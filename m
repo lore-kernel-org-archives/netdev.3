@@ -1,149 +1,87 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD8C4DEC15;
-	Fri,  9 Oct 2026 15:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E165E4E141D;
+	Fri,  9 Oct 2026 15:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791559229; cv=none; b=etao94Wj6VoJPcszPVDYVYEiE6IEn5XO7YcSkx3ssjhRK0WPf5iIE1XP18a55XqUvu43RpEGzc1E48SA+T5FKsCxXeuf3/Ar2q5is1LAq2C9+iWB9bx00OrVrUNU5pQf5a5r84Fqre5qq7i3bkNxetYAf6M9LPJZHASVmfk7Zfk=
+	t=1791559789; cv=none; b=AoD5m0+/rkjObkrm8/yGjRQ+0cTkF7gLVRUYtWzBDtaFYQdCRldqj89ZAdJ92yEF0qNixEPghnamfEHrEXSNF3CAcaYaLt0fvHbrds8UjLkTKeUEV9KkEAg41gLCatAge7LNYL0qf4DBt2i7as2yx4jAZwY1ibrGfRq5iw+v4uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791559229; c=relaxed/simple;
-	bh=fTcOwCXJBoEKdjXvf8bN4MoiJ4xOloa7nuvRAx/pEik=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E3R8j7jiorEv4MdHZK18/hZ7N8i1BPFn3Vb1OV1cQgQz7dqzMdJmyfu52ePn2SAvw/vCtD9FtWr6KSSzpVac/Rr1KHMI0Br4rJ7LbQ5CfIFJUizx8JWURwdrrMIxBT3FWxicfqL5OqiGykCVTAolX8CQa5GFwNfWZemRMIL7hrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 77D68430FB;
-	Fri, 09 Oct 2026 17:20:20 +0200 (CEST)
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
+	s=arc-20240116; t=1791559789; c=relaxed/simple;
+	bh=m5Oxfi8s5vZu+bzQS+WRYvMM6s6DS+tla1qoaKR9uBU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Qko3Z3RoXhnagll7ONK3pJHa9pOfL9QYwLxtUGbLZNqpqcuJpTy3/4bjrWe8sTdYQTJdBoh6Yr+sMUW1xTCKFhktQZ0Ibr2uVvsXy/3jgkm7VwrEKqbu70uJfo19Cz8ZfWVK7vKR60UiHzTrMa4GFXXZHzgRufUSlz2sCZehzOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcsICqKP; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcsICqKP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961691F000FF;
+	Fri,  9 Oct 2026 15:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791559788;
+	bh=rtlq/9YcmXw8NmebrTfGcIs8U33OKDOfAPBwtnMEh1E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=XcsICqKPqnQSdKfgvRh3AoIIbXjevADj+oCFJqtTe+2F3ekENxE1hgxJPf/KkZvNP
+	 LyVTI6pOBs1gTKjV5J+qjTKGE3teS8TpsQVl5y5qjsq/DjPEzuGXRrJEJ0hBqknYGG
+	 0JBOe1inPsSaXG9nJR8gkNA/0oKvx2L09YDFZdUYQxIkhL81SUiAWOXwbet8BU8XXP
+	 B95JzLmcu+kH8KG8ycdTVv6aE7zCDLNoPaa04sd+QmnIHPkfLmjoC4EcpdqRn1z14M
+	 ZfOtMEom4O440aMhI4UWv826HFjfD7j9IqnUgAZZmtGjnvOoU4OGjjnH3LfMb6FpzO
+	 Qe3tQOwFA0NWQ==
+Date: Fri, 9 Oct 2026 10:29:47 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Claudiu Manoil <claudiu.manoil@nxp.com>
+Cc: netdev@vger.kernel.org, s32@nxp.com,
+	Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5] net: ipv6: seg6: report lwtunnel setup errors via extack
-Date: Fri,  9 Oct 2026 17:20:13 +0200
-Message-ID: <20261009152015.462383-1-g.goller@proxmox.com>
-X-Mailer: git-send-email 2.47.3
+Subject: Re: [PATCH net-next v1 5/5] PCI: Create OF node for NXP ENETC
+ pseudo-MAC functions
+Message-ID: <20261009152947.GA976116@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1791559219587
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2706e800774bb7e72992a8cc9d17ce7be039f046.1791548316.git.claudiu.manoil@nxp.com>
 
-seg6_build_state() rejected invalid configurations with a generic -EINVAL,
-so "ip route add ... encap seg6 ..." sometimes reported "Invalid argument".
+On Fri, Oct 09, 2026 at 03:40:34PM +0300, Claudiu Manoil wrote:
+> NXP ENETCv4 pseudo-MAC (PPM) ports can be probed as pure PCI endpoints,
+> without any "ethernet" node in the static device tree. The ENETC4 driver
+> describes their fixed link by applying a device-tree overlay onto the PCI
+> function's own OF node, which requires that node to exist.
+> 
+> Request the PCI core to synthesize a per-function OF node for these
+> devices by registering of_pci_make_dev_node() as a final fixup, following
+> the existing precedent for the Xilinx, Red Hat and EFAR devices. The
+> helper is a no-op when the function already has a static OF node, so this
+> has no effect on platforms that describe ENETC via static DT. It only
+> takes effect when CONFIG_PCI_DYNAMIC_OF_NODES is enabled.
+> 
+> Both ENETC4 PCI device IDs are covered (0xe101 and 0xe110), since either
+> can be instantiated as a pseudo-MAC port on S32N79.
+> 
+> Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
 
-Add extack messages to the checks that lacked one, and use
-NL_REQ_ATTR_CHECK() for the missing SRH attribute so that userspace can
-tell which attribute is missing. The checks themselves and their return
-values are unchanged.
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 
-Signed-off-by: Gabriel Goller <g.goller@proxmox.com>
----
-
-v5 (https://lore.kernel.org/all/20261005140637.644840-1-g.goller@proxmox.com/):
- * use NL_REQ_ATTR_CHECK() for the missing SRH attribute (Jakub)
- * reword the inline mode message to "inline mode requires the IPv6
-   address family", since it also applies to IPv4 nexthop objects
-   (Andrea)
- * consistently call the header "IPv6 Segment Routing Header" (RFC 8754)
-   in all messages (Andrea)
- * include the offending mode value in the invalid mode message
- * reword the commit message to match
-
-v4 (https://lore.kernel.org/all/20260923120228.172643-1-g.goller@proxmox.com/):
- * use NL_SET_ERR_MSG when the SRH attr is missing
- * use NL_SET_ERR_MSG_ATTR when we have an invalid attr
-
-v3 (https://lore.kernel.org/all/20260922090851.38978-1-g.goller@proxmox.com/):
- * format fix
- * use NL_SET_ERR_MSG_ATTR
-
-v2 (https://lore.kernel.org/all/20260918153544.1178884-1-g.goller@proxmox.com/):
- * dropped tests
-
- net/ipv6/seg6_iptunnel.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
-
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index 69a6ef5c5317..0d39a38a5dd2 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -762,8 +762,11 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	struct seg6_lwt *slwt;
- 	int err;
- 
--	if (family != AF_INET && family != AF_INET6)
-+	if (family != AF_INET && family != AF_INET6) {
-+		NL_SET_ERR_MSG(extack,
-+			       "unsupported address family for SRv6 encapsulation");
- 		return -EINVAL;
-+	}
- 
- 	err = nla_parse_nested_deprecated(tb, SEG6_IPTUNNEL_MAX, nla,
- 					  seg6_iptunnel_policy, extack);
-@@ -771,7 +774,7 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	if (err < 0)
- 		return err;
- 
--	if (!tb[SEG6_IPTUNNEL_SRH])
-+	if (NL_REQ_ATTR_CHECK(extack, nla, tb, SEG6_IPTUNNEL_SRH))
- 		return -EINVAL;
- 
- 	tuninfo = nla_data(tb[SEG6_IPTUNNEL_SRH]);
-@@ -782,13 +785,19 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	 */
- 	min_size = sizeof(*tuninfo) + sizeof(struct ipv6_sr_hdr) +
- 		   sizeof(struct in6_addr);
--	if (tuninfo_len < min_size)
-+	if (tuninfo_len < min_size) {
-+		NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
-+				    "truncated IPv6 Segment Routing Header attribute");
- 		return -EINVAL;
-+	}
- 
- 	switch (tuninfo->mode) {
- 	case SEG6_IPTUN_MODE_INLINE:
--		if (family != AF_INET6)
-+		if (family != AF_INET6) {
-+			NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
-+					    "inline mode requires the IPv6 address family");
- 			return -EINVAL;
-+		}
- 
- 		if (tb[SEG6_IPTUNNEL_SRC]) {
- 			NL_SET_ERR_MSG(extack, "incompatible mode for tunsrc");
-@@ -804,12 +813,19 @@ static int seg6_build_state(struct net *net, struct nlattr *nla,
- 	case SEG6_IPTUN_MODE_L2ENCAP_RED:
- 		break;
- 	default:
-+		NL_SET_ERR_MSG_ATTR_FMT(extack, tb[SEG6_IPTUNNEL_SRH],
-+					"invalid SRv6 encapsulation mode %d",
-+					tuninfo->mode);
- 		return -EINVAL;
- 	}
- 
- 	/* verify that SRH is consistent */
--	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo), false))
-+	if (!seg6_validate_srh(tuninfo->srh, tuninfo_len - sizeof(*tuninfo),
-+			       false)) {
-+		NL_SET_ERR_MSG_ATTR(extack, tb[SEG6_IPTUNNEL_SRH],
-+				    "invalid IPv6 Segment Routing Header");
- 		return -EINVAL;
-+	}
- 
- 	newts = lwtunnel_state_alloc(tuninfo_len + sizeof(*slwt));
- 	if (!newts)
--- 
-2.47.3
-
-
+> ---
+>  drivers/pci/quirks.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index de9bbccda21f..86f0a182224b 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -6391,6 +6391,8 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_EFAR, 0x9660, of_pci_make_dev_node);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_PHILIPS, 0xe101, of_pci_make_dev_node);
+> +DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_PHILIPS, 0xe110, of_pci_make_dev_node);
+>  
+>  /*
+>   * Devices known to require a longer delay before first config space access
+> -- 
+> 2.34.1
+> 
