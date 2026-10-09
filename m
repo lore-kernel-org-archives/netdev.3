@@ -1,78 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5754E4C3A;
-	Fri,  9 Oct 2026 12:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608824BE45A;
+	Fri,  9 Oct 2026 12:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791547328; cv=none; b=uRUhu8LBkPdAa35R8mXHhaXW9BiQgjqXMaIaIz2Rjd58+ymQJLUZB7z/Q7DH7BwhfxK1U2FGYzFgxHvrZnOVdG0rBNkgxN2eYIVxhCRqfOrnyvFJjVQizYqJwsbrkZisjsnCEcdWouCRJhGTj2vTjYo/6YwZ0RFx7/QaHvZQuLI=
+	t=1791547788; cv=none; b=Zs0WW0CQhG/0nuusBeLpqy54kYncbPRnGE7hl2FXrxGFg124BU6utFz5iL2qX8LvF8yofEETThNV0BRvyM1gizi0Li6/So/7Tok+xcI1cnltvBVxn7uRtbUXIVs0bpSYxtiyAQVMvbveGylpT8vlM3Hrfj5i3XWqg23zDWr/aeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791547328; c=relaxed/simple;
-	bh=6FtDSrgaYV7Ds/Zpv/sUmavtdmBH9gBDnWD2EBM7p4Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fKRzlpLRFWWRsAZbBToV5E25eTz/EcSc0poBougQrNPQ6Q2iSlp81Rn/nUwzAOvrSJv1z/+/YQVXKAWpUKqzmLVfqrEQl3WWzfdriVcp7rvneOQy3+yHlURS23hvDC5vWBlG1SzJ6X/fLikUMCcAjN6uBHAyZxOfROwZKh4mhIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVCj0Khw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791547788; c=relaxed/simple;
+	bh=Dq20ADAqDf405H8K7WW4rLyLm7w2FrSG0HL5gZBWnmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OIXxNMsFRaXE4RimgNO5MGlz3/yNlJQDFz/5cVjIS4E3HuPUp7OIzDstssaazsa8iklGac2KgHKcJ3mLwUHEFZUpE2tHjq76T0j8sLwYyxXFd4as5rD1oVZm0zVuGEakaBU8WMGCdR1pXKZwfN/i8WUX815KvtkROfgkSfca4cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TxYgJENI; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVCj0Khw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFE81F000FF;
-	Fri,  9 Oct 2026 12:02:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791547324;
-	bh=27Qg1735PHB2T//K3jELbiSjWjSG0HONYGKp7KFkKws=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VVCj0KhwADjBnN6aDcwom6Pn3NloGWC1xCdoP6R7RQX/2P3s8lAgDCXW15ePoT8nl
-	 BhJkEHi3/Mu9SnYUqgSr5z1W6dXyo+dWDNGsCboVr7vf4nKMQyYSYXlbU1UInBz9oB
-	 IuVn0vkGj4Ad3LJqxBwe+UaiUjP6xkcUUvg07DGjlKADa8I1S24n0FPdgbQX4To+LF
-	 uX6qXnQv/ernYpArUhinbXl/h+CkDyagXb5mCUdNf/K5yZ7aCT/v9Z5DP4zaOuw9Cq
-	 ckBwJRNlbH9rAAILX4GYt7IjFvz2MP/Sx49VDZy+kqa79JOpHAMDzAlrYeiAxWzXxg
-	 vR8tbXsHuClFA==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, magnus.karlsson@intel.com,
- stfomichev@gmail.com, pabeni@redhat.com, tushar.vyavahare@intel.com,
- kerneljasonxing@gmail.com
-Subject: Re: [PATCH v2 net-next 00/14] selftests: net: migrate AF_XDP test
- suite over to net
-In-Reply-To: <20261008143013.55b0f462@kernel.org>
-References: <20261008114909.734364-1-maciej.fijalkowski@intel.com>
- <20261008143013.55b0f462@kernel.org>
-Date: Fri, 09 Oct 2026 14:02:01 +0200
-Message-ID: <87cxtjqdza.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TxYgJENI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=O9rA9Mwgk88aDRZr9jh+2l7+6yLxai29L8EHtEPPmBE=; b=TxYgJENIpCy2zZ+Gm/jz7q6JNU
+	y27zQXW0nYjcAiIR+j1hs3zlFGdmb0yBTb61WWh+Gdrczqe7j9jz2xA+me0rqHXRDPzn57CuPgQRt
+	M1wGFJLtrUZUA4avMOfEGmSXS6Tc/zzdj1/78q7fUxGVNJwcJdhvsFJVu7kr0tZxuoUo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xF9Pr-009mUc-6n; Fri, 09 Oct 2026 14:09:35 +0200
+Date: Fri, 9 Oct 2026 14:09:35 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Magnus Lindholm <linmag7@gmail.com>
+Cc: pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] tg3: normalize inherited M3000 register byte
+ order
+Message-ID: <becc8f95-4650-477b-b1c7-cc4952e5e980@lunn.ch>
+References: <20261008220433.965791-1-linmag7@gmail.com>
+ <038bffb2-e40d-44bb-b7ce-53e9de32e50d@lunn.ch>
+ <CA+=Fv5QvhYd7EqVBYKWVgvf92SLE=FjE8EYcZvUQ7HKdx2kc3Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+=Fv5QvhYd7EqVBYKWVgvf92SLE=FjE8EYcZvUQ7HKdx2kc3Q@mail.gmail.com>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+> > Is there a legitimate reason you would want the bytes are swapped?
 
-> On Thu,  8 Oct 2026 13:48:55 +0200 Maciej Fijalkowski wrote:
->> Heads-up for ice: to reserve a queue, xsk.py updates only the RSS
->> indirection table over ethtool netlink. On ice this also turns on
->> symmetric Toeplitz hashing, and restoring the table afterwards fails.
->> The fix, "ice: keep the RSS hash function on indirection-only updates",
->> goes to iwl-net separately [0]. Without it, the first case that takes a
->> queue out of RSS fails in its cleanup, and the table stays modified.
->
-> Good news it that it applied, bad news is that the non-HW test_xsk.sh
-> crashes the host:
->
-> https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/857863/166=
--test-xsk-sh/stderr
+You missed answering this. I'm guessing, but does the hardware offer
+this to make big endian machines more efficient?
 
-That's also good! A bug has been surfaced by the test! XD
+Please could you look at the driver and think about what would happen
+on a big endian machine. Is the change still correct?
 
-AFAIU this is a know veth issue [1] (right, Maciej?).
-
-Disable until a fix a landed?
-
-
-Bj=C3=B6rn
-
-
-[1] https://lore.kernel.org/netdev/20260509084858.773921-1-maciej.fijalkows=
-ki@intel.com/
+	Andrew
