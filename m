@@ -1,61 +1,63 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1209D3AEF50
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F313B42C6
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791565124; cv=none; b=M/tJPPmZgpQ7vXBUa/J3mYKxaqdj83v+BCFhBybyfR+l0/6PNQTl2CVs5kc124LleLCmowwLZRxj9j6xP1ZEpfFfkcnj17Pum9wsGk76FeexBtXC8yA71Sv3lfOeZfc2wA2xO1loKUYwd9n4OfqoWqgT//fbFkC3G3yakpGHPeE=
+	t=1791565131; cv=none; b=Qy+17rCY0lx5zDSfUtFsMCcM0z9Kriv09dHyjlKQSx5tSM12cdMTdpj5XUHs/7d/n8G9L8iNFoK8ReZ3YK30UCj4kdHX+kPOV/iYrEMxJ2KUemMJ1Vk58VEW/BvBIYYcn2ulcbOjnpcIIco7+nu3fz7U2ex2MuAbBZ2vkZWC2as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791565124; c=relaxed/simple;
-	bh=buZ6qltwC1ejIwyTNn15zGgc6lh0GpPbL07r50E9di0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K/q3dIbRRetmKJD2ZtZR41hfGiEBM3OylNkGVzK4qeys2oER+oKoLXRfz7w6wcgKjrMmJDs9AUfd44Sqoi7oRJ5P+h0TSBcp2eG1rVgI7WbU4RENKwjv5rDT/Vd7pBR6iYS8QQuyFMoRPVNPpiPehxF7T/tCwkKeRc7DN+5WBf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Blm4zhXr; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1791565131; c=relaxed/simple;
+	bh=s+pgwaIhoAKB5TYzttX7X+vT+586hf5yM3Ll9Pqk8KM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dFgJ3VdxxS2MTQ4pOBKH+GFCOdKEPc3mN1jhQnMs0KRua9oKkLFTYOiRiX5qt2eLN6DWkON/ECsn+/YTwUZcLNQUDQp5+zBPDsCD3m//8R+nQElyNg3o6gLLykOtOrdg0dRMi90iEaadU2uIxLKws87rj8tDMKL2cSx7Jc23NiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jRm2clI3; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Blm4zhXr"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8875d220446so2385523b3a.3
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:58:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jRm2clI3"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-878b44611ffso3526717b3a.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:58:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791565122; x=1792169922; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KlijA4wF7PV1etHWVzlP7RU50laOzEh5e/QgJFQcuts=;
-        b=Blm4zhXrRLyFimufOtIiYyCx7EOUslxZgUWXDFI1Qx+xQRs2ICjfR0TuTphkbFJ9AI
-         oXwHr7kMzzQ5sqbK6V6P5DBNHdxBasoZ61kwHUWtWPuqnwke6Ru+duelLiL59Udyb9xT
-         8W7sMAHi/ZaDL2Rj6hDSf6/8X81ijn+3PBgygzUhzD/0NNba2BqKBjEzygSTv/NQe7ZF
-         1Adum989tvGVwivkOLXNgaFWXRwWD3PVaGUXPwa5YUYg/dhoixNPDKnY5D/MwEVe44Oa
-         Oj+n1O8MLeMKMzPT7wdLZI8EHqeI9bzFkAF2aut21/abOfktl/qQ6pf7H/rUw4vZxImE
-         H0dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791565122; x=1792169922;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1791565129; x=1792169929; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KlijA4wF7PV1etHWVzlP7RU50laOzEh5e/QgJFQcuts=;
-        b=WlJND3j0gpWHVKtwvHT+2yotmQH4T9ahTxXTTAxsJYL9G6XP7MJ/YXACw9mXZC0gAx
-         EXj8J7NBHcA4LwiUmIM0wWfzYhGbO0kPcTmc+9i3nhKXnOxda+pMjr8VB9YT60moxxw+
-         VQ3xyb/LnX3GzEsFj4+G8Wa7x4uedrpCV49bc3qhfN30dG1WS2i8l42ISp1dwMRguI3x
-         MCOcd61PV3i4NRVoD0zuKlstVlgnIDtzHWWGk2jieWs5MlxKx6h+pW1Ttf5m4VnD5yvI
-         yols7RRCKZ71CgrhHhANmUl9PEMClFWluMWpTYst1qsvgRpq+uVv0pmZwjvKqlEFpkoF
-         wcZg==
-X-Gm-Message-State: AFq9FYLOxNfkGh0aAwf9w9PNy7pFq8qT41KHRMPw9wi1zIcK/7Z93rQg
-	9IsVoGFRjc+UrMLuBnlTNjYOJNFS0L1dLJJphiGEeGRG5jWWqlZPx1hhpzirTrMD
-X-Gm-Gg: AYBFou1HTnK+37ZQFy4ULon5hv1HYHrQnCONwfNkGm+mCgbT8fSfT87Rzl0CSamuutW
-	Wnf59/tTASRp+hAsQiKlvXvhCUSc4HMR4jYQuqZEX+yHlEpePkhGkq6bWEgNiZ7Ele2hgPdwlXV
-	Xj3AGrZFo7Ec2zcZtrI27zaTph61TojWqpdIvg+D00QrteePim/0wxZwGTqfslEDbDf5kkywxe6
-	HWVt0t3n5w7AIB4tMG9Vpd46PvdMb0GBFgGQJzY2Uoh1mWSVS0mYCYEt0tGZ6jlPG/s06l41VXA
-	h0fnXnb7LRv7zy5WESGFecrjz7sL8HTMe0sK4JUcGJPT5ZmucDC3ufV8iwKhyWHdNgcZJf1m933
-	Z/o6BdQ0bAw//CLhPaDSH2t8MolfoD78f5m313xfjyFsoLEQMUiQ8hgRL0iKbAvSXrfqwbGruBd
-	mvvWicVw1R8oiC+wIKx6CSWztZBeD6hp37mOS7wN3TqJd+INGVgNh/PppUhs26XyWUh0uodtCIE
-	2rUg1Hp6ZIBO/MZX6cdZRAzVg==
-X-Received: by 2002:a05:6a00:2e86:b0:874:705d:f65d with SMTP id d2e1a72fcca58-897c6e18d04mr2218928b3a.43.1791565122176;
-        Fri, 09 Oct 2026 09:58:42 -0700 (PDT)
+        bh=QQ7BCPJPZs0rbKUt5hEFk4a7TJVk9czU/DoC2Om2fvM=;
+        b=jRm2clI3raqPk93iFnziHKzfOzkaKmPRezDJPHIcj13z3PkRvXruZArJz6Xyv+nUuv
+         Fo7tb7Amy8lmPKZAtHybhu12xWylmvVn0gGYC2rIlfnP1RRYnhKaB0YurHXTw0n0JYgr
+         K89VW3T7cTOlvCDD2VALusWnrqmbrv3wy4XzmGR+LmsNRei8n8eu//gIJwtscJ6KYJQX
+         dZnU7FvJNX+6Yq2B73/+RV1H6yVmvZtdRSx+eAAMjMmU2P8YD8vV0qkJXOTJUQnhnsGc
+         Db+J/4NXjnRLLrJCDNh+UNMNNPBksHrkDTKQcSt3/QIsRZdQAxBfP1Ne8M7e4o7a3V1Z
+         lq7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791565129; x=1792169929;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QQ7BCPJPZs0rbKUt5hEFk4a7TJVk9czU/DoC2Om2fvM=;
+        b=M1vFm19NmtSlPW1QTwwlzQ6CYfe1Gf6/vmLca824x+Qv6ZpajTcXidDWG3AXNx/nqA
+         6Rrvl25+9ZuNN2L5D9tJN0vUS3kZo87mw6hcuNo+6nPFTokg+WNRx3sRXEwCOA6xlaBS
+         Z1vw6Fs/NHterzaxkit2gVZAD7qrGsq7quYctu7dsaVWoZemLavSR4dhCFiF2cjfGMf6
+         toovj0XasNVNZsbtxx1Y38/GSdX+LvdG/D730BWDDKKQOUp3LulJu/O4sSQawLbvNH9T
+         yq4TrUBO89DVSJVdGGG2UOZ1k6OAWlYaqernjcUaZG+xP06Ye3Xw9USbIQCwwxnztTDS
+         M7QA==
+X-Gm-Message-State: AFuF++nto5Yc8cxZS/sE5ojv2WteBFZrCvONqpJEazr0jYMNfbt+N5k4
+	yBbokCCC1WUItK/5Othy26uUlY1rg1Y8uh6a46vw7XiXxUAdHFs7gyGFzh3KcZeX
+X-Gm-Gg: AYBFou1Fr43ZA5pjLEtO37HLxq2Z7JixNdJbauG5AqsKbihlca3Y5I1TXC9SHcb1PZY
+	kzQw9hHp1fQG3gq6uEhJWfllJRk4bcj/Wc9RCD7EGJD4Bnj/DLzrcIdHVzPNEtWeesf5aWhjV3V
+	9C59bV4x7xMp5NTQySljgVbzhe3Up7/NesXqlQosC0ozflk5pN0wkMhTaHjchmYW/aGJ8g1T6HF
+	5vGwVNxS872/SKvZxKE0z6K4Zm3+MEzdmKxY48khWIPC5eGUJKi7FQIAbnWDzQNP8Ad0gQfKlf/
+	ISF9gX+DF67UK7lykb8AzTWEdu6Aa5SDKrSWLpof9W1qfESPcPmFwPxW5PKq1NlECOf68noRdXR
+	nBBgrXrst8JQSI4ByqtqyCh7nZz+rFQUcd9gHFhDJkI1jsAWnmLCfV3tm7TLZE/jCazFRQBZIkp
+	nmyPHIs4QwmDPunvIHmeA7luvsT6mpcfIM2qKp3Z9PJoDJtFtjU6KwQsL71LsIyD+WyRhNXhAQX
+	11+u2NtLOpFbut2uywXlpzuAQ==
+X-Received: by 2002:a05:6a20:2451:b0:3dd:a196:69ec with SMTP id adf61e73a8af0-3e16bf36b7amr2257934637.71.1791565129145;
+        Fri, 09 Oct 2026 09:58:49 -0700 (PDT)
 Received: from d.home.yangfl.dn42 ([2a09:bac5:661c:1246::1d2:d1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c37de994sm1494437b3a.26.2026.10.09.09.58.38
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c37de994sm1494437b3a.26.2026.10.09.09.58.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 09:58:40 -0700 (PDT)
+        Fri, 09 Oct 2026 09:58:48 -0700 (PDT)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -66,10 +68,12 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 0/4] net: dsa: motorcomm: TC offload follow-ups
-Date: Sat, 10 Oct 2026 00:58:18 +0800
-Message-ID: <20261009165825.359259-1-mmyangfl@gmail.com>
+Subject: [PATCH net-next v3 2/4] net: dsa: motorcomm: Use NSEC_PER_SEC
+Date: Sat, 10 Oct 2026 00:58:20 +0800
+Message-ID: <20261009165825.359259-3-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261009165825.359259-1-mmyangfl@gmail.com>
+References: <20261009165825.359259-1-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,34 +82,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series continues the traffic control work on the Motorcomm YT9215S
-DSA driver: it reorganizes the offload code and then adds ACL enablement
-on demand and flower priority mapping.
+Get rid of magic numbers.
 
-v3:
-  - rebase
-  - reword commit messages and comments
-  - fix cleanup path in acl_add()
-v2: https://lore.kernel.org/r/20261001204851.2576101-1-mmyangfl@gmail.com
-  - move type casting helper into chip.h
-  - remove flow statistics and broadcast/multicast policers
-v1: https://lore.kernel.org/r/20260926211813.935723-1-mmyangfl@gmail.com
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+ drivers/net/dsa/motorcomm/tc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-David Yang (4):
-  net: dsa: motorcomm: Split TC module
-  net: dsa: motorcomm: Use NSEC_PER_SEC
-  net: dsa: motorcomm: Enable ACL on demand
-  net: dsa: motorcomm: Add TC prio support
-
- drivers/net/dsa/motorcomm/Makefile |    1 +
- drivers/net/dsa/motorcomm/chip.c   | 1662 ++--------------------------
- drivers/net/dsa/motorcomm/chip.h   |  352 +-----
- drivers/net/dsa/motorcomm/tc.c     | 1583 ++++++++++++++++++++++++++
- drivers/net/dsa/motorcomm/tc.h     |  381 +++++++
- 5 files changed, 2059 insertions(+), 1920 deletions(-)
- create mode 100644 drivers/net/dsa/motorcomm/tc.c
- create mode 100644 drivers/net/dsa/motorcomm/tc.h
-
+diff --git a/drivers/net/dsa/motorcomm/tc.c b/drivers/net/dsa/motorcomm/tc.c
+index 433a428ed070..be3321df8868 100644
+--- a/drivers/net/dsa/motorcomm/tc.c
++++ b/drivers/net/dsa/motorcomm/tc.c
+@@ -25,14 +25,14 @@ static u32 rate2token(u64 rate, unsigned int slot_ns, int unit, int C)
+ {
+ 	int e = 2 * unit + C + YT921X_TOKEN_RATE_C;
+ 
+-	return div_u64(ldexpu64(slot_ns * rate, -e), 1000000000);
++	return div_u64(ldexpu64(slot_ns * rate, -e), NSEC_PER_SEC);
+ }
+ 
+ static u64 token2rate(u32 token, unsigned int slot_ns, int unit, int C)
+ {
+ 	int e = 2 * unit + C + YT921X_TOKEN_RATE_C;
+ 
+-	return div_u64(ldexpu64(mul_u32_u32(1000000000, token), e), slot_ns);
++	return div_u64(ldexpu64(mul_u32_u32(NSEC_PER_SEC, token), e), slot_ns);
+ }
+ 
+ /* burst = 2^C * token * 4^unit */
+@@ -83,7 +83,7 @@ yt921x_marker_tfm(struct yt921x_marker *marker, u64 rate, u64 burst,
+ 	}
+ 
+ 	/* Check for matching burst */
+-	burst_est = div_u64(slot_ns * rate, 1000000000);
++	burst_est = div_u64(slot_ns * rate, NSEC_PER_SEC);
+ 	burst_sug = burst_est;
+ 	if (flags & YT921X_MARKER_PKT_MODE)
+ 		burst_sug++;
 -- 
 2.53.0
 
