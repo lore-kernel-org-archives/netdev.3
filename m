@@ -1,37 +1,48 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D963B3CE489;
-	Fri,  9 Oct 2026 12:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB564D9F9A;
+	Fri,  9 Oct 2026 12:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791550152; cv=none; b=fyX3e0cfEj9v5ueoC9/GQq6nCQsaBlmdmBfg2zx4DaE8SGOl5mOTsqi+Df5hXkesjZ9nfJ+9IvCEhdRu7HhZ06PCRhvdI5YB9nOXCJiXhN8cRQxohD3GlDP5ptxyDOO2rIzCT1w1CYsow4V13KnAbuCXR0Fw88NhIsDcU2rtYxI=
+	t=1791550186; cv=none; b=tl+p8CI8X90HFTiyTcoNZ1XdsRpqY0AT9F07f3Mg0MOcogzjNKx6GMVbPhu9mhxgkNVl6LrfxISoB+AihDeiKyQv5enBvUUf8Ne36HGkQMQ6LO5b6HQeq2gk9ngPhLPQeZlHaxY/9UjhcNzxfYfCVbopFBIy0m0LWB8yY58E2JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791550152; c=relaxed/simple;
-	bh=XI4Ekq5uN1tv5Vxv9u2qHb0Mmnx6aKfDsexGYsVBuGg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CfzMEuNJLSJt4gMbeRlMvozk7aJzD3QRcOZ6CHVcNqHkbBwhChBZiG6nAKJOPLq9rQe1H3xI7W8ZXZ41gdtB3OBr68fwyjXVkRnMqxN/C9bQ+lBSpyjQ4BkfDbTp1pjY1w2ivle41LwlnGkdPwZ7f5zZEtHxztE3VYv1UAzcaIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
+	s=arc-20240116; t=1791550186; c=relaxed/simple;
+	bh=K/awXRjtrAgT9DdlL0OZn/wU4RkIEIx7avAlLfsuKag=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aYlZrP6j5bjldISj0eH6MQUFXFRLpk9LBI9EAXuf03AtsEPjU4WeXsykqQdvmpXD7Y6lZOv3MsNXtwW8Fq29JAYdHBE8C+wF1swrmrK2u5FusuvzIsQZA+a/CuDjBARQq7up9Cne2cixauT5doMPBFapRKKicZ4HqIyKjZbJzV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 6C973200320;
-	Fri,  9 Oct 2026 14:40:36 +0200 (CEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 504FC1A02FB;
+	Fri,  9 Oct 2026 14:40:41 +0200 (CEST)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 60305200099;
-	Fri,  9 Oct 2026 14:40:36 +0200 (CEST)
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 42D761A02FA;
+	Fri,  9 Oct 2026 14:40:41 +0200 (CEST)
 Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 15FED2037D;
-	Fri,  9 Oct 2026 14:40:35 +0200 (CEST)
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 9CAC32037D;
+	Fri,  9 Oct 2026 14:40:39 +0200 (CEST)
 From: Claudiu Manoil <claudiu.manoil@nxp.com>
 To: netdev@vger.kernel.org
 Cc: s32@nxp.com,
+	Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
 	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	devicetree@vger.kernel.org
-Subject: [PATCH net-next v1 0/5] net: enetc: S32N79 pseudo-MAC (PPM) networking support
-Date: Fri,  9 Oct 2026 15:40:29 +0300
-Message-Id: <cover.1791548316.git.claudiu.manoil@nxp.com>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v1 3/5] arm64: dts: s32n79: add NETC IEP18 ECAM node for ENETC PPM ports
+Date: Fri,  9 Oct 2026 15:40:32 +0300
+Message-Id: <49a0450c6d906f0ba1a886d86e89f35746a7a6fc.1791548316.git.claudiu.manoil@nxp.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1791548316.git.claudiu.manoil@nxp.com>
+References: <cover.1791548316.git.claudiu.manoil@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,64 +52,56 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: ClamAV using ClamSMTP
 
-This series adds networking support for the ENETCv4.4 pseudo-MAC (PPM)
-ports found on the NXP S32N79 SoC. On S32N79, the ENETCv4 ports are
-not wired to any external PHY/MII; instead they are internal "pseudo-MAC"
-links into the on-chip NETC switch. These links are proprietary, expose
-no standard IEEE interface, and run at a speed fixed at boot time by the
-Port PCR[PSPEED] register.
+Add the netc_iep18 PCIe ECAM host node describing the NETC integrated
+endpoint bus allocated to the first Linux cohort on S32N79. The bus is
+enumerated via the generic pci-host-ecam-generic driver and hosts the
+ENETC v4 Pseudo-MAC (PPM) PF and its VFs, which connect internally to
+the on-chip NETC switch (not owned by Linux).
 
-A key use case is a port that has no "ethernet" DT node at all: NETC is
-reached over PCI from a host that probes the ENETC, while the internal
-NETC switch it connects to is not owned by Linux. Such a port must have
-its fixed link synthesized at probe time.
+The node is kept disabled at the SoC level; boards that wire up NETC
+enable it. MSIs are routed through the GIC-v3 ITS and DMA is translated
+by the SMMUv3 (iommu-map).
 
-Rather than hand-building a software node, the driver describes the
-fixed link with a self-contained DT overlay (following the lan966x PCI
-approach), applied unmodified via of_overlay_fdt_apply() onto the PCI
-function's dynamic OF node (CONFIG_PCI_DYNAMIC_OF_NODES). phylink then
-picks up the fixed-link node through dev_fwnode(); the real operating
-speed is sourced live from PCR[PSPEED].
+Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
+---
+ arch/arm64/boot/dts/freescale/s32n79.dtsi | 24 +++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-The series touches three subsystems:
-  - net/enetc:  pseudo-MAC overlay support + probing of 4.4 devices
-  - arm64 dts:  NETC IEP18 ECAM node on S32N79 and its RDB board enable
-  - PCI:        a quirk creating the OF node for the ENETC PMAC functions
-
-Because this is primarily a networking feature and the pieces are
-interdependent at runtime, it would be most convenient to merge the
-whole series through the netdev tree.
-
-Patch 1 has a runtime (not Kconfig) dependency on
-CONFIG_PCI_DYNAMIC_OF_NODES; absent that, the pseudo-MAC probe path
-fails gracefully with -ENODEV.
-
-v1: initial submission.
-
-Claudiu Manoil (5):
-  net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a DT overlay
-  net: enetc: Enable probing of version 4.4 devices
-  arm64: dts: s32n79: add NETC IEP18 ECAM node for ENETC PPM ports
-  arm64: dts: s32n79-rdb: enable NETC IEP18
-  PCI: Create OF node for NXP ENETC pseudo-MAC functions
-
- arch/arm64/boot/dts/freescale/s32n79-rdb.dts  |  4 +
- arch/arm64/boot/dts/freescale/s32n79.dtsi     | 24 +++++
- drivers/net/ethernet/freescale/enetc/Kconfig  |  1 +
- drivers/net/ethernet/freescale/enetc/Makefile |  1 +
- drivers/net/ethernet/freescale/enetc/enetc.c  | 12 +++
- drivers/net/ethernet/freescale/enetc/enetc.h  |  1 +
- .../net/ethernet/freescale/enetc/enetc4_pf.c  | 98 +++++++++++++++++--
- .../freescale/enetc/enetc4_pseudo_mac.dtso    | 32 ++++++
- .../net/ethernet/freescale/enetc/enetc_hw.h   |  1 +
- .../freescale/enetc/enetc_pf_common.c         | 41 +++++++-
- .../freescale/enetc/enetc_pf_common.h         |  1 +
- drivers/pci/quirks.c                          |  2 +
- 12 files changed, 209 insertions(+), 9 deletions(-)
- create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_pseudo_mac.dtso
-
-
-base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+diff --git a/arch/arm64/boot/dts/freescale/s32n79.dtsi b/arch/arm64/boot/dts/freescale/s32n79.dtsi
+index 94ab58783fdc..671b807f1c54 100644
+--- a/arch/arm64/boot/dts/freescale/s32n79.dtsi
++++ b/arch/arm64/boot/dts/freescale/s32n79.dtsi
+@@ -122,6 +122,30 @@ irqsteer_coss: interrupt-controller@4ed00000 {
+ 		};
+ 	};
+ 
++	nwss-bus {
++		compatible = "simple-bus";
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges = <0x0 0x48800000 0x0 0x48800000 0x0 0x4b0000>,
++			 <0x2 0x40000000 0x2 0x40000000 0x0 0x20000000>;
++
++		netc_iep18: pcie@241200000 {
++			compatible = "pci-host-ecam-generic";
++			reg = <0x2 0x41200000 0x0 0x100000>;
++			#address-cells = <3>;
++			#size-cells = <2>;
++			device_type = "pci";
++			bus-range = <0x0 0x0>;
++			msi-parent = <&its 0x0>;
++			iommu-map = <0x0 &smmu 0xc0000 0x100>;
++			dma-coherent;
++			status = "disabled";
++
++			/* All NETC PCIe functions */
++			ranges = <0x82000000 0x0 0x48800000 0x0 0x48800000 0x0 0x4b0000>;
++		};
++	};
++
+ 	cpus {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
 -- 
 2.34.1
 
