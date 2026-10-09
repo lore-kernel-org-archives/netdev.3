@@ -1,85 +1,84 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6609A4E4308;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C5C4E4332;
 	Fri,  9 Oct 2026 13:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791553424; cv=pass; b=tyy1fqVYgFw94vYrV3u5vzGhesTmM/aYgpMYvTnuNilGHmR+5uy/84plw1jdV+8LxRi8UP5KVf6fJDZBc4b0U71auwUe23gQCUGuq5cQaL2qrmoTXnUrdze8TWhYP+oXcVYxgvuEXm650flr3MnM+wncHsnwP8KhHxgS013py04=
+	t=1791553425; cv=pass; b=f0s88Sq8cL+EBkx2VWoVOM1tyyKBjTXa5F6vUvwbCh0Y5VlLSvXoOVYmtVtoCdAUlY0RVgETtCDxLvHYajASzda0jv1CUsLlXz8CWRH+sc8Fivp6SYDM79nHFq9KO7GZPoTqWwn0heLO1fF02q/4S9/Vh3aGY5gbYUAOSM6n3w8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791553424; c=relaxed/simple;
-	bh=cVv64f5BQoSA8JZMbM3oCGMWHhPHO6JQHImCr9SPqrs=;
+	s=arc-20240116; t=1791553425; c=relaxed/simple;
+	bh=848LzRvnlnQzlqeA+kBmcLmF8BouHfWSkPJntA0ExHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEcmxdjD7az0/M/DPzzFX48d8EAfdnM2qMcb4TzgLQA6lON8G5EjUOXVGJXfGhFVmWW9ZGnoHNdilsGFIUid7LfyfTfbZ0BKv42W3Hu0bZKnRw7QbkpQJdr0dObcurl1PsaW6nxcV7287d6CYX90AUYvQEabwldU6GbMdLdhVOs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=doq/Tw7d; arc=pass smtp.client-ip=185.203.200.13
+	 MIME-Version; b=OPFZnYnRynlRdHQQ/+jhak8yhrqz5qFzwPe5zX9VLU11gw8eWfSGc2ldAbIXsx1g9cruU2VU8XTkIu4JRhE4kkmSUrBBRbPdimx4uJtQHPMLj7pViRCX77zAqgywkQLrmDJJeh2cjFOwG20g2W0WsTN/8Bru/elh26etczSQk2U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=WKDx1+VD; arc=pass smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="doq/Tw7d"
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="WKDx1+VD"
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 65FD320265B;
-	Fri, 09 Oct 2026 15:43:37 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 77ABD20266A;
+	Fri, 09 Oct 2026 15:43:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553417;
+	s=20260414; t=1791553419;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/itt5lMWrTUK7wO99+ImVfO07iO2rvmAiQrDKdrH09Y=;
-	b=doq/Tw7dgwhs0WnQFNnVN8jG+4mvkhFqiE0v8UYsXrs6zSD14gbpEi4AYlp/MbeCePk1+4
-	mSBZ8cHWgqRiV1nDai/p93c0VoGwzmjXVyLnG0EI7ucCNAeuhxxj0l+HLHMntq8bZfRkYL
-	Eoz4gGdMZaqlYjLYQTAFL7Z9nmMVu5JEs7WCyO+9tUX2cgZiAf7EgsrYBxg7MyIKqHqAIr
-	n3c7cXTaZAnRutSFIPnp/cMZraMDNPHXVSNpX+qcgYsNzUTjInYGmC42oCraZwTzbO4hjb
-	OD7Idft/o05X1CQVbYoR0+2oEdKI1HUj69aGlgRIW+0qY1xx25EG55ZPjQ8cyg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791553417; a=rsa-sha256;
+	bh=SSadS0UA+Oi+k7qAj5ETX1kfD9e7tPd6g1V6+n52G4k=;
+	b=WKDx1+VDfbP0xp4S3nndSpT3w9rWyVosA8bPCjsuHsp03dhKjMpGFnI7ob8z0SASuVIWHN
+	/TTrd6Dvi7kCIHQ4377o/7ivQ/YTxOQPeBTwd6vdMqs/QOm+j7tsQ5N5q9YOgaAmzID6mw
+	WpA6ewuhAiHz9/OxWAEB9VPDIwqdVdTawdeEH8S0zluFeU4T1smW+DtBgynm3B6mtjQBjU
+	+wthK+6f9o3A9vhV5KQJ2AZ8L2ZqJw1m+JZo7f1oMZ79lpLVZxc68PNdW8MWMuNZtXFQYJ
+	Hbs885UGyXG4h0JAevVbFLPQ/kNor8rt19utnJIGSgOKY2BsXgMZ2apLoFS0nA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791553419; a=rsa-sha256;
 	cv=none;
-	b=T91bvkb+boO3YZeIhR+XL5bOAV5FkodewzWfh07SyslTxsjujkfh50nEDrzALyX0TCy4uV
-	AW4zZUKjZAflVyQf+eR/YcUJhB4uV3BhUogZxKQPaXwdY67gz2Mp8dtfKx1hX15pcFl2CA
-	2T52pJ2baBeM9Pxs5WvEUNIvFMg7kk7C8UHm9HSx7ZdU9P9a6FQYyUUg5evnwSCk/AbXER
-	1jvtIVc+kxUQ8H1BUtJRIspW5oDA0ue5wLCLsckJoQyPXqF3ksOaTIURVZN9veolomagcc
-	IUBFP+NlA8TEADBDsi//va2FH6I3qm75K2rvkebm2m9ID9w6bHS4Eo7eivGvPw==
+	b=UoGdGDWQfe7WsGpe6YiE2Zje10fs+33HyoGNORJjvb63dnaMZCpE0fpiFMPDn6bPhmzxYq
+	Rk36ZN6zMKV0hLtZBHP04Ebgth9byAf6CZN7dICUGr93TwQvVfmztsjcSezrIzv9Y2piXv
+	OKHIOvbKKB+7WF8HER6YiKagRnSRr0/PIlyH0xdVMW3mDDSBj8ZHXrr7WNt5Ifm6GbiV2C
+	hEDlTxTfpheE0qnQXnmDxBoTC6AqbCkqcPMYhANZRPsQVipWBhR8uJuWeph6tR1CMqoFc3
+	BfnvdrRLGC7KjAT5UG+iWmj3+rqtGq3qnCsq2fUhsLwx+i/9ffsG8fCsSGAzBA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553417;
+	s=20260414; t=1791553419;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/itt5lMWrTUK7wO99+ImVfO07iO2rvmAiQrDKdrH09Y=;
-	b=IDx9ta4wDqRr0v8jvWHF5cQMM+8Nir+0iD9Alc7l0F5s/VpQoVVA/9t/bsIKwIWiBkFnb9
-	5navzEC24/02EiJ/cL+5Ex+DClivfEQdphPFnGcsBPeJQbTsmuVC96yjiUW/WueNmq688I
-	6GUb2mRJxKmATCfXZTM0J3wFjaWaEBL4l+jIneknpklSG6LR6XCgNR52lqcflWqP+L5k9T
-	Yp8MH6fHV8CA35L3OWvuHEOXmi0OYTDntlSiZzcYKZB0JUemQ8M3dVHdNPdjatvBXYWwmN
-	A0qoxf2ffujvs5VGWwNpFyaFSY/EJWypl7QVnlqb7TFHOr72LQmctBRRqBHK6g==
+	bh=SSadS0UA+Oi+k7qAj5ETX1kfD9e7tPd6g1V6+n52G4k=;
+	b=U9cbrKi71TQMB7QHyXPEDoQwOgcg0kBCnR65tTlIQ5pUqxILbztlXMoJQsMjtwN1gTQXW7
+	RMHNpQhj6GGq1yixXPC6RcZU8Lvh9Mt2+HoKzYN650nfBzSxeAwfV1D0O0/zhjW5rWpP4z
+	3hf6DE2Z5p/QLj4au2eI6bSgArp4235QPbnx1a1mHt/Q4+j5f9PWfVtm0IH/2ShPJrrDob
+	xJSHTuQSvM9/8iGt659BIRJojDODfLdmWbUCR9P3PTHJMu9k43Us9BUoVHBgRwhuJr5rJw
+	PXKIAWrK3jogC5lavEmvH1rpNBDmbmeVU8rfVixFMJSOk5Q5Bs/X1wvywLsEjQ==
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xFAsr-0053Sm-11;
-	Fri, 09 Oct 2026 15:43:37 +0200
+	id 1xFAst-0053TI-1G;
+	Fri, 09 Oct 2026 15:43:39 +0200
 Received: from blackshift.org (90-182-211-1.rcp.o2.cz [90.182.211.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id DEFAD5BD8CC;
-	Fri, 09 Oct 2026 13:43:36 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id EE9365BD8DC;
+	Fri, 09 Oct 2026 13:43:38 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 20/37] dt-bindings: can: renesas,rcar-canfd: Restrict resets in top-level
-Date: Fri,  9 Oct 2026 15:27:52 +0200
-Message-ID: <20261009134323.64064-21-mkl@pengutronix.de>
+Subject: [PATCH net-next 28/37] can: flexcan: flexcan_setup_stop_mode_gpr: fix OF node reference leak
+Date: Fri,  9 Oct 2026 15:28:00 +0200
+Message-ID: <20261009134323.64064-29-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261009134323.64064-1-mkl@pengutronix.de>
 References: <20261009134323.64064-1-mkl@pengutronix.de>
@@ -91,62 +90,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-Properties varying per variant of the device should still have the
-broadest constraints set in the top level, so add such for the "resets".
-Since top-level part says "reset-names" cannot accept one item, disallow
-it for the two variants which do not use it in practice.
+of_find_node_by_phandle() takes a reference on the GPR node and the error
+path releases it through out_put_nodeq. The success path returns before
+reaching that label, so the reference is leaked every time the stop mode is
+set up successfully, and the node can never be freed.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20261001060825.53335-2-krzysztof.kozlowski@oss.qualcomm.com
+Release the node reference before returning.
+
+Fixes: e9f2a856e102 ("can: flexcan: fix an use-after-free in flexcan_setup_stop_mode()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20260917095302.2145506-1-vulab@iscas.ac.cn
+[mkl: update Fixes: tag]
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .../devicetree/bindings/net/can/renesas,rcar-canfd.yaml   | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/can/flexcan/flexcan-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-index bbaaef8f4282..1a7a9ce45e97 100644
---- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-+++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-@@ -133,7 +133,9 @@ properties:
-   power-domains:
-     maxItems: 1
+diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
+index 86b40abe9e76..30ae7c344a05 100644
+--- a/drivers/net/can/flexcan/flexcan-core.c
++++ b/drivers/net/can/flexcan/flexcan-core.c
+@@ -1986,6 +1986,7 @@ static int flexcan_setup_stop_mode_gpr(struct platform_device *pdev)
+ 		"gpr %s req_gpr=0x02%x req_bit=%u\n",
+ 		gpr_np->full_name, priv->stm.req_gpr, priv->stm.req_bit);
  
--  resets: true
-+  resets:
-+    minItems: 1
-+    maxItems: 2
++	of_node_put(gpr_np);
+ 	return 0;
  
-   reset-names:
-     items:
-@@ -209,7 +211,6 @@ allOf:
- 
-         resets:
-           minItems: 2
--          maxItems: 2
- 
-   - if:
-       properties:
-@@ -231,6 +232,8 @@ allOf:
-         resets:
-           maxItems: 1
- 
-+        reset-names: false
-+
-   - if:
-       properties:
-         compatible:
-@@ -246,7 +249,6 @@ allOf:
- 
-         resets:
-           minItems: 2
--          maxItems: 2
- 
-   - if:
-       properties:
+ out_put_node:
 -- 
 2.53.0
 
