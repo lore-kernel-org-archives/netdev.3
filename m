@@ -1,98 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99D03DAADC
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5069D476058
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791531027; cv=none; b=F/vYoxY65Bp+soDTHnlOAguc4cePdALjRzo+YsXaqAlTzWkSujyy5gSyrxM3lU3+UmhzgR/8iFJ6VTkJmPdD1jjI5QM9d5NX7Nu80dVu/6eX+WSus6woLziOAXKbTA46FE+5ho2Z6OqBKVMMIKlM+EpcOil8jpslLRC5zYmotPg=
+	t=1791531789; cv=none; b=sOMZfqVwWOUCmje5tL6ShHU8RuuCklXYEQJerLwRBYsuKHpF67A7ZBhmFuU4y9xsCbD/7BlTmXreP12e7Ewfyket8u4hNofZ97recQ2UKa+doOv3ggKR8oaVSeneaN5umT9gI/IfVixWemQPFXxUrhEFBOzCirdcqFiHOTuLQy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791531027; c=relaxed/simple;
-	bh=VYDZY2uGKu33vKOyYd6NW2GKWHjdqDv69Ge3kjWDmHg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IKjpRRHGFuxh7PkdGQl0HEDQYalIe9DmEhf/rtet/b6912uUm73yIqnMlGSNRb4K+wzfzQJJ4MS/rjAs3sLkjyfLDqcghNGgBzgVs5Aqc2Ev4UHO+eizTzlkxP8W1+Q4M7r9luBsAhSApqQoQMqxlQKUv9bHDzharveEJA4o9IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwIUDr3s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791531789; c=relaxed/simple;
+	bh=tTYCiu56WjZLaEUZm84YXG5kgInp20xIQBrWMS7xesA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T+zqbnxmXup6GqMuIuu/s+sunu6YVsS/CDH0ZDLMZ0ZNXjLrENmjpFmE8qGCAJ5hMXoK5n5xbx9RAvCePy7EuHBoQl64vbf/Ny34MePP+5+JzKNGCks4VPNCSW+vVUzfJ+obDeQIm2/bVJ4CP/ZdGwyDpelhZGir3fwET8Y0WMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a8CD/Azk; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwIUDr3s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA3D1F0089C
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:30:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791531026;
-	bh=VYDZY2uGKu33vKOyYd6NW2GKWHjdqDv69Ge3kjWDmHg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=JwIUDr3s/MfSM7kcKnUID52hZC5kSpTTuEkc+3ww3rh3REqeBLTEOlZBf7UExohXk
-	 +ijBF1puacoxRVPWtk0LaU/94rCUSoT5K3cvAilB+Zz0MHDfI/Yo28jkhr2a6cRlDp
-	 V42CMcttMu55r75vyi06asWkSVicuIkNE5b+hm6t2i+9L+HUK3/9o28y1FwlHhl+dg
-	 u2FOqySJdm4iM+LdE+eyTYYNTnfmMi2tYlsNDVfxeYuj+uBbxR7Q+kNVfkGmOGYRw3
-	 +plZLYhbBRrMmbUfgBO2bGQohQRCbUuHjMNyoS/p8rlHGES0lkj/bs9zM8LUcLizOr
-	 7/kwdUfQ5x4MA==
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-91986c5cb75so40420396d6.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 00:30:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz89ooMBw1S1GsRB+25QBXJey2i1MCd4SOBSswRZmd0rt6cs7HFKlegI3XKM7STJiVpRGfJcsc=@vger.kernel.org
-X-Gm-Message-State: AFuF++n8zwJUGFQovcjS1ldxnSIoXir5G/g6nioQ7HA7d98FFxIZR4uY
-	Eu4rS0yEd91iADHViInATm6Hg6/i0dPJ6Eae2zJZXaWt09IPB8Pg6fzotsjVZgq+HcTfsjmn+wV
-	cbbNkRnhwk5R1qf3KEqPo/xZVS66TDik=
-X-Received: by 2002:a05:620a:a416:20b0:93e:c12c:9b76 with SMTP id
- af79cd13be357-93ec12c9f3cmr30877285a.81.1791531025574; Fri, 09 Oct 2026
- 00:30:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a8CD/Azk"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-39647aa9d52so1249430a91.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 00:43:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791531788; x=1792136588; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lwKfuoeQ35NUGbMAfIq/wI54O4pLFX7q37/ntcKq2NQ=;
+        b=a8CD/AzkbtJo0q67hHOmqfwkikOtCvK2q4ddH4wrZX+iIqxRT6IctBaxm6yXA/P/f2
+         3nrFblFjx5OQ6q4k2y2Ifp5LT8F6UsxT12Pjdqkq/b4QUQsd95AWMwdOQplSrEcphWXF
+         tcB94tAi+fkxL0QUO6vzyIjnzWei+JQT4V67z9N9Ims6mceL3XxBVNRCL6kprFPVYp4m
+         6v5LZ+d0NPeYQuMn/Hr2C5fOu50oz9BC6upVOVTd4YtnF+Jd/kCm5BAb7UNWzuzUKA0N
+         R9TIibS5b97K+jnUIpkbAx8sC4ZaoTwdpPQ240mN5vcRod2MPe4dVvaT3ptKya0FjrVX
+         Y8Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791531788; x=1792136588;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lwKfuoeQ35NUGbMAfIq/wI54O4pLFX7q37/ntcKq2NQ=;
+        b=W0Ytq76TO1z0lyZ4WMLqxv/gorgbwtF21s8+Fo7FMc570LmVNR22qrmpQthCxgb3Zr
+         r2oL1sABPtjZmPFTvKDrsdj7k5NyDjE8BB3u2JNMa2ngXYCnlRkjCwhl/dLtSsRgjiUc
+         n+zHrbPsE+K8b/b2dcjVi4R2bjtR7fXSX1uJ4sV4RX2ZihyFl0c9CuwJxQFDeaXQOSAR
+         2rbbhft9nLlFcoEkTJI1cNug+JNjkXOpXKXLYthfgtBNzz/Ul3CFwfYSsHVTfBH8pCjv
+         0FM9KTm+GWiHcIRS4beTRsTOYhPYZPWmKEjdSFFM962DPT9Eus+LhQjuqbOZUEBWpb+G
+         Tn5w==
+X-Forwarded-Encrypted: i=1; AKwUvBxbvoZyHw+RMZKfmt7vX2/u3idoSQ1Iz07rsSSNNfNPofXuHGthXnbXaJt7yZwBrmNvKqyHqsU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLLavwzXGI/uDUHXyG3UKBxrSyCUv/5S8eTmv5LOeWgzGOfXnvb
+	wr2TmzdRwVEj1XltVBDDgdFZVUpuAyoeQm99foDqCaz2D+vHyui35frD
+X-Gm-Gg: AYBFou2mwQab/z5067kKsQCnE8VCicin5nHPEyBkgIRTOvxm21sL1dJtqI+1Id0vL2i
+	J9jvuHokUfiKZzdIi2t6zIkwVymrDjKLvaGh/+FaHzBhrS/zmXGq0pq/5gyfKF+rOj9OYKxXzPb
+	TrbwjF3COF9b2KwKjdHZq7rYJy0SZXcsygp8nd+Rpu6cmME8P59AATjVVbwyXcpKyTAnDF77Jiw
+	0tXmF9MG3/v5gNNjzPwx90reP1WaxNBsog+qZxvaTyNnLBrUMwiYr69qqOm8duoaW8rmzecpwOE
+	diHa/qo0ivZFj128FkEdFwNafzie9fvxlr698S03orv1z4+ZYBhKPLL2RWzLCK8a90pur1BRjJ9
+	27ehFrvvmQrGNcl+Fm6mUz+nLd13aRPm8nKVOQGv0CbW3yRzvBKfQUSmZtcWywprLTFXFdrN55I
+	/sxnc7hiU1MuDKmlJFyg1IK3Lyg+I1gNRQV2PI6t0898z6uPebcr3m3ySxdOIlV0/Em6LPSXvhz
+	e/6KKFpguXu3Gu7zB58LV4h9EiRdo/nik+Tw6TzakKfRA==
+X-Received: by 2002:a17:90b:4f43:b0:3a4:ee64:f492 with SMTP id 98e67ed59e1d1-3ab3ac8f4admr686219a91.33.1791531787321;
+        Fri, 09 Oct 2026 00:43:07 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab38ddac6dsm2124986a91.7.2026.10.09.00.43.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 09 Oct 2026 00:43:06 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	David Lee <david.lee@trailofbits.com>,
+	Kyle Zeng <kylebot@openai.com>
+Subject: [PATCH net v4 0/2] sctp: re-point retained control chunks on association migration
+Date: Fri,  9 Oct 2026 15:42:30 +0800
+Message-ID: <20261009074244.3718-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009062637.176005-1-hui.zhu@linux.dev>
-In-Reply-To: <20261009062637.176005-1-hui.zhu@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 9 Oct 2026 15:30:14 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xYGDXMKjbcnkvZAVf3GEd_bnjdJY=84dfyak=rmQVA1Q@mail.gmail.com>
-X-Gm-Features: AclHuK-MFYBp2Fx57JVqeSVV6ggA-SIdiDol7zrPg6odH2nr65hN0ZFPuJg2TWo
-Message-ID: <CAGsJ_4xYGDXMKjbcnkvZAVf3GEd_bnjdJY=84dfyak=rmQVA1Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v4] selftests/bpf: Add bpf_proactive_reclaim test
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Geliang Tang <geliang@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
-	Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 9, 2026 at 2:27=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
->
-> From: Hui Zhu <zhuhui@kylinos.cn>
->
-> bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-> unlike a write to memory.reclaim, does not retry until the goal is
-> reached.
->
-> Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-> and check that the result is positive but well below the request: one
-> pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-> 4K and 64K page kernels.
->
-> The test deliberately covers only the kfunc itself. A full example of
-> the intended asynchronous use, where a BPF program watches one cgroup's
-> workingset refaults and reclaims another one from bpf_wq callbacks, is
-> maintained out of tree at [1], released under GPLv2.
->
-> Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.=
-c
-> is not built at all.
->
-> [1] https://github.com/teawater/memcg-async-reclaim
->
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+This series fixes ownership of retained SCTP control chunks during socket
+migration. Patch 1 carries David Lee's shared-key prerequisite.
 
-Thanks very much!
+Changes since v3 [1], following Xin Long's review:
+ - Add David Lee's and the forwarding submitter's sign-offs to patch 1.
+ - Restore sctp_process_tx_chunk() to skip duplicate visits.
+ - Preserve a control chunk's existing shared key across migration.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+[1] https://lore.kernel.org/netdev/20260926100359.78731-1-juny24602@gmail.com/
+
+David Lee (1):
+  sctp: hold shkey across socket migration
+
+Jun Yang (1):
+  sctp: re-point retained control chunks on association migration
+
+ include/net/sctp/sm.h    |  1 +
+ net/sctp/sm_make_chunk.c |  5 +++--
+ net/sctp/socket.c        | 57 +++++++++++++++++++++++++++++++++++++++---------
+ 3 files changed, 51 insertions(+), 12 deletions(-)
+
+base-commit: a7bfaba4823e3c165bb2004c74eff7c096672bc7
