@@ -1,158 +1,73 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272473C1D62
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093453CB55E
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791532154; cv=none; b=ajYq+NUwi9T/EwQ/BXlgA4JYPgYNQrSO8ncogUgeMsVf/wzPrmPKzo1wN3y06Dwd0JAbOP3F3okTkXVVP2yomfpQ20Tbyby22eSZe2z6IgNEsuX5kra1r5CTckbJykPPTMAEgyjT5jLCKn2KdrA/qibpUSBtaVtYD98W137rVDA=
+	t=1791532215; cv=none; b=PQ0/d3HkVqq0JwmqBtBkBIF8I8oxs0MU2iTXC5b12DOmWiE0LH6RNaFtB2oMwnJjtz3bXRz63T3YgWC0U141IP8SaMQPv/BI6BidE6ECPSDTGCkLhd4rvMiA6CnfszPVzEwvF1aWeN9/iBmY0dfp8BJx3jER13YrOIB9qxkceUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791532154; c=relaxed/simple;
-	bh=LC+iT6cz6gt1xJGfnqi7RV6noX5MBVINAfFkxDUTe5A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=odKsJOl1k4+YoINZ8yz5GC8iJrtby8UcFNsQDUyAqdQwRWIPxNDDvu/Kst4SwJhDBk85w9g79r3cqX0zu1gGmFAMFtjeFqlHrQ1qi+iTGRVBtAWpr5JKQZZUAcJvGo0ebBDSRmPTzNkoTrFzmMKEOnU3d2hN1+6Q243+cQgnzZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STM8SBJ2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791532215; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ivd6BBsKt2Y2OhVBfKrX9u8XV91IUoPupEggsAPwwy2yXakLMvQfO4t4B2jdZtjuf6h0ZqHu3xUMyb7+bcO2Rvpb5YDAYPgZFxJWNZMabUnFASLGSy+qGsbWkpAYEjNFJz7ze+ymMMR3pMVyWaTU8hpaoEjNkSKxy1UadCMG7fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJB8P8X9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STM8SBJ2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635A81F000FF;
-	Fri,  9 Oct 2026 07:49:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJB8P8X9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E259A1F000FF;
+	Fri,  9 Oct 2026 07:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791532152;
-	bh=OjPt+wkbBrxQpcTb2uuLv60lWItNEsjFUGl75FoNi2Q=;
-	h=From:To:Cc:Subject:Date;
-	b=STM8SBJ2of9UVOrpXQy07E1G2iwc0zAB+xMhMSsx8yDzz9nzJyaTa/TkwtfeQhYbf
-	 NOzNJM7wt4qalP5QhnwxgFeEr0ViveoDFzsy8kSPJvpJ5wINozsJ5KxPA+tILS7Cfs
-	 ozTExEdPqPWOkNuWRsp1j1Uj8s2q3olqgbjtS8a/eU3jKwBaPHv8HfEAkteDSOTDQg
-	 CvfmOh2SRz6zLCaab+6M2bDqP9YUty/1eoem8kYT895JHmwQSOVuSsEIUsoRPWFA9u
-	 swSLsfYGCm/XKi1lf72rZSXMFpnNdbCnBJ1QgzstczKhzLe85TwHoklxfWImRlnOa8
-	 Acu23pad80Ifw==
-From: Eric Dumazet <edumazet@kernel.org>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	netdev@vger.kernel.org,
-	Eric Dumazet <edumazet@kernel.org>,
-	Baul Lee <baul.lee@xbow.com>
-Subject: [PATCH net] ipv4: use RCU protection in inet_netconf_get_devconf()
-Date: Fri,  9 Oct 2026 09:49:05 +0200
-Message-ID: <20261009074906.729877-1-edumazet@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	s=k20260515; t=1791532214;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=IJB8P8X9U55JfTpc11N1KctJ8zaSMln6+JKXv8NQDY0rSsK6h7V/q0Z9f8U3RqffK
+	 j5km0ZVbqkh7WNVF4WHGqchtoPMg49PGj2jqFpU/8pJVxdzNUZuOBEkTJU30MHb8Yv
+	 TnzeMaqobR1kff79/hU5kLgcw9Rqw7B9BVkG5pgRJaTXOkdCKTl7b9Qrxgqnw689dp
+	 EV2nPSAEoCoWyq4HNHXGuDflUWJ1qo6u1QxMz40N3V8nOAUxjau4pqyjtsOqkGaR3m
+	 gHQapZFUphgmt0egIWd7PqhFTBPZfobE2O18c60GDPrc7gBW3iFHa0xcGcip8pPb3d
+	 OzgggHKMkNStA==
+From: netdev-bot+sinfo@kernel.org
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+ Eric Dumazet <edumazet@google.com>, Baul Lee <baul.lee@xbow.com>,
+ Cen Zhang <zzzccc427@gmail.com>
+Subject: 
+ Re: [PATCH net] ipv4: use RCU protection in inet_netconf_get_devconf()
+Date: Fri, 09 Oct 2026 07:50:13 +0000
+Message-ID: <179153221344.2527009.10357629258604832185@kernel.org>
+In-Reply-To: <20261009074405.727999-1-edumazet@kernel.org>
+References: <20261009074405.727999-1-edumazet@kernel.org>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-inet_netconf_get_devconf() runs without RTNL. It uses dev_get_by_index()
-and in_dev_get() to pin the device and its in_device while the reply is
-allocated and filled.
+Hi!
 
-in_dev_get() is not safe for a lockless caller. Since commit 9d40c84cf5bc
-("net: devinet: Reduce refcount before grace period"), inetdev_destroy()
-drops the final reference before the RCU grace period. A reader can load
-dev->ip_ptr, then call refcount_inc() on a zero refcount after
-in_dev_free_rcu() has been queued, and keep using the in_device once it
-has been freed.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-None of these references are needed. An in_device is freed after an RCU
-grace period, ipv4_devconf is embedded in it, and
-inet_netconf_fill_devconf() does not sleep.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Allocate the skb first, then perform the lookup and the fill under
-rcu_read_lock(), using dev_get_by_index_rcu() and __in_dev_get_rcu(),
-like inet_netconf_dump_devconf() already does.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-Fixes: bbcf91053bb6 ("inet: do not use RTNL in inet_netconf_get_devconf()")
-Reported-by: Baul Lee <baul.lee@xbow.com>
-Closes: https://lore.kernel.org/netdev/20260815172032.79740-1-baul.lee@xbow.com/
-Signed-off-by: Eric Dumazet <edumazet@kernel.org>
----
-Sorry for a resend, I did a mistake, using edumazet@google.com instead of
-edumazet@kernel.org, not enough sleep I guess.
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
- net/ipv4/devinet.c | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
-
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 5b6b11c943e453742b4893f1c9bd9e70d3d37a6f..f9a361621f74b420276006b13de94926e13af18e 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -2379,8 +2379,8 @@ static int inet_netconf_get_devconf(struct sk_buff *in_skb,
- 	struct net *net = sock_net(in_skb->sk);
- 	struct nlattr *tb[NETCONFA_MAX + 1];
- 	const struct ipv4_devconf *devconf;
--	struct in_device *in_dev = NULL;
--	struct net_device *dev = NULL;
-+	struct in_device *in_dev;
-+	struct net_device *dev;
- 	struct sk_buff *skb;
- 	int ifindex;
- 	int err;
-@@ -2392,7 +2392,13 @@ static int inet_netconf_get_devconf(struct sk_buff *in_skb,
- 	if (!tb[NETCONFA_IFINDEX])
- 		return -EINVAL;
- 
-+	skb = nlmsg_new(inet_netconf_msgsize_devconf(NETCONFA_ALL), GFP_KERNEL);
-+	if (!skb)
-+		return -ENOBUFS;
-+
- 	ifindex = nla_get_s32(tb[NETCONFA_IFINDEX]);
-+
-+	rcu_read_lock();
- 	switch (ifindex) {
- 	case NETCONFA_IFINDEX_ALL:
- 		devconf = net->ipv4.devconf_all;
-@@ -2402,36 +2408,29 @@ static int inet_netconf_get_devconf(struct sk_buff *in_skb,
- 		break;
- 	default:
- 		err = -ENODEV;
--		dev = dev_get_by_index(net, ifindex);
--		if (dev)
--			in_dev = in_dev_get(dev);
-+		dev = dev_get_by_index_rcu(net, ifindex);
-+		if (!dev)
-+			goto out_unlock;
-+		in_dev = __in_dev_get_rcu(dev);
- 		if (!in_dev)
--			goto errout;
-+			goto out_unlock;
- 		devconf = &in_dev->cnf;
- 		break;
- 	}
- 
--	err = -ENOBUFS;
--	skb = nlmsg_new(inet_netconf_msgsize_devconf(NETCONFA_ALL), GFP_KERNEL);
--	if (!skb)
--		goto errout;
--
- 	err = inet_netconf_fill_devconf(skb, ifindex, devconf,
- 					NETLINK_CB(in_skb).portid,
- 					nlh->nlmsg_seq, RTM_NEWNETCONF, 0,
- 					NETCONFA_ALL);
-+out_unlock:
-+	rcu_read_unlock();
- 	if (err < 0) {
- 		/* -EMSGSIZE implies BUG in inet_netconf_msgsize_devconf() */
- 		WARN_ON(err == -EMSGSIZE);
- 		kfree_skb(skb);
--		goto errout;
-+		return err;
- 	}
--	err = rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
--errout:
--	if (in_dev)
--		in_dev_put(in_dev);
--	dev_put(dev);
--	return err;
-+	return rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
- }
- 
- static int inet_netconf_dump_devconf(struct sk_buff *skb,
--- 
-2.53.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
