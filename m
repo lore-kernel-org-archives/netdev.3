@@ -1,115 +1,87 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D374A0915;
-	Fri,  9 Oct 2026 11:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4162B4C9E04;
+	Fri,  9 Oct 2026 11:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791544703; cv=none; b=heYNffAqZdZ11f5MHSuEuXfram177n4if4bUxpEVkPovah4i0kd5T6TgDQFCvvYIMpjBip3mmAeuHHXBHBSdNjn+flC0TAJYNnyQ1sgsOq1pKAWMGjVazpQvLyUMvyFCLO+hIIZOe9DIeDP/nLvQmRGVjDzbZ/fbM0arJ5RM0wQ=
+	t=1791544818; cv=none; b=F8e0iYaZ4uVW7beR99eQQcgxMttbESHlApMXMaJplZbLTy+zOTxfruQqyy4yolwa8aufaBHc4DpQAzWnzYKziN4lfRBczfyXkyw0VAFUUerJ5f8orONQlyzSeW+obrWADIq+MlxK9kC6B7I7rfiO8YL9zT7yhJtCbmT0LzXQijc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791544703; c=relaxed/simple;
-	bh=7nxS2I2aVw+0r4Yzf+raKz1xpyoEyfatzqM5reWEoy0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iJN1x41cBWtOrnxd7IAmwHx1GpBq738Z0DbM8guOV1rlYjVO42+0t/rm6B+uipOL9rVBSQDasry0WNY2axWPkelCSwaQu25xL7HThndQZE+LMmBKMsd/Q/uAcnngkFMT6ZACtti9eApNYAD+ln7ZjXn2U5jpWZv/uAbgMDXldHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JX8e1p6t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791544818; c=relaxed/simple;
+	bh=gcTZyf14ssLkKwrYPJXbLcDPts9T9IBgYPP1i6hobs4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TWd2OBIJs+dsLyC+MAE5Tsdp4Wwl1ZrkyK/2EQbKKlXAsLg4HCL70dh94An/RHiDwubrARLyWXTchZUxjRC2I2fAoZCSw3AkMcImQfzBAyCwhDd9fnewBWkAIalToJWlBRkkzhomZMgikbvqqGIK38G8WcFJ7GMAvL7oSNB9IS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UmhfHzj1; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JX8e1p6t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D6F1F000FF;
-	Fri,  9 Oct 2026 11:18:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791544693;
-	bh=rWKMsscvTXY3/zZUf8OyMletBRfbuYUpwT7FFmOt+Mo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=JX8e1p6tzNxj/VSqQpPPFaGhFdKBCyJPe4mZVr7BCfhQCn+mG46uyfLeQ0mNHG/C+
-	 NImBU864zXrOjujG3QP297yFi7TGgVd+JTzSMaypnY1PmCeYPLiYnVg8aGbrvR7Js9
-	 rkqDkDZXtOuLzuS3gRxfCywKtkLW0w8wWaOXx+uDAgrmP9qNFNG3Kpd8Ch7AtAnG+c
-	 I0cDnzTWopJ/uT1NJ/NiLSd/AcVZ2TLCKs3uFIHugypSB/4wSmlsuA+yY9ukSDiIxK
-	 AYVhS/tj/tzFW0uU1DtI9oASFr9zQ8ThlEhyfxg/Ea19QPLyFhWCeT8gFxsIhye/wR
-	 sLFVTzNp43m/Q==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
- kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
- kerneljasonxing@gmail.com, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>
-Subject: Re: [PATCH v2 net-next 05/14] selftests: xsk: move the AF_XDP test
- suite to selftests/net
-In-Reply-To: <20261008114909.734364-6-maciej.fijalkowski@intel.com>
-References: <20261008114909.734364-1-maciej.fijalkowski@intel.com>
- <20261008114909.734364-6-maciej.fijalkowski@intel.com>
-Date: Fri, 09 Oct 2026 13:18:10 +0200
-Message-ID: <87qzhzqg0d.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UmhfHzj1"
+Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 6D39F20B716A;
+	Fri,  9 Oct 2026 04:20:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6D39F20B716A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791544809;
+	bh=gcTZyf14ssLkKwrYPJXbLcDPts9T9IBgYPP1i6hobs4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UmhfHzj1q0rtxohBwkVEyXKnx7o/9Orjzyp7iPQSeYZnJsXYJs20VXQsmd/Prcd+T
+	 RpUJU/OHQae1rPi070YXfBWkfA0kEDiQlB6pTYiUmDEYum6A/6Q4/1TsTwZq6rWw20
+	 tWQBpISKd8itgIDE/AOyzIomtFo3KtBk2QA5PiiY=
+From: Wei Hu <weh@linux.microsoft.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-hyperv@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	weh@microsoft.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH net-next v6 1/4] net: mana: prepare HWC ownership for safe reinitialization
+Date: Fri,  9 Oct 2026 11:20:06 +0000
+Message-ID: <20261009112006.591265-1-weh@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <sashiko-outbox-164177@kernel.org>
+References: <cover.1790665894.git.weh@linux.microsoft.com> <901e5237127da4fbd8e14ff07fa32dec8a20fd84.1790670523.git.weh@linux.microsoft.com> <sashiko-outbox-164177@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
+On Thu, Oct 08, 2026 at 12:54:01PM +0000, sashiko-bot@kernel.org wrote:
+> Can this dereference of cq race with mana_gd_destroy_queue() and cause a
+> use-after-free?
 
-> Move the xskxceiver engine, the AF_XDP userspace library, the test
-> definitions and the XDP program to net/lib/xsk, and the veth launcher
-> test_xsk.sh with its prerequisites script to selftests/net. A later
-> patch drives the same engine against real NICs from drivers/net/hw, and
-> net/lib is where both suites already take shared helpers from, so the
-> binary does not need a second copy.
->
-> net/lib builds xskxceiver together with its XDP program and skeleton,
-> using the bpftool in PATH, and skips it with a warning when bpftool is
-> missing or does not run, so the rest of net/lib still builds.
-> selftests/net installs test_xsk.sh, which runs lib/xskxceiver.
->
-> Like the rest of net/lib, xskxceiver builds against the installed uapi
-> headers rather than the tools/include/uapi copies that the bpf selftests
-> use. xskxceiver.c got min_t() only because the tools copy of
-> linux/netlink.h includes linux/kernel.h, so include linux/kernel.h
-> directly.
->
-> Move the two ethtool ring helpers from network_helpers into xsk.c so the
-> engine no longer depends on network_helpers, and point the kselftest.h
-> include of test_xsk.h at the net/lib include path. The XDP program moves
-> unchanged. Its Ethernet header bound check compares pointers of distinct
-> types, so net/lib builds it with -Wno-compare-distinct-pointer-types, as
-> the bpf selftests do.
->
-> xdp_hw_metadata and the test_progs xdp_metadata test keep using xsk.c
-> and xsk.h from their new location.
->
-> Point the AF_XDP entry in MAINTAINERS at the new paths.
->
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> ---
->  Documentation/networking/af_xdp.rst           |  6 +--
->  MAINTAINERS                                   |  3 +-
->  tools/testing/selftests/bpf/.gitignore        |  1 -
->  tools/testing/selftests/bpf/Makefile          | 29 +++++------
->  tools/testing/selftests/bpf/network_helpers.c | 48 ------------------
->  tools/testing/selftests/bpf/network_helpers.h |  2 -
->  tools/testing/selftests/net/Makefile          |  2 +
->  tools/testing/selftests/net/config            |  1 +
->  tools/testing/selftests/net/lib/.gitignore    |  2 +
->  tools/testing/selftests/net/lib/Makefile      | 34 +++++++++++++
->  .../prog_tests =3D> net/lib/xsk}/test_xsk.c     |  2 +-
->  .../prog_tests =3D> net/lib/xsk}/test_xsk.h     |  2 +-
->  .../selftests/{bpf =3D> net/lib/xsk}/xsk.c      | 49 ++++++++++++++++++-
->  .../selftests/{bpf =3D> net/lib/xsk}/xsk.h      |  4 ++
->  .../{bpf =3D> net/lib/xsk}/xsk_xdp_common.h     |  0
->  .../lib/xsk/xsk_xdp_progs.bpf.c}              |  0
->  .../{bpf =3D> net/lib/xsk}/xskxceiver.c         |  7 +--
->  .../{bpf =3D> net/lib/xsk}/xskxceiver.h         |  0
->  .../selftests/{bpf =3D> net}/test_xsk.sh        |  0
+Thanks for the review. I agree that the Ethernet CQ lifetime gap described
+here needs to be fixed. However, it is already present on the base of this
+series, c66d93e68728, rather than introduced by this patch.
 
-I would not carry the test_xsk.sh over. Just do a Python variant, like
-the drivers/net/hw/xsk.py, but for net instead. Look at the the
-nk_lease.py pair for inspiration.
+On that base, mana_gd_destroy_cq() clears the CQ table entry without waiting
+for existing readers, and mana_gd_destroy_queue() subsequently frees the
+queue. Both functions and the Ethernet CQ-before-EQ teardown order are
+unchanged by this series. The original completion handler also obtained
+the CQ pointer and dereferenced it without a corresponding reclamation
+grace period.
 
-It's just a cogitive load switch between Python and bash. We're starting
-out fresh(ish) here.
+The reader changes here serve a different purpose: the acquire-load of
+gc->cq_table pairs with HWC's release-publication of the initialized table
+and its bound, while the NULL checks handle an unpublished table or entry.
+They do not provide lifetime protection for an Ethernet CQ that another
+CPU has already obtained from the table.
 
-The Python ksft world gives us a lot for free.
+For HWC specifically, this patch destroys its dedicated EQ before freeing
+the CQ and callback state. EQ deregistration removes the EQ from the IRQ
+dispatch list and calls synchronize_rcu(), draining the existing IRQ-side
+readers before the HWC CQ is released. This does not protect the separate
+Ethernet CQ teardown path described in the report.
 
+The reported CQ-destruction path is fixed in an independent MANA queue-set
+replacement series that I plan to post shortly. That change unpublishes
+the exact CQ pointer and waits for existing IRQ-side RCU readers before
+the CQ is freed. It adds teardown-side synchronization without adding
+per-completion reference counting.
 
-Bj=C3=B6rn
+I am keeping that pre-existing-bug fix in the independent series rather
+than expanding the scope of this HWC concurrency and queue-depth series.
+
+Thanks,
+Wei
