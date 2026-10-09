@@ -1,60 +1,57 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727414F85B4;
-	Fri,  9 Oct 2026 18:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9C94F93B8;
+	Fri,  9 Oct 2026 18:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.129.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791570219; cv=fail; b=q8SMnryqA9f15ZY5VycPj0JdO+fgkTo0hpU6WT56LfyDQrJKwanSJRUNi+uyfHh5Mr7pyMmDY1FRhI03UKAz3JhvNdbxhwtaV4KOTozsQbNW//Pqn7aQnb5SEvVyjwFnbQkM6Wxc9aOqYdiRNx0cN515p2zaibh6nZjQdzQ7kkw=
+	t=1791570220; cv=fail; b=YBIFGdRpZoCyumIdIccNKh1gwN8P4aYpNDyA+c5/15ZkyWdF1XgzM5t22SdlrY4eiT/MjnoMvGD5R0+HsWYdSEFdzeCHqsTZTZF3HUKEzQDgSU/29eoO/NpEdnH+qu9iriclnFSQDTNwOb2tuZp6ylDI80lHag55QKsJq2KsIVY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791570219; c=relaxed/simple;
-	bh=zLxOVMiOKBswZhRjPFxxJJdBrEfiec/6KXwsID8L4Q8=;
+	s=arc-20240116; t=1791570220; c=relaxed/simple;
+	bh=nuSq7Kn/lvbasDoslt6wbhXnBYF2+t/FP+5ioxmmGiE=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Q8L3GIx+MEjGmSTAhhBMZLGICW65t6nnc8T0gRkHNjMe8Dt1BzaSR4bd09zvJnUXnYS5QBVHsfaIYdXsPmvg1DJnZYemF4DWyejHjL7mln5TcdxLLcWH4gNw4KTubWxIFpxWU5B5v6GszRB6Js+SN0rO/Dl7Gtmmi29zdicg6Yw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=k//phQCl; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=mw+yJyD7; arc=fail smtp.client-ip=148.163.129.49
+	 Content-Type:MIME-Version; b=jwWYPthE79sZrUyShgeDRkD5Uc/W1FdBG3w936ZY78nZnUz1/xHzGvRAMq3wwKSqhVPPuRvgiPaR+pziIwvBVj6YnpvJ7O2oFAKcU5NOK9lDQO265WrtI7HF7ZT0n15434fWLx1VhxsfTvEm/frm9012d/hx8fjZoQu54GOgB3I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=Yz2QYnO+; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=qOovll4y; arc=fail smtp.client-ip=148.163.129.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="k//phQCl";
-	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="mw+yJyD7"
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BA0B844D714;
-	Fri,  9 Oct 2026 18:23:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="Yz2QYnO+";
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="qOovll4y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
  h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
- s=mail; bh=zLxOVMiOKBswZhRjPFxxJJdBrEfiec/6KXwsID8L4Q8=;
- b=k//phQCldY9Od38Cpz98EOnkXEaMYTnIiUChy/c0tyzyBm1VbBUVSV+88UMqKWgDavlu8yWyRYtm1HPLCAxPU5NGA2RFqIccMsqmD9qK/UBNAUHCfwP0d/fFIuJX4Tt+HdASPj9wI5xA6ByQebQ3j9X8XyV2R0HF0KitwGlotVqWZ3T8zG5J6SnElKLSe9PWpS3reXRiF4TLeuMBAylNMaQHjMQKSijshjBpdCU4BkEdKKSv7vLUNzrtOQD9koxQREi5gkKMoGHh91aKlpkPxKEIb7CO47St9OOIc0iqnNKUfeDYkqFPvzvZNj+CaMDEWfMhlKqgWhQ+EsT3ZX7OpQ==
+ s=mail; bh=nuSq7Kn/lvbasDoslt6wbhXnBYF2+t/FP+5ioxmmGiE=;
+ b=Yz2QYnO+W3Qnjfk0G3OF97KgNOsEkg/+Yhd/AEXPE8ly1eqd7oazawENNsp6HhUjwdpbL9iJESx9oeGaIgV/Pzkq/7cSeQ62q+2SsnVO4DzR6Kn87Xdt153DLiVrmCpwqo78p/ref4eOz464eWj9AEz0y7Q6JYUAKZH0+UtENy0pMsSK6H+8OnB9L5433t89EOVAYvpSqR0Eo9K/QMVseD/txQoM/z2S4Rnf5hcfj+s9FNmgSyleS3bhSsl8WMUnX+kYg6S3PK/v6uG58PPTnrqGPH7XlbpGZsOCfr8bEt9/Eb9IDdZx4HA3myrKX+Nzo45f9yXARpqa0Ar5kbkvYg==
 X-Virus-Scanned: Proofpoint Essentials engine
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11022092.outbound.protection.outlook.com [40.107.209.92])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11020076.outbound.protection.outlook.com [52.101.56.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 3B3F2100075;
-	Fri,  9 Oct 2026 18:23:28 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 9ECB7C40064;
+	Fri,  9 Oct 2026 18:23:32 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=f1cXuGo4ajD7DJdQqOMa22rMlQSTg6L5f7/soxPWD6Fdt7O6HwHAw7ChRZipCBHfWgSydxm003KP9cJWxB8jOLXDJ2mWUPAfLyFSN8TBaadKn2m1jzhXmrM/VP/5LjuvbyFnL58Hr9x+1MCoLHz5jZdp3+RXbXmCfUfW2iapmaaTd6QRdEwGyRCq9yfNo+mwF86b0L412tLwihSxDbcbDxgQgzTG93P3/Cl8aNK4h2uq+3ndQXVZ4H/Ii8kSXpnCZ0YjK0ydJv10bzLGTegDT6NQVvoY5QvjGHyFwInluLYSicayArqJSLs8THkRk3H3fV6GLO8TLsYv7VV1UvPaQA==
+ b=v1/7a7Hm5R/e0i1icwX1DOZ32JANzuAwf/25VZOBVvsZNEnptvMvBp98OeMhIHpGmssDN39GvmzbIvZfJo0qcO1fDshedJhDb46iZo1LafmoujVoqxDybBAfeghY4feG6o6YwgyV8jSdUJMndTsDT81KpA8QedXbhz1BkGQuxgW/GstlkHHPuUH2bcsI0j73Ep6m82XuwSHBQ5pLyKczFkV97aUKlJFbayX0+JLPqnSHNrgQB81+mnBW2LWXIW1RPrkO306vuwi9BW81ZIpQtIIXmTnJpmO/EsX2ZsteZIxGWmqwvkOwQEdk2sEc+GeOBMx+ANMhMYF41N3Bys6HJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zLxOVMiOKBswZhRjPFxxJJdBrEfiec/6KXwsID8L4Q8=;
- b=iw5PMk0xyrdkTTu462XUBEBV0YkCqb//QM/FHywqvV/+gRkkZN43ixRJVLVgtCL5hVRi4olEYlGrtzLptzdkNnhh8fLl7y5Z37u1FQfnGGKRHKam8G59KCmPs3XLCoX7MLQNWjP0rW9RoUPZJssvDTtsy1bOh3d/cwk/YH4tZuF/namgM1ZMNBr+EcutSQdgCN4zUMiwbkBk8oXTVaH5yoAOYdnROAkLonCSuBtfgLK9AEITzuUnGjWi64EeryPLcGsxlVLr9+hC+VyGo3EZ7TVCX1GFQ7071oghUsK2DhFLlIzW743t8RiPdb03pzuFoIDEjBRT/jz5agJveKbnKg==
+ bh=nuSq7Kn/lvbasDoslt6wbhXnBYF2+t/FP+5ioxmmGiE=;
+ b=hpJEoHCszxNVb9g2D8HhvQvKEBlFNhZsVmgCpH6YmtkzOGviO0aKTahYA4eS7yKGzx4wbvXiu18alKbiZ1NleKKkt5jTuymKNPN3lOXIYDY7J0mpweRIs/UYFXyuGOuVv7g7QVK9jGnOZy+f00f9Pcl3B1BijKuTAO5i3lcbPvoq9n77xFLlqCLKDopaxhl3zKD/vUMSUbXYn849pM+cWF/bCBQq5LOmA2xrZGPhPJALkyOcKiG30MVOyMpTON5w+Vo3toSVZCeQ4fOhrkdKjDcxGQ3FtXcGcU8VjKH8nMz+W059FdRUmN0/46My2VJPLv3J87R71YrYM8WmFzbwVQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
  dkim=pass header.d=sitime.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zLxOVMiOKBswZhRjPFxxJJdBrEfiec/6KXwsID8L4Q8=;
- b=mw+yJyD7WTFbqipF7G5YHJ7Xzwiyy3BPi5ExUpp4xrP71FdB57hfAXED2WlXPZK1sLe/TLdyuGbjNQqMmBQKhGxv3r7kILKuv9VcvWdFde9boAL7IroPxliYoA4spXPJ8lyG+A1NpCfuc1Wt659ROhw8K5sd9tIq/suu4P3Bzb1joIp5tdsmSLcYlqvuSObBS6w3dnrcUdm/sqdg5L4BrFV4DkWfJ5jPYnAWBbX0APYuvqIg01mBBuiy7WRkUuW8aoaUeZbvR0sURljNjYvlJU0tL9l2qUlt8rIx3I/cGHnpcjhksoWAI7rk3H6rn/lOYS482ZJLnoBpa6ZV9qiaiQ==
+ bh=nuSq7Kn/lvbasDoslt6wbhXnBYF2+t/FP+5ioxmmGiE=;
+ b=qOovll4yfegJnLuRCMUQDcAXnDDQu5zgWkNkxVf4EOWOdAGfsDaIiJ+sM9VMMB5sZyWkju1S2CLscT9Rr1I3SoW80v2RQDRFe9A1YpNmB9nPqmdhmyYSQ+dipfeSh3WaPXHyEeeQYz75fIUrBRK2Pu60k11DXtqwF1KftdMLisYtmy62f5B7ldmzvN12Dk6p6os82Bs3zDfnFLtIqeD0iIZbo4RBI9/j/CqkTAdSiszIOLBQK/h4GKz8eFqTIvBuJN6/ZK7MWrmSHV+N/iB+HxUYwLXi//sgN8p/IE776V9oye2/rTCl+fILGnG2Mzjfn285Tiowt0if+Bmt28HZMA==
 Received: from LVWPR20MB994915.namprd20.prod.outlook.com
  (2603:10b6:408:3bf::16) by CH9PR20MB007164.namprd20.prod.outlook.com
  (2603:10b6:610:314::9) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Fri, 9 Oct
- 2026 18:23:26 +0000
+ 2026 18:23:28 +0000
 Received: from LVWPR20MB994915.namprd20.prod.outlook.com
  ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
  ([fe80::9551:3864:128b:8c01%4]) with mapi id 15.21.0496.015; Fri, 9 Oct 2026
- 18:23:26 +0000
+ 18:23:28 +0000
 From: Ali Rouhi <arouhi@sitime.com>
 To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
 CC: Jiri Pirko <jiri@resnulli.us>, Vadim Fedorenko
@@ -67,15 +64,15 @@ CC: Jiri Pirko <jiri@resnulli.us>, Vadim Fedorenko
 	<devicetree@vger.kernel.org>, "netdev@vger.kernel.org"
 	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
 	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v11 06/13] dpll: sit9531x: register DPLL devices
- and pins
-Thread-Topic: [PATCH net-next v11 06/13] dpll: sit9531x: register DPLL devices
- and pins
-Thread-Index: AQHdUTSirK6vvqwIv0yxJhRl8uO+lLbuKhKAgAdqBQA=
-Date: Fri, 9 Oct 2026 18:23:26 +0000
-Message-ID: <20261009182323.76166-4-arouhi@sitime.com>
-References: <179116259911.434549.6587142199088743518@kernel.org>
-In-Reply-To: <179116259911.434549.6587142199088743518@kernel.org>
+Subject: Re: [PATCH net-next v11 10/13] dpll: sit9531x: implement output pin
+ state on a DPLL
+Thread-Topic: [PATCH net-next v11 10/13] dpll: sit9531x: implement output pin
+ state on a DPLL
+Thread-Index: AQHdUTSkf1BcHEXMiUGwaPBnkwtavLbuKhgAgAdqBAA=
+Date: Fri, 9 Oct 2026 18:23:28 +0000
+Message-ID: <20261009182323.76166-8-arouhi@sitime.com>
+References: <179116260402.434549.6445320171946602725@kernel.org>
+In-Reply-To: <179116260402.434549.6445320171946602725@kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -84,47 +81,47 @@ authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=sitime.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|CH9PR20MB007164:EE_
-x-ms-office365-filtering-correlation-id: 4fb015a1-ce09-464f-8f36-08df2632695a
+x-ms-office365-filtering-correlation-id: 97431c06-3513-486a-5206-08df26326a90
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|18002099003|38070700021|56012099006|5023799004|22082099003|10067099003|6133799003;
+ BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|18002099003|38070700021|56012099006|5023799004|22082099003|10067099003|3023799007;
 x-microsoft-antispam-message-info:
- upP1zQX//xe2E6w0GIgSWMlFxstUOd8LMCcozWFedQL/d6ScPSNM3XgBTezn+W/bclSyYz2tmq8byaUlFQMnEuqtx5ykwOn3C/NrzgxBFg389AmIPXq68KiDMfkNbyCLw+50uY8P67uhUhwtewAxnmXsRXKrsEJJ46XU2+9UUh4MnqesJ1zUjM46Z2KzIFb8d1tvxZaF9+gBNpGzjqfmZD7cTD7QYVHcW9Uq8nPlzaCPflPRnPMFUWgiImQ1zipGqWhhB1jTzs18U6Ijtt2mY+RORXbO7XGvVYYLwnsRWzd3Ue3enEgNZgL6z4HANiU0FK5v21kK+grox+dGZzC/g27lFaxPXs9v3fLU4mwISPCyfYU1cYLgH3BAV15Mn8TPqJpQagjO4LVIfHfgPlnsNUBwGgV7qxcrxJ+DU83c+xeeodK7H39RtU3ti5/Mze4i5ORax8nNdlQ/bQhiSueKahMmMYdCEG79/wyZtOE2eMM4vxjekwZsv2eYobm6PZO0GHkxy4TaLFr/fer+CviQiFi4+txjBSSi2nOnJoM7NRwhwNWc03FBXKoBdT4hOPi6qFwhzJkW6pcdZQp6ebEj007MseBJOt4D1oqT/N4N3Nygym2N/v2Z9+WODAO+jQqvTRbHiIqpTCyK+rcmzYaW3QL3sO23gkGacrW6p1yEO1ahfEEhWw56MUyu7Pl5N/OOW/aPzP0kf9i2n0klamnNVI2cprGr6wRcaYsD4NY0js8=
+ C+oGYQ0IQnqVMq2pqf0n9AsvQLeEosqXlcPGOKtI2vf4q1HwF0rdHqMRN3DWlTIGmY+sbz4xKhNi5Amdbv4uZdlq0wsBaBDIIjEd/9+uTwjN78BSIPtvquWm66TwPs7U52Kw+pJwWhvvEW9vCSB97de5Hr2J++O6wuo/dHNGlQ8Fxk3ib8gcfSyCy7ATnYAzocYonyE4V5DE2t+9AffDRqD0FczkzYoCgUw6pEP63FMnN0BBxGuiRuZNH/CDdoULb+MDjWRlMzj76r4Rb+hnnJd6Gy0tTVGBrF1iI2OPf33lWzKq/GZaIX3nBlHk6YfRiJDunKmtuZWl5RC6oUafbel2aybjfX+vl6cSwp6cuyiV+GVdzxJyYY002yGeYWN3enw8kSe16lAO+nMtyiVJVPqjo7h60WzzNSjly1JXRqEWEMY7oLAk8P+uHX74HtIhmCoQLN1rwClW3GrPAFuHC/ekubXBy4hpHmcIDJXJxiw+/FwR+v358yBeUsg25NtXvKKMKjlC8O44cCsyvktrBgZyw/z4Qvjr4tx+rTkXiwqMbChd3sISB9g+T5nqT7TgFHkbM8k70GrHwxApb+k7Scmfw190SZvxkQ+jwqcmF/EwN0uqdyXPejHdLaleyVPplUn0HUuy44DTZ8+Ip1j8sTDW8C99eJ111TrkoFh2hrffTAJE6lrwNFIxdsnfC1mt/Qgqftcqzsp10EAFADUxSWvgVurKcHYueWqa79GCxDg=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(18002099003)(38070700021)(56012099006)(5023799004)(22082099003)(10067099003)(6133799003);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(18002099003)(38070700021)(56012099006)(5023799004)(22082099003)(10067099003)(3023799007);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?zJ85/FkfXpogQEgenqnzYoK20heK1nYjxGMWX67VR6+zXynil7OvKNsgtH?=
- =?iso-8859-1?Q?co8Sb5/urz8rqyplFL5AoAzak+guYXyDomE2oC5VDhSkhGIgoxNOy5f5i+?=
- =?iso-8859-1?Q?GZ9NNsjIexAYc8tyO1EEiWKlfpBzg6rgE6eHB4WvxbxmdAywILvghllLV9?=
- =?iso-8859-1?Q?hKTrv8wvuAeQ46O4AGphYtq3c8nspHas3pEtOnI6ccWox+J5swpIEr61JQ?=
- =?iso-8859-1?Q?Y361RQGFUp0prvOkhQI4xDKceFQmMqa2AiowK6ZN/YRocJntjPheX8ypZW?=
- =?iso-8859-1?Q?z7i00DTz50ywjar5h2UpHeDS+qd1sp7wfOWLGz4aQGkuM3NUlECWV+IEiK?=
- =?iso-8859-1?Q?NSBmIjkDBvq0yz3fmjNBeHeMw2j9TyvpNTsxDXBbKikcOTQYtuvK/wqVSo?=
- =?iso-8859-1?Q?VhlyJhnVL0L7Kox/UVdm6W6DFUNlXRnOQzvJxxtgBZ1+S7UQFD5NvKGVlk?=
- =?iso-8859-1?Q?0GgYhJ9gc1GfeOQ72i1FWQbf+8w4t+/nkV1EM0ea4uMxz1y1XIEDfVvPiZ?=
- =?iso-8859-1?Q?Su1n21l3ftLsr8j5+McJVnVa3RCkPcIaCxdod09twqSDNmyjXuqvL//mbi?=
- =?iso-8859-1?Q?vkFwu77tBDnlITx5BkwgBxYgndN0iQpnX3w8+n7PRp6N23SLl8dYr8SvXe?=
- =?iso-8859-1?Q?GjZtX0/upGisiXZ85C8u6LDBgXwH7fPSuqBxrtx6U58qTc/J6E5Q5h46dh?=
- =?iso-8859-1?Q?pFe8nQMVCeFxyNO1HUhP8pnHvFrhwHcdaHtmRnpDxYRLPDmEXN1pMCWqkq?=
- =?iso-8859-1?Q?tWup00kpClcZOIeUHi9Q2UpRFiUjNRUdBkzk0ckkhuyfonZJUfu6zLUDbs?=
- =?iso-8859-1?Q?E0ECCnEwtRjSREnF1AQ4D/+gdOreSoFsVcn2eqys829eofXQNyo/VtbgUZ?=
- =?iso-8859-1?Q?TkW8ZOKcaU6XHlVjvhdBUioy11r432BAFAPokhEEX5YrgcvL79Fz2afcsF?=
- =?iso-8859-1?Q?jMO/WxnguFOPrqlIbzTQT1Ec1WP63oxcRtqtttUGFnGXhroNp+HLBpsIq/?=
- =?iso-8859-1?Q?QPZojGo6P8KKrqZyxvamspL6Sqlq2UR1zLhWOc1NojuoqU3AS6b/dwIn1i?=
- =?iso-8859-1?Q?HS5/PoMsNi9InHQAlBLwy64IKpXu5QQU0lEuN+1qpa0EK4OXe7+96yZJI8?=
- =?iso-8859-1?Q?nFgTxZGMtRAwj03ojQCBT6Db4f8WhKeGBVmBuUYbf2h50N81pMFBpsEfzk?=
- =?iso-8859-1?Q?d3+zRhlbu0wikh67JMXhhdgj+2pdN5s//I0OAS8snEkjdA+QG+O5WJBHpH?=
- =?iso-8859-1?Q?5aaDx9ERErK4jtljstHxOvPBveOrSs+IowZk5TQv04w8ChhzXF+rwKHJGA?=
- =?iso-8859-1?Q?PtSPNnJzFF3SNQAZ3YfmV1jDj4UgjQJktwRNspKrbzlsa4flT+5PUaHXXb?=
- =?iso-8859-1?Q?vtFraLG0JXdL/fSRBlCaPeP/5gCd2qZLnaHsRDB1h/Dtf8cCOYVoO53IgP?=
- =?iso-8859-1?Q?n8CmF+m4mIn3oi0cn3flBNd8eZN2FWTT1mXMbBhISx3G1mk7Abaqw4fqr+?=
- =?iso-8859-1?Q?a8+vcHDn2utskYex0c0UFBKvi+v/lWHP69vD83lQ9Nj6WwVO9sAfaI70PK?=
- =?iso-8859-1?Q?DWL384oiHZVDjW4R0B/QbD9oYnAVRFTL0oE1JiRk4F/yzV5X9VXsl+9hNh?=
- =?iso-8859-1?Q?+RgRdIN1SOqrffStqzdQqf1pZsEh5RNT8JeHi3AAVZ/bFnnQvP3wUG7Am1?=
- =?iso-8859-1?Q?DOZC6YZHq5dmQzs1baZaMcJefcSG9u/hVguttcbcO09XlmIfwqNYBcPI6i?=
- =?iso-8859-1?Q?Lpg7HRzlMJbZqdP9A2Dt17iOepy7m2sLP4yZzSCCvjksZw?=
+ =?iso-8859-1?Q?Qa+8LwGLDtDwXueqxfu5ZSxcyJO76DeZTkiXXAgqCbnoRfXk7llfFHKwrG?=
+ =?iso-8859-1?Q?OWuZlnV9ckpyCDBlEt+tKIE6gglecTrxwTLVN8VgrO2UkbD9j/s72exZz6?=
+ =?iso-8859-1?Q?dmHtjP5Q4O8NkdCVn9ouzEzS/943htZIsRS11UqAAR33n/K0uNWgBy4s3I?=
+ =?iso-8859-1?Q?AjKfT5Unl8KfXLoUOfqX3ypH5wvQSmspl3jIZv26Ma5C0wsHVRzW/KL1m+?=
+ =?iso-8859-1?Q?NKFPI4zIUvgxLSu2cHb6mO+7zK10qpv6UEe/X1ltR5ZEmWnlqSzRKZUX2q?=
+ =?iso-8859-1?Q?tM12kKtpPTn8cJRkfwlf3ASHF8wLPAEJtE0s4zDCS4gYI1N3rDGsQz7vCn?=
+ =?iso-8859-1?Q?Odm7aMnKwYnGTXkb26hzTe7mrQ8+6z9ZEBmOOD5cNlXpXwDh5RogOWsdvM?=
+ =?iso-8859-1?Q?+dQ6cADZXoIwhLRc6BWzKWZ1in/OgMUQ/TbVsrTYcqrpCmyGfYi6WVesbS?=
+ =?iso-8859-1?Q?ksctfh7v83iOekU4PuvG1SaxExOCNBu54Wxq7kN3sjDuPyfgUObGHWOzJ4?=
+ =?iso-8859-1?Q?pD84ZZnEaF163V+gaSHo5Sn+F7n0yNvQgwMr+Wezi0j0oNjdW2uvEIHxvj?=
+ =?iso-8859-1?Q?oXIPEN9EPEK6VccPh2hwl7kjBckAAebKbZSCneWZLzoFXFL6KipMN3Z04Q?=
+ =?iso-8859-1?Q?mPQhjcjFq/ZZiN7Kg8IkG9q6VITkk/pqxEQ/WCFJqmgi8lUvDL1K05r31N?=
+ =?iso-8859-1?Q?CZeVv/I2PlJPAM2oOqUSpuyRCRB4FEWik38qNwBEDL8sTRKhhIZyz5hO8t?=
+ =?iso-8859-1?Q?hooDVzULgYDd3yQlHL1R4+u19uxf+tz6tvbnChAP95n+wsMxxRcy2kS19g?=
+ =?iso-8859-1?Q?SccnLn6tgbw4W7EPwXaeIT9+Vp0w0bo6rRysvs9r/OK+KqUu31IaayLLjV?=
+ =?iso-8859-1?Q?ypx13LGh71/RrHSi3MxexjGHtewW+ttigINpL/1iLbQ70D4XiesARsqEc0?=
+ =?iso-8859-1?Q?UlVjSXpVUoZm7GnsqzWqSlGB5sN5iuIbNgqvNhXX/5Z3lsQ9Yie9rIvMg8?=
+ =?iso-8859-1?Q?Ay1pFag28V9NV2KCIny/I2P1uEXCIeaYx6MSHotcMUUUQiL1LfMfbj/D//?=
+ =?iso-8859-1?Q?WOy0h+SY87LrD6E7E1nv1mCCkbF8Dr+MwEaTDn3c5ti+44VvRmKW0cLBko?=
+ =?iso-8859-1?Q?M4MEX6RaUqH+fiV2KXCpKME9wMl6prualAhQsvrC+n164wrhEk3i0s0VqA?=
+ =?iso-8859-1?Q?pOAiFoNmUO/wburhaG9jXrXr9h9NUVRd6/4zdC1afbmKq02IlyYXw/CzrK?=
+ =?iso-8859-1?Q?ZL7kCbtEPOk7TgpOk5UDC05G5VsWrP6MINA6JHCLxZbfygnDd5JH1ApTja?=
+ =?iso-8859-1?Q?Y65M7jRMKaV9NSRsXyveQRtSNqWqI6snZ8a/Aw5K8+tq3eaSMa0v0V0HNg?=
+ =?iso-8859-1?Q?kGtJHI6PdYbNRTkJt1C28203gBbVHQVCP+r/QhnAlKiCpP0cPUQjMJzt1x?=
+ =?iso-8859-1?Q?cZm3pwcpTPGbnIzLhuWtZ7SIPBDa19DaK/2fzMROcQRACL18nqA1rD/XOJ?=
+ =?iso-8859-1?Q?diuT3dJaK3TpmEvKyXCEfCuYUDxOu4iA+JydHdPXyvwZPOfqyla6RePmZ2?=
+ =?iso-8859-1?Q?nGHLHwt/kfMJsW5zVuvse9jJkozJgYK8AN2P6l2i2eJZbAVE97l3X2dgy1?=
+ =?iso-8859-1?Q?bB+EpQhhs11VlwEMJWSCQ9ckWGAeaCRVkC06C2a0r/apWNeXXWf6kKikCY?=
+ =?iso-8859-1?Q?Q9YJHpXiMR728izmR4SEViHtSaLl/iDvKSLho6ITkDGoXjbTzmgxwL/MDl?=
+ =?iso-8859-1?Q?QVMxqmuZ/9CXupektT11vrYmKLISSxajhCYSc+OQe2vsSV?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -134,96 +131,79 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Exchange-RoutingPolicyChecked:
-	oqw+QcGo7nUTqFd7CymSeklbob7vmwTsgyWD1GNr7sepHp+eaCw/XxMb+rinESZB0LOk0DNqtwdCslWI/8aeCnmnbCfhQE0z92iv0fx4tn5vadC1wcbUpmn6Us8Xh1zDlctNjGIfV+nezj4GEpLJA9naOeIiOyPAKy/X/Yfhy0yMFsssgbmuYAPof2RFT0tnRhBx/NYGgHHm+bv6R+YQkDw2IdrRKjFObW0dzgUvk0s0P35v2O5lHE7UTP/bxajVNqCvrdoHUqU5w1Kiqpc7OMnviUYTkdrKK7UfzUxKHFY/pIa2PrJek+3ExFVZPWsDZYhfCOgG7EReD5nJa6FtnA==
+	A2pveuYOvpMtPeBCb3KzIB+U7W7olQnRbkLONjvTG82B4P6oF2ZoVumUCG4v9AMZPN25tzn8v7+lxLnX1Y5WRQ7kKJ+pwUHnQk0a2PhNa+gj4p9qWIJj/hfdAn0e1ARiG0D3MaP2Giylm1Z++rNPIQf0y7YoezLN3Y/7yjtXeYl5heljeNSyCyFvhc4iMk0OnULwk+Eyct/Fnc4tHDfvAut0j78drVqXSBrxUorEx4Xb1fi6M6ChH/hzsxo/5kMKwilZvZ68e7grHi9iHl8H5eQgrDU1CsTp6hHqKuWZJWJQ78NkrOhxd2lE8CPcq9nERNW+ncxFbVkDWFCzPhEh4g==
 X-OriginatorOrg: sitime.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fb015a1-ce09-464f-8f36-08df2632695a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2026 18:23:26.7529
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97431c06-3513-486a-5206-08df26326a90
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2026 18:23:28.7861
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FGfWhi2vUrNaEby8Tw6wUsITBFUT89Vjsel8nMjg4Z7OvoztgMrRWG0P83L4iivRSeoScBK2HSdL0K04/okjnQ==
+X-MS-Exchange-CrossTenant-userprincipalname: RzX3p0PG/bkUek6yh5tU2MlIM8MJ012M6Iga2ztfGCn4tW5p6kEmSliXyy766+2BVoa9lJZmqidO8Fg3r+3R0A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH9PR20MB007164
-X-MDID: 1791570208-C5BhKzAKklEj
+X-MDID: 1791570213-6jIBULOw8Pdz
 X-PPE-STACK: {"stack":"us1"}
 X-MDID-O:
- us1;ut7;1791570208;C5BhKzAKklEj;<arouhi@sitime.com>;5de2396b9b83917d02f0372d9ae54394
+ us1;ut7;1791570213;6jIBULOw8Pdz;<arouhi@sitime.com>;5de2396b9b83917d02f0372d9ae54394
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
 On Mon, 5 Oct 2026, netdev-bot+sashiko@kernel.org wrote:=0A=
 =0A=
-Replies inline, in the order of the summary list.=0A=
+Replies inline, in the order of the summary list. All three are right=0A=
+and all three are fixed in v12.=0A=
+=0A=
+> [Severity: High]=0A=
+> Can dpin->dpll_pin be NULL here if the device is being torn down?=0A=
+>=0A=
+> [...]=0A=
+>=0A=
+> Would it be safer to use the pin argument the core passes to this=0A=
+> callback, which stays valid until dpll_pin_unregister() returns? Another=
+=0A=
+> option is to read dpin->dpll_pin once and skip the notification when it i=
+s=0A=
+> NULL.=0A=
+=0A=
+Right. sit9531x_dpll_pin_unregister() clears the handle before it can=0A=
+take the core's lock, and the setter read it after more than a hundred=0A=
+milliseconds of transfers with nothing between the two.=0A=
+=0A=
+The setter now reads the handle once and sends no notification when it is=
+=0A=
+NULL; the clear and the read are a WRITE_ONCE/READ_ONCE pair. The poll's=0A=
+own notifications need no guard, since the poll is cancelled before any=0A=
+pin is unregistered.=0A=
 =0A=
 > [Severity: Medium]=0A=
-> Is DPLL_MODE_AUTOMATIC the right value for a PLL whose profile sets=0A=
-> manual active select? sit9531x_manual_sel_report() detects PLL_CONFIG1F=
-=0A=
-> bit 6 at probe, but only warns:=0A=
+> Should there be an early return when the request matches the current stat=
+e?=0A=
 >=0A=
 > [...]=0A=
 >=0A=
-> With no .mode_set, the core already refuses mode changes. For a PLL where=
+> Also, the commit message calls the mute a per-output control that "leaves=
 =0A=
-> sit9531x_manual_sel_report() found bit 6 set, could mode_get report=0A=
-> DPLL_MODE_MANUAL and supported_modes_get list only MANUAL?=0A=
+> the divider alone". It doesn't mention that every request runs the=0A=
+> device-wide programming sequence above.=0A=
 =0A=
-A profile can set the manual active-select bit, and the driver reports=0A=
-it: sit9531x_manual_sel_report() reads CONFIG1F bit 6, MISCINNER bit 5=0A=
-and the MAN_IN_SEL bit at probe and says so once.=0A=
-=0A=
-With the inner manual bit clear the PLL follows CLK_ACTIVESEL, which=0A=
-this driver rewrites on every table commit, so the selection is the=0A=
-driver's and AUTOMATIC is the right report. A read-only MANUAL would=0A=
-describe only the case where the inner manual bit is set, which the=0A=
-loaded configurations do not do. If one does, the message at probe says=0A=
-which bit, and the mode can be made to follow it then.=0A=
+Fixed: the Hi-Z pairs are read first and a request that matches them=0A=
+returns without entering the programming state. Each state change that=0A=
+does change something still runs the device-wide programming sequence,=0A=
+and the commit message now says so.=0A=
 =0A=
 > [Severity: Medium]=0A=
-> Can a PLL that is frozen in holdover be reported as LOCKED here?=0A=
+> Can a state change go unannounced when the read-back fails?=0A=
 >=0A=
 > [...]=0A=
 >=0A=
-> Should the ho_freeze test come before the locked test?=0A=
+> Should state_stale count as a possible change here? Alternatively, the=0A=
+> later refresh could announce the new state if it differs from the cached=
 =0A=
-Fixed: holdover freeze is tested before the lock bit, which is also the=0A=
-order the pin-state contract uses (a pin is active while the PLL is=0A=
-locked and not frozen). A frozen PLL whose outer loss-of-lock bit is=0A=
-clear reports holdover, not locked.=0A=
+> one.=0A=
 =0A=
-> [Severity: Low]=0A=
-> The pin loop below takes a first-poll baseline through pin->seen, but=0A=
-> this device-level comparison has no baseline.=0A=
->=0A=
-> [...]=0A=
->=0A=
-> Won't the first tick send a dpll_device_change_ntf() for every PLL that=
+Fixed: the notification is sent when the cached state moved or when the=0A=
+read-back failed and left it marked stale, so a subscriber is not left=0A=
+with the old state; the getter's read-through supplies the value.=0A=
 =0A=
-> is locked or in holdover, even though nothing changed?=0A=
-=0A=
-Fixed: the device's lock status is seeded at registration, through the=0A=
-same getter the poll uses, so the first tick announces only what moved=0A=
-since. The pins' baseline moved the same way, see the reply on 08/13.=0A=
-=0A=
-> [Severity: Low]=0A=
-> Slots 2n and 2n+1 share one register, so sit9531x_prio_reg() returns the=
-=0A=
-> same address on two consecutive iterations. Is it intended that 5 of the=
-=0A=
-> 6 priority registers are read twice, for every PLL, on every poll?=0A=
->=0A=
-> [...]=0A=
->=0A=
-> Could each priority register be read once, and the global status bytes=0A=
-> once per tick? That would remove about 30 transfers per tick.=0A=
-=0A=
-The count is right: the table is read a byte per slot although two slots=0A=
-share a register, and the three page-0 status bytes are read once per=0A=
-PLL rather than once per tick.=0A=
-=0A=
-None of it is a correctness problem. The poll runs at 500 ms and the bus=0A=
-is 100 kHz, which leaves it idle for most of the period. Reading the six=0A=
-table registers once and hoisting the three global reads is a mechanical=0A=
-change; it is planned for a later revision so this one stays about=0A=
-behavior.=0A=
+pw-bot: cr=0A=
