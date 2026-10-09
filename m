@@ -1,178 +1,160 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B7549DBB9;
-	Fri,  9 Oct 2026 09:42:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504394A0F09
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791538979; cv=none; b=np9F9SIyF/4nSL92Bc6fAqmkjII6hlk8nAtTrw2xLrK5z4NGtmAfMbDtdUEApG05hF4U8QM+DPkaRFvJ2Ag0mIBkvp8yRdxNboV/wB3KR/M/GdEXFDQj85ZocYI8hrei0mUZEU096ckyd6sRBTTyK2L1tvQeYm/hY9Q+GAmJX/o=
+	t=1791539086; cv=none; b=Ek9oeWLHci2hAb63bNl06ejvitXSWlRlfuglWh/b+uSKAjGHo0/eeofAgJoQP9poTHYIW3sdK/5WtwPVYHJURAFaXc0oiQhZ78u4B2STDk+wCDBvFiJ0W/VB8KafOI2t2t62YZd+S6/lDLjqvZeZrKfu8pVvjtJwqMlsD0gJmTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791538979; c=relaxed/simple;
-	bh=yhOjj/wrjjiaYAgabEvaYOFm/8b7bCIzioUlA5BSq/U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QyZhij95/8VgtRwuV8YqRIgh1GmXSvaybiQHg2x90ccss8hM+WVvpzOXMvK41WmjczGHn2G97J9/WYDHJRwy8kLo6jRQ0oatbSIVq+jRaqHEJFzJ6fz3w87BEgSgxTbgQZZboYPYm9IZ09SMg7DOG5A+pzbNVhIyBkrJzUAdJ3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Of3Cg7mi; arc=none smtp.client-ip=220.197.31.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1791539086; c=relaxed/simple;
+	bh=bExytepNqeEnYoIxPmIR3Yt5a0tGUiyPzEQmZBVvvIM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GqVlrUOqer/8G0zda2XbZg/Ikkb5Ts5wYYvLr49lpxCRh0lnc7Rq1bxL9aTJUA+/8SXx/Iy/pVpIzBLvOPdJC5aDGDox9NwTUMKT1SfsPOgui0t4KHkevIYZnsriL+YaTs3If/te2OdxPUNWu5b5GvGETPaotNOBWWSPotE9sXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KlDWB4qI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=feeMUi2Z; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Of3Cg7mi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=comNi0bq8Of/dXYDxEHJTvUJcWhZQ1Sp8DE5wIR2vhA=;
-	b=Of3Cg7miPOXJ2jb0AeB8OOfPqw94BzyQiG5igLTjey/F5NEhxjHsOL2jXKdaAR
-	iKM2VQntpfJBFotx+3JBc3RuhsIk7Eafyyfr8/9JxEXBW1ozXRGxLb0/CwChpKR4
-	HmsNmt/WvY/2VyAIZK194DLatWI6J+R/0jX+u8MKdhBDE=
-Message-ID: <544bc0d9-c1c8-461d-aba8-6065409cb53c@126.com>
-Date: Fri, 9 Oct 2026 17:31:23 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KlDWB4qI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="feeMUi2Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791539078;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ElzbfGJ6k9OnVXRhdCGGIydQGM/Gsew8hwRjohyR8bE=;
+	b=KlDWB4qI1lbkIrF1WGNLDRsCSYEaclSfMp3aJBBLZX7H+4p8i5HxEd0ffnMW5OWFI2PkiW
+	rvdOSnNzS92VOsH2eL3d/s6xGUaDpAbVNexHdSa2xruyM4FrZTx9nCqrZB4Q8kyA9itnkN
+	DwFwqmn3sU/RKqqzmBZ3WTgADx41iSw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-595-LEE8Ye21NTqzHwvYtEh3Lg-1; Fri, 09 Oct 2026 05:44:36 -0400
+X-MC-Unique: LEE8Ye21NTqzHwvYtEh3Lg-1
+X-Mimecast-MFC-AGG-ID: LEE8Ye21NTqzHwvYtEh3Lg_1791539076
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a16dc2323cso48049155e9.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 02:44:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791539075; x=1792143875; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ElzbfGJ6k9OnVXRhdCGGIydQGM/Gsew8hwRjohyR8bE=;
+        b=feeMUi2Zpt5oHjcs2IMy0fUO8DcnM6TeCt0LAlkafc4Lce2Hk7Yop5yQNegg4HqRjz
+         pl0DU7Wq9GKPryPQ20KSwoj2QQwCa4XpOslhXa2ZeRBu55e5Z0C15ms7i5EfBSQgexCV
+         Oy7Bp/CoT4B2syey+9kFMyf0r/fJy6iDCTk25Hs5z3Qrz43F1Z3N6N3c84PkO9soveNZ
+         NoHMEBWb5YXUwYAIoRLMNfXB1P6wQZutZEKgSBBgk/m4Qba4F6FbCJs3QV52aQS/YPGp
+         94pSCz5y6l3RjQY+u+qKWxnde2qO62gaSOLbpVavL87PU+V4p7/+TBPMUc/zuLOBiZhn
+         zTjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791539075; x=1792143875;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ElzbfGJ6k9OnVXRhdCGGIydQGM/Gsew8hwRjohyR8bE=;
+        b=zmsyeW4jK7jc2z7JXLJBH1WBmuE4grTaUoJSHex35ssNgLU8bcR4Qz7UsF7DbqjFV/
+         tkTTXNDq5rNbLAt6gOdoAaxKHU7ZbseKKGRXxL7AMG/7yX3h6xmn6LR/VczZuKFlSkL5
+         f37dErK0hO9J5ahsiTdn1nSoI5qtrQ08qs6skU6jUD/mEknarMzZfhIm4MFWOsj7ffs6
+         oF+kOvLuzpG0YrTg2DnI0JpN/CMWaXKSyKjG+2KSxVWAGREQzgCvHWaZ2Vv0zZU2ysi+
+         WpAS0h72R7bealDM9+62vjdiA3hnh/QxYE0rwpBM762WA0U8KRTu6YpyVNyX5pI46DZA
+         symQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzJXMAsOJiJIpsmjUunzaRZLLpnWno74PXb7BGA1/SX5Ws16SbqL56xHkQJwRlm0ssQm+nzh0o=@vger.kernel.org
+X-Gm-Message-State: AFuF++lININUdE+ETjwGjCW+KVgRMFqQvI/e0BJxdt+GZ0hPX1ExCl8a
+	+UWRvVh2gGgT06y2/Nm3ZkW7HuGuAjVwqox+a7gNm+p1428K7oZIvwriSA6dZfysb9Tu0+dU4r8
+	WqrlAvRMPDZBh83CPjA3iR27pAEWOsAgJXHOVM9mkh7Ypkh833OvCvSirgw==
+X-Gm-Gg: AYBFou0I40s50pOWjOVtg9qQGRfLPKWkU1dtuymgiRN2gzdgoQ5/A2URq1UBWURTX2d
+	vKCRgJ1ePpAp0Xwuln1KvGMJoFb+cYw4Z54zyDvygtEsiQy7/u/WEGmOEwaoV5uiueKMetrIuf7
+	m2sxsI2WKu1GfvtM95Et2Rhqz95wC21nIfL21JOntEfw7MtAx1/KfwCKu3j45skJ88PsITXS0RF
+	J4nxsSqclZCSYNVT/AjZASdJDPekB1MZ36WnJpK00k9mmz+7If9vTfWkCxkYazN2NH63njsGacW
+	gaOZsYfV7dO4ieci4wpr5pcBBH3VtHczhH7dW7Un1Y8USLm082cAGJdx5Ze31t+HhkRDacul5fG
+	y
+X-Received: by 2002:a05:600c:3e0a:b0:4a0:1c10:1372 with SMTP id 5b1f17b1804b1-4a18e4aa206mr24728265e9.27.1791539075657;
+        Fri, 09 Oct 2026 02:44:35 -0700 (PDT)
+X-Received: by 2002:a05:600c:3e0a:b0:4a0:1c10:1372 with SMTP id 5b1f17b1804b1-4a18e4aa206mr24727965e9.27.1791539075228;
+        Fri, 09 Oct 2026 02:44:35 -0700 (PDT)
+Received: from sgarzare-redhat ([5.11.115.77])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf35930sm44828935e9.13.2026.10.09.02.44.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 02:44:34 -0700 (PDT)
+Date: Fri, 9 Oct 2026 11:44:27 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: netdev-bot+sashiko@kernel.org, stefanha@redhat.com, mst@redhat.com, 
+	jasowangio@gmail.com, eperezma@redhat.com, davem@davemloft.net, 
+	xuanzhuo@linux.alibaba.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	edumazet@kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imv4bel@gmail.com
+Subject: Re: [PATCH net v4] vsock: treat TCP_CLOSING as once-established
+Message-ID: <asiySxBYMDbRa73H@sgarzare-redhat>
+References: <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
+ <179133282699.434549.6239722975007408103@kernel.org>
+ <011a9085-0bb4-433b-afc5-9c787cde0e12@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 02/19] net: stmmac: request the MDIO reset
- GPIO only once
-To: James Hilliard <james.hilliard1@gmail.com>,
- Linus Walleij <linusw@kernel.org>
-Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Christian Marangi <ansuelsmth@gmail.com>,
- Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Serge Semin <fancer.lancer@gmail.com>,
- Suraj Jaiswal <quic_jsuraj@quicinc.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Joao Pinto <Joao.Pinto@synopsys.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- Ong Boon Leong <boon.leong.ong@intel.com>,
- Voon Weifeng <weifeng.voon@intel.com>,
- "Song, Yoong Siang" <yoong.siang.song@intel.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Magnus Karlsson <magnus.karlsson@intel.com>,
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
- Simon Horman <horms@kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>, Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Jose Abreu <Jose.Abreu@synopsys.com>,
- Yao Zi <me@ziyao.cc>, Philipp Zabel <p.zabel@pengutronix.de>,
- Richard Genoud <richard.genoud@bootlin.com>,
- Alastair D'Silva <alastair@d-silva.org>, Maxime Ripard <mripard@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
- ZhaoJinming <zhaojinming@uniontech.com>,
- Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Ding Hui <dinghui1111@163.com>, Linkui Xiao <xiaolinkui@kylinos.cn>,
- linux-tegra@vger.kernel.org, linux-sunxi@lists.linux.dev,
- stable@vger.kernel.org
-References: <20260927-submit-stmmac-reset-fixes-v1-v5-0-feec6c14dd06@gmail.com>
- <20260927-submit-stmmac-reset-fixes-v1-v5-2-feec6c14dd06@gmail.com>
- <CAD++jL=6Ov5BPK1naX6orzMsrJPm_g6SkdRaU6Ji+okXMFaZdQ@mail.gmail.com>
- <CADvTj4pU6EXgx1-dupQoQBm8OrrvAeR5NyCk4of7zya2V=yvEw@mail.gmail.com>
-Content-Language: en-US
-From: Linkui Xiao <xiaolinkui@126.com>
-In-Reply-To: <CADvTj4pU6EXgx1-dupQoQBm8OrrvAeR5NyCk4of7zya2V=yvEw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnT_lttMhqfcDGAw--.25712S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXFyxtr43KF15GF47ZFy5Arb_yoWrXw1kpF
-	Waqa1YyrZ5XrWxAws2qw1UZFyjvFs0yr43Xr1jkrWxCF98CFyfJr1xtr4Y9F97Cry8Ww1Y
-	vF4vva47uan0yFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ur3ktUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqRAW7GrItHDUxQAA30
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <011a9085-0bb4-433b-afc5-9c787cde0e12@rbox.co>
 
+On Wed, Oct 07, 2026 at 11:24:32AM +0200, Michal Luczaj wrote:
+>On 10/7/26 02:27, netdev-bot+sashiko@kernel.org wrote:
+>> [Severity: High]
+>> Can vsock_connect() still reset a socket that is already linked in
+>> vsock_connected_table? This check only covers TCP_ESTABLISHED and
+>> TCP_CLOSING. At least two transports move an established socket that is
+>> already in the table straight to TCP_CLOSE, and neither one unlinks it.
+>>
+>> net/vmw_vsock/virtio_transport.c:virtio_vsock_reset_sock() {
+>> 	sk->sk_state = TCP_CLOSE;
+>> 	sk->sk_err = ECONNRESET;
+>> 	sk_error_report(sk);
+>> }
+>>
+>> virtio_vsock_event_handle() calls this for every connected socket on
+>> VIRTIO_VSOCK_EVENT_TRANSPORT_RESET. It does not take lock_sock().
+>>
+>> net/vmw_vsock/vmci_transport.c:vmci_transport_handle_detach() {
+>> 	...
+>> 			sk->sk_state = TCP_CLOSE;
+>> 		}
+>> 		sk->sk_state_change(sk);
+>> 	...
+>> }
+>
+>Right, that's a known issue[1], to be handled separately.
 
+Agree!
 
-On 2026/9/28 07:49, James Hilliard wrote:
-> On Sun, Sep 27, 2026 at 5:35 PM Linus Walleij <linusw@kernel.org> wrote:
->>
->> Hi James,
->>
->> On Sun, Sep 27, 2026 at 11:59 PM James Hilliard
->> <james.hilliard1@gmail.com> wrote:
->>
->>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
->>>
->>> stmmac_mdio_reset() calls devm_gpiod_get_optional() every time it runs.
->>> A GPIO line can only be requested once, so from the second call on
->>> gpiod_request_commit() returns -EBUSY. devm_gpiod_get_optional() only
->>> turns -ENOENT into NULL, hence the error is passed straight back and
->>> stmmac_mdio_reset() bails out before pulsing "snps,reset" and before
->>> running the STE101P MDC workaround.
->>>
->>> The first call, made by of_mdiobus_register(), succeeds, so the failure
->>> is only visible later on: every resume that does not use WoL goes
->>> through stmmac_resume() -> stmmac_mdio_reset(), and that caller ignores
->>> the return value, so the PHY silently stays un-reset.
->>>
->>> The descriptor used to be requested exactly once: stmmac_mdio_reset()
->>> resolved "snps,reset-gpio" itself and cached the GPIO number in
->>> stmmac_mdio_bus_data::reset_gpio, and commit ae26c1c6cb9b ("stmmac: fix
->>> PHY reset during resume") relies on that cache to reuse the line on
->>> every call. commit 7c86f20d15b7 ("net: stmmac: use GPIO descriptors in
->>> stmmac_mdio_reset") replaced it with a devm_gpiod_get_optional() that
->>> caches nothing, so the request is repeated on every call and fails from
->>> the second one on.
->>>
->>> Parse the whole reset description, the GPIO and "snps,reset-delays-us",
->>> in stmmac_mdio_register() at probe time, and keep it in struct
->>> stmmac_priv. This is where devm-gpiod is meant to be used: the line is
->>> acquired with the device and released with it, and any failure to
->>> acquire it is reported during probe instead of being ignored by
->>> stmmac_resume(). stmmac_mdio_reset() then only pulses the cached line,
->>> with the delays that were read once and for all at probe time.
->>>
->>> Cache the request and delays for DT devices regardless of
->>> mdio_bus_data->needs_reset. That flag controls the registration-time
->>> bus reset callback, but system resume calls stmmac_mdio_reset()
->>> directly. The reset routine no longer looks at the device tree: where
->>> the description is absent the cached descriptor is NULL and the delays
->>> are zero, so the pulse remains a no-op.
->>>
->>> Keep acquisition conditional on CONFIG_STMMAC_PLATFORM, matching the
->>> reset callback, so non-platform configurations do not request an unused
->>> GPIO. Also skip acquisition for a disabled MDIO child: registering that
->>> bus returns -ENODEV without calling its reset callback, and the driver
->>> must retain the existing disabled-bus success path even if the unused
->>> GPIO is unavailable. Remove the unnecessary gpio_desc forward declaration.
->>>
->>> Fixes: 7c86f20d15b7 ("net: stmmac: use GPIO descriptors in stmmac_mdio_reset")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
->>> Co-developed-by: James Hilliard <james.hilliard1@gmail.com>
->>> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
->>
->> Dostoyevsky commit message, I didn't read it. Ask the agent
->> to be terse.
-> 
-> That commit message style mostly just came from the imported patch,
-> I'll change it to be more terse in the next revision:
-> https://lore.kernel.org/all/20260921015727.2643540-1-xiaolinkui@126.com/Hi James,
+>
+>> [ ... ]
+>> sk_state does not seem to track table membership reliably. Would it be
+>> more robust to check sock->state == SS_CONNECTED instead (the transports
+>> set it together with vsock_insert_connected()),
+>
+>vsock_shutdown() complicates this. It can flip SS_CONNECTED to
+>SS_DISCONNECTING.
 
-Thanks for picking this up. Agreed the commit message is too long;
-I'm fine with you trimming it for the next revision. Linus already
-gave his Reviewed-by on the code, so the logic is settled.
+Yeah, I'd avoid to use sock->state for what we are going to fix.
+
+>
+>> or to check membership in
+>> connected_table directly? That check would have to guard both the
+>> signal/timeout reset inside the loop and the sock_error() reset after the
+>> loop.
+>
+>Lack of membership check for connected_table is not the root cause of the
+>issue. But, sure, we can discuss adding it as a sanity check.
+
+Agree also on this!
 
 Thanks,
-Linkui
+Stefano
 
-> 
->> I looked at the code and from a GPIO PoV it does the right
->> thing: use 1 as asserted and 0 as de-asserted RESET line.
->>
->> Reviewed-by: Linus Walleij <linusw@kernel.org>
->>
->> Yours,
->> Linus Walleij
+>
+>[1]: https://lore.kernel.org/netdev/arpBYXWb9pohx-8v@sgarzare-redhat/
+>
 
