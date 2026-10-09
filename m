@@ -1,527 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB4F369D71;
-	Fri,  9 Oct 2026 23:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791589719; cv=none; b=iKEgXCb1hOFpRzDMebRXNkwGfvwHeZlg7098eEj1a/XPvIhEZ7j/3WaT53Sf0SrXF/PaAOZDXQflIHbnYoemOmszUmNH1JR0yzQrDcDBT72ZZ0VWxsULDbIsEVx2doUZSsHf9idu8FZUhsgn9v7y9rbsSCPAz1OMU2EbQRDipgg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791589719; c=relaxed/simple;
-	bh=nFksT7jr0H7znj6H4e1sOyfixlG8c0+BFvQkGSoJ2hI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CFHwgyVD6+Lo+A5IgMLD//ZOllM+GBwQZNEBBMdLDA8KWV5svDfSSGEk4437BrVTySyEGQr9IvGaTKL+CKvwvXNHf3rRdS6SjuyWQ00VBxuKn8NPW4mpr2LmE2O6kBmuTF1MRYi2DjiqFWT7ICo9dzBEWQwagZaM5x938GaKqp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KuFT2kMZ; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049D53E5A32
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 23:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791590070; cv=pass; b=Hbn/gLlxrDEUdfveuxQRfwVzd9o5m//tpWWFPywD1SpJt4a8se+WRDpXOJqH5COVNCMCnb2BXQxzoELCcLIbUan3YvIrOVfy94giu/O1nTcZd8jXkxGbPZeLuJXWGX4wDS6BxjsMHNQGFxLAt03d8fQryOsRYJTTRrAVGlJkYTY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791590070; c=relaxed/simple;
+	bh=6BbAOFR5ozv9YI2gjZqVkZoLPCjlp6tmsusKEhB3G6Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S0s9hFmDDEb+ZZlzrWliXSvRhl2M+QTpdMxNuiOhITnFSI4qTj0C9oKJzLu/5h+GU9/6Y8H0QkM29nmkyNHQd6l54QfCOW1eBJH3Cg6/WKnQeF5LGtAb9B4/14P6EIP0D2+tPmrJoQ8xZPbgHYX56+ijyHObi4XGB331r7Io+Ks=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qXmx/vWV; arc=pass smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KuFT2kMZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791589717; x=1823125717;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=nFksT7jr0H7znj6H4e1sOyfixlG8c0+BFvQkGSoJ2hI=;
-  b=KuFT2kMZuhCBE9X7xetnXbyeANYLk8Y3FYuGRmuQDCUJG7q0JvMOFcdZ
-   cQ1fMHTDG09u/8Oc1qRkmBktOmji0kM8SJgueqhGZttpdFV9i2jvBDxab
-   w1sAKr0J7T1XUdW41FIk/9Ejh/40PqaVheB+qs8IXmMJipnlW5aPHZ8g+
-   JcydgJIQf/HJNvbx8zBfc3+YUPGfo00DHQ6Ji/74lXRYggzZsCvWsS9ij
-   /AW+CsmpKwX2P/K8ikwxhZD2ofBl4v7YpE7LyACQAyJbFWxomjbA7GPwM
-   TQtSl8D0p9lqzAwkL03jn8hUN0Dx3u96gThwbLajypxPRgzWxf5kBCcWr
-   A==;
-X-CSE-ConnectionGUID: yLazDjbTS8C2/wBGAQo+BQ==
-X-CSE-MsgGUID: o2TxFQDoSU+sL+GqDanrDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="402905"
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="402905"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 16:48:37 -0700
-X-CSE-ConnectionGUID: zYZemT7FRKiXhIDZ54CJtw==
-X-CSE-MsgGUID: lAf2XBhhSr6pK8gli9KZUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="879781"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 09 Oct 2026 16:48:33 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xFKKE-000000006IS-1xKj;
-	Fri, 09 Oct 2026 23:48:30 +0000
-Date: Sat, 10 Oct 2026 07:47:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, rafael@kernel.org,
-	lenb@kernel.org, pavel@kernel.org, willemdebruijn.kernel@gmail.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-pm@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	stable@vger.kernel.org,
-	=?iso-8859-1?B?Suly6W15?= Jean <jeremy.jean@oss.cyber.gouv.fr>
-Subject: Re: [PATCH net] udp_tunnel: drop packets when hibernating
-Message-ID: <202610100745.bqMCEIml-lkp@intel.com>
-References: <20261008124106.665014-1-Jason@zx2c4.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qXmx/vWV"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6aae147ef9dso1286a12.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 16:54:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791590067; cv=none;
+        d=google.com; s=arc-20260327;
+        b=e1T63m6lt/8b9LqYu/tiShznFUrzsEs/C3BfxotrbI8BzyZqoQQ3QlHLTBgZfTMEcl
+         ipPVsZvrA1Wr2FLgTIQSa7XwtQJ2gw6Dq3lcRZbMHEYwHWlF6gXSm0/q24Q9lfZHkXGu
+         uvM6fLF8MEKk74U2BzreSsLNqVoqsl7CLu+D1lOFtFkiKvyWpzUIvKuKj1QpBAPWpItW
+         5wUqbK5QeKk4/BqjzM50GEHwWQueHxfYNsA5AEKHc+BsmEts9+QsEN/5Y2+6UvSJ4igQ
+         OYBXBHjbpVDCJZpbq0mdjZ3t4Y6kqlWfqW09zZ3Jgcqp/UEcoPpU+fu50CPjeIzYYPCb
+         HVPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6BbAOFR5ozv9YI2gjZqVkZoLPCjlp6tmsusKEhB3G6Y=;
+        fh=rrNP30epYdOaKbf99fCjWZZ3lcUL1xzKYew/aIJxob0=;
+        b=ViYNCE/wB1P+hTMtfaAvoovSAiH0iOzlfVG/oAhYL05gW1FSkP94zkcVz3KSxsDh1H
+         ePMi9R+4W9SY2ybYbvz83vlnjE9whMRETgqzZndqSHJWr4+jytctn0sf/bAqqVg3sh9R
+         1IX3/BkkJwO4yA8qic80t4F64V5kjwcFG2FfzpJl2z5lLXeApMAREMd5A23SeVj8w/yy
+         bEdCkVsxoMDNMgaojHeLiLZlR8Rtfk66DHUH0PBvtZ5zrP6A1mVSO/4IQaqH5lh1I5lJ
+         y6rLH7A21iUAn2JAlCykm6GjJbcDNiXkJKYpakyEb6LEPitVqvCnLPKHfYZrK5SDeIQb
+         A/tA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791590067; x=1792194867; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6BbAOFR5ozv9YI2gjZqVkZoLPCjlp6tmsusKEhB3G6Y=;
+        b=qXmx/vWV0JJ5vLM3ox63kUAd6fadJkJAAwe2nPT3Rf5U0A4Q4Jw4YeABgEL5+euiOd
+         dZs6rFvAd1+S4vPSdl28nKc+wMCqCvaImodHgr636n7a3UuA33QuqdcldgvGp2wCWbIf
+         zBB8MviyksypDmJV1C+6V76SBNby1CcBvTY47GPFJb6jSkEGm0iTcCyB7JKaR/u3W0e1
+         S+39FEuvIImesddZZPBVOjLGub96lPi5LDNYRxYHFnytz5woC81bc5P1QeJY7gsHR/ts
+         orDd7Vh/eE7SIxPzqpvy4YU7xGpvqBIUJWFQFlL80SqDsmqYULnVZsPVPCm3X5EUrg6M
+         FYmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791590067; x=1792194867;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6BbAOFR5ozv9YI2gjZqVkZoLPCjlp6tmsusKEhB3G6Y=;
+        b=TwJbHzuMnbJ7/g917LzBPg+egn7cxDCFWo1p0bYa97eg97B4bP88xo8fZqSsZh18fH
+         jSOYvHNaH78lFrOcBClMSNgwe/UALfHN6Yks6Piyp/uuFNvGadKXbW990qEisxAhBZml
+         kqmaIMmHEij4mF0z9XpeRTm+Z8mLUYjfL+Whdx5Ipzp3uscrmgFrr0Pz7H700+2b+I8i
+         UzKnTip7hd6Ww3UcEF2EzvtMPLA/w1zkOoYimydf+XTdXEJEManc4tPtcQp0qMAaolCV
+         peGuLcj9GTjbWScurKtcmtC8p56tAuWGTTicI1XrxAqu6iuyV+f8cAx3KpDxKAcvofFU
+         OwFA==
+X-Forwarded-Encrypted: i=1; AKwUvBx+KH8KsKpcjICL5TZXGbAOGiKwyTQiumwp30f9hS0MKJndj1cgUJ3rO4Kbr3ObaxJzW9GTLJs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLU8atwxU7GNLIF9/7hBEdlKoFo2bPpQOomfaw0tNQn/atTECjY
+	QUBh9ontQGwAFZoyCgnOnZ6kh//HvM1KlPwvcZAOOtAVgydz3p6mL0G9DSxsU+p7Sj1f7yZVpTP
+	KCm4Qirzbkg3DnCJiqyCBYQlQs369ftz5tLYlWDI2
+X-Gm-Gg: AYBFou1DCgzLec2nHqXAFQFDyifpIzgOYwmD1gp/C/Y3nj0Qjf3NXD9f8EuP65u7VbV
+	c3CyG0o05tll2ytzln/hWuFDen3MIlABYN4hJy3RqH9TRW5F3THzKxfoCkb4CWN+u76sftY6+s8
+	KdsbOio5gRRkhCRR+uVxoQNY00cRiEiANlQTlSMa4ej5oDdxaBTr6+ak1ghDqBwTD+mReKQu0Zu
+	LjQJVH28sISl7mrYprE3xL2jtlYDiEvLiC0ATteX9dOsqyKgeltsqeYh/IFZWJVDDn8iXxlUtqO
+	Hfd7o7hFf4VXnxLOpnEu16e1CjAWVfb8aZy6jGQTn5/N9Qj4YfQWS5NKIV/zFUVT
+X-Received: by 2002:a05:6402:1492:b0:6af:afce:184f with SMTP id
+ 4fb4d7f45d1cf-6b1988f1271mr5875a12.3.1791590066657; Fri, 09 Oct 2026 16:54:26
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261008124106.665014-1-Jason@zx2c4.com>
+References: <20261008132815.654147-1-tariqt@nvidia.com> <CAHS8izNSo4YzXxD3C6c2HohdOfH2GK1M=51biuevLUk3vz5k4g@mail.gmail.com>
+In-Reply-To: <CAHS8izNSo4YzXxD3C6c2HohdOfH2GK1M=51biuevLUk3vz5k4g@mail.gmail.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 9 Oct 2026 16:54:15 -0700
+X-Gm-Features: AclHuK_ZzbZd-uX5EqoDdsPJuuPhovZF16107otVMYSWFJ0lAZEAV_UPEgtn00I
+Message-ID: <CAHS8izMKNeEmJM0wOgtoz9_3WRLUOqP0PEDMn5SZ+hXTKTwSyw@mail.gmail.com>
+Subject: Re: [PATCH net-next 00/10] net/mlx5e: Add netdev support for data direct
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
+	Paolo Abeni <pabeni@redhat.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Byungchul Park <byungchul@sk.com>, Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, 
+	Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>, 
+	Jacob Keller <Jacob.e.keller@intel.com>, Kees Cook <kees@kernel.org>, 
+	Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, 
+	Matt Fleming <mfleming@cloudflare.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shivaji Kant <shivajikant@google.com>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, William Tu <witu@nvidia.com>, 
+	Yue Haibing <yuehaibing@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jason,
+On Fri, Oct 9, 2026 at 9:42=E2=80=AFAM Mina Almasry <almasrymina@google.com=
+> wrote:
+>
+> On Thu, Oct 8, 2026 at 6:28=E2=80=AFAM Tariq Toukan <tariqt@nvidia.com> w=
+rote:
+> >
+> > Hi,
+> >
+> > This patch series by Dragos adds data direct support for netdev devices=
+,
+> > allowing a mlx5 netdev to issue DMA commands through multiple paths.
+> > This feature is critical for improving performance and reaching line
+> > rate in certain environments where issuing PCI transactions over one
+> > path may be significantly faster than over another. These differences
+> > can arise from various PCI generations in the system or the specific
+> > system topology.
+> >
+> > Data direct for netdev will work with devmem by returning the data
+> > direct DMA device instead of the DMA device of the NIC. Each PF netdev
+> > registers its own data direct device and support for RX and TX datapath
+> > is added. The feature is selected through a new data direct priv flag.
+> >
+> > The feature is enabled though a ethtool private flag. When this flag
+> > is enabled, the driver will return the data direct device in the
+> > ndo_queue_get_dma_dev op.
+> >
+> > During data_direct device unbind, a re-creation of the channels is
+> > triggered.
+> >
+> > A note about the unbind: it does not does not tear down dmabuf bindings
+> > attached to the data direct device; the recreated channels will still
+> > pick up the binding via rxq->mp_params and post DMA addresses from the
+> > data direct IOMMU domain to the PF, causing IOMMU faults. A devmem
+> > revoke hook is needed to close those bindings before the switch. This i=
+s
+> > out of scope for this series.
+> >
+>
+> Elaborate on this please. Are you referring to the fact that on
+> page_pool_scrub we unmap the netmems dma-mapped by the page-pool, but
+> we don't unmap the netmems dma-mapped by the memory provider?
+>
+> What's the impact of leaving this unfixed? Is the machine going to
+> crash if the device goes away but we don't unmap the dmabuf?
 
-kernel test robot noticed the following build warnings:
+Oh, you're referring to an even different bug than the one I had in
+mind. (I'll see if I can submit a fix for the bug I had in mind).
 
-[auto build test WARNING on net/main]
+But in general I think not addressing the issue you're referring to is
+way too messy. I think we do indeed need to unbind the dma-buf if the
+dma-dev is going away. The invariant should be that the
+binding->attachment->dev should not change at all during the entire
+lifetime of the binding. We already 'revoke' the dma-buf binding if
+the netdev is going away, sorta (there is a bug there I need to fix.
+The uninstall function in the provider doesn't actually unmap the
+dma-buf :sad face:).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-A-Donenfeld/udp_tunnel-drop-packets-when-hibernating/20261008-144021
-base:   net/main
-patch link:    https://lore.kernel.org/r/20261008124106.665014-1-Jason%40zx2c4.com
-patch subject: [PATCH net] udp_tunnel: drop packets when hibernating
-config: arm64-randconfig-1000-20261010 (https://download.01.org/0day-ci/archive/20261010/202610100745.bqMCEIml-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610100745.bqMCEIml-lkp@intel.com/reproduce)
+I've worked with my LLM to suggest some changes that (we think) make
+this work, but you may disagree. I'll post the suggestions. But please
+I think this should be handled one way or another.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610100745.bqMCEIml-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/char/virtio_console.c:636:33: note: in expansion of macro 'pm_freezing'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   include/linux/compiler_types.h:682:9: note: in definition of macro '__compiletime_assert'
-      if (!(condition))     \
-            ^~~~~~~~~
-   include/linux/compiler_types.h:702:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:2: note: in expansion of macro 'compiletime_assert'
-     compiletime_assert(__native_word(t),    \
-     ^~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:21: note: in expansion of macro '__native_word'
-     compiletime_assert(__native_word(t),    \
-                        ^~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:169:2: note: in expansion of macro 'compiletime_assert_atomic_type'
-     compiletime_assert_atomic_type(*p);    \
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:33: note: in expansion of macro 'pm_freezing'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   include/linux/compiler_types.h:682:9: note: in definition of macro '__compiletime_assert'
-      if (!(condition))     \
-            ^~~~~~~~~
-   include/linux/compiler_types.h:702:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:2: note: in expansion of macro 'compiletime_assert'
-     compiletime_assert(__native_word(t),    \
-     ^~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:21: note: in expansion of macro '__native_word'
-     compiletime_assert(__native_word(t),    \
-                        ^~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:169:2: note: in expansion of macro 'compiletime_assert_atomic_type'
-     compiletime_assert_atomic_type(*p);    \
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:33: note: in expansion of macro 'pm_freezing'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   include/linux/compiler_types.h:682:9: note: in definition of macro '__compiletime_assert'
-      if (!(condition))     \
-            ^~~~~~~~~
-   include/linux/compiler_types.h:702:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:2: note: in expansion of macro 'compiletime_assert'
-     compiletime_assert(__native_word(t),    \
-     ^~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:21: note: in expansion of macro '__native_word'
-     compiletime_assert(__native_word(t),    \
-                        ^~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:169:2: note: in expansion of macro 'compiletime_assert_atomic_type'
-     compiletime_assert_atomic_type(*p);    \
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:33: note: in expansion of macro 'pm_freezing'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   In file included from include/linux/list.h:11,
-                    from include/linux/kobject.h:19,
-                    from include/linux/cdev.h:5,
-                    from drivers/char/virtio_console.c:7:
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   arch/arm64/include/asm/barrier.h:170:32: note: in definition of macro '__smp_load_acquire'
-     kasan_check_read(__p, sizeof(*p));    \
-                                   ^
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:33: note: in expansion of macro 'pm_freezing'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
->> arch/arm64/include/asm/barrier.h:170:19: warning: passing argument 1 of 'kasan_check_read' makes pointer from integer without a cast [-Wint-conversion]
-     kasan_check_read(__p, sizeof(*p));    \
-                      ^~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   In file included from include/asm-generic/rwonce.h:26,
-                    from arch/arm64/include/asm/rwonce.h:81,
-                    from include/linux/compiler.h:369,
-                    from include/linux/build_bug.h:5,
-                    from include/linux/container_of.h:5,
-                    from include/linux/list.h:5,
-                    from include/linux/kobject.h:19,
-                    from include/linux/cdev.h:5,
-                    from drivers/char/virtio_console.c:7:
-   include/linux/kasan-checks.h:40:58: note: expected 'const volatile void *' but argument is of type 'int'
-    static inline bool kasan_check_read(const volatile void *p, unsigned int size)
-                                        ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from include/linux/list.h:11,
-                    from include/linux/kobject.h:19,
-                    from include/linux/cdev.h:5,
-                    from drivers/char/virtio_console.c:7:
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   arch/arm64/include/asm/barrier.h:171:18: note: in definition of macro '__smp_load_acquire'
-     switch (sizeof(*p)) {      \
-                     ^
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:33: note: in expansion of macro 'pm_freezing'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:175:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:180:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:185:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:190:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   arch/arm64/include/asm/barrier.h:193:11: note: in definition of macro '__smp_load_acquire'
-     (typeof(*p))__u.__val;      \
-              ^
-   drivers/char/virtio_console.c:636:6: note: in expansion of macro 'smp_load_acquire'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:636:33: note: in expansion of macro 'pm_freezing'
-     if (smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   In file included from <command-line>:
-   drivers/char/virtio_console.c: In function 'put_chars':
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   include/linux/compiler_types.h:626:13: note: in definition of macro '__unqual_scalar_typeof'
-      _Generic((x),      \
-                ^
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
---
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   include/linux/compiler_types.h:682:9: note: in definition of macro '__compiletime_assert'
-      if (!(condition))     \
-            ^~~~~~~~~
-   include/linux/compiler_types.h:702:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:2: note: in expansion of macro 'compiletime_assert'
-     compiletime_assert(__native_word(t),    \
-     ^~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:21: note: in expansion of macro '__native_word'
-     compiletime_assert(__native_word(t),    \
-                        ^~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:169:2: note: in expansion of macro 'compiletime_assert_atomic_type'
-     compiletime_assert_atomic_type(*p);    \
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   include/linux/compiler_types.h:682:9: note: in definition of macro '__compiletime_assert'
-      if (!(condition))     \
-            ^~~~~~~~~
-   include/linux/compiler_types.h:702:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:2: note: in expansion of macro 'compiletime_assert'
-     compiletime_assert(__native_word(t),    \
-     ^~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:21: note: in expansion of macro '__native_word'
-     compiletime_assert(__native_word(t),    \
-                        ^~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:169:2: note: in expansion of macro 'compiletime_assert_atomic_type'
-     compiletime_assert_atomic_type(*p);    \
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   include/linux/compiler_types.h:682:9: note: in definition of macro '__compiletime_assert'
-      if (!(condition))     \
-            ^~~~~~~~~
-   include/linux/compiler_types.h:702:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:2: note: in expansion of macro 'compiletime_assert'
-     compiletime_assert(__native_word(t),    \
-     ^~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:705:21: note: in expansion of macro '__native_word'
-     compiletime_assert(__native_word(t),    \
-                        ^~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:169:2: note: in expansion of macro 'compiletime_assert_atomic_type'
-     compiletime_assert_atomic_type(*p);    \
-     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   In file included from include/linux/list.h:11,
-                    from include/linux/kobject.h:19,
-                    from include/linux/cdev.h:5,
-                    from drivers/char/virtio_console.c:7:
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   arch/arm64/include/asm/barrier.h:170:32: note: in definition of macro '__smp_load_acquire'
-     kasan_check_read(__p, sizeof(*p));    \
-                                   ^
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
->> arch/arm64/include/asm/barrier.h:170:19: warning: passing argument 1 of 'kasan_check_read' makes pointer from integer without a cast [-Wint-conversion]
-     kasan_check_read(__p, sizeof(*p));    \
-                      ^~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   In file included from include/asm-generic/rwonce.h:26,
-                    from arch/arm64/include/asm/rwonce.h:81,
-                    from include/linux/compiler.h:369,
-                    from include/linux/build_bug.h:5,
-                    from include/linux/container_of.h:5,
-                    from include/linux/list.h:5,
-                    from include/linux/kobject.h:19,
-                    from include/linux/cdev.h:5,
-                    from drivers/char/virtio_console.c:7:
-   include/linux/kasan-checks.h:40:58: note: expected 'const volatile void *' but argument is of type 'int'
-    static inline bool kasan_check_read(const volatile void *p, unsigned int size)
-                                        ~~~~~~~~~~~~~~~~~~~~~^
-   In file included from include/linux/list.h:11,
-                    from include/linux/kobject.h:19,
-                    from include/linux/cdev.h:5,
-                    from drivers/char/virtio_console.c:7:
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   arch/arm64/include/asm/barrier.h:171:18: note: in definition of macro '__smp_load_acquire'
-     switch (sizeof(*p)) {      \
-                     ^
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:175:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:180:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:185:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   arch/arm64/include/asm/barrier.h:190:11: error: invalid type argument of unary '*' (have 'int')
-       : "Q" (*__p) : "memory");   \
-              ^~~~
-   include/asm-generic/barrier.h:176:29: note: in expansion of macro '__smp_load_acquire'
-    #define smp_load_acquire(p) __smp_load_acquire(p)
-                                ^~~~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   arch/arm64/include/asm/barrier.h:193:11: note: in definition of macro '__smp_load_acquire'
-     (typeof(*p))__u.__val;      \
-              ^
-   drivers/char/virtio_console.c:1173:6: note: in expansion of macro 'smp_load_acquire'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-         ^~~~~~~~~~~~~~~~
-   drivers/char/virtio_console.c:1173:33: note: in expansion of macro 'pm_freezing'
-         smp_load_acquire(&portdev->pm_freezing)) /* pairs with freeze/restore */
-                                    ^~~~~~~~~~~
-   In file included from drivers/char/virtio_console.c:12:
-   drivers/char/virtio_console.c: In function 'virtcons_probe':
-   include/linux/freezer.h:79:21: error: expected identifier before '(' token
-    #define pm_freezing (false)
-                        ^
-   drivers/char/virtio_console.c:2071:11: note: in expansion of macro 'pm_freezing'
-     portdev->pm_freezing = false;
-              ^~~~~~~~~~~
-
-
-vim +/kasan_check_read +170 arch/arm64/include/asm/barrier.h
-
-47933ad41a86a4 Peter Zijlstra     2013-11-06  164  
-fd072df850e536 Michael S. Tsirkin 2015-12-27  165  #define __smp_load_acquire(p)						\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  166  ({									\
-10223c5286f738 Will Deacon        2019-12-19  167  	union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;	\
-131e135f7fd14b Mark Rutland       2019-04-09  168  	typeof(p) __p = (p);						\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  169  	compiletime_assert_atomic_type(*p);				\
-131e135f7fd14b Mark Rutland       2019-04-09 @170  	kasan_check_read(__p, sizeof(*p));				\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  171  	switch (sizeof(*p)) {						\
-878a84d5a8a18a Andre Przywara     2015-04-20  172  	case 1:								\
-878a84d5a8a18a Andre Przywara     2015-04-20  173  		asm volatile ("ldarb %w0, %1"				\
-c139aa60c10074 Will Deacon        2015-11-18  174  			: "=r" (*(__u8 *)__u.__c)			\
-131e135f7fd14b Mark Rutland       2019-04-09  175  			: "Q" (*__p) : "memory");			\
-878a84d5a8a18a Andre Przywara     2015-04-20  176  		break;							\
-878a84d5a8a18a Andre Przywara     2015-04-20  177  	case 2:								\
-878a84d5a8a18a Andre Przywara     2015-04-20  178  		asm volatile ("ldarh %w0, %1"				\
-c139aa60c10074 Will Deacon        2015-11-18  179  			: "=r" (*(__u16 *)__u.__c)			\
-131e135f7fd14b Mark Rutland       2019-04-09  180  			: "Q" (*__p) : "memory");			\
-878a84d5a8a18a Andre Przywara     2015-04-20  181  		break;							\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  182  	case 4:								\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  183  		asm volatile ("ldar %w0, %1"				\
-c139aa60c10074 Will Deacon        2015-11-18  184  			: "=r" (*(__u32 *)__u.__c)			\
-131e135f7fd14b Mark Rutland       2019-04-09  185  			: "Q" (*__p) : "memory");			\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  186  		break;							\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  187  	case 8:								\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  188  		asm volatile ("ldar %0, %1"				\
-c139aa60c10074 Will Deacon        2015-11-18  189  			: "=r" (*(__u64 *)__u.__c)			\
-131e135f7fd14b Mark Rutland       2019-04-09  190  			: "Q" (*__p) : "memory");			\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  191  		break;							\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  192  	}								\
-10223c5286f738 Will Deacon        2019-12-19  193  	(typeof(*p))__u.__val;						\
-47933ad41a86a4 Peter Zijlstra     2013-11-06  194  })
-47933ad41a86a4 Peter Zijlstra     2013-11-06  195  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--=20
+Thanks,
+Mina
