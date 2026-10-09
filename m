@@ -1,41 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59AE3A3E8B;
-	Fri,  9 Oct 2026 06:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5FC4279FE;
+	Fri,  9 Oct 2026 06:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791526239; cv=none; b=Wg0GOBYQVLPDxSk/l9WX2Doy/CinoLiHJAl8/jDxNIim4CshBsjWE5jIhPPEGHZajwaOBuEgurospBDQyj3AZ8PZk5RCm7PgJXlHHBSY2aXk0BgkOXWuzVjKWFRiPvDTX7n6LmzDYcvFFt+0tesEKwWTiU0bZlWZ6HzkbDWXYUE=
+	t=1791526253; cv=none; b=uPfsAeo49sJxjOUW/i4z97p3iTBRF1tsPiiW7Fpb+hMBBEgDRl2GPhPVxhtc/VqbiHugjYnqIGbZuEGaJGq6+DWMJOXCTq0FFhZr+VQKStU8wAXck9A576uMuEvixNEPnPRC4UiyGeMdQrRjKCFbAIye45cwYPzlvDD+duyxec4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791526239; c=relaxed/simple;
-	bh=vOjoPzRFlz1vnUFQYob6r2lAU8rCn7TvrwBi2gqoOHw=;
+	s=arc-20240116; t=1791526253; c=relaxed/simple;
+	bh=JsKn0W6V7DyjIbmw/qt1dkI3v6Snv+d4FND9/dAuNAA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P6JFwVngnwJY8E3bBnrjR5iqH34xuLT5vRFP3AHfK+o8+Js4sRwsnLWpfX0Do5b2RICvFjfQlYQjIb7XlNGPgSAvrWWeKPa6pyaHdgrk6WGitQGouXH2vhgO9Vk6J5DpbEwyRbVCr92DM3AZ9AzxKi7AG7rQEHNV2Rk1pc4yeDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZkcYLZPG; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ied1V6tJW1jdkYhFbl+JVVBcDUR/w75FQ+BbtsBkmak9wX7fa9wD9NqsyE0PNhPrW1fxbsq2or97rjCQM2UcTLhczMQi60jAUJDjGeeWS/SfKYWdAx9H1h9RywWUW/gc2SynCJzFUSAHoTWJpdil/NGCTvLiGQctDppx5O3hf8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mEFPiUoo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZkcYLZPG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB871F00893;
-	Fri,  9 Oct 2026 06:10:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mEFPiUoo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D211F00898;
+	Fri,  9 Oct 2026 06:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791526235;
-	bh=bJXTKtqeMFmEbsZpjFNApaJAlaG+gDHLDHTHWW4tZuE=;
+	s=k20260515; t=1791526251;
+	bh=jeMjLgvkM8NXuE64fpizt11DP2l7PUI8HIjgpZhg86c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZkcYLZPGp2zjpAl2Pn50h/B7h8Su+WKlrjKLsChz7HNnWYOn3uihNmlxiNKA9fa8N
-	 xp0MSsIAI8xtyW17VoBnf1HA6ZFy7X1BqKAvJpnvZ2fE79h7o/aJb2RN/VvsTbQXUR
-	 GQx53FpcsuBS/Qo+WpEYCanuJd9ys3w2BwUxFt/tp3RLZcoSbZrnqiwNKrUn9vo1LD
-	 58fV8QkdP30gTRLdKu0xMmcs8Rg/myiGt6gmzu9JmbYBffWAqxroPSUX/f41Cc9MX4
-	 XMnXJWs0BvTObHI/VcOvGUBbrEKLJc3lRgBJVkRY+pCqkmsHBiXS+dOG42M+6iHrHL
-	 WcS1tT9PbmOgQ==
-Date: Fri, 9 Oct 2026 08:10:32 +0200
+	b=mEFPiUoo0HDXDa8cjlKiaenJJUkobMyYTGISHLrH6r7jvPzzRa5i+C4BD1c79aJU/
+	 lG6N7tEk/EoFuaqiH2eGAxzK51KptjifgrAUjuQXnfnDYTto0IhooUACaMb01GSU3I
+	 NXZhluNGAUJw25+CIC/TRVYehWaRtSITKOD285Tzlt//exz7c/wVWT6Vc9+e4Ti+z6
+	 FUh3HWs8jRFjd2zxtPZR0UqeiM7/SP5Lr8+s+mLePkdkGSMC/3M87YYYK24vdQSB2J
+	 Qfvy3OwUG7uSUjkKPZsUFVHtTL11FVAytDFacsKNY6jfepRCKL4FiOp4NSOeiekxRO
+	 UJoqveA5k272g==
+Date: Fri, 9 Oct 2026 08:10:49 +0200
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Haotian Zhang <vulab@iscas.ac.cn>
-Cc: "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, 
-	Josua Mayer <josua@solid-run.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org
-Subject: Re: [PATCH] net: mvmdio: fix clk reference leak in orion_mdio_probe()
-Message-ID: <20261009-fractal-millipede-of-tempest-5ab9ce@quoll>
-References: <20261008165328.2702289-1-vulab@iscas.ac.cn>
+Cc: David Daney <david.daney@cavium.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Andrew Lunn <andrew@lunn.ch>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH] net: mdio: mdio-mux: fix device_node reference leak on
+ success
+Message-ID: <20261009-narwhal-of-unnatural-shopping-7dfa7c@quoll>
+References: <20261008175612.2748920-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,26 +46,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261008165328.2702289-1-vulab@iscas.ac.cn>
+In-Reply-To: <20261008175612.2748920-1-vulab@iscas.ac.cn>
 
 
-On Fri, 09 Oct 2026 00:53:28 +0800, Haotian Zhang wrote:
-> orion_mdio_probe() calls of_clk_get() with index ARRAY_SIZE(dev->clk)
-> purely to test whether the device tree declares more clocks than the
-> driver supports.  of_clk_get() takes a reference on the returned clk,
-> but the return value is only checked with IS_ERR() and never released,
-> so both the clk reference and the clk allocated by alloc_clk() are leaked
-> whenever the DT node has more than four clocks.
+On Fri, 09 Oct 2026 01:56:12 +0800, Haotian Zhang wrote:
+> mdio_mux_init() obtains a reference to the parent bus device_node with
+> of_parse_phandle() when no mux_bus is passed in. All error paths release
+> it through err_parent_bus, but the success path at the end of the
+> function returns without calling of_node_put(). of_mdio_find_bus() only
+> takes a reference to the embedded struct device, so the device_node
+> reference is leaked for every multiplexer that probes successfully.
 > 
-> Store the returned clk in a local variable and release it with clk_put()
-> after emitting the warning.
+> Release parent_bus_node before returning from the success path.
 > 
-> Fixes: ea664b1bdc19 ("net: mvmdio: print warning when orion-mdio has too many clocks")
+> Fixes: 0ca2997d1452 ("netdev/of/phy: Add MDIO bus multiplexer support.")
 > Assisted-by: DeepSeek-V4.1-Flash
 > Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
 > ---
->  drivers/net/ethernet/marvell/mvmdio.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  drivers/net/mdio/mdio-mux.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 
 
