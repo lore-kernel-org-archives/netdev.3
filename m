@@ -1,160 +1,220 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-70.mta0.migadu.com [91.218.175.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504394A0F09
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652249E5EA
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791539086; cv=none; b=Ek9oeWLHci2hAb63bNl06ejvitXSWlRlfuglWh/b+uSKAjGHo0/eeofAgJoQP9poTHYIW3sdK/5WtwPVYHJURAFaXc0oiQhZ78u4B2STDk+wCDBvFiJ0W/VB8KafOI2t2t62YZd+S6/lDLjqvZeZrKfu8pVvjtJwqMlsD0gJmTo=
+	t=1791539116; cv=none; b=Wj70FiGiVwvfdwzfbV6AKLqvFpmN/6ZRc3aRiGNAlJYmSn1mcHKoHs4ql9n+eUIq25QrPxBEC8dg3Z5C7/+1eikrF6C3or4SLcmJo7wJTIO8JagjOV4U++WnT29XSyoRXFLQWELFoAgvSFakpbgorl7cxLau3TNpCREu/UjUudA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791539086; c=relaxed/simple;
-	bh=bExytepNqeEnYoIxPmIR3Yt5a0tGUiyPzEQmZBVvvIM=;
+	s=arc-20240116; t=1791539116; c=relaxed/simple;
+	bh=Ya+lCXbP1pgn175bZ6iGNPPZUQBznlWGEZ6lafUQ9JM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GqVlrUOqer/8G0zda2XbZg/Ikkb5Ts5wYYvLr49lpxCRh0lnc7Rq1bxL9aTJUA+/8SXx/Iy/pVpIzBLvOPdJC5aDGDox9NwTUMKT1SfsPOgui0t4KHkevIYZnsriL+YaTs3If/te2OdxPUNWu5b5GvGETPaotNOBWWSPotE9sXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KlDWB4qI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=feeMUi2Z; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFJb/z7n9MnhFaBIBTQ91cUTy3OVs+9KX1iowkCkVy+qpXzl+iBA0+aDCs1udCXf/XOTgG5QWUKXwXoXFgzYrIxR2dVnQWTvJ/Sckgp8/p1yD4/PYiT/7E+zOBpc3ujNqIZom8/Ph7/n/Lkvc6jQwFEgn2AR1vbZV3mYdpsO3DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=C+JFyTjl; arc=none smtp.client-ip=91.218.175.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KlDWB4qI";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="feeMUi2Z"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791539078;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ElzbfGJ6k9OnVXRhdCGGIydQGM/Gsew8hwRjohyR8bE=;
-	b=KlDWB4qI1lbkIrF1WGNLDRsCSYEaclSfMp3aJBBLZX7H+4p8i5HxEd0ffnMW5OWFI2PkiW
-	rvdOSnNzS92VOsH2eL3d/s6xGUaDpAbVNexHdSa2xruyM4FrZTx9nCqrZB4Q8kyA9itnkN
-	DwFwqmn3sU/RKqqzmBZ3WTgADx41iSw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-595-LEE8Ye21NTqzHwvYtEh3Lg-1; Fri, 09 Oct 2026 05:44:36 -0400
-X-MC-Unique: LEE8Ye21NTqzHwvYtEh3Lg-1
-X-Mimecast-MFC-AGG-ID: LEE8Ye21NTqzHwvYtEh3Lg_1791539076
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4a16dc2323cso48049155e9.3
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 02:44:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791539075; x=1792143875; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ElzbfGJ6k9OnVXRhdCGGIydQGM/Gsew8hwRjohyR8bE=;
-        b=feeMUi2Zpt5oHjcs2IMy0fUO8DcnM6TeCt0LAlkafc4Lce2Hk7Yop5yQNegg4HqRjz
-         pl0DU7Wq9GKPryPQ20KSwoj2QQwCa4XpOslhXa2ZeRBu55e5Z0C15ms7i5EfBSQgexCV
-         Oy7Bp/CoT4B2syey+9kFMyf0r/fJy6iDCTk25Hs5z3Qrz43F1Z3N6N3c84PkO9soveNZ
-         NoHMEBWb5YXUwYAIoRLMNfXB1P6wQZutZEKgSBBgk/m4Qba4F6FbCJs3QV52aQS/YPGp
-         94pSCz5y6l3RjQY+u+qKWxnde2qO62gaSOLbpVavL87PU+V4p7/+TBPMUc/zuLOBiZhn
-         zTjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791539075; x=1792143875;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ElzbfGJ6k9OnVXRhdCGGIydQGM/Gsew8hwRjohyR8bE=;
-        b=zmsyeW4jK7jc2z7JXLJBH1WBmuE4grTaUoJSHex35ssNgLU8bcR4Qz7UsF7DbqjFV/
-         tkTTXNDq5rNbLAt6gOdoAaxKHU7ZbseKKGRXxL7AMG/7yX3h6xmn6LR/VczZuKFlSkL5
-         f37dErK0hO9J5ahsiTdn1nSoI5qtrQ08qs6skU6jUD/mEknarMzZfhIm4MFWOsj7ffs6
-         oF+kOvLuzpG0YrTg2DnI0JpN/CMWaXKSyKjG+2KSxVWAGREQzgCvHWaZ2Vv0zZU2ysi+
-         WpAS0h72R7bealDM9+62vjdiA3hnh/QxYE0rwpBM762WA0U8KRTu6YpyVNyX5pI46DZA
-         symQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJXMAsOJiJIpsmjUunzaRZLLpnWno74PXb7BGA1/SX5Ws16SbqL56xHkQJwRlm0ssQm+nzh0o=@vger.kernel.org
-X-Gm-Message-State: AFuF++lININUdE+ETjwGjCW+KVgRMFqQvI/e0BJxdt+GZ0hPX1ExCl8a
-	+UWRvVh2gGgT06y2/Nm3ZkW7HuGuAjVwqox+a7gNm+p1428K7oZIvwriSA6dZfysb9Tu0+dU4r8
-	WqrlAvRMPDZBh83CPjA3iR27pAEWOsAgJXHOVM9mkh7Ypkh833OvCvSirgw==
-X-Gm-Gg: AYBFou0I40s50pOWjOVtg9qQGRfLPKWkU1dtuymgiRN2gzdgoQ5/A2URq1UBWURTX2d
-	vKCRgJ1ePpAp0Xwuln1KvGMJoFb+cYw4Z54zyDvygtEsiQy7/u/WEGmOEwaoV5uiueKMetrIuf7
-	m2sxsI2WKu1GfvtM95Et2Rhqz95wC21nIfL21JOntEfw7MtAx1/KfwCKu3j45skJ88PsITXS0RF
-	J4nxsSqclZCSYNVT/AjZASdJDPekB1MZ36WnJpK00k9mmz+7If9vTfWkCxkYazN2NH63njsGacW
-	gaOZsYfV7dO4ieci4wpr5pcBBH3VtHczhH7dW7Un1Y8USLm082cAGJdx5Ze31t+HhkRDacul5fG
-	y
-X-Received: by 2002:a05:600c:3e0a:b0:4a0:1c10:1372 with SMTP id 5b1f17b1804b1-4a18e4aa206mr24728265e9.27.1791539075657;
-        Fri, 09 Oct 2026 02:44:35 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e0a:b0:4a0:1c10:1372 with SMTP id 5b1f17b1804b1-4a18e4aa206mr24727965e9.27.1791539075228;
-        Fri, 09 Oct 2026 02:44:35 -0700 (PDT)
-Received: from sgarzare-redhat ([5.11.115.77])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf35930sm44828935e9.13.2026.10.09.02.44.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 02:44:34 -0700 (PDT)
-Date: Fri, 9 Oct 2026 11:44:27 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Michal Luczaj <mhal@rbox.co>
-Cc: netdev-bot+sashiko@kernel.org, stefanha@redhat.com, mst@redhat.com, 
-	jasowangio@gmail.com, eperezma@redhat.com, davem@davemloft.net, 
-	xuanzhuo@linux.alibaba.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	edumazet@kernel.org, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imv4bel@gmail.com
-Subject: Re: [PATCH net v4] vsock: treat TCP_CLOSING as once-established
-Message-ID: <asiySxBYMDbRa73H@sgarzare-redhat>
-References: <20261005-vsock-connect-reset-closing-v4-1-15d41cfda3ed@rbox.co>
- <179133282699.434549.6239722975007408103@kernel.org>
- <011a9085-0bb4-433b-afc5-9c787cde0e12@rbox.co>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="C+JFyTjl"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Ya+lCXbP1pgn175bZ6iGNPPZUQBznlWGEZ6lafUQ9JM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791539104; v=1; x=1792143904;
+ b=C+JFyTjlJqirIcrKHhCJjnR0jkVWC+BkmuG29Qj1gqYXq4cbEiHMRwxTV03LBa13G6QNKSww
+ Z6RTOgTAIryUpO6MA8LIwmhiddVGhVg460WLqS1rtAmcEzGbyVcZ8gGwEujvuiFKoGIGA9xUAlb
+ o5Hs97USH3L7RmeERN0MJALk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 3618e950e467ceb9;
+	Fri, 09 Oct 2026 09:45:03 +0000
+X-Mizu-Trace-ID: 3618e950e467ceb9
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 9 Oct 2026 17:44:56 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	donald.hunter@gmail.com, edumazet@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, liuhangbin@kylinos.cn
+Subject: Re: [PATCH net-next v4 4/6] netlink: specs: rt-route: describe
+ lwtunnel IP options
+Message-ID: <asi3mNcz1H6wJPOB@fedora>
+References: <20261008-ynl_rt_encap-v4-4-4ed2ccf7f949@kylinos.cn>
+ <179153682125.434549.6402494415316907824@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <011a9085-0bb4-433b-afc5-9c787cde0e12@rbox.co>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179153682125.434549.6402494415316907824@kernel.org>
 
-On Wed, Oct 07, 2026 at 11:24:32AM +0200, Michal Luczaj wrote:
->On 10/7/26 02:27, netdev-bot+sashiko@kernel.org wrote:
->> [Severity: High]
->> Can vsock_connect() still reset a socket that is already linked in
->> vsock_connected_table? This check only covers TCP_ESTABLISHED and
->> TCP_CLOSING. At least two transports move an established socket that is
->> already in the table straight to TCP_CLOSE, and neither one unlinks it.
->>
->> net/vmw_vsock/virtio_transport.c:virtio_vsock_reset_sock() {
->> 	sk->sk_state = TCP_CLOSE;
->> 	sk->sk_err = ECONNRESET;
->> 	sk_error_report(sk);
->> }
->>
->> virtio_vsock_event_handle() calls this for every connected socket on
->> VIRTIO_VSOCK_EVENT_TRANSPORT_RESET. It does not take lock_sock().
->>
->> net/vmw_vsock/vmci_transport.c:vmci_transport_handle_detach() {
->> 	...
->> 			sk->sk_state = TCP_CLOSE;
->> 		}
->> 		sk->sk_state_change(sk);
->> 	...
->> }
->
->Right, that's a known issue[1], to be handled separately.
+On Fri, Oct 09, 2026 at 09:07:01AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> 
+> Critical: 0 � High: 0 � Medium: 1 � Low: 2
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] Under this spec, YNL cannot send a request that sets Geneve
+>   tunnel options; the kernel rejects it.
+> - [Low] The new `lwtunnel-ip-opts` set declares `geneve` as one `binary`
+>   attribute without `multi-attr: true`.
+> - [Low] The commit message contradicts itself.
+> 
+> --
+> 
+> netlink: specs: rt-route: describe lwtunnel IP options
+> 
+> This commit changes the binary opts attribute in lwtunnel-ip and
+> lwtunnel-ip6 into a nest of a new lwtunnel-ip-opts set. It adds vxlan and
+> erspan option sets. Geneve options stay binary because the kernel uses a
+> different layout for requests and for dumps.
+> 
+> > Replace binary opts in lwtunnel-ip and lwtunnel-ip6 with a nested
+> > lwtunnel-ip-opts set. Add attribute sets for geneve, vxlan, and erspan
+> > IP options to match linux/lwtunnel.h.
+> 
+> [Severity: Low]
+> The first paragraph says attribute sets are added for geneve, vxlan and
+> erspan. The diff adds lwtunnel-ip-opts, lwtunnel-ip-opt-vxlan and
+> lwtunnel-ip-opt-erspan, but no lwtunnel-ip-opt-geneve set, and the
+> second paragraph says geneve is omitted.
 
-Agree!
+I mean add geneve attr. I didn't add lwtunnel-ip-opt-geneve.
 
->
->> [ ... ]
->> sk_state does not seem to track table membership reliably. Would it be
->> more robust to check sock->state == SS_CONNECTED instead (the transports
->> set it together with vsock_insert_connected()),
->
->vsock_shutdown() complicates this. It can flip SS_CONNECTED to
->SS_DISCONNECTING.
+> 
+> Could the first paragraph say something like "Add attribute sets for
+> vxlan and erspan IP options; keep geneve as binary (see below)"?
+> 
+> > diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
+> > index dc842a786794a..ea6711292c9b6 100644
+> > --- a/Documentation/netlink/specs/rt-route.yaml
+> > +++ b/Documentation/netlink/specs/rt-route.yaml
+> > @@ -377,7 +377,8 @@ attribute-sets:
+> >          type: pad
+> >        -
+> >          name: opts
+> > -        type: binary  # lwtunnel ip nest options
+> > +        type: nest
+> > +        nested-attributes: lwtunnel-ip-opts
+> >    -
+> >      name: ila-attrs
+> >      name-prefix: ila-attr-
+> 
+> [ ... ]
+> 
+> > @@ -562,6 +564,45 @@ attribute-sets:
+> >        -
+> >          name: link
+> >          type: u32
+> > +  -
+> > +    name: lwtunnel-ip-opts
+> > +    name-prefix: lwtunnel-ip-opts-
+> > +    attributes:
+> > +      -
+> > +        name: geneve
+> > +        type: binary
+> 
+> [Severity: Medium]
+> With geneve declared as binary, can YNL still send a route request that
+> carries Geneve options?
 
-Yeah, I'd avoid to use sock->state for what we are going to fix.
+No, before this patch, the whole encap data is binary. We now support
+all the encap types other than geneve, which encodes LWTUNNEL_IP_OPTS_GENEVE
+differently for requests and dumps.
 
->
->> or to check membership in
->> connected_table directly? That check would have to guard both the
->> signal/timeout reset inside the loop and the sock_error() reset after the
->> loop.
->
->Lack of membership check for connected_table is not the root cause of the
->issue. But, sure, we can discuss adding it as a sanity check.
-
-Agree also on this!
-
-Thanks,
-Stefano
-
->
->[1]: https://lore.kernel.org/netdev/arpBYXWb9pohx-8v@sgarzare-redhat/
->
-
+Thanks
+Hangbin
+> 
+> In tools/net/ynl/pyynl/lib/ynl.py, YnlFamily._add_attr() sets
+> NLA_F_NESTED only in the nest branch. The binary branch copies the payload
+> and leaves the flag out of the header:
+> 
+>     if attr["type"] == 'nest':
+>         nl_type |= Netlink.NLA_F_NESTED
+>     ...
+>     elif attr["type"] == 'binary':
+>         ...
+>             attr_payload = value
+> 
+> In the kernel, ip_opts_policy types GENEVE as nested:
+> 
+> net/ipv4/ip_tunnel_core.c:
+>     [LWTUNNEL_IP_OPTS_GENEVE]	= { .type = NLA_NESTED },
+> 
+> ip_tun_parse_opts() validates the payload in strict mode:
+> 
+>     err = nla_validate(nla_data(attr), nla_len(attr), LWTUNNEL_IP_OPTS_MAX,
+>                        ip_opts_policy, extack);
+> 
+> NL_VALIDATE_STRICT includes NL_VALIDATE_NESTED, so validate_nla() in
+> lib/nlattr.c rejects the attribute:
+> 
+>     if (validate & NL_VALIDATE_NESTED) {
+>         if ((pt->type == NLA_NESTED || pt->type == NLA_NESTED_ARRAY) &&
+>             !(nla->nla_type & NLA_F_NESTED)) {
+> 
+> ip_tun_parse_opts_geneve() then calls nla_parse_nested(), which does the
+> same check. So a newroute with encap type ip or ip6 and encap.opts.geneve
+> set to bytes fails with -EINVAL, even if the bytes hold a well-formed
+> CLASS/TYPE/DATA triplet.
+> 
+> Before this patch the whole opts attribute was binary. A caller could
+> pass the raw LWTUNNEL_IP_OPTS payload with NLA_F_NESTED already set on the
+> inner GENEVE header. The outer attribute is parsed with
+> nla_parse_nested_deprecated(), so the missing flag there was not checked.
+> 
+> Is this a regression for YNL users who configure Geneve options? Dumps
+> still decode, because ip_tun_fill_encap_opts_geneve() uses
+> nla_nest_start_noflag(). Later patches in the series do not change this,
+> and the final rt-route.yaml still has geneve as binary.
+> 
+> [Severity: Low]
+> Can this spec describe a request with more than one Geneve option?
+> 
+> On the request path, ip_tun_parse_opts() walks every attribute in the
+> opts nest. It passes each LWTUNNEL_IP_OPTS_GENEVE to
+> ip_tun_parse_opts_geneve(), which reads exactly one CLASS/TYPE/DATA
+> option:
+> 
+>     nla_for_each_attr(nla, nla_data(attr), nla_len(attr), rem) {
+>         switch (nla_type(nla)) {
+>         case LWTUNNEL_IP_OPTS_GENEVE:
+>             ...
+>             opts_len += opt_len;
+>             if (opts_len > IP_TUNNEL_OPTS_MAX)
+> 
+> So a request sends several Geneve options by repeating the GENEVE
+> attribute. The uAPI also defines a structured inner set for it, which
+> geneve_opt_policy enforces:
+> 
+>     [LWTUNNEL_IP_OPT_GENEVE_CLASS]	= { .type = NLA_U16 },
+>     [LWTUNNEL_IP_OPT_GENEVE_TYPE]	= { .type = NLA_U8 },
+>     [LWTUNNEL_IP_OPT_GENEVE_DATA]	= { .type = NLA_BINARY, .len = 127 },
+> 
+> The geneve entry here has no multi-attr. YnlFamily._add_attr() only turns
+> a list value into repeated attributes when attr.is_multi is set, so two
+> Geneve options on one route cannot be expressed.
+> 
+> Adding multi-attr alone would not make requests work, because of the
+> NLA_F_NESTED problem above. Nothing later in the series changes this.
+> 
+> > +      -
+> > +        name: vxlan
+> > +        type: nest
+> > +        nested-attributes: lwtunnel-ip-opt-vxlan
+> 
+> [ ... ]
+> 
+> -- 
+> Sashiko AI review � https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-ynl_rt_encap-v4-0-4ed2ccf7f949%40kylinos.cn
