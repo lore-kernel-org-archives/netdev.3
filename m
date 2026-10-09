@@ -1,239 +1,158 @@
-Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C962F47206A
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272473C1D62
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791532001; cv=none; b=Np0fixslS0FOlLsDl4QhZMiKXDmZaNZrGvJYUh7Q5BNqMPtLhJIBW8pnzIDtWSUmTQ/8ePyUD/b5m83OWFKaSdmL4gM6tzF7h9b+oJK+Xke5//nrVnqadmJZ3lPq7xZckJCO0kYa+WY+4mamq5aoo4/k7KtbYeUl+EUq1qgDffk=
+	t=1791532154; cv=none; b=ajYq+NUwi9T/EwQ/BXlgA4JYPgYNQrSO8ncogUgeMsVf/wzPrmPKzo1wN3y06Dwd0JAbOP3F3okTkXVVP2yomfpQ20Tbyby22eSZe2z6IgNEsuX5kra1r5CTckbJykPPTMAEgyjT5jLCKn2KdrA/qibpUSBtaVtYD98W137rVDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791532001; c=relaxed/simple;
-	bh=+grsSZCeGjPJjHmjcAR86H9X3p7tblGNuACQPAt7aDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=d4yTiJ1hI2sgv2gbNfJQoWUlfYywlxuQJnVSlhbTrmuCtJxQXGjd0dclhrtHnv0M2FQ6TKBwCGvIiAXZEbHbSAl2HA9PdhRjhXGiD2sFZDL2K1WuSklDou5pzmt8xuUCaCB4trEcNeeD7ocp9PigAHoeNdjVx+BUDWYdtcrUpyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EHJ7kYTi; arc=none smtp.client-ip=74.125.227.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791532154; c=relaxed/simple;
+	bh=LC+iT6cz6gt1xJGfnqi7RV6noX5MBVINAfFkxDUTe5A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=odKsJOl1k4+YoINZ8yz5GC8iJrtby8UcFNsQDUyAqdQwRWIPxNDDvu/Kst4SwJhDBk85w9g79r3cqX0zu1gGmFAMFtjeFqlHrQ1qi+iTGRVBtAWpr5JKQZZUAcJvGo0ebBDSRmPTzNkoTrFzmMKEOnU3d2hN1+6Q243+cQgnzZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STM8SBJ2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EHJ7kYTi"
-Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2e81c65b074so6266345ad.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 00:46:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791531999; x=1792136799; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=w8E1UM2uA2mgoa7ClHpQP/oej4PTxre8P1UpeWTgBp8=;
-        b=EHJ7kYTiL0RZIB4ZWtwzU804X7OveKzrXAnyUPMYbfmILcIt9G5H7ZNP3DqQiTfLjz
-         xiuDwuXmU9TodSB54ZnS7P4nBbfN3KLMxByZjax3/rew6YJlfuopc1CKZIGE8FAm7pbH
-         PVCtD5pY916VpypxoUMR6gKFZVS7xHZ/Ev9rCaHijATwHD1M2Me/+he3qwwgiX9SvAsW
-         RsoZhT8Yl8jMFrC35B2z0YHb8ARteM9AwJheDwDgmoMp9MfYlX33CyZls6LHHoJ6I8w4
-         d+/Fdg0SXg03IYft+Z4N+A1n+gpAYzxPHljbWMfrcg5HSAcm63YtZB6eCOe80oxDY1K2
-         Et4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791531999; x=1792136799;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=w8E1UM2uA2mgoa7ClHpQP/oej4PTxre8P1UpeWTgBp8=;
-        b=WLBbr3BqjfpCiT26+VQUAlRmUcrYfToQCM+7aaR5YKRrwjKD+MXHtBocjIPMsxOvvd
-         Hq+4RYRVmBUI7Vgn+3CuToxkq8i15pqWHplptm8MSr8yj/L4dRpg3QwcbmHKBQDFyRog
-         TfZnobX4a6KSRwfqXRra4XJe4RLTtR5l1QuqnlD+Ll9b9EdkS8CAvWn04Zz7kxdjyhl0
-         mkUwgEd5cCqdAtC9FZToObUX0mY8uBDyHNW0pm9pJsmJ1o/Sl2IR0atv2BmG5eb9o+7R
-         IzeSpD2AO2DBZklhExIFxOdfV5iAsllccCkXXNBxm6JFW7oD9VX2HBQ163l1SFBO2h2H
-         GKsA==
-X-Forwarded-Encrypted: i=1; AKwUvBzQcc33LgrwCvuFFYWK9Aa0I8EvvCE02UFWDGINIhM+4P9mA1RXKtBVLZNdr4hz7URyrPLkrf8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJsQc15QkjeHogGwdmWms1YV5qlBwBiqHIxKeH4r8bJ04vi45CR
-	HYasKS9cXhhzMFzJYShkXevgdNOQgkB4GN96YUhCp5Q6X/aq8GWt+W0H
-X-Gm-Gg: AYBFou13d4sPN51qWERkFZyE8vUP0U/2wqluAlVzg/6Ycu7/Sri7GCi3f86gC8fpO1a
-	+UjaX3bNu0jhGflSN5YxVhVQc9F1nDnDwwlZX0zsWy0iHT3i27LZep4BKaVai9zwyW1rKWy1Y1n
-	qVpPmJFnTw02q6ijfgbZFAyChCYymcySczNSfGd2tYatXIMm/eVKYhcrqwSM06TjNzesN7fkDc+
-	gTcTKae1L9smm/5TCuf2RLH7DM0tnFHoCXKKr9SMNRxbRud93Dw9lnhaxkH4oCREz5BLLO/SIHi
-	Ci84j6ajJeMcBtEvHA3mQBhaAteRm52+t9ZQGbogKknW/Xoh3onqTd1xPCgRPNNcpAl0dTnhg/p
-	5o2a/H2GUStI59xBFs+A7NalRY1Mmv6Ts5JTTjWkhL0vCEnJdLfaDiTnMK2QzoHqxaWwG6PPVqu
-	vPndbH5KThMi575dFM2XJqnZaznx6oQaaozzaiPy6R3nx8W+X8OE40m1AGrQCBc9/oGJPIkmZg
-X-Received: by 2002:a17:903:19e7:b0:2e2:c84b:43e9 with SMTP id d9443c01a7336-2e842837a3amr10138365ad.1.1791531999201;
-        Fri, 09 Oct 2026 00:46:39 -0700 (PDT)
-Received: from hhost ([120.231.212.218])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e841a02f85sm4980385ad.10.2026.10.09.00.46.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 00:46:37 -0700 (PDT)
-Date: Fri, 9 Oct 2026 15:46:26 +0800
-From: Xingyuan Mo <hdthky0@gmail.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
-	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-	Xingyuan Mo <hdthky0@gmail.com>
-Subject: [PATCH v4] sctp: reject forged cookie peer_addr with unknown address
- family
-Message-ID: <20261009074601.3954275-1-hdthky0@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STM8SBJ2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635A81F000FF;
+	Fri,  9 Oct 2026 07:49:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791532152;
+	bh=OjPt+wkbBrxQpcTb2uuLv60lWItNEsjFUGl75FoNi2Q=;
+	h=From:To:Cc:Subject:Date;
+	b=STM8SBJ2of9UVOrpXQy07E1G2iwc0zAB+xMhMSsx8yDzz9nzJyaTa/TkwtfeQhYbf
+	 NOzNJM7wt4qalP5QhnwxgFeEr0ViveoDFzsy8kSPJvpJ5wINozsJ5KxPA+tILS7Cfs
+	 ozTExEdPqPWOkNuWRsp1j1Uj8s2q3olqgbjtS8a/eU3jKwBaPHv8HfEAkteDSOTDQg
+	 CvfmOh2SRz6zLCaab+6M2bDqP9YUty/1eoem8kYT895JHmwQSOVuSsEIUsoRPWFA9u
+	 swSLsfYGCm/XKi1lf72rZSXMFpnNdbCnBJ1QgzstczKhzLe85TwHoklxfWImRlnOa8
+	 Acu23pad80Ifw==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	Baul Lee <baul.lee@xbow.com>
+Subject: [PATCH net] ipv4: use RCU protection in inet_netconf_get_devconf()
+Date: Fri,  9 Oct 2026 09:49:05 +0200
+Message-ID: <20261009074906.729877-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
 
-When cookie authentication is disabled, COOKIE-ECHO peer_addr is
-attacker-controlled. An invalid sa_family made sctp_get_af_specific()
-return NULL and crash in sctp_transport_init() on
-af_specific->sockaddr_len. Validate it with af->addr_valid() in
-sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
-an AF_INET6 peer_addr on an IPv4 socket that would later crash in
-sctp_v6_get_dst() on inet6_sk(sk)->opt. peer_addr is validated in
-place, so a v4-mapped v6 address is normalised to AF_INET before the
-association and its primary transport are built from it.
+inet_netconf_get_devconf() runs without RTNL. It uses dev_get_by_index()
+and in_dev_get() to pin the device and its in_device while the reply is
+allocated and filled.
 
-For that, sctp_v6_addr_valid() has to return 0 for a non-v4-mapped
-address when it is called with a socket that is not PF_INET6, so that
-IPv6 addresses are never used on IPv4 sockets. The check is done after
-the v4-mapped handling, so v4-mapped addresses passed to an IPv4
-socket through the socket API keep being accepted. As addr_valid()
-now also checks sk_family and ipv6_only_sock, simplify the address
-handling in sctp_process_param() with it, as it additionally filters
-out non-unicast addresses. As a side effect, a v4-mapped address in
-an IPv6 address parameter is now normalised to AF_INET before the
-transport is created, matching what the socket API paths already do.
+in_dev_get() is not safe for a lockless caller. Since commit 9d40c84cf5bc
+("net: devinet: Reduce refcount before grace period"), inetdev_destroy()
+drops the final reference before the RCU grace period. A reader can load
+dev->ip_ptr, then call refcount_inc() on a zero refcount after
+in_dev_free_rcu() has been queued, and keep using the in_device once it
+has been freed.
 
-Also add the missing !af check in sctp_process_init(), as
-sctp_get_af_specific(AF_INET6) returns NULL on CONFIG_IPV6=n builds.
+None of these references are needed. An in_device is freed after an RCU
+grace period, ipv4_devconf is embedded in it, and
+inet_netconf_fill_devconf() does not sleep.
 
-  BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
-  Read of size 4 at addr 00000000000000b4 by task poc/682
-  Call Trace:
-   <IRQ>
-   sctp_transport_new+0xa7/0x350
-   sctp_assoc_add_peer+0x153/0x850
-   sctp_process_init+0xf9/0x1180
-   sctp_sf_do_5_1D_ce+0x464/0xbc0
-   sctp_do_sm+0x114/0x2990
-   sctp_endpoint_bh_rcv+0x280/0x430
-   sctp_inq_push+0xdd/0x100
-   sctp_rcv+0x17f5/0x1ae0
-   sctp4_rcv+0x2b/0x40
-   ip_protocol_deliver_rcu+0x25b/0x270
-   ip_local_deliver+0xd1/0xe0
-   </IRQ>
-  Kernel panic - not syncing: Fatal exception in interrupt
+Allocate the skb first, then perform the lookup and the fill under
+rcu_read_lock(), using dev_get_by_index_rcu() and __in_dev_get_rcu(),
+like inet_netconf_dump_devconf() already does.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: opencode:deepseek-v4
-Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+Fixes: bbcf91053bb6 ("inet: do not use RTNL in inet_netconf_get_devconf()")
+Reported-by: Baul Lee <baul.lee@xbow.com>
+Closes: https://lore.kernel.org/netdev/20260815172032.79740-1-baul.lee@xbow.com/
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
-v2: https://lore.kernel.org/netdev/20260913113522.2674588-1-hdthky0@gmail.com/
-- validate the forged cookie peer_addr with af->addr_valid() instead of
-  a family whitelist, and make sctp_v6_addr_valid() reject non-PF_INET6
-  sockets, so a forged AF_INET6 cookie can no longer crash an IPv4
-  socket in sctp_v6_get_dst() (found by Sashiko)
-- simplify sctp_process_param() address handling with addr_valid(), as
-  addr_valid() now also checks sk_family and ipv6_only_sock
-- add the missing !af check in sctp_process_init() for CONFIG_IPV6=n
-  builds (suggested by Xin Long)
+Sorry for a resend, I did a mistake, using edumazet@google.com instead of
+edumazet@kernel.org, not enough sleep I guess.
 
-v3: https://lore.kernel.org/netdev/20260915212917.3775248-1-hdthky0@gmail.com/
-- drop the sctp_transport_new() check
-- merge the !af checks into the conditions they guard with ||
-- drop the comment above the sctp_unpack_cookie() check
+ net/ipv4/devinet.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
-v4: https://lore.kernel.org/netdev/20260917030505.4176635-1-hdthky0@gmail.com/
-- move the non-PF_INET6 socket check after the v4-mapped handling in
-  sctp_v6_addr_valid()
-- validate bear_cookie->peer_addr in place instead of a copy
-
- net/sctp/ipv6.c          |  6 +++++-
- net/sctp/sm_make_chunk.c | 23 ++++++++++++-----------
- 2 files changed, 17 insertions(+), 12 deletions(-)
-
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index ef26878f1282..97390569c4bd 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -725,7 +725,8 @@ static int sctp_v6_available(union sctp_addr *addr, struct sctp_sock *sp)
-  * SCTP.
-  *
-  * Output:
-- * Return 0 - If the address is a non-unicast or an illegal address.
-+ * Return 0 - If the address is a non-unicast or an illegal address,
-+ *            or a non-v4-mapped address on a non-PF_INET6 socket.
-  * Return 1 - If the address is a unicast.
-  */
- static int sctp_v6_addr_valid(union sctp_addr *addr,
-@@ -749,6 +750,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
- 	if (!(ret & IPV6_ADDR_UNICAST))
- 		return 0;
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 5b6b11c943e453742b4893f1c9bd9e70d3d37a6f..f9a361621f74b420276006b13de94926e13af18e 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -2379,8 +2379,8 @@ static int inet_netconf_get_devconf(struct sk_buff *in_skb,
+ 	struct net *net = sock_net(in_skb->sk);
+ 	struct nlattr *tb[NETCONFA_MAX + 1];
+ 	const struct ipv4_devconf *devconf;
+-	struct in_device *in_dev = NULL;
+-	struct net_device *dev = NULL;
++	struct in_device *in_dev;
++	struct net_device *dev;
+ 	struct sk_buff *skb;
+ 	int ifindex;
+ 	int err;
+@@ -2392,7 +2392,13 @@ static int inet_netconf_get_devconf(struct sk_buff *in_skb,
+ 	if (!tb[NETCONFA_IFINDEX])
+ 		return -EINVAL;
  
-+	if (sp && sctp_opt2sk(sp)->sk_family != PF_INET6)
-+		return 0;
++	skb = nlmsg_new(inet_netconf_msgsize_devconf(NETCONFA_ALL), GFP_KERNEL);
++	if (!skb)
++		return -ENOBUFS;
 +
- 	return 1;
- }
- 
-diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-index 84a4c97d0f75..175dbb242e1c 100644
---- a/net/sctp/sm_make_chunk.c
-+++ b/net/sctp/sm_make_chunk.c
-@@ -1732,7 +1732,9 @@ struct sctp_association *sctp_unpack_cookie(
- 	struct sctp_cookie *bear_cookie;
- 	struct sctp_chunkhdr *ch;
- 	unsigned int len, chlen;
-+	union sctp_addr *paddr;
- 	enum sctp_scope scope;
-+	struct sctp_af *af;
- 	ktime_t kt;
- 
- 	/* Header size is static data prior to the actual cookie, including
-@@ -1841,6 +1843,11 @@ struct sctp_association *sctp_unpack_cookie(
- 		goto fail;
+ 	ifindex = nla_get_s32(tb[NETCONFA_IFINDEX]);
++
++	rcu_read_lock();
+ 	switch (ifindex) {
+ 	case NETCONFA_IFINDEX_ALL:
+ 		devconf = net->ipv4.devconf_all;
+@@ -2402,36 +2408,29 @@ static int inet_netconf_get_devconf(struct sk_buff *in_skb,
+ 		break;
+ 	default:
+ 		err = -ENODEV;
+-		dev = dev_get_by_index(net, ifindex);
+-		if (dev)
+-			in_dev = in_dev_get(dev);
++		dev = dev_get_by_index_rcu(net, ifindex);
++		if (!dev)
++			goto out_unlock;
++		in_dev = __in_dev_get_rcu(dev);
+ 		if (!in_dev)
+-			goto errout;
++			goto out_unlock;
+ 		devconf = &in_dev->cnf;
+ 		break;
  	}
  
-+	paddr = &bear_cookie->peer_addr;
-+	af = sctp_get_af_specific(paddr->sa.sa_family);
-+	if (!af || !af->addr_valid(paddr, sctp_sk(ep->base.sk), NULL))
-+		goto malformed;
-+
- 	/* Make a new base association.  */
- 	scope = sctp_scope(sctp_source(chunk));
- 	retval = sctp_association_new(ep, ep->base.sk, scope, gfp);
-@@ -2381,8 +2388,8 @@ int sctp_process_init(struct sctp_association *asoc, struct sctp_chunk *chunk,
- 		    (param.p->type == SCTP_PARAM_IPV4_ADDRESS ||
- 		     param.p->type == SCTP_PARAM_IPV6_ADDRESS)) {
- 			af = sctp_get_af_specific(param_type2af(param.p->type));
--			if (!af->from_addr_param(&addr, param.addr,
--						 chunk->sctp_hdr->source, 0))
-+			if (!af || !af->from_addr_param(&addr, param.addr,
-+							chunk->sctp_hdr->source, 0))
- 				continue;
- 			if (sctp_cmp_addr_exact(sctp_source(chunk), &addr))
- 				src_match = 1;
-@@ -2554,17 +2561,11 @@ static int sctp_process_param(struct sctp_association *asoc,
- 	 */
- 	switch (param.p->type) {
- 	case SCTP_PARAM_IPV6_ADDRESS:
--		if (PF_INET6 != asoc->base.sk->sk_family)
--			break;
--		goto do_addr_param;
+-	err = -ENOBUFS;
+-	skb = nlmsg_new(inet_netconf_msgsize_devconf(NETCONFA_ALL), GFP_KERNEL);
+-	if (!skb)
+-		goto errout;
 -
- 	case SCTP_PARAM_IPV4_ADDRESS:
--		/* v4 addresses are not allowed on v6-only socket */
--		if (ipv6_only_sock(asoc->base.sk))
--			break;
--do_addr_param:
- 		af = sctp_get_af_specific(param_type2af(param.p->type));
--		if (!af->from_addr_param(&addr, param.addr, htons(asoc->peer.port), 0))
-+		if (!af || !af->from_addr_param(&addr, param.addr,
-+						htons(asoc->peer.port), 0) ||
-+		    !af->addr_valid(&addr, sctp_sk(asoc->base.sk), NULL))
- 			break;
- 		scope = sctp_scope(peer_addr);
- 		if (sctp_in_scope(net, &addr, scope))
+ 	err = inet_netconf_fill_devconf(skb, ifindex, devconf,
+ 					NETLINK_CB(in_skb).portid,
+ 					nlh->nlmsg_seq, RTM_NEWNETCONF, 0,
+ 					NETCONFA_ALL);
++out_unlock:
++	rcu_read_unlock();
+ 	if (err < 0) {
+ 		/* -EMSGSIZE implies BUG in inet_netconf_msgsize_devconf() */
+ 		WARN_ON(err == -EMSGSIZE);
+ 		kfree_skb(skb);
+-		goto errout;
++		return err;
+ 	}
+-	err = rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
+-errout:
+-	if (in_dev)
+-		in_dev_put(in_dev);
+-	dev_put(dev);
+-	return err;
++	return rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
+ }
+ 
+ static int inet_netconf_dump_devconf(struct sk_buff *skb,
 -- 
-2.43.0
+2.53.0
 
