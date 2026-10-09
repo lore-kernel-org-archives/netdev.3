@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A4E3D5222;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491AD455629;
 	Fri,  9 Oct 2026 17:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791565947; cv=none; b=Jtsr+7bse08KQxDUdE+X251cWAL/qyykZ1zFQk5ikNF5bV2sfPFaPPcyByGovR2RGMTPWlpe8LfdcjG1t8T63z6JAAgOTMB01/Tm8npybXG5y8VOnydxe4XDBTVGuOYUGgfdfLysQWwX7P3EK9lr37Wr7V37vWyo0eCl8Iw8J3Q=
+	t=1791565947; cv=none; b=qY11xM7IB36/cx8WbFV+BKO1q1Tffrzwq8TzToaRhtfMrVCnJQ+axYHre4sm8+9FBZI04icEuWfjm+xqBKTrpKqxozQQSNDzvQ8Y7nBJVNSybmI417rNxrNUrCkYxHtqVxNZcDomBdreGCds5kziOFdOFIhwnju4X3qKTzCjKg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791565947; c=relaxed/simple;
-	bh=T4HlLQssIGCrbt3U0euzyFHHGNa5cUbGE6o3QqJmM0c=;
+	bh=GX6eB15GhoLmG5kfNk6Y4EN25aJZHpNXijcGtsblGjQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=g1Q5AH4sy9heWryRYhiwsgLSckPV8JjdZ0FfDSMPAttg29/lLtKnz5lHqyE47eN1U6k2wH9Z6nXHIzTDdLzWZocNkHgb4OigJWfYNT5docEqOOJvYRQJVYfgKLFS05qUsRGhUQ1vsj5bF4Tjj7SAYZhaOXj4uvk0Xd4XEfz2xHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4ArtGSI; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Sps2A7qS+ef2/EmWamkM2BFg2CY8dXET8sYbQvZefF37VBgBZyvIzb8/7Q3e6ULt1vrKeIdjCVYvtcssi4B4Mr2j87yYg7YzfTsWCEnzBzXn7WIw66eZxM7Jg49UQremMO/caN81SQBAu5RQntySc6c269fUcN4vyVEOaMv6vnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3/zqYUE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4ArtGSI"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A7834C4AF60;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3/zqYUE"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D18DEC4DDF8;
 	Fri,  9 Oct 2026 17:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1791565946;
-	bh=T4HlLQssIGCrbt3U0euzyFHHGNa5cUbGE6o3QqJmM0c=;
+	bh=GX6eB15GhoLmG5kfNk6Y4EN25aJZHpNXijcGtsblGjQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=M4ArtGSIMlK5we+fM1pUunt73Q15myQPNtK+rwJLRhMJu+iUtYKppil8lM5VGMg9b
-	 InniHWzYLw13Cj/z5TBY5ouFJ+bqzFe5O4s6tD6kD/Nxr0MDnUL6eqzdYRMXxocR4j
-	 lesIDIZAzuTRAR5WvnokLJiOYVXmQKsevPqMvP4OmBH4zM5IrPn0Lo515nGA6bhn2p
-	 9cMH7qT9wbATnQoN3zy6ynQHXlQywDv0rzccWmJIWp98EFm6E0EzKXAKvIkxo5sgo1
-	 D8NLX13BLpsqx2u7EZ0l+Dk3FxntzvZll4cNs5+cbsIKJRSK7mJ1Hpp/SQfhSLt8lg
-	 FKHoMnPYEUS3A==
+	b=k3/zqYUErzkGE9I0RincxzMAiWwkiWCm5KgjMpe20g+KFHFMMoQRZkWgt8BybNlIj
+	 Vzg55VS7gzqlYuwTy1aqCccYE2w0QUGZWuGM0nHTzgjq2yRI3y6bDtqBWt6TBnsSR5
+	 PHz0Ia0K/2y8MI/QzX2xLGIy+RGFAXxIjVkTGBrC4RrGf/+FkSHROaY+Q4pu7J5HGe
+	 M1WJwE6cVCuLhTlGT0hA5iNzeprJq02dFjuUa2xJ5f1M3bdXekJJlUD6+VZpuR3HMI
+	 rNSqlC0VR8YyJuJeR+t9IufZkQJUJs2DkDO+yuvc4RSW7tOKFjK8EN+Ckim+jThffr
+	 QmWJIGenK7thA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 92C12CA601E;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7312CA9EBE;
 	Fri,  9 Oct 2026 17:12:26 +0000 (UTC)
 From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 09 Oct 2026 10:12:29 -0700
-Subject: [PATCH net-next v9 09/11] onsemi: s2500: Added selftest support to
- onsemi's S2500 driver
+Date: Fri, 09 Oct 2026 10:12:31 -0700
+Subject: [PATCH net-next v9 11/11] net: phy: ncn26000: Support for loopback
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-s2500-mac-phy-support-v9-9-dcefe1d0bf0d@onsemi.com>
+Message-Id: <20261009-s2500-mac-phy-support-v9-11-dcefe1d0bf0d@onsemi.com>
 References: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
 In-Reply-To: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
 To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
@@ -65,11 +64,11 @@ Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>,
  Jerry Ray <jerry.ray@microchip.com>, 
  Ciprian Regus <ciprian.regus@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791565943; l=1779;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791565943; l=4676;
  i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=0s8jXlqiuPiEwP153abb8OuiPHKo4VvluMNFFTW261I=;
- b=qF7plycfdK+m6YWv7lNIvyKxtYPWEXgVZq6pIhIay3JHOMohGn0Cu7i7G92dI+8VjhGCxkuLY
- Kzm26IsWw+6CIrqL/TH9r4hEhGR3AzCkEQ1YjrA5gmsJDT1oPqXjfuo
+ bh=9ZJxd6nzeh5RKc2O1fpSz5xPc3nBv1Df11hJFSZ3Tcs=;
+ b=yUQI66Jb3qZBm3ggYqGcZlo5a4ogveyq08mYEo9/tGH30+NaCz52C/fQNmvTUBvjG6T6yTLx0
+ /Zs3GxcYDTXDIBnrjZzzBwBrxRlg5FDFpEtvzX4JfVCgRrXfr56dvfR
 X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
  pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
 X-Endpoint-Received: by B4 Relay for
@@ -79,67 +78,131 @@ Reply-To: Selvamani.Rajagopal@onsemi.com
 
 From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
-Adds selftest support for onsemi S2500 MAC-PHY. Added as a separate
-patch for the ease of review.
+Adding loopback support for S2500 internal PHY to help running
+loopback test through ethtool.
+
+This instance requires only manipulating the loopback bit in
+the PHY, without setting the speed. So, added a generic helper
+function to modify loopback bit of the PHY only. This will
+help the PHY drivers, like 10Base-T1S or any other PHYs that
+want to handle loopback bit only.
 
 Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
 
 ---
 changes in v9
-  - Added net_selftest entry to the ethtool_ops in the correct patch
+  - replaced "fixed_speed" with "no_speed" for the API.
+  - Improved the comments to be specific about not setting the
+    speed.
 changes in v8
-  - No change
+  - No code change. Changes were in two different patches.
+    Merged into one.
 changes in v7
   - No change
 changes in v6
-  - Moved the signed off information to the correct place.
+  - No change
 changes in v5
   - No change
-changes in v4:
-  - Added a selftest as a separate patch
+changes in v4
+  - Moved the onsemi implementation to a new, genphy API to
+    make it vendor agnostic.
+changes in v3
+  - Addd loopback functionality for onsemi's PHY driver
   - First patch
 ---
- drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/phy/dp83867.c    | 11 +----------
+ drivers/net/phy/ncn26000.c   |  1 +
+ drivers/net/phy/phy_device.c | 22 ++++++++++++++++++++++
+ include/linux/phy.h          |  2 ++
+ 4 files changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-index 062cab9460dc..12e59e8d44a6 100644
---- a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-+++ b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-@@ -5,6 +5,7 @@
-  */
- 
- #include <linux/ethtool.h>
-+#include <net/selftests.h>
- #include <linux/phy.h>
- 
- #include "s2500_hw_def.h"
-@@ -201,6 +202,8 @@ static int s2500_get_sset_count(struct net_device *ndev, int sset)
- 	switch (sset) {
- 	case ETH_SS_STATS:
- 		return S2500_MAC_STATS_LEN;
-+	case ETH_SS_TEST:
-+		return net_selftest_get_count();
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-@@ -214,6 +217,9 @@ static void s2500_get_strings(struct net_device *ndev, u32 stringset,
- 		memcpy(buf, s2500_mac_stat_strings,
- 		       S2500_MAC_STATS_LEN * ETH_GSTRING_LEN);
- 		break;
-+	case ETH_SS_TEST:
-+		net_selftest_get_strings(buf);
-+		break;
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index a3cd5cb11ea0..a62667606422 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -1058,15 +1058,6 @@ static void dp83867_link_change_notify(struct phy_device *phydev)
  	}
  }
  
-@@ -372,5 +378,6 @@ const struct ethtool_ops s2500_ethtool_ops = {
- 	.get_ts_info = s2500_get_ts_info,
- 	.get_regs_len = s2500_get_regs_len,
- 	.get_regs = s2500_get_regs,
-+	.self_test = net_selftest,
- };
+-static int dp83867_loopback(struct phy_device *phydev, bool enable, int speed)
+-{
+-	if (enable && speed)
+-		return -EOPNOTSUPP;
+-
+-	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
+-			  enable ? BMCR_LOOPBACK : 0);
+-}
+-
+ static int
+ dp83867_led_brightness_set(struct phy_device *phydev,
+ 			   u8 index, enum led_brightness brightness)
+@@ -1292,7 +1283,7 @@ static struct phy_driver dp83867_driver[] = {
+ 		.resume		= dp83867_resume,
  
+ 		.link_change_notify = dp83867_link_change_notify,
+-		.set_loopback	= dp83867_loopback,
++		.set_loopback	= genphy_loopback_no_speed,
+ 
+ 		.led_brightness_set = dp83867_led_brightness_set,
+ 		.led_hw_is_supported = dp83867_led_hw_is_supported,
+diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
+index a33ebb2a7ece..de0fafda3876 100644
+--- a/drivers/net/phy/ncn26000.c
++++ b/drivers/net/phy/ncn26000.c
+@@ -178,6 +178,7 @@ static struct phy_driver ncn26000_driver[] = {
+ 		.config_aneg           = ncn26000_config_aneg,
+ 		.read_status           = ncn26000_read_status,
+ 		.handle_interrupt      = ncn26000_handle_interrupt,
++		.set_loopback          = genphy_loopback_no_speed,
+ 		.set_plca_cfg          = ncn26000_c45_plca_set_cfg,
+ 		.get_plca_cfg          = genphy_c45_plca_get_cfg,
+ 		.get_plca_status       = genphy_c45_plca_get_status,
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index bfce8b893644..03419f645587 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -2791,6 +2791,28 @@ int genphy_resume(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL(genphy_resume);
+ 
++/**
++ * genphy_loopback_no_speed - Helper to modify the PHY loopback mode
++ * without setting speed. Some PHYs, like 10Base-T1S, don't support
++ * auto-negotiation and therefore setting the speed isn't supported.
++ *
++ * @phydev: The phy_device struct
++ * @enable: Flag to enable or disable the PHY level loopback.
++ * @speed: Speed setting. Not expected to be set. Error if it is set.
++ *
++ * Returns: 0 if successful, negative error code on failure.
++ */
++int genphy_loopback_no_speed(struct phy_device *phydev, bool enable,
++			     int speed)
++{
++	if (enable && speed)
++		return -EOPNOTSUPP;
++
++	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
++			  enable ? BMCR_LOOPBACK : 0);
++}
++EXPORT_SYMBOL(genphy_loopback_no_speed);
++
+ int genphy_loopback(struct phy_device *phydev, bool enable, int speed)
+ {
+ 	if (enable) {
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 7c5098a0dd6c..ea3505e49316 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2307,6 +2307,8 @@ int genphy_read_status(struct phy_device *phydev);
+ int genphy_read_master_slave(struct phy_device *phydev);
+ int genphy_suspend(struct phy_device *phydev);
+ int genphy_resume(struct phy_device *phydev);
++int genphy_loopback_no_speed(struct phy_device *phydev, bool enable,
++			     int speed);
+ int genphy_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_soft_reset(struct phy_device *phydev);
+ irqreturn_t genphy_handle_interrupt_no_ack(struct phy_device *phydev);
 
 -- 
 2.43.0
