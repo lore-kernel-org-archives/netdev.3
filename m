@@ -1,117 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C573431F8;
-	Fri,  9 Oct 2026 14:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AA94E2F1B;
+	Fri,  9 Oct 2026 14:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791555992; cv=none; b=GI5zDOGh26gBStgxRpmyl44fWK0bjIHuupmKZbagDnD5URQS1UWoNHVq+E+aQPU45aU59ONz9kQdWDuzSSMavvtvvmLtg7oYZLQ1948veVaw+rtFWOp5ZfU831DhYDyp4CBqGRLrfNaw+n05o3/Z3ttN+enNzS3hq9ILGBnFZRo=
+	t=1791556180; cv=none; b=DHyJb9drIrQDe36OpaJlZos0NZQ5VImQ3cm85lqzojKP8IFwYR0+9X/fKPLSIGs6HLm7O4fYo0Xq9XqItRvqMAxd+n698yXCIHMwYtHMiYyc4EOSpk8ZIQHkQOZSZstriNLQ/xfxFOlkeR66Q5xhNGZDCKUJxsppqPf0e9vu4Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791555992; c=relaxed/simple;
-	bh=jsgXyspX+A1abRVIuSI4vKkw0YZqKn+DWQ6nHxC+fjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ND5QIjtmEsO5HuNO+xEXJ6kGjGFyFdg6lBrNMsx6FCfVU0PLWU8T/I2e5jaWvQiyBUheOPARdx0y8bg40Y8mn148m+XcCC0BDS6+HGl+ZowIKlFWaaqGzlpQlvTq92WompEbidhfE45YyFLxrjsetxhjtcFnPEzNDMUNwS9GPbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D+rQK5js; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D+rQK5js"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7410E1F00893;
-	Fri,  9 Oct 2026 14:26:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791555991;
-	bh=pM5q2YWqVU6exVxt+Fkb1ukGHEwP5IPEUe1WbHW/XFA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D+rQK5jsExPJqhyjzg0n2LyXmgwKcz7HRkEYRChcdrjzmD/z19VcVaCfbu7I1am3F
-	 4KtOPuUvOO8JXz1hRWnCSEQo6QLt4nhMDl234gkNGzFR2K6flUXfKU2ymU4KF353Lt
-	 j3AU4T3twEKAva07aZONUU/L48rU1viaD633VuZSwdazl8OU9hI8tX3PwBKnUoi1kY
-	 oM+anowbAvGvPEiBS2mmZLoKDi1XIZVmkzgHXXeQYDBfQwytQ19eVC9GXLVHi0HckT
-	 ROz7J5iegBtpbtq4gip5kKNRkQGGqZdIEYUzg4100j+skmPB/WCwZvhbIYYURBqjHk
-	 kTtm9FWrF3BMw==
-Date: Fri, 9 Oct 2026 15:26:26 +0100
-From: Simon Horman <horms@kernel.org>
-To: Kyle Hendry <khendry@reliablecontrols.com>
-Cc: =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/2] net: pcs: rzn1-miic: Validate dtb
- configuration values
-Message-ID: <20261009142626.GE83879@horms.kernel.org>
-References: <20261006-miic-validate-dtb-v3-v3-0-68617b3dca5c@reliablecontrols.com>
- <20261006-miic-validate-dtb-v3-v3-2-68617b3dca5c@reliablecontrols.com>
+	s=arc-20240116; t=1791556180; c=relaxed/simple;
+	bh=CsNEcSseIDsr0m2RL/k2dyWm7uTwoNCldkmTt/+nYn4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ORnjG6mgTfNDYp9jJekwTxlGPAgHl0qSecSN0aSsfPtZzqZGJ/loV37QLeOr2HksD+2LU75nFFaEdEzhgt5Irh7Ra1kFRGfAYtNtnzdS1NoZGDq7FsjAdYfPOP49+C0d7zi1X/hSG0qn9SYD0NA4BjbAtfAVDEzpOzjDf4ZOXfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2DE7021B8F;
+	Fri,  9 Oct 2026 14:29:35 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0FE9C1368B;
+	Fri,  9 Oct 2026 14:29:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id A+GNNE36yGrMIwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 09 Oct 2026 14:29:34 +0000
+Message-ID: <e2beb9bc-7b92-4ae4-8190-c99bee8de1ca@suse.de>
+Date: Fri, 9 Oct 2026 16:28:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261006-miic-validate-dtb-v3-v3-2-68617b3dca5c@reliablecontrols.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH nf] netfilter: ip6t_SYNPROXY: check TCP header before
+ verifying checksum
+To: Palla Raghunath <raghunathpalla.0209@gmail.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, Patrick McHardy <kaber@trash.net>
+Cc: Shuah Khan <shuah@kernel.org>, Brigham Campbell <me@brighamcampbell.com>,
+ linux-kernel-mentees@lists.linux.dev, linux-kernel@vger.kernel.org,
+ syzbot+5a8667f002726fc59f88@syzkaller.appspotmail.com,
+ Phil Sutter <phil@nwl.cc>, Simon Horman <horms@kernel.org>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org
+References: <20260926204519.43402-1-raghunathpalla.0209@gmail.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260926204519.43402-1-raghunathpalla.0209@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Spamd-Bar: /
+X-Rspamd-Queue-Id: 2DE7021B8F
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: 0.00
+X-Spam-Level: 
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [0.00 / 50.00];
+	TAGGED_RCPT(0.00)[5a8667f002726fc59f88]
 
-On Tue, Oct 06, 2026 at 09:48:12AM -0700, Kyle Hendry via B4 Relay wrote:
-> From: Kyle Hendry <khendry@reliablecontrols.com>
+On 9/26/26 10:45 PM, Palla Raghunath wrote:
+> synproxy_tg6() passes par->thoff to nf_ip6_checksum() before it has
+> checked that a TCP header is actually present at that offset.
 > 
-> Bad configuration values from the dtb could result in out of bounds array
-> access. Verify parsed values are within range for the SoC and fail the
-> probe if invalid.
+> par->thoff comes from ipv6_find_hdr(), called by ip6_packet_match()
+> with target -1. ipv6_find_hdr() only checks that each extension header's
+> first two bytes are in the skb. It then adds that header's declared
+> length to the offset and stops at the first non-extension header, so it
+> can return an offset past the end of the packet. With
+> CHECKSUM_NONE, nf_ip6_checksum() calls skb_checksum(skb, 0, thoff, 0).
+> When thoff is larger than skb->len, the BUG_ON(len) in skb_checksum()
+> fires:
 > 
-> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+>    kernel BUG at net/core/skbuff.c:3606!
+>    RIP: 0010:skb_checksum+0x8b2/0x8c0
+>    Call Trace:
+>     nf_ip6_checksum+0x1bd/0x320 net/netfilter/utils.c:89
+>     synproxy_tg6+0x1a4/0x6e0 net/ipv6/netfilter/ip6t_SYNPROXY.c:21
+>     ip6t_do_table+0xd37/0x15b0 net/ipv6/netfilter/ip6_tables.c:366
+>     ...
+> 
+> In the syzbot reproducer, a 60-byte packet carries an AH header, then two
+> hop-by-hop headers. The last hop-by-hop header has nexthdr TCP and
+> hdrlen 167, so thoff is 1400.
+> 
+> Fetch the TCP header with skb_header_pointer() first, as
+> nf_reject_ip6_tcphdr_get() already does. This drops packets that do not
+> contain a full TCP header at thoff before the checksum is computed.
+> 
+> Fixes: 4ad362282cb4 ("netfilter: add IPv6 SYNPROXY target")
+> Reported-by: syzbot+5a8667f002726fc59f88@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=5a8667f002726fc59f88
+> Signed-off-by: Palla Raghunath <raghunathpalla.0209@gmail.com>
 > ---
->  drivers/net/pcs/pcs-rzn1-miic.c | 29 +++++++++++++++++++++++++++--
->  1 file changed, 27 insertions(+), 2 deletions(-)
+
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+
+The nftables synproxy eval path is also affected but I think it would be 
+better to keep it in a separate patch in order to facilitate 
+backporting. The issue were introduced at different times and nftables 
+synproxy expression is "recent" compared to the iptables target.
+
+I am sending a patch for the nftables expression and will CC you in case 
+you can test it too.
+
+Thanks!
+
+>   net/ipv6/netfilter/ip6t_SYNPROXY.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-> index 31716241b58f..10622eb654d2 100644
-> --- a/drivers/net/pcs/pcs-rzn1-miic.c
-> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
-> @@ -693,16 +693,40 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
->  	memset(dt_val, MIIC_MODCTRL_CONF_NONE,
->  	       sizeof(*dt_val) * miic->of_data->conf_conv_count);
->  
-> -	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
-> -		dt_val[0] = conf;
-> +	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0) {
-> +		if (conf >= miic->of_data->conf_to_string_count) {
-> +			dev_err(miic->dev, "Port input configuration out of range: %d\n",
-> +				conf);
-> +			ret = -EINVAL;
-> +			goto err;
-> +		} else {
-> +			dt_val[0] = conf;
-> +		}
-> +	}
+> diff --git a/net/ipv6/netfilter/ip6t_SYNPROXY.c b/net/ipv6/netfilter/ip6t_SYNPROXY.c
+> index d51d0c3e5fe9..04db1f82420b 100644
+> --- a/net/ipv6/netfilter/ip6t_SYNPROXY.c
+> +++ b/net/ipv6/netfilter/ip6t_SYNPROXY.c
+> @@ -18,13 +18,16 @@ synproxy_tg6(struct sk_buff *skb, const struct xt_action_param *par)
+>   	struct synproxy_options opts = {};
+>   	struct tcphdr *th, _th;
+>   
+> -	if (nf_ip6_checksum(skb, xt_hooknum(par), par->thoff, IPPROTO_TCP))
+> -		return NF_DROP;
+> -
+> +	/* par->thoff may point past the end of the packet; make sure a
+> +	 * full TCP header is present before checksumming up to it.
+> +	 */
+>   	th = skb_header_pointer(skb, par->thoff, sizeof(_th), &_th);
+>   	if (th == NULL)
+>   		return NF_DROP;
+>   
+> +	if (nf_ip6_checksum(skb, xt_hooknum(par), par->thoff, IPPROTO_TCP))
+> +		return NF_DROP;
+> +
+>   	if (!synproxy_parse_options(skb, par->thoff, th, &opts))
+>   		return NF_DROP;
+>   
 
-Hi Kyle,
-
-Please drop the else arm here, it is unnecessary.
-
-Doing so will move the code into the preferred style
-of handling errors conditionally while keeping
-the main thread of execution outside (extra) conditions.
-
-(Completely untested, but I mean like this.)
-
-	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0) {
-		if (conf >= miic->of_data->conf_to_string_count) {
-			dev_err(miic->dev, "Port input configuration out of range: %d\n",
-				conf);
-			ret = -EINVAL;
-			goto err;
-		}
-		dt_val[0] = conf;
-	}
-
-With that change, feel free to add:
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
--- 
-pw-bot: changes-requested
