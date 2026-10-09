@@ -1,95 +1,237 @@
-Received: from send146.i.mail.ru (send146.i.mail.ru [89.221.237.241])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1D95172D9
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.221.237.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93B8248896
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791571726; cv=none; b=oSsKNTXktL8R2qQ5PJwf60YUXYtyQ0Ke4K5taZD+3Im4/gw/cVg8IuzQqkWDe4FQxMpbQ52f5cDWo0qV4oWVTh+ghwZ8kI5QQNZeaDTF3fTOnpDQh1NgjGCJU9flO/T0KxaDaNRHi4SCx/In4D6VgEpC21BlvMVEkxqMotqSJJM=
+	t=1791571906; cv=none; b=JxoxHMOYb/zarDkx6cne8uokN8/ImNDrei5HiNMePfbPPQa7rQ7ORBARIhjrVgMauoaPReKXGEhpmhp0naFd+p9ngbSWCyXAA1WiBx5N8MAy9a+jZKwFLeTIXr5gjX4n0Bjiqi+rGRBihu/Z58k4CR4V75+Zs9eByOQRn6pX9yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791571726; c=relaxed/simple;
-	bh=P3iRQPVrj0y58gbjM8OjXeK7oC7/Qyx+z2Z5ICkvLKA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FvRNxBGzc6VNPlb+QXaYNLhaWShxqFO3WAzZgx5eyX1XkbK5fAvcDzxpNPSXNTgi84qgEq1AaKFwiVANjKhShEykuOIj2IhMlIM9qFLrXkjFogfoKE95Q19BvF+D9/igUlKYTm85rdSDv3nk3bWUVRJGetbSRhdMuuXHDjkZp3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mail.ru; spf=pass smtp.mailfrom=mail.ru; dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b=oarsyTCj; dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b=ay6br0uW; arc=none smtp.client-ip=89.221.237.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mail.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.ru
+	s=arc-20240116; t=1791571906; c=relaxed/simple;
+	bh=bDjFbIr8Y6dod909EUu5GKAp+s9Z70jMQPcuGu2Dwak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XvOt+n8WDReYtYgfoqMxtWdS+OLuqoSydz63li0qTuAhaBbHHUXim57qIpLBXOmRBOPb7UF3p5lQlCjTxrK5DVnxfxLrjVZnEa0zBL1kVjZMS3iZ9Mc74BsYBL2UBvZbnISAAUTbPlOmC33c7/HWQhSocsGnjy6H6g0GOfymme0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YzaJjzvj; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b="oarsyTCj";
-	dkim=pass (2048-bit key) header.d=mail.ru header.i=@mail.ru header.b="ay6br0uW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru;
-	s=mail4; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive:X-Cloud-Ids;
-	bh=P3iRQPVrj0y58gbjM8OjXeK7oC7/Qyx+z2Z5ICkvLKA=; t=1791571721; x=1791661721; 
-	b=oarsyTCjuP/PP4OL7uuHGne5Db3DPBXTJKOx6zSFOav4FQkXLJVQhh0SMocU3hXph/Xnt2yUCtn
-	OrBQXSxxD4eK6x2bCrqw0a1l7yngeYvjd9wYR1d9V/h5uuFvg24jryNOwRn9SybeCXBs1URROgSVf
-	/oG2kHfTXuiehteacdddwuZXYxjp/Uf981xm0RTc/hfUhTyTLPCG5+YfCmuWUbXT4EZP5zzGeKOcE
-	nLXZrCvNYf8mJYZ61aUWqn4+ewWbLxrnsBnyEcouVTYUtBNDImQ6CpuazueGnizGx3WJa9SQgu1u4
-	R4XQIeFVIt9T0om10P3vO30HHOKvZto646ZQ==;
-Received: from [10.113.21.85] (port=42696 helo=send83.i.mail.ru)
-	by exim-fallback-canary-30-bf9b798b-hpm7c with esmtp (envelope-from <skyline@mail.ru>)
-	id 1xFFPO-00000000KLv-0CsT
-	for netdev@vger.kernel.org; Fri, 09 Oct 2026 21:33:30 +0300
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mail.ru;
-	s=mail4; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:From:Sender:Reply-To:To:Cc:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-	List-Archive:X-Cloud-Ids:Disposition-Notification-To;
-	bh=P3iRQPVrj0y58gbjM8OjXeK7oC7/Qyx+z2Z5ICkvLKA=; t=1791570810; x=1791660810; 
-	b=ay6br0uWeZweC+Gmpt5vk5Obfu9OX8XCNWrmLCBc4usy7RCOk3zx5ytgdPX1ZcAtXFjnTw5mtVh
-	ZPLi00JKbpgtSjTbl9CTPhAHnUiD+3xlXRhM6yQBnMVvItgUSauQc/e2TOjcOj6mUZz/jyyvJEjZ3
-	e/i/q+6u+hn4X4OGJloWosA1P0wSklH5RWUpK5P/VmW/Gl0c7j6qaFWZWGdKEn06+0EIzLs61nRQ9
-	q9Aht2RSQ6loTCK4VIqA3klTsEJZUMCVgh0nQX80wGUhk4SXRW5OWmwhcea8fRXPp1Fz4dAvEeaQ3
-	5Ky190ilJkIwgBVulF3kAqorIpTNSCwuEKng==;
-Received: by exim-smtp-84d6fb566c-wglvt with esmtpa (envelope-from <skyline@mail.ru>)
-	id 1xFFPF-000000001hg-2uXN; Fri, 09 Oct 2026 21:33:22 +0300
-From: Konstantin Meshkov <skyline@mail.ru>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Aleksander Jan Bajkowski <olek2@wp.pl>
-Subject:
- Re: [PATCH net-next] net: phy: marvell: add LED support for 88E1116R PHY
-Date: Fri, 09 Oct 2026 21:33:21 +0300
-Message-ID: <179157080151.2919349.14930375926277142714@mail.ru>
-In-Reply-To: <1bef1633-8213-476f-a019-f29a71553e09@lunn.ch>
-References: <179152610952.2918676.6625057760354797023@mail.ru>
- <1bef1633-8213-476f-a019-f29a71553e09@lunn.ch>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YzaJjzvj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791571903;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=boSMJ8W5SZY4egD4A43ydHSAalOMwEiCjd69J7IHCDE=;
+	b=YzaJjzvjx5DE8M/a6zZVbuJl07BqTqbyWPzhrwACdH7HnFZ6zsoSEbay2od7cb4PKF00Ps
+	mSi31t4XoX4VLeMmlZOoMa3Z9nQw32e55P6Jef0gOFBoJk17lmoTso7g7iQf5iZV42hi+K
+	WJJBmR8kCNLI35yYEznkzMHbsLz/0SI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-kJxJgLhpP82K_x74CaHMVg-1; Fri,
+ 9 Oct 2026 18:51:40 +0000
+X-MC-Unique: kJxJgLhpP82K_x74CaHMVg-1
+X-Mimecast-MFC-AGG-ID: kJxJgLhpP82K_x74CaHMVg_1791571899
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6C4031844BC1;
+	Fri,  9 Oct 2026 18:51:38 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C6131800586;
+	Fri,  9 Oct 2026 18:51:35 +0000 (UTC)
+Message-ID: <eefa9f84-62cd-45aa-be00-9105108a2692@redhat.com>
+Date: Fri, 9 Oct 2026 20:51:34 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailru-Src: smtp
-X-4EC0790: 10
-X-7564579A: 646B95376F6C166E
-X-77F55803: 4F1203BC0FB41BD968B159B7CE59A0BE839AFA9BDD930B8FADE3061D615233CE182A05F53808504090EB24609BF31F213DE06ABAFEAF6705E581C46925C9F303C92BF50CAFD2D6264ED41D986C17A953
-X-7FA49CB5: FF5795518A3D127A4AD6D5ED66289B5278DA827A17800CE7AB5815F4DE05345AEA1F7E6F0F101C67BD4B6F7A4D31EC0BCC500DACC3FED6E28638F802B75D45FF8AA50765F7900637F88016AB904663428638F802B75D45FF914D58D5BE9E6BC1A93B80C6DEB9DEE97C6FB206A91F05B253C75DEF4E44AF3B2E070BE324C7D3C4B964E0D86F22F0CBBB0A4F435E46E6718B35066C979671628AA50765F79006370D9A29B7FD16D1239FA2833FD35BB23D27C277FBC8AE2E8B55B19328CBC4F849A471835C12D1D977C4224003CC836476EB9C41850244470149FD398EE364050FB28585415E75ADA9040F9FF01DFDA4A8C4224003CC836476E2F48590F00D11D6E2021AF6380DFAD1A18204E546F3947CB11811A4A51E3B096D1867E19FE1407959CC434672EE6371089D37D7C0E48F6C8AA50765F79006377AA2284B41911753EFF80C71ABB335746BA297DBC24807EABDAD6C7F3747799A
-X-C1DE0DAB: 0D63561A33F958A519FF7EA91328DAD35002B1117B3ED696F0D39B8DC1DA691569995D676B7B4CBE823CB91A9FED034534781492E4B8EEADADEF88395FA75C5FBDAD6C7F3747799A
-X-C8649E89: 1C3962B70DF3F0AD73CAD6646DEDE1918E10F71CB4DF9F96AB70F9BE574AE9C625B6776AC983F447FC0B9F89525902EE6F57B2FD27647F25E66C117BDB76D6598D17824D78122CA9C149431AA5F3AE4C16E367EDE86A3108BE1A5722693E7BA88B56DE7E7E65C08BB8341EE9D5BE9A0A09C25327078F53203B3D34973F4D6BD2FD3A9E3EEFF9D0576536EB022892E5344C41F94D744909CEF050418E73B5114343AC56E63459EDF0964550E41902C4E4
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+ObcCpyrx6l7KImUglyhkEat/+ysWwi0gdhEs0JGjl6ggRWTy1haxBpVdbIX1nthFXOcIETfglQORZ0zpDET4Zrk3igikrdHlWH5tNqQj7XulDLEd9SnCO68=
-X-Mailru-Sender: 7F28D27DF3217653F22F657F8252CA87C84551CB0FCEEC19B951B70A5BD4BD8E3C2923B751FF33D7D3C3B9E8BF9E2370E2E7FBE4C8C559FA08335C02508E532CFD0FAA000577B61F3DDE9B364B0DF289AE208404248635DF
-X-Mras: Ok
-X-Mailru-Src: fallback
-X-7564579A: 646B95376F6C166E
-X-77F55803: 6242723A09DB00B45D890D6ED43546528841C2FD58021E0538E7744A242C81F668F3CF0E9FE49B6936D86992DF37BCF380F5673DBCD9B91D9F16D0DE78AFE8392F3F1EDFD6DB5E2766139748607E89BF
-X-7FA49CB5: 0D63561A33F958A5752768D39F8332755002B1117B3ED6964215AEDC06C66C9438F1085A36400C8202ED4CEA229C1FA827C277FBC8AE2E8B151349A97B1D58DE
-X-D57D3AED: 3ZO7eAau8CL7WIMRKs4sN3D3tLDjz0dLbV79QFUyzQ2Ujvy7cMT6pYYqY16iZVKkSc3dCLJ7zSJH7+u4VD18S7Vl4ZUrpaVfd2+vE6kuoey4m4VkSEu53w8ahmwBjZKM/YPHZyZHvz5uv+WouB9+OYcBso8Zm+oliTz8oZwnDrFsY77LZRcHyw5ht0smWrfSeTW5FiI8avd9v29gUBslpLaIlvAR6h4id02YH9mgeCTAyYoNlVO8azJwwEpi/pKF2ATidM7B36U=
-X-Mailru-MI: 20000080020000000000000800
-X-Mras: Ok
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 4/4] dpll: zl3073x: notify sibling pin when shared
+ output config changes
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, min.li@microchip.com, vadim.fedorenko@linux.dev,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, kuba@kernel.org,
+ Prathosh.Satish@microchip.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+References: <20261006153116.347497-5-ivecera@redhat.com>
+ <179147350520.434549.16772916744710272674@kernel.org>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <179147350520.434549.16772916744710272674@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-> I've not be tracking. Is this merged already? If not, please resubmit
-> once it has been.
+On 10/8/26 17:31, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
+> 
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] The commit message describes the old teardown incorrectly.
+> - [Low] The documentation for zl3073x_dpll_output_pin_sibling_get() does
+>    not match its code, and the commit message's safety claim is only…
+> 
+> --
+> 
+> dpll: zl3073x: notify sibling pin when shared output config changes
+> 
+> The P and N pins of a zl3073x output share the divisor, clock type,
+> esync and phase compensation registers. This patch adds a sibling
+> lookup helper and sends a change notification to the sibling pin from
+> frequency_set(), esync_set() and phase_adjust_set(). It also changes
+> the order of list_add()/list_del() on zldpll->pins relative to DPLL
+> pin registration, and does both under zldpll->lock.
+> 
+>> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+>> index 65107b4cc4f82..9c678acc3e777 100644
+>> --- a/drivers/dpll/zl3073x/dpll.c
+>> +++ b/drivers/dpll/zl3073x/dpll.c
+> 
+> [ ... ]
+> 
+>> @@ -132,11 +134,39 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
+>>   	return NULL;
+>>   }
+>>   
+>> +/**
+>> + * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
+>> + * @pin: output pin whose sibling is sought
+>> + *
+>> + * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
+>> + * single HW output. Looks up the other pin of the pair, if it is
+>> + * registered as a dpll_pin on this DPLL.
+>> + *
+>> + * Return: pointer to sibling pin, or NULL if it is not registered
+>> + */
+>> +static struct zl3073x_dpll_pin *
+>> +zl3073x_dpll_output_pin_sibling_get(struct zl3073x_dpll_pin *pin)
+>> +{
+>> +	struct zl3073x_dpll_pin *sibling;
+>> +
+>> +	lockdep_assert_held(&pin->dpll->lock);
+>> +
+>> +	list_for_each_entry(sibling, &pin->dpll->pins, list) {
+>> +		if (!zl3073x_dpll_is_input_pin(sibling) &&
+>> +		    sibling->id == (pin->id ^ 1))
+>> +			return sibling;
+>> +	}
+>> +
+>> +	return NULL;
+>> +}
+> 
+> [Severity: Low]
+> Does this kernel-doc match what the helper does? It says NULL is
+> returned when the sibling is not registered. The loop only checks list
+> membership, direction and id.
+> 
+> This patch makes zl3073x_dpll_pin_register() and
+> zl3073x_dpll_nco_pin_register() add the pin to zldpll->pins before
+> dpll_pin_register(). It also makes zl3073x_dpll_pin_unregister()
+> remove the pin only after dpll_pin_unregister(). During those windows
+> the helper can return a pin that is not registered.
+> 
+> esync_set(), frequency_set() and phase_adjust_set() then pass that pin
+> directly to __dpll_pin_change_ntf(), whose kernel-doc says:
+> 
+>   * @pin: registered pin pointer
+> 
+> The window looks reachable. zl3073x_dpll_register() registers the DPLL
+> device before its pins, so a PIN_SET on the P pin can run while the N
+> pin's dpll_pin_register() waits on dpll_lock. On teardown, the N pin is
+> unregistered while the P pin is still available.
+> 
+> The commit message also says:
+> 
+>    A pin that is transiently on the list while
+>    not registered is harmless: __dpll_pin_change_ntf() is a no-op for a
+>    pin that is not available
+> 
+> Is that accurate? Only dpll_pin_event_send() checks
+> dpll_pin_available(). dpll_pin_notify() runs first and calls the
+> in-kernel notifier chain without any check:
+> 
+> __dpll_pin_change_ntf()
+>      dpll_pin_notify(pin, pin->clock_id, DPLL_PIN_CHANGED);
+>          call_dpll_notifiers(action, &info);
+>      return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
+> 
+> So an in-kernel DPLL_PIN_CHANGED event can be sent for a pin that is
+> not registered. Nothing in the tree seems to be affected today: the
+> only in-tree notifier, ice_dpll_pin_notify(), ignores actions other
+> than CREATED and DELETED.
+> 
+> Should the kernel-doc and the commit message be corrected? The other
+> option is to check that the sibling is actually registered before it
+> is notified.
 
-Not merged yet. It is still under review as "[PATCH net-next v2] net:
-phy: marvell: add support for PHY LEDs polarity modes" (patchwork
-14842707). I'll resubmit once it lands.
+Will correct.
+> [ ... ]
+> 
+>> @@ -1784,6 +1874,13 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
+>>   	/* Unregister the pin */
+>>   	dpll_pin_unregister(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
+>>   
+>> +	/* Remove the pin from the list only after it has been unregistered so
+>> +	 * that a still-registered pin is always findable as a sibling.
+>> +	 */
+>> +	mutex_lock(&zldpll->lock);
+>> +	list_del(&pin->list);
+>> +	mutex_unlock(&zldpll->lock);
+>> +
+>>   	dpll_pin_put(pin->dpll_pin, &pin->tracker);
+>>   	pin->dpll_pin = NULL;
+>>   
+>> @@ -1803,9 +1900,11 @@ zl3073x_dpll_pins_unregister(struct zl3073x_dpll *zldpll)
+>>   {
+>>   	struct zl3073x_dpll_pin *pin, *next;
+>>   
+>> +	/* Unregister each pin before removing it from the list so that a
+>> +	 * still-registered pin is always findable as a sibling.
+>> +	 */
+>>   	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
+>>   		zl3073x_dpll_pin_unregister(pin);
+>> -		list_del(&pin->list);
+>>   		zl3073x_dpll_pin_free(pin);
+>>   	}
+>>   }
+> 
+> [Severity: Low]
+> The commit message says:
+> 
+>    and teardown detached the whole list before unregistering any
+>    pin, so a sibling that is registered - and thus reachable by a PIN_SET
+>    on the other pin - could be missing from the list and never notified.
+> 
+> Does this describe the old teardown correctly? Before this patch,
+> zl3073x_dpll_pins_unregister() already unregistered each pin before
+> removing it from the list:
+> 
+> 	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
+> 		zl3073x_dpll_pin_unregister(pin);
+> 		list_del(&pin->list);
+> 		zl3073x_dpll_pin_free(pin);
+> 	}
+> 
+> drivers/dpll/zl3073x/ has no list_splice() or similar call on this
+> list. A pin that was still registered therefore stayed on zldpll->pins
+> during teardown.
+> 
+> The list and the registration state only got out of step at
+> registration time, because dpll_pin_register() ran before list_add().
+> On the teardown side, this hunk mainly moves list_del() under
+> zldpll->lock, which the new lockdep-asserted lookup needs.
+> 
+> Could the commit message describe what the teardown change actually
+> does?
+Yes, will rewrite it in v4.
 
 Thanks,
-Konstantin
+Ivan
+
