@@ -1,152 +1,239 @@
-Received: from mail-oo2-f4.google.com (mail-oo2-f4.google.com [74.125.231.132])
+Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013601E7C2E
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:45:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C962F47206A
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791531937; cv=none; b=AAj4E/QdgHn8a/CFD5y0yX1VDfauPLrmsM3su2UJF7S2e37DOesUEWWJ3+4Xexa/wOeGRya6LHkjhiUtwpICAKKLA3YWTLrM3bsYWeAlqyQx7ZBxQVOdYGAw1NHqp1J6gpbocGEV41lMWuIGySZJfs3ZPzD4pFL6Um/W8jBGvks=
+	t=1791532001; cv=none; b=Np0fixslS0FOlLsDl4QhZMiKXDmZaNZrGvJYUh7Q5BNqMPtLhJIBW8pnzIDtWSUmTQ/8ePyUD/b5m83OWFKaSdmL4gM6tzF7h9b+oJK+Xke5//nrVnqadmJZ3lPq7xZckJCO0kYa+WY+4mamq5aoo4/k7KtbYeUl+EUq1qgDffk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791531937; c=relaxed/simple;
-	bh=ZwfTSJk9JG0mkL6vUHY4wYZ/zxFnLxRfeSs6ksDOhpo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A49AFZjoHYpOWN/u6/JA0xCPhPC1exYuc+JlcqkMDOIAfeftCQp6q4c/j2NEA2+OLtfMF/4hf+5ICQvWAlO+DSkpM+L+bSlmedu9tFlvDu6MyJeezxzAizcJdHuPOaR7CSDeOes7OzuuM7ZFm0IYjGdlwfMQzo7uggsf5UH8djQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S95puc0R; arc=none smtp.client-ip=74.125.231.132
+	s=arc-20240116; t=1791532001; c=relaxed/simple;
+	bh=+grsSZCeGjPJjHmjcAR86H9X3p7tblGNuACQPAt7aDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=d4yTiJ1hI2sgv2gbNfJQoWUlfYywlxuQJnVSlhbTrmuCtJxQXGjd0dclhrtHnv0M2FQ6TKBwCGvIiAXZEbHbSAl2HA9PdhRjhXGiD2sFZDL2K1WuSklDou5pzmt8xuUCaCB4trEcNeeD7ocp9PigAHoeNdjVx+BUDWYdtcrUpyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EHJ7kYTi; arc=none smtp.client-ip=74.125.227.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S95puc0R"
-Received: by mail-oo2-f4.google.com with SMTP id 006d021491bc7-6df960a7c6eso2562863eaf.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 00:45:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EHJ7kYTi"
+Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2e81c65b074so6266345ad.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 00:46:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791531935; x=1792136735; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1791531999; x=1792136799; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=eLXuH3kNk2vtVW5LR5Zl+GGZ0SinlHLiZHSL9eCZFA0=;
-        b=S95puc0RLtS/vPtRVlKMYhIuNfW7fz6IXJGZYdNEoVXpNvL1b4UA1Jzy3SVRLOK+zE
-         En60cMn55v7/hLPqrZR1OSMgcyKd0nyDkmgwXLZ3jT256GRx7R0KngzB9oTl8JG8czTL
-         F7F0kekTy47AIPmPFk7EXsBa5Zk9ctd7re0fvFw+23UvCGy7gdyAqLpl8r5T1I9pd95p
-         zmN0YSUPGpUAaIjl3xxsyMQY7ETsvQaELoSSEbKlmiIGRos0s50cQsUykbtJmEPjRq0g
-         z2l2s+4NAq+8cTLMxN1QD2kAKHlWVzRuPkprNj26MFFd6XRSAxi6PFX5a86fiAPVJpSl
-         Hr/g==
+        bh=w8E1UM2uA2mgoa7ClHpQP/oej4PTxre8P1UpeWTgBp8=;
+        b=EHJ7kYTiL0RZIB4ZWtwzU804X7OveKzrXAnyUPMYbfmILcIt9G5H7ZNP3DqQiTfLjz
+         xiuDwuXmU9TodSB54ZnS7P4nBbfN3KLMxByZjax3/rew6YJlfuopc1CKZIGE8FAm7pbH
+         PVCtD5pY916VpypxoUMR6gKFZVS7xHZ/Ev9rCaHijATwHD1M2Me/+he3qwwgiX9SvAsW
+         RsoZhT8Yl8jMFrC35B2z0YHb8ARteM9AwJheDwDgmoMp9MfYlX33CyZls6LHHoJ6I8w4
+         d+/Fdg0SXg03IYft+Z4N+A1n+gpAYzxPHljbWMfrcg5HSAcm63YtZB6eCOe80oxDY1K2
+         Et4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791531935; x=1792136735;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=eLXuH3kNk2vtVW5LR5Zl+GGZ0SinlHLiZHSL9eCZFA0=;
-        b=B0bgoLoyaKqnKHIqpGgPji4C00R+8P+E0yNBgPFjucwKwLd23a8Ne/qD8QuQujJzOm
-         Ti+h0znHoyRQWNWKUQvzBInLj9fKfIZ2o93Q50PW7kWMewFsm41hGOvhfwPXfqRtorAQ
-         NLh7eE3VXHgqM6CpafEso9ioKIVYw0xDgHhf5TjV9kl9WRwEnfMBp5/SppS7n3QuG4SS
-         2BAnqr8CrIW1ZA1Q8q7oe71YuPPCF6+CAHuNOxO6URS83q0Rs7dMOEQY9wBjMk4rfGVd
-         XAxaehgvZRAfE98JCN3iEtghfTwy0tHlzY78uRYecT7Z45B72qg2BH08XohszCKHyWkR
-         e4Uw==
-X-Gm-Message-State: AFuF++l86jytAwzj9S6f/1rxNiz9eDbV7Fvs5CSEXqn52//bDR8afccZ
-	pnKpkjValK5QvlwBlTqORWrDI6fqXgZAWTeN2SzEuBrOMGFsj3aYz1Cg
-X-Gm-Gg: AYBFou02V9sIBgkMBkQWJxiAtbmWZvi77jUm4+B3T1s+NsojZ5tbUAl7z7ed5oGMlxT
-	CSuyn5IgGpVxEb+eyNEpWC8QtovgpK95YPUD3OAWAv/lNp+us7bfPH7AALwREkkSr22NPIkenT/
-	9p9UuK3uWUNaEg1n/jHj8uOEFIY8CQzMhFwat5BFx2Si3J261uoBnI7PFyF7z30UdlX06EnREi7
-	D277seDRiRYojI1Gk5FIVWuqVQyCKnMlwFi9D+g8zMsF37HRt/yTyH+3TAGjNmge+C8GawWThi/
-	LR8wkRmfjdIsh8lmHcLDoW8we5hCu1f7TVbo/IJ6Gi0x32WKO8+zQnDHJeDnbgW0h7sflD1BG6e
-	fn8R2c1gLVpNgMFMan9f0neJwNLrcxA/VllTDVXHaso1j9qdESSkirLPOQRNCM9Sxvi/stS1xnk
-	1M+ok+ogwllUTbAt4v7TIozAphZmQBkFlgR6E2POWRt9l1lpkwTyOlD2xxzVPGs4QQFqYAlUEvV
-	i3+Wscd5L1HMgpAChDDBt7eruhKSuTFhlUh
-X-Received: by 2002:a05:6820:f004:b0:6c8:d1cc:38a9 with SMTP id 006d021491bc7-6ef08c7a67bmr886377eaf.8.1791531934819;
-        Fri, 09 Oct 2026 00:45:34 -0700 (PDT)
-Received: from localhost.localdomain ([14.22.11.164])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6ef01dba775sm1138539eaf.9.2026.10.09.00.45.27
+        d=1e100.net; s=20260707; t=1791531999; x=1792136799;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w8E1UM2uA2mgoa7ClHpQP/oej4PTxre8P1UpeWTgBp8=;
+        b=WLBbr3BqjfpCiT26+VQUAlRmUcrYfToQCM+7aaR5YKRrwjKD+MXHtBocjIPMsxOvvd
+         Hq+4RYRVmBUI7Vgn+3CuToxkq8i15pqWHplptm8MSr8yj/L4dRpg3QwcbmHKBQDFyRog
+         TfZnobX4a6KSRwfqXRra4XJe4RLTtR5l1QuqnlD+Ll9b9EdkS8CAvWn04Zz7kxdjyhl0
+         mkUwgEd5cCqdAtC9FZToObUX0mY8uBDyHNW0pm9pJsmJ1o/Sl2IR0atv2BmG5eb9o+7R
+         IzeSpD2AO2DBZklhExIFxOdfV5iAsllccCkXXNBxm6JFW7oD9VX2HBQ163l1SFBO2h2H
+         GKsA==
+X-Forwarded-Encrypted: i=1; AKwUvBzQcc33LgrwCvuFFYWK9Aa0I8EvvCE02UFWDGINIhM+4P9mA1RXKtBVLZNdr4hz7URyrPLkrf8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJsQc15QkjeHogGwdmWms1YV5qlBwBiqHIxKeH4r8bJ04vi45CR
+	HYasKS9cXhhzMFzJYShkXevgdNOQgkB4GN96YUhCp5Q6X/aq8GWt+W0H
+X-Gm-Gg: AYBFou13d4sPN51qWERkFZyE8vUP0U/2wqluAlVzg/6Ycu7/Sri7GCi3f86gC8fpO1a
+	+UjaX3bNu0jhGflSN5YxVhVQc9F1nDnDwwlZX0zsWy0iHT3i27LZep4BKaVai9zwyW1rKWy1Y1n
+	qVpPmJFnTw02q6ijfgbZFAyChCYymcySczNSfGd2tYatXIMm/eVKYhcrqwSM06TjNzesN7fkDc+
+	gTcTKae1L9smm/5TCuf2RLH7DM0tnFHoCXKKr9SMNRxbRud93Dw9lnhaxkH4oCREz5BLLO/SIHi
+	Ci84j6ajJeMcBtEvHA3mQBhaAteRm52+t9ZQGbogKknW/Xoh3onqTd1xPCgRPNNcpAl0dTnhg/p
+	5o2a/H2GUStI59xBFs+A7NalRY1Mmv6Ts5JTTjWkhL0vCEnJdLfaDiTnMK2QzoHqxaWwG6PPVqu
+	vPndbH5KThMi575dFM2XJqnZaznx6oQaaozzaiPy6R3nx8W+X8OE40m1AGrQCBc9/oGJPIkmZg
+X-Received: by 2002:a17:903:19e7:b0:2e2:c84b:43e9 with SMTP id d9443c01a7336-2e842837a3amr10138365ad.1.1791531999201;
+        Fri, 09 Oct 2026 00:46:39 -0700 (PDT)
+Received: from hhost ([120.231.212.218])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e841a02f85sm4980385ad.10.2026.10.09.00.46.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 00:45:33 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+        Fri, 09 Oct 2026 00:46:37 -0700 (PDT)
+Date: Fri, 9 Oct 2026 15:46:26 +0800
+From: Xingyuan Mo <hdthky0@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ipconfig: fix use-after-free of device list after ic_close_devs()
-Date: Fri,  9 Oct 2026 15:45:20 +0800
-Message-ID: <20261009074523.2747168-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.43.7
+Cc: "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+	Xingyuan Mo <hdthky0@gmail.com>
+Subject: [PATCH v4] sctp: reject forged cookie peer_addr with unknown address
+ family
+Message-ID: <20261009074601.3954275-1-hdthky0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.43.0
 
-ic_close_devs() kfree()s every ic_device node but leaves the static
-ic_first_dev and ic_dev pointers dangling behind.  When a DHCP reply
-consists of an OFFER that is never followed by an ACK (a misbehaving
-or lossy DHCP server, or a network that drops the ACK), the boot-time
-autoconfiguration loop becomes vulnerable:
+When cookie authentication is disabled, COOKIE-ECHO peer_addr is
+attacker-controlled. An invalid sa_family made sctp_get_af_specific()
+return NULL and crash in sctp_transport_init() on
+af_specific->sockaddr_len. Validate it with af->addr_valid() in
+sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
+an AF_INET6 peer_addr on an IPv4 socket that would later crash in
+sctp_v6_get_dst() on inet6_sk(sk)->opt. peer_addr is validated in
+place, so a v4-mapped v6 address is normalised to AF_INET before the
+association and its primary transport are built from it.
 
-  1. ic_bootp_recv() accepts the OFFER and records ic_dev = <list
-     node> ("We have a winner!" state);
-  2. the retransmit round times out in ic_dynamic(), so
-     ic_close_devs() frees the whole list — node included;
-  3. the dynamic retry path (try_try_again) runs ic_open_devs() and
-     ic_dynamic() again; on failure it falls through ic_close_devs()
-     once more, where the entry point evaluates
+For that, sctp_v6_addr_valid() has to return 0 for a non-v4-mapped
+address when it is called with a socket that is not PF_INET6, so that
+IPv6 addresses are never used on IPv4 sockets. The check is done after
+the v4-mapped handling, so v4-mapped addresses passed to an IPv4
+socket through the socket API keep being accepted. As addr_valid()
+now also checks sk_family and ipv6_only_sock, simplify the address
+handling in sctp_process_param() with it, as it additionally filters
+out non-unicast addresses. As a side effect, a v4-mapped address in
+an IPv6 address parameter is now normalised to AF_INET before the
+transport is created, matching what the socket API paths already do.
 
-         struct net_device *selected_dev = ic_dev ? ic_dev->dev : NULL;
+Also add the missing !af check in sctp_process_init(), as
+sctp_get_af_specific(AF_INET6) returns NULL on CONFIG_IPV6=n builds.
 
-     — an 8-byte use-after-free read against the freed ic_device.
+  BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
+  Read of size 4 at addr 00000000000000b4 by task poc/682
+  Call Trace:
+   <IRQ>
+   sctp_transport_new+0xa7/0x350
+   sctp_assoc_add_peer+0x153/0x850
+   sctp_process_init+0xf9/0x1180
+   sctp_sf_do_5_1D_ce+0x464/0xbc0
+   sctp_do_sm+0x114/0x2990
+   sctp_endpoint_bh_rcv+0x280/0x430
+   sctp_inq_push+0xdd/0x100
+   sctp_rcv+0x17f5/0x1ae0
+   sctp4_rcv+0x2b/0x40
+   ip_protocol_deliver_rcu+0x25b/0x270
+   ip_local_deliver+0xd1/0xe0
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-KASAN confirms (boot-time bootload, no userspace yet):
-
-  BUG: KASAN: slab-use-after-free in ic_close_devs+0x214/0x220
-  Read of size 8 by task swapper/0/1
-   Call Trace:
-    ic_close_devs+0x214/0x220
-    ip_auto_config+0x172b/0x34e0
-    do_one_initcall+0x9f/0x370
-    kernel_init_freeable+0x432/0x760
-    kernel_init+0x24/0x1f0
-  Allocated by task 1:
-    __kmalloc_cache_noprof+0x1b5/0x430 <- ip_auto_config+0x587/0x34e0
-    (ic_open_devs' kmalloc_obj of the ic_device list node)
-  Freed by task 1:
-    kfree+0x166/0x450 <- ic_close_devs+0xcb/0x220
-    (ic_close_devs freeing the same node at round end)
-
-NULL both pointers after the free loop so subsequent retry rounds
-take the clean empty-list path instead of acting on freed entries.
-
-This vulnerability was discovered by Tencent CodeBuddy Security.
-
-Cc: stable@vger.kernel.org
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Assisted-by: opencode:deepseek-v4
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
 ---
- net/ipv4/ipconfig.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+v2: https://lore.kernel.org/netdev/20260913113522.2674588-1-hdthky0@gmail.com/
+- validate the forged cookie peer_addr with af->addr_valid() instead of
+  a family whitelist, and make sctp_v6_addr_valid() reject non-PF_INET6
+  sockets, so a forged AF_INET6 cookie can no longer crash an IPv4
+  socket in sctp_v6_get_dst() (found by Sashiko)
+- simplify sctp_process_param() address handling with addr_valid(), as
+  addr_valid() now also checks sk_family and ipv6_only_sock
+- add the missing !af check in sctp_process_init() for CONFIG_IPV6=n
+  builds (suggested by Xin Long)
 
-diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
-index 1b8585404a41..ac4851e59c3b 100644
---- a/net/ipv4/ipconfig.c
-+++ b/net/ipv4/ipconfig.c
-@@ -346,6 +346,13 @@ static void __init ic_close_devs(void)
- 		kfree(d);
- 	}
- 	rtnl_unlock();
+v3: https://lore.kernel.org/netdev/20260915212917.3775248-1-hdthky0@gmail.com/
+- drop the sctp_transport_new() check
+- merge the !af checks into the conditions they guard with ||
+- drop the comment above the sctp_unpack_cookie() check
+
+v4: https://lore.kernel.org/netdev/20260917030505.4176635-1-hdthky0@gmail.com/
+- move the non-PF_INET6 socket check after the v4-mapped handling in
+  sctp_v6_addr_valid()
+- validate bear_cookie->peer_addr in place instead of a copy
+
+ net/sctp/ipv6.c          |  6 +++++-
+ net/sctp/sm_make_chunk.c | 23 ++++++++++++-----------
+ 2 files changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index ef26878f1282..97390569c4bd 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -725,7 +725,8 @@ static int sctp_v6_available(union sctp_addr *addr, struct sctp_sock *sp)
+  * SCTP.
+  *
+  * Output:
+- * Return 0 - If the address is a non-unicast or an illegal address.
++ * Return 0 - If the address is a non-unicast or an illegal address,
++ *            or a non-v4-mapped address on a non-PF_INET6 socket.
+  * Return 1 - If the address is a unicast.
+  */
+ static int sctp_v6_addr_valid(union sctp_addr *addr,
+@@ -749,6 +750,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
+ 	if (!(ret & IPV6_ADDR_UNICAST))
+ 		return 0;
+ 
++	if (sp && sctp_opt2sk(sp)->sk_family != PF_INET6)
++		return 0;
 +
-+	/* The whole ic_device list was just kfree()'d above; clear the
-+	 * static pointers so retry rounds (e.g. dynamic retry after an
-+	 * OFFER without ACK) don't dereference them (use-after-free).
-+	 */
-+	ic_first_dev = NULL;
-+	ic_dev = NULL;
+ 	return 1;
  }
-
- /*
---
-2.43.7
+ 
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 84a4c97d0f75..175dbb242e1c 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -1732,7 +1732,9 @@ struct sctp_association *sctp_unpack_cookie(
+ 	struct sctp_cookie *bear_cookie;
+ 	struct sctp_chunkhdr *ch;
+ 	unsigned int len, chlen;
++	union sctp_addr *paddr;
+ 	enum sctp_scope scope;
++	struct sctp_af *af;
+ 	ktime_t kt;
+ 
+ 	/* Header size is static data prior to the actual cookie, including
+@@ -1841,6 +1843,11 @@ struct sctp_association *sctp_unpack_cookie(
+ 		goto fail;
+ 	}
+ 
++	paddr = &bear_cookie->peer_addr;
++	af = sctp_get_af_specific(paddr->sa.sa_family);
++	if (!af || !af->addr_valid(paddr, sctp_sk(ep->base.sk), NULL))
++		goto malformed;
++
+ 	/* Make a new base association.  */
+ 	scope = sctp_scope(sctp_source(chunk));
+ 	retval = sctp_association_new(ep, ep->base.sk, scope, gfp);
+@@ -2381,8 +2388,8 @@ int sctp_process_init(struct sctp_association *asoc, struct sctp_chunk *chunk,
+ 		    (param.p->type == SCTP_PARAM_IPV4_ADDRESS ||
+ 		     param.p->type == SCTP_PARAM_IPV6_ADDRESS)) {
+ 			af = sctp_get_af_specific(param_type2af(param.p->type));
+-			if (!af->from_addr_param(&addr, param.addr,
+-						 chunk->sctp_hdr->source, 0))
++			if (!af || !af->from_addr_param(&addr, param.addr,
++							chunk->sctp_hdr->source, 0))
+ 				continue;
+ 			if (sctp_cmp_addr_exact(sctp_source(chunk), &addr))
+ 				src_match = 1;
+@@ -2554,17 +2561,11 @@ static int sctp_process_param(struct sctp_association *asoc,
+ 	 */
+ 	switch (param.p->type) {
+ 	case SCTP_PARAM_IPV6_ADDRESS:
+-		if (PF_INET6 != asoc->base.sk->sk_family)
+-			break;
+-		goto do_addr_param;
+-
+ 	case SCTP_PARAM_IPV4_ADDRESS:
+-		/* v4 addresses are not allowed on v6-only socket */
+-		if (ipv6_only_sock(asoc->base.sk))
+-			break;
+-do_addr_param:
+ 		af = sctp_get_af_specific(param_type2af(param.p->type));
+-		if (!af->from_addr_param(&addr, param.addr, htons(asoc->peer.port), 0))
++		if (!af || !af->from_addr_param(&addr, param.addr,
++						htons(asoc->peer.port), 0) ||
++		    !af->addr_valid(&addr, sctp_sk(asoc->base.sk), NULL))
+ 			break;
+ 		scope = sctp_scope(peer_addr);
+ 		if (sctp_in_scope(net, &addr, scope))
+-- 
+2.43.0
 
