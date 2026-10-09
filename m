@@ -1,207 +1,202 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-wm1-f99.google.com (mail-wm1-f99.google.com [209.85.128.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DB84F85B3
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA314F5E07
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 18:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791569672; cv=none; b=m2iysno1eGxPJiNMfvZCsP4nOTDUIgurZxDVq74ieaFFcsfUg76IV1+lC+hqGwj7FocUo+9b/7EPlEeJMtZCBCd4e3fZyT7q5MzEcfjWj5ddVHvl2b0x2z8sTZD9LcZj8zecA2ozHoajITQwoSwnGlF3JPprVjBijt/JTfitHws=
+	t=1791569760; cv=none; b=Ykm6Af6bmhqPAfO1gBvWk5K+sPA9tiQZQkf/WAxUhJ8V/N4utOgV2W77RwyGaea0Ex/7cjJ262B+hq9seQYC4an/XqvQ6X5fHOFvm0OTQ5D/j+a+U30FP68g7pOM6/f2t5q5/O706dpuQbfioiSGAOpBSuVGtXQBHJPrWmUlU2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791569672; c=relaxed/simple;
-	bh=hmhp5aCfAowc1RH1ZLE5xg09F/tgIyMjcgJPa/87Xxg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=C+hChNgOA/im6N1s/8B90yV/02lxtowwQ9095lo7BnSYKeIjajZmL2hgntkUyr6drlaVooI3Y1c9mm0GvIc8n3VwP7DLGNyz/f0qXBFlh4BUHJqDyUTzIN3d1whT0ANO9cKWyuvoqu1GvEhLt5FRBrneYno3okcqNX9CaCP78XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RXilsdNz; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791569760; c=relaxed/simple;
+	bh=KQQJ+CHj3noUPqd3hIOKH/SstTaXg/xWE+mbjKTc6QU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TXBA8qTxdUS2IceZk89mKsGt12/LUWWXbhqQR1Yq+beVmwJNVI+8G9PrtaY6dI1yzLz+FZctLODxPXR9Q2fvafPVhoTo6kkcsnOW7OwETUilsXa//+ARjkFPxXvBxIt/ynzP2jOQWA08OBehgOPTOjrBbRFCz9ca7fArUxGN4IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=everpuredata.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=UhkTVboJ; arc=none smtp.client-ip=209.85.128.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=everpuredata.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RXilsdNz"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-917a20e9efeso1259566d6.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:14:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="UhkTVboJ"
+Received: by mail-wm1-f99.google.com with SMTP id 5b1f17b1804b1-49ff680331aso1097655e9.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 11:15:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791569669; x=1792174469; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=BmUaHEAjDqs57lG3N//XR/fYj5yl74K4ovqeCbA5msc=;
-        b=RXilsdNzfJ72M8bImGfAbIxRYb5qr3aYOwHWmPo9m6vGwG8yWMfimC92Cz6Zy9Z+Dp
-         v6kSmDuftmyOAtvZdtVyL+Odbyg9np5MyEoZ88H/VUJOkuiDmCi5yobSB4FgHO7JmOc7
-         aAk9uWOSY3eVB+0L+DqJyU/EXWXgnpbrhGg83fldr2DII0c6ot/uF9FJjic5H3kbDCrI
-         3nKp53CEULM7K9qsmeWQc/aRuhGL1y2kwuaJiq0JpMJv0C2purZTqB3Sx6ZO0IY4NUNl
-         YG+90gs+T4kCrVKA3KFi798rl2yfjwNb9X3imKAwJRDLj2a22cl9oo05351kL9gbE858
-         N1aA==
+        d=everpuredata.com; s=google; t=1791569757; x=1792174557; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PKh0n31LZjAabx1GRWM6AQ6aUQk08xh7miYGIsbVSlE=;
+        b=UhkTVboJozaRtNyHM6Olto+yCVOvaRrcj12FNiuV9ycRnF/aBvS61RGdwrgywKZc2U
+         GP3JIIF6SKj3uc12yTxsFzSV9n/oSsmi0aV74KPxz/0iWS7v58/jNAtoUlrKbMamJzA9
+         dG9PSCQYXl5BjtVvfr8Kx2b+iBwKbo+uLpplrSZYL0aDC0Jx2l2mRtde8kUWqoT7gIle
+         A6Fk12LXVCzePCAdwmRPYoFAZLRs89347znKeuWC8UjsR+O7vqBF6clh6Uup+fG7Q1EE
+         8dciMLfoT8dM/0i/620Fu8qEYBWjlhBlCibxbrTFhm20G5FlACO6wsgjzpiUv3soG64C
+         zErA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791569669; x=1792174469;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BmUaHEAjDqs57lG3N//XR/fYj5yl74K4ovqeCbA5msc=;
-        b=hFAQ0bMwpmyxvMoCEuzHCUzbkmC8yZF0fqnKjSD+5U88xxPbGfTbkE0T01TK3PDasq
-         ZjOve1eS1eSf/TejPl+PbNqSGifDbpwDb9gylExtKNaMzgphouUO/RAF2U27rgzQBUST
-         Fe78w8cbUEHjJpTtDC3X1XH7paYm8zUbPlqSaDxa28j9rKWMSj7h2F62Bm8OqcmGLiSm
-         gy1jQD4Y5k830xCWuyCLw+gh9yLM424/X8Ugy4/76lrI6qsovWMBlBZYRk510KzjI3M1
-         XKri+kim1Ah7fuNjAp4Q/Jc86Wu3Hnf4uz4aqEqj21Z4IejxykmJhjdEqUJb+csT+5Lm
-         6oww==
-X-Forwarded-Encrypted: i=1; AKwUvBxyeuUJQzrtdrSAMEKTr5Z8q1O79gx7DIXqkGv++McusGG/VnV2H6hFiGcMKS2dzoZPNlIgHo0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ2Nfhbid5VZZJTa4wBEPDdUAzHC5ul/IWz848+XDjpWha94W7w
-	HnxFMfFOHKW+hvn3HiaZCkSK8zIe4HjPJtxyavtgazEcRpiROE8RFmIRTGGViU6I
-X-Gm-Gg: AYBFou0P1Ic+odL/b9xyOJQ12M8sO7yKoMWzZ219FnmOMxqA4MDRZC0Yq5K9+BRsz6h
-	SPbwL+hVQmEEazNgSyPGz6rN4q76dfT2v7HfxudSu0MFvXn4d4G9+vmOMtBdXolbWNfrAXibnXR
-	LJu3wsprNVZyDJbvwH752K6+ZCnOh6Aw0JXNXOwd+FJKOJxQnLn4vbX6QecyvA7Rcse5oGPAySn
-	rM4DN5tWaJ8bO/YA+YMKhtLPVw7ickdjr8F5Y1ncFcKoEP+Qoa+uIYioe77oFQ3b+Ih7QqyDI0e
-	/MGCZATNdGgPGQtPYDptpbzxJWQas+txQXk7L1Z5DxHBk2zLKs2dAQX9X3KH6hVrX4QC5XCqKWI
-	2k+QpqepodzTrMfLKL51uqIvrMy6rjhXD9+mHQZJrPULVqGM5Fs6KtTenM/MhmiaiDrGpoIj58H
-	o05ilED2I/MLKvwkSdmEHSJG0gYrjXFM1LV0aZ3gGnb99GL5mj1cpCD+75ikmOjoItpO77Th6Tf
-	Jg=
-X-Received: by 2002:a05:620a:19a2:b0:934:ab73:ac53 with SMTP id af79cd13be357-93ebcc1186emr416023685a.0.1791569668976;
-        Fri, 09 Oct 2026 11:14:28 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93eb986c0cfsm248923385a.19.2026.10.09.11.14.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Oct 2026 11:14:28 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791569757; x=1792174557;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PKh0n31LZjAabx1GRWM6AQ6aUQk08xh7miYGIsbVSlE=;
+        b=yBGWuO30pF48OQvq63T7fiPfUCvL4mc+CwAXo2z0O/3Ex+f9V8+CQCLO/IHqwyvTxf
+         0hIPRegZz2IhMUqnfTy/tuTVza61E+SPmAoZv09m1mZcdVV02mIWf1z33tp39bm8btNB
+         Dmo+YfUdwWBLqVlTnPTbSOnQAT8JcDqsLjU8bIYbMClxkCt1g+YyTKRPCeIpQJ8jGs08
+         Yoq/oKFZZbj21YgJt9ulxhr5LZIzlqCPGr/xl6Mej3lmr/wpB/Zvk2nlx/JTHEwxNlDx
+         Y1H4vA5GJzYMLrbEozd5gINncGWQ/IwFowzhpQIDqcaWcVuGJJMQvdrt1/Xo+Y1Guc6J
+         mn7w==
+X-Forwarded-Encrypted: i=1; AKwUvBzydzBH+sqrKUhiHAcC5r0NcUvI+YE7tyvceU82LVNPYSTTlwQFxeD1hHCuG13c7yAdWWHnsYQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lk2srB/e8OO17ns7L5qZVY4oXSPJ7LX3tYvUN7VRLqqoDzKTUC
+	ePLBVdNklXr2/NWSBuLoQfg/AdNYaZMBEXUt/M+8ZmjEa9ztXsFfbdcBEGxCA7MVWpTi9iLblCd
+	eQ/KEyHlbVnqIIiI8x+BUFsk1TEz5AskKTOCQ
+X-Gm-Gg: AYBFou3k+98gSy6VzemDet5PusqW/B11OBTYqKYuk+U05y9RkPkSssnuYJRjh4PORlv
+	ORE+UtJr11HdhL4kmXJ2+Qy0Ka2GpSoqykU7VSUD7MC4/urOTHauBkVvuD0HV1L5Q0Mk6KNPP6s
+	dWVK4dNmLq87De7DrydZXmJEN1zINordUSsNVEHQwuym38+6JVEC0Wx0oTTW4cQk9DWN6oX/Us5
+	jp+Nz49ZUYKSDw4eyUlUsrqgiYKkc1HTlYdTLsSN/ZuNYtrvYpUrZdqSjONZvsXhD3tX1VsINCC
+	JxLm6r4A59XUF9wmGjSKVC5YjfIIIufhUOJ7VBaOhegA1FVPkf+yvCnF8GW014e9gkczTTLCvTV
+	YAXRdDDaBGe5GV9pQw/uBJ8dqhbUHjBIEa14qJng=
+X-Received: by 2002:a05:600c:609a:b0:4a1:717b:7976 with SMTP id 5b1f17b1804b1-4a18e4b15e5mr54406015e9.35.1791569756709;
+        Fri, 09 Oct 2026 11:15:56 -0700 (PDT)
+Received: from c14-smtp-2023.dev.purestorage.com ([208.88.158.129])
+        by smtp-relay.gmail.com with ESMTPS id 5b1f17b1804b1-4a18bc48302sm7189525e9.2.2026.10.09.11.15.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 11:15:56 -0700 (PDT)
+X-Relaying-Domain: everpuredata.com
+Received: from irdv-tmenninger.dev.purestorage.com (irdv-tmenninger.dev.purestorage.com [10.32.149.15])
+	by c14-smtp-2023.dev.purestorage.com (Postfix) with ESMTPS id F24603401CB;
+	Fri,  9 Oct 2026 11:15:54 -0700 (PDT)
+From: Tim Menninger <tmenninger@everpuredata.com>
+To: Chuck Lever <cel@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>
+Cc: Olga Kornievskaia <okorniev@redhat.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Badger <ebadger@everpuredata.com>,
+	Jon Curley <jcurley@everpuredata.com>,
+	Yongjian Mu <ymu@everpuredata.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] xprtrdma: trim head iovec when the payload arrives via a Write chunk
+Date: Fri,  9 Oct 2026 18:15:54 +0000
+Message-Id: <20261009181554.2280374-1-tmenninger@everpuredata.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 09 Oct 2026 14:14:27 -0400
-Message-Id: <DM0IFYXERNG1.2ZNS2EYUGGPOF@gmail.com>
-Cc: <kernel-team@meta.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S
- . Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Dimitri Daskalakis" <daskald@meta.com>, "Mohsin Bashir"
- <mohsin.bashr@gmail.com>, "Bobby Eshleman" <bobbyeshleman@meta.com>,
- <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] eth: fbnic: validate the Rx completion buffer index
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Yehyeong Lee" <yhlee@isslab.korea.ac.kr>, "Alexander Duyck"
- <alexanderduyck@fb.com>, "Jakub Kicinski" <kuba@kernel.org>,
- <netdev@vger.kernel.org>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20261009175358.1598001-1-yhlee@isslab.korea.ac.kr>
-In-Reply-To: <20261009175358.1598001-1-yhlee@isslab.korea.ac.kr>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Oct 9, 2026 at 1:53 PM EDT, Yehyeong Lee wrote:
-> The buffer ID in an address/length Rx completion descriptor is a 16 bit
-> field, FBNIC_RCD_AL_BUFF_PAGE_MASK being DESC_GENMASK(15, 0) once the
-> fragment bits are removed, so the device can name any index from 0 to
-> 65535.  fbnic_pkt_prepare() and fbnic_add_rx_frag() feed that value
-> straight into fbnic_page_pool_get_head() and fbnic_page_pool_get_data(),
-> which use it to subscript qt->sub0.rx_buf[] and qt->sub1.rx_buf[].
->
-> Those arrays only cover the buffers the driver posted.  They are
-> allocated with size_mask + 1 entries, and size_mask comes from
-> hpq_size / FBNIC_BD_FRAG_COUNT, so at the default FBNIC_HPQ_SIZE_DEFAULT
-> of 256 each array holds 256 entries of 16 bytes, that is 4096 bytes.  A
-> buffer ID of 65535 reaches 1048560 bytes past the start of the
-> allocation.
->
-> The fill side already masks every index it computes against
-> bdq->size_mask, and so does all of the ring head and tail arithmetic.
-> The completion side does not.  A descriptor naming a buffer that was
-> never posted makes fbnic_page_pool_get_head() decrement pagecnt_bias
-> through a pointer outside the array and hand the out-of-bounds
-> netmem_ref back as a struct page; page_pool_get_dma_addr() and
-> page_address() then dereference it and the skb is built on whatever it
-> points at.
->
-> Injecting an out-of-range header completion reports under KASAN:
+From: Yongjian Mu <ymu@everpuredata.com>
 
-How exactly are you injecting the completion? Just overwriting the id
-field in the Rx completion with an arbitrary value from the driver?
+The upper layer sets rq_rcv_buf.head[0].iov_len from its estimate of the
+reply header size. For RPCSEC_GSS that estimate includes
+auth->au_ralign, which gss_create_new() initializes to GSS_VERF_SLACK >>
+2 (25 XDR words, or 100 bytes) and which is corrected to the real
+verifier size only after the first reply on that rpc_auth has been
+unwrapped. In this case, the krb5 MIC verifier is 36 bytes, so every
+request encoded before the first reply completes has a head that is 64
+bytes too long.
 
-The buffer id is chosen by SW when the BD is submitted to the device,
-and the device just echoes it back like a cookie when that buffer is
-used.
+On TCP this is harmless: xdr_realign_pages() moves the excess head
+bytes, which are genuine reply data, into the page list. With
+RPC-over-RDMA and a Write chunk (sec=krb5, i.e. RPC_GSS_SVC_NONE, where
+DDP is allowed), the payload has already been placed directly into the
+page list, and the receive buffer holds only the inline part of the
+reply. rpcrdma_inline_fixup() clamps its local copy of the head length
+to the inline length but leaves head.iov_len untouched, so
+xdr_realign_pages() still sees iov_len > cur and shifts whatever lies
+past the inline reply in the receive buffer into the front of the
+directly-placed payload:
 
->
->   BUG: KASAN: slab-out-of-bounds in fbnic_page_pool_get_head
->   Read of size 8 at addr ffff88800c719008
->   The buggy address is located 8 bytes to the right of
->    allocated 4096-byte region [ffff88800c718000, ffff88800c719000)
->
-> Check the ID against size_mask before it is used and drop the packet if
-> it is out of range.  Masking it instead would keep the access in bounds
-> but would silently attribute the completion to an unrelated buffer that
-> the driver does own, which is worse than a drop.  Set add_frag_failed so
-> the frame takes the existing error path.
->
-> Rejecting the header completion leaves pkt->buff uninitialized, and the
-> payload completions that follow are handled before the metadata
-> descriptor that looks at add_frag_failed, so fbnic_add_rx_frag() has to
-> bail out as well or xdp_buff_add_frag() writes through a shared info
-> pointer derived from a NULL data_hard_start.  Key that on
-> data_hard_start, the way fbnic_put_pkt_buff() already does, so the
-> buffer accounting on the normal path is untouched.
->
-> Fixes: a29b8eb6e533 ("eth: fbnic: Add basic Rx handling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-> ---
->  drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 27 ++++++++++++++++++--
->  1 file changed, 25 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/e=
-thernet/meta/fbnic/fbnic_txrx.c
-> index 10caacffee0f0..d85daab06c99c 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> @@ -985,14 +985,24 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vec=
-tor *nv, u64 rcd,
->  {
->  	unsigned int hdr_pg_idx =3D FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd)=
-;
->  	unsigned int hdr_pg_off =3D FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
-> -	struct page *page =3D fbnic_page_pool_get_head(qt, hdr_pg_idx);
->  	unsigned int len =3D FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
->  	unsigned int frame_sz, hdr_pg_start, hdr_pg_end, headroom;
->  	unsigned char *hdr_start;
-> +	struct page *page;
-> =20
->  	/* data_hard_start should always be NULL when this is called */
->  	WARN_ON_ONCE(pkt->buff.data_hard_start);
-> =20
-> +	/* A buffer ID the device never got from us cannot name a buffer we
-> +	 * own, so drop the packet instead of running off the end of rx_buf[].
-> +	 */
-> +	if (unlikely(hdr_pg_idx > qt->sub0.size_mask)) {
-> +		pkt->add_frag_failed =3D true;
-> +		return;
-> +	}
-> +
-> +	page =3D fbnic_page_pool_get_head(qt, hdr_pg_idx);
-> +
->  	/* Short-cut the end calculation if we know page is fully consumed */
->  	hdr_pg_end =3D FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
->  		     FBNIC_BD_FRAG_SIZE : fbnic_hdr_pg_end(hdr_pg_off, len);
-> @@ -1026,10 +1036,23 @@ static void fbnic_add_rx_frag(struct fbnic_napi_v=
-ector *nv, u64 rcd,
->  	unsigned int pg_idx =3D FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
->  	unsigned int pg_off =3D FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
->  	unsigned int len =3D FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
-> -	netmem_ref netmem =3D fbnic_page_pool_get_data(qt, pg_idx);
->  	unsigned int truesize;
-> +	netmem_ref netmem;
->  	bool added;
-> =20
-> +	/* The header completion was rejected, so buff was never initialized
-> +	 * and add_frag_failed is already set.  There is nothing to add to.
-> +	 */
-> +	if (unlikely(!pkt->buff.data_hard_start))
-> +		return;
-> +
-> +	if (unlikely(pg_idx > qt->sub1.size_mask)) {
-> +		pkt->add_frag_failed =3D true;
-> +		return;
-> +	}
-> +
-> +	netmem =3D fbnic_page_pool_get_data(qt, pg_idx);
-> +
->  	truesize =3D FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
->  		   FBNIC_BD_FRAG_SIZE - pg_off : ALIGN(len, 128);
-> =20
+  rpc_xdr_recvfrom:  head=[...,196] page=524288 tail=[...,64]
+  rpc_xdr_alignment: nfsv4 READ offset=132 copied=64
+
+The first 64 bytes returned by each such READ are incorrect (zeroed, or
+shifted right by 64 bytes depending on the kernel's xdr_shrink_bufhead()
+implementation). This is readily hit with pNFS flexfiles over RDMA and
+sec=krb5: the per-DS rpc_clnt gets a fresh rpc_auth whose first RPC is a
+large READ. Reads following the first completed reply return the
+expected data.
+
+Commit cb0ae1fbb2f5 ("xprtrdma: Do not update {head, tail}.iov_len in
+rpcrdma_inline_fixup()") removed the head-length correction while fixing
+the handling of pure-inline krb5p replies.
+
+When a Write chunk conveyed the payload, trim head.iov_len (in both
+rq_rcv_buf and rq_private_buf, which call_decode() expects to match) to
+the inline length actually received so that the XDR layer does not
+realign the page list. Pure inline replies and Reply chunk replies are
+unchanged.
+
+Fixes: cb0ae1fbb2f5 ("xprtrdma: Do not update {head, tail}.iov_len in rpcrdma_inline_fixup()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yongjian Mu <ymu@everpuredata.com>
+Signed-off-by: Tim Menninger <tmenninger@everpuredata.com>
+---
+ net/sunrpc/xprtrdma/rpc_rdma.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/net/sunrpc/xprtrdma/rpc_rdma.c b/net/sunrpc/xprtrdma/rpc_rdma.c
+index 1285f04cdac1..bebc9a20b28e 100644
+--- a/net/sunrpc/xprtrdma/rpc_rdma.c
++++ b/net/sunrpc/xprtrdma/rpc_rdma.c
+@@ -984,7 +984,7 @@ void rpcrdma_reset_cwnd(struct rpcrdma_xprt *r_xprt)
+  * @rqst: controlling RPC request
+  * @srcp: points to RPC message payload in receive buffer
+  * @copy_len: remaining length of receive buffer content
+- * @pad: Write chunk pad bytes needed (zero for pure inline)
++ * @writelist: bytes conveyed by the Write chunk (zero for pure inline)
+  *
+  * The upper layer has set the maximum number of bytes it can
+  * receive in each component of rq_rcv_buf. These values are set in
+@@ -998,13 +998,16 @@ void rpcrdma_reset_cwnd(struct rpcrdma_xprt *r_xprt)
+  * Returns the count of bytes which had to be memcopied.
+  */
+ static unsigned long
+-rpcrdma_inline_fixup(struct rpc_rqst *rqst, char *srcp, int copy_len, int pad)
++rpcrdma_inline_fixup(struct rpc_rqst *rqst, char *srcp, int copy_len,
++		     u32 writelist)
+ {
+ 	unsigned long fixup_copy_count;
+ 	int i, npages, curlen;
+ 	char *destp;
+ 	struct page **ppages;
+ 	int page_base;
++	int pad = writelist & 3;
++	unsigned int delta;
+ 
+ 	/* The head iovec is redirected to the RPC reply message
+ 	 * in the receive buffer, to avoid a memcopy.
+@@ -1016,8 +1019,20 @@ rpcrdma_inline_fixup(struct rpc_rqst *rqst, char *srcp, int copy_len, int pad)
+ 	 * head.iov_len bytes are copied into the page list.
+ 	 */
+ 	curlen = rqst->rq_rcv_buf.head[0].iov_len;
+-	if (curlen > copy_len)
++	if (curlen > copy_len) {
++		/* These READ replies have no inline fields after the payload.
++		 * Trim the head without moving the directly-placed data.
++		 */
++		if (writelist) {
++			delta = curlen - copy_len;
++
++			rqst->rq_rcv_buf.head[0].iov_len = copy_len;
++			rqst->rq_private_buf.head[0].iov_len = copy_len;
++			rqst->rq_rcv_buf.buflen -= delta;
++			rqst->rq_private_buf.buflen -= delta;
++		}
+ 		curlen = copy_len;
++	}
+ 	srcp += curlen;
+ 	copy_len -= curlen;
+ 
+@@ -1245,7 +1260,7 @@ rpcrdma_decode_msg(struct rpcrdma_xprt *r_xprt, struct rpcrdma_rep *rep,
+ 	base = (char *)xdr_inline_decode(xdr, 0);
+ 	rpclen = xdr_stream_remaining(xdr);
+ 	r_xprt->rx_stats.fixup_copy_count +=
+-		rpcrdma_inline_fixup(rqst, base, rpclen, writelist & 3);
++		rpcrdma_inline_fixup(rqst, base, rpclen, writelist);
+ 
+ 	r_xprt->rx_stats.total_rdma_reply += writelist;
+ 	return rpclen + xdr_align_size(writelist);
+-- 
+2.34.1
 
