@@ -1,83 +1,97 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D64C3CBE6D
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 21:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA7350255E
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 22:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791582883; cv=none; b=UQ2+PpmwvLNUvSNKa4YjAZtpa9HBXVudx1ZVzCbXTHPtvpjryDgttxBbCoWXIetQl+8UrN73e9alBHWJ+nEpY3dqJeNlw8apqKim+xiEeepy7rdy+O6lwvlDq+upxsn/YDaRVFZhhgg2Oo/HjLLMnVULZDjtVIe2aqa6hkfSNJ8=
+	t=1791583446; cv=none; b=sDbrAbmLPqP6fKA1WQHaw6/HY9cw6L7b3MKbfK8sszII6RagYkU5XcSYOyAfZd2kLapIbdr3YsOG2uir1G23ykNJZr5z5TStxK5nWp5awCjaZbyPuQZfdKV10ptKfZt97CoCe1+Y9nAjtdYv2giHFvRs2UjanQDLG+0LSWtLyXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791582883; c=relaxed/simple;
-	bh=Yw+kW60tiyde7KiT0jO+rnWgC5MSbh+FufdnqnUvDEs=;
+	s=arc-20240116; t=1791583446; c=relaxed/simple;
+	bh=tHszEtQ6qUPfNkfp/Y3nptpIWt+shu7FTTyhBIFxA3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dy00t1PWOjog6oikEs8+vcS0nEoB7b2PorTcTqP2TWnd+rEcannjpjJpTTbuAluhA65W95943qW/OruhFbzzmWz5i8vdPlKXCP1jeHt3Eh/ZeMkl/ZI+nIriihXIiUW/na/5n7YJCoJL07M/56Px/1GK4k0OW5XyVtpCEI1u3hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=pR1lKHbQ; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	 MIME-Version; b=bYQwW3jyd/KqPL2dLesXKzLQrtVetJcFUPMjzs54sPhUs2d2A+D/ORP+m9XumhKJSDpooQSo8SPbabfe0s3lzgIjRBNpJ0pM4fsq38LsOjDQND91LgGxbA5r3gq3XTRpyYJXpd7mAEQQYlHFpMgsk2ROuLlsytHshm/edqfxdbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=alAeGzM1; arc=none smtp.client-ip=74.125.82.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="pR1lKHbQ"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cc1cf287ef8so64880a12.3
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 14:54:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="alAeGzM1"
+Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-35829219da8so114392eec.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 15:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791582881; x=1792187681; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791583444; x=1792188244; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Z7iB6MuKqAb6OuycuUnKN9NPjjEJxtCuOVdjVCejVb8=;
-        b=pR1lKHbQZreWKMFA71JBZuWYGCkVfo/Txj4RTXA4MqcyiRmdY7YmUDs5nSOrjhOHDr
-         vkqPq00xOLdUjUX0mKWNjl+jtUBAhxmxpsStjneaVgGzpu2yIY0qByT5rwISeID9Sj5R
-         W9r3wVhg3FJXq2WiQzWabP96U0RhFosrGFW/LS2Uly1ZWzFY3hOtyn95peyDxo984yWM
-         ccYtSPufiLpiLZ5LdOPo6NTZI2fPqTUFx8xMPuNDHQMRcqMMA4SQftoC181niklIDG+f
-         fZCBa8Jv3QfjFaA47yfJM1+8MD5RO5VS/HEoW/oujwRmugZHRv+5S1Nl0FCBZFLbS7u3
-         MkzA==
+        bh=Oz+mubEJi9OTuwRjam7n0ruAb9lpR9EULifx4BafNbY=;
+        b=alAeGzM1hy9XS6SGy9x2/oep749Ae41M7wq6Lk+uWiQgKsya8pBLPrS12odbI3Ks86
+         +db/4pZkxitmn7UaQ0uspROUA5HeBtax74QqwDube7H7G7KDFt2nYlkN+24IfMj2pGsn
+         5vtMmvmyRctLxT6V9+JALs5OuQujUKu6pZ37SdrDF2WReFe7poYAPfa+/CW2zyWL1RD5
+         I2RoRPoCIWiFZxRxA+sB4a3nNGJpYY610WdEFPi8Gj8PldTRnGttH9t9s8G7YWhFztgE
+         d3sTbKrpiHa+chc51+hKzmq8wKwqLifZMkYKY6ZN7ahBSFfaJZZ/qHLfj2WFDa9BDfzF
+         sM4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791582881; x=1792187681;
+        d=1e100.net; s=20260707; t=1791583444; x=1792188244;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z7iB6MuKqAb6OuycuUnKN9NPjjEJxtCuOVdjVCejVb8=;
-        b=M9GNpYpJBNdoU1wcMn7ZvQ2uLYBVxk5ef9/2Hvvg6BN4BfZeA1I571TyE34gMsmycG
-         BwEBu70JVSFJqWYcBA1Qesrf+n56s1jn22KoCZROHIw20eOSoJFqbBEUcm+XoCOlsirT
-         //d/0qhtDmoER+UvGuPvx1OMQBxlMVa1lHL4tIAc0gbkZ9wHF7R1Qgv8pvKl+YnphAIq
-         fczdsUw9ZsH68cRPEadCQfO6/cbKhk5k3UG68ny6Z5V4D+nnYCpUIb96ZkwxiqdtH7jG
-         rK4vSeHVAKbw8f5j4UaOODguFt6/7K1SyDruf110oARA1oZSh1+PDGZIMFap382Zo8EQ
-         CFeA==
-X-Gm-Message-State: AFq9FYK99ZX0VPyKu594V59IjmpLtxfKs2etkeSzlVoWLOc7lCUNNnPE
-	gHdySemPBPomtSx5dRixL6RAEN9y2srWsZYcuzpbTwZVnXL755mWjNauGQ/0e46vk7GtpOe5t1y
-	Gy0E1
-X-Gm-Gg: AYBFou171Q4jLCSgQ2trYqbwzQeLQYfq/VYK4wht/yR0WFkYrRacvQe6lU+xwxVaIm4
-	3RfbE+tU2CYGD6ZJKbrjc+HfOUWYWL8kK3TjKfVcHxolpNmb8KBULq+JcTR7LBAPLrZbsCwGJYq
-	LYK2P5ji6Hn+GCoI+ZQzriXh+XihOzKzCSZgRWbg4B/VLF03zZlKLQIib4LtsnY229OTUG5Uv1W
-	Mx4NFp2lCYewynDJpjDc55IpScK9cohzHbFLN2DL9a2hFC41m34AoK6dlKg3Bg83RUhNMIDhCGJ
-	Hz/vpBNjS093Ky3g5xwQFshL/RgkJHmVeW4IvK9l4FcCGGJ7WGCC9Ny2D1Z6ruJeeRXHbyqVOcL
-	5brx63h2xqLiqwdj0xSQyBOCeTXsPsS+iI6l51k3D8vDZU7GWp71rhKmOR5jh1jegfbR2nbipRH
-	HgqYYYSNagVOD9MpfNPG/rIZ5xJPs1x/zzm/eX700GbdXgOBca7jTbwskgy8wGwZu9b211dPFI5
-	v7SE5+SVr/7
-X-Received: by 2002:a17:90a:d2c7:b0:3a4:ca46:8d44 with SMTP id 98e67ed59e1d1-3ab3a735fafmr2733232a91.18.1791582881278;
-        Fri, 09 Oct 2026 14:54:41 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5a::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab37139b59sm5389248a91.13.2026.10.09.14.54.36
+        bh=Oz+mubEJi9OTuwRjam7n0ruAb9lpR9EULifx4BafNbY=;
+        b=I79/bBDJWHidxvX+OYFGHp4yJlrI4bpj1CX2wUSzRQroqy/37LB1qpepqZbN34gRS4
+         nbpf0UusSmrLn5k2u3dTiKvDY9YTCXswBgjK+RmpjmXzEUw0u4XlvLOTfW8P0prQnS+j
+         lE18m/7LFwTbniOBmjF53YY1BKXjbocn1lRr7zmVgQkbI9a5PUxsODvg6dH4O9GyJGXy
+         3waXCXI2Ix+lzMnzwRNQe46TEQVZqeRH6uQBZDGHmsodiHnY4B8Y8Gd9W0S0VeTLFPeW
+         bWWrGztgEP+W+Nf6ssPNFNye2k/VneXJufpj8LMu2C7JJYYgsfHv2PnxkkmtEAgTzF4v
+         ULfA==
+X-Forwarded-Encrypted: i=1; AKwUvBwbWCU0TC8gxYMm6GZHmnRHBkYlQgC/aNdjJZ8pyXNfNQL5pAVHRDryMOjnehFKdMcrGEeLHEQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJvo4ZbI1MiCvd0PYK9LIRjk1k5QAoj1pcncPWp1PFCrL8KL+Hf
+	0AB7sf3M0UVYlUNCyfc/KNMMJJmiuarOar9mAHHrdWFdvy+yky8E8RJs
+X-Gm-Gg: AYBFou2Z9G+1JE6yE+tqbhcpSksbLzwIQgXI/46bi6cOiJ2FBIlJzvurHn4O0kIM2Z9
+	jiHyDPayMf+MQQHgOOgUZfnJzB8cZCtwrnaJK1J8xzYPG31AUbRcAsfKiSKt98toAis7bpNt52l
+	XHU8ofQJh9VDMcETbFjlKcaeH2hUf8neQp0E7ZB16JD6BAA608tHW7SNq+936EPqEwKOszrScE4
+	zV1ifmr9WsY0Qc/QBRHNRfc6ydcPI+siJcV/kAfEL+IENR+7RgTRr/L9WUgO/lac1Gyxb1VUx84
+	q9zNEjqkFs1b7w4CFdUQlzPSVwfxL42KGWePPONT7uqlaXLh2g+lavBed4c9lKJDgted+e8f3OA
+	yaZ8ipj1Gxz7x/XrKWSEnGVIUoNs+a6TsdSetWveHVdsVzYUFHvFQAganhBSJODmfaZZFNUSLoU
+	o6NdeBUoDHgMa7R4WEn4MCxe/MJh/bMtDz2qC4eqlYkQRk7wJUJK/6QkunMLGATCkSKbsyJ4CgC
+	l5FSfD5GUvRIr0VW9jmu4X/Czyr+kp7zwalaKjWt3A=
+X-Received: by 2002:a05:693c:821a:b0:357:ee3a:267a with SMTP id 5a478bee46e88-357ee3a2dd9mr962923eec.2.1791583443330;
+        Fri, 09 Oct 2026 15:04:03 -0700 (PDT)
+Received: from DESKTOP-1E7V4GR.lan ([190.177.131.57])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2fd33sm8279558eec.28.2026.10.09.15.03.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 14:54:36 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: edumazet@google.com,
-	horms@kernel.org,
+        Fri, 09 Oct 2026 15:04:02 -0700 (PDT)
+From: Cristian Papa <pcristian292@gmail.com>
+To: benjamin.larsson@genexis.eu
+Cc: Landen.Chao@mediatek.com,
+	andrew@lunn.ch,
+	angelogioacchino.delregno@collabora.com,
+	arinc.unal@arinc9.com,
+	chester.a.unal@arinc9.com,
+	cjd@cjdns.fr,
+	conor+dt@kernel.org,
+	daniel@makrotopia.org,
+	davem@davemloft.net,
+	devicetree@vger.kernel.org,
+	dqfext@gmail.com,
+	edumazet@google.com,
+	krzk+dt@kernel.org,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Joe Damato <joe@dama.to>
-Subject: [PATCH net-next v2 2/2] bnxt_en: Pad short SW USO segments to BNXT_MIN_PKT_SIZE
-Date: Fri,  9 Oct 2026 14:54:24 -0700
-Message-ID: <20261009215426.2377946-3-joe@dama.to>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261009215426.2377946-1-joe@dama.to>
-References: <20261009215426.2377946-1-joe@dama.to>
+	linux-mediatek@lists.infradead.org,
+	linux@armlinux.org.uk,
+	matthias.bgg@gmail.com,
+	naseefkm@gmail.com,
+	netdev@vger.kernel.org,
+	olteanv@gmail.com,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	sean.wang@mediatek.com
+Subject: Re: [PATCH v2 net-next 7/7] net: dsa: mediatek: support EN751221 switch
+Date: Fri,  9 Oct 2026 19:03:48 -0300
+Message-ID: <20261009220348.4531-1-pcristian292@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <4310cd4d-d9e5-4bc4-bdee-7f6f6b3a2409@genexis.eu>
+References: <4310cd4d-d9e5-4bc4-bdee-7f6f6b3a2409@genexis.eu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,158 +100,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Each SW USO segment is hdr_len + seg_payload bytes. With IPv4, hdr_len
-is 42 bytes, so a segment carrying less than 10 bytes of UDP payload is
-sent shorter than BNXT_MIN_PKT_SIZE. This happens with a short last
-segment (e.g. gso_size 1400 and 1405 bytes of payload) or with a
-gso_size below 10 bytes.
+On Sun, 20 Sep 2026 12:33:21 +0200, Benjamin Larsson wrote:
+> Thus I suggest that dts property also is added and that the calibration
+> is performed if that property is not present.
+>
+> The original SDK and production units seem to have a fixed setting and
+> user testing also indicate that a fixed value results in a working
+> trgmii link.
 
-Fix the short last segment in bnxt_sw_udp_gso_xmit(): zero the pad
-bytes after the header in the segment's inline header slot and add a
-pad BD pointing at them after the payload BDs. Only the last segment
-can need padding, and its pad BD fits within the existing bound in
-bds_needed and BNXT_SW_USO_MAX_DESCS, since payload BDs are at most
-num_segs + nr_frags.
+Some of that user testing may be mine (fixed RX taps on an XR500v in
+Matheus Sampaio Queiroga's airoha tree, airoha/kernel PR #54 on his
+Gitea, https://sirherobrine23.com.br/airoha/kernel/pulls/54 - viewing
+it needs a login there), so here are the numbers behind it. One unit:
+TP-Link Archer XR500v v1 (EN7526G, on-die switch plus MCM), running
+that tree's driver on Linux 6.18, not v2.
 
-If gso_size itself is too small, every segment would need a pad BD,
-exceeding the descriptor bound. This case is unlikely, so
-bnxt_features_check() clears GSO features for these skbs and the stack
-segments them instead; bnxt_start_xmit() then pads each segment.
+That driver uses the same PLL frequency (362.5 MHz) and TX drive values
+as v2, but the rest of the sequence differs. v2 sets the MCM TX delay
+to 0 (it reads 8 here), writes RCK_RTT and 0x7a14 on the on-die side
+and disables SSC on the MCM; that driver does none of that and instead
+writes the full vendor MTRAP word (0x01017e8f, between TOP_SIG_CTRL 0
+and 1) on both switches, where v2 only changes individual MTRAP bits,
+and the vendor CKGCR value (0x30f0 = 0x1e02) on the MCM, which v2 does
+not touch. So the taps may shift with v2.
 
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Joe Damato <joe@dama.to>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 12 ++++++++
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c | 28 +++++++++++++++++--
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h | 15 ++++++++++
- 3 files changed, 53 insertions(+), 2 deletions(-)
+With the 0x55 pattern, sweeping RD_TAP from 1, all five lanes pass up
+to tap 37-45 for SoC->MCM and up to tap 16-18 for MCM->SoC (one boot).
+The eye with real traffic is much narrower. With all lanes on the same
+tap, iperf3 through the cascade and the RX CRC counter of the receiving
+port (same result on two boots):
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index c1d3fcc7ae84..0682060b048c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -14268,6 +14268,18 @@ static netdev_features_t bnxt_features_check(struct sk_buff *skb,
- 	u8 *l4_proto;
- 
- 	features = vlan_features_check(skb, features);
-+
-+	/* SW USO pads at most the last segment; let the stack segment skbs
-+	 * where every segment would be shorter than BNXT_MIN_PKT_SIZE.
-+	 */
-+	if (skb_is_gso(skb) &&
-+	    (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) &&
-+	    !(bp->flags & BNXT_FLAG_UDP_GSO_CAP) &&
-+	    bnxt_sw_gso_pad_len(skb_transport_offset(skb) +
-+				sizeof(struct udphdr),
-+				skb_shinfo(skb)->gso_size))
-+		features &= ~NETIF_F_GSO_MASK;
-+
- 	switch (vlan_get_protocol(skb)) {
- 	case htons(ETH_P_IP):
- 		if (!skb->encapsulation)
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-index ef04c9d08066..80d5c4f963a9 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-@@ -82,11 +82,19 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 	if (unlikely(num_segs <= 1))
- 		goto drop;
- 
-+	/* bnxt_features_check() makes the stack segment these, but paths
-+	 * that skip validate_xmit_skb() (e.g. generic XDP_TX of a GRO'd
-+	 * skb) can still get here. Padding every segment would need more
-+	 * BDs than bds_needed reserves below, so drop instead.
-+	 */
-+	if (unlikely(bnxt_sw_gso_pad_len(hdr_len, mss)))
-+		goto drop;
-+
- 	/* Upper bound on the number of descriptors needed.
- 	 *
- 	 * Each segment uses 1 long BD + 1 ext BD + payload BDs, which is
- 	 * at most num_segs + nr_frags (each frag boundary crossing adds at
--	 * most 1 extra BD).
-+	 * most 1 extra BD). The last segment may need 1 pad BD.
- 	 */
- 	bds_needed = 3 * num_segs + skb_shinfo(skb)->nr_frags + 1;
- 
-@@ -133,12 +141,14 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 		dma_addr_t dma_addr;
- 		struct tx_bd *txbd;
- 		struct udphdr *uh;
-+		unsigned int pad;
- 		void *this_hdr;
- 		int bd_count;
- 		bool last;
- 		u32 flags;
- 
- 		last = (i == num_segs - 1);
-+		pad = bnxt_sw_gso_pad_len(hdr_len, seg_payload);
- 		offset = slot * TSO_HEADER_SIZE;
- 		this_hdr = txr->tx_inline_buf + offset;
- 		this_hdr_dma = txr->tx_inline_dma + offset;
-@@ -156,10 +166,18 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 			iph->check = 0;
- 		}
- 
-+		/* Pad bytes follow the header in the inline slot. Zero them
-+		 * so stale header bytes from an earlier packet are not sent.
-+		 */
-+		if (pad)
-+			memset(this_hdr + hdr_len, 0, pad);
-+
- 		dma_sync_single_for_device(&pdev->dev, this_hdr_dma,
--					   hdr_len, DMA_TO_DEVICE);
-+					   hdr_len + pad, DMA_TO_DEVICE);
- 
- 		bd_count = tso_dma_map_count(&map, seg_payload);
-+		if (pad)
-+			bd_count++;
- 
- 		tx_buf = &txr->tx_buf_ring[RING_TX(bp, prod)];
- 		txbd = &txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
-@@ -222,6 +240,12 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
- 			seg_payload -= chunk_len;
- 		}
- 
-+		if (pad) {
-+			prod = NEXT_TX(prod);
-+			txbd = bnxt_sw_gso_data_bd(bp, txr, prod,
-+						   this_hdr_dma + hdr_len, pad);
-+		}
-+
- 		txbd->tx_bd_len_flags_type |=
- 			cpu_to_le32(TX_BD_FLAGS_PACKET_END);
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-index 77d9af97cc22..5916ee08c0e6 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h
-@@ -19,10 +19,25 @@
-  * Each segment: 1 long BD + 1 ext BD + payload BDs.
-  * Total payload BDs across all segs <= num_segs + nr_frags (each frag
-  * boundary crossing adds at most 1 extra BD).
-+ * The last segment may need 1 pad BD (see bnxt_sw_gso_pad_len()).
-  * So: 3 * max_segs + MAX_SKB_FRAGS + 1 = 3 * 64 + 17 + 1 = 210.
-  */
- #define BNXT_SW_USO_MAX_DESCS	(3 * BNXT_SW_USO_MAX_SEGS + MAX_SKB_FRAGS + 1)
- 
-+/* Bytes of padding needed to bring a segment carrying @seg_payload bytes
-+ * up to BNXT_MIN_PKT_SIZE, or 0 if no padding is needed.
-+ */
-+static inline unsigned int bnxt_sw_gso_pad_len(unsigned int hdr_len,
-+					       unsigned int seg_payload)
-+{
-+	unsigned int len = hdr_len + seg_payload;
-+
-+	if (len < BNXT_MIN_PKT_SIZE)
-+		return BNXT_MIN_PKT_SIZE - len;
-+	else
-+		return 0;
-+}
-+
- static inline u16 bnxt_inline_avail(struct bnxt_tx_ring_info *txr)
- {
- 	return BNXT_SW_USO_MAX_SEGS -
--- 
-2.53.0-Meta
+  SoC->MCM (MCM port 6):    clean up to tap 24, nearly dead at 28
+                            (1-6 Mbit/s with CRC errors), dead from 32
+  MCM->SoC (on-die port 5): clean up to tap 10, CRC errors at 12,
+                            unusable from 14 to 64, and a second
+                            narrow eye around 72
 
+Tap 1, the lowest I tried, was clean in both directions, so the lower
+edge of the eye never showed up. The midpoints of the 0x55 windows
+(19-23 and 8-9 here) are only 1-5 and 1-2 taps below the last clean
+tap measured.
+
+That driver uses RX tap 4 in both directions (for SoC->MCM the 0x55
+sweep still runs, as a check). With it, 12 boots (8 warm reboots and 4
+power cycles of about 30 s) had 0 CRC errors on both cascade ports
+after 6 s of iperf3 each way, 29k-101k frames per direction. One value
+(4) works for both directions here, although the margin to the last
+clean tap differs (about 20 taps vs 6).
+
+Separately: an out-of-tree U-Boot port for this board (since fixed)
+left the on-die switch's PHY auto-polling on (AP_EN in PPSC, 0x7018).
+With it on, 8 of 240 TFTP boots trained no SoC->MCM lane until the
+switch was re-probed, and a stress test found repeated tap writes
+landing in the MCM's 0x7a04 (4 of 4 boots, 0 of 4 with AP_EN off).
+Clearing AP_EN before registering the MDIO bus gave 120 of 120 boots
+with all lanes trained. In v2 the on-die switch is set up (and reset)
+before the MCM, which should clear it, but I have not tested that; it
+may matter if v3 touches the MCM earlier.
+
+Per-boot logs on request. Happy to test whichever approach v3 takes.
+
+Thanks,
+Cristian
