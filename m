@@ -1,287 +1,87 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5344AA008
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 11:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25574D0CDC;
+	Fri,  9 Oct 2026 11:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791545738; cv=none; b=PsmxVc5b3QH35ZYmxdFoe72loZQvskzgR+WMrZhATckxyYtNBMx3wUzx0wd1c/WQ4H/F89NPXYN0/CGe2USYZGNSRCeHnCGGR9URN/eZlSoQ+el+FuQUK/gx5yKheij9S8yNoagAQ1henTiGTl3qu66SCaiPlK65QlHyhTTt8D0=
+	t=1791546133; cv=none; b=dYHsUMZaxaAX16G5gbbAy+IGPHi0T/bYNSSgDnU67QP8gsFNsDfpCFT/mLrOuk499lwhoYfu7wyn3Up5pWux/mX6HO+ZFB6s0hi/TPcs56nd+SDLrDjYQWKlr4GXugZzxArxrEzCwr1FspGcC2wUxpQitYzw41mMdH7988AmuhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791545738; c=relaxed/simple;
-	bh=oftSqSNxAmSJGZwtSUlMSlBmKCJvlrKpmxylbOgxbn4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=onTBEvHoFO1lRd4iot9wH0OA38JvnQ2BW2k8p9VRWEzkXgqxdoQhvPyAnRzHzhWBQ9KdN644lVY3NLp/BY23ztAMZWw2pt9zJKukHOrWspm6VG78fFMlNIbsYu7xW3RiElBXEchIr4neoae0X5jwMz+Xi1QX9b8YSre7Q0wcZjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pZfz8JWQ; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791546133; c=relaxed/simple;
+	bh=/ytrXwjy/3GbsfN9HIye1HopERZbJiOztI12NgeN7AU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o5U8O3K57y2ln0Lcsvgj8DQiNAiAqzI8Myex0dGKH3223igzLdmNJhRgyxmziVwP3qktoSdO8Zjg6U/rVWXfQO+1KtYjTd9OqDF8YFg160SKZfRMk8JuhdX66LeJIOkUi+sXNWlA/zJFKNarQLu/FiBduYMyXt4PpSe7JbvRDmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=F1wVplm4; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pZfz8JWQ"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-8253bc5a613so4513677a34.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 04:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791545725; x=1792150525; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=B4mdbNaS2RRyeKNgKYK6YRPUChL14pwWX8aLwe3X11A=;
-        b=pZfz8JWQWggEL7SdNrDVoBwOMeOCY2sb9EnSVCR5mJsjKWjxf2TL03XIA2Bt1nDqvu
-         +gWiwMUcd4YLw7XuC4Q7NtMngUEu1Ggyz/9ewhG2Z77o5tSXVq75IHMGNZaWCSm5dlgb
-         NBpABAcL4wKxButzxjYxr63/a7lHPsmEAzFIYM8qdj2Dh2icoz04q0XPMgfgDnLEpb/5
-         GFEQui4TzejvGdvh17/3p8o12+2D2+IxFaWxjrfl4Hfygagzqpu3j01/1qyzoIwViA5s
-         kA50P1J2cSI7m7B4eKQAhfMYq5nHrQ5/WvEX4zh4JdPWmMgkSAFM12S8jHXL2yHvFKbi
-         bMXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791545725; x=1792150525;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B4mdbNaS2RRyeKNgKYK6YRPUChL14pwWX8aLwe3X11A=;
-        b=19JS6tPbe+clco2F+CBBk0yoQOYuPrSU5hdFVMdAw1rj6LcY1hDsuldFhGE7hkoyKN
-         H3zfNHETZAu+Mt68Nap9etfIYMaEtp7gXjmD6l49Qqspwzq9Cu1q1FAXKH9gv4B7bmOd
-         qUuzYIl/ggVlhVRrU6JQVV8NNc5ypKW9zs4ZHk76eED8gqf+d6B5ILwjjMdOGgacyKX8
-         V7qgpqJtukdvNH8n1fhrAT5/4NrBlqYzBbGfgB7PHhDaZo1YZv5hXhJXXNnAxMpHzVuv
-         wImynuxsDcC3wqGAwqhQFrByOsKXwksge5xu67GCFcCjE4Kc78J7KQyWE/R+t7ciJKIW
-         NRfQ==
-X-Gm-Message-State: AFuF++nVPF+p05gbzwgAze2Y3pW8Hj6Lp7lscWcnm9rMIdpW7DQ96Vi8
-	RrRMOGgXtkqvVNPabcvIrX5m8z5mJTC/NaFoxhmzYR6wTqmgzPGAdJjp
-X-Gm-Gg: AYBFou1m3J8FniJ3RtLa0e3G7a1qeEtNdVozKokmPxoactZJMz1HzA5sVonbzO4jo4A
-	jSC49cevuIetCBFe+XVDHgrugKuxH5HdxrJ4VqnH/mTv9Av8ugWgixuu9shJEkDx7I1UEPfzc0X
-	OcioW5Tzl9huibh8iPqJpYQgD04VMEJFTdeNpI3Ke0qlV12TuwCVjJ6sBTPyTTnhXhZOJCge70A
-	kwuEPjUdZF5O3ZCfj1spVOYRw3+XfYoQ0dZo3fIXQV2VAr6putQ/W6I6pvLD/0SDn7xIc4h4rKe
-	4CbTHO6HNERSMrYfduFsqUCfdNECdKer+9Iy+R21JFx7/AtFuYwKTJZ/t/aJ6FFnjvyZxtqi1UL
-	wXfXwN3jKjRCwwZd6L8Y4j+VVscJHjQ88EfeKQfRxtydRrYlb9pLnrB08hqxApq+Srjdi14t2CG
-	IcKXbYw9w2VxewbCRlsR9hzz8tVna2SBqM3QrpqR7yTY2uXckw7qa4zlWjdXPeolNtZ6o=
-X-Received: by 2002:a05:6830:6816:b0:806:1e7:4167 with SMTP id 46e09a7af769-83095843911mr1267831a34.13.1791545724799;
-        Fri, 09 Oct 2026 04:35:24 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:3::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-83039a3e016sm1452421a34.17.2026.10.09.04.35.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 04:35:23 -0700 (PDT)
-From: Daniel Zahka <daniel.zahka@gmail.com>
-Date: Fri, 09 Oct 2026 04:35:07 -0700
-Subject: [PATCH net-next 4/4] eth: mpnic: count Rx allocation failures
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="F1wVplm4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791546126; x=1823082126;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/ytrXwjy/3GbsfN9HIye1HopERZbJiOztI12NgeN7AU=;
+  b=F1wVplm4M5BZ7FGAskRbyDCs9ImRTcDxOtqHFuSsxShKAZnqceWHiWVJ
+   6A7zf58KVUsVlG1/hYlv12DLhopWNOr4jF0QbSUVM12D5Tn+NtwFLca+c
+   k/QK5h9g2NQo9/1idYLllU3KL4OHp3Q2tBoCs5M1fwHmm/AAtqBtl8uiR
+   rFbEmEhr0ZiL0oGP+l6fQ5Llcp3IF+hRfUDaa6Js9KxPUFzqJl0Y711ll
+   xstdrNpTcwhPsZUyZdDPVfCaZu+NDGoDqq0+F3LWC/7kyC3zHGqlZ9NRW
+   sYf9XSVYVN3jYa44JN0JpSqHFd+inQeIGGG57Wbe0fxGnQyIAj3Anax5l
+   A==;
+X-CSE-ConnectionGUID: 3R8Tm/V9Soa4dBCQpbSVPw==
+X-CSE-MsgGUID: /9iBSp1iTX2vXlosCZDWeQ==
+X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
+   d="scan'208";a="75126207"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Oct 2026 04:42:05 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 9 Oct 2026 04:42:05 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 9 Oct 2026 04:42:03 -0700
+Date: Fri, 9 Oct 2026 13:42:03 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Joas Antonio dos Santos <joasantonio108@gmail.com>
+CC: Paul Moore <paul@paul-moore.com>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH net-next] calipso: hash the cache key, not the option
+ start, in calipso_cache_add()
+Message-ID: <20261009114203.e5fhom6ncokmzevv@DEN-DL-M70577.microsemi.net>
+References: <179138670045.80227.16155454353416856947@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-mpnic-counters3-v1-4-7dc7644cc500@gmail.com>
-References: <20261009-mpnic-counters3-v1-0-7dc7644cc500@gmail.com>
-In-Reply-To: <20261009-mpnic-counters3-v1-0-7dc7644cc500@gmail.com>
-To: Alexander Duyck <alexanderduyck@fb.com>, 
- Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Eric Dumazet <edumazet@kernel.org>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <179138670045.80227.16155454353416856947@gmail.com>
 
-Count both skb allocation failures and page pool allocation failures per
-queue, and report them through the queue stats API. The bdq allocation
-failures are added to the skb allocation failures when reporting to core
-and folded into base stats during aggregation, because the qstats API
-doesn't support reporting them separately.
+> calipso_cache_add() stores calipso_ptr + 2 as the cache key, but
+> computes entry->hash over calipso_ptr, i.e. starting two bytes earlier
+> at the option type and length.  calipso_opt_getattr() looks entries up
+> with calipso_cache_check(calipso + 2, calipso[1], ...), which hashes the
+> key itself.
+> 
+> The two hashes only match on a jhash collision, so the CALIPSO label
+> cache never hits and every labelled packet takes the full DOI lookup and
+> category conversion path.  The memcmp() on the key keeps lookups
+> correct, so this is a performance bug only.
+> 
+> Hash the stored key, as cipso_v4_cache_add() does for CIPSO.
 
-Page pool allocation failures are also counted when the BDQs are first
-filled in ndo_open, which runs in process context. mpnic_fill() disables
-BH around the fill, so the u64_stats update happens with preemption
-disabled.
+FWIW:
 
-Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
----
- drivers/net/ethernet/meta/mpnic/mpnic_netdev.c | 24 ++++++++++++++++++++++-
- drivers/net/ethernet/meta/mpnic/mpnic_netdev.h |  1 +
- drivers/net/ethernet/meta/mpnic/mpnic_txrx.c   | 27 +++++++++++++++++++++++---
- drivers/net/ethernet/meta/mpnic/mpnic_txrx.h   |  4 ++++
- 4 files changed, 52 insertions(+), 4 deletions(-)
+I tested this with a small throwaway KUnit test: put 16 labels into the cache,
+then look each one up again the same way the kernel does when a packet arrives.
+Without the patch none of them were found (0/16), with it all of them were
+(16/16).
 
-diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
-index 9e262f939c79..7fdf57f70151 100644
---- a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
-+++ b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.c
-@@ -147,14 +147,29 @@ static const struct net_device_ops mpnic_netdev_ops = {
- 	.ndo_get_stats64	= mpnic_get_stats64,
- };
- 
-+static u64 mpnic_bdq_alloc_failed(struct mpnic_ring *bdq)
-+{
-+	struct mpnic_queue_stats *stats = &bdq->stats;
-+	unsigned int start;
-+	u64 alloc_failed;
-+
-+	do {
-+		start = u64_stats_fetch_begin(&stats->syncp);
-+		alloc_failed = u64_stats_read(&stats->bdq.alloc_failed);
-+	} while (u64_stats_fetch_retry(&stats->syncp, start));
-+
-+	return alloc_failed;
-+}
-+
- static void mpnic_get_queue_stats_rx(struct net_device *dev, int idx,
- 				     struct netdev_queue_stats_rx *rx)
- {
- 	struct mpnic_net *mpn = netdev_priv(dev);
- 	struct mpnic_ring *rxr = mpn->rx[idx];
-+	u64 bytes, packets, alloc_failed;
- 	struct mpnic_queue_stats *stats;
-+	struct mpnic_q_triad *qt;
- 	unsigned int start;
--	u64 bytes, packets;
- 
- 	if (!rxr)
- 		return;
-@@ -164,10 +179,16 @@ static void mpnic_get_queue_stats_rx(struct net_device *dev, int idx,
- 		start = u64_stats_fetch_begin(&stats->syncp);
- 		bytes = u64_stats_read(&stats->rcq.bytes);
- 		packets = u64_stats_read(&stats->rcq.packets);
-+		alloc_failed = u64_stats_read(&stats->rcq.alloc_failed);
- 	} while (u64_stats_fetch_retry(&stats->syncp, start));
- 
-+	qt = container_of(rxr, struct mpnic_q_triad, cmpl);
-+	alloc_failed += mpnic_bdq_alloc_failed(&qt->sub0);
-+	alloc_failed += mpnic_bdq_alloc_failed(&qt->sub1);
-+
- 	rx->bytes = bytes;
- 	rx->packets = packets;
-+	rx->alloc_fail = alloc_failed;
- }
- 
- static void mpnic_get_queue_stats_tx(struct net_device *dev, int idx,
-@@ -221,6 +242,7 @@ static void mpnic_get_base_stats(struct net_device *dev,
- 
- 	rx->bytes = base->rx.bytes;
- 	rx->packets = base->rx.packets;
-+	rx->alloc_fail = base->rx.alloc_failed;
- }
- 
- static const struct netdev_stat_ops mpnic_stat_ops = {
-diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.h b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.h
-index 0d1ee66dd86c..6711766ebc3c 100644
---- a/drivers/net/ethernet/meta/mpnic/mpnic_netdev.h
-+++ b/drivers/net/ethernet/meta/mpnic/mpnic_netdev.h
-@@ -23,6 +23,7 @@ struct mpnic_base_stats {
- 		u64 packets;
- 		u64 bytes;
- 		u64 dropped;
-+		u64 alloc_failed;
- 		u64 errors;
- 	} rx;
- 
-diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-index 35129fc149e2..91b897d766a8 100644
---- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-+++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
-@@ -409,8 +409,12 @@ static unsigned int __mpnic_fill_bdq(struct mpnic_ring *bdq)
- 		struct page *page;
- 
- 		page = page_pool_dev_alloc_pages(bdq->page_pool);
--		if (!page)
-+		if (!page) {
-+			u64_stats_update_begin(&bdq->stats.syncp);
-+			u64_stats_inc(&bdq->stats.bdq.alloc_failed);
-+			u64_stats_update_end(&bdq->stats.syncp);
- 			break;
-+		}
- 
- 		bdq->rx_buf[i] = page;
- 		mpnic_bd_prep(bdq, i, page);
-@@ -598,6 +602,7 @@ static int mpnic_clean_rcq(struct mpnic_napi_vector *nv,
- 	unsigned int packets = 0, bytes = 0, dropped = 0, errors = 0;
- 	struct mpnic_ring *rcq = &qt->cmpl;
- 	struct mpnic_rcq_state *state;
-+	unsigned int alloc_failed = 0;
- 	__le64 *raw_rcd, done;
- 	u32 head = rcq->head;
- 
-@@ -633,6 +638,7 @@ static int mpnic_clean_rcq(struct mpnic_napi_vector *nv,
- 				   !state->pkt.add_frag_failed)) {
- 				pkt_bytes = xdp_get_buff_len(&state->pkt.buff);
- 				skb = xdp_build_skb_from_buff(&state->pkt.buff);
-+				alloc_failed += !skb;
- 			}
- 
- 			if (likely(skb)) {
-@@ -667,6 +673,7 @@ static int mpnic_clean_rcq(struct mpnic_napi_vector *nv,
- 	u64_stats_add(&rcq->stats.rcq.packets, packets - dropped - errors);
- 	u64_stats_add(&rcq->stats.rcq.bytes, bytes);
- 	u64_stats_add(&rcq->stats.rcq.dropped, dropped);
-+	u64_stats_add(&rcq->stats.rcq.alloc_failed, alloc_failed);
- 	u64_stats_add(&rcq->stats.rcq.errors, errors);
- 	u64_stats_update_end(&rcq->stats.syncp);
- 
-@@ -727,12 +734,19 @@ static void mpnic_aggregate_ring_tcq_counters(struct mpnic_base_stats *base,
- 	base->tx.wake += u64_stats_read(&tcq->stats.tcq.wake);
- }
- 
-+static void mpnic_aggregate_ring_bdq_counters(struct mpnic_base_stats *base,
-+					      struct mpnic_ring *bdq)
-+{
-+	base->rx.alloc_failed += u64_stats_read(&bdq->stats.bdq.alloc_failed);
-+}
-+
- static void mpnic_aggregate_ring_rcq_counters(struct mpnic_base_stats *base,
- 					      struct mpnic_ring *rcq)
- {
- 	base->rx.packets += u64_stats_read(&rcq->stats.rcq.packets);
- 	base->rx.bytes += u64_stats_read(&rcq->stats.rcq.bytes);
- 	base->rx.dropped += u64_stats_read(&rcq->stats.rcq.dropped);
-+	base->rx.alloc_failed += u64_stats_read(&rcq->stats.rcq.alloc_failed);
- 	base->rx.errors += u64_stats_read(&rcq->stats.rcq.errors);
- }
- 
-@@ -769,8 +783,13 @@ void mpnic_stats_fold_rings(struct mpnic_net *mpn)
- 			mpnic_aggregate_ring_tcq_counters(new, &qt->cmpl);
- 		}
- 
--		for (j = 0; j < nv->rxt_count; j++, t++)
--			mpnic_aggregate_ring_rcq_counters(new, &nv->qt[t].cmpl);
-+		for (j = 0; j < nv->rxt_count; j++, t++) {
-+			struct mpnic_q_triad *qt = &nv->qt[t];
-+
-+			mpnic_aggregate_ring_bdq_counters(new, &qt->sub0);
-+			mpnic_aggregate_ring_bdq_counters(new, &qt->sub1);
-+			mpnic_aggregate_ring_rcq_counters(new, &qt->cmpl);
-+		}
- 	}
- 
- 	rcu_assign_pointer(mpn->stats.base, new);
-@@ -1496,7 +1515,9 @@ void mpnic_fill(struct mpnic_net *mpn)
- 			state->hdr.idx = UINT_MAX;
- 			state->payld.idx = UINT_MAX;
- 
-+			local_bh_disable();
- 			mpnic_fill_qt_bdqs(qt);
-+			local_bh_enable();
- 		}
- 	}
- }
-diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h
-index 764e78918b8f..52492e3f484f 100644
---- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h
-+++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.h
-@@ -100,8 +100,12 @@ struct mpnic_queue_stats {
- 			u64_stats_t packets;
- 			u64_stats_t bytes;
- 			u64_stats_t dropped;
-+			u64_stats_t alloc_failed;
- 			u64_stats_t errors;
- 		} rcq;
-+		struct {
-+			u64_stats_t alloc_failed;
-+		} bdq;
- 	};
- 	struct u64_stats_sync syncp;
- };
-
--- 
-2.52.0
-
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
