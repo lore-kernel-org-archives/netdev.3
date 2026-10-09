@@ -1,1547 +1,310 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39303D0BF3;
-	Fri,  9 Oct 2026 17:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CC0344021
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 17:14:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791565947; cv=none; b=sVpzVE6oyOqCE/2sHAk2cj1mY6f+v4KWIvJATe+4i+o2oPYzRFHKaUHv85uPFCgl1R+wnSe5KKcYNhSy9/J27wSdrS4sEswW04xd0PVhv5rC+NLHVMonu0PeqC9Ok2+gXkJ/0DcOU5FRGN8q/tGkAjgF0PnSAsuGb9sMoEVV+8A=
+	t=1791566100; cv=none; b=ZP0bN3UGOoiGbqa+Vw0eipu+VMymFkHOpt0KW4if467BEYFiuYNF+vbW0XX7SFb/J7YnXJ0fg3opUGzQdbuBieqwSI8urg/rYA7Y2igzN9qH0VYFkLjqN41fduaIl87zUMHVdvzXnclUKtYOKuzXnAODB3UeBVgSvmFpsB9g2RI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791565947; c=relaxed/simple;
-	bh=BkulHzlyG3wSk5XjsLf728S9GxDkw5gTc6x556+6df4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EL4FfYgtkjHNVPZWLkMxmh2z4ZvJrO/sOPnfDs52xIzkp8ISgtibRpL90WynDZb1kWuo15RwBeTLgYmHhGaQrtEy6luJA9UR0Bwfe+VnPcgWVguN8rSAzgzABjdp1hI0HKCUwef75vT7/D7vgXv0DGdyL1D1+GLYmcZCcobsDqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuwiZAi2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1791566100; c=relaxed/simple;
+	bh=38wGNto74bxu2WAODltZOq4OXWmmlq4ZJPERCjlRvkI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=juxB3fHYDZ+Gtn0K2adJdizBxAIlKPl7jYp6sLD10ggJmsaJOF6aval+IfWnGkjsskFlQgsfx2KO4mI6gpJ5hEeYrcC7fJl7AD2EVvvvBXcWIE0hCAK7qAy+ow46hzato0btXwe7U/KZMKsKAObu4EiStGMIVmXa5X8yfE1VmJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k0HbMVJV; arc=none smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuwiZAi2"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 78F32C2BD04;
-	Fri,  9 Oct 2026 17:12:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1791565946;
-	bh=BkulHzlyG3wSk5XjsLf728S9GxDkw5gTc6x556+6df4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CuwiZAi2nlCyt0hOVN/tuBr5+vcX/aXk7WJA5fo4Ab+hGhMMPUgwgbOTGvVpxWKx8
-	 PR5cOuqZZowp9lGcLOcGJ+dEO8i0tLf3RJQ/0KrtQXQNB4nbTYR1whlbk+xM/LxxJC
-	 QHOFZbUuAK4+PErD1kJ/908ylGo1ZjJjt5g+uHiskHGEZzG0DHqzzMIYT/bTGWs97z
-	 CehlTfmDrbkJL4TMwfB3yIhO2jPOlLXfJdBlEwv5ky4u4rgaOnXcZGbbTyvR5okvm6
-	 KUud06SJ40axGC4rirXK2/QnIaLOZJ+sIlY36a8B6sDBZHNuE3JWInGTqyE5jcLwsC
-	 M8bhZQfpEkLiA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 63FF9CA9EBD;
-	Fri,  9 Oct 2026 17:12:26 +0000 (UTC)
-From: Selvamani Rajagopal via B4 Relay <devnull+Selvamani.Rajagopal.onsemi.com@kernel.org>
-Date: Fri, 09 Oct 2026 10:12:28 -0700
-Subject: [PATCH net-next v9 08/11] onsemi: s2500: Add driver support for
- S2500 MAC-PHY
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k0HbMVJV"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-66c54dc3a91so314524d50.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 10:14:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791566097; x=1792170897; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=E4z3PQQeohjx7UQf7qRiQ7smvRMOM7QoLpAb02qh/eo=;
+        b=k0HbMVJVgZeiWe7HtFMywv66dHR2+X0wh/KUUU603KYsRjv5IY4wBYP5flUCRRfY/H
+         BpV4kUEuVqbdlEiUJYC/EBNQcE1lWEzA0uySP83ugboGLLj+s+IohHW8VkpS8JU4NQWS
+         897qM7aaU2UknQK3ro7zS1QaU1z0bczpl2XjVayM5DIJXkxZt2MuTawc8BGC4Yi6bfRd
+         xlLM4o7X0aDCIOyHHB5Gq9Qm4WcPQiAkQ9/w3y2NU5s7wBgCXg3Qp3R65pdgDkEYGweb
+         93ppbqHt3GN4Il9UjlibR4uQjWrftognTTlAY4+hrQ091pAO0sRVblD3IApnpNGb3RDG
+         QSBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791566097; x=1792170897;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=E4z3PQQeohjx7UQf7qRiQ7smvRMOM7QoLpAb02qh/eo=;
+        b=CBMwr//Z4GcsdfK/F9IQFO4qqdXsra/Pe2jCIao+wXZHJxS8lCbmCVe8b+dDWe6kXs
+         7DsxjvoPHsScE73zVCxyAfyNmz2tVTf8dJdqeWMDarf7ahbZuH9XO90iW/4O+RP28eIM
+         S/hEY7h/w+Xr4QGbmpRQhEZMGMgIECgZqFTMSaE4JFqCoyQHslADF8pRtH6rut/dC88U
+         VpZgV16gLDFb4j8OfZ5HuErDASf2O+1HBS+2Kgtav/+lyT5BHrcopdExlAnGTn11Aniy
+         5ouzc4EM5TccA+FHp9RSyMsIGwf+6AFVyARM8nMymE5WON4mqSNC22plpNAHaysuyalx
+         xfcA==
+X-Forwarded-Encrypted: i=1; AKwUvBzWVkW9FSZc77kfvaYfE0jh7iLK1cOpG9anJzMm8qU8MT9JBCHXOnDou58z4kdmxFEk3aYCQdU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJk7Y2ZvGb+zTkVDTGBN6PuMxtaeEh0jbb3kl/LRDWjcgyQli4Z
+	DGgJwKJ1dC0lHANXry7N7d0R0EHvhH/3lst0Esq73TZfOOEJBS3tUmK6
+X-Gm-Gg: AYBFou2VfB4eEul/F5yKtDVXNY7Rno0YZ1wMcCZ1dUUH8D9hUggRfkm4qN9hPFDRXy0
+	N6kJbBhCKAnmLP4q9/L5xMf28rEf0E/7dXe2Y5tTNwLh3o/zO9PNgrioLIRJyp9tYd7URQMSYrR
+	Hi2fj3IsMOBXyK0xJWWQMNyFWP24kKS9yWQYzaZg62nPvqR4BzAjtYWLWpksdYc31dKcBuGYFoo
+	cRql9TaSB6JttN038UwGSQccUnfvC04oi28bIL52Jn+FAQm8hA/r2PHiQrMBEzrC2HwJy/Ogyii
+	ml3VgPwNHEgv+QVgN1sfg/ffvOtnOXzexzeXxaq9XlLuKuwLEpoVEmmbPR4GDRyicNqu5ukwC0T
+	zDGuodVFFSKTTqg9ffBFu/kxZtVJxqUsJqX23FFKNkXVK1WRQn+eDCmuSeKoCQ79tGj+5nemJCq
+	waFnKxwoabvoCBX3Wsxm8u66C5OPJhE6IlLajvYKEjMwqZL7Vgp4+zR/B6H26YGspJoYKKfz+49
+	qvWpVlxr7B8jQkLgx4FqBCDCZzepyL8o8CZ2CVc5m1r26qDcjKdi1r8bNw=
+X-Received: by 2002:a05:690e:13cf:b0:677:d251:ccb8 with SMTP id 956f58d0204a3-6793605d268mr1693320d50.4.1791566097218;
+        Fri, 09 Oct 2026 10:14:57 -0700 (PDT)
+Received: from yes.c.googlers.com.com (215.177.86.34.bc.googleusercontent.com. [34.86.177.215])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b07f1e8682sm10990557b3.19.2026.10.09.10.14.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 10:14:56 -0700 (PDT)
+From: Neal Cardwell <ncardwell.sw@gmail.com>
+To: edumazet@kernel.org
+Cc: davem@davemloft.net,
+	horms@kernel.org,
+	jiayuan.chen@linux.dev,
+	kuba@kernel.org,
+	kuniyu@google.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	ncardwell.sw@gmail.com,
+	ncardwell@google.com,
+	netdev@vger.kernel.org,
+	nramaswamy@openai.com,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	ycheng@google.com
+Subject: Re: [PATCH net v3 3/3] selftests: net: packetdrill: test RTO fallback after partial undo
+Date: Fri,  9 Oct 2026 10:14:47 -0700
+Message-ID: <20261009171447.291802-1-ncardwell.sw@gmail.com>
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+In-Reply-To: <CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com>
+References: <CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-s2500-mac-phy-support-v9-8-dcefe1d0bf0d@onsemi.com>
-References: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
-In-Reply-To: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
-To: Selva Rajagopal <selvamani.rajagopal@onsemi.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Parthiban Veerasooran <parthiban.veerasooran@microchip.com>, 
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Eric Dumazet <edumazet@kernel.org>, 
- Piergiorgio Beruto <piergiorgio.beruto@gmail.com>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: Selva Rajagopal <Selvamani.Rajagopal@onsemi.com>, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- Jerry Ray <jerry.ray@microchip.com>, 
- Ciprian Regus <ciprian.regus@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791565943; l=44031;
- i=Selvamani.Rajagopal@onsemi.com; s=20260531; h=from:subject:message-id;
- bh=lEquduQBY9nSxJ0L2I9KrA+ZF8A5Ws3oe7NkJZj2HXY=;
- b=Bpi8ESV1FDoqwqXMLTgsBh1M9yVdBfwGIjSNFDYPRiKhlczbuYAybpLFDSFfG59ILsVyJz3uY
- aTFZZyiLFvgD7RbDaK4Gvxp0QznOEs31YnTft6SPt8C/w2s1Zi2Qwqh
-X-Developer-Key: i=Selvamani.Rajagopal@onsemi.com; a=ed25519;
- pk=5QRdM0HS/LGWWcUZZ9hVfZ+qbPQGZCumcTXOiN7Fyug=
-X-Endpoint-Received: by B4 Relay for
- Selvamani.Rajagopal@onsemi.com/20260531 with auth_id=803
-X-Original-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
-Reply-To: Selvamani.Rajagopal@onsemi.com
+Content-Transfer-Encoding: 8bit
 
-From: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-Support for onsemi's S2500, 802.3 cg compliant Ethernet
-transceiver with integrated MAC-PHY. Works with
-Open Alliance TC6 framework.
+On Fri, Oct 9, 2026 at 1:47#AM Eric Dumazet <edumazet@kernel.org> wrote:
 
-Hardware timestamp support is present in the driver.
-adjtime callback is implemented using settime callback.
+> Let me come back to tp->tsorted_lost_queue [1]. I was too terse there
+> ("often") and it did not get discussed.
 
-Driver has ethtool support for printing some device
-registers, MAC stats, rmon stats and timestamp related
-traffic counters.
+Thanks, Eric. Given that you are OK with the space overhead for a new
+tp->tsorted_lost_queue field, I think it would be quite nice to use your
+suggested approach, since it should give us better loss recovery behavior.
 
-Driver supports maximum three multicast filters. If
-system has more than 3 multicast addresses to support,
-all multicast traffic is allowed.
-
-Signed-off-by: Selvamani Rajagopal <Selvamani.Rajagopal@onsemi.com>
+FWIW, I asked an LLM to code up your idea, and below is what it came up with,
+in case that is useful for discussion or using. It also proposed 2 packetdrill
+tests (one that claims "This is the case that Eric suggested for segments with
+TCPCB_EVER_RETRANS."), which I can post if there is interest.
 
 ---
-changes in v9
-  - moved net_selftest entry in ethtool_ops to the correct patch
-  - Moved MAINTAINERS changes here for driver files.
-  - Fix the order of variable declaration to keep reverse christmas
-    tree format.
-changes in v8
-  - changes to use the new MMS read/write API in oa tc6 framework
-  - Updated to improve adjtime/adjfine implementation
-  - cleanup to remove unncessary definitions/initializations
-  - Removed unnecessary ioctl callback
-changes in v7
-  - Moved the update to MAINTAINERS to the patch that has DTS
-    as it comes first.
-  - Added space between {}. Added missing MODULE_DEVICE_TABLE
-  - Removed the duplicate vendor dependency check in Kconfig
-changes in v6
-  - Changes to ensure line length stay within 80 columns
-changes in v5
-  - integrated the onsemi's selftest support to onsemi's driver
-    as a single patch as number of patches exceeded the limit
-  - Fixed the formatting issue in Kconfig file
-  - Fixed commenting issue
-changes in v4
-  - MAC/PHY Loopback implemented by onsemi replaced by Linux
-    standard net_selftest APIs
-  - onsemi defined MMS values are replaced by OA TC definitions.
-  - removed only model information as it has practical use
-  - replaced all read/write APIs that use non-zero MMS to
-    use the new APIs that takes mms as one of its parameters.
-  - some bit manipulations are changed to use FIELD_GET macro
-changes in v3
-  - split rmon stats and interface states separately.
-  - moved get_ts_info to OA TC6 framework as this isn't vendor
-    specific
-  - removed few static inline code
-  - moved ptp register code OA TC6 framework
-changes in v2
-  - Removed the support for onsemi's NCN26010 which is legacy
-    MAC-PHY to keep only onsemi's S2500 MAC-PHY
-  - Renamed all the functions to start with S2500
-changes in v1
-  - Added onsemi MAC-PHYs NCN26010 and S2500 support
+
+From 919ec4af823300734104e42e855793ebd958c401 Mon Sep 17 00:00:00 2001
+From: Neal Cardwell <ncardwell@google.com>
+Date: Fri, 9 Oct 2026 07:18:41 -0700
+Subject: [PATCH 1/2] tcp: restore RACK-lost skbs to tsorted_sent_queue on undo
+
+RACK unlinks each skb that it marks lost from tp->tsorted_sent_queue, so
+that later scans do not walk it again. The skb only returns to the list
+when it is retransmitted. If an undo clears TCPCB_LOST before that, the
+skb is on no list at all: RACK can never mark it lost again,
+tcp_xmit_retransmit_queue() skips it, and only an RTO repairs it. This
+happens for example after a partial undo in fast recovery, when PRR has
+not yet retransmitted all the skbs that RACK marked lost.
+
+As suggested by Eric, move the skbs that RACK marks lost to a new list,
+tp->tsorted_lost_queue, instead of unlinking them. RACK scans the sent
+queue in send order, and the skbs that a later scan marks lost were sent
+later, so the lost queue stays sorted by send time without any sorting.
+Nothing else needs to change: a retransmit moves the skb to the tail of
+the sent queue, a SACK or cumulative ACK unlinks it, and tcp_fragment()
+links the new skb next to the old one, in whichever list that is.
+(Today, for an skb that RACK unlinked, tcp_fragment() builds a two-node
+ring that is on no list.)
+
+On undo, put the lost queue back into the sent queue. Usually every lost
+skb was sent before every skb that is still in the sent queue, and one
+list_splice_init() at the head does it. But the skbs that
+tcp_timeout_mark_lost() marks stay in the sent queue, and RACK may later
+move skbs sent after them to the lost queue. In that case, merge the two
+sorted lists in one pass.
+
+Unlike skipping skbs with TCPCB_EVER_RETRANS, this also restores skbs
+that a TLP probed, or whose retransmit was lost, so that they do not
+have to wait for an RTO either.
+
+The cost is one list_head in tcp_sock, outside the fast path cache line
+groups.
+
+Fixes: 043b87d7599e ("tcp: more efficient RACK loss detection")
+Reported-by: Neil Ramaswamy <nramaswamy@openai.com>
+Closes: https://lore.kernel.org/netdev/cover.1791506907.git.nramaswamy@openai.com/
+Suggested-by: Eric Dumazet <edumazet@kernel.org>
+Link: https://lore.kernel.org/netdev/CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com/
 ---
- MAINTAINERS                                       |   1 +
- drivers/net/ethernet/Kconfig                      |   1 +
- drivers/net/ethernet/Makefile                     |   1 +
- drivers/net/ethernet/onsemi/Kconfig               |  22 +
- drivers/net/ethernet/onsemi/Makefile              |   7 +
- drivers/net/ethernet/onsemi/s2500/Kconfig         |  21 +
- drivers/net/ethernet/onsemi/s2500/Makefile        |   7 +
- drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c | 376 ++++++++++++++++
- drivers/net/ethernet/onsemi/s2500/s2500_hw_def.h  | 160 +++++++
- drivers/net/ethernet/onsemi/s2500/s2500_main.c    | 523 ++++++++++++++++++++++
- drivers/net/ethernet/onsemi/s2500/s2500_ptp.c     | 174 +++++++
- include/linux/oa_tc6.h                            |   1 +
- 12 files changed, 1294 insertions(+)
+ .../networking/net_cachelines/tcp_sock.rst    |  1 +
+ include/linux/tcp.h                           |  3 ++
+ net/ipv4/tcp.c                                |  2 +
+ net/ipv4/tcp_input.c                          | 51 +++++++++++++++++++
+ net/ipv4/tcp_minisocks.c                      |  1 +
+ net/ipv4/tcp_recovery.c                       |  9 +++-
+ 6 files changed, 66 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1d1e0563b922..4e122a5eefa1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20445,6 +20445,7 @@ M:	Selva Rajagopal <selvamani.rajagopal@onsemi.com>
- L:	netdev@vger.kernel.org
- S:	Supported
- F:	Documentation/devicetree/bindings/net/onnn,s2500.yaml
-+F:	drivers/net/ethernet/onsemi/s2500/*
+diff --git a/Documentation/networking/net_cachelines/tcp_sock.rst b/Documentation/networking/net_cachelines/tcp_sock.rst
+index 0f6088c4ab8bb..c5a4c06a5765d 100644
+--- a/Documentation/networking/net_cachelines/tcp_sock.rst
++++ b/Documentation/networking/net_cachelines/tcp_sock.rst
+@@ -34,6 +34,7 @@ u32                           compressed_ack_rcv_nxt
+ u32                           tsoffset                read_mostly         read_mostly         tcp_established_options(tx);tcp_fast_parse_options(rx)
+ struct list_head              tsq_node
+ struct list_head              tsorted_sent_queue      read_write                              tcp_update_skb_after_send
++struct list_head              tsorted_lost_queue
+ u32                           snd_wl1                                     read_mostly         tcp_may_update_window
+ u32                           snd_wnd                 read_mostly         read_mostly         tcp_wnd_end,tcp_tso_should_defer(tx);tcp_fast_path_on(rx)
+ u32                           max_window              read_mostly                             tcp_bound_to_half_wnd,forced_push
+diff --git a/include/linux/tcp.h b/include/linux/tcp.h
+index 6a8c77719322f..98699d599f11e 100644
+--- a/include/linux/tcp.h
++++ b/include/linux/tcp.h
+@@ -377,6 +377,9 @@ struct tcp_sock {
+ 				 */
+ 	u32	compressed_ack_rcv_nxt;
+ 	struct list_head tsq_node; /* anchor in tsq_tasklet.head list */
++	struct list_head tsorted_lost_queue; /* time-sorted skbs that RACK
++					      * marked lost, until resent
++					      */
  
- OP-TEE DRIVER
- M:	Jens Wiklander <jenswi@kernel.org>
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index 5758e0fbbca5..c160bf991345 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -137,6 +137,7 @@ source "drivers/net/ethernet/nvidia/Kconfig"
- source "drivers/net/ethernet/nxp/Kconfig"
- source "drivers/net/ethernet/oa_tc6/Kconfig"
- source "drivers/net/ethernet/oki-semi/Kconfig"
-+source "drivers/net/ethernet/onsemi/Kconfig"
+ 	/* Information of the most recently (s)acked skb */
+ 	struct tcp_rack {
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 562752352afe4..6cbf4d79824e2 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -428,6 +428,7 @@ void tcp_init_sock(struct sock *sk)
+ 	tcp_init_xmit_timers(sk);
+ 	INIT_LIST_HEAD(&tp->tsq_node);
+ 	INIT_LIST_HEAD(&tp->tsorted_sent_queue);
++	INIT_LIST_HEAD(&tp->tsorted_lost_queue);
  
- config ETHOC
- 	tristate "OpenCores 10/100 Mbps Ethernet MAC support"
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index e0e86c249e42..e4bad64bf95c 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -74,6 +74,7 @@ obj-$(CONFIG_NET_VENDOR_NVIDIA) += nvidia/
- obj-$(CONFIG_LPC_ENET) += nxp/
- obj-$(CONFIG_OA_TC6) += oa_tc6/
- obj-$(CONFIG_NET_VENDOR_OKI) += oki-semi/
-+obj-$(CONFIG_NET_VENDOR_ONSEMI) += onsemi/
- obj-$(CONFIG_ETHOC) += ethoc.o
- obj-$(CONFIG_NET_VENDOR_PASEMI) += pasemi/
- obj-$(CONFIG_NET_VENDOR_QLOGIC) += qlogic/
-diff --git a/drivers/net/ethernet/onsemi/Kconfig b/drivers/net/ethernet/onsemi/Kconfig
-new file mode 100644
-index 000000000000..484de609462a
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/Kconfig
-@@ -0,0 +1,22 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# onsemi network device configuration
-+#
-+
-+config NET_VENDOR_ONSEMI
-+	bool "onsemi network devices"
-+	default y
-+	help
-+	  If you have a network card belonging to this class, say Y.
-+
-+	  Note that the answer to this question doesn't directly affect the
-+	  kernel: saying N will just cause the configurator to skip all
-+	  the questions about onsemi ethernet devices. If you say Y, you
-+	  will be asked for your specific card in the following questions.
-+
-+if NET_VENDOR_ONSEMI
-+
-+source "drivers/net/ethernet/onsemi/s2500/Kconfig"
-+
-+endif # NET_VENDOR_ONSEMI
-+
-diff --git a/drivers/net/ethernet/onsemi/Makefile b/drivers/net/ethernet/onsemi/Makefile
-new file mode 100644
-index 000000000000..f3d4eb154313
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Makefile for the onsemi network device drivers.
-+#
-+
-+obj-$(CONFIG_S2500_MACPHY) += s2500/
-+
-diff --git a/drivers/net/ethernet/onsemi/s2500/Kconfig b/drivers/net/ethernet/onsemi/s2500/Kconfig
-new file mode 100644
-index 000000000000..abd967448af0
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/s2500/Kconfig
-@@ -0,0 +1,21 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# onsemi S2500 Driver Support
-+#
-+
-+config S2500_MACPHY
-+	tristate "S2500 support"
-+	depends on SPI
-+	depends on PTP_1588_CLOCK_OPTIONAL
-+	imply NET_SELFTESTS
-+	select BITREVERSE
-+	select NCN26000_PHY
-+	select OA_TC6
-+	help
-+	  Support for the onsemi S2500 MACPHY Ethernet chip.
-+	  It works under the framework that conform to OPEN Alliance
-+	  10BASE-T1x Serial Interface specification.
-+
-+	  To compile this driver as a module, choose M here. The module will be
-+	  called s2500.
-+
-diff --git a/drivers/net/ethernet/onsemi/s2500/Makefile b/drivers/net/ethernet/onsemi/s2500/Makefile
-new file mode 100644
-index 000000000000..61ec705cdf9f
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/s2500/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Makefile for the onsemi network device drivers.
-+#
-+obj-$(CONFIG_S2500_MACPHY) := s2500.o
-+s2500-objs := s2500_main.o s2500_ethtool.o s2500_ptp.o
-+
-diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-new file mode 100644
-index 000000000000..062cab9460dc
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/s2500/s2500_ethtool.c
-@@ -0,0 +1,376 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright 2026 Semiconductor Components Industries, LLC ("onsemi").
-+ * onsemi's S2500 10BASE-T1S MAC-PHY driver
-+ */
-+
-+#include <linux/ethtool.h>
-+#include <linux/phy.h>
-+
-+#include "s2500_hw_def.h"
-+
-+#define S2500_NUM_REGS			38
-+#define S2500_REGDUMP_LEN		(sizeof(u32) * (S2500_NUM_REGS * 2))
-+
-+#define S2500_NUM_MAC_STATS		1
-+#define S2500_NUM_RMON_STATS		12
-+
-+struct s2500_reg_map {
-+	u16 reg;
-+	u8 mms;
-+};
-+
-+static const struct s2500_reg_map s2500_reg_map[S2500_NUM_REGS] = {
-+	{ S2500_REG_VS_ONIPVER,      OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_TWEAKS1,      OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_PLCAEXT,      OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_PMATUNE0,     OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_PMATUNE1,     OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_T1SWUPTUNE,   OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_HDD,          OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_DCQ_TOID,     OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_DCQ_SQI,      OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_DCQ_SQI_PLUS, OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_HDD_TUNE1,    OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_HDD_TUNE2,    OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_HDD_TUNE3,    OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_WS_STATUS_0,  OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_WS_CTRL_0,    OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_WS_STATUS_1,  OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_WS_CTRL_1,    OA_TC6_PHY_C45_VS_PLCA_MMS4 },
-+	{ S2500_REG_VS_MIIMIRQE,     OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_MIIMIRQS,     OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_DIOCFG0,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CHIPID,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_TWEAKS2,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_MACID0,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_MACID1,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_NVM_HEALTH,   OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_PTP_SEC,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_PTPNSEC,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_PTP_SETSEC,   OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_SETNSEC,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_PTP_ADJ,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CMPCTL,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CMPSEC,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CMPNSEC,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CMPPER,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CAPCTL,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CAPSEC,       OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_CAPNSEC,      OA_TC6_PHY_C45_VS_MMS12 },
-+	{ S2500_REG_VS_BCNCNT,       OA_TC6_PHY_C45_VS_MMS12 },
-+};
-+
-+enum s2500_stat_idx {
-+	S2500_MSTOCTECTSTX_IDX = 0,
-+	S2500_MSTFRAMESTXOK_IDX,
-+	S2500_MSTBCASTTXOK_IDX,
-+	S2500_MSTMCASTTXOK_IDX,
-+	S2500_MSTFRAMESTX64_IDX,
-+	S2500_MSTFRAMESTX65_IDX,
-+	S2500_MSTFRAMESTX128_IDX,
-+	S2500_MSTFRAMESTX256_IDX,
-+	S2500_MSTFRAMESTX512_IDX,
-+	S2500_MSTFRAMESTX1024_IDX,
-+	S2500_MSTTXUNDEFLOW_IDX,
-+	S2500_MSTSINGLECOL_IDX,
-+	S2500_MSTMULTICOL_IDX,
-+	S2500_MSTEXCESSCOL_IDX,
-+	S2500_MSTDEFERREDTX_IDX,
-+	S2500_MSTCRSERR_IDX,
-+	S2500_MSTOCTECTSRX_IDX,
-+	S2500_MSTFRAMESRXOK_IDX,
-+	S2500_MSTBCASTRXOK_IDX,
-+	S2500_MSTMCASTRXOK_IDX,
-+	S2500_MSTFRAMESRX64_IDX,
-+	S2500_MSTFRAMESRX65_IDX,
-+	S2500_MSTFRAMESRX128_IDX,
-+	S2500_MSTFRAMESRX256_IDX,
-+	S2500_MSTFRAMESRX512_IDX,
-+	S2500_MSTFRAMESRX1024_IDX,
-+	S2500_MSTRUNTSERR_IDX,
-+	S2500_MSTRXTOOLONG_IDX,
-+	S2500_MSTFCSERRS_IDX,
-+	S2500_MSTSYMBOLERRS_IDX,
-+	S2500_MSTALIGNERRS_IDX,
-+	S2500_MSTRXOVERFLOW_IDX,
-+	S2500_MSTRXDROPPED_IDX,
-+};
-+
-+static const char s2500_mac_stat_strings[][ETH_GSTRING_LEN] = {
-+	"rx_mismatch_drops",
-+};
-+
-+static const u8 s2500_mac_stat_map[S2500_NUM_MAC_STATS] = {
-+	S2500_MSTRXDROPPED_IDX,
-+};
-+
-+static const u8 s2500_rmon_stat_map[S2500_NUM_RMON_STATS] = {
-+	S2500_MSTFRAMESTX64_IDX,
-+	S2500_MSTFRAMESTX65_IDX,
-+	S2500_MSTFRAMESTX128_IDX,
-+	S2500_MSTFRAMESTX256_IDX,
-+	S2500_MSTFRAMESTX512_IDX,
-+	S2500_MSTFRAMESTX1024_IDX,
-+	S2500_MSTFRAMESRX64_IDX,
-+	S2500_MSTFRAMESRX65_IDX,
-+	S2500_MSTFRAMESRX128_IDX,
-+	S2500_MSTFRAMESRX256_IDX,
-+	S2500_MSTFRAMESRX512_IDX,
-+	S2500_MSTFRAMESRX1024_IDX,
-+};
-+
-+static const struct ethtool_rmon_hist_range s2500_rmon_hist_ranges[] = {
-+	{ 64, 64 },
-+	{ 65, 127 },
-+	{ 128, 255 },
-+	{ 256, 511 },
-+	{ 512, 1023 },
-+	{ 1024, 2000 },
-+	{ },
-+};
-+
-+#define S2500_MAC_STATS_LEN ARRAY_SIZE(s2500_mac_stat_strings)
-+static_assert(S2500_MAC_STATS_LEN == S2500_NUM_MAC_STATS);
-+static_assert(ARRAY_SIZE(s2500_mac_stat_map) == S2500_NUM_MAC_STATS);
-+static_assert(ARRAY_SIZE(s2500_rmon_stat_map) == S2500_NUM_RMON_STATS);
-+
-+#define STAT_REG_OFFSET(x) ((S2500_REG_MAC_ST##x) - \
-+			   S2500_REG_MAC_FIRST_STAT)
-+
-+static void s2500_update_stats(struct s2500_info *priv)
+ 	icsk->icsk_rto = TCP_TIMEOUT_INIT;
+ 
+@@ -3352,6 +3353,7 @@ void tcp_write_queue_purge(struct sock *sk)
+ 	}
+ 	tcp_rtx_queue_purge(sk);
+ 	INIT_LIST_HEAD(&tcp_sk(sk)->tsorted_sent_queue);
++	INIT_LIST_HEAD(&tcp_sk(sk)->tsorted_lost_queue);
+ 	tcp_clear_all_retrans_hints(tcp_sk(sk));
+ 	tcp_sk(sk)->packets_out = 0;
+ 	inet_csk(sk)->icsk_backoff = 0;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 92bc60716f33d..a18ee1bcf0138 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2840,6 +2840,56 @@ static void DBGUNDO(struct sock *sk, const char *msg)
+ #endif
+ }
+ 
++/* Was @a sent after @b, in the order of tp->tsorted_sent_queue? */
++static bool tcp_tsorted_after(const struct sk_buff *a, const struct sk_buff *b)
 +{
-+	u64 *data = priv->stats_data;
-+	u32 *regs, *rptr, addr;
-+	int ret;
++	return tcp_skb_sent_after(a->skb_mstamp_ns, b->skb_mstamp_ns,
++				  TCP_SKB_CB(a)->end_seq,
++				  TCP_SKB_CB(b)->end_seq);
++}
 +
-+	if (time_is_after_jiffies(priv->stats_read_at +
-+				  S2500_STATS_CACHE_PERIOD))
++/* Undo cleared the lost marks, so move the skbs that RACK marked lost back
++ * to tp->tsorted_sent_queue, in send order, where RACK can detect their
++ * loss again.
++ */
++static void tcp_tsorted_restore_lost(struct tcp_sock *tp)
++{
++	struct list_head *sent = &tp->tsorted_sent_queue;
++	struct list_head *lost = &tp->tsorted_lost_queue;
++	struct sk_buff *skb, *tmp, *pos;
++
++	if (list_empty(lost))
 +		return;
 +
-+	regs = kmalloc_array(S2500_NUM_STAT_REGS, sizeof(u32), GFP_KERNEL);
-+	if (!regs)
-+		return;
-+
-+	addr = FIELD_PREP(S2500_REG_MMS_MASK, OA_TC6_MAC_MMS1) |
-+			  S2500_REG_MAC_STOCTECTSTXL;
-+	ret = oa_tc6_read_registers(priv->tc6, addr, regs,
-+				    S2500_NUM_STAT_REGS);
-+	if (ret)
-+		goto out;
-+
-+	priv->stats_read_at = jiffies;
-+	rptr = regs;
-+
-+	/* TX bytes is a 64-bit value that is stored in two regs.
-+	 * When lower 32 bits are read from OCTETS-L register,
-+	 * upper bits are sampled and stored in OCTETS-H register.
-+	 * Request to read multiple registers reads OCTETS-L first.
-+	 * This way, counter value is read in an atomic manner.
++	/* Usually every lost skb was sent before every skb that is still in
++	 * the sent queue, so the lost queue goes back at the head. But the
++	 * skbs that tcp_timeout_mark_lost() marks stay in the sent queue,
++	 * and RACK may later move skbs sent after them to the lost queue.
++	 * Then merge the two queues, which are both sorted by send time.
 +	 */
-+	*(data++) += ((u64)*rptr) | (((u64)*(rptr + 1)) << 32);
-+
-+	/* Rest are 32-bit values until RX bytes register. */
-+	for (rptr += 2; (rptr - regs) < STAT_REG_OFFSET(OCTECTSRXL); ++rptr)
-+		*(data++) += *rptr;
-+
-+	/* RX bytes is a 64-bit value that is stored in two regs.
-+	 * Like TX bytes counter, value is read atomically from
-+	 * registers.
-+	 */
-+	*(data++) += ((u64)*rptr) | (((u64)*(rptr + 1)) << 32);
-+
-+	for (rptr += 2; (rptr - regs) < S2500_NUM_STAT_REGS; ++rptr)
-+		*(data++) += *rptr;
-+out:
-+	kfree(regs);
-+}
-+
-+static void s2500_get_drvinfo(struct net_device *ndev,
-+			      struct ethtool_drvinfo *info)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	strscpy(info->driver, DRV_NAME, sizeof(info->driver));
-+	strscpy(info->bus_info, dev_name(&priv->spi->dev),
-+		sizeof(info->bus_info));
-+}
-+
-+static int s2500_get_sset_count(struct net_device *ndev, int sset)
-+{
-+	switch (sset) {
-+	case ETH_SS_STATS:
-+		return S2500_MAC_STATS_LEN;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static void s2500_get_strings(struct net_device *ndev, u32 stringset,
-+			      u8 *buf)
-+{
-+	switch (stringset) {
-+	case ETH_SS_STATS:
-+		memcpy(buf, s2500_mac_stat_strings,
-+		       S2500_MAC_STATS_LEN * ETH_GSTRING_LEN);
-+		break;
-+	}
-+}
-+
-+static void s2500_get_ethtool_stats(struct net_device *ndev,
-+				    struct ethtool_stats *stats, u64 *data)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+	int i;
-+
-+	s2500_update_stats(priv);
-+	for (i = 0; i < S2500_NUM_MAC_STATS; i++)
-+		data[i] = priv->stats_data[s2500_mac_stat_map[i]];
-+}
-+
-+static void s2500_get_eth_mac_stats(struct net_device *ndev,
-+				    struct ethtool_eth_mac_stats *mac_stats)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+	const u64 *st;
-+
-+	if (mac_stats->src != ETHTOOL_MAC_STATS_SRC_AGGREGATE)
++	pos = list_first_entry(sent, struct sk_buff, tcp_tsorted_anchor);
++	if (list_empty(sent) ||
++	    !tcp_tsorted_after(list_last_entry(lost, struct sk_buff,
++					       tcp_tsorted_anchor), pos)) {
++		list_splice_init(lost, sent);
 +		return;
-+
-+	s2500_update_stats(priv);
-+	st = priv->stats_data;
-+
-+	mac_stats->OctetsTransmittedOK = st[S2500_MSTOCTECTSTX_IDX];
-+	mac_stats->FramesTransmittedOK = st[S2500_MSTFRAMESTXOK_IDX];
-+	mac_stats->BroadcastFramesXmittedOK = st[S2500_MSTBCASTTXOK_IDX];
-+	mac_stats->MulticastFramesXmittedOK = st[S2500_MSTMCASTTXOK_IDX];
-+	mac_stats->SingleCollisionFrames = st[S2500_MSTSINGLECOL_IDX];
-+	mac_stats->MultipleCollisionFrames = st[S2500_MSTMULTICOL_IDX];
-+	mac_stats->FramesAbortedDueToXSColls = st[S2500_MSTEXCESSCOL_IDX];
-+	mac_stats->FramesWithDeferredXmissions = st[S2500_MSTDEFERREDTX_IDX];
-+	mac_stats->CarrierSenseErrors = st[S2500_MSTCRSERR_IDX];
-+	mac_stats->FramesLostDueToIntMACXmitError =
-+		st[S2500_MSTTXUNDEFLOW_IDX];
-+	mac_stats->OctetsReceivedOK = st[S2500_MSTOCTECTSRX_IDX];
-+	mac_stats->FramesReceivedOK = st[S2500_MSTFRAMESRXOK_IDX];
-+	mac_stats->BroadcastFramesReceivedOK = st[S2500_MSTBCASTRXOK_IDX];
-+	mac_stats->MulticastFramesReceivedOK = st[S2500_MSTMCASTRXOK_IDX];
-+	mac_stats->FrameTooLongErrors = st[S2500_MSTRXTOOLONG_IDX];
-+	mac_stats->FrameCheckSequenceErrors = st[S2500_MSTFCSERRS_IDX];
-+	mac_stats->AlignmentErrors = st[S2500_MSTALIGNERRS_IDX];
-+	mac_stats->FramesLostDueToIntMACRcvError =
-+		st[S2500_MSTRXOVERFLOW_IDX];
-+}
-+
-+static void s2500_get_eth_phy_stats(struct net_device *ndev,
-+				    struct ethtool_eth_phy_stats *phy_stats)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	if (phy_stats->src != ETHTOOL_MAC_STATS_SRC_AGGREGATE)
-+		return;
-+
-+	s2500_update_stats(priv);
-+	phy_stats->SymbolErrorDuringCarrier =
-+		priv->stats_data[S2500_MSTSYMBOLERRS_IDX];
-+}
-+
-+static void s2500_rmon_stats(struct net_device *ndev,
-+			     struct ethtool_rmon_stats *rmon_stats,
-+			     const struct ethtool_rmon_hist_range **ranges)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+	u8 offset;
-+	int i;
-+
-+	if (rmon_stats->src != ETHTOOL_MAC_STATS_SRC_AGGREGATE)
-+		return;
-+
-+	s2500_update_stats(priv);
-+
-+	rmon_stats->undersize_pkts = priv->stats_data[S2500_MSTRUNTSERR_IDX];
-+	rmon_stats->oversize_pkts = priv->stats_data[S2500_MSTRXTOOLONG_IDX];
-+
-+	for (i = 0; i < 6; i++) {
-+		offset = s2500_rmon_stat_map[i];
-+		rmon_stats->hist_tx[i] = priv->stats_data[offset];
 +	}
 +
-+	for (i = 0; i < 6; i++) {
-+		offset = s2500_rmon_stat_map[i + 6];
-+		rmon_stats->hist[i] = priv->stats_data[offset];
-+	}
-+
-+	*ranges = s2500_rmon_hist_ranges;
-+}
-+
-+static int s2500_get_ts_info(struct net_device *ndev,
-+			     struct kernel_ethtool_ts_info *ts_info)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	return oa_tc6_get_ts_info(priv->tc6, ts_info);
-+}
-+
-+static int s2500_get_regs_len(struct net_device *dev)
-+{
-+	return S2500_REGDUMP_LEN;
-+}
-+
-+static void s2500_get_regs(struct net_device *ndev,
-+			   struct ethtool_regs *regs, void *p)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+	__be32 *pbuff = p;
-+	int ret = 0;
-+	u32 val;
-+	u16 reg;
-+	u8 mms;
-+	int i;
-+
-+	regs->version = 0;
-+	memset(p, 0, S2500_REGDUMP_LEN);
-+
-+	if (!netif_running(ndev))
-+		return;
-+
-+	for (i = 0; i < S2500_NUM_REGS; i++) {
-+		val = 0;
-+		reg = s2500_reg_map[i].reg;
-+		mms = s2500_reg_map[i].mms;
-+		ret = oa_tc6_read_register_mms(priv->tc6, mms, reg,
-+					       &val);
-+
-+		/* Write a pattern to indicate failure */
-+		if (ret)
-+			val = 0xDEADC0DE;
-+		*pbuff++ = cpu_to_be32(((u32)mms << 16) | reg);
-+		*pbuff++ = cpu_to_be32(val);
-+	}
-+}
-+
-+static void s2500_get_ts_stats(struct net_device *ndev,
-+			       struct ethtool_ts_stats *ts_stats)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	oa_tc6_get_ts_stats(priv->tc6, ts_stats);
-+}
-+
-+const struct ethtool_ops s2500_ethtool_ops = {
-+	.get_drvinfo = s2500_get_drvinfo,
-+	.get_link = ethtool_op_get_link,
-+	.get_link_ksettings = phy_ethtool_get_link_ksettings,
-+	.set_link_ksettings = phy_ethtool_set_link_ksettings,
-+	.get_ts_stats = s2500_get_ts_stats,
-+	.get_sset_count = s2500_get_sset_count,
-+	.get_strings = s2500_get_strings,
-+	.get_ethtool_stats = s2500_get_ethtool_stats,
-+	.get_eth_mac_stats = s2500_get_eth_mac_stats,
-+	.get_eth_phy_stats = s2500_get_eth_phy_stats,
-+	.get_rmon_stats = s2500_rmon_stats,
-+	.get_ts_info = s2500_get_ts_info,
-+	.get_regs_len = s2500_get_regs_len,
-+	.get_regs = s2500_get_regs,
-+};
-+
-diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_hw_def.h b/drivers/net/ethernet/onsemi/s2500/s2500_hw_def.h
-new file mode 100644
-index 000000000000..0d0b335a397a
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/s2500/s2500_hw_def.h
-@@ -0,0 +1,160 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright 2026 Semiconductor Components Industries, LLC ("onsemi").
-+ * onsemi's S2500 10BASE-T1S MAC-PHY driver
-+ */
-+
-+#ifndef S2500_HW_DEF_H
-+#define S2500_HW_DEF_H
-+
-+#include <linux/kernel.h>
-+#include <linux/netdevice.h>
-+#include <linux/spi/spi.h>
-+#include <linux/phylink.h>
-+#include <linux/net_tstamp.h>
-+#include <linux/ptp_clock_kernel.h>
-+#include <linux/delay.h>
-+#include <linux/mutex.h>
-+#include <linux/ktime.h>
-+#include <linux/errno.h>
-+#include <linux/oa_tc6.h>
-+
-+#define DRV_NAME			"s2500"
-+
-+#define S2500_N_MCAST_FILTERS		3
-+
-+#define S2500_REG_MMS_MASK		GENMASK(19, 16)
-+
-+/* SPI OID and model register */
-+#define S2500_REG_PHYID			0x1
-+
-+#define S2500_PHYID_OUI_SHIFT		10
-+#define S2500_PHYID_OUI_MASK		GENMASK(31, S2500_PHYID_OUI_SHIFT)
-+#define S2500_PHYID_OUI_MASK0		GENMASK(21, 16)
-+#define S2500_PHYID_OUI_MASK1		GENMASK(15, 8)
-+#define S2500_PHYID_OUI_MASK2		GENMASK(7, 0)
-+
-+#define S2500_CONFIG0_TXCTHRESH_SHIFT	10
-+#define S2500_CONFIG0_RXCTE		BIT(8)
-+#define S2500_CONFIG0_CPS_SHIFT		0
-+#define S2500_CONFIG0_TXCTHRESH_8	0x2
-+#define S2500_CONFIG0_CPS_64		0x6
-+
-+/* Read only bit in STATUS0 register */
-+#define S2500_STATUS0_PHY_INT		BIT(7)
-+
-+#define S2500_REG_MAC_CTRL		0x0
-+
-+#define S2500_MAC_CTRL_MCSF		BIT(18)
-+#define S2500_MAC_CTRL_ADRF		BIT(16)
-+#define S2500_MAC_CTRL_FCSA		BIT(8)
-+#define S2500_MAC_CTRL_TXEN		BIT(1)
-+#define S2500_MAC_CTRL_RXEN		BIT(0)
-+
-+/* MAC address filter registers */
-+#define S2500_REG_MAC_ADDRFILTL(n)	(16 + 2 * (n))
-+#define S2500_REG_MAC_ADDRFILTH(n)	(17 + 2 * (n))
-+#define S2500_REG_MAC_ADDRMASKL(n)	(32 + 2 * (n))
-+#define S2500_REG_MAC_ADDRMASKH(n)	(33 + 2 * (n))
-+
-+#define S2500_MAC_ADDRFILT_ENABLE	BIT(31)
-+
-+/* MAC statistic registers */
-+#define S2500_REG_MAC_STOCTECTSTXL	48
-+#define S2500_REG_MAC_STOCTECTSTXH	49
-+#define S2500_REG_MAC_STOCTECTSRXL	65
-+#define S2500_REG_MAC_STOCTECTSRXH	66
-+#define S2500_REG_MAC_STRXDROPPED	82
-+
-+/* First/last statistic register for sequential access */
-+#define S2500_REG_MAC_FIRST_STAT	S2500_REG_MAC_STOCTECTSTXL
-+#define S2500_REG_MAC_LAST_STAT		S2500_REG_MAC_STRXDROPPED
-+
-+#define S2500_NUM_STAT_REGS \
-+	(S2500_REG_MAC_LAST_STAT - S2500_REG_MAC_FIRST_STAT + 1)
-+#define S2500_NUM_STAT_VARS		(S2500_NUM_STAT_REGS - 2)
-+#define S2500_STATS_CACHE_PERIOD	msecs_to_jiffies(100)
-+
-+/* Vendor specific MMS4 registers */
-+#define S2500_REG_VS_ONIPVER		0x8000
-+#define S2500_REG_VS_TWEAKS1		0x8001
-+#define S2500_REG_VS_PLCAEXT		0x8002
-+#define S2500_REG_VS_PMATUNE0		0x8003
-+#define S2500_REG_VS_PMATUNE1		0x8004
-+#define S2500_REG_VS_T1SWUPTUNE		0x8007
-+#define S2500_REG_VS_HDD		0xCC01
-+#define S2500_REG_VS_DCQ_TOID		0xCC02
-+#define S2500_REG_VS_DCQ_SQI		0xCC03
-+#define S2500_REG_VS_DCQ_SQI_PLUS	0xCC04
-+#define S2500_REG_VS_HDD_TUNE1		0xCD00
-+#define S2500_REG_VS_HDD_TUNE2		0xCD01
-+#define S2500_REG_VS_HDD_TUNE3		0xCD02
-+#define S2500_REG_VS_WS_STATUS_0	0xD000
-+#define S2500_REG_VS_WS_CTRL_0		0xD001
-+#define S2500_REG_VS_WS_STATUS_1	0xD100
-+#define S2500_REG_VS_WS_CTRL_1		0xD101
-+
-+/* Vendor specific MMS12 registers */
-+#define S2500_REG_VS_MIIMIRQE		0x10
-+
-+/* MIIM IRQ status register */
-+#define S2500_REG_VS_MIIMIRQS		0x11
-+
-+#define S2500_REG_VS_DIOCFG0		0x12
-+
-+#define S2500_REG_VS_CHIPID		0x1000
-+#define S2500_REG_VS_TWEAKS2		0x1001
-+
-+/* Permanent MAC address register */
-+#define S2500_REG_VS_MACID0		0x1002
-+#define S2500_VS_MACID0_BYTE4_MASK	GENMASK(15, 8)
-+#define S2500_VS_MACID0_BYTE5_MASK	GENMASK(7, 0)
-+
-+#define S2500_REG_VS_MACID1		0x1003
-+#define S2500_VS_MACID1_BYTE3_MASK	GENMASK(7, 0)
-+#define S2500_REG_VS_NVM_HEALTH		0x1005
-+
-+/* PTP registers */
-+#define S2500_REG_VS_PTP_SEC		0x1010
-+#define S2500_REG_VS_PTP_SETSEC		0x1012
-+#define S2500_REG_VS_PTP_ADJ		0x1014
-+
-+/* Frequency adjust magnitude, 1 LSB = 0.000125 ppm = 1/8 ppb */
-+#define S2500_PTP_ADJ_MAX		GENMASK(27, 0)
-+#define S2500_PTP_MAX_ADJ_PPB		(S2500_PTP_ADJ_MAX / 8)
-+#define S2500_REG_VS_PTPNSEC		0x1011
-+#define S2500_REG_VS_SETNSEC		0x1013
-+#define S2500_REG_VS_CMPCTL		0x1015
-+#define S2500_REG_VS_CMPSEC		0x1016
-+#define S2500_REG_VS_CMPNSEC		0x1017
-+#define S2500_REG_VS_CMPPER		0x1018
-+#define S2500_REG_VS_CAPCTL		0x1019
-+#define S2500_REG_VS_CAPSEC		0x101A
-+#define S2500_REG_VS_CAPNSEC		0x101B
-+#define S2500_REG_VS_BCNCNT		0x101C
-+
-+/* prototypes / forward declarations */
-+extern const struct ethtool_ops s2500_ethtool_ops;
-+
-+struct s2500_info {
-+	struct device *dev;
-+	struct net_device *ndev;
-+
-+	/* To have atomic operation for PTP time registers */
-+	struct mutex ptp_adj_lock;
-+
-+	struct spi_device *spi;
-+
-+	/* statistic counters variables */
-+	u64 stats_data[S2500_NUM_STAT_VARS];
-+	unsigned long stats_read_at;
-+
-+	/* PTP related variables */
-+	struct ptp_clock_info ptp_clock_info;
-+	struct oa_tc6 *tc6;
-+};
-+
-+int s2500_ptp_register(struct s2500_info *priv);
-+
-+#endif /* S2500_HW_DEF_H */
-+
-diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_main.c b/drivers/net/ethernet/onsemi/s2500/s2500_main.c
-new file mode 100644
-index 000000000000..4cd0f5d10666
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/s2500/s2500_main.c
-@@ -0,0 +1,523 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright 2026 Semiconductor Components Industries, LLC ("onsemi").
-+ * onsemi's S2500 10BASE-T1S MAC-PHY driver
-+ */
-+
-+#include <linux/etherdevice.h>
-+#include <linux/if_ether.h>
-+#include <linux/irqchip.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/bitrev.h>
-+#include <linux/phy.h>
-+
-+#include "s2500_hw_def.h"
-+
-+/* Initializes the net device MAC address by reading the UID stored
-+ * into the device internal non-volatile memory.
-+ */
-+static int s2500_read_mac_from_nvmem(struct s2500_info *priv)
-+{
-+	u8 mms = OA_TC6_PHY_C45_VS_MMS12;
-+	u8 addr[ETH_ALEN];
-+	u32 mac1 = 0;
-+	u32 mac0 = 0;
-+	u32 val;
-+	int ret;
-+
-+	ret = oa_tc6_read_register_mms(priv->tc6, mms,
-+				       S2500_REG_VS_MACID1, &mac1);
-+	if (ret)
-+		return ret;
-+
-+	ret = oa_tc6_read_register_mms(priv->tc6, mms,
-+				       S2500_REG_VS_MACID0, &mac0);
-+	if (ret)
-+		return ret;
-+
-+	/* Pre-production parts may have 0 */
-+	if (mac0 == 0 && mac1 == 0)
-+		return -ENXIO;
-+
-+	ret = oa_tc6_read_register(priv->tc6, S2500_REG_PHYID, &val);
-+	if (ret)
-+		return ret;
-+
-+	val = (val & S2500_PHYID_OUI_MASK) >> S2500_PHYID_OUI_SHIFT;
-+
-+	/* Mapping for bits from PHY ID register to OUI as give below.
-+	 * - PHY-ID[10:17] provides OUI[16:23]
-+	 * - PHY-ID[18:25] provides OUI[8:15]
-+	 * - PHY-ID[26:31] provides OUI[2:7]
-+	 *
-+	 * Hardware presents OUI such a way that this requires not just
-+	 * byte level swap, bit level swap is needed as well.
-+	 */
-+	addr[0] = bitrev8(FIELD_GET(S2500_PHYID_OUI_MASK0, val));
-+	addr[1] = bitrev8(FIELD_GET(S2500_PHYID_OUI_MASK1, val));
-+	addr[2] = bitrev8(FIELD_GET(S2500_PHYID_OUI_MASK2, val));
-+
-+	addr[3] = FIELD_GET(S2500_VS_MACID1_BYTE3_MASK, mac1);
-+	addr[4] = FIELD_GET(S2500_VS_MACID0_BYTE4_MASK, mac0);
-+	addr[5] = FIELD_GET(S2500_VS_MACID0_BYTE5_MASK, mac0);
-+
-+	__dev_addr_set(priv->ndev, addr, ETH_ALEN);
-+	priv->ndev->addr_assign_type = NET_ADDR_PERM;
-+	return ret;
-+}
-+
-+/* Writes MAC address to macphy registers */
-+static int s2500_set_mac_filter(struct net_device *ndev, const u8 *mac)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+	u8 mms = OA_TC6_MAC_MMS1;
-+	u32 val;
-+	int ret;
-+
-+	/* Set unicast address filter */
-+	ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+					S2500_REG_MAC_ADDRMASKL(0),
-+					0xffffffff);
-+	if (ret)
-+		return ret;
-+
-+	ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+					S2500_REG_MAC_ADDRMASKH(0),
-+					0xffff);
-+	if (ret)
-+		return ret;
-+
-+	val = get_unaligned_be32(&mac[2]);
-+
-+	ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+					S2500_REG_MAC_ADDRFILTL(0),
-+					val);
-+	if (ret)
-+		return ret;
-+
-+	val = S2500_MAC_ADDRFILT_ENABLE | get_unaligned_be16(mac);
-+
-+	return oa_tc6_write_register_mms(priv->tc6, mms,
-+					 S2500_REG_MAC_ADDRFILTH(0),
-+					 val);
-+}
-+
-+static int s2500_mac_ctrl_modify_bits(struct s2500_info *priv,
-+				      u32 in_bits, bool clr)
-+{
-+	u32 reg = S2500_REG_MAC_CTRL;
-+	u8 mms = OA_TC6_MAC_MMS1;
-+	u32 rval = 0;
-+	u32 wval = 0;
-+	int ret;
-+
-+	ret = oa_tc6_read_register_mms(priv->tc6, mms, reg, &rval);
-+	if (ret)
-+		return ret;
-+
-+	if (clr)
-+		wval = rval & ~in_bits;
-+	else
-+		wval = rval | in_bits;
-+	if (rval != wval)
-+		ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+						reg, wval);
-+	return ret;
-+}
-+
-+static int s2500_init(struct s2500_info *priv)
-+{
-+	u32 val;
-+	int ret;
-+
-+	/* Configure MAC-PHY's behavior */
-+	val = OA_TC6_CONFIG0_SYNC | S2500_CONFIG0_RXCTE |
-+	      (S2500_CONFIG0_TXCTHRESH_8 <<
-+	      S2500_CONFIG0_TXCTHRESH_SHIFT) |
-+	      (S2500_CONFIG0_CPS_64 << S2500_CONFIG0_CPS_SHIFT) |
-+	      OA_TC6_CONFIG0_FTSS_64BIT_TSTAMP;
-+
-+	ret = oa_tc6_write_register(priv->tc6, OA_TC6_REG_CONFIG0,
-+				    val);
-+	if (ret)
-+		return ret;
-+
-+	/* Program the source MAC address into the device */
-+	ret = s2500_set_mac_filter(priv->ndev, priv->ndev->dev_addr);
-+	if (ret)
-+		return ret;
-+
-+	val = S2500_MAC_CTRL_ADRF | S2500_MAC_CTRL_FCSA;
-+
-+	return s2500_mac_ctrl_modify_bits(priv, val, false);
-+}
-+
-+static void s2500_shutdown(struct s2500_info *priv)
-+{
-+	u32 val = S2500_MAC_CTRL_TXEN | S2500_MAC_CTRL_RXEN;
-+	struct net_device *ndev = priv->ndev;
-+
-+	netif_stop_queue(ndev);
-+	phy_stop(ndev->phydev);
-+
-+	s2500_mac_ctrl_modify_bits(priv, val, true);
-+}
-+
-+static int s2500_set_promiscuous_mode(struct s2500_info *priv,
-+				      unsigned int rx_flags)
-+{
-+	u32 val = S2500_MAC_CTRL_ADRF;
-+	bool clr = false;
-+
-+	if (rx_flags & IFF_PROMISC)
-+		clr = true;
-+	return s2500_mac_ctrl_modify_bits(priv, val, clr);
-+}
-+
-+static int s2500_set_multicast_mode(struct s2500_info *priv,
-+				    unsigned int rx_flags,
-+				    struct netdev_hw_addr_list *mc)
-+{
-+	struct netdev_hw_addr *ha;
-+	u8 mms = OA_TC6_MAC_MMS1;
-+	int i, ret = 0;
-+	int mc_count;
-+	u16 addr;
-+	u32 val;
-+
-+	mc_count = netdev_hw_addr_list_count(mc);
-+
-+	if ((rx_flags & IFF_ALLMULTI) ||
-+	    mc_count > S2500_N_MCAST_FILTERS) {
-+		/* Disable multicast filter */
-+		ret = s2500_mac_ctrl_modify_bits(priv,
-+						 S2500_MAC_CTRL_MCSF,
-+						 true);
-+		if (ret)
-+			return ret;
-+
-+		/* Accept all multicasts */
-+		addr = S2500_REG_MAC_ADDRMASKL(1);
-+		ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+						addr, 0);
-+		if (ret)
-+			return ret;
-+
-+		addr = S2500_REG_MAC_ADDRMASKH(1);
-+		ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+						addr, 0x100);
-+		if (ret)
-+			return ret;
-+
-+		addr = S2500_REG_MAC_ADDRFILTL(1);
-+		ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+						addr, 0);
-+		if (ret)
-+			return ret;
-+
-+		val = S2500_MAC_ADDRFILT_ENABLE | 0x00000100;
-+		addr = S2500_REG_MAC_ADDRFILTH(1);
-+		ret = oa_tc6_write_register_mms(priv->tc6, mms,
-+						addr, val);
-+	} else if (mc_count == 0) {
-+		/* Enable multicast filter */
-+		ret = s2500_mac_ctrl_modify_bits(priv,
-+						 S2500_MAC_CTRL_MCSF,
-+						 false);
-+		if (ret)
-+			return ret;
-+
-+		/* Disable filters */
-+		for (i = 1; i <= S2500_N_MCAST_FILTERS; i++) {
-+			addr = S2500_REG_MAC_ADDRFILTH(i);
-+			ret = oa_tc6_write_register_mms(priv->tc6,
-+							mms, addr, 0);
-+			if (ret)
-+				return ret;
++	list_for_each_entry_safe(skb, tmp, lost, tcp_tsorted_anchor) {
++		/* Find the first skb in the sent queue sent after skb. */
++		list_for_each_entry_from(pos, sent, tcp_tsorted_anchor) {
++			if (tcp_tsorted_after(pos, skb))
++				break;
 +		}
-+	} else {
-+		u32 addrh, addrl;
-+
-+		/* Disable multicast filter */
-+		ret = s2500_mac_ctrl_modify_bits(priv,
-+						 S2500_MAC_CTRL_MCSF,
-+						 true);
-+		if (ret)
-+			return ret;
-+
-+		/* Disable filters */
-+		for (i = 1; i <= S2500_N_MCAST_FILTERS; i++) {
-+			addr = S2500_REG_MAC_ADDRFILTH(i);
-+			ret = oa_tc6_write_register_mms(priv->tc6,
-+							mms, addr, 0);
-+			if (ret)
-+				return ret;
++		if (list_entry_is_head(pos, sent, tcp_tsorted_anchor)) {
++			list_splice_tail_init(lost, sent);
++			return;
 +		}
-+
-+		/* Slot 0 holds the unicast MAC, multicast starts at 1 */
-+		i = 1;
-+		netdev_hw_addr_list_for_each(ha, mc) {
-+			const u8 *mac = ha->addr;
-+			int slot = i++;
-+
-+			addrh = S2500_MAC_ADDRFILT_ENABLE |
-+				get_unaligned_be16(mac);
-+			addrl = get_unaligned_be32(&mac[2]);
-+
-+			addr = S2500_REG_MAC_ADDRFILTH(slot);
-+			ret = oa_tc6_write_register_mms(priv->tc6,
-+							mms, addr,
-+							addrh);
-+			if (ret)
-+				return ret;
-+
-+			addr = S2500_REG_MAC_ADDRFILTL(slot);
-+			ret = oa_tc6_write_register_mms(priv->tc6,
-+							mms, addr,
-+							addrl);
-+			if (ret)
-+				return ret;
-+
-+			addr = S2500_REG_MAC_ADDRMASKL(slot);
-+			ret = oa_tc6_write_register_mms(priv->tc6,
-+							mms, addr,
-+							0xffffffff);
-+			if (ret)
-+				return ret;
-+
-+			addr = S2500_REG_MAC_ADDRMASKH(slot);
-+			ret = oa_tc6_write_register_mms(priv->tc6,
-+							mms, addr,
-+							0xffff);
-+			if (ret)
-+				return ret;
-+		}
++		list_move_tail(&skb->tcp_tsorted_anchor,
++			       &pos->tcp_tsorted_anchor);
 +	}
-+	return ret;
 +}
 +
-+static int s2500_set_rx_mode(struct net_device *ndev,
-+			     struct netdev_hw_addr_list *uc,
-+			     struct netdev_hw_addr_list *mc)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+	int ret;
-+
-+	ret = s2500_set_promiscuous_mode(priv, ndev->flags);
-+	if (ret)
-+		return ret;
-+
-+	return s2500_set_multicast_mode(priv, ndev->flags, mc);
-+}
-+
-+static int s2500_set_mac_address(struct net_device *ndev, void *p)
-+{
-+	struct sockaddr *addr = p;
-+	int ret;
-+
-+	if (!is_valid_ether_addr(addr->sa_data))
-+		return -EADDRNOTAVAIL;
-+
-+	ret = s2500_set_mac_filter(ndev, addr->sa_data);
-+	if (ret)
-+		return ret;
-+
-+	eth_hw_addr_set(ndev, addr->sa_data);
-+	return ret;
-+}
-+
-+static netdev_tx_t s2500_start_xmit(struct sk_buff *skb,
-+				    struct net_device *ndev)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	return oa_tc6_start_xmit(priv->tc6, skb);
-+}
-+
-+static int s2500_open(struct net_device *ndev)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+	u32 val;
-+	int ret;
-+
-+	dev_dbg(&ndev->dev, "%s", "s2500_open\n");
-+	phy_start(priv->ndev->phydev);
-+
-+	val = S2500_MAC_CTRL_TXEN | S2500_MAC_CTRL_RXEN;
-+	ret = s2500_mac_ctrl_modify_bits(priv, val, false);
-+	if (!ret)
-+		netif_start_queue(priv->ndev);
-+	else
-+		phy_stop(priv->ndev->phydev);
-+	return ret;
-+}
-+
-+static int s2500_stop(struct net_device *ndev)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	dev_dbg(&ndev->dev, "%s", "s2500_stop\n");
-+
-+	s2500_shutdown(priv);
-+	return 0;
-+}
-+
-+static int s2500_hwtstamp_get(struct net_device *ndev,
-+			      struct kernel_hwtstamp_config *k_cfg)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	oa_tc6_hwtstamp_get(priv->tc6, k_cfg);
-+	return 0;
-+}
-+
-+static int s2500_hwtstamp_set(struct net_device *ndev,
-+			      struct kernel_hwtstamp_config *cfg,
-+			      struct netlink_ext_ack *extack)
-+{
-+	struct s2500_info *priv = netdev_priv(ndev);
-+
-+	return oa_tc6_hwtstamp_set(priv->tc6, cfg);
-+}
-+
-+static const struct net_device_ops s2500_netdev_ops = {
-+	.ndo_open              = s2500_open,
-+	.ndo_stop              = s2500_stop,
-+	.ndo_start_xmit        = s2500_start_xmit,
-+	.ndo_set_mac_address   = s2500_set_mac_address,
-+	.ndo_set_rx_mode_async = s2500_set_rx_mode,
-+	.ndo_eth_ioctl         = phy_do_ioctl_running,
-+	.ndo_hwtstamp_get      = s2500_hwtstamp_get,
-+	.ndo_hwtstamp_set      = s2500_hwtstamp_set,
-+};
-+
-+static int s2500_probe(struct spi_device *spi)
-+{
-+	struct device *dev = &spi->dev;
-+	struct net_device *ndev;
-+	struct s2500_info *priv;
-+	u32 val;
-+	int ret;
-+
-+	if (spi->irq < 0)
-+		return -ENODEV;
-+
-+	ndev = devm_alloc_etherdev(dev, sizeof(struct s2500_info));
-+	if (!ndev)
-+		return -ENOMEM;
-+
-+	priv = netdev_priv(ndev);
-+	priv->ndev = ndev;
-+	priv->spi = spi;
-+	priv->dev = dev;
-+
-+	SET_NETDEV_DEV(ndev, dev);
-+
-+	mutex_init(&priv->ptp_adj_lock);
-+	ndev->irq = spi->irq;
-+
-+	/* Ensures that the first read is not from the cache. */
-+	priv->stats_read_at = jiffies - S2500_STATS_CACHE_PERIOD;
-+
-+	spi_set_drvdata(spi, priv);
-+
-+	ndev->netdev_ops = &s2500_netdev_ops;
-+	ndev->ethtool_ops = &s2500_ethtool_ops;
-+	ndev->if_port = IF_PORT_10BASET;
-+
-+	priv->tc6 = oa_tc6_init(spi, ndev, NULL);
-+	if (IS_ERR(priv->tc6)) {
-+		ret = PTR_ERR(priv->tc6);
-+		dev_err(&spi->dev, "OA TC6 init failed\n");
-+		return ret;
-+	}
-+	oa_tc6_set_vend1_mms(priv->tc6, OA_TC6_PHY_C45_VS_MMS12);
-+
-+	/* All read-only bits. Some are self clear. No need to write */
-+	ret = oa_tc6_read_register_mms(priv->tc6, OA_TC6_PHY_C45_VS_MMS12,
-+				       S2500_REG_VS_MIIMIRQS, &val);
-+	if (ret) {
-+		dev_err(&spi->dev, "Failed to read MIIM IRQ status\n");
-+		goto err_reg_read;
-+	}
-+
-+	/* Acknowledge all IRQ status bits */
-+	ret = oa_tc6_read_register(priv->tc6,
-+				   OA_TC6_REG_STATUS0, &val);
-+	if (!ret) {
-+		/* Clear read only bit */
-+		val &= ~S2500_STATUS0_PHY_INT;
-+		oa_tc6_write_register(priv->tc6,
-+				      OA_TC6_REG_STATUS0, val);
-+	}
-+
-+	ret = device_get_ethdev_address(priv->dev, ndev);
-+	if (ret)
-+		ret = s2500_read_mac_from_nvmem(priv);
-+
-+	if (ret) {
-+		eth_hw_addr_random(ndev);
-+		dev_warn(&spi->dev, "Using random MAC address %pM\n",
-+			 ndev->dev_addr);
-+	}
-+
-+	ret = s2500_init(priv);
-+	if (ret) {
-+		dev_err(&spi->dev, "Failure seen in s2500_init\n");
-+		goto err_reg_read;
-+	}
-+
-+	/* Configure PTP as S2500 supports it */
-+	ret = s2500_ptp_register(priv);
-+	if (ret)
-+		goto err_reg_read;
-+
-+	ret = register_netdev(ndev);
-+	if (!ret)
-+		return ret;
-+	dev_err(&spi->dev, "Failed to register netdev\n");
-+	oa_tc6_ptp_unregister(priv->tc6);
-+err_reg_read:
-+	oa_tc6_exit(priv->tc6);
-+	return ret;
-+}
-+
-+static void s2500_remove(struct spi_device *spi)
-+{
-+	struct s2500_info *priv = spi_get_drvdata(spi);
-+
-+	dev_dbg(&priv->ndev->dev, "%s", "s2500_remove\n");
-+
-+	unregister_netdev(priv->ndev);
-+	oa_tc6_ptp_unregister(priv->tc6);
-+	oa_tc6_exit(priv->tc6);
-+}
-+
-+static const struct of_device_id s2500_of_match[] = {
-+	{ .compatible = "onnn,s2500" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, s2500_of_match);
-+
-+static const struct spi_device_id s2500_ids[] = {
-+	{ "s2500" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, s2500_ids);
-+
-+static struct spi_driver s2500_driver = {
-+	.driver = {
-+		.name = DRV_NAME,
-+		.of_match_table = s2500_of_match,
-+	},
-+	.probe = s2500_probe,
-+	.remove = s2500_remove,
-+	.id_table = s2500_ids,
-+};
-+module_spi_driver(s2500_driver);
-+
-+MODULE_AUTHOR("Selva Rajagopal <selvamani.rajagopal@onsemi.com>");
-+MODULE_AUTHOR("Piergiorgio Beruto");
-+MODULE_DESCRIPTION("onsemi MACPHY ethernet driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/net/ethernet/onsemi/s2500/s2500_ptp.c b/drivers/net/ethernet/onsemi/s2500/s2500_ptp.c
-new file mode 100644
-index 000000000000..2bcf69c0d6a2
---- /dev/null
-+++ b/drivers/net/ethernet/onsemi/s2500/s2500_ptp.c
-@@ -0,0 +1,174 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright 2026 Semiconductor Components Industries, LLC ("onsemi").
-+ * onsemi's S2500 10BASE-T1S MAC-PHY driver
-+ */
-+
-+#include "s2500_hw_def.h"
-+
-+static int s2500_ptp_get_time64(struct ptp_clock_info *ptp,
-+				struct timespec64 *ts,
-+				struct ptp_system_timestamp *ptp_sts)
-+{
-+	struct s2500_info *priv = container_of(ptp, struct s2500_info,
-+					       ptp_clock_info);
-+	u32 data[2];
-+	u32 addr;
-+	int ret;
-+
-+	ptp_read_system_prets(ptp_sts);
-+	addr = FIELD_PREP(S2500_REG_MMS_MASK,
-+			  OA_TC6_PHY_C45_VS_MMS12) |
-+			  S2500_REG_VS_PTP_SEC;
-+	ret = oa_tc6_read_registers(priv->tc6, addr, &data[0], 2);
-+	ptp_read_system_postts(ptp_sts);
-+
-+	if (!ret) {
-+		ts->tv_sec = data[0];
-+		ts->tv_nsec = data[1];
-+	}
-+
-+	return ret;
-+}
-+
-+static int s2500_ptp_write_time(struct s2500_info *priv,
-+				const struct timespec64 *ts)
-+{
-+	u32 data[2];
-+	u32 addr;
-+
-+	lockdep_assert_held(&priv->ptp_adj_lock);
-+
-+	if (ts->tv_sec >= (1ULL << 32))
-+		return -ERANGE;
-+
-+	data[0] = (u32)ts->tv_sec;
-+	/* bit 31 = execute set command */
-+	data[1] = ts->tv_nsec | BIT(31);
-+	addr = FIELD_PREP(S2500_REG_MMS_MASK,
-+			  OA_TC6_PHY_C45_VS_MMS12) |
-+			  S2500_REG_VS_PTP_SETSEC;
-+
-+	return oa_tc6_write_registers(priv->tc6, addr, &data[0], 2);
-+}
-+
-+static int s2500_ptp_set_time64(struct ptp_clock_info *ptp,
-+				const struct timespec64 *ts)
-+{
-+	struct s2500_info *priv = container_of(ptp, struct s2500_info,
-+					       ptp_clock_info);
-+	int ret;
-+
-+	mutex_lock(&priv->ptp_adj_lock);
-+	ret = s2500_ptp_write_time(priv, ts);
-+	mutex_unlock(&priv->ptp_adj_lock);
-+
-+	return ret;
-+}
-+
-+static int s2500_ptp_set_freq(struct s2500_info *priv, long scaled_ppm)
-+{
-+	u32 sign_bit = 0;
-+	long adj;
-+	u32 val;
-+	u64 ppm;
-+
-+	if (scaled_ppm < 0) {
-+		/* split sign / mod */
-+		sign_bit = 1U << 31;
-+		scaled_ppm = ~scaled_ppm + 1;
-+	}
-+
-+	/*
-+	 * Convert unsigned scaled_ppm to atto-seconds per clock cycles.
-+	 * The scaled_ppm format is Qx.16 --> 1 lsb = 1/65536 ppm.
-+	 * The clock period of the S2500 is 8ns (125 MHz), so 1 lsb of
-+	 * adj register LSB is 1 atto-sec / 8ns = 0.000125 ppm.
-+	 * Represented in Qx.16 format, this is 0.000125 * 2^16 = 8(.192)
-+	 * To convert scaled_ppm into a register value we need to divide
-+	 * it by the LSB value, hence adj = (scaled_ppm * 1000) / 8192 to
-+	 * minimize the precision loss due to the integer arithmetic.
-+	 * That further reduces to (scaled_ppm * 125) / 1024.
-+	 */
-+	ppm = (u64)scaled_ppm * 125;
-+	do_div(ppm, 1024);
-+	adj = (long)ppm;
-+
-+	/* check overflow */
-+	if (adj > S2500_PTP_ADJ_MAX)
-+		return -ERANGE;
-+
-+	val = (u32)adj | sign_bit;
-+	return oa_tc6_write_register_mms(priv->tc6, OA_TC6_PHY_C45_VS_MMS12,
-+					 S2500_REG_VS_PTP_ADJ, val);
-+}
-+
-+static int s2500_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
-+{
-+	struct s2500_info *priv = container_of(ptp, struct s2500_info,
-+					       ptp_clock_info);
-+
-+	return s2500_ptp_set_freq(priv, scaled_ppm);
-+}
-+
-+static int s2500_ptp_step_time(struct s2500_info *priv, s64 delta)
-+{
-+	struct timespec64 target, now, delta_ts;
-+	struct ptp_system_timestamp sts;
-+	int ret;
-+
-+	memset(&sts, 0, sizeof(sts));
-+	ret = s2500_ptp_get_time64(&priv->ptp_clock_info, &now, &sts);
-+	if (ret)
-+		return ret;
-+	if (delta >= 0) {
-+		delta_ts = ns_to_timespec64(delta);
-+		target = timespec64_add(now, delta_ts);
-+	} else {
-+		delta_ts = ns_to_timespec64(-delta);
-+		target = timespec64_sub(now, delta_ts);
-+	}
-+	/* The subtraction above can take the target below the epoch */
-+	if (target.tv_sec < 0)
-+		return -ERANGE;
-+	return s2500_ptp_write_time(priv, &target);
-+}
-+
-+static int s2500_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
-+{
-+	struct s2500_info *priv = container_of(ptp, struct s2500_info,
-+					       ptp_clock_info);
-+	int ret;
-+
-+	/* Nothing to do */
-+	if (delta == 0)
-+		return 0;
-+
-+	/* The device has no add-delta register, so the offset is applied as
-+	 * a read-modify-write of the time registers.
-+	 */
-+	mutex_lock(&priv->ptp_adj_lock);
-+	ret = s2500_ptp_step_time(priv, delta);
-+	mutex_unlock(&priv->ptp_adj_lock);
-+
-+	return ret;
-+}
-+
-+int s2500_ptp_register(struct s2500_info *priv)
-+{
-+	struct ptp_clock_info *info = &priv->ptp_clock_info;
-+	int ret;
-+
-+	info->max_adj = S2500_PTP_MAX_ADJ_PPB;
-+	info->owner = THIS_MODULE;
-+	info->adjfine = s2500_ptp_adjfine;
-+	info->gettimex64 = s2500_ptp_get_time64;
-+	info->settime64 = s2500_ptp_set_time64;
-+	info->adjtime = s2500_ptp_adjtime;
-+
-+	ret = oa_tc6_ptp_register(priv->tc6, info);
-+	if (ret)
-+		dev_err(&priv->spi->dev, "PTP registration failed\n");
-+	return ret;
-+}
-+
-diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-index 88e7d5491b20..86075ee113fe 100644
---- a/include/linux/oa_tc6.h
-+++ b/include/linux/oa_tc6.h
-@@ -75,6 +75,7 @@
- #define OA_TC6_PHY_C45_VS_PLCA_MMS4		4	/* MMD 31 */
- #define OA_TC6_PHY_C45_AUTO_NEG_MMS5		5	/* MMD 7 */
- #define OA_TC6_PHY_C45_POWER_UNIT_MMS6		6	/* MMD 13 */
-+#define OA_TC6_PHY_C45_VS_MMS12			12	/* for vendors */
+ static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+@@ -2850,6 +2900,7 @@ static void tcp_undo_cwnd_reduction(struct sock *sk, bool unmark_loss)
+ 		skb_rbtree_walk(skb, &sk->tcp_rtx_queue) {
+ 			TCP_SKB_CB(skb)->sacked &= ~TCPCB_LOST;
+ 		}
++		tcp_tsorted_restore_lost(tp);
+ 		tp->lost_out = 0;
+ 		tcp_clear_all_retrans_hints(tp);
+ 	}
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 0ddfd5af6e58f..e73db6b70d079 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -580,6 +580,7 @@ struct sock *tcp_create_openreq_child(const struct sock *sk,
  
- struct oa_tc6;
+ 	INIT_LIST_HEAD(&newtp->tsq_node);
+ 	INIT_LIST_HEAD(&newtp->tsorted_sent_queue);
++	INIT_LIST_HEAD(&newtp->tsorted_lost_queue);
  
-
+ 	tcp_init_wl(newtp, treq->rcv_isn);
+ 
+diff --git a/net/ipv4/tcp_recovery.c b/net/ipv4/tcp_recovery.c
+index 1396467510736..4258b00e28570 100644
+--- a/net/ipv4/tcp_recovery.c
++++ b/net/ipv4/tcp_recovery.c
+@@ -84,7 +84,14 @@ static void tcp_rack_detect_loss(struct sock *sk, u32 *reo_timeout)
+ 		remaining = tcp_rack_skb_timeout(tp, skb, reo_wnd);
+ 		if (remaining <= 0) {
+ 			tcp_mark_skb_lost(sk, skb);
+-			list_del_init(&skb->tcp_tsorted_anchor);
++			/* Move the skb to the lost queue instead of just
++			 * unlinking it, so that undo can put it back. Each
++			 * scan marks skbs in send order, and the skbs a later
++			 * scan marks were sent later, so the lost queue stays
++			 * sorted by send time.
++			 */
++			list_move_tail(&skb->tcp_tsorted_anchor,
++				       &tp->tsorted_lost_queue);
+ 		} else {
+ 			/* Record maximum wait time */
+ 			*reo_timeout = max_t(u32, *reo_timeout, remaining);
 -- 
-2.43.0
-
+2.56.0.385.gd3acb90ef8-goog
 
