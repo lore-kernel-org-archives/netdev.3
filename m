@@ -1,403 +1,154 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa2-f10.google.com (mail-oa2-f10.google.com [74.125.231.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6E11B4F0A;
-	Fri,  9 Oct 2026 05:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0F33CF690
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 05:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791525339; cv=none; b=eWBURvNDN2cVh4V+W/JjS73iC1y7frLJ7wJ2ojo17mvFJ2cMdkd//A/R6XVdwI3hexc8emFc4JByq0cZK4IqEAjpeKC1nMOZlohQpGrg7Ze8SoL5DM0v6AwY2JR4rxodEXcL4al0Yi8LiRRd3+zk3fGRSXCFp8jibZaG6Sg8ckc=
+	t=1791525375; cv=none; b=e1ALBZ24eEZIutGCD/ffnVvJ4zOyHR++5rstuyxI/HBuKU0IJQxpDagC871ad7+J80ULQJY2xdMwRFna509ljsxU8sq/uPT5DK5AzIwfVHnK5gd5LyZzt1kItsOlV6NZZ59Z2NhW9FF600KniV24QpUrYBZLQdtnkZ5bEF6ysDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791525339; c=relaxed/simple;
-	bh=IGoLwZgHM+A8k45W6DHg4WD6ZHMwtSlO7CCubNLI+io=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Qw9yL50OGdF6mYEk/X+yvs7X3MuTaph5Xasc7YkC3ZETlbXhff6xpYBTkB6gFATV1T4w1DRyInjqi7fLhIfM5kaV4TTN0dxHcgQYlUucVmX2J80Hoaa99/SzMcBIs/5pt5FzGYAY1dRiUJx1tVd3aiNj4xxUWEW7eDQ6Up02e+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AW/R5kRv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791525375; c=relaxed/simple;
+	bh=0Cd7BRJTOwMBwlto6I1RgpvE5V4HZw5T6GNxqVD2h10=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G8zhwmcOE4tLtiHkF0z8wfZ4mdaOOrrxMRvh/Ir2zF0suFfJPVrg1AhQUnjqc+6YFquXmvXjvjkHfu7MKGH9P77W7cWqPjmAZawwk+j7SHU43DBLKGAG1CO8PkQuXaFz+5RDjFPKQOShu8mu0z0GazQWHW3D8MloYMkDHVVimy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9kld79g; arc=none smtp.client-ip=74.125.231.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AW/R5kRv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12741F000FF;
-	Fri,  9 Oct 2026 05:55:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791525338;
-	bh=z++ovmLCjLUQb7TShFLHPtLsuA2Bcf+FxL9MZyiRbuI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AW/R5kRvVobQcMcjPpus0isKodlrA+ms3ZWMSe5F2w/qjDg2npEK/3WkGaCqBmFWI
-	 KAZNDNlhZuuKVpRKm5WqZze0DKIW4ZJyhyp0OrINXHDqu5ev1X7doBpoYePeH6aFcI
-	 hsTDbZty93tM0wj/LfvY8fU20IMWnsXrTaj2iNI9NXAGjCaOiuFnqbhyaBxXblze8U
-	 kSFORk8DznwqlCz4FNbWGTNV8mxzfLCo7Oks31tpz9LZJZXI7X2AoUw/lRrJ1vavZ0
-	 u9MUf9vPWL20yl6YEN3l1fVg/9zYXyFKNXdu32L/0roX16JfVFAtFT2UFMImVjasfO
-	 hDtbh3vlx1iMg==
-Subject: Re: [PATCH v4 2/2] nfc: nci: uart: fix use-after-free of write_work
- on ldisc teardown
-From: netdev-bot+sashiko@kernel.org
-To: shubham@octane.security
-Cc: netdev@vger.kernel.org, oe-linux-nfc@lists.linux.dev, david@ixit.cz,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, johan@kernel.org, linux-kernel@vger.kernel.org,
- gio@octane.security
-Date: Fri, 09 Oct 2026 05:55:37 +0000
-Message-ID: <179152533733.434549.9573604181273544366@kernel.org>
-In-Reply-To: <20261006115532.72100-3-shubham@octane.security>
-References: <20261006115532.72100-3-shubham@octane.security>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9kld79g"
+Received: by mail-oa2-f10.google.com with SMTP id 586e51a60fabf-4753ef5108aso2556806fac.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 22:56:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791525373; x=1792130173; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YBM96Z0acKI7hIHci4HfMZ4VWwlNJJJw6ZcLXrahmw0=;
+        b=Y9kld79gHMe/lWTLg9dwyKVSjp3aIjP93TFwhRhltmOLMKUwSVFrbHKxxJiCOn36PU
+         Gcpfr9fDOY0UuOr+o3pPAsAcAdv93FtFOz3NPcCPND8h8To8WTkQACV12nP5Rf+3qglj
+         iuK/k7mtpt136yuPg07ccZJ4k7bsX3cPbuHvkzyBfG8hj4+NZw6EP8SDWHf7oGlXLjcK
+         hw/rsxdaAVc+kZpZ8Alr3cwYegrmBUNiEjaS9ydSksnV3TNTwB+7wtGobshlf7fjPb8o
+         S/+8gDdwh4h/W6pQsN9Go4o80v+KxC6sljZ/nZ7Nr/mIRkzZPtmSdsm3NGnWxhDggZOP
+         Yl5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791525373; x=1792130173;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YBM96Z0acKI7hIHci4HfMZ4VWwlNJJJw6ZcLXrahmw0=;
+        b=RM32M+nI4BW+9XCSqxTMUzEDP9mgdpCSOU7ZiR3j8afQksXCK+n/Nuq5i/A7408vJB
+         gOFNPjdzGYv8KsYHW4XtI1SJFXNQdXl1LBiiT1Uo1WXRws22l+4YsN0YXsipnT858RjA
+         cgSm1vHb2ppqr/jPp6HENirOviCHQX7JQoxYFmDHSQueLoOwv2QoEksx56taKXOjcZ65
+         ISP2/41PC0b7o4F1PukdB5rnvbfij4HGth2eyH/azFATlyLbccsuR5E0SucqPNz9GD2j
+         Xye//aY4U7KrWOU5u0Ig1j2dUjpfgnxSoqe+/EG8ZT7LIq7fCmv5yqwPooSolOVrq803
+         C8rQ==
+X-Gm-Message-State: AFq9FYJy5bypXoRBA/V8/uYuIsRph5+OYTzdn+feWhk/ZIsQ50p0283s
+	8Hy7/O5t0uq7+iRh9YiBmwKc0dS9WF+PgumPN8wa0xMYSaYD6oeHbO9k
+X-Gm-Gg: AYBFou2eAsfj4v+JH30XD54DTO/XLDOxzqAFfrDtEmjlcxRsWpHCmeQ9YY07yLIm9Dr
+	G/IhCctOlsiSsYQWmSFZbIp1kXatmtV+ey1P6lOh+T4sctyHFv9jzwo/yMdi+n7hvVY1Q2osRHB
+	mr0iIRxNA6MUYCWTu9KGr3fPhLk2QUhVPQsJDvNzMEBY2XbfcWTdO7UbnEAh7m84PKbvugzXz40
+	hhfvo0RthlOy1RqVdsBl/sr3xGKil6UMVBL6ahS/GKTLZtiP6efFJQ55S770J3/6ujetg8os9xM
+	ofjCH87tz+41sd0UqQ38av4rUJD2FD70qwNn9dILZKXWhvu3qcz7adCV6n3161K4eMsgLGkgV6M
+	NMw4x4vX5BU+8TPKfzU8ep6QPC1t8IQVRE21Bzs4ZO3e+ll0DMM+qPdw+lw8REnQ4LurexcEiKs
+	SetgPPDj9a9ESRqrlixLhNe23azHChGSqkCFJZFHS344+T9m82x4uPP1EXgbhrQFuol9j20B+a7
+	ZAffbNNAGDkIwyFHV3LRxl6VXHY2FIb/8yJ6Q==
+X-Received: by 2002:a05:6870:3329:b0:49e:6d1c:a569 with SMTP id 586e51a60fabf-4a2a88e66a0mr909544fac.38.1791525373223;
+        Thu, 08 Oct 2026 22:56:13 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.36])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a2a84a14c0sm1079723fac.3.2026.10.08.22.56.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 22:56:11 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: Jon Maloy <jmaloy@redhat.com>,
+	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
+	Ying Xue <ying.xue@windriver.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] tipc: fix broadcast sender hang and leak on last acker departure
+Date: Fri,  9 Oct 2026 13:56:00 +0800
+Message-ID: <20261009055601.2304158-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+TIPC group broadcast senders are blocked in poll()/write() until all
+members have acked the replicast.  When a departing member held the
+last outstanding ack, tipc_group_delete_member() decrements
+grp->bc_ackers to zero but never restores *grp->open nor wakes the
+blocked senders; write() then sleeps until the send timeout and
+poll() is never woken at all.  Commit 99cc2a62e07a ("tipc: reject
+invalid and unexpected GRP_ACK_MSG to prevent bc_ackers underflow")
+noted this as a pre-existing issue.
 
-Critical: 0 · High: 0 (1) · Medium: 1 (2) · Low: 2 (1)
+Restore the open state exactly on the 1->0 acker transition in the
+delete path, mirroring the GRP_ACK_MSG completion path, and invoke
+sk->sk_write_space() from tipc_sk_filter_rcv() when the group just
+became writable again.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+This vulnerability was discovered by Tencent CodeBuddy Security.
 
-- [Medium] Regression: CORE_RESET sent while the device is torn down
-  never reaches the NFCC.
-- [Low] The commit message describes the tty-hangup race wrongly.
-- [Low] The new comment in nci_uart_tx_wakeup() is wrong as soon as the
-  patch lands.
+Cc: stable@vger.kernel.org
+Fixes: 2f487712b893 ("tipc: guarantee that group broadcast doesn't bypass group unicast")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
+ net/tipc/group.c  |  9 ++++++---
+ net/tipc/socket.c | 12 +++++++++++-
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but two
-  NCIUARTSETDRIVER ioctls can race on one tty (TOCTOU), orphaning an…
-- [Medium] This problem wasn't introduced by this patch, but the TX state
-  machine can lose a wakeup.
-- [Medium] This problem wasn't introduced by this patch, but the driver-
-  template registry has a lifetime race.
-- [Low] This problem wasn't introduced by this patch, but tty->disc_data
-  is published only after nu->ops.open() has registered the NCI device…
+diff --git a/net/tipc/group.c b/net/tipc/group.c
+index 74f6d3dac0784..e20eb612f82ce 100644
+--- a/net/tipc/group.c
++++ b/net/tipc/group.c
+@@ -340,9 +340,12 @@ static void tipc_group_delete_member(struct tipc_group *grp,
+ 	rb_erase(&m->tree_node, &grp->members);
+ 	grp->member_cnt--;
 
+-	/* Check if we were waiting for replicast ack from this member */
+-	if (grp->bc_ackers && less(m->bc_acked, grp->bc_snd_nxt - 1))
+-		grp->bc_ackers--;
++	/* If this member held the last outstanding replicast ack,
++	 * restore the open state so blocked broadcast senders can proceed.
++	 */
++	if (grp->bc_ackers && less(m->bc_acked, grp->bc_snd_nxt - 1) &&
++	    !--grp->bc_ackers)
++		*grp->open = true;
+
+ 	list_del_init(&m->list);
+ 	list_del_init(&m->small_win);
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index d5d70eb230b56..65cc0c4964b31 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -2356,8 +2356,18 @@ static void tipc_sk_filter_rcv(struct sock *sk, struct sk_buff *skb,
+ 	if (unlikely(!msg_isdata(hdr)))
+ 		tipc_sk_proto_rcv(sk, &inputq, xmitq);
+
+-	if (unlikely(grp))
++	if (unlikely(grp)) {
++		bool was_open = tsk->group_is_open;
++
+ 		tipc_group_filter_msg(grp, &inputq, xmitq);
++		/* A departing member may have held the last outstanding
++		 * replicast ack, which can restore the open state inside
++		 * tipc_group_filter_msg(); wake up senders blocked in
++		 * poll()/write() if the group just became writable.
++		 */
++		if (!was_open && tsk->group_is_open)
++			sk->sk_write_space(sk);
++	}
+
+ 	if (unlikely(!grp) && mtyp == TIPC_MCAST_MSG)
+ 		tipc_mcast_filter_msg(net, &tsk->mc_method.deferredq, &inputq);
 --
-
-nfc: nci: uart: fix use-after-free of write_work on ldisc teardown
-
-This patch gates nci_uart_tx_wakeup() on a new NCI_UART_READY bit taken
-under a percpu rwsem. It reorders nci_uart_tty_close() so write_work is
-cancelled before ops.close() runs and before the tx skbs are freed. It
-also takes the module reference and sets READY before ops.open() in
-nci_uart_set_driver(), and adds shared error labels to that path.
-
-> Two paths can therefore (re)queue the write worker after the
-> skbs are freed and run it against freed memory:
->
->  - a tty hangup invokes the ldisc ->write_wakeup() (nci_uart_tty_wakeup
->    -> nci_uart_tx_wakeup -> schedule_work), and
-
-[Severity: Low]
-Is this description of the hangup path accurate?
-
-In tty_ldisc_hangup(), ->write_wakeup() is called under a tty_ldisc_ref()
-reference. That reference is dropped before tty_ldisc_lock() is taken and
-before ->close() runs:
-
-drivers/tty/tty_ldisc.c:tty_ldisc_hangup() {
-    ld = tty_ldisc_ref(tty);
-    ...
-        ld->ops->write_wakeup(tty);
-    ...
-    tty_ldisc_deref(ld);
-    ...
-    tty_ldisc_lock(tty, MAX_SCHEDULE_TIMEOUT);
-}
-
-Other wakeups go through tty_wakeup()->tty_ldisc_ref(). That call fails
-while the ldisc semaphore is write-held during close. So it looks like no
-tty-originated wakeup can run inside nci_uart_tty_close().
-
-The hangup use-after-free seems to have a different cause. Work queued
-just before close is still pending or running when the old code frees
-nu->tx_skb and calls nu->ops.close().
-
-For that path, moving cancel_work_sync() ahead of the frees is what closes
-the window. The NCI_UART_READY gate only matters for the internal
-nci_uart_send() path.
-
-The changelog later says:
-
-> neither the tty nor the internal send path can requeue write_work once it
-> is cancelled
-
-Could the changelog describe which reordering closes which window?
-
-> diff --git a/net/nfc/nci/uart.c b/net/nfc/nci/uart.c
-> index aa20e8603f327..a971fb3b1bbb6 100644
-> --- a/net/nfc/nci/uart.c
-> +++ b/net/nfc/nci/uart.c
-
-[ ... ]
-
-> @@ -58,13 +59,28 @@ static inline int nci_uart_queue_empty(struct nci_uart *nu)
->  
->  static int nci_uart_tx_wakeup(struct nci_uart *nu)
->  {
-> +	/* This may be called in an IRQ context, so we can't sleep.  Therefore
-> +	 * we try to acquire the read lock only, and if that fails we assume
-> +	 * the tty is being closed, because that is the only time the write
-> +	 * lock is taken (nci_uart_tty_close()).  If the write lock is ever
-> +	 * taken elsewhere, this must be revisited.
-> +	 */
-
-[Severity: Low]
-This isn't a bug, but is this comment accurate? The same patch also takes
-the write lock in the err_ready path of nci_uart_set_driver():
-
-err_ready:
-	...
-	percpu_down_write(&nu->tx_lock);
-	clear_bit(NCI_UART_READY, &nu->tx_state);
-	percpu_up_write(&nu->tx_lock);
-
-Dropping the wakeup there is harmless because that path is also teardown.
-Still, the comment says nci_uart_tty_close() is the only place the write
-lock is taken.
-
-> +	if (!percpu_down_read_trylock(&nu->tx_lock))
-> +		return 0;
-> +
-> +	if (!test_bit(NCI_UART_READY, &nu->tx_state))
-> +		goto out;
-> +
->  	if (test_and_set_bit(NCI_UART_SENDING, &nu->tx_state)) {
->  		set_bit(NCI_UART_TX_WAKEUP, &nu->tx_state);
-> -		return 0;
-> +		goto out;
->  	}
-
-[Severity: Medium]
-This is a pre-existing issue, but can a wakeup be lost here?
-nci_uart_write_work() checks NCI_UART_TX_WAKEUP before it clears
-NCI_UART_SENDING:
-
-net/nfc/nci/uart.c:nci_uart_write_work() {
-    ...
-	if (test_bit(NCI_UART_TX_WAKEUP, &nu->tx_state))
-		goto restart;
-
-	if (nu->ops.tx_done && nci_uart_queue_empty(nu))
-		nu->ops.tx_done(nu);
-
-	clear_bit(NCI_UART_SENDING, &nu->tx_state);
-}
-
-Consider this interleaving:
-
-CPU1 (nci_uart_write_work)
-  dequeue loop ends with tx_q empty
-  test_bit(NCI_UART_TX_WAKEUP) -> false
-
-CPU2 (nci_uart_send)
-  skb_queue_tail(&nu->tx_q, skb)
-  nci_uart_tx_wakeup()
-    test_and_set_bit(NCI_UART_SENDING) -> 1
-    set_bit(NCI_UART_TX_WAKEUP)
-
-CPU1
-  tx_done skipped, queue not empty
-  clear_bit(NCI_UART_SENDING)
-
-The new skb then stays on nu->tx_q with no work scheduled until an
-unrelated wakeup arrives, so the pending NCI command can time out.
-
-nci_uart_tty_wakeup() also clears TTY_DO_WRITE_WAKEUP. A tty wakeup that
-lands while SENDING is set therefore doesn't reliably rescue the frame.
-
-hci_uart_tx_wakeup() and hci_uart_write_work() avoid this race. They set
-TX_WAKEUP before test_and_set_bit(SENDING), and clear SENDING before
-rechecking TX_WAKEUP.
-
-Since this function is being rewritten to follow hci_uart, could it use
-that ordering too?
-
-> @@ -123,18 +139,46 @@ static int nci_uart_set_driver(struct tty_struct *tty, unsigned int driver)
->  	INIT_WORK(&nu->write_work, nci_uart_write_work);
->  	spin_lock_init(&nu->rx_lock);
->  
-> -	ret = nu->ops.open(nu);
-> -	if (ret) {
-> -		kfree(nu);
-> -		return ret;
-> -	} else if (!try_module_get(nu->owner)) {
-> -		nu->ops.close(nu);
-> -		kfree(nu);
-> -		return -ENOENT;
-> +	ret = percpu_init_rwsem(&nu->tx_lock);
-> +	if (ret)
-> +		goto err_free;
-> +
-> +	/* Take the module reference and enable the write worker before the
-> +	 * device is registered: ops.open() may already transmit (e.g. download
-> +	 * firmware), and user space can use the interface as soon as it is
-> +	 * registered.
-> +	 */
-> +	if (!try_module_get(nu->owner)) {
-> +		ret = -ENOENT;
-> +		goto err_rwsem;
->  	}
-
-[Severity: Medium]
-This is a pre-existing issue, but is the module reference still taken too
-late? Earlier in nci_uart_set_driver(), the template is read from the
-registry with no lock and no module reference held:
-
-	if (!nci_uart_drivers[driver])
-		return -ENOENT;
-	...
-	memcpy(nu, nci_uart_drivers[driver], sizeof(struct nci_uart));
-
-The template lives in the nfcmrvl_uart module image.
-nci_uart_unregister() clears the slot without any synchronization:
-
-	nci_uart_drivers[nu->driver] = NULL;
-
-Suppose an rmmod of nfcmrvl_uart completes between the slot check and
-try_module_get(). Can the memcpy() then read freed module memory, or
-try_module_get() run on a freed struct module?
-
-Moving try_module_get() ahead of ops.open() narrows this, but the window
-between lookup and reference remains. Triggering it needs CAP_SYS_MODULE
-racing the ioctl.
-
-> +
-> +	set_bit(NCI_UART_READY, &nu->tx_state);
-> +
-> +	ret = nu->ops.open(nu);
-> +	if (ret)
-> +		goto err_ready;
-> +
->  	tty->disc_data = nu;
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can two concurrent
-NCIUARTSETDRIVER ioctls on the same tty both get here?
-
-tty_ioctl() takes only a shared ldisc reference before calling
-ld->ops->ioctl. nci_uart_tty_ioctl() then checks tty->disc_data without
-any serialization:
-
-	case NCIUARTSETDRIVER:
-		if (!nu)
-			return nci_uart_set_driver(tty, (unsigned int)arg);
-		else
-			return -EBUSY;
-
-tty->disc_data is stored only after nu->ops.open() returns, so the window
-covers all of device registration. Both callers can allocate their own nu,
-set NCI_UART_READY and register a separate NFC device. The second store
-then overwrites tty->disc_data.
-
-nci_uart_tty_close() tears down only the instance in tty->disc_data. The
-first nu is never unregistered or freed, its write_work is never
-cancelled, and it keeps its module reference.
-
-Setting N_NCI and issuing this ioctl need no capability, so an
-unprivileged pty user can repeat the race.
-
-Once the tty has been freed, bringing the orphaned NFC device up looks
-like it would use the freed nu->tty:
-
-NFC_CMD_DEV_UP
-  nci_open_device()
-    nci_uart_send()
-      nci_uart_tx_wakeup()          <- NCI_UART_READY is still set
-        nci_uart_write_work()
-          set_bit(TTY_DO_WRITE_WAKEUP, &tty->flags);
-          tty->ops->write(tty, skb->data, skb->len);
-
-That last step needs NFC_CMD_DEV_UP, which is GENL_ADMIN_PERM.
-
-hci_ldisc guards HCIUARTSETPROTO with test_and_set_bit(HCI_UART_PROTO_SET,
-...). Would a similar guard work here?
-
-[Severity: Low]
-This is a pre-existing issue, but tty->disc_data is published only after
-nu->ops.open() has registered the NCI device. In that window,
-nci_uart_tty_wakeup() and nci_uart_tty_receive() return early because
-disc_data is still NULL:
-
-	struct nci_uart *nu = tty->disc_data;
-
-	if (!nu)
-		return;
-
-A write_wakeup after a partial write, or response bytes arriving in this
-window, are therefore dropped.
-
-TX does not stall for good, because nci_uart_write_work() always clears
-NCI_UART_SENDING at the end. The worst case seems to be one NCI command
-timing out, for example a dev_up issued right after
-nci_register_device(). This patch does not change that behaviour.
-
-[ ... ]
-
-> @@ -180,16 +224,24 @@ static void nci_uart_tty_close(struct tty_struct *tty)
->  	if (!nu)
->  		return;
->  
-> -	kfree_skb(nu->tx_skb);
-> -	kfree_skb(nu->rx_skb);
-> +	/* Drain in-flight tx_wakeups and block new ones, so write_work cannot
-> +	 * be requeued once it is cancelled below.
-> +	 */
-> +	percpu_down_write(&nu->tx_lock);
-> +	clear_bit(NCI_UART_READY, &nu->tx_state);
-> +	percpu_up_write(&nu->tx_lock);
->  
-> -	skb_queue_purge(&nu->tx_q);
-> +	cancel_work_sync(&nu->write_work);
->  
->  	nu->ops.close(nu);
-
-[Severity: Medium]
-Does this prevent the CORE_RESET sent during unregistration from reaching
-the controller?
-
-For nfcmrvl_uart, ops.close() ends up in nci_close_device(), which sends
-CORE_RESET when NCI_UP is set:
-
-nfcmrvl_nci_uart_close()
-  nfcmrvl_nci_unregister_dev()
-    nci_unregister_device()
-      nci_close_device()
-        __nci_request(ndev, nci_reset_req, ...)
-          nfcmrvl_nci_send()
-            nfcmrvl_uart_nci_send()
-              nci_uart_send()
-                skb_queue_tail(&nu->tx_q, skb)
-                nci_uart_tx_wakeup()
-
-NCI_UART_READY is already clear at this point. nci_uart_tx_wakeup() now
-returns without scheduling write_work:
-
-	if (!test_bit(NCI_UART_READY, &nu->tx_state))
-		goto out;
-
-The frame is never written to the tty. skb_queue_purge(&nu->tx_q) frees
-it later.
-
-Nothing else on this path quiesces the NFCC. nfcmrvl_uart_nci_close() is
-a no-op, and nfcmrvl_nci_unregister_dev() neither calls
-nfcmrvl_chip_halt() nor touches the reset GPIO.
-
-Before this patch, write_work could still run during ops.close(). The
-reset therefore reached the UART whenever the tty was still working at
-ldisc close. Examples are a TIOCSETD switch, or a hangup where
-tty_ldisc_hangup() runs before tty->ops->hangup().
-
-If the ldisc is detached while the device is up and polling, can the NFCC
-keep its RF and firmware state until the next power cycle, GPIO reset or
-dev_up?
-
-hci_ldisc makes the same choice by clearing HCI_UART_PROTO_READY before
-hci_unregister_dev(). The commit message doesn't mention this behaviour
-change for NCI UART, though.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006115532.72100-1-shubham%40octane.security
+2.43.7
