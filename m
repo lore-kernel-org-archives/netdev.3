@@ -1,85 +1,80 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-oo2-f6.google.com (mail-oo2-f6.google.com [74.125.231.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A434D7D38
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F754D598B
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791549581; cv=none; b=fXXmExANm7lMlxsT6+NRCFYgPIerf0xO5WAnGTF6XB2JYmnqvAVrM6GPU46atabN2Ef5++XgljbfiyX60RRI9hDzV46WauGrCXKWSK2ASx1ALpM+U4cgQSLhGsGTZd5U5NCSt+nwyGEpg+4XdPby3FkYwpekJ2DZ+gLNf3SCOFI=
+	t=1791549690; cv=none; b=mwmUUvnj976GW5dcRqiraqTCxlw7xPWqp+qf0yCSeZ1bc6QY1yiOl4dyaAM2nuC+Y7m7ApkvhVfvRqoOmYQ5VzyQOIt0rYzoK196PTdkRpnSK+ImH7He6hd7SkJKyWeo6umvmqbrvm0XzXuj3h0gz7cgaXM3xEOYovfJSWvEL6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791549581; c=relaxed/simple;
-	bh=YkFngmUHJVNtqW4md/XBpJxxkgF7T+dBARvecXA4TKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mw5vQ41eVi3RnZFV2B+zV6AW+ahPDlzIH3VSJ42bPpRkULJij4ZFU/wg4w3aEbz7Oy2/AyAM6Gdme580jES0y66YmSTui4pSpuIzpiC6/OnXU5Cmmr+u1WWt8tOHehE8Z/ZaDkdiEbRHDcNGOYzCvd0zQDaymvNHP2/6WzbZabo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XQcts8ut; arc=none smtp.client-ip=209.85.208.177
+	s=arc-20240116; t=1791549690; c=relaxed/simple;
+	bh=PfNhsuzh4AOEts9llViSuzmKalMWMyZHXZnTes1rkHQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iECXowtvjofHD42lBvta+r50+RDqlsAwoBaVxeKR/IX3AjSuu4soHcEzc1KBAW5uSUj8wnAxKdBRR39hyd3p8jterWl/252FCVZ6B7UFwHA0ioiP4qrN5TowDkxDL/vK/jFKFPZhZeUE/X6pldCbLZMq5snqx5tvLmfVtSIVIb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lgyw+bYU; arc=none smtp.client-ip=74.125.231.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XQcts8ut"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a9ad623098so17753851fa.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 05:39:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lgyw+bYU"
+Received: by mail-oo2-f6.google.com with SMTP id 46e09a7af769-821480f0153so1630696a34.1
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 05:41:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791549572; x=1792154372; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kyY83NomyQWfh4LKX7bgA+B05RDisIzsK5TyQRhxHSo=;
-        b=XQcts8utbnFWyDR2h9ZGUIOpzNZR6Z6PuazvleT+oEA/CzCd+cRYfnWZWkD0V5Jfx6
-         yXRd/OeaJpaZfZJ/ijIdMY3DuipEFnbkUSWNSlGJLNitl7x48sMzygVlFAU8Bgjjslvy
-         j/b1aY4NAvuSposZiOeMs6cSEHZicRCxIfGWZJvsSH2UC5aruO25QghzVXwxVzI+gnsk
-         /SHZdZeYEd8bqG/ADYuX0/8LoGNfPzLDMedWsMwvdvKfBU+dW+ddXU8D8rW4ftOkQ1RK
-         KZX8mK4OtWcBRAPWDmvCuOGzv4u8hOdr1xN56DY15TtFGDU975CQr86WRAJy8tFjY2zw
-         ok5Q==
+        d=gmail.com; s=20251104; t=1791549684; x=1792154484; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ryl3WOCqZhMHH6Gxb8y5ffAOVmJr/vg7ENqE2edW0CE=;
+        b=lgyw+bYU4JkFYG/IjDvkSjBGeDmIHjZctUFElep4Hb1KTsjxK6gcev5mfkWfYxqVSl
+         DUYyYFvRDX5jRpMgdm+5XqryPwNIxGTFyIcwNn/q624CnHYdWa1kWMz0liUc04BoBt38
+         1d+/JR42mo2uzyiwAOU1rqj/P9p36vpV3kGP0AzeKWhDy9lthwoA9Kr6E6kszuaQiRVa
+         9YP7n84fdnzoSMUMkmQF+6jo/qd396sqMqP/1NnDZjXcfCH1wJCUvjOavfKQKJpI/VJv
+         0Sd2OCpBsMnHsCxBH6bMdpe9iHPhY5pSZUAWntwpmVLrvynieGR21MfPSpiV4TpUgWAw
+         YPBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791549572; x=1792154372;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kyY83NomyQWfh4LKX7bgA+B05RDisIzsK5TyQRhxHSo=;
-        b=xYkFEH1bOCt/0kYxsHKLEm2nxVfTZ3LfVgKv9iw/W0RZIMRz7LHv2B7oNGb1y3jss4
-         vfelAb8Zzz5AbmQQUX+nVRHSV7TsymzBXA2ca0DTM8/L0PuZA0954Yxrgbf0HYSm7cIA
-         lu4qS7IGfnwrO6DFCKc3asEYB/cFri9vo6y/uJJY0rLKw4TifA1avNTifQXL9f7HRIWy
-         r6NonFoq6OlIR7FL67j2At0HESMC5a6ucCVGNDLYsNZykO6P61VWE1TSUQI9HwoLeHKs
-         AAp9y4rDPD+dQrPW7SU+99yk3oyIQNVZG99JnpoYwHbnj6cCoHE0jeXljOvlbZlLLznD
-         33zA==
-X-Forwarded-Encrypted: i=1; AKwUvBwQs82IlMJYZNyYD63EaiI2O44FTYpgAWg9Mx+dVWWLRKGhb/fH3XFhjUERzr40Nm0JVxPhXSg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK4w+gg1vrfDZrNe7/g4TNC0otXYlH6yNaZnalJOsQzbq/yCrA/
-	yrfUiWxDXgHcugh3p6m+k2DmolO62eA7WjwrkH4FxeWGh69CRHWJ1Rfw45k+dEP9
-X-Gm-Gg: AYBFou39sH4WRfRKocgYkRhA8igU48x3xoD8C25iyHyNHdnuSC4W471R3sObwrqY3Gs
-	H8zTopSLaygowp65aYbygfH8J44YM+qSDYbWF9hm8wNchXGVZYfbZ9sL0dLxh/RVxbFQTKdWcBV
-	odFoaYuStc1UW9rQh/litREHjUIqz7IX+EHt2jaDtrDYRSqySvmm3KPoWXcX8/Ablf4KAn81kjs
-	ZlRJG4pX58LoNgDO1F9oooNvMai+LXPoRXtJrXZESKd7nMVXgNseM/ElEYUFat2xU5HkAz4zmU6
-	QQxCC1NumxDV3wTAmu4GucMPcQlQTQ/ATGW39chpqFuLg/yBBxK+i0J8mA5He+04+gKYaMtXI9s
-	VD38S8yRcxHAcRkYahJ1bbLmF3ytAN5eg3w3/A5ZtgY/majrEzxlRn9Pw9LyNUm3uvpHTzqALmW
-	JuhBJtlCRO4o1bYouhu0xGLy40RxYXOSkptuJhaoE4u5Xy37HDIpVgQNBwyZN6OCt/ByoCdFepR
-	ARu
-X-Received: by 2002:a05:651c:549:b0:3a9:7b12:b35b with SMTP id 38308e7fff4ca-3a9c53b2811mr4542691fa.12.1791549572202;
-        Fri, 09 Oct 2026 05:39:32 -0700 (PDT)
-Received: from grower.uveon.ru ([37.230.157.20])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a9c3cf5903sm6729281fa.42.2026.10.09.05.39.31
+        d=1e100.net; s=20260707; t=1791549684; x=1792154484;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ryl3WOCqZhMHH6Gxb8y5ffAOVmJr/vg7ENqE2edW0CE=;
+        b=J60yEcd2HS+VOxgY1g0K5m6DCGHQorNi18RR3twHQj0HBxDaUmuLmZDHGXGPOCKcmw
+         SPAOmjguVQsNEp8rLRwn0k75GHjyWYKbgn5lQEiShrN/dlskfDjh1UGIrNMn/4mT9RGf
+         Xo1nASknDrfAXzWUQjW1U4a2IokxMHMiT1GZndqAOf4aiHtufISU0CpRCgsWJyWa34jl
+         76SqlpLx9UYfldScS1IM3GX6fLgBPvgHs8oZ0cA+FTTn3tiFTNXhQHJi5ID3vQ0OUixZ
+         uEDr9hToz/tad9tIOo7ZoFkHMPEFeWPLvylIVjB05l4zLGVqVSDkjMrfos1/vTixbmcL
+         iKIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxTCvS8NWmNjxLIY/SoUKD8kjCJnmH6uMCX5DO3XLnuKwFe9R4oRwoRC5COXdfERDbmUh4lWJY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kN1Y2CoJyoaIrDXADmvkKJc/tV1ZpoL69INPKhZQTKv2EtDlGE
+	FsO+9FR2z4CBtcfYu2gHI3ED7Frq8+uB+/wCpQ/wHIqa1p2U5lLN7WQV
+X-Gm-Gg: AYBFou3+y86XwMTavWo9rnq+uSTJU871PLs41yBIZd0Kpj2YsDM/trT9XYFwMMNEf4F
+	yJ4FMaoeaqxt3chwW5PMBsbPJI/E2+jBoeFE6ULHXbbgTuDV3sJr4hpthVQIAWghe28dsf1zpYf
+	5EOh+HaKVQoCqdVeVeSGITZwj30E2C+Bph7apiG9MCuODIX2hCAYrbkVnlfDYFIbynMVSkacZgD
+	DsYUqMLFoniJXhdhutHVBrAJ0WbmYBzeDDQj3nCewQL3PGUtGST7jgWBxAsp7uiIFMeERoKv+iJ
+	UYEU3tfZvtnVImbMR/yjOTCq9MoP4U5J/2RQmvyFcgHyYb6Dll3S9YcC9I1Deg1otJbIrL+U2ke
+	WqddG6AIxTOtdk4C39nS57RZvqUMZnbZAIvl/DNeKpLdu7RW5pUYYrLcJFripnhlcxU70DWycQy
+	QowbE50rpLyhfrs60GdQLwFO179N/DyovdW6OExyexiNVRXvSAoT9agirl6Kt1E6SnurooSHxN4
+	rzmG5+7cVwDXvVVqEMFeSF1+FuHIf0GRpIaNg==
+X-Received: by 2002:a05:6820:1c89:b0:6dd:6d12:2305 with SMTP id 006d021491bc7-6ef08e71af8mr1263442eaf.3.1791549684102;
+        Fri, 09 Oct 2026 05:41:24 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.36])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6ef00520fb5sm1492829eaf.5.2026.10.09.05.41.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 05:39:31 -0700 (PDT)
-From: Alexander Martyniuk <alexevgmart@gmail.com>
-To: pchelkin@ispras.ru,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: alexevgmart@gmail.com,
-	davem@davemloft.net,
-	johannes.berg@intel.com,
-	johannes@sipsolutions.net,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org,
+        Fri, 09 Oct 2026 05:41:23 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	syzbot+63a84ea9c0f57d6133fa@syzkaller.appspotmail.com,
-	thomas@cozybit.com
-Subject: [PATCH 5.10/5.15 v2] wifi: mac80211: mesh: release the channel if start fails
-Date: Fri,  9 Oct 2026 15:39:26 +0300
-Message-ID: <20261009123926.22180-1-alexevgmart@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261008220352-4a493878ce385d22bedcf4a4-pchelkin@ispras>
-References: <20261008220352-4a493878ce385d22bedcf4a4-pchelkin@ispras>
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] netfilter: nf_conntrack_h323: fix NULL pointer deref in decode_seqof()
+Date: Fri,  9 Oct 2026 20:41:16 +0800
+Message-ID: <20261009124116.3950469-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,64 +83,43 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+The eight supportedPrefixes table entries (_H310Caps, _H320Caps,
+_H321Caps, _H322Caps, _H323Caps, _H324Caps, _VoiceCaps and
+_T120OnlyCaps, all reached through the _SupportedProtocols CHOICE)
+are declared SEQOF,SEMI with fields=NULL.  decode_seqof()
+dereferences f->fields on the first loop iteration whenever the
+attacker-controlled SEMI count is non-zero, causing a NULL pointer
+dereference.
 
-commit ae97fff6495a8764bc0ef281cfe5444f701e527f upstream.
+Return H323_ERROR_BOUND when the nested field pointer is NULL.
 
-ieee80211_join_mesh() acquires a channel context and then calls
-ieee80211_start_mesh(), which can fail. In that case, the chanctx
-isn't released then interface removal will attempt to unassign it
-after it's removed from the driver, hitting:
+This issue was discovered by Tencent CodeBuddy Security.
 
-  wlan0: Failed check-sdata-in-driver check, flags: 0x0
-  WARNING: net/mac80211/driver-ops.c:366 at drv_unassign_vif_chanctx
-   ieee80211_assign_link_chanctx
-   __ieee80211_link_release_channel
-   ieee80211_link_release_channel
-   ieee80211_teardown_sdata
-   unregister_netdevice_many_notify
-   _cfg80211_unregister_wdev
-   ieee80211_remove_interfaces
-   ieee80211_unregister_hw
-   mac80211_hwsim_del_radio
-   hwsim_exit_net
-
-Correctly release the channel on start failures.
-
-Assisted-by: LLM
-Reported-by: syzbot+63a84ea9c0f57d6133fa@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=63a84ea9c0f57d6133fa
-Fixes: 2b5e19677592 ("mac80211: cache mesh beacon")
-Link: https://patch.msgid.link/20260908122838.201719-21-johannes@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[Alexander: No such function ieee80211_link_release_channel(), so
-ieee80211_vif_release_channel() is used]
-Signed-off-by: Alexander Martyniuk <alexevgmart@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
-Backport fix for CVE-2026-98326
- net/mac80211/cfg.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_h323_asn1.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 29bcb5f6013a..d5865f4083cf 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2311,7 +2311,14 @@ static int ieee80211_join_mesh(struct wiphy *wiphy, struct net_device *dev,
- 	if (err)
- 		return err;
- 
--	return ieee80211_start_mesh(sdata);
-+	err = ieee80211_start_mesh(sdata);
-+	if (err) {
-+		mutex_lock(&sdata->local->mtx);
-+		ieee80211_vif_release_channel(sdata);
-+		mutex_unlock(&sdata->local->mtx);
-+	}
-+
-+	return err;
- }
- 
- static int ieee80211_leave_mesh(struct wiphy *wiphy, struct net_device *dev)
--- 
-2.43.0
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index 6830c9da3507..4d66db5bf5f7 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -692,6 +692,13 @@ static int decode_seqof(struct bitstr *bs, const struct field_t *f,
+
+ 	/* Decode nested field */
+ 	son = f->fields;
++	/*
++	 * Malformed table entries may carry a NULL fields pointer (e.g.
++	 * the *_Caps.supportedPrefixes SEQOF,SEMI rows); treat them as
++	 * undecodable instead of dereferencing NULL when count > 0.
++	 */
++	if (!son)
++		return H323_ERROR_BOUND;
+ 	if (base)
+ 		base -= son->offset;
+ 	for (i = 0; i < count; i++) {
+--
+2.43.7
 
