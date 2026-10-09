@@ -1,83 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725054BE43B;
-	Fri,  9 Oct 2026 14:20:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791555619; cv=none; b=W7MNwu9b8pkM1RR7FQF3VXvQw7gWtv+GHU6CtP9dkLnL2D0ucQWRr+G3XDglxp82DQgBEEutXTjDNgDP9kNg4Jr8nbH7L8Y0NnC5GRvf2yg8CuEiy94WadraBa8Qfqsw6V8jLRchxa3KBtf4ikIyMP7WNwUA9SiIQBBM6MSCcYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791555619; c=relaxed/simple;
-	bh=FK/5QkKrJsl6LQgwJuO9euTHbOe4prmUUKzuulDswwQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fCAiYM0umVevmn0tqHND+AdRyKvLvsFYe75dSg2mwITxKGNK6+CtkCI/c3vt7Er5Au4Q3RS9vdP957Iw/LGHSPRiBoq9DYQjbbtcaYrfYfPL6PTzjNyeYE9+fL6SI4BemPtkmInETjPECGvHdbIk5SU4o8KFsnWPlnCsdY4uMsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzknZs2S; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E494E4C5E
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 14:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791555710; cv=pass; b=tPtesmzpwP1HAC1aL4ywdKxw1+SEDp5aHG74x/fSCKHuafrvtAt8KhOnjeDpBXSypqwKjtFWyjKNZIEJ/C6e7iimH1dzaOIitwiIUEEoKb3SAML49Z58dpIcuTmFp0u53J8C6ME9pJgZ1KVXyPPm8NA9FXzZGoMHnkBA2KpCRco=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791555710; c=relaxed/simple;
+	bh=DjLH3NHRMpRoNuKKHe/cz8XjgzfCVIY+JqxNaz1KntU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ii92abFfySWSdqpV/ZcXMCcVVWVGKCDkAbYOCmPYZ7fkQNoBE8m5KFb5xD07cz60bLBmGRmhwxeZAQBIQIbpeCzNd+JjzXNFEIzr/LrjqH5lDj0LkRW6Gy6FeQpsgJrt0F15GkFbyAB+eEI7oU/+dyNvK7Eqq+TsUokd9dJgmw4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=abDhmqMY; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzknZs2S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060BF1F00899;
-	Fri,  9 Oct 2026 14:20:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791555612;
-	bh=VueJfE8UlGkXA1cki1w3qV3t5fH9UA9JVCjBcoCaaK4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=JzknZs2SqvczwRk/MukSIZGgw6NIX2D368BBCrH0a6nAM7l3yIkuy5bGCHHejvx5T
-	 6Kp3XJnJ+7TnMnL8DAlFtGugRFIVCecVwMr82VPAjbDsyiyVMB6lzoydeZ1u3CrX/l
-	 3ykDNRcEYHu39CAEI47/2r6avAp5aXxDk+N1aWWJAy020bCp5G0Q4CUvHxGgN8OLMu
-	 kqPxMYrnUQYGwyRuCW9fEyQuxpdDvpUN8SHECFPmUd25u9wr+r9OHh8Ih+AcGdgcoH
-	 l+JZ8Gac+ORWJ78m6zymLFH0UAXgr8Sanz3W6iIxSvnf+ixuQfX/sQGvd8MVhooH0T
-	 JhPo5Th2owQsQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F153339253CC;
-	Fri,  9 Oct 2026 14:20:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="abDhmqMY"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso10435a12.1
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 07:21:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791555707; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sQKQ8drsaAqtNclAotQwam8kdzhAUQc4wA40vDMZGEe8nyn5Z8jSxeTRj3snXHsY2C
+         wqmBEcaXoRvlKbJaU1dV1ghBGTI48qVnIDkOxkZnNbRBK0nhjRWAZEqK0jBvfiQk+bEx
+         yaHNPKcdgokb6xd/u2rzl8SovdW7nVnSn3408+h6kAnXSIUUzd4pqU+XzhLQD8JMs9q0
+         MYDuq0jqDXNb+ul/eKS/o6w3+0xBIYZ2rBGCoD85jUmhp3kv8THpgLe0HrAx1IiO/U6D
+         GZoUNnLxyJkXrpODl1bpA1djuEKMfty6fqGVMea2nMiXZgaB9OT3T88mbdtYBq1WAYMB
+         IU/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=S+Pafe7r34WKQaUOmtVa7F9TC3dIvP/um8KR5+3ODs4=;
+        fh=OffYhwkOOqEyUFJBI3ku4nBjLOWbR7jDpFXJw5NfK+s=;
+        b=RMxWbzmfAB15X9Lkgs9sTm40cjidtpImBb9UkVPp/qBm2eAZY+QDVJlyCM4nyrilun
+         c2rCYAhDbOMyoW09zq8f8RZqtVlhwSZ6scz3w/hTaqfuRZ1lxMB8IfsxbftZqb8XQyY0
+         s05aFvXdy11h+x55VOTYEciYQ0Io3iWg7NVsjbsF7Q+CpAM7LpqpxsiCXcl6BliNxSsB
+         XGleyRvG76VmnLwk6yyVN3XHECA/8J/ptRWKppqzKYvNK4lPkzLyjB3KEk6FR45K2RZm
+         ZffnQzIEDt+2avPpWYfqBLX4pZxp98tpleIs6lHiVnagB7q/+YdNNyPBe5oKtprs75dg
+         ooXg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791555707; x=1792160507; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=S+Pafe7r34WKQaUOmtVa7F9TC3dIvP/um8KR5+3ODs4=;
+        b=abDhmqMYkWCTXBppl4+EGs6RiXxAyec693hGa+4nYUtHilJEbKm6vc2a+t+2XNqeoG
+         RKJ70I42KkLmM7ARRY9zVr91+m3mTyxfTIwS4I7nLZUMdDUR8+IjBlK+WNl/JiQzyR21
+         wXPceziaj4EdVS8KrYyqTDWxgERR0iBVN1REsV/nTGHonv7TjER9rH1+mKXnw19ZBAH2
+         exYCA9eBGI+MdMr6A4mILxzw7mAmYb9DN5n8ZbqGYwiTTlebhEvUIHJNQXMgCOqGnGJq
+         vwwI3QvMj43vhDoCG0ttMyhzo/KmOGjESJVahXAiEoYQmfGfAO6/Ot3Y/qUINPEsLTux
+         Molw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791555707; x=1792160507;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=S+Pafe7r34WKQaUOmtVa7F9TC3dIvP/um8KR5+3ODs4=;
+        b=nTWMPzLTel3XHK34o0ANHds2bphceTaW9THXrlx/vX0WHAhpIXUBOMSXfK8C5poc5l
+         4XUu3bjK5illdmlNV+VRQl0iuzxP4EhwRiLyo/egCIsWR7wPX6PqyK87YaRkA2NUWCvD
+         Gw0gL4q/qY0OMAz2215cdofTkRcXSaidB9BsjdE5jvVjGb7D9TUo1JWh39XXKaZeiF4r
+         S7RhzNPzG9n6776gD4ULib7uQZCtMfx2ELPdAoS/MF0rMUNc6kv2o0gqnQovcejwAG9W
+         yqL3VXR1Mu+foEYGl0YFBpUPX09GBEGD/OWLkTZ+yOG7vwGFPCXbnJJxS+aMhlFBnSql
+         ryNg==
+X-Forwarded-Encrypted: i=1; AKwUvBw9Hgx3dJOGk5HDCx5wr78m3rXLAtZ3WjhYlo3VvpcWXR+pCTxf86dCYYZbYv00hrZ8t39X+eM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJFLLZpPTzW7Nr8CtLsgKyXcoHJx2l7K4BH/nYpxigDMKHitCOJ
+	unTuIXA4IpfxTj2s5Wiz6+ukP3QmZJ5o9633txfAzQs8+WhTuHlhydjOaH6+y5JPxNpQyyqH2RF
+	vtfzynNeBcqCt+U4jHUo8KLT5FuBVyMmmfdznW7Uq
+X-Gm-Gg: AYBFou2rHdnUA87T1wDamegBZJAEAhMud22t2Si2GIytZK2ymXxj8PbvvechU8TpgIp
+	h99pF8gKwOjZP4tR8aGxonLFKmfK6aQuYIc+gCOQNvSXweDezQwjYC/520rlUTsIc6Hggccj5bi
+	0CGXaqVH0MUiH+fIfZAq4mHEcX/jVRsXnX6dEWKzE3fX+RY1dhSeo510jZmI9F9xxtS4c8gHohv
+	860ljU+PmM7abgJ0D1+NWgUEEYpGwMPUEmrxhZar3pMplCK/iZBQNxV3oxtMPcN2N57oZUe/x9t
+	uCjDw9801nSdM3TqxFwEfgGjlIe7OgmKVVaDtiES1NCc7FuuKDa2MTn+WciSawuh+nlOqvNuIPi
+	thRCMvNNpDV+/o6RK4Ohssrb0ITYPG2zxePRq7sfStzZ4
+X-Received: by 2002:a05:6402:1803:b0:6a6:7385:3eac with SMTP id
+ 4fb4d7f45d1cf-6b17b931bf5mr40890a12.11.1791555706842; Fri, 09 Oct 2026
+ 07:21:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] Bluetooth: btmtk: fix skb double free on ISO padding
- failure
-From: patchwork-bot+bluetooth@kernel.org
-Message-Id: 
- <179155561051.812174.8873772264427168812.git-patchwork-notify@kernel.org>
-Date: Fri, 09 Oct 2026 14:20:10 +0000
-References: <20261009083525.733804-1-edumazet@kernel.org>
-In-Reply-To: <20261009083525.733804-1-edumazet@kernel.org>
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: marcel@holtmann.org, luiz.dentz@gmail.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-bluetooth@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+References: <20261008133252.3750-1-nashuiliang@gmail.com> <CADVnQy==0Vor90buiY8U+DNYKjxyWRQ94zAq9=aKhyAezsB9Vw@mail.gmail.com>
+ <CACueBy4VT9WzCnseKEnYUA9U2YGZBxY-CLxrZpRnXWHcUdMZwA@mail.gmail.com>
+In-Reply-To: <CACueBy4VT9WzCnseKEnYUA9U2YGZBxY-CLxrZpRnXWHcUdMZwA@mail.gmail.com>
+From: Neal Cardwell <ncardwell@google.com>
+Date: Fri, 9 Oct 2026 10:21:27 -0400
+X-Gm-Features: AclHuK9NsjUhV2RVv6Ss3vMpmfuUatpBCp3Pc4xX57XTudISj1wSKEOFjlYyIa4
+Message-ID: <CADVnQymbtXa1kxjhJDE3+Px1jEXY4_FL0rf4aj6vGv8gkGygiA@mail.gmail.com>
+Subject: Re: [PATCH net-next v10] net: reduce ARFS flow updates by checking
+ LLC affinity
+To: chuang <nashuiliang@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Stanislav Fomichev <sdf.kernel@gmail.com>, 
+	Hangbin Liu <liuhangbin@gmail.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Fri, Oct 9, 2026 at 10:05=E2=80=AFAM chuang <nashuiliang@gmail.com> wrot=
+e:
+>
+> On Thu, Oct 8, 2026 at 10:14=E2=80=AFPM Neal Cardwell <ncardwell@google.c=
+om> wrote:
+> >
+> > On Thu, Oct 8, 2026 at 9:33=E2=80=AFAM Chuang Wang <nashuiliang@gmail.c=
+om> wrote:
+> > >
+> > ...
+> > > --- a/net/core/sysctl_net_core.c
+> > > +++ b/net/core/sysctl_net_core.c
+> > > @@ -560,6 +560,13 @@ static struct ctl_table net_core_table[] =3D {
+> > >                 .mode           =3D 0644,
+> > >                 .proc_handler   =3D rps_sock_flow_sysctl
+> > >         },
+> > > +       {
+> > > +               .procname       =3D "rps_feat_llc_affinity",
+> > > +               .data           =3D &rps_feat_llc_affinity.key,
+> > > +               .maxlen         =3D sizeof(rps_feat_llc_affinity.key)=
+,
+> > > +               .mode           =3D 0644,
+> > > +               .proc_handler   =3D proc_do_static_key
+> > > +       },
+> >
+> > Having "feat_" in the name of a sysctl seems redundant, since most
+> > sysctls are features.
+> >
+> > Also, the name seems overly broad, as it could also apply to other
+> > RPS/RFS mechanisms leveraging LLC affinity, for which we might want
+> > separate sysctl control knobs. I'd suggest perhaps something more
+> > specific, like "rps_llc_affinity_for_set_cpu".
+>
+> How about arfs_llc_affinity or rfs_accel_llc_affinity or
+> rfs_accel_llc_affinity_steer?
+>
+> The knob only gates the aRFS (CONFIG_RFS_ACCEL) hardware steering
+> update in set_rps_cpu(), so scoping the name to aRFS describes exactly
+> what it controls.
 
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+Of those options, arfs_llc_affinity sounds most appealing IMHO. But
+let's see what Eric and others propose.
 
-On Fri,  9 Oct 2026 10:35:25 +0200 you wrote:
-> btmtk_isopkt_pad() uses skb_pad(), which frees the skb on failure.
-> 
-> The error is propagated by alloc_mtk_intr_urb() and
-> btusb_send_frame_mtk() up to hci_send_frame(), which frees
-> the skb a second time:
-> 
-> 	err = hdev->send(hdev, skb);
-> 	if (err < 0) {
-> 		bt_dev_err(hdev, "sending frame failed (%d)", err);
-> 		kfree_skb(skb);
-> 		return err;
-> 	}
-> 
-> [...]
-
-Here is the summary with links:
-  - Bluetooth: btmtk: fix skb double free on ISO padding failure
-    https://git.kernel.org/bluetooth/bluetooth-next/c/2820ae3262bd
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+best,
+neal
