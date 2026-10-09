@@ -1,155 +1,110 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746363AEF50;
-	Fri,  9 Oct 2026 06:49:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C10449B0B;
+	Fri,  9 Oct 2026 06:52:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791528558; cv=none; b=UMetTizweKxlRJ1kB7TtKuPBRXNF+wTT7c1tuSt8Q2AmF6bCbK0GXVg1cRE9Nv3pzAiUOkusRtMga8San48WYwVADw1sruNb300EXhEbGGgfAMAEZTSizWS/tcN3djl7F39DyfonuTYLSV1qcyn//+5yNR5uaDR2UgBdAeb3gjM=
+	t=1791528770; cv=none; b=rruL09pJVHdrpHz+Q8OOf/uclMuVGmv1ivQ5Vv58Dp/TwnVTr+yTLL9bHErqLhyUfPjor1bytManU7DbyRni68buFdPQpYdqp70cynS+nWSAfJ4Fhf2sSy7fUhqpyvHWqVKr/2I7R5SIIsqOHv8zPRv4EXcVbR3hXN5/qo36k74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791528558; c=relaxed/simple;
-	bh=7w6WtgOAooBhMLzwKrrQuDQCvTsa7DPrL70+gYLvitY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=ctUnP2Q+4oENu0TX/DuHh11qzozRC5b4mcF/NgY2Lp2m3/reXn6QRszxfCdhrV9BIX0kcEmqe6ncMDzHOcCTQmB5/oAX2xLFyI6KVrZ0j4teNNHBvFwQ9ZPRYw4TZPBT/C7B1yofDwyF+c1jkLTKnXq4lGz55PM5L62RAG+o9o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=kZFuYIPz; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1791528770; c=relaxed/simple;
+	bh=OHnagsKSc5pJHV/T3Hz4IWrEPkWe/SGywir2UlZh7pI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=oh0IXDcoBcjZrMyyF87vLdPELikEo3sZUtm24hEhdvqGxHXJSrJqUS20jCrGo5VFZQugL9bMrski9zymsuQSOs4iLEsXZgPo/wHUMXLKFHsEasx/YmrUDEn20yPph/ApAAjvuugdRu9gVXMUVd4KwnGkVNwta1j1N+n4CWXUS5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWELuXtU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="kZFuYIPz"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 125E7A1545;
-	Fri,  9 Oct 2026 08:49:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791528548; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=lcrb/n6yq9rUogTadFHg4X4Vn+bgruUv47sFAGOzlDo=;
-	b=kZFuYIPzYEsMBF16NbUxECIKID0eVOFlNivAcf8B7RmcGRTJnFUDgWTEb+PS7FvFSjwj/1
-	8+3+RMYjhVY4RsK8ZFeGRt88EUqXpQX1f5hENOyPHDC6aZFjaaaehf9TN5n6SYUyaG3x77
-	KJSehPNwPCnZhU1gduLne/X3t2a7kO/6c+P3cGRlM1A+pqLGgoMo5hPQXAfSEqH1vhTLjT
-	QNFwKsC70h3bUNtvjheIQUAhgbvbuYODR8QVA7qpq28ir4W9rRxRx7EJauo3ZzdfoGSfxg
-	dNPId/Wbkx0rEzev4bTN5gFtwIvFv2Dj9hLpZOCSkBTeD2STbqzDgLd4JHwmgQ==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWELuXtU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5003C1F000FF;
+	Fri,  9 Oct 2026 06:52:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791528768;
+	bh=HxhqS7KWFvgkkzT+tjSnQJnl/ACGgyIv2zEycuxVd1U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=NWELuXtUopvGNhwPDV2cVD96iICqS0r5K3Xh6iI+rUn87cP9JouteZzTln4Vxc3Lv
+	 09PwntmjoJ+AdGW4K/RZTfmkXrnAUzzayiUXrH+D2133poNReg/Q5XtwFnD0uwtF4U
+	 3yeDfjP/FkpQz7w7vHLmz5+tv6tSSgEgv7rTwGGGnWrH2aaHsKS0BvCKLUdwqlo/hI
+	 owoCTwwtDvep14fAPVAKBmyVZQibx2jeTpLs7V8ZPmDpwniJgzJI+xBB7oZbLU4sbk
+	 nmMUVYJ5Z003mv8uJKpy4n9vjjpHtgDQZaWMYqTL9qrqfYOYqAswuQ5CoO+3Qe1mx/
+	 CeIFOE/iOczCA==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Toshiaki Makita <toshiaki.makita1@gmail.com>,
+ John Fastabend <john.fastabend@gmail.com>, Daniel Borkmann
+ <daniel@iogearbox.net>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] veth: clear rx queue hint in veth_xmit
+In-Reply-To: <20261009040412.14571-1-jiayuan.chen@linux.dev>
+References: <20261009040412.14571-1-jiayuan.chen@linux.dev>
+Date: Fri, 09 Oct 2026 08:52:45 +0200
+Message-ID: <874ievs6v6.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 09 Oct 2026 08:49:02 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, o.rempel@pengutronix.de,
- maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- Jose.Abreu@synopsys.com, saeedm@nvidia.com, tariqt@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, dtatulea@nvidia.com, alazar@nvidia.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: selftests: use skb_share_check() in the
- loopback receive hook
-In-Reply-To: <179149509090.434549.9918598206439291164@kernel.org>
-References: <20261007-nb-net-selftest-shared-net-v1-1-458369bfa1ba@tipi-net.de>
- <179149509090.434549.9918598206439291164@kernel.org>
-Message-ID: <533b88ce917b59f4f59f52145d2f035f@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Clashiko
+Jiayuan Chen <jiayuan.chen@linux.dev> writes:
 
-On 8.10.2026 23:31, netdev-bot+sashiko@kernel.org wrote:
+> With more tx queues on one end of a veth pair than rx queues on the
+> other, and RPS or generic XDP enabled on the receiving end, we get:
+>
+>     veth1 received packet on queue 2, but number of RX queues is 2
+>     WARNING: net/core/dev.c:5212 at get_rps_cpu+0x560/0x1360
+>     Call Trace:
+>      <TASK>
+>      netif_rx_internal+0x1af/0x4c0
+>      __netif_rx+0x99/0x350
+>      veth_xmit+0x713/0xca0
+>      dev_hard_start_xmit+0x166/0x5f0
+>      __dev_queue_xmit+0x1797/0x42d0
+>      ip_finish_output2+0xa34/0x1f40
+>      __ip_finish_output+0x510/0x7e0
+>      ip_finish_output+0x2f/0x320
+>      ip_output+0x17a/0x3f0
+>      ip_send_skb+0x1bc/0x220
+>      ......
+>
+> Easy to hit with "ethtool -L veth0 tx 4", "ethtool -L veth1 rx 2",
+> rps_cpus set on veth1 and a few flows sent over the pair [1].
+>
+> veth_xmit() uses skb->queue_mapping to pick the peer rq, but never
+> clears it before veth_forward_skb(), so the rx side still sees the tx
+> queue index. Everything on the rx side that goes through
+> skb_get_rx_queue(), like get_rps_cpu() and netif_get_rxqueue() for
+> generic XDP, takes it as a recorded rx queue and warns once it is out
+> of range.
+>
+> Clear it before handing the skb to the peer:
+>
+> - It is the tx queue index of this device, it says nothing about the
+>   rx queue of the peer.
+>
+> - The two sides don't even agree on the encoding. The tx side stores
+>   the index as is, the rx side stores index + 1 so that 0 can mean
+>   "not recorded". So tx queue k is read back as rx queue k - 1, and
+>   tx queue 0 as "not recorded".
+>
+> - Commit 710ad98c363a ("veth: Do not record rx queue hint in
+>   veth_xmit") already decided that veth should not pass any queue
+>   hint to the peer. There is no tx->rx queue mapping to preserve, so
+>   nothing is lost by clearing it.
+>
+> On NETDEV_TX_BUSY the skb goes back to the qdisc, which looks up the
+> txq from skb->queue_mapping to decide when to retry, so restore it
+> there, next to the existing __skb_push().
+>
+> [1]: https://lore.kernel.org/netdev/156834bb-8e40-496e-9443-9d515fa18eab@=
+linux.dev/
+>
+> Fixes: 710ad98c363a ("veth: Do not record rx queue hint in veth_xmit")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-> [...]
+...should probably still target net, and let the maintainers decide
+route?
 
-> [Severity: High]
-> This change looks correct for net_test_loopback_validate(). The same
-> pattern still seems to be present in stmmac_test_vlan_validate() in
-> drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c, though.
-> 
-> A later commit in this series, "net: stmmac: selftests: use
-> skb_share_check() in the loopback receive hook", converts
-> stmmac_test_loopback_validate(). The second copy of this handler in the
-> same file is left as:
-> 
-> stmmac_test_vlan_validate() {
->     ...
-> 	skb = skb_unshare(skb, GFP_ATOMIC);
-> 	if (!skb)
-> 		goto out;
-> 
-> 	if (skb_linearize(skb))
-> 		goto out;
->     ...
-> }
-> 
-> __stmmac_test_vlanfilt() and the other VLAN tests register this handler 
-> as
-> a device-bound packet_type. The type is ETH_P_IP, ETH_P_8021Q, or 
-> either
-> one depending on svlan:
-> 
-> 	tpriv->pt.type = htons(ETH_P_IP);
-> 	tpriv->pt.func = stmmac_test_vlan_validate;
-> 	tpriv->pt.dev = priv->dev;
-> 
-> Suppose another handler for the same type sits later in the device's
-> ptype list, for example an AF_PACKET socket bound to ETH_P_IP on that
-> interface. deliver_skb() then increments skb->users, so the hook gets 
-> an
-> skb that is shared but not cloned. skb_unshare() only checks
-> skb_cloned(), so it returns that skb unchanged.
-> 
-> For a non-linear frame with less tailroom than data_len, this path
-> follows:
-> 
-> skb_linearize()
->   __pskb_pull_tail()
->     pskb_expand_head()
->       BUG_ON(skb_shared(skb));
-> 
-> Should stmmac_test_vlan_validate() get the same skb_share_check()
-> conversion, so the series covers every copy of this hook?
-
-No, AFAIU the VLAN tests can't get a shared skb here. They set
-capture_all, so stmmac_sft_add_pack() registers stmmac_sft_filter()
-instead, which passes stmmac_test_vlan_validate() its own clone.
-
-> 
-> The xgbe sibling, xgbe_test_loopback_validate(), does not seem to be
-> affected. It already calls skb_share_check() before it expands a shared
-> skb.
-> 
-> [Severity: Low]
-> This is a pre-existing issue that this patch did not introduce. The
-> length check further down in net_test_loopback_validate() looks too
-> short for what the function parses afterwards:
-> 
-> 	if (skb_headlen(skb) < (NET_TEST_PKT_SIZE - ETH_HLEN))
-> 		goto out;
-> 
-> NET_TEST_PKT_SIZE in include/net/selftests.h covers only ethhdr, iphdr
-> and netsfhdr. That guarantees 33 bytes past the network header and does
-> not include the TCP/UDP header.
-> 
-> The function then reads:
-> 
-> 	thdr = (struct tcphdr *)((u8 *)ihdr + 4 * ihdr->ihl);
-> 	...
-> 	if (shdr->magic != cpu_to_be64(NET_TEST_PKT_MAGIC))
-> 
-> It never checks ihl >= 5, the IP version, tot_len or the L4 header
-> length, and double_vlan adds another 4 bytes.
-> 
-> Could an IPv4 frame that arrives during ethtool -t make the hook read 
-> up
-> to about 64 bytes past skb->tail? Examples would be a minimum-size TCP
-> segment or a frame with ihl=15.
-> 
-> The over-read seems to stay inside the skb head allocation, because
-> skb_shared_info follows skb->end. If so, the only effect is a possibly
-> wrong selftest result.
-
-The length check is pre-existing, will address that in a follow-up 
-patch.
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
