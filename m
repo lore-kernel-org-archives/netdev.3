@@ -1,78 +1,83 @@
 Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63A03EFFDB
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 21:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADFF3EDE7C
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 21:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791582876; cv=none; b=i1MQe2jkThjVZxI3ZCYIGfNAGCEFpGszX5pKaEW28YfMTXISmh195X9uZe3JNuMn3FtJu1sWKvRQF3HS+BEQrueu0n/AMEbn5SE7ciP/GKp0ezo5qqk3O6Cel7sVqUS6u0YqkHRHSEcqqVIJ3b/5+FSWtY/GRXwFZjbhbi3EATM=
+	t=1791582878; cv=none; b=eLpJi3+qEbSZmhfd9vKoazudDeo9THyO+yqKtnk4x66rXr0Y204i4yJhgDy5hnqxOlIyHxwkKYrp4uot81UlxjFUHp68JvX6sBBUwpqhrCZeBkq/61lyrmq84l39yjR6PBPHAVumzwj5WKnF2JVRY3btr5RyUgymWRNNbx56hvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791582876; c=relaxed/simple;
-	bh=CtH6DluhMd+muXMYnJEXGqPlgnABaOW9uHENaxu6YHs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rcddbmqNfdZyGoZg4ccS57KSL1q2O1YK+3+DfcXEyn0wDAIFmYPRsqoufBX2VX3rnhXvvSTrw9AfVsplMgnlvy5aJT1zFqLBXgjpvY6mloR/Kcye0DTJaT/V9bhX7YWtMsl2nch41SeJAwZwY/3GYHDy3Wde7dXPQl+d1o3Vvb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=yTTItb/J; arc=none smtp.client-ip=209.85.216.49
+	s=arc-20240116; t=1791582878; c=relaxed/simple;
+	bh=jyTQX6gHVlLMAuxSV9YrNqfXCPA15cOhWl5JBqLVTn0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=epUtuvKwDipRdRiHCyPRe4J0s4yDwQwROPXcn9hotEUgu+4Ur6aekoxIeyGmDClyJcSZFMA3R1qFOBYgdEPToUOTMYRV+Y8Ewx3+l6OI5t64NAxu2EYrpsFkdl7dLQgDJ6kpAjI1mgPRwwTkCCfKnygYO16I3acb1CFRcLSyGuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=qkNDU2if; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="yTTItb/J"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-398a4dcf289so56536a91.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 14:54:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="qkNDU2if"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3a4b9732d5aso69921a91.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 14:54:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791582873; x=1792187673; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4abdHfRSw+nQAbbMuTS5V/T7lcYjtcsQiFz445wACEc=;
-        b=yTTItb/JDVpHmMnovZpO0nIRnHIRyiXWAdlRM1jh5x3ZxscihtRQcVQyWDu+6e1itI
-         1oYkdwBLVYUuxC5TgsYDWkOM3myxEo9i6vdFU834bRX6G+sr0PlHvBAhle4bfU1OVTl3
-         CTPobMwQIfwn3hPUSuhhGre8QCx5ci5SUHc80N8lE6WpgZmserJURdBNoI9o4/yCR6jI
-         UWdkDT2VQjN5adHtSMpunnmHOHp8iUkG2BeN46qqXFaG0z+c225yoMhYxSMtEFMGGpOi
-         F/H6XyDH6dlgI8Kc5+RHk9Jgq7YLGmYYgLTSEPzgFgxG9KUnVVFrw2su0kTW6EJ6ZAfe
-         14eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791582873; x=1792187673;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791582875; x=1792187675; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4abdHfRSw+nQAbbMuTS5V/T7lcYjtcsQiFz445wACEc=;
-        b=AQ9lZyg4ch7ykXtCNAgPzpzCRyU3ZX+IJgyHs5ipdX2BMXTlawY/DetUmSRBx0wYyx
-         QvhZBwWoJQkAhjLA7OpMY7vieOWzPXpryDYPJDZg6VOR2wPM0tWDiWtSPXqwlIeUERlA
-         vkHtYPUKB5jGHFcboBKm/fYeRQFaWOlNJ+hRfEaPvHtnHedi7DLF36NSAodZNGb/qaIf
-         7b6orhS0G+sfjULANbyWaK3L4HTneOm8RxsEvv/mdfja2KHIPvVtu/2MpLPbbcnPbD3j
-         lyOLD2KYirsqtarq3nM9NOLpQe4zr3VSTauM+kCSViwvHxs7Blus8Guu/4IOi6D/CEnv
-         DQqA==
-X-Gm-Message-State: AFq9FYKiKFk0TixABwLv/aRU8BTo48V+DVCXGt0bb/ro5Pw6AvVoPLGy
-	GqFVSOegKGVJ0NMEWwQtB8hOV9WWhIAKkl+vg8Wt/a3xXlegAR/7PDTUb2Ww0ntZzgRlijVcjYO
-	vQWxS
-X-Gm-Gg: AYBFou10Lqm5aOwq3TcZa0nUfROsY7Vl/coYtVtQnDLOGz4kxDQqptcjj6XNbFFCRHj
-	DvfbaQQ4jietIqW6O4zKiURefjhls60et9mroxbmp7xkyUInxva6UaI+GAzjaNpQENHqRcPI9yJ
-	Z/dVX6Wlt8cpHjhEGN1O1dvGqNj2DhdayclNFssFllR2NTmqzZoY9buNfqANnNum9mptPnMj4jT
-	VrTJl9ZCZYT7Rfb+mxnrwgKCgh/QZ0c31gn1qJakkWEO2ygEDpsdecwJZRxA5MmDxee/O8BwB4P
-	9H03mx5TIrN4mzr84qsYEx/iPIoP70r6uu0OZhNS44XsAqnqrYkyBNmt7QT1u0LqRuTxIVaCvH0
-	I9fS7GZ2I9XfAfotaYPu3+z5xEtzAGoB1afH5E2T4+WYzs02Pfx5WXFB+6SkZP57vooJBvn6hoX
-	Z0Vxwp7W77JgpEV/ZWI7XDvS0TXFGda0AiUVrpbS+hOmqHYFFNFR6QzXq1ForZ3UDt7U40ASMIo
-	TW4OCywRENuaNw8G1nPzw==
-X-Received: by 2002:a17:90b:2ccb:b0:3ab:1af3:a0d with SMTP id 98e67ed59e1d1-3ab3ac63ba3mr2640667a91.33.1791582872747;
-        Fri, 09 Oct 2026 14:54:32 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:7::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab397920b4sm3032876a91.4.2026.10.09.14.54.31
+        bh=86KAF2s8MyS8a1OAHwlwG1z8Q/cZ8M57EZYH8fFLoz0=;
+        b=qkNDU2ifM5TLloHirhQoMCTf/lFXWI9vPtNVCog11/fgtUIiMd6FCce8KGnXzOEpXs
+         2Pi/B7XCUWUSSLOIKUFBiadkgXDyNpqjlq9ICI7iocKuU5dBdJ75nF9VzyjFb6M5Q2et
+         xrFUmkkc9ksSYIvVVjLXWI8xZrzQ7IGyfgNEhsjajE3sVek3/QClnXohuwhXqQL9gP5L
+         F0pyK/8ta6fNeH6dBwBnAoZR/+JDO2wLkg02p9wiMeNWLrXhBqjwPH0C9RYij5tWVslE
+         z5AGRK+MCqTacmdjmA48lIpETW+JYYxF4gxu6nixOjp94qAoD8CIzWqM9bvZaHrTUTqB
+         +mwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791582875; x=1792187675;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=86KAF2s8MyS8a1OAHwlwG1z8Q/cZ8M57EZYH8fFLoz0=;
+        b=TaqDL+1O4P+Wtu4zTrUtK6eu7NhM/BKwxXUem7693tnkWGBugxnVcrDk7OV2i+Uhy+
+         AGJOeHdqBTVXy1TvgrgviyVg/oKYWka/zFL0NpkJsxYD4q6jV+6BSgR1hvD2UCPnI5qV
+         UoxgRREbCfVama16Wr5bUzeNJx1Lpy3zdpQb9UGVwsJPW6eA/4bbIGIZz5neqnLOSk4U
+         kOB7tPVaBcXLIxfcPEWtxaB0MTx8NinqI/V+0rlGTX6v6vOIYU2XtFzJyZ/ZXOoq2naa
+         4psToVqGYFY+K8xBO/mhGhOc9pxBfJhLCI3fu7UIXnZDf99u8PBVCsqmdPtSOStbiwha
+         rx6A==
+X-Gm-Message-State: AFq9FYIP0E9uTjmG6GDIbMKa9+qXUawB0IsRdZ6GddPXvGERJnBeEdAP
+	7W0Obot24kj+ExQzVzhguUPzARvSJu4UiW2rEPeCQjAzsyZHvYn3orIplVOQ6GWHNG7fexb0hiO
+	4Gn2e
+X-Gm-Gg: AYBFou2Acukppb76cfJzjPAP62Id4kEcViOyOrOhblsragbBJ/+klP8onYSA/lFKR8C
+	naV4PM+Q9Nw/nK6NLTbcxZqkffYiAHpNWpsGD4Zy1W2jfEjjsV2Ekrf1gzHcWQEZoDnBaAup8iZ
+	6t9dL3fjPdCiJEQz0yFaSaDZJF1TPByXCrLL1SSFmOQViQQ1XGRZDFXtBCAln7tOXQ6loS1mtrM
+	pST4NQnXEVqDlp3yHpmJOl5EOJmeV7ebCuriSr8wwi3hoEKLTL/2bDrlVscBdCa9w30eQ5yjDav
+	cnZY3lH9cnewRxpQmKnmg54gNsBjzDOJHQctekGhQp78EU+n1HOR7FIueOftE4aEOi/p6SkpTty
+	fTxJunLmBXTGT/Ej5TOaGSCBaHB0KBZkvnUa0X7ghzl/k3HLdLApKNKQ6hN0eLdGwwX3EXuXYGP
+	FGL+2LU3pWwhCEkOgOIxqBl6FCql0V83BBZ9fj6TOBEr6c/J/Y6ho5d27vBFS1bDZE/sr71edBi
+	8Hqp2kafjX06ElcpCU+cg4=
+X-Received: by 2002:a17:90a:d006:b0:39e:53a:c8d4 with SMTP id 98e67ed59e1d1-3ab3a90e57amr2463266a91.12.1791582874924;
+        Fri, 09 Oct 2026 14:54:34 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:56::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab36ed040dsm6555649a91.6.2026.10.09.14.54.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 14:54:31 -0700 (PDT)
+        Fri, 09 Oct 2026 14:54:33 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+To: netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: edumazet@google.com,
 	horms@kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
 	linux-kernel@vger.kernel.org,
 	Joe Damato <joe@dama.to>
-Subject: [PATCH net-next v2 0/2] bnxt_en: Fix SW USO padding
-Date: Fri,  9 Oct 2026 14:54:22 -0700
-Message-ID: <20261009215426.2377946-1-joe@dama.to>
+Subject: [PATCH net-next v2 1/2] bnxt_en: Add helper to fill SW USO payload BDs
+Date: Fri,  9 Oct 2026 14:54:23 -0700
+Message-ID: <20261009215426.2377946-2-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261009215426.2377946-1-joe@dama.to>
+References: <20261009215426.2377946-1-joe@dama.to>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,56 +86,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Greetings:
+Move the code that fills a payload BD and its software ring entry in
+bnxt_sw_udp_gso_xmit() into a helper, bnxt_sw_gso_data_bd().
 
-As a followup to Eric's fix a51d233ccd48 ("bnxt_en: fix DMA mapping length
-for padded small packets") which fixes padding for normal TX, this series
-fixes padding for SW USO.
+No functional change. A following patch uses the helper to add a pad BD
+to short SW USO segments.
 
-There are two cases I try to address:
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Joe Damato <joe@dama.to>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c | 33 ++++++++++++-------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
-  1. The last segment could be shorter than BNXT_MIN_PKT_SIZE. So, add an
-     extra BD if needed to pad to that minimum.
-  2. The gso_size is so small that every segment would be shorter than
-     BNXT_MIN_PKT_SIZE (under 10 bytes with IPv4). This seems exceedingly
-     unlikely, but just in case, it is handled by clearing the GSO features
-     for these skbs so the stack segments them.
-
-Patch 1 is a small refactor to move code into a helper that patch 2 uses to
-avoid duplicating code.
-
-I ran v1 on a bnxt machine and re-ran the uso.py test and it passed, but
-the existing uso.py test doesn't test this specific case, so running the
-test was more of a regression test. There were no functional changes to
-v2.
-
-Note that I did not see this issue in production and it should not be
-possible for QUIC to hit this case on either ipv4 or ipv6 because QUIC
-packets are at least 21 bytes. AFAIU, only ipv4 segments with less than 10
-bytes of UDP payload can trigger this. As such, I was asked to send this
-to net-next.
-
-Thanks,
-Joe
-
-v2:
-  - Switched to net-next
-  - Added a comment as discussed with Michael in patch 2
-  - Added Michael's tags to patches 1 and 2
-
-v1: https://lore.kernel.org/netdev/20261008191114.3736826-1-joe@dama.to/
-
-Joe Damato (2):
-  bnxt_en: Add helper to fill SW USO payload BDs
-  bnxt_en: Pad short SW USO segments to BNXT_MIN_PKT_SIZE
-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 12 ++++
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c | 61 +++++++++++++++----
- drivers/net/ethernet/broadcom/bnxt/bnxt_gso.h | 15 +++++
- 3 files changed, 75 insertions(+), 13 deletions(-)
-
-
-base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+index 6c1060fa2ea5..ef04c9d08066 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+@@ -31,6 +31,26 @@ static u32 bnxt_sw_gso_lhint(unsigned int len)
+ 		return TX_BD_FLAGS_LHINT_2048_AND_LARGER;
+ }
+ 
++static struct tx_bd *bnxt_sw_gso_data_bd(struct bnxt *bp,
++					 struct bnxt_tx_ring_info *txr,
++					 u16 prod, dma_addr_t addr,
++					 unsigned int len)
++{
++	struct tx_bd *txbd = &txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
++	struct bnxt_sw_tx_bd *tx_buf = &txr->tx_buf_ring[RING_TX(bp, prod)];
++
++	txbd->tx_bd_haddr = cpu_to_le64(addr);
++	txbd->tx_bd_len_flags_type = cpu_to_le32(len << TX_BD_LEN_SHIFT);
++	txbd->tx_bd_opaque = 0;
++
++	dma_unmap_addr_set(tx_buf, mapping, addr);
++	dma_unmap_len_set(tx_buf, len, 0);
++	tx_buf->skb = NULL;
++	tx_buf->is_sw_gso = 0;
++
++	return txbd;
++}
++
+ /* Transmit an skb requiring software UDP segmentation.
+  *
+  * Returns 1 if the skb was queued and new BDs were produced, 0 if the skb
+@@ -181,15 +201,10 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
+ 		while (tso_dma_map_next(&map, &dma_addr, &chunk_len,
+ 					&mapping_len, seg_payload)) {
+ 			prod = NEXT_TX(prod);
+-			txbd = &txr->tx_desc_ring[TX_RING(bp, prod)][TX_IDX(prod)];
++			txbd = bnxt_sw_gso_data_bd(bp, txr, prod, dma_addr,
++						   chunk_len);
+ 			tx_buf = &txr->tx_buf_ring[RING_TX(bp, prod)];
+ 
+-			txbd->tx_bd_haddr = cpu_to_le64(dma_addr);
+-			dma_unmap_addr_set(tx_buf, mapping, dma_addr);
+-			dma_unmap_len_set(tx_buf, len, 0);
+-			tx_buf->skb = NULL;
+-			tx_buf->is_sw_gso = 0;
+-
+ 			if (mapping_len) {
+ 				if (last_unmap_buf) {
+ 					dma_unmap_addr_set(last_unmap_buf,
+@@ -204,10 +219,6 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
+ 			}
+ 			last_unmap_buf = tx_buf;
+ 
+-			flags = chunk_len << TX_BD_LEN_SHIFT;
+-			txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
+-			txbd->tx_bd_opaque = 0;
+-
+ 			seg_payload -= chunk_len;
+ 		}
+ 
 -- 
 2.53.0-Meta
 
