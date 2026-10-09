@@ -1,266 +1,162 @@
-Received: from out28-173.mail.aliyun.com (out28-173.mail.aliyun.com [115.124.28.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2F93F12E1;
-	Fri,  9 Oct 2026 12:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B513A4E020F
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791548947; cv=none; b=H8mF55csy7XcniGbGp83X1BPi1qcJMNhIlg6kn8eL2W2VdeLcZPinq2tIDSsyagXyboMeALNkjsJX4WfLys6FC51CcD/i3SwEE8TCzw5hbWMH1laiv5VI7vWhHL+/UNmBsc0lGCcBSsnx6HOszoy3kVQuaSOKlQVbMmoLH2/ilU=
+	t=1791548964; cv=none; b=Bwk4lJNo7y16jmpa7ayPhqUJJPsH85XK1x97vNs4g9apHoaa72QnFKZmbtEU2omeS97WU6vcf656TzkZzDxfbxPy8fATmk7CQiycmhUse1p3cirQYjnTqWkRc0xD7TlsK63gzrL7CgTYMf/67QUvzppCo7N/qunze8lAGUFSFgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791548947; c=relaxed/simple;
-	bh=Uiur4GwjGdMo23mLukEmApHRS5d62d9wlCgSy7EHmmA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Id+CwWG502Rm99FkL21nwB71jDKZoVTNVeDnv1HXcKh19R/KEsSUISxDWnsIRkHBnuVgFuAyICNSfWiOE6aZpgao8UkRuBWgnp28sacpmtaXcRgyLQ0IFbbrBPkE1gTHcZ8vZ+IB/VjqEhNClSikzsrrsPE9Gc5emOatCSriFuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436326|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0208765-0.00028719-0.978836;FP=13141431404878110224|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jXj4a-L_1791548925;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jXj4a-L_1791548925 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Fri, 09 Oct 2026 20:28:46 +0800
-From: Kyle Switch <kyle.switch@motor-comm.com>
-To: andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mmyangfl@gmail.com,
-	horms@kernel.org,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com,
-	wei.zhang@gl-inet.com,
-	sijia.huang@gl-inet.com
-Subject: [PATCH net-next v12 4/5] net: dsa: tag_yt922x: add support for Motorcomm YT922x tags
-Date: Fri,  9 Oct 2026 20:28:35 +0800
-Message-Id: <20261009122836.1534400-5-kyle.switch@motor-comm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261009122836.1534400-1-kyle.switch@motor-comm.com>
-References: <20261009122836.1534400-1-kyle.switch@motor-comm.com>
+	s=arc-20240116; t=1791548964; c=relaxed/simple;
+	bh=ddagq09YQl/TKZgF3VMoaZENHGAYSCeBLPQzpdMd1cs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JzXUg/AMdREY1F1rj09oS/VnAuwAs/5Yb8MzNiuU2iBo/RHpnrvQP8jwqwO15VclK4NgGgg/IUIu1AXjKMHXbWbRa0mvWb8nar6zGBaY1M/1pHkhcL+wae0g7OlWvpVlaJvUL/U2zrpk5UeBRzUOy3Kgv1ngBu3efzeOfP2U7KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=OVwOuw12; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="OVwOuw12"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-48b042c0759so3282135f8f.2
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 05:29:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvpn.net; s=google; t=1791548957; x=1792153757; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=YNYNcm3g2Dr44VNhjrxLCscrRkBQxS3shsHHjVsm3xc=;
+        b=OVwOuw126yNbYcIGmAPRfee+Mm4YZ8ahtqTFdL/vzRiHRWhugWAJ4/jHBApT0mu9CA
+         FDJh03jq9/9XKpjBPusLyg/Aep8egfDqOwFTtM1iSXEwMRoMLQ01a2Hc95KhGF7+ktSf
+         QSkoYg75QnCGRk3uT4KUZsQ2xKkSolwINNufSyqmDQimkjOumo591eOKgapPioJuQyCA
+         epguP8yMNVLiFBvHAgRMURwrw5GaTOWeCtOcIwCq0Ge4IKiKvE7xPLauLgo/70llyY/B
+         Qrr1LVhTOrX2AUOi9D5wVXS9Skm8ZQQ0YlHlQghTdXstmzuC/o8k0zTjAl6Ws8SifYiL
+         g2Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791548957; x=1792153757;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :autocrypt:from:content-language:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=YNYNcm3g2Dr44VNhjrxLCscrRkBQxS3shsHHjVsm3xc=;
+        b=xLE3ChOY8QtLvKpNhXHhWg5cbHiSK9gdiWJQlSikqD/zsMlvwizESFv+3hx8e60mZF
+         1qPEhknKaNL/IgYlfgmIFEu4rwWHZoyYBBGVBvGdlNq6fKbSC0EC8diKeSjr2lmSvR60
+         ehI3TXMybZnkSsZtMojRxkGsqPn3WzoRqA1liaUF0Fi5arAbf88sJ7LbAxvypyUmMPPP
+         Z3R2GUeE5UvcCD301xfzgCgyXjYBQQbExi6vKSZ2uvKFZMBg126enRKDXB634BO/R7kE
+         SG6EMAmqB8rYwptGt8SjxLe9TPENhjpouIV0NX5P9kVrqNYJSf/oKu/eEyqAHXgXmtsY
+         Vpxg==
+X-Gm-Message-State: AFq9FYIJzikmF9JtpPj2I+CwE/RsrCj/GJQWfkI4pyrG1vGnn0vESib7
+	TrlleEns0obeNySU28U9bR5fADl6PLwAKreJvob+flV5k1SiCQSOo87O/LeMspRm2QnQD36D8lc
+	xmA4DpTazP3cJOfz3tKbREH43tAUCqc5ytLWxZyKuJOxLuz8SpKw=
+X-Gm-Gg: AYBFou3W8+1nixTfVhKJExf/G72i5l0BBAGrMMJyUpraz3Ys8RW/5A63FtFmCqiuawF
+	foYcg9aA9YdQj4UiiyVeEFrzECIH+47XDO/Jy5a7VIwOjXpkB5wghtaeLT6FZIwh/NGYHZxc3q7
+	qd5vW85fM9UDRMcBHVwJg0PeQu977a4ri23Kz+DTOsuJtVfj5JozXtSSICVU132nnujGqUUWgAl
+	kKMyMkE1z0KIdkd/R//0hHrBQwnmKxMkHo46SCR9leRCoZ1zPTqEEaTJEczdFh7JF3ym8JLmU1R
+	s4ONKl0bE7zHDfDNd6AbxVpXjpw2OsBeLXwP/9W1aDvewBf2AEqXByNaP7ZmuEwkxljMRBEYPOu
+	WFfNbc0ZdI2IP6y00lDQNk3DQoJrSzWfnAQ88iX5aHtKA8kw7suAKyISuvI0DMLE+5ip+A49sri
+	4+uDSXknVzxufYGbkg74DwPexQb/kEZUSLGQw1YYXHrvvIgNz2vpNW1LWek2xjt/HS82XfeRRJB
+	X3fRA==
+X-Received: by 2002:a05:6000:22c2:b0:48b:1a0:5630 with SMTP id ffacd0b85a97d-48dbacf3275mr2790286f8f.41.1791548956576;
+        Fri, 09 Oct 2026 05:29:16 -0700 (PDT)
+Received: from [192.168.182.19] ([185.242.181.115])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9abd574sm3857191f8f.34.2026.10.09.05.29.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Oct 2026 05:29:15 -0700 (PDT)
+Message-ID: <fd4fc9f9-3b8d-4a5b-b308-96969c8c9de8@openvpn.net>
+Date: Fri, 9 Oct 2026 14:29:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 4/7] selftests: ovpn: enable TCP_NODELAY on TCP
+ sockets
+To: Neal Cardwell <ncardwell@google.com>
+Cc: netdev@vger.kernel.org, Marco Baffo <marco@mandelbit.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Ralf Lici <ralf@mandelbit.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
+References: <20261007133018.1451958-1-antonio@openvpn.net>
+ <20261007133018.1451958-5-antonio@openvpn.net>
+ <CADVnQymvjmpFE95MFDLwHJJpusZ+FfnHyLs4+bo80GjtrLhafQ@mail.gmail.com>
+Content-Language: en-US
+From: Antonio Quartulli <antonio@openvpn.net>
+Autocrypt: addr=antonio@openvpn.net; keydata=
+ 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
+ ifS0+hzvnPVD9wXa9kdjO+0H
+Organization: OpenVPN Inc.
+In-Reply-To: <CADVnQymvjmpFE95MFDLwHJJpusZ+FfnHyLs4+bo80GjtrLhafQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Add DSA tag support for Motorcomm YT922x switches.  YT922x uses the
-same ETH_P_YT921X EtherType and the same 8-byte tag length as YT921x,
-but the tag layout differs, so a separate tag driver is needed instead
-of extending tag_yt921x.c.
+Hi,
 
-The new driver documents both the to-CPU and from-CPU tag layouts.
+On 08/10/2026 15:59, Neal Cardwell wrote:
+> On Wed, Oct 7, 2026 at 9:38 AM Antonio Quartulli <antonio@openvpn.net> wrote:
+>>
+>> From: Marco Baffo <marco@mandelbit.com>
+>>
+>> Userspace now enables TCP_NODELAY by default. Enable it for
+>> ovpn-cli's TCP sockets too.
+> 
+> This claim is accurate in context, but terse. I would suggest a more
+> precise wording, like: “Since OpenVPN 2.7.6, openvpn unconditionally
+> sets TCP_NODELAY on its TCP sockets. Do the same in ovpn-cli so the
+> TCP selftests match that configuration.”
 
-Update the co-maintainer for the Motorcomm DSA driver.
+ok! I'll make the wording more precise and explicit about the version 
+introducing this change in userspace.
 
-Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
----
- MAINTAINERS          |   2 +
- include/net/dsa.h    |   2 +
- net/dsa/Kconfig      |   6 +++
- net/dsa/Makefile     |   1 +
- net/dsa/tag_yt922x.c | 122 +++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 133 insertions(+)
- create mode 100644 net/dsa/tag_yt922x.c
+> 
+> Sashiko’s suggestion to keep an option for running with Nagle on seems
+> worthwhile. Peers on 2.7.0–2.7.5, and mixed-version setups, will keep
+> producing Nagle-on sockets under ovpn for a while. It might be nice to
+> have test coverage to ensure those setups do not get broken by kernel
+> changes.
+> 
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 509b35b5a0e7..434cd217011b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18434,11 +18434,13 @@ F:	drivers/net/phy/motorcomm.c
- 
- MOTORCOMM YT921X ETHERNET SWITCH DRIVER
- M:	David Yang <mmyangfl@gmail.com>
-+M:	Kyle Switch <kyle.switch@motor-comm.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
- F:	drivers/net/dsa/motorcomm/
- F:	net/dsa/tag_yt921x.c
-+F:	net/dsa/tag_yt922x.c
- 
- MOXA SMARTIO/INDUSTIO/INTELLIO SERIAL CARD
- M:	Jiri Slaby <jirislaby@kernel.org>
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 5d12191b6f6f..5a173fe2bb87 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -62,6 +62,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_KSZ8463_VALUE		34
- #define DSA_TAG_PROTO_MT7628_VALUE		35
- #define DSA_TAG_PROTO_KS8995_VALUE		36
-+#define DSA_TAG_PROTO_YT922X_VALUE		37
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
-@@ -101,6 +102,7 @@ enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
- 	DSA_TAG_PROTO_MT7628		= DSA_TAG_PROTO_MT7628_VALUE,
- 	DSA_TAG_PROTO_KS8995		= DSA_TAG_PROTO_KS8995_VALUE,
-+	DSA_TAG_PROTO_YT922X		= DSA_TAG_PROTO_YT922X_VALUE,
- };
- 
- struct dsa_switch;
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index 4f44bf3ede23..06d8d6526054 100644
---- a/net/dsa/Kconfig
-+++ b/net/dsa/Kconfig
-@@ -233,4 +233,10 @@ config NET_DSA_TAG_YT921X
- 	  Say Y or M if you want to enable support for tagging frames for
- 	  Motorcomm YT921x switches.
- 
-+config NET_DSA_TAG_YT922X
-+	tristate "Tag driver for Motorcomm YT922x switches"
-+	help
-+	  Say Y or M if you want to enable support for tagging frames for
-+	  Motorcomm YT922x switches.
-+
- endif
-diff --git a/net/dsa/Makefile b/net/dsa/Makefile
-index 1f9cc30e9988..0ef6dfce3b92 100644
---- a/net/dsa/Makefile
-+++ b/net/dsa/Makefile
-@@ -45,6 +45,7 @@ obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
- obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
- obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
- obj-$(CONFIG_NET_DSA_TAG_YT921X) += tag_yt921x.o
-+obj-$(CONFIG_NET_DSA_TAG_YT922X) += tag_yt922x.o
- 
- # for tracing framework to find trace.h
- CFLAGS_trace.o := -I$(src)
-diff --git a/net/dsa/tag_yt922x.c b/net/dsa/tag_yt922x.c
-new file mode 100644
-index 000000000000..b6146a9af98b
---- /dev/null
-+++ b/net/dsa/tag_yt922x.c
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Motorcomm YT922x Switch Extended CPU Port Tagging
-+ *
-+ * Copyright (c) 2026 Kyle switch <kyle.switch@motor-comm.com>
-+ *
-+ */
-+
-+#include <linux/etherdevice.h>
-+
-+#include "tag.h"
-+
-+#define YT922X_TAG_LEN 8
-+
-+/*
-+ * To define the from cpu tag format 8 bytes.
-+ *
-+ * To-CPU (RX) tag format, 8 bytes:
-+ *
-+ *   tag[0]: TPID (default: 0x9988)
-+ *   tag[1]: VID lookup
-+ *   tag[2]: bit 5:2  - RX source port
-+ *
-+ * From-CPU (TX) tag format, 8 bytes:
-+ *
-+ *   tag[0]: TPID (default: 0x9988)
-+ *   tag[1]: bit 8:0 - Dst port mask
-+ *   tag[2]: bit 15  - Dst port 0
-+ *
-+ */
-+#define YT922X_TAG_NAME		"yt922x"
-+#define YT922X_TAG_PORTMASK_0	BIT(15)
-+#define YT922X_TAG_PORTMASK_M	GENMASK(8, 0)
-+#define  YT922X_TAG_PORTS(x)		FIELD_PREP(YT922X_TAG_PORTMASK_M, (x))
-+#define YT922X_TAG_FORCE_DST	BIT(9)
-+#define YT922X_TAG_PRIO_M	GENMASK(12, 10)
-+#define YT922X_TAG_PRIO_EN	BIT(13)
-+#define  YT922X_TAG_PRIO(x)	(FIELD_PREP(YT922X_TAG_PRIO_M, (x)) | YT922X_TAG_PRIO_EN)
-+#define YT922X_TAG_RX_PORT_M	GENMASK(5, 2)
-+
-+static struct sk_buff *
-+yt922x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
-+{
-+	unsigned long ports;
-+	__be16 *tag;
-+	u16 ctrl;
-+
-+	skb_push(skb, YT922X_TAG_LEN);
-+	dsa_alloc_etype_header(skb, YT922X_TAG_LEN);
-+	tag = dsa_etype_header_pos_tx(skb);
-+
-+	tag[0] = htons(ETH_P_YT921X);
-+	ports = dsa_xmit_port_mask(skb, netdev);
-+	/*To fill in the case where the port index is not 0 */
-+	ctrl = YT922X_TAG_PRIO(skb->priority) | YT922X_TAG_FORCE_DST |
-+	       YT922X_TAG_PORTS(ports >> 1);
-+	tag[1] = htons(ctrl);
-+	if (ports & BIT(0)) {
-+		/* To fill in the case where the port index is 0 */
-+		ctrl = YT922X_TAG_PORTMASK_0;
-+		tag[2] = htons(ctrl);
-+	} else {
-+		tag[2] = 0;
-+	}
-+	tag[3] = 0;
-+
-+	return skb;
-+}
-+
-+static struct sk_buff *
-+yt922x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
-+{
-+	unsigned int port;
-+	__be16 *tag;
-+	u16 rx;
-+
-+	if (unlikely(!pskb_may_pull(skb, YT922X_TAG_LEN))) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	tag = dsa_etype_header_pos_rx(skb);
-+
-+	if (unlikely(tag[0] != htons(ETH_P_YT921X))) {
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Unexpected EtherType 0x%04x\n",
-+				     ntohs(tag[0]));
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	/* Locate which port this is coming from */
-+	rx = ntohs(tag[2]);
-+	port = FIELD_GET(YT922X_TAG_RX_PORT_M, rx);
-+	skb->dev = dsa_conduit_find_user(netdev, 0, port);
-+	if (unlikely(!skb->dev)) {
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Couldn't decode source port %u\n", port);
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	/* Remove tag and update checksum */
-+	skb_pull_rcsum(skb, YT922X_TAG_LEN);
-+	dsa_strip_etype_header(skb, YT922X_TAG_LEN);
-+
-+	return skb;
-+}
-+
-+static const struct dsa_device_ops yt922x_netdev_ops = {
-+	.name = YT922X_TAG_NAME,
-+	.proto = DSA_TAG_PROTO_YT922X,
-+	.xmit = yt922x_tag_xmit,
-+	.rcv = yt922x_tag_rcv,
-+	.needed_headroom = YT922X_TAG_LEN,
-+};
-+
-+MODULE_DESCRIPTION("DSA tag driver for Motorcomm YT922x switches");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_YT922X, YT922X_TAG_NAME);
-+
-+module_dsa_tag_driver(yt922x_netdev_ops);
+True, extending the tests to cover both case shouldn't be a big deal.
+
+Will respin with both points addressed.
+
+Regards,
+
 -- 
-2.25.1
+Antonio Quartulli
+OpenVPN Inc.
 
