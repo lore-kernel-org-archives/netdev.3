@@ -1,85 +1,84 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EA34E3ED9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4297F4E3EF3;
 	Fri,  9 Oct 2026 13:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791553423; cv=pass; b=rvdsg+Yc8yfcZo5lGkdtzw9nXUWGoB3a7f9BlmHKQRWqxy5RHhoe2q6YXh+uT1tw8tDyKnWcM0w2zeRlqNCjXrI6tjzRdXaZKJXS8WqeKNSJHgSuSNf+x0Vs+2RlfHp7sgOmPs3Wbcymqu/4BL3EwE/VdoV6S6G73gkuUMOEba8=
+	t=1791553423; cv=pass; b=CxT3opCrcuI0S06FVeHzV4n1ryHiyx1ukumWf68lLq77lGp2D4fw8D6wd0+A9rDboEz2xQLMVDqnMfXBo0x4kKbT8opgqp7+BNaU6QEacT4/5Cw1itTh7sgTSZl/4Rb/2A8IezYwx3suIzJoNIQ+jNWb/91mE8yMLSnk8UBeWco=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791553423; c=relaxed/simple;
-	bh=L4b77WGngEL/FWpF9iRAHfE9+k/sNz06Qmqdpp6bneI=;
+	bh=EDoagEUgu25weQiUCei6Kl9QdgOwQBCmHglU16FopUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkczvhEcDfnJnBXxp/FBHaqYgl0dmeFcw2+p+3DEs/HOcES6+sohLnPQ3zpN4X0E47LmYI2phKFWc6ZVNAPi+MKeEe/FjpXfXMRiz2d4X7aj/EP6xoau9itsqGzAyH90RupObyij599a+FGadTiVPKaNoN7C+65DNBAk3ZIXniM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=RMG+7Tcb; arc=pass smtp.client-ip=185.203.200.13
+	 MIME-Version; b=kQNnmcA6ZxmzsTw3uuEoWtxZzmljNJkNzo753Gz0vDlp+erD3IJYjjm4zE0lkk8Tf/hk5GxHnDmH5Zo8VZHLeDAkmhY9Z49ong8GQ4lTyJI6CoSdRK9xwZOjlthLydcrH3E7sSUT4kaJfpYdf6KxyzwQUoQS0MUrfFDoU7FmHoE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=IBtKBjbl; arc=pass smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="RMG+7Tcb"
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="IBtKBjbl"
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id EC33C202622;
-	Fri, 09 Oct 2026 15:43:35 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CDB8D202601;
+	Fri, 09 Oct 2026 15:43:36 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553415;
+	s=20260414; t=1791553416;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d4HNy9wJpg90Hhz9sk2AWur8gvwMQKYnAUoHhj+Xys8=;
-	b=RMG+7TcbWZsIt8n9tV0S+tcdJl9NQ1ZpHi5g2oj44rZtTdEVuWJsftv28dR+ytGSrsQLNH
-	FRQWat7IbQSbwb6AqeTtRuzKUWzxfEk6LSOn4Ls6XPg6cQQDFtLbiqWfCJmGHs5zLUR2UA
-	BNHigozj84AnucVmHI5uNU5bA3pwpBPaXoyYiIXy9In/5BQRXD6oCp1B9upJxWvZn4GdxJ
-	odzJxvyq0Tb9PpeyssVAOp+jPXBmF7rXw4r9hns/urJEwQvmfoaKydTz4EDAoizGbhy6/1
-	7+BoekaE1kJJvmwpk9SznRfqVWX+mYBaUILyiR4TCcBujmYrcZsGkKyr+nVWhA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791553415; a=rsa-sha256;
+	bh=QZN6PILafY+cAwECJ3seVw3gPB6Vgfr3gQEV6UDJ+uI=;
+	b=IBtKBjblzKCuEH8ePvcmkFGc7vyerWSz7JoEoAa6CaIWoGdhcsQXDvR1NmDXC7MDZr90MN
+	g8DyDoUhcOEVYx3b9KpG5E6kCwsAl4zLX3wom6xPu3fsMVdEujo4WfoymvgTtWEinorRni
+	zfWiD88pNc4t9Zw9/7FXJejQOb2XtiplwlADmBDCS3Lajd5ItnSrQl5RknnEdyr+BH+X4A
+	pFU1F/sBl5Ojw+gr+H4fQXUvZDukreMUiBC6vFjCT0mT30Ug8GJW8kmieK/hyH12JJh75c
+	wrhEhDRj2Y7F4xM9Gr/x6EzfLdmbJwatyP+nj76nSaMVKtZ8Ynf6/BcyWyTVYA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791553416; a=rsa-sha256;
 	cv=none;
-	b=Dpupu6ldRV6k73k01723Tf5BG93xkvIyya4ETAwXk/jwCn2h6xrKX25zPGEERcSpC64Ktv
-	d6UvWrOnQu66QlHAtpo25spAyNmh6iziPFc7yDJl9uPfpeZZgc8FiQDkLUnu73YuCL31cv
-	Wm5gvstcB4VSmq8hWtxj083VmAAV4kf6i1xyvOlsGUgbWaH/Gy18yqC2FYSFrAGnqF6XeJ
-	FMvt9SPiKyGa5afM3SVx4XZ1/dFEgFFy6ZI+wtpYGDZJ3aSBhMyH7V/EMxMSUAB4ECF17I
-	HMgDhSyQOrO1rgX0vjsoKiEjXSc8gws33JL9YAnzpwaqfJmm6Q+3bmat1koF8A==
+	b=L1gmIAursTM9mdJEtZjP/V+H4G6UsPajFQU95f8UoUYTCqtbalSXAB+C0KKk2lD2o8XVaR
+	YtrH+qax850Sd7XwT3F7Owf3JIRAuYFExJXBnpTUMbjIse63z3Fp5tLZaI1Ssa/KwUnzjU
+	QtsTJtjWi/Qqhj9WAOzW9Lno5vpKhi1+ZKcNFKEiyYKYZIuffQrPSO0w7u3T5DQnDyPKc9
+	9FdUKR71QM2Na6GcJiR3ghE77I8sv+ciT2Hh0Tsg+1Othk/3tXJRiZNsvVo3RSJpGxy5cp
+	t3jybjS8/gh9Ndg33sGr2+1q96QKUQ4DIf5RkOlr9QK02w8NnbSd+EYHrn9jZA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553415;
+	s=20260414; t=1791553416;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d4HNy9wJpg90Hhz9sk2AWur8gvwMQKYnAUoHhj+Xys8=;
-	b=czu5rY/gysdPHVMZYNH7GPx9c4xl83QtQ85x+iDq+H1/264KfWWx/HYAIW+adfoJWKdePi
-	1TNi8xVhl6GybmuQIZlEsEesoi+O7GMxli7jaAZd5Z6o+zOXQqwGttsABrQHLBAuCfX9Dc
-	PaHCzaLY5LT/2YnbQn1eniN23NRn1gGrFIzVvtd/Q9ncamYwiY3+IG03mYQhNvM8TFQROu
-	CeG128dBWdmXeVb7L7fQZzEOlsqaJjaMr6xkKj52wHp87J8sbJDNAKAK1A6DQpxWHL4Wgk
-	lkZBiEgFlUc/dXxq3iQXEK+yKlcopx4t2iN2eav6E86Tg/OdCD3o5Gie+3kpuQ==
+	bh=QZN6PILafY+cAwECJ3seVw3gPB6Vgfr3gQEV6UDJ+uI=;
+	b=GQfmGTspdXyqAkScY3L1sRExauAWuYYT2O1+zX6fhZDmOAV50YdadVTaBCZ3HeUpwng4Zt
+	ugWcuPd6ogAAvi7lQYNcos4+1s+d+jn8U8Z62528TB71SwMlfx1zlLu4SwLYSgJNvZkZx0
+	OWLrpNJTSwBCyYxOfGctnszoygIQjsRgq+kWlJS7O7nNL5YOqlwHS9PnaTRGQinvhBwycT
+	YEh4c0okAbB07kgu0D+u0j8DubWHzq+u5OdB+kuTlx/aP++t9d5YxFy5L3or9A720+d+6x
+	YxwZJummIfArF+cRX/V7o8rvSu8f4f3XzHwTaZ8vF3IMNRKLnItLN+nZao/iUA==
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xFAsp-0053SS-2l;
-	Fri, 09 Oct 2026 15:43:35 +0200
+	id 1xFAsq-0053Sf-2O;
+	Fri, 09 Oct 2026 15:43:36 +0200
 Received: from blackshift.org (90-182-211-1.rcp.o2.cz [90.182.211.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6BA9E5BD8BB;
-	Fri, 09 Oct 2026 13:43:35 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 539915BD8C5;
+	Fri, 09 Oct 2026 13:43:36 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Quchaosheng <quchaosheng000406@163.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 15/37] can: rcar_canfd: Add support for Renesas RZ/G3S
-Date: Fri,  9 Oct 2026 15:27:47 +0200
-Message-ID: <20261009134323.64064-16-mkl@pengutronix.de>
+Subject: [PATCH net-next 18/37] dt-bindings: net: can: convert grcan to DT schema
+Date: Fri,  9 Oct 2026 15:27:50 +0200
+Message-ID: <20261009134323.64064-19-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261009134323.64064-1-mkl@pengutronix.de>
 References: <20261009134323.64064-1-mkl@pengutronix.de>
@@ -91,69 +90,165 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Quchaosheng <quchaosheng000406@163.com>
 
-Add support for Renesas RZ/G3S
+grcan.txt is the only CAN controller binding whose device does not have a
+compatible string.  There are no device tree source files for LEON SPARC,
+and the nodes are built by the PROM from the AMBA plug&play information,
+which carries a core name and a register window but no compatible.  The
+driver matches on the node name instead.
 
-The Renesas RZ/G3S CAN-FD controller is largely compatible with the
-variant found on the Renesas RZ/G3E. The main differences are:
-- the RZ/G3S provides 16 AFL pages
-- the RZ/G3S supports only two channels
-- the RZ/G3S supports only CAN-FD operation and does not implement the
-  bits used to select between classical CAN-only and CAN FD-only modes.
-- the RZ/G3S includes an internal divider that allows the peripheral
-  clock to be used as the CAN FD clock source.
+It is the last of the five CAN controller bindings that were still written
+as free-form text; the other four are posted separately.
 
-Add support for the Renesas RZ/G3S.
+A binding without a compatible string is not selected by dtbs_check,
+because nodes are matched through their compatible values.  The schema
+therefore needs an explicit select on the node name.  This is the same
+mechanism ethernet-phy.yaml uses for optional-compatible nodes, and
+without it the schema would never be applied to anything.
 
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20260902141544.565763-6-claudiu.beznea+renesas@tuxon.dev
+Two further details are worth pointing out, because the text binding got
+them wrong or left them implicit:
+
+  - "systemid" is not a property of the controller node.  The driver and
+    arch/sparc/kernel/leon_kernel.c both read it from the "/ambapp0" node,
+    so it is described in the description rather than in properties.  The
+    binding is stricter than the text file here, and dtbs_check now
+    rejects a controller node that carries it.
+
+  - The node name format is "<core name>@<irq>,<address>", as built by
+    ambapp_path_component() in arch/sparc/kernel/prom_32.c from the "name"
+    and "reg" properties of the AMBA plug&play core.  The select pattern
+    and the example follow that format.
+
+The "name" property of the text binding is not described: dtc enforces
+that it equals the base node name and then deletes it from the output, so
+it never reaches a compiled devicetree.
+
+This binding does not reference can-controller.yaml, unlike the other CAN
+controller schemas.  That common schema constrains the node name to
+"^can(@.*)?$", which these nodes cannot satisfy -- they are named after
+the AMBA plug&play core.  Referencing it makes every valid node fail.
+
+No functional change.  The driver comment is updated by a separate patch.
+
+Assisted-by: LLM
+Signed-off-by: Quchaosheng <quchaosheng000406@163.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20260929073703.2748220-2-quchaosheng000406@163.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ .../net/can/aeroflexgaisler,grcan.yaml        | 65 +++++++++++++++++++
+ .../devicetree/bindings/net/can/grcan.txt     | 28 --------
+ 2 files changed, 65 insertions(+), 28 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/can/aeroflexgaisler,grcan.yaml
+ delete mode 100644 Documentation/devicetree/bindings/net/can/grcan.txt
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index ac5d5959d8e4..74c3c3f20991 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -661,6 +661,26 @@ static const struct rcar_canfd_hw_info rzg2l_hw_info = {
- 	.fixed_canfd = 0,
- };
- 
-+static const struct rcar_canfd_hw_info r9a08g045_hw_info = {
-+	.nom_bittiming = &rcar_canfd_gen4_nom_bittiming_const,
-+	.data_bittiming = &rcar_canfd_gen4_data_bittiming_const,
-+	.tdc_const = &rcar_canfd_gen4_tdc_const,
-+	.regs = &rcar_gen4_regs,
-+	.sh = &rcar_gen4_shift_data,
-+	.rnc_field_width = 16,
-+	.max_aflpn = 15,
-+	.max_cftml = 31,
-+	.max_channels = 2,
-+	.postdiv = 2,
-+	.shared_global_irqs = 0,
-+	.multi_channel_irqs = 1,
-+	.ch_interface_mode = 1,
-+	.shared_can_regs = 1,
-+	.external_clk = 1,
-+	.fcan_pclk = 1,
-+	.fixed_canfd = 1,
-+};
+diff --git a/Documentation/devicetree/bindings/net/can/aeroflexgaisler,grcan.yaml b/Documentation/devicetree/bindings/net/can/aeroflexgaisler,grcan.yaml
+new file mode 100644
+index 000000000000..d5cba5b1bac1
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/can/aeroflexgaisler,grcan.yaml
+@@ -0,0 +1,65 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/can/aeroflexgaisler,grcan.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- static const struct rcar_canfd_hw_info r9a09g047_hw_info = {
- 	.nom_bittiming = &rcar_canfd_gen4_nom_bittiming_const,
- 	.data_bittiming = &rcar_canfd_gen4_data_bittiming_const,
-@@ -2383,6 +2403,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(rcar_canfd_pm_ops, rcar_canfd_suspend,
- 
- static const __maybe_unused struct of_device_id rcar_canfd_of_table[] = {
- 	{ .compatible = "renesas,r8a779a0-canfd", .data = &rcar_gen4_hw_info },
-+	{ .compatible = "renesas,r9a08g045-canfd", .data = &r9a08g045_hw_info },
- 	{ .compatible = "renesas,r9a09g047-canfd", .data = &r9a09g047_hw_info },
- 	{ .compatible = "renesas,r9a09g077-canfd", .data = &r9a09g077_hw_info },
- 	{ .compatible = "renesas,rcar-gen3-canfd", .data = &rcar_gen3_hw_info },
++title: Aeroflex Gaisler GRCAN and GRHCAN CAN controllers
++
++maintainers:
++  - Marc Kleine-Budde <mkl@pengutronix.de>
++
++description: |
++  The GRCAN and GRHCAN CAN controllers are available in the GRLIB VHDL IP
++  core library.
++
++  On a LEON SPARC system there are no device tree source files. The nodes
++  are built by the PROM from the AMBA plug&play information, which does not
++  provide a compatible string. The driver therefore matches on the node
++  name, which is built as "<core name>@<irq>,<address>" from the "name" and
++  "reg" properties of the AMBA plug&play core.
++
++  The GRLIB build ID is not a property of the controller node either. It is
++  read from the "systemid" property of the "/ambapp0" node, and the TX bug
++  workaround is enabled when that property is absent or when its least
++  significant 16 bits are smaller than 4100.
++
++select:
++  properties:
++    $nodename:
++      pattern: '^(01_034|01_03d|GAISLER_GRCAN|GAISLER_GRHCAN)@'
++  required:
++    - $nodename
++
++properties:
++  reg:
++    maxItems: 1
++
++  freq:
++    description:
++      Frequency of the external oscillator clock in Hz, which is the
++      frequency of the AMBA bus in the ordinary case.
++    $ref: /schemas/types.yaml#/definitions/uint32
++
++  interrupts:
++    maxItems: 1
++    description:
++      Interrupt number of the controller, as built from the AMBA plug&play
++      information.
++
++required:
++  - reg
++  - freq
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    /* AMBA plug&play children are named "<core name>@<irq>,<address>" */
++    GAISLER_GRCAN@c,80000000 {
++        reg = <0x80000000 0x1000>;
++        freq = <40000000>;
++        interrupts = <12>;
++    };
++...
+diff --git a/Documentation/devicetree/bindings/net/can/grcan.txt b/Documentation/devicetree/bindings/net/can/grcan.txt
+deleted file mode 100644
+index 34ef3498f887..000000000000
+--- a/Documentation/devicetree/bindings/net/can/grcan.txt
++++ /dev/null
+@@ -1,28 +0,0 @@
+-Aeroflex Gaisler GRCAN and GRHCAN CAN controllers.
+-
+-The GRCAN and CRHCAN CAN controllers are available in the GRLIB VHDL IP core
+-library.
+-
+-Note: These properties are built from the AMBA plug&play in a Leon SPARC system
+-(the ordinary environment for GRCAN and GRHCAN). There are no dts files for
+-sparc.
+-
+-Required properties:
+-
+-- name : Should be "GAISLER_GRCAN", "01_03d", "GAISLER_GRHCAN" or "01_034"
+-
+-- reg : Address and length of the register set for the device
+-
+-- freq : Frequency of the external oscillator clock in Hz (the frequency of
+-	the amba bus in the ordinary case)
+-
+-- interrupts : Interrupt number for this device
+-
+-Optional properties:
+-
+-- systemid : If not present or if the value of the least significant 16 bits
+-	of this 32-bit property is smaller than GRCAN_TXBUG_SAFE_GRLIB_VERSION
+-	a bug workaround is activated.
+-
+-For further information look in the documentation for the GLIB IP core library:
+-http://www.gaisler.com/products/grlib/grip.pdf
 -- 
 2.53.0
 
