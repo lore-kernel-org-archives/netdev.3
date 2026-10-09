@@ -1,269 +1,72 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6353E4D37B9
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EB14D6C44;
+	Fri,  9 Oct 2026 12:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791548118; cv=none; b=C8IETZwiAoiztuTpL6SE/PjF75F0IPO+2js5MegJcxmakv6KBBdkzAyCOh4t97+FzcsirGz7Mdb2nfNTwlB/w/imXV+V/YR3e26U/R+AoyivdjwRgVqqklN08wxGBHJGlH0kLjk2pd0PK6fh/J/hTUqSjOYdDc0n3S2AZHvXyFk=
+	t=1791548122; cv=none; b=A9ng/32whY9H+PzNKRqoSvAu4MiESVrmVIvE26l0YMOJbdcwJJMIv4R/JEOr+xC/WiehrArrxqcJvrnd0KEFGpk/N+atXGRFFMUYP2c3/bpbps5+b2j7kCDMUkeuVXLvpVvhXiWahGkLqE4qhQlOv0C+N/y0xJDg2z4CUyx/rNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791548118; c=relaxed/simple;
-	bh=3EoZw3SqKXPj6on6zJs8Qp+OWr6VM6QEbjKLmyEw17M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ni8n2hTyt+xy574gQBRaRy5I9h/0terjIrERRyBacWktO3u6tCW8W9oz71GhKF67FC8Fbv6zomtilrdWJtoeJUf69d+KDFeQ86tUddPATWlUPPzGP+2g4GupiDfF9csx90Cwzt1ns4UxOPMtdm4ekxPyUL+MY1bQQz/feThvjIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nh0FjFjp; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791548122; c=relaxed/simple;
+	bh=akh2/KY6vbUjpMPax7LEcPyou8t/F1Tq3ulvHtvoxRQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aPOaRDPymUVMN6HWBI8CS0xtXcImr3HkI+e5AkXcsIv8YX0SEpsFZDR3h0FfKMeT8gE6m/cVZn3aMICTZtJUCz/BEbOHf7DgLStZe9sbO5JnbwjH5mEHWCSUG0Sd+xLh4NrqGKQ+FW8akd5xPtXEttCjFW8R4o8ye7VDVGpcVaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mi+OrU15; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nh0FjFjp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791548106; x=1823084106;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3EoZw3SqKXPj6on6zJs8Qp+OWr6VM6QEbjKLmyEw17M=;
-  b=Nh0FjFjpDsIgRZi+PxutpsaQFuxnNTqRmnH+cRow1IAeJ5TMkYXQI1N8
-   kEaUDEpORtmMBt9ZwIoqlbPSGTloyekE0ymTXmzNvxGJys27+V/7Mb4U3
-   SIxWipz2m388FhWQy0bBY/B4aQVBZP+YqPT7tYtBEVNPDstfqnWoDjgO9
-   C5azJOXjQCEwKY2PohniTapBsHUuCiGrqUoGn1aFQAw9jggdTfDGkZ7GT
-   uWqCA5YPThwM/7Kl8q/Q9nortx2svodrukaMLDn5ZKTs/+99IrYTSoktf
-   MVnhWzeBci68R6uy2LMMyNSf1c/7w9kxFQv/xCBIspnlOv5bS4b03SaUX
-   Q==;
-X-CSE-ConnectionGUID: 6gm9T3/zR9yrlAmr7CHlTw==
-X-CSE-MsgGUID: QmyHCIXbSVukas6T2wFUSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="251127"
-X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
-   d="scan'208";a="251127"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 05:14:55 -0700
-X-CSE-ConnectionGUID: zcpYXfJCR4GlWj3YxfIZXg==
-X-CSE-MsgGUID: DdQeSYKiTLmmpLgLHm9CIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
-   d="scan'208";a="420406"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa002.fm.intel.com with ESMTP; 09 Oct 2026 05:14:51 -0700
-Received: from pkitszel-desk.tendawifi.com (unknown [10.245.245.238])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 6E25A2FC44;
-	Fri,  9 Oct 2026 13:14:46 +0100 (IST)
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-To: netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	intel-wired-lan@lists.osuosl.org,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	Jonathan Corbet <corbet@lwn.net>,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	andrew+netdev@lunn.ch,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	leon@kernel.org,
-	mbloch@nvidia.com,
-	jacob.e.keller@intel.com,
-	jedrzej.jagielski@intel.com,
-	anzaki@gmail.com,
-	brett.creeley@amd.com,
-	jtornosm@redhat.com,
-	ohartoov@nvidia.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net-next v2 04/14] ice: add helpers for Global RSS LUT alloc, free, vsi_update
-Date: Fri,  9 Oct 2026 14:04:15 +0200
-Message-ID: <20261009121433.30347-5-przemyslaw.kitszel@intel.com>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20261009121433.30347-1-przemyslaw.kitszel@intel.com>
-References: <20261009121433.30347-1-przemyslaw.kitszel@intel.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mi+OrU15"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=7MhystBVEOVDZzGPDoVICEB1oSofc5klmxZ9TwVsffo=; b=mi+OrU15ZngXhA95MFG+UAr3RA
+	i/pviWuDKK9hGrYug4XbQQZgB2DDaV+aoHV2ISQVc+AXah/j1g6ckvwUOe034NSrwOnKWKEOLmSGk
+	6Fa7G5LZUh9uBzSjwoRSOZnTjycq0eAjZJJ8R1fy9eypRX/Qp5dU2XfNQONIIC9pIMWw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xF9V9-009mbx-B0; Fri, 09 Oct 2026 14:15:03 +0200
+Date: Fri, 9 Oct 2026 14:15:03 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Konstantin Meshkov <skyline@mail.ru>
+Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: marvell: add LED support for 88E1116R
+ PHY
+Message-ID: <1bef1633-8213-476f-a019-f29a71553e09@lunn.ch>
+References: <179152610952.2918676.6625057760354797023@mail.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179152610952.2918676.6625057760354797023@mail.ru>
 
-Add AQ commands for RSS Global LUT allocation and free operations.
-The new functions are used by subsequent commits.
+On Fri, Oct 09, 2026 at 09:08:29AM +0300, Konstantin Meshkov wrote:
+> The Marvell 88E1116R PHY (used on the D-Link DNS-325) exposes its LEDs
+> through the same page 3 register 0x10 LED control layout as the 88E1318S.
+> Wire up the existing 88E1318S LED handlers in the 88E1116R driver entry
+> so the PHY LEDs can be described in the device tree and driven through
+> the LED trigger API with hardware offload.
+> 
+> The LED polarity is configured through the led_polarity_set() callback
+> shared with the 88E1318S family.
+> 
+> Signed-off-by: Konstantin Meshkov <skyline@mail.ru>
+> ---
+> This patch depends on:
+> [PATCH net-next v2] net: phy: marvell: add support for PHY LEDs polarity modes
 
-Add programming code for GLOBAL LUT ID of UPDATE VSI AQ,
-do the same for RSS LUT "type", also for PF LUT in case of VF VSI.
+I've not be tracking. Is this merged already? If not, please resubmit
+once it has been.
 
-Co-developed-by: Brett Creeley <brett.creeley@intel.com>
-Signed-off-by: Brett Creeley <brett.creeley@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
----
-v2: fix whitespace (Sashiko)
----
- drivers/net/ethernet/intel/ice/ice.h          |  1 +
- .../net/ethernet/intel/ice/ice_adminq_cmd.h   |  1 +
- drivers/net/ethernet/intel/ice/ice_switch.h   |  2 +
- drivers/net/ethernet/intel/ice/ice_lib.c      | 28 +++++++++++--
- drivers/net/ethernet/intel/ice/ice_switch.c   | 41 +++++++++++++++++++
- 5 files changed, 69 insertions(+), 4 deletions(-)
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 432da05c48c0..89a2bdbecf60 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -367,6 +367,7 @@ struct ice_vsi {
- 	u8 *rss_hkey_user;	/* User configured hash keys */
- 	u8 *rss_lut_user;	/* User configured lookup table entries */
- 	u8 rss_lut_type;	/* used to configure Get/Set RSS LUT AQ call */
-+	u8 global_lut_id;       /* valid when lut_type == GLOBAL_LUT */
- 
- 	/* aRFS members only allocated for the PF VSI */
- #define ICE_MAX_ARFS_LIST	1024
-diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-index 42878abac9eb..90c5587642d0 100644
---- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
-@@ -169,6 +169,7 @@ struct ice_aqc_set_port_params {
- #define ICE_AQC_RES_TYPE_VSI_LIST_PRUNE			0x04
- #define ICE_AQC_RES_TYPE_RECIPE				0x05
- #define ICE_AQC_RES_TYPE_SWID				0x07
-+#define ICE_AQC_RES_TYPE_GLOBAL_RSS_HASH		0x20
- #define ICE_AQC_RES_TYPE_FDIR_COUNTER_BLOCK		0x21
- #define ICE_AQC_RES_TYPE_FDIR_GUARANTEED_ENTRIES	0x22
- #define ICE_AQC_RES_TYPE_FDIR_SHARED_ENTRIES		0x23
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.h b/drivers/net/ethernet/intel/ice/ice_switch.h
-index 671d7a5f359f..99b593b68bd0 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.h
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.h
-@@ -387,6 +387,8 @@ ice_rem_adv_rule_by_id(struct ice_hw *hw,
- 		       struct ice_rule_query_data *remove_entry);
- 
- int ice_init_def_sw_recp(struct ice_hw *hw);
-+int ice_alloc_rss_global_lut(struct ice_hw *hw, u16 *global_lut_id);
-+int ice_free_rss_global_lut(struct ice_hw *hw, u16 global_lut_id);
- u16 ice_get_hw_vsi_num(struct ice_hw *hw, u16 vsi_handle);
- 
- int ice_replay_vsi_all_fltr(struct ice_hw *hw, u16 vsi_handle);
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 7cd2dd066ef5..8319956754b7 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -1247,30 +1247,46 @@ static void ice_set_fd_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
- 	ctxt->info.fd_report_opt = cpu_to_le16(val);
- }
- 
-+/* Translate @lut_type used in most of the places to the Admin Queue
-+ * Q_OPT value for RSS.
-+ * Used with VSI ADD and VSI UPDATE AQs (opcodes 0x0210, 0x0211).
-+ */
-+static u8 ice_lut_type_to_aq_qopt_rss_val(enum ice_lut_type lut_type)
-+{
-+	switch (lut_type) {
-+	case ICE_LUT_PF:
-+		return ICE_AQ_VSI_Q_OPT_RSS_LUT_PF;
-+	case ICE_LUT_GLOBAL:
-+		return ICE_AQ_VSI_Q_OPT_RSS_LUT_GBL;
-+	case ICE_LUT_VSI:
-+	default:
-+		return ICE_AQ_VSI_Q_OPT_RSS_LUT_VSI;
-+	}
-+}
-+
- /**
-  * ice_set_rss_vsi_ctx - Set RSS VSI context before adding a VSI
-  * @ctxt: the VSI context being set
-  * @vsi: the VSI being configured
-  */
- static void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
- {
- 	u8 lut_type, hash_type;
-+	u8 global_lut_id = 0;
- 	struct device *dev;
- 	struct ice_pf *pf;
- 
- 	pf = vsi->back;
- 	dev = ice_pf_to_dev(pf);
- 
- 	switch (vsi->type) {
- 	case ICE_VSI_CHNL:
--	case ICE_VSI_PF:
--		/* PF VSI will inherit RSS instance of PF */
- 		lut_type = ICE_AQ_VSI_Q_OPT_RSS_LUT_PF;
- 		break;
-+	case ICE_VSI_PF:
- 	case ICE_VSI_VF:
- 	case ICE_VSI_SF:
--		/* VF VSI will gets a small RSS table which is a VSI LUT type */
--		lut_type = ICE_AQ_VSI_Q_OPT_RSS_LUT_VSI;
-+		lut_type = ice_lut_type_to_aq_qopt_rss_val(vsi->rss_lut_type);
- 		break;
- 	default:
- 		dev_dbg(dev, "Unsupported VSI type %s\n",
-@@ -1281,8 +1297,12 @@ static void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
- 	hash_type = ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ;
- 	vsi->rss_hfunc = hash_type;
- 
-+	if (vsi->rss_lut_type == ICE_LUT_GLOBAL)
-+		global_lut_id = vsi->global_lut_id;
-+
- 	ctxt->info.q_opt_rss =
- 		FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_LUT_M, lut_type) |
-+		FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_GBL_LUT_M, global_lut_id) |
- 		FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_HASH_M, hash_type);
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 4daee252e2a6..e6f08fe9b5c2 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -1527,6 +1527,47 @@ ice_aq_get_sw_cfg(struct ice_hw *hw, struct ice_aqc_get_sw_cfg_resp_elem *buf,
- 	return status;
- }
- 
-+/* Allocate a new Global LUT for the caller.
-+ * LUT ID is returned via @global_lut_id.
-+ */
-+int ice_alloc_rss_global_lut(struct ice_hw *hw, u16 *global_lut_id)
-+{
-+	DEFINE_RAW_FLEX(struct ice_aqc_alloc_free_res_elem, buf, elem, 1);
-+	u16 buf_len = __struct_size(buf);
-+	int err;
-+
-+	buf->num_elems = cpu_to_le16(1);
-+	buf->res_type = cpu_to_le16(ICE_AQC_RES_TYPE_GLOBAL_RSS_HASH);
-+
-+	err = ice_aq_alloc_free_res(hw, buf, buf_len, ice_aqc_opc_alloc_res);
-+	if (err)
-+		ice_debug(hw, ICE_DBG_RES, "Failed to allocate RSS global LUT, err %d\n",
-+			  err);
-+	else
-+		*global_lut_id = le16_to_cpu(buf->elem[0].e.sw_resp);
-+
-+	return err;
-+}
-+
-+/* Free Global LUT at @global_lut_id. */
-+int ice_free_rss_global_lut(struct ice_hw *hw, u16 global_lut_id)
-+{
-+	DEFINE_RAW_FLEX(struct ice_aqc_alloc_free_res_elem, buf, elem, 1);
-+	u16 buf_len = __struct_size(buf);
-+	int err;
-+
-+	buf->num_elems = cpu_to_le16(1);
-+	buf->res_type = cpu_to_le16(ICE_AQC_RES_TYPE_GLOBAL_RSS_HASH);
-+	buf->elem[0].e.sw_resp = cpu_to_le16(global_lut_id);
-+
-+	err = ice_aq_alloc_free_res(hw, buf, buf_len, ice_aqc_opc_free_res);
-+	if (err)
-+		ice_debug(hw, ICE_DBG_RES, "Failed to free RSS global LUT %d, err %d\n",
-+			  global_lut_id, err);
-+
-+	return err;
-+}
-+
- /**
-  * ice_aq_add_vsi
-  * @hw: pointer to the HW struct
--- 
-2.51.1
-
+    Andrew
