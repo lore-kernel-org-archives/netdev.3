@@ -1,274 +1,98 @@
-Received: from mta1.migadu.com (out-152.mta1.migadu.com [95.215.58.152])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A8449252E
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B78B4A1DF3
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791538848; cv=none; b=Rnkhplokjqvbe+cHvmtVC8cd2fW4tEy8nD3l/L+VCwyl5YamzaBjyudRIxA4m+oSdWGedwQMibp1dJROA2P3Uo4G5RRXGkr8Z3yUcYYpGjtsHqlxjcuoQ6wSDWbZ7puCUhTHqOs9mLl8o2RbGnV6RK2CX+49bSJGCGr6Mx+zKrc=
+	t=1791538979; cv=none; b=ppsWOQdUx9zAM2XALfyCvxtJa4yOjrGqKU8zI4stZpayBFGN9XeNhR/MgNHy/1j74s++9g7tCe0tktToneahB3ScEb1oDVvA91kibEkLb/QyjCeWQFf3nZk+zyJhGDqVnfgwXSRERRXckp8LrX38Eoors5wkTPzWHXB5AbRnP3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791538848; c=relaxed/simple;
-	bh=xVrnhRmotXNnJn/Ot+2DF2PbMo6NgLhFJQaiiZmxOfo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sxZzVWSJoJ2Zs129tBdDc8ehh0NXDYFrqwegQ4ndeyAigUjZMx4+Ipj/7dJ3ijdYl4rZJO+RqDLj4G/ydNLc0bSIN6e1f0oeEyTQpiNTbbTxy935OmSy5bxwN+I4GL5cGDjPCTL8MWx/JIYYd8kRPW18XmcP71hmY+hSBKmqMSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TDyQVfFG; arc=none smtp.client-ip=95.215.58.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791538979; c=relaxed/simple;
+	bh=ALY1O9tPv0kwiP8hOApzJYIHIqYDvjbsrechk39f/v0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JkF1cVHTldXJZOpEKGDergNo3g4I1viJv04dUrrrQjKh4cQain1WqpUWOe8eC529CiyoJ7dyv1jyEdDLZ1ZAW9cpMjbZ7emDiGfv4sYZn/S+JVrgB00Z8zV15ED5RI49lp60kfA5T4+PWrMR/noANdDTjTCbgXiv6rBxABcj0UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UALXc9n0; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TDyQVfFG"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=xVrnhRmotXNnJn/Ot+2DF2PbMo6NgLhFJQaiiZmxOfo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791538840; v=1; x=1792143640;
- b=TDyQVfFGaIP1LjsAXdzexZspOMyXtLYh0qJmN+uOphvzPuZURGpoCnqCEzLXjADqOEhGyT4h
- bikxxFvWf5nUW3JGxI8aSNE1pQPcaR/7MyNgzddLvkC2mZMr2r4Z5rXxGDmDG1qV52kq1F4b3Tp
- jYMFtyUqgtiBgPBx6g1JYGas=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id fc0f941f014be6ba;
-	Fri, 09 Oct 2026 09:40:36 +0000
-X-Mizu-Trace-ID: fc0f941f014be6ba
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 9 Oct 2026 17:40:23 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: netdev-bot+sashiko@kernel.org
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	donald.hunter@gmail.com, edumazet@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, liuhangbin@kylinos.cn
-Subject: Re: [PATCH net-next v4 2/6] tools: ynl: convert enum selector to
- string for sub-message parsing
-Message-ID: <asi2h4Rd7f4FXo1s@fedora>
-References: <20261008-ynl_rt_encap-v4-2-4ed2ccf7f949@kylinos.cn>
- <179153681840.434549.374414508868008982@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UALXc9n0"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c315869241fso713114066b.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 02:42:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791538971; x=1792143771; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=87sDAQaZgbuZUIRnkfj95yPvO1LFq8s/STt1FfRjdWI=;
+        b=UALXc9n0rd0+LHCUqo/dxG4XIcJwjwfe33hweiqjLpNZSP8wMAoKSctx+0d0ZfUoR2
+         mw+qisE09jrKWuQ43p9clba3fHlWo/fH05P8bkZcmTih6mKj8Aq5hGrZMQ4RsXeWeZEz
+         sV0ZlhXAVYcNoagK6rL4CBPUn76t6zasveHVQdg2voVhnidqJF04aImHkTlmw5S1x3K4
+         xdaN41/BPN+E57acyRQDLnALC0Y3a+hdscUhw02mX3sGuiGlwQ+X4vHUkvvA8J/ygJKq
+         oqcvWonX9Jlz9hrfhqNpvkEN2DiLhq6BxcnkNDtzW9Bl2yLgK8omeo7mwe/83parWnjf
+         Z1Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791538971; x=1792143771;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=87sDAQaZgbuZUIRnkfj95yPvO1LFq8s/STt1FfRjdWI=;
+        b=kHp8s6pxog+ANlbnwI42tsgzTvm7R0QqH6g/SMjKeR0AmPFdM8ZgT61qDaV3Ijvwnp
+         Ak8OSpsV/3ZXWfoUHN6/gvfZnW8RrvGb20ZFybFAo74aJZeiLmaFZyEHe0YeLMgeSrs4
+         1m++7T56x2KoX+rD2iwgQ+iEbVVoS+2iIS599ibYqtUyePos+qrWxc5ubsgcL5+HnCL9
+         sbPvYJZGjXImNETxIyJGApXik99/KfNTyXK7pzCAR016Yi0mqxZACVOIvxGT6biBYsMR
+         SmmmBXZP9YbW5JMpYjYR/csbfjs8EHou2G8XfkDROLu2HBGYNvqBET5Va3dr1WXrqfwx
+         AEVA==
+X-Forwarded-Encrypted: i=1; AKwUvBx6ipScLyg0W6W3INj6YFurIVSetILiEdgQ/vlmLtw+MOXkd813ngbCDxR365lA6ciRX6VnGbA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJwVe+2Qj/Jg+Ik1tfDXylTcwxXZzlhcohoHtdfePpS1FLaHMdq
+	NPTMKpBrng/velYUcjj1xLkYtWbRt4CXe7HQ1Xx5YtV341dsv1SNmKcm
+X-Gm-Gg: AYBFou259hdqbTcCuuLVcez9fwICa6UR1gziF4wdhRi47aC7G+Kd/gbmEw0gWdbdqxJ
+	ZOMJr6i3mOTEbky+3U59rnEs4DvxL2rOqBGVgInQZ6AeFUSl84xlsA2zEVZ/ISJS4vWUJdZgbKj
+	y9hMiVb4qAyuiGefWzl/RfHU8p/oaFvAHXsVrrkrzcsqi7n7qXOnP1n/NHTAR3vBC/SWxaV3A3d
+	rnHnD2ap43HV6Pvbq45iqcrqPnrmHjKXjOJ7jX6LwaAuM88oDNTYDI7e0sxmkP0isTbBQBXTUXd
+	cYgfDInER4jhAh3FLzlp8nTvebiYBSwrCEdI2BvGdDjDd3YmYXfo89F/zYsUCYDsVVKLfGmyX9g
+	jjvFVnC/KR5JJ1XNe8KX5opsQqHtAyy9LUBuO5HHBm31mlE+5zmwtmqnGVvAUPK1PF6wVj4V1wP
+	sc5+zQ/LaygaHZezTZWeiYKykH8yO7AsD0VAJ9TiNtzrWKlS7dTZf04hACXakRHHorqXf0tdkEh
+	iH2YWWAp2vU640XKLPyvscAm3/u22ow4iomFXC3chv884xTJrm6kKOHKy6VwUJrAAM3CXtWlSiU
+	dbJ1GeI/tl5jU9JxYJEqOB/n0+QNFEHqP5cvsGen6FRLw2sO3JUzOyiBuVDZLmbxaNqpaHb8ODZ
+	edorbq5OBctnnD2ov5a7X7vW4iDLqRCfpow==
+X-Received: by 2002:a17:907:9620:b0:c29:5172:6151 with SMTP id a640c23a62f3a-c31aa02998amr127473466b.45.1791538971338;
+        Fri, 09 Oct 2026 02:42:51 -0700 (PDT)
+Received: from [192.168.100.100] (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a97654e6sm71202366b.7.2026.10.09.02.42.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Oct 2026 02:42:50 -0700 (PDT)
+Message-ID: <6d9c9501-70d0-4e1e-933c-eb5a45bef97a@gmail.com>
+Date: Fri, 9 Oct 2026 11:42:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179153681840.434549.374414508868008982@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/2] net/sched: taprio: fix RCU stall from replayed
+ schedule entries
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Vladimir Oltean <vladimir.oltean@nxp.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261006113335.241564-1-krystianmkaniewski@gmail.com>
+ <20261008091732.7794253a@kernel.org>
+Content-Language: en-US
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+In-Reply-To: <20261008091732.7794253a@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 09, 2026 at 09:06:58AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider.
-> 
-> Critical: 0 � High: 0 � Medium: 2 � Low: 2
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] An unknown enum selector value now aborts the whole message or
->   dump.
-> - [Medium] The new enum-to-string conversion ignores byte order.
-> - [Low] When the enum lookup fails, the error message is misleading.
-> - [Low] The generator now produces working response parsing for enum-
->   keyed sub-messages.
-> 
-> --
-> 
-> tools: ynl: convert enum selector to string for sub-message parsing
-> 
-> This patch changes the YNL C code generator for sub-messages keyed by a
-> non-external enum selector. The integer selector value is converted to a
-> string with the family's {enum}_str() helper before the sub-message parse
-> function is called. A missing selector or a failed enum lookup is
-> reported through ynl_submsg_failed().
-> 
-> > diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-> > index 15c79849c6096..4aca51396a9e2 100755
-> > --- a/tools/net/ynl/pyynl/ynl_gen_c.py
-> > +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-> > @@ -951,13 +951,31 @@ class TypeSubMessage(TypeNest):
-> 
-> [ ... ]
-> 
-> > +        if self.selector.is_enum_val() and not self.selector.is_external():
-> > +            enum = self.family.consts[self.selector.get_enum_name()]
-> > +            pres_var = f"{var}->_present.{sel}"
-> > +            parse_sel = f"{sel}_str"
-> > +            local_vars = [f'const char *{parse_sel};']
-> > +
-> > +            get_lines = [
-> > +                f'if (!{pres_var})',
-> > +                f'return ynl_submsg_failed(yarg, "{self.name}", "{selector}");',
-> > +                f'{parse_sel} = {enum.render_name}_str({sel_var});',
-> 
-> [Severity: Medium]
-> Does this handle selectors declared with byte-order: big-endian?
-
-This doesn't affect the current series. The encap-type selector is
-type: u16 with no byte-order specified (native order), so the raw value
-passed to _str() is already host-order. nftables is in GENS_UNSUP today,
-so no in-tree generated family hits this yet. We address this as a follow-up.
-
-> 
-> TypeScalar._attr_get() loads the value in {sel_var} with a plain
-> ynl_attr_get_u32() or ynl_attr_get_u16(), which is a native load. In
-> TypeScalar.__init__(), byte-order only becomes a C comment through
-> byte_order_comment. The struct member therefore holds the value in wire
-> order.
-> 
-> On a little-endian host, a big-endian selector value of 1 arrives as
-> 0x01000000. That fails the range check in the generated {enum}_str():
-> 
->     if (value < 0 || value >= (int)YNL_ARRAY_SIZE(map))
->         return NULL;
-> 
-> So every sub-message would fail with "enum-lookup-failed".
-> 
-> This combination already exists in-tree. obj-attrs in
-> Documentation/netlink/specs/nftables.yaml has:
-> 
->     name: type
->     type: u32
->     enum: object-type
->     byte-order: big-endian
->     ...
->     name: data
->     type: sub-message
->     sub-message: obj-data
->     selector: type
-> 
-> nftables is listed in GENS_UNSUP in tools/net/ynl/generated/Makefile, so
-> the default build does not generate it.
-> 
-> Before this patch, though, the generator passed the u32 as the
-> const char *sel argument, which failed at compile time. Now it silently
-> emits code that cannot decode these sub-messages.
-> 
-> Should the conversion normalize the byte order first, or should the
-> generator reject such specs?
-> 
-> Because of obj-attrs, the note below the commit message saying rt-route
-> encap is "the first enum-keyed sub-message in the YNL specs" also does
-> not seem accurate.
-> 
-> > +                f'if (!{parse_sel})',
-> > +                f'return ynl_submsg_failed(yarg, "{self.name}", "enum-lookup-failed");']
-> 
-> [Severity: Medium]
-> Is it intended that an unknown enum value aborts the whole message or
-> dump?
-
-Yes, this is intended. The same with string lookup fails.
-
-> 
-> ynl_submsg_failed() always returns YNL_PARSE_CB_ERROR.
-> ynl_dump_trampoline() passes that up, and __ynl_sock_read_msgs() stops
-> processing.
-> 
-> The string selector path behaves differently. parse_rsp_submsg() emits a
-> strcmp() chain that ends in return 0. An unknown string key, such as a
-> new rt-link kind, is skipped and parsing continues.
-> 
-> The enum path is also inconsistent within itself. A value that is in the
-> enum but has no formats entry falls through the strcmp() chain and
-> returns 0. A value outside the enum is a hard error.
-> 
-> Take the rt-route spec from this series. If a future kernel adds a new
-> LWTUNNEL_ENCAP_* type, wouldn't the generated client fail the entire
-> route dump as soon as one route uses that encap? Leaving the encap
-> undecoded would match the rest of YNL.
-> 
-> The commit message says:
-> 
->     or a new encap_type is missing from the spec file in future kernel,
->     the code will report "Sub-message key not set", the same with string
->     lookup fails.
-> 
-> This doesn't match the string path, which skips unknown keys silently.
-
-The string patch used to failed like
-
-	if (!{sel_var})
-		return ynl_submsg_failed(yarg, "{self.name}", "{selector}");
-
-> 
-> Could this skip the sub-message instead, leaving it unset and returning
-> success, when the enum lookup misses?
-
-Jakub has suggested to use the current way other than *continue* to skip.
-
-Thanks
-Hangbin
-
-> 
-> [Severity: Low]
-> Is "enum-lookup-failed" the right value for the selector name argument?
-> ynl_submsg_failed() always uses this format with YNL_ERROR_SUBMSG_KEY:
-> 
->     "Parsing error: Sub-message key not set (msg %s, key %s)"
-> 
-> The user would see "Sub-message key not set (msg encap, key
-> enum-lookup-failed)". In this case the key was present but held an
-> unknown value.
-> 
-> The message also loses the real selector name (encap-type) and does not
-> report the numeric value that failed. To the caller, this looks the same
-> as a missing selector.
-> 
-> > +        else:
-> > +            parse_sel = sel_var
-> 
-> [ ... ]
-> 
-> > @@ -979,6 +997,12 @@ class Selector:
-> >      def is_external(self):
-> >          return self._external
-> >  
-> > +    def is_enum_val(self):
-> > +        return self.get_enum_name() is not None
-> > +
-> > +    def get_enum_name(self):
-> > +        return self.attr and self.attr.attr.get("enum")
-> > +
-> 
-> [Severity: Low]
-> Response parsing now supports enum selectors. Should the policy side be
-> addressed, or at least documented? TypeSubMessage._attr_typol() still
-> says:
-> 
->     # Reverse-parsing of the policy (ynl_err_walk() in ynl.c) does not
->     # support external selectors. No family uses sub-messages with external
->     # selector for requests so this is fine for now.
-> 
-> Only TypeString._attr_typol() emits .is_selector = 1.
-> TypeScalar._attr_typol() emits only .type = YNL_PT_U<N>, so the u16
-> encap-type selector never gets the flag.
-> 
-> As a result, ynl_err_walk_is_sel() never records the selector. For any
-> extack offset inside RTA_ENCAP, ynl_err_walk_report_one() then reaches
-> this code and the attribute path is cut off at .encap:
-> 
->     if (!selector) {
->         if (*n < str_sz)
->             *n += snprintf(str, str_sz, "(!selector)");
->         return 1;
->     }
-> 
-> For NLMSGERR_ATTR_MISS_NEST inside the encap nest, ynl_ext_ack_check()
-> leaves nest_pol at the outer route-attrs policy. The missing attribute
-> would then be named from the wrong policy.
-> 
-> newroute and delroute requests carry encap. The kernel does return
-> extack offsets inside RTA_ENCAP, for example NL_SET_ERR_MSG_ATTR on
-> tb[IOAM6_IPTUNNEL_*] in net/ipv6/ioam6_iptunnel.c.
-> 
-> ynl_err_walk_sel_policy() also assumes a string selector
-> (ynl_attr_get_str() plus strcmp()). It would need enum-to-string support
-> before is_selector could be set for scalar selectors.
-> 
-> The note below the commit message says this will be a follow-up. Could
-> the comment in _attr_typol() be updated to mention the enum/integer
-> selector limitation too?
-> 
-> -- 
-> Sashiko AI review � https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-ynl_rt_encap-v4-0-4ed2ccf7f949%40kylinos.cn
+On 10/8/26 18:17, Jakub Kicinski wrote:
+> Could you restructure the helper to avoid reading `entry` after the loop,
+Thanks for the review. I will prepare a v2 that fixes this. While
+reviewing the patch again locally I also found a few lines over the
+80 column limit, and v2 will fix those as well.
+-- 
+Krystian Kaniewski
