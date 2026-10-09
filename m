@@ -1,154 +1,233 @@
-Received: from mail-oa2-f10.google.com (mail-oa2-f10.google.com [74.125.231.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0F33CF690
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 05:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BB440803D;
+	Fri,  9 Oct 2026 05:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791525375; cv=none; b=e1ALBZ24eEZIutGCD/ffnVvJ4zOyHR++5rstuyxI/HBuKU0IJQxpDagC871ad7+J80ULQJY2xdMwRFna509ljsxU8sq/uPT5DK5AzIwfVHnK5gd5LyZzt1kItsOlV6NZZ59Z2NhW9FF600KniV24QpUrYBZLQdtnkZ5bEF6ysDQ=
+	t=1791525533; cv=none; b=P9ynftD1BfcQY6PmTG60VlALrnigGW2tobK7Vm9KGu2qptp3eInykhb1NzO5w4THmQUseRUrQDp+2CCJGi33sSq/KvDx4GctgsBICgyToLgiHqcZpIjKrBApkdkZ2AtGIgUUKZaYfuAsDwE7W+lyLfyyJ0QT2mD9j60wWenbl+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791525375; c=relaxed/simple;
-	bh=0Cd7BRJTOwMBwlto6I1RgpvE5V4HZw5T6GNxqVD2h10=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G8zhwmcOE4tLtiHkF0z8wfZ4mdaOOrrxMRvh/Ir2zF0suFfJPVrg1AhQUnjqc+6YFquXmvXjvjkHfu7MKGH9P77W7cWqPjmAZawwk+j7SHU43DBLKGAG1CO8PkQuXaFz+5RDjFPKQOShu8mu0z0GazQWHW3D8MloYMkDHVVimy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y9kld79g; arc=none smtp.client-ip=74.125.231.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791525533; c=relaxed/simple;
+	bh=KjK8ntwPO6bSpyBoSTYcmLXAZ1NuFeJD6b1g7yEq6OI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gUz3Mv+a1aJ/bru2IzVipFAkyG89sP5QM+ysigZr6ZzqoOKGH4NJMqjA4AUroLi4BG0+3YB2niHChpxY5g3iGS346cfoxLQG0FRJlIXqhovxTADzal7b7ggMs/UaHxVtoeCz2hwZXzZo6lsAfoqAwT/kabz/2zdWQw6Wi9POh1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iAR/z1zr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y9kld79g"
-Received: by mail-oa2-f10.google.com with SMTP id 586e51a60fabf-4753ef5108aso2556806fac.1
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 22:56:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791525373; x=1792130173; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YBM96Z0acKI7hIHci4HfMZ4VWwlNJJJw6ZcLXrahmw0=;
-        b=Y9kld79gHMe/lWTLg9dwyKVSjp3aIjP93TFwhRhltmOLMKUwSVFrbHKxxJiCOn36PU
-         Gcpfr9fDOY0UuOr+o3pPAsAcAdv93FtFOz3NPcCPND8h8To8WTkQACV12nP5Rf+3qglj
-         iuK/k7mtpt136yuPg07ccZJ4k7bsX3cPbuHvkzyBfG8hj4+NZw6EP8SDWHf7oGlXLjcK
-         hw/rsxdaAVc+kZpZ8Alr3cwYegrmBUNiEjaS9ydSksnV3TNTwB+7wtGobshlf7fjPb8o
-         S/+8gDdwh4h/W6pQsN9Go4o80v+KxC6sljZ/nZ7Nr/mIRkzZPtmSdsm3NGnWxhDggZOP
-         Yl5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791525373; x=1792130173;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YBM96Z0acKI7hIHci4HfMZ4VWwlNJJJw6ZcLXrahmw0=;
-        b=RM32M+nI4BW+9XCSqxTMUzEDP9mgdpCSOU7ZiR3j8afQksXCK+n/Nuq5i/A7408vJB
-         gOFNPjdzGYv8KsYHW4XtI1SJFXNQdXl1LBiiT1Uo1WXRws22l+4YsN0YXsipnT858RjA
-         cgSm1vHb2ppqr/jPp6HENirOviCHQX7JQoxYFmDHSQueLoOwv2QoEksx56taKXOjcZ65
-         ISP2/41PC0b7o4F1PukdB5rnvbfij4HGth2eyH/azFATlyLbccsuR5E0SucqPNz9GD2j
-         Xye//aY4U7KrWOU5u0Ig1j2dUjpfgnxSoqe+/EG8ZT7LIq7fCmv5yqwPooSolOVrq803
-         C8rQ==
-X-Gm-Message-State: AFq9FYJy5bypXoRBA/V8/uYuIsRph5+OYTzdn+feWhk/ZIsQ50p0283s
-	8Hy7/O5t0uq7+iRh9YiBmwKc0dS9WF+PgumPN8wa0xMYSaYD6oeHbO9k
-X-Gm-Gg: AYBFou2eAsfj4v+JH30XD54DTO/XLDOxzqAFfrDtEmjlcxRsWpHCmeQ9YY07yLIm9Dr
-	G/IhCctOlsiSsYQWmSFZbIp1kXatmtV+ey1P6lOh+T4sctyHFv9jzwo/yMdi+n7hvVY1Q2osRHB
-	mr0iIRxNA6MUYCWTu9KGr3fPhLk2QUhVPQsJDvNzMEBY2XbfcWTdO7UbnEAh7m84PKbvugzXz40
-	hhfvo0RthlOy1RqVdsBl/sr3xGKil6UMVBL6ahS/GKTLZtiP6efFJQ55S770J3/6ujetg8os9xM
-	ofjCH87tz+41sd0UqQ38av4rUJD2FD70qwNn9dILZKXWhvu3qcz7adCV6n3161K4eMsgLGkgV6M
-	NMw4x4vX5BU+8TPKfzU8ep6QPC1t8IQVRE21Bzs4ZO3e+ll0DMM+qPdw+lw8REnQ4LurexcEiKs
-	SetgPPDj9a9ESRqrlixLhNe23azHChGSqkCFJZFHS344+T9m82x4uPP1EXgbhrQFuol9j20B+a7
-	ZAffbNNAGDkIwyFHV3LRxl6VXHY2FIb/8yJ6Q==
-X-Received: by 2002:a05:6870:3329:b0:49e:6d1c:a569 with SMTP id 586e51a60fabf-4a2a88e66a0mr909544fac.38.1791525373223;
-        Thu, 08 Oct 2026 22:56:13 -0700 (PDT)
-Received: from localhost.localdomain ([14.116.239.36])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a2a84a14c0sm1079723fac.3.2026.10.08.22.56.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 22:56:11 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
-	Ying Xue <ying.xue@windriver.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] tipc: fix broadcast sender hang and leak on last acker departure
-Date: Fri,  9 Oct 2026 13:56:00 +0800
-Message-ID: <20261009055601.2304158-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iAR/z1zr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05B11F0089B;
+	Fri,  9 Oct 2026 05:58:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791525531;
+	bh=XMDi6LSC4gfBO0GBDHQ2H3dSPEu1MrCd8/4Fxy8VdP0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iAR/z1zrXms15Snodx9FlR52rB+oiG7RyMp0E+VlIceeH8btwWxixgfoo6mwSawkL
+	 oQA59cu6+hktQd96RyGOirYUwwP02R8lmKzYCFSTWuGgYai+EJ9rqmtZULWMMTXoQw
+	 TWtZ1oL/S5M1yJN5R10A8k0YjE1TH5VUf6fDHPoCb+sfxLrblWSUr5aLGY0XJVyzmd
+	 U81soclsoIjLrb7h4p8PbojWSWBcxAuUEcRrNrtE0LBWf8qC3pxQV4YOHRLwRh0Lp4
+	 s3aRVW4uT/fOdvSWbNtUa5HssKHPC/xQ5pl1100qAPdesJMOTOE2eVWJcNr1DlXa9k
+	 TTdoanUNvBeYA==
+Subject: Re: [PATCH] tun: fix skb length underflow in NAPI frags path
+From: netdev-bot+sashiko@kernel.org
+To: harshit.m.mogalapalli@oracle.com
+Cc: maheshb@google.com, willemdebruijn.kernel@gmail.com, jasowangio@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, peterpenkov96@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, error27@gmail.com, stable@vger.kernel.org
+Date: Fri, 09 Oct 2026 05:58:50 +0000
+Message-ID: <179152553052.434549.7841966987517379353@kernel.org>
+In-Reply-To: <20261005054224.4154727-1-harshit.m.mogalapalli@oracle.com>
+References: <20261005054224.4154727-1-harshit.m.mogalapalli@oracle.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-TIPC group broadcast senders are blocked in poll()/write() until all
-members have acked the replicast.  When a departing member held the
-last outstanding ack, tipc_group_delete_member() decrements
-grp->bc_ackers to zero but never restores *grp->open nor wakes the
-blocked senders; write() then sleeps until the send timeout and
-poll() is never woken at all.  Commit 99cc2a62e07a ("tipc: reject
-invalid and unexpected GRP_ACK_MSG to prevent bc_ackers underflow")
-noted this as a pre-existing issue.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Restore the open state exactly on the 1->0 acker transition in the
-delete path, mirroring the GRP_ACK_MSG completion path, and invoke
-sk->sk_write_space() from tipc_sk_filter_rcv() when the group just
-became writable again.
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0 (1)
 
-This vulnerability was discovered by Tencent CodeBuddy Security.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Cc: stable@vger.kernel.org
-Fixes: 2f487712b893 ("tipc: guarantee that group broadcast doesn't bypass group unicast")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- net/tipc/group.c  |  9 ++++++---
- net/tipc/socket.c | 12 +++++++++++-
- 2 files changed, 17 insertions(+), 4 deletions(-)
+- [High] This fix is incomplete.
 
-diff --git a/net/tipc/group.c b/net/tipc/group.c
-index 74f6d3dac0784..e20eb612f82ce 100644
---- a/net/tipc/group.c
-+++ b/net/tipc/group.c
-@@ -340,9 +340,12 @@ static void tipc_group_delete_member(struct tipc_group *grp,
- 	rb_erase(&m->tree_node, &grp->members);
- 	grp->member_cnt--;
+Pre-existing issues:
+- [High] tun_napi_alloc_frags() builds fragments from `iter_iov(it) + i`
+  and the raw `iov->iov_len` (drivers/net/tun.c:1505-1506).
+- [Low] In tun_get_user(), the `if (msg_control)` block
+  (drivers/net/tun.c:1837-1849) still computes copylen/linear and walks…
 
--	/* Check if we were waiting for replicast ack from this member */
--	if (grp->bc_ackers && less(m->bc_acked, grp->bc_snd_nxt - 1))
--		grp->bc_ackers--;
-+	/* If this member held the last outstanding replicast ack,
-+	 * restore the open state so blocked broadcast senders can proceed.
-+	 */
-+	if (grp->bc_ackers && less(m->bc_acked, grp->bc_snd_nxt - 1) &&
-+	    !--grp->bc_ackers)
-+		*grp->open = true;
-
- 	list_del_init(&m->list);
- 	list_del_init(&m->small_win);
-diff --git a/net/tipc/socket.c b/net/tipc/socket.c
-index d5d70eb230b56..65cc0c4964b31 100644
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -2356,8 +2356,18 @@ static void tipc_sk_filter_rcv(struct sock *sk, struct sk_buff *skb,
- 	if (unlikely(!msg_isdata(hdr)))
- 		tipc_sk_proto_rcv(sk, &inputq, xmitq);
-
--	if (unlikely(grp))
-+	if (unlikely(grp)) {
-+		bool was_open = tsk->group_is_open;
-+
- 		tipc_group_filter_msg(grp, &inputq, xmitq);
-+		/* A departing member may have held the last outstanding
-+		 * replicast ack, which can restore the open state inside
-+		 * tipc_group_filter_msg(); wake up senders blocked in
-+		 * poll()/write() if the group just became writable.
-+		 */
-+		if (!was_open && tsk->group_is_open)
-+			sk->sk_write_space(sk);
-+	}
-
- 	if (unlikely(!grp) && mtyp == TIPC_MCAST_MSG)
- 		tipc_mcast_filter_msg(net, &tsk->mc_method.deferredq, &inputq);
 --
-2.43.7
+
+tun: fix skb length underflow in NAPI frags path
+
+This patch moves the clearing of zerocopy for the IFF_NAPI_FRAGS path in
+tun_get_user() so it happens before copylen is computed. The NAPI frags
+allocation is then sized for the complete iterator instead of the zerocopy
+linear prefix. This avoids a skb->data_len underflow and a BUG() in
+__skb_pull().
+
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index 5a302709a68aa..1124b8b33664e 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -1848,6 +1848,10 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  			zerocopy = true;
+>  	}
+>  
+> +	/* The NAPI frags path copies the complete iterator. */
+> +	if (frags)
+> +		zerocopy = false;
+> +
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but with this override in
+place, the msg_control block just above in tun_get_user() has no useful
+effect when frags is set:
+
+drivers/net/tun.c:tun_get_user() {
+    ...
+	if (msg_control) {
+		struct iov_iter i = *from;
+
+		/* There are 256 bytes to be copied in skb, so there is
+		 * enough room for skb expand head in case it is used.
+		 * The rest of the buffer is mapped from userspace.
+		 */
+		copylen = min(hdr_len ? hdr_len : GOODCOPY_LEN, good_linear);
+		linear = copylen;
+		iov_iter_advance(&i, copylen);
+		if (iov_iter_npages(&i, INT_MAX) <= MAX_SKB_FRAGS)
+			zerocopy = true;
+	}
+    ...
+}
+
+For frags, the !zerocopy branch overwrites copylen and linear, and the
+result of the iov_iter_npages() walk is discarded.
+
+The comment doesn't describe the frags path either. It also says 256
+bytes, but GOODCOPY_LEN is defined as 128.
+
+Would gating the block with msg_control && !frags make the code and the
+comment agree, and also skip the extra iov_iter_npages() walk?
+
+>  	if (!frags && tun_can_build_skb(tun, tfile, len, noblock, zerocopy)) {
+>  		/* For the packet that is not easy to be processed
+>  		 * (e.g gso or jumbo packet), we will do it at after
+> @@ -1868,11 +1872,6 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+>  		if (frags) {
+>  			mutex_lock(&tfile->napi_mutex);
+>  			skb = tun_napi_alloc_frags(tfile, copylen, from);
+
+[Severity: High]
+Does this fully close the underflow described in the commit message?
+
+copylen is an int, but len is a size_t taken from iov_iter_count(). The
+frags path now always goes through this assignment:
+
+drivers/net/tun.c:tun_get_user() {
+    ...
+		if (!zerocopy) {
+			copylen = len;
+			linear = min(hdr_len, good_linear);
+		}
+    ...
+}
+
+tun_napi_alloc_frags() checks the truncated value against ETH_MAX_MTU. It
+then takes linear from the first segment, which is not truncated:
+
+drivers/net/tun.c:tun_napi_alloc_frags() {
+    ...
+	linear = iov_iter_single_seg_count(it);
+	err = __skb_grow(skb, linear);
+	if (err)
+		goto free;
+
+	skb->len = len;
+	skb->data_len = len - linear;
+    ...
+}
+
+So when len is over 4 GiB, the first segment can still be larger than the
+allocation length.
+
+vhost-net appears able to deliver such an iterator to an IFF_NAPI_FRAGS
+TAP backend. init_iov_iter() adds the guest descriptor lengths into a
+size_t, and get_tx_bufs() only rejects a length of 0. The default copy
+mode then calls handle_tx_copy()->tun_sendmsg()->tun_get_user() with
+msg_control = NULL.
+
+For example, this needs a guest memslot of at least 4 GiB. The guest
+builds a chain whose first iovec is about 0xfffffff3 bytes after the
+vnet header, followed by a 272 byte iovec. That gives len = 0x100000103
+and copylen = 259:
+
+- __skb_grow() with diff = 0xfffffff3 passes a negative ntail to
+  pskb_expand_head(), so it makes a small allocation instead of failing
+- skb->len = 259 and skb->data_len = 272
+- skb_copy_datagram_from_iter() and pskb_may_pull(ETH_HLEN) both succeed
+- eth_type_trans()->__skb_pull() sees skb->len < skb->data_len and
+  calls BUG()
+
+Copy mode already reached copylen = len before this patch. With this
+change, the msg_control case reaches it too.
+
+Would it make sense to pass the size_t len directly to
+tun_napi_alloc_frags(), or to reject lengths that don't fit in an int
+before narrowing?
+
+[Severity: High]
+This is a pre-existing issue, but tun_napi_alloc_frags(), which this fix
+relies on, assumes the iterator is ITER_IOVEC. It also doesn't clamp the
+last fragment to the remaining count:
+
+drivers/net/tun.c:tun_napi_alloc_frags() {
+    ...
+	for (i = 1; i < it->nr_segs; i++) {
+		const struct iovec *iov = iter_iov(it) + i;
+		size_t fragsz = iov->iov_len;
+    ...
+}
+
+io_uring IORING_OP_WRITE_FIXED on a tun fd reaches tun_get_user() through
+tun_chr_write_iter() with an ITER_BVEC iterator. io_import_fixed() sets
+the count to len, but the last bvec keeps its full bv_len:
+
+io_uring/rsrc.c:io_import_fixed() {
+    ...
+	nr_segs = (offset + len + bvec->bv_offset + folio_mask) >> imu->folio_shift;
+	iov_iter_bvec(iter, ddir, bvec, nr_segs, len);
+    ...
+}
+
+In this case iter_iov() returns the bio_vec array cast to struct iovec.
+On 64-bit little-endian, iov_len reads as bv_len | (u64)bv_offset << 32.
+For page-aligned bvecs that is just bv_len.
+
+Take a 5000 byte write from a page-aligned registered buffer. linear is
+about 4084 and data_len is about 904, but the second fragment is given a
+size of 4096. skb_copy_datagram_from_iter() writes only 904 bytes into it.
+
+Can this leave about 3192 bytes of uninitialized netdev_alloc_frag()
+memory inside the fragment? The fragment sizes would then add up to more
+than skb->data_len.
+
+If so, anything that later walks the frags by skb_frag_size() could expose
+that memory.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005054224.4154727-1-harshit.m.mogalapalli%40oracle.com
