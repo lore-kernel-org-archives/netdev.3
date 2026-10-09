@@ -1,144 +1,133 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00E94E50A3;
-	Fri,  9 Oct 2026 13:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4404E50D2
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 13:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791553426; cv=pass; b=Vwmd2DZ1pF+R5LGxEWLSjhQIHuX1vBshhjs11L6c1O2/PGlYthYIyImfg8YR55zYvc05I++dddnSrZpCSatgz4yolFG+AnK9/n0ml0NyBmW+lFpnjkg24bUAsZ9n74NA3+VK6t3DoRU9Kx6f3V2uA1E+5FSN6kR4FWuyNNAbOjo=
+	t=1791553426; cv=pass; b=OufST6DQ/lleMnwdck3BMbJHneyqolDwedQSHILYJKNhdMspw9ZG5kUHWAWw8TVTgNGx2Gvfj2KXWIyxlGvw1Wp9Nd5mfUsy7PB+rT1Ori6j4+X9zJxhR2QFtEZuPEEAtjHeynmbsd33nso9AMrGUaNdpvPtDRHINCC2q+eKvlw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791553426; c=relaxed/simple;
-	bh=IttHcJ0OSTOlfGH+JJK5ZP/UFEwnle/riB1BzbvHXG0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6s9pKMQo3olalK+nx9r4F/Dy0Do7WRb93bXgG/4BJSNsyWVYAvz+ay38sJHwbbSIM4aQ6zrO+alSzirueZLpHrm6uDml1ozksm8FRKy3FL5lc2IwfFYeHURy7PQ6fNsdkNRjQmP+jMLRDZwqz6uyUPtnmpLf72wyYV4SOKi1tM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=JVeiAqPm; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	bh=LQYO10lBY8YucsXcJTd6r+9tll/gYfDwC9yXCQh2QM0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gEAHMTyDca/3kJz6sauXFF7bdheUeQL0khFNUh06ImxoKznyH/TMc5cYfW3tpF3C501HCnp4S2dcBoHRREaRu0XKgHq7YzaU74uujfk7Gmu2qyAfca2QoNbqiPNNv1kqPBgiLeX0tL9IiWjtLFGRaccNKkjtR3HWjPCoZZGtH10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=KK/LlfF5; arc=pass smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="JVeiAqPm"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A5F8D202623;
-	Fri, 09 Oct 2026 15:43:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nA5lyvl0xeHdQ6oEcgtRAbywu84Dc+Oye8Wvzdlhmws=;
-	b=JVeiAqPmA/WNetkxZwso1dLZbtRpWF03qOTkS209SDToF+n27V7RESNwKI4o+4ToJJsoz/
-	pU7zRaAL5DJ9UryB0l2SyCW764e02hWqD9XakprtkeAtw3QqCrRcvqb/JINaPSqH/d8ZoJ
-	U1+RBK6+ljarCwoLr9popo0yUwDwBsGnO96Tkkc9FjDFPO3EoGuEP3c2pV9/rziWQvHMZb
-	LTvshyPNjgYgpHQvuRL1ZsWMw3GG92PGcy3HI1m5ukQeI1DCSTgHRV7wn3yzzBu8HH5218
-	A8nt2qSUjhAQUNyJrbFOgah5v//lGE5YqZN2mzF/bOKs6Vm1zvYaZYfAimoMLw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791553421; a=rsa-sha256;
-	cv=none;
-	b=Or188RBRPit7PGbPu7N1aEyOxqWdHH/z0woD8EWZAT5sd6z9AysLx9/BI8NmMSM1AZxqwA
-	acrC6iPCOhHR3qJr6ih6N3rb1nkd4qifx44pHvZZ1xt/Nz8bf+LUR5GU9sAxsGCRClbvN6
-	2sY9VVqk8ydz6B+/ETtthpk8mV3t8ZrmUpHbSpg4HMSkgZqO23tTTgksGcHSrO2n7WACjx
-	+A5XIhayJlOhJfz1C2vd7VoqA2kauSo0uPeU9x46scJWKnWwJkzmrkMHDaV9TdtpzHQ9p0
-	Rtes8pRlVh0fF0zOmYczNJkFws73QLa4jSVeluAxGFGNEUgIrcYwdjqC71iffg==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553421;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nA5lyvl0xeHdQ6oEcgtRAbywu84Dc+Oye8Wvzdlhmws=;
-	b=MuAeUJSYIApuCKvARMXu6Q/rqIa+T8dLftj/kcRekZQ5hgJJJ7Q7Y4J3nV6tu94stTcAj2
-	lvS//PfwZ3QgHGB0j+w1v4pwEoIEMkoe5gysiTQvfYSRGhcGiJ0wktku9lPbeWc9IYX32Z
-	1KXi6AYDMGSsbtdardUhbvT/F1rk1lT67gJ3ny8bi9l6noIiW2cGDE1b6HoYBfHgeoIX2q
-	HWpZUXmmiJxGYhfxSY+yLuiKb/u05/MCSJ7DVhH0PQUJIjvTAl/5TMyK0B5VHJYsJ4NO1u
-	pEgC7mWmV9VbXaTVhlIxu0XRt2L4u/ZkExIOkG4y1hMKXkVn9J5BO/6lV3ylWA==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xFAsv-0053Tg-1s;
-	Fri, 09 Oct 2026 15:43:41 +0200
-Received: from blackshift.org (90-182-211-1.rcp.o2.cz [90.182.211.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 2BE235BD8F7;
-	Fri, 09 Oct 2026 13:43:41 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Jiale Yao <yaojiale02@163.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 34/37] can: mcp251xfd: mcp251xfd_probe(): reject devices without match data
-Date: Fri,  9 Oct 2026 15:28:06 +0200
-Message-ID: <20261009134323.64064-35-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261009134323.64064-1-mkl@pengutronix.de>
-References: <20261009134323.64064-1-mkl@pengutronix.de>
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="KK/LlfF5"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-353804b591eso1099239eec.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 06:43:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791553423; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hDluwWheC/iCwIzlCg4XIzz74D7NcMAbDUZnkal/tGYfNeHd+sOFLTYLjle5tGAbLE
+         zoDQo7of9KeyX/7SY35igM7BQuxUUC/d2jVOnc3A+4V6DV2EkMYmyJw8ovpcBBWX1MH4
+         lU26QH+RqBt9dToRRtr5O1idosHE5spA6f0m76/4PqPsix2xT++t40e2mgUPdij5nuML
+         AhO6YuBFp17ts9gAV0qjnL/3/Tjviuf73eHUi42yYC+5/NrixZ8o/q4GFwjv+/jD2mo4
+         d012wKoOVaQ3xxNhmhU6wcQeit90gH4ewnPdppKwWlcUpMm8LPNC6V4AAGqDIrIzeopZ
+         n+Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Cr53QXzLPPnzzAYL9+Ow9RuREkmHHvveZLDzlgyx6as=;
+        fh=BeIGK70QjDhU13JTUHDW5XR2hTrjzUjs+ndovzSOsDA=;
+        b=p6jMoMZ9oqbcXR1InS1S8wJTOWuUbffD3v7QD+cxDbaGW7s5HL6XeVISUtH5S5KXL8
+         c2neBZIRZvzuJ4Lu5EVu+qChw51D4HyIbS5oUsKQtsK26rbCRn0dB09mdsQLRMn/IjC+
+         6afy9TW74Pvo8mRcy+/oo7CKILdkm9IYOzbaBF8EIps6FORJYA3FNfFV4QW/oy5a85Ol
+         XeMlYfDrsUvOI30flMrfFgbxR/kU59K16zEBhCO/zG4kowa4eytumqLGwh5/zZ0Enbgq
+         D99UVy6k8L13Kox9XaAxUvy3FUiGyGXNFGDojgrFuxGz1tLvxsOsKtQS6jXN8xmpnYi+
+         aULQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda.com; s=google; t=1791553423; x=1792158223; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Cr53QXzLPPnzzAYL9+Ow9RuREkmHHvveZLDzlgyx6as=;
+        b=KK/LlfF500M9HKvvEgwUZaMtwopK0KJsc7zlInv3lmgORbkZwrgh1WDGJoxJHLO40o
+         pHVo62d91gMPpJ3soaq1BiMrYr0AizMjjPyqCIBkIC4w7gjHvTfLXybRAUnI5Po67+ie
+         n137UHeoo/KUHK5CaLCeN98pBwDFobrzY5qzA/8N0CnbljkinGekpq6jiakTio/VeKRu
+         uZQBtUFGx4xjW+G3Qg29Fz00i5EgI3yHysYnN5n5UAl/a272zYo6fcBrghJk14YL9/ot
+         Spbh2FcFdSnRMUlw5oad4QAPXxpc2UICU9dzngX3csn5Koj5Xd9VcWaEv6Qq+EplAiAf
+         BntA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791553423; x=1792158223;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Cr53QXzLPPnzzAYL9+Ow9RuREkmHHvveZLDzlgyx6as=;
+        b=bjh7QAWc2/9KJacDQu4cPuk462D6ZzYcSbAoSqXsSSgz9LHWADsUBY9HS1nufV1l2k
+         Ay7vBO4KiM+l6k6MFw9pbKl0W04zgXRNkwiw9hhst+eQyZkvENujEqUgiDcJi7xHBXsH
+         nIFsU5JNpjq00A7aJieAa+48zXMC3OkAZEOHbISc7MRHYph0UG4C6M1EweEnqPOTr82D
+         pjvZ8pZijmbLQqqk7zYxhwRRprxtVzbjNE3ySUIZvCl95yBjOBrf7EcVQ3isVcbV3VK0
+         BvvTR/I8PKluMjily79iXYAAIVEAg9w3EuQ4KQVFETovPVK8Xy1v7l+MSU2XXCsj9gmr
+         xGjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxKCO3lcAiWB05ajSzSE6NMZJsRGqkTHVooZ4oIlqAD8O/8BcCiuFn0QKKPyTKFspzHc2ZGng8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mQr+I741NWoWa2TfEdOvMPwC2rBTQq4WEdY3ttI3XK7THqphFH
+	kQYhmYWt29C/yJHvpEeczp8Cl+vDLaNZwjLugA/IC5yUzVDq6EltYa9EnaetodFFzoF/OQmHcVk
+	YwqYnFYCwA0L+8aatJiVh152Myu8OfUJ9nsNKi9puXA==
+X-Gm-Gg: AYBFou24jbu1anTUMb3o2u1lE1OaCl9lnVv7h0VeGJwdPYXZwhOZdKZ2FURUs1HzWNn
+	Bm4o+PqI+N888NqNODbBF9+AB3JJD+i445J9qGG79qt1QPyH2MyA1bG4Pik5vtoFulTpukis3X4
+	1gR8yZolyJ1HE5r3MPkjCOavD90cUKBYu5HVPnqViJLKNo84132B9ONOeGmhOM6+aUX6oM465Pf
+	uWCKUy9/Nls/DUgzg4V7XMwpBWTi7nprjdvaG3E8MThsOueO5sgTC11Vk1JlJC/pXRFLLwpoeN+
+	UgCQyCRkksigH+qx/e4FgUXLAxryuOv02M6y8LM+CutYCt/4Zep+8+d1QB23pU2mJCjRC3TXpJm
+	dy7iXtLLICClbSg==
+X-Received: by 2002:a05:7301:6e98:b0:33c:e74:4624 with SMTP id
+ 5a478bee46e88-3537e112919mr2778982eec.27.1791553422908; Fri, 09 Oct 2026
+ 06:43:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261008-b4-pskb-pull-tail-drivers-v2-0-8f2bd9bee138@toxicpanda.com>
+ <20261008141131.0ac356dd@kernel.org>
+In-Reply-To: <20261008141131.0ac356dd@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Fri, 9 Oct 2026 09:43:31 -0400
+X-Gm-Features: AclHuK9i2kH_QiKyGXflCaQStHSk6ronnlxME5kUtzkQ0rs0GpgdrjH4gnmAJRI
+Message-ID: <CAEzrpqfgBrvwy0Q_AX8X1s3ogq3g1U=JmpqHAM8QUmMHAqWPsw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 00/10] net: stop calling __pskb_pull_tail()
+ from drivers
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Manish Chopra <manishc@marvell.com>, 
+	Rahul Verma <rahulv@marvell.com>, GR-Linux-NIC-Dev@marvell.com, 
+	Shahed Shaikh <shshaikh@marvell.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, intel-wired-lan@lists.osuosl.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jiale Yao <yaojiale02@163.com>
+On Thu, Oct 8, 2026 at 5:11=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Thu, 08 Oct 2026 21:02:47 +0000 Josef Bacik wrote:
+> > v1->v2:
+> > - New 1/10: skb_drop_empty_frags(). xen-netfront, netxen and qlcnic
+> >   relied on __pskb_pull_tail() releasing zero-length frags even when
+> >   there's nothing to pull, which pskb_may_pull() doesn't do (Sashiko).
+> > - xen-netfront, netxen, qlcnic: call skb_drop_empty_frags() after
+> >   pskb_may_pull().
+> > - skb_drop_empty_frags() checked with a boot-time test under KASAN and
+> >   kmemleak, on cloned and uncloned skbs.
+>
+> Please keep in mind that we ask people to limit themselves to 15
+> outstanding patches per tree. You have 18 right now.
+> (200 active netdev contributors + an LLM) x 20 patches =3D=3D insanity :/
 
-A device bound through driver_override need not match an entry in the
-driver tables. In that case spi_get_device_match_data() returns NULL, but
-mcp251xfd_probe() dereferences the result while copying the device type
-data.
+Eesh sorry Jakub, the skbuff BUG_ON() removal series is the more
+important one, this series is the followup so I can finish that work.
+By outstanding do you mean per-merge window or once I get
+notifications for things being merged I'm good to send the next batch?
+ Thanks,
 
-Reject devices without match data before continuing probe.
-
-Signed-off-by: Jiale Yao <yaojiale02@163.com>
-Link: https://patch.msgid.link/20260925133716.2230252-1-yaojiale02@163.com
-Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-[mkl: update Fixes tag]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-index f441f2265299..8759bc05bd8f 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -2213,6 +2213,7 @@ MODULE_DEVICE_TABLE(spi, mcp251xfd_id_table);
- 
- static int mcp251xfd_probe(struct spi_device *spi)
- {
-+	const struct mcp251xfd_devtype_data *devtype_data;
- 	struct net_device *ndev;
- 	struct mcp251xfd_priv *priv;
- 	struct gpio_desc *rx_int;
-@@ -2222,6 +2223,10 @@ static int mcp251xfd_probe(struct spi_device *spi)
- 	u32 freq = 0;
- 	int err;
- 
-+	devtype_data = spi_get_device_match_data(spi);
-+	if (!devtype_data)
-+		return -ENODATA;
-+
- 	if (!spi->irq)
- 		return dev_err_probe(&spi->dev, -ENXIO,
- 				     "No IRQ specified (maybe node \"interrupts-extended\" in DT missing)!\n");
-@@ -2307,7 +2312,7 @@ static int mcp251xfd_probe(struct spi_device *spi)
- 	priv->reg_vdd = reg_vdd;
- 	priv->reg_xceiver = reg_xceiver;
- 	priv->xstbyen = device_property_present(&spi->dev, "microchip,xstbyen");
--	priv->devtype_data = *(struct mcp251xfd_devtype_data *)spi_get_device_match_data(spi);
-+	priv->devtype_data = *devtype_data;
- 
- 	/* Errata Reference:
- 	 * mcp2517fd: DS80000792C 5., mcp2518fd: DS80000789E 4.,
--- 
-2.53.0
-
+Josef
