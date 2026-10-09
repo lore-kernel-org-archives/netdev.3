@@ -1,209 +1,222 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285014EB84B
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 15:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791560537; cv=pass; b=dlKlKN7XWj5PFxCsm93NFOuBA0C/VQuDnJfe/2AhBTsK/WGgZM4rDeKLHm9EJdUxjHDaEY7rbafwwLnv7S0OX9Ut+CWejEwW/R6qrc7konsnsuiziZ1kcQoARCNy7nIFPcG+j930haX1Nlvy8eK5yKd/VLtaMbZEXqKvsdo1Djo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791560537; c=relaxed/simple;
-	bh=ODP9oLFkSTTxNwHzgn/OPjr02NM8N6qGs+/FJBL1okc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MvXBNKgwwS/QDI/6b0Pu7PIU85KpCcBHBKe5fr7UsxQiG3Pb8R1J7BCAf87ur2giXEer2fLF44Za4ejLXDXKnAhT87RZv1O8ysgJho1Zpw3J4s5RrxJDIRW68kCIs1yT080iXrRAihQmbNFPGc0SGn271+tqbVmxdCQtG5WOWFc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OpWNGM9H; arc=pass smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC1B38A733;
+	Fri,  9 Oct 2026 15:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791561150; cv=none; b=RNWZuJOq2qSM4qj/xIEd+9IRzYOLzbuoXRp1yrvFko1U/aD0Jrf9cO1zlYsEHUjNPORW+fPVqFQgAQlsC49yEzcz6O40BZYj24weINASKOZVVGprrN41xzq6at2IA/H2pQhceON71FBRvixziTE9G/37nc1xCjza8A5db8e5spo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791561150; c=relaxed/simple;
+	bh=Bp8Y3B+4k1arBEAPTQHV+Jezm+XIuoVKGwAJXnjuv9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gsQoG7DNXVGRstNKiDgMd9MARgV25IZqm3SV1/WSee8uhsfrhvqqPILkmwrrEOeIDhI0Jbbm23zvIIIfyjyYLQuNFZWejCB5f8iWnTlWXxfQtwOh/GErArDb+hp7uzW/N3qzOvaNKKJUq1rxjceH3EmHDwJ/R2WuyNywcrMGxDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0hK3+yrw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yMZxadU1; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OpWNGM9H"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-6ae14cdc63aso11879a12.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 08:42:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791560533; cv=none;
-        d=google.com; s=arc-20260327;
-        b=CqAuPcOdHszmzraCoTGvpC+6v0GqYrJ6o4A3lP/6sXy0Ok1gW6FrA8PfM/w5FYQK4B
-         soPRySEDHXcl/SSrxKScFHpHsIun6lXdNXOGaYOJiML8AsMDkbR787TD9RnH/dIFLe7b
-         HgmL89JExQ8viCYngZM/3KGSnWSQBJSBfDzob5OAURJN94QtlL6ZjfLafXuB/AiuXpgg
-         rYNBpcT4cWJ+/AnZIhzoig98KSYV4Dz/d2hw6+mj2V6LwA6iPel1eQSqMioX49jJkAOD
-         tbswLrIp/u0o4rjkSdWENqV8CScvmX7AWVMKGIsaO7MxoxnIL/6btstM+e5lp8VGFWBX
-         hjmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lyiu94Q8CWOzAbPl0E5395hB8F0rcFgV/E8an3zhytw=;
-        fh=WflohDkg2+Zy0cnTgk+dacPXPFsGRAGXC+wPrNBRllU=;
-        b=hZCOykKOJsYB0kLSuIFJVPLuyc7YG0jrPih1sDLhUNkbg7DOKJelTFXqfk1K2Z7P/5
-         4N7RTFvQ6AIGBxPwkMEDibv9cGy3fm/LcLdAdfPTy1uzlgVbxieCGQEdDYVTJA6/xlMA
-         AiyJFWFkOdomAEKxQ+QZUcJjIDYYLqfbLwp98XzSJ67F45ugoLQPo9Lfc+NAxPb4i1/L
-         V7ZH6xcay+jgcltQy3DVT91h2DFzVvKjjxv0+lxMsgoZv+2Zo9CPju0tvybOjQw0GnVl
-         JQF6iT/jM2Sn5QHkBPxB0Obg/wOEcKcDaLD7b3yRFoGj0S1dDusnDkyqv8JbI8suJp9O
-         1r4w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791560533; x=1792165333; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lyiu94Q8CWOzAbPl0E5395hB8F0rcFgV/E8an3zhytw=;
-        b=OpWNGM9HITmmWSeHCLHNZygXvrbRXZTpgSNet7PIJQyLHGQotT7mi/q2rCg2Ci6i5T
-         etqnW0c+vAJPRoLb4NLKqpg7EdyGWSgCFCMpinHioKNroNs4qoIsIk9qoDPfNBrqgfBl
-         /EwfICwupKgSGzQvQxJxi33xzcyRMzVTh+F9lgSdNXbdK2Y7DzKarxHBW028MxYENpkx
-         xJgCbJmyNSmGRu7fUt6KdcNkRV3PvcA/wC8PUUzxcMB08Q/DezG/eyoPquHPxjkivk1G
-         d6nfjdcbFmoqKsRTkOi7fhpv4Ut9AeMFQMMd+t18BFwYgm0WSk1v995wvaHySokz72PG
-         higQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791560533; x=1792165333;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lyiu94Q8CWOzAbPl0E5395hB8F0rcFgV/E8an3zhytw=;
-        b=Kdslrt8FzO6E0U7uelIs9UjM+zaHSwd9arvpE3SnRp6TCESuxi2ChdqCHXHAaNJcyR
-         wRnF3b0WDIyGaS32rwlqxmlyQSUS04uJdx8knL/hXK8LV+swFVa/Ixv+hWRiU2hYHRG7
-         etHMkMj8e8XwlIgqihzn0+d+pHOL3Us6XD6zBoUUbQ15EWWl80Rg5/M3OHEohs+kVTdY
-         VkeNGuVa1z3fK0fLAW9bGdVuAGE1zJ4DeMAPl+tzp+dTfoeoMIButce2Krvmyhj5Snvv
-         lrKgdRtQ7bvjp1vN3/gEmlZ9Ff/XILo8caeGKiU1OYVqjTFuSBUoWQdzHPJbIjUBA8wo
-         23xQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzvbKPNzBDH9cFyloPT1MGmE2mmhfC+ScL/L9EDVW/JCaNtxgR9zE6BH0LFnMXJoAwduycrI34=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKx6gCDW/GXLU7mIZJPLgV/bTikf67eMAAdK/BdEDriTfDqCv1S
-	nv0cil3nwVqOQ252ojC2Opac/yLXrsewo+/qxVmh6ausW3tqdR6tEf35F7cnlLzv7yUNJisjh9m
-	TCB4FcL8VgPyhVj3uqT9h4WyGbRNdqtkBukqmkdvJ
-X-Gm-Gg: AYBFou2c/txH6aRmELGkTRkh09T2y8TrO7fnkvcSaRFDa7l44XrSKa5c5tUiiXGxDOS
-	r/8sIK0kTQvPSL6prd8xjZ+HhG4gJX7LCoAOQ6SK3bK0T59TMMUjqHv2J44PNVxLfPPXyk6U/9H
-	SjHeXY/cXGis928GUEISRIu3QwEiUcPn/7YR/2szAUAxqOgipEqw+nNEPdFv+PYTqJ17E3jcsOv
-	BG9ZBOCDjSjBkzbhDJOxT1F8GgXbLbyXIvtmNmP1yeSL8S9iiH5MSGs19E/HWVl8/sZMxzoeFjS
-	cF98qvh2navHnHQfpg99Wb6sI6Rg2b9f9qkYsAG4HMF7YYOOEZNAv2fKCYsobZyg
-X-Received: by 2002:aa7:d743:0:b0:6a6:7dff:61ab with SMTP id
- 4fb4d7f45d1cf-6b17b963117mr40705a12.15.1791560532616; Fri, 09 Oct 2026
- 08:42:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0hK3+yrw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yMZxadU1"
+Date: Fri, 9 Oct 2026 17:52:25 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791561146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=80QEXrpzD+kFda3/t4OvfmIyHa2usi5G2SbXsA7Iaek=;
+	b=0hK3+yrwjLIuBKWsevUjEqlQwGjIc1bngq037sYMRJadfTM6pWehYVHiL8wQoE/dW6w9xt
+	bYVDKnraYa7sB0xO/OuinBr3i1iI3hJHi2G1940ynLPs3ELBknW5L2+RyWzoA8bt28r7yJ
+	dvjm4IEuMhU9Qqyn8zvEYm34M5l44Tn4nVHV5U7znEJzsbNl3/2GY9qd3jHU8vL/m6lPhY
+	yBOJDdtxPQFUCECQuToR2gFFlH6a/+QRGMg8H5f8RvlP0kZEl3D/eW6V/Kfh3/lj1i4SwX
+	kFXCu0NxeVjJpFgIwTLRaKhx/2zCZ5GPKTQpQxrBWoGCL8O33Va+V0yKW7ww5w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791561146;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=80QEXrpzD+kFda3/t4OvfmIyHa2usi5G2SbXsA7Iaek=;
+	b=yMZxadU1OrZtchHsqw7H5PtHO4vxKtc1FDCeI9sB+ECH0vjq7LRfJOxAlO5nsNJyAabYlJ
+	hzUHf1pkzHfvsKDg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH net v2 1/2] netpoll: use a raw lock for the deferred
+ transmit queue
+Message-ID: <20261009155225.6Uy7b0wd@linutronix.de>
+References: <20260928064239.32456-1-kmehltretter@gmail.com>
+ <20260930192103.62973-2-kmehltretter@gmail.com>
+ <20261001074819.gQ3w8q6P@linutronix.de>
+ <ar7sTVun7mF-4nl6@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com>
-In-Reply-To: <20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 9 Oct 2026 08:42:00 -0700
-X-Gm-Features: AclHuK_-OS7FzcusCgigYqbLXBGGgd8VVdGqpOopI3dxHJrjPaF9OMOOxoHmqMY
-Message-ID: <CAHS8izOAGUcKKBuU8uyANr9-xCacBq43PHfqW5yyR=35PXxi0g@mail.gmail.com>
-Subject: Re: [PATCH net] net: skbuff: don't segment unreadable skbs without SG
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ar7sTVun7mF-4nl6@gmail.com>
 
-On Fri, Oct 9, 2026 at 6:32=E2=80=AFAM Josef Bacik <josef@toxicpanda.com> w=
-rote:
->
-> Without NETIF_F_SG, skb_segment() copies each segment's payload out of
-> head_skb.  With checksum offload it uses skb_copy_bits(), which fails on
-> unreadable frags, so skb_segment() errors out.  Without checksum offload
-> it uses skb_copy_and_csum_bits() and keeps the checksum that returns.
->
-> Since commit ab9414ed70bd ("net: skbuff: don't leave stale bytes in
-> skb_copy_and_csum_bits()") that copy zero-fills whatever it can't read
-> and returns 0, which is the correct checksum for zeroes.  A devmem TCP
-> skb keeps its whole payload in unreadable frags, so every segment ends
-> up with a payload of zeroes, tcp_gso_segment() writes a valid TCP
-> checksum over it, and the peer accepts the zeroes as stream data.
-> Before that commit the segments carried uninitialized memory with a
-> checksum that almost never matched, so they leaked but were dropped.
->
-> This is reachable when both SG and TX checksum offload are turned off
-> on a device used for devmem TX.  sk_setup_caps() still gives TCP SG and
-> HW_CSUM, so the dmabuf send is accepted, validate_xmit_unreadable_skb()
-> lets the skb through for a NETMEM_TX_NO_DMA device or a matching
-> binding, and software GSO then segments it with neither feature.  With
-> only SG off the copy goes through skb_copy_bits() and is already
-> refused, and with only checksum offload off the segments keep sharing
-> the frags.
->
-> Refuse to segment unreadable skbs without SG, which is what the checksum
-> branch already does through skb_copy_bits().  Check the frag_list
-> members as well, since their payload is copied the same way.
->
-> This was found by the Sashiko AI review of that commit.
->
-> Fixes: ab9414ed70bd ("net: skbuff: don't leave stale bytes in skb_copy_an=
-d_csum_bits()")
-> Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
-> Link: https://lore.kernel.org/all/179148235783.434549.1432237422747783281=
-7@kernel.org/
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> ---
-> Follow-up to Sashiko's review of ab9414ed70bd:
-> https://lore.kernel.org/all/179148235783.434549.14322374227477832817@kern=
-el.org/
->
-> Tested with a module that hands skb_segment() a TCPv4 GSO skb whose
-> 3000-byte payload sits in an unreadable frag, with SG off.  Without this
-> patch it returns three segments with all-zero payloads and a checksum
-> of 0; with it, -EINVAL.  The same skb with checksum offload was already
-> refused, and a readable skb still segments and copies normally.
->
+On 2026-10-02 01:30:45 [+0200], Karl Mehltretter wrote:
+> > >   BUG: sleeping function called from invalid context
+> > >   in_atomic(): 0, irqs_disabled(): 1, non_block: 0
+> > >   rt_spin_lock
+> > >   skb_queue_tail
+> > >   netpoll_send_skb
+> > 
+> > How is this possible? netpoll is only used by netconsole right? And this
+> > is CON_NBCON so it only prints threaded. What is the missing piece?
+> > 
+> 
+> The call is from the NBCON printer thread, but netpoll_send_skb()
+> explicitly disables hard interrupts around __netpoll_send_skb():
+> 
+>         local_irq_save(flags);
+>         ret = __netpoll_send_skb(np, skb);
+>         local_irq_restore(flags);
+> 
+> When direct transmission cannot complete, __netpoll_send_skb() calls
+> skb_queue_tail() before interrupts are restored. Its spinlock can sleep
+> on PREEMPT_RT despite the caller being a thread.
+
+We have netconsole as a user of netpoll. The netconsole user is nbcon.
+There are users such as macvlan and dsa and this looks like not a real
+user but just forwarding the netpoll packet. According to the history
+for macvlan, it is just there to forward the netconsole packets so it
+appears to check out.
+
+So it is just netconsole which is NBCON but has CON_NBCON_ATOMIC_UNSAFE.
+
+In the ::write_thread() case the interrupts are disabled due invoking
+::device_lock(). In the ::write_atomic() the lock function might not be
+invoked but due to the nature of the situation the interrupts will be
+disabled anyway. So disabling interrupts looks like a lazy way of
+letting everyone know that ::ndo_start_xmit() will be invoked from
+netpoll/ netconsole.
+I don't see anything that would mandate disabling interrupts in
+__netpoll_send_skb() except BH need to be disabled before
+HARD_TX_TRYLOCK(). 
+
+I would suggest to untangle that local-irq-disable assumption. Then we
+end up with the ::write_atomic callback on PREEMPT_RT which will raise
+warnings. But those will appear only on panic() and as the last console
+due to CON_NBCON_ATOMIC_UNSAFE so everything will go according to the
+plan.
+On !RT the whole __netpoll_send_skb() will be with disabled interrupts
+due to the console lock. On RT it won't and I don't know if anything
+down the call chain assumes that.
+
+To illustrate my idea a bit
+
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index 1c6b1eec5efd6..3853611f672be 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -71,6 +71,9 @@ void netpoll_zap_completion_queue(void);
+ unsigned int netpoll_get_carrier_timeout(void);
+ 
+ #ifdef CONFIG_NETPOLL
++
++DECLARE_PER_CPU(atomic_t, netpoll_active);
++
+ static inline void *netpoll_poll_lock(struct napi_struct *napi)
+ {
+ 	struct net_device *dev = napi->dev;
+@@ -96,7 +99,7 @@ static inline void netpoll_poll_unlock(void *have)
+ 
+ static inline bool netpoll_tx_running(struct net_device *dev)
+ {
+-	return irqs_disabled();
++	return atomic_read(this_cpu_ptr(&netpoll_active)) > 0;
+ }
+ 
+ #else
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index fe1e0cda5d6bf..8ecdac601ca13 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -73,7 +73,9 @@ static netdev_tx_t netpoll_start_xmit(struct sk_buff *skb,
+ 		}
+ 	}
+ 
++	/* local_irq_save() ? */
+ 	status = netdev_start_xmit(skb, dev, txq, false);
++	/* local_irq_restore() ? */
+ 
+ out:
+ 	return status;
+@@ -258,7 +260,8 @@ static int netpoll_owner_active(struct net_device *dev)
+ 	return 0;
+ }
+ 
+-/* call with IRQ disabled */
++DEFINE_PER_CPU(atomic_t, netpoll_active) = ATOMIC_INIT(0);
++
+ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ {
+ 	netdev_tx_t status = NETDEV_TX_BUSY;
+@@ -268,12 +271,11 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 	/* It is up to the caller to keep npinfo alive. */
+ 	struct netpoll_info *npinfo;
+ 
+-	lockdep_assert_irqs_disabled();
+-
+ 	dev = np->dev;
+ 	/* npinfo->txq belongs to np->dev, so retries must stay bound to it. */
+ 	skb->dev = dev;
+-	rcu_read_lock();
++	rcu_read_lock_bh();
++	atomic_inc(this_cpu_ptr(&netpoll_active));
+ 	npinfo = rcu_dereference_bh(dev->npinfo);
+ 
+ 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
+@@ -306,11 +308,6 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 
+ 			udelay(USEC_PER_POLL);
+ 		}
+-
+-		WARN_ONCE(!irqs_disabled(),
+-			"netpoll_send_skb_on_dev(): %s enabled interrupts in poll (%pS)\n",
+-			dev->name, dev->netdev_ops->ndo_start_xmit);
+-
+ 	}
+ 
+ 	if (!dev_xmit_complete(status)) {
+@@ -319,7 +316,8 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 	}
+ 	ret = NETDEV_TX_OK;
+ out:
+-	rcu_read_unlock();
++	atomic_dec(this_cpu_ptr(&netpoll_active));
++	rcu_read_unlock_bh();
+ 	return ret;
+ }
+ 
+@@ -332,9 +330,7 @@ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
+ 		dev_kfree_skb_irq(skb);
+ 		ret = NET_XMIT_DROP;
+ 	} else {
+-		local_irq_save(flags);
+ 		ret = __netpoll_send_skb(np, skb);
+-		local_irq_restore(flags);
+ 	}
+ 	return ret;
+ }
+
+
+and this did not even see the compiler. Plus queue_process() has been
+ignored.
+
 > Thanks,
-> Josef
-> ---
->  net/core/skbuff.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 41beaf625421..4ba544b5f3ba 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -4782,6 +4782,18 @@ struct sk_buff *skb_segment_list(struct sk_buff *s=
-kb,
->  }
->  EXPORT_SYMBOL_GPL(skb_segment_list);
->
-> +static bool skb_segment_unreadable(const struct sk_buff *head_skb)
-> +{
-> +       const struct sk_buff *iter;
-> +
-> +       if (!skb_frags_readable(head_skb))
-> +               return true;
-> +       skb_walk_frags(head_skb, iter)
-> +               if (!skb_frags_readable(iter))
-> +                       return true;
-> +       return false;
-> +}
-> +
->  /**
->   *     skb_segment - Perform protocol segmentation on skb.
->   *     @head_skb: buffer to segment
-> @@ -4842,6 +4854,14 @@ struct sk_buff *skb_segment(struct sk_buff *head_s=
-kb,
->         sg =3D !!(features & NETIF_F_SG);
->         csum =3D !!can_checksum_protocol(features, proto);
->
-> +       /* Without SG every segment's payload is copied out of head_skb, =
-which
-> +        * can't be done for unreadable frags.
-> +        */
-> +       if (!sg && skb_segment_unreadable(head_skb)) {
-> +               err =3D -EINVAL;
-> +               goto err;
-> +       }
-> +
+> Karl
 
-For this one, IMO we cannot have random unreadable checks in the code
-because high level functions will eventually do something that
-requires readability deep in the call stack. The code deep inside the
-call site will change and we (the LLM) will forget to update the
-accompanying unreadable check way up the stack.
-
-I would say for this one, if possible make the innermost helper
-requiring readability should perform the check, and return an error,
-and then update the callers to handle that error generically. You may
-end up with a larger, more complicated change but I think it will be a
-more sustainable change than this 1-off.
-
-Thanks,
-Mina
+Sebastian
