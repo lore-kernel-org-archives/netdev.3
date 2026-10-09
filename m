@@ -1,65 +1,65 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A354EBAC3
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECC84EBAFE
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 16:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791562286; cv=none; b=cQe3r8sAoh/kAKNcILimR5oVIfjse70/+B2cyoEi0l1yCLpA3rUeYqMp1OcQhjKMQOOY9BYjnKfKSKfqoM1zxqLgY/4cTajKrfEFPBTN/L6Ifeg/MLvdx6Es0Ju1UM8BHA4TNM8N89lOhPHYPZGPgwLy2pauGOVKV+wrflFzwU4=
+	t=1791562288; cv=none; b=fI8XG2V4H+wpmoBXRtTpwhe7v4o2AZjjXmLc5HOKZ3xzZoia6Vky6NN746jBAfxya/v+7k5vXy4/4ttBS265xiyaagw5zmWU4ymld73XfNSKBqlShl2bCCnljRRy07rYEej3rj6g9emdHymCvFcCqmKsvlEEJAycBIRfY61PJkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791562286; c=relaxed/simple;
-	bh=Tk1bCAYhLsmyvPuL10obACPflxis9NCVo3pI361whto=;
+	s=arc-20240116; t=1791562288; c=relaxed/simple;
+	bh=NU4X2VJGcjl2rlOCjM4L+p3D3tqMARtIFAjlFc9hBWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZGN1kZ2x0WGszx9WkyZYNWwN/qk2e284Zq8LYvYacnSrF2FarcdFZ55hM9sym9ghVvSuUhLLx/lboHZ8pyshF2uRwYJ8pqxOSQPHRiQqvVuO2Cg4U9SmTV1XIf9oGdePj5o2UIb/jh/hh7cLGAtv5QtHrT653aLi2MsAfVQ6FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcuOUDsl; arc=none smtp.client-ip=209.85.221.45
+	 MIME-Version; b=oJ9jT/fyMdDMpbP8VL+2YmGYoTAyOHUxmNgP2YGsurTL4Q9Y8Hzc4S3O5cGTxwT7T8mQMV1rE+m7bwFpCKeLOIPPycRUFaD2AyQIFRKDLbOUVX9Z+4mRX8GTijSwfc0RKH51NhhRQzo0FGs6U/JKJIsck+Sj2n1Ve0ynIpftOSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BoFxDkLk; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcuOUDsl"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48b001cd92bso3469344f8f.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:11:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BoFxDkLk"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1682bff3cso68865e9.1
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 09:11:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791562281; x=1792167081; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791562283; x=1792167083; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=U1AlJviyEsn0JwTEbIVJIrAaLLKDRuGfTWO+8DDkJVk=;
-        b=CcuOUDsl8cnRW/ONAOgBLJRbP71rURSroiMi03XsShkyKVmO1p0muQhWmpeznbyvfS
-         eD24bruISyYm7VqPSRsngyEe9wCFr6KSjvI7cSdWRj+aleKiJKXiYsHfR1qbs+RRnhBY
-         xzP6T3p/AD0qRPUFJciXK0zoDi4/jjKhJLxehG5kttouA2qvd8ByQARNub0iYFLZDCCj
-         SNfmQC1mYvK+F9YD0CS5C4vQsR95gx4t2p5LKX9dgziP0e4OQGJZ6/Iy9KVdpAC9fBo3
-         mMu1AhvQu7mr1O2mgRr/K8G2kph15UJJjbvLF39/glF6tekDqUYQOxiaPJe59h2/fY8r
-         UAhA==
+        bh=rbIAcFETs7Fo7Fiw9hweWROaB2K6gpG5L37UCuTLIIU=;
+        b=BoFxDkLks1XgO2Mw0V97lYqS3NWFS9+l0w0UYdrBNonUbYvGRX8btQXCOgtEpCaFwG
+         lBMJxI15Ij0pUgKb3NQbcSPExsUcnfTjXbRhZqbr5j96SyDar4Du9FHgtEljGs5gqP9i
+         DWLG4yOYCbB8o525hJlcAn43mZlwk5hT8v8HJ/Rje5AjOYHpZFufEDGp1At4SNpOK7He
+         Sq32bglmZuIv78Sa8+qgoZOG8pZ59PKhmvOPsGaE6d7pjMMs43rEvQx1IMbpf2MDeHX+
+         2gTUxCB0yseDJQCsMQ8ZECGa9cG3bEIAL9MHOlpTeVX9hWHp156WT6uq/2vo27lS6Zul
+         PLbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791562281; x=1792167081;
+        d=1e100.net; s=20260707; t=1791562283; x=1792167083;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=U1AlJviyEsn0JwTEbIVJIrAaLLKDRuGfTWO+8DDkJVk=;
-        b=QX+KS8uOCr7HTBEqCSiahW0u3EztPN3xe3dAz6DA4s6EuL7kY5zV6Rx9a5lWWYh2Ik
-         rgqJC5miNJuVCS4lpFy9/tGOf4jyUEWJ0ekeXdDlrB7csHUC0OGMBzKGZoQjJTV67MZb
-         6gcLfjUxA0uEWy9g0McIrZ/gU+4hvyPEFzspKPvcMrqtOhvnkuvPdCbg6kWFY5TPz0SR
-         Lua7VyiUI2s7hoJ4OW2HYnzkmMTczpm3Dai3NJErpQUeiPhyLV3rpfDlbjwT/A6Dxqb4
-         760cBQtU0Nxw4GgXPjw8Mx2AoBE0OnL4BdEk/c2FUCEhd857ydewNhIOecr9wVOMgeBD
-         FYGw==
-X-Forwarded-Encrypted: i=1; AKwUvBy9WV89utr5onaqg8+3oOeu2qM+ZkE4eIKlW+qi4DtR9sGEHgH6iJCn9YB4QmRasA3oZRxOqm0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKcGDx3MSnYZHSOgI/UWcP8LmFTe7tQYEGRBEhtcx5qnQUfNS2x
-	uu4gEHhSEwpF1EAKUfVaTmYjm0zf0kCxpxDb0Bi+fUR18BXRps2PSEmg
-X-Gm-Gg: AYBFou2wiQ12tjvAxQy6c4rE0gBlb1TzRXeJRyl5Qd+TL7Wrxw1mY4xiooKn7Ld2V9q
-	pqweK4Pw+l9eMpigfSmhwCnrEYfs3Xn8hx2eRpJPDwXmrmRRruIN86nruHtsWYCIIt1SzUj+3iz
-	xFGlLZY/uO6ZL6ITg7kGm9El5k73JPOhz6oMcgSWBknSkIWgjC2foRgNN9eh1mYa056fqV11d3S
-	4Y6kJBjnaTVt3Z89/CgFy1i1D24w3WoXyr7nyQ7F1Gvp9+x3G+qC/aCRqwdAmIwuEs11wO5+s/n
-	a6lmfVVJUXdxACSLdNzNOt95VEPjBwb6YWiRu9WCOwBpGes0LdewDXFqeGtxXkNiG/jcPqesb+y
-	RYsEi7ytwbcQ4rCfwNj86JAVbu7EYmzN1jajiFOscsJxfWEUOoMbSwtnWBy8fa9akT5JO2APNxO
-	2JQKqi4Ci78DQTeY4kWsvbTbDAxKE91xm1fggytJE+rsyoBFB6y2Kujf6duw1QJqnrfIBZCS8SC
-	pQYtXb9N+ly4muDpY/hEEfkYyHXVyGl0YmQ68U2hZmnTNBF5DD3cwn0zWScNMOJKbd+bgnt4/x3
-	QxfDZM0OQf1nXjlbOA==
-X-Received: by 2002:a05:6000:4811:b0:488:7da0:fedb with SMTP id ffacd0b85a97d-48dbace3b1fmr4014645f8f.40.1791562281084;
-        Fri, 09 Oct 2026 09:11:21 -0700 (PDT)
+        bh=rbIAcFETs7Fo7Fiw9hweWROaB2K6gpG5L37UCuTLIIU=;
+        b=QPDmW0K3VsTFuL4G8/Nkf9U5o70liE+8Pwb+uhbjkbcDD7cnYLK6grUQgUbS6pl8xf
+         BSPcKkSYflbs/udrTJScT+WZECyAyCcQgIBTiKx9bIettT2NhPwbuhbE4uup8u3ttTZG
+         97S2JYA/djxF/39pc0cdWmyR1VvUktJ4YVyTnCvDJFMiBMG1MR8bIuiF5yYot2E319T6
+         rnsEC+DjusoDipc/iak2RUW/8mg8dXxQ5REGuUgZbZfNoDnYi0OjiNFFB5T1rvh0ZO6U
+         0xtobgLvb4JMr8VHyQNfcjdM3WMBW3sSt1vEEcXqv6q8ZTmq+n1cDgqMIRQ2Dmbbw2Mu
+         FEcA==
+X-Forwarded-Encrypted: i=1; AKwUvBw1Jz4otT413bmYZejK74cpeyr65bULlInEeSmci8mhi7aQRaUYJD7OMSnJLTsfp42Q1gEq9eE=@vger.kernel.org
+X-Gm-Message-State: AFuF++ndgSIyXsmeLkM0JnzznqEEfJavW7ZQcXdTUfWD2LhnZZNqJOnz
+	Jp01P1MmZS1u1fO8etLroo1KEbM3EQB0i5ogSkwQjHMVfGoluUYrXHsX
+X-Gm-Gg: AYBFou3B9uFFoWPGbFKYCbxVDTSz7WocuPmwp9val48DmLf1Z6aB7Q3yRiRblebJYyc
+	fPzTrx/fFuXyaVDOHayw45YzQOgnXkOP84A3CM5qW3mH84gA1VDrog4WL/hhkqnAGVJDNwFniJg
+	epBg6y2Dccg/PK5vRN0ks0oKY13j7qdeRumKvfp+rvSQtzDqusx7BJLgoAlnvLj7ChpPm/Gjej1
+	Hk1DcGuZ6+NIvjDiVi3rOiTYeWTiJPtcLTcg5sZ9fXz2PGCUpVoVKW9D9f17ZRX96TKU+AEsi/H
+	u79DtOz4Ssu7ES1saoTg7ccmgqESmr6Ec6pQ1XNsLQDfucj75keAnM1h1t5H1vtIbndPq+TAeM9
+	w7OMFmYM8ulXpYGcBwJ1Av+9NXDfjLPKq7uYUB0er36as6DlpzJ2+af/JplHUApYAABgPuHf6e1
+	Hx0+/3ggTzX8bQWsYxta1DK1Z0filOFs7UGljimNhbVF2nGQB+IcQtI1Y6zv+6IOvs9H793OF73
+	9tz6JcnTB/H8ZlLN68ZZG4yEuGNCjw5ZollgdJPDJo6CY5+ZYNiChSnYU6Tknwv9vZnj/Xdpsme
+	cvWtKlR9SB+yRDEB7A==
+X-Received: by 2002:a05:600c:3e8d:b0:4a1:825a:56fd with SMTP id 5b1f17b1804b1-4a18e4aecb2mr43266655e9.32.1791562283128;
+        Fri, 09 Oct 2026 09:11:23 -0700 (PDT)
 Received: from Ansuel-XPS24.localdomain (host-213-45-9-252.retail.telecomitalia.it. [213.45.9.252])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48db94e2f08sm4744701f8f.15.2026.10.09.09.11.19
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48db94e2f08sm4744701f8f.15.2026.10.09.09.11.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 09:11:20 -0700 (PDT)
+        Fri, 09 Oct 2026 09:11:22 -0700 (PDT)
 From: Christian Marangi <ansuelsmth@gmail.com>
 To: Christian Marangi <ansuelsmth@gmail.com>,
 	Lee Jones <lee@kernel.org>,
@@ -87,9 +87,9 @@ To: Christian Marangi <ansuelsmth@gmail.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v25 05/10] net: phy: Add Airoha AN8855 Internal Switch Gigabit PHY
-Date: Fri,  9 Oct 2026 18:10:50 +0200
-Message-ID: <20261009161102.38961-6-ansuelsmth@gmail.com>
+Subject: [PATCH net-next v25 06/10] net: dsa: tag_mtk: add Airoha variant usage of this TAG
+Date: Fri,  9 Oct 2026 18:10:51 +0200
+Message-ID: <20261009161102.38961-7-ansuelsmth@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261009161102.38961-1-ansuelsmth@gmail.com>
 References: <20261009161102.38961-1-ansuelsmth@gmail.com>
@@ -101,329 +101,157 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for Airoha AN8855 Internal Switch Gigabit PHY.
+Add variant of the MTK TAG for Airoha Switch and comments about difference
+between Airoha AN8855 and Mediatek tag bitmap.
 
-This is a simple PHY driver to configure and calibrate the PHY for the
-AN8855 Switch with the use of NVMEM cells.
+Airoha AN8855 doesn't support controlling SA learning and Leaky VLAN
+from tag. Although these bits are not used (and even not defined for
+Leaky VLAN), it's worth to add comments for these difference to prevent
+any kind of regression in the future if ever these bits will be used.
+
+Rework the makefile, config and tag driver to better report to
+external tool (like libpcap) the usage of this variant with a dedicated
+"Airoha" name.
 
 Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 ---
- drivers/net/phy/Kconfig      |   6 +
- drivers/net/phy/Makefile     |   1 +
- drivers/net/phy/air_an8855.c | 275 +++++++++++++++++++++++++++++++++++
- 3 files changed, 282 insertions(+)
- create mode 100644 drivers/net/phy/air_an8855.c
+ include/net/dsa.h |  2 ++
+ net/dsa/Kconfig   | 11 +++++++++++
+ net/dsa/Makefile  |  2 +-
+ net/dsa/tag_mtk.c | 36 +++++++++++++++++++++++++++++++++---
+ 4 files changed, 47 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index d3835597e379..eca2ce135c86 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -96,6 +96,12 @@ config AIR_AN8801_PHY
- 	help
- 	  Currently supports the Airoha AN8801R PHY.
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 5d12191b6f6f..9824c63ad50b 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -62,6 +62,7 @@ struct tc_action;
+ #define DSA_TAG_PROTO_KSZ8463_VALUE		34
+ #define DSA_TAG_PROTO_MT7628_VALUE		35
+ #define DSA_TAG_PROTO_KS8995_VALUE		36
++#define DSA_TAG_PROTO_AIROHA_VALUE		37
  
-+config AIR_AN8855_PHY
-+	tristate "Airoha AN8855 Internal Gigabit PHY"
-+	depends on NVMEM || !NVMEM
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
+@@ -76,6 +77,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_KSZ9893		= DSA_TAG_PROTO_KSZ9893_VALUE,
+ 	DSA_TAG_PROTO_LAN9303		= DSA_TAG_PROTO_LAN9303_VALUE,
+ 	DSA_TAG_PROTO_MTK		= DSA_TAG_PROTO_MTK_VALUE,
++	DSA_TAG_PROTO_AIROHA		= DSA_TAG_PROTO_AIROHA_VALUE,
+ 	DSA_TAG_PROTO_QCA		= DSA_TAG_PROTO_QCA_VALUE,
+ 	DSA_TAG_PROTO_TRAILER		= DSA_TAG_PROTO_TRAILER_VALUE,
+ 	DSA_TAG_PROTO_8021Q		= DSA_TAG_PROTO_8021Q_VALUE,
+diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+index 4f44bf3ede23..28a249f04a43 100644
+--- a/net/dsa/Kconfig
++++ b/net/dsa/Kconfig
+@@ -24,6 +24,13 @@ config NET_DSA_TAG_NONE
+ 	  Say Y or M if you want to enable support for switches which don't tag
+ 	  frames over the CPU port.
+ 
++config NET_DSA_TAG_AIROHA
++	tristate "Tag driver for Airoha switches"
++	select NET_DSA_TAG_MTK_COMMON
 +	help
-+	  Currently supports the internal Airoha AN8855 Switch PHY.
++	  Say Y or M if you want to enable support for tagging frames for
++	  Airoha switches.
 +
- config AIR_EN8811H_PHY
- 	tristate "Airoha EN8811H 2.5 Gigabit PHY"
- 	select AIR_NET_PHYLIB
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 579066a638f0..d5c633db0742 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -31,6 +31,7 @@ obj-$(CONFIG_ADIN_PHY)		+= adin.o
- obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
- obj-$(CONFIG_ADIN1140_PHY)	+= adin1140-phy.o
- obj-$(CONFIG_AIR_AN8801_PHY)	+= air_an8801.o
-+obj-$(CONFIG_AIR_AN8855_PHY)	+= air_an8855.o
- obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
- obj-$(CONFIG_AIR_NET_PHYLIB)	+= air_phy_lib.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
-diff --git a/drivers/net/phy/air_an8855.c b/drivers/net/phy/air_an8855.c
-new file mode 100644
-index 000000000000..bc22256fd5f9
---- /dev/null
-+++ b/drivers/net/phy/air_an8855.c
-@@ -0,0 +1,275 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2024 Christian Marangi <ansuelsmth@gmail.com>
+ config NET_DSA_TAG_AR9331
+ 	tristate "Tag driver for Atheros AR9331 SoC with built-in switch"
+ 	help
+@@ -104,8 +111,12 @@ config NET_DSA_TAG_MT7628
+ 	  Say Y or M if you want to enable support for tagging frames for the
+ 	  switch embedded in the MT7628 SoC.
+ 
++config NET_DSA_TAG_MTK_COMMON
++	tristate
++
+ config NET_DSA_TAG_MTK
+ 	tristate "Tag driver for Mediatek switches"
++	select NET_DSA_TAG_MTK_COMMON
+ 	help
+ 	  Say Y or M if you want to enable support for tagging frames for
+ 	  Mediatek switches.
+diff --git a/net/dsa/Makefile b/net/dsa/Makefile
+index 1f9cc30e9988..7ccaa528a989 100644
+--- a/net/dsa/Makefile
++++ b/net/dsa/Makefile
+@@ -29,7 +29,7 @@ obj-$(CONFIG_NET_DSA_TAG_KS8995) += tag_ks8995.o
+ obj-$(CONFIG_NET_DSA_TAG_KSZ) += tag_ksz.o
+ obj-$(CONFIG_NET_DSA_TAG_LAN9303) += tag_lan9303.o
+ obj-$(CONFIG_NET_DSA_TAG_MT7628) += tag_mt7628.o
+-obj-$(CONFIG_NET_DSA_TAG_MTK) += tag_mtk.o
++obj-$(CONFIG_NET_DSA_TAG_MTK_COMMON) += tag_mtk.o
+ obj-$(CONFIG_NET_DSA_TAG_MXL_862XX) += tag_mxl862xx.o
+ obj-$(CONFIG_NET_DSA_TAG_MXL_GSW1XX) += tag_mxl-gsw1xx.o
+ obj-$(CONFIG_NET_DSA_TAG_NETC) += tag_netc.o
+diff --git a/net/dsa/tag_mtk.c b/net/dsa/tag_mtk.c
+index c7dc7731675e..f8087d768da6 100644
+--- a/net/dsa/tag_mtk.c
++++ b/net/dsa/tag_mtk.c
+@@ -11,6 +11,7 @@
+ #include "tag.h"
+ 
+ #define MTK_NAME		"mtk"
++#define AIROHA_NAME		"airoha"
+ 
+ #define MTK_HDR_LEN		4
+ #define MTK_HDR_XMIT_UNTAGGED		0
+@@ -18,6 +19,9 @@
+ #define MTK_HDR_XMIT_TAGGED_TPID_88A8	2
+ #define MTK_HDR_RECV_SOURCE_PORT_MASK	GENMASK(2, 0)
+ #define MTK_HDR_XMIT_DP_BIT_MASK	GENMASK(5, 0)
++/* AN8855 doesn't support SA_DIS and Leaky VLAN
++ * control in tag as these bits doesn't exist.
 + */
-+
-+#include <linux/bitfield.h>
-+#include <linux/module.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/of.h>
-+#include <linux/phy.h>
-+
-+#define AN8855_PHY_SELECT_PAGE			0x1f
-+#define   AN8855_PHY_PAGE			GENMASK(2, 0)
-+#define   AN8855_PHY_PAGE_STANDARD		FIELD_PREP_CONST(AN8855_PHY_PAGE, 0x0)
-+#define   AN8855_PHY_PAGE_EXTENDED_1		FIELD_PREP_CONST(AN8855_PHY_PAGE, 0x1)
-+
-+/* MII Registers Page 1 */
-+#define AN8855_PHY_EXT_REG_14			0x14
-+#define   AN8855_PHY_EN_DOWN_SHIFT		BIT(4)
-+
-+/* R50 Calibration regs in MDIO_MMD_VEND1 */
-+#define AN8855_PHY_R50OHM_RSEL_TX_AB		0x174
-+#define AN8855_PHY_R50OHM_RSEL_TX_A_EN		BIT(15)
-+#define AN8855_PHY_R50OHM_RSEL_TX_A		GENMASK(14, 8)
-+#define AN8855_PHY_R50OHM_RSEL_TX_B_EN		BIT(7)
-+#define AN8855_PHY_R50OHM_RSEL_TX_B		GENMASK(6, 0)
-+#define AN8855_PHY_R50OHM_RSEL_TX_CD		0x175
-+#define AN8855_PHY_R50OHM_RSEL_TX_C_EN		BIT(15)
-+#define AN8855_PHY_R50OHM_RSEL_TX_C		GENMASK(14, 8)
-+#define AN8855_PHY_R50OHM_RSEL_TX_D_EN		BIT(7)
-+#define AN8855_PHY_R50OHM_RSEL_TX_D		GENMASK(6, 0)
-+
-+#define AN8855_SWITCH_EFUSE_R50O		GENMASK(30, 24)
-+
-+/* PHY TX PAIR DELAY SELECT Register */
-+#define AN8855_PHY_TX_PAIR_DLY_SEL_GBE		0x013
-+#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_A_GBE GENMASK(14, 12)
-+#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_B_GBE GENMASK(10, 8)
-+#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_C_GBE GENMASK(6, 4)
-+#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_D_GBE GENMASK(2, 0)
-+/* PHY ADC Register */
-+#define AN8855_PHY_RXADC_CTRL			0x0d8
-+#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_A	BIT(12)
-+#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_B	BIT(8)
-+#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_C	BIT(4)
-+#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_D	BIT(0)
-+#define AN8855_PHY_RXADC_REV_0			0x0d9
-+#define   AN8855_PHY_RG_AD_RESERVE0_A		GENMASK(15, 8)
-+#define   AN8855_PHY_RG_AD_RESERVE0_B		GENMASK(7, 0)
-+#define AN8855_PHY_RXADC_REV_1			0x0da
-+#define   AN8855_PHY_RG_AD_RESERVE0_C		GENMASK(15, 8)
-+#define   AN8855_PHY_RG_AD_RESERVE0_D		GENMASK(7, 0)
-+
-+#define AN8855_PHY_ID				0xc0ff0410
-+
-+struct air_an8855_priv {
-+	bool needs_calibration;
-+	u8 calibration_data[4];
+ #define MTK_HDR_XMIT_SA_DIS		BIT(6)
+ 
+ static struct sk_buff *mtk_tag_xmit(struct sk_buff *skb,
+@@ -99,6 +103,7 @@ static struct sk_buff *mtk_tag_rcv(struct sk_buff *skb, struct net_device *dev)
+ 	return skb;
+ }
+ 
++#if IS_ENABLED(CONFIG_NET_DSA_TAG_MTK)
+ static const struct dsa_device_ops mtk_netdev_ops = {
+ 	.name		= MTK_NAME,
+ 	.proto		= DSA_TAG_PROTO_MTK,
+@@ -107,8 +112,33 @@ static const struct dsa_device_ops mtk_netdev_ops = {
+ 	.needed_headroom = MTK_HDR_LEN,
+ };
+ 
+-MODULE_DESCRIPTION("DSA tag driver for Mediatek switches");
+-MODULE_LICENSE("GPL");
++DSA_TAG_DRIVER(mtk_netdev_ops);
+ MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_MTK, MTK_NAME);
++#endif
+ 
+-module_dsa_tag_driver(mtk_netdev_ops);
++#if IS_ENABLED(CONFIG_NET_DSA_TAG_AIROHA)
++static const struct dsa_device_ops airoha_netdev_ops = {
++	.name		= AIROHA_NAME,
++	.proto		= DSA_TAG_PROTO_AIROHA,
++	.xmit		= mtk_tag_xmit,
++	.rcv		= mtk_tag_rcv,
++	.needed_headroom = MTK_HDR_LEN,
 +};
 +
-+static const u8 dsa_r50ohm_table[] = {
-+	127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
-+	127, 127, 127, 127, 127, 127, 127, 126, 122, 117,
-+	112, 109, 104, 101,  97,  94,  90,  88,  84,  80,
-+	78,  74,  72,  68,  66,  64,  61,  58,  56,  53,
-+	51,  48,  47,  44,  42,  40,  38,  36,  34,  32,
-+	31,  28,  27,  24,  24,  22,  20,  18,  16,  16,
-+	14,  12,  11,   9
++DSA_TAG_DRIVER(airoha_netdev_ops);
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_AIROHA, AIROHA_NAME);
++#endif
++
++static struct dsa_tag_driver *dsa_tag_driver_array[] =	{
++#if IS_ENABLED(CONFIG_NET_DSA_TAG_MTK)
++	&DSA_TAG_DRIVER_NAME(mtk_netdev_ops),
++#endif
++#if IS_ENABLED(CONFIG_NET_DSA_TAG_AIROHA)
++	&DSA_TAG_DRIVER_NAME(airoha_netdev_ops),
++#endif
 +};
 +
-+static int an8855_get_r50ohm_val(struct device *dev, const char *calib_name,
-+				 u8 *dest)
-+{
-+	u32 shift_sel, val;
-+	int ret;
-+	int i;
++module_dsa_tag_drivers(dsa_tag_driver_array);
 +
-+	ret = nvmem_cell_read_u32(dev, calib_name, &val);
-+	if (ret)
-+		return ret;
-+
-+	shift_sel = FIELD_GET(AN8855_SWITCH_EFUSE_R50O, val);
-+	for (i = 0; i < ARRAY_SIZE(dsa_r50ohm_table); i++)
-+		if (dsa_r50ohm_table[i] == shift_sel)
-+			break;
-+
-+	if (i < 8 || i >= ARRAY_SIZE(dsa_r50ohm_table))
-+		*dest = dsa_r50ohm_table[25];
-+	else
-+		*dest = dsa_r50ohm_table[i - 8];
-+
-+	return 0;
-+}
-+
-+static int an8855_probe(struct phy_device *phydev)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	struct air_an8855_priv *priv;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->needs_calibration = of_property_present(dev->of_node,
-+						      "nvmem-cells");
-+
-+	if (priv->needs_calibration) {
-+		int ret;
-+
-+		ret = an8855_get_r50ohm_val(dev, "tx_a", &priv->calibration_data[0]);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8855_get_r50ohm_val(dev, "tx_b", &priv->calibration_data[1]);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8855_get_r50ohm_val(dev, "tx_c", &priv->calibration_data[2]);
-+		if (ret)
-+			return ret;
-+
-+		ret = an8855_get_r50ohm_val(dev, "tx_d", &priv->calibration_data[3]);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	phydev->priv = priv;
-+
-+	return 0;
-+}
-+
-+static int an8855_get_downshift(struct phy_device *phydev, u8 *data)
-+{
-+	int val;
-+
-+	val = phy_read_paged(phydev, AN8855_PHY_PAGE_EXTENDED_1, AN8855_PHY_EXT_REG_14);
-+	if (val < 0)
-+		return val;
-+
-+	*data = val & AN8855_PHY_EN_DOWN_SHIFT ? DOWNSHIFT_DEV_DEFAULT_COUNT :
-+						 DOWNSHIFT_DEV_DISABLE;
-+
-+	return 0;
-+}
-+
-+static int an8855_set_downshift(struct phy_device *phydev, u8 cnt)
-+{
-+	u16 ds = cnt != DOWNSHIFT_DEV_DISABLE ? AN8855_PHY_EN_DOWN_SHIFT : 0;
-+
-+	return phy_modify_paged(phydev, AN8855_PHY_PAGE_EXTENDED_1,
-+				AN8855_PHY_EXT_REG_14, AN8855_PHY_EN_DOWN_SHIFT,
-+				ds);
-+}
-+
-+static int an8855_config_init(struct phy_device *phydev)
-+{
-+	struct air_an8855_priv *priv = phydev->priv;
-+	int ret;
-+
-+	/* Enable HW auto downshift */
-+	ret = an8855_set_downshift(phydev, DOWNSHIFT_DEV_DEFAULT_COUNT);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->needs_calibration) {
-+		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_R50OHM_RSEL_TX_AB,
-+				     AN8855_PHY_R50OHM_RSEL_TX_A_EN | AN8855_PHY_R50OHM_RSEL_TX_A |
-+				     AN8855_PHY_R50OHM_RSEL_TX_B_EN | AN8855_PHY_R50OHM_RSEL_TX_B,
-+				     AN8855_PHY_R50OHM_RSEL_TX_A_EN |
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_A,
-+						priv->calibration_data[0]) |
-+				     AN8855_PHY_R50OHM_RSEL_TX_B_EN |
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_B,
-+						priv->calibration_data[1]));
-+		if (ret)
-+			return ret;
-+		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_R50OHM_RSEL_TX_CD,
-+				     AN8855_PHY_R50OHM_RSEL_TX_C_EN | AN8855_PHY_R50OHM_RSEL_TX_C |
-+				     AN8855_PHY_R50OHM_RSEL_TX_D_EN | AN8855_PHY_R50OHM_RSEL_TX_D,
-+				     AN8855_PHY_R50OHM_RSEL_TX_C_EN |
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_C,
-+						priv->calibration_data[2]) |
-+				     AN8855_PHY_R50OHM_RSEL_TX_D_EN |
-+				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_D,
-+						priv->calibration_data[3]));
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Apply values to reduce signal noise */
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_TX_PAIR_DLY_SEL_GBE,
-+			     AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_A_GBE |
-+			     AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_C_GBE,
-+			     FIELD_PREP(AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_A_GBE, 0x4) |
-+			     FIELD_PREP(AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_C_GBE, 0x4));
-+	if (ret)
-+		return ret;
-+	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_RXADC_CTRL,
-+			       AN8855_PHY_RG_AD_SAMPLE_PHSEL_A |
-+			       AN8855_PHY_RG_AD_SAMPLE_PHSEL_C);
-+	if (ret)
-+		return ret;
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_RXADC_REV_0,
-+			    FIELD_PREP(AN8855_PHY_RG_AD_RESERVE0_A, 0x1));
-+	if (ret)
-+		return ret;
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_RXADC_REV_1,
-+			    FIELD_PREP(AN8855_PHY_RG_AD_RESERVE0_C, 0x1));
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int an8855_get_tunable(struct phy_device *phydev,
-+			      struct ethtool_tunable *tuna, void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_DOWNSHIFT:
-+		return an8855_get_downshift(phydev, data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int an8855_set_tunable(struct phy_device *phydev,
-+			      struct ethtool_tunable *tuna, const void *data)
-+{
-+	switch (tuna->id) {
-+	case ETHTOOL_PHY_DOWNSHIFT:
-+		return an8855_set_downshift(phydev, *(const u8 *)data);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int an8855_read_page(struct phy_device *phydev)
-+{
-+	return __phy_read(phydev, AN8855_PHY_SELECT_PAGE);
-+}
-+
-+static int an8855_write_page(struct phy_device *phydev, int page)
-+{
-+	return __phy_write(phydev, AN8855_PHY_SELECT_PAGE, page);
-+}
-+
-+static struct phy_driver an8855_driver[] = {
-+{
-+	PHY_ID_MATCH_EXACT(AN8855_PHY_ID),
-+	.name			= "Airoha AN8855 internal PHY",
-+	/* PHY_GBIT_FEATURES */
-+	.flags			= PHY_IS_INTERNAL,
-+	.probe			= an8855_probe,
-+	.config_init		= an8855_config_init,
-+	.soft_reset		= genphy_soft_reset,
-+	.get_tunable		= an8855_get_tunable,
-+	.set_tunable		= an8855_set_tunable,
-+	.suspend		= genphy_suspend,
-+	.resume			= genphy_resume,
-+	.read_page		= an8855_read_page,
-+	.write_page		= an8855_write_page,
-+}, };
-+
-+module_phy_driver(an8855_driver);
-+
-+static struct mdio_device_id __maybe_unused an8855_tbl[] = {
-+	{ PHY_ID_MATCH_EXACT(AN8855_PHY_ID) },
-+	{ }
-+};
-+
-+MODULE_DEVICE_TABLE(mdio, an8855_tbl);
-+
-+MODULE_DESCRIPTION("Airoha AN8855 PHY driver");
-+MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
++MODULE_DESCRIPTION("DSA tag driver for Mediatek switches");
 +MODULE_LICENSE("GPL");
 -- 
 2.55.0
