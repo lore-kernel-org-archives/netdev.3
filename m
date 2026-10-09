@@ -1,129 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E478D492E4E
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 08:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA0137AA9E;
+	Fri,  9 Oct 2026 08:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791533058; cv=none; b=pKnQ9ax3xsJ4tQ+Issb7pRhXEaIbrIU8d8e+VnZXetjXI8BB1rGCLj6u8S7ejWUQSr8xILYJrALIYE6nDg+DVkNNTeCnGBcQ40nMq80HMOuc35dln7dox8IQFD8PimFYeYSnw+6Ke6yD8OXhgxrjpEC0B2N6xk2XKA7KnLr8WAk=
+	t=1791533347; cv=none; b=MFT0U6nKuQTBnhG9AOkaNHbPy3KdaKroUXWeNUAwequeV+SdKPp7GRRBcCPYz7rJgn9rcT1nu8uQHLXAHxp850RS9rrIZWnCOjkyXK1gJ1mli3dEgoHzKVG5H93kosR2WZECctKlwNAAq1GvhGgykEc1C4mUKjG1Po8ZdSyEjA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791533058; c=relaxed/simple;
-	bh=0y74i2STDjmKr4lBePoInGDutw/6C+poWpHkbdAVK1I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZMw1vkCpllpJCK1P7z28hty54II6NY0xnZFGZGUFKSnt7u9CQy/JbRrvQrXcTGtmfGeSdrpUmVEoQp3qlxIBV3DfQ+HPbJ/VoUdTXqC7pIRFe5FWDHBLGp3IiEFBo84a/58bJGd1O4naWGIUXsReea0fu4GYdK34vzfSHAKpEtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hd2yY7Bf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791533347; c=relaxed/simple;
+	bh=YqCj2DI45rBAiCTfBWTa8ZEjISoBAV0jHOtCtO+LHRQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jS0ttkMeq4zm2YmJSLmAa+piaCYzQfSjNspGcELYcd3SaZfE1Qo5Zc5WnLX3BdSTJ7v30IPQR6CwMseEOgNXFZzIYRKhkTPXklwEOLVkcNfACnnW8C7lQpWVQwMw9jWAcCQKF2h4TMSZI7MR9XBdJkaumnu9mT/VwWuFak+H8e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UqPzd8aB; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hd2yY7Bf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693711F00893
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 08:04:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791533055;
-	bh=s/5A+ZClw8uFOpyIi+IWKMRcAZDloocaw/uDqLtwjvM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Hd2yY7Bf/6HQv2JT31eHw4xxh6qv2pVK2+TKA8ZZGIN+Fepttoygqwu8OGSD6E3JT
-	 WVW5BGva4e8Mp5TXySE3UdShEOmo7j3JK7BcR8aWYW3hEJ3UNo+973//1z9xefJJa1
-	 E6dytF5qet5tUAjrmBLU38VdIuerB97XgCwIzJz+JX2sgrLXbJHEjgPKVAambKGcuJ
-	 R//Qczr4xpAX5vpu8sjsHRcTlorJmH99LH/GBKvT/I+q33GJEZOmJ6gFLD+7cage1e
-	 9gUAde6xeQa1VaZt5kRBE94YLVgAmuEH6krMMIFliCM3Y0/O4oeBNttM1V1LNgi1CV
-	 o9+kr/XnqTqlA==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-49e5f85ce89so1592768fac.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 01:04:15 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx2wp2eAdDxuJWhHOsoYNq034LpLEUAH2HCF20eCv7hV8h5ylPm02pUYMCNFVZ0ZEUWsw4euXA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIyBio5PKjwp3pHQ60PrKuq1E0jGSwDD5JdfeVrK30P2p2r6F9w
-	RodnESPSoOi1UAFPC6Oj80rDBIPoeJZTRPZP3Ddp9zwWJc6oi2HYehH7BKo1MkVw4pYPPMlGmnA
-	omfams1lFpYcorUaUdnzAWS0DjztroqU=
-X-Received: by 2002:a05:6870:6493:b0:4a2:4d77:866d with SMTP id
- 586e51a60fabf-4a2a87ff162mr990737fac.11.1791533054730; Fri, 09 Oct 2026
- 01:04:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UqPzd8aB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791533339; x=1823069339;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YqCj2DI45rBAiCTfBWTa8ZEjISoBAV0jHOtCtO+LHRQ=;
+  b=UqPzd8aBy8NXZI+M86dO/gZUwhbF9gDnB9DsUx1TMEWM0OBd+yLYgm/r
+   n+arK2euNP7kK70kKngZPgkMP+EzxUuHV1xlX7QXdqG6oSLM0PizIOQgE
+   HQDRqU6AE5gPqv3FnRRlwCXALW/5SRY/jeRlg5e+RFm5wi7QbPPVpxZSJ
+   8m37APXdsvMos/dIVGCZg00FxdPqu1/8122DlF26+3nR0jDbhwEIrwjvG
+   6EYThRS1lKaHyK8FTzh9B0qLqyPqI24UxA5DZ2NogwZ6Nd0q/0OyOYCTg
+   nAmaHRkNB4rHSj1bUNCsPzWlbEE1Lg89Z5wLnqECtmxWQa0mM05U9nlMQ
+   Q==;
+X-CSE-ConnectionGUID: dIsZ+WLRTeKwVkIRWHtgXQ==
+X-CSE-MsgGUID: vZlShO7RSgiWPTorujsFvg==
+X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
+   d="scan'208";a="75117816"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 01:08:52 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Fri, 9 Oct 2026 01:08:51 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 9 Oct 2026 01:08:49 -0700
+Date: Fri, 9 Oct 2026 10:08:48 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Kusuma Vasana <kusuma.vasana@amd.com>
+CC: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <michal.simek@amd.com>, <git@amd.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>
+Subject: Re: [PATCH net-next V4] net: axienet: Clear stale AXI DMA TX/RX
+ status before re-enabling interrupts
+Message-ID: <20261009080848.peze77mpvcub5wqv@DEN-DL-M70577.microsemi.net>
+References: <20261005090106.1594994-1-kusuma.vasana@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009074523.2747168-1-bsdhenrymartin@gmail.com>
-In-Reply-To: <20261009074523.2747168-1-bsdhenrymartin@gmail.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 9 Oct 2026 10:04:03 +0200
-X-Gmail-Original-Message-ID: <CAL4WiipX3uc6FD1=saqEthm+PTCKkoY=J7cXRf9R9FTqd68raw@mail.gmail.com>
-X-Gm-Features: AclHuK8ltwaJAIjTWP05-fE44s7cCMnjL8O00smo3LgS1FtFj3W92as-vTo_gZ4
-Message-ID: <CAL4WiipX3uc6FD1=saqEthm+PTCKkoY=J7cXRf9R9FTqd68raw@mail.gmail.com>
-Subject: Re: [PATCH] ipconfig: fix use-after-free of device list after ic_close_devs()
-To: Henry Martin <bsdhenrymartin@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261005090106.1594994-1-kusuma.vasana@amd.com>
 
-Le ven. 9 oct. 2026 =C3=A0 09:45, Henry Martin <bsdhenrymartin@gmail.com> a=
- =C3=A9crit :
->
-> ic_close_devs() kfree()s every ic_device node but leaves the static
-> ic_first_dev and ic_dev pointers dangling behind.  When a DHCP reply
-> consists of an OFFER that is never followed by an ACK (a misbehaving
-> or lossy DHCP server, or a network that drops the ACK), the boot-time
-> autoconfiguration loop becomes vulnerable:
->
->   1. ic_bootp_recv() accepts the OFFER and records ic_dev =3D <list
->      node> ("We have a winner!" state);
->   2. the retransmit round times out in ic_dynamic(), so
->      ic_close_devs() frees the whole list =E2=80=94 node included;
->   3. the dynamic retry path (try_try_again) runs ic_open_devs() and
->      ic_dynamic() again; on failure it falls through ic_close_devs()
->      once more, where the entry point evaluates
->
->          struct net_device *selected_dev =3D ic_dev ? ic_dev->dev : NULL;
->
->      =E2=80=94 an 8-byte use-after-free read against the freed ic_device.
->
->
-> NULL both pointers after the free loop so subsequent retry rounds
-> take the clean empty-list path instead of acting on freed entries.
->
-> This vulnerability was discovered by Tencent CodeBuddy Security.
+Hi Kusuma,
 
-This is __init code, on a boot that already failed to get a lease.
-I would not call it a vulnerability.
+A few comments:
 
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-
-Wrong tag. In 2.6.12 ic_dev was a 'struct net_device *' that was only
-compared, never dereferenced. The dereference came in v5.12 with:
-
-Fixes: 46acf7bdbc72 ("Revert "net: ipv4: handle DSA enabled master
-network devices"")
-
-> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> The AXI DMA interrupt line is level-sensitive: it asserts whenever
+> the IOC (XAXIDMA_IRQ_IOC_MASK) or DELAY (XAXIDMA_IRQ_DELAY_MASK) bits
+> in the status register (XAXIDMA_TX_SR_OFFSET / XAXIDMA_RX_SR_OFFSET)
+> are set and their corresponding enable bits in the control register
+> are active.
+> 
+> During TX/RX, interrupts are disabled in the control register while
+> NAPI runs. Completions arriving in this window cause hardware to latch
+> IOC/DELAY into the status register regardless of the control register
+> mask state. After NAPI completion, re-enabling interrupts immediately
+> re-asserts the IRQ line due to these stale status register bits, even
+> when no new work is pending.
+> 
+> This results in a stale interrupt and redundant NAPI poll cycle with
+> no new work pending, causing unnecessary CPU processing.
+> 
+> In the initial driver, the status register was cleared after polling
+> all packets, which naturally consumed any status accumulated during
+> processing. In later versions of the driver, status register clearing
+> was moved to the ISR before polling begins, leaving no mechanism to
+> clear status bits that arrive during the NAPI poll window.
+> 
+> Clear the status register IOC/DELAY bits before re-enabling interrupts
+> and recheck the next BD to catch race-window completions. Both are
+> skipped on budget exhaustion. On the RX side, both are additionally
+> skipped on refill failure.
+> 
+> Signed-off-by: Kusuma Vasana <kusuma.vasana@amd.com>
 > ---
->  net/ipv4/ipconfig.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
-> index 1b8585404a41..ac4851e59c3b 100644
-> --- a/net/ipv4/ipconfig.c
-> +++ b/net/ipv4/ipconfig.c
-> @@ -346,6 +346,13 @@ static void __init ic_close_devs(void)
->                 kfree(d);
+> Changes in v4:
+> - Read back SR after W1C so the clear is posted before the BD recheck.
+> - Document that poll may return @budget on that recheck.
+> - Drop the incorrect "leave IRQ armed" wording for RX refill failure.
+> 
+> Changes in v3:
+> - Updated the commit description.
+> - Restricted TX/RX status-register clear and completion recheck to the
+>   NAPI completion path, with RX only when refill succeeds.
+> - Rechecked descriptor completion after status-register clear to handle
+>   race-window completions.
+> 
+> Changes in v2:
+> -Added net-next prefix in the subject
+> -Updated the commit description
+> 
+> ---
+>  .../net/ethernet/xilinx/xilinx_axienet_main.c | 29 +++++++++++++++++--
+>  1 file changed, 27 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index fcf517069d16..4d8169fc39cd 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -986,7 +986,8 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+>   * @napi:      Pointer to NAPI structure.
+>   * @budget:    Max number of TX packets to process.
+>   *
+> - * Return: Number of TX packets processed.
+> + * Return: Number of TX packets processed, or @budget to continue polling
+> + * after a post-clear completion recheck.
+>   *
+>   * This function is invoked from the NAPI processing to notify the completion
+>   * of transmit operation. It clears fields in the corresponding Tx BDs and
+> @@ -1018,6 +1019,17 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
+>                         netif_wake_queue(ndev);
 >         }
->         rtnl_unlock();
-> +
-> +       /* The whole ic_device list was just kfree()'d above; clear the
-> +        * static pointers so retry rounds (e.g. dynamic retry after an
-> +        * OFFER without ACK) don't dereference them (use-after-free).
+> 
+> +       /* Clear stale IOC/DELAY bits, flush the clear, and re-check for
+> +        * race-window completions. Skipped on budget exhaustion.
 > +        */
-> +       ic_first_dev =3D NULL;
-> +       ic_dev =3D NULL;
->  }
+> +       if (packets < budget) {
+> +               axienet_dma_out32(lp, XAXIDMA_TX_SR_OFFSET,
+> +                                 XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
+> +               axienet_dma_in32(lp, XAXIDMA_TX_SR_OFFSET);
+> +               if (lp->tx_bd_v[lp->tx_bd_ci].status & XAXIDMA_BD_STS_COMPLETE_MASK)
+> +                       return budget;
+> +       }
+> +
 
-The change looks correct, but the comment is not needed.
+The patch does not apply on my tree.
 
-Please send a V2 (in more than 24 hours) targeting the net tree
-([PATCH net v2]).
+This part was reworked in f9d58127380a ("net: axienet: do not report TX
+completions as NAPI work") to not return budget-sized work, it now just returns
+0.
 
-Thanks.
+>         if (packets < budget && napi_complete_done(napi, packets)) {
+>                 /* Re-enable TX completion interrupts. This should
+>                  * cause an immediate interrupt if any TX packets are
+> @@ -1204,7 +1216,8 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+>   * @napi:      Pointer to NAPI structure.
+>   * @budget:    Max number of RX packets to process.
+>   *
+> - * Return: Number of RX packets processed.
+> + * Return: Number of RX packets processed, or @budget to continue polling
+> + * after a post-clear completion recheck.
+>   */
+>  static int axienet_rx_poll(struct napi_struct *napi, int budget)
+>  {
+> @@ -1301,6 +1314,18 @@ static int axienet_rx_poll(struct napi_struct *napi, int budget)
+>         if (tail_p)
+>                 axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
+> 
+> +       /* Clear stale IOC/DELAY bits, flush the clear, and re-check for
+> +        * race-window completions. Skipped on budget exhaustion and on
+> +        * refill failure (cur_p->skb == NULL).
+> +        */
+> +       if (packets < budget && cur_p->skb) {
+> +               axienet_dma_out32(lp, XAXIDMA_RX_SR_OFFSET,
+> +                                 XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
+> +               axienet_dma_in32(lp, XAXIDMA_RX_SR_OFFSET);
+> +               if (cur_p->status & XAXIDMA_BD_STS_COMPLETE_MASK)
+> +                       return budget;
+> +       }
+> +
+>         if (packets < budget && napi_complete_done(napi, packets)) {
+>                 if (READ_ONCE(lp->rx_dim_enabled)) {
+>
 
-pw-bot: cr
+I think the RX side looks good.
+
+>struct dim_sample sample = {
+> --
+> 2.43.0
+> 
+> 
+
+/Daniel
