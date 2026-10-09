@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A44E33DEE6;
-	Fri,  9 Oct 2026 02:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DB533F8B4;
+	Fri,  9 Oct 2026 02:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791511207; cv=none; b=EXS4ndESptkXVm57wETzAjE7bWglFEFMPxVbvGapguJmwC5+wB2ZpsJaKppe0QaCuci6/ComP4UzXWfEGR33Rn6AQ40gVpine41LFPT9grcybMXz5B5EI2tnnhC4xxO3TZYY1TvZFOBw+woT5ZQsfIfkYLx3VNPfDZF1CNbpmps=
+	t=1791511208; cv=none; b=mDAsTyRge2P1Zj9FC7UfCN951fLZ9uv3angq4lOk5cLj3J5qSqypJ7pAN/WgpadQGGMH1DSKDhkXjqXtlCADtA2pl2iM0LcEbvc1/2G060lXn9LtfiGzNRDRLX4yrXKfm1No/1WiYsfWVESr4gA6owDkpBbQOnq+iVWS/7Uf/e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791511207; c=relaxed/simple;
-	bh=R2m3QZ6hkoY0NHVl7KQDVBxqdMytc7MYQ6OIRnTfglA=;
+	s=arc-20240116; t=1791511208; c=relaxed/simple;
+	bh=XZPc1JM4Qpcu/jFJLeAdRo+xF4T6kyvD8hxdPs3bOME=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Ln1ljpwO9MobkfuMUg0fduSdgnB8xEDoyuP1KIkx6irZgJFoM4xWQZJfRWLQzIfhtqbGfUphxsxf66c4B2or5iGn6ihlWnsss0PogasZcuz3AJkah3EDeATdjupxSXZzFnERp0VTZI9aCsM/eJ5sa8oghWve+f1NIOQlBlB/mcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNeB+ufj; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=ZKYHXpcewnoO+wc6XJl/V2n5qE5o0vD9M3Dh1CPBuLPT20f5EM9CsXJhk3jhkKX3I172y2eGQ4+pDY4oeNgN5fZ2Yhb1ugKY90rhjL6Br0iAdBSTdKctQPmIDgGeLr9+HnPH5pSsLdwx5txaDTzpqIhyzNg9mmIUfQFAx3lymPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hiR1gL/g; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNeB+ufj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0E01F000FF;
-	Fri,  9 Oct 2026 02:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hiR1gL/g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8416F1F000FF;
+	Fri,  9 Oct 2026 02:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791511206;
-	bh=ZBdnt0dr5Vo0ey6jKlPaKDv7WXk3zlN1BpBABNQDneY=;
+	s=k20260515; t=1791511207;
+	bh=8xdgtLpjzbpWmGNyuK/NwNf8zISqtgETz6cQOW/oSCI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VNeB+ufjqu8/B4RkQDR1PL2l0P422ITe7F5Bq25xae5GnkHdR78Dimy3N9Qly9CXU
-	 rQgI0aIPMzMljuJAnNTw+FhUwQ8kEWhWKM41S2TuDPc3hkQF4cavrycJW1Bf9zhiZf
-	 OX0r9AQF/upR0Dbkro5sndnR+rspofZCeRnSGns+KT7uTlfIUtFxAgsMikakUesPxN
-	 K9MwNkLnIHw0iqu3pOLy4NvwEOMHilPaEJ1bjfSuHMMVPKhcgml4+9IIefgaKEYAIO
-	 QxIEOw+1r1M/eYjSdRMO4dRb98intx7CghuxRsvws42xwPdYV7HmGQU/YCHiN7A+Q9
-	 BZTpA6JgFgT9g==
+	b=hiR1gL/gH4HWrRzY881q+mhh4ba7xpPUTlfRq+zi18oi4mPyL7u3JM+EARwHTkfqJ
+	 g2TnpYwoYQtjasL48DR9OJ71AOMCerIqUiT5AQk2yzqkSQCAXteQyXDVgNCq2fq36r
+	 TtZcEhmFS/AUshYA4AVyFh1xsyld2Ezo9+ryf4lkM53k85kJQKOTORxuHOoyB570Qe
+	 ftI2t7mnO5Y/gihfcdrgWbDRmTAEqi3Rxm3GL0K0E+JVrKHfJMYHRht0DlOFR8P+kY
+	 LImXberAbvcepYsCS6roFZKxulKu74zdCdb016RLaihw7/noAIQID2rdkz5JP6HCf/
+	 zh5xXQFhKGmwQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1431380AA63;
-	Fri,  9 Oct 2026 02:00:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7735A380AA63;
+	Fri,  9 Oct 2026 02:00:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] docs: oa-tc6-framework: Fix typo in SYNC bit
- description
+Subject: Re: [PATCH net-next] net: stmmac: move XPCS lifetime management to
+ platform drivers
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179151120478.517180.17431403278807567875.git-patchwork-notify@kernel.org>
-Date: Fri, 09 Oct 2026 02:00:04 +0000
-References: <20261005194135.64584-1-jayarajdmit@gmail.com>
-In-Reply-To: <20261005194135.64584-1-jayarajdmit@gmail.com>
-To: Jayaraj Devaraj <jayarajdmit@gmail.com>
-Cc: parthiban.veerasooran@microchip.com, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, kuba@kernel.org, corbet@lwn.net
+ <179151120601.517180.886475800307456718.git-patchwork-notify@kernel.org>
+Date: Fri, 09 Oct 2026 02:00:06 +0000
+References: <20261005221749.1104430-1-coiaprant@gmail.com>
+In-Reply-To: <20261005221749.1104430-1-coiaprant@gmail.com>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: kuba@kernel.org, maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, romain.gantois@bootlin.com,
+ linux@armlinux.org.uk, heiko@sntech.de, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-rockchip@lists.infradead.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  6 Oct 2026 01:11:35 +0530 you wrote:
-> Fix a missing space in the SYNC bit
-> description: "bitin" should
-> be "bit in".
+On Tue,  6 Oct 2026 06:17:49 +0800 you wrote:
+> The current XPCS creation logic in stmmac_pcs_setup() is problematic
+> for several reasons.
 > 
-> Signed-off-by: Jayaraj Devaraj <jayarajdmit@gmail.com>
-> ---
->  Documentation/networking/oa-tc6-framework.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> First, if a device tree specifies a "pcs-handle" but no select_pcs()
+> callback is provided by the platform driver, the created XPCS cannot be
+> used by phylink for PCS operations. The framework requires select_pcs()
+> to return the PCS to the core, so the pcs-handle property becomes
+> effectively useless for link management without the matching callback.
+> The XPCS is still consulted by stmmac_phylink_setup() and
+> stmmac_init_phy(), which makes the configuration silently half-working
+> rather than clearly broken.
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] docs: oa-tc6-framework: Fix typo in SYNC bit description
-    https://git.kernel.org/netdev/net-next/c/758fe10f83a6
+  - [net-next] net: stmmac: move XPCS lifetime management to platform drivers
+    https://git.kernel.org/netdev/net-next/c/f91afd7f7133
 
 You are awesome, thank you!
 -- 
