@@ -1,81 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-53.ptr.blmpb.com (va-2-53.ptr.blmpb.com [209.127.231.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCB238DC6F;
-	Fri,  9 Oct 2026 10:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5EA3DAABE
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 10:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791542384; cv=none; b=Rz4gT0uoXkaazJteATTPOHvFzwiFPjDgPi6cpi5CXGa1C6QS+2DZqTLE/82Xy3djqTMgc0FCFAynL5OtMcWPlQ3Z9sqzUlUSZ2FJBh1/PnXw+UBdwolarPi+6QQgzNZ/7r8Da8IY8xtV0Rbbx9ZcYjiBX+IaUEGlpRC/t3IkZOM=
+	t=1791542515; cv=none; b=gDqhHgEsgE5KyMaYcce79Mrn1874VWM1S9UjG2X+FytiibR/kJB4zNtK/DtmP0Ie2h0YlooVSoIlzWKNQ31lJ8tCOZwRzi1hzzMk7oI95r+6OMW2nwF8ixHpcLx8XbkroGgm2v8AUbTvz9BcSJ1JVgG+tByROBkjP04wdkz1b/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791542384; c=relaxed/simple;
-	bh=yuREDrIz9SKJKLrQfl0sDMPacUyEvm407gPC9dhOyps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=euUCb7UxYhvHu2+aFOFP5AKxlsajRJVtHWAWjrZHK/yCfJ1D2RKqg0RhKtefPpCgsYb6jDyeJcDFQ95wW9Txc+HUGf5zl/fN6KqSiGOYQ7nlM7rgYQYVA2TIaSHd3gPz58JVVQW89DYAXwFKfqscpn/1ubBivU/aEuYTnpi1B0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8lb7rfF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791542515; c=relaxed/simple;
+	bh=EMVL+vtprNX6/nb1cKg8CTGnpBwi4mL9PY0tVfV+wHw=;
+	h=Cc:From:Subject:Mime-Version:To:Message-Id:Date:Content-Type; b=jResxQK2Y0dJOEDF7V5IsUg5PweZv+KVHjB5eZDkOS4pwnSNYaSKC+GJsxA/s4PcK/p8GI/46ONGMAyXjWekG4UUmlPQXJQLp1kIthfqrMiRpUwmSuqcCls27etQJJM2LQaBsCA9puwLu4bu3zVyyrhsiDKn/2qxytYSxgBbD9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com; spf=pass smtp.mailfrom=lanxincomputing.com; dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b=bTxFwom7; arc=none smtp.client-ip=209.127.231.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lanxincomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lanxincomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8lb7rfF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BDE1F000FF;
-	Fri,  9 Oct 2026 10:39:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791542383;
-	bh=n6SBIK/RTJ2gKGJUx4mMtmO3hND48ShXeu1KsGP31Dg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T8lb7rfFs5SCf8klrO8V53eGWKjoijHWEtYbXWHIP2InyTIod20TSCfW4WiG05/XK
-	 WsO4WDNP+RulRO+g/hJl4SIWDguooxunbrMQ1CsENWaCEbGRaiT12Z7s7ONfUbXPpB
-	 oFnc2yqY2SVEzp4nc76HrvxBr02aZxa8EwHAVjGBpjA2lc0+AxPgtnMhGwiqg7ewMv
-	 PCzjvztCmmMiGtqwe8irX26Mop83S3WyOj/FygoOAwyX+wEkNqwgjkP+7Q38UT3k4+
-	 tyeGEzr/Up/klrZyNO2lb4nUd7gg1ygwG/n7p8Mr3eb03rY4auMB/fhUPQpXsa+KP7
-	 KIZuAK6XaO3LA==
-Date: Fri, 9 Oct 2026 12:39:39 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Stefano Radaelli <stefano.radaelli21@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	pierluigi.p@variscite.com, Stefano Radaelli <stefano.r@variscite.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Shawn Guo <shawnguo@kernel.org>, Joseph Guo <qijian.guo@nxp.com>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>, Josua Mayer <josua@solid-run.com>, 
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>, Mehmet Fide <mehmet.fide@screeningeagle.com>, 
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>, Maud Spierings <maudspierings@gocontroll.com>, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v5 03/13] dt-bindings: arm: fsl: Add Variscite i.MX6ULZ
- board variants
-Message-ID: <20261009-dexterous-petrel-of-storm-8156bf@quoll>
-References: <cover.1791487179.git.stefano.r@variscite.com>
- <cb2311ceda0efe83d2a05d2d0488d547043b1d47.1791487179.git.stefano.r@variscite.com>
+	dkim=pass (2048-bit key) header.d=lanxincomputing-com.20200927.dkim.feishu.cn header.i=@lanxincomputing-com.20200927.dkim.feishu.cn header.b="bTxFwom7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=lanxincomputing-com.20200927.dkim.feishu.cn; t=1791542492;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=CEJbbbhuXHgrYs6t3WPjEtu9JKVxoeLA7pFn71Sz5a4=;
+ b=bTxFwom7nw/ai03UEjIoUvLYMzReOVEaIvlywfP8G6LrIHLfnPDq/iUGImplw+9DZ7tF4y
+ tzpGx2IIWEYKFUsLPDczL8RXVeleH3TwWWl05qByhuudXkxAyb9fax/9+ldp7mcClNCH6q
+ GygogY/+iZe8ioIP4HCA/bziup4CsFmLJGZgMy09kWZ/FZ9jpY/YLDX+w6cOR8fZbxMcc6
+ WvQw29xR8Zr4oq2nmnfIgT+vRldSn4YjyEVyNWVMvakTN5oXXPUVy5+8ohVvKGBs/8AAwK
+ fQAg+6szagJEXTUC52GI3mbU+weoZy8fsqDMOyaIq05VYxfvfTHopGkib3aK8Q==
+X-Mailer: git-send-email 2.53.0
+X-Original-From: Jin Li <jinli@lanxincomputing.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, 
+	<netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, "Jin Li" <jinli@lanxincomputing.com>
+From: "Jin Li" <jinli@lanxincomputing.com>
+Subject: [PATCH] selftests: net: forwarding: bridge_vlan_mcast: Allow default startup query interval to vary by HZ
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cb2311ceda0efe83d2a05d2d0488d547043b1d47.1791487179.git.stefano.r@variscite.com>
+Mime-Version: 1.0
+Received: from ubuntu ([123.120.5.129]) by smtp.feishu.cn with ESMTPS; Fri, 09 Oct 2026 18:41:29 +0800
+To: "Shuah Khan" <shuah@kernel.org>, "David Ahern" <dsahern@kernel.org>, 
+	"Ido Schimmel" <idosch@nvidia.com>
+Message-Id: <20261009104109.754133-1-jinli@lanxincomputing.com>
+X-Lms-Return-Path: <lba+26ac8c4da+802424+vger.kernel.org+jinli@lanxincomputing.com>
+Content-Transfer-Encoding: 7bit
+Date: Fri,  9 Oct 2026 10:41:09 +0000
+Content-Type: text/plain; charset=UTF-8
 
-On Thu, Oct 08, 2026 at 09:37:43PM +0200, Stefano Radaelli wrote:
-> From: Stefano Radaelli <stefano.r@variscite.com>
-> 
-> Document VAR-SOM-6UL configurations on the Concerto and Symphony
-> carriers and DART-6UL configurations on VAR-6ULCustomBoard with
-> i.MX6ULZ.
-> 
-> The compatibles identify the SoM storage, wireless and audio options
-> followed by the carrier, module and SoC compatibles.
-> 
-> Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-> ---
-> v4->v5:
->  - Put fsl,imx6ulz before the fsl,imx6ull fallback in the new Variscite
->    entries. Leave the existing EVK and BSH compatible order unchanged.
+The mcast_startup_query_interval default value is calculated as
+125 * HZ / 4. With CONFIG_HZ=250, this results in 3124 instead of
+3125 due to integer truncation. The test currently hardcodes 3125,
+which fails on kernels built with CONFIG_HZ=250.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Allow a +/- 1 tolerance for the default value check to account for
+this rounding, while still catching genuine regressions in the
+default value.
 
-Best regards,
-Krzysztof
+Signed-off-by: Jin Li <jinli@lanxincomputing.com>
+---
+ tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
+index c4cd2078a8db..e72680869721 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
+@@ -383,7 +383,7 @@ vlmc_startup_query_test()
+ 
+ 	echo -n $goutput |
+ 		jq -e ".[].vlans[] | select(.vlan == 10 and \
+-					    .mcast_startup_query_interval == 3125) " &>/dev/null
++                                           .mcast_startup_query_interval >= 3124 and .mcast_startup_query_interval <= 3126) " &>/dev/null
+ 	check_err $? "Wrong default mcast_startup_query_interval global vlan option value"
+ 	log_test "Vlan mcast_startup_query_interval global option default value"
+ 
+-- 
+2.53.0
