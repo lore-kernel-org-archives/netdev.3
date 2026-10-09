@@ -1,54 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BE634D3BE;
-	Fri,  9 Oct 2026 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4667926FA4B;
+	Fri,  9 Oct 2026 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791564617; cv=none; b=bVoV89JylWFtUNAvNVjRPlU9kJacEE84CYqCxuuNhUgODIzxs/tGiWHbsWvv8oChcKs92RR7BprxGsb1yyY/zyx4VyKi28cfSWf4ZADDIKH+XnH8T3biyOCa9Zmvr8holpFBzULTMf8FIgIYArC3rdQRHFq0KXuZ01GsUf3o9To=
+	t=1791564660; cv=none; b=kH92aL9wBmu4btrv8L/Cu5Nf5K818eF9qs5x2C+LxgSkbwX3Sk7mZE4VocLB2OcrHtj/hyI9tP7lQkvd1q7UxviKyAHpGchGcVWsPHNQUFGCBs6yldN2PbrTSoD27Y3OViJJ4EbRskBibjN9+8a7gSAhYByx22Lwvo69EhqchHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791564617; c=relaxed/simple;
-	bh=5G0sBwACRL5D52xdlWgz3htUbJLR0HlFH/MMh7jYA+w=;
+	s=arc-20240116; t=1791564660; c=relaxed/simple;
+	bh=PFmLssKDcusJBbxG5usTXRmrFBeqcyLWlgtt/gO1JoQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aqm230Em269R9Ft6tXqxkLbywg2F1EK9GGBHrIA/XE7OPkUu0PrOkzIJCzXOlL/7I1oSCFgwW3C46MEU+qCiWpTSWHnIOfYyqapTs9kgIAty8HTnDkhJY/JjcXNkch465i1LoTzEZDU9KBvzIbUCLERObIPZja8c0nzY3Wfnrnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWyDY+ez; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=pD+XAt7JB7M5OnzRKqXOTxtiZnA55q2sIfUyO8eBIoPCgbTdzfjUf9VRfSml1pprKZIWYgVUWVIcP0V0aFLsgazNhRVw3fmV/67TPAw7b5X7KJru7FrIs1UZ5s8nvz4V1hR0DZMoxCURDFSAkA7ezpjU96nsYvM/9n4LzVdWI8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXkqgPtb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWyDY+ez"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA00E1F000FF;
-	Fri,  9 Oct 2026 16:50:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXkqgPtb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EA51F000FF;
+	Fri,  9 Oct 2026 16:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791564616;
-	bh=X5bMgzoAD9TX0Ya0OQIcLnyUsUBkoiE4qn++57CQU/w=;
+	s=k20260515; t=1791564658;
+	bh=O9BMlJTdE9Y9VZdVW9+inED8bkLDwjOaM01fXKv8qfE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=gWyDY+ezHCpkHnpiVa+qJfyQh44cMGLAEea9ajLx2EdZnqG8WGnwDgrNQ7fK5dGeC
-	 giFTynWHnUkmmIctB0JvtkUcCdR7FFXh3CQwa9xCkKFARs1xDhGdtGZWd5domM8smQ
-	 gdzJ7lbM07RnbBAmgV9z2mF/k1lMhz83yXlO3ZZfEenB3zmqJYXvSZNYG1mdaXB0hV
-	 n4QawKNGnVK9Ypjce91gXG73wOELPv+q004DNN0axye/nqPWpOl3GkfhBpaZku1a5e
-	 bqrMk6P9ek3E/Tiw/DzGwUo0MBtMVzaUA1dqKqiZrY1OEtCDWLrKeT9ej8V4lQqFgW
-	 qGoBkJunp7ZCg==
-Date: Fri, 9 Oct 2026 11:50:15 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Coia Prant <coiaprant@gmail.com>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, linux-kernel@vger.kernel.org,
-	Heiko Stuebner <heiko@sntech.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	b=JXkqgPtbCDRx3KC6KulxRMR2o64UyhwWCytktuRojvzxt49habrfIPit8XsAS+pvb
+	 kyCtubuzUKHJkCvnOcGvgOl3spNLq8lsQ95pv3IXWMZs8oytvWTldI5vB26Edb05IX
+	 GhxBJSzMJT+AKmtSRjaj7ISBGGQPTl3DGJrGjJnOPTgoyO2QiZl06Mf6/YqMH9HQiz
+	 L/wi6uBJMBX5eJYOOS9D8Yn3h90CdIwHcg8h78nN1i7LUI1fuuPNHTTzZEpR2UV5su
+	 T4XJIFDmOJTXhhj5ZLG7EK1uoctbsVYbpFJpBCtbCXYaRzxx1GC97bJHJYdayk0NCF
+	 Vi/rfD4N0KgJg==
+Date: Fri, 9 Oct 2026 17:50:54 +0100
+From: Simon Horman <horms@kernel.org>
+To: Arnav Kapoor <kapoorarnav43@gmail.com>
+Cc: Edward Cree <ecree.xilinx@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Paolo Abeni <pabeni@redhat.com>, David Wu <david.wu@rock-chips.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH net-next v11 4/6] dt-bindings: net: rockchip-dwmac:
- document pcs-handle
-Message-ID: <179156461404.2718981.13574948615000926953.robh@kernel.org>
-References: <20261008175225.3375274-1-coiaprant@gmail.com>
- <20261008175225.3375274-5-coiaprant@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] sfc: fix stale kernel-doc member names in
+ net_driver.h
+Message-ID: <20261009165054.GH83879@horms.kernel.org>
+References: <20261007175338.28683-1-kapoorarnav43@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,21 +48,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261008175225.3375274-5-coiaprant@gmail.com>
+In-Reply-To: <20261007175338.28683-1-kapoorarnav43@gmail.com>
 
-
-On Fri, 09 Oct 2026 01:51:58 +0800, Coia Prant wrote:
-> The Rockchip GMAC binding needs to describe the PCS reference used by
-> the SGMII support added later in this series. The property will be
-> parsed by rk_pcs_init(), and a missing phandle fails the probe. Add it
-> and require it when phy-mode is "sgmii" on rockchip,rk3568-gmac, the
-> only SoC in this binding that has SGMII support.
+On Wed, Oct 07, 2026 at 11:23:34PM +0530, Arnav Kapoor wrote:
+> Several kernel-doc comments in net_driver.h describe struct members that
+> have since been renamed or removed, and the EFX_MAX_FRAME_LEN() comment
+> is separated from the macro by the EFX_FRAME_PAD define. kernel-doc
+> reports:
 > 
-> Signed-off-by: Coia Prant <coiaprant@gmail.com>
+>   Excess struct member 'state' description in 'efx_channel'
+>   Excess struct member 'state_lock' description in 'efx_channel'
+>   Excess struct member 'indir_table' description in 'efx_rss_context'
+>   Excess struct member 'irq_rx_mod_step_us' description in 'efx_nic'
+>   Excess struct member 'tx_queue' description in 'efx_nic'
+>   Excess struct member 'rx_queue' description in 'efx_nic'
+>   Excess struct member 'extra_channel_types' description in 'efx_nic'
+>   expecting prototype for EFX_MAX_FRAME_LEN(). Prototype was for
+>   EFX_FRAME_PAD() instead
+> 
+> along with "not described" warnings for the renamed members.
+> 
+> Fix the member names to match the structs, drop the entries for members
+> that no longer exist, and move the EFX_FRAME_PAD define above the
+> EFX_MAX_FRAME_LEN() comment, documenting its @mtu parameter.
+> 
+> kernel-doc -Wall also reports three members that are not described
+> because nothing in the driver uses them any more, so remove them rather
+> than document them:
+> 
+>   - efx_channel::busy_poll_state, left behind when commit e7fe9491261e
+>     ("sfc: get rid of custom busy polling code") removed its users.
+>     @state and @state_lock above were its old kernel-doc entries.
+>   - efx_tx_queue::flush_outstanding, only used by the Falcon/Siena
+>     flush code, which commit 36ff6393292d ("sfc: Move Siena specific
+>     files") moved into siena/ with its own copy of the struct.
+>   - efx_rx_queue::min_overfill, whose kernel-doc entry and only
+>     assignment were removed by commit ecc910f520ba ("sfc: Make the dmaq
+>     size a run-time setting (rather than compile-time)").
+> 
+> The warnings were found with scripts/kernel-doc -Wall. I don't have sfc
+> hardware; this is compile-tested only.
+> 
+> No functional change.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Arnav Kapoor <kapoorarnav43@gmail.com>
 > ---
->  .../bindings/net/rockchip-dwmac.yaml          | 27 +++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
+> Changes in v2:
+> - Remove busy_poll_state, flush_outstanding and min_overfill, which are
+>   unused, instead of leaving them undocumented (Simon)
+> - Use the Assisted-by format from coding-assistants.rst
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Thanks for the updates.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
 
