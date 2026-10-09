@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B24459AFC
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 19:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F96C45FFB7
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 19:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791573987; cv=none; b=PJBJcmDccrzgU5RGLXok0CwBn+Hr2PpjANr/BvDUYRLkt9T+tLo5DTBGe6l6fKynK8jYeT9S9LBlpstIpjb8WF/h3Nk2xbEloeJ98pVQgIXdNjGV0czMmPmfHvosS75GakGe/a3aFNlhbLTtBin8PObxBXwEXN7TdLinupfE0tk=
+	t=1791573991; cv=none; b=IpGVBdjEyYnK58vT7Q/ObjxfOB5OUqvGPBolTYLdXB70XIp1I5KPFB3UtNeCHieSQfEBFnJqwoaQxT4bawNUjT8l9E94G6lvvNV+LpYTtYSyuJVi5IJcA9B2Bncg3+/tVjXohHDHk484d2R/N6SEnMn5V5gPxHf17fGs3ZzHbGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791573987; c=relaxed/simple;
-	bh=m3BiumC4Irsq5CiZcnYSc/N3K5HJXTeF/caBageVpbY=;
+	s=arc-20240116; t=1791573991; c=relaxed/simple;
+	bh=qsjrHsDcJ48ZuO8ci7NjLRJK8sLHRGrfu0MH9YNB09A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2c3IHEeZwYo8IATWr0hmgHUf1T90xqIBWckm6R1sNXNnRP0XDP8kzWhvU8tlZq0mjjE+ljXABS1ER2FDYOl+rgUiiU+/ZbjLnLjgMB5E25cJQMsG2VKtO6vkyq5E4lp0qgJPKPJ/Mw3Q0aZxa1HClWRJZntY9QM0uZAGEJghcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=anaqPcG2; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=iEh+QAcdokbo6PwgP7Yu5+WFxluxqo934qtuxl9FvzIb6jHWvVK2/VqQ7kOtnEcGCcmo19nnug3x9huIlWW6a80h1DmSpOgrFMdiMNIERzwTAcb3lzAMYt0GX2urqlmBBK7+KlbrYM/uFHAcas9Io5oz1OrDjkL5om+WGlAJqb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=STGSwWeP; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="anaqPcG2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="STGSwWeP"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791573974;
+	s=mimecast20190719; t=1791573983;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/AfNEfqRVasKIsOnh0P3KNoCeb15xbrc1NHR3sPZSuY=;
-	b=anaqPcG2FqIOqZj1yp0WhP7dnFvLi2YFbNXhmGJddytmt3wwrZID+etOevBAJ+TZpPy2sO
-	89si4Sn1eJnDbYPz+fxfbEmsQorDpNYM0NywJVVFUygrpJ0/GZY0XdbEH2f6Mt+KjJp9XN
-	wFdl9Uq+UNAynKoLSEDbb633bWKrM7k=
+	bh=mu1bmM2Mb+a7R1Up5N5Fuqug/UKciTTCvByTqx4wwFQ=;
+	b=STGSwWePU453GrpvL+3e0HmBEYnT3OXrf76L3d54egP1CtDvEny+dNL4R7c8e4n6ql3qyI
+	ZX7UxuoeIiH5qMnB4s7nDLbJdsNDcopWFba5uRtHtPKLA+gOq7sMYEGfDKCJiVCdREp5yF
+	AmrEpJXuhcMtBBOF9tZOilb1pQu4epk=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-80-fGDD5i1WNpa6WUL_z7of-w-1; Fri,
- 9 Oct 2026 19:26:09 +0000
-X-MC-Unique: fGDD5i1WNpa6WUL_z7of-w-1
-X-Mimecast-MFC-AGG-ID: fGDD5i1WNpa6WUL_z7of-w_1791573967
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-168-xqrmZ033Ns2AGWDCO0IHLQ-1; Fri,
+ 9 Oct 2026 19:26:11 +0000
+X-MC-Unique: xqrmZ033Ns2AGWDCO0IHLQ-1
+X-Mimecast-MFC-AGG-ID: xqrmZ033Ns2AGWDCO0IHLQ_1791573970
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 38D72193EF53;
-	Fri,  9 Oct 2026 19:26:07 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 129EA1977010;
+	Fri,  9 Oct 2026 19:26:10 +0000 (UTC)
 Received: from ivecera-thinkpadp16vgen1.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 69D6918004D2;
-	Fri,  9 Oct 2026 19:26:04 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8E2BA18005B3;
+	Fri,  9 Oct 2026 19:26:07 +0000 (UTC)
 From: Ivan Vecera <ivecera@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
@@ -53,9 +53,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	Prathosh Satish <Prathosh.Satish@microchip.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v4 2/5] dpll: zl3073x: reject output frequencies with too small divisor
-Date: Fri,  9 Oct 2026 21:25:53 +0200
-Message-ID: <20261009192556.272263-3-ivecera@redhat.com>
+Subject: [PATCH net v4 3/5] dpll: zl3073x: make embedded sync follow the output carrier frequency
+Date: Fri,  9 Oct 2026 21:25:54 +0200
+Message-ID: <20261009192556.272263-4-ivecera@redhat.com>
 In-Reply-To: <20261009192556.272263-1-ivecera@redhat.com>
 References: <20261009192556.272263-1-ivecera@redhat.com>
 Precedence: bulk
@@ -67,90 +67,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The output divisor has to be at least 2: a divisor of 1 bypasses the
-divider and the hardware then ignores the pulse width and eSync
-registers. For the N-pin of an N-divided output the N divider (>= 2)
-applies on top, so its effective divisor has to be at least 4.
+The eSync period and width are relative to the output carrier, but
+changing the output frequency did not update them, so eSync ran at
+a wrong frequency and duty cycle. For a 1 Hz carrier esync_get()
+returns -EOPNOTSUPP, so eSync left enabled could not be disabled.
 
-zl3073x_pin_check_freq() only checked that the frequency divides the
-synth frequency. Require also the minimum divisor and reject 0 Hz.
-For N-divided outputs this is necessary but not sufficient, the rest
-is checked by the frequency set callback.
+Factor out zl3073x_out_esync_{is_enabled,enable,disable}() helpers
+and use them in frequency_set() to recompute the eSync period and
+width for the new carrier, or to disable eSync for a 1 Hz carrier.
 
-Fixes: a99a9f0ebdaa ("dpll: zl3073x: Read DPLL types and pin properties from system firmware")
+Also compute the reported pulse width in 64 bits, as
+50 * esync_n_width overflows u32 for low carrier frequencies.
+
+Fixes: ce26d7ca50a5 ("dpll: zl3073x: Add support to get/set frequency on pins")
+Fixes: 634ca2cb06d2 ("dpll: zl3073x: Add support to get/set esync on pins")
 Reviewed-by: Petr Oros <poros@redhat.com>
 Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
- drivers/dpll/zl3073x/prop.c | 35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ drivers/dpll/zl3073x/dpll.c | 46 +++++++++++++++++++------------------
+ drivers/dpll/zl3073x/out.h  | 36 +++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
-index 18a1bf310332..4e006ed5950a 100644
---- a/drivers/dpll/zl3073x/prop.c
-+++ b/drivers/dpll/zl3073x/prop.c
-@@ -22,7 +22,8 @@
-  * The function checks the given frequency is valid for the device. For input
-  * pins it checks that the frequency can be factorized using supported base
-  * frequencies. For output pins it checks that the frequency divides connected
-- * synth frequency without remainder.
-+ * synth frequency without remainder and that the resulting divisor is not
-+ * below the minimum the driver supports.
-  *
-  * Return: true if the frequency is valid, false if not.
-  */
-@@ -30,7 +31,7 @@ static bool
- zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
- 		       u8 id, u64 freq)
- {
--	if (freq > U32_MAX)
-+	if (!freq || freq > U32_MAX)
- 		goto err_inv_freq;
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index f2e137475b40..8bac680394d7 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -878,7 +878,7 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
+ 	esync->range = esync_freq_ranges;
+ 	esync->range_num = ARRAY_SIZE(esync_freq_ranges);
  
- 	if (dir == DPLL_PIN_DIRECTION_INPUT) {
-@@ -41,18 +42,38 @@ zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
- 		if (rc)
- 			goto err_inv_freq;
- 	} else {
--		u32 synth_freq;
--		u8 out, synth;
-+		u32 synth_freq, div, min_div, rem;
-+		const struct zl3073x_out *out;
-+		u8 out_id, synth;
+-	if (zl3073x_out_clock_type_get(out) != ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC) {
++	if (!zl3073x_out_esync_is_enabled(out)) {
+ 		/* No need to read esync data if it is not enabled */
+ 		esync->freq = 0;
+ 		esync->pulse = 0;
+@@ -894,7 +894,7 @@ zl3073x_dpll_output_pin_esync_get(const struct dpll_pin *dpll_pin,
+ 	 * Note that half pulse width is in units of half synth cycles, which
+ 	 * is why it reduces down to be output_div.
+ 	 */
+-	esync->pulse = (50 * out->esync_n_width) / out->div;
++	esync->pulse = div_u64(mul_u32_u32(50, out->esync_n_width), out->div);
  
- 		/* Get output pin synthesizer */
--		out = zl3073x_output_pin_out_get(id);
--		synth = zl3073x_dev_out_synth_get(zldev, out);
-+		out_id = zl3073x_output_pin_out_get(id);
-+		synth = zl3073x_dev_out_synth_get(zldev, out_id);
+ 	return 0;
+ }
+@@ -926,32 +926,17 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
+ 	if (zl3073x_out_is_ndiv(&out))
+ 		return -EOPNOTSUPP;
  
- 		/* Get synth frequency */
- 		synth_freq = zl3073x_dev_synth_freq_get(zldev, synth);
+-	/* Update clock type in output mode */
+-	if (freq)
+-		zl3073x_out_clock_type_set(&out,
+-					   ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC);
+-	else
+-		zl3073x_out_clock_type_set(&out,
+-					   ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL);
+-
+-	/* If esync is being disabled just write mailbox and finish */
+-	if (!freq)
++	if (!freq) {
++		zl3073x_out_esync_disable(&out);
+ 		return zl3073x_out_state_set(zldev, out_id, &out);
++	}
  
- 		/* Check the frequency divides synth frequency */
--		if (synth_freq % (u32)freq)
-+		div = div_u64_rem(synth_freq, freq, &rem);
-+		if (rem)
-+			goto err_inv_freq;
-+
-+		/* The driver requires an output divisor of at least 2 -
-+		 * below that the hardware bypasses the divider and ignores
-+		 * the pulse width and eSync registers the driver programs.
-+		 * For the N-pin of an N-divided output the effective divisor
-+		 * also includes the N divider (>= 2), so the minimum is 4.
-+		 * For N-divided outputs this is only a necessary condition -
-+		 * whether the frequency can be set also depends on the output
-+		 * divisor shared by both pins, which is checked when the
-+		 * frequency is set.
+ 	/* Get attached synth frequency */
+ 	synth = zl3073x_synth_state_get(zldev, zl3073x_out_synth_get(&out));
+ 	synth_freq = zl3073x_synth_freq_get(synth);
+ 
+-	/* Compute and update esync period */
+-	out.esync_n_period = synth_freq / (u32)freq / out.div;
+-
+-	/* Half of the period in units of 1/2 synth cycle can be represented by
+-	 * the output_div. To get the supported esync pulse width of 25% of the
+-	 * period the output_div can just be divided by 2. Note that this
+-	 * assumes that output_div is even, otherwise some resolution will be
+-	 * lost.
+-	 */
+-	out.esync_n_width = out.div / 2;
++	/* Enable 1PPS eSync for this pin frequency */
++	zl3073x_out_esync_enable(&out, synth_freq / out.div);
+ 
+ 	/* Commit output configuration */
+ 	return zl3073x_out_state_set(zldev, out_id, &out);
+@@ -1009,6 +994,23 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
+ 		/* For 50/50 duty cycle the divisor is equal to width */
+ 		out.width = new_div;
+ 
++		/* The embedded sync period and width are computed relative to
++		 * the output carrier so they have to be adjusted to follow the
++		 * new frequency.
 +		 */
-+		out = zl3073x_out_state_get(zldev, out_id);
-+		if (zl3073x_out_is_ndiv(out) && zl3073x_is_n_pin(id))
-+			min_div = 4;
-+		else
-+			min_div = 2;
-+		if (div < min_div)
- 			goto err_inv_freq;
++		if (zl3073x_out_esync_is_enabled(&out)) {
++			if (frequency == 1) {
++				/* eSync cannot work on a 1 Hz carrier */
++				zl3073x_out_esync_disable(&out);
++			} else {
++				/* Update esync period and width according to
++				 * the new frequency.
++				 */
++				zl3073x_out_esync_enable(&out,
++							 synth_freq / out.div);
++			}
++		}
++
+ 		/* Commit output configuration */
+ 		return zl3073x_out_state_set(zldev, out_id, &out);
  	}
+diff --git a/drivers/dpll/zl3073x/out.h b/drivers/dpll/zl3073x/out.h
+index 660889c57bff..d2b8b4eb5a76 100644
+--- a/drivers/dpll/zl3073x/out.h
++++ b/drivers/dpll/zl3073x/out.h
+@@ -134,4 +134,40 @@ static inline u8 zl3073x_out_synth_get(const struct zl3073x_out *out)
+ 	return FIELD_GET(ZL_OUTPUT_CTRL_SYNTH_SEL, out->ctrl);
+ }
  
++static inline bool zl3073x_out_esync_is_enabled(const struct zl3073x_out *out)
++{
++	u8 clock_type = zl3073x_out_clock_type_get(out);
++
++	return clock_type == ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC;
++}
++
++static inline
++void zl3073x_out_esync_enable(struct zl3073x_out *out, u32 base_freq)
++{
++	/* Period is expressed as the number of output divider clock cycles.
++	 * So for 1 Hz the period is equal to base frequency.
++	 */
++	out->esync_n_period = base_freq;
++
++	/* Half of the period in units of 1/2 synth cycle can be represented by
++	 * the output_div. To get the supported esync pulse width of 25% of the
++	 * period the output_div can just be divided by 2. Note that this
++	 * assumes that output_div is even, otherwise some resolution will be
++	 * lost.
++	 */
++	out->esync_n_width = out->div / 2;
++
++	/* Update the clock type */
++	zl3073x_out_clock_type_set(out, ZL_OUTPUT_MODE_CLOCK_TYPE_ESYNC);
++}
++
++static inline
++void zl3073x_out_esync_disable(struct zl3073x_out *out)
++{
++	/* Just update the clock type. The eSync period and width are
++	 * ignored for this clock type.
++	 */
++	zl3073x_out_clock_type_set(out, ZL_OUTPUT_MODE_CLOCK_TYPE_NORMAL);
++}
++
+ #endif /* _ZL3073X_OUT_H */
 -- 
 2.56.0
 
