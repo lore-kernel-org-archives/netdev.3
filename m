@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72ED34CDDD8
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25C6468C2C
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791548106; cv=none; b=rGEqHe1dFJW+2q2Ele0nJN1+J4QnHJq/VHymT3JgxC3aO/1YLd1yatGF+PlyfAdngG8f6r/CVJbf5z+reRDJuV/59UDeG9mrQ8i5gtFAyVeLnHcMAxZdD3KCxguSmT1gDh5WAihg4Z1RAShgbyj5WKmmyQU2hSYfffD2OiNT784=
+	t=1791548109; cv=none; b=o1lCN6M4QcDsuU7Oa9s2GC2ZrvOMPJ4UYKIKvMijJz6VPANOTBr5q1wO9t3CWcN+eFcB5m2ffHqe0RzkmyvQ1Vpd3mIIGpOWN/tzZ+irHAaDRcc4xsPw4mhypDVz2cG90GNHl56H45h/VDRHDpGgEdwkGtWdeASe4TIsyojK+yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791548106; c=relaxed/simple;
-	bh=uCFe9ZHTSiGZk59zD17DaLB9M5jijws+3lD/CEq7C/Q=;
+	s=arc-20240116; t=1791548109; c=relaxed/simple;
+	bh=S21YojpVXyoD0w7YKuSVQH09IvJc9X+ncpEbKejmmH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uG36JSLo8O/CJAMrMRxJwTO9mDi9wmiSjaUDJEEg7pYZTlQOHQcKktP437SN7fVTfa8mykiaznIapSHGP0Na+apPGzVvZjKwG3zxfbkrJuhBHsxJGnduz+gyfveW7DGE3VFSAfkvL0K8LaeFV8vrKbYSOKRWP6UMhpdsuLRJY/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WZweDNOL; arc=none smtp.client-ip=192.198.163.10
+	 MIME-Version; b=sahW4RCo9341aBoZTRrGXC1lk67po90/PTetAFbVuWBby5Exc63zLJfU/XnxAPHu0/olRLWIAx2R5FsUa969rIm//Xpxuko+odcHm+LDBS4hiJ0dTLmDwAG6/bcmsviePkF/664wZmxx36R+BBiHNoZbKk3Jc2r0rEj4gwYl1Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G7Fr/qnp; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WZweDNOL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G7Fr/qnp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791548093; x=1823084093;
+  t=1791548091; x=1823084091;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=uCFe9ZHTSiGZk59zD17DaLB9M5jijws+3lD/CEq7C/Q=;
-  b=WZweDNOLWLF3S2VTpfwAF41meqKi6UJDCS8DX8ZJVvkoHZmdTHf7S8VH
-   0gxhfgbpRkBtYKFG1N7ceOGAI4ulYBdpPmGx+CVjfXVpI9jT7lRw3jqi1
-   Ofg9LBFVgpXvesQed0vRdJK907RthXxHthbAw4Q+GcCfKSVX167uSzAHO
-   hoeyyMvDCmdz2/pyphNhOg2EGyPE8VHuyE4bVn3lhB6e9K/Ez/rmbtfrB
-   C3TYY5FIyUzBDwllxVT0gj3YUCLpJLpah85mu1kvAdmcZvQO11GqG3y19
-   MyzdxMXx4LljptHOcYWE7I6jEEs57UhugbzwBQGw9AizZCWsxJxkaX3fr
+  bh=S21YojpVXyoD0w7YKuSVQH09IvJc9X+ncpEbKejmmH8=;
+  b=G7Fr/qnpNHR5pE+k4o6+4/oVz0vyIVJtrituFNsP16GHGBxTMfXnbSBB
+   BA/tzLDGmOtVG95s5/MMPBQmEAyyGiwx7Y8envD8qpk2wMQiJFFlm+W43
+   zESRyJhoAlzhY9c0Mz9sd0AyaODXOVO1Lb10TyYIZ+sJXagIz06soz5YJ
+   GUZCuacDazcuGKWxqYdHjqQ7NcO7mOO+ytm3dZvKKtXY+8EBu8xJXXfNn
+   K/YArTgoTMGad4UtJUNqqsT1SPO+YFya0fyVXZhO5vPV8boKko5J6aX3R
+   uXnNI2zbpxo6Pn7LM4d/VQ/pQOPO4DFusQLHoL6gGYYts3IFx/Qt/D14O
    w==;
-X-CSE-ConnectionGUID: AnMBCEeZTE6Fmm47EjrYTQ==
-X-CSE-MsgGUID: 43CiqTLlRumYJEsoLAyF7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="251099"
+X-CSE-ConnectionGUID: P4f6J6lKSVeB+JicH/77qQ==
+X-CSE-MsgGUID: /HQZNIzsT3iQCWSyQVu2cw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="251081"
 X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
-   d="scan'208";a="251099"
+   d="scan'208";a="251081"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 05:14:52 -0700
-X-CSE-ConnectionGUID: rp9bcubhQOe/vuUg0qKcpA==
-X-CSE-MsgGUID: hQmaq1uSSFCbg6BA61gFyw==
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 05:14:49 -0700
+X-CSE-ConnectionGUID: uQPJSAOtRQCsQHhq/2VTmw==
+X-CSE-MsgGUID: DFLgBQePTh2WBzqmhVqa1w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,148,1787036400"; 
-   d="scan'208";a="420392"
+   d="scan'208";a="420383"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa002.fm.intel.com with ESMTP; 09 Oct 2026 05:14:47 -0700
+  by fmviesa002.fm.intel.com with ESMTP; 09 Oct 2026 05:14:44 -0700
 Received: from pkitszel-desk.tendawifi.com (unknown [10.245.245.238])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 8D2412FC41;
-	Fri,  9 Oct 2026 13:14:42 +0100 (IST)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 781AE2879A;
+	Fri,  9 Oct 2026 13:14:40 +0100 (IST)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -72,12 +72,10 @@ Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	brett.creeley@amd.com,
 	jtornosm@redhat.com,
 	ohartoov@nvidia.com,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>
-Subject: [PATCH net-next v2 02/14] ice: use shared devlink to store ice_adapters instead of custom xarray
-Date: Fri,  9 Oct 2026 14:04:13 +0200
-Message-ID: <20261009121433.30347-3-przemyslaw.kitszel@intel.com>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next v2 01/14] devlink, mlx5: add init/fini ops for shared devlink
+Date: Fri,  9 Oct 2026 14:04:12 +0200
+Message-ID: <20261009121433.30347-2-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20261009121433.30347-1-przemyslaw.kitszel@intel.com>
 References: <20261009121433.30347-1-przemyslaw.kitszel@intel.com>
@@ -89,333 +87,324 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Refactor our storage and deduplication logic of ice_adapters by moving
-it to be handled by shared devlink instance, recently added by
-Jiri Pirko [1].
+Add .shd_init() and .shd_fini() ops, that will be called for the first
+devlink_shd_get() (to initialize driver's priv data) and on the last
+devlink_shd_put() (to allow for the cleanup). Both ops are optional.
 
-We wanted the devlink instance for whole device anyway - later in the
-series I will add devlink resources under it.
+.shd_init() could return an error, which will stop creation of shd
+instance. The initializer also gets an additional, optional param,
+that driver could use for any needs.
 
-Make the shared devlink a parent (wrt. nesting) of the actual PF devices.
+devlink_shd_get() now returns ERR_PTR() on failure instead of NULL, so
+the error from .shd_init() reaches the caller. Adjust mlx5, the only
+user, to that and to the new param.
 
-[1] commit 411ad0605875 ("Merge branch 'devlink-introduce-shared-devlink-instance-for-pfs-on-same-chip'")
-[1] https://lore.kernel.org/all/20260312100407.551173-1-jiri@resnulli.us
+If any of the callbacks will need to get devlink instance, it could
+be accessed by shd_priv_to_devlink().
 
-Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Both callbacks are called with devl_lock held, .shd_init() before
+devlink is registered, .shd_fini() after it is unregistered.
+
+Next commit will make use of the callbacks, a later one will make use
+also of the additional param.
+
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 ---
-CC: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
-CC: Grzegorz Nitka <grzegorz.nitka@intel.com>
+(v0) first discussed at:
+https://lore.kernel.org/netdev/20260325063143.261806-3-przemyslaw.kitszel@intel.com
+
+v1: remove redundant added blank line (Jiri)
 
 v2:
- * propagate the error from devlink_shd_get() with ERR_CAST()
- * minor kdoc updates
- * check devl_nested_devlink_set() return value, ice_devlink_register()
-   returns int now (Sashiko)
- * prefix the shared devlink id with "ice:", to avoid collisions with
-   ids used by other drivers (Sashiko)
-
-Sashiko suggestions I don't want to apply:
- S: all PFs without DSN get index 0, and so share one instance
- me: pre-existing, and DSN 0 is only on pre-production samples
+ * call devl_register() only after .shd_init(), so there is no NEW/DEL
+   notification pair when the init callback fails; adjust the order of
+   devl_unregister() in devlink_shd_destroy() (Sashiko)
+ * return the error from .shd_init() to the caller instead of
+   collapsing every failure into -ENOMEM, devlink_shd_get() returns
+   ERR_PTR() now (Sashiko)
+ * commit message: .shd_init()/.shd_fini() are called outside of
+   devlink registration; the init param is used within this series
+ * kdoc: use @shd_init/@shd_fini member tags, fix the "shd_devlink'
+   priv" wording, document the calling context (locks, before
+   registration/after unregistration) and that a failed .shd_init()
+   is retried on the next devlink_shd_get() (Sashiko)
+ * devlink-shared.rst: document .shd_init()/.shd_fini(), init_param,
+   ERR_PTR() return and shd_priv_to_devlink() (Sashiko)
 ---
- .../net/ethernet/intel/ice/devlink/devlink.h  |  2 +-
- drivers/net/ethernet/intel/ice/ice_adapter.h  | 12 +--
- .../net/ethernet/intel/ice/devlink/devlink.c  | 11 ++-
- drivers/net/ethernet/intel/ice/ice_adapter.c  | 99 ++++++-------------
- drivers/net/ethernet/intel/ice/ice_main.c     | 11 ++-
- 5 files changed, 57 insertions(+), 78 deletions(-)
+ .../networking/devlink/devlink-shared.rst     | 19 ++++++-
+ include/net/devlink.h                         | 30 ++++++++++
+ .../ethernet/mellanox/mlx5/core/sh_devlink.c  |  6 +-
+ net/devlink/sh_dev.c                          | 57 ++++++++++++++++---
+ 4 files changed, 98 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.h b/drivers/net/ethernet/intel/ice/devlink/devlink.h
-index 1af3b0763fbb..62af38d11fd9 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.h
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.h
-@@ -7,7 +7,7 @@
- struct ice_pf *ice_allocate_pf(struct device *dev);
- struct ice_sf_priv *ice_allocate_sf(struct device *dev, struct ice_pf *pf);
- 
--void ice_devlink_register(struct ice_pf *pf);
-+int ice_devlink_register(struct ice_pf *pf);
- void ice_devlink_unregister(struct ice_pf *pf);
- int ice_devlink_register_params(struct ice_pf *pf);
- void ice_devlink_unregister_params(struct ice_pf *pf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
-index 4f695f32da3d..c11d511d7a8e 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
-@@ -7,7 +7,8 @@
- #include <linux/types.h>
- #include <linux/mutex.h>
- #include <linux/spinlock_types.h>
--#include <linux/refcount_types.h>
+diff --git a/Documentation/networking/devlink/devlink-shared.rst b/Documentation/networking/devlink/devlink-shared.rst
+index 16bf6a7d25d9..f8b2a3d8aa82 100644
+--- a/Documentation/networking/devlink/devlink-shared.rst
++++ b/Documentation/networking/devlink/devlink-shared.rst
+@@ -45,6 +45,14 @@ The following functions are provided for managing shared devlink instances:
+ * ``devlink_shd_get()``: Get or create a shared devlink instance identified by a string ID
+ * ``devlink_shd_put()``: Release a reference on a shared devlink instance
+ * ``devlink_shd_get_priv()``: Get private data from shared devlink instance
++* ``shd_priv_to_devlink()``: Get shared devlink instance from its private data
 +
-+#include <net/devlink.h>
++``devlink_shd_get()`` returns ``ERR_PTR()`` on failure.
++
++The driver may initialize and clean up its private data of the shared
++instance in the optional ``shd_init()`` and ``shd_fini()`` callbacks of
++``struct devlink_ops``. The ``init_param`` argument of ``devlink_shd_get()``
++is passed to ``shd_init()``.
  
- #include "ice_type.h"
+ Initialization Flow
+ -------------------
+@@ -55,7 +63,9 @@ Initialization Flow
  
-@@ -30,31 +31,30 @@ struct ice_port_list {
+    * The function looks up existing instance by identifier
+    * If none exists, creates new instance:
+-     - Allocates and registers devlink instance
++     - Allocates devlink instance
++     - Calls ``shd_init()`` (if set), on failure frees it and returns the error
++     - Registers devlink instance
+      - Adds to global shared instances list
+      - Increments reference count
+ 
+@@ -67,7 +77,8 @@ Cleanup Flow
+ 
+ 1. **Cleanup** when PF is removed
+ 2. **Call** ``devlink_shd_put()`` to release reference (decrements reference count)
+-3. **Shared instance is automatically destroyed** when the last PF removes (reference count reaches zero)
++3. **Shared instance is automatically destroyed** when the last PF removes (reference count reaches zero),
++   ``shd_fini()`` (if set) is called after unregistering it
+ 
+ Chip Identification
+ -------------------
+@@ -85,6 +96,10 @@ Locking
+ 
+ A global mutex (``shd_mutex``) protects the shared instances list during registration/deregistration.
+ 
++``shd_init()`` and ``shd_fini()`` are called with ``shd_mutex`` and the devlink
++lock of the shared instance held, thus must not call ``devlink_shd_get()`` nor
++``devlink_shd_put()``, and must use ``devl_*()`` variants of devlink API.
++
+ Similarly to other nested devlink instance relationships, devlink lock of
+ the shared instance should be always taken after the devlink lock of PF.
+ 
+diff --git a/include/net/devlink.h b/include/net/devlink.h
+index 7abd23376319..98bdde4f72ca 100644
+--- a/include/net/devlink.h
++++ b/include/net/devlink.h
+@@ -1607,6 +1607,34 @@ struct devlink_ops {
+ 	 * with other operations.
+ 	 */
+ 	bool supported_cross_device_rate_nodes;
++	/**
++	 * @shd_init: Shared devlink instance initializer.
++	 *
++	 * Gets the driver's priv data of the shared instance (the same as
++	 * devlink_shd_get_priv() returns) and the init_param passed to
++	 * devlink_shd_get(). Should initialize the priv data. May be NULL.
++	 *
++	 * Called when devlink_shd_get() creates the shared instance, before
++	 * it is registered. If it fails, the instance is freed without calling
++	 * @shd_fini, and the next devlink_shd_get() for the same id will try to
++	 * create it (and call @shd_init) again.
++	 *
++	 * Called with the global shared devlink mutex and the devlink lock of
++	 * the shared instance held, thus must not call devlink_shd_get() nor
++	 * devlink_shd_put(), and must use devl_*() variants of devlink API.
++	 *
++	 * Return: 0 on success, negative errno to fail the creation.
++	 */
++	int (*shd_init)(void *priv, void *init_param);
++	/**
++	 * @shd_fini: Shared devlink instance finalizer.
++	 *
++	 * Gets the driver's priv data of the shared instance. Called when the
++	 * last reference is dropped, after the shared instance is unregistered,
++	 * in the same locking context as @shd_init. Should clean up the priv
++	 * data. May be NULL.
++	 */
++	void (*shd_fini)(void *priv);
+ 	/**
+ 	 * selftests_check() - queries if selftest is supported
+ 	 * @devlink: devlink instance
+@@ -1672,9 +1700,11 @@ void devlink_free(struct devlink *devlink);
+ struct devlink *devlink_shd_get(const char *id,
+ 				const struct devlink_ops *ops,
+ 				size_t priv_size,
++				void *init_param,
+ 				const struct device_driver *driver);
+ void devlink_shd_put(struct devlink *devlink);
+ void *devlink_shd_get_priv(struct devlink *devlink);
++struct devlink *shd_priv_to_devlink(void *priv);
  
  /**
-  * struct ice_adapter - PCI adapter resources shared across PFs
-- * @refcount: Reference count. struct ice_pf objects hold the references.
-+ * @devlink: ice adapter's devlink (whole dev devlink)
-  * @ptp_gltsyn_time_lock: Spinlock protecting access to the GLTSYN_TIME
-  *                        register of the PTP clock.
-  * @txq_ctx_lock: Spinlock protecting access to the GLCOMM_QTX_CNTX_CTL register
-  * @cpi_phy_lock: Per-PHY mutex serializing CPI REQ/ACK transactions.
-  *               Index 0 = PHY0, index 1 = PHY1. Used on E825C devices.
-  * @ctrl_pf: Control PF of the adapter
-  * @ports: Ports list
-- * @index: 64-bit index cached for collision detection on 32bit systems
-  */
- struct ice_adapter {
--	refcount_t refcount;
-+	struct devlink *devlink;
-+
- 	/* For access to the GLTSYN_TIME register */
- 	spinlock_t ptp_gltsyn_time_lock;
- 	/* For access to GLCOMM_QTX_CNTX_CTL register */
- 	spinlock_t txq_ctx_lock;
- 	/* Serialize CPI REQ/ACK transactions per PHY (E825C only) */
- 	struct mutex cpi_phy_lock[ICE_E825_MAX_PHYS];
+  * struct devlink_port_ops - Port operations
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+index b925364765ac..2c58f820b018 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sh_devlink.c
+@@ -43,10 +43,10 @@ int mlx5_shd_init(struct mlx5_core_dev *dev)
+ 	*end = '\0';
  
- 	struct ice_pf *ctrl_pf;
- 	struct ice_port_list ports;
--	u64 index;
- };
+ 	/* Get or create shared devlink instance */
+-	devlink = devlink_shd_get(sn, &mlx5_shd_ops, 0, pdev->dev.driver);
++	devlink = devlink_shd_get(sn, &mlx5_shd_ops, 0, NULL, pdev->dev.driver);
+ 	kfree(sn);
+-	if (!devlink)
+-		return -ENOMEM;
++	if (IS_ERR(devlink))
++		return PTR_ERR(devlink);
  
- struct ice_adapter *ice_adapter_get(struct pci_dev *pdev);
--void ice_adapter_put(struct pci_dev *pdev);
-+void ice_adapter_put(struct ice_adapter *adapter);
- 
- #endif /* _ICE_ADAPTER_H */
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink.c b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-index 8c2b63eef82b..fa64b9744779 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink.c
-@@ -1747,11 +1747,20 @@ struct ice_sf_priv *ice_allocate_sf(struct device *dev, struct ice_pf *pf)
-  *
-  * Return: zero on success or an error code on failure.
-  */
--void ice_devlink_register(struct ice_pf *pf)
-+int ice_devlink_register(struct ice_pf *pf)
+ 	dev->shd = devlink;
+ 	return 0;
+diff --git a/net/devlink/sh_dev.c b/net/devlink/sh_dev.c
+index 85acce97e788..4f1b2f24b755 100644
+--- a/net/devlink/sh_dev.c
++++ b/net/devlink/sh_dev.c
+@@ -34,43 +34,61 @@ static struct devlink_shd *devlink_shd_lookup(const char *id)
+ static struct devlink_shd *devlink_shd_create(const char *id,
+ 					      const struct devlink_ops *ops,
+ 					      size_t priv_size,
++					      void *init_param,
+ 					      const struct device_driver *driver)
  {
- 	struct devlink *devlink = priv_to_devlink(pf);
-+	struct ice_adapter *adapter = pf->adapter;
+ 	struct devlink_shd *shd;
+ 	struct devlink *devlink;
 +	int err;
  
-+	if (adapter) {
-+		err = devl_nested_devlink_set(adapter->devlink, devlink);
+ 	devlink = __devlink_alloc(ops, sizeof(struct devlink_shd) + priv_size,
+ 				  &init_net, NULL, driver);
+ 	if (!devlink)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	shd = devlink_priv(devlink);
+ 
+ 	shd->id = kstrdup(id, GFP_KERNEL);
+-	if (!shd->id)
++	if (!shd->id) {
++		err = -ENOMEM;
+ 		goto err_devlink_free;
++	}
+ 	shd->priv_size = priv_size;
+-	refcount_set(&shd->refcount, 1);
+ 
+ 	devl_lock(devlink);
++
++	if (ops->shd_init) {
++		err = ops->shd_init(shd->priv, init_param);
 +		if (err)
-+			return err;
++			goto err_unlock;
 +	}
  	devl_register(devlink);
+ 	devl_unlock(devlink);
+ 
++	refcount_set(&shd->refcount, 1);
+ 	list_add_tail(&shd->list, &shd_list);
+ 
+ 	return shd;
+ 
++err_unlock:
++	devl_unlock(devlink);
++	kfree(shd->id);
 +
-+	return 0;
+ err_devlink_free:
+ 	devlink_free(devlink);
+-	return NULL;
++	return ERR_PTR(err);
  }
  
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index 2dc3629d6d0f..c6301341ccae 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -1,18 +1,13 @@
- // SPDX-License-Identifier: GPL-2.0-only
- // SPDX-FileCopyrightText: Copyright Red Hat
+ static void devlink_shd_destroy(struct devlink_shd *shd)
+ {
+ 	struct devlink *devlink = priv_to_devlink(shd);
  
--#include <linux/cleanup.h>
--#include <linux/mutex.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
--#include <linux/xarray.h>
+ 	list_del(&shd->list);
+ 	devl_lock(devlink);
+ 	devl_unregister(devlink);
 +
- #include "ice_adapter.h"
- #include "ice.h"
++	if (devlink->ops->shd_fini)
++		devlink->ops->shd_fini(shd->priv);
++
+ 	devl_unlock(devlink);
+ 	kfree(shd->id);
+ 	devlink_free(devlink);
+@@ -81,46 +99,53 @@ static void devlink_shd_destroy(struct devlink_shd *shd)
+  * @id: Identifier string (e.g., serial number) for the shared instance
+  * @ops: Devlink operations structure
+  * @priv_size: Size of private data structure
++ * @init_param: Passed to .shd_init() callback alongside driver's priv;
++ *              this value need not match across all users of the shared
++ *              instance
+  * @driver: Driver associated with the shared devlink instance
+  *
+  * Get an existing shared devlink instance identified by @id, or create
+  * a new one if it doesn't exist. Return the devlink instance with a
+  * reference held. The caller must call devlink_shd_put() when done.
+  *
++ * On creation, @ops->shd_init() is called (if set), see its description
++ * for the calling context. Its error is returned to the caller.
++ *
+  * All callers sharing the same @id must pass identical @ops, @priv_size
+- * and @driver. A mismatch triggers a warning and returns NULL.
++ * and @driver. A mismatch triggers a warning and returns ERR_PTR(-EINVAL).
+  *
+  * Return: Pointer to the shared devlink instance on success,
+- *         NULL on failure
++ *         ERR_PTR() on failure
+  */
+ struct devlink *devlink_shd_get(const char *id,
+ 				const struct devlink_ops *ops,
+ 				size_t priv_size,
++				void *init_param,
+ 				const struct device_driver *driver)
+ {
+ 	struct devlink *devlink;
+ 	struct devlink_shd *shd;
  
--static DEFINE_XARRAY(ice_adapters);
--static DEFINE_MUTEX(ice_adapters_mutex);
--
- #define ICE_ADAPTER_FIXED_INDEX	BIT_ULL(63)
+ 	mutex_lock(&shd_mutex);
  
- #define ICE_ADAPTER_INDEX_E825C	\
-@@ -40,48 +35,40 @@ static u64 ice_adapter_index(struct pci_dev *pdev)
+ 	shd = devlink_shd_lookup(id);
+ 	if (!shd) {
+-		shd = devlink_shd_create(id, ops, priv_size, driver);
++		shd = devlink_shd_create(id, ops, priv_size, init_param, driver);
+ 		goto unlock;
  	}
+ 
+ 	devlink = priv_to_devlink(shd);
+ 	if (WARN_ON_ONCE(devlink->ops != ops ||
+ 			 shd->priv_size != priv_size ||
+ 			 devlink->dev_driver != driver)) {
+-		shd = NULL;
++		shd = ERR_PTR(-EINVAL);
+ 		goto unlock;
+ 	}
+ 	refcount_inc(&shd->refcount);
+ 
+ unlock:
+ 	mutex_unlock(&shd_mutex);
+-	return shd ? priv_to_devlink(shd) : NULL;
++	return IS_ERR(shd) ? ERR_CAST(shd) : priv_to_devlink(shd);
  }
+ EXPORT_SYMBOL_GPL(devlink_shd_get);
  
--static unsigned long ice_adapter_xa_index(struct pci_dev *pdev)
--{
--	u64 index = ice_adapter_index(pdev);
--
--#if BITS_PER_LONG == 64
--	return index;
--#else
--	return (u32)index ^ (u32)(index >> 32);
--#endif
--}
--
--static struct ice_adapter *ice_adapter_new(struct pci_dev *pdev)
-+static int ice_adapter_init(void *priv, void *init_param)
- {
--	struct ice_adapter *adapter;
-+	struct ice_adapter *adapter = priv;
-+	struct devlink *devlink;
- 
--	adapter = kzalloc_obj(*adapter);
--	if (!adapter)
--		return NULL;
-+	devlink = shd_priv_to_devlink(adapter);
-+	adapter->devlink = devlink;
- 
--	adapter->index = ice_adapter_index(pdev);
- 	spin_lock_init(&adapter->ptp_gltsyn_time_lock);
- 	spin_lock_init(&adapter->txq_ctx_lock);
- 	for (int i = 0; i < ARRAY_SIZE(adapter->cpi_phy_lock); i++)
- 		mutex_init(&adapter->cpi_phy_lock[i]);
--	refcount_set(&adapter->refcount, 1);
- 
- 	mutex_init(&adapter->ports.lock);
- 	INIT_LIST_HEAD(&adapter->ports.ports);
- 
--	return adapter;
-+	return 0;
+@@ -159,3 +184,17 @@ void *devlink_shd_get_priv(struct devlink *devlink)
+ 	return shd->priv;
  }
- 
--static void ice_adapter_free(struct ice_adapter *adapter)
-+static void ice_adapter_fini(void *priv)
- {
-+	struct ice_adapter *adapter = priv;
+ EXPORT_SYMBOL_GPL(devlink_shd_get_priv);
 +
- 	WARN_ON(!list_empty(&adapter->ports.ports));
- 	for (int i = 0; i < ARRAY_SIZE(adapter->cpi_phy_lock); i++)
- 		mutex_destroy(&adapter->cpi_phy_lock[i]);
- 	mutex_destroy(&adapter->ports.lock);
--
--	kfree(adapter);
- }
- 
-+static const struct devlink_ops ice_adapter_devlink_ops = {
-+	.shd_init = ice_adapter_init,
-+	.shd_fini = ice_adapter_fini,
-+};
++/**
++ * shd_priv_to_devlink - Get shared devlink instance from its priv data
++ * @priv: Driver's priv data, as returned by devlink_shd_get_priv()
++ *
++ * Return: pointer to shared devlink instance the @priv belongs to.
++ */
++struct devlink *shd_priv_to_devlink(void *priv)
++{
++	struct devlink_shd *shd = container_of(priv, struct devlink_shd, priv);
 +
- /**
-  * ice_adapter_get - Get a shared ice_adapter structure.
-  * @pdev: Pointer to the pci_dev whose driver is getting the ice_adapter.
-@@ -93,59 +80,37 @@ static void ice_adapter_free(struct ice_adapter *adapter)
-  *
-  * Context: Process, may sleep.
-  * Return:  Pointer to ice_adapter on success.
-- *          ERR_PTR() on error. -ENOMEM is the only possible error.
-+ *          ERR_PTR() on error.
-  */
- struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
- {
- 	struct ice_adapter *adapter;
--	unsigned long index;
--	int err;
--
--	index = ice_adapter_xa_index(pdev);
--	scoped_guard(mutex, &ice_adapters_mutex) {
--		adapter = xa_load(&ice_adapters, index);
--		if (adapter) {
--			refcount_inc(&adapter->refcount);
--			WARN_ON_ONCE(adapter->index != ice_adapter_index(pdev));
--			return adapter;
--		}
--		err = xa_reserve(&ice_adapters, index, GFP_KERNEL);
--		if (err)
--			return ERR_PTR(err);
--
--		adapter = ice_adapter_new(pdev);
--		if (!adapter) {
--			xa_release(&ice_adapters, index);
--			return ERR_PTR(-ENOMEM);
--		}
--		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
--	}
-+	struct devlink *devlink;
-+	char devlink_id[32];
-+	u64 index;
-+
-+	index = ice_adapter_index(pdev);
-+	snprintf(devlink_id, sizeof(devlink_id), "ice:%llx", index);
-+	devlink = devlink_shd_get(devlink_id, &ice_adapter_devlink_ops,
-+				  sizeof(*adapter), NULL, pdev->dev.driver);
-+	if (IS_ERR(devlink))
-+		return ERR_CAST(devlink);
-+
-+	adapter = devlink_shd_get_priv(devlink);
-+
- 	return adapter;
- }
- 
- /**
-  * ice_adapter_put - Release a reference to the shared ice_adapter structure.
-- * @pdev: Pointer to the pci_dev whose driver is releasing the ice_adapter.
-+ * @adapter: the ice_adapter to release reference to
-  *
-  * Releases the reference to ice_adapter previously obtained with
-  * ice_adapter_get.
-  *
-  * Context: Process, may sleep.
-  */
--void ice_adapter_put(struct pci_dev *pdev)
-+void ice_adapter_put(struct ice_adapter *adapter)
- {
--	struct ice_adapter *adapter;
--	unsigned long index;
--
--	index = ice_adapter_xa_index(pdev);
--	scoped_guard(mutex, &ice_adapters_mutex) {
--		adapter = xa_load(&ice_adapters, index);
--		if (WARN_ON(!adapter))
--			return;
--		if (!refcount_dec_and_test(&adapter->refcount))
--			return;
--
--		WARN_ON(xa_erase(&ice_adapters, index) != adapter);
--	}
--	ice_adapter_free(adapter);
-+	devlink_shd_put(adapter->devlink);
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 454fba07d4ec..6373cd5ac288 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4946,7 +4946,12 @@ static int ice_init_devlink(struct ice_pf *pf)
- 		return err;
- 
- 	ice_devlink_init_regions(pf);
--	ice_devlink_register(pf);
-+	err = ice_devlink_register(pf);
-+	if (err) {
-+		ice_devlink_destroy_regions(pf);
-+		ice_devlink_unregister_params(pf);
-+		return err;
-+	}
- 	ice_health_init(pf);
- 
- 	return 0;
-@@ -5291,7 +5296,7 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
- unroll_dev_init:
- 	need_dev_deinit = true;
- unroll_adapter:
--	ice_adapter_put(pdev);
-+	ice_adapter_put(adapter);
- unroll_hw_init:
- 	ice_deinit_hw(hw);
- 	if (need_dev_deinit)
-@@ -5404,7 +5409,7 @@ static void ice_remove(struct pci_dev *pdev)
- 	ice_setup_mc_magic_wake(pf);
- 	ice_set_wake(pf);
- 
--	ice_adapter_put(pdev);
-+	ice_adapter_put(pf->adapter);
- 	ice_deinit_hw(&pf->hw);
- 
- 	ice_deinit_dev(pf);
++	return priv_to_devlink(shd);
++}
++EXPORT_SYMBOL_GPL(shd_priv_to_devlink);
 -- 
 2.51.1
 
