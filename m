@@ -1,85 +1,83 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EB74E3EFB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D4F4E36DC;
 	Fri,  9 Oct 2026 13:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791553423; cv=pass; b=dOpbUub69Z/rBLJTkzlAkN42cIS/9nkc/dl96PDUV6L5reTeNICw9sNN/BnslAeamF6LmbVrngO2mvr56wVOK5yImAFZMN/3g152VXh2i0SxjpqKGuyfP134WSaqs22hmv4qhH3ZoUo6DgNk9yj2AsXPnIpj/3mtwKXvXMZsY6c=
+	t=1791553423; cv=pass; b=KtwCwtiJW2qrJq8Q3Jvw+bnTGbVmVP8yZp40d4GE7/xx6GSeprNUyI+NNokMC3n8gEAy/TXHP2RZ6SGGi8aCC9WDq3ExwgSexh+jo+RK8EsH53TdnErp+tnhpRbQFFO250DP/0inQLh/+qbzgZ/WhyggpgEMl57eZfDcKBkoKlk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791553423; c=relaxed/simple;
-	bh=fwBT7oJptnof8QQ2fqMUv0jW8BE1O0h7Z0Gsq5ashYU=;
+	bh=tA8AhGZk7hbowSNlGPvIS8pWHJEEWQqOHheerDGc62A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MznGjoNGo3bZjFhRk6rpxCIsDTzXUwzOyKn53P3yT3dv3egVMgd9DGirnIYzummWLG1NLNSivaJTidZWgNi8qeOo6/T6VolkHeUq2kX2SLG5OV0kLIWb1QSCN+VUgvr8BwXGVMSbs3+tVs1JKF0Q/waqPqDJ4t/lvkq3WfD51ss=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=VQ9P4lQY; arc=pass smtp.client-ip=185.203.200.13
+	 MIME-Version; b=nGGFoJ5872ICjjgzQ9Uum+bWbVKko0RJpeFw+6mIPECVePdRyBjSI8jTZfdj9SARpVdaDPIpObT+YvhcdgiHEyXF84D2OJYHPlkblXT49pSlKeupBufPPCTJvonRvue/0gwBXb+dDYhzaDWL62RMM+PxoOR+VFYMM5cOX9RGF3I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=gRpVXptO; arc=pass smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="VQ9P4lQY"
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="gRpVXptO"
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3921B201CFE;
-	Fri, 09 Oct 2026 15:43:36 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7298D202664;
+	Fri, 09 Oct 2026 15:43:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553416;
+	s=20260414; t=1791553418;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=553R12nP08CYMv930kDDoHha3RmvYHCeyeQdl4a7nqw=;
-	b=VQ9P4lQYxv/XLejauya/KCchN0fCr9QT8JALisjpWDekv1d+GdgYtBqghVcJD6ffwJcPOl
-	mnxL+3ihPza9MFcwMN5AAiWjpgqYSvCIm3JxXdp6TZ/3HnmqcaK6G6e823CKzIQ9Qv4YmG
-	nB5j5ptVJd7mLHmCGKwOtIbKdk3L03L2lr4HGWQlXlGAuITvp6DUIzTlvHBGbwkNiRVLmh
-	u7yrHdVo8N9QJ4I/YVQjI//qxV8B+M/qu9vEE39AriY4+68yR/Y3CWSzzqnGvW+QUdIO0r
-	PbEnRevPm2fB4iAqxPIkVlwPhCgVC6oSNenvY1S3QDi5pzRZM6OULxEFdb+5uw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791553416; a=rsa-sha256;
+	bh=nrV60qykOkiFooqhY7dbMa9F9uJN5Ez5A7f3T3LfIQQ=;
+	b=gRpVXptOgQi4UVE8kaqOvk14yIYwTUoEcP5Oh3MPqXMb3RSyubUreC0+mvj2UUohwEMY19
+	VH5oQsN92LjN2poaU6utCp3b2x0EKvW0/Q7ROIBaiY/pX7MlWy1KDKR7wYGEFWAOHHN7Xb
+	ngizORk5iAKNqq8muQoDb4lQcqagqmN0Ma3G5jze91IMOfkD9P6BlVKLrbKjMuxYg5u5wR
+	yJuPd9znITvCtsIGOLssTY6Z/JZEanvzn5LzMCihzrWmbdKFijxHDQJlgfkSR354JBEhhq
+	vThlmmBGFFMCA0mVxVSVDbI8uQ3aDxo/7gkEnc5j5h8gQw3vGLTiYqm6uGcnKQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791553418; a=rsa-sha256;
 	cv=none;
-	b=HRYORJDgl/mJGVQXrXrSf3+puv0I1fBL5+WtfCFKfksAr++ot/KYyHK10aExNBOkpq2dxS
-	U5Kiijg2BKS60DCpLbvApbMHo96xTKjIyv1IVdzxNleF+ideDFhQxuOy8YhlgBo1gEIaXp
-	ILaC4xeB8b/ILR6pALjXqo7hk867UMH7ArJjaHXbtSnsl6obKl1/8h2m0lxsJ+bSqBMYis
-	PhvkoVZRQyvVU0jx5NDTkCkEqoWb9bPbxuRQ6VrFipx5gxJe2/Ul2Eo5djOBQOeTSnc3N8
-	PdsEygh/ucCff6Kus3Rs3/jsyCq11USlHO+pHAdIck9PvQNPmPG4k4m2sohNCQ==
+	b=YS8ppiw0B8EkSVhIjvbGXbn3ns6RfW87nR+jPk/MtagrQtB/hSp2rCUgBpQK/62MOMkjjL
+	xgacjx1VR6/OVsZFPqD/KR0y3+5uFrsOUchbx3elXHir+zhdkAPg2q0Sp1JK57p3LJOo/L
+	SsDmFOKaWZrIigBiuZ0Ir2jHyob0P06NJhIqTeA7kh1PhWnnweP7u5FnMaCERVWgbJx0BD
+	HCq+IeLdx/Yod+uiGi/B4b6yOFqrLllwe2ffw2qfI//Svmukkp9uugSAtodFu1yQ6AiEmq
+	RalSsbOaADvF93j7UER+3gFPN7o8VdugGtKJmt5t4BSWuxnul0vy9tUXXMbURw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791553416;
+	s=20260414; t=1791553418;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=553R12nP08CYMv930kDDoHha3RmvYHCeyeQdl4a7nqw=;
-	b=NI848Xt3OD1BZe8vBcFE16J6ZPy+GlAkxyLi8NVt7wF21uBxA4c71hsDHGiZ0VeTDyTb5M
-	qP2csPvV5JtLUoWq0zVUg/9ceSaYXgBwHgeaDSKn6QLtXR5acQp9WfyXr9DMMAGwbBybgy
-	0xGQ1LOw5lje73vbrMGoQrLJZvSv59S7+YdVcMJwhJqABbCMsYT7BfLbct/z/HyCoCe2IO
-	1pYpmFPE4rC1TR1uDQDNkhy/tU9+9X+ivLuR8OhYLfXAZigacfAKPRTX0IL8LRbnyusi4x
-	tk8zrl6wDiS6c2MUpknrGofcZ8RdE5n0v4vmrtKmcgQRRGaGsIKr+5JhJK+cOQ==
+	bh=nrV60qykOkiFooqhY7dbMa9F9uJN5Ez5A7f3T3LfIQQ=;
+	b=RZ/QwjyO0f3A4X8nxmqtSmduvC9w/J3rbi2R7pMUXqgERAQuWfHsXynBgBNDWNEfw6osPb
+	jWRJqtRPpPKbNuqFAc3OLwdPIMmLDsbHL3bYYg0K3e0uRfOAKa69wW2TJ2atpQmDec3Zj2
+	4CJx0aF/5i6A5plQf9MfmTb8dH7XbmoS+o4MrTe5O6wQW4mrB88CPHny60JUN9a5jumxsn
+	h0DJnRtWaHwEal5RynCN4Nxa6g8PNmI2bEuFAZn6QAuGEWgObtD97J9OYkB9Ws8Zf+M49I
+	9kcnjibXK/V8Tx9rLT7wFNG9Gg9y0DqZe6otovOBortG3CcIFReK+Kera11Tlw==
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1xFAsq-0053SW-0R;
-	Fri, 09 Oct 2026 15:43:36 +0200
+	id 1xFAss-0053T2-1B;
+	Fri, 09 Oct 2026 15:43:38 +0200
 Received: from blackshift.org (90-182-211-1.rcp.o2.cz [90.182.211.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B05315BD8BE;
-	Fri, 09 Oct 2026 13:43:35 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id F32785BD8D3;
+	Fri, 09 Oct 2026 13:43:37 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Chaosheng Qu <quchaosheng000406@163.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 16/37] dt-bindings: can: renesas,rcar-canfd: Document RZ/G3L SoC
-Date: Fri,  9 Oct 2026 15:27:48 +0200
-Message-ID: <20261009134323.64064-17-mkl@pengutronix.de>
+Subject: [PATCH net-next 24/37] can: cc770: don't discard the IRQ lookup error in probe
+Date: Fri,  9 Oct 2026 15:27:56 +0200
+Message-ID: <20261009134323.64064-25-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261009134323.64064-1-mkl@pengutronix.de>
 References: <20261009134323.64064-1-mkl@pengutronix.de>
@@ -91,72 +89,55 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Chaosheng Qu <quchaosheng000406@163.com>
 
-Document the RZ/G3L (R9A08G046) SoC support.
+cc770_platform_probe() collapses every failure of platform_get_irq()
+into -ENODEV:
 
-RZ/G3L has 11 interrupts and 3 CANFD channels compared to 8 interrupts
-and 2 CANFD channels on RZ/G3S. RZ/G3L has 288 buffers in total
-compared to 192 buffers in RZ/G3S.
+	irq = platform_get_irq(pdev, 0);
+	if (!mem || irq <= 0)
+		return -ENODEV;
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20261001075742.21961-2-biju.das.jz@bp.renesas.com
+That discards -EPROBE_DEFER, so a probe that has to wait for its
+interrupt controller is never retried and the device stays unbound.
+
+Return the lookup error unchanged, which is what the neighbouring CAN
+platform drivers already do (c_can_platform.c, flexcan-core.c,
+sja1000_platform.c). A device tree without an interrupt now reports
+-ENXIO rather than -ENODEV; the driver core treats those two the same
+way, so the outcome does not change.
+
+The memory resource is checked first and on its own, so a missing
+region no longer triggers an IRQ lookup that cannot succeed.
+
+Assisted-by: LLM
+Signed-off-by: Chaosheng Qu <quchaosheng000406@163.com>
+Link: https://patch.msgid.link/20261009105556.301821-1-quchaosheng000406@163.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- .../bindings/net/can/renesas,rcar-canfd.yaml  | 24 ++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/net/can/cc770/cc770_platform.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-index 1a7a9ce45e97..4b94bc8d911b 100644
---- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-+++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
-@@ -14,6 +14,7 @@ properties:
-     oneOf:
-       - enum:
-           - renesas,r9a08g045-canfd        # RZ/G3S
-+          - renesas,r9a08g046-canfd        # RZ/G3L
-           - renesas,r9a09g047-canfd        # RZ/G3E
-           - renesas,r9a09g077-canfd        # RZ/T2H
+diff --git a/drivers/net/can/cc770/cc770_platform.c b/drivers/net/can/cc770/cc770_platform.c
+index b6c4f02ffb97..64fbdf14e8ab 100644
+--- a/drivers/net/can/cc770/cc770_platform.c
++++ b/drivers/net/can/cc770/cc770_platform.c
+@@ -156,10 +156,13 @@ static int cc770_platform_probe(struct platform_device *pdev)
+ 	int err, irq;
  
-@@ -294,6 +295,25 @@ allOf:
-       patternProperties:
-         "^channel[6-7]$": false
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	irq = platform_get_irq(pdev, 0);
+-	if (!mem || irq <= 0)
++	if (!mem)
+ 		return -ENODEV;
  
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: renesas,r9a08g046-canfd
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 11
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return irq;
 +
-+        interrupt-names:
-+          minItems: 11
-+
-+        resets:
-+          minItems: 2
-+
-+      patternProperties:
-+        "^channel[3-7]$": false
-+
-   - if:
-       properties:
-         compatible:
-@@ -358,7 +378,9 @@ allOf:
-       properties:
-         compatible:
-           contains:
--            const: renesas,r9a08g045-canfd
-+            enum:
-+              - renesas,r9a08g045-canfd
-+              - renesas,r9a08g046-canfd
-     then:
-       properties:
-         renesas,no-can-fd: false
+ 	mem_size = resource_size(mem);
+ 	if (!request_mem_region(mem->start, mem_size, pdev->name))
+ 		return -EBUSY;
 -- 
 2.53.0
 
