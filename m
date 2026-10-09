@@ -1,236 +1,260 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D92DB7BE
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 02:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25C5384CE5;
+	Fri,  9 Oct 2026 03:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791514300; cv=none; b=bTjALbqGnE+tsXaATQrbqTUBDOuzvJFz9oM1gB1WttMuJbIAtFnf6t/TeGpYydENO/MwqFDNdubb+TMoa8B5o3D59gVeTAdnnL6c2kdKTkkvOkXsjxR9rKadgBgw4NEcE0J+VuL8ky4Z7ZqI8ZlgP4t+XRWjs0HAvno0khJL/hw=
+	t=1791516076; cv=none; b=uGajJw8NrZvZklQgenhso31hf4dKhkWJfujvjIWISTI02HTtwwqGkf0zqCnIbAUbRwep0m3ZfUx9Xvbyjs4VHd2meU4GVdQAMoBGiAj4fbcYB071gYn4y/sAPdm5kZTKnhZy3ecziT8yZLx8+Lk64AZzocb7MmLlXC2Dx9jqklk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791514300; c=relaxed/simple;
-	bh=6vbWOQf/L4UZhzzAKEI/kSey8QHneh6kMPrrM4gTi4c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EevGnAZqTZEbRDeyxHTHLoqWiASfYvYGJeInD7nqwlNthn03OF/KUD2fIrheLjxtJcQrBCxCQdmnMOdf1A4eRTwEfo1i4HJ8VYQvLUL1UPSnGWw8OVKlAZZr0DP4SPLw4GAjnEfpIxQrgw+5sEIfMbhlZKh/ZS1fQhmZds3TGzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=byoz2GgJ; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791516076; c=relaxed/simple;
+	bh=wcqHV2Wg3FXBYYmg1vUHmOb3Xq5jc8STEKB0J+8XZ5A=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OKKn60g5OjS80oyoGJeM5ZFTJZRy04Hz13wLm3iNdcFz48MXUWum+sst9hOI99YsA+6CvYZMiwPu4LViaL/KeABmeLtHtmdBInW2qrSsdvcexu+r2iXd/RpyCLXCvnx7vY83ayuNm7+M6IeuJRseTcZc1dKAVdWMAhg8TqoFxyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZiCeaWy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="byoz2GgJ"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3a865731ee4so3240126a91.2
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 19:51:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791514298; x=1792119098; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GmI96dl1PZMpoLyoj8GisHl1hYMLINmAceHNZSk2qG4=;
-        b=byoz2GgJiDMIAKMpJkLu44C+dg+VheeVAqvDCbQ2hR21CbDxLxp3FWSDWcRb22f9x/
-         TyKkZlxV6wf/0DgNf7trNQeIyH5yHLQ8yrp0zggJbJodnvCMrqcuVaWlHOZg9hqGYNLx
-         Bj2iG2kfdcrJy4NkOu79lIqG7x8SoK5gCyz9OSZLrgLHwr7L42yYmgyAJLgctQU7M7aQ
-         XnC0+l+LpM4wG8MIIMysrflFaHwPu+lRrsj04mpRQJh3j2+EFsPk6ds+bY4o5ojVdavN
-         GTxOG+vn8DL3qhZDVynoWfYFN2b99md8lzQ+0IcBPpibqZp4Vqzt8MusSJ81nPHC7Igk
-         vnCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791514298; x=1792119098;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GmI96dl1PZMpoLyoj8GisHl1hYMLINmAceHNZSk2qG4=;
-        b=sRL9zmxJJTWFI6jqrZuS8o7iaxovSCk11aQWrWQckhhoxAtqLVsIWaf3JuBDFyyaEW
-         Ux4pm32+GTTMwavpEyUNuD+zLKalxUotWkXmffuoeF7ACamuzs3HJ6NMGDVVAWfYZGqq
-         IWr7jElCU3k743eV6/rawNEALZIdjN3fM+XqwbpHWFJ7fyRRizlWTbkP4CRHA/BHAzzL
-         uK14OwWaZefoyT91Fjm74Qtvb1N0JXiYcb8F1DR0YSF4mfUeNgNa76j2b6ZfZut7WdGM
-         IRdzhAhpQQDSLJX9jrcP39KVTmphyf7B3clCAY8f8F4jZpCEJKMhuMLK78QkwP+Knm8r
-         0+3g==
-X-Forwarded-Encrypted: i=1; AKwUvBwBu+HlWT3/eBJbWns2ohZpgC8I/xiY2MbqYL2Y+rATRHCNdVdGW9HeNWBzWbU21xEz9JaruB0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJtzC2n+k9XORG/+QvkN/tZEXdBPiXEaMqNlAeUBAxuSfjbRdkq
-	00VZpLmBCJdmIAfZqSnB5EDEwazhqqJaitE7W5m5RKGwCDiYeTmrrLBR
-X-Gm-Gg: AYBFou2NBF4NsWPqA5JQJ6rsB0DMSCz/vn3jpYLbgfwRIxA4A21MJlBNiXE1ziDTDO2
-	e80crzdEgNJh9+Lbg7XizvP0quxnlGnYhL5SGom/olXhtX86rnbu0R+cXsALSYEf8PYhOhwiPNz
-	d+P0LYxcaOByUuWDanY9ImajUgyL63FU2zWj17U9YnNYQJrqG7Qv/6Asu5hX6g+4GOrqmS+pFbk
-	NnjQm4HeZEJR7ABWqm++Zg3MjYz1hqNwl0y5PKqPINx1ejCYW3oGJZEjDWfVdBxj5oWMwD9mZ/X
-	Rkb6uLU5qdnZY1YLH91tXaTYMkc3LNGt8sa0fRGeKSoXVLzrkgXOsB4rmw3gHkfFISGWEg4KvVI
-	+pvH3r7+ivpJty8duzP1pve4rukiZb1oYN0oPvKVBMaK8HeUpgUTvYZuTav2W0TL69s3j3crKy0
-	qOdR8dzGDf8NCu0PdcSfK9kDBcxWE4Q8dWn4li8ZmlSVK2azbUVxTSFF4yiDdG+5ASdrbG0fyXY
-	4fa
-X-Received: by 2002:a17:90a:e7ce:b0:3ab:9cb:b5a4 with SMTP id 98e67ed59e1d1-3ab3ac7eecemr732524a91.40.1791514298310;
-        Thu, 08 Oct 2026 19:51:38 -0700 (PDT)
-Received: from localhost ([2a03:2880:7ff:55::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab38f4863esm1543746a91.11.2026.10.08.19.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 19:51:37 -0700 (PDT)
-From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>
-Cc: Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v3] net/mlx5e: advertise tcp-data-split support
-Date: Thu,  8 Oct 2026 19:51:37 -0700
-Message-ID: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZiCeaWy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7982D1F00899;
+	Fri,  9 Oct 2026 03:21:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791516063;
+	bh=JXfCHG31Bc/gSZjaK8k9wksl9IuXvNCzPnYy9hoGaWo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SZiCeaWykiCNamdBlxa2XXBIE7gHvyKIOn3LN9Z24cQoLXU1mgA+E4KHeFYXnfA8w
+	 nqIAdtQM2bUAlDeqLfi8ov47ZQsL1z0gyDQt3j3saygu6WtBAm21eNfuexjr/pGN6Q
+	 t4AkxHMvpWPEBN9PJKOmuxrBsKYq4/i0GcvolU+G3xbJk9ht9dV2KmZ3bYResU1deR
+	 TYj7BjSjB0vD6D/mfDOYA5RtgrHYodZ8MQY7Yim4b73YyIKDn7KIylPvIPh9Ahiigy
+	 XG4dPmJibsR6eKsD54zdUO7qufshIQBGq1l9gQ7j4D6bG8QIlhllADGadEtXMFF4QG
+	 Qpvto6oN0so+g==
+Subject: Re: [PATCH v3] netfilter: nf_nat: Fix stale outer UDP checksum on
+ VXLAN encapsulated packets
+From: netdev-bot+sashiko@kernel.org
+To: lvjunyu@cmss.chinamobile.com
+Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
+Date: Fri, 09 Oct 2026 03:21:03 +0000
+Message-ID: <179151606303.434549.9146029208323443792@kernel.org>
+In-Reply-To: <20260922062305.752147-1-lvjunyu@cmss.chinamobile.com>
+References: <20260922062305.752147-1-lvjunyu@cmss.chinamobile.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Dimitri Daskalakis <daskald@meta.com>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-The ability to set tcp-data-split was introduced in
-commit 46bcce5dfd33 ("net/mlx5e: Support ethtool tcp-data-split settings")
-This commit dropped reporting from mlx5e_ethtool_get_ringparam()
-without explaining why. commit d347b28c492e ("net/mlx5e: Add hds-thresh
-query support via ethtool") added support for ETHTOOL_RING_USE_HDS_THRS,
-and modified mlx5e_ethtool_get_ringparam() to report an hds_thresh of 0.
+Critical: 0 · High: 1 · Medium: 0 (1) · Low: 2
 
-Between these two commits, the hds selftest helper _defer_reset_hds()
-would skip the reset because neither hds-thresh or tcp-data-split was
-present in the ring config. After the second commit this introduced
-a KeyError in the hds.set_hds_enable/disable tests.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-mlx5 couples tcp-data-split with rx-gro-hw. Users can currently disable
-tcp-data-split then enable HW GRO. The kernel reports tcp-data-split
-off, but the HW is presumably splitting.
+- [High] The fix is incomplete.
+- [Low] The commit message describes the trigger more narrowly than the
+  code shows.
+- [Low] The new comment in __udp_manip_pkt() presents the offload-target
+  test as a way to tell apart only the two states that udp_set_csum()…
 
-Add back tcp-data-split reporting in mlx5e_ethtool_get_ringparam(),
-and de-feature tcp-data-split disable. Users can either enable it
-(if HW GRO is enabled), or leave it under driver control.
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the IPVS UDP
+  NAT handlers have the same bug.
 
-Additionally, move the call to netdev_update_features() out of
-mlx5e_ethtool_set_tcp_data_split(). If mlx5e_ethtool_set_ringparam()
-fails, this can cause the driver/kernel feature to de-sync.
+--
 
-This is not a fix since HDS/tcp-data-split is still functional with HW
-GRO enabled.
+netfilter: nf_nat: Fix stale outer UDP checksum on VXLAN encapsulated packets
 
-Signed-off-by: Dimitri Daskalakis <daskald@meta.com>
----
-Changes in v3:
-- Drop redundant hw_features check in mlx5e_ethtool_get_ringparam(). Packet
-  merge type can only be MLX5E_PACKET_MERGE_SHAMPO when HW GRO is active.
-- Address Bjorn's feedback, and drop premature netdev_update_features() call
-  in mlx5e_ethtool_set_tcp_data_split()
-- Link to v2: https://lore.kernel.org/all/20261006225925.568263-1-dimitri.daskalakis1@gmail.com/
-Changes in v2:
-- Leave kernel_param->tcp_data_split as ETHTOOL_TCP_DATA_SPLIT_UNKNOWN if the
-  device does not support HW GRO
-- Prevent users from disabling tcp-data-split
-- Link to v1: https://lore.kernel.org/all/20260923230521.1267511-1-dimitri.daskalakis1@gmail.com/
+This patch changes __udp_manip_pkt() to detect the local checksum offload
+(LCO) state. In that state the outer UDP header holds a complete checksum
+while csum_start points at the inner transport header. When it sees this
+state, it sets ip_summed to CHECKSUM_NONE for the duration of the update,
+so the address and port deltas are applied through csum_replace*().
 
-hds.py before:
- # Interface: eth0, driver: mlx5_core
- TAP version 13
- 1..13
- ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
- ok 2 hds.get_hds_thresh
- # Exception while handling defer / cleanup (callback 1 of 1)! ...
- # Defer Exception| KeyError: 'tcp-data-split'
- # Defer Exception|
- not ok 3 hds.set_hds_disable
- # Exception while handling defer / cleanup (callback 1 of 1)!
- ...
- # Defer Exception| KeyError: 'tcp-data-split'
- # Defer Exception|
- not ok 4 hds.set_hds_enable
- ok 5 hds.set_hds_thresh_random # SKIP hds-thresh-max is too small
- ok 6 hds.set_hds_thresh_zero
- ok 7 hds.set_hds_thresh_max
- ok 8 hds.set_hds_thresh_gt
- ok 9 hds.set_xdp # SKIP tcp-data-split not supported by device
- ok 10 hds.enabled_set_xdp # SKIP tcp-data-split not supported by device
- ok 11 hds.ioctl # SKIP tcp-data-split not supported by device
- ok 12 hds.ioctl_set_xdp # SKIP tcp-data-split not supported by device
- ok 13 hds.ioctl_enabled_set_xdp # SKIP tcp-data-split not supported by device
+> When MASQUERADE --random-fully rewrites the outer UDP source port and
+> address of a VXLAN-encapsulated packet whose inner header has
+> CHECKSUM_PARTIAL, the outer UDP checksum is not updated correctly.
 
-hds.py after:
- # Interface: eth0, driver: mlx5_core
- TAP version 13
- 1..13
- ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
- ok 2 hds.get_hds_thresh
- ok 3 hds.set_hds_disable # SKIP disabling of HDS not supported by the device
- ok 4 hds.set_hds_enable # SKIP disabling of HDS not supported by the device
- ok 5 hds.set_hds_thresh_random # SKIP hds-thresh-max is too small
- ok 6 hds.set_hds_thresh_zero
- ok 7 hds.set_hds_thresh_max
- ok 8 hds.set_hds_thresh_gt
- ok 9 hds.set_xdp # SKIP tcp-data-split not supported by device
- ok 10 hds.enabled_set_xdp # SKIP tcp-data-split not supported by device
- ok 11 hds.ioctl # SKIP tcp-data-split not supported by device
- ok 12 hds.ioctl_set_xdp # SKIP tcp-data-split not supported by device
- ok 13 hds.ioctl_enabled_set_xdp # SKIP tcp-data-split not supported by device
- # Totals: pass:4 fail:0 xfail:0 xpass:0 skip:9 error:0
----
- .../ethernet/mellanox/mlx5/core/en_ethtool.c  | 23 +++++++++++++++----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+[Severity: Low]
+Is the trigger described here narrower than the real one?
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 261c466a4d36..c30d751cac2f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -378,6 +378,9 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
- 
- 	kernel_param->hds_thresh = 0;
- 	kernel_param->hds_thresh_max = 0;
-+
-+	if (priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO)
-+		kernel_param->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
- }
- 
- static void mlx5e_get_ringparam(struct net_device *dev,
-@@ -403,10 +406,11 @@ static bool mlx5e_ethtool_set_tcp_data_split(struct mlx5e_priv *priv,
- 		return false;
- 	}
- 
--	/* Might need to disable HW-GRO if it was kept on due to hds. */
--	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_DISABLED &&
--	    dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED)
--		netdev_update_features(priv->netdev);
-+	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_DISABLED) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "TCP-data-split can not be disabled");
-+		return false;
-+	}
- 
- 	return true;
- }
-@@ -468,13 +472,22 @@ static int mlx5e_set_ringparam(struct net_device *dev,
- 			       struct netlink_ext_ack *extack)
- {
- 	struct mlx5e_priv *priv = netdev_priv(dev);
-+	int err;
- 
- 	if (!mlx5e_ethtool_set_tcp_data_split(priv,
- 					      kernel_param->tcp_data_split,
- 					      extack))
- 		return -EINVAL;
- 
--	return mlx5e_ethtool_set_ringparam(priv, param, extack);
-+	err = mlx5e_ethtool_set_ringparam(priv, param, extack);
-+	if (err)
-+		return err;
-+
-+	/* Disable HW-GRO if it was only kept on for HDS. */
-+	if (dev->cfg->hds_config != kernel_param->tcp_data_split)
-+		netdev_update_features(priv->netdev);
-+
-+	return 0;
- }
- 
- void mlx5e_ethtool_get_channels(struct mlx5e_priv *priv,
+Any SNAT, DNAT or MASQUERADE that changes the address of an LCO-state
+outer UDP header hits the wrong-sign delta in
+nf_csum_update()->inet_proto_csum_replace4/16(pseudohdr=true), even if no
+port changes. Any port rewrite hits the no-op inet_proto_csum_replace2().
+
+The LCO branch lives in udp_set_csum(). Its callers are
+udp_tunnel_xmit_skb() (VXLAN, GENEVE, bareudp and others),
+l2tp_xmit_core(), fou_build_udp() and ip_vs_tunnel_xmit().
+udp6_set_csum() has the same branch for IPv6, and the patch also changes
+IPv6 behaviour through nf_nat_ipv6_csum_update().
+
+The reproducer may have needed --random-fully only because MASQUERADE in a
+single netns keeps the same source address. That leaves the port as the
+only field that changes.
+
+Could the changelog state the general trigger, so stable triage can judge
+the impact correctly?
+
+> diff --git a/net/netfilter/nf_nat_proto.c b/net/netfilter/nf_nat_proto.c
+> index 64b9bac228eae..6779e9f2812d9 100644
+> --- a/net/netfilter/nf_nat_proto.c
+> +++ b/net/netfilter/nf_nat_proto.c
+> @@ -54,9 +54,39 @@ __udp_manip_pkt(struct sk_buff *skb,
+>  		portptr = &hdr->dest;
+>  	}
+>  	if (do_csum) {
+> +		/* When udp_set_csum() takes the LCO branch (encapsulated
+
+[ ... ]
+
+> +		 * The seed/offload branch of udp_set_csum() sets csum_start
+> +		 * to the outer UDP header, so the offload-target test
+> +		 * below distinguishes the two states.
+> +		 */
+
+[Severity: Low]
+This isn't a bug, but is this comment complete? It describes the test as
+telling apart only the two states that udp_set_csum() creates. The
+predicate below is true for any CHECKSUM_PARTIAL non-GSO skb whose
+csum_start + csum_offset is not &hdr->check.
+
+One such case is the UDP header embedded in an ICMP or ICMPv6 error. In
+nf_nat_icmp_reply_translation() and nf_nat_icmpv6_reply_translation(), it
+is rewritten through:
+
+  nf_nat_ipv{4,6}_manip_pkt()
+    udp_manip_pkt()
+      __udp_manip_pkt()
+
+On that path the offload target is the outer ICMP checksum.
+
+The embedded UDP checksum there is a complete checksum, so switching to
+csum_replace*() gives the right result. The only gap is that neither the
+comment nor the lco name covers this case.
+
+The comment also names only the IPv4 helpers. This code covers
+udp6_set_csum() and inet_proto_csum_replace16() too.
+
+> +		bool lco = skb->ip_summed == CHECKSUM_PARTIAL &&
+> +			   !skb_is_gso(skb) &&
+> +			   (skb->head + skb->csum_start + skb->csum_offset) !=
+> +			   (unsigned char *)&hdr->check;
+
+[Severity: High]
+Is this fix complete for flows that are offloaded to an nft flowtable?
+
+The flowtable fast path applies the same conntrack NAT with the old
+helpers:
+
+net/netfilter/nf_flow_table_ip.c:nf_flow_nat_ip_udp() {
+    ...
+	if (udph->check || skb->ip_summed == CHECKSUM_PARTIAL) {
+		inet_proto_csum_replace4(&udph->check, skb, addr,
+					 new_addr, true);
+    ...
+}
+
+net/netfilter/nf_flow_table_core.c:nf_flow_nat_port_udp() {
+    ...
+	if (udph->check || skb->ip_summed == CHECKSUM_PARTIAL) {
+		inet_proto_csum_replace2(&udph->check, skb, port,
+					 new_port, false);
+    ...
+}
+
+nf_flow_nat_ipv6_udp() follows the same pattern with
+inet_proto_csum_replace16().
+
+For an LCO-state outer UDP header, these functions hit the same two
+failures this patch fixes in __udp_manip_pkt(): the address delta gets the
+wrong sign, and the port update does nothing. Nothing in the flowtable
+path filters out CHECKSUM_PARTIAL or encapsulated skbs.
+
+Take a MASQUERADE or SNAT rule plus a flowtable. The first packets of a
+UDP tunnel flow get correct checksums through nf_nat. Once the conntrack
+is offloaded, the rest of the flow goes through:
+
+  nf_flow_offload_ip_hook()
+    nf_flow_offload_forward()
+      nf_flow_snat_ip() / nf_flow_dnat_ip()
+        nf_flow_nat_ip_l4proto()
+          nf_flow_nat_ip_udp()
+      nf_flow_snat_port() / nf_flow_dnat_port()
+        nf_flow_nat_port_udp()
+
+Would the receiver then drop those packets with UdpInCsumErrors?
+
+tcf_nat_act() in net/sched/act_nat.c uses the same pattern on outer UDP
+headers.
+
+All of these callers rely on one assumption in inet_proto_csum_replace*():
+under CHECKSUM_PARTIAL, the field being patched is taken to be the
+offload target.
+
+net/core/utils.c:inet_proto_csum_replace4() {
+    ...
+	} else if (pseudohdr)
+		*sum = ~csum_fold(csum_add(csum_sub(csum_unfold(*sum),
+						    (__force __wsum)from),
+					   (__force __wsum)to));
+}
+
+Would it work better to compare sum against skb->head + csum_start +
+csum_offset inside those shared helpers? That would cover nf_nat, the
+flowtable and act_nat in one place, instead of a local workaround in
+__udp_manip_pkt().
+
+> +
+> +		if (lco)
+> +			skb->ip_summed = CHECKSUM_NONE;
+> +
+>  		nf_csum_update(skb, iphdroff, &hdr->check, tuple, maniptype);
+>  		inet_proto_csum_replace2(&hdr->check, skb, *portptr, newport,
+>  					 false);
+> +
+> +		if (lco)
+> +			skb->ip_summed = CHECKSUM_PARTIAL;
+> +
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch, but the
+IPVS UDP NAT handlers look like they have the same problem.
+
+udp_snat_handler() and udp_dnat_handler() in
+net/netfilter/ipvs/ip_vs_proto_udp.c check only ip_summed:
+
+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+		udp_partial_csum_update(cp->af, udph, &cp->daddr, &cp->vaddr,
+					htons(oldlen),
+					htons(skb->len - udphoff));
+
+udp_partial_csum_update() always treats the field as a seed:
+
+	uhdr->check =
+		~csum_fold(ip_vs_check_diff4(oldip->ip, newip->ip,
+				ip_vs_check_diff2(oldlen, newlen,
+						csum_unfold(uhdr->check))));
+
+It never applies the port change.
+
+For an LCO outer UDP header built by udp_set_csum() or udp6_set_csum(),
+won't IPVS also apply the address delta with the wrong sign and skip the
+port delta?
+
+After this patch, nf_nat and IPVS would also handle the same skb state
+differently.
+
+>  		if (!hdr->check)
+>  			hdr->check = CSUM_MANGLED_0;
+>  	}
+
 -- 
-2.52.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922062305.752147-1-lvjunyu%40cmss.chinamobile.com
