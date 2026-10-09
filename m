@@ -1,307 +1,160 @@
-Received: from mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A8544162A
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 06:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791527223; cv=none; b=egA3a/L8vkYBOTD6319aJ8U+B3L3nzHpU3qntPHVptwIqS9LyG1Zdx7ONduhbhddyIXiURnFU0ER5YWlGsMJ9nhAlLUrD2XSRJYlGSvj57a0YYMVKpf2uJrZbNSUPZ/2HGcvWK8KbOcJ3TsLFClN1sKEpxf0MLAMRTsyH0hC3tM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791527223; c=relaxed/simple;
-	bh=4J2Oujq0h9Tdxh5Fs82Gko1VDMQdbho/Ty/hsMPCfKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YciMLtHKXtoKke5L37CO5sgodb/iOEw9A8eCX9xb7NRUKwppNPOALvD1GFCYqeAdL7KqIo6Gz0fx5RsjHMY7DKwBOID1hsZBSmPkeqWWy4TF/dioXmeVR4Ofg/PsGYlYmJ2J48dodXCry+PguK6zJOVZfCd3ZuAZHg/6etl0fzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LMklH/zs; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27654442FAD
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 06:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791527346; cv=pass; b=L3dmiR8PDEK8EqXnNBFMoWjmYkHrO6eHEtlm537n682hfUDb/7H33Z4DCgCYNGvCrmmsj+bywlQtXo1+cokufV3AMLH6skRo/q1d8E7dW48o6szD1i7pXyvI1MHCazBKOT4c9xoxHEk329Y+BnZscYRbfTmARQk8Ksu8Sj70/ro=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791527346; c=relaxed/simple;
+	bh=Y5NCAAj+S8CVX/AK6zeAmzUsBUrcPbh6f/6GokfhsQE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OgnkMNqjBQVT5w4fsWVmR8fskH9/3CRj/ycf6ACLVXGb3CuuIHe9DcUnM6bX+v+xnAGQ6T50ogSmUpd/GNoCsa0utGDA5MxVoPiA9s7y57ZfZNxmEXu3BTj1lmwc14/qTk9yJ8ljOcMacugppfZsMCCI9MQb4P5n3nPWvtruC8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WFB9ma93; arc=pass smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LMklH/zs"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=4J2Oujq0h9Tdxh5Fs82Gko1VDMQdbho/Ty/hsMPCfKU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791527217; v=1; x=1792132017;
- b=LMklH/zs2AewPti66CHbdlRmVAfSRS9XoIxpBqCNyNjEm0KeJhGzLORrXNop/6mC9xmqkFYD
- WeTydWE+U/YYzx4aMIOVjASDXFg4jX5hYj0ZS+4j3FLwRQ/kOzqjleyuBVewuxxJ0Q+y0wwwyi0
- O1VPy1bn91hpCpuY8buxvy1M=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 04d29327fff06515;
-	Fri, 09 Oct 2026 06:26:57 +0000
-X-Mizu-Trace-ID: 04d29327fff06515
-X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next v4] selftests/bpf: Add bpf_proactive_reclaim test
-Date: Fri,  9 Oct 2026 14:26:37 +0800
-Message-ID: <20261009062637.176005-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WFB9ma93"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a0a4aa99bdso5057220a12.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 23:29:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791527343; cv=none;
+        d=google.com; s=arc-20260327;
+        b=j4OND6NQhBOKaEUeMmPwGjTM06or+SPtLP2atkibs8TdjODfdbTz4WcMU2WPYec2c3
+         iuOa2mHN98mJcAqKyNzPdL3zIzDIUk1jBWpWSpVlome4Uxrm0VRhQuakhTQDfXcABsE5
+         lv7cWyX0LeTOgAnD8jcYWowkRY06LGC1VoKNpZqfVBP5CWjqFfrT7bYBoBzucuA5SXft
+         m5f4TeWC9B0UeoAAJaJD+a/Qr3ukceDey/IoI53xenB2sRjS2GXg1iH9Yb9BE0jdazud
+         Wb+siexQf57NlZoCoP7kJfQRnNxNRFgjNb+ZDcrQQXx3G8fK4I6a7vpvaOVaLGYj3y4X
+         gxEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=U1VUoDa7q17rAeqnY7bbHsgshGRs6k3XUU7zBz6pXTY=;
+        fh=9Lt/Ov+E9XagEW4maSWoSytZ/A84cNlese4pUwWLmoQ=;
+        b=e9qxdDOjywS2o8ycmLGhaJUvHY8vdZHR6y6LFjqXMpcsBEArToo8qoy1tvj8pSo4qj
+         eDNY7o4LbcBA9q0k4v4ugIHuWDDIWShWnxZ2S/godAR4Ffej7kiVKi4OP2AXQx0t/oTR
+         iAvMWY/m+p7dGaZ+l+1qNzO4tlTtpT2s2OV16pUAhr+2vtl8IqojepZfSeAellyGgnk4
+         MP6AHWis4G/qnjD5kFi05hEtkgVFU38qi+MTa37ZRyPtVZZxZblcPHzcqlHAdQ7ciUZG
+         s2qc/OClJFSfA0oaj0lMEqs1MxqWnpyf0XvtLknJuebYKaDvg/SsctX6iIrwSBq8Vgo7
+         1tHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791527343; x=1792132143; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=U1VUoDa7q17rAeqnY7bbHsgshGRs6k3XUU7zBz6pXTY=;
+        b=WFB9ma93JZ3Nl1BNB3eZkXfmHvUmBSt2pU5rbVClkK9djK3bnXDrFrGVfa71uw5j9r
+         bso5qwjiFI9JVSoYThINt2nTUnJzeJS/I9eRmPtI/JZJLbKsGvZ/cm9IjjcQJ3V/ugy5
+         l8jD+oE8aZ/S+iTPpYw29e5dyjcKPnUr7xsIzT/liKjKFNfSyOK6Y3b0JjV/tUojU+NJ
+         hrBCo3BsdHtDTJZYYcYgQHbUaRdK5sLU3oTtl7zhHSHXSZn6noIo3Cbiq5Do9AGj2f2A
+         NHVGjmmKksg2WcAQlRyyRreXCDvAVbJgKW0HlTGm+Wf/CE70A4TnNcxDq9WXfhgh4BE8
+         55TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791527343; x=1792132143;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=U1VUoDa7q17rAeqnY7bbHsgshGRs6k3XUU7zBz6pXTY=;
+        b=QQViz0DJxVposC8R/M0Mh3QS+aYzt7Agcb2Bp3SEUTvWQCqvbL5kMMkGSQhdoLEc7+
+         uMeS67wMUz9uI4nexNXSljf72z8vFmQx9S0CY2feluxekNETwpljrvrcA5qjDxog0dIV
+         LOWqBgitbb+ZcriGuQ566WWMjWElixmSmzQqaQ7SvywWw5cgL7/MduzYRXQdB7NYvwzL
+         CrzmWtX4sGAkU+vyLpZ8bdoM5RoK9UXi4WQwUPaIQg8uWFSsUcEP1UTEbA1qLxPjkq7g
+         ITH0CeCDmi7mM5AoC/OGlgoVeipz96FSE4cbZTjZRSPC5f06otlI3bpobjHllLQaAL5z
+         laAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzVSAFqZiJx2TZkvd1M/AdgMEdXIiy2ytf0sH3P4OncYADKMpByfRXAfZh89eBMxPe2IAiQOe0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJQcbe9ltP/frWL8QfSUYNw58qQG8t70Bj/C4LCu0+beRD3ssIM
+	9evLqUllVdIIN4UVUbwrh5qK1DdofhgJ+KOrr+SwvU7+2fBtiWAULmaZkUudWJk4R1ihbrjAX6r
+	9HOENd1QNRqL+7ZxZb8QSu/8WdBrNZ/A=
+X-Gm-Gg: AYBFou3g9u3fXIulrJ5lInRAHkCS5KBYHyEb59PWOKrUquKO85Q81KPmb6u6DdcJH01
+	j7yaJwteZtQP1/35fCn9tIEHZzAJOSJkMjh6pH6e2ADMMCIiAtaHupXPW21oeXVhRMCAmCEjHZ3
+	W241sA+0Gjm6wM/SXzjy3S1Myk7AUk5n7d3E1SmIVI8mFET63kT8nErv6qmDD4+nundyb5pBn6G
+	XDbyUo5fPjndKrj421w8D2KZGjB7r61SOoPkxuN2PUnF3D1u/9JdXyRFGiv+CRuUnZHyQXYuTsN
+	UgGtRB9+qNqc/VRzdo1UbjckWLNSr+qMrV1Jp2g9JO8U0QZ9mEscXaNdVIFtRcU4+y/wUnW4XP8
+	S5JogFhHTQo0gUqS2B2mKgureK2rcYS2731Pas1yeiw==
+X-Received: by 2002:a05:6402:450e:b0:6ac:9a44:d409 with SMTP id
+ 4fb4d7f45d1cf-6b17c1dec0cmr625458a12.4.1791527343140; Thu, 08 Oct 2026
+ 23:29:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261008220433.965791-1-linmag7@gmail.com> <038bffb2-e40d-44bb-b7ce-53e9de32e50d@lunn.ch>
+In-Reply-To: <038bffb2-e40d-44bb-b7ce-53e9de32e50d@lunn.ch>
+From: Magnus Lindholm <linmag7@gmail.com>
+Date: Fri, 9 Oct 2026 08:28:51 +0200
+X-Gm-Features: AclHuK-JpJJ8BWVdNGK7pt4HrpIyJkAQKyqnfpnG3fkPyd0w-Sx8RYMtjvqDjms
+Message-ID: <CA+=Fv5QvhYd7EqVBYKWVgvf92SLE=FjE8EYcZvUQ7HKdx2kc3Q@mail.gmail.com>
+Subject: Re: [PATCH net-next] tg3: normalize inherited M3000 register byte order
+To: andrew@lunn.ch
+Cc: pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+Hi Andrew,
 
-bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-unlike a write to memory.reclaim, does not retry until the goal is
-reached.
+On Fri, Oct 9, 2026 at 3:13=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Fri, Oct 09, 2026 at 12:04:03AM +0200, Magnus Lindholm wrote:
+> > M3000 firmware can leave BCM5718 vendor registers byte-swapped while
+> > standard PCI fields retain normal byte order. Match the Fujitsu 10cf:16=
+5a
+> > subsystem, IKKAKU model and swapped revision/product signature before
+> > restoring host control; reject failed PCI accesses or register readback=
+s.
+> >
+> > Keep this in probe so failures can abort initialization; SPARC firmware
+> > enumeration skips PCI_FIXUP_EARLY. Normal rebinds and other platforms
+> > retain their existing path.
+> >
+> > Use tg3.h's MISC_HOST_CTRL_BYTE_SWAP and TG3PCI_GEN2_PRODID_ASICREV;
+> > the inherited state was observed on M3000 hardware.
+> >
+> > Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+>
+> > +/* M3000 firmware can leave the on-board BCM5718 registers byte-swappe=
+d. */
+> > +static bool tg3_is_m3000(struct pci_dev *pdev)
+> > +{
+> > +     struct device_node *root;
+> > +     const char *model;
+> > +     bool match;
+> > +
+> > +     if (pdev->vendor !=3D PCI_VENDOR_ID_BROADCOM ||
+> > +         pdev->device !=3D TG3PCI_DEVICE_TIGON3_5718 ||
+> > +         pdev->subsystem_vendor !=3D 0x10cf ||
+> > +         pdev->subsystem_device !=3D 0x165a)
+> > +             return false;
+> > +
+> > +     root =3D of_find_node_by_path("/");
+> > +     match =3D !of_property_read_string(root, "model", &model) &&
+> > +             !strcmp(model, "IKKAKU");
+>
+> The DT Maintainers generally don't like this.
+>
+> Is there a legitimate reason you would want the bytes are swapped?
+>
+> Can you not just probe the registers, and if they are swapped undo it?
+> Does it really need to be conditional on the machine?
+>
 
-Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-and check that the result is positive but well below the request: one
-pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-4K and 64K page kernels.
+Thanks for the suggestion. I've tested a revised approach without
+the machine-model or subsystem checks. It checks the BCM5718 register
+state, leaving a normal revision signature untouched and requiring
+the swapped revision, byte-swap bit and product ID before correcting
+the byte order. Both register readbacks are checked afterward.
 
-The test deliberately covers only the kfunc itself. A full example of
-the intended asynchronous use, where a BPF program watches one cgroup's
-workingset refaults and reclaims another one from bpf_wq callbacks, is
-maintained out of tree at [1], released under GPLv2.
+On the M3000, all four ports normalized at boot, with no additional
+normalization on driver rebind. Link cycling and bidirectional
+file-transfer checks also passed.
 
-Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
-is not built at all.
+I'll send v2 shortly.
 
-[1] https://github.com/teawater/memcg-async-reclaim
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-Changelog:
-v4:
-According to the comment of Barry, test skips instead of failing on a
-read-only mount.
-v3:
-According to the comment of Barry, use write() + fsync() to charge the
-page cache instead of ftruncate() + read().
-According to the comment of AI, skip instead of fail when no regular
-filesystem is available for the workload file.
-v2:
-According to the comment of Alexei, remove the samples/bpf sample patch.
-Ship it out-of-tree as a standalone project.
-
- tools/testing/selftests/bpf/config            |   1 +
- .../bpf/prog_tests/memcg_proactive_reclaim.c  | 130 ++++++++++++++++++
- .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
- 3 files changed, 165 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 2b883b388f90..5621ef94ad7e 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -57,6 +57,7 @@ CONFIG_LIRC=y
- CONFIG_LIVEPATCH=y
- CONFIG_LWTUNNEL=y
- CONFIG_LWTUNNEL_BPF=y
-+CONFIG_MEMCG=y
- CONFIG_MODULE_SIG=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..c22dcfabe856
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-@@ -0,0 +1,130 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <limits.h>
-+#include <linux/magic.h>
-+#include <sys/statfs.h>
-+#include <unistd.h>
-+
-+#include "cgroup_helpers.h"
-+#include "memcg_proactive_reclaim.skel.h"
-+
-+#define CG_PATH "/memcg_proactive_reclaim"
-+
-+/*
-+ * Large enough that a single reclaim pass cannot come close to it, so that
-+ * "reclaimed less than was asked for" is not page-size noise: one pass is
-+ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
-+ * on 64K pages.
-+ */
-+#define FILE_SIZE (32 * 1024 * 1024UL)
-+#define BUF_SIZE (64 * 1024)
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/*
-+ * The data file has to sit on a writable regular filesystem: tmpfs pages are
-+ * charged as shmem, so whether they can be reclaimed at all depends on swap
-+ * being available, and a read-only mount cannot host the file at all (EROFS
-+ * applies to root too). /tmp is tmpfs on many systems, and test_progs is
-+ * routinely run from a tmpfs working directory, so both candidates need the
-+ * check.
-+ */
-+static const char *workload_dir(void)
-+{
-+	static const char * const dirs[] = { "/tmp", "." };
-+	struct statfs st;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dirs); i++)
-+		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
-+		    st.f_type != RAMFS_MAGIC && !access(dirs[i], W_OK))
-+			return dirs[i];
-+
-+	return NULL;
-+}
-+
-+void test_memcg_proactive_reclaim(void)
-+{
-+	struct memcg_proactive_reclaim *skel = NULL;
-+	struct reclaim_args args = {};
-+
-+	LIBBPF_OPTS(bpf_test_run_opts, opts,
-+		    .ctx_in = &args,
-+		    .ctx_size_in = sizeof(args));
-+
-+	char data_file[PATH_MAX];
-+	static char buf[BUF_SIZE];
-+	__u64 cgroup_id;
-+	const char *dir;
-+	off_t off;
-+	int cg_fd = -1, data_fd = -1, err;
-+
-+	/*
-+	 * Both candidate directories can be unusable: tmpfs (initramfs-based
-+	 * CI, for instance) or a read-only mount. That is an environment
-+	 * limitation, not a test failure.
-+	 */
-+	dir = workload_dir();
-+	if (!dir) {
-+		test__skip();
-+		return;
-+	}
-+
-+	snprintf(data_file, sizeof(data_file),
-+		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
-+	data_fd = mkstemp(data_file);
-+	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
-+		return;
-+
-+	cg_fd = cgroup_setup_and_join(CG_PATH);
-+	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
-+		goto out;
-+
-+	cgroup_id = get_cgroup_id(CG_PATH);
-+	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
-+		goto out;
-+
-+	skel = memcg_proactive_reclaim__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto out;
-+
-+	/* Charge FILE_SIZE of clean page cache to the cgroup. */
-+	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
-+		if (!ASSERT_EQ(write(data_fd, buf, sizeof(buf)),
-+			       (ssize_t)sizeof(buf), "write"))
-+			goto out;
-+	if (!ASSERT_OK(fsync(data_fd), "fsync"))
-+		goto out;
-+
-+	args.cgroup_id = cgroup_id;
-+	args.size = FILE_SIZE;
-+	skel->bss->reclaimed = 0;
-+	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
-+				     &opts);
-+	if (!ASSERT_OK(err, "test_run"))
-+		goto out;
-+	if (!ASSERT_EQ(opts.retval, 0, "retval"))
-+		goto out;
-+
-+	/*
-+	 * A single call is a single bounded pass: it reclaims something, but
-+	 * stops well short of the requested size instead of retrying until the
-+	 * goal is reached the way a write to memory.reclaim does.
-+	 */
-+	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
-+	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
-+
-+out:
-+	if (skel)
-+		memcg_proactive_reclaim__destroy(skel);
-+	if (cg_fd >= 0)
-+		close(cg_fd);
-+	if (data_fd >= 0) {
-+		close(data_fd);
-+		unlink(data_file);
-+	}
-+	cleanup_cgroup_environment();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..b551192526fc
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/* Signed, because bpf_test_run_opts.retval is a __u32. */
-+__s64 reclaimed;
-+
-+SEC("syscall")
-+int memcg_proactive_reclaim(struct reclaim_args *ctx)
-+{
-+	struct mem_cgroup *memcg;
-+	struct cgroup *cgrp;
-+
-+	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
-+	if (!cgrp)
-+		return 0;
-+
-+	memcg = bpf_get_mem_cgroup(&cgrp->self);
-+	if (memcg) {
-+		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
-+		bpf_put_mem_cgroup(memcg);
-+	}
-+	bpf_cgroup_release(cgrp);
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.43.0
-
+Thanks,
+Magnus
