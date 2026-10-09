@@ -1,120 +1,99 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED44B3BE179;
-	Fri,  9 Oct 2026 08:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6CD3F23B1;
+	Fri,  9 Oct 2026 08:38:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791535055; cv=none; b=WgVrNxD+Ti2Knb28v6qBFzbi2JYgm/IDE8Ky4tQaK5Jwy4OJQxNuDLQCNgc140WapQoGkEbifNVWgaSsqKWJIuoIYQemAFxmKPjgQWsFmKJaq+TjsGIqy/GNIyG/QUCAYK17RBRiME6wlo6pRnsc6RKgwBWFtXzhGnwKTJFLfQs=
+	t=1791535140; cv=none; b=BW8bNVPEetzcyAA8y4XFg8pxvvRO5IswgVNXtLyw0odyoPAi+lk/4RCDGrq8EwvlKyZ/BTMtwGEygd31WA5KDI7TZoOqEOZytpgR/NZbn7yJlr7P9EvV7fjhO0G6FH28LfzjqU9MBNP/HsKfTzKRmJ8Dk0paP86dEGjoksIZsDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791535055; c=relaxed/simple;
-	bh=6kBGKdI4xRgmH+upwAe8YgkIdImCBWYu4BA78K8w4Bk=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=PgVBh69H34bTMQskXwtYVWd0zoOhGdbKAHk3G8/lMpE5whF7uuzue2RT2G0hdknlIIWEWkL/0X4A7E3LdnSiV1/nPIie+3AzIMwEAtYLAXtqQbWSNi7OGKq1WB4ncWe+FLcXEsvYnq89Q7D71SvykEKe2+Vv603/yU29waIkjNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=x9O41Ioi; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1791535140; c=relaxed/simple;
+	bh=7+Cf/AaTxbLmYEDtCQE75GxCYmkqk4cDoNDIVdmLi6g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kPhSzavZRPQ/q4P4ULm4V27xcPlNlOl8IAz6/jkFQr/twMrmVZGZrhEhbnl/plV2JN3d+RNnPpIdQGJ3DSJREDmZ2wWtbIvaoPplArG8RZkhl6wPEI4NQkrneRmVvSUqa9Hx2HEch1M5B/FZgTYQjIbOjJfzOge5l1PAKcoBLag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KGi2EQj9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="x9O41Ioi"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B591A1561;
-	Fri,  9 Oct 2026 10:37:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791535049; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=1jl9tQJWjV8nksZpR7yDPWHvqkEBuwYygti9sXjrMe4=;
-	b=x9O41IoiaA1sMC21CzEWXcQnk55P4GigN1uHSPsC+Xtwt2d2EL0M+tos8ltfSemhW41AK8
-	kD003tpHzLnlGAegyXUbN/wPwAvt5fhftLLFE1jpRbTjZ603yJsSal9NWqgvUuMItqT+Or
-	/PXjWcCZmvj46iJ7m6LuI7uTgvFIiRrtHN2OIasf3FdXGqof8nYskGFaSVHJeRch8pUA2X
-	csndNPDuhOhHJdEQCT5AmFngKcWovukqFeQbTXLnGqMcH5pNpjrQWs5vvUANXIVUxt5BUT
-	30y71+BxBLLKuTrz85C71kghZPYenrZsTHCT0czszyn7iHFlU8KUC+L6PXmquQ==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KGi2EQj9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02221F000FF;
+	Fri,  9 Oct 2026 08:38:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791535138;
+	bh=+2ksSPu2eoUDNq7v3hNGID9sRvWeLXBxpAnRk+ghzc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KGi2EQj9uJW1bEBhGD3f55CNQiBag4bypMM0sRPe+8cIMtR7ApAfXtNGtcauzSlHK
+	 T+g3E//fO8i3L4sntZeheIBunZGzyfTSa2IIZ1o0h8wlCLYolBGetDQAHqwyN2KP0A
+	 kOzReBm82yNTKojrQOa8LRFjKozr00qpFY1UL6Jt+e6flKs6QH0x1gXIE6im2bz8L6
+	 wEyxt5EgaI9OV78UmR2nJ8y0GEiuYRndlVnGdqHoqGZtQCaTXKwmFigej6TS9Dklz/
+	 CEh6mgIFwXm/zi4S+C/YfHgJinGRCjtBfgF+oMCxE5VJ46y5wFN5oaPOJez/wZ5ufi
+	 MlQgRswb0wxLw==
+Date: Fri, 9 Oct 2026 10:38:55 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Til Kaiser <mail@tk154.de>
+Cc: netdev@vger.kernel.org, Luo Jie <jie.luo@oss.qualcomm.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Lei Wei <quic_leiwei@quicinc.com>, Suruchi Agarwal <quic_suruchia@quicinc.com>, 
+	Pavithra R <quic_pavir@quicinc.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next 3/4] dt-bindings: net: qcom,ipq9574-ppe: Add
+ IPQ5332 support
+Message-ID: <20261009-practical-wildebeest-of-conversion-7c0e59@quoll>
+References: <20261005152915.101780-1-mail@tk154.de>
+ <20261005152915.101780-4-mail@tk154.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 09 Oct 2026 10:37:26 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, o.rempel@pengutronix.de,
- maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- Jose.Abreu@synopsys.com, saeedm@nvidia.com, tariqt@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, dtatulea@nvidia.com, alazar@nvidia.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next 3/3] net/mlx5e: use skb_share_check() in the
- loopback selftest hook
-In-Reply-To: <179149509264.434549.15492783775949444420@kernel.org>
-References: <20261007-nb-net-selftest-shared-net-v1-3-458369bfa1ba@tipi-net.de>
- <179149509264.434549.15492783775949444420@kernel.org>
-Message-ID: <b90df783d996dbad672656dc81c8f5de@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261005152915.101780-4-mail@tk154.de>
 
-On 8.10.2026 23:31, netdev-bot+sashiko@kernel.org wrote:
+On Mon, Oct 05, 2026 at 05:29:14PM +0200, Til Kaiser wrote:
+> IPQ5332 uses the same PPE architecture as IPQ9574, but has two front
+> panel ports instead of six and four interconnect paths instead of seven.
+> 
+> Add the qcom,ipq5332-ppe compatible and constrain the interconnects
+> and port nodes per SoC: IPQ5332 takes four interconnects and only
+> ethernet-port@1 and ethernet-port@2, while IPQ9574 keeps seven
+> interconnects.
+> 
+> The PPE core, EDMA and MAC clock functions are shared, but IPQ5332 also
+> needs the GCC IM sleep clock. The PPE core uses one reset and each MAC
+> uses three resets on both SoCs. IPQ5332 EDMA needs separate system and
+> configuration resets; IPQ9574 uses one combined reset. Constrain the
+> clock and reset counts accordingly. Keep EDMA resets positional, with
+> the system reset first and the configuration reset second on IPQ5332,
+> consistent with the existing unnamed IPQ9574 reset.
+> 
+> IPQ5332 EDMA has 24 TX/completion rings, 16 RX descriptor rings and eight
+> RX fill rings, so the full EDMA interrupt set comprises 49 interrupts.
+> Constrain the interrupt counts and ring names per SoC as well.
+> 
+> The IPQ5332 clock and reset functions are described by Qualcomm's NSSCC
 
-> [...]
+How is clock relevant to this device? This is PPE, no?
 
-> [Severity: Low]
-> This isn't a bug, but the comment just below this hunk in
-> mlx5e_test_loopback_validate() now contradicts the new code:
+> driver submission. Its sleep clock is also listed in Qualcomm's
+> PPE DTS submission. The ring limits come from QSDK 14.0.1595.1665,
+> qca-nss-dp hal/soc_ops/ipq53xx/nss_ipq53xx.h.
 > 
-> 	if (skb_linearize(skb))
-> 		goto out;
-> 
-> 	/* We are only going to peek, no need to clone the SKB */
-> 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
-> 		goto out;
-> 
-> skb_share_check() calls skb_clone() whenever the skb is shared. After
-> that, skb_linearize() can modify or reallocate the skb head.
-> 
-> Should this comment be dropped or reworded? A later reader could take
-> "no need to clone" at face value and remove the skb_share_check().
-> stmmac_test_loopback_validate() uses the same skb_share_check() +
-> skb_linearize() sequence and has no such comment.
+> Link: https://lore.kernel.org/r/20240829082830.56959-7-quic_varada@quicinc.com
+> Link: https://lore.kernel.org/r/20240110112059.2498-3-quic_luoj@quicinc.com
 
-Yes, it is stale. I'll drop it if a v2 is needed.
+I do not understand how these clock patches are relevant here.
 
-> [...]
+Drop links and paragraph not relevant to this code.
 
-> [Severity: Low]
-> This is a pre-existing issue and was not introduced by this patch.
-> Further down in mlx5e_test_loopback_validate(), the UDP header is
-> located using iph->ihl, which comes from the packet and is never
-> checked:
-> 
-> 	/* Don't assume skb_transport_header() was set */
-> 	udph = (struct udphdr *)((u8 *)iph + 4 * iph->ihl);
-> 	if (udph->dest != htons(9))
-> 		goto out;
-> 
-> 	mlxh = (struct mlx5ehdr *)((char *)udph + sizeof(*udph));
-> 	if (mlxh->magic != cpu_to_be64(MLX5E_TEST_MAGIC))
-> 
-> The only length check is this one:
-> 
-> 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
-> 		goto out;
-> 
-> That guarantees 44 bytes: 20 for IP, 8 for UDP, and 16 for struct
-> mlx5ehdr, which includes the padding before magic.
-> 
-> The hook is registered with dev_add_pack() for every ETH_P_IP frame on
-> priv->netdev. While the loopback test is running, could an external UDP
-> frame sent to the port MAC with ihl up to 15 make this code read
-> udph->dest and mlxh->magic up to 40 bytes past skb_headlen()?
-> 
-> Those bytes stay inside the skb head allocation, in the tailroom or
-> skb_shared_info, and they are only compared against constants. The
-> result could be a spurious selftest outcome or a KMSAN uninit-value
-> report. Would it make sense to check 4 * iph->ihl against skb_headlen()
-> before using it?
+With this:
 
-Yes, pre-existing. I can send a separate patch for this.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+
+Best regards,
+Krzysztof
+
