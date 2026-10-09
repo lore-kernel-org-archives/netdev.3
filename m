@@ -1,94 +1,82 @@
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6064E4EF15D
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 17:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6F74F3914
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 17:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791568105; cv=none; b=gR+F+xqFwDxYCnSOlWpV3OMbcficKJyR7EBlaXSYkoaTQG3zBNuQEYI4ZO8iZba7JhselKd8tku+Jv1oG8cL4Wt1N3pr03G2SuDo0EG1nHN2XbcgWmhN4+cTo6HGbxnt86Lsbsqh2nOq7crnZseF8kCRzI2wkPF51oxrFGIfzQw=
+	t=1791568502; cv=none; b=m04ka9wfDMhBaxOl+P9jS1xo3LEC0e5bO6nIWPpEBtTm9r39FteqIyJgeBROxiAESXuBKvdihex5J2QpSruI3jDZxb/3hTNHmAarsJ+lHNB39TcoUzq7EYpiM0+Zbh/HzHt8Xw1HH7Wji0DZoVNCJVqOq1/XucwZcc/F/U7wDQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791568105; c=relaxed/simple;
-	bh=G06C5aUATOmcrADynMI536oFVbNg8OnKAEM+SR465rY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSKo0aPfwWUoefjd2VsyiTLicypgwOCEPFJetv2e/jbdHDlGSzrGji8mD/c5QZw7AhwJ3Wvxe0uEMa7csUDHGxBctiBqetrca/wvJwOsNd+qAgknAfNQmfLVQY+vcPHGgCIJzMDHXeMms2lbQkUGC7NYkQLdmT6a8PZTNgSIzD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GktQTKde; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791568502; c=relaxed/simple;
+	bh=1Um5EiCJSDVvTwK1Tyd0ZORnY2SUAT6cpGWylov2DI0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WH4u3pGjE+DFPUomjdheODv+e7d7j24knNoFxajlu05CyJ6hvPjpnyI+X2OH/LULuFrI6fZfEtMk+Rv6hp3F3MZbehqubS/wGDgGF+EC3Cp2FdMO2XzOTUBKGLUomqkriqnj5aHw7w0cscFy8dyiw85XbVe6nogfonZxNme/7yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=A0iXw+PB; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GktQTKde"
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ba3ec92031so4804117e87.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 10:48:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="A0iXw+PB"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3ab41538192so763681a91.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 10:54:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791568102; x=1792172902; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=K5vaYVFwLLngWpq3Z5O+W5okZzU1bzC9tm9Olt/FKzg=;
-        b=GktQTKdeLUEIMlDoi/S6oB4dzsEE0nUmxbuI20ExqgHnw361RPo8P7Rvj/G8lu/+VJ
-         1kw/OWHmwjecAaUuvol6ipfJRK+rOa9l43hTn0vt25JvU5cWsrWZu9/p3sNkL9XyBzRP
-         /ZkwsfcFbbEJOm8QChUaz7rf8Gp3dbL8ewYPOSwJyNWz7XBg+BzwhHeZRuKc9p+M5azT
-         ZyrD3EQaXXm7LHvWLBgFIzbGKt/pyiR8/7SEMuuFrXOXesgUJymm6L2DWFMLFOA+ATBm
-         DOj/xd3grc5gw5QhsOUW1ELKbreC635RFeIrkONzhdl6LqCfvutPDf7qhQinfQBFTVj+
-         HURQ==
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1791568491; x=1792173291; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bC+umOfWsHMMd5xQqstPSm9nZ9qFadOsLmNye9AbZ80=;
+        b=A0iXw+PBenJQucA9MRKSCMdBIpbtEELjLYLLA6u9GZGelwN4kFCkQ/Qo4KcZWT5eEc
+         Br7gsCfLatAg1S+pObeAqhF45gn9iwVXAYibG3ORIfKTIwVijAny6pEkQfiqs0WX7Zk+
+         m4fjeQMZ//qvhn3jGPjs7UmIWCATpGwrgclAPGH7tzJrApbrwinucXCSJQLP6Zt4Lvfw
+         UFg4/Q77nFZIw8waLGOfyP3Z4EycDd/OgA1zOb8IGCh5C0716QxxW5jLtPuNmWz/yYfG
+         5Li/QFD1VIsQylPzG7LzArYMT2ea5pP1+S8LmHr3MS3880mhiB1xbHBZwXTfN3l8k8Gh
+         Vk1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791568102; x=1792172902;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=K5vaYVFwLLngWpq3Z5O+W5okZzU1bzC9tm9Olt/FKzg=;
-        b=c9J31DCrubm5pjV/zh4pn4dcgl8jDvHS+V+8ZSrUNin/cEbJ5jbOcrwDGQ8F+M1n9A
-         lEMuqcitGAPkCjcwf0bKiTxqWAOg5O74BuAV5TROBsk6ja5E7wXGZm28lr3q66MTfnIo
-         S7xidGwPjUT/NAcRfLFd67R44NtpiUAxpdURXFwhxLyR+ezfEWR/k/VgGuvG7Y11TRps
-         SxRBCZxIx5zTalgG+6Rv4WM0MBG8nvsQU8KEIA4FKvlyjtIYUPIfTp0VFeJOWNteJmN7
-         aZygN1lkB+wtm6k/GXNnQhToWpXrdX7MNreEvcV79oGVZBiI5OjzEF4clgez/pbqYx2s
-         QI7Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwAR/3SyZjZQO9uud8k/zNC6SGy9Ra5gEOR0U13pXbgr2Dj0mMd8v0zLT4QDWgl8oMCUL6VPEg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLxBtibLX00ZIjR3pt3CvNUBYxwK+hfzb2chFvDSDOscei7N2bL
-	LXeOh/csiRF2jRPbV7EPCfaIk4XRhSstXGxXM2H31YdQy37x03oKewqT
-X-Gm-Gg: AYBFou23YVemZF+tC+A7llSmrD184e9+bom1MQYJ9CudEn+qKx0cqtxGar0WbxJbnoW
-	REJS/wOOPCW7wZKub+8JnJoWfBMd4fZlm/i4mwj1quaRq0UU78FGp6CiIAhhvBnT6DYMgunsJsY
-	f4+7xoD5NrwSeoZz9BDvBXJ7YlsAT9qv7iRRJ1ayUcOZWCag51qGEfxeA3PjaQe6jmaKhXaiiLW
-	5RY1WCV7BLjGhlzucS9ogHvGV2xJIHmevKc+XnIe1W22GtWZM/T9oB8x7s/I1G34O7wuIG/kqEN
-	RbyPmT/XyiV7yhBK4Id/P5HO4CvXqPVnwRd++8OPOAzFECa055JBuQcKnMGDttAOPXYbpRD+Xfk
-	Ez5vgixUObX+nVVirONN2IHNKtSowyCNoP4KqbvPBa13tn3MBNLBUG0P9+Ja3nkr7jNuvU9+vf3
-	uycXOoCGMJ1S0CZprWEpEPYo3J0d/wKzG1RDkdXOCutS3DxH7VpXGA+xcNsEDRXa7AXoXpHc/zu
-	AqIsXw4BxKJ4vIae9IkS/BmavvRz84EOUF1QZMPWedtQrKze72r
-X-Received: by 2002:a05:6512:340e:b0:5b6:31c:bb0c with SMTP id 2adb3069b0e04-5bcde35222amr856659e87.9.1791568102256;
-        Fri, 09 Oct 2026 10:48:22 -0700 (PDT)
-Received: from localhost.localdomain (95-24-167-79.broadband.corbina.ru. [95.24.167.79])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bcddeb5604sm852635e87.63.2026.10.09.10.48.19
+        d=1e100.net; s=20260707; t=1791568491; x=1792173291;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bC+umOfWsHMMd5xQqstPSm9nZ9qFadOsLmNye9AbZ80=;
+        b=2gVVGcNv7aa6cm8jq600iMqee3W+3BYmPebsZ7C1VrxKPpaTP3A5DBc7hkJlnt3IFK
+         IXc7ft64k9LKaoVgKKVuUP3gPyRqn8qE7R2MC7FBvNFdkszVD1CarnIyken28GsjFwSy
+         q7rqwWjRg//tgYo3urKWLXLWSNb8X+m5R6BQ1nb5NYGLS0bEdm8Vur/Vss62DeITQan3
+         T0DDSoRYtmRuOt7VdxqKsxfRVPJ9ceGaQ/znTUsFE7VFeK9HWvV/zK02HucKU/mQ8r4H
+         mzS5iaK/lHug4VQJDwaO4mx/r4dKIqqWDRuN/fneuxPCcIWXwyqHt/BDIPUXHKu3DDTU
+         igoA==
+X-Forwarded-Encrypted: i=1; AKwUvBwyB0zPA1zoCnl7qywPbVYQ1oKN++/H99PTCiEXlGtooYGmP+rEUSMQppTXPRFzloSCOKAI/vI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKSKjmgPpaAlw7e4Svmgf19nuS1tmXzTe9AAY91XRunkK2F0LKf
+	YgHsUSfaabswlE0hh0Qd1KHJ02NP7UAVzbcbJjao4v6in0VVzR9V3avpCnV9qo90Ga4=
+X-Gm-Gg: AYBFou0oOoWbD6JQJHM8cSFbH2l33FXT+ThU0+ZMZ6FuE3fsfeK7+VuIXE/HKdGhK8K
+	hkou9p8aUFdWsQAuu0e67DxxzoM95sP0ZfZ2Bz3lp7kIJ1gQyIwCy5gVqIA/1wjLmx3dYqA9Jo+
+	IupzrJNuSGlgtm0M3Hv34XmJNxaBF0LNL+9NJ5dmGgzDr1wfBKtuumRh6P7rHDZr2/oJH+M5bes
+	tfCAg/CHihc1MknmybA+4oOMy0VERiyDW8KMyUQh8g8X8PMmp1vgfx29R9tsLsZZN3MeDyakXxI
+	v0t8McjJWy+hguv4AnY2r2wBr1TPeSjAXjJY2oa8iAoqSJw7SWqQiFdg+VWs6QfAUfxnyYUPx7G
+	c6KVe9RGXjnmUqdUXriZ/9ZkfdjyR8/y+po1krSWF54rO7EKZODO9VSnIlBGc2gQUwu5RGubB1k
+	f8j7cltFOHY5FoheOScigXSTI9/I8iKyv3AByyX0cxB3NKg+xH3bZs8F1C4hBNE02qKWHsj6Cb0
+	nhCQhY05dTXq+Nvutvv4w==
+X-Received: by 2002:a17:90b:2688:b0:3a4:adea:50ad with SMTP id 98e67ed59e1d1-3ab3a775938mr2547113a91.27.1791568490985;
+        Fri, 09 Oct 2026 10:54:50 -0700 (PDT)
+Received: from localhost.localdomain ([2406:5900:1044:110c:c95f:28ac:324a:cdc3])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab36ed040dsm5596962a91.6.2026.10.09.10.54.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 10:48:21 -0700 (PDT)
-From: Maxim Skokov <skokovmaksimevg@gmail.com>
-To: bpf@vger.kernel.org
-Cc: ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	memxor@gmail.com,
-	emil@etsalapatis.com,
-	ihor.solodrai@linux.dev,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	vadim.fedorenko@linux.dev,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
+        Fri, 09 Oct 2026 10:54:50 -0700 (PDT)
+From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+To: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org
+Cc: kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Dimitri Daskalakis <daskald@meta.com>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Maxim Skokov <skokovmaksimevg@gmail.com>
-Subject: [PATCH bpf v2 2/2] selftests/bpf: Cover test_run csum validation after bpf_skb_change_tail()
-Date: Fri,  9 Oct 2026 20:47:48 +0300
-Message-ID: <20261009174755.22026-3-skokovmaksimevg@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261009174755.22026-1-skokovmaksimevg@gmail.com>
-References: <20261009174755.22026-1-skokovmaksimevg@gmail.com>
+	Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Subject: [PATCH net] eth: fbnic: validate the Rx completion buffer index
+Date: Sat, 10 Oct 2026 02:53:58 +0900
+Message-ID: <20261009175358.1598001-1-yhlee@isslab.korea.ac.kr>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,132 +85,112 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add BPF_F_TEST_SKB_CHECKSUM_COMPLETE tests for tc programs that move the
-skb out of CHECKSUM_COMPLETE with bpf_skb_change_tail():
+The buffer ID in an address/length Rx completion descriptor is a 16 bit
+field, FBNIC_RCD_AL_BUFF_PAGE_MASK being DESC_GENMASK(15, 0) once the
+fragment bits are removed, so the device can name any index from 0 to
+65535.  fbnic_pkt_prepare() and fbnic_add_rx_frag() feed that value
+straight into fbnic_page_pool_get_head() and fbnic_page_pool_get_data(),
+which use it to subscript qt->sub0.rx_buf[] and qt->sub1.rx_buf[].
 
-- change_tail_trim trims the last 4 bytes of pkt_v4. They hold the
-  non-zero tcp.urg_ptr, so the stale skb->csum no longer matches the
-  packet.
-- change_tail_grow_write appends 4 zero bytes, which on their own do
-  not change the sum, and then writes a byte with BPF_F_RECOMPUTE_CSUM.
-  That write can no longer update skb->csum.
+Those arrays only cover the buffers the driver posted.  They are
+allocated with size_mask + 1 entries, and size_mask comes from
+hpq_size / FBNIC_BD_FRAG_COUNT, so at the default FBNIC_HPQ_SIZE_DEFAULT
+of 256 each array holds 256 entries of 16 bytes, that is 4096 bytes.  A
+buffer ID of 65535 reaches 1048560 bytes past the start of the
+allocation.
 
-Both return -EBADMSG without the preceding test_run fix and pass with
-it.
+The fill side already masks every index it computes against
+bdq->size_mask, and so does all of the ring head and tail arithmetic.
+The completion side does not.  A descriptor naming a buffer that was
+never posted makes fbnic_page_pool_get_head() decrement pagecnt_bias
+through a pointer outside the array and hand the out-of-bounds
+netmem_ref back as a struct page; page_pool_get_dma_addr() and
+page_address() then dereference it and the skb is built on whatever it
+points at.
 
-Also add store_no_recompute as a negative test. It writes a byte
-without BPF_F_RECOMPUTE_CSUM, so the skb stays CHECKSUM_COMPLETE with a
-stale skb->csum, and test_run must keep returning -EBADMSG. This checks
-that the validation still runs for CHECKSUM_COMPLETE skbs. The passing
-case, a CHECKSUM_COMPLETE skb whose checksum is updated correctly, is
-already covered by test_skb_pkt_end.
+Injecting an out-of-range header completion reports under KASAN:
 
-Assisted-by: LLM
-Signed-off-by: Maxim Skokov <skokovmaksimevg@gmail.com>
+  BUG: KASAN: slab-out-of-bounds in fbnic_page_pool_get_head
+  Read of size 8 at addr ffff88800c719008
+  The buggy address is located 8 bytes to the right of
+   allocated 4096-byte region [ffff88800c718000, ffff88800c719000)
+
+Check the ID against size_mask before it is used and drop the packet if
+it is out of range.  Masking it instead would keep the access in bounds
+but would silently attribute the completion to an unrelated buffer that
+the driver does own, which is worse than a drop.  Set add_frag_failed so
+the frame takes the existing error path.
+
+Rejecting the header completion leaves pkt->buff uninitialized, and the
+payload completions that follow are handled before the metadata
+descriptor that looks at add_frag_failed, so fbnic_add_rx_frag() has to
+bail out as well or xdp_buff_add_frag() writes through a shared info
+pointer derived from a NULL data_hard_start.  Key that on
+data_hard_start, the way fbnic_put_pkt_buff() already does, so the
+buffer accounting on the normal path is untouched.
+
+Fixes: a29b8eb6e533 ("eth: fbnic: Add basic Rx handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 ---
- .../bpf/prog_tests/skb_csum_complete.c        | 39 ++++++++++++++++
- .../selftests/bpf/progs/skb_csum_complete.c   | 46 +++++++++++++++++++
- 2 files changed, 85 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/skb_csum_complete.c
- create mode 100644 tools/testing/selftests/bpf/progs/skb_csum_complete.c
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 27 ++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/skb_csum_complete.c b/tools/testing/selftests/bpf/prog_tests/skb_csum_complete.c
-new file mode 100644
-index 0000000000000..919f24dbacd3d
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/skb_csum_complete.c
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <network_helpers.h>
-+#include "skb_csum_complete.skel.h"
-+
-+static void run(struct bpf_program *prog, int expected_err)
-+{
-+	LIBBPF_OPTS(bpf_test_run_opts, topts,
-+		.data_in = &pkt_v4,
-+		.data_size_in = sizeof(pkt_v4),
-+		.repeat = 1,
-+		.flags = BPF_F_TEST_SKB_CHECKSUM_COMPLETE,
-+	);
-+	int err;
-+
-+	err = bpf_prog_test_run_opts(bpf_program__fd(prog), &topts);
-+	if (!ASSERT_EQ(err, expected_err, "test_run"))
-+		return;
-+	if (!expected_err)
-+		ASSERT_EQ(topts.retval, 0, "retval");
-+}
-+
-+void test_skb_csum_complete(void)
-+{
-+	struct skb_csum_complete *skel;
-+
-+	skel = skb_csum_complete__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_and_load"))
-+		return;
-+
-+	if (test__start_subtest("change_tail_trim"))
-+		run(skel->progs.change_tail_trim, 0);
-+	if (test__start_subtest("change_tail_grow_write"))
-+		run(skel->progs.change_tail_grow_write, 0);
-+	if (test__start_subtest("store_no_recompute"))
-+		run(skel->progs.store_no_recompute, -EBADMSG);
-+
-+	skb_csum_complete__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/skb_csum_complete.c b/tools/testing/selftests/bpf/progs/skb_csum_complete.c
-new file mode 100644
-index 0000000000000..644731a12dc87
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/skb_csum_complete.c
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <vmlinux.h>
-+#include <bpf/bpf_helpers.h>
-+
-+SEC("tc")
-+int change_tail_trim(struct __sk_buff *skb)
-+{
-+	/*
-+	 * Drops CHECKSUM_COMPLETE. skb->csum still covers the trimmed bytes,
-+	 * which hold the non-zero tcp.urg_ptr of pkt_v4, so it no longer
-+	 * matches the packet.
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index 10caacffee0f0..d85daab06c99c 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -985,14 +985,24 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
+ {
+ 	unsigned int hdr_pg_idx = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
+ 	unsigned int hdr_pg_off = FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
+-	struct page *page = fbnic_page_pool_get_head(qt, hdr_pg_idx);
+ 	unsigned int len = FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
+ 	unsigned int frame_sz, hdr_pg_start, hdr_pg_end, headroom;
+ 	unsigned char *hdr_start;
++	struct page *page;
+ 
+ 	/* data_hard_start should always be NULL when this is called */
+ 	WARN_ON_ONCE(pkt->buff.data_hard_start);
+ 
++	/* A buffer ID the device never got from us cannot name a buffer we
++	 * own, so drop the packet instead of running off the end of rx_buf[].
 +	 */
-+	if (bpf_skb_change_tail(skb, skb->len - 4, 0))
-+		return 1;
-+	return 0;
-+}
++	if (unlikely(hdr_pg_idx > qt->sub0.size_mask)) {
++		pkt->add_frag_failed = true;
++		return;
++	}
 +
-+SEC("tc")
-+int change_tail_grow_write(struct __sk_buff *skb)
-+{
-+	__u8 val = 0xab;
++	page = fbnic_page_pool_get_head(qt, hdr_pg_idx);
 +
-+	/*
-+	 * Drops CHECKSUM_COMPLETE. The new bytes are zero and do not change
-+	 * the sum, but the write below can no longer update skb->csum.
+ 	/* Short-cut the end calculation if we know page is fully consumed */
+ 	hdr_pg_end = FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
+ 		     FBNIC_BD_FRAG_SIZE : fbnic_hdr_pg_end(hdr_pg_off, len);
+@@ -1026,10 +1036,23 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
+ 	unsigned int pg_idx = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
+ 	unsigned int pg_off = FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
+ 	unsigned int len = FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
+-	netmem_ref netmem = fbnic_page_pool_get_data(qt, pg_idx);
+ 	unsigned int truesize;
++	netmem_ref netmem;
+ 	bool added;
+ 
++	/* The header completion was rejected, so buff was never initialized
++	 * and add_frag_failed is already set.  There is nothing to add to.
 +	 */
-+	if (bpf_skb_change_tail(skb, skb->len + 4, 0))
-+		return 1;
-+	if (bpf_skb_store_bytes(skb, skb->len - 1, &val, sizeof(val),
-+				BPF_F_RECOMPUTE_CSUM))
-+		return 2;
-+	return 0;
-+}
++	if (unlikely(!pkt->buff.data_hard_start))
++		return;
 +
-+SEC("tc")
-+int store_no_recompute(struct __sk_buff *skb)
-+{
-+	__u8 val = 0xab;
++	if (unlikely(pg_idx > qt->sub1.size_mask)) {
++		pkt->add_frag_failed = true;
++		return;
++	}
 +
-+	/* skb stays CHECKSUM_COMPLETE, but skb->csum is not updated. */
-+	if (bpf_skb_store_bytes(skb, skb->len - 1, &val, sizeof(val), 0))
-+		return 1;
-+	return 0;
-+}
++	netmem = fbnic_page_pool_get_data(qt, pg_idx);
 +
-+char _license[] SEC("license") = "GPL";
+ 	truesize = FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
+ 		   FBNIC_BD_FRAG_SIZE - pg_off : ALIGN(len, 128);
+ 
 -- 
-2.47.3
+2.43.0
 
