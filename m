@@ -1,106 +1,87 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0062335C69E;
-	Fri,  9 Oct 2026 15:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D879F3905E0;
+	Fri,  9 Oct 2026 15:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791558968; cv=none; b=WHFkmGB3ENI/eNIg1kbtWztBU1MpaSmERSpM6PLR/mbLZxtlog9rHA2MM6g+xP2moBQsWxL68DyCLsGOQDTtaQJ3Q+NXeNzpFUqX2vUfkaXZigYqrLDVq4O0hNKsqR7F2NBuVaq/fucH7c0H6dm7XdMsQD/Yo28zQd2SYQRlX5k=
+	t=1791559154; cv=none; b=ZImCe+b67OmeV8sCjGUW3aaL3k2Gz6O589cJBA+Ss7yvN6OlLEmSoZWi+VG97Q26R5JCcIKmgpouoxCKwv5oNetObklTp0SDrzzgazGX+SQRqzWaT34UBs6tr0jaFVWVWzwhfPmG4xko0zpXl/oYGXHomUDVQeUyr87D9Vplc14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791558968; c=relaxed/simple;
-	bh=o4+ZkyO2VmGyXRxiDbs8VVTEX6tQ0BmyOL11epC4bqg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hHqZpNlQCpWD34JqlaG8yOm5qhEZcV02i02/uIpRskgLCqLXx8Ni1cGHS/4eSYqOVJCYEbfAcINNSkc2/ir4KrYh44zvWm0ZraDaGp78B0gbhJS+8Lf6f8ZUKLEyKIjitwV6Bis2NUQVFn77eiH8J9/m9lQGxaxZrt6Y+6L5fDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=cTy03ma2; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1791559154; c=relaxed/simple;
+	bh=bPR5Tqwi4Y4erVYP/3BIN0RRkQjgxUFnu09DGUygdvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=khO4HAwQK8uIYJGAVyANKx0NSZy5mUOfCvh7xsuhaikeUn0qvLtm17uP/aqIosJwKzcBKHwPa+C6/riMpl19v+io1WWptg4oww/cuoBmEe3XuDIAzvbGkI5Beu1q0RX9566aOv8dLn2JwemCTz1aM2fI2ZJhvUJQn3rNovbhGuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKhhpHI6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="cTy03ma2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=ayFS0Are3+5wgCM5+cbAMqeFBhyvNmxcL24U1rZoH4Y=; b=cTy03ma2JEgNGnnLyrEoDt8Kgh
-	iTahBQ1ERMdxtoR8W8svYYZvfe/CY8PVQ737KAeaSOdYQlcLwU58xgBVyLXgVmaJvJF+5Qd8+cs2+
-	hsiV4okIbs5JB5d3o98Bfm8gPFFyeFDknKTeyufAgSBzoIHjw+M8Q43YM7Rr+RLNAM7sTHCrbT89G
-	bEcWxSBjtNVyFX+1L5/iJYs8T/H4fHprGgVDK935gMrLhRdmprK9NRLNrUkL104vjc1Va47C+joL0
-	TpOppKOTApB1egOU0Z/9Gqsg3MrGkLz9Lr20i6uuoZKRi7cVWEtQJt25EJcwgANGo1U0PPKrbV4sc
-	48dBFlPw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xFCKE-000cVw-00;
-	Fri, 09 Oct 2026 15:15:58 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 09 Oct 2026 06:39:25 -0700
-Subject: [PATCH net] MAINTAINERS: add Gustavo Luiz Duarte as netconsole
- reviewer
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKhhpHI6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32F71F000FF;
+	Fri,  9 Oct 2026 15:19:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791559153;
+	bh=jZKQBS895WjgLPHYyn9gLII3Mh3ShLe3Tp6Or1il/2g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gKhhpHI6zRqA9uKz3Ah2TEHVaj41J6RpNCKNJB7BwQKDW1N72JWeeK8pqVY6vqPhl
+	 XwuOXpVCtcW0AvmM3DJKvG8oSlW136BMtQoKGWl4W+a4lTre1tw5IP922hjN84IqC4
+	 ZZgxKsDBXjMjtTDveSFLcLQc8oDMGw6lhNrmkyXm6A6vzb029XvJ655AwAl+LS6FAO
+	 cH2c8i67NibnQQ0AeJy75X0UgloGIaEaR/X4LfHntWsCOnfJx4TqXCkUswC0uI6Pxv
+	 nuzzrwRCOnwOkFnjibpTllQV1vQTFdFTqSDqRkI4vzY7qAosSlM6oUZyPIouzHPU1p
+	 26+QaqRJ5FAEg==
+Date: Fri, 9 Oct 2026 16:19:06 +0100
+From: Simon Horman <horms@kernel.org>
+To: Wei Hu <weh@linux.microsoft.com>
+Cc: Long Li <longli@kernel.org>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Kees Cook <kees+treewide@kernel.org>, Kees Cook <kees@kernel.org>,
+	Manish Awasthi <mawasthi@linux.microsoft.com>,
+	Wei Hu <weh@microsoft.com>
+Subject: Re: [PATCH net-next v6 0/4] net: mana: concurrent HWC requests and
+ dynamic queue depth
+Message-ID: <20261009151906.GF83879@horms.kernel.org>
+References: <cover.1790665894.git.weh@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-netcon_main-v1-1-6d298ab5a0cd@debian.org>
-X-B4-Tracking: v=1; b=H4sIAI3uyGoC/x3MWwqDMBAF0K0M99vAxEep2UoR0Ti28+FYEhFB3
- LvgWcA5kSWpZAQ6kWTXrKshkC8I8TfYV5xOCISSy5dnbp3JFlfrl0HNNTXzVL3b0fuIgvBPMuv
- xbB+YbOiu6wY6MIW9YgAAAA==
-X-Change-ID: 20261009-netcon_main-5400d389b11c
-To: Gustavo Luiz Duarte <gustavold@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=826; i=leitao@debian.org;
- h=from:subject:message-id; bh=o4+ZkyO2VmGyXRxiDbs8VVTEX6tQ0BmyOL11epC4bqg=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqyQUpQqP4LNKKB6ak/CQlSFgGOV3jlk2mVAPiP
- VvlkF+j7VCJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaskFKQAKCRA1o5Of/Hh3
- bYeaD/4iKgK034u3f5Qbix86zNCsgQuDzl+sJvV0HCuyP7sKr+jCSGt9WipalfOnvZh4iCasT8g
- 6u85l0hVd5HC3kcETfoldUeb/Yzgw58gdT+d/fz3wauGljDoEk9un49Z5teOaR1BHBXju9sT/kw
- xpGLmJR/EzT1D2FLIw8H2JCbMxWzMVS8RwsGc637gP4Vzf+kFIeUqUT6y96iutxM66M14MWr4MB
- 4hSNC6Q+3ZswsL7K9AAYexrigKneWbI0JmCWXGNmrmsW2dCE49IZ53zYf6Z8KgmBSlmtoyvsotB
- PpwUn9pLLV3gSZ3W3Brkf78v/womexMWWi8hpbp+AxkPA2o0ZWT/Qypcnpy7o7XNMFS7qftdf8Q
- OtksDXPOCQD3S4bUCFOAAqvRPXwM3TfipTaDNs+kRo/pLb++GDfC+nvVA6tf6DIa2nbIxQK+Kfv
- N/XxtpH6MIskSYt6Zs+4GT1rpuwueAprmN2KuVVikOu7cGSvsGqJAAhvv8OLTsthoBLeL2gmb14
- dB7exTm6kRyH4PsBU9PgQeL1/66c5jBA6SDfD67Hyzq4x8j8CbyGMjWN5mIVMDItRCFp8+b0d87
- NTfwfDaoZAmE2wJKBvRNMy92Z608KjupyExiwoH4cT0OlAz0wH26ZGExLmrwvvLVBMKLS/T/Yw6
- 3ku6zIRn0K1m7BQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1790665894.git.weh@linux.microsoft.com>
 
-Gustavo has been the most active netconsole reviewer, let's add him
-to the MAINTAINERS file.
+On Wed, Oct 07, 2026 at 12:53:26PM +0000, Wei Hu wrote:
 
-Add an R: entry so get_maintainer.pl Cc's Gustavo on netconsole patches.
+...
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+> Long Li (4):
+>   net: mana: prepare HWC ownership for safe reinitialization
+>   net: mana: give each HWC message slot its own completion state
+>   net: mana: support concurrent HWC requests
+>   net: mana: add dynamic HWC queue depth with reinit path
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 509b35b5a0e7a2..2795a65fa50751 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18831,6 +18831,7 @@ F:	drivers/net/ethernet/nebula-matrix/
- 
- NETCONSOLE
- M:	Breno Leitao <leitao@debian.org>
-+R:	Gustavo Luiz Duarte <gustavold@gmail.com>
- S:	Maintained
- F:	Documentation/networking/netconsole.rst
- F:	drivers/net/netconsole.c
+Hi Wei,
 
----
-base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
-change-id: 20261009-netcon_main-5400d389b11c
+Unfortunately this patch-set did not apply cleanly to net-next,
+and thus our CI did not run.
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+Please rebase and repost.
 
+...
+
+-- 
+pw-bot: changes-requested
