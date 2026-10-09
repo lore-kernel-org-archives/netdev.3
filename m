@@ -1,57 +1,56 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C00B1B808;
-	Fri,  9 Oct 2026 20:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803223E9C1A;
+	Fri,  9 Oct 2026 20:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791579087; cv=none; b=ElNFMVBI2c8qvMHx95ln2fwNCT008gb9zIzzf/aecW/xpPDbtoMGiKBGSTUyKil4paQdR9A6WEQe+crW4WKyvJeyPAAPNvLy8VsC+ihhQ60Mig9IVMUakLZh5bUXiVbmlwiQeOHONPMgdN07odlfYKpS6Qyi0Ed46d8AQxwXW/4=
+	t=1791579090; cv=none; b=HCCSEOAN+52Bpz59wB6MKtvc1rvCUDljmvcQGt+e9ZgxjyZ92D6bhVGkSN/TyPu1/QpQwTp5g99RhKYYa+wo3kYIdal70LK1XEcZOwDYSMvZXYfa6shMdJr1BDCBvnrpI/WYBoEyYGA/ddF0v4tFcrG1tL/sG8tntPkweWxM4RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791579087; c=relaxed/simple;
-	bh=mO4JRlde3fyBWnbVIcOK3lxvQZkqW1Kcnw2zhKxOLXE=;
+	s=arc-20240116; t=1791579090; c=relaxed/simple;
+	bh=zEGeUqX1DcxZJrUheONXXdbvpA09Ei8Yhj75igvMmgY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fxLfhlJfEGGsC96L7KOwVsdq7SH1PFt4K+dYbRQJ3F7qVeqhZI/gjvZ4P+lYLC94p1oKqiLh8ZMiirmaadE07Jb6/B4cyl3xdyDbmWQq2kUqsMRavsmsOgcxsHI1rhhSOOliahykAabScCDlZ37zx26lF1n4nfSn8XRnQ9HqKyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=henZWXe2; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=ro5vS6HAW2jwt3JfNs5lWvELEsVeg4v+FIn/tMeDszgH53WtLp81kwY/OBg2UXC3H2ipdt04xrzcKBt55jVNne+V4wQyspy0PzJlKdzU7mOsuIEnFXXkO52JT12jkHWSFm9tN7DwHn/UXJEkmOnIc2Pu2FBMS0TwBW28qyQrvTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E19lUo1C; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="henZWXe2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E19lUo1C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791579084; x=1823115084;
+  t=1791579087; x=1823115087;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=mO4JRlde3fyBWnbVIcOK3lxvQZkqW1Kcnw2zhKxOLXE=;
-  b=henZWXe26GWWqp988a0Y8CPSpxMefS3nnXIckmuscRxVL/yllXMA1nVR
-   y6tN6ic6UefOpk+Tv6bd1w3v7aNiXbJwP0ZqnV7HA/AunP0VhI2GOahtc
-   OQmCo9Zl6/hNOMuP4rXouE8IY0iNJrIEmoZZNswHH7hHK9rib4k9k5Thw
-   jM4tXmH4+P0Q6tJbUWL4g/oNcG34REFmwA++2YsBU2jfSspi5hhl6VIPG
-   WIgFEaKD7ZPiLMP1O65Oa76elESUDc2YNts8gcjUpVZ1WrWqWoFARaCmT
-   /oWlPJOsYz32In+iIkne4G5IH/BRNWKPDvOCpw+6uQy0FnQwJhvj+oGQE
-   A==;
-X-CSE-ConnectionGUID: JmAyqJOhRX2qJMAfx0z7qw==
-X-CSE-MsgGUID: pOINpP7jS9OQ8nTznP9NTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="278170"
+  bh=zEGeUqX1DcxZJrUheONXXdbvpA09Ei8Yhj75igvMmgY=;
+  b=E19lUo1Cx5MkAPyfBx+WNFk2o+eO3Y8NbYJ49Huws8vjzTH9F/MywID8
+   IUnIZsGD/XGjzhirHj/dPCkvGyEl93zefN8ayjY4oNK3oVTd4MNWKnZgh
+   IFoKLxU3po2xz1kryxNiC+vj2pzOAwBPGBYmt8iDFuFtjL9NlFK4s0vAq
+   aFu4Sv6WF529Znq/xvJibfmb+otXPfTGgTtFtfgbhHtWAvrAkQmqfmruy
+   /jDoWXPGE408D1kBWQL6UXBbeg5m2UsN4jBzb2Za0BroPPuzx2taRrreJ
+   pnhseITSHH4rHjBgkONRP9+BBtAMzi6DjtEIjjzEE/emP8LvaxXv2PPGL
+   w==;
+X-CSE-ConnectionGUID: EYKkScv0Rn2k3K/Jt6nlBg==
+X-CSE-MsgGUID: U/61MQdhRYW1ZLt8wYyIag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="278162"
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="278170"
+   d="scan'208";a="278162"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
   by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 13:51:23 -0700
-X-CSE-ConnectionGUID: LoEIyudnSVGZNcfAIi7YIA==
-X-CSE-MsgGUID: EzDvV8EbSYWC2P/rtAjbdQ==
+X-CSE-ConnectionGUID: x/ZTpGljRU6MOJlcjw+hOg==
+X-CSE-MsgGUID: 2WcaUnjHSRab3tGwVfgkGA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
-   d="scan'208";a="722734"
+   d="scan'208";a="722735"
 Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
   by fmviesa008.fm.intel.com with ESMTP; 09 Oct 2026 13:51:21 -0700
 Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1xFHYk-000000006BE-1lBG;
+	id 1xFHYk-000000006BG-1qLg;
 	Fri, 09 Oct 2026 20:51:18 +0000
-Date: Sat, 10 Oct 2026 04:51:02 +0800
+Date: Sat, 10 Oct 2026 04:51:04 +0800
 From: kernel test robot <lkp@intel.com>
 To: Konstantin Meshkov <skyline@mail.ru>, netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
 	Aleksander Jan Bajkowski <olek2@wp.pl>,
@@ -59,7 +58,7 @@ Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net-next] net: phy: marvell: add LED support for 88E1116R
  PHY
-Message-ID: <202610100452.oJWOdesg-lkp@intel.com>
+Message-ID: <202610100412.3inKNHop-lkp@intel.com>
 References: <179152610952.2918676.6625057760354797023@mail.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -81,28 +80,21 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Konstantin-Meshkov/net-ph
 base:   net-next/main
 patch link:    https://lore.kernel.org/r/179152610952.2918676.6625057760354797023%40mail.ru
 patch subject: [PATCH net-next] net: phy: marvell: add LED support for 88E1116R PHY
-config: arm-defconfig (https://download.01.org/0day-ci/archive/20261010/202610100452.oJWOdesg-lkp@intel.com/config)
-compiler: clang version 24.0.0git (https://github.com/llvm/llvm-project 242243a5814307de825db3428662d67b064e2cbc)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610100452.oJWOdesg-lkp@intel.com/reproduce)
+config: nios2-defconfig (https://download.01.org/0day-ci/archive/20261010/202610100412.3inKNHop-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610100412.3inKNHop-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610100452.oJWOdesg-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610100412.3inKNHop-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> drivers/net/phy/marvell.c:3916:23: error: use of undeclared identifier 'm88e1318_led_polarity_set'; did you mean 'm88e1318_led_blink_set'?
+>> drivers/net/phy/marvell.c:3916:37: error: 'm88e1318_led_polarity_set' undeclared here (not in a function); did you mean 'm88e1318_led_blink_set'?
     3916 |                 .led_polarity_set = m88e1318_led_polarity_set,
          |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~
          |                                     m88e1318_led_blink_set
-   drivers/net/phy/marvell.c:3293:12: note: 'm88e1318_led_blink_set' declared here
-    3293 | static int m88e1318_led_blink_set(struct phy_device *phydev, u8 index,
-         |            ^
->> drivers/net/phy/marvell.c:3916:23: error: incompatible function pointer types initializing 'int (*)(struct phy_device *, int, unsigned long)' with an expression of type 'int (struct phy_device *, u8, unsigned long *, unsigned long *)' (aka 'int (struct phy_device *, unsigned char, unsigned long *, unsigned long *)') [-Wincompatible-function-pointer-types]
-    3916 |                 .led_polarity_set = m88e1318_led_polarity_set,
-         |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~
-   2 errors generated.
 
 
 vim +3916 drivers/net/phy/marvell.c
