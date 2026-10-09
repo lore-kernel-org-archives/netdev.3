@@ -1,153 +1,138 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1507038838F
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 17:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128B53D1A82
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 17:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791567192; cv=none; b=u8XkgeRlCPbt6cNbbaSBHFHglD7qFBSm5ntYBTigHL/wVYNpd9Td6xeTW9eqeC2PFwle1wi0Pxmjmtv+S1eSw1k6NqcCA8SpBEIQGk8FsvPc/+AEDfkmMKsQ/6Qj5ikg/BzZyOKuM16L+TWzyqToiKji0O+cb44apPW6e1gdSHI=
+	t=1791567354; cv=none; b=ZIAAQ3q2RwtJYiqU9un4pGyc2fOzTv5oF/QOfS9u7f+cEc4j36iejK+MIoByT2laPFh6Rr+m3rY1zC0PPyD8tuJv1W3rXi1UIbImKXsIR1DLFjKWp2FQWY/Qro3TZeZuNxkDQGpbVTYElSZGRVmI5rQF/RTo17x1hRqMdNzUGps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791567192; c=relaxed/simple;
-	bh=HkIkB+dqyxrAL4iBkZUM6mZrOi0zi8ugvAIKpk7F+dE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QlRVfTUZnmh49t2xfwvBvjEL9TmvBQoHprkKJO9gn+5U3yPa7HxYq+udBI7VeP+ylLq4qHDMqNuSF9VwUf2C91eVLhDmFfIgcanyXP64pSO4dlO11ebrqhQKH4FjUEcGHW61ehBTMowJtq5yoVAwUwpm6jGGCNKVRwmLOrHQtx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=Kz+M7ghT; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1791567354; c=relaxed/simple;
+	bh=gW/Td4Wa5cSM40tjMjOLPYFrT5jUvCsiVJ5ZLl1cjaI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YqVfqTEBpigj293JWqRLtewqfwgxPrXA0lrLXJEz92L/Vr0iKF3QAzvHVUI1LwmgfNo8hiEXpKVrjsBqlaAzYdoa8nqD9qZ0/lqx4K90Q/QjEQIgTBAT6rzpXoO39t6lzob01os5hXVfPN7YIcAUnT/WrZCH6Q3ykyUr5tJyY+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SU9cqWEO; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="Kz+M7ghT"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3a7cfe8f761so1404168a91.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 10:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791567190; x=1792171990; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=c2jD9IJYGfmVcnhpThjvZylfTJOWRr2wSFSn38TwVbE=;
-        b=Kz+M7ghToLcxEPLsGhNMENOREy02pE8g1DL2Ja3ecdo3GQulOGf9xLnItO87cAgrGp
-         Ikh8XzTzeSNw8/EbIVGELTdxvEckVB6ibaRUgOW8RxS/BjysdykXS7/yMLjj18UNyMPn
-         v+g5qkIM8vHoAIPx+ndnta9TuSiXJkOCZihznMh1FCJs8GQ/T6Uy3Wqgi43dRxUAunUP
-         RoxQOD/7tr5hqsscCMwBUp7nTHSHH833BEaWFAqGtGwM7eadZmXul8V9FvVllr8OcX7a
-         6btmH+5Dp/3OP2K0jYmLtI4EYmQ2dV6uQadQsZoPaop32HeT3mGzq//F8s9YyPw5uXvc
-         nvew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791567190; x=1792171990;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:mail-followup-to:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=c2jD9IJYGfmVcnhpThjvZylfTJOWRr2wSFSn38TwVbE=;
-        b=OFSH1wgNENaGZNA+YWfhWx0oRNqlSRLOgUrT5kETaOAjHnt1Hajfnfv1ZiVv1n4Ss/
-         hp8RAcHKjVW9Lw125fCKH5vuslgEH5Ee3PJZ6DjeC3yQwrLHPitE5KW5Darg0jGJVLnP
-         jeHrE/OCY51HvI60/t4hQPiedQJ47h9xlQ46J1IWrijmjEYvGWhhms+yvDHy+uBvetq3
-         SKol3w9apombOr/vBG7W37oZTvzx87UvX/VeHTadgdwVNm2mo3iulVturov7gMQsxFcQ
-         qPpt+lDQyUkUdwGGA+Zze7ZghCaJhTRMjhtvVCTCjUgQPxWCeeMdHAGf1YOSMPx1H9UJ
-         nWag==
-X-Gm-Message-State: AFq9FYLgVEVCoLUN6Sd/dS505CFS5jRwGPvtekmGC4EjWOEk31PSxZ4/
-	rLH1Ws6iXeXUkwn7m4IB5AnddZMzmlBvmP3/AUIiNMQL3TLOhqWuNWcKQZmy6OTn1II=
-X-Gm-Gg: AYBFou33DlG/f/ZW6e/ig2wLAjq9oV9KDzNFmnLTHZ3wOJwY9CwhCHbiR94//dEpzLC
-	qc7HULabNXY8N91thXWoOJDJlJKYW+NqOniKoZBvlHaRj94RuAtpQPI8Mzlyi35HP9PxD2ROpYD
-	qvzV8hW7YswB14OCqX7YcoW8WKHzlm6TNqT+rNh9zGMpNjsNTHMrjjV8EU0FxyQ5dbxj0yUKjvA
-	8pTfCgPwHmNq+7oQ8IpxQSSH94MTsrGWA182FUJURWrhQ9iJ1rYML1cZwD0IQkhsD7HES2DygBr
-	Whb7uV5S1yRAksLJTl4vkmpys5NF8byHy0tN8Wqk00Vsh3NECh0JCgph4mHeT0QFbuQB30Hwak5
-	9WD6b61qQJ8LGUkQIIXqJFtASB41mdjQnJ8NtDHFwsZu58/MtUHy2awvPbJzahcDLkGP+po4O89
-	gdhnkdZXq7trM1ZVVLn/ucZTkdfmKC+9sitis1L/IkVJB5yG7+tdtbAXb/pZXJy1yK5Y4yhMLzO
-	pKtb+5zFjUm
-X-Received: by 2002:a17:90b:3912:b0:3a4:e735:b3a3 with SMTP id 98e67ed59e1d1-3ab3aceb920mr1536825a91.40.1791567190330;
-        Fri, 09 Oct 2026 10:33:10 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:70::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab395e11a0sm2740419a91.2.2026.10.09.10.33.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 10:33:09 -0700 (PDT)
-Date: Fri, 9 Oct 2026 10:33:08 -0700
-From: Joe Damato <joe@dama.to>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: netdev@vger.kernel.org, Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 2/2] bnxt_en: Pad short SW USO segments to
- BNXT_MIN_PKT_SIZE
-Message-ID: <asklVFvUJx8P/k1d@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>,
-	Michael Chan <michael.chan@broadcom.com>, netdev@vger.kernel.org,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-References: <20261008191114.3736826-1-joe@dama.to>
- <20261008191114.3736826-3-joe@dama.to>
- <CACKFLikWkH6QaOG=EO_zu8cqCFRxGqtA2-+R-btp0TwUbJjVBg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SU9cqWEO"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 699HZVuI1016047;
+	Fri, 9 Oct 2026 17:35:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=8ph89gh2mD/
+	bMPt6f2nHN70n+MOTT6spwmNgWcpdkG0=; b=SU9cqWEOzPcrQcT/dUW97hO6Zwj
+	50l/b4IuQA1tJqrsmOe52Nrx/OO6WRFKjH1/p3k7vwF1VuHUBlMRku43iD8GO/Ec
+	7F6MT+s03joDP0UU9Vuc+ZBEmRXhbhZEOS/8HEja4sFEaZ4EA9alXpJYihVf6FGs
+	GDoC3JQU2H8iEc4BgN61NNasf2qvkHpB5CiALbYgwl6dyQeeZoycmcMdV03oCJbx
+	dcFn/07QGXwe+F5KudNdxhlEGszyTPeLZzz5++Uhspzta0J0cCwpBjTHBRZsPcdU
+	HbkqEHu6bfLmgRAw/pUIdoiG1+hjNQWrzbOF3AZvtccDYBnK7uUkt6Z8AeA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h74t8800y-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 17:35:43 +0000 (GMT)
+Received: from pps.filterd (nalasppmta03.qualcomm.com [127.0.0.1])
+	by NALASPPMTA03.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id 699HZAhq1107220;
+	Fri, 9 Oct 2026 17:35:10 GMT
+Received: from hu-devc-lv-u24-a.qualcomm.com (hu-zmckevit-lv.qualcomm.com [10.81.84.220])
+	by NALASPPMTA03.qualcomm.com (PPS) with ESMTPS id 699HZ98f1107203
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 09 Oct 2026 17:35:09 +0000 (GMT)
+Received: by hu-devc-lv-u24-a.qualcomm.com (Postfix, from userid 4696302)
+	id BF71D2222F; Fri,  9 Oct 2026 10:35:09 -0700 (PDT)
+From: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+To: dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
+        riana.tauro@intel.com, aravind.iddamsetty@linux.intel.com,
+        rodrigo.vivi@intel.com, raag.jadav@intel.com, simona.vetter@ffwll.ch,
+        airlied@gmail.com, kuba@kernel.org, ogabbay@kernel.org,
+        lizhi.hou@amd.com, karol.wachowski@linux.intel.com
+Cc: jeff.hugo@oss.qualcomm.com, carl.vanderlip@oss.qualcomm.com,
+        troy.hanson@oss.qualcomm.com, youssef.abdulrahman@oss.qualcomm.com,
+        Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+Subject: [PATCH 1/3] drm/drm_ras: Remove admin-perm flag from list-nodes operation
+Date: Fri,  9 Oct 2026 10:31:50 -0700
+Message-ID: <20261009173152.2436195-2-zachary.mckevitt@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com>
+References: <20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACKFLikWkH6QaOG=EO_zu8cqCFRxGqtA2-+R-btp0TwUbJjVBg@mail.gmail.com>
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-ORIG-GUID: i0MkeIiNjuJJjc6ilVwxMm7jP5hqSrKx
+X-Proofpoint-GUID: i0MkeIiNjuJJjc6ilVwxMm7jP5hqSrKx
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA5MDA3MCBTYWx0ZWRfX8mp7Gar8F3Ni
+ SwI2N1Z5SO0OC2ufdEsn0p3bkVXTqfgXiD7ZpQpxXjQHEIt+u5KXVwYiF2cZMrFAAzKRyodU0KG
+ dRo8xKVdHJIychUm+HoGreS4YwCvr8k=
+X-Authority-Analysis: v=2.4 cv=JuNkP84C c=1 sm=1 tr=0 ts=6ac925ef cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8 a=CU0-bA9xmp4BjaDge1wA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA5MDA3MCBTYWx0ZWRfX6LFgAmW++LBa
+ OshXmG51GGdF4bH5ua0BbzUKirgtRlEJJdaRtna0HEvuzzgpTJeQIWd95VRth4wTGxZ6j+gs3WY
+ dEUBx6+x0hXftCJBAPPPeNLkpxUEhi2V45fQw1dlhgiiP7rRqnypOwkzs8l9yoPt+z+TrykfKIw
+ igFWbttWtVlL0VfVGg2gl0frYBWqqzP0NS3DkDoSDpOm6OToLcqqJvDPh1X5GIviULJZzIKO4rl
+ vq52lOW0aFyDdwH05aWr8hYV2vp2mqHMsd+nrjXIreihUwwW4GU4Q0gMNyDEGUZx+NaRRPoECmS
+ tUOgDFiqI68TT1Tk/D2EnNvi6i4S9wpIRrldeh2tC1dgBx2kIeoMzjd29DIPQB1q+qYiXm9aYvT
+ ijLVmgOLnahP/JuIDMQyKJDsM8NG2Z5sqaC40m91FC8bWp1NH8L5Erzpp1GUW101UdqRlHD/sMT
+ OXycZjxXLBwFETvzCqg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-09_05,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 priorityscore=1501 suspectscore=0 phishscore=0
+ impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610090070
 
-On Thu, Oct 08, 2026 at 10:26:06PM -0700, Michael Chan wrote:
-> On Thu, Oct 8, 2026 at 12:11 PM Joe Damato <joe@dama.to> wrote:
-> 
-> > diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-> > index ef04c9d08066..f87e02ef3033 100644
-> > --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-> > +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
-> > @@ -82,11 +82,14 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
-> >         if (unlikely(num_segs <= 1))
-> >                 goto drop;
-> >
-> > +       if (unlikely(bnxt_sw_gso_pad_len(hdr_len, mss)))
-> > +               goto drop;
-> > +
-> 
-> This looks redundant since you already have the same check in
-> bnxt_features_check().
+Drivers may want to avoid requiring CAP_NET_ADMIN for subsequent
+drm-ras operations. However, userspace must still be able to access
+the list of RAS nodes to determine the node IDs. So, drop the
+CAP_NET_ADMIN requirement for dumping RAS nodes so that drivers
+with different permission requirements are still able to use the
+interface.
 
-It's redundant for skbs that go through validate_xmit_skb(), but generic XDP
-doesn't AFAIU. Not sure how else to handle this case, but open to suggestions.
+This prepares the interface to be used for telemetry by the qaic
+driver.
 
-If you agree and are OK with dropping these, then I could add a comment
-clarifying this in the v2. LMK what you think.
+Signed-off-by: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+---
+ Documentation/netlink/specs/drm_ras.yaml | 1 -
+ drivers/gpu/drm/drm_ras_nl.c             | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-> >         /* Upper bound on the number of descriptors needed.
-> >          *
-> >          * Each segment uses 1 long BD + 1 ext BD + payload BDs, which is
-> >          * at most num_segs + nr_frags (each frag boundary crossing adds at
-> > -        * most 1 extra BD).
-> > +        * most 1 extra BD). The last segment may need 1 pad BD.
-> >          */
-> >         bds_needed = 3 * num_segs + skb_shinfo(skb)->nr_frags + 1;
-> 
-> I don't quite understand why we don't need to add 1 more for possible
-> padding here.
+diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
+index 4c2ac9a1ba3f..a88fdab7a1c7 100644
+--- a/Documentation/netlink/specs/drm_ras.yaml
++++ b/Documentation/netlink/specs/drm_ras.yaml
+@@ -112,7 +112,6 @@ operations:
+            the node IDs. These IDs are required for all subsequent
+            operations on nodes, such as querying error counters.
+       attribute-set: node-attrs
+-      flags: [admin-perm]
+       dump:
+         reply:
+           attributes:
+diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
+index c9f5e0ceb3b5..ff0dc406c27c 100644
+--- a/drivers/gpu/drm/drm_ras_nl.c
++++ b/drivers/gpu/drm/drm_ras_nl.c
+@@ -46,7 +46,7 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
+ 	{
+ 		.cmd	= DRM_RAS_CMD_LIST_NODES,
+ 		.dumpit	= drm_ras_nl_list_nodes_dumpit,
+-		.flags	= GENL_ADMIN_PERM | GENL_CMD_CAP_DUMP,
++		.flags	= GENL_CMD_CAP_DUMP,
+ 	},
+ 	{
+ 		.cmd		= DRM_RAS_CMD_GET_ERROR_COUNTER,
+-- 
+2.43.0
 
-Re-reading the code, I think the +1 was never needed in the first place.
-Payload BDs come from at most 1 + nr_frags DMA regions. Going from one region
-to the next adds at most one BD on top of one BD per segment. There are
-nr_frags boundaries at most, so I think the math is:
-
-  2*num_segs + num_segs + nr_frags
-
-which simplifies to 3*num_segs + nr_frags.
-
-I would appreciate a double check on the math :) but I think the +1 from the
-original code was actually unnecessary and so for this change we can use it
-for the pad BD.
-
-Shockingly: it seems sashiko didn't find any issues (?). If you agree with the
-above I can respin to add the comment for the generic XDP path and re-send
-later today.
-
-Thanks,
-Joe
