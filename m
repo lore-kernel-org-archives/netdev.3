@@ -1,85 +1,90 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212054E8E10
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 17:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3158B391E55
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 17:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791567636; cv=none; b=rDqhCC528N0qdwLtQS1ySC6rWqHw3IQjAXf0nMGAWMVGmbY/YY5u9/RjPnAul4O5jC8wcFOlabAgzrsnYH12DH+Ri7Duva2ejKIgfkQyrVSOcjBol3dRdYjjUhaRJMOowktFTfq6c8iOsiBYyimSDgFGymdCuJlBKKYWRr0nM64=
+	t=1791568098; cv=none; b=JZnT3V31LDAySnGJGoFazdI/hBOYa0mblM1h+E2tGpalV4bka7QBnU+HF0/3KaAp3PrZQ37h6GQ2PFxxvhbFXxvn9h4yo7zkP+LQC7yNYATN2hPoghMeJdGYwmSnTLRVkehAdgzIgm+Hsrk37rnfSv5SyCa7+SwToRU5xrMqZ5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791567636; c=relaxed/simple;
-	bh=k8aejIH4girCnHlnsmhW0AOY4LYP8I4Mq1RNU11YCWM=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=kvQXbDy9BBFf4Scur4B7rKQa0gL5REU9mdPcD1x6CEdTcEZh74mVwhL54ed5sRUclwdGN0PP33ms8So1cCHAfZ78FMqGjgnXakPeAMPfPKmU5Pt90IoKXHEwjR/m9M/gz1+RSe2UFpHCf95T74qtlodURMXGVx9K9FC2M7bqEfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m9zSOP7C; arc=none smtp.client-ip=209.85.215.179
+	s=arc-20240116; t=1791568098; c=relaxed/simple;
+	bh=JgPaicxCucfdMkRINMIAPBjQlAb0HOrhvBZzO59T1bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m7FyFkcTKlvIWPD2Zo/1QO2kgwunZbyCB3lSKDHwiJ9ZrR7kYVnWMc/+oaFh6trM0cSkabGRLpDer9ep0OKSoYi8t/aZQjjzEgfAPv4E7KNfruovWpaHRnkWQyPHnbN4u4I9kPmhUh+yw8AYCYltuuF4Fy1GL+ufoIWLONAVu9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YAuOrsvz; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m9zSOP7C"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc4aa02a269so3118147a12.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 10:40:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YAuOrsvz"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5ba3adf78f5so5243594e87.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 10:48:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791567634; x=1792172434; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lxguw1uDTuEJffZkA0RjIlXZRSyCjRzPKT3u+yYZHzQ=;
-        b=m9zSOP7CMCUmZNzkXqoKyJQSj4cgqFc+K9oLqhVhIKCpUKHbfOpaiVIVZU03Ek7z2c
-         jLJBGmvZzX9kx2YXQKAonZhFNlLmXecOA6xfxJarHDvdn7Y9a+A+jpLwdynMME6Ig9jd
-         CKWQF9hnaTYzEQE51THglUpxluX897guBh1wRfkDUy2FFTBM/dLRPeogGwjPSluNoozm
-         V4wIgDO3WEnEa1dveaZynoahNmHWYSujlUaGkpPczuC08kphQOWbcBZxVzc0OmBnC6qt
-         v7Bq0yPUCUM3JnZeBInv2WN4/sJ7x/OzHvL9n36YrkgEcNhU0Bm+ioZxzY8D3sFI6uau
-         /lHw==
+        d=gmail.com; s=20251104; t=1791568094; x=1792172894; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pA8E/ThbMiBTOoyIyD/1D76SZ7hCfLkGZWv68NB0mJs=;
+        b=YAuOrsvzMD0e/VL0IBVH9fLziRwJqN1laynw2JFcVT/5CkA88bLIMuKnHiBxE5m6Zn
+         +s/ZzLHaBWSNKrsXM7wp8o/eI2N1nOTlFB5V4Ty/Yq2N/Xf3/PW68IehFvokUbm08oAt
+         DSFtzUMwZh1/Rj6XDF4QG4cjoTjptWv47hjgRCe5UbXmM01UbZePvAOXVrIHIlRDGKew
+         x0cW9sGD0iLDP8SzcS/jhemyrn90Z6YKr0Wym/VSAPIZq7SeseqEwfoE9eOJxOHSYLIa
+         UUKdYKVJo2ORtsBUhaIvGnIpNi7vfns0m+TbQDbkUHo4fKZO2m1gGxj6EolQNwAYARru
+         E7QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791567634; x=1792172434;
-        h=content-transfer-encoding:mime-version:reply-to:message-id:date
-         :subject:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791568094; x=1792172894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lxguw1uDTuEJffZkA0RjIlXZRSyCjRzPKT3u+yYZHzQ=;
-        b=NC/cCvuJrfpAFCw+/l+CNiPORpEhZ/p2wWfJAQsUfTgkvQLCPM6fVGID8ybenqkIkW
-         aL2LJer6THUsNbGcZjJQut9K4I3w0VBdb6Wvq4JKghGna/AixM17Sw2cBN+hu33qoKiU
-         Ga5v8xkPjuUTp/83u5f2Qv5oyuTo1IeckB6eIHzxRWty7NFxV35yJKLZboHxjqwW8yna
-         TrTu7zyY+r1DT+lt972bx2xRAdyJYZhW+l3tV4KyfDiKtdnzFeDe3GcVJNIpA+o2xer+
-         kO+NxUyxHGvCZRbnZrlN4sK8/zgSCLi3AnQLbT2e70aTscUBfcTNjnnULKlqaTCPlSt+
-         T49w==
-X-Forwarded-Encrypted: i=1; AKwUvBwuiKjx23xUDuAwVvBwArXRyD1Edw1UTBNP3B5fpwaKKRmf29f4D+2tYdc6jdSeEmFWjyhcFTo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJoWgFFqZ01x6/6ulZyCJhCRNQ5lo7wTr89yyOJdR01Wixy8+uZ
-	/8e+R+rzAmLtCOTM+NsezYfGOKQO4vZO33h7KvIeSNlQr213agKNvRCg
-X-Gm-Gg: AYBFou2GJRX2g62ghUDvXonnXWNSgn5aGtckzPJ7KLMkkwGPjg7vdlJkR5WY1VXtwvD
-	0kHXvMRLelDCXovh0yaMBL0qOCWGtZZAbIt+NRnNDLV0CRA1dxdpW6h5H9nlbi6HxdXDLvOYxV1
-	Lkj6YJYWG/0AKeGSagwZXGXJ+0ceEkrVSkjwzr4eQdKrGqsPG59euKlbo0p6uwNYm/0JLzsWwMA
-	/pR/hwcQTauM0kaSyTARaMi60bfEjkeI5GE0zP3fJxbEsjZ19FhWDwrekXwlN8/XOXYwAGVaKvI
-	nm81gn6T7eohNWkLNXfKIVzdYm25OYkvNFMmOAo+rA1c5JTRpLNAmBBm/8NsyJk2waT6J9ggw0i
-	DZWkdQPUtNSnFvrhaZq9EFCiDZcWJU2qvKOf7KQotW0Ju6HtAuFiAxiBsJhuIrbqvs5eWIwzkWv
-	7BSKRrG7xrFY/7xCNa9UV5eX7VZxAyr9NdYuc+VDiRtN1UBQ0Hr3ZJ/4Md0e5kROxDyzW8Lot1y
-	4DDAkJOMKYWAOwavHUNIWvKOcQcdPevLpE1685PK5BohQLyM/m9OEuJI5P+Luup
-X-Received: by 2002:a17:90b:224e:b0:3ab:1323:1012 with SMTP id 98e67ed59e1d1-3ab3a32ff26mr2282751a91.1.1791567634272;
-        Fri, 09 Oct 2026 10:40:34 -0700 (PDT)
-Received: from localhost.localdomain (c-174-165-208-10.hsd1.wa.comcast.net. [174.165.208.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab338676besm2726448a91.1.2026.10.09.10.40.33
+        bh=pA8E/ThbMiBTOoyIyD/1D76SZ7hCfLkGZWv68NB0mJs=;
+        b=Jwx1XvRPavT5tNBZI4+yFweNyycQP/+mcKSHgHxImhy+O1TWGXBn3LP9YFhlPHD2RS
+         IB7ezbJkrWJ/2XEIJPKYuBsSYYsfqu9RgqxwcCNK75QmklKB2JGfhfHWZqdBxcdvWwfx
+         SRwDuOEsVJ2UfOWQ6f6ZOkrCNTUeq3WZ3H5ZdwO9gVqSqz1hAHwmK454VaBPSEBwNWwP
+         ncdl5pKHoLRMirBxiqNOsoUaDQi1U/Bjdm2fiERsPpZbCRsAWjLNppt5rGwnT1hOxeej
+         Q87WX0eenr7Jl5p/ddoZyzQrZrX1gLz8JXV4Gs3YvbjXaa/Cb5TljzKakhkCIpi/O6IC
+         7hGw==
+X-Forwarded-Encrypted: i=1; AKwUvBwNWx7STRwQcLOs7ewmiGQHfw0kHuNDB+heNeJZsndW8mud8KHeBUz38a9KYgdktZLm5MRGsQc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIALg7WKFTyjg+H1YB3+HzAGiLuKnHFwPAJmPdKdtKQQ0mTh2vs
+	yydE50RHjm2XMcZIbqKOd6K+qmTqdjLAUA1nAObnrwE9PoWFM+Yyi7Ov
+X-Gm-Gg: AYBFou27naHrtOLwN3SveTGRTTcDSmTbYmxYfL90gRwFyIGWRMq/9T4T2ogQkzLOr6H
+	DRM1w/RQG9dFCS07zew+F+iuIUpNzxqM8sR9CYzHHIkbswSb5AJTydV5eCivP40ZMEhjsOYYWp6
+	ECKILjtdGEOGA7l1Q5E4PZkUA3V4fzZ4mv/o1jQGI/j7UaYy5XxEs7VSfVxHbZdw6w3oFEDmLbp
+	oLqnv2Ijs6SBn6b6yYwbZIV/lvIWi2sJTnaf1sEARA5t2Y4DxbMb2vkttXf9tiSILVL7dDgzo0j
+	SRK9PJZ4J2/PwTE3p6e/5Ksu+tXdlhPxbtNQB3sMcVgOvOxgwGAJhujAx6AZ9seXBW/GRrVWywf
+	SEkvQK0Z0cdmKy07nY1dORwoAYv+EMUPat2JCuzVI3610NKDE/7ddHoy+p+VMq1Q2EdVVhfzQMf
+	1iQHg2xss4j/875dF2e4OMUH9WIwSvnYJAt19SakOFIv8TJS5+UlJoB3Fyv1hyIL8YFIl+Uo52x
+	ax7fYdexkqD2tsLlYApyfJ8x++WQj3+SlwpZc63/AK09L96rUld
+X-Received: by 2002:a05:6512:3f24:b0:5b8:f533:d439 with SMTP id 2adb3069b0e04-5bcde8c1acdmr1016443e87.38.1791568093888;
+        Fri, 09 Oct 2026 10:48:13 -0700 (PDT)
+Received: from localhost.localdomain (95-24-167-79.broadband.corbina.ru. [95.24.167.79])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bcddeb5604sm852635e87.63.2026.10.09.10.48.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 10:40:33 -0700 (PDT)
-From: Michael Kelley <mhkelley58@gmail.com>
-X-Google-Original-From: Michael Kelley <mhklinux@outlook.com>
-To: haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
+        Fri, 09 Oct 2026 10:48:12 -0700 (PDT)
+From: Maxim Skokov <skokovmaksimevg@gmail.com>
+To: bpf@vger.kernel.org
+Cc: ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	memxor@gmail.com,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
 	davem@davemloft.net,
 	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
+	shuah@kernel.org,
+	vadim.fedorenko@linux.dev,
 	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH v2 1/1] Documentation: hyperv: Remove support for guests on Hyper-V 2012/2012R2
-Date: Fri,  9 Oct 2026 10:40:07 -0700
-Message-Id: <20261009174007.6745-1-mhklinux@outlook.com>
-X-Mailer: git-send-email 2.25.1
-Reply-To: mhklinux@outlook.com
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Maxim Skokov <skokovmaksimevg@gmail.com>
+Subject: [PATCH bpf v2 0/2] bpf: test_run: Fix false -EBADMSG with BPF_F_TEST_SKB_CHECKSUM_COMPLETE
+Date: Fri,  9 Oct 2026 20:47:46 +0300
+Message-ID: <20261009174755.22026-1-skokovmaksimevg@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,99 +93,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Support for running Linux guests on Windows Server 2012/2012 R2 Hyper-V
-hosts and Windows 8/8.1 hosts has been removed, which includes removing
-support for operating Hyper-V synthetic timers in other than Direct Mode.
-Update the documentation to reflect these removals.
+BPF_PROG_TEST_RUN with BPF_F_TEST_SKB_CHECKSUM_COMPLETE returns -EBADMSG
+for correct tc programs that call bpf_skb_change_tail(). The helper
+moves the skb to CHECKSUM_NONE and leaves skb->csum stale, but the
+post-run check added by commit a3cfe84cca28 ("bpf: Add CHECKSUM_COMPLETE
+to bpf test progs") still compares against it.
 
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
----
-Changes since v1:
-* Updated the netvsc.rst network driver documentation [Naman Jain]
-* My "below the line" comment in v1 wrong. It said that removal of WS2012
-  support was going into 7.4. But it is actually already in 7.3. So
-  ideally these doc changes would go into 7.3 as well.
+Patch 1 only does the check while the skb is still CHECKSUM_COMPLETE.
+Patch 2 adds selftests for a trim, a grow followed by a write, and a
+negative case that keeps the skb CHECKSUM_COMPLETE with a stale
+skb->csum.
 
- .../device_drivers/ethernet/microsoft/netvsc.rst   | 14 +++++++-------
- Documentation/virt/hyperv/clocks.rst               |  8 ++------
- Documentation/virt/hyperv/overview.rst             |  6 +++---
- 3 files changed, 12 insertions(+), 16 deletions(-)
+Tested in a VM on bpf, with two kernels that differ only by patch 1
+(subtest results):
 
-diff --git a/Documentation/networking/device_drivers/ethernet/microsoft/netvsc.rst b/Documentation/networking/device_drivers/ethernet/microsoft/netvsc.rst
-index 616f808e885b..0d464706a59a 100644
---- a/Documentation/networking/device_drivers/ethernet/microsoft/netvsc.rst
-+++ b/Documentation/networking/device_drivers/ethernet/microsoft/netvsc.rst
-@@ -7,8 +7,9 @@ Hyper-V network driver
- Compatibility
- =============
- 
--This driver is compatible with Windows Server 2012 R2, 2016 and
--Windows 10.
-+This driver supports Linux guests running on Windows Server 2016 Hyper-V
-+and later, and Windows 10 and later. Support for running as a guest on
-+earlier versions of Hyper-V has been removed from Linux.
- 
- Features
- ========
-@@ -16,9 +17,8 @@ Features
- Checksum offload
- ----------------
-   The netvsc driver supports checksum offload as long as the
--  Hyper-V host version does. Windows Server 2016 and Azure
--  support checksum offload for TCP and UDP for both IPv4 and
--  IPv6. Windows Server 2012 only supports checksum offload for TCP.
-+  Hyper-V host version does. Windows Server 2016 Hyper-V and later, and
-+  Azure, support checksum offload for TCP and UDP for both IPv4 and IPv6.
- 
- Receive Side Scaling
- --------------------
-@@ -58,8 +58,8 @@ Large Receive Offload (LRO), or Receive Side Coalescing (RSC)
- -------------------------------------------------------------
-   The driver supports LRO/RSC in the vSwitch feature. It reduces the per packet
-   processing overhead by coalescing multiple TCP segments when possible. The
--  feature is enabled by default on VMs running on Windows Server 2019 and
--  later. It may be changed by ethtool command::
-+  feature is enabled by default on VMs running on Windows Server 2019 Hyper-V
-+  and later. It may be changed by ethtool command::
- 
- 	ethtool -K eth0 lro on
- 	ethtool -K eth0 lro off
-diff --git a/Documentation/virt/hyperv/clocks.rst b/Documentation/virt/hyperv/clocks.rst
-index 176043265803..9527e6073654 100644
---- a/Documentation/virt/hyperv/clocks.rst
-+++ b/Documentation/virt/hyperv/clocks.rst
-@@ -64,12 +64,8 @@ applying the scale and offset to get the constant 10 MHz clock.
- 
- Linux clockevents are based on Hyper-V synthetic timer 0 (stimer0).
- While Hyper-V offers 4 synthetic timers for each CPU, Linux only uses
--timer 0. In older versions of Hyper-V, an interrupt from stimer0
--results in a VMBus control message that is demultiplexed by
--vmbus_isr() as described in the Documentation/virt/hyperv/vmbus.rst
--documentation. In newer versions of Hyper-V, stimer0 interrupts can
--be mapped to an architectural interrupt, which is referred to as
--"Direct Mode". Linux prefers to use Direct Mode when available. Since
-+timer 0. stimer0 is operated in what Hyper-V calls "Direct Mode"
-+where timer interrupts are mapped to an architectural interrupt. Since
- x86/x64 doesn't support per-CPU interrupts, Direct Mode statically
- allocates an x86 interrupt vector (HYPERV_STIMER0_VECTOR) across all CPUs
- and explicitly codes it to call the stimer0 interrupt handler. Hence
-diff --git a/Documentation/virt/hyperv/overview.rst b/Documentation/virt/hyperv/overview.rst
-index 77408a89d1a4..c4c262b77aa3 100644
---- a/Documentation/virt/hyperv/overview.rst
-+++ b/Documentation/virt/hyperv/overview.rst
-@@ -157,9 +157,9 @@ when accessing data shared with Hyper-V.
- Versioning
- ----------
- Current Linux kernels operate correctly with older versions of
--Hyper-V back to Windows Server 2012 Hyper-V. Support for running
--on the original Hyper-V release in Windows Server 2008/2008 R2
--has been removed.
-+Hyper-V back to Windows Server 2016 Hyper-V and Windows 10. Support for
-+running on Windows Server 2012/2012 R2, Windows Server 2008/2008 R2,
-+and Windows 8.1 and earlier has been removed.
- 
- A Linux guest on Hyper-V outputs in dmesg the version of Hyper-V
- it is running on.  This version is in the form of a Windows build
+                           without patch 1    with patch 1
+  change_tail_trim         FAIL (-EBADMSG)    OK
+  change_tail_grow_write   FAIL (-EBADMSG)    OK
+  store_no_recompute       OK                 OK
+  test_skb_pkt_end         OK                 OK
+
+Changes in v2:
+- Put the opening /* of multi-line comments on its own line (bpf-ci,
+  Sashiko).
+
+v1: https://lore.kernel.org/bpf/20261007181249.352831-1-skokovmaksimevg@gmail.com/
+
+Maxim Skokov (2):
+  bpf: test_run: Fix false -EBADMSG after skb leaves CHECKSUM_COMPLETE
+  selftests/bpf: Cover test_run csum validation after
+    bpf_skb_change_tail()
+
+ net/bpf/test_run.c                            |  8 +++-
+ .../bpf/prog_tests/skb_csum_complete.c        | 39 ++++++++++++++++
+ .../selftests/bpf/progs/skb_csum_complete.c   | 46 +++++++++++++++++++
+ 3 files changed, 92 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/skb_csum_complete.c
+ create mode 100644 tools/testing/selftests/bpf/progs/skb_csum_complete.c
+
+
+base-commit: ff47652a4b66c067c765a7ad464d930b5a9367cc
 -- 
-2.25.1
+2.47.3
 
