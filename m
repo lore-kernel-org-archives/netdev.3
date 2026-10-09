@@ -1,602 +1,198 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583924EDCD8;
-	Fri,  9 Oct 2026 14:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D88D4EE876;
+	Fri,  9 Oct 2026 14:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791556922; cv=none; b=RJYAL1h0y1g3x/lW1bNO6AssradnotxAoGbPYIOnDxGM46UWPn8DwccwwqH8XYqFMy9dG1j3UVPJFL2cx+WaRmP2UWnJm52odRE5kqxZfzxMpBZZyunij64uU6vPpUsyLON1tX/eO8/DCXU/QdG7DJ8ykEvTgumP4/vJhY5oLDY=
+	t=1791556932; cv=none; b=vGvLxTun3VYft6wOuSllMYUqcw4gz5Us93joBg2fXOAe4UGio8AyXPxte5DbHH6RXsPzRlc0K3YlPcQodmPY+e7gz0qz8Lhr3hwJigNe/iugutkOz0D29qLdOfnH6uNxLbbTd1mLkDCr2vSTZqL/Gz0lO5cz3FIgDKuXGwtJGik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791556922; c=relaxed/simple;
-	bh=mlRnTGrxCtR+7T4lmk41OPh2WW3NTcE3nhLpfNsmfQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cC/xzRgqesY3b5MrIVgGRQHONxaa+Od2k06V8fIgp+aOxVdVr0krLJTn+JKkWKGjyCU20YwWDLAtCOVVV02wdJansXb+VGvUNWUZMNykL9J6hY5Ciq+SLAgwwQtNylO4rUk4kqaBbz+G3wG1pAjTkGQEco+SpH+FJVXYWYEWGG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Ed+BUcT2; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Ed+BUcT2"
-Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 4AF7F20B717A;
-	Fri,  9 Oct 2026 07:41:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4AF7F20B717A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1791556918;
-	bh=RyTfBSSc1V8eyMXfvpu3tv4hT7SofScxxwVaYUTug3I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ed+BUcT2GyEV0PnvrOEStmXMo54OGnOiESObBdmiogPshNwXjBBrzS2sF4pt5YFcp
-	 ZvgOwTcjyTR11CvimJ3ANCd100PH1VaQEKbJyibx6wWO1P5TE8+l+IOzhPRoNdp7IC
-	 vu+ooSBrY3w2le4C1oQIk04CXT8w9tCrXS+tI+QM=
-From: Wei Hu <weh@linux.microsoft.com>
-To: longli@kernel.org,
-	kotaranov@microsoft.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	shradhagupta@linux.microsoft.com,
-	horms@kernel.org,
-	ernis@linux.microsoft.com,
-	stephen@networkplumber.org
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dipayanroy@linux.microsoft.com,
-	bpf@vger.kernel.org,
-	sdf@fomichev.me,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	ast@kernel.org,
-	john.fastabend@gmail.com,
-	weh@microsoft.com
-Subject: [PATCH net-next v6 13/13] net: mana: keep the existing queues when the channel count is raised
-Date: Fri,  9 Oct 2026 14:41:24 +0000
-Message-ID: <6243b02cc7140a9ff340dbdb8b770d22b19ddb9b.1790795005.git.weh@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1790795005.git.weh@linux.microsoft.com>
-References: <cover.1790795005.git.weh@linux.microsoft.com>
+	s=arc-20240116; t=1791556932; c=relaxed/simple;
+	bh=L0ZY1yQv5GNt88TQoZPHqYzEbRRQTSkYQMEBVi/3ppk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FMEECsJmvq+/HiPV4GvcFTBBqzAvmluYSGLzJYoTvMGYcx2KCJp25n82uc8V3/lyx2vdca+9clkQM1jhfG+RQ2kp16fsQdQTVLPtJTBo+Pdqrkr5SpURsjuUuWzN7XuR8/kvxl2ssRiYAQTJSSPLpCilJOSeCjraJ1XxlRBYOI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 608591F7CB;
+	Fri,  9 Oct 2026 14:42:09 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 42B9E1368B;
+	Fri,  9 Oct 2026 14:42:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YSBwBUD9yGoQMgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 09 Oct 2026 14:42:08 +0000
+Message-ID: <027f7f3a-1b33-40f9-bc39-ed9ef4986ed8@suse.de>
+Date: Fri, 9 Oct 2026 16:41:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH nf] netfilter: ip6t_SYNPROXY: check TCP header before
+ verifying checksum
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: Palla Raghunath <raghunathpalla.0209@gmail.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>, Patrick McHardy <kaber@trash.net>
+Cc: Shuah Khan <shuah@kernel.org>, Brigham Campbell <me@brighamcampbell.com>,
+ linux-kernel-mentees@lists.linux.dev, linux-kernel@vger.kernel.org,
+ syzbot+5a8667f002726fc59f88@syzkaller.appspotmail.com,
+ Phil Sutter <phil@nwl.cc>, Simon Horman <horms@kernel.org>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org
+References: <20260926204519.43402-1-raghunathpalla.0209@gmail.com>
+ <e2beb9bc-7b92-4ae4-8190-c99bee8de1ca@suse.de>
+Content-Language: en-US
+In-Reply-To: <e2beb9bc-7b92-4ae4-8190-c99bee8de1ca@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Rspamd-Pre-Result: action=no action;
+	module=Unknown lua;
+	unknown reason
+X-Spamd-Result: default: False [0.00 / 50.00];
+	TAGGED_RCPT(0.00)[5a8667f002726fc59f88]
+X-Spam-Score: 0.00
 
-From: Long Li <longli@microsoft.com>
+On 10/9/26 4:28 PM, Fernando Fernandez Mancera wrote:
+> On 9/26/26 10:45 PM, Palla Raghunath wrote:
+>> synproxy_tg6() passes par->thoff to nf_ip6_checksum() before it has
+>> checked that a TCP header is actually present at that offset.
+>>
+>> par->thoff comes from ipv6_find_hdr(), called by ip6_packet_match()
+>> with target -1. ipv6_find_hdr() only checks that each extension header's
+>> first two bytes are in the skb. It then adds that header's declared
+>> length to the offset and stops at the first non-extension header, so it
+>> can return an offset past the end of the packet. With
+>> CHECKSUM_NONE, nf_ip6_checksum() calls skb_checksum(skb, 0, thoff, 0).
+>> When thoff is larger than skb->len, the BUG_ON(len) in skb_checksum()
+>> fires:
+>>
+>>    kernel BUG at net/core/skbuff.c:3606!
+>>    RIP: 0010:skb_checksum+0x8b2/0x8c0
+>>    Call Trace:
+>>     nf_ip6_checksum+0x1bd/0x320 net/netfilter/utils.c:89
+>>     synproxy_tg6+0x1a4/0x6e0 net/ipv6/netfilter/ip6t_SYNPROXY.c:21
+>>     ip6t_do_table+0xd37/0x15b0 net/ipv6/netfilter/ip6_tables.c:366
+>>     ...
+>>
+>> In the syzbot reproducer, a 60-byte packet carries an AH header, then two
+>> hop-by-hop headers. The last hop-by-hop header has nexthdr TCP and
+>> hdrlen 167, so thoff is 1400.
+>>
+>> Fetch the TCP header with skb_header_pointer() first, as
+>> nf_reject_ip6_tcphdr_get() already does. This drops packets that do not
+>> contain a full TCP header at thoff before the checksum is computed.
+>>
+>> Fixes: 4ad362282cb4 ("netfilter: add IPv6 SYNPROXY target")
+>> Reported-by: syzbot+5a8667f002726fc59f88@syzkaller.appspotmail.com
+>> Closes: https://syzkaller.appspot.com/bug?extid=5a8667f002726fc59f88
+>> Signed-off-by: Palla Raghunath <raghunathpalla.0209@gmail.com>
+>> ---
+> 
+> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> 
+> The nftables synproxy eval path is also affected but I think it would be 
+> better to keep it in a separate patch in order to facilitate 
+> backporting. The issue were introduced at different times and nftables 
+> synproxy expression is "recent" compared to the iptables target.
+> 
+> I am sending a patch for the nftables expression and will CC you in case 
+> you can test it too.
+> 
+> Thanks!
 
-Keep existing queues and allocate only the added tail. Growing N to M
-now needs M SQ/RQ pairs at peak, rather than N + M.
+Actually, I thought twice about this. Could you please include the 
+following diff in a v2? In addition, I think the comment is a bit 
+redundant/not necessary. Could you just strip it?
 
-Track the fresh queues separately for failure cleanup and XDP references.
-Wait for TX-selection readers before freeing old containers, and clear
-slots during partial teardown. Full rebuilds now keep the current count.
+Please use also the following fixes tag too.
 
-Advertise in-driver resize recovery after converting the live resize
-paths. Failed rollback still requires recovery.
+Fixes: a311a8981727 ("netfilter: nft_synproxy: use the family-aware 
+checksum helper")
 
-Signed-off-by: Long Li <longli@microsoft.com>
-Signed-off-by: Wei Hu <weh@microsoft.com>
----
- .../net/ethernet/microsoft/mana/mana_bpf.c    |   2 +-
- drivers/net/ethernet/microsoft/mana/mana_en.c | 209 +++++++++++++++---
- .../ethernet/microsoft/mana/mana_ethtool.c    |  31 ++-
- include/net/mana/gdma.h                       |   8 +-
- include/net/mana/mana.h                       |   7 +-
- 5 files changed, 217 insertions(+), 40 deletions(-)
+Thanks,
+Fernando.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_bpf.c b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-index 0ad3a0fa6747..798f0dc485f8 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-@@ -216,7 +216,7 @@ static int mana_xdp_set(struct net_device *ndev, struct bpf_prog *prog,
- 			goto clear_flag;
- 		}
- 
--		err = mana_alloc_qset(apc, scratch, apc->num_queues,
-+		err = mana_alloc_qset(apc, scratch,
- 				      apc->rx_queue_size, apc->tx_queue_size,
- 				      apc->priv_flags, apc->configured_mtu,
- 				      prog, &newq);
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 2fe53adda119..5fbadc4dccbc 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -952,7 +952,7 @@ static int mana_change_mtu(struct net_device *ndev, int new_mtu)
- 		goto clear_flag;
- 	}
- 
--	err = mana_alloc_qset(mpc, scratch, mpc->num_queues, mpc->rx_queue_size,
-+	err = mana_alloc_qset(mpc, scratch, mpc->rx_queue_size,
- 			      mpc->tx_queue_size, mpc->priv_flags, new_mtu,
- 			      mpc->bpf_prog, &newq);
- 	if (err)
-@@ -2920,7 +2920,9 @@ static void mana_deinit_txq(struct mana_port_context *apc, struct mana_txq *txq)
- 	mana_gd_destroy_queue(gd->gdma_context, txq->gdma_sq);
- }
- 
--static void mana_destroy_txq(struct mana_port_context *apc)
-+/* Keep the array and queues below @first; clear freed slots. */
-+static void mana_destroy_txq_from(struct mana_port_context *apc,
-+				  unsigned int first)
- {
- 	struct napi_struct *napi;
- 	int i;
-@@ -2928,7 +2930,7 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 	if (!apc->tx_qp)
- 		return;
- 
--	for (i = 0; i < apc->num_queues; i++) {
-+	for (i = first; i < apc->num_queues; i++) {
- 		if (!apc->tx_qp[i])
- 			continue;
- 
-@@ -2952,7 +2954,16 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 		mana_deinit_txq(apc, &apc->tx_qp[i]->txq);
- 
- 		kvfree(apc->tx_qp[i]);
-+		apc->tx_qp[i] = NULL;
- 	}
-+}
-+
-+static void mana_destroy_txq(struct mana_port_context *apc)
-+{
-+	if (!apc->tx_qp)
+diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
+index 554a96a000f4..6b290a89886d 100644
+--- a/net/netfilter/nft_synproxy.c
++++ b/net/netfilter/nft_synproxy.c
+@@ -118,12 +118,6 @@ static void nft_synproxy_do_eval(const struct 
+nft_synproxy *priv,
+  		return;
+  	}
+
+-	if (nf_checksum(skb, nft_hook(pkt), thoff, IPPROTO_TCP,
+-			nft_pf(pkt))) {
+-		regs->verdict.code = NF_DROP;
+-		return;
+-	}
+-
+  	tcp = skb_header_pointer(skb, thoff,
+  				 sizeof(struct tcphdr),
+  				 &_tcph);
+@@ -132,6 +126,12 @@ static void nft_synproxy_do_eval(const struct 
+nft_synproxy *priv,
+  		return;
+  	}
+
++	if (nf_checksum(skb, nft_hook(pkt), thoff, IPPROTO_TCP,
++			nft_pf(pkt))) {
++		regs->verdict.code = NF_DROP;
 +		return;
-+
-+	mana_destroy_txq_from(apc, 0);
- 
- 	kfree(apc->tx_qp);
- 	apc->tx_qp = NULL;
-@@ -2983,8 +2994,11 @@ static void mana_create_txq_debugfs(struct mana_port_context *apc, int idx)
- 			    tx_qp->tx_cq.gdma_cq, &mana_dbg_q_fops);
- }
- 
-+/* With @first nonzero, use the existing array and unwind only new queues on
-+ * failure.
-+ */
- static int mana_create_txq(struct mana_port_context *apc,
--			   struct net_device *net)
-+			   struct net_device *net, unsigned int first)
- {
- 	struct mana_context *ac = apc->ac;
- 	struct gdma_dev *gd = ac->gdma_dev;
-@@ -2999,9 +3013,14 @@ static int mana_create_txq(struct mana_port_context *apc,
- 	int err;
- 	int i;
- 
--	apc->tx_qp = kzalloc_objs(struct mana_tx_qp *, apc->num_queues);
--	if (!apc->tx_qp)
--		return -ENOMEM;
-+	if (first) {
-+		if (WARN_ON(!apc->tx_qp))
-+			return -EINVAL;
-+	} else {
-+		apc->tx_qp = kzalloc_objs(struct mana_tx_qp *, apc->num_queues);
-+		if (!apc->tx_qp)
-+			return -ENOMEM;
-+	}
- 
- 	/*  The minimum size of the WQE is 32 bytes, hence
- 	 *  apc->tx_queue_size represents the maximum number of WQEs
-@@ -3018,7 +3037,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 
- 	gc = gd->gdma_context;
- 
--	for (i = 0; i < apc->num_queues; i++) {
-+	for (i = first; i < apc->num_queues; i++) {
- 		apc->tx_qp[i] = kvzalloc_obj(*apc->tx_qp[i]);
- 		if (!apc->tx_qp[i]) {
- 			err = -ENOMEM;
-@@ -3126,7 +3145,10 @@ static int mana_create_txq(struct mana_port_context *apc,
- out:
- 	netdev_err(net, "Failed to create %d TX queues, %d\n",
- 		   apc->num_queues, err);
--	mana_destroy_txq(apc);
-+	if (first)
-+		mana_destroy_txq_from(apc, first);
-+	else
-+		mana_destroy_txq(apc);
- 	return err;
- }
- 
-@@ -3487,14 +3509,15 @@ static void mana_create_rxq_debugfs(struct mana_port_context *apc, int idx)
- 			    &mana_dbg_q_fops);
- }
- 
-+/* The caller must destroy queues added before a failure. */
- static int mana_add_rx_queues(struct mana_port_context *apc,
--			      struct net_device *ndev)
-+			      struct net_device *ndev, unsigned int first)
- {
- 	struct mana_rxq *rxq;
- 	int err = 0;
- 	int i;
- 
--	for (i = 0; i < apc->num_queues; i++) {
-+	for (i = first; i < apc->num_queues; i++) {
- 		rxq = mana_create_rxq(apc, i, &apc->eqs[i], ndev);
- 		if (IS_ERR(rxq)) {
- 			err = PTR_ERR(rxq);
-@@ -3512,14 +3535,15 @@ static int mana_add_rx_queues(struct mana_port_context *apc,
- 	return err;
- }
- 
--static void mana_destroy_rxqs(struct mana_port_context *apc)
-+static void mana_destroy_rxqs_from(struct mana_port_context *apc,
-+				   unsigned int first)
- {
- 	struct mana_rxq *rxq;
- 	u32 rxq_idx;
- 
- 	if (apc->rxqs) {
- 
--		for (rxq_idx = 0; rxq_idx < apc->num_queues; rxq_idx++) {
-+		for (rxq_idx = first; rxq_idx < apc->num_queues; rxq_idx++) {
- 			rxq = apc->rxqs[rxq_idx];
- 			if (!rxq)
- 				continue;
-@@ -3530,6 +3554,11 @@ static void mana_destroy_rxqs(struct mana_port_context *apc)
- 	}
- }
- 
-+static void mana_destroy_rxqs(struct mana_port_context *apc)
-+{
-+	mana_destroy_rxqs_from(apc, 0);
-+}
-+
- static void mana_destroy_vport(struct mana_port_context *apc)
- {
- 	struct gdma_dev *gd = apc->ac->gdma_dev;
-@@ -3903,7 +3932,7 @@ int mana_alloc_queues(struct net_device *ndev)
- 		goto destroy_vport;
- 	}
- 
--	err = mana_create_txq(apc, ndev);
-+	err = mana_create_txq(apc, ndev, 0);
- 	if (err) {
- 		netdev_err(ndev, "Failed to create TXQ on vPort %u: %d\n",
- 			   apc->port_idx, err);
-@@ -3918,7 +3947,7 @@ int mana_alloc_queues(struct net_device *ndev)
- 		goto destroy_txq;
- 	}
- 
--	err = mana_add_rx_queues(apc, ndev);
-+	err = mana_add_rx_queues(apc, ndev, 0);
- 	if (err)
- 		goto destroy_rxq;
- 
-@@ -4257,8 +4286,137 @@ void mana_discard_split(struct mana_qset *newq, struct mana_qset *tailq)
- 	memset(tailq, 0, sizeof(*tailq));
- }
- 
-+/* Carry existing queues into @out_new; allocate only the tail. @out_fresh
-+ * isolates new queues for cleanup after a failed publish.
-+ */
-+int mana_grow_qset(struct mana_port_context *apc,
-+		   struct mana_port_context *scratch, unsigned int new_count,
-+		   struct mana_qset *out_new, struct mana_qset *out_fresh)
-+{
-+	unsigned int old_count = apc->num_queues;
-+	struct mana_tx_qp **new_tx, **fresh_tx;
-+	struct mana_rxq **new_rx, **fresh_rx;
-+	struct net_device *ndev = apc->ndev;
-+	unsigned int fresh_count;
-+	bool indir_lost;
-+	unsigned int i;
-+	int err;
-+
-+	ASSERT_RTNL();
-+
-+	if (WARN_ON(new_count <= old_count))
-+		return -EINVAL;
-+	if (WARN_ON(!apc->tx_qp || !apc->rxqs))
-+		return -EINVAL;
-+
-+	fresh_count = new_count - old_count;
-+
-+	new_tx = kzalloc_objs(struct mana_tx_qp *, new_count);
-+	new_rx = kzalloc_objs(struct mana_rxq *, new_count);
-+	fresh_tx = kzalloc_objs(struct mana_tx_qp *, fresh_count);
-+	fresh_rx = kzalloc_objs(struct mana_rxq *, fresh_count);
-+	if (!new_tx || !new_rx || !fresh_tx || !fresh_rx) {
-+		err = -ENOMEM;
-+		goto free_arrays;
 +	}
 +
-+	for (i = 0; i < old_count; i++) {
-+		new_tx[i] = apc->tx_qp[i];
-+		new_rx[i] = apc->rxqs[i];
-+	}
-+
-+	scratch->num_queues = new_count;
-+	scratch->tx_qp = new_tx;
-+	scratch->rxqs = new_rx;
-+
-+	err = mana_rss_table_alloc(scratch);
-+	if (err)
-+		goto free_arrays;
-+
-+	err = mana_grow_eqs(apc, new_count);
-+	if (err)
-+		goto cleanup_rss;
-+
-+	scratch->eqs = apc->eqs;
-+	scratch->num_eqs = apc->num_eqs;
-+
-+	err = mana_create_txq(scratch, ndev, old_count);
-+	if (err)
-+		goto cleanup_rss;
-+
-+	err = mana_add_rx_queues(scratch, ndev, old_count);
-+	if (err)
-+		goto cleanup_rxq;
-+
-+	if (mana_rss_table_keep(apc, new_count, &indir_lost))
-+		memcpy(scratch->indir_table, apc->indir_table,
-+		       apc->indir_table_sz * sizeof(*apc->indir_table));
-+	else
-+		mana_rss_table_init(scratch);
-+
-+	mana_qset_snapshot(scratch, out_new);
-+	out_new->rxfh_indir_lost = indir_lost;
-+
-+	for (i = 0; i < fresh_count; i++) {
-+		fresh_tx[i] = new_tx[old_count + i];
-+		fresh_rx[i] = new_rx[old_count + i];
-+	}
-+
-+	memset(out_fresh, 0, sizeof(*out_fresh));
-+	out_fresh->tx_qp	= fresh_tx;
-+	out_fresh->rxqs		= fresh_rx;
-+	out_fresh->default_rxobj = INVALID_MANA_HANDLE;
-+	out_fresh->num_queues	= fresh_count;
-+	out_fresh->rx_queue_size = apc->rx_queue_size;
-+	out_fresh->tx_queue_size = apc->tx_queue_size;
-+	out_fresh->priv_flags	= apc->priv_flags;
-+	out_fresh->mtu		= apc->configured_mtu;
-+	out_fresh->bpf_prog	= apc->bpf_prog;
-+
-+	/* Take XDP refs on fresh RXQs only. On the merged set,
-+	 * mana_chn_setxdp() returns early on the carried rxqs[0].
-+	 */
-+	mana_qset_install(scratch, out_fresh);
-+	mana_chn_setxdp(scratch, mana_xdp_get(apc));
-+
-+	return 0;
-+
-+cleanup_rxq:
-+	mana_destroy_rxqs_from(scratch, old_count);
-+	mana_destroy_txq_from(scratch, old_count);
-+cleanup_rss:
-+	mana_cleanup_indir_table(scratch);
-+free_arrays:
-+	/* Free containers only; carried queues remain live. */
-+	scratch->tx_qp = NULL;
-+	scratch->rxqs = NULL;
-+	kfree(new_tx);
-+	kfree(new_rx);
-+	kfree(fresh_tx);
-+	kfree(fresh_rx);
-+
-+	mana_shrink_eqs(apc, apc->num_queues);
-+
-+	netdev_err(ndev, "%s(num_queues=%u) failed: %d\n", __func__,
-+		   new_count, err);
-+	return err;
-+}
-+
-+/* Free merged containers only, not carried queues. The caller must retire fresh
-+ * queues separately.
-+ */
-+void mana_discard_grow(struct mana_qset *newq)
-+{
-+	kfree(newq->tx_qp);
-+	kfree(newq->rxqs);
-+	kfree(newq->indir_table);
-+	kfree(newq->rxobj_table);
-+	memset(newq, 0, sizeof(*newq));
-+}
-+
-+/* Rebuild at the current count; resize uses split/grow. */
- int mana_alloc_qset(struct mana_port_context *apc,
--		    struct mana_port_context *scratch, unsigned int num_queues,
-+		    struct mana_port_context *scratch,
- 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
- 		    u32 priv_flags, int mtu, struct bpf_prog *bpf_prog,
- 		    struct mana_qset *out)
-@@ -4269,7 +4427,7 @@ int mana_alloc_qset(struct mana_port_context *apc,
- 
- 	ASSERT_RTNL();
- 
--	scratch->num_queues	= num_queues;
-+	scratch->num_queues	= apc->num_queues;
- 	scratch->rx_queue_size	= rx_queue_size;
- 	scratch->tx_queue_size	= tx_queue_size;
- 	scratch->priv_flags	= priv_flags;
-@@ -4285,22 +4443,19 @@ int mana_alloc_qset(struct mana_port_context *apc,
- 	if (err)
- 		goto cleanup_rxq_array;
- 
--	err = mana_grow_eqs(apc, num_queues);
--	if (err)
--		goto cleanup_rss;
--
-+	/* Reuse the existing EQ pool; the queue count is unchanged. */
- 	scratch->eqs = apc->eqs;
- 	scratch->num_eqs = apc->num_eqs;
- 
--	err = mana_create_txq(scratch, ndev);
-+	err = mana_create_txq(scratch, ndev, 0);
- 	if (err)
- 		goto cleanup_rss;
- 
--	err = mana_add_rx_queues(scratch, ndev);
-+	err = mana_add_rx_queues(scratch, ndev, 0);
- 	if (err)
- 		goto cleanup_rxq;
- 
--	if (mana_rss_table_keep(apc, num_queues, &indir_lost))
-+	if (mana_rss_table_keep(apc, scratch->num_queues, &indir_lost))
- 		memcpy(scratch->indir_table, apc->indir_table,
- 		       apc->indir_table_sz * sizeof(*apc->indir_table));
- 	else
-@@ -4319,10 +4474,8 @@ int mana_alloc_qset(struct mana_port_context *apc,
- 	kfree(scratch->rxqs);
- 	scratch->rxqs = NULL;
- out_err:
--	mana_shrink_eqs(apc, apc->num_queues);
--
- 	netdev_err(ndev, "%s(num_queues=%u) failed: %d\n", __func__,
--		   num_queues, err);
-+		   apc->num_queues, err);
- 	return err;
- }
- 
-@@ -4607,7 +4760,7 @@ int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
- }
- 
- /* Create missing debugfs nodes once retiring names are gone. */
--static void mana_qset_debugfs_publish(struct mana_port_context *apc)
-+void mana_qset_debugfs_publish(struct mana_port_context *apc)
- {
- 	unsigned int i;
- 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index d3e465ea9428..ec76a75268ac 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -684,7 +684,7 @@ static int mana_set_channels(struct net_device *ndev,
- 	struct mana_port_context *apc = netdev_priv(ndev);
- 	unsigned int new_count = channels->combined_count;
- 	struct mana_port_context *scratch;
--	struct mana_qset newq, oldq;
-+	struct mana_qset newq, oldq, freshq;
- 	int err;
- 
- 	if (new_count < 1 || new_count > apc->max_queues) {
-@@ -767,19 +767,33 @@ static int mana_set_channels(struct net_device *ndev,
- 		goto free_scratch;
- 	}
- 
--	err = mana_alloc_qset(apc, scratch, new_count, apc->rx_queue_size,
--			      apc->tx_queue_size, apc->priv_flags,
--			      apc->configured_mtu, apc->bpf_prog, &newq);
-+	err = mana_grow_qset(apc, scratch, new_count, &newq, &freshq);
- 	if (err)
- 		goto free_scratch;
- 
- 	err = mana_publish_qset(apc, &newq, &oldq);
- 	if (err) {
--		mana_free_qset(scratch, &newq);
-+		/* Free only the new queues, then discard the merged containers.
-+		 */
-+		mana_free_qset(scratch, &freshq);
-+		mana_discard_grow(&newq);
- 		goto free_scratch;
- 	}
- 
--	mana_free_qset(scratch, &oldq);
-+	/* Wait for ndo_select_queue() readers of oldq.indir_table. All queues
-+	 * are now live in newq; free only the old and fresh containers.
-+	 */
-+	synchronize_net();
-+
-+	kfree(oldq.tx_qp);
-+	kfree(oldq.rxqs);
-+	kfree(oldq.indir_table);
-+	kfree(oldq.rxobj_table);
-+	kfree(freshq.tx_qp);
-+	kfree(freshq.rxqs);
-+
-+	/* No retirement runs to publish the new queues' debugfs nodes. */
-+	mana_qset_debugfs_publish(apc);
- 
- free_scratch:
- 	mana_publish_close_if_needed(apc);
-@@ -856,7 +870,7 @@ static int mana_set_ringparam(struct net_device *ndev,
- 		goto clear_flag;
- 	}
- 
--	err = mana_alloc_qset(apc, scratch, apc->num_queues, new_rx, new_tx,
-+	err = mana_alloc_qset(apc, scratch, new_rx, new_tx,
- 			      apc->priv_flags, apc->configured_mtu,
- 			      apc->bpf_prog, &newq);
- 	if (err) {
-@@ -876,7 +890,6 @@ static int mana_set_ringparam(struct net_device *ndev,
- 	mana_free_qset(scratch, &oldq);
- 
- free_scratch:
--	/* Release unpublished queues before closing their shared EQ pool. */
- 	mana_publish_close_if_needed(apc);
- 	mana_qset_scratch_free(scratch);
- clear_flag:
-@@ -948,7 +961,7 @@ static int mana_set_priv_flags(struct net_device *ndev, u32 priv_flags)
- 		goto clear_flag;
- 	}
- 
--	err = mana_alloc_qset(apc, scratch, apc->num_queues, apc->rx_queue_size,
-+	err = mana_alloc_qset(apc, scratch, apc->rx_queue_size,
- 			      apc->tx_queue_size, priv_flags,
- 			      apc->configured_mtu, apc->bpf_prog, &newq);
- 	if (err)
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index 308950f9b54b..666565ffb26a 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -686,6 +686,11 @@ enum {
- /* Driver supports non-contiguous queue buffers */
- #define GDMA_DRV_CAP_FLAG_1_NON_CONTIGUOUS_BUFFERS BIT(30)
- 
-+/* Resize failures are handled in-driver; a failed rollback still needs
-+ * recovery.
-+ */
-+#define GDMA_DRV_CAP_FLAG_1_SELF_RECOVERY_ON_QUEUE_RESIZE_FAILURE BIT(31)
-+
- #define GDMA_DRV_CAP_FLAGS1 \
- 	(GDMA_DRV_CAP_FLAG_1_EQ_SHARING_MULTI_VPORT | \
- 	 GDMA_DRV_CAP_FLAG_1_NAPI_WKDONE_FIX | \
-@@ -703,7 +708,8 @@ enum {
- 	 GDMA_DRV_CAP_FLAG_1_HWC_TIMEOUT_RECOVERY | \
- 	 GDMA_DRV_CAP_FLAG_1_EQ_MSI_UNSHARE_MULTI_VPORT | \
- 	 GDMA_DRV_CAP_FLAG_1_DYN_INTERRUPT_MODERATION | \
--	 GDMA_DRV_CAP_FLAG_1_NON_CONTIGUOUS_BUFFERS)
-+	 GDMA_DRV_CAP_FLAG_1_NON_CONTIGUOUS_BUFFERS | \
-+	 GDMA_DRV_CAP_FLAG_1_SELF_RECOVERY_ON_QUEUE_RESIZE_FAILURE)
- 
- #define GDMA_DRV_CAP_FLAGS2 0
- 
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index fef800bea2c0..2e101730e40c 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -731,7 +731,7 @@ static inline struct mana_stats_rx *mana_rxq_stats(struct mana_rxq *rxq)
- }
- 
- int mana_alloc_qset(struct mana_port_context *apc,
--		    struct mana_port_context *scratch, unsigned int num_queues,
-+		    struct mana_port_context *scratch,
- 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
- 		    u32 priv_flags, int mtu, struct bpf_prog *bpf_prog,
- 		    struct mana_qset *out);
-@@ -739,10 +739,15 @@ int mana_split_qset(struct mana_port_context *apc,
- 		    struct mana_port_context *scratch, unsigned int new_count,
- 		    struct mana_qset *out_new, struct mana_qset *out_tail);
- void mana_discard_split(struct mana_qset *newq, struct mana_qset *tailq);
-+int mana_grow_qset(struct mana_port_context *apc,
-+		   struct mana_port_context *scratch, unsigned int new_count,
-+		   struct mana_qset *out_new, struct mana_qset *out_fresh);
-+void mana_discard_grow(struct mana_qset *newq);
- int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
- 		      struct mana_qset *out_old);
- void mana_publish_close_if_needed(struct mana_port_context *apc);
- void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset);
-+void mana_qset_debugfs_publish(struct mana_port_context *apc);
- 
- void mana_dim_change(struct mana_cq *cq, bool enable);
- 
+  	if (!synproxy_parse_options(skb, thoff, tcp, &opts)) {
+  		regs->verdict.code = NF_DROP;
+  		return;
+
+
+> 
+>>   net/ipv6/netfilter/ip6t_SYNPROXY.c | 9 ++++++---
+>>   1 file changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/net/ipv6/netfilter/ip6t_SYNPROXY.c b/net/ipv6/netfilter/ 
+>> ip6t_SYNPROXY.c
+>> index d51d0c3e5fe9..04db1f82420b 100644
+>> --- a/net/ipv6/netfilter/ip6t_SYNPROXY.c
+>> +++ b/net/ipv6/netfilter/ip6t_SYNPROXY.c
+>> @@ -18,13 +18,16 @@ synproxy_tg6(struct sk_buff *skb, const struct 
+>> xt_action_param *par)
+>>       struct synproxy_options opts = {};
+>>       struct tcphdr *th, _th;
+>> -    if (nf_ip6_checksum(skb, xt_hooknum(par), par->thoff, IPPROTO_TCP))
+>> -        return NF_DROP;
+>> -
+>> +    /* par->thoff may point past the end of the packet; make sure a
+>> +     * full TCP header is present before checksumming up to it.
+>> +     */
+>>       th = skb_header_pointer(skb, par->thoff, sizeof(_th), &_th);
+>>       if (th == NULL)
+>>           return NF_DROP;
+>> +    if (nf_ip6_checksum(skb, xt_hooknum(par), par->thoff, IPPROTO_TCP))
+>> +        return NF_DROP;
+>> +
+>>       if (!synproxy_parse_options(skb, par->thoff, th, &opts))
+>>           return NF_DROP;
+> 
+
