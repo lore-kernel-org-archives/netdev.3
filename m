@@ -1,198 +1,237 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA0137AA9E;
-	Fri,  9 Oct 2026 08:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC87234CFCF;
+	Fri,  9 Oct 2026 08:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791533347; cv=none; b=MFT0U6nKuQTBnhG9AOkaNHbPy3KdaKroUXWeNUAwequeV+SdKPp7GRRBcCPYz7rJgn9rcT1nu8uQHLXAHxp850RS9rrIZWnCOjkyXK1gJ1mli3dEgoHzKVG5H93kosR2WZECctKlwNAAq1GvhGgykEc1C4mUKjG1Po8ZdSyEjA8=
+	t=1791533528; cv=none; b=kGulbKJCec4pOaDdrA5oxspfPYT+NONtjUTz0pP3z6IeIYf+IADpDfnNbBJDnEbIox57SEIAqqJX3ObHG04rtOmS5gNNWqu5HrRyhRlJSwiJvJpPynhWkUZWL58vRmGh+3PYzgIlxUU9nmptoH5tmBQ7iK1TNxUoCdu1jblhihY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791533347; c=relaxed/simple;
-	bh=YqCj2DI45rBAiCTfBWTa8ZEjISoBAV0jHOtCtO+LHRQ=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jS0ttkMeq4zm2YmJSLmAa+piaCYzQfSjNspGcELYcd3SaZfE1Qo5Zc5WnLX3BdSTJ7v30IPQR6CwMseEOgNXFZzIYRKhkTPXklwEOLVkcNfACnnW8C7lQpWVQwMw9jWAcCQKF2h4TMSZI7MR9XBdJkaumnu9mT/VwWuFak+H8e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UqPzd8aB; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1791533528; c=relaxed/simple;
+	bh=LzNfJ/QuelNQIPa+5THeRO/sO8w9449OvViZXPZz9JA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=idP4III8wyKtECyXwipxMyO+c2UPoi2oR+Ox0XyHOGfE3nn0Llg9A3+137JMovJt/x6wfZww3bveRxRlU9PpyW+UI7EPVI2X6kEP6VJZ2tEV3iAn3m01XQcVtOkJ2sBvHovesJhKmNBq1XOvP7lhzdTbyVqlCVKs/VG44OriOjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfSb+jil; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UqPzd8aB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1791533339; x=1823069339;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YqCj2DI45rBAiCTfBWTa8ZEjISoBAV0jHOtCtO+LHRQ=;
-  b=UqPzd8aBy8NXZI+M86dO/gZUwhbF9gDnB9DsUx1TMEWM0OBd+yLYgm/r
-   n+arK2euNP7kK70kKngZPgkMP+EzxUuHV1xlX7QXdqG6oSLM0PizIOQgE
-   HQDRqU6AE5gPqv3FnRRlwCXALW/5SRY/jeRlg5e+RFm5wi7QbPPVpxZSJ
-   8m37APXdsvMos/dIVGCZg00FxdPqu1/8122DlF26+3nR0jDbhwEIrwjvG
-   6EYThRS1lKaHyK8FTzh9B0qLqyPqI24UxA5DZ2NogwZ6Nd0q/0OyOYCTg
-   nAmaHRkNB4rHSj1bUNCsPzWlbEE1Lg89Z5wLnqECtmxWQa0mM05U9nlMQ
-   Q==;
-X-CSE-ConnectionGUID: dIsZ+WLRTeKwVkIRWHtgXQ==
-X-CSE-MsgGUID: vZlShO7RSgiWPTorujsFvg==
-X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="75117816"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 01:08:52 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Fri, 9 Oct 2026 01:08:51 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 9 Oct 2026 01:08:49 -0700
-Date: Fri, 9 Oct 2026 10:08:48 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Kusuma Vasana <kusuma.vasana@amd.com>
-CC: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <michal.simek@amd.com>, <git@amd.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>
-Subject: Re: [PATCH net-next V4] net: axienet: Clear stale AXI DMA TX/RX
- status before re-enabling interrupts
-Message-ID: <20261009080848.peze77mpvcub5wqv@DEN-DL-M70577.microsemi.net>
-References: <20261005090106.1594994-1-kusuma.vasana@amd.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfSb+jil"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716331F00898;
+	Fri,  9 Oct 2026 08:12:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791533521;
+	bh=MGSDFZ8QxtD4W8jGrQZdA7pypggrA+L9YwjgZcmH5IQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=QfSb+jilw++8MZxxcYU8mE45J1fz4R+CEki4qu4kJlX3r4vMD2mEc2KMf9coM3xA0
+	 /wgOuXmec+iBPz5UjeaJt/Lyg3apnPu8Ck0B+JeYyEmczl5mcLCBkAEKlsp16QCaXi
+	 QlqS07hJGOOFch7pwjyq9l+2vjQtk5rxjS6/SBjZU783Xa5b+FLYxkxEhqlOxbGqac
+	 SZ49uE3gf4dov4vDgHe37L7bk7IbkBi2hUHXeSb2hjBtESKoCxOZpetiGgp/R1Fitg
+	 Z0NtjO5fCqUgpqDCJhqJVWTZC9DU5iEU8bozIatcwwfS7NDtnVhrMKfd81QFA9iVQK
+	 dtum5r9oDqObg==
+Subject: Re: [PATCH net-next 3/9] net: skbuff: don't BUG() on a bad frag_list
+ layout in skb_segment()
+From: netdev-bot+sashiko@kernel.org
+To: josef@toxicpanda.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kaiyuanz@google.com,
+ almasrymina@google.com, willemb@google.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Date: Fri, 09 Oct 2026 08:12:00 +0000
+Message-ID: <179153352002.434549.8562336759000042936@kernel.org>
+In-Reply-To: <20261006-b4-skbuff-bug-on-v1-3-1b4434c5357c@toxicpanda.com>
+References: <20261006-b4-skbuff-bug-on-v1-3-1b4434c5357c@toxicpanda.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261005090106.1594994-1-kusuma.vasana@amd.com>
 
-Hi Kusuma,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-A few comments:
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 2
 
-> The AXI DMA interrupt line is level-sensitive: it asserts whenever
-> the IOC (XAXIDMA_IRQ_IOC_MASK) or DELAY (XAXIDMA_IRQ_DELAY_MASK) bits
-> in the status register (XAXIDMA_TX_SR_OFFSET / XAXIDMA_RX_SR_OFFSET)
-> are set and their corresponding enable bits in the control register
-> are active.
-> 
-> During TX/RX, interrupts are disabled in the control register while
-> NAPI runs. Completions arriving in this window cause hardware to latch
-> IOC/DELAY into the status register regardless of the control register
-> mask state. After NAPI completion, re-enabling interrupts immediately
-> re-asserts the IRQ line due to these stale status register bits, even
-> when no new work is pending.
-> 
-> This results in a stale interrupt and redundant NAPI poll cycle with
-> no new work pending, causing unnecessary CPU processing.
-> 
-> In the initial driver, the status register was cleared after polling
-> all packets, which naturally consumed any status accumulated during
-> processing. In later versions of the driver, status register clearing
-> was moved to the ISR before polling begins, leaving no mechanism to
-> clear status bits that arrive during the NAPI poll window.
-> 
-> Clear the status register IOC/DELAY bits before re-enabling interrupts
-> and recheck the next BD to catch race-window completions. Both are
-> skipped on budget exhaustion. On the RX side, both are additionally
-> skipped on refill failure.
-> 
-> Signed-off-by: Kusuma Vasana <kusuma.vasana@amd.com>
-> ---
-> Changes in v4:
-> - Read back SR after W1C so the clear is posted before the BD recheck.
-> - Document that poll may return @budget on that recheck.
-> - Drop the incorrect "leave IRQ armed" wording for RX refill failure.
-> 
-> Changes in v3:
-> - Updated the commit description.
-> - Restricted TX/RX status-register clear and completion recheck to the
->   NAPI completion path, with RX only when refill succeeds.
-> - Rechecked descriptor completion after status-register clear to handle
->   race-window completions.
-> 
-> Changes in v2:
-> -Added net-next prefix in the subject
-> -Updated the commit description
-> 
-> ---
->  .../net/ethernet/xilinx/xilinx_axienet_main.c | 29 +++++++++++++++++--
->  1 file changed, 27 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index fcf517069d16..4d8169fc39cd 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -986,7 +986,8 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
->   * @napi:      Pointer to NAPI structure.
->   * @budget:    Max number of TX packets to process.
->   *
-> - * Return: Number of TX packets processed.
-> + * Return: Number of TX packets processed, or @budget to continue polling
-> + * after a post-clear completion recheck.
->   *
->   * This function is invoked from the NAPI processing to notify the completion
->   * of transmit operation. It clears fields in the corresponding Tx BDs and
-> @@ -1018,6 +1019,17 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
->                         netif_wake_queue(ndev);
->         }
-> 
-> +       /* Clear stale IOC/DELAY bits, flush the clear, and re-check for
-> +        * race-window completions. Skipped on budget exhaustion.
-> +        */
-> +       if (packets < budget) {
-> +               axienet_dma_out32(lp, XAXIDMA_TX_SR_OFFSET,
-> +                                 XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-> +               axienet_dma_in32(lp, XAXIDMA_TX_SR_OFFSET);
-> +               if (lp->tx_bd_v[lp->tx_bd_ci].status & XAXIDMA_BD_STS_COMPLETE_MASK)
-> +                       return budget;
-> +       }
-> +
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The patch does not apply on my tree.
+- [Medium] Commit "net: skbuff: don't BUG() on a bad frag_list layout in
+  skb_segment()" replaces four BUG_ON()s in skb_segment()…
+- [Low] The comment in bpf_skb_net_grow() (net/core/filter.c:3698-3702)
+  still says "There is a BUG_ON() when segmenting the frag_list with…
+- [Low] The KUnit test gso_test_func() in net/core/net_test.c (lines
+  223-227) turns off NETIF_F_SG for GSO_TEST_FRAG_LIST_NON_UNIFORM.
 
-This part was reworked in f9d58127380a ("net: axienet: do not report TX
-completions as NAPI work") to not return budget-sized work, it now just returns
-0.
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but
+  skb_segment() (net/core/skbuff.c) still dereferences list_skb without…
 
->         if (packets < budget && napi_complete_done(napi, packets)) {
->                 /* Re-enable TX completion interrupts. This should
->                  * cause an immediate interrupt if any TX packets are
-> @@ -1204,7 +1216,8 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
->   * @napi:      Pointer to NAPI structure.
->   * @budget:    Max number of RX packets to process.
->   *
-> - * Return: Number of RX packets processed.
-> + * Return: Number of RX packets processed, or @budget to continue polling
-> + * after a post-clear completion recheck.
->   */
->  static int axienet_rx_poll(struct napi_struct *napi, int budget)
->  {
-> @@ -1301,6 +1314,18 @@ static int axienet_rx_poll(struct napi_struct *napi, int budget)
->         if (tail_p)
->                 axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
-> 
-> +       /* Clear stale IOC/DELAY bits, flush the clear, and re-check for
-> +        * race-window completions. Skipped on budget exhaustion and on
-> +        * refill failure (cur_p->skb == NULL).
-> +        */
-> +       if (packets < budget && cur_p->skb) {
-> +               axienet_dma_out32(lp, XAXIDMA_RX_SR_OFFSET,
-> +                                 XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-> +               axienet_dma_in32(lp, XAXIDMA_RX_SR_OFFSET);
-> +               if (cur_p->status & XAXIDMA_BD_STS_COMPLETE_MASK)
-> +                       return budget;
-> +       }
-> +
->         if (packets < budget && napi_complete_done(napi, packets)) {
->                 if (READ_ONCE(lp->rx_dim_enabled)) {
->
+--
 
-I think the RX side looks good.
+net: skbuff: don't BUG() on a bad frag_list layout in skb_segment()
 
->struct dim_sample sample = {
-> --
-> 2.43.0
-> 
-> 
+This patch replaces the four BUG_ON() frag_list layout checks in
+skb_segment() with WARN_ON_ONCE(). Each one now takes the existing -EINVAL
+error path. The check in the clone path runs after skb_clone(), so it also
+frees the clone before bailing out.
 
-/Daniel
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 5d856948cef92..405d27e9bc9d1 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -4916,7 +4916,10 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  
+>  		if (hsize <= 0 && i >= nfrags && skb_headlen(list_skb) &&
+>  		    (skb_headlen(list_skb) == len || sg)) {
+> -			BUG_ON(skb_headlen(list_skb) > len);
+> +			if (WARN_ON_ONCE(skb_headlen(list_skb) > len)) {
+> +				err = -EINVAL;
+> +				goto err;
+> +			}
+
+[Severity: Medium]
+The commit message says "Anybody who can get a malformed GSO skb to a
+segmentation point gets to crash the box". Malformed input can reach all
+four of these checks. Is WARN_ON_ONCE() the right tool for them?
+
+If panic_on_warn is set (boot parameter or the kernel.panic_on_warn
+sysctl), check_panic_on_warn() turns each of these warnings into a panic:
+
+kernel/panic.c:check_panic_on_warn() {
+	if (panic_on_warn)
+		panic("%s: panic_on_warn set ...\n", origin);
+	...
+}
+
+On those systems the crash is still there. On other systems a malformed
+skb still taints the kernel and prints a stack trace.
+
+The "Do not WARN lightly" section of coding-style.rst says WARN*() should
+not be used for conditions that user space can trigger.
+
+A little further down in the same loop, the too many frags check handles
+a malformed layout with net_warn_ratelimited() and -EINVAL.
+
+Would net_warn_ratelimited() or DEBUG_NET_WARN_ON_ONCE(), plus the -EINVAL
+drop, be a better fit for all four converted checks?
+
+[Severity: Low]
+This isn't a bug, but a comment in bpf_skb_net_grow() still refers to the
+BUG_ON() that this patch removes:
+
+net/core/filter.c:bpf_skb_net_grow() {
+		/* Due to header growth, MSS needs to be downgraded.
+		 * There is a BUG_ON() when segmenting the frag_list with
+		 * head_frag true, so linearize the skb after downgrading
+		 * the MSS.
+		 */
+}
+
+After this patch skb_segment() has no BUG_ON() left. A lowered MSS now
+makes this check return -EINVAL instead.
+
+The skb_linearize() call is still needed, to avoid a dropped packet. Should
+the comment give that reason instead?
+
+>  
+>  			nskb = skb_clone(list_skb, GFP_ATOMIC);
+>  			if (unlikely(!nskb))
+> @@ -4929,7 +4932,11 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  			pos += skb_headlen(list_skb);
+>  
+>  			while (pos < offset + len) {
+> -				BUG_ON(i >= nfrags);
+> +				if (WARN_ON_ONCE(i >= nfrags)) {
+> +					kfree_skb(nskb);
+> +					err = -EINVAL;
+> +					goto err;
+> +				}
+
+[Severity: Low]
+This isn't a bug, but gso_test_func() in net/core/net_test.c says SG is
+turned off to avoid this BUG_ON():
+
+net/core/net_test.c:gso_test_func() {
+	/* TODO: this should also work with SG,
+	 * rather than hit BUG_ON(i >= nfrags)
+	 */
+	if (tcase->id == GSO_TEST_FRAG_LIST_NON_UNIFORM)
+		features &= ~NETIF_F_SG;
+}
+
+With this patch there is no BUG_ON(i >= nfrags) left. The check returns
+ERR_PTR(-EINVAL) instead, and the test would report that through its
+IS_ERR(segs) path.
+
+Should this comment be updated? Would a negative test for the new -EINVAL
+path also be worth adding?
+
+>  
+>  				size = skb_frag_size(frag);
+>  				if (pos + size > offset + len)
+> @@ -5036,9 +5043,15 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+>  				skb_shinfo(nskb)->flags |= skb_shinfo(frag_skb)->flags & SKBFL_SHARED_FRAG;
+>  
+>  				if (!skb_headlen(list_skb)) {
+> -					BUG_ON(!nfrags);
+> +					if (WARN_ON_ONCE(!nfrags)) {
+> +						err = -EINVAL;
+> +						goto err;
+> +					}
+>  				} else {
+> -					BUG_ON(!list_skb->head_frag);
+> +					if (WARN_ON_ONCE(!list_skb->head_frag)) {
+> +						err = -EINVAL;
+> +						goto err;
+> +					}
+
+[Severity: Medium]
+This is a pre-existing issue, but what happens here if the frag_list is
+already used up and list_skb is NULL?
+
+Just above this hunk, the i >= nfrags branch in skb_segment() does:
+
+	if (i >= nfrags) {
+		if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
+		    skb_zerocopy_clone(nskb, list_skb,
+				       GFP_ATOMIC))
+			goto err;
+
+		i = 0;
+		nfrags = skb_shinfo(list_skb)->nr_frags;
+		...
+
+skb_zcopy() checks skb before using it, so both helpers return 0 for a
+NULL skb. Nothing catches the NULL list_skb.
+skb_shinfo(list_skb)->nr_frags and skb_headlen(list_skb) then dereference
+NULL before any of the new checks run.
+
+pos only advances over each frag_list member's linear data and page
+frags. It does not cover a nested frag_list. Take a member with headlen 0,
+one page frag, a nested frag_list and a NULL next pointer. Could it leave
+pos < offset + len after list_skb has become NULL?
+
+Two other places make the same assumption: the skb_headlen(list_skb) test
+in the clone path at the top of the loop, and len = list_skb->len for
+GSO_BY_FRAGS.
+
+GRO does not appear to build nested frag_lists today, because
+dev_gro_receive() flushes skbs that already have a frag_list. No current
+producer of this layout is known.
+
+Since the goal is to drop malformed layouts rather than crash, would a
+check like this at those places make sense?
+
+	if (unlikely(!list_skb)) {
+		err = -EINVAL;
+		goto err;
+	}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-b4-skbuff-bug-on-v1-0-1b4434c5357c%40toxicpanda.com
