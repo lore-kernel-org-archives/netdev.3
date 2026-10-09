@@ -1,130 +1,222 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B433738E8BD
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45834233942
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.180
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791537965; cv=pass; b=qnA0kGDvZJ7mocQOX80DgPlSxzoLCugqf8da90mRFjp5Kf77mLEe6PH7OCFRdWid2/q+JZfa20Xagga/se48BKRXswt0NGDYVZO2UPKpFNPtVAOjL7x4++O8dNsOJbgIxPVqHoaMMv7FGBdq7mcGw5uhAfXemSal/nwWeJr9XRI=
+	t=1791538135; cv=pass; b=Qw679ey/F1Sf1GZeHLvpZSrT2Bcoc7OANjhiH4LuKgaU+PWbj1lJ3UXYEiSxbu5PRsyYMufXHwqXgRnZVYd63tI36/ioZW5a++4DWN+1EtlZznvXvcAVGm1YrpGcSnIwzyqlS/f1hBCrDgA7FTKt2ccXn5oxYEnsXFA6Y38NROM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791537965; c=relaxed/simple;
-	bh=BUi3VVc2WGcdLLbUe0Vfuo/Zxj8KOZZ4l8VVScuoBYg=;
+	s=arc-20240116; t=1791538135; c=relaxed/simple;
+	bh=x9l6lRa0LMB54cr7ndM5V4us2FpiCBo6jaUwYUOhzu0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ILoCYhQUjiAcANhLCWqWUDSZW9Ttqljkyvhd8uLoGwTEi0zPYiwYdshNdgz0rOcT8rMZWICLsN8cIibYQNou5dbcQH9/WVL1a5uM+GNz54s9Et/0SrOQ1Q/KAAgEWOjRvgoG13TFMkxuqlle7KAI88xvWlqLfL9zXp/TW2QjitY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Yizhknq9; arc=pass smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	 To:Cc:Content-Type; b=WzUZKanLs9q3u35G+qylnfmKuuOnW+4XRx01Sh+8XqVytEa1x5dyaNPSMtINYUFibGZ6yoGZdb5OyXxmsTpyQ1Q1o7U1Rng55SeAhwMlFFE1hmEt/hD9xxt30eYE3Fozb+oxiu3ywoIl3jBh4PETsIr6/w5S0F4fnwVDANcmPDo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E+JFAxx9; arc=pass smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Yizhknq9"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc4d192643dso1820246a12.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 02:26:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791537963; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E+JFAxx9"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-8565d77c277so41126397b3.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 02:28:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791538133; cv=none;
         d=google.com; s=arc-20260327;
-        b=THkqeioGdFdGzw1+tw4ma93BlmBMl/t7l2fFEC5MJKwu0RZg/NdbR5FOiOIDHGB9Lo
-         DNF5i4vwa+/84Mxp9td0GY4NJy2I4/RK9trETefrh06pXVmdzCcgGqhbJDu8HX6p81Y5
-         uu/bHa8ay938o9LIuKnCAdjkEEzyXWJTAp9okV8LyhR3PckqfedrP30QPVYy7UjXjx3k
-         TYZH+v8OdSx4LrQ0aiCyj/0VZuspJfA/so42nA7gV44LU8y9PrREA6qqZAZukJ8A4Xnz
-         XuMyj7eqt+UaOqmaZZUYjVQwTW4m0bHXb0CZjhQDEHpKU629s36a5b44LQuYHHEcSQlg
-         Fh3A==
+        b=KO/0mpOUxTOa2jWTzNAYqnQ4eGnYNwRvgz/iTqkW0wSkg++bBFwUsX2LMlpOtGLNc6
+         DAw1LYB6DHwWVjKkkEDyKmbPeNAfBI6TSPnCevqUvY9sSvLv27m6spdBBAEdkuvmJEzM
+         haN06YYxzvRNVUpjQTNEz2gGEbwD7gkWIbxIe/eIzogArAYrcCzm5Qe9yDtuw6pFwS5m
+         GtiFXpBDsSqYVp8WllL7Da6cLuq/LKSlmw97ikX6/LDxTkRqpQcfblPXmnVl6yWCiEsq
+         KFpivh8scnNv7mDKcQzAYxHK3GvfeOISObMZaFaeRjeVRgucZKZ9XEvEi91dfF9/RbE8
+         qvIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=r1M5Qqi3LRW7Vp0nEi2+b8JRST80YvkJ/X3Ikh1oGi8=;
-        fh=5+t0ka9kLTbomn9Jrh1y8lkChSMvy0zFtedHvyFSri8=;
-        b=b2DmiLuQVMaJShRezWdRe4TCuArtBVBTYgJw65f7iEPQTcRveim9ubInD4DAiiOZbd
-         6NE8E6z+xrI+H4mg1ZLmq+5NJSqtECFh5K5LgdLG8RRJ5DfzFS+RwliMzyfmJbP9DcNv
-         86mjMdBxVcS5Re6EktC9BVd7f7b6VR6wTQERhJZiA5TUmdFVeQI3wDyr1UQYLT1Qfn1k
-         pq0igkXEkFbXwnXxPE9Gi8ZB8JprAzMZ5htbpZdGjsc6/5rhXoEHPDo7tkpNVjsSZydM
-         Wu3AeQWTFF4MCD7bdVmqI3GyoeEVg+yNlNsjMKWVC/3xPpHa1Q71ebFw7EW/mnVXGdzI
-         tuKA==;
+        bh=SoQSQjh6Jm8gBqQ1PDQyGzx+E+R1VRExp+5Jlum5ypA=;
+        fh=spiYZb98B7GqjlzziDn3nzDtqwN65qn1DLT1CztHu88=;
+        b=h61Uu0miYhCn0LTydUqcgfRUiCODlGtD8e0KNDmnIzO7ngGPAPQ0W6+SoKZTQW7iF0
+         YbERJZbNi6jY4JGdE1plVNchtaqeyA+LsF+5bBb6YWzWmJsmcCL4u/cMPkoz7fNT2xGA
+         vI8fDUmhXEoLSmRz3/BX0V0eONvFHzdi5vVCFuju+uDaU7yjaOuwe+fHCX5RYqkA5KJE
+         R4xsWnvRygP+K2P7lL8Dz98kYyiAQeTM+3aq5dPWmFvn3ZkURDJ9P2DTJstzE76IbKVO
+         v9IujTKYHtlEk/YgIdLywbzTwZe4vFN6VyqYQeUQGz/TODOHbNlbr3/WW9Ed3z4yhjKX
+         bE1Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791537963; x=1792142763; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791538133; x=1792142933; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=r1M5Qqi3LRW7Vp0nEi2+b8JRST80YvkJ/X3Ikh1oGi8=;
-        b=Yizhknq9buLEsLiPTUaZuy0J3ryZcP+yj77nPzsGFVPWUuBiKDqDEsg5qQ9tOvv80D
-         mrBy6lFbVzqVFhl/GH3R5mYt9y1xdyBB86rHCf7siBNM8J10FNhj9Jh3rsC0Mb8wNHZD
-         cWAd8SQMVx8yvPLk0yp8wsrc4MhZC/e7SeQRw=
+        bh=SoQSQjh6Jm8gBqQ1PDQyGzx+E+R1VRExp+5Jlum5ypA=;
+        b=E+JFAxx9TNggi939XEeqmD891wyL2VwMWDZOvLjmW7gTClcBTUvigEyK8kqaUtTR1L
+         VBGxAfOJ6nkwe+ly6UN6Z27DNv77o0QFM/pf1j0ZkDL/KiRilvIWDaB8v/oST1hlLnOn
+         lrrAhYE9GE+r73r1L6w0R851wBWymNHi0AQymDLNMT3mnH+X5mvmsF1SoAHSosKvRJ/G
+         RntixrGgeqbmaTEhY5GxQMHRbTomUQr//PD5QQtv93ucbHdpGBmeIzXNnJGqUDmpsc5O
+         DBY27b3e5PKn0RE1v186UATZjZyGw6mxM04R54ISIPzvXJRvCPlWE5qEBuyeC+Ni04Ct
+         3OWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791537963; x=1792142763;
+        d=1e100.net; s=20260707; t=1791538133; x=1792142933;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=r1M5Qqi3LRW7Vp0nEi2+b8JRST80YvkJ/X3Ikh1oGi8=;
-        b=xcTvzm9mDfsssB3ABvbrj9uC8apD8REiZHxgMadaUX5L6HdzJQi9hGCUAl5Onn3+VE
-         /+e5kLt6bJqP7My1lNdMSHYZiV7/zQcl7LFk9Ur1fUkWg5db9Xb0zQfBSEiAEbVcH358
-         5CfnmW6GWj1iQ5FHkK3BlEdT2PMBpDpuVEpHUx48ScXhXyOrQylR1CXsJEqHBrLxoZx0
-         Tj7KveT+NRWZSBiiAidXbxJMLCnSaYVCWokySAunJomKkxpEIcghW9IpTDs0npykOIWr
-         KIJjQ/CbsqSz/x43DVeP4fZ73CYmrWfpwHHhcbu4r5UJeq0kRjAVv7iqoVB0o6Od45PH
-         6A9A==
-X-Forwarded-Encrypted: i=1; AKwUvByqZ2YtnF06YhflgqpTU08vWvrVjOy1HG1AHzkE+KEAwwlNmqdmoH1zIGX+rRdaNOzDOC1ZP0o=@vger.kernel.org
-X-Gm-Message-State: AFuF++kfF1shOs6JIZCZonhnC+Zik0f1hexv0WA0CwgARoIeWFFePDWZ
-	l+ea/CYSUqVO+wWO3KpG5WxjE4LI51XlRGhhy90IYBMyykotYHt5b3d1AVil3TqlP/4lgcj56ND
-	5t4tLUJZY6dJKB8lQ/7erZjY875oqCyqPX2Y09rVC
-X-Gm-Gg: AYBFou24odst7CfJNRUgTP6yOA8OQmubLHL9TDWs0asqNh1d9PXMQ/n7xPPW5I2hcmK
-	H4Yq8DAkXKh2alO7mNPGQaquwcLbbjTMRTMY8WsN67MzU0U46BlmhnP0pQGl4sNHMlonMXPdDeG
-	qFbrrryq+wXEQHW+f6s3Fh5zWKUc+ZVvPxfXFxFncHkN1CbVf2zsnRaZXdSmTZbUJwLmQBndOTl
-	SrDpxTYtOX6Nm8f9oZMjrj8jhRbY4nLhELUm8U9E0XuGMBeDu63xtfinOFDXw7zSAtg5w0IgOPj
-	AnmkJ2sUq2Ngg5DSUEOcMnB7qac7/fMNAPTShQckHPDqC22VfnrXrz65bKGF9UKixX3UBRMiizx
-	jvmb6bRtRWjbRbHVG5/xgMlNZbsuF2KloGgwudSI4hRhg
-X-Received: by 2002:a05:6a20:748c:b0:3e0:8887:7013 with SMTP id
- adf61e73a8af0-3e16bf31c6emr1030855637.74.1791537962911; Fri, 09 Oct 2026
- 02:26:02 -0700 (PDT)
+        bh=SoQSQjh6Jm8gBqQ1PDQyGzx+E+R1VRExp+5Jlum5ypA=;
+        b=daNnXiVl5C+9WezQUn15LEyvJtrVjLLBbpEpnqBqIKWdHaeLQeoSdDTpSEKztgiyY9
+         aoc+hR8PC4KC+0fDHLixQnpfhiFU0IzJatAZfZSijRR2cnm3NKoLVbeHQDftsDIIkSXr
+         A2OLERTDgBTW0FvEnzW1anyt3ltHtt1fioIVGiaXFIa9tjtSNJeRAfTp9qPsdY5/b2UI
+         R/aEbnLKc11n/slXtV/B7m1hBKvxXmtvzJzFgn79vI+2DcSVZyn+JiGNYW2r1cSjzX3R
+         dI+Y0lAsnQY5KAZkE8tgBcmCNOUZWpeRBNFVe69/iHqiYPDnw51EAoECEQiydrU7NQM0
+         6faw==
+X-Forwarded-Encrypted: i=1; AKwUvBzIQ4Gd/iHMfECRKfjpE9WloQk3zbxco1HV24jD2UuKNd+N1hLTnLo5UJztuR0xWgFYkVehweg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLzjRgNjtQpdPfzgWhDhEisDKBogk373qogVmPNzqggZ89mIKlB
+	p8Yu8XjObS9p9siaGixnumSkJA3DiPDlHYm8Y5xH3WkOzAWDutWDb9lnrWhkFq7VS5APbD/VAX+
+	ReEr8n1rd/SG9zdjF0iisClFQXQYjFQU=
+X-Gm-Gg: AYBFou2l5zwT2tbe53gtaQHmobTE5UH3Gp6c57NYlEeZyse4rfHEXM/DGVJ13IcQ+sl
+	ckNVwErIxSAG2zC9rfVg1G+VfPK5ryRTRJwzzE93zrytt72Kw7OiNkA8yggcg80dL0s8lLsGHna
+	kjUeq7QWMANoPkgwG4/A169ourVDMMVh2Kf9kHgNLPy0k263yoA+4RHtGOjU9z8PWFN9FdxOUpB
+	sZjOHy4mJR0+/CHoG8FxrP/C1R7Ufj6VPx1bysKaDb9THaWZhhbJTpbH6eDURUY95C8Tj/HbB2C
+	4L2nC729oCCkFASYyETYktLy1qzORaLSlxAb/MO/wiMbinfitpgJjLKigg==
+X-Received: by 2002:a05:690c:ed6:b0:88f:df4:1c7d with SMTP id
+ 00721157ae682-8b07ed943a7mr3818137b3.14.1791538133235; Fri, 09 Oct 2026
+ 02:28:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009051930.3619697-1-acassen@corp.free.fr>
-In-Reply-To: <20261009051930.3619697-1-acassen@corp.free.fr>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 9 Oct 2026 05:25:51 -0400
-X-Gm-Features: AclHuK93AmW8nSnwQTG7lOamrpxOEoVJVjrQUrMwnbi8vokhGes7Or5WjNWmhpI
-Message-ID: <CAM0EoM=tTsRd04oexDRBtErOjJchPV84eMC=5jD0LF54koHT2g@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/2] net/sched: let hardware only actions drop
- per CPU stats
-To: Alexandre Cassen <acassen@corp.free.fr>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org
+References: <20261009074405.727999-1-edumazet@kernel.org>
+In-Reply-To: <20261009074405.727999-1-edumazet@kernel.org>
+From: Cen Zhang <zzzccc427@gmail.com>
+Date: Fri, 9 Oct 2026 17:28:42 +0800
+X-Gm-Features: AclHuK9mWPUNmKzHBu9GWf-6foC73yMwhOZBxuqNWn3dMRPJc0SGUAtY9CIhFj4
+Message-ID: <CAFRLqsVVPWqiWmVScSs+3GLT6XuMQ80KPeo_0HuL1t-sCrB+YA@mail.gmail.com>
+Subject: Re: [PATCH net] ipv4: use RCU protection in inet_netconf_get_devconf()
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>, Baul Lee <baul.lee@xbow.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 9, 2026 at 1:19=E2=80=AFAM Alexandre Cassen <acassen@corp.free.=
-fr> wrote:
+Eric Dumazet <edumazet@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=889=E6=97=
+=A5=E5=91=A8=E4=BA=94 15:44=E5=86=99=E9=81=93=EF=BC=9A
 >
-> This series lets hardware only actions drop their per CPU stats:
+> From: Eric Dumazet <edumazet@google.com>
 >
-> - skbedit, police, mpls and sample honor TCA_ACT_FLAGS_NO_PERCPU_STATS.
-> - tunnel_key skips the dst cache for skip_sw actions.
+> inet_netconf_get_devconf() runs without RTNL. It uses dev_get_by_index()
+> and in_dev_get() to pin the device and its in_device while the reply is
+> allocated and filled.
 >
-> With no_percpu set, the first four count like gact and mirred but also
-> share their race with hardware stats updates when an offloaded action
-> also runs in software. A separate net patch fixes that race:
-> "net/sched: act_api: take tcfa_lock for hardware stats updates".
+> in_dev_get() is not safe for a lockless caller. Since commit 9d40c84cf5bc
+> ("net: devinet: Reduce refcount before grace period"), inetdev_destroy()
+> drops the final reference before the RCU grace period. A reader can load
+> dev->ip_ptr, then call refcount_inc() on a zero refcount after
+> in_dev_free_rcu() has been queued, and keep using the in_device once it
+> has been freed.
 >
-> Alexandre Cassen (2):
->   net/sched: honor TCA_ACT_FLAGS_NO_PERCPU_STATS in more actions
->   net/sched: act_tunnel_key: skip dst cache for skip_sw actions
+> None of these references are needed. An in_device is freed after an RCU
+> grace period, ipv4_devconf is embedded in it, and
+> inet_netconf_fill_devconf() does not sleep.
 >
->  net/sched/act_mpls.c       |  8 ++++----
->  net/sched/act_police.c     | 10 +++++-----
->  net/sched/act_sample.c     |  6 +++---
->  net/sched/act_skbedit.c    |  9 +++++----
->  net/sched/act_tunnel_key.c | 10 +++++++---
->  5 files changed, 24 insertions(+), 19 deletions(-)
-
-For the series:
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-
-cheers,
-jamal
-
+> Allocate the skb first, then perform the lookup and the fill under
+> rcu_read_lock(), using dev_get_by_index_rcu() and __in_dev_get_rcu(),
+> like inet_netconf_dump_devconf() already does.
+>
+> Fixes: bbcf91053bb6 ("inet: do not use RTNL in inet_netconf_get_devconf()=
+")
+> Reported-by: Baul Lee <baul.lee@xbow.com>
+> Closes: https://lore.kernel.org/netdev/20260815172032.79740-1-baul.lee@xb=
+ow.com/
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Cen Zhang <zzzccc427@gmail.com>
+> ---
+>  net/ipv4/devinet.c | 35 +++++++++++++++++------------------
+>  1 file changed, 17 insertions(+), 18 deletions(-)
+>
+> diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+> index 5b6b11c943e453742b4893f1c9bd9e70d3d37a6f..f9a361621f74b420276006b13=
+de94926e13af18e 100644
+> --- a/net/ipv4/devinet.c
+> +++ b/net/ipv4/devinet.c
+> @@ -2379,8 +2379,8 @@ static int inet_netconf_get_devconf(struct sk_buff =
+*in_skb,
+>         struct net *net =3D sock_net(in_skb->sk);
+>         struct nlattr *tb[NETCONFA_MAX + 1];
+>         const struct ipv4_devconf *devconf;
+> -       struct in_device *in_dev =3D NULL;
+> -       struct net_device *dev =3D NULL;
+> +       struct in_device *in_dev;
+> +       struct net_device *dev;
+>         struct sk_buff *skb;
+>         int ifindex;
+>         int err;
+> @@ -2392,7 +2392,13 @@ static int inet_netconf_get_devconf(struct sk_buff=
+ *in_skb,
+>         if (!tb[NETCONFA_IFINDEX])
+>                 return -EINVAL;
+>
+> +       skb =3D nlmsg_new(inet_netconf_msgsize_devconf(NETCONFA_ALL), GFP=
+_KERNEL);
+> +       if (!skb)
+> +               return -ENOBUFS;
+> +
+>         ifindex =3D nla_get_s32(tb[NETCONFA_IFINDEX]);
+> +
+> +       rcu_read_lock();
+>         switch (ifindex) {
+>         case NETCONFA_IFINDEX_ALL:
+>                 devconf =3D net->ipv4.devconf_all;
+> @@ -2402,36 +2408,29 @@ static int inet_netconf_get_devconf(struct sk_buf=
+f *in_skb,
+>                 break;
+>         default:
+>                 err =3D -ENODEV;
+> -               dev =3D dev_get_by_index(net, ifindex);
+> -               if (dev)
+> -                       in_dev =3D in_dev_get(dev);
+> +               dev =3D dev_get_by_index_rcu(net, ifindex);
+> +               if (!dev)
+> +                       goto out_unlock;
+> +               in_dev =3D __in_dev_get_rcu(dev);
+>                 if (!in_dev)
+> -                       goto errout;
+> +                       goto out_unlock;
+>                 devconf =3D &in_dev->cnf;
+>                 break;
+>         }
+>
+> -       err =3D -ENOBUFS;
+> -       skb =3D nlmsg_new(inet_netconf_msgsize_devconf(NETCONFA_ALL), GFP=
+_KERNEL);
+> -       if (!skb)
+> -               goto errout;
+> -
+>         err =3D inet_netconf_fill_devconf(skb, ifindex, devconf,
+>                                         NETLINK_CB(in_skb).portid,
+>                                         nlh->nlmsg_seq, RTM_NEWNETCONF, 0=
+,
+>                                         NETCONFA_ALL);
+> +out_unlock:
+> +       rcu_read_unlock();
+>         if (err < 0) {
+>                 /* -EMSGSIZE implies BUG in inet_netconf_msgsize_devconf(=
+) */
+>                 WARN_ON(err =3D=3D -EMSGSIZE);
+>                 kfree_skb(skb);
+> -               goto errout;
+> +               return err;
+>         }
+> -       err =3D rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
+> -errout:
+> -       if (in_dev)
+> -               in_dev_put(in_dev);
+> -       dev_put(dev);
+> -       return err;
+> +       return rtnl_unicast(skb, net, NETLINK_CB(in_skb).portid);
+>  }
+>
+>  static int inet_netconf_dump_devconf(struct sk_buff *skb,
 > --
-> 2.43.0
+> 2.53.0
 >
+
+Tested-by: Cen Zhang <zzzccc427@gmail.com>
