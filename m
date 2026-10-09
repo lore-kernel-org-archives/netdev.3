@@ -1,39 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D224E1C61
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 13:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04306364949;
+	Fri,  9 Oct 2026 13:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791554076; cv=none; b=Tv+40EpxgRdyLrLCkXxEQZ2O5bRfjSzrYgNqQvyh95zR+uTWN7obm+sJ38aJ3q/pRJ4Xx4BSW2/O0nnSjGLecX1twCjlR4IrpJbTrA+sYxaupH2QFWVC8OeirnbME6zuAvCiYlD94553s30gPKN96wdyf4CXWw4wKSVNO11D/EY=
+	t=1791554087; cv=none; b=N1xT9bdROrCd7j6qzc6Y+bgvVPvsneyk8wubU1ZJqhkXCGl1aSrYvjw1u4UkpCZhhLF1onetUr45gFQ/uNINSt8H+OkDjL7sDkvvkd9Ra7kFv98eMjic8ZukBGxN9o4bsATpR+Baeza2xgFnwKLE1/tLT12wgZyBsQXZytT3lMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791554076; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
+	s=arc-20240116; t=1791554087; c=relaxed/simple;
+	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qSiZE6jkYcc5KPCJ5Vj3GiP8Pfy+r4W8MUGmU5vfjT+HNgBRvfdY9RV2D9PhqyrXzLlz1xI6oWDnBelwU56uWGAF5KQsmH81Q7aGdCYfx3Ljlk+QL5fKaV3aTMxM/epqBaGbIFZpHZ/upTU+sbiAddDyVPKTwnhzmx5tFA+J+VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mlpNkoXw; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DKlD+HYv8CJStB3qs/b8dwBLBetM0hd/Ph7VI/mRYPQvSSp7uyz91mJj5EI2xK92sAmuLn/iKTtVUe8l7RBUTei0U18NoUmD34qWnJb3bXbD6HCoGVHG/JV8oYiY9Z7E3mTZU/qKVApp/tivB+KzfLnPzs6N9VFE7sMBvRXjwjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aMI8FKRv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mlpNkoXw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92D01F0089D;
-	Fri,  9 Oct 2026 13:54:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aMI8FKRv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C871F00893;
+	Fri,  9 Oct 2026 13:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791554074;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	s=k20260515; t=1791554086;
+	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mlpNkoXwVciuEkf777ufUktHfDrtr20nCxoyiOOpWhCFf6ImTJIeL9tw3VXfkeDU8
-	 jkyNk+CU3Bilefi5f5EpZfQYfVkct5cq14QUcq7aMfEQWB2BFEuRwTLwIwofhyMG+S
-	 1F4QufONLEKStWaTxegs9XzR8r/zWTpm4J0s+hHtdfOCivRRJCVJDCJbWTyUbyhwxT
-	 xpvhPfUcVk7GcEPO9gSfAQqJlJFxNlDmQz4jb5b/eb1SNzdT9Yft7Xcz7KdG9E7HlU
-	 N6K/Xge+vjKKP8dk/v44iTi1aIl59NbD4WJWLxrzcfjH3us5DBAaJi+oAemRH1+oP2
-	 3JE+1+yJwnpPA==
+	b=aMI8FKRvWbOl8oaGU9M/aybdX9W/4i3A/E5ok1YDV37ftsgXBsFYoD0u+IDhP73eO
+	 oHpGq5TiL/iJIwj7whuio4jltptPg9/VkTwzZbc1tHDoQC1yfubYSalK4CGEeB9P9E
+	 VSxO6bhb2jrx1m93KkMnSt0kf4i47SUVmrnvENkBsLXCmKIsXuYymPLPljKvS7LDlg
+	 6kPRuq92bZOoAeVzkB1Qb6ZtFnAKR92KRqZIQmajkC54Jil+k8cDZSKzkAIAaB2dXk
+	 wC1Q4i6Ot2PhbAg2db6FjiWj0nPid89wksIFjJTN+EwvYm0ZvTr9eEjGV+hwIs3Tgz
+	 FO9b2O/OBzB6A==
 From: netdev-bot+sinfo@kernel.org
-To: Sung Byeongchan <tjdqudcks0424@naver.com>
-Cc: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
-Subject: Re: [PATCH net] macsec: reject frames after receive PN exhaustion
-Date: Fri, 09 Oct 2026 13:54:33 +0000
-Message-ID: <179155407332.2527009.17772945284795940148@kernel.org>
-In-Reply-To: <20261009135109.718408-1-tjdqudcks0424@naver.com>
-References: <20261009135109.718408-1-tjdqudcks0424@naver.com>
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] esp: fix out-of-bounds transport-header read after
+ exthdr walk
+Date: Fri, 09 Oct 2026 13:54:45 +0000
+Message-ID: <179155408574.2527009.17555985982930326812@kernel.org>
+In-Reply-To: <20261009135233.4084239-1-bsdhenrymartin@gmail.com>
+References: <20261009135233.4084239-1-bsdhenrymartin@gmail.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -49,9 +55,9 @@ Hi!
 This is an automated message. This series looks like a fix, but its
 commit messages seem to be missing some information:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
