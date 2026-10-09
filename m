@@ -1,68 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF64D4E234D;
-	Fri,  9 Oct 2026 11:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C704E4DA9D2;
+	Fri,  9 Oct 2026 11:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791546874; cv=none; b=I0rTURjYTQcHrxozYNNNQQ2UXgolarMCI++m7HsIed0wNCaKR1M0MgHDrkg7tzlCd1zD32tqvrB5yGqJ6OCmM4wLDB6Z6hMOLWyYTKCfaMus3PaKZjBCHR46NEAYtYb+39pnB5rA6Duo48HWOM0MWiuhfD0J2OG4847EieSru5M=
+	t=1791547041; cv=none; b=SUmfgkoLHcVZQTMna6nQAj0hPcW0fKMMZtupPA9GOiOzoIxnawF4SKhzZdPJeQtIiuBLpU6vpJ6DNONSLbAhGWCcwFGDbgjnA3BRTX0RwZYW2Q8F20S8KOy1iZyFI1UW3aKg1ZaZltvTh59NVLe+t80/XELKFqPgNo8a864/Tl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791546874; c=relaxed/simple;
-	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ea4vBHHps4Bxj1r10dWCiP/ZWyT24sCHqa8eIrCKzzDc9Xlagn24p9R02mqJDfKSE39nGTVzN1C+tTUMbULHUis5VMIC5k2npoOedw9t07UN+dDMr030qJxC4lhdONE3/CphhrOs/Y8eBlKWBkeWgI/5AD4103ZYWQiJPN85u44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h48KUv5E; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791547041; c=relaxed/simple;
+	bh=v84WXKHBRkIPKMIRWCyBoGuMhQh2i5McFvIimU6RjvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lkSKZ6W91RCdSGocJB4y+fE3QZHYfZzxsJYOs2Gm0KzpWBPeGiaF7exXgpfxCLqL5wDnaPpkBiqyKYzZ7fiKLjvvwwV5hdBnn/g+TyMfDK3JEbb17ZiKjWbgwUMdPbX/wOGYYHYGfCBf4l9SvqILRM3NN3taspyI1Nx4ezKBOkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onxaaafG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h48KUv5E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9441F1F00893;
-	Fri,  9 Oct 2026 11:54:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onxaaafG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113F81F000FF;
+	Fri,  9 Oct 2026 11:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791546868;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h48KUv5ENL73MsO60544+jmEkIEhYpOjdfOIQrr3IF88muYEfj+Qv6DNEC8IGP9jM
-	 WfVZTIwAe5dBB2avcGUzvgx5CrF0hyre7bYnAjv6IIeKzRPBh0ksNL6le9y0pNTpFr
-	 OhDbbdWZrP4RrLH/29CnECQToHIqlDzwMgfr98Hs4QIK2UbnHi5IGvtR1lsbcfBs27
-	 4+YFjw5fu0zJ/+Q/FKB74niOlEhkfWqoIi4z2/3y9uBarZJO6FbN67cfjTESQQHDaT
-	 LbVQ3IKO21fkoBsHJkWYHfyLq9IjoW4JZ4TadOB3GCzFfWsSqMXxmW0en4jYP8DSs9
-	 5dHrRoHb5JJJg==
-From: netdev-bot+sinfo@kernel.org
-To: Henry Martin <bsdhenrymartin@gmail.com>
-Cc: David Howells <dhowells@redhat.com>,
- Marc Dionne <marc.dionne@auristor.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-afs@lists.infradead.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] rxrpc: fix connection reference leak on aborted CHALLENGE
-Date: Fri, 09 Oct 2026 11:54:27 +0000
-Message-ID: <179154686717.2527009.7769251289741823580@kernel.org>
-In-Reply-To: <20261009115003.3696517-1-bsdhenrymartin@gmail.com>
-References: <20261009115003.3696517-1-bsdhenrymartin@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=k20260515; t=1791547035;
+	bh=mnj7YWVL8un/+HEREsby3Xeusast07rN6RHjgO1tuD4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=onxaaafGHlAm5rfwt/JyK38iBsLmQkPz8/pundpp99RN2mUwrhoEkVphijH3/xw5o
+	 ZG3DxYO16UmshwveCQpopyUuRjNTyBu22rFfcpFnD9hSqfQRjVliFpr0dWLCE3nQqZ
+	 rGL7kTJrFZiMAe2IJd+9OswXE1prDLgozBimJn2ZEOoi4IVGDBHjPEniLWc+gbB7hR
+	 Y+/SjEzHeBNh3XHoiD7BCRSZcmKB2s112DFEHXs1hLVtitXHzB05I/fIpieYhvGVlD
+	 eiEh/0U2+4GC7tygaF09qxFJDv7cftHVXBRuPyy20S0D87WJlLFoTo1hffpUXD9HHi
+	 dUhncXHBIsPIg==
+Date: Fri, 9 Oct 2026 12:57:11 +0100
+From: Simon Horman <horms@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
+	edumazet@google.com, kuba@kernel.org
+Subject: Re: [PATCH net v4 1/2] net/rds: keep the connected peer's scope id
+ apart from the bound one
+Message-ID: <20261009115711.GZ83879@horms.kernel.org>
+References: <20261008031426.1142344-1-achender@kernel.org>
+ <20261008031426.1142344-2-achender@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261008031426.1142344-2-achender@kernel.org>
 
-Hi!
+On Wed, Oct 07, 2026 at 08:14:25PM -0700, Allison Henderson wrote:
+> rds_connect() has nowhere to keep the scope of a link-local peer, so
+> it stores it in rs_bound_scope_id, the scope of the socket's own
+> bound address, for rds_bind() to check a later link-local bind
+> against.  That field is then also what a send without a destination
+> uses as the request's scope, what getpeername() and recvmsg() report
+> as the peer's scope, and what a later bind() overwrites:
+> rds_add_bound() stores the bound address's scope unconditionally,
+> which for a non-link-local address is 0.
+> 
+> So after connect(fe80::x%ifA) followed by bind(global), a send() with
+> no destination asks for fe80::x with scope 0.  rds_conn_lookup() keys
+> on the interface, so that finds or creates a connection with c_dev_if
+> 0, which the TCP transport then tries to connect through
+> sin6_scope_id 0 and tcp_v6_connect() rejects for a link-local peer:
+> the connected socket's data is queued on a connection that can never
+> come up.  In the other order, bind(global) then connect(fe80::x%ifB),
+> the connect leaves a global-bound socket with rs_bound_scope_id ifB,
+> so sends to other link-local peers are refused as off-link and sends
+> to global peers inherit a meaningless interface.
+> 
+> Give the connected peer its own rs_conn_scope_id.  rds_connect()
+> records it there and leaves the bound scope alone, rds_bind()'s
+> connected-socket check compares against it, and the destination-less
+> send takes its scope from it - falling back to the bound scope for a
+> non-link-local peer, so that send() and sendto() to the connected
+> peer compute the same scope, and so the same connection.
+> getpeername() reports the connected peer with its own scope, and
+> recvmsg() reports a sender with the connected peer's scope when there
+> is one and the bound scope otherwise, as before.
+> 
+> Found by inspection while reworking the sendmsg connection cache; not
+> observed in the field.
+> 
+> Fixes: 1e2b44e78eea ("rds: Enable RDS IPv6 support")
+> Assisted-by: Claude-Code:claude-fable-5
+> Signed-off-by: Allison Henderson <achender@kernel.org>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Reviewed-by: Simon Horman <horms@kernel.org>
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
