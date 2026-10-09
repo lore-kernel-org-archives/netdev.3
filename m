@@ -1,37 +1,34 @@
-Received: from mta1.migadu.com (out-61.mta1.migadu.com [95.215.58.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68294A3D23
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 09:59:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E30243E9CB;
+	Fri,  9 Oct 2026 10:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791539975; cv=none; b=IrHBrUyG3sT0udmwKxMY/j385VDzVD4gcTU2u6DxgbMW4kFXTbp/luKTd+8AUOHZLIB7eTmZIERFHSJ80Z7pJI6ADgPTIblWyBd45VmaTRfUI1C6FawTGIBerk6gZqTSWJ4pr5IELSMbBz1J+u0xSIk8GzBH5agYcuYPE9Y2hPE=
+	t=1791540668; cv=none; b=bRMSZnEhMSgfdJyxJbGMiFe6hZRnCufMzipLBO7tP3LSLlvvU2E2a+UhmKDxjQ2SvkAOP4rxE493/QLSz//RxCi2UPzqo8cWHoh7iw2shbWSuUO9pdcdOTO/yP6cjDEUBG3mGsd/WGBjP8XP/bM5LXnCJRcBbFpyf5tamWLB704=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791539975; c=relaxed/simple;
-	bh=W4YQdGnf2k0cUQ/QdfHuq4iLGQ0/RL+GbH8R3ThCLsw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Hvvsp21TEDoJbJctSQar2O+UF0y4gYLB7yq0asf8qW2FD3dv+4JLXgekuVfYo97ISn5P4cY4Uy5AVk5NgXrg7uo6EJDerqVQ6HtPCecuQoyqorHsN8irGPxpoiRMHEd9ij2FGCQhUYrkSTTzwBJxSqHnVBF3jjWG1glmNO6PYKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lfqt6a1n; arc=none smtp.client-ip=95.215.58.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791540668; c=relaxed/simple;
+	bh=fha1a3arIoJLlTVM53k7P7B7fPGKH9vmXcXb315lgc4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HoGFU9N9e78U8BFXz6v0q9cq7/UbAwlgzEP/1LNrlbotGGusohWJLLlD/1fl2IvFc40YvyLBn1w4xDw2PPqwfF2g1NaRanfLKgkjohSfWgzfp+6YVIg27b01C5A3nrC8ya4yhcYyKpoG1nMYxvNOyzPRXQnNEXqRa8MRPhVHDJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=b9tCNn+5; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lfqt6a1n"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=W4YQdGnf2k0cUQ/QdfHuq4iLGQ0/RL+GbH8R3ThCLsw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791539970; v=1; x=1792144770;
- b=lfqt6a1nqDO9qVUpDqhdy0vV0vFelsKE943jI6mjcRGXDVDgY6L9X2PNu+xRTDGW1tKw7L8O
- bklb7hA5fblhcfflZSrFRiQSCtUMvT0qeibVK1zdzljOekycl9hyFquIKzjuGjAWzJYurpheKuY
- Sdi5M3fWH9TQCkDdgIvorkl8=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id d21b8d44aaaeb638;
-	Fri, 09 Oct 2026 09:59:30 +0000
-X-Mizu-Trace-ID: d21b8d44aaaeb638
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Fri, 09 Oct 2026 17:58:41 +0800
-Subject: [PATCH net-next v2 5/5] selftests: seg6: add End.X PSP selftest
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="b9tCNn+5"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5FCE3A1546;
+	Fri,  9 Oct 2026 12:10:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791540660; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=O/E93M9qF++wqqPi27386nQo3pvtjSqURQxn24uotfg=;
+	b=b9tCNn+5/p6SoTKL7k+Jr8zBPjvw4+29TqG5U47b5HYtJ81d8gVh6jEszVbzHxWZ0Q7Lgx
+	h3dP3Hr5m3U9fLAqKXgTWynYDwgxywJnY22sylGREzcwRYedpnqlroQQS8tAcT10C15esO
+	xdo/tad5cGgEi1vtec6ekZzWrt5YD7qIWs8yKlNIN17ORw1OoWMOL+Yp93tz2mgxUNp4+p
+	Ddfec0h6Rz/lDHvi5l470x1wd7TyZsIj68gWXH3abBQhVqX/qfqdXplL9TtkUTSdxLMbCE
+	6AYSJvusNwYSuNqGcmULNhANH4UA7vq7bZo3vRziZEZvOqpRK99xCqQj1FBTZw==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+Date: Fri, 09 Oct 2026 12:10:41 +0200
+Subject: [PATCH net] net: bcmgenet: unshare the skb before writing the
+ control block
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,169 +37,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261009-srv6_flavors_endx-v2-5-56ac7f838f41@kylinos.cn>
-References: <20261009-srv6_flavors_endx-v2-0-56ac7f838f41@kylinos.cn>
-In-Reply-To: <20261009-srv6_flavors_endx-v2-0-56ac7f838f41@kylinos.cn>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, Eric Dumazet <edumazet@kernel.org>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+Message-Id: <20261009-nb-genet-shared-skb-net-v1-1-c6d0a841977d@tipi-net.de>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMyw6CQBAEf4X02UkWwkP9FeOBZRsYTVazg8aE8
+ O8ueqxOV60wJqXhXKxIfKvpI2YoDwWGuY8TRUNmVK5qS+dOEr1MjFzE5j4xiN297Nh0dUc2YTy
+ 2NbL9TBz18ytfkA+4/kd7+RuHZW9i275PZLT7gAAAAA==
+X-Change-ID: 20261009-nb-genet-shared-skb-net-5747ee5df864
+To: Doug Berger <opendmb@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>
+X-Mailer: b4 0.16.0
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+bcmgenet stores first_cb, last_cb and bytes_sent in the skb control
+block and reads them back on completion to free the skb and credit BQL.
+ether_setup() leaves IFF_TX_SKB_SHARING set, so the stack can resubmit
+a shared skb that is still in the ring. The next transmit overwrites
+last_cb, so the earlier slots complete without crediting their bytes
+and BQL stalls the queue until the watchdog resets it.
 
-The current selftest only exercises End with PSP. Add a new test that
-uses End.X on the PSP path so the kernel's End.X flavor handling is
-validated end to end.
+Unshare the skb before writing the control block.
 
-Extend __setup_rt_policy() to parse End.X action field from the
-router description, allowing entries like:
-  4:psp:End.X,4,2
-  3:psp:End.X,3,1
+Reproduce with pktgen in clone_skb mode, which hands the driver the same
+skb while earlier copies are still in the ring:
 
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+  modprobe pktgen
+  pg=/proc/net/pktgen
+  echo "add_device eth0" > $pg/kpktgend_0
+  echo "dst_mac AA:BB:CC:DD:EE:FF" > $pg/eth0
+  echo "dst 192.0.2.1" > $pg/eth0
+  echo "clone_skb 8" > $pg/eth0
+  echo "count 0" > $pg/eth0
+  echo start > $pg/pgctrl &
+  sleep 5
+  echo stop > $pg/pgctrl
+  wait
+  cat /sys/class/net/eth0/queues/tx-0/byte_queue_limits/inflight
+
+inflight stays nonzero on the now idle queue. clone_skb 0 leaves it at
+zero.
+
+Fixes: f48bed16a756 ("net: bcmgenet: Free skb after last Tx frag")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- .../testing/selftests/net/srv6_end_flavors_test.sh | 77 +++++++++++++++++++++-
- 1 file changed, 75 insertions(+), 2 deletions(-)
+Another finding while testing the genet MTU series. Similar shared-skb
+bug as the macb fixes already merged in net [1], here in bcmgenet's Tx
+control block rather than the software FCS path.
 
-diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-index a57e92541a04..4ba93ace8656 100755
---- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-+++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-@@ -397,6 +397,36 @@ __get_srv6_rtcfg_op()
- 		xargs | sed 's/ /,/g'
- }
- 
-+# Given the description of a router <id:op:act> as an input, the function
-+# returns the <act> token which represents the action (e.g. End, End.X,
-+# End.T behavior with or without route table, out interface) configured
-+# for the node.
-+#
-+# Support End, End.X at present. When omit, return default End behavior.
-+# i.e. input: "1:psp:End.X,1,3"
-+#      output: "End.X nh6 fcf0:0:1:3::3 oif veth-rt-1-3"
-+__get_srv6_rtcfg_act()
-+{
-+	local element="$1"
-+	local net_prefix
-+	local acts
-+	local out
-+
-+	acts="$(echo "${element}" | cut -d':' -f3)"
-+	act="$(echo "${acts}" | cut -d',' -f1)"
-+	act="${act:-"End"}"
-+
-+	rt="$(echo "${acts}" | cut -d',' -f2)"
-+	neigh="$(echo "${acts}" | cut -d',' -f3)"
-+
-+	if [ "$act" == "End" ]; then
-+		echo "End"
-+	elif [ "$act" == "End.X" ]; then
-+		net_prefix="$(get_network_prefix "${rt}" "${neigh}")"
-+		echo "End.X nh6 ${net_prefix}::${neigh} oif veth-rt-${rt}-${neigh}"
-+	fi
-+}
-+
- # Setup the basic networking for the routers
- setup_rt_networking()
- {
-@@ -497,6 +527,7 @@ __setup_rt_policy()
- 	local function
- 	local fullsid
- 	local op_type
-+	local action
- 	local node
- 	local n
- 
-@@ -505,19 +536,20 @@ __setup_rt_policy()
- 	for n in ${policy_rts}; do
- 		node="$(__get_srv6_rtcfg_id "${n}")"
- 		op_type="$(__get_srv6_rtcfg_op "${n}")"
-+		action="$(__get_srv6_rtcfg_act "${n}")"
- 		rt_nsname="$(get_rtname "${node}")"
- 
- 		case "${op_type}" in
- 		"noflv")
- 			policy="${policy}${LOCATOR_SERVICE}:${node}::${END_FUNC},"
- 			function="${END_FUNC}"
--			behavior_cfg="End"
-+			behavior_cfg="${action}"
- 			;;
- 
- 		"psp")
- 			policy="${policy}${LOCATOR_SERVICE}:${node}::${END_PSP_FUNC},"
- 			function="${END_PSP_FUNC}"
--			behavior_cfg="End flavors psp"
-+			behavior_cfg="${action} flavors psp"
- 			;;
- 
- 		*)
-@@ -713,6 +745,30 @@ cleanup_end_flv_psp()
- 	cleanup_rt_policy_ipv6 1 2 "1:psp"
- }
- 
-+setup_endx_flv_psp()
-+{
-+	# Direction hs-1 -> hs-2 (End.X PSP flavor)
-+	# SID List=fcff:3::e,fcff:4::ef1,cafe::2
-+	#  - rt-1 (SRv6 H.Insert policy)
-+	#  - rt-3 (SRv6 End behavior)
-+	#  - rt-4 (SRv6 End.X flavor PSP with SL=1, route to rt-2 via nh/oif)
-+	#  - rt-2 (Route to hs-2 with same subnet)
-+	#
-+	# Direction hs-2 -> hs-1 (End.X PSP flavor)
-+	# SID List=fcff:3::ef1,cafe::1
-+	#  - rt-2 (SRv6 H.Insert policy)
-+	#  - rt-3 (SRv6 End.X flavor PSP with SL=1, route to rt-1 via nh/oif)
-+	#  - rt-1 (Route to hs-1 with same subnet)
-+	setup_rt_policy_ipv6 2 1 "3:noflv:End 4:psp:End.X,4,2"
-+	setup_rt_policy_ipv6 1 2 "3:psp:End.X,3,1"
-+}
-+
-+cleanup_endx_flv_psp()
-+{
-+	cleanup_rt_policy_ipv6 2 1 "3:noflv 4:psp"
-+	cleanup_rt_policy_ipv6 1 2 "3:psp"
-+}
-+
- check_rt_connectivity()
- {
- 	local rtsrc="$1"
-@@ -819,6 +875,22 @@ host_srv6_end_flv_psp_tests()
- 	cleanup_end_flv_psp
- }
- 
-+host_srv6_endx_flv_psp_tests()
-+{
-+	set -e
-+	SETUP_ERR=1
-+	setup_endx_flv_psp
-+	SETUP_ERR=0
-+	set +e
-+
-+	log_section "SRv6 connectivity test hosts (h1 <-> h2, End.X flavor PSP)"
-+
-+	check_and_log_hs_connectivity 1 2
-+	check_and_log_hs_connectivity 2 1
-+
-+	cleanup_endx_flv_psp
-+}
-+
- test_iproute2_supp_or_ksft_skip()
- {
- 	local flavor="$1"
-@@ -920,5 +992,6 @@ set +e
- router_tests
- host2gateway_tests
- host_srv6_end_flv_psp_tests
-+host_srv6_endx_flv_psp_tests
- 
- print_log_test_results
+[1] https://lore.kernel.org/netdev/20261006-nb-macb-shared-skb-net-v1-0-a80641479041@tipi-net.de/
+---
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
--- 
-2.55.0
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index e8908916558b..f4cfbff49a1b 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2153,6 +2153,16 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		goto out;
+ 	}
+ 
++	/* We store Tx state in the control block, so the skb must not be
++	 * shared, but ether_setup() leaves IFF_TX_SKB_SHARING set.
++	 */
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (!skb) {
++		BCMGENET_STATS64_INC((&ring->stats64), dropped);
++		ret = NETDEV_TX_OK;
++		goto out;
++	}
++
+ 	/* Retain how many bytes will be sent on the wire, without TSB inserted
+ 	 * by transmit checksum offload
+ 	 */
+
+---
+base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
+change-id: 20261009-nb-genet-shared-skb-net-5747ee5df864
+
+Best regards,
+--  
+Nicolai Buchwitz <nb@tipi-net.de>
 
