@@ -1,121 +1,141 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4A91FBEA6
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 00:57:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791507445; cv=none; b=M205KS179CDZ1JxtzkUH7+L70mdUqQy64qTJqDlzZcgvtQYuV2tqRte0GsaJxXilMlbzKD0uVsQq884vBjiOz3QUhanvUi3jR2l2aqjjr0aLPXRPYW08AeHW4CrwP5/CpQ2ggsF7c4D1lW8DMRqx0eUyRYXiw0dKrfoc2oo/+kg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791507445; c=relaxed/simple;
-	bh=CjNYu265Gtz+X7qBnb/UogVrXDtYACULQPTjz9Jr16c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d66bn2UrL7ZTVXW/MeWpVIbaOMwNM7eEO0zIVKeVG2OuDWVOyHq3yO5ma6Ldmhmjv8TlP/dBRDQssAncHeNOWUm6PDSjAumlIzIruvKydJB52kO0QFJdBOuTeDGnSiYFNehJGGTQYF+UfAjxS2iLf35NtaIbF9BFp/5Vdz/U7x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eer1K1dH; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F162E285C
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 01:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791508192; cv=pass; b=uJFWoGEHDMIvZHs4Yi4PpvZiP5Om1KC/m/WeX+CEi2/dyHGVdn94Ea1doOEZBd5ujODKASC47UCDrEE1VaA54bznj70Mhjq8Ad9UPgdePQiAyWf+WPuvGnJagfri3M8zD8A8oIxq3mhN6I6MCZgbuKqYinzq9tkrfmimAiUCOPI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791508192; c=relaxed/simple;
+	bh=zfbHOYPpmgOxH/7SdLKAnBHBmgz7/uJSAeYRBHo1Y9E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cVJ5mdPh278pF9FXo4pwnDzyAGaL5yLmWtCkwgR+4a8VbFhqNZ+u0oWLwWNdcS5KPlRouSD78l3axKJT3+u2JE6uL483GcB5C/kvGtpl0Um7t5e9t1kFXe8FN/AxKO3dg84BOHF4GiGfCKeuH+wDBwiYT6NpSFP322Yt4fQqjYc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=VdtQHaAF; arc=pass smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eer1K1dH"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a1688d7769so36839175e9.0
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 17:57:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="VdtQHaAF"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5ba3adf78f5so4513382e87.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 18:09:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791508189; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pzMDltwezG1oXa5psz+Fwxiso2lpIS9+2xjCTZhcGcL+HmiL4rmrqT9x17J+LZV+Z3
+         8+dYQeFshvXnDuRsKAZ8sUGIxNsnzkC2r5qkwwkKj/GjWf4LehrF9jVz9L/ebxxDzyMT
+         6DdnJ/jTmUi4xTFK/t0+RT5gLCxQv5PAoCqvX8+y6WuxvvxcuwtNA438LwCgpD5+hAme
+         MgF8gmT85zpL+A/E+xn7anoDaPdOvE2TNZjvawNa8QWnDdcFzpkA2YFll4kF7OL/sPhD
+         vlj0d/yJ+GdRA5EwFbyeAOCsCcymFnjqI0TIG52Dnsrd//HfSFcXPzwRQJplkaHOG5Le
+         KJ+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zfbHOYPpmgOxH/7SdLKAnBHBmgz7/uJSAeYRBHo1Y9E=;
+        fh=M95i/8broDPojKv/podIhGe0VqagKRCaBotKImYtuHQ=;
+        b=KRRpJxP6Ut3f59GCSbaJXR2cYwk6sJ6Prl+IE87TX2Twn5qP6/L4JLnSEbczaftSzK
+         SFt0Xocr4VDYqLlm+UXegaA3dphQ0eyIbxsdjq8xaQN1R5rg6gYZWS/83IXdtwoanY5B
+         PoIqoT0azVyhtTS4v8RJbfF2R6toQ+cO0f1Nxs32I8WW/uHPydf/krlNpv/hvo0PuS8v
+         uRxXVV8/XanXcTewCDl9vtjmWLWsqWSNiFxSYmxIbiY+WrGO0uZSXF6OZ6Eq724Q7PEc
+         iJFrirV/S+o3GWRdyOtkLRkhaTSwfd4I2/UfBft5KqMv23gDJcS75N1KHM4z4R7AaBVG
+         qZow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791507442; x=1792112242; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vHBweLHo3kgYXnvznsE/p6q6nh/cKN7XIUKJAQEgHHs=;
-        b=Eer1K1dHzs1amf2lzjoyeub9OcdxOLBdrZhhx+0CSFKCHpVwJ5D53ztzKjmkQfKozl
-         BBGEUweMGOl7Lrye6ibdBhAfzFu/OzSPGpmMPETEqYoOJI8hlM2tylvdmhq6/TjgZLPM
-         RdkiwnldD/jqTGu600rqpEskDKM4aDjk68AhYdXzSTICH4+FAlavY95GRCpXhQIvi/6L
-         vGMZPp98/XkN93zNVHHn5enNvS9oNLZ5+Ba9mkzpVQ1rGizxa8+pZ8vfxlx+FGilG0nQ
-         iKBskNMkAjTl5/ia8h7K6ZHFOL8N6I0L+QKOMqijBZO5kftOSwiV0rjKXd9N0jnzQ/gh
-         YoRA==
+        d=nebusec.ai; s=google; t=1791508189; x=1792112989; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zfbHOYPpmgOxH/7SdLKAnBHBmgz7/uJSAeYRBHo1Y9E=;
+        b=VdtQHaAFWbaCLcI2lBQ4zcGk+rEru0nEXCPViade1MCjKs1JlyRoiwDs4yL/yRhb8D
+         MVgwsLy6jyApwoLCCO6OvQbLtqtQVmqzOQ/M+7Z9o0q1/9Z5JwHDKA1QSaF4DNEp2uJ3
+         4YtUIlwE5IoKsMtbkv5o0ZO0MmNeS7r2bv92bKmpMzUXmRX+OhQbjjY13AenyygB/lzI
+         HiYAYRItyeyLN98Lw1/zcikdRhKoS/Qj43j3LUdhzWowkgxWhenCfWxsLJTNLq+pGBYi
+         lXshJJtXM5GeSar2fjurnFJY14NVoevclALHeYaul05Os0Nm43KoC3skubw0icfp+npF
+         Iw3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791507442; x=1792112242;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vHBweLHo3kgYXnvznsE/p6q6nh/cKN7XIUKJAQEgHHs=;
-        b=LrtYxTfpOAJqng6OF1/rVE6EXGJrYpUfJcSPlT8FFq8yPFr9hw0pfgN63P4SNCwVwM
-         O5cH8xKevCkTI3lurQfVFIFCop1kD8ZgGFv313fyrxQ3bUlNJ5diyVJ8cmCcMIAZStEL
-         EfMlmFdz9pk81i4h7tXT8JF2oxAYA7LEqPhj+hpb5n5d+xA6hv4SMCvA4h64hPKJWO26
-         9+5MzIGFXkuAs1Rest9LQ1vm1sqIN6wiAAtWbcEBExyEibTO9YBgkJwO9lo77q1f1hXB
-         ADwOfxlM+cUlxEXIpoxFKYNStQfyVmzuBTUj9nOdim6z3TLnV9ZdOL89FstHFKGAu2uo
-         hyAg==
-X-Gm-Message-State: AFuF++mWixHIq2vyMBmbHattyTj+uTfUzsEMk+qTz7b/E4evm0oZQXMj
-	fdGZuRtrpuWEGvJOxBjnsbsr5ZUmbageoRtjcztKcB33HS9AuDvVnWQUSv1CDz6B
-X-Gm-Gg: AYBFou0Z4OVSS4dhx8GEuHtGHsM77CvjwQ65Epbw9hyUOUrBNtvJGhbzyEHJJos6b+S
-	DN6TVasFqhmbRDgwJlv1T3NXUDjK00AmAaJLVu8FO8Id5TN7UXt/JP8y5m3loSNX0zcJ4RsoOK7
-	QHaP5h3LB2iLzbFWjuPmZqQxHiFrtHHlW5youqipGhZCqlDUX1aoIomWBi9kLoHaViN05BfwIz5
-	g+S2bjCVV1uW0XRuO7q0N0BNu5dvFUvIDI+iqd1SK3irDW386YGjSdFJDaC8A8neBTy4Qzht+KE
-	vpSroYb/TAtrvCGsRXe8Idx4GL9ctirm+oC1PbIg2qQ+pSu8cfyVHYl7YIF3FsCalL85+9UDWgz
-	FPfolbJ63rtWMi8Acp0p9pJIJJ/KwwsPcLtNEP59UAdTvhqAlb/y7YqXoT3/ZvqILerZZLf4Vab
-	Sbiu1CKoLv81hbFH6YLas7kRLWm8+0g0DvhMkSdMISSDkuIijTwoo0ibpZE3UAe9o4x4dF7UhXj
-	OPnwHvzF7CTNzUVKai6bUy4ydscyYW6uQdF8g2yAMJnC9ZVRLFy8w==
-X-Received: by 2002:a05:600c:8b09:b0:4a1:6f78:842f with SMTP id 5b1f17b1804b1-4a18e4987b8mr4207445e9.11.1791507441595;
-        Thu, 08 Oct 2026 17:57:21 -0700 (PDT)
-Received: from fedora.fritz.box ([93.93.22.191])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be8c5e7sm30700305e9.4.2026.10.08.17.57.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Oct 2026 17:57:21 -0700 (PDT)
-From: Stefano Munari <stefanomunari.sm@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Thangaraj Samynathan <Thangaraj.S@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nisar Sayed <Nisar.Sayed@microchip.com>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: usb: lan78xx: reject invalid EEPROM write requests
-Date: Fri,  9 Oct 2026 02:57:02 +0200
-Message-ID: <20261009005702.164936-1-stefanomunari.sm@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1791508189; x=1792112989;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zfbHOYPpmgOxH/7SdLKAnBHBmgz7/uJSAeYRBHo1Y9E=;
+        b=DLPlS+wyl5oTAgKPTJ9blGK3LwBhbfsNxK3IXenHYxbviNpgWRB+1G9tqyWuTQnxkp
+         OyIBiLccZgH3bVP8GZI63BBVp3YETb3oUEonfEGeWdJCS0VXtklL2O4ZW4l6XJbNK7SZ
+         KZNh33bGVAjlSGnHI6UUH/KIdISDntCH0Sg6+5ggClrc5GERVaaye4cQAboz8iIaJWda
+         ugpI0gF3BBF1nZI4u6/plYQBSD4xqJZIvwPUIESK9ON9140QGeesCd6Y1cP7EvtaMs5v
+         /FOlLLDKUsFIh3ForR2M/3Q6TzoFe9zXeJuizxhdA+8YuGAHNab26lb5orZX7ZrhC7SX
+         A5PA==
+X-Forwarded-Encrypted: i=1; AKwUvByBbf8dBvdnUbZD2KqT8HZAghCxblPkUuAqCZasNUe17Pga2yrqCOp/9l+1os84gtnbRjBVLX0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJQAFiFUB1UqJaI9o616SsUReLPqpqVd7fKKo+wyWMTWewum1/7
+	2SpVgn5tu2NSCYhxpRrldGlcF1EHNgOWM86aSS7CtyTtYQdg1M9l19D1m3aAdCKx6549A9/c36m
+	HEbxuZN3PE6Lx0RGK9tUSGHBortduSRhgnxQDcLmI8Pw=
+X-Gm-Gg: AYBFou3n/Cg7FmW7NObdeXO+vk6JH5uHdBlpGBWHs3iTw3Q/kQ9q+0MKmkrQse/4Oia
+	Zadj2q/BGZa/O9Y3Z59ARaSDFYWdTF6YsswzKM3vVcJ4FtgURwDrOuYdNwgfWO6qF2+3Fl8K2U9
+	tn+rSlt9LLP0mXkODGDSkJVXAoOwn2Sz+VckTjmnLzZoATXU6rDGmiM/Y/yBUbv7Sg3r4wmMOLR
+	frX+/NpjBHcHuA/nwHSFaGkKvLUpO9gyam/8NImweCLSnGd2YvlvXLUIp28fH1OStnpyao06mnk
+	AFjf3kmpFzMgvPzMS7tnbly6zFBImZVcrTdESM4vN0gJH2bN9hI5k6OUGtVOv6PYf2j/aj8ueYC
+	cYtYDDM2NBg==
+X-Received: by 2002:a05:6512:3b24:b0:5bb:7829:741c with SMTP id
+ 2adb3069b0e04-5bcde35ea87mr133020e87.1.1791508188824; Thu, 08 Oct 2026
+ 18:09:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1789885804.git.zihanx@nebusec.ai> <f88fc502b17b4022105a99eea407525807ee573e.1789885804.git.zihanx@nebusec.ai>
+ <asgtQ3E2LVWqfV8D@chamomile> <asgwR9LsGCEMolQX@strlen.de> <asgx_COtYd1PifN2@chamomile>
+In-Reply-To: <asgx_COtYd1PifN2@chamomile>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Fri, 9 Oct 2026 09:09:37 +0800
+X-Gm-Features: AclHuK_SUmv4p6WRojnrW3e-mI4nWpBMifWbKSG3UER4l70SEe-UheyaXxZXzZc
+Message-ID: <CAANe3eSnAF6wRVqopQkgtQLv2Kat2sGT0Fc6vGkCFk8cCovbuA@mail.gmail.com>
+Subject: Re: [PATCH nf v3 1/1] netfilter: x_tables: avoid holding mutex over
+ faultable user copies
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Florian Westphal <fw@strlen.de>, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	phil@nwl.cc, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The runtime PM handling removed the -EINVAL return for invalid
-EEPROM/OTP write requests. These requests now return zero from a
-successful usb_autopm_get_interface() call, even though no data is
-written.
+On Fri, Oct 9, 2026 at 8:14=E2=80=AFAM Pablo Neira Ayuso <pablo@netfilter.o=
+rg> wrote:
+>
+> On Fri, Oct 09, 2026 at 02:07:35AM +0200, Florian Westphal wrote:
+> > Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+> > > > The ebtables GET paths use a separate ebt_mutex and are outside thi=
+s
+> > > > IPv4/IPv6/ARP series.
+> > >
+> > > I keep spinning on this, and I am not sure this fix is the right thin=
+g
+> > > to do. There is no single caller of this pagefault_disable/enable() m=
+m
+> > > subsystem function in the net folder.
+> >
+> > See:
+> >
+> > https://lore.kernel.org/all/CAL4Wiir+CBGE=3DhXxHEBkyk0Au9B6G3=3DAdHFd5b=
+otrC-FF5BM5w@mail.gmail.com/raw
+> >
+> > Quote:
+> > | We have many places where copy_{from,to}_user() runs while a mutex or
+> > | a socket lock is held, and some of these locks are global.
+>
+> Indeed.
+>
+> > So I would not spend too much time on this, especially not for the
+> > xtables get/setsockopt APIs.
+>
+> OK, I'll drop this patch in patchwork then.
+>
+> Thanks Florian.
 
-Set ret to -EINVAL for invalid requests while preserving the runtime
-PM reference release.
+Thanks Florian and Pablo for the discussion.
 
-Fixes: 8a7ffeb795f8 ("lan78xx: Fix for eeprom read/write when device auto suspend")
-Signed-off-by: Stefano Munari <stefanomunari.sm@gmail.com>
----
-Tested on a Raspberry Pi 3 Model B+ with the onboard Ethernet
-controller, using raspberrypi/linux commit bba53a117a4a on the
-rpi-6.6.y branch as the baseline.
+Understood. I'll drop this series and won't this approach further.
 
-  ethtool -E eth0 magic 0 offset 0 length 1 value 0
-
-The command succeeds without the patch and reports "Invalid argument"
-with the patch applied.
----
- drivers/net/usb/lan78xx.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index 5655941f1478..7ac263454d45 100644
---- a/drivers/net/usb/lan78xx.c
-+++ b/drivers/net/usb/lan78xx.c
-@@ -1719,6 +1719,8 @@ static int lan78xx_ethtool_set_eeprom(struct net_device *netdev,
- 		 (ee->len == 512) &&
- 		 (data[0] == OTP_INDICATOR_1))
- 		ret = lan78xx_write_raw_otp(dev, ee->offset, ee->len, data);
-+	else
-+		ret = -EINVAL;
- 
- 	usb_autopm_put_interface(dev->intf);
- 
--- 
-2.55.0
-
+Best regards,
+Zihan
