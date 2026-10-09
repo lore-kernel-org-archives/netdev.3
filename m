@@ -1,222 +1,232 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from sender5-op-o15.zoho.com (sender5-op-o15.zoho.com [165.173.182.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC1B38A733;
-	Fri,  9 Oct 2026 15:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791561150; cv=none; b=RNWZuJOq2qSM4qj/xIEd+9IRzYOLzbuoXRp1yrvFko1U/aD0Jrf9cO1zlYsEHUjNPORW+fPVqFQgAQlsC49yEzcz6O40BZYj24weINASKOZVVGprrN41xzq6at2IA/H2pQhceON71FBRvixziTE9G/37nc1xCjza8A5db8e5spo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791561150; c=relaxed/simple;
-	bh=Bp8Y3B+4k1arBEAPTQHV+Jezm+XIuoVKGwAJXnjuv9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gsQoG7DNXVGRstNKiDgMd9MARgV25IZqm3SV1/WSee8uhsfrhvqqPILkmwrrEOeIDhI0Jbbm23zvIIIfyjyYLQuNFZWejCB5f8iWnTlWXxfQtwOh/GErArDb+hp7uzW/N3qzOvaNKKJUq1rxjceH3EmHDwJ/R2WuyNywcrMGxDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0hK3+yrw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yMZxadU1; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454AB38D3FD;
+	Fri,  9 Oct 2026 15:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791561235; cv=pass; b=LEVEeTdrI0uG+3o6Nj/fh/yow2QAbxCTw6C3vhUD/2cdurtDrpCLyIZh4xVVT+fg83OZu3oEvOms2kYsKTmhlr1LVco+cXS1DnHTSAX9yyEVyKBHkCZBb7nsH0ysCYGX2treQVqv+Xlh9c9shDEGRYk4zPUano8JTSRXh/Ylxu8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791561235; c=relaxed/simple;
+	bh=StBWC5rdGl30CGSA8cby9W9feHch4ijdhDIwbiWdprQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LeIhehMf0vLFKK9hu0oiy32Ju7Y5CC3vkUrhdIVeYUZc22j+7/urdKfqDKH3arMblKGaIMbZkCjhROxAPdekGkXYRgTryT6mhXjQvLGUP7AuAoU65YS6AttoJkxLVWsesPo58KUgPn2NaWTsyHqTAN/yvR92aR27wafzONDAbrk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=o5Lm4Xf7; arc=pass smtp.client-ip=165.173.182.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0hK3+yrw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yMZxadU1"
-Date: Fri, 9 Oct 2026 17:52:25 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791561146;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=80QEXrpzD+kFda3/t4OvfmIyHa2usi5G2SbXsA7Iaek=;
-	b=0hK3+yrwjLIuBKWsevUjEqlQwGjIc1bngq037sYMRJadfTM6pWehYVHiL8wQoE/dW6w9xt
-	bYVDKnraYa7sB0xO/OuinBr3i1iI3hJHi2G1940ynLPs3ELBknW5L2+RyWzoA8bt28r7yJ
-	dvjm4IEuMhU9Qqyn8zvEYm34M5l44Tn4nVHV5U7znEJzsbNl3/2GY9qd3jHU8vL/m6lPhY
-	yBOJDdtxPQFUCECQuToR2gFFlH6a/+QRGMg8H5f8RvlP0kZEl3D/eW6V/Kfh3/lj1i4SwX
-	kFXCu0NxeVjJpFgIwTLRaKhx/2zCZ5GPKTQpQxrBWoGCL8O33Va+V0yKW7ww5w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791561146;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=80QEXrpzD+kFda3/t4OvfmIyHa2usi5G2SbXsA7Iaek=;
-	b=yMZxadU1OrZtchHsqw7H5PtHO4vxKtc1FDCeI9sB+ECH0vjq7LRfJOxAlO5nsNJyAabYlJ
-	hzUHf1pkzHfvsKDg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>
-Subject: Re: [PATCH net v2 1/2] netpoll: use a raw lock for the deferred
- transmit queue
-Message-ID: <20261009155225.6Uy7b0wd@linutronix.de>
-References: <20260928064239.32456-1-kmehltretter@gmail.com>
- <20260930192103.62973-2-kmehltretter@gmail.com>
- <20261001074819.gQ3w8q6P@linutronix.de>
- <ar7sTVun7mF-4nl6@gmail.com>
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="o5Lm4Xf7"
+ARC-Seal: i=1; a=rsa-sha256; t=1791561184; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=atvbFYNzQ6nMs+vHCSb9N2vNC07w8pxOBj5iBtLNWXygmeGmZzHB+w2dB/EWfbxPyMRRtrbTxsbeDFy8ozP2Ry3dqOlfj+sZxy8vWFuX/2zWuJIYdMwpcWVUeexo6I18F9DxtKr3OGP9VmbbkA/0m83NuN3k8eEYvVeOqgsdwXk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1791561184; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=fPdEIZW7sOTj4odPbZ748d72yqRqKOz4PkPYMfEhMj8=; 
+	b=OmiTjmRSwGJb3v2qBQUgxUE8h2zuxLUKZiirg1HPoaDolmAboO/6JambR2J7ZaofE8jZtb0PW662mzJxYoqJsswmhzU6P4hf5aKoui9aOUGzV8uzVuEWZfHrG6JbsKmRNoLqdqOUkJHRMNOwRx2TVCGLL2Q1QKjCFKGNKUICWLQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=pigmoral.tech;
+	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
+	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1791561184;
+	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=fPdEIZW7sOTj4odPbZ748d72yqRqKOz4PkPYMfEhMj8=;
+	b=o5Lm4Xf7oj6XjLNVMW6Ba1V69FgAAAXb8gmGoL6Y84y9/2LkxVMkxY5AkHgglmV4
+	jJEm/x8b5DiCrGn+n6mgBDFX8+LjhclRVUi7irVeYweRAasLzcpV5PTus4OXUy1W7FG
+	P++tMvpGXcIbHkxalP43TkOp/ge5AaZdM5dIPB14=
+Received: by smtp.zohomail.com with SMTPS id 1791561181104459.34509613209946;
+	Fri, 9 Oct 2026 08:53:01 -0700 (PDT)
+From: Junhui Liu <junhui.liu@pigmoral.tech>
+Subject: [PATCH v6 0/8] clk: sunxi-ng: Add support for Allwinner A733 CCU
+ and PRCM
+Date: Fri, 09 Oct 2026 23:52:05 +0800
+Message-Id: <20261009-a733-clk-v6-0-ae8178fce7e8@pigmoral.tech>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ar7sTVun7mF-4nl6@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22R0WrDMAxFfyX4eS6W7cRxGWP/MfZgK8pq1iSdn
+ YaO0n+fkwyajb4YZHSO0NWVJYqBEtsXVxZpCikMfS6qp4LhwfUfxEOTayaFrER+uDNKcTx+ctH
+ oFoVwtrXIcvspUhsui+rtPdeHkMYhfi/mCebfVaJA3CUTcMFV5TVZL7UuzespfHRDdMfdSHhgs
+ 2iSd9gAbGCZYWt0A3WNngQ+gtUdtqLcwCrDpWilqltl0dSPYL2B5Xaynicj1Jo8WYfwCC43sNr
+ uXGYYAEzpNWAjm//wbU0z0tc532NcI2UdpeSWe+yL5999Kp7O/SUs2n7gpzVP9A1JQNtSZf+6X
+ +ZDeZeI49B1YdwXk9kpHhHy1NsP+5z44Q0CAAA=
+X-Change-ID: 20260202-a733-clk-0d4fc00a9f9c
+To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
+ Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Junhui Liu <junhui.liu@pigmoral.tech>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ netdev@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>, 
+ Enzo Adriano <enzo.adriano.code@gmail.com>, 
+ Andre Przywara <andre.przywara@arm.com>, Norman Herms <dockseed@proton.me>, 
+ Vinicius Pedrosa <vinicius.eduardo.pedrosa@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7311;
+ i=junhui.liu@pigmoral.tech; h=from:subject:message-id;
+ bh=StBWC5rdGl30CGSA8cby9W9feHch4ijdhDIwbiWdprQ=;
+ b=owGbwMvMwCWWvDb1VEXc8j+Mp9WSGLJO8m5yeBZ3r0qYa/oXz7/scp/mnTi9gvPIX20vG49Fy
+ oc3Rkyw6ChlYRDjYpAVU2Th8hf/Z63D8+2IQOt9mDmsTCBDGLg4BWAiv1QYGaYzzj2T7RHzhUFk
+ 04Oyo/rGZQLuvVuFkuuq1aOUThY+ucLIcGzBme6CxI2BU8u59j02e/qxY9ctl9h/Hx4t3Dwv2un
+ TIw4A
+X-Developer-Key: i=junhui.liu@pigmoral.tech; a=openpgp;
+ fpr=15B30CC69C4BF0CC3C08F85A2A90CDC122DF37BF
+X-ZohoMailClient: External
 
-On 2026-10-02 01:30:45 [+0200], Karl Mehltretter wrote:
-> > >   BUG: sleeping function called from invalid context
-> > >   in_atomic(): 0, irqs_disabled(): 1, non_block: 0
-> > >   rt_spin_lock
-> > >   skb_queue_tail
-> > >   netpoll_send_skb
-> > 
-> > How is this possible? netpoll is only used by netconsole right? And this
-> > is CON_NBCON so it only prints threaded. What is the missing piece?
-> > 
-> 
-> The call is from the NBCON printer thread, but netpoll_send_skb()
-> explicitly disables hard interrupts around __netpoll_send_skb():
-> 
->         local_irq_save(flags);
->         ret = __netpoll_send_skb(np, skb);
->         local_irq_restore(flags);
-> 
-> When direct transmission cannot complete, __netpoll_send_skb() calls
-> skb_queue_tail() before interrupts are restored. Its spinlock can sleep
-> on PREEMPT_RT despite the caller being a thread.
+Add support for the main CCU and the PRCM module (R-CCU) found in the
+Allwinner A733 SoC. The clock architecture is derived from the previous
+A523 design, with the MCU_CCU removed and the clock tree extended for
+the additional functional blocks found on the A733.
 
-We have netconsole as a user of netpoll. The netconsole user is nbcon.
-There are users such as macvlan and dsa and this looks like not a real
-user but just forwarding the netpoll packet. According to the history
-for macvlan, it is just there to forward the netconsole packets so it
-appears to check out.
+The A733 introduces a "pll-ref" clock that normalizes the physical
+oscillator frequency, which can be 19.2MHz, 24MHz, or 26MHz, into a
+consistent 24MHz reference for the PLL clock tree.
 
-So it is just netconsole which is NBCON but has CON_NBCON_ATOMIC_UNSAFE.
+The peripheral, video, and DE PLLs provide multiple independently gated
+outputs with programmable dividers. Model these outputs as separate
+divider-and-gate child clocks. Also follow the documented hierarchy for
+the derived peripheral PLL outputs. The explicitly named PLL_AUDIO1 /2
+and /5 outputs are modeled as fixed-factor clocks, with their divider
+fields initialized accordingly.
 
-In the ::write_thread() case the interrupts are disabled due invoking
-::device_lock(). In the ::write_atomic() the lock function might not be
-invoked but due to the nature of the situation the interrupts will be
-disabled anyway. So disabling interrupts looks like a lazy way of
-letting everyone know that ::ndo_start_xmit() will be invoked from
-netpoll/ netconsole.
-I don't see anything that would mandate disabling interrupts in
-__netpoll_send_skb() except BH need to be disabled before
-HARD_TX_TRYLOCK(). 
+Also extend the sunxi-ng SDM (Sigma-Delta Modulation) support for the
+dual-pattern register layout used by the A733 PLLs. PLL_AUDIO0 uses the
+dual-pattern SDM support to synthesize its fractional output.
+PLL_AUDIO1 does not expose fractional rates, but its SDM controls are
+modeled so that stale settings left by firmware can be disabled when an
+integer rate is programmed.
 
-I would suggest to untangle that local-irq-disable assumption. Then we
-end up with the ::write_atomic callback on PREEMPT_RT which will raise
-warnings. But those will appear only on panic() and as the last console
-due to CON_NBCON_ATOMIC_UNSAFE so everything will go according to the
-plan.
-On !RT the whole __netpoll_send_skb() will be with disabled interrupts
-due to the console lock. On RT it won't and I don't know if anything
-down the call chain assumes that.
+The actual parents of a small number of bus gates are not documented in
+the user manual. Follow the vendor BSP and keep these gates parented to
+"hosc" until more complete hardware information is available.
 
-To illustrate my idea a bit
+This series depends on the A523 single-divider clock fixes [1], which
+add feature support to the M-only clock macro used by the MBUS and DRAM0
+clocks. The prerequisite series has been applied to the
+sunxi/clk-for-7.4 branch.
 
-diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
-index 1c6b1eec5efd6..3853611f672be 100644
---- a/include/linux/netpoll.h
-+++ b/include/linux/netpoll.h
-@@ -71,6 +71,9 @@ void netpoll_zap_completion_queue(void);
- unsigned int netpoll_get_carrier_timeout(void);
- 
- #ifdef CONFIG_NETPOLL
-+
-+DECLARE_PER_CPU(atomic_t, netpoll_active);
-+
- static inline void *netpoll_poll_lock(struct napi_struct *napi)
- {
- 	struct net_device *dev = napi->dev;
-@@ -96,7 +99,7 @@ static inline void netpoll_poll_unlock(void *have)
- 
- static inline bool netpoll_tx_running(struct net_device *dev)
- {
--	return irqs_disabled();
-+	return atomic_read(this_cpu_ptr(&netpoll_active)) > 0;
- }
- 
- #else
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index fe1e0cda5d6bf..8ecdac601ca13 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -73,7 +73,9 @@ static netdev_tx_t netpoll_start_xmit(struct sk_buff *skb,
- 		}
- 	}
- 
-+	/* local_irq_save() ? */
- 	status = netdev_start_xmit(skb, dev, txq, false);
-+	/* local_irq_restore() ? */
- 
- out:
- 	return status;
-@@ -258,7 +260,8 @@ static int netpoll_owner_active(struct net_device *dev)
- 	return 0;
- }
- 
--/* call with IRQ disabled */
-+DEFINE_PER_CPU(atomic_t, netpoll_active) = ATOMIC_INIT(0);
-+
- static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- {
- 	netdev_tx_t status = NETDEV_TX_BUSY;
-@@ -268,12 +271,11 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 	/* It is up to the caller to keep npinfo alive. */
- 	struct netpoll_info *npinfo;
- 
--	lockdep_assert_irqs_disabled();
--
- 	dev = np->dev;
- 	/* npinfo->txq belongs to np->dev, so retries must stay bound to it. */
- 	skb->dev = dev;
--	rcu_read_lock();
-+	rcu_read_lock_bh();
-+	atomic_inc(this_cpu_ptr(&netpoll_active));
- 	npinfo = rcu_dereference_bh(dev->npinfo);
- 
- 	if (!npinfo || !netif_running(dev) || !netif_device_present(dev)) {
-@@ -306,11 +308,6 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 
- 			udelay(USEC_PER_POLL);
- 		}
--
--		WARN_ONCE(!irqs_disabled(),
--			"netpoll_send_skb_on_dev(): %s enabled interrupts in poll (%pS)\n",
--			dev->name, dev->netdev_ops->ndo_start_xmit);
--
- 	}
- 
- 	if (!dev_xmit_complete(status)) {
-@@ -319,7 +316,8 @@ static netdev_tx_t __netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 	}
- 	ret = NETDEV_TX_OK;
- out:
--	rcu_read_unlock();
-+	atomic_dec(this_cpu_ptr(&netpoll_active));
-+	rcu_read_unlock_bh();
- 	return ret;
- }
- 
-@@ -332,9 +330,7 @@ netdev_tx_t netpoll_send_skb(struct netpoll *np, struct sk_buff *skb)
- 		dev_kfree_skb_irq(skb);
- 		ret = NET_XMIT_DROP;
- 	} else {
--		local_irq_save(flags);
- 		ret = __netpoll_send_skb(np, skb);
--		local_irq_restore(flags);
- 	}
- 	return ret;
- }
+Link: https://patch.msgid.link/20260906-sunxi-clk-no-p-v1-0-cbde21c9fe69@pigmoral.tech [1]
+Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
+---
+Changes in v6:
+- Patches 1 and 3: Drop the R-TWD bus clock, since S_TWD_BGR_REG is
+  always secure and cannot be accessed by the non-secure kernel
+- Patches 1 and 7: Rename mbus-nand and CLK_MBUS_NAND to mbus-nand0 and
+  CLK_MBUS_NAND0
+- Patches 3 and 4: Document the firmware requirements for the PRCM and
+  CCMU security switch registers
+- Patch 4: Add CLK_SET_RATE_PARENT to the video and DE PLL output clocks
+- Patch 5: Document why the CPU_PERI and NSI clocks are not modelled
+- Patch 7: Model ahb-store as the parent of the NAND, MMC, SPI, SPIF and UFS
+  bus gates, and drop its CLK_IS_CRITICAL flag
+- Patch 7: Keep mbus-store critical for the storage DMA paths and make it
+  the parent of mbus-nand0
+- Patch 7: Add comments explaining the ahb-store, ahb-cpus and mbus-store
+  gates
+- Patches 5, 7 and 8: Collect Reviewed-by tags
+- Link to v5: https://patch.msgid.link/20260930-a733-clk-v5-0-11175b41cd2d@pigmoral.tech
 
+Changes in v5:
+- Add the CLK_GIC binding ID, inserted after CLK_TRACE
+- Add the GIC clock and mark it critical
+- Fix the continuation line alignment of the trace clock
+- Mark ahb-cpus critical
+- Link to v4: https://patch.msgid.link/20260921-a733-clk-v4-0-9c184ebe9ac1@pigmoral.tech
 
-and this did not even see the compiler. Plus queue_process() has been
-ignored.
+Changes in v4:
+- Model the MBUS and DRAM0 clocks as M-only clocks
+- Base the series on the A523 single-divider clock fixes
+- Link to v3: https://patch.msgid.link/20260905-a733-clk-v3-0-50f238f39c78@pigmoral.tech
 
-> Thanks,
-> Karl
+Changes in v3:
+- Patch 1: Rename the clock/reset binding headers with the allwinner vendor
+  prefix, use BSD-2-Clause for their dual license, and reorder the binding
+  properties according to the preferred schema layout
+- Patches 1 and 4: Drop the undocumented 12X suffix from the video and DE
+  PLL core clock names and binding IDs
+- Patch 2: Require all PAT1 enable bits to be set when checking whether SDM
+  is enabled
+- Patch 4: Model the independently gated peripheral, video, and DE PLL
+  outputs as programmable-divider child clocks
+- Patch 4: Follow the documented hierarchy for the derived peripheral PLL
+  outputs
+- Patch 4: Model the explicitly named PLL_AUDIO1 /2 and /5 outputs as
+  fixed-factor clocks and initialize their divider fields accordingly
+- Patch 4: Model the PLL_AUDIO1 SDM controls so stale firmware settings are
+  disabled when an integer rate is programmed
+- Patch 4: Add the missing module device table and remove an unused include
+- Patch 6: Replace the MP helpers used by timer clocks, which have no M
+  divider, with the corresponding P-only helpers
+- Patch 7: Document the unresolved parents of bus gates kept on hosc and
+  fix the APB/AHB IOMMU1 system clock names
+- Patches 3 and 8: Make the reset maps const
+- Link to v2: https://patch.msgid.link/20260711-a733-clk-v2-0-974d188cbe0c@pigmoral.tech
 
-Sebastian
+Changes in v2:
+- Rework the clocks property in DT bindings to source hosc directly from
+  the oscillator to adapt to the new RTC binding
+- Clean up the SDM dual-pattern helper macro and add the missing enable
+  parameter for pll-audio0
+- Number single-instance clocks with 0, e.g. GPU0, VE_ENC0/VE_DEC0,
+  DRAM0, NAND0, GPADC0, THS0, etc
+- Correct 8x PLL post-divider names to 12x for video and DE PLLs
+  (pll-videoX-12x, pll-de-12x)
+- Drop gic, cpu-peri, nsi clocks
+- Rename clocks: OWA -> SPDIF, USB_REF -> USB01_REF, HDMI_ESM -> HDCP_ESM,
+  PWMCTRL -> PWM
+- Mark bus-dram0, ahb-store and mbus-store critical to avoid DMA, MMC and
+  SPI NOR failures when unused clocks are disabled
+- Switch PRCM timer clocks to P-only helpers
+- Fix bus gate bit positions for UARTs and correct the sysdap register
+  address
+- Interleave bus clocks into function clocks
+- Link to v1: https://lore.kernel.org/r/20260310-a733-clk-v1-0-36b4e9b24457@pigmoral.tech
+
+---
+Junhui Liu (8):
+      dt-bindings: clk: sun60i-a733-ccu: Add Allwinner A733 support
+      clk: sunxi-ng: sdm: Add dual patterns support
+      clk: sunxi-ng: a733: Add PRCM CCU
+      clk: sunxi-ng: a733: Add PLL clocks support
+      clk: sunxi-ng: a733: Add bus clocks support
+      clk: sunxi-ng: a733: Add mod clocks support
+      clk: sunxi-ng: a733: Add bus clock gates
+      clk: sunxi-ng: a733: Add reset lines
+
+ .../bindings/clock/allwinner,sun60i-a733-ccu.yaml  |  107 +
+ drivers/clk/sunxi-ng/Kconfig                       |   10 +
+ drivers/clk/sunxi-ng/Makefile                      |    4 +
+ drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c           |  277 +++
+ drivers/clk/sunxi-ng/ccu-sun60i-a733.c             | 2422 ++++++++++++++++++++
+ drivers/clk/sunxi-ng/ccu_sdm.c                     |   52 +-
+ drivers/clk/sunxi-ng/ccu_sdm.h                     |   29 +-
+ .../dt-bindings/clock/allwinner,sun60i-a733-ccu.h  |  291 +++
+ .../clock/allwinner,sun60i-a733-r-ccu.h            |   38 +
+ .../dt-bindings/reset/allwinner,sun60i-a733-ccu.h  |  129 ++
+ .../reset/allwinner,sun60i-a733-r-ccu.h            |   23 +
+ 11 files changed, 3356 insertions(+), 26 deletions(-)
+---
+base-commit: e5e04726cdd043e309677071ab1b65a4b18f422b
+change-id: 20260202-a733-clk-0d4fc00a9f9c
+prerequisite-message-id: <20260906-sunxi-clk-no-p-v1-0-cbde21c9fe69@pigmoral.tech>
+prerequisite-patch-id: 0df2ae41836b86fd868dfa01ddfde57f888f761a
+prerequisite-patch-id: 88f3a431e7c551a9fa732f062188f10fdd362eeb
+prerequisite-patch-id: 3e88bc873c909059d1199f82cda4013765e7a5e5
+prerequisite-patch-id: 0dbc27cd7417352319a0705a051dff35085e8922
+
+Best regards,
+--  
+Junhui Liu <junhui.liu@pigmoral.tech>
+
