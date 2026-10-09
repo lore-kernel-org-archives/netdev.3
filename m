@@ -1,260 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25C5384CE5;
-	Fri,  9 Oct 2026 03:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4BD37E5D2
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 03:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791516076; cv=none; b=uGajJw8NrZvZklQgenhso31hf4dKhkWJfujvjIWISTI02HTtwwqGkf0zqCnIbAUbRwep0m3ZfUx9Xvbyjs4VHd2meU4GVdQAMoBGiAj4fbcYB071gYn4y/sAPdm5kZTKnhZy3ecziT8yZLx8+Lk64AZzocb7MmLlXC2Dx9jqklk=
+	t=1791516337; cv=none; b=AkBtWlW7Uy5HjhmqZ3AuXf/c5bl4P49ecJqSVTZQNojhaymBeJjuL8njBqZV4KT/XKT+RqPMbk6C845biqz/P4ZjrBTZhIqoy1HxMYg8IE/9Q19b+LGEeWn5RHAgfNSVjRyVBjheUrvmpQYbcONd5Yn/kjOd+mC7GNfgeMqrhRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791516076; c=relaxed/simple;
-	bh=wcqHV2Wg3FXBYYmg1vUHmOb3Xq5jc8STEKB0J+8XZ5A=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OKKn60g5OjS80oyoGJeM5ZFTJZRy04Hz13wLm3iNdcFz48MXUWum+sst9hOI99YsA+6CvYZMiwPu4LViaL/KeABmeLtHtmdBInW2qrSsdvcexu+r2iXd/RpyCLXCvnx7vY83ayuNm7+M6IeuJRseTcZc1dKAVdWMAhg8TqoFxyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZiCeaWy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791516337; c=relaxed/simple;
+	bh=XAO8a0f6lkr/LOkHNd81baGqXg+G2u2xKghhfh0jkl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kI8GH/WGBjP/hRxL0jovudU6K5hC33f97JwV60tV3e7X1ChSiiUs4D4+U4cq1Ee0beMSMUhz1QHghypX61mhlrDzPOPLqWsLV9FQhF45GchenKA5nGQsi2nZOzKPvJbhnuS6VtZtilJYEgASGSlkBeEeH1ld+maqPuiUED5FegA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rIxbKrJX; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZiCeaWy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7982D1F00899;
-	Fri,  9 Oct 2026 03:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791516063;
-	bh=JXfCHG31Bc/gSZjaK8k9wksl9IuXvNCzPnYy9hoGaWo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SZiCeaWykiCNamdBlxa2XXBIE7gHvyKIOn3LN9Z24cQoLXU1mgA+E4KHeFYXnfA8w
-	 nqIAdtQM2bUAlDeqLfi8ov47ZQsL1z0gyDQt3j3saygu6WtBAm21eNfuexjr/pGN6Q
-	 t4AkxHMvpWPEBN9PJKOmuxrBsKYq4/i0GcvolU+G3xbJk9ht9dV2KmZ3bYResU1deR
-	 TYj7BjSjB0vD6D/mfDOYA5RtgrHYodZ8MQY7Yim4b73YyIKDn7KIylPvIPh9Ahiigy
-	 XG4dPmJibsR6eKsD54zdUO7qufshIQBGq1l9gQ7j4D6bG8QIlhllADGadEtXMFF4QG
-	 Qpvto6oN0so+g==
-Subject: Re: [PATCH v3] netfilter: nf_nat: Fix stale outer UDP checksum on
- VXLAN encapsulated packets
-From: netdev-bot+sashiko@kernel.org
-To: lvjunyu@cmss.chinamobile.com
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org
-Date: Fri, 09 Oct 2026 03:21:03 +0000
-Message-ID: <179151606303.434549.9146029208323443792@kernel.org>
-In-Reply-To: <20260922062305.752147-1-lvjunyu@cmss.chinamobile.com>
-References: <20260922062305.752147-1-lvjunyu@cmss.chinamobile.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rIxbKrJX"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93e4f0d7d77so517132385a.0
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 20:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791516326; x=1792121126; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XAO8a0f6lkr/LOkHNd81baGqXg+G2u2xKghhfh0jkl8=;
+        b=rIxbKrJXxtFHBN6qY5V7vcSq7aTz1APFg7lxfqzpF/XeDybxl683IMRmM0tkPD8pVp
+         Ne62BAzMr4yS3Gjb0xtqNc6fqHYumbUshUJUiQg9qloKeLoO8PMozMsqLIOcnzT+acGf
+         xcSdkwTkzJ5BOrdcC1+eyWPsY66mJ9dbHLrW4x8eGuv55YxBNxJ11sAbf+sfDPvQ+ZrP
+         1ZM3N+HtCOua8g8f0wkaJxFC5MPZmUPu22xwZFSNmDjz+Cp8Udg20a2Wd6Ooa3zOJV1J
+         EAeb9qLbf30drHF7qSif2GPrkOlwjUegZiHfFS5qc/axontEsbx1vZ731933A1+SsCYZ
+         DE2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791516326; x=1792121126;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XAO8a0f6lkr/LOkHNd81baGqXg+G2u2xKghhfh0jkl8=;
+        b=hlauUcrvgwQa4OjCs6E1banJnV+OADOwBWnUzAGbUrNtXhJQxBL4UNwPculCW8Dm1e
+         CsZgkb72qpPnZTAb8nDUgstuZJQLaJaCPioLA9+71XaNvcp/o6q1LfZH39h61hLV6QAP
+         pM4DGN5DBVgvecNDpgRyEZY0eS8Q2yLv9HjYdX7QjMaRzsLLvbGGmifRJrgvifOrjXsI
+         IEYZePMFMNRxl2it+Z0meP9OjEe/9KecAAIxvMHV9VUXP/IxKl2R8af2PjSufKX18WvN
+         Kbs4JR12daShlMG85VR96qArt6/0b7dc6q+7ITQDfsqSk4Q6WAe0PHi6gLX+3itvqp9A
+         /myg==
+X-Gm-Message-State: AFuF++mLzAKYMbLQs9TfwE0r47/8S+Q/uW4ock4qv4sspz7irPWMHhJb
+	KY8v+zgv4nFnESbC5kennGzQ5DWlkdnWPjpazeA80/YJnwvHwydJzKb2MAcUFIOy
+X-Gm-Gg: AYBFou066qHIrtPdiaS1nr4N7DuN800D9TcqLZ/p8lm9WRaT2gM82Bd9VE+72xN+ZtH
+	5L9TotinR/UX/usvh/029FS6xzriGXQBYsY+6qOJpfyv0/w7Q8vwo1ffgvJ9S0j/wkg7qgHjdy9
+	7Up+NLAgnMFxKDHjd9g+cRTEGCFkdEw98M24SoEDxep/NNsVO8B4rodMhP0VV7EesnVdLnSj1d2
+	XqJF8LOI1oidUJEAiLsUJWDKNPPJNLdiTFP0sNkt1zR4iITbPdRL8lCVv84+J6wAbI4uDBlzzPB
+	nkFdEzUpTntYBmTvNa8whMVZSGhJOUgN6WLIO+KQu5Hepr7B4XwVRApB1Zeyl9USTKbvTNQXzQ8
+	U6GtEyLM3cruBymGJmTTojGCYZesDr8mNQMxkIuZtosok1iSkILLP5kxNjtS2Q0vbcf61qGDpVQ
+	A40diLQermz5hb7w2JeiayJ/3XAIdr29W3zhTTo7PS+yoVZHa4ufLs8vvIdNRmtGJ4
+X-Received: by 2002:a05:620a:27c9:b0:93b:d7a4:9d4b with SMTP id af79cd13be357-93ebe9d08e6mr48637885a.30.1791516326339;
+        Thu, 08 Oct 2026 20:25:26 -0700 (PDT)
+Received: from houminxi ([61.170.182.45])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93eb986d018sm88474385a.23.2026.10.08.20.25.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Oct 2026 20:25:25 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net-next 1/2] netlink: specs: add ovs_flow del and set operations
+Date: Thu,  8 Oct 2026 23:25:19 -0400
+Message-ID: <20261009032520.1758340-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <179146490651.434549.2629505929025835263@kernel.org>
+References: <20261006130533.1620706-1-houminxi@gmail.com> <20261006130533.1620706-2-houminxi@gmail.com> <179146490651.434549.2629505929025835263@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Thu, 8 Oct 2026, netdev-bot+sashiko@kernel.org wrote:
+> [Medium] Should probe be declared as type: flag in flow-attrs?
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 2
+Yes. The kernel policy marks both probe and clear as NLA_FLAG, and clear
+was already a flag in the spec. probe stayed binary only because no
+request listed it, so nothing exercised the mismatch. v2 makes it a flag.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> [Low] Should probe be listed on del as well? ovs_flow_cmd_del() reads it.
 
-- [High] The fix is incomplete.
-- [Low] The commit message describes the trigger more narrowly than the
-  code shows.
-- [Low] The new comment in __udp_manip_pkt() presents the offload-target
-  test as a way to tell apart only the two states that udp_set_csum()…
+Yes, and v2 adds it. ovs_flow_cmd_del() reads OVS_FLOW_ATTR_PROBE to
+decide whether to log the error. set listed it and del did not.
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the IPVS UDP
-  NAT handlers have the same bug.
+> [Low] Is the set doc complete? Replacing actions needs a key even
+> when a ufid is present.
 
---
+The doc was wrong. ovs_nla_init_match_and_action() returns -EINVAL for
+actions with no key, whether or not a ufid is there. A ufid alone is
+enough for a stats or clear update. v2 says so.
 
-netfilter: nf_nat: Fix stale outer UDP checksum on VXLAN encapsulated packets
+> [Low] Neither del nor set describes a reply or a notification.
 
-This patch changes __udp_manip_pkt() to detect the local checksum offload
-(LCO) state. In that state the outer UDP header holds a complete checksum
-while csum_start points at the inner transport header. When it sees this
-state, it sets ip_summed to CHECKSUM_NONE for the duration of the update,
-so the address and port deltas are applied through csum_replace*().
+Both handlers build a message and send it with ovs_notify(), and
+ovs_must_notify() returns true when the request sets NLM_F_ECHO or
+the multicast group has a listener. A client that wants the message
+subscribes to the group.
 
-> When MASQUERADE --random-fully rewrites the outer UDP source port and
-> address of a VXLAN-encapsulated packet whose inner header has
-> CHECKSUM_PARTIAL, the outer UDP checksum is not updated correctly.
+A do() call does not get those attributes back. I checked on a live
+kernel: new, set and del all return an ack, and only get returns the
+flow attributes. The existing new op and the datapath and vport specs
+describe the same thing the same way, which the review also notes.
 
-[Severity: Low]
-Is the trigger described here narrower than the real one?
-
-Any SNAT, DNAT or MASQUERADE that changes the address of an LCO-state
-outer UDP header hits the wrong-sign delta in
-nf_csum_update()->inet_proto_csum_replace4/16(pseudohdr=true), even if no
-port changes. Any port rewrite hits the no-op inet_proto_csum_replace2().
-
-The LCO branch lives in udp_set_csum(). Its callers are
-udp_tunnel_xmit_skb() (VXLAN, GENEVE, bareudp and others),
-l2tp_xmit_core(), fou_build_udp() and ip_vs_tunnel_xmit().
-udp6_set_csum() has the same branch for IPv6, and the patch also changes
-IPv6 behaviour through nf_nat_ipv6_csum_update().
-
-The reproducer may have needed --random-fully only because MASQUERADE in a
-single netns keeps the same source address. That leaves the port as the
-only field that changes.
-
-Could the changelog state the general trigger, so stable triage can judge
-the impact correctly?
-
-> diff --git a/net/netfilter/nf_nat_proto.c b/net/netfilter/nf_nat_proto.c
-> index 64b9bac228eae..6779e9f2812d9 100644
-> --- a/net/netfilter/nf_nat_proto.c
-> +++ b/net/netfilter/nf_nat_proto.c
-> @@ -54,9 +54,39 @@ __udp_manip_pkt(struct sk_buff *skb,
->  		portptr = &hdr->dest;
->  	}
->  	if (do_csum) {
-> +		/* When udp_set_csum() takes the LCO branch (encapsulated
-
-[ ... ]
-
-> +		 * The seed/offload branch of udp_set_csum() sets csum_start
-> +		 * to the outer UDP header, so the offload-target test
-> +		 * below distinguishes the two states.
-> +		 */
-
-[Severity: Low]
-This isn't a bug, but is this comment complete? It describes the test as
-telling apart only the two states that udp_set_csum() creates. The
-predicate below is true for any CHECKSUM_PARTIAL non-GSO skb whose
-csum_start + csum_offset is not &hdr->check.
-
-One such case is the UDP header embedded in an ICMP or ICMPv6 error. In
-nf_nat_icmp_reply_translation() and nf_nat_icmpv6_reply_translation(), it
-is rewritten through:
-
-  nf_nat_ipv{4,6}_manip_pkt()
-    udp_manip_pkt()
-      __udp_manip_pkt()
-
-On that path the offload target is the outer ICMP checksum.
-
-The embedded UDP checksum there is a complete checksum, so switching to
-csum_replace*() gives the right result. The only gap is that neither the
-comment nor the lco name covers this case.
-
-The comment also names only the IPv4 helpers. This code covers
-udp6_set_csum() and inet_proto_csum_replace16() too.
-
-> +		bool lco = skb->ip_summed == CHECKSUM_PARTIAL &&
-> +			   !skb_is_gso(skb) &&
-> +			   (skb->head + skb->csum_start + skb->csum_offset) !=
-> +			   (unsigned char *)&hdr->check;
-
-[Severity: High]
-Is this fix complete for flows that are offloaded to an nft flowtable?
-
-The flowtable fast path applies the same conntrack NAT with the old
-helpers:
-
-net/netfilter/nf_flow_table_ip.c:nf_flow_nat_ip_udp() {
-    ...
-	if (udph->check || skb->ip_summed == CHECKSUM_PARTIAL) {
-		inet_proto_csum_replace4(&udph->check, skb, addr,
-					 new_addr, true);
-    ...
-}
-
-net/netfilter/nf_flow_table_core.c:nf_flow_nat_port_udp() {
-    ...
-	if (udph->check || skb->ip_summed == CHECKSUM_PARTIAL) {
-		inet_proto_csum_replace2(&udph->check, skb, port,
-					 new_port, false);
-    ...
-}
-
-nf_flow_nat_ipv6_udp() follows the same pattern with
-inet_proto_csum_replace16().
-
-For an LCO-state outer UDP header, these functions hit the same two
-failures this patch fixes in __udp_manip_pkt(): the address delta gets the
-wrong sign, and the port update does nothing. Nothing in the flowtable
-path filters out CHECKSUM_PARTIAL or encapsulated skbs.
-
-Take a MASQUERADE or SNAT rule plus a flowtable. The first packets of a
-UDP tunnel flow get correct checksums through nf_nat. Once the conntrack
-is offloaded, the rest of the flow goes through:
-
-  nf_flow_offload_ip_hook()
-    nf_flow_offload_forward()
-      nf_flow_snat_ip() / nf_flow_dnat_ip()
-        nf_flow_nat_ip_l4proto()
-          nf_flow_nat_ip_udp()
-      nf_flow_snat_port() / nf_flow_dnat_port()
-        nf_flow_nat_port_udp()
-
-Would the receiver then drop those packets with UdpInCsumErrors?
-
-tcf_nat_act() in net/sched/act_nat.c uses the same pattern on outer UDP
-headers.
-
-All of these callers rely on one assumption in inet_proto_csum_replace*():
-under CHECKSUM_PARTIAL, the field being patched is taken to be the
-offload target.
-
-net/core/utils.c:inet_proto_csum_replace4() {
-    ...
-	} else if (pseudohdr)
-		*sum = ~csum_fold(csum_add(csum_sub(csum_unfold(*sum),
-						    (__force __wsum)from),
-					   (__force __wsum)to));
-}
-
-Would it work better to compare sum against skb->head + csum_start +
-csum_offset inside those shared helpers? That would cover nf_nat, the
-flowtable and act_nat in one place, instead of a local workaround in
-__udp_manip_pkt().
-
-> +
-> +		if (lco)
-> +			skb->ip_summed = CHECKSUM_NONE;
-> +
->  		nf_csum_update(skb, iphdroff, &hdr->check, tuple, maniptype);
->  		inet_proto_csum_replace2(&hdr->check, skb, *portptr, newport,
->  					 false);
-> +
-> +		if (lco)
-> +			skb->ip_summed = CHECKSUM_PARTIAL;
-> +
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch, but the
-IPVS UDP NAT handlers look like they have the same problem.
-
-udp_snat_handler() and udp_dnat_handler() in
-net/netfilter/ipvs/ip_vs_proto_udp.c check only ip_summed:
-
-	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-		udp_partial_csum_update(cp->af, udph, &cp->daddr, &cp->vaddr,
-					htons(oldlen),
-					htons(skb->len - udphoff));
-
-udp_partial_csum_update() always treats the field as a seed:
-
-	uhdr->check =
-		~csum_fold(ip_vs_check_diff4(oldip->ip, newip->ip,
-				ip_vs_check_diff2(oldlen, newlen,
-						csum_unfold(uhdr->check))));
-
-It never applies the port change.
-
-For an LCO outer UDP header built by udp_set_csum() or udp6_set_csum(),
-won't IPVS also apply the address delta with the wrong sign and skip the
-port delta?
-
-After this patch, nf_nat and IPVS would also handle the same skb state
-differently.
-
->  		if (!hdr->check)
->  			hdr->check = CSUM_MANGLED_0;
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260922062305.752147-1-lvjunyu%40cmss.chinamobile.com
+Listing a reply would tell a generated client that do() returns
+attributes it never receives. I left it off.
