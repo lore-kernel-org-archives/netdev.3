@@ -1,199 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE493F1062;
-	Fri,  9 Oct 2026 05:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8273F0A9F
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 05:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791525147; cv=none; b=dyKvVT6lrs7U5Jr5SmvcXF+5Mdk4is5YgRGiNFcsVbE7S1QcnfnJtpqcO7kXd8deyD08CXTtlxzehIINgVdS+iIbbrwcEjlVvNaErK06nkAG2dgt5tgn2GHs1phUqjWNoUZuUsTVCnAmO4nkdo6uJK1WxAff/u5z4nFC1WYXBig=
+	t=1791525157; cv=none; b=LSKiDQIJGj0ZwmOp17q2rNYvwFdU0tEcRGau83j/Lo/nxg0AGkbilsAW4pFspReJn8TQHXnHD7rZnVmsS6JGSEoH8Pvm1QQQt/jhnbg5PGCq0z4USdysIM+oCI3E1FrCcHOlvmql3lSxYpXcPw33t4lU1Yab/jQwPnQLVa3TCpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791525147; c=relaxed/simple;
-	bh=FOvH8w4C9wvY4okS7M3MXG/xmU9mgKI/kDapv4ZTltw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=R6gbAEuID1ibHoK8LL1eW2OdXdm862rKKyjHFZ9ZMdrri1VLHt/FwE53uzL7hlNuxT79UiUSPY22DrF3T2mb4tW6xnx2c8U+aBzc5otKmgpD5/e3EWkrnl0+sSbtrpUSic/aju7NqYFZQdRO7CdvPWuTVTel6gM70OwOHfDvUAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXYu2lB7; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXYu2lB7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BA11F000FF;
-	Fri,  9 Oct 2026 05:52:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791525145;
-	bh=/7dg6dToZwdakbPOV94KUonfQlPDX7kUrfbPFVUg5GY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OXYu2lB73Iq2XVmnFtMMVSekthwGDH1CaEefXVwE8oGTgF0+O82lz6rjShb7DR+a1
-	 iKTFh5aMR4Cwy5MyucR6q737BVbJ1BzOfpYjdIxFsthWvskhKh6kMUSEfpnKRJHYqW
-	 uvP1whvcvoLQo5dtbCm5mhxKI4xJFqEAwSv2LS9zyGk/8dMP9EbCyFsLM4TLganYt5
-	 QKB3e8FlzYefFIDBld/R2iMDXo8Og/5OQJ7U/jzq6mTBlhCrFNZcLRhzpbQ1JUuATq
-	 7oK5IueH9TbgzqZRhx5FPaoyh746VhhtSw7yo8knqHmjq/ewshlzD3t7Jwjm6FnFVj
-	 ABfmBlLrTEFeg==
-Subject: Re: [PATCH v3] net: phy: marvell: keep WOL_EIE across interrupt
- reconfiguration
-From: netdev-bot+sashiko@kernel.org
-To: rosenp@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, michael@stapelberg.de,
- linux-kernel@vger.kernel.org
-Date: Fri, 09 Oct 2026 05:52:24 +0000
-Message-ID: <179152514441.434549.4140686458634721887@kernel.org>
-In-Reply-To: <20261005225028.465866-1-rosenp@gmail.com>
-References: <20261005225028.465866-1-rosenp@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1791525157; c=relaxed/simple;
+	bh=vANEtx02YGciCZihBKUYNtj/eBy+BpTaZ8ueDZBr8AU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WOPsoUSO3DZ6uLABoABnjT2M1t1rvpymAw0vG29a6yOt/mrdVGsf3pbVti8XOj7iLyh2fnyy1TeSOWuig1vi5RNf/tu8unmJfA+Hc/LLyDyGbO1HQNnq6lBXUpctr/XJWwASdHIy0Z3QY8fxR6ktePdtIzrM6LD5xp/4ANK4BEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-8828138cc95so17802647b3.1
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 22:52:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791525155; x=1792129955;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NHcCOJlfDk2kf/nYjNk1wm3um6Oe/oxI7EYgEHDQ21E=;
+        b=Vjpnq1G7gEWCamNyAFNoqPgPKvkH7xdugismCVOXF7bbuCx6IzcRPX1VHxOFmf/t4d
+         4P/J44WNGRsl8ZsuspbX9Vf1FhKUvJvFMTxX6uoQ/YihBkUWkjyBjdn3UeiwfsZoLbuu
+         1UyZ2H2qtLpvkQTguV+5cYdFtNGT92e56M+xN9WBByrxiJbFkpurmO4v0uH2CN0GbUyf
+         8Mfc6rMVrS1ypWf+EWMfrm53gZwqRoaYE0nIB7BNsmYUJ0gmKHCowuWrFtjIWCE2YkFF
+         T3OWIvsfdHdhK0iO7jt3tchLgGTTp+xIzigZAMp2aZxt3CeOGYctik8r7yS8I/JqCsUD
+         Ctyg==
+X-Forwarded-Encrypted: i=1; AKwUvByFZTlSwfXt2F4VnnI1SkI6lb7bO1fpwxvTbjXaSyVe3M14MQoeglMoDx5EiCHCAen0AwC8v3w=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJPPJUerJtwYOhAgJDuPeVSSfxc1W/trTUGGPAfHi0in69lEqG9
+	3ZVr9LPDJgaIQc+75OKCuxVDpyfTyxp5clMRNZ9Vkk/NQneBqpRu8BldHOBQa4fQ
+X-Gm-Gg: AYBFou1GcxkTYGZWh4VRE26JpDnxKVg5bensHjUdQbb+YCUyXJFVTjUlvcZzbpZqM6I
+	nnb9uNM+jUgd5Wuox1DQYbkYB7y/nchC9bRK83JvLeYlDdpCk4/VNjBUIysWBVN9UQgwi+CC0ly
+	xUbXy9TulVSFewlpbzG3DwsivOvtM+d3gW4FCq4CIfP2itPm5tOi4RGYSMsyAnDS/vdo3chXALN
+	QTvgjF/hDvkvScacnPhIy27nOplQtZ8ML5zuaR7WvY0HUPH1YiS9C1yEmCLfLfbp1+cEj39QxpM
+	UM5tCw62p21Anfz1tZxN1/fIlXB5+6lNMqnC1QdcZqrTLr4I4VWhacUC3Hih6xj0HHRYL/IVV7M
+	7vSxunH9FWeOP5pVfwn45eD6r5F7n0YKc9M1erA2rBdymyQ9TJJZBViokbiVu1sVK/GiJRVJGpT
+	ax/fXBVKRLLHCdhr2mwG07HY+uEoKax9/7nsfCpOrenl1iVL+d00gLODcjePDMXWZ7hmtK8gGOD
+	gShTFWEam38hqKdpCWaIhWJI2wp6W+6sqIyMOVxHyhPSA==
+X-Received: by 2002:a05:690c:dd6:b0:8af:1191:a65f with SMTP id 00721157ae682-8b07ee2f438mr3077247b3.40.1791525154777;
+        Thu, 08 Oct 2026 22:52:34 -0700 (PDT)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b07f1ed781sm3506587b3.25.2026.10.08.22.52.34
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Oct 2026 22:52:34 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-8ab38a051aaso38505137b3.3
+        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 22:52:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxp4Ws9Wb1q3emgERbcOcxDSDT/6dsZLaXZ9h8l8vJou09GsNOnPCg3Iar5xbq3zj4OhHxMlZg=@vger.kernel.org
+X-Received: by 2002:a05:690c:e:b0:88f:62ba:512b with SMTP id
+ 00721157ae682-8b07ee3297amr3678357b3.42.1791525154408; Thu, 08 Oct 2026
+ 22:52:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261007082627.63807-1-tanure@linux.com> <20261007082627.63807-7-tanure@linux.com>
+ <c1764303-9f18-4487-ba93-06173cd8a53f@lunn.ch>
+In-Reply-To: <c1764303-9f18-4487-ba93-06173cd8a53f@lunn.ch>
+Reply-To: tanure@linux.com
+From: Lucas Tanure <tanure@linux.com>
+Date: Fri, 9 Oct 2026 06:52:22 +0100
+X-Gmail-Original-Message-ID: <CAJX_Q+1BZky6KUtqZKm7q8bDfWKV47xSZtK31qdYBWx_e3uwdQ@mail.gmail.com>
+X-Gm-Features: AclHuK9uJycl8wPMvbL9js8yfzmf_wvwEi-NV4Dy7HnHzbbgfaJpxaRVEvgynGU
+Message-ID: <CAJX_Q+1BZky6KUtqZKm7q8bDfWKV47xSZtK31qdYBWx_e3uwdQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 6/7] arm64: dts: amlogic: t7: add the ethernet controller
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Wed, Oct 7, 2026 at 2:12=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Wed, Oct 07, 2026 at 09:26:26AM +0100, Lucas Tanure wrote:
+> > The SoC has a Synopsys gigabit MAC, a block of glue registers that
+> > selects the interface type and trims the clock timing, and a
+> > multiplexer that points the management bus at the on-chip 100M PHY
+>
+>
+> > +                                     internal_ephy: ethernet-phy@8 {
+> > +                                             compatible =3D "ethernet-=
+phy-id0180.3301",
+> > +                                                          "ethernet-ph=
+y-ieee802.3-c22";
+> > +                                             interrupts =3D <GIC_SPI 3=
+40 IRQ_TYPE_LEVEL_HIGH>;
+> > +                                             reg =3D <8>;
+> > +                                             max-speed =3D <100>;
+>
+> It is a 100M PHY. What supported speeds does it report in its
+> registers?
+I cannot read them. On the VIM4 the MDIO mux points at the external
+PHY and the internal one never probes, and no board in tree uses it.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message says the interrupt register layout is the
-  same across all PHYs this driver handles.
-- [Medium] In the PHY_INTERRUPT_DISABLED branch, marvell_config_intr()
-  now calls phy_modify(phydev, MII_M1011_IMASK,…
-
---
-
-net: phy: marvell: keep WOL_EIE across interrupt reconfiguration
-
-This patch makes marvell_config_intr() use phy_modify() with a mask that
-leaves WOL_EIE alone. With that, the config_intr call from phy_init_hw() on
-resume no longer disarms Wake-on-LAN on the 88E1318S and 88E1510. When WoL
-is disabled, m88e1318_set_wol() now clears WOL_EIE itself, and the shared
-marvell_handle_interrupt() also claims WoL events.
-
-> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-> index f71cffa884062..56650182bf3e4 100644
-> --- a/drivers/net/phy/marvell.c
-> +++ b/drivers/net/phy/marvell.c
-> @@ -55,6 +55,11 @@
->  #define MII_M1011_IMASK			0x12
->  #define MII_M1011_IMASK_INIT		0x6400
->  #define MII_M1011_IMASK_CLEAR		0x0000
-> +/* Bits updated by config_intr. The WoL interrupt enable is owned by
-> + * set_wol, so the config_intr call from phy_init_hw() on resume does not
-> + * silently disarm Wake-on-LAN.
-> + */
-> +#define MII_M1011_IMASK_CONFIG_MASK	(U16_MAX & ~MII_88E1318S_PHY_CSIER_WOL_EIE)
->  
->  #define MII_M1011_PHY_SCR			0x10
->  #define MII_M1011_PHY_SCR_DOWNSHIFT_EN		BIT(11)
-> @@ -393,11 +398,13 @@ static int marvell_config_intr(struct phy_device *phydev)
->  		if (err)
->  			return err;
->  
-> -		err = phy_write(phydev, MII_M1011_IMASK,
-> -				MII_M1011_IMASK_INIT);
-> +		err = phy_modify(phydev, MII_M1011_IMASK,
-> +				 MII_M1011_IMASK_CONFIG_MASK,
-> +				 MII_M1011_IMASK_INIT);
->  	} else {
-> -		err = phy_write(phydev, MII_M1011_IMASK,
-> -				MII_M1011_IMASK_CLEAR);
-> +		err = phy_modify(phydev, MII_M1011_IMASK,
-> +				 MII_M1011_IMASK_CONFIG_MASK,
-> +				 MII_M1011_IMASK_CLEAR);
-
-[Severity: Medium]
-When interrupts are disabled, this branch no longer clears WOL_EIE. Does it
-still meet the config_intr contract in include/linux/phy.h?
-
-  @config_intr: Enables or disables interrupts.
-  It should also clear any pending interrupts prior to enabling the
-  IRQs and after disabling them.
-
-The commit message only covers the resume path through phy_init_hw().
-Teardown also reaches this branch:
-
-phy_disconnect()
-  phy_free_interrupt()
-    phy_disable_interrupts()
-      marvell_config_intr()   /* WOL_EIE is kept */
-    free_irq()
-
-Take an 88E1318S or 88E1510 in interrupt mode with WoL armed by
-m88e1318_set_wol(). WOL_EIE stays set, and LED[2] is still routed as INTn
-through MII_88E1318S_PHY_LED_TCR_INTn_ENABLE. Nothing undoes either one on
-teardown.
-
-Suppose a magic packet (WAKE_MAGIC) or a link-up event (WAKE_PHY) arrives
-after ifdown. Can the PHY then assert the active-low INTn after its handler
-has been freed? Nothing would be left to read MII_M1011_IEVENT and release
-the pin.
-
-phy_request_interrupt() requests the line with IRQF_ONESHOT | IRQF_SHARED.
-If another device shares the line, could the IRQ core end up disabling the
-line for that device as unhandled?
-
-Before this patch, the disabled branch wrote 0x0000, which cleared WOL_EIE.
-Would it work to keep WOL_EIE only across the resume reconfiguration, or to
-track the WoL state and re-apply it after config_intr, and still clear it
-in the disable path?
-
->  		if (err)
->  			return err;
->  
-> @@ -417,7 +424,8 @@ static irqreturn_t marvell_handle_interrupt(struct phy_device *phydev)
->  		return IRQ_NONE;
->  	}
->  
-> -	if (!(irq_status & MII_M1011_IMASK_INIT))
-> +	if (!(irq_status & (MII_M1011_IMASK_INIT |
-> +			    MII_88E1318S_PHY_CSIER_WOL_EIE)))
->  		return IRQ_NONE;
->  
->  	phy_trigger_machine(phydev);
-
-[Severity: Medium]
-The commit message says:
-
-  The interrupt register layout is the same across the PHYs this driver
-  handles, so extend the shared handler to also claim a WoL event instead
-  of adding a per-PHY one.
-
-Does that hold for bit 7? drivers/net/ethernet/marvell/skge.h describes the
-same registers (PHY_MARV_INT_MASK = 0x12, PHY_MARV_INT_STAT = 0x13), but
-there bit 7 is a FIFO error:
-
-  PHY_M_IS_FIFO_ERROR	= 1<<7, /* FIFO Overflow/Underrun Error */
-
-skge's default interrupt mask also enables this bit.
-
-About 20 entries in marvell_drivers[] share marvell_config_intr() and
-marvell_handle_interrupt(): 88E1101, 88E1112, 88E1111, 88E1111 (Finisar),
-88E1118, 88E1121R, 88E1145, 88E1149R, 88E1240, 88E1116R, 88E1540/1545,
-88E3016, 88E1340S, 88E1548P and the 88E6xxx switch PHYs. Of these, only
-88E1318S and 88E1510 have .set_wol.
-
-On the other PHYs, MII_M1011_IMASK_CONFIG_MASK means config_intr never
-clears bit 7 of register 0x12. If a bootloader or a marvell,reg-init entry
-left it set, does it stay armed even after phylib asks config_intr to
-disable interrupts (polling mode, phy_probe(), phy_free_interrupt())?
-Nothing else in the driver manages bit 7 on these PHYs.
-
-marvell_handle_interrupt() now also returns IRQ_HANDLED and triggers the
-state machine for IEVENT bit 7 on all of these PHYs. On the older parts,
-that bit is a FIFO over/underrun event the driver never enabled. Since
-phylib requests the IRQ with IRQF_SHARED, could this also hide spurious
-interrupt detection?
-
-Would it be better to limit the bit 7 handling to the 88E1318S and 88E1510?
-That could be their own config_intr/handle_interrupt callbacks, or a
-per-driver mask.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005225028.465866-1-rosenp%40gmail.com
+The line was copied from meson-g12-common.dtsi, which has the same
+max-speed =3D <100> on the same PHY ID. Dropped in v3.
+>
+> You should only need max-speed when the PHY is broken, says it can do
+> more than it actually can do, or when a 1G PHY only has two of the
+> four pairs connected to the outside world etc.
+>
+>         Andrew
