@@ -1,65 +1,65 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1124D4876
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21704DEC0C
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:24:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791548701; cv=none; b=JBWMieaYwxG0iwUzE6LchOwHwd4vd29ic4AB/MmxPvAlfa6fTGPJTFx23sQALyigYlo07veZg7UwPS4U2sM/4pcK5d2U3W3uKFYQ3XVtk2JAi+DDikXCPuunQXeX/27iLyakGxbhCIu+xwAs4T0SzYLxMebQop4n1NEOhjB30CQ=
+	t=1791548702; cv=none; b=b6OUYrzgQn8sFyz2agcGLPDnkz8lbO9cNGrwAcU1egQyaE9YNK1kcTDvRadc7MO0unuNTUju5N6Mk1gX5H3FCy8Q2H+AIizGGzjCJ6lm6xxWPR0N1mOIup0fEfaNql8VIgq6YDpJv7haUQISERigLK6GLPx87I1AvH8Oj6FWRe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791548701; c=relaxed/simple;
-	bh=8RWnBIY88AM13j6DvqP1Xg+77UY/JVZIRlFkQYtyW5o=;
+	s=arc-20240116; t=1791548702; c=relaxed/simple;
+	bh=fY5Grftq988zETCKTD+AxH4y9OWlWICKpXj3Ea0plQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4poDSSkRtNtbjwP+mTI0+JkfZklJtoqbQGj1U5Px9luzctinq9627e+jA+jx/lBHmX+5W6S9hNYwcJuOdaIYZJWRf0wnYFsOYRw1QA+7OR/ssRMUHxcMrBVnaZbWdnJmNRljfSuEKz7D4w0PO5BBtNK2kXDhIUxLgrvTeGsfjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=oBzBwAai; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version; b=ILRGGE/qDOhpfuE4j/KR2jKDZkSoIwMLuZF34inJVcJlrSfQrNFyFAbwZuS9EEmuM7D+Nted6iDY/9YO69JtTUmdsJfR19EDpR1AUDAO2X1XV6bGae4b++I/QOECEkv+1I8JdlrOkhpXAIPpGFDezCnM2kcggOcACYcPUTe6+y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=CDlodfux; arc=none smtp.client-ip=209.85.215.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="oBzBwAai"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3ab33730821so412760a91.3
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 05:24:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="CDlodfux"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cc4aa18f9afso3099398a12.3
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 05:24:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1791548692; x=1792153492; darn=vger.kernel.org;
+        d=blockcast.net; s=google; t=1791548691; x=1792153491; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yjXf3zywhfYnG5TRw5ezXLQRr19gQLXq9BEDfkjxJeY=;
-        b=oBzBwAaiMSdwpE29e9S84nELrAAWn1z4l6GooekDtuQX3y1Uu6La1fzvYwqvZ5HY2O
-         DTbCLbqg2nZuKb50vwaOXAUlkqTdvITK61yd1eUEtcYc2VuGLjRnqG1ocObE+U1gXNCT
-         OpN4AfCf+B3mkegCgunA0ZTrI3CXR9GcL2w3ESxWvnr7iR6P6LbSjncuwwrELWt8zb83
-         fm/ZafD77x5SP931vPvGZXRV0wb3q+7cW679/3AWIIp+otbARYEIjlrGnXJeUYHLxTk5
-         H00nkel/ufRN/8do9KVjYOAsDJJZj+1tqlBIPdP8gnhdfGq7QZVq2+41xrzfq7QdAjfr
-         7yqg==
+        bh=2LWIHYfSfL38FbGhJOfROiN2A9tR5CGBM+1n/EC/kos=;
+        b=CDlodfuxkk/MQrrSkQLWjmcP3DH4ff/GDNxw1X3ZArXWlXyeo+xAi8qnlzvCeWHKbO
+         /PBC5NXqJsvejJ0D7ZliNKsicirTyaS1PxOEQ8cb/io3A1ns/cEquSODSxOzYGXBSVwI
+         GwM8ee82mI3uc2OcVfxsExe8QnQyaSP5wRt9fgBbVOQVrYvfJhxcH7w8fGSmggf24mBU
+         XR4MbJaN+oZmBn5R2YYjbfdZ/y8EunOkW2eWOO1nNySAPCFw7qYD87htVdcZXGobAkZe
+         YsQmap8G+05MjI6W8AXp+C2pwIFITbop/IfxXL+j69zgWp00ht9KjvLG2CT7gWRE2Kal
+         2I0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791548692; x=1792153492;
+        d=1e100.net; s=20260707; t=1791548691; x=1792153491;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yjXf3zywhfYnG5TRw5ezXLQRr19gQLXq9BEDfkjxJeY=;
-        b=mWcFl6+cwWHIVvoDn2FjauSf8xg1I+W53qtBbUycbuJHLAsZubpBOovQ6SCdkH3FTS
-         D1Fwr7Dv/nhhNt9JgPVrzIWa0fTlG1cYAcrLoW4iDlIpDjUjSlbkMpURF8RB87tesd2W
-         lMpWjfvOFPtXGDRPWpNmFeeEYbg1aEHDVd6XCvxbNOwahxrwb9I2cSoMuNghzZrtEpqN
-         rI9N+Qv2gY2pVBTK++ECCaM1Oi/91eUfxr8hZtNSNh+LTGNtLQQS2qfwtsCHARaV5xCs
-         eY+qQlv+aOePHXlJcPQW1xKxN/ai8pyrf1jyvaqqrrs0PEhxfkzUFJ4ntQNpeMDxeq3p
-         KpAg==
-X-Forwarded-Encrypted: i=1; AKwUvBxxLGEnrsCRqWSSR86Q8FkmHYUgrg1nysRRCi5WuuApQd2iPjMGwSDSGFzbGqj7ze8el+8zDkU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKzxwBir+EGqzdhY0JJbiOunoF6SciFANhZPsde+Kh9UXNyPVLs
-	Ggs07a2/ITGmX0FICFa10g45WYlJC5XXGOFhDMDdTQVvKtCNstzhBMiYi7lXe6BFDbQ0ByqOVm8
-	OUVr0bOs=
-X-Gm-Gg: AYBFou0dAGE63OTGVtEJPTR1ntJBlclYwrqMeseJHgiIZEwgLWrDoUM1/11jhPBi3Ys
-	QF9Aym1FYLU1ipQKOAzyWBkjyGEvcainparWAV0Pl+y7sytGDcTjrc9CxFElw9jjaauYmVGjg/X
-	aSRQmXvouVVe+Lt4xJi2OIfXNQ/u69xRIDc3Pvn0OEl2mQSvN6hGWfHyNmYox5PjMnL6b8yKOl9
-	ZoHrbqLAUKX+cLrSooXbZAoMWpi8AzJRP0kpm4dDI9OwyC3ltZ/4JnhICz8EJbNlBSDP0IsD0Yn
-	CUbrzdDS64HaehGkNZn5TjBjkmNhjsPvL2+8EquHiJnaYAyC9AJ0lEbs2+TdHvq1YUht/NZ/0DI
-	rva3Ucv/4Gk2QT7Dtf2FIhxBOBw8tEQvrbnJ1JJFVsG+OP+g3GW90VIaWz0CmtoLL35CkdaB0cM
-	SwisJnmgkfgP84jaoQWl91EB7fUbMfSMR8FephY3I6hfx52SLXBKK0DEehhTTspWK5iewAtdNqY
-	YcBeoirP1CF2qLbDfXYGnh2mtL18hfoTrkzE1Rn
-X-Received: by 2002:a17:90b:2687:b0:3ab:22fe:b13a with SMTP id 98e67ed59e1d1-3ab3a79a2efmr1620761a91.40.1791548692476;
-        Fri, 09 Oct 2026 05:24:52 -0700 (PDT)
+        bh=2LWIHYfSfL38FbGhJOfROiN2A9tR5CGBM+1n/EC/kos=;
+        b=a2rw7n7LNKB7wrCyTOhC7BVHNDRNcNtrtSFQ6Z1GL4wuqhMXp7Dby4SAh3Q76Z7kP8
+         KjDBENDlmhSGgja9lJtdZhajx9fVXW/6URgh8AJXDKWo88FTu/YCj2R4yxMKBTkIqYJh
+         6bi0xeoUrJTA9q5w9n3mxbhR2pgadwoV2lhRT20xeq1Rh9En9YxvSwa0nh5Ut5PndOAp
+         heIcYx4A/YWFvZY9okcabD3dqbdbDnRKoshtSxXLiRcK07ynjm01luitOq6UBmfjdrus
+         OGegztfIhHrckQsMUXzHBjfDK2L42wLp1wSyEEQsF0h1CfX5aCb2Xjz58JCHDrx4wvhr
+         VCPw==
+X-Forwarded-Encrypted: i=1; AKwUvBzLL/q004wNb5YsXSgNX3J5MSY1Vajgx4W3I4hYDCn6xwNgVf13ZYEXoVe9l9qmz/KnI28OYug=@vger.kernel.org
+X-Gm-Message-State: AFq9FYICtjaJE2jYtMnDYKQIEDHX23g0JUphkvZgN6cxpYOQhnKzG8e7
+	8AXIiOoBTDq2NUXum45n82Ic2zbaYeWBSXz2QlYr1ZOrXcHgxHzdTYJS6sV4bSIuSr1wJlkn4Sg
+	3UwXHSKw=
+X-Gm-Gg: AYBFou24CGU6VZHyb/QHbgezRdUaG0ii2Yt3lSygc8WGYE05Ag8xX5ARU6EvG5kzZg7
+	GmZRKg42UJxO89b21VmhC1FDWaClzc5cDoAy4gTfoOpz9G6zSyYhTaQfON7RdSG4kvIwBDlGcaN
+	vcygPvzgqdCQXvET4k39e2ZjnH0pUqGmp2hdC3YeuoaawOmcFcaHY/8is8bJjzCRsK66nZM1Jcs
+	IRe5NzSLfRHhP0eWCNHvLWPXcOTJeqiP2RlvVeItvV+R+Nfvi0areYITPiy/CnyE1AOKaRxH5vQ
+	DvpFAwYlA9I+Uvh5CZu1KMpOW/Dt5eeNT1PM8C26B5p0km/IHw0BTI5hO7s/MULTqhZrmYO0yyS
+	7fkpm6qMpBL5QSy5MJ/VdafNpxSsioSU4P+ZKkyEaVhuSEW0pj9VV6fpgYYrJE+EfaUCUEXHmf3
+	nr/l1+++O85F97W9ThMP0z0dfvJt7wkCHQ7q51UFH0aTO80e/8kn9sn4is32WSZR0J7miXOGbSX
+	56Q92uoyjEU8tbqQFUINt4eWC8nDxZLD55TTAoQ
+X-Received: by 2002:a17:90b:4b:b0:3ab:2c2b:1030 with SMTP id 98e67ed59e1d1-3ab3a747cfcmr1496754a91.22.1791548690909;
+        Fri, 09 Oct 2026 05:24:50 -0700 (PDT)
 Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab55e41eefsm1660502a91.10.2026.10.09.05.24.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab55e41eefsm1660502a91.10.2026.10.09.05.24.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 05:24:51 -0700 (PDT)
+        Fri, 09 Oct 2026 05:24:50 -0700 (PDT)
 From: Omar Ramadan <omar@blockcast.net>
 To: Taehee Yoo <ap420073@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -72,9 +72,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 11/13] MAINTAINERS: amt: cover the amt headers and selftests
-Date: Fri,  9 Oct 2026 12:24:24 +0000
-Message-ID: <20261009122426.551178-12-omar@blockcast.net>
+Subject: [PATCH net-next 10/13] amt: add netlink attributes for an IPv6 outer transport
+Date: Fri,  9 Oct 2026 12:24:23 +0000
+Message-ID: <20261009122426.551178-11-omar@blockcast.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261009122426.551178-1-omar@blockcast.net>
 References: <20261009122426.551178-1-omar@blockcast.net>
@@ -86,33 +86,329 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The AMT entry lists only drivers/net/amt.c, so get_maintainer.pl does
-not find the AMT maintainer for changes to include/net/amt.h,
-include/uapi/linux/amt.h or tools/testing/selftests/net/amt.sh, and this
-series touches the first two and adds selftests next to the third. Add
-the two headers, and a glob that covers amt.sh and the new amt_*.sh
-scripts.
+Every path of the relay and the gateway can now run over an IPv6 outer
+transport, but nothing can create such a device. Add the attributes
+that do:
+
+ - IFLA_AMT_LOCAL_IP6, the local IPv6 address. It selects IPv6 as the
+   outer transport and is mutually exclusive with IFLA_AMT_LOCAL_IP.
+ - IFLA_AMT_DISCOVERY_IP6, the IPv6 address a gateway sends its Relay
+   Discovery to. A gateway's discovery address has to be in the family
+   of its local address, as both ends of the tunnel use one outer
+   transport.
+ - IFLA_AMT_REMOTE_IP6, the relay address the gateway learned from the
+   IPv6 Relay Advertisement. Like IFLA_AMT_REMOTE_IP it is only
+   reported; unlike that one, the policy rejects it on input.
+
+amt_fill_info() reports the addresses in the device's outer family.
+IFLA_AMT_LOCAL_IP6 is refused with -EAFNOSUPPORT on a kernel built
+without IPv6, rather than creating an IPv4 device with no local
+address. An IPv6 local or discovery address is refused when it is
+unspecified, loopback or multicast, as the IPv4 ones are, and also when
+it is IPv4-mapped: the V6ONLY socket could never send from or to such
+an address, so the device would be created but silently fail every
+send.
+
+The existing IFLA_AMT_LOCAL_IP and IFLA_AMT_DISCOVERY_IP cannot simply
+carry 16 bytes. Their policy only sets a minimum length of 4, so a
+kernel without this series would accept a 16-byte value and use its
+first four bytes as an IPv4 address. A kernel that does not know the
+new attributes ignores them and fails the request for lack of a local
+address, so userspace can tell whether IPv6 is supported. vxlan
+(IFLA_VXLAN_LOCAL6, IFLA_VXLAN_GROUP6) and geneve (IFLA_GENEVE_REMOTE6)
+add their IPv6 addresses the same way. The attributes are appended to
+the enum, so the existing values do not change, and strict_start_type
+makes the policy validate them, and any attribute added after them,
+strictly.
+
+Because of that minimum length, amt_validate() now refuses a 16-byte
+IFLA_AMT_LOCAL_IP, and a 16-byte IFLA_AMT_DISCOVERY_IP on a gateway.
+Every iproute2 released before the companion iproute2 patch puts an
+IPv6 literal in the IPv4 attribute, and the kernel then creates an IPv4
+device from the first four bytes of the address, 32.1.13.184 for
+2001:db8::. Such a request now fails with an extack message that names
+the problem instead of creating the wrong device. A relay never reads
+IFLA_AMT_DISCOVERY_IP, so an IPv4 relay given a 16-byte one still
+works as before.
+
+A relay has always ignored IFLA_AMT_DISCOVERY_IP, and existing users may
+pass it, so an IPv4 relay still accepts it. An IPv6 relay has no
+existing users, so it rejects a discovery address of either family, and
+an IPv4 relay rejects IFLA_AMT_DISCOVERY_IP6.
 
 Assisted-by: LLM
 Signed-off-by: Omar Ramadan <omar@blockcast.net>
 ---
- MAINTAINERS | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/amt.c        | 176 +++++++++++++++++++++++++++++++--------
+ include/uapi/linux/amt.h |  13 +++
+ 2 files changed, 155 insertions(+), 34 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 509b35b..51799f5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1461,6 +1461,9 @@ S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next.git
- F:	drivers/net/amt.c
-+F:	include/net/amt.h
-+F:	include/uapi/linux/amt.h
-+F:	tools/testing/selftests/net/amt*.sh
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 86f168c..fb199d9 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -3516,6 +3516,7 @@ static void amt_link_setup(struct net_device *dev)
+ }
  
- ANALOG DEVICES INC AD3530R DRIVER
- M:	Kim Seer Paller <kimseer.paller@analog.com>
+ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
++	[IFLA_AMT_UNSPEC]	= { .strict_start_type = IFLA_AMT_LOCAL_IP6 },
+ 	[IFLA_AMT_MODE]		= { .type = NLA_U32 },
+ 	[IFLA_AMT_RELAY_PORT]	= { .type = NLA_U16 },
+ 	[IFLA_AMT_GATEWAY_PORT]	= { .type = NLA_U16 },
+@@ -3524,8 +3525,25 @@ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
+ 	[IFLA_AMT_REMOTE_IP]	= { .len = sizeof_field(struct iphdr, daddr) },
+ 	[IFLA_AMT_DISCOVERY_IP]	= { .len = sizeof_field(struct iphdr, daddr) },
+ 	[IFLA_AMT_MAX_TUNNELS]	= { .type = NLA_U32 },
++	[IFLA_AMT_LOCAL_IP6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
++	[IFLA_AMT_DISCOVERY_IP6] =
++		NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
++	[IFLA_AMT_REMOTE_IP6]	= { .type = NLA_REJECT },
+ };
+ 
++/* The policy of the IPv4 address attributes only sets a minimum length,
++ * and an iproute2 without IPv6 AMT support puts an IPv6 literal in them,
++ * so the device would take the first four bytes of it as its address.
++ */
++static bool amt_ip6_in_ip4_attr(const struct nlattr *attr,
++				struct netlink_ext_ack *extack)
++{
++	if (!attr || nla_len(attr) != sizeof(struct in6_addr))
++		return false;
++	NL_SET_ERR_MSG_ATTR(extack, attr, "IPv6 address in an IPv4 attribute");
++	return true;
++}
++
+ static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
+ 			struct netlink_ext_ack *extack)
+ {
+@@ -3550,16 +3568,63 @@ static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!data[IFLA_AMT_LOCAL_IP]) {
++	if (amt_ip6_in_ip4_attr(data[IFLA_AMT_LOCAL_IP], extack))
++		return -EINVAL;
++
++	if (!data[IFLA_AMT_LOCAL_IP] && !data[IFLA_AMT_LOCAL_IP6]) {
+ 		NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_DISCOVERY_IP],
+ 				    "Local attribute is required");
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!data[IFLA_AMT_DISCOVERY_IP] &&
+-	    nla_get_u32(data[IFLA_AMT_MODE]) == AMT_MODE_GATEWAY) {
+-		NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_LOCAL_IP],
+-				    "Discovery attribute is required");
++	if (data[IFLA_AMT_LOCAL_IP] && data[IFLA_AMT_LOCAL_IP6]) {
++		NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_LOCAL_IP6],
++				    "Local IPv4 and IPv6 are mutually exclusive");
++		return -EINVAL;
++	}
++
++	if (data[IFLA_AMT_LOCAL_IP6] && !IS_ENABLED(CONFIG_IPV6)) {
++		NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_LOCAL_IP6],
++				    "IPv6 support is disabled");
++		return -EAFNOSUPPORT;
++	}
++
++	if (nla_get_u32(data[IFLA_AMT_MODE]) != AMT_MODE_GATEWAY) {
++		struct nlattr *disc = data[IFLA_AMT_DISCOVERY_IP6];
++
++		/* An IPv4 relay has always ignored IFLA_AMT_DISCOVERY_IP,
++		 * and existing users may pass it. An IPv6 relay has no such
++		 * users, so it rejects a discovery address of either family.
++		 */
++		if (!disc && data[IFLA_AMT_LOCAL_IP6])
++			disc = data[IFLA_AMT_DISCOVERY_IP];
++		if (disc) {
++			NL_SET_ERR_MSG_ATTR(extack, disc,
++					    "Discovery is only valid in gateway mode");
++			return -EINVAL;
++		}
++		return 0;
++	}
++
++	/* A relay never reads IFLA_AMT_DISCOVERY_IP, but a gateway would
++	 * take the first four bytes of an IPv6 literal as its relay.
++	 */
++	if (amt_ip6_in_ip4_attr(data[IFLA_AMT_DISCOVERY_IP], extack))
++		return -EINVAL;
++
++	/* A gateway's discovery address is in the family of its local
++	 * address, since both ends of the tunnel use one outer transport.
++	 */
++	if (data[IFLA_AMT_LOCAL_IP6] ? !data[IFLA_AMT_DISCOVERY_IP6] :
++				       !data[IFLA_AMT_DISCOVERY_IP]) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Discovery attribute of the local family is required");
++		return -EINVAL;
++	}
++
++	if (data[IFLA_AMT_DISCOVERY_IP] && data[IFLA_AMT_DISCOVERY_IP6]) {
++		NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_DISCOVERY_IP6],
++				    "Discovery IPv4 and IPv6 are mutually exclusive");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -3609,13 +3674,22 @@ static int amt_newlink(struct net_device *dev,
+ 		goto err;
+ 	}
+ 
+-	amt->local_ip = nla_get_in_addr(data[IFLA_AMT_LOCAL_IP]);
+-	if (ipv4_is_loopback(amt->local_ip) ||
+-	    ipv4_is_zeronet(amt->local_ip) ||
+-	    ipv4_is_multicast(amt->local_ip)) {
+-		NL_SET_ERR_MSG_ATTR(extack, tb[IFLA_AMT_LOCAL_IP],
+-				    "Invalid Local address");
+-		goto err;
++	if (data[IFLA_AMT_LOCAL_IP6]) {
++		amt->local_ipv6 = nla_get_in6_addr(data[IFLA_AMT_LOCAL_IP6]);
++		if (amt_ip6_unusable(&amt->local_ipv6)) {
++			NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_LOCAL_IP6],
++					    "Invalid Local IPv6 address");
++			goto err;
++		}
++	} else {
++		amt->local_ip = nla_get_in_addr(data[IFLA_AMT_LOCAL_IP]);
++		if (ipv4_is_loopback(amt->local_ip) ||
++		    ipv4_is_zeronet(amt->local_ip) ||
++		    ipv4_is_multicast(amt->local_ip)) {
++			NL_SET_ERR_MSG_ATTR(extack, tb[IFLA_AMT_LOCAL_IP],
++					    "Invalid Local address");
++			goto err;
++		}
+ 	}
+ 
+ 	amt->relay_port = nla_get_be16_default(data[IFLA_AMT_RELAY_PORT],
+@@ -3633,24 +3707,32 @@ static int amt_newlink(struct net_device *dev,
+ 		amt->qrv = READ_ONCE(amt->net->ipv4.sysctl_igmp_qrv);
+ 		amt->qri = 10;
+ 	} else {
+-		if (!data[IFLA_AMT_DISCOVERY_IP]) {
+-			NL_SET_ERR_MSG_ATTR(extack, tb[IFLA_AMT_DISCOVERY_IP],
+-					    "discovery must be set in gateway mode");
+-			goto err;
+-		}
+ 		if (!amt->gw_port) {
+ 			NL_SET_ERR_MSG_ATTR(extack, tb[IFLA_AMT_DISCOVERY_IP],
+ 					    "gateway port must not be 0");
+ 			goto err;
+ 		}
+-		WRITE_ONCE(amt->remote_ip, 0);
+-		amt->discovery_ip = nla_get_in_addr(data[IFLA_AMT_DISCOVERY_IP]);
+-		if (ipv4_is_loopback(amt->discovery_ip) ||
+-		    ipv4_is_zeronet(amt->discovery_ip) ||
+-		    ipv4_is_multicast(amt->discovery_ip)) {
+-			NL_SET_ERR_MSG_ATTR(extack, tb[IFLA_AMT_DISCOVERY_IP],
+-					    "discovery must be unicast");
+-			goto err;
++		if (data[IFLA_AMT_DISCOVERY_IP6]) {
++			struct nlattr *attr = data[IFLA_AMT_DISCOVERY_IP6];
++
++			amt->discovery_ipv6 = nla_get_in6_addr(attr);
++			if (amt_ip6_unusable(&amt->discovery_ipv6)) {
++				NL_SET_ERR_MSG_ATTR(extack, attr,
++						    "discovery must be unicast");
++				goto err;
++			}
++		} else {
++			WRITE_ONCE(amt->remote_ip, 0);
++			amt->discovery_ip =
++				nla_get_in_addr(data[IFLA_AMT_DISCOVERY_IP]);
++			if (ipv4_is_loopback(amt->discovery_ip) ||
++			    ipv4_is_zeronet(amt->discovery_ip) ||
++			    ipv4_is_multicast(amt->discovery_ip)) {
++				NL_SET_ERR_MSG_ATTR(extack,
++						    tb[IFLA_AMT_DISCOVERY_IP],
++						    "discovery must be unicast");
++				goto err;
++			}
+ 		}
+ 	}
+ 	dev->needed_headroom = amt->stream_dev->needed_headroom + amt_hlen(amt);
+@@ -3702,7 +3784,27 @@ static size_t amt_get_size(const struct net_device *dev)
+ 	       nla_total_size(sizeof(__u32)) + /* IFLA_MAX_TUNNELS */
+ 	       nla_total_size(sizeof(__be32)) + /* IFLA_AMT_DISCOVERY_IP */
+ 	       nla_total_size(sizeof(__be32)) + /* IFLA_AMT_REMOTE_IP */
+-	       nla_total_size(sizeof(__be32)); /* IFLA_AMT_LOCAL_IP */
++	       nla_total_size(sizeof(__be32)) + /* IFLA_AMT_LOCAL_IP */
++	       /* IFLA_AMT_{LOCAL,DISCOVERY,REMOTE}_IP6. Only one address of
++		* each IPv4/IPv6 pair is emitted, but this sizes for both.
++		*/
++	       3 * nla_total_size(sizeof(struct in6_addr));
++}
++
++/* The IPv6 addresses of an IPv6 device, one of each IPv4/IPv6 pair. */
++static int amt_fill_addr6(struct sk_buff *skb, const struct amt_dev *amt)
++{
++	const struct in6_addr remote = amt_get_remote_ipv6(amt);
++
++	if (nla_put_in6_addr(skb, IFLA_AMT_LOCAL_IP6, &amt->local_ipv6))
++		return -EMSGSIZE;
++	if (amt->mode == AMT_MODE_GATEWAY &&
++	    nla_put_in6_addr(skb, IFLA_AMT_DISCOVERY_IP6, &amt->discovery_ipv6))
++		return -EMSGSIZE;
++	if (!ipv6_addr_any(&remote) &&
++	    nla_put_in6_addr(skb, IFLA_AMT_REMOTE_IP6, &remote))
++		return -EMSGSIZE;
++	return 0;
+ }
+ 
+ static int amt_fill_info(struct sk_buff *skb, const struct net_device *dev)
+@@ -3719,15 +3821,21 @@ static int amt_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 		goto nla_put_failure;
+ 	if (nla_put_u32(skb, IFLA_AMT_LINK, amt->stream_dev->ifindex))
+ 		goto nla_put_failure;
+-	if (nla_put_in_addr(skb, IFLA_AMT_LOCAL_IP, amt->local_ip))
+-		goto nla_put_failure;
+-	if (nla_put_in_addr(skb, IFLA_AMT_DISCOVERY_IP, amt->discovery_ip))
+-		goto nla_put_failure;
+-
+-	remote_ip = READ_ONCE(amt->remote_ip);
+-	if (remote_ip)
+-		if (nla_put_in_addr(skb, IFLA_AMT_REMOTE_IP, remote_ip))
++	if (amt_v6(amt)) {
++		if (amt_fill_addr6(skb, amt))
++			goto nla_put_failure;
++	} else {
++		if (nla_put_in_addr(skb, IFLA_AMT_LOCAL_IP, amt->local_ip))
+ 			goto nla_put_failure;
++		if (nla_put_in_addr(skb, IFLA_AMT_DISCOVERY_IP,
++				    amt->discovery_ip))
++			goto nla_put_failure;
++
++		remote_ip = READ_ONCE(amt->remote_ip);
++		if (remote_ip)
++			if (nla_put_in_addr(skb, IFLA_AMT_REMOTE_IP, remote_ip))
++				goto nla_put_failure;
++	}
+ 	if (nla_put_u32(skb, IFLA_AMT_MAX_TUNNELS, amt->max_tunnels))
+ 		goto nla_put_failure;
+ 
+diff --git a/include/uapi/linux/amt.h b/include/uapi/linux/amt.h
+index 2dccff4..5290ece 100644
+--- a/include/uapi/linux/amt.h
++++ b/include/uapi/linux/amt.h
+@@ -54,6 +54,19 @@ enum {
+ 	IFLA_AMT_DISCOVERY_IP,
+ 	/* This attribute specify number of maximum tunnel. */
+ 	IFLA_AMT_MAX_TUNNELS,
++	/* This attribute specifies the local IPv6 address. It selects IPv6
++	 * as the outer transport and excludes IFLA_AMT_LOCAL_IP.
++	 */
++	IFLA_AMT_LOCAL_IP6,
++	/* This attribute specifies the IPv6 address of the relay a gateway
++	 * sends its Discovery to. It is the IPv6 form of
++	 * IFLA_AMT_DISCOVERY_IP and needs IFLA_AMT_LOCAL_IP6.
++	 */
++	IFLA_AMT_DISCOVERY_IP6,
++	/* This attribute reports the IPv6 relay address a gateway learned
++	 * from the Relay Advertisement. It is read-only.
++	 */
++	IFLA_AMT_REMOTE_IP6,
+ 	__IFLA_AMT_MAX,
+ };
+ 
 -- 
 2.43.0
 
