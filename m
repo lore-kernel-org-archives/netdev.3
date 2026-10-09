@@ -1,170 +1,102 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A9113A258;
-	Fri,  9 Oct 2026 22:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD9A35E1AA;
+	Fri,  9 Oct 2026 23:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791586323; cv=none; b=fNU9THis4sx98pyEpi5wKPdJ4zZcLhZg2hsqW7PizZKMaKbnrlQfFsWyF4hX7X2KnNpeEuFKRBjk8KERXDkkxgQ796TBAKKvzn9hPP7Ylh4SDK9SvBMVo+eJMyG+MkROjGizFM4kXIW1xR/UI50X/iPBCLjewFvKZCAn9ShRdPs=
+	t=1791586941; cv=none; b=c9FcLltGfWrpOC9mksGpfWdYrJf5xVaZoLn3EXsk92s0oZJs+FH0b4MXNL5iKLP75SAP/xG3BF2+YNX7s3oQF7zMRpkBMLDCKy6u38QqCo729I811094vdDdEbNHkR3/bkqZLOBlecV4brQA6HrdFg1ZY/xG6tZCMBZNjO5Q0z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791586323; c=relaxed/simple;
-	bh=v/TAjBE1UUbpIO6vyUnpk9uA82N5vj3fjiVm6XpI/wc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lCQZ2gjTCaEMyrPWrqzHS7Cd+fu70Osf0ied1vNzTYNlO+ZnqD2WUy1AIokIEO25zJ1x0asB9WWgbyIhS7dzCj84CcZIpr6fnxpV8OzhautxyqbDvBrKAMa1wGsuzDESBjgb/94Jqdqt3NZF0qBexythpBZjN4TR1xm5gi/gTjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=djWKgrWw; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1791586941; c=relaxed/simple;
+	bh=WFbgsXq9x5wQl6fZmgFSgE0d1Fm4i8XPFbd7Mig7AU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SjwgAQl7WrQROlAHNuM4M25SG01uoV2LazyopUuq+HBNzzms0GG5GK7I2wNLy9Uzob+cfCxLPMaPIx2F6P4n8cZpQUcrlWb+DDG+ZLe3uki1/jJupAYhFCwNvPlrhzeSg/zy7VfE++kKgm84v9b3laUCcR1PG5Jo7zkyTmqRXCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=M/M2RrrN; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="djWKgrWw"
-Received: from localhost.localdomain (unknown [4.194.122.170])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 7007320B7168;
-	Fri,  9 Oct 2026 15:51:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7007320B7168
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1791586320;
-	bh=SB6i8Q/z/JBPFDBZwt31VaHf1p4MoLNT0AmWMeHfREs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=djWKgrWwhisrmcXPOafuVy6rBaoKPKlAV2naI3A2Du7g1U+MJHAZO9SL12vaONz6z
-	 +BWGP36wsc4um/LIG9RcCIUUEQqGCXZ4xNmCC91Z0py2/TZ4Yfy1Ce5sezZpVfUfQ7
-	 F7qZAu4yCwSm+ox6KU9JRw8DNaE+ZrN4mH7HG1T8=
-From: "Cen Zhang (Microsoft)" <cenzhang@linux.microsoft.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Ben Greear <greearb@candelatech.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	tgopinath@linux.microsoft.com,
-	Cen Zhang <cenzhang@linux.microsoft.com>
-Subject: [PATCH net] ipv6: fix fib6 walker UAF on NLM_F_REPLACE
-Date: Fri,  9 Oct 2026 18:51:42 -0400
-Message-ID: <20261009225142.47005-1-cenzhang@linux.microsoft.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="M/M2RrrN"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=1ZIyz1/OPj/Af2dLzTUaE10fWPUAL1OAIW2ByRolxEU=; b=M/M2RrrNvH1etedYXYR9wGmAtn
+	Pf6JPKhphvDIpBfHJuR33YHRYFvMkwuotmu7rZ9EJFsZ0bLYZyXvKBZ+hAgsNeWr0T1cNnDussnKU
+	SrL81owTsYR9jAKxCHemaooWhBmlptqpAu9LMzT9S90o18mUTNvmpPB9XROJJSeLhdRic9I7HZNVp
+	0Ty2oK1U087XXykX49ThZY9Z9Wz6Z+QLSTfI0qIA9jQojaQbfv537O+mdoq7GDNJzIOOuD+bfUu1o
+	WT88UBUgEedvFOBorL1Iyx/K5T5Dwly/CvJjGZugfP4nPLgajVWJR+FxsbqqROZcDLKEd8b5XWRD6
+	3bqy1pAw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xFJbP-00000007JyH-2CFW;
+	Fri, 09 Oct 2026 23:02:11 +0000
+Message-ID: <d6e094cd-3341-498e-9591-3544908db069@infradead.org>
+Date: Fri, 9 Oct 2026 16:02:09 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 08/11] onsemi: s2500: Add driver support for
+ S2500 MAC-PHY
+To: Selvamani.Rajagopal@onsemi.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, Eric Dumazet <edumazet@kernel.org>,
+ Piergiorgio Beruto <piergiorgio.beruto@gmail.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Jerry Ray <jerry.ray@microchip.com>, Ciprian Regus <ciprian.regus@analog.com>
+References: <20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d@onsemi.com>
+ <20261009-s2500-mac-phy-support-v9-8-dcefe1d0bf0d@onsemi.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20261009-s2500-mac-phy-support-v9-8-dcefe1d0bf0d@onsemi.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-fib6_walker uses w->leaf to remember the next fib6_info to dump, so an
-RTM_GETROUTE dump can continue there on the next recvmsg().  This
-assumes that whoever removes a route from the tree also updates the
-walkers pointing at it. The NLM_F_REPLACE branch of fib6_add_rt2node()
-can break this assumption. It removes the old route, fib6_add() frees
-it, and w->leaf keeps pointing at the freed object.
 
-The fn_sernum version check in fib6_dump_table() normally protects
-against resuming on a stale w->leaf, but it can be bypassed:
-ip6_link_failure() resets fn_sernum to -1 when the default route
-fails, which an unprivileged user in a user+net namespace can cause:
 
-  1) link failure            fn_sernum = -1
-  2) dump pauses on route R
-  3) replace R               fn_sernum changed, R freed
-  4) link failure            fn_sernum = -1
-  5) dump resumes            -1 == -1, reads freed R  <- UAF
+On 10/9/26 10:12 AM, Selvamani Rajagopal via B4 Relay wrote:
+> diff --git a/drivers/net/ethernet/onsemi/s2500/Kconfig b/drivers/net/ethernet/onsemi/s2500/Kconfig
+> new file mode 100644
+> index 000000000000..abd967448af0
+> --- /dev/null
+> +++ b/drivers/net/ethernet/onsemi/s2500/Kconfig
+> @@ -0,0 +1,21 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# onsemi S2500 Driver Support
+> +#
+> +
+> +config S2500_MACPHY
+> +	tristate "S2500 support"
+> +	depends on SPI
+> +	depends on PTP_1588_CLOCK_OPTIONAL
+> +	imply NET_SELFTESTS
+> +	select BITREVERSE
+> +	select NCN26000_PHY
+> +	select OA_TC6
+> +	help
+> +	  Support for the onsemi S2500 MACPHY Ethernet chip.
+> +	  It works under the framework that conform to OPEN Alliance
 
-  BUG: KASAN: slab-use-after-free in rt6_fill_node+0x1c22/0x2cd0
-  Read of size 4 at addr ff11000011fa0064 by task poc/101
-   rt6_fill_node <- rt6_dump_route
+	                                    conforms
 
-Fix by making the walker adjustment of fib6_del_route() as a common
-function fib6_walkers_skip_rt() and call it from both fib6_del_route()
-and the NLM_F_REPLACE branch, for the replaced route and each removed
-ECMP sibling.
+> +	  10BASE-T1x Serial Interface specification.
+> +
+> +	  To compile this driver as a module, choose M here. The module will be
+> +	  called s2500.
 
-Fixes: 4a287eba2de3 ("IPv6 routing, NLM_F_* flag support: REPLACE and EXCL flags support, warn about missing CREATE flag")
-Reported-by: AutonomousCodeSecurity@microsoft.com
-Assisted-by: LLM
-Signed-off-by: Cen Zhang (Microsoft) <cenzhang@linux.microsoft.com>
----
- net/ipv6/ip6_fib.c | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
-
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 9ff761962b45..a5699809fe04 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -89,6 +89,29 @@ static void fib6_walker_unlink(struct net *net, struct fib6_walker *w)
- 	write_unlock_bh(&net->ipv6.fib6_walker_lock);
- }
- 
-+/* Move the walkers resting on @rt to the next route, or up the tree if
-+ * @rt is the last one.  Called with tb6_lock held.
-+ */
-+static void fib6_walkers_skip_rt(struct net *net, struct fib6_info *rt)
-+{
-+	struct fib6_info *next;
-+	struct fib6_walker *w;
-+
-+	next = rcu_dereference_protected(rt->fib6_next,
-+					 lockdep_is_held(&rt->fib6_table->tb6_lock));
-+
-+	read_lock(&net->ipv6.fib6_walker_lock);
-+	FOR_WALKERS(net, w) {
-+		if (w->state == FWS_C && w->leaf == rt) {
-+			pr_debug("walker %p adjusted by unlink of %p\n", w, rt);
-+			w->leaf = next;
-+			if (!next)
-+				w->state = FWS_U;
-+		}
-+	}
-+	read_unlock(&net->ipv6.fib6_walker_lock);
-+}
-+
- static int fib6_new_sernum(struct net *net)
- {
- 	int new, old = atomic_read(&net->ipv6.fib6_sernum);
-@@ -1315,6 +1338,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 		fib6_info_hold(rt);
- 		rcu_assign_pointer(rt->fib6_node, fn);
- 		rt->fib6_next = iter->fib6_next;
-+		fib6_walkers_skip_rt(info->nl_net, iter);
- 		rcu_assign_pointer(*ins, rt);
- 		if (!info->skip_notify)
- 			inet6_rt_notify(RTM_NEWROUTE, rt, info, NLM_F_REPLACE);
-@@ -1337,6 +1361,7 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 				if (iter->fib6_metric > rt->fib6_metric)
- 					break;
- 				if (rt6_qualify_for_ecmp(iter)) {
-+					fib6_walkers_skip_rt(info->nl_net, iter);
- 					*ins = iter->fib6_next;
- 					iter->fib6_node = NULL;
- 					list_add(&iter->purge_link, purge_list);
-@@ -1971,7 +1996,6 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
- 			   enum rt_del_reason del_reason)
- {
- 	struct fib6_info *leaf, *replace_rt = NULL;
--	struct fib6_walker *w;
- 	struct fib6_info *rt = rcu_dereference_protected(*rtp,
- 				    lockdep_is_held(&table->tb6_lock));
- 	struct net *net = info->nl_net;
-@@ -2022,18 +2046,7 @@ static void fib6_del_route(struct fib6_table *table, struct fib6_node *fn,
- 		rt6_multipath_rebalance(next_sibling);
- 	}
- 
--	/* Adjust walkers */
--	read_lock(&net->ipv6.fib6_walker_lock);
--	FOR_WALKERS(net, w) {
--		if (w->state == FWS_C && w->leaf == rt) {
--			pr_debug("walker %p adjusted by delroute\n", w);
--			w->leaf = rcu_dereference_protected(rt->fib6_next,
--					    lockdep_is_held(&table->tb6_lock));
--			if (!w->leaf)
--				w->state = FWS_U;
--		}
--	}
--	read_unlock(&net->ipv6.fib6_walker_lock);
-+	fib6_walkers_skip_rt(net, rt);
- 
- 	/* If it was last route, call fib6_repair_tree() to:
- 	 * 1. For root node, put back null_entry as how the table was created.
 -- 
-2.55.0
+~Randy
 
