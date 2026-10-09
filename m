@@ -1,168 +1,130 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1513B8128
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5814F3B058F;
+	Fri,  9 Oct 2026 07:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791529356; cv=none; b=aaOD52RLDA21RLJsO5vh001YrpM8Ixh1DALZVxL5TVT5npJbe4avY+/twwiW7B2KKPJv0755YLcZnIdsQq82XhGNRHE62HMlACdMjQtX5dduXA7tt1jF8texKss4nkpDm1FJv1j7nxJw1mpbWL05+R/GTnvn5Uuzij5XwfQW72Q=
+	t=1791530190; cv=none; b=PdsZj4MEhZSYwTW8WX0HGUtMLjeIvdJCnWI3b8aJhytnRAb8xfLd9SLZCeUt7vxvbKoj+MP7ST5b0e+B3jjtXbarNkfOurorrykGOXX02HtDo2kMKIBS14WlX6KSIU0+NNfWOtrYXW+9KNEi9vtZxOBtk2qe7DtSr3nKMEYnAP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791529356; c=relaxed/simple;
-	bh=TPxOKHJ895l/zZBrxoHbLiI9IaPlmjfGv9C/U5YFa/8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=AHOzTmEvedT42XYbl6+kP6pUfaYXmpdwN0noOiRjG+iATWnn4rm7bscFfRwGVTYBBGs0OBpiPzILVe65BOpOqqMAGlm3EtCvCbVVdMCgfVL1jFMM2NG8VREn0di8IxrpWez4FZXFZu6QtbvTWbRblVXuIvnbYuYxSmr+S/kylCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=C9N8jCAC; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="C9N8jCAC"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49ff639372eso1388455e9.3
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 00:02:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791529354; x=1792134154; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=TPxOKHJ895l/zZBrxoHbLiI9IaPlmjfGv9C/U5YFa/8=;
-        b=C9N8jCAC0Iem1Aze75g9YeAY9EO3ZF5Z442gaZX7XR9vuY01P9rjdlkS25mnhvk3kd
-         Zkp+WuYXNqWqZop75J/P2Diz5NYOOQjuBr4fNKZpuxvCuBwE7c22xEd2pSwWum9xNWs4
-         p5nQ5YhW0Rs75Axh6UW1V0yDby3Y5oAzB7ZM1tHLxJZlXE1nGg2vmuevQTsWVTNllKPn
-         AT+F4z8aMZ/7y4xqcGj2laFVgUN92AZKiVe1gRq+79We61VOV34WiGarv96vEHJkSFjS
-         9pQXcGLx1zpE3Y67O4KSUxvzG5kefPZXVoN+UQs5qwVGBfUwsbabIZ5Eym8pHzB56jB4
-         ccsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791529354; x=1792134154;
-        h=content-transfer-encoding:content-type:mime-version:message-id
-         :references:in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TPxOKHJ895l/zZBrxoHbLiI9IaPlmjfGv9C/U5YFa/8=;
-        b=mKq8z5ZwouVaH1VcABmNBfGdyJcFdsdyV5lxMxkH1huukD5DP11zkFz8jOjQAjXXmC
-         3kNSSXzsRcNRRPPlwTStHoB9MwU8+sNoObaPj0qXNjA8PIZwLwiOkNoOAn1Gv99KdcpZ
-         qofhqMchlozX2s4ZdDlWfSTXdchExIAOyeoKbdGs4SUUekAeK+ZmnbKkiBsF1GIr5VMH
-         NdBxkDqxWgIfJg9piFo1knbCH020gDcYdUpi8NfRpZ5kaVlJuuTMouwWK8ib7ZpiKXk4
-         ZSVm2ISRCjNj7VLpRb3ilrXjGyg3YpDmInDVSD1QDQ7YMjaPjyK+bgUB2w+Z0BmBlcg6
-         cq4A==
-X-Forwarded-Encrypted: i=1; AKwUvBxqs7Y3eXBge7vfR93Sy2JmRxju0VL081Iq1vUUcFppmcyLLvqdO63Lwp8MO1CUj2U1N+JIAnk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mkuyWZznN3hoeWnLF7T31PSKdJnOi1+nsnfAh/cPlziTdF5m1X
-	YrJBMWYa5tb5hA6puOMsb5slKlYrWKxC3FuMJz4P4H/kdEbWL4c634RcQTqe5ANg7DE=
-X-Gm-Gg: AYBFou3EKKJQlumpm1gSh8oW+y/7Qa8CLXM5jHaB0im+qbNNQJf/8p1bWH1mykt4RsC
-	Bwirv8XZb3/XJrqOW2W1QmBly3sF4WbpoqSvjEhY9hpk5pHi3+DgoCCnJPwznEtzFfcNjWXopaE
-	lckhpXh/LniRdvTuLRKLbgfINSFH20rdeMSp1fxew2Me0gOKa4fjVsB/eTbTcsAts0muYArHXfV
-	mNkmT/i5EgdSdHBhpVj3D9oGecSW592U2av3nNwsry0WPIYBRwuitUFjoP2PQ3j8JgF4N/mZ+9j
-	ukwliGJW8wmzpnkUwY59TPZHeSWwp2HQv6EEOQp1e8RmnHnJCwa3rLMKWSA9zCoiKreTt1L3fpR
-	1HeE4qarCdV3atT/cxGj9OHVfidmAQ0dZGbBzn+MTr+Lc/KTpNWX2+lyZdBe1aQdX4BzrFjo4oe
-	C6WDZ/HnsKmd4AT7LFzcNrplql03C0ZH+8xOrWWD/9YipXiEobukMh62QWVVHvhwv7IdaXaypJ3
-	T3cCA==
-X-Received: by 2002:a05:600c:a086:b0:4a0:1f9e:5f78 with SMTP id 5b1f17b1804b1-4a18e3ea887mr15384705e9.0.1791529353543;
-        Fri, 09 Oct 2026 00:02:33 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([2a00:11b1:1081:dc93:96ae:ba90:5787:8bd2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be96549sm52255005e9.6.2026.10.09.00.02.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Oct 2026 00:02:33 -0700 (PDT)
-Date: Fri, 09 Oct 2026 09:02:31 +0200
-From: Vlastimil Babka <vbabka@suse.com>
-To: Harry Yoo <harry@kernel.org>, Kees Cook <kees@kernel.org>
-CC: Vlastimil Babka <vbabka@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Pedro Falcato <pfalcato@suse.de>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Willem de Bruijn <willemb@google.com>,
- Jason Xing <kerneljasonxing@gmail.com>, cgroups@vger.kernel.org,
- netdev@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_v6_0/8=5D_net=3A_skb=3A_isolate_s?=
- =?US-ASCII?Q?kb_data_area_allocations_into_a_separate_bucket?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <asgAh4mrr_yd622U@thinkpad>
-References: <20261006092030.got.500-kees@kernel.org> <asgAh4mrr_yd622U@thinkpad>
-Message-ID: <70EBD8E2-6DBA-4758-9CA3-D5CB661CD3B7@suse.com>
+	s=arc-20240116; t=1791530190; c=relaxed/simple;
+	bh=yFIcK03YR1EPWOWpZUiTJf6yYh14EZJ8rlFVV/wG7Ys=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=czYdFdpHHAnL0czstmDeEDBCmXlMjYX0OiJo2t4KdvL+VhX7GNQoyNF3OT77k4mNPIHdOlXDIqN4hjNZ/5pLmbGj83i5A2KRRYyG3++3fzKvN6WLsdB/rjl9uBfMpDCvnZ2A7SgjfUArg9rPUL5IkFaJUhDKkNW+swipiDFyoI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 5225f02ac3b111f19a56ed5b684f684d-20261009
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:d97d8542-796d-4be6-a727-cafe12b21010,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:6ead2c12ab8a5df136f25aa15dcb250b,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|865|898|915,TC:nil,Content:0|15|52
+	|99,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
+	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 5225f02ac3b111f19a56ed5b684f684d-20261009
+X-User: lilinmao@kylinos.cn
+Received: from [192.168.1.101] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <lilinmao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 835964222; Fri, 09 Oct 2026 15:16:18 +0800
+Message-ID: <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
+Date: Fri, 9 Oct 2026 15:16:14 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] r8152: Use BMSR to detect the link state
+To: Andrew Lunn <andrew@lunn.ch>, Hayes Wang <hayeswang@realtek.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Chih Kai Hsu <hsu.chih.kai@realtek.com>,
+ nic_swsd <nic_swsd@realtek.com>, Birger Koblitz <mail@birger-koblitz.de>,
+ Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
+ <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
+ <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
+From: Linmao Li <lilinmao@kylinos.cn>
+In-Reply-To: <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On October 8, 2026 11:25:13 PM GMT+02:00, Harry Yoo <harry@kernel=2Eorg> wr=
-ote:
->On Tue, Oct 06, 2026 at 02:20:26AM -0700, Kees Cook wrote:
->> Hi!
->
->Hi Kees!
->
->Was hoping to say hi to you at LPC but I missed the chance ;)
->Maybe next time=2E Safe travels!
->
->Uh, my mailbox stopped working for a few days as I forgot to renew
->subscription=2E (Kiryl told me it's bouncing, thanks!) Hopefully I didn't
->miss too much=2E=2E=2E
->
->> This gets the buckets able to handle memcg (GFP_KERNEL_ACCOUNT) with
->> isolation (since it's common due to AF_UNIX),
->
->Cool!
->
->> and GFP_DMA with fall back
->> (since it's rare)=2E
->
->> It gave me an excuse to build out bucket kunit tests
->> too, and that (and LLM review) found a couple other issues that needed
->> fixing too, including msg_msg allocations going uncharged to their memc=
-g
->> when CONFIG_SLAB_BUCKETS=3Dn (fixed in 2/8)=2E
->
->Oh=2E
->
->> Harry, on your v4 question[1] about bucket users giving their own
->> alignment: I tried that in v5, but a set's allocations don't always
->> come from its own caches=2E With CONFIG_SLAB_BUCKETS=3Dn, after a faile=
-d
->> kmem_buckets_create(), and for the DMA and reclaimable fallbacks, they
->> come from the general kmalloc caches, which can only give kmalloc()'s
->> alignment=2E
+
+在 2026/10/7 0:10, Andrew Lunn 写道:
+> On Tue, Oct 06, 2026 at 08:28:21AM +0000, Hayes Wang wrote:
+>> Linmao Li <lilinmao@kylinos.cn>
+>>> Sent: Monday, October 5, 2026 6:53 PM
+>> [...]
+>>> r8152 detects carrier from PLA_PHYSTATUS without reading BMSR, so
+>>> BMSR_LSTATUS can still be latched low when the carrier comes up.
+>>> Since commit f6f2e946aa4d ("net: mii: Fix the Speed display when the network
+>>> cable is not connected"), the first speed query after link up can then report
+>>> SPEED_UNKNOWN, leaving NetworkManager at 0 Mb/s until the next carrier
+>>> change.
+>>>
+>>> Use BMSR_LSTATUS in set_carrier() and rtl8152_runtime_resume(), so the
+>>> driver consumes the latched link down itself. If the first read still reports link
+>>> down, the next link-up notification triggers another read and brings the carrier
+>>> up.
+>>>
+>>> Tested on an RTL8153B with a 6.6-based kernel. In 5 rebinds and 6 cable
+>>> replugs, the first read returned LSTATUS=0, a second link-up notification came
+>>> about 32 ms later, the second read returned
+>>> LSTATUS=1 and the carrier went up; NetworkManager reported 1000 Mb/s.
+>>> Runtime suspend/resume with the link up did not change the carrier.
+>> I think this patch may introduce a new issue.
 >>
->> So v6 goes back to mirroring the kmalloc cache's alignment,
+>> Our newer ICs do not generate periodic link-status notifications. They generate a
+>> notification only when the link status changes. Therefore, with your patch, BMSR
+>> will not be read a second time until the next link-status change.
+> But the link status in BMSR does change.
 >
->I might be missing something, but why is that a problem?
+> You read it once and get the latched value. That clears the latch, so
+> the link status changes to the current version.
 >
->For kmem_buckets users, the reason* to specify alignment is because
->they might need less strict alignment than kmalloc=2E
+> Now, 802.3 C22 has no support for interrupts, that is a vendor
+> extension. But if you are not generating an interrupt when BMSR
+> changes, i would say that is broken.
 >
->(*Perhaps it's nice to document that in the comment)
->
->However, because kmem_buckets can fall back to kmalloc on e=2Eg=2E kernel=
-s
->w/o CONFIG_SLAB_BUCKETS, it should be fine to fall back=2E No?
->
->Creating kmem_buckets with more strict alignment than
->kmalloc doesn't make sense=2E=20
->
->> and drops the ctor and flags arguments for the same reason=2E
->
->Uh, for ctor and flags, yes=2E We can't have them in kmem_buckets=2E
->
->> And the whole
->> exploration made me realize I had a completely wrong understanding of
->> how memcg worked=2E :P
->>=20
->> The bulk of this is mm/slab, but the final patch is netdev, which Paolo
->> acked in v4, so I'm hoping this whole series can go via slab?
->
->Going thorough slab/for-next sounds reasonable to me once it gets
->some reviews=2E
->
->Vlastimil?
+> 	 Andrew
+Hi Hayes, Andrew,
 
-Sure! If you review and feel it's ready to be added there, please do so=2E=
- I couldn't yet due to conferencing, should be able next week=2E
+Thanks. Since the newer ICs notify only when the link status changes,
+the driver cannot rely on another link up notification after the link
+has settled, so v2 can leave the carrier off when the first read
+returns the latched link down.
 
+Before sending v3, which approach would you prefer? Both fixed the
+problem in my tests on an RTL8153B with v7.3-rc6:
+
+a) Keep carrier detection on PLA_PHYSTATUS and read BMSR once before
+    carrier on, only to clear the latch. This is the option I asked
+    about on v1.
+
+b) Detect carrier from BMSR and read it again when the first read
+    returns link down, as genphy_update_link() does in interrupt mode.
+
+Neither depends on another notification. Neither reports a short link
+drop that recovers before the link work runs: with a) a later speed
+query still sees the latched link down, with b) the latch is cleared.
+
+Hayes, for b): is BMSR_LSTATUS reliable as the carrier source on all
+chips supported by r8152?
+
+Thanks,
+Linmao
+
+pw-bot: cr
