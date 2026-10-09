@@ -1,152 +1,176 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECC74D9F74
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 11:00:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538944CA796
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 11:04:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791543631; cv=none; b=XBym13ObMHXQyMiV/9YOndnwxn/jvRxMEUt3ec924w5exMKQjsGdJCT9PuCI2AA2fnItRaaG2CV9oCULpXnoyNBtv8rC4AXdp79m9GNG/gxESZfGlUBxzEEMG1Zii/SbsaxMaCi4X8HPsHKBz7WtcOlARoVWMQlbWJeNzbWy108=
+	t=1791543897; cv=none; b=iAgqgooSjFIJrOeDgsF55HUiNNoqVL0uiJWeL1OtZCAAi80aHuSnKS61Uc8bbb9Jnxot8/k/ybjHH3PDqO2PcoiPMO9W9jwCRHL8X3m8AoS0rXoQvWFne614myAFoyq2Yaxrm3jJWBgOf2sdrAbwm8BH+eK2lIV5ZuRdszC99Bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791543631; c=relaxed/simple;
-	bh=BzTR+eW3wr+Q5y1uCczUoND6CTvbG2LHZM1vzpnFyMQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=X8/vW020oRlmAbYxDm7+TMAUOSgE7ijwHOxXqBKGVqBxra/5yi9ktGs+0PjN2+PyLsiq10KMHwmT3l7C3sAD7XOuEqiHG68GOx4BizRqwaTrAYz4MbqXe9uhYT+gKL4h2y925S75wQA+bUvs2jWhMdYJO/IgDf1suYy0p4q7sTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=CjLJttJm; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dC7i3GMM; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1791543897; c=relaxed/simple;
+	bh=eDmZgvdJBEP/V89rgWffgYB2jV/NsGxr1ioAENM9DCA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jxb4SR886IpLUxw+EEX0alD1vVT4BkjA4juhciOTwx6GNiOQaUHSSIG+rtEaM+BkkvDNH3igHpItUBbQ4T3bo/RFa3fLU2FY+wQnYr4TyRxRi+e8iV8QLyp+t0mou/Xpf6Fp7fvpyRq+w0CixwjXOpviGJ9HphGcq9Tng+1Y/9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgeEjXqU; arc=none smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="CjLJttJm";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dC7i3GMM"
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfout.stl.internal (Postfix) with ESMTP id 5C3771D000E5
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 07:00:17 -0400 (EDT)
-Received: from ams-imap-19 ([10.64.2.39])
-  by ams-compute-01.internal (MEProxy); Fri, 09 Oct 2026 07:00:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1791543609;
-	 x=1791630009; bh=HRdD7XbZXfyzgNKs4mc5etqpgg+xB3vrcZQ8CfVm7gc=; b=
-	CjLJttJmjx3XadfMokRx9zb5US/ORFjESN64jW+QB8DM8wExJObwGrJpy7jwgwwm
-	+ga+J/sIWudj+LXVqY/rI4IR/gwdIHSWeMnZMNyj+vsUCbHN2u5zt6Ig83rCgVgV
-	7lgTcXtLvOQ6LhHm5YUSO5zqGt6Qinziif9WwDY6CPsjO231+PDalxqLfzlvdHxR
-	lIkhVoeShf8OX7fq/yw38DBg4sTJPi/dW7bJtHiF/EzzenPOMYbjeze1ZXtrjTT6
-	smmNNqDyrJ5DXqFSO9B7rM3ZHBDm1+G95fq57rHzdSoFdB6ViBSwJKubu7o1etIw
-	LzSBmAyCikUgfRYqc0jaPg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791543609; x=
-	1791630009; bh=HRdD7XbZXfyzgNKs4mc5etqpgg+xB3vrcZQ8CfVm7gc=; b=d
-	C7i3GMM7HhJRN+1T+7EBZmPOoYzlPnW3rMSHfs5urfxUR0n3YSzYF3pFOWYXZp5E
-	J7tKOnGV+LJ+uR2KZsoF9Kjm8b0/NzaQLqE/Fd8JWppvk3/NLqIbd/O2PWJ/QOiF
-	VPuukP7igAAhsgDW0uu0fI/0w7Bh4wjJEh1/7r75e7NQO5KfgAaWs17dbB3W+rnk
-	JcYe9D/qiX3HbRLtkmoNoxRoGhQmF37HWCVbd0aFoUFX8ePnMVKCx2U5KoTtV7ta
-	cHZO59AcWMZ3QneiU4qbq1BbsHtmfDIYIxljxqMga24ecQbptR8BKhPX6zlOwkCi
-	WUBd5bqhSrIV7hsVXIS9g==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=fastmail.im a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791543609; d=fastmail.im;
-	mf=PGFsaWNlLmtlcm5lbEBmYXN0bWFpbC5pbT4=;
-	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm2:rsa-sha256:lVhNeHZpDCmy51Ioa3BfdjvmJ72AKz5+HIz6rXmaLZssLRR
-	iNjReQY0Ggc+tRNUo23PZW6FxKuxskc/Gg3/OBzP2ba9QD3hVfr1EgNvObVhbnn+
-	ScJNYFiwLH85L1xOK3i8AR5eZCwln4GEWZoT13ck9itz4zkWOpEPPH6zOkW3fBfi
-	iYw+0LTkIpU9mUvoyqKm86yZg81w4AaOfykBZlr4rVcT88xoawUoOqhpsWkOi2oU
-	zsYtcLe4sYxh3qCquZ9uvBi9eNw0JoR0CVh7JqGs9ZMsrFW2oOHAAxyJo5rFErVh
-	vTanuwGZTpXExXFbAYwZEmsOtiSU+CGdLYTZKhw==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:cqRdEF7vO4dqzT6dpUZoD2031PsWjeHqBGUfWzYnXCQ=:BzTR+eW3wr+Q5y1uCczUoND6CTvbG2LHZM1vzpnFyMQ=;
-X-ME-Sender: <xms:NMnIanT_oa-UGuY0gfsUMaz-qIxMOfoCBA_yWHa4v9wndCvsmb_aAQ>
-    <xme:NMnIajnQ-kUNy3CapMgiEWi2clOfwa7d3B_LlY-lEwMy6FmXM6BAJ3BbYxcb8lwXi
-    B-lN9NyXE3QVz_-SrBmhTIMvANgVCC0WNoNpjTZaToD2Bj-iGB3LLza>
-X-ME-Proxy-Cause: dmFkZTGbB7RwK4ypT1uHKC2/+ph+7+jcr4ZMRMlp7fXeuD3uWp4EYF7LWsyYq9zHwHNTEN
-    k3IJQPb9bjw4BStTNk6RSUiaWikop7jTY/d2J8xv0G0tKcgzXFkUvRLj+as9vmc8AkBtpT
-    8S/KiiVMTpjJbGUM6jgjmbjemqaKq9h0UHqqLk3RiqlItkHOZY1lcktcIchZ3AlzHgaNIW
-    Tc3D04DAGmQKEut5QUlot1SdewWFLtxPBlvVaKTZUBcJABM58IkmPSdX/FSBq0qqXEglme
-    mmNPQrSIoWPfCFlnhZn15Yd7bx3LJqjKYnX636c2SbfkwgH2JDt5MJGPjFm/y5ykMjemEL
-    g21+N38EtqlzdPeDruhcs8brdwmBvP2xTzA2nlPM/R1k7j2XZpE+1wqnFWVOxgvARrUjsl
-    Qa/mT0thdy4Ga28yqijywE8zYbI5GsenoUnEeh3Jfsh2Ng6d0EKwak9NCl6w6/oBaDGCmV
-    26oj9QWAaYI1drg2sgvlOX2+++qce1vaugKYq3P1MsksHjiLO2t8kdvkzUJzy2MFn432aN
-    x47mEyphBgUUGwnx2xuQbK21aOqz0IXBu8mrUDDtaAmJ85EFBB1nKiaKTJhg0awldA0KlW
-    0vBGTx5RzPOYWW4eh+jCxrppA3wu8S7xn9M9wfcUn9sW869Qvad1YZAgMIbg
-X-ME-Proxy: <xmx:NsnIaj1m2CpLMi1ESMQpjdTsQBaKN8MOPlxOcB4-siAf5pnNLy-SvA>
-    <xmx:NsnIajqT6AJGKeT5EydclvNiQMcD4B649qoEb7-A2rrLBGQWD0bYdA>
-    <xmx:NsnIajJiT32hKKJmhZ7UHZn1XYZvfjvM8mUURnY1CTOU-W_goWUjrA>
-    <xmx:NsnIavSMHLqzqmkz1qSFAPMCGE3ioew4F-0M5_RNn3gsHnDQmiQGnA>
-    <xmx:OcnIannhju_zvyOEktgLshhr98im-EPeRF1bktUzMOF35N6KQZfDnQ-->
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 478222F8005D; Fri,  9 Oct 2026 07:00:04 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgeEjXqU"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-3550c917fd3so298864eec.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 04:04:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791543882; x=1792148682; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VPd7mkFszDLuOghTat7AF9sEOa8CyJ0U/uMQy3jtosY=;
+        b=RgeEjXqUi5qhMmATEnCZ/DlPmUzwb/bZe3lAA6gAFMxAdnfpUeTKVoXIz5F5JtpmcR
+         X1BsysCHTxVIchWPdcWR/1u7N62pxx65/gL64fx0NKMUPaNwxaJ9JVpElOR6O0lVXmo1
+         BGgiUzh+anjyOQ52+2brzozESwNAKgDLuUQ6+HcO86KFPTe/3TpHxa2GpL+e8Gd+J8tK
+         akKQONHAvvv/TsS+5fYGe49NEIZHZps1yJiYFuKuUKL/DaeKzVLuhyIXc58m5INMJdTN
+         fN2XzjYiWgOXDQeHZm5bpXV2ejzCCF9KZ6ZDcHpu02Y3XYqncWTTpPUTyMqb9K5boTHk
+         6gBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791543882; x=1792148682;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VPd7mkFszDLuOghTat7AF9sEOa8CyJ0U/uMQy3jtosY=;
+        b=UHAolYjejHyybXWp0sAOiI94bIJXRQEqDlvcYVxovbDoM4HDHmji1JEd8Z7g8mW5+Q
+         wYSDzXKXootjTiqak83PZ2/oV4/iSQagS6GitftSjAjk49fkK28gfbUWscD4KXoQd1Hv
+         gZ5WxS/5oAb8jv/y5C6J08FbnKA6GxthyFU5Fc8Rd2MOZgLlEPERf4d4WCcWIvSohv0r
+         2ea15FX0iRp8mTPMdqfxZB+oxiYLc0rko1IvUlCCXuOUopWPXDCPGhPWj73ENIwjP7oc
+         W6tfdtcOx1KuAY+Oc9bSHvqhGgk2F8SwHawUBswwvreas8/Y66fkumDuNX0thdv12ngW
+         6XfQ==
+X-Forwarded-Encrypted: i=1; AKwUvBztw453cwR52ZUD12rXlBolTV506bFAG3fUWELs8yav8pEI80Gju3aRVbtK5ognogMn/mXyP2s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIual/zSdlW9hDn85Vgi6cDpHXNgfMp/2sOhUHnxxH1Bml4eedn
+	9t9ccEP4RCtbpLqZDQZPovf5DW82RdjSNCorBuiFrj1bIHcw00cUAZtu
+X-Gm-Gg: AYBFou3LzP0t2pRNWcLm5KPpyZIwbhjR8TxxtKCW63uzzzRIZVm4byQrilFY8g/QZvF
+	fQjokC2JoLILxDkq2eevcyaqLHAAhC2jTKS4Lk8FJCYO2XQ+9t2zD6LpdqvrEQ7JaRyhaxNWpUd
+	IbV26EJYDviCBZbkcFbhGN3TbJSb4gg5uSe9/dfzmHk6Z8+pdBdva+AH5c3310qYVvAs4r2bStB
+	WpJBtNMUbwHxZKQGxsXM1cdymDuu999heH9bS3mUoCNJDnwwIpNMN7con6pdGewINm9SOJ7DKSx
+	S/ypQoCyZfXxvrNU+YPEgdPoZp9ZYEoFr5mzV4lwnoWoUXuOrs/Rqwo/iplT35Rx/ep6z7X7aR3
+	zuwoYAg95YlQxMOBg9VOEBqdO5d0KukXPJbQZl5Pm7NNiNoifDn3hBDcEPdaC1cE437OyAFVb+N
+	LVX5A6DIk9NUyy6LErsAKIyM0Nb+GNpF38X4UusrMac1Qwvz2Dr0qBIM8qUsnTYiVc/GCl9eGIt
+	u01tKth8jy/UljgTu88fRD+VHOxCw3aK/k=
+X-Received: by 2002:a05:7301:4d0b:b0:34c:7e54:65e6 with SMTP id 5a478bee46e88-3537ddf9214mr2077096eec.5.1791543882092;
+        Fri, 09 Oct 2026 04:04:42 -0700 (PDT)
+Received: from localhost.localdomain ([2804:1530:651:7a30:14ad:c4a2:42e5:ccb3])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca1ba7esm6350714eec.7.2026.10.09.04.04.36
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 09 Oct 2026 04:04:41 -0700 (PDT)
+From: Andre Ziviani <andrepziviani@gmail.com>
+To: John Crispin <john@phrozen.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org,
+	Gaoyang Wei <yhyxwgy@gmail.com>,
+	Ziyou Xu <xuziyougm@gmail.com>,
+	Benjamin Larsson <benjamin.larsson@genexis.eu>
+Subject: Re: [RFC net-next 00/12] net: add the PON subsystem
+Date: Fri,  9 Oct 2026 08:04:28 -0300
+Message-ID: <20261009110428.55471-1-andrepziviani@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261008143249.3439762-1-john@phrozen.org>
+References: <20261008143249.3439762-1-john@phrozen.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 09 Oct 2026 13:59:43 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: "Haishuang Yan" <yanhaishuang@cmss.chinamobile.com>,
- netdev@vger.kernel.org
-Cc: "Matthieu Baerts" <matttbe@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Shuah Khan" <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Message-Id: <a300a06d-89d0-4977-95aa-a0b3d375a8b4@app.fastmail.com>
-In-Reply-To: <20261007014731.1277055-1-yanhaishuang@cmss.chinamobile.com>
-References: <20261007014731.1277055-1-yanhaishuang@cmss.chinamobile.com>
-Subject: Re: [PATCH net] selftests: net: big_tcp_tunnels: Fix the IPv6 route change
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 7, 2026, at 04:47, Haishuang Yan wrote:
-> On slow machines, do_test() raises initcwnd on the route into the tunnel
-> with "ip route change". For IPv6 traffic this fails with:
->
->   RTNETLINK answers: No such file or directory
+Hi John,
 
-Thanks for the fix! It's already merged, but anyway:
+On Thu, Oct 08, 2026 at 04:32:37PM +0200, John Crispin wrote:
+> The scope is XGS-PON. The mode enum keeps gpon and xg-pon so that the
+> uapi order stays clean for later drivers.
 
-Tested-by: Alice Mikityanska <alice.kernel@fastmail.im>
+A G-PON data point, since the framework thread mentioned Realtek only
+as work with proprietary components. odi-oss [1] is open firmware for a
+GPON SFP ONU stick on the Realtek RTL9602C. It runs mainline 6.18 with
+GPL drivers of our own for the GPON MAC, the PLOAM state machine of
+G.984.3, the CPU NIC and the switch, and with a userspace OMCI daemon.
+Apart from the stock bootloader, the image has no vendor code or
+binaries. It runs in production on two ISPs, and a user has it working
+on a third.
 
-> The IPv6 prefix route of the tunnel address has metric 256, while
-> "ip -6 route change" without a metric looks for a route with the default
-> metric 1024, so nothing is changed. The test still passes, but without
-> the larger initcwnd it is meant to use.
->
-> Pass the metric of the prefix route.
->
-> Fixes: 1d62b83fb751 ("selftests: net: Fix slow configurations in 
-> big_tcp_tunnels.sh")
-> Signed-off-by: Haishuang Yan <yanhaishuang@cmss.chinamobile.com>
-> ---
->  tools/testing/selftests/net/big_tcp_tunnels.sh | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/net/big_tcp_tunnels.sh 
-> b/tools/testing/selftests/net/big_tcp_tunnels.sh
-> index cc0875e52fb9..fb43fed824e3 100755
-> --- a/tools/testing/selftests/net/big_tcp_tunnels.sh
-> +++ b/tools/testing/selftests/net/big_tcp_tunnels.sh
-> @@ -145,7 +145,8 @@ do_test() {
->  			    route change 192.168.2.0/24 dev tun0 initcwnd 100
->  		else
->  			ip -netns "$CLIENT_NS" -6 \
-> -			    route change 2001:db8::2:0/112 dev tun0 initcwnd 100
-> +			    route change 2001:db8::2:0/112 dev tun0 initcwnd 100 \
-> +			    metric 256
->  		fi
->  	else
->  		ip netns exec "$CLIENT_NS" \
-> -- 
-> 2.43.0
+I should be upfront: I am not a PON or kernel expert. The drivers were
+written with an AI coding assistant, working from the ITU-T
+recommendations and from register traces of the stock firmware, and
+checked by trial and error on my own sticks against live OLTs. So take
+what follows as field data from one G-PON implementation, not as
+review from someone who knows the standards well. Corrections are very
+welcome.
+
+Our split is already the one this series takes: PLOAM in the MAC driver,
+OMCI in userspace over netlink (a private family for now). So our G-PON
+driver should be able to sit on net/pon, as a second MAC and a first
+G-PON one, at least out of tree (the RTL9602C platform itself is not
+upstream). Reading the series with that in mind, four things would get
+in the way:
+
+1. The activation edges. pon_state_legal[] is one table for every mode,
+   and the comment says a per-mode split can wait for a second MAC. Our
+   state machine follows G.984.3 Table 10-1, and five of its edges are
+   not in the table:
+
+     O3 -> O2  TO1 expires in Serial_Number
+     O5 -> O2  Deactivate_ONU-ID in Operation (O6 -> O2 too)
+     O6 -> O4  broadcast POPUP
+     O6 -> O7  Disable_Serial_Number in POPUP
+     O7 -> O2  Disable_Serial_Number "enable"; G.9807.1 goes to O1
+
+   Each would be published with a warning on every occurrence. A table
+   per mode, selected by the device mode, would fix it.
+
+2. GEM port ids. The spec takes 1021 to 65534, the XGEM Port-ID range. A
+   G-PON Port-ID is 12 bits. The operator with six GEM ports mentioned
+   above assigns 269 to 909, and ours on the other ISP 1434 to 1946.
+   The range would need to depend on the mode too.
+
+3. The datapath of an SFP ONU. Service traffic never reaches the CPU on
+   this stick. The switch bridges the host SerDes and the PON in
+   hardware, and our OMCI daemon programs it from the MIB: GEM flows,
+   upstream queues and VLAN treatment from the Extended VLAN Tagging ME.
+   Only OMCI goes through the CPU NIC: received frames carry a trap
+   reason in the RX descriptor, and we send with per-frame descriptor
+   words (port and GEM stream). So OMCI fits the conduit contract well,
+   but there is no data netdev to pair and nothing to bridge in Linux.
+   Can a driver own the T-CONT, GEM and gem-map objects and offload
+   them without a data netdev or GEM netdevs? The VLAN rules we need
+   also go beyond tag/vid/pbit/dscp (double-tag rules, TPID, the
+   treatment side), but that may belong to switchdev rather than here.
+
+4. Observing OMCI. omci-ntf goes to the one registered socket. Being able
+   to watch the exchange without taking over the channel, as Benjamin and
+   Ziyou asked in the earlier thread, is what we use most when an OLT
+   behaves oddly. A read-only multicast copy of the PDUs in both
+   directions would cover it.
+
+One small note for the docs: baseline G-PON OMCI ends with a CRC-32
+trailer, not a MIC. On the RTL9602C neither direction is checked or
+added by the MAC, so our driver would compute it in software. That fits
+the current pdu attribute; the docs could just name the G-PON trailer
+alongside the MIC.
+
+If a per-mode state table and Port-ID range are acceptable, I can port
+our driver onto the series and report back. I can also share PLOAM
+traces from both ISPs.
+
+[1] https://github.com/AndreZiviani/odi-oss
+
+Thanks,
+Andre Ziviani
