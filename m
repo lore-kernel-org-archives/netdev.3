@@ -1,144 +1,199 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D153DCDA4
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 05:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE493F1062;
+	Fri,  9 Oct 2026 05:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791524859; cv=none; b=dVVq2lv6xCoq0MAvCqa8niaelLn4Ewb6QxoMCHCWLWWWiSZAMQa5ws+jM1A0e4bDYEoQBwENq4cHeBanseylK6EPe0x4It9gQJ7mH7ea9SdLptanpveRFV/fhpgDkvRtwDiX3CuEcIwJ8ofAhobz4jVCPb0+JPVjCX1063F/7hU=
+	t=1791525147; cv=none; b=dyKvVT6lrs7U5Jr5SmvcXF+5Mdk4is5YgRGiNFcsVbE7S1QcnfnJtpqcO7kXd8deyD08CXTtlxzehIINgVdS+iIbbrwcEjlVvNaErK06nkAG2dgt5tgn2GHs1phUqjWNoUZuUsTVCnAmO4nkdo6uJK1WxAff/u5z4nFC1WYXBig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791524859; c=relaxed/simple;
-	bh=VYy2rbGQC2RdtOpzlrJiWSegUq9hlWo2pAx9579dENE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=onRCpXZY2gREpy5RKV5q/iWJqn3psCRaYG4lfszQ95OLPg195vyV8FJ3XTmRz6jzj4QAO/TNqo1JK+oKEOIFYZPbHHk0qF6QOHjBrvhvwweOOWuU7cJgpUKneP1W/Nm77MQbRd8Z2Z7W4CvF6rGJqTpwaFsPV13pPeko2OFaMsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fozDY/ZI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791525147; c=relaxed/simple;
+	bh=FOvH8w4C9wvY4okS7M3MXG/xmU9mgKI/kDapv4ZTltw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=R6gbAEuID1ibHoK8LL1eW2OdXdm862rKKyjHFZ9ZMdrri1VLHt/FwE53uzL7hlNuxT79UiUSPY22DrF3T2mb4tW6xnx2c8U+aBzc5otKmgpD5/e3EWkrnl0+sSbtrpUSic/aju7NqYFZQdRO7CdvPWuTVTel6gM70OwOHfDvUAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OXYu2lB7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fozDY/ZI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E914E1F008A0
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 05:47:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OXYu2lB7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BA11F000FF;
+	Fri,  9 Oct 2026 05:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791524857;
-	bh=IsGx97RgM8+2NU8wXdDA6EIGSG1c/gLn7f6vrBW/zic=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=fozDY/ZIMuTebIYilL17pqjavQHqqp1QISyHsT7DGADT+C5p98gpoADxHFefiUiST
-	 cjKi9zrNnE6+euLt97eK3JcT8BLhTxlQkPxcCyAUH9hhuRkNloZ9yiJdDo5qDOcsC9
-	 uXTuC4zcqxymwzgK+NEXwntzUlX0DXQDhswYW/GC+vvtrpJ8p2GnzmXctf8JErUdxl
-	 zXozCv4zyMJMRL4SvZbSBfJ8qRxoeiCUfiTXNtzcmy5aVo4PTb8X7XCdFELwR8/7Th
-	 ZSVctqj2m7156xAImB5nMyNMaEn6SeJLbqTkWqUE+Cz+RhJgWalBcQnWlvVNKLF47J
-	 k0wpzsHTO0IXQ==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6c1983dfaffso4852051eaf.2
-        for <netdev@vger.kernel.org>; Thu, 08 Oct 2026 22:47:37 -0700 (PDT)
-X-Gm-Message-State: AFuF++nW/Z3R+M54QK+NCSbYUw6IZNntqs0TX0OKI7gqmfYlO+841Dx5
-	pCUuNIjIHpxrHrFCNgjWm8UpPPDrUCrL0EhDEaG6kcjB5TOMNqH/F9bvyY0TvaFt0051YzW6egC
-	SU+2pgIx6ODEh5IJrDfeoATGIco8lbH8=
-X-Received: by 2002:a05:6820:8118:b0:6d7:c5f2:9c14 with SMTP id
- 006d021491bc7-6ef08c78a38mr747471eaf.4.1791524857192; Thu, 08 Oct 2026
- 22:47:37 -0700 (PDT)
+	s=k20260515; t=1791525145;
+	bh=/7dg6dToZwdakbPOV94KUonfQlPDX7kUrfbPFVUg5GY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OXYu2lB73Iq2XVmnFtMMVSekthwGDH1CaEefXVwE8oGTgF0+O82lz6rjShb7DR+a1
+	 iKTFh5aMR4Cwy5MyucR6q737BVbJ1BzOfpYjdIxFsthWvskhKh6kMUSEfpnKRJHYqW
+	 uvP1whvcvoLQo5dtbCm5mhxKI4xJFqEAwSv2LS9zyGk/8dMP9EbCyFsLM4TLganYt5
+	 QKB3e8FlzYefFIDBld/R2iMDXo8Og/5OQJ7U/jzq6mTBlhCrFNZcLRhzpbQ1JUuATq
+	 7oK5IueH9TbgzqZRhx5FPaoyh746VhhtSw7yo8knqHmjq/ewshlzD3t7Jwjm6FnFVj
+	 ABfmBlLrTEFeg==
+Subject: Re: [PATCH v3] net: phy: marvell: keep WOL_EIE across interrupt
+ reconfiguration
+From: netdev-bot+sashiko@kernel.org
+To: rosenp@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, michael@stapelberg.de,
+ linux-kernel@vger.kernel.org
+Date: Fri, 09 Oct 2026 05:52:24 +0000
+Message-ID: <179152514441.434549.4140686458634721887@kernel.org>
+In-Reply-To: <20261005225028.465866-1-rosenp@gmail.com>
+References: <20261005225028.465866-1-rosenp@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1791506907.git.nramaswamy@openai.com> <976f8457bffbc513197d6ff5c052ca7c4bd6ed03.1791506907.git.nramaswamy@openai.com>
-In-Reply-To: <976f8457bffbc513197d6ff5c052ca7c4bd6ed03.1791506907.git.nramaswamy@openai.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Fri, 9 Oct 2026 07:47:26 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com>
-X-Gm-Features: AclHuK91G6IRlIqoAjVWmpyrxCrXqPKYP2WF59BVsz-PHSystkYQmdWjZCNt61U
-Message-ID: <CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com>
-Subject: Re: [PATCH net v3 3/3] selftests: net: packetdrill: test RTO fallback
- after partial undo
-To: nramaswamy@openai.com
-Cc: netdev@vger.kernel.org, Neal Cardwell <ncardwell@google.com>, 
-	Neal Cardwell <ncardwell.sw@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Yuchung Cheng <ycheng@google.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le ven. 9 oct. 2026 =C3=A0 07:01, <nramaswamy@openai.com> a =C3=A9crit :
->
-> From: Neil Ramaswamy <nramaswamy@openai.com>
->
-> Tests that a segment that is lost but also previously retransmitted is no=
-t
-> added back to the RACK list during partial undo, and is instead
-> retransmitted by the RTO. It utilizes the fact that a TLP doesn't increme=
-nt
-> retrans_out, which needs to be 0 for partial undo (but this scenario may
-> also happen without the TLP).
->
-> Signed-off-by: Neil Ramaswamy <nramaswamy@openai.com>
-> Assisted-by: LLM
-> ---
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-This test passes with or without patch 1/3, so it does not test the fix.
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-It records that a 3-segment flow with one TLP and one late ACK has to
-wait for an RTO, and whoever fixes that later will have to rewrite it.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-A single TLP probe is enough to get TCPCB_EVER_RETRANS on a segment, so
-I am not convinced this case is rare.
+- [Medium] The commit message says the interrupt register layout is the
+  same across all PHYs this driver handles.
+- [Medium] In the PHY_INTERRUPT_DISABLED branch, marvell_config_intr()
+  now calls phy_modify(phydev, MII_M1011_IMASK,…
 
-Let me come back to tp->tsorted_lost_queue [1]. I was too terse there
-("often") and it did not get discussed.
+--
 
-tcp_rack_detect_loss() walks tsorted_sent_queue from oldest to newest,
-and whatever it leaves there was sent after what it just marked lost.
-So if it does
+net: phy: marvell: keep WOL_EIE across interrupt reconfiguration
 
-list_move_tail(&skb->tcp_tsorted_anchor, &tp->tsorted_lost_queue);
+This patch makes marvell_config_intr() use phy_modify() with a mask that
+leaves WOL_EIE alone. With that, the config_intr call from phy_init_hw() on
+resume no longer disarms Wake-on-LAN on the 88E1318S and 88E1510. When WoL
+is disabled, m88e1318_set_wol() now clears WOL_EIE itself, and the shared
+marvell_handle_interrupt() also claims WoL events.
 
-instead of list_del_init(), the lost queue stays sorted by send time
-across scans, for free. This also holds for skbs that were retransmitted
-(TLP probe, lost retransmit), because they sit in tsorted_sent_queue at
-their last transmit time. No TCPCB_EVER_RETRANS special case, no
-comparator.
+> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+> index f71cffa884062..56650182bf3e4 100644
+> --- a/drivers/net/phy/marvell.c
+> +++ b/drivers/net/phy/marvell.c
+> @@ -55,6 +55,11 @@
+>  #define MII_M1011_IMASK			0x12
+>  #define MII_M1011_IMASK_INIT		0x6400
+>  #define MII_M1011_IMASK_CLEAR		0x0000
+> +/* Bits updated by config_intr. The WoL interrupt enable is owned by
+> + * set_wol, so the config_intr call from phy_init_hw() on resume does not
+> + * silently disarm Wake-on-LAN.
+> + */
+> +#define MII_M1011_IMASK_CONFIG_MASK	(U16_MAX & ~MII_88E1318S_PHY_CSIER_WOL_EIE)
+>  
+>  #define MII_M1011_PHY_SCR			0x10
+>  #define MII_M1011_PHY_SCR_DOWNSHIFT_EN		BIT(11)
+> @@ -393,11 +398,13 @@ static int marvell_config_intr(struct phy_device *phydev)
+>  		if (err)
+>  			return err;
+>  
+> -		err = phy_write(phydev, MII_M1011_IMASK,
+> -				MII_M1011_IMASK_INIT);
+> +		err = phy_modify(phydev, MII_M1011_IMASK,
+> +				 MII_M1011_IMASK_CONFIG_MASK,
+> +				 MII_M1011_IMASK_INIT);
+>  	} else {
+> -		err = phy_write(phydev, MII_M1011_IMASK,
+> -				MII_M1011_IMASK_CLEAR);
+> +		err = phy_modify(phydev, MII_M1011_IMASK,
+> +				 MII_M1011_IMASK_CONFIG_MASK,
+> +				 MII_M1011_IMASK_CLEAR);
 
-- Retransmit: tcp_update_skb_after_send() already moves the skb to the
-  tail of tsorted_sent_queue.
-- SACK and cumulative ACK: list_del_init()/list_del() are unchanged.
-- tcp_fragment(): buff lands next to skb in the lost queue. Today, for
-  an skb RACK has unlinked, list_add() builds a 2-node ring that belongs
-  to no list.
-- Undo in fast recovery: everything in the lost queue was sent before
-  everything still in tsorted_sent_queue, so this is a
-  list_splice_init() at the head. O(1), no walk, no timestamp compare.
+[Severity: Medium]
+When interrupts are disabled, this branch no longer clears WOL_EIE. Does it
+still meet the config_intr contract in include/linux/phy.h?
 
-The "often" is the RTO case: tcp_timeout_mark_lost() leaves the skbs it
-marks in tsorted_sent_queue, and they can be older than what RACK moves
-to the lost queue afterwards. So undo needs a check: splice at the head
-if tsorted_sent_queue is empty or the lost tail was sent before the sent
-head, otherwise merge the two sorted lists (the forward walk from Neal's
-patch, without the EVER_RETRANS test).
+  @config_intr: Enables or disables interrupts.
+  It should also clear any pending interrupts prior to enabling the
+  IRQs and after disabling them.
 
-Cost is one list_head in tcp_sock and an INIT_LIST_HEAD() in
-tcp_init_sock(), tcp_create_openreq_child() and tcp_write_queue_purge().
-Reneged skbs are on neither list and would stay as they are today.
-Neal's point about per-socket state is fair, but I think 16 bytes is a
-reasonable price for not needing the RTO fallback at all.
+The commit message only covers the resume path through phy_init_hw().
+Teardown also reaches this branch:
 
-With that, B is back in tsorted_sent_queue after the undo at .490 in
-your scenario. tcp_undo_cwnd_reduction() sets tp->rack.advanced, RACK
-looks at B in the same ACK (sent around .413, rack.rtt_us 40ms from C,
-reo_wnd around 10ms), marks it lost again and it is retransmitted
-immediately. The test then has the same shape as 2/3 (untested):
+phy_disconnect()
+  phy_free_interrupt()
+    phy_disable_interrupts()
+      marvell_config_intr()   /* WOL_EIE is kept */
+    free_irq()
 
-  .490 < . 1:1(0) ack 1001 win 20000 <TS val 1390 ecr 210,sack 2001:3001>
-   +0~+.05 > P. 1001:2001(1000) ack 1 <...>
-   +0 %{ assert tcpi_retransmits =3D=3D 0, tcpi_retransmits }%
+Take an 88E1318S or 88E1510 in interrupt mode with WoL armed by
+m88e1318_set_wol(). WOL_EIE stays set, and LED[2] is still routed as INTn
+through MII_88E1318S_PHY_LED_TCR_INTn_ENABLE. Nothing undoes either one on
+teardown.
 
-and it fails on current kernels, which is what we want from a selftest
-shipped with a fix.
+Suppose a magic packet (WAKE_MAGIC) or a link-up event (WAKE_PHY) arrives
+after ifdown. Can the PHY then assert the active-low INTn after its handler
+has been freed? Nothing would be left to read MII_M1011_IEVENT and release
+the pin.
 
-If Neal and Yuchung still prefer the stateless version I can live with
-it, but then the 3/3 changelog should say that the test passes without
-1/3 and documents a known limitation.
+phy_request_interrupt() requests the line with IRQF_ONESHOT | IRQF_SHARED.
+If another device shares the line, could the IRQ core end up disabling the
+line for that device as unhandled?
 
-[1] https://lore.kernel.org/netdev/CAL4WiipKWgA-EcFWDQd3t7nBwU7AnkLvqs6j--h=
-e-dR-SAgqiw@mail.gmail.com/
+Before this patch, the disabled branch wrote 0x0000, which cleared WOL_EIE.
+Would it work to keep WOL_EIE only across the resume reconfiguration, or to
+track the WoL state and re-apply it after config_intr, and still clear it
+in the disable path?
 
-Thanks.
+>  		if (err)
+>  			return err;
+>  
+> @@ -417,7 +424,8 @@ static irqreturn_t marvell_handle_interrupt(struct phy_device *phydev)
+>  		return IRQ_NONE;
+>  	}
+>  
+> -	if (!(irq_status & MII_M1011_IMASK_INIT))
+> +	if (!(irq_status & (MII_M1011_IMASK_INIT |
+> +			    MII_88E1318S_PHY_CSIER_WOL_EIE)))
+>  		return IRQ_NONE;
+>  
+>  	phy_trigger_machine(phydev);
+
+[Severity: Medium]
+The commit message says:
+
+  The interrupt register layout is the same across the PHYs this driver
+  handles, so extend the shared handler to also claim a WoL event instead
+  of adding a per-PHY one.
+
+Does that hold for bit 7? drivers/net/ethernet/marvell/skge.h describes the
+same registers (PHY_MARV_INT_MASK = 0x12, PHY_MARV_INT_STAT = 0x13), but
+there bit 7 is a FIFO error:
+
+  PHY_M_IS_FIFO_ERROR	= 1<<7, /* FIFO Overflow/Underrun Error */
+
+skge's default interrupt mask also enables this bit.
+
+About 20 entries in marvell_drivers[] share marvell_config_intr() and
+marvell_handle_interrupt(): 88E1101, 88E1112, 88E1111, 88E1111 (Finisar),
+88E1118, 88E1121R, 88E1145, 88E1149R, 88E1240, 88E1116R, 88E1540/1545,
+88E3016, 88E1340S, 88E1548P and the 88E6xxx switch PHYs. Of these, only
+88E1318S and 88E1510 have .set_wol.
+
+On the other PHYs, MII_M1011_IMASK_CONFIG_MASK means config_intr never
+clears bit 7 of register 0x12. If a bootloader or a marvell,reg-init entry
+left it set, does it stay armed even after phylib asks config_intr to
+disable interrupts (polling mode, phy_probe(), phy_free_interrupt())?
+Nothing else in the driver manages bit 7 on these PHYs.
+
+marvell_handle_interrupt() now also returns IRQ_HANDLED and triggers the
+state machine for IEVENT bit 7 on all of these PHYs. On the older parts,
+that bit is a FIFO over/underrun event the driver never enabled. Since
+phylib requests the IRQ with IRQF_SHARED, could this also hide spurious
+interrupt detection?
+
+Would it be better to limit the bit 7 handling to the 88E1318S and 88E1510?
+That could be their own config_intr/handle_interrupt callbacks, or a
+per-driver mask.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261005225028.465866-1-rosenp%40gmail.com
