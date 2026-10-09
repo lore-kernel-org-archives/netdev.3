@@ -1,98 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10273655C7;
-	Fri,  9 Oct 2026 08:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED44B3BE179;
+	Fri,  9 Oct 2026 08:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791534976; cv=none; b=p2DyTgnKoCC8nwOi/IenQcQcOt+jnusxhJm0CaztDhLHeo2BzlF+yd+xD1W2VkhPk5DEvbM5QLju5HdIfWKM1ie6+GDpoUx104wwly3fgnYxBmbgH5AG4sqD2FLUxb0K/INDfpjB6TuvJ5rrr3Tw5phmI8qMlG6uu87B8o019wQ=
+	t=1791535055; cv=none; b=WgVrNxD+Ti2Knb28v6qBFzbi2JYgm/IDE8Ky4tQaK5Jwy4OJQxNuDLQCNgc140WapQoGkEbifNVWgaSsqKWJIuoIYQemAFxmKPjgQWsFmKJaq+TjsGIqy/GNIyG/QUCAYK17RBRiME6wlo6pRnsc6RKgwBWFtXzhGnwKTJFLfQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791534976; c=relaxed/simple;
-	bh=1SqIwN6JU8buHKv38WL4LisHd0/TXPfSwZ3bIQLWeYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BXG4qrp6O8ZIbxIx99xzozfqn4L7MIVyl0TIGn61gnpeoa1BJwK3GKB5UAJxUdsqVXcLce6nEROkA35EzLABq5y5loJrOQzZmB2BGb02iYp+/QLUoEurKFG+dLPV8JyYqAL6CEokFghYhagl5NciLG3NaAiPKQ9osPJ0SaS+9x8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nja6rhOw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791535055; c=relaxed/simple;
+	bh=6kBGKdI4xRgmH+upwAe8YgkIdImCBWYu4BA78K8w4Bk=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=PgVBh69H34bTMQskXwtYVWd0zoOhGdbKAHk3G8/lMpE5whF7uuzue2RT2G0hdknlIIWEWkL/0X4A7E3LdnSiV1/nPIie+3AzIMwEAtYLAXtqQbWSNi7OGKq1WB4ncWe+FLcXEsvYnq89Q7D71SvykEKe2+Vv603/yU29waIkjNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=x9O41Ioi; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nja6rhOw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C546F1F000FF;
-	Fri,  9 Oct 2026 08:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791534974;
-	bh=4WlGPZ54svZCU+yv4o/S7va6SD9ZRUbV9dZirPNS7H0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Nja6rhOwRtngSNzSsyeys9Yd+p+RazzEke4KP+S3a/h6htMCqVc5Z8zUe9sTqWZZj
-	 +84nXC0t1qwaXXMcUtGcRv1AGS2VTeFPVwhIkx4FcZrYBJSFKxIkNJrb9VLTcx/+qn
-	 1MpMSBrfLzj8uC8blj2VF7NYTHNOM+Y5dstHbytswbnX8VDPSZtDjCItT/5117Tkxy
-	 xyy/Fd36dsOlQ4q+Nuf5cwDX4rpG434X0DR7Xgs+WMnZguIVnLn5gVrGIFzFhEmPpa
-	 S2KuKEr41WYpIQJ22/6jNAs863WBh2j5VMnP0MBWVv4su/J+QpBoWDzYotAehKAoQi
-	 YXalqsbBjiJXg==
-Date: Fri, 9 Oct 2026 10:36:10 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Til Kaiser <mail@tk154.de>
-Cc: netdev@vger.kernel.org, Luo Jie <jie.luo@oss.qualcomm.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Lei Wei <quic_leiwei@quicinc.com>, Suruchi Agarwal <quic_suruchia@quicinc.com>, 
-	Pavithra R <quic_pavir@quicinc.com>, linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next 2/4] dt-bindings: net: qcom,ipq9574-ppe: Tighten
- ethernet port node constraints
-Message-ID: <20261009-glittering-fresh-squid-e2fcc8@quoll>
-References: <20261005152915.101780-1-mail@tk154.de>
- <20261005152915.101780-3-mail@tk154.de>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="x9O41Ioi"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B591A1561;
+	Fri,  9 Oct 2026 10:37:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791535049; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=1jl9tQJWjV8nksZpR7yDPWHvqkEBuwYygti9sXjrMe4=;
+	b=x9O41IoiaA1sMC21CzEWXcQnk55P4GigN1uHSPsC+Xtwt2d2EL0M+tos8ltfSemhW41AK8
+	kD003tpHzLnlGAegyXUbN/wPwAvt5fhftLLFE1jpRbTjZ603yJsSal9NWqgvUuMItqT+Or
+	/PXjWcCZmvj46iJ7m6LuI7uTgvFIiRrtHN2OIasf3FdXGqof8nYskGFaSVHJeRch8pUA2X
+	csndNPDuhOhHJdEQCT5AmFngKcWovukqFeQbTXLnGqMcH5pNpjrQWs5vvUANXIVUxt5BUT
+	30y71+BxBLLKuTrz85C71kghZPYenrZsTHCT0czszyn7iHFlU8KUC+L6PXmquQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261005152915.101780-3-mail@tk154.de>
+Date: Fri, 09 Oct 2026 10:37:26 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, o.rempel@pengutronix.de,
+ maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ Jose.Abreu@synopsys.com, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, leon@kernel.org, dtatulea@nvidia.com, alazar@nvidia.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next 3/3] net/mlx5e: use skb_share_check() in the
+ loopback selftest hook
+In-Reply-To: <179149509264.434549.15492783775949444420@kernel.org>
+References: <20261007-nb-net-selftest-shared-net-v1-3-458369bfa1ba@tipi-net.de>
+ <179149509264.434549.15492783775949444420@kernel.org>
+Message-ID: <b90df783d996dbad672656dc81c8f5de@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Oct 05, 2026 at 05:29:13PM +0200, Til Kaiser wrote:
-> The port node pattern "^ethernet-port@[1-6]+$" also matches multi-digit
-> unit addresses such as ethernet-port@11, which the reg property does not
-> allow. Drop the stray '+'.
+On 8.10.2026 23:31, netdev-bot+sashiko@kernel.org wrote:
+
+> [...]
+
+> [Severity: Low]
+> This isn't a bug, but the comment just below this hunk in
+> mlx5e_test_loopback_validate() now contradicts the new code:
 > 
-> Also restrict the ethernet-ports object to its declared properties.
-> Without this, nodes outside the port pattern are accepted through the
-> generic ethernet-switch schema.
-
-Simple test shows that it is not true, so I do not get how you
-reproduced it.
-
-Are you sending some LLM output?
-
+> 	if (skb_linearize(skb))
+> 		goto out;
 > 
-> Signed-off-by: Til Kaiser <mail@tk154.de>
-> ---
->  .../devicetree/bindings/net/qcom,ipq9574-ppe.yaml     | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+> 	/* We are only going to peek, no need to clone the SKB */
+> 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
+> 		goto out;
 > 
-> diff --git a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> index 6d0b21a10732..1a78e2c82b90 100644
-> --- a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> +++ b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> @@ -174,8 +174,17 @@ properties:
->        - interrupt-names
->  
->    ethernet-ports:
-> +    type: object
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      '#address-cells':
-> +        const: 1
-> +      '#size-cells':
-> +        const: 0
+> skb_share_check() calls skb_clone() whenever the skb is shared. After
+> that, skb_linearize() can modify or reallocate the skb head.
+> 
+> Should this comment be dropped or reworded? A later reader could take
+> "no need to clone" at face value and remove the skb_share_check().
+> stmmac_test_loopback_validate() uses the same skb_share_check() +
+> skb_linearize() sequence and has no such comment.
 
-No need for any of these.
+Yes, it is stale. I'll drop it if a v2 is needed.
 
-Best regards,
-Krzysztof
+> [...]
 
+> [Severity: Low]
+> This is a pre-existing issue and was not introduced by this patch.
+> Further down in mlx5e_test_loopback_validate(), the UDP header is
+> located using iph->ihl, which comes from the packet and is never
+> checked:
+> 
+> 	/* Don't assume skb_transport_header() was set */
+> 	udph = (struct udphdr *)((u8 *)iph + 4 * iph->ihl);
+> 	if (udph->dest != htons(9))
+> 		goto out;
+> 
+> 	mlxh = (struct mlx5ehdr *)((char *)udph + sizeof(*udph));
+> 	if (mlxh->magic != cpu_to_be64(MLX5E_TEST_MAGIC))
+> 
+> The only length check is this one:
+> 
+> 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
+> 		goto out;
+> 
+> That guarantees 44 bytes: 20 for IP, 8 for UDP, and 16 for struct
+> mlx5ehdr, which includes the padding before magic.
+> 
+> The hook is registered with dev_add_pack() for every ETH_P_IP frame on
+> priv->netdev. While the loopback test is running, could an external UDP
+> frame sent to the port MAC with ihl up to 15 make this code read
+> udph->dest and mlxh->magic up to 40 bytes past skb_headlen()?
+> 
+> Those bytes stay inside the skb head allocation, in the tailroom or
+> skb_shared_info, and they are only compared against constants. The
+> result could be a spurious selftest outcome or a KMSAN uninit-value
+> report. Would it make sense to check 4 * iph->ihl against skb_headlen()
+> before using it?
+
+Yes, pre-existing. I can send a separate patch for this.
