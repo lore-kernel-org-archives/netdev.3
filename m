@@ -1,102 +1,142 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A9044C64C;
-	Fri,  9 Oct 2026 12:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791548544; cv=none; b=TDONh2g//bUPBiE/t5swaafQkQyaRI0sOcTaJm7O6+qDK4aFMQKSZYMx9S7EUf805fWslliNk80bvVcTgw2WmWnbF2Iu9zLgKleiLDn+Wytfgqh6UOCvKmhbpMdyMZ69KuBnD4niLQ/OBqm4/gChSB8ThrrK0RdQyiV14nRE91k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791548544; c=relaxed/simple;
-	bh=464YzXGaDQUbdH+7KNEdxBgo56LjFG1riLV/FeW9DEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYsmH33M7MqOokNOkU8VyzQCC1aEnq8lEeF5PYZAD6QhiIhlDMMg1uQfQ92howg/CF2uw7yaTgZEojnK1kq97RW6mQBs+qAEY/appwFSL7ZWlH9MlZPe/TWzanYHo0mvPn0b3YlwW9WfZQOk7Nwy+IKV68XoXX03JtF+T61z/Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4QMpZlUr; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493983B0ADC
+	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 12:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791548655; cv=pass; b=IMuDzVltAENaTkSmQs9WoU3y7vD7kEurRgLkc0kvjmh1E85j7+xmQHZQkYs/tTZxhoqiw6t9NSZA7Kd1VDvqrMSmzNv1av+R5k/jZxihr+iZP+pRwcqzbvon7L5ZN0Yv4OBnfzCs7P2cyVkVYT8BpyrJqTPHADLI7oJBvn2wu/4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791548655; c=relaxed/simple;
+	bh=W+GVodrUTNH4Yy1nDEnsPN+ql8MzERFY3f4gbOktc0Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=k88d7Ap1fAZPK4gRictUS1tYT6splOicPIIe/F0C9jfCxX3lOZP1vqJ+D70Jip48PAc6YtTz4a5xqaLMU26HFVtMUPtKb/tB5VQSVIYopnudqrDmtjTIKLMFbPadbaMvMB1vP2M3YrhOUhC4TNUDwuqZqtIlIO65WVncazk04to=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sQNlduzi; arc=pass smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4QMpZlUr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=ZqrK1Qsencsi1WEjQh8Yxu5eRbvhSvpLF3WsCRZH2UE=; b=4Q
-	MpZlUrJY9LL0t1S1d5NYqm7eHgNjlOo1QjEUl2H173SfCZbQ5j5NCEHDUUVpORB+mpuJQS0DJizzh
-	tt6UpvKz+wTcCzv0cHf3RmaAQD9nc8fzCQLQ9z5jxwzl/ZV6kHYE5MBHOnjl8IMbsH7cusZfz2vvP
-	q1rTazV+qlU4LJM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xF9bw-009mlP-0G; Fri, 09 Oct 2026 14:22:04 +0200
-Date: Fri, 9 Oct 2026 14:22:03 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Linmao Li <lilinmao@kylinos.cn>
-Cc: Hayes Wang <hayeswang@realtek.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Chih Kai Hsu <hsu.chih.kai@realtek.com>,
-	nic_swsd <nic_swsd@realtek.com>,
-	Birger Koblitz <mail@birger-koblitz.de>,
-	Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net v2] r8152: Use BMSR to detect the link state
-Message-ID: <591ca604-b296-4469-94b5-957d9ba45ae4@lunn.ch>
-References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
- <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
- <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
- <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sQNlduzi"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-33fb4680717so1193475eec.1
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 05:24:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791548651; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oj83XRbkxOMVQJaJhYXAmp85psiOBagoWjvHax8pwqEW+EMlnehVEubAcv7xczx4r+
+         /js9CrBzEK4M/26PWdc2tboPuasHQRSLxsxeodRnu8OvTfuIIUwybn4rAbXPr21aj9rM
+         Q85xNQoJieV1fJEskKxt9rZkkgOF0BDFlYDRBLDT8CCScnuvvrz/+hjo+knMm9jcGk4q
+         UULvXb941hP7WHr3j9+Wvh8JSRXcYIAgNIMOlObZAUH7QxSFrBQ9Td52N82gZ8rA/Cx0
+         a2HY5V+mj6ezpvq4yjFG7VKcqBweR23jKBuFnfLlzdK9HzrvIAouH59rv6qlZuRj0FTi
+         kYUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=6w7iXC+S7wuM/jPa5o9UtD+49O2Q2UL2gZUFw1fUahM=;
+        fh=gBgR8gNaR7OSQiCIcbbAEGl6uzH0wlKzbf3k/EY02kw=;
+        b=j/A12zToZvr7s7PvKuRcDsZ7WB5rbhj38wn81tlrFGvsM7OndmBMF79pdCxKxjLWps
+         eoDsFVHUvjbHbh8WZQyTCkBWjtB3lOPiWNmi1UX5TpsWiUDU+hD719FcklvOXbUKuCVw
+         utNRdIIFXB9seQ80i7LC6xW5TmPj2OTb5Y2l6Nt+lzhgL6ooL1Vjk5do4aR16qcXIPag
+         YrA9H7qdxRwfEBj9NISWEJH4zBjAMs/gE7sgIQFmE2EOlwRze7dNeJ+5iyVS3XmVVHx3
+         xZQkpSbgNH0/VqYnOjJBkD24WJYbOyH6HB/+1NA/5rYZjrlHGSNTM45ds3rBixiz+HFN
+         2kGQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791548651; x=1792153451; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6w7iXC+S7wuM/jPa5o9UtD+49O2Q2UL2gZUFw1fUahM=;
+        b=sQNlduzi/63ZkkDCnIriT6G1Yo+AA3Y+4+9LPmjw/rerzugD3/SD+i/77xtHkd+qyx
+         bY+lOjX0+YI7iKJxXPVNq89retWljHuBJJGbtaNmppRl/ucggm8qIZJEi6GUTLVnCWBQ
+         WF4F+upwRL011bRU17x5wixbPPTqTfjHsDjBgeq1ELQeL96ZUrKCASVv6/3U4TZpby2U
+         uJcqNgHjbLBNXdLN7cT17Sh6S8K82rrguw3XFZhUVcHXey2On6hP1BG/aNRwISvLIT03
+         f/KTTp0ZspPJPnsdvofWi8P0mq1oR675EFAjpj2d5HqVvE7nCtIFx9h5Jxq5/bWE+LFO
+         jdvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791548651; x=1792153451;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6w7iXC+S7wuM/jPa5o9UtD+49O2Q2UL2gZUFw1fUahM=;
+        b=h4gcdGLvJeO1xaXktGPUuxhercbzUboeROq0OQcUkRD+jKvfpd0wsB8D6rviiwbWUa
+         BHNEfX1oJ1Yo97kAKHzdeLi1QN0hWSXm3RdhFqL65k5+USEabRoSG65z1b9KhojL/9Ke
+         0mL+jUNHmxnB1ewtyoAUSLAItIenpCI67TIoQX/MjxcfDvrlhhbz1hAV/sLuZBZQYynP
+         5EFxKsbcFFquSwH6bt79S9WNWcsYbpaaXsbjmsf4IpaFeRvTMW/a7efmsy5w0pT4+XPS
+         ZYAbPV4IREJYZZO47ezmPDdTw7rfFMn/9FAP16MVeuB5HOQxdqPx8THL7OlUw+S2MKF0
+         X95Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxANweRGEWGLBmY7O+Kjn4BGzRRVrFy455xky6/25FmJ01cRF2BLxtdFLLFqYuegt5L4nScVyo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYYQWq9Q7jVtwoW0zzifzDOdaXXG3NVumhXMLy0+O0o0coWJn2
+	fjeq8VXuJSyn7sRSFQ9gz6OA3Nai4t9EuGVUSQhdJ4yoTO0We14ZafmSM4ncLzWseDsxVcLjXza
+	vpFb4c9om17/iHtByVW+39f/j20/jmw==
+X-Gm-Gg: AYBFou0byBbPWsW3vdllZzcDDGE05sRlYHul/LJyXX4gNJeXJ73lwM8bpvFOl1BRZ57
+	Io1lV0U+Ju0PY/sk/WQXBUfmFawgCVwc8SESi8vN3haVt5oVUXzPsnGlbGdJrvsZn1GRfiTsh9Y
+	nFjuIZK5IYAs96LHVjq1IZOjfAGhuM5EJU74VK3fivYjvt3a7rOpu9TJ7VKTTBPcExNTGwjG3ru
+	8J5CGxdexObqFDmnhQT83q1oGKjS3vCdlZQnuTXixmJmjgEuWBwLZDfCOYK9HwnoJB320RUJelB
+	sPUI/oaCsEQo/OlcTJaKpdzPQCHIdbOCBa9PWmWvga50wgAo82OPM+NrAyyjwpq53xx38aG/YN8
+	8YYOX2Lh0fZw9M9pEY25mvhHpB4enYln+g4FLe/n6
+X-Received: by 2002:a05:7300:cd8f:b0:351:75b5:885d with SMTP id
+ 5a478bee46e88-3537dfd8470mr3507309eec.17.1791548651179; Fri, 09 Oct 2026
+ 05:24:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
+References: <CAM6_QD_PoTdwdM7DvzzgHRs-G5EvQu-c5oNGve=GuKV4wFYAvQ@mail.gmail.com>
+ <CAM6_QD_xAyTFVvYKvCrrZmS+fV5DBBje9V=VdkDMMSpt2ussRg@mail.gmail.com>
+ <20260928120343.49e02c07.michal.pecio@gmail.com> <CAM6_QD-CbYSsmic5LhpMi-aMXuC_VaniELBzaBeWO8SWm4UONA@mail.gmail.com>
+ <20261002104355.698eaf00.michal.pecio@gmail.com>
+In-Reply-To: <20261002104355.698eaf00.michal.pecio@gmail.com>
+From: Dane Linssen <linssendane@gmail.com>
+Date: Fri, 9 Oct 2026 14:23:57 +0200
+X-Gm-Features: AclHuK99jZT_xKU3QNXdrk-r0fVYuUviUqc5tIgyboVM9TB_HTssMakAr2jlGvc
+Message-ID: <CAM6_QD_z7eT+N6HieHyZhPmXqPxKqeSYKX8OK--M+rN2VAsO_Q@mail.gmail.com>
+Subject: Re: r8152: RX stops until rebind after -EPROTO on the bulk-in endpoint
+To: Michal Pecio <michal.pecio@gmail.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+	Mathias Nyman <mathias.nyman@intel.com>, Alan Stern <stern@rowland.harvard.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-> Hi Hayes, Andrew,
-> 
-> Thanks. Since the newer ICs notify only when the link status changes,
-> the driver cannot rely on another link up notification after the link
-> has settled, so v2 can leave the carrier off when the first read
-> returns the latched link down.
-> 
-> Before sending v3, which approach would you prefer? Both fixed the
-> problem in my tests on an RTL8153B with v7.3-rc6:
-> 
-> a) Keep carrier detection on PLA_PHYSTATUS and read BMSR once before
->    carrier on, only to clear the latch. This is the option I asked
->    about on v1.
-> 
-> b) Detect carrier from BMSR and read it again when the first read
->    returns link down, as genphy_update_link() does in interrupt mode.
-> 
-> Neither depends on another notification. Neither reports a short link
-> drop that recovers before the link work runs: with a) a later speed
-> query still sees the latched link down, with b) the latch is cleared.
-> 
-> Hayes, for b): is BMSR_LSTATUS reliable as the carrier source on all
-> chips supported by r8152?
+> You could try it. We may consider increasing retries in mainline if
+> this turns out to solve real world problems. Though so far, in the only
+> reported case of 3 retries not working, 10 retries over a span of 100ms
+> weren't helping either...
 
-Ideally we want a list of devices which correctly do notification on
-every change of link state, and which are broken.
+Thanks, I'd like to try it. It needs some setup here first (signed
+modules), so it may take a while before I can report back.
 
-For those that work, read the BMSR once and report the down, and then
-later on the second event, report the up.
+> Any results yet?
 
-For those devices which are broken, double read the BMSR.  The danger
-is, somebody who quickly unplugs and replugs the cable is not going to
-get the down notification. The dhcp client will not restart, so the
-old IP address will be used, for the next hour to day, and the network
-is broken.
+Yes: three more stalls on the same host in 11 days (09-30, 10-04,
+10-06), all with virt_state 0x40, each recovered by the watchdog's
+rebind in about 30 s. Dynamic debug was on for the last two. Both
+start with a single burst, and in the 11 days there wasn't one
+"Transfer error" on ep 2 outside the stalls. 10-04:
 
-    Andrew
+  22:36:09.251 Transfer error for slot 4 ep 2 on endpoint
+  22:36:09.252 Soft-reset ep 2, slot 4
+  22:36:09.255 Transfer error for slot 4 ep 2 on endpoint
+  22:36:09.255 Soft-reset ep 2, slot 4
+  22:36:09.258 Transfer error for slot 4 ep 2 on endpoint
+  22:36:09.259 Soft-reset ep 2, slot 4
+  22:36:09.262 Transfer error for slot 4 ep 2 on endpoint
+  22:36:09.262 Soft-reset ep 2, slot 4
+  22:36:09.265 Transfer error for slot 4 ep 2 on endpoint
+  22:36:09.266 Hard-reset ep 2, slot 4
 
+From there it's Transfer error + Hard-reset pairs at about 275/s
+until the rebind 40 s later. 10-06 is the same: four soft retries
+about 3.5 ms apart, the hard reset at +15 ms, then the same loop. So
+here all the retries are spent within 15 ms.
 
+usbmon, 2 s from each of the three stalls: every bulk-in (0x81)
+completion is -71 (571, 553 and 551 of them), none succeed, and
+bulk-out and the interrupt endpoint complete normally.
 
+The other host with the same adapter logged no transfer errors at all
+in the same 11 days.
+
+Dane
