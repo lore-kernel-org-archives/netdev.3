@@ -1,216 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f0.google.com (mail-oo2-f0.google.com [74.125.231.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE97B367B71;
-	Sat, 10 Oct 2026 06:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD86D26FDAC
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791614290; cv=none; b=qOhCXAg48iklixfy+8oS0JhXVF803XBZ/uV0cy7QIQSK1DF94RFCX2360405heJWp2QpaD4KW/92J5Ll/4wh8xEnynq6cR3/kMyOd2cnz65Ol28eMulYemd/U02jXe7+0PBMkkDna+IS1cv2DO4SlHfgA+1raiPP3B77S122mO8=
+	t=1791614898; cv=none; b=q8naHeBPh32ax19LNgJ7FJd11IZRcKAMakD56T76VeoqQro8W31ufwZRTpn/yJ5gzPs8RQHqk4EirudddMcHvkqGn6bKQS4JKisFa+lD/j7keM6SeJRmn0TaGGvQ1iT52apKuTy7ljH2VOXWyLi0JQA2qHV0wuvac6VRL6404Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791614290; c=relaxed/simple;
-	bh=/vWqq2pzVcl36tqUoXWHORtS0JmaGOIn8ZMWpYs7zRs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=s0QNM1pbWSGK0pKL/oRYdmWNsKhh5Jp3PALW9ZVqLzCoKG90Liq1mbHdryUK6eLtHMOobbffhYCfpQUj2xsjmHQVIBjjCdiMD40gFi+biwSR4FuZHtTUDtg1PbFWELLoXo92hnlQykVO/vlF5cUra87uko3AAHinh6RFV0s61mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ScY9z2HB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791614898; c=relaxed/simple;
+	bh=5L5DxwVvnvUWNH5IP02RQY8g/fqYMrFIez+ufoPDWCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KER6b9l0OHTYApQDOxPwHLk23Tr5KATWu8a7mGsC6g53fFeG1sNUS2/lI0NYSY9Ueg49pgBd+QWuAZeWOiST6vii1VuK7UEgQC5Kcx/34UpMrBxo8WXuXwQVQPgRNApIEm2EzYGq2+xUXdZ1G0UbjNqSgEYjRgSy5Mcv5HUa/T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eomXT2Z/; arc=none smtp.client-ip=74.125.231.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ScY9z2HB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C791F000FF;
-	Sat, 10 Oct 2026 06:38:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791614288;
-	bh=fEEO3v1L3zz+tLSI6RWGQzmGcrPEPkcaUTB011Qb2S8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ScY9z2HBS55TpFj0u/jp+mgxV3kvlpmSRjNnJwhT3vxjz8n5PtBJ8QmYav7gk2kzV
-	 h77fGdHtwleuZ2hxt0u2JOzixIaQMHxGc925jqJHriq1HQK6Fk3zJRvUmm6ylPrzcE
-	 rKV4NAV9HezJ4JfjBJ4T8hhR928JS+ZngCDDvPb5pc68ELbwgJdHDrB0OFMewp+vZZ
-	 kHV830Bw9MtvSSfkATSMZUMUt+6QiaJU2WARDy0nejQ1UiZLQOGYqxMK54umdc1mdi
-	 orUC0LbKopG+05P3fo2bDJecwAU0uajwwuWr+4IUCRI+KZ5wbFjHoUJrgZdJTCeWuZ
-	 5UxLPTPMZldGA==
-Subject:
- Re: [PATCH] net: tcp: fix fraglist GRO flushing on alternating TCP PSH flag
-From: netdev-bot+sashiko@kernel.org
-To: shiming.cheng@mediatek.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, willemb@google.com,
- daniel.zahka@gmail.com, alice@isovalent.com, sd@queasysnail.net,
- eilaimemedsnaimel@gmail.com, imv4bel@gmail.com, nbd@nbd.name,
- dsahern@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- stable@vger.kernel.org, steffen.klassert@secunet.com
-Date: Sat, 10 Oct 2026 06:38:06 +0000
-Message-ID: <179161428655.434549.7066789783316941855@kernel.org>
-In-Reply-To: <20261009060319.6229-1-shiming.cheng@mediatek.com>
-References: <20261009060319.6229-1-shiming.cheng@mediatek.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eomXT2Z/"
+Received: by mail-oo2-f0.google.com with SMTP id 46e09a7af769-824040a3379so164797a34.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 23:48:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791614894; x=1792219694; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=R3rH/D6qM7voVS6XyaxzTyltsiNIVflM2CckMW9LdmQ=;
+        b=eomXT2Z/zMb0XUYnzXPpEVw6gZbc+qXYi8jPIseSscmUR21AqGq/PM3Ib71m/0TVx0
+         ScHzwZYB6i9gguXwugb8QiZ0fP0O4JbronAwLignYtXs8nms2aslyjobxy+qwIowusqR
+         HurYbkeppW2LZqbEt363C/Z9yQbEIhGPUHeaDqsmcV0pblRXW0h6wPzsi6OpcAYODB6o
+         3KB1rpUR3B6rse9BLjGQ4MSly93AK5hs+uxkWFVHpf6KYxgp5bXd1h0JTf2pJSun7nFX
+         Bowp7wJI7XKUKMd4NslQOFH5CddSfUVdKfFi26ic5eamkZgkMKdv25pwGEJwSqzYhe+d
+         qy1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791614894; x=1792219694;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=R3rH/D6qM7voVS6XyaxzTyltsiNIVflM2CckMW9LdmQ=;
+        b=zMyAYTp5jwKcuFulKJmvvsOREhQEQXk7zdSodEIxz38cFoB2jtGSWErTvuiHA/vkGj
+         bX3x09T5azTPGN4ODT2sPwpNn9INNTDHZo31czoCRLYiW0Cwo7HgWfwouJsyzDTArb1L
+         NIeRe0TdCWw7/eex2LlV8sng0FaEvaxCxMIJ3+RUz/Rw5yrL1ixtGa3jUSMCZcgk04Ya
+         HZH1rCRDZsAzHVjVSwCyrVR/3CfIzwcM9xz3X/CdycT4zVtsTm/lVEhCvdgCYINNG8NK
+         DZqVLiFtF66f3twkxZBGRDa0GL6TIPr0V3OJMO9BN1tDyEynism5LeZ8MD+78BRvTeqi
+         XsmQ==
+X-Gm-Message-State: AFq9FYKTkyFR2oH0rszE8CFd+Dd8IcXVhVvHCnU+3Zd+hxrTwZ/COqqz
+	e+GMNKg4u0gGuXik1zhc+kn3xX1LOOTKVZQzVuLr6aR/nBbmk5aTb0bq
+X-Gm-Gg: AYBFou0qfV0P6j8fqcvLx4aJRHXyzGuatZeuzCip81rW/fbI1RdvvAejTS8piVWSvyA
+	91gB78ruRkQHW9TJx+HgNQpNY7EBYTX9opfoPgqFElI+Io5ZQIrEq7Gv0zARukRDuYI4HmPXwpY
+	w3awOuaMkLlsw9KKbsXCFVAscN3jtJeB1pbdBKDA229jBV2jzjYT8bN0GB825rI6nbvgQdY1ZUE
+	akRLeSEf9SZlWeqDoFh1Mn02m9b8jx8w47/HH51HW7TDmaCH7dCtcTfAQ5xwog+W0i6PnF144Yx
+	x88guQpjyfMtj2qPdwB9Oimkkw79UPxACQrFfpITuVbINB7n0YNaBCU45DKQNb3x75isoRX177M
+	pIfbxgSg9oiQrSFxFZN+08F4F7yXn3W03eRCBlXkvcuhAc1EgyAXOco60zbo//WmMXpQ5ZEuqAo
+	z9j8jB55r7DqIl6hQjlLdTPaByDeNwwZWa8Jtru1RuhQa/F0rgAyvFDlnecWHd+YrfNGHC8TEkA
+	A8kwH9fiJ7XxI0433NvuaVcKHLNLAtUZFHQCccTrq+7iJ+w
+X-Received: by 2002:a05:6820:16a1:b0:6ca:5f4d:318f with SMTP id 006d021491bc7-6ef0d8173bfmr2975799eaf.30.1791614894240;
+        Fri, 09 Oct 2026 23:48:14 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.41])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-830385ba23csm3864752a34.7.2026.10.09.23.48.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Oct 2026 23:48:12 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Antoine Tenart <atenart@kernel.org>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Seungwon Bae <qotmddnjs@ajou.ac.kr>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] vxlan: reject appending a remote to a nexthop fdb entry
+Date: Sat, 10 Oct 2026 14:48:02 +0800
+Message-ID: <20261010064802.2741221-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+vxlan_fdb_update_existing() guards nexthop entries against nhid
+replacement (nhid && !f->nh) and against nhid-carrying NLM_F_APPEND,
+but the plain NLM_F_APPEND branch for multicast/zero MACs never
+checks f->nh: vxlan_fdb_append() happily links a remote onto an
+entry that is backed by a nexthop group.
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
+This breaks the "nexthop entries have no remote list" invariant: the
+xmit path consults f->nh while dump/notify/delete walk the remotes
+list.  Concretely, the appended remote is invisible in fdb dumps,
+yet "bridge fdb del ... dst <ip>" removes it, and once the last
+remote is gone the whole nexthop entry is destroyed, silently
+dropping a forwarding binding the user never asked to remove.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Commit 98fc57d167446 ("vxlan: reject dynamic fdb entries that
+reference a nexthop id") closed the sibling nh/state mixing vector;
+this is the same invariant violation through the opposite door.
 
-- [High] Forwarded TCP FIN/PSH can be dropped from the wire when a
-  fraglist GRO skb falls back to tcp_gso_segment()/skb_segment().
-- [High] FIN/PSH in a fraglist tail segment is invisible to netfilter,
-  conntrack, flowtable, tc and BPF, which all read only the aggregate's…
-- [Medium] The commit message calls the removed check 'redundant' and
-  only discusses PSH.
+Reject NLM_F_APPEND on nexthop-backed entries.
 
---
+This issue was discovered by Tencent CodeBuddy Security.
 
-net: tcp: fix fraglist GRO flushing on alternating TCP PSH flag
+Cc: stable@vger.kernel.org
+Fixes: 1274e1cc4226 ("vxlan: ecmp support for mac fdb entries")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
+ drivers/net/vxlan/vxlan_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-This patch removes the unmasked TCP flag word comparison from the is_flist
-branch of tcp_gro_receive(). Segments whose PSH/FIN flags differ from the
-held packet can then be appended to a fraglist GRO skb. The goal is to stop
-premature flushes when a sender alternates [ACK] and [PSH, ACK] segments
-in forwarding and tethering setups.
-
-> This redundant check causes premature flushing on any incoming PSH packet,
-> shattering aggregation and increasing softirq overhead.
-
-[ ... ]
-
-> a single fraglist, and are safely flushed together upon encountering the
-> PSH flag at `out_check_final`, preserving the required TCP push semantics.
-
-[Severity: Medium]
-Is the removed check really redundant? Commit 8d95dc474f85 ("net: add code
-for TCP fraglist GRO") added it to the is_flist branch on purpose.
-
-The general path can mask FIN|PSH out of its first comparison only because
-it later ORs those flags into the held packet's header:
-
-    tcp_flag_word(th2) |= flags & (TCP_FLAG_FIN | TCP_FLAG_PSH);
-
-The is_flist branch jumps to out_check_final before it reaches that line.
-So the unmasked comparison was what kept every fraglist member's flags
-identical to the head's.
-
-The removal also relaxes FIN, not only PSH. Data-carrying FIN segments,
-such as the last segment of a response, can now join a fraglist. The
-commit message doesn't mention this.
-
-The claim that push semantics are preserved seems to hold only when the
-skb goes through skb_segment_list(). Could the commit message describe the
-FIN change and the cases raised in the comments on the diff below?
-
-> diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
-> index e74d99ca9face..54b40ec95a080 100644
-> --- a/net/ipv4/tcp_offload.c
-> +++ b/net/ipv4/tcp_offload.c
-> @@ -328,7 +328,6 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
->  	flush |= skb_cmp_decrypted(p, skb);
->  
->  	if (unlikely(NAPI_GRO_CB(p)->is_flist)) {
-> -		flush |= (__force int)(flags ^ tcp_flag_word(th2));
-
-[Severity: High]
-Can this drop a forwarded FIN or PSH from the wire?
-
-Without this check, skb_gro_receive_list() links an in-sequence [PSH, ACK]
-or [FIN, ACK] data segment into the held skb's frag_list. The is_flist
-branch then jumps to out_check_final. That skips the only place where
-FIN/PSH reach the head header:
-
-    tcp_flag_word(th2) |= flags & (TCP_FLAG_FIN | TCP_FLAG_PSH);
-
-tcp4_gro_complete() and tcp6_gro_complete() return early for is_flist.
-The head can't carry FIN/PSH itself, because out_check_final would have
-flushed it. So the head header has neither flag, while the last frag_list
-member has them.
-
-tcp4_gso_segment() uses __tcp4_gso_segment_list() only when the geometry
-still matches and SKB_GSO_DODGY is clear:
-
-    if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
-        !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
-        return __tcp4_gso_segment_list(skb, features);
-
-Otherwise it falls back to tcp_gso_segment()->skb_segment(). That path
-copies head_skb's headers, TCP flags included, into every segment.
-
-tcp_gso_segment() then clears fin/psh on every segment except the last:
-
-    while (skb->next) {
-        th->fin = th->psh = 0;
-
-The last segment keeps the head's flags, which never had FIN/PSH.
-tcp6_gso_segment() has the same fallback.
-
-These can trigger the fallback on forwarded traffic:
-
-  bpf_skb_proto_4_to_6() and bpf_skb_proto_6_to_4(), reached through
-  bpf_skb_change_proto() (for example CLAT/464xlat when tethering), set
-  SKB_GSO_DODGY on GSO skbs.
-
-  bpf_skb_net_grow() and bpf_skb_net_shrink() set SKB_GSO_DODGY.
-  bpf_skb_net_grow() can also linearize frag_list skbs when
-  BPF_F_ADJ_ROOM_FIXED_GSO is not set.
-
-  Any pull or linearize that changes the geometry has the same effect,
-  for example skb_ensure_writable(skb, skb->len) in NAT mangling.
-
-In those cases the receiver doesn't get the FIN until the sender
-retransmits it, and PSH is silently cleared.
-
-A fraglist skb redirected to a local TCP socket after GRO (DNAT/TPROXY) is
-also parsed from the head header only. TCP has nothing like UDP's
-local-delivery fraglist handling, so the FIN would be missed there too.
-
-ORing the tail's flags into th2 in the is_flist branch doesn't seem to fix
-this. skb_segment_list() emits the head skb with its own TCP header, so the
-first segment would then carry a spurious FIN/PSH.
-
-[Severity: High]
-Does this also hide the tail's FIN/PSH from netfilter, conntrack,
-flowtable, tc and BPF? All of these read only the aggregate's head header
-before segmentation.
-
-In conntrack, get_conntrack_index() only checks the head's tcph->fin, so
-the FIN transition never fires. tcp_in_window() computes:
-
-    end = segment_seq_plus_len(seq, skb->len, dataoff, tcph);
-
-skb->len covers all of the fraglist payload. The +1 for FIN is missing,
-because tcph is the head header. The peer's ACK of the FIN then hits:
-
-    if (!before(sack, receiver->td_end + 1))
-        return nf_tcp_store_invalid(ct, sender, log, NFCT_TCP_INVALID,
-                                    NF_TCP_LOG_ACK_OVER, receiver->td_end + 1);
-
-That ACK is classified invalid, and so are the peer's own FIN and the
-final ACK. A typical "ct state invalid drop" rule would then drop the
-teardown packets. Without such a rule, the entry stays ESTABLISHED instead
-of moving to FIN_WAIT/CLOSE_WAIT.
-
-In the flowtable, nf_flow_state_check() reads fin/rst only from the head
-header, so NF_FLOW_CLOSING is never set for the offloaded flow.
-
-tcp_mt() in xt_tcpudp and the nft tcp flags match also read only the head
-header, so a FORWARD rule that matches FIN or PSH won't fire.
-skb_segment_list() copies only the MAC header from the head and keeps each
-member's own TCP header. The FIN/PSH therefore still goes out on the wire
-and bypasses that policy.
-
-Before this patch, the unmasked comparison guaranteed that the head header
-described every member of the fraglist.
-
-[ ... ]
-
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 3390e341d1e58..aff450ff6aea7 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1038,6 +1038,11 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 	if ((flags & NLM_F_APPEND) &&
+ 	    (is_multicast_ether_addr(f->key.eth_addr) ||
+ 	     is_zero_ether_addr(f->key.eth_addr))) {
++		if (rcu_access_pointer(f->nh)) {
++			NL_SET_ERR_MSG(extack,
++				       "Cannot append a remote to a nexthop fdb");
++			return -EOPNOTSUPP;
++		}
+ 		rc = vxlan_fdb_append(f, ip, port, vni, ifindex, &rd);
+ 
+ 		if (rc < 0)
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009060319.6229-1-shiming.cheng%40mediatek.com
+2.43.7
+
