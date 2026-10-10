@@ -1,231 +1,227 @@
-Received: from mail-dl1-f70.google.com (mail-dl1-f70.google.com [74.125.82.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BAB3C10A8
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 02:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288E438B157
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 02:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791600942; cv=none; b=talQPvR328G82z1UzCXotfUQ4PFXDbmPjFC12zE+ZDjKuSSV8jetOba3TAQxV00iNIMYh07uGAkipNmqOcAT00XbPsO851nxAR4fFJDLVBnte2aNAmyLHltCSlw6wpGvjE7OCGFU3uhwlf7uY4vJ5FYJNFxkMTzqli28OP8NDhM=
+	t=1791601173; cv=none; b=num8WCr9KgxbFGPksLFyeq2vk9PBo3cNICE8+U/sKWkdlMrsXCIBCRvspZY5FxQ7XNvlKM3G7uD3HT890KA57I4RyM8VwULOTAdcwBiqTsu/lrY4fbzRfRDp4y6hZsI/xwgrYyWfHhgOmQDBmXyNVQxSUn/9P5W+QLWDZXWsjjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791600942; c=relaxed/simple;
-	bh=6gGUo5bfHG056Upj0Wv3RVCBcYSHTIx2FpNy0nwC6/4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gr18SpQzPSkiShVXnReqAnn3xJrlenEig8hIstb4jWMF7DVoMeGjDXnu1oQBoZrJa8VkL+1dOv1f7gwaz177G/TJcGn+PYmdoRfAYTsygYtkOh9RgSijp11wGAryAguTRjQtJRGAxC3ArwmzhAv8+bsReki4OFwktAfjsjv16uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fN+DxHhx; arc=none smtp.client-ip=74.125.82.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	s=arc-20240116; t=1791601173; c=relaxed/simple;
+	bh=eOWKi+90UDsaBSQok0+tvI9ILPzw5GYhHYjJFZOjig4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XAZeXAAUuFoY78vqswTDqkURIwgJWSveFTsOcwQHvqLgjFGH+ZzBmD13IzfcuVIpQlXHMgXn5ELhJwx8xo3Xmxm6AqZCmkV0AN+S4Iil4Mnsn2M9l9YZ2baUUaCkXCn4igDxzD4lKH/QVEQOEnz6MwwtzEjoJ8+0/LM9eUnZDpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AIZVX8bv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fN+DxHhx"
-Received: by mail-dl1-f70.google.com with SMTP id a92af1059eb24-147be78cd56so1314679c88.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 19:55:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791600938; x=1792205738; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0d9kx5oWqQ1CybegjOdsNGS+P/geGKBslG4tLGyxeVI=;
-        b=fN+DxHhxImxuPdY0qJfuRumNvnkLcVwJruiyjK86iWKDOhmcw7zzOrtMfuwb2ahvor
-         lSlpftunEv+Tn+68w/orjJo5giKkjhQlRDZ/9YZa1u9KKRRo0k/hsoVLGnam4nl4mTGU
-         ndwnhCUKNEiPxJhMYHQjER4xqdCaIGP4XPOE66DuPdbOG4eyt/OuaxkonloC7/Ptq6LQ
-         4o7aqleGxL4TWWaeeAXIw9PDUY6Hcj4ACVWVB6kAvBa0RgrXbA9FGZKAtvwIdUmfCNyF
-         8h+bYE1pxUIb75eXeP0YiGk8NbFyHA+De5Xf4yx/W19+u5wMC5E8hJ2LpvPIMVMuxqyN
-         vlbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791600938; x=1792205738;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0d9kx5oWqQ1CybegjOdsNGS+P/geGKBslG4tLGyxeVI=;
-        b=gxtpq/erhmDScm+PYkpdHv2qQmK/JxxxY16N0oVHCCZ5V4Iw4J0PxhPrizbpk/gB6e
-         iPkEIHuJ/2lt1/JupRYi6N1iw9g8MWVDdAZo5kbqPwuUiUZfkFbjqhU5RjPwDbmgWWmB
-         MtJtP1J05B8lA7myePzGqi6bORfVvvPmvocy6SHQ0tfmH0Z7nkWz6VHBMBSn1mRQnIAx
-         PuGCMvTwplcmlh1MhdLssB8MpeGbhB2d4fExAUSxjKmBNaPVwYZoSqR+HOVLQuT0EFXz
-         ssRuL/GqPziNyohVaTGPB/NbeEk7ZjWsN2Xl3Bl822cqTZugk7fYh7yMRKIKflTAyhG4
-         qysw==
-X-Forwarded-Encrypted: i=1; AKwUvByRNW88c8QaX7w44X5iZJVu3MPujwP0CjKpEdszRrpkjsCkAfwgGZirJXvE+JruevTik4f3U+M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLxIqgiNMqWVYWqSAYeHSKItGdQZskGWRlKostSdQZMkVSHBflo
-	rheVbP6NNPjIkJE+6efhtPhtI2PEp9y3SLzDgmm78THv7l1AUjoIyHK2c2Uaf8K3faboKHRA9qT
-	rbbXxm6xtlg7asuwKHFjS+MR1+Q==
-X-Received: from dyvj1-n2.prod.google.com ([2002:a05:693c:87c1:20b0:355:5354:7d27])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:895a:20b0:351:f762:a10c with SMTP id 5a478bee46e88-3537dc3ca81mr5067199eec.0.1791600937866;
- Fri, 09 Oct 2026 19:55:37 -0700 (PDT)
-Date: Sat, 10 Oct 2026 02:55:16 +0000
-In-Reply-To: <20261010025532.839559-1-almasrymina@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AIZVX8bv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90311F000FF;
+	Sat, 10 Oct 2026 02:59:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791601171;
+	bh=zFzxqVjro4anFHZ9xw159Y+eVQ0k1chhiGkCrongoT0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=AIZVX8bvQRoU3i6XZsaGQOkCZIPHpP6nX51fTpOk7I/gRvbO+jeFHmP+8SSWHWFlQ
+	 WI1U4xqkamfmeeVwyQZaXFqqqmgEv+RHUserAmcJfym2jkqUrkcwEvufYsNX9ZUsfc
+	 qKR8sSwDkzi10W/67wydB40ZdDyNh7gR3ddFa96GOXnL530i/AgQ2K8Ff5HxxjLFL+
+	 klLInHhQ8jMsW2h+f1uCqPqbreKiqw+1GucTrVLzNyELxEeApNhWGOmz8o0yirMGcA
+	 3GNtX/Qp+QT9PC75NP2vt45KfQXScym87k92MYhGJ8dv75MDZlyWiH7/mddjkTRPju
+	 Iq49jJXOhjlDg==
+Subject: Re: [PATCH net-next v3] net/mlx5e: advertise tcp-data-split support
+From: netdev-bot+sashiko@kernel.org
+To: dimitri.daskalakis1@gmail.com
+Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
+ mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
+ cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com, cjubran@nvidia.com,
+ bjorn@kernel.org, netdev@vger.kernel.org
+Date: Sat, 10 Oct 2026 02:59:30 +0000
+Message-ID: <179160117016.434549.2094341982375611260@kernel.org>
+In-Reply-To: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
+References: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261010025532.839559-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261010025532.839559-5-almasrymina@google.com>
-Subject: [PATCH net v1 4/4] selftests: net: add devmem RX and TX netdev
- unregister tests
-From: Mina Almasry <almasrymina@google.com>
-To: Jakub Kicinski <kuba@kernel.org>, Mina Almasry <almasrymina@google.com>, David Wei <dw@davidwei.uk>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Taehee Yoo <ap420073@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>, Kaiyuan Zhang <kaiyuanz@google.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, 
-	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Tariq Toukan <tariqt@nvidia.com>, 
-	Kaifeng Wang <kaifengw@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-Add devmem_bind_rx_unregister_check and devmem_bind_tx_unregister_check
-to nl_netdev.py to verify that unregistering a netdevsim device while a
-netlink socket holds an active RX or TX devmem binding synchronously
-detaches the dma_buf attachment and cleanly closes the netlink socket
-without use-after-free or page faults.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Cc: Tariq Toukan <tariqt@nvidia.com>
-Cc: Kaifeng Wang <kaifengw@google.com>
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- tools/testing/selftests/net/nl_netdev.py | 108 ++++++++++++++++++++++-
- 1 file changed, 105 insertions(+), 3 deletions(-)
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
-index ceb44c8e1fec5..bad230ee9dcd2 100755
---- a/tools/testing/selftests/net/nl_netdev.py
-+++ b/tools/testing/selftests/net/nl_netdev.py
-@@ -6,10 +6,14 @@ Tests for the netdev netlink family.
- """
- 
- import errno
-+import fcntl
-+import mmap
-+import os
-+import struct
- from os import system
--from lib.py import ksft_run, ksft_exit
-+from lib.py import ksft_run, ksft_exit, KsftSkipEx
- from lib.py import ksft_eq, ksft_ge, ksft_ne, ksft_raises, ksft_busy_wait
--from lib.py import NetdevFamily, NetdevSimDev, NlError, defer, ip
-+from lib.py import EthtoolFamily, NetdevFamily, NetdevSimDev, NlError, defer, ip
- 
- 
- def empty_check(nf) -> None:
-@@ -366,6 +370,102 @@ def page_pool_stats_ifindex_check(nf) -> None:
-     ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.info.id')
- 
- 
-+def _create_udmabuf(num_pages=64) -> int:
-+    """Create a sealed memfd-backed udmabuf fd for devmem tests."""
-+    if not os.path.exists("/dev/udmabuf"):
-+        raise KsftSkipEx("/dev/udmabuf is not available")
-+
-+    size = num_pages * mmap.PAGESIZE
-+    memfd = os.memfd_create("devmem-ksft", os.MFD_ALLOW_SEALING)
-+    os.ftruncate(memfd, size)
-+    fcntl.fcntl(memfd, 1033, 0x0002)  # F_ADD_SEALS, F_SEAL_SHRINK
-+    devfd = os.open("/dev/udmabuf", os.O_RDWR)
-+    req = bytearray(struct.pack("IIQQ", memfd, 0, 0, size))
-+    dmabuf_fd = fcntl.ioctl(devfd, 0x40187542, req)  # UDMABUF_CREATE
-+    os.close(devfd)
-+    os.close(memfd)
-+    return dmabuf_fd
-+
-+
-+def _dmabuf_attached_devs():
-+    """Return attached device names from debugfs dma_buf/bufinfo if available."""
-+    path = "/sys/kernel/debug/dma_buf/bufinfo"
-+    if not os.path.exists(path):
-+        return None
-+    with open(path, "r", encoding="utf-8") as f:
-+        text = f.read()
-+    attached = []
-+    in_attached = False
-+    for line in text.splitlines():
-+        if line.strip() == "Attached Devices:":
-+            in_attached = True
-+            continue
-+        if in_attached:
-+            if line.startswith("\t") and line.strip():
-+                attached.append(line.strip())
-+            else:
-+                in_attached = False
-+    return attached
-+
-+
-+def devmem_bind_rx_unregister_check(_nf) -> None:
-+    """Verify RX devmem bindings detach dma_buf synchronously on netdev unregister."""
-+    dmabuf_fd = _create_udmabuf()
-+    nf_priv = NetdevFamily()
-+    ef = EthtoolFamily()
-+    nsimdev = NetdevSimDev(queue_count=2)
-+    nsim = nsimdev.nsims[0]
-+
-+    ip(f"link set dev {nsim.ifname} up")
-+    ef.rings_set({"header": {"dev-index": nsim.ifindex},
-+                  "tcp-data-split": "enabled"})
-+    nf_priv.bind_rx({
-+        "ifindex": nsim.ifindex,
-+        "fd": dmabuf_fd,
-+        "queues": [{"id": 1, "type": "rx"}],
-+    })
-+
-+    attached = _dmabuf_attached_devs()
-+    if attached is not None:
-+        ksft_ge(len(attached), 1)
-+
-+    nsimdev.remove()
-+
-+    attached = _dmabuf_attached_devs()
-+    if attached is not None:
-+        ksft_eq(len(attached), 0)
-+
-+    del nf_priv
-+    os.close(dmabuf_fd)
-+
-+
-+def devmem_bind_tx_unregister_check(_nf) -> None:
-+    """Verify TX devmem bindings detach cleanly on netdev unregister without UAF."""
-+    dmabuf_fd = _create_udmabuf()
-+    nf_priv = NetdevFamily()
-+    nsimdev = NetdevSimDev(queue_count=2)
-+    nsim = nsimdev.nsims[0]
-+
-+    ip(f"link set dev {nsim.ifname} up")
-+    nf_priv.bind_tx({
-+        "ifindex": nsim.ifindex,
-+        "fd": dmabuf_fd,
-+    })
-+
-+    attached = _dmabuf_attached_devs()
-+    if attached is not None:
-+        ksft_ge(len(attached), 1)
-+
-+    nsimdev.remove()
-+
-+    attached = _dmabuf_attached_devs()
-+    if attached is not None:
-+        ksft_eq(len(attached), 0)
-+
-+    del nf_priv
-+    os.close(dmabuf_fd)
-+
-+
- def main() -> None:
-     """ Ksft boiler plate main """
-     nf = NetdevFamily()
-@@ -379,7 +479,9 @@ def main() -> None:
-               page_pool_check,
-               page_pool_dump_ifindex,
-               page_pool_ifindex_leak_check,
--              page_pool_stats_ifindex_check
-+              page_pool_stats_ifindex_check,
-+              devmem_bind_rx_unregister_check,
-+              devmem_bind_tx_unregister_check
-               ],
-              args=(nf, ))
-     ksft_exit()
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch is titled "advertise tcp-data-split support" and
+  says it will "Add back tcp-data-split reporting", but…
+- [Medium] On an mlx5 device with rx-gro-hw on,
+  mlx5e_ethtool_get_ringparam() now reports tcp-data-split='enabled'…
+- [Low] The commit message says "This is not a fix" and carries no Fixes:
+  tag, but the patch fixes real defects that the message itself…
+- [Low] With rx-gro-hw on and dev->cfg->hds_config == UNKNOWN,
+  mlx5e_ethtool_get_ringparam() now reports tcp-data-split=enabled from…
+
+--
+
+net/mlx5e: advertise tcp-data-split support
+
+This commit brings back tcp-data-split reporting in
+mlx5e_ethtool_get_ringparam() when SHAMPO is active. It also rejects
+requests to disable tcp-data-split. Finally, it moves
+netdev_update_features() so that it only runs after
+mlx5e_ethtool_set_ringparam() succeeds.
+
+> This is not a fix since HDS/tcp-data-split is still functional with HW
+> GRO enabled.
+
+[Severity: Low]
+Is this accurate? The patch seems to fix problems that the commit message
+itself describes:
+
+  - the tcp-data-split reporting that 46bcce5dfd33 dropped from ethtool -g
+  - the KeyError in hds.set_hds_enable/disable since d347b28c492e
+  - the feature/config de-sync caused by calling netdev_update_features()
+    before mlx5e_ethtool_set_ringparam()
+
+For the last one: in the baseline, mlx5e_ethtool_set_tcp_data_split()
+called netdev_update_features() before the ring sizes were validated.
+mlx5e_fix_features() looks at netdev->cfg_pending:
+
+drivers/net/ethernet/mellanox/mlx5/core/en_main.c:mlx5e_fix_features() {
+    ...
+	if (cfg && cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
+	    !(features & NETIF_F_GRO_HW)) {
+    ...
+}
+
+Take a request like "ethtool -G ethX rx 1 tcp-data-split off" while
+hds_config is ENABLED. HW-GRO/SHAMPO could be turned off first. The
+rx_pending minimum check then fails, and the ethtool core discards
+cfg_pending. dev->cfg->hds_config stays ENABLED, but the HW is no longer
+splitting.
+
+There is no Fixes: tag, so stable tooling won't pick these fixes up for
+kernels that contain 46bcce5dfd33 and d347b28c492e. Could the reporting
+restore and the netdev_update_features() reordering be split into their
+own patches with Fixes: tags? The uAPI behavior change that rejects
+tcp-data-split off could then stay separate.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> index 261c466a4d362..c30d751cac2fa 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+> @@ -378,6 +378,9 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
+>  
+>  	kernel_param->hds_thresh = 0;
+>  	kernel_param->hds_thresh_max = 0;
+> +
+> +	if (priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO)
+> +		kernel_param->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
+>  }
+
+[Severity: Medium]
+The subject says "advertise tcp-data-split support" and the message says
+"Add back tcp-data-split reporting". However, this only ever writes
+ENABLED, and only when SHAMPO is active. The code removed by 46bcce5dfd33
+also reported DISABLED when SHAMPO was not active.
+
+HW-GRO is off by default on mlx5, since mlx5e_build_nic_netdev() clears
+NETIF_F_GRO_HW. In that case:
+
+  - rings_prepare_data() pre-fills tcp_data_split from
+    dev->cfg->hds_config (UNKNOWN)
+  - the driver leaves it untouched
+  - rings_fill_reply() leaves out the attribute:
+
+net/ethtool/rings.c:rings_fill_reply() {
+    ...
+	    (kr->tcp_data_split &&
+	     (nla_put_u8(skb, ETHTOOL_A_RINGS_TCP_DATA_SPLIT,
+    ...
+}
+
+So user space sees tcp-data-split as unsupported, even though the device
+advertises ETHTOOL_RING_USE_TCP_DATA_SPLIT and is in fact not splitting.
+The post-patch log in the changelog shows this:
+
+  ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
+
+mlx5e_ethtool_set_tcp_data_split() now also rejects
+ETHTOOL_TCP_DATA_SPLIT_DISABLED unconditionally. On a default-configured
+device, the off state can then be neither reported nor requested.
+
+Would it be safe to report ETHTOOL_TCP_DATA_SPLIT_DISABLED when SHAMPO is
+not active? Both ethtool_ringparam_get_cfg() and the netlink set path
+replace the driver-reported value with dev->cfg->hds_config.
+
+[Severity: Low]
+With rx-gro-hw on and dev->cfg->hds_config == UNKNOWN, this now reports
+enabled. Can hds.set_hds_enable then leave hds_config stuck at ENABLED
+after the test finishes?
+
+_defer_reset_hds() saves tcp-data-split as 'enabled' (from SHAMPO state)
+set_hds_enable() writes tcp-data-split 'enabled'
+  ethnl_set_rings()
+    dev->cfg_pending->hds_config = kernel_ringparam.tcp_data_split;
+_hds_reset() at cleanup:
+    if cur.get('tcp-data-split') != rings.get('tcp-data-split'):
+
+Both values are 'enabled', so 'unknown' is never written back.
+
+After that, mlx5e_fix_features() keeps NETIF_F_GRO_HW forced on, and
+"ethtool -K rx-gro-hw off" no longer takes effect. dev_xdp_attach() also
+rejects single-buffer XDP:
+
+	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
+	    prog && !prog->aux->xdp_has_frags) {
+
+In a full hds.py run, the later set_xdp tests write 'unknown' and hide
+this. It shows up when set_hds_enable runs alone, or as the last test that
+touches HDS.
+
+The root cause is that the test compares reported state rather than
+config, and netdevsim has the same pattern. This patch is what makes it
+reachable on mlx5, though. Should _hds_reset() or the driver reporting
+be adjusted?
+
+[Severity: Medium]
+On mlx5 with rx-gro-hw on, do hds.set_xdp and hds.ioctl_set_xdp now go
+from SKIP to FAIL?
+
+Both tests see mode 'enabled', write 'unknown', and then attach a
+single-buffer XDP program:
+
+tools/testing/selftests/drivers/net/hds.py:set_xdp() {
+    ...
+    if mode == 'enabled':
+        _defer_reset_hds(cfg, netnl)
+        netnl.rings_set({'header': {'dev-index': cfg.ifindex},
+                         'tcp-data-split': 'unknown'})
+
+    _xdp_onoff(cfg)
+}
+
+If cfg is already UNKNOWN, ethnl_set_rings() returns 0 on !mod and the
+'unknown' write does nothing. Otherwise it only clears the config, and
+GRO_HW stays wanted. Either way SHAMPO stays active:
+
+mlx5e_xdp_set()
+  mlx5e_xdp_allowed()
+	if (params->packet_merge.type != MLX5E_PACKET_MERGE_NONE) {
+		netdev_warn(netdev, "can't set XDP while HW-GRO/LRO is on, disable them first\n");
+		return -EINVAL;
+
+The log in the changelog only covers the HW-GRO off case, where these
+tests are skipped. Was the HW-GRO on configuration tested as well?
+
+[ ... ]
+
 -- 
-2.56.0.385.gd3acb90ef8-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009025137.2631215-1-dimitri.daskalakis1%40gmail.com
