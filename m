@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB114B405E;
-	Sat, 10 Oct 2026 19:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E563BA232;
+	Sat, 10 Oct 2026 19:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791659450; cv=none; b=o1vzufUdlLV5d92YBz+Z9mPf/VQgAnjreg5ZlYvde1EqW8v+GaDIJ6EzjKedcCmVY3yT14H8KK41wE2Fc2DPnY0niHnKj8c5fmdG9gPd9L+b0fprvCTzbr0exf+t0b9KZRYFAJqPV1GNXgejIzG3dExezqdtACdtuZzdafbAJC4=
+	t=1791660422; cv=none; b=aydnKNzbENdoFLDqgMIpNPjWXE7M+51nrJbPrPbfi993ffD5Q+UcvgJcw6iCzQxbNRXHfiz8SdSSIK8qa7Z+e0yKFmGSTgcyEcDl2huHy2nLR/TlFmiKJoqskhSI8VIcSKuCgH6F65VKfKa23oG5ph3Re66z19XpPLnynXwDlro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791659450; c=relaxed/simple;
-	bh=WqKq3/IcrYMSEUaGps9jVmezFTk/Mk9m7vKwDCQpAts=;
+	s=arc-20240116; t=1791660422; c=relaxed/simple;
+	bh=8oxBFzyPpQD7aHgj/e4xQeADxGso7MPsg5cVh1/aANU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VGDuLwOHFFWmwmokR8+JRv9AI64ZHB27iDXVOheIeyBuCUfe6xkZqUpQVODblgCQEEVkh9ld0vgci4rHUy4gdolDbFxuICEb6NBlCYDqw2i74F95dW+G7felINCUocOdoZ0i6NqKpG8onUC+iV4+E7d1qY8bfuXJ3xlzWGK5lIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKDZ0ntX; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=RUTD5gmTPvuj1xKous1MT+E65wpSmmCkRKmU3tzg9XybI2JeKT/BJGwQ0VTHvffeu8mW4x87MEXlPdWU8CGAvzCiuTcxGJrKqSQ+vzEsX9n2fSwI0FD8xm75KkoT22d9XaZCMq+m8QTe+ZxeeZQa/2r8XpdDhjG6qUEjWDkv2Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axAHdrv2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKDZ0ntX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263E61F00893;
-	Sat, 10 Oct 2026 19:10:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axAHdrv2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5331F000FF;
+	Sat, 10 Oct 2026 19:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791659449;
-	bh=pwcAo7dHSCw8nV9+0txmx3BX+wsRNt71MBoq9JyGCtw=;
+	s=k20260515; t=1791660421;
+	bh=RTYzQWbOq2I6U646F3ov4k0c0sdmFFlu5hbxBb5Gi6I=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fKDZ0ntXNmYEY5osq3GCI09sE4Tlci8NNOZ8S4AetYpFNFp1Fg7vMP1v/zygUYh7C
-	 lnC9dtF4ai7P1hUBtHMAmJnxYSTR5EnTJ0A+7qOd374QT3nOUFAjlBD7BV/pq5IsOm
-	 KpOoyWUE/6SWHlQrcNx6rT9s86VJt3xIa2aveFTKgr2/OhxDX9NX+YeXsgGU8ylUmT
-	 tSMrWHK3p3EmGrPVlCMRMjczFb/8TL9aAtieCZpJ9c1AytYDSElDqFYqjxcKxK9DsL
-	 WziJerZWc0DP0j9b5pSLK4Bb0mdphE2ZWgBIAYt784peeVW57czB6nfFGC5Akqd7JP
-	 jY29EprJycnzQ==
-Subject: Re: [PATCH net 2/2] sfc: ptp: avoid racing PPS timestamp updates
+	b=axAHdrv2xCZAWamt4duDH0Od0WiFSVL0U5Urrh/05BkxdCqm6t7Wtr7SSD+9vmJIw
+	 iTSwmzjboQ4pAVSDL38hVl3UDgD7Ut/TmkU3xhkk2Br9alT8J451BQlCWF6XprRZvj
+	 QvO1d7olVSiprtTRTbGb356cnUiGfVRt6bzI6voW5O+J9Bs8JJmtOfLLibKVBei36b
+	 00LmmQa16SovV8FsU08NLI1qQ+2mFVwIAn4ihPC1z/jFbeB2XksQRmkg+K9+2ocE8N
+	 09dijX+lBJY9MnoxqXasgG9uGxmNlAqFpqb/yS/1cRH74/b5TbS8eUehOS8ty1NVOT
+	 9b8XC7gNAtBXQ==
+Subject: Re: [PATCH net v4 1/5] dpll: zl3073x: do not offer 0 Hz as a
+ supported pin frequency
 From: netdev-bot+sashiko@kernel.org
-To: alex.austin@amd.com
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, bhutchings@solarflare.com,
- davem@davemloft.net, ecree.xilinx@gmail.com, edumazet@kernel.org,
- kuba@kernel.org, linux-kernel@vger.kernel.org, linux-net-drivers@amd.com,
- pabeni@redhat.com, richardcochran@gmail.com, smhodgson@solarflare.com,
- alucero@amd.com, pieter.jansen-van-vuuren@amd.com, alucerop@amd.com
-Date: Sat, 10 Oct 2026 19:10:47 +0000
-Message-ID: <179165944766.434549.14678251542382712038@kernel.org>
-In-Reply-To: <20261009183240.1898762-3-alex.austin@amd.com>
-References: <20261009183240.1898762-3-alex.austin@amd.com>
+To: ivecera@redhat.com
+Cc: netdev@vger.kernel.org, poros@redhat.com, min.li@microchip.com,
+ vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
+ kuba@kernel.org, Prathosh.Satish@microchip.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Sat, 10 Oct 2026 19:27:00 +0000
+Message-ID: <179166042014.434549.4178521508120779611@kernel.org>
+In-Reply-To: <20261009192556.272263-2-ivecera@redhat.com>
+References: <20261009192556.272263-2-ivecera@redhat.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,133 +59,92 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The Siena PTP driver still has the PPS timestamp race that
-  this patch fixes in sfc.
-
-Pre-existing issues:
-- [Low] The comment above efx_ptp_process_times() in
-  drivers/net/ethernet/sfc/ptp.c (lines 909-916) says the function will…
+- [Medium] At this commit, the subject says 0 Hz is no longer offered,
+  but zl3073x_pin_props_get() (drivers/dpll/zl3073x/prop.c) only filters…
 
 --
 
-sfc: ptp: avoid racing PPS timestamp updates
+dpll: zl3073x: do not offer 0 Hz as a supported pin frequency
 
-This patch removes the shared host_time_pps field from struct
-efx_ptp_data in the sfc driver. The computed PPS timestamp is now returned
-through a caller-owned struct efx_ptp_sync_result. efx_ptp_pps_worker()
-uses a stack-local result, and efx_ptp_change_mode() passes NULL.
+This patch stops zl3073x_pin_props_get() from putting the current pin
+frequency into the supported list when it reads back as 0 Hz. If the
+list ends up empty, it is freed and not published, because the DPLL
+core rejects an empty non-NULL list.
 
-> diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
-> index ac9951fee5ddd..103df1f8fa92d 100644
-> --- a/drivers/net/ethernet/sfc/ptp.c
-> +++ b/drivers/net/ethernet/sfc/ptp.c
-
-[ ... ]
-
-> @@ -911,7 +917,8 @@ static void efx_ptp_read_timeset(MCDI_DECLARE_STRUCT_PTR(data),
->  static int
->  efx_ptp_process_times(struct efx_nic *efx, MCDI_DECLARE_STRUCT_PTR(synch_buf),
->  		      size_t response_length,
-> -		      const struct pps_event_time *last_time)
-> +		      const struct pps_event_time *last_time,
-> +		      struct efx_ptp_sync_result *result)
->  {
-
-[Severity: Low]
-This isn't a bug introduced by this patch, but the comment above
-efx_ptp_process_times() doesn't match what the function does:
-
- * Extract times from returned results, and establish the minimum value
- * seen.  The minimum value represents the "best" possible time and events
- * too much greater than this are rejected - the machine is, perhaps, too
- * busy.
-
-The loop never computes an observed minimum. It checks each reading
-against SYNCHRONISATION_GRANULARITY_NS, MAX_SYNCHRONISATION_NS and
-ptp->min_synchronisation_ns, and every reading that passes updates
-last_good:
-
-		} else if (corrected < ptp->min_synchronisation_ns) {
-			++ptp->undersize_sync_windows;
-		} else {
-			ngood++;
-			last_good = i;
-		}
-
-When several readings pass, the function uses the last one, not the one
-with the smallest window.
-
-Could the comment be updated to describe the fixed thresholds and the
-last-good selection?
-
-[ ... ]
-
-> @@ -1494,14 +1506,15 @@ static void efx_ptp_pps_worker(struct work_struct *work)
->  {
->  	struct efx_ptp_data *ptp =
->  		container_of(work, struct efx_ptp_data, pps_work);
-> +	struct efx_ptp_sync_result result = {};
->  	struct efx_nic *efx = ptp->efx;
->  	struct ptp_clock_event ptp_evt;
+> diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
+> index ac9d41d0f978e..18a1bf3103326 100644
+> --- a/drivers/dpll/zl3073x/prop.c
+> +++ b/drivers/dpll/zl3073x/prop.c
+> @@ -295,13 +295,20 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
+>  		goto err_alloc_ranges;
+>  	}
 >  
-> -	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS))
-> +	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS, &result))
->  		return;
+> -	/* Start with current frequency at index 0 */
+> -	ranges[0] = (struct dpll_pin_frequency)DPLL_PIN_FREQUENCY(curr_freq);
+> +	/* Start with current frequency at index 0. A sub-Hz frequency is
+> +	 * read back as 0 Hz and cannot be set, so it is not offered.
+> +	 */
+> +	j = 0;
+> +	if (curr_freq) {
+> +		struct dpll_pin_frequency freq = DPLL_PIN_FREQUENCY(curr_freq);
+> +
+> +		ranges[j++] = freq;
+> +	}
 >  
->  	ptp_evt.type = PTP_CLOCK_PPSUSR;
-> -	ptp_evt.pps_times = ptp->host_time_pps;
-> +	ptp_evt.pps_times = result.host_time_pps;
->  	ptp_clock_event(ptp->phc_clock, &ptp_evt);
->  }
+>  	/* Add frequencies from firmware node, skipping current frequency
+>  	 * and filtering out frequencies not representable by device
+>  	 */
+> -	for (i = 0, j = 1; i < num_freqs; i++) {
+> +	for (i = 0; i < num_freqs; i++) {
+>  		struct dpll_pin_frequency freq = DPLL_PIN_FREQUENCY(freqs[i]);
+>  
+>  		if (freqs[i] == curr_freq)
 
 [Severity: Medium]
-Does the Siena driver still have the same race?
+Can 0 Hz still end up offered through the firmware list?
 
-drivers/net/ethernet/sfc/siena/ptp.c is a near copy of this file. It still
-keeps host_time_pps as a shared field in its struct efx_ptp_data.
+The subject says 0 Hz is no longer offered. However, only a 0 Hz current
+frequency is filtered.
 
-Its efx_ptp_process_times() writes that field on every successful
-synchronization:
+Suppose the "supported-frequencies-hz" property has a 0 entry and
+curr_freq is nonzero. That entry is not skipped by the
+freqs[i] == curr_freq check. It goes on to zl3073x_pin_check_freq(),
+which has no zero check at this commit:
 
-drivers/net/ethernet/sfc/siena/ptp.c:efx_ptp_process_times() {
+drivers/dpll/zl3073x/prop.c:zl3073x_pin_check_freq() {
+	if (freq > U32_MAX)
+		goto err_inv_freq;
     ...
-	/* Set PPS timestamp to match NIC top of second */
-	ptp->host_time_pps = *last_time;
-	pps_sub_ts(&ptp->host_time_pps, delta);
-    ...
-}
-
-Its efx_ptp_pps_worker() copies the field after the synchronization
-returns:
-
-drivers/net/ethernet/sfc/siena/ptp.c:efx_ptp_pps_worker() {
-    ...
-	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS))
-		return;
-
-	ptp_evt.type = PTP_CLOCK_PPSUSR;
-	ptp_evt.pps_times = ptp->host_time_pps;
+		/* Check the frequency divides synth frequency */
+		if (synth_freq % (u32)freq)
+			goto err_inv_freq;
     ...
 }
 
-The SIOCSHWTSTAMP path can rewrite the field at the same time:
+On an output pin, does this divide by zero during probe?
 
-efx_siena_ptp_change_mode()
-    efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS * 2)
-        efx_ptp_process_times()
-            ptp->host_time_pps = *last_time;
+On an input pin, zl3073x_ref_freq_factorize(0, ...) succeeds on the first
+base frequency of 1. Here 0 / 1 = 0 <= U16_MAX and 0 % 1 == 0, so 0 Hz is
+published as supported. It could then be programmed with base 1 and
+multiplier 0.
 
-The Siena efx_ptp_synchronize() also takes no lock, because siena/ptp.c
-has no phc_lock. So Siena has neither the serialization from "sfc: ptp:
-serialize host and MC synchronization transactions" nor the caller-owned
-result added here. Concurrent synchronizations can overwrite ptp->timeset[]
-and host_time_pps while the worker reads them.
+The dpll-pin.yaml binding sets no minimum for supported-frequencies-hz,
+so the schema does not reject 0.
 
-Both copies come from the Fixes: commit 7c236c43b838, and the commit
-message does not mention Siena.
+A later patch in this series, "dpll: zl3073x: reject output frequencies
+with too small divisor", changes the first check in
+zl3073x_pin_check_freq() to:
 
-Should siena/ptp.c get the same fix, either in this patch or as a
-follow-up?
+	if (!freq || freq > U32_MAX)
+		goto err_inv_freq;
+
+That fixes this by the end of the series. At this intermediate commit,
+though, the 0 Hz case is still reachable from firmware.
+
+Would it make sense to move the !freq check into this patch? Bisection
+would then not land on a kernel that can still divide by zero here.
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009183240.1898762-1-alex.austin%40amd.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009192556.272263-1-ivecera%40redhat.com
