@@ -1,158 +1,86 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B506284662
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA73E361941
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791613545; cv=none; b=Yfy/h+ZQFZu8asgTYMP/tmqprPWe/VRyl9JA3ZMQb72HaYsYI5to8rDOiAKfBXi4W1aKWV+FcKrhBF7hMbNt7Q3A6sIsFtDanUuZuqaMnIX5dMCABPRl9V4YZ4AQ/FZx+4lcOoOodm80NmgIzAtGXNJ8zZnXv0hkhPfxpUK54Gw=
+	t=1791613565; cv=none; b=QOQE0OganYr0LM0+287R8juHCHQLRAOIDurmj7HjNM8eg8WnzenrlqbGP639NlO/t8pIkxUlzqAyJAaUn1x8eXLwAx0GVROrpIasm0jR1MlpfKjw4C1bh9SoF+OGtZW08acbhuyfelGLqspIiCIQYUlPP5bemW46a2vvUI/rGDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791613545; c=relaxed/simple;
-	bh=ukhTjY+tzJ7z8UlycHQonmn8I88AAmwOMyFsDWHYWI8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0iNVBiHVlXtoEx8YaQ9K1iKG16zOdVo/wq2Rr+eW8KXqCLb1w1xAiax38DZ08b+Idpp1vBQaW6ND4zTNUZRxrJ5Gw7i/cR45MfrtbNLSu0DodBiG6D7fGqQ4sqV7S5wO8ueeog9z9RVkYn42WumUjuz3hcFBNVcEbL9NbWXOTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=RjFjlwny; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1791613565; c=relaxed/simple;
+	bh=/VwFVEy1ksMMQ3bDcdEpkKJrBuTWhaaB1+PgMhDl+NI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oMCbfGfwZoih3msk/gHycfr7Cb5FN27PLFxD18zvDtnYmm00E2I5nVMwiSc74V6FEws4Yw3r9oZiTBoBjihcwDsLEkssFpVaiN4nrMJrtyv9n50svN+eP4WucoG/2/TBo2At4b9TjZXBtC85/7+aoHNGxsk2MLa4/bfCZtVjToo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWrOt/mH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="RjFjlwny"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93cc31c18ebso24402585a.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 23:25:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1791613543; x=1792218343; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0HOGcAJM0K8BeFbMrcvdMtYmm/3qaO8p9fgso6bpXfU=;
-        b=RjFjlwnyFJIvTWueyLZQPt7J2YihG8LDgyMj/lvjJYIKk7Elc/WknssayZgCU6I81x
-         ZHNgXXFBNz4fwT7chtrk9HbYR18o90EcRVoOqPpaIXlfU2SYvoDGzircWh0cv14iy27U
-         s+1PHfBw+J+pI0N/4VDb0UOHjH4iY32T+uLgYi5uHE6h5VOjfdXc/r8ql1hgLh6L1lP2
-         jT+2cJ4WNyhSttHbvqW1BNby2oO3MsHWV2ebLPBtKrj6WDt49qf6mTyMCG7BDixdUAx6
-         Dhkr8k3kt+fMyVAK+B1ai7Lz+elvfUep7OjtYl4n131PgyLnH0hMfRbEmOrzb2i686jz
-         u5NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791613543; x=1792218343;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0HOGcAJM0K8BeFbMrcvdMtYmm/3qaO8p9fgso6bpXfU=;
-        b=nvTFVG4UQikbWaFWGicSvubstMbWGpZCnZmFy+oxgkZY0xfZ3leElrhqjv/VzRFbTw
-         92eOlPzAilwsYxhmTtApthow4lHtUf368mbo4YkKBNrB2fixGoY9pCu+4E5LmSPaoiVD
-         LBKLVzDZFHrfh8elrAsNO3m22dQj7hYpc4XUcP4CNInSaHvpJbAzLEpDYnDJCsagLybw
-         g6Wdtd3SNWXWMnthZodjd4RSsNuOUihe1FTFP2YTMXOlJwtQWz2b3yP3I9lvJ1y12r7T
-         L2hvC6CdYk8vdehHNeQD9mlKHTl4jfQGiALtawQvtR5d3WXmVZBPiCIUlaxb3gCti0Hr
-         07jg==
-X-Gm-Message-State: AFq9FYKo1ubACh54gd0xXqPFO3EXDmgsngZDG0d7irx6q7Q1MSfq+jo8
-	xB7is/rrVpDynvIPRUU0SK9DuRJVF7yDqRzkFOGnnWp9cenFTQbGHMHC1+xHhnpm6ovsL39DfFY
-	w7oxtqwGn
-X-Gm-Gg: AYBFou2V5HCsxyoY2lUl98Lt1Lqwq/1iOn1R179TYrxCYT6w42XKAy3JoYfCPCiskTZ
-	YzO6SX1UyzGBSZamrDuFZU35IJ2PVcUmMBNnaYtH7P2non+Wis17RYq9HGtqePHKntQYQZrBcY6
-	0rMlhvzp15Uuihf3LTacP5zL0dXgkCOZ0JWiOg3ThOfLYK3fse2onSEycuQ0GUgawHMWDRMpKWp
-	cSiCy24O21j+lkmx9luscuuRQcrey0kmAIdLs48Ig7n+1rWbqjoKxMH5779K++yaw9fBBbfWdgr
-	LSeeP+rl3CBxzjOLwLXbQmLlpGFeV8kSikAJNvVbBHovoWK4/J0UJtn9Hif8fA9/PrX1F78VFIg
-	TD6TCKbXfB8eQgnE87Y2IjDETZUcHo+9lcODWQssJLIageo+cJwgiH1o3oBfnjSdAi8y6g1dYgA
-	kinYOUiV2ezTqzu2Mk9vHKJ4iOnr5dDymtTFyWFRQqNmMSiYlSHQuWZoTmuI8k1NKt9/9QRVJae
-	0ZsPpTuSo8m1ejvK0Y=
-X-Received: by 2002:a05:620a:40d2:b0:93e:4d07:14db with SMTP id af79cd13be357-93ebd1e0133mr669079385a.24.1791613543129;
-        Fri, 09 Oct 2026 23:25:43 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([191.222.220.30])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b550e177csm37378836d6.47.2026.10.09.23.25.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 23:25:42 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: netdev@vger.kernel.org,
-	kuba@kernel.org
-Cc: jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	petalzu987@gmail.com,
-	weir@nebusec.ai
-Subject: [PATCH net v2 1/1] devlink: fix reload error on netns teardown
-Date: Sat, 10 Oct 2026 14:25:31 +0800
-Message-ID: <c43794aa549424b79a0da624e73bbb5215c0e9f5.1791555658.git.petalzu987@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1791555658.git.petalzu987@gmail.com>
-References: <cover.1791555658.git.petalzu987@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWrOt/mH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5133B1F008A0
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:26:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791613564;
+	bh=/VwFVEy1ksMMQ3bDcdEpkKJrBuTWhaaB1+PgMhDl+NI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=aWrOt/mHYDK1fRzSEWkvZcJWJfDgy8A+sFPJ1h/jBwJR8SD+f0cufmBh6w63N0dEL
+	 1ILNheCdWPUdTstwTTjrmwB7h0l7zk2lpJjUpIQVEo3nYsYgFTRFDG8Qg6qCHMg/41
+	 /oo5fMVe6TjANwCTu47Uqxq27autStv7XcA1FmQ2BDurby8i+af2KZOG/J335Sj+1d
+	 +BRVEjRnvbXd4uKg7glwrEU+hPKvfHyoLMX/wodh5H1h6zMnCDZGxWXuHz8GwjRXq8
+	 qS/VRjVsDLvagqBdAzui153F7bMXn3w6S03s6UoQ70VKHVZkkDSQSAAC19Vy6Puf8K
+	 CAIrdqa8O5Kvg==
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-483c607ccb4so337501fac.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 23:26:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy/oDghx7m3cRYT2vl8vZh3/rgoz4udaW20uO3v2BZHbFvK7jTbUPdWfNLrXPNA/p6nLK1+1MA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKCyZickN7V8w1b2pksoWGfFVx4wHv+leM3ebbLBFxgX2PWJdhA
+	wa9ZDBZPv1fd5qeX22G92kt7h5Oe94zzmrRVs/FkG7+mDvLjlm5cYuMpx1I7rLGt2DM8LCXtn/a
+	0SMo8XBHH+Ao6BhKZW4b++ydeKheUFqc=
+X-Received: by 2002:a05:6870:c272:b0:47c:2737:edd0 with SMTP id
+ 586e51a60fabf-4a2a86c4673mr3263725fac.1.1791613563536; Fri, 09 Oct 2026
+ 23:26:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com>
+ <20261009171447.291802-1-ncardwell.sw@gmail.com>
+In-Reply-To: <20261009171447.291802-1-ncardwell.sw@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sat, 10 Oct 2026 08:25:52 +0200
+X-Gmail-Original-Message-ID: <CAL4Wiir8_sh3pS=DGTG=iqLstnHbxf0dWQgk0O0b0oferN69=w@mail.gmail.com>
+X-Gm-Features: AclHuK8OXj7pbT2oTIRY8DcZBjiXkMGrnNSUYf07pfEkmQ7cCLqcw1rz21aj6Ok
+Message-ID: <CAL4Wiir8_sh3pS=DGTG=iqLstnHbxf0dWQgk0O0b0oferN69=w@mail.gmail.com>
+Subject: Re: [PATCH net v3 3/3] selftests: net: packetdrill: test RTO fallback
+ after partial undo
+To: Neal Cardwell <ncardwell.sw@gmail.com>
+Cc: davem@davemloft.net, horms@kernel.org, jiayuan.chen@linux.dev, 
+	kuba@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, ncardwell@google.com, netdev@vger.kernel.org, 
+	nramaswamy@openai.com, pabeni@redhat.com, shuah@kernel.org, ycheng@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Zixuan Chai <petalzu987@gmail.com>
+Le ven. 9 oct. 2026 =C3=A0 19:15, Neal Cardwell <ncardwell.sw@gmail.com> a =
+=C3=A9crit :
+>
+> From: Neal Cardwell <ncardwell@google.com>
+>
+> On Fri, Oct 9, 2026 at 1:47#AM Eric Dumazet <edumazet@kernel.org> wrote:
+>
+> > Let me come back to tp->tsorted_lost_queue [1]. I was too terse there
+> > ("often") and it did not get discussed.
+>
+> Thanks, Eric. Given that you are OK with the space overhead for a new
+> tp->tsorted_lost_queue field, I think it would be quite nice to use your
+> suggested approach, since it should give us better loss recovery behavior=
+.
+>
+> FWIW, I asked an LLM to code up your idea, and below is what it came up w=
+ith,
+> in case that is useful for discussion or using. It also proposed 2 packet=
+drill
+> tests (one that claims "This is the case that Eric suggested for segments=
+ with
+> TCPCB_EVER_RETRANS."), which I can post if there is interest.
+>
 
-During network namespace teardown, devlink_pernet_pre_exit() reloads
-devlink instances into init_net. If reload_down() fails, devlink_reload()
-returns before changing the namespace, leaving the registered devlink with
-a pointer to the namespace being destroyed.
-
-Move the fallback transition to devlink_pernet_pre_exit(), where the
-teardown context is explicit. Do it only when the devlink still belongs to
-the exiting namespace, since reload_up() can fail after the regular reload
-path has already moved the instance. Keep the original reload error.
-
-Fixes: 070c63f20f6c ("net: devlink: allow to change namespaces during reload")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Closes: https://bugtracker.nebusec.ai/f/11365
-Assisted-by: LLM
-Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
----
- net/devlink/core.c          | 2 ++
- net/devlink/dev.c           | 6 +++---
- net/devlink/devl_internal.h | 3 +++
- 3 files changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/net/devlink/core.c b/net/devlink/core.c
-index bddbbbf000fe..9b844e0c1bd2 100644
---- a/net/devlink/core.c
-+++ b/net/devlink/core.c
-@@ -585,6 +585,8 @@ static void __net_exit devlink_pernet_pre_exit(struct net *net)
- 					     DEVLINK_RELOAD_ACTION_DRIVER_REINIT,
- 					     DEVLINK_RELOAD_LIMIT_UNSPEC,
- 					     &actions_performed, NULL);
-+		if (err && net_eq(devlink_net(devlink), net))
-+			devlink_reload_netns_change(devlink, net, &init_net);
- 		devl_dev_unlock(devlink, true);
- 		devlink_put(devlink);
- 		if (err && err != -EOPNOTSUPP)
-diff --git a/net/devlink/dev.c b/net/devlink/dev.c
-index 55959b0ff5ab..da7bd9015baf 100644
---- a/net/devlink/dev.c
-+++ b/net/devlink/dev.c
-@@ -412,9 +412,9 @@ static struct net *devlink_netns_get(struct sk_buff *skb,
- 	return net;
- }
- 
--static void devlink_reload_netns_change(struct devlink *devlink,
--					struct net *curr_net,
--					struct net *dest_net)
-+void devlink_reload_netns_change(struct devlink *devlink,
-+				 struct net *curr_net,
-+				 struct net *dest_net)
- {
- 	/* Userspace needs to be notified about devlink objects
- 	 * removed from original and entering new network namespace.
-diff --git a/net/devlink/devl_internal.h b/net/devlink/devl_internal.h
-index cdf894ba5a9d..798e707002b9 100644
---- a/net/devlink/devl_internal.h
-+++ b/net/devlink/devl_internal.h
-@@ -324,6 +324,9 @@ struct devlink_port *devlink_port_get_from_attrs(struct devlink *devlink,
- 
- /* Reload */
- bool devlink_reload_actions_valid(const struct devlink_ops *ops);
-+void devlink_reload_netns_change(struct devlink *devlink,
-+				 struct net *curr_net,
-+				 struct net *dest_net);
- int devlink_reload(struct devlink *devlink, struct net *dest_net,
- 		   enum devlink_reload_action action,
- 		   enum devlink_reload_limit limit,
--- 
-2.34.1
-
+Excellent, thanks Neal. I will take a deeper look on Monday.
