@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91D03932F9;
-	Sat, 10 Oct 2026 07:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF12371CF8;
+	Sat, 10 Oct 2026 07:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791619126; cv=none; b=g6iJvmj5f1N32ocXTfqMme1mzRNEWddt//cj36Jkj/8hL+Jea1Es5ZBiu7dAz/aG7W0MeHkQnIFfLLgk1/4Tf7egPiKpWPDpkMQfxMpLkPzyVlrH6XaIrcukP0Bc2/Igk/AXZ+j7A/6cy/4bJlwBlMPANMc4voawMP2KksgYKnM=
+	t=1791619127; cv=none; b=syBeReX98wkV4dPO9HIyZUVxkgAHLm1fnJFmS1YQlP5QdrqP53mX/2WcxC0ywR1ghDkKw4mk8RscnoTPA/7DnacrA0YEmVkcjr+8KCbv5ubq90oMVr6g+pTpF/7LqWYxqpcM6whAln7YXzHzVjZzg+yi/mihXWvGNstvP5k0ftA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791619126; c=relaxed/simple;
-	bh=XIdCPeDewN10SKO1C0TQYrubUpPucOgza8+GjWkQ/sU=;
+	s=arc-20240116; t=1791619127; c=relaxed/simple;
+	bh=cQNoY7GCF+8dP7AlXyh733Cm+Thv2UqXPBf8rQPTwx8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=loEeIkl82aUPBsp1NY9XFm1qjjwo+iFK9AOxC/fhFQcRNtDVtuTJLBaVaHfFkSUWDGAmkdbGHiNO2Th7MfxXZhW0vMy0djw+GTNLzo1ZeLt2ru35MxN1XDZrEh5CFUIrB77oBDzoeQccWl0hGWY+pJEtJkfPfAWYkbRkJoSwiRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTFPKEwH; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=glAkBiYVeLQggk6txfVo9UiGNgQc9Hp4bS7OanEtL8mdlwLLIh8fl/sBz4X7T5oSLPGmNsz7rbcJ2nA5/wnT9KBW0uTlwu8OIPmxPgmWHgB/VL6raf4YU9LKcGa3Yj/D9JyxKL0iRo0/tOEe88H0ubdzMhXVvMjtEyU/pgzL1H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdXHQJ6+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTFPKEwH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756691F00893;
-	Sat, 10 Oct 2026 07:58:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdXHQJ6+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7641F000FF;
+	Sat, 10 Oct 2026 07:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791619124;
-	bh=flQcx5gSOoKvqu5wM1mUsERFuY2KFXUokmPdWLYRZvI=;
+	s=k20260515; t=1791619126;
+	bh=ihM+8OF/a7XmMt1k/YOV5m6YdEX835YCfzjT9xgUihI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lTFPKEwHj1hxea52PIFAL/dfHeJPnoFXv9obCF4omjMizvDE1qDk8vBiCWzMowqRS
-	 Bblb8rXAMYMm2+KZ6XntX1TJScecY3y3wp86NcnlxIL+GEATlfqta06IU19JRldoJu
-	 h799zhmk+/3MlpuUtxNAz9wl/2+YaB/UlAX7APQAF6+NGnS1OBhq6CmO5or6cpN24v
-	 MKyhRBd4GRI634X56g5Z8enJTrXskQUmP//gpt496taPLGO9nS9ZTVgKe/utjVWUd6
-	 OKtfuaiVTrlWT53YQ/qcnrB+8rFaiR8JyKAavumQLAff0aOBTmjTyu9b9WIOjkHIem
-	 Ypo0/dY6tfMoQ==
-Subject:
- Re: [PATCH net-next v2 4/6] net: ftgmac100: Require phy-mode for AST2700
+	b=PdXHQJ6+jFAi7Q0fuGEhU6RIwL2UCbG47pKaUKkTkGAVRMIZwqJKvpioOmZYl0M22
+	 wCYDOCPyK6E1UBjtZtgH1ojZG/dZwMtj3CTV9wqMxrP2rJHCtoS3S+YrYriwbF7AG8
+	 P0AfOYjdj7Sd9mv7BJBE+6PTHVHjNzPiLj9IFYslhjk7zFRjyt1pawGGJv6ZvAD0ZV
+	 YybNv6fhAlRgPdWzBXRF06aicJtdjwSkWcwc9rwVtprSqlsHNN56q+AVzWfmqbnltp
+	 P9GRJ7SrNE+IVyjF+6jgpLbsYFKOQZjOycLfhglZGCHXsGuN1L10ZEDzYvdnxUe9mh
+	 PnPIckmC8Z44w==
+Subject: Re: [PATCH net-next v2 5/6] net: ftgmac100: Add AST2700 upper DMA
+ address support
 From: netdev-bot+sashiko@kernel.org
 To: jacky_chou@aspeedtech.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -35,11 +35,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  ratbert@faraday-tech.com, edumazet@kernel.org, hkallweit1@gmail.com,
  linux@armlinux.org.uk, netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 07:58:42 +0000
-Message-ID: <179161912299.434549.18172761836430196404@kernel.org>
-In-Reply-To: <20261006-support_ast2700-v2-4-36de51fb8066@aspeedtech.com>
-References: <20261006-support_ast2700-v2-4-36de51fb8066@aspeedtech.com>
-X-sashiko-severity: Medium
+Date: Sat, 10 Oct 2026 07:58:44 +0000
+Message-ID: <179161912453.434549.9464928131713010335@kernel.org>
+In-Reply-To: <20261006-support_ast2700-v2-5-36de51fb8066@aspeedtech.com>
+References: <20261006-support_ast2700-v2-5-36de51fb8066@aspeedtech.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,137 +49,121 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- [Low] struct ftgmac100_txdes in
+  drivers/net/ethernet/faraday/ftgmac100.h still says `__le32 txdes2; /*…
 
-- [Medium] The new AST2700 check in ftgmac100_mii_probe() can never run,
-  and the commit message describes behaviour that does not exist.
-- [Low] The commit says it makes 'phy-mode' a required property for
-  AST2700, but the DT binding in the same series does not say so.
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but TX
+  completion has no consumer-side read barrier to pair with the…
 
 --
 
-net: ftgmac100: Require phy-mode for AST2700
+net: ftgmac100: Add AST2700 upper DMA address support
 
-This patch makes ftgmac100_mii_probe() return -EINVAL on AST2700 when
-the phy-mode property is missing, instead of falling back to RGMII. The
-commit message says the RGMII default is no longer valid because
-AST2700 also supports RMII.
+This patch programs the high RX and TX descriptor ring base registers on
+AST2700. It also stores DMA address bits 34:32 in rxdes2/txdes2 and
+rebuilds the full address from both words before unmapping. A 35-bit DMA
+mask is requested, and all of this is gated by the new
+FTGMAC100_QUIRK_DMA_35BIT match-data quirk.
 
 > diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-> index b835472da3604..2d029d1262e6f 100644
+> index 2d029d1262e6f..af2e272f32f2d 100644
 > --- a/drivers/net/ethernet/faraday/ftgmac100.c
 > +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-> @@ -1521,8 +1521,13 @@ static int ftgmac100_mii_probe(struct net_device *netdev)
+
+[ ... ]
+
+> @@ -672,9 +686,14 @@ static void ftgmac100_free_tx_packet(struct ftgmac100 *priv,
+>  				     struct ftgmac100_txdes *txdes,
+>  				     u32 ctl_stat)
+>  {
+> -	dma_addr_t map = le32_to_cpu(txdes->txdes3);
+> +	dma_addr_t map;
+>  	size_t len;
 >  
->  	/* Default to RGMII. It's a gigabit part after all */
->  	err = of_get_phy_mode(np, &phy_intf);
-> -	if (err)
-> +	if (err) {
-> +		if (priv->mac_id == FTGMAC100_AST2700) {
-> +			dev_err(priv->dev, "phy-mode is required for this SoC\n");
-> +			return -EINVAL;
-> +		}
+> +	map = le32_to_cpu(txdes->txdes3);
+> +	if (priv->quirks & FTGMAC100_QUIRK_DMA_35BIT)
+> +		map |= (u64)FIELD_GET(FTGMAC100_TXDES2_TXBUF_BADR_HI,
+> +				     le32_to_cpu(txdes->txdes2)) << 32;
+> +
 
 [Severity: Medium]
-Can this check ever run on AST2700?
+This is a pre-existing issue and was not introduced by this patch. The new
+txdes2 read goes through the same TX completion handoff as the existing
+txdes0/txdes3 reads, and that handoff seems to have no read barrier on the
+consumer side.
 
-priv->mii_bus is set in only one place, ftgmac100_setup_mdio(). That
-function is called from ftgmac100_probe() only for the Faraday, AST2400
-and AST2500 variants:
+ftgmac100_hard_start_xmit() fills tx_skbs[] and txdes1/2/3, sets OWN in
+txdes0, and then publishes the producer index:
 
-ftgmac100_probe() {
-    ...
-	if (priv->mac_id == FTGMAC100_FARADAY ||
-	    priv->mac_id == FTGMAC100_AST2400 ||
-	    priv->mac_id == FTGMAC100_AST2500) {
-		err = ftgmac100_setup_mdio(netdev);
-    ...
-}
+	dma_wmb();
+	first->txdes0 = cpu_to_le32(f_ctl_stat);
+	...
+	smp_wmb();
+	...
+	priv->tx_pointer = pointer;
 
-So on AST2700 priv->mii_bus stays NULL, and ftgmac100_mii_probe()
-returns before it reaches of_get_phy_mode():
+On another CPU, ftgmac100_poll()->ftgmac100_tx_complete() runs:
 
-ftgmac100_mii_probe() {
-    ...
-	if (!priv->mii_bus) {
-		dev_err(priv->dev, "No MDIO bus available\n");
-		return -ENODEV;
-	}
-    ...
-}
+	while (ftgmac100_tx_buf_cleanable(priv) &&
+	       ftgmac100_tx_complete_packet(priv))
+		;
 
-That leaves the new dev_err() and -EINVAL return unreachable on AST2700.
+ftgmac100_tx_buf_cleanable() loads priv->tx_pointer. After that,
+ftgmac100_tx_complete_packet() loads txdes0 and tx_skbs[pointer], and
+ftgmac100_free_tx_packet() loads txdes2/txdes3. Nothing like smp_rmb()
+sits between the tx_pointer load and the descriptor loads. The smp_mb()
+after the loop runs too late to help.
 
-The other AST2700 PHY path is phy-handle or fixed-link in
-ftgmac100_probe_dt(). It goes through of_phy_get_and_connect(), which
-already returns NULL when phy-mode is missing:
+On weakly ordered SMP CPUs such as ARM/ARM64, can the txdes0 load be
+satisfied before the tx_pointer load? If so, it could return the stale
+OWN-clear value left by the previous completion, and the slot would be
+reclaimed while the device still owns it.
 
-of_phy_get_and_connect() {
-    ...
-	ret = of_get_phy_mode(np, &iface);
-	if (ret)
-		return NULL;
-    ...
-}
+That could unmap a buffer the device is still reading. It could also
+dereference skb->len through a stale NULL tx_skbs[] entry.
 
-Probe then fails with "Failed to connect to phy" and never uses an RGMII
-default.
+ftgmac100_poll() keeps NAPI scheduled while ftgmac100_tx_buf_cleanable()
+is true, so completion can run on one CPU while xmit runs on another.
+Would an smp_rmb() after the tx_pointer check in the completion path be
+needed here?
 
-Given that, is this part of the commit message accurate for AST2700?
+[ ... ]
 
-  "The driver currently defaults to RGMII when the "phy-mode" property
-  is missing from the device tree."
+> diff --git a/drivers/net/ethernet/faraday/ftgmac100.h b/drivers/net/ethernet/faraday/ftgmac100.h
+> index 8c35c895b1465..0c244b1c0a351 100644
+> --- a/drivers/net/ethernet/faraday/ftgmac100.h
+> +++ b/drivers/net/ethernet/faraday/ftgmac100.h
 
-  "... fail probe with an error message if it is not specified, instead
-  of silently defaulting to RGMII."
+[ ... ]
 
-One AST2700 configuration can still probe without phy-mode: an mdio child
-node with no phy-handle. The requirement the commit describes is not
-enforced there either.
-
-The end of the series ("net: ftgmac100: Allow building on ARM64") has the
-same layout. ftgmac100_setup_mdio() is still skipped for AST2700, and the
-mii_bus check still comes before the new AST2700 check.
-
-Would it make sense to move this check somewhere reachable, such as
-ftgmac100_probe_dt(), and update the commit message to match? Or should
-the patch be dropped?
-
-> +		phy_intf = PHY_INTERFACE_MODE_RGMII;
-> +	}
+> @@ -226,6 +229,7 @@ struct ftgmac100_txdes {
+>  #define FTGMAC100_TXDES1_TX2FIC		(1 << 30)
+>  #define FTGMAC100_TXDES1_TXIC		(1 << 31)
+>  
+> +#define FTGMAC100_TXDES2_TXBUF_BADR_HI	GENMASK(18, 16)
 
 [Severity: Low]
-The commit message says:
+This isn't a bug, but struct ftgmac100_txdes still describes this word as
+reserved:
 
-  "Make "phy-mode" a required property for AST2700"
+	__le32	txdes2; /* Reserved */
 
-The binding doesn't seem to say that. The top-level required list in
-Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml is:
+With this patch, ftgmac100_hard_start_xmit() writes the upper buffer
+address bits into txdes2 for the head descriptor and for every fragment
+descriptor. ftgmac100_free_tx_packet() reads them back to rebuild the
+address passed to dma_unmap_single()/dma_unmap_page().
 
-required:
-  - compatible
-  - reg
-  - interrupts
+Could the comment be updated to describe the new field? Otherwise a later
+change might zero or reuse txdes2 based on that comment.
 
-The allOf if/then block for aspeed,ast2600-mac and aspeed,ast2700-mac only
-covers resets. That means dtbs_check still accepts an AST2700 node with
-no phy-mode.
-
-The series already adds the AST2700 compatible in "dt-bindings: net:
-ftgmac100: Add AST2700 compatible". Could the requirement go in that
-patch, as an if/then for aspeed,ast2700-mac with required: [phy-mode]?
-
-It would need to exclude use-ncsi nodes. ftgmac100_probe_ncsi() hardcodes
-PHY_INTERFACE_MODE_RMII and never reads phy-mode.
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-support_ast2700-v2-0-36de51fb8066%40aspeedtech.com
