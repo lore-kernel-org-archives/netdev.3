@@ -1,343 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF4C358363;
-	Sat, 10 Oct 2026 16:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A183C9EE5
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 16:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791650727; cv=none; b=VXewYUoB4wiZFcg6pPIU3tPIm/3a+n68Ajf6gmdF0bQt53AjLQP/GzZjToBwPWSG+YoSlsOuw1BczeH+l9y4CeztFL7rjSVZyapmKnTGI2nR2ZY4ThgQNZALSSFsP78B4rU6IKOvymttp1aTNzEVSfqaH2S/IdetM+2VRkZrmA8=
+	t=1791651065; cv=none; b=ZHhjAWUoAVEayC22W/s7mtjw6jZmxJwwKxl2VoNdTG/y/8cc7qwaEj0tw4acrveMeaKqRFbZ+G0jWAv3wu0hVLEr6plPWlH07OvPnX6hmfPNkg87Ys0CyvQiH+xjnLvdmzUFJ/uhZOLGHQbX6j0RiO5NZ8H0jQ8BN5Lk6O+b+HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791650727; c=relaxed/simple;
-	bh=BjQcWrxxEzY2pQplQyWwEqszwZkK5CivOSc9qGwM60A=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oJF5+Mq/Au9kfdA1bZ3EyIvhmW+0OVzvpfpK7aqfFUlP8eQctA418SELEIkJNg6zAzSrJaocu3c8d+kcV2q6Pzfn3GHlpBRi8v01BwiugRQ1IGJLtJEJ2HyNkR68cuJO00scViA1ltAe3xV2dIphTW3n+gO3zF4qA427+cAtd6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bossdBL+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791651065; c=relaxed/simple;
+	bh=mkgVRX9YuyhUq2vsRjUuGhTE9wKrEeana7ye+Aj7TLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Xkx0K8V3Jo2A+kxZ76v+8DT3rK1pbQzrS9NnPc292leYpt9ynxsWwdgxI4bhVNxGUhk9awu5GRvdmXi5/26Gx7zlOrK8nHgboRzzTWH6FQ+bBBmLMAbtaZa6Qn2d7AUgo2u2Tcdxr7hGMDAFAbHkOzJhc496k6rd1rfO22wJ8fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oNR5HjXd; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bossdBL+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2C71F00893;
-	Sat, 10 Oct 2026 16:45:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791650725;
-	bh=WsUaTQW16T+VJ/IXuKMk2nCrenXhAlNwSmjK48HhIf0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bossdBL+e4oI2KCDhndhK/ogW5fFjXO36mLNSUPi1FY9LHtuk/+09ELXOXOSBu+e2
-	 fOhvoF+zWqTAfwoWfXQ1dhIikZTNNhRwpTq4Vs7NPhA5L4ohUlDfmODq6Ws/BG3yZs
-	 es5vzZ8J8lMBDSbhtpFMcwS9rnUNZBFcm7TnUmvAdnfSzyaesS8ulqC2+HZVgr2h74
-	 9ge9UcyZJQTPGRnjsqjBF9rG8k0obkxhqrL8/eD6zX25s/MI/FLoA9557I3AYaO7ah
-	 PQPeeK09TwvMNd6j1lOD97HQfjjIOaK/6z4lTsi0LFG2ZvDPnl5Y4FwT4T62tVr7RE
-	 8Cots2c/vBcbA==
-Subject: Re: [net-next v2 3/3] bnge: reserve TX/completion rings for the RoCE
- MPC channel
-From: netdev-bot+sashiko@kernel.org
-To: siva.kallam@broadcom.com
-Cc: leonro@nvidia.com, jgg@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, vikas.gupta@broadcom.com,
- ajit.khaparde@broadcom.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- sachin.holla@broadcom.com, dharmender.garg@broadcom.com
-Date: Sat, 10 Oct 2026 16:45:24 +0000
-Message-ID: <179165072406.434549.12670474627195598439@kernel.org>
-In-Reply-To: <20261006161256.1493672-4-siva.kallam@broadcom.com>
-References: <20261006161256.1493672-4-siva.kallam@broadcom.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oNR5HjXd"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48b00aa033bso72967f8f.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 09:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791651062; x=1792255862; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8EeIjRVizR1PJsy6PguhlaW7zpk67FRvd3p6xP3V+QY=;
+        b=oNR5HjXdJRqD22pGWlU03tfBMRuK90f8VFpsiWRTtvxqe8v/FcGxucckRE3fuP6Zu7
+         0KhDq0gFGNnAFbpaI4Gr0hLWTjlEB5anKkZZj/SGger1Y3b7l5zQW6LxrOpmcTx6WaR0
+         AC3CNVG3xngVwGbJ513L75ZNh6mS72CKKco0/SRFFLSy8yH6gOwTmINC0gzIfAIbPPSr
+         vSxvFk2B/5bH4Obvxd3OiQDq84qUXMZihNgbEDBuJIqmtXA2p92Nb1336Q04I6L7UT0C
+         yYEVxUvtdP/DPvYFZeEdXjxf9ca1Ejkov7E9MBMYHShBvVdGwiMP+ETf/Ap0UoS0Z++/
+         HWtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791651062; x=1792255862;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8EeIjRVizR1PJsy6PguhlaW7zpk67FRvd3p6xP3V+QY=;
+        b=AAjl36zzbSIPk6YFtdfHZsrRT85O4JSauGIdAOEgqGQfDbeYqdAXdBn22gbzRQ60Fn
+         UhXOEADz4+hlKeFMYGa/UOi4rru3M4PSLwrzHVo3O5WETWzlNzFIVD/IUuQqCeUzoGGY
+         /KR70JxQitaAYhCT26F4LLOfJ/DFo3wZTqh1l/fTJqKGdG+7pmzyOF8DUTRnMMB+la3Q
+         2A7vTfoKfMDphxzuA6gP3M8sJwQeU2+JAg199FBP41TWytxiAYOkfjBxnuyYJtFfIWTP
+         n2RPv9Gm1+pQZ+rr2AVyV0zB9yYib2X5YYFFONQxB8jm59PhxNi+UtIMjpFUsWo/A2VO
+         pBMA==
+X-Gm-Message-State: AFq9FYIln6Pq0OI1/nxfU+EmRXSRaG4l2nqO1El8UShyBixI3GB/6+dD
+	2laTaSAb7KqEh1iu0U/f97ax+wLTMAEkRcrHv61EFK3UeXacrsZTb8+Yni8ov3n3Utg=
+X-Gm-Gg: AYBFou1rE7fiL6w7EyqSBVCwzmR2qwtcqCgtlvgGrE/jPIE0wPxF6QRO4OxjLNUyS2a
+	/A9prdG7vff9N+I3BUiIGBJPTzK3pYHS1J71EVr0qNoZVq+WPNDBaAZDneEHUgc188SrKNIgg2h
+	24yt+H1W7Dc8ZbFciaO9gNM20dY/JNfhwX++BBUDLBQgcrdE8nWS5BF1dK0r/+fenwBikQV0w+N
+	fn3geRiadCu4s//mH+kbRN6xs4A17Mz0w4a4vWXh7alSXjut2p+BoJOE22ennsMDj3Qb8oh7Mb2
+	4ly4Mw0ZgJKdh8elq03aMWA8HowxKXlJCYuAQre5DuSy1HhwDn5606KnabnWSY7G/yJa2GDsIIH
+	sNUANN9PyQmGyJYQeUmQztAtoFZ1WkSkiLNW1kSvwhRE8gjPlqeHLn34KSxE5a8kujcMhrdNtEo
+	7my+eEOFVwMG4ZXnFXHDg7rMIJSHNDAb891pLQBSX4M+qlP19+KMYk8agKp35qGD5m/QhcvXWfd
+	0kW60BCT0p4xm/aqwJ09EKfHarYuCGt85LEKxmFqFQB8KMk55osqk+IUcjO54WaLZ+9sBbzW8cx
+	3ayQ6edMP0zaQNr5AUr29EW0HptWQ1IA9WZsxINyugBG2AFvdM/IBvtSXAbEVQG+5Ga6yxaGS+j
+	H10tjsamTR03VUerc78I=
+X-Received: by 2002:a5d:5f92:0:b0:48c:4dba:5612 with SMTP id ffacd0b85a97d-48dbad3077cmr8429506f8f.5.1791651062011;
+        Sat, 10 Oct 2026 09:51:02 -0700 (PDT)
+Received: from ?IPV6:2a02:3100:5eef:f0fc:594b:8efc:4396:6984? (dynamic-2a02-3100-5eef-f0fc-594b-8efc-4396-6984.310.pool.telefonica.de. [2a02:3100:5eef:f0fc:594b:8efc:4396:6984])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48dba033a0fsm8412327f8f.14.2026.10.10.09.51.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 10 Oct 2026 09:51:01 -0700 (PDT)
+Message-ID: <4b70af58-559c-4e6f-98fd-3b1da3c01998@gmail.com>
+Date: Sat, 10 Oct 2026 18:51:00 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
-
-Critical: 0 · High: 2 · Medium: 1 · Low: 0 (1)
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] In bnge_reserve_rings()
-  (drivers/net/ethernet/broadcom/bnge/bnge_resc.c:347-353), the new RoCE…
-- [High] The patch adds an MPC TX ring and CQ on top of the L2 demand.
-- [Medium] The commit message says the bng_re driver allocates its own
-  TX/CQ rings for an MPC control channel from the per-function FW ring…
-
-Pre-existing issues:
-- [Low] bnge_reserve_rings() now reads bnge_is_roce_en() separately for
-  need_reserve, tx_demand/hwr.tx (line 312), hwr.cmpl (line 317) and the…
-
---
-
-bnge: reserve TX/completion rings for the RoCE MPC channel
-
-When RoCE is enabled, this patch makes bnge_reserve_rings() request one
-extra TX ring and one extra completion ring for an MPC control channel
-that the commit says bng_re owns. Once firmware has made the reservation,
-the extra TX ring is taken out of the L2 TX count. If firmware did not
-grant the full TX demand, the function returns -ENOMEM.
-
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> index 4711dd4945ffe..9dfb22b7c7c7a 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
-> @@ -110,9 +110,24 @@ static u16 bnge_nqs_demand(struct bnge_dev *bd)
->  	return bd->nq_nr_rings + bnge_aux_get_msix(bd);
->  }
->  
-> +static u16 bnge_tx_rings_demand(struct bnge_dev *bd)
-> +{
-> +	u16 tx_rings = bd->tx_nr_rings;
-> +
-> +	if (bnge_is_roce_en(bd))
-> +		tx_rings += 1; /* For MPC TX ring */
-
-[Severity: Medium]
-
-The commit message says:
-
-  When RoCE is enabled, the bng_re driver allocates its own TX/CQ rings
-  for the MPC control channel out of the same per-function FW ring pool.
-
-Is there an in-tree user of this ring? In
-drivers/infiniband/hw/bng_re/bng_dev.c, the only firmware ring allocation
-is in bng_re_dev_init(), and it allocates an NQ for the CREQ:
-
-bng_re_dev_init() {
-    ...
-	type = RING_ALLOC_REQ_RING_TYPE_NQ;
-	creq = &rdev->rcfw.creq;
-    ...
-	rc = bng_re_net_ring_alloc(rdev, &rattr, &creq->ring_id);
-    ...
-}
-
-Nothing else calls bng_re_net_ring_alloc(), and the matching free in
-bng_re_dev_uninit() is also for the NQ. A search for mpc in bng_re and
-bnge only turns up the comments this patch adds.
-
-In the current tree, each RoCE-enabled function gives up one TX ring and
-one completion ring that nothing uses. The "pool overflow" in the commit
-message also doesn't look reachable.
-
-If this prepares for a future bng_re MPC series, could the commit message
-say so, or could the patch go in with that series? The same goes for the
-"it is owned by RoCE driver" comment in bnge_reserve_rings().
-
-> +
-> +	return tx_rings;
-> +}
-> +
->  static u16 bnge_cprs_demand(struct bnge_dev *bd)
->  {
-> -	return bd->tx_nr_rings + bd->rx_nr_rings;
-> +	u16 cprs = bd->tx_nr_rings + bd->rx_nr_rings;
-> +
-> +	if (bnge_is_roce_en(bd))
-> +		cprs += 1; /* For MPC CQ ring */
-> +
-> +	return cprs;
->  }
-
-[Severity: High]
-
-Can the extra ring push the request past the firmware pool it is meant
-to protect?
-
-The L2 maximums still let L2 take the whole TX pool:
-
-_bnge_get_max_rings() {
-    ...
-	*max_tx = hw_resc->max_tx_rings;
-    ...
-}
-
-The RoCE branch of bnge_get_dflt_rings() lowers max_cp, max_irq and
-max_stat, but leaves max_tx alone:
-
-	max_cp -= BNGE_MIN_ROCE_CP_RINGS;
-	max_irq -= BNGE_MIN_ROCE_CP_RINGS;
-	max_stat -= BNGE_MIN_ROCE_STAT_CTXS;
-	...
-	rc = bnge_adjust_rings(bd, max_rx, max_tx, max_cp, shared);
-
-Shared mode is the only mode used, via bnge_net_init_dflt_rings(bd, true).
-In that mode TX and RX are each clamped to max_cp, not their sum.
-
-bnge_net_init_dflt_rings() then does:
-
-	bd->tx_nr_rings_per_tc = min_t(u16, dflt_rings, max_tx_rings);
-
-If max_tx_rings is at or below netif_get_num_default_rss_queues(),
-tx_nr_rings equals max_tx_rings. bnge_tx_rings_demand() then asks for
-max_tx_rings + 1, and __bnge_hwrm_reserve_pf_rings() passes that to
-FUNC_CFG as is:
-
-	req->num_tx_rings = cpu_to_le16(hwr->tx);
-	...
-	req->num_cmpl_rings = cpu_to_le16(hwr->cmpl);
-
-Completion rings have the same problem. _bnge_get_max_rings() only
-enforces rx + tx <= max_cp, so rx + tx + 1 can go over it.
-
->From there firmware has two options:
-
-- Reject FUNC_CFG. bnge_reserve_rings() then returns before any counts
-  are adjusted.
-- Grant at most max_tx_rings. That hits the new -ENOMEM check below.
-
-In both cases the retry in bnge_net_init_dflt_rings() sends the same
-request again and probe fails, even though (L2 TX - 1) plus MPC would fit.
-
-Should the L2 max/default calculation hold back one TX ring and one
-completion ring for MPC when RoCE is enabled? Relaxing the check below
-would not fix the FUNC_CFG rejection case.
-
-[ ... ]
-
-> @@ -293,11 +309,12 @@ int bnge_reserve_rings(struct bnge_dev *bd)
->  		hwr.nq = bnge_nqs_demand(bd);
->  	}
->  
-> -	hwr.tx = bd->tx_nr_rings;
-> +	tx_demand = bnge_tx_rings_demand(bd);
-> +	hwr.tx = tx_demand;
->  	hwr.rx = bd->rx_nr_rings;
->  	if (bd->flags & BNGE_EN_SHARED_CHNL)
->  		sh = true;
-> -	hwr.cmpl = hwr.rx + hwr.tx;
-> +	hwr.cmpl = bnge_cprs_demand(bd);
-
-[Severity: Low]
-
-This is a pre-existing issue and was not introduced by this patch. Could
-BNGE_EN_ROCE change between reads here? bnge_reserve_rings() now reads
-bnge_is_roce_en() in four places:
-
-- bnge_need_reserve_rings()
-- the tx_demand calculation
-- bnge_cprs_demand()
-- the MPC subtraction after the firmware exchange
-
-The flag can be cleared without holding rtnl or the netdev lock:
-
-bnge_rdma_aux_device_add() {
-    ...
-	bd->flags &= ~BNGE_EN_ROCE;
-    ...
-}
-
-bnge_probe_one() calls this after bnge_netdev_alloc() has registered the
-netdev. So ndo_open->bnge_open_core()->bnge_reserve_rings() could run at
-the same time.
-
-I don't think the result is harmful:
-
-- If the flag clears between tx_demand and hwr.cmpl,
-  bnge_hwrm_get_rings() sees cp < rx + tx and trims the reserved TX/RX
-  counts through bnge_fix_rings_count().
-- If it clears before the subtraction, L2 keeps one extra TX ring. That
-  ring still fits inside the firmware reservation, and
-  bnge_adjust_rings() clamps it.
-
-At worst, one TX ring stays over-reserved until the next reservation.
-
-Both the unlocked flag clear and the earlier flag-dependent reads (via
-bnge_aux_get_msix() and bnge_aux_get_stat_ctxs()) existed before this
-patch.
-
->  
->  	hwr.vnic = bnge_get_total_vnics(bd, hwr.rx);
->  
-> @@ -327,6 +344,13 @@ int bnge_reserve_rings(struct bnge_dev *bd)
->  	if (hwr.stat > bnge_aux_get_stat_ctxs(bd))
->  		hwr.stat -= bnge_aux_get_stat_ctxs(bd);
->  	hwr.nq = min_t(u16, hwr.nq, hwr.stat);
-> +	/* Drop MPC TX ring from L2 TX ring count; it is owned by RoCE driver */
-> +	if (bnge_is_roce_en(bd)) {
-> +		if (hwr.tx >= tx_demand)
-> +			hwr.tx -= 1;
-> +		else
-> +			return -ENOMEM;
-> +	}
-
-[Severity: High]
-
-Does this make any partial TX grant from firmware a hard failure?
-
-By this point bnge_copy_reserved_rings() has replaced hwr.tx with the
-granted count. That count can't be larger than tx_demand, so the check
-in effect requires the full tx_nr_rings + 1.
-
-bnge_hwrm_get_rings() can lower resv_tx_rings even when the HWRM command
-succeeds. Firmware may return a smaller alloc_tx_rings, or the count is
-trimmed to fit the granted completion rings:
-
-	if (cp < (rx + tx)) {
-		rc = bnge_fix_rings_count(&rx, &tx, cp, false);
-		...
-		hw_resc->resv_tx_rings = tx;
-
-For example, take 8 L2 TX rings and 8 RX rings. The request is 9 TX and
-17 completion rings. If firmware grants 16 completion rings, TX is
-trimmed to 8. Since 8 < 9, this returns -ENOMEM, even though 7 L2 TX
-rings plus MPC would have fit.
-
-Before this patch, bnge_adjust_rings() absorbed a short grant and
-bd->tx_nr_rings was set to the granted value.
-
-Now the return comes after firmware has committed the reservation and
-hw_resc has been updated. It also comes before any of these are updated:
-
-- bd->tx_nr_rings, bd->rx_nr_rings and bd->nq_nr_rings
-- the RSS table
-- the aux MSI-X/stat-ctx split
-
-tx_nr_rings is never lowered, so bnge_need_reserve_rings() stays true.
-The re-reserve retry in bnge_net_init_dflt_rings() then sends the same
-demand and fails again:
-
-	if (bnge_need_reserve_rings(bd)) {
-		rc = bnge_reserve_rings(bd);
-		...
-	}
-	if (rc) {
-		bd->tx_nr_rings = 0;
-		bd->rx_nr_rings = 0;
-	}
-
-That leads to bnge_probe_one() failing with "Error setting up default
-cfg". bnge_open_core() hits the same check, so the interface couldn't be
-opened either.
-
-There may also be a knock-on effect on the RSS table. rss_indir_tbl is
-allocated with kmalloc_array() and only initialized when the reserved RX
-count changes:
-
-	if (old_rx_rings != bd->hw_resc.resv_rx_rings)
-		bnge_set_dflt_rss_indir_tbl(bd);
-
-Suppose a reservation changes resv_rx_rings and then fails here. A later
-successful call with the same RX grant would then skip the
-initialization. bnge_fill_hw_rss_tbl() uses the stale or uninitialized
-entries as indexes:
-
-	j = bd->rss_indir_tbl[i];
-	rxr = &bn->rx_ring[j];
-
-Can that index past the end of bn->rx_ring[]?
-
-Would it work to only require room for MPC plus one L2 TX ring here? For
-example, hwr.tx >= 2, like the hwr.rx >= 2 aggregation check above, and
-then let bnge_adjust_rings() scale down as before.
-
->  
->  	/* Adjust the rings */
->  	rc = bnge_adjust_rings(bd, &rx_rings, &hwr.tx, hwr.nq, sh);
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v7 2/4] net: hsr: preserve submission order without a
+ forwarding lock
+To: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
+ qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
+ bigeasy@linutronix.de, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
+ liuhangbin@gmail.com, stable@vger.kernel.org, sdf.kernel@gmail.com,
+ syzbot+fbf74291c3b7e753b481@syzkaller.appspotmail.com
+References: <20261009201324.17-1-xiexinet@gmail.com>
+ <20261009201324.17-3-xiexinet@gmail.com>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <20261009201324.17-3-xiexinet@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+One integration note for net-next:
+
+This series targets net. Contest reports conflicts in three files.
+We handled the differences in those files as follows in our
+net-next integration:
+
+- In send_hsr_supervision_frame() and handle_std_frame(), net-next
+  already uses WRITE_ONCE() for hsr->sequence_nr. Remove the old
+  numbering blocks as this patch does, and keep the new consumer-side
+  numbering and WRITE_ONCE() updates. The supervision builder keeps
+  the zero sequence placeholder.
+
+- In hsr_fill_info(), net-next already has READ_ONCE() and the updated
+  RCU handling. Omit only this patch's redundant sequence-read hunk
+  and keep the net-next RCU handling unchanged.
+
+This resolution was included in the previously built and reviewed
+integration series based on net-next cfb7793d1bc0. I also confirmed
+that net/hsr is byte-for-byte identical in
+net-next-2026-10-10--00-00, so the same resolution applies to these
+conflicts. I have not rebuilt the series on that snapshot.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006161256.1493672-1-siva.kallam%40broadcom.com
+Xin
