@@ -1,179 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329C2444713;
-	Sat, 10 Oct 2026 09:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486043B6BF1;
+	Sat, 10 Oct 2026 09:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791623583; cv=none; b=jZ5SQFqJC3L7NbuF/ZMVIfw+TxUgZ+ifiH90CPw4AsEIjaRUyHGeTpBtxQu7rfn8aurtBoztqGYnh37C1QjL84WIcRzzoxna+RKtuD+p9UFbvlPo2BeAyxiAG8tRc/vYDaUK2w0YWvu7X0i1iXyqcKvSKuxgnaekjmsoJBoTQsA=
+	t=1791624166; cv=none; b=GtmqMUoIc39/paVnEOt0inFen3CutYlfVxNHEN6JLfx+d8nSs+aqY4stk73jckK8b8BQbtAQ6Un3ukMiSsZm5TC4q4+vzRsABw1BNzbfMKyyxECtP0+y0jZInlrn5WN6uys/PiN+Mfu/SxP5WADRJXgd0qESrJ/KS47OdOTbgak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791623583; c=relaxed/simple;
-	bh=ND1giJhTP5OlB71Z5D8wkAfOiW7LSG4QZd78LP0fgiw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pfcHMaU5QlDjl/8JgCXEXA3dSIIA3MdrAegw/JdiLPaZazRONUnLx6/LAK0UPU6YwcQNYEq87qQUVgr4UdxS9ALVqJg/mZcMCRTeOUeoCTZOwrL68tA6p4pWsObv2+UmEVw37iPhCKWbSoqVY69ONR5r8L7J+La7PyN3KhW4GpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bn/wbT1P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791624166; c=relaxed/simple;
+	bh=6/4qvDnaYM2Z85U+qehegp5waEtzX0dhCN/9J3t82TA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=QYs331IJY02IEvKpoe3mvPoQ4UgL6vf76KPaMPQdaaridnjV87eo24xs3odZttYT+LESS8YOG20XKxNNOIWhi9GuxBY/j5bPmcm9YcAoj6/e32Tlx5/Z0mM1Q8WCX2gRKQUEtewgVGm4zbNlNBbR1LqSHYb9LaBsRQMhDzTJbww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EWUUlwtV; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bn/wbT1P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778C61F000FF;
-	Sat, 10 Oct 2026 09:12:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791623581;
-	bh=FUG+gz+C80r+8tdjKS4k5zRgWIFK6yUZeC4/dP/SevQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Bn/wbT1PZ6OSWE28WoX/9oUAZNC9n0jMK0jyqs1kbReTKXkDFtYNuNIzmb4sk3Kxz
-	 rZ7IOhUlrLVcb3IzciYrEbC5zBxk6FOFD4/w7kANaTk1Zb3Du+7SxKwSTnUawg2yhx
-	 9EqmaWS1Htahy+MlM5owxoIt6snurWFaMGRKfUGholAVtANPnbjl5OeQUGWAiXCXMc
-	 izctduhAx6bBzNbuyG1OJHsFR0rHqIMII+WPgb/hljsQAkCgB9jSFah4ZMFRMUv4bm
-	 Ejl1D85WnOmH0j2U/AcENAG7jkV18cKaitZ///5GPYytJgrUzPcy0aga+hFPvG2dDR
-	 HM+MyAtyFM4ZQ==
-Subject: Re: [PATCH net-next v2 7/7] selftests: net: getsockopt_iter: cover ip
- and ipv6
-From: netdev-bot+sashiko@kernel.org
-To: leitao@debian.org
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
- martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
- jolsa@kernel.org, emil@etsalapatis.com, ihor.solodrai@linux.dev,
- john.fastabend@gmail.com, sdf@fomichev.me, shuah@kernel.org,
- edumazet@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- david.laight.linux@gmail.com, kernel-team@meta.com
-Date: Sat, 10 Oct 2026 09:12:58 +0000
-Message-ID: <179162357899.434549.5846968713018971046@kernel.org>
-In-Reply-To: <20261009-sockopt_expand_out_v2-v2-7-8ac08c469ecb@debian.org>
-References: <20261009-sockopt_expand_out_v2-v2-7-8ac08c469ecb@debian.org>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EWUUlwtV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=Zg2aBdBdTLP9z/WGD5ND/M8stJfE0DaZc3MKIYs9Juo=;
+	b=EWUUlwtV9OtfeaIR8NS/MuIGWzcVRH4txpOXC9Z4stjbe1SwQYy5zrUH5dHmyt
+	uOOUGCUQLA07QNA19DRN8SqnrcqVfwB7NuhhV3fyKdc71OAe6OswZ4m4hheDvv1U
+	yMVDNT/A9irq5BtIoJZHqySuURPvqkSQGQpr70dX4TrmQ=
+Received: from lx2.. (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wD3n3qeA8pqnP+WDg--.44293S2;
+	Sat, 10 Oct 2026 17:21:35 +0800 (CST)
+From: Zijin Tao <taozj888@163.com>
+To: theo.lebrun@bootlin.com
+Cc: Zijin Tao <taozj888@163.com>,
+	stable@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v5] net: macb: rate limit netdev error info print in the data path
+Date: Sat, 10 Oct 2026 17:21:34 +0800
+Message-Id: <20261010092134.130564-1-taozj888@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3n3qeA8pqnP+WDg--.44293S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFWrAry3tw18ZF1rGr1xXwb_yoWrCryfpa
+	yUC3s8Jw4kJr42yas7tr40vF1rZrn8tryUWrW8Gw13Xw15Xr98WFySgrya9FW8GayfA3WF
+	yr1DZFZIka1kZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEBT5JUUUUU=
+X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC+R81-GrKA583jQAA3p
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Now the MACB ethernet driver print the netdev error information
+directly by netdev_err(), which would lead to a large number of
+error information print if there was a significant number of
+error or just jumbo packets exceeding the MTU received when booting.
+For example, it would print a large number of:
 
-Low priority / nit picks for your consideration:
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+macb PHYT0036:00 eth0: not whole frame pointed by descriptor
+...
 
-- [Low] In tools/testing/selftests/net/getsockopt_iter.c, the ipv6
-  fixture's negative_optlen test only exercises IPV6_UNICAST_HOPS.
-- [Low] The new TEST_F(ip, mroute_wrong_type) needs CONFIG_IP_MROUTE: it
-  skips when /proc/net/ip_mr_vif is missing.
+in gem_rx() by received a large number of packets without
+RX_EOF flag set, especially with unknown packet
+type that would penetrate the hardware offload for the IP packets.
 
---
+The unlimited prints here would greatly bother and delay
+the system booting process unless the source stop sending
+packets since they occupy the console output bandwidth and
+other processes have to wait for the completion of printing those
+messages.
 
-selftests: net: getsockopt_iter: cover ip and ipv6
+So rate limit the netdev error information print in the receive
+and transmit data path.
 
-This adds ip and ipv6 fixtures to getsockopt_iter. They check the
-returned length and errno for several buffer sizes, for the branches
-that answer empty, for an unknown optname, and for the MRT_*/MRT6_*
-options dispatched before the switch. The MRT tests skip when
-/proc/net/ip_mr_vif or /proc/net/ip6_mr_vif is missing.
+Fixes: 4df95131ea80 ("net/macb: change RX path for GEM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijin Tao <taozj888@163.com>
+---
 
-> diff --git a/tools/testing/selftests/net/getsockopt_iter.c b/tools/testing/selftests/net/getsockopt_iter.c
-> index 6c2408df46123..252a46d44e522 100644
-> --- a/tools/testing/selftests/net/getsockopt_iter.c
-> +++ b/tools/testing/selftests/net/getsockopt_iter.c
+Changes since v1:
 
-[ ... ]
+v5:
 
-> +/* The MRT_* options are dispatched ahead of the rest of the switch and
-> + * want a raw IGMP socket. Without CONFIG_IP_MROUTE they are not
-> + * dispatched at all and the switch also answers ENOPROTOOPT, so the
-> + * config check has to come from somewhere other than this errno.
-> + */
-> +TEST_F(ip, mroute_wrong_type)
-> +{
-> +	socklen_t optlen = sizeof(int);
-> +	int val;
-> +
-> +	if (access("/proc/net/ip_mr_vif", F_OK))
-> +		SKIP(return, "CONFIG_IP_MROUTE disabled");
+- Update the commit message for the target fix id to 4df95131ea80
+which was indicated by Theo <theo.lebrun@bootlin.com> and Nicolai
+<nb@tipi-net.de>
+- Update the user name in the "From" part to Zijin Tao which is
+the same as that of "Signed-off-by"
 
-[Severity: Low]
-Should tools/testing/selftests/net/config also get CONFIG_IP_MROUTE=y?
+v4:
 
-The config fragment already has this line:
+- Update the commit message for the target fix id to 89e5785fc8a6
+as suggested by Nicolai Buchwitz<nb@tipi-net.de>
+- Update the patch with the changelog added in the patch itself
 
-    CONFIG_IPV6_MROUTE=y
+v3:
 
-It has no CONFIG_IP_MROUTE entry, though, and nothing in net/ selects
-IP_MROUTE. So whether this test runs depends on the base config.
-x86_64 and i386 defconfig enable it, but arm64 defconfig does not. On
-an arm64 kselftest-merge build, /proc/net/ip_mr_vif is missing and
-ip.mroute_wrong_type always skips, while ipv6.mroute_wrong_type runs.
+- add this change log since v2 missing it
+- drop the blank line between the assignment sentence and the commit
+  info
 
-The commit message says:
+v2:
 
-    A kernel with CONFIG_IP_MROUTE or CONFIG_IPV6_MROUTE built in no
-    longer hides that regression behind a skip.
+- update the commit message with the reason why the unlimit prints would
+  bother/delay booting process
+- update the commit message with the Fix commit id provided which is
+  suggested by Théo Lebrun<theo.lebrun@bootlin.com>
+- update the commit message with what packet type would trigger the
+  error printings more easily.
 
-With the current fragment, the selftest config only builds such a
-kernel for IPv6.
+v1:
 
-> +
-> +	ASSERT_EQ(-1, getsockopt(self->fd, SOL_IP, MRT_VERSION, &val,
-> +				 &optlen));
-> +	ASSERT_EQ(EOPNOTSUPP, errno);
-> +}
+- initial commit
 
-[ ... ]
+ drivers/net/ethernet/cadence/macb_main.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-> +/* Unlike SOL_IP, a negative optlen has always behaved as 4 here. */
-> +TEST_F(ipv6, negative_optlen)
-> +{
-> +	socklen_t optlen = (socklen_t)-1;
-> +	int val = 0;
-> +
-> +	ASSERT_EQ(0, getsockopt(self->fd, SOL_IPV6, IPV6_UNICAST_HOPS, &val,
-> +				&optlen));
-
-[Severity: Low]
-Does this test cover the negative optlen change made earlier in this
-series?
-
-IPV6_UNICAST_HOPS is an int option. Before the series, it already
-turned a negative optlen into 4 through:
-
-    len = min_t(unsigned int, sizeof(int), len);
-
-The earlier patch "ipv6: treat a negative optlen as 4 in
-do_ipv6_getsockopt()" added this in ipv6_getsockopt() for every option:
-
-net/ipv6/ipv6_sockglue.c:ipv6_getsockopt() {
-    ...
-	/* Historic bug compatibility: the int options have always taken a
-	 * negative optlen as 4, so take it as 4 everywhere.
-	 */
-	if (len < 0)
-		len = 4;
-    ...
-}
-
-According to that patch's commit message, a negative optlen now cuts
-sticky headers such as IPV6_HOPOPTS to 4 bytes. It also makes
-IPV6_PATHMTU and IPV6_FLOWLABEL_MGR fail with -EINVAL.
-
-hopopts_roundtrip, hopopts_undersize_clamped and pathmtu_undersize all
-pass a positive optlen. If the clamp were removed or broken later,
-ipv6.negative_optlen would still pass.
-
-Could a negative optlen case be added for IPV6_HOPOPTS or IPV6_PATHMTU?
-
-Also, the kernel comment limits "always" to the int options. The
-comment above this test does not, so a reader may think SOL_IPV6 never
-changed how it handles a negative optlen. Could the comment say this
-only holds for the int options?
-
-> +	ASSERT_EQ(sizeof(int), optlen);
-> +	ASSERT_EQ(42, val);
-> +}
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index b8234ac4b602..c32d48d03008 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		count++;
+ 
+ 		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
+-			netdev_err(bp->netdev,
+-				   "not whole frame pointed by descriptor\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+ 		}
+ 		skb = queue->rx_skbuff[entry];
+ 		if (unlikely(!skb)) {
+-			netdev_err(bp->netdev,
+-				   "inconsistent Rx descriptor chain\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "inconsistent Rx descriptor chain\n");
+ 			bp->netdev->stats.rx_dropped++;
+ 			queue->stats.rx_dropped++;
+ 			break;
+@@ -1829,7 +1829,8 @@ static int macb_rx(struct macb_queue *queue, struct napi_struct *napi,
+ 		unsigned long flags;
+ 		u32 ctrl;
+ 
+-		netdev_err(bp->netdev, "RX queue corruption: reset it\n");
++		if (net_ratelimit())
++			netdev_err(bp->netdev, "RX queue corruption: reset it\n");
+ 
+ 		spin_lock_irqsave(&bp->lock, flags);
+ 
+@@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
+ 
+ 	if (status & MACB_BIT(HRESP)) {
+ 		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+-		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
++		if (net_ratelimit())
++			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+ 		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
+ 	}
+ 
+@@ -2511,7 +2513,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
+ 		else
+ 			hdrlen = skb_tcp_all_headers(skb);
+ 		if (skb_headlen(skb) < hdrlen) {
+-			netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
++			if (net_ratelimit())
++				netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
+ 			/* if this is required, would need to copy to single buffer */
+ 			return NETDEV_TX_BUSY;
+ 		}
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-sockopt_expand_out_v2-v2-0-8ac08c469ecb%40debian.org
+2.34.1
+
