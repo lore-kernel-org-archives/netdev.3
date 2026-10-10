@@ -1,281 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E105A3B8BCC;
-	Sat, 10 Oct 2026 09:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2706F36F909
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 09:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791623170; cv=none; b=rwktRxATrVuc3Ul/F+yIBv7IdaiRQyyeO200z1vNQkIhFJLiEzTQTAc09d528WZl7CA4+t2S/I5/6lxICu1iwuyLgg4HzDR8iYhyelm3CVJUIINwwoWI4ImFVHBy8mol+bHF5lbCCmCzqT87iRK+8tTtdJgPWrWkK+1HzQ1htbg=
+	t=1791623170; cv=none; b=gmEKyr38461HXRXIuvO1w5xQ9JY9R5DFKNJYp8k3wfSmgQ03+i03x+3p/EyJR5G9jneuoREWsSDUwdug2W5kP76rtxW4y9KRnsMHXz6ko5B8Jl/0WrmDoTQ1L5A149F61seLyvdUF7wqY65uH8ITYtOjGkLogbaSFsdZtjNaQ7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791623170; c=relaxed/simple;
-	bh=uyP+fXkBFXEUN5GSFp719XsAkM0dlIvt9fjtseV/rSw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=StU5y6yvAL/zXLlTgBocgdjS0PkyuNeAV1dPWc0KkfC9ADD89SEcAxgcqj0y6W8SN8c8TAYlkdIfLhDNXoVY7h0zBBm6409BEHE3rAPwIsdyeTiQ819T3Dk0R+YlzJ94eSyXDWpmp6fqztXavKAhzzF2mVklIlv/gaL6gnihpIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfKOhRfv; arc=none smtp.client-ip=100.103.45.18
+	bh=cKRxNm86gzxnVgmkPil6uvSeyJZxMrBzx9O2/9KRxls=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o0mmm3XXtN83AYGLR7Blqk0vhIt/W/G6bggnctzAWiUlHP34st1c34US0lgVRp5l7wA8nNASygwT9gfi3O7MxDtuvrcm3QfiD8oJLZE9Jn5wYMfljI+wKaP0GDe4H4GLV17yj5yc5ux3GuMf7KL++6Q39vRBk8bsQV4E5TrulBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com; spf=pass smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=gk+CwX+L; arc=none smtp.client-ip=74.125.82.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfKOhRfv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB37A1F00899;
-	Sat, 10 Oct 2026 09:06:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791623168;
-	bh=jxXgrrCJlsDzTfffL80QrRQeFK7SVSWVhZTOun6MhdM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YfKOhRfvU/aYiB8wPJGQQujeAs42QNC65WMHkQHe2gMWaBx9drp8V44VC2QunLchC
-	 DL20Uwv9Zn22eyBJM9SlSQJZ1mewKqHmPYimNs8ZxtIsv1fvivRQM9Pg9Cp4mCIuOq
-	 57PX39Odt2tW2d0VJVuyf1pGEs6NVfj2veXbzlP2Mq7a1F3hOoj5d5HygbAlnpsMQd
-	 vvTqRsaytuylGLygDQLjHMp44pHcNwu8rkbCfvEvI+6/LTfeUZxryJ/tOz5Qx1BJJ7
-	 dQArTxd5A3KtJQZIq3G7n4DivwWITDeIzL73RbUWtjcuUMWQEFTckU6RyrS3FUGYJv
-	 BpQEHLGEWzdnw==
-Subject:
- Re: [PATCH net] selftests: openvswitch: Test SET on later IPv6 fragments
-From: netdev-bot+sashiko@kernel.org
-To: sahaj123.sc@gmail.com
-Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
- i.maximets@ovn.org, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dev@openvswitch.org,
- linux-kselftest@vger.kernel.org
-Date: Sat, 10 Oct 2026 09:06:07 +0000
-Message-ID: <179162316732.434549.3008431843792004994@kernel.org>
-In-Reply-To: <20261009090629.1694991-1-sahaj123.sc@gmail.com>
-References: <20261009090629.1694991-1-sahaj123.sc@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="gk+CwX+L"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-354ba08cfd1so834221eec.1
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 02:06:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1791623166; x=1792227966; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=aZs8U0ZjQ35oS4ozK838xXyPfIOXVraWP2I51EAkJ5w=;
+        b=gk+CwX+LRz8ORl6Q0IvKrzDJV+ECVTG7KteaoM7bYAlJHNcSqlRndQPqp+2EsBuYeN
+         DWvdQWpevv/vg6KyLfayqYfyHSA87Ty7IaDX/M5wwSUN/qmRiPCeoNkPq8I/IfUD6hHW
+         PUgygYE49ss2bZFLxJE06/GYaGtotmcEbGA6CoRINpqY0V/NLICnJYbJDicgTVLfEPkw
+         A1M4OL4hG3iJHvozEhyKtCqqBIEXvTp4uJa7uab2bqrFWC9JvqsrARLxZ0gt6hFYBxME
+         btA5fdpIC0cmzz4GkT7SeJeXAG7iKFi+NHH6xpEpby0Gbw0AOEx8rcE+ST1WsIuvfRkf
+         JJsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791623166; x=1792227966;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=aZs8U0ZjQ35oS4ozK838xXyPfIOXVraWP2I51EAkJ5w=;
+        b=2lz8n+PsCwcQ6x8D88kxVq+CE9C1y4qBAYygFnNtxzgFLZKtVW7yqqknvS38TV11Vh
+         IaUY3pxaBX8LGvXQn1Qw69IgV6NlPhWjOtoKnUekiEBrxsRis8gR9M/Fp5zYMEfAZwWz
+         jAPj7rSJv8l/KAOHQGKbJBLoZdc7a00dXrn6CQCX3AHRwBXRr2+5PZwIWDALfV+lG5vt
+         iTqLDyL6UW1WI77+olJojEAtC9jJnAN6VeZRO91nd5AO1vYaF/HWhPCG61RevpT8s+Fl
+         K8FBjID+Ej44gWF3/dbpm1fjU8GTsxKsiZ01IYS3Qq9DEbvLeCz5vd3jUmahpt1BHirS
+         lBjg==
+X-Gm-Message-State: AFq9FYIOsoKPP5wXpYiZh9v+zY3tpQx63khWa8x0xyiIZjZN8LLAYbxQ
+	DPvHM2FMkU1y14EYwTBB5xtl8Gbhu4olJuVFEQjFAdWP9SMZ7po7Q6RoOTvvtvpl9+SqIqtYLWl
+	PjvqiJuVS8f8U9ClBEHU57paqg1glYeGPKBXfGjEqMXaJc38/fjURYw1qcMguN/7zwuwODgzw
+X-Gm-Gg: AYBFou2DfGvCedVxUMMuk4BYXrs3xlUZm+q7I+IvC66G5bD3VeKveGyS+BFtO8sVF2o
+	GIYT3hqAU7niyvJgt42uLAH3WhFBZPaabW1GojlCgaNmhmfS++BCTYksZhjXLTX26VaBwoqeYvR
+	jMVQmT6HtQEX2Sn1p5uGtciz+SeKTK/vCWfgA468p+ZkBz0N4m3IUO18Mj2l89Ym0WUYwGhHBHO
+	hGneuU2jxDY3zlUG2XJjizvOYr4TXLBhV92mUPIyEnt7jBntxaFpG6oJfJuISi0wHMdsmzIGlPn
+	HDC0YT/rGMxRdHjn4F5BmYH5b487mRnEhjVokBuKk5kHpNtH88PdXkID61I2QR4dVCpFeswmfVG
+	Tj01+uzd1FLngUaVxfZAYz18QUNEFD351s+apn47cM28LzxWXPF1ofQWknmIOEgDvaPF6aEK2Qp
+	0J1AY5IXk27v0uNgDSsnUfSvx7u+EgYdGJrniLAg1ZvpKNjpxQ5T7TKU5w3tD1M8foKYWyiBrIg
+	GzHsei68Ro=
+X-Received: by 2002:a05:7022:ea48:10b0:166:5552:780a with SMTP id a92af1059eb24-16a5afe59d1mr5532791c88.8.1791623165597;
+        Sat, 10 Oct 2026 02:06:05 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.241])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1699718c547sm12212587c88.3.2026.10.10.02.06.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 02:06:05 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org,
+	Joas Antonio dos Santos <joasantonio108@gmail.com>
+Cc: Wang Zhan <wang.zhan@smartx.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-security-module@vger.kernel.org,
+	Alice Mikityanska <alice.kernel@fastmail.im>
+Subject: Re: [PATCH net v2] calipso: keep BIG TCP payload_len in calipso_skbuff_setattr()
+Date: Sat, 10 Oct 2026 17:05:34 +0800
+Message-ID: <20261010090534.317149-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <179156155963.36253.400481753322266658@gmail.com>
+References: <179156155963.36253.400481753322266658@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
+On Fri, 09 Oct 2026 12:59:19 -0300 Joas Antonio dos Santos wrote:
+> calipso_skbuff_setattr() adjusts payload_len by the length of the
+> option it inserts or resizes:
+>
+> 	payload = ntohs(ip6_hdr->payload_len);
+> 	ip6_hdr->payload_len = htons(payload + len_delta);
+>
+> GRO can build BIG TCP packets larger than IPV6_MAXPLEN, and stores
+> payload_len == 0 for them; ipv6_payload_len() then falls back to
+> skb->len.  For such a packet forwarded to a destination mapped to
+> CALIPSO, the code above writes len_delta (or 65536 + len_delta when
+> shrinking) into payload_len, and ipv6_payload_len() no longer falls
+> back to skb->len.  nf_tables, conntrack and sch_cake rely on it.
+>
+> The same arithmetic also wraps when a packet grows past IPV6_MAXPLEN,
+> and a BIG TCP packet that shrinks below IPV6_MAXPLEN should get its
+> real length back.
+>
+> Set payload_len from the skb length with ipv6_set_payload_len(), which
+> stores 0 above IPV6_MAXPLEN and the real length otherwise, as
+> ipv6_gro_complete() does.  The network header was just reset to
+> skb->data, so skb->len - sizeof(*ip6_hdr) is the payload length.
+>
+> Tested on one kernel (arm64, QEMU) with SELinux permissive, a minimal
+> mdp-generated policy (network_peer_controls=1), "netlabelctl calipso
+> add pass doi:16" and a NetLabel mapping of fd00:2::/64 to CALIPSO
+> DOI 16.  calipso_skbuff_setattr() was called through
+> netlbl_skbuff_setattr() from a test-only debugfs hook (not part of
+> this patch) adding a level-only label; payload_len after the call:
+>
+>   case                         before fix   after fix   real length
+>   1000, unlabeled                    1016        1016          1016
+>   70000 GSO, payload_len 0             16           0         70016
+>   65530 GSO, grows past MAXPLEN        10           0         65546
+>   65540 GSO with a 24 byte hop
+>   header, shrinks below MAXPLEN     65528       65532         65532
+>   1000 with a 24 byte hop header      992         992           992
+>
+> (0 means ipv6_payload_len() returns the real length.)  On the forward
+> path, with a client injecting unlabeled UDP through a router to a
+> server, the router adds the CALIPSO option and the server delivers all
+> datagrams (Udp6InDatagrams 5, Ip6InTruncatedPkts 0) with this patch.
+>
+> Fixes: 81fbc812132c ("ipv6/gro: insert temporary HBH/jumbo header")
+> Suggested-by: Eric Dumazet <edumazet@kernel.org>
+> Suggested-by: Wang Zhan <wang.zhan@smartx.com>
+> Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
+> Assisted-by: Claude:claude-opus-5-5
 
-Critical: 0 · High: 1 · Medium: 3 · Low: 2
+Reviewed-by: Wang Zhan <wang.zhan@smartx.com>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> @@ -1357,8 +1357,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
+>  			sizeof(*ip6_hdr) + start);
+>  		skb_reset_network_header(skb);
+>  		ip6_hdr = ipv6_hdr(skb);
+> -		payload = ntohs(ip6_hdr->payload_len);
+> -		ip6_hdr->payload_len = htons(payload + len_delta);
+> +		/* 0 above IPV6_MAXPLEN (BIG TCP), the real length otherwise */
 
-- [High] The test sends its fragment in a way that can never trigger the
-  bug it is meant to catch, so it passes with or without commit…
-- [Medium] test_ipv6_later_frag looks for the regression with `grep -c
-  'WARNING:.*set_ipv6_addr'`.
-- [Medium] test_ipv6_later_frag never checks that the running kernel has
-  CONFIG_DEBUG_NET, even though the patch adds CONFIG_DEBUG_NET=y to the…
-- [Medium] The new test's packet-counter check (ovs_flow_has_packets)
-  runs `ovs-dpctl.py dump-flows` on a flow whose action is a SET, but…
-- [Low] The commit message says the test 'covers the later-fragment case
-  handled by the upstream fix' but does not name it: commit 3c6a4b11330f…
-- [Low] The fragment adds CONFIG_DEBUG_NET=y but not its prerequisite
-  CONFIG_DEBUG_KERNEL=y.
-
---
-
-selftests: openvswitch: Test SET on later IPv6 fragments
-
-This adds an openvswitch selftest that sends a crafted noninitial IPv6
-fragment through a flow with an IPv6 source-address SET action. The test
-checks that the flow counter advances and that dmesg shows no
-set_ipv6_addr warning. It also adds CONFIG_DEBUG_NET=y to the openvswitch
-config fragment.
-
-> This covers the later-fragment case handled by the upstream fix.
-
-[Severity: Low]
-Could this name the fix? It appears to be commit 3c6a4b11330f ("net:
-openvswitch: validate transport header presence in set_ipv6_addr").
-
-The commit message also doesn't say that the patch adds CONFIG_DEBUG_NET=y
-to tools/testing/selftests/net/openvswitch/config. That change applies to
-every OVS selftest built from the fragment. It turns on all
-DEBUG_NET_WARN_ON_ONCE() checks and turns off the transport header reset
-in __netif_receive_skb_core().
-
-Should that be mentioned too?
-
-> diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
-> index a825e0b5c88e5..b062ebbce0f00 100644
-> --- a/tools/testing/selftests/net/openvswitch/config
-> +++ b/tools/testing/selftests/net/openvswitch/config
-> @@ -3,6 +3,7 @@ CONFIG_INET_DIAG=y
->  CONFIG_IP_SCTP=y
->  CONFIG_IPV6=y
->  CONFIG_NETFILTER=y
-> +CONFIG_DEBUG_NET=y
-
-[Severity: Low]
-Does this fragment also need CONFIG_DEBUG_KERNEL=y? From net/Kconfig.debug:
-
-config DEBUG_NET
-	bool "Add generic networking debug"
-	depends on DEBUG_KERNEL && NET
-
-DEBUG_KERNEL has no default. If this fragment is merged into a base config
-that lacks DEBUG_KERNEL, DEBUG_NET is silently dropped and the warning this
-test looks for can't fire.
-
-x86_64_defconfig and i386_defconfig already set CONFIG_DEBUG_KERNEL=y, so
-the common case isn't affected.
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> index a31f7fb6882dc..b9a4c4bf40672 100755
-> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-
-[ ... ]
-
-> @@ -66,6 +67,11 @@ ovs_wait() {
->  	return 1
->  }
->  
-> +ovs_flow_has_packets() {
-> +	python3 "$ovs_base/ovs-dpctl.py" dump-flows "$1" |
-> +		grep -Eq 'packets:[1-9][0-9]*,'
-> +}
-
-[Severity: Medium]
-Can dump-flows format the SET action that this test installs? The SET
-branch of ovsactions.dpstr() in ovs-dpctl.py does this:
-
-    field = datum
-    mask = None
-    if field[0] == "OVS_ACTION_ATTR_SET_MASKED":
-
-Here datum is the decoded ovskey nla returned by
-self.get_attr("OVS_ACTION_ATTR_SET"). So field[0] indexes an nla object
-with the integer 0 instead of checking the action name. This branch is not
-inside the try/except that covers the other actions.
-
-ovsflow.dpstr() puts the "packets:N," text in the same string as the
-actions, and dump-flows prints nothing until that whole string is built.
-
-If indexing the pyroute2 nla with 0 raises KeyError, dump-flows exits with
-a traceback and prints nothing. Then ovs_flow_has_packets never matches,
-ovs_wait times out, and the test fails even on a fixed kernel.
-
-Whether it raises depends on how pyroute2's nlmsg_base implements
-__getitem__. The formatter itself isn't new. However, no existing test
-dumps a flow with a SET action, so this test seems to be the first to
-depend on it.
-
-> @@ -445,6 +451,43 @@ test_action_set() {
->  	return 0
->  }
->  
-> +test_ipv6_later_frag() {
-> +	local t="test_ipv6_later_frag"
-> +	local warning="WARNING:.*set_ipv6_addr"
-
-[Severity: Medium]
-Will this pattern match the warning on every build? __warn() in
-kernel/panic.c prints the headline like this:
-
-	pr_warn("WARNING: %s:%d at %pS, CPU#%d: %s/%d\n",
-		file, line, caller,
-
-For the DEBUG_NET_WARN_ON_ONCE() in skb_transport_header(), %s:%d is the
-include/linux/skbuff.h location. %pS names the out-of-line function that
-contains the WARN. The [inline] frames in the syzbot trace come from
-offline symbolization and don't appear in raw dmesg.
-
-set_ipv6_addr() is a static helper with two call sites, both in
-set_ipv6(). In the syzbot build, set_ipv6() was already inlined into
-do_execute_actions(). If the compiler also inlines set_ipv6_addr(), the
-headline names do_execute_actions or set_ipv6 instead. The test would then
-pass even though the warning fired.
-
-Would it be more reliable to match on the skbuff.h WARN location or on the
-skb_transport_header_was_set() condition?
-
-> +	local before after
-> +
-> +	if ! dmesg >/dev/null 2>&1; then
-> +		info "dmesg unavailable - cannot check for kernel warning"
-> +		return $ksft_skip
-> +	fi
-
-[Severity: Medium]
-Should the test also skip when the running kernel doesn't have
-CONFIG_DEBUG_NET? Without it, include/net/net_debug.h has:
-
-#define DEBUG_NET_WARN_ON_ONCE(cond) BUILD_BUG_ON_INVALID(cond)
-
-and __netif_receive_skb_core() also resets an unset transport header:
-
-#if !defined(CONFIG_DEBUG_NET)
-	if (!skb_transport_header_was_set(skb))
-		skb_reset_transport_header(skb);
-#endif
-
-The test only skips when dmesg can't be read or when a matching warning is
-already present. On distro or CI kernels not built from the config
-fragment, it returns 0 once the flow counter advances instead of returning
-$ksft_skip.
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py b/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
-> new file mode 100644
-> index 0000000000000..869f9d6503ef4
-> --- /dev/null
-> +++ b/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
-
-[ ... ]
-
-> +    packet = ethernet + ipv6 + fragment + payload
-> +
-> +    with socket.socket(
-> +        socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003)
-> +    ) as sock:
-> +        sock.bind((interface, 0))
-> +        sent = sock.send(packet)
-
-[Severity: High]
-Can a fragment sent this way trigger the warning at all? It looks like the
-test passes both with and without commit 3c6a4b11330f.
-
-The socket is bound with ETH_P_ALL, so packet_snd() leaves skb->protocol at
-0. Then this happens:
-
-packet_snd()
-  packet_parse_headers()
-    skb->protocol = dev_parse_header_protocol(skb);  /* ETH_P_IPV6 */
-    skb_probe_transport_header()
-      __skb_flow_dissect()
-        /* NEXTHDR_FRAGMENT, non-first fragment */
-        fdret = FLOW_DISSECT_RET_OUT_GOOD;
-      skb_set_transport_header(skb, keys.control.thoff);
-
-Nothing on the way from veth to OVS clears it. __dev_forward_skb2(),
-skb_scrub_packet() and __netif_receive_skb_core() all leave a set
-transport header in place.
-
-parse_ipv6hdr() in net/openvswitch/flow.c also returns early for a later
-fragment without touching it:
-
-		if (frag_off) {
-			key->ip.frag = OVS_FRAG_TYPE_LATER;
-			key->ip.proto = NEXTHDR_FRAGMENT;
-			return 0;
-		}
-
-So on an unfixed kernel, set_ipv6()->set_ipv6_addr()->
-update_ipv6_checksum() calls skb_transport_offset() while the transport
-header is already set. The check in skb_transport_header() doesn't fire:
-
-	DEBUG_NET_WARN_ON_ONCE(!skb_transport_header_was_set(skb));
-
-As a result, after equals before and test_ipv6_later_frag() returns 0.
-
-The syzbot trace quoted in 3c6a4b11330f goes through
-ovs_packet_cmd_execute(). There the skb is built from netlink with no
-transport header. Does the test need to inject the packet through
-OVS_PACKET_CMD_EXECUTE to cover this regression?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009090629.1694991-1-sahaj123.sc%40gmail.com
+nit: consider dropping the comment, it just repeats what
+ipv6_set_payload_len() does.
