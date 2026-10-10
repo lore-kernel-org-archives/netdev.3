@@ -1,239 +1,217 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EEA381C4;
-	Sat, 10 Oct 2026 14:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279CC26ED3E;
+	Sat, 10 Oct 2026 14:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791642734; cv=none; b=MIfS1EOX0mXc+zEctU3e93gJY6gLaxV+tYBqO6Vjav6urj8Q1X00zQrW19z81ffLLWd1ynYPOfwN4lB/fM2bFUdTRbJCMy34DUzgNsc+kh4wdXQnogcsSmfM93t/9j3NAlAPOOWU1dnutKv1xYk0F8vmj+iBiRWWaKqBkWgpuTY=
+	t=1791643596; cv=none; b=unWWST3T+ZqXqgV1b0VvsbSqqHD50xM/AcJQoIYZ1UoYtVJHT82vVUunkHFCh5RmJayh0Q9TMdVhJzUk1TFEa7fV1coWvZM7LSo43RtBbwij+/A2I662R8IFGna1AOFSq3VCuP/ud158aPr9RCgQTYosWDaRlX0GEteXrmvcJ00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791642734; c=relaxed/simple;
-	bh=2LIPWbfOeDgSf5t6nd75y8gDzljUUM8YhDMfuPbA9qM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OtMyFTH/QT6SGZet9tPcH2oLLNGJj8+kxnjxkjBb2Q6CY16p4Gam/aSu5VhiA3EA7ElI8QwzB9oEx8OU7PQbC7YFPIkuAPQgRo0KiH4cYry6AKzNKdtqhbOH95K3gebYRERu3IhbmZqshbfvxLw6vhCnUcw4p0r8AosJmBDaK4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTST7iuv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791643596; c=relaxed/simple;
+	bh=O9tReunjV/TkBzh0/rwM2bzREpHWpmAvIoVIbQKSr2E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZkjcgzhtkChJn3Qv1qYxXpg7SAzMVvqOm4+UrbQ80vyUbRACaMa7PqRf9p12iD8ESdeJstfjjktsArnCWFRoqUQZlGPWIC3RO2JADcYpBwRhvrwJvEtuBxBlGdBijYP7N9otSqjyJ9M4FmnxtRB8X7lBTb3BEMaNEVpVAe1wJzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jShDoeX+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTST7iuv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBE51F000FF;
-	Sat, 10 Oct 2026 14:32:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791642732;
-	bh=dJZLdbFhLC/ynJVpWk/rEOzcEFJLRmSBZudkVqLrcp0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KTST7iuvzfxpvR5a97XPjhGCw1IhaZDtfa+AjX4TqdyWUO/8ktIJ6XTIUOX3XgoGU
-	 yXZBCO0F2c+sTEpp/hOHQC87sBulKnlE3LVk1I0tvd221bTemtMvYgiUebSCVKwdQi
-	 kAeYeM5nkmGBAnMT4Jek2IQtsi+zkDs1PfPS3y4gAIo0MEWhA8m4nV07uOxWTzvmoj
-	 5OuKLIXLhwXbUmidi/FFFdwkxL0sJDIxOmC9/XsaAnpGYNMJJ8t6eLcPZ2WTzkk8wE
-	 ZRJ/hfIgvxGq+1sewqDhcSliTh9/25g+Y+8fKvM/Dp5A04yKlmWk/Xpy8UxgEOEYsh
-	 PQRji3tPxCzAg==
-Subject: Re: [PATCH net] esp: fix out-of-bounds transport-header read after
- exthdr walk
-From: netdev-bot+sashiko@kernel.org
-To: bsdhenrymartin@gmail.com
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 14:32:11 +0000
-Message-ID: <179164273177.434549.11736942363139290526@kernel.org>
-In-Reply-To: <20261009135233.4084239-1-bsdhenrymartin@gmail.com>
-References: <20261009135233.4084239-1-bsdhenrymartin@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jShDoeX+"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C1EE6C2BCB9;
+	Sat, 10 Oct 2026 14:46:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1791643595;
+	bh=O9tReunjV/TkBzh0/rwM2bzREpHWpmAvIoVIbQKSr2E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=jShDoeX+4Ae0JXGD5cjFUhXpBZnpbUXOU9KdjKLbSpm95KN6+ct55yXosTdo2cFw+
+	 ELGts7nP43D/Izzv9HAMtMmJJxEvLd86MqhzblPv/QBlnMWgKoaEjgImE3cmN3YH+v
+	 3w4IHnvzzaVzgQpqWZyjK9tQ7V82ia6CQ9S62nx7jiijycBgIhrXSYqgR9eXE2mJIT
+	 piDZKZE+C3p8atQr96qF+bVJah9vPdbMiAFywy/TWcx6sKhFvjI/I4hpfrlKZ9rw6L
+	 ZxyUsBma+6i05CMTq8JsFbxBr0mXnD4HhOzMLRkG0IJZ4MZO2yXJmXdUpn/VU0WOxE
+	 /OEKIHlSYgf2w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4D44CA9EBE;
+	Sat, 10 Oct 2026 14:46:35 +0000 (UTC)
+From: Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org>
+Date: Sat, 10 Oct 2026 07:46:28 -0700
+Subject: [PATCH net-next v3 1/2] tls: annotate lockless access to
+ sk->sk_err
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261010-tls-fix-sk-kcsan-err-v3-1-e28aadeb31ad@proton.me>
+References: <20261010-tls-fix-sk-kcsan-err-v3-0-e28aadeb31ad@proton.me>
+In-Reply-To: <20261010-tls-fix-sk-kcsan-err-v3-0-e28aadeb31ad@proton.me>
+To: John Fastabend <john.fastabend@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jakub Sitnicki <jakub@cloudflare.com>, 
+ Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791643590; l=4423;
+ i=quanyeyang@proton.me; s=20260801; h=from:subject:message-id;
+ bh=oyeMQXlYZ5OEpzoZY0Ba7hIry6yUmLmTMWGSVMly/Fw=;
+ b=TMsLvdjn/QacxSqsZGsbKF1rS8ehvGN72WoxHJir1whjEPigAhCuu6YlxACj8x4Oqi7fGocpY
+ 0RLG+rdbfU6BxVG7YBW0U6+djPd/4r3w7Fufbao22bgzjTBh5yOXFgd
+X-Developer-Key: i=quanyeyang@proton.me; a=ed25519;
+ pk=9L9FrcvzMgxPaBRU6XV0EnqTgjDqVO596rQKSZ9qZoY=
+X-Endpoint-Received: by B4 Relay for quanyeyang@proton.me/20260801 with
+ auth_id=963
+X-Original-From: Quanye Yang <quanyeyang@proton.me>
+Reply-To: quanyeyang@proton.me
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+From: Quanye Yang <quanyeyang@proton.me>
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
+kTLS sits on the same struct sock as TCP. do_recvmmsg() and
+getsockopt(SO_ERROR) still call sock_error() without the socket lock
+and clear sk_err with xchg().
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+tls_rx_rec_wait() already peeks when data has been copied and consumes
+otherwise, but the outer if (sk_err) is an unmarked load. On the
+no-data path that check-then-sock_error() window can return 0 after
+another thread consumes the error. Call sock_error() once and only
+return when it is non-zero; keep READ_ONCE() on the peek path.
 
-- [High] Both new bounds checks compare a negative, data-relative offset
-  against skb->len using unsigned arithmetic, so the check is always…
-- [Medium] Where the computed offset is non-negative, the new checks
-  bound it only by skb->len (total length including page frags and…
-- [Low] The new comments and the commit message do not describe the main
-  receive paths accurately.
+tls_sw_sendmsg_locked(), tls_push_data(), bpf_exec_tx_verdict() and
+tls_encrypt_done() read sk_err more than once. Fold those unmarked loads
+into one READ_ONCE() and use that value as the returned errno. The field is
+still not consumed there.
 
---
+Link: https://lore.kernel.org/netdev/3d9d442f-f168-43da-87b0-010ad5a78365@redhat.com/
+Signed-off-by: Quanye Yang <quanyeyang@proton.me>
+---
+ net/tls/tls_device.c |  5 +++--
+ net/tls/tls_sw.c     | 54 ++++++++++++++++++++++++++++++++++------------------
+ 2 files changed, 39 insertions(+), 20 deletions(-)
 
-esp: fix out-of-bounds transport-header read after exthdr walk
-
-This adds a bounds check to esp_input_done2() and to esp6_input_done2()
-before the 2-byte source port is read from the encap transport header.
-If the computed offset plus two bytes is past skb->len, the packet is
-rejected with -EINVAL.
-
-> diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-> index e76db5817e78e..aaff5a2b659db 100644
-> --- a/net/ipv4/esp4.c
-> +++ b/net/ipv4/esp4.c
-> @@ -744,6 +744,18 @@ int esp_input_done2(struct sk_buff *skb, int err)
->  		struct udphdr *uh = (void *)(skb_network_header(skb) + ihl);
->  		__be16 source;
->  
-> +		/*
-> +		 * ihl is taken from the decrypted inner packet and is not
-> +		 * re-validated after esp_remove_trailer() shrank the skb;
-> +		 * make sure the 2-byte source port we read below is within
-> +		 * the packet.
-> +		 */
-
-[Severity: Low]
-Is this comment accurate for the UDP encap path?
-
-In esp_input_done2(), ihl comes from:
-
-	iph = ip_hdr(skb);
-	ihl = iph->ihl * 4;
-
-At this point that is the outer, unencrypted IPv4 header that
-ip_rcv_core() validated. The inner network header is only reset later,
-by the mode input callback.
-
-The UDP header at network_header + ihl was already linearized by
-__xfrm4_udp_encap_rcv():
-
-	if (!pskb_may_pull(skb, sizeof(struct udphdr) + min(len, 8)))
-
-That header sits before skb->data, so esp_remove_trailer() trimming the
-tail can't move it out of range.
-
-The esp6 comment has the same problem. On the UDP path,
-ipv6_skip_exthdr() walks outer extension headers that IPv6 input has
-already validated, stops at the UDP header, and returns a negative
-offset relative to skb->data.
-
-The scenario might really happen on espintcp paths where the network
-header is stale. tcp_collapse() leaves network_header at 0 for a new
-head, and alloc_skb_for_msg() copies first->network_header into a
-0-byte head through __copy_skb_header(). That would fit the Fixes: tag,
-but neither the comments nor the commit message describe it.
-
-Could the comments and the commit message describe how the offsets
-actually work, and which path produces the bad header?
-
-> +		if (skb_network_offset(skb) + ihl + sizeof(__be16) >
-> +		    skb->len) {
-> +			err = -EINVAL;
-> +			goto out;
-> +		}
-
-[Severity: High]
-Can this check ever pass for a valid encapsulated packet?
-
-When esp_input_done2() runs, skb->data points at the ESP header. The
-outer IP header and the UDP or TCP encap header both sit before
-skb->data. For UDP, __xfrm4_udp_encap_rcv() pulls the UDP header off:
-
-net/ipv4/xfrm4_input.c:__xfrm4_udp_encap_rcv() {
-    ...
-	if (pull) {
-		__skb_pull(skb, len);
-		skb_reset_transport_header(skb);
-    ...
-}
-
-For espintcp, espintcp_rcv() does:
-
-	if (!pskb_pull(skb, rxm->offset + 2)) {
-
-So with UDP encap, skb_network_offset(skb) is -(ihl + 8), and
-skb_network_offset(skb) + ihl is -8. Adding sizeof(__be16) converts
-that to size_t, so the left side becomes a huge unsigned value and the
-comparison is always true.
-
-Wouldn't that drop every UDP_ENCAP_ESPINUDP and TCP_ENCAP_ESPINTCP
-packet with -EINVAL after a successful decrypt? That would break both
-NAT-T and espintcp receive.
-
-The new check in esp6_input_done2() looks like it has the same problem:
-
-	if (offset + sizeof(__be16) > skb->len) {
-
-offset starts at skb_network_offset(skb) + sizeof(*ip6h).
-ipv6_skip_exthdr() stops at the UDP or TCP header, which gives -8 for
-UDP. The existing code already depends on offset being negative there:
-
-	hdr_len += offset;
-
-Also, skb->len counts bytes from skb->data onward, but the port being
-read is before skb->data. Even a signed comparison against skb->len
-would not bound this read.
-
-Would something like skb_header_pointer_careful(), or a signed check
-against the headroom and headlen, be needed instead of extending this
-check?
-
-> +
->  		switch (x->encap->encap_type) {
->  		case TCP_ENCAP_ESPINTCP:
->  			source = th->source;
-> diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-> index b1c9b36f76dc4..89e8cdf5a26b2 100644
-> --- a/net/ipv6/esp6.c
-> +++ b/net/ipv6/esp6.c
-> @@ -782,6 +782,17 @@ int esp6_input_done2(struct sk_buff *skb, int err)
->  			goto out;
->  		}
->  
-> +		/*
-> +		 * ipv6_skip_exthdr() can advance past the packet end when the
-> +		 * last extension header claims an oversized length; the
-> +		 * transport header below would then be read out of bounds.
-> +		 * Make sure there is room for the 2-byte source port we read.
-> +		 */
-> +		if (offset + sizeof(__be16) > skb->len) {
-> +			err = -EINVAL;
-> +			goto out;
-> +		}
-> +
->  		uh = (void *)(skb->data + offset);
->  		th = (void *)(skb->data + offset);
->  		hdr_len += offset;
-
-[Severity: Medium]
-When offset is non-negative, does this check bound the read that
-follows?
-
-skb->len includes page frags and the frag_list. The port, however, is
-read straight from the linear buffer through skb->data + offset. Any
-offset with skb_headlen(skb) <= offset + 2 <= skb->len passes the
-check, and the read then lands past the linear data, possibly past the
-end of the head allocation.
-
-Non-negative offsets seem possible on the espintcp paths where the
-network header is stale. alloc_skb_for_msg() does:
-
-	n = alloc_skb(0, GFP_ATOMIC);
-	...
-	skb_shinfo(n)->frag_list = first;
-
-	__copy_skb_header(n, first);
-
-and tcp_collapse() leaves network_header at 0. In both cases
-ipv6_hdr() points at bytes that are not a real IPv6 header.
-ipv6_skip_exthdr() walks with skb_header_pointer(), which can read
-frags, and each step can advance up to 2048 bytes. esp6_input() does
-not linearize the skb, so the offset can end up well inside skb->len
-but past skb_headlen().
-
-The esp4 check has the same skb->len bound in front of the direct
-th->source and uh->source reads at skb_network_header(skb) + ihl.
-
-I haven't confirmed the whole path end to end. Would reading the port
-with skb_header_pointer_careful() handle both the negative-offset case
-and the frag case?
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index f11d0528fc43..03ce83a9d4e9 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -444,8 +444,9 @@ static int tls_push_data(struct sock *sk,
+ 	if ((flags & (MSG_MORE | MSG_EOR)) == (MSG_MORE | MSG_EOR))
+ 		return -EINVAL;
+ 
+-	if (unlikely(sk->sk_err))
+-		return -sk->sk_err;
++	rc = -READ_ONCE(sk->sk_err);
++	if (unlikely(rc))
++		return rc;
+ 
+ 	flags |= MSG_SENDPAGE_DECRYPTED;
+ 	tls_push_record_flags = flags | MSG_MORE;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 312e51270f29..a2be1283ca93 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -473,6 +473,7 @@ static void tls_encrypt_done(void *data, int err)
+ 	struct scatterlist *sge;
+ 	struct sk_msg *msg_en;
+ 	struct sock *sk;
++	int skerr;
+ 
+ 	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
+ 		return;
+@@ -488,13 +489,15 @@ static void tls_encrypt_done(void *data, int err)
+ 	sge->offset -= prot->prepend_size;
+ 	sge->length += prot->prepend_size;
+ 
++	skerr = READ_ONCE(sk->sk_err);
++
+ 	/* Check if error is previously set on socket */
+-	if (err || sk->sk_err) {
++	if (err || skerr) {
+ 		rec = NULL;
+ 
+ 		/* If err is already set on socket, return the same code */
+-		if (sk->sk_err) {
+-			ctx->async_wait.err = -sk->sk_err;
++		if (skerr) {
++			ctx->async_wait.err = -skerr;
+ 		} else {
+ 			ctx->async_wait.err = err;
+ 			tls_err_abort(sk, err);
+@@ -704,10 +707,14 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 	int err;
+ 
+ 	err = tls_push_record(sk, flags, record_type);
+-	if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
+-		*copied -= sk_msg_free(sk, msg);
+-		tls_free_open_rec(sk);
+-		err = -sk->sk_err;
++	if (err && err != -EINPROGRESS) {
++		int skerr = READ_ONCE(sk->sk_err);
++
++		if (skerr == EBADMSG) {
++			*copied -= sk_msg_free(sk, msg);
++			tls_free_open_rec(sk);
++			err = -skerr;
++		}
+ 	}
+ 	return err;
+ }
+@@ -800,10 +807,9 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 	}
+ 
+ 	while (msg_data_left(msg)) {
+-		if (sk->sk_err) {
+-			ret = -sk->sk_err;
++		ret = -READ_ONCE(sk->sk_err);
++		if (ret)
+ 			goto send_end;
+-		}
+ 
+ 		if (ctx->open_rec)
+ 			rec = ctx->open_rec;
+@@ -1107,10 +1113,16 @@ tls_rx_rec_wait(struct sock *sk, bool nonblock, bool released, bool has_copied)
+ 	timeo = sock_rcvtimeo(sk, nonblock);
+ 
+ 	while (!tls_strp_msg_ready(ctx)) {
+-		if (sk->sk_err) {
+-			if (has_copied)
+-				return -READ_ONCE(sk->sk_err);
+-			return sock_error(sk);
++		if (has_copied) {
++			int err = READ_ONCE(sk->sk_err);
++
++			if (err)
++				return -err;
++		} else {
++			int err = sock_error(sk);
++
++			if (err)
++				return err;
+ 		}
+ 
+ 		if (ret < 0)
+@@ -1132,10 +1144,16 @@ tls_rx_rec_wait(struct sock *sk, bool nonblock, bool released, bool has_copied)
+ 		 * sk_err here so a connection abort surfaces as the
+ 		 * actual error rather than a clean EOF.
+ 		 */
+-		if (sk->sk_err) {
+-			if (has_copied)
+-				return -READ_ONCE(sk->sk_err);
+-			return sock_error(sk);
++		if (has_copied) {
++			int err = READ_ONCE(sk->sk_err);
++
++			if (err)
++				return -err;
++		} else {
++			int err = sock_error(sk);
++
++			if (err)
++				return err;
+ 		}
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+ 			return 0;
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009135233.4084239-1-bsdhenrymartin%40gmail.com
+2.55.0
+
+
