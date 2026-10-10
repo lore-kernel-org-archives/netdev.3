@@ -1,129 +1,140 @@
-Received: from mail-oo2-f9.google.com (mail-oo2-f9.google.com [74.125.231.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021BD2F8E91
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C553635E55D
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791620124; cv=none; b=rOKnMRVJVLd2A5tmV1Gqc0/dC/TVSDLCyHabl9iymmq91/vVt8j5IXeF7DzzoEaF13ZETFW4LLbApnjhNxeEIKIHjQGe+bR4+4kT8lfhjNJM6exf5xk0GVKqzkP/SRRXSxgGiZa+9b+atOJpCOujK/wBbLQTrKmkODbNlHFJV/0=
+	t=1791620774; cv=none; b=qQQQjPebchZTwsWzHsjIeS9Qd+2QgssZJmNWRhunm8muwYmh4P1iGxht2oitA9wmu9qHy6jfJgV48w0Nj6Ys6oypnpFJpecT6JD8AOkDcB/mKQT8WMFGyzvFChVpgmtBSOF9v6sPDwbUWOhWWdpGL2lQ/fe+msxSP156JqAd1u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791620124; c=relaxed/simple;
-	bh=Uf/oosQ/UAQy81xB9H7Rsx1eC7q8VdIACUuGXMPsPNM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DZnI9+UtwERy28rlv9LkVNMS2INIt7uZu95Bew1EbkCr9e5eGP0v+CYPfvdg7RS4/pHfPd/X4tpLUhQp63eO28c3f5pX3MChkjTvlvDHSgTLd6ky3tsjECpFIedCCQ8Ed9IOiFRgPIzBLvKXUOHxHRdzUA/k0uUpyt+cavIlt2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IfCRkZGK; arc=none smtp.client-ip=74.125.231.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791620774; c=relaxed/simple;
+	bh=vi5jpLGy+JwHOFQXGt9InSXMZQ//fuL1+427dpdSnQ8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oC4uH2RAcNWc6iJFoaZ8oDL52C5tDcFY6iT4yUatVT53s7Z1IS5fyllX5bOrNjCAUFbW3lkkOxwOxy71Nkhum5m11JTNKlpctSMo1uPfODUO2aE6qpXF2Be02LUJ1TYxkZowX8esVXz+Jg/1dy9JZTVzvMom/xUDHPshlQ1I82I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g2HOMi88; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IfCRkZGK"
-Received: by mail-oo2-f9.google.com with SMTP id 006d021491bc7-6de19ccd89bso43692eaf.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:15:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791620121; x=1792224921; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/b9AkOusiOjPBsWU4XsABElpJcJY0c8yQLeU8F399Ww=;
-        b=IfCRkZGK1vl8aNQnmZ1Tz1GIj6Mqj6rmQZI7dheMnOJDLRDnedgS4oNz3mZiixGmi1
-         EGNlqzplQZsloPkDwaWOVYSL7sjHvi0MQKVrQI8/ceBKjkIIP/HZQZBZu0kqgl6tAPJS
-         yyfa5+umi0Pfi0PUFEbvKlLrQtEfkljIviODG8Gwm4pwFTQ72SqNeaZIW0VOzZ/1kWym
-         tVWb7+z0OQD9pAQICqvD+o91/jpPGFy41eK7W0ImOU4lE7aOyq6iL2KtzyRbgeU+w4UG
-         AxmHOwdwvbBMM63KQB71JMpX+3Hkhwc0VV83dO0QTToXAIM2QhrU7oMy+ex6124QCWd3
-         VM2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791620121; x=1792224921;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/b9AkOusiOjPBsWU4XsABElpJcJY0c8yQLeU8F399Ww=;
-        b=zOERnRawLUcnnuXezZd2QgrWLmMyE6Wb61Kc+RrzWvGybrt/D6OGyc/vCuevoaW9Sr
-         ZRDGhxx/hYZhiQ0TLa5afIXkjCgaGQ7BS4idwLfO6s9BgoIGWNpRSQQySnFiAN0cdoUY
-         UQLWh5KLPNjEJndx/dzBjjs6BgfVDSZiHFbt1l9rkXHYWyKEWPZwzr5yBnQZaltpHxTT
-         BtgOiFW7O9ZL3KfNlRAuifvt9D2VvOJCDcAgRoXgK4O8LcEwvbGsXjAqyo4G4uOu70fh
-         kQpDAdOm3b2dLe5GK0stStzcJNdq5uoWP0641UCREhvHiD+lQ4wlr34EYicwGviu2bUb
-         FnWA==
-X-Forwarded-Encrypted: i=1; AKwUvBxlqa6fKQTAzNtSRYPPnkoBwYLxDD0cgLpoTJpTYRpYTIQhY7or6OZEYbXWjTacjxlI2ySfk9E=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJnZWgwU3qzmjPOhb/U1YRh8yqfpE5caYWDlX9vTaKZJKLeglWF
-	K+xe5HV9K0WduYXDnqp3BVW8YmbrM0K7f8L01lVMPFqHCrmfIaK2S6tg
-X-Gm-Gg: AYBFou3f8tr4GLTnKwzmsr0u/b68idbdytoT+cyEinhZiQQLNupXFtXXttHmkLozrVE
-	7dw8scl0jitzfjHTNl7prBeKovO8GEUj40wsUEoPnU1qpwkfmjnbjALqd3vAZ18M3353U5ZfbCG
-	YaevwlxIWp+2Q6/K7vwnRwK5DiOQd3mumoOHQGeWmniYG6t8Wp6SRk4LtUqF+dgm/ffQ8Up3+Vh
-	HJsRyxzUBahaVLhasM3bERYWXnGVNN6m4EB/bzoFvSaJ7KrFRx8Y3oSQ4bb+E884UaWGoDSxqxS
-	5LXsvh7oH3mCMnPU/solHlYpShzYVcilpBve3mLfye4Uqj1vbDX9bk/8eY0vedbk/h5IZbUoAyu
-	qTPLs4CSB0EvRpBUPPK0GZQHt0gn7GC+wMhBP6hnoOd7dNh3nRVYSxr0pojWAQE7jKwLIZ3pVAH
-	q8sAFf4r4ZDG0CUnFgmItOLq5ghQOBUILXanetKUX0s6Dasr+Lu0gToFl/U+azKqn14YyXoe6TK
-	ZHC/JKdnGOjWRFb2bcIeDLHa6TlIz8Wjt9e
-X-Received: by 2002:a05:6820:1ca7:b0:6dd:d08d:7900 with SMTP id 006d021491bc7-6ef0fbb6725mr3230261eaf.54.1791620120710;
-        Sat, 10 Oct 2026 01:15:20 -0700 (PDT)
-Received: from localhost.localdomain ([14.22.11.162])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8302f625a10sm4067822a34.0.2026.10.10.01.15.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 01:15:19 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: Allison Henderson <achender@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: linux-rdma@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] rds: fix transport reference leak on rds_add_bound() failure
-Date: Sat, 10 Oct 2026 16:14:46 +0800
-Message-ID: <20261010081446.3112217-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g2HOMi88"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7699A1F0089E
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791620773;
+	bh=OH4d1I58KRGiSRV9Dj+44ocHv/O2DZTJh8ELdSAq85k=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=g2HOMi88/qygg7slQTfltPgS/6rezeYPMPPffhcUgKaWhorTBPERjVpt5UtG4npBg
+	 7urZh2sc7dQIFl6AEwkelipTOYpBNPNhJz6agTRB8aW8TtP5xDv5/JE3+HTydI/WOo
+	 AI9YW3EJQszt7BwQeoF/O8pU4sFRJrrXVDNFlko3H85myTE8JC/3CvZObUXSBn0T5x
+	 AYyckvY7qUosfyXjFjH+83o0oUdpvNOtvVTn8dorAkRFh/RRZcgT5RL2kVtSvZZ+4W
+	 j4reE9Nm4CTlIBfa0FSzmpQs0L7xa4mdaTpJTX9YPxXz3gujK5dr0ve9AwNH5jjQZn
+	 sJkIn356J7CBw==
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4b1fcd3b1a9so201316b6e.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:26:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByT8l4+fqBJnJGio6raAZLhLzvEzdjPFQUWy4NDOg0SCv7j232xPJjBx+swEyIFRNfhqDLVD7M=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKgVfE/3dZ/4X1wSQ/VPX/rwQ+WAYmE4NoAZ6Mu/KAOOWn/VT+Y
+	jzhs4Vq50RM7RJ4jGUA59vPIbmuxyMNhzMqX42vE4NPRtYqWVD6N9r+VSvfSIDr4LDCxz5WE0AI
+	l7eKzgtCDoNpzdWCKPEp1RPGX2+eLsN8=
+X-Received: by 2002:a05:6808:c2b6:b0:4ec:d580:2440 with SMTP id
+ 5614622812f47-50c56348bd3mr3537338b6e.54.1791620772707; Sat, 10 Oct 2026
+ 01:26:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261010072548.2869465-1-bsdhenrymartin@gmail.com>
+In-Reply-To: <20261010072548.2869465-1-bsdhenrymartin@gmail.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sat, 10 Oct 2026 10:26:01 +0200
+X-Gmail-Original-Message-ID: <CAL4WiipgL26xjM+0+wT-NUVx9ppjQEJj+oShdew-mbzrRVU=dA@mail.gmail.com>
+X-Gm-Features: AclHuK-HBhWUWJd8z0U94No5sZEEaJ0hMqagbNquWcG66cocr2HtoJN_Y12NuYc
+Message-ID: <CAL4WiipgL26xjM+0+wT-NUVx9ppjQEJj+oShdew-mbzrRVU=dA@mail.gmail.com>
+Subject: Re: [PATCH net] netlink: fix out-of-bounds bitmap access clearing
+ stale mc groups
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>, Kees Cook <kees@kernel.org>, 
+	Ilya Maximets <i.maximets@ovn.org>, Breno Leitao <leitao@debian.org>, Jeff Layton <jlayton@kernel.org>, 
+	Kexin Sun <kexinsun@smail.nju.edu.cn>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-rds_bind() takes a module reference on the chosen transport via
-rds_trans_get_preferred().  If the subsequent rds_add_bound() fails,
-rs->rs_transport is reset to NULL without dropping the reference,
-and rds_release_sock() later only calls rds_trans_put() when
-rs_transport is non-NULL.
+Le sam. 10 oct. 2026 =C3=A0 09:26, Henry Martin <bsdhenrymartin@gmail.com> =
+a =C3=A9crit :
+>
+> netlink_realloc_groups() sizes nlk->groups to the number of groups
+> that exist at bind/ADD_MEMBERSHIP time.  When more multicast groups
+> are registered later (e.g. a new genl family), existing sockets keep
+> their smaller bitmap.
+>
+> __netlink_clear_multicast_users() however iterates every group of
+> the departing family and calls netlink_update_socket_mc() for each
+> socket on mc_list, which does test_bit()/__assign_bit() on group - 1
+> with no regard to nlk->ngroups.  A stale socket therefore gets bits
+> read and cleared past its bitmap allocation, corrupting whichever
+> heap object follows it; the corruption repeats on every family
+> unregister.
 
-Every failed bind therefore leaks one rds_tcp module reference,
-unprivileged and unbounded: a few hundred failed binds (e.g. to
-port 1) make "rmmod rds_tcp" permanently impossible.  The reference
-was originally balanced because the failed bind left rs_transport
-in place for the release path; commit 05733434ee9a ("net/rds: Check
-laddr_check before calling it") added the NULL-out without the
-matching put.
+Do you have a KASAN report, or is this from static analysis only ?
 
-Drop the reference in the failure branch; rds_trans_put() already
-tolerates NULL.  The symmetric SO_RDS_TRANSPORT leak is covered by
-the same fix.
+nl_table[NETLINK_GENERIC].groups only grows when group ids no longer
+fit in mc_groups_longs * BITS_PER_LONG.
 
-This issue was discovered by Tencent CodeBuddy Security.
+On 64bit, 59 ids are free in the initial bitmap. I count 58 genl
+multicast groups in the whole tree, 4 of them using reserved ids
+(ctrl, quota, pmcraid, NET_DM), so 54 dynamically allocated ones
+if every family was loaded at the same time.
 
-Cc: stable@vger.kernel.org
-Fixes: 05733434ee9a ("net/rds: Check laddr_check before calling it")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- net/rds/bind.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I do not see how a 64bit kernel with in-tree families can get there.
+32bit kernels could, and then only from genl_unregister_family(),
+i.e. at module unload.
 
-diff --git a/net/rds/bind.c b/net/rds/bind.c
-index f800d920d9690..e4667b3128940 100644
---- a/net/rds/bind.c
-+++ b/net/rds/bind.c
-@@ -264,8 +264,10 @@ int rds_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int addr_len)
- 
- 	sock_set_flag(sk, SOCK_RCU_FREE);
- 	ret = rds_add_bound(rs, binding_addr, &port, scope_id);
--	if (ret)
-+	if (ret) {
-+		rds_trans_put(rs->rs_transport);
- 		rs->rs_transport = NULL;
-+	}
- 
- out:
- 	release_sock(sk);
--- 
-2.43.7
+The check itself looks fine and matches what do_one_broadcast()
+does, but the changelog should describe the real conditions instead
+of suggesting a generic heap corruption.
 
+Unless you have a reproducer, I think this is net-next material,
+without the Cc: stable.
+
+>
+> Skip groups that lie beyond the socket's bitmap: such a socket could
+> never have joined them.
+>
+> This issue was discovered by Tencent CodeBuddy Security.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: b4ff4f0419ae ("[NETLINK]: allocate group bitmaps dynamically")
+
+This commit did not add netlink_update_socket_mc() or
+netlink_clear_multicast_users(). This should be
+
+Fixes: 84659eb529b3 ("[NETLIKN]: Allow removing multicast groups.")
+
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> ---
+>  net/netlink/af_netlink.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+> index 9fdf964224ab4..8cc655aa927f1 100644
+> --- a/net/netlink/af_netlink.c
+> +++ b/net/netlink/af_netlink.c
+> @@ -1657,6 +1657,12 @@ static void netlink_update_socket_mc(struct netlin=
+k_sock *nlk,
+>  {
+>         int old, new =3D !!is_new, subscriptions;
+>
+> +       /* A socket whose bitmap predates this group can never be a membe=
+r;
+> +        * don't touch bits beyond its allocation.
+> +        */
+> +       if (group - 1 >=3D nlk->ngroups)
+> +               return;
+> +
+>         old =3D test_bit(group - 1, nlk->groups);
+>         subscriptions =3D nlk->subscriptions - old + new;
+>         __assign_bit(group - 1, nlk->groups, new);
+> --
+> 2.43.7
+>
