@@ -1,67 +1,63 @@
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316E93C199B
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FCA3BBFBE
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791621580; cv=none; b=tZNQmIvX8Idcuj1lqCbJ5s1lF3FEahEjk9CSysRj3Dl8iC66hrs9HPm03/HdHpdmeraeatQIEjwzXQ3VcC0mLggd63HUAcqkFrLd1Fl0AAayukyRTrKEAzvlowozkRLJNJtFgMabAWLSsBpnT0/MEVZ3bRHU1q+uu0nfS/7qGCA=
+	t=1791621582; cv=none; b=mi2XcuajqUawo5dbZJtUAJjyn9PY1aZOS7+DEENk78kf+ngd3TfPMEXIiA0r/0M/2DAoADXG70micX+wrGyvNvnbRuqSwrj7BqRFAKDUfVn0g3dzwBKwwKUHLybqZLTrd3gUy4xXt6a0jFmuU63R9aB2qYqwRRybTGDbbZhZVl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791621580; c=relaxed/simple;
-	bh=c4i6mi3hlpud4ggYzlYd71WHusW0w0pU98zmW2ROBu8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=f4Vj7Nyp2j6BqzJLmkxceAmr6z6mA4vQFEBbNi9sMhpsVHwFR0LyOX4+5to05bCRVD82b2BXScvKGUtkwSnF0RPvBSVjFaFuFAYDAjnc/ERo6ZSxr3FE0olYVo7NVVm+0ffSDU3DfjmuhxmCaDxijJcCD9J/AzO0WbvA7pTsmdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ok+GrNS8; arc=none smtp.client-ip=74.125.82.200
+	s=arc-20240116; t=1791621582; c=relaxed/simple;
+	bh=yJPx+2NjK9QXSRZnpkECYqzwogeVBJ5CYjQo9wXfUBE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qdbcerycm8Ckq/s1OTaiycTJiN+ZerMrucKpgMbPJCosU6PhRRBsviNvvTnYgFzOVENGEkGLh7X1FAgVG+oQYWy4bqtmvgeczgU4LHbq18hza4a+E8lIZaJRljqgxOyW0iapzNllvd0oCkJS9AiYJhY5N2QMwKBrri01EahsBow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=b7lxaZKr; arc=none smtp.client-ip=74.125.82.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ok+GrNS8"
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-3548cdfd2fbso664762eec.1
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:39:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="b7lxaZKr"
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-151ba226e1bso610086c88.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:39:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791621577; x=1792226377; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lHcZnhc3QYZQ2/oBZUUaxlLCVCxGa2In7CH7r+34iGA=;
-        b=Ok+GrNS8Y6mqZFXOGu2tI+Ipn9Oaw1NOXxHv/R3bCRjwf2VIYL4wXuH2ukDmQ7cqcy
-         zVIxQu3xLZ0khGcsrw5Q290xOqiFL8Wov3uS0uej/yHDq0SAnyZNAwWaFI/09FRrQiqf
-         IrPSCkNPc8dQDMv93KmdkOfUoZ0ky8tmocTO4dez2wwxbn5JeyQK1HI6L7BrvIzcAYUZ
-         6cNKsTPaSZtao6qmBqSMIHpD+HN+8VOu1gfX5oqrV2VwASzB6r9xmKAwdCfeOdpm71FL
-         o7Xa1NosM3mQYqMNXRzSTLd62pIH6p/rxzryZ+V3CnfthZGjc2ONY1QrQ49cc2RV1XYB
-         NFtg==
+        d=google.com; s=20251104; t=1791621576; x=1792226376; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=konKcecyvECbbvQ18/L6qLdUB40zhoOLVBmrCxo31fE=;
+        b=b7lxaZKrxD3UFktzJ8sRFkFV8gE4uhVI6zQcdpYLyeLYRcY/vWA37CPaV/aGikukwT
+         EBr0laY3dWgi5Sr5ndLKHg8v3x0U9bYep7QVZ6SzNJPUABKFMt6mwrrOiBClQqla012E
+         EL7BSezCnvV80Y2VsetELf0caUo3WoolwDjBYuQX/a5GaLAqEZYyA/ui2yvFd6hanawr
+         1j8n8Xx41o8xC4+X2do7bTPY06JA4iq6/APdjcgZ4B36eaa/LWRJeiRDMc+7MzoxX1G/
+         QdUNNar+0uGDBmE5ylHglov+UO4B/HIQ6Yz68IsB4uSsrxEtwy+P09Gx+o4KZxX9D4qL
+         lXng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791621577; x=1792226377;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lHcZnhc3QYZQ2/oBZUUaxlLCVCxGa2In7CH7r+34iGA=;
-        b=fGrgAJ/qN0yvhmbXF8KVW8Ts6QcRXO2ZwrEY5VFa66A9EsERi0J9HF9tBaxqxVYTOK
-         ucT9roh6mE+7wbhNy8KQOqjOX7JRg70HrjeAC3nv72kdRfc0z6qD8jMWVC72gjRWVRW2
-         k2B87u80W74yFUGzrIGnSEBU2yMhAx38/54D+aBvmnqTC4XGjoeDa9ueXsL/LniNFmur
-         XIdfwiRTQ9bLEvLT0ZDw/RxlkM7ogiW5K+de3KhzRyYM1LP3/yDZE+U2A81dCi/no+XQ
-         z5k//fi9OVvZ+7rKrmH0cp/U8pP6dyAOAfvNi6Rk9uY7Udo36jkIND/+DR7Zlp1wL6qg
-         eMog==
-X-Gm-Message-State: AFq9FYKQzA9SZ584ZPtK+lA7q1Gbl9z6lp78/A9NC2JR7gsbIFuITc6R
-	7cpmHRyOV9dbPWISBvPaGGgUvC9r7ey7B50hoa1cxiqKrzQutMIeJ5Qei+565KbaED2zPOwqfMy
-	5m83LyStex5+qj8CHla1sBCw+6vXqAQtrQZ0K5LmqsE1UJ8H4gdz9lpuHNqxprq5LCQbYf0bxI+
-	hEOg7D5ooHUvfCFM4v9RDfbfKCEdUBDzdT7MQMTyyk+G00MOqSbzCsNEJ2V4KZ0Mw=
-X-Received: from dybqm7.prod.google.com ([2002:a05:7301:6707:b0:351:5787:a37a])
+        d=1e100.net; s=20260707; t=1791621576; x=1792226376;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=konKcecyvECbbvQ18/L6qLdUB40zhoOLVBmrCxo31fE=;
+        b=PtAS78KwHRE77/CEybDhss3o0I2+MDoRZRhBh8DivZVPAyPohfaYBUhjQLgVbfAwR3
+         Y7mPmeNDZmJyaIx8ExvTkPJCtOMLXYoUtVrSMTnALNwgZiXtcKYs1bSwFXl6btqOJvux
+         XrJMfbWesgpLrzfGCYund+I0Ssf+cKWksoaHuZwJ/g6QOy6jsYxGRD2gNqaxyRlK0KaA
+         OohZTZiKJZHY1t3BYtw7AwkK4T36LsFnsePOrxz8aAJoYWl7pA6h1qXExXRhg6mLuA+x
+         CGw8XWBq0O2sS/hsWWvBB1bSWeQTNCMYv9PrabN4ntvrtMLhfrQtFb7KzBCnO5YAEI7A
+         Dx7g==
+X-Gm-Message-State: AFq9FYKeG+xjTNRPF9nmKgqy6J7a3OO9VKk6npUEPN5zzWLHmabnXleN
+	7Q/T0d7+//yue2k78DTCIDKpWPldnRtksIr3NMvanFSQbIcKe7g2CthFQKiX0IuPzBej1k5kiVr
+	cxELfAsMKEAN6NkuD9sdeuxi7GLah74pNmesKQ//9YaUNDgy9HiNlDIPQ36jYiLyYKKiHTYJSRH
+	Xwskk0UWe02OmXSj7WUAh6PU85yCJAiMIuNl6tvuoVjFtFcWND/mPgowc/lcREYUE=
+X-Received: from dli5-n2.prod.google.com ([2002:a05:7022:285:20b0:165:ba5:ba2b])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:6394:10b0:34a:48ce:b687 with SMTP id 5a478bee46e88-3537e010c56mr5272905eec.32.1791621576769;
- Sat, 10 Oct 2026 01:39:36 -0700 (PDT)
-Date: Sat, 10 Oct 2026 08:38:42 +0000
-In-Reply-To: <20261010083935.3274178-1-almasrymina@google.com>
+ 2002:a05:7023:a4b:20b0:158:b944:b20 with SMTP id a92af1059eb24-16a5dcf5a57mr5509841c88.11.1791621575725;
+ Sat, 10 Oct 2026 01:39:35 -0700 (PDT)
+Date: Sat, 10 Oct 2026 08:38:41 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20261010083935.3274178-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261010083935.3274178-2-almasrymina@google.com>
-Subject: [PATCH net-next v1 1/6] netmem: rename __get/__put_netmem() to get/put_net_iov()
+Message-ID: <20261010083935.3274178-1-almasrymina@google.com>
+Subject: [PATCH net-next v1 0/6] net: unify symmetric netmem and page_pool refcounting
 From: Mina Almasry <almasrymina@google.com>
 To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-rdma@vger.kernel.org, bpf@vger.kernel.org
@@ -78,121 +74,62 @@ Cc: Mina Almasry <almasrymina@google.com>, Ayush Sawal <ayush.sawal@chelsio.com>
 	Arend van Spriel <arend.vanspriel@broadcom.com>, Jakub Raczynski <j.raczynski@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 
-netmems carry both a non-pp backing refcount and a page_pool
-pp_ref_count. Make the non-pp layer explicit and symmetric across both
-netmem types: get/put_netmem() dispatches to get/put_page() for pages
-and get/put_net_iov() for net_iovs, always acquiring or releasing a
-non-pp reference regardless of page_pool membership.
+netmems (pages and net_iovs) have two independent refcounts: a non-pp
+refcount (page._refcount or binding->ref) governing backing memory
+lifetime, and pp_ref_count governing recycling within a page_pool while
+page_pool holds a single backing non-pp reference. SKBs with
+pp_recycle=1 own pp_ref_count references on page_pool fragments; SKBs
+with pp_recycle=0 own non-pp references.
 
-Warn via DEBUG_NET_WARN_ON_ONCE() for net_iov types that do not support
-non-pp references.
+Core helpers currently mix these two refcounts asymmetrically:
+skb_frag_ref() always increments the non-pp refcount via get_netmem(),
+whereas skb_frag_unref() decrements pp_ref_count when skb->pp_recycle
+is set. Any path that refs a fragment on a pp_recycle=1 SKB (or unrefs
+with a hardcoded recycle=false) increments one counter and decrements
+the other, leaking the backing memory while underflowing pp_ref_count
+(e.g., IP-TFS [1], skb_split(), skb_shift(), and cloned SKB uncloning).
+Unclear core APIs also led drivers and ULPs to open-code pp_ref_count
+manipulations or add one-off helpers like skb_pp_frag_ref().
 
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- include/net/netmem.h | 24 ++++++++++++++++++++----
- net/core/skbuff.c    | 36 ++++++++++++++++++++++++++----------
- 2 files changed, 46 insertions(+), 14 deletions(-)
+Unify fragment refcounting into symmetric pairs where each layer clearly
+specifies which refcount it touches:
 
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index 0cc8572f62caf..697d50c51a5ee 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -399,21 +399,37 @@ static inline bool net_is_devmem_iov(const struct net_iov *niov)
- }
- #endif
- 
--void __get_netmem(netmem_ref netmem);
--void __put_netmem(netmem_ref netmem);
-+void get_net_iov(struct net_iov *niov);
-+void put_net_iov(struct net_iov *niov);
- 
-+/**
-+ * get_netmem - acquire a non-page_pool reference on a netmem
-+ * @netmem: netmem to reference
-+ *
-+ * Acquires a non-pp backing reference (page._refcount via get_page() or
-+ * binding->ref via get_net_iov()) regardless of page_pool membership.
-+ * Counterpart to put_netmem().
-+ */
- static __always_inline void get_netmem(netmem_ref netmem)
- {
- 	if (netmem_is_net_iov(netmem))
--		__get_netmem(netmem);
-+		get_net_iov(netmem_to_net_iov(netmem));
- 	else
- 		get_page(netmem_to_page(netmem));
- }
- 
-+/**
-+ * put_netmem - release a non-page_pool reference on a netmem
-+ * @netmem: netmem to unreference
-+ *
-+ * Drops a non-pp backing reference (page._refcount via put_page() or
-+ * binding->ref via put_net_iov()) regardless of page_pool membership.
-+ * Counterpart to get_netmem().
-+ */
- static __always_inline void put_netmem(netmem_ref netmem)
- {
- 	if (netmem_is_net_iov(netmem))
--		__put_netmem(netmem);
-+		put_net_iov(netmem_to_net_iov(netmem));
- 	else
- 		put_page(netmem_to_page(netmem));
- }
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index d56f4f0102f75..b459264ba5180 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -7551,23 +7551,39 @@ bool csum_and_copy_from_iter_full(void *addr, size_t bytes,
- }
- EXPORT_SYMBOL(csum_and_copy_from_iter_full);
- 
--void __get_netmem(netmem_ref netmem)
-+/**
-+ * get_net_iov - acquire a non-page_pool reference on a net_iov
-+ * @niov: net_iov to reference
-+ *
-+ * Acquires a non-pp backing reference (binding->ref) on @niov regardless of
-+ * page_pool membership, warning if @niov does not support non-pp references.
-+ * Counterpart to put_net_iov().
-+ */
-+void get_net_iov(struct net_iov *niov)
- {
--	struct net_iov *niov = netmem_to_net_iov(netmem);
--
- 	if (net_is_devmem_iov(niov))
--		net_devmem_get_net_iov(netmem_to_net_iov(netmem));
-+		net_devmem_get_net_iov(niov);
-+	else
-+		DEBUG_NET_WARN_ON_ONCE(true);
- }
--EXPORT_SYMBOL(__get_netmem);
-+EXPORT_SYMBOL(get_net_iov);
- 
--void __put_netmem(netmem_ref netmem)
-+/**
-+ * put_net_iov - release a non-page_pool reference on a net_iov
-+ * @niov: net_iov to unreference
-+ *
-+ * Drops a non-pp backing reference (binding->ref) on @niov regardless of
-+ * page_pool membership, warning if @niov does not support non-pp references.
-+ * Counterpart to get_net_iov().
-+ */
-+void put_net_iov(struct net_iov *niov)
- {
--	struct net_iov *niov = netmem_to_net_iov(netmem);
--
- 	if (net_is_devmem_iov(niov))
--		net_devmem_put_net_iov(netmem_to_net_iov(netmem));
-+		net_devmem_put_net_iov(niov);
-+	else
-+		DEBUG_NET_WARN_ON_ONCE(true);
- }
--EXPORT_SYMBOL(__put_netmem);
-+EXPORT_SYMBOL(put_net_iov);
- 
- struct vlan_type_depth __vlan_get_protocol_offset(const struct sk_buff *skb,
- 						  __be16 type,
+- Non-PP refcount: get/put_page(), get/put_net_iov(), get/put_netmem()
+- PP refcount:     napi_pp_get/put_page()
+- SKB netmem:      skb_netmem_ref/unref(netmem, recycle)
+- SKB fragment:    skb_frag_ref/unref(skb, f)
+
+[1] https://lore.kernel.org/netdev/xfrm-iptfs-pp_ref_count-underflow-v4-1-912fa72106f0@secunet.com/
+
+Mina Almasry (6):
+  netmem: rename __get/__put_netmem() to get/put_net_iov()
+  net: skbuff: add napi_pp_get_page() and use it in tcp_recvmsg_dmabuf()
+  net: skbuff: replace skb_page_unref() and __skb_frag_unref() with
+    skb_netmem_unref()
+  net: skbuff: replace __skb_frag_ref() with symmetric skb_netmem_ref()
+  net: skbuff: use skb_frag_ref() in skb_try_coalesce()
+  net: kunit: test netmem, page_pool, and skb frag refcounting
+
+ .../chelsio/inline_crypto/ch_ktls/chcr_ktls.c |   2 +-
+ drivers/net/ethernet/marvell/sky2.c           |   2 +-
+ drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   2 +-
+ drivers/net/ethernet/sun/cassini.c            |   4 +-
+ drivers/net/veth.c                            |   2 +-
+ include/linux/skbuff_ref.h                    |  64 +-
+ include/net/netmem.h                          |  24 +-
+ net/core/net_test.c                           | 747 ++++++++++++++++++
+ net/core/skbuff.c                             | 145 ++--
+ net/ipv4/esp4.c                               |   4 +-
+ net/ipv4/tcp.c                                |   6 +-
+ net/ipv6/esp6.c                               |   4 +-
+ net/tls/tls_device.c                          |   2 +-
+ net/tls/tls_device_fallback.c                 |   2 +-
+ net/tls/tls_strp.c                            |   2 +-
+ net/xfrm/xfrm_iptfs.c                         |   3 +-
+ 16 files changed, 900 insertions(+), 115 deletions(-)
+
+
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
