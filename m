@@ -1,162 +1,161 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3851745628B
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 10:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA7536F8F0;
+	Sat, 10 Oct 2026 10:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791627051; cv=none; b=YVGvHv9L5A8VrF6lLmyxIU2snN5nkzJwWS8K0/uKpzFJHJi1uDT69ymFfHai1ZExNYvv57maHALqw5gUIbJdK72EgjOG498YVGCAJTtKNXAqj6jE9uLE1Rn5NypYJQgh6yvG+oxAbbWvkKjvQCUToEcwbbNYJcF12nCOKnwOqKA=
+	t=1791627665; cv=none; b=HFpS2rhvidr0arBX2JslgUIEEAIthIc3CSup5IxtCumvuQLxvLGNAlvvTVsuc3sHh+WVY65JNjtvcTtubasG7Ud0e48Mg1UarqtY9SZ5nEYdbxocrwoJDRax/2XMU394bU6oNGovrjN2+e9Z9D2FCdcA143E6IXe63+L82IrXrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791627051; c=relaxed/simple;
-	bh=NxGySGRW/C4GCaMH6YssU1T4XSy1dh7+6mdwaFS162o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pw7I0NwR7LuguqqJ1TbH0SkajqkTOCLPT14LlLt5fYqRfwQnHxL64QX0xfOddjyUOxMWytdRoas9FwaueVj7y79w+8xSKvJZozqkpLFaljZXW5aB/Og6KBzVEZaRsJ3KqIEdDq2FfB+ZGOH4Xh/ywOojYL+XtFz2d7qQRzyf6zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O7KmN93j; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791627665; c=relaxed/simple;
+	bh=eD4Zcwx2XKMocqxB6g9BVwV3EdemU3hTFb9LHqDyByc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZctVU1BHsb2iE5MmzMeHp/CZJW99uTrijFUSd5rE/413Qg8LSEFc8pwKM7Lnv+opH2k8D76chxYQAPqSyJ1NLy4LDvqwiG8RjTvv8c+K9irWwHHHlwBFldeYtY4tluWSYA+6M5KQ6ZOUx72yCQOsdvyqv+VRdjJyuaIdzxvHY44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLhRCRnr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O7KmN93j"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-88bc25fcd0eso337519b3a.2
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:10:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791627049; x=1792231849; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LK95suqIwIMlxETWM1WHHhD9KjnaZrkA6Wag74W8qQc=;
-        b=O7KmN93jJMp5T8lXtaZarBG3EEdwX0wRSCov9uSYS1PPsnYrGKFlekfF4UdMdiMrOx
-         wDY2g3smPSBBM+E9s+ldcHKjAzwFQEcYdGvgrPPg3/3qudqqG+ryPW1dYJUZbHITO2pt
-         3op4/nqk7bqf1Qg2Z0+QDfIDfxyfpkqKT6TeBXsV3SO2jSH8/5AqVtN9Ohqz6ERUaybK
-         AY+RTvQl+dUdpmE6VYkG5KELBKPx37+f4rShKKTG2QOV3E1iEaAUpRFJw6FQTmhy+aOh
-         Vatckbf3FSFRKOqYoQNSg+0UhG+BjkEBSupKqHMX7/oxUPu+DIOqN25P41uzskYYBfWh
-         8xTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791627049; x=1792231849;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LK95suqIwIMlxETWM1WHHhD9KjnaZrkA6Wag74W8qQc=;
-        b=nVqal8XwXeNpcFtMxeShVj9t8yjJQZ8xyOAo/3PDxOPdf+2To5BzHtXtbxgTQi6+o6
-         D6IDIjUZU8oaMgBDfirx55HcYAQTNgyhsjUu0i+RXNkLsRDHIsfoeW/HsT9n4GlxMlcm
-         yKZngtlNbHuwzygzwfjzOVGC1hP7mtIKZB/jtcbHW7IIJQXyiTSGudEA67CuHMRVlJPW
-         jKC7yZWkL6O43a7NVDEbB3ETHaUhW6+tLJWyuJaCufFuQE0sBJm7ID+Z/yW6+KOFoftr
-         rLWbOLTNYVz3hjwMxXnYFF71xr5xTmFbOb1XGF9zdrZqKktJB7MSCAFWo+eFA2yRyisu
-         XuZA==
-X-Gm-Message-State: AFq9FYJ+rYBsgOOyYtTx/RtJRspjhbvhExKXVvceIpD3wpyL8Jjc7aSs
-	/oO6AkWJ/PDWqmApqPaLzIPfQuiZeEsQTiSo8+yBa5oRA64jjqbp0tYqICDFP1Cf
-X-Gm-Gg: AYBFou05Tgv2rMis4eOzymMbtja3yD07GoGzRMY6vwwvLuXxzi0CcNaVjd2UeJ7mANO
-	fFdmtE7jDt5fhu4wu0EeOlJN4uVuWt2q+EWw1KYa2luQ+02dtoghPJCuuCMU8FW/VcreZlmdkwh
-	QZWXuuWy2L/MUBip8Y8sEY4BJAYA1SxJI2vUUfJ70K4UDf6/esgBxUN7hr5AKhPnUUba8AW0sIr
-	TLgJt/fFO32qDiR3Qix/6/JSK+byAcnkrhZSwCIWmj8z6x4JKsB4Q++oT5wUdzGu3//AvPdFl1P
-	mMElhgyi1iFa+gU9HDjdXlNAr+hxB8BRK7sxZ2UqNQ9q0SKufKBb0QlaqeVj7TDL+6sJZ64uFu4
-	fsGbsvFe9T0RLj99U/RWibbkqZrr2R3gO15dCX4FTsav0NFs3jcGgOHzX5/fVw2I16wUqGhv288
-	AX0d/b1Yx1TDuNRMw61o2S0zOWN4nCNXS2zzuZhvxnCDqaBGHDFzLEHgknFl0m499/PuMwFGCe
-X-Received: by 2002:a05:6a00:44c9:b0:851:c2a6:172f with SMTP id d2e1a72fcca58-897c3ef97b0mr3883417b3a.7.1791627049250;
-        Sat, 10 Oct 2026 03:10:49 -0700 (PDT)
-Received: from dev.local ([163.43.243.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c37de99fsm2069988b3a.25.2026.10.10.03.10.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 03:10:48 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Date: Sat, 10 Oct 2026 19:10:40 +0900
-Subject: [PATCH net-next v2 2/2] seg6: skip the route refcount in seg6local
- IPv4 lookups
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLhRCRnr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB051F000FF;
+	Sat, 10 Oct 2026 10:21:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791627663;
+	bh=eX49ecnK1yX0oQBGYjqLmGFhTNizuDshcWBPiQNkZQU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PLhRCRnrIngq166grwddtQHIq+eI877lyBC0oKn1Ex02MNNAQHFvBq3o4zXYpP9HH
+	 LcDeDSca9dpJ4KpF9GMKpvazDJ8SoMubbQ35UbQ/cZq7/4zm+RGE6/A93nfjNRCom4
+	 g7Fx80AIGgrWnHhhAxYItgRdf80/Tph08WrvWJ1wUg23jD2REUCcSvAoJ5SkyeWbU2
+	 ICfm9e17ANXlXVewnJHzzbt/enFygFNHGnNbZZt6XNpATvLZdDPgJoqUae+4+c4gHo
+	 xR5DsN7hRYjATgEqh8DMspJQRxQAj6BPJt82VEm13hB1phsTxC/DLb0bZQpVDPJoUD
+	 3btFfUps+kIqA==
+Subject:
+ Re: [PATCH net-next v2 2/5] seg6: add RFC8986 flavor support for End.X
+From: netdev-bot+sashiko@kernel.org
+To: hangbin.liu@linux.dev
+Cc: andrea.mayer@uniroma2.it, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, edumazet@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, liuhangbin@kylinos.cn
+Date: Sat, 10 Oct 2026 10:21:02 +0000
+Message-ID: <179162766256.434549.13511080924871737471@kernel.org>
+In-Reply-To: <20261009-srv6_flavors_endx-v2-2-56ac7f838f41@kylinos.cn>
+References: <20261009-srv6_flavors_endx-v2-2-56ac7f838f41@kylinos.cn>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261010-seg6-lookup-noref-v2-2-51c09dd98197@gmail.com>
-References: <20261010-seg6-lookup-noref-v2-0-51c09dd98197@gmail.com>
-In-Reply-To: <20261010-seg6-lookup-noref-v2-0-51c09dd98197@gmail.com>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Yuya Kusakabe <yuya.kusakabe@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2368;
- i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
- bh=NxGySGRW/C4GCaMH6YssU1T4XSy1dh7+6mdwaFS162o=;
- b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqyg8gPPHzi05/ZRz5TTStwF4TZCswAt/8CysTL
- Lk7tE52VriJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCasoPIAAKCRAq19F1Kl0b
- TW0CD/95ZrgxR1P0lfP0hcouuWftAdsCGfdvbAyfLk+KwTstaTMgqaQcqi97dUrU9qrQ3XtKg3l
- kfOHuF1Z6Y8hsY+cqtepcO7+AUqlEBR2W0gG7zzyTLrTk5JnMq3jlnDZtrC8u2lMSprYwyatJDO
- NKGYNszMQxlo2lgvtK/jbGw7+nMfLSRZ45h2dxCpuZDPX2gxvjb5j3IMiy0lhrJwdDXpoh8P/gW
- OZWz2Zk6Hf31zoyrtMkcm2sX59XDK5TxOU/eVOgMkwSm+34ymse1xv+tow8131Scpxyrai9btEK
- tCgAmSUO7PXiAXsWU0+zdFObfu1CqK7xfe2Er+MXD9AIP6aSaOfFIi2qpfw+qnUIcC2qjERoH0o
- 3aciJWRzHE9i27ii0PhffQ+X4p0xGgnKd9oZKGKFSyriSpeZECFTmNJprF87Nryy4xbOdhCTpKc
- QpalJJHRUwx1wUlwJTnow1t0uHh8DMIn+Jv8NT8xNpTbLmJBZcECLlNaHHYPMPa2i9jVZLgG/K1
- V1NasURqPtV/du34uvAr3eSY3pw/Fmi5lfXr6nHEW+zKmPIa2NswMNFo2FymvjCrgJdlBHVK35k
- 22QT+veOOecervVtJS7IjMKCSwkoG2iSC3z4GkpznBWGYFecxi9LrLh5nCFT875LPYDTNJ8j2YZ
- z9EEaTxStyLbrqQ==
-X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
- fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
-ip_route_input() looks the input route up with ip_route_input_noref()
-and then forces a reference on it, which is dropped again when the
-packet is transmitted.  End.DX4 and End.DT4 call it from the RCU
-read-side section of the receive path, either directly from the
-seg6local input handler or from a netfilter okfn, and hand the skb to
-dst_input() before leaving that section.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Use ip_route_input_noref(), as ip_rcv_finish() does.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Throughput at 0.5% packet loss of 82-byte IPv4-in-IPv6 UDP packets
-(no SRH), spread by RSS on an ixgbe 82599ES across two 10-core Xeon
-E5-2650 v3, offered by TRex over 10 runs of 10 s, in Mpps:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-  End.DX4
-  queues  cores                   before   after
-  1       1                        0.791   0.811  (+2.5%)
-  10      10 on the NIC's socket   6.118   7.394  (+20.9%)
-  16      10 + 6 on two sockets    3.305  10.205  (+208.8%)
+- [Medium] End.X now accepts the flavor pair NEXT-C-SID + PSP but only
+  applies NEXT-C-SID.
 
-  End.DT4
-  queues  cores                   before   after
-  1       1                        0.481   0.489  (+1.6%)
-  10      10 on the NIC's socket   4.328   4.588  (+6.0%)
-  16      10 + 6 on two sockets    3.351   7.153  (+113.5%)
+--
 
-Every CPU takes and drops a reference on the same input route, the
-one cached on the nexthop.  At 16 queues that cache line bounces
-between the sockets, and skb_dst_force() and dst_release() together
-take more than half of the cycles for End.DX4 and over 40% for End.DT4.
+seg6: add RFC8986 flavor support for End.X
 
-Assisted-by: LLM
-Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
----
- net/ipv6/seg6_local.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This patch adds PSP flavor processing to the SRv6 End.X behavior by reusing
+end_flv8986_core(). It also widens SEG6_LOCAL_END_X_FLV_SUPP_OPS so that
+End.X advertises PSP support alongside NEXT-C-SID.
 
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index f23330278922..60abd139dbe3 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1099,7 +1099,7 @@ static int input_action_end_dx4_finish(struct net *net, struct sock *sk,
- 
- 	skb_dst_drop(skb);
- 
--	reason = ip_route_input(skb, nhaddr, iph->saddr, 0, skb->dev);
-+	reason = ip_route_input_noref(skb, nhaddr, iph->saddr, 0, skb->dev);
- 	if (reason) {
- 		kfree_skb_reason(skb, reason);
- 		return -EINVAL;
-@@ -1325,7 +1325,7 @@ static int input_action_end_dt4(struct sk_buff *skb,
- 
- 	iph = ip_hdr(skb);
- 
--	reason = ip_route_input(skb, iph->daddr, iph->saddr, 0, skb->dev);
-+	reason = ip_route_input_noref(skb, iph->daddr, iph->saddr, 0, skb->dev);
- 	if (unlikely(reason))
- 		goto drop;
- 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 4fcfcd48cfaed..521a9b0c09290 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -121,7 +121,8 @@ struct bpf_lwt_prog {
+>  
+>  #define SEG6_LOCAL_END_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+>  					 SEG6_LOCAL_FLV8986_SUPP_OPS)
+> -#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	SEG6_F_LOCAL_FLV_NEXT_CSID
+> +#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+> +					 SEG6_LOCAL_FLV8986_SUPP_OPS)
+>  
+>  struct seg6_flavors_info {
+>  	/* Flavor operations */
+
+[ ... ]
+
+> @@ -923,12 +924,20 @@ static int input_action_end_x(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+>  {
+>  	const struct seg6_flavors_info *finfo = &slwt->flv_info;
+>  	__u32 fops = finfo->flv_ops;
+> +	int ret;
+> +
+> +	if (!fops)
+> +		return input_action_end_x_core(skb, slwt);
+>  
+>  	/* check for the presence of NEXT-C-SID since it applies first */
+>  	if (seg6_next_csid_enabled(fops))
+>  		return end_x_next_csid_core(skb, slwt);
+
+[Severity: Medium]
+Now that SEG6_LOCAL_END_X_FLV_SUPP_OPS is wider, what happens when an
+End.X instance is configured with both next-csid and psp?
+
+parse_nla_flavors() only rejects bits that fall outside the supported mask:
+
+net/ipv6/seg6_local.c:parse_nla_flavors() {
+    ...
+	if (rc < 0 || (fops & ~supp_fops)) {
+		NL_SET_ERR_MSG(extack, "Unsupported Flavor operation(s)");
+		return -EOPNOTSUPP;
+	}
+    ...
+}
+
+So NEXT_CSID|PSP is now accepted for SEG6_LOCAL_ACTION_END_X. It gets
+stored in flv_ops and reported back to userspace as configured.
+
+On the data path, input_action_end_x() returns through the NEXT-C-SID
+branch above and never reaches end_flv8986_core(). Once the C-SID argument
+is used up, end_x_next_csid_core() falls back to plain End.X processing:
+
+net/ipv6/seg6_local.c:end_x_next_csid_core() {
+    ...
+	if (seg6_next_csid_is_arg_zero(daddr, finfo))
+		return input_action_end_x_core(skb, slwt);
+    ...
+}
+
+input_action_end_x_core() only calls advance_nextseg() and then
+input_action_end_x_finish(). It never calls seg6_pop_srh(), even when
+SL == 1.
+
+Does that mean the configured psp flavor is silently ignored, and packets
+leave with the SRH still attached? A downstream node with seg6_enabled=0
+would then drop them, and nothing reports an error at configuration time.
+
+This also seems to contradict the comment above
+seg6_flv_supp_ops_by_action():
+
+ * ... if a user specifies a
+ * flavor combination that is not supported by a given End* behavior, the
+ * kernel refuses to instantiate the tunnel reporting the error.
+
+Before this patch, End.X refused psp entirely. End already has the same
+mismatch in input_action_end(); this patch carries it over to End.X.
+
+The note below the --- line says this combination is not handled and that
+Andrea is preparing a fix. That note won't be in the commit log, though.
+Nothing in the code or the commit message rejects or documents the
+combination, and net/ipv6/seg6_local.c is not changed again after this
+patch.
+
+Could parse_nla_flavors() reject NEXT_CSID combined with any RFC8986
+flavor? Or could the End.X mask stay at SEG6_F_LOCAL_FLV_NEXT_CSID until
+combined processing is in place?
 
 -- 
-2.50.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-srv6_flavors_endx-v2-0-56ac7f838f41%40kylinos.cn
