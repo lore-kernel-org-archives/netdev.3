@@ -1,87 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f6.google.com (mail-oo2-f6.google.com [74.125.231.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653F43B42EE;
-	Sat, 10 Oct 2026 08:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB0B3BFAD4
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791621945; cv=none; b=Ursp2n1J82KbR/FAC/XEETMK9CCvaWBJrTeG3nx5TWmPeXzOkRhq6dGbN6G1/iRXzNAi8iRHLZjG1MnhY9k+2PcOHaRWdSsOH5wuEtsOUVrBTkJV7jlfvlA0vwQ61C954uoomzMS/R66Ly7y5iVITcZ9J74dolbzGZ8mC37Ez98=
+	t=1791622219; cv=none; b=OGs6x4T4xazFM4+HD1roBGux7DZNzNtSOWKoq3UjNSYoqLt6FzNb3AwZsAC1qNtjt5+3Nig4iqKQeeBKEejxSaBV0hH2m4VBKk9EyvT8WpdDt7ZcWmS+Kv+ngMjvV1RwRH3f3Ezd47HiybakRwjkyBMoTQEun1Urm8PQiO5SsTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791621945; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Kz0Y9X8F+TmalQuBjxDNKx1/hvxzqXZpi5H/zG3+2DbtThbTDrjvS7BMgrshr3Hi/qcEBvessyTdNON1lGAfYLt3PEzWS+GT5B27fJLODQZec3hYEJOVew+3k15oqKGrvJwV9iHRXLB0jkZlAfFMzR+gpXfudyG4nnc1uAWyYkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmxrwwAH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791622219; c=relaxed/simple;
+	bh=dBpu91GhGp71AhjQrBoWYb2hnyV7FaxIHcjPH1PEfvQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Bccjjt8bDlYFJUycAWvtjEt2emqxGrnm1un4nRIIo/R4csVsEoVZpQ3E44d3H9KOXvu2odvdW58W7irzmAszENF7lsdqPVQT8IG4tbhh3aEe40KnebumK/Wn8CmfwJSBRFZVzTOAkzTvLidQpWyMVuEbLoruDXAmqFL9hDPJuHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m8jzfYGa; arc=none smtp.client-ip=74.125.231.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmxrwwAH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E061F000FF;
-	Sat, 10 Oct 2026 08:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791621944;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KmxrwwAHkkbhpqpJ0vWnoqOec6tV/YM7L+eowEOMvZ0rMPJNqIUxXQh24YZd8vYv+
-	 mqeiCzvH63MZgtrHhNDAzsw3VeewlEE0ATK7BHscLN/pve0cfXcvtgRUV1s0vJzKca
-	 LVMRI3p9RCxTvjo3kgyIukiz7mH/QrSJgautxOiRZYJYvTF4oMLjWXbX8SBhBwkv8k
-	 gsXRds9Kz8wNa6FYK35CzKWOsqU+6b5T4+d+zeAUEkU2Ejl+Regx1fNtdVAEuM3Z9y
-	 J7NzSyFa8rX0arwRi5heEd21wkJMnk0j3GMnhsgy4ItTuR612Aj+FgzynL/daUfe6s
-	 6N3Qc0GubhT/Q==
-From: netdev-bot+sinfo@kernel.org
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
- Ayush Sawal <ayush.sawal@chelsio.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- John Fastabend <john.fastabend@gmail.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Eric Biggers <ebiggers@kernel.org>,
- Kees Cook <kees@kernel.org>, Michael Grzeschik <mgr@kernel.org>, Uwe 
- =?utf-8?q?Kleine-K=C3=B6nig?= =?utf-8?q?=28The?= Capable =?utf-8?q?Hub=29?=
- <u.kleine-koenig@baylibre.com>, Petr Machata <petrm@nvidia.com>,
- Arend van Spriel <arend.vanspriel@broadcom.com>,
- Jakub Raczynski <j.raczynski@samsung.com>
-Subject: Re: [PATCH net-next v1 0/6] net: unify symmetric netmem and page_pool
- refcounting
-Date: Sat, 10 Oct 2026 08:45:41 +0000
-Message-ID: <179162194176.2527009.17837283221529280785@kernel.org>
-In-Reply-To: <20261010083935.3274178-1-almasrymina@google.com>
-References: <20261010083935.3274178-1-almasrymina@google.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m8jzfYGa"
+Received: by mail-oo2-f6.google.com with SMTP id 006d021491bc7-6ddf6877d33so9522eaf.1
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:50:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791622217; x=1792227017; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0AzRHZlsZ/kgam4CoQL/YmVx0Bb+p0rC1CfcNC+r3us=;
+        b=m8jzfYGamQk+j9hdrbtaz8f+MPQq+bfSmP3btpbh1BkppDnFb7EHmFYSrRK0gt9Kfg
+         mZTD7gyiYLojvRCkOtLZmBJDfxB2fuaRAF+BzfMPtOXEbkZDYMpHcjRi0BBcMpHwqBhX
+         UAjMiVKAO25slOYDvZYSr5JIk5/tUN/CSoZlVLWANNGKWNt57Ku26/WWpkSneVQzEYMA
+         6ceBf4cnUjeKw8esDKzsqTdceAhDre7fRkWaZpJ4GqjvD+pNNF1YcNPxANRcCvBkYwN6
+         u5vHb1qkITtHXFoQxdMqQXki/uPjKySE4MUVJ3LsfVFVrru0avn4+93G7C37aUQzHZ9k
+         sY/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791622217; x=1792227017;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0AzRHZlsZ/kgam4CoQL/YmVx0Bb+p0rC1CfcNC+r3us=;
+        b=ZGJ7H1Wn1G+IUJB7VkHsn4SRPamxUwfAAQWWb06NS+KeAV52paHKcZjd/mKOzur7HV
+         5BJhO3cPGJk734aP88N+spq4LBoPqfebdj6aKNqKYs3adqMWjcBRF+s4MFUOpiiugNbo
+         BQNPBUMbsyfWtMuFYPB7vaXeQeJbE+sLdKnnCCXtQicN2EJVR263o3ALEtilvFsYU/ry
+         yG1Dw9s33nZiDQH+2qDaBXA7XudjEOEvtXwXoPS6ClcGO85QcxOHRcZNhR/EPhoL3Mm5
+         EBK1JbtTXSvdXooo8gIRTrm/EIst80CIwYjr9skT+EjSHfv1JUU6aZI7V4pfzStOtNlh
+         HRtQ==
+X-Gm-Message-State: AFq9FYIBDdSrjaM+4U6fS9VSKxZNUfHpYhLlmdWgSkSGCp/YjrJFgljA
+	Sxa6qFZg+ekTFvNATnHDBc2YZ3b4X8DIiumhEM/dcqQgguDMP8Zm86DI
+X-Gm-Gg: AYBFou3DSTPMIrJRKkdd6YJGCH8U8Ckeol+/6O5FO4FHTwQISrnPsgj/hzr7PzrfnSt
+	DSqHL1vTpaILJgDRsLj7BXWdT0HDWihjX9T/D0bgMJBRXvAKESfxYbcS4CGx6WV7sNdvLs3zic9
+	k0x2rUoueeCnkjXTROHKb4J0XMyECEjOxGpTcfu3mYef95Z/rvnfGctZPEcJGmXDrlb/tVWhKQB
+	Mez8Kj/EE6vy+BDXnUe3b18CPuFWAkHZh0lAcsvZpz5Y0V9Ho/8mCr/J2FEg/V/G/lZmAkni4DZ
+	egQ2PdCXdwW4M/rVwxAmH6WcBmPM8La9pO8mFL4w/Huf2fL6dYyW4gqwYjruiWZrK9Hqzobw6nX
+	IL/MY+4eRT3cx3R2GdPdk9BGr9W2iFiQmOgglyFfxbp1Z8hw1Y5hA7DauSdMFr3KPyOBcXJMujT
+	bkPy+slwdDc0Lg5w7VuGtzPj5ZBoiDF3ysZBRz/Cb3YWIEhm8YNerdFREsFh9HpMDfrvDm52KHn
+	kluNbqGtJtqCNAbRi3CvXgTSnFLOCNOc+IWdw==
+X-Received: by 2002:a05:6820:4dec:b0:6d8:462d:2737 with SMTP id 006d021491bc7-6ef0e8dded8mr2517883eaf.27.1791622216750;
+        Sat, 10 Oct 2026 01:50:16 -0700 (PDT)
+Received: from localhost.localdomain ([14.116.239.34])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6eef6e22b46sm4037577eaf.0.2026.10.10.01.50.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 01:50:14 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] ipconfig: fix use-after-free of device list after ic_close_devs()
+Date: Sat, 10 Oct 2026 16:49:58 +0800
+Message-ID: <20261010085003.3261587-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi!
+ic_close_devs() kfree()s every ic_device node but leaves the static
+ic_first_dev and ic_dev pointers dangling behind.  When a DHCP
+negotiation gets an OFFER but never the matching ACK, ic_bootp_recv()
+accepts the OFFER and records ic_dev = <list node>, the round times
+out and ic_close_devs() frees the whole list — node included.  The
+next failed retry round runs ic_close_devs() once more, evaluating
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+    selected_dev = ic_dev ? ic_dev->dev : NULL;
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+against the freed ic_device — an 8-byte use-after-free read.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+KASAN confirms:
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+  BUG: KASAN: slab-use-after-free in ic_close_devs+0x214/0x220
+  Read of size 8
+    ic_close_devs    <- ip_auto_config
+  Allocated by: ip_auto_config (ic_open_devs)
+  Freed by:      ic_close_devs <- ip_auto_config
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+NULL both pointers after the free loop so retry rounds take the
+clean empty-list path.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+This memory-safety issue was discovered by Tencent CodeBuddy Security.
+
+Cc: stable@vger.kernel.org
+Fixes: 46acf7bdbc72 ("Revert "net: ipv4: handle DSA enabled master network devices"")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
+Changes in v2:
+ - Fixes: tag corrected to the commit that introduced the ic_dev->dev
+   dereference that makes this a UAF (46acf7bdbc72); in 2.6.12 ic_dev
+   was a struct net_device * that was only compared, never dereferenced.
+ - Code comment in ic_close_devs() dropped per review.
+ - Message reduced to the memory-safety mechanism (no vulnerability
+   framing).
+
+ net/ipv4/ipconfig.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/ipv4/ipconfig.c b/net/ipv4/ipconfig.c
+index 1b8585404a41..ac4851e59c3b 100644
+--- a/net/ipv4/ipconfig.c
++++ b/net/ipv4/ipconfig.c
+@@ -346,6 +346,9 @@ static void __init ic_close_devs(void)
+ 		kfree(d);
+ 	}
+ 	rtnl_unlock();
++
++	ic_first_dev = NULL;
++	ic_dev = NULL;
+ }
+
+ /*
+--
+2.43.7
+
