@@ -1,145 +1,216 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDED3806D9
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE97B367B71;
+	Sat, 10 Oct 2026 06:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791614272; cv=none; b=DtT5MW/4DCQoinV8XUdXzVStuOWNf0fkIMfQ+pwzWZjTkT2/RkFWYhZGHlQgjg//v9h79KGRv1g9z5KT3DAww5SLfMOzJ+XOsF4gS1XtJlEzJhOSL9VXjQ1GDs0xHkwo1wUXacZLAOYxcOn4HZENGAc8l7OISccwX+3RLjD0HcE=
+	t=1791614290; cv=none; b=qOhCXAg48iklixfy+8oS0JhXVF803XBZ/uV0cy7QIQSK1DF94RFCX2360405heJWp2QpaD4KW/92J5Ll/4wh8xEnynq6cR3/kMyOd2cnz65Ol28eMulYemd/U02jXe7+0PBMkkDna+IS1cv2DO4SlHfgA+1raiPP3B77S122mO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791614272; c=relaxed/simple;
-	bh=sMKf6UDT7/vaS+7Li4uwAz0LP+Q/4d5o0YcVL/T2Uqg=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=lhzXokDhgYiHuM4LG0v3e2feDaCz66PUVualDSQJglvVuK3gLnAzsanlENIOOdEIdRBsiQ2PNoFuffdgWUwrSJyBWadeBj65hTp94tcqjvbI2J1cBcUhxlEm3PXPKD4TOflJmIrn8UAxxR+xCSYJsCewmj1j+8MPBWoOmWzl4Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=scramble.tools; spf=pass smtp.mailfrom=gildred.net; dkim=pass (2048-bit key) header.d=gildred-net.20251104.gappssmtp.com header.i=@gildred-net.20251104.gappssmtp.com header.b=TBlL+Jil; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=scramble.tools
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gildred.net
+	s=arc-20240116; t=1791614290; c=relaxed/simple;
+	bh=/vWqq2pzVcl36tqUoXWHORtS0JmaGOIn8ZMWpYs7zRs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=s0QNM1pbWSGK0pKL/oRYdmWNsKhh5Jp3PALW9ZVqLzCoKG90Liq1mbHdryUK6eLtHMOobbffhYCfpQUj2xsjmHQVIBjjCdiMD40gFi+biwSR4FuZHtTUDtg1PbFWELLoXo92hnlQykVO/vlF5cUra87uko3AAHinh6RFV0s61mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ScY9z2HB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gildred-net.20251104.gappssmtp.com header.i=@gildred-net.20251104.gappssmtp.com header.b="TBlL+Jil"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33fb4680717so1340995eec.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 23:37:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gildred-net.20251104.gappssmtp.com; s=20251104; t=1791614270; x=1792219070; darn=vger.kernel.org;
-        h=message-id:date:content-transfer-encoding:content-type:mime-version
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/yV0lwwuniGUnn1moAe0URUcCaHzm8fGoXLy9SraqIo=;
-        b=TBlL+Jil6S9Bhdh/1fBX1ESRpNEA7CwWzPXT4fClIxxxtH6rXUtbuZAfGnC7oHWUPr
-         VPwR3R24TeAe/kPcM1W6c1T0B4DUAKU2Des4qbMdsxbNzRcfp+mfjeNSc5n30FEjIwbd
-         O3bNSsf/VRx83WWwnbF0Mdo2/7ua9SWqRklmuJQg0uaXJYkeXZzjb1N3FRa7GSfJUMR/
-         DuVPEiiX0pL2F1aUu5VpDz/yYNJth2qyW7dKmTqfyOZE+HdaMNstdIwi5ouwbmC/vBGK
-         G1MBVLwajRirsrKl3aSRfI53HKkWfmg3plk454J88KFQZs7GyJgVIgcK/H4bilEkLu+R
-         ueLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791614270; x=1792219070;
-        h=message-id:date:content-transfer-encoding:content-type:mime-version
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/yV0lwwuniGUnn1moAe0URUcCaHzm8fGoXLy9SraqIo=;
-        b=nBUXscrPZTT7GjNdWYHut6gGdoN6xHfdP85ZaEzzKNAYWVtjpFPFWTO5YbpTzb7RM0
-         S90pq8Utu3O8lOzIK+J//IqiotgbfSd+ySQljsYrWy6pKqE8NGJVRFaP/VPDwEKrVFjB
-         O0UGCk4eqNXM4IZqKkjFfrR0MKSVzEaRE5LCZpd77vaJ/RTEuPE/JTqV7pIe4qYg6U9O
-         ZRrqq0ddlrXP3++wiHm0er1gbpFkV+kDVg1xkcKc2or65aNSabJV69OPX7e8P9zMYh/V
-         DOdisLN/aRX2PHP8mM3CZfrhDr9rn8XRrYsp0YxEujSvb/ICzAiZ6/ooHE2E2ibmrktw
-         NXXQ==
-X-Gm-Message-State: AFq9FYLI9kz5VPZfaeNlfkDsBix6X89zr4zyiDFYLIt+b7lM1w3HPaph
-	d1QQ/KxBQmNMZ+ncHAsrh1dlMK9cBdye1j186K/g4gRNjffIsAzssxp0V0zd/JcEhDAoWhj9cEL
-	wBz51AjY=
-X-Gm-Gg: AYBFou0uBd7srTTozaqL6RKnut1mFFB0YRE1oaxazF+w5cTh8kg3gk/NtN6nVksJSwO
-	cFxv/vLBkbj4FYamP/llEpgSoiDUb1DkDglgRSdYr+qwpvjO9JUajXmvARjwx59MNeErKaoq45a
-	/6KeaJq93fQcQXQQxmtqwxdJhGZyTECHAt8fZbIoiudhBoe0LUE0FqKExMnczvQkNyBrRhCab/T
-	VOPHvOhL6xY5RNo/hNqQ0auUlsSfsnVRKXiNhIpEd2f+MVau9Msc2k0S7vEetRgWJgWPJ2Zv+rE
-	fp2TCW5W4A5eA1HKeRZwhq43N3oDrbj4Psf4KXp2hLVQFEYA8UxVG7ZkeTaccJ6ZOSO65Cw+NJO
-	3lit/uH0cV4lNbsWSSGYkUchsc7Tf3rrCB6Axm4lMBr06cnYlxPYZ5HnaN42t0X1a58ETJyW/J0
-	TxDgqK1k5Z5EzG7IRWNpQnt+PI1oolR3pqan4WOBxgOKPW5r1hei2KV7pe8Vbjb69Qh+8NQ57yt
-	w==
-X-Received: by 2002:a05:7300:81:b0:353:81a3:9032 with SMTP id 5a478bee46e88-35381a391eamr4996691eec.39.1791614269497;
-        Fri, 09 Oct 2026 23:37:49 -0700 (PDT)
-Received: from [192.168.4.107] ([2600:8801:de00:2a5:5f43:aedd:35ff:e547])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537c843079sm11917076eec.1.2026.10.09.23.37.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 23:37:49 -0700 (PDT)
-From: John Gildred <john@scramble.tools>
-To: Sukhdeep Singh <sukhdeeps@marvell.com>
-Cc: netdev@vger.kernel.org
-Subject: [BUG] atlantic: PTP receive time stamp left on, or cut from, frames
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ScY9z2HB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C791F000FF;
+	Sat, 10 Oct 2026 06:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791614288;
+	bh=fEEO3v1L3zz+tLSI6RWGQzmGcrPEPkcaUTB011Qb2S8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ScY9z2HBS55TpFj0u/jp+mgxV3kvlpmSRjNnJwhT3vxjz8n5PtBJ8QmYav7gk2kzV
+	 h77fGdHtwleuZ2hxt0u2JOzixIaQMHxGc925jqJHriq1HQK6Fk3zJRvUmm6ylPrzcE
+	 rKV4NAV9HezJ4JfjBJ4T8hhR928JS+ZngCDDvPb5pc68ELbwgJdHDrB0OFMewp+vZZ
+	 kHV830Bw9MtvSSfkATSMZUMUt+6QiaJU2WARDy0nejQ1UiZLQOGYqxMK54umdc1mdi
+	 orUC0LbKopG+05P3fo2bDJecwAU0uajwwuWr+4IUCRI+KZ5wbFjHoUJrgZdJTCeWuZ
+	 5UxLPTPMZldGA==
+Subject:
+ Re: [PATCH] net: tcp: fix fraglist GRO flushing on alternating TCP PSH flag
+From: netdev-bot+sashiko@kernel.org
+To: shiming.cheng@mediatek.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, willemb@google.com,
+ daniel.zahka@gmail.com, alice@isovalent.com, sd@queasysnail.net,
+ eilaimemedsnaimel@gmail.com, imv4bel@gmail.com, nbd@nbd.name,
+ dsahern@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org, steffen.klassert@secunet.com
+Date: Sat, 10 Oct 2026 06:38:06 +0000
+Message-ID: <179161428655.434549.7066789783316941855@kernel.org>
+In-Reply-To: <20261009060319.6229-1-shiming.cheng@mediatek.com>
+References: <20261009060319.6229-1-shiming.cheng@mediatek.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Date: Fri, 09 Oct 2026 23:37:43 -0700
-Message-ID: <179161426357.982836.14940819580364358369@scramble.tools>
 
-Hello,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-On an AQC107 (TP-Link TX401, PCI 1d6a:07b1 rev 02, firmware 3.1.100)
-with the in-tree atlantic driver, received PTP frames reach user space
-with the hardware receive time stamp handled wrongly, in two ways. The
-kernel is a distribution build of 7.2.5; I have not tried net-next yet.
-It is tainted only by NVIDIA's out-of-tree graphics driver (flags O
-and E), which has no part in the network path. The recent mainline
-changes to atlantic (AQC113 PTP support in June 2026, RX and TX buffer
-fixes in August) do not seem to touch the AQC107's receive time
-stamps.
-linuxptp's ptp4l 4.4 runs on the port with hardware time stamping and
-the L2 transport, so the receive filter is
-HWTSTAMP_FILTER_PTP_V2_L2_EVENT. The frame lengths below are as
-dumpcap captures them on the receiving port.
+Critical: 0 · High: 2 · Medium: 1 · Low: 0
 
-1. After the link renegotiates, multicast PTP frames keep the time
-   stamp.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Changing the pause parameters while the link is up
-(ethtool -A enp2s0 autoneg off rx off tx off), or unplugging the cable
-and plugging it back in, renegotiates the link. From then on every PTP
-frame received for 01:1B:19:00:00:00 or 01:80:C2:00:00:0E arrives 12
-octets longer than before: a 60-octet Sync arrives as 72, a 92-octet
-Follow_Up as 104, a 104-octet Announce as 116, a 68-octet Pdelay_Req
-as 80. The extra octets follow the PTP message and look like the time
-stamp: one of them counts up by one each second. ptp4l takes them for
-a malformed TLV and drops every message ("bad message"), so the port
-never synchronizes.
+- [High] Forwarded TCP FIN/PSH can be dropped from the wire when a
+  fraglist GRO skb falls back to tcp_gso_segment()/skb_segment().
+- [High] FIN/PSH in a fraglist tail segment is invisible to netfilter,
+  conntrack, flowtable, tc and BPF, which all read only the aggregate's…
+- [Medium] The commit message calls the removed check 'redundant' and
+  only discusses PSH.
 
-Restarting ptp4l, which sets SIOCSHWTSTAMP again, does not help.
-"ip link set dev enp2s0 down" followed by "up" does, until the next
-renegotiation. Taking the interface down and up does not itself cause
-the fault.
+--
 
-2. Unicast PTP frames lose their last 12 octets.
+net: tcp: fix fraglist GRO flushing on alternating TCP PSH flag
 
-With the link in the good state, a Delay_Resp sent to the port's own
-MAC address (ptp4l's hybrid_e2e, IEEE 1588-2019 16.9) arrives as 56
-octets. A tap on the sender's link shows 72 octets plus FCS on the
-wire: 14 octets of Ethernet header, a VLAN 0 priority tag (PCP 7),
-which the port strips, and the 54-octet Delay_Resp. 56 is below the
-Ethernet minimum and is exactly the 68 octets left after the tag less
-12, so the driver appears to remove a trailer the hardware never
-appended. The Delay_Resp loses the end of receiveTimestamp and all of
-requestingPortIdentity, and ptp4l drops it. Multicast PTP frames
-arrive whole in the same state.
+This patch removes the unmasked TCP flag word comparison from the is_flist
+branch of tcp_gro_receive(). Segments whose PSH/FIN flags differ from the
+held packet can then be appended to a fraglist GRO skb. The goal is to stop
+premature flushes when a sender alternates [ACK] and [PSH, ACK] segments
+in forwarding and tethering setups.
 
-Both look like the driver and the hardware disagreeing about which
-received frames carry a time stamp: after a renegotiation the hardware
-still appends it to multicast PTP frames but the driver no longer
-takes it off, and for unicast PTP frames the driver takes off 12
-octets the hardware did not append.
+> This redundant check causes premature flushing on any incoming PSH packet,
+> shattering aggregation and increasing softirq overhead.
 
-To reproduce, with the AQC107 port linked to a PTP grandmaster that
-sends L2 PTP (any 802.1AS bridge, or an IEEE 1588 L2 grandmaster):
+[ ... ]
 
-  # ptp4l -i enp2s0 -f configs/gPTP.cfg -m       (syncs)
-  # ethtool -A enp2s0 autoneg off rx off tx off  (renegotiates)
-  ptp4l now logs "port 1 (enp2s0): bad message" for every frame
+> a single fraglist, and are safely flushed together upon encountering the
+> PSH flag at `out_check_final`, preserving the required TCP push semantics.
 
-and for the unicast case, ptp4l with "hybrid_e2e 1" and
-"delay_mechanism E2E" on L2 against a grandmaster that answers unicast
-Delay_Req: every Delay_Resp is dropped.
+[Severity: Medium]
+Is the removed check really redundant? Commit 8d95dc474f85 ("net: add code
+for TCP fraglist GRO") added it to the is_flist branch on purpose.
 
-I can test patches, and capture more (frames, register dumps) on this
-card.
+The general path can mask FIN|PSH out of its first comparison only because
+it later ORs those flags into the held packet's header:
 
-Thanks,
-John Gildred
+    tcp_flag_word(th2) |= flags & (TCP_FLAG_FIN | TCP_FLAG_PSH);
+
+The is_flist branch jumps to out_check_final before it reaches that line.
+So the unmasked comparison was what kept every fraglist member's flags
+identical to the head's.
+
+The removal also relaxes FIN, not only PSH. Data-carrying FIN segments,
+such as the last segment of a response, can now join a fraglist. The
+commit message doesn't mention this.
+
+The claim that push semantics are preserved seems to hold only when the
+skb goes through skb_segment_list(). Could the commit message describe the
+FIN change and the cases raised in the comments on the diff below?
+
+> diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+> index e74d99ca9face..54b40ec95a080 100644
+> --- a/net/ipv4/tcp_offload.c
+> +++ b/net/ipv4/tcp_offload.c
+> @@ -328,7 +328,6 @@ struct sk_buff *tcp_gro_receive(struct list_head *head, struct sk_buff *skb,
+>  	flush |= skb_cmp_decrypted(p, skb);
+>  
+>  	if (unlikely(NAPI_GRO_CB(p)->is_flist)) {
+> -		flush |= (__force int)(flags ^ tcp_flag_word(th2));
+
+[Severity: High]
+Can this drop a forwarded FIN or PSH from the wire?
+
+Without this check, skb_gro_receive_list() links an in-sequence [PSH, ACK]
+or [FIN, ACK] data segment into the held skb's frag_list. The is_flist
+branch then jumps to out_check_final. That skips the only place where
+FIN/PSH reach the head header:
+
+    tcp_flag_word(th2) |= flags & (TCP_FLAG_FIN | TCP_FLAG_PSH);
+
+tcp4_gro_complete() and tcp6_gro_complete() return early for is_flist.
+The head can't carry FIN/PSH itself, because out_check_final would have
+flushed it. So the head header has neither flag, while the last frag_list
+member has them.
+
+tcp4_gso_segment() uses __tcp4_gso_segment_list() only when the geometry
+still matches and SKB_GSO_DODGY is clear:
+
+    if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
+        !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
+        return __tcp4_gso_segment_list(skb, features);
+
+Otherwise it falls back to tcp_gso_segment()->skb_segment(). That path
+copies head_skb's headers, TCP flags included, into every segment.
+
+tcp_gso_segment() then clears fin/psh on every segment except the last:
+
+    while (skb->next) {
+        th->fin = th->psh = 0;
+
+The last segment keeps the head's flags, which never had FIN/PSH.
+tcp6_gso_segment() has the same fallback.
+
+These can trigger the fallback on forwarded traffic:
+
+  bpf_skb_proto_4_to_6() and bpf_skb_proto_6_to_4(), reached through
+  bpf_skb_change_proto() (for example CLAT/464xlat when tethering), set
+  SKB_GSO_DODGY on GSO skbs.
+
+  bpf_skb_net_grow() and bpf_skb_net_shrink() set SKB_GSO_DODGY.
+  bpf_skb_net_grow() can also linearize frag_list skbs when
+  BPF_F_ADJ_ROOM_FIXED_GSO is not set.
+
+  Any pull or linearize that changes the geometry has the same effect,
+  for example skb_ensure_writable(skb, skb->len) in NAT mangling.
+
+In those cases the receiver doesn't get the FIN until the sender
+retransmits it, and PSH is silently cleared.
+
+A fraglist skb redirected to a local TCP socket after GRO (DNAT/TPROXY) is
+also parsed from the head header only. TCP has nothing like UDP's
+local-delivery fraglist handling, so the FIN would be missed there too.
+
+ORing the tail's flags into th2 in the is_flist branch doesn't seem to fix
+this. skb_segment_list() emits the head skb with its own TCP header, so the
+first segment would then carry a spurious FIN/PSH.
+
+[Severity: High]
+Does this also hide the tail's FIN/PSH from netfilter, conntrack,
+flowtable, tc and BPF? All of these read only the aggregate's head header
+before segmentation.
+
+In conntrack, get_conntrack_index() only checks the head's tcph->fin, so
+the FIN transition never fires. tcp_in_window() computes:
+
+    end = segment_seq_plus_len(seq, skb->len, dataoff, tcph);
+
+skb->len covers all of the fraglist payload. The +1 for FIN is missing,
+because tcph is the head header. The peer's ACK of the FIN then hits:
+
+    if (!before(sack, receiver->td_end + 1))
+        return nf_tcp_store_invalid(ct, sender, log, NFCT_TCP_INVALID,
+                                    NF_TCP_LOG_ACK_OVER, receiver->td_end + 1);
+
+That ACK is classified invalid, and so are the peer's own FIN and the
+final ACK. A typical "ct state invalid drop" rule would then drop the
+teardown packets. Without such a rule, the entry stays ESTABLISHED instead
+of moving to FIN_WAIT/CLOSE_WAIT.
+
+In the flowtable, nf_flow_state_check() reads fin/rst only from the head
+header, so NF_FLOW_CLOSING is never set for the offloaded flow.
+
+tcp_mt() in xt_tcpudp and the nft tcp flags match also read only the head
+header, so a FORWARD rule that matches FIN or PSH won't fire.
+skb_segment_list() copies only the MAC header from the head and keeps each
+member's own TCP header. The FIN/PSH therefore still goes out on the wire
+and bypasses that policy.
+
+Before this patch, the unmasked comparison guaranteed that the head header
+described every member of the fraglist.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009060319.6229-1-shiming.cheng%40mediatek.com
