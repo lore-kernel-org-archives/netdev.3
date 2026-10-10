@@ -1,92 +1,83 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8323630B0;
-	Sat, 10 Oct 2026 07:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC95B35C689;
+	Sat, 10 Oct 2026 07:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791618148; cv=none; b=c4DNrdvD3MQ330KiYzFehG2JV2ROwzOYiCDDZZ1FP230+v9NbmxRBKaKxec3zzr9UJsUMFgIKq61NDrF/ErGzBBm/zTMP12C/g925JkRD8uvPjlfngETy5QUOdl+bI5ZUEvrzGcGndHNlXTEYexuvB+GJkju6cQVPP6w9Egb4mE=
+	t=1791618570; cv=none; b=rs7HSSEBjqCDsP01a42oiOf0k3f3Ft3aJW5H1ah2T29mZEseueWg2dVZJW5GN9VHccsKgiyMn0cHfRRxvx7HGE7uSaSYcXZ3NMN/9Hsragp/kcl8AtiLcohz214zuXK0bbe1nrZMPA14vFaO1cNGfJLLRgt728+M7W44Or4LwCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791618148; c=relaxed/simple;
-	bh=HyPzLRrcfBl0mgmNZFfi4VrIJ6h/dbpeSnbAwwMj8IA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bGSp6Lh+su2zr8OID8U6VuhZKGZo0IqvFC25xDXgfGklHZyKanPs5iGPNpdWQUHssnzgLj6Z8HV6zWb2Esr5q8nhxn4y4CAtFOsEVczstAJ2V/bcphrmKw+UboOXcq2wAAeSbXcM4CJy9xVfWWBarrzgX/simPsFpOduozRgcgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=IY064Okc; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=EFRD9wLJ; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1791618570; c=relaxed/simple;
+	bh=Klv/b8Pwn+UQ6/vgV9gS2oVr25CHb2D8ssMW8T8Khwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rTe+IhfyGnozCHZCC2wqrCAyWLKOVIEdl/M5DlKwZYLYpNA3JrqFSJ+avSyEQnArrLgL/7GiaVG0d0R/8TE3x192xIJFwuf5MLopY9zghad14XkgzFKyyiGDJOqn+xsgnxO9qySKP91xJulVAjXGuqCkkTtSRxeyJ3LfOTV7fJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXBWjvUh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="IY064Okc";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="EFRD9wLJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791618144;
-	bh=HyPzLRrcfBl0mgmNZFfi4VrIJ6h/dbpeSnbAwwMj8IA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IY064Okcd6oNl1Fd5CEy+Ib8faOHVjBIq2liOAAbVv634wfGqs20ayyYLZgJtR/LQ
-	 BKQggsKa+wh8uTZWTnPNfUdKCl3VF0+kOYnw7rS6WSG+4AEugJvcKeEq+XA0SGL8ar
-	 kXt2x1aHD3gbGZuaRfVFVMaQ5uI9LBe9gPSZhSGP5c2hVk/qYbG8DTNSXhfrNZY8FH
-	 t21+CShhRqqhl1BWX6qNjYbeAp7JoaCkf+4RB34JabFr9NzFdSSUNVIykqwA9ReWlE
-	 X+rJs8Og49TiHrYQPt10J5UDseSxOmBYsLML/aVdIxy3Vgzfw/GiNibtTlWggAoXGR
-	 d9kimNOIJyMOA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 65E7147553; Sat, 10 Oct 2026 07:42:24 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791618142;
-	bh=HyPzLRrcfBl0mgmNZFfi4VrIJ6h/dbpeSnbAwwMj8IA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EFRD9wLJqcM9O01zWVwavk9+j8Znt8KrFOWxcpNjF7m51NG6E42HPH4jVPkW/9JIx
-	 irrUWZEKkbX7oZfm7/M/RTRUJyn3MLG9aYAwcAcp4RhBBe6T8UFvaUd83pU+4GrR9f
-	 O8AFar8kfQAP5NXuNxDYIRE/d353a7KwjA6w6iSkwDpP736KfBUrxAfsqu/ROOO1Yd
-	 tXMikRvaH9T68v5CEuPx+mQpxwZJ/YVNN7z4HqRxPzQBwU54ts+q4Q9fRR69t6Suji
-	 MKmIOrszKHWRZTrchSEMVRx1rR7tZdH9RN+Xqw+fNQ+OjWMiKbXALlxVl8nPVqBKSZ
-	 XhcmvvDXyYYyg==
-Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id C398F4752E;
-	Sat, 10 Oct 2026 07:42:21 +0000 (UTC)
-Message-ID: <ec24f075-e38d-44cc-91d2-16ff6305405c@birger-koblitz.de>
-Date: Sat, 10 Oct 2026 09:42:20 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXBWjvUh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD0C1F000FF;
+	Sat, 10 Oct 2026 07:49:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791618567;
+	bh=5ynVKQSt5j+tv0i8SaXGizvaTG/NkoVM6iQofe2hs5c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PXBWjvUhladbytSLMwh9PC/wq+rNCQIKJ4AvK3fDNMZwofmWJXbaMwYsczYex4B28
+	 9988Srn/fsjN5ibQtJhRgPgUcAnuefpg+oS4RrM35q9Wv2cAiAwzNH+rHhnkq7hzPS
+	 ehoIEu8t77lmacTstkFSaP3TlJUdsqVUOB5pnJPgZQU6rCFFOJMH6oKywLaVffHxDM
+	 5vZ6Ep5O1UpvGWpQ+rSLqc4XkfUnddGPkbIFCWPtDaw7BFg+NYdJF1MQ5ct2idMR8o
+	 OjOMgnNE4qaftOb985z+uhMU0Ed24yoM6ApQBz23iqPOHa8zBLfXbHebgJxUGJg2sz
+	 X9Lt+OXa0uUAg==
+Date: Sat, 10 Oct 2026 08:49:22 +0100
+From: Simon Horman <horms@kernel.org>
+To: Kyle Zeng <kylebot@openai.com>
+Cc: netdev-bot+sinfo@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	outbounddisclosures@openai.com
+Subject: Re: [PATCH net v2] netlink: avoid hashing the network namespace
+ pointer
+Message-ID: <20261010074922.GM83879@horms.kernel.org>
+References: <20261008011359.63727-2-kylebot@openai.com>
+ <179142234633.2527009.9314976849845433713@kernel.org>
+ <asbwfr5yXmeOQ-hT@com-75606>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v19 0/13] ax88179_178a: Add support for AX88179A-based
- chips
-To: Jianhui Xu <neuromoments@gmail.com>
-Cc: andrew+netdev@lunn.ch, andrew@lunn.ch, chenhuacai@kernel.org,
- davem@davemloft.net, edumazet@kernel.org, hkallweit1@gmail.com,
- kernel@xen0n.name, kuba@kernel.org, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, linux@armlinux.org.uk, loongarch@lists.linux.dev,
- nb@tipi-net.de, netdev@vger.kernel.org, pabeni@redhat.com
-References: <20261010-ax88179a-v19-0-7475173cfb56@birger-koblitz.de>
- <20261010062047.399148-1-neuromoments@gmail.com>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <20261010062047.399148-1-neuromoments@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <asbwfr5yXmeOQ-hT@com-75606>
 
-Hi Jianhui,
+On Wed, Oct 07, 2026 at 06:23:10PM -0700, Kyle Zeng wrote:
+> On Thu, Oct 08, 2026 at 01:19:06AM +0000, netdev-bot+sinfo@kernel.org wrote:
+> > Hi!
+> > 
+> > This is an automated message. This series looks like a fix, but its
+> > commit messages seem to be missing some information:
+> > 
+> >  - How the issue was discovered, e.g. hit in production, hit during
+> >    development, syzbot report, manual code inspection, LLM or static
+> >    analysis tool scan.
+> > 
+> >  - Whether the issue was actually triggered, or is only theoretical
+> >    (e.g. found by code inspection). If it was triggered please include
+> >    the symptoms, like the stack trace or error messages.
+> > 
+> > Please do not repost the series just to address the above. Instead,
+> > reply to this email with the missing information, so that reviewers
+> > can take it into account. If the series needs another revision for
+> > other reasons, please include the information in the commit messages
+> > then.
+> > 
+> > The evaluation is done by an LLM so it may be wrong, if you think
+> > that is the case please reply and explain.
+> 
+> I have a PoC for this issue, the symptom of the issue is kernel
+> information leak.
 
-thanks again for your persistent testing efforts!
+Thanks for the extra information.
+And the updates in v2.
 
-Cheers,
-   Birger
-
-On 10/10/2026 8:20 am, Jianhui Xu wrote:
-> Hi Birger,
-> 
-> I tested the v19 series on my AX88179B adapter, rerunning all the
-> previously described tests.
-> 
-> The previously observed VLAN-filter failure did not reproduce, and no
-> carrier or RX failures were observed in the test. No confirmed driver
-> regressions were found in the tested scenarios.
-> 
-> Tested-by: Jianhui Xu <neuromoments@gmail.com>
-> 
-> Thanks,
-> Jianhui
+Reviewed-by: Simon Horman <horms@kernel.org>
 
