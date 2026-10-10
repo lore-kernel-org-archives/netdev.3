@@ -1,286 +1,319 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359E636826E
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 21:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E912AEF5;
+	Sat, 10 Oct 2026 21:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791666189; cv=none; b=AaIcM4YiaSEkaszMiubvjmUOojLD2mBsPYzrqIyARDJ5hDcuWutHKHjo+wtTeAaWBMvS/kYiXA+BrPMbhfOJZYEC/s4/A49wy9M4lgu/THOjIEjZHADz+0xheLTTz3fsRR+1WoXiZ9KwvZfd+cqOsgz5B+PoLNTeCnNgoMu6Me4=
+	t=1791666534; cv=none; b=n9cwbVaRFoIqez65RwbwBQcOpzWvmokfJBzzurAvWQ4NMIBSHrU7aCjJ+1PpZ8Fa6VEMR2e2zbhnIkRRSocOeJUgN5UvOdQkQqdUBo+1vt0W4ZHdnzdGNu7SqA6koojqF0So/jZRuSiGVfgRwQqL38ilyT118h3B67rt9i1AEL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791666189; c=relaxed/simple;
-	bh=v/XlPMN4fPBfmAxkgYIsWzQxkY2uLOFx2Hx425yLdCQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XeGiZO/NQ4/clJu6SZUHtH49nflpvlMBpbnbgNDXw9MofXUv5hL7PVpXBp4/7GtHmX4Zosgd7W419EmmUyXKuoUNFvpZhYxcnjT2Zin4FsFzBZaWsiQcG41QV0LX8qmbyNc+Zz2+C4Z7X0aH01XPRz1vKlfokhyBJjqyFLEdrQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=WzislntM; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1791666534; c=relaxed/simple;
+	bh=4sZT1lidg2qUi9wNSszlyezNz1ZQ6LWJsNuulAFWDec=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MNBw6Qy4QS4qUHvKbb1bN46ISgDGwcShY+YVm7nOiBtFYvU9RFLjTRtKVHND5sYajuN6tg/5hOZTao0zSsRf97KAs5zfZLa4KDQmgBMcD3Iy17pN4M3ZDzVVfVt7/2p5oZ6S0x3cIVRNNzX3EQQCxMSo+nMLve6xcd/g0tYjNP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fStO893j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="WzislntM"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e762768f3so103891885a.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 14:03:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791666187; x=1792270987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jz2Hc1XYfp2QYZMfwSM35lC+Lb6h+/doZovOemukty0=;
-        b=WzislntMaHvjSpMec8Vc4/i1wBjX75zqKLRZm8lu7uOqz+NWFO7XkasklP/+dZREZi
-         uDbltHc4CpnJC5bQaR2Gppt6X4OPs7+AYqq5K02IdmxhRllw7n6h279iavp9ibm2MIg8
-         NtSzaICuv3MnSEXaaIHBfkkcEVJ7SqfmA3SfI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791666187; x=1792270987;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jz2Hc1XYfp2QYZMfwSM35lC+Lb6h+/doZovOemukty0=;
-        b=rpfVkMlAIUEkuTmRApI3kvfK01mo6ydfO+TauvUPGQe/Yt7k3rgVVCDXtoDalWZJEN
-         eh3kX6JqhvMkmvyNfDCUanaBmIY9ANsfYpkWje8KeJ40zB5YFsKJzKRLpFgtg+2gSsuf
-         yYP2fD0GghSXjL3xFrU8pkiYafU9pKM5DWsXGQdQiiRmU79lwqI/Z8V95XBfD5zjDXg8
-         tZx+NBa1wFDOIzdpoilUHl6VhUY8Z5LF0hl9/pJaQaEeoLy05i8vemk+A37jlQxWfUVc
-         OIaAOX5oKlp8rZNPwWpTT6sXvwdN85ifYqBWn1Yk8Pkd/46mdvtqjLQcR5jkBz0Wh9Ck
-         kazQ==
-X-Gm-Message-State: AFq9FYICJR3tg2CmsNSZD9LYenrLEa7UwxLUkMtt25kDenic1xlPGdvf
-	PRUCenzuCr60aK98iKO2cI9slIS2IeS2N8p+XcHjNUPvsxdy7Byfp7mbHoGLBTRBsWd6cjIpxkM
-	87G8=
-X-Gm-Gg: AYBFou1TtCvrFD1SDrN8hMR02jvRepLDCFIyu0S/JMLLJhlWHZOm6e/9wka2ijVl440
-	3t3+VoJCV80Yh9T6hTXGDIjDRSeOloXP8f+FxTXlvWVGHcNXpDlryGaI5GfyNuQGqZSnBnJmAaJ
-	EqgJWmFqj1QqC/SIdCldI8lMqOi4ZGS+OsBcih1JUvA83m/Lqg8rMcUrMshw2v+u5jTVV/wUhdp
-	3y/c0QH49pUlzZ+O8iIdjE7HPKJE/0iLgkW8v+sVvaQSqyh7IpsgbP6frTWRU0LS0M6zmGxrapI
-	tvTzYEZA2Cl+U+7mEYsc2ZbLqGre6VXUzhFRPSqcMiOsTSEt+fmFS8oCm33ltsEj8mvG0uiXEb8
-	LmzOvs/J/v/oRfA2fAZi8ejhYPdwv9mzdQE2ao2GsblaosMMogHt9mWR6tFBhhe34D2jDVDYrPl
-	OUngXsCqJkh9tA7r0hjWZzI3y1DpDJkm+yAasR27wTVK3V+Lj/5UnuDE3o/dAegq83I791RwH1Z
-	hehBuLUO4OsgyyTroqqnWg9twZX2tt0HnrJvfScKnvi
-X-Received: by 2002:a05:620a:17a0:b0:93e:c12c:f13b with SMTP id af79cd13be357-93ec12d085amr843885885a.69.1791666186988;
-        Sat, 10 Oct 2026 14:03:06 -0700 (PDT)
-Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93eb984845csm498538085a.14.2026.10.10.14.03.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 14:03:06 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jiri@resnulli.us,
-	bpf@vger.kernel.org,
-	victor@mojatatu.com
-Subject: [PATCH net v2 3/3] selftests: net: exercise dev-bound cls_bpf on shared blocks
-Date: Sat, 10 Oct 2026 17:02:50 -0400
-Message-Id: <QDISC-PYC7.v2.20261010165947-4@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-PYC7.v2.20261010165947@mojatatu.com>
-References: <QDISC-PYC7.v2.20261010165947@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fStO893j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739F01F000FF;
+	Sat, 10 Oct 2026 21:08:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791666533;
+	bh=wGum4GbKA1QmItEo32DpAURITDeGtaFPXEbkaSVSSsU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fStO893jPnxAqdN8Yc602oQ49jgz4rlhJsP0iH7tRVY8ockG+VVxw9gAyzFmMDFt4
+	 8C/w/nDe8R9Nw9WslY6+sJ9Ldxp55nGMfSqIETvG3LzRC70uyLSv3q05SJdrlsSySx
+	 o3lVZN4iMKNWYu7//b7pvNsba118a23omwRYfxL/hkDsMpjDyA7JRegKL+ijGPBlP8
+	 BCMDLfmCyPIoQk8IdaKXUPABxFk+0/5i+nLffADgTpVurhjBUOI8Qp866//FeC92l8
+	 oPBL5p65cKGxx4VtPlS29ipkgiuGfAoGbkv98nmUDhj1K1vFusfuPwJPKsVt07YKzJ
+	 VcX30QW6Y3FpQ==
+Subject: Re: [PATCH net v2 1/3] amt: key relay tunnel state on the (address,
+ port) endpoint, not the address
+From: netdev-bot+sashiko@kernel.org
+To: omar@blockcast.net
+Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org
+Date: Sat, 10 Oct 2026 21:08:51 +0000
+Message-ID: <179166653195.434549.4491351472065396785@kernel.org>
+In-Reply-To: <20261009201455.1904698-2-omar@blockcast.net>
+References: <20261009201455.1904698-2-omar@blockcast.net>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The issue:
-bpf_offload.py only exercises per-device ingress qdiscs today, so neither
-the shared-block accept path nor the late-join replay is tested.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-The Fix:
-Add a test for a device-bound SCHED_CLS program attached through a shared
-block.  It loads a dev-bound SCHED_CLS program for a netdevsim device and
-checks:
-  - the program attaches to a shared block owned by its device, and the
-    filter teardown leaves the device unloaded;
-  - a block that also holds an independently backed device rejects the
-    attach, because the offload path broadcasts the program to all
-    members;
-  - an independently backed device that joins a populated block is not
-    loaded by the bind/replay path, and the driver's extack is asserted;
-  - a second port of the same netdevsim device (same offload device) is
-    accepted together with the bound port.
+Critical: 0 (1) · High: 1 · Medium: 1 · Low: 1 (2)
 
-The program is loaded from the existing sample_ret0.bpf.o with an explicit
-`type classifier` override, so no new sample object is needed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
----
-v1 -> v2 (v2 of an on-list patch; v1 posted 2026-10-04):
+- [High] Keying the tunnel lookup on (saddr, sport) instead of saddr
+  alone removes the only limit on how many tunnels one source address…
+- [Medium] The new `amt->dev->stats.rx_dropped++` on the "Invalid MAC"
+  arm of amt_update_handler() counts each rejected Update twice.
+- [Low] The new `amt->dev->stats.rx_dropped++` in amt_update_handler() is
+  a plain read-modify-write of the shared net_device counter from…
 
-- New selftest: shared-block + late-join coverage in bpf_offload.py.
-- Split the single v2 draft into three patches; this companion carries no
-  Fixes: and no Cc: stable (a selftest is not backported; it depends on
-  both code patches).
----
- tools/testing/selftests/net/bpf_offload.py | 139 +++++++++++++++++++++
- 1 file changed, 139 insertions(+)
+Pre-existing issues:
+- [Critical] This problem wasn't introduced by this patch, but it is a
+  remotely reachable use-after-free that is still present at the end of…
+- [Low] amt_request_handler() does its (ip4, source_port) lookup
+  locklessly, then takes amt->lock and allocates without looking again.
+- [Low] In amt_request_handler() a new tunnel is published with
+  list_add_tail_rcu() before tunnel->key is set, and…
 
-diff --git a/tools/testing/selftests/net/bpf_offload.py b/tools/testing/selftests/net/bpf_offload.py
-index c856d266c8f3..87e244d8ff05 100755
---- a/tools/testing/selftests/net/bpf_offload.py
-+++ b/tools/testing/selftests/net/bpf_offload.py
-@@ -452,6 +452,38 @@ class BpfNetdevSim(NetdevSim):
-         self.tc_add_ingress()
-         self.wait_for_flush(bound=bound, total=total)
- 
-+    def tc_add_block(self, block, fail=True, include_stderr=False):
-+        return tc("qdisc add dev %s ingress_block %d clsact" %
-+                  (self['ifname'], block), fail=fail,
-+                  include_stderr=include_stderr)
-+
-+    def tc_del_block(self, block):
-+        tc("qdisc del dev %s clsact" % (self['ifname']), fail=False)
-+
-+    def tc_add_block_filter(self, block, bpf, op="add", prio=None, handle=None,
-+                            da=False, verbose=False, skip_sw=False,
-+                            skip_hw=False, fail=True, include_stderr=False):
-+        spec = ""
-+        if prio is not None:
-+            spec += " prio %d" % (prio)
-+        if handle:
-+            spec += " handle %s" % (handle)
-+
-+        params = ""
-+        if da:
-+            params += " da"
-+        if verbose:
-+            params += " verbose"
-+        if skip_sw:
-+            params += " skip_sw"
-+        if skip_hw:
-+            params += " skip_hw"
-+
-+        return tc("filter {op} block {block} {spec} bpf {bpf} {params}"
-+                  .format(op=op, block=block, spec=spec, bpf=bpf,
-+                          params=params),
-+                  fail=fail, include_stderr=include_stderr)
-+
-     def tc_show_ingress(self, expected=None):
-         # No JSON support, oh well...
-         flags = ["skip_sw", "skip_hw", "in_hw"]
-@@ -629,6 +661,111 @@ def test_spurios_extack(sim, obj, skip_hw, needle):
-                             include_stderr=True)
-     check_no_extack(res, needle)
- 
-+def test_tc_shared_block():
-+    """
-+    Device-bound cls_bpf program attached through a shared block.
-+    """
-+    # A shared block has no qdisc, so the target device is derived from the
-+    # block's bound netdevs and the program must match every member, since
-+    # the offload path broadcasts it to every callback on the block.  A
-+    # netdev joining a populated block later is replayed the stored filter
-+    # before it is inserted into block->ports, so the driver callback must
-+    # enforce the device match as well.
-+    simdev = BpfNetdevSimDev()
-+    sim, = simdev.nsims
-+    sim.set_ethtool_tc_offloads(True)
-+
-+    start_test("Test TC shared-block load dev-bound program...")
-+    bpftool_prog_load("sample_ret0.bpf.o", "/sys/fs/bpf/tc_shared",
-+                      prog_type="classifier", dev=sim['ifname'])
-+
-+    start_test("Test TC shared-block dev-bound attach...")
-+    # The pinned program is dev-bound to this device; attaching it through
-+    # a shared block must succeed even though block->q is NULL.
-+    sim.tc_add_block(22)
-+    # err is kept (include_stderr) for post-mortem value on a failure.
-+    ret, _, err = sim.tc_add_block_filter(22, bpf_pinned("/sys/fs/bpf/tc_shared"),
-+                                          da=True, skip_sw=True,
-+                                          fail=False, include_stderr=True)
-+    fail(ret != 0, "dev-bound program rejected on a matching shared block")
-+    fail(sim.dfs_read("bpf_offloaded_id") == "0",
-+         "dev-bound program not offloaded on a matching shared block")
-+    sim.tc_del_block(22)
-+
-+    start_test("Test TC shared-block broadcast to a foreign member...")
-+    # Add an independently backed device to the SAME block before the
-+    # attach.  The program is bound to sim's device only, and the offload
-+    # path fans it out to every member, so the attach must be rejected.
-+    simdev2 = BpfNetdevSimDev()
-+    sim2, = simdev2.nsims
-+    sim2.set_ethtool_tc_offloads(True)
-+    sim.tc_add_block(40)
-+    sim2.tc_add_block(40)
-+    ret, _, err = sim.tc_add_block_filter(40, bpf_pinned("/sys/fs/bpf/tc_shared"),
-+                                          da=True, skip_sw=True,
-+                                          fail=False, include_stderr=True)
-+    fail(ret == 0, "dev-bound program broadcast to a foreign shared-block member")
-+    check_extack(err, "Program is not bound to every device in the block.", args)
-+    sim2.tc_del_block(40)
-+    sim.tc_del_block(40)
-+    simdev2.remove()
-+
-+    start_test("Test TC shared-block late join replay...")
-+    # Build a block owned by sim's device with the matching program
-+    # installed, then let an independently backed device join it.  The
-+    # join replays the stored filter to the joining device's callback
-+    # before the device is recorded in block->ports; the driver must
-+    # reject the replay so the foreign device is never loaded.
-+    # sim2 is created here (not inherited) so the TC-offload state it
-+    # depends on is explicit.
-+    simdev2 = BpfNetdevSimDev()
-+    sim2, = simdev2.nsims
-+    sim2.set_ethtool_tc_offloads(True)
-+    sim.tc_add_block(30)
-+    ret, _, err = sim.tc_add_block_filter(30, bpf_pinned("/sys/fs/bpf/tc_shared"),
-+                                          da=True, skip_sw=True,
-+                                          fail=False, include_stderr=True)
-+    fail(ret != 0, "dev-bound program rejected on a matching shared block")
-+    ret, _, err = sim2.tc_add_block(30, fail=False, include_stderr=True)
-+    fail(ret == 0, "foreign device joined a populated dev-bound shared block")
-+    check_extack_nsim(err, "program bound to a different device.", args)
-+    fail(sim2.dfs_read("bpf_offloaded_id") != "0",
-+         "replayed program loaded onto a foreign device")
-+    # The add above was expected to fail, so the qdisc may not exist; the
-+    # delete is harmless and only cleans up when it does.
-+    sim2.tc_del_block(30)
-+    sim.tc_del_block(30)
-+    simdev2.remove()
-+
-+    start_test("Test TC shared-block same-offload-device member...")
-+    # A second port of the same netdevsim device shares the offload device,
-+    # so a program bound to one port may legitimately be offloaded to both.
-+    simdev3 = BpfNetdevSimDev(2)
-+    sim3, sim3b = simdev3.nsims
-+    sim3.set_ethtool_tc_offloads(True)
-+    sim3b.set_ethtool_tc_offloads(True)
-+    bpftool_prog_load("sample_ret0.bpf.o", "/sys/fs/bpf/tc_shared_multi",
-+                      prog_type="classifier", dev=sim3['ifname'])
-+    sim3.tc_add_block(50)
-+    sim3b.tc_add_block(50)
-+    # err kept for post-mortem value on a failure.
-+    ret, _, err = sim3.tc_add_block_filter(50, bpf_pinned("/sys/fs/bpf/tc_shared_multi"),
-+                                           da=True, skip_sw=True,
-+                                           fail=False, include_stderr=True)
-+    fail(ret != 0, "same-offload-device member rejected on a shared block")
-+    fail(sim3.dfs_read("bpf_offloaded_id") == "0",
-+         "program not offloaded to the bound port")
-+    fail(sim3b.dfs_read("bpf_offloaded_id") == "0",
-+         "program not offloaded to the same-offload-device port")
-+    sim3b.tc_del_block(50)
-+    sim3.tc_del_block(50)
-+
-+    simdev3.remove()
-+    simdev.remove()
-+    rm("/sys/fs/bpf/tc_shared_multi")
-+    rm("/sys/fs/bpf/tc_shared")
-+    bpftool_prog_list_wait(expected=0)
-+
- def test_multi_prog(simdev, sim, obj, modename, modeid):
-     start_test("Test multi-attachment XDP - %s + offload..." %
-                (modename or "default", ))
-@@ -1349,6 +1486,8 @@ try:
-     ret, out = bpftool("prog show %s" % (progB), fail=False)
-     fail(ret != 0, "couldn't get information about orphaned program")
- 
-+    test_tc_shared_block()
-+
-     print("%s: OK" % (os.path.basename(__file__)))
- 
- finally:
+--
+
+amt: key relay tunnel state on the (address, port) endpoint, not the address
+
+This patch adds the UDP source port to the relay tunnel lookups in
+amt_request_handler() and amt_update_handler(), so tunnels are keyed on
+the (address, port) endpoint as RFC 7450 s4.2.2 describes. It also counts
+"Invalid MAC" Update drops in rx_dropped.
+
+> diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+> index b53f8ec556615..ed82f8fac3f0a 100644
+> --- a/drivers/net/amt.c
+> +++ b/drivers/net/amt.c
+
+[ ... ]
+
+> @@ -2491,7 +2494,8 @@ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  	skb_reset_network_header(skb);
+>  
+>  	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
+> -		if (tunnel->ip4 == saddr) {
+> +		if (tunnel->ip4 == saddr &&
+> +		    tunnel->source_port == sport) {
+>  			if ((nonce == tunnel->nonce &&
+>  			     response_mac == tunnel->mac)) {
+>  				mod_delayed_work(amt_wq, &tunnel->gc_wq,
+
+[Severity: Critical]
+This problem is older than this patch, but can this mod_delayed_work()
+re-arm gc_wq on a tunnel that amt_tunnel_expire() is about to free?
+
+The tunnel comes from a lockless RCU walk, and nothing checks that it is
+still on the list before the work is re-armed. The workqueue clears the
+pending bit before it calls amt_tunnel_expire(), which then does:
+
+	spin_lock_bh(&amt->lock);
+	rcu_read_lock();
+	list_del_rcu(&tunnel->list);
+	amt->nr_tunnels--;
+	amt_clear_groups(tunnel);
+	rcu_read_unlock();
+	spin_unlock_bh(&amt->lock);
+	kfree_rcu(tunnel, rcu);
+
+Here is one possible sequence:
+
+CPU1                                CPU2
+                                    amt_rcv()
+                                      rcu_read_lock_bh()
+                                      amt_update_handler()
+                                        finds tunnel in tunnel_list
+gc_wq fires, pending cleared
+amt_tunnel_expire()
+  list_del_rcu(&tunnel->list)
+                                        mod_delayed_work(&tunnel->gc_wq)
+                                          re-arms gc_wq.timer
+  kfree_rcu(tunnel, rcu)
+                                      rcu_read_unlock_bh()
+tunnel freed after grace period,
+gc_wq.timer still queued
+
+The gc_wq expiry is much longer than a grace period, so the timer would
+still be in the timer wheel after the tunnel is freed. When it fires,
+delayed_work_timer_fn() would work on freed memory. A second
+amt_tunnel_expire() would then repeat list_del_rcu() and underflow
+nr_tunnels.
+
+This patch makes the race easier to hit, because one host can now hold
+many tunnels that expire separately. The same window still exists at the
+end of the series. The locked re-check in amt_tunnel_get_or_create() can
+find the tunnel while amt_tunnel_expire() waits on amt->lock, and the
+caller re-arms gc_wq after it unlocks.
+
+> @@ -2499,7 +2503,13 @@ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  								  * 3);
+>  				goto report;
+>  			} else {
+> +				/* The endpoint match is unique, so no other
+> +				 * tunnel can validate this Update. Count the
+> +				 * drop: an unauthenticated Update is not
+> +				 * observable from the gateway's own side.
+> +				 */
+
+[Severity: Low]
+This race is older than this patch, but is the endpoint match really
+unique? amt_request_handler() does its (ip4, source_port) lookup without
+amt->lock, then takes amt->lock and allocates without looking again:
+
+	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list)
+		if (tunnel->ip4 == iph->saddr &&
+		    tunnel->source_port == udph->source)
+			goto send;
+
+	spin_lock_bh(&amt->lock);
+	if (amt->nr_tunnels >= amt->max_tunnels) {
+
+Two concurrent Requests from the same endpoint could create duplicate
+tunnels. The early return on this Invalid MAC arm assumes there is only
+one.
+
+Later in the series, "amt: do not create tunnel state for unauthenticated
+Requests" seems to fix this. Its amt_tunnel_get_or_create() re-checks
+under amt->lock, and that commit also removes this comment.
+
+>  				netdev_dbg(amt->dev, "Invalid MAC\n");
+> +				amt->dev->stats.rx_dropped++;
+
+[Severity: Medium]
+Does this count each rejected Update twice? amt_update_handler() returns
+true here, and amt_rcv() already counts that on its drop path:
+
+drivers/net/amt.c:amt_rcv() {
+    ...
+		case AMT_MSG_MEMBERSHIP_UPDATE:
+			err = amt_update_handler(amt, skb);
+			if (err)
+				goto drop;
+    ...
+drop:
+	if (err) {
+		amt->dev->stats.rx_dropped++;
+		kfree_skb(skb);
+    ...
+}
+
+If so, this part of the commit message is not accurate:
+
+  "Also count the "Invalid MAC" drop in rx_dropped. It is currently a
+  netdev_dbg only"
+
+Before this patch, the drop was already counted once through amt_rcv().
+The double count is still there at the end of the series, in the
+!verified branch of amt_update_handler() after "amt: do not create tunnel
+state for unauthenticated Requests".
+
+Could the added increment be removed?
+
+[Severity: Low]
+Separately, this is a plain read-modify-write of dev->stats.rx_dropped in
+softirq context. amt_rcv() can run on several CPUs at once, so concurrent
+invalid Updates can lose increments. This increment also races with the
+plain increment at the drop label in amt_rcv().
+
+Removing the extra increment above would fix this too. If it stays, would
+DEV_STATS_INC() be the right form?
+
+>  				return true;
+>  			}
+>  		}
+
+[ ... ]
+
+> @@ -2705,7 +2715,8 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  		return true;
+>  
+>  	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list)
+> -		if (tunnel->ip4 == iph->saddr)
+> +		if (tunnel->ip4 == iph->saddr &&
+> +		    tunnel->source_port == udph->source)
+>  			goto send;
+>  
+>  	spin_lock_bh(&amt->lock);
+
+[Severity: High]
+With the port added to the key, can one host using its own address fill
+the whole tunnel table?
+
+Every Request from a new UDP source port now misses this lookup and
+allocates a new amt_tunnel_list. The only admission check left is the
+device-wide one just below:
+
+	if (amt->nr_tunnels >= amt->max_tunnels) {
+		spin_unlock_bh(&amt->lock);
+		icmp_ndo_send(skb, ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, 0);
+		return true;
+	}
+
+A host can open max_tunnels (default 128) sockets on different ports and
+send a Request from each. It receives the Membership Query on each port,
+since it owns them, and answers with valid Updates. Each refreshing Update
+keeps its entry alive through mod_delayed_work() in amt_update_handler().
+Once the table is full, every other gateway's Request gets
+ICMP_HOST_UNREACH.
+
+No spoofing is needed, so source address filtering does not help. Before
+this patch, a non-spoofing host could hold at most one tunnel.
+
+Each of these tunnels also has its own group and source state, and
+amt_dev_xmit() calls amt_send_multicast_data() once per tunnel. Would the
+relay then send up to max_tunnels copies of each joined stream to the
+same address?
+
+The commit message mentions this:
+
+  "Note this removes an accidental bound: while tunnels were keyed on the
+  address alone, one source address could never hold more than one
+  tunnel, whatever it did. [ ... ] it is restored in a companion net-next
+  patch ("amt: bound relay tunnels admitted per source address") rather
+  than here, since it adds UAPI and this is a fix."
+
+This patch has a Fixes: tag, so it may be backported to stable without
+the net-next patch. Should the per-source bound go in with this fix?
+
+The problem also remains at the end of the series. After "amt: do not
+create tunnel state for unauthenticated Requests", the only limit in
+amt_tunnel_get_or_create() is still nr_tunnels >= max_tunnels. A
+non-spoofing host passes MAC verification on each of its own ports.
+
+[ ... ]
+
+> @@ -2743,6 +2754,14 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+>  	spin_unlock_bh(&amt->lock);
+>  
+>  send:
+> +	/* source_port is part of the tunnel's identity and is set once, in
+
+[ ... ]
+
+> +	 */
+>  	tunnel->nonce = amtrh->nonce;
+>  	mac = siphash_3u32((__force u32)tunnel->ip4,
+>  			   (__force u32)tunnel->source_port,
+
+[Severity: Low]
+This problem is older than this patch, but the allocation path above
+publishes the tunnel before its key is set:
+
+	list_add_tail_rcu(&tunnel->list, &amt->tunnel_list);
+	tunnel->key = amt->key;
+
+Here, tunnel->nonce and tunnel->mac are also written without a lock, while
+amt_update_handler() reads them locklessly.
+
+Could a concurrent Request that finds the new entry compute tunnel->mac
+with a zero key? Could amt_update_handler() see a nonce/mac pair that
+comes from two different Requests?
+
+Later in the series, "amt: do not create tunnel state for unauthenticated
+Requests" appears to resolve this. It removes the per-tunnel nonce, key
+and mac, and amt_tunnel_get_or_create() publishes only fully initialised
+entries.
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009201455.1904698-1-omar%40blockcast.net
