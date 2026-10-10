@@ -1,121 +1,127 @@
-Received: from mail-oo2-f7.google.com (mail-oo2-f7.google.com [74.125.231.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113ED204C31
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E0540B10C
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791613855; cv=none; b=ZXF/lCPMeqO0OWSzbbHT6Bg6oZ7ICTNmKEFDMzjMwT3XcT3k2ZHF3C5DYlziRxkABE2lHFwbuBlnZxOONb0JDrgZ1H2luvfw6a3SQEaS+U2KV9t0gbyVPygk+y8E8WWqyk7u9QAq32B6s56d1/PJt1domtbdcllZ6NuroSM5YXA=
+	t=1791613983; cv=none; b=cHhYJNxTBDG6auRLYOwiO08viKNkxLIxbzke9Ua3257Lha8XZsQl1VAv87NtrmUkfW2Eq+CqLLx7K4TwEWCi8YPOepF77AQ8Ko/AAOdzeslubB0sFPH/48ehYXuXZzsoo/o9MRcCb42OJ1RwWB7o4dAoMboDuNISEIOnK1eBy8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791613855; c=relaxed/simple;
-	bh=UU9e/DIEZIoiwv6BQyhSYSDdVEcIQaOzjBs1CU/yQjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MP83xvKBHKf4P0YtM3E7NbR4oUnL9h7s5iHRZsKqlNaaYWIP/M2DNA5bphE/NqbV6EQrCmmOh9w1fLkWEsW4T5CQrgPNyjbTqc9165MbfUBh7KHa+2G2lr/r4/3UhUcsfCKAulI0JpnEhcAGTVJTl7XTsYwC9IPDNPvYQoG6ZUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pH3kI7BF; arc=none smtp.client-ip=74.125.231.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791613983; c=relaxed/simple;
+	bh=js99Rxw6d4LTQnUdeK4/G0TvZ029qAkf0Iwu2klLhiA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ewPgoEkTqaTG/NbVp8PyMSHzp+sL97Er7tpY/Teb+28ouB3yaAM242HDiGy8EQCYJbbSHtwvhESlajtDY7tnTR+VUyer/T+NoREgNu8fO0t/tNv4eK0/cOIuwDa+ZIpAG4QPOVUQ9wz99oNv43toLLsnlLyma1WOkVgrrLPo1qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAc/Q2au; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pH3kI7BF"
-Received: by mail-oo2-f7.google.com with SMTP id 46e09a7af769-8210db80578so173988a34.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 23:30:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791613853; x=1792218653; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2I0Ul8sPqzlVU5TVserEHspod34j/pr1dNRLi4dN0Ck=;
-        b=pH3kI7BFeVA5H+GYQg8ysrhbUtIzrHJX1PbHbS4EFoSc2Lr3KKuxHX5+Qs432mKTVu
-         zV6VgvHnABIlQoC2zrGMkL08j0AHvJwmDf2znz5CwLTsU5fqdNNM+YHx8ukl3THN+yiP
-         LeFnugd3zVNcObeOgQsjJAeK1Oq6+TMCB59qUZJLjijHz0MbCRsROOmc+P3udQFKos81
-         dZDeuxbltJh35bxDpff4puLluI3/ihEnrTAPdtzAWUpw+Y8aTKSE751nXM0+/57ofuYd
-         Ue8HeT7QL7DwU2/JfWVuCeWJ3fdgGsCMreuUVJcOXYU7ghOSohrKTD3/H8mmbH32hAYS
-         FiiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791613853; x=1792218653;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2I0Ul8sPqzlVU5TVserEHspod34j/pr1dNRLi4dN0Ck=;
-        b=wU4A84z1pS36rdFwbY8jmJIGjrq1mZ8fFGmLJ3cDOhyiwoiUE2ybBCsNZ6bc3Qr+BY
-         gxZqSIeqcfIgxD385JFeievKiuTS1J8S8aVmw4zUOWEaJWnhty0FSrp3llCH4/g3aRxU
-         SdBwVAXdipVj4U7VnYv5HJTwwn1EjM462gcSxiQKkQdKEKRrNVeeLCQma2z+vgmHy/rZ
-         4d/eDDRAmD2AIAVRd6uOEmLntxS8nXAJM4pKbyWcF1ipBWdWVkv9fVBCjeqZeM7Rusjr
-         3hXApssGAQL/UBZkfSDc7nR1SIt88D6M2LwQrdcXe4NTopwfCI6HdlCsUw3kyfksU1sn
-         VChA==
-X-Gm-Message-State: AFq9FYIxDq2dVZokFiyKLrBRgSTTuTf8//RGV7IwhPV8LruAHa4dU6Wy
-	xWc5tArBgSf0WDnK9pnxTRJnuqhsgKhYJ63P+wIn39bYrVjNblSk+sZQ
-X-Gm-Gg: AYBFou2NE5z1Az7dKKQVYYhsMeZ0FVurJN15FzZjQbwPHpxPMQ68mt+X9cvr1NVaesI
-	yEg+qYDA2bmQDq9tiPfLp7Lk7xpUAzfzMjijUbI1fb50BqiD3zb2gsA5OFKH7vjI/o27TUEkeWM
-	gaff7Pe6yiDsOfB2PoTZfH+VYH9nDqKbx+anJ54/Ms5aMFCtF56ScfYtFQXkyU8pralnhuHNvv5
-	mzJh1XkaoX92VEYeaixbXs+okP8G7yqdlK9eZqN4MsuWA5u6F3+p81WiomaQC01l68br18iOqzT
-	//mhz92GcviJQernBTQGtJi0oQs7TTb2ra8G8aIDPpAvGY6GAMZ5yuVXvsZ7nDTvs3OkVY9nc1P
-	/tX5cKz/TL/TASvHYWQSOjRc5TUNU5EvEzrw/QO+JjWfpOkbS5OlcCq4OgczXdQCHDazuNVEyvd
-	1+hUObu7dmLfh/qXUyk9icwo7xhTMp8mVjOGIFjE7r9RzpxP4bMVyGl6chJ/tW3xsKk7R4sJPX/
-	dLPp/Cau8oqtQopgN4iuAgBifiVxOkDsJcMrUGhsOISJh9a
-X-Received: by 2002:a05:6820:16ac:b0:6be:354a:1cec with SMTP id 006d021491bc7-6ef0d333abdmr2941085eaf.27.1791613852696;
-        Fri, 09 Oct 2026 23:30:52 -0700 (PDT)
-Received: from localhost.localdomain ([14.116.239.38])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8303a328da8sm3999286a34.24.2026.10.09.23.30.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 23:30:51 -0700 (PDT)
-From: Henry Martin <bsdhenrymartin@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] macvlan: require lower-netns admin for IFLA_MACVLAN_FLAGS
-Date: Sat, 10 Oct 2026 14:29:44 +0800
-Message-ID: <20261010062944.2671656-1-bsdhenrymartin@gmail.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAc/Q2au"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA37D1F00898
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 06:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791613979;
+	bh=b16zzei5UU6y9ZD9txjezNSP6bvSMZ1kmlNghkWbFz8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=AAc/Q2auzXjSpVXcsaVhWISGHKrj3x5UiTJNzPACL1YXdbxK7Cm5cskufzGIVIFwd
+	 hGTr3L6MFHLzB1uTih/FxI5u8pz/3KXQpshRMAqYBQXyBEKUNKIY4G3zJrwbGiiZeq
+	 4bEmyPiNui+mK8jT7xo5ds0KrpBnGocp/plFt2Hx2dHeOF3eKOTdBZPYsDiZ0O50Wq
+	 FOJ1+iiN0vxiu8bwjaiyMD8UNFtizaUV3vDQGGVMcpTVaRCnF7Vt92lMcuwwfs6F+L
+	 mDATorta9/uOoribRgbSxCc2SFIVob1TEBhd4tnGBiWXLvCuSHkT55sN/Ib9LLvd+8
+	 sSttQTqLt8O/Q==
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6de2f213b7aso210451eaf.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 23:32:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByb2NQMm+d6ZEizY+jDOmSTl6Sc9OcFqAfrSTXi2np8xVJwCk/mWaCD37XqGhp5XCUUCnVYLnI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJgiDr7+Jq956RuUg8vqypZHpa0H57XVxFwmOCxxsDVsVFhQETP
+	ZQh6g4o2yljoqFpyxtMjkzSbGdOqgcyCx+jpMRNZcbY+IjjXlG3j7c+GAq6UpsKBxoiG0heUqqb
+	UnXzmkY1PXfatFwdKeRpc3HOy6hqjw7Q=
+X-Received: by 2002:a05:6820:4dc4:b0:6e0:1599:a5c with SMTP id
+ 006d021491bc7-6ef1009c43dmr2740104eaf.71.1791613978986; Fri, 09 Oct 2026
+ 23:32:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261010-fib-trie-nospec-v2-1-30319b4db8d0@nvidia.com>
+In-Reply-To: <20261010-fib-trie-nospec-v2-1-30319b4db8d0@nvidia.com>
+From: Eric Dumazet <edumazet@kernel.org>
+Date: Sat, 10 Oct 2026 08:32:48 +0200
+X-Gmail-Original-Message-ID: <CAL4WiiqALaRC5U+H_tc5nUmkN932pHPE8Z94x4cB5X7vbuGRCA@mail.gmail.com>
+X-Gm-Features: AclHuK_jW0xWSuvSePWtjINEueMh-yMLMabcZhyjAtOV1tnHpIDfomRToV0aEFo
+Message-ID: <CAL4WiiqALaRC5U+H_tc5nUmkN932pHPE8Z94x4cB5X7vbuGRCA@mail.gmail.com>
+Subject: Re: [PATCH net v2] ipv4: fib_trie: prevent speculative out-of-bounds
+ child access
+To: datrujillo@nvidia.com
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Alexander Duyck <alexander.h.duyck@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 5b782a811e73 ("macvlan: require lower-netns admin for shared
-port settings") added a rtnl_dev_link_net_capable() guard to
-macvlan_changelink(), but only covered IFLA_MACVLAN_BC_QUEUE_LEN and
-IFLA_MACVLAN_BC_CUTOFF.  The IFLA_MACVLAN_FLAGS branch performs the
-same class of cross-namespace operation: in passthru mode, toggling
-MACVLAN_FLAG_NOPROMISC calls dev_set_promiscuity() on the lower
-device, which lives in the parent netns.
+Le sam. 10 oct. 2026 =C3=A0 07:37, Dani=C3=ABl Trujillo via B4 Relay
+<devnull+datrujillo.nvidia.com@kernel.org> a =C3=A9crit :
+>
+> From: Dani=C3=ABl Trujillo <datrujillo@nvidia.com>
+>
+> fib_table_lookup() checks the child index against the bounds before
+> passing it to get_child_rcu().
+>
+> The index is derived from the lookup key, which in turn is derived from
+> flp->daddr. A userspace process can therefore influence the index by
+> triggering lookups for chosen destination IPv4 addresses.
+>
+> If this bounds check is mispredicted as in-bounds, an out-of-bounds index
+> can be transiently passed to get_child_rcu(). The value loaded beyond the
+> child array is then treated as a node pointer. A later transient
+> dereference of that pointer can cause a data-dependent cache footprint.
+>
+> This was found during Spectre-v1 research. Leakage was demonstrated with
+> instrumentation that delays branch resolution with a CLFLUSH before the
+> mispredicted branch and makes the leaked location
+> deterministic for reproducible measurement. In that setup, a
+> userspace-controlled IPv4 lookup key was able to trigger a transient
+> out-of-bounds child access. The transient use of the loaded value as a
+> pointer caused a data-dependent cache footprint that was recoverable from
+> userspace using Prime+Probe. A real-world attacker would likely
+> need to delay branch resolution, which was not demonstrated end-to-end
+> without the added CLFLUSH.
+>
+> Sanitize the index with array_index_nospec() before accessing the child
+> array. This removed the observed leakage in the described setup.
+>
+> Apply the hardening before setting cindex in fib_table_lookup(), because
+> cindex can later be used by the backtrace path to load another child
+> pointer. fib_find_node() has the same pattern, with the checked index
+> derived from a user-provided key in fib_table_insert() and
+> fib_table_delete(). leaf_walk_rcu() has a similar checked cindex before
+> get_child_rcu(), and the traversed state can be influenced by userspace
+> actions. fib_find_node() runs under RTNL and
+> leaf_walk_rcu() is not on the packet lookup hot path, so harden those
+> analogous accesses in the same way.
+>
+> Fixes: 9f9e636d4f89 ("fib_trie: Optimize fib_table_lookup to avoid wastin=
+g time on loops/variables")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Dani=C3=ABl Trujillo <datrujillo@nvidia.com>
+> ---
+> Changes in v2:
+> - Move array_index_nospec() before cindex is set in
+>   fib_table_lookup() so the backtrace path cannot use an out-of-bounds in=
+dex
+>   (Eric Dumazet).
+> - Apply the same hardening to fib_find_node() and leaf_walk_rcu()
+>   (Eric Dumazet).
+> - Add discovery/testing details of the gadget to the changelog.
+> - Link to v1: https://patch.msgid.link/20261008-fib-trie-nospec-v1-1-fa18=
+726d485e@nvidia.com
+>
 
-A macvlan device can be moved into a child netns owned by a child
-userns; root inside that child namespace (no CAP_NET_ADMIN in the
-lower device's namespace) can then flip the parent namespace
-lowerdev's promiscuity counter at will.
+This looks good to me, let's wait for final Sashiko findings.
 
-Extend the existing guard to IFLA_MACVLAN_FLAGS.
+Choice of net vs net-next tree is also debatable given that
+performance impacts are unknown.
 
-This issue was discovered by Tencent CodeBuddy Security.
+Thanks.
 
-Cc: stable@vger.kernel.org
-Fixes: df8ef8f3aaa6 ("macvlan: add FDB bridge ops and macvlan flags")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
----
- drivers/net/macvlan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index afad90b9222a2..d30cffddb1e1b 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -1641,7 +1641,8 @@ static int macvlan_changelink(struct net_device *dev,
- 	int ret;
- 
- 	if (data &&
--	    (data[IFLA_MACVLAN_BC_QUEUE_LEN] || data[IFLA_MACVLAN_BC_CUTOFF]) &&
-+	    (data[IFLA_MACVLAN_BC_QUEUE_LEN] || data[IFLA_MACVLAN_BC_CUTOFF] ||
-+	     data[IFLA_MACVLAN_FLAGS]) &&
- 	    !rtnl_dev_link_net_capable(dev, dev_net(vlan->lowerdev))) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Changing shared macvlan port settings requires CAP_NET_ADMIN in the lower device network namespace");
--- 
-2.43.7
-
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
