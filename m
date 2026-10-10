@@ -1,191 +1,145 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010057.outbound.protection.outlook.com [52.101.46.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9720613DDAE;
-	Sat, 10 Oct 2026 14:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791640851; cv=fail; b=uQIz4lg9iML89b14eZ3Tf+ql5NGNxvexZCTib/2EqwmOvdWMkh8x9TTT2RWkmyrEV0221lJYSwLMYn2JUnenKwv95Al7dj7+aNqU6c+O5uJn3069rDeJZPkfhEldns0Y9n7VInjNUXy8tH3kx2Ps4zRAP5PE6em4ttuNWCOwLvk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791640851; c=relaxed/simple;
-	bh=oRqq9t1zPnFEsNr3VYDOoe29A556Z5JB1aXIiaWNERw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=G1Oqq8FsSMZ9p8tRb2Xxe7DGzktNgwSPCHMLRKJ7GV1LzeEwAmYZG70Fdt2J+6HUol69x11fEN2M9DxrKbgJI3EgXGJfl3vSohTzGhVwPIWaW1f/dQvTP5YrneQOxg8OaQSyNqLXg+SPBknuA0YkKSgcCqbtuQRl0psUlRhtsA4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HNQek1N9; arc=fail smtp.client-ip=52.101.46.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A19F13B58C
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 14:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791640953; cv=none; b=kanwwnyW2eIi72L2fz6LyDyPo5EGP9NnVgIBJ8KIveymJtQ3PeBlRkaxh/eueESrLVzKBltF3Bdqp18B3oCxOPNwapdXI1CNx3tLawYuDd9/4YmWr3/fydMWOOPp+GFbEHSPtjkUPVpxosKV+5caVsXT9ysCtQdVSXUR1NrzX5s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791640953; c=relaxed/simple;
+	bh=1nn/gxCVP607cWus+kYr5yIsKr+fX0D4lXIQhCvbtzw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oRfhVCXUwB3OCmELxoVpqzaMh8iXmkT634l+dXghAQdQtTO2B+6LyHrXyg723BzqRJw91lgAJPyCbsu4nGZ7UW3A2snjUUY6pSSijHKnCskLQXjdHXF7wdsbT47dqL7RbAj82pKfq7oGibRNX091MLGnp67eoriZ+sYmK8KogXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qDSQdYr2; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HNQek1N9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EbAWQOmkw4ZG8ChxgAGSz34PTptZ0MgHoGa8vJNdwgbD+799JBd17gMor08kRbG6svoetlZmZ80BTTAR6FX7n3jA3jtIvPPk3CyRt3t5avQvIsoPs/XGI9j9QlrhDVzQKgqf8Etq3Kha6ZH3EqV0OmpnA3UIySmOMHlj9rJ2QXuXf9vOuhOzjEFC2j8oUF0yyFQVtj0Lmt4kK8k5tb0wb5mHdw9yWrogy220AtQO9AVKkknxGCJZ1everuJ+kY3YK1T5Qd/36mPvXk42HBxzlLuR9WjFAySRWCZslOPHLVMUDFUVPJ/kJmQFecM7Z6iTumCQI7oy/bPadpikat2//Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YIKaHiT+vl/C/jjTqlktnodzpGJ8waRz2zBONlUkpfA=;
- b=H1CWdM5dKwSnIXjeugto6LY811OYigbo7lEpYJTfZNS19gaHMQoh048D3faUVNHVYKL2n/nDl7iyJJxQjxems15yckJ+5pcDUrq12oSluIHyVKwKiGcFgXmavgcwPDy+pLflx6LFuNTELouSdsZcmnVs5sTU0Q2OCeWZvJilfOiaGAfNj4XjmPAJeawrBqQQcOUDnI95H42jGB7UTJYOvEcY2ZNpUazeZGYkbXRPJUFaEeklCgJL975moFOLZV1GqJIUCD/Kj7GhKRIeqyo0ggLrCo7MNM++ts4MYSbn0kWqUHRW1yg/HbFAyP5Lv2in+r+qzMmikzghSULNHLPSEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YIKaHiT+vl/C/jjTqlktnodzpGJ8waRz2zBONlUkpfA=;
- b=HNQek1N9qqgAEDhmp53OupHNfdRiZVSmguB6S01BKKuaoONundgGA4ff/ZmrspiBgPUKGN//XnTSSHyjxzqv8zTyEPDJ7VeG2MtTdvuNlFa+an2RoeBqUo9pNDULvRSHPjy0jcApTr6pAHb7adgkYAMhaE2aIquwIl451B7Cug1fGtE+k1pBhGM3BIDFS50mlmxAdeUQ8PISToWEz5BNCKac9KBg8Q8eQAVOmmPgXPLyfIjd2HximrY//RfzB2uFXXckBYTC4Gjum9v69JGmVytfFWunaYWi4WRsfr9Ouse0yW+ooSo8D5Y5KvDUB0FwQ7IIjKpxDNUf7KXFn2z17A==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH1PR12MB9647.namprd12.prod.outlook.com (2603:10b6:610:2b0::10)
- by SACPR12MB056849.namprd12.prod.outlook.com (2603:10b6:806:543::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.18; Sat, 10 Oct
- 2026 14:00:47 +0000
-Received: from CH1PR12MB9647.namprd12.prod.outlook.com
- ([fe80::228c:766a:191d:77b2]) by CH1PR12MB9647.namprd12.prod.outlook.com
- ([fe80::228c:766a:191d:77b2%3]) with mapi id 15.21.0496.019; Sat, 10 Oct 2026
- 14:00:47 +0000
-Message-ID: <59e1612d-f9f7-4f1d-a050-a6da8aa63ec0@nvidia.com>
-Date: Sat, 10 Oct 2026 16:00:40 +0200
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next 08/10] net/mlx5e: Recreate netdev channels on
- data direct device unbind
-To: Mina Almasry <almasrymina@google.com>, Tariq Toukan <tariqt@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Bobby Eshleman <bobbyeshleman@meta.com>,
- Byungchul Park <byungchul@sk.com>, Carolina Jubran <cjubran@nvidia.com>,
- Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Jacob Keller <Jacob.e.keller@intel.com>, Kees Cook <kees@kernel.org>,
- Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
- linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
- Matt Fleming <mfleming@cloudflare.com>,
- Nikolay Aleksandrov <razor@blackwall.org>, Saeed Mahameed
- <saeedm@nvidia.com>, Shivaji Kant <shivajikant@google.com>,
- Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- Stanislav Fomichev <sdf.kernel@gmail.com>, William Tu <witu@nvidia.com>,
- Yue Haibing <yuehaibing@huawei.com>
-References: <20261008132815.654147-1-tariqt@nvidia.com>
- <20261008132815.654147-9-tariqt@nvidia.com>
- <20261009235615.3825992-1-almasrymina@google.com>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <20261009235615.3825992-1-almasrymina@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0197.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e5::7) To CH1PR12MB9647.namprd12.prod.outlook.com
- (2603:10b6:610:2b0::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qDSQdYr2"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48af27fe287so533138f8f.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 07:02:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791640950; x=1792245750; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7F23FNsErj3fpOWKD/UF72cX4yQCCC/yv71F53gfj74=;
+        b=qDSQdYr2Z/+mdWr5U9bMM5gDAIS4cjZD0yDeCyIfsFfHYpIe/gYGLc/dT9OQDe5ZyM
+         pr1zGnzEzFNtrH3AraRLJ6Ba7MLXvgw8eAvI2boZA1c+xLYps7STj05CZ2fsPMO1pFEs
+         nXqebZNvonbBefAXm8QHluLwoyANWBzBWD2LAoyzeIuVMJRSXsczb6rAIB2iefqSw1e+
+         QadP+/LKkS0pvPI4VX4T5PfEo0OuISIWLLWf+iqvMkOG29pP1YKP9igsoEcRVEjjDIyV
+         K3PQn1aap2b2S6seVp+UJo6X/+taOuJZj0PqkoCpHWbR1SQkTGsaOB1LGjaoGFe+MiDC
+         H1wA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791640950; x=1792245750;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7F23FNsErj3fpOWKD/UF72cX4yQCCC/yv71F53gfj74=;
+        b=ifQX6dTuftMSGv0y57qyUjc+6pvi5CeysnWzbLInWORDT88kIRlEJt2Pn5ON5XXvb5
+         biWcyqDYDRwx8LrNDTTMCHx8ije6UkGac0XuvVxJ+XpOdyudTsOUwhkOe1BsakCDOvWs
+         wbOI8lznnR+UCKRrKD6GONJODwWJIei0Ki+QXuPdJafYuGQno4CVGMf/2frS2pt20EwQ
+         rM2dPIv5ZPT3BrIE+Nlk6seBFIBkiFXa1Tt8nQPlANRs+gPwJ2lIdtq+43PvKUiFfEty
+         xHygENpYQp/QR1lKjA1ggTLgeTZNIMPiD141zA20NcDr6nj4o/hZxvx5nm8xBtBq2HYA
+         mLDg==
+X-Forwarded-Encrypted: i=1; AKwUvBz1K377MeYeUMZ4qZ6/65ZmjjwPvtg4Hz/zoqwQKtncMNCKn9uW6LyTa3AQ5mn8wlWmWXQ3/hE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLEedCU6ZgarQ8CMb6bpJ4xYoNl7MH1jhKylHkFR7cE5hVxqi4x
+	lD5z4yQvzeL1Vgqsz08LjfUgGOuF+S2SowifK/NOyfXPdKdCrxkZO1Rt
+X-Gm-Gg: AYBFou08WHvoTdlJktye0a2S28bMfa95nED6CTqNUizGcln5/vIRllMLxCIgxmjrCc1
+	E1bd/mi7Rqmt53QRVZwAauzlvi0imXS3H9AQppElgsnnVfntF6WdujirMMQGLgiVceA8EXMdpF1
+	iWJJME14N/yarAgO3or7NIBGMnw6KocncyWuu2I13SXlSzunWIEdAqV3ZOCT4NDoAsFTpLGXmQO
+	GFXEc1eHs5M4OGrnOP0r2ZMtE0r9d50m3+h/0J/iIDAVL0znXJA9PhQItILy45kIv4qPSjlIT00
+	Z2/HRW3mnAKHpL1jX6h5DCc6nf/9s0yB4KC5Q/X5R3qjfPChDSpGSnlJMIOCK+PcgSORWBqxlaY
+	FRD0hRWFAwoNu41hym64jpfD4HhOlFAdXn6FKcXXh97P8BJLhnsWihi80U55uRAuLcPrfOG5b3S
+	g45up5EGHTSUBaRI4gTzswCyrodlTsad13SAgMkAXv4Yz8w4uxRwD+TCjawMTYBagI74WX7Ediw
+	U7fU2tdU/TGyRYyGCd+EMYn7x6ZNCE7PH0Cnc3ERJ8tUN0Bh/Tf7Jt83Zt6EhtkjpL5iNgpLL8U
+	4cacEiLlc17lMusVfYzOsB8a/6nsrA7RXjoBnWSINGUwXdF8
+X-Received: by 2002:a5d:6992:0:b0:48c:49bd:62df with SMTP id ffacd0b85a97d-48dba77d1ddmr7509477f8f.1.1791640950478;
+        Sat, 10 Oct 2026 07:02:30 -0700 (PDT)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9463499sm8727077f8f.3.2026.10.10.07.02.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 10 Oct 2026 07:02:29 -0700 (PDT)
+Message-ID: <12d8d2fc-6b3a-432f-b27d-e27bea01d697@gmail.com>
+Date: Sat, 10 Oct 2026 15:02:26 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PR12MB9647:EE_|SACPR12MB056849:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7afc5b7e-e39d-4c51-0e2f-08df26d6e23a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|261009223027099003|56012099006|4143699003|5023799004|11063799006|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	pKQFhFDnZjfD+rNUOwNvPNCM2RGCQBH908pjusAruM1sCdVui6LLsb2QIgO1RLt25ANrlg0XulXemYZbiRLq65F1E8GRzhw5Qd4jkPqBavBpJhXpC4ZMbpVhiOyDVpmowCyDF2rSF1KavcJLP5b2ASxMjeaJ7BftvHZ4R8z6Gn9tBUJIMkMuCFwNaXtyQHtGc9XJRSfWodJrsQeNbtl97btb7th2oxKJCgLnNErlMOBYSjmDOiwFrAg+SNMBobtvzK/wUjh2rnqtlEQxdMOZl09EROOTBLfYWeno/NdVybtby7+EvuhewavMd2gEcKTCplEfSPYt4puLzOxDdd1ZZqB1wCKfilFRjD4SuhaPVMl5jovsxw71bWnO3f17wJa/mG6c11NJrlJvnwYOKh2i4QKDjsguJ8TtUjvsCXN06kMMf75EZqDKIijipna0+YcdRfaZiaj0ytm9ceC3N7Di0nTMNDtgCZRI2dR4+9Wr3agZMsHuHACW/0wunjZi/sE+HBweS12awVW9G46aNuy+4CBN+Tys7gel+gzkZhWrjLd0OPIPL2IrzLxnsyo5wGYbg4WtHhMxENUqXiF9OLUho1OPQ1O4Yb0yhrlfNbDcDu+F1LvD/6nmV7YbVhms8JUenZBqoQomyGtcpCCVodbV2yFfcdo6cO3TR5j33hB7VOU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9647.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(261009223027099003)(56012099006)(4143699003)(5023799004)(11063799006)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RXlQZXgxS2lCNmovVGNEMnUzbGJYamI3N21kbUpXM0M1cHRTZSsvRDBCRnpB?=
- =?utf-8?B?MytBSW5wTkNEUnB1Y29aaHQ2RGxmSjBRV0Z1aEsybDFpak9iS2ZlWk9nZGxZ?=
- =?utf-8?B?WEIvMG1VSmRVR29Md2VxY3BPRkIzUGhBUWxZWTBuU0ErcUFrM094MEhLc3FE?=
- =?utf-8?B?Qm1ycHVhMW1paUFlOFMxbE5XOExBU3JWeGpBeFZGaVI0SFBTNVVLR0ZXWEth?=
- =?utf-8?B?cC95VHB4OWtCeGxYdmdTMlE4VXVWd0Jsd2tBdlBvaEcydXJUeDBNdVh4MEFE?=
- =?utf-8?B?NUlRSXhLWGpYcWpMVlFObW1iSlEwRTV2MVpTeXZLN1RWQTcweHBxTFA2d1NU?=
- =?utf-8?B?RmRJSFBKVk5VaDU0MDNMQjU3emNRdWlRUmVIS0p1ZjR3eEs3UW1jZ0tMcU5j?=
- =?utf-8?B?bUFGRG8yNWNtN1VKUThtWkJXblRYM0xDU1BwNG14NFlxZjJRYjdyTS9qV3Vn?=
- =?utf-8?B?RkdmVlZoU3JiUGs3a1cxWFltT0ZaV1RZVnBZMGFVODdEU2FoTnNMb0RlUlE3?=
- =?utf-8?B?eG0xR1lCL0pOWCtSa3QwUis4bHdkdkM5SFljNFZCdHNXbW4zTmdFbWdZd1Bs?=
- =?utf-8?B?KzUzVVg1cW02OXJkV3l5bGJVSFliRmEwenB4Z3hUc2ZRQmlCd1NhTExCVmhm?=
- =?utf-8?B?VHR1TnFDU1c5Yy9QSjNpdS9TTERZa0hxTkxUeHlOSXhtZ1BvYmx3NXN4MkJi?=
- =?utf-8?B?MmlSVHB2VXdiQXJwYzY1NUVvMWUwOFgyb1kzbytnSUZwblB2Y0RuWEpDYURr?=
- =?utf-8?B?Tnl0Y2N0K2M4bFdvaXR1TzY5blFkUEZQbnRvNUhKdEZKM2NDN2FFV29ua1Vk?=
- =?utf-8?B?NUdDZjlUSk1MamZDeU1uYml0Z2ZWMVUwOGpualNia2U3UXZ4RGJpTnhWSWV0?=
- =?utf-8?B?NXM0UnM3VGZtYTMxU2hRUExFZ3YzMTM2VmJiZk9DUkJtampSbHZybm93L2Fx?=
- =?utf-8?B?aWxoU2oySThGUzlzc3FIVWNLR29SUjN6K0RNUTErcC9la0VMVTZJa3dFKzl0?=
- =?utf-8?B?a0dGUmZhOG45RmtJMkpxY1FaTDQ5cTg1eTVCTWZ1emJjWUt3R0k1UUEzZ0Jr?=
- =?utf-8?B?S1RUdTlNdDhaL0NmRGoxalNVTEJWN2RQR1JCbmJWL0NlK2M0emRQdFhJOC9k?=
- =?utf-8?B?MDcwRnNRQW5pd1MrNU1WczZpazUvNTNWb0RscG1sbkMxUCswQzRZZFdheWxK?=
- =?utf-8?B?NTZPYituWUY2d1l5d0lBUzVCbEduQWZIVUQvUkd0MncvL0J4eUwrR0h0ZkhJ?=
- =?utf-8?B?WGdFWjNDUTZkeWRBbk50WDNKL2VIRldzZjJEZi9tZU5ibjhWSnZvZlZEYTdJ?=
- =?utf-8?B?b3ZNVlFub3FDQU43UGxpamduM3EzNURWVlpleVk4NUZKWVBhMTh6bVpqQzFI?=
- =?utf-8?B?RFdnWGFzTnJIaEpiWjh6Y2FjWm8ya0VvaVVsSmlKZ0lBUGFMU0FYMzhkaFhh?=
- =?utf-8?B?NlV6ZnJ5Q3BMRGowSld0L2VJUWlpdEJHb1RUWnRtRW0vL1h0a3JEQzZpZ0du?=
- =?utf-8?B?VS84S09LWGFzQjRPMjFONjFzNHF4VUdBRWN1WjdUS0lLOW5wMURLNzNGZ2hr?=
- =?utf-8?B?RDVIYXJ1Y2ozbGp0R1RCMlB0T3BIOXQram8vZkNLRCtTYklydkJSc3BhRHJi?=
- =?utf-8?B?eUQvdzBFeEYrbGhGUUZkcjc2ZjZsRWoyY0I4d0lXazltR2NwWndnN0tub21S?=
- =?utf-8?B?bStla1l5Tk0wVSs4UEtIenNpQkNvWk1EdklGR0JiSzVXdzFUMG5LbGxPSjJB?=
- =?utf-8?B?ZFFEblRFK0Z0NU1BY2RVNDdqcmRPK3M1UzBVd3l6RXc2SVdUb0Q1SkQweCth?=
- =?utf-8?B?eWYra1ZIdHN6VFZoOXBBWUtTVDdLVTl3M0M3UlU0Zko3blc5UGJJR00zWkM4?=
- =?utf-8?B?andYUlVIWXhuaHEreTVpUU12MUx2V1dyNzdlWEc3ZTNWbVo1eDJLSlBYSzR5?=
- =?utf-8?B?RmVyZWUySU1oNk9vUUxLVWk2T0M4NnlxOVl2RmZ2WTZBUExIUUNwQ25hZHZo?=
- =?utf-8?B?b2ttQ0RCRWhjUlRHUHhhOGJ5a3Q4M1lTRG1DTkY5ak4xS3dwSjRDUU9aRGZn?=
- =?utf-8?B?U1pmQUtEekZObnB0eU42M1JRb2FFQ3hjaXhNL1RScGlBUGxRWEtZSTdVOTQ2?=
- =?utf-8?B?aHZvbk0vYTMvQzdJaDg2cUJsUmFjOFBzODl1enlkbmpXUFpTTCtTRGY3RWVu?=
- =?utf-8?B?d0JNQUR1YkVQZlhhK2dtREpmYTZOZE1hWm44SGlKTG8yMWlKWTUxdUxzNi9X?=
- =?utf-8?B?cHVVZ3BLdU52V0s5QkF1QVJlREp0K3kzOUNyYVFLS1V6aWVRc0d6ZkFiUmNt?=
- =?utf-8?B?Ynl0WHNHWHAyWThRbHVJVENBOGVsR2N6b0NVcnJHczBzbHZueDJ1dz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7afc5b7e-e39d-4c51-0e2f-08df26d6e23a
-X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9647.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2026 14:00:47.1701
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: df/s4Ui9OycwADtec/BwoSCSlMVhp2F6YT2sf7TBAvnynaaG28I8U5CNKhrYHADSZokr0nKbhktWsv298onvwA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SACPR12MB056849
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v1 1/4] net: devmem: unmap dma_buf synchronously on
+ queue uninstall
+To: Mina Almasry <almasrymina@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ David Wei <dw@davidwei.uk>, Taehee Yoo <ap420073@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>,
+ Kaiyuan Zhang <kaiyuanz@google.com>, Bobby Eshleman
+ <bobbyeshleman@meta.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Nikolay Aleksandrov <razor@blackwall.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Kaifeng Wang <kaifengw@google.com>
+References: <20261010025532.839559-1-almasrymina@google.com>
+ <20261010025532.839559-2-almasrymina@google.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20261010025532.839559-2-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 10/10/26 03:55, Mina Almasry wrote:
+> When a bound net_device is unregistered while userspace still holds a
+> netlink or TCP socket reference on a devmem binding,
+> mp_dmabuf_devmem_uninstall() clears binding->dev to NULL so
+> netdev_nl_sock_priv_destroy() will not touch the unregistered
+> net_device, but leaves the dma_buf attachment mapped until
+> __net_devmem_dmabuf_binding_free() runs later on socket close.
+> 
+> Because dma_buf_attach() does not take a reference on dma_dev, device
+> removal frees dma_dev while the attachment is still mapped. Closing the
+> netlink socket afterwards triggers a slab use-after-free in
+> dma_unmap_sg_attrs():
+> 
+>    BUG: KASAN: slab-use-after-free in dma_unmap_sg_attrs+0x76/0x2b0
+>    Read of size 8 at addr ffff88810fae64b0 by task kworker/3:1/53
+>    Workqueue: events __net_devmem_dmabuf_binding_free
+>    Call Trace:
+>     dma_unmap_sg_attrs+0x76/0x2b0
+>     unmap_udmabuf+0x8e/0x100
+>     dma_buf_unmap_attachment+0x145/0x330
+>     dma_buf_unmap_attachment_unlocked+0x96/0x130
+>     __net_devmem_dmabuf_binding_free+0x156/0x2e0
+>    Freed by task 9:
+>     kfree+0x1b8/0x550
+>     nsim_bus_dev_release+0xe/0x60
+>     device_release+0xcf/0x250
+> 
+> Add net_devmem_dmabuf_binding_unmap() serialized under binding->lock
+> and null out binding->sgt and binding->attachment after unmapping so
+> unmapping is idempotent across queue uninstall and deferred binding
+> destruction. Call it synchronously when the last bound RX queue is
+> uninstalled in mp_dmabuf_devmem_uninstall().
+> 
+> Fixes: f8350a4358fc ("net: page_pool: add a mp hook to unregister_netdevice*")
 
+It looks more like 170aafe35cb98e0f3fbacb446ea86389fbce22ea
+("netdev: support binding dma-buf to netdevice"). The one in the
+tag didn't do anything interesting.
 
-On 10.10.26 01:56, Mina Almasry wrote:
-> On Thu, Oct 8, 2026 at 6:28 AM Tariq Toukan <tariqt@nvidia.com> wrote:
->> From: Dragos Tatulea <dtatulea@nvidia.com>
->>
->> Note that this does not tear down dmabuf bindings attached to the data
->> direct device; the recreated channels will still pick up the binding via
->> rxq->mp_params and post DMA addresses from the data direct IOMMU domain
->> to the PF, causing IOMMU faults. A devmem revoke hook is needed to close
->> those bindings before the switch.
-> 
-> (Note: LLM-assisted review comment below.)
-> 
-> Rather than shipping this known IOMMU fault window on MLX5_DATA_DIRECT_UNBIND,
-> could we add the core detach helper in patch 09/10 and invoke it here under
-> netdev_lock(priv->netdev) before mlx5e_safe_switch_params()?
-> 
-> Specifically, reopening channels on the PF without detaching active bindings
-> leaves three issues:
-> 1. RX: reopened queues pick up stale rxq->mp_params and post data_direct IOVAs
->    onto ch->pdev.
-> 2. TX: active TX bindings (net_devmem_dmabuf_bindings) and in-flight or
->    retransmitted skbs still hold data_direct IOVAs while mlx5e_xmit() switches
->    to sq->mkey_be (ch->pdev).
-> 3. DMA unmap ordering: binding->sgt / binding->attachment stay mapped to
->    &dd_dev->pdev->dev until userspace closes all sockets, after
->    mlx5_data_direct_remove() has already returned.
-> 
-> If mlx5e_data_direct_event() calls a core helper such as
-> netdev_unbind_dmabuf_dma_dev(priv->netdev, &dd_dev->pdev->dev) before
-> mlx5e_safe_switch_params():
-> - netif_mp_close_rxq() clears rxq->mp_params so reopened channels use host
->   page_pool pages on ch->pdev.
-> - Clearing WRITE_ONCE(binding->dev, NULL) + synchronize_net() causes existing
->   validate_xmit_unreadable_skb() (READ_ONCE(binding->dev) != dev) to drop any
->   in-flight/retransmitted TX skbs automatically with zero driver fast-path
->   changes.
-> - dma_buf_unmap_attachment_unlocked() + dma_buf_detach() complete synchronously
->   before mlx5_data_direct_remove() finishes.
-> 
-My plan was to address this after this series is accepted.
+The fix looks good as well, might be a good idea to clear
+net_iov's dma_addr as well.
 
-Thanks,
-Dragos
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+
+-- 
+Pavel Begunkov
+
