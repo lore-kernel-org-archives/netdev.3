@@ -1,64 +1,64 @@
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76723BB677
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055BB2DC76A
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791604300; cv=none; b=o+Q2Ks0Wd+6pN5+oVys5DEYoVaxCI0Fgu43s+vJx/8MZMKNvdKempC7zitta8PDPnEHmgp4cNImTYpyXAIRTcB03dFMUWOMSIrF7P6zG0lg1DlNTWuaadvhO0uY70Fs8uiaonnct9XQrbNaJTjZ/DWAeqbUkaduk5f1wJlNhvJM=
+	t=1791604301; cv=none; b=CR49pRZbyZEerq1+TUDiy2YIAV1nkPu2VESDqYnhoXGUCCUSjin6xMJSfNxszg/LJUqHXi6xkhTU7/QfjoZHehdqN0o+vmMs8rnJLC2m+lwsX7IYQCSaHGM1Lku0wCCczagSlvhTU4SnXsP5ONGSD4WyUzmdMpF1VSCAi4ZncA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791604300; c=relaxed/simple;
-	bh=vHsTXZv5TyeF3HX5UW6hnKMqsavvFFm+POrGdkcd3fg=;
+	s=arc-20240116; t=1791604301; c=relaxed/simple;
+	bh=8/vp+Uh9lf8asnHdZVo+B2pmjMLDnsodUn5dgmwbS5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBXViFu2kC/nY1GCzXinKMgXzDnLBPPi+Fu4hq11btzdJ+IMvuLPStan4s6xRBevDGNniIGnBEBl5EHMcktZm9pilIxiTGarG1S1jc20cz7yPk6gpChOEpvZ0UsoOaFo2bcTYKyjQdruLHUBWzmD9Ad2Buzhdeu07SWOr0fKLWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XkgJNwsY; arc=none smtp.client-ip=209.85.167.48
+	 MIME-Version; b=l/9VcfnT3h5IlleI4zyD25cn9djDg3lF+NdIZQbNjjJ3BXNPZThpPizh9XZ6qkXp0HnTj5P7QhmsVZ7XHCEsHGNn+uWEfyb0ka80izTTA1T0VAmhtqQdqgmoWxZRzM2v7o954xxt/iLtu4yazrqJz2y2m6MVO+ostx/MY3MqKhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JiczssT4; arc=none smtp.client-ip=209.85.167.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XkgJNwsY"
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5ba4180a65aso217130e87.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 20:51:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JiczssT4"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5bcbd8df6fdso190058e87.0
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 20:51:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791604296; x=1792209096; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791604298; x=1792209098; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=t4lwgRqdIBm7UtaWzVpHkZBb7rvpL6UN+PLUcNwF8OI=;
-        b=XkgJNwsYTpq7K+5h39+U0hDHyOZ4SFimOtAzhP+CUo1QcItqImglgcudINkIVs5tro
-         bpIWpAE133tFXjgvA0csZrZlNERkjixBZ/VrmLjJEp8eduw3rvgHq6AVD3sKmlfkIIMe
-         Ihh+oePUhNhpftxcVYU7IRWiMBoT0rtYcKAV3zzA9bYuQ53JoxqkCMd8t+piv5T1QQQr
-         +Ftp6msTjzEvCQdhRKbZzNxGTK917rfXeBxXeAfAbz7VKPJ6VSrzyN1DpCOjNCXBH9I/
-         pAOxsnLNtggjQqotKwA+5AkY4/nnR8IL4WUyxxZ85/4yFDDHIX+0Q53uVBFxoR0SRhHn
-         zuqQ==
+        bh=miiJUjBn7YGDRW7Q8CA+7JpD/iOrNnpqOu38b4xVhnw=;
+        b=JiczssT4F+i/qbY/P8OnK/z6g9A3j2R5gQViNQ8qnj1bXEipGRw3Z4c1yR9E10E1s2
+         tbF2oXoZ/0/DVTnh3RoeAZiH6F0BNR5Gt9Ho41T5QcJzfoT2Hh7i4F2LU2TlJVQsW1s9
+         ox0S2qfyMXLNAXB53UfG4mJ7ZbgtZfOwO9ZrNTZk+ig4Q9m0DwcwpO5JzOFWRslf0PrI
+         RdMMDjkH+EIRQG98yIneTFop8u554DQ5C0HDAIyfWNkYJ0Z04PKa4Ry9tUdTcDvNI/EU
+         BobZA4v+1HeCEYdO1ezS5r7WsDzd0u0+Q6FI73CgBCmzdP7zuCk01AUtdbZ9OU+DMP1n
+         YtLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791604296; x=1792209096;
+        d=1e100.net; s=20260707; t=1791604298; x=1792209098;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=t4lwgRqdIBm7UtaWzVpHkZBb7rvpL6UN+PLUcNwF8OI=;
-        b=ncusXNbSexbHwxS9ZM7ZW/ob/sMLHzax7nMHzSibYxGReGn86b6xjNyVwORlGMHWy5
-         Su6j6k9nk2idhqfHvTNo0j6AfYDF/VlanMXLksSutD0h/ME92qO1nhkgvlC4yL2j/6X4
-         wKiAP4v5FA++/ex4Cbs8+F1XOoIGxkIJvsM8qkO7AcYXQ0AYK5n0TI/c3EkdqSL87gNe
-         BFTcWh2lRE4O5/RIo3NDsh2cZK0gbxkWgfB9IAHtH72ZvjN9u0BaeL2CL539GMWaKK6P
-         PvLF9e875/Q9dJDofLiHSHKMNjKTOj2p/Djxh+ZXU68k7XDnjkFn5ftnEm8LVpOrIwjC
-         TucA==
-X-Forwarded-Encrypted: i=1; AKwUvByCPC0Zrew41ypoKos7LTJdigdkIGv7QTF97moeNg7jwgbbxo9jxv6x0UEQjhQoah4f/jUF2jo=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKFSW0YuAvMsdcKv2mNFkuCCpN2+XLDVN6fOQXfiYovR3qCmCjy
-	xjXNt1Z5bn6Kmig0SHfoDLrz72aoPuepV4RfkK6kJKPHG64MNEZlRqa+
-X-Gm-Gg: AYBFou0gc5ib8q4kZdgkDT8aCuako9JckHMe430BSp41n4vU0wnX2GyBZ7BGIcNOcAM
-	bYGXHOTakkCWESNubE9NlWtQ1F36ufVlN+h1pHzCGaXepPJ5fKZnKH/Sgu4yCJgG9pphba9scaC
-	9W83GW5VlZmLGctbEyOY/Crit7FG11uISBwfWTFCsl/KRWgLFR4x7LrMXYFS5UfESxUKtkLITvk
-	Q9ybHGGdQRy4KqGl1Uk1v+eJzjGc9/w195IPYhmNyJx+JLXNpcuNgFON6bq1FRy9m5XUWa/vOwR
-	LD5PyUEHdNwDtCv12alDIWaYP/dXets0m7bkT4OkJUcgzjIFWYSlano+9Vi+34XRpvq33fXCc2m
-	+N2xDEHlxzk9y1dgJ+xKW3bRmdo0/yDql9yMfzUgEdR2z0ZNK733M4p92e9UCdGJ2sgpt/oXzSu
-	K5qgwqoRj1SSF4ORhk4L7mt2uYn/ktHOzCjl4kIR8hO1U0RQRHSA8x553PIcPWx5xVsCJL5+IN8
-	E9P3OUF5CcJJ6iL/0DenZSkDcR4IdJ15o5rh15vy38=
-X-Received: by 2002:a05:6512:4011:b0:5bc:ddab:bbba with SMTP id 2adb3069b0e04-5bcde8bc77cmr1309405e87.38.1791604295488;
-        Fri, 09 Oct 2026 20:51:35 -0700 (PDT)
+        bh=miiJUjBn7YGDRW7Q8CA+7JpD/iOrNnpqOu38b4xVhnw=;
+        b=nRfm3xzL+XYNpG83VBw7L1U1D8IRmiJQ4OeXv9rtbhZVvDhqo1FcaUkPmXV2N8A/At
+         qlU+Wh9+K5Sbxyp4iWG8VGED246oBrAI4lmwLHusHL9yQlU1VILYBSgkqD5ex3QTnc4g
+         xCpcgfRe4wT7TpkMVCoVYKsktVpVFKysn9KU5r4T0582nkvsKmPGGkt6GLifTDWvRXV1
+         qnLXz37/DB8ACQ5fqZ6WEN2v4bXVd4MsjAz55hMQ09h2IeVzUA+HRCz6G5HMvAzgM0EH
+         mFF8VckjCrdISIEyERc6gCWBb39Dy57TTzNixzkem4s4ZGaLFeyQW8I1XewkGCFuiePH
+         07rw==
+X-Forwarded-Encrypted: i=1; AKwUvBzZFW8x8lXMgc2fxtodxA24aGurVjjPyqU7QcCFwylqdY/XmN0j8iOvw3M+CInh50ujrAQ7Ca4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLcg2FOdX/M0GfP63TtMCkCu8a0QlK0n8zA7wzhvfPKx5CFxzjj
+	0RaXenqmKDTQpwHd9WapZBG/O5rAeu3h7W/fUiiq3Kiwe8xDz2bsg1i/
+X-Gm-Gg: AYBFou3keh7vj1dB/AG2RkyKy16XtgGD0/7sv0cFFcNRjwStDqaEWetCYCZ6fBhGvIm
+	+IJHmBXh1vysT7aNLIZ+staGG1euHz7q4Igvnh5S3uD8brVosyzSaWTiL9Ix9Ihk0HBF7rKYoO4
+	H4l9lx8ypnvZ3R6sZXb4v7iCMkchUhrcTPIywUIOa8iSwpXzV+YbNiw8F8qDXayexTgkejujMaP
+	t0W9t1wqf35IPsoiIQVXkQAJ6Wwfxzw5xoj7nQhlmXU/u3RVEcOaBVZ6yHcEaO/9aNtRvbXU/Gg
+	OP0OBC49+S09yDoM3a5ftSBYPziqyY1fqNfkVc7h6vvKJVqfdGpqy8oY25ca3JccxLaxDUROKND
+	RngXm4JmFZiH1GX8SJpWc8J4gtBb14sZigo9aW9NnVTE3027pGzZL5PPoGTkMBuzEhHKpXiU3df
+	5QFFK1SCkj7Te+k9Rl0nKXlxPUEUPbqqZtKnrglyOlTwXgyS8S2SFnQEKKz+r5TSmRBch+zvpTa
+	QaZFRtUWex2VNPOnoVX2ib89159DPywRyz5ljrdmDM=
+X-Received: by 2002:ac2:4f0d:0:b0:5bc:c656:3b42 with SMTP id 2adb3069b0e04-5bcebbe1164mr29051e87.19.1791604297734;
+        Fri, 09 Oct 2026 20:51:37 -0700 (PDT)
 Received: from dau-home-pc.. ([95.139.131.22])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bcdde9c924sm1161984e87.36.2026.10.09.20.51.33
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bcdde9c924sm1161984e87.36.2026.10.09.20.51.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 20:51:33 -0700 (PDT)
+        Fri, 09 Oct 2026 20:51:36 -0700 (PDT)
 From: Anton Danilov <littlesmilingcloud@gmail.com>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -71,9 +71,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Remy D. Farley" <one-d-wide@protonmail.com>,
 	Rachel Menge <rachelmenge@linux.microsoft.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH 6.12.y 2/4] tools: ynl-gen: support limits using definitions
-Date: Sat, 10 Oct 2026 06:51:14 +0300
-Message-ID: <20261010035116.578385-3-littlesmilingcloud@gmail.com>
+Subject: [PATCH 6.12.y 3/4] tools: ynl: add scope qualifier for definitions
+Date: Sat, 10 Oct 2026 06:51:15 +0300
+Message-ID: <20261010035116.578385-4-littlesmilingcloud@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261010035116.578385-1-littlesmilingcloud@gmail.com>
 References: <2026060807-egging-prune-a3ae@gregkh>
@@ -88,100 +88,197 @@ Content-Transfer-Encoding: 8bit
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-commit fa796178e5eb0078a9a6c36f60fd6494cfc3f81d upstream.
+commit fbf5df34a4dbcd09d433dd4f0916bf9b2ddb16de upstream.
 
-Support using defines / constants in integer checks.
-Carolina will need this for rate API extensions.
+Using definitions in kernel policies is awkward right now.
+On one hand we want defines for max values and such.
+On the other we don't have a way of adding kernel-only defines.
+Adding unnecessary defines to uAPI is a bad idea, we won't
+be able to delete them. And when it comes to policy user
+space should just query it via the policy dump, not use
+hard coded defines.
 
-Reported-by: Carolina Jubran <cjubran@nvidia.com>
-Link: https://lore.kernel.org/1e886aaf-e1eb-4f1a-b7ef-f63b350a3320@nvidia.com
+Add a "scope" property to definitions, which will let us tell
+the codegen that a definition is for kernel use only. Support
+following values:
+  - uapi: render into the uAPI header (default, today's behavior)
+  - kernel: render to kernel header only
+  - user: same as kernel but for the user-side generated header
+
+Definitions may have a header property (definition is "external",
+provided by existing header). Extend the scope to headers, too.
+If definition has both scope and header properties we will only
+generate the includes in the right scope.
+
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20250203215510.1288728-2-kuba@kernel.org
+Link: https://patch.msgid.link/20260510192904.3987113-8-kuba@kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Anton: the generator is tools/net/ynl/ynl-gen-c.py in 6.12.y. ]
+[ Anton: the generator is tools/net/ynl/ynl-gen-c.py in 6.12.y and its
+  context differs, the hunks were applied by hand without changes.
+  6.12.y lacks commit 3ff5258b9781 ("tools: ynl-gen: allow overriding
+  name-prefix for constants"), so render_uapi() ignores name-prefix of
+  constants while render_scoped_consts() honours it, as upstream does.
+  No spec in 6.12.y has a constant with name-prefix. ]
 Assisted-by: LLM
 Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
 ---
- Documentation/netlink/genetlink-c.yaml      | 5 +++--
- Documentation/netlink/genetlink-legacy.yaml | 5 +++--
- Documentation/netlink/genetlink.yaml        | 5 +++--
- tools/net/ynl/ynl-gen-c.py                  | 5 ++++-
- 4 files changed, 13 insertions(+), 7 deletions(-)
+ Documentation/netlink/genetlink-c.yaml      |  9 ++++++
+ Documentation/netlink/genetlink-legacy.yaml |  9 ++++++
+ Documentation/netlink/genetlink.yaml        |  9 ++++++
+ Documentation/netlink/netlink-raw.yaml      |  9 ++++++
+ tools/net/ynl/ynl-gen-c.py                  | 31 +++++++++++++++++++--
+ 5 files changed, 65 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/netlink/genetlink-c.yaml b/Documentation/netlink/genetlink-c.yaml
-index 4f803eaac6d8..12c60a6d88a7 100644
+index 12c60a6d88a7..228b6bacd3d0 100644
 --- a/Documentation/netlink/genetlink-c.yaml
 +++ b/Documentation/netlink/genetlink-c.yaml
-@@ -14,9 +14,10 @@ $defs:
-     pattern: ^[0-9A-Za-z_-]+( - 1)?$
-     minimum: 0
-   len-or-limit:
--    # literal int or limit based on fixed-width type e.g. u8-min, u16-max, etc.
-+    # literal int, const name, or limit based on fixed-width type
-+    # e.g. u8-min, u16-max, etc.
-     type: [ string, integer ]
--    pattern: ^[su](8|16|32|64)-(min|max)$
-+    pattern: ^[0-9A-Za-z_-]+$
-     minimum: 0
- 
- # Schema for specs
+@@ -69,6 +69,15 @@ properties:
+         header:
+           description: For C-compatible languages, header which already defines this value.
+           type: string
++        scope:
++          description: |
++            Visibility of this definition. "uapi" (default) renders into
++            the uAPI header, "kernel" renders into the kernel-side
++            generated header, "user" renders into the user-side
++            generated header. When combined with `header:`, the
++            definition is not rendered, and the named header is
++            included only by code matching the scope.
++          enum: [ uapi, kernel, user ]
+         type:
+           enum: [ const, enum, flags ]
+         doc:
 diff --git a/Documentation/netlink/genetlink-legacy.yaml b/Documentation/netlink/genetlink-legacy.yaml
-index 8db0e22fa72c..d2ee1199bdf2 100644
+index d2ee1199bdf2..c9f1b8120912 100644
 --- a/Documentation/netlink/genetlink-legacy.yaml
 +++ b/Documentation/netlink/genetlink-legacy.yaml
-@@ -14,9 +14,10 @@ $defs:
-     pattern: ^[0-9A-Za-z_-]+( - 1)?$
-     minimum: 0
-   len-or-limit:
--    # literal int or limit based on fixed-width type e.g. u8-min, u16-max, etc.
-+    # literal int, const name, or limit based on fixed-width type
-+    # e.g. u8-min, u16-max, etc.
-     type: [ string, integer ]
--    pattern: ^[su](8|16|32|64)-(min|max)$
-+    pattern: ^[0-9A-Za-z_-]+$
-     minimum: 0
- 
- # Schema for specs
+@@ -80,6 +80,15 @@ properties:
+         header:
+           description: For C-compatible languages, header which already defines this value.
+           type: string
++        scope:
++          description: |
++            Visibility of this definition. "uapi" (default) renders into
++            the uAPI header, "kernel" renders into the kernel-side
++            generated header, "user" renders into the user-side
++            generated header. When combined with `header:`, the
++            definition is not rendered, and the named header is
++            included only by code matching the scope.
++          enum: [ uapi, kernel, user ]
+         type:
+           enum: [ const, enum, flags, struct ] # Trim
+         doc:
 diff --git a/Documentation/netlink/genetlink.yaml b/Documentation/netlink/genetlink.yaml
-index b036227b46f1..e43e50dba2e4 100644
+index e43e50dba2e4..179e6000c0a2 100644
 --- a/Documentation/netlink/genetlink.yaml
 +++ b/Documentation/netlink/genetlink.yaml
-@@ -14,9 +14,10 @@ $defs:
-     pattern: ^[0-9A-Za-z_-]+( - 1)?$
-     minimum: 0
-   len-or-limit:
--    # literal int or limit based on fixed-width type e.g. u8-min, u16-max, etc.
-+    # literal int, const name, or limit based on fixed-width type
-+    # e.g. u8-min, u16-max, etc.
-     type: [ string, integer ]
--    pattern: ^[su](8|16|32|64)-(min|max)$
-+    pattern: ^[0-9A-Za-z_-]+$
-     minimum: 0
- 
- # Schema for specs
+@@ -52,6 +52,15 @@ properties:
+         header:
+           description: For C-compatible languages, header which already defines this value.
+           type: string
++        scope:
++          description: |
++            Visibility of this definition. "uapi" (default) renders into
++            the uAPI header, "kernel" renders into the kernel-side
++            generated header, "user" renders into the user-side
++            generated header. When combined with `header:`, the
++            definition is not rendered, and the named header is
++            included only by code matching the scope.
++          enum: [ uapi, kernel, user ]
+         type:
+           enum: [ const, enum, flags ]
+         doc:
+diff --git a/Documentation/netlink/netlink-raw.yaml b/Documentation/netlink/netlink-raw.yaml
+index 914aa1c0a273..d8ae7f7365b0 100644
+--- a/Documentation/netlink/netlink-raw.yaml
++++ b/Documentation/netlink/netlink-raw.yaml
+@@ -75,6 +75,15 @@ properties:
+         header:
+           description: For C-compatible languages, header which already defines this value.
+           type: string
++        scope:
++          description: |
++            Visibility of this definition. "uapi" (default) renders into
++            the uAPI header, "kernel" renders into the kernel-side
++            generated header, "user" renders into the user-side
++            generated header. When combined with `header:`, the
++            definition is not rendered, and the named header is
++            included only by code matching the scope.
++          enum: [ uapi, kernel, user ]
+         type:
+           enum: [ const, enum, flags, struct ] # Trim
+         doc:
 diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
-index 00c05791a669..7e6b38ada78f 100755
+index 7e6b38ada78f..07786d7e9b0b 100755
 --- a/tools/net/ynl/ynl-gen-c.py
 +++ b/tools/net/ynl/ynl-gen-c.py
-@@ -83,7 +83,7 @@ class Type(SpecAttr):
-         if isinstance(value, int):
-             return value
-         if value in self.family.consts:
--            raise Exception("Resolving family constants not implemented, yet")
-+            return self.family.consts[value]["value"]
-         return limit_to_number(value)
+@@ -2432,6 +2432,8 @@ def render_uapi(family, cw):
+     for const in family['definitions']:
+         if const.get('header'):
+             continue
++        if const.get('scope', 'uapi') != 'uapi':
++            continue
  
-     def get_limit_str(self, limit, default=None, suffix=''):
-@@ -93,6 +93,9 @@ class Type(SpecAttr):
-         if isinstance(value, int):
-             return str(value) + suffix
-         if value in self.family.consts:
-+            const = self.family.consts[value]
-+            if const.get('header'):
-+                return c_upper(value)
-             return c_upper(f"{self.family['name']}-{value}")
-         return c_upper(value)
+         if const['type'] != 'const':
+             cw.writes_defines(defines)
+@@ -2565,6 +2567,25 @@ def render_uapi(family, cw):
+     cw.p(f'#endif /* {hdr_prot} */')
  
+ 
++def render_scoped_consts(family, cw, scope):
++    defines = []
++    for const in family['definitions']:
++        if const['type'] != 'const':
++            continue
++        if const.get('header'):
++            continue
++        if const.get('scope') != scope:
++            continue
++        name_pfx = const.get('name-prefix', f"{family.ident_name}-")
++        defines.append([
++            c_upper(family.get('c-define-name',
++                               f"{name_pfx}{const['name']}")),
++            const['value']])
++    if defines:
++        cw.writes_defines(defines)
++        cw.nl()
++
++
+ def _render_user_ntf_entry(ri, op):
+     ri.cw.block_start(line=f"[{op.enum_name}] = ")
+     ri.cw.p(f".alloc_sz\t= sizeof({type_name(ri, 'event')}),")
+@@ -2718,8 +2739,12 @@ def main():
+             cw.p('#include "ynl.h"')
+         headers = [parsed.uapi_header]
+     for definition in parsed['definitions']:
+-        if 'header' in definition:
+-            headers.append(definition['header'])
++        if 'header' not in definition:
++            continue
++        scope = definition.get('scope', 'uapi')
++        if scope != 'uapi' and scope != args.mode:
++            continue
++        headers.append(definition['header'])
+     for one in headers:
+         cw.p(f"#include <{one}>")
+     cw.nl()
+@@ -2731,6 +2756,7 @@ def main():
+             for one in args.user_header:
+                 cw.p(f'#include "{one}"')
+         else:
++            render_scoped_consts(parsed, cw, 'user')
+             cw.p('struct ynl_sock;')
+             cw.nl()
+             render_user_family(parsed, cw, True)
+@@ -2738,6 +2764,7 @@ def main():
+ 
+     if args.mode == "kernel":
+         if args.header:
++            render_scoped_consts(parsed, cw, 'kernel')
+             for _, struct in sorted(parsed.pure_nested_structs.items()):
+                 if struct.request:
+                     cw.p('/* Common nested types */')
 -- 
 2.47.3
 
