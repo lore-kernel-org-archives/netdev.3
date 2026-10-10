@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B42C41685B;
-	Sat, 10 Oct 2026 05:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4728E370D6E
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 05:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791610999; cv=none; b=K3gw6PcdcZwy91qVWS4+Q8pPosp4tvGkgW6BpKBxOolcrWp8IvhEebFWiHsD988J4ScCAYqyWe6cajhw91d5e0K74DyIzDt+GXEXgC/kR26Jl5TKvQC4RZ8SiWr3hdGLcE6TdUc2FcU8wxNAxP3AToKPHu+9gmbRU+geN/6nTIU=
+	t=1791611578; cv=none; b=PGwt15lW9w+RrT07QhECgNMu5VAijmFiYRc5EOMhcR9T8/DOj2IrPvQNlg831zbWZdayB4b+5gFgHbz2lDqy2L9W043lucJq0jzuvDjYqMnlrzhGxEUOEfB98Gn75vR3Q6nn1cdp0o4EDniH4ftFAM+srmFCPxItyNHs3nrHjXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791610999; c=relaxed/simple;
-	bh=8BhOSnSMCRkF3FQEx0oTAwy5ksfS2nVozJ7vYVBCq3g=;
+	s=arc-20240116; t=1791611578; c=relaxed/simple;
+	bh=LWlDKF50WQzp/8c5IiMmc5IqPdNFpeMIxfZ1jFvg9O0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Jz7hsAti2lmQE66Bvgzd9/lcAnvuxZUV3uyjG2P99hvjCQ84bcwDFnBWTwvIxNt9mzsMpfdE4Hz10Va53htuY9jB0ST5ld8Vpq5idKWi3qqD1HOJVQtI47/3A7cD7vZzW3V6NVHztCw5lut6QHEdqjpiD5uww2/OsTl5i5/96gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhIQZOtJ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=lEvFGw7Du35lpRNz+tHtGlyWBwPFodjY2Mqa70pGCKI0cIq2vospQGa2xBCEvyEe9mrnHXfL6J/10kKMuWTvtqxff+4Lmk/rUk3WQxMR8vVU+syjfC8g7QLfUSut17USRgo0whABeP4flh6HG8SznOrVZ77LtiqTGgSnXzLwSNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOgkK5i7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhIQZOtJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251A71F00898;
-	Sat, 10 Oct 2026 05:43:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOgkK5i7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034401F000FF;
+	Sat, 10 Oct 2026 05:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791610997;
-	bh=bC/XxRo9bENL0ZUgs308rvTZG0rWTKpDwqPA9XVdEYs=;
+	s=k20260515; t=1791611576;
+	bh=0K6hmcX6NNTeJvar8oL2JSoi1NMF+DBugT04LsGaiE8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BhIQZOtJYPWK+/qTRAjRDFeuDuVUxIVxcg8Cdyv5w+xBIbozaihQ4+yZhBAlR/1yJ
-	 Qe3ssAbZe1NkxcR111lNSSeiCA0niELDE/08YISAcncrvt/7z01xD1hz3hf96xDA1o
-	 5Ougvz49K6FMaLIpNoc8D8sjlJyn8FYb3oSp3anERr1K329TCNxU2Vy7cIF138dYtC
-	 w0PDcRzK9Ajp3ATbD21qHHoUZAlAZuxFD+JpB2Z3H5Y65+8n/VmcTAWWMq0Zf8bzoI
-	 m2XTgs8cJkDmfqLvib8W3kdsnZ8VtbPJKxxXjMUJsftdUj+Yk163731cL/3pzfLDCK
-	 jOIa9gnoFlv0w==
+	b=QOgkK5i7ILAQ053kTre8ejyvMSVGK1O7XQgMyb+cm5sobOwgrZMXtmUlfSLL8wV37
+	 /Z4YzO6BGNAbES5VdPXsNWpKcopBeHhgbHwDUPmK77YpHcPdLygpD5dRTEkmn58X6b
+	 dwWgZptPE9rxco1KIFyQlrFI01B9km16zhub2BISMAe9xlx9QfLAx0iEYQEOw3F9BT
+	 KXEuxKlX/Qtov7N0FmwOsnr6S7Bx+dXr4wFY+w9Z0uUO1GhkApTEWKx5cJwJHMPL6v
+	 KoCi5a2M5+xXfQWdqToecAE9gVD+lmSMuBuMuwDqA4GOSOipT1tvsQPKsFGdbmdQVS
+	 MJAYRODVMAQrg==
 Subject:
- Re: [PATCH net v3 3/3] ipv6: initialize temporary ifaddr before publication
+ Re: [PATCH net] net/sched: act_api: take tcfa_lock for hardware stats updates
 From: netdev-bot+sashiko@kernel.org
-To: 4ncienth@gmail.com
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+To: acassen@corp.free.fr
+Cc: jhs@mojatatu.com, jiri@resnulli.us, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 05:43:16 +0000
-Message-ID: <179161099665.434549.5858601179492551889@kernel.org>
-In-Reply-To: <20261009054042.272944-4-4ncienth@gmail.com>
-References: <20261009054042.272944-4-4ncienth@gmail.com>
-X-sashiko-severity: Medium
+ vladbu@nvidia.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
+ rostedt@goodmis.org, netdev@vger.kernel.org
+Date: Sat, 10 Oct 2026 05:52:55 +0000
+Message-ID: <179161157546.434549.9093736644956306615@kernel.org>
+In-Reply-To: <20261009051703.3615846-1-acassen@corp.free.fr>
+References: <20261009051703.3615846-1-acassen@corp.free.fr>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,103 +59,109 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch makes the temporary ifaddr visible to
-  manage_tempaddrs() before ipv6_create_tempaddr() has finished setting…
+- [High] The per-CPU branch of tcf_action_update_stats()
+  (net/sched/act_api.c) is still racy after this patch.
 
 --
 
-ipv6: initialize temporary ifaddr before publication
+net/sched: act_api: take tcfa_lock for hardware stats updates
 
-This patch passes the public ifaddr to ipv6_add_addr() through
-ifa6_config, so ift->ifpub is set before the temporary address goes on
-the hash and per-device lists. That closes a window where
-addrconf_ifdown() could remove the temporary address while ifpub was
-still NULL and leak the public ifaddr reference.
+This commit takes tcfa_lock with spin_lock_bh() around hardware stats
+updates in tcf_action_update_stats() for actions without per-CPU stats.
+It also moves the preempt_disable()/preempt_enable() pair from the two
+callers into the per-CPU branch of tcf_action_update_stats(), so that
+PREEMPT_RT does not take a spinlock_t with preemption disabled.
 
-Link: https://lore.kernel.org/r/20261007164548.GA1153540@shredder
-
-> diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-> index 5a7e7129d4346..699d058f5c786 100644
-> --- a/net/ipv6/addrconf.c
-> +++ b/net/ipv6/addrconf.c
-> @@ -1159,6 +1159,7 @@ ipv6_add_addr(struct inet6_dev *idev, struct ifa6_config *cfg,
->  	ifa->tokenized = false;
->  
->  	ifa->rt = f6i;
-> +	ifa->ifpub = cfg->ifpub;
->  
->  	ifa->idev = idev;
->  	in6_dev_hold(idev);
+> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> index e45a63be397ce..f6f8cd0a5af64 100644
+> --- a/net/sched/act_api.c
+> +++ b/net/sched/act_api.c
 
 [ ... ]
 
-> @@ -1504,7 +1506,6 @@ static int ipv6_create_tempaddr(struct inet6_ifaddr *ifp, bool block)
->  	}
+> @@ -1588,6 +1586,7 @@ void tcf_action_update_stats(struct tc_action *a, u64 bytes, u64 packets,
+>  			     u64 drops, bool hw)
+>  {
+>  	if (a->cpu_bstats) {
+> +		preempt_disable();
+>  		_bstats_update(this_cpu_ptr(a->cpu_bstats), bytes, packets);
 >  
->  	spin_lock_bh(&ift->lock);
-> -	ift->ifpub = ifp;
->  	ift->cstamp = now;
->  	ift->tstamp = tmp_tstamp;
->  	spin_unlock_bh(&ift->lock);
+>  		this_cpu_add(a->cpu_qstats->drops, drops);
+> @@ -1595,13 +1594,16 @@ void tcf_action_update_stats(struct tc_action *a, u64 bytes, u64 packets,
+>  		if (hw)
+>  			_bstats_update(this_cpu_ptr(a->cpu_bstats_hw),
+>  				       bytes, packets);
+> +		preempt_enable();
+>  		return;
+>  	}
 
-[Severity: Medium]
+[Severity: High]
+The commit message says pinning the CPU is enough for the per-CPU path. Is
+it, given that BH stays enabled here?
 
-Now that ifpub is set before publication, can manage_tempaddrs() find the
-new ift before these cstamp and tstamp stores run?
+This per-CPU branch is the default, used unless
+TCA_ACT_FLAGS_NO_PERCPU_STATS is set. The hardware stats writer reaches it
+from process context:
 
-Before this patch, ifpub stayed NULL until this ift->lock section.
-manage_tempaddrs() skips entries that don't match ifpub, so it ignored the
-new address until all three fields were final:
+tcf_dump_walker()  (holds mutex idrinfo->lock)
+  tcf_action_update_hw_stats()
+    tcf_action_stats_update()
+      tcf_gact_stats_update()
+        tcf_action_update_stats()
 
-net/ipv6/addrconf.c:manage_tempaddrs() {
+fl_hw_update_stats() / mall_stats_hw_filter()
+  tcf_exts_hw_stats_update()
     ...
-	list_for_each_entry(ift, &idev->tempaddr_list, tmp_list) {
-		...
-		if (ifp != ift->ifpub)
-			continue;
-    ...
-		ift->valid_lft = valid_lft;
-		ift->prefered_lft = prefered_lft;
-		ift->tstamp = now;
-    ...
-}
+      tcf_action_update_stats()
 
-There is now a window between write_unlock_bh(&idev->lock) in
-ipv6_add_addr() and the spin_lock_bh(&ift->lock) above. The NETDEV_UP
-inet6addr notifier chain also runs inside this window.
+A softirq on the same CPU can run while this writer is between
+u64_stats_update_begin() and u64_stats_update_end() in _bstats_update().
+That softirq can write the same per-CPU syncp from the software datapath:
 
-The RA softirq path does not hold RTNL. It doesn't seem to be serialized
-against ipv6_create_tempaddr() callers such as addrconf_verify_rtnl() or
-addrconf_dad_stop():
+tcf_gact_act()
+  tcf_action_update_bstats()
+    bstats_update(this_cpu_ptr(a->cpu_bstats), skb)
 
-CPU1
-ipv6_create_tempaddr(ifp)
-  tmp_tstamp = ifp->tstamp;
-  ipv6_add_addr()
-    ift published with ift->ifpub == ifp
+It can also read it from the rate estimator:
 
-CPU2 (RA softirq)
-addrconf_prefix_rcv_add_addr()
-  WRITE_ONCE(ifp->tstamp, now);
-  manage_tempaddrs(in6_dev, ifp, valid_lft, prefered_lft, create, now)
-    ift->valid_lft = valid_lft;
-    ift->prefered_lft = prefered_lft;
-    ift->tstamp = now;
+est_timer()
+  est_fetch_counters()
+    gnet_stats_add_basic()
+      gnet_stats_add_basic_cpu()
+        u64_stats_fetch_begin(&bcpu->syncp)
 
-CPU1
-  ift->cstamp = now;
-  ift->tstamp = tmp_tstamp;
+On 32-bit, u64_stats_add() is a plain p->v += val, and
+__u64_stats_update_begin() only does preempt_disable_nested() plus
+write_seqcount_begin(). Neither of those keeps BH out.
 
-Would ift then have lifetimes computed relative to CPU2's now, but a
-tstamp taken from the older tmp_tstamp?
+Could a softirq bstats_update() that lands inside the interrupted
+read-modify-write then be overwritten, losing updates?
 
-If so, the temporary address loses (now - tmp_tstamp) seconds of preferred
-and valid lifetime. addrconf_verify() would then deprecate, regenerate or
-expire it early.
+And if est_timer fires on this CPU while the writer holds the seqcount
+odd, would read_seqcount_begin() spin forever? The interrupted writer
+can't resume until the softirq returns. The estimator takes tcfa_lock
+through e->stats_lock in est_fetch_counters(), but the per-CPU writer
+never takes that lock, so it doesn't help here.
 
-Could cstamp and tstamp also be set before publication? One way is to
-pass the timestamp through ifa6_config, or to set it in ipv6_add_addr()
-next to ifpub. Then nothing in ift is written after it becomes reachable.
+These look like the same symptoms the commit message describes ("lose
+counter updates", "seqcount odd and make its readers spin forever"). They
+seem to be fixed only for the non-per-CPU branch.
+
+The race was already present through the callers' preempt_disable()
+before this patch. Since this hunk rewrites that block, would
+local_bh_disable()/local_bh_enable() work instead of
+preempt_disable()/preempt_enable() here? That would also keep the task
+on the current CPU and is safe on PREEMPT_RT.
+
+>  
+> +	spin_lock_bh(&a->tcfa_lock);
+>  	_bstats_update(&a->tcfa_bstats, bytes, packets);
+>  	atomic_add(drops, &a->tcfa_drops);
+>  	if (hw)
+>  		_bstats_update(&a->tcfa_bstats_hw, bytes, packets);
+> +	spin_unlock_bh(&a->tcfa_lock);
+>  }
+>  EXPORT_SYMBOL(tcf_action_update_stats);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009054042.272944-1-4ncienth%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009051703.3615846-1-acassen%40corp.free.fr
