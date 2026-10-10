@@ -1,49 +1,49 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A837941169F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5A34189DD
 	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 10:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791629957; cv=none; b=AvqNPpnc+Hw5X52gV+mQx7gsMGdMMW/4PfbGY0Sfj1V9pYVk4J+pXcB3nWWBqyJ7eIMegdzdfeu34cZbVgEWNcMsWi/XeHJbDsHZ7g/Qq9h2EMEfknJk/lrt3WI0IL0NKMJ+5Jky+FQcmci2NJhJ+mQXXQGkhaFP7GdCKZCpb1c=
+	t=1791629958; cv=none; b=tHmNuOSsqUZjQIfKxoBEaol3hVbse2WJzdTVIsrPbfOp1P8hmHrhPW0C2REqSF59y+2j40nUE8fXarkGJBJrW/M0ArdeouRmVgSsSP4e8mlvHkdb0Y+mV7q2cCWjTX/996ExKn7qMAV5uggndHum+6FLxA/t9Dwb5tbCcm0SF14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791629957; c=relaxed/simple;
-	bh=qqF/9hNJkZvz5igwPUH17BMZnyUc6DBPLiCg9tn2gMs=;
+	s=arc-20240116; t=1791629958; c=relaxed/simple;
+	bh=8rU4lcGem9r8npg9voyJwgRjQfcdPrmgPfj8qzzKnnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoItPhRuYN8kDJA9J2gLcKTdyD0ZxALwD0OgXacHn32sRlanbG2sFachirGLTIjT6FspgnIPZrX2MEgIazSfXehzX0eDenTiJLkmwxlVrSIZ10svWiqUAUkIqwZeiGYjJB9D0yYszvpnNM6La8KHI3mcsCY8ZSkpmn48bnMWCLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version; b=SR8g61D5QPFvhACKlT83KA7JsfcKe6APYfEbYtnCOk0lgLthX+iXxts9Ft1g7NSlqDcdadEJuUIqDshE7NoY0HIXv5laCsjCOCa7MJR5+Ma1LnFuvSruCxYrUjfgTkCGAkes7gepHGfznaVaTYoMU88ipcTEQhsi/DcFDl4X94U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48870973bddso283318f8f.1
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48b001cd92bso319253f8f.2
         for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:59:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1791629952; x=1792234752;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RQBX2EsGilW7uIgdk0tYqFZ4ZqmuLdnOK0NA9yKXMRg=;
-        b=zvTTYAZjQGEhTza5w40A6Q22+g9tDo4SbPwEDsWXhOkamaiWmsyn3TCuTzok4kL543
-         h0F/q7yJ7B4iLqY4TI68X25ot/QJDTrsu3qnQueFC70C8x2ZlLceXqQvDPuxPC3jelG3
-         boVKLYAr930nm7EgXahk95l629KqW8gh7MtwdIKUvhHEjXVlPW22Ge7XxFJRNeNyMexx
-         tb+SoPgxGrwjDGl6Lq2NNrLGXponAStpe0QnVwpaQDRzQi/7DctFD20ZoLCyG1+kCC15
-         Azgaw+l/z9UapSzZp2tj2Th0isHfu4TKL3C/Oe1xP890kTFbFPl1vRNNpp30XR+0gIuZ
-         nwPQ==
-X-Gm-Message-State: AFq9FYJg6WGyH3ryrAvAXsWG7iENwvgIWKlSrEa+CRZo3GAGaT2GLPXZ
-	kF0nI7IEyyeeLIsMt2jCVAHi+N7kA/k1Y5A2NMfzhW9q0XXVfS2CgPjp
-X-Gm-Gg: AYBFou05Re/JuOPntlVRpBvYffybPxlRpZu4TlZO2zn2ViWRTiUViQRf3qQXrwfD+bD
-	Sy6pTF3Xyfc8+d6N5kNyhiuAXO7/RqxD21xLQe0RfNxifzMDXQygZBNcv7IrYUrvAJM56MAl9Op
-	5Z6zqez6MwfoP9TAr2JgYa9YjXse1sKhOxVMTSG+KiMcEwZjMM1j1pwwyrnO4R9ZqJCO8YZaipZ
-	4/IKqx5Q1MY9PSAEgioWZECeiUw/V29FvNHGkwr2Kmjh9TT8W15NKRcNe7cfrx5FfNl5MvYgNo1
-	YEGigashitH0at3uk0dhB2wZG1C6xkGY4khxXaLZQfecwbhJ4rZaQjP1k1lzB0yR97WAmsi+vXS
-	I8VcMFCRFOXsksuWaI7cf5/+aj9hBqbBaaWnMztdzBBjjvHP1qPugH8m2WOO2/kJNR5YncyQ9Lx
-	Jk7C7IO4i+Yxp9ClxrwGlERjmCaKvxgbrqfzcrb91gw4stwNLsrMj9H58FY6+5L0Zg3RvUL8juq
-	/xjDDOgMoMAQVK3Pk5R9tllShYZb4o4wxs=
-X-Received: by 2002:a05:6000:2306:b0:488:8347:a110 with SMTP id ffacd0b85a97d-48dba9e6163mr7697023f8f.7.1791629951651;
-        Sat, 10 Oct 2026 03:59:11 -0700 (PDT)
+        bh=pdKVlCj4REX0NWkQYtOCVGuCUyIjtnl9DbGH17gD2u8=;
+        b=IA05MBW2C9Zax/oXcRUvBZTJmDdG7feGAndb76aorcItoSX+90FMEc//iZD/wTJQjt
+         b1+wALcShvd9x83b+qXTztzBHJ4zSUZhkRW8orxQxAMTrdak8dAHJZqjItXcw58ojZ7g
+         TImozTjjjZXSl8jC46HOlTM6bktWS0gVzlB4HKo1KIooHp6L4eQmqDHHmacdCvNvJxDi
+         Xu8YudFOZkYPG3/T1Ii1xgnc9VQgju7SY8lmkKXReU+70du5h4Ha6cAQtzA6tppjPLf0
+         Iao2IsPZ5wkE9CTXf4lo22AqE/02cif0Z+oz4gW6/sXQRFxY+1vsVQfR0bNNM+GNRlWe
+         1ijQ==
+X-Gm-Message-State: AFq9FYIE8Wj8yqJCiMhmy648cZ1HkvrQTOmMS9Y1oDBW28FnrtKAViyg
+	uEUQBjD6/1k0H0baKCgeR/UC+RTMEqqLOPxisV7Yy+8LptDjJjvTvg+q
+X-Gm-Gg: AYBFou084WjBUI2CAJoqEYc6JcPlje2OtIvhiEB9BfdYHK0twvjDeioGci0/QMDEbYg
+	BtVnwChL9U1XfPLoF9RsmJN16O2dcM/Whw0+RPbPp6em8Cndg61blo6oTDTUho6fDxg60ZtAspk
+	nJZPSOUEnHChZV5FBvlGWkzeidbQ0LlcHeXgnHTZsMWKsXhXPU3RZ5i4FsW28fgyF519+nh1rXi
+	2ea6peGB/5ky4Vkm2/UA4YodNOdy/ExoyFQlOxoj0sC3rjI5uuOXGJMknAi3kCUyJ+twzmxZphx
+	MDncvevsOLnOAh+PhFtAK9uPL8/Yr4AI5kkeFd9d697ejkFdziTMvny7KeQZFmVajrzhcRhoRIB
+	h8h8bctWEwaxHZ9lLglm0lGe9cjX886TiFp3r+TbNwe2bXz0rabbySKa3OiuJOUnZj+PceToSIZ
+	8Mv67+PJb5Cb1fSE+QRtUpdx8FeMxSq653y5lOvrypTBMh4B6fIelF4A3ONEwGTAnMYGBIoFYfr
+	cFbd7R6AvqON7ifIJ6g+HdmfthMig7RTcQ=
+X-Received: by 2002:a05:6000:2dc5:b0:48b:2a1:dfe3 with SMTP id ffacd0b85a97d-48dbace3b32mr6883381f8f.41.1791629952539;
+        Sat, 10 Oct 2026 03:59:12 -0700 (PDT)
 Received: from threads.localdomain ([84.70.176.222])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9ae17e9sm8709526f8f.57.2026.10.10.03.59.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9ae17e9sm8709526f8f.57.2026.10.10.03.59.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 03:59:10 -0700 (PDT)
+        Sat, 10 Oct 2026 03:59:12 -0700 (PDT)
 From: Lucas Tanure <tanure@linux.com>
 To: xianwei.zhao@amlogic.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -66,9 +66,9 @@ Cc: netdev@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-amlogic@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 7/8] arm64: dts: amlogic: t7: khadas-vim4: enable the ethernet port
-Date: Sat, 10 Oct 2026 11:58:59 +0100
-Message-ID: <20261010105900.247342-8-tanure@linux.com>
+Subject: [PATCH v3 8/8] dt-bindings: net: ethernet-controller: tabulate who adds the RGMII delays
+Date: Sat, 10 Oct 2026 11:59:00 +0100
+Message-ID: <20261010105900.247342-9-tanure@linux.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261010105900.247342-1-tanure@linux.com>
 References: <20261010105900.247342-1-tanure@linux.com>
@@ -80,63 +80,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The board carries a Realtek RTL8211F gigabit PHY on the external
-management bus, connected to the MAC over RGMII.
+The informative section explains in prose how phy-mode, the delay
+properties in the MAC node and the mode handed to the PHY fit together,
+and says itself that developers often get this wrong. A reader has to
+work through several paragraphs before answering the one question they
+usually have: for this phy-mode and these properties, which part adds
+which delay.
 
-Enable the controller, hand it the ethernet pins and point it at the
-PHY. RGMII needs a delay on each of its two clocks, and on this board
-both come from inside the chips, not from the board traces. The PHY
-adds the one on receive. Its transmit delay does not work here, so the
-controller adds that one.
-
-The PHY interrupt output is wired to GPIOH_6, so link changes are
-reported instead of polled. The PHY reset is an RC network on the
-board, not a SoC pin, so there is no reset line to describe.
+Add a table that answers it at a glance, with one row for every
+combination the properties allow.
 
 Assisted-by: LLM
 Signed-off-by: Lucas Tanure <tanure@linux.com>
 ---
- .../amlogic/amlogic-t7-a311d2-khadas-vim4.dts | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ .../bindings/net/ethernet-controller.yaml      | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-index 0fa83362b417..c18bde02ac40 100644
---- a/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-+++ b/arch/arm64/boot/dts/amlogic/amlogic-t7-a311d2-khadas-vim4.dts
-@@ -14,6 +14,7 @@ / {
- 	compatible = "khadas,vim4", "amlogic,a311d2", "amlogic,t7";
- 
- 	aliases {
-+		ethernet0 = &ethmac;
- 		serial0 = &uart_a;
- 		mmc0 = &sd_emmc_c;
- 		mmc1 = &sd_emmc_b;
-@@ -256,6 +257,25 @@ xtal: xtal-clk {
- 	};
- };
- 
-+&ethmac {
-+	status = "okay";
-+	pinctrl-0 = <&eth_pins>, <&eth_rgmii_pins>;
-+	pinctrl-names = "default";
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&external_phy>;
-+	tx-internal-delay-ps = <2000>;
-+};
-+
-+&ext_mdio {
-+	external_phy: ethernet-phy@0 {
-+		/* Realtek RTL8211FD-CG */
-+		reg = <0>;
-+
-+		interrupt-parent = <&gpio_intc>;
-+		interrupts = <GPIOH_6 IRQ_TYPE_LEVEL_LOW>;
-+	};
-+};
-+
- &i2c_m_ao_a {
- 	status = "okay";
- 	pinctrl-0 = <&i2c0_ao_d_pins>;
+diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+index 1bafd687dcb1..bba27a9feb61 100644
+--- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
++++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+@@ -339,6 +339,24 @@ additionalProperties: true
+ # has added. Failure to remove the delay will result in a
+ # non-functioning link.
+ #
++# Put together, with the two properties in the MAC node, this is who
++# adds each delay:
++#
++#   phy-mode    tx-internal-delay-ps  rx-internal-delay-ps  TX delay    RX delay
++#   rgmii       -                     -                     PCB trace   PCB trace
++#   rgmii-id    -                     -                     PHY         PHY
++#   rgmii-id    present               -                     MAC         PHY
++#   rgmii-id    -                     present               PHY         MAC
++#   rgmii-id    present               present               MAC         MAC
++#   rgmii-txid  -                     -                     PHY         PCB trace
++#   rgmii-txid  present               -                     MAC         PCB trace
++#   rgmii-rxid  -                     -                     PCB trace   PHY
++#   rgmii-rxid  -                     present               PCB trace   MAC
++#
++# A property for a clock the PCB already delays is not in this table.
++# It is either the fine tuning described next, or a mistake the MAC
++# should report as a fatal error.
++#
+ # Sometimes there is a need to fine tune the delays. Often the MAC or
+ # PHY can perform this fine tuning. In the MAC node, the Device Tree
+ # properties 'rx-internal-delay-ps' and 'tx-internal-delay-ps' should
 -- 
 2.56.0
 
