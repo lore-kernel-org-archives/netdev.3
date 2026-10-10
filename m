@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D01037269C;
-	Sat, 10 Oct 2026 19:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE7A4BD7B6;
+	Sat, 10 Oct 2026 19:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791661220; cv=none; b=gccYP4ewdM72tslMhhWDC645z0jHR6vMZW4QQJvFtys279vMMOqtpHS7ezglZ5F0yJ8a8YdwKGyozPAWpjzAC0yhy6MTiQsXC9PPFii3zltacNsw1ckxViXqtP+Tl7Bw+xYXXrIsq4gnjarc1kxGMtN95XxVwNxL0CxH5nBlZO0=
+	t=1791661224; cv=none; b=rLPbCq9Jy8BtJV8GhXXMs3yuDRekDG4NA8A2DNTOaQa48lNQB8CjL0RiM1nAsuJB2uMWyWDb8oLbc9OvlCd1Dwyxl7nPwCOf3x/3AtTQedZyDWX+oc1QcmjXeCnyeYomGawPnnFKH62fD7MHLbB+Q6OzTWlKPG4avDgxAfttfBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791661220; c=relaxed/simple;
-	bh=O+Bu2puz/WXmvltTHOg86j1NW45KGnY8AMtphOlhmbg=;
+	s=arc-20240116; t=1791661224; c=relaxed/simple;
+	bh=8jrsGy6SWYYVjRXyTGb47a0v2IVm7BzeOKYuaU6QHz4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iPZgl0DxW9aOam51/SDOfBdMJPjkkID+JTUeEmNrQesQjgS59kZlylVMsXAYsy9JcDJA35BqyghYpxvEzRAahePP/6oso2xXHbbT0HhsllaZqBGr444ZHhn8STyrgfgwyMlEXDYhEUxYyM0WNdNAuarWyQbh22UzH+rlEnP1Oss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHaQGXSu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=nviX5u2R90IWKHhK5Iz42X0Rf0iu+9TM2yCAAnsxqMYFu1PQICTbK8bOYZZ6G16aupMprSuxteo5IIfEKRO7qI2+BDKt7jXy+V53G9xJ+omuQ322RvsrRUd8dgp5tXlBDqnhlKg5HmzKbgGeKFFwenQFmQleQ7ug/W5SQT3+y6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXOfFamn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHaQGXSu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE0D1F00898;
-	Sat, 10 Oct 2026 19:40:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXOfFamn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61FE1F0089A;
+	Sat, 10 Oct 2026 19:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791661215;
-	bh=O7jPgtWlaLzpLbIefWvv1Ic2MxSd+b3STMx1pkYwTcs=;
+	s=k20260515; t=1791661220;
+	bh=7OHwjQtY0x3YdtfuQNPPgk0/84ywzq7SNRlouHxpfow=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bHaQGXSuNa8ix8e37gIYES6Z+L4AaINIbyeLe7JOc5gS7r8irL5BRV5XsRgNHBwBw
-	 eVeSLkDcDqtB1mD++XoK/ApLtfaHVPObcOELR8SSpvNvvsXJALqK9lTMfql/ALlh8S
-	 I9TbPfTUtMJus0UB9jreV9omm8vnSEbMRp89MalBodgLkRPLZk6bkUFlTjPIDWojdv
-	 tkefxoIChIP0DmwRbCaYlMqN6tEPBQNc8oNfd38DnGq10WHIEcHHX4CY1SgV3NHeQc
-	 U/0BN7XBcXPbijavkkyAnuaQdLHHFQ8P2NWJ+Fd67a1tMeHLez8LdAfVUq7vpJrFhB
-	 F7BjaSZM1NumA==
-Subject: Re: [PATCH net-next v9 04/11] net: ethernet: oa_tc6: Move constant
- definitions to header file
+	b=XXOfFamnsth8G6OOuGjETNqr9upFxWRi9TdA5JsrIl5BNu0j2eLIzdn0GWLHRlcJj
+	 H8VYjgXmhFdVm/8hDSERvEKV4NOp/mCQzqbMSy/lrOlBTO9InP8JN4TzXSwr/BMvh9
+	 9aDcfSEcTxK+Bc07B2jfon1ozFjXYLZtP1+i189xEZ8s19bkcV98ACA/YbTG72sCcz
+	 6vWuz6s2T9VSfU+7JzYeug7w9o9jtx/7WD91GBmC+/sW17mS/4/WW08ND7UTuZcAOs
+	 +QHX/R4wsuRpDdE8DMZbZaC9MweGwxzd4eOd3faPXsD14aWScJRJMv4Ht3miAf7lik
+	 QbWu/Ckt5F9zA==
+Subject: Re: [PATCH net-next v9 06/11] net: ethernet: oa_tc6: Support for
+ vendor specific MMS
 From: netdev-bot+sashiko@kernel.org
 To: Selvamani.Rajagopal@onsemi.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -38,10 +38,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, piergiorgio.beruto@gmail.com, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, jerry.ray@microchip.com, ciprian.regus@analog.com
-Date: Sat, 10 Oct 2026 19:40:13 +0000
-Message-ID: <179166121360.434549.13863914493616373656@kernel.org>
-In-Reply-To: <20261009-s2500-mac-phy-support-v9-4-dcefe1d0bf0d@onsemi.com>
-References: <20261009-s2500-mac-phy-support-v9-4-dcefe1d0bf0d@onsemi.com>
+Date: Sat, 10 Oct 2026 19:40:18 +0000
+Message-ID: <179166121819.434549.1077502913840125344@kernel.org>
+In-Reply-To: <20261009-s2500-mac-phy-support-v9-6-dcefe1d0bf0d@onsemi.com>
+References: <20261009-s2500-mac-phy-support-v9-6-dcefe1d0bf0d@onsemi.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -58,82 +58,68 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The new private header
-  drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h doesn't compile on its…
+- [Low] Documentation/networking/oa-tc6-framework.rst describes
+  oa_tc6_set_vend1_mms() as mapping VEND1 to a vendor MMS 'between 10…
 
 --
 
-net: ethernet: oa_tc6: Move constant definitions to header file
+net: ethernet: oa_tc6: Support for vendor specific MMS
 
-This patch moves the control/data header definitions, size constants,
-enums and struct oa_tc6 out of oa_tc6.c into a new private header,
-drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h. Other source files in the
-OA TC6 framework can then share them.
+This commit adds an exported helper, oa_tc6_set_vend1_mms(), so a vendor
+driver can map MDIO_MMD_VEND1 to a vendor-specific MMS value. With this
+change, oa_tc6_get_phy_c45_mms() returns the stored value for
+MDIO_MMD_VEND1. The value defaults to -EOPNOTSUPP in oa_tc6_init().
 
-> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-> new file mode 100644
-> index 0000000000000..403a9c22b5f14
-> --- /dev/null
-> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6_std_def.h
-> @@ -0,0 +1,125 @@
-
-[ ... ]
-
-> +#ifndef OA_TC6_STD_DEF_H
-> +#define OA_TC6_STD_DEF_H
-> +
-> +#include <linux/ptp_clock_kernel.h>
-> +#include <linux/net_tstamp.h>
-> +#include <linux/netdevice.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/skbuff.h>
-> +#include <linux/sched.h>
-> +#include <linux/wait.h>
-> +#include <linux/phy.h>
-
-[ ... ]
-
-> +/* Internal structure for MAC-PHY drivers */
-> +struct oa_tc6 {
-
-[ ... ]
-
-> +	bool prot_ctrl;
-> +	enum oa_tc6_quirk_flag quirk_flags;
-> +	struct gpio_desc *reset_gpio;
-> +};
+> diff --git a/drivers/net/ethernet/oa_tc6/oa_tc6.c b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+> index 0b6e216de8a1b..0c4f7d3f978fd 100644
+> --- a/drivers/net/ethernet/oa_tc6/oa_tc6.c
+> +++ b/drivers/net/ethernet/oa_tc6/oa_tc6.c
+> @@ -248,6 +248,18 @@ static int oa_tc6_update_standard_capability(struct oa_tc6 *tc6)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * oa_tc6_set_vend1_mms - Add vendor specific MDIO_MMD to OA TC6 MMS
+> + * mapper value.
+> + * @tc6: oa_tc6 struct.
+> + * @mms: vendor defined MMS value for VEND1 mdio device.
+> + */
+> +void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms)
+> +{
+> +	tc6->vend1_mms = mms;
+> +}
 
 [Severity: Low]
-This isn't a bug, but is this header meant to be self-contained?
+Should this setter reject values outside the 10..15 range?
 
-struct oa_tc6 has quirk_flags as a by-value member of type
-enum oa_tc6_quirk_flag. That enum is defined only in
-include/linux/oa_tc6.h:
+Documentation/networking/oa-tc6-framework.rst says the helper is for
+vendors that "may have used any MMS value between 10 and 15 as allowed by
+the specification". However, the setter stores any int as-is and returns
+void.
 
-include/linux/oa_tc6.h:
-enum oa_tc6_quirk_flag {
-	OA_TC6_BROKEN_PHY = BIT(0),
-};
+oa_tc6_mdiobus_read_c45() and oa_tc6_mdiobus_write_c45() only reject
+mms < 0. The value is then passed as a u8 to oa_tc6_read_register_mms() and
+oa_tc6_write_register_mms(), which do:
 
-oa_tc6_std_def.h doesn't include <linux/oa_tc6.h>. It compiles today
-only because oa_tc6.c includes <linux/oa_tc6.h> right before it:
+    mms_reg = FIELD_PREP(OA_TC6_REG_MMS_MASK, mms) | address;
 
-#include <linux/oa_tc6.h>
+OA_TC6_REG_MMS_MASK is GENMASK(19, 16). That means a value of 0..9 selects
+a standard memory map directly, and 16 or 17 wraps to MMS0 or MMS1. VEND1
+MDIO reads and writes would then go to a different register space without
+any error.
 
-#include "oa_tc6_std_def.h"
+The only caller in the series, s2500_probe(), passes
+OA_TC6_PHY_C45_VS_MMS12, which is in range. Nothing in the tree hits this
+today.
 
-Any new file that includes "oa_tc6_std_def.h" first would fail to build.
+Would it make sense to add a range check that returns -EINVAL? Another
+option is kernel-doc text stating that the caller must pass a value in
+10..15.
 
-At this commit include/linux/oa_tc6.h has no include guard, so adding
-the include here would also need a guard there. The later patch "net:
-ethernet: oa_tc6: Support for hardware timestamp" adds _LINUX_OA_TC6_H.
-Could this patch add the guard and include <linux/oa_tc6.h> directly
-from oa_tc6_std_def.h?
+> +EXPORT_SYMBOL_GPL(oa_tc6_set_vend1_mms);
+> +
 
-A smaller point: nothing in this patch seems to use
-<linux/ptp_clock_kernel.h>, <linux/net_tstamp.h>, <linux/sched.h> or
-<linux/wait.h>. They look like they are first needed by the later
-hardware timestamp patch.
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d%40onsemi.com
