@@ -1,174 +1,135 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDB53AFCF7
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791602468; cv=pass; b=Nomy37DhOwFFB8kcGUA5kP4AUgRQeY0WvTygOKFgtD1rHkdq/wCZN1zRzrYV7jk6sWyELxi0a9V/TW8pFntVWdO+KdwREdl/AGWe3M2MW33ARZBU7Tw0BFSvjsKlg9ybfzvdkT6ggOXSSBqmXJWamSbmiW7lbdUnPjZoDWT/AIE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791602468; c=relaxed/simple;
-	bh=cdvvrG7WPkbcrZGPB7ALjUAe17n+SbUghC1wB+UaIFU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n0x6CmaLtjb9WEYs4l7/VpWJS3jvW1epUFXAgs/53kz7sS/moqJE9n7dt1HgLTVSbR2/N78rdltdOJnsKasptVdA9VSxLpFxq6qiORJmHHgd+RpjexAnmd8zevpPq6t6IeQXLqqc6Ar+BeOOYBKSda66J5oxdy6npag3tDcfFfU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=W2DttC4+; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Jyt73DkL; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C212C2E6CB8;
+	Sat, 10 Oct 2026 03:22:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791602524; cv=none; b=gRhJvdgh1i9LcQ4ealdZugxE1pHOJuCIthVVqvanzmZzPGrN8o7bK9enbzS47yxuEetcZyfsJsk6GuBzbtaA8oyHNWPfOZ5o7XPRAiE0ZA4haxtqEo2DBQq9HGnwy9PIerfplYEELOA6RsORgAaAezjUyrKBgCxFM7TDCHmo2ms=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791602524; c=relaxed/simple;
+	bh=iznYCBsnuDD7TtKTvWpvkkDtxuHJRApQbTM5v5Rs2d8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xyrzd4hqcSilKy9mhvHlr8oUIRy/C3mJEAQtz18x2LD3L9XNdMeKOlLn4Dpta/SrB0aWBZm9QzgcXknun/f6ECHbKfl8P1/pkHec09S2yV48vbl9Ez+5mSUR/klfOvL9Y8zUVw0eYdo0itV6HeiFyDLPPWah7SN4oOofoi3zg4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=OOFFvlus; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="W2DttC4+";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Jyt73DkL"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69A2eQsN3597978
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:21:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kVFIzf6qKFdgBMbvBDNXwTubrxO8VTgmNkIEL5po9tQ=; b=W2DttC4+Bg/B+3ws
-	bSXUDzF6IG5mn9xU5D6JiM7lZw3pUWzTMJL1e/ExEgPQoXH5O8xy5Z/6MAlhQY77
-	VlOQUJG4NT2GfODiAHiTZZxrNjPI6WXgLhWaO2lUsjaQcYlTSKIY6xKybzBWjfTy
-	HgWWh+E9E6YxKxW0WvBoapNv5ZeI7VSwPQ31kjh1faetbS7ZBhqjyvYPVzf7YDBC
-	ogYA36T8Bm5eLxDYCSSw44cMmzsFpwWxc0Slc48GXkscp/JK/Y/wFsVDDXxl2FCp
-	+VHbzZQ2lbLTaxlT6N/y19/pPAukUr08miotAn8OGlJgQzu5I0zu5XFR+JFHyi99
-	M/eBxg==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h74t89khg-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:21:06 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc11b5dd54dso630052a12.3
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 20:21:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791602464; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Hp7XKJ6JsVvLpyW4Wi7F6pLgT2z76dtBQE3Aa1B/+pbxFixEMHjhQ2TjXcUEmlQ92h
-         0rUvL/4ZGkCRiD693AaLbnG/9eH4VeAFxMpxJoZe5U+CRyDPtpr3Q3I0CwPYTtq7ARmV
-         gtCfCNytVH5XZj/PNL0x0uWZi8yEozX0gEKQComSJoh8gIwcXAcyaimcaOxiXyh3sayn
-         439EJYIFS8mZzz9yXIytMsbJ5TJM0igQXtOIVWUYNlZxhrGajKcI/bQ/08SFl5DoK3Em
-         w+i5s4SfWmRfUvf+dG7SE8+wFLPeUlIEHzuILX62TvsUhQZOVLv+zUY/ecdUrWVpiK92
-         FO5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kVFIzf6qKFdgBMbvBDNXwTubrxO8VTgmNkIEL5po9tQ=;
-        fh=PCWTFhCw+HWBKtBNVYibevWLyHUF8o0lW4MaAg2xHuw=;
-        b=VpE70zYt9F3cbvwRxe0WVL6S74HDD0AGO5Hs4OIR/kxPYt3PGMNI97GjepTINhDqFc
-         61MpIi6UeHWcR2/+npiJIoDbkL2e6+keIf62YHoxfKYE+9z2EBEOHcshuNUs3KWXJUlb
-         NNH7AnMkqWX3ZD3Iyu2Y/nBjQBjl1WLTdgWWTTzxnpiXipyP2dvWtVJC+asFK/35LbNp
-         Wx1WCRDhpmpwAjj0HuR8MvgVR2wP8JoxTqLjYU5XtIOaxMFSSRygjCTmgCsskVtMrPDq
-         lF3NI269TCjTy4LI5BsOcVk2KxE/Qiro9Rj92sHkH8nYx2rU9O85DKsKIRWpzbPc+jun
-         hLUQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791602464; x=1792207264; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kVFIzf6qKFdgBMbvBDNXwTubrxO8VTgmNkIEL5po9tQ=;
-        b=Jyt73DkLTatuTsVIVLD2LQQFfe3oBS+Tz8jj3DZvXt1Oc+MP+YXKcgZqwZrdPbv/91
-         8MWfMDlGdI7YGi7+F9+UNX6TU+O41E0GbO2U2t4k0UdsZxts5m+UD/Gbv1dsJKhzpKmM
-         boUnqHlYmdhxPeZ572I/NPC0F2l6whiw4TXFa4paOqxowSHqDXlnegurkVteFhZxL7qR
-         rm9ida8lIK/7nq/m0eZqR7FipQzIQg8c41RYlGUp14VILh500hULPS9II4yTwca4o22H
-         BDSKiLOlYTj/jUZVC9O66wcb9UR2TYZd20V9GIQUKNGGTnDVw6oemhRFl917bHA0q3pH
-         a76w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791602464; x=1792207264;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kVFIzf6qKFdgBMbvBDNXwTubrxO8VTgmNkIEL5po9tQ=;
-        b=o5oZo2i5ke3RluXBm7CjMLp4HxTUse0a2TQ1wtImIvSOjDXGYnthJEytmFEu3LWQj0
-         K1+k1YztqOjlvC0AACIv7MgyHw9TDJd3w05R92lS0pxcNRNO4cXmlsORJioT9bQQpadm
-         zpx+4lXg28IvQHpqQ9PbjF1xPEBNcdp59M3/Wg2u4oV/8BIMyvaPuCQo/HapPpW0uFgj
-         oYgEG5FLJv7vvw9Q1FBSxcMnASEYVYAsmRd+DOVIMJZ+wLomXscEQN9/8ZQGw2sBorHs
-         Am/DQ20u7e5amH34NpQQENK8/8A6fLL0mPUqw8JZv3v0vc1lN4tg7WHJsC1mTBKSjDcn
-         KDiw==
-X-Forwarded-Encrypted: i=1; AKwUvByLbAxdYZxk7iiiJcSv3MY/sGnTi95TxObFEpXFbPMoDhbXoe9ToVBxAwiZcUEFTYj0krDqlYM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL5ZrTl/VJ8AZiZYTHOzk991dshY9mH48oEE2vmguKH9SscAmqH
-	rE4/Q2Ne9j4V2mDrBUNOaQynoRsv1fHnRtBkmicdb38SMJKMg/t0p+QktO6G9cD3jOmHC/mYHp+
-	kamGjBMq/aB6JRhJeNoIpAWeIGRtQRXIMEcKf0+QBgsTDY3tqA0TV4EJjYRySJD43Vi5Z10gKxB
-	lpPgX3p5ZyOvTtZ3gRk+B1NnIgEJDT8A7AsA==
-X-Gm-Gg: AYBFou3cCbPVojqXySaGHCYFMzCswv7w4Ds5qqj0mLi8vT3UlrMckctIC0kDvXXvQQD
-	qpU0rnrVh8vvbvcJ9Y7L3+E+K8UC13LlWKMMhJTvFiWq3vT70yukga24t/iRZp6m39E7urzppCk
-	fyS42Q3IS0r9hO515b11jY60JIv/IZkFJ9c0YTG8SwjJ7oAN2USZ53/PziUQ==
-X-Received: by 2002:a17:90b:4d86:b0:3a8:6571:b43f with SMTP id 98e67ed59e1d1-3ab3a9f7f28mr3326746a91.29.1791602464020;
-        Fri, 09 Oct 2026 20:21:04 -0700 (PDT)
-X-Received: by 2002:a17:90b:4d86:b0:3a8:6571:b43f with SMTP id
- 98e67ed59e1d1-3ab3a9f7f28mr3326738a91.29.1791602463627; Fri, 09 Oct 2026
- 20:21:03 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="OOFFvlus"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=nW
+	Lvz8pjTi2eJKYRDz83xjnrYXYS3iiNIjJCpfNJPd8=; b=OOFFvluspDZZ/BNTLO
+	1jRAxcQAWHLgAD/dpO1zO1bl5MjhhBPwTxz1Zj6g67CAs6vbE3ygwr2fcsF/CmVZ
+	xIKKL66wDCpwxxuX0EfU/ltWKmiEIi1N68W4MrEuEkQbH7KoyERO1DMRG8GdpFE2
+	+UZIK1tREjyc+yEAVMZzEG9pk=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wCXb+Usr8lqH2_BDg--.64530S2;
+	Sat, 10 Oct 2026 11:21:18 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: borisp@nvidia.com,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	sd@queasysnail.net
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH net v2] net: mlx5e: Fix use-after-free of the MACsec xarray entry on RX SC deletion
+Date: Sat, 10 Oct 2026 11:21:15 +0800
+Message-ID: <20261010032115.93545-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260923-qcom_xpcs_nord_emac-v1-0-4b1c682af70f@oss.qualcomm.com>
- <20260923084921.3942100-1-zhangfei.gao@oss.qualcomm.com> <asmbVX7U4cgm7XNB@QCOM-aGQu4IUr3Y>
-In-Reply-To: <asmbVX7U4cgm7XNB@QCOM-aGQu4IUr3Y>
-From: Zhangfei Gao <zhangfei.gao@oss.qualcomm.com>
-Date: Sat, 10 Oct 2026 11:20:52 +0800
-X-Gm-Features: AclHuK8rsVvfZj_k56Q5QKzcsjlIbLPicr-jBYfM5wSUQDytqGrRVpofZv9SSgg
-Message-ID: <CAFkd8huTuFii5PPYrZ85LKkoECbb8JD7eX=jWC+G4ac6QOBr6w@mail.gmail.com>
-Subject: Re: [PATCH 0/3] Nord ethernet followup
-To: Shawn Guo <shengchao.guo@oss.qualcomm.com>
-Cc: bartosz.golaszewski@oss.qualcomm.com, mohd.anwar@oss.qualcomm.com,
-        maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, hkallweit1@gmail.com,
-        linux@armlinux.org.uk, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEwMDAxMiBTYWx0ZWRfX3WUplI/pd+Ye
- EpzNn2DdLhy1VP4l55+SlsnVKyRTjKbaqgLqg/rE7CG21lJ/R69g5R8ShIFpMqaaEqCiJNFqQGc
- nuVkeDVfe3aK9aAOkD5dYLkKQJqvlvs=
-X-Proofpoint-ORIG-GUID: 66H8MZBFstCwL12r3OVDK7-MdmAhMlVv
-X-Authority-Analysis: v=2.4 cv=D9jSufRj c=1 sm=1 tr=0 ts=6ac9af22 cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=gowsoOTTUOVcmtlkKump:22 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=YagQt7tFpqKSyC3IlFAA:9 a=QEXdDO2ut3YA:10 a=_Vgx9l1VpLgwpw_dHYaR:22
-X-Proofpoint-GUID: 66H8MZBFstCwL12r3OVDK7-MdmAhMlVv
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEwMDAxMiBTYWx0ZWRfX+W3u7af1ueWu
- o3In9WSDQjogPeMqtqAlMn5aQTVuxlNC+KoN2Kpopb895VlBmxQ2uG3KUmDCQqON3665LQN3VzE
- cHcxY+bkkRCzxqpUIVuKLSvHk15SFglin06xMFZcgObETLXnO3ROvIVzoamYkE9o3HmTgDphevN
- QKIOw2m2ue4Vd3/IzgQtIHy71R7KRxNZMLGgjALPcYXbHq66ncqQ8FnSjWGcSHpktil/xKZuIqj
- 4V8yEVHSouxkYUhy+J1+bVv3meg7l6rAOH6eghQ8IAJEytxLuFkL9DSnilYyaLb68L9u6SXPaSV
- yStqnQEsHL2mQowT3yWaVN+gbne2L0wy8J0MHXU0YMTHKNeoxi7PNMV2wluBgydlmq8oP5h3zYl
- ufy/FXUBehBZsuyArj5M95O+L8PC3hVGvn45tEU7RP5KF8c79UTjc/kyC30PKFHz5pmKVmD+599
- pjf+2LZ4m78ljO0Mp1g==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-10_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 phishscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 clxscore=1015 priorityscore=1501 adultscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
- definitions=main-2610100012
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXb+Usr8lqH2_BDg--.64530S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJw18XFyrAF13tF1rKrW7urg_yoW5tF15pa
+	yfJFW7CFykGry8XryxAa1xWw15ZrZ2qa43u3W5C3yfA3Z8Z3y0vFy8Gay09r90krWrC3ZI
+	vws29w47Xa15Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UoSoXUUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+w4E52rJry5ZvwAA3S
 
-On Sat, Oct 10, 2026 at 9:56=E2=80=AFAM Shawn Guo
-<shengchao.guo@oss.qualcomm.com> wrote:
->
-> On Wed, Sep 23, 2026 at 04:49:18PM +0800, Zhangfei Gao wrote:
-> > This series verifies Mohd Ayaan Anwar's patch set:
-> >
-> >   net: introduce Qualcomm XPCS support and add Nord Ethernet plumbing [=
-1]
-> >
-> > Tested on both IQ10 RRD and Ride
-> >
-> > The full test branch is available at:
-> >
-> >   https://github.com/zhangfei-gao/kernel-topics/tree/next-9.23
-> >
-> >
-> > [1] https://lore.kernel.org/linux-arm-msm/?q=3Dqcom_xpcs_nord_emac
->
-> Please do not post a patch series in reply to another. It makes life
-> harder for thread viewer and b4 tool.
+In macsec_del_rxsc_ctx(), the RX secure channel is torn down with:
 
-OK, got it, my bad.
+	list_del_rcu(&rx_sc->rx_sc_list_element);
+	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
+	dst_release(&rx_sc->md_dst->dst);
+	kfree(rx_sc->sc_xarray_element);
+	kfree_rcu_mightsleep(rx_sc);
 
-Thanks
+The comment above the sequence claims that "xa_erase which uses rcu to
+sync" hides the RX SC from the data path, but this is not sufficient:
+the RCU protection of xarray covers only its internal nodes (making
+xa_load() safe against concurrent erase); it does not extend to the
+object pointed to by the entry value.  A reader that has already
+obtained the pointer from xa_load() is not covered by any grace period,
+and the bare kfree() releases the entry object immediately.
+
+The reader is mlx5e_macsec_offload_handle_rx_skb() in the NAPI RX
+path, which runs under rcu_read_lock() only:
+
+	sc_xarray_element = xa_load(&macsec->sc_xarray, fs_id);
+	rx_sc = sc_xarray_element ? sc_xarray_element->rx_sc : NULL;
+
+An RCU read-side critical section protects only against deferred frees
+(call_rcu()/kfree_rcu()); it provides no protection against the
+immediate kfree() above.  If the NAPI reader loads the entry pointer
+and is then delayed while another CPU executes the deletion path, the
+subsequent read of sc_xarray_element->rx_sc dereferences freed memory.
+
+The path is reachable with CAP_NET_ADMIN while an RX SC has in-flight
+traffic: CQEs carrying the fs_id metadata can still arrive after the
+offload rule has been removed, so deleting an RX SC concurrently with
+reception can race the reader.
+
+Note that the same function already releases rx_sc itself via
+kfree_rcu_mightsleep(): the author was aware that this teardown needs a
+deferred free, but the intermediate entry object was missed.
+
+Fix this by adding an rcu_head to the entry object and releasing it
+with kfree_rcu().
+
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by LLM-assisted (GLM-5.3) code inspection.  The issue was
+not observed at runtime; it is identified by code inspection only.
+
+Fixes: b7c9400cbc48 ("net/mlx5e: Implement MACsec Rx data path using MACsec skb_metadata_dst")
+Signed-off-by: Binbin Deng <18983559317@163.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+index daff53ba7d09..d4caa7affae6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
+@@ -75,6 +75,7 @@ struct mlx5e_macsec_rx_sc;
+ struct mlx5e_macsec_rx_sc_xarray_element {
+ 	u32 fs_id;
+ 	struct mlx5e_macsec_rx_sc *rx_sc;
++	struct rcu_head rcu_head;
+ };
+ 
+ struct mlx5e_macsec_rx_sc {
+@@ -839,7 +840,7 @@ static void macsec_del_rxsc_ctx(struct mlx5e_macsec *macsec, struct mlx5e_macsec
+ 	list_del_rcu(&rx_sc->rx_sc_list_element);
+ 	xa_erase(&macsec->sc_xarray, rx_sc->sc_xarray_element->fs_id);
+ 	dst_release(&rx_sc->md_dst->dst);
+-	kfree(rx_sc->sc_xarray_element);
++	kfree_rcu(rx_sc->sc_xarray_element, rcu_head);
+ 	kfree_rcu_mightsleep(rx_sc);
+ }
+ 
+-- 
+2.43.0
+
