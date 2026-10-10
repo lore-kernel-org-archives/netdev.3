@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675384B205A;
-	Sat, 10 Oct 2026 19:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EC44B44BF;
+	Sat, 10 Oct 2026 19:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791659254; cv=none; b=GK9OuBYlYBtq4Ol2rWzIZWT20rIiAItYniWiD9Gz/UyGVN8SH4PO9PHef5vArUYoQUp+fmcEaKTR10yCoZIad19KvZzCzWQJzbzK4oGbCaEbKl5B1K3sqvq/HOr3foRKYHRXBEAK0UXtkgNuuXTx+E2nAdqE5giyRSImFKbo+V8=
+	t=1791659256; cv=none; b=k/L4JTrq013SIxfVZ6BafqD6GlwmILVeMANJuemTsnoOF5sf8eLQJhKIabt/a1s7ZFbGggTEWOcFpIjMjLgUV2kUyNLG89e4ZQvzZ4eUpdIz50rorpNepTr+/aR9xvvGr0Ra/31h0r+3uDXG6dQqCrtn65Vhb77TuSu+LAExdgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791659254; c=relaxed/simple;
-	bh=E94E1uf1F1Tynjm/3MRBH4aaNhJJyvVu56q6/qnyjQo=;
+	s=arc-20240116; t=1791659256; c=relaxed/simple;
+	bh=RX3HUGnJvfbNuOfh2YfO4unieZqsx+UEPgo3+7Gc+nw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oG8jPoPriafdvXDbh9oUggPUmEC40IbxhOxgJlxIqDWmcLXt5ti8WlhriV4Dd/HqSo6IzIcDtX/uPsQ5I0wrC3c08rG5sdprkcuD7axkfCiJYm74aVCELY3EEljb8Oq81ufDxeBezVxK5+hiQ7Ja9A7CcagvNsBkZOaldPK3yHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PTeCuHjk; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pelE59j9mH1L4glJJ7AvIfp0RbE9KO3j/AusvfcLd3xodpYWym6t6cPXIfRE1sWHAqCMqOLQoywBJfH1PqVUmCWel8C/GP1TcPyMdMei3CJGSdcTK5O5CbzZPADaU0MvAKrL1oCqPDR9cg0IA7X/liw2ip7N9HNMWrm+H+YyyGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kq2V+YXd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PTeCuHjk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CF01F00893;
-	Sat, 10 Oct 2026 19:07:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kq2V+YXd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9157E1F000FF;
+	Sat, 10 Oct 2026 19:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791659252;
-	bh=UJxs76/Pxk8kiE3tiuRxPMubEzaw1bWEcApNHnJJJT0=;
+	s=k20260515; t=1791659254;
+	bh=8GdtLgttCyKb4tZx9St8N2yZyVc+yX3u7FwIGjnKRQg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PTeCuHjkaeHVKf/7HW1JwhwewB0Nyt7jDaHx1AOLlHGo4WXovSSKNg9vr5x57YlnK
-	 YvNvaurOUnEgLYinLEa6PnrCPekNv4c83Kor4YC3T5GMDR+3tNsAQ1e/Tva1tckZg/
-	 EzoSeddkB1+M9ryEUDVrCZb28CtlIldGteVSoxsrdPtkG3Iw1ooBiSFkFbc0O8SzEc
-	 V3oe8p9rX5Krs4m6vKJhPDQvtjiflWtiLeByrcJ72lIN5V9dZXZtvmA+Evlx/aiwRG
-	 YQLD/BGV1cBlwBVqTMoAtCBCK4xS35U92zP5PDbnzgJA1jEY+0gL+KutvePCRf0H0k
-	 PfzZeQY6E2HzQ==
-Subject: Re: [PATCH net-next v5 3/4] net: phy: serialise attach and detach
- with PHY driver bind and unbind
+	b=kq2V+YXd+S1I3XJFDTfGJcUm1jKBU17Y35kf7n/MC4vAHHy09F79XeiLXSYmeXMIP
+	 vi9EkPMdrnNl9aQETMtPJ+fr8/aCC7he/WPwJWOilLUgyTh5yM4j3Vx+Mhc+InBHdA
+	 G0x6hwmRF1hpPiy9dXWvtJBTw3KOLsa2QWg9Vm6P3PVmRXRS+Hy0l2/sIEIJvohH7W
+	 3MB7k2PRVNreSZRPAHrJBk+Y+TjJT1VyJXlLQCZm1Fe7Kylb5DDgxCvdJGI3a8kCzY
+	 Pq111Jeuze8Ov+DVHRwDGZJ/8UCtIYo5NxPdgyv35wRgDvrzb56tcIeQ0yTh1sVBSA
+	 nQ6NTlH51xE/w==
+Subject: Re: [PATCH net-next v5 4/4] net: phy: make an unbind wait for the
+ attached consumer to detach
 From: netdev-bot+sashiko@kernel.org
 To: f@lex.la
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
@@ -35,10 +35,10 @@ Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
  f.fainelli@gmail.com, woojung.huh@microchip.com, vladimir.oltean@nxp.com,
  maxime.chevallier@bootlin.com
-Date: Sat, 10 Oct 2026 19:07:31 +0000
-Message-ID: <179165925160.434549.1346083587752988109@kernel.org>
-In-Reply-To: <20261009180551.1234107-4-f@lex.la>
-References: <20261009180551.1234107-4-f@lex.la>
+Date: Sat, 10 Oct 2026 19:07:33 +0000
+Message-ID: <179165925312.434549.3215733785480960392@kernel.org>
+In-Reply-To: <20261009180551.1234107-5-f@lex.la>
+References: <20261009180551.1234107-5-f@lex.la>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,7 +52,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (2) · Medium: 1 (1) · Low: 2
+Critical: 0 · High: 3 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,339 +60,248 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] phy_detach_internal() clears phy_link_change, and swaps out
-  drv_owner, inside one bind_lock section (phy_device.c:1740-1744).
-- [Medium] phy_attach_direct() now returns -EAGAIN when d->driver is set
-  but phydev->bound is false (drivers/net/phy/phy_device.c:1852-1855).
-- [Low] The struct phy_device comment for the new mutex says `/* Protects
-  bound */` (include/linux/phy.h).
-- [Low] The struct mii_bus kernel-doc for notify_phy_attach lists its
-  calling context: process context, may sleep, may hold RTNL, must not…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but bind_lock does
-  not cover the driver core's own bookkeeping around phy_remove().
-- [High] This problem wasn't introduced by this patch, but the genphy
-  fallback in phy_attach_direct() still writes d->driver = genphy…
-- [Medium] (Baseline: discarded, as a pre-existing medium issue.) In the
-  genphy path of phy_attach_direct(), if __phy_probe(d) succeeds and…
+- [High] phy_remove() can wait forever on its own thread.
+- [High] net: phy: driver state corruption due to attach/detach race
+- [High] net: phy: deadlock in phy_detach_internal() waiting for unbind
+- [Medium] The new wait_var_event() in phy_remove()
+  (drivers/net/phy/phy_device.c, lines 3887-3892) has no upper bound and…
 
 --
 
-net: phy: serialise attach and detach with PHY driver bind and unbind
+net: phy: make an unbind wait for the attached consumer to detach
 
-This commit adds a per-PHY bind_lock mutex and a bound flag. Together they
-serialise phy_attach_direct() and phy_detach() against phy_probe() and
-phy_remove(). An attach that finds a driver bound but not done probing
-returns -EAGAIN. The "already attached" test and the drv_owner hand-off
-in detach now run under the new mutex.
+With this patch, phy_remove() waits for phy_detach() to run before it
+takes the driver away from a PHY that is still attached. Without the
+wait, phylink and phylib keep using phydev->drv after the unbind. Removing
+the device through phy_device_remove() sets a new removing flag, which
+skips the wait and wakes any unbind that is already waiting.
 
 > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 68691c487eee5..0ffaa456a308b 100644
+> index 0ffaa456a308b..a271fe76c3f8e 100644
 > --- a/drivers/net/phy/phy_device.c
 > +++ b/drivers/net/phy/phy_device.c
 
 [ ... ]
 
-> @@ -1725,11 +1732,18 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
->  		phy_link_topo_del_phy(dev, phydev);
->  	}
->  
-> -	phydev->phy_link_change = NULL;
->  	phydev->phylink = NULL;
->  
-> -	module_put(phydev->drv_owner);
-> +	/* A new attach may pass its "already attached" test as soon as
-> +	 * phy_link_change is clear, so take the owner in the same section.
-> +	 */
-> +	mutex_lock(&phydev->bind_lock);
-> +	phydev->phy_link_change = NULL;
-> +	drv_owner = phydev->drv_owner;
->  	phydev->drv_owner = NULL;
-> +	mutex_unlock(&phydev->bind_lock);
-> +
-> +	module_put(drv_owner);
->  
->  	/* If the device had no specific driver before (i.e. - it
->  	 * was using the generic driver), we unbind the device
-
-[Severity: High]
-After this section drops bind_lock, a second consumer's phy_attach_direct()
-can take it and pass the "already attached" test. The rest of the detach
-then runs with no lock held:
-
-phy_detach_internal() {
-    ...
-	if (phydev->is_genphy_driven) {
-		/* The release below lets phy_probe() write this field. */
-		phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
-		device_release_driver(&phydev->mdio.dev);
-		phydev->is_genphy_driven = 0;
-	}
-
-	/* Assert the reset signal */
-	phy_device_reset(phydev, 1);
-    ...
-}
-
-Take a genphy-driven PHY. The new attach would find d->driver still set
-to genphy, bound still true and is_genphy_driven still 1. Would it then
-run __phy_probe(d) and device_bind_driver(d) again on a device that is
-already probed?
-
-A few outcomes look possible from there.
-
-phy_led_triggers_register() fails with -EEXIST on the duplicate trigger
-name and sets phy_num_led_triggers to 0. phy_led_triggers still points at
-the registered array. A later phy_led_triggers_unregister() loops zero
-times and kfree()s that array, which leaves freed entries on the global
-trigger list. phy_setup_ports() also adds duplicate ports.
-
-If device_bind_driver() fails with -EEXIST, error_module_put sets
-d->driver = NULL while the driver core still has the device bound. The
-old detach's device_release_driver() then does nothing, and later
-attaches keep failing with -EEXIST.
-
-If the bind succeeds after the old detach's driver_sysfs_remove(), the
-old detach's phy_remove() runs against the new attachment. With the
-later patch in this series that makes an unbind wait for the attached
-consumer, phy_remove() would wait for the second consumer to detach. The
-first detach thread meanwhile holds the device lock and usually rtnl.
-
-For any PHY driver, not only genphy, can the old detach's
-phy_device_reset(phydev, 1) run after the new attach's phy_init_hw() has
-deasserted reset? That would leave the new consumer's PHY held in reset.
-
-The last patch in the series, "net: phy: make an unbind wait for the
-attached consumer to detach", moves only the irq restore ahead of this
-locked section. device_release_driver(), the is_genphy_driven clear and
-the reset assert still come after it.
-
-[ ... ]
-
-> @@ -1829,23 +1849,29 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
->  			d->driver = &genphy_driver.mdiodrv.driver;
->  
->  		phydev->is_genphy_driven = 1;
-> +	} else if (!phydev->bound) {
-> +		phydev_err(phydev, "driver is binding or unbinding\n");
-> +		err = -EAGAIN;
-> +		goto error_unlock;
->  	}
-
-[Severity: Medium]
-This state only lasts while the PHY driver is probing or being removed.
-Callers that attach from their own probe pass the error straight up,
-for example ethoc_mdio_probe() in drivers/net/ethernet/ethoc.c:
-
-	return dev_err_probe(&dev->dev, err, "could not attach to PHY\n");
-
-and hbg_phy_connect() in drivers/net/ethernet/hisilicon/hibmcge/hbg_mdio.c:
-
-	return dev_err_probe(dev, ret, "failed to connect phy\n");
-
-driver_probe_device() in drivers/base/dd.c calls driver_deferred_probe_add()
-only for -EPROBE_DEFER. Any other error, -EAGAIN included, is logged as a
-failed probe and is never retried.
-
-Suppose a MAC probe overlaps a PHY driver probe, for example while a PHY
-module loads or during async probing at boot. Would the MAC stay unbound
-even though the PHY finishes probing moments later?
-
-The commit message says such a MAC "then fails that probe". Would
-returning -EPROBE_DEFER here let it recover automatically? The other
-option is a kernel-doc note telling probe-time callers to convert
--EAGAIN themselves.
-
->  
->  	drv_owner = d->driver->owner;
-
-[ ... ]
-
->  	if (phydev->is_genphy_driven) {
-> -		err = d->driver->probe(d);
-> +		err = __phy_probe(d);
->  		if (err >= 0)
->  			err = device_bind_driver(d);
->  
->  		if (err)
->  			goto error_module_put;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, since the old
-d->driver->probe(d) call had the same gap. If __phy_probe(d) succeeds
-and device_bind_driver(d) then fails, error_module_put restores only a
-few fields:
-
-error_module_put:
-	module_put(phydev->drv_owner);
-	phydev->drv_owner = NULL;
-	phydev->irq = irq;
-	phydev->is_genphy_driven = 0;
-	d->driver = NULL;
-
-Several things set up by __phy_probe() are left behind:
-
-- the LED triggers stay registered
-- the phy_port entries stay on phydev->ports
-- phydev->drv still points at genphy
-
-phy_remove() never runs, because the driver core never recorded the
-binding.
-
-On the next attach, phy_led_triggers_register() would fail with -EEXIST
-and zero phy_num_led_triggers while the old array is still registered.
-Can a later phy_led_triggers_unregister() then kfree() triggers that are
-still on the trigger list?
-
-> +
-> +		phydev->bound = true;
->  	}
-
-[Severity: High]
-This is a pre-existing issue, and the commit message says the generic
-driver fallback is not covered. Still, the fallback writes d->driver
-without the device lock and runs __phy_probe(d) holding only bind_lock.
-
-A real driver can bind through the driver core at the same time, via a
-sysfs bind or __driver_attach() after a module load.
-__driver_probe_device() checks for that under device_lock:
-
-	if (dev->driver)
-		return -EBUSY;
-
-really_probe() then sets dev->driver, calls driver_sysfs_add() and calls
-phy_probe(). phy_probe() runs __phy_probe() before it takes bind_lock.
-
-If that check runs before attach writes d->driver, can two __phy_probe()
-calls run on the same phydev at once? Both would write phydev->drv, add
-phy_port entries to phydev->ports without a lock, and register duplicate
-LED triggers and SFP upstreams.
-
-Attach's device_bind_driver() would then usually fail with -EEXIST.
-error_module_put then sets d->driver = NULL while really_probe() is
-still running. Would driver_bound() or device_unbind_cleanup() then
-dereference a NULL dev->driver?
-
-[ ... ]
-
-> @@ -1928,6 +1954,8 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
->  
->  	phy_resume(phydev);
->  
-> +	mutex_unlock(&phydev->bind_lock);
-> +
-
-[Severity: Low]
-bus->notify_phy_attach() is now called with phydev->bind_lock held:
-
-	if (phydev->mdio.bus->notify_phy_attach) {
-		err = phydev->mdio.bus->notify_phy_attach(phydev);
-		if (err)
-			goto error;
-	}
-
-The struct mii_bus kernel-doc for notify_phy_attach covers process
-context, sleeping and rtnl, but does not mention bind_lock. A bus
-implementation that attached, detached or rebound the PHY from this
-callback would deadlock on bind_lock through phy_probe() or
-phy_remove().
-
-Should the kernel-doc say so? The only in-tree implementer,
-otto_emdio_notify_phy_attach() in mdio-realtek-rtl9300.c, does not do
-any of this.
-
-A smaller point: the notify_phy_detach doc says it is called "right
-after phy_suspend()". phy_detach_internal() now skips phy_suspend() when
-bound is false.
-
->  	/**
->  	 * If the external phy used by current mac interface is managed by
->  	 * another mac interface, so we should create a device link between
-
-[ ... ]
-
-> @@ -3807,10 +3839,30 @@ static int phy_probe(struct device *dev)
-
-[ ... ]
-
+> @@ -3858,11 +3874,23 @@ static int phy_probe(struct device *dev)
 >  static int phy_remove(struct device *dev)
 >  {
 >  	struct phy_device *phydev = to_phy_device(dev);
+> +	bool attached;
 >  
-> +	mutex_lock(&phydev->bind_lock);
-> +	phydev->bound = false;
-> +	mutex_unlock(&phydev->bind_lock);
-> +
->  	cancel_delayed_work_sync(&phydev->state_queue);
+>  	mutex_lock(&phydev->bind_lock);
+>  	phydev->bound = false;
+> +	attached = READ_ONCE(phydev->attached) && !phydev->removing;
+>  	mutex_unlock(&phydev->bind_lock);
+>  
+> +	/* The driver core cannot refuse an unbind, and the consumer keeps
+> +	 * using phydev->drv until it detaches.
+> +	 */
+> +	if (attached) {
+> +		phydev_warn(phydev, "unbind waits for the PHY to be detached\n");
+> +		wait_var_event(&phydev->attached,
+> +			       !READ_ONCE(phydev->attached) ||
+> +			       READ_ONCE(phydev->removing));
+> +	}
 
 [Severity: High]
-This isn't a bug introduced by this patch, but bind_lock does not cover
-what the driver core does after phy_remove() returns. In
-__device_release_driver(), device_unbind_cleanup() clears dev->driver.
-Only after that do device_links_driver_cleanup() and
-klist_remove(&dev->p->knode_driver) run.
+Can the detach of a genphy-driven PHY end up waiting for a different
+consumer? The commit message expects an attach to come right after
+this section. For a PHY on the generic driver, though, the detach is
+not finished at that point.
 
-An attach that takes bind_lock in that gap sees !d->driver and takes the
-genphy fallback:
+attached is cleared and bind_lock is dropped before
+device_release_driver() runs. phy_remove() only samples attached when
+it takes bind_lock again from inside the driver core. As far as I can
+tell, __device_release_driver() calls driver_sysfs_remove() before
+device_remove(), and dev->driver is cleared only afterwards, in
+device_unbind_cleanup().
 
-phy_attach_direct()
-   d->driver = &genphy_driver.mdiodrv.driver;   (no device lock)
-   __phy_probe(d)
-   device_bind_driver(d)
-      driver_sysfs_add()   succeeds, the old links are already gone
-      driver_bound()       device_is_bound() still true, only warns
+A phy_attach_direct() that lands in that window sees:
 
-The unbind thread then runs klist_remove(). The device is left with
-dev->driver = genphy and knode_driver on no list.
+- phy_link_change == NULL
+- d->driver still set
+- phydev->bound still true
+- is_genphy_driven still 1
 
-The next device_release_driver() can come from phy_detach() or from
-device_del(). Can klist_remove()->klist_del()->klist_put() then
-dereference a NULL knode_klist(n) in lib/klist.c?
+It runs __phy_probe() again. device_bind_driver() now succeeds because
+the driver sysfs links are already gone; driver_bound() only warns that
+the device is already bound. The attach then completes and sets
+attached to true.
+
+The detaching thread then gets to phy_remove() and sees attached set
+and removing clear. It sleeps in wait_var_event() with the PHY's device
+lock held until the new consumer detaches.
+
+The old consumer usually gets here through phylink_disconnect_phy() or
+phy_disconnect() from ndo_stop with RTNL held. The ifdown then hangs
+in D state behind an unrelated consumer. Suppose that consumer attached
+without RTNL, for example from a probe path, but needs RTNL for its
+own detach. Then the wait can never end.
+
+Even when the wait does end, the new attach has re-run __phy_probe()
+and device_bind_driver() on a device that was halfway through its
+unbind.
+
+Could phy_link_change stay set until device_release_driver() has
+returned, with only attached cleared before it? An attach in this
+window would then be refused with -EBUSY instead.
+
+[Severity: High]
+Does the genphy release at the end of phy_detach_internal() still race
+with a new attach? The irq restore now comes ahead of the bind_lock
+section so that a new attach cannot see it. However, is_genphy_driven
+and d->driver are still used after bind_lock has been dropped.
+
+Once phy_link_change is NULL, a concurrent phy_attach_direct() passes
+its "already attached" test. At that point d->driver still points at
+the genphy driver, phydev->bound is still true and is_genphy_driven is
+still 1. The attach therefore takes the genphy path again and calls
+__phy_probe() and device_bind_driver() on a device that is still bound.
+
+If the driver sysfs links have not been removed yet, driver_sysfs_add()
+fails with -EEXIST. The attach then unwinds through error_module_put,
+which clears is_genphy_driven and sets d->driver to NULL.
+
+The detaching thread then does one of two things:
+
+- It sees is_genphy_driven == 0 and skips device_release_driver().
+
+- It reaches __device_release_driver() after dev->driver was cleared
+  and does nothing.
+
+Either way the device stays on the genphy driver's klist with its
+driver sysfs links in place, but with a NULL driver pointer. Since
+phy_remove() never runs, phydev->bound stays true.
+
+>From then on, every genphy attach fails the same way in
+driver_sysfs_add(). When the device is later deleted,
+bus_remove_device() finds no driver to release. As far as I can tell,
+the knode_driver of a freed device is then left on the genphy driver's
+list.
+
+Would it work to keep phy_link_change set until
+device_release_driver() has returned? Only attached would be cleared,
+and the waiter woken, before it. A new attach would then get -EBUSY
+for the whole genphy release. Or is there another way you would
+prefer to keep phy_attach_direct() off a device whose genphy driver is
+still being released?
+
+[Severity: Medium]
+This wait has no timeout and cannot be interrupted. It also runs while
+the driver core holds the PHY's device lock. __wait_var_event() is:
+
+include/linux/wait_bit.h:
+#define __wait_var_event(var, condition)
+	___wait_var_event(var, condition, TASK_UNINTERRUPTIBLE, 0, 0,
+			  schedule())
+
+and phy_remove() is reached under the device lock (plus the parent lock,
+when the bus needs it):
+
+drivers/base/dd.c:device_release_driver_internal() {
+    ...
+	__device_driver_lock(dev, parent);
+
+	if (!drv || drv == dev->driver)
+		__device_release_driver(dev, parent);
+
+	__device_driver_unlock(dev, parent);
+    ...
+}
+
+Only phy_detach_internal() or phy_device_remove() can end the wait. For
+a MAC that connects in ndo_open, that means an ifdown. For DSA, or a MAC
+that connects at probe, it means tearing down the consumer driver. Until
+then the unbinding task sits in D state and keeps holding dev->mutex.
+
+The commit message covers the reboot hang in device_shutdown(). There
+seem to be other effects as well:
+
+- The freezer cannot freeze a task in TASK_UNINTERRUPTIBLE without
+  TASK_FREEZABLE, so system suspend and hibernate would abort.
+
+- The hung task detector would report the task every
+  hung_task_timeout_secs, and with hung_task_panic=1 the machine would
+  panic.
+
+- Anything else that needs this device's lock would block too, such as
+  a later bind, a driver_override write, or loading a driver that
+  matches the device.
+
+The dependency is a bool flag plus wait_var_event(), and dev->mutex uses
+a lockdep novalidate class. As far as I can tell, lockdep cannot report
+any of these hangs.
+
+Was a different design considered? For example, a managed device link
+from the consumer to the PHY would make the driver core unbind the
+consumer before the PHY, so phy_remove() would not have to block under
+the device lock.
+
+[Severity: High]
+Can this wait end up waiting on its own thread forever? The commit
+message says:
+
+  One case is known to wait for good and is untested: when the PHY and
+  its MAC or switch are managed device-link consumers of one supplier,
+  unbinding the supplier can unbind the PHY first, and phy_remove() then
+  waits for a detach that only the same thread would run later.
+
+When a supplier is unbound, device_links_unbind_consumers() unbinds each
+active managed consumer synchronously, one at a time:
+
+drivers/base/core.c:device_links_unbind_consumers() {
+    ...
+		if (status == DL_STATE_ACTIVE) {
+			struct device *consumer = link->consumer;
+
+			get_device(consumer);
+
+			device_links_write_unlock();
+
+			device_release_driver_internal(consumer, NULL,
+						       consumer->parent);
+			put_device(consumer);
+			goto start;
+		}
+    ...
+}
+
+The PHY can be a consumer of a third-party supplier through fw_devlink,
+for example via reset-gpios, interrupts, pinctrl or a clock. If its link
+is processed before the link of the MAC or switch that holds it
+attached, the call chain is:
+
+device_release_driver_internal(supplier)
+  __device_release_driver(supplier)
+    device_links_unbind_consumers(supplier)
+      device_release_driver_internal(phy)
+        phy_remove()
+          wait_var_event()
+
+The phy_detach() that would wake the waiter runs only when the MAC or
+switch consumer is unbound. That happens later in the same loop, on the
+same thread, after phy_remove() returns. The thread then hangs for good
+while holding both the supplier's and the PHY's device locks, and any
+later reboot hangs in device_shutdown() as well.
+
+The MAC-to-PHY link created in phy_attach_direct() does not help here:
+
+	phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+					  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
+
+Because it is stateless, device_links_unbind_consumers() ignores it and
+does not unbind the MAC before the PHY.
+
+This patch knowingly ships a hang that cannot be recovered. Could it be
+avoided before merging, for example with a timeout, a managed link, or
+by skipping the wait when the unbind comes from a supplier?
+
+>  	cancel_delayed_work_sync(&phydev->state_queue);
+>  
+>  	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
 
 [ ... ]
-
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index a5a419bc400ec..db7c8696743cf 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-
-[ ... ]
-
-> @@ -802,6 +804,10 @@ struct phy_device {
->  
->  	struct mutex lock;
->  
-> +	/* Protects bound */
-> +	struct mutex bind_lock;
-> +	bool bound;
-> +
-
-[Severity: Low]
-This isn't a bug, but the comment says bind_lock protects only bound.
-The code relies on it for more than that:
-
-- phy_attach_direct() reads phy_link_change under it as the "already
-  attached" test
-- phy_detach_internal() clears phy_link_change and swaps drv_owner
-  under it
-
-Meanwhile phylink_bringup_phy() in drivers/net/phy/phylink.c writes
-phy_link_change without bind_lock:
-
-	phy->phy_link_change = phylink_phy_change;
-
-Today that write only replaces one non-NULL value with another, so the
--EBUSY test still works. It is still a plain write racing with locked
-reads.
-
-Should the comment list phy_link_change and drv_owner too? The last
-patch in the series changes it to "Protects bound, attached and
-removing", which still leaves them out.
-
->  	/* This may be modified under the rtnl lock */
->  	bool sfp_bus_attached;
->  	struct sfp_bus *sfp_bus;
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009180551.1234107-1-f%40lex.la
