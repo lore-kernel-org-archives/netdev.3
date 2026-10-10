@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925573CFF6A;
-	Sat, 10 Oct 2026 05:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1233DD526;
+	Sat, 10 Oct 2026 05:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791609260; cv=none; b=NO7JgDCpAlsIzmNbQy8/LxUooXPwGSbsq2hhCnXW1NUIQifXF7iUlZ5pUaLJDJptEQl3qUwcQZ+UajDyGl0SNc0LolTcWbHbwvYngRftaoqLirYMi1mwCmPhQGSHFFws/UjtW2LUGi/MXEnL8AtQ2Kn6sAkqE2sL2ITgtrPECt0=
+	t=1791609267; cv=none; b=YrSm5QvJsJjiTnBJHUqEGJckIHxMhkLkY3uu5Dot4C7MHdD7ypGLzlLkn3dmpTVEKEeSSgGcGCFtVLL7qRH9e0AK+xMwydBRXkUg0Alf1Kk7qeijTwASAfwZ3fdHc1YSSzXqISXh2K6+50zx6R60wCS+fGlpSbYv+qHBDuNb9jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791609260; c=relaxed/simple;
-	bh=gjp0hzB4/se2w0PN88AATbfDhZvcYRHBXz4puBbvN+Y=;
+	s=arc-20240116; t=1791609267; c=relaxed/simple;
+	bh=fZcBkqQ+qS3CLr6EwqhCkC8bqyk9nniFwdq1bKliiKo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BXOZGQJ+qeGDh3uJwcdvVEPxrrraM3zt9m5Tz1aOra05bT1mlMDRxQ+zOyGfOUDr4ZUop0CPPIafbPuDB3EWhF++016Hve4KFv1W8Lcj36FjyCID6yDWk5JI5dstQpzq17I0UgRMZGFswb2rbKUpbROrr7hsh0k1XUyLryVE6qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgJ1NBOE; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=p2aC+Wj+JEql8CBuqlzvFsh9sioqf9+gdnm/MlzxzXySkwixOE+V+8zCYQwUsJEmwTVpmJcS8v+u4kP7E69KyTQijr6INo7h7DrKISAiS4dNgdFjdPOKHm1/OCuMPo4PoVACEw3j1P7zTobIU6caq9x2UoBFO31cbZyQjXHwx94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOgvwLLI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgJ1NBOE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EFD91F00893;
-	Sat, 10 Oct 2026 05:14:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOgvwLLI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E401F000FF;
+	Sat, 10 Oct 2026 05:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791609259;
-	bh=j7ylKT/EVB6TudViOAFvT+T2wATe3G/YmELgGKFxjdo=;
+	s=k20260515; t=1791609260;
+	bh=7MVmSJWCIXAEcg7ysfqbqXIBpphkfmUEAevkdZlc2Xk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TgJ1NBOEY4frxlysZT0o15zyel43u4k3qT4r05F3K3H/huvQBJMGEfwDKqlvTbl5y
-	 ZLYnjIu2ASP0RlAvb12YAYihjaUfGmf9JCNGHSlY0LcLmcMMGLKQm8dfd9oBZVoixj
-	 mYAlIWpwwH8mVIg2yBSMU0W94Lw347OBjWgTIggExwqaT4jE0MV5R9QNh1etrvW5mS
-	 gyz6krI3oTAAmBzfWX931Is3iMo6+swluhjD01GCRQC6RDNtQgFyWuDLjyteX+wTn0
-	 YhUkw9oW1WJCoENyJsazY4+Ou6yLCzfVxL730l5I1iQmTCSm7iWO28PDJG1pxF2j7P
-	 05ACIDu5uJYLA==
-Subject: Re: [PATCH net-next v2 6/8] net: dsa: realtek: rtl8365mb: set/clear
- pvid for family D
+	b=QOgvwLLIEXrxaT3hSdU7aMbSkJYcxPSgwPXB8n7HMP+MRkcxJpN66B9Di1I16G2iL
+	 7y97C5jMuS3isVJRXHsNoc6oNkYkY3l1IZpFnooQfIz/GyqaHXxKnfZBr9t6nbmTB6
+	 j067Fh3dYTx8JwtPdf8Pyh2Bpp+c4di6VbIGktAp/X9Wc68bxZVg41+Hnrj5n6t1+P
+	 IUoREEiLr1IUEE1K8bksUe3xci/AHDYvMNPYB5VtToiLxQtOqlBkxuzKfZSHOWkVxZ
+	 SejKyZaCH2AkI8MThqY2OGmEKlFu1d9/oZUBh6IZlCAxmAvV4bovzhSi9Am1gSQfvc
+	 t2im4vA1LIziw==
+Subject: Re: [PATCH net-next v2 7/8] net: dsa: realtek: rtl8365mb: add family
+ D SDS13 PCS support
 From: netdev-bot+sashiko@kernel.org
 To: namiltd@yahoo.com
 Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch, olteanv@gmail.com,
  kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 05:14:17 +0000
-Message-ID: <179160925797.434549.12327289507107214339@kernel.org>
-In-Reply-To: <b65ed622-c511-4acb-9661-89ed0615e0b8@yahoo.com>
-References: <b65ed622-c511-4acb-9661-89ed0615e0b8@yahoo.com>
-X-sashiko-severity: Low
+Date: Sat, 10 Oct 2026 05:14:19 +0000
+Message-ID: <179160925945.434549.12881167125289499223@kernel.org>
+In-Reply-To: <a45bbcfe-9436-4800-bf23-553d1d566716@yahoo.com>
+References: <a45bbcfe-9436-4800-bf23-553d1d566716@yahoo.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,131 +48,253 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-- [Low] The commit message and the new kernel-doc are inaccurate in two
-  places.
-- [Low] Several comments are stale after this patch.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] On family D (RTL8367S-VB), the SerDes path skips every SerDes-
+  side speed, duplex and pause step, but phylink is still told the port…
+- [Medium] In this commit, the family D `rtl8365mb_pcs_config()` writes
+  the SDS_MISC mode field (bits 4:0) straight to SGMII (0x02) or HSGMII…
+- [Low] The `struct rtl8365mb` kernel-doc says `@sds_supported` means
+  "SerDes tuning parameters match the chip option, so the SerDes…
+- [Low] Several comments in the SerDes PCS/MAC path still say the SerDes
+  link parameters are forced, or reprogrammed, in…
 
 --
 
-net: dsa: realtek: rtl8365mb: set/clear pvid for family D
+net: dsa: realtek: rtl8365mb: add family D SDS13 PCS support
 
-This patch adds a direct-VID path to rtl8365mb_vlan_pvid_port_set() and
-rtl8365mb_vlan_pvid_port_clear() for RTL8365MB_FAMILY_D chips. On those
-chips, the PVID is written as a raw 12-bit VID to a per-port register, and
-the VLAN MC table is skipped entirely.
+This commit extends the RTL8367S SGMII/HSGMII PCS code to family D
+switches, whose CPU SerDes is reached through the indexed SDS13 window.
+It adds family D tuning tables and SDS_MISC encodings. The family D path
+is chosen from the chip-family metadata, and family C is left unchanged.
 
-> The RTL8367S-VB (family D) has no working VLAN member-config (MC)
-> table in hardware. rtl8365mb_vlan_port_get_pvid() was already fixed
-> to read PVID directly from its dedicated per-port register, but
-> rtl8365mb_vlan_pvid_port_set() and rtl8365mb_vlan_pvid_port_clear()
-> still went through the MC-index allocation path meant for family C,
-> which on family D hardware writes into the wrong register/field
-> (colliding with the neighbouring port's real PVID register) and reads
-> back a VLAN MC table that does not exist on this silicon.
-
-[Severity: Low]
-Is "the neighbouring port's real PVID register" accurate for all ports?
-
-The family-C macros map port p like this, with a 5-bit field at bit offset
-((_p) & 1) << 3:
-
-#define RTL8365MB_VLAN_PVID_CTRL_REG(_p) \
-		(RTL8365MB_VLAN_PVID_CTRL_BASE + ((_p) >> 1))
-
-On family D, 0x0700 + q is port q's own 12-bit VID register:
-
-#define RTL8365MB_D_VLAN_PVID_CTRL_REG(port) \
-	(RTL8365MB_D_VLAN_PVID_CTRL_BASE + (port))
-
-So a family-C write for port p lands in the VID field of port (p >> 1).
-Port 0 corrupts its own VID. Only ports 1 and 2 hit a neighbour (ports 0
-and 1). Port 3 hits port 1, ports 4 and 5 hit port 2, and ports 6 and 7
-hit port 3.
-
-Could the commit message say that port p's write lands in port
-(p >> 1)'s PVID register?
-
-Separately, the new kernel-doc for rtl8365mb_vlan_pvid_port_set_direct()
-says:
-
- * the rollback behavior of the family-C implementation above.
-
-The family-C rtl8365mb_vlan_pvid_port_set() is defined below this helper,
-though, not above it.
-
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-> index 0466e8cbc4123..da517b1aae208 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-> @@ -810,6 +810,64 @@ rtl8365mb_vlan_port_set_framefilter(struct realtek_priv *priv,
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> index 3819a48386006..4cad90f5c0181 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
 
 [ ... ]
 
->  /*
->   * rtl8365mb_vlan_pvid_port_set() - Configure a port's PVID and associated
->   * VLANMC entry
-> @@ -839,6 +897,13 @@ int rtl8365mb_vlan_pvid_port_set(struct dsa_switch *ds, int port, u16 vid,
+> @@ -1398,6 +1435,14 @@ static int rtl8365mb_sds_probe_option(struct realtek_priv *priv)
+>  	int ret;
+>  	int i;
 >  
->  	lockdep_assert_held(&priv->vlan_lock);
+> +	/* Family D has a fixed SDS13 programming model and does not use the
+> +	 * family C option register to select its tuning table.
+> +	 */
+> +	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D) {
+> +		mb->sds_supported = true;
+> +		return 0;
+> +	}
+> +
+>  	/* Nothing to probe if no external interface is wired to the SerDes */
+>  	for (i = 0; i < RTL8365MB_MAX_NUM_EXTINTS; i++) {
+>  		extint = &mb->chip_info->extints[i];
+
+[Severity: Low]
+This isn't a bug, but this early return skips both the extint scan ("Nothing
+to probe if no external interface is wired to the SerDes") and the option
+register check. The kernel-doc for struct rtl8365mb still says:
+
+ * @sds_supported: SerDes tuning parameters match the chip option, so the
+ *                 SerDes interface modes can be advertised
+
+Should the kernel-doc be updated for family D?
+
+rtl8365mb_setup() also calls rtl8365mb_sds_raise_rate_limits() whenever
+sds_supported is set. As a result, every family D chip gets its port 6
+ingress and egress rate limits rewritten.
+
+RTL8367S-VB does have an SGMII/HSGMII extint on port 6, so nothing changes
+today. The commit message says this code can be reused by other family D
+boards, though. Would it make sense to keep the extint scan ahead of the
+family D shortcut?
+
+[ ... ]
+
+> @@ -1526,34 +1590,53 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
 >  
-> +	/* This chip family has no VLAN MC table - PVID is a raw VID in a
-> +	 * dedicated per-port register, and there is no separate membership
-> +	 * table entry to allocate/track.
+>  	/* Tune the SerDes with vendor-prescribed parameters */
+>  	for (i = 0; i < sds_jam_size; i++) {
+> -		ret = rtl8365mb_sds_write(priv, sds_jam[i].reg,
+> -					  sds_jam[i].val);
+> +		ret = rtl8365mb_sds_write(priv, sds_index,
+> +					  sds_jam[i].reg, sds_jam[i].val);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	/* Family-specific post-tuning configuration */
+> +	if (is_d) {
+> +		ret = regmap_update_bits(priv->map, RTL8365MB_D_FIBER_CFG2_REG,
+> +					 RTL8365MB_D_FIBER_CFG2_RX_DISABLE_MASK,
+> +					 RTL8365MB_D_FIBER_CFG2_RX_DISABLE_SDS0);
+>  		if (ret)
+>  			return ret;
+> +
+> +		misc_mask = RTL8365MB_D_SDS_MISC_CFG_MASK;
+> +		misc_val  = RTL8365MB_D_SDS_MISC_PA33PC_EN |
+> +			    RTL8365MB_D_SDS_MISC_PA12PC_EN |
+> +			    RTL8365MB_D_SDS_MISC_MAC6_SEL_SDS0 | sds_mode;
+> +	} else {
+
+[ ... ]
+
+>  	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
+> -				 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK |
+> -					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK,
+> -				 mode == RTL8365MB_EXT_PORT_MODE_SGMII ?
+> -					 RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK :
+> -					 RTL8365MB_SDS_MISC_MAC8_SEL_HSGMII_MASK);
+> +				 misc_mask, misc_val);
+>  	if (ret)
+>  		return ret;
+
+[Severity: Medium]
+On family D, does this write give the SerDes receiver a mode edge to latch
+on?
+
+The mode field (bits 4:0) is written straight to SGMII (0x02) or HSGMII
+(0x12). It is never parked at RTL8365MB_D_PORT_SDS_MODE_DISABLE (0x1f)
+first.
+
+The register may already hold the target value, either from the bootloader
+or from an earlier pcs_config() with the same interface. In that case
+regmap_update_bits() writes nothing. Even when the write does happen, it can
+land before the far-end MAC is up.
+
+At this point in the series, could the CPU-facing trunk then report link up
+on both sides but pass no frames?
+
+The later patch "net: dsa: realtek: rtl8365mb: re-latch the family D SerDes"
+seems to fix this with rtl8365mb_sds_relatch_work(). That work parks
+SDS_MISC at DISABLE, sleeps 20 ms, restores the target, and retries until
+the link status bit is set. Could that logic be folded into this patch, so
+this commit works on its own when bisecting?
+
+[ ... ]
+
+> @@ -1576,14 +1661,16 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
+>  	/* Keep SGMII in-band autonegotiation disabled: the link parameters are
+>  	 * forced from rtl8365mb_pcs_link_up() instead.
+>  	 */
+> -	ret = rtl8365mb_sds_read(priv, RTL8365MB_SDS_REG_NWAY, &val);
+> +	ret = rtl8365mb_sds_read(priv, sds_index,
+> +				 RTL8365MB_SDS_REG_NWAY, &val);
+
+[Severity: Low]
+This isn't a bug, but this comment is no longer accurate for family D,
+because rtl8365mb_pcs_link_up() now returns right away there. Several other
+comments say the same thing and are unchanged.
+
+In rtl8365mb_pcs_get_state():
+
+	/* In-band autonegotiation is not implemented, so the link parameters are
+	 * forced from rtl8365mb_pcs_link_up(). ...
+
+In rtl8365mb_phylink_mac_link_up():
+
+	/* The SerDes forced link state is programmed by the PCS in
+	 * rtl8365mb_pcs_link_up(); here only the MAC external interface force
+	 * is configured, for both RGMII and SerDes.
+	 */
+
+In rtl8365mb_phylink_mac_link_down():
+
+	 * enough to bring the link down; the SerDes keeps presenting its last
+	 * forced state until the next pcs_link_up() reprograms it.
+
+The comment above RTL8365MB_SDS_EXT_INTERFACE_ID also says:
+
+/* The embedded SerDes can only be muxed to external interface 1 (MAC8),
+ * which is port 6.
+ */
+
+However, the family D chip_info puts the SerDes on extint 0 (MAC6, through
+SDS13).
+
+Could these comments be updated to cover the family D path too?
+
+[ ... ]
+
+> @@ -1630,6 +1725,13 @@ static void rtl8365mb_pcs_get_state(struct phylink_pcs *pcs,
+>  	if (!state->link)
+>  		return;
+>  
+> +	if (is_d) {
+> +		state->duplex = DUPLEX_FULL;
+> +		state->speed = state->interface == PHY_INTERFACE_MODE_2500BASEX ?
+> +				SPEED_2500 : SPEED_1000;
+> +		return;
+> +	}
+> +
+>  	/* The speed and duplex are forced; read them back from the values
+>  	 * programmed into the SerDes MISC register.
+>  	 */
+> @@ -1671,6 +1773,12 @@ static void rtl8365mb_pcs_link_up(struct phylink_pcs *pcs,
+>  	u32 r_speed;
+>  	int ret;
+>  
+> +	/* Family D forces the external MAC ability from mac_link_up(); its
+> +	 * SDS_MISC fields do not share the family C link-force layout.
 > +	 */
 > +	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D)
-> +		return rtl8365mb_vlan_pvid_port_set_direct(priv, port, vid);
+> +		return;
 > +
 
-[Severity: Low]
-With this early return in place, should the kernel-doc for
-rtl8365mb_vlan_pvid_port_set() be updated too? It still says:
+[Severity: Medium]
+With this early return, does anything on family D program the SerDes for
+10/100 or half duplex?
 
- * rtl8365mb_vlan_pvid_port_set() - Configure a port's PVID and associated
- * VLANMC entry
- ...
- * Allocates or reuses a hardware VLANMC entry to map the given port to its new
- * PVID.
+The family D SDS_MISC fields added here (PA33PC_EN, PA12PC_EN, MAC6_SEL_SDS0
+and the 5-bit mode) have no speed or duplex field. pcs_config() also clears
+NWAY, so no in-band code word carries the rate either. If the family D MAC
+force register alone is enough for these modes, could a comment say so?
 
-On RTL8365MB_FAMILY_D, rtl8365mb_vlan_pvid_port_set_direct() writes a raw
-VID to RTL8365MB_D_VLAN_PVID_CTRL_REG(port) and never touches the VLANMC
-table.
+Pause has the same gap. The rtl8365mb_phylink_mac_link_up() hunk later in
+this patch skips the SDS_MISC TXFC/RXFC write on family D:
 
-The same applies to rtl8365mb_vlan_pvid_port_clear(). Its kernel-doc still
-says:
+	if (rtl8365mb_interface_is_serdes(interface) &&
+	    rtl8365mb_get_family(priv) != RTL8365MB_FAMILY_D) {
 
- * Resets the target port's hardware PVID allocation to 0. Cleans up and frees
- * the associated VLANMC entry if no other ports are referencing it.
+Nothing replaces that write. The comment just above it says these SerDes
+bits, "not the MAC force pause bits, gate pause on the SerDes external
+interface".
 
-The new family D branch calls rtl8365mb_vlan_pvid_port_clear_direct()
-instead, which does no VLANMC management.
+The family D branch in rtl8365mb_pcs_get_state() above always reports
+DUPLEX_FULL, plus SPEED_1000 or SPEED_2500.
 
-The file header comment also still says, without naming a family:
+When in-band AN is disabled, phylink_mac_pcs_get_state() fills in
+state->speed and state->duplex from the forced link_config before it calls
+pcs_get_state(). rtl8365mb_pcs_inband_caps() always returns
+LINK_INBAND_DISABLE.
 
- * programming of a port-based VLAN ID (PVID). The PVID is programmed on a
- * per-port basis via register field, which refers to a specific VLAN membership
- * configuration via an index 0~31.
- ...
- * VLANMC index 0 is reserved as a neutral PVID, used for standalone ports.
+Take managed = "in-band-status" with 100/half forced through ethtool. Would
+this branch replace those values with 1000/full? That would affect both what
+ethtool reports and what the next mac_link_up() forces into the MAC.
 
-The struct rtl8365mb_vlanmc kernel-doc also still lists "PVID
-configuration" as one of the remaining uses of the VLAN membership
-configuration database.
+Meanwhile, rtl8365mb_phylink_get_caps() still advertises:
 
-Could these comments mention the family D raw-VID path? The "above"
-reference in the rtl8365mb_vlan_pvid_port_set_direct() kernel-doc, noted
-earlier, is the same kind of stale comment.
+	config->mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE |
+				   MAC_10 | MAC_100 | MAC_1000FD;
 
->  	/* Read the old PVID exclusively to undo in case of error */
->  	ret = rtl8365mb_vlan_get_pvid_mc(priv, port, &prev_vlanmc_idx,
->  					 &prev_vlanmc);
+rtl8365mb_sds_probe_option() now sets sds_supported for every family D
+chip. That means SGMII and 2500base-X are offered on the RTL8367S-VB port 6
+extint.
 
-[ ... ]
+Should the family D SerDes port limit its mac_capabilities to what this path
+actually handles? Or should the commit message explain these limits? Right
+now it only says the "SDS_MISC fields differ from family C", and this
+appears unchanged at the end of the series.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/28382f3f-03c1-4606-9b11-86f118abeafe%40yahoo.com
