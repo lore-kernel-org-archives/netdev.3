@@ -1,96 +1,96 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE152E0B5C
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 22:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009E033DED1
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 22:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791669653; cv=pass; b=POK/zTWpx/tVjMinWMdIR3uquoBoDXEpFde6bOYyZibjocV5cCWfVyX7ePdzAptACZ0X5nCuotNyRDhBrJVeZBZt1qq9wtvlE4/BhCMiKzKQqJZ+AHTNo2qEW9zE4sUDnBvYtVS3b/2KX4XIkQXlxjXazNzjfGvwNp+v28SOHB8=
+	t=1791669865; cv=pass; b=ikwajywrxKzVd7Ezh1q/0VCwFa8h57urwDMkmgWNHDPEJ8zULZKY0yzMuS1bs71npjb+CAemm7qyal9+xa6fq3I0leZXiU/pnxNFpfowa13/60MT8AoCIU0Glk4J3YrbcWu8+/VuWbssXdpd+0IYEnuFhBGDz3RuNuHlrOcD22Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791669653; c=relaxed/simple;
-	bh=VsLa3yNmPbqAsvOEv+girJFBtwqO7wp3UAIL92BqneU=;
+	s=arc-20240116; t=1791669865; c=relaxed/simple;
+	bh=BYcObbLCaSgU0tk4reE6Oh6GJ9XtFYK/QOHixm1CUkA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hYNIjx9KWzThH8uo7qORl5vU8xKnixrMd/+m3IyK2oGpJKA1ltXdKvZwnvNBYxAlPVHPKpe5BIu1mJqtqUE1SgCAJX3gAuRyu7imrRDK/4sOsFCxrWsxdfrjZMNK97tpmvQkHzxukvfPgkHM/Zi4af/Z1JhwwDkg4QU4s4uPkSM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Z+P3lxY2; arc=pass smtp.client-ip=74.125.224.52
+	 To:Cc:Content-Type; b=lRMTGCaRgwQMi0lWlh0W/swZI5KRW7HC+/TmL9hFdyIlWTBGuqz2wZhrkfcfWWFJcfmIxBfsvSnvFk8WWWDvY9LTvvmobyOVvaGwWYkHApPFpNKdu/Hw1+n3OgaConTiQs4KJqVZA4zGFK49lW8HgUsjjcPY3dl1JPQKJo1DXrM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=p1O8tu+j; arc=pass smtp.client-ip=74.125.224.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Z+P3lxY2"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-677bf06de21so497752d50.3
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 15:00:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791669651; cv=none;
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="p1O8tu+j"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6776efd4ff1so502592d50.1
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 15:04:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791669863; cv=none;
         d=google.com; s=arc-20260327;
-        b=sx9KtaeOIpGsHqxPPxRVGAspB4aRWYQ94dzJRZ57Pq31vFLGb8IbrTPVXn66c+XJR7
-         e1M/a5PNiSgF3ptILg2fh8sy5k8GLWZnx6r0+UDdFuNDVe/FK3jdIQ6qNB/kh7cWoUnZ
-         TSUE6CDM3DqQqwEooiSfeTYGtq4xJ1aiLLIcZvrd4Bw5/OxpThdTDQa1fbdETNcBYlLw
-         UqhBepxYDgM48G0RgSO6LLQ3te73dS8E/t+FQ07W3F4wzFZ2IKz+WxWiYwcKYKaLH3C9
-         8IvvWyU1vUP5w/FW2d6Nk2nJOjuX3z9FznHTjP5uDnVPzmv+OQvl9GQRJ0DRCHkEiUHk
-         w5Yw==
+        b=M0GIeRFrZCmSDZ1z/QxaYHmwP6I/xyoW/+UTvh2+CnPOLmoj/uWL/0Ff3S45j+80AT
+         VAQqkpGCcSjXwPaGkXHsejZu6Zo1PT9ZJ5/wYKaZ1G81qEcTcY/hc1cfpdCt+tqGlTDX
+         Tk1/9V+JjvpK7gmXQzcmt0oUAPXrrcnnp/t1DhR8EdSBrYxF+YHCvYh6GYobjKf6ThV6
+         3VcCmv5GE+5LQQujlrjVc3cQL4sl2ZpcOvx/hmXqj6HECDJfoRAuO5z5JdIqmjhgSeB/
+         Rd0B4bI73Ywzm94Rt4xYItqOo3zBvZSsak9NLVXyKBPZJqoE1cII5o9obGupnvaADnR3
+         OVow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=viEI3bB6GOdsd4kqZvlb/IfnNxfAW1h37zzw5ogvS/U=;
-        fh=WeXQg1BYjdUEihFKoZLm+llWyA2enru7VF9iV7cO5ac=;
-        b=LChiN5uFpDU77QWAArJVWRJfuS0WG+ME1JiJjoBMR36etcGIbd4Q7bnJpXy4L1mCEe
-         opj/PeM35I79rbxcOtnzrU2an6fVq42LLXcQE2NqqP0vaolEJdZqwLs4MJYbnOG6tLvL
-         oLs3+9CVi6fomjvBd6JQM6ycmk+bALSxKwP6iq2dhB6t2k5NHRtkF1XoDjyq3IgcPpjB
-         UInsQZktEEX03WJ6Etcdl2HYkFcJ9gqSgJcggapGpNo9HAOO0rhTVUknYU4dH8Doesbl
-         6/qoeL4vexu3dsuf225Zj10ZOriccdhDo84aBlvW9H4OHBotHAF7s/lxa2cNU9hg/MUs
-         q+Ow==;
+        bh=nD84KsrwDgkTBQQV+472E0SUuRjtbi5qncXpaLstElo=;
+        fh=ADLn0VFIyqnAX83XpXskF16FsjN062Gim3ArOBa3HRY=;
+        b=CNkz+vJ/P3Qg6hpH2iaecik8rELJ6JyDiPMJ1QgltCYazfHSvfnqz2Pxv2+sLk2OfW
+         Qs3y/LjH7HRWMCoCoU9WyN96ckwU7D7kARsCsXr9cE+M7ORb/gMzdflnqa8n4vsp8gvR
+         07fAoYnYsyaFg+3e6fNY4YggPZOD+64iUnumYYhUwsw8SKjAjyJ3FKgfEVuEEmfEiwSy
+         phrPxPsWYWxHM32mutfI/1ziKx9j3Rr85Rorkz1mGbpVxXDJnmA7E3Gym+S6SYIDM7nd
+         xL5w4gmGvTNl+RNDoudxZOKv4PiN/Zow4z75aUworA2Exr8/v+8KhmWJjzrlnLdUUu5I
+         X5LA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1791669651; x=1792274451; darn=vger.kernel.org;
+        d=googlemail.com; s=20251104; t=1791669863; x=1792274663; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=viEI3bB6GOdsd4kqZvlb/IfnNxfAW1h37zzw5ogvS/U=;
-        b=Z+P3lxY2zcf3Kb5thIym1/9pShU4pcsu19c2lYcYTIM4vhCVFK51rQVCb7734VU41k
-         dqI+fbGue/8Cucl8f9uyXI/zYAaAJ4Fv2gm5rFFrCsQOhLi5VOF1Eow9TdguabLJmH8h
-         brz9+JrfAF4RkW0hKjsku/7aCEZUpRN9iON6kmJX2PCVFWv662FKwFkAirHlwxLrser/
-         xGyaQ+GHPIyhCTSzVa2cLL8pmlcM/ulykrmnT/OiyOXfJFJVXr0AgpU4ybSVQ+b9R7IR
-         YkUg/AyxCu6sFxqOKZE+3HrmYiscDx+dDICnmpJ6YoFm+ElDyi3gOTlwPFat5FeCBNa8
-         8PBw==
+        bh=nD84KsrwDgkTBQQV+472E0SUuRjtbi5qncXpaLstElo=;
+        b=p1O8tu+jIHXloojYJcntAerl/63gaJIulBPFm0UByRTVmqXvIAJ8HJtZgddJxFBqIi
+         nF5h4mp6dj23uHnsVS36bQjBHKmd63qWW0gad61dzh2TTLSF2ZVGYBUlum3SX3qlgcMk
+         SnSFMCyFDXFX+gE2H8Nwej9Va8ZAbGQZticmu7pDJjmsi5cdyGj7HoXT0rtsP3Nx6J92
+         ftCPAwnl7vex6uvBvtHwF0VJZaXZghBmode6VuLHv+jgzvB2m0/jCci3hL3LV3tv01Gu
+         z2BoKqS1TvFdVFs9zBc4ZLPtlFWwOOAJtqAMFDzc/XkFz+zDHS9S71BOrl8I7dCwR0jP
+         Lk3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791669651; x=1792274451;
+        d=1e100.net; s=20260707; t=1791669863; x=1792274663;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=viEI3bB6GOdsd4kqZvlb/IfnNxfAW1h37zzw5ogvS/U=;
-        b=xpI1jNVheXph1VeJslxtCuA4A2q2Xu54UF5Tr/EMu/ES3XLV9Nqj/GzfubrfMZmbUn
-         R4YynXO4/lKjwSSS+EA94XdBgnOd4Dws8fI/gn+c6MALS8Eu0RFELAK2P2bEUwX9b5Ei
-         3Q/G0fCnUxvc7n+o7tYwvAvaPD7SpSUoMxcKspZM53QP4JfNN/JmYiR4bI5uY0hAdikJ
-         VyVC3y8xq0ZwByEN0+R3l+6OKomhKOVjTmOi4ZezGf+tnUmyeqlQVBYK6VaDQOZi2EQp
-         VpLcVW0Dot/RJnxKyt9hie7UmbmrB8Id8JN/wpHGb8UErOCWMk+rAEpXO9sOGvskl5GS
-         6U4Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxDgnXLVLxG1+p8ixl5OY/a+INH2y+PHfaoKE1AVwVZhrFJI+9PF0eu2tfJpRWIWoglzUvO9EA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLmA1bfSsMT3jR5zI10szTseVRJJUhvydYraZQIpE5XXjYXuYRZ
-	T3kU9Z/KEWofIbtbEiuld/06P5ZCrzmD8nq5VtNmVsHF1/X9882EBd6KeTfXW1apo5lUUZUKT4g
-	WpvPGyLJMjvV5XbqjAJgPz+I/bD4bWEU=
-X-Gm-Gg: AYBFou3Lo5+1YhvcxWM+dUKfZoAp6fztlcVhj6PPpfG1Lvn1yKGvpq3fzqMj9Ls7woK
-	r0gPK1TPy2pmmJ/6R1CcKZItbWEDakSXVaughDcgtgp+L2v798DyBVFSvEcHqgErGUIS0EBahkG
-	bembj0U8LOfLFEC+46g64CmcVefg0NG12s3u4/9QQIKWbZYlzsLyFVUZqF+rdUYJYCuKVuxWRjR
-	Jz9DAe1PrkF9eloQ7I4wn1Ex2w+kZAnmp4VCEMkNUL3jHFkHD76FV0c3IC5qhJq8+zkWsC1fU5/
-	xn3oOJ//qgAf1HO/MWvd67GouJJsB1C6kHcz6d75QZBU1ieEkOsb0EPHVajDhKan6hwwdGyTL2a
-	c79hohBI0h3pg
-X-Received: by 2002:a05:690e:810:20b0:671:5206:72f2 with SMTP id
- 956f58d0204a3-67936049a53mr1141845d50.56.1791669651100; Sat, 10 Oct 2026
- 15:00:51 -0700 (PDT)
+        bh=nD84KsrwDgkTBQQV+472E0SUuRjtbi5qncXpaLstElo=;
+        b=tpDq0EB03vuhYIJ9RaQdk2zeXqlw3JCbEFmeYwV40BwoSmo4FvKlZDMFfAQ+anWnWZ
+         UAhQJ6O43g77ZRBvxN0T39bt8fhG1L0g66vpvQ0ixMrwllG34kINHdiA0WpJ300RCi5Q
+         YOSUQYSzqjQ1u9X3QzUQ1UYfutzbrJbeavZAAuXwOXBR4l9V5ga+01OvFCLZjIcjTA7O
+         ueSOv0oCTfD33rERMPySktLSknYfNvMg9WcMUgfV5NgKB+LJtKzZCxZ94ZDTQYiS+YNZ
+         eqzOfBqQAQR+T0pjHIldhDyb4Bip2dUihwtPWssupHBriFhWbK8bxhNt5zqQ7tIon8s5
+         +eag==
+X-Forwarded-Encrypted: i=1; AKwUvBzubiq7/GA3dEHDXtq6eqQjn3igoLk0+MfuCO9gmrRoTxJNIR95lPCnPSa0JxeZRFCD5FqFr6A=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK7GvXFNfHI1RVj1TXnYmDjdUkMTpho8cDPt5nKcy0FwdBk1hfB
+	O8S2eblhvOzGtBsTQSntAipG4Q+370Yf2h+K4C03NeGPXjm8+nHG8GHo722BE/1NqWqB2OSIHSR
+	SQypjD+R578qxZaP80VvkuKP3twI4Fsw=
+X-Gm-Gg: AYBFou1ohqbikun+5QQwyK2hZ4dEGf58Mb2SWcBPSutOgf8xMaIyQyQUQKJTDmOckIs
+	vWmj5qAzmjuRFeViAbgiLTbBwvC2vtpXqC4omYmO6gUG8gubfd+kazwsm+W7pIdX54wHrfcvtvA
+	07B/gmSnTlIAyp7BAVtJy0jd+2+2v1s0Y8p4ICoLzwwr20HbDVE5MXQasATebzrC9y9So/ROPfC
+	L9bxLj7ZUQ21C+ua9qTgpIgoBP/QSeO52hg3LMBaJaDj7YyboW/aL0OyJjYT6AkI6KF4SF1So7r
+	lBNvergf4GQV7mqmY/griSBz7qH6U+ZdnpVzhMTW3d/ryvyrPCeHViVS2lagYEB3uRgDhf0auZt
+	fvoWJQFzMijDEFA==
+X-Received: by 2002:a05:690e:1407:b0:679:24b6:fb2f with SMTP id
+ 956f58d0204a3-6793678c7e0mr2255529d50.12.1791669862784; Sat, 10 Oct 2026
+ 15:04:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261010105900.247342-1-tanure@linux.com> <20261010105900.247342-8-tanure@linux.com>
-In-Reply-To: <20261010105900.247342-8-tanure@linux.com>
+References: <20261010105900.247342-1-tanure@linux.com> <20261010105900.247342-2-tanure@linux.com>
+In-Reply-To: <20261010105900.247342-2-tanure@linux.com>
 From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Sun, 11 Oct 2026 00:00:40 +0200
-X-Gm-Features: AclHuK-1AFCBBfJ7Kfb5Ikey6DbHIu9yDPTfwBVIgnuMS2JnhjeqsjRPSCAltBs
-Message-ID: <CAFBinCC8iKESoc2zEXJMEmqk0cwWbVap-a2KcAtB7-KFKO9Atg@mail.gmail.com>
-Subject: Re: [PATCH v3 7/8] arm64: dts: amlogic: t7: khadas-vim4: enable the
- ethernet port
+Date: Sun, 11 Oct 2026 00:04:12 +0200
+X-Gm-Features: AclHuK9eVPsrLu_8xG98kzx45q0ow1wl_zWO8WFmOGBNd_k8l5MABlydeHwbbRI
+Message-ID: <CAFBinCAejxmeeHyDy+vMSg6dBm+9prhEo9qZ7FAsiWNB1W-HXw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/8] dt-bindings: net: amlogic,meson-dwmac: list the
+ compatible combinations
 To: Lucas Tanure <tanure@linux.com>
 Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
@@ -101,29 +101,33 @@ Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
 	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
+	linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+
+Hi Lucas and Conor,
 
 On Sat, Oct 10, 2026 at 12:59=E2=80=AFPM Lucas Tanure <tanure@linux.com> wr=
 ote:
 [...]
-> RGMII needs a delay on each of its two clocks, and on this board
-> both come from inside the chips, not from the board traces. The PHY
-> adds the one on receive. Its transmit delay does not work here, so the
-> controller adds that one.
-[...]
-> +&ethmac {
-> +       status =3D "okay";
-> +       pinctrl-0 =3D <&eth_pins>, <&eth_rgmii_pins>;
-> +       pinctrl-names =3D "default";
-> +       phy-mode =3D "rgmii-id";
-> +       phy-handle =3D <&external_phy>;
-> +       tx-internal-delay-ps =3D <2000>;
-You're stating that RTL8211F's TX delay doesn't work but not explaining why=
-.
-I haven't come across this behavior before and I'm worried that that's
-an issue with a batch of RTL8211F.
-What if the previous/next batch of RTL8211F will have working TX delay
-again - wouldn't that mean 4ns delay in total unless the RTL8211F
-driver is changed?
+> +          - enum:
+> +              - amlogic,meson8b-dwmac
+> +              - amlogic,meson-gxbb-dwmac
+> +              - amlogic,meson-axg-dwmac
+> +              - amlogic,meson-g12a-dwmac
+> +          - const: snps,dwmac-3.70a
+> +          - const: snps,dwmac
+> +      - items:
+> +          - enum:
+> +              - amlogic,meson6-dwmac
+> +              - amlogic,meson8m2-dwmac
+Meson8m2 dwmac reports: User ID: 0x10, Synopsys ID: 0x37
+In case it helps I can submit a patch to change the Meson8m2 .dtsi to
+use "amlogic,meson8m2-dwmac", "snps,dwmac-3.70a", "snps,dwmac" - then
+we could move it here too.
+That leaves only Meson6 with a single fallback compatible. I don't
+have any Meson6 boards, so it'll have to stay that way.
+
+
+Best regards,
+Martin
