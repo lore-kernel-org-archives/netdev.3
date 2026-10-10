@@ -1,236 +1,127 @@
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7CC34E777
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 22:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791671918; cv=none; b=HJYzdbGU/uBlLZ2ddt5Eib5IByKSN/kLsVEyUEDnqu/i4S3rEAsj2Kguv3IQy3SiSeTAc2rqnRxvQ7QPuuBsX5RC8rJuCk9TeRI4JcqMzZpvatPX8CIKumVcvr5cYhx5yo2JxvDbHL37Sp3rbR610gozAPU6RdWUs5SHG61Ye0M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791671918; c=relaxed/simple;
-	bh=GakE8AZ7h7Ff/gZ0gzwS+vvrTUmSI/jN2/MR+62m4Xg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Wf/Hz/gDL5txuChyRqLj5XAy21j6TneAM6xW+7E2xwK72RYRESLBgbtGSackThVvnCz04I+JYiBrUJy+ESjQmVLrULVb05issWgRrvk+KfLVfDC4Lv6HAQ+8FBJqUU1T5zBiPlj+7TAxhB0ZqtYVFTLFl10d+ctETHIS+GCtKV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CpfV9UN9; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648ED38B158
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 22:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791672055; cv=pass; b=OnXfD8vFN2uxBwMmJ7guVgwAeSw4JgA4l7rKUdD+kFDFZDyYINJWEbhpv9cp5ibI+dz1Y5CIZ8NojG8Poi5uoNjFkN6gL6PAiQ++OWN4Lpdm5hGHYh0TfKtmjOFNsF9ua2OK4cx9rxDGZWsHZ14RZEzAahB+wUJqtFUPqkdy55g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791672055; c=relaxed/simple;
+	bh=6mEGm2u4SySep02ssBb6cSOg0RdAq/up2Jup45p2V48=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aVT8Wt+CleTf0vwWupfKJD5Nbo4TovFnB99LTyP+a+0tWmAtFv+jN+UkWR7Uv+sxwrSSERUTakH28f8tPhf2ds5kjqS4X7gK8E1iFmIA4H9v4Lr33YpAOY3yPZliCoNXrAx9WQDSnf1n/9O/+sik1+f/QmOF2cDmYIZo9lMRv+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=hTbDXvB+; arc=pass smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CpfV9UN9"
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c2533d83e3bso133401666b.2
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 15:38:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="hTbDXvB+"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6793ff3d53dso520594d50.2
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 15:40:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791672053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AWXQYVqMEs9dvYJ9R59cpQMlCHZ+KdEFBKe2MCsoS3JyR/DWAwI5tfrAZy4pPl4ay3
+         eQOOlZpYRhymvVh6i4dcU7VN+6T6C6tJkk3cZmjAkF4AMOxV5RjvkYkADIodDVj/Yvxo
+         c7JGK9yPScN3OBypisn8u7slYihClHeSnk+razsFYVXyv58Z0XF+DRXgwbtm9QeDheYW
+         UmuJSPFVVLtEPyG4KNzRVzAo0Ec2JRzDPYKBvMT/SwVtyyP/h85zzhqlR+5oH3O6rM+O
+         gzkprD7jMCq2/eLT9+koGqyQKTCQn3WvZjkk27lXINZ282CIHTwl8xkTZsR3DdCmyz4M
+         rOwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6mEGm2u4SySep02ssBb6cSOg0RdAq/up2Jup45p2V48=;
+        fh=K+LRXeOunBi+2aEUULneAJgowTe3VZ9y1BEYzyqZcOY=;
+        b=rw2+vUEWfbQVnVcCZmBgYsFnk/jMhOKf2uGI0v6GkEw5xQ/BLRo0xpQmDU5XzBm4eu
+         5N6sUx4mEu/kODndVmovZiq11O/9bCWzdMacdVv6iXvspjyWioCEHAkcPk2JX3RmQ+uY
+         rRkYapfivrbdKR6yS9lIDLRPpSKpAdYnewO3szjFNGCkjzRwdtWW8biLit1+JYXjZkhq
+         1MMs5rXxFLRXZA+n7d/Q8sHpUlBpMOyJZFZsAaUOocI0bsbifLv0YURx9zh9YWE5R6/a
+         7I12HsLOCXHeZZOpjhIE4Kmv782l3j3f9M1tdggcRxAG5AvZLWVkQhbmJu96N+0SHd0s
+         txZw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791671915; x=1792276715; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ASc9O9quoKRrtl/skArbQkt7QMywfxsGfVb1NDerWcQ=;
-        b=CpfV9UN9TDfvsnlLE/GJzBlZr9r5PT9uhtZ/jG1pg9DY/kqYUHm4IelXq9f+c/MYC8
-         8gO1rDPzjomaVGy5pLt5OkUtLx8WelRE5jeIkgG4neV+gidnFOuE5g2n/HGeRSrKDofk
-         fXv49mbbSmx7MngYayt9omNviKrIa928FAWS14OY8yr9c/pQA+q3FkBo52sxWMbHT3bG
-         hMTvw0/7t2IzVdeWs7IT/1LdZL3rD73KPWtn9lP0oChS1J1gH6VPrJ3xZ+0cGYQjae5k
-         HGloZqQNTXEa5TcHubSWA9kdUrGh3oldfaqhDrbqd/aZGkLMY0ZeApUnxaYgNVNiAFKq
-         EoIg==
+        d=googlemail.com; s=20251104; t=1791672053; x=1792276853; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6mEGm2u4SySep02ssBb6cSOg0RdAq/up2Jup45p2V48=;
+        b=hTbDXvB+EroO1FpSn6zCPJhCbP3gFD8tCYQk6spnV04sD8P4ZB7CnAeyHnUWZY0brJ
+         CCNyb+U8INcbxlctmvPP1Fbl6QShI5MLkUeZ7ilq1+Jm4jcXWXweJogVeYRJSMVH9vWA
+         6dswFz9Har+uvJBV1NG4SDnf1ChzqAbMIrT01MvyOVt9oHrK+a8hpJrwsTYwlyT7kJ0Z
+         lnUnFgGmqCa2VjrIWZtdwTu1iBtDOlq8hs6gQKKLJvIZwGEadEyALFWyPsZLUHEkVy/S
+         9g2uf/C6Gaz288AxUS6rajoAcKVRYGRoFwC2bcKY+B90XfYhiOR+R7KRCrnNubF6KV6Y
+         pqxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791671915; x=1792276715;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ASc9O9quoKRrtl/skArbQkt7QMywfxsGfVb1NDerWcQ=;
-        b=VjsYav50QxOgiC3Fuhrf5mXzjhsHRXog0H3J4sxFu0yaqKfdzAnwH3eFvIdp8DtTRB
-         VO/z6HXHVX5lSY8XBtGvtYMJGdqI1yaHDq4F2Gls4RZsL6aIv6mLTGeeyu89AA6OGk8B
-         ikSppZHW+lG8Y8SH2fvhJx3II5q0NFWgmkXHvX/3Decy+fxGvXctzT5hQtaF/+B7MDE8
-         NEvcjAoY0Bh0G1QkQ+FyfpctaafybfzOcY6AF4EKwRQ3oMxKP0ZVXSV8dlSfK+hTyJyY
-         47tBliiZoVP1lG51SMG20F85isfzwIhGCeG/TEmIVKf5H/Qsk8Z2DriCLZqcUFOpzwrn
-         hnQg==
-X-Forwarded-Encrypted: i=1; AKwUvByiu11z7b5KFFakYlfVBav7ufZgdhqlh+qVPLPsCYlx0x+NbebIgc99ELDg7eNRlNN48KzfYSQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKfe4r1pZ8pOT68ouINT1i7XzoCsea5QTN81fG8uGPF5o11spcw
-	ECa+o+MmQzuDuiAht7WaF59e1luYtrdFqx+/WL3YBcU799gYr5nnmlgI
-X-Gm-Gg: AYBFou0XHOXoUNB3U9ZYwNRpyXsGvVCkNr1F4yXG6WcQ348OyI1K4Bl9lPD1P2wcXdk
-	+e9RndkQhqUZGUZWpKpxOx/QQVkXLR772ssWdC12q65UkiyiFReFDLss/p34YHLi3JtL+AV2QPb
-	Prol4kJKtaxNHtRFp69yIjV7eOawwhCvC8DEK1WSbeB06CuLK3bG4SRo/5PplBGsK8HFFLuAchT
-	H5s+YnaO++NHJaWX/WfVAMrJSoL/xgDsYoFEwV4QyxHifz7Ll5TRT6iAYxu54xdn2K6KwcN6/Cz
-	tNPtKIeYx/FwURcoEXrD/zUwr6Q7XEesvDqzdsxTy4iOf7OZwivaJ4UAVi+OscOW/qTIiDMsUZ3
-	QHpHiLraC9yQ8h9wO1AdYQ+gOXLZGz/IcldIl2F0o8YggSatCiDpcJgrybBk5Oa2Fy5K9REHtHT
-	3l0knuzp6/1QFJH1p2SwNBQ4ekgFVCU+2pEbgDONNHjybkdpP9W93RXQK/EYTc8cyWatRJ7eUaw
-	j2fmQ05Ng==
-X-Received: by 2002:a17:906:f5aa:b0:c2e:3abd:aadd with SMTP id a640c23a62f3a-c31aa093e85mr514870666b.37.1791671914377;
-        Sat, 10 Oct 2026 15:38:34 -0700 (PDT)
-Received: from theodors-laptop.. ([5.255.118.7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9762af5sm293764366b.1.2026.10.10.15.38.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 15:38:34 -0700 (PDT)
-From: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Christian Ehrig <cehrig@cloudflare.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Tom Herbert <tom@herbertland.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
-Subject: [PATCH net] ip_tunnel: reserve headroom for the encap header before pushing it
-Date: Sun, 11 Oct 2026 01:36:01 +0300
-Message-Id: <20261010223601.1193655-1-theodorlarionov@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20260707; t=1791672053; x=1792276853;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6mEGm2u4SySep02ssBb6cSOg0RdAq/up2Jup45p2V48=;
+        b=Hg3T4KY6hJ8/6UMPr6QXOmSUIRlPeymyBmmyfbIdDO86MrrUT17nQRp42f7OAM+GOm
+         7cPgChfTEK4K1x9miS2+dpwA7gBj6G/SfUUtUujR0LZWL6akci6JqeGVLOKOJ6w6bS5P
+         6SGVATgL8WTgxxOY27C4EiyurrL8rfsKMURkeqCUIfRw0UYefKOfEAsG0EZnSeDJ0UmQ
+         3GpHx4ZAWgBqvi9hQURYr17fwcPz+RLWF9Bx8lYsc6piHITWZnMCk/HFJT+q0MjHW+3m
+         WD2g2nmM4VWMHDuFexiLLA8+asQOxDcvBBwQ70lpqZz8UBTHF5JJ/ZoPqaJ0hRZGPz5S
+         hYcQ==
+X-Forwarded-Encrypted: i=1; AKwUvByN8tHBdTshV7YuYUFAZ5Vx5N/oLGk6LSUvLkiag5IY+SQf+v3kO0S0H34VYGrY1U16AqRbA9w=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJPtc/vuWnk5UqUNAk7aW0ZYyJCKiZRTFXK5IqKQeLvE+Pjvk9r
+	E3b8IggAonKJTz53DSOMxjFIX/7+JUUuNrByBCpN8iyIaUGpeBGuphTW4TcAZdCzrvPj4q9vbT9
+	unuR0yXkX9EbhzKRynQ9FpBDRBx50V3U=
+X-Gm-Gg: AYBFou1E+do+6zZJa3p32K2X5sAIr1JBB/QHgukjV/i0GiEsrr4l9zspuzqE1vF+FEt
+	y84mGONQ8ERnq3lITvU3XdAZQIOUw7BV/+GA4IYXXywvqNDotaxF0uCVbY6j8Lhk6dz3fHIdaPR
+	fskefkuiAZc6htN8ZIefVAQNKxtsz16Flhsfr4k6FR6s0SlR9DexcF3dODrejjpk8uuD9mlpdAk
+	VQiuPUHRlfUzHXiVKM+qwZuhIgwoMl5YsFY7urEHO9rx4+Drzj1DMy4WFEOlmNfPqgy/+VdkDtN
+	pxXZVyS4jcx1jbNUbrLgbROVS2q7BSMj3IoLHn5z7a7OWQPEJ1iceKNQf9MIrILdHspzQidh+La
+	3YJolCu0YpNkK
+X-Received: by 2002:a05:690e:12cf:b0:667:e855:ecdb with SMTP id
+ 956f58d0204a3-67935edbdd4mr1914994d50.3.1791672053242; Sat, 10 Oct 2026
+ 15:40:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261010105900.247342-1-tanure@linux.com> <20261010105900.247342-4-tanure@linux.com>
+In-Reply-To: <20261010105900.247342-4-tanure@linux.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Sun, 11 Oct 2026 00:40:42 +0200
+X-Gm-Features: AclHuK8sus9eXHW8D0kCsjiICdQbyK-pql4xQRfUyDiKVkCN64EjzyryJR6PDrA
+Message-ID: <CAFBinCCaAT8+YjSwg0=aFF8mbN=j-MQ=oWvfwUakVE8O-eu93Q@mail.gmail.com>
+Subject: Re: [PATCH v3 3/8] net: stmmac: dwmac-meson8b: add support for the
+ Amlogic T7
+To: Lucas Tanure <tanure@linux.com>
+Cc: xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ip_tunnel_xmit() and ip_md_tunnel_xmit() push the FOU/GUE header in
-ip_tunnel_encap() before skb_cow_head() reserves headroom and unshares
-the header. A packet redirected into the tunnel by tc mirred or an nft
-netdev fwd only has the headroom of the device it came from, and
-fou_build_udp() hits skb_under_panic(). With a mirred mirror, the push
-overwrites the Ethernet header of the original packet instead.
-
-Reproducer, run in an unprivileged user and network namespace:
-
-  ip link add dummy0 type dummy
-  ip addr add 10.2.2.1/24 dev dummy0
-  ip link set dummy0 up
-  ip link add ipip0 type ipip local 10.1.1.1 remote 10.1.1.2 \
-          encap gue encap-sport auto encap-dport 5555 encap-remcsum
-  ip link set ipip0 up
-  tc qdisc add dev dummy0 clsact
-  tc filter add dev dummy0 egress matchall \
-          action mirred egress redirect dev ipip0
-  # send a UDP packet to 10.2.2.2
-
-skbuff: skb_under_panic: text:ffffffffad28b5cf len:49 put:8 head:ffff888010217740 data:ffff88801021773c tail:0x2d end:0x180 dev:ipip0
-kernel BUG at net/core/skbuff.c:214!
-Call Trace:
- <TASK>
- skb_push+0xcc/0xf0
- fou_build_udp+0x2f/0x380
- gue_build_header+0xfa/0x150
- ip_tunnel_xmit+0x87f/0x21c0
- ipip_tunnel_xmit+0x472/0x4f0
- dev_hard_start_xmit+0x139/0x680
- __dev_queue_xmit+0x11e4/0x3520
- sch_frag_xmit_hook+0x10a/0x190
- tcf_dev_queue_xmit+0x44/0x60
- tcf_mirred_to_dev+0xbf8/0x1060
- tcf_mirred_act+0x612/0x11b0
- tcf_action_exec+0x1d9/0x8b0
- mall_classify+0x16d/0x1e0
- __tcf_classify.constprop.0+0x121/0x710
- tcf_classify+0x8d/0xc0
- tc_run+0x342/0x590
- __dev_queue_xmit+0x9a7/0x3520
- neigh_resolve_output+0x44c/0x780
- ip_finish_output2+0x6e8/0x16f0
- __ip_finish_output.part.0+0x1bb/0x350
- ip_output+0x2ad/0x4a0
- ip_send_skb+0x195/0x1f0
- udp_send_skb+0x758/0xcc0
- udp_sendmsg+0x1634/0x2050
- </TASK>
-
-Call skb_cow_head() for the encap length at the start of both
-functions. ip_tunnel_xmit() reads tunnel->encap once, so a concurrent
-changelink cannot change the length between the reservation and the
-push. The GRE callers and ip6_tunnel already reserve this headroom.
-
-Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp encapsulation")
-Fixes: ac931d4cdec3 ("ipip,ip_tunnel,sit: Add FOU support for externally controlled ipip devices")
-Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
----
-Found with a syzkaller-based fuzzer.
-
-syzbot has an older report with the same title, fixed by c88f8d5cd95f
-("sit: update dev->needed_headroom in ipip6_tunnel_bind_dev()"). This
-is a different path: redirected packets do not get needed_headroom.
-
-Tested on net af32da41b032: the reproducer above and an nft netdev
-egress fwd variant no longer crash, and a GUE ipip tunnel between two
-namespaces still passes traffic.
-
- net/ipv4/ip_tunnel.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index e6bcf01411d0..38ab3c3bf5c9 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -579,6 +579,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	struct rtable *rt = NULL;
- 	struct flowi4 fl4;
- 	__be16 df = 0;
-+	int encap_hlen;
- 	u8 tos, ttl;
- 	bool use_cache;
- 
-@@ -587,6 +588,11 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 		     ip_tunnel_info_af(tun_info) != AF_INET))
- 		goto tx_error;
- 	key = &tun_info->key;
-+	encap_hlen = ip_encap_hlen(&tun_info->encap);
-+	if (encap_hlen < 0)
-+		goto tx_error;
-+	if (skb_cow_head(skb, encap_hlen))
-+		goto tx_dropped;
- 	memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
- 	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
- 	tos = key->tos;
-@@ -671,6 +677,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
- 	struct ip_tunnel_info *tun_info = NULL;
-+	struct ip_tunnel_encap encap;
- 	const struct iphdr *inner_iph;
- 	unsigned int max_headroom;	/* The extra header space needed */
- 	struct rtable *rt = NULL;		/* Route to the other host */
-@@ -679,11 +686,23 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	struct flowi4 fl4;
- 	bool md = false;
- 	bool connected;
-+	int encap_hlen;
- 	int err_count;
- 	u8 tos, ttl;
- 	__be32 dst;
- 	__be16 df;
- 
-+	/* Size and push the encap header from one copy of the config. */
-+	encap = READ_ONCE(tunnel->encap);
-+	encap_hlen = ip_encap_hlen(&encap);
-+	if (encap_hlen < 0)
-+		goto tx_error;
-+	if (skb_cow_head(skb, encap_hlen)) {
-+		DEV_STATS_INC(dev, tx_dropped);
-+		kfree_skb(skb);
-+		return;
-+	}
-+
- 	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
- 	connected = (tunnel->parms.iph.daddr != 0);
- 	payload_protocol = skb_protocol(skb, true);
-@@ -765,7 +784,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 			    tunnel->net, READ_ONCE(tunnel->parms.link),
- 			    tunnel->fwmark, skb_get_hash(skb), 0);
- 
--	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
-+	if (ip_tunnel_encap(skb, &encap, &protocol, &fl4) < 0)
- 		goto tx_error;
- 
- 	if (connected && md) {
-@@ -834,7 +853,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
- 	}
- 
- 	max_headroom = LL_RESERVED_SPACE(rt->dst.dev) + sizeof(struct iphdr)
--			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
-+			+ rt->dst.header_len + encap_hlen;
- 
- 	if (skb_cow_head(skb, max_headroom)) {
- 		ip_rt_put(rt);
-
-base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
--- 
-2.34.1
-
+On Sat, Oct 10, 2026 at 12:59=E2=80=AFPM Lucas Tanure <tanure@linux.com> wr=
+ote:
+>
+> The glue registers on the T7 are laid out exactly as the G12A ones, RX
+> delay field included, so the T7 can reuse the G12A settings.
+>
+> What it does not share is how the controller reaches memory. That path
+> runs through a pipeline stage with a gate of its own, and no other
+> device has any use for that gate. Nothing claims it, so it is switched
+> off as unused and a transfer that has started can never finish.
+>
+> Without that gate the controller cannot do DMA at all, so it is
+> required rather than optional: a clear probe failure beats an
+> undiagnosable hang later.
+>
+> Assisted-by: LLM
+> Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> Signed-off-by: Lucas Tanure <tanure@linux.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
