@@ -1,67 +1,67 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95033F4138
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 10:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626CE3F4138
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 10:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791627046; cv=none; b=ZXXo/1xqINndm9xfAxqnLVdQtARuXs0abaA964s8MJ46rrhxeGA0WkIh5oz+0hQq/pX6YRnXi0ZEcGn2FmChNT9VLeS8WA9pA4XBOTDsujWo/ZYP0MTOOZC28y1plYLCoNXQVPTAAPGGDPjDrYsaT6UiQ38spypuCEC1d3Qo1r0=
+	t=1791627048; cv=none; b=X4YaKAj0qDDkaFbGESmI3jScXJiUZaRzi8/ZWCWOAroJB8JWn0RkghShWK4UEWkFhoHftsAjh8Il0n6FOHxvjEWCX9LSpfwA4h7R2mLHyt64X81NFQZLSnoOlGQfxsCA0rY5KcDLfHCEeKz5YEfedsYgipj9yvn9iSfVc9nOmCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791627046; c=relaxed/simple;
-	bh=k5qXWm2fWfprmVvsRKBjYWJGJEhMZpzoHtTJXsDkYxc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M2iknmLWoHqIZC32MDk031PvnR+QrVWQMR7cqXo1eRcbJqeT4c7+rbuVRH4njcOlFN7zfR7OpaktvzTDgZQXy/AB3Oe3JSBCyMQ5G+LbhV1dkkC4GWISm4VF67QWP+pYBivxtR3MIU5XwQMDR2bJ+UDiUe2ouoevolPktOLMp8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XJ/Da0n2; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1791627048; c=relaxed/simple;
+	bh=6+Co2Zx5KpoZRtv9y1QI6IVaFfbA9GFUmjerQu63RJs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=kzNMBS8vkY9sYLk18k9ytkAgbnFIY6SOYvA3q4Eb0U648IgWv2ON9sc5MzNfj6RyO5j+oSeoX9ZumcCW6ULpmOXlRqsqLraGVWgt78RJ87X0bbrUhb4z1RADNQWcautWS0yyX9yCJT5atDdAaeOCNFuxO7c+MAvNhBiGagdcPNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CbwNyt/D; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XJ/Da0n2"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-884062f3296so332639b3a.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:10:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CbwNyt/D"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-88bc25fcd0eso337504b3a.2
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:10:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791627044; x=1792231844; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=6g0pW6yOR+NxDMtQhXgsc9e0vnz9TsV7kL1lDEnnCt8=;
-        b=XJ/Da0n2QZgfmg1l98fqDbR5o+Y5evlJueqGCnhxwT5dwkBMPfEO0VzYErlGlwnIcY
-         r3B55ZertW/FUcqbxlNYFoqxEsKvdmyfmqOG/qNy848oxTZIEbuNVDzuvfoSgutIh7du
-         noDVJw7xZbHKe37rh0/R/fQFU0/2IVIFT2Bw1PFiFhUtFwz4nUc2Bj1XgvvSx9HQY8vI
-         2zH6NY13pNEzGabNW97BFFgDWnRbtUx9TIoQw0Ulx0rqE+Gf+g4rTpkDiIUEd/2F8TBQ
-         MAhtjR82JVZgImtAFfVb5IKS4xGspX1qPTW8MuHJ5SOltxvQOznqicE6JIjM6+fSBhM5
-         xpYg==
+        d=gmail.com; s=20251104; t=1791627047; x=1792231847; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pGgAdtMsM68+kEQC26JSjKBLK+GU4QU18+YP9/Nryjg=;
+        b=CbwNyt/D5fj5pRW6uoT9lGaN5lePsEOSmbscSPkV9TtmkGtBqqo4Y4ukp9dsuEFXCe
+         3Mf+NOX1esZLjZ4HMso8RtV8T2zE5DfJZEn+Pv553ogLtdZ2N9kVmrFKVkwlHsjefTvu
+         7k18LRWIxRrWMvR7N3jthNJQH6ByYvQxZt33CxW8+EMUf8vvOmZ4mSCoRfSZb00O1lkN
+         MuC+KhUmIO6uwf0oT0fzWEtUJqiCMj3CuWgAPxPSgxnyEFvb89I5yPxidAlRxcOXeQZV
+         CAE7OAGzJmW2K4Y/We+YQ+6iGvjFVkUgEWDNtP6iO1mg7nqWS2m+VK2TZQuEm+ZyDBHu
+         G2rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791627044; x=1792231844;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=6g0pW6yOR+NxDMtQhXgsc9e0vnz9TsV7kL1lDEnnCt8=;
-        b=KGY6OYXKNaQTWFS9Ee2qSTm3YnZs3v4aCA0u/1tHZJIVQ6MnQAaIht/A65ygl+vVjf
-         ikgEJiEnaPUxN9yP8AD5Ehnop2MudStN0tyyHwoO9Ac7vkWZ19Gdg+PWGJes9ajPeCKn
-         86AzRN04m6b+ZqSnw10sas3KsejTiSMhU8bsxz7Pp9nFI7rwVeYOuXHse61iWniS23y+
-         7Xk3Ua6cPWsV6tKLQr2hsDnSmWpn10GUGrcTsCbrLKRY2fgIProlgF+GiiVOYzCAuPKd
-         v4wDTRZqoRqadVa5sNweko4fTyoRYn4C3qZ4jrqIpcQc0Q/WQ9Azza2cdcbe3AAGSEA7
-         wx5g==
-X-Gm-Message-State: AFq9FYLsVymlTuJ1whTihtSwpRn/auj/RB8uYy+drZ5AA7CHw3afvkSe
-	A/aCXVeyh6dyZJ98ZzPKQw3XSEXIQxbYlJRledEYXf9chGc3togWy/AF
-X-Gm-Gg: AYBFou39tyBFrgOmuqTXTduHYHg++/Fwo/s5PnlzcwefjZnFN4y2s1eK3EyVH3uEr4y
-	QaTvEv9hC0MguD/0m4uoNyeTShrPfZ0y1Czt69vsVcIeLdSgjFP49laRMGSlOZ7GY7wbk4Xd6f8
-	Z4+thuVv8GOoKEE5vFuatIWq9cHILGQadRaHVXvjXvD9mNPEz+8/+eruVpEiyV6MSMA2hjVWlQR
-	OcjJKiI7pW25b8pw2N4iGQfKiAnAf9cAna/la0lxaFkfP47TnPYUhzTQs6A4uF9TB5A/pVOmpQr
-	uGepEtGYI5cMBhlGHU2FDtwLGIJhiJJiklnqwLaMTWfsSo/O521jaEYgVoNMmc2+ktUrSILdbdJ
-	y+oAsi5ZNf38MHWpFhnU1KtFGmGVmF83nXh5McPIQgZwDP9aoE3eK4jpVh/ZGHh3ovi5/osrtNx
-	dshx+gthLc+uwIF3oGLKxbfhOf9PazjEkk2s/0VEAZAIUdDiUq+Wb7i0eAtCKULaJ420h9gWMKS
-	PWghTswVw==
-X-Received: by 2002:a05:6a00:c488:b0:899:915:792b with SMTP id d2e1a72fcca58-89909158069mr699050b3a.54.1791627044073;
-        Sat, 10 Oct 2026 03:10:44 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791627047; x=1792231847;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=pGgAdtMsM68+kEQC26JSjKBLK+GU4QU18+YP9/Nryjg=;
+        b=s9cAWbhiMNATfKAGxZtjrt1UIZ6T+JCgtKAKpTtlr9xRerAZN+OyvtMVYVJluCXJhW
+         cMQT9oHFKusPk6NswZgdiJcWnYvc6HdXzi61ja0MrMXU8jm7enf3gC67Ts/USSbYjvNT
+         INwa5CNflTiSVkB8CNheW/wAovedIpEER5/JwQZExHaPVurc3WvJC0pSJNUYs47lBrey
+         LSEynDtWLQgDYQGbGMhr8uPkKGdDjAtBmqdaSkRGhFnMEo4noN0RZ2UfHcW39a1508Gr
+         QrQugwHjGkjmBVYlhorS2MJuRE4OOPmTXS06kRHciK4npdsa7u/F+ofmJj3/mUYJFR4N
+         8azA==
+X-Gm-Message-State: AFq9FYLyTSjp+yoT/0dd3eJ3uuGXQTN2qzGxcWLvPLK5LDG94zAg52nE
+	+nuuo/IjWBTZHUs2u33uSo5ie7KDZ/dtzfnQzhE/wXi0tqG5GF1nPZ+5
+X-Gm-Gg: AYBFou3LrWlYKsdbDM3EgVCdQ57yjRzUQ4FB5X6XvFNbp0qpci3UgZDUeOzY35+LKPE
+	XbYnmDMf2/2jbWldlPvqWHXgrLxkd2f+zI9RMpVA9P3boNqzmKL/W4P9QiNktrnARo9cNcYReZb
+	4U0gulF2p+0JJHvWTzxQSo5fy4a+pQrJftglXznU3yEO1bKbVvDLS9yzDGoH+R3R7ZsFWl8yMGa
+	RCWel9ikQzrJ1oaxrVme2lmNXFx0kk5XV0bBhtNefCjP7/2hZcBY7l3Jn/8u86viM+KKNfWo+7J
+	4s6KZSHbWh1fb+Mete6KE1lh0qIj3yZGqB9Ha6cGh4ydD7nEQbx7PAOF27AcPIrc53L9Hn2XxMR
+	mjuZnS076YrJACe3Yy6Ac7LHXuLJSLG+LLuhLEJFMuWp0S+zIQgEU79Ie3MZxshMB84chf2xYcu
+	uuzuIswduF37+87kDrkKy9N2hrWVE8HTniJoAFLzNw6hzsfe4aper8WSYbr3ZfyHu5kiS3cR0=
+X-Received: by 2002:a05:6a00:4212:b0:893:428b:5e4a with SMTP id d2e1a72fcca58-897c79de74cmr3735147b3a.34.1791627046689;
+        Sat, 10 Oct 2026 03:10:46 -0700 (PDT)
 Received: from dev.local ([163.43.243.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c37de99fsm2069988b3a.25.2026.10.10.03.10.40
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c37de99fsm2069988b3a.25.2026.10.10.03.10.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 03:10:42 -0700 (PDT)
+        Sat, 10 Oct 2026 03:10:46 -0700 (PDT)
 From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-Subject: [PATCH net-next v2 0/2] seg6: skip route refcounts in seg6local
- lookups
-Date: Sat, 10 Oct 2026 19:10:38 +0900
-Message-Id: <20261010-seg6-lookup-noref-v2-0-51c09dd98197@gmail.com>
+Date: Sat, 10 Oct 2026 19:10:39 +0900
+Subject: [PATCH net-next v2 1/2] seg6: skip the route refcount in seg6local
+ IPv6 lookups
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,11 +70,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAB4PymoC/22NSw6CMBCGr0Jmbc20KQVceQ/DgscIVWxJWwiGc
- HcLunT5P78VPDlNHi7JCo5m7bU1UYhTAk1fmY6YbqMGgUJxRMk8dYoN1j6nkRnr6M4IuZJFWiu
- kFuJujKZejs8bGArM0BKg/CZ+qh/UhP1y7/baB+veB37mx+JHSv+QZs6QYSEol1kmKcdr96r0c
- G7sC8pt2z4WX4mszgAAAA==
-X-Change-ID: 20261004-seg6-lookup-noref-e016495b60ed
+Message-Id: <20261010-seg6-lookup-noref-v2-1-51c09dd98197@gmail.com>
+References: <20261010-seg6-lookup-noref-v2-0-51c09dd98197@gmail.com>
+In-Reply-To: <20261010-seg6-lookup-noref-v2-0-51c09dd98197@gmail.com>
 To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -82,49 +80,226 @@ To: Andrea Mayer <andrea.mayer@uniroma2.it>,
 Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Yuya Kusakabe <yuya.kusakabe@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1052;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7098;
  i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
- bh=k5qXWm2fWfprmVvsRKBjYWJGJEhMZpzoHtTJXsDkYxc=;
- b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqyg8fEnSNrfVB5GQhd3JgS68idorn2DXSxaacs
- H0CA4NtxXuJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCasoPHwAKCRAq19F1Kl0b
- TfQwD/92pg3UJ9YHYpdH2l2U8XFV0OESEB1deZ/0+avPoTkMzadPjB3r5dhuwJoGITN/O4xB54v
- XU59rheW+nWhwdTrsj18L1Tg/NbGvh7dUWf5xR4/sshFt3lBp8jcSAVqbeWODAQNwwb9Mun4VeO
- 7tMq366q/IjANpknEypTPmM8RyxGnTm5jmdWNnabYGBKGnlDEs18xJh7bhSYlnCWdwHGcOI3FID
- fr/IEtROgO9uuQW1CJC4i/61THAJt/01DhMCA2d4Lyc+crLoJdPO2AynNtD5fmHHXKxjp5oP4tD
- U8Vs92iMSJKUUcvGfwmgXdh5lmFWDZ9NR+D+Q2THZAgLLqf9eQ85SsM0HG6YW1kB8bIEytzgytt
- 0weCLziXloGeyiPPeg1GumMtY1y5lPctWJxdkF8ntVshFG7FXkzNdlUmlJgFfrtNUUnYKeX3l08
- DA2Isc1gj8yBAtKOEDULuK1e9BojD/wB/S6grVQwJMttNe17al2divyheggIkOZta76laaQxHTs
- 5m1kOeGRhcP23BsgLAZp1/jn6TURRwCIIf2zl88clht7DSA0TpMdCHnQv1gnBjJRi0NeNbbp6oB
- HVXuc9/CoYa1PowD7LR5xPGVtFmLdkGwRhV6WjCqvVdfJeZD8JB/dn8qVXBFZ5Uw8DIBfA+pA2n
- PPlGAVm31ShlF5Q==
+ bh=6+Co2Zx5KpoZRtv9y1QI6IVaFfbA9GFUmjerQu63RJs=;
+ b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqyg8fdfReFhDPnLzyI65uhLnM3MmPNwAxivUDC
+ SJysid7Y7yJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCasoPHwAKCRAq19F1Kl0b
+ Tc9MEACBjBDhQnsazwO5Ji6HgZ/M2dfYD+4A2EFr4nOqK7D2MJ2w6fMERq4NRVJrNxchwm3GEEh
+ H7UhXveVfOxQMlr7xcZ+4Xv8DijGpqCmuBoAwzAtqAM7tQAeHl9OU4WmWmLX1vutO80dajCo3Mz
+ vi7sqkb+0V4fKyoZfM2CCK4JBBM101TwzL9dE1jtUtp1zEPxkxcEry7KzQ1j3HXprSbZlVYiaja
+ 2xx69OENMyY47mA9G8xOv0oxo11/sKsScbhemv7XKhnCg15NU1H8JVt/wD6qYRKwQnV1dDy8ZPg
+ v8du2XzEsTlToAPtnby11ltw7wZWPDIL1a9GyP1wWAP2jVYqueTkyxPLlKssJrE3gLjaabfXChP
+ AtuBMrJ9BMPK9qckMcWUOpW4xQKVKXyrlxO5QA6GXp9eXKyXjfvG9OHX2cW/pmjxYlgo2OtKEkT
+ puEzI3c8DNsPWSlMMCt9Fex4l/HTKt7YjmmYL0S0FyjzVB9DdYhfGJ+rnuoexirSntfyAIjQvIh
+ 6f7u26wUnWXz4J1RVxNLBevw7WscR1qBuWKjmWKndB62RNpn59RsH9MZLhXE+EtAdpZc8IR6oby
+ S/1N2Vc4wwtyOqCJZKx+g940LJJEFlXg4e4E/KFo/eCNnaGzUiAkRE+RtSd/DldSohAgUSzuO9k
+ 3ILmyYxxfc6x5dw==
 X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
  fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
-seg6local looks up the nexthop of its IPv6 and IPv4 behaviors from the
-RCU read-side section of the receive path, yet takes and drops a route
-reference for every packet.  Skip the reference, as ip6_route_input()
-and ip_rcv_finish() do.
+ip6_route_input() attaches the input route to the skb without taking a
+reference, relying on the RCU read-side section of the receive path.
+The seg6local input actions run in that same section, either directly
+from the seg6local input handler or from a netfilter okfn, yet
+seg6_lookup_any_nexthop() takes and drops a route reference for every
+packet.
 
+Look the route up with RT6_LOOKUP_F_DST_NOREF, as ip6_route_input()
+does, for the input and table lookups of those actions.  Keep
+seg6_lookup_nexthop(), which the BPF LWT helpers also call, refcounted:
+BPF_PROG_TEST_RUN runs them repeatedly on the same skb and may leave
+the RCU read-side section between runs.  Like ip6_route_output_flags(),
+it now takes the reference on top of the noref lookup.
+
+Throughput at 0.5% packet loss of 94-byte End packets (two-segment
+SRH, no payload), spread by RSS on an ixgbe 82599ES across two 2.30 GHz
+Xeon E5-2650 v3 with 10 cores each, offered by TRex and binary-searched
+over 10 runs of 10 s, in Mpps:
+
+  queues  cores                   before   after
+  1       1                        0.740   0.756  (+2.2%)
+  10      10 on the NIC's socket   6.404   6.950  (+8.5%)
+  16      10 + 6 on two sockets    6.550  10.124  (+54.6%)
+
+With the default rules, fib6_rule_lookup() tries the local table
+first, and the miss takes and drops a reference on ip6_null_entry,
+one route shared by every CPU.  At 16 queues that cache line bounces
+between the sockets, and ip6_hold_safe() and dst_release() together
+take about a third of the cycles.
+
+Assisted-by: LLM
+Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
 ---
-Changes in v2:
-- Split the lookup into a noref primitive for the seg6local input
-  actions and a refcounted seg6_lookup_nexthop() wrapper, which the BPF
-  LWT helpers also call (Andrea Mayer, Sashiko).
-- Rebase onto net-next and re-measure.
-- Link to v1: https://patch.msgid.link/20261005-seg6-lookup-noref-v1-0-092e84774e80@gmail.com
+ net/ipv6/seg6_local.c | 54 ++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 40 insertions(+), 14 deletions(-)
 
----
-Yuya Kusakabe (2):
-      seg6: skip the route refcount in seg6local IPv6 lookups
-      seg6: skip the route refcount in seg6local IPv4 lookups
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 0c3d1be7f129..f23330278922 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -318,8 +318,8 @@ static struct ipv6_sr_hdr *advance_nextseg(struct sk_buff *skb,
+ }
+ 
+ static int
+-seg6_lookup_any_nexthop(struct sk_buff *skb, struct in6_addr *nhaddr,
+-			u32 tbl_id, bool local_delivery, int oif)
++seg6_lookup_any_nexthop_noref(struct sk_buff *skb, struct in6_addr *nhaddr,
++			      u32 tbl_id, bool local_delivery, int oif)
+ {
+ 	struct net *net = dev_net(skb->dev);
+ 	struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -342,6 +342,7 @@ seg6_lookup_any_nexthop(struct sk_buff *skb, struct in6_addr *nhaddr,
+ 		fl6.flowi6_flags = FLOWI_FLAG_KNOWN_NH;
+ 
+ 	if (!tbl_id && !oif) {
++		flags |= RT6_LOOKUP_F_DST_NOREF;
+ 		dst = ip6_route_input_lookup(net, skb->dev, &fl6, skb, flags);
+ 	} else if (tbl_id) {
+ 		struct fib6_table *table;
+@@ -350,6 +351,7 @@ seg6_lookup_any_nexthop(struct sk_buff *skb, struct in6_addr *nhaddr,
+ 		if (!table)
+ 			goto out;
+ 
++		flags |= RT6_LOOKUP_F_DST_NOREF;
+ 		rt = ip6_pol_route(net, table, oif, &fl6, skb, flags);
+ 		dst = &rt->dst;
+ 	} else {
+@@ -363,7 +365,7 @@ seg6_lookup_any_nexthop(struct sk_buff *skb, struct in6_addr *nhaddr,
+ 		dev_flags |= IFF_LOOPBACK;
+ 
+ 	if (dst && (dst_dev(dst)->flags & dev_flags) && !dst->error) {
+-		dst_release(dst);
++		ip6_rt_put_flags(dst_rt6_info(dst), flags);
+ 		dst = NULL;
+ 	}
+ 
+@@ -372,17 +374,41 @@ seg6_lookup_any_nexthop(struct sk_buff *skb, struct in6_addr *nhaddr,
+ 		rt = net->ipv6.ip6_blk_hole_entry;
+ 		dst = &rt->dst;
+ 		dst_hold(dst);
++		flags &= ~RT6_LOOKUP_F_DST_NOREF;
+ 	}
+ 
+ 	skb_dst_drop(skb);
+-	skb_dst_set(skb, dst);
++	if ((flags & RT6_LOOKUP_F_DST_NOREF) && !dst->rt_uncached_list)
++		skb_dst_set_noref(skb, dst);
++	else
++		skb_dst_set(skb, dst);
+ 	return dst->error;
+ }
+ 
++static int seg6_lookup_nexthop_noref(struct sk_buff *skb,
++				     struct in6_addr *nhaddr, u32 tbl_id)
++{
++	return seg6_lookup_any_nexthop_noref(skb, nhaddr, tbl_id, false, 0);
++}
++
+ int seg6_lookup_nexthop(struct sk_buff *skb,
+ 			struct in6_addr *nhaddr, u32 tbl_id)
+ {
+-	return seg6_lookup_any_nexthop(skb, nhaddr, tbl_id, false, 0);
++	int err;
++
++	rcu_read_lock();
++	err = seg6_lookup_nexthop_noref(skb, nhaddr, tbl_id);
++	if (!skb_dst_force(skb)) {
++		struct dst_entry *dst;
++
++		dst = &dev_net(skb->dev)->ipv6.ip6_blk_hole_entry->dst;
++		dst_hold(dst);
++		skb_dst_set(skb, dst);
++		err = dst->error;
++	}
++	rcu_read_unlock();
++
++	return err;
+ }
+ 
+ static __u8 seg6_flv_lcblock_octects(const struct seg6_flavors_info *finfo)
+@@ -446,7 +472,7 @@ seg6_next_csid_advance_arg(struct sk_buff *skb,
+ static int input_action_end_finish(struct sk_buff *skb,
+ 				   struct seg6_local_lwt *slwt)
+ {
+-	seg6_lookup_nexthop(skb, NULL, 0);
++	seg6_lookup_nexthop_noref(skb, NULL, 0);
+ 
+ 	return dst_input(skb);
+ }
+@@ -497,7 +523,7 @@ static int end_next_csid_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+ static int input_action_end_x_finish(struct sk_buff *skb,
+ 				     struct seg6_local_lwt *slwt)
+ {
+-	seg6_lookup_any_nexthop(skb, &slwt->nh6, 0, false, slwt->oif);
++	seg6_lookup_any_nexthop_noref(skb, &slwt->nh6, 0, false, slwt->oif);
+ 
+ 	return dst_input(skb);
+ }
+@@ -939,7 +965,7 @@ static int input_action_end_t(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+ 		goto drop;
+ 	}
+ 
+-	seg6_lookup_nexthop(skb, NULL, slwt->table);
++	seg6_lookup_nexthop_noref(skb, NULL, slwt->table);
+ 
+ 	return dst_input(skb);
+ 
+@@ -1023,7 +1049,7 @@ static int input_action_end_dx6_finish(struct net *net, struct sock *sk,
+ 	if (!ipv6_addr_any(&slwt->nh6))
+ 		nhaddr = &slwt->nh6;
+ 
+-	seg6_lookup_nexthop(skb, nhaddr, 0);
++	seg6_lookup_nexthop_noref(skb, nhaddr, 0);
+ 
+ 	return dst_input(skb);
+ }
+@@ -1383,7 +1409,7 @@ static int input_action_end_dt6(struct sk_buff *skb,
+ 	/* note: this time we do not need to specify the table because the VRF
+ 	 * takes care of selecting the correct table.
+ 	 */
+-	seg6_lookup_any_nexthop(skb, NULL, 0, true, 0);
++	seg6_lookup_any_nexthop_noref(skb, NULL, 0, true, 0);
+ 
+ 	return dst_input(skb);
+ 
+@@ -1391,7 +1417,7 @@ static int input_action_end_dt6(struct sk_buff *skb,
+ #endif
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+ 
+-	seg6_lookup_any_nexthop(skb, NULL, slwt->table, true, 0);
++	seg6_lookup_any_nexthop_noref(skb, NULL, slwt->table, true, 0);
+ 
+ 	return dst_input(skb);
+ 
+@@ -1446,7 +1472,7 @@ static int input_action_end_b6(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+ 
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+ 
+-	seg6_lookup_nexthop(skb, NULL, 0);
++	seg6_lookup_nexthop_noref(skb, NULL, 0);
+ 
+ 	return dst_input(skb);
+ 
+@@ -1482,7 +1508,7 @@ static int input_action_end_b6_encap(struct sk_buff *skb,
+ 
+ 	skb_set_transport_header(skb, sizeof(struct ipv6hdr));
+ 
+-	seg6_lookup_nexthop(skb, NULL, 0);
++	seg6_lookup_nexthop_noref(skb, NULL, 0);
+ 
+ 	return dst_input(skb);
+ 
+@@ -1571,7 +1597,7 @@ static int input_action_end_bpf(struct sk_buff *skb,
+ 	local_unlock_nested_bh(&seg6_bpf_srh_states.bh_lock);
+ 
+ 	if (ret != BPF_REDIRECT)
+-		seg6_lookup_nexthop(skb, NULL, 0);
++		seg6_lookup_nexthop_noref(skb, NULL, 0);
+ 
+ 	return dst_input(skb);
+ 
 
- net/ipv6/seg6_local.c | 58 +++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 42 insertions(+), 16 deletions(-)
----
-base-commit: 758fe10f83a655bed0f7b98fcfacdfc3556fb9a1
-change-id: 20261004-seg6-lookup-noref-e016495b60ed
-
-Best regards,
---  
-Yuya Kusakabe <yuya.kusakabe@gmail.com>
+-- 
+2.50.1
 
