@@ -1,169 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF12371CF8;
-	Sat, 10 Oct 2026 07:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABA2391E55;
+	Sat, 10 Oct 2026 07:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791619127; cv=none; b=syBeReX98wkV4dPO9HIyZUVxkgAHLm1fnJFmS1YQlP5QdrqP53mX/2WcxC0ywR1ghDkKw4mk8RscnoTPA/7DnacrA0YEmVkcjr+8KCbv5ubq90oMVr6g+pTpF/7LqWYxqpcM6whAln7YXzHzVjZzg+yi/mihXWvGNstvP5k0ftA=
+	t=1791619151; cv=none; b=kcWiBddLvNZvyV2I+ZoeBU9WS0Cy3+0tWckfaFHfTGTI5Nh7dmZz8UVTOShmPjVnTR265XM4oGDZiDEUCja+jaMdsmGaup5ysFERW2SZoDgBy9vaPCxS10HGz01zLXaCnKL3J/BfIacyEANu501ztwyYgOJY8+7ot0tfx9XRkaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791619127; c=relaxed/simple;
-	bh=cQNoY7GCF+8dP7AlXyh733Cm+Thv2UqXPBf8rQPTwx8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=glAkBiYVeLQggk6txfVo9UiGNgQc9Hp4bS7OanEtL8mdlwLLIh8fl/sBz4X7T5oSLPGmNsz7rbcJ2nA5/wnT9KBW0uTlwu8OIPmxPgmWHgB/VL6raf4YU9LKcGa3Yj/D9JyxKL0iRo0/tOEe88H0ubdzMhXVvMjtEyU/pgzL1H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdXHQJ6+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791619151; c=relaxed/simple;
+	bh=041B+7DCE8HmFhQCjiaDIIl7UD9Hq2Yi34UR4dJk/0Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pgq8IxgbK95t0PZ3s0w97egsFEVc5eVpLWqftSts6jhWL/1XXbCYJy/5cDYS8EQkQjH4PZjQEwYTgm2h4aZO9x1L+nvKw6FbrByczF3JdYOCk7uhUl8pMiavKCGdKirv+4FljUFLY7mvg0ZoAaQJkwaEoPfsmXGh3tkw8T+8XEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=E3i+WXKq; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdXHQJ6+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7641F000FF;
-	Sat, 10 Oct 2026 07:58:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791619126;
-	bh=ihM+8OF/a7XmMt1k/YOV5m6YdEX835YCfzjT9xgUihI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PdXHQJ6+jFAi7Q0fuGEhU6RIwL2UCbG47pKaUKkTkGAVRMIZwqJKvpioOmZYl0M22
-	 wCYDOCPyK6E1UBjtZtgH1ojZG/dZwMtj3CTV9wqMxrP2rJHCtoS3S+YrYriwbF7AG8
-	 P0AfOYjdj7Sd9mv7BJBE+6PTHVHjNzPiLj9IFYslhjk7zFRjyt1pawGGJv6ZvAD0ZV
-	 YybNv6fhAlRgPdWzBXRF06aicJtdjwSkWcwc9rwVtprSqlsHNN56q+AVzWfmqbnltp
-	 P9GRJ7SrNE+IVyjF+6jgpLbsYFKOQZjOycLfhglZGCHXsGuN1L10ZEDzYvdnxUe9mh
-	 PnPIckmC8Z44w==
-Subject: Re: [PATCH net-next v2 5/6] net: ftgmac100: Add AST2700 upper DMA
- address support
-From: netdev-bot+sashiko@kernel.org
-To: jacky_chou@aspeedtech.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- ratbert@faraday-tech.com, edumazet@kernel.org, hkallweit1@gmail.com,
- linux@armlinux.org.uk, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 07:58:44 +0000
-Message-ID: <179161912453.434549.9464928131713010335@kernel.org>
-In-Reply-To: <20261006-support_ast2700-v2-5-36de51fb8066@aspeedtech.com>
-References: <20261006-support_ast2700-v2-5-36de51fb8066@aspeedtech.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="E3i+WXKq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=4e
+	oySCwjQ7bRcafrGH+oTg1MumxaBMFbyBAUUpdJI04=; b=E3i+WXKqmGtStZxzUv
+	10GepF+R5g+VZpyC9NEEyE0Heh6I92vOnSG7zU6xBGsN4P7lNwdXQgVLgtGmVus/
+	prr/0bBmWs1Pbyg+sklkaW7oM47/1Q0XxTKD+kBqtsGoii12RBbr1d8If/jobvY9
+	Q7j5hXM1YE6gPWeB+JN58NSeQ=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3N40m8Mlq6MIiDQ--.21817S2;
+	Sat, 10 Oct 2026 15:58:31 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: sam@mendozajonas.com,
+	fercerpav@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH net v2] ncsi: Fix use-after-free in the device unregister path
+Date: Sat, 10 Oct 2026 15:58:28 +0800
+Message-ID: <20261010075828.5724-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3N40m8Mlq6MIiDQ--.21817S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCFy8ArW3Cr48tr1fKw15Jwb_yoWrAr4xpF
+	W3GFy5Kw48JF1FgFZ5WrWrWF15Xr4kW3Wjg39rKw4SyasxGryUZryfAayj9Fy5GFZ7Ca1a
+	vr4YgFWa9rW8ZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U01v-UUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC+wdSNmrJ8CeIYgAA3G
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+ncsi_unregister_dev() tears the NCSI device down in this order:
 
-Low priority / nit picks for your consideration:
+	dev_remove_pack(&ndp->ptype);
 
-- [Low] struct ftgmac100_txdes in
-  drivers/net/ethernet/faraday/ftgmac100.h still says `__le32 txdes2; /*…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but TX
-  completion has no consumer-side read barrier to pair with the…
-
---
-
-net: ftgmac100: Add AST2700 upper DMA address support
-
-This patch programs the high RX and TX descriptor ring base registers on
-AST2700. It also stores DMA address bits 34:32 in rxdes2/txdes2 and
-rebuilds the full address from both words before unmapping. A 35-bit DMA
-mask is requested, and all of this is gated by the new
-FTGMAC100_QUIRK_DMA_35BIT match-data quirk.
-
-> diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-> index 2d029d1262e6f..af2e272f32f2d 100644
-> --- a/drivers/net/ethernet/faraday/ftgmac100.c
-> +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-
-[ ... ]
-
-> @@ -672,9 +686,14 @@ static void ftgmac100_free_tx_packet(struct ftgmac100 *priv,
->  				     struct ftgmac100_txdes *txdes,
->  				     u32 ctl_stat)
->  {
-> -	dma_addr_t map = le32_to_cpu(txdes->txdes3);
-> +	dma_addr_t map;
->  	size_t len;
->  
-> +	map = le32_to_cpu(txdes->txdes3);
-> +	if (priv->quirks & FTGMAC100_QUIRK_DMA_35BIT)
-> +		map |= (u64)FIELD_GET(FTGMAC100_TXDES2_TXBUF_BADR_HI,
-> +				     le32_to_cpu(txdes->txdes2)) << 32;
-> +
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. The new
-txdes2 read goes through the same TX completion handoff as the existing
-txdes0/txdes3 reads, and that handoff seems to have no read barrier on the
-consumer side.
-
-ftgmac100_hard_start_xmit() fills tx_skbs[] and txdes1/2/3, sets OWN in
-txdes0, and then publishes the producer index:
-
-	dma_wmb();
-	first->txdes0 = cpu_to_le32(f_ctl_stat);
+	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+		ncsi_remove_package(np);
 	...
-	smp_wmb();
-	...
-	priv->tx_pointer = pointer;
+	disable_work_sync(&ndp->work);
 
-On another CPU, ftgmac100_poll()->ftgmac100_tx_complete() runs:
+	kfree(ndp);
 
-	while (ftgmac100_tx_buf_cleanable(priv) &&
-	       ftgmac100_tx_complete_packet(priv))
-		;
+ncsi_remove_package() and ncsi_remove_channel() remove the objects
+with list_del_rcu() and free them with an immediate kfree().  Two
+concurrent users are not covered by this sequence:
 
-ftgmac100_tx_buf_cleanable() loads priv->tx_pointer. After that,
-ftgmac100_tx_complete_packet() loads txdes0 and tx_skbs[pointer], and
-ftgmac100_free_tx_packet() loads txdes2/txdes3. Nothing like smp_rmb()
-sits between the tx_pointer load and the descriptor loads. The smp_mb()
-after the loop runs too late to help.
+  1. The NCSI state machine work (ndp->work) iterates the package and
+     channel lists (NCSI_FOR_EACH_PACKAGE/NCSI_FOR_EACH_CHANNEL, which
+     are list_for_each_entry_rcu) while configuring channels, holding
+     neither ndp->lock nor np->lock across the iteration.
+     disable_work_sync() runs only after all packages have been freed,
+     so it does not prevent the work from walking the lists over freed
+     objects.
 
-On weakly ordered SMP CPUs such as ARM/ARM64, can the txdes0 load be
-satisfied before the tx_pointer load? If so, it could return the stale
-OWN-clear value left by the previous completion, and the slot would be
-reclaimed while the device still owns it.
+  2. RCU readers of the published lists.  list_del_rcu() removes the
+     entry for subsequent readers, but the following bare kfree() is
+     not covered by any grace period, so a reader that has already
+     obtained the node pointer (e.g. a list_for_each_entry_rcu
+     iteration in flight) dereferences freed memory when it resumes.
 
-That could unmap a buffer the device is still reading. It could also
-dereference skb->len through a stale NULL tx_skbs[] entry.
+The ordering is reachable on BMC systems: ftgmac100_remove() calls
+ncsi_unregister_dev() before unregister_netdev(), i.e. before
+ncsi_stop_dev() has stopped the state machine, so the work is still
+active while the packages are freed.  Device removal concurrent with
+the NCSI configuration cycle or a netlink query triggers the race.
 
-ftgmac100_poll() keeps NAPI scheduled while ftgmac100_tx_buf_cleanable()
-is true, so completion can run on one CPU while xmit runs on another.
-Would an smp_rmb() after the tx_pointer check in the completion path be
-needed here?
+Fix this in two parts:
 
-[ ... ]
+  - stop the state machine work before freeing the packages and
+    channels instead of after;
+  - free the package and channel objects with kfree_rcu() so that
+    readers covered by an RCU read-side critical section do not
+    access freed memory.
 
-> diff --git a/drivers/net/ethernet/faraday/ftgmac100.h b/drivers/net/ethernet/faraday/ftgmac100.h
-> index 8c35c895b1465..0c244b1c0a351 100644
-> --- a/drivers/net/ethernet/faraday/ftgmac100.h
-> +++ b/drivers/net/ethernet/faraday/ftgmac100.h
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by LLM-assisted (GLM-5.3) code inspection.  The issue was
+not observed at runtime; it is identified by code inspection only.
 
-[ ... ]
+Fixes: e6f44ed6d04d ("net/ncsi: Package and channel management")
+Signed-off-by: Binbin Deng <18983559317@163.com>
+---
+ net/ncsi/internal.h    | 2 ++
+ net/ncsi/ncsi-manage.c | 8 ++++----
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-> @@ -226,6 +229,7 @@ struct ftgmac100_txdes {
->  #define FTGMAC100_TXDES1_TX2FIC		(1 << 30)
->  #define FTGMAC100_TXDES1_TXIC		(1 << 31)
->  
-> +#define FTGMAC100_TXDES2_TXBUF_BADR_HI	GENMASK(18, 16)
-
-[Severity: Low]
-This isn't a bug, but struct ftgmac100_txdes still describes this word as
-reserved:
-
-	__le32	txdes2; /* Reserved */
-
-With this patch, ftgmac100_hard_start_xmit() writes the upper buffer
-address bits into txdes2 for the head descriptor and for every fragment
-descriptor. ftgmac100_free_tx_packet() reads them back to rebuild the
-address passed to dma_unmap_single()/dma_unmap_page().
-
-Could the comment be updated to describe the new field? Otherwise a later
-change might zero or reuse txdes2 based on that comment.
-
-[ ... ]
-
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index adee6dcabdc3..362c3c69d087 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -239,6 +239,7 @@ struct ncsi_channel {
+ 	} monitor;
+ 	struct list_head            node;
+ 	struct list_head            link;
++	struct rcu_head             rcu_head;
+ };
+ 
+ struct ncsi_package {
+@@ -253,6 +254,7 @@ struct ncsi_package {
+ 	bool                 multi_channel; /* Enable multiple channels  */
+ 	u32                  channel_whitelist; /* Channels to configure */
+ 	struct ncsi_channel  *preferred_channel; /* Primary channel      */
++	struct rcu_head      rcu_head;
+ };
+ 
+ struct ncsi_request {
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 54d0df0a9efe..05dcd732effa 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -263,7 +263,7 @@ static void ncsi_remove_channel(struct ncsi_channel *nc)
+ 	np->channel_num--;
+ 	spin_unlock_irqrestore(&np->lock, flags);
+ 
+-	kfree(nc);
++	kfree_rcu(nc, rcu_head);
+ }
+ 
+ struct ncsi_package *ncsi_find_package(struct ncsi_dev_priv *ndp,
+@@ -326,7 +326,7 @@ void ncsi_remove_package(struct ncsi_package *np)
+ 	ndp->package_num--;
+ 	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+-	kfree(np);
++	kfree_rcu(np, rcu_head);
+ }
+ 
+ void ncsi_find_package_and_channel(struct ncsi_dev_priv *ndp,
+@@ -1958,6 +1958,8 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ 	struct ncsi_package *np, *tmp;
+ 	unsigned long flags;
+ 
++	disable_work_sync(&ndp->work);
++
+ 	dev_remove_pack(&ndp->ptype);
+ 
+ 	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+@@ -1967,8 +1969,6 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ 	list_del_rcu(&ndp->node);
+ 	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
+ 
+-	disable_work_sync(&ndp->work);
+-
+ 	kfree(ndp);
+ }
+ EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006-support_ast2700-v2-0-36de51fb8066%40aspeedtech.com
+2.43.0
+
