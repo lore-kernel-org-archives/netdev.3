@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EC44B44BF;
-	Sat, 10 Oct 2026 19:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05F03EB11E;
+	Sat, 10 Oct 2026 19:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791659256; cv=none; b=k/L4JTrq013SIxfVZ6BafqD6GlwmILVeMANJuemTsnoOF5sf8eLQJhKIabt/a1s7ZFbGggTEWOcFpIjMjLgUV2kUyNLG89e4ZQvzZ4eUpdIz50rorpNepTr+/aR9xvvGr0Ra/31h0r+3uDXG6dQqCrtn65Vhb77TuSu+LAExdgM=
+	t=1791659449; cv=none; b=UlwDn5MXrsxK879G4mPYhapW/s7cuhwTpsW+6esJRInLzYWfWmg0+x0Sgkzsv2SKkyl9CdHPm1qpFffX0FEX5BGAO1bgnMebg4q640KOAsu+tfT6lt+ukWcMwRRMaQpka/hgdTxaj16CYKNpsZy5k7bxgxBt4EpbG+i8XmZo6pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791659256; c=relaxed/simple;
-	bh=RX3HUGnJvfbNuOfh2YfO4unieZqsx+UEPgo3+7Gc+nw=;
+	s=arc-20240116; t=1791659449; c=relaxed/simple;
+	bh=siTGSaxa2ghjbwi1HBCDUIewIA+lbRItIkT1fFM421Y=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pelE59j9mH1L4glJJ7AvIfp0RbE9KO3j/AusvfcLd3xodpYWym6t6cPXIfRE1sWHAqCMqOLQoywBJfH1PqVUmCWel8C/GP1TcPyMdMei3CJGSdcTK5O5CbzZPADaU0MvAKrL1oCqPDR9cg0IA7X/liw2ip7N9HNMWrm+H+YyyGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kq2V+YXd; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=bVp5K5abIQUOX0Hig5xYx5u8H9680eLkVKm10M++0J6o8bfWS2PvfnWD/4QPlZHcmxsNqxqtWcG+f1OoMqB2fBLdYGTvdQzEkJ2NwWuZHMf0QKRvdWsMZ5GCL12+8+Uu0EVpDpSodGWG8/wxBzaZj7OjHnNqcWj2mr//h+ABi3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KBscKhh9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kq2V+YXd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9157E1F000FF;
-	Sat, 10 Oct 2026 19:07:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KBscKhh9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703861F000FF;
+	Sat, 10 Oct 2026 19:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791659254;
-	bh=8GdtLgttCyKb4tZx9St8N2yZyVc+yX3u7FwIGjnKRQg=;
+	s=k20260515; t=1791659447;
+	bh=Yg4STVau57RFMxif8ip3Fv5kvfpRUl+yjYtx6g84m3A=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kq2V+YXd+S1I3XJFDTfGJcUm1jKBU17Y35kf7n/MC4vAHHy09F79XeiLXSYmeXMIP
-	 vi9EkPMdrnNl9aQETMtPJ+fr8/aCC7he/WPwJWOilLUgyTh5yM4j3Vx+Mhc+InBHdA
-	 G0x6hwmRF1hpPiy9dXWvtJBTw3KOLsa2QWg9Vm6P3PVmRXRS+Hy0l2/sIEIJvohH7W
-	 3MB7k2PRVNreSZRPAHrJBk+Y+TjJT1VyJXlLQCZm1Fe7Kylb5DDgxCvdJGI3a8kCzY
-	 Pq111Jeuze8Ov+DVHRwDGZJ/8UCtIYo5NxPdgyv35wRgDvrzb56tcIeQ0yTh1sVBSA
-	 nQ6NTlH51xE/w==
-Subject: Re: [PATCH net-next v5 4/4] net: phy: make an unbind wait for the
- attached consumer to detach
+	b=KBscKhh9j/JJla+92whP86amlQota94cZQk+fhLh9TmvUxhTzAGQOdnjmDKBWaJ/j
+	 SYFsL+uQdYGpT9X7/Vq8C3Bg/ss5GWkz8sm4oNCNrFXhG17ahu+ARbwY6txge/2528
+	 3+GnLVzsyX8Ya8XvM0oSYgRhtBDgouY9e+M6cCOlwCvPkm+hBw3q6+YvrM305j0tpQ
+	 2TB9fz8Gaolx4Eoucw4X8t5tZsq6uWN4Kuzj+y/edJ9KVR/1PPmZp0xstIyx/FMl/5
+	 zITJ0T7e5t2MDiqJeaTkPH/YOgE7DAmzot6QOFlpcwG3xsdh6bSY0Y8JKVaQLoTi2m
+	 amDyAhsgFnXkA==
+Subject: Re: [PATCH net 1/2] sfc: ptp: serialize host and MC synchronization
+ transactions
 From: netdev-bot+sashiko@kernel.org
-To: f@lex.la
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- f.fainelli@gmail.com, woojung.huh@microchip.com, vladimir.oltean@nxp.com,
- maxime.chevallier@bootlin.com
-Date: Sat, 10 Oct 2026 19:07:33 +0000
-Message-ID: <179165925312.434549.3215733785480960392@kernel.org>
-In-Reply-To: <20261009180551.1234107-5-f@lex.la>
-References: <20261009180551.1234107-5-f@lex.la>
-X-sashiko-severity: High
+To: alex.austin@amd.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, bhutchings@solarflare.com,
+ davem@davemloft.net, ecree.xilinx@gmail.com, edumazet@kernel.org,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, linux-net-drivers@amd.com,
+ pabeni@redhat.com, richardcochran@gmail.com, smhodgson@solarflare.com,
+ alucero@amd.com, pieter.jansen-van-vuuren@amd.com, alucerop@amd.com
+Date: Sat, 10 Oct 2026 19:10:45 +0000
+Message-ID: <179165944590.434549.13992833657056738261@kernel.org>
+In-Reply-To: <20261009183240.1898762-2-alex.austin@amd.com>
+References: <20261009183240.1898762-2-alex.austin@amd.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 3 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 3 (1) · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,248 +60,313 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] phy_remove() can wait forever on its own thread.
-- [High] net: phy: driver state corruption due to attach/detach race
-- [High] net: phy: deadlock in phy_detach_internal() waiting for unbind
-- [Medium] The new wait_var_event() in phy_remove()
-  (drivers/net/phy/phy_device.c, lines 3887-3892) has no upper bound and…
+- [Medium] At this commit, ptp->host_time_pps is written by
+  efx_ptp_process_times() while phc_lock is held.
+- [Medium] phc_lock is created separately in each PCI function's
+  efx_ptp_data: efx_ptp_probe() calls mutex_init(&ptp->phc_lock) for…
+- [Medium] sfc: data race on current_adjfreq in efx_ptp_start
+- [Low] The patch changes how efx_ptp_synchronize()
+  (drivers/net/ethernet/sfc/ptp.c) handles a failed…
+- [Low] The commit message says clock adjustments are serialized with
+  phc_lock "so they cannot change the PHC during a capture".
+
+Pre-existing issues:
+- [Medium] efx_ptp_start() resets ptp->current_adjfreq = 0 (line 1457)
+  without phc_lock.
 
 --
 
-net: phy: make an unbind wait for the attached consumer to detach
+sfc: ptp: serialize host and MC synchronization transactions
 
-With this patch, phy_remove() waits for phy_detach() to run before it
-takes the driver away from a PHY that is still attached. Without the
-wait, phylink and phylib keep using phydev->drv after the unbind. Removing
-the device through phy_device_remove() sets a new removing flag, which
-skips the wait and wakes any unbind that is already waiting.
+This commit adds a phc_lock mutex to struct efx_ptp_data and holds it
+across the SYNCHRONIZE DMA handshake in efx_ptp_synchronize(). The PHC
+adjfine, adjtime, gettime and settime callbacks are serialized with the
+same mutex, and efx_phc_settime() now reads and adjusts under one lock
+hold.
 
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 0ffaa456a308b..a271fe76c3f8e 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
+> Protect the DMA handshake and result processing against concurrent
+> synchronization callers. Serialize clock adjustments with the same mutex
+> so they cannot change the PHC during a capture.
+
+[Severity: Low]
+Is this rationale accurate for adjustments made on the same function?
+
+efx_ptp_synchronize() acquires the MCDI interface in
+efx_mcdi_rpc_start()->efx_mcdi_acquire_sync(). It only releases it at
+the end of efx_mcdi_rpc_finish():
+
+drivers/net/ethernet/sfc/mcdi.c:efx_mcdi_acquire_sync() {
+	wait_event(mcdi->wq,
+		   cmpxchg(&mcdi->state,
+			   MCDI_STATE_QUIESCENT, MCDI_STATE_RUNNING_SYNC) ==
+		   MCDI_STATE_QUIESCENT);
+}
+
+efx_phc_adjfine(), efx_phc_adjtime() and efx_phc_gettime() all go
+through efx_mcdi_rpc()->_efx_mcdi_rpc()->efx_mcdi_rpc_start(). So even
+before this patch, they could not send an MC command while SYNCHRONIZE
+was in flight.
+
+After rpc_finish, efx_ptp_process_times() only uses the response buffer
+and nic_to_kernel_time(). It does not use current_adjfreq.
+
+The commit message doesn't mention what the new PHC locking actually
+adds:
+
+- efx_phc_settime() now does its gettime and adjtime atomically.
+- The current_adjfreq cached by efx_phc_adjfine() now stays consistent
+  with the PTP_IN_ADJUST_FREQ value that _efx_phc_adjtime() sends.
+
+Could the commit message describe these changes instead?
+
+> diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
+> index 6ca9a75af01d8..ac9951fee5ddd 100644
+> --- a/drivers/net/ethernet/sfc/ptp.c
+> +++ b/drivers/net/ethernet/sfc/ptp.c
 
 [ ... ]
 
-> @@ -3858,11 +3874,23 @@ static int phy_probe(struct device *dev)
->  static int phy_remove(struct device *dev)
->  {
->  	struct phy_device *phydev = to_phy_device(dev);
-> +	bool attached;
+> @@ -1027,11 +1030,14 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
+>  	MCDI_SET_QWORD(synch_buf, PTP_IN_SYNCHRONIZE_START_ADDR,
+>  		       ptp->start.dma_addr);
 >  
->  	mutex_lock(&phydev->bind_lock);
->  	phydev->bound = false;
-> +	attached = READ_ONCE(phydev->attached) && !phydev->removing;
->  	mutex_unlock(&phydev->bind_lock);
->  
-> +	/* The driver core cannot refuse an unbind, and the consumer keeps
-> +	 * using phydev->drv until it detaches.
-> +	 */
-> +	if (attached) {
-> +		phydev_warn(phydev, "unbind waits for the PHY to be detached\n");
-> +		wait_var_event(&phydev->attached,
-> +			       !READ_ONCE(phydev->attached) ||
-> +			       READ_ONCE(phydev->removing));
-> +	}
-
-[Severity: High]
-Can the detach of a genphy-driven PHY end up waiting for a different
-consumer? The commit message expects an attach to come right after
-this section. For a PHY on the generic driver, though, the detach is
-not finished at that point.
-
-attached is cleared and bind_lock is dropped before
-device_release_driver() runs. phy_remove() only samples attached when
-it takes bind_lock again from inside the driver core. As far as I can
-tell, __device_release_driver() calls driver_sysfs_remove() before
-device_remove(), and dev->driver is cleared only afterwards, in
-device_unbind_cleanup().
-
-A phy_attach_direct() that lands in that window sees:
-
-- phy_link_change == NULL
-- d->driver still set
-- phydev->bound still true
-- is_genphy_driven still 1
-
-It runs __phy_probe() again. device_bind_driver() now succeeds because
-the driver sysfs links are already gone; driver_bound() only warns that
-the device is already bound. The attach then completes and sets
-attached to true.
-
-The detaching thread then gets to phy_remove() and sees attached set
-and removing clear. It sleeps in wait_var_event() with the PHY's device
-lock held until the new consumer detaches.
-
-The old consumer usually gets here through phylink_disconnect_phy() or
-phy_disconnect() from ndo_stop with RTNL held. The ifdown then hangs
-in D state behind an unrelated consumer. Suppose that consumer attached
-without RTNL, for example from a probe path, but needs RTNL for its
-own detach. Then the wait can never end.
-
-Even when the wait does end, the new attach has re-run __phy_probe()
-and device_bind_driver() on a device that was halfway through its
-unbind.
-
-Could phy_link_change stay set until device_release_driver() has
-returned, with only attached cleared before it? An attach in this
-window would then be refused with -EBUSY instead.
-
-[Severity: High]
-Does the genphy release at the end of phy_detach_internal() still race
-with a new attach? The irq restore now comes ahead of the bind_lock
-section so that a new attach cannot see it. However, is_genphy_driven
-and d->driver are still used after bind_lock has been dropped.
-
-Once phy_link_change is NULL, a concurrent phy_attach_direct() passes
-its "already attached" test. At that point d->driver still points at
-the genphy driver, phydev->bound is still true and is_genphy_driven is
-still 1. The attach therefore takes the genphy path again and calls
-__phy_probe() and device_bind_driver() on a device that is still bound.
-
-If the driver sysfs links have not been removed yet, driver_sysfs_add()
-fails with -EEXIST. The attach then unwinds through error_module_put,
-which clears is_genphy_driven and sets d->driver to NULL.
-
-The detaching thread then does one of two things:
-
-- It sees is_genphy_driven == 0 and skips device_release_driver().
-
-- It reaches __device_release_driver() after dev->driver was cleared
-  and does nothing.
-
-Either way the device stays on the genphy driver's klist with its
-driver sysfs links in place, but with a NULL driver pointer. Since
-phy_remove() never runs, phydev->bound stays true.
-
->From then on, every genphy attach fails the same way in
-driver_sysfs_add(). When the device is later deleted,
-bus_remove_device() finds no driver to release. As far as I can tell,
-the knode_driver of a freed device is then left on the genphy driver's
-list.
-
-Would it work to keep phy_link_change set until
-device_release_driver() has returned? Only attached would be cleared,
-and the waiter woken, before it. A new attach would then get -EBUSY
-for the whole genphy release. Or is there another way you would
-prefer to keep phy_attach_direct() off a device whose genphy driver is
-still being released?
+> +	mutex_lock(&ptp->phc_lock);
+> +
 
 [Severity: Medium]
-This wait has no timeout and cannot be interrupted. It also runs while
-the driver core holds the PHY's device lock. __wait_var_event() is:
+Can a per-function phc_lock protect a PHC that is shared across PCI
+functions?
 
-include/linux/wait_bit.h:
-#define __wait_var_event(var, condition)
-	___wait_var_event(var, condition, TASK_UNINTERRUPTIBLE, 0, 0,
-			  schedule())
+efx_ptp_probe() calls mutex_init(&ptp->phc_lock) for every function.
+Only the primary function registers the clock with ptp_clock_register().
+efx_ptp_get_ts_info() reports the primary's clock for secondaries too:
 
-and phy_remove() is reached under the device lock (plus the parent lock,
-when the bus needs it):
-
-drivers/base/dd.c:device_release_driver_internal() {
+drivers/net/ethernet/sfc/ptp.c:efx_ptp_get_ts_info() {
     ...
-	__device_driver_lock(dev, parent);
-
-	if (!drv || drv == dev->driver)
-		__device_release_driver(dev, parent);
-
-	__device_driver_unlock(dev, parent);
+	if (primary && primary->ptp_data && primary->ptp_data->phc_clock)
+		ts_info->phc_index =
+			ptp_clock_index(primary->ptp_data->phc_clock);
     ...
 }
 
-Only phy_detach_internal() or phy_device_remove() can end the wait. For
-a MAC that connects in ndo_open, that means an ifdown. For DSA, or a MAC
-that connects at probe, it means tearing down the consumer driver. Until
-then the unbinding task sits in D state and keeps holding dev->mutex.
+A secondary function still captures against that clock through
+efx_ptp_change_mode()->efx_ptp_synchronize(). While it does so it holds
+only secondary->ptp_data->phc_lock.
 
-The commit message covers the reboot hang in device_shutdown(). There
-seem to be other effects as well:
+On the primary, efx_phc_adjtime(), efx_phc_settime() and
+efx_phc_adjfine() take primary->ptp_data->phc_lock, which is a different
+mutex. They send MC_CMD_PTP_OP_ADJUST over the primary's own MCDI
+interface, so per-function MCDI serialization doesn't cover this case
+either.
 
-- The freezer cannot freeze a task in TASK_UNINTERRUPTIBLE without
-  TASK_FREEZABLE, so system suspend and hibernate would abort.
+If ptp4l on the primary steps the PHC while SIOCSHWTSTAMP runs on a
+secondary, could the secondary's timesets become inconsistent?
 
-- The hung task detector would report the task every
-  hung_task_timeout_secs, and with hung_task_panic=1 the machine would
-  panic.
+In that case efx_ptp_process_times() would return -EAGAIN. The baseline
+synchronisation in efx_ptp_change_mode() would then fail, and PTP would
+be stopped on that function:
 
-- Anything else that needs this device's lock would block too, such as
-  a later bind, a driver_override write, or loading a driver that
-  matches the device.
+			if (rc == 0) {
+				rc = efx_ptp_synchronize(efx,
+							 PTP_SYNC_ATTEMPTS * 2);
+				if (rc != 0)
+					efx_ptp_stop(efx);
+			}
 
-The dependency is a bool flag plus wait_var_event(), and dev->mutex uses
-a lockdep novalidate class. As far as I can tell, lockdep cannot report
-any of these hangs.
+Whether this actually goes wrong depends on whether the MC firmware
+processes the primary's ADJUST while it is servicing the secondary's
+SYNCHRONIZE. That can't be confirmed from the driver.
 
-Was a different design considered? For example, a managed device link
-from the consumer to the PHY would make the driver core unbind the
-consumer before the PHY, so phy_remove() would not have to block under
-the device lock.
+Would a lock scoped to the clock be needed to fully cover the case the
+commit message describes? One option is a lock shared through
+efx->primary->ptp_data.
 
-[Severity: High]
-Can this wait end up waiting on its own thread forever? The commit
-message says:
+>  	/* Clear flag that signals MC ready */
+>  	WRITE_ONCE(*start, 0);
+>  	rc = efx_mcdi_rpc_start(efx, MC_CMD_PTP, synch_buf,
+>  				MC_CMD_PTP_IN_SYNCHRONIZE_LEN);
+> -	EFX_WARN_ON_ONCE_PARANOID(rc);
+> +	if (rc)
+> +		goto out;
 
-  One case is known to wait for good and is untested: when the PHY and
-  its MAC or switch are managed device-link consumers of one supplier,
-  unbinding the supplier can unbind the PHY first, and phy_remove() then
-  waits for a detach that only the same thread would run later.
+[Severity: Low]
+This change looks correct, but it fixes a separate bug that the commit
+message doesn't mention.
 
-When a supplier is unbound, device_links_unbind_consumers() unbinds each
-active managed consumer synchronously, one at a time:
+efx_mcdi_rpc_start() can fail before it calls efx_mcdi_acquire_sync().
+This happens when efx_mcdi_check_supported() fails, when
+mc_bist_for_other_fn is set, or when mcdi->mode is MCDI_MODE_FAIL:
 
-drivers/base/core.c:device_links_unbind_consumers() {
+drivers/net/ethernet/sfc/mcdi.c:efx_mcdi_rpc_start() {
     ...
-		if (status == DL_STATE_ACTIVE) {
-			struct device *consumer = link->consumer;
+	if (efx->mc_bist_for_other_fn)
+		return -ENETDOWN;
 
-			get_device(consumer);
+	if (mcdi->mode == MCDI_MODE_FAIL)
+		return -ENETDOWN;
 
-			device_links_write_unlock();
-
-			device_release_driver_internal(consumer, NULL,
-						       consumer->parent);
-			put_device(consumer);
-			goto start;
-		}
+	efx_mcdi_acquire_sync(mcdi);
     ...
 }
 
-The PHY can be a consumer of a third-party supplier through fw_devlink,
-for example via reset-gpios, interrupts, pinctrl or a clock. If its link
-is processed before the link of the MAC or switch that holds it
-attached, the call chain is:
+Without paranoid checks, EFX_WARN_ON_ONCE_PARANOID() compiled to
+nothing. The old code then busy-waited for up to MAX_SYNCHRONISE_WAIT_MS
+and called efx_mcdi_rpc_finish() anyway.
 
-device_release_driver_internal(supplier)
-  __device_release_driver(supplier)
-    device_links_unbind_consumers(supplier)
-      device_release_driver_internal(phy)
-        phy_remove()
-          wait_var_event()
+That path waited for a completion that never came and called
+efx_mcdi_abandon(). It then called efx_mcdi_release() on an interface
+this caller had never acquired.
 
-The phy_detach() that would wake the waiter runs only when the MAC or
-switch consumer is unbound. That happens later in the same loop, on the
-same thread, after phy_remove() returns. The thread then hangs for good
-while holding both the supplier's and the PHY's device locks, and any
-later reboot hangs in device_shutdown() as well.
-
-The MAC-to-PHY link created in phy_attach_direct() does not help here:
-
-	phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
-					  DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
-
-Because it is stateless, device_links_unbind_consumers() ignores it and
-does not unbind the MAC before the PHY.
-
-This patch knowingly ships a hang that cannot be recovered. Could it be
-avoided before merging, for example with a timeout, a managed link, or
-by skipping the wait when the unbind comes from a supplier?
-
->  	cancel_delayed_work_sync(&phydev->state_queue);
->  
->  	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev))
+Could this be described in the commit message, or split into its own
+patch with its own justification?
 
 [ ... ]
 
+> @@ -1062,11 +1068,13 @@ static int efx_ptp_synchronize(struct efx_nic *efx, unsigned int num_readings)
+>  			++ptp->no_time_syncs;
+>  	}
+>  
+> +out:
+>  	/* Increment the bad syncs counter if the synchronize fails, whatever
+>  	 * the reason.
+>  	 */
+>  	if (rc != 0)
+>  		++ptp->bad_syncs;
+> +	mutex_unlock(&ptp->phc_lock);
+>  
+>  	return rc;
+>  }
+
+[Severity: Medium]
+Is ptp->host_time_pps still racy after this unlock?
+
+efx_ptp_process_times() writes ptp->host_time_pps while phc_lock is
+held. efx_ptp_pps_worker() reads it only after efx_ptp_synchronize() has
+dropped the mutex:
+
+drivers/net/ethernet/sfc/ptp.c:efx_ptp_pps_worker() {
+	...
+	if (efx_ptp_synchronize(efx, PTP_SYNC_ATTEMPTS))
+		return;
+
+	ptp_evt.type = PTP_CLOCK_PPSUSR;
+	ptp_evt.pps_times = ptp->host_time_pps;
+	ptp_clock_event(ptp->phc_clock, &ptp_evt);
+}
+
+A concurrent SIOCSHWTSTAMP can go through
+efx_ptp_change_mode()->efx_ptp_synchronize() and overwrite host_time_pps
+while the worker is copying it. The PPS event passed to
+ptp_clock_event() could then carry a torn timestamp.
+
+This race existed before this commit.
+
+The next patch in this series, "sfc: ptp: avoid racing PPS timestamp
+updates", removes host_time_pps from struct efx_ptp_data. That patch
+returns the result through a caller-owned struct efx_ptp_sync_result
+filled in under phc_lock, and efx_ptp_change_mode() passes NULL. The
+race is gone by the end of the series.
+
+[ ... ]
+
+> @@ -2106,23 +2117,23 @@ static int efx_phc_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+>  	MCDI_SET_QWORD(inadj, PTP_IN_ADJUST_FREQ, adjustment_ns);
+>  	MCDI_SET_DWORD(inadj, PTP_IN_ADJUST_SECONDS, 0);
+>  	MCDI_SET_DWORD(inadj, PTP_IN_ADJUST_NANOSECONDS, 0);
+> +	mutex_lock(&ptp_data->phc_lock);
+>  	rc = efx_mcdi_rpc(efx, MC_CMD_PTP, inadj, sizeof(inadj),
+>  			  NULL, 0, NULL);
+> -	if (rc != 0)
+> -		return rc;
+> -
+> -	ptp_data->current_adjfreq = adjustment_ns;
+> -	return 0;
+> +	if (!rc)
+> +		ptp_data->current_adjfreq = adjustment_ns;
+> +	mutex_unlock(&ptp_data->phc_lock);
+> +	return rc;
+>  }
+
+[Severity: Medium]
+efx_ptp_start() still writes ptp->current_adjfreq without taking
+phc_lock:
+
+drivers/net/ethernet/sfc/ptp.c:efx_ptp_start() {
+    ...
+	ptp->evt_frag_idx = 0;
+	ptp->current_adjfreq = 0;
+    ...
+}
+
+current_adjfreq is an s64. _efx_phc_adjtime() reads it under phc_lock
+and passes it to MCDI_SET_QWORD(). That macro evaluates its value
+argument twice, once for the low dword and once for the high dword.
+Even on 64-bit the compiler is free to emit two separate loads. On
+32-bit, the store in efx_ptp_start() is also two separate 32-bit
+writes.
+
+efx_ptp_start() is reached in two ways that don't hold phc_lock:
+
+- SIOCSHWTSTAMP via efx_ptp_change_mode()
+- efx_ptp_worker(), when reset_required is set
+
+So a concurrent clock_adjtime() on the PHC can run _efx_phc_adjtime()
+at the same moment.
+
+Could the MC then receive a PTP_IN_ADJUST_FREQ built from the low half
+of one value and the high half of another? Suppose current_adjfreq
+held a small negative value. The low dword could read the new 0 while
+the high dword still reads 0xffffffff. The result is a frequency
+adjustment of roughly -4.3e9, which is neither the old value nor 0.
+How the firmware reacts to such a value can't be determined from the
+driver.
+
+This is the same unlocked write raised above for efx_phc_adjfine(),
+but the consequence here is a corrupted value rather than just a lost
+one. This patch makes phc_lock the lock for current_adjfreq. Should
+efx_ptp_start() also take phc_lock around the reset?
+
+efx_ptp_start() runs in process context. It doesn't appear to be
+called with phc_lock already held: efx_ptp_change_mode() calls
+efx_ptp_synchronize() only after efx_ptp_start() returns. So taking
+the mutex there looks straightforward.
+
+[Severity: Medium]
+This is a pre-existing issue and was not introduced by this patch.
+efx_ptp_start() still resets current_adjfreq without taking phc_lock:
+
+drivers/net/ethernet/sfc/ptp.c:efx_ptp_start() {
+    ...
+	ptp->evt_frag_idx = 0;
+	ptp->current_adjfreq = 0;
+    ...
+}
+
+efx_ptp_start() is reached from three places:
+
+- efx_ptp_worker(), when reset_required is set
+- efx_ptp_start_datapath()->efx_ptp_restart()
+- efx_ptp_change_mode()
+
+None of them take phc_lock, so efx_ptp_start() can run alongside the
+PHC clock ioctls.
+
+Could this interleaving drop the servo's frequency correction?
+
+efx_phc_adjfine()
+  sends frequency X to the MC
+  current_adjfreq = X
+                              efx_ptp_start()
+                                current_adjfreq = 0
+efx_phc_adjtime()
+  _efx_phc_adjtime()
+    sends PTP_IN_ADJUST_FREQ = 0
+
+The next adjfine would correct this, so the frequency error is
+transient.
+
+Now that phc_lock protects the other accesses to current_adjfreq,
+should efx_ptp_start() take it as well?
+
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009180551.1234107-1-f%40lex.la
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009183240.1898762-1-alex.austin%40amd.com
