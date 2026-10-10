@@ -1,190 +1,87 @@
-Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
+Received: from mta0.migadu.com (out-130.mta0.migadu.com [91.218.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BE243F8AE
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 09:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09ED92F12DA
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 09:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791625337; cv=none; b=CPIZfBUtHhcEf4RleofPWBiRRpDTZnP+CnHFWK8DF85pgMuzpxBTVprxVpxZ7N14jlMVlRHaD3F3JbvyuyVB9yeQc+Zpeauwr7Djy4CfkhJYd94fZ1LyrSCN/li5g6jbuL3ZLo3Jb/0IAhLzdM4Ep7S2VNuLM0+7bKYAPdEebOo=
+	t=1791625408; cv=none; b=NqQYPtWc1e6v9P1LyP2S7fH7I+0bd9EiA7921vYEH1gtfOhq5Xlt/EW5kTH4qPEc0YziiQKKjfs8ppE5UgNKy8wfWt/wxppuedfrx0K1eP/EZKA8MwH9z23wKT+tn8TcU77VPyJ8UfkN7fpxKJAewzyYoJRHT4We8a4gJF8s4mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791625337; c=relaxed/simple;
-	bh=kKlY911nDkY+jNkNOd7gwZr5u5uxJa71M/JB163ih2Y=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=hNE2v65LPefD+6N/p37P1pnkiROVlYFbANx25wPz5QhdpSCtaEZ8vP7YR+5eY0Ji6JLww3JUj4cQEk3LUU9b0tZoCFAK814BiqW3TAfAhbLGfmlJoAe+jWXxnu3yme1QRbdmkjmAKiQK9phrBFyuNmsR8G51abddM84GdRe8Fmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-4519ef1babeso730419fac.2
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 02:42:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791625332; x=1792230132;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8LzDxcHIFLOailu9VoDSBmcQuYWWLTYeM5cdlcmR5HQ=;
-        b=YOTPMHVCgOh7ASvONzzVzvJKqKxgBuCSQvlo4TebQKnRTYLqbz5PE+VkqME4tyvlY0
-         p0x+tqrCKGuxtL+kQfxEvlOd4A90R1gYzjyX4XNnf1EEWN0//GviSWLh8jygCnQJxUAN
-         P7BdsgAlcf/nvQ7jnB7p0ZTep4cgt45kNhco8B2K0724EEeR04DwM+GbJO3yGKkGWNpO
-         UPKcQQJh0p3G51yxDIxobu6fhOcgj03uez8iyxW1ekZUFM80UU57nf+DDPtU9TFOOgwc
-         De/sYPA1b+tBlooH/w9WXPBb3Itk77ocdD8y83OkqQGtPfgYlPDClAWN39hPqlnV6uRk
-         e6UQ==
-X-Forwarded-Encrypted: i=1; AKwUvByoLaRX2fm2M96zni2d2aiVmEplzOR7HwKE2337qm7yCNQdOF16FdFG/jQHEOLnyeq40xV+sH0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK9NGyYI0Rl42airw3FYI1+KAKDS6Z7EygczeDWa/s4YHU84mhj
-	3tFgnLGWFf6rkEWEr5fu8ooTeGO5vz1OTdgE7MmlWrEiqmMIFdGtg0qBK8JJPxWueG8NnmhQ8Hv
-	HeEDTXyfiDzNofWaWcmGziEd+/d32U3jd5cmQ28/4V13I5DBN7lnWtrAo4vQ=
+	s=arc-20240116; t=1791625408; c=relaxed/simple;
+	bh=KA7PQQQ0+2GHywNCj78Dee+GHkJauenbmKtXXvKDUys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gtiOUwNeYEVMnMfnNXtNrrvdsr97ULFadSiqiPA4zlEj4ZvR9LCOuYZznqprDi3ojXzSOPlekY7fvqvgb2Tq5JhDq17dpKryY5JUD53U821XPs5cGt91tHJ1b3hnLUcqrpYk3IOVFDqRJwk1BbUnjCDEwAagwXMXDS1eOTQw6Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z06hhJKT; arc=none smtp.client-ip=91.218.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z06hhJKT"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=KA7PQQQ0+2GHywNCj78Dee+GHkJauenbmKtXXvKDUys=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791625405; v=1; x=1792230205;
+ b=Z06hhJKTY9dGfqOb1uR3W3zfMGfX+9NNtwFbdqu7XANwmQ3iW5SqqA3JKcgKghbd33XetIcl
+ 82ADv223oKuCQCy6laA4QvUbpqD/jzHpUl4tFHX16L/3bRNAaTxzFB9szHcmmZE+Eiv42hrJGAm
+ d/pg8Pi4oQoeIfpKCyrmkZek=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id f0209d5248f65c54;
+	Sat, 10 Oct 2026 09:43:24 +0000
+X-Mizu-Trace-ID: f0209d5248f65c54
+X-Migadu-Flow: FLOW_OUT
+Date: Sat, 10 Oct 2026 17:43:18 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Yun Lu <luyun_611@163.com>
+Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	maheshb@google.com, razor@blackwall.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net v3] bonding: 3ad: select a port when the TX array is
+ empty
+Message-ID: <asoItm3JVXSC5GQ4@fedora>
+References: <20261008024031.16224-1-luyun_611@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:138e:b0:4f4:73a9:f838 with SMTP id
- 5614622812f47-50c4ed3dc0dmr3742553b6e.22.1791625331782; Sat, 10 Oct 2026
- 02:42:11 -0700 (PDT)
-Date: Sat, 10 Oct 2026 02:42:11 -0700
-In-Reply-To: <20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aca0873.70ed5d86.2ac85.00ac.GAE@google.com>
-Subject: [syzbot ci] Re: Extend drm_ras for qaic telemetry
-From: syzbot ci <syzbot+ci0a77ef6c47a86cbc@syzkaller.appspotmail.com>
-To: airlied@gmail.com, aravind.iddamsetty@linux.intel.com, 
-	carl.vanderlip@oss.qualcomm.com, dri-devel@lists.freedesktop.org, 
-	jeff.hugo@oss.qualcomm.com, karol.wachowski@linux.intel.com, kuba@kernel.org, 
-	lizhi.hou@amd.com, netdev@vger.kernel.org, ogabbay@kernel.org, 
-	raag.jadav@intel.com, riana.tauro@intel.com, rodrigo.vivi@intel.com, 
-	simona.vetter@ffwll.ch, troy.hanson@oss.qualcomm.com, 
-	youssef.abdulrahman@oss.qualcomm.com, zachary.mckevitt@oss.qualcomm.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261008024031.16224-1-luyun_611@163.com>
 
-syzbot ci has tested the following series
+Hi Lu Yun,
+On Thu, Oct 08, 2026 at 10:40:31AM +0800, Yun Lu wrote:
+> From: Yun Lu <luyun@kylinos.cn>
+> 
+> This issue was observed on a machine in real use. During 802.3ad
+> bring-up in production, packets were dropped even though the bond's
+> carrier was up and LACP had enabled ports for distribution. The
+> transmit path only consults usable_slaves and returns no slave when
+> the array is NULL or its count is zero.
+> 
+> LACP port eligibility and the TX array are updated separately. The
+> state machine enables ports and updates carrier before scheduling
+> slave_arr_work to rebuild and publish the array. The worker requires
+> RTNL and retries if rtnl_trylock() fails, so RTNL contention can
+> prolong the interval in which eligible ports exist but the cached
+> array is empty.
+> 
+> Add a fallback for 802.3ad when the usable array is empty and carrier
+> is up. Walk the RCU-protected slave list and use ports whose
+> aggregator is active and which pass bond_slave_can_tx(), without
+> taking mode_lock or changing LACP state. In 802.3ad mode the
+> per-slave active flag is set only by the mux machine for ports of the
+> active aggregator, so these lockless reads identify distributable
+> ports with the same criteria bond_update_slave_arr() applies when
+> building the array.
 
-[v1] Extend drm_ras for qaic telemetry
-https://lore.kernel.org/all/20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com
-* [PATCH 1/3] drm/drm_ras: Remove admin-perm flag from list-nodes operation
-* [PATCH 2/3] drm/drm_ras: Extend DRM RAS interface to include telemetry nodes
-* [PATCH 3/3] accel/qaic: Add callbacks for DRM RAS netlink telemetry
+`bond_update_slave_arr()` is called from `bond_enslave()`, and it should be
+very fast. Could we add a check in `bond_3ad_state_machine_handler()` or
+another suitable place to ensure usable slaves exist before entering the
+distribution state?
 
-and found the following issue:
-general protection fault in drm_ras_nl_pre_telemetry
+The fallback path seems somewhat complex and costly. Or you can wait for
+Jay's feedback.
 
-Full report is available here:
-https://ci.syzbot.org/series/6915fb7c-08cd-48b4-b8a4-3834f3e60de5
-
-***
-
-general protection fault in drm_ras_nl_pre_telemetry
-
-tree:      drm-next
-URL:       https://gitlab.freedesktop.org/drm/kernel.git
-base:      f2bf20011b95401f63e573d54134544c452c4117
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/d48f7944-a0fb-4983-a3c6-c037c81dd832/config
-syz repro: https://ci.syzbot.org/findings/c2ca90ba-3f79-4e56-94d4-b1ddc64056e5/syz_repro
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 UID: 0 PID: 5808 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:nla_get_u32 include/net/netlink.h:1734 [inline]
-RIP: 0010:drm_ras_nl_pre_telemetry+0x60/0xe0 drivers/gpu/drm/drm_ras.c:656
-Code: 8b 1b 48 83 c3 08 48 89 d8 48 c1 e8 03 42 80 3c 38 00 74 08 48 89 df e8 3e 3c 9a fc 48 8b 1b 48 83 c3 04 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 75 5b 8b 33 48 c7 c7 80 d3 6f 90 e8 c9 8c 49
-RSP: 0018:ffffc9000379f420 EFLAGS: 00010247
-RAX: 0000000000000000 RBX: 0000000000000004 RCX: ffff8881bf17bc00
-RDX: 0000000000000000 RSI: ffff8881bf38d380 RDI: ffffc9000379f600
-RBP: ffffc9000379f588 R08: ffffc9000379f4ff R09: 0000000000000000
-R10: ffffc9000379f4d0 R11: ffffffff859eb380 R12: ffffc9000379f600
-R13: dffffc0000000000 R14: ffff8881bf38d380 R15: dffffc0000000000
-FS:  00007f2c256e36c0(0000) GS:ffff8882a7cb6000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000000100 CR3: 000000016e7ee000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- genl_family_rcv_msg_doit+0x1db/0x340 net/netlink/genetlink.c:1109
- genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
- genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2575
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
- netlink_unicast_kernel net/netlink/af_netlink.c:1338 [inline]
- netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1364
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1919
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2c2479e1d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f2c256e3028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f2c24a25fa0 RCX: 00007f2c2479e1d9
-RDX: 0000000000000000 RSI: 0000200000000100 RDI: 0000000000000004
-RBP: 00007f2c24835888 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2c24a26038 R14: 00007f2c24a25fa0 R15: 00007ffc88247b58
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:nla_get_u32 include/net/netlink.h:1734 [inline]
-RIP: 0010:drm_ras_nl_pre_telemetry+0x60/0xe0 drivers/gpu/drm/drm_ras.c:656
-Code: 8b 1b 48 83 c3 08 48 89 d8 48 c1 e8 03 42 80 3c 38 00 74 08 48 89 df e8 3e 3c 9a fc 48 8b 1b 48 83 c3 04 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 75 5b 8b 33 48 c7 c7 80 d3 6f 90 e8 c9 8c 49
-RSP: 0018:ffffc9000379f420 EFLAGS: 00010247
-RAX: 0000000000000000 RBX: 0000000000000004 RCX: ffff8881bf17bc00
-RDX: 0000000000000000 RSI: ffff8881bf38d380 RDI: ffffc9000379f600
-RBP: ffffc9000379f588 R08: ffffc9000379f4ff R09: 0000000000000000
-R10: ffffc9000379f4d0 R11: ffffffff859eb380 R12: ffffc9000379f600
-R13: dffffc0000000000 R14: ffff8881bf38d380 R15: dffffc0000000000
-FS:  00007f2c256e36c0(0000) GS:ffff8882a7cb6000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f2c247eb8c0 CR3: 000000016e7ee000 CR4: 00000000000006f0
-----------------
-Code disassembly (best guess):
-   0:	8b 1b                	mov    (%rbx),%ebx
-   2:	48 83 c3 08          	add    $0x8,%rbx
-   6:	48 89 d8             	mov    %rbx,%rax
-   9:	48 c1 e8 03          	shr    $0x3,%rax
-   d:	42 80 3c 38 00       	cmpb   $0x0,(%rax,%r15,1)
-  12:	74 08                	je     0x1c
-  14:	48 89 df             	mov    %rbx,%rdi
-  17:	e8 3e 3c 9a fc       	call   0xfc9a3c5a
-  1c:	48 8b 1b             	mov    (%rbx),%rbx
-  1f:	48 83 c3 04          	add    $0x4,%rbx
-  23:	48 89 d8             	mov    %rbx,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	42 0f b6 04 38       	movzbl (%rax,%r15,1),%eax <-- trapping instruction
-  2f:	84 c0                	test   %al,%al
-  31:	75 5b                	jne    0x8e
-  33:	8b 33                	mov    (%rbx),%esi
-  35:	48 c7 c7 80 d3 6f 90 	mov    $0xffffffff906fd380,%rdi
-  3c:	e8                   	.byte 0xe8
-  3d:	c9                   	leave
-  3e:	8c                   	.byte 0x8c
-  3f:	49                   	rex.WB
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
-
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
-
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+Thanks
+Hangbin
