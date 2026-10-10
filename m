@@ -1,362 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from a4i850.smtp2go.com (a4i850.smtp2go.com [158.120.83.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338A836D9EB;
-	Sat, 10 Oct 2026 14:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE333EC837
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 14:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.83.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791641188; cv=none; b=ebz6hHaITgQRtsWRrfEr15ga/bcG0JnZIcn5xCGpY06E4GcS2VuTvNhQMGW9YG1rJsu97hKJFySsDq3MqI2L+u3S2Ihknaw/34uDxBB9yR3vQEyrCs2/zCI3J/oOIT6Ak0XkOEjCo5aAhpgpo+X39nItRJKp4i57T4QpWNkBm9w=
+	t=1791641436; cv=none; b=jM8BlYC1Wp6SIWf8cprxyBUrJK4Ee0BPrMqA8AXEj/+clIqAFXsObZ24bj1MABR5AI3+o5Y38mPL05Dv3QTg9DS9h/aJ/GnLebLzu1X/PREhrI8GT0LGCifH5VEANy71iWwgz18US+hP/e1i1i9oXkc087ZarT8WF46wvlGjB+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791641188; c=relaxed/simple;
-	bh=ZYwiTmKE4MLfG8J+b/NJpyWxbzNsQfCLr6vyitiyL88=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CDf0ljIQZE/rh5Lky6TfkmUXwOWbft1cwlSVDhuoinkVPmfnwnSlpaqCF6qo3Qc2mErXlu4YqJdBctdlPSwPlwY2K77UoU+Wq6vnfz40IZjQb3/mxVVZ9PxNamc2B0fXsUQTxr5qqF1jqDci2vfRW4LY89318xO8b7pTGZ4SMU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=By26bg6g; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791641436; c=relaxed/simple;
+	bh=KurMqRYTtfK7Q2u2yEmmD+g6KxcgzV/eyli+dy2Qm2M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YdpmWbFd1GhCZKEoQpM2Cs907fybwALqDkp0ZtwfYsMMhCDstjucifDrGwsm8vZpyl9lLMgowV0CcjVktTM8Hy9N+1PpB1YYyVYNO2Xy1RVSJv+jG7JhFeFcsQfDGLl1IAH1FrF5onnayWih2svwZKwg6ADdY4vvrbEp7T9zUvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dilluti0n.com; spf=pass smtp.mailfrom=em840244.dilluti0n.com; dkim=pass (2048-bit key) header.d=dilluti0n.com header.i=@dilluti0n.com header.b=JTZrydpA; arc=none smtp.client-ip=158.120.83.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dilluti0n.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em840244.dilluti0n.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="By26bg6g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E74E1F000FF;
-	Sat, 10 Oct 2026 14:06:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791641186;
-	bh=m/Wiyr2QQSo5MX8nUbvxxVLvSVSOOWu6WYbNTaig6YM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=By26bg6g5k2lL/nPDQTJ1BKR166L7ejk5ljC+av84QKY0S44e3auTr7xGMZF28Tmx
-	 OapLSWr/TPG93JFKGVoDe+5Pt3LbMD7sCcHpjU6IBbhEqlNUvvaZfz9XGmzXJGqJaK
-	 UPvtEhZ8w8hd+3mKoJP+bEEmxhJv1iPTQAhdxm2MzZl+DtwPoEenwuZ8Ourjfa1a2v
-	 i+JhsSCGHswngJ3MX/m3tnHBxS5+geSTIeBG8KY3bPN9/oAxcPTQieNgf+BVRUlgyC
-	 +Vxzwb/QwhmBRqTPilI+zmHusqKOinCv74RGv3cr8jMYJYkqIN22vzkKTBaPhWVXhc
-	 eCVwPIua/b0HQ==
-Subject:
- Re: [PATCH net v1] ncsi: Fix use-after-free in the device unregister path
-From: netdev-bot+sashiko@kernel.org
-To: 18983559317@163.com
-Cc: sam@mendozajonas.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 14:06:25 +0000
-Message-ID: <179164118587.434549.3866860374276214421@kernel.org>
-In-Reply-To: <20261009132021.39611-1-18983559317@163.com>
-References: <20261009132021.39611-1-18983559317@163.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=dilluti0n.com header.i=@dilluti0n.com header.b="JTZrydpA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dilluti0n.com;
+ i=@dilluti0n.com; q=dns/txt; s=s840244; t=1791640527; h=from : subject
+ : to : message-id : date : list-unsubscribe : list-unsubscribe-post;
+ bh=r2qIUuIj7U6tM96spZZJ0rqFYcbWjd0y9e3WDSS49yk=;
+ b=JTZrydpA4STtIxzsSf32vHdvl0o7O08i4jSGYc2/K+BBvva4cxa2K2nDXYquweKFN3j1n
+ kZggBw41QMpHDbmVGxYlDx6Asqzpjyn6DhrWOE19TwsaAMPLAAh5RlNbwApb8Lp9k2poLkD
+ nFFFWCF+zoYKaRcVyrl2p0BFPa+96Gp8pbwvftplJMNo0FHFOqu7KUYOr3lx8zIvBy0UG5j
+ C5TwhWYlJ4xs/L+HL16/AFEQ/XAkqZvqykxlCRNwO+agUYZD5a+PBziyc2kpqjA0CutmuzF
+ OMwP7RGHJMN5/7WgmEgxpVdFFbAocZGH6kNmvyjSpVq8PaZG5rAD6uzFlGLA==
+Received: from [10.40.244.132] (helo=dilluti0n.com)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256:X25519)
+	(Exim 4.100.1)
+	(envelope-from <hskim@dilluti0n.com>)
+	id 1xFXXn-4o5NDgrmnGh-t6LZ;
+	Sat, 10 Oct 2026 13:55:23 +0000
+Received: from localhost (<unknown> [10.42.0.2])
+	by dilluti0n.com (OpenSMTPD) with ESMTP id c195b92f;
+	Sat, 10 Oct 2026 13:55:15 +0000 (UTC)
+From: Hee-Suk Kim <hskim@dilluti0n.com>
+To: netdev@vger.kernel.org
+Cc: Hee-Suk Kim <hskim@dilluti0n.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	nic_swsd@realtek.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Daniel Golle <daniel@makrotopia.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] r8169: allow Giga Lite fallback on RTL8168EP
+Date: Sat, 10 Oct 2026 22:53:52 +0900
+Message-ID: <20261010135356.85454-1-hskim@dilluti0n.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 840244m:840244atORciv:840244sg2a5K__8p
+X-smtpcorp-track: XQXCgZ55rArs.C63NjuUq_NFt.goLr2AwKMPP
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
+Giga Lite is a Realtek proprietary mode which allows links of up to
+500 Mbps over two-pair cabling. In South Korea, it is widely used to
+support 500 Mbps plans by most ISPs. The vendor driver [1] sets PHY
+page 0xa42, reg 0x14, bit 9 to allow it on RTL8168H and FP. The driver
+does not handle RTL8168EP but I confirmed the same works for it by
+setting the PHY register via SIOCSMIIREG on an SK Broadband 500 Mbps
+plan [2].
 
-Critical: 0 · High: 4 (1) · Medium: 2 · Low: 0
+With the bit set, the link still came up at about 470 Mbps even when
+only 10/100 was advertised. So set it only when autonegotiating with
+1000baseT/Full advertised, and clear it otherwise, to respect a lower
+advertised speed. This matches what the vendor driver does for
+RTL8168H and FP.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+PHYSR reports 0x30 in its speed field to denote a Giga Lite link. This
+value is not handled in rtlgen_decode_physr(), so the reported speed
+varies between 100 and 1000 Mbps on the same link. Handle it to report
+1000, as there is no 500 Mbps uAPI.
 
-- [High] The fix leaves the netlink-query race it claims to close fully
-  reachable.
-- [High] ncsi_unregister_dev() frees ndp, which embeds requests[256] and
-  their timer_list objects, without cancelling the outstanding request…
-- [High] Moving disable_work_sync(&ndp->work) earlier does not stop the
-  NCSI state machine, so the fix's premise ('stop the state machine work…
-- [High] net/ncsi: active request timers cause UAF on device unregister
-- [Medium] ncsi_remove_channel() only does list_del_rcu(&nc->node).
-- [Medium] ncsi_remove_channel() now defers freeing nc with kfree_rcu(),
-  but frees its sub-allocations immediately: kfree(nc->mac_filter.addrs)…
+[1] https://github.com/mtorromeo/r8168/blob/b3e24e4aa74a3561618d0abf01b708bd55def57a/src/r8168_n.c#L6375-L6390
+[2] https://www.tworld.co.kr/web/product/callplan/NI00000567
 
-Pre-existing issues:
-- [High] ftgmac100_remove() calls ncsi_unregister_dev(priv->ndev), which
-  ends with kfree(ndp), and then calls unregister_netdev(netdev).
+Assisted-by: LLM
+Signed-off-by: Hee-Suk Kim <hskim@dilluti0n.com>
+---
+Test results on a ThinkPad T14 Gen 5 (RTL8168ep/8111ep, XID 502) with
+an SK Broadband 500 Mbps plan ("before"/"after" = without/with this
+patch, throughput by fast.com):
 
+  kernel  bit 9          advertised   PHYSR  reported     throughput
+  ------  -------------  -----------  -----  -----------  ----------
+  before  clear          10/100/1000  0x10   100          94 Mbps
+  before  set manually   10/100/1000  0x30   100 or 1000  470 Mbps
+  after   set manually   10/100       0x30   1000         470 Mbps
+  after   clear          10/100       0x10   100          95 Mbps
+  after   set            10/100/1000  0x30   1000         470 Mbps
+
+"set manually" means bit 9 was set via SIOCSMIIREG. Happy to share the
+script if useful.
+
+ MAINTAINERS                               |  1 +
+ drivers/net/ethernet/realtek/r8169_main.c |  4 ++++
+ drivers/net/phy/realtek/realtek_main.c    | 26 +++++++++++++++++++++++
+ include/linux/realtek_phy.h               | 10 +++++++++
+ 4 files changed, 41 insertions(+)
+ create mode 100644 include/linux/realtek_phy.h
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 509b35b5a0e7..a54370ae80a3 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9789,6 +9789,7 @@ F:	include/linux/phy_fixed.h
+ F:	include/linux/phy_link_topology.h
+ F:	include/linux/phylib_stubs.h
+ F:	include/linux/platform_data/mdio-bcm-unimac.h
++F:	include/linux/realtek_phy.h
+ F:	include/net/phy/
+ F:	include/trace/events/mdio.h
+ F:	include/uapi/linux/mdio.h
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 43c46d483eb8..fe49197c4d7b 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -28,6 +28,7 @@
+ #include <linux/bitfield.h>
+ #include <linux/phylink.h>
+ #include <linux/prefetch.h>
++#include <linux/realtek_phy.h>
+ #include <linux/ipv6.h>
+ #include <linux/unaligned.h>
+ #include <net/ip6_checksum.h>
+@@ -5619,6 +5620,9 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+ 		return -EUNATCH;
+ 	}
+
++	if (tp->mac_version == RTL_GIGA_MAC_VER_51)
++		tp->phydev->dev_flags |= RTL_PHY_F_GIGA_LITE;
++
+ 	/* Keep EEE off but the version stays EEE-capable so that link-up
+ 	 * still clears the MAC TX-LPI bits.
+ 	 */
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index e14960192e79..319122270bca 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -14,6 +14,7 @@
+ #include <linux/of.h>
+ #include <linux/phy.h>
+ #include <linux/pm_wakeirq.h>
++#include <linux/realtek_phy.h>
+ #include <linux/netdevice.h>
+ #include <linux/module.h>
+ #include <linux/delay.h>
+@@ -1706,6 +1707,7 @@ static void rtlgen_decode_physr(struct phy_device *phydev, int val)
+ 		phydev->speed = SPEED_100;
+ 		break;
+ 	case 0x0020:
++	case 0x0030:	/* Giga Lite */
+ 		phydev->speed = SPEED_1000;
+ 		break;
+ 	case 0x0200:
+@@ -1735,6 +1737,29 @@ static void rtlgen_decode_physr(struct phy_device *phydev, int val)
+ 	}
+ }
+
++static int rtlgen_config_aneg(struct phy_device *phydev)
++{
++	int ret = 0;
++
++	/* With Giga Lite enabled, the PHY can link in Giga Lite even
++	 * when 1000baseT/Full is not advertised.  Only allow it when
++	 * autonegotiating with 1000baseT/Full advertised, so that a
++	 * lower speed set by the user is respected.
++	 */
++	if (phydev->dev_flags & RTL_PHY_F_GIGA_LITE) {
++		bool en = phydev->autoneg == AUTONEG_ENABLE &&
++			  linkmode_test_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
++					    phydev->advertising);
++
++		ret = phy_modify_paged_changed(phydev, 0xa42, 0x14, BIT(9),
++					       en ? BIT(9) : 0);
++		if (ret < 0)
++			return ret;
++	}
++
++	return __genphy_config_aneg(phydev, ret > 0);
++}
++
+ static int rtlgen_read_status(struct phy_device *phydev)
+ {
+ 	int ret, val;
+@@ -3248,6 +3273,7 @@ static struct phy_driver realtek_drvs[] = {
+ 	}, {
+ 		.name		= "Generic FE-GE Realtek PHY",
+ 		.match_phy_device = rtlgen_match_phy_device,
++		.config_aneg	= rtlgen_config_aneg,
+ 		.read_status	= rtlgen_read_status,
+ 		.suspend	= genphy_suspend,
+ 		.resume		= rtlgen_resume,
+diff --git a/include/linux/realtek_phy.h b/include/linux/realtek_phy.h
+new file mode 100644
+index 000000000000..7fcde616c070
+--- /dev/null
++++ b/include/linux/realtek_phy.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _REALTEK_PHY_H
++#define _REALTEK_PHY_H
++
++#include <linux/bits.h>
++
++/* phy_device::dev_flags */
++#define RTL_PHY_F_GIGA_LITE	BIT(0)
++
++#endif /* _REALTEK_PHY_H */
+
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
 --
-
-ncsi: Fix use-after-free in the device unregister path
-
-This commit moves disable_work_sync() in ncsi_unregister_dev() so it runs
-before the packages and channels are torn down. It also switches
-ncsi_remove_package() and ncsi_remove_channel() from kfree() to
-kfree_rcu(), with an rcu_head added to both structures.
-
-> diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-> index 54d0df0a9efe6..05dcd732effa2 100644
-> --- a/net/ncsi/ncsi-manage.c
-> +++ b/net/ncsi/ncsi-manage.c
-> @@ -263,7 +263,7 @@ static void ncsi_remove_channel(struct ncsi_channel *nc)
->  	np->channel_num--;
->  	spin_unlock_irqrestore(&np->lock, flags);
->  
-> -	kfree(nc);
-> +	kfree_rcu(nc, rcu_head);
-
-[Severity: Medium]
-nc is now freed after a grace period, but earlier in ncsi_remove_channel()
-its filter arrays are still freed right away, before the list_del_rcu():
-
-	/* Release filters */
-	kfree(nc->mac_filter.addrs);
-	kfree(nc->vlan_filter.vids);
-
-vlan_filter.n_vids and the bitmap are not changed. Can a reader that
-already holds nc still index the freed vids[] array?
-
-ncsi_write_channel_info() in ncsi-netlink.c reads it without nc->lock and
-copies the values into the netlink reply:
-
-	while ((i = find_next_bit((void *)&ncf->bitmap, ncf->n_vids,
-				  i + 1)) < ncf->n_vids) {
-		if (ncf->vids[i])
-			nla_put_u16(skb, NCSI_CHANNEL_ATTR_VLAN_ID,
-				    ncf->vids[i]);
-	}
-
-set_one_vid() can also do ncf->vids[index] = vid under nc->lock if it gets
-the lock after ncsi_remove_channel() has dropped it.
-
-Should the filter arrays be freed together with nc after the grace period?
-
-[Severity: Medium]
-ncsi_remove_channel() only unlinks nc->node. Is nc->link ever removed from
-ndp->channel_queue? Also, are ndp->active_channel, ndp->hot_channel and
-np->preferred_channel cleared before the channel is freed?
-
-Suppose disable_work_sync() interrupts a multi-channel configuration. The
-channels still queued stay on channel_queue after they are freed.
-
-The monitor of a channel that has not been removed yet is still armed.
-GLS responses are dropped after dev_remove_pack(), so that monitor can
-reach its timeout branch in ncsi_channel_monitor():
-
-	spin_lock_irqsave(&ndp->lock, flags);
-	nc->state = NCSI_CHANNEL_ACTIVE;
-	list_add_tail_rcu(&nc->link, &ndp->channel_queue);
-	spin_unlock_irqrestore(&ndp->lock, flags);
-	ncsi_process_next_channel(ndp);
-
-The list_add_tail_rcu() writes into the link of the stale tail entry.
-ncsi_process_next_channel() then pops the first entry with
-list_first_or_null_rcu() and list_del_init(), makes it
-ndp->active_channel, and calls ncsi_configure_channel() on it.
-
-The kfree_rcu() grace period does not cover a timer callback that starts
-after kfree_rcu() was called. Can this write to a freed ncsi_channel from
-softirq context?
-
->  }
-
-[ ... ]
-
-> @@ -1958,6 +1958,8 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
->  	struct ncsi_package *np, *tmp;
->  	unsigned long flags;
->  
-> +	disable_work_sync(&ndp->work);
-> +
-
-[Severity: High]
-disable_work_sync() waits for the current run of ndp->work. It does
-nothing about NCSI requests that are already outstanding.
-ncsi_xmit_cmd() arms nr->timer, which is embedded in ndp->requests[],
-and returns before the response arrives.
-
-After dev_remove_pack() and synchronize_net(), no response can complete
-those requests. Each pending one can then only finish through its
-timeout. Nothing in ncsi_unregister_dev() walks ndp->requests[] and
-cancels those timers before kfree(ndp).
-
-So the timer wheel still holds nr->timer inside the freed ndp. About a
-second later ncsi_request_timeout() runs on freed memory:
-
-ncsi_request_timeout()
-  ndp = nr->ndp
-  spin_lock_irqsave(&ndp->lock, flags)     /* freed ndp */
-  ncsi_find_package_and_channel()          /* netlink-driven */
-  ncsi_free_request(nr)
-    --ndp->pending_req_num
-    consume_skb(cmd)
-
-Even before the callback runs, a pending timer_list in freed memory
-can corrupt the timer wheel once the allocation is reused.
-
-The window is easy to hit. Probe commands to absent packages only ever
-finish by timeout. Channel configuration, the channel monitor's GLS
-commands and NCSI_CMD_SEND_CMD requests from netlink can all be
-pending when the device is removed.
-
-Should ncsi_unregister_dev() shut down every ndp->requests[i].timer
-before freeing ndp, for example with timer_shutdown_sync()? Should it
-also release any cmd/rsp skbs still attached to those requests, which
-would otherwise leak?
-
-[Severity: High]
-Does disabling ndp->work actually stop the state machine?
-ncsi_process_next_channel() calls ncsi_configure_channel(),
-ncsi_suspend_channel() or ncsi_choose_active_channel() directly, and it is
-called from places other than ndp->work.
-
-One caller is the VLAN ndo path. ftgmac100 sets
-NETIF_F_HW_VLAN_CTAG_FILTER in NCSI mode. ftgmac100_remove() calls
-ncsi_unregister_dev() without rtnl, while the netdev is still registered.
-So a concurrent VLAN add can do this:
-
-ncsi_vlan_rx_add_vid()
-  ncsi_find_dev()
-  ncsi_kick_channels()          /* NCSI_FOR_EACH_PACKAGE/CHANNEL */
-  ncsi_process_next_channel()
-    ncsi_configure_channel()
-      ncsi_xmit_cmd()
-
-This runs in process context without rcu_read_lock(), so neither
-kfree_rcu() nor the final kfree(ndp) is ordered against it.
-ncsi_vlan_rx_kill_vid() follows the same pattern.
-
-The other caller is the channel monitor timer. In its timeout branch,
-ncsi_channel_monitor() clears nc->monitor.enabled itself and then keeps
-using ndp.
-
-If ncsi_remove_channel() reaches ncsi_stop_channel_monitor() on another
-CPU after that point, it returns early:
-
-	spin_lock_irqsave(&nc->lock, flags);
-	if (!nc->monitor.enabled) {
-		spin_unlock_irqrestore(&nc->lock, flags);
-		return;
-	}
-
-timer_delete_sync() is never called. Nothing waits for the running
-callback while ncsi_unregister_dev() goes on to kfree(ndp).
-
-The commit message says this change will "stop the state machine work
-before freeing the packages and channels". Do these entry points need to
-be shut out before the lists are torn down for that to hold?
-
->  	dev_remove_pack(&ndp->ptype);
-
-[Severity: High]
-What happens to commands that are already in flight at this point?
-ncsi_xmit_cmd() arms a timer embedded in ndp->requests[] and returns:
-
-	nr->enabled = true;
-	mod_timer(&nr->timer, jiffies + 1 * HZ);
-
-disable_work_sync() only waits for the current run of the work.
-dev_remove_pack() and synchronize_net() then make sure no response will
-ever complete those requests.
-
-Several kinds of request can still be pending: probe commands to absent
-packages (these only finish by timeout), config commands, GLS commands
-from channel monitors, and NCSI_CMD_SEND_CMD requests.
-
-Nothing cancels ndp->requests[i].timer before kfree(ndp). About a second
-later, ncsi_request_timeout() can run on the freed ndp:
-
-ncsi_request_timeout()
-  spin_lock_irqsave(&ndp->lock, flags)
-  ncsi_find_package_and_channel()   /* netlink-driven requests */
-  ncsi_free_request()
-    timer_delete_sync(&nr->timer)
-    --ndp->pending_req_num
-    schedule_work(&ndp->work)
-
-Does this leave pending timer_list objects in the timer wheel after their
-memory has been freed?
-
-Should each request timer be shut down (for example with
-timer_shutdown_sync()) and the cmd/rsp skbs released before kfree(ndp)?
-
->  
->  	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
-> @@ -1967,8 +1969,6 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
->  	list_del_rcu(&ndp->node);
->  	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
->  
-> -	disable_work_sync(&ndp->work);
-> -
->  	kfree(ndp);
-
-[Severity: High]
-The commit message lists "a netlink query" as a trigger. It says
-kfree_rcu() protects "readers covered by an RCU read-side critical
-section". Do any of the NCSI netlink readers run inside one?
-
-ndp_from_ifindex() in ncsi-netlink.c takes no RCU lock and no reference on
-ndp:
-
-	nd = ncsi_find_dev(dev);
-	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
-
-	dev_put(dev);
-	return ndp;
-
-ncsi_pkg_info_nl() keeps that raw pointer across
-genlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL), which can sleep. Then
-ncsi_write_package_info() walks ndp->packages and np->channels with
-NCSI_FOR_EACH_PACKAGE/NCSI_FOR_EACH_CHANNEL. ncsi_pkg_info_all_nl() walks
-the packages the same way. ncsi_unregister_dev() takes neither genl_mutex
-nor rtnl.
-
-ndp itself holds the packages list head. Here it is still freed with a
-plain kfree() right after list_del_rcu(&ndp->node), with no grace period.
-
-ftgmac100_remove() calls ncsi_unregister_dev() while the netdev is still
-registered, so dev_get_by_index() still succeeds for a concurrent query.
-NCSI_CMD_PKG_INFO has .flags = 0, so an unprivileged user can send it.
-
-Can this sequence copy freed or reallocated package and channel memory
-into the netlink reply?
-
-ncsi_pkg_info_nl()
-  ndp_from_ifindex()            /* no ref, no RCU */
-  genlmsg_new(GFP_KERNEL)       /* may sleep */
-                                   ncsi_unregister_dev()
-                                     ncsi_remove_package()
-                                     kfree(ndp)
-  ncsi_write_package_info()     /* walks freed ndp->packages */
-
-The admin-only ncsi_set_interface_nl() and ncsi_set_channel_mask_nl()
-handlers, and the VLAN ndo paths, look like they have the same issue.
-
-Does ndp need real lifetime protection here? For example, RCU around the
-readers plus a grace period or a refcount before kfree(ndp), rather than
-kfree_rcu() on the child objects only.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the commit message points
-at the ordering in ftgmac100_remove(), and that ordering looks like it
-also causes a deterministic use-after-free:
-
-	if (priv->ndev)
-		ncsi_unregister_dev(priv->ndev);
-	unregister_netdev(netdev);
-
-If the interface is up, unregister_netdev() closes it through
-ftgmac100_stop(). priv->use_ncsi is still true and priv->ndev is never
-cleared, so:
-
-ftgmac100_remove()
-  ncsi_unregister_dev()
-    kfree(ndp)
-  unregister_netdev()
-    ftgmac100_stop()
-      ncsi_stop_dev(priv->ndev)     /* freed ndp */
-        NCSI_FOR_EACH_PACKAGE(ndp, np) ...
-        ncsi_report_link(ndp, true)
-          nd->handler(nd)
-
-This walks the freed ndp->packages and takes nc->lock on channels that may
-already be freed. It also writes nd->state and nd->link_up, and makes an
-indirect call through nd->handler, which is loaded from freed memory.
-
-Would calling unregister_netdev() before ncsi_unregister_dev() in
-ftgmac100_remove() close this path? It would also close the netlink and
-VLAN windows that depend on the netdev still being registered.
-
->  }
->  EXPORT_SYMBOL_GPL(ncsi_unregister_dev);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009132021.39611-1-18983559317%40163.com
+2.55.0
