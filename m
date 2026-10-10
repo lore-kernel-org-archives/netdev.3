@@ -1,100 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293901A683D
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316E93C199B
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791621274; cv=none; b=hpgclr1OnSb0sGwVaJMRrmHhCLeE7xopU8wyOfpZLhd3VYr7WlfRB/6ETyZvqK5btgAgupkI4J6hz+V+keaMCH+VubD8clfHGPo6y1y1pYqdmaxUeRqiIARPyuEy2zHgyYPYm59TMEAzHscWcPdnFVY3JdSyoNQesReXw1P6rsY=
+	t=1791621580; cv=none; b=tZNQmIvX8Idcuj1lqCbJ5s1lF3FEahEjk9CSysRj3Dl8iC66hrs9HPm03/HdHpdmeraeatQIEjwzXQ3VcC0mLggd63HUAcqkFrLd1Fl0AAayukyRTrKEAzvlowozkRLJNJtFgMabAWLSsBpnT0/MEVZ3bRHU1q+uu0nfS/7qGCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791621274; c=relaxed/simple;
-	bh=TEwsiz8Ih8v3OgTNM9+K8zciWuPTlmI3xhjKYBAsVxU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DPsxIwl2ya4dW94FOJxw4amqBGwA6JlC9GvhjcNdRku9v0bK5QR05CFvZ+tZznyHpYs/833fIqxH4YVp5HRK6iix2MlpX9Sd8szBl1hGzNok61Gwg0cCdbRyKR3xe/ajGk+fd7gbCRJLT5fHB5Rz+NPV1jJIPs9mg/LJaOg89+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PLwN4DSz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791621580; c=relaxed/simple;
+	bh=c4i6mi3hlpud4ggYzlYd71WHusW0w0pU98zmW2ROBu8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=f4Vj7Nyp2j6BqzJLmkxceAmr6z6mA4vQFEBbNi9sMhpsVHwFR0LyOX4+5to05bCRVD82b2BXScvKGUtkwSnF0RPvBSVjFaFuFAYDAjnc/ERo6ZSxr3FE0olYVo7NVVm+0ffSDU3DfjmuhxmCaDxijJcCD9J/AzO0WbvA7pTsmdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ok+GrNS8; arc=none smtp.client-ip=74.125.82.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PLwN4DSz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16B01F00899
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:34:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791621272;
-	bh=TEwsiz8Ih8v3OgTNM9+K8zciWuPTlmI3xhjKYBAsVxU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=PLwN4DSz+MbyaaTzYh3u8g0wC64SUgovp4AoIBMOd9SPEdz6u2hARWRz9WWxijN3W
-	 UR/gBhkCVcaoSurICwD6lOfueyQ1oZ2YL/fguByVgHrNnJk273g7XAg5aZpW9gTjAP
-	 a52T4c2CYMI19kZmwnwKxgcWLElTYfyoI5JhXNXe97ZJim9HKFspf/2PpjFyGeuGZc
-	 6Lpal+n5DI+NdOkG017ggougwllBVdenoN/RA7SgrfWLwQGmCQMNiWZMy4w71z7mhg
-	 zMWKPVbWRrldNu0VUOzM10zQDv2XQdVsdPrBQsgr+8WUTi86qtvfBM2y8Jzdev5kQv
-	 uSGKriIjhFN7A==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-48eee44b908so336946fac.1
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:34:32 -0700 (PDT)
-X-Gm-Message-State: AFq9FYJg7v19AhYndM9swJTBnLhYQtCNMzexQL0b22JiyCbrdaKnB3if
-	O2//Q3aLYvUcsDb0kQWstlLtOv/nPSw7Xmgh8jUx8vvflFjWL+BBOY0P06+kxqlQq7y0GNeV/ZM
-	a+T302Qr8nBDqyOL+ig7L5Zmj/EhLkYA=
-X-Received: by 2002:a05:6870:8a08:b0:494:b8f4:9a14 with SMTP id
- 586e51a60fabf-4a2a8687b27mr3915629fac.6.1791621272059; Sat, 10 Oct 2026
- 01:34:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ok+GrNS8"
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-3548cdfd2fbso664762eec.1
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:39:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791621577; x=1792226377; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=lHcZnhc3QYZQ2/oBZUUaxlLCVCxGa2In7CH7r+34iGA=;
+        b=Ok+GrNS8Y6mqZFXOGu2tI+Ipn9Oaw1NOXxHv/R3bCRjwf2VIYL4wXuH2ukDmQ7cqcy
+         zVIxQu3xLZ0khGcsrw5Q290xOqiFL8Wov3uS0uej/yHDq0SAnyZNAwWaFI/09FRrQiqf
+         IrPSCkNPc8dQDMv93KmdkOfUoZ0ky8tmocTO4dez2wwxbn5JeyQK1HI6L7BrvIzcAYUZ
+         6cNKsTPaSZtao6qmBqSMIHpD+HN+8VOu1gfX5oqrV2VwASzB6r9xmKAwdCfeOdpm71FL
+         o7Xa1NosM3mQYqMNXRzSTLd62pIH6p/rxzryZ+V3CnfthZGjc2ONY1QrQ49cc2RV1XYB
+         NFtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791621577; x=1792226377;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lHcZnhc3QYZQ2/oBZUUaxlLCVCxGa2In7CH7r+34iGA=;
+        b=fGrgAJ/qN0yvhmbXF8KVW8Ts6QcRXO2ZwrEY5VFa66A9EsERi0J9HF9tBaxqxVYTOK
+         ucT9roh6mE+7wbhNy8KQOqjOX7JRg70HrjeAC3nv72kdRfc0z6qD8jMWVC72gjRWVRW2
+         k2B87u80W74yFUGzrIGnSEBU2yMhAx38/54D+aBvmnqTC4XGjoeDa9ueXsL/LniNFmur
+         XIdfwiRTQ9bLEvLT0ZDw/RxlkM7ogiW5K+de3KhzRyYM1LP3/yDZE+U2A81dCi/no+XQ
+         z5k//fi9OVvZ+7rKrmH0cp/U8pP6dyAOAfvNi6Rk9uY7Udo36jkIND/+DR7Zlp1wL6qg
+         eMog==
+X-Gm-Message-State: AFq9FYKQzA9SZ584ZPtK+lA7q1Gbl9z6lp78/A9NC2JR7gsbIFuITc6R
+	7cpmHRyOV9dbPWISBvPaGGgUvC9r7ey7B50hoa1cxiqKrzQutMIeJ5Qei+565KbaED2zPOwqfMy
+	5m83LyStex5+qj8CHla1sBCw+6vXqAQtrQZ0K5LmqsE1UJ8H4gdz9lpuHNqxprq5LCQbYf0bxI+
+	hEOg7D5ooHUvfCFM4v9RDfbfKCEdUBDzdT7MQMTyyk+G00MOqSbzCsNEJ2V4KZ0Mw=
+X-Received: from dybqm7.prod.google.com ([2002:a05:7301:6707:b0:351:5787:a37a])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:693c:6394:10b0:34a:48ce:b687 with SMTP id 5a478bee46e88-3537e010c56mr5272905eec.32.1791621576769;
+ Sat, 10 Oct 2026 01:39:36 -0700 (PDT)
+Date: Sat, 10 Oct 2026 08:38:42 +0000
+In-Reply-To: <20261010083935.3274178-1-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261008011359.63727-2-kylebot@openai.com>
-In-Reply-To: <20261008011359.63727-2-kylebot@openai.com>
-From: Eric Dumazet <edumazet@kernel.org>
-Date: Sat, 10 Oct 2026 10:34:21 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiip1pwoyjOsCV2e9Bx7UJWY2mt+J28F3pc8huPEEVkavvA@mail.gmail.com>
-X-Gm-Features: AclHuK9Y16wwCvAHyVouHe-_1ye9UA8IcdE1MMFK7IiU4cuP3BwSdjMWrWJExjQ
-Message-ID: <CAL4Wiip1pwoyjOsCV2e9Bx7UJWY2mt+J28F3pc8huPEEVkavvA@mail.gmail.com>
-Subject: Re: [PATCH net v2] netlink: avoid hashing the network namespace pointer
-To: Kyle Zeng <kylebot@openai.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, outbounddisclosures@openai.com
+Mime-Version: 1.0
+References: <20261010083935.3274178-1-almasrymina@google.com>
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261010083935.3274178-2-almasrymina@google.com>
+Subject: [PATCH net-next v1 1/6] netmem: rename __get/__put_netmem() to get/put_net_iov()
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, Ayush Sawal <ayush.sawal@chelsio.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, 
+	Eric Biggers <ebiggers@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Michael Grzeschik <mgr@kernel.org>, 
+	"=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?=" <u.kleine-koenig@baylibre.com>, Petr Machata <petrm@nvidia.com>, 
+	Arend van Spriel <arend.vanspriel@broadcom.com>, Jakub Raczynski <j.raczynski@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Le jeu. 8 oct. 2026 =C3=A0 03:14, Kyle Zeng <kylebot@openai.com> a =C3=A9cr=
-it :
->
-> The netlink rhashtable key includes a raw struct net pointer and a
-> user-controlled port ID. Both /proc/net/netlink and socket diagnostics
-> expose the table's bucket order. By binding and rebinding chosen
-> NETLINK_USERSOCK port IDs, an unprivileged reader can distinguish equal
-> buckets and recover the low bits of the Jenkins hash. Its 32-bit seed
-> and the limited set of kernel-image slides can then be searched offline
-> to recover the address of init_net.
->
-> Use the namespace's unique, non-address net_cookie in the comparison
-> key instead. It is assigned before the per-net initializers run and
-> remains unchanged for the namespace's lifetime. The lookup key and
-> object hash are still built by netlink_compare_arg_init(), keeping
-> lookup, insertion, removal and rehashing consistent while preserving
-> namespace separation. Neither public table walker needs to change.
->
-> Reading the socket's namespace cookie in netlink_compare() is safe
-> under RCU, including during namespace teardown. netlink_release()
-> removes the socket from the hash table and defers its final put with
-> call_rcu(). cleanup_net() runs the per-net exit methods and waits for
-> outstanding RCU callbacks with rcu_barrier() before freeing namespace
-> storage.
->
-> Unlike ns.ns_id, net_cookie is also available and initialized during
-> setup_net() in older stable kernels, making the change straightforward
-> to backport to v5.15 and later.
->
-> Fixes: c428ecd1a21f ("netlink: Move namespace into hash key")
-> Assisted-by: LLM
-> Signed-off-by: Kyle Zeng <kylebot@openai.com>
-> ---
->
-> Changes in v2:
-> - Use net_cookie for compatibility with older stable kernels.
-> - Name the key field net_cookie to avoid confusion with netns IDs.
-> - Explain the RCU lifetime of the socket and network namespace.
+netmems carry both a non-pp backing refcount and a page_pool
+pp_ref_count. Make the non-pp layer explicit and symmetric across both
+netmem types: get/put_netmem() dispatches to get/put_page() for pages
+and get/put_net_iov() for net_iovs, always acquiring or releasing a
+non-pp reference regardless of page_pool membership.
 
-Please next time add a Link to the prior version, and/or maybe give
-credits to reviewers ideas,
-this is something that humans care for.
+Warn via DEBUG_NET_WARN_ON_ONCE() for net_iov types that do not support
+non-pp references.
 
-Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+---
+ include/net/netmem.h | 24 ++++++++++++++++++++----
+ net/core/skbuff.c    | 36 ++++++++++++++++++++++++++----------
+ 2 files changed, 46 insertions(+), 14 deletions(-)
+
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 0cc8572f62caf..697d50c51a5ee 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -399,21 +399,37 @@ static inline bool net_is_devmem_iov(const struct net_iov *niov)
+ }
+ #endif
+ 
+-void __get_netmem(netmem_ref netmem);
+-void __put_netmem(netmem_ref netmem);
++void get_net_iov(struct net_iov *niov);
++void put_net_iov(struct net_iov *niov);
+ 
++/**
++ * get_netmem - acquire a non-page_pool reference on a netmem
++ * @netmem: netmem to reference
++ *
++ * Acquires a non-pp backing reference (page._refcount via get_page() or
++ * binding->ref via get_net_iov()) regardless of page_pool membership.
++ * Counterpart to put_netmem().
++ */
+ static __always_inline void get_netmem(netmem_ref netmem)
+ {
+ 	if (netmem_is_net_iov(netmem))
+-		__get_netmem(netmem);
++		get_net_iov(netmem_to_net_iov(netmem));
+ 	else
+ 		get_page(netmem_to_page(netmem));
+ }
+ 
++/**
++ * put_netmem - release a non-page_pool reference on a netmem
++ * @netmem: netmem to unreference
++ *
++ * Drops a non-pp backing reference (page._refcount via put_page() or
++ * binding->ref via put_net_iov()) regardless of page_pool membership.
++ * Counterpart to get_netmem().
++ */
+ static __always_inline void put_netmem(netmem_ref netmem)
+ {
+ 	if (netmem_is_net_iov(netmem))
+-		__put_netmem(netmem);
++		put_net_iov(netmem_to_net_iov(netmem));
+ 	else
+ 		put_page(netmem_to_page(netmem));
+ }
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index d56f4f0102f75..b459264ba5180 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -7551,23 +7551,39 @@ bool csum_and_copy_from_iter_full(void *addr, size_t bytes,
+ }
+ EXPORT_SYMBOL(csum_and_copy_from_iter_full);
+ 
+-void __get_netmem(netmem_ref netmem)
++/**
++ * get_net_iov - acquire a non-page_pool reference on a net_iov
++ * @niov: net_iov to reference
++ *
++ * Acquires a non-pp backing reference (binding->ref) on @niov regardless of
++ * page_pool membership, warning if @niov does not support non-pp references.
++ * Counterpart to put_net_iov().
++ */
++void get_net_iov(struct net_iov *niov)
+ {
+-	struct net_iov *niov = netmem_to_net_iov(netmem);
+-
+ 	if (net_is_devmem_iov(niov))
+-		net_devmem_get_net_iov(netmem_to_net_iov(netmem));
++		net_devmem_get_net_iov(niov);
++	else
++		DEBUG_NET_WARN_ON_ONCE(true);
+ }
+-EXPORT_SYMBOL(__get_netmem);
++EXPORT_SYMBOL(get_net_iov);
+ 
+-void __put_netmem(netmem_ref netmem)
++/**
++ * put_net_iov - release a non-page_pool reference on a net_iov
++ * @niov: net_iov to unreference
++ *
++ * Drops a non-pp backing reference (binding->ref) on @niov regardless of
++ * page_pool membership, warning if @niov does not support non-pp references.
++ * Counterpart to get_net_iov().
++ */
++void put_net_iov(struct net_iov *niov)
+ {
+-	struct net_iov *niov = netmem_to_net_iov(netmem);
+-
+ 	if (net_is_devmem_iov(niov))
+-		net_devmem_put_net_iov(netmem_to_net_iov(netmem));
++		net_devmem_put_net_iov(niov);
++	else
++		DEBUG_NET_WARN_ON_ONCE(true);
+ }
+-EXPORT_SYMBOL(__put_netmem);
++EXPORT_SYMBOL(put_net_iov);
+ 
+ struct vlan_type_depth __vlan_get_protocol_offset(const struct sk_buff *skb,
+ 						  __be16 type,
+-- 
+2.56.0.385.gd3acb90ef8-goog
+
