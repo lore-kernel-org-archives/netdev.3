@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96503793A9;
-	Sat, 10 Oct 2026 05:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4343DBD43;
+	Sat, 10 Oct 2026 05:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791609257; cv=none; b=Bpz3d3XO2BEmS31UzIVvAEGfI9HvG3elX+5n5qECqkElNJkHySrwT8bXn6hsQkrOzF7YzVVwKNvRoQYy1kY1lRZP1CvFGWX5bBj6ol5+YsV4FoGyjLh5Z2kbuAp7lz8p8Ghy7wbEQjA7Yoxj/f7V1GPBr6q+Ds6l1SKZNr9tL1A=
+	t=1791609259; cv=none; b=e+lNPhluQBIBY6b5XaTgGHO1kBxs1WaLiAz8/3y1D1PK36aQXjlMLTc145ww/CtuTgYa00x8pWZzwaBPCW0xTstBbZPzsmcjVarsmYL9N3Cx9wF4JVzvynGEUlyiggMjAWjTJsaR6E8feZ4qA2kMJrK0IWntaW57cdDpaOA0Kxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791609257; c=relaxed/simple;
-	bh=PDkjBawJpyQjm/Cl61ap3lIuw2hEe9BcNlvy4Syg0qw=;
+	s=arc-20240116; t=1791609259; c=relaxed/simple;
+	bh=ccffT9k65X2e5hyKkZGLUbqBP7Utixj7WCVOWlAOcOs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D7wnyzWbPk8nDSJUKB3Afve/xk4ct6lyTODb8haQxcOYRdeYdMy124lUp4hBytd9KB/vUSU98Vagij6NFuZYtl59ZFvDh+A4NRs2aaQydzZfSLeAFcOr+UQtmsAIRK6GpqSy3xQaXXfgum+0SN1JsE+2QPIC8VSsFjinmwWEJxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4uqUNiN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=V0rNdzmbQiyTEvc4r+lyM30iji1lSxwvwQGJyMyNg3MDKzqgnYyJ83tpMO+0BTsiMlMpb1/NUcshWr6KrkKezkJVni/KVMRTHuXJ8Vqal0eNoCuiW79szjd3HYvbX538Q5QIRQzH7kfveca8KBfa128XF/T7dloCMgF6t+XEOUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Om8kGrju; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4uqUNiN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8134B1F00893;
-	Sat, 10 Oct 2026 05:14:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Om8kGrju"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C921F000FF;
+	Sat, 10 Oct 2026 05:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791609256;
-	bh=hd03o8pGxqvvOsfLe9hcoypAAVGEnRhxTdJxKvz5dxU=;
+	s=k20260515; t=1791609257;
+	bh=S+7SxJJF2e2C6SrlZL11OcXnqaOExIveVR99YvWehtI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=V4uqUNiNQ+IciQHJFT2Ihclpdn41S1TAV6crnsT/dJagXargSF+WfF1yng0egjdjQ
-	 FLZKtKm0hgrsq+e9YVG7RBUYHu/9rpKpqIdQLoiWg4xNRQgHpoBXl7naY309Vv0X7T
-	 IQ6g6pQZ5iojatXLgyQJr+Pl2NK4Rsvlh9NFflxa7v3r/TzhlF6Qj/9+Zswq5/VEFN
-	 ZCuixeedb5casxAjdrrRN0UP8eMmPjmOol0hqyb01M/a0BggjMn8bOtoMkDLxpWkW5
-	 hlVnCN+o7rb09YtMhnuj9QFZmZHFZpacav5XMq8MwKuRd1hsmOKyfwRcc+KTqgJbQT
-	 rVNdH7YIUZ9HA==
-Subject: Re: [PATCH net-next v2 2/8] net: dsa: realtek: rtl8365mb: set speed
+	b=Om8kGrjuaUjfkxO4IAvFu3OhryFsvA/5ukCyTto34tN3fvDc002H/DBu3/5TyHUQL
+	 H3cdwuYFlzcdqHQ2kG9pugC1YiwvVLZt2geE4XzzznmsWwW4sRau7eqWsTrP9+c6y7
+	 P6EsbAkN8xsIS6VjwrUq4lmUVFTlQ+w+KujIHOV8bOOWh2ZkeiiVpIAXBaMVTl/R8+
+	 rjVtahaULlVi/AK6aP+KL31sXUDM2VNSvQ1fktTYXNkIp5yCr/Dzb/gvAjfhKNvC3y
+	 WKasyz49qK3e6S0dEXaFRV5uFSVP0Zg7z84oN34/Gztb7WJo44Molv+9+FN7KZPK3r
+	 qUSQJ+X1S0/GQ==
+Subject: Re: [PATCH net-next v2 3/8] net: dsa: realtek: rtl8365mb: get pvid
  for family D
 From: netdev-bot+sashiko@kernel.org
 To: namiltd@yahoo.com
@@ -34,11 +34,11 @@ Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch, olteanv@gmail.com,
  kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 05:14:15 +0000
-Message-ID: <179160925505.434549.8008768293460524931@kernel.org>
-In-Reply-To: <05f792d4-ed17-47b5-abb5-70813ce628cc@yahoo.com>
-References: <05f792d4-ed17-47b5-abb5-70813ce628cc@yahoo.com>
-X-sashiko-severity: Medium
+Date: Sat, 10 Oct 2026 05:14:16 +0000
+Message-ID: <179160925651.434549.11653230490116316082@kernel.org>
+In-Reply-To: <522f75c1-28fc-4163-88e2-63c36502c60e@yahoo.com>
+References: <522f75c1-28fc-4163-88e2-63c36502c60e@yahoo.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,108 +48,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] At this commit, the family D 2.5G MAC force encoding
-  (RTL8365MB_D_PORT_SPEED_2500M, split across FORCE_SPEED bits[1:0] and…
+- [Low] At this commit only rtl8365mb_vlan_port_get_pvid() is converted
+  to the family D layout.
 
 --
 
-net: dsa: realtek: rtl8365mb: set speed for family D
+net: dsa: realtek: rtl8365mb: get pvid for family D
 
-This patch makes rtl8365mb_ext_config_forcemode() use the family D
-2500M speed code (5). The code is split across FORCE_SPEED bits[1:0] and
-a new FORCE_SPEED2 field. On family D the value goes to a per-port force
-register at 0x12c0 + port, with an enable register at 0x12c8 + port.
-Family C keeps programming 1000M for 2.5G.
+On family D chips, this commit changes rtl8365mb_vlan_port_get_pvid() to
+read the PVID directly from a per-port register at 0x0700 + port, taking
+bits [11:0]. Family C keeps the old lookup through the VLAN MC table
+index.
 
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index 80fc551992195..b1ea8b06a1a18 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-
-[ ... ]
-
-> @@ -1661,23 +1676,31 @@ static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> index 8d49ffadce926..7add1fb1bea19 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
 
 [ ... ]
 
-> +	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
->  	if (link) {
->  		/* Force the link up with the desired configuration */
->  		r_link = 1;
->  		r_rx_pause = rx_pause ? 1 : 0;
->  		r_tx_pause = tx_pause ? 1 : 0;
+> @@ -679,11 +685,22 @@ int rtl8365mb_vlan_port_get_pvid(struct realtek_priv *priv, int port, u16 *pvid)
+>  	u8 vlanmc_idx;
+>  	int ret;
 >  
-> -		/* The speed field has no value for 2.5 Gbps: the rate is
-> -		 * determined by the HSGMII SerDes configuration, and the
-> -		 * vendor driver programs the 1 Gbps value here.
-> -		 */
-> -		if (speed == SPEED_2500 || speed == SPEED_1000) {
-> +		if (speed == SPEED_2500) {
-> +			if (is_d) {
-> +				r_speed = RTL8365MB_D_PORT_SPEED_2500M;
+> -	ret = rtl8365mb_vlan_get_pvid_mc(priv, port, &vlanmc_idx, &vlanmc);
+> -	if (ret)
+> -		return ret;
+> +	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D) {
+> +		u32 data;
+> +
+> +		ret = regmap_read(priv->map, RTL8365MB_D_VLAN_PVID_CTRL_REG(port), &data);
 
-[Severity: Medium]
-At this point in the series, does the family D 2500M MAC force match
-what the PCS side programs for the same link?
+[Severity: Low]
+At this commit, do the family D reader and writers use different register
+layouts?
 
-At this commit the PCS path still only handles family C.
-rtl8365mb_pcs_config() uses the hardcoded ext id, the family C jam
-tables and the MAC8 mux:
+The new branch reads 0x0700 + port and treats bits [11:0] as a VID. The
+writers are not changed, so on family D they still use the family C
+layout. rtl8365mb_vlan_port_set_pvid() writes a 5-bit MC index into
+0x0700 + (port >> 1):
 
-	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
-	...
-	if (interface == PHY_INTERFACE_MODE_2500BASEX) {
-		sds_jam = rtl8365mb_sds_jam_hsgmii;
-		sds_jam_size = ARRAY_SIZE(rtl8365mb_sds_jam_hsgmii);
-		mode = RTL8365MB_EXT_PORT_MODE_HSGMII;
+drivers/net/dsa/realtek/rtl8365mb_vlan.c:rtl8365mb_vlan_port_set_pvid() {
+    ...
+	val = vlanmc_idx << RTL8365MB_VLAN_PVID_CTRL_PORT_MCIDX_OFFSET(port);
+	ret = regmap_update_bits(priv->map,
+				 RTL8365MB_VLAN_PVID_CTRL_REG(port),
+				 RTL8365MB_VLAN_PVID_CTRL_PORT_MCIDX_MASK(port),
+				 val);
+    ...
+}
 
-rtl8365mb_pcs_link_up() also still writes the family C value (1000M for
-2.5G) into SDS_MISC:
+rtl8365mb_vlan_pvid_port_set() and rtl8365mb_vlan_pvid_port_clear() also
+still read the old state through rtl8365mb_vlan_get_pvid_mc(). So on
+family D at this commit, reading the PVID back after
+rtl8365mb_vlan_pvid_port_set() would not return the VID that was set.
+That affects callers such as rtl8365mb_port_vlan_filtering() in
+rtl8365mb_main.c.
 
-	if (speed == SPEED_2500 || speed == SPEED_1000) {
-		r_speed = RTL8365MB_PORT_SPEED_1000M;
+This is resolved later in the series. The commit "net: dsa: realtek:
+rtl8365mb: set/clear pvid for family D" adds family D dispatches at the
+top of rtl8365mb_vlan_pvid_port_set() and rtl8365mb_vlan_pvid_port_clear().
+Those dispatches go to rtl8365mb_vlan_pvid_port_set_direct() and
+rtl8365mb_vlan_pvid_port_clear_direct(), which use the same
+RTL8365MB_D_VLAN_PVID_CTRL_REG(port) / GENMASK(11, 0) layout as this
+getter.
 
-The RTL8367S-VB chip_info entry puts the SerDes on port 6 with ext id 0:
+Also, the family D chip (ID 0x6642) only starts probing with "net: dsa:
+realtek: rtl8365mb: detect RTL8367S-VB" later in the series. So no
+existing setup is affected.
 
-	{ 6, 0, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
+Could the getter and the set/clear conversion be merged into one commit,
+or reordered? That would keep the family D read and write paths
+consistent at every point in the series.
 
-RTL8365MB_SDS_EXT_INTERFACE_ID is 1.
-
-If sds_supported is set on an RTL8367S-VB, rtl8365mb_phylink_get_caps()
-advertises 2500BASEX. mac_select_pcs() then returns &mb->pcs, so the
-family C pcs_config() and pcs_link_up() run. Meanwhile
-rtl8365mb_ext_config_forcemode() writes RTL8365MB_D_PORT_SPEED_2500M.
-
-Would a 2500BASE-X link on family D come up at this commit?
-
-A later patch in the series, "net: dsa: realtek: rtl8365mb: add family
-D SDS13 PCS support", appears to fix this. It adds an is_d path to
-rtl8365mb_pcs_config(), and rtl8365mb_pcs_link_up() returns early on
-family D. The family C PCS handling on family D was added by "net: dsa:
-realtek: rtl8365mb: detect RTL8367S-VB", not by this patch.
-
-Could the series be reordered, or 2500BASEX held back for family D until
-the PCS support lands, so this in-between state can't be reached?
-
-> +			} else {
-> +				/* The speed field has no value for 2.5 Gbps: the rate is
-> +				 * determined by the HSGMII SerDes configuration, and the
-> +				 * vendor driver programs the 1 Gbps value here.
-> +				 */
-> +				r_speed = RTL8365MB_PORT_SPEED_1000M;
-> +			}
-> +		} else if (speed == SPEED_1000) {
+> +		if (ret)
+> +			return ret;
+> +
+> +		*pvid = data & RTL8365MB_D_VLAN_PVID_CTRL_MASK;
+> +	} else {
 
 [ ... ]
 
