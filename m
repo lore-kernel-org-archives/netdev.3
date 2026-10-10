@@ -1,281 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9E444A72C;
-	Sat, 10 Oct 2026 09:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BE243F8AE
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 09:42:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791624555; cv=none; b=bEEruscwIoDME9qUl49iIE0ySi8LusBKEIVOx8Lcd5U8EAGOt5DjTELEzOusCusNcyNiyhqd8SPy9u2xVdiBCWdjR2LDOiiV9e5wQULKb4Tjjq3TkPsnTROXL8bvY9KGQvrnxsjZji6kV1EiQIFlGyf2OiBxAk7uhoJ5MAOv1yE=
+	t=1791625337; cv=none; b=CPIZfBUtHhcEf4RleofPWBiRRpDTZnP+CnHFWK8DF85pgMuzpxBTVprxVpxZ7N14jlMVlRHaD3F3JbvyuyVB9yeQc+Zpeauwr7Djy4CfkhJYd94fZ1LyrSCN/li5g6jbuL3ZLo3Jb/0IAhLzdM4Ep7S2VNuLM0+7bKYAPdEebOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791624555; c=relaxed/simple;
-	bh=IoKbd3Cj9/XqlRQ0qbxAPyFZpvebMhplNjTK9hDfJyM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OUXKXjlKi1ddwd5TKpWKqQnoD88WQvaJy2Vr6mtoP9sZv2XDP4l3LvLc0uqrRB9iGFHb4beY6H0fvM4X0qy9EsrwS+CkhXwfR3mQEzDP6f8ry2SToE7Tx3LPszaYHA8D6wc1WTRaSCN+TFWSZY0oxyUQizt0wLim3IBDI3nc1tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBOh2A/u; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBOh2A/u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E2B1F000FF;
-	Sat, 10 Oct 2026 09:29:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791624553;
-	bh=JJCD+BM8OQRbbhmPIh55knqUKVnl+PPt4F6+rgNpE5A=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aBOh2A/upk6xLoWHrEzvdjT8jqyG/nXy6ZE6VLzCIamKi0oRNE2lUTou9+6w2rIHD
-	 SyT+Fk1MLp5NbMfrzlOknM+TYnKU3tkqzHGBu16+Ecj0uis2+Aus6uZuiqY5IwHzSR
-	 n0pjdGfd/HovfuCC+UrtuNXT6oCHwWEZ6nWyOyKnC4FdXvga04gQLGEeMmdgiDF3fV
-	 308l77hCpsRM+epAfcozSQFn6WxKno5sCjIw4lO/57Oc5De6ARbNOT8nT/PtxI+lkp
-	 9wdKiYs3iskTLOu0fEzo6qo8vz0w9u5XtVhr/TDRMH+RRXy8qfqvl+JOtEMVZrWpkc
-	 ryAl6I2CkOVlQ==
-Subject: Re: [PATCH net-next v3 8/8] docs: networking: Add documentation for
- the coalescing support in rmnet
-From: netdev-bot+sashiko@kernel.org
-To: subash.a.kasiviswanathan@oss.qualcomm.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, corbet@lwn.net, horms@kernel.org,
- skhan@linuxfoundation.org, rdunlap@infradead.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, lkp@intel.com,
- sean.tranchetti@oss.qualcomm.com
-Date: Sat, 10 Oct 2026 09:29:12 +0000
-Message-ID: <179162455218.434549.13807583931507621107@kernel.org>
-In-Reply-To:
- <20261009084351.317632-9-subash.a.kasiviswanathan@oss.qualcomm.com>
-References:
- <20261009084351.317632-9-subash.a.kasiviswanathan@oss.qualcomm.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1791625337; c=relaxed/simple;
+	bh=kKlY911nDkY+jNkNOd7gwZr5u5uxJa71M/JB163ih2Y=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=hNE2v65LPefD+6N/p37P1pnkiROVlYFbANx25wPz5QhdpSCtaEZ8vP7YR+5eY0Ji6JLww3JUj4cQEk3LUU9b0tZoCFAK814BiqW3TAfAhbLGfmlJoAe+jWXxnu3yme1QRbdmkjmAKiQK9phrBFyuNmsR8G51abddM84GdRe8Fmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-4519ef1babeso730419fac.2
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 02:42:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791625332; x=1792230132;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8LzDxcHIFLOailu9VoDSBmcQuYWWLTYeM5cdlcmR5HQ=;
+        b=YOTPMHVCgOh7ASvONzzVzvJKqKxgBuCSQvlo4TebQKnRTYLqbz5PE+VkqME4tyvlY0
+         p0x+tqrCKGuxtL+kQfxEvlOd4A90R1gYzjyX4XNnf1EEWN0//GviSWLh8jygCnQJxUAN
+         P7BdsgAlcf/nvQ7jnB7p0ZTep4cgt45kNhco8B2K0724EEeR04DwM+GbJO3yGKkGWNpO
+         UPKcQQJh0p3G51yxDIxobu6fhOcgj03uez8iyxW1ekZUFM80UU57nf+DDPtU9TFOOgwc
+         De/sYPA1b+tBlooH/w9WXPBb3Itk77ocdD8y83OkqQGtPfgYlPDClAWN39hPqlnV6uRk
+         e6UQ==
+X-Forwarded-Encrypted: i=1; AKwUvByoLaRX2fm2M96zni2d2aiVmEplzOR7HwKE2337qm7yCNQdOF16FdFG/jQHEOLnyeq40xV+sH0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK9NGyYI0Rl42airw3FYI1+KAKDS6Z7EygczeDWa/s4YHU84mhj
+	3tFgnLGWFf6rkEWEr5fu8ooTeGO5vz1OTdgE7MmlWrEiqmMIFdGtg0qBK8JJPxWueG8NnmhQ8Hv
+	HeEDTXyfiDzNofWaWcmGziEd+/d32U3jd5cmQ28/4V13I5DBN7lnWtrAo4vQ=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Received: by 2002:a05:6808:138e:b0:4f4:73a9:f838 with SMTP id
+ 5614622812f47-50c4ed3dc0dmr3742553b6e.22.1791625331782; Sat, 10 Oct 2026
+ 02:42:11 -0700 (PDT)
+Date: Sat, 10 Oct 2026 02:42:11 -0700
+In-Reply-To: <20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aca0873.70ed5d86.2ac85.00ac.GAE@google.com>
+Subject: [syzbot ci] Re: Extend drm_ras for qaic telemetry
+From: syzbot ci <syzbot+ci0a77ef6c47a86cbc@syzkaller.appspotmail.com>
+To: airlied@gmail.com, aravind.iddamsetty@linux.intel.com, 
+	carl.vanderlip@oss.qualcomm.com, dri-devel@lists.freedesktop.org, 
+	jeff.hugo@oss.qualcomm.com, karol.wachowski@linux.intel.com, kuba@kernel.org, 
+	lizhi.hou@amd.com, netdev@vger.kernel.org, ogabbay@kernel.org, 
+	raag.jadav@intel.com, riana.tauro@intel.com, rodrigo.vivi@intel.com, 
+	simona.vetter@ffwll.ch, troy.hanson@oss.qualcomm.com, 
+	youssef.abdulrahman@oss.qualcomm.com, zachary.mckevitt@oss.qualcomm.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+syzbot ci has tested the following series
 
-Low priority / nit picks for your consideration:
+[v1] Extend drm_ras for qaic telemetry
+https://lore.kernel.org/all/20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com
+* [PATCH 1/3] drm/drm_ras: Remove admin-perm flag from list-nodes operation
+* [PATCH 2/3] drm/drm_ras: Extend DRM RAS interface to include telemetry nodes
+* [PATCH 3/3] accel/qaic: Add callbacks for DRM RAS netlink telemetry
 
-- [Low] The new rmnet.rst text never says that rmnet itself drops packets
-  that the CSUM error bitmap flags, and it states the single-packet…
-- [Low] The MAPv4/MAPv5 checksum mutual-exclusion rule is documented only
-  under RMNET_FLAGS_INGRESS_COALESCE, and its wording is ambiguous:…
-- [Low] The comment for the rmnet_map_header flags field in
-  include/linux/if_rmnet.h still says 'NEXT_HEADER: 1 = packet contains…
-- [Low] The comment above rmnet_map_segment_coal_skb()
-  (rmnet_map_data.c:1116) says 'NLOs with checksum errors are dropped.'…
-- [Low] The new section 'e.
+and found the following issue:
+general protection fault in drm_ras_nl_pre_telemetry
 
---
+Full report is available here:
+https://ci.syzbot.org/series/6915fb7c-08cd-48b4-b8a4-3834f3e60de5
 
-docs: networking: Add documentation for the coalescing support in rmnet
+***
 
-This commit documents the MAPv5 coalescing header layout and field
-semantics in rmnet.rst. It also documents the IFLA_RMNET_FLAGS ingress and
-egress flags, the rules for combining coalescing with checksum offload,
-and when coalesced frames are delivered as GSO skbs.
+general protection fault in drm_ras_nl_pre_telemetry
 
-> diff --git a/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst b/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst
-> index 5aedbabb73827..52f92d2fba311 100644
-> --- a/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst
-> +++ b/Documentation/networking/device_drivers/cellular/qualcomm/rmnet.rst
-> @@ -125,8 +125,8 @@ Command (1)/ Data (0) bit value is to indicate if the packet is a MAP command
->  or data packet. Command packet is used for transport level flow control. Data
->  packets are standard IP packets.
->  
-> -Next header is used to indicate the presence of another header, currently is
-> -limited to checksum header.
-> +Next header is used to indicate the presence of another header, currently
-> +limited to the checksum and coalescing headers.
+tree:      drm-next
+URL:       https://gitlab.freedesktop.org/drm/kernel.git
+base:      f2bf20011b95401f63e573d54134544c452c4117
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/d48f7944-a0fb-4983-a3c6-c037c81dd832/config
+syz repro: https://ci.syzbot.org/findings/c2ca90ba-3f79-4e56-94d4-b1ddc64056e5/syz_repro
 
-[Severity: Low]
-This text now disagrees with the flags comment in include/linux/if_rmnet.h.
-The series did not update that comment:
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 1 UID: 0 PID: 5808 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:nla_get_u32 include/net/netlink.h:1734 [inline]
+RIP: 0010:drm_ras_nl_pre_telemetry+0x60/0xe0 drivers/gpu/drm/drm_ras.c:656
+Code: 8b 1b 48 83 c3 08 48 89 d8 48 c1 e8 03 42 80 3c 38 00 74 08 48 89 df e8 3e 3c 9a fc 48 8b 1b 48 83 c3 04 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 75 5b 8b 33 48 c7 c7 80 d3 6f 90 e8 c9 8c 49
+RSP: 0018:ffffc9000379f420 EFLAGS: 00010247
+RAX: 0000000000000000 RBX: 0000000000000004 RCX: ffff8881bf17bc00
+RDX: 0000000000000000 RSI: ffff8881bf38d380 RDI: ffffc9000379f600
+RBP: ffffc9000379f588 R08: ffffc9000379f4ff R09: 0000000000000000
+R10: ffffc9000379f4d0 R11: ffffffff859eb380 R12: ffffc9000379f600
+R13: dffffc0000000000 R14: ffff8881bf38d380 R15: dffffc0000000000
+FS:  00007f2c256e36c0(0000) GS:ffff8882a7cb6000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000100 CR3: 000000016e7ee000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ genl_family_rcv_msg_doit+0x1db/0x340 net/netlink/genetlink.c:1109
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2575
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1218
+ netlink_unicast_kernel net/netlink/af_netlink.c:1338 [inline]
+ netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1364
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1919
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+ __sys_sendmsg net/socket.c:2799 [inline]
+ __do_sys_sendmsg net/socket.c:2804 [inline]
+ __se_sys_sendmsg net/socket.c:2802 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f2c2479e1d9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f2c256e3028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f2c24a25fa0 RCX: 00007f2c2479e1d9
+RDX: 0000000000000000 RSI: 0000200000000100 RDI: 0000000000000004
+RBP: 00007f2c24835888 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f2c24a26038 R14: 00007f2c24a25fa0 R15: 00007ffc88247b58
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:nla_get_u32 include/net/netlink.h:1734 [inline]
+RIP: 0010:drm_ras_nl_pre_telemetry+0x60/0xe0 drivers/gpu/drm/drm_ras.c:656
+Code: 8b 1b 48 83 c3 08 48 89 d8 48 c1 e8 03 42 80 3c 38 00 74 08 48 89 df e8 3e 3c 9a fc 48 8b 1b 48 83 c3 04 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 75 5b 8b 33 48 c7 c7 80 d3 6f 90 e8 c9 8c 49
+RSP: 0018:ffffc9000379f420 EFLAGS: 00010247
+RAX: 0000000000000000 RBX: 0000000000000004 RCX: ffff8881bf17bc00
+RDX: 0000000000000000 RSI: ffff8881bf38d380 RDI: ffffc9000379f600
+RBP: ffffc9000379f588 R08: ffffc9000379f4ff R09: 0000000000000000
+R10: ffffc9000379f4d0 R11: ffffffff859eb380 R12: ffffc9000379f600
+R13: dffffc0000000000 R14: ffff8881bf38d380 R15: dffffc0000000000
+FS:  00007f2c256e36c0(0000) GS:ffff8882a7cb6000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2c247eb8c0 CR3: 000000016e7ee000 CR4: 00000000000006f0
+----------------
+Code disassembly (best guess):
+   0:	8b 1b                	mov    (%rbx),%ebx
+   2:	48 83 c3 08          	add    $0x8,%rbx
+   6:	48 89 d8             	mov    %rbx,%rax
+   9:	48 c1 e8 03          	shr    $0x3,%rax
+   d:	42 80 3c 38 00       	cmpb   $0x0,(%rax,%r15,1)
+  12:	74 08                	je     0x1c
+  14:	48 89 df             	mov    %rbx,%rdi
+  17:	e8 3e 3c 9a fc       	call   0xfc9a3c5a
+  1c:	48 8b 1b             	mov    (%rbx),%rbx
+  1f:	48 83 c3 04          	add    $0x4,%rbx
+  23:	48 89 d8             	mov    %rbx,%rax
+  26:	48 c1 e8 03          	shr    $0x3,%rax
+* 2a:	42 0f b6 04 38       	movzbl (%rax,%r15,1),%eax <-- trapping instruction
+  2f:	84 c0                	test   %al,%al
+  31:	75 5b                	jne    0x8e
+  33:	8b 33                	mov    (%rbx),%esi
+  35:	48 c7 c7 80 d3 6f 90 	mov    $0xffffffff906fd380,%rdi
+  3c:	e8                   	.byte 0xe8
+  3d:	c9                   	leave
+  3e:	8c                   	.byte 0x8c
+  3f:	49                   	rex.WB
 
-/* rmnet_map_header flags field:
- ...
- *  NEXT_HEADER: 1 = packet contains V5 CSUM header 0 = no V5 CSUM header
- */
-#define MAP_NEXT_HEADER_FLAG		BIT(6)
 
-After this series, MAP_NEXT_HEADER_FLAG can also indicate a coalescing
-header. rmnet_map_validate_packet_len() handles the length of that type
-differently:
+***
 
-		if (hdr_type == RMNET_MAP_HEADER_TYPE_CSUM_OFFLOAD)
-			packet_len += sizeof(*next_hdr);
-		else if (hdr_type != RMNET_MAP_HEADER_TYPE_COALESCING)
-			return 0;
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
 
-Should the comment in if_rmnet.h also mention the coalescing header?
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-[ ... ]
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
 
-> @@ -162,8 +162,109 @@ indicates that the calculated packet checksum is invalid.
->  
->  Reserved bits must be zero when sent and ignored when received.
->  
-> -e. MAP packet v1/v5 (command specific)
-> ---------------------------------------
-> +e. Coalescing header v5
-> +------------------------
-> +
-> +Hardware can coalesce multiple same-flow IP packets into a single MAP frame
-> +to reduce per-packet overhead at high data rates.  Packets are grouped into
-> +NLOs, with all packets in each NLO having the same length.  The coalescing
-> +header (header type 1) describes the coalesced content.
-
-[Severity: Low]
-Sections a through d each say their fields are in big endian format. This
-new section gives no byte order.
-
-The NLO Pkt length field is big endian on the wire:
-
-include/linux/if_rmnet.h:
-struct rmnet_map_v5_nl_pair {
-	__be16 pkt_len;
-	u8  csum_error_bitmap;
-	u8  num_packets;
-} __aligned(1);
-
-Could this section add a sentence such as "Coalescing header fields are in
-big endian format."?
-
-[ ... ]
-
-> +CSUM error bitmap is one 48-bit stream formed by concatenating the
-> +``csum_error_bitmap`` bytes from all six NLO slots in slot order. Packet 0
-> +corresponds to bit 0 of slot 0's bitmap byte, and bits are consumed from
-> +least significant bit to most significant bit. The bit stream is indexed by
-> +the packet's absolute position in the frame and does not restart at an NLO
-> +boundary. If an NLO contains more than eight packets, its error bits
-> +continue into the bitmap byte of the following slot. Bitmap bytes in slots
-> +after the active NLO prefix may therefore contain continuation bits and must
-> +not be ignored.
-
-[Severity: Low]
-This description matches rmnet_map_coal_segment_loop(). The comment above
-rmnet_map_segment_coal_skb() in rmnet_map_data.c says something different:
-
-/* Expand a coalesced SKB into individual IP packets placed on the list.
- * NLOs with checksum errors are dropped. __rmnet_map_ingress_handler will
- * free the SKB in the error case.
- */
-
-rmnet_map_coal_segment_loop() checks the flat bitmap once per packet:
-
-			csum_err = nlo_err_mask & 1;
-
-It flushes the good packets collected so far, drops only the errored
-packet, and carries on within the same NLO.
-
-Should that comment say that individual packets are dropped, not whole
-NLOs?
-
-[Severity: Low]
-This section explains how the bitmap is encoded, but not what rmnet does
-with the packets it flags. __rmnet_map_segment_coal_skb() drops a flagged
-packet and counts it:
-
-	if (!csum_valid && coal_meta->zero_csum)
-		csum_valid = true;
-
-	if (!csum_valid) {
-		...
-		u64_stats_add(&pcpu_ptr->priv_stats.rx_dropped, coal_meta->pkt_count);
-		u64_stats_inc(&pcpu_ptr->priv_stats.coal_csum_drop);
-		...
-		goto next_pkt;
-	}
-
-Could the doc say that these packets are dropped and counted in
-rx_dropped?
-
-The zero checksum exemption appears only in the single-packet quirk
-paragraph ("IPv4 UDP packets with a zero checksum remain valid ..."). In
-the code, zero_csum overrides the bitmap for every rebuilt segment, not
-only in that case.
-
-The RMNET_FLAGS_INGRESS_COALESCE entry further down says "A coalesced
-frame containing one packet is delivered as a normal non-GSO skb." Does
-that still hold when RX checksum offload and rx-gro-hw are both enabled?
-
-Take a single-NLO, single-packet frame where:
-
-  - CSUM valid is clear
-  - the close reason is not on the quirk list (for example close type 0,
-    1 or 2)
-  - bit 0 of the bitmap is set
-  - the packet is not zero-checksum IPv4 UDP
-
-The path looks like this:
-
-rmnet_map_segment_coal_skb()
-  rmnet_map_v5_csum_fixup() returns false
-  rmnet_map_coal_gro_fast_path() returns false
-  rmnet_map_coal_segment_loop()
-    __rmnet_map_segment_coal_skb(..., false)   <- packet dropped
-
-The list stays empty, rmnet_map_process_next_hdr_packet() frees the skb,
-and nothing is delivered.
-
-[ ... ]
-
-> @@ -208,3 +309,39 @@ rmnet userspace configuration is done through netlink using iproute2
->  https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/
->  
->  The driver uses rtnl_link_ops for communication.
-> +
-> +The data format flags controlling the ingress and egress processing
-> +pipeline are set via the ``IFLA_RMNET_FLAGS`` attribute
-> +(``struct ifla_rmnet_flags``).
-> +
-> +Relevant ingress flags:
-> +
-> +``RMNET_FLAGS_INGRESS_DEAGGREGATION``
-> +  Enable MAP frame de-aggregation.
-> +
-> +``RMNET_FLAGS_INGRESS_MAP_CKSUMV4``
-> +  Enable MAPv4 downlink checksum offload.
-> +
-> +``RMNET_FLAGS_INGRESS_MAP_CKSUMV5``
-> +  Enable MAPv5 downlink checksum offload (header type 2).
-> +
-> +``RMNET_FLAGS_INGRESS_COALESCE``
-> +  Enable MAPv5 downlink hardware coalescing (header type 1).
-> +  This flag requires ``RMNET_FLAGS_INGRESS_MAP_CKSUMV5``. MAPv4 and
-> +  MAPv5 checksum flags cannot be enabled together in either direction.
-> +  A direction may leave checksum offload disabled. Invalid combinations
-> +  are rejected.
-
-[Severity: Low]
-"cannot be enabled together in either direction" reads like a rule
-applied to each direction separately. rmnet_config_data_format_valid()
-applies it to the whole device, whether or not
-RMNET_FLAGS_INGRESS_COALESCE is set:
-
-	u32 v4_mask = RMNET_FLAGS_INGRESS_MAP_CKSUMV4 |
-		      RMNET_FLAGS_EGRESS_MAP_CKSUMV4;
-	u32 v5_mask = RMNET_FLAGS_INGRESS_MAP_CKSUMV5 |
-		      RMNET_FLAGS_EGRESS_MAP_CKSUMV5;
-
-	if ((data_format & v4_mask) && (data_format & v5_mask))
-		return false;
-
-This means rmnet_newlink() and rmnet_changelink() reject
-RMNET_FLAGS_INGRESS_MAP_CKSUMV5 plus RMNET_FLAGS_EGRESS_MAP_CKSUMV4 with
--EINVAL, even with no coalescing.
-
-The rule applies to the checksum flags by themselves. Could it go in the
-RMNET_FLAGS_INGRESS/EGRESS_MAP_CKSUMV4/V5 entries, worded to say that only
-one checksum version may be enabled across both directions?
-
-The comment above rmnet_config_data_format_valid() ("selected
-independently for ingress and egress, but only one version may be enabled
-across the device") is also ambiguous on this point.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009084351.317632-1-subash.a.kasiviswanathan%40oss.qualcomm.com
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
