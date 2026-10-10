@@ -1,189 +1,200 @@
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBE028C009
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 05:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6556E34F46D;
+	Sat, 10 Oct 2026 05:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791608440; cv=none; b=ghANwS9rDCsiTrek6p5IUyXZ3FksfaAveAebwKfcTuEA+gPLmr+HtfsAGaID9ccjn6yQtcPJKathTCt80tlkQScdFlOQ0T7RjVs5dKgUUmErFRkfsT7fu0mM+nuiB7KjwbBOJ07hKmcsIuHB599HlyTW/BdnkIMYjq4sK84qsfQ=
+	t=1791609256; cv=none; b=DjvV7wolmEERrm+7RfqJDA1sou+vkxBlAIMA3ZeWkzZr5dFLKAXmFUGQZsjAHwiPaNXYKj1HiNcI4meFO8FagGTvD0kaOmG7i62lDqAK7dKK7441GAThK1SBKFV+/p5J7DcsduNBsFVfx9dmwOV+pzUFAH2rg3IniiHsRT0NNbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791608440; c=relaxed/simple;
-	bh=6lbDcEEQzMxUZanUbIXWQQRvNAzNlU06Z/mHfBfNw8I=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UevHx4talpeaODA5xjERgPrDElXJ7cw06THQDaQdhztg7hiYk+6qfHZL/6aBFz9a1PrnHttzv0Pa4cwnuQwKR5qSkw0lIZyzmlXP7qUTEi+ZjTgFHZTC0AYa2FTB+gyA28Xe8eTasaF4odJChdSe9QdUTqpQqi3GJWNMx+3TSBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-4cc89e86e4dso799782b6e.2
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 22:00:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791608437; x=1792213237;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=us6ScB89JOPz+Y6KklNmPbHFhs0MEllFJihi/ZoHtfw=;
-        b=RkaKtmbDoGx1YFUnMtR44/IuttlupDYLIYw9Ae+vxtviaH/LyJIEj/SFc1BcbJD1bl
-         VKLFhH8RlGdSIDz41zXwnJCTekuY/m66BTm4RDDLdUDBPOBqTll7SXbW/R/UC0o/uKjx
-         PfTm0muXeTag//VdWr8av7PDS5SMP2ELP0dQjlk+c+yc2/ISyeelKNJVM5DUORiB5tAz
-         veKUVWNfN+2h26ZWdjXlFGI/Ng+qG+u6gsKAuaPuRcbw3bLpVpel83forlNgin0Uyi6f
-         CfZfcWqyZs6SjjWS10NjFXk8mw0vR1G6wolHtjtD/v0lHvLE0iyIWanlc94rLlN8B3T1
-         1W2g==
-X-Forwarded-Encrypted: i=1; AKwUvBw5g3SBzuhlDwpefaf8/wqwN035RdJyQHt5ZRgA6eR1SunnSCVwTtbxbPkebikU2WK3M8tP95E=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLfZ47WOws1GCc4C8yNt+Sj+5h+Y+DHJ9m87b61tui/k3fHd3Rt
-	wV1Im1RsGZZeJHXbw6NOHtUt9zH4M92KBiEUJrYBx33vANikUQfqAQMpZ/0r/H8zhtx5yDVYtD5
-	MgVBesL4F8MIi6OrZy141XFPvMNGTWRt4i1ftPzaTPFbr5+oWhf13bwbvTu0=
+	s=arc-20240116; t=1791609256; c=relaxed/simple;
+	bh=M/fY0Zwp0KgaNL3HaS323uPgGyXRXYcpOc21x4gRM1A=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DucwWW4zy4bq37NsbI2ipiJxTZRi/hRgG4pxyt1Wjw7CgxsuuQQHCeYnbsLQV7ceJh5IbsGNukURmXVagL2ykLzCyuY/FjAYzfDGt8gRyhI0PzTOcYbv95QIOClOsj3a/sNR+RTG3SdsJkgbiJUJ6ZxcX3aRp3HKCBAufRWsMB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKVC3fjL; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKVC3fjL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3101F000FF;
+	Sat, 10 Oct 2026 05:14:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791609254;
+	bh=pMQWyaaVfY7hicmWCDHwvSG957W1lxSNDiZb8O6H47o=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MKVC3fjLf46FoFoqpQLLK/xQWFCvoNfTk0If/LmjLaN1P1c4eiitGzD3yM5oLuBmi
+	 2JHJcz1ITDj91p574HGtHeCuzlJolht8n2rRc7zKSJjmPX+3Fe85VPSjSSvMiHfkjp
+	 fhSgocU5TSDGXjTiQdr6nK/QtanEe0E2cM5+idB6myGC7kUI9g9YPxuXVruHyXTjJ9
+	 0pl9MqaYys6swFKe04+GvNAMzQrt9qVv44t88nu0SlupKrubfeN2+QIdIQW8ZYQE14
+	 1xK5MmWBT22htCxWbir7XQCFsCc6cijglPGHtM1H3AE74NBI1SpHDBIx3ZhtIe4tQD
+	 YoibK0mbTl8xA==
+Subject:
+ Re: [PATCH net-next v2 1/8] net: dsa: realtek: rtl8365mb: detect RTL8367S-VB
+From: netdev-bot+sashiko@kernel.org
+To: namiltd@yahoo.com
+Cc: linusw@kernel.org, alsi@bang-olufsen.dk, andrew@lunn.ch, olteanv@gmail.com,
+ kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sat, 10 Oct 2026 05:14:13 +0000
+Message-ID: <179160925352.434549.12136746885800799801@kernel.org>
+In-Reply-To: <29f75a64-fed4-449c-92c5-c0b67f270504@yahoo.com>
+References: <29f75a64-fed4-449c-92c5-c0b67f270504@yahoo.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c3ee:b0:4e8:92e5:db5b with SMTP id
- 5614622812f47-50c5b4648camr4475500b6e.54.1791608437351; Fri, 09 Oct 2026
- 22:00:37 -0700 (PDT)
-Date: Fri, 09 Oct 2026 22:00:37 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ac9c675.a150a118.27e199.0024.GAE@google.com>
-Subject: [syzbot] [net?] INFO: trying to register non-static key in neigh_periodic_work
-From: syzbot <syzbot+2f98196f4b99dca2b979@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-syzbot found the following issue on:
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-HEAD commit:    71c3e5409eef Merge remote-tracking branch 'will/for-next/p..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=15ae21c9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c7205f05c11fb4dd
-dashboard link: https://syzkaller.appspot.com/bug?extid=2f98196f4b99dca2b979
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-userspace arch: arm64
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1305400d580000
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/20ff6159ce99/disk-71c3e540.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/1d6172672705/vmlinux-71c3e540.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/923d5e083e1b/Image-71c3e540.gz.xz
+- [Medium] Not a final-state bug: a later patch in this series fixes it.
+- [Low] The file header comment in
+  drivers/net/dsa/realtek/rtl8365mb_main.c adds RTL8367S-VB to the list…
+- [Low] The driver now recognises RTL8367S-VB (chip_id 0x6642, chip_ver
+  0x0010) under the existing compatible "realtek,rtl8365mb", and its…
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2f98196f4b99dca2b979@syzkaller.appspotmail.com
+--
 
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 0 UID: 0 PID: 3103 Comm: kworker/u8:8 Not tainted syzkaller #0 PREEMPT 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/14/2026
-Workqueue: events_power_efficient neigh_periodic_work
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
- __dump_stack+0x30/0x40 lib/dump_stack.c:94
- dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
- dump_stack+0x1c/0x28 lib/dump_stack.c:129
- assign_lock_key+0xcc/0xdc kernel/locking/lockdep.c:1028
- register_lock_class+0xf8/0x31c kernel/locking/lockdep.c:1343
- __lock_acquire+0x140/0x2b08 kernel/locking/lockdep.c:5162
- lock_acquire+0x13c/0x320 kernel/locking/lockdep.c:5942
- __raw_write_lock include/linux/rwlock_api_smp.h:229 [inline]
- _raw_write_lock+0x48/0x60 kernel/locking/spinlock.c:335
- neigh_periodic_work+0x3bc/0x9ec net/core/neighbour.c:1004
- process_one_work kernel/workqueue.c:3396 [inline]
- process_scheduled_works+0x91c/0x1250 kernel/workqueue.c:3479
- worker_thread+0x798/0xbd0 kernel/workqueue.c:3560
- kthread+0x304/0x3d4 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:854
-bridge_slave_1: left allmulticast mode
-bridge_slave_1: left promiscuous mode
-bridge0: port 2(bridge_slave_1) entered disabled state
-bridge_slave_0: left allmulticast mode
-bridge_slave_0: left promiscuous mode
-bridge0: port 1(bridge_slave_0) entered disabled state
-Unable to handle kernel paging request at virtual address dfff800000000009
-KASAN: null-ptr-deref in range [0x0000000000000048-0x000000000000004f]
-Mem abort info:
-  ESR = 0x0000000096000005
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x05: level 1 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0
-[dfff800000000009] address between user and kernel address ranges
-Internal error: Oops: 0000000096000005 [#1]  SMP
-Modules linked in:
-CPU: 1 UID: 0 PID: 3103 Comm: kworker/u8:8 Not tainted syzkaller #0 PREEMPT 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/14/2026
-Workqueue: netns cleanup_net
-pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : qdisc_reset+0xec/0x594 net/sched/sch_generic.c:1078
-lr : trace_qdisc_reset include/trace/events/qdisc.h:128 [inline]
-lr : qdisc_reset+0xdc/0x594 net/sched/sch_generic.c:1076
-sp : ffff80009a317510
-x29: ffff80009a317520 x28: 1fffe00018cc50ad x27: ffff0000c6628568
-x26: 0000000000000003 x25: ffff0000c9624800 x24: ffff0000c6628018
-x23: 0000000000000000 x22: dfff800000000000 x21: ffff800088a77ec8
-x20: 0000000000000048 x19: ffff0000c9624818 x18: 1fffe00035bd7428
-x17: 0000000000000003 x16: ffff800088a77000 x15: ffff800088b27700
-x14: ffff0001adeba14c x13: 0000000000000001 x12: 0000000000000004
-x11: ffff700013462e98 x10: 0000000000000003 x9 : 0000000000000200
-x8 : 0000000000000009 x7 : 0000000000000000 x6 : ffff800084df21d4
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800084def98c
-x2 : 0000000000000002 x1 : ffff0000cde31d80 x0 : 0000000000000000
-Call trace:
- qdisc_reset+0xec/0x594 net/sched/sch_generic.c:1078 (P)
- dev_reset_queue+0x10c/0x1f0 include/net/sch_generic.h:756
- netdev_for_each_tx_queue include/linux/netdevice.h:2752 [inline]
- dev_deactivate_many+0x490/0x9d0 net/sched/sch_generic.c:1394
- __dev_close_many+0x178/0x648 net/core/dev.c:1782
- netif_close_many+0x1d8/0x51c net/core/dev.c:1824
- unregister_netdevice_many_notify+0x740/0x1760 net/core/dev.c:12530
- unregister_netdevice_many+0x28/0x38 net/core/dev.c:12632
- ops_exit_rtnl_list net/core/net_namespace.c:188 [inline]
- ops_undo_list+0x32c/0x81c net/core/net_namespace.c:249
- cleanup_net+0x474/0x6c4 net/core/net_namespace.c:706
- process_one_work kernel/workqueue.c:3396 [inline]
- process_scheduled_works+0x91c/0x1250 kernel/workqueue.c:3479
- worker_thread+0x798/0xbd0 kernel/workqueue.c:3560
- kthread+0x304/0x3d4 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:854
-Code: 14000002 96e12f3e 910122f4 d343fe88 (38766908) 
----[ end trace 0000000000000000 ]---
-----------------
-Code disassembly (best guess):
-   0:	14000002 	b	0x8
-   4:	96e12f3e 	bl	0xfffffffffb84bcfc
-   8:	910122f4 	add	x20, x23, #0x48
-   c:	d343fe88 	lsr	x8, x20, #3
-* 10:	38766908 	ldrb	w8, [x8, x22] <-- trapping instruction
+net: dsa: realtek: rtl8365mb: detect RTL8367S-VB
 
+This adds detection of the RTL8367S-VB (chip_id 0x6642, chip_ver 0x0010).
+It introduces a family C / family D split in the chip_info table. The
+RTL8367S-VB entry is tagged as family D with SGMII/HSGMII on ext_int 0,
+and priv->num_ports is capped at 8 for family D.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> index da06f952a053d..80fc551992195 100644
+> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> @@ -81,6 +81,7 @@
+>   *  - RTL8367RB-VB
+>   *  - RTL8367SB
+>   *  - RTL8367S
+> + *  - RTL8367S-VB
+>   *  - RTL8370MB
+>   *  - RTL8310SR
+>   *
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+[Severity: Low]
+This isn't a bug, but the header comment now puts RTL8367S-VB in the list
+introduced by "According to documentation from Realtek, the family should
+include the following chips". That list describes the single RTL8367C
+family the driver targets.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+The same comment block also separates out chips that "require the rtl8367d
+vendor driver". The new chip_info entry tags RTL8367S-VB as
+RTL8365MB_FAMILY_D, so the comment and the code disagree about the
+chip's family.
 
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+The comment above RTL8365MB_LEARN_LIMIT_MAX also still describes one
+family:
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+  /* Valid for the whole family except RTL8370B, which has 4160 entries.
+   * RTL8370B is mentioned in vendor code but it might not even belong
+   * to the same RTL8367C family.
+   */
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+The 2112 limit now applies to family D chips as well.
 
-If you want to undo deduplication, reply with:
-#syz undup
+Could these comments be updated to cover the family D split? The mismatch
+is still there at the end of the series.
+
+[ ... ]
+
+> @@ -777,6 +786,19 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
+>  		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+>  		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
+>  	},
+> +	{
+> +		.name = "RTL8367S-VB",
+> +		.chip_id = 0x6642,
+> +		.chip_ver = 0x0010,
+> +		.family = RTL8365MB_FAMILY_D,
+> +		.extints = {
+> +			{ 6, 0, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
+
+[Severity: Medium]
+On RTL8367S-VB the SerDes sits on ext_int id 0 (port 6) and RGMII sits on
+id 1 (port 7). Is rtl8365mb_pcs_config() still correct for this layout at
+this point in the series? It hardcodes the family C interface ID:
+
+#define RTL8365MB_SDS_EXT_INTERFACE_ID		1
+
+rtl8365mb_pcs_config() {
+	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
+	...
+	val = mode << RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(id);
+	ret = regmap_update_bits(priv->map,
+				 RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(id),
+				 RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_MASK(id),
+				 val);
+	...
+}
+
+RTL8365MB_DIGITAL_INTERFACE_SELECT_REG0 (0x1305) holds EXT0 in bits 3:0
+and EXT1 in bits 7:4. On family D this write would therefore put the
+SGMII/HSGMII mode into the nibble for port 7's RGMII interface.
+
+rtl8365mb_ext_config_forcemode() works from a different interface. It
+forces the link through RTL8365MB_DIGITAL_INTERFACE_FORCE_REG(extint->id),
+and extint->id is 0 here.
+
+rtl8365mb_sds_probe_option() doesn't check the family either. If the
+family C option register reads non-zero, sds_supported gets set and
+phylink can pick SGMII or 2500base-x on port 6:
+
+rtl8365mb_setup()
+  rtl8365mb_sds_probe_option()
+    mb->sds_supported = true;
+...
+rtl8365mb_pcs_config()
+  regmap_update_bits(..., DIGITAL_INTERFACE_SELECT_REG(1), ...)
+
+Could this break port 7 RGMII, or leave the SerDes mode unset on
+RTL8367S-VB?
+
+A later patch in the series, "net: dsa: realtek: rtl8365mb: add family D
+SDS13 PCS support", appears to fix this. It adds a family D branch to
+rtl8365mb_pcs_config() that skips the DIGITAL_INTERFACE_SELECT write, and
+it makes rtl8365mb_sds_probe_option() return early for family D.
+
+Could SerDes modes stay disabled for family D in this patch, so the
+intermediate commits remain bisectable?
+
+> +			{ 7, 1, PHY_INTF(MII) | PHY_INTF(TMII) |
+> +				PHY_INTF(RMII) | PHY_INTF(RGMII) },
+> +		},
+> +		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+> +		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
+> +	},
+>  };
+
+[Severity: Low]
+The driver now matches RTL8367S-VB under the existing realtek,rtl8365mb
+compatible. Documentation/devicetree/bindings/net/dsa/realtek.yaml wasn't
+updated, though, and its model list still reads:
+
+      realtek,rtl8365mb:
+        Use with models RTL8363NB, RTL8363NB-VB, RTL8363SC, RTL8363SC-VB,
+        RTL8364NB, RTL8364NB-VB, RTL8365MB, RTL8366SC, RTL8367RB-VB, RTL8367S,
+        RTL8367SB, RTL8370MB, RTL8310SR
+
+Should RTL8367S-VB be added to that list? None of the later patches in
+the series update the binding.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/28382f3f-03c1-4606-9b11-86f118abeafe%40yahoo.com
