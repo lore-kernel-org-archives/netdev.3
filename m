@@ -1,215 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6504AAC50;
-	Sat, 10 Oct 2026 15:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7B135C691;
+	Sat, 10 Oct 2026 15:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791645063; cv=none; b=QqwIUWW5IFBRl+O5mn8xbQk+pDybnmd01BFA7UFS9bllVxsRDNvhWuVAX0I3FqfKU74lw3uEOV/MN1q3Xd7QV7jTwOb10XEHs57FoUCWr2OkVcFDquzeEolGlsSJAcP/ZqP00QvOF+OHwYF6YCzRsGLcrlKDkOmtlK4P7+Z1S+4=
+	t=1791645503; cv=none; b=BpRm7FLX61cx+pOskYYHdvmQ+zXTCkS2QMER6ozW/yw0AcU49fnQ5Riv1saV2gUQUEnrArv+ju9PGlsvLN4zk+Dhlrm7oTL2+7IC5z0TQWTG5tOh2urMILDefChRkNK0cGG4qm3Q+QWvXrA3nUazVoLnnqzeuGbgIbzcrTZEz4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791645063; c=relaxed/simple;
-	bh=uMSWYYLd+3dC5c6o7LkwY2x7NK5YiNjOd8P0A2Khoys=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oWNHf9NkfMjbkrRn7TzHh9oux6Nae+bnO6eb7DnIDAO47wIGFa42C5iMLL9hNy+z/QcAGKdASa0u5ulj3SLiVdZajDoXftD6UxkydEuxcoiO9kr1osPUaQlHQo5hsC670ECl57r/QyYbBDsZDVSd2cwp3XQi673zJr7s2Upocok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UcmA2JOW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791645503; c=relaxed/simple;
+	bh=PugPBopIbjU+Mph4q4eNzKWaALuRpl3D+GgMEso11qo=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=nlLeGIKeCZOH17FoIz+HK338XhQL38uOxy3hbNSCcPWeBnsh8GNs75RqIaXa8Sehj57fBT9tCWXWyFo0pWBvlrd8pP/+8Gkp6xquy3m5Li2OqBH9SbQzEnNO2t+01+OWX2Kj5rFJz3mNOJ9fevjJF6Buzk8IdJPWB/IZ/C6bAQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=jLnv4Ix+; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UcmA2JOW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312E51F000FF;
-	Sat, 10 Oct 2026 15:11:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791645062;
-	bh=XHqIJq78TPh3CMoZn8eT46bz2UXEjv2uCG2uaAz+oRo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UcmA2JOW7GZF07D9cRKdH83D4Exa25SGk/szOAEwHpgE8vaLdHswjiBwHNUrM5oHq
-	 e0UIqL7MwkXy0ABWxrZVHpS9R/LLsmYxLP82+ojftAjg8kYuLFrd0moCaEDgQbtWQv
-	 ED4CT7jjMFo//3oenBf7WPCy4f5OB/kdv+7Bv2SdPbV6lzfR3t3fSkYWMkjUBC4meM
-	 YEfitWZYyKWBhDLmQwfRHGfvaPQb1nQQ2iyuqWssV0AThefP2w6Omr3bUjHIqB2hqX
-	 huuNon+6WqYFNyTQUj66iLoWTwCNZ53g6d3nc/V1mlJfF3QlRg4YZNsTtojB5s9kR4
-	 yM2clIuxh2gLA==
-Subject: Re: [PATCH net-next 5/5] net: mdio: bcm-unimac: implement timestamped
- MDIO writes
-From: netdev-bot+sashiko@kernel.org
-To: jjc@jclark.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, hkallweit1@gmail.com,
- richardcochran@gmail.com, florian.fainelli@broadcom.com, opendmb@gmail.com,
- nb@tipi-net.de, theo.lebrun@bootlin.com, linux@armlinux.org.uk,
- conor.dooley@microchip.com, bcm-kernel-feedback-list@broadcom.com,
- tglx@kernel.org, mlichvar@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 15:11:00 +0000
-Message-ID: <179164506067.434549.2658464555254529067@kernel.org>
-In-Reply-To: <20261009143506.2507607-6-jjc@jclark.com>
-References: <20261009143506.2507607-6-jjc@jclark.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="jLnv4Ix+"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 101AFA1554;
+	Sat, 10 Oct 2026 17:18:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791645495; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=OFji6mK5hVh4IRqyn2mb1ycCkKmMpbTGNcgel/+gPgk=;
+	b=jLnv4Ix+rxmKtY3Xt+YQswGD3nTUK3HrvXg2OerlmUpm8sl8Z66elzW66+DQp0OO2OlqyI
+	NrI5eNvItJDtWmkBn4CNQmZXgrArX5GAdqHfsLBszClH1pbENEv2ie78tfKhqYmKVK22mc
+	bfpA9+ScFFBoBNWduYSzQk+riVJRcLoJz7Me6VDvp4FDIHylVZS9DmIfAE8zFDwk1scKEd
+	ryx0oxVfisBqWW2NFEkSr6CImKbnCh5ahyeAGAaDHNtXwei8OZPRvQCq0iMcExN4lvMZb4
+	4Sc6PMOXpQ46ZnO8bP0DGLdPIe03aTpRHag9J/vw7NGUfkhPPcyTPLnMzscpRQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Sat, 10 Oct 2026 17:18:11 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>, James Clark
+ <jjc@jclark.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Richard Cochran <richardcochran@gmail.com>, Doug
+ Berger <opendmb@gmail.com>, =?UTF-8?Q?Th=C3=A9o_Lebrun?=
+ <theo.lebrun@bootlin.com>, Russell King <linux@armlinux.org.uk>, Conor
+ Dooley <conor.dooley@microchip.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>,
+ Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 5/5] net: mdio: bcm-unimac: implement timestamped
+ MDIO writes
+In-Reply-To: <3b1a2994-5251-4800-8c61-b63d7a435b21@broadcom.com>
+References: <20261009143506.2507607-1-jjc@jclark.com>
+ <20261009143506.2507607-6-jjc@jclark.com>
+ <3b1a2994-5251-4800-8c61-b63d7a435b21@broadcom.com>
+Message-ID: <60accbd89cfaf0d4be1da5ec2fafd975@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Florian, hi James
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+On 9.10.2026 18:04, Florian Fainelli wrote:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> [...]
 
-- [Medium] Two things in the timestamped-write path are only known to
-  hold on BCM2711, but the patch applies them to every UniMAC/GENET/ASP…
-- [Low] The driver now uses two different reference rates for the same
-  BCM2711 MDIO block.
+>> When there is no clock, unimac_mdio_clk_set() assumes a 250 MHz
+>> reference rate, and no in-tree DT gives GENET or UniMAC a clock. For
+>> BCM2711 I have no documentation of the reference rate or of the clock
+>> that supplies it, but MDIO busy times measured at several MDC dividers
+>> fit a rate of 200 MHz. This patch checks the parent's compatible 
+>> string,
+>> which is unsatisfactory. I would prefer to get the rate from DT, and
+>> would welcome suggestions for the right DT description.
+> 
+> You can, and should define a chip-specific compatible string for the 
+> MDIO contorller node. We have one for 2711 already for GENET 
+> (brcm,bcm2711-genet-v5), so you could define brcm,bcm2711-genet-mdio-v5
+> 
+> The clock frequency is fixed, so you could also provide a fixed clock 
+> to ensure that the clock frequency is derived correctly. I will check 
+> the actual clocking because 200MHz sounds odd to me, since the RGMII 
+> interface does require 125MHz and therefore a 250MHz source makes that 
+> easy.
 
---
+I dug a bit deeper on a CM4: AFAIU the MDC runs off the GISB clock,
+which the firmware sets to 200 MHz (CPRMAN 0x1d8, PLLD_PER 750 MHz /
+3.75). Bumping that divider to 4.0 at runtime moves the MDIO busy time
+by exactly the same ratio, so that's the one. The 250 MHz you have in
+mind is genet250 / genet125, the RGMII side, a different generator.
 
-net: mdio: bcm-unimac: implement timestamped MDIO writes
+So instead of a fixed clock or a compatible match this could just be
+BCM2711_CLOCK_GISB in clk-bcm2835 (critical, firmware owns it) and
+clocks = <&clocks BCM2711_CLOCK_GISB> on the mdio node. I can send that
+if it helps.
 
-This adds a write_sts implementation to the UniMAC MDIO driver. It takes
-system timestamps around the MDIO command start and shifts them by 63.5
-to 64.5 MDC periods, computed from the reference rate and the MDC
-divider. When no clock is present on BCM2711 GENET, it uses a hardcoded
-200 MHz reference rate.
-
-> diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
-> index 31e396cc9fbf2..e1ae806d1a84e 100644
-> --- a/drivers/net/mdio/mdio-bcm-unimac.c
-> +++ b/drivers/net/mdio/mdio-bcm-unimac.c
-
-[ ... ]
-
-> @@ -127,10 +150,41 @@ static int unimac_mdio_read(struct mii_bus *bus, int phy_id, int reg)
->  	return ret;
->  }
->  
-> -static int unimac_mdio_write(struct mii_bus *bus, int phy_id,
-> -			     int reg, u16 val)
-> +static int unimac_mdio_sts_delays(struct unimac_mdio_priv *priv,
-> +				  u64 *pre_ns, u64 *post_ns)
-> +{
-
-[ ... ]
-
-> +	config = unimac_mdio_readl(priv, MDIO_CFG);
-> +	if (config & MDIO_SUPP_PREAMBLE)
-> +		return -EIO;
-> +	divisor = 2 * (((config >> MDIO_CLK_DIV_SHIFT) & MDIO_CLK_DIV_MASK) + 1);
-> +	/* On BCM2711 the MDC divider runs freely, so the MDC edge that
-> +	 * clocks the last bit of a write comes 63.5 to 64.5 periods after
-> +	 * the command start.
-> +	 */
-> +	*pre_ns = div64_ul(127ULL * divisor * NSEC_PER_SEC,
-> +			   2 * priv->mdio_ref_rate);
-> +	*post_ns = div64_ul(129ULL * divisor * NSEC_PER_SEC +
-> +			    2 * priv->mdio_ref_rate - 1,
-> +			    2 * priv->mdio_ref_rate);
-
-[Severity: Medium]
-The comment says the 63.5 to 64.5 period model comes from BCM2711. Does
-it also hold on other UniMAC, GENET and ASP MDIO controllers?
-
-unimac_mdio_init_sts() turns on write_sts for any controller where
-clk_get_rate() is non-zero and MDIO_SUPP_PREAMBLE is clear. The
-bcm2711-genet-v5 compatible check only supplies a missing rate. It
-doesn't limit the model to BCM2711:
-
-	priv->mdio_ref_rate = clk_get_rate(priv->clk);
-	...
-	if (!priv->mdio_ref_rate)
-		return false;
-	...
-	return !(config & MDIO_SUPP_PREAMBLE);
-
-Two setups that the bindings allow reach this path:
-
-- A standalone UniMAC or ASP MDIO node with a clocks property.
-  unimac_mdio_probe() picks it up with devm_clk_get_optional(), and
-  brcm,unimac-mdio.yaml allows clocks.
-
-- A GENET node with the "enet" main clock, which bcmgenet_mii_register()
-  passes as ppd.clk.
-
-In the GENET case, is the main clock really the MDC divider's reference?
-A wrong rate moves both bounds by about 64 times the period error. For
-example, 250 MHz instead of 200 MHz at divider 9 shifts them by about
-1.6 us, while the window is only about one MDC period wide.
-
-On those parts the start-to-edge latency or the reference rate could
-differ. The [pre, post] interval would then miss the real edge without
-any warning.
-
-Would that break the mii_bus.write_sts contract in include/linux/phy.h?
-It says "Set only if timestamps can always be provided". It would also
-make PTP_SYS_OFFSET_EXTENDED report wrong PHC offsets with no error.
-
-No in-tree DT gives GENET or UniMAC a clock today, so in-tree only
-BCM2711 enables this. Could write_sts be limited to BCM2711 until other
-variants have been measured?
-
-Also, the note below the --- line says the model is assumed for every
-UniMAC, but that note is dropped when the patch is applied.
-
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> @@ -234,6 +307,30 @@ static int unimac_mdio_clk_set(struct unimac_mdio_priv *priv)
->  	return ret;
->  }
->  
-> +static bool unimac_mdio_init_sts(struct unimac_mdio_priv *priv,
-> +				 struct device *dev)
-> +{
-> +	u32 config;
-> +
-> +	/* The reference rate is fixed, so read it once. */
-> +	priv->mdio_ref_rate = clk_get_rate(priv->clk);
-> +	/* BCM2711's 200 MHz GENET reference clock is not described in DT. */
-> +	if (!priv->mdio_ref_rate && dev->parent &&
-> +	    of_device_is_compatible(dev->parent->of_node,
-> +				    "brcm,bcm2711-genet-v5"))
-> +		priv->mdio_ref_rate = 200000000;
-
-[Severity: Low]
-This sets a 200 MHz reference rate for BCM2711. But
-unimac_mdio_clk_set() runs straight after this in unimac_mdio_probe(),
-and again from unimac_mdio_resume(). It still assumes 250 MHz for the
-same hardware:
-
-	rate = clk_get_rate(priv->clk);
-	if (!rate)
-		rate = 250000000;
-
-	div = (rate / (2 * priv->clk_freq)) - 1;
-
-bcm2711-rpi-400.dts sets clock-frequency = <1950000> on &genet_mdio. So
-clk_set programs div = 250000000 / 3900000 - 1 = 63.
-
-If 200 MHz is right, MDC then runs at 200 MHz / 128, about 1.56 MHz,
-instead of the 1.95 MHz that was requested. The correct divider would be
-50.
-
-The timestamps stay consistent, because unimac_mdio_sts_delays() reads
-the divider back from MDIO_CFG. The MDC mis-programming also existed
-before this patch.
-
-Still, the file now has two different reference rates for the same
-block. Should unimac_mdio_clk_set() use priv->mdio_ref_rate when it is
-set?
-
-> +
-> +	if (!priv->mdio_ref_rate)
-> +		return false;
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009143506.2507607-1-jjc%40jclark.com
+Regards,
+Nicolai
