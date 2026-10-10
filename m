@@ -1,68 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11FB1FBC8C;
-	Sat, 10 Oct 2026 03:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F7437DAA9
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:36:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791602725; cv=none; b=j4aWgSOhvg6AjDSXfpaKGR8q+qLpJmUAx8vdP9mBR5TCKVx1BVDCpXnOzziNPqyh4Bvni10NDW1O6XaLhDjIBL4n1fq5lfOv924O4PaUeLCPxNhAg++TapwiVNJMqPo8TMBuYjGpHuRgG6EZYZukdUZI6V+H3j5czMr2poH/EoA=
+	t=1791603393; cv=none; b=jZwfFFRawCY80PZ+blx31wRxAEmyIuQbIsZeXmf3D+gHE+tYpcd0FnIrkNsAV/LccE2Xq/ljnpOQ/E5e9X62CX465lV+vVHadJz59T5pG/BIQ1J1HKkvSfpDqeYLRhC5nqvOx6SJ35b9WiVao/mWhMjgRQMEDapk0kTntspTZmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791602725; c=relaxed/simple;
-	bh=Frc+ADQTxRwKDWaoqMQMlUJQ/gCXB8qyIs31/48aD70=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fMZllqoghCt86I7IYIB/pObvzklKv8TE3fkxILuS4hsjOV/fx0/EMFsQkccDPGZpW4DfKHDxlmSHU3sRiidc7Jeyhw7TyVcJQWv2WTX3ixOHMdQQSsnVRTVZ3ZYYE1R3JW37ZdGxER8jlzPKnl07zZ60vb15FHfQUn7TDCq31W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1yan0GN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791603393; c=relaxed/simple;
+	bh=70YgM1Mt4Z5YsyjAZUstuPenINMCxDg+GnCsfmv86Gg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=O+nzwMzJKH91mn5kuO2I4fLIlzzRPxIf07EduOPXX7y2KNTb4AIxzmzQhkcuzXwvgcTQYeBV6uhsPGuh28vpzmdYpnfLT0CuvZjOVueZ39qFWDSgkJIt7s2pnwNlc+3bopy0rn/Vy2apt5Y3/441yEkEMaokYL7apk1SgQYRpxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dvnisGYQ; arc=none smtp.client-ip=74.125.82.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1yan0GN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7030B1F000FF;
-	Sat, 10 Oct 2026 03:25:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791602724;
-	bh=80POjU5WP6ctS0DqN7hA/63JAQ8Agh1hTny2C1kJcvk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R1yan0GNX8GBVnPCrjlLSMyfQtDrS/h8pKB+m4TZUQTWZAcH8Fv4kLYRPL4swtEet
-	 xjUOxL9z9IV1h75yA5oJ+c9Wx2p7IAtMw7gaWjNDYbbjAstcQ5j9EEmz6SmBr87b0P
-	 CdOoCt7UKMrcKaqpW5nNZmtyg1IyT3l5uPUdYPi98tyvfih6nRwKmHgWlZe6r2mzKQ
-	 l6H/Qmu03fzd/CDzudKKoCWCpWBS8SJBxbnB3QtWjYQyFTFGwvOx62Zywhd+9DgjDC
-	 COymzfjrb9gQ700TsgosBe3X6JDdCssefcJpBylVlPjRh0PV3Ojhkht46JmGClQ4nx
-	 6B+Z1sz74ibfA==
-From: netdev-bot+sinfo@kernel.org
-To: Binbin Deng <18983559317@163.com>
-Cc: borisp@nvidia.com, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, sd@queasysnail.net,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: mlx5e: Fix use-after-free of the MACsec
- xarray entry on RX SC deletion
-Date: Sat, 10 Oct 2026 03:25:22 +0000
-Message-ID: <179160272288.2527009.600458371077116507@kernel.org>
-In-Reply-To: <20261010032115.93545-1-18983559317@163.com>
-References: <20261010032115.93545-1-18983559317@163.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dvnisGYQ"
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-147be78cd56so1409356c88.1
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 20:36:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791603392; x=1792208192; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FN3jzVFTvR1bxiOc6QpulyJ81OKLo+adR8/+V0xSoVo=;
+        b=dvnisGYQQDcD8L1ZZv5AfQx1JnQvKicEPFUpJXia7M6AGhKtiXVM6h3Wtl4FI91clX
+         3jFGz91cUCXnkdyQAE4jOOiOUMUBPkrzlQ9LFjRHQDxn85db8YfBp0LIHHb4GzJXOBHe
+         woVo7NSjUJz4ktoipH/gve2GX65em5Gscpy4qjvSzWMpDmgcTeo0jeOX88bONGujJZui
+         3NnsxlSJg5CHpgOMpqb527cdc4HvCKNYufZcnfOIJMrO+DrOGf08K/R53XcFBRYGTFOa
+         uQSgdf3m8UVwHSp9jQuuwR2hpcxX6H0uL6LvSHoSswZDpbScogXK/6tswotDC6IBQj12
+         2l7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791603392; x=1792208192;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FN3jzVFTvR1bxiOc6QpulyJ81OKLo+adR8/+V0xSoVo=;
+        b=CfGZb4CDBbhtg5/M1ewjkhWKwdohxEqNQSJq55Fu2NVhO5kR0h09m3pFroRf27oLmd
+         8x54PFMMlJUkqWngGs8ibaXvu/CRL5xv+8/20H9sRj+Y44AdbLQRl3YnwHIjaDdoNaB+
+         +ihWz2qrK6FHIto4ooNSzdW09KBbsblDKfmRd7v3YMs4eRkbFoTst+9wwkZ8RWXmok0x
+         W7ye6KOaUbog26t4KKXAmL17zQo6EMkIsTsSIdGczZmh3MXGQiHNxFfcayXgxk0Us+8U
+         v+1kznCk4ETPzUVleeXpvlkt7tGjRfkWnCGOUeyGKgAMR6VjX+gnNuXJt7M3R3uHZv39
+         jHNg==
+X-Gm-Message-State: AFq9FYKCttYyUuYPLW3K4MYUgXLqn1PEb/g4rghz+4I/g6YamXvy4nwN
+	kXrkLogLl3fyKitOQsUaB2stVi/LkeK4ff9+yVPKDsrTP0oi3voJ7DYXpl+l7I1Bw9PgjsZrrkn
+	7qwR0VMtf21tY0eD1wvhTrON15ipDgyCkwsHNNjBHOoJ8vcdkNxf/cF4w+WTkUzuYbBzFhviIti
+	n6sIHUbtk3oPulUQeC/vmKAKPERWnvrX1A32qA+/+SbpTDamH5n5aJk6OcqZS42o4=
+X-Received: from dlep17-n2.prod.google.com ([2002:a05:701b:4591:20b0:14a:c841:ce30])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:e11:b0:145:3a5:d918 with SMTP id a92af1059eb24-16a640fd0admr7318681c88.33.1791603391029;
+ Fri, 09 Oct 2026 20:36:31 -0700 (PDT)
+Date: Sat, 10 Oct 2026 03:36:07 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261010033630.1171692-1-almasrymina@google.com>
+Subject: [PATCH net-next v3 0/2] net: netmem: document design principles and
+ intended direction
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Luigi Rizzo <lrizzo@google.com>, "=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?=" <bjorn@kernel.org>, 
+	Pavel Begunkov <asml.silence@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+Because the networking stack and drivers are only partially converted to
+netmem_ref and current memory providers only supply unreadable net_iovs,
+automated code review and analysis tools (such as LLMs) frequently infer
+the wrong architectural invariants from existing code. Specifically,
+they often assume that page_pool's struct page APIs are primary rather
+than legacy wrappers, that memory providers always imply net_iov, that
+net_iov is inherently unreadable, or that callers should branch on or
+downcast netmem_ref directly.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Document the intended netmem, memory provider, page_pool, and skb
+fragment design principles concisely in the relevant headers, code
+comments, and netmem documentation so both developers and automated
+tools follow the intended abstractions. This series adds comments and
+documentation rather than performing a large refactor all at once, so
+that future incremental changes nudge the codebase in the intended
+direction.
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+This reflects my mental model of the netmem, page_pool, and memory
+provider architecture; I welcome feedback and disagreements,
+particularly from major contributors to page_pool and memory providers.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+Cc: Luigi Rizzo <lrizzo@google.com>
+Cc: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+Cc: Stanislav Fomichev <sdf@fomichev.me>
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+---
+v3:
+- Collect Reviewed-by/Acked-by tags from Bj=C3=B6rn, Pavel, and Stanislav.
+- Clarify skb fragment homogeneity rule: all frags in an skb must either
+  be struct page-backed or belong to the same memory provider instance
+  (Pavel Begunkov).
+- Link to v2: https://lore.kernel.org/netdev/20261008023030.1089616-1-almas=
+rymina@google.com/
+v2:
+- Document both current implementation status (memory providers currently
+  supply net_iov, and net_iov is currently unreadable) and target design
+  principles, and clarify that new code should generalize existing
+  limitations as much as possible (Stanislav Fomichev).
+- Link to v1: https://lore.kernel.org/netdev/20261005004958.3603059-1-almas=
+rymina@google.com/
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Mina Almasry (2):
+  net: netmem: document netmem and memory provider design in comments
+  docs: netmem: document netmem and memory provider design principles
+
+ Documentation/networking/netmem.rst     | 53 +++++++++++++++++++++++++
+ include/linux/skbuff.h                  |  6 +++
+ include/net/netmem.h                    | 30 +++++++++-----
+ include/net/page_pool/helpers.h         | 18 ++++++---
+ include/net/page_pool/memory_provider.h | 10 +++++
+ include/net/page_pool/types.h           |  6 +--
+ net/core/skbuff.c                       |  4 ++
+ 7 files changed, 109 insertions(+), 18 deletions(-)
+
+
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+--=20
+2.56.0.385.gd3acb90ef8-goog
+
