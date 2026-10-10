@@ -1,162 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CA236B07C;
-	Sat, 10 Oct 2026 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1268A298CAB
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 13:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791639197; cv=none; b=RQiBJcCOR/lbkRe/hCpGzoIqzbnESP/wkfKSfJFcOTSKUKxgCZEF1O6lVRhA7QuniQuwockqG3fiZonsBtaekBoJkSMvQUR9bYYB/cSCQLOeBjbFEVJDI2V68eD/L/tEl9Bg1Y15uWskng2Gn7HHmMmUlZDJeStWRA0zb9a2WmQ=
+	t=1791639247; cv=none; b=FbRXkjMFgthGwgnL7NRctEiseRmcCdJYul2t6JI5Z60BqGlAY+PGDwmo9h8oaM6yBrdPrQQlRmAt0tC/lZKCMgK6O0UESK80IELP+WHGZy7YBZrxyStncx4cPBPl4Pt8uDYuM3fT5MrRp41k7gJ79GLgzAdFV+X1px15NTZwUmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791639197; c=relaxed/simple;
-	bh=fQ96koIwsc+73ye2d9WY1cAHeJdGvpPPwMKjvKPy60U=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IMKFQhl2IS630KMFn6QVu8SRAvKh908O8xgHxdbiHxH96hME0L8IB+ISURpYd0Nzee/3zRq/D1xRWyX48cGiHY5LaY5JHFpd1I3W4UOfagWyns8tR01B0LHdFSLJ1MqdrjI5YU2b8YzRq/dO9MZayjHEMFVbj42r2uL/luZNy/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BkAJVzE1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791639247; c=relaxed/simple;
+	bh=0FW8t9ZBkQy3zNJDOFSQlfapGF7siBhBw9CMgFYWLpg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o/HwygcBtQ7vkBFqDIBr3dPWwQX31Fo/uvqxydPLwXG+TwCoWeXYoQVcIIpJFlzT0ULUd2kFxI2ck+ea/+z5lfjEvEJ+tI67WaoQWySQzEibcu9XUJuuABk51yOjmbdcgUf5Ce4dIsc9Ac3733hNkeZprXvQADEm7qvKqPxGEYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UMwEYkCA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BkAJVzE1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053691F000FF;
-	Sat, 10 Oct 2026 13:33:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UMwEYkCA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F209E1F000FF;
+	Sat, 10 Oct 2026 13:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791639195;
-	bh=hSeD2f5/61SwfYL5OwNCKY5q2+rB1164Ic0xoMaUHwU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BkAJVzE1U0KVGOqZ/8okpduQkfKpZZsG5ycHEHb5VVYkj8pCi5Nml+GXwITmxWdrb
-	 v0f0qwLgReRbV2uyHP0Fn1z9JXU0N5TK+n2sUiIftIudcQyqmx0f9lJx034aFStm1k
-	 dfuuLbixvN0obW3B/iBmtGwPMiK/MQVtszmA9hZ6ZZ+DMJ2RWrUL/pUfyn7s6BLWNs
-	 DQxp3V8C4bnUCM9FnPzeYQJgLgu0VpWoBIdQ7rxCcwUJQ4VmlIr0nXHrGlXnTHGcS6
-	 bEFcQVmQSHclH5f79gQpvTHfNdmlJ9ZE59vJbQPmOzdkmk5SFExAaeyKX6nJ2hdlzo
-	 fOyrYnINAvpdA==
-Subject: Re: [PATCH net] net: skbuff: don't segment unreadable skbs without SG
-From: netdev-bot+sashiko@kernel.org
-To: josef@toxicpanda.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, almasrymina@google.com,
- willemb@google.com, kaiyuanz@google.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 10 Oct 2026 13:33:14 +0000
-Message-ID: <179163919450.434549.9325877615055483977@kernel.org>
-In-Reply-To:
- <20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com>
-References:
- <20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8@toxicpanda.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791639245;
+	bh=EkUlwaVc4wdGZN8BMKhaD2tkYCp4SyIbCRE5qKkmCSI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=UMwEYkCAMw2JrYA4jW4ZlpP7ErkWoCYKgnDeZ6uMhZMwpdtaGM4oCkrQvu8L5Xhtr
+	 aYBLdyl2kDsIsbPdSXnB3fwgCYntDIM8xf+q0SqVFg8sRqaGqNG4P0B8tmptkIhzXv
+	 cB95Cip2qL8MWb1eOgYYzPrBphZB0+LzBFd/qoLYE6h+yedzPzTXMk8XUbKgm/bYDR
+	 YJS3Cc8edTKjln+tD+kt3e6hjPtjjGB7t9B3Np/h5guftQFJ4vsbS8b0xZ08TLaNhZ
+	 XRoTX2CB6nw1GZ9Y51eTcQitAqjolOAn9oPUWNbEftZJlm8j+w3ELVyXt5Nyj5VYPr
+	 aN2aH823nBpuw==
+Message-ID: <0caf7eb8-e4de-40cd-bd5a-c1a1d96a82a1@kernel.org>
+Date: Sat, 10 Oct 2026 07:34:04 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 2/3] ipv4: Pass netns to fib_table_lookup()
+Content-Language: en-US
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, horms@kernel.org, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com, daniel@iogearbox.net,
+ petrm@nvidia.com, ferenc@fejes.dev
+References: <20261008133158.1438907-1-idosch@nvidia.com>
+ <20261008133158.1438907-3-idosch@nvidia.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20261008133158.1438907-3-idosch@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 10/8/26 7:31 AM, Ido Schimmel wrote:
+> The next patch will report the network namespace cookie in the
+> fib_table_lookup tracepoint. As a preparation, pass the namespace to
+> fib_table_lookup() and from there to the tracepoint, like the
+> fib6_table_lookup tracepoint. All the callers already have the namespace
+> at hand.
+> 
+> Add the namespace as the last tracepoint argument so that the positions
+> of the existing arguments do not change and BPF programs that attach to
+> the raw tracepoint are not affected.
+> 
+> No functional changes intended.
+> 
+> Assisted-by: LLM
+> Reviewed-by: Petr Machata <petrm@nvidia.com>
+> Reviewed-by: Ferenc Fejes <ferenc@fejes.dev>
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+> ---
+>  include/net/ip_fib.h       | 12 +++++++-----
+>  include/trace/events/fib.h |  5 +++--
+>  net/core/filter.c          |  2 +-
+>  net/ipv4/devinet.c         |  3 ++-
+>  net/ipv4/fib_frontend.c    |  6 ++++--
+>  net/ipv4/fib_rules.c       |  2 +-
+>  net/ipv4/fib_semantics.c   |  2 +-
+>  net/ipv4/fib_trie.c        | 14 ++++++++------
+>  8 files changed, 27 insertions(+), 19 deletions(-)
+> 
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message says the 'only checksum offload off' case
-  is safe because 'the segments keep sharing the frags'.
-
---
-
-net: skbuff: don't segment unreadable skbs without SG
-
-This patch makes skb_segment() reject unreadable skbs, including their
-frag_list members, when NETIF_F_SG is not set. Without SG the payload is
-copied out of head_skb. Since commit ab9414ed70bd, a devmem payload copied
-that way turns into zeroes that carry a valid checksum.
-
-Link: https://lore.kernel.org/all/179148235783.434549.14322374227477832817@kernel.org/
-
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 41beaf625421a..4ba544b5f3bab 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-
-[ ... ]
-
-> @@ -4842,6 +4854,14 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
->  	sg = !!(features & NETIF_F_SG);
->  	csum = !!can_checksum_protocol(features, proto);
->  
-> +	/* Without SG every segment's payload is copied out of head_skb, which
-> +	 * can't be done for unreadable frags.
-> +	 */
-> +	if (!sg && skb_segment_unreadable(head_skb)) {
-> +		err = -EINVAL;
-> +		goto err;
-> +	}
-> +
-
-[Severity: Medium]
-Does this guard also need to cover the sg && !csum case?
-
-The commit message says:
-
-  "and with only checksum offload off the segments keep sharing
-  the frags."
-
-The segments do share the frags. But in that case skb_segment() still
-reaches perform_csum_check, and __copy_skb_header() has already copied the
-unreadable bit into each nskb:
-
-net/core/skbuff.c:skb_segment() {
-    ...
-perform_csum_check:
-		if (!csum) {
-			if (skb_has_shared_frag(nskb) &&
-			    __skb_linearize(nskb))
-				goto err;
-
-			if (!nskb->remcsum_offload)
-				nskb->ip_summed = CHECKSUM_NONE;
-			SKB_GSO_CB(nskb)->csum =
-				skb_checksum(nskb, doffset,
-					     nskb->len - doffset, 0);
-    ...
-}
-
-The devmem MSG_ZEROCOPY path in tcp_sendmsg_locked() goes through
-skb_zerocopy_iter_stream() and never sets SKBFL_SHARED_FRAG. As far as I
-can tell, only the MSG_SPLICE_PAGES branch sets it. That means the
-__skb_linearize() fallback is skipped and skb_checksum() is called on an
-nskb whose payload is entirely in unreadable frags. skb_checksum() then
-hits:
-
-	if (WARN_ON_ONCE(!skb_frags_readable(skb)))
-		return 0;
-
-This leaves SKB_GSO_CB(nskb)->csum at 0. tcp_gso_segment() then calls
-gso_make_checksum() and writes a TCP checksum that does not cover the
-dmabuf payload that actually goes out on the wire.
-
-The setup looks reachable in the same way the commit message describes
-for the case where both features are off. sk_setup_caps() grants SG and
-HW_CSUM, and validate_xmit_unreadable_skb() lets the skb through.
-harmonize_features() strips the checksum and GSO features but keeps SG:
-
-	if (skb->ip_summed != CHECKSUM_NONE &&
-	    !can_checksum_protocol(features, type)) {
-		features &= ~(NETIF_F_CSUM_MASK | NETIF_F_GSO_MASK);
-	}
-
-So with tx-checksumming off and SG on, software GSO reaches skb_segment()
-with sg=1 and csum=0. The result is a WARN splat, and the peer drops
-segments that will never checksum correctly, including on retransmit.
-
-Would checking !sg || !csum here be more appropriate? Since this is
-tagged for stable, could the commit message also be updated so it does
-not describe the checksum-off-only case as safe?
-
->  	if (sg && csum && !gso_by_frags)  {
->  		if (!(features & NETIF_F_GSO_PARTIAL)) {
->  			struct sk_buff *iter;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-b4-skb-segment-nosg-unreadable-v1-1-7e2334a55fe8%40toxicpanda.com
