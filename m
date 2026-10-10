@@ -1,99 +1,128 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BBC376A0B;
-	Sat, 10 Oct 2026 16:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6009E3BFE41;
+	Sat, 10 Oct 2026 16:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791650409; cv=none; b=ePeZ1b4UG45uZwiubfCpEmWvq7dswj1YaWmODNV8TjODlB90jPbeMVIJpmzgSZHjui8znaWY6paKnn9H15+y+t4YR3TEyMpX/QGw1WAuOLhCnRehir0TQzp4aQliq6vpP5Wtq1PstH7rhRBQYM2rDELX+FQWLEhReos43KOe/2k=
+	t=1791650726; cv=none; b=BbHs16xwR1cja9+yPODK/T7qNdUOLX1pBlPvnnzruKPofY4sAazrUOU4yVJlW58BbwhhQ9DgwatqEbeLIrJsiM60KqL84cVk8murP61FZi7/w97aFXHKt8ofcH9dX/O/PJdXbWShv9CjF2EXaaPm3Jj7xo1trg8b9dbbLnZ83Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791650409; c=relaxed/simple;
-	bh=W+rXmx71uElXmbjWgC7Q42fhpg1QDwyieQ/twAh+bf8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EcJoiCEPDc5BMixznKoCHlDN2bNg2S4mAPdO4iE+hCt9r363y3DR9dTiQ/wGFN6ZuBQ4Re3xN/yOc6tP/e8+yMugRd2tq3FuL/sflisM8qZVbE0705IFK6pMOd4+Ycjdz7arcWK4hUo8eIRkc8X7MlC5icFUkWvnX5XckvzaDb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AR9Mn8JX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791650726; c=relaxed/simple;
+	bh=ADsm7uiEMCxBHs6X1kEtYy6VCQL+Q1sBBSVnXBZ3fi0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Szi3P+HrovtPm8WHtaj+hC7WSjzRbW79Lii6omTBrDLrHBfPJl54zuw84v8Lb7zp5kVEgu5wJYCEsNvatTAUZ6IiQ4HBwYkKsnXf6K8pVgZ6+sdrl3Tmcr6agA9uYQKf1BAfHpGujZybQi1lV05LfY2AYleLAqDD2wgNHO/JEH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cW8daFep; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AR9Mn8JX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43BF31F000FF;
-	Sat, 10 Oct 2026 16:40:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cW8daFep"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E546B1F000FF;
+	Sat, 10 Oct 2026 16:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791650408;
-	bh=4UN5NAnx8hlvcuEwnHYSkiLlpT4gcUYPFfjfL//rXvo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=AR9Mn8JXqVJgLzzkz0Pjnhepkf5CB7BWGn0TKoa10Jyuojlog0hRy/wt0ekKN23yk
-	 ENEj4YYcAC3cS5wFHokwCiznE+Sb3wf0bSMLblNooGpJXkXTbSze/39MeV3ea7Ba+1
-	 iYqSIzCANn2Xf2LLCXB12SlxIoohjXQEF9hCCQyLUZi8y/rcyfYNy/JTq7brwrXGYn
-	 1bFTfJhMA7Z9JdUi/iDToEj1roGfsZSgKmqBk1uhptNPeUkK/aP7JgLhHcNsOmtjyi
-	 pKI3v+5m+QPYykiJHkqN+u5q3ikrLzlzFPmAVkkwHqZIDTWau//l5mNLoV3YJM8GU4
-	 oQkjzNTwDD3ag==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A1EC38111CE;
-	Sat, 10 Oct 2026 16:40:08 +0000 (UTC)
+	s=k20260515; t=1791650723;
+	bh=pvsjiwZx+xIsJolf/NAt29QhFY341sWiNZv+tPj/ZoE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cW8daFep2Y6UyKJg4dcQNh74s6YaRYOl/kSBxCKTDYpc3oWQpevNIsXvDm/32764V
+	 uGDNoRe/x/CnGDVhRhcuwc/WhkJVFpEyk37nfNt7cXOxw+FV6uS3WDUQH7/bk12k33
+	 qfPUdF31VeLddmT4qhn2r1AjL15ZBcdX4aiahygO5TtdQ5dMIERytuYqrj5X2FEJNZ
+	 rv6XbJSghQ6XsqwGJK+TrJCQHseo8QfJVk2GrRQS3ePr5kIsXP3HXDERt0bBV64qNM
+	 OxYrHT3GfbQFiE1CpLSs/CMw7jBK0X4t1cX86rDf+aEoLyxlFLA61A62zNzlqqmaag
+	 hKkU+dLDzg0lA==
+Subject:
+ Re: [net-next v2 1/3] bnge: Add infrastructure support for RoCE MPC channels
+From: netdev-bot+sashiko@kernel.org
+To: siva.kallam@broadcom.com
+Cc: leonro@nvidia.com, jgg@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, vikas.gupta@broadcom.com,
+ ajit.khaparde@broadcom.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ sachin.holla@broadcom.com, dharmender.garg@broadcom.com
+Date: Sat, 10 Oct 2026 16:45:22 +0000
+Message-ID: <179165072240.434549.10870506597507225182@kernel.org>
+In-Reply-To: <20261006161256.1493672-2-siva.kallam@broadcom.com>
+References: <20261006161256.1493672-2-siva.kallam@broadcom.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v5 bpf-next 00/10] bpf: Add bpf_tcp_ops hooks for TCP
- AutoLOWAT.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179165040702.1772634.14891087593048357727.git-patchwork-notify@kernel.org>
-Date: Sat, 10 Oct 2026 16:40:07 +0000
-References: <20261008031604.256498-1-kuniyu@google.com>
-In-Reply-To: <20261008031604.256498-1-kuniyu@google.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- martin.lau@linux.dev, eddyz87@gmail.com, memxor@gmail.com,
- ameryhung@gmail.com, yonghong.song@linux.dev, john.fastabend@gmail.com,
- sdf@fomichev.me, edumazet@kernel.org, ncardwell@google.com,
- willemb@google.com, ukyab@berkeley.edu, cleger@meta.com, kuni1840@gmail.com,
- bpf@vger.kernel.org, netdev@vger.kernel.org
 
-Hello:
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-This series was applied to bpf/bpf-next.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
+Low priority / nit picks for your consideration:
 
-On Thu,  8 Oct 2026 03:15:20 +0000 you wrote:
-> This series introduces two callbacks for bpf_tcp_ops:
-> 
->   .enqueue_rcvq(): invoked when TCP stack enqueues skb to
->                    sk->sk_receive_queue
-> 
->   .dequeue_rcvq(): invoked in tcp_cleanup_rbuf() after data
->                    is dequeued from sk->sk_receive_queue
-> 
-> [...]
+- [Low] The patch has no consumer, and its subject and body promise more
+  than it does.
 
-Here is the summary with links:
-  - [v5,bpf-next,01/10] bpf: tcp: Convert deny-list for bpf_{get,set}sockopt() to allow-list.
-    https://git.kernel.org/bpf/bpf-next/c/114ce944d015
-  - [v5,bpf-next,02/10] bpf: tcp: Add a new per-socket flag and kfunc for bpf_tcp_ops.
-    https://git.kernel.org/bpf/bpf-next/c/4e2385abecb0
-  - [v5,bpf-next,03/10] selftest: bpf: Use bpf_tcp_ops_set_flags() in bpf_tcp_ops_hdr.c.
-    https://git.kernel.org/bpf/bpf-next/c/ca577d08f88b
-  - [v5,bpf-next,04/10] bpf: tcp: Guard fast-path bpf_tcp_ops_call() under per-socket flag.
-    https://git.kernel.org/bpf/bpf-next/c/59c25bb6759a
-  - [v5,bpf-next,05/10] bpf: tcp: Check BPF_SOCK_OPS_TEST_FLAG() after cgroup_bpf_enabled(CGROUP_SOCK_OPS).
-    https://git.kernel.org/bpf/bpf-next/c/c071408db308
-  - [v5,bpf-next,06/10] bpf: tcp: Introduce bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-    https://git.kernel.org/bpf/bpf-next/c/32d17fe8a9a5
-  - [v5,bpf-next,07/10] tcp: Split out __tcp_set_rcvlowat().
-    https://git.kernel.org/bpf/bpf-next/c/dcddae18f512
-  - [v5,bpf-next,08/10] bpf: mptcp: Don't support BPF_TCP_OPS_FLAG_RCVQ.
-    https://git.kernel.org/bpf/bpf-next/c/d65dc83603eb
-  - [v5,bpf-next,09/10] bpf: tcp: Add kfunc to adjust sk->sk_rcvlowat.
-    https://git.kernel.org/bpf/bpf-next/c/5f549c1e49f3
-  - [v5,bpf-next,10/10] selftest: bpf: Add test for bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-    https://git.kernel.org/bpf/bpf-next/c/11f1c0b8a43a
+--
 
-You are awesome, thank you!
+bnge: Add infrastructure support for RoCE MPC channels
+
+This patch adds a bar1 pointer to struct bnge_auxr_dev. It also fills that
+pointer in from bd->bar1 in bnge_set_auxr_dev_info(), next to the existing
+bar0. The commit message says follow-on patches will use it to send RoCE
+commands to the firmware over the MPC channels.
+
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
+> index 0955b488b6fea..87ae40eab5926 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.c
+> @@ -181,6 +181,7 @@ static void bnge_set_auxr_dev_info(struct bnge_auxr_dev *auxr_dev,
+>  	auxr_dev->pf_port_id = bd->pf.port_id;
+>  	auxr_dev->en_state = bd->state;
+>  	auxr_dev->bar0 = bd->bar0;
+> +	auxr_dev->bar1 = bd->bar1;
+>  }
+>  
+>  void bnge_rdma_aux_device_add(struct bnge_dev *bd)
+> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.h b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.h
+> index 6c5c15ef2b0a7..13cb9289f5b89 100644
+> --- a/drivers/net/ethernet/broadcom/bnge/bnge_auxr.h
+> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_auxr.h
+> @@ -46,6 +46,7 @@ struct bnge_auxr_dev {
+>  	struct net_device	*net;
+>  	struct pci_dev		*pdev;
+>  	void __iomem		*bar0;
+> +	void __iomem		*bar1;
+
+[Severity: Low]
+Does anything read auxr_dev->bar1? This commit has no user of the new
+field. The later patches in the series ("bnge: Update HSI" and "bnge:
+reserve TX/completion rings for the RoCE MPC channel") don't add one either.
+
+drivers/infiniband/hw/bng_re/ dereferences neither ->bar0 nor ->bar1. It
+still maps its own regions, in bng_re_map_cmdq_mbox():
+
+	mbox->reg.bar_base = pci_resource_start(pdev, mbox->reg.bar_id);
+
+and in bng_re_map_creq_db():
+
+	creq_db->reg.bar_base = pci_resource_start(pdev, creq_db->reg.bar_id);
+
+Could this assignment and the new field move into the bng_re patch that
+first uses auxr_dev->bar1?
+
+The subject and body also describe more than the patch does:
+
+    bnge: Add infrastructure support for RoCE MPC channels
+
+    Add the initial L2 driver plumbing for RoCE MPC (PRIMATE channel)
+    support:
+
+Nothing in the change is specific to MPC or PRIMATE. The body also has a
+bullet list with only one item.
+
+If the field stays in this patch, could the message say that it only
+passes the existing L2 BAR1 doorbell mapping to the RoCE auxiliary device?
+
+>  
+>  	struct bnge_msix_info	msix_info[BNGE_MAX_ROCE_MSIX];
+>
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006161256.1493672-1-siva.kallam%40broadcom.com
