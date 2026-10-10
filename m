@@ -1,83 +1,74 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1108381C4
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFAA38E5C4
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791604303; cv=none; b=TknIv3YfUpZdlKo1d+ApzhVFnMqGVX5//Xb21khzqC3fq8bXPxGx+/e+r0GpEjeg4cQ8VsQUOVmmRViSkT/zGWAv7gFyOAjvk/bW0wjChaRZgAs6xgLY837dnlcQ6ecdGX8Zjuf7h39yM62+cRrS/085dSVLGErQlsxG6/2NEVU=
+	t=1791604781; cv=none; b=Tw43WPAnyKM7MYX59miwTsmlxnYQwUJRCLMiXHRN94K4JUGStIY1z2c4QrbRJgiYKJ+60LpYM0ZmFV+MXVZxg03NkylMqGe0ZxpsOMugGjfe4iCgmcRvExz3wNOAgXgvZNecrNgk67xbaWqdBvThmga7A2W4ZdlNtZMspenE9XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791604303; c=relaxed/simple;
-	bh=ArA+w71w1BaEj9a+G3Ctm79DsTHOAgfSfPNsAtEyqFQ=;
+	s=arc-20240116; t=1791604781; c=relaxed/simple;
+	bh=9uUi7VJXnnwjCj1byg6atdUf19EY7e7jPvxXvAjDn64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaZ1fWpgzbSFvCnIAAHaBCSew6KNP2w3VjsGvExh57JUGnbIaGWTOEUlkRJF57snTjVdrQRuNOFtliRAkPU0lsII9e+EsQRVfvaqB9nyEoOpYIOhhHMg196ZHcwdng9XtClJlbBCe10cgJCpAvBjzLM38oqE2QRU3W2BG9kYHys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c0f2ju7w; arc=none smtp.client-ip=209.85.208.169
+	 MIME-Version; b=TcDyuLw7iQ1PXbttObscVLj20QNYigxyCySPT3p7Cvl/5C5xhQ1bLkV1ippxykTgAvJkmNuYMIuEXB07JHKNpLZ/CWWYrOoeisHMNVlUt1t2gbtYrBMznios6wGVIOsUvV4yiOxlCvFe+nifjW9QUtlbk/3HlKCyPcqeOntoSOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sfu5+dyU; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c0f2ju7w"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a777d4f321so4121041fa.0
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 20:51:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sfu5+dyU"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5bcb440d1cbso135902e87.1
+        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 20:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791604299; x=1792209099; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791604777; x=1792209577; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oHTcdU7BDJRK9HJIi4NfQxgJw/5DvdcfPlbURZ+9Mwc=;
-        b=c0f2ju7wLux0deMtGRTjh7mrTXUx/NkCBhsgy3dpEE8jZgG4XUeydApj6WdXTUCCXp
-         noYfti7x65zfUpTtk7XiQEAo4JPI1ffZnk7Y0FRAVt35ETnuZqNfOjo1jDo3vo8dMW3i
-         AkfKszqRy++qEph248hpj/NbX5l7HitxShJYxCuwTZyfjSj6hFz2bjJrapyKtCKYQJBF
-         KAeSUF+mealzPMMzwfRP/g14cSjbd+D30VXWOFW4S4fg4sQZapf0rS6AAy1wHbeRy9rc
-         3x40WfZ4Jx8OKYKFBsKh/DlHf3RrL4gI+Ps+ePeoHZSnHoAZ1fvyI3uC25+GafryF5cN
-         XMJQ==
+        bh=9uUi7VJXnnwjCj1byg6atdUf19EY7e7jPvxXvAjDn64=;
+        b=sfu5+dyUDHXDvz3azDLkeRnGDawVUJLLtp6CtzXI0ROEBzfQy50IeTJ0XSHo1r6Ygr
+         wJU8fypLXpYKd3Dd2y9/JHxzmM7NjULIvA7QzWVLxmjdNIz7vyxjvupPYSM7qAZFVOeF
+         yvklmdtsHLR9AGwMC/SfIU5rITyFwFuAeEaBbFLGn7113sbRAvttFIBJ20GCQrDKhueA
+         yjCNkjvpNKJ1XNyn2N243Ey8M5Ygu0Wqe5G05g5twflK30ekY70X6C+8w791EgGSSxy1
+         Loh3xxi3v+ouwWtc0i9D6JjIQN0N6mDjzgDDL6A4tlk1H8b+OOqTxVhfOAp0TnW+4S/A
+         ZLmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791604299; x=1792209099;
+        d=1e100.net; s=20260707; t=1791604777; x=1792209577;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oHTcdU7BDJRK9HJIi4NfQxgJw/5DvdcfPlbURZ+9Mwc=;
-        b=BjGP77DMVGWxIJ5LRjJzo3+EKg+luXYCIvbDaxtGrFsQ5R3bpX2/IrqQBBPmhcVAAb
-         gaNl5HhFr2JbzAsm+Qpzqojtuy/7+ObvwMA8hEGhgV4wDRzlkK2LruRlgpHxsSkx/lqW
-         lA/LynJbm9XAWnMWy4/aB97oPOehbN7RKLAyTq+Ke4blbritbdv4AYzeFsH1RfgvyCbD
-         0MkJ64jkzn7tGdgzB9O7MWD/Xt0U2UoaEQNbYAyYdcRa0rgV/q8kYmkMSOGEf/MpOBsF
-         sLLoz2tVhF9YZkkwNC2irO2iRSQdJ2zbDGSUSDkNkdHuCLG254X4slO4HzAbhdszjaYL
-         76iA==
-X-Forwarded-Encrypted: i=1; AKwUvBwEOIrjaDivTSKu+JaRuwbMXVnXU7c5ZMwDiL5yNW6mRjvfF2PtvrcyhQ8ow3Hcbt7y2SyRd/o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLY57VFFtS0kpc3DGtx77UvaCcj69x+Wjqgb53hWnC9mYif7rsY
-	5H6jFhFfO/nnXYxm2yXv0XvQwOWKNmdjOZ1mLNrew3/MG9gUEVU6FM3W
-X-Gm-Gg: AYBFou0APfVy51SULBsDD2SS6+YcJCXb+9aSbrBHnn+2mLHBLZTIgimTQ6HtmIt9Rme
-	rzVWzX0jPprupqJtz+Kebb5l5hppTTtt4HBzchka8c7gmX9A/QhNQvoEDK3Gl0el06VrOdBAgbY
-	3tkCvQ379wzRCh+81BKm/M1D1h5cH4n3RnlW88Vxa4GB1FHq62yMPdemdlrKMsTvS+oVtpgEIrs
-	PPQolS/EtRbJWAh/36CjUhYQ7Xi1NMK6zqwvPg+1yA+ITtojQRlD/ck7qpRKvhxVgrAHzIyugpr
-	HWMlvpFRB6YTgquoGiOoJxunqmxoy0Y4DU3MvR14HFlITQoAqSLWMwboUw9CsEvhw5QtBjdAZ3U
-	9GaXuVIm6cA9Yg8/lXJ/f01bL7AxijB4zF3F8XPjctFFJbggwDIqMUxaqa2bJHhpvki8vDUvoTh
-	WHa4yABo5rWFSUHKVufw49al7TPsvpI1wO75P5PIVtWigSOC0bvLxP8n8NUQcXI5aQhrCztyDfl
-	wJZmG8DrNZQyYJltbBru5uPRCGWfI8bKCVCZbheF40=
-X-Received: by 2002:ac2:4e08:0:b0:5ba:3f72:3c61 with SMTP id 2adb3069b0e04-5bcde8ce984mr1402306e87.62.1791604298863;
-        Fri, 09 Oct 2026 20:51:38 -0700 (PDT)
+        bh=9uUi7VJXnnwjCj1byg6atdUf19EY7e7jPvxXvAjDn64=;
+        b=s5jYosQQhi6AsMrxPGJKNzw4AMScLE6PYBDICpZkRyx7cN3Zvm28xcjpt54L+1TaK3
+         PmqIYrF9D+eswDbbytIjKIgG8N8NJsyvChW8GoyhPaSnBgfScCc+ge7Y02d7v4STfMid
+         rvMO15DOGHdF3YsKHJuZb1Ajq4mU+1TSfvPW9Vgi38Pzk8tI89kmesHKDJXhQSnZeOi2
+         +yagc8ZWDdMEBWhJ1aiFhzAgBoY1o0d7L98/04X0gfgjc1bp8UaJKmucYwWn/wgEfNZ8
+         dBNBSiQiflm8hlufq00J1DVZ4hyPPgey3R8oYHpDKqyI4mtmLP3FYh37AJJTlxQp2wFf
+         UqBA==
+X-Forwarded-Encrypted: i=1; AKwUvBxttTCtz5gRhWOBje//nkocxCDoHHCZ7kiQZnpZd3DZLMQwpvuM9gpeigBX8svmjJZ01l/T228=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL1+NusZV3SHIT93Dkge65gI+AbsoE77htjSxnpvcsqDiu/1ElP
+	VXyhEJ5hfmTQhel4T9Mw3zPUWqG5+3gSw1UM/s9zgeM4NeCmbhWW6QR2Z1oR++DbSnQ=
+X-Gm-Gg: AYBFou317OcJRiA57hlIPaF6zowNww74YceSUFsFlndpye17nG9QY+HI17O0AbhAAZu
+	NvH8IOAeiOHS1vF0yp1ZTZmKatRbymwinAbAhJljQQXkbxslv8c/JUw779ZMbKWhpPoLkE2PU2m
+	teZPLqkJq8AcR/FRJ5+tcqJro9NHXisoseDU546QBXaSUKV8v3WJ1lFj2kfnkkVo326qe+ztYTd
+	naoe87e54JhC16geFsqjg0XYNVVXvAK4Nq0KelD7vYYJKA9LgRuzpWs2nVvgSwdT2mnuXeGo+2S
+	6IMDFLDizx0BxQdKE4SzIi55Q3VI/uH8Tiqbvgq53XrKHUziJpesSjaI7psPf62thIxZQR+A1it
+	EgCLnSQ18/Bbg8ZT9uwZJiShlUNH4jqHXI6Kg5bh3beYq5ExhIK4eUYLNpFvW2ILlR91NdVZH/1
+	X60XcrWIe4Q8n1Qr/ILBIUC+SjmxsUEwlLsXUeejwR2szHw/H+hq86RYxo/zYUj799LDAE9Mw0N
+	AKlwbOjXwyoHdvJ6MDqRrncRz/7EbQQ3GHPI9tagWA=
+X-Received: by 2002:a05:6512:2315:b0:5b8:f955:29e9 with SMTP id 2adb3069b0e04-5bce01aacaemr904126e87.7.1791604776835;
+        Fri, 09 Oct 2026 20:59:36 -0700 (PDT)
 Received: from dau-home-pc.. ([95.139.131.22])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bcdde9c924sm1161984e87.36.2026.10.09.20.51.37
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5bcdde91281sm1164909e87.19.2026.10.09.20.59.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2026 20:51:38 -0700 (PDT)
+        Fri, 09 Oct 2026 20:59:35 -0700 (PDT)
 From: Anton Danilov <littlesmilingcloud@gmail.com>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Thorsten Leemhuis <linux@leemhuis.info>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Remy D. Farley" <one-d-wide@protonmail.com>,
-	Rachel Menge <rachelmenge@linux.microsoft.com>,
+To: Rachel Menge <rachelmenge@linux.microsoft.com>
+Cc: stable@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 6.12.y 4/4] doc/netlink: netlink-raw: Add max check
-Date: Sat, 10 Oct 2026 06:51:16 +0300
-Message-ID: <20261010035116.578385-5-littlesmilingcloud@gmail.com>
+Subject: Re: Request backport of bf5a54bc0e3d to 6.18.y
+Date: Sat, 10 Oct 2026 06:59:27 +0300
+Message-ID: <20261010035930.579535-1-littlesmilingcloud@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261010035116.578385-1-littlesmilingcloud@gmail.com>
-References: <2026060807-egging-prune-a3ae@gregkh>
- <20261010035116.578385-1-littlesmilingcloud@gmail.com>
+In-Reply-To: <899bd843-fd19-418e-8913-91bfb6e760a2@linux.microsoft.com>
+References: <899bd843-fd19-418e-8913-91bfb6e760a2@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,52 +77,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Remy D. Farley" <one-d-wide@protonmail.com>
+On Fri, Oct 09, 2026 at 03:36:42PM -0700, Rachel Menge wrote:
+> Please consider applying the following upstream commit to 6.18.y:
+>
+> bf5a54bc0e3d8962474fcd611f1266eba036232f
+> doc/netlink: netlink-raw: Add max check
 
-commit bf5a54bc0e3d8962474fcd611f1266eba036232f upstream.
+I see the same on v6.18.55: rt-link-user.h fails since 6.18.53 and
+rt-neigh-user.h since 6.18.54, and the in-tree cli.py fails the same
+way for both families. With bf5a54bc0e3d on top, make -C tools/net/ynl
+passes, and the generated rt-link and rt-neigh code is byte-identical
+to a build of the same tree with the two checks hunks dropped.
 
-Add definitions for max check and len-or-limit type, the same as in other
-specifications.
+> I also checked 6.1.y, 6.6.y, 6.12.y, and 6.19.y. Those branches do not
+> contain the rt-link.yaml and rt-neigh.yaml checks.max additions that create
+> this mismatch, so this request is limited to 6.18.y.
 
-Suggested-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
-Link: https://patch.msgid.link/20260303195638.381642-2-one-d-wide@protonmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
+6.12.y is affected too. Since 6.12.111 it carries 45ca9f59b6c7 ("net:
+reject oversized tx_queue_len at netlink parse time"), which adds
+checks.max to rt_link.yaml (the file name has an underscore there).
+6.12.y does not generate C code for netlink-raw specs, so the build is
+not affected by this one, but cli.py --spec rt_link.yaml fails with
+the same ValidationError.
+
+bf5a54bc0e3d applies to 6.12.y as well. The 6.12.y YNL build has been
+broken since 6.12.93 by handshake.yaml, so I sent a 6.12.y series that
+fixes that and includes bf5a54bc0e3d:
+
+https://lore.kernel.org/netdev/20261010035116.578385-1-littlesmilingcloud@gmail.com/
+
+One more thing for 6.18.y, not a regression: conntrack.yaml and
+nftables.yaml fail the schema check since v6.18 itself ('labels mask'
+and 'set id' do not match the attribute name pattern), so cli.py fails
+for these two families. Upstream fixed that in 1adc241f3940 ("ynl: fix
+schema check errors"), which renames the two attributes to labels-mask
+and set-id. It applies cleanly to 6.18.55, and with it and bf5a54bc0e3d
+all specs in 6.18.55 pass the schema check. The C build is not affected,
+these two families are not generated there.
+
+Tested-by: Anton Danilov <littlesmilingcloud@gmail.com> # v6.18.55
+
 ---
- Documentation/netlink/netlink-raw.yaml | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/netlink-raw.yaml b/Documentation/netlink/netlink-raw.yaml
-index d8ae7f7365b0..d6d58ac63b7c 100644
---- a/Documentation/netlink/netlink-raw.yaml
-+++ b/Documentation/netlink/netlink-raw.yaml
-@@ -13,6 +13,12 @@ $defs:
-     type: [ string, integer ]
-     pattern: ^[0-9A-Za-z_-]+( - 1)?$
-     minimum: 0
-+  len-or-limit:
-+    # literal int, const name, or limit based on fixed-width type
-+    # e.g. u8-min, u16-max, etc.
-+    type: [ string, integer ]
-+    pattern: ^[0-9A-Za-z_-]+$
-+    minimum: 0
- 
- # Schema for specs
- title: Protocol
-@@ -270,7 +276,10 @@ properties:
-                     type: string
-                   min:
-                     description: Min value for an integer attribute.
--                    type: integer
-+                    $ref: '#/$defs/len-or-limit'
-+                  max:
-+                    description: Max value for an integer attribute.
-+                    $ref: '#/$defs/len-or-limit'
-                   min-len:
-                     description: Min length for a binary attribute.
-                     $ref: '#/$defs/len-or-define'
--- 
-2.47.3
-
+Anton Danilov
