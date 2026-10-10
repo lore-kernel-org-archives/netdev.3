@@ -1,112 +1,132 @@
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8108496D40
-	for <netdev@vger.kernel.org>; Fri,  9 Oct 2026 23:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2112F1F94F
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 00:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791590191; cv=none; b=gxntqR8ElJ7UFznZ/HIB2hBkIS7vgQzWidA6u6koEzbmh4E76nE8kk4MM12EECVJ+9IkWJ8rUeM0cna074wpzC/BRQVuuauw2xfR2X34XBR6uDji9EwGBw1b2DnDG6c2cqbQGbBC84/rjk5aJ+CcnjLUD+T78nbeiZItB8PfoWE=
+	t=1791591162; cv=none; b=jKU9+x6t+Sh+PKN737RNlKs+l4DANzXBXzgg1TcbOBpkbeKKutVsSmowQDctyd76QGOoV+waVXrT/JlpBW8wFb6R7FahGg6OiPriRa1tcHAXcrA+JxkySbR2Ff906dvi8yKyyE16hh/vsaVkSHJ6QceVNJLX3QtNcEz2rlIzUUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791590191; c=relaxed/simple;
-	bh=c2p/8s/u1+M4DT4S4RPozf9b1gNSNBk+bGyW0+gQ3Rw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LxfRKaSzJXkpcpP9kNA3/VX/T/udAcdn2nVD51fxZOtMhsteMr7ZbWB8gBVXRHUysMZ5BJU7tA8Pmr7plJMBl7A8ei7+iu6HXsVX2PbqzQDVRD+VpPTU50l5sZ9nxyjD5U8V0s8IFvsc476R4jdIRJcEFlYj2UXgJ1L0WORKlvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=txZgsE8r; arc=none smtp.client-ip=74.125.82.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	s=arc-20240116; t=1791591162; c=relaxed/simple;
+	bh=1Ay9bN2eGeWUpHZsJ2AYo8jafOcl8zrShs1l3EUrEE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZyAD/gCN4mcw++OdIc8xwEt/L3kpjm8ZYL0Cwg+0qcRDnNb9SbbIjcq/NZBrDdPItKppw6XxTgY2PHroSbA2si04NpGB6yTMlh0CNitbyzwueaPD/0+7xdxjA5I/mVdsAxtZLEiY5WmMYaGh2g+WHMW7chvF/maLw/8jlwgyw1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i8hCaN6V; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="txZgsE8r"
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-313d1015161so697560eec.1
-        for <netdev@vger.kernel.org>; Fri, 09 Oct 2026 16:56:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791590190; x=1792194990; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PJTxzhnYs9hhRpF1VB7va1Wtd9L8csRH9tcezUL8KaI=;
-        b=txZgsE8rF6lBUsJm+MtwyrwqvLN4vJGr8PvjdzagwSGPpt+MKy5drOxOm9WFq410RY
-         lW3yDhL0XczD0V/TbD2IZEoNYOM16bjTSh2+gCXLnYdwT0EPubFWEoXOBBds8jhmBffF
-         jz8AQA4NRgrSPHe9cvNS2xtv5WEoyk8ghhT5YJD9fW9A+bedBBru9d0s6I+cBI/F4EW2
-         tdQLkEbdCywOgWiCJInL6VHOFxa+xoAI/J/vs1QFI0yphsG1gkRQ8qLA/NfvNiqXiOLs
-         4ydnLQOtEM5rnTUBZ+R+FvgCDjNH+Wszn3UoZS3JSQytX/7Kemcx6MegkYXIkAhNh8xy
-         MeRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791590190; x=1792194990;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PJTxzhnYs9hhRpF1VB7va1Wtd9L8csRH9tcezUL8KaI=;
-        b=XH31mpRwaLZThhDcKEODWVXvOM71RJUhu9+R2e3kGv8jfsx+LMdIbNsyuwK5aKSx0+
-         ekY5y0YzEHuGuYixlCUAdCPFqFFNBoLdTtGEs5pOs8Tr2xUukCoNqdyeNeEHK5qdvGjm
-         klWogYgyiwRE0pR5c4MDJ7jpgQYi55zJ9m7sBQJGXSE2F5307eaQ1DJE3eclXiunzQXk
-         1OxhVl+zKH7egBfLqV1w10/ticsZ68ythEROfoqxGKY+wk2Gm/J8nIBAtK2NRT0Zg7IV
-         BjJeZExLyFwvfvayQhEdYS3Twgleejf6CZ7azsuZPGrnXB10YYYtqRT/0JLmXn/Dxgzr
-         vL0g==
-X-Forwarded-Encrypted: i=1; AKwUvBxtk3l0DYv6Um3PoyA+OSpQJNsSsi/BJGEvN4rzaIDD0q0je+p//vDBKGM2EVaEiEu4SzS/3gM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ3QltwU1XGet+N0AD6e0WifUBDN/kqDhuXnwIu0dhUtSUxSLQB
-	t7PBTkfKcGh+cp+OnSUinYECmpKjHiewe3hTwg3PdokG77PA2IXkgcCxIsZ3wQZaUbhLawI+jNs
-	ZS+xgF/m02wcxmgq6t8dhRkNQbg==
-X-Received: from dyclv4-n2.prod.google.com ([2002:a05:7301:6184:20b0:339:7118:d1b6])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:26c3:b0:34a:cb0e:f4e5 with SMTP id 5a478bee46e88-3537e24a01cmr4661674eec.40.1791590189372;
- Fri, 09 Oct 2026 16:56:29 -0700 (PDT)
-Date: Fri,  9 Oct 2026 23:56:28 +0000
-In-Reply-To: <20261008132815.654147-11-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i8hCaN6V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791591161; x=1823127161;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1Ay9bN2eGeWUpHZsJ2AYo8jafOcl8zrShs1l3EUrEE0=;
+  b=i8hCaN6VZKrqg6VcWttxSnoK1rReJCLrz+GysGmqCZpTSBkFM4XbF/6Z
+   XhiLJeiG6fCWJDyZpwl6HKjXia6tV8u6JrEKVtZc7UliZpXcWFJqSQPxT
+   jPXpLEFdp42S+6A99Uz3NUcDFeypBo6S/0iL0ZvJ7yLO557XeV2zTYXqi
+   wvXdkPG4o+ZWYlO/6hvsWB7PFpismPRBs3rleGPB7noyyG00kJ90fc+RY
+   U/At9Plh1xuZ0dpARlPR97iObqLuA2z2azdId+kYmJyM3dX3ff/yqbJNE
+   yELXiyg9w4tLFFm0C0ECt8RSIoqJy1Oy9KR512ePSF/iJh6sZpEv3Fh2L
+   w==;
+X-CSE-ConnectionGUID: iSGwfsB0TyOOi3ux8HGWMw==
+X-CSE-MsgGUID: 4RxY3CptS0GqSwXjjtYeDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="284074"
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="284074"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 17:12:40 -0700
+X-CSE-ConnectionGUID: 4Vg5DPiuSQaBNImMGjKKmA==
+X-CSE-MsgGUID: FM/fDYzmT6WuED4Lfm5WYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="529746"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 09 Oct 2026 17:12:38 -0700
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xFKhX-000000006KK-2sl6;
+	Sat, 10 Oct 2026 00:12:35 +0000
+Date: Sat, 10 Oct 2026 08:11:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wong Boon Jhee <wongboonjhee52@gmail.com>, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, horms@kernel.org,
+	kuba@kernel.org, Wong Boon Jhee <wongboonjhee52@gmail.com>
+Subject: Re: [PATCH v9] net/ncsi: Fix use-after-free in NCSI teardown
+Message-ID: <202610100859.YrkmZvhQ-lkp@intel.com>
+References: <20261009082201.1424955-1-wongboonjhee52@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261008132815.654147-1-tariqt@nvidia.com> <20261008132815.654147-11-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261009235628.3827386-1-almasrymina@google.com>
-Subject: Re: [PATCH net-next 10/10] net/mlx5e: Enable the data direct netdev feature
-From: Mina Almasry <almasrymina@google.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Mina Almasry <almasrymina@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Byungchul Park <byungchul@sk.com>, 
-	Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, 
-	Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>, 
-	Jacob Keller <Jacob.e.keller@intel.com>, Kees Cook <kees@kernel.org>, 
-	Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, 
-	Matt Fleming <mfleming@cloudflare.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shivaji Kant <shivajikant@google.com>, 
-	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, William Tu <witu@nvidia.com>, 
-	Yue Haibing <yuehaibing@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261009082201.1424955-1-wongboonjhee52@gmail.com>
 
-On Thu, Oct 8, 2026 at 6:28 AM Tariq Toukan <tariqt@nvidia.com> wrote:
-> From: Dragos Tatulea <dtatulea@nvidia.com>
->
-> +	/* Changing the flag reopens the channels with a different DMA device,
-> +	 * which would break any dmabuf currently bound to this netdev.
-> +	 */
-> +	if (netdev_has_dmabuf_binding(netdev, NULL)) {
-> +		netdev_err(netdev, "Can't change data_direct while dmabufs are bound\n");
-> +		return -EBUSY;
-> +	}
-> +
-> +	new_params = priv->channels.params;
-> +	MLX5E_SET_PFLAG(&new_params, MLX5E_PFLAG_DATA_DIRECT, enable);
-> +
-> +	return mlx5e_safe_switch_params(priv, &new_params, NULL, NULL, true);
+Hi Wong,
 
-(Note: LLM-assisted review comment below.)
+kernel test robot noticed the following build errors:
 
-set_pflag_data_direct() is called under rtnl_lock() only, whereas
-netdev_nl_bind_rx_doit() and netdev_nl_bind_tx_doit() serialize bindings under
-netdev_lock(netdev) without holding rtnl_lock().
+[auto build test ERROR on net/main]
+[also build test ERROR on net-next/main linus/master v7.3-rc6 next-20261008]
+[cannot apply to horms-ipvs/master]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Should set_pflag_data_direct() hold netdev_lock(netdev) across both
-netdev_has_dmabuf_binding() and mlx5e_safe_switch_params() (just as
-mlx5e_data_direct_event() does in patch 08/10) so a concurrent bind-rx/bind-tx
-cannot race past the -EBUSY check while channels are switching DMA devices?
+url:    https://github.com/intel-lab-lkp/linux/commits/Wong-Boon-Jhee/net-ncsi-Fix-use-after-free-in-NCSI-teardown/20261009-162201
+base:   net/main
+patch link:    https://lore.kernel.org/r/20261009082201.1424955-1-wongboonjhee52%40gmail.com
+patch subject: [PATCH v9] net/ncsi: Fix use-after-free in NCSI teardown
+config: i386-buildonly-randconfig-1005-20261010 (https://download.01.org/0day-ci/archive/20261010/202610100859.YrkmZvhQ-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261010/202610100859.YrkmZvhQ-lkp@intel.com/reproduce)
 
--- 
-Thanks,
-Mina
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202610100859.YrkmZvhQ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> net/ncsi/ncsi-manage.c:2101:19: error: use of undeclared identifier 'nc'
+    2101 |                                                       &np, &nc);
+         |                                                             ^~
+   net/ncsi/ncsi-manage.c:2103:38: error: use of undeclared identifier 'nc'
+    2103 |                         ncsi_send_netlink_timeout(nr, np, nc);
+         |                                                           ^~
+   2 errors generated.
+
+
+vim +/nc +2101 net/ncsi/ncsi-manage.c
+
+  2078	
+  2079	void ncsi_unregister_dev(struct ncsi_dev *nd)
+  2080	{
+  2081		struct ncsi_dev_priv *ndp = TO_NCSI_DEV_PRIV(nd);
+  2082		struct ncsi_package *np, *tmp;
+  2083		struct vlan_vid *vlan, *vlan_tmp;
+  2084		unsigned long flags;
+  2085		int i;
+  2086	
+  2087		ncsi_unregister_dev_prepare(nd);
+  2088		for (i = 0; i < ARRAY_SIZE(ndp->requests); i++) {
+  2089			struct ncsi_request *nr = &ndp->requests[i];
+  2090	
+  2091			if (!nr->used)
+  2092				continue;
+  2093	
+  2094			if (nr->flags == NCSI_REQ_FLAG_NETLINK_DRIVEN && nr->cmd) {
+  2095				struct ncsi_cmd_pkt *cmd = (struct ncsi_cmd_pkt *)
+  2096					skb_network_header(nr->cmd);
+  2097	
+  2098				rcu_read_lock();
+  2099				ncsi_find_package_and_channel(ndp,
+  2100							      cmd->cmd.common.channel,
+> 2101							      &np, &nc);
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
