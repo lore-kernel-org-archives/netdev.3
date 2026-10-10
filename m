@@ -1,496 +1,239 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F0749A3AB
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 14:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EEA381C4;
+	Sat, 10 Oct 2026 14:32:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791642236; cv=none; b=luxQQRtn3QcHXkvJTcg/ym46AkH0ivBaVx59p1oQFFpZrMr2wsc9H9K/4syrL4IG/BnocJeD8VIYxCGYC51AXzJqq+VTqhi4HcM8TDqhhXWSWPJsH5+4kC0nWIvZUKtXLNnUmNZk2xA6ZFPLcBcfMktBHC0AVuxINnBc9e9iza0=
+	t=1791642734; cv=none; b=MIfS1EOX0mXc+zEctU3e93gJY6gLaxV+tYBqO6Vjav6urj8Q1X00zQrW19z81ffLLWd1ynYPOfwN4lB/fM2bFUdTRbJCMy34DUzgNsc+kh4wdXQnogcsSmfM93t/9j3NAlAPOOWU1dnutKv1xYk0F8vmj+iBiRWWaKqBkWgpuTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791642236; c=relaxed/simple;
-	bh=L1eZIEVU/ofQte2gvNih6Bludiqn1MxT0tCVYZyJVP8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kZykuIUF6zeZ/75HTCOvC0zk8ognC0fFBAUxBi8hBHYv7wGkkST/m70TOjCrKdG3w3vthLYqcnG0HpkohB3SLrmcM2vJTs0nOZOlfmLTl1P+D+00cgHHcOylRR/sLY+psziWsG5yG8/lk5Z2ofrJvHxDvnFoCqieBqCLJxuyfHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SfgDWM3G; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791642734; c=relaxed/simple;
+	bh=2LIPWbfOeDgSf5t6nd75y8gDzljUUM8YhDMfuPbA9qM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OtMyFTH/QT6SGZet9tPcH2oLLNGJj8+kxnjxkjBb2Q6CY16p4Gam/aSu5VhiA3EA7ElI8QwzB9oEx8OU7PQbC7YFPIkuAPQgRo0KiH4cYry6AKzNKdtqhbOH95K3gebYRERu3IhbmZqshbfvxLw6vhCnUcw4p0r8AosJmBDaK4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTST7iuv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SfgDWM3G"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d560775ca2so2273395ad.1
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 07:23:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791642235; x=1792247035; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ow0+9kC3h+sUBY7u1HdgedXX1Au0fVpDxstdKdYipeg=;
-        b=SfgDWM3GC7fNatBSAVxB3HKeX1p4q50JUPDNDsu+BgaOEGlc0lM0fJTXi8Glw7HXsi
-         00EkUjhOhOaDsF4ComoFsEDymSQYu8+x2Fv8liFLrH4QRJ42WI/fQyz3zth3zh32AsuH
-         BaTjAIgGMmabCCSI6vlfJcoYHxzn3AxAlbI1P6paDgETNlnsouFYD//rFvRDFreq7Cod
-         3rPnx/DtC3STqEqKe4HW0+maUMiPhEWIOsoU/tOSOEwiITcwulzI2kwxi2FXkgNEN7ci
-         vWgx/q6SmmKf6MBzlNowbWBGaiOlpvyADqpz1StYNvM5C5a+y64wHxm0lXBluEXHcIxk
-         2sLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791642235; x=1792247035;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ow0+9kC3h+sUBY7u1HdgedXX1Au0fVpDxstdKdYipeg=;
-        b=Vted3P101hjBLn2aet8jn643suE32SUW9eFGMtofh5xB33jh4yzFjXo6lIqro6lBHL
-         rfE+Nxh4YtnXP1enI+AyQjwJydrt1Qq4ZznvMmthXVKIqfS9n0DElQK++V/IylNoF69B
-         x3Y7EWTQbafvx4orOA5FuxHtr5Yz/Lla47LZg6sNPRo8CIdYiSGZuX3+CTwyongL7j3B
-         sVA3mT00VTpk5I45hanFGB3cuJgTAhM/EfLlx47b/oEQfY8Xi7pCO6r586gsb/m9PyNE
-         TqO2vb9xCigtbfLnj8Nt9haM4I1duUjP85aY74Gt/NchTY4jjNnP4cCQE/mFRn1NyqUr
-         pnmA==
-X-Forwarded-Encrypted: i=1; AKwUvBykN7+LN/pu3oXQwMb7i8eCiUuaKPGSIyzkOqLo5FguTwevwyK7RD3zp8HwFkSXTvJpPaU6EfY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLGwcvqeBGPQbADz9/9Wbh9qZr+j/SfC/ZYEV0sRO1PCP60O0gC
-	2BQ5c8ibdzMlHpMxFnp+/E7VxCuEir3aVDV82hlU80TSRTUAG1b4YZ6r
-X-Gm-Gg: AYBFou1PH6n7AAehdNzxTdDurEuAf8jx8BsXekRCoy6atQb0oTKBCttxqWhhLPzO3/m
-	5OZYj/x7TrrQrmnbCv6F9skO6ATBvJQvgeTL7OfJvrPoTZFGPAl+2ye8oSKqGty/o2J7nJYcmGR
-	/sA6b2x288jQyoZHqiy4pqBEX118QXxl5oI6EWOpRHKHKJcA1F/q/VSs2LDstD8bEfUCBE99ciu
-	tloJsKBNeJvd4cNb4Nz+xy6ReZbX8eEVVFPSKYvQyA1ka0Pl/5pGPzKDqxhFzZ1YORhohbj+YFC
-	k18waFOxCrPClQRc/4YBwrCv5XyyOH0T/oe2mGCdoIxwkT/HcsT0dDUBxOtF5V/ofXX2wqvk93p
-	u0WnZE0/0hwQLUXdT1TmcH2iOplBrTQPs66J8KZAJWgtjmvQmzGpJZM5xmdQq48U5S7gafvSEOm
-	o+v4P4EP7rOO65DhB4406WTzq9W+TFi+o3x2jgzMBZAHDZ5jPSnra4KUntJXwp3TLFlneDXQ==
-X-Received: by 2002:a17:902:dac2:b0:2e4:adb3:c776 with SMTP id d9443c01a7336-2e842bc0a1fmr42948105ad.24.1791642234303;
-        Sat, 10 Oct 2026 07:23:54 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e841a0401esm23676615ad.4.2026.10.10.07.23.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 07:23:51 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: stefanha@redhat.com,
-	sgarzare@redhat.com,
-	netdev@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org
-Cc: mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Jia Jia <physicalmtea@gmail.com>
-Subject: [PATCH net-next v2 5/5] vsock/virtio: defer RX readable notifications until batch unlock
-Date: Sat, 10 Oct 2026 22:22:47 +0800
-Message-Id: <20261010142247.99223-6-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261010142247.99223-1-physicalmtea@gmail.com>
-References: <20261010142247.99223-1-physicalmtea@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTST7iuv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBE51F000FF;
+	Sat, 10 Oct 2026 14:32:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791642732;
+	bh=dJZLdbFhLC/ynJVpWk/rEOzcEFJLRmSBZudkVqLrcp0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KTST7iuvzfxpvR5a97XPjhGCw1IhaZDtfa+AjX4TqdyWUO/8ktIJ6XTIUOX3XgoGU
+	 yXZBCO0F2c+sTEpp/hOHQC87sBulKnlE3LVk1I0tvd221bTemtMvYgiUebSCVKwdQi
+	 kAeYeM5nkmGBAnMT4Jek2IQtsi+zkDs1PfPS3y4gAIo0MEWhA8m4nV07uOxWTzvmoj
+	 5OuKLIXLhwXbUmidi/FFFdwkxL0sJDIxOmC9/XsaAnpGYNMJJ8t6eLcPZ2WTzkk8wE
+	 ZRJ/hfIgvxGq+1sewqDhcSliTh9/25g+Y+8fKvM/Dp5A04yKlmWk/Xpy8UxgEOEYsh
+	 PQRji3tPxCzAg==
+Subject: Re: [PATCH net] esp: fix out-of-bounds transport-header read after
+ exthdr walk
+From: netdev-bot+sashiko@kernel.org
+To: bsdhenrymartin@gmail.com
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sat, 10 Oct 2026 14:32:11 +0000
+Message-ID: <179164273177.434549.11736942363139290526@kernel.org>
+In-Reply-To: <20261009135233.4084239-1-bsdhenrymartin@gmail.com>
+References: <20261009135233.4084239-1-bsdhenrymartin@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-An RX batch can make a socket readable while the worker still owns its
-socket lock. Waking a reader at that point can make it immediately wait
-for the same lock.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-For the callback installed by sock_init_data(), record when the existing
-low-watermark condition is met and issue one notification after the batch
-releases the lock. Save the initial sock_def_readable() callback when the
-AF_VSOCK socket is created because virtio_transport_common can be built as
-a module and cannot refer to that unexported symbol directly.
+Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
-When sk_data_ready or sk_write_space no longer matches that initial
-callback, pass queued skbs to the current callback one skb at a time. The
-handoff stops if the callback is the default again or the queue does not
-shrink. After 64 successful callbacks, queue another bounded handoff if
-data remains. vsock_bpf_update_proto() schedules the same handoff so an
-attach or detach outside the worker still drains skbs already queued.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Always deliver a coalesced write-space event to the saved default callback
-before sampling the callback state. A current replacement is invoked by
-the handoff as well, so a callback change cannot hide the native writer
-wakeup or pending sockmap work.
+- [High] Both new bounds checks compare a negative, data-relative offset
+  against skb->len using unsigned arithmetic, so the check is always…
+- [Medium] Where the computed offset is non-negative, the new checks
+  bound it only by skb->len (total length including page frags and…
+- [Low] The new comments and the commit message do not describe the main
+  receive paths accurately.
 
-Sampling at batch finish takes sk_callback_lock once. The per-packet fast
-path still uses READ_ONCE() and does not take that lock. Control packets,
-state transitions, transport changes and non-batched sockets keep their
-existing behavior.
+--
 
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- include/linux/virtio_vsock.h            |   1 +
- include/net/af_vsock.h                  |   8 +-
- net/vmw_vsock/af_vsock.c                | 103 ++++++++++++++++++++++++
- net/vmw_vsock/virtio_transport_common.c |  73 ++++++++++++++---
- net/vmw_vsock/vsock_bpf.c               |   2 +
- 5 files changed, 174 insertions(+), 13 deletions(-)
+esp: fix out-of-bounds transport-header read after exthdr walk
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 3a58120d9078..21a3460b940f 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -291,6 +291,7 @@ struct virtio_transport_rx_batch {
- 	struct sockaddr_vm src;
- 	struct sockaddr_vm dst;
- 	bool write_space_pending;
-+	bool data_ready_pending;
- };
- 
- void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 9d8ae62209ed..86d6e6ba3d9d 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -63,8 +63,11 @@ struct vsock_sock {
- 	u32 peer_shutdown;
- 	bool sent_request;
- 	bool ignore_connecting_rst;
--	/* Initial callback, used to identify replacements. */
-+	/* Initial callbacks, used to identify replacements. */
-+	void (*default_data_ready)(struct sock *sk);
- 	void (*default_write_space)(struct sock *sk);
-+	struct delayed_work rx_cb_work;
-+	bool rx_cb_retried;
- 
- 	/* Protected by lock_sock(sk) */
- 	u64 buffer_size;
-@@ -80,6 +83,9 @@ s64 vsock_stream_has_data(struct vsock_sock *vsk);
- s64 vsock_stream_has_space(struct vsock_sock *vsk);
- struct sock *vsock_create_connected(struct sock *parent);
- void vsock_data_ready(struct sock *sk);
-+bool vsock_rx_cb_is_native(struct sock *sk);
-+void vsock_rx_callback_kick(struct sock *sk);
-+void vsock_rx_callback_handoff(struct sock *sk);
- 
- /**** TRANSPORT ****/
- 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index fe7f49da6c4b..df6faee0bd37 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -931,6 +931,107 @@ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr)
- 	return retval;
- }
- 
-+#define VSOCK_RX_CB_HANDOFF_MAX 64
-+
-+static void vsock_rx_callback_queue(struct sock *sk, unsigned long delay)
-+{
-+	struct vsock_sock *vsk = vsock_sk(sk);
-+
-+	sock_hold(sk);
-+	if (!schedule_delayed_work(&vsk->rx_cb_work, delay))
-+		sock_put(sk);
-+}
-+
-+void vsock_rx_callback_kick(struct sock *sk)
-+{
-+	vsock_rx_callback_queue(sk, 0);
-+}
-+
-+/* Caller holds sk_callback_lock. */
-+bool vsock_rx_cb_is_native(struct sock *sk)
-+{
-+	struct vsock_sock *vsk = vsock_sk(sk);
-+
-+	return READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
-+	       READ_ONCE(sk->sk_data_ready) == vsk->default_data_ready &&
-+	       READ_ONCE(sk->sk_write_space) == vsk->default_write_space;
-+}
-+EXPORT_SYMBOL_GPL(vsock_rx_cb_is_native);
-+
-+/* Caller holds lock_sock(). */
-+void vsock_rx_callback_handoff(struct sock *sk)
-+{
-+	struct vsock_sock *vsk = vsock_sk(sk);
-+	void (*write_space)(struct sock *sk);
-+	void (*data_ready)(struct sock *sk);
-+	bool wrote = false;
-+	s64 before, after;
-+	int i;
-+
-+	if (sock_flag(sk, SOCK_DEAD) || !vsk->transport)
-+		return;
-+
-+	read_lock_bh(&sk->sk_callback_lock);
-+	data_ready = READ_ONCE(sk->sk_data_ready);
-+	if (READ_ONCE(sk->sk_prot) != sk->sk_prot_creator &&
-+	    data_ready == vsk->default_data_ready) {
-+		read_unlock_bh(&sk->sk_callback_lock);
-+		/*
-+		 * start_verdict publishes sk_data_ready after the proto swap.
-+		 * Retry once before treating this as a stable non-RX setup.
-+		 */
-+		if (!vsk->rx_cb_retried) {
-+			vsk->rx_cb_retried = true;
-+			vsock_rx_callback_queue(sk, 1);
-+			return;
-+		}
-+		vsk->rx_cb_retried = false;
-+		data_ready(sk);
-+		return;
-+	}
-+	read_unlock_bh(&sk->sk_callback_lock);
-+	vsk->rx_cb_retried = false;
-+
-+	for (i = 0; i < VSOCK_RX_CB_HANDOFF_MAX; i++) {
-+		read_lock_bh(&sk->sk_callback_lock);
-+		data_ready = READ_ONCE(sk->sk_data_ready);
-+		write_space = READ_ONCE(sk->sk_write_space);
-+		read_unlock_bh(&sk->sk_callback_lock);
-+
-+		if (!wrote && write_space != vsk->default_write_space) {
-+			write_space(sk);
-+			wrote = true;
-+		}
-+		if (data_ready == vsk->default_data_ready) {
-+			data_ready(sk);
-+			break;
-+		}
-+		before = vsock_stream_has_data(vsk);
-+		if (before <= 0)
-+			break;
-+		data_ready(sk);
-+		after = vsock_stream_has_data(vsk);
-+		if (after >= before)
-+			break;
-+		if (i == VSOCK_RX_CB_HANDOFF_MAX - 1 && after > 0)
-+			vsock_rx_callback_queue(sk, 0);
-+	}
-+}
-+EXPORT_SYMBOL_GPL(vsock_rx_callback_handoff);
-+
-+static void vsock_rx_callback_work(struct work_struct *work)
-+{
-+	struct vsock_sock *vsk = container_of(work, struct vsock_sock,
-+					      rx_cb_work.work);
-+	struct sock *sk = sk_vsock(vsk);
-+
-+	lock_sock(sk);
-+	if (!sock_flag(sk, SOCK_DEAD))
-+		vsock_rx_callback_handoff(sk);
-+	release_sock(sk);
-+	sock_put(sk);
-+}
-+
- static void vsock_connect_timeout(struct work_struct *work);
- 
- static struct sock *__vsock_create(struct net *net,
-@@ -958,6 +1059,7 @@ static struct sock *__vsock_create(struct net *net,
- 		sk->sk_type = type;
- 
- 	vsk = vsock_sk(sk);
-+	vsk->default_data_ready = sk->sk_data_ready;
- 	vsk->default_write_space = sk->sk_write_space;
- 	vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
- 	vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
-@@ -976,6 +1078,7 @@ static struct sock *__vsock_create(struct net *net,
- 	WRITE_ONCE(vsk->peer_shutdown, 0);
- 	INIT_DELAYED_WORK(&vsk->connect_work, vsock_connect_timeout);
- 	INIT_DELAYED_WORK(&vsk->pending_work, vsock_pending_work);
-+	INIT_DELAYED_WORK(&vsk->rx_cb_work, vsock_rx_callback_work);
- 
- 	psk = parent ? vsock_sk(parent) : NULL;
- 	if (parent) {
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index f0398ae2200d..5499cd1d8a25 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1583,10 +1583,12 @@ out:
- 
- static int
- virtio_transport_recv_connected(struct sock *sk,
--				struct sk_buff *skb)
-+				struct sk_buff *skb,
-+				bool *data_ready_pending)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-+	void (*data_ready)(struct sock *sk);
- 	int err = 0;
- 
- 	switch (le16_to_cpu(hdr->op)) {
-@@ -1602,7 +1604,23 @@ virtio_transport_recv_connected(struct sock *sk,
- 			vsock_remove_sock(vsk);
- 			break;
- 		}
--		vsock_data_ready(sk);
-+		if (!data_ready_pending) {
-+			vsock_data_ready(sk);
-+		} else {
-+			data_ready = READ_ONCE(sk->sk_data_ready);
-+			if (data_ready == vsk->default_data_ready) {
-+				if (!*data_ready_pending &&
-+				    (vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
-+				     sock_flag(sk, SOCK_DONE)))
-+					*data_ready_pending = true;
-+			} else {
-+				/* Use the callback seen for this packet. */
-+				*data_ready_pending = false;
-+				if (vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
-+				    sock_flag(sk, SOCK_DONE))
-+					data_ready(sk);
-+			}
-+		}
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
- 		virtio_transport_send_credit_update(vsk);
-@@ -1836,6 +1854,7 @@ struct virtio_transport_rx_pkt_ctx {
- 	const struct sockaddr_vm *dst;
- 	bool *batchable;
- 	struct virtio_transport_rx_batch *batch;
-+	bool defer_data_ready;
- };
- 
- static bool
-@@ -1909,7 +1928,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 		kfree_skb(skb);
- 		break;
- 	case TCP_ESTABLISHED:
--		virtio_transport_recv_connected(sk, skb);
-+		virtio_transport_recv_connected(sk, skb,
-+						ctx->defer_data_ready && ctx->batch ?
-+						&ctx->batch->data_ready_pending : NULL);
- 		break;
- 	case TCP_CLOSING:
- 		virtio_transport_recv_disconnecting(sk, skb);
-@@ -1978,33 +1999,45 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
-  * Finish the RX batch.
-  * For a non-empty batch, the caller must hold the socket lock acquired with
-  * lock_sock(). This function releases the lock and the batch's lookup
-- * reference.
-- * An empty batch is a no-op.
-+ * reference. An empty batch is a no-op.
-  */
- void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
- {
- 	bool write_space_pending = batch->write_space_pending;
--	void (*write_space)(struct sock *sk);
-+	bool data_ready_pending = batch->data_ready_pending;
- 	struct sock *sk = batch->sk;
- 	struct vsock_sock *vsk;
-+	bool native;
- 
- 	batch->sk = NULL;
- 	batch->pkts = 0;
- 	batch->bytes = 0;
- 	batch->net = NULL;
- 	batch->write_space_pending = false;
-+	batch->data_ready_pending = false;
- 
- 	if (!sk)
- 		return;
- 
--	if (write_space_pending) {
--		vsk = vsock_sk(sk);
-+	vsk = vsock_sk(sk);
-+	if (write_space_pending)
- 		vsk->default_write_space(sk);
--		write_space = READ_ONCE(sk->sk_write_space);
--		if (write_space != vsk->default_write_space)
--			write_space(sk);
-+
-+	read_lock_bh(&sk->sk_callback_lock);
-+	native = vsock_rx_cb_is_native(sk);
-+	read_unlock_bh(&sk->sk_callback_lock);
-+
-+	if (native) {
-+		release_sock(sk);
-+		if (data_ready_pending)
-+			vsk->default_data_ready(sk);
-+		sock_put(sk);
-+		return;
- 	}
- 
-+	if (write_space_pending || data_ready_pending)
-+		vsock_rx_callback_handoff(sk);
-+
- 	release_sock(sk);
- 	sock_put(sk);
- }
-@@ -2015,9 +2048,9 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 				     struct virtio_transport_rx_batch *batch)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-+	bool batchable, defer_data_ready, start_batch;
- 	struct virtio_transport_rx_pkt_ctx ctx;
- 	struct sockaddr_vm src, dst;
--	bool batchable, start_batch;
- 	struct sock *sk;
- 	bool free_pkt;
- 
-@@ -2038,6 +2071,17 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 		    vsock_addr_equals_addr(&batch->dst, &dst) &&
- 		    virtio_transport_recv_pkt_batchable(t, batch->sk)) {
- 			sk = batch->sk;
-+			defer_data_ready = READ_ONCE(sk->sk_data_ready) ==
-+					   vsock_sk(sk)->default_data_ready;
-+			if (unlikely(batch->data_ready_pending && !defer_data_ready)) {
-+				/*
-+				 * BPF map updates can replace callbacks while lock_sock()
-+				 * remains held. Finish the old notification first.
-+				 */
-+				virtio_transport_rx_batch_finish(batch);
-+				goto lookup;
-+			}
-+
- 			if (!skb_set_owner_sk_safe(skb, sk)) {
- 				WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
- 				virtio_transport_rx_batch_finish(batch);
-@@ -2051,6 +2095,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 				.dst = &dst,
- 				.batchable = &batchable,
- 				.batch = batch,
-+				.defer_data_ready = defer_data_ready,
- 			};
- 			free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
- 
-@@ -2064,6 +2109,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 		virtio_transport_rx_batch_finish(batch);
- 	}
- 
-+lookup:
- 	sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
- 	if (!sk) {
- 		virtio_transport_rx_batch_finish(batch);
-@@ -2089,6 +2135,8 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 
- 	if (start_batch)
- 		batch->sk = sk;
-+	defer_data_ready = start_batch &&
-+		READ_ONCE(sk->sk_data_ready) == vsock_sk(sk)->default_data_ready;
- 
- 	ctx = (struct virtio_transport_rx_pkt_ctx) {
- 		.net = net,
-@@ -2096,6 +2144,7 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
- 		.dst = &dst,
- 		.batchable = start_batch ? &batchable : NULL,
- 		.batch = start_batch ? batch : NULL,
-+		.defer_data_ready = defer_data_ready,
- 	};
- 	free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
- 	if (start_batch && batchable) {
-diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-index 9049d2648646..7770a6c51dbe 100644
---- a/net/vmw_vsock/vsock_bpf.c
-+++ b/net/vmw_vsock/vsock_bpf.c
-@@ -154,6 +154,7 @@ int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore
- 	if (restore) {
- 		sk->sk_write_space = psock->saved_write_space;
- 		sock_replace_proto(sk, psock->sk_proto);
-+		vsock_rx_callback_kick(sk);
- 		return 0;
- 	}
- 
-@@ -166,6 +167,7 @@ int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore
- 
- 	vsock_bpf_check_needs_rebuild(psock->sk_proto);
- 	sock_replace_proto(sk, &vsock_bpf_prot);
-+	vsock_rx_callback_kick(sk);
- 	return 0;
- }
- 
+This adds a bounds check to esp_input_done2() and to esp6_input_done2()
+before the 2-byte source port is read from the encap transport header.
+If the computed offset plus two bytes is past skb->len, the packet is
+rejected with -EINVAL.
+
+> diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+> index e76db5817e78e..aaff5a2b659db 100644
+> --- a/net/ipv4/esp4.c
+> +++ b/net/ipv4/esp4.c
+> @@ -744,6 +744,18 @@ int esp_input_done2(struct sk_buff *skb, int err)
+>  		struct udphdr *uh = (void *)(skb_network_header(skb) + ihl);
+>  		__be16 source;
+>  
+> +		/*
+> +		 * ihl is taken from the decrypted inner packet and is not
+> +		 * re-validated after esp_remove_trailer() shrank the skb;
+> +		 * make sure the 2-byte source port we read below is within
+> +		 * the packet.
+> +		 */
+
+[Severity: Low]
+Is this comment accurate for the UDP encap path?
+
+In esp_input_done2(), ihl comes from:
+
+	iph = ip_hdr(skb);
+	ihl = iph->ihl * 4;
+
+At this point that is the outer, unencrypted IPv4 header that
+ip_rcv_core() validated. The inner network header is only reset later,
+by the mode input callback.
+
+The UDP header at network_header + ihl was already linearized by
+__xfrm4_udp_encap_rcv():
+
+	if (!pskb_may_pull(skb, sizeof(struct udphdr) + min(len, 8)))
+
+That header sits before skb->data, so esp_remove_trailer() trimming the
+tail can't move it out of range.
+
+The esp6 comment has the same problem. On the UDP path,
+ipv6_skip_exthdr() walks outer extension headers that IPv6 input has
+already validated, stops at the UDP header, and returns a negative
+offset relative to skb->data.
+
+The scenario might really happen on espintcp paths where the network
+header is stale. tcp_collapse() leaves network_header at 0 for a new
+head, and alloc_skb_for_msg() copies first->network_header into a
+0-byte head through __copy_skb_header(). That would fit the Fixes: tag,
+but neither the comments nor the commit message describe it.
+
+Could the comments and the commit message describe how the offsets
+actually work, and which path produces the bad header?
+
+> +		if (skb_network_offset(skb) + ihl + sizeof(__be16) >
+> +		    skb->len) {
+> +			err = -EINVAL;
+> +			goto out;
+> +		}
+
+[Severity: High]
+Can this check ever pass for a valid encapsulated packet?
+
+When esp_input_done2() runs, skb->data points at the ESP header. The
+outer IP header and the UDP or TCP encap header both sit before
+skb->data. For UDP, __xfrm4_udp_encap_rcv() pulls the UDP header off:
+
+net/ipv4/xfrm4_input.c:__xfrm4_udp_encap_rcv() {
+    ...
+	if (pull) {
+		__skb_pull(skb, len);
+		skb_reset_transport_header(skb);
+    ...
+}
+
+For espintcp, espintcp_rcv() does:
+
+	if (!pskb_pull(skb, rxm->offset + 2)) {
+
+So with UDP encap, skb_network_offset(skb) is -(ihl + 8), and
+skb_network_offset(skb) + ihl is -8. Adding sizeof(__be16) converts
+that to size_t, so the left side becomes a huge unsigned value and the
+comparison is always true.
+
+Wouldn't that drop every UDP_ENCAP_ESPINUDP and TCP_ENCAP_ESPINTCP
+packet with -EINVAL after a successful decrypt? That would break both
+NAT-T and espintcp receive.
+
+The new check in esp6_input_done2() looks like it has the same problem:
+
+	if (offset + sizeof(__be16) > skb->len) {
+
+offset starts at skb_network_offset(skb) + sizeof(*ip6h).
+ipv6_skip_exthdr() stops at the UDP or TCP header, which gives -8 for
+UDP. The existing code already depends on offset being negative there:
+
+	hdr_len += offset;
+
+Also, skb->len counts bytes from skb->data onward, but the port being
+read is before skb->data. Even a signed comparison against skb->len
+would not bound this read.
+
+Would something like skb_header_pointer_careful(), or a signed check
+against the headroom and headlen, be needed instead of extending this
+check?
+
+> +
+>  		switch (x->encap->encap_type) {
+>  		case TCP_ENCAP_ESPINTCP:
+>  			source = th->source;
+> diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+> index b1c9b36f76dc4..89e8cdf5a26b2 100644
+> --- a/net/ipv6/esp6.c
+> +++ b/net/ipv6/esp6.c
+> @@ -782,6 +782,17 @@ int esp6_input_done2(struct sk_buff *skb, int err)
+>  			goto out;
+>  		}
+>  
+> +		/*
+> +		 * ipv6_skip_exthdr() can advance past the packet end when the
+> +		 * last extension header claims an oversized length; the
+> +		 * transport header below would then be read out of bounds.
+> +		 * Make sure there is room for the 2-byte source port we read.
+> +		 */
+> +		if (offset + sizeof(__be16) > skb->len) {
+> +			err = -EINVAL;
+> +			goto out;
+> +		}
+> +
+>  		uh = (void *)(skb->data + offset);
+>  		th = (void *)(skb->data + offset);
+>  		hdr_len += offset;
+
+[Severity: Medium]
+When offset is non-negative, does this check bound the read that
+follows?
+
+skb->len includes page frags and the frag_list. The port, however, is
+read straight from the linear buffer through skb->data + offset. Any
+offset with skb_headlen(skb) <= offset + 2 <= skb->len passes the
+check, and the read then lands past the linear data, possibly past the
+end of the head allocation.
+
+Non-negative offsets seem possible on the espintcp paths where the
+network header is stale. alloc_skb_for_msg() does:
+
+	n = alloc_skb(0, GFP_ATOMIC);
+	...
+	skb_shinfo(n)->frag_list = first;
+
+	__copy_skb_header(n, first);
+
+and tcp_collapse() leaves network_header at 0. In both cases
+ipv6_hdr() points at bytes that are not a real IPv6 header.
+ipv6_skip_exthdr() walks with skb_header_pointer(), which can read
+frags, and each step can advance up to 2048 bytes. esp6_input() does
+not linearize the skb, so the offset can end up well inside skb->len
+but past skb_headlen().
+
+The esp4 check has the same skb->len bound in front of the direct
+th->source and uh->source reads at skb_network_header(skb) + ihl.
+
+I haven't confirmed the whole path end to end. Would reading the port
+with skb_header_pointer_careful() handle both the negative-offset case
+and the frag case?
+
 -- 
-2.34.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009135233.4084239-1-bsdhenrymartin%40gmail.com
