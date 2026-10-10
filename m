@@ -1,106 +1,106 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from sonic312-24.consmr.mail.ne1.yahoo.com (sonic312-24.consmr.mail.ne1.yahoo.com [66.163.191.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DAB4B7A24
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 19:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC11395ACC
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 19:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.191.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791661507; cv=none; b=hgrL7POMIeg32daG5mLsZ59NtunkkJgAYexozTXAUuKBHKH8zg33e7hwX7vDcp1uK49yXNTFpHgo/CbKHoPlCzeqnWCZ8PuCtNTn/QCzopHYhxBRqf5wKLmwWnwLWrg2fdOhEp1a/nIxyz54d7mx5Qa2R8sQh+oKR+RPGUgpSAA=
+	t=1791661711; cv=none; b=BzwKQjqAxkz0eNTlUH19ThMtyiyn9NiviaGBMvAf6u+1TdVqtpe4FLRBQcEAi0F25v4qxVaWKWYE3yTbbqwnfIbmrpa7idVOBYE7QYOXc75csC2w0rtYRpe52hJgObxD0S+CAhwq5DyCPpEGBnJvlcuv3ngx4vGQYL45+nePGJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791661507; c=relaxed/simple;
-	bh=jBWuGD2YqZU0E2e6O/mVHlk6Lcec7KbBe/dsJotPZqY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUYWUfCfcKSNNeQKcLS4hGBA0OTfCfB7+V/p0O7hLlJ9xxVSp9yBsQsfvrTyBo5+VY5dXY71y/SMyLde5dQQQXmU/TvpTtR21Et1BpoDsn/0Pv0hQZL9kzxwTds45++Z/2Z3cAYGGmeR5kOYn6v85zIDV2rk+NPX4U8J/SqwIz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=SxVrH9Ug; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1791661711; c=relaxed/simple;
+	bh=+JB7XipNzNz0wtFVDnLNPGI3XOSve9ZpgoYDsQHWHUQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=KgFG1bYkRxe40s5HfBI8suyvqBXklW9s0BHTwqVJV0wYOG8DBdAyvMQ6GSTeHL0eo7dv6nSejYxF/ZLQ6Zi/ADvkreVK96c7a5Vif0GysPsbLMHXVXxpT12WPLh9t6WhA99z6o/PegXQXW9SoNUCA3dVffRqJu9wyECTTs4KNyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=ibMbDbX4; arc=none smtp.client-ip=66.163.191.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="SxVrH9Ug"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a1923f15afso2886525e9.3
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 12:45:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1791661504; x=1792266304; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jBWuGD2YqZU0E2e6O/mVHlk6Lcec7KbBe/dsJotPZqY=;
-        b=SxVrH9UgkmgMBmm71be1Hp9yPkJh6wNDiKPmxnCijnMEjXuFHFR5Rtjp/kvOWRZ1B2
-         nzpNXW9gDxdiu/vMImTJinNWOYuoinCzdMNyLdBrS37Z/R3bO/gLy6FZb0AkCaGgBBzf
-         Vsz7BHi9Mp3EOT/10OULKgeRheq5AUHPyKVJT01CUJRtP8c2iKPm0S79GVv5CH0alGB5
-         jkh7Fk22tibJtNJsRpzQoFop2wW9uQj+VkZRLASSPza9eh+5QKlLLOxHtNDAkJhAGbaL
-         9JTVzJx0giyBaCd0S/aLOAfnL4dcNpQDkPtDK0pHECcV5+2b0soeK+ULDsmxBcj9fQip
-         CSpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791661504; x=1792266304;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=jBWuGD2YqZU0E2e6O/mVHlk6Lcec7KbBe/dsJotPZqY=;
-        b=DeaZBqcCx2QK93ZiRp9WFiM4wLkqChGfd7jzUH6wSdiIBOgniET9lzwqLy1+hwnKH3
-         OvNagwHPd9XRYl++In7RdglbpqgkDDQ8n99J4WQ3LxdGOlhOuGRu83Dhkgfmrcu6Bift
-         6iP2Wx88OEQI+op7dbpwnEkrvRSWbPknr+4zr0n5rZqm8AeuJQfzZ0Uj6ND4+oxMwaA0
-         jxu/C5uzymd5HejpmGr6dLju6ctuWfo84aT99GZkxdgM0CHOan0kfkxWOTgzpLLKlouL
-         4e1NeaRZRla0CClkVE2zFBav5g/wqHmdBXp6LCnO3uMwsK9/CZwVgEBwVE0IbngmIPV9
-         UaYQ==
-X-Forwarded-Encrypted: i=1; AKwUvBztbAj3UjjCtSgGNg4ZPbdofGzybQiV31qCqKaSNwjRzBzL14GyUujLz4/us8BjK3hkNUdl2io=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLj78jd1clVdNyyx9/ccrR8QKPNZltJZ9WPxwStRjHyMk/2Ad1c
-	8MSL+J/oyo+X7NW9//DNui+VhDYgW684ZTmmZ4mn5cuF8I7VJT0bDXX8kOopE70eMaE=
-X-Gm-Gg: AYBFou2zKluPWx8nT4bAXvyBIk5JWct/zzmVdRp34I7Eoo8u/2HJsPge2KcZqz6BNYN
-	R35RztOEeVoUmeufyD2ZPebA6C0FOU7OdH3E3L3fWJGsMTorUJ6ia9XtP6onzrNamJscq2bjqgX
-	GPp/hsM0K9nn55MHGPwZMzhlmgKridZTSr2tU75jWepvOMVIf3XQNMp7RJcrjN4tzdD6N0XQJxv
-	0MU1t74ER5TCiOBKLTZUZVwU9LX1xsSPq5eThtPPc3sdWPkvN9toprXK6QWHN/A6M0psxZxwwkk
-	2NG+VHpjVHZR6GlkuRU0tv1Sub2sYcztjIqefXu6e1QRF5Kx6y+rOWJBemsdjJobM58F626BkkL
-	YqmUluMDt6ERDM93iYciJ6qSKhzOPK9qonEDtTZ+Ne+5eR0exRnErVD23hNwCWhTNem+bGS2w2H
-	rxqmt0DpVvOtbTLqAxBYTLjg2wQQNypixFSO8daSiNS8ZSF1F4eH+2hkBmr4XJ
-X-Received: by 2002:a05:600c:3b0a:b0:4a0:1e68:d28d with SMTP id 5b1f17b1804b1-4a18e4a177cmr99986885e9.6.1791661504056;
-        Sat, 10 Oct 2026 12:45:04 -0700 (PDT)
-Received: from remote-01 ([84.17.55.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf35930sm151457265e9.13.2026.10.10.12.45.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 12:45:03 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Russell King <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next v5 4/4] net: phy: make an unbind wait for the attached consumer to detach
-Date: Sat, 10 Oct 2026 22:44:58 +0300
-Message-ID: <20261010194458.2943738-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261009180551.1234107-5-f@lex.la>
-References: <20261009180551.1234107-5-f@lex.la>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="ibMbDbX4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791661709; bh=mdzHawn+hXQOM+WR+wXD1MUKW+eXjZjdraUQsrIoH/U=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=ibMbDbX4v96MMK1CuK79DpocdP04inIGlsdFJmUQwzG0EnuHwd3k+usgWCMwUq96b9L4cAioQwWaTSYa0O22G0Dd+SOoFoxTekay2QnDkGwUS24xCkwzAGtKrcbUFIUZb57x8lssIWgB/13bwXXxxbdpRWwY1vf/FvS3q1mo3sOENXTO+R4TytNE/4jUIg3Z97tXuPlZnnQPPZFh362cS84DzJ3fti2DyO/TfN4TVRp73BgaZYqAyiCUhtQ3TGLIhyTcuRZvm9iN6YftADbBPZYYkI7RffwRZpGczk9ANeNpjWhXwMeMy9nH4ZeR1IoORhjzQ0vSZ/tsPzzZ0s3meQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791661709; bh=AzZGQw0cerJ2Leotw1vG4INBwRdBQSXGnNr22L8Zp+S=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=Fkxob4RS6ZvSk2Ld9A/T5dye4qYgiEjwZXT5zs+Njs87f2749lckiCFw7EDa1U5L4AtMcNK3GyhIktJu6YUeZ+riEDzyfyZ2Dlc/+S16woof6Ysg7uXkKICsqOUn1ndxkeX7tRZOtiDjvzxHUwqsNseQlZn4Hgf2BnD/2TK0pfMjxDk7FXa1C8gQYnurm8fV2XKClZ73JwBJuzfQxSt+kr9PtWSkmr2MXka3fp7ZBZhhVBqRBhsp7LqyD41iX/EYMQnkJygijs4Ix9khsoQq9Y6NDIGOiZsf4MEzhF9S4d7FDtbYRX3xPPIKTWXIVyp5+JR0ix7O8eGiQk4ycjOXdA==
+X-YMail-OSG: BHDcElwVM1mDIQEqJvTZ_L234VmFNe.lWTkKqQ2H8YqxITdNFVUx8sPTsGuyVYL
+ 6A4uvlgoQlBA3GhimN6nf2Uivuj_0n4xLqVNAC.LHviZTl5sGVMfT_GYB1E_jzCizHQmJ1n0naAp
+ zOlsEiJ4QUrqsVrNl1WXdpKfCZ1UlpQZ4hPLFYLoGxNX7GDQcqWdA.BcRAwWHZ.2VxmTw0m31MCo
+ GhldtiBLMeT1wMlDxA1HpCXZMqH98Gg0IDc9db2tzAIoktVwGOnL3tv53U.7vL_2fH8RcNauSXRR
+ arXvlOuNcfhq18RmMmA74DmejpNe_e2nxmzkYIcAZVt3RU9K213b3F5aKXeU4egLyEiMILEB5OJN
+ 1ZDVC09uqlVvwSwXJAmFH_34HWXjQSbpjjSTx8WgfibdC8tvvWocaBak9emWjigj.cBEVMYpz37n
+ eLme8oWQlVPCQdEvVE7nDwbesqjXczZpU09vXbHcFgurfcgXZUnZ9fYIuxflprUDm0l6zQsrNyy3
+ SGUdd0GtYZBZ7LRS41g0hzPnuwDmvWuk6BT6gs4shbCb2fQORqiGIj55dsScdvkBu7I0WuBS_B2S
+ b5OWwyxG27YUrEuc0Hf4mOklzJ0evYziJUoy.RNr8s0N7utpw86Y7df7DrwcEH0xztUxrD6aZ0LJ
+ nTjGB3ueU45Yd.oxfOYGAVUvc4O3XGakki5GyjLQdNM7hYz_FaU4Vmk0VdrOgVK4Ss6951vI_Cpp
+ r5jJtGlAh9F7SC5i15.l8SdygkEKU4TlCLaYvzh_YMkzaUoR735N20kfinFvjB1fPkhZh.qxmKCd
+ DyjV2uKrnIZ7c81i24X9ZSeFAmaqS.hM39VEWZw52ywMgACfXKhMhRaHMP2ciAp9LJ2awXSuw7ix
+ YOQfX5uyMNeB54NPUBuUN9USu5T.OWp08t3TlegGSAqGTkcBRVNc5NdghXJQPWngfLZiOEgwzlPk
+ SHRhXPhbbxbemqnP95f.zK0bAtByED6OO4LT7ZLGMnYbP.T3oaVGgNYUwAKuLXpOv6a1VMx.O775
+ ISDviUD202zJnh7TK2ADCF7Bn4D9pTIQd6EIlAGT5vj8muGuK_lVQ2jLCmJ9Z9nG.gi2sULy9pfO
+ ReIGZRJ3j40BsZg.0RqVe5uQFPCOrSyRxETU336No1bYefhSTThrRuknLqXF1YRPnY4deAzLLuKg
+ kTfXCJnFCebnyA.0swWFzPRJFIcUNf2DGocXw9RQa8fpbKUEGBqCXyAag90h.Vfm23CpdT8AqfKR
+ pRTxmT6Y6wOn1qvWDXlLMjAACxzXrkX_isKMOWEvzb60VkgxH81m3hXG14r4RrV5R.9cLD44e1dD
+ uvtkS.EbvlsAly3t4ad6Nt40TeI7zmp_YEk1vmJIz.2Fkr6x34H4QyvzB8w9NHJUujZ6Gu3Rkir7
+ np0jIl6gI7JCZA9y_f4MTEK7LyQNFFYJJSeK0YGrbUDad4hv73P2QN8MSNWW6Nb9X.2QKS9wozfa
+ Pp5CnxPUXo2nEH6fj6VDC3IkeE68XcqqKg1XppkdaPQnGPxZbXPkWEfC39iyRKobxAyJZ750Pzgs
+ 9qrSMB1X6ghsjYz1.KcCRGfiX0CRuWoHvQsziwz4y5G0ybd.qft56285P0RDeQ3INP.eni8JzLqq
+ y_ZPjiE2cHRAWtcY2dG4PK9LvAwyvHFlrrEL6e1zgLsu_bXyHgEWLQ4ySrFnW6Mn1T4JBW7XGp4z
+ rqf9egfExs0czcITCAL.klKYCiNXNh6sFwZrOeZ_RgSzF4M.YP2_fLuk6H.yhlLYYBqtPQyGKJ8b
+ 0OTenijXSp4IhdHEvAzl3rYuhlWjBDJYeeO7vLaHeHh5IFP5rgGtdN_DYeyxYuGP7zXhYbIZQ88w
+ XU2UnmRsBRI0v5aUO132ZmvJ8KID2H_Zhoge0AFGxwkLId1G1NHwFsFsbV12TQBLt2bYiLn15NYz
+ jWiciCitTmTgnVKRgiKDyzVSNnxwoFh_.sNfCo9b4_s_cZ8GAKWP1ocbwtJYgfC36Bem6GdqeLzD
+ 4uR1Gv2w_lhdVESOcTnsq6el3O5UBNYnlambBsbzfpyQp1lHYubbIFYMSCp_RCW5ppSdQfXW56wZ
+ 2I8tEGM5ZmsN1k0_HPkeWepNfxl0F9iHy4TUwzv_x0A25k8zDQq2C9kYt_9WbxFI.4cQsQ6ihqvj
+ 6tIoxE3vxwVHATSMeDeBzWhUd96Qk52bIpYjFDXPuGksLhtvB.KG94lEEeuixxEciQiNIVgTPwfc
+ ZVZrOJ5gbbJiGjAtJJ4cWGf3uH.jmVEaBOnseMdOinVIzfQ1zaaUb.66hok0a1LKCB568iWydnqs
+ BibX_rhv1u2XNnQmztxTbJNIFRBf2P2dvvbvaYP0-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: db21b006-e687-4f9a-bf24-171c5034c38f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.ne1.yahoo.com with HTTP; Sat, 10 Oct 2026 19:48:29 +0000
+Received: by hermes--production-ir2-5dd9bf4598-lsjm6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2e1f61bd0a4759a889456ca9d87e0635;
+          Sat, 10 Oct 2026 19:38:12 +0000 (UTC)
+Message-ID: <e3f96c51-f454-4544-881e-80a02f9ae9f8@yahoo.com>
+Date: Sat, 10 Oct 2026 21:38:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH net-next v3 1/9] dt-bindings: net: dsa: realtek: add
+ RTL8367S-VB
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <e84d76ee-03df-49b0-8c9a-b289dfae8728@yahoo.com>
+Content-Language: pl
+In-Reply-To: <e84d76ee-03df-49b0-8c9a-b289dfae8728@yahoo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26668 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Russell,
+The RTL8367S-VB (chip ID 0x6642) is supported by the rtl8365mb driver.
+Like the other models in the family, it is identified by its chip ID
+register, so it does not need a compatible string of its own. List it
+under realtek,rtl8365mb.
 
-Sashiko's review of this patch showed that waiting in phy_remove() for
-the consumer to detach can hang: on the unbinding thread itself through
-device links, and with the device lock held across reboot and suspend.
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+---
+ Documentation/devicetree/bindings/net/dsa/realtek.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-For v6 I would rather not wait. phy_remove() would call back into the
-consumer under rtnl, and phylink would answer with
-phylink_disconnect_phy(), the path it already takes when an SFP module
-with a PHY goes away. Consumers without the callback keep today's
-behaviour.
+diff --git a/Documentation/devicetree/bindings/net/dsa/realtek.yaml b/Documentation/devicetree/bindings/net/dsa/realtek.yaml
+index 473facd..ca775f6 100644
+--- a/Documentation/devicetree/bindings/net/dsa/realtek.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/realtek.yaml
+@@ -43,7 +43,7 @@ properties:
+       realtek,rtl8365mb:
+         Use with models RTL8363NB, RTL8363NB-VB, RTL8363SC, RTL8363SC-VB,
+         RTL8364NB, RTL8364NB-VB, RTL8365MB, RTL8366SC, RTL8367RB-VB, RTL8367S,
+-        RTL8367SB, RTL8370MB, RTL8310SR
++        RTL8367S-VB, RTL8367SB, RTL8370MB, RTL8310SR
+       realtek,rtl8366rb:
+         Use with models RTL8366RB, RTL8366S
+ 
+-- 
+2.53.0
 
-Is a callback from phylib into phylink like this acceptable to you, or
-would you rather see it shaped differently?
-
-Aleksei
-
-pw-bot: cr
