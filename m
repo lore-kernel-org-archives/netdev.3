@@ -1,239 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BBE457E4B;
-	Sat, 10 Oct 2026 10:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95033F4138
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 10:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791626475; cv=none; b=T8pjEAnZivMMYrPY0B2qv49kgex3pHE7mj1OMpcEzzFBIY3p1txTtUugViEzoDY7RrWWYcjvw2+pUOCvr3YJrU0EznrZYXg69xoX5REgIav9gpJQ3dzhkz7h2kQvUrNpdkgYngCzx3BFdGI9uUDA+CbLbsbxplIkY0quPh49DXg=
+	t=1791627046; cv=none; b=ZXXo/1xqINndm9xfAxqnLVdQtARuXs0abaA964s8MJ46rrhxeGA0WkIh5oz+0hQq/pX6YRnXi0ZEcGn2FmChNT9VLeS8WA9pA4XBOTDsujWo/ZYP0MTOOZC28y1plYLCoNXQVPTAAPGGDPjDrYsaT6UiQ38spypuCEC1d3Qo1r0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791626475; c=relaxed/simple;
-	bh=8MwjnvP0TVjnnHUZlWiNSC+MXUJZHZMzE1oLJB5LN2Q=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=upRAFRXjtitkU31tGGd8F8XvplqIhGcWrmca1qypVwJESrjBbcdTULVhHtDMMqqwJqWUN2/KJStFbk6V92lWT/p/yQt4tZESyFv+tfTF8kExnnJR6Ix7wQPdUHB8TtIFjF/6l1lJZnxAxfoTV9TUjR8jQ0IPSHsT4o2U1FuKenE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TVc33rrE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791627046; c=relaxed/simple;
+	bh=k5qXWm2fWfprmVvsRKBjYWJGJEhMZpzoHtTJXsDkYxc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M2iknmLWoHqIZC32MDk031PvnR+QrVWQMR7cqXo1eRcbJqeT4c7+rbuVRH4njcOlFN7zfR7OpaktvzTDgZQXy/AB3Oe3JSBCyMQ5G+LbhV1dkkC4GWISm4VF67QWP+pYBivxtR3MIU5XwQMDR2bJ+UDiUe2ouoevolPktOLMp8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XJ/Da0n2; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TVc33rrE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EA71F000FF;
-	Sat, 10 Oct 2026 10:01:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791626473;
-	bh=Oet3vwiIyCskbJM+gNxrIIuTXViaOe1c9rWFx0S/x5E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TVc33rrEm/REdJfESmJL5W94DDahQ5TZ16ho7mc4P1JZDw6/0elR/stuBKgdy0bNc
-	 bjx1/zFPKFaWQHH7uocerWpuqApVU0zDtbrkErMd3uStDCYZDa00Bex3j3ur6RuXTs
-	 V0NvubwCRt5d/cldHjk94OdKPruREVb3XM4tww58QR6AR9UBZy+yH92O9nQu6mGTwz
-	 G574/NLHzsGSJuc9rP7X1e5N5joRNhzGbZuHiCnwEAoxODSK4fg+ZQk67ekKChCVtd
-	 X+pRy1kDfrSf4W2KecJCtCxcwFfHqtTyzoWztKFxBqnY68zisLsfnkRpaiANfIKeeO
-	 roml5MA+xESog==
-Subject: Re: [PATCH] nfc: llcp: fix socket list self-loop and soft lockup on
- bound connect
-From: netdev-bot+sashiko@kernel.org
-To: bsdhenrymartin@gmail.com
-Cc: david@ixit.cz, sameo@linux.intel.com, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sat, 10 Oct 2026 10:01:12 +0000
-Message-ID: <179162647268.434549.12888490245916744855@kernel.org>
-In-Reply-To: <20261009092338.3146149-1-bsdhenrymartin@gmail.com>
-References: <20261009092338.3146149-1-bsdhenrymartin@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XJ/Da0n2"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-884062f3296so332639b3a.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 03:10:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791627044; x=1792231844; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=6g0pW6yOR+NxDMtQhXgsc9e0vnz9TsV7kL1lDEnnCt8=;
+        b=XJ/Da0n2QZgfmg1l98fqDbR5o+Y5evlJueqGCnhxwT5dwkBMPfEO0VzYErlGlwnIcY
+         r3B55ZertW/FUcqbxlNYFoqxEsKvdmyfmqOG/qNy848oxTZIEbuNVDzuvfoSgutIh7du
+         noDVJw7xZbHKe37rh0/R/fQFU0/2IVIFT2Bw1PFiFhUtFwz4nUc2Bj1XgvvSx9HQY8vI
+         2zH6NY13pNEzGabNW97BFFgDWnRbtUx9TIoQw0Ulx0rqE+Gf+g4rTpkDiIUEd/2F8TBQ
+         MAhtjR82JVZgImtAFfVb5IKS4xGspX1qPTW8MuHJ5SOltxvQOznqicE6JIjM6+fSBhM5
+         xpYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791627044; x=1792231844;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=6g0pW6yOR+NxDMtQhXgsc9e0vnz9TsV7kL1lDEnnCt8=;
+        b=KGY6OYXKNaQTWFS9Ee2qSTm3YnZs3v4aCA0u/1tHZJIVQ6MnQAaIht/A65ygl+vVjf
+         ikgEJiEnaPUxN9yP8AD5Ehnop2MudStN0tyyHwoO9Ac7vkWZ19Gdg+PWGJes9ajPeCKn
+         86AzRN04m6b+ZqSnw10sas3KsejTiSMhU8bsxz7Pp9nFI7rwVeYOuXHse61iWniS23y+
+         7Xk3Ua6cPWsV6tKLQr2hsDnSmWpn10GUGrcTsCbrLKRY2fgIProlgF+GiiVOYzCAuPKd
+         v4wDTRZqoRqadVa5sNweko4fTyoRYn4C3qZ4jrqIpcQc0Q/WQ9Azza2cdcbe3AAGSEA7
+         wx5g==
+X-Gm-Message-State: AFq9FYLsVymlTuJ1whTihtSwpRn/auj/RB8uYy+drZ5AA7CHw3afvkSe
+	A/aCXVeyh6dyZJ98ZzPKQw3XSEXIQxbYlJRledEYXf9chGc3togWy/AF
+X-Gm-Gg: AYBFou39tyBFrgOmuqTXTduHYHg++/Fwo/s5PnlzcwefjZnFN4y2s1eK3EyVH3uEr4y
+	QaTvEv9hC0MguD/0m4uoNyeTShrPfZ0y1Czt69vsVcIeLdSgjFP49laRMGSlOZ7GY7wbk4Xd6f8
+	Z4+thuVv8GOoKEE5vFuatIWq9cHILGQadRaHVXvjXvD9mNPEz+8/+eruVpEiyV6MSMA2hjVWlQR
+	OcjJKiI7pW25b8pw2N4iGQfKiAnAf9cAna/la0lxaFkfP47TnPYUhzTQs6A4uF9TB5A/pVOmpQr
+	uGepEtGYI5cMBhlGHU2FDtwLGIJhiJJiklnqwLaMTWfsSo/O521jaEYgVoNMmc2+ktUrSILdbdJ
+	y+oAsi5ZNf38MHWpFhnU1KtFGmGVmF83nXh5McPIQgZwDP9aoE3eK4jpVh/ZGHh3ovi5/osrtNx
+	dshx+gthLc+uwIF3oGLKxbfhOf9PazjEkk2s/0VEAZAIUdDiUq+Wb7i0eAtCKULaJ420h9gWMKS
+	PWghTswVw==
+X-Received: by 2002:a05:6a00:c488:b0:899:915:792b with SMTP id d2e1a72fcca58-89909158069mr699050b3a.54.1791627044073;
+        Sat, 10 Oct 2026 03:10:44 -0700 (PDT)
+Received: from dev.local ([163.43.243.221])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c37de99fsm2069988b3a.25.2026.10.10.03.10.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 03:10:42 -0700 (PDT)
+From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Subject: [PATCH net-next v2 0/2] seg6: skip route refcounts in seg6local
+ lookups
+Date: Sat, 10 Oct 2026 19:10:38 +0900
+Message-Id: <20261010-seg6-lookup-noref-v2-0-51c09dd98197@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB4PymoC/22NSw6CMBCGr0Jmbc20KQVceQ/DgscIVWxJWwiGc
+ HcLunT5P78VPDlNHi7JCo5m7bU1UYhTAk1fmY6YbqMGgUJxRMk8dYoN1j6nkRnr6M4IuZJFWiu
+ kFuJujKZejs8bGArM0BKg/CZ+qh/UhP1y7/baB+veB37mx+JHSv+QZs6QYSEol1kmKcdr96r0c
+ G7sC8pt2z4WX4mszgAAAA==
+X-Change-ID: 20261004-seg6-lookup-noref-e016495b60ed
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Yuya Kusakabe <yuya.kusakabe@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1052;
+ i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
+ bh=k5qXWm2fWfprmVvsRKBjYWJGJEhMZpzoHtTJXsDkYxc=;
+ b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqyg8fEnSNrfVB5GQhd3JgS68idorn2DXSxaacs
+ H0CA4NtxXuJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCasoPHwAKCRAq19F1Kl0b
+ TfQwD/92pg3UJ9YHYpdH2l2U8XFV0OESEB1deZ/0+avPoTkMzadPjB3r5dhuwJoGITN/O4xB54v
+ XU59rheW+nWhwdTrsj18L1Tg/NbGvh7dUWf5xR4/sshFt3lBp8jcSAVqbeWODAQNwwb9Mun4VeO
+ 7tMq366q/IjANpknEypTPmM8RyxGnTm5jmdWNnabYGBKGnlDEs18xJh7bhSYlnCWdwHGcOI3FID
+ fr/IEtROgO9uuQW1CJC4i/61THAJt/01DhMCA2d4Lyc+crLoJdPO2AynNtD5fmHHXKxjp5oP4tD
+ U8Vs92iMSJKUUcvGfwmgXdh5lmFWDZ9NR+D+Q2THZAgLLqf9eQ85SsM0HG6YW1kB8bIEytzgytt
+ 0weCLziXloGeyiPPeg1GumMtY1y5lPctWJxdkF8ntVshFG7FXkzNdlUmlJgFfrtNUUnYKeX3l08
+ DA2Isc1gj8yBAtKOEDULuK1e9BojD/wB/S6grVQwJMttNe17al2divyheggIkOZta76laaQxHTs
+ 5m1kOeGRhcP23BsgLAZp1/jn6TURRwCIIf2zl88clht7DSA0TpMdCHnQv1gnBjJRi0NeNbbp6oB
+ HVXuc9/CoYa1PowD7LR5xPGVtFmLdkGwRhV6WjCqvVdfJeZD8JB/dn8qVXBFZ5Uw8DIBfA+pA2n
+ PPlGAVm31ShlF5Q==
+X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
+ fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+seg6local looks up the nexthop of its IPv6 and IPv4 behaviors from the
+RCU read-side section of the receive path, yet takes and drops a route
+reference for every packet.  Skip the reference, as ip6_route_input()
+and ip_rcv_finish() do.
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
+---
+Changes in v2:
+- Split the lookup into a noref primitive for the seg6local input
+  actions and a refcounted seg6_lookup_nexthop() wrapper, which the BPF
+  LWT helpers also call (Andrea Mayer, Sashiko).
+- Rebase onto net-next and re-measure.
+- Link to v1: https://patch.msgid.link/20261005-seg6-lookup-noref-v1-0-092e84774e80@gmail.com
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+---
+Yuya Kusakabe (2):
+      seg6: skip the route refcount in seg6local IPv6 lookups
+      seg6: skip the route refcount in seg6local IPv4 lookups
 
-- [High] The fix is incomplete.
-- [Low] The commit message says a bound socket "must be closed or unbound
-  before connecting to another service".
+ net/ipv6/seg6_local.c | 58 +++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 42 insertions(+), 16 deletions(-)
+---
+base-commit: 758fe10f83a655bed0f7b98fcfacdfc3556fb9a1
+change-id: 20261004-seg6-lookup-noref-e016495b60ed
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is a
-  locking violation that a remote peer can trigger.
+Best regards,
+--  
+Yuya Kusakabe <yuya.kusakabe@gmail.com>
 
---
-
-nfc: llcp: fix socket list self-loop and soft lockup on bound connect
-
-This commit makes llcp_sock_connect() reject sockets in the LLCP_BOUND
-state with -EISCONN. Without the check, a bound socket's sk_node gets
-linked into both local->sockets and local->connecting_sockets. When the
-CC handler then re-adds the node to local->sockets, it turns into a
-self-loop.
-
-> diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-> index 1e5ee4bcde684..b1b5b6d319466 100644
-> --- a/net/nfc/llcp_sock.c
-> +++ b/net/nfc/llcp_sock.c
-> @@ -714,6 +714,15 @@ static int llcp_sock_connect(struct socket *sock, struct sockaddr_unsized *_addr
->  		ret = -EINPROGRESS;
->  		goto error;
->  	}
-> +	/* A bound socket is already linked into local->sockets; letting
-> +	 * it connect() would link the same sk->sk_node into
-> +	 * local->connecting_sockets too, and the CC handler's re-add turns
-> +	 * it into a self-loop.  Reject like CONNECTED/CONNECTING.
-> +	 */
-> +	if (sk->sk_state == LLCP_BOUND) {
-
-[Severity: High]
-Is checking only LLCP_BOUND enough here? The comment above says the real
-problem is that sk->sk_node is already linked into local->sockets. That
-is also true in some other states.
-
-llcp_sock_listen() moves a bound socket to LLCP_LISTEN without unlinking
-it:
-
-net/nfc/llcp_sock.c:llcp_sock_listen() {
-    ...
-	if ((sock->type != SOCK_SEQPACKET && sock->type != SOCK_STREAM) ||
-	    sk->sk_state != LLCP_BOUND) {
-    ...
-	sk->sk_state = LLCP_LISTEN;
-    ...
-}
-
-The sequence socket(AF_NFC, SOCK_STREAM, NFC_SOCKPROTO_LLCP), bind(),
-listen(), connect() still gets past all three state checks in
-llcp_sock_connect(). It then reaches this call while the node is still
-hashed on local->sockets:
-
-	nfc_llcp_sock_link(&local->connecting_sockets, sk);
-
-When CC arrives, nfc_llcp_recv_cc() does:
-
-	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-	nfc_llcp_sock_link(&local->sockets, sk);
-
-Wouldn't that create the same self-loop, and the same soft lockup in
-nfc_llcp_sock_get() and the other sk_for_each() walks of local->sockets?
-Only SOCK_RAW requires CAP_NET_RAW, so an unprivileged user seems able to
-reach this once a DEP link is up.
-
-LLCP_CLOSED looks like it has the same problem. Connected sockets go onto
-local->sockets through nfc_llcp_recv_cc(), or through
-nfc_llcp_recv_connect() for accepted children. Later, nfc_llcp_recv_disc()
-and nfc_llcp_recv_dm() (for reasons other than NOBOUND/REJ) set the state
-to closed without unlinking:
-
-net/nfc/llcp_core.c:nfc_llcp_recv_disc() {
-    ...
-	if (sk->sk_state == LLCP_CONNECTED) {
-		nfc_put_device(local->dev);
-		sk->sk_state = LLCP_CLOSED;
-		sk->sk_state_change(sk);
-	}
-    ...
-}
-
-The remote peer decides when this happens. A later connect() on the same
-fd would pass the new check and link the node a second time.
-
-llcp_sock_bind() has the same gap. It only checks sk->sk_state !=
-LLCP_CLOSED before it calls nfc_llcp_sock_link(&local->sockets, sk), and
-the node may still be hashed at that point.
-
-On both of these paths, connect() also overwrites llcp_sock->local,
-llcp_sock->ssap, llcp_sock->reserved_ssap and llcp_sock->service_name.
-Does that leak the earlier nfc_llcp_local reference, the earlier SAP
-reservation and the earlier service_name buffer?
-
-If connect() then fails, the sock_unlink label removes the node only from
-local->connecting_sockets. Wouldn't local->sockets still point at it?
-
-Would it be more robust to check list membership instead of adding one
-more state? For example, connect() could fail unless sk->sk_state ==
-LLCP_CLOSED && !sk_hashed(sk) && !llcp_sock->local. Another option is to
-have the transitions to LLCP_CLOSED unlink the socket.
-
-> +		ret = -EISCONN;
-
-[Severity: Low]
-The commit message says:
-
-  (a bound socket must be closed or unbound before connecting to
-  another service)
-
-Is there a way to unbind an LLCP socket? llcp_sock_bind() requires
-LLCP_CLOSED. llcp_sock_connect() requires sa_family == AF_NFC, so there
-is no AF_UNSPEC disconnect. No user operation moves a socket from
-LLCP_BOUND back to LLCP_CLOSED, so closing it seems to be the only
-option.
-
-Also, -EISCONN means "Transport endpoint is already connected", but this
-socket is only bound. Elsewhere in this file, wrong-state checks such as
-those in llcp_sock_bind() and llcp_sock_listen() return -EBADFD.
-
-Could a non-blocking connect loop that treats EISCONN as success mistake
-a bound-only socket for a connected one? Would -EBADFD be more
-consistent here?
-
-> +		goto error;
-> +	}
->  
->  	dev = nfc_get_device(addr->dev_idx);
->  	if (dev == NULL) {
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. The
-sock_unlink error path further down in llcp_sock_connect() seems to
-assume sk is still on local->connecting_sockets:
-
-sock_unlink:
-	nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-
-sock_wait_state() drops the socket lock while it sleeps:
-
-		release_sock(sk);
-		timeo = schedule_timeout(timeo);
-		lock_sock(sk);
-		set_current_state(TASK_INTERRUPTIBLE);
-
-		err = sock_error(sk);
-
-That gives the rx work a window to move sk between lists. Suppose a peer
-sends an AGF frame containing a CC followed by a DM whose reason is not
-NOBOUND or REJ. nfc_llcp_recv_agf() handles the two PDUs back to back:
-
-nfc_llcp_recv_cc()
-    nfc_llcp_sock_unlink(&local->connecting_sockets, sk);
-    nfc_llcp_sock_link(&local->sockets, sk);
-    sk->sk_state = LLCP_CONNECTED;
-
-nfc_llcp_recv_dm()
-    llcp_sock = nfc_llcp_sock_get(local, dsap, ssap);
-    ...
-    sk->sk_err = ENXIO;
-    sk->sk_state = LLCP_CLOSED;
-
-When the waiter gets the lock back, sock_error() returns -ENXIO and it
-jumps to sock_unlink. sock_unlink then calls sk_del_node_init() on a node
-that is now on local->sockets, while holding only connecting_sockets.lock.
-A DISC combined with a pending signal reaches the same label.
-
-Can this race with code that changes local->sockets under
-local->sockets.lock? Examples are bind() or release() on other sockets,
-nfc_llcp_accept_dequeue(), and nfc_llcp_recv_connect() handling a later
-CONNECT PDU in the same AGF.
-
-If so, a socket could be dropped from the list, or a socket that is about
-to be freed could stay linked, which would be a use-after-free.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009092338.3146149-1-bsdhenrymartin%40gmail.com
