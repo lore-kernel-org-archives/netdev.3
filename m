@@ -1,62 +1,62 @@
-Received: from sonic313-9.consmr.mail.ne1.yahoo.com (sonic313-9.consmr.mail.ne1.yahoo.com [66.163.185.32])
+Received: from sonic310-24.consmr.mail.ne1.yahoo.com (sonic310-24.consmr.mail.ne1.yahoo.com [66.163.186.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C935348C7B
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 19:44:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948F93CC315
+	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 19:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.186.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791661448; cv=none; b=SICX3qmR9HdPzxlD1Qyli2ejVrQVuPIdIYhPdFOqwHtf3lo92CuOPLpegF+rBUGRR1cj2MQhAgvuwbX6JL8FS4PVjHqKH5BZaETvWYGIqeXNiQ4Q91vuX0fGa9UeVKqcKX9ToyOiKNVY+FcdX/1WK6tb/s4KqPH8octJ/WlD3aY=
+	t=1791661507; cv=none; b=PadlYJbFu2NRY9pstB2IAAwU81tibXQrEqtcJsEczI49hr9UnrtMfXVBUCuDx99RJH7sAXrD3O8O2zwY5pCMYHQEFvGWV5iR0OPQFkBMFOLNwJdCXhp22xfLnDfdsSflqwmAtD3WwPqoXEfSmMgb4vGJfAPwjZ/6/T55GOSWBLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791661448; c=relaxed/simple;
-	bh=wIqo9BCNvV8w5SPKWgCd8awdr65K5KBzCTYPZJGWbeo=;
+	s=arc-20240116; t=1791661507; c=relaxed/simple;
+	bh=o4sj9TMlaQemOT0I/UuZE81Gd5fmF8J4vK6aDbcbc3c=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=S9REyvBJU0e7kAInduDYbycwZO12qdnf+miKO2/D2TXOgtfOLYmRzRMHXd54GVwjRhfeE3yAJx2Qb9PmQCfsRRl4SLezeOhukpIe/YA5mCbPa8FvWD94NMHFCdyEMVS5rpmYE3JVKmSAiWN1B9zoUaDhREy81aD2CliskQleZew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=TsMVcK9H; arc=none smtp.client-ip=66.163.185.32
+	 In-Reply-To:Content-Type; b=aa95yGF0XliJ4dqZftZctXTC3Q/+VfH+rJesnMzp1qPqYWH8lD5jVTVHG3j4aUFfgggjy/pSDl+QI6TpcENX03e+EiEciWmr2/nRWrdzwlsHd2TJESsRHqdn1OSjhlUncQHc1isvKGTZcNdHnxqEZCbgiolMegSI8HoLEs4IZ+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=CfrE+yAF; arc=none smtp.client-ip=66.163.186.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="TsMVcK9H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791661445; bh=NkePJ/eKajBxDn/tnMMJUY8j4Rvy0B9cMSJbDL//dTU=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=TsMVcK9HzdzwxkaP95kKazlHznLl7DyLU8VMdnfnen7TdvDnIt2omCqaEdyDdu0b8PshpRuI7xzdgbQBvNFC0EGNPzoBORuPCPmJWDl1L64olEnVNesq5/ES1IJfsTqoUvQRS855lF08o5qtoguZCHO5yoH6AyJQR5t2gMf2EwdxBsSCXim/T/ZTmNGIv0vEYAwOEveb9PcNBPLcbXLX76+IFWAe3gr056aMFjBmHZm1VMnSM+3QVfZtykRN3xcEfFmmM4IfVPl8pO0YbCYLfNT2SnVQTnY8QB8xi1lZ2VIfcGklEIyYFC7nnAJyIL7jtyO442DEJNXzkx7SQ9ZMLQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791661445; bh=Aq1yFJOndcUpj8ry0MgdmSwkIem7HwFFsUtzANpJaml=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=mPDI82HdIHNGFu1o5thDj2lMLxzIgyVXrw70cNUP5YFJcSbSxhUUyRFdH/Pq0iO8/llAjUqTcCE3ERklm/8feCUhI1oqjM5LOKhjFFN6PE8RNaPLMAAgJpTCsPcPwSq6L22VdR3fGsREs+o658uEiIQJKXqbmtG8pFml6DUGV6F7ku+X0ib1OQJ0LTgiZ9B7Nor7yrvTWv8/7rx8JQqqXwcwAXC3kblP/FS9c4ft+uMcglKtrTBAPjEMFLGsf1rsS3c+FxbIJiZvpVITiTUlK4qjmmLza8iirJgSln4DEbqIkgKtvvkVE4Bq7olv4GzYc+055xRoBUUbHAhCexhrcw==
-X-YMail-OSG: bzmf8AEVM1msgzndfRyJMujEk_mvr607GY1wq9Ecer7nbs8btNDqFn1GgRdHET4
- VJGBWQTTmXhBOkjw2ouZu7EZ5t6K2mbgj5j7jyqG_3Pj0n5OvtUcWRvCAzqQMJSxG0FEN45ulOv4
- XmgzryKlMnyjhqFGXGtbaUp45Pp1hhC6q2bDqER9PlmkYqCE0_ow_Gpf0fU91yqW_2tNcOUw9oAk
- Fjoly0BfuhWl1VxWkQZCL.ufQ71UrGDGuNv5dGRAH1IXwGitmN8jM1e8AHTfo2mV.fMyn6ihRfbQ
- CdjB5EavuB2bPkIN9iZzvKeQMZoArTbHhFuUfRlYOQDaJlwhHzNJoA1dmkn3tINA77qFVxby2jPZ
- nxhDI1Jcms6LwwbCy6a2AICxX.BB58ktlvsyy7.lMTqb1pfVwFcloXjTQgFG.oRAcCCsWH6snLzv
- CeGtxU1yfPT3hOXWj.3bTSo5VFRgcR6eNpX0l.S0XsWeLWhePhntwNWFnwXN4RKbPfHgRDFgTuik
- YPf22bX30Zp62SYV664hHGV5jDiTaTMcxugsgzlCsB6saKLJ3ayKgz7JKMVVYDh.g72ZzzyPj6Bt
- MljxxiQCfnBVLePHAqMonwOtS2f7vWtbDMg6HORFf7SIaMi5oM2uVi.G79pfGN9UXL1qpupWvLBy
- ZfVmKSBsyYgXy1EJcOSPpuvDu8gI9CKBXawCdJSo6KSHmXtpOcYc4BGu_KPvSTcQ1Y.GAme1NRzg
- AoRWZr3mYKEOKn9a04tfNw.w7XDLUKxOsG61qwD81iL_3bEPVZoC9pU3MP65ptqCvQkXeEYOHsKY
- P4Dy4qa6hkd0QFJ6J8xYo1Z6xZX5yjZUjYjaPyNfvtl.Gpt6WP9iAhPKY.McRHPRLPiCa0vp9rI_
- YRhLUhSfZ3vS8yrivS23Mq1rkUQoVhmpud.252XfZ1CzhR9_UXRYDLRqvZMNVNVsWAaXlSYDdfRD
- 7YyFeIXtI.gCAq.ECCUgbcQr3pWFP21oG4DCiU3BNh3QrCslCdwjypZQPZLoEqh.ZjJL88cm_lUW
- bVkQKCCgRVu47MuKwMdII8LZVtens2.VsVLgYBitcrShRX5yfLimu33gjNlM.DPU0CPnZFXLge.z
- kdsgqKUSqQw2UEDo2Av0N7PwFTlAFatblJKuBi0pRqWNuL9xWNh1.5Ju1YlCOe99Vya3OMtYpLkE
- wkLXfaUSWcinyXYtgc6V56PG2t4i4qXdLpy5tXinWrV.43wAznIf9srE.K4kO5n.VZxy4WxPf3ff
- AyZ_JHOTcEgpTIy2OzvVWI046rOF5ZNP_hOs.lOnlZimzWEcmioTMRfsiQoAFWbTZdyyIiaEVpg0
- c7H6tw1A8HTqCMS5Ya1Fy1DFHwUl29UboL_QM3RhJfjIiys79vFrPKUJICR956o4uany.QNEw67i
- 1uuB9SwZUh3G1qkxOduiHVbts7kzauu7iCvsSEuukGijyjC5.OsF9SLFxasvAYF8A09hdvybDblW
- l938ePLX_tTfzqRy8fK3J5wa27Q9R9UQ2g4HIHkOpfLdLZi6W6D2ZdT_tLFyzF16sAraweeJOZZ0
- AmyrR1ibtis15h_cS0W1s1D0ykRmkXw5Og1g9voy6JrsF98aDgtGmtvWEq_1QBFLv55QA4RqqxJ7
- txLJOnBP5RGW8Yt4z1OZr8vnObr8tGeFoufhBsffIsFBiakXK20C05hEq_SBAWOAHPSVBJTYflPq
- InRPyiLWWnFNqkTgf0PXWxrZGUvCyCJ4ubJRQs_zuX4.vB7WvGUrEPdflgPJWalJ33ycQCrBPq3B
- IbN1jSQdavYJPyBqV9Jhj7kw0WYUmEk2wKFqUM55B0u5DSpmnPiAiXDB0LMgC521HNqe8fRuaPj7
- Os5d6GBNgthD9xpmmOaTCBE.a.j2W_cybAhw3N4qefsoNUfog4gR3IJWeAPuOk4H0s1O_sSF0iQF
- TjKdEicOsPTqU7qp.SQdF9kWHil1onmrFHBy2UKIqTWIe8MJ.uL5pcwRdIrjeOF2G1pvZEGYWXZg
- gGM8Cx2fkPq7MXquqcG48tFwpLL6a4aZ0hwMPmZ6ppE0SlG9iOK4ryLa5TbyI7wWeU8BztiJLm.5
- lN7h2ELhLLVUmOk8qczIhR4VTp5_gQPqunernWCmPm28OkojEWfQ7qBvsiDnLMltkqUCVRkzPlsi
- vEGyh8QE4xMzBUC62rnuEgRxxMmu2aItKAR6CAM0RZEcKtwH9gv16c08u7G9ssr507HD3p9zoy8b
- EQBQiZvwafZYjFM_26_drucGbItIElkMY8qwZCOC3CSYLq0BCRoEFuxya5G_cEcmFsP78Ukhs0zq
- gJ27mbFzT2K7XsO4.0RVOzgWICdMLKd5UbJIQCkzaKSzQ7Ss-
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="CfrE+yAF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791661497; bh=A1iomQdYyd+5MMtNNZ94Yi3jTdT30m7TFYDS68ug5i0=; h=Date:Subject:From:To:References:In-Reply-To:From:Subject:Reply-To; b=CfrE+yAF9wt2taYlJjIP3s5SLUBv0oZrvMSN2ORXuwfS/vRQs/t0TFxCQBqbQ6TMhq+zOAG8DIJ8smMkTunQS+ddi5GKHadw5C6da0DQb2BWr6wIlbijx3CaS1utBtoD156AqJ1LnNVI2fHWOH5YIclUV7o48+Bm4zGiAC1xWiZ0/TyqBhF3xJgM7Q/0roYyAk1KyMYqGAq/S758B/j7PLUR6X5wsic2WbAe6X9Fu1Yegh6DFm0JfOaB3cs8jbW1mC+pqUVsqCqFSPHSU4SJx9RUTsaIB6LBpxOwN+DbPIthMF6wc1ASB3S3h5L3BiDLKLizi4/a/GSzWhPqPtVwaQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791661497; bh=oj3nEhr834JYy8e5t9x/2Guma05c4jdkGrv/3LvS4QC=; h=X-Sonic-MF:Date:Subject:From:To:From:Subject; b=QoP9Kfh0XVqSDRw6EA87bQG5lm5Tq594SgedHg18RMb9s3JY5gX8q4fgYk2i8zFzPDXPKxECS9Dd7XJTZEnUfBbu0sExarJxuj++e7fuyCV7cpixBya0tRnLUl33nT43KIDAdE3GBVW4VKQxYAQTEMOfKsh8Iq691XppuIF21mG2qZUTA0PqnD191GWWnl+NJ4w9eQhLHtNhHZJ2X5P6v9a7MksitK12t7HjdLGnamzY+BJ4MeVpP4rs3i5F3NYU4+EUARU6E4lharKS63eGdRHJY/4lzmicd7HsJIfKYYIePAD213SqbqkQcveFgAJOsAloJdUsLuzS/abxM7nKGw==
+X-YMail-OSG: pSxV5NgVM1ljPNwVMa1ufBFutHdINucWTbyABk3XmY0_m3NJlX7gpNPZOndOEu9
+ 8pAjSdI6XyiTRiEq3PtzwFjvZfeizO8lRRhj35r4zlqWsVf_kF3bMGSOueypzr0ORjIUQHe.T9kg
+ e3_K9J.11Wk1Fhfp3rajIZ1IqgFtD67R2YflNwP_7nH8M3MJAUKXwR90o8mn4WFZNO2XkRVx0.Yh
+ QPqNUuq5F9RFKQZGLRGesA_nMJtOuqip_oZ3tRvw4f8LK8A11Pmn4VaegdeudMPhRHWDgGEhxgr.
+ bYRFFrMWaSE7qq.70lUxOyPtHBySY2_CNIkXpFxKY.CrHYk74j5AseaUcBG7J7wmW_kyFiPEN1_.
+ iDcoaGVjvr7w0FU21faIG4k9eAgr2w.9gcx8JTOlddurfADYS1dRa8RvKQ6PzZp0Y1jl8tgphw0v
+ 7dsIKOhbe8gwlJPsYHnjL3.RM3LHXyfyTgR_cP.Mht0uusQz7Ep10zquHM6yNQNRQpbkm_kJPFo9
+ x5YfCL4k8fk6q43.aGx6Airx7jSDn75EsOs7BmNfRWnw7FrjGFLsH13j2MenuJHBKo6duzYI4uXW
+ 1RAN3dq9B5KKWngfZGmYHE8.gGOVtoeuAgJzvO422vixn9LRaZqBJiNiIicwlKkS8L_0bDZBljGd
+ 87JBroWUaHtsGDSWz1kUInLx.LOW6kdjDFvdoDwr02QZPI7TCSwwiX3dQx8PEuoAdIMxRUARmVrg
+ H1NmhNBo80U6K9Pmp98G5BAgNOzLzbKT_yXUNcbHnk3IwAAbEBcqcwPQEgRLL0tpztIfo9khz00z
+ g1WWIfyx5qaWrAbxvSmJFHo5zgRnGr47osZcFTaxbPtik9l01J.KNTF7zVaxHp.Kk9S5cSF48sks
+ Zl5TpBxKerG.fut_AP_J_rRJ1cXexQ0Xn.SZUxrVVgDyA6wSaeW1YgWe7r3_CKF.fIPqkYVcUPDC
+ CR5eFq7jYs70VlS5XacPiCyo8bJ8RFzIBB1yHqX.bMSbdzp_OwKhNjv5DNe.NuVpSdps06q9TiLf
+ CVt9Vkp7lhkAdVdzXH3ubgc3y7SEq5ONI6QaSR2tYjM8MVGNY4fMOkqr5.L1EiemZRvOu8MArDQX
+ reT.mIFvPznZpSk8pHTtCzxnW.hS_ENBjXI3xodThsahwN5xbY_hce9uMLelCSLZVhDxzGk7X6qT
+ 0OKDk8ewDnWE1U_tWhU3zsWhXdqfI4ng9_71g3yFivcmNHw5YtCrreodsci8FLGlAvMMePrCn2WX
+ XM6SGtj_YbfkVgfbjaZyglZorWgmMAbqj.C9fq4ZoYjsJSxuODORJnnYA8mn.4Hkm_N_uE.ZiOOz
+ xLZwg4EoXbg1j1TNlu6SCgia0m3FVN32qwyzjdwhMdfLWBZK.hMtBB_Z.7q1KsZ5Bme6FHNw2vKP
+ 7AfDjfxtkPUuV._HirhH6qsyIc9aJw.1NBBmSkyFd2x4gIhEWRm6e1xMy5HJSXBbWKLtgYB9FceP
+ C.w8c38eQpVEZsxpG3JMdLx__mya3I2jNMW3jEEwx9SJVPhQByRygh.7WsaUsK438TOHjThE6PG5
+ jUJy2fGJj4bhBZ6IZtd22vatQ65zHsJNoFDuegYI72io5tsFvvHUj7EfxZwUuZM.P1ugQUVuqrZm
+ TN5wYhqS_aXZiHJNFc9mtntjiP2I2NP6b.YBS2Zc90apeTZd68Vhlqvwbbk3KKlvM1juknvF52WG
+ Dz7bD8m9fU_fbqivHlFygBtP_JIbNaO_2DJRmDmx..6X.U5D_3cC9oJjp9oLQHH52FbzbhAErLHe
+ BNneoFqN3XzWQ_iAvN9wNOrfozU1foi.RmX8zzwr8XMEatk9BSDX_PSWyjaa3pUVQBltVliRH46L
+ wjjT7AsnVEO0yCbtmdHbegBP7XGYXglt5NOdURyJnHzXF0_zoEV58eXRoSHozD5uF9yeElt7asS_
+ J0zEMCeR0XLtkAsO_ra9W0l0mO6TGBi35onOfzlpMH4kWPd1xcmnwtX6TnigIdUv85.NCc3PyfnY
+ YX7HOzBNlHGbTIPiTj1uYe9Cuo1gPx5h36Y3m50T8C2PQUH2xT1CyhR.SlwWOSAZLCze3ixQAzQG
+ rLQgVLtita.HQbTeoB0GYHXrzq3VKcHtQJjSo1Sj1CimHLjjKDIC4pSynjjfsoDAtyKPCVTAz6t0
+ AO9s.VXaNXo_2kqmRkMSxgrvWEWnraGUs49zepu62iDRIPt4bw_EyKIzsB1ePNI09yn7SbXApgpS
+ 3edf.FsMnywcKjgMCqGjZeHOi9MSqV69dOsFFMTNsi6varEKdPo0eNOgNaLqrbgNtgT9XqVVp8wU
+ zQBXs2Red4zgqMU91LhlrCeHsszEndFrL4XI7a_LO1jTDTBGGSKY-
 X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: b22f7f13-db49-4a95-8086-bc41c832298a
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Sat, 10 Oct 2026 19:44:05 +0000
-Received: by hermes--production-ir2-5dd9bf4598-fvbwk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 1116e2803c667d355160b1f9f9bf9040;
-          Sat, 10 Oct 2026 19:44:03 +0000 (UTC)
-Message-ID: <2a637a34-6d4f-4a07-88b5-04475ebbba2e@yahoo.com>
-Date: Sat, 10 Oct 2026 21:44:01 +0200
+X-Sonic-ID: b52615f1-a628-4ef0-abe0-b8aea0ed1d9f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Sat, 10 Oct 2026 19:44:57 +0000
+Received: by hermes--production-ir2-5dd9bf4598-lsjm6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5f53752bd3862099eb73f04915345000;
+          Sat, 10 Oct 2026 19:44:54 +0000 (UTC)
+Message-ID: <8d3a9cc7-17cb-46b5-ac78-c7b4055989a7@yahoo.com>
+Date: Sat, 10 Oct 2026 21:44:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,8 +64,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH net-next v3 8/9] net: dsa: realtek: rtl8365mb: re-latch the
- family D SerDes
+Subject: [PATCH net-next v3 9/9] net: dsa: realtek: rtl8365mb: add support for
+ RTL8367S-VB
 From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
@@ -78,481 +78,96 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: WebService/1.1.26668 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-The family D receiver latches on the DISABLE -> HSGMII edge in SDS_MISC
-rather than on the value, and it will not latch until the MAC at the
-other end of the trunk has brought its own half of the link up. If it
-does not latch, the trunk reports 2.5Gbps/Full on both sides but moves
-no frames: the CPU MAC transmits, the switch CPU port counts no octets,
-and there are no CRC, alignment or FIFO errors.
+Add the RTL8367S-VB (chip ID 0x6642, version 0x0010) to the chip table.
+It is the first chip of family D, whose handling was added in the
+preceding patches, so this is the patch that makes it reachable.
 
-The two ends can be seconds apart, e.g. on an IPQ5018 board:
+The SGMII/HSGMII SerDes of this chip sits on external interface 0
+(port 6), and the MII/TMII/RMII/RGMII interface on external interface 1
+(port 7), the other way round than on family C chips. The chip reuses the
+existing initialization jam table.
 
-  5.27  rtl8365mb: configuring for fixed/2500base-x   <- pcs_config()
-  7.72  ipq5018-gmac-dwmac eth0: configuring for fixed/2500base-x
-  8.02  ipq5018-gmac-dwmac eth0: Link is Up - 2.5Gbps/Full
-  8.56  SerDes latches
+The chip has 8 ports, not 11. Cap priv->num_ports at
+RTL8365MB_D_MAX_NUM_PORTS for family D. This is a functional change: it
+sets ds->num_ports, the IRQ domain size and the bound of every loop over
+priv->num_ports.
 
-pcs_config() runs seconds before the far-end MAC even starts
-configuring, so a single edge driven from there is not enough: the
-receiver has nothing to latch onto yet. Neither is pcs_link_up(),
-which is seconds early for the same reason. phylink does not help
-either - it never calls rtl8365mb_pcs_get_state() for this port in
-the first place, since mb->pcs.poll only arms phylink's own poll for
-in-band links, and this CPU port is a fixed link.
+The L2 learning limit is the same as on family C (2112 entries), as
+given by the Realtek rtl8367 common API (rtl8367_common V1.4.2), so
+RTL8365MB_LEARN_LIMIT_MAX needs no per-family handling; only its
+comment is updated.
 
-There is no local signal that predicts when the far-end MAC will
-bring up its half of the link (bit 8 of the SDS link-status word
-does not change ahead of it), so the work cannot wait for it; it can
-only tell afterwards, from the link-status bit, whether an edge took.
-Nothing external re-checks this later. So pcs_config() kicks off one
-attempt, and the work re-arms itself after each edge; the next run
-checks whether the edge took, rather than waiting on a poll that will
-not come.
+Tested on a TP-Link Archer AX55 v1 (RTL8367S-VB, CPU port over HSGMII
+to an IPQ5018) with bridge VLAN filtering and per-port PVIDs.
 
-Each attempt (park for 20 ms, then restore the target mode) is
-performed by a work item rather than from pcs_config(), because the
-attempts have to continue for seconds after pcs_config() has returned.
-pcs_config() re-runs cancel the work, so an attempt never interleaves
-with a reconfiguration. Before parking, the work reads the link status
-itself and does not park if the receiver has already latched, since the
-condition that queued it may be stale by the time it runs; it then ends
-the episode instead.
-
-Attempts are spaced about 1 s apart and capped at
-RTL8365MB_D_SDS_RELATCH_MAX_TRIES (15) per fast episode. After the last
-attempt one more run checks whether it took and only then warns that
-the SerDes did not latch. The work then keeps driving one edge per
-RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL, so a far end that comes up late
-or a link that drops again is recovered without a reconfiguration,
-at a bounded cost of one 20 ms park per interval.
-
-Once the receiver has latched, the work keeps checking the link every
-10 s (RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL). If it finds the link down
-outside a reconfiguration, e.g. after the far end reset its PLL, it
-logs that and starts a new episode. An episode also starts at every
-pcs_config().
-
-For family D, pcs_config() keeps the masked update of SDS_MISC and saves
-the value it wrote as the target the work restores. The work parks and
-restores with masked updates over the same fields, so other bits are
-never touched.
-
-The work reads the SerDes link status through the SDS_INDACS indirect
-access window, a multi-register ADR/CMD/DATA sequence that the PCS
-callbacks also use, so those sequences are serialized by a new sds_lock.
-The SDS_MISC updates need no extra locking: each one is a single regmap
-read-modify-write.
-
-The work is only started for 2500base-x, the mode the re-latch edge
-was observed with. It is cancelled from pcs_disable(), from
-pcs_config() before SDS_MISC is touched, from teardown(), and by a
-devres action, so that it never outlives the PCS or the driver data.
-
-Co-developed-by: Oleg Gavrilov <gabonpivovich@gmail.com>
-Signed-off-by: Oleg Gavrilov <gabonpivovich@gmail.com>
 Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 ---
- drivers/net/dsa/realtek/rtl8365mb_main.c | 264 +++++++++++++++++++++--
- 1 file changed, 249 insertions(+), 15 deletions(-)
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 31 +++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index 0d3a2a3..5d80409 100644
+index 5d80409..c604560 100644
 --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -97,6 +97,7 @@
- #include <linux/irqdomain.h>
- #include <linux/mii.h>
- #include <linux/mutex.h>
-+#include <linux/workqueue.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/if_bridge.h>
-@@ -298,6 +299,28 @@
- #define   RTL8365MB_SDS_MISC_SGMII_SPD_MASK		GENMASK(8, 7)
- #define   RTL8365MB_SDS_MISC_MAC8_SEL_SGMII_MASK	BIT(6)
- 
-+/* Re-latch retry interval and attempt budget. Each attempt parks the
-+ * SerDes for 20 ms, so a far end that never comes up must not be retried
-+ * at this rate forever, and the interval must not be so tight that
-+ * back-to-back parks starve a link that is about to latch. The count is
-+ * reset to 1 by pcs_config() and to 0 whenever the receiver latches;
-+ * attempts start at pcs_config(), well before the far end MAC is up, so
-+ * with the interval below the budget is roughly RELATCH_MAX_TRIES seconds,
-+ * generous enough to outlast a slow conduit.
-+ */
-+#define RTL8365MB_D_SDS_RELATCH_INTERVAL	(HZ)
-+#define RTL8365MB_D_SDS_RELATCH_MAX_TRIES	15
-+
-+/* The SerDes stays parked until the restore write succeeds, so a failed
-+ * write is retried this many times before giving up until the next run.
-+ */
-+#define RTL8365MB_D_SDS_RESTORE_TRIES		3
-+
-+/* How often a latched (or out-of-budget) SerDes is checked, and re-latched
-+ * if still down. Much slower than the re-latch interval.
-+ */
-+#define RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL	(10 * HZ)
-+
- /* SerDes internal registers, accessed via the SDS_INDACS registers. The BMCR
-  * data path reset holds BMCR_ANENABLE | BMCR_ISOLATE while toggling the
-  * vendor-specific low bits from phase 1 to phase 2, which triggers a data path
-@@ -928,10 +951,16 @@ struct rtl8365mb_port {
-  * @chip_info: chip-specific info about the attached switch
-  * @cpu: CPU tagging and CPU port configuration for this chip
-  * @mib_lock: prevent concurrent reads of MIB counters
-+ * @sds_lock: serializes access to the shared SDS_INDACS ADR/CMD/DATA window,
-+ *            reachable both from phylink's PCS callbacks and from the
-+ *            family D SerDes re-latch work
-  * @ports: per-port data
-  * @pcs: PCS for the SerDes external interface
-  * @sds_supported: SerDes tuning parameters match the chip option, so the
-  *                 SerDes interface modes can be advertised
-+ * @sds_relatch: re-latch edges and link health check (family D)
-+ * @sds_relatch_count: next attempt of the re-latch episode, 0 once latched
-+ * @sds_misc_target_val: SDS_MISC_CFG_MASK fields the re-latch work restores
-  *
-  * Private data for this driver.
+@@ -89,6 +89,12 @@
+  * things will work out-of-the-box for other chips, and a careful review of the
+  * vendor driver may be needed to expand support. The RTL8365MB-VC seems to be
+  * one of the simpler chips.
++ *
++ * The RTL8367S-VB (chip ID 0x6642) is not part of the family listed above. It
++ * belongs to a newer generation, which this driver calls family D. Its
++ * registers differ in the VLAN table, the external interface speed and RGMII
++ * configuration and the SerDes, so the code paths specific to it are selected
++ * with rtl8365mb_get_family().
   */
-@@ -941,9 +970,13 @@ struct rtl8365mb {
- 	const struct rtl8365mb_chip_info *chip_info;
- 	struct rtl8365mb_cpu cpu;
- 	struct mutex mib_lock;
-+	struct mutex sds_lock;
- 	struct rtl8365mb_port ports[RTL8365MB_MAX_NUM_PORTS];
- 	struct phylink_pcs pcs;
- 	bool sds_supported;
-+	struct delayed_work sds_relatch;
-+	unsigned int sds_relatch_count;
-+	u32 sds_misc_target_val;
+ 
+ #include <linux/bitfield.h>
+@@ -118,9 +124,10 @@
+ #define RTL8365MB_NUM_PHYREGS		32
+ #define RTL8365MB_PHYREGMAX		(RTL8365MB_NUM_PHYREGS - 1)
+ #define RTL8365MB_MAX_NUM_PORTS		11
+-/* Valid for the whole family except RTL8370B, which has 4160 entries.
+- * RTL8370B is mentioned in vendor code but it might not even belong
+- * to the same RTL8367C family.
++#define RTL8365MB_D_MAX_NUM_PORTS	8
++/* Valid for the whole RTL8367C family (and for family D, RTL8367S-VB)
++ * except RTL8370B, which has 4160 entries. RTL8370B is mentioned in
++ * vendor code but it might not even belong to the same RTL8367C family.
+  */
+ #define RTL8365MB_LEARN_LIMIT_MAX	2112
+ #define RTL8365MB_MAX_NUM_EXTINTS	3
+@@ -874,6 +881,19 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
+ 		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+ 		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
+ 	},
++	{
++		.name = "RTL8367S-VB",
++		.chip_id = 0x6642,
++		.chip_ver = 0x0010,
++		.family = RTL8365MB_FAMILY_D,
++		.extints = {
++			{ 6, 0, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
++			{ 7, 1, PHY_INTF(MII) | PHY_INTF(TMII) |
++				PHY_INTF(RMII) | PHY_INTF(RGMII) },
++		},
++		.jam_table = rtl8365mb_init_jam_8365mb_vc,
++		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
++	},
  };
  
- #define pcs_to_rtl8365mb(_pcs) container_of((_pcs), struct rtl8365mb, pcs)
-@@ -1350,43 +1383,53 @@ static int rtl8365mb_ext_config_rgmii(struct realtek_priv *priv, int port,
- static int rtl8365mb_sds_write(struct realtek_priv *priv, u8 index,
- 			       u16 addr, u16 data)
- {
-+	struct rtl8365mb *mb = priv->chip_data;
- 	int ret;
+ enum rtl8365mb_stp_state {
+@@ -3787,7 +3807,10 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
  
-+	mutex_lock(&mb->sds_lock);
-+
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_DATA_REG, data);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_ADR_REG, addr);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	/* The SerDes indirect access engine completes the command within the
- 	 * register write transaction, so there is no need to wait or poll for
- 	 * completion before the next access, matching the vendor driver.
- 	 */
--	return regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
--			    RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
--			    RTL8365MB_SDS_INDACS_CMD_WR_MASK |
--			    FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
--				       index));
-+	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
-+			   RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
-+			   RTL8365MB_SDS_INDACS_CMD_WR_MASK |
-+			   FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
-+				      index));
-+
-+out_unlock:
-+	mutex_unlock(&mb->sds_lock);
-+	return ret;
- }
- 
- static int rtl8365mb_sds_read(struct realtek_priv *priv, u8 index,
- 			      u16 addr, u16 *data)
- {
-+	struct rtl8365mb *mb = priv->chip_data;
- 	u32 val;
- 	int ret;
- 
-+	mutex_lock(&mb->sds_lock);
-+
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_ADR_REG, addr);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	ret = regmap_write(priv->map, RTL8365MB_SDS_INDACS_CMD_REG,
- 			   RTL8365MB_SDS_INDACS_CMD_RUN_MASK |
- 			   FIELD_PREP(RTL8365MB_SDS_INDACS_CMD_INDEX_MASK,
- 				      index));
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	/* Wait for the indirect read to complete: the engine clears the BUSY
- 	 * bit once the data register holds the result.
-@@ -1396,15 +1439,19 @@ static int rtl8365mb_sds_read(struct realtek_priv *priv, u8 index,
- 				       !(val & RTL8365MB_SDS_INDACS_CMD_BUSY_MASK),
- 				       10, 1000);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	ret = regmap_read(priv->map, RTL8365MB_SDS_INDACS_DATA_REG, &val);
- 	if (ret)
--		return ret;
-+		goto out_unlock;
- 
- 	*data = val;
- 
--	return 0;
-+	ret = 0;
-+
-+out_unlock:
-+	mutex_unlock(&mb->sds_lock);
-+	return ret;
- }
- 
- /* The vendor driver selects between two sets of SerDes tuning parameters based
-@@ -1526,6 +1573,13 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 
- 	is_d = rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D;
- 
-+	/* Cancel any in-flight re-latch edge before touching SDS_MISC: the
-+	 * work parks SDS_MISC and restores the target value after a sleep, so
-+	 * it could otherwise write a stale target over the new configuration.
-+	 */
-+	if (is_d)
-+		cancel_delayed_work_sync(&mb->sds_relatch);
-+
- 	/* Select the appropriate tuning table and SDS mode */
- 	if (interface == PHY_INTERFACE_MODE_2500BASEX) {
- 		if (is_d) {
-@@ -1611,7 +1665,9 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 	if (ret)
- 		return ret;
- 
--	if (!is_d) {
-+	if (is_d) {
-+		WRITE_ONCE(mb->sds_misc_target_val, misc_val);
-+	} else {
- 		val = sds_mode << RTL8365MB_DIGITAL_INTERFACE_SELECT_MODE_OFFSET(id);
- 		ret = regmap_update_bits(priv->map,
- 					 RTL8365MB_DIGITAL_INTERFACE_SELECT_REG(id),
-@@ -1658,8 +1714,155 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
- 	val &= ~RTL8365MB_SDS_NWAY_EN_MASK;
- 	val |= RTL8365MB_SDS_NWAY_RESTART_MASK;
- 
--	return rtl8365mb_sds_write(priv, sds_index,
--				   RTL8365MB_SDS_REG_NWAY, val);
-+	ret = rtl8365mb_sds_write(priv, sds_index,
-+				  RTL8365MB_SDS_REG_NWAY, val);
-+	if (ret)
-+		return ret;
-+
-+	/* The re-latch edge has only been observed with HSGMII, so the work is
-+	 * only started for 2500base-x. Start a new episode and kick off the
-+	 * first attempt; see rtl8365mb_sds_relatch_work() for why this cannot
-+	 * wait for phylink to ask again.
-+	 */
-+	if (is_d && interface == PHY_INTERFACE_MODE_2500BASEX) {
-+		WRITE_ONCE(mb->sds_relatch_count, 1);
-+		schedule_delayed_work(&mb->sds_relatch, 0);
-+	}
-+
-+	return 0;
-+}
-+
-+/* The family D receiver latches on a DISABLE -> mode edge in SDS_MISC
-+ * rather than on the value, and only once the far-end MAC has brought up
-+ * its half of the link. No local signal predicts that (bit 8 of the SDS
-+ * link-status word does not change ahead of it), so the work cannot wait
-+ * for it, only check afterwards whether an edge took. Nor does phylink
-+ * call rtl8365mb_pcs_get_state() for a link without in-band signalling
-+ * such as the fixed-link CPU trunk (mb->pcs.poll only arms phylink's own
-+ * poll for in-band links), so this cannot rely on being polled at all.
-+ * Instead, pcs_config() starts an episode and this work re-arms itself
-+ * after every edge, its next run checking whether the edge took.
-+ *
-+ * An episode is capped at RTL8365MB_D_SDS_RELATCH_MAX_TRIES edges, spaced
-+ * RTL8365MB_D_SDS_RELATCH_INTERVAL apart, so that a far end which never
-+ * comes up costs a bounded burst of 20 ms parks. The run after the last
-+ * edge only checks whether it took and reports failure; from then on one
-+ * edge is driven per RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL, so a far end
-+ * that comes up late is recovered without a reconfiguration. Once the
-+ * receiver has latched the work just polls the link at the same slow
-+ * interval; finding it down then starts a new episode, e.g. after the far
-+ * end reset its PLL without a reconfiguration.
-+ *
-+ * sds_relatch_count is the number of the next attempt of the episode: 0
-+ * while latched, 1..MAX_TRIES in budget, MAX_TRIES + 1 for the run that
-+ * only reports, and above that once out of budget.
-+ */
-+static void rtl8365mb_sds_relatch_work(struct work_struct *work)
-+{
-+	struct rtl8365mb *mb = container_of(to_delayed_work(work),
-+					    struct rtl8365mb, sds_relatch);
-+	struct realtek_priv *priv = mb->priv;
-+	u32 park = (READ_ONCE(mb->sds_misc_target_val) &
-+		    ~RTL8365MB_D_SDS_MISC_MODE_FIELD_MASK) |
-+		   RTL8365MB_D_PORT_SDS_MODE_DISABLE;
-+	unsigned long delay = RTL8365MB_D_SDS_RELATCH_INTERVAL;
-+	unsigned int attempts;
-+	u16 status;
-+	int ret;
-+	int i;
-+
-+	/* The condition that queued this work may already be stale by the
-+	 * time it runs (e.g. an earlier edge from a prior attempt just
-+	 * latched). Parking an already-live link would drop it for no
-+	 * reason.
-+	 */
-+	ret = rtl8365mb_sds_read(priv, RTL8365MB_D_SDS_EXT0_INDEX,
-+				 RTL8365MB_SDS_REG_LINK_STATUS, &status);
-+	if (ret) {
-+		dev_err_ratelimited(priv->dev,
-+				    "failed to read SerDes link status: %pe\n",
-+				    ERR_PTR(ret));
-+		goto rearm;
-+	}
-+	if (status & RTL8365MB_SDS_LINK_STATUS_LINK_MASK) {
-+		/* Latched: end the episode, keep watching for a later loss. */
-+		WRITE_ONCE(mb->sds_relatch_count, 0);
-+		delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL;
-+		goto rearm;
-+	}
-+
-+	attempts = READ_ONCE(mb->sds_relatch_count);
-+	if (!attempts) {
-+		dev_warn(priv->dev,
-+			 "SerDes link lost outside a reconfiguration; re-latching\n");
-+		attempts = 1;
-+	} else if (attempts == RTL8365MB_D_SDS_RELATCH_MAX_TRIES + 1) {
-+		/* This run only checked whether the last in-budget edge
-+		 * took. The first out-of-budget edge comes one healthcheck
-+		 * interval from now, not on this pass.
-+		 */
-+		WRITE_ONCE(mb->sds_relatch_count, attempts + 1);
-+		dev_warn(priv->dev,
-+			 "SerDes did not latch after %u re-latch attempts; still retrying every %d s\n",
-+			 RTL8365MB_D_SDS_RELATCH_MAX_TRIES,
-+			 RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL / HZ);
-+		delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL;
-+		goto rearm;
-+	}
-+
-+	if (attempts <= RTL8365MB_D_SDS_RELATCH_MAX_TRIES)
-+		WRITE_ONCE(mb->sds_relatch_count, attempts + 1);
-+	else
-+		/* Past the fast-retry budget. The receiver latches only on a
-+		 * DISABLE -> mode edge and nothing re-runs pcs_config() for a
-+		 * link without in-band signalling, so keep driving one edge
-+		 * per interval.
-+		 */
-+		delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL;
-+
-+	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-+				 RTL8365MB_D_SDS_MISC_CFG_MASK, park);
-+	if (ret) {
-+		dev_err_ratelimited(priv->dev,
-+				    "failed to park SDS_MISC: %pe\n",
-+				    ERR_PTR(ret));
-+		goto rearm;
-+	}
-+
-+	usleep_range(20000, 21000);
-+
-+	for (i = 0; i < RTL8365MB_D_SDS_RESTORE_TRIES; i++) {
-+		ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-+					 RTL8365MB_D_SDS_MISC_CFG_MASK,
-+					 READ_ONCE(mb->sds_misc_target_val));
-+		if (!ret)
-+			break;
-+		usleep_range(1000, 2000);
-+	}
-+	if (ret) {
-+		dev_err_ratelimited(priv->dev,
-+				    "failed to restore SDS_MISC: %pe\n",
-+				    ERR_PTR(ret));
-+		/* The SerDes is left parked: come back soon rather than
-+		 * at the (possibly 10 s) pace chosen above.
-+		 */
-+		delay = RTL8365MB_D_SDS_RELATCH_INTERVAL;
-+		goto rearm;
-+	}
-+
-+	dev_dbg(priv->dev, "SerDes re-latch edge driven (attempt %u)\n",
-+		attempts);
-+
-+	/* This edge may not have taken either; the next run checks. */
-+rearm:
-+	schedule_delayed_work(&mb->sds_relatch, delay);
-+}
-+
-+static void rtl8365mb_sds_relatch_cancel(void *data)
-+{
-+	struct rtl8365mb *mb = data;
-+
-+	cancel_delayed_work_sync(&mb->sds_relatch);
- }
- 
- static bool rtl8365mb_interface_is_serdes(phy_interface_t interface)
-@@ -1802,11 +2005,20 @@ static void rtl8365mb_pcs_link_up(struct phylink_pcs *pcs,
- 	}
- }
- 
-+static void rtl8365mb_pcs_disable(struct phylink_pcs *pcs)
-+{
-+	struct rtl8365mb *mb = pcs_to_rtl8365mb(pcs);
-+
-+	if (rtl8365mb_get_family(mb->priv) == RTL8365MB_FAMILY_D)
-+		cancel_delayed_work_sync(&mb->sds_relatch);
-+}
-+
- static const struct phylink_pcs_ops rtl8365mb_pcs_ops = {
- 	.pcs_inband_caps = rtl8365mb_pcs_inband_caps,
- 	.pcs_config = rtl8365mb_pcs_config,
- 	.pcs_get_state = rtl8365mb_pcs_get_state,
- 	.pcs_link_up = rtl8365mb_pcs_link_up,
-+	.pcs_disable = rtl8365mb_pcs_disable,
- };
- 
- static int rtl8365mb_ext_config_forcemode(struct realtek_priv *priv, int port,
-@@ -3506,6 +3718,10 @@ out_error:
- static void rtl8365mb_teardown(struct dsa_switch *ds)
- {
- 	struct realtek_priv *priv = ds->priv;
-+	struct rtl8365mb *mb = priv->chip_data;
-+
-+	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D)
-+		cancel_delayed_work_sync(&mb->sds_relatch);
- 
- 	rtl8365mb_stats_teardown(priv);
- 	rtl8365mb_irq_teardown(priv);
-@@ -3572,6 +3788,24 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
  	dev_info(priv->dev, "found an %s switch\n", mb->chip_info->name);
  
- 	priv->num_ports = RTL8365MB_MAX_NUM_PORTS;
-+
-+	ret = devm_mutex_init(priv->dev, &mb->sds_lock);
-+	if (ret)
-+		return ret;
-+
-+	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D) {
-+		/* Registered after sds_lock, so on release the work is
-+		 * cancelled before the mutex is destroyed.
-+		 */
-+		INIT_DELAYED_WORK(&mb->sds_relatch,
-+				  rtl8365mb_sds_relatch_work);
-+		ret = devm_add_action_or_reset(priv->dev,
-+					       rtl8365mb_sds_relatch_cancel,
-+					       mb);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	mb->priv = priv;
- 	mb->cpu.trap_port = RTL8365MB_MAX_NUM_PORTS;
- 	mb->cpu.insert = RTL8365MB_CPU_INSERT_TO_ALL;
+-	priv->num_ports = RTL8365MB_MAX_NUM_PORTS;
++	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D)
++		priv->num_ports = RTL8365MB_D_MAX_NUM_PORTS;
++	else
++		priv->num_ports = RTL8365MB_MAX_NUM_PORTS;
+ 
+ 	ret = devm_mutex_init(priv->dev, &mb->sds_lock);
+ 	if (ret)
 -- 
 2.53.0
 
