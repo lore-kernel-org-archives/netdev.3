@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE32C4BB298;
-	Sat, 10 Oct 2026 19:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35154BD363;
+	Sat, 10 Oct 2026 19:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791661217; cv=none; b=UbCi6mysyPJUA913X/JANpd7pt1B5RjHO+UMX1+s8Z7Tlt8TUgb9jm7COONNpsy6kx/TNjbCxFd7pHce0iOYB3/WKiUEFWux4caoGhZRMIzEkoNBZX/aD8dvU2+M7JQuz8LKMxA52TrdYeS6y46dlaop9uHpVzChrxu9WREaqe8=
+	t=1791661217; cv=none; b=FzLYPtA3NxBIp1uLiGxAMc6Neg43kVVt11PvvyCchrzAhzxZGjhP4c6kagacdGwc9ZjcFOQbZuZfnUwDGETzzv3e6rQa/mgjuN53k3u4GM2GcFdLxOaYXSuWk9pOBKFVQCbZJ4vr3hsM7MMBuKNmwmo+3L/VOBJ5a+Gl5iBWajw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791661217; c=relaxed/simple;
-	bh=I4ATVEh7unBIA3iDv8TcKZgRPvpPi6uCNiKW67MdfT0=;
+	bh=nv2tocSlpYGtnHFuL673b6JquwYesAJKQf4bvqmTL4w=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=AGbGaGh0UZgEO9BYhETqu2oaceWRYuFWp/6HDxk2uCGaUKjnJ9rF3BQcfaZfeXyEwDuh2HzT01CPPEhrTgbbRNYcHiDbndG4ZPQb/6obtPjFQ5lzkYAoFLWogW4dGOkT+beL2NqiDoiq5/AujQ+Ia0bCY8DkTtz/oBRSw6/x3T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KqLTWGBH; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=mcH9an0EPG27SCnM6FWkbUcSfgQY824jGi6cuGT/iryyAa1BHIrHpx5AhxbRCGTnMYh4Q4u74CW5tZMl3PcojOU7DaAazWl6T1u/VJQAhbxEqPv2b8HNf0YbhRKYKluWzN0P+Fl1ArJuFahaRKXsMVCd1p6hhjJNJxctX9RH12Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QL5Hd9aF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KqLTWGBH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C711F000FF;
-	Sat, 10 Oct 2026 19:40:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QL5Hd9aF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82F91F00893;
+	Sat, 10 Oct 2026 19:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791661211;
-	bh=0r5UUjFumMsYCBi2YuyR6SkyRNOKpNF/2rDGULVRSvs=;
+	s=k20260515; t=1791661213;
+	bh=8V4+4hZdwtqnR1ZUsdI2kqMyO5eC8bR6rdfVX9L2Ph0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KqLTWGBHjpHCy0PDCpj4fxfdmps3xnzV5PPQAMbd6mRwLEETFc/ZRWuN//Woq49Ea
-	 MBxJ1tc8N9aeNqZS/exoExTdluU+qt6RgM2iqjWXthkOMujJAuC7O1OSKWuLhP4thx
-	 rxYFfHxN5P6zghGDpJt44jNZIeRyePlmJq3Gqla69Sob1n9PwAD5QQ5QlXt+9TFzMB
-	 MIXATpM08uASh7Nf5zkon8Vx67UU+tVzNJhDobWYT393vZf/tTIwdXJBK8rAsZt5XY
-	 58NCsIQITu6FzbjtBRi5GPp90EtLaPruoopUpBoArZkEAi4u0y8tjNMJ+WEd0ZLc3P
-	 PODz/aG/eEDDA==
-Subject: Re: [PATCH net-next v9 02/11] Documentation: networking: Add
- timestamp related APIs to OA TC6 framework
+	b=QL5Hd9aFdrxwjkLCggoJcfP0Wpb9nnRn/qg3r8cM7ZWLb4mDrl8STHv8PhU0TzWVM
+	 ddqJO5XJyqdPQJ5RH0CsSBhn1j2JwMnEkMojRQwqJWrd1UsxETTHvmFWvJKf6mM7y4
+	 ivrhxqCWjYgYxrG0fcLlAkxZ5+AKHExxkOW8t7q/aL6jjFa9ew6s94iX447GyE8QGr
+	 6zJ3pf8VENcMCHo/QgWe7DOblFkJJBZh8RgpoEcgHBt49vFtApnO3zG8C4e6RP7pUI
+	 1sfXzc4hzGu5JLGk21D5KJnucD3zMqjzz+A5TirxvV1GTd3lBTiKSj90+Q8D1R7Pwl
+	 ihr2rMeTYu8HA==
+Subject: Re: [PATCH net-next v9 03/11] net: ethernet: oa_tc6: Move oa_tc6.c to
+ its own directory
 From: netdev-bot+sashiko@kernel.org
 To: Selvamani.Rajagopal@onsemi.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -38,11 +38,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, piergiorgio.beruto@gmail.com, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, jerry.ray@microchip.com, ciprian.regus@analog.com
-Date: Sat, 10 Oct 2026 19:40:09 +0000
-Message-ID: <179166120913.434549.12298856160000074889@kernel.org>
-In-Reply-To: <20261009-s2500-mac-phy-support-v9-2-dcefe1d0bf0d@onsemi.com>
-References: <20261009-s2500-mac-phy-support-v9-2-dcefe1d0bf0d@onsemi.com>
-X-sashiko-severity: Low
+Date: Sat, 10 Oct 2026 19:40:11 +0000
+Message-ID: <179166121127.434549.2014178695820662916@kernel.org>
+In-Reply-To: <20261009-s2500-mac-phy-support-v9-3-dcefe1d0bf0d@onsemi.com>
+References: <20261009-s2500-mac-phy-support-v9-3-dcefe1d0bf0d@onsemi.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,101 +52,97 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] Baseline decision: false positive, kept only because
-  requires_validation=true.
-- [Low] The new framework bullet in Documentation/networking/oa-
-  tc6-framework.rst (lines 156-158) reads: 'If supported by the hardware…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message presents this as a pure file move ("Move
+  oa_tc6.c to its own directory", similarity index 100%), but the patch…
 
 --
 
-Documentation: networking: Add timestamp related APIs to OA TC6 framework
+net: ethernet: oa_tc6: Move oa_tc6.c to its own directory
 
-This patch documents new OA TC6 framework APIs for hardware timestamping,
-PTP clock registration and the VEND1 MMS mapping helper. It also documents
-the existing MMS-based register read/write helpers. A new entry in the
-framework feature list describes hardware timestamp updates in the skb.
+This patch moves drivers/net/ethernet/oa_tc6.c into a new
+drivers/net/ethernet/oa_tc6/ directory, which gets its own Kconfig and
+Makefile. It prepares for the hardware timestamping and PTP files that
+come later in the series.
 
-> diff --git a/Documentation/networking/oa-tc6-framework.rst b/Documentation/networking/oa-tc6-framework.rst
-> index 2545ef694016f..3cfe8cb7cf75f 100644
-> --- a/Documentation/networking/oa-tc6-framework.rst
-> +++ b/Documentation/networking/oa-tc6-framework.rst
-> @@ -153,6 +153,10 @@ OPEN Alliance TC6 Framework
->  - Forwards the received Ethernet frame from 10Base-T1x MAC-PHY to n/w
->    subsystem.
->  
-> +- If supported by the hardware and enabled, updates hardware timestamp
-> +  in skb, when indicated by one of the three timestamp capture registers
-> +  through TSC fields of the header.
-
-[Severity: Low]
-Does this bullet only describe the transmit side of timestamping?
-
-This document defines TSC as a field of the transmit data header:
-
-  TSC (Bit 7..6) - Timestamp Capture. Request a timestamp capture when the
-                   frame is transmitted onto the network.
-
-Receive timestamps use the RTSA/RTSP footer bits instead, and the timestamp
-is added to the start of the frame:
-
-  RTSA (Bit 7) - Receive Timestamp Added. This bit is set when a 32-bit or
-                 64-bit timestamp has been added to the beginning of the
-                 received Ethernet frame. ...
-
-By the end of the series the framework handles both paths. On transmit it
-sets the TSC field, reads the TTSCx capture registers and calls
-skb_tstamp_tx(). On receive in oa_tc6.c it parses RTSA/RTSP and checks the
-parity of the 64-bit timestamp at the start of the frame. It then stores
-the timestamp in skb_hwtstamps(skb) and strips it with skb_pull().
-
-This bullet comes right after the "Forwards the received Ethernet frame"
-item and refers to updating the timestamp in the skb. Could a reader take
-this to mean that receive timestamps come from the TSC capture registers?
-
-Would it be clearer to have one entry for transmit (TSC and capture
-registers) and another for receive (RTSA/RTSP)?
-
-> +
->  Data Transaction
->  ~~~~~~~~~~~~~~~~
->  
-> @@ -496,3 +500,58 @@ the MAC-PHY.
->  Zero align receive frame feature can be enabled to align all receive ethernet
->  frames data to start at the beginning of any receive data chunk payload with a
->  start word offset (SWO) of zero.
-> +
-> +.. c:function:: int oa_tc6_ptp_register(struct oa_tc6 *tc6, \
-> +                                        struct ptp_clock_info *info);
+> diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+> index a306dae23bcb8..e0e86c249e425 100644
+> --- a/drivers/net/ethernet/Makefile
+> +++ b/drivers/net/ethernet/Makefile
 
 [ ... ]
 
-> +.. c:function:: void oa_tc6_set_vend1_mms(struct oa_tc6 *tc6, int mms);
+> @@ -105,5 +106,4 @@ obj-$(CONFIG_NET_VENDOR_XILINX) += xilinx/
+>  obj-$(CONFIG_NET_VENDOR_XIRCOM) += xircom/
+>  obj-$(CONFIG_NET_VENDOR_SYNOPSYS) += synopsys/
+>  obj-$(CONFIG_NET_VENDOR_PENSANDO) += pensando/
+> -obj-$(CONFIG_OA_TC6) += oa_tc6.o
+>  obj-$(CONFIG_NET_VENDOR_ZTE) += zte/
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/oa_tc6/Makefile b/drivers/net/ethernet/oa_tc6/Makefile
+> new file mode 100644
+> index 0000000000000..f24aae852ef27
+> --- /dev/null
+> +++ b/drivers/net/ethernet/oa_tc6/Makefile
+> @@ -0,0 +1,7 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +#
+> +# Makefile for OA TC6 10BASE-T1x MAC-PHY
+> +#
 > +
-> +Helper to map MDIO_MMD_VEND1 command to vendor specific Memory Map Select
-> +(MMS) value. This function offers flexibility for vendors that may have
-> +used any MMS value between 10 and 15 as allowed by the specification.
-> +MDIO_MMD_VEND2 is already mapped to MMS4 in the OA TC6 frame work code.
+> +obj-$(CONFIG_OA_TC6) := oa_tc6_mod.o
+> +oa_tc6_mod-objs := oa_tc6.o
 
-[Severity: Low]
-This isn't a bug, but at this point in the series none of these APIs
-exist yet: oa_tc6_ptp_register(), oa_tc6_ptp_unregister(),
-oa_tc6_get_ts_info(), oa_tc6_hwtstamp_get(), oa_tc6_get_ts_stats(),
-oa_tc6_hwtstamp_set() and oa_tc6_set_vend1_mms(). Also,
-oa_tc6_get_phy_c45_mms() does not map MDIO_MMD_VEND1 yet.
+[Severity: Medium]
+Does this change the name of the module? Before this patch, the parent
+Makefile had:
 
-All of them are added later in the series, in "net: ethernet: oa_tc6:
-Support for hardware timestamp" and "net: ethernet: oa_tc6: Support for
-vendor specific MMS". This only affects someone reading the docs partway
-through the series.
+  obj-$(CONFIG_OA_TC6) += oa_tc6.o
 
-Would it make sense to move this patch after those two, so the docs land
-together with the code?
+That built oa_tc6.ko. With the composite target here, CONFIG_OA_TC6=m
+builds oa_tc6_mod.ko instead, and KBUILD_MODNAME becomes "oa_tc6_mod".
+
+The subject says "Move oa_tc6.c to its own directory", and the file
+rename shows similarity index 100%. Neither the commit message nor the
+changelog mentions the module rename, and nothing else in the tree uses
+the new name.
+
+Anything that refers to the module by name would stop matching. That
+includes "modprobe oa_tc6" and "rmmod oa_tc6", modprobe.d blacklist or
+options entries, /sys/module/oa_tc6, and module lists in initramfs or
+packaging. Dependent drivers like lan865x still load it automatically,
+because depmod resolves the dependency through exported symbols.
+
+The new name also stays in place at the end of the series:
+
+  oa_tc6_mod-objs := oa_tc6.o oa_tc6_ptp.o oa_tc6_tstamp.o
+
+Is the rename needed? kbuild only rejects a composite module that has the
+same name as one of its own objects.
+
+At this commit there is only one object, so a plain
+"obj-$(CONFIG_OA_TC6) += oa_tc6.o" in the subdirectory would keep
+oa_tc6.ko.
+
+After the other files are added, renaming the source file would also keep
+the old module name. For example, oa_tc6.c could become oa_tc6_core.c,
+with:
+
+  oa_tc6-y := oa_tc6_core.o oa_tc6_ptp.o oa_tc6_tstamp.o
+
+If the rename is intended, could the commit message say so?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d%40onsemi.com
