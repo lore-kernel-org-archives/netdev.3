@@ -1,861 +1,208 @@
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A89A3451CE
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 08:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EDF3B52FA;
+	Sat, 10 Oct 2026 08:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791621601; cv=none; b=UyaCn6TiqY8bUna+PdGSqtQvg0L6pLRNLysYhGkv8sJw2Qn4SlDkiMwCigB+XKIXZ2tZBLSiXTG4qQ2CCtHHzYYsocU0UGaMU31qvUKwyVdf70B7qs0koq94DinXbSV+NMsshSJzJzZSijUbouGXfX/2/U91jSC0lcakoQS3obM=
+	t=1791621626; cv=none; b=ZeN5tvbsUTmttAuF7IqVwBZNtTH+K6tQ9CRH4XKLL7wiT9kSabRmWxTeAONATq/kj56pNyacLttYdH4dHd0AaDkV/j++uOTDsTsDtHvojwXofqz7E/CcatHZlBGoKLWqAQT7ji+rRr7heO3CuFFUBON9E7lsR1hZXQRLhWhLjo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791621601; c=relaxed/simple;
-	bh=qFNEKp34lKsVrt8CzD/Bp8sYPaKmOL2RZgVzpoCQllE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X2E4pdWYtqJ6gLneFHs4DcaSUfAxIbA20ZsnzcgT4R6PKegvpMb/LUtbVe0nMcXckDZ7mw1+OO1oW7NWht2CkH0lqaxx0VFouRgMBuhpCjOLk8Ch0x1BiTA2LAojacbEBRiuxjgQbW7L11lAioxV09ODJxy2KHzineIUmjDPguE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ftuCcnto; arc=none smtp.client-ip=74.125.82.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	s=arc-20240116; t=1791621626; c=relaxed/simple;
+	bh=HdbbUhqbjD/1QW1enFmmU1Du7vzcRxNechaRIsb3oWU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jt3QFpTT0Zl0q2f8OrfcTPpSaqNJQw2T44nDGnhGro0viJ+6cLVLIt4T8MCfn/0vLETNxuKdAKrqAbHaNxGJR1lZOynCAg+tpIprAmDn1dikiVgKqEN7d9fmVrNEukGO3R7i45iPMonulc6y9QEW0ffwMsLBAfAr0JsXaboS8HY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fESpfesU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ftuCcnto"
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-357e2bc3b1bso749939eec.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 01:39:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791621583; x=1792226383; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3loHobRbvfkA1yU59pzJt/W5AzsqBPJt2rE4wK97BbQ=;
-        b=ftuCcntooKGU1tRC+recAbdzXEGhpxij4dMZfmcODcghG3D9WuiYMVUZM1AoXnKXlH
-         kjqAcyD1pewCQuTVVePSkLLh8AsSfsiampxjxSDhZ+ulh1ECeNh+qeoY44TiOs4typD6
-         DfSTbUcrAW3WKzl/4uPzD0uXRdoHwF+RBT+oIr/S+l3QPXAgytqe99rtj2VdAzNxuP9k
-         FCmRCES9MNqjNmTqrF3eT6Hd9NAQjwcHvAwYP83JaEp3OnmNgzYiNGvAhKDWOqo0juqP
-         +hZauTukq3z51UV9YooVfI52M2oUTr8/NN2+mZp6FPOebtIVY5K93lnPNLqBjmNFmLGZ
-         yn2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791621583; x=1792226383;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3loHobRbvfkA1yU59pzJt/W5AzsqBPJt2rE4wK97BbQ=;
-        b=Fwv/ESHAd9cS0Xm6XpcXQVufCtV6qW3g/EYmgVBf12/HhR+AirpHev4sEFcg4oVGZY
-         ZYFq4oj8E/vdZEYx/NfLhhMRFTFvckwJrjVy+65Z3oZHll4R1Zzlnbv2VRT1lEqxEfVc
-         s94VR+WuUqU7jWBYfKQI8DtN6NIpmmHXzqQEGP4tTb0RdL610BdT+JwSOrIx1TLfapo1
-         +D6sTtdoleynm9krkvrAzEwD/AzLka9TUiciOclmUlEwqKMkNkgGobmUANRWg8u3ksIr
-         bhzv/o7Ze7rlHQYD/rztopZgb+4QnoSEj9btNuEkhIMuwGF7MVbqegf8nHRqT2qkLb/l
-         hRbQ==
-X-Gm-Message-State: AFq9FYIH4EIkucfX2L99hoAPCxKa9/1KlJ++6EqRGr7Q9qZcT9iR/NXV
-	jCY7BrFL/Obth/C7GMTO6jpZ+7NfXOGZVjelJa36nbNgD6vnZAsDmUnbwNdUSAYiXG3uokFlY2I
-	I+x+H4UP/6RWQbUiDZ6fq7JoD7SVhcQC0cV9RFJVhfFoegzc93QL0V34Git9FfWexWPue3TqUF9
-	zCez1XLlGUIEAMh6WjRk8p8okyoVX0RaumPQqeGeXE1MrxzlCExOcgz+cRNjSVmGg=
-X-Received: from dycc24.prod.google.com ([2002:a05:693c:60d8:b0:33e:8d5d:6f5b])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:8212:b0:351:b65:63e5 with SMTP id 5a478bee46e88-3537e0587c5mr4987763eec.41.1791621582175;
- Sat, 10 Oct 2026 01:39:42 -0700 (PDT)
-Date: Sat, 10 Oct 2026 08:38:47 +0000
-In-Reply-To: <20261010083935.3274178-1-almasrymina@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fESpfesU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C571F000FF;
+	Sat, 10 Oct 2026 08:40:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791621621;
+	bh=GigaAgksWe+Wzj8d5hU/p7crR3OdI1UHqkxncEzre6U=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fESpfesUOr2nZHPalfZQlngsZeaSPaSJV31vxCDh5UgOARroUgSRC13HVHs7f1RNC
+	 IsqKPl3mr0FEGXjw1KZG+7UDFyiNkqXuuxQHBIrDZFTucLT8AQSLJU04CEvvHazFhc
+	 1Jk928k5A21igS8l83UmMbOVk7Pe0DBxuCOyeH7zOheFfA56jnZzF6enlJ89vnuVZC
+	 oGjnBqONVxfobwuCDZuCgwxMuB/8VbADoQwsLwMBV67YVa7JWP/HGHIb1gSn10sNLg
+	 vQTLuy2fXSTwfKyQXtFVDqDnzDsVbZzVmGii+8ZVf5AlAk7uFCs0h1GekP11W1Vz1j
+	 +lFQyj5V7TAxg==
+Subject: Re: [PATCH v4] sctp: reject forged cookie peer_addr with unknown
+ address family
+From: netdev-bot+sashiko@kernel.org
+To: hdthky0@gmail.com
+Cc: marcelo.leitner@gmail.com, lucien.xin@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-sctp@vger.kernel.org, netdev@vger.kernel.org
+Date: Sat, 10 Oct 2026 08:40:20 +0000
+Message-ID: <179162162010.434549.13276446555925201942@kernel.org>
+In-Reply-To: <20261009074601.3954275-1-hdthky0@gmail.com>
+References: <20261009074601.3954275-1-hdthky0@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261010083935.3274178-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261010083935.3274178-7-almasrymina@google.com>
-Subject: [PATCH net-next v1 6/6] net: kunit: test netmem, page_pool, and skb
- frag refcounting
-From: Mina Almasry <almasrymina@google.com>
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org
-Cc: Mina Almasry <almasrymina@google.com>, Ayush Sawal <ayush.sawal@chelsio.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>, 
-	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, 
-	Eric Biggers <ebiggers@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Michael Grzeschik <mgr@kernel.org>, 
-	"=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?=" <u.kleine-koenig@baylibre.com>, Petr Machata <petrm@nvidia.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Jakub Raczynski <j.raczynski@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-Verify that non-pp (page._refcount / binding->ref) and page_pool
-(pp_ref_count) references stay balanced without cross-counter leaks or
-underflows across regular pages, page_pool pages, non-pp net_iovs, and
-page_pool net_iovs with both pp_recycle=0 and pp_recycle=1.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Cover get/put_net_iov(), get/put_netmem(), napi_pp_get/put_page(),
-skb_netmem_ref/unref(), skb_frag_ref/unref(), pskb_copy(),
-skb_zerocopy(), skb_shift(), skb_split(), skb_release_data() (clones,
-unclone ordering, pskb_extract(), and skb_morph()), and skb_segment().
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
-Signed-off-by: Mina Almasry <almasrymina@google.com>
----
- net/core/net_test.c | 747 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 747 insertions(+)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-diff --git a/net/core/net_test.c b/net/core/net_test.c
-index 9c3a590865d26..f9f50f9159902 100644
---- a/net/core/net_test.c
-+++ b/net/core/net_test.c
-@@ -370,10 +370,757 @@ static void ip_tunnel_flags_test_run(struct kunit *test)
- 	KUNIT_ASSERT_TRUE(test, __ipt_flag_op(bitmap_equal, exp, out));
- }
- 
-+/* Netmem & SKB fragment refcounting */
-+
-+#include <linux/skbuff_ref.h>
-+#include <net/netmem.h>
-+#include <net/netdev_rx_queue.h>
-+#include <net/page_pool/helpers.h>
-+#include <net/page_pool/memory_provider.h>
-+#include "devmem.h"
-+#include "netmem_priv.h"
-+
-+static void netmem_ref_test_page(struct kunit *test)
-+{
-+	struct sk_buff *skb;
-+	netmem_ref netmem;
-+	struct page *page;
-+	int base_ref;
-+
-+	page = alloc_page(GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, page);
-+	netmem = page_to_netmem(page);
-+	base_ref = page_ref_count(page);
-+
-+	/* Layer 1: get_netmem / put_netmem use page non-pp refcount */
-+	get_netmem(netmem);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref + 1);
-+	put_netmem(netmem);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+#ifdef CONFIG_PAGE_POOL
-+	/* Layer 2: napi_pp_get/put_page return false on non-PP page */
-+	KUNIT_EXPECT_FALSE(test, napi_pp_get_page(netmem));
-+	KUNIT_EXPECT_FALSE(test, napi_pp_put_page(netmem));
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+#endif
-+
-+	/* Layer 3: skb_netmem_ref / unref fall back to non-pp on non-PP page */
-+	skb_netmem_ref(netmem, false);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref + 1);
-+	skb_netmem_unref(netmem, false);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+	skb_netmem_ref(netmem, true);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref + 1);
-+	skb_netmem_unref(netmem, true);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+	/* Layer 4: skb_frag_ref / skb_frag_unref on non-PP page */
-+	skb = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+
-+	skb->pp_recycle = 1;
-+	skb_frag_ref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref + 1);
-+	skb_frag_unref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+	skb_shinfo(skb)->nr_frags = 0;
-+	consume_skb(skb);
-+	__free_page(page);
-+}
-+
-+#ifdef CONFIG_PAGE_POOL
-+static void netmem_ref_test_pp_page(struct kunit *test)
-+{
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.pool_size = 4,
-+		.nid = NUMA_NO_NODE,
-+	};
-+	struct page_pool *pool;
-+	struct sk_buff *skb, *copy, *clone, *split;
-+	netmem_ref netmem;
-+	struct page *page;
-+	long base_pp_ref;
-+	int base_ref;
-+
-+	pool = page_pool_create(&pp_params);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool);
-+
-+	page = page_pool_dev_alloc_pages(pool);
-+	KUNIT_ASSERT_NOT_NULL(test, page);
-+	netmem = page_to_netmem(page);
-+	base_ref = page_ref_count(page);
-+	base_pp_ref = atomic_long_read(&page->pp_ref_count);
-+
-+	/* Layer 1: get_netmem / put_netmem always use non-pp refcount */
-+	get_netmem(netmem);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref + 1);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+	put_netmem(netmem);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+	/* Layer 2: napi_pp_get/put_page use pp_ref_count */
-+	KUNIT_EXPECT_TRUE(test, napi_pp_get_page(netmem));
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	KUNIT_EXPECT_TRUE(test, napi_pp_put_page(netmem));
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* Layer 3: skb_netmem_ref / unref obey recycle flag */
-+	skb_netmem_ref(netmem, false);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref + 1);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+	skb_netmem_unref(netmem, false);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+	skb_netmem_ref(netmem, true);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	skb_netmem_unref(netmem, true);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* Layer 4: skb_frag_ref / skb_frag_unref match on pp_recycle=1 & 0 */
-+	skb = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len = 64;
-+	skb->data_len = 64;
-+
-+	skb->pp_recycle = 1;
-+	skb_frag_ref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	skb_frag_unref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* pskb_copy on pp_recycle=1 skb propagates pp_recycle & pp_ref_count */
-+	copy = pskb_copy(skb, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, copy);
-+	KUNIT_EXPECT_TRUE(test, copy->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	consume_skb(copy);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* skb_zerocopy on pp_recycle=1 skb propagates pp_ref_count */
-+	copy = alloc_skb(0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, copy);
-+	skb_put(copy, skb_tailroom(copy));
-+	skb->head_frag = 1;
-+	KUNIT_ASSERT_EQ(test, skb_zerocopy(copy, skb, skb->len, 0), 0);
-+	skb->head_frag = 0;
-+	KUNIT_EXPECT_TRUE(test, copy->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	consume_skb(copy);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* skb_clone + pskb_expand_head preserves pp_recycle and pp_ref_count */
-+	clone = skb_clone(skb, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, clone);
-+	KUNIT_ASSERT_EQ(test, pskb_expand_head(clone, 32, 0, GFP_KERNEL), 0);
-+	KUNIT_EXPECT_TRUE(test, clone->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	consume_skb(clone);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* skb_split on page_pool frag propagates pp_recycle & balances refs */
-+	split = alloc_skb(0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, split);
-+	skb_split(skb, split, 32);
-+	KUNIT_EXPECT_TRUE(test, split->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	consume_skb(split);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* skb_segment on pp_recycle=1 skb propagates pp_recycle to segments */
-+	skb->protocol = htons(ETH_P_IP);
-+	skb_reset_network_header(skb);
-+	skb_shinfo(skb)->gso_size = 16;
-+	split = skb_segment(skb, NETIF_F_SG | NETIF_F_HW_CSUM);
-+	KUNIT_ASSERT_FALSE(test, IS_ERR_OR_NULL(split));
-+	KUNIT_EXPECT_TRUE(test, split->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 2);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	kfree_skb_list(split);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* skb_shift balances pp_ref_count on split and merge */
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len = 64;
-+	skb->data_len = 64;
-+	split = alloc_skb(0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, split);
-+	split->pp_recycle = 1;
-+	KUNIT_EXPECT_EQ(test, skb_shift(split, skb, 16), 16);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	KUNIT_EXPECT_EQ(test, skb_shift(split, skb, 48), 48);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+	skb_shinfo(split)->nr_frags = 0;
-+	consume_skb(split);
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len = 64;
-+	skb->data_len = 64;
-+
-+	skb->pp_recycle = 0;
-+	skb_frag_ref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref + 1);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+	skb_frag_unref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+	skb_shinfo(skb)->nr_frags = 0;
-+	consume_skb(skb);
-+	page_pool_put_full_page(pool, page, false);
-+	page_pool_destroy(pool);
-+}
-+#endif
-+
-+#if defined(CONFIG_PAGE_POOL) && defined(CONFIG_NET_DEVMEM)
-+static void dummy_percpu_ref_release(struct percpu_ref *ref)
-+{
-+}
-+
-+static void netmem_ref_test_net_iov(struct kunit *test)
-+{
-+	struct net_devmem_dmabuf_binding binding = {};
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.pool_size = 4,
-+		.nid = NUMA_NO_NODE,
-+	};
-+	struct sk_buff *skb, *clone, *copy;
-+	struct page_pool *pool;
-+	struct net_iov niov = {};
-+	netmem_ref netmem;
-+	long base_ref;
-+	int err;
-+
-+	err = percpu_ref_init(&binding.ref, dummy_percpu_ref_release,
-+			      PERCPU_REF_INIT_ATOMIC, GFP_KERNEL);
-+	KUNIT_ASSERT_EQ(test, err, 0);
-+
-+	net_iov_init(&niov, &binding.area, NET_IOV_DMABUF);
-+	netmem = net_iov_to_netmem(&niov);
-+	base_ref = atomic_long_read(&binding.ref.data->count);
-+
-+	/* Non-PP net_iov: get/put_net_iov & get/put_netmem */
-+	get_net_iov(&niov);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref + 1);
-+	put_net_iov(&niov);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+
-+	KUNIT_EXPECT_FALSE(test, napi_pp_get_page(netmem));
-+	KUNIT_EXPECT_FALSE(test, napi_pp_put_page(netmem));
-+
-+	skb_netmem_ref(netmem, true);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref + 1);
-+	skb_netmem_unref(netmem, true);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+
-+	/* Attach net_iov to a page_pool to test PP net_iov behavior */
-+	pool = page_pool_create(&pp_params);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool);
-+	netmem_set_pp(netmem, pool);
-+	netmem_or_pp_magic(netmem, PP_SIGNATURE);
-+	atomic_long_set(&niov.desc.pp_ref_count, 2);
-+
-+	/* Layer 0 & 1: get_net_iov / get_netmem grab non-pp ref even on PP */
-+	get_net_iov(&niov);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref + 1);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+	put_net_iov(&niov);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+
-+	/* Layer 2: napi_pp_get/put_page use pp_ref_count */
-+	KUNIT_EXPECT_TRUE(test, napi_pp_get_page(netmem));
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+	KUNIT_EXPECT_TRUE(test, napi_pp_put_page(netmem));
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+
-+	/* Layer 4: skb_frag_ref / skb_frag_unref on PP net_iov */
-+	skb = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len = 64;
-+	skb->data_len = 64;
-+
-+	skb->pp_recycle = 1;
-+	skb_frag_ref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+	skb_frag_unref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+
-+	/* pskb_copy on pp_recycle=1 net_iov skb keeps pp_ref_count */
-+	copy = pskb_copy(skb, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, copy);
-+	KUNIT_EXPECT_TRUE(test, copy->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+	consume_skb(copy);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+
-+	/* skb_zerocopy on pp_recycle=1 net_iov skb keeps pp_ref_count */
-+	copy = alloc_skb(0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, copy);
-+	skb_put(copy, skb_tailroom(copy));
-+	skb->head_frag = 1;
-+	skb->unreadable = 1;
-+	KUNIT_ASSERT_EQ(test, skb_zerocopy(copy, skb, skb->len, 0), 0);
-+	skb->head_frag = 0;
-+	KUNIT_EXPECT_TRUE(test, copy->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+	consume_skb(copy);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+
-+	/* skb_shift balances pp_ref_count on split and merge */
-+	copy = alloc_skb(0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, copy);
-+	copy->pp_recycle = 1;
-+	KUNIT_EXPECT_EQ(test, skb_shift(copy, skb, 16), 16);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+	KUNIT_EXPECT_EQ(test, skb_shift(copy, skb, 48), 48);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+	skb_shinfo(copy)->nr_frags = 0;
-+	consume_skb(copy);
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len = 64;
-+	skb->data_len = 64;
-+
-+	/* Uncloning a cloned pp_recycle=1 net_iov skb keeps pp_ref_count */
-+	clone = skb_clone(skb, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, clone);
-+	KUNIT_ASSERT_EQ(test, pskb_expand_head(skb, 32, 0, GFP_KERNEL), 0);
-+	KUNIT_EXPECT_TRUE(test, skb->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+	consume_skb(clone);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+
-+	skb->pp_recycle = 0;
-+	skb_frag_ref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref + 1);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+	skb_frag_unref(skb, 0);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_ref);
-+
-+	skb_shinfo(skb)->nr_frags = 0;
-+	consume_skb(skb);
-+	netmem_clear_pp_magic(netmem);
-+	netmem_set_pp(netmem, NULL);
-+	page_pool_destroy(pool);
-+	percpu_ref_exit(&binding.ref);
-+}
-+
-+static void netmem_ref_test_release_data(struct kunit *test)
-+{
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.pool_size = 4,
-+		.nid = NUMA_NO_NODE,
-+	};
-+	struct sk_buff *skb, *clone1, *clone2, *ext;
-+	struct net_devmem_dmabuf_binding binding = {};
-+	struct net_iov niov = {};
-+	struct page_pool *pool;
-+	struct page *page;
-+	netmem_ref netmem;
-+	long base_pp_ref;
-+	int base_ref;
-+	int i;
-+
-+	pool = page_pool_create(&pp_params);
-+	KUNIT_ASSERT_FALSE(test, IS_ERR(pool));
-+	page = page_pool_dev_alloc_pages(pool);
-+	KUNIT_ASSERT_NOT_NULL(test, page);
-+	netmem = page_to_netmem(page);
-+	page_pool_ref_netmem(netmem);
-+
-+	/* 3-way clone chain: only last clone drops pp_ref_count */
-+	skb = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	skb_put(skb, 32);
-+	skb->pp_recycle = 1;
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len += 64;
-+	skb->data_len = 64;
-+	base_ref = page_ref_count(page);
-+	base_pp_ref = atomic_long_read(&page->pp_ref_count);
-+
-+	page_pool_ref_netmem(netmem);
-+	clone1 = skb_clone(skb, GFP_KERNEL);
-+	clone2 = skb_clone(clone1, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, clone1);
-+	KUNIT_ASSERT_NOT_NULL(test, clone2);
-+
-+	/* Freeing head skb first leaves clone1/clone2 pp_recycle=1 intact */
-+	consume_skb(skb);
-+	KUNIT_EXPECT_TRUE(test, clone1->pp_recycle);
-+	KUNIT_EXPECT_TRUE(test, clone2->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	consume_skb(clone2);
-+	KUNIT_EXPECT_TRUE(test, clone1->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	consume_skb(clone1);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* All 4 combinations of (unclone skb vs clone) x (free order) */
-+	for (i = 0; i < 4; i++) {
-+		skb = alloc_skb(64, GFP_KERNEL);
-+		KUNIT_ASSERT_NOT_NULL(test, skb);
-+		skb_put(skb, 32);
-+		skb->pp_recycle = 1;
-+		skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+		skb->len += 64;
-+		skb->data_len = 64;
-+		page_pool_ref_netmem(netmem);
-+
-+		clone1 = skb_clone(skb, GFP_KERNEL);
-+		KUNIT_ASSERT_NOT_NULL(test, clone1);
-+		KUNIT_ASSERT_EQ(test,
-+				pskb_expand_head((i & 1) ? clone1 : skb,
-+						 32, 0, GFP_KERNEL), 0);
-+		KUNIT_EXPECT_TRUE(test, skb->pp_recycle);
-+		KUNIT_EXPECT_TRUE(test, clone1->pp_recycle);
-+		KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+				base_pp_ref + 2);
-+		KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+
-+		if (i & 2) {
-+			consume_skb(clone1);
-+			KUNIT_EXPECT_EQ(test,
-+					atomic_long_read(&page->pp_ref_count),
-+					base_pp_ref + 1);
-+			consume_skb(skb);
-+		} else {
-+			consume_skb(skb);
-+			KUNIT_EXPECT_EQ(test,
-+					atomic_long_read(&page->pp_ref_count),
-+					base_pp_ref + 1);
-+			consume_skb(clone1);
-+		}
-+		KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+				base_pp_ref);
-+		KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	}
-+
-+	/* pskb_extract carving inside header & inside nonlinear frags */
-+	skb = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	skb_put(skb, 32);
-+	skb->pp_recycle = 1;
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len += 64;
-+	skb->data_len = 64;
-+	page_pool_ref_netmem(netmem);
-+
-+	/* Carve inside header keeping frag -> pp_ref_count +1 until free */
-+	ext = pskb_extract(skb, 16, skb->len - 16, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, ext);
-+	KUNIT_EXPECT_TRUE(test, ext->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 2);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	consume_skb(ext);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+
-+	/* Carve + trim + skb_condense ref/unrefs pp_ref_count cleanly */
-+	ext = pskb_extract(skb, 16, 48, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, ext);
-+	KUNIT_EXPECT_TRUE(test, ext->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	consume_skb(ext);
-+
-+	/* Carve inside nonlinear keeping frag -> pp_ref_count +1 until free */
-+	ext = pskb_extract(skb, 48, skb->len - 48, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, ext);
-+	KUNIT_EXPECT_TRUE(test, ext->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 2);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(page), base_ref);
-+	consume_skb(ext);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+
-+	/* skb_morph drops old skb data via skb_release_data */
-+	page_pool_ref_netmem(netmem);
-+	clone1 = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, clone1);
-+	clone1->pp_recycle = 1;
-+	skb_fill_netmem_desc(clone1, 0, netmem, 0, 64);
-+	clone1->len = 64;
-+	clone1->data_len = 64;
-+	skb_morph(clone1, skb);
-+	KUNIT_EXPECT_TRUE(test, clone1->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&page->pp_ref_count),
-+			base_pp_ref + 1);
-+	consume_skb(clone1);
-+	kfree_skb(skb);
-+	page_pool_put_full_page(pool, page, false);
-+	page_pool_put_full_page(pool, page, false);
-+
-+	/* Also verify pskb_extract on page_pool net_iov */
-+	KUNIT_ASSERT_EQ(test,
-+			percpu_ref_init(&binding.ref, dummy_percpu_ref_release,
-+					PERCPU_REF_INIT_ATOMIC, GFP_KERNEL),
-+			0);
-+	net_iov_init(&niov, &binding.area, NET_IOV_DMABUF);
-+	netmem = net_iov_to_netmem(&niov);
-+	netmem_set_pp(netmem, pool);
-+	netmem_or_pp_magic(netmem, PP_SIGNATURE);
-+	atomic_long_set(&niov.desc.pp_ref_count, 2);
-+
-+	skb = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, skb);
-+	skb_put(skb, 32);
-+	skb->pp_recycle = 1;
-+	skb_fill_netmem_desc(skb, 0, netmem, 0, 64);
-+	skb->len += 64;
-+	skb->data_len = 64;
-+
-+	ext = pskb_extract(skb, 48, skb->len - 48, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, ext);
-+	KUNIT_EXPECT_TRUE(test, ext->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-+	consume_skb(ext);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+
-+	skb_shinfo(skb)->nr_frags = 0;
-+	consume_skb(skb);
-+	netmem_clear_pp_magic(netmem);
-+	netmem_set_pp(netmem, NULL);
-+	page_pool_destroy(pool);
-+	percpu_ref_exit(&binding.ref);
-+}
-+
-+static void netmem_ref_test_skb_segment(struct kunit *test)
-+{
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.pool_size = 4,
-+		.nid = NUMA_NO_NODE,
-+	};
-+	struct sk_buff *head, *list, *segs, *seg;
-+	struct net_devmem_dmabuf_binding binding = {};
-+	struct net_iov niov = {};
-+	struct page *pp_page, *reg_page;
-+	netmem_ref pp_nm, niov_nm;
-+	struct page_pool *pool;
-+	long base_pp_ref, base_iov_ref;
-+	int base_pp_page_ref, base_reg_ref;
-+
-+	pool = page_pool_create(&pp_params);
-+	KUNIT_ASSERT_FALSE(test, IS_ERR(pool));
-+	pp_page = page_pool_dev_alloc_pages(pool);
-+	KUNIT_ASSERT_NOT_NULL(test, pp_page);
-+	pp_nm = page_to_netmem(pp_page);
-+	page_pool_ref_netmem(pp_nm);
-+	reg_page = alloc_page(GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, reg_page);
-+
-+	KUNIT_ASSERT_EQ(test,
-+			percpu_ref_init(&binding.ref, dummy_percpu_ref_release,
-+					PERCPU_REF_INIT_ATOMIC, GFP_KERNEL),
-+			0);
-+	net_iov_init(&niov, &binding.area, NET_IOV_DMABUF);
-+	niov_nm = net_iov_to_netmem(&niov);
-+	netmem_set_pp(niov_nm, pool);
-+	netmem_or_pp_magic(niov_nm, PP_SIGNATURE);
-+	atomic_long_set(&niov.desc.pp_ref_count, 2);
-+
-+	base_pp_ref = atomic_long_read(&pp_page->pp_ref_count);
-+	base_pp_page_ref = page_ref_count(pp_page);
-+	base_reg_ref = page_ref_count(reg_page);
-+	base_iov_ref = atomic_long_read(&binding.ref.data->count);
-+
-+	/* 1. Single GSO skb with page_pool net_iov frags */
-+	head = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, head);
-+	head->pp_recycle = 1;
-+	head->protocol = htons(ETH_P_IP);
-+	skb_reset_mac_header(head);
-+	skb_reset_network_header(head);
-+	skb_fill_netmem_desc(head, 0, niov_nm, 0, 64);
-+	head->len = 64;
-+	head->data_len = 64;
-+	skb_shinfo(head)->gso_size = 16;
-+
-+	segs = skb_segment(head, NETIF_F_SG | NETIF_F_HW_CSUM);
-+	KUNIT_ASSERT_FALSE(test, IS_ERR_OR_NULL(segs));
-+	for (seg = segs; seg; seg = seg->next)
-+		KUNIT_EXPECT_TRUE(test, seg->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 6L);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-+			base_iov_ref);
-+	kfree_skb_list(segs);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 2L);
-+	skb_shinfo(head)->nr_frags = 0;
-+	consume_skb(head);
-+
-+	/* 2. GRO frag_list fast path (skb_clone of pp_recycle=1 list_skb) */
-+	head = alloc_skb(64, GFP_KERNEL);
-+	list = alloc_skb(64, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, head);
-+	KUNIT_ASSERT_NOT_NULL(test, list);
-+	head->pp_recycle = 1;
-+	list->pp_recycle = 1;
-+	head->protocol = htons(ETH_P_IP);
-+	skb_reset_mac_header(head);
-+	skb_reset_network_header(head);
-+	skb_put(head, 16);
-+	skb_fill_netmem_desc(head, 0, pp_nm, 0, 16);
-+	head->len += 16;
-+	head->data_len = 16;
-+	page_pool_ref_netmem(pp_nm);
-+
-+	skb_put(list, 16);
-+	skb_fill_netmem_desc(list, 0, pp_nm, 16, 16);
-+	list->len += 16;
-+	list->data_len = 16;
-+	page_pool_ref_netmem(pp_nm);
-+
-+	skb_shinfo(head)->frag_list = list;
-+	head->len += list->len;
-+	head->data_len += list->len;
-+	skb_shinfo(head)->gso_size = 32;
-+
-+	segs = skb_segment(head, NETIF_F_SG | NETIF_F_HW_CSUM);
-+	KUNIT_ASSERT_FALSE(test, IS_ERR_OR_NULL(segs));
-+	for (seg = segs; seg; seg = seg->next)
-+		KUNIT_EXPECT_TRUE(test, seg->pp_recycle);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&pp_page->pp_ref_count),
-+			base_pp_ref + 4);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(pp_page), base_pp_page_ref);
-+	kfree_skb_list(segs);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&pp_page->pp_ref_count),
-+			base_pp_ref + 2);
-+	consume_skb(head);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&pp_page->pp_ref_count),
-+			base_pp_ref);
-+
-+	/* 3. Mixed GRO frag_list: head pp_page + list reg_page */
-+	head = alloc_skb(64, GFP_KERNEL);
-+	list = alloc_skb(0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, head);
-+	KUNIT_ASSERT_NOT_NULL(test, list);
-+	head->pp_recycle = 1;
-+	list->pp_recycle = 0;
-+	head->protocol = htons(ETH_P_IP);
-+	skb_reset_mac_header(head);
-+	skb_reset_network_header(head);
-+	skb_fill_netmem_desc(head, 0, pp_nm, 0, 24);
-+	head->len = 24;
-+	head->data_len = 24;
-+	page_pool_ref_netmem(pp_nm);
-+
-+	skb_fill_page_desc(list, 0, reg_page, 0, 24);
-+	get_page(reg_page);
-+	list->len = 24;
-+	list->data_len = 24;
-+
-+	skb_shinfo(head)->frag_list = list;
-+	head->len += list->len;
-+	head->data_len += list->len;
-+	skb_shinfo(head)->gso_size = 16;
-+
-+	/* Segment 0: [pp_page:16], Segment 1: [pp_page:8 + reg_page:8],
-+	 * Segment 2: [reg_page:16]. Freeing all segments restores exact refs!
-+	 */
-+	segs = skb_segment(head, NETIF_F_SG | NETIF_F_HW_CSUM);
-+	KUNIT_ASSERT_FALSE(test, IS_ERR_OR_NULL(segs));
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&pp_page->pp_ref_count),
-+			base_pp_ref + 3);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(pp_page), base_pp_page_ref);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(reg_page), base_reg_ref + 3);
-+	kfree_skb_list(segs);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&pp_page->pp_ref_count),
-+			base_pp_ref + 1);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(pp_page), base_pp_page_ref);
-+	KUNIT_EXPECT_EQ(test, page_ref_count(reg_page), base_reg_ref + 1);
-+
-+	consume_skb(head);
-+	KUNIT_EXPECT_EQ(test, atomic_long_read(&pp_page->pp_ref_count),
-+			base_pp_ref);
-+	page_pool_put_full_page(pool, pp_page, false);
-+	page_pool_put_full_page(pool, pp_page, false);
-+	__free_page(reg_page);
-+	netmem_clear_pp_magic(niov_nm);
-+	netmem_set_pp(niov_nm, NULL);
-+	page_pool_destroy(pool);
-+	percpu_ref_exit(&binding.ref);
-+}
-+#endif
-+
- static struct kunit_case net_test_cases[] = {
- 	KUNIT_CASE_PARAM(gso_test_func, gso_test_gen_params),
- 	KUNIT_CASE_PARAM(ip_tunnel_flags_test_run,
- 			 ip_tunnel_flags_test_gen_params),
-+	KUNIT_CASE(netmem_ref_test_page),
-+#ifdef CONFIG_PAGE_POOL
-+	KUNIT_CASE(netmem_ref_test_pp_page),
-+#endif
-+#if defined(CONFIG_PAGE_POOL) && defined(CONFIG_NET_DEVMEM)
-+	KUNIT_CASE(netmem_ref_test_net_iov),
-+	KUNIT_CASE(netmem_ref_test_release_data),
-+	KUNIT_CASE(netmem_ref_test_skb_segment),
-+#endif
- 	{ },
- };
- 
+- [Medium] The patch now validates peer_addr in place.
+
+Pre-existing issues:
+- [Low] Two comments next to the code this patch changes contradict the
+  implementation.
+
+--
+
+sctp: reject forged cookie peer_addr with unknown address family
+
+This patch validates the COOKIE-ECHO peer_addr with af->addr_valid() in
+sctp_unpack_cookie(). Bad families are rejected, and v4-mapped addresses
+are normalised in place. It also makes sctp_v6_addr_valid() reject
+non-v4-mapped addresses on non-PF_INET6 sockets, uses addr_valid() to
+simplify sctp_process_param(), and adds a missing !af check in
+sctp_process_init().
+
+> diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+> index ef26878f1282a..97390569c4bdc 100644
+> --- a/net/sctp/ipv6.c
+> +++ b/net/sctp/ipv6.c
+> @@ -725,7 +725,8 @@ static int sctp_v6_available(union sctp_addr *addr, struct sctp_sock *sp)
+>   * SCTP.
+>   *
+>   * Output:
+> - * Return 0 - If the address is a non-unicast or an illegal address.
+> + * Return 0 - If the address is a non-unicast or an illegal address,
+> + *            or a non-v4-mapped address on a non-PF_INET6 socket.
+>   * Return 1 - If the address is a unicast.
+>   */
+>  static int sctp_v6_addr_valid(union sctp_addr *addr,
+
+[Severity: Low]
+
+This isn't a bug introduced by this patch, but two nearby comments
+don't match the code that this patch now relies on.
+
+The v4-mapped branch of sctp_v6_addr_valid() says:
+
+	/* Note: This routine is used in input, so v4-mapped-v6
+	 * are disallowed here when there is no sctp_sock.
+	 */
+	if (sp && ipv6_only_sock(sctp_opt2sk(sp)))
+		return 0;
+	sctp_v6_map_v4(addr);
+
+When sp is NULL, as in the sctp_rcv() input path, the code maps and
+accepts the address instead of rejecting it.
+
+The header comment of sctp_v4_addr_valid() in net/sctp/protocol.c only
+lists non-unicast or illegal addresses as reasons to return 0. The
+function also returns 0 for any IPv4 address on an IPV6_V6ONLY socket:
+
+	/* IPv4 addresses not allowed */
+	if (sp && ipv6_only_sock(sctp_opt2sk(sp)))
+		return 0;
+
+This patch removes the explicit ipv6_only_sock() test from
+sctp_process_param(), so that function now depends on this check.
+
+The sctp_v6_addr_valid() header comment is already being updated here.
+Could these two comments be updated as well?
+
+[ ... ]
+
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 84a4c97d0f755..175dbb242e1cb 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+
+[ ... ]
+
+> @@ -1841,6 +1843,11 @@ struct sctp_association *sctp_unpack_cookie(
+>  		goto fail;
+>  	}
+>  
+> +	paddr = &bear_cookie->peer_addr;
+> +	af = sctp_get_af_specific(paddr->sa.sa_family);
+> +	if (!af || !af->addr_valid(paddr, sctp_sk(ep->base.sk), NULL))
+> +		goto malformed;
+> +
+
+[Severity: Medium]
+
+Can this modify packet data that is shared with a clone? bear_cookie
+points into the received skb. sctp_sf_do_5_1D_ce() and
+sctp_sf_do_5_2_4_dupcook() both set:
+
+	chunk->subh.cookie_hdr =
+		(struct sctp_signed_cookie *)chunk->skb->data;
+
+For an AF_INET6 v4-mapped peer_addr, sctp_v6_addr_valid() calls
+sctp_v6_map_v4(), which writes directly into that buffer:
+
+	addr->v4.sin_family = AF_INET;
+	addr->v4.sin_port = addr->v6.sin6_port;
+	addr->v4.sin_addr.s_addr = addr->v6.sin6_addr.s6_addr32[3];
+
+No skb_cloned() or skb_unshare() check happens before this write.
+
+If an AUTH chunk is bundled before the COOKIE-ECHO,
+sctp_endpoint_bh_rcv() and sctp_assoc_bh_rcv() do:
+
+	chunk->auth_chunk = skb_clone(chunk->skb,
+				GFP_ATOMIC);
+
+The clone shares the same data.
+
+sctp_sf_do_5_1D_ce() calls sctp_unpack_cookie() first. AUTH is verified
+only afterwards:
+
+sctp_auth_chunk_verify()
+  sctp_sf_authenticate()
+    sctp_auth_calculate_hmac()
+      data_len = skb_tail_pointer(skb) - (unsigned char *)auth;
+
+That HMAC covers the COOKIE-ECHO body, including the rewritten
+peer_addr. The peer computed its HMAC over the original bytes. Would
+verification then fail and the COOKIE-ECHO be dropped through
+sctp_sf_pdiscard()? The duplicate-cookie handlers use the same order:
+unpack first, then verify AUTH.
+
+Other holders of a clone, such as raw IPPROTO_SCTP sockets and non-mmap
+AF_PACKET readers, would also see the changed bytes. sctp_rcv() doesn't
+prevent this, because skb_linearize() does nothing to an skb that is
+already linear but cloned.
+
+A v4-mapped peer_addr doesn't have to be forged. For an INIT that
+arrives over IPv6 from a ::ffff:a.b.c.d source, sctp_make_temp_asoc()
+stores the raw source in the signed cookie:
+
+	SCTP_INPUT_CB(skb)->af->from_skb(&asoc->c.peer_addr, skb, 1);
+
+It can also be forged directly when cookie authentication is disabled.
+
+In that case, the commit message statement "peer_addr is validated in
+place, so a v4-mapped v6 address is normalised to AF_INET before the
+association and its primary transport are built from it" would not hold
+when AUTH is bundled.
+
+Would it work to validate and normalise a stack copy of peer_addr, and
+pass that copy to the association and transport setup, instead of
+writing into the packet buffer?
+
+[ ... ]
+
 -- 
-2.56.0.385.gd3acb90ef8-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009074601.3954275-1-hdthky0%40gmail.com
