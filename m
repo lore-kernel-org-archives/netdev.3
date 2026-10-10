@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D335F4AA3E6;
-	Sat, 10 Oct 2026 15:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6504AAC50;
+	Sat, 10 Oct 2026 15:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791645062; cv=none; b=oFjZOHnLyCJbuJL37vigGvrYED/PiFweLbgWwhyETQWtIxYk20y6yIeapzTiwbjH0od3pCixJIKu7extRkBwHnLZKO6bj9gDtf/RSsY886n/hwdelzS33UjiNeNS24WR5JZWi5lJU0N5cyRuY6XwWBDqLbH8kkfRty9hYpxGF7c=
+	t=1791645063; cv=none; b=QqwIUWW5IFBRl+O5mn8xbQk+pDybnmd01BFA7UFS9bllVxsRDNvhWuVAX0I3FqfKU74lw3uEOV/MN1q3Xd7QV7jTwOb10XEHs57FoUCWr2OkVcFDquzeEolGlsSJAcP/ZqP00QvOF+OHwYF6YCzRsGLcrlKDkOmtlK4P7+Z1S+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791645062; c=relaxed/simple;
-	bh=pTf0NtafgzMRl2AhDHX03xQkwVmDMpVpgFMf93SSRqk=;
+	s=arc-20240116; t=1791645063; c=relaxed/simple;
+	bh=uMSWYYLd+3dC5c6o7LkwY2x7NK5YiNjOd8P0A2Khoys=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UBrjZhnizl6onhyYy1fNZXa6kutxfOltK7GmOEs1y+/Q0IXaDM2vUL6OeivCGzUoSG+CHPF0k0tGY1QnYN+X0O0Acgc7g42e5fHFksga5KahN9cnsDHaDx4WMXs7hFAhYpSVyazgFvWnnV1HMuzTZM05ZMbmkrNrWGQIGEdpPqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILd2irHO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=oWNHf9NkfMjbkrRn7TzHh9oux6Nae+bnO6eb7DnIDAO47wIGFa42C5iMLL9hNy+z/QcAGKdASa0u5ulj3SLiVdZajDoXftD6UxkydEuxcoiO9kr1osPUaQlHQo5hsC670ECl57r/QyYbBDsZDVSd2cwp3XQi673zJr7s2Upocok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UcmA2JOW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILd2irHO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E50C1F00893;
-	Sat, 10 Oct 2026 15:10:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UcmA2JOW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312E51F000FF;
+	Sat, 10 Oct 2026 15:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791645060;
-	bh=E8GeyO+4i8dZZKvi7XkshM7rDNrK7wamGc0ofjeqC5w=;
+	s=k20260515; t=1791645062;
+	bh=XHqIJq78TPh3CMoZn8eT46bz2UXEjv2uCG2uaAz+oRo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ILd2irHOHzhQtljC1BLZTYUu4Ob+4QGU1tE7ll0yz+AzMYvxYMo5ais3cR3ardrPD
-	 dRSyZhq8zrgKdmgdUsd9sGiKniatabaXUFfFq7i6nlPIPM0yMjp+oR0dkYBfs+wk7m
-	 wf7BPvt2wMCDTI9uxEsG/CTmxUPi8LioVkZ8SjsEfeRZHLB46MEbo8oesStisJCT0A
-	 aXqeUY50jBwIJ0UE76xMCevn9n3XJvueZeSXCEvwUJziwWkwtLfy20aNad5w28AAr8
-	 IcWZjgGEzCmkBWqGbTzppUsdw4zt6bxF7cKHdEFCvRk/hvcCoHfK+GVYH20GXgOIDr
-	 dhHdENiILF1Rg==
-Subject: Re: [PATCH net-next 4/5] net: macb: implement timestamped MDIO writes
+	b=UcmA2JOW7GZF07D9cRKdH83D4Exa25SGk/szOAEwHpgE8vaLdHswjiBwHNUrM5oHq
+	 e0UIqL7MwkXy0ABWxrZVHpS9R/LLsmYxLP82+ojftAjg8kYuLFrd0moCaEDgQbtWQv
+	 ED4CT7jjMFo//3oenBf7WPCy4f5OB/kdv+7Bv2SdPbV6lzfR3t3fSkYWMkjUBC4meM
+	 YEfitWZYyKWBhDLmQwfRHGfvaPQb1nQQ2iyuqWssV0AThefP2w6Omr3bUjHIqB2hqX
+	 huuNon+6WqYFNyTQUj66iLoWTwCNZ53g6d3nc/V1mlJfF3QlRg4YZNsTtojB5s9kR4
+	 yM2clIuxh2gLA==
+Subject: Re: [PATCH net-next 5/5] net: mdio: bcm-unimac: implement timestamped
+ MDIO writes
 From: netdev-bot+sashiko@kernel.org
 To: jjc@jclark.com
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
@@ -36,10 +37,10 @@ Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  conor.dooley@microchip.com, bcm-kernel-feedback-list@broadcom.com,
  tglx@kernel.org, mlichvar@redhat.com, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Sat, 10 Oct 2026 15:10:58 +0000
-Message-ID: <179164505890.434549.6507201122764529709@kernel.org>
-In-Reply-To: <20261009143506.2507607-5-jjc@jclark.com>
-References: <20261009143506.2507607-5-jjc@jclark.com>
+Date: Sat, 10 Oct 2026 15:11:00 +0000
+Message-ID: <179164506067.434549.2658464555254529067@kernel.org>
+In-Reply-To: <20261009143506.2507607-6-jjc@jclark.com>
+References: <20261009143506.2507607-6-jjc@jclark.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +51,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,179 +62,154 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] macb_mdio_sts_delay() applies one fixed delay to every MACB,
-  GEM and EMAC variant: 63.5 MDC periods from the MAN command write to…
-- [Medium] bp->mdio_sts_rate is refreshed only in macb_mii_init() (via
-  macb_mdio_init_sts()) and in macb_init_hw() (on open and resume).
-- [Low] The delay in macb_mdio_sts_delay() comes from two values that
-  nothing keeps consistent with each other: bp->mdio_sts_rate…
+- [Medium] Two things in the timestamped-write path are only known to
+  hold on BCM2711, but the patch applies them to every UniMAC/GENET/ASP…
+- [Low] The driver now uses two different reference rates for the same
+  BCM2711 MDIO block.
 
 --
 
-net: macb: implement timestamped MDIO writes
+net: mdio: bcm-unimac: implement timestamped MDIO writes
 
-This adds a write_sts callback to the macb MDIO bus that takes system
-timestamps around the MAN command register write. Both bounds are then
-shifted by 63.5 MDC periods, using a cached pclk rate and the CLK divider
-read from NCFGR, to estimate the MDC edge that clocks the last data bit.
-The 63.5 period figure was measured on RP1 with a BCM54210PE PHY.
+This adds a write_sts implementation to the UniMAC MDIO driver. It takes
+system timestamps around the MDIO command start and shifts them by 63.5
+to 64.5 MDC periods, computed from the reference rate and the MDC
+divider. When no clock is present on BCM2711 GENET, it uses a hardcoded
+200 MHz reference rate.
 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index c4223ca848df8..cec6e5a48e9f0 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -384,11 +384,47 @@ static int macb_mdio_read_c45(struct mii_bus *bus, int mii_id, int devad,
->  	return status;
+> diff --git a/drivers/net/mdio/mdio-bcm-unimac.c b/drivers/net/mdio/mdio-bcm-unimac.c
+> index 31e396cc9fbf2..e1ae806d1a84e 100644
+> --- a/drivers/net/mdio/mdio-bcm-unimac.c
+> +++ b/drivers/net/mdio/mdio-bcm-unimac.c
+
+[ ... ]
+
+> @@ -127,10 +150,41 @@ static int unimac_mdio_read(struct mii_bus *bus, int phy_id, int reg)
+>  	return ret;
 >  }
 >  
-> -static int macb_mdio_write_c22(struct mii_bus *bus, int mii_id, int regnum,
-> -			       u16 value)
-> +static u64 macb_mdio_sts_delay(struct macb *bp)
+> -static int unimac_mdio_write(struct mii_bus *bus, int phy_id,
+> -			     int reg, u16 val)
+> +static int unimac_mdio_sts_delays(struct unimac_mdio_priv *priv,
+> +				  u64 *pre_ns, u64 *post_ns)
 > +{
 
 [ ... ]
 
-> +	unsigned long rate = READ_ONCE(bp->mdio_sts_rate);
-> +	u32 config = macb_readl(bp, NCFGR);
-> +	u32 divisor;
-> +
-> +	if (macb_is_gem(bp))
-> +		divisor = gem_divisors[GEM_BFEXT(CLK, config)];
-> +	else
-> +		divisor = macb_divisors[MACB_BFEXT(CLK, config)];
-> +
-> +	/* On RP1 the MDC edge that clocks the last bit of a clause 22
-> +	 * write comes 63.5 periods after the command write.
+> +	config = unimac_mdio_readl(priv, MDIO_CFG);
+> +	if (config & MDIO_SUPP_PREAMBLE)
+> +		return -EIO;
+> +	divisor = 2 * (((config >> MDIO_CLK_DIV_SHIFT) & MDIO_CLK_DIV_MASK) + 1);
+> +	/* On BCM2711 the MDC divider runs freely, so the MDC edge that
+> +	 * clocks the last bit of a write comes 63.5 to 64.5 periods after
+> +	 * the command start.
 > +	 */
-> +	return div64_ul(127ULL * divisor * NSEC_PER_SEC, 2 * rate);
+> +	*pre_ns = div64_ul(127ULL * divisor * NSEC_PER_SEC,
+> +			   2 * priv->mdio_ref_rate);
+> +	*post_ns = div64_ul(129ULL * divisor * NSEC_PER_SEC +
+> +			    2 * priv->mdio_ref_rate - 1,
+> +			    2 * priv->mdio_ref_rate);
 
 [Severity: Medium]
-The 63.5 period figure was measured only on RP1. Even so, macb_mii_init()
-installs write_sts for every device that macb_probe() brings up. The only
-gate is a non-zero pclk rate from macb_mdio_init_sts():
+The comment says the 63.5 to 64.5 period model comes from BCM2711. Does
+it also hold on other UniMAC, GENET and ASP MDIO controllers?
 
-	if (macb_mdio_init_sts(bp))
-		bp->mii_bus->write_sts = &macb_mdio_write_c22_sts;
+unimac_mdio_init_sts() turns on write_sts for any controller where
+clk_get_rate() is non-zero and MDIO_SUPP_PREAMBLE is clear. The
+bcm2711-genet-v5 compatible check only supplies a missing rate. It
+doesn't limit the model to BCM2711:
 
-That covers Zynq-7000, ZynqMP, Versal, SAMA5/SAMA7, SiFive, EyeQ5, PIC64
-and plain MACB. It also covers the AT91RM9200 EMAC (emac_config with
-at91ether_init) and macb_pci. In macb_pci, pclk is a fixed nominal 50 MHz
-clock from clk_register_fixed_rate().
+	priv->mdio_ref_rate = clk_get_rate(priv->clk);
+	...
+	if (!priv->mdio_ref_rate)
+		return false;
+	...
+	return !(config & MDIO_SUPP_PREAMBLE);
 
-The mii_bus write_sts documentation says to set the callback "only if
-timestamps can always be provided". __mdiobus_write_sts() also requires
-the bounds to contain the MDC rising edge that clocks the last data bit.
+Two setups that the bindings allow reach this path:
 
-Both bounds are shifted by the same predicted delay. Some integrations
-could start the MDC frame at a different phase, for example with a
-free-running divider or extra synchronizer cycles between MAN and MDC.
-Would those report an interval that misses the real edge by up to one MDC
-period (about 400 ns at 2.5 MHz)?
+- A standalone UniMAC or ASP MDIO node with a clocks property.
+  unimac_mdio_probe() picks it up with devm_clk_get_optional(), and
+  brcm,unimac-mdio.yaml allows clocks.
 
-The bcm-unimac patch in this series found that hardware like this exists:
+- A GENET node with the "enet" main clock, which bcmgenet_mii_register()
+  passes as ppd.clk.
 
-drivers/net/mdio/mdio-bcm-unimac.c:unimac_mdio_sts_delays() {
-    /* On BCM2711 the MDC divider runs freely, so the MDC edge that
-     * clocks the last bit of a write comes 63.5 to 64.5 periods after
-     * the command start.
-     */
-}
+In the GENET case, is the main clock really the MDC divider's reference?
+A wrong rate moves both bounds by about 64 times the period error. For
+example, 250 MHz instead of 200 MHz at divider 9 shifts them by about
+1.6 us, while the window is only about one MDC period wide.
 
-Once this is applied, Broadcom bcm-phy-lib PHYs that check
-phy_supports_write_sts() stop using their fallback path and use these
-bounds on every macb variant. mdio-mux children inherit the callback too.
+On those parts the start-to-edge latency or the reference rate could
+differ. The [pre, post] interval would then miss the real edge without
+any warning.
 
-Should write_sts be limited to RP1, for example with a MACB_CAPS_* flag
-set in raspberrypi_rp1_config?
+Would that break the mii_bus.write_sts contract in include/linux/phy.h?
+It says "Set only if timestamps can always be provided". It would also
+make PTP_SYS_OFFSET_EXTENDED report wrong PHC offsets with no error.
 
-Also, the commit message does not say that the delay was validated only
-on RP1. That caveat is below the --- line and will be dropped when the
-patch is applied. Could it go into the commit message?
+No in-tree DT gives GENET or UniMAC a clock today, so in-tree only
+BCM2711 enables this. Could write_sts be limited to BCM2711 until other
+variants have been measured?
 
-[ ... ]
-
-> @@ -1141,6 +1203,13 @@ static int macb_mdiobus_register(struct macb *bp, struct device_node *mdio_np)
->  	return mdiobus_register(bp->mii_bus);
->  }
->  
-> +static bool macb_mdio_init_sts(struct macb *bp)
-> +{
-> +	bp->mdio_sts_rate = clk_get_rate(bp->pclk);
-
-[Severity: Medium]
-bp->mdio_sts_rate is refreshed only here and in macb_init_hw(), on open
-and resume. There is no clk notifier and no rate exclusivity. What
-happens to the bounds when pclk changes after that?
-
-On Zynq-7000 the GEM pclk is <&clkc 30> (gem0_aper). It is gated from
-cpu_1x, which is divided from cpu_div. cpu_6or4x has CLK_SET_RATE_PARENT
-on that same cpu_div. cpufreq-dt-platdev allowlists "xlnx,zynq-7000", and
-zynq-7000.dtsi has 666667 and 333334 kHz operating points.
-
-When cpufreq drops from 666 MHz to 333 MHz, pclk halves but NCFGR keeps
-the old divider, so the real time to the last MDC edge doubles. Take
-GEM_CLK_DIV48 with pclk going from about 111 MHz to about 55 MHz.
-macb_mdio_sts_delay() would add about 27.4 us instead of about 54.9 us.
-post_sts would then land tens of microseconds before the real completion.
-If the rate goes up instead, pre_sts lands after it.
-
-The error lasts until the next macb_init_hw(). It also applies while the
-interface is down, because the probe-time rate stored here is used then.
+Also, the note below the --- line says the model is assumed for every
+UniMAC, but that note is dropped when the patch is applied.
 
 > +
-> +	return bp->mdio_sts_rate != 0;
+> +	return 0;
 > +}
-> +
 
 [ ... ]
 
-> @@ -3095,12 +3166,20 @@ static void macb_configure_dma(struct macb *bp)
+> @@ -234,6 +307,30 @@ static int unimac_mdio_clk_set(struct unimac_mdio_priv *priv)
+>  	return ret;
+>  }
 >  
->  static void macb_init_hw(struct macb *bp)
->  {
-> +	unsigned long rate;
->  	u32 config;
->  
->  	macb_reset_hw(bp);
->  	macb_set_hwaddr(bp);
->  
->  	config = macb_mdc_clk_div(bp);
-> +	/* Record the pclk rate the MDC divider is chosen from, for
-> +	 * write_sts, which can't call clk_get_rate() under the MDIO bus
-> +	 * lock.
-> +	 */
-> +	rate = clk_get_rate(bp->pclk);
-> +	if (rate)
-> +		WRITE_ONCE(bp->mdio_sts_rate, rate);
+> +static bool unimac_mdio_init_sts(struct unimac_mdio_priv *priv,
+> +				 struct device *dev)
+> +{
+> +	u32 config;
+> +
+> +	/* The reference rate is fixed, so read it once. */
+> +	priv->mdio_ref_rate = clk_get_rate(priv->clk);
+> +	/* BCM2711's 200 MHz GENET reference clock is not described in DT. */
+> +	if (!priv->mdio_ref_rate && dev->parent &&
+> +	    of_device_is_compatible(dev->parent->of_node,
+> +				    "brcm,bcm2711-genet-v5"))
+> +		priv->mdio_ref_rate = 200000000;
 
 [Severity: Low]
-The new rate is published here, but the matching CLK divider reaches
-NCFGR only later in macb_init_hw():
+This sets a 200 MHz reference rate for BCM2711. But
+unimac_mdio_clk_set() runs straight after this in unimac_mdio_probe(),
+and again from unimac_mdio_resume(). It still assumes 250 MHz for the
+same hardware:
 
-	macb_writel(bp, NCFGR, config);
+	rate = clk_get_rate(priv->clk);
+	if (!rate)
+		rate = 250000000;
 
-Nothing here takes bus->mdio_lock. macb_mdio_write_c22_sts() holds only
-mdio_lock. It can be reached from a PTP_SYS_OFFSET_EXTENDED ioctl on the
-PHY PHC while macb_open() -> macb_init_hw() is running, because the PHC
-is registered at probe.
+	div = (rate / (2 * priv->clk_freq)) - 1;
 
-Suppose a timestamped write lands between this WRITE_ONCE() and the
-NCFGR write. Could macb_mdio_sts_delay() pair the new rate with the old
-divisor? Both bounds would then be shifted by a delay that matches
-neither configuration.
+bcm2711-rpi-400.dts sets clock-frequency = <1950000> on &genet_mdio. So
+clk_set programs div = 250000000 / 3900000 - 1 = 63.
 
-There are two related gaps. This rate comes from a separate
-clk_get_rate() call, not the one macb_mdc_clk_div() / gem_mdc_clk_div()
-used to choose the divider. And macb_mdio_write_c22_sts() samples
-delay_ns before local_irq_save(), so an NCFGR rewrite between the sample
-and the MAN write is not covered either.
+If 200 MHz is right, MDC then runs at 200 MHz / 128, about 1.56 MHz,
+instead of the 1.95 MHz that was requested. The correct divider would be
+50.
 
-A mismatch needs pclk to have changed since NCFGR was last programmed.
-That can happen on Zynq-7000 with cpufreq-dt.
+The timestamps stay consistent, because unimac_mdio_sts_delays() reads
+the divider back from MDIO_CFG. The MDC mis-programming also existed
+before this patch.
 
->  	/* Make eth data aligned.
->  	 * If RSC capable, that offset is ignored by HW.
->  	 */
+Still, the file now has two different reference rates for the same
+block. Should unimac_mdio_clk_set() use priv->mdio_ref_rate when it is
+set?
+
+> +
+> +	if (!priv->mdio_ref_rate)
+> +		return false;
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009143506.2507607-1-jjc%40jclark.com
