@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120874BEE53;
-	Sat, 10 Oct 2026 19:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39004C10F8;
+	Sat, 10 Oct 2026 19:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791661235; cv=none; b=LliurMqlhYexULooZjGOvoczJEKGWCAmYnvjpb7rSp1EbEK07g6/BUmvmu5CvtoiVhKNdmL/UPXo8E1Tfo/ikoGW/B5dCLveujL17783Jh8Pkna5eIaGNfxUIT9GwdAfcBNtodqLrnnWhYf3vj2RQx0VMBAabgxTch3Ez+n5yaE=
+	t=1791661237; cv=none; b=n2L1uhrp+da/gtV3CRVvC4s9SkeYZAzVdok3rsXVZrJhFPAyEIw27diRtppI85DwElp6llyF5AGAubFdrDCQhWOTYygSFdc7Cdg0EQZ7Zp3hXXPb7rC/rRuDzgDhh8HWNBl9zChSiXVYUD3ckgm1laja7oSdD2khxEVx2zsDQG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791661235; c=relaxed/simple;
-	bh=2xHHTBibhKIPxt+dbbmjTGYHjjR8pLNNaXOO0z6XGPc=;
+	s=arc-20240116; t=1791661237; c=relaxed/simple;
+	bh=GUBFWkXfhXltbnaZuVslhKmju7dqE874fnspU5gyWRU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CUU5YGyrf3ifN5IdPAAuqjJIeyWWvUdkmHQh91qUiS6JpadQjUTf203+FAIthrCov/SzpuQzyF44XK5VStTuZ99ljKKKQbrEXZKjEwRPKhiGN+30PZAuHbTsmlyoExdDUxNTdduypm0JW49zXCPDisXRgzgGwT5psqscQcil1EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PX/vtyVJ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=iJAeN2NaO2XeyqQH7LMNyXHArkvok6bQvxvpV5REx9b9rvqeLS7uC0fIxl4NEwzpx/fErlu9V7hMV0PM0uS6sXWPbkK1ncrgHcQ+vOi4VOZ3PRYlIFuQGM5oyk7YPpTkWyccssmRXTMl87R/8VyycTJNSlVXbdOI6x0ffftpYZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0kX1eEY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PX/vtyVJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69EB1F000FF;
-	Sat, 10 Oct 2026 19:40:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0kX1eEY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730AD1F00899;
+	Sat, 10 Oct 2026 19:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791661231;
-	bh=giIBFlTs8SzRK0bKKBttRruO32bFt+Z8PnSWRPOMI+I=;
+	s=k20260515; t=1791661229;
+	bh=LnD8J2KcaI+gv3WBX2KIvBt99UZsK/idX/3+1TkS4xA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PX/vtyVJmXlGm/CJ7dxCM9ZuTHGAn8isUTH91rp5DdeQ9DUExuE5yX8fiKiq7xwtQ
-	 qWewauv8OIvFD5szuA799o5FUxeuglkKjt4GPPtK/AIi5CYmwyHOoHtlC9XNk+/OdT
-	 ZMVTCKNVErbv/n65pjiTzvK+vNoSUSxfe4ROTsISVnHReM+Wiy3q6kCCEylWVh0Uli
-	 RwtUVCG4/YBjluthUND0YQx6Nc/AyYZzq/iQTm5njVhyrze0txib33vDlRDvXGGXcw
-	 StF629TtwdnSZ1L/WPGrLKJCTkrWKtwHbyjI7/L3FGKESKAMxZwmIb8CxMcYksh9bT
-	 R8mPzt13WnKNg==
-Subject:
- Re: [PATCH net-next v9 11/11] net: phy: ncn26000: Support for loopback
+	b=c0kX1eEYhE2cfwIqss7SNBiFDpiWfKprvGeazTslSNxlT4ZQ3jarcUeL+pE2fQ+WX
+	 P/BCtZOP5mG/FxGtLYV01IpyB98KlhXw6aRLbxINrllltVTGkBemlwqOhItHA5oTbW
+	 Y7Ason2kE21htbz7wr6J73fkwaTHyTd0Ksy0zfWA40c+tiy0XKqAei+6Rt/eMR5bR1
+	 /GQIxyLS2pTJeAkJGKunPneHPOphykqYeMjU7lcBWEEAZUJR2CBXUM6B5mc+SJQFO4
+	 UAjDaGvwXVg91/JkEti9K8xIRwFVrLeuN2GRnT6bznwFWCYS/lTu1HLE5yLiVaWhL6
+	 P/WE79GJzgMRQ==
+Subject: Re: [PATCH net-next v9 10/11] net: phy: ncn26000: Support for
+ onsemi's S2500 internal phy
 From: netdev-bot+sashiko@kernel.org
 To: Selvamani.Rajagopal@onsemi.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
@@ -38,11 +38,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
  edumazet@kernel.org, piergiorgio.beruto@gmail.com, netdev@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, jerry.ray@microchip.com, ciprian.regus@analog.com
-Date: Sat, 10 Oct 2026 19:40:29 +0000
-Message-ID: <179166122916.434549.9063503265267082319@kernel.org>
-In-Reply-To: <20261009-s2500-mac-phy-support-v9-11-dcefe1d0bf0d@onsemi.com>
-References: <20261009-s2500-mac-phy-support-v9-11-dcefe1d0bf0d@onsemi.com>
-X-sashiko-severity: Medium
+Date: Sat, 10 Oct 2026 19:40:26 +0000
+Message-ID: <179166122697.434549.4781991463001466231@kernel.org>
+In-Reply-To: <20261009-s2500-mac-phy-support-v9-10-dcefe1d0bf0d@onsemi.com>
+References: <20261009-s2500-mac-phy-support-v9-10-dcefe1d0bf0d@onsemi.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,140 +52,107 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] This patch adds loopback support for the S2500 by pointing
-  .set_loopback at genphy_loopback_no_speed().
-- [Low] The kernel-doc for genphy_loopback_no_speed() does not match the
-  code.
+- [Low] In this patch, the new S2500 entry in ncn26000_driver[]
+  (drivers/net/phy/ncn26000.c, lines 172-191) has no .set_loopback…
+- [Low] The help text for the NCN26000_PHY Kconfig option
+  (drivers/net/phy/Kconfig, lines 393-398) still says "Currently…
 
 --
 
-net: phy: ncn26000: Support for loopback
+net: phy: ncn26000: Support for onsemi's S2500 internal phy
 
-This patch adds a generic helper, genphy_loopback_no_speed(), that only
-toggles BMCR_LOOPBACK and rejects a speed when loopback is enabled. It
-uses the helper as .set_loopback for the S2500 entry in ncn26000. It also
-converts dp83867 from its private dp83867_loopback() to the new helper.
+This patch adds a phy_driver entry for the internal PHY of the onsemi
+S2500 MAC-PHY to the ncn26000 driver. The NCN26000 PLCA TO_TIMER
+workaround in ncn26000_config_init() now runs only for the NCN26000
+model.
 
 > diff --git a/drivers/net/phy/ncn26000.c b/drivers/net/phy/ncn26000.c
-> index a33ebb2a7ecef..de0fafda38761 100644
+> index 6d433f4e2c45d..a33ebb2a7ecef 100644
 > --- a/drivers/net/phy/ncn26000.c
 > +++ b/drivers/net/phy/ncn26000.c
-> @@ -178,6 +178,7 @@ static struct phy_driver ncn26000_driver[] = {
->  		.config_aneg           = ncn26000_config_aneg,
->  		.read_status           = ncn26000_read_status,
->  		.handle_interrupt      = ncn26000_handle_interrupt,
-> +		.set_loopback          = genphy_loopback_no_speed,
-
-[Severity: Medium]
-Can ncn26000_config_aneg() quietly take the PHY back out of loopback? It
-writes the whole BMCR and does not keep BMCR_LOOPBACK:
-
-drivers/net/phy/ncn26000.c:ncn26000_config_aneg() {
-    ...
-	// bring up the link
-	return phy_write(phydev, MII_BMCR, NCN26000_BCMR_LINK_CTRL_BIT);
-}
-
-genphy_setup_forced(), by contrast, keeps the bit:
-
-	return phy_modify(phydev, MII_BMCR,
-			  ~(BMCR_LOOPBACK | BMCR_ISOLATE | BMCR_PDOWN), ctl);
-
-genphy_loopback_no_speed() sets bit 14 and returns. Nothing in the aneg
-path checks phydev->loopback_enabled.
-
-Here is one ordering that seems reachable. Bringing the interface up calls
-phy_start(), which sets PHY_UP and queues the state machine. If ethtool -t
-(net_selftest) takes phydev->lock in phy_loopback(true, 0) before that
-work runs, the work then does:
-
-phy_state_machine()
-  _phy_state_machine()          /* PHY_UP */
-    _phy_start_aneg()
-      phy_config_aneg()
-        ncn26000_config_aneg()
-          phy_write(phydev, MII_BMCR, ...)   /* clears BMCR_LOOPBACK */
-
-A cable test that finishes during the self-test (PHY_CABLETEST to PHY_UP)
-reaches _phy_start_aneg() the same way.
-
-phy_check_link_status() returns early when phydev->loopback_enabled is
-set, so the mismatch is never noticed.
-
-Wouldn't the net_selftest frames then go out onto the shared 10BASE-T1S
-medium instead of looping back inside the PHY? That would make the
-self-test report false failures, and the final phy_loopback(false) would
-clear a bit that is already clear.
-
-The old genphy_loopback() fallback also wrote BMCR_LOOPBACK. With this
-helper, though, loopback actually engages, so the new feature depends on
-config_aneg leaving bit 14 alone.
-
-Should ncn26000_config_aneg() preserve BMCR_LOOPBACK, for example by using
-phy_modify() instead of phy_write()?
-
->  		.set_plca_cfg          = ncn26000_c45_plca_set_cfg,
->  		.get_plca_cfg          = genphy_c45_plca_get_cfg,
->  		.get_plca_status       = genphy_c45_plca_get_status,
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index bfce8b893644f..03419f6455875 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -2791,6 +2791,28 @@ int genphy_resume(struct phy_device *phydev)
->  }
->  EXPORT_SYMBOL(genphy_resume);
->  
-> +/**
-> + * genphy_loopback_no_speed - Helper to modify the PHY loopback mode
-> + * without setting speed. Some PHYs, like 10Base-T1S, don't support
-> + * auto-negotiation and therefore setting the speed isn't supported.
-> + *
-> + * @phydev: The phy_device struct
-> + * @enable: Flag to enable or disable the PHY level loopback.
-> + * @speed: Speed setting. Not expected to be set. Error if it is set.
-> + *
-> + * Returns: 0 if successful, negative error code on failure.
-> + */
-> +int genphy_loopback_no_speed(struct phy_device *phydev, bool enable,
-> +			     int speed)
-> +{
-> +	if (enable && speed)
-> +		return -EOPNOTSUPP;
-
-[Severity: Low]
-This isn't a bug, but the @speed description says "Error if it is set".
-The code only returns -EOPNOTSUPP when enable && speed. A disable call
-with a non-zero speed succeeds.
-
-That behaviour matches the set_loopback contract in include/linux/phy.h,
-where EOPNOTSUPP only applies when loopback is enabled with speed > 0.
-Could the kernel-doc describe it that way?
-
-The reason given about 10Base-T1S not supporting auto-negotiation also
-fits poorly with dp83867. This patch converts dp83867 to the same helper,
-and it is a gigabit PHY that supports autoneg.
-
-Would something like "speed selection in loopback is not supported"
-describe the helper more accurately?
-
-> +
-> +	return phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
-> +			  enable ? BMCR_LOOPBACK : 0);
-> +}
-> +EXPORT_SYMBOL(genphy_loopback_no_speed);
 
 [ ... ]
+
+> @@ -163,6 +169,26 @@ static int ncn26000_config_intr(struct phy_device *phydev)
+>  }
+>  
+>  static struct phy_driver ncn26000_driver[] = {
+> +	{
+> +		PHY_ID_MATCH_MODEL(PHY_ID_S2500),
+> +		.name                  = "S2500",
+> +		.features              = PHY_BASIC_T1S_P2MP_FEATURES,
+> +		.config_init           = ncn26000_config_init,
+> +		.config_intr           = ncn26000_config_intr,
+> +		.config_aneg           = ncn26000_config_aneg,
+> +		.read_status           = ncn26000_read_status,
+> +		.handle_interrupt      = ncn26000_handle_interrupt,
+> +		.set_plca_cfg          = ncn26000_c45_plca_set_cfg,
+> +		.get_plca_cfg          = genphy_c45_plca_get_cfg,
+> +		.get_plca_status       = genphy_c45_plca_get_status,
+> +		.soft_reset            = genphy_soft_reset,
+> +		.get_sqi               = genphy_c45_oatc14_get_sqi,
+> +		.get_sqi_max           = genphy_c45_oatc14_get_sqi_max,
+> +		.read_mmd              = genphy_read_mmd_c45,
+> +		.write_mmd             = genphy_write_mmd_c45,
+> +		.cable_test_get_status = genphy_c45_oatc14_cable_test_get_status,
+> +		.cable_test_start      = genphy_c45_oatc14_cable_test_start,
+> +	},
+
+[Severity: Low]
+The S2500 entry has no .set_loopback callback, so phy_loopback() falls
+back to genphy_loopback(). That function overwrites all of BMCR:
+
+drivers/net/phy/phy_device.c:genphy_loopback() {
+    ...
+		phy_modify(phydev, MII_BMCR, ~0, ctl);
+
+		ret = phy_read_poll_timeout(phydev, MII_BMSR, val,
+					    val & BMSR_LSTATUS,
+				    5000, 500000, true);
+    ...
+}
+
+This driver uses that BMCR bit for link control:
+
+#define NCN26000_BCMR_LINK_CTRL_BIT	BMCR_ANENABLE
+
+At this commit, does the PHY loopback selftest from "onsemi: s2500: Added
+selftest support to onsemi's S2500 driver" fail on S2500? The path is
+ethtool -t -> net_selftest -> phy_loopback() -> genphy_loopback().
+
+This is not a regression against the pre-patch state. Before this patch
+the generic PHY driver bound to 0x180FF411 and used the same fallback.
+
+The later patch in this series, "net: phy: ncn26000: Support for
+loopback", adds genphy_loopback_no_speed() and sets it as .set_loopback
+on the S2500 entry. That fixes this by the end of the series.
+
+[ ... ]
+
+>  static const struct mdio_device_id __maybe_unused ncn26000_tbl[] = {
+>  	{ PHY_ID_MATCH_MODEL(PHY_ID_NCN26000) },
+> +	{ PHY_ID_MATCH_MODEL(PHY_ID_S2500) },
+>  	{ }
+>  };
+
+[Severity: Low]
+Should the NCN26000_PHY help text in drivers/net/phy/Kconfig be updated
+as well? It still reads:
+
+	  Currently supports the NCN26000 10BASE-T1S Industrial PHY
+	  with MII interface.
+
+With this patch the driver also binds the S2500 internal PHY. That PHY
+is not a discrete MII-attached part; it is reached over the OA TC6 MDIO
+bus with C45 accessors.
+
+No later patch in the series changes Kconfig.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-s2500-mac-phy-support-v9-0-dcefe1d0bf0d%40onsemi.com
