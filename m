@@ -1,227 +1,201 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288E438B157
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 02:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F31E38B157;
+	Sat, 10 Oct 2026 02:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791601173; cv=none; b=num8WCr9KgxbFGPksLFyeq2vk9PBo3cNICE8+U/sKWkdlMrsXCIBCRvspZY5FxQ7XNvlKM3G7uD3HT890KA57I4RyM8VwULOTAdcwBiqTsu/lrY4fbzRfRDp4y6hZsI/xwgrYyWfHhgOmQDBmXyNVQxSUn/9P5W+QLWDZXWsjjk=
+	t=1791601178; cv=none; b=A+O3YdbYh5FGHfT7eWwT18Vh1EaB9lnBr0eUeTupq9WWGf+M3vwDTO/i5Ecn4idrfjAm/mY1KXEBUpPrLGdMIYdpu9rxSBaR9ru7Q2S4epzipISvymM0o/Eco5JtvcaKReJvTGBtsWZJ9bWlwym8jr/G/Nx+2t2Wxnm8rpVDAKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791601173; c=relaxed/simple;
-	bh=eOWKi+90UDsaBSQok0+tvI9ILPzw5GYhHYjJFZOjig4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XAZeXAAUuFoY78vqswTDqkURIwgJWSveFTsOcwQHvqLgjFGH+ZzBmD13IzfcuVIpQlXHMgXn5ELhJwx8xo3Xmxm6AqZCmkV0AN+S4Iil4Mnsn2M9l9YZ2baUUaCkXCn4igDxzD4lKH/QVEQOEnz6MwwtzEjoJ8+0/LM9eUnZDpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AIZVX8bv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791601178; c=relaxed/simple;
+	bh=Lmzi9xD+MtFDsvia7u2Hw0Yuu44BmeRtKvAQ5SQT7cY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=bQzBAfXuemi5vH+Yv3shWtkRTAp7jHKtjz1aZJFUjHaRwxesgzkHEq/r9jUt/2OngZea86RT0jD8rMQReByzRfnUiisZ/DlvolukVuDxOaJCadmX6dsortbQ0nicB15+Aag23Yppa08o9AtccZjl4zGCuk9Jn85dON1JlJb4NC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ll9asCl7; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AIZVX8bv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90311F000FF;
-	Sat, 10 Oct 2026 02:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791601171;
-	bh=zFzxqVjro4anFHZ9xw159Y+eVQ0k1chhiGkCrongoT0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AIZVX8bvQRoU3i6XZsaGQOkCZIPHpP6nX51fTpOk7I/gRvbO+jeFHmP+8SSWHWFlQ
-	 WI1U4xqkamfmeeVwyQZaXFqqqmgEv+RHUserAmcJfym2jkqUrkcwEvufYsNX9ZUsfc
-	 qKR8sSwDkzi10W/67wydB40ZdDyNh7gR3ddFa96GOXnL530i/AgQ2K8Ff5HxxjLFL+
-	 klLInHhQ8jMsW2h+f1uCqPqbreKiqw+1GucTrVLzNyELxEeApNhWGOmz8o0yirMGcA
-	 3GNtX/Qp+QT9PC75NP2vt45KfQXScym87k92MYhGJ8dv75MDZlyWiH7/mddjkTRPju
-	 Iq49jJXOhjlDg==
-Subject: Re: [PATCH net-next v3] net/mlx5e: advertise tcp-data-split support
-From: netdev-bot+sashiko@kernel.org
-To: dimitri.daskalakis1@gmail.com
-Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
- cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com, cjubran@nvidia.com,
- bjorn@kernel.org, netdev@vger.kernel.org
-Date: Sat, 10 Oct 2026 02:59:30 +0000
-Message-ID: <179160117016.434549.2094341982375611260@kernel.org>
-In-Reply-To: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
-References: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ll9asCl7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791601177; x=1823137177;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Lmzi9xD+MtFDsvia7u2Hw0Yuu44BmeRtKvAQ5SQT7cY=;
+  b=Ll9asCl7J9FeNzw4ss6mw9sOis9ptCgIt/ckN2vz+/t/l+bgNb+E1kza
+   zOiMIoG52kzx62AwzrzpdjyE3vmU3yGM23vV6GKeiulf3wITwF/0tedvR
+   Fif3uCqUeBu4Sgy3R932Djjwxw6zl8ltzPAg5gtTz0KLiDHBFMx7zpjoV
+   BSmLZ7lsQscWUQmF4HX5UD4+kzEb/SZR19kotWv6UxVJr22JLa8rcnioa
+   nF9dWVKdUgOZmKGBuXkZAWFR57R4i9+5vOq+atPFZMjv92/ak4qapfn59
+   mWqQrYYmcYsNNcDHzhiiDGdyz70QPj0EMUDh65771yFlmgg/QIhkN7ft0
+   w==;
+X-CSE-ConnectionGUID: PV97uAovSDqis5+jX/HGzg==
+X-CSE-MsgGUID: qNsRusgbSnepU5VygGXvXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11930"; a="297252"
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="297252"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:59:36 -0700
+X-CSE-ConnectionGUID: D0WT4WvpRAWa+I2cCRGTnA==
+X-CSE-MsgGUID: 5I+VBCSRRdyWLhvWpsksMw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,149,1787036400"; 
+   d="scan'208";a="541414"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2026 19:59:27 -0700
+Date: Sat, 10 Oct 2026 10:59:24 +0800
+From: kernel test robot <yi1.lai@intel.com>
+To: Luigi Rizzo <lrizzo@google.com>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org,
+	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
+	Luigi Rizzo <lrizzo@google.com>, yi1.lai@intel.com
+Subject: Re: [RFC: DMA_PMD 02/22] iommu/dma: add DMA_PMD pool lifecycle and
+ page recycle hook
+Message-ID: <202610101013.706708d0-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261003212241.3432303-3-lrizzo@google.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Hello,
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+kernel test robot noticed "WARNING:at_kernel/workqueue.c:#alloc_workqueue_va" on:
 
-- [Medium] The patch is titled "advertise tcp-data-split support" and
-  says it will "Add back tcp-data-split reporting", but…
-- [Medium] On an mlx5 device with rx-gro-hw on,
-  mlx5e_ethtool_get_ringparam() now reports tcp-data-split='enabled'…
-- [Low] The commit message says "This is not a fix" and carries no Fixes:
-  tag, but the patch fixes real defects that the message itself…
-- [Low] With rx-gro-hw on and dev->cfg->hds_config == UNKNOWN,
-  mlx5e_ethtool_get_ringparam() now reports tcp-data-split=enabled from…
+commit: 3311715530328ddf9249e312fa817c89b767fde9 ("[RFC: DMA_PMD 02/22] iommu/dma: add DMA_PMD pool lifecycle and page recycle hook")
+url: https://github.com/intel-lab-lkp/linux/commits/Luigi-Rizzo/iommu-dma-introduce-CONFIG_DMA_PMD-and-metadata-table/20261003-212220
+base: https://git.kernel.org/cgit/linux/kernel/git/akpm/mm.git mm-everything patch link: https://lore.kernel.org/all/20261003212241.3432303-3-lrizzo@google.com/
+patch subject: [RFC: DMA_PMD 02/22] iommu/dma: add DMA_PMD pool lifecycle and page recycle hook
+
+in testcase: boot
+
+config: x86_64-rhel-9.4-rust
+compiler: clang-22
+test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 4 -m 16G
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <yi1.lai@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202610101013.706708d0-lkp@intel.com
+
+
+[    0.966875][    T1] ------------[ cut here ]------------
+[    0.972831][    T1] workqueue: dma_pmd is using neither WQ_PERCPU or WQ_UNBOUND. Setting WQ_PERCPU.
+[    0.978823][    T1] WARNING: kernel/workqueue.c:5939 at alloc_workqueue_va+0x75a/0x7c0, CPU#3: swapper/0/1
+[    0.983827][    T1] Modules linked in:
+[    0.985221][    T1] CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.3.0-rc5+ #1 PREEMPT(lazy)
+[    0.988734][    T1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    0.991819][    T1] RIP: 0010:alloc_workqueue_va (workqueue.c:5938)
+[    0.993522][    T1] Code: 00 08 00 00 e8 40 08 f0 ff e9 cb f9 ff ff 0f 0b e9 cd fe ff ff 0f 0b e9 c6 fe ff ff 48 8d 3d 66 07 18 02 49 8d b6 b8 00 00 00 <67> 48 0f b9 3a 41 81 cc 00 01 00 00 e9 75 f9 ff ff 48 8d 3d 57 07
+All code
+========
+   0:	00 08                	add    %cl,(%rax)
+   2:	00 00                	add    %al,(%rax)
+   4:	e8 40 08 f0 ff       	call   0xfffffffffff00849
+   9:	e9 cb f9 ff ff       	jmp    0xfffffffffffff9d9
+   e:	0f 0b                	ud2
+  10:	e9 cd fe ff ff       	jmp    0xfffffffffffffee2
+  15:	0f 0b                	ud2
+  17:	e9 c6 fe ff ff       	jmp    0xfffffffffffffee2
+  1c:	48 8d 3d 66 07 18 02 	lea    0x2180766(%rip),%rdi        # 0x2180789
+  23:	49 8d b6 b8 00 00 00 	lea    0xb8(%r14),%rsi
+  2a:*	67 48 0f b9 3a       	ud1    (%edx),%rdi		<-- trapping instruction
+  2f:	41 81 cc 00 01 00 00 	or     $0x100,%r12d
+  36:	e9 75 f9 ff ff       	jmp    0xfffffffffffff9b0
+  3b:	48                   	rex.W
+  3c:	8d                   	.byte 0x8d
+  3d:	3d                   	.byte 0x3d
+  3e:	57                   	push   %rdi
+  3f:	07                   	(bad)
+
+Code starting with the faulting instruction ===========================================
+   0:	67 48 0f b9 3a       	ud1    (%edx),%rdi
+   5:	41 81 cc 00 01 00 00 	or     $0x100,%r12d
+   c:	e9 75 f9 ff ff       	jmp    0xfffffffffffff986
+  11:	48                   	rex.W
+  12:	8d                   	.byte 0x8d
+  13:	3d                   	.byte 0x3d
+  14:	57                   	push   %rdi
+  15:	07                   	(bad)
+[    0.999820][    T1] RSP: 0000:ffffcb9d00013a90 EFLAGS: 00010246
+[    1.001542][    T1] RAX: 0000000000000000 RBX: ffff8b7380b46400 RCX: 33ebeeb162fc7d00
+[    1.004550][    T1] RDX: 0000000000000007 RSI: ffff8b7380b464b8 RDI: ffffffff8e484980
+[    1.006818][    T1] RBP: 0000000000000000 R08: 00000000646d705f R09: 000000000000000f
+[    1.008790][    T1] R10: ffff8b7381cec680 R11: ffffffff8ea6ca80 R12: 0000000000000008
+[    1.011630][    T1] R13: ffffffff8da42c29 R14: ffff8b7380b46400 R15: ffffcb9d00013b10
+[    1.013818][    T1] FS:  0000000000000000(0000) GS:ffff8b7721089000(0000) knlGS:0000000000000000
+[    1.016639][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.018818][    T1] CR2: 0000000000000000 CR3: 00000003e4e20000 CR4: 00000000000406f0
+[    1.021819][    T1] Call Trace:
+[    1.022829][    T1]  <TASK>
+[    1.023829][    T1]  ? iommu_dma_forcedac_setup (dma-iommu.c:?)
+[    1.025515][    T1]  alloc_workqueue_noprof (workqueue.c:6049)
+[    1.026818][    T1]  ? blake2s_update (crypto/blake2s.c:131)
+[    1.028234][    T1]  ? intel_cleanup_irq_remapping (irq_remapping.c:?)
+[    1.029818][    T1]  dma_pmd_init (iommu/dma-pmd-pool.c:373)
+[    1.031195][    T1]  do_one_initcall (main.c:1358)
+[    1.032833][    T1]  ? get_random_u32 (char/random.c:396 char/random.c:541)
+[    1.033826][    T1]  ? __get_random_u32_below (char/random.c:555)
+[    1.036270][    T1]  ? alloc_from_new_slab (linux/spinlock.h:425 slub.c:4519)
+[    1.037829][    T1]  ? refill_objects (slub.c:7424)
+[    1.038818][    T1]  ? irqentry_exit (linux/irq-entry-common.h:539)
+[    1.040264][    T1]  ? asm_sysvec_apic_timer_interrupt (x86/include/asm/idtentry.h:674)
+[    1.045448][    T1]  ? parameq (params.c:91 params.c:99)
+[    1.046722][    T1]  ? parameq (linux/fortify-string.h:218 params.c:99)
+[    1.051786][    T1]  ? do_initcall_level (linux/srcutree.h:?)
+[    1.054571][    T1]  ? parse_args (params.c:153)
+[    1.056827][    T1]  do_initcall_level (main.c:1420)
+[    1.058834][    T1]  do_initcalls (main.c:1436)
+[    1.060827][    T1]  kernel_init_freeable (main.c:1671)
+[    1.063560][    T1]  ? rest_init (main.c:?)
+[    1.065827][    T1]  kernel_init (main.c:1561)
+[    1.067786][    T1]  ret_from_fork (x86/kernel/process.c:158)
+[    1.069828][    T1]  ? rest_init (main.c:?)
+[    1.072821][    T1]  ret_from_fork_asm (x86/entry/entry_64.S:245)
+[    1.074826][    T1]  </TASK>
+[    1.076251][    T1] ---[ end trace 0000000000000000 ]---
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20261010/202610101013.706708d0-lkp@intel.com
+
 
 --
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-net/mlx5e: advertise tcp-data-split support
 
-This commit brings back tcp-data-split reporting in
-mlx5e_ethtool_get_ringparam() when SHAMPO is active. It also rejects
-requests to disable tcp-data-split. Finally, it moves
-netdev_update_features() so that it only runs after
-mlx5e_ethtool_set_ringparam() succeeds.
-
-> This is not a fix since HDS/tcp-data-split is still functional with HW
-> GRO enabled.
-
-[Severity: Low]
-Is this accurate? The patch seems to fix problems that the commit message
-itself describes:
-
-  - the tcp-data-split reporting that 46bcce5dfd33 dropped from ethtool -g
-  - the KeyError in hds.set_hds_enable/disable since d347b28c492e
-  - the feature/config de-sync caused by calling netdev_update_features()
-    before mlx5e_ethtool_set_ringparam()
-
-For the last one: in the baseline, mlx5e_ethtool_set_tcp_data_split()
-called netdev_update_features() before the ring sizes were validated.
-mlx5e_fix_features() looks at netdev->cfg_pending:
-
-drivers/net/ethernet/mellanox/mlx5/core/en_main.c:mlx5e_fix_features() {
-    ...
-	if (cfg && cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-	    !(features & NETIF_F_GRO_HW)) {
-    ...
-}
-
-Take a request like "ethtool -G ethX rx 1 tcp-data-split off" while
-hds_config is ENABLED. HW-GRO/SHAMPO could be turned off first. The
-rx_pending minimum check then fails, and the ethtool core discards
-cfg_pending. dev->cfg->hds_config stays ENABLED, but the HW is no longer
-splitting.
-
-There is no Fixes: tag, so stable tooling won't pick these fixes up for
-kernels that contain 46bcce5dfd33 and d347b28c492e. Could the reporting
-restore and the netdev_update_features() reordering be split into their
-own patches with Fixes: tags? The uAPI behavior change that rejects
-tcp-data-split off could then stay separate.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> index 261c466a4d362..c30d751cac2fa 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> @@ -378,6 +378,9 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
->  
->  	kernel_param->hds_thresh = 0;
->  	kernel_param->hds_thresh_max = 0;
-> +
-> +	if (priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO)
-> +		kernel_param->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
->  }
-
-[Severity: Medium]
-The subject says "advertise tcp-data-split support" and the message says
-"Add back tcp-data-split reporting". However, this only ever writes
-ENABLED, and only when SHAMPO is active. The code removed by 46bcce5dfd33
-also reported DISABLED when SHAMPO was not active.
-
-HW-GRO is off by default on mlx5, since mlx5e_build_nic_netdev() clears
-NETIF_F_GRO_HW. In that case:
-
-  - rings_prepare_data() pre-fills tcp_data_split from
-    dev->cfg->hds_config (UNKNOWN)
-  - the driver leaves it untouched
-  - rings_fill_reply() leaves out the attribute:
-
-net/ethtool/rings.c:rings_fill_reply() {
-    ...
-	    (kr->tcp_data_split &&
-	     (nla_put_u8(skb, ETHTOOL_A_RINGS_TCP_DATA_SPLIT,
-    ...
-}
-
-So user space sees tcp-data-split as unsupported, even though the device
-advertises ETHTOOL_RING_USE_TCP_DATA_SPLIT and is in fact not splitting.
-The post-patch log in the changelog shows this:
-
-  ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
-
-mlx5e_ethtool_set_tcp_data_split() now also rejects
-ETHTOOL_TCP_DATA_SPLIT_DISABLED unconditionally. On a default-configured
-device, the off state can then be neither reported nor requested.
-
-Would it be safe to report ETHTOOL_TCP_DATA_SPLIT_DISABLED when SHAMPO is
-not active? Both ethtool_ringparam_get_cfg() and the netlink set path
-replace the driver-reported value with dev->cfg->hds_config.
-
-[Severity: Low]
-With rx-gro-hw on and dev->cfg->hds_config == UNKNOWN, this now reports
-enabled. Can hds.set_hds_enable then leave hds_config stuck at ENABLED
-after the test finishes?
-
-_defer_reset_hds() saves tcp-data-split as 'enabled' (from SHAMPO state)
-set_hds_enable() writes tcp-data-split 'enabled'
-  ethnl_set_rings()
-    dev->cfg_pending->hds_config = kernel_ringparam.tcp_data_split;
-_hds_reset() at cleanup:
-    if cur.get('tcp-data-split') != rings.get('tcp-data-split'):
-
-Both values are 'enabled', so 'unknown' is never written back.
-
-After that, mlx5e_fix_features() keeps NETIF_F_GRO_HW forced on, and
-"ethtool -K rx-gro-hw off" no longer takes effect. dev_xdp_attach() also
-rejects single-buffer XDP:
-
-	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-	    prog && !prog->aux->xdp_has_frags) {
-
-In a full hds.py run, the later set_xdp tests write 'unknown' and hide
-this. It shows up when set_hds_enable runs alone, or as the last test that
-touches HDS.
-
-The root cause is that the test compares reported state rather than
-config, and netdevsim has the same pattern. This patch is what makes it
-reachable on mlx5, though. Should _hds_reset() or the driver reporting
-be adjusted?
-
-[Severity: Medium]
-On mlx5 with rx-gro-hw on, do hds.set_xdp and hds.ioctl_set_xdp now go
-from SKIP to FAIL?
-
-Both tests see mode 'enabled', write 'unknown', and then attach a
-single-buffer XDP program:
-
-tools/testing/selftests/drivers/net/hds.py:set_xdp() {
-    ...
-    if mode == 'enabled':
-        _defer_reset_hds(cfg, netnl)
-        netnl.rings_set({'header': {'dev-index': cfg.ifindex},
-                         'tcp-data-split': 'unknown'})
-
-    _xdp_onoff(cfg)
-}
-
-If cfg is already UNKNOWN, ethnl_set_rings() returns 0 on !mod and the
-'unknown' write does nothing. Otherwise it only clears the config, and
-GRO_HW stays wanted. Either way SHAMPO stays active:
-
-mlx5e_xdp_set()
-  mlx5e_xdp_allowed()
-	if (params->packet_merge.type != MLX5E_PACKET_MERGE_NONE) {
-		netdev_warn(netdev, "can't set XDP while HW-GRO/LRO is on, disable them first\n");
-		return -EINVAL;
-
-The log in the changelog only covers the HW-GRO off case, where these
-tests are skipped. Was the HW-GRO on configuration tested as well?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009025137.2631215-1-dimitri.daskalakis1%40gmail.com
