@@ -1,167 +1,121 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C84052A2;
-	Sun, 11 Oct 2026 22:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AFF2F7EE0;
+	Sun, 11 Oct 2026 22:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791756030; cv=none; b=GoUQUrwLytNgT7T91lxinI6v3WEhSR1IqydtNDc+tbnVDEexSckY3sf8s1bBWko2rnK+aF9NQfCl+uOhVwDaH9Db3pHQ16Cy6zEGzcnYCaRksd0EsEnbPrMjE2zInSi5zuAO6pgiw9svlcw7u05c0w2HBfVyCEBQKoXhmu+82Rc=
+	t=1791756120; cv=none; b=FU+GH/96V4lhMlaJdsQ2k+/g7YfG+uF5hsn/kjRO5ym5Pgn1XqXGquEMsGPxpp3KXr7QoNgWHpfOT2r4x52UitdZtUUFnGLk7/ifN9Y2/ODv/iipmMiDTUwRYP4XwcuPdCuT1NaZXQLsj1MKAYZHlyClruEeoEZqtT+RtBaISeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791756030; c=relaxed/simple;
-	bh=z1KvmLDOIDdSwfXviF5qSAaGc2XNRuleRb8XhWM/eBo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjYEHwWWupFGr3MlaMDAp7f+tNDnvB6vpt02d1U4MGLYM7kREl3HOVx0fTOS5EhQocTogmzZ8vaSk1xxMZzOwDKYhJSbsqsItoMbQ5KN3Cod6OhZH3OgrVaZeOg+FYkxZWz1d+lB0WnrIcSI/zx9isGjrJDqogOQZnEx85oOd/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=awYMVpoy; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1791756120; c=relaxed/simple;
+	bh=1fW0XKYtdagdZuFVD5Q5U2KR8FhzkEtOyk1ibS6hp1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=M8nrmbtnn1bVsYlmFhSWsadVBjDsvRWDPvGJ1vKbdSNWGs6TMR0KeirUQ9S/DjG248CtdVWLOYCX95gKAJEFqdZtia/47QRZgCiFxKjLQjw4qdtY67JrU/JGPRSLYZUpK6mivjdbbAZIZ1e0/rhAVfPVSFhXiauEPWsfzePr5Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFXY2cuj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="awYMVpoy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1791756024;
-	bh=Sy2M0QI554MDVbivdO9EjRACH6DW3sC2H69veOZRhrw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=awYMVpoybAQTtnknMIyTUU3lHtX8ekDDPH2vMOuN22di15GV/xsfRO/7czF+c+oxM
-	 FGjmSajC5dEBz6rZwiGzoi6JY89O43ZMrK1XbPgKxb0icc4GFuWbslPCiSpwHbTgRw
-	 hoXqUbByPcQ0DxlUTDstl3324jUrVXn/QZPfUhSHXzuijxaxetJFWhcBPpf0zStUnn
-	 pRjusWChsRc/JCg/FqAJn8ZDkyXIFRVpW+dZECdTQYdjSe4qeqY7insQEUqqV7dEvH
-	 H6jv6QKdI1hdDxMCtgCIrzg6epC0RCivU6344ZH203r3FGiLoDPwQMfJXdhmvzPk3c
-	 XxEqgd2jWkW6A==
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 70A7760060;
-	Mon, 12 Oct 2026 00:00:24 +0200 (CEST)
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@kernel.org,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: [PATCH net-next 15/15] netfilter: nft_exthdr: avoid 60 bytes stack buffer in TCP option mangling
-Date: Sun, 11 Oct 2026 23:59:53 +0200
-Message-ID: <20261011215953.1334630-16-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261011215953.1334630-1-pablo@netfilter.org>
-References: <20261011215953.1334630-1-pablo@netfilter.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFXY2cuj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id D6FCBC2BCF5;
+	Sun, 11 Oct 2026 22:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1791756120;
+	bh=1fW0XKYtdagdZuFVD5Q5U2KR8FhzkEtOyk1ibS6hp1g=;
+	h=From:To:Cc:Subject:Date:Reply-To:From;
+	b=EFXY2cujf1OPa95w6QTbAur5NetU2BWeJpadFEwbjy+qlGU7SEgEvwyGOog1a6Ys8
+	 Nj8WGOoYheVVH06AWIM6Qkaq4TH5cL46AiwNHLhmMqGmdyE9OhX08RR4V7OHmeVGLb
+	 R6JVVAFIEehe9zYE5niorO0rWCluBKEsq/uyhcmwjmO4Q7JfsJQkNODd/dOZ3XOkg4
+	 A3d95yF9U4T3ZXty2QtG+0vweKyRqJBoCv6DSk1FfCEKLDIyWN5qdnNxP0Ij8fZ0Ff
+	 GoCpnItwNRCcS6GTG9cPgut+col+o9wTbGSbU1hWtt7S1UPw5DE49JG2uSKIcil9qd
+	 Bb5UVDcGOW67Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB5DDCA9EBD;
+	Sun, 11 Oct 2026 22:01:59 +0000 (UTC)
+From: Haseeb Malik via B4 Relay <devnull+haseebulhaq55.gmail.com@kernel.org>
+To: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] macsec: check for duplicate SCIs before
+ registering the device
+Date: Sun, 11 Oct 2026 21:57:11 +0000
+Message-ID: <20261011-macsec-early-sci-check-2b1f06af193f@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1791756119; l=2042;
+ i=haseebulhaq55@gmail.com; s=default; h=from:subject:message-id;
+ bh=3yrY3KSdmX2Lbj0TP8rJOIrBxb8TNoGAzNCgkYC5p74=;
+ b=L5t3/FxbcRCZzHeu1Bp9cVnk4u93qX8LBwHeRupzFdJL6irVlyKzONIkG1rDbzH+NS7LSCIfl
+ wByRJDDreD2A+fJATZUFNk1vaZng9LpqZUgYgZUPGwOwqDl7RLhyyWo
+X-Developer-Key: i=haseebulhaq55@gmail.com; a=ed25519;
+ pk=U/yCVc6cTsqDqxWLzvoONZ7DUA3EfRU+rfO9Xxo4p2w=
+X-Endpoint-Received: by B4 Relay for haseebulhaq55@gmail.com/default with
+ auth_id=1026
+X-Original-From: Haseeb Malik <haseebulhaq55@gmail.com>
+Reply-To: haseebulhaq55@gmail.com
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Haseeb Malik <haseebulhaq55@gmail.com>
 
-nft_exthdr_tcp_set_eval() and nft_exthdr_tcp_strip_eval() fetched the
-TCP header and options through nft_tcp_header_pointer(), which calls
-skb_header_pointer() a second time for the full tcphdr_len into a 60
-bytes stack buffer. Since commit 28427f368f0e ("netfilter: nft_exthdr:
-Fix non-linear header modification") both functions then call
-skb_ensure_writable() and re-read the header from skb->data, so the
-buffer was never used.
+macsec_newlink() registers and links the device before rejecting a
+duplicate SCI. Registration can emit link notifications for a device
+whose creation ultimately fails with -EBUSY.
 
-Only the 20 bytes fixed header is needed to learn tcphdr_len, so fetch
-just that, validate the length as before, and let skb_ensure_writable()
-pull the rest. This also drops the 60 bytes stack buffer from both
-functions.
+The SCI is already resolved before SecY initialization, so check for a
+duplicate there and return -EBUSY directly. Remove the now-unused unlink
+label while preserving cleanup for failures after registration.
 
-Comparison of performance in mpps:
-
-  op       linear/non-linear     before    after    delta
-==================================================================
-   set,         non-linear       4.193     4.348    +3.7% mpps
-   strip,       non-linear       4.184     4.434    +6.0% mpps
-   set,         linear           5.302     5.427    +2.4% mpps
-   strip,       linear           5.452     5.527    +1.4% mpss
-
-Comparison of performance in ns/expression:
-
-  op       linear/non-linear     before    after    delta
-==================================================================
-   set,         non-linear       34.6      25.3     -9.4  ns
-   strip,       non-linear       35.2      20.8     -14.3 ns
-   set,         linear           23.6      19.7     -3.9  ns
-   strip,       linear           22.9      19.8     -3.1  ns
-
-./scripts/bloat-o-meter exthdr_before.o exthdr_after.o
-add/remove: 0/1 grow/shrink: 3/0 up/down: 233/-207 (26)
-Function                                     old     new   delta
-nft_exthdr_tcp_eval                          792     946    +154
-nft_exthdr_tcp_strip_eval                    825     891     +66
-nft_exthdr_tcp_set_eval                      602     615     +13
-nft_tcp_header_pointer.part.constprop        207       -    -207
-Total: Before=6527, After=6553, chg +0.40%
-
-This also allow the compiler to inline nft_tcp_header_pointer inside
-nft_exthdr_tcp_eval() which could yield some minimal performance gain.
-
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/netdev/ar2KmwhtCMbOKLsG@krikkit/
+Assisted-by: LLM
+Signed-off-by: Haseeb Malik <haseebulhaq55@gmail.com>
 ---
- net/netfilter/nft_exthdr.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+Tested on arm64 in virtme with KASAN and lockdep: all 15 MACsec selftests
+and 80 offload/cleanup cycles pass. Rejected-device link notifications
+observed by the diagnostic drop from two to zero.
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index 3492426dccf7..861bab93f435 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -233,16 +233,23 @@ static void nft_exthdr_tcp_set_eval(const struct nft_expr *expr,
- 				    struct nft_regs *regs,
- 				    const struct nft_pktinfo *pkt)
- {
--	u8 buff[sizeof(struct tcphdr) + MAX_TCP_OPTION_SPACE];
- 	struct nft_exthdr *priv = nft_expr_priv(expr);
- 	unsigned int i, optl, tcphdr_len, offset;
--	struct tcphdr *tcph;
-+	struct tcphdr *tcph, _tcph;
- 	u8 *opt;
+ drivers/net/macsec.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 409fd855235ba29125e39bfd80e1c5656aea784f..4e3020586b1e53c5a17f7e31c1f15b87f6443e17 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -4264,6 +4264,9 @@ static int macsec_newlink(struct net_device *dev,
+ 	if (sci == MACSEC_UNDEF_SCI)
+ 		sci = dev_to_sci(dev, MACSEC_PORT_ES);
  
--	tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
-+	if (pkt->tprot != IPPROTO_TCP || pkt->fragoff)
-+		goto err;
++	if (rx_handler && sci_exists(real_dev, sci))
++		return -EBUSY;
 +
-+	tcph = skb_header_pointer(pkt->skb, nft_thoff(pkt), sizeof(_tcph), &_tcph);
- 	if (!tcph)
- 		goto err;
+ 	/* Registration can notify listeners before returning. */
+ 	macsec_init_secy(dev, sci, icv_len);
+ 	if (data) {
+@@ -4284,11 +4287,6 @@ static int macsec_newlink(struct net_device *dev,
+ 	if (err < 0)
+ 		goto unregister;
  
-+	tcphdr_len = __tcp_hdrlen(tcph);
-+	if (tcphdr_len < sizeof(*tcph) ||
-+	    tcphdr_len > sizeof(*tcph) + MAX_TCP_OPTION_SPACE)
-+		goto err;
-+
- 	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
- 		goto err;
+-	if (rx_handler && sci_exists(real_dev, sci)) {
+-		err = -EBUSY;
+-		goto unlink;
+-	}
+-
+ 	/* If h/w offloading is available, propagate to the device */
+ 	if (macsec_is_offloaded(macsec)) {
+ 		const struct macsec_ops *ops;
+@@ -4320,7 +4318,6 @@ static int macsec_newlink(struct net_device *dev,
  
-@@ -313,16 +320,23 @@ static void nft_exthdr_tcp_strip_eval(const struct nft_expr *expr,
- 				      struct nft_regs *regs,
- 				      const struct nft_pktinfo *pkt)
- {
--	u8 buff[sizeof(struct tcphdr) + MAX_TCP_OPTION_SPACE];
- 	struct nft_exthdr *priv = nft_expr_priv(expr);
- 	unsigned int i, tcphdr_len, optl;
--	struct tcphdr *tcph;
-+	struct tcphdr *tcph, _tcph;
- 	u8 *opt;
- 
--	tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
-+	if (pkt->tprot != IPPROTO_TCP || pkt->fragoff)
-+		goto err;
-+
-+	tcph = skb_header_pointer(pkt->skb, nft_thoff(pkt), sizeof(_tcph), &_tcph);
- 	if (!tcph)
- 		goto err;
- 
-+	tcphdr_len = __tcp_hdrlen(tcph);
-+	if (tcphdr_len < sizeof(*tcph) ||
-+	    tcphdr_len > sizeof(*tcph) + MAX_TCP_OPTION_SPACE)
-+		goto err;
-+
- 	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
- 		goto drop;
- 
--- 
-2.47.3
+ del_dev:
+ 	macsec_del_dev(macsec);
+-unlink:
+ 	netdev_upper_dev_unlink(real_dev, dev);
+ unregister:
+ 	unregister_netdevice(dev);
+
+base-commit: 8df0638138d3e0344fd1fb36cf2d1ca1cf5028f0
+
 
