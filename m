@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B6F439F8A
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7F33C0607
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791742004; cv=none; b=qfMWrh848t6npgT1s+o0DZFLNGfk1a+1ORqqffVCI1vgPGlYLwhNPzWSlKrZgjcPoADg8QR9ySDYmImUBKi49aFGegh80ZYucNfqzQf82/cNJxT8Z/UB/N1JPWxOalKX42MEu9rFRfhbW1BncEV0Z0BiHzIbDkN6dejZbfWriSU=
+	t=1791742006; cv=none; b=Eif/giIu7nr7MEuRxjmq+05hCEHRCpYkwKh4umIrbbhWIFa5NKBmKM1cPi3393FIBTNQfpS/XGEnV8iTKlfscbuBeOHuerQRJ3rA0mrCoyfNTjRZUd+yVCuggNMyxwand/NsYdrEba4vGKu4BrNjtaMQ6XA2pwQEBiXfMEdkZJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791742004; c=relaxed/simple;
-	bh=tRTSRjG0crhl/K0MCSIJ4Fp8Q1OYcOKjEybI1uwCdW0=;
+	s=arc-20240116; t=1791742006; c=relaxed/simple;
+	bh=5gYdbcSBZqSesON3t3sdM6fmCFYLijiVhGzYp3sWjGU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=J2M4kfweXZEMwQZt/LBJkf8x1cemAxxJoZcAE87QBNwM3PFoXdUlIS/4UwSnonSTUwv2BzEWXNM+Qx+FCicWNIl9jyMkbmAhTm1LNnrmTeqHJxigHmtCQE/XQ3MTawrYwbAkkNa3oaOqFiTCbitLkO2Iz7WdPVsBL0UjRBWY//E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZL6mECfZ; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kAyeUbtK1ll3PmbuxiAMMmvQF3wALrzaFL0cknrpybTj2KPUFXdGrKXQKFYLbr4ut1XgPnRL1LQ2g/NHNF/3Bl49iHCaArb8IDF7YoXqWcDLusmy15geWTH0FkMAcLkXJsoUQwNBDywKaC9x1XzRI3HGGOYuuFJxyyYGu3bDCRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJWw9pRn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZL6mECfZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560641F0089B;
-	Sun, 11 Oct 2026 18:06:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJWw9pRn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CD91F0089D;
+	Sun, 11 Oct 2026 18:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791742002;
-	bh=ufSSKWFjXPoWpo6Uh1IShKC6p6G7KsnTAy09T/nS5x8=;
+	s=k20260515; t=1791742005;
+	bh=3/MpgewILMinV1Vsy0/lJIHXgteBsckrBYAn5UdbQEA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZL6mECfZYzafnIOzR7xWM1I7QFqOIwVUJDHDItT2E5OqmQFwbuAFTno4908QMojAT
-	 vMJ4NDmV5tGf0Ntxw707KGsBFA3aLldibbyDOBcMEdXOiSajpcSn6XNkBaoS/KTT/E
-	 1nk7E/v46M7mcj4A1u4EdRKVGQT8xmW+SpYFcg2PqCoZ+SZpyElGYrv37sGX55ZX34
-	 hbD/MAUczZSanbC+XH7IYB4iAozduYuf/eMs7NDM8/aNth30rnrM0HDwKaXqABecZ9
-	 YOl2Lo/ML4Xg16idFgAR3q8vMxAwQ3I7K9jPCvUeUqnD0VHu3e7n1w9WLXBTitGELX
-	 ZdZUBVrqEOK7A==
+	b=dJWw9pRnTxkIrKeXxXxCxHysQxDKfPa5ZF36i+Pt3el4+/cx8uj0w9OnWevPme6uR
+	 Q7CseA8QF7lz9bqxC9st5xNCPqrYa0iYYvSOfaap2y/XUgvvnbXXUskQYCLVfsOYAv
+	 8jnawIIaYVgRBtL8C8d+7hqmP5kTtN0MIw0f8FePamkVuMOR+6RuN3P0hXRYPOIfcl
+	 RXlJsZ+nnNv4hyG89mHpvPhj++TPG5ihbNzclW3H/FhGVjo98O5UrLLo8I5a1cog9E
+	 LM2hSQYhQMwMImmWTVI+XAA87CRt1/IyFyMncdpplRx0NfnOf2fEswrvjXWb4wz2Vc
+	 bxUQTDQn25+Ag==
 From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 11 Oct 2026 20:06:21 +0200
-Subject: [PATCH net-next v4 08/15] net: ethernet: cortina: Rebuild free
- queue metadata for RX ring changes
+Date: Sun, 11 Oct 2026 20:06:22 +0200
+Subject: [PATCH net-next v4 09/15] net: ethernet: cortina: Rotate free
+ queue page allocation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261011-gemini-ethernet-fixes-3-v4-8-4b1631b08f5d@kernel.org>
+Message-Id: <20261011-gemini-ethernet-fixes-3-v4-9-4b1631b08f5d@kernel.org>
 References: <20261011-gemini-ethernet-fixes-3-v4-0-4b1631b08f5d@kernel.org>
 In-Reply-To: <20261011-gemini-ethernet-fixes-3-v4-0-4b1631b08f5d@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
@@ -50,139 +50,82 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-Changing an RX ring can leave the shared free queue order unchanged
-while increasing the number of pages which may be in flight. The queue
-resize fast path then retains a metadata pool sized for the old RX
-rings. A failed resize also leaves the new RX order installed, and open
-accepts -EBUSY and proceeds with that larger ring.
+The free queue metadata bitmap currently searches for a free slot from
+zero for every page allocation. Under sustained traffic this repeatedly
+scans occupied low-numbered slots.
 
-Derive the required metadata capacity in one helper and include it in
-the resize fast path. Reuse an oversized queue only while another port
-is running; otherwise rebuild it at the requested order so downsizing
-releases the surplus pages. Propagate resize failures from open and
-restore the old RX order after a failed ethtool request.
+Remember the position after the most recently allocated slot and wrap the
+bitmap search at its end. Reset the cursor when the bitmap is released so
+the two remain consistent across failed setup and teardown. This keeps
+allocation cost distributed across the metadata table.
 
 Assisted-by: LLM
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 51 ++++++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 284823bdfd50..cd5ded7384a5 100644
+index cd5ded7384a5..3bb96c51e0b7 100644
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1068,21 +1068,31 @@ static void geth_freeq_release_pages(struct gemini_ethernet *geth)
- 	xa_destroy(&geth->freeq_mappings);
- }
+@@ -174,6 +174,7 @@ struct gemini_ethernet {
+ 	struct xarray	freeq_mappings;
+ 	unsigned int	num_freeq_pages;
+ 	unsigned long	*freeq_page_bitmap;
++	unsigned int	freeq_page_cursor;
+ 	spinlock_t	freeq_lock; /* Locks queue from reentrance */
+ };
  
-+static unsigned int
-+geth_freeq_page_slots(struct gemini_ethernet *geth, unsigned int order)
-+{
-+	unsigned int fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
-+	unsigned int slots = 1 << (order - fpp_order);
-+
-+	if (geth->port0 && geth->port0->netdev)
-+		slots += 1 << geth->port0->rxq_order;
-+	if (geth->port1 && geth->port1->netdev)
-+		slots += 1 << geth->port1->rxq_order;
-+
-+	return slots;
-+}
-+
- static int geth_setup_freeq(struct gemini_ethernet *geth)
- {
- 	unsigned int fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
- 	unsigned int len = 1 << geth->freeq_order;
--	unsigned int pages = len >> fpp_order;
--	unsigned int page_slots = pages;
-+	unsigned int page_slots;
- 	unsigned int expected;
- 	union queue_threshold qt;
- 	union dma_skb_size skbsz;
- 	unsigned int filled;
+@@ -745,12 +746,20 @@ static int geth_freeq_alloc_slot(struct gemini_ethernet *geth)
  
--	if (geth->port0)
--		page_slots += 1 << geth->port0->rxq_order;
--	if (geth->port1)
--		page_slots += 1 << geth->port1->rxq_order;
-+	page_slots = geth_freeq_page_slots(geth, geth->freeq_order);
+ 	lockdep_assert_held(&geth->freeq_lock);
  
- 	geth->freeq_ring = dma_alloc_coherent(geth->dev,
- 		sizeof(*geth->freeq_ring) << geth->freeq_order,
-@@ -1196,7 +1206,9 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
- 	struct net_device *netdev = port->netdev;
- 	struct gemini_ethernet_port *other_port;
- 	struct net_device *other_netdev;
-+	bool other_running;
- 	unsigned int new_size = 0;
-+	unsigned int page_slots;
- 	unsigned int new_order;
- 	int ret;
- 
-@@ -1211,9 +1223,7 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
- 	else
- 		other_port = geth->port0;
- 	other_netdev = other_port ? other_port->netdev : NULL;
--
--	if (other_netdev && netif_running(other_netdev))
--		return -EBUSY;
-+	other_running = other_netdev && netif_running(other_netdev);
- 
- 	new_size = 1 << (port->rxq_order + 1);
- 	netdev_dbg(netdev, "port %d size: %d order %d\n",
-@@ -1234,8 +1244,16 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
- 	if (new_order <= PAGE_SHIFT - geth->freeq_frag_order)
- 		return -EINVAL;
- 
--	if (geth->freeq_ring && geth->freeq_order == new_order)
--		return 0;
-+	if (geth->freeq_ring) {
-+		page_slots = geth_freeq_page_slots(geth, geth->freeq_order);
-+		if (geth->num_freeq_pages >= page_slots &&
-+		    (geth->freeq_order == new_order ||
-+		     (other_running && geth->freeq_order > new_order)))
-+			return 0;
+-	slot = find_first_zero_bit(geth->freeq_page_bitmap,
+-				   geth->num_freeq_pages);
+-	if (slot == geth->num_freeq_pages)
+-		return -ENOSPC;
++	slot = find_next_zero_bit(geth->freeq_page_bitmap,
++				  geth->num_freeq_pages,
++				  geth->freeq_page_cursor);
++	if (slot == geth->num_freeq_pages) {
++		slot = find_first_zero_bit(geth->freeq_page_bitmap,
++					   geth->freeq_page_cursor);
++		if (slot == geth->freeq_page_cursor)
++			return -ENOSPC;
 +	}
-+
-+	if (other_running)
-+		return -EBUSY;
  
- 	disable_irq(geth->port1->irq);
- 	geth_set_freeq_irq(geth, false);
-@@ -2014,10 +2032,7 @@ static int gmac_open(struct net_device *netdev)
- 	phy_start(netdev->phydev);
+ 	__set_bit(slot, geth->freeq_page_bitmap);
++	geth->freeq_page_cursor = slot + 1;
++	if (geth->freeq_page_cursor == geth->num_freeq_pages)
++		geth->freeq_page_cursor = 0;
  
- 	err = geth_resize_freeq(port);
--	/* It's fine if it's just busy, the other port has set up
--	 * the freeq in that case.
--	 */
--	if (err && (err != -EBUSY)) {
-+	if (err) {
- 		netdev_err(netdev, "could not resize freeq\n");
- 		goto err_stop_phy;
- 	}
-@@ -2376,14 +2391,20 @@ static int gmac_set_ringparam(struct net_device *netdev,
- 			      struct netlink_ext_ack *extack)
- {
- 	struct gemini_ethernet_port *port = netdev_priv(netdev);
-+	unsigned int old_rxq_order;
- 	int err = 0;
+ 	return slot;
+ }
+@@ -1112,6 +1121,7 @@ static int geth_setup_freeq(struct gemini_ethernet *geth)
+ 	if (!geth->freeq_page_bitmap)
+ 		goto err_freeq_pages;
+ 	geth->num_freeq_pages = page_slots;
++	geth->freeq_page_cursor = 0;
  
- 	if (netif_running(netdev))
- 		return -EBUSY;
+ 	/* Discard pointer state belonging to the previous queue geometry. */
+ 	writel(0, geth->base + GLOBAL_SWFQ_RWPTR_REG);
+@@ -1142,6 +1152,7 @@ static int geth_setup_freeq(struct gemini_ethernet *geth)
+ 	kfree(geth->freeq_pages);
+ 	geth->freeq_pages = NULL;
+ 	geth->num_freeq_pages = 0;
++	geth->freeq_page_cursor = 0;
+ err_freeq:
+ 	dma_free_coherent(geth->dev,
+ 			  sizeof(*geth->freeq_ring) << geth->freeq_order,
+@@ -1170,6 +1181,7 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
+ 	kfree(geth->freeq_pages);
+ 	geth->freeq_pages = NULL;
+ 	geth->num_freeq_pages = 0;
++	geth->freeq_page_cursor = 0;
  
- 	if (rp->rx_pending) {
-+		old_rxq_order = port->rxq_order;
- 		port->rxq_order = min(15, ilog2(rp->rx_pending - 1) + 1);
- 		err = geth_resize_freeq(port);
-+		if (err) {
-+			port->rxq_order = old_rxq_order;
-+			return err;
-+		}
- 	}
- 	if (rp->tx_pending) {
- 		port->txq_order = min(15, ilog2(rp->tx_pending - 1) + 1);
+ 	dma_free_coherent(geth->dev,
+ 			  sizeof(*geth->freeq_ring) << geth->freeq_order,
 
 -- 
 2.56.0
