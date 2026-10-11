@@ -1,64 +1,76 @@
-Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C002F3403E8;
-	Sun, 11 Oct 2026 19:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC6B45FFAC
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 19:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791746667; cv=none; b=R4RlzvCfa++7vzdd039STsvUlPUZtfzsTlovBQ12GgRjdi5Dnu0gtQYmSoccb17S9ZwCabBSqLRQabyYCVl7ty+/0EChGDEV7cYVOqVMEVFkGG0lHPbUpYNm/RMzu7fyPzVmuybqqvL6zNL7hqqoqE3HRNH/FLyakTWL0QLg2q4=
+	t=1791747767; cv=none; b=pVUMFV21P5GRcxq9+TqYu6hCPOw8svWh/TVurSqtfvdIXtiBM11MZaskH0+YigX/YFljwcUHXE9iMj0QBe5bJpYtQbqPgLmXLzPjk8E4Xddv8dAgMKBGPIzZDrtUaWdXcp4shgj2tPQoktFd4yAUTQR6lKoMkzh5Rm+qZQVwXxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791746667; c=relaxed/simple;
-	bh=wVvs34JXYAOct3wsRjx11NKKpF08OFkBXGvyFNoM6bs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pCPFMnKhzjxEIJxg/E/WjiOfNWn9/bBIwv0y2I+8lPOI4VPgeEdKqwqFdx7qu0hQuF1YRxwjU0R8eSPo1Y3evBB+5zCrCmFCeUIQ7Y2RL6603ZLyrhe9VcHWNRzBxMMz0MoPzYp2JL9xLOY1oNa/nfuXLI+LXKvzsctRn2YVUeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=q41pPjgx; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Qv7d/UXj; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+	s=arc-20240116; t=1791747767; c=relaxed/simple;
+	bh=duwhY6Tg9tFTL1XOXarBBsKmWEqDi2jVDN3dH3CmJ4Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dA63C1chKwUxBdbN7Swi0Uqx9si7Tlgxlh13e22m1pRX4bAd5VSuILEsZDUJsEu+t/dlIDmj9PTVOwHp4tFErpwwPt0plsMBVuSME05etNyrINDxtxdB5ntvgygu1ANmWEKiz2rItVsN4539ZDOZvzAF3SEyx2F2Q3gQROVFiTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h50CcZEV; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="q41pPjgx";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Qv7d/UXj"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69BJNbOw010948;
-	Sun, 11 Oct 2026 21:23:42 +0200
-Received: from localhost.localdomain (unknown [160.80.105.87])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id D314C12294F;
-	Sun, 11 Oct 2026 21:23:32 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1791746612; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gOIZzI8MoZpC+ul484Q1c2neV7O0L3gKo49Mhwr/msk=;
-	b=q41pPjgxop9hYMTS4p34WkJThxQmMQOtWCx+zSvVG7c/V4/LmCGc0xX9afiXfdfbF24VdS
-	DZtrBkWoeJxrllDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1791746612; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gOIZzI8MoZpC+ul484Q1c2neV7O0L3gKo49Mhwr/msk=;
-	b=Qv7d/UXjE4d5QFZOa/lGjIq1mxiEh2+JrEnA2ixkxUqxF+p2HGEU3RRZRm4PY+HprN8cYw
-	76H/L65HC9ydNCt8Ss4i2m0bTfxj5HDcxXSNKZ5RMezbFKPcTbd31eksw4xecYl2p5UGL6
-	HqfCV55WvQjTeiZHrKwoQ95CVASKo6R3Wnu9q/So18tj5Hr23ZWc1dIfrdEjvtlxMoqdBM
-	7fYzzSMc7dw04ysnM0UTAVSrdffckzQ0fLLs0+l9zyLjPSlehkcjvV67Yhuiy5KoJYdzKY
-	Aa5GQJiu9iH8rM8nE3OGMCs6UP3o1pQA4IC0HUsU/MWI6sjIP0e10HyVSzUKzg==
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
-        Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-        Hangbin Liu <hangbin.liu@linux.dev>,
-        Justin Iurman <justin.iurman@gmail.com>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Ahmed Abdelsalam <ahabdels@cisco.com>,
-        Stefano Salsano <stefano.salsano@uniroma2.it>,
-        Andrea Mayer <andrea.mayer@uniroma2.it>
-Subject: [PATCH net-next 3/5] seg6: apply the PSP flavor together with NEXT-C-SID in SRv6 End
-Date: Sun, 11 Oct 2026 21:23:08 +0200
-Message-Id: <20261011192310.55-4-andrea.mayer@uniroma2.it>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20261011192310.55-1-andrea.mayer@uniroma2.it>
-References: <20261011192310.55-1-andrea.mayer@uniroma2.it>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h50CcZEV"
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c2e8c710847so150975266b.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 12:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791747760; x=1792352560; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=P57ESlsV9SvC7jAyaXBqTiZZ0EEN4K1kw22rWzkVaQw=;
+        b=h50CcZEVKgMXP+VS13OBpeU9Qm+RLcRIl957khv4EIB90D/wHkS3s23xF6jwkK/gOr
+         nu8PZbvUu8eHVE/u3Jzww8RN2G0GTDREMEamlkoPW+2Cfm9V2JlGIVTU3eBYiAB9c4rS
+         V8qnLW2I2wy/7gZQhoB6RP3MClVrQ/tauQlx8poQbxfNkXYAVJHmc8fNwGRrQt5tXhTf
+         XcDNRViDF4fvuZfT9tPR9nIHtiP1hBQ8Et2AvcfxiSOGc3PznsoIzO65fIPXpV6msB8M
+         c8Ok3O55SpKc0/sFZfDPug60j6bvzaz+6l4fWLcZnIKDiwLGYZQZUNP5PV9xlOts8G2z
+         DPrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791747760; x=1792352560;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=P57ESlsV9SvC7jAyaXBqTiZZ0EEN4K1kw22rWzkVaQw=;
+        b=TKXfhq80hd8kxXOwtDrQYknotT7ZAkrJQ0nHXwDMVtG+RyJ5oekUf63M+1hMUrd4yh
+         IGDahVgQ91rfzpn9hHkwER0vyyCIwCL7FPc/VnNFG9tkdyggmDAu4/k4RFp1VyG08A+N
+         zrCW4vO8FoxfaDHUKQmRj2nS6iMVqpZuDUgmX7ARQ3PrrQuFzk6f4BFmrTBJuAEo9Sii
+         3oFLMNcw15rL/o2p2vnDEQW/ZMWSu0dfpcm//hWymjHZLVEEsFILcs37bjSUsHXK4mM2
+         XiiN3J7K3dQbfCSwUqKViIQkbWlR1MRt6YbqXG9sGm56aGFiZPij9j+q1JTUdoVbr5Lu
+         kCxg==
+X-Forwarded-Encrypted: i=1; AKwUvByb0HqzhDQquw9N4591mcMaFMEM+sQJ8/VRslSbUjcq8iX+b0oytMulbTUK27QLA6vLhJ3mLC0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIP4NFP1hGqx3YxxeyB+wuMtn4d9Mxz6XNUssjUfxXAVENhTYxb
+	r8qjExxDGoaoNEZeuEMFk/7tdy5h+2u4InSjI/1is7buam/hG4HfOuLv
+X-Gm-Gg: AYBFou1tqf9b/VNu2TWes0YssDG/rQoZB1rFzHrFTR7n+YUCnZH4z0uozJVwZMF4XQM
+	HuW0BTDm6Oweers6tkZtZbVu5KRNSIkph5ubiHZIYsQMP0n/NrvGCpY53ATOZO/LHgZiA73aPF4
+	vpJtRhubHQ+T6IlQz2oRaAn+JGESfEVEUP/npgsYo2BTxH5lLS+b0K2PRwZhSw5A8FXjOcTd1+S
+	HYzUNz647TVPWd8QgR+4FFf1UrPmTEtzGhwiUhqsuUDWPG6M1wb9HElbsnDayhssB8b7PfU6P/V
+	ZW0Xe9qAgdVRDUgM0VAMovnyGTjwm0hcJ4ib2oUBUXiaDeUHKv63R9I1p7cflr6sij+2f4SQbcH
+	pt27UPI+uE/MO8MRViIe4SMOUDJKT4rk1Am+S1jsU6j0r/zu5mpUdVASlN5h65yFAqj6mNkn5PA
+	mbNdPpDFnSd8yX4i33h+yIq9vluAv4Z3Gujil3tQ8kqN6byakEhk8oPiSEtiglwy51w20+n/1kM
+	DiazuVboU8/KGJbQa2ymXVh4fVx2eP+IRS8CtLD
+X-Received: by 2002:a17:907:968f:b0:c31:8c48:e18b with SMTP id a640c23a62f3a-c31a9afb3b6mr819944966b.14.1791747760150;
+        Sun, 11 Oct 2026 12:42:40 -0700 (PDT)
+Received: from buildhost.darklands.se ([2001:9b1:ff:d701:51eb:176f:63d9:53f8])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9a74bcbsm387266166b.38.2026.10.11.12.42.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Oct 2026 12:42:38 -0700 (PDT)
+From: Magnus Lindholm <linmag7@gmail.com>
+To: pavan.chebbi@broadcom.com
+Cc: andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linmag7@gmail.com
+Subject: [PATCH net-next v3] tg3: normalize inherited BCM5718 register byte order
+Date: Sun, 11 Oct 2026 21:41:58 +0200
+Message-ID: <20261011194228.981141-1-linmag7@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,125 +78,145 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
 
-Since commit bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End
-behavior"), an SRv6 End route can be set up with both the NEXT-C-SID and
-the PSP flavors, e.g.:
+Firmware can leave BCM5718 vendor registers byte-swapped while standard
+PCI fields retain normal byte order. Detect this from the host-control
+revision marker, byte-swap bit and swapped product ID, without matching
+a platform model or PCI subsystem. Prefer the normal revision marker
+so already-normal controllers do not enter the normalization path.
 
-  ip -6 route add fcbb:0:100::/48 encap seg6local action End \
-          flavors next-csid,psp lblen 32 nflen 16 dev dum0
+Hardware swapping can accommodate big-endian register accesses, but tg3
+already initializes misc_host_ctrl with WORD_SWAP set and BYTE_SWAP clear
+on both little- and big-endian builds. Its normal MMIO path uses
+readl()/writel(); on SPARC64 these use little-endian accesses. Restore
+that existing register mode rather than choosing a mode based on host
+endianness. The swab32() on the initial write compensates for the device's
+inherited state; subsequent accesses use the normal driver path.
 
-In RFC 9800, the NEXT-C-SID flavor (NEXT-CSID in the RFC) changes the
-End processing only when the Argument is not zero [1]. With a zero
-Argument (i.e. when the IPv6 DA carries no further C-SID), End is
-processed as in RFC 8986, and the PSP flavor (when set) applies
-unchanged [2]. If the packet arrives with Segments Left 1, PSP must
-then remove the SRH.
+DMA byte ordering is controlled separately through GRC_MODE. Leave those
+settings, including the __BIG_ENDIAN handling for non-frame data,
+unchanged. Check both register readbacks and keep this in probe so PCI
+access or validation failures can abort initialization.
 
-However, on a route with both the NEXT-C-SID and PSP flavors,
-input_action_end() always uses the NEXT-C-SID processing. The
-NEXT-C-SID processing handles a packet with a zero Argument as End
-without flavors, ignoring PSP. Therefore, if this packet arrives with
-Segments Left 1, the SRH is not removed.
+Limit detection to BCM5718, whose register layout and inherited state
+were checked on M3000 hardware. Other controller families retain their
+existing initialization path.
 
-Fix this by using the NEXT-C-SID processing only when the Argument is
-not zero or the route has no RFC 8986 flavor. Otherwise, the packet is
-processed as End with its RFC 8986 flavors, in end_flv8986_core(). With
-a zero Argument and Segments Left 1, PSP now removes the SRH before the
-packet is forwarded. If seg6_pop_srh() cannot remove the SRH, the packet
-is dropped, as on a route with the PSP flavor alone.
-
-Found by manual code inspection and reproduced in a VM without kernel
-changes or error injection. A following commit adds tests for this case
-to srv6_end_flavors_test.sh. The tests reproduce the issue: they fail
-without this change and pass with it.
-
-[1] - https://datatracker.ietf.org/doc/html/rfc9800#section-4.1.1
-[2] - https://datatracker.ietf.org/doc/html/rfc9800#section-4.1.7
-
-Fixes: bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End behavior")
-Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
 ---
- net/ipv6/seg6_local.c | 50 ++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 47 insertions(+), 3 deletions(-)
+Changes since v2:
+- Expand the commit message in response to Andrew Lunn's review: explain
+  the existing register mode on both host endiannesses, the purpose of
+  the initial swab32(), and the separate big-endian DMA configuration.
+- No code changes; the diff is identical to the tested v2.
 
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 26cd4facbe36..427d12fedfc3 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -551,6 +551,47 @@ static bool seg6_next_csid_enabled(__u32 fops)
- 	return fops & SEG6_F_LOCAL_FLV_NEXT_CSID;
+Changes since v1:
+- Detect BCM5718 register state without OF model or subsystem matching.
+- Prefer the normal revision marker and retain checked PCI accesses and
+  product-ID/readback validation. Use dev_dbg() for successful correction.
+
+The unchanged v2 code was tested on big-endian SPARC64 with M3000 v2:
+normalization at boot on all four ports, rebind without further
+normalization, three active-link cycles and a 16 MiB bidirectional
+transfer with matching SHA-256. Kernel taint remained zero. Standalone
+SPARC and x86-64 CONFIG_OF=n driver builds passed; no little-endian
+hardware runtime test was performed.
+
+ drivers/net/ethernet/broadcom/tg3.c | 72 ++++++++++++++++++++++++++++-
+ 1 file changed, 70 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 73a4b569b03e..ef0f6e5f6440 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -16248,6 +16248,65 @@ static bool tg3_10_100_only_device(struct tg3 *tp,
+ 	return false;
  }
  
-+static bool seg6_flv8986_enabled(__u32 fops)
++static int tg3_fw_byteorder(struct tg3 *tp, u32 *misc_ctrl_reg)
 +{
-+	return fops & SEG6_LOCAL_FLV8986_SUPP_OPS;
++	struct pci_dev *pdev = tp->pdev;
++	u32 prodid, expected_prodid, normalized, readback;
++	int reg, err;
++
++	/* Prefer the normal revision marker before testing the swapped state. */
++	if (pdev->device != TG3PCI_DEVICE_TIGON3_5718 ||
++	    (*misc_ctrl_reg >> 28) == ASIC_REV_USE_PROD_ID_REG ||
++	    (swab32(*misc_ctrl_reg) >> 28) != ASIC_REV_USE_PROD_ID_REG ||
++	    !(swab32(*misc_ctrl_reg) & MISC_HOST_CTRL_BYTE_SWAP))
++		return 0;
++
++	/* Standard PCI fields are normal; verify the swapped vendor registers. */
++	reg = TG3PCI_GEN2_PRODID_ASICREV;
++	err = pci_read_config_dword(pdev, reg, &prodid);
++	if (err)
++		goto config_error;
++	expected_prodid = swab32(prodid);
++	if ((expected_prodid >> 12) != ASIC_REV_5717) {
++		dev_err(&pdev->dev, "unexpected swapped BCM5718 product ID %08x\n",
++			prodid);
++		return -ENODEV;
++	}
++
++	normalized = (swab32(*misc_ctrl_reg) & MISC_HOST_CTRL_CHIPREV) |
++		     tp->misc_host_ctrl;
++	reg = TG3PCI_MISC_HOST_CTRL;
++	err = pci_write_config_dword(pdev, reg, swab32(normalized));
++	if (err)
++		goto config_error;
++	err = pci_read_config_dword(pdev, reg, &readback);
++	if (err)
++		goto config_error;
++	if (readback != normalized) {
++		dev_err(&pdev->dev, "BCM5718 host-control readback mismatch %08x\n",
++			readback);
++		return -EIO;
++	}
++
++	reg = TG3PCI_GEN2_PRODID_ASICREV;
++	err = pci_read_config_dword(pdev, reg, &prodid);
++	if (err)
++		goto config_error;
++	if (prodid != expected_prodid) {
++		dev_err(&pdev->dev, "BCM5718 product-ID readback mismatch %08x\n",
++			prodid);
++		return -EIO;
++	}
++	*misc_ctrl_reg = readback;
++	dev_dbg(&pdev->dev, "normalized firmware register byte order\n");
++	return 0;
++
++config_error:
++	dev_err(&pdev->dev, "BCM5718 PCI config access at %#x failed (%d)\n",
++		reg, err);
++	return pcibios_err_to_errno(err);
 +}
 +
-+/* check whether the NEXT-C-SID processing has to be used for the packet,
-+ * instead of the RFC8986 flavors set for the given SRv6 End* behavior
-+ * instance.
-+ *
-+ * This function returns:
-+ *  - true, when the packet has to go through the NEXT-C-SID processing;
-+ *  - false, when NEXT-C-SID is not configured or the packet has to be
-+ *    processed on the basis of the RFC8986 flavors.
-+ */
-+static bool seg6_use_next_csid(struct sk_buff *skb,
-+			       const struct seg6_flavors_info *finfo)
-+{
-+	const struct in6_addr *addr;
-+	__u32 fops = finfo->flv_ops;
+ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
+ {
+ 	u32 misc_ctrl_reg;
+@@ -16272,8 +16331,17 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
+ 	 * sure that indirect register accesses are enabled before
+ 	 * the first operation.
+ 	 */
+-	pci_read_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
+-			      &misc_ctrl_reg);
++	err = pci_read_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
++				    &misc_ctrl_reg);
++	if (err && tp->pdev->device == TG3PCI_DEVICE_TIGON3_5718) {
++		dev_err(&tp->pdev->dev, "PCI host-control read failed (%d)\n",
++			err);
++		return pcibios_err_to_errno(err);
++	}
++	err = tg3_fw_byteorder(tp, &misc_ctrl_reg);
++	if (err)
++		return err;
 +
-+	if (!seg6_next_csid_enabled(fops))
-+		return false;
-+
-+	addr = &ipv6_hdr(skb)->daddr;
-+
-+	/* NEXT-C-SID and the RFC8986 flavors combine according to the
-+	 * DA.Argument (see RFC9800, sections 4.1.1 and 4.1.7):
-+	 *
-+	 *       DA.Argument   RFC8986 flavors   processing
-+	 *   (1) != 0          any               NEXT-C-SID only, SL unchanged
-+	 *   (2) == 0          none              the behavior, e.g. End
-+	 *   (3) == 0          one or more       the behavior with its flavors,
-+	 *                                       e.g. End with PSP
-+	 *
-+	 * In (2), the packet still goes through the NEXT-C-SID processing,
-+	 * which runs the behavior (e.g. End) when the DA.Argument is zero.
-+	 */
-+	return !seg6_flv8986_enabled(fops) ||
-+	       !seg6_next_csid_is_arg_zero(addr, finfo);
-+}
-+
- /* Processing of SRv6 End, End.X, and End.T behaviors can be extended through
-  * the flavors framework. These behaviors must report the subset of (flavor)
-  * operations they currently implement. In this way, if a user specifies a
-@@ -865,7 +906,10 @@ static int end_flv8986_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
- 	if (srh && !seg6_hmac_validate_skb(skb, srh))
- 		goto drop;
- #endif
--	flvmask = finfo->flv_ops;
-+	/* NEXT-C-SID, when configured, has already been evaluated by the
-+	 * caller. Only the RFC8986 flavors are left here.
-+	 */
-+	flvmask = finfo->flv_ops & ~SEG6_F_LOCAL_FLV_NEXT_CSID;
- 	if (unlikely(flvmask & ~SEG6_LOCAL_FLV8986_SUPP_OPS)) {
- 		pr_warn_once("seg6local: invalid RFC8986 flavors\n");
- 		goto drop;
-@@ -919,8 +963,8 @@ static int input_action_end(struct sk_buff *skb, struct seg6_local_lwt *slwt)
- 	if (!fops)
- 		return input_action_end_core(skb, slwt);
- 
--	/* check for the presence of NEXT-C-SID since it applies first */
--	if (seg6_next_csid_enabled(fops))
-+	/* NEXT-C-SID is evaluated first, when configured */
-+	if (seg6_use_next_csid(skb, finfo))
- 		return end_next_csid_core(skb, slwt);
- 
- 	/* the specific processing function to be performed on the packet
+ 	tp->misc_host_ctrl |= (misc_ctrl_reg &
+ 			       MISC_HOST_CTRL_CHIPREV);
+ 	pci_write_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
+
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
 -- 
 2.43.0
 
