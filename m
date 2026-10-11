@@ -1,138 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F77364059
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 08:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F1A1C84CB
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 08:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791706522; cv=none; b=ZIuj0MWV8LZPJX4yoMOhaM5/91LamfCPtHSkxU2Qkg6jeZ4w0ODQoa9XN8Hxal0b5It7BL0l+v88LEn0XoiiR/6RVg2Z/HW1f9k2cXSAI5YA+EjlwDu2w9o3WaRDdwPfsqAOnor6vfd46zmNj1c7I7zAoblGNjvJY8uHfNH36nM=
+	t=1791707093; cv=none; b=Hh/xdCOT0bHx7BwKdyYGx4CcHWIiizmHwHLHO0M7kclC3PfmhX1tKm923Bn83MQr642hIh4tz1jf0x+42arUYUmybbrj+z0rh0fiXDhbGzZITqqOoYHbPpanh/EsJ5k7jZyeldZzooUN/IGEitFluqnSkh7B+vnGttUCjGg91ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791706522; c=relaxed/simple;
-	bh=/FCg25jwFYL2ar3DHPT39gbE1Iw7WOPXNMb12c2vqN8=;
+	s=arc-20240116; t=1791707093; c=relaxed/simple;
+	bh=DVlvpcSU+l8MsocvPiXK14zDFL4lPwCgHGawjsFSaV8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eaEDEgkBjfMEisk2VYGTyqwMTSPbFrxC/vejJAyEeMXtJxcLV4yexhCHeaS7C++/kjBcoBpRm0YZA8E4sXppWgFEsUQdZk5lZxJL1h6XcI9Y4ClNu/+uIqXM0MG9auIySgFzb5PCXm0KHRwQ/JGGsSreTRJTlGvQM0Th1EH9osc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AkAueSbn; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=gBL36DdL6H1m2cZ4BGAPj95cjTUtTOgJ+Xk5hJOoGl8QxatFGXWhEw+4+/TyTrlFNBu11CALDCc8Xj8jqsf0Ov3s0ugu6EDvzNE3VhbrYNGTlNbphnPXXftp1AF1KJbkG5mJ6Hw89xUC7NwoMJgs9Sj5zuNsS/I6mSAyTX7cCdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIN0R08Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AkAueSbn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729EE1F008A1
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 08:15:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIN0R08Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF101F008A4
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 08:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791706521;
-	bh=CVfiSFcCF0e/GPeUJhHYWYQxeQKMAvPyvPYtAOqKv1s=;
+	s=k20260515; t=1791707092;
+	bh=akBs+Ql74VJDQYf/bJz7IZtF57QSpbzonAG8FFo5X1E=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=AkAueSbnjw5a6OIk+Q40Bko5u0dnx8+RQRi89c74qJ5Vs8FZpmntHIev7ZXD8uoWA
-	 DTejzy9KJbdsMe76wJ3Z/5bqbcX1sPMge3aGD7NS3tc1Fzl0km5LvtXN/VkGwxU81W
-	 YkR/0RhvmB2/FvD/f+eyoIwecF2w/arvE4/SNuxfecsHzJ3LHfwx7TL3scP7lop6bd
-	 3QXIe2WjAm0cAfYKV/MF/b9BpG5U7FRAWfBJTaHYZg4ZFziRSM9dlfNOqvk5fcWA3A
-	 RmMTZ+KFZ4o+zcwGA5uGg8wKOp30SPcmQgiji4tSEmWTVZyi9YrPyLNHWJEs9q+mTQ
-	 ms6m+Np0iulXw==
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-483d290f398so652937fac.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 01:15:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz/w7jP7VVgm+sq1y23JAYh/S9qWhVXsLwE1fTt4RGCRJiJPVy7zekXA7mKiaVFe46rd2BMivA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIeW7hJoNlbVKx5cRGZluh6Rcs/yfcWe0I3zdofg24vnNS2sRDY
-	0zIEqVowCXDT8dJTwVV9Nt//tkD623KjLWxWJKuZ/IoVQfe1lMvMAeqDorcHqMadKhAUKreJKdz
-	u0ERBaGbR3DEdPLbgi+CU2A9roT5m/m8=
-X-Received: by 2002:a05:6870:1495:b0:4a2:21ce:f2f8 with SMTP id
- 586e51a60fabf-4a2a88f8190mr6010986fac.41.1791706520768; Sun, 11 Oct 2026
- 01:15:20 -0700 (PDT)
+	b=aIN0R08QeTYF8z3n+LPWXdDcOyauwychHtT29FL5Hf0Ltpesb0n/yzXI4OA7+4TiJ
+	 ZUT/AdXGa1Ma7CCzQ1mP0Nb2BTglp5AsomEMIsxy3Oek3Hq7vPEf4oitriPNyjwVZJ
+	 V0OWhujeDfg05rMzCaFKeo7VSNx7AFWYmk7/B3B2IK6+JifXPTw8z08HIETxKek+qO
+	 a2d0oOsJk+2ix+pocGD8wxyjiYvfEJp1T3bdp4I/1U/jXSRRCqvDhWQ/IOB7+5DGYm
+	 B+pKwJ/VOCOiUn8RyRiXRjzjtM+pMuQExGyMvd5IwUh1E5ZS6lzYlvA1yadYJicko1
+	 MtYOGTJ1ZvlHg==
+Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-499f20c7054so618929fac.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 01:24:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwm0dNN2DRpd3wNh3ToRHBWtjkn/0+mKPZNVFYFxkurQb4uqViYr63NXwzQLI2lEFRztAC1pTU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIyFbLHdqpSyia03/WtjWM1GyAmVFIm1gJDO8//3RbJmb0YZn8a
+	+4UkbBV/rg61wZnfu35ns8kQ0441IPI9LyCN9VmpP+6GAEJ00FKo6/H3OoHFQAXN9bw0uEVpugC
+	WUn8vJd7jrchFjzJmyvDGaiKMHuDcUjE=
+X-Received: by 2002:a05:6870:6586:b0:49e:16bf:1f87 with SMTP id
+ 586e51a60fabf-4a2a8a7ad2cmr4961091fac.38.1791707091176; Sun, 11 Oct 2026
+ 01:24:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261011052006.60585-1-jain.sm@gmail.com> <179169628642.2527009.18099159731266030842@kernel.org>
- <CA+FWx==a6tGvhtPfz92PJa4CxgR4tGNBGHQMq9jEhX5P-4sB2g@mail.gmail.com>
-In-Reply-To: <CA+FWx==a6tGvhtPfz92PJa4CxgR4tGNBGHQMq9jEhX5P-4sB2g@mail.gmail.com>
+References: <20261010152227.401987-1-acassen@corp.free.fr>
+In-Reply-To: <20261010152227.401987-1-acassen@corp.free.fr>
 From: Eric Dumazet <edumazet@kernel.org>
-Date: Sun, 11 Oct 2026 10:15:09 +0200
-X-Gmail-Original-Message-ID: <CAL4Wiio1bAsM_Z2LEQz9r0-ehHoWpzTneWy49hd2FGeoVVEQhQ@mail.gmail.com>
-X-Gm-Features: AclHuK9B4U4RVCwX7L_yEsSbxUzqDO0uYorO0scfr3eIuyaVKw-Jzcv8lIuYjy4
-Message-ID: <CAL4Wiio1bAsM_Z2LEQz9r0-ehHoWpzTneWy49hd2FGeoVVEQhQ@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: keep the route window metric when SO_RCVBUF is
- set before connect
-To: shashank Jain <jain.sm@gmail.com>
-Cc: netdev-bot+sinfo@kernel.org, Neal Cardwell <ncardwell@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 10:24:39 +0200
+X-Gmail-Original-Message-ID: <CAL4WiipPLTPOtm9VL+xpf=Bj=SgiPyafsYLynAyns3VNHVGBiA@mail.gmail.com>
+X-Gm-Features: AclHuK8canZhdW4krwKcMXeuhtrZQXi4JcLCLKEyTFNxMtLkOk29RB2MYiar9Tw
+Message-ID: <CAL4WiipPLTPOtm9VL+xpf=Bj=SgiPyafsYLynAyns3VNHVGBiA@mail.gmail.com>
+Subject: Re: [PATCH net v2] net/sched: act_api: take tcfa_lock for hardware
+ stats updates
+To: Alexandre Cassen <acassen@corp.free.fr>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Vlad Buslov <vladbu@nvidia.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le dim. 11 oct. 2026 =C3=A0 07:26, shashank Jain <jain.sm@gmail.com> a =C3=
-=A9crit :
+Le sam. 10 oct. 2026 =C3=A0 17:22, Alexandre Cassen <acassen@corp.free.fr> =
+a =C3=A9crit :
 >
-> The issue was found by manual code inspection assisted by an LLM
-> (Claude Code, Claude Opus), while reviewing the networking changes that
-> set window_clamp on unconnected sockets, and then confirmed with a
-> reproducer before posting. The patch carries an "Assisted-by: LLM" tag
-> for that reason.
+> Actions without per CPU stats update their counters under tcfa_lock in
+> the software path but tcf_action_update_stats() adds hardware stats to
+> the same counters without it. A dump of a filter without skip_hw does
+> this even when nothing is offloaded, so such an action loses counter
+> updates. On 32-bit, readers holding tcfa_lock can also observe torn
+> 64-bit values.
 >
-> Reproducer: mainline a5ebb76233b7 built for x86_64 and booted in qemu,
-> two network namespaces joined by a veth pair, with
-> "ip route replace 10.0.0.0/24 dev <veth> window 4096" on both sides. A
-> small program sets SO_RCVBUF before connect()/listen() and reads
-> TCP_WINDOW_CLAMP and tcp_info, and the SYN/SYN-ACK is captured with
-> tcpdump.
+> Callers disable preemption around this update for the per CPU stats.
+> PREEMPT_RT forbids taking a spinlock_t with preemption disabled. Disable
+> BH in the per CPU path instead. On 32-bit, this also keeps a softirq on
+> the same CPU from updating or reading these counters in the middle of
+> the update.
 >
-> Without SO_RCVBUF the route's window metric is applied
-> (TCP_WINDOW_CLAMP=3D4096, rcv_wscale=3D0, SYN "win 2920, wscale 0"). With
-> SO_RCVBUF set before connect, mainline reports TCP_WINDOW_CLAMP ~1 MB
-> and rcv_wscale=3D5, i.e. the route metric is ignored. Reverting
-> b025461303d8 ("tcp: update window_clamp when SO_RCVBUF is set") or
-> applying this patch restores TCP_WINDOW_CLAMP=3D4096 and the scaled-down
-> SYN window; with no route metric configured, mainline, the revert and
-> the patch behave identically in all four combinations.
+> Discovered by manual code inspection while letting more actions honor
+> TCA_ACT_FLAGS_NO_PERCPU_STATS. Reproduced in a VM without kernel
+> changes, where the second action counts fewer packets than the first:
 >
-> Thanks,
-> Shashank
-
-Note that we ask to not top post on netdev@ mailing list.
-
-A few remarks on the changelog:
-
-1) "TCP_WINDOW_CLAMP 4096" only holds until the first data segment.
-Since a2cbb1603943 ("tcp: Update window clamping condition"),
-tcp_measure_rcv_mss() overwrites window_clamp from sk_rcvbuf as soon
-as scaling_ratio changes, with or without your patch. What the patch
-really restores is the SYN/SYN-ACK window and the window scale.
-Please say so.
-
-2) "no window scaling" is not accurate: we still send the option,
-with a shift of 0.
-
-3) This also fixes TCP_WINDOW_CLAMP being overwritten by a later
-SO_RCVBUF on a not yet connected socket or a listener. This is
-probably more common than the route metric and worth mentioning.
-
-A packetdrill test covering the SYN window and wscale would be nice.
-
-It seems to be a net-next candidate, since WINDOW_CLAMP is not well
-documented / defined / implemented / tested.
-
-pw-bot: cr
-
-Thanks.
-
-
+>   ip link add d0 type dummy && ip link set d0 up
+>   tc qdisc add dev d0 clsact
+>   tc filter add dev d0 ingress matchall \
+>      action gact pipe action gact pass no_percpu
+>   yes "filter show dev d0 ingress" | head -10000 > batch
+>   while :; do tc -s -b batch; done > /dev/null &
+>   samples/pktgen/pktgen_bench_xmit_mode_netif_receive.sh -i d0 -t 4
+>   tc -s filter show dev d0 ingress
 >
-> On Sun, Oct 11, 2026 at 10:54=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wr=
-ote:
-> >
-> > Hi!
-> >
-> > This is an automated message. This series looks like a fix, but its
-> > commit messages seem to be missing some information:
-> >
-> >  - How the issue was discovered, e.g. hit in production, hit during
-> >    development, syzbot report, manual code inspection, LLM or static
-> >    analysis tool scan.
-> >
-> > Please do not repost the series just to address the above. Instead,
-> > reply to this email with the missing information, so that reviewers
-> > can take it into account. If the series needs another revision for
-> > other reasons, please include the information in the commit messages
-> > then.
-> >
-> > The evaluation is done by an LLM so it may be wrong, if you think
-> > that is the case please reply and explain.
+> The 32-bit issue in the per CPU path comes from the Sashiko AI review
+> of v1 [1] and was not reproduced.
+>
+> Tested with the reproducer and the tc-testing action, matchall and
+> flower tests with lockdep enabled. Also tested for regressions on
+> ConnectX-7 with firmware 28.48.1000.
+>
+> Fixes: 5e174d5e73df ("net: sched: modify stats helper functions to suppor=
+t regular stats")
+> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009051703.=
+3615846-1-acassen%40corp.free.fr [1]
+> Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
+> ---
+
+Reviewed-by: Eric Dumazet <edumazet@kernel.org>
+
+Thanks!
