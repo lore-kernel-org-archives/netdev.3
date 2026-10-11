@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC09323BCF7;
-	Sun, 11 Oct 2026 23:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C787C314D13;
+	Sun, 11 Oct 2026 23:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791759740; cv=none; b=uSs7ocHRfZ2zcLVTw+2nYVDkpOGzstyoI47iapNdWW2g08V2XgdrJ8tRve5uydB/MAmPf+qGUBwF+0ZtnR2iM1SRRgwbgjLLyifkRPBvkDkhexmNQHBJ+LO3ra1FL5TrqxWVChs4Hd6ise2BNwBxxauqop6HGPHn3O7p+m+rYHw=
+	t=1791760307; cv=none; b=AMMNNqwfkKoF31NTTgjM7SluSVk0i/Ck7XlzY2ZrpvfD6wSxyYrgruOgsD486QxFfPXdZlzdeJJ5lZJmuawlfNB4BZ1ASzSL9/ZDRlPqwTvtD3j+uezU/bseVsYmOVn7NpE3SsCiVAA6+k7S4j59ILpziptX1YUhpwvj3rPyYEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791759740; c=relaxed/simple;
-	bh=+LrpSHi83rg43ATDcwnlytRa93Im8h1st3CGeqOd/LY=;
+	s=arc-20240116; t=1791760307; c=relaxed/simple;
+	bh=L6t6eTegQPAOeQuhMTa9PTtwUFRsC5wObH5Mjwu7cEU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Krtap9a9VNknEC9NTXoPvrb0TvBdyFdPYmowadH/6VEiDsR7j0dhxq2j2WJY/ZXldaTLkj9J9IgzwCY6L5WAG39zsWIvdenQQcPD0vkRe1+WAOpU5Iic7V1NY4pRsjJFceaNEGd/dZ7Rxt/RTOMdh0GVCQezL9D1h19Z8HWErsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFnHjWlP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=TrqKdVCZAQjMpi0cSXjHUlpC0kfXpfvdDvj3GjGUAlvVFofPO0+VH9oMA5I4Z/Zuapf64N4UH3jGfhBcW1Z9evJ8qbHAm9cgwK3DnndgnKuHZBA4jZtB+E1qaJyk2Q5K4AhMABCojlhRUB+MmIppcce4RelUiPFD+t530gBm2ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BWF7aSUp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFnHjWlP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F7E1F0089B;
-	Sun, 11 Oct 2026 23:02:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BWF7aSUp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C497B1F0089B;
+	Sun, 11 Oct 2026 23:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791759739;
-	bh=BMnwnSmmh2hW4aGAkK60qX2n3aHbKT63XD1QC30Rr9Q=;
+	s=k20260515; t=1791760306;
+	bh=z5pOc8cLCfkjIfWcLR1xQNYyoRYgZOxxSZvfhh7g+Nc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=aFnHjWlP7yNtmJtHuDiMq+1Ptf/98BvwcvGh3omVzvfRvl+khkd1JusycK0Dfk2vZ
-	 wutHGRdyA5AlkwvgK7lFXYKU4rI3xjRM/t8wHC+xBUFXN0hmWxtebeEriEv5rSG7wn
-	 jRDWgQQEF4fzGyEArx7Dd95KEDXCdVDdTlNMvzYM0FrJzV68k9NuxP+Kprk6R2OC2E
-	 CeBvkWrLqJT/XGnXwpItlZfw4k9MiNReWNVz4gNVori006Zw9cm8CA9/I8/ro60JZr
-	 as67voQdi9bI03VATm2v6RWPeh6rUutlKGbx8OPPIXDMzEN51ebjsWGeMvKFTkZhFl
-	 CByzUzH5XgaQw==
-Subject: Re: [PATCH net v2] tcp: do not send a SYNACK to a broadcast or
- multicast address
+	b=BWF7aSUpJoro1SGTcMPhW+z8A6y0pcfbt5YtNCSu4Y+b3dTSe5DgVmjIFhGwqdeRD
+	 4UxglLlBEH2hl7czxokmhf6nJSOHj4mM/cwH7VeLsVXfkRrYh18Jgmg0g7mJCaZ5pk
+	 ZnefNlgrBLf0sSGmsjOy0VvO//amgmTlPW46LGmyV7fUhj/R2EbBSDCQjzDla9qA1J
+	 0BUGZWkBSelqCiSQDGKCENIpeiH/xcXu/jBBillE027vC4h65xp+8MhMMG9gxWwSCQ
+	 hROGFu3SlnoFGCOKJr+QRBJvBx2oItZtiQzXMYYnR8XmfHrxStEV3r+g299o87dSRR
+	 PRjfB2fVRD9CQ==
+Subject:
+ Re: [PATCH net-next] net: dsa: motorcomm: Do not do the redundant MIB clear
 From: netdev-bot+sashiko@kernel.org
-To: theodorlarionov@gmail.com
-Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 23:02:18 +0000
-Message-ID: <179175973842.434549.79608444362932465@kernel.org>
-In-Reply-To: <20261008114942.1376889-1-theodorlarionov@gmail.com>
-References: <20261008114942.1376889-1-theodorlarionov@gmail.com>
-X-sashiko-severity: High
+To: mmyangfl@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 23:11:45 +0000
+Message-ID: <179176030531.434549.15766940452679334921@kernel.org>
+In-Reply-To: <20261010231015.2600207-1-mmyangfl@gmail.com>
+References: <20261010231015.2600207-1-mmyangfl@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,7 +50,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,107 +58,80 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
+- [Medium] The commit message's last paragraph gives a reason why the
+  removed MIB clear needs no replacement anywhere else, and both parts…
 
 --
 
-tcp: do not send a SYNACK to a broadcast or multicast address
+net: dsa: motorcomm: Do not do the redundant MIB clear
 
-This patch makes inet_csk_route_req() reject SYNACK routes that have
-RTCF_BROADCAST or RTCF_MULTICAST set. A SYN with a multicast source that
-is looped back with its dst attached skips the martian source check. Its
-SYNACK then goes through ip_mc_output(), and sk_mc_loop() reads past the
-end of the request socket.
+This patch removes the MIB clear from yt921x_chip_setup(). The commit
+message argues it is redundant because a hardware reset happens right
+before it. It also argues that nothing else needs to handle MIB state,
+because per-port state is always freshly allocated.
 
-> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-> index 6a30f11384547..aa928015cd143 100644
-> --- a/net/ipv4/inet_connection_sock.c
-> +++ b/net/ipv4/inet_connection_sock.c
-> @@ -779,6 +779,9 @@ struct dst_entry *inet_csk_route_req(const struct sock *sk,
->  		goto no_route;
->  	if (opt && opt->opt.is_strictroute && rt->rt_uses_gateway)
->  		goto route_err;
-> +	/* Never send a SYNACK to a broadcast or multicast destination. */
-> +	if (rt->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
-> +		goto route_err;
+> Nor should we take care of it elsewhere: .port_setup() should not clear
+> it, and .setup() runs at most once per registration, so per-port state
+> is always freshly allocated by .port_setup().
 
-[Severity: High]
-Does this cover the syncookie passive-open path? cookie_v4_check() in
-net/ipv4/syncookies.c does its own route lookup to ireq->ir_rmt_addr.
-The only check on the result is IS_ERR():
+[Severity: Medium]
+Is this paragraph accurate? Both of its claims seem to conflict with the
+DSA core and with the driver's own port setup code.
 
-net/ipv4/syncookies.c:cookie_v4_check() {
-    ...
-	rt = ip_route_output_key(net, &fl4);
-	if (IS_ERR(rt)) {
-		SKB_DR_SET(reason, IP_OUTNOROUTES);
-		goto out_free;
-	}
-    ...
-	ret = tcp_get_cookie_sock(sk, skb, req, &rt->dst);
-    ...
-}
+On ".setup() runs at most once per registration": in net/dsa/dsa.c,
+dsa_switch_remove() calls dsa_tree_teardown() on the whole tree. That
+reaches dsa_switch_teardown() for every member switch, which does:
 
-In the syncookie case, tcp_v4_syn_recv_sock() uses that dst as is.
-Neither inet_csk_route_req() nor inet_csk_route_child_sock() runs.
+    ds->setup = false;
 
-So it looks like a full child socket can still be created with
-inet_daddr set to a multicast address such as 224.0.0.1. Active opens
-already refuse this in tcp_v4_connect():
+When the removed switch probes again, the call chain is:
 
-	if (rt->rt_flags & (RTCF_MULTICAST | RTCF_BROADCAST)) {
-		ip_rt_put(rt);
-		return -ENETUNREACH;
+dsa_switch_probe()->dsa_tree_setup()->dsa_switch_setup()
+    err = ds->ops->setup(ds);
 
-The ACK that completes the handshake can come in the way the commit
-message describes for the SYN: raw IP_HDRINCL, nft dup or TEE, with
-saddr=224.0.0.1. tcp_v4_cookie_check() passes any non-SYN segment to
-cookie_v4_check().
+This runs for every switch in the tree, including a yt921x that never
+unregistered.
 
-The cookie can pass in two ways:
+On "per-port state is always freshly allocated by .port_setup()":
+yt921x_dsa_port_setup() only allocates the MIB block when none exists:
 
-- cookie_tcp_check(), after a recent overflow. A netns owner can set
-  tcp_syncookies=2 and send one unicast SYN. After that, ack_seq/seq can
-  be brute forced at about 2^-29 per packet.
-- cookie_bpf_check(), when a BPF program is in use.
+    if (!pm && (BIT(port) & yt921x_info_ports_mask(info))) {
+        pm = devm_kzalloc(dev, sizeof(*pm), GFP_KERNEL);
+        ...
+        /* Start disabled, so that the enable below always pairs with
+         * either this disable or the one from a previous teardown
+         */
 
-Once that child is closed and in TIME_WAIT, a segment from the peer
-would go down this path:
+yt921x_dsa_port_teardown() deliberately keeps the block:
 
-tcp_v4_rcv()
-  tcp_v4_timewait_ack()
-    tcp_v4_send_ack()
-      ip_send_unicast_reply(ctl_sk, tw, ...)
-        ip_route_output_flow()   /* daddr 224.0.0.1, no rt_flags check */
-        skb_set_owner_edemux(nskb, tw)
-        ip_push_pending_frames()
-          ip_send_skb()
-            ip_local_out(net, skb->sk, ...)
-              ip_mc_output()
-                sk_mc_loop(tw)
+    /* get_stats64() might not be synchronized with port_teardown(), hold
+     * the MIB block till the device teardown
+     */
 
-sk_mc_loop() does not check sk_fullsock():
+So on a second .setup() within one registration, yt921x_dsa_setup() calls
+yt921x_chip_reset(). Per this commit message, that zeroes the hardware
+counters. pm->data[] and pm->stats still hold the old accumulated values.
 
-	case AF_INET:
-		return inet_test_bit(MC_LOOP, sk);
+yt921x_mib_read() says "MIB buffer must be zeroed before" and extends the
+32-bit counters like this:
 
-Wouldn't that read inet_flags past the end of the tcp_timewait_sock
-object? That is the same out-of-bounds read this patch fixes for request
-sockets. This path comes from reading the code at this commit; it has
-not been reproduced.
+    val = (old_val & ~(u64)U32_MAX) | val0;
+    if (val < old_val)
+        val += 1ull << 32;
 
-Could the same rt_flags rejection (ip_rt_put() and drop) go after
-ip_route_output_key() in cookie_v4_check()? For symmetry it could also
-go in inet_csk_route_child_sock(). In practice that one only runs after
-inet_csk_route_req() has passed, so it is just an inconsistency.
+After a re-setup, won't the first poll treat the reset counters as a wrap?
+That would add about 2^32 to each 32-bit counter. The 64-bit counters would
+go backwards to small values. These values then show up in get_stats64,
+ethtool -S and the rmon/mac/pause stats.
 
-Another option would be to change sk_mc_loop() and
-ip_send_unicast_reply() so they do not treat non-full sockets as
-inet_sock.
+The removed write to YT921X_MIB_CTRL never cleared the software buffer, so
+this patch does not change runtime behaviour here. The concern is that the
+commit message says no handling is needed, based on invariants the code does
+not appear to guarantee.
 
->  	rcu_read_unlock();
->  	return &rt->dst;
->
+Could the commit message be corrected? Alternatively, should
+yt921x_dsa_port_setup() clear pm->data and pm->stats when it reuses an
+existing block, since every .setup() hard-resets the chip?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008114942.1376889-1-theodorlarionov%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010231015.2600207-1-mmyangfl%40gmail.com
