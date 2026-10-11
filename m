@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38D143CE73;
-	Sun, 11 Oct 2026 10:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9F83AA9D4;
+	Sun, 11 Oct 2026 10:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791715890; cv=none; b=cSysEKFkybEnF5rvxTz8k9E08o82p4hu64bxLy7WZ8baFzIZmDUVRrpu+A5389Q4dKaggnZAL7UK7gSAgqjz+JBnZSGUhW4bIcAJrlRg4f2eteBBxLJ4RHIIhxV7UdxbJMM22bwg6QJzdVu9fN4mL8unLbUd2AaZllHje+vh1XM=
+	t=1791715890; cv=none; b=U5tkJeZj1CxgngRxqmcmdvfRqbyXVlCx0wzm4xDEQj3BIwXH8DTFlpAUXW4jm8WgSIJhM1iwfSFDa50Ii3Vx0tRV5Rjp2dC9OYnFmj3nfyTp+VJhYzHdmu4QpnOUkHQy9Gn8t/040Uhn7Y+QF/kvbxEjX82urCCW9nAehITmmCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791715890; c=relaxed/simple;
-	bh=xK+yHyKTh94pvxjqg6oiFbjBwGp4b1724p9Ste8+6uI=;
+	bh=wND2Qak6gZ9aayFjtb9rOlIHupLuyXbfUMT09KMoyOw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LVRBNJV6Q0xGKiuGlDVlXH7smfVoqVF6spJBDPB7TKJ/PA3ABL96e24GN4jCDX6UjgPBqTyNfi0cwSZdGYIXHF4aoWn9n60IziWYY1PVpn/7m6YFuc6O4pIz/B5iKJoa4XcqFREoBSt3w5DhyO0mxxNuhAplqUtIF3ph2BToEvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPJmeiwG; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=nPQ4wWt1YzS1UeboMhHvmzwD+hgijYSelDZfLmLl6veUE1jk4Ft7gPBi33P9ih/8RmoDttQPDQLBj5eClkBXVT/4Nl90eZiguUDftqTXGYtaX8TO3ysdmUsm+hii+/JA8MTAs95G5VJ8M4mdcS2FNnvKgzCB1oaC+6BBFJXJW5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCuPdFR9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPJmeiwG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB8F1F0089D;
-	Sun, 11 Oct 2026 10:51:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCuPdFR9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698911F0089C;
+	Sun, 11 Oct 2026 10:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791715886;
-	bh=i4wXItLBI+jPlNVAS/OPUIcpk3cL799kkvfJhP4EeTE=;
+	s=k20260515; t=1791715888;
+	bh=c0+f13DiiztngV6ayuEFXPfJMUEDNCDll5WvBLLbjmA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kPJmeiwGAupB0zk5hbxzdrmb0UV4qbjq461b6dMY9IfuoLskQ/qfsZals2xG4DfvZ
-	 PHCjxrHRdUOewyJ1CRQt91kaHRWADkf9xlVOeZzvcRkGx6LSom3zUtsTQpc8pAQyWS
-	 UzC1v5G4VLuWMkK7yb9V0a7yho799jGOTCJ7aGh3OUtMjRsqFYQP0s4vd5+/Q/k0/6
-	 Kb2YfM8Xa0pjKeq6DPWk/5KmBuug18wWoixX/Ey32AapwyKfslV3FpB67hFmn/jz3F
-	 OAZBh0VTM2S3IFHroFyFTnw8HORBJC3J4hCiiLgb/G2F5vQ7g2oZKGya1Es5bVOfA/
-	 z1aoCECY2qNfw==
-Subject: Re: [PATCH v31 net-next 6/8] net/nebula-matrix: dispatch: implement
- channel RPC framework and serialize hardware ops
+	b=ZCuPdFR9lsQNNA1xRwoaJCoah4C5P1+DXPtXV02LJhVwxphCmBsz2UuKddPn1AHIE
+	 rzUb+AnyapbLBgGa+kkkYNSjyKYQJB0FEnTB8SJFh0fBP7aaky+f5zUp8bPNC2fN10
+	 AertxXrep/lUWdW1mkgSfGLDUokRoCGIUxbsM+XoGHQlmggILH/TmZIg3RbLwbmikn
+	 G9TK6TbWkpSYxqAYz1SwmgxLfaXPzE27PYlmsEWXI83Clbjuv2+wrDMtIUAaWpXGtX
+	 L+UqOXPqnwWpoKtxr9hbcvS1rQddYXLirX8ShESVS3bv20z87iNPp04nDQajFPaK/3
+	 XBkO0nFcilQyQ==
+Subject: Re: [PATCH v31 net-next 8/8] net/nebula-matrix: add common dev
+ start/stop operation
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
  edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 10:51:25 +0000
-Message-ID: <179171588597.434549.1106532144631559450@kernel.org>
-In-Reply-To: <20261010095939.2230-7-illusion.wang@nebula-matrix.com>
-References: <20261010095939.2230-7-illusion.wang@nebula-matrix.com>
-X-sashiko-severity: Low
+Date: Sun, 11 Oct 2026 10:51:28 +0000
+Message-ID: <179171588801.434549.12954777191481893263@kernel.org>
+In-Reply-To: <20261010095939.2230-9-illusion.wang@nebula-matrix.com>
+References: <20261010095939.2230-9-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,121 +47,198 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-- [Low] Baseline decision is false: in the final state of the series this
-  is not a bug.
-- [Low] The kernel-doc this patch adds for struct nbl_dispatch_ops in
-  nbl_def_dispatch.h says the new callbacks 'forward chip/firmware…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] nbl_probe() now calls nbl_core_start() -> nbl_dev_start() for
+  every adapter that nbl_core_init() returns.
+- [Low] In nbl_dev_disable_mailbox_irq() (drivers/net/ethernet/nebula-
+  matrix/nbl/nbl_core/nbl_dev.c), the comment says the helper runs in…
+- [Low] The err_free_irq comment in nbl_dev_start() (nbl_dev.c) explains
+  skipping set_mailbox_irq(false) by saying it 'would only add one more…
 
 --
 
-net/nebula-matrix: dispatch: implement channel RPC framework and serialize hardware ops
+net/nebula-matrix: add common dev start/stop operation
 
-This patch adds mailbox RPC requests and responders for five dispatch ops:
-cfg_msix_map, destroy_msix_map, set_mailbox_irq, get_vsi_id and get_eth_id.
-Each op is chosen by capability level. A has_ctrl function calls the
-resource layer locally, and a has_net function forwards the request to the
-management PF over the channel. nbl_disp_remove() gains a comment that
-explains why the registered responders are never unregistered.
+This patch adds nbl_dev_start() and nbl_dev_stop(). They are called from
+nbl_probe() and nbl_remove() through nbl_core_start() and nbl_core_stop().
+Start configures the MSI-X map, fetches the VSI/ETH ids, allocates the
+MSI-X vectors and arms the mailbox interrupt; stop does the matching
+best-effort teardown.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> index 966fee2dec8b0..e2d98b7c391b4 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> index 390bc2b177e21..41754fd06ea36 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
 
 [ ... ]
 
->  void nbl_disp_remove(struct nbl_adapter *adapter)
->  {
-> -	/* Dispatch structures are allocated via devm */
+> @@ -18,6 +29,230 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
+
+[ ... ]
+
+> +static int nbl_dev_disable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
+> +{
+
+[ ... ]
+
+> +	 * This helper is invoked in two paths:
+> +	 * 1. Error unwind path of nbl_dev_start(): not reached with
+> +	 * IRQ_RDY set (nbl_dev_enable_mailbox_irq() sets it only after
+> +	 * its RPC succeeded), so only the hardware mask still applies,
+> +	 * followed by nbl_dev_free_mailbox_irq() and full channel
+> +	 * teardown.
+
+[Severity: Low]
+Is the description of the first path accurate? nbl_dev_start() never
+calls nbl_dev_disable_mailbox_irq(). Its err_free_irq label calls only
+nbl_dev_free_mailbox_irq() and then falls through to err_destroy_map:
+
+err_free_irq:
+	nbl_dev_free_mailbox_irq(dev_mgt);
+err_destroy_map:
+	cleanup_ret = nbl_dev_destroy_msix_map(dev_mgt);
+	...
+	nbl_dev_clear_interrupt_scheme(dev_mgt);
+
+	cancel_work_sync(&common_dev->clean_mbx_task);
+
+This patch also adds the err_free_irq comment, which says
+set_mailbox_irq(false) is not sent from that path on purpose. That
+contradicts this comment.
+
+nbl_dev_start() does no channel teardown either. That only happens
+later, when nbl_probe() calls nbl_core_remove().
+
+nbl_dev_stop() seems to be the only caller of this helper. The rollback
+path depends on the routing disable in
+__nbl_res_intr_prepare_destroy_msix_map(), not on this helper.
+
+Could the comment list only nbl_dev_stop()?
+
+> +	 * 2. Normal device stop path nbl_dev_stop(): free_irq() blocks until
+
+[ ... ]
+
+> +static int nbl_dev_cfg_msix_map(struct nbl_dev_mgt *dev_mgt)
+> +{
+
+[ ... ]
+
+> +	err = disp_ops->cfg_msix_map(dev_mgt->disp_ops_tbl->priv,
+> +				     msix_net_num, msix_not_net_num,
+> +				     mask_en);
+
+[Severity: Medium]
+Can disp_ops->cfg_msix_map be NULL here?
+
+nbl_probe() now calls nbl_core_start()->nbl_dev_start() for every
+adapter that nbl_core_init() returns. nbl_dev_start() then calls
+cfg_msix_map, get_vsi_id and get_eth_id without checking capabilities or
+NULL. On the unwind path it also calls destroy_msix_map.
+
+nbl_disp_refresh_ctrl_ops() memsets the dispatch ops table. It fills the
+table only when NBL_DISP_CTRL_LVL_MGT (has_ctrl) or NBL_DISP_CTRL_LVL_NET
+(has_net) is set.
+
+The struct nbl_dispatch_ops kerneldoc in nbl_def_dispatch.h says:
+
+  A function with neither has_ctrl nor has_net leaves these pointers
+  NULL; callers must not invoke them on such functions.
+
+That state looks reachable. Suppose root binds a VF, or a function other
+than func 0, whose ID is not in nbl_id_table, by writing
+driver_override=nbl. pci_match_device() then passes the dummy ID:
+
+drivers/pci/pci-driver.c:pci_match_device() {
+	...
+	/* driver_override will always match, send a dummy id */
+	if (ret > 0)
+		return &pci_device_id_any;
+	...
+}
+
+The dummy ID has driver_data 0. nbl_get_func_param() therefore sets
+has_net to 0, and has_ctrl stays 0:
+
+	param->caps.has_net = !!(driver_data & BIT(NBL_CAP_HAS_NET_BIT));
+
+new_id cannot produce this state, because new_id_store() rejects a
+driver_data value that matches no table entry.
+
+Now assume func 0 of the same slot is bound to nbl, which
+nbl_probe_chip_deps() requires, and the init steps succeed. Wouldn't
+probe then call a NULL function pointer?
+
+nbl_probe()
+  nbl_core_start()
+    nbl_dev_start()
+      nbl_dev_cfg_msix_map()
+        disp_ops->cfg_msix_map()   <- NULL
+
+Before this patch, nbl_dev_init() used disp_ops only under has_ctrl, so
+this path is new. Would it make sense to reject !has_ctrl && !has_net
+early in nbl_probe()?
+
+[ ... ]
+
+> @@ -274,3 +517,151 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
+
+[ ... ]
+
+> +	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
+> +	if (ret)
+> +		goto err_free_irq;
+> +
+> +	return 0;
+> +
+> +err_free_irq:
 > +	/*
-> +	 * Dispatch structures are devm-allocated and freed at detach.
-> +	 *
-> +	 * The five responders registered by nbl_disp_setup_msg() are
-> +	 * owned by the channel layer (xarray of handlers) and are never
-> +	 * unregistered here. This is safe because the teardown order
-> +	 * guarantees no responder can run after this point:
-> +	 *
-> +	 *   mailbox teardown
-> +	 *     -> cancel_work_sync(clean_mbx_task)   // drain RX work
-> +	 *     -> nbl_chan_teardown_queue()          // stop HW queue,
-> +	 *                                                 // join clean task,
-> +	 *                                                 // active=false
-> +	 *     -> nbl_chan_remove_common()
-> +	 *          -> destroy_wq()                       // no new work
-> +	 *          -> nbl_chan_remove_msg_handler()      // free handler nodes
-
-[Severity: Low]
-This isn't a bug, but does this comment describe code that exists at this
-commit?
-
-clean_mbx_task doesn't appear anywhere in the tree yet. Nothing calls
-chan_ops->setup_queue at this point either, so the mailbox RX path that
-this sequence quiesces is never active.
-
-The ordering the comment relies on is nbl_dev_remove() doing the mailbox
-teardown before nbl_disp_remove(), nbl_res_remove_leonis() and
-nbl_chan_remove_common(). That ordering only arrives with the later
-"net/nebula-matrix: add common/ctrl dev init/remove operation" patch.
-
-Also, destroy_wq() looks like shorthand for nbl_common_destroy_wq().
-
-Could this comment move to the patch that introduces that teardown
-ordering, and use the real function names?
-
-> +	 *
-> +	 * By the time devres frees disp_mgt, the mailbox queue is stopped
-> +	 * and the handler xarray is empty, so no responder can touch
-> +	 * res_mgt->intr_mgt after nbl_intr_mgt_stop() has cleared it.
+> +	 * nbl_dev_enable_mailbox_irq() only fails before it sets
+> +	 * NBL_CHAN_IRQ_RDY - the flag is set after its RPC returns - so
+> +	 * there is no interrupt-mode sender to release and no software
+> +	 * state to revoke.  The peer-side mailbox routing, if the failed
+> +	 * RPC did land, is switched off by the destroy_msix_map() below,
+> +	 * whose prepare phase disables mailbox IRQ routing first.  Sending
+> +	 * set_mailbox_irq(false) from here would only add one more full
+> +	 * polling-mode ACK timeout against a peer that just proved
+> +	 * unresponsive.
 > +	 */
->  }
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-> index 08fef0f679268..bcd74b9df8275 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
-
-[ ... ]
-
-> @@ -32,6 +33,16 @@ enum {
->   *               mailbox DMA before calling it, see nbl_dev_remove().
->   *               Returns void.  Control-PF exclusive, same NULL rule as
->   *               @init_module.
-> + * @cfg_msix_map: configure function msix mapping table
-> + * @destroy_msix_map: tear down msix mapping resource
-> + * @set_mailbox_irq: bind mailbox interrupt to specified msix vector
-> + * @get_vsi_id: resolve VSI ID by type
-> + * @get_eth_id: resolve eth port info from VSI ID
-> + *
-> + * These callbacks are not dispatch-layer setup/teardown: the dispatch
-> + * structures are devm-allocated in nbl_disp_init(), and nbl_disp_remove()
-> + * only documents why no explicit teardown is needed.  They forward
-> + * chip/firmware control to the upper layers instead.
+> +	nbl_dev_free_mailbox_irq(dev_mgt);
 
 [Severity: Low]
-Is "upper layers" the right direction here? The new callbacks forward
-downward, for example:
+This isn't a bug, but does the last sentence of this comment hold for
+every failure? It assumes nbl_dev_enable_mailbox_irq() can only fail
+through an ACK timeout against an unresponsive peer.
 
-nbl_disp_cfg_msix_map()
-    return res_ops->cfg_msix_map(p, common->mgt_pf, num_net_msix,
-                                 num_others_msix, net_msix_mask_en);
+On the control PF, disp_ops->set_mailbox_irq is nbl_disp_set_mailbox_irq().
+That is a direct local call: no mailbox, no ACK and no timeout.
 
-The nbl_disp_chan_*_req() variants call chan_ops->send_msg() instead.
+	if (!res_ops->set_mailbox_irq)
+		return -EOPNOTSUPP;
+	return res_ops->set_mailbox_irq(p, common->mgt_pf, vector_id, en_msix);
 
-The resource and channel layers both sit below dispatch, and nbl_dev is
-the caller. Later patches in the series don't change this text, so the
-wording stays as it is.
+The resource layer, __nbl_res_intr_set_mailbox_irq(), can fail without
+touching hardware:
 
->   *
->   * Warning: init_module/deinit_module are control-PF exclusive. The five
->   * resource ops (cfg_msix_map, destroy_msix_map, set_mailbox_irq,
+  -ESHUTDOWN if intr_mgt->stopping is set
+  -ENODEV if the function is not NBL_INTR_FUNC_CONFIGURED
+  -EINVAL if vector_id is out of range
+
+The responder passes these errors to non-control PFs unchanged.
+
+Skipping set_mailbox_irq(false) still looks correct, because the routing
+disable in __nbl_res_intr_prepare_destroy_msix_map() covers a CONFIGURED
+function. Could the comment give that as the reason instead?
 
 [ ... ]
 
