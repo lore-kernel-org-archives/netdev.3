@@ -1,148 +1,139 @@
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479B53C81B2
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 05:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791696381; cv=pass; b=cTet6cm8as3ewxGJmEId3yd/HGBUdX7/ahOZQibSb1yg9IF2bf6+iIC/0lbRw/PXpE1gsGMgANNFu1kkRpyLKdDF3t+XDZYeuGEYP1QGc+dtKXHPcks1k0GSngujOMnlNjoZiXbT1JO6Wn1Yrh40xIwvEVLU73+LGRfJlKe0xXQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791696381; c=relaxed/simple;
-	bh=77rZFfgjYBTlmfFxdEKXYN3j8YeaENiscAJklGZpDd0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sXH4Zu6Fv/hUwg8CD8N0dhK01X1Vgj4PwafgM44nK8U2KyfswIeL/ZOcJLXIoOa6jJ5k0zNsi3+ZBb5NOvaojchZkmlDEwnZeCwSO2lmL6tbu6AnswMHSrIH7UW9+3wEnfBFY+zetoiI6rJN8J/4NOui7UQ8yiB5aiBYcucb32s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MQsggebR; arc=pass smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59A81C5D5E;
+	Sun, 11 Oct 2026 05:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791696782; cv=none; b=bfncJNmS/ddJaJpyi5zaItKz02JR7o5faAsJkXUvoeQbWMQGG4fzdDqGXq4Kva8Ua5UVpUPXLEHk69pfCls8kFUYgtAK28IiUUyJ8o3Ecadt++O8uzAvQ/cLGU0jcXCIBeCpOhtCYtD6GHNgjlVmR1yyYeqGLB6D56r8RMSdZKU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791696782; c=relaxed/simple;
+	bh=W9RvR/XI0sTjGWT17IQav5iU/yf/psweZkbaR2ucR2Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=klRBK9FQIis8A1ZaIIumaBWM1iop1xFrJyOvmNbko4mC8UIGq6k6pYWl+iLahnFeTZ3xwzKC2wtkiObNJnddj2Cb3fU9kLhRdc0C2ColGD+3Aqo/tB5tIisf+36ffrXtrkxO4w0UEUcRK5WrS2XI5HpUY9xWZkSZKNZ7rqx1i+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=OlB2BMiD; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Ga7Qtsmd; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MQsggebR"
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-5350d9ea106so13788351cf.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 22:26:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791696379; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OoSFL+/YuPwnNAGpvuMKvL6wesEg+SDzWLzKPOIdKFQfBBcnMGOOJK4bdK96aslKhy
-         vD/+qLKMcyuKdJ/8YPciL7VqmpQEyBGswq+kxJWrtR7GHyN5nRZoqWYYR+ftWilDuiLG
-         oA3eAKCpqm9ePtjK8quWyx5K68hoY71VstyES3XQqU3S8SNFZhkC+u67bxz89QEqbw6L
-         0B/v+pUL+J48+s1jFonZq/vsMAU8CQKG/vek3FEbteCWl21gWHjAga7xsUkzzoPgpyo+
-         Z0IOGc0QoZxj+Dc4KerOJjXLfFvE35ihOuDyYZC+4zfZ3EkJR/AkE/CH/KIzPQj9vPPN
-         fxMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1i76vSVcCtW46mgdzvE51Z6MfQ6riiMaLLzExFhy9SI=;
-        fh=ZZczrLB7uR7g7k0B9d38976FrsdqXYDF/nKCH7LGcMI=;
-        b=iLf1Ob894lf1zDF+5zAPwzJ5bivoLu6/TcpT3rBbCCdGs2VpkO+5Ackdy6zdL1Ry4N
-         l5eFRPDVRp1QPW8zjpo/vlxrmkd1olYzt5YpDhxMT9PQAf2nEYz9vb685KRNvxACyiRs
-         5Yrx8BfQSyf7hIwLrRLdDAXpAfJjesjYtfK6Q5mf0Z1mfXEb/A5Ec+4ZnuNZ6TTbhm/r
-         wtvMYOV82bvowOMtQST5rxr2IMJTSpZWfcchjzxp4sIV9gMZFR4U8sPE7/NlfMvpcnyf
-         ho1owZtyo46AwT7z5aB4J7Spgnx4ptDQqjna28OR0HSlt7vgJMM39Gg/GyzU72BxvYvK
-         VjwA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791696379; x=1792301179; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1i76vSVcCtW46mgdzvE51Z6MfQ6riiMaLLzExFhy9SI=;
-        b=MQsggebRpqTvK/77e7pxNlG2SnjQPv6a1RDvxjdT12CIz0G805TMlDiLp1bYvmXziQ
-         7/LJz3W9vYfWlg48v6o32owSqc1mcqTbJbXDmHC/v2fGopfuQDi6Yenzgza2tY+8d+xV
-         VuaHiBeJki50JmPymrSMbzI7MOYUA+Vmfl2SlnUqhJgx6LrxUX9eWeP5HLf8DwFcnQbz
-         g9mMKTg9XxFt4vtJjX5PqMfIA1vhrqR/QceCx37SzUXyLpgq6dr2b1qhDF6yHcUT3Fdy
-         vjGXijuZ+UoChOOWjslxARtQVFz3vax9XE0qpsG34CsBh/0kfLg6QG2EH0tzgg518Lr1
-         Ux2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791696379; x=1792301179;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1i76vSVcCtW46mgdzvE51Z6MfQ6riiMaLLzExFhy9SI=;
-        b=gcBvRXKwwQHyGl9PMeaKyxSJPpfl/FMt85YlViSqxku6L6iO2NRPqQPLkWCQfklzZf
-         ms3zpoaHqn7uDnoKXPzllY89icTZUFcad1mUxkjnIKlnGZehL13Otk3A2js358wYaGjb
-         yqwvWVqGzpgGLd6pOcaZ6BZwo5JEHJOLIXqLV4KGUsegHliuTV30VcH7ErrxpKxkRyqM
-         Z9D1Ol5J0XA5SK4FPfrJAaMiuhtZyvACEBMOOnWXOANOFsMFZDlBuCQJIuO0aDcgKs+S
-         gm7F/YC/rcW82sRO7VqgiOIcsUrLNyJ0lz0rOfnLTsJuwOmzsIB9dYyGv1O54gLRIxrs
-         eEzQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx4vCB/IxV7oiSMUpTkMGDuxRKTt8RMT4QUeaV5Yp8p1FOUn35GKpgynZRsIVzjtrAfVcDqSfk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIgQjkySSfVR5Bl7H0CwZs1H2FJOMhgKzqFQ1m2AvXxHPGyR0lb
-	PxTCGUk+o89eWPPGh2E87FOQcrIIcIpDHU7kQv8fsS3WCbC7dVMlYukDo4NJZ9rCKkxLVS2WRLj
-	sixP+jNnVhDlP2JF4CCIAzioIKHEogsI=
-X-Gm-Gg: AYBFou3odj3RkHA4XdUXr2GSpIXLYtEjkOm0Q8yKKOqg+dyhl/ZZvAklf1HxlFSAt/L
-	TBZ1rVzEIQGC26TXoJQ0yaxI+Hj5Y6FAEZX9fz8pmE6zXitP/zFzgWxm2SM66Tpv96CYPQtdwRM
-	IsVOlGc02OpCrkA3IHRa/cRz7RAUEfxzj0p6IDwsRVKWIYtID18I/fKxk0MbJML4wud9pQKcVnz
-	vkg1/yXHL8TTTmAsOlWveylnn67nqbyQaGi69G8tM6utLOmVAy4JHo5GZoo39ZlXMQg3KIObQzZ
-	b9bqysdzO4NUsYONqebsBRl8gJDt22R2jq94tCF76ibpHxU1DjaJwIMOE73NW9m9vsehkUUMUWl
-	8S507eLZHjZvWZDSFZOkUtNERh2PO3yFFOX5t2souxlLhphaEIWrEJOkYjShT6X1jWNdC8vHpUI
-	Tt8RGGVwhY5zaiFkQCRImO+qm4BrMS0Gf+K6eDofIUFTcQopyG0+/deZiZfWVuigisf8F9rXgOO
-	Zj09aU+lS2CmaqZp2XME13BF2G5AQE=
-X-Received: by 2002:a05:622a:4815:b0:535:7692:786 with SMTP id
- d75a77b69052e-5359fae3fe1mr113804581cf.20.1791696379015; Sat, 10 Oct 2026
- 22:26:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="OlB2BMiD";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Ga7Qtsmd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1791696773;
+	bh=W9RvR/XI0sTjGWT17IQav5iU/yf/psweZkbaR2ucR2Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OlB2BMiDCpFHfsjkWBTYCxlSmXfgKEB/QvA6ldTtloG6ITzsG4PdSYb/ntAifog41
+	 iB9EtQW8ykOqjFbWlEmi8SqKuA9ZY0zlOmS3SMwq4Az+7TFQtx38ogyTjhzbwMPV2u
+	 ivmqjN1s3MfcNk7tPIcv04dCRnhQEOEKWAeYk+cUxTk2x++6/XFAKaNjfLG3nnaJCn
+	 xAw71VM4+7n6Qyn3WWrvyejZbx7iqs8jFiCD+v/jIrdwV98aQngmKquZaaiXH+aAa8
+	 u+F6EbB6XOl9bK789kQfOd5063qvXZ8fVNU/N/a3SwcKgu/P9t7OLOn4AKNX2VN/mV
+	 9nmai7Rnud+Cw==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 957AE481C9; Sun, 11 Oct 2026 05:32:53 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1791696772;
+	bh=W9RvR/XI0sTjGWT17IQav5iU/yf/psweZkbaR2ucR2Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Ga7QtsmdWUYCDqTN6I/h3UkDL7pR6xvZGksXybZcmUehD0bZh0zc6U7t9hjVEiLTe
+	 1TIJs81q8I56AusbvjsA/NKz7J5NFRpNYSY/kf59uaGw7yq0AOBlI7E3XGOK7Iz74s
+	 OtsqXbrBPT7p+Oz3TWW4H7Pgm6gbpeDrzXQXS57gVFLPpxJqrHB8+qF3Vy/GbISI0A
+	 KMv4zrAogGFS/nIzheBZ5lzv9w5xb3nuY/aTnHCnzrz9CSplElaH6wxiFgL0M3si0Z
+	 5VXsA7egyt6IZCXwpukM0ARqWv222BWbjVQVsJSFZkP4cSVP9pE5hSOzMh1AjV8mMe
+	 U7XmFvE3bQwpg==
+Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 8F36B475D3;
+	Sun, 11 Oct 2026 05:32:52 +0000 (UTC)
+Message-ID: <acada24c-903e-49ea-be04-879fedbfa08b@birger-koblitz.de>
+Date: Sun, 11 Oct 2026 07:32:52 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261011052006.60585-1-jain.sm@gmail.com> <179169628642.2527009.18099159731266030842@kernel.org>
-In-Reply-To: <179169628642.2527009.18099159731266030842@kernel.org>
-From: shashank Jain <jain.sm@gmail.com>
-Date: Sun, 11 Oct 2026 10:56:07 +0530
-X-Gm-Features: AclHuK_e2G4wGlYi2pZCqS6Wc_bIdvLjmkNcLTMqIuPeyyB_aBbCowg7WmVNY5c
-Message-ID: <CA+FWx==a6tGvhtPfz92PJa4CxgR4tGNBGHQMq9jEhX5P-4sB2g@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: keep the route window metric when SO_RCVBUF is
- set before connect
-To: netdev-bot+sinfo@kernel.org
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v19 01/13] phylink: Add phylink_mac_interrupt
+To: sashiko-reviews@lists.linux.dev
+Cc: linux-usb@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>,
+ Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>
+References: <20261010-ax88179a-v19-0-7475173cfb56@birger-koblitz.de>
+ <20261010-ax88179a-v19-1-7475173cfb56@birger-koblitz.de>
+ <sashiko-outbox-167008@kernel.org>
+From: Birger Koblitz <mail@birger-koblitz.de>
+Content-Language: en-US
+In-Reply-To: <sashiko-outbox-167008@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The issue was found by manual code inspection assisted by an LLM
-(Claude Code, Claude Opus), while reviewing the networking changes that
-set window_clamp on unconnected sockets, and then confirmed with a
-reproducer before posting. The patch carries an "Assisted-by: LLM" tag
-for that reason.
+On 11/10/2026 6:54 am, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] phylink: UAF and TOCTOU in phylink_mac_interrupt due to lockless phydev access
+> --
+> 
+> commit 667c3fb1a09bf0994b40559aee9027d3f9775442
+> Author: Birger Koblitz <mail@birger-koblitz.de>
+> 
+> phylink: Add phylink_mac_interrupt
+> 
+> Adds the phylink_mac_interrupt() function to phylink, passing link-change
+> interrupts received by the MAC to phylib.
+> 
+>> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+>> index a7d086cdc9b25..a3ca7993eb7e0 100644
+>> --- a/drivers/net/phy/phylink.c
+>> +++ b/drivers/net/phy/phylink.c
+> [ ... ]
+>> @@ -1612,6 +1612,26 @@ static bool phylink_link_is_up(struct phylink *pl)
+>>   	return pl->netdev ? netif_carrier_ok(pl->netdev) : pl->old_link_state;
+>>   }
+>>   
+>> +/**
+>> + * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
+>> + * @pl: a pointer to a &struct phylink returned from phylink_create()
+>> + *
+>> + * Passes a link-change interrupt received by the MAC to phylib.
+>> + * This function may be called in interrupt context, and therefore cannot take
+>> + * a mutex. However, it is safe to assume that the reference to phy does not
+>> + * disappear during the call, as only an SFP module may be unplugged to make a
+>> + * PHY disappear. SFP modules however do not support interrupts.
+>> + */
+>> +void phylink_mac_interrupt(struct phylink *pl)
+>> +{
+>> +	struct phy_device *phy;
+>> +
+>> +	phy = pl->phydev;
+>> +	if (phy)
+>> +		phy_mac_interrupt(phy);
+> 
+> [Severity: High]
+> The function comment notes that SFP modules do not support interrupts. However,
+> when an SFP module is physically unplugged, the electrical link drops. Could
+> this link drop trigger the MAC interrupt being handled here?
 
-Reproducer: mainline a5ebb76233b7 built for x86_64 and booted in qemu,
-two network namespaces joined by a veth pair, with
-"ip route replace 10.0.0.0/24 dev <veth> window 4096" on both sides. A
-small program sets SO_RCVBUF before connect()/listen() and reads
-TCP_WINDOW_CLAMP and tcp_info, and the SYN/SYN-ACK is captured with
-tcpdump.
+The way this code-review is done by whoever handles the AI is absolutely 
+not OK. The same patch was considered to be free of errors in the 
+previous round. Now something is brought up that has been discussed ad 
+nauseam before, including an analysis by Andrew, and found correct.
+The minimum I expect is that emails relating to the patches are being 
+looked at and also understood!
 
-Without SO_RCVBUF the route's window metric is applied
-(TCP_WINDOW_CLAMP=3D4096, rcv_wscale=3D0, SYN "win 2920, wscale 0"). With
-SO_RCVBUF set before connect, mainline reports TCP_WINDOW_CLAMP ~1 MB
-and rcv_wscale=3D5, i.e. the route metric is ignored. Reverting
-b025461303d8 ("tcp: update window_clamp when SO_RCVBUF is set") or
-applying this patch restores TCP_WINDOW_CLAMP=3D4096 and the scaled-down
-SYN window; with no route metric configured, mainline, the revert and
-the patch behave identically in all four combinations.
+Additionally, the AI spits out vast amounts of issues in code-paths for 
+older hardware. Issues that I do not intend to fix, because I simply do 
+not have that hardware to test. Still, reviewing these "issues" takes 
+large amounts of time and even when I complain, the same or similar 
+issues are raised again in the next round.
 
-Thanks,
-Shashank
+The "issues" raised by the AI have become more and more absurd and 
+trying to fix them does not really improve code quality, because of 
+possible introduction of new issues and regressions.
 
-On Sun, Oct 11, 2026 at 10:54=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrot=
-e:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+I am not going to look further through this AI review as the benefit to 
+effort ratio seems tiny. The code has been tested in-depth. It has been 
+reviewed by several humans. Unless a human steps in and tells me that 
+something really needs to be fixed, at this point it is as good as it gets.
+
+Birger
+
