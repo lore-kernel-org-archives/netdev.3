@@ -1,137 +1,173 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D623AFCF3
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9363546C2;
+	Sun, 11 Oct 2026 19:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791745088; cv=none; b=NOlg97txMzIARCgN4daqYAQMs/kcv0nNKUQuketri4eJUnsidaHFCF4ahsBLp8uTK5hK3Zvs3OZ5YEAv5WFbV8Redmit4QHn7LE+cGzHkVVLTaVKL7ur6jPJFZNAsAQiBYgmMmy9Pp8vDwXXtlHUPnvlLofk1MzGTDB8uCZs5JI=
+	t=1791745443; cv=none; b=Mqe5FMQTu+KG2MsV7f6VI3uS66GzB1dQH9tnNwKLiOgnMT5f9hG4kqGRavJI9i7eWngGVk+5zcIB2VKUpCwZrN3Z9tm5YsxdLFlIeCW98EuPA7Yz4kAt+1Qb7A2tyiBo59W7cMOymLIgMxPtfNAiQMtNSG6fkMejj3Ia/kK57fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791745088; c=relaxed/simple;
-	bh=30vIfVs4KGaKJvtrndZP8P9FN0D+Uu8JZD/JsQ4gY6w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HtZeUhm8sXeRuHnYUXTMdH9PclN8yzlZyqcfYwMpHCqAzciGtff0Tsdg58wFFI+aWxuPbihAVcVa2XaXmE/GSOl9pDMMPdFmQ6laOVMny9oLaqohUv1Ud7DARhgouONRvFh279Ci2yMbo3EGI07Ds3a1E3YjQKrFlLkCRK/AB44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=edx0aHYv; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791745443; c=relaxed/simple;
+	bh=kiT7M8JMauVIJJT9P/O+jLNWWZsKoTsCAhQQgDmnRx8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pAPhWnAh4nVXsZ1lmcKjTmFJKOQ+el+sCSY1mVpIHI5Uzm9rrbdtiH6XutfXSeeR3hoaluCzjbphdXZykYZZ1KAGxgMUSW7awDdYmaM7QqoN9D4LjmPs0BIzM+j/YfKIYrfAzRVtIkLNj+b/dJ941H8agj4/2VYdVbIa6krSE9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzzUYkcx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="edx0aHYv"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a17ce1dc00so2092285e9.1
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 11:58:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791745085; x=1792349885; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=30vIfVs4KGaKJvtrndZP8P9FN0D+Uu8JZD/JsQ4gY6w=;
-        b=edx0aHYv611IcIA3wCr9DZZNqzNZv0g7qLB2EZEJHY8Nyl3h9MnUO8VQhqp2KZj2VQ
-         OvOgfOdQaUfArxyop6uhgnHRhC1+m56EQ7ouiamEmNNUgDUo+MZDAG2CF+H8yRF0nPZx
-         n2SoOt3Oy9h7mA+IowVH+zulS8b54C1bEoX4cfQMs9SpNJjrIyjXwte4IMM6fFiYubHQ
-         Y/ABzwBlZFJhY/MDhT0Jstuxxxy9IiibiC0+lm2SnPTRcsz0B+MV2KWlI8vDirs0Zvjd
-         wQxkHDSo7bEWVOh9Vsfr6pIhZsS4trpANJu4i893rx9xG4lt0q7JYF8igp8Wk2Wc4BQp
-         bFgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791745085; x=1792349885;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=30vIfVs4KGaKJvtrndZP8P9FN0D+Uu8JZD/JsQ4gY6w=;
-        b=PzKXdGkgkwvpL5R2t7opdiKftNuiDihUCu34H8OdttPHnVAo9bWpGOwfBwxIQ5nf8Q
-         2QDgFGLgmbRCmiRsW6QVGPRzut7ObgElrdzn/eI4/4KEoSaShF4imDO4/Shz9mnB83U8
-         0UPOn2gQP4XmCc6Wd/vcAj9w87lLFYYvm60QOFq2l+nQWQjL4H2lMDZJeMTg0scbZCsp
-         qf1TDzB7OyrSRMt18SNjxjpEzW3x/YBYtHsCVpRGkixNxAgsFt3FfgDXcPzopQedTnTK
-         gyTxA8Rls3ljEd/sfgpwW0hvewnbAjo4j7WrN9xdO331ipHzx5Xq9llstkpQmlvpk1FL
-         pxtA==
-X-Gm-Message-State: AFq9FYLqSz62rw7ZGgHsjwzOIhQekPDPdaNaxXtW6f6vY44hFI1isjWT
-	fuylQ3iZavT7Q8/F8VgbzLZ3ZgsEuKY+FhQkAF96lwS8jPjW0bcpV5yyS1yvapCWZac=
-X-Gm-Gg: AYBFou2+gHOMI3ZLWktyvUDUjkX92nMHOw0EpGg3z39rDq2XdUk6OzVJqWV/nZkZqzt
-	YxpRe22UPPMKSdn7kbQf5mCbl0DhiNbsfMVsLxiDQA0wCTyQDjlvb3xaN8lq0FhFNEdP7xPZHKg
-	GeUM8pgT4bykr5gO0Mg7MQUZC+pyKetyEbZYECV6rEs8RM/GgA5MiDdgmgl7gyVBgcQMykI8pdc
-	Nmwu3l7O16J3/eB4LF1mctjqaOlHCeHJQHapNPG8lZsTaN7agSTEeOz7kGqmZPlqPOFXl7N+Jj4
-	PY8m/MVAogg7dY4a5ZrOw4uBaZ8492Op2Jztx4KuUKQK38VK7xBkF0jOFz2A5aoQEwXGKWbfubO
-	9CSGpJCzXrabK3vPywprejNRGkkPgKC9I6FWlqFVGbIqhb2qnUHIXidsZfbcvXAn+5g/N/YQAJt
-	uLqN6AistbGq+G61+G0AOFnh8sfkWKhnr0NoVo/FWHNOmEuvVynDuSZLfwEhF1uPXZ4VMIo5mkk
-	/xs7h8mCaYEmc5fGpSLgo+dgaLN57sBin80wTV6nc2zd2vcRIyM8gB/rgjYF8nlZUL7ZElQmurX
-	WipKwNlINfhwMxnSV9QXEASwf60RJQZ4u/LU+Qo3w72+3qQPtED1aORR5KegLduwOeL99wv2cvd
-	jBkJGAH6si0TlyNXlV/0=
-X-Received: by 2002:a05:6000:2289:b0:487:1488:d200 with SMTP id ffacd0b85a97d-48dba9dd862mr12678838f8f.3.1791745084567;
-        Sun, 11 Oct 2026 11:58:04 -0700 (PDT)
-Received: from ?IPV6:2a02:3100:5e07:d2fc:e857:e0d8:19e6:f391? (dynamic-2a02-3100-5e07-d2fc-e857-e0d8-19e6-f391.310.pool.telefonica.de. [2a02:3100:5e07:d2fc:e857:e0d8:19e6:f391])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9aac6a4sm15508639f8f.28.2026.10.11.11.58.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 11 Oct 2026 11:58:04 -0700 (PDT)
-Message-ID: <3030b753-eab2-46df-b936-8704c358f589@gmail.com>
-Date: Sun, 11 Oct 2026 20:58:02 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzzUYkcx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A731F0089B;
+	Sun, 11 Oct 2026 19:03:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791745441;
+	bh=LdxMvCC8JxkBtq+BNVpskgNv+Iemqb0CitObZkcZf3A=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=UzzUYkcxQOL0XlmelgcWjoUE8uZ5mu43l+m4m3WaR9oNIw62zCnUniB7tzEWo2BrB
+	 m/LtSCL5ygDk1oFfZBldkSOb9zcjhLNCiL0ryQ8J7LHAIrimuDA02HRyFG7gcNaeDp
+	 hJlAHlApw9NQgtB6uGiS1SdyWdNJPYYCIcokj6uBek3AWSfrNQrfwQN9yFCi/AjY1r
+	 L/H7nT8TTDqifm4cjorAwd2/DDPlx6Ti2F5nrdw4ff/R7AD535cW+u7s/elWHg0P39
+	 JDkxuf933VY9tJJkaAlHfRXEPptQgd6XeC196sPAtXgJjdRykcwDhXBIS4gDvJqmwz
+	 RH2OwqBWE9Ddw==
+Subject: Re: [PATCH net-next 2/9] net/mlx5e: check for failure when pulling
+ the Ethernet header after XDP
+From: netdev-bot+sashiko@kernel.org
+To: josef@toxicpanda.com
+Cc: kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
+ davem@davemloft.net, andrew+netdev@lunn.ch, saeedm@nvidia.com,
+ tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org, jgross@suse.com,
+ sstabellini@kernel.org, oleksandr_tyshchenko@epam.com,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com, manishc@marvell.com,
+ rahulv@marvell.com, GR-Linux-NIC-Dev@marvell.com, shshaikh@marvell.com,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, xen-devel@lists.xenproject.org,
+ intel-wired-lan@lists.osuosl.org
+Date: Sun, 11 Oct 2026 19:03:59 +0000
+Message-ID: <179174543945.434549.12308757559903944189@kernel.org>
+In-Reply-To:
+ <20261007-b4-pskb-pull-tail-drivers-v1-2-9512b0fb977b@toxicpanda.com>
+References:
+ <20261007-b4-pskb-pull-tail-drivers-v1-2-9512b0fb977b@toxicpanda.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v7 4/4] selftests: net: hsr: verify GRO policy and
- ordered forwarding
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
- shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
- qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
- bigeasy@linutronix.de, xiaoliang.yang_1@nxp.com, skhawaja@google.com,
- liuhangbin@gmail.com, stable@vger.kernel.org, sdf.kernel@gmail.com
-References: <20261009201324.17-5-xiexinet@gmail.com>
- <179166359775.434549.12356274501362124625@kernel.org>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-Autocrypt: addr=xiexinet@gmail.com; keydata=
- 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
- sNySbH3veZ/55EtlXA==
-In-Reply-To: <179166359775.434549.12356274501362124625@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-> [Severity: Critical]
-> Can this leave veth's NAPI state out of sync?
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Confirmed. veth decides its NAPI lifetime from wanted_features in
-veth_open()/veth_close(), so an attached veth with GRO still requested
-can disable NAPI twice on close, or enable it twice on detach. I will
-fix this in v8 and address the reports on patches 2 and 4 there too.
+Low priority / nit picks for your consideration:
 
-pw-bot: cr
+- [Low] In mlx5e_skb_from_cqe_mpwrq_nonlinear()
+  (drivers/net/ethernet/mellanox/mlx5/core/en_rx.c), the new drop path…
 
 --
-Xin
+
+net/mlx5e: check for failure when pulling the Ethernet header after XDP
+
+This patch replaces the unchecked __pskb_pull_tail() call in
+mlx5e_skb_from_cqe_mpwrq_nonlinear() with pskb_may_pull(). If the pull
+fails, the packet is dropped. The goal is to stop eth_type_trans() from
+hitting BUG() in __skb_pull() when the linear part holds less than
+ETH_HLEN.
+
+> When an XDP program leaves less than ETH_HLEN in the linear part of a
+> multi-buffer packet, mlx5e_skb_from_cqe_mpwrq_nonlinear() pulls the rest
+> of the Ethernet header in from the frags with __pskb_pull_tail() and
+> ignores the return value.  If that pull fails, eth_type_trans() later
+> finds less than ETH_HLEN in the head and BUG()s in __skb_pull().
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> index e3f915beebe1b..b1e1e30a77e22 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+> @@ -2060,9 +2060,12 @@ mlx5e_skb_from_cqe_mpwrq_nonlinear(struct mlx5e_rq *rq, struct mlx5e_mpw_info *w
+>  				pagep->frags++;
+>  			while (++pagep < frag_page);
+>  
+> -			if (len < ETH_HLEN)
+> -				__pskb_pull_tail(skb, min(ETH_HLEN - len,
+> -							  skb->data_len));
+> +			if (len < ETH_HLEN &&
+> +			    !pskb_may_pull(skb, min(ETH_HLEN, skb->len))) {
+> +				rq->stats->buff_alloc_err++;
+> +				dev_kfree_skb_any(skb);
+> +				return NULL;
+> +			}
+
+[Severity: Low]
+Can this new drop path actually be reached? Given how the skb is built
+on the XDP path, it doesn't look like the pull can fail.
+
+For an skb with frags and no frag_list, these are the only failure
+returns in __pskb_pull_tail():
+
+net/core/skbuff.c:__pskb_pull_tail() {
+    ...
+	if (!skb_frags_readable(skb))
+		return NULL;
+
+	if (eat > 0 || skb_cloned(skb)) {
+		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
+				     GFP_ATOMIC))
+			return NULL;
+	}
+    ...
+}
+
+The frags are always readable here because XDP and memory providers
+can't be used together:
+
+- dev_xdp_attach() returns -EBUSY when dev_get_min_mp_channel_count()
+  is non-zero.
+- The memory provider binding code in netdev_rx_queue.c refuses when
+  dev_xdp_prog_count() is non-zero.
+
+The skb isn't cloned either, since mlx5e_build_linear_skb() has just
+built it with napi_build_skb().
+
+There is also always enough tailroom, so eat stays negative. The XDP
+setup earlier in this function is:
+
+	linear_hr = XDP_PACKET_HEADROOM;
+	linear_data_len = 0;
+	linear_frame_sz = MLX5_SKB_FRAG_SZ(linear_hr + MLX5E_RX_MAX_HEAD);
+
+That leaves about 256 bytes past the linear tail, and the pull is never
+more than ETH_HLEN bytes.
+
+On the commit message's claim that this happens "When an XDP program
+leaves less than ETH_HLEN in the linear part of a multi-buffer packet",
+is that accurate?
+
+The driver always gives XDP an empty linear area. So the pull runs for
+every multi-buffer XDP_PASS packet whose program doesn't adjust the
+head.
+
+An XDP program also can't leave 1 to 13 bytes in the linear part,
+because bpf_xdp_adjust_head() rejects it:
+
+	if (unlikely(data < data_start ||
+		     data > xdp->data_end - ETH_HLEN))
+		return -EINVAL;
+
+When frags are present, bpf_xdp_adjust_tail() only changes the frags,
+so the linear data_end stays where it is. That means len is either 0 or
+at least ETH_HLEN at this point.
+
+If this change is meant as hardening, for example against later changes
+to linear_frame_sz, could the commit message say so?
+
+If there is a real way to make the pull fail, could the message describe
+it and add a Fixes: tag for the commit that added the unchecked
+__pskb_pull_tail()?
+
+>  		}
+>  	} else {
+>  		if (xdp_buff_has_frags(&mxbuf->xdp)) {
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007-b4-pskb-pull-tail-drivers-v1-0-9512b0fb977b%40toxicpanda.com
