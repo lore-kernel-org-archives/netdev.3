@@ -1,137 +1,148 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011040.outbound.protection.outlook.com [52.101.62.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE3924DFF9
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 11:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EF73AEF4E;
+	Sun, 11 Oct 2026 11:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791717821; cv=pass; b=L18zX7aMHnDw4U8TcArjabE5W0UU2iwYUANjWPoxXcEQ/IObXvBT9a2UZCOnE6l9+SNswPQ8okl4ewjyJMRTt2coYaeU68Cn5qVfn69u3RF3zWB+pcyNMMFg2Zj2smtGqbHSh8SOcAGPlnc5ITW8A1yfhwCWaNRxV5YBHRRaAI8=
+	t=1791718172; cv=fail; b=m9jwBuQooNEUmCY5jJ9N97t7PzxhCzlJ7Y1aSdyLtUSoTLliU4hGJoLtl0dJSSUVcK5hBs+XIHl1EaarxukT+NGg+B7Q8zSnNCHBvLdKpkGXE9vmbmZbu7a7K+TitymQaC6YHKZusiJiO4d8UgQz/UXjkHuWJ0B5aGt9yy49uIQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791717821; c=relaxed/simple;
-	bh=6S5nM0TeHpy1xxJuI9ztdTyKwNfI3pGJlDOe1fVvLUc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NXi3mxwPFw8b4y/wsQradOk1kkvL/AP3bXOstg9uR6iTxssM9kSlwfBxNVBt34guzo7ccyExUxF4nnaGsDwV0DMfYBSVROrhck57r+zb2eGMBtnLMoHy5wup1lVTOaV+VBSsHeaM7zPQ1xjnA2etsvU87g8mAm8y76j8nhPuqEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MNM9a+ex; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791718172; c=relaxed/simple;
+	bh=jXjPe5AFyKOtgFmEahc6Qxu3P7r8+XURJDYymjTmOiU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U5H8oEMiO1Wjk3LzRU7a6UeVaGCjIDecfFtToaBemQ62JdxQEVW/qUmZN8/9mx1ex3zqiynnGdJ2gtEbJuh/tsDfP4N7WYCnWXqeyu3mQKsypmeNLUAKgSBUGpmXY2A0khlKDiHx3noRYpKBPcpNTctBJKhxY39ZdPcaWL/75GM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MHK5XoLc; arc=fail smtp.client-ip=52.101.62.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MNM9a+ex"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-53440816851so12451601cf.0
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 04:23:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791717819; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PlHWbp25gCwmVdfTyqivWPHq0dvoBDwHC/L4p1ObJGodSZVYlkiHO5dj7ULHz9uizA
-         NSOKG/wwj4VTa5vrr+lbvK40/Yf6XjuY27rLwKOuLqZxaGqzCey4qCKCau6EQuIlO5TM
-         HStkw2HLzUFi+D3APrbeUs1xo8Wgj6vsIE0WpdmxM6Zs9uH8o5rVoY7dPTczs1tx9a56
-         Q2h1ZPM6HFgOI7EkYbq1ofTc1pfORnBnV73R7VBNvcD8oEkw1qPeHcqKivQc7RUskhNa
-         zumrNF9elDCkOaCE41KiGi2khNvxiVrWf+1s1nM2KWA139DQ3pYe+Ijd3YW7LwGD0O7c
-         74Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HQtrELtPHcUM2E6UeVj7fPemFu8C3adgNKDbLbY/Hok=;
-        fh=i+4A0kLsEtTJr96GlIGFzRN5a4niYwyeXPGFDvEmfsg=;
-        b=D5G8LjE3BFPmVxqu3WN65vLEqNY1knCFSY8d8IowpZHAAlBmb6GxKfpEo4GipiME6d
-         zuuJ2suvRHS8TzJvvASDnpt6n8GniK09Af/uoAPR8U+rDa3L/O85mkConzd7C/C4eciq
-         KwSYHgaN3KkXBuXB9+bY33ehnVgSLoR4u0vEneF777CEGriUGdTu3iYId2mRwIHhGwNH
-         NVmMYpzjwlVKWonjeYe3JUP5/k4RcQavx49q6t3Tuxj/m+rC94Np5jab3sGwqTNBV07I
-         FKQH+63Q88abV2/D5RUmZW9lV+TgutN6aD1A8qM8VY0x5PkFw6RTBNEV+SEiMHrlV4tq
-         aPVg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791717819; x=1792322619; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HQtrELtPHcUM2E6UeVj7fPemFu8C3adgNKDbLbY/Hok=;
-        b=MNM9a+exiO3VtIzFn/qEN6fePbhN1AQpY3dNq+AnLajWsAqiAbPGTtOb4FWNBtf/DH
-         R7gUYrXzzzgLYfgbyTgloJvOr9dKwT1tpVkwvuFw9qRYocCmBhuAYug07WmAAKFzGvNE
-         7hBdOn2VWvUdNx4E+MZ0B0auGjlSzKt6dEwvgXKS61h/v2OkmhHPXAej1Tt+FYy+ahjQ
-         UWMI2JoUjRBJZPJYKBDSMeoKQJlkux4Hoem3j93cGQsWMDysYDl04Opoxw7Jswkg6Er3
-         VtrNdNYh3LTdpsa1NLB5N08+LXA8WUiU/LLxbjJvTqAvu+xQa+W5gFfok0lk41jJmNPm
-         7V6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791717819; x=1792322619;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HQtrELtPHcUM2E6UeVj7fPemFu8C3adgNKDbLbY/Hok=;
-        b=OFiKFduWvSgDlCrFj6WsqiXVCk8LV8mAdPdw1Fne2g0AKaQ6cfY2bUgpLbfdSLuv0e
-         YYuB8CSWTRPsGi0eRse+TUkzdUdo2QnvWdOi74ird04FYrV8Fzb9Y6yXP1Qxvajtq3cY
-         Rd5y9pgmMZFXDr96ubNRdFRs7Eszkg3A8cAukAeAp/Kt24YKYIWAXjnSwcYM+uMgk6wj
-         cZbQxyYnslVpyLcS3fjuUmarsmCQyY4rGl2wTwTpGP7XxGm88wDtNt+Ot4tc/LlA5PJP
-         IYYo10trG5CHfYHTyhZOpjMh1EN2uJuSWsZVzxeQFhacGJLMVKOQtUroxehvyOUIEakA
-         sjEQ==
-X-Forwarded-Encrypted: i=1; AKwUvByFXR2CSrtL6B8I1Dl6cNTuCsE5SUup5mz/lvXxsjUFO8UibYtBsoEcOkA6ZKLAEaC1yy6p02k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJU483Ka9MVaArIcZqZns4W+qdtOP6AYy+C46SKFQvnOVwcsMrs
-	eoq5LSfzvOzklE9UdMLND3y19shJmLiffkGXd9w5Onybe6axP9F8c4BFL07s3XseSjz6fWllcz9
-	6VRoWhbZcAMMfTi8ut4BgyLsNAHEr+B0=
-X-Gm-Gg: AYBFou2RLhu/OvgmLrgkgUJ3vHPWqY5nYywM7ti8lo2XefCUhoQIX5rp6CI+oujkHxy
-	5MQ2mXi6lt9OdfDW/r1UhBJAc8qi0a4Ywhjzd/SfiJS3rRV2NasiHFZWqA28/GhQnJoGSLzIExY
-	Rbz1XLGYq6fTkZMdlwGg1Gy0sginmGiovPUPChnrkWuDFSE/P9XuNrYynRfzVapPLM9YpaylbWu
-	7KCpM5EScWgGOJJSLprWhdyxo4uwk9Y/zieVa67psl7EJREywlYPg9ljAnBF5nJEA2dtwIE5K1y
-	bD4SR2o2dg+gWhqYJPmf5LEoXYXXUuZU81Rf0quc+XK1d9m8DChVDNie1woZxRh8rbaxxCXnFQJ
-	k7zFopaI8KEppiuXsXYLGYLuBrW46tDq+fE0q09wYrQJ/KGuAV//JtlGYAoI1ehhjPqRqf9NqsA
-	Z6JeUsDM/v+1gqB+CSYsjN8l62te9t1JxN7YYfWSye1qrUkKo3ZKYkuXXtVdMaBRW729QG/DU/3
-	1cAcfDUZoK5XAbiqJFH8V9V/3jhvf0j
-X-Received: by 2002:ac8:5f0c:0:b0:533:d98b:d373 with SMTP id
- d75a77b69052e-5359fae8d9emr116437321cf.20.1791717819231; Sun, 11 Oct 2026
- 04:23:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MHK5XoLc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=l5Ggo+X4vfiGFhDT1S8PtJbb5DRlgoDl73sBBSeRA5+8LApcpAPmNJcPxyzxmAU/ijaK6SkFHqFheSQVA4JdwJ+pLoECbC/2WNivPnlXZmZXcOrOOysO/nICErk3oCbwlrlEO6gy26hmOWjw6FdF0qvqz9Qgd9AuSUIXmAlRxm3oiSlS9SFVPLlYIX7fThTMAFAV0aniSFLcvI41uwtF05PxrkuYjYFB1eBVSaSwi1h6xy+75rMdoC/4FHQymZmpeX90cUdA3Ho43WFfoUb+BlCH9l/Ip5hytSFtfdeaor6enPAm7T4X5C4p18IDvoLNRgVsLj7vOufH+FH+DozIGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wqgI7zCt9LqoHqxvQNg4hW9Sknu+vvTkU6BdcjHSdVE=;
+ b=QH6tjAIbuKsKV598PzTY9bBA09N9q387rnTRXqvwfKnLPbxkeX1UBxzyOqSrjo8yckddGnS8XyaNshHXmqE2hFZZ+iNreA1hFZ8B28LunRR5fSHijeooO/+Lj2xYlJQEUvtcOmfYE9OezY7GXSRGA3ugboOpcwgQC/XqE2kZ5O47CgzSxXT6k7DH4b1haAQ/VD2V97dlk6RuRrFIxMNJaf4wHXadnj2bOIEm4qBaeBhYDfS44HECm77CZ3S055/EEVAhw4QC6b5tcbNYZYDpBmDPQ7ZQekxZ5gMm1QpnvsbUMoWM3pNU6XP06tEeLH2BnrtMs3jLzqmvRsunQI0Dbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wqgI7zCt9LqoHqxvQNg4hW9Sknu+vvTkU6BdcjHSdVE=;
+ b=MHK5XoLcrICgoaQaliexHxEifCz8JgVSvyPHqhXaY/yZVVMkO/cAG+vDSiXbDDs5kPk5gEvEtzTLMf8n5FYWUO3Q7cUSnyySNURbaLon9Qrqg3Ju2+S2aoMDCCkfwKF1DM4lIyJhMcs+b0ICrtngH0j5HJAvrtj2quB4M8JrE/ZAKXCR92h+Mwnc6jiOUorYjDVAma4JwECfgTKs/NSJv+BXFD8KJwPGOvCqWLxno7yrnhOoJk9XQY4qfw/40TqzAJIHX/E07jxWKNLvbudYuztRUlieaRTCEjsf3vc4cQuEzY3Ipk3AhSHZfASIeFnLa78p8Zx76F+nrmWSitoL8Q==
+Received: from DS7P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:1ca::17) by
+ IA1PR12MB6211.namprd12.prod.outlook.com (2603:10b6:208:3e5::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.17; Sun, 11 Oct 2026 11:29:21 +0000
+Received: from DS2PEPF000061C3.namprd02.prod.outlook.com
+ (2603:10b6:8:1ca:cafe::10) by DS7P220CA0003.outlook.office365.com
+ (2603:10b6:8:1ca::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Sun, 11
+ Oct 2026 11:29:20 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ DS2PEPF000061C3.mail.protection.outlook.com (10.167.23.70) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Sun, 11 Oct 2026 11:29:20 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 11 Oct
+ 2026 04:29:17 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Sun, 11 Oct 2026 04:29:17 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Sun, 11 Oct 2026 04:29:13 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Alexei Lazar <alazar@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Leon
+ Romanovsky" <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net-next 0/2] net/mlx5e: Align setdcbx with DCBX capability flags
+Date: Sun, 11 Oct 2026 14:28:58 +0300
+Message-ID: <20261011112900.802150-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261011111606.14753-1-jain.sm@gmail.com> <179171754826.2527009.561712354727529429@kernel.org>
-In-Reply-To: <179171754826.2527009.561712354727529429@kernel.org>
-From: shashank Jain <jain.sm@gmail.com>
-Date: Sun, 11 Oct 2026 16:53:28 +0530
-X-Gm-Features: AclHuK9Bae3Zu4tNFkM32AdKSdWX51c1yCKllaI73dhcI0T3jtwCSZvSTD7PBRc
-Message-ID: <CA+FWx=nC--v=9KHH-1BSt13EAnCu2hwXQzA_=a3Gd_=RUyrTzw@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/2] tcp: keep the route window on the SYN when
- SO_RCVBUF is set before connect
-To: netdev-bot+sinfo@kernel.org
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF000061C3:EE_|IA1PR12MB6211:EE_
+X-MS-Office365-Filtering-Correlation-Id: c1b43b44-279e-4028-9de9-08df278ae498
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|82310400026|36860700016|376014|1800799024|10067099003|18002099003|11063799006|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	kE6WzluzDsX5HdxRSRKBnwHR+QJwTC3hz+fImG9ga3GRWxiVCuImafw7l+XgJkGSYnQI5eArrnhrhY6I5+x9mEw8HDnKV1RzaBThBhm2+5AjoIMW5QBgkEjSkRJcAKU+VdOGSBqgrOEax0WlycVsUhdFZGBjWBEDpYocKKEugSyPRuwagbUtZZ4rVdvRAkT2GxltknS+qRSVrMl6+c0sTyiKpMgCTpPf0BAwLTlKCSVMTe3c9oE3q88kg6Pwp4veLLRaH9hivxA0k9Eh4ewbFD5g7toQPRwZNQh8m/zwEZ3GesDlZeyKXwwq3ivj48ooxUUm/lxV9/GaVprfJZBBa5+3oW6Fxx9rqAxOKub4sruxK94dF/MeqBZh+awNId4i0/GFpJe7uhQj2TB3PmCPZss/1Q3h8U9UrgMOE3+5SSHYWv40wghh460/GZywc1li0onslBBzor0IclQ+Q9kalds7cHfnd3aBZBNYYMs35bvVYldb1UnH3UdL0TnwH9l0nUw20T1Zu3OFinCVWca6FYLL6sbisMZKv9xihERTRwEn5h+WL4qJh1RevdH8UVOC89Ul3bWnVYJ5/d9e7wa7dTR+//kPnwsDPyW4fwR/lCnfCWY47feDEZ/n+EU3mChRaOdm17K9GVMQeyTzRvObr36Oix2HmFp1zBGrg4RBwVK7FPGBpAIGJjBG8JnuqruWZHYMga+z4uj59UC3PDWUWw==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(36860700016)(376014)(1800799024)(10067099003)(18002099003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	YzkvHyaOqXVXcxTHjauqdCmyW/QlNh7cIxwTrMF1Uj+mwnOnRtXiE7PPoEvVw5kHO7wauAk0sZJyzCvwGSngZ70NvTnDYcoljMq5b4+BHrRIg/nWRCv3tFnbkzW+v0O5ebB3JYvQNZ24FZd1+8EIbaV6k0MHteIMfUX6Zdf0sTMEIidcRN9uIigARwN5m9WCEvkEDGkUPMmnzh2h7sybOOq9pGanv1nDtRKwQ/Mp0zp7r07VH78+4llaMRNtYn6Q6LQ0cXurIlkWrrIpfqaawKhj9vgI4VKGxeyyh5yzP/gCQIJielNRKkkSKhhlcWGBLrNqHCeT1PxSfHkl0KMDsnlDbIHCAsctEjB3WRlP63GjtxDyjm3NxXFLo17adJAISPtGXQpx9l7c/iv5TmQk9rZGmf/ZhBO+EGApavnwjdZXVkgXcQnoKflj7NiSVnRS
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2026 11:29:20.2663
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c1b43b44-279e-4028-9de9-08df278ae498
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF000061C3.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6211
 
-On Sun, Oct 11, 2026, netdev-bot+sinfo@kernel.org wrote:
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->  - How the issue was discovered ...
+Hi,
 
-Found by manual code inspection assisted by an LLM (Claude Code, Claude
-Opus) while reviewing the networking changes that set window_clamp on
-unconnected sockets, then confirmed before posting with the packetdrill
-test included as patch 2/2 and a veth/netns reproducer. The patches
-carry an "Assisted-by: LLM" tag for that reason.
+This series by Alexei aligns the mlx5e DCBX mode handling in the setdcbx
+DCB callback with the DCBX capability flags.
 
-Thanks,
-Shashank
+Today mlx5e_dcbnl_setdcbx() applies two different policies: a request of
+mode 0 switches the firmware to AUTO, while any other request is
+accepted only if it carries DCB_CAP_DCBX_HOST. Requests with
+DCB_CAP_DCBX_LLD_MANAGED are rejected outright, even though that flag
+describes exactly the case where DCBX negotiation is done by the
+firmware/LLD agent rather than by the host.
 
-On Sun, Oct 11, 2026 at 4:49=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Patch 1 switches the firmware between HOST and AUTO modes based solely
+on the DCB_CAP_DCBX_HOST bit, which folds the two code paths into one
+and removes the dedicated switch-to-host helper. When moving to
+firmware-controlled mode, CEE, IEEE and LLD_MANAGED are reported
+together due to a firmware limitation.
+
+Patch 2 drops the rejection of DCB_CAP_DCBX_LLD_MANAGED, so that
+requesting it switches to firmware-controlled DCBX mode.
+
+Regards,
+Tariq
+
+Alexei Lazar (2):
+  net/mlx5e: Select DCBX HOST/AUTO from capability flags in setdcbx
+  net/mlx5e: Add DCB_CAP_DCBX_LLD_MANAGED support in setdcbx
+
+ .../ethernet/mellanox/mlx5/core/en_dcbnl.c    | 51 +++++--------------
+ 1 file changed, 14 insertions(+), 37 deletions(-)
+
+
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+-- 
+2.44.0
+
