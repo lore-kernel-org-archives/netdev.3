@@ -1,148 +1,110 @@
-Received: from mail-oo2-f0.google.com (mail-oo2-f0.google.com [74.125.231.128])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FCC19005E
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 04:17:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44477330B01
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 05:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791692254; cv=pass; b=mnSdbAqyd2/2wbh4u17C6xyysv8kEOOdFs8X4puzZI0g43qKeQmS5fI3Lrfk1xV7ipU9roo4GMkhzAWnFGjbLDQ+5F+QIQ6GmqqJzOvHG/CZN85EKGg4UbZU5W1wLKFhzjBzAcwbFTFEWoV6xblq3et9VpicUHMZ7uCNaWGlz+A=
+	t=1791694861; cv=pass; b=noIfWoHGc8e9ZMKEFyWaeGjcC4P+3AJ4dsfAlQVXaRMZ+u75+jSpxau+P/T0+nAgTB6cQCnEbrEv6IrOZ7zDRSQp8YI6DjlYFsIMYyBmxZa7CzysCD+yE/OWHLJxuam6ajvW2Yf1/9GDa+KQ6vv21k32mezsFYEUHAskwg8wvzE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791692254; c=relaxed/simple;
-	bh=EojC/6mtzUWJ7avmaSpCmXay/upr0JmdGGgyCBDDGzY=;
+	s=arc-20240116; t=1791694861; c=relaxed/simple;
+	bh=ONJ8sL2eLY61Nf+ScHCP5MNggSt3fR+V7XSvnBvT1jg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OcR5ccfrTV/m//SbjkVgJcbCzg1/gpUX4c0clnGDZdHw9gTO9mTOGWNQ+biRy4iyBdrwPyBmZ4Z4A1/OUS3wd/QdfGKU2T3wh9jaZjUDdfsuJh9yKZ0DL8wTDCae1rey0dY+bzfM49dPVjHte3PGo+ew1/0n4WkGP8nGztUjWiQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=acqmmXTL; arc=pass smtp.client-ip=74.125.231.128
+	 To:Cc:Content-Type; b=BIFrXQE1Tw5SwHhtDv5fqyzwYpTcCOuUhAM/Hg6mxOO38jnUlB6IoC7T+kDc9QymjL5SHEah/xahIbqznXpEX3sAlKm91PEX4fJQzGvw+xvVtb0LKkdKTDwpaZJT9TUpf0sStDUTyYyTlGF+hkkgFIoxg44vgh5vmy/TW+8kkHg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CwAZzTBT; arc=pass smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="acqmmXTL"
-Received: by mail-oo2-f0.google.com with SMTP id 46e09a7af769-824040a3379so398698a34.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 21:17:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791692251; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CwAZzTBT"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3a9761758adso8824991fa.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 22:00:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791694857; cv=none;
         d=google.com; s=arc-20260327;
-        b=m4DBXoI22tgVeDRoyovO5XZ19TTCbfY9MtkHe9ChN80/LEzXRA4jLgdoLME3S+F6PA
-         bsmWd4a1YpGM0kDMMdmgaTdK/a8ypJuaWVGbPq48ZInuwkiP8G+MYPWywXUBT7DdSmbv
-         PhZeD2iC2GOXVc4Odpkdt0zpqLxEfVuzJVqb/Ov7K7mhJ3rOdl5eXezopQJUP/vZf/NO
-         /dykoMxv1jQSqz3RJ8fXAdsB0yIljKEcQ285nQRDgskNeEXRmmVi2SjB/ag1DRJeZmva
-         RHTTAVHzMw0Xzs6b99TrfSaJ0Z1lJUNxKN1xw7I4M7r2v5tM58wToXACJabnb3+RR09K
-         wmFw==
+        b=enG96r/wmEQGxZ5lhdzonKpc83tVsEYH9sxDnDSr/ZPfMNSpLIuLoVl8LPlE6Nifxj
+         sTuRsWzNWXHcUZR6s8p/FchVeOujBql8kW7RGW59F+563wzKnUJOwa09zj2/RDXNGc44
+         sfBA/++J+uj9EGV4/352Ah8PBNjyqC1RzZFpFtl9MOQKAooYtSfEL7rrtkdWctMWyJhI
+         xucmLoQqvy7XouPa61bo3uowY2ZD4LE0y/8Hymt6EimYOiLnWDnQEKW7kwpSrHfXVkES
+         tkPXduYSnnwumNyfg2EIz2vXNAMM+Ua5yI1nbu5mxJ3Yy45oFKJvzcIPb5HmDo5Uj2dF
+         03wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ze3tU5ClgmV//hWYQFqIt/MG2FODlVRCQlPbo8m5k9w=;
-        fh=OOfZzHJZc7VF8olnIjmbnpxcBUpfWvHiME6ZW7a0zvQ=;
-        b=hOqIxPXIjeJXZ54n88tNjliwtaPh+noqAebNWfNRJ0v5LUu3CHjoZKgbJmOfDqxWLX
-         Np4ZHYNIu9+m1YTOmpZLAA9Vk4Spg0RvNPPy/jmMNXKL6sXIiDgtlsanTecn9GCFXkJ0
-         iLmxHMBBFOLl+4+5K6E9sG1+5e//MTapynxpua5VsYek3WIgJp9E8xdrpCfGLxzWlU8t
-         XCUJyR+b3tIoQsa3tpaU63O3D8CsSLFhUOPAq0XnKudX/FJvrzaCZ33b2rj7dULO6H0X
-         /e8La4429Nf6KNbYW9oY+IqlB0cht5wEpZrfj9ESkM0PQYgZQJJ09IqEzfdz6MH5sFSK
-         Fxcg==;
+        bh=o9fOpLHNyvCnw7ct/flm+4OABTu8ji/SW2nl6R0R/KI=;
+        fh=qtiyh5JrNuQQjtTcT8LupOCsDXIh1OU6PMr8cqL5YXM=;
+        b=SR3FeJEJHatrdfWjap48A5o3yHmiclqAYWG1IrABgKk3CJhBJHl2XrxqVs1lY3PG8K
+         7b49rJSiqHQpD7KLGkCXvlcKqxPrB7hCflf7PkJxTwi0+G4GdSbFH3vMkzkDNdgB7XLh
+         U/8HOfhxVO9YRs8oFgUwghIH30g4MlcKf6JgVvCgDhJNORQM+tbRO4W/OOEjlyF5O/p+
+         M4sAV0C/3DZcMKbxmenXoE2nQYwK/sKyAtSvEnPP8mdnbveoAcBDWmSCW2A9tYNxDvXN
+         HNFZJc65BFTEUzv2fAzUU8rX2dogK3G/XvnROtKMHNkyXTCOpXVhaO7pwLfVDa3NwRB4
+         TNcw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791692251; x=1792297051; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791694857; x=1792299657; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ze3tU5ClgmV//hWYQFqIt/MG2FODlVRCQlPbo8m5k9w=;
-        b=acqmmXTLH3/JqLul4xg0YhnqrVxyfR3hxgvuPybOeTz/MIUiN972T+nMdl+nhNsiiZ
-         gvAHayn/EDi5xIoaRVVuIcMNda+TXC9UMymbknO+5KlK9Dg1n4Ix7EZeb+OrwClrjnw5
-         ELkGj3gVIPRiJv4h5eChhfSbpOiKnT7Ei1l/5/ovHXZzXdLecQXJXuyZGXUpVvoYC/XW
-         pAQ6j4JkRHG8A3QXwEp6L2TmagY8cMV/d2cHFeUL1QfLJgVBDPipiPrd1orkQKiBKQDL
-         8A8wAHFnu0Qz0C8xMnWMCA2UyPG3KIwR3ikjXCmS/+BpPCLddzYu0/wA0BirwanIMDQ6
-         V9gg==
+        bh=o9fOpLHNyvCnw7ct/flm+4OABTu8ji/SW2nl6R0R/KI=;
+        b=CwAZzTBTRSONUpXC6WiUjYFzFTfkivtHgncXV0hyDh8UYl2X1kCq0p5oLCHTTkApfq
+         Wn11uEIlG56VKW7v6f1A+hYkkQtS6LSYYoVPORle8jFVITrdQiGcHo4OSZOBNRXnUL81
+         /eJAgEoO/f0GbRhPsRS+tGt2SYiq0Rm6F0G7XKdM7jIQHjg1x1tKBwHb2TngIxo8mnC/
+         TH8P5mIB5kSqiGygdPwgELrsiHkzTv1fPAsZmTagsx4GOo2vx9BtSOykiM3k9gWQEKpA
+         NWa9EMd/5edmhDa2XLnHV2xxQCMjZAjdXhAfjpJbCcoPEdeKD8rtz4f7H64d9LuNHpzh
+         k4Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791692251; x=1792297051;
+        d=1e100.net; s=20260707; t=1791694857; x=1792299657;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ze3tU5ClgmV//hWYQFqIt/MG2FODlVRCQlPbo8m5k9w=;
-        b=hhR2iQtzHje9kCxVIsIXCdfd1EzP7oCMliJOb0u//mMbIOqTZ4bsZjtZil5E4AWTAE
-         LTBrLX4Di2Run8PkwPPkcjni8JIOWKuoEhnXZw+zhZiZFuwoaPCSqUM0o7lfWhJXEVZl
-         CVZ68a+N0d+xYy9eVY7LViYPzQ/79IkCfvjgYvIOfPeBmPdRnxzIa36/fFcVa3z3jFMU
-         rR/p8t0L9YedsnSc4Wq1EEDnccH4vTivd17+lYDBX5fKcnJDcYH+lSodrZA5KVrMRu22
-         mTgQrxD6YssaXu0XfJ27k1k6gREFH+0+efngRh29PkrBkPPKoioViPeHPspydZHV/gqN
-         x2Zg==
-X-Gm-Message-State: AFq9FYKh1k4CsifMOwqPeqk35Q2fChd8nRLHt3VReB0sEdB2/kQFt7BK
-	qEkeN64YPFbG5bRkTlf4LWcWJYnkpI6PKh+oUMYK0iOnFRNGoZ6eqXW+jJuXXqJWDmOvk7c+7QB
-	Lr8Y7t6zWp7LMI531kLZtP/ayOmzORnA=
-X-Gm-Gg: AYBFou3IVD0vyfnX65k1P3ilL13t+Xran2XBiiB1CZLanLuzIYoiBf33S1yNgqxvRBe
-	eUVFohBALq8jK56izfkTNz7WAjVHaZQx1cmdwFjHLNERiboCaZ4RkzzGwouBtgptjr6Z/PbV8R7
-	cRHcKfnch3iaj46Pql8Wq46hMuTLzdncoI6MRWmkcdcbZwAedd90iDLKoj026iadaQEl54D9NXA
-	HgrcSVUkx39PkAlLHXSUim325PCtaOngOccaDfHBgbMve8FlM1ktkCBtRLJNLix3DvJgpy+d0D1
-	ZWHqA5UIMVsk2iQ3apNuLqMZAUvnQ9zjFR2bXGdc6WKPf6I8HjzJHcMkIHZKxBpwCB/SG0RVVbG
-	pdlb1X0VVTqND2eNPlbrMKGM=
-X-Received: by 2002:a05:6808:1908:b0:4b9:a88b:8884 with SMTP id
- 5614622812f47-50c50f2e1f2mr6409320b6e.26.1791692250833; Sat, 10 Oct 2026
- 21:17:30 -0700 (PDT)
+        bh=o9fOpLHNyvCnw7ct/flm+4OABTu8ji/SW2nl6R0R/KI=;
+        b=zs5RA7mTZ/wIVTJ3CYZR0AKGjKmzT050jJ0+pX0f84BhOEjzckEBcJCh1SG4vyhh4n
+         T/zHhx5LQpmHx1DPCbKASZNJ/7qrYsbdvWVRvIwjc4L6L6zd5Du9nnXoBDs6OYlA6ga2
+         MpPOJaM9p8EPKEmIXi74M+Y1vrL673jS8eTW0ILrPLXWpVQoyeJjzgFS4Q4Yo3izTM1r
+         cP4/+CiVkfyHIc9LEAAilXb2G+F/HY6ziM2fqgCEL0elWSYTshSrEYA1wlaGnd4r4PGb
+         5fg6mtdRx5Zup23dgGVbH8MCyTxzIn97FtVyygwf54Ci1C+96bmKas/7t4pTH24pZ6OB
+         8NhA==
+X-Gm-Message-State: AFq9FYJIFRFLuiqkPH6m/B+ZwKeonSgYMH274fpnldevwPt4yiQVPLfA
+	poTN5stLVGFe07gakz7EdRvSl3EbjnflzDXelQyGDIsVVrhyJUxvdH7CmE1PgePCogJC/iupYld
+	oxuSOqO8n0MJeW44/FntF6nBEtKesGgY=
+X-Gm-Gg: AYBFou213JSIyQVrimNLRZudBkze85BHJxggKt/0kK4JrudS8iem5xlPHJTiNc6kkhP
+	p5VRvovMSzAf436GDirt95nawPWPTTX4+3cgjYP/AroKwF6/UyEjMFaVdFrzZEDhWMb7XdwommJ
+	uoKocNNIHP3lyA7LNwk0EhVLWhWCCFpWAiDWYeboNTqcUHpcFPOj/ZHIo4EEKa+Z+JFZd+gnHbP
+	XtWdhK1Nvi1/5HIxPzBlLCLOngztuaaLWEulcuHMxWWPp8bCI7Kr1zKd/RjG5awwXE8fyKLpBEv
+	XSt2GKIyKdl35Ta48wU8UQpbGNMuieX+4gqS0UNQJNxvbXmatIaUH4ris8rdZx3bVLZWPE0J7Qh
+	0zwpMg7HEJA==
+X-Received: by 2002:a2e:b891:0:b0:3a3:2a41:c0c4 with SMTP id
+ 38308e7fff4ca-3a9c55ace5bmr15462731fa.14.1791694856908; Sat, 10 Oct 2026
+ 22:00:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005041525.49111-1-xinsheng.zhu.ny@gmail.com> <179134657946.434549.14071341559835135672@kernel.org>
-In-Reply-To: <179134657946.434549.14071341559835135672@kernel.org>
-From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
-Date: Sun, 11 Oct 2026 00:17:18 -0400
-X-Gm-Features: AclHuK8R4vcLcP0LXZ-tOoywSVJ8FWjq2V0QOjKOAR5xzmbA-pdI0ZnoHItcWRs
-Message-ID: <CAFGKm+zjOtU8WGpcqqb6_XnFd3vmPw2RszPig9PJzbq3Uqh_Lw@mail.gmail.com>
-Subject: Re: [PATCH net] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+References: <20261007034620.1360542-1-maimon.sagi@gmail.com> <179147446494.434549.11428994399896260897@kernel.org>
+In-Reply-To: <179147446494.434549.11428994399896260897@kernel.org>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Sun, 11 Oct 2026 08:00:30 +0300
+X-Gm-Features: AclHuK8wvxfWEv_7A9VOQ3ODs6zOLFK7SsQqqUZ0c-kLMQjTNWe3Fqy-VD138Ag
+Message-ID: <CAMuE1bE5m0NrFaD28wEC5D7LrpDo6+N-TiihQy-CAjLzNs5+9Q@mail.gmail.com>
+Subject: Re: [PATCH net v4] net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
 To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, oliver@neukum.org, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
+Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com, michal.simek@amd.com, 
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, daniel@iogearbox.net, 
+	jacob.e.keller@intel.com, joe@dama.to, suraj.gupta2@amd.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Thanks for the review.
-
-> Should this branch return a negative errno for short reads? For example:
+On Thu, Oct 8, 2026 at 6:47=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
 >
->         return err < 0 ? err : -EIO;
-
-Yes. I changed the condition without adjusting the return value and
-overlooked the zero-length case.
-
-When usbnet_read_cmd() returns 0, the new branch returns 0 before the
-remaining initialization has run. cdc_ncm_bind_common() then treats that
-as success. This is a regression introduced by v1.
-
-I will fix this in v2 by preserving negative errors and returning -EIO
-for short responses, including zero-length responses:
-
-        if (err !=3D sizeof(ctx->ncm_parm)) {
-                dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
-                return err < 0 ? err : -EIO; /* GET_NTB_PARAMETERS is
-required */
-        }
-
-> Is it intended that these responses now cause a probe failure for
-> cdc_ncm, cdc_mbim and huawei_cdc_ncm, which all share this bind path?
-
-Rejecting incomplete GET_NTB_PARAMETERS responses here was the intent,
-to avoid continuing initialization with parameters that the device did
-not provide.
-
-> Should it carry a Fixes: tag?
-
-Yes. I will add the missing tag in v2:
-
-Fixes: 36c35416a94f ("cdc_ncm: fix endianness problem.")
-
-Thanks,
-Xinsheng
-
-pw-bot: cr
-
-On Wed, Oct 7, 2026 at 12:16=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
+> Thank you for your contribution! Sashiko AI review found 4 potential
 > issue(s) to consider.
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 2
+> Critical: 0 =C2=B7 High: 1 (3) =C2=B7 Medium: 1 (3) =C2=B7 Low: 2
 >
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -152,138 +114,413 @@ k
 y
 > (one such reply per series is enough).
 >
-> - [High] In cdc_ncm_init() (drivers/net/usb/cdc_ncm.c:527-529), the new
->   check `if (err !=3D sizeof(ctx->ncm_parm)) { dev_err(...); return err;=
+> - [High] net: axienet: RX buffer leak in axienet_dma_bd_release
+
+Real, but not introduced here: the RX walk is unchanged by this patch.
+It stops at the first descriptor with a NULL skb, so after a failed
+refill in axienet_rx_poll() the buffers behind that slot leak, and it
+frees each skb before unmapping it.  The commit message overstates it
+when it says the RX walk frees every receive buffer.  I will send a
+separate fix for the RX walk once I can test it on hardware.
+
+> - [Medium] axienet_free_tx_bufs() loops over the current lp->tx_bd_num
+>   entries of lp->tx_bd_v, reading cntrl/skb and storing zeros into every=
 =E2=80=A6
-> - [Low] The patch makes any GET_NTB_PARAMETERS response shorter than 28
->   bytes fatal to bind (cdc_ncm_bind_common() -> error2 -> -ENODEV).
-> - [Low] The commit message describes a defect: cdc_ncm_init() only
->   checked `err < 0`, so initialization continued with an incomplete=E2=80=
-=A6
+
+This needs axienet_open() to ignore a failed reset after the ring was
+resized, a path on which dma_free_coherent() already uses the wrong
+size.  The fix is for axienet_open() to check the reset result and
+unwind, which is a separate, pre-existing problem.
+The remaining pre-existing items (the unchecked reset in
+axienet_open(), the error handler not stopping the TX queue, the open
+error paths, ll_temac) are outside this patch.  For the error handler,
+the loop is moved unchanged; dev_kfree_skb_any() in its process context
+frees at once instead of at the next softirq on the same CPU, which
+neither opens nor closes that race.
+
+> - [Low] axienet_free_tx_bufs() walks the TX ring in index order
+>   0..tx_bd_num-1 and, at each descriptor that has an skb attached, frees=
+=E2=80=A6
+> - [Low] axienet_dma_stop() ignores both the timeouts of its HALT polls
+>   and the return value of __axienet_device_reset(), which is -ETIMEDOUT=
+=E2=80=A6
+>
+> Pre-existing issues:
+> - [High] axienet_open() ignores the result of axienet_device_reset().
+> - [High] In the RX walk of axienet_dma_bd_release(), each RX skb is freed
+>   with dev_kfree_skb() (line 254) before its DMA_FROM_DEVICE streaming=E2=
+=80=A6
+> - [High] axienet_dma_err_handler() runs from a workqueue and does not
+>   stop or lock the TX queue: there is no netif_tx_disable(),=E2=80=A6
+> - [Medium] In the sibling Xilinx driver ll_temac, temac_dma_bd_release()
+>   unmaps and frees the RX skbs but frees the TX descriptor ring with=E2=
+=80=A6
+> - [Medium] The RX walk in axienet_dma_bd_release() stops (`break`) at the
+>   first descriptor with a NULL skb, on the assumption in its comment=E2=
+=80=A6
+> - [Medium] If phylink_of_phy_connect() or axienet_init_legacy_dma() fails
+>   after axienet_device_reset() has succeeded, axienet_open() returns=E2=
+=80=A6
 >
 > --
 >
-> net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+> net: axienet: free outstanding TX buffers in axienet_dma_bd_release()
 >
-> This patch changes the GET_NTB_PARAMETERS check in cdc_ncm_init() from
-> err < 0 to an exact-length comparison against sizeof(ctx->ncm_parm). The
-> goal is to reject short responses instead of continuing initialization
-> with zero-filled NTB parameters.
+> This patch moves the TX ring walk out of axienet_dma_err_handler() into a
+> new helper, axienet_free_tx_bufs(). axienet_dma_bd_release() now calls it=
+,
+> so TX skbs still in flight and their DMA mappings are freed when the
+> interface goes down. The patch also clears tx_bd_v and rx_bd_v once their
+> rings are freed, skips the TX walk when tx_bd_v is NULL, and frees skbs
+> with dev_kfree_skb_any() instead of dev_kfree_skb_irq().
 >
-> > Require the return value to equal sizeof(ctx->ncm_parm), consistent wit=
-h
-> > the existing exact-length check for GET_MAX_DATAGRAM_SIZE in
-> > cdc_ncm_set_dgram_size().
+> > diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/driver=
+s/net/ethernet/xilinx/xilinx_axienet_main.c
+> > index 09443623a3e2a..318ff03b04e69 100644
+> > --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> > +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> > @@ -173,6 +173,46 @@ static dma_addr_t desc_get_phys_addr(struct axiene=
+t_local *lp,
+>
+> [ ... ]
+>
+> > +static void axienet_free_tx_bufs(struct axienet_local *lp)
+> > +{
+> > +     struct axidma_bd *cur_p;
+> > +     u32 i;
+> > +
+> > +     for (i =3D 0; i < lp->tx_bd_num; i++) {
+> > +             cur_p =3D &lp->tx_bd_v[i];
+>
+> [Severity: Medium]
+> Can this loop run past the end of the allocated ring? The loop bound is
+> the current lp->tx_bd_num. The only guard in axienet_dma_bd_release() is
+> the NULL check on lp->tx_bd_v, and that says nothing about how many
+> entries the ring was allocated with.
+>
+> This sequence seems to reach that state:
+>
+> axienet_open()
+>   axienet_device_reset() succeeds, axienet_dma_bd_init() allocates N entr=
+ies
+>   phylink_of_phy_connect() or axienet_init_legacy_dma() fails
+>   returns without axienet_dma_bd_release(), so tx_bd_v stays non-NULL
+>
+> axienet_ethtools_set_ringparam()
+>   the interface is down, so lp->tx_bd_num =3D M with M > N is accepted
+>
+> axienet_open()
+>   __axienet_device_reset() times out and axienet_dma_bd_init() is skipped
+>   the failure is ignored and open returns 0
+>
+> axienet_stop()->axienet_dma_bd_release()->axienet_free_tx_bufs()
+>   walks M entries of an N-entry ring
+>
+> For i >=3D N, the loop reads cntrl and skb from beyond the coherent buffe=
+r.
+> It may call dma_unmap_single() or dev_kfree_skb_any() on garbage values,
+> and it writes zeros past the end of the allocation.
+>
+> On this path the following dma_free_coherent() already passes the wrong
+> size, so the path itself isn't new. The walk adds out-of-bounds writes to
+> it. Fixing the unchecked reset and the missing unwind in axienet_open()
+> would cover this too.
+>
+> > +             if (cur_p->cntrl) {
+> > +                     dma_addr_t addr =3D desc_get_phys_addr(lp, cur_p)=
+;
+> > +
+> > +                     dma_unmap_single(lp->dev, addr,
+> > +                                      (cur_p->cntrl &
+> > +                                       XAXIDMA_BD_CTRL_LENGTH_MASK),
+> > +                                      DMA_TO_DEVICE);
+> > +             }
+> > +             /* not reclaimed by axienet_free_tx_chain(), so a drop */
+> > +             if (cur_p->skb)
+> > +                     dev_kfree_skb_any(cur_p->skb);
+>
+> [Severity: Low]
+> Is the skb freed here before all of its mappings have been unmapped?
+>
+> axienet_start_xmit() puts the head at orig_tail_ptr and the fragments at
+> the following indices, wrapping to 0. Only the last descriptor gets
+> cur_p->skb:
+>
+>         for (ii =3D 0; ii < num_frag; ii++) {
+>                 if (++new_tail_ptr >=3D lp->tx_bd_num)
+>                         new_tail_ptr =3D 0;
+>         ...
+>         cur_p->skb =3D skb;
+>
+> Take an in-flight packet whose head is at tx_bd_num - 1 and whose last
+> fragment wrapped to index 0. This loop frees the skb at index 0. It only
+> calls dma_unmap_single() on the head and fragment descriptors at the top
+> of the ring later in the walk.
+>
+> With DMA_TO_DEVICE and the engine stopped there may be no visible effect.
+> Would unmapping every descriptor first and then freeing the skbs, or
+> walking from tx_bd_ci in chain order, keep the usual unmap-before-free
+> order? The error handler loop had the same order, and this patch adds it
+> to normal teardown.
+>
+> > +             cur_p->phys =3D 0;
+>
+> [ ... ]
+>
+> > @@ -186,11 +226,18 @@ static void axienet_dma_bd_release(struct net_dev=
+ice *ndev)
+> >       int i;
+> >       struct axienet_local *lp =3D netdev_priv(ndev);
 > >
-> > Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+> > -     /* If we end up here, tx_bd_v must have been DMA allocated. */
+> > +     /* tx_bd_v is NULL if axienet_dma_bd_init() did not get as far as
+> > +      * allocating it, and is cleared below once the ring is freed;
+> > +      * dma_free_coherent() accepts NULL.
+> > +      */
+> > +     if (lp->tx_bd_v)
+> > +             axienet_free_tx_bufs(lp);
 >
 > [Severity: Low]
-> This isn't a bug, but this fixes the unchecked response length in
-> cdc_ncm_init(). Should it carry a Fixes: tag pointing at the commit that
-> added the err < 0 check, so stable backporters can follow it?
+> This code assumes the DMA engine has stopped. axienet_dma_stop() ignores
+> the HALT poll timeouts and also the return value of the reset:
 >
-> > diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-> > index 35db38cb3e4a2..66f40f0d9c273 100644
-> > --- a/drivers/net/usb/cdc_ncm.c
-> > +++ b/drivers/net/usb/cdc_ncm.c
-> > @@ -524,7 +524,7 @@ static int cdc_ncm_init(struct usbnet *dev)
-> >                             |USB_RECIP_INTERFACE,
-> >                             0, iface_no, &ctx->ncm_parm,
-> >                             sizeof(ctx->ncm_parm));
-> > -     if (err < 0) {
-> > +     if (err !=3D sizeof(ctx->ncm_parm)) {
+>         /* Do a reset to ensure DMA is really stopped */
+>         axienet_lock_mii(lp);
+>         __axienet_device_reset(lp);
+>         axienet_unlock_mii(lp);
 >
-> [Severity: Low]
-> With this check, any response shorter than sizeof(ctx->ncm_parm) now make=
-s
-> bind fail. There is no fallback, and the wLength the device reports is no=
-t
-> used.
+> Suppose __axienet_device_reset() returns -ETIMEDOUT ("DMA reset timeout!"=
+)
+> while an AXI read is still outstanding. Could the device then read TX
+> buffers after they were unmapped and freed here, for example causing an
+> IOMMU fault?
 >
-> Before this patch, short responses were accepted. The zero-filled fields
-> were then sanitized by cdc_ncm_fix_modulus(), by
-> cdc_ncm_check_rx_max()/cdc_ncm_check_tx_max(), and by the
-> tx_max_datagrams =3D=3D 0 default.
+> axienet_stop() clears TXEN before this point, so freed data shouldn't
+> reach the wire, and teardown has to proceed anyway. This is more a
+> hardening question about faulty hardware.
 >
-> The commit message calls this "consistent with the existing exact-length
-> check for GET_MAX_DATAGRAM_SIZE in cdc_ncm_set_dgram_size()". That check
-> is not fatal, though:
->
->         if (err !=3D sizeof(max_datagram_size)) {
->                 dev_dbg(&dev->intf->dev, "GET_MAX_DATAGRAM_SIZE failed\n"=
-);
->                 goto out;
->         }
->
-> No device that sends a short response has been identified. That makes
-> this a compatibility question, not confirmed breakage. Is it intended tha=
-t
-> these responses now cause a probe failure for cdc_ncm, cdc_mbim and
-> huawei_cdc_ncm, which all share this bind path?
->
-> >               dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
-> >               return err; /* GET_NTB_PARAMETERS is required */
->                         ^^^
+> > +
+> >       dma_free_coherent(lp->dev,
+> >                         sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
+> >                         lp->tx_bd_v,
+> >                         lp->tx_bd_p);
+> > +     lp->tx_bd_v =3D NULL;
 >
 > [Severity: High]
-> What happens when the device ends the GET_NTB_PARAMETERS data stage with
-> a zero-length packet? usbnet_read_cmd() then returns 0. Does this branch
-> log "failed GET_NTB_PARAMETERS" and still return 0, which the caller read=
-s
-> as success?
+> This isn't a bug introduced by this patch. The commit message notes that
+> axienet_open() does not check the reset result, and the transmit path
+> still uses the ring when the reset fails:
 >
-> __usbnet_read_cmd() passes the usb_control_msg() length through unchanged=
-:
+> axienet_open() {
+>         ...
+>         ret =3D axienet_device_reset(ndev);
+>         axienet_unlock_mii(lp);
 >
-> drivers/net/usb/usbnet.c:__usbnet_read_cmd() {
->     ...
->         err =3D usb_control_msg(dev->udev, usb_rcvctrlpipe(dev->udev, 0),
->                               cmd, reqtype, value, index, buf, size,
->                               USB_CTRL_GET_TIMEOUT);
->         if (err > 0 && err <=3D size) {
->     ...
->         return err;
+>         ret =3D phylink_of_phy_connect(lp->phylink, lp->dev->of_node, 0);
+>         ...
 > }
 >
-> cdc_ncm_bind_common() only treats a non-zero return as a failure:
+> The reset can fail in two ways: __axienet_device_reset() times out, or
+> axienet_dma_bd_init() fails with -ENOMEM and calls
+> axienet_dma_bd_release(). Either way, open still runs
+> axienet_init_legacy_dma() and returns 0 with no TX or RX ring.
 >
->         if (cdc_ncm_init(dev))
->                 goto error2;
+> The first transmit then does this:
 >
-> So bind would continue, but the rest of cdc_ncm_init() never runs.
-> SET_CRC_MODE and SET_NTB_FORMAT are never sent. ctx->is_ndp16,
-> ctx->tx_max_datagrams, ctx->max_ndp_size and ctx->timer_interval all keep
-> their zero values from the kzalloc.
+> axienet_start_xmit()
+>         cur_p =3D &lp->tx_bd_v[orig_tail_ptr];
+>         ...
+> axienet_check_tx_bd_space()
+>         cur_p =3D &lp->tx_bd_v[(READ_ONCE(lp->tx_bd_tail) + num_frag) %
+>                              lp->tx_bd_num];
+>         if (cur_p->cntrl)
 >
-> With ctx->tx_max_datagrams =3D=3D 0, this loop in cdc_ncm_fill_tx_frame()
-> never runs:
+> Now that this patch clears tx_bd_v, that is a NULL pointer dereference.
+> Before the patch, after an earlier close, it was a write into the freed
+> coherent ring.
 >
->         for (n =3D ctx->tx_curr_frame_num; n < ctx->tx_max_datagrams; n++=
-) {
+> axienet_dma_err_handler() also calls axienet_free_tx_bufs() and walks
+> rx_bd_v, without the NULL check that axienet_dma_bd_release() now has.
 >
-> Each incoming skb then goes to the "free up any dangling skb" block, gets
-> freed and is counted in tx_dropped.
+> Should axienet_open() check the result of axienet_device_reset() and
+> unwind on failure?
 >
-> On the RX side, is_ndp16 is 0, so cdc_ncm_rx_fixup() calls
-> cdc_ncm_rx_verify_nth32(). The device was never sent SET_NTB_FORMAT, so i=
-t
-> is still using its default NTB16 format.
+> [Severity: Medium]
+> This is a pre-existing issue. The axienet_open() error exits that come
+> after a successful reset never release the rings or stop the DMA engine:
 >
-> With CDC_NCM_FLAG_NDP_TO_END set, kzalloc(ctx->max_ndp_size) with a size
-> of 0 returns ZERO_SIZE_PTR. That passes the NULL check in
-> cdc_ncm_bind_common(), so the problem is not caught there either.
+>         ret =3D phylink_of_phy_connect(lp->phylink, lp->dev->of_node, 0);
+>         if (ret) {
+>                 dev_err(lp->dev, "phylink_of_phy_connect() failed: %d\n",=
+ ret);
+>                 return ret;
+>         }
 >
-> Before this patch, a zero-length response went through the full
-> initialization with sanitized defaults. Isn't this a regression for the
-> zero-length case? Short reads of 1 to 27 bytes do fail bind, but only
-> because the positive byte count is non-zero.
+> The err_phy path, taken when axienet_init_legacy_dma() fails, does the
+> same.
 >
-> Should this branch return a negative errno for short reads? For example:
+> By that point axienet_dma_bd_init() has allocated both coherent rings,
+> allocated and mapped rx_bd_num RX skbs, and started the DMA engine. Do
+> these leak, with the DMA engine still running?
 >
->         return err < 0 ? err : -EIO;
+> The next open's axienet_dma_bd_init() then overwrites tx_bd_v and rx_bd_v
+> without freeing the old allocations.
 >
-> >       }
+> >
+> >       if (!lp->rx_bd_v)
+> >               return;
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the RX walk just below
+> leaks in the same way the TX side did. It stops at the first
+> descriptor with a NULL skb:
+>
+>         if (!lp->rx_bd_v[i].skb)
+>                 break;
+>
+> That only works if the populated descriptors form a prefix of the
+> ring. That holds on the axienet_dma_bd_init() error path, but not once
+> the ring has been running.
+>
+> axienet_rx_poll() takes the skb from a completed descriptor and sets
+> cur_p->skb to NULL before refilling it. If napi_alloc_skb() or
+> dma_map_single() then fails, the poll loop breaks. That leaves a NULL
+> slot at rx_bd_ci in the middle of an otherwise populated ring.
+>
+> If the interface is closed before a later poll refills that slot,
+> axienet_stop()->axienet_dma_bd_release() stops there. The skb and
+> DMA_FROM_DEVICE mapping of every descriptor after it are then leaked.
+> Depending on where rx_bd_ci sits, that can be most of the ring. A
+> system under memory pressure is the one most likely to hit this.
+>
+> It also contradicts the commit message, which says this walk frees
+> every receive buffer.
+>
+> Would continue instead of break be enough? A slot emptied by
+> axienet_rx_poll() still has a non-zero cntrl, and its phys points at
+> the buffer that was already unmapped. So the skip has to cover the
+> unmap as well, which a continue at that point does. The zeroed,
+> never-filled slots on the axienet_dma_bd_init() error path would be
+> skipped the same way.
+>
+> This patch is about making axienet_dma_bd_release() release everything
+> the rings still hold. Could the RX side be fixed here as well, or in a
+> separate patch?
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch. The RX walk below frees each
+> skb before it unmaps the skb's DMA_FROM_DEVICE mapping:
+>
+>                 dev_kfree_skb(lp->rx_bd_v[i].skb);
+>                 ...
+>                 if (lp->rx_bd_v[i].cntrl) {
+>                         phys =3D desc_get_phys_addr(lp, &lp->rx_bd_v[i]);
+>                         dma_unmap_single(lp->dev, phys,
+>                                          lp->max_frm_size, DMA_FROM_DEVIC=
+E);
+>                 }
+>
+> With swiotlb bouncing, can the unmap copy up to max_frm_size bytes back
+> into the skb data that was just freed? On non-coherent platforms the
+> unmap also invalidates cache lines of memory that may already belong to a
+> new owner.
+>
+> Bouncing looks realistic here. Probe uses a 32-bit DMA mask unless 64-bit
+> DMA is detected, so a 32-bit AXI DMA on a host with RAM above 4 GiB would
+> bounce, as could the PCIe card from the commit message.
+>
+> The new TX helper unmaps before it frees. Would swapping the order in
+> this loop make the two walks consistent?
+>
+> [Severity: Medium]
+> This is also pre-existing. The same RX walk stops at the first NULL skb:
+>
+>                 /* A NULL skb means this descriptor has not been initiali=
+sed
+>                  * at all.
+>                  */
+>                 if (!lp->rx_bd_v[i].skb)
+>                         break;
+>
+> axienet_rx_poll() sets cur_p->skb =3D NULL and exits its loop if
+> napi_alloc_skb() or dma_map_single() fails. That leaves a NULL slot at
+> rx_bd_ci in the middle of a populated ring.
+>
+> Would a close after such a refill failure leak every RX skb and mapping
+> after that slot? That would also contradict the commit message, which
+> says the RX walk frees "every receive buffer".
+>
+> > @@ -221,6 +268,7 @@ static void axienet_dma_bd_release(struct net_devic=
+e *ndev)
+> >                         sizeof(*lp->rx_bd_v) * lp->rx_bd_num,
+> >                         lp->rx_bd_v,
+> >                         lp->rx_bd_p);
+> > +     lp->rx_bd_v =3D NULL;
+> >  }
+>
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but the sibling ll_temac
+> driver seems to have the same TX leak. temac_dma_bd_release() in
+> drivers/net/ethernet/xilinx/ll_temac_main.c frees only the TX ring:
+>
+>         if (lp->tx_bd_v)
+>                 dma_free_coherent(ndev->dev.parent,
+>                                   sizeof(*lp->tx_bd_v) * lp->tx_bd_num,
+>                                   lp->tx_bd_v, lp->tx_bd_p);
+>
+> temac_start_xmit() attaches the skb to the last TX BD via ptr_to_txbd(),
+> and only temac_start_xmit_done() reclaims it.
+>
+> Does temac_stop()->temac_dma_bd_release() leak in-flight TX skbs and
+> their DMA_TO_DEVICE mappings? It may be worth a separate fix.
+>
+> [ ... ]
+>
+> > @@ -2749,29 +2797,7 @@ static void axienet_dma_err_handler(struct work_=
+struct *work)
+> >       axienet_dma_stop(lp);
+> >       netdev_reset_queue(ndev);
+> >
+> > -     for (i =3D 0; i < lp->tx_bd_num; i++) {
+>
+> [ ... ]
+>
+> > -     }
+> > +     axienet_free_tx_bufs(lp);
+>
+> [Severity: High]
+> This is a pre-existing issue, since the loop was moved rather than newly
+> written. What stops axienet_start_xmit() from running at the same time as
+> this code?
+>
+> axienet_dma_err_handler() runs from a workqueue. It disables NAPI, the
+> MAC TX/RX enables and the DMA engine, but it never calls
+> netif_tx_disable(), netif_tx_lock() or netif_stop_queue(). The TX queue
+> stays awake for the up to ~250 ms spent in axienet_dma_stop().
+>
+> Meanwhile, on another CPU:
+>
+> axienet_start_xmit()
+>         cur_p->skb =3D skb;
+>         ...
+>         WRITE_ONCE(lp->tx_bd_tail, new_tail_ptr);
+>         netdev_sent_queue(ndev, skb->len);
+>
+> If axienet_free_tx_bufs() frees that skb between the store and the read
+> of skb->len, can start_xmit read a freed skb?
+>
+> The two paths also race on tx_bd_tail, which the handler later resets to
+> 0, on BQL state (netdev_reset_queue() against netdev_sent_queue()), and
+> on descriptor contents. The restarted DMA could therefore fetch zeroed
+> descriptors.
+>
+> dev_kfree_skb_irq() deferred the free to NET_TX softirq. With
+> dev_kfree_skb_any(), this process-context worker now frees the skb
+> immediately, so the freed memory can be reused sooner.
+>
+> The helper's kernel-doc lists only "The DMA engine must be stopped" as a
+> precondition. Should it also require the TX queue to be quiesced?
 >
 > --
 > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261005041525.49111-1-xinsheng.zhu.ny%40gmail.com
+set/20261007034620.1360542-1-maimon.sagi%40gmail.com
