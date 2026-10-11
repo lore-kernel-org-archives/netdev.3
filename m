@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8C735C6BE;
-	Sun, 11 Oct 2026 22:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC09323BCF7;
+	Sun, 11 Oct 2026 23:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791758425; cv=none; b=SUDBetMxhPxFH2ANQvzKDhXFxSXfqeqdSnPLoGJFWNBaSDd1aZ3M+pbCwl31t1ntgoJmJkeHpPjJ/aAmVkrfog2FHLMbC3GbSQFNLLqFKVTv4s562ocR3SHpoQdieg2Toyx1LLgGecbHTR8t8RsTtLPDV7JR+Aj5QM+eGoBg1eg=
+	t=1791759740; cv=none; b=uSs7ocHRfZ2zcLVTw+2nYVDkpOGzstyoI47iapNdWW2g08V2XgdrJ8tRve5uydB/MAmPf+qGUBwF+0ZtnR2iM1SRRgwbgjLLyifkRPBvkDkhexmNQHBJ+LO3ra1FL5TrqxWVChs4Hd6ise2BNwBxxauqop6HGPHn3O7p+m+rYHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791758425; c=relaxed/simple;
-	bh=IxShT9PYMHtq0d2zYCfZWp4T5J7JzMrOrsnG6YCZE2Q=;
+	s=arc-20240116; t=1791759740; c=relaxed/simple;
+	bh=+LrpSHi83rg43ATDcwnlytRa93Im8h1st3CGeqOd/LY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RXerKW1wpw3q4QajgQQSnUcAdcprVwZZPld4M6aO4UsQLyWeqjaEq96Et+6QoUbWwgERJau6BIJOsS9p1J1W5B5B32oW5vi4OIIEsDKxxLE+NQaBWibmnEQkU2WSHhx2rbxmKooGgzMJlgNG2Lai543MiLtPxNgftKRYDNvr9R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMUEr7/p; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Krtap9a9VNknEC9NTXoPvrb0TvBdyFdPYmowadH/6VEiDsR7j0dhxq2j2WJY/ZXldaTLkj9J9IgzwCY6L5WAG39zsWIvdenQQcPD0vkRe1+WAOpU5Iic7V1NY4pRsjJFceaNEGd/dZ7Rxt/RTOMdh0GVCQezL9D1h19Z8HWErsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFnHjWlP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMUEr7/p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE521F0089B;
-	Sun, 11 Oct 2026 22:40:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFnHjWlP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F7E1F0089B;
+	Sun, 11 Oct 2026 23:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791758424;
-	bh=k6XlKFnfVi4/5k41hFdTt5y7yRrRlJp0WwmZIund+20=;
+	s=k20260515; t=1791759739;
+	bh=BMnwnSmmh2hW4aGAkK60qX2n3aHbKT63XD1QC30Rr9Q=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OMUEr7/p18hHaEwb1ca2J4cCZAhv+xnM+tyOqHSXzaloMVFpm/arWyWLzbNb8Eurt
-	 O63M6/7da6ZOcFCA14QmovJX6mdyJhY2O5gbWmgV8+z7QDWR3obi3An4qFe5lAXnSW
-	 Qg9uz2KhEhBJ4pmHG/HZeeo8GyusWdH6U6kWpymjtmvIweaCe/9MZvSv88923mqXYC
-	 Gxl08qiBTezVfVrcTB+zWxC6zKNDI77llMGzzNKpub9XQ1PzKKONn28PvRoBWCAfAY
-	 hkeoc0yt8JrjZSIsJIWZBM2fnxazy/F/fubhNuUgyUK7iBSU2BpjyjM3a6Dvtejh29
-	 yOpsOljs57AIw==
-Subject: Re: [PATCH net] ip_tunnel: reserve headroom for the encap header
- before pushing it
+	b=aFnHjWlP7yNtmJtHuDiMq+1Ptf/98BvwcvGh3omVzvfRvl+khkd1JusycK0Dfk2vZ
+	 wutHGRdyA5AlkwvgK7lFXYKU4rI3xjRM/t8wHC+xBUFXN0hmWxtebeEriEv5rSG7wn
+	 jRDWgQQEF4fzGyEArx7Dd95KEDXCdVDdTlNMvzYM0FrJzV68k9NuxP+Kprk6R2OC2E
+	 CeBvkWrLqJT/XGnXwpItlZfw4k9MiNReWNVz4gNVori006Zw9cm8CA9/I8/ro60JZr
+	 as67voQdi9bI03VATm2v6RWPeh6rUutlKGbx8OPPIXDMzEN51ebjsWGeMvKFTkZhFl
+	 CByzUzH5XgaQw==
+Subject: Re: [PATCH net v2] tcp: do not send a SYNACK to a broadcast or
+ multicast address
 From: netdev-bot+sashiko@kernel.org
 To: theodorlarionov@gmail.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- cehrig@cloudflare.com, ast@kernel.org, tom@herbertland.com,
+Cc: edumazet@kernel.org, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 22:40:22 +0000
-Message-ID: <179175842288.434549.1635440087778323337@kernel.org>
-In-Reply-To: <20261010223601.1193655-1-theodorlarionov@gmail.com>
-References: <20261010223601.1193655-1-theodorlarionov@gmail.com>
+Date: Sun, 11 Oct 2026 23:02:18 +0000
+Message-ID: <179175973842.434549.79608444362932465@kernel.org>
+In-Reply-To: <20261008114942.1376889-1-theodorlarionov@gmail.com>
+References: <20261008114942.1376889-1-theodorlarionov@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 1 (1)
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,235 +58,107 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch adds skb_cow_head(skb, encap_hlen) at the top of
-  ip_tunnel_xmit() (net/ipv4/ip_tunnel.c:700), before the first…
-- [High] In ip_md_tunnel_xmit(), the headroom is sized from one live read
-  of the shared tun_info->encap: `encap_hlen =…
-- [Low] The new early skb_cow_head(skb, encap_hlen) in ip_tunnel_xmit()
-  (net/ipv4/ip_tunnel.c:700) runs on every packet, including tunnels…
-
-Pre-existing issues:
-- [Low] ip_tunnel_xmit() now does `encap = READ_ONCE(tunnel->encap);`
-  (net/ipv4/ip_tunnel.c:696) under the comment 'Size and push the encap…
+- [High] The fix is incomplete.
 
 --
 
-ip_tunnel: reserve headroom for the encap header before pushing it
+tcp: do not send a SYNACK to a broadcast or multicast address
 
-This patch adds an early skb_cow_head() for the FOU/GUE encap header length
-at the start of ip_tunnel_xmit() and ip_md_tunnel_xmit(). The goal is that
-ip_tunnel_encap() no longer pushes the encap header into headroom that was
-never reserved. ip_tunnel_xmit() also takes one READ_ONCE() snapshot of
-tunnel->encap and uses it for both the reservation and the push.
+This patch makes inet_csk_route_req() reject SYNACK routes that have
+RTCF_BROADCAST or RTCF_MULTICAST set. A SYN with a multicast source that
+is looped back with its dst attached skips the martian source check. Its
+SYNACK then goes through ip_mc_output(), and sk_mc_loop() reads past the
+end of the request socket.
 
-> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> index e6bcf01411d0b..38ab3c3bf5c9a 100644
-> --- a/net/ipv4/ip_tunnel.c
-> +++ b/net/ipv4/ip_tunnel.c
-
-[ ... ]
-
-> @@ -587,6 +588,11 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
->  		     ip_tunnel_info_af(tun_info) != AF_INET))
->  		goto tx_error;
->  	key = &tun_info->key;
-> +	encap_hlen = ip_encap_hlen(&tun_info->encap);
-> +	if (encap_hlen < 0)
-> +		goto tx_error;
-> +	if (skb_cow_head(skb, encap_hlen))
-> +		goto tx_dropped;
+> diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+> index 6a30f11384547..aa928015cd143 100644
+> --- a/net/ipv4/inet_connection_sock.c
+> +++ b/net/ipv4/inet_connection_sock.c
+> @@ -779,6 +779,9 @@ struct dst_entry *inet_csk_route_req(const struct sock *sk,
+>  		goto no_route;
+>  	if (opt && opt->opt.is_strictroute && rt->rt_uses_gateway)
+>  		goto route_err;
+> +	/* Never send a SYNACK to a broadcast or multicast destination. */
+> +	if (rt->rt_flags & (RTCF_BROADCAST | RTCF_MULTICAST))
+> +		goto route_err;
 
 [Severity: High]
-Is tun_info->encap stable between this reservation and the push?
+Does this cover the syncookie passive-open path? cookie_v4_check() in
+net/ipv4/syncookies.c does its own route lookup to ireq->ir_rmt_addr.
+The only check on the result is IS_ERR():
 
-The headroom is sized here from one read of tun_info->encap. The header is
-then pushed later in ip_md_tunnel_xmit() using separate reads:
-
-	if (!tunnel_hlen)
-		tunnel_hlen = ip_encap_hlen(&tun_info->encap);
-
-	if (ip_tunnel_encap(skb, &tun_info->encap, &proto, &fl4) < 0)
-		goto tx_error;
-
-The fou/gue build_header callbacks also read e->flags again.
-
-tun_info is not necessarily private to this skb. bpf_skb_set_tunnel_key()
-attaches the per-CPU md_dst to every skb it handles on that CPU, and then
-rewrites it in place:
-
-net/core/filter.c:bpf_skb_set_tunnel_key() {
-	struct metadata_dst *md = this_cpu_ptr(md_dst);
+net/ipv4/syncookies.c:cookie_v4_check() {
     ...
-	skb_dst_drop(skb);
-	dst_hold((struct dst_entry *) md);
-	skb_dst_set(skb, (struct dst_entry *) md);
-
-	info = &md->u.tun_info;
-	memset(info, 0, sizeof(*info));
+	rt = ip_route_output_key(net, &fl4);
+	if (IS_ERR(rt)) {
+		SKB_DR_SET(reason, IP_OUTNOROUTES);
+		goto out_free;
+	}
+    ...
+	ret = tcp_get_cookie_sock(sk, skb, req, &rt->dst);
     ...
 }
 
-bpf_skb_set_fou_encap() also writes info->encap.type/flags/sport/dport in
-place.
+In the syncookie case, tcp_v4_syn_recv_sock() uses that dst as is.
+Neither inet_csk_route_req() nor inet_csk_route_child_sock() runs.
 
-Suppose an skb is tagged on CPU0, queued on a qdisc of a collect_md ipip
-device, and sent from CPU1. Meanwhile CPU0's tc BPF program rewrites the
-same md_dst (memset to TUNNEL_ENCAP_NONE, then GUE). Could CPU1 reserve 0
-or 8 bytes here and then push a 12-20 byte GUE header?
+So it looks like a full child socket can still be created with
+inet_daddr set to a multicast address such as 224.0.0.1. Active opens
+already refuse this in tcp_v4_connect():
 
-That would hit the same skb_under_panic() in fou_build_udp() that this
-patch fixes. In the mirred mirror case it would overwrite the bytes in
-front of skb->data instead.
+	if (rt->rt_flags & (RTCF_MULTICAST | RTCF_BROADCAST)) {
+		ip_rt_put(rt);
+		return -ENETUNREACH;
 
-ip_tunnel_xmit() takes a local copy of the encap config for this reason.
-Would a local snapshot here close the same gap on the md path? For example:
+The ACK that completes the handshake can come in the way the commit
+message describes for the SYN: raw IP_HDRINCL, nft dup or TEE, with
+saddr=224.0.0.1. tcp_v4_cookie_check() passes any non-SYN segment to
+cookie_v4_check().
 
-	struct ip_tunnel_encap encap = tun_info->encap;
+The cookie can pass in two ways:
 
-used for the reservation, tunnel_hlen and ip_tunnel_encap().
+- cookie_tcp_check(), after a recent overflow. A netns owner can set
+  tcp_syncookies=2 and send one unicast SYN. After that, ack_seq/seq can
+  be brute forced at about 2^-29 per packet.
+- cookie_bpf_check(), when a BPF program is in use.
 
->  	memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
->  	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
->  	tos = key->tos;
+Once that child is closed and in TIME_WAIT, a segment from the peer
+would go down this path:
 
-[ ... ]
+tcp_v4_rcv()
+  tcp_v4_timewait_ack()
+    tcp_v4_send_ack()
+      ip_send_unicast_reply(ctl_sk, tw, ...)
+        ip_route_output_flow()   /* daddr 224.0.0.1, no rt_flags check */
+        skb_set_owner_edemux(nskb, tw)
+        ip_push_pending_frames()
+          ip_send_skb()
+            ip_local_out(net, skb->sk, ...)
+              ip_mc_output()
+                sk_mc_loop(tw)
 
-> @@ -679,11 +686,23 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+sk_mc_loop() does not check sk_fullsock():
 
-[ ... ]
+	case AF_INET:
+		return inet_test_bit(MC_LOOP, sk);
 
-> +	/* Size and push the encap header from one copy of the config. */
-> +	encap = READ_ONCE(tunnel->encap);
+Wouldn't that read inet_flags past the end of the tcp_timewait_sock
+object? That is the same out-of-bounds read this patch fixes for request
+sockets. This path comes from reading the code at this commit; it has
+not been reproduced.
 
-[Severity: Low]
-This is a pre-existing issue, not one introduced by this patch, but the
-writer side has no matching marked store for this READ_ONCE().
-ip_tunnel_encap_setup() zeroes t->encap and then fills it in with plain
-stores:
+Could the same rt_flags rejection (ip_rt_put() and drop) go after
+ip_route_output_key() in cookie_v4_check()? For symmetry it could also
+go in inet_csk_route_child_sock(). In practice that one only runs after
+inet_csk_route_req() has passed, so it is just an inconsistency.
 
-net/ipv4/ip_tunnel.c:ip_tunnel_encap_setup() {
-    ...
-	memset(&t->encap, 0, sizeof(t->encap));
+Another option would be to change sk_mc_loop() and
+ip_send_unicast_reply() so they do not treat non-full sockets as
+inet_sock.
 
-	hlen = ip_encap_hlen(ipencap);
-	if (hlen < 0)
-		return hlen;
-
-	t->encap.type = ipencap->type;
-	t->encap.sport = ipencap->sport;
-	t->encap.dport = ipencap->dport;
-	t->encap.flags = ipencap->flags;
-    ...
-}
-
-So a snapshot taken during changelink can still be half-written. It might
-see type NONE right after the memset, or a new type with sport/dport still
-0.
-
-The length and the push now both come from the local copy. Because of
-that, the worst case is a few packets sent without encap or with UDP port
-0, plus a possible KCSAN report. The old plain reads could already see
-these same states.
-
-Would it make sense to build the new config in a local struct and store it
-once on the writer side, as a follow-up?
-
-> +	encap_hlen = ip_encap_hlen(&encap);
-> +	if (encap_hlen < 0)
-> +		goto tx_error;
-> +	if (skb_cow_head(skb, encap_hlen)) {
-> +		DEV_STATS_INC(dev, tx_dropped);
-> +		kfree_skb(skb);
-> +		return;
-> +	}
-
-[Severity: High]
-Can this new skb_cow_head() free the memory that tnl_params points to?
-
-For GRE devices with header_ops (NBMA or a multicast remote), ipgre_xmit()
-passes ip_tunnel_xmit() a tnl_params pointer that lives inside the skb
-head:
-
-net/ipv4/ip_gre.c:ipgre_xmit() {
-    ...
-	if (dev->header_ops) {
-		int pull_len = tunnel->hlen + sizeof(struct iphdr);
-
-		if (skb_cow_head(skb, 0))
-			goto free_skb;
-		...
-		tnl_params = (const struct iphdr *)skb->data;
-
-		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
-		skb_pull(skb, pull_len);
-    ...
-}
-
-That pointer reaches ip_tunnel_xmit() through __gre_xmit():
-
-	ip_tunnel_xmit(skb, dev, tnl_params, tnl_params->protocol);
-
-If skb_cow_head(skb, encap_hlen) ends up in pskb_expand_head(), the old head
-is freed. Every later read of tnl_params (->daddr, ->tos, ->saddr,
-->frag_off, ->ttl) then reads freed memory. Those values feed the route
-lookup and the outer IP header.
-
-Before this patch, the only skb_cow_head() in ip_tunnel_xmit() ran after the
-last tnl_params read.
-
-For the reallocation to happen, the headroom at entry has to be smaller than
-encap_hlen. In the GRE header_ops path the tunnel config is read three times
-without locking:
-
-  - tunnel->hlen in ipgre_xmit(), for pull_len
-  - tunnel->tun_hlen in __gre_xmit()
-  - tunnel->encap here
-
-ipgre_changelink() writes t->encap and t->hlen in
-ipgre_newlink_encap_setup(). It later writes tun_hlen and hlen in
-ipgre_link_update(). There is no synchronize_net() in between.
-
-For example, take a single "ip link set" that changes encap from none to GUE
-with remcsum (0 -> 20 bytes) and o_flags to csum|key|seq (tun_hlen 4 -> 16).
-If a packet is between the hlen read and the tun_hlen read, it has about
-H0 + 8 bytes of headroom, where H0 is the headroom it arrived with. For
-small H0 that is below 20.
-
-Before the patch, that race ended in skb_under_panic(). With the patch it
-looks like it becomes a silent use-after-free read.
-
-Doesn't this contradict this part of the commit message?
-
-    ip_tunnel_xmit() reads tunnel->encap once, so a concurrent
-    changelink cannot change the length between the reservation and the
-    push.
-
-Would either of these avoid it: copying *tnl_params to a local struct before
-the early skb_cow_head(), or moving the reservation after the last
-tnl_params read?
-
-[Severity: Low]
-Should this skb_cow_head() be skipped when encap_hlen is 0?
-
-__skb_cow() calls pskb_expand_head() whenever skb_header_cloned() is true,
-even when delta is 0. ipip_tunnel_xmit() and sit pass skbs through without
-uncloning them.
-
-Take a header-cloned skb going into a plain ipip tunnel with no encap, such
-as the mirred mirror case from the commit message. It is now uncloned here.
-If its headroom is still too small, the later skb_cow_head(skb,
-max_headroom) reallocates it a second time.
-
-Before the patch, one pskb_expand_head() in the max_headroom call handled
-both. Either guarding this call with if (encap_hlen), or reserving the full
-estimate in one call, would avoid the extra allocation and copy per packet.
-
-> +
->  	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
->  	connected = (tunnel->parms.iph.daddr != 0);
->  	payload_protocol = skb_protocol(skb, true);
-
-[ ... ]
+>  	rcu_read_unlock();
+>  	return &rt->dst;
+>
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010223601.1193655-1-theodorlarionov%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008114942.1376889-1-theodorlarionov%40gmail.com
