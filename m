@@ -1,92 +1,190 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1107344A3ED;
-	Sun, 11 Oct 2026 13:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CCE23ED5E;
+	Sun, 11 Oct 2026 13:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791725625; cv=none; b=VRk1s6+eEN7aTo2okjh6f9ZtkARHBGrIOlUU6/IquPIt49/EwRj6wnwKGf7xG5nwGr1LJp2dKE+QW6kAtO2cVzrvwIYNZkCVqXekz1McNVBCNzKgvG0Blkw1O6uaCbQT8G4QqERHt4dGK9CDm3Vk/Slf1TJmExeU04NlV3GJNu0=
+	t=1791726281; cv=none; b=js+FAV2LN7oPE7PxxyP5Hgcmy2SYo0mERqvBPZdnXcUJjsCoZhDuF+qQlYEHiSR1XCV8Qf3mWXX5/CMjasWfO5NTE3iEdC0Ou10+rJNiiQkE+WTMvZSu1jdSCKuad267k/IEuRwjSrYxDycQaozyo8angAd04BiJ7/YFNZxResQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791725625; c=relaxed/simple;
-	bh=HOnRafXWuKE72C/S23cH6++NT6CqQhr4UAAHfdBw9Zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vf02H13zbNGwvM8fQR2O+Ukxv1RBcAZy1opTrKqdIglhgTbe37kCIzX4WBcpA6Wbv5UXZklhfy9wmZM05EtPsdi0bhTz/1aRX/E4W6Jaq4e4e1q2u3Y1aDVv/AWO/othMUQdm+Qxi7Ef8OGRul1ZtS93TwwlsssULxGrFq+BSIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XD5lEmY3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791726281; c=relaxed/simple;
+	bh=SY1aZ5FFRmCf+dJslwGoOhZMH+FBGqIQNpQZvMzedXI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jeovNFrx76ArL5Hm/Po5qQLbXgdD3w2dU+PgT2gASgQHmPbIDIFMfO1dBtCwjg/8VMflCVHTOWngVm8BsXKsk7rMXMZCFG3U1RJvqfFVEoPJZYJLXn0Hy4MQ84aKYVIa6Fn2h2VzZKNYOULgGHXEIkfiYSblPO7eRRlQ9jDoZ5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMI/KlHo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XD5lEmY3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=5p6ZdRwQER1NYntwkVUYNtDCW+pWTolFozIqkDncQWw=; b=XD
-	5lEmY34PTVRKve2sYa6osmERrvO2YtHUqHk2NcJsTlo6V6/ywRFY5s/Vm+88pICnwY6idRKl1Xvqu
-	pE2kXaXoTQbilR6qLToDWUZKPWHYchBuuPlMC36jVBNBWr+gRl7kgktPzHLuxBX4Ti7BaobMJWdp1
-	2xlmh22o4tspqSY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xFtgH-00A6Mw-Hs; Sun, 11 Oct 2026 15:33:37 +0200
-Date: Sun, 11 Oct 2026 15:33:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Magnus Lindholm <linmag7@gmail.com>
-Cc: pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] tg3: normalize inherited M3000 register byte
- order
-Message-ID: <c8bc138e-2d62-4ee8-9020-5f1091efe015@lunn.ch>
-References: <20261008220433.965791-1-linmag7@gmail.com>
- <038bffb2-e40d-44bb-b7ce-53e9de32e50d@lunn.ch>
- <CA+=Fv5QvhYd7EqVBYKWVgvf92SLE=FjE8EYcZvUQ7HKdx2kc3Q@mail.gmail.com>
- <becc8f95-4650-477b-b1c7-cc4952e5e980@lunn.ch>
- <CA+=Fv5TU1rOUimi8f+e0R4_48ki+X3qzD_+1QPyviTnJz-irvA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMI/KlHo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8AC1F0089B;
+	Sun, 11 Oct 2026 13:44:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791726279;
+	bh=vu2YEMKauIpc7tvvbmbxBOjYQhZ2cgVTT1RoZH61C8c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PMI/KlHobLaSx5EuU461CGRAlXhLirQE/q/5v8VIxncXoqknMmuf8MeEeX8LuYoBC
+	 neaMqygQiTTbD6ygjWM/oDvBRyO5EpxVCr/e6L7Av0diTQ871vJBvgzvg/DvPcJP6a
+	 u52WQ7sy6y9Wzaws0IIkpVMuxKo0Hk2C1lhYJFhWTxIcMDAAqMXxVTQqOo2aTOVjPW
+	 W2Xk9K7AFd5jGiKXgqb1pFuouDul/HKBC1sW0/8TkgZqugd5Jg/OYgy5YC8IYsLGQD
+	 gDjmKJPahwzBMOcFcY2O0FjKCuK2R4iHWuPn9IZ6RR9svSWxNt1eqlv9EDJXL/vzgn
+	 A2G7RdhdQNm4A==
+Subject: Re: [PATCH net] ipmr: do not drop GSO packets that fit the MTU after
+ segmentation
+From: netdev-bot+sashiko@kernel.org
+To: julius@bairaktaris.de
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, steffen.klassert@secunet.com, willemb@google.com,
+ linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 13:44:38 +0000
+Message-ID: <179172627842.434549.17722584347227331391@kernel.org>
+In-Reply-To: <20261010131842.2157365-1-julius@bairaktaris.de>
+References: <20261010131842.2157365-1-julius@bairaktaris.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+=Fv5TU1rOUimi8f+e0R4_48ki+X3qzD_+1QPyviTnJz-irvA@mail.gmail.com>
 
-On Fri, Oct 09, 2026 at 02:52:57PM +0200, Magnus Lindholm wrote:
-> Hi Andrew,
-> 
-> On Fri, Oct 9, 2026 at 2:09 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > > Is there a legitimate reason you would want the bytes are swapped?
-> >
-> > You missed answering this. I'm guessing, but does the hardware offer
-> > this to make big endian machines more efficient?
-> >
-> > Please could you look at the driver and think about what would happen
-> > on a big endian machine. Is the change still correct?
-> >
-> >         Andrew
-> 
-> You're right, my earlier reply missed the underlying question.
-> 
-> That is a plausible reason for providing the hardware swap mode:
-> it can accommodate big-endian accesses without software byte
-> swapping. I haven't verified Broadcom's design rationale.
-> 
-> However, Linux tg3 already initializes misc_host_ctrl with WORD_SWAP set
-> and BYTE_SWAP clear on both little- and big-endian builds, before
-> this helper runs.
-> 
-> The helper restores that existing setting. Its swab32() compensates
-> for the device's inherited register state, not CPU endianness.
-> Subsequent accesses use the normal driver path, and the separate
-> __BIG_ENDIAN handling for DMA remains unchanged.
-> 
-> That is why I believe the correction is appropriate on either
-> endianness. The runtime tests were on the M3000 running big-endian
-> SPARC64.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Please expand the commit message to show you have thought about this.
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-       Andrew
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] On VIFF_TUNNEL vifs the patch does not stop the drop it claims
+  to fix.
+- [Low] The patch rewrites the DF/MTU check in ipmr_prepare_xmit() from
+  `skb->len + encap > dst4_mtu(&rt->dst)` (which cannot wrap) to `mtu =…
+
+--
+
+ipmr: do not drop GSO packets that fit the MTU after segmentation
+
+This patch changes ipmr_prepare_xmit() so a DF packet larger than the
+route MTU is no longer dropped if it is a GSO packet whose segments fit
+that MTU. This matches the skb_gso_validate_network_len() check in
+ip_forward(). The MTU used for the check is now dst4_mtu() minus the
+tunnel encapsulation overhead.
+
+> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+> index b9c544d48c452..06c37b4e653bf 100644
+> --- a/net/ipv4/ipmr.c
+> +++ b/net/ipv4/ipmr.c
+> @@ -1908,6 +1908,7 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
+>  	struct rtable *rt;
+>  	struct flowi4 fl4;
+>  	int    encap = 0;
+> +	unsigned int mtu;
+>  
+>  	vif_dev = vif_dev_read(vif);
+>  	if (!vif_dev)
+> @@ -1940,7 +1941,9 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
+>  			return -1;
+>  	}
+>  
+> -	if (skb->len+encap > dst4_mtu(&rt->dst) && (ntohs(iph->frag_off) & IP_DF)) {
+> +	mtu = dst4_mtu(&rt->dst) - encap;
+> +	if (skb->len > mtu && (ntohs(iph->frag_off) & IP_DF) &&
+> +	    !(skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))) {
+
+[Severity: High]
+The new mtu value subtracts encap, so this check seems meant to cover
+VIFF_TUNNEL vifs too. Can a DF GSO aggregate that passes it actually be
+transmitted on a tunnel vif?
+
+Further down in ipmr_prepare_xmit(), such an skb goes to ip_encap():
+
+	if (vif->flags & VIFF_TUNNEL) {
+		ip_encap(net, skb, vif->local, vif->remote);
+
+ip_encap() only adds the outer header:
+
+	skb_push(skb, sizeof(struct iphdr));
+	skb->transport_header = skb->network_header;
+	skb_reset_network_header(skb);
+	...
+	iph->protocol	=	IPPROTO_IPIP;
+	...
+	iph->tot_len	=	htons(skb->len);
+
+It does not add SKB_GSO_IPXIP4 to gso_type, set skb->encapsulation or
+set the inner header offsets. ipip_tunnel_xmit() does set up that state,
+by calling iptunnel_handle_offloads(skb, SKB_GSO_IPXIP4) first.
+
+Software segmentation runs for fraglist GSO, and on any device without
+hardware USO. In that case the path is:
+
+validate_xmit_skb()
+  skb_gso_segment()
+    inet_gso_segment()
+      ipip_gso_segment()
+
+and ipip_gso_segment() rejects the skb:
+
+	if (!(skb_shinfo(skb)->gso_type & SKB_GSO_IPXIP4))
+		return ERR_PTR(-EINVAL);
+
+validate_xmit_skb() then frees the skb and only increments tx_dropped.
+The skb_gso_network_seglen() check in ip_finish_output_gso() does not
+catch this either. After ip_encap(), transport minus network covers only
+the 20-byte outer header.
+
+So on tunnel vifs, are these packets still dropped, just no longer
+counted in FragFails? Meanwhile vif->pkt_out, vif->bytes_out,
+tx_packets and OUTFORWDATAGRAMS count them as sent.
+
+There is also a hardware case, which I have not fully traced. If the
+egress device advertises NETIF_F_GSO_UDP_L4 and the aggregate is plain
+UDP_L4 from UDP GRO forwarding, could the device get a GSO skb whose
+transport offset points at the inner IP header and has no encapsulation
+flag? Could it then send malformed segments?
+
+Before this patch these DF aggregates were dropped up front here. The
+ip_encap() GSO problem already existed for non-DF GSO skbs, but this
+change lets DF traffic reach it as well.
+
+Would it work to apply the exemption only when encap == 0? Other options
+are to segment before ip_encap(), or to have ip_encap() set up the
+IPXIP4 GSO state the way iptunnel_handle_offloads() does.
+
+[Severity: Low]
+The old check was additive and could not wrap:
+
+	if (skb->len+encap > dst4_mtu(&rt->dst) && ...
+
+The new code does an unsigned subtraction instead. On the VIFF_TUNNEL
+path encap is sizeof(struct iphdr), which is 20. If the route to
+vif->remote has an MTU below 20, can mtu wrap to a value near UINT_MAX?
+
+ip_metrics_convert() only clamps RTAX_MTU from above:
+
+	if (type == RTAX_MTU && val > 65535 - 15)
+		val = 65535 - 15;
+
+ip_dst_mtu_maybe_forward() also returns the metric with no lower bound,
+apart from subtracting the lwtunnel headroom.
+
+If mtu wraps, skb->len > mtu is false for every DF packet, GSO or not,
+so the drop and its IPSTATS_MIB_FRAGFAILS count are skipped. The packet
+then gets vif and device tx accounting and goes through the
+NF_INET_FORWARD hook. It is only dropped later, by the mtu < hlen + 8
+check in ip_do_fragment(), or during GSO segmentation.
+
+This needs a privileged and odd route configuration. Would keeping the
+additive comparison, or checking that dst4_mtu() > encap before
+subtracting, avoid it?
+
+>  		/* Do not fragment multicasts. Alas, IPv4 does not
+>  		 * allow to send ICMP, so that packets will disappear
+>  		 * to blackhole.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010131842.2157365-1-julius%40bairaktaris.de
