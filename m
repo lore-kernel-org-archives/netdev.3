@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3199321F2D;
-	Sun, 11 Oct 2026 11:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F383A382B;
+	Sun, 11 Oct 2026 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791717550; cv=none; b=qg1MgZutPC34EkusBYVw9+Luy2+ZQ0qIfR7qau2WDU4Ys2h6vA6rvKYJPJq4oba9MPGTz5FIYJBHG27Pc5ZVOYKIJS7yMs7cY5Suh+IAjyNmW4GMVl8UesYW2PnusE0DkvZR0OYmqB0RgIqbbvZhML7fvyttvrisGpYEKOTWol8=
+	t=1791717646; cv=none; b=MbyW7brhRLIRr5m7xndWUmIxgztfM2dbbjhGJ4oZL50rdyUZP1BERyHWyfzYvrOAdfDSxlZ8WHhfdhgdyB0ah2F+e14nVFVzpmMfc1Iy4zZIdBVt/TA+M4aX/VWmAMfpGjZYY9BiPw7bgLS2za5AxwFX46fMrfmhkAyQiNeTqGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791717550; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I1C2ZHsvQC4SxWvHxUlQTi0I0J4DZGdrNtqXT/nLDCC6cAuup+BQMBq4AU0PZTD8t7k/PKx8hIlZKIidXIvlo+4Q7GEubvmAInIbKBIWz1fZ4u2+64/vJJRAI0HgHFNvzIOq99IyKl/191hRUCof3qWNSh1QrlQKHTe+GD/2fco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yo9fuhlG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791717646; c=relaxed/simple;
+	bh=wlf7nsUliOWIWbjtkTQ1W4deN/zMC5EUiykRWzU3Hno=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NeVTAlU57k01gYbQWjGt0ayK0wfdhuyc6I2TvOJ1UQWNBEDTHBh8ZMNgEK8luxfstRhutJpZAOkEY8UaCZizHa3UO5doLaL8RvchV2JA4Wh0ih+asCGCUj6W2NhlABzHk/y/oRX7dOkvi9O2nJ53v1BECv9jGR7ICqHIFZyENHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JRt64lxb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yo9fuhlG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A900D1F0089B;
-	Sun, 11 Oct 2026 11:19:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JRt64lxb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A464D1F0089C;
+	Sun, 11 Oct 2026 11:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791717549;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yo9fuhlGDub3oHOZ2WZc09oK5Tj7iyOLk9t+sN6XgEyNaNle0q251wDihqn1Q38Ui
-	 uP3wuImKTTT7QgU/0QoyzjMfLULSOPP2Z06QQdOY90H0j+7F8FI4U1+cVaMR6aiXyF
-	 mmVXeGNkYtYY579426vzFz6/Nsx1NXjdpZVf80vBKnTszX2aQDTTvGk7nT5pwowwvF
-	 9yDHvABvO4ca0vWE+K0XRjibvqBDgAz2EtQPQpxGhqfqHuFdOa6JvoBpXBsp1JkWDh
-	 InV4zZzR/TBTIB1huRPPSLWZU+uerQxkzoZdhJUbItI0cb2w05xf2YJOvhnbjeNTg0
-	 QlwTcFhYSWRVg==
-From: netdev-bot+sinfo@kernel.org
-To: Shashank Mohan Jain <jain.sm@gmail.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>,
- Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] tcp: keep the route window on the SYN when
- SO_RCVBUF is set before connect
-Date: Sun, 11 Oct 2026 11:19:08 +0000
-Message-ID: <179171754826.2527009.561712354727529429@kernel.org>
-In-Reply-To: <20261011111606.14753-1-jain.sm@gmail.com>
-References: <20261011111606.14753-1-jain.sm@gmail.com>
-Auto-Submitted: auto-generated
+	s=k20260515; t=1791717644;
+	bh=MRGNEMdVEZ/pe2HQ8uuM1oqnOADaMzPiTnjNzvu0fJo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JRt64lxbzgPrQMsWKsjP7Y9ULmS/yetSQ1HEkTTyvV/m/3cJNEUbdu1DZrzNiMOMk
+	 B7MaLaUNWvEnvpTSN2fUzfGb4JeHnq042YWrq3A6OKX0e8C6FBSMp/QU0WgABzPf4w
+	 1Xzh2JPnu3Z9NcrA/xScMJJUWzgxgmWI4aj5KuMutqoVJmM5DOwFXKyonMyWYLbWyR
+	 MZUq73AV3bUzHgkrY0VhYPEqyNzLx8Rkwn/5xQPNjP4F9e+PIEisgP+z/nf3BXvoeO
+	 AkJDpkujJwePK7Q4W7ftlxAMBSb9LT0Vst8Wjs0/xZdWGTXZQCsugi2ELly5/bHVy7
+	 +zZD8lqGiWffg==
+Subject: Re: [PATCH net-next v4 3/3] selftests: net: add a test for the gtp
+ netlink family
+From: netdev-bot+sashiko@kernel.org
+To: anilkaushikwireless@gmail.com
+Cc: pablo@netfilter.org, laforge@gnumonks.org, donald.hunter@gmail.com,
+ kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, andrew+netdev@lunn.ch, shuah@kernel.org,
+ osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Date: Sun, 11 Oct 2026 11:20:43 +0000
+Message-ID: <179171764325.434549.3580917696239237625@kernel.org>
+In-Reply-To: <20261010105740.223992-4-anilkaushikwireless@gmail.com>
+References: <20261010105740.223992-4-anilkaushikwireless@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,20 +49,101 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hi!
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Low priority / nit picks for your consideration:
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+- [Low] In tools/testing/selftests/net/gtp.py, _setup() catches every
+  CmdExitFailure from `ip link add gtp0 type gtp role ggsn` and raises…
+- [Low] _setup() in tools/testing/selftests/net/gtp.py creates a new
+  GtpFamily handle inside the test netns for each test case (`with…
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+--
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+selftests: net: add a test for the gtp netlink family
+
+This adds a Python selftest that uses the gtp generic netlink family
+through its ynl spec. It creates a gtp device, then adds, dumps and
+deletes PDP contexts by TEI and by MS address. It also checks that
+deleting an unknown context returns ENOENT, and it adds a GtpFamily ynl
+wrapper.
+
+> diff --git a/tools/testing/selftests/net/gtp.py b/tools/testing/selftests/net/gtp.py
+> new file mode 100755
+> index 0000000000000..b307699b3c1ed
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/gtp.py
+> @@ -0,0 +1,115 @@
+
+[ ... ]
+
+> +def _setup(ns):
+> +    """Return a gtp family handle, and the ifindex of a new gtp device.
+> +
+> +    Create the device first: that loads gtp.ko through its rtnl link
+> +    alias. ynl resolves the family ids once per process, with a
+> +    CTRL_CMD_GETFAMILY dump which does not autoload modules, so the
+> +    family must be registered before the first family handle is created.
+> +    """
+> +    try:
+> +        ip("link add gtp0 type gtp role ggsn", ns=str(ns))
+> +    except CmdExitFailure as e:
+> +        raise KsftSkipEx("no gtp support (CONFIG_GTP, iproute2)") from e
+
+[Severity: Low]
+Is this skip broader than intended? CmdExitFailure is raised for any
+non-zero exit from ip. That covers old iproute2 and a missing gtp.ko,
+but it also covers a real failure in the gtp newlink path. Examples are
+gtp_newlink() failing to create or bind its UDP sockets, an -EINVAL
+regression, or -EEXIST if an earlier case left a gtp0 behind.
+
+add_del_pdp(), add_two_pdp() and del_unknown_pdp() all go through
+_setup(). If gtp link creation regresses, every case would be reported
+as SKIP instead of FAIL.
+
+The patch also adds CONFIG_GTP=m to tools/testing/selftests/net/config,
+so a correctly configured run should not need this skip. Would it make
+sense to check e.cmd.stderr for the specific "not supported" messages
+and re-raise anything else? drivers/net/lib/py/env.py already uses that
+pattern:
+
+            except CmdExitFailure as e:
+                if "Operation not supported" not in e.cmd.stderr:
+                    raise
+
+> +    defer(ip, "link del gtp0", ns=str(ns))
+> +    ip("link set gtp0 up", ns=str(ns))
+> +    link = ip("-d link show gtp0", ns=str(ns), json=True)[0]["ifindex"]
+> +
+> +    with NetNSEnter(str(ns)):
+> +        gtp = GtpFamily()
+> +
+> +    return gtp, link
+
+[Severity: Low]
+This isn't a functional bug, but should the GtpFamily handle be closed
+when each case ends?
+
+YnlFamily.__init__() opens a netlink socket. It also stores a
+functools.partial(self._op, op_name) on self for every op, which makes a
+reference cycle:
+
+        for op_name, op in self.ops.items():
+            bound_f = functools.partial(self._op, op_name)
+            setattr(self, op.ident_name, bound_f)
+
+Because of that cycle, reference counting alone never frees the socket.
+It is freed only by the cyclic GC or at process exit. Each case creates
+a new handle, so up to three netlink sockets in the test netns stay
+open. Each one keeps the namespace alive after NetNS.__exit__() deletes
+it.
+
+YnlFamily already has close() and __enter__()/__exit__(). Would adding
+defer(gtp.close) in _setup() be cleaner?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010105740.223992-1-anilkaushikwireless%40gmail.com
