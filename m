@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2516243498C
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 10:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB82D42AF9B
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 10:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791716276; cv=none; b=WgLgSniYec7wLezWBC/XFqXAP3xEYvOQzSMu0yTo67VYj/RnTvh6TynaElmEanZg1T3rKuDhX9tSWTu7twnt2fK01HXjeR1tVVHGyUtGlECupVTn/7pg62HqUouBreoEe/Lxcs2/jVNa2ifMStRGMVSvNFOjuVlLGngRAW3sOUo=
+	t=1791716278; cv=none; b=mW5yZsafuizfy5cdj/zplLOPeFf5VGcTRMy32J1E09yrg96YkOLAthb3+UUQ74gmVv2Me78MjziZi83U5VcYzTzzw9c0dkXAOkQAx+vF04xXuOBDSmSRDapsvPBlyxT3L+GIEZgI3xXMEpjZwdCpHM5QwUSX4ErdwLj8TpwqFtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791716276; c=relaxed/simple;
-	bh=m6E0m6NvNzK4Qq6gQgXPGfKfnmJGivi9gSrulwox1Z0=;
+	s=arc-20240116; t=1791716278; c=relaxed/simple;
+	bh=OHC4i8iIvUryqdAQkvQGjMqEnKPxbkv1oQimsw343ro=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u/JxM2VNC+QG0aKbAFSNQviXUjh4uk9Pzi15qabK16+5B7A7nvwqkhoB6EAn9YiA38l0Jz5g7lUWsGaS4rYruiBv1ss1VU//uxJgTCT5KG2bLfwBrpCihUvA4Worh1/1beT84+4rDJ1guQHeDofql2GgNPTrxZ/QQpcxYz/lIVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWoTejUi; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=A0+DyQekuRbWKf0PgM5wAIDLrswSCr1ORLOx7RsOttU/aFsw0GtQg6F8mKq/ikrnwBy1qolB6McyWZOht9LzvotDQAm3WXMgS8d+tZ9ueb2+U5kulQT2GG+dXaF5s5BIsRamLQrzepxtu0U0XzIjo0yYe62stWEighs1f+lMmLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSQhetdM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWoTejUi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C581F0089B;
-	Sun, 11 Oct 2026 10:57:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSQhetdM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13061F0089C;
+	Sun, 11 Oct 2026 10:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791716275;
-	bh=qKA4NXD9C+s5AK+TvomnwKBq6jJUyIjSrqijefcbJj8=;
+	s=k20260515; t=1791716276;
+	bh=zHj3vYduDcwipEKvmk8VdX0qQ2h4zS7ivust/TDlDZM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gWoTejUi4y0kdAdAYAGrkRF9Pd/e7mtSMMF6KFduQxL07DP6knqq9nmO3krlJJoDH
-	 GhCcEFEwHYrP4a1qqhSJ1INPsrvMZx5oegt1Pb/IjggXs/97NfRUqBVUhwsTzYXLHB
-	 8MgTI1bTKiKWgOXiukXw3uvMM3BWR13pxT3r+2SOxLRsrubyqF/aTEi/dVNpMKOWsw
-	 4M5hTi3si+a+rFbiYLs00E6KpPnN7cYa/W4Y8GfGi12a3j3Jvam4jQTIxrnhpoIFQD
-	 01bpXRffxnHQPPA253IJOfnhuW9WmziMz7KoLKS8Nf5+MFwvEkT07b0KjDt9XzO7f3
-	 PNYK5UEcK/puQ==
-Subject: Re: [PATCH net-next 1/2] net/sched: act_gate: reject oversized dumps
- instead of wrapping them
+	b=SSQhetdMqGeIq29JwQ1GjJgFSqMV2bnvIJw+nPmZjc0YvgFCGciTFL3WZL0HbJV/o
+	 AvrtE1AuT2prz5m8eDsB6VfIs+HRe76z5GGZKqHYiBUXi5MJduR0HJ8owjvpRczrPm
+	 Noc94xBM45pxFKd9QHvFAPwfnvvhtvhAlzsDvIH9UeLshBBiwLvAVNT5ry3joAm1eR
+	 4oYrUZyD3P7V6eeJ5WrOHPBY9H9kvhH27WtGuQnhF3ozJimbAjXWYE/LuD3ue0oZN4
+	 nKWlPrC2AuG1+SScSFy6pgCS0RNpOCCr4VL3XYtFNRoer2Z48eUhrDHVUZmHsULlW0
+	 ib00iAHqNWRSg==
+Subject: Re: [PATCH net-next 2/2] net/sched: act_gate: cap the number of
+ scheduling entries
 From: netdev-bot+sashiko@kernel.org
 To: jhs@mojatatu.com
 Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
@@ -35,11 +35,11 @@ Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
  horms@kernel.org, olteanv@gmail.com, vladimir.oltean@nxp.com, p@1g4.org,
  eadavis@qq.com, dcaratti@redhat.com, dsahern@kernel.org,
  stephen@networkplumber.org, sashiko-bot@kernel.org
-Date: Sun, 11 Oct 2026 10:57:53 +0000
-Message-ID: <179171627364.434549.1472397105608939135@kernel.org>
-In-Reply-To: <QDISC-H19Z.v2.20261007062551-2@mojatatu.com>
-References: <QDISC-H19Z.v2.20261007062551-2@mojatatu.com>
-X-sashiko-severity: High
+Date: Sun, 11 Oct 2026 10:57:55 +0000
+Message-ID: <179171627521.434549.2707902365679392275@kernel.org>
+In-Reply-To: <QDISC-H19Z.v2.20261007062551-3@mojatatu.com>
+References: <QDISC-H19Z.v2.20261007062551-3@mojatatu.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 3
+Critical: 0 · High: 0 · Medium: 2 (2) · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,279 +60,244 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] This patch makes an unbuildable notification block
-  RTM_DELACTION.
-- [Medium] RTM_NEWACTION for an action set whose dump exceeds U16_MAX now
-  returns -EINVAL even though the actions have already been created or…
-- [Low] On the -EMSGSIZE branch, tfilter_del_notify()
-  (net/sched/cls_api.c) sets the extack message "Filter deleted; del…
-- [Low] The commit message misdescribes what the code did before the
-  patch.
-- [Low] In tfilter_del_notify(), -EMSGSIZE is taken to mean that the dump
-  cannot be represented in a u16 nest ('no notification can ever be…
+- [Medium] With the 1024-entry cap, a single unprivileged RTM_GETACTION
+  request can still make the kernel allocate about 1.3 MB of reply…
+- [Medium] GATE_ENTRIES_MAX = 1024 still allows a single gate whose dump
+  cannot fit in any netlink dump skb, so the silent 'tc actions ls'…
+- [Low] The commit message calls the unbounded gate list 'bugs' and says
+  it was 'demonstrated to be exploitable to create an OOM', but there is…
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  tfilter_del_notify() still returns without calling ->delete() when…
+- [Medium] This problem wasn't introduced by this patch, but batched
+  action requests can carry several capped gates whose combined size…
+- [Medium] This problem wasn't introduced by this patch, but the sja1105
+  driver never checks the total number of hardware Schedule table…
 
 --
 
-net/sched: act_gate: reject oversized dumps instead of wrapping them
+net/sched: act_gate: cap the number of scheduling entries
 
-This commit switches the nest closes on the tc action and classifier dump
-paths to nla_nest_end_safe(). A dump larger than U16_MAX now reports
--EMSGSIZE instead of writing a wrapped nla_len. It also bounds the
-tfilter_notify_prep() retry loop, and makes tfilter_del_notify() drop a
-notification it cannot build and delete the filter anyway.
+This patch limits parse_gate_list() to 1024 TCA_GATE_ONE_ENTRY elements.
+Longer lists are rejected with -E2BIG and an extack message. The value was
+picked so that a fully dumped entry list still fits in one u16-length
+TCA_GATE_ENTRY_LIST nest, and it matches the SJA1105 schedule table size.
 
-Link: https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
-Link: https://lore.kernel.org/netdev/179111893181.434549.13449660670267048994@kernel.org/
-
-> tfilter_notify_prep() treats that as socket-buffer exhaustion and
-> retries with an ever larger alloc_skb(); a dump that does not fit a u16
-> nest cannot be built at any skb size, so the loop only spins until the
-> allocation itself fails.
+> The bugs:
+> 1. A single gate can make tcf_dump_walker() silently truncate
+> "tc actions ls"
+> 2. Lack of capping has been demonstrated to be exploitable to
+> create an OOM through amplification of RTM_GETACTION replies.
 
 [Severity: Low]
-Does this describe the code as it was before this patch?
+The commit message calls these bugs, but there is no Fixes: tag for the
+commit that added act_gate:
 
-Before, nla_nest_end() could not fail:
+a51c328df310 ("net: qos: introduce a gate control flow action")
 
-include/net/netlink.h:nla_nest_end() {
-	unsigned long diff = skb_tail_pointer(skb) - (unsigned char *)start;
+Documentation/process/maintainer-netdev.rst says "for fixes the Fixes: tag
+is required, regardless of the tree".
 
-	DEBUG_NET_WARN_ON_ONCE(diff > U16_MAX);
-	start->nla_len = diff;
-	return skb->len;
+The commit message also says this is net-next hardening and should not be
+backported, so leaving the tag out looks intentional.
+
+Would a Fixes: tag together with "Cc: <stable+noautosel@kernel.org>" record
+where the problem came from without triggering an automatic backport?
+
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index 14801c604bd9..d8e8c2356bd5 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
+> @@ -18,6 +18,17 @@
+>  
+>  static struct tc_action_ops act_gate_ops;
+>  
+> +/* A netlink attribute records its total length, including the 4-byte
+> + * header, in a u16 nla_len, so one nested attribute can describe at most
+> + * 65532 bytes. tcf_gate_dump() emits each schedule entry as 36 bytes, or
+> + * 40 with the gate-open flag, so 1024 entries serialize to 36868-40964
+> + * bytes and still fit a single TCA_GATE_ENTRY_LIST nest, while 4096 would
+> + * need ~144-160 KiB and cannot be represented. 1024 is also the schedule
+> + * table capacity of SJA1105 (SJA1110 provides 4096). Cap the entry list
+> + * at 1024.
+> + */
+> +#define GATE_ENTRIES_MAX	1024
+
+[Severity: Medium]
+This sizes the cap against the u16 nla_len of the nest. Should it also be
+sized against the largest dump skb?
+
+netlink_recvmsg() limits the dump buffer size:
+
+net/netlink/af_netlink.c:netlink_recvmsg() {
+    ...
+	max_recvmsg_len = min_t(size_t, max_recvmsg_len,
+				SKB_WITH_OVERHEAD(32768));
+    ...
 }
 
-Nothing under net/sched used nla_nest_end_safe(). So tcf_fill_node()
-returned -EMSGSIZE only while the skb was short on tailroom. Once
-tfilter_notify_prep() had grown the skb enough, the fill succeeded with a
-wrapped length and the loop stopped.
+For RTM_GETACTION dumps, netlink_dump() allocates at most about 32.4 KB.
+dumping_entry() emits 36 or 40 bytes per entry. A gate with more than about
+810-900 entries therefore cannot be dumped, and the new cap still accepts
+it.
 
-The loop that runs until alloc_skb() fails seems to exist only after this
-patch turns the u16 overflow into a fill failure. That makes the new bound
-in tfilter_notify_prep() a requirement of the nla_nest_end_safe()
-conversions, not a fix for an existing loop.
+When this happens, tcf_dump_walker() trims the action and returns without
+an error:
 
-Could the commit message say this? A backport that takes the conversions
-without the bound would bring in the allocation escalation loop.
+net/sched/act_api.c:tcf_dump_walker() {
+    ...
+		if (err < 0) {
+			index--;
+			nlmsg_trim(skb, nest);
+			goto done;
+		}
+    ...
+}
 
-> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-> index 6e48b4bc2d75..747d91ae6446 100644
-> --- a/net/sched/act_api.c
-> +++ b/net/sched/act_api.c
+If the gate is the first action in the skb, n_i is 0. tc_dump_action()
+then returns a skb->len of 0, and netlink_dump() sends NLMSG_DONE with
+success. If earlier actions fit, the next callback restarts at the gate's
+index and ends the same way.
+
+The result is that the gate and every later action in the IDR are missing
+from "tc actions ls", and userspace gets no error.
+
+The commit message lists this truncation first under "The bugs:". The
+Caveat Emptor section then says the cap does not prevent it.
+
+Should the cap be small enough that a single gate fits in a dump skb? If
+not, should the commit message stop listing this truncation as something
+the cap fixes?
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the cap is based on the
+SJA1105 schedule table size. Does the sja1105 driver check the total number
+of Schedule table entries against the device capacity anywhere?
+
+The cap only limits a single action. sja1105_vl_gate() copies num_entries
+with no limit:
+
+drivers/net/dsa/sja1105/sja1105_vl.c:sja1105_vl_gate() {
+    ...
+	rule->vl.num_entries = num_entries;
+    ...
+}
+
+sja1105_init_scheduling() adds the taprio and gate entry counts together.
+It then sets the table size without checking max_entry_count:
+
+drivers/net/dsa/sja1105/sja1105_tas.c:sja1105_init_scheduling() {
+    ...
+	table->entry_count = num_entries;
+    ...
+}
+
+sja1105_static_config_check_valid() does not reject an oversized Schedule
+table either.
+
+On SJA1105, the entry point address and subscheind[] fields are 10 bits
+wide, so sja1105_packing() cannot encode schedule indices of 1024 or more.
+A 1024-entry gate plus a taprio schedule or a second offloaded gate rule
+would overflow the shared table.
+
+The commit message already notes that these are shared total capacities
+and that the driver has no entry cap check. Is a separate driver fix
+planned?
 
 [ ... ]
 
-> @@ -1693,7 +1696,8 @@ static int tca_get_fill(struct sk_buff *skb, struct tc_action *actions[],
->  	if (tcf_action_dump(skb, actions, bind, ref, false) < 0)
->  		goto out_nlmsg_trim;
+> @@ -277,6 +288,14 @@ static int parse_gate_list(struct nlattr *list_attr,
+>  			continue;
+>  		}
 >  
-> -	nla_nest_end(skb, nest);
-> +	if (nla_nest_end_safe(skb, nest) < 0)
-> +		goto out_nlmsg_trim;
+> +		if (i >= GATE_ENTRIES_MAX) {
+> +			NL_SET_ERR_MSG_FMT(extack,
+> +					   "Too many schedule entries, at most %u are supported",
+> +					   GATE_ENTRIES_MAX);
+> +			err = -E2BIG;
+> +			goto release_list;
+> +		}
+> +
 
-[Severity: High]
-With this change, tca_get_fill() fails for an action set whose TCA_ACT_TAB
-is larger than U16_MAX. Before, the same fill succeeded with a wrapped
-length. Does this make a failed notification build refuse an
-RTM_DELACTION?
+[Severity: Medium]
+This limits each gate to about 41 KB of fill size. Does it also limit the
+size of an RTM_GETACTION reply? The commit message says:
 
-tcf_del_notify() builds the notification before it deletes anything:
+  While this patch fixes the binding of per-action storage and the dump
+  amplification
 
-net/sched/act_api.c:tcf_del_notify() {
+RTM_GETACTION skips the capability check in tc_ctl_action():
+
+net/sched/act_api.c:tc_ctl_action() {
     ...
-	} else {
+	if ((n->nlmsg_type != RTM_GETACTION) &&
+	    !netlink_capable(skb, CAP_NET_ADMIN))
+		return -EPERM;
+    ...
+}
+
+tca_action_gd() accepts up to TCA_ACT_MAX_PRIO (32) TCA_ACT_TAB entries.
+All of them can name the same gate index, because tcf_action_get_1() takes
+another reference without checking for duplicates. For each entry it does:
+
+	attr_size += tcf_action_fill_size(act);
+
+tcf_gate_get_fill_size() budgets 40 bytes per entry. With one 1024-entry
+gate in the netns, 32 copies add up to about 1.3 MB, and tcf_get_notify()
+allocates that much:
+
+	skb = alloc_skb(max(attr_size, NLMSG_GOODSIZE), GFP_KERNEL);
+
+Once the total is above U16_MAX, tca_get_fill() always fails here:
+
+	if (nla_nest_end_safe(skb, nest) < 0)
+		goto out_nlmsg_trim;
+
+and the skb is freed.
+
+This does not lead to OOM. The doit runs under rtnl, so these allocations
+are serialized and freed immediately.
+
+Still, an unprivileged request of a few hundred bytes can repeatedly force
+an order-9 GFP_KERNEL allocation while rtnl is held, and the buffer is
+always discarded.
+
+Could tca_action_gd()/tcf_get_notify() reject an attr_size larger than a
+u16 TCA_ACT_TAB nest can hold, before calling alloc_skb()?
+
+[Severity: Medium]
+This is a pre-existing issue, but one capped gate takes about 41 KB in a
+dump. Two of them in one batched request therefore exceed the u16
+TCA_ACT_TAB nest in tca_get_fill():
+
+	if (nla_nest_end_safe(skb, nest) < 0)
+		goto out_nlmsg_trim;
+
+For RTM_NEWACTION, tcf_action_add() has already installed the actions by
+the time tcf_add_notify() fails. The caller gets -EINVAL even though the
+actions were installed:
+
+	ret = tcf_add_notify(net, n, actions, portid, attr_size, extack);
+
+For RTM_DELACTION, tcf_del_notify() returns before tcf_action_delete() is
+called, so nothing is deleted:
+
 		skb = tcf_del_notify_msg(net, n, actions, portid, attr_size,
 					 extack);
 		if (IS_ERR(skb))
 			return PTR_ERR(skb);
-	}
 
-	/* now do the delete */
-	ret = tcf_action_delete(net, actions);
-    ...
-}
+A batched RTM_GETACTION fails too.
 
-tcf_del_notify_msg() turns any tca_get_fill() failure into -EINVAL:
+The add and delete failures only happen when rtnl_notify_needed() is true,
+i.e. there is an RTNLGRP_TC listener or NLM_F_ECHO is set. Whether they
+occur depends on whether something like tc monitor is running.
 
-	if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, 0, RTM_DELACTION,
-			 0, 2, extack) <= 0) {
-		NL_SET_ERR_MSG(extack, "Failed to fill netlink TC action attributes");
-		kfree_skb(skb);
-		return ERR_PTR(-EINVAL);
-	}
+The previous patch in this series, "net/sched: act_gate: reject oversized
+dumps instead of wrapping them", turned the earlier wrapped length into
+these failures and left the add-side -EINVAL for later. It fixed the filter
+delete path, but tcf_del_notify() still blocks action deletes.
 
-The full path is:
-
-tc_ctl_action(RTM_DELACTION)
-  tca_action_gd()
-    tcf_del_notify()
-      tcf_del_notify_msg()
-        tca_get_fill()
-          nla_nest_end_safe() < 0
-
-tcf_action_delete() is never reached.
-
-With the 1024-entry cap applied, "tc actions del action gate index 1
-action gate index 2" on two 1024-entry gate actions looks like it would
-fail with -EINVAL and leave both actions installed. The commit message
-says this two-action shape survives the cap.
-
-The cap patch later in this series only adds GATE_ENTRIES_MAX in
-parse_gate_list(). It does not touch tcf_del_notify(). Without the cap
-patch, a single gate action with about 1815 or more entries could not be
-deleted by index.
-
-This needs rtnl_notify_needed() to be true, meaning an RTNLGRP_TC
-listener or NLM_F_ECHO. rtnetlink allows non-root receive, so an
-unprivileged listener in the netns seems to be enough to make an admin's
-delete fail.
-
-The commit message says "A notification that cannot be serialised must
-not veto the state change the caller asked for", and tfilter_del_notify()
-is changed to match. tcf_reoffload_del_notify() in this file already
-drops a notification it cannot build:
-
-		if (IS_ERR(skb))
-			skb = NULL;
-
-Should tcf_del_notify() be changed the same way? tca_get_fill() returns a
-bare -1, so -EMSGSIZE would also need to be passed up. Otherwise the
-delete path cannot tell the structural overflow from other failures,
-which tfilter_del_notify() now relies on.
-
-[Severity: Medium]
-The same failure also shows up on the add side.
-tcf_action_add()->tcf_action_init() has already inserted or replaced the
-actions by the time tcf_add_notify()->tcf_add_notify_msg() calls
-tca_get_fill():
-
-	if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, n->nlmsg_flags,
-			 RTM_NEWACTION, 0, 0, extack) <= 0) {
-		NL_SET_ERR_MSG(extack, "Failed to fill netlink attributes while adding TC action");
-		kfree_skb(skb);
-		return ERR_PTR(-EINVAL);
-	}
-
-The commit message notes this case and leaves it for later. However,
-before this patch an oversized set still filled (with wrapped lengths)
-and the add reported success. Isn't the "-EINVAL after the actions were
-created" result new for these sets?
-
-For example, with the cap applied, adding two 1024-entry gate actions in
-one request now returns -EINVAL with the actions installed. This happens
-when an RTNLGRP_TC listener exists or NLM_F_ECHO is set. A retry would
-then hit -EEXIST.
-
->  
->  	nlh->nlmsg_len = skb_tail_pointer(skb) - b;
->  
-> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-> index a9f54988561f..3f0ce567fa2d 100644
-> --- a/net/sched/cls_api.c
-> +++ b/net/sched/cls_api.c
-
-[ ... ]
-
-> @@ -2200,8 +2209,16 @@ static int tfilter_del_notify(struct net *net, struct sk_buff *oskb,
->  	skb = tfilter_notify_prep(net, oskb, n, tp, block, q, parent, fh,
->  				  RTM_DELTFILTER, portid, rtnl_held, extack);
->  	if (IS_ERR(skb)) {
-> -		NL_SET_ERR_MSG(extack, "Failed to build del event notification");
-> -		return PTR_ERR(skb);
-> +		if (PTR_ERR(skb) != -EMSGSIZE) {
-> +			NL_SET_ERR_MSG(extack, "Failed to build del event notification");
-> +			return PTR_ERR(skb);
-> +		}
-
-[Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch. This
-branch still returns without calling ->delete() when
-tfilter_notify_prep() fails with something other than -EMSGSIZE, such as
--ENOBUFS from alloc_skb() or -EINVAL. Does that leak the flower filter
-reference taken during the lookup?
-
-In tc_del_tfilter(), fh comes from tp->ops->get(). For flower,
-fl_get()->__fl_get() takes a reference:
-
-	if (f && !refcount_inc_not_zero(&f->refcnt))
-		f = NULL;
-
-fl_delete() normally drops it with __fl_put(f). On this error path,
-tc_del_tfilter() does:
-
-		err = tfilter_del_notify(net, skb, n, tp, block, q, parent, fh,
-					 &last, rtnl_held, extack);
-
-		if (err)
-			goto errout;
-
-errout releases tp, chain and block, but never calls tfilter_put(tp, fh).
-After that, even a later successful delete would not free the filter or
-the actions bound to it.
-
-The alloc_skb() failure seems realistic here. The retry loop grows the
-skb toward U16_MAX + NLMSG_GOODSIZE, which needs order 4-5 allocations.
-
-> +		/* The filter's dump cannot be represented in a u16 nest, so no
-> +		 * notification can ever be built for it. Drop the notification
-> +		 * rather than refusing to delete the filter.
-> +		 */
-
-[Severity: Low]
-Does -EMSGSIZE always mean the dump cannot fit in a u16 nest?
-tcf_fill_node() starts with:
-
-	int ret = -EMSGSIZE;
-
-and returns that for every ->dump() failure. Some dumps fail for reasons
-that have nothing to do with size. One example is tcf_pedit_dump():
-
-	opt = kzalloc(s, GFP_ATOMIC);
-	if (unlikely(!opt)) {
-		rcu_read_unlock();
-		return -ENOBUFS;
-
-u32_dump() also allocates with kzalloc_flex(), and tcf_action_dump_1()
-reduces any error to -1.
-
-If such a failure repeats through every retry in tfilter_notify_prep()
-(about 17 with 4K pages), the loop returns ERR_PTR(-EMSGSIZE). This
-branch then drops an RTM_DELTFILTER event that could have been built. The
-comment in tfilter_notify_prep() only mentions structural overflow and
-genuine capacity exhaustion.
-
-> +		NL_SET_ERR_MSG(extack, "Filter deleted; del event notification could not be built");
-> +		return tp->ops->delete(tp, fh, last, rtnl_held, extack);
-
-[Severity: Low]
-The extack text is set before ->delete() runs. If ->delete() then fails
-without writing its own extack message, won't userspace get "Filter
-deleted" together with a negative errno?
-
-Flower, for example, runs without rtnl on an unlocked qdisc. Two
-concurrent RTM_DELTFILTER requests for the same oversized filter can both
-get through fl_get() and both hit -EMSGSIZE in prep. The second one then
-reaches __fl_delete():
-
-	if (f->deleted) {
-		spin_unlock(&tp->lock);
-		return -ENOENT;
-	}
-
-That path does not set extack. fw_delete() can return -EINVAL the same
-way.
-
-Could the message be set only after ->delete() returns 0?
-
->  	}
->  
->  	err = tp->ops->delete(tp, fh, last, rtnl_held, extack);
-
-[ ... ]
+Is a follow-up planned for the action delete path?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-H19Z.v2.20261007062551%40mojatatu.com
