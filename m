@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4800946A5EE;
-	Sun, 11 Oct 2026 19:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2F1463B9C;
+	Sun, 11 Oct 2026 19:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791748291; cv=none; b=iIg22ZKYqEUEDvdjhVzJZLLu5rs8uuYDYB6F+Ol9b3nf9z+PfabNLRWoKFbygUJMkR20c6wLBkr6JDnUW6RGA1l5LEPyDycb5MhvwkVWRF6FNdXjYCRaeCAfllDuVeHogXX5RSDmpe00VMzfnINEiNKc3x54WM73wUPChTxhGvU=
+	t=1791748292; cv=none; b=R5W13HvgtzE6UgQMfw+f2DMBSGLFYicS1BZ3F32zNGR3JoTYsmts4k6yLGwnBwtqwaVvF+nUXoWpQK+f4YjwbuubKwuWSyAoVvRvATPskPrzh7jBBGmf/wsLaAB/DfUsgaEOHzdKEPOxMXeF0aJltZ1lOsieSkZN3EnGC8qXrXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791748291; c=relaxed/simple;
-	bh=LWGFFLMzH4Tq1IvVlyZYgPCu6rZTl5Iwao5LYb1K3LM=;
+	s=arc-20240116; t=1791748292; c=relaxed/simple;
+	bh=4se4uHMC97QgGHXvxbMlmjwpHcbloYW4bCGbOKMnW+E=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fywRowTplE8w2jSmvNPzlHWuvk3k0QVyx6W0+WnzGDZyiSGnACU8xrQZ9OqwGBm7kkRV46/kWmSsBP2zVg+D8+sWxhiVDgBGJTfk8lyVCOHYEqLe7zZsOL8YprVJdfTn7o+w5afdAMEMK2s8+jWrtiIQK1Z6y5dyphSI1NCUZu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6WJgTfP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=KjCvfR0kLAowc3xMVrz3f7ngfLbH+Y5BrzUwYhgxcBSeMQpLYIuGNkcnbB686FvEWXN/WlchC2suIvLMIentCRJw+ieCgRLbT+DneQCr3tfeZne6L68ervNBGVnOipgBcHMqoU5RpT2axUnqyWc1KETtuAzysSqTxr5zJ7TrHVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZrqRE28R; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6WJgTfP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1CB1F0089C;
-	Sun, 11 Oct 2026 19:51:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZrqRE28R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFC41F0089B;
+	Sun, 11 Oct 2026 19:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791748290;
-	bh=LSzBBRhwJ2EDIMclyQ5S4WmZQ6fXpN2gz8ECmGPSNPw=;
+	s=k20260515; t=1791748291;
+	bh=/p/JZkpPRUTdvbzpofph+CHY3QC8tVZqhJXJcQRPyAg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=F6WJgTfPyQBLmI5ERgEIFAFu212E4ovKOF62IDSuyN6hxovdYxUVz9Og5EddjENJs
-	 DDN+Qt68pPe80puwzeT1wb/6V60YBbHu82hYt14Mfcwg1C01l107/ajGcQLETBuBP/
-	 MVsIse0+usOH5eB+epWFagO3dh70zzW7Us0aJ0A4k/UUqw/Cz94kWXFBEfyw2COBHN
-	 nMKjuve4W+PeZLTgKZuXk2aLK1aK2XXSuDXnBGK9LO5Ou7VPV9xzNzvEr6exsGYnZt
-	 4UeqJmY7DYmxPlyeQbyA74YEaQ4+gIPYyJicefryDzdPf9Zd7h7FGHY6fLpdU99yCU
-	 0FMsnoKZXOlOw==
-Subject: Re: [PATCH net-next v3 8/9] net: dsa: realtek: rtl8365mb: re-latch
- the family D SerDes
+	b=ZrqRE28RmGfpcLvZ97bAIv2q5/Cf4sbVKOPgks2D/ZxSZ4YdR+31LwQLP7DAluXQ4
+	 ValFeplE42H2PNSo1LDjKnxpwRvAU7ALxQcamMwEWbtMhcvS+6uPWWAmeXvLfzKsWS
+	 yqXdxER7mhMSN+vx6nHNJ/VwpqCFQc8H7a+1cehjt7jx0OF8Oihp/PC3wH1XVl/sXb
+	 RuknVkhtNDnzcOxxPWhcRhovbeX1rK/N47wwOk8EOyUAKjJ/N6oOVmMoJBe5p2HDee
+	 mvrCNSu9XSlWsjLtqmcMT52fC75oQQArEAGGDmZjIczqMpSx+1IM5xFPkeEpdBn5Cs
+	 G2m1mDzQDrnWw==
+Subject: Re: [PATCH net-next v3 9/9] net: dsa: realtek: rtl8365mb: add support
+ for RTL8367S-VB
 From: netdev-bot+sashiko@kernel.org
 To: namiltd@yahoo.com
 Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 19:51:29 +0000
-Message-ID: <179174828906.434549.1964597270204409308@kernel.org>
-In-Reply-To: <2a637a34-6d4f-4a07-88b5-04475ebbba2e@yahoo.com>
-References: <2a637a34-6d4f-4a07-88b5-04475ebbba2e@yahoo.com>
+Date: Sun, 11 Oct 2026 19:51:30 +0000
+Message-ID: <179174829036.434549.5346764045610555935@kernel.org>
+In-Reply-To: <8d3a9cc7-17cb-46b5-ac78-c7b4055989a7@yahoo.com>
+References: <8d3a9cc7-17cb-46b5-ac78-c7b4055989a7@yahoo.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,179 +59,109 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The re-latch work can leave the family D SerDes parked
-  (SDS_MISC mode field = RTL8365MB_D_PORT_SDS_MODE_DISABLE) for about 11…
-- [Medium] The family D re-latch work rearms itself forever and is not
-  stopped on system shutdown or reboot.
+- [Medium] On family D, rtl8365mb_pcs_get_state() replaces the configured
+  speed and duplex with fixed values.
+- [Low] The comment above RTL8365MB_SDS_EXT_INTERFACE_ID
+  (drivers/net/dsa/realtek/rtl8365mb_main.c:347-350) says "The embedded…
 
 --
 
-net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
+net: dsa: realtek: rtl8365mb: add support for RTL8367S-VB
 
-This commit adds a self-rearming delayed work for family D chips. The
-work parks SDS_MISC in DISABLE mode and then restores it, which drives a
-DISABLE -> HSGMII edge until the SerDes receiver latches. After that it
-checks the link every 10 s.
-
-It also adds sds_lock to serialize the SDS_INDACS indirect access
-sequences. The work is cancelled from pcs_config(), pcs_disable(),
-teardown() and a devres action.
+This patch adds the RTL8367S-VB (chip ID 0x6642, version 0x0010) to the
+chip table as the first family D chip. On this chip the SGMII/HSGMII
+SerDes is on external interface 0 (port 6) and RGMII is on external
+interface 1 (port 7). The patch also caps priv->num_ports at 8 for
+family D and updates the comment on the learn limit.
 
 > diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index 0d3a2a385a204..5d804099f131a 100644
+> index 5d804099f131a..c6045607ade06 100644
 > --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
 > +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
 
 [ ... ]
 
-> @@ -1658,8 +1714,155 @@ static int rtl8365mb_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-
-[ ... ]
-
-> +static void rtl8365mb_sds_relatch_work(struct work_struct *work)
-> +{
-
-[ ... ]
-
-> +	ret = rtl8365mb_sds_read(priv, RTL8365MB_D_SDS_EXT0_INDEX,
-> +				 RTL8365MB_SDS_REG_LINK_STATUS, &status);
-> +	if (ret) {
-> +		dev_err_ratelimited(priv->dev,
-> +				    "failed to read SerDes link status: %pe\n",
-> +				    ERR_PTR(ret));
-> +		goto rearm;
-> +	}
-
-[ ... ]
-
-> +	attempts = READ_ONCE(mb->sds_relatch_count);
-> +	if (!attempts) {
-> +		dev_warn(priv->dev,
-> +			 "SerDes link lost outside a reconfiguration; re-latching\n");
-> +		attempts = 1;
-> +	} else if (attempts == RTL8365MB_D_SDS_RELATCH_MAX_TRIES + 1) {
-> +		/* This run only checked whether the last in-budget edge
-> +		 * took. The first out-of-budget edge comes one healthcheck
-> +		 * interval from now, not on this pass.
-> +		 */
-> +		WRITE_ONCE(mb->sds_relatch_count, attempts + 1);
-> +		dev_warn(priv->dev,
-> +			 "SerDes did not latch after %u re-latch attempts; still retrying every %d s\n",
-> +			 RTL8365MB_D_SDS_RELATCH_MAX_TRIES,
-> +			 RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL / HZ);
-> +		delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL;
-> +		goto rearm;
-> +	}
-> +
-> +	if (attempts <= RTL8365MB_D_SDS_RELATCH_MAX_TRIES)
-> +		WRITE_ONCE(mb->sds_relatch_count, attempts + 1);
-
-[ ... ]
-
-> +	ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-> +				 RTL8365MB_D_SDS_MISC_CFG_MASK, park);
-> +	if (ret) {
-> +		dev_err_ratelimited(priv->dev,
-> +				    "failed to park SDS_MISC: %pe\n",
-> +				    ERR_PTR(ret));
-> +		goto rearm;
-> +	}
-> +
-> +	usleep_range(20000, 21000);
-> +
-> +	for (i = 0; i < RTL8365MB_D_SDS_RESTORE_TRIES; i++) {
-> +		ret = regmap_update_bits(priv->map, RTL8365MB_SDS_MISC_REG,
-> +					 RTL8365MB_D_SDS_MISC_CFG_MASK,
-> +					 READ_ONCE(mb->sds_misc_target_val));
-> +		if (!ret)
-> +			break;
-> +		usleep_range(1000, 2000);
-> +	}
-> +	if (ret) {
-> +		dev_err_ratelimited(priv->dev,
-> +				    "failed to restore SDS_MISC: %pe\n",
-> +				    ERR_PTR(ret));
-> +		/* The SerDes is left parked: come back soon rather than
-> +		 * at the (possibly 10 s) pace chosen above.
-> +		 */
-> +		delay = RTL8365MB_D_SDS_RELATCH_INTERVAL;
-> +		goto rearm;
-> +	}
+> @@ -874,6 +881,19 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
+>  		.jam_table = rtl8365mb_init_jam_8365mb_vc,
+>  		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
+>  	},
+> +	{
+> +		.name = "RTL8367S-VB",
+> +		.chip_id = 0x6642,
+> +		.chip_ver = 0x0010,
+> +		.family = RTL8365MB_FAMILY_D,
+> +		.extints = {
+> +			{ 6, 0, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
 
 [Severity: Medium]
-Can the SerDes stay parked for about 11 s here, instead of the ~1 s this
-branch asks for? Consider the case where all RTL8365MB_D_SDS_RESTORE_TRIES
-restore writes fail on the last in-budget attempt (attempts == 15):
+This entry lets port 6 run SGMII on a family D chip. That makes the
+family D branch of rtl8365mb_pcs_get_state() reachable for the first
+time.
 
-attempt 15:
-  WRITE_ONCE(mb->sds_relatch_count, 16)
-  park write succeeds
-  all three restore regmap_update_bits() calls fail
-  delay = RTL8365MB_D_SDS_RELATCH_INTERVAL; goto rearm
+Does that branch discard the forced speed and duplex that phylink has
+already filled in?
 
-next run, 1 s later:
-  link bit is clear, because the lane is still in MODE_DISABLE
-  attempts == RTL8365MB_D_SDS_RELATCH_MAX_TRIES + 1
-    sds_relatch_count = 17
-    "SerDes did not latch after 15 re-latch attempts"
-    delay = RTL8365MB_D_SDS_HEALTHCHECK_INTERVAL; goto rearm
-
-The report-only pass never writes sds_misc_target_val back to SDS_MISC.
-The mode is restored only on the run after that, 10 s later. The CPU
-trunk stays in DISABLE mode for that whole window, and the warning
-describes an edge that was never completed.
-
-There is a related gap in the link status read failure path above. If an
-earlier run left the lane parked and rtl8365mb_sds_read() then fails, the
-work jumps straight to rearm. It does not try the direct SDS_MISC
-restore, even though that restore does not go through SDS_INDACS.
-
-Could the work record that a restore is still outstanding, and retry the
-restore first on the next run, before the link check and the report-only
-branch?
-
-> +
-> +	dev_dbg(priv->dev, "SerDes re-latch edge driven (attempt %u)\n",
-> +		attempts);
-> +
-> +	/* This edge may not have taken either; the next run checks. */
-> +rearm:
-> +	schedule_delayed_work(&mb->sds_relatch, delay);
-> +}
-
-[Severity: Medium]
-Every path in rtl8365mb_sds_relatch_work() ends here, so the work rearms
-until something cancels it. What stops it on reboot or kexec?
-
-The .shutdown path goes through rtl83xx_shutdown():
-
-drivers/net/dsa/realtek/rtl83xx.c:rtl83xx_shutdown() {
-	struct dsa_switch *ds = &priv->ds;
-
-	dsa_switch_shutdown(ds);
-
-	dev_set_drvdata(priv->dev, NULL);
+drivers/net/dsa/realtek/rtl8365mb_main.c:rtl8365mb_pcs_get_state() {
+    ...
+	if (is_d) {
+		state->duplex = DUPLEX_FULL;
+		state->speed = state->interface == PHY_INTERFACE_MODE_2500BASEX ?
+				SPEED_2500 : SPEED_1000;
+		return;
+	}
+    ...
 }
 
-Clearing drvdata stops realtek_{smi,mdio}_remove() from running. That
-means neither rtl8365mb_teardown() nor the rtl8365mb_sds_relatch_cancel()
-devres action runs.
+rtl8365mb_phylink_get_caps() advertises MAC_10 | MAC_100 | MAC_1000FD
+for this port, so phylink accepts a forced 10/100 setting.
 
-dsa_switch_shutdown() closes the conduits and unlinks the user netdevs.
-It does not stop the CPU port's phylink, so rtl8365mb_pcs_disable() is
-not called either.
+Take port 6 as a PHY-less SGMII user port with
+managed = "in-band-status", and run:
 
-After shutdown, couldn't the work keep issuing SDS_INDACS reads and
-SDS_MISC park/restore writes over MDIO/SMI? That would happen while the
-parent bus controller is shutting down, and it could leave the SerDes
-parked for a kexec'd kernel. Every reboot of a family D board would hit
-this once the RTL8367S-VB support later in the series is applied.
+  ethtool -s <port> autoneg off speed 100 duplex full
 
-The commit message says the cancellations are there:
+phylink_ethtool_ksettings_set() stores link_config.speed = 100.
+phylink_pcs_neg_mode() then picks PHYLINK_PCS_NEG_OUTBAND, and the mode
+stays MLO_AN_INBAND because there is no phydev.
 
-    so that it never outlives the PCS or the driver data.
+After that:
 
-Should the work also be cancelled on the shutdown path?
+phylink_resolve()
+  phylink_mac_pcs_get_state()
+    state->speed = pl->link_config.speed;    /* 100 */
+    rtl8365mb_pcs_get_state()
+      state->speed = SPEED_1000;
+  phylink_link_up()
+    rtl8365mb_phylink_mac_link_up()          /* 1000/full */
+      rtl8365mb_ext_config_forcemode()
+
+Would the MAC then be forced to 1000 Mbps while the configured speed is
+100? Would ethtool get_link_ksettings also report 1000/full?
+
+The family C branch avoids this by reading the forced values back from
+SDS_MISC. When in-band autoneg is disabled, could the family D branch
+keep the speed and duplex that phylink passed in?
+
+[Severity: Low]
+This isn't a bug, but this entry makes the comment above
+RTL8365MB_SDS_EXT_INTERFACE_ID inaccurate:
+
+/* The embedded SerDes can only be muxed to external interface 1 (MAC8),
+ * which is port 6.
+ */
+#define RTL8365MB_SDS_EXT_INTERFACE_ID		1
+
+On RTL8367S-VB the SerDes is on external interface 0, and external
+interface 1 is the port 7 RGMII interface.
+
+rtl8365mb_pcs_config() still does:
+
+	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
+
+This only works today because every use of id is in the !is_d branch.
+
+Could this comment be updated for family D, as was done for the
+LEARN_LIMIT comment?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/e84d76ee-03df-49b0-8c9a-b289dfae8728%40yahoo.com
