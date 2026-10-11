@@ -1,259 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010005.outbound.protection.outlook.com [52.101.56.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B2B276050;
-	Sun, 11 Oct 2026 06:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791700888; cv=none; b=E/xpKvSDyhLgftTL6ix+OgFPNtzn9o2gHw1gvxYcHkWCeUPWQE/3If7zgZfAGtO5MseaNL0I02Q9mMaqp9iwmp/tGbcEQEdlMZn036KNB5oKe3wCs5/ishy59w6JmuW7aRwMlVyXcTqkxi33gOF8BrD0/6PUrfmbTP42H/3tqNM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791700888; c=relaxed/simple;
-	bh=o1Cfjj4mgiFLSD4ehTkQrXze+HXV0jTSSUbP7u03vuA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ebn/M8SkaXcwuLY5ZYaCvMDpBb4bWcUCFHLRjGK2FaQ+wWcQ4zJSgoVRxsHLjPv5Oj4vJaOH2MYp1oCkdSD2H0KI8n1SQn9AdU90FZTjccoONBOshQzUZVI7JYX2ZpO7xsL/S5tzofOsC1ydfGg3E+IsMVnb6g5Yq+RgJJ6zW0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9chI6SV; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCC63EC823;
+	Sun, 11 Oct 2026 06:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.5
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791701502; cv=fail; b=nGYE126XXjKAs0Pwpn6uR+9fZpWcID073RcLPDeF7ZGXjrSE29K9E6HinFdHl5m7T0UC1Vv38YzmYl8Xwc7TnkdSvGMyyJlHr1uA0jm0Refnqmqez+Cka5bFwkFPDqI9n1Vggj6Pncbx8Ssvl7Cn71vXHvgE88iTVeDTN/+li70=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791701502; c=relaxed/simple;
+	bh=uSMfdxfIhOT3MzyinsUqnCVamw/4AUmGh03q/uZcgF4=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=XVBHBnW68CxrSn2SpKVtpEFfoIv8Fc3xhDwsRIX6+w4+m6saZmbCPOhM/swdn8kNUuukB9Ge7iMlSTqktYbtQmfaHFD/DN8xgESaV+0eIaSQ8PRqJZac2CM3T6bVsoM90MrkmPbygr2tpl6KP/QQucLcYpbEf26Tv7QKkZuG/1A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Vys4vYY5; arc=fail smtp.client-ip=52.101.56.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9chI6SV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AB51F0089B;
-	Sun, 11 Oct 2026 06:41:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791700886;
-	bh=RmCZH95ehgU540OjvnS3MFoFEkyabpFbTjwYQ0ORD6k=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=c9chI6SVxwWEhR9Gnfx7+wVHgTLMyFaMMMbouAiIIJ8tXrXAdCLpGVEGAI7GQiQ8V
-	 bkAwVt+B8Vvg5BPbs06QDrVTVF2oSORR708zdASXpEYMYiyGYqWkx8vqMG43SPf+lv
-	 IU2deCmPlDX3X7Ry72gkooZM7a12Tl5wl8Mbhj8ueMDaUdlovJCptQjjVq05yfHvbt
-	 rEe56RR8P0fOBWrZ0ATTZQmjsFwt/XB+2xIhX+1bHPnCQymMYSq0+NunDQvpFAJaW0
-	 DpC/mDB7+yGOmi4Qi4gQ39m6HrMfFCrP/pf8JTdvC97PE8c4OSRn5u0NksoXC26okx
-	 vFW5mpoM6PP9Q==
-Subject:
- Re: [PATCH net] macvlan: require lower-netns admin for IFLA_MACVLAN_FLAGS
-From: netdev-bot+sashiko@kernel.org
-To: bsdhenrymartin@gmail.com
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 11 Oct 2026 06:41:25 +0000
-Message-ID: <179170088566.434549.4699134797461783473@kernel.org>
-In-Reply-To: <20261010062944.2671656-1-bsdhenrymartin@gmail.com>
-References: <20261010062944.2671656-1-bsdhenrymartin@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Vys4vYY5"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T9K1w5/HA2EX5p0NLNcqKyHe761RESx9coAB9CNxqy9WcTj88mV4Yv7v8ygHo4EqFpDhvl0Y4BgKsg6Sh89G18IOa6We4M+icEOEb25XLQTS0iNvsjMmLkMCWxYhrX7Re4tbt9mGGSiDgJ6UEFjlf3BtGLvpV5h9z2Nz5Lk+eSovUCPyGkRIxlCUAnfPwaFeG7qERUDNSI2RKK9NfJYB0XK5K2PKKertcTHYgIpBR/6P1MnbUZc+loKg2dt77uQFu6j9hYQDrX67XNX6kKsyyMKYiBowkdFwgE708lu2Inia7tSvz4vtXiJvCmT1TrUWuxZ99zI4lcXvQTrSbma7Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dAqUmyQtEuOxIqet++c/aMbdPQY1lvWhpey7OWc4AP0=;
+ b=V3x4r+CgYLDCQi7+UGWi2/ltA9aFZl1TeFXxZRGabs3aL5KJwQ8JbP2I3kuHCu8przs/cg42QuzNYCGx/Lg/F79XYqc7mhfRBRZ1lXeau6OF1HcYYOspTiJgMP/3C3s3Y3xNRr3yZOW00/AreEBdKqbpHKT0fcddmZ63wkV4btKd2XBzoZZKJOgdvzmVXv79Y6/oX3XcXORT9uwVJyuxdiVpz5FQZxsiNBIRARWa1yhOFajAZlZzB/ohUMZftfMe/s3xvDlsol+mizB7oqdWmAeP+uPeGrQ2C4Uh6o6uA4Sj1FbMNYANEIb2KDrm5OhHV0DXj+CE+kFK8+yR5D/fAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dAqUmyQtEuOxIqet++c/aMbdPQY1lvWhpey7OWc4AP0=;
+ b=Vys4vYY5tcl1ewP+QYBzveRs62zOZaQtCOTH6RIOWlVEOl1htvCxi3v3P6mTaoxOQYrkp9vsIA30obaqTUQFU9FGD9DNZPce+qcVDcJaH15obDnUla/MXXt4jxUqRKCyK+PHJbcJ0E0hWzG8PEKsMfBosDTB7p84Tmz7aauYqr16Cfsae5pwxb6YFW4vSMqEeVmlhA0za8kq/F0pTm3NiT9v5a8huFWggkrKiNwArs7ZuM+IxoLVisXOGaFZH0rPcv4J/Ueb2OMqX68uiZmnlo3Zzx6C58QjLNf3R8foY4m2AAhA1MHtdTzr6BOMtFJwj4hXXiD+BHweVJQqiwsx/w==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA0PR12MB7090.namprd12.prod.outlook.com (2603:10b6:806:2d5::16)
+ by MN0PR12MB5930.namprd12.prod.outlook.com (2603:10b6:208:37d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Sun, 11 Oct
+ 2026 06:51:33 +0000
+Received: from SA0PR12MB7090.namprd12.prod.outlook.com
+ ([fe80::de78:df30:c2e6:7adc]) by SA0PR12MB7090.namprd12.prod.outlook.com
+ ([fe80::de78:df30:c2e6:7adc%3]) with mapi id 15.21.0472.015; Sun, 11 Oct 2026
+ 06:51:33 +0000
+Message-ID: <d6dbce50-1f2d-42dd-86a5-cc7528323da6@nvidia.com>
+Date: Sun, 11 Oct 2026 09:51:29 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/2] net/mlx5: HWS, release L2 to L3 tunnel reformats
+ to their own pool
+To: Yevgeny Kliteynik <kliteyn@nvidia.com>,
+ Alexandre Cassen <acassen@corp.free.fr>, Saeed Mahameed <saeedm@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Moshe Shemesh <moshe@nvidia.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+References: <20261007143830.1733583-1-acassen@corp.free.fr>
+ <20261007143830.1733583-2-acassen@corp.free.fr>
+ <8d147cbd-3be2-412e-ae4a-316c880eadf0@nvidia.com>
+Content-Language: en-US
+From: Tariq Toukan <tariqt@nvidia.com>
+In-Reply-To: <8d147cbd-3be2-412e-ae4a-316c880eadf0@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: TL0P290CA0013.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::20) To SA0PR12MB7090.namprd12.prod.outlook.com
+ (2603:10b6:806:2d5::16)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR12MB7090:EE_|MN0PR12MB5930:EE_
+X-MS-Office365-Filtering-Correlation-Id: a757c59c-97be-4d51-c374-08df276415f1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|261009223027099003|11063799006|4143699003|56012099006|10067099003|18002099003|22082099003|41080700001|15866825006;
+X-Microsoft-Antispam-Message-Info:
+	MZLLauaLod3eYl66xVJLRR3gWSebfOZU7majP9dBSyOGI9NM3gkwfTwR2wukVD9YAzSSurC9AbXCEvbFybCehIKyNudIsbnYj00CKFTW4wrcoMpiAtlpj5WtNOE/vRfJv/SKxKgmrVPFHvfitx2zEjypjgN5pO3DX//CDyXbuwxqUy9GIl44Yd/Nh2elux5bAzSpecZLyka+G+/8qiXGv1RLp4sd07HZPA9w78+H8o7jtxIHlW4ctfqjLFZfPRXyRlWJC4WO20XxIuuuNEFMAdNHWPBP+xJJYPc3BotXMkqGu/CF07sss3cwiNq5B9+jHM+AVjzMjoWpszCWf92PXzoEufcOi9tllzbzXk0LgBkzHAv7icv3tfIzJ0irl7BAyhKYFBn/7RyvX6h1hw1oiRyDjqoZutfbo7VrtT+d5tjwcFpE11K7VeqB3S2EXVTiljqEvhwdnu/sI7rR9aU1+CXFRaTxUB1pfJ6UkbX8VO7Ru12I2RLfdpYDjctMUHjTEiKgkTsho9Rs8RJ83kgYtXd4sWj8SOaZekdivIHfcgPPLlJ9hWuAOTkz5MJ2Ire1SFDN0lf0y5LQcsSxahk+Fa7FOb1EurisAg10VKTFPEIA2KW0J0d6IapSiXTWy9OA/rXGqh6btf1sCnJwQ8QOHeMiv4b1lvD9Bdm6McLEfreQSgDcB8ekj7rob+FxVX47DKvfSrj0KrwFuOKzXEmPc6C7WhvkvSXEv4OqBzB9smPUbzGnlnap5a1vn56dZEdT
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB7090.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(261009223027099003)(11063799006)(4143699003)(56012099006)(10067099003)(18002099003)(22082099003)(41080700001)(15866825006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?c1dINUNMWFhMbEllRlBnVE15ZEVRcmpFV0FwaCtsejBoRlVKa0dvMlBJbDdy?=
+ =?utf-8?B?U1MwOGJGNVFhVDB1Z1AzanFkTWhndGQ4bkNKbnRpN2EyclVQdlM1UVluZ3lK?=
+ =?utf-8?B?THN4ZVJuQnJMMmFmQ00rSW1nemJWT2llNVZOQ1gyUm55TjFvNDBDSlFXZXp0?=
+ =?utf-8?B?dzB5MFdsVFFUMGdoRnlCdjVTenFKOU9UeVBzOU41Z0c5ekZwbTRKdnd3d1ZR?=
+ =?utf-8?B?eUo4WDE1eFgzZjhrQXZHUUpuR0loaHg0dUVMTmtlRDA0ZzRBRFU5M1RjZmI2?=
+ =?utf-8?B?WWEyY1lLOWlBZnllQnBNdTlWekpmbUZLamsyTFFYSG81S09ITkt4Y1VVWisw?=
+ =?utf-8?B?elE3UTl2V0FaMUJlSkUzQmU0ZHZtd3g5SWMrZDdtU2JUb1h2Tm8xTEg0dHoz?=
+ =?utf-8?B?WnBaOTBsbXVUSStjVmdVTXRWYXBPK0ZJQlFBa0ZQbGlxMXZyc01RNTdySUNI?=
+ =?utf-8?B?cUpWVHRZTm9jckJXRjNKVWhkSzRWMkp2S1dVV2xxMmg0Zmw4RGIybk1OdzJN?=
+ =?utf-8?B?ZGRpOFlWM2p4WERCSHJaa2F2TUlLbWJBR09RZG10Z3IyV1lhbVhFUEZCQy9w?=
+ =?utf-8?B?RUZyU2M2a0ZRNCtNWXZrOGVVSWhmdjJ0TlhIY0VGaXJNMWhjZnQ2eGYzSzdm?=
+ =?utf-8?B?UVVkcFU0dXVqZWhQeCthSW9rY2JGblpQbVI4Vk5vRkE4eWlXYnpzQ1ZYVm5M?=
+ =?utf-8?B?UUIzVnFkTTEzbUVvd1pVZHlidmtaNExRUXVhaFgwQ25VRUZtTjZKZHcyVUNJ?=
+ =?utf-8?B?SDl4bVM5YzA3dnZqQU84U2thbk1GTnVnMVdUSDdOMlNzWXpBdGFQOUpUTkFK?=
+ =?utf-8?B?UVU1cDh6aGRnNmJGTUZQYXM0RzFCWEQ3d2FjZWJOcDFvdGhjSVBEQjYvdEp6?=
+ =?utf-8?B?cGNWZWdMNG5GL0dCbk4vNnZqWU1QbGQ2ajlPODRFeUxENFJkMGowWmpTTzh2?=
+ =?utf-8?B?dU91ZzlRaDF2bHBoSG80V3ZPVTlIcmt5ZWdob1lWOU04SnhuK0hRVTQ4M0FJ?=
+ =?utf-8?B?UWdvZWE5RmNiL0cvbTBBWmJaN1pFV0JwdGIrVEpDdjV1TzhhdmhwV1djOG5m?=
+ =?utf-8?B?MVhOWlFpZko4N1ZwSnhaZXFqa1ZPVkM2Z3k2WEg0aHBobFdnSzI3TTdqdEpC?=
+ =?utf-8?B?RmtNTG1MWGU2TERRZzc5WmdpeEpWblowQzMvQjNtY29wMytsc2FveXBoTTFv?=
+ =?utf-8?B?ZzNJSDllMWU1MVZyRGc2OE9yUWdSdHkxNTNCVDhmMG5mYzVYMGRPTmtuNEM0?=
+ =?utf-8?B?V1lYVVpESENpV2w2UUlwaC9ERE9LdTdNRlh6Y1R4d01XZEFhcC9VYU1LaTFo?=
+ =?utf-8?B?Z24xUmFRblc2UDc1czdxR2RvbU9RcjAxL1BDTTkwMDl4UndBaDlHU0FjcllC?=
+ =?utf-8?B?UVUxRlBBM05SVmswd1dmM2VIa2ZpTjNYeloranY5amhGL2JadVBlVTRwcjFw?=
+ =?utf-8?B?R0h1MVdDYWU3NmNhaG42Snh1bGJ6cUhqSGhvZ2pQZ1prczVFNFdNL3dhcFB5?=
+ =?utf-8?B?VW9LUEU2bmRLaU4xQ09ZRVB1Wmttb2dwL1NBVjlVRzM3OTYzZHdEaWRDVW44?=
+ =?utf-8?B?Vnc1c2VpNllqQ3FLK21kdStqTDNGOFFESWVRU3NJUkZRa0t6MFozUEJFSk01?=
+ =?utf-8?B?NDJWUVpiQldFUHZhOXplKzVRQ2wwSGVybWNtSTlpTk94cjk3SlA3am5aNFFK?=
+ =?utf-8?B?b3JjMWExQzNQUVU4VFhMSlZOSHdqaTJUZ25wV0hkRmZpUXJzZ0JZMDNIZE1F?=
+ =?utf-8?B?VkphYkcvNkM3bk0xQmtTcndoRzVkUmFYYmhzV25WeVl0SEh6bEEybmF3akRL?=
+ =?utf-8?B?bURHQ2xyblE0eGlXUklPV0xmOUZNOUFsTHVienMvUU1sZWg2R1A3V3g4ZE03?=
+ =?utf-8?B?YTNOL21DT2RxMFZWN2Myd3hJaGxIcUtuUXFiMzVOOHhLajN5VG9NTVh5WVFi?=
+ =?utf-8?B?ckVGWks0Mm5zQktEMWFHdGdqeEdEN2pBWDZmZ0hRR213TG5rQ0h4TDlYYlF2?=
+ =?utf-8?B?bWpuS3ZTekJnNVVYK3RKVG1zMi83eFBoSjJoTThiZUMwZjRjclFpd2I5cFVI?=
+ =?utf-8?B?QmpuZVNUWDJibG80WDdxUGpZcnhZSDZWM2VPTHVJVm9JdHBmL1hUODdndWd0?=
+ =?utf-8?B?aUY5RFpTRFd2UkN2dk1XbzF6YXYxS0RTMVNPNjIxOHRUQml2WVMycElmTmdP?=
+ =?utf-8?B?c21kcWprM1Z5RzJRTUJJaWc2YU9qQXlGZU1lU1JTUzkxY3FPVU14VnRaQkZT?=
+ =?utf-8?B?eXhzZklGemJNY1FQOThGR2lIZUx1SWpSU2VLaDNmSS9HZEhkOURjYU9pcE13?=
+ =?utf-8?B?UGNuZTVLT3dHeGpISHcvREQvYXAvK2tOVG8zOHJvVGM1K0cxSnBRdz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a757c59c-97be-4d51-c374-08df276415f1
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB7090.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2026 06:51:33.2333
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pyHZ0+JhNv6qdAVsxftSu/y7wzbMaNLe/hX15y646qj8LVcOaBJCIbnXm2QFYBF1ZKPyG57NXh/Et71g+euiww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5930
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 (2) · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 08/10/2026 16:32, Yevgeny Kliteynik wrote:
+> On 07-Oct-26 17:38, Alexandre Cassen wrote:
+>> L2 to L3 tunnel reformats are now released to the el2tol3tnl pools.
+>>
+>> Fixes: aecd9d1020e3 ("net/mlx5: fs, add HWS packet reformat API 
+>> function")
+>> Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
+>> ---
+>>   drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/ 
+>> fs_hws.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
+>> index 5a172c572a68..44b311b4532d 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
+>> @@ -1398,8 +1398,8 @@ static void 
+>> mlx5_cmd_hws_packet_reformat_dealloc(struct mlx5_flow_root_namespace
+>>                               pr_data->data_size);
+>>           break;
+>>       case MLX5_REFORMAT_TYPE_L2_TO_L3_TUNNEL:
+>> -        pr_pool = mlx5_fs_get_pr_encap_pool(dev, &hws_pool- 
+>> >el2tol2tnl_pools,
+>> -                            MLX5HWS_ACTION_TYP_REFORMAT_L2_TO_TNL_L2,
+>> +        pr_pool = mlx5_fs_get_pr_encap_pool(dev, &hws_pool- 
+>> >el2tol3tnl_pools,
+>> +                            MLX5HWS_ACTION_TYP_REFORMAT_L2_TO_TNL_L3,
+>>                               pr_data->data_size);
+>>           break;
+>>       case MLX5_REFORMAT_TYPE_L3_TUNNEL_TO_L2:
+> 
+> Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
 
-- [High] macvlan: incomplete CAP_NET_ADMIN check allows traffic
-  interception
-- [Medium] The commit message presents commit 5b782a811e73 ("macvlan:
-  require lower-netns admin for shared port settings") as covering…
+Acked-by: Tariq Toukan <tariqt@nvidia.com>
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but
-  macvlan_changelink() (drivers/net/macvlan.c:1665-1678) calls…
-- [Medium] This problem wasn't introduced by this patch, but the new
-  check relies on rtnl_dev_link_net_capable()…
-
---
-
-macvlan: require lower-netns admin for IFLA_MACVLAN_FLAGS
-
-This patch extends the rtnl_dev_link_net_capable() check in
-macvlan_changelink() to IFLA_MACVLAN_FLAGS. Changing that attribute now
-requires CAP_NET_ADMIN in the lower device's network namespace. The
-reason given is that toggling MACVLAN_FLAG_NOPROMISC in passthru mode
-calls dev_set_promiscuity() on the lower device.
-
-> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-> index afad90b9222a2..d30cffddb1e1b 100644
-> --- a/drivers/net/macvlan.c
-> +++ b/drivers/net/macvlan.c
-> @@ -1641,7 +1641,8 @@ static int macvlan_changelink(struct net_device *dev,
->  	int ret;
->  
->  	if (data &&
-> -	    (data[IFLA_MACVLAN_BC_QUEUE_LEN] || data[IFLA_MACVLAN_BC_CUTOFF]) &&
-> +	    (data[IFLA_MACVLAN_BC_QUEUE_LEN] || data[IFLA_MACVLAN_BC_CUTOFF] ||
-> +	     data[IFLA_MACVLAN_FLAGS]) &&
->  	    !rtnl_dev_link_net_capable(dev, dev_net(vlan->lowerdev))) {
->  		NL_SET_ERR_MSG(extack,
->  			       "Changing shared macvlan port settings requires CAP_NET_ADMIN in the lower device network namespace");
-
-[Severity: High]
-This isn't introduced by this patch. Since the guard is being
-extended here, though, does it still miss the attributes that let a
-child netns admin receive traffic from the lower device?
-
-IFLA_MACVLAN_MODE and IFLA_MACVLAN_MACADDR_MODE are not covered by the
-rtnl_dev_link_net_capable() check. One changelink request is enough
-for root in the macvlan's netns to do both of these:
-
-  1. Switch a non-passthru macvlan to MACVLAN_MODE_SOURCE. set_mode is
-     applied before the IFLA_MACVLAN_MACADDR_MODE branch.
-  2. Pass MACVLAN_MACADDR_ADD with an arbitrary MAC address.
-
-macvlan_changelink_sources() then calls macvlan_hash_add_source().
-That inserts the entry into vlan->port->vlan_source_hash, which
-belongs to the shared struct macvlan_port, not to the upper device.
-
-On receive, macvlan_handle_frame() calls macvlan_forward_source() for
-every frame on the lower device, keyed on eth->h_source. For each
-matching entry, macvlan_forward_source_one() delivers a clone to that
-vlan. Nothing restricts the MAC to stations that belong to the child
-netns.
-
-A container that only owns the upper device could therefore add the
-MAC of, for example, the gateway on that segment. It would then get a
-copy of every frame that station sends on the lower device. That
-includes frames addressed to the lower device itself or to macvlans in
-other namespaces.
-
-If MACVLAN_FLAG_NODST is already set on that vlan, consume becomes
-true in macvlan_forward_source(). The frame is then dropped instead of
-reaching its real destination.
-
-5b782a811e73 treated mode as a per-upper setting. Does that still hold
-once MACVLAN_MODE_SOURCE fills a port-wide hash?
-
-Should the check also cover IFLA_MACVLAN_MACADDR_MODE, and maybe the
-switch into MACVLAN_MODE_SOURCE? Or is source-mode filtering meant to
-be allowed for an admin of the upper's namespace alone?
-
-[Severity: Medium]
-
-The commit message says that 5b782a811e73 "only covered
-IFLA_MACVLAN_BC_QUEUE_LEN and IFLA_MACVLAN_BC_CUTOFF". That reads as if
-flags were overlooked. However, 5b782a811e73 left flags ungated on
-purpose:
-
-    rtnl_dev_link_net_capable() short-circuits when the lower
-    device shares the macvlan network namespace, so an ordinary
-    single-namespace configuration is unaffected, and per-upper settings
-    such as mode and flags stay available to an administrator of the
-    macvlan's own namespace. This is the model ipvlan has used since
-    commit 7cc9f7003a96 ("ipvlan: disallow userns cap_net_admin to change
-    global mode/flags").
-
-That commit also said the passthru-only port state cannot be reached
-from a second upper, since passthru requires port->count == 0.
-
-Should the commit message say that this reverses the earlier decision,
-and explain why that reasoning no longer holds?
-
-The extack text is reused unchanged. IFLA_MACVLAN_FLAGS is stored in
-vlan->flags in struct macvlan_dev, not in the shared struct
-macvlan_port. Is "Changing shared macvlan port settings" accurate for
-this attribute?
-
-The new check also covers more than the problem described. In the flags
-branch below, only this path touches the lower device:
-
-	if (macvlan_passthru(vlan->port) && promisc) {
-		...
-			err = dev_set_promiscuity(vlan->lowerdev, -1);
-		...
-	}
-	WRITE_ONCE(vlan->flags, flags);
-
-On a non-passthru macvlan, or for a change that leaves NOPROMISC alone
-(for example a NODST-only change), the branch only writes vlan->flags.
-After this patch, an admin of the macvlan's own netns without
-CAP_NET_ADMIN in the lower netns gets -EPERM for those changes too.
-
-Is this uAPI change intended? Could the check be limited to passthru
-mode when MACVLAN_FLAG_NOPROMISC actually changes?
-
-[Severity: Medium]
-
-This isn't a bug introduced by this patch, but the IFLA_MACVLAN_FLAGS
-branch in macvlan_changelink() changes the lower device's promiscuity
-without checking netif_running(dev):
-
-	if (data && data[IFLA_MACVLAN_FLAGS]) {
-		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
-		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
-		if (macvlan_passthru(vlan->port) && promisc) {
-			int err;
-
-			if (flags & MACVLAN_FLAG_NOPROMISC)
-				err = dev_set_promiscuity(vlan->lowerdev, -1);
-			else
-				err = dev_set_promiscuity(vlan->lowerdev, 1);
-
-Otherwise the passthru promiscuity reference is held only while the
-macvlan is up. macvlan_open() takes it:
-
-	if (macvlan_passthru(vlan->port)) {
-		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
-			err = dev_set_promiscuity(lowerdev, 1);
-
-macvlan_stop() drops it:
-
-	if (macvlan_passthru(vlan->port)) {
-		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
-			dev_set_promiscuity(lowerdev, -1);
-
-What happens if NOPROMISC is toggled while the macvlan is down?
-
-Clearing NOPROMISC while down adds 1. A later open adds another 1, but
-stop removes only one. Does the lower device then stay promiscuous for
-good?
-
-Setting NOPROMISC while down drops a reference that was never taken.
-That could take away another holder's reference. If the counter was 0,
-__dev_set_promiscuity() would wrap it to UINT_MAX with IFF_PROMISC set,
-and later +1 requests would fail with -EOVERFLOW.
-
-This goes back to df8ef8f3aaa6. With this patch applied, reaching this
-path needs CAP_NET_ADMIN in the lower netns, or both devices in the
-same netns.
-
-[Severity: Medium]
-
-This is a pre-existing issue, but the check extended here depends on
-rtnl_dev_link_net_capable(), which only looks at current's credentials:
-
-net/core/rtnetlink.c:rtnl_dev_link_net_capable() {
-	return net_eq(link_net, dev_net(dev)) ||
-	       ns_capable(link_net->user_ns, CAP_NET_ADMIN);
-}
-
-The other cross-netns checks in rtnetlink use
-netlink_ns_capable(skb, ...). That also requires the socket opener to
-hold the capability (the CVE-2014-0181 hardening).
-
-Could a confused deputy get past the lower-netns check here? For
-example:
-
-  1. An unprivileged user who owns a child userns opens a NETLINK_ROUTE
-     socket in the child netns.
-  2. A privileged program (for example a setuid-root one) is made to
-     write an attacker-controlled RTM_NEWLINK message to that fd.
-  3. netlink_net_capable() in rtnetlink_rcv_msg() passes, because the
-     opener is privileged in the child userns.
-  4. rtnl_dev_link_net_capable() in macvlan_changelink() passes,
-     because current is global root.
-
-Nothing checks that the opener lacks CAP_NET_ADMIN in the lower netns.
-
-The helper came from 8165f7ff57d966. Other callers such as ip_gre,
-vxlan and geneve share it, so a fix there would probably be a separate
-patch.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010062944.2671656-1-bsdhenrymartin%40gmail.com
