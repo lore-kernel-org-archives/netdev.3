@@ -1,217 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f5.google.com (mail-yx2-f5.google.com [74.125.224.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755643BFE2B;
-	Sun, 11 Oct 2026 03:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F918364029
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 03:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791690679; cv=none; b=dCmjjIgrjdOqEQ4O8qKY/6E6b1C6q0UD35O4i+43B7snO6dFt/Pu9PlJbnUz9Zk5GvwJgCHbyVHPia+nnRaABBCz7vktakp5BNsNkNsHuHlHjYj7pSix0p/ZrD7BpbVczudzqgwoJUlT8PJ3cdlPv+wzUjeVA8TG8sh0tmj/vhk=
+	t=1791690718; cv=none; b=ujmLd0MBTMJ1aAVG1QKuaoOZz00SnN2tE8J6iMs5hc6gSQ1h++t9TloGI7fDGJj76I7vtk26FjYYFiLWDDf+bbKNVe/HrfGU0Tm9pEa4+41vrzwp7eA/FG0KMt+H0LSn37yUgy5ZSRHWGKMWW/s+D5YuyeCQRZgST9S3ltP0y20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791690679; c=relaxed/simple;
-	bh=ZvqOF+v/s082r9S8506nNWLLgfVXF4V04WTvyqOsRDE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qUeuGOydKgyWUQYb6XWtmY3vL8jBxVJVG4WOFmeb6wn75dy1gRiRscMPdW740HjeaJ1PQc3VhuQ16J5kHGAlK1QTKJwTGOFXoZJX0pL49000eNMHRNzh22FSk8y3RDnOPudG4+zlBrxeWYElVqJOY3BsHjgQvs4/1TQZOoP1CyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b510PXK8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791690718; c=relaxed/simple;
+	bh=rsYl2evSxKIO+SY5ef5tx8ssbRNTBeYHiGZ0B0zC0F8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z5ZNBaMTUwRkhhBXfLRFEGBmD5N6w+ktECbXkBZlRGnCuL34GnBcQNGvb72SzvPSJbihKRYNGHtGa6f/tzs6M9z86gnAcBVxiZ0euC0yfDNPXpnH3g4lKH01fRdNJ/2lPKmSvwP9Ps67UabMlYZyYEpEwD7Lvz8yz1/xX7cyt2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YGOGWf/K; arc=none smtp.client-ip=74.125.224.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b510PXK8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D86C1F00893;
-	Sun, 11 Oct 2026 03:51:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791690677;
-	bh=BxIG9RGXtPeoCRfraWyVT7uMTEzIpuY6URyi2+XVd/I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=b510PXK8t7+e5mIzuaKO7Ly8zesK021UNW57R1CeMEbqp4pAfZSvRQdG/oeWkRkbo
-	 Yih1wVc9W/Y2hVbWXTmkH4NNNrcbHpWBKNb8Fv/qLnFh4z9L+yhpG9Ddej1u2vw+6u
-	 JIKlSFC+ZYTOM5slXJXobtDAV6n0Qaslt0gDG1wqQmstX/mrQlmEgODLRyiwntGT39
-	 ePaIUTT8i3lBKwAXtVRI7UKJttIOEWTQYriEbCVDUGMs+/zKD6us5NJoIzzQ48TygH
-	 o4bLuzptQZQM6UQktHNo1fccCxik0jbhySsOzqBBaox8RiGZGX3kSxHObIsTuHw2vw
-	 oJ5ytWqxcGNgg==
-Subject: Re: [PATCH net-next v3 2/2] docs: netmem: document netmem and memory
- provider design principles
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
- hawk@kernel.org, ilias.apalodimas@linaro.org, ast@kernel.org,
- daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me,
- lrizzo@google.com, bjorn@kernel.org, asml.silence@gmail.com
-Date: Sun, 11 Oct 2026 03:51:15 +0000
-Message-ID: <179169067595.434549.16209693488880004107@kernel.org>
-In-Reply-To: <20261010033630.1171692-3-almasrymina@google.com>
-References: <20261010033630.1171692-3-almasrymina@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YGOGWf/K"
+Received: by mail-yx2-f5.google.com with SMTP id 00721157ae682-8ae946560ceso2838827b3.1
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 20:51:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791690716; x=1792295516; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AuaSUooYMWjiVC3in8ithjctEvqzUlOvqy+QwP+9O/Q=;
+        b=YGOGWf/K2syJkwyB/x8MUt0E2WuH/vILIJDu2edKk3jNkx09BmMFCDE8IY8VSjdwAx
+         HN67J+7ECq/VIRc76YuM4BwY8q/oN6bW8nCV1obMsK38R2xj2OapbrcERtkganxCCOCi
+         P2snNmjjlzKwBFtN9CBX+bx4VhO7pnpbfbHriqHIWrhrON3uLIqAo66BvQDY66ni4P9c
+         X6S8e8pwGlHhmq6XijfVgN5Ev/nhd+PgcJg9AYzBLcv1ITOV4YtheVxi1AG9VV2GfRaK
+         3hCVtS/3FVCeUxDq58SpKkGpYF4xn83UG97P6PFkrVHQRN7prtCz/2RyYchS66wf9xxr
+         6EGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791690716; x=1792295516;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AuaSUooYMWjiVC3in8ithjctEvqzUlOvqy+QwP+9O/Q=;
+        b=ezegjslW4NVUWMwV6fy6G8RQKzEGBy9hiR7XCdLqOfIhQy+2qS5F1LEFxhQ9RHyH7v
+         34/K+bet1CybmF/tG79ZP0Ku11OggwHUbX4e8zeDZ31mG4cjWArZyNrpMcmgkgdq9GaZ
+         q4QtKV9yLJXOaLJ0cUHEMIPWsUqMzK3GwHBeKjJ1MqXTXQUs6me0HGdts5CstchQrVgM
+         qlWYzewGmsjP+t5y4Da04KZnLx/dH3ZsrWXTrGMJOlRvh/162pKARIaTC72MNoqcMPZq
+         vKDqPRUuwUGcNtTBmwaSqRt6sk9VAYd/L8sbakahgwwCMVPTdzwNpknib0hrDj28l75R
+         yX3g==
+X-Gm-Message-State: AFq9FYKgKkzyuwxxFmZIimHDqM43GpLOdPS9Bb9aDpShISITZEfoJCFb
+	Ps9xB0m6+1p0Qv63TvMvJjTuYn0BnO5qgO7NdBaII0M3hk4/QdKfG1MtkH+s316wS9M=
+X-Gm-Gg: AYBFou1vQu82p3CbzML1Fu9OocYEkIjJWW5o6CR63i+YSFioIXFujE8uZhgYi43/qTM
+	R0BOsaam+kjlzLH0W+M7RABpM+vcfrusfHLTopEiqxCRXQiX63MInh/e0PgyVILVnEI6MG7Wb0E
+	i8cd6UFqk/I96RaQQ+uavTWWCYqT0IkM2w20Qdsa3ShnEVpreAMl8uhjZNepgVgK7J9XN0CIXmz
+	KzemOxbUs+DG6Aw8zwoxakkKP/Ri/AzYFLQmyGGTZEK38K4wGttOd/DUFBk/zwiWkkSjzc8zQGz
+	kBi+xnaK0vtO8TQkj5OAbnj1P9nA0Fjm9I1G1O5MnQrqKn6NRdYd/vEWv7XBoixUAS0JQ0OJBdr
+	b68X9Hs8kelrSO24KzJpkz5zRTmvvSoNNzbcrYXaAeuAY7e+EA4cHdz3tPsEJLNYhQSeJ4IVH+R
+	xfrjsrehe23liWa/jkHsl0tWQZRA3I7HiYg78XP/GFnEmJ+yNi1OWQrpYcBimpHteHlCZpUlvDN
+	0BGAc4/iXYQhWgQHDNVU+D3j1+dxvmS9QrgtY5mFTgv4QvU3p8=
+X-Received: by 2002:a05:690c:c045:b0:8ac:36da:c494 with SMTP id 00721157ae682-8b07ed14cebmr16160647b3.38.1791690715908;
+        Sat, 10 Oct 2026 20:51:55 -0700 (PDT)
+Received: from Xinshengs-MBP.attlocal.net ([2600:1702:7d20:7d20:68ae:b2c8:bae:dcc6])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b07f226b50sm22161307b3.28.2026.10.10.20.51.53
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 10 Oct 2026 20:51:54 -0700 (PDT)
+From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	oliver@neukum.org,
+	giuseppe@southpole.se
+Subject: [PATCH net v2] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+Date: Sat, 10 Oct 2026 23:51:50 -0400
+Message-ID: <20261011035150.53315-1-xinsheng.zhu.ny@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+usbnet_read_cmd() returns the actual transfer length, but cdc_ncm_init()
+only checks for negative errors when reading the NTB parameters. A short
+response therefore leaves the missing bytes zero-filled, and
+initialization continues with parameters that were not supplied by the
+device.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+CDC NCM 1.1, section 7.2.1, Table 7-3 defines a 28-byte NTB
+parameter structure. Require GET_NTB_PARAMETERS to return the
+complete structure before continuing initialization.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Return -EIO for short responses, including zero-length responses, and
+preserve negative errors from usbnet_read_cmd(). This ensures that a
+zero-byte response cannot be reported as successful initialization when
+rejecting an incomplete response.
 
-- [Medium] Item 5 of the new Design Principles section in
-  Documentation/networking/netmem.rst says every frag in an skb must be…
-- [Low] Items 2 and 5 of the new Design Principles section contradict
-  each other once a page-backed memory provider exists.
-- [Low] Item 3 of netmem.rst, and the matching net_iov comment in
-  include/net/netmem.h added by the commit "net: netmem: document netmem…
+The issue is theoretical and was found by manual inspection of
+usbnet_read_cmd() callers with LLM assistance.
 
---
+Fixes: 36c35416a94f ("cdc_ncm: fix endianness problem.")
+Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+---
+Changes in v2:
+- Return -EIO for short responses, including zero-length responses,
+  while preserving negative errors from usbnet_read_cmd().
+- Add the missing Fixes tag.
+- Changes of description in the commit message.
 
-docs: netmem: document netmem and memory provider design principles
+v1: https://lore.kernel.org/netdev/20261005041525.49111-1-xinsheng.zhu.ny@gmail.com/
 
-This commit adds a Design Principles section to
-Documentation/networking/netmem.rst. The section covers the netmem_ref
-abstraction, the rule against downcasting, decoupling memory providers
-from net_iov and net_iov from unreadability, and delegating type-specific
-logic to the lower layers. It also adds a rule against mixing skb fragment
-memory sources.
+ drivers/net/usb/cdc_ncm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> diff --git a/Documentation/networking/netmem.rst b/Documentation/networking/netmem.rst
-> index 217869d1108dd..6871dcdd700cc 100644
-> --- a/Documentation/networking/netmem.rst
-> +++ b/Documentation/networking/netmem.rst
-> @@ -19,6 +19,59 @@ Benefits of Netmem :
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 35db38cb3e4a..79893d2342ca 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -524,9 +524,9 @@ static int cdc_ncm_init(struct usbnet *dev)
+ 			      |USB_RECIP_INTERFACE,
+ 			      0, iface_no, &ctx->ncm_parm,
+ 			      sizeof(ctx->ncm_parm));
+-	if (err < 0) {
++	if (err != sizeof(ctx->ncm_parm)) {
+ 		dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
+-		return err; /* GET_NTB_PARAMETERS is required */
++		return err < 0 ? err : -EIO; /* GET_NTB_PARAMETERS is required */
+ 	}
+ 
+ 	/* set CRC Mode */
 
-[ ... ]
-
-> +3. **Decouple net_iov from unreadability**: ``struct net_iov`` is flexible and
-> +   has no inherent restrictions; it may represent either CPU-readable or
-> +   unreadable memory. Today, in-tree ``net_iov`` implementations are unreadable
-> +   by the CPU (``netmem_address()`` returns ``NULL``) and some existing code
-> +   still reflects that limitation, but new code must not assume ``net_iov``
-> +   implies unreadable memory (check readability via ``netmem_address()`` or
-> +   ``skb_frags_readable()`` instead) and should, as much as possible, generalize
-> +   existing limitations to match the design principles.
-
-[Severity: Low]
-Can netmem_address() reliably test readability for page-backed netmem?
-For pages, it ends up calling page_address():
-
-include/net/netmem.h:netmem_address() {
-	if (netmem_is_net_iov(netmem))
-		return NULL;
-
-	return __netmem_address(netmem);
-}
-
-With CONFIG_HIGHMEM, page_address() in mm/highmem.c returns NULL for a
-highmem page that has no permanent mapping. The CPU can still read that
-page through kmap_local_page(), which item 1 uses as its example.
-
-Highmem page frags are normal in skbs on 32-bit kernels. They come from
-sendfile/splice or from MSG_ZEROCOPY user pages.
-
-Could new code that follows this advice and treats a NULL return from
-netmem_address() as "unreadable" wrongly reject or skip valid highmem page
-frags?
-
-The same advice appears in the struct net_iov comment in
-include/net/netmem.h. That comment was added by "net: netmem: document
-netmem and memory provider design in comments".
-
-Would it be more accurate to say that a NULL netmem_address() means "no
-permanent kernel mapping"? Another option is to point only to
-skb_frags_readable() or to a dedicated netmem readability helper.
-
-[ ... ]
-
-> +5. **Do not mix skb fragment memory sources**: All ``frags[]`` in an
-> +   ``sk_buff`` must either be ``struct page``-backed or belong to the same
-> +   memory provider instance (for example, the same ``devmem`` binding or
-> +   ``io_uring`` area). Mixing ``struct page`` and memory-provider fragments,
-> +   or mixing fragments from different memory providers within a single
-> +   ``sk_buff``, is not allowed (including when coalescing ``sk_buff``\ s).
-
-[Severity: Medium]
-Is this invariant enforced anywhere today? Items 2 and 3 note that some
-existing code does not follow them yet, but this item has no such note.
-
-The companion commit "net: netmem: document netmem and memory provider
-design in comments" adds this comment in skb_try_coalesce():
-
-net/core/skbuff.c:skb_try_coalesce() {
-    ...
-	/* All frags in an skb must either all be struct page-backed or all
-	 * belong to the same memory provider instance; do not coalesce skbs
-	 * that would mix them.
-	 */
-	if (skb_frags_readable(from) != skb_frags_readable(to))
-		return false;
-    ...
-}
-
-skb_frags_readable() only returns !skb->unreadable. Two unreadable skbs
-can carry net_iovs from different devmem bindings, or from a devmem
-binding and an io_uring zcrx area. Both would pass this check, and their
-frags would then be merged.
-
-Other places look similar:
-
-- tcp_skb_can_collapse() in include/net/tcp.h compares only readability.
-- skb_gro_receive() in net/core/gro.c checks pp_recycle and skb_zcopy(),
-  but not readability or provider identity.
-
-On TX, tcp_sendmsg_locked() looks up the binding again on every sendmsg
-call with net_devmem_get_binding(sk, sockc.dmabuf_id). Before it appends
-to the tail skb, it only checks:
-
-	if (copy <= 0 || !tcp_skb_can_collapse_to(skb) ||
-	    unlikely(skb_frags_readable(skb) != !binding)) {
-
-msg_zerocopy_realloc() then extends the tail skb's uarg. Because of that,
-the -EEXIST check in skb_zerocopy_iter_stream() never triggers.
-
-bind-tx does not require privileges. Could a user bind two dmabufs to one
-netdev, then send two back-to-back MSG_ZEROCOPY sendmsg calls with
-different dmabuf_ids? That would leave net_iovs from two bindings in one
-skb.
-
-validate_xmit_unreadable_skb() in net/core/dev.c already relies on this
-invariant, because it only checks frags[0]:
-
-	niov = netmem_to_net_iov(skb_frag_netmem(&shinfo->frags[0]));
-	if (net_is_devmem_iov(niov) &&
-	    READ_ONCE(net_devmem_iov_binding(niov)->dev) != dev)
-		goto out_free;
-
-Should these places get a provider-identity check? Otherwise, could this
-item and the skb_try_coalesce() comment say that only readability is
-enforced today, the way items 2 and 3 describe their own limitations?
-
-[Severity: Low]
-Do items 2 and 5 conflict once a page-backed memory provider exists?
-
-Item 2 says "a memory provider that returns struct page-backed
-netmem_refs to upper layers is allowed". A frag from such a provider
-fits both categories in the first sentence here: "struct page-backed"
-and "same memory provider instance". Read that way, it could share an
-skb with ordinary page frags, or with page frags from a different
-page-backed provider. skb_try_coalesce() would allow that today.
-
-The second sentence, however, forbids "Mixing struct page and
-memory-provider fragments, or mixing fragments from different memory
-providers".
-
-The new skb_frag_t comment in include/linux/skbuff.h uses the same
-wording.
-
-Could the two categories be stated so they don't overlap? For example,
-"non-provider struct pages" versus "frags from a single provider
-instance, whatever their backing".
-
+base-commit: 6dc989ea46b96ce170840174b4a38c4a387fb005
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010033630.1171692-1-almasrymina%40google.com
+2.54.0 (Apple Git-157)
+
