@@ -1,313 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A1D23BF91;
-	Sun, 11 Oct 2026 07:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791702795; cv=none; b=a4PNFUe5oPGzFM9f64ahehUPzTdQd/S5eKX6GZnDsGjk4hWjp8cWCmyBSmESxw9px4DiKQgzdRUitSN+Hoq4RBfng6PutZoyVb9FGNTWUJDOn1c+Mvdtbfxr5sw6v1hrobSUR/eT72rtu7gSsR+u+5B96m86f7Pco7GsyuW85Ro=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791702795; c=relaxed/simple;
-	bh=UNzFcPb9iLWtp+2/arO5644kd4QaDQJ80HY5ydr9uaU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hdIZgGgzc9yVCv8PUCL5ntA/Ktkk0XozqmKRL7EJ38KOrmU7sW+U5qylA5eF1Y9pMStyBFWakf/IhtNPPHLr+WnYF8E5+iuWqHiecFJa7erH24Ja6YWRtZBpH411QS/O+2cGQ74nRSsY0o+oajvkv0f7d+70nwb7fgS90/Spbxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mNBvxFeF; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15322BD022
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 07:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791703234; cv=pass; b=bXrVib9HWkt07a9AlEDZyfdmwByQPGDqA0NQsJjemqA2mVp7b053QhzK706w1lPUoay7O4QoOYm4Mh5FVxIo2PjvSmAinQ3CluTI87nh7FNDSg+qQfHVmvtdC6LEMBHtE3whq/Y8/+w03bI3d/jn53DuW3xzOe2g5b6xpoJrevE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791703234; c=relaxed/simple;
+	bh=8KOKIwaDjvb2cYDxEoE6i5g/eeyXWfmuX1STLiv97yY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mD9DoRaSMrE7tz7KvEnNPPurpWjTWoVHBYemo68hSXU2bQwC4TFpMQWMbd5Cxjd8EW6P12w1qqNluMVSo/Tc0oymSGdQ5PUIne3wmkxWOCOM1Y8rVs/twU4mYWvFnCLd+7HS9oZmPxv0tMY7PnDUUaheY8DNzwZ2EnY/AQpOLKU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com; spf=pass smtp.mailfrom=jclark.com; dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b=sxXtctnu; arc=pass smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mNBvxFeF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41E81F0089B;
-	Sun, 11 Oct 2026 07:13:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791702793;
-	bh=lnGwD9fE2Mz8xFJXNMFKNTcck4mpALjdDYG863eHPdI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mNBvxFeFaQ4RhUJs3pOO9esgYpSRfnJA8rmK2arh9G/rUwy4ig//gn9maQac8bZ3N
-	 kI4P1C6YUU/GKTPYharXt72o8oCbhfVrnPbdYvz4Nhgc0IXDe5uJTaAQGD0kgNU3JR
-	 o+3Ow6fhxQSmE9TSIdes/QqpV3uCsvZqyXpY8QapuL8FfTpIxLAm6WilJlwMADOhwz
-	 XvqDjdIKNQFrsr/kg/ajPKxMkJKmdmkqNvmUCKwpdL6U7tWS19PbWxQVXuoLk6JHr0
-	 /y+SofWLS1I2UsQ77q2JprTYs7XayWd/CQTaYJdZ7TyCvIPsHqd0mIMeYMZJ0c9FnR
-	 AUmmcyAu6V5aQ==
-Subject: Re: [PATCH net] net: bgmac: clear TX slots when freeing the ring
-From: netdev-bot+sashiko@kernel.org
-To: rosenp@gmail.com
-Cc: netdev@vger.kernel.org, rafal@milecki.pl,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- nbd@openwrt.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 07:13:12 +0000
-Message-ID: <179170279214.434549.15109616376617039657@kernel.org>
-In-Reply-To: <20261010070418.84457-1-rosenp@gmail.com>
-References: <20261010070418.84457-1-rosenp@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b="sxXtctnu"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91b63bd2030so15377356d6.3
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 00:20:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791703231; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SmQPcOESUdDeWVWdxonpD44KlgHdZlfH867X9iEd7EcfSoXNP59QFCp1W8j1T0Di4b
+         wKpSRHhdLAV5UmQ4S/m7hWid8yAwrfSmbrHZeHejxLagJsq8VM2AuSRlx1csbNJrhI+v
+         cpeHOlXknU2/uBgdvRNk/8iE88Dy+Elt28f9Gdkr2gTMSuoxP/l6XKE5FTSm5yy4qsD1
+         S9llOu/0EW8Kov8HWpGRZTpi8C4J8QBKHDFF3AtbT6QPVqAqWifYQHOcxt2xOjUuuF2h
+         uKOhuoMJwLw5K7uzOMvGPWRP56qGW87+nlqYm/wyilYrD1FCy+QgqI0Q3jXHhGY3/nWN
+         Um9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8KOKIwaDjvb2cYDxEoE6i5g/eeyXWfmuX1STLiv97yY=;
+        fh=Bp93nmmQUbRa4nlqbs7EyFxet890CZDEWeMUJl95O/U=;
+        b=qwilJXa2QtlxiKlEVIodhtQi6uHua9QWm0A/A3esVv4RdY4+dHWxptEyRDYEle69C5
+         9/jIeW8UXZ20FAWJZTyiI6oAt+Yx7hNXZ727KXJZbjXT67TPKme/i6imnXvzUJU/zoS/
+         lo0HJxtNBd3ixoSgh71eBBssRSe7geZrT6mgG6EZrvOZT3tqlqcMPC6fSSosvzjt8loZ
+         mhxyYWs/6NG/9N3tLTcSDfiSdZxVvXYYpzAIrmN/NGWjqUh7V7z2lvU3yo/Os1Mxa8FR
+         m4odKK/jHjvQGDiYgqiWFZowi/tYLeY6elMU2CL+KzRp5Hmwz0dYu4qfdWLW+Ss85f5y
+         7khA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1791703231; x=1792308031; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8KOKIwaDjvb2cYDxEoE6i5g/eeyXWfmuX1STLiv97yY=;
+        b=sxXtctnuF0KW8c9lkta/dvV10ZVXoLbzP5Y/uMAEDtmPPnRg1iAI8FeSxXxhKVHQRd
+         ZJ9eoCL6ExkZ1I5eI8dS/8f0+LtMq/uujSs8zJrifl6bNdFd/HmvLIMKSZr+6YoVPveu
+         pTfJSh80QCwM15GtuaxHMB94w9cKJ+f5Ab4HLP1vgLGmsnOJXDnLA9QGt2zGE9eU4IeO
+         w9h6jAd14i9v9p14Ii/LMlJFnGbbR2tVArHhHhiE8crLN6aknmFmVlSLdLWVT9b9z6uo
+         BI5YzDpHqRwqzg4prsMGgzKmOhmIVNTYbth4whp+EgvFZsryWxkSJFcopn9hWTB7IlrK
+         nnYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791703231; x=1792308031;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8KOKIwaDjvb2cYDxEoE6i5g/eeyXWfmuX1STLiv97yY=;
+        b=wlFG5A82Ls5Nd8kQ6f555KEE1rdjMyCe8kcf9TPKFZt8vP0Kw+hgPEuH+XdtkZ60vR
+         OZA/UKgCKvt0MQr1Q6X9DBYOgmMkkXFt/BYQ0GsugiXSo8RJExstS27G6NqT7iI3X3qL
+         pwpgFtLlQryhM1EBkEw3EXw4i/gdhKo8TvA0i8/URN/zBkwXAHHgSYyzO6MXditHoj/b
+         gwvmZIdxBwHCkBZ9y8Oa49hFSA6AMaUu4VovNPrnYY6RMtqdLNvYi2EOAe/Zw3Gs43G8
+         6tdBCQwE8d8DLWkoD6jFiwZo8BNX/q3X54oviSA9hq3aqgnnYqmP3EZPzo58wURruUVT
+         SDTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz63gQLEKFhiiM7I1Lsa+aRa72Eap9IUiuNF43LTCeT0PDcgtaPb0rbLib+y+qJAhHfBxEbH0o=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK/3xUWX8SqjAVvlaQaZdEWw2OTCzBDRl5QtSqlV+PQzFbj4rq/
+	kI/L6bwQfuckJMJCc+MFDGCMQ6ySTQKS1EHfoMGs4Mmg1FgZY1My7L99iwywoFujE5UQHqTkEiL
+	hhsLb2WFb+XRZT2tSWJC5qLLNPBt/xC3IYSsKFab0
+X-Gm-Gg: AYBFou1C+hdJhej5Uqza3nEBxwt+2W5azYels7oHNov9Ab+C5mx/czyXmrl1yvJyf6l
+	oLr6jKyhsetcFqDMNuNYVyuARa597tHXy2WBloYJiLWldqsf9OO4Wg1XweDrx4WXbQ/8FWjTN2q
+	XaJF5T4hXYmx8Scc3bcmig/BBioBOs9+VZgcWcD5/EKDiameGxqsY47A/iY9xTMZs8TtGRWPZIl
+	zcKsra2fWhepH9xFezRZ0HzC39WGvSWAnHplEiiofyjbHJwh3KraG1HkLjDjUs5uv7SwlT5iKC5
+	awK1DHIqu7RLe/uRObJhQ6ZhJ6NltLlAecgwpD7bywoscpjB+SG6XpA=
+X-Received: by 2002:a05:6214:3209:b0:917:9ec0:f0fb with SMTP id
+ 6a1803df08f44-91b5e019a01mr109533446d6.24.1791703231532; Sun, 11 Oct 2026
+ 00:20:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261009143506.2507607-1-jjc@jclark.com> <20261009143506.2507607-6-jjc@jclark.com>
+ <3b1a2994-5251-4800-8c61-b63d7a435b21@broadcom.com> <60accbd89cfaf0d4be1da5ec2fafd975@tipi-net.de>
+In-Reply-To: <60accbd89cfaf0d4be1da5ec2fafd975@tipi-net.de>
+From: James Clark <jjc@jclark.com>
+Date: Sun, 11 Oct 2026 14:20:20 +0700
+X-Gm-Features: AclHuK9Ocwt7HcU-vYQEwbBPDKcgav2cMdh95NRnUvL2pDHuZe7MJXWz9dxj8UI
+Message-ID: <CANz3_EYfcBopo=HgRioXkhoT6P+4WWpfFT7UeWkXd5eM_RNpSA@mail.gmail.com>
+Subject: Re: [PATCH net-next 5/5] net: mdio: bcm-unimac: implement timestamped
+ MDIO writes
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Doug Berger <opendmb@gmail.com>, 
+	=?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
+	Russell King <linux@armlinux.org.uk>, Conor Dooley <conor.dooley@microchip.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sat, Oct 10, 2026 at 10:18=E2=80=AFPM Nicolai Buchwitz <nb@tipi-net.de> =
+wrote:
+> I dug a bit deeper on a CM4: AFAIU the MDC runs off the GISB clock,
+> which the firmware sets to 200 MHz (CPRMAN 0x1d8, PLLD_PER 750 MHz /
+> 3.75). Bumping that divider to 4.0 at runtime moves the MDIO busy time
+> by exactly the same ratio, so that's the one. The 250 MHz you have in
+> mind is genet250 / genet125, the RGMII side, a different generator.
+>
+> So instead of a fixed clock or a compatible match this could just be
+> BCM2711_CLOCK_GISB in clk-bcm2835 (critical, firmware owns it) and
+> clocks =3D <&clocks BCM2711_CLOCK_GISB> on the mdio node. I can send that
+> if it helps.
 
-Critical: 0 · High: 1 (1) · Medium: 1 (2) · Low: 0
+Thank you very much for looking into this. I think this would solve
+the problem from my end.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Let me just confirm how I would need to adapt my patch with that fix:
+in the pdata branch of the probe, I would call devm_clk_get_optional
+to find the clock on the mdio node, falling back to pdata->clk. I
+would still add the chip-specific compatible string because the number
+of MDC periods has only been measured on that specific hardware.
 
-- [High] net/bgmac: broken DMA mapping error cleanup in TX path
-- [Medium] The patch says "Unmap before freeing", but
-  bgmac_dma_tx_ring_free() only orders unmap before free within a single…
-
-Pre-existing issues:
-- [High] In bgmac_open()
-  (drivers/net/ethernet/broadcom/bgmac.c:1177-1205), the hardware is…
-- [Medium] The error paths of bgmac_dma_tx_add()
-  (drivers/net/ethernet/broadcom/bgmac.c) leave slot->dma_addr non-zero,…
-- [Medium] The err_dma unwind in bgmac_dma_tx_add()
-  (drivers/net/ethernet/broadcom/bgmac.c:210-221) unmaps the wrong…
-
---
-
-net: bgmac: clear TX slots when freeing the ring
-
-This patch changes bgmac_dma_tx_ring_free() to unmap each TX slot before
-freeing its skb. It picks dma_unmap_single() or dma_unmap_page() based on
-the SOF flag in the descriptor, and then clears slot->skb and
-slot->dma_addr. The aim is to stop stale slot->skb pointers from surviving
-a down/up cycle and being freed a second time by bgmac_dma_tx_free().
-
-> diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-> index 3e9c57196a397..769d5d8e40bae 100644
-> --- a/drivers/net/ethernet/broadcom/bgmac.c
-> +++ b/drivers/net/ethernet/broadcom/bgmac.c
-> @@ -535,17 +535,19 @@ static void bgmac_dma_tx_ring_free(struct bgmac *bgmac,
->  		unsigned int len = ctl1 & BGMAC_DESC_CTL1_LEN;
->  
->  		slot = &ring->slots[i];
-> -		dev_kfree_skb(slot->skb);
->  
-> -		if (!slot->dma_addr)
-> -			continue;
-> +		if (slot->dma_addr) {
-> +			if (le32_to_cpu(dma_desc[i].ctl0) & BGMAC_DESC_CTL0_SOF)
-> +				dma_unmap_single(dma_dev, slot->dma_addr,
-> +						 len, DMA_TO_DEVICE);
-> +			else
-> +				dma_unmap_page(dma_dev, slot->dma_addr,
-> +					       len, DMA_TO_DEVICE);
-> +			slot->dma_addr = 0;
-> +		}
-
-[Severity: High]
-This is a pre-existing issue, but the new teardown code depends on
-slot->dma_addr being accurate, so it is worth raising here. What
-happens to the ring when skb_frag_dma_map() fails in
-bgmac_dma_tx_add()?
-
-At that point slot points at the failing fragment's slot, and its
-dma_addr is DMA_MAPPING_ERROR. The err_dma label then calls
-dma_unmap_single() on that value with skb_headlen(skb) as the length.
-The real head mapping is not released there.
-
-The unwind loop computes its index as (ring->end + i), but fragment k
-was placed at ring->end + 1 + k. When i > 0, the loop reaches the head
-slot at i == 0 and releases it with dma_unmap_page(), although it was
-mapped with dma_map_single(). Fragment i - 1 is never unmapped. When
-fragment 0 fails, only the bogus dma_unmap_single() runs and the head
-mapping leaks.
-
-None of these slots get their dma_addr reset to 0. ring->end is not
-advanced either, so bgmac_dma_tx_free() never looks at them. Suppose
-bgmac_stop() or bgmac_enet_suspend() runs before the ring wraps over
-these slots. Then bgmac_dma_cleanup() calls bgmac_dma_tx_ring_free(),
-which finds a non-zero dma_addr in every one of them.
-
-bgmac_dma_tx_add_buf() already wrote the head descriptor with SOF
-set. The new check therefore calls dma_unmap_single() on a head that
-err_dma already released as a page. The fragments that err_dma did
-unmap are unmapped a second time with dma_unmap_page(). The failing
-slot still holds DMA_MAPPING_ERROR, and its ctl0 and ctl1 belong to
-whichever packet last used it. So that value goes to the DMA API with
-a stale length and a stale single/page choice.
-
-With swiotlb or an IOMMU, couldn't a double unmap release a bounce
-buffer or IOVA that has since been given to another mapping? That
-would corrupt memory or crash, not just trip CONFIG_DMA_API_DEBUG.
-
-Should err_dma unmap ring->slots[ring->end % BGMAC_TX_RING_SLOTS] for
-the head and walk the fragments at ring->end + 1 + i? Should it also
-set dma_addr to 0 on every slot it touches, including the failing
-one? Would you prefer to fold that into this fix or send it as a
-separate patch?
-
-[Severity: Medium]
-This is a pre-existing issue and not something this patch introduced.
-Can this check see stale handles left behind by the error paths in
-bgmac_dma_tx_add()?
-
-If the head mapping fails, the head slot keeps DMA_MAPPING_ERROR:
-
-drivers/net/ethernet/broadcom/bgmac.c:bgmac_dma_tx_add() {
-    ...
-	slot->dma_addr = dma_map_single(dma_dev, skb->data, skb_headlen(skb),
-					DMA_TO_DEVICE);
-	if (unlikely(dma_mapping_error(dma_dev, slot->dma_addr)))
-		goto err_dma_head;
-    ...
-}
-
-If a fragment mapping fails, the failing slot also keeps
-DMA_MAPPING_ERROR. Its descriptor still holds the ctl0/ctl1 of the packet
-that last used that slot. The err_dma unwind unmaps the head and the
-earlier fragments, but it never resets their slot->dma_addr to 0.
-
-ring->end is not advanced in either case, so bgmac_dma_tx_free() never
-visits these slots. Suppose bgmac_stop() or bgmac_enet_suspend() runs
-before the ring wraps over them. Then the call chain
-bgmac_dma_cleanup()->bgmac_dma_tx_ring_free() finds a non-zero dma_addr
-and unmaps it again. The single/page choice comes from a stale SOF bit,
-and the length comes from a stale ctl1.
-
-Doesn't that mean addresses err_dma already released get unmapped twice,
-or DMA_MAPPING_ERROR itself gets unmapped? With swiotlb or an IOMMU,
-could that free a bounce slot or IOVA that now belongs to another
-mapping? CONFIG_DMA_API_DEBUG should at least report it.
-
-Would it make sense for the error paths in bgmac_dma_tx_add() to clear
-slot->dma_addr?
-
-The old code had the same if (!slot->dma_addr) check, so this patch does
-not change the behaviour here.
-
->  
-> -		if (slot->skb)
-> -			dma_unmap_single(dma_dev, slot->dma_addr,
-> -					 len, DMA_TO_DEVICE);
-> -		else
-> -			dma_unmap_page(dma_dev, slot->dma_addr,
-> -				       len, DMA_TO_DEVICE);
-> +		dev_kfree_skb(slot->skb);
-> +		slot->skb = NULL;
-
-[Severity: Medium]
-The commit message says "Unmap before freeing". Does that still hold for
-a scatter/gather packet that wraps past the end of the ring?
-
-bgmac_dma_tx_add() places a packet's slots at consecutive indices modulo
-BGMAC_TX_RING_SLOTS. It sets slot->skb only on the last of them:
-
-	slot->skb = skb;
-
-So one packet can have its head in slot 126, a fragment in slot 127 and
-its last fragment in slot 0.
-
-This loop runs i from 0 to 127. At i == 0 it unmaps the last fragment.
-dev_kfree_skb() then frees skb->data and drops the fragment page
-references through skb_release_data().
-
-The head in slot 126 and the fragment in slot 127 are unmapped only
-later, when the skb has already been freed.
-
-Would two passes give the ordering the commit message describes? The
-first pass would unmap every slot and the second would free the skbs.
-
->  	}
->  }
-
-While looking at this, I noticed two more issues in the same file that
-this patch does not touch.
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. Does
-the err_dma unwind in bgmac_dma_tx_add() unmap the wrong addresses?
-
-drivers/net/ethernet/broadcom/bgmac.c:bgmac_dma_tx_add() {
-	int index = ring->end % BGMAC_TX_RING_SLOTS;
-	struct bgmac_slot_info *slot = &ring->slots[index];
-    ...
-	for (i = 0; i < nr_frags; i++) {
-		...
-		index = (index + 1) % BGMAC_TX_RING_SLOTS;
-		slot = &ring->slots[index];
-		slot->dma_addr = skb_frag_dma_map(dma_dev, frag, 0,
-						  len, DMA_TO_DEVICE);
-		if (unlikely(dma_mapping_error(dma_dev, slot->dma_addr)))
-			goto err_dma;
-		...
-	}
-    ...
-err_dma:
-	dma_unmap_single(dma_dev, slot->dma_addr, skb_headlen(skb),
-			 DMA_TO_DEVICE);
-
-	while (i-- > 0) {
-		int index = (ring->end + i) % BGMAC_TX_RING_SLOTS;
-		...
-		dma_unmap_page(dma_dev, slot->dma_addr, len, DMA_TO_DEVICE);
-	}
-    ...
-}
-
-By the time err_dma runs, slot points at the failing fragment's slot. The
-dma_unmap_single() call therefore gets DMA_MAPPING_ERROR with the head's
-length, not the head mapping.
-
-Fragment k lives at index ring->end + 1 + k, but the loop uses
-ring->end + i:
-
-- If fragment 0 fails, the loop does not run and the head mapping leaks.
-- If fragment i > 0 fails, the loop unmaps the head slot with
-  dma_unmap_page(), although it was mapped with dma_map_single().
-  Fragment i - 1 is never unmapped.
-
-Should the head unmap use ring->slots[ring->end % BGMAC_TX_RING_SLOTS],
-and should the loop index be ring->end + 1 + i?
-
-[Severity: High]
-This is a pre-existing issue and not something this patch introduced. Is
-the request_irq() failure path in bgmac_open() safe while the hardware is
-still running?
-
-drivers/net/ethernet/broadcom/bgmac.c:bgmac_open() {
-    ...
-	err = bgmac_dma_init(bgmac);
-	if (err)
-		return err;
-
-	/* Specs say about reclaiming rings here, but we do that in DMA init */
-	bgmac_chip_init(bgmac);
-
-	err = request_irq(bgmac->irq, bgmac_interrupt, IRQF_SHARED,
-			  net_dev->name, net_dev);
-	if (err < 0) {
-		dev_err(bgmac->dev, "IRQ request error: %d!\n", err);
-		bgmac_dma_cleanup(bgmac);
-		return err;
-	}
-    ...
-}
-
-When request_irq() is called, the hardware is already armed:
-
-- bgmac_dma_init() has enabled RX DMA and given every RX slot to the
-  hardware through bgmac_dma_rx_update_index().
-- bgmac_chip_init() has unmasked interrupts with bgmac_chip_intrs_on()
-  and enabled the MAC with bgmac_enable().
-
-If request_irq() fails, only bgmac_dma_cleanup() runs. Inside it,
-bgmac_dma_rx_ring_free() unmaps each RX buffer and calls put_page() on
-it. Nothing calls bgmac_chip_intrs_off() or bgmac_chip_reset() first.
-
-Could the RX DMA engine, still enabled, then write incoming frames into
-pages that have already gone back to the allocator? On ports attached to
-a switch, where the link is always up, frames can arrive at any time.
-
-The device would also keep raising interrupts on a shared line with no
-handler registered. Could that make the kernel disable the IRQ?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010070418.84457-1-rosenp%40gmail.com
+James
