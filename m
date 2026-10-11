@@ -1,425 +1,226 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B8E1990C7
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 12:34:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3FE3D75A0
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 12:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791722084; cv=pass; b=cI25pkBfd6SRHD/ZJgEEMPuYk+QVZPFyGSrA6qb2NhOVhFJYcITeDFpZskaT4qyngsuPdzHhdYSsvWgnvbSKuNGV6/uI8qMj9lP1hHRFOspAX5xE3Ych0sHU3bRmd8pLFxM6ryij0y8IjKwsHE+wt4TVYDWRFquTcaTP+7d5m/w=
+	t=1791722140; cv=pass; b=AQVA/IOmUa8iPuOhC48zaV/wShe2sqeAily7rfrwR0JKAqOY+tGiWn1C1TF15JoMF8qKTU+gBAd4FsTyyV4kV2mAcqsl6h29IGJAu1dydC+2cmu/HGg7ltZZPgQCJd+hgwWOGP1Av7qfflbSOY+OSrdlInL2/mSD5geHRC8bDCg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791722084; c=relaxed/simple;
-	bh=D6V9u5ORzzjAQgFGUrLisPrLfQOatY/BmMyDm/LKlVU=;
+	s=arc-20240116; t=1791722140; c=relaxed/simple;
+	bh=88IIAoChlEf0WQ3jxG0qVp+32AZndTvn9HQBAYzNovE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o9FAlk/SqFMMHVWPjxPnvNN8CF4z3A7EE80MCWYYSjFkcrA8lVLAwvsQKR7Ofds5riXI19ZsCPiuMN7P8r4r4UIWq/DL+FtU3qJeUhCUu+QjAZsp53ZYO3sN+WBt/CKOtsBsimtSaIGj+LnfLtMoXrkW/twmU1U6tQZEwDtSvTw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=g6M2PcoZ; arc=pass smtp.client-ip=209.85.210.170
+	 To:Cc:Content-Type; b=I5gdS5lyqdhujKdPh7uWNmeMC/AxQFqARDqwMU9y5yspy1TULk5JfcvmKZc7KO1F0BwhQbsGxmq4N7jck40er2eMEencacyfC/ZbWRSRNzxehly8N4PtxL02gEHcH3SGb/bADoxdGsSLBGVfwgGGChOgKbEIpo8RS4m75emPtPk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=OcEQ4B6P; arc=pass smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="g6M2PcoZ"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-873a4edb243so626800b3a.0
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 05:34:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791722078; cv=none;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="OcEQ4B6P"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-890d52c7c7bso892433b3a.2
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 05:35:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791722132; cv=none;
         d=google.com; s=arc-20260327;
-        b=BQxpgBFJUT2Tu8YgpAx4tsp1TwV3Za6uXu/QPP3bk790kodm5mT2gOwhhrV+Wd3UoE
-         YSlg1n/3HTZHZ6KNhu9bYwekPLa133/70CnOnAQAXvesDYSlmZQEw9w3h3N+6yIJhWXm
-         bGgF1mv7O/aQ1QBk4/Wk4uk8Tr0yhbF6o/T0MRnoacoA/EaLqrBHLtVTiw/tezIexUZe
-         5UrGBikT1N3r5O6AsWjVaC1FsEwLHCIiE1jBEq1zlUUeLS1zK27hJUQtBt0LXWRy9KFZ
-         d/hICd2dtKfdx5ZBf1+Xp62bjPGiGd4j5XEAGbNTEzkoxQHeNqLIfqf8wWHUCHYesZ/N
-         9lPA==
+        b=QBie/dsQFDnZ7AqjcmkKQ/VWmTmKAGliPWiLI7e3P6tV37oM/9x3N0SgsliJsK6o0K
+         kSeLTIxN/2M9tPWwTu9JlGkuCVRr9By7iYk19j3yjWi7FZS6GXrWsQI11VhlsgQ/cTku
+         UV9S506GIMKmRyXtHdwkpj7LLHfnKqzlNo0Yd/cYJZaj4aQAoSX5/TXcCb+zkBzDbio0
+         GzpXYg2Ftc6E9wnghNe8C65Ncct22cSRQ9YyUFw6Jt53K8Xjg4dgJETZE3CdnhtCp35I
+         9KiN9NMDAyf4dJGdvZgZvP+kx/k3L3rTdYlNGMsdy1LjUS+Fh3rk4yJTzY4PMf/ySyHM
+         VAJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=5MscJspoPgipIH59+xkblLiO7MQYfaj4zA3WKs8xjco=;
-        fh=MyPeqE3c2UMzaQFTYpQUmkaruW3S1bPk+P4DCS0xpHI=;
-        b=GBgaNMWO6M9TgLvtwjZJfrQ+34siHppLd2qvLHZfNQEHpSXoxfK58AHgZ22QA+gDWI
-         6ZhCHp4OA136Bz/ruVNz/c5JzgBOy3zB07pDsw1o2GajeXK3Ecq10jziuHc0vpvWrehD
-         FkCkuZANv8A4kejJKGydrD2GUO1SXNFcOtL9qZWpv+et+euZ2zfFjai7Lmq/2oaVmTUk
-         w06w+w7EVcoo/Qn3M3lzWN0JIQ06VR8Lb10Jla8DaamZTmedVlK3yXek+k80+msPuW0N
-         A/Se1rPLkm/hX6tAIddbTYbn7aymeWoBsssE0hH5pRY9Y8blymHbf7T82tWG4wgNiotS
-         3QLw==;
+        bh=KdVoUcER69zvBRWUnB5/fbxarYF+WWZROLlRW70C99Y=;
+        fh=oY+r7cJmBTQgvbRX2DXKoB56Qi1BJwWhjiTky7dfimM=;
+        b=N8/C0NQGTXlqYTsDMyVK4nFS7kZgpbKfJvJVo/0zDPD9Sd/8JSqO4xB4IBJf8CwQTm
+         151Mq87IW23PRksvDLPPt4NZUzv55UFZxYULayAbXq35TmIWTW+I/P+5K2xkUDOT4juI
+         pasuXnrmJUn2XEF+2ECgHCbR/33Sr2GLGOzuSbkDkUsmz8hlbZN8XJp/d2zgEq8qlieH
+         x4Yxj2TyhQKgI4TOblcV94jUf6x6Vu2DXp1scqX6p/YX4Ck36PJSXKuAFx8kR9x0iQcQ
+         FAQE4fWm0dcNNhy1ORSEQwACildTQ0EP64m/62uGC14fR9LdgvzizvuKhkLWB43GtO4C
+         wx2g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791722078; x=1792326878; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1791722132; x=1792326932; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=5MscJspoPgipIH59+xkblLiO7MQYfaj4zA3WKs8xjco=;
-        b=g6M2PcoZLZdjw0xeK9Wbv8XEi0rJxGmkpoeSq1SfoFBN8Go5YHfhXdpUGrHomc7E7e
-         Kz1cbhuESJeW+n9hK1RegUmvWNOsCOszDZg3XrltqzPGPjfsAEjNv8LOigQqE/+n0Ksf
-         nqfpsvy79PB1ke9pR1ePx7Xs8gCy0CL72e2yA=
+        bh=KdVoUcER69zvBRWUnB5/fbxarYF+WWZROLlRW70C99Y=;
+        b=OcEQ4B6P8fZ5SrHAR4PPnfAn8I7F9VipNwEOseMcuTyfS28KtPS9ZfamIOsC5PKGjN
+         wXLZUSrJjuu9/yQcPnkKPRj5X+huwpFZXRklMkszEbzlPBMkki4opHGMrtULmXpOuD6D
+         aNwVt/Lkv+TT2tUmOY3dTFsWRgdN9C5AzttiQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791722078; x=1792326878;
+        d=1e100.net; s=20260707; t=1791722132; x=1792326932;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=5MscJspoPgipIH59+xkblLiO7MQYfaj4zA3WKs8xjco=;
-        b=l6JTOEvjDDTAIOm2PfCKLbk70S+Gfo5JCX/Q+FWESfwq3BKMTxIIXnwrYnHfFfoigo
-         bxtaaRQGuPs8B6Kxy36H2iHT6m0yBMR1sToayl57xFE6YETtfzKLG3WCIdeAtXnGDH8R
-         /taamuoyf5DlDKOEmQ5KgUvu45nQMdtXHhesvzj3VMaaTj3L/Vwq+ae5e8JE/Ac5L5fz
-         Y2l7dnxK4l3KkmnttNcNZE/C9bZMh0QuAGE8NBk9kLNJAdlctlL+spl65O1gzzZxlV5l
-         tw4SvHTp4NnlSloYM1dkJl7Dc9m5O2PJlo71U9FY3ee40ui0xRz8OVjxbHjXBc073RgM
-         VLpQ==
-X-Gm-Message-State: AFq9FYKCr5W7ABisJB7TUI8117blfERoZ80SDCYeQzf59M0TYTbuN256
-	rjQdcIuHapkLXfpIqaR3CflalSPfUeIwwiPfOV0rkCvp2M+vYo7O4XJRJNjCeFu5ERA9dhAr+yS
-	o9wDDvfgVqcChB1szIEHmuy98KQOfpg205vyXEpRE
-X-Gm-Gg: AYBFou01bvnGa5riK/jbmaD5Wg0GaZJqv0rsE8duNbGdm7ddU84fG2UrZ1h6C6IISH5
-	ajMjm0tR/xQNGjzkdgC1G6M46Du/Bs3Tb4dW3aaR2Ae7VmjD8y8cqSbKsj8TxYiBCVTN+KOEySG
-	Kd/6mHTvK5To7ooVSPYiVQBwS2gmzyrX/Ib50ZxDK6chFWvaPph5cBSXmKuwhLKWso3iPmdivGx
-	FuOtNrmINdHPVbKuHpyUNKwuyzGmrc3USxsWDfkuMDxhww2SG2k+Gefaxu2lX0msvTrEOSgo8KO
-	sOGupMDlAXkek4+ykdX8tD5/zLgXwlrmGX/6TbDNEX5QC2jOpPlIihOJvCRxEqdoMHIru+6QbfN
-	qs0MeWm60FtgEYZ0PIBV1U+LdA4E4noEhqQ==
-X-Received: by 2002:a05:6a00:c08f:b0:899:632a:9613 with SMTP id
- d2e1a72fcca58-899632a97f6mr1774790b3a.40.1791722077939; Sun, 11 Oct 2026
- 05:34:37 -0700 (PDT)
+        bh=KdVoUcER69zvBRWUnB5/fbxarYF+WWZROLlRW70C99Y=;
+        b=hEYVGGx3lTYTpGdrKrtnkssgpMyGPc58KHOK8ziGQzMEfnNHr1ha5wJWBZOOc47Ch/
+         DOEp4HEiHDp8A9boekCcsDjVeAxIMciiHxPo9JdR5MsWpOkiUS54YztbFwvQbA8y0Q8X
+         zFPLLef0aHtLO5zny5/wJWt5bAEXd1AEbTOOGSGNzjv7G+e90CbtLsdDnjPIbfyK8Gde
+         HZIZZdAKSE/JVqLgWl9zu0SV92Pv/8Fx2oAVAlnxNYPKmnQK1IPykgVbAlYiLTzPAFcN
+         yc7lnmlnsXC+QafQFcv/CA4CLior2O3cV8GAMIxLSRrYLL3/O6teVAvxRS2YzDh6C5zC
+         YAyg==
+X-Forwarded-Encrypted: i=1; AKwUvBxd1ti1aayVoMU+1aZTN9W6mrl6ziocaChqTfUR8TSg1+GajnWoqVopit7xpot+W4FXB87smeQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKarnm7aFLrVs2tJkJwKApp5LY/lhBXe/0cgpnqrNRzxfvoGmJy
+	QvsgyVB/B1SIYrHPsSEe+prH8q98UY8JjI5eKC/P77VJeO8He87GuvkkuWBdLJc4fsCQ1jF3fX4
+	JdwGBwP9rMir+GX/m/K6BYogRBKeH8JFIYOJu7C+b
+X-Gm-Gg: AYBFou130elA8CPwbhnO1dEVEXNmMjbiGUmD5YqHJF11a9rCOkqgiOG9SwJnYlKTETS
+	ug79u6SDXsEcmojD5KUJmNFzX49BvyV3mQsa7S0TkpwKDGXQoTtGWjpPJSanuq9ekTOJifhmDHv
+	w5GGOg2PH9n2ZNcSTBTZ4JUKGda0vhfVa9eIm8obheoBUD9ONzD4N7k44sgegBcp77rhBCZV2Co
+	q2w8pzlmuKvXiQp+xvfGL0nrK05ckrz4xmULqJbL8Ali54tCfSmB/p+/YfzNLAnEyHOvso5lw7M
+	Gaz9eeTnpN/psVyxEV+KhsWqQ3eejviqk1vqnvKxAaE+B/0F3c9Jhze+gfEzmiSnhUDLcGossPC
+	L0widIUpcKRTnPeUMfzaYszosR5yW77LAzw==
+X-Received: by 2002:a05:6a00:181f:b0:892:597f:37d8 with SMTP id
+ d2e1a72fcca58-897c7010883mr6378352b3a.15.1791722132398; Sun, 11 Oct 2026
+ 05:35:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-H19Z.v2.20261007062551-2@mojatatu.com> <179171627364.434549.1472397105608939135@kernel.org>
-In-Reply-To: <179171627364.434549.1472397105608939135@kernel.org>
+References: <20261010152227.401987-1-acassen@corp.free.fr>
+In-Reply-To: <20261010152227.401987-1-acassen@corp.free.fr>
 From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sun, 11 Oct 2026 08:34:26 -0400
-X-Gm-Features: AclHuK_9O6PguYvjcAUqQ40eNRehVnTLn6w40BzpoAuA1IHupVlbjFFVkSzCCsg
-Message-ID: <CAM0EoMn-qNn=tpuRTeTuD8Y_Nc4jxerR7HfLwZZ-HkV6ygZvLw@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] net/sched: act_gate: reject oversized dumps
- instead of wrapping them
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, olteanv@gmail.com, vladimir.oltean@nxp.com, p@1g4.org, 
-	eadavis@qq.com, dcaratti@redhat.com, dsahern@kernel.org, 
-	stephen@networkplumber.org, sashiko-bot@kernel.org
+Date: Sun, 11 Oct 2026 08:35:21 -0400
+X-Gm-Features: AclHuK_kb5Ok9iFu-OBYa-uWj3fzN6-JFeqxqGiL0LJZf2Q7bJaoQgJXUTLjPnk
+Message-ID: <CAM0EoMm_Sc36=GOhXrjA4Syz=Ak8mdAC+dDUAX-brQSzbcz8Bw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net/sched: act_api: take tcfa_lock for hardware
+ stats updates
+To: Alexandre Cassen <acassen@corp.free.fr>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Vlad Buslov <vladbu@nvidia.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 11, 2026 at 6:57=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
+On Sat, Oct 10, 2026 at 11:22=E2=80=AFAM Alexandre Cassen <acassen@corp.fre=
+e.fr> wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 5 potential
-> issue(s) to consider.
+> Actions without per CPU stats update their counters under tcfa_lock in
+> the software path but tcf_action_update_stats() adds hardware stats to
+> the same counters without it. A dump of a filter without skip_hw does
+> this even when nothing is offloaded, so such an action loses counter
+> updates. On 32-bit, readers holding tcfa_lock can also observe torn
+> 64-bit values.
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 (1) =C2=B7 Low: 3
+> Callers disable preemption around this update for the per CPU stats.
+> PREEMPT_RT forbids taking a spinlock_t with preemption disabled. Disable
+> BH in the per CPU path instead. On 32-bit, this also keeps a softirq on
+> the same CPU from updating or reading these counters in the middle of
+> the update.
 >
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
+> Discovered by manual code inspection while letting more actions honor
+> TCA_ACT_FLAGS_NO_PERCPU_STATS. Reproduced in a VM without kernel
+> changes, where the second action counts fewer packets than the first:
 >
-> - [High] This patch makes an unbuildable notification block
->   RTM_DELACTION.
+>   ip link add d0 type dummy && ip link set d0 up
+>   tc qdisc add dev d0 clsact
+>   tc filter add dev d0 ingress matchall \
+>      action gact pipe action gact pass no_percpu
+>   yes "filter show dev d0 ingress" | head -10000 > batch
+>   while :; do tc -s -b batch; done > /dev/null &
+>   samples/pktgen/pktgen_bench_xmit_mode_netif_receive.sh -i d0 -t 4
+>   tc -s filter show dev d0 ingress
+>
+> The 32-bit issue in the per CPU path comes from the Sashiko AI review
+> of v1 [1] and was not reproduced.
+>
+> Tested with the reproducer and the tc-testing action, matchall and
+> flower tests with lockdep enabled. Also tested for regressions on
+> ConnectX-7 with firmware 28.48.1000.
+>
+> Fixes: 5e174d5e73df ("net: sched: modify stats helper functions to suppor=
+t regular stats")
+> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009051703.=
+3615846-1-acassen%40corp.free.fr [1]
+> Signed-off-by: Alexandre Cassen <acassen@corp.free.fr>
 
-This is a really good catch. I doubt anyone on planet earth will
-delete this way but it is a legit bug - so will send a v3.
-Since I am sending a v3, I will fix all the complaints on commit
-messages for this patch and patch 2/2.
-The rest are followups we captured.
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
 cheers,
 jamal
 
-> - [Medium] RTM_NEWACTION for an action set whose dump exceeds U16_MAX now
->   returns -EINVAL even though the actions have already been created or=E2=
-=80=A6
-> - [Low] On the -EMSGSIZE branch, tfilter_del_notify()
->   (net/sched/cls_api.c) sets the extack message "Filter deleted; del=E2=
-=80=A6
-> - [Low] The commit message misdescribes what the code did before the
->   patch.
-> - [Low] In tfilter_del_notify(), -EMSGSIZE is taken to mean that the dump
->   cannot be represented in a u16 nest ('no notification can ever be=E2=80=
-=A6
+> ---
+> v2:
+> - Fix the 32-bit consequence (Eric).
+> - Disable BH instead of preemption in the per CPU path (Sashiko).
+> - Say how the bug was found and validated (Jamal).
 >
-> Pre-existing issues:
-> - [Medium] This problem wasn't introduced by this patch, but
->   tfilter_del_notify() still returns without calling ->delete() when=E2=
-=80=A6
+> v1: https://lore.kernel.org/netdev/20261009051703.3615846-1-acassen@corp.=
+free.fr/
 >
-> --
+>  include/net/pkt_cls.h | 2 --
+>  net/sched/act_api.c   | 6 ++++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 >
-> net/sched: act_gate: reject oversized dumps instead of wrapping them
+> diff --git a/include/net/pkt_cls.h b/include/net/pkt_cls.h
+> index 5f5cb36439fe..9382405b2bab 100644
+> --- a/include/net/pkt_cls.h
+> +++ b/include/net/pkt_cls.h
+> @@ -316,10 +316,8 @@ tcf_exts_hw_stats_update(const struct tcf_exts *exts=
+,
+>                                 continue;
+>                 }
 >
-> This commit switches the nest closes on the tc action and classifier dump
-> paths to nla_nest_end_safe(). A dump larger than U16_MAX now reports
-> -EMSGSIZE instead of writing a wrapped nla_len. It also bounds the
-> tfilter_notify_prep() retry loop, and makes tfilter_del_notify() drop a
-> notification it cannot build and delete the filter anyway.
+> -               preempt_disable();
+>                 tcf_action_stats_update(a, stats->bytes, stats->pkts, sta=
+ts->drops,
+>                                         stats->lastused, true);
+> -               preempt_enable();
 >
-> Link: https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatat=
-u.com/
-> Link: https://lore.kernel.org/netdev/179111893181.434549.1344966067026704=
-8994@kernel.org/
+>                 a->used_hw_stats =3D stats->used_hw_stats;
+>                 a->used_hw_stats_valid =3D stats->used_hw_stats_valid;
+> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> index 6e48b4bc2d75..4ff553f3abb6 100644
+> --- a/net/sched/act_api.c
+> +++ b/net/sched/act_api.c
+> @@ -307,13 +307,11 @@ int tcf_action_update_hw_stats(struct tc_action *ac=
+tion)
 >
-> > tfilter_notify_prep() treats that as socket-buffer exhaustion and
-> > retries with an ever larger alloc_skb(); a dump that does not fit a u16
-> > nest cannot be built at any skb size, so the loop only spins until the
-> > allocation itself fails.
->
-> [Severity: Low]
-> Does this describe the code as it was before this patch?
->
-> Before, nla_nest_end() could not fail:
->
-> include/net/netlink.h:nla_nest_end() {
->         unsigned long diff =3D skb_tail_pointer(skb) - (unsigned char *)s=
-tart;
->
->         DEBUG_NET_WARN_ON_ONCE(diff > U16_MAX);
->         start->nla_len =3D diff;
->         return skb->len;
-> }
->
-> Nothing under net/sched used nla_nest_end_safe(). So tcf_fill_node()
-> returned -EMSGSIZE only while the skb was short on tailroom. Once
-> tfilter_notify_prep() had grown the skb enough, the fill succeeded with a
-> wrapped length and the loop stopped.
->
-> The loop that runs until alloc_skb() fails seems to exist only after this
-> patch turns the u16 overflow into a fill failure. That makes the new boun=
-d
-> in tfilter_notify_prep() a requirement of the nla_nest_end_safe()
-> conversions, not a fix for an existing loop.
->
-> Could the commit message say this? A backport that takes the conversions
-> without the bound would bring in the allocation escalation loop.
->
-> > diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-> > index 6e48b4bc2d75..747d91ae6446 100644
-> > --- a/net/sched/act_api.c
-> > +++ b/net/sched/act_api.c
->
-> [ ... ]
->
-> > @@ -1693,7 +1696,8 @@ static int tca_get_fill(struct sk_buff *skb, stru=
-ct tc_action *actions[],
-> >       if (tcf_action_dump(skb, actions, bind, ref, false) < 0)
-> >               goto out_nlmsg_trim;
-> >
-> > -     nla_nest_end(skb, nest);
-> > +     if (nla_nest_end_safe(skb, nest) < 0)
-> > +             goto out_nlmsg_trim;
->
-> [Severity: High]
-> With this change, tca_get_fill() fails for an action set whose TCA_ACT_TA=
-B
-> is larger than U16_MAX. Before, the same fill succeeded with a wrapped
-> length. Does this make a failed notification build refuse an
-> RTM_DELACTION?
->
-> tcf_del_notify() builds the notification before it deletes anything:
->
-> net/sched/act_api.c:tcf_del_notify() {
->     ...
+>         err =3D tcf_action_offload_cmd(&fl_act, NULL, NULL, NULL);
+>         if (!err) {
+> -               preempt_disable();
+>                 tcf_action_stats_update(action, fl_act.stats.bytes,
+>                                         fl_act.stats.pkts,
+>                                         fl_act.stats.drops,
+>                                         fl_act.stats.lastused,
+>                                         true);
+> -               preempt_enable();
+>                 action->used_hw_stats =3D fl_act.stats.used_hw_stats;
+>                 action->used_hw_stats_valid =3D true;
 >         } else {
->                 skb =3D tcf_del_notify_msg(net, n, actions, portid, attr_=
-size,
->                                          extack);
->                 if (IS_ERR(skb))
->                         return PTR_ERR(skb);
+> @@ -1597,6 +1595,7 @@ void tcf_action_update_stats(struct tc_action *a, u=
+64 bytes, u64 packets,
+>                              u64 drops, bool hw)
+>  {
+>         if (a->cpu_bstats) {
+> +               local_bh_disable();
+>                 _bstats_update(this_cpu_ptr(a->cpu_bstats), bytes, packet=
+s);
+>
+>                 this_cpu_add(a->cpu_qstats->drops, drops);
+> @@ -1604,13 +1603,16 @@ void tcf_action_update_stats(struct tc_action *a,=
+ u64 bytes, u64 packets,
+>                 if (hw)
+>                         _bstats_update(this_cpu_ptr(a->cpu_bstats_hw),
+>                                        bytes, packets);
+> +               local_bh_enable();
+>                 return;
 >         }
 >
->         /* now do the delete */
->         ret =3D tcf_action_delete(net, actions);
->     ...
-> }
->
-> tcf_del_notify_msg() turns any tca_get_fill() failure into -EINVAL:
->
->         if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, 0, RTM_DELAC=
-TION,
->                          0, 2, extack) <=3D 0) {
->                 NL_SET_ERR_MSG(extack, "Failed to fill netlink TC action =
-attributes");
->                 kfree_skb(skb);
->                 return ERR_PTR(-EINVAL);
->         }
->
-> The full path is:
->
-> tc_ctl_action(RTM_DELACTION)
->   tca_action_gd()
->     tcf_del_notify()
->       tcf_del_notify_msg()
->         tca_get_fill()
->           nla_nest_end_safe() < 0
->
-> tcf_action_delete() is never reached.
->
-> With the 1024-entry cap applied, "tc actions del action gate index 1
-> action gate index 2" on two 1024-entry gate actions looks like it would
-> fail with -EINVAL and leave both actions installed. The commit message
-> says this two-action shape survives the cap.
->
-> The cap patch later in this series only adds GATE_ENTRIES_MAX in
-> parse_gate_list(). It does not touch tcf_del_notify(). Without the cap
-> patch, a single gate action with about 1815 or more entries could not be
-> deleted by index.
->
-> This needs rtnl_notify_needed() to be true, meaning an RTNLGRP_TC
-> listener or NLM_F_ECHO. rtnetlink allows non-root receive, so an
-> unprivileged listener in the netns seems to be enough to make an admin's
-> delete fail.
->
-> The commit message says "A notification that cannot be serialised must
-> not veto the state change the caller asked for", and tfilter_del_notify()
-> is changed to match. tcf_reoffload_del_notify() in this file already
-> drops a notification it cannot build:
->
->                 if (IS_ERR(skb))
->                         skb =3D NULL;
->
-> Should tcf_del_notify() be changed the same way? tca_get_fill() returns a
-> bare -1, so -EMSGSIZE would also need to be passed up. Otherwise the
-> delete path cannot tell the structural overflow from other failures,
-> which tfilter_del_notify() now relies on.
->
-> [Severity: Medium]
-> The same failure also shows up on the add side.
-> tcf_action_add()->tcf_action_init() has already inserted or replaced the
-> actions by the time tcf_add_notify()->tcf_add_notify_msg() calls
-> tca_get_fill():
->
->         if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, n->nlmsg_fla=
-gs,
->                          RTM_NEWACTION, 0, 0, extack) <=3D 0) {
->                 NL_SET_ERR_MSG(extack, "Failed to fill netlink attributes=
- while adding TC action");
->                 kfree_skb(skb);
->                 return ERR_PTR(-EINVAL);
->         }
->
-> The commit message notes this case and leaves it for later. However,
-> before this patch an oversized set still filled (with wrapped lengths)
-> and the add reported success. Isn't the "-EINVAL after the actions were
-> created" result new for these sets?
->
-> For example, with the cap applied, adding two 1024-entry gate actions in
-> one request now returns -EINVAL with the actions installed. This happens
-> when an RTNLGRP_TC listener exists or NLM_F_ECHO is set. A retry would
-> then hit -EEXIST.
->
-> >
-> >       nlh->nlmsg_len =3D skb_tail_pointer(skb) - b;
-> >
-> > diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-> > index a9f54988561f..3f0ce567fa2d 100644
-> > --- a/net/sched/cls_api.c
-> > +++ b/net/sched/cls_api.c
->
-> [ ... ]
->
-> > @@ -2200,8 +2209,16 @@ static int tfilter_del_notify(struct net *net, s=
-truct sk_buff *oskb,
-> >       skb =3D tfilter_notify_prep(net, oskb, n, tp, block, q, parent, f=
-h,
-> >                                 RTM_DELTFILTER, portid, rtnl_held, exta=
-ck);
-> >       if (IS_ERR(skb)) {
-> > -             NL_SET_ERR_MSG(extack, "Failed to build del event notific=
-ation");
-> > -             return PTR_ERR(skb);
-> > +             if (PTR_ERR(skb) !=3D -EMSGSIZE) {
-> > +                     NL_SET_ERR_MSG(extack, "Failed to build del event=
- notification");
-> > +                     return PTR_ERR(skb);
-> > +             }
->
-> [Severity: Medium]
-> This is a pre-existing issue, not one introduced by this patch. This
-> branch still returns without calling ->delete() when
-> tfilter_notify_prep() fails with something other than -EMSGSIZE, such as
-> -ENOBUFS from alloc_skb() or -EINVAL. Does that leak the flower filter
-> reference taken during the lookup?
->
-> In tc_del_tfilter(), fh comes from tp->ops->get(). For flower,
-> fl_get()->__fl_get() takes a reference:
->
->         if (f && !refcount_inc_not_zero(&f->refcnt))
->                 f =3D NULL;
->
-> fl_delete() normally drops it with __fl_put(f). On this error path,
-> tc_del_tfilter() does:
->
->                 err =3D tfilter_del_notify(net, skb, n, tp, block, q, par=
-ent, fh,
->                                          &last, rtnl_held, extack);
->
->                 if (err)
->                         goto errout;
->
-> errout releases tp, chain and block, but never calls tfilter_put(tp, fh).
-> After that, even a later successful delete would not free the filter or
-> the actions bound to it.
->
-> The alloc_skb() failure seems realistic here. The retry loop grows the
-> skb toward U16_MAX + NLMSG_GOODSIZE, which needs order 4-5 allocations.
->
-> > +             /* The filter's dump cannot be represented in a u16 nest,=
- so no
-> > +              * notification can ever be built for it. Drop the notifi=
-cation
-> > +              * rather than refusing to delete the filter.
-> > +              */
->
-> [Severity: Low]
-> Does -EMSGSIZE always mean the dump cannot fit in a u16 nest?
-> tcf_fill_node() starts with:
->
->         int ret =3D -EMSGSIZE;
->
-> and returns that for every ->dump() failure. Some dumps fail for reasons
-> that have nothing to do with size. One example is tcf_pedit_dump():
->
->         opt =3D kzalloc(s, GFP_ATOMIC);
->         if (unlikely(!opt)) {
->                 rcu_read_unlock();
->                 return -ENOBUFS;
->
-> u32_dump() also allocates with kzalloc_flex(), and tcf_action_dump_1()
-> reduces any error to -1.
->
-> If such a failure repeats through every retry in tfilter_notify_prep()
-> (about 17 with 4K pages), the loop returns ERR_PTR(-EMSGSIZE). This
-> branch then drops an RTM_DELTFILTER event that could have been built. The
-> comment in tfilter_notify_prep() only mentions structural overflow and
-> genuine capacity exhaustion.
->
-> > +             NL_SET_ERR_MSG(extack, "Filter deleted; del event notific=
-ation could not be built");
-> > +             return tp->ops->delete(tp, fh, last, rtnl_held, extack);
->
-> [Severity: Low]
-> The extack text is set before ->delete() runs. If ->delete() then fails
-> without writing its own extack message, won't userspace get "Filter
-> deleted" together with a negative errno?
->
-> Flower, for example, runs without rtnl on an unlocked qdisc. Two
-> concurrent RTM_DELTFILTER requests for the same oversized filter can both
-> get through fl_get() and both hit -EMSGSIZE in prep. The second one then
-> reaches __fl_delete():
->
->         if (f->deleted) {
->                 spin_unlock(&tp->lock);
->                 return -ENOENT;
->         }
->
-> That path does not set extack. fw_delete() can return -EINVAL the same
-> way.
->
-> Could the message be set only after ->delete() returns 0?
->
-> >       }
-> >
-> >       err =3D tp->ops->delete(tp, fh, last, rtnl_held, extack);
->
-> [ ... ]
+> +       spin_lock_bh(&a->tcfa_lock);
+>         _bstats_update(&a->tcfa_bstats, bytes, packets);
+>         atomic_add(drops, &a->tcfa_drops);
+>         if (hw)
+>                 _bstats_update(&a->tcfa_bstats_hw, bytes, packets);
+> +       spin_unlock_bh(&a->tcfa_lock);
+>  }
+>  EXPORT_SYMBOL(tcf_action_update_stats);
 >
 > --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/QDISC-H19Z.v2.20261007062551%40mojatatu.com
+> 2.43.0
+>
