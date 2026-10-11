@@ -1,196 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38AA405F7;
-	Sun, 11 Oct 2026 15:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791731981; cv=none; b=WNPkOS9Ix3ODiL5JGkRChUOelb6nVCSTspWOVph9MANKBoICaVvy+TEEx3eqpWO4M6tfdiB7Lhm9wVJ22erEvsfMiCyenr02OwqUCpgzNaG414/oOKGozC/rVoCCJDEEDn0GYL57NgQwBkkBVG4jOkAZELWXsgBf/bKhNPYyXzk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791731981; c=relaxed/simple;
-	bh=LtCyh9nnBrjqkIbbIwLiupRPV+TFwFkyJ6gs9wxDGhU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IHHohwGy3nqZXKaz34FL4XV3cZnu9Gm4i1+k3X0PQkUgiIu3zVJSS81tDa3DkECGdgKufj5ESdCGRo4NKPAu8fPvVII5yc8t/4N9YwLrq4i/g+OKlqH+Br3WgvKomhvIyno/SoJ37vsafQ6E0XzNvYk+crEYQwzgZPX7vKjRR6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AL4bhu1L; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE9E1E8332
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 15:46:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791733571; cv=pass; b=Tp8MukFM+jOGT5zxpdhX+vruYYl3ze2wi/nP09N87xWeyaObUmZKsTNz8EiIPnKlb28523AhfCSZhnOb4qREQR10JGToX/9EU4VFPffJZqvEC6eYa1am4BrOqJ9KQ+MUw6zHWUDh/yktihS8qgAsUkNdQlz0nPaOfdEJQ4mklNU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791733571; c=relaxed/simple;
+	bh=rQXlRoSMdeeZu3l+07GtH5SZ02qfTqlKbUj7DiEyiPc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mXlMc2W7hee5fAx6jcUx2NiaFTq2Gevt+OnCjuaVZvTQtt+oUHw0hrGDVuE4bZ6SXfaL0m2XcpC5RChUym0NZAExrYagMy1PiJ1uXqmTw5a5rXC3ceclF4fyxQ9VfMQeT7ahOnyjjZOBJwbKs5IlRocM0Rv3UsfScdOvWwWTtH8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bb1NoM/0; arc=pass smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AL4bhu1L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3081F0089B;
-	Sun, 11 Oct 2026 15:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791731979;
-	bh=mUCf4nSzDUXsV7PZq3Gz76x5gHcSeE+bODEKH+oBdV0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AL4bhu1LyToQDNaPaazv5jrGEIREIo2aa5pzBLdnLCPz1NP1mapNZ/IzhX9iYkBVw
-	 MjrKMbTn65jjC6IqVQ1bi0rpFEgHeFXOWoiciouJ3cVF8XMWXSXlp+uajgixtRNRFh
-	 3m4dHhHjRXIjcl+JUCRKNY2NkyywRddYkUiOi4g0mv5cqp3xJbUKFGq7WOAuqDo9yY
-	 YmwigJbGiZQO8oWGfy6g5CEC8jDz3Q8AzYYeUTZk7mwhJZ+vKxdMGKUtugf7TjJ87O
-	 3T7HyDXoEhh1fXPzXWy81oFpCJwUhdWBL6PuhNWhB6U+DVdHyqfpXT6v8YsErfUsde
-	 tQT2Xo1ZLsZNw==
-Subject: Re: [PATCH net] net: sparx5: free the matchall entry on destroy
-From: netdev-bot+sashiko@kernel.org
-To: daniel.machon@microchip.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
- UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- kees@kernel.org
-Date: Sun, 11 Oct 2026 15:19:38 +0000
-Message-ID: <179173197837.434549.9373931425008737442@kernel.org>
-In-Reply-To:
- <20261007-sparx5-matchall-kfree-net-v1-1-c8918685b337@microchip.com>
-References:
- <20261007-sparx5-matchall-kfree-net-v1-1-c8918685b337@microchip.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bb1NoM/0"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-6afac79b3a3so3805a12.1
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 08:46:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791733568; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DMlvtVOsWAfT1wwjH6N55l10bCbhfToOFyVfE8ypzHBHzBiv6q+3gv4bvnhCzwYkez
+         HxWlWWKcQb+pHlOrrR2xDpLhF4BA7gmEHaai4/4xu9ZJrC7rJ5L2EzjmJAWAh2EISjkV
+         aPctdNnspyuf/U8HPYCvR8IOGV0zty7kaMrXpIaNkN1LStSyLY/InyuaGVFmEFchbPak
+         W43jcix/j0PvfoRwxnAqRayg5y2mRdEYFdk1jfxpEPrirSIe138fyVFeBPg6kJft6Wne
+         UY7LPhtOdIqrQgYtuWfPVCvHbCjqzG/NnBy3XNKiC6tWnBHNK6ZIyXuno7k118ll375S
+         AZOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NQ8Y8vCXDwvbwSecDA7aeQbHVXaWb6F8hoqdYyLqgk8=;
+        fh=6toU3DEePwSeIS6MNoAieyjTAbNFN5ugtyiGAa+sQdI=;
+        b=sZZWTSZfnRkWoC4e26CIKJWUcjlmo4ZeZwnWCGVcOeG3y/sTCnqI0tqcJCo2x8R6wB
+         NYZbn2OZFqK/gvKQUnEraenhK6Zvdb2r1fXjIdbuX0af8mN8PVZetE05iiUlC4ft2Zwx
+         xUWxpVWgmVExUQyKLw4BSFmWSQ5VGybP0J2Y+D9N2ygUCiPGdeEdVMxBaXaUZ2bp0goM
+         Kh1TLFZEr+J/LFWnxerO6JVJLemReryG1Pnr87D80PHpcnXTkTNPYjII5LjtLBsW8Doo
+         4XbP2UFhaqqXRJZ9hup7jHHZcmHCn+iP+7jVZnaB04cbq8XwLK7yHabRKMgb5tS9YUOY
+         +S+Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791733568; x=1792338368; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NQ8Y8vCXDwvbwSecDA7aeQbHVXaWb6F8hoqdYyLqgk8=;
+        b=bb1NoM/0kjC3EZPLOADjfmsOI2AQCH2n6T6TghzdLY+guq/FGYIsanWSG3zffP5Xj7
+         QHJBhV0q/EloM1S64F/m+qAu8lGthx3RptnqL42H3hy9acmGvXjiPpwM4eDDW/Iv6RcB
+         QF1/LbVZ6WPPVBxOL1fyi30egNQFBSy9yOgEr8NJYG7QgIHkyjfQZQjmBKGr77WzoJo/
+         vJwWm4Z9jAknTQkYPolPauhC4bdQz49uPFFMHkqSITo7EoBxDBjPv+Xv1P/O9ZoIYkQQ
+         CTO5HNbIJ0klplJVmyWwbd8RLxXTU+ryvub5Q2RnVNrp/TMqqXNMCxa/ndYtRffV2Q1o
+         TB9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791733568; x=1792338368;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NQ8Y8vCXDwvbwSecDA7aeQbHVXaWb6F8hoqdYyLqgk8=;
+        b=SJy2VFjijRaZOb0NnsanxIRzVn6c+NNZAmP+anpefJ+IuQDN6YUI8q3H2PYejzclDi
+         hnNwDoM3O0PBfO/Ug5heOppESm4+RFjt14hv/NKa290thqdJIi0zKtkfXB7Ix2E9K6qS
+         DwfH2y0VxforgGHUYdUXwgwtojy394YaKbR1e3zyO3pBY2nKzo8Nb9as2aS5ru8ZGii3
+         vhkT1RccnpWQjqNP/VDCQ1gqkGmL+fiwV9LSIQ4sSufP5q7x2R0J1vXEyXUGuQBjreWN
+         vgyO06Q2eSKG3wbvmJwkvR1vtg3CRWQAQ4IITl51Rvvs74FxKcd/b9UutYeE7NxMWbXd
+         z6DA==
+X-Gm-Message-State: AFq9FYJe1jAkiTYGS8/h24k82es7VC5dvCeSAcK9c9ECB/sZLDXdOvk8
+	1NYbI0d9AvMvUHUfjc4uFEDxz+bjcWOrsga5F0mY4mSUsen1NtUnLepY4fRQB0HqwA+2nzLPCbz
+	Ze93s5Irjq22kmQbUMaeEGLoBxVRfW5iYV9KDMx/p
+X-Gm-Gg: AYBFou01rsdc9gQ27IelM9zeAtGGqKcjaYip9+1TE/9zPpPZ94pkfC3crcicA6RQMSH
+	ghKS7h17KZEpBGDMZSKOe+nQF6FWQy7uxldrV+eHCr/WQUIwWjQuMh/ughDW9KqeVwiBe123UV0
+	jv8XgWyc7rLZJVaxpcU1bML5OC7rzXDzwhSwu4QrjFxuq4hzXLSQP5B8priRExV92rcbXKfrSps
+	PuPuSERFuRfrZFLepBFB7gMIrCtG5dqdFmw4y8q60UEc2d2ORUbX8FYvE8CbbwWPLDr34U4DxGK
+	vhKR3c6TbRTS3pxQqDR5MBLwEqzQVPjg4VMvQm7zbFTmVL2XLyXuICaawQt2EORy
+X-Received: by 2002:aa7:d38d:0:b0:6ae:1503:5a27 with SMTP id
+ 4fb4d7f45d1cf-6b1999f28d0mr32551a12.8.1791733567188; Sun, 11 Oct 2026
+ 08:46:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261008034027.1403188-1-almasrymina@google.com> <179173083927.434549.6834667881612626912@kernel.org>
+In-Reply-To: <179173083927.434549.6834667881612626912@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Sun, 11 Oct 2026 08:45:54 -0700
+X-Gm-Features: AclHuK9Z8QuC4Ay-2rnhGygOdIrDTmHPITpI09OOb4gpQMofmnM8JDJaiIrsSis
+Message-ID: <CAHS8izMARWs41xLX0gD+39qd=NPXA8QfUwXc8qKwqAUf1anS-w@mail.gmail.com>
+Subject: Re: [PATCH net v1] net: devmem: prevent mixing fragments from
+ different bindings
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, kaiyuanz@google.com, sdf@fomichev.me, 
+	pabeni@redhat.com, linux-kernel@vger.kernel.org, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, horms@kernel.org, 
+	bobbyeshleman@meta.com, antonio@openvpn.net, asml.silence@gmail.com, 
+	ralf@mandelbit.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Sun, Oct 11, 2026 at 8:00=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 2 (1) =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] This patch makes a valid devmem MSG_ZEROCOPY sendmsg() fail with
+>   -EFAULT.
+> - [High] The commit says it prevents mixing fragments from different
+>   devmem bindings in one skb, but it only guards the=E2=80=A6
+>
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but it undermines
+>   the validation the patch hardens.
+>
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+Both these issues seem valid. I could fix them in follow up patches
+but it may be good to try to fix them now. Let me take a stab at it.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+pw-bot: cr
 
-- [High] The fix is incomplete: `struct sparx5_mall_entry` still leaks on
-  every error return in `sparx5_tc_matchall_replace()`.
-
-Pre-existing issues:
-- [High] `sparx5_tc_matchall_parse_mirror_action()` sets
-  `entry->mirror.port = netdev_priv(action->dev)` without checking that…
-
---
-
-net: sparx5: free the matchall entry on destroy
-
-This patch adds a kfree() of the struct sparx5_mall_entry in
-sparx5_tc_matchall_destroy(), after the entry is removed from
-sparx5->mall_entries. Without it, every deleted mirror and goto matchall
-filter leaked its entry.
-
-> diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c
-> index 702257979462d..146d7f28e8f3d 100644
-> --- a/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c
-> +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_tc_matchall.c
-> @@ -160,6 +160,7 @@ static int sparx5_tc_matchall_destroy(struct net_device *ndev,
->  	}
->  
->  	list_del(&entry->list);
-> +	kfree(entry);
->  
->  	return err;
->  }
-
-[Severity: High]
-Does sparx5_tc_matchall_replace() still leak mall_entry on its error
-paths?
-
-The entry is allocated before the action is checked or the hardware is
-programmed. It is only added to the list at the very end:
-
-sparx5_tc_matchall_replace() {
-    ...
-	mall_entry = kzalloc_obj(*mall_entry);
-	if (!mall_entry)
-		return -ENOMEM;
-    ...
-	list_add_tail(&mall_entry->list, &sparx5->mall_entries);
-
-	return 0;
-}
-
-Each return between those two points loses the only pointer to the entry
-without freeing it:
-
-- the sparx5_mirror_add() failure in the FLOW_ACTION_MIRRED case, which
-  returns err (-EEXIST, -EINVAL, -ENOENT)
-
-- the four vcap_enable_lookups() failure returns in the FLOW_ACTION_GOTO
-  case (-EFAULT, -EADDRINUSE, -EADDRNOTAVAIL, and other errors)
-
-- the default case:
-
-	default:
-		NL_SET_ERR_MSG_MOD(tmo->common.extack, "Unsupported action");
-		return -EOPNOTSUPP;
-
-These entries never reach sparx5->mall_entries. That means
-sparx5_tc_matchall_destroy() can never find them, and the new kfree()
-does not cover them.
-
-A failed offload is easy to repeat. Examples are a matchall filter with
-an action like drop, which hits the default case, a second mirror on a
-port that is already mirrored, or a goto to an unsupported chain.
-Without skip_sw the software filter is still installed, so this can run
-in a loop.
-
-Since this is the same object the commit message says is leaked, could
-the fix also free mall_entry on these paths? A shared error label in
-sparx5_tc_matchall_replace() would work, or the action could be checked
-before the allocation.
-
-[Severity: High]
-This is a pre-existing issue and was not introduced by this patch. Is
-the mirred target device checked before it is used as a sparx5 port?
-
-sparx5_tc_matchall_parse_mirror_action() {
-	entry->mirror.port = netdev_priv(action->dev);
-}
-
-Nothing checks that action->dev is a sparx5 port, or even that it is
-non-NULL. The driver already has a helper that checks both:
-
-sparx5_netdevice_check() {
-	return dev && (dev->netdev_ops == &sparx5_port_netdev_ops);
-}
-
-The lan966x driver does a similar check in lan966x_mirror_port_add().
-
-If the mirred target is a foreign netdev such as dummy, veth or a
-bridge, sparx5_mirror_add() reads mport->portno from that driver's
-private area. It then writes the value to hardware:
-
-sparx5_mirror_add() {
-    ...
-	if (sport->portno == mport->portno)
-		return -EINVAL;
-    ...
-	sparx5_mirror_monitor_set(sparx5, mirror_idx, mport->portno);
-    ...
-}
-
-As a result, mirrored traffic could be sent to an arbitrary switch port.
-
-action->dev can also be NULL. In net/sched/act_mirred.c,
-tcf_offload_mirred_get_dev() leaves entry->dev NULL when the action has
-no device:
-
-tcf_offload_mirred_get_dev() {
-	entry->dev = act->ops->get_dev(act, &entry->destructor);
-	if (!entry->dev)
-		return;
-    ...
-}
-
-This happens with mirred blockid actions, where tcf_mirred_init() calls
-tcf_mirred_replace_dev(m, NULL). It also happens when the target device
-has been unregistered. In both cases entry->id is still set to
-FLOW_ACTION_MIRRED.
-
-netdev_priv(NULL) then returns a small non-NULL pointer, and the
-mport->portno read in sparx5_mirror_add() would oops.
-
-Would calling sparx5_netdevice_check() on action->dev before it is
-used fix both cases?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007-sparx5-matchall-kfree-net-v1-1-c8918685b337%40microchip.com
+--=20
+Thanks,
+Mina
