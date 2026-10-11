@@ -1,178 +1,234 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012016.outbound.protection.outlook.com [40.93.195.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425F24078E9;
-	Sun, 11 Oct 2026 08:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791708002; cv=fail; b=EsdNLSe95954Z1R3u/NJKRAuuyY4DHeDbc/jrFyZsXVxrKoh6er9EP82SIfADVK1zAL6vuNyJD3qNQdqoOLZpAYeT3NjQ8Oy0hRMOYJmFv43RkJkKdSWNZupachOSiRKWjNzjsqB0NOnRrUAe41b1ORRvgZz+b1aqVFUbgWGHz8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791708002; c=relaxed/simple;
-	bh=pXb/udyY72tlkXkHG5bT/Pzlwro3XpfXpDb7mUUcUT4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZlGl5trA+kEKd0NhD95yi4+SrGGX9bP0A6rHFUOTcvylNT2o3+6WjEojyuaLS3k2ZwdpqPU28S2UoROBOSjibnS/g7RZ8TJUEeax1bCgGmeSam6aB2/VX5O9k1JKMdNpjg+uOFkZL3JF+fBdDzLSqZcjipQ0ALRPlTmusIm0q08=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=FN7njEH7; arc=fail smtp.client-ip=40.93.195.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2AB421245;
+	Sun, 11 Oct 2026 08:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791708380; cv=none; b=CQnU4WPCNYEbSuI2wnvRpyBHJs4ZOGBAV9kHmxW5k4EvQLjEgk24PAfX6zD0fOprTyr1qj42xIxQO+Ui5o+439hp6QD39HXJocNyNsMZ3WxnC65tBGd0vhRvygIhXZwgRcX7XfjhJQbthYcsulHQRkWvtqrSEUQNIvyRAF0pFKE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791708380; c=relaxed/simple;
+	bh=JXK4oSCpErPklpc7lLoKnemVgdcwS7et3wPxvHo68bk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EU52+xfeBL0GKeqJzXu1blern/1pE3OC/fNL2TWUbDoYq6shD/ov3uhIwEToEDDz88qhh2+1h1nkjbBlB97BN+zOA613cpcrRH+4OQsxEV+FVvPiLtljI3NQpdfqYw9+LmPhdoezMf9Z2I2plCN+aNqhs27VnSED04nqvbw0nts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XObUx/gw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="FN7njEH7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fWT98xijiSAPQgIMQCUg4HJ+mCuULHZMDf/c5x4oGw3cRe7aEZxEO4T4qaYsqA7+xmi7tzhD5wSgvfeahy2jiIFRcPuCoXPEHGxcQjI3h08p15ZvAlOVJY7PtvvJRWV7v/Tw/LZ3TOcf8SPeAOCSXIgLed5gCeQpcp/vjiK8inHWvBQXOxYc/QC7BUN5AJ8xExOrJigiTObaKYkffhYraGfh/6ZyZCsbj1gMsBFy1PAKH8WuFPWZ6ONfY4aql4mthzsshwI61OS9ZXnN6Lj3RpC0UOiMKvLUQNw8mIx8M/LGNXynVpXEnXIYi3WmaiiWpx7Ky/NxpCMUQyP42PGfng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9+M3A6U7TU4M4aiMrOjf/Awi+1GBbK4DCBsFhEb/M/s=;
- b=C002OfBi9Isyem2T4MKaVMWpeasaQzX6j59GWptyXoFEBMil8F3KbXeVS0od+c0OUksjNl/HsUEhsaVBuWZh6ddRSLgzgju9qP10nie9iRtYahjYvQIPtyM+wBcmzO6r57XohEcF1RxoPZJkfyKJNaQuh8vSFS0lD9kboacg8zmulL8GxXa7ZNYzrdTQg4xGntgOfFh5n2Qx1a6SM0scD1g73VkW9VzTzr/qA+4UVXm9zu5zhP9TIfgOW+OwefgF9CMuMpCEgK4/dx8MVJR5r0Y62zLZPxSsZqVEaTRd19pMvi/CbsKTbNk7IzTw2x90JofwgjWLnaU1DTYdZGzGcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9+M3A6U7TU4M4aiMrOjf/Awi+1GBbK4DCBsFhEb/M/s=;
- b=FN7njEH7XTCjWMXDF5ZDKD6m+3s9mdjqdEsiLR3vnk0NmrcLXRcar7E1iEbYlkRcXrOh3YPz+qp7TvyMfKAmidl/+0fH9FnPHWkiGhJTMW1f6PFqFTwFXF946anPj/kxuMZ4st9FV1RuR6aMGECgoe/5MBZVBu79FI2lGmAmXdxAGmoq5ZkhJZHHHP5AU/IZJdI1OTeMO4u9S/ysGYG88hU5XKgEnc2cLEgloZzOJH0Svlc1ibCAo5gHTeadJdJGtX2vPzdBnl6XEtv1YSCEof8cmAGwP9dy75BW5hMbSPZxV7BbGqO0MPfjea48gmBYM0xoJIlIbyiTx3pLmhOuQw==
-Received: from BN0PR04CA0169.namprd04.prod.outlook.com (2603:10b6:408:eb::24)
- by CH3PR12MB9431.namprd12.prod.outlook.com (2603:10b6:610:1c1::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.17; Sun, 11 Oct
- 2026 08:39:55 +0000
-Received: from BN7PEPF000000AA.namprd05.prod.outlook.com
- (2603:10b6:408:eb:cafe::4f) by BN0PR04CA0169.outlook.office365.com
- (2603:10b6:408:eb::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.496.5 via Frontend Transport; Sun, 11
- Oct 2026 08:39:55 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BN7PEPF000000AA.mail.protection.outlook.com (10.167.245.234) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Sun, 11 Oct 2026 08:39:54 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 11 Oct
- 2026 01:39:44 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 11 Oct
- 2026 01:39:43 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Sun, 11
- Oct 2026 01:39:40 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Alexei Lazar <alazar@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>, Kees Cook <kees@kernel.org>, open list
-	<linux-kernel@vger.kernel.org>, <oss-drivers@corigine.com>, Simon Horman
-	<horms@kernel.org>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net-next V2] net/dcb: Validate bandwidth for non-ETS traffic classes
-Date: Sun, 11 Oct 2026 11:39:29 +0300
-Message-ID: <20261011083929.739261-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XObUx/gw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40E61F0089B;
+	Sun, 11 Oct 2026 08:46:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791708378;
+	bh=FYthYDxYDoOAgUYRAWkQ0GCdhoXr4bMX021KWI/g0l4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XObUx/gwFpLfOl4g6Ss5t9I77a8SxllPvTsONJgeUCLUJJU+ZXuTYa6UpZR8oT7+c
+	 /sqXKyjlVCnowuCWp2wvklgrQXFZ3kIAHL4wcWFzfYzVosFao1eDyyXFDXbyOnxb+4
+	 Vxy8kkIG2fwkdwcvyTEJKjItVufght8LrBGX710ZZuUdYm4xxnjQn7aOWcSJYvhfvL
+	 xjZ8+QZavRE2m0sYrqST+vwJ6UqRH64S3Q+a+m0QIcQfXA3KhcRffAutPI33RY6Af6
+	 JxnzqrXkwdECscqE+0BUrG1Z6aQ7xE4lOZrzKrz97OFyRXdg7I+TsiUHsnUvO/SFCI
+	 /ly5AQbE9FQqQ==
+Subject:
+ Re: [PATCH net] rds: fix transport reference leak on rds_add_bound() failure
+From: netdev-bot+sashiko@kernel.org
+To: bsdhenrymartin@gmail.com
+Cc: achender@kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 11 Oct 2026 08:46:17 +0000
+Message-ID: <179170837722.434549.13971101110405723728@kernel.org>
+In-Reply-To: <20261010081446.3112217-1-bsdhenrymartin@gmail.com>
+References: <20261010081446.3112217-1-bsdhenrymartin@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PEPF000000AA:EE_|CH3PR12MB9431:EE_
-X-MS-Office365-Filtering-Correlation-Id: 772b5598-cbd4-49fb-c49e-08df277339a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|7416014|376014|36860700016|6133799003|18002099003|261009223027099003|13003099007|11063799006|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	V8phrbmX+Jh545IEkIF/lxqJlcNlIQfSnGiQm0/Z2BeQ6jDKcRMr04obzj0Jgzlfw2Red0jJyrdx+Zd2D7U1ge3c5miuB9Phzd4r4o6AJV8rjiQ/BoQ3NvxQUOSRPkM5U8M3eemQKahiIzbyzuo/XktE7gA2CatGvRVwcSYoHAlO6bpWRcS4Fuo12EgDEawOZJjCUcHoxPknh3fl2+KnRzpWvHV0fpCFn8XU7+ipxxGzirWRff+Yt7IQyDQcU7cEqQOUGpSmvWa6zFU4cbheaL1j+8bPv1zyaliz5G59oCiPaReX88AfaelvKnAH2R8QGDZ+bVhgdmVv3+2EaZrADUYXSnHUhbZU2+VSuC8QXj+AaIRPVDKjot4IsNc5mO8IdnPJkrmwx55ojbs9kf3gyCdCzIVUKYYclrtuDfGDANuvN9nbaBRl/Gx0qjIhtH6MZQj1zKRxePL2aStel9HuihluiYjiBfrk7DppEn5qKwTaxjh/8jST4sCEsNzGsmcc5lceERzp3RJiYgYqLCByK0mOKb9h50tGQqwWE3aF0p2mtu0J+nR04+KxiKJIlLbAG+fnxshB4VX9GXxoHmMU25k53xljd2PwsdG+7YLq7n4S1pE338ulKrI6Y+DdQRnRxL68nmaKvudjFnqJBL1UYVOfbkUzYeLzU9j8k4THudNy3LpJjvgNfJlA3j1Sq01VAKt42G3kiytetKaIQSdOXg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(7416014)(376014)(36860700016)(6133799003)(18002099003)(261009223027099003)(13003099007)(11063799006)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	5/BYGQTVYLrgPoBchk4K6p42NpqnHikun41mt8qsPha7D47BeJNv0xjpc/s+ko2Zght3Ume7smyQPF5ZY4jkvk7U1FD4tttdYAdBY7IqcFEUkFqrXQwiUVzWCm4Get1pUpHtjSlGAZ3BAs4R85r78g86dNfqSJKhPfxBMhNyENECS3WYGQWvnpZuEjcEPiRvExV85Kga77CcyiA/BWxJnzjW1N209K1lNCq6SDdGKkHZjYNeWhF2BZ30OzWGIxKK9SMAEOC5s2qa9MQhn239RBeh9JBgfSk6TDV+4dn0F2M20H4dajQgKFgKzBIwu7ldutlmZgGD9f2voH7ZqHDRCUPMVtywfUZgQaoKG+D6wt8nM7jZJJsoqlaH4f2+GBvPl4EbentJpxMLCIuTYubexKNwcYzq0Y+hjJW1/z8OL8ZVlGr2bDmwisnHACDRqXBL
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Oct 2026 08:39:54.9555
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 772b5598-cbd4-49fb-c49e-08df277339a0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN7PEPF000000AA.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9431
 
-From: Alexei Lazar <alazar@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-The IEEE 802.1Qaz standard defines that bandwidth allocation percentages
-only apply to ETS traffic classes. Reject ETS configurations that
-specify non-zero bandwidth for non-ETS traffic classes.
+Critical: 0 · High: 1 · Medium: 0 (3) · Low: 0
 
-Placing this check in dcbnl_ieee_set() enforces the constraint uniformly
-for all drivers rather than relying on each driver to validate it
-independently.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Drop the equivalent check from NFP's dcb_ets_check(). Keep ETS
-bandwidth-sum validation unchanged.
+- [High] In rds_bind() (net/rds/bind.c:267-270), the new failure branch
+  calls rds_trans_put(rs->rs_transport) while the socket is still live.
 
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- drivers/net/ethernet/netronome/nfp/nic/dcb.c | 3 ---
- net/dcb/dcbnl.c                              | 9 +++++++++
- 2 files changed, 9 insertions(+), 3 deletions(-)
+Pre-existing issues:
+- [Medium] The SO_RDS_TRANSPORT once-only contract breaks after a failed
+  bind.
+- [Medium] rds_ioctl(SIOCRDSSETTOS) (af_rds.c:264-266) and
+  rds_getsockopt(SO_RDS_TRANSPORT) (af_rds.c:525-526) read…
+- [Medium] When rhashtable_insert_fast() fails, rds_add_bound() briefly
+  sets rs->rs_bound_addr = *addr (bind.c:123) and then resets it…
 
-V2:
-- Generalized per Jakub's suggestion.
+--
 
-V1:
-https://lore.kernel.org/all/20260622112925.624795-3-tariqt@nvidia.com/
+rds: fix transport reference leak on rds_add_bound() failure
 
-diff --git a/drivers/net/ethernet/netronome/nfp/nic/dcb.c b/drivers/net/ethernet/netronome/nfp/nic/dcb.c
-index bb498ac6bd7d..91fbfa3708fc 100644
---- a/drivers/net/ethernet/netronome/nfp/nic/dcb.c
-+++ b/drivers/net/ethernet/netronome/nfp/nic/dcb.c
-@@ -218,9 +218,6 @@ static int dcb_ets_check(struct net_device *dev, struct ieee_ets *ets)
- 		if (ets->tc_tsa[i] == IEEE_8021QAZ_TSA_ETS) {
- 			ets_exists = true;
- 			sum += ets->tc_tx_bw[i];
--		} else if (ets->tc_tx_bw[i]) {
--			nfp_warn(app->cpp, "ETS BW for strict/vendor TC must be 0.");
--			return -EINVAL;
- 		}
- 	}
- 
-diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
-index 35164bfa563d..ab71f5312876 100644
---- a/net/dcb/dcbnl.c
-+++ b/net/dcb/dcbnl.c
-@@ -1578,6 +1578,15 @@ static int dcbnl_ieee_set(struct net_device *netdev, struct nlmsghdr *nlh,
- 
- 	if (ieee[DCB_ATTR_IEEE_ETS] && ops->ieee_setets) {
- 		struct ieee_ets *ets = nla_data(ieee[DCB_ATTR_IEEE_ETS]);
-+
-+		/* IEEE 802.1Qaz: BW allocation applies only to ETS TCs */
-+		for (int i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
-+			if (ets->tc_tsa[i] != IEEE_8021QAZ_TSA_ETS &&
-+			    ets->tc_tx_bw[i]) {
-+				err = -EINVAL;
-+				goto err;
-+			}
-+		}
- 		err = ops->ieee_setets(netdev, ets);
- 		if (err)
- 			goto err;
+When rds_add_bound() fails, rds_bind() now drops the transport module
+reference before it clears rs->rs_transport. Before this change, every
+failed bind leaked one reference on the transport module (for example
+rds_tcp), and the module could no longer be unloaded.
 
-base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+> diff --git a/net/rds/bind.c b/net/rds/bind.c
+> index f800d920d9690..e4667b3128940 100644
+> --- a/net/rds/bind.c
+> +++ b/net/rds/bind.c
+> @@ -264,8 +264,10 @@ int rds_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int addr_len)
+>  
+>  	sock_set_flag(sk, SOCK_RCU_FREE);
+>  	ret = rds_add_bound(rs, binding_addr, &port, scope_id);
+> -	if (ret)
+> +	if (ret) {
+> +		rds_trans_put(rs->rs_transport);
+
+[Severity: High]
+Can this module_put() race with code on the same socket that reads
+rs->rs_transport without a lock?
+
+Before this patch, rds_release() was the only place that dropped the
+transport module reference. No other syscall can be running on the
+socket at that point.
+
+With this change, the socket's only reference can be dropped while
+rs->rs_transport is still set and other threads may already hold the
+pointer. The pointer gets set either by setsockopt(SO_RDS_TRANSPORT) or
+by rds_bind() itself, which assigns rs->rs_transport = trans before it
+calls rds_add_bound().
+
+Several readers use rs->rs_transport without lock_sock() and without
+taking their own module reference:
+
+net/rds/af_rds.c:rds_ioctl() {
+    ...
+		if (rs->rs_transport &&
+		    rs->rs_transport->get_tos_map)
+			tos = rs->rs_transport->get_tos_map(utos);
+    ...
+}
+
+net/rds/af_rds.c:rds_getsockopt() {
+    ...
+		trans = (rs->rs_transport ? rs->rs_transport->t_type :
+			 RDS_TRANS_NONE); /* unbound */
+    ...
+}
+
+There is also __rds_rdma_map() in net/rds/rdma.c. It is reached through
+RDS_GET_MR, which does not take lock_sock(). It stores rs->rs_transport
+in mr->r_trans and calls ->get_mr().
+
+A possible sequence:
+
+CPU1                                  CPU0
+rds_ioctl(SIOCRDSSETTOS)
+  reads rs->rs_transport
+                                      rds_bind()
+                                        rds_add_bound() fails (port 1)
+                                        rds_trans_put(rs->rs_transport)
+                                          module_put(rds_tcp)
+                                      rmmod rds_tcp frees the module
+  rs->rs_transport->get_tos_map(utos)
+
+At that point CPU1 reads the freed rds_tcp_transport and calls into
+freed module text. This needs a concurrent rmmod, but making
+"rmmod rds_tcp" possible again is the stated goal of the patch.
+
+Would it work to keep the result of rds_trans_get_preferred() in a
+local variable and assign rs->rs_transport only after rds_add_bound()
+succeeds? On failure, only the local reference would be put. A
+transport chosen with SO_RDS_TRANSPORT would stay attached and be
+released in rds_release().
+
+>  		rs->rs_transport = NULL;
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but should rs->rs_transport
+be cleared here when the user picked the transport with
+SO_RDS_TRANSPORT?
+
+Documentation/networking/rds.rst says of SO_RDS_TRANSPORT:
+
+    This socket option may only be set exactly once on the socket,
+    prior to binding it via the bind(2) system call.
+
+rds_set_transport() enforces this only with:
+
+	if (rs->rs_transport)
+		return -EOPNOTSUPP; /* previously attached to transport */
+
+After a failed bind(), getsockopt(SO_RDS_TRANSPORT) returns
+RDS_TRANS_NONE and a second setsockopt(SO_RDS_TRANSPORT) succeeds. If
+the user simply retries bind(), it quietly uses
+rds_trans_get_preferred() instead of the transport the user chose.
+
+The NULL-out was added by commit 05733434ee9a ("net/rds: Check
+laddr_check before calling it"). This patch keeps it as is.
+
+[Severity: Medium]
+This is a pre-existing issue, but can the unlocked readers see this
+NULL store between their NULL check and their dereference?
+
+rds_ioctl(SIOCRDSSETTOS) and rds_getsockopt(SO_RDS_TRANSPORT), quoted
+above, read rs->rs_transport with plain loads and no lock_sock(). They
+load it once for the NULL check and again for the dereference. This
+store runs under lock_sock(), which those readers don't hold.
+
+If the compiler emits two separate loads, a reader can pass the
+non-NULL check, then see NULL and dereference NULL->get_tos_map or
+NULL->t_type. The NULL-out also comes from commit 05733434ee9a.
+
+[Severity: Medium]
+This is also a pre-existing issue, but is there a similar window in
+__rds_rdma_map()?
+
+If rhashtable_insert_fast() fails, rds_add_bound() sets the bound
+address for a moment and then resets it:
+
+net/rds/bind.c:rds_add_bound() {
+    ...
+		rs->rs_bound_addr = *addr;
+    ...
+		} else {
+			rs->rs_bound_addr = in6addr_any;
+			rds_sock_put(rs);
+			ret = -ENOMEM;
+			break;
+		}
+    ...
+}
+
+rds_bind() then puts and clears rs->rs_transport. RDS_GET_MR and
+RDS_GET_MR_FOR_DEST run without lock_sock(), so __rds_rdma_map() can
+pass this check while the address is briefly set:
+
+	if (ipv6_addr_any(&rs->rs_bound_addr) || !rs->rs_transport) {
+
+Later, after calls that force the pointer to be loaded again, it does:
+
+	trans_private = rs->rs_transport->get_mr(
+
+That load can see NULL. __rds_rdma_map() can also store mr->r_trans for
+a transport whose socket reference the failing bind then drops.
+
+The window opens only when rhashtable_insert_fast() fails (-ENOMEM,
+-EBUSY or -E2BIG), which an attacker cannot control. The NULL
+dereference also needs a transport that has get_mr. The dropped module
+reference part is the same race described in the first comment above.
+
+> +	}
+>  
+>  out:
+>  	release_sock(sk);
+
 -- 
-2.44.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010081446.3112217-1-bsdhenrymartin%40gmail.com
