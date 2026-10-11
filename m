@@ -1,47 +1,70 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B297E54705F;
-	Sun, 11 Oct 2026 03:28:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9542E718B
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 03:29:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791689294; cv=none; b=mO4NFO7SHdc7tuI88/Donaq3MnaLWOrlkKDTvCAKbVU3ERGvDoyXpFna3g4zIAnGIMY42GErulIek4UtSLX5zsw83ha7qs/zNQZnNIsI1HlThKzWj8zSJ1wX/qIJj/Bi5lzG7sHawEcqLH7KavvkYQssHpcC4pRv2nvCDh+N54M=
+	t=1791689352; cv=none; b=Rx+pegbrtBALfhJs/YWGXQS72/e575KlgBPp/H3wfCAlj3QvOZg6IKyMtU0G8RWjFAn3ATfA5ScjOoXQaPMwu2tZJ3hDlc2tRXhKt2QzMiJuq8ScIhIzcZeLrV26e5JXlOKgNkS2NhxGEZTMZLbNeW+Gb6/Qx7Z8SwCUZDSTKrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791689294; c=relaxed/simple;
-	bh=/YPLbqEcFVqjmRMWusjhbUsaybFteEuS+PBKtWSD37I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bXFLefT+GYWA+oT4nRFG0dnjNE5bK2BkctN5zdX+8YbUruFcmv6UE8gHlErCHFHq/Rb1htSKxuGQTXGzPxQGa7ECmUjVyAp1qOPnwmXQO3S8EOmGwA8ywTS2IjJWYKN9xq6jjiIFA1rrGC5A6WPEBR+cvguLXgW2tEpfHiIGaHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pafyuOO3; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1791689352; c=relaxed/simple;
+	bh=kvrRj9ursMBQy+uwrLYkSJyece+TKmku/6S5ruvQ73Y=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=Kg2luNef11KCdXgWiWk6+MPO89810If0eukSiUEkXeiXPFVQU0XnJfhCjaZohBaWYFIPQd8CRYeza7X0AgDqEQ1sNBLHijDkDCNMNWjiachN2B9le7Y8kN8MlP5thprZ35RCPWYv6k4bVnb4zkxQDhwY4vh3KhKzMDJYVgzihok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=abbZGrVZ; arc=none smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pafyuOO3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=ZmJlsXYI+H0VdIL85rNDi+Xp9VytUUOPhTxfLykp7to=; b=pafyuOO3/E5PdQ3Yeib6eUID6A
-	yrr4hsUiVq+lj2Iv6KCajrqzgyVEJmn+f52VXXaLtXRgIdb7ptxr/rS5KFlj3C96VpPHSnrJ5cpgr
-	UCLAZf/9oR9nxdj8USg8WHVi2T6AwW/lQEKdj1yjOpzTS4PDew6VqrqY4CnxGHhTJ9ps06GQKzCZB
-	W7T00iwK1lPqHM3QKfIJdy6KuJR0YGu+pcuc3g2JUwqFT7a3GH1SIu1aSI3K96uOehfw6zhM+Xcds
-	s0rwok+R02Ixp0bt5hcd32HfORw4gLFw9vcuXMwmlGNpj+fKbau9MkpDJbvv7YfRaHEdwQt72PXm0
-	wZlD9yQA==;
-Received: from [50.53.43.113] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xFkEE-00000008gGO-1EWR;
-	Sun, 11 Oct 2026 03:28:02 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: netdev@vger.kernel.org
-Cc: patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next] net: dccp: uapi: clean up kernel-doc comments
-Date: Sat, 10 Oct 2026 20:28:00 -0700
-Message-ID: <20261011032800.278870-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="abbZGrVZ"
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-359d729379fso68094eec.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 20:29:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791689350; x=1792294150; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IO3ydnByvXMnYzFtl9P1WkksFG2gUWqRIyCmkWgMOTQ=;
+        b=abbZGrVZBwBhjEHIBhHahYLGlpbBnCnwEvVUrMaxSorDjxdHY5rsLuRpdqVu1YW/JZ
+         DZmcEwk9rMKcB8fHhsVQGzodrr3s+vGJXIKaWp8f4fVs8z1ZZSKWfxtuuCPUO9AiaW2z
+         G5A+jRfXwYenWqH+pvlMAHidkFQLV7XUeSpyAWTImTLdIZCZnJf0M5/0vHzguu+rr+Z8
+         QjtCXIEJfshRUnfaZPxZUW/UWKRx9GglRqfEAsrldN5DsQI/CeVOkyn0cb2LxhmLZ9ug
+         X+Ov5OVGDcsM2kTkAwgEXNxQjee0jsSKcbyPn1sAr1C7hKiq6Lu1ZgPhjZsUcqKqHnTc
+         fZIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791689350; x=1792294150;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=IO3ydnByvXMnYzFtl9P1WkksFG2gUWqRIyCmkWgMOTQ=;
+        b=yShj5jyJohLd9Evs1iKWnlkwS0zcrT2P0TNzSe9jOSf8H+JiIXVuNOkpzeaYemDFix
+         6BN/wy+9u/KPAvvZ3SGsJG2al36BUMbGRLNtlY8ofhFTwavp2tnQ3MC66V/oH5HmC5Uo
+         PHl8+bXV8qhvltoWfWJDdEkGTmXtjyj4H9A6cICyWt/YUfFsy+92dOoHAMrxQBkETg0w
+         0l56JlCCrVbfE1A8991trqAGYor2wU8h2UxgiATIz3E1x1In88l4GJpdRjqfPLBcigaN
+         0BhLIdqvkx3zz6t5LfUoiB94D03LIRM9zNKyvnmSq+A1SzQOY6tvAapPMcos31YOTZ3m
+         /5Rw==
+X-Forwarded-Encrypted: i=1; AKwUvBx/MaKKI5A4UuP8H8ErpD8kU0aSdSOhZ8lVsL7qh4O0k1sdrxaxTLeIeY1cCQ64Ylra9kB0Zuw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJIbRu9ehsGZ0OUVVuXz4yiLKrMw1wimi06zKuqLlhuNES/RfH+
+	FvzGYpoDtHcJjSp72Am91CtjmnSHaFvp8mwteA4S3RlfDzDyB/SKZLvc
+X-Gm-Gg: AYBFou2J5/A0m6H5LJ4njGZG/gw5FGoyKJMT6pJwErBdABXQIANQas2LAKOeAcaU58w
+	muxy2+9XcazTGaYcqeyi5d4c8a1vEbt93d3L7Vrw7/aVcwkS1+nhqHOf6sBuWNXs0qYsI51WUh4
+	W05dLx68A9kTSUrnvBNah70rqN0Nh+3vbFnAEBt9sAXfoYYGj5Ye223K+ueq5VFJJNBMz+aTwKl
+	RNwqzBuuKKOHK11Y72xtWWds4m6aeIvigMtvrlNkf0JoyPJ+csNfbLEjQmBibrrmnVEz3ym+CIc
+	1MU3/8n+6AArIv8hbXv2o4UgOEIBVEwkpk4Hycfq2wxiJUysdkrjE/1HapZG30an8KDrAKHSOIt
+	LQCCvcOztebSPPjRielCnlpKFgoIFGKJiG2eba5zBgZFNOMppTRBTqKHMB1Lh3AwHO0bcXNIitJ
+	kopVUsO0SKeFf//MACtmwBF4o5Gu0IzG7XBuIb4ZXqs+dKYJU/92/PGJlox6aO5zxb+Y5cs3nao
+	mf71wRyOHTm8mNvl2PDbjZ8kwCWYOjajSyQNJ9xYwbRR1H7+Ucd/15iL8pWc4eoHgKxORvq8B0s
+	rfY0u76mHtj9gbk=
+X-Received: by 2002:a05:693c:6218:b0:350:1d30:6c0f with SMTP id 5a478bee46e88-3537dfc7defmr9152144eec.9.1791689349694;
+        Sat, 10 Oct 2026 20:29:09 -0700 (PDT)
+Received: from l ([2603:8002:ea00:6800:4112:f5be:f9b3:803f])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cab27d5sm22393297eec.17.2026.10.10.20.29.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Oct 2026 20:29:09 -0700 (PDT)
+From: Dave Seddon <dave.seddon.ca@gmail.com>
+To: dave.seddon.ca@gmail.com,
+	netdev@vger.kernel.org
+Subject: [PATCH iproute2 0/3] iplink: bond: fix partner LACP state decoding
+Date: Sat, 10 Oct 2026 20:29:03 -0700
+Message-ID: <20261011032906.1398174-1-dave.seddon.ca@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,102 +73,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use correct kernel-doc format for struct members and add comments for
-missing struct members (dccph_seq2 and reserved).
+I have been using an LLM to help port iproute2's netlink handling to
+Go. While comparing the two decoders it flagged that ip reads
+IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE one byte wide. I may well be
+missing something; details below in case it is real.
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
+Patch 1 is the one-line fix and stands on its own. Patches 2 and 3 add
+a test for it. Please take just patch 1 if you would rather not have
+the test.
 
- include/uapi/linux/dccp.h |   41 ++++++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+Issue
+- kernel sends u16: nla_put_u16() in bond_fill_slave_info(),
+  drivers/net/bonding/bond_netlink.c:79. The field is
+  struct port_params.port_state, u16, include/net/bond_3ad.h:205.
+- iproute2 reads u8: rta_getattr_u8() in bond_slave_print_opt(),
+  ip/iplink_bond_slave.c:148.
+- little endian: first byte is the low byte. Output is right because
+  the kernel never sets bits above 0xff (the value comes from the
+  one-byte LACPDU actor_state, bond_3ad.c:562).
+- big endian: first byte is the always-zero high byte. Every bond port
+  prints:
+    ad_partner_oper_port_state 0 ad_partner_oper_port_state_str <>
+  Reproduced on s390x under qemu-user by replaying a generated message.
+- regressed in 39ac2d2b802b (v5.6.0). That commit added the _str
+  output and copied the actor (u8) block for the partner. The code
+  before it used rta_getattr_u16().
+- the kernel width is old: u16 in the struct since 1055c9aba3b6
+  (2008), exported as u16 since 46ea297ed67c (2015). sysfs and the
+  YNL spec agree with it, so the fix belongs in iproute2.
+- /proc/net/bonding and sysfs read the struct directly and are fine,
+  which is probably why nobody noticed.
+- the other bond and bond slave attributes match bond_netlink.c; this
+  is the only width mismatch.
 
---- linext-2026-1007.orig/include/uapi/linux/dccp.h
-+++ linext-2026-1007/include/uapi/linux/dccp.h
-@@ -8,15 +8,19 @@
- /**
-  * struct dccp_hdr - generic part of DCCP packet header
-  *
-- * @dccph_sport - Relevant port on the endpoint that sent this packet
-- * @dccph_dport - Relevant port on the other endpoint
-- * @dccph_doff - Data Offset from the start of the DCCP header, in 32-bit words
-- * @dccph_ccval - Used by the HC-Sender CCID
-- * @dccph_cscov - Parts of the packet that are covered by the Checksum field
-- * @dccph_checksum - Internet checksum, depends on dccph_cscov
-- * @dccph_x - 0 = 24 bit sequence number, 1 = 48
-- * @dccph_type - packet type, see DCCP_PKT_ prefixed macros
-- * @dccph_seq - sequence number high or low order 24 bits, depends on dccph_x
-+ * @dccph_sport: Relevant port on the endpoint that sent this packet
-+ * @dccph_dport: Relevant port on the other endpoint
-+ * @dccph_doff: Data Offset from the start of the DCCP header, in 32-bit words
-+ * @dccph_ccval: Used by the HC-Sender CCID
-+ * @dccph_cscov: Parts of the packet that are covered by the Checksum field
-+ * @dccph_checksum: Internet checksum, depends on dccph_cscov
-+ * @dccph_x: 0 = 24 bit sequence number, 1 = 48
-+ * @dccph_type: packet type, see DCCP_PKT_ prefixed macros
-+ * @dccph_reserved: reserved bits
-+ * @dccph_seq: sequence number high or low order lower 16 bits,
-+ *  depends on dccph_x
-+ * @dccph_seq2: sequence number high or low order upper 8 bits,
-+ *  depends on dccph_x
-  */
- struct dccp_hdr {
- 	__be16	dccph_sport,
-@@ -50,7 +54,7 @@ struct dccp_hdr {
- /**
-  * struct dccp_hdr_ext - the low bits of a 48 bit seq packet
-  *
-- * @dccph_seq_low - low 24 bits of a 48 bit seq packet
-+ * @dccph_seq_low: low 24 bits of a 48 bit seq packet
-  */
- struct dccp_hdr_ext {
- 	__be32	dccph_seq_low;
-@@ -59,7 +63,7 @@ struct dccp_hdr_ext {
- /**
-  * struct dccp_hdr_request - Connection initiation request header
-  *
-- * @dccph_req_service - Service to which the client app wants to connect
-+ * @dccph_req_service: Service to which the client app wants to connect
-  */
- struct dccp_hdr_request {
- 	__be32	dccph_req_service;
-@@ -67,8 +71,9 @@ struct dccp_hdr_request {
- /**
-  * struct dccp_hdr_ack_bits - acknowledgment bits common to most packets
-  *
-- * @dccph_resp_ack_nr_high - 48 bit ack number high order bits, contains GSR
-- * @dccph_resp_ack_nr_low - 48 bit ack number low order bits, contains GSR
-+ * @dccph_reserved1: reserved bits
-+ * @dccph_ack_nr_high: 48 bit ack number high order bits, contains GSR
-+ * @dccph_ack_nr_low: 48 bit ack number low order bits, contains GSR
-  */
- struct dccp_hdr_ack_bits {
- 	__be16	dccph_reserved1;
-@@ -78,8 +83,8 @@ struct dccp_hdr_ack_bits {
- /**
-  * struct dccp_hdr_response - Connection initiation response header
-  *
-- * @dccph_resp_ack - 48 bit Acknowledgment Number Subheader (5.3)
-- * @dccph_resp_service - Echoes the Service Code on a received DCCP-Request
-+ * @dccph_resp_ack: 48 bit Acknowledgment Number Subheader (5.3)
-+ * @dccph_resp_service: Echoes the Service Code on a received DCCP-Request
-  */
- struct dccp_hdr_response {
- 	struct dccp_hdr_ack_bits	dccph_resp_ack;
-@@ -89,9 +94,9 @@ struct dccp_hdr_response {
- /**
-  * struct dccp_hdr_reset - Unconditionally shut down a connection
-  *
-- * @dccph_reset_ack - 48 bit Acknowledgment Number Subheader (5.6)
-- * @dccph_reset_code - one of %dccp_reset_codes
-- * @dccph_reset_data - the Data 1 ... Data 3 fields from 5.6
-+ * @dccph_reset_ack: 48 bit Acknowledgment Number Subheader (5.6)
-+ * @dccph_reset_code: one of %dccp_reset_codes
-+ * @dccph_reset_data: the Data 1 ... Data 3 fields from 5.6
-  */
- struct dccp_hdr_reset {
- 	struct dccp_hdr_ack_bits	dccph_reset_ack;
+Test
+- tools/generate_nlmsg writes four RTM_NEWLINK blobs for a bond slave
+  with partner state 0x003f, 0x0000, 0x0100 and absent.
+- tests/ip/link/show_bond_slave_lacp_state.t decodes them with
+  "ip -d monitor file" and checks the printed value. No root needed.
+- 0x0100 cannot occur in real LACP. A one-byte reader prints 0 for it
+  on little endian and 1 on big endian; only a u16 reader prints 256.
+  That makes the bug visible on x86_64 too.
+
+How it was tested
+- x86_64, native: new test red with patch 1 reverted (0x0100 prints 0),
+  green with it.
+- s390x, qemu-user: the blobs were written by an s390x build of
+  generate_nlmsg, so they are big endian (partner payload 01 00 for
+  0x0100). ip built with and without patch 1:
+    without: 0x3f prints "0 <>", 0x0100 prints "1 <active>"
+    with:    0x3f prints "63 <active,...>", 0x0100 prints "256"
+- results: without patch 1, 1 of 6 checks fails on x86_64 and 2 of 6
+  on s390x. With it, all pass on both.
+- whole testsuite, rootless, with the series: no change. add_tunnel.t
+  and the two netns/set_nsid tests fail (no module load, no
+  /var/run/netns), the same as on unpatched e11870d5.
+- test_on_not fix checked against matching, mixed, absent and empty
+  output, a bad regex and a missing file.
+- builds with no warnings. checkpatch --strict is clean apart from the
+  exec bit on the new .t, which matches the existing .t files.
+- the new .t is shellcheck clean and passes under dash, busybox sh and
+  bash --posix, so it does not depend on what /bin/sh points to.
+
+Fix
+- patch 1: rta_getattr_u8 -> rta_getattr_u16.
+- patch 2: lib/generic.sh test_on_not uses "grep -vqE", which passes
+  whenever any line does not match. Fixed so the new test can use it.
+  Its one caller, tests/bridge/vlan/show.t, still passes.
+- patch 3: the test.
+
+LLM use
+- The LLM spotted the mismatch, wrote the patches and drafted this
+  letter. Each patch carries Assisted-by: LLM.
+- Every result above comes from running the code, natively and under
+  qemu-s390x. I have read all of it and can answer for it.
+
+Dave Seddon (3):
+  iplink_bond_slave: read ad_partner_oper_port_state as u16
+  testsuite: fix test_on_not on multi-line output
+  testsuite: add bond slave LACP port state test
+
+ .gitignore                                    |   1 +
+ ip/iplink_bond_slave.c                        |   2 +-
+ testsuite/Makefile                            |   1 +
+ testsuite/lib/generic.sh                      |   5 +-
+ .../ip/link/show_bond_slave_lacp_state.t      |  33 ++++++
+ testsuite/tools/generate_nlmsg.c              | 103 ++++++++++++++++--
+ 6 files changed, 133 insertions(+), 12 deletions(-)
+ create mode 100755 testsuite/tests/ip/link/show_bond_slave_lacp_state.t
+
+-- 
+2.55.0
+
