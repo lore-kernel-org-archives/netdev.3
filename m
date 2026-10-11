@@ -1,47 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E623BFADD;
-	Sun, 11 Oct 2026 03:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3276F25B0AA;
+	Sun, 11 Oct 2026 03:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791689910; cv=none; b=iBRS7Sqlf4CWsLRySYBJH9kHz4CS7RlOD3OfZIp/tyovuboFR9hNJn+A9l9r08M2ZbFml95HBCLL/BJyxel/bkMS4CqlnOaIRfnC8gEA1e4/A56QenemIbChn0JnqoDP4tdd+LV+fWYPA24btVnCDyko+XhzxsTVnxdTr03K3/E=
+	t=1791690677; cv=none; b=pKfoAkR/JBU3BLVyZS3pGX6JW7Fm0+PnOpvY+aXVrjy267al5ZMcNIJHaPl0FAT0t/8QDURYxzdQIR5COJYhwLkkdwLqNpljrg9bB7wpNUy03V/RiAeP12Vz4Ux5gpD+4k63TV79pa9w1Ajf8kc8pUt3oCayBzQpGylxaEc3dFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791689910; c=relaxed/simple;
-	bh=2xrZX45iucc6IrSrbF9YcOlGiPMVSZSHJtoWydcngZ4=;
+	s=arc-20240116; t=1791690677; c=relaxed/simple;
+	bh=X5Ixg3fxEMwvNPAQRx75yKDpZg12oGnkj05165U+2Rg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=R/RMAy7mJpAYAlSvgaAz/fIpzZubOUzoAMk/8GsQcCfPzVq/icX9GMO9KLP2l5aLiMI42kuMIxEdlFY+xmQB1EsFt8wUpCYuqvLNYFpg5yGuieCobCvTDRZ2DSj5SaN5hxK6gdeSOCoBRIXr0YdcrLsjr7ud1Yypou8D6W+tdbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSHJfP/I; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=NHKHRudAT2igXJyESYgcazQEuwJENQfdyLFAEknShox2BSA1O3UPEBsIMFhKFtRaPWi1LqvScNFcRlikyXUGEP0KrlT+OzvvgDlDR3AoGf2EP4Cf21SOanGOYp23aFJ7dIUoKsC31FGjnEa7HOC5QNflhX5DasdNHCvTWnxDmMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKpMiS/0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSHJfP/I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54211F00893;
-	Sun, 11 Oct 2026 03:38:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKpMiS/0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EECF1F000FF;
+	Sun, 11 Oct 2026 03:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791689904;
-	bh=DhT2Sc1qZOsPqVuOtTlejOzafSl9/+wC5w47v4hyl3w=;
+	s=k20260515; t=1791690675;
+	bh=ajuPNc6AYdRFyH5XN7//XCC/5UxqIs3E6g54pV9bOBY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LSHJfP/IDboyc/VdiFW0S5vIbArmrOGlWGu/rf8Sh8b+nve3NdVCJHXsysp4l9xaH
-	 tD4nZz3H2ZukItiafHfTQjAnJmrAdmTRwxKLV3nJR4XGcpWcLGef/wR8PqhWRPI5HR
-	 muaHaCh6nYMsarMSJlbuwA114GYKMFTPCUSkucosh0wzaDPMJgqlyUFHLFhy2jma/j
-	 a2KBtbQ/hC3yjjj2yu6EILi7ByOptub1AdzKbl62tWxeRgpvpM3S5S6OD0a0VY2PAV
-	 obgXc63PF1EQDAttMzuZo4oAgEmdZUlABXqaqErfF06EHfxtqUsjKEqS31zb4sEcD6
-	 FIqE/AFVbfJMg==
-Subject: Re: [PATCH net v1 4/4] selftests: net: add devmem RX and TX netdev
- unregister tests
+	b=gKpMiS/0srXIO2nTPd+iwB3R2xkU2gjbOEnc+D3XsQPRZG0hxFQEHt2ikVKbH97b5
+	 rA4gMGBE3kFfp+IJTZ0gSX7usJ3hGyefrQvMXLFya/bzgRwwFgY8lKn7wFVSNqLqlh
+	 rNsBRv+8mgrCXz6k/X8oUMmxAoD45aaPw/gU9rjoooJ7H6xbmOoHYZQZlP3IMCnNEH
+	 8WVtyqbZqf2v677nRpz3HOtdLrKiduOjTrttgJq6bjjvry7DilADIBqhPK60ZtRysc
+	 UO3BKMnN12BgbnS5yH9QwuAzm2W1YB53h/2i2+E4Ls4EZ28CiN2fFnWot86IuJkj2i
+	 /KcBUY3JnIxnA==
+Subject: Re: [PATCH net-next v3 1/2] net: netmem: document netmem and memory
+ provider design in comments
 From: netdev-bot+sashiko@kernel.org
 To: almasrymina@google.com
-Cc: kuba@kernel.org, dw@davidwei.uk, asml.silence@gmail.com,
- ap420073@gmail.com, sdf@fomichev.me, pabeni@redhat.com, kaiyuanz@google.com,
- bobbyeshleman@meta.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, horms@kernel.org, shuah@kernel.org,
- sumit.semwal@linaro.org, christian.koenig@amd.com, daniel@iogearbox.net,
- razor@blackwall.org, tariqt@nvidia.com, kaifengw@google.com
-Date: Sun, 11 Oct 2026 03:38:22 +0000
-Message-ID: <179168990244.434549.3313221235274785716@kernel.org>
-In-Reply-To: <20261010025532.839559-5-almasrymina@google.com>
-References: <20261010025532.839559-5-almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
+ hawk@kernel.org, ilias.apalodimas@linaro.org, ast@kernel.org,
+ daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me,
+ lrizzo@google.com, bjorn@kernel.org, asml.silence@gmail.com
+Date: Sun, 11 Oct 2026 03:51:13 +0000
+Message-ID: <179169067381.434549.11136857943175735340@kernel.org>
+In-Reply-To: <20261010033630.1171692-2-almasrymina@google.com>
+References: <20261010033630.1171692-2-almasrymina@google.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,10 +51,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 7 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 5 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,257 +62,128 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In devmem_bind_rx_unregister_check() and
-  devmem_bind_tx_unregister_check()…
-- [Medium] The new tests need /dev/udmabuf (CONFIG_UDMABUF) and debugfs
-  (CONFIG_DEBUG_FS, for the bufinfo assertions).
-- [Medium] _dmabuf_attached_devs() (nl_netdev.py:390-408) collects the
-  'Attached Devices' entries of every dma_buf in the system, not only…
-- [Medium] devmem_bind_rx_unregister_check() (lines 413-439) and
-  devmem_bind_tx_unregister_check() (lines 444-466) do not use `with…
-- [Medium] _create_udmabuf() (nl_netdev.py:384) passes the hardcoded
-  number 0x40187542 as UDMABUF_CREATE.
-- [Low] In both new tests, the only check for the behaviour the
-  docstrings claim ('Verify RX devmem bindings detach dma_buf…
-- [Low] _create_udmabuf() (nl_netdev.py:379-387) closes memfd and devfd
-  only on the success path.
+- [Medium] The patch adds a comment in skb_try_coalesce()
+  (net/core/skbuff.c, lines 6213-6216).
+- [Low] The new skb_frag_t comment (include/linux/skbuff.h:361-363) gives
+  'the same io_uring area' as an example of 'the same memory provider…
 
 --
 
-selftests: net: add devmem RX and TX netdev unregister tests
+net: netmem: document netmem and memory provider design in comments
 
-This adds two tests to nl_netdev.py. Each one creates a udmabuf, binds it
-to a netdevsim device for devmem RX or TX through the netdev netlink
-family, and then removes the netdevsim device. The tests check debugfs
-dma_buf/bufinfo to confirm that the attachment is gone, and expect the
-netlink socket to close cleanly afterwards.
+This commit adds comments describing the design principles for netmem,
+memory providers, page_pool and skb frags. It documents that all frags in
+an skb must be page-backed or come from the same memory provider instance.
+It also adds a comment to that effect in skb_try_coalesce().
 
-> diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
-> index ceb44c8e1fec5..bad230ee9dcd2 100755
-> --- a/tools/testing/selftests/net/nl_netdev.py
-> +++ b/tools/testing/selftests/net/nl_netdev.py
+> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> index 27ec1e38c8283..af1cbc2799b77 100644
+> --- a/include/linux/skbuff.h
+> +++ b/include/linux/skbuff.h
+> @@ -358,6 +358,12 @@ struct sk_buff;
+>   */
+>  #define GSO_BY_FRAGS	0xFFFF
+>  
+> +/* All frags in an skb must either all be struct page-backed or all belong to
+> + * the same memory provider instance (e.g. the same devmem binding or io_uring
+> + * area). Mixing page and memory-provider frags, or mixing frags from different
+
+[Severity: Low]
+Is "io_uring area" the right example here? For io_uring zcrx, the provider
+instance is the ifq, not the area:
+
+io_uring/zcrx.c:io_pp_to_ifq() {
+	return pp->mp_priv;
+}
+
+io_zcrx_recv_frag() also checks identity per ifq:
+
+	if (!pp || pp->mp_ops != &io_uring_pp_zc_ops || io_pp_to_ifq(pp) != ifq)
+		return -EFAULT;
+
+One ifq can own several areas. io_zcrx_append_area() grows ifq->areas[] up
+to ZCRX_MAX_AREAS, and userspace can add areas to an existing ifq with
+ZCRX_CTRL_ADD_AREA. Frags from two areas of the same ifq share one provider
+instance and one page_pool, and nothing stops them from sharing an skb.
+
+Read literally, the example says those frags must not share an skb. Would
+"the same io_uring zcrx ifq" be more accurate?
+
+The later commit "docs: netmem: document netmem and memory provider design
+principles" repeats this example in Documentation/networking/netmem.rst.
+
+> + * memory providers within a single skb (including via coalescing), is not
+> + * allowed.
+> + */
+>  typedef struct skb_frag {
+>  	netmem_ref netmem;
+>  	unsigned int len;
 
 [ ... ]
 
-> @@ -366,6 +370,102 @@ def page_pool_stats_ifindex_check(nf) -> None:
->      ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.info.id')
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index d56f4f0102f75..69d3d27e29d97 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -6210,6 +6210,10 @@ bool skb_try_coalesce(struct sk_buff *to, struct sk_buff *from,
+>  	if (to->pp_recycle != from->pp_recycle)
+>  		return false;
 >  
->  
-> +def _create_udmabuf(num_pages=64) -> int:
-> +    """Create a sealed memfd-backed udmabuf fd for devmem tests."""
-> +    if not os.path.exists("/dev/udmabuf"):
-> +        raise KsftSkipEx("/dev/udmabuf is not available")
+> +	/* All frags in an skb must either all be struct page-backed or all
+> +	 * belong to the same memory provider instance; do not coalesce skbs
+> +	 * that would mix them.
+> +	 */
+>  	if (skb_frags_readable(from) != skb_frags_readable(to))
+>  		return false;
 
 [Severity: Medium]
-Will these tests ever run in CI that builds from the net config fragment?
+Does this check enforce the rule stated in the comment above it?
+skb_frags_readable() only looks at a single bit:
 
-The only related entry in tools/testing/selftests/net/config is:
-
-CONFIG_NETDEVSIM=m
-
-It enables neither CONFIG_UDMABUF nor CONFIG_DEBUG_FS. So
-_create_udmabuf() would always raise KsftSkipEx here, and both new tests
-would always skip.
-
-tools/testing/selftests/drivers/net/hw/config and drivers/dma-buf/config
-both set CONFIG_UDMABUF=y. Should the net config fragment add
-CONFIG_UDMABUF=y and CONFIG_DEBUG_FS=y too?
-
-> +
-> +    size = num_pages * mmap.PAGESIZE
-> +    memfd = os.memfd_create("devmem-ksft", os.MFD_ALLOW_SEALING)
-> +    os.ftruncate(memfd, size)
-> +    fcntl.fcntl(memfd, 1033, 0x0002)  # F_ADD_SEALS, F_SEAL_SHRINK
-> +    devfd = os.open("/dev/udmabuf", os.O_RDWR)
-> +    req = bytearray(struct.pack("IIQQ", memfd, 0, 0, size))
-> +    dmabuf_fd = fcntl.ioctl(devfd, 0x40187542, req)  # UDMABUF_CREATE
-
-[Severity: Medium]
-Is 0x40187542 the right request number on every architecture?
-
-The uapi header defines it as:
-
-include/uapi/linux/udmabuf.h:
-#define UDMABUF_CREATE       _IOW('u', 0x42, struct udmabuf_create)
-
-0x40187542 is the asm-generic encoding. Alpha, mips, powerpc and sparc
-define _IOC_WRITE as 4U with 13 size bits, and parisc defines it as 2U.
-On all of these the write bit lands at 0x80000000, so the request number
-becomes 0x80187542.
-
-On those architectures udmabuf_ioctl() hits its default case:
-
-	default:
-		ret = -ENOTTY;
-
-Nothing catches the resulting OSError from fcntl.ioctl(), so both devmem
-tests would fail instead of running or skipping.
-
-> +    os.close(devfd)
-> +    os.close(memfd)
-> +    return dmabuf_fd
-
-[Severity: Low]
-Does this leak memfd and devfd on the error paths?
-
-If os.ftruncate(), the F_ADD_SEALS fcntl() or os.open() raises, memfd is
-never closed. If the UDMABUF_CREATE ioctl raises (the ENOTTY case above,
-for example), both memfd and devfd stay open. ksft_run() catches the
-exception and keeps the process running.
-
-A try/finally around these calls would close both.
-
-> +
-> +
-> +def _dmabuf_attached_devs():
-> +    """Return attached device names from debugfs dma_buf/bufinfo if available."""
-> +    path = "/sys/kernel/debug/dma_buf/bufinfo"
-> +    if not os.path.exists(path):
-> +        return None
-
-[Severity: Low]
-What happens when bufinfo is missing (CONFIG_DEBUG_FS off, or debugfs not
-mounted)?
-
-Both tests guard every assertion with:
-
-    if attached is not None:
-
-With None they run no assertions at all. ksft_run() then records them as
-pass, not skip.
-
-The tests still exercise nsimdev.remove(), but they would pass even if
-the dma_buf stayed attached after unregister. Should this raise
-KsftSkipEx instead of returning None?
-
-> +    with open(path, "r", encoding="utf-8") as f:
-> +        text = f.read()
-> +    attached = []
-> +    in_attached = False
-> +    for line in text.splitlines():
-> +        if line.strip() == "Attached Devices:":
-> +            in_attached = True
-> +            continue
-> +        if in_attached:
-> +            if line.startswith("\t") and line.strip():
-> +                attached.append(line.strip())
-> +            else:
-> +                in_attached = False
-> +    return attached
-
-[Severity: Medium]
-Does this count attachments from every dma_buf in the system, rather than
-only the udmabuf this test created?
-
-dma_buf_debug_show() walks the whole dmabuf_list and prints one block for
-each buffer:
-
-drivers/dma-buf/dma-buf.c:dma_buf_debug_show() {
-    ...
-		seq_puts(s, "\tAttached Devices:\n");
-		attach_count = 0;
-
-		list_for_each_entry(attach_obj, &buf_obj->attachments, node) {
-			seq_printf(s, "\t%s\n", dev_name(attach_obj->dev));
-    ...
+include/linux/skbuff.h:skb_frags_readable() {
+	return !skb->unreadable;
 }
 
-The parser collects entries after every header, so the result is a total
-for the whole host.
+Nothing in skb_try_coalesce() compares pp->mp_priv, the devmem binding or
+the zcrx ifq of to and from.
 
-This has two effects:
+Two unreadable skbs from different provider instances would pass this
+check, and their frag arrays would be memcpy'd together. For example, two
+devmem bindings, or a devmem binding and a zcrx ifq, could reach one TCP
+socket through different RX queues via
+tcp_try_coalesce()->skb_try_coalesce().
 
-- ksft_eq(len(attached), 0) after nsimdev.remove() fails whenever any
-  other dma_buf (GPU, display, V4L2) has an attachment, even if the
-  kernel detached this one correctly.
-- ksft_ge(len(attached), 1) passes even if this binding never attached.
+Also, when an unreadable from skb has a non-zero, stealable linear head,
+the skb_headlen(from) != 0 branch adds the head page as a page frag next to
+the net_iov frags:
 
-An attachment left behind by the RX test would also make the TX test
-fail.
+	page = virt_to_head_page(from->head);
+	...
+	skb_fill_page_desc(to, to_shinfo->nr_frags,
+			   page, offset, skb_headlen(from));
 
-Could this filter on the inode of dmabuf_fd (os.fstat(dmabuf_fd).st_ino)
-or on the netdevsim device name?
+skb_gro_receive() in net/core/gro.c is another coalescing path. It checks
+only pp_recycle and skb_zcopy, with no readability or provider check.
 
-> +
-> +
-> +def devmem_bind_rx_unregister_check(_nf) -> None:
-> +    """Verify RX devmem bindings detach dma_buf synchronously on netdev unregister."""
-> +    dmabuf_fd = _create_udmabuf()
-> +    nf_priv = NetdevFamily()
-> +    ef = EthtoolFamily()
-> +    nsimdev = NetdevSimDev(queue_count=2)
-> +    nsim = nsimdev.nsims[0]
+Existing consumers already handle mixed skbs one frag at a time:
+io_zcrx_recv_frag() rejects frags from another ifq, and
+tcp_recvmsg_dmabuf() re-checks each frag with skb_frag_net_iov().
 
-[Severity: Medium]
-What happens to the netdevsim device if anything between here and
-nsimdev.remove() raises?
+The same patch also says providers may supply page-backed netmems and that
+net_iovs may be readable. Under those principles, readability alone can't
+tell page frags from provider frags.
 
-The ip link set call, ef.rings_set(), nf_priv.bind_rx() or ksft_ge()
-could all raise. ksft_run() catches the exception and moves on, but
-nsimdev.remove() is never reached.
+The new skb_frag_t comment and the commit message state this as a hard
+invariant ("is not allowed", "including via coalescing"). Could the wording
+describe what the code currently guarantees instead? Otherwise the per-frag
+checks above might later be removed because of it.
 
-NetdevSimDev only cleans up through remove() or __exit__ and has no
-__del__. So the device stays in the kernel after the selftest exits.
-dmabuf_fd stays open, and if the bind succeeded, the dma_buf attachment
-stays live too.
+Or should skb_try_coalesce() and skb_gro_receive() actually compare
+provider identity?
 
-The other netdevsim tests in this file use "with NetdevSimDev(...)" or
-defer(). Could these do the same? devmem_bind_tx_unregister_check() has
-the same pattern.
-
-> +
-> +    ip(f"link set dev {nsim.ifname} up")
-> +    ef.rings_set({"header": {"dev-index": nsim.ifindex},
-> +                  "tcp-data-split": "enabled"})
-> +    nf_priv.bind_rx({
-> +        "ifindex": nsim.ifindex,
-> +        "fd": dmabuf_fd,
-> +        "queues": [{"id": 1, "type": "rx"}],
-> +    })
-> +
-> +    attached = _dmabuf_attached_devs()
-> +    if attached is not None:
-> +        ksft_ge(len(attached), 1)
-> +
-> +    nsimdev.remove()
-> +
-> +    attached = _dmabuf_attached_devs()
-> +    if attached is not None:
-> +        ksft_eq(len(attached), 0)
-> +
-> +    del nf_priv
-> +    os.close(dmabuf_fd)
-
-[Severity: Medium]
-Does del nf_priv actually close the netlink socket that holds the
-binding?
-
-YnlFamily.__init__() stores, on self, a partial for every op that refers
-back to self:
-
-tools/net/ynl/pyynl/lib/ynl.py:YnlFamily.__init__() {
-    ...
-        for op_name, op in self.ops.items():
-            bound_f = functools.partial(self._op, op_name)
-            setattr(self, op.ident_name, bound_f)
-    ...
-}
-
-That is a reference cycle, so refcounting never frees the object. del
-only drops the local name, and self.sock stays open until the cyclic GC
-happens to run. That could be during the next test, or at process exit
-after ksft_exit() has already printed the results.
-
-So the step the commit message describes, closing the socket after
-unregister and reaching netdev_nl_sock_priv_destroy(), does not happen
-at a fixed point inside this test. A failure on that path could be
-blamed on another test, or show up after this one already reported ok.
-
-YnlFamily already provides close() and __enter__/__exit__. Would
-nf_priv.close(), or "with NetdevFamily() as nf_priv:", be better here?
-The same applies to devmem_bind_tx_unregister_check().
-
-[ ... ]
+The later commit "docs: netmem: document netmem and memory provider design
+principles" repeats the same claim in Documentation/networking/netmem.rst.
+The comment here is not corrected anywhere in the series.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010025532.839559-1-almasrymina%40google.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010033630.1171692-1-almasrymina%40google.com
