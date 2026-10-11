@@ -1,46 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAB2469837;
-	Sun, 11 Oct 2026 20:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4232AD00;
+	Sun, 11 Oct 2026 20:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791750926; cv=none; b=gx2EQFcsWpkKMLBlr8qrJYgV8Hqcvw55z6Nb/w1j8YmwdM9RNQrcGUrDC/oN0sr/EUe1kk8XOf0eTRhGodbtxKvtyrlauwQTVmQ4O2+IRHCfY8KppHbFvhNIae3kOA4wt5vcfCad4f0TTdHpV3Z49kk/0Shl70+9tnLz4ZAu3IQ=
+	t=1791751293; cv=none; b=phyTTTm0T/bRs6tVp5ngRbyUN9qZeq7WlDW40EaBrcIFNaMDZa+Gq6ZxhjGhuqrgh5oAryyWV8TqWz2/JLuBTFsIy4sDnmKwZNuJg0Y8nt7t+T0Im574QZr4XYYd6GA4ipXvm9rvt+rlulqLzgoOLx95ZALZNM6Tr7ZnUuHLYDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791750926; c=relaxed/simple;
-	bh=e7QT3SsYr0JHQ9H9umJ2k17iSH4izfr6KKE/hIwlQ2g=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jhbXl5nvL3UX3LA4YNK9bLXU/WJlqe1JCyJ76NpbV3s0T6e0wAl2h7yTW5NwdbBsO7pDCP04olI1KQE/V0tajgRIELrEQzkk5ywfF7HlA+zXpGkVGuNL+jBEqVOcnkD3R+xdHtkddE15YNmkY7bmqf/p1lBDhhvI/RZkHmvPajQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOXYtlzB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791751293; c=relaxed/simple;
+	bh=RO9ISlZvPFFXP6l+PwZzFLx38QyGRFkuORHAOV9ntKI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=B5hu8d/hEiXyyq6WL3w9xcdi0Rfk75mLrz4DeTdlMf52bROplzsLH1a5WxRDz6wolA1KrA9V3zJVlC8k5dFaGdaW/sBvSpHXAzzUTetpVgLi44Hq/Alpa9mSzEhVoh/IR9bXvRQUulvU/6cxBIJKWt/5yld3cK/wiRCZr9Jb4hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b10v1nnB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOXYtlzB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E281F0089B;
-	Sun, 11 Oct 2026 20:35:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b10v1nnB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB471F0089B;
+	Sun, 11 Oct 2026 20:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791750924;
-	bh=8FE/7thoXkP2rxSPSe4s5tC4CjAPnwzchcLCubm2LTk=;
+	s=k20260515; t=1791751292;
+	bh=RfXdrFXcfp1opR3x45dOBQyYz5kPQ9A4aytmThsJMzs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OOXYtlzB8d46QBzxHL/c3BUsiNWmMfBz1mAVA8YY9Am4AVVl+Qu9oYi7SlCp6Kobx
-	 rXHO0IL1F3P7vkf/ZwnWrI1Sxcn1XcBHayKFnOv6SqJLA6itK1CcV29K8UgWeBNRGa
-	 XDm0S3vJrDxdZcVW9y+XuGgJTBhC8LS+pMQFZXa0WnScDzrXYtmXLfDQlQreOjRD6t
-	 RM/lGUcNKt7ehISEUf8drbQ+pvk8MMTU8NrmZRT2FHgB61B4boWQ8VXzx05zyKTp5f
-	 eVrj3s7GNOcuwoQkHiFWMKu4BwBN4Pl+FO4yN1LE1zBaSIlcoihscOB7cDdBVXOW2P
-	 8LuoacN1kLXgw==
-Subject: Re: [PATCH net-next v3 6/9] tls: Return copied data ahead of a run of
- empty records
-From: netdev-bot+sashiko@kernel.org
-To: cel@kernel.org
-Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
- davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
- shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Date: Sun, 11 Oct 2026 20:35:23 +0000
-Message-ID: <179175092355.434549.9915477729935214479@kernel.org>
-In-Reply-To: <20261007-tls-follow-on-v3-6-6d52d98389b3@kernel.org>
-References: <20261007-tls-follow-on-v3-6-6d52d98389b3@kernel.org>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	b=b10v1nnBor0aJ+7mOPZ7PlfPUck6RaGHusprk/0cO2RrvqP7qh1tHC64dSh06RjPZ
+	 Ms3NNUca0hdC4XWG1CLDKZ88HtkZ7ne7eipytvh6+BBpEBhD+nTvCyHqgyfMVWJb/I
+	 dymnSiL0xoMy+u6tZeIPDLt03wp1J1z85ge3StxB1LpTRN0VFNJdutoJ9c17kbezD6
+	 Pw+/XBMnYZoVHdywC3e1RUV+qY7sBj6WURvdSh83bp29+F5vxblG4wldigE2pM+5Tp
+	 91f5guh+WqASznr+N/u2xSxAzRfy9EJ6NhfK1FynkWCbDbjKHKo8eeg3S9XwB9/tey
+	 gLYQ1FdU/fcJg==
+Message-ID: <9cdaa7743cbd1e6e39345647f4ef95ab308ca7ad.camel@kernel.org>
+Subject: Re: [PATCH] rds: fix out-of-bounds conn_path access via handshake
+ NPATHS
+From: Allison Henderson <achender@kernel.org>
+To: Henry Martin <bsdhenrymartin@gmail.com>, "David S . Miller"
+	 <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	 <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	 <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 11 Oct 2026 13:41:31 -0700
+In-Reply-To: <20261008163843.957325-1-bsdhenrymartin@gmail.com>
+References: <20261008163843.957325-1-bsdhenrymartin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,119 +49,81 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+On Fri, 2026-10-09 at 00:38 +0800, Henry Martin wrote:
+> Connections on the IB transport (t_mp_capable unset) own exactly one
+> rds_conn_path slot, but the peer can still claim eight lanes through
+> the NPATHS extension header of a handshake packet, and every
+> subsequent fan-out path then treats all eight entries as real: the
+> mp-start helper iterates conn->c_path[0..7], dereferencing cp->cp_conn,
+> taking cp->cp_lock and queueing delayed work on cp->cp_wq at 504-byte
+> strides into whatever comes after the single allocated slot (KASAN:
+> "Read of size 8 in rds_conn_path_connect_if_down").
+>=20
+> The negotiated lane count is now clamped to the same value the
+> transport was allocated with (trans->t_mp_capable ?
+> RDS_MPATH_WORKERS : 1), so a peer can never ask us to walk lanes that
+> do not exist.
+>=20
+> This vulnerability was discovered by Tencent CodeBuddy Security.
 
-Low priority / nit picks for your consideration:
+Hi Henry,
 
-- [Low] The commit "tls: Return copied data ahead of a run of empty
-  records" fixes a delay a remote peer can cause in tls_sw_recvmsg(),…
+Thanks for the patches.  This patch looked a little familiar, and it turns =
+out this fix and the
+companion patch ("fix out-of-bounds conn_path walk in peer gen update") are=
+ the same fix Paula
+posted in August:
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the new
-  early exit in tls_sw_recvmsg() only fires when `decrypted + copied >=…
+https://lore.kernel.org/netdev/20260825120132.51636-1-pamoutafpro@gmail.com=
+/
 
---
+The AI review of that version came back with some complaints:
 
-tls: Return copied data ahead of a run of empty records
+https://lore.kernel.org/netdev/20260828230506.385788-1-kuba@kernel.org/
 
-This patch makes tls_sw_recvmsg() leave the receive loop at a zero-length
-application_data record once the receive low-water mark has been met. Data
-that has already been copied then goes back to the reader. Before this, it
-stayed in the loop while a peer kept sending empty records.
+The good news is, I think the fix is a very simple port of a uek patch:
+https://github.com/oracle/linux-uek/commit/2fdeb0513f18
 
-Link: https://lore.kernel.org/r/179124254665.434549.12245680127262431659@kernel.org
+If your willing to step in where this series left off, you'll want to start=
+ with the v2 thread,
+and pick up the porting task described there:
+https://lore.kernel.org/netdev/83915f73efb509328a3d4963b093e2cffcf9af99.cam=
+el@kernel.org/
 
-> Suggested-by: sashiko-bot <netdev-bot+sashiko@kernel.org>
-> Link: https://lore.kernel.org/r/179124254665.434549.12245680127262431659@kernel.org
-> Signed-off-by: Chuck Lever <cel@kernel.org>
+Please send a single v2 that is just that port, against net.  The fix tag b=
+a3d1f480c7a doesnt
+look like it changes the allocations. The tags you want should be:
+Fixes: 840df162b3eb ("rds: reduce memory footprint for RDS when transport i=
+s RDMA")
+Fixes: 905dd4184e07 ("RDS: TCP: Track peer's connection generation number")
 
-[Severity: Low]
-Should this commit carry a Fixes: tag?
+A link to Paula's v2 would also be a nice way to credit her analysis as wel=
+l.
 
-The commit message describes a delay that a remote peer can cause, but the
-trailers only contain Suggested-by and Link.
+Thanks!
+Allison
 
-Every other kernel patch in this series has a Fixes: tag. That includes
-"tls: Check for a pending signal after an empty record", which is also
-described as not reproduced and uses Fixes: c46234ebb4d1.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: ba3d1f480c7a ("net/rds: size a connection's path set by the transp=
+ort it ends up with")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> ---
+>  net/rds/recv.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> --- a/net/rds/recv.c
+> +++ b/net/rds/recv.c
+> @@ -224,7 +224,8 @@
+>  		/* Process extension header here */
+>  		switch (type) {
+>  		case RDS_EXTHDR_NPATHS:
+> -			new_npaths =3D min_t(int, RDS_MPATH_WORKERS,
+> +			new_npaths =3D min_t(int, conn->c_trans->t_mp_capable ?
+> +					   RDS_MPATH_WORKERS : 1,
+>  					   be16_to_cpu(buffer.rds_npaths));
+>  			break;
+>  		case RDS_EXTHDR_GEN_NUM:
+> --
+> 2.43.7
 
-The behavior predates the series. Before "tls: Consume empty data records
-in tls_sw_recvmsg()", an empty record went through the normal path with
-decrypted += 0 and len -= 0. The || tls_strp_msg_ready(ctx) loop condition
-then kept the reader in the loop.
-
-That parent commit carries Fixes: 692d7b5d1f91. It also adds the
-!chunk && control == TLS_RECORD_TYPE_DATA branch that this patch changes.
-
-Without a tag here, would stable backports that take the parent commit
-miss this follow-up?
-
-> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> index b7f3edf9828e0..fd6f944ffd677 100644
-> --- a/net/tls/tls_sw.c
-> +++ b/net/tls/tls_sw.c
-> @@ -1937,6 +1937,12 @@ int tls_sw_recvmsg(struct sock *sk,
->  
->  			/* An empty record still marks a boundary. */
->  			msg->msg_flags |= MSG_EOR;
-> +
-> +			/* Return data already copied instead of holding it
-> +			 * through a run of empty records.
-> +			 */
-> +			if (decrypted + copied >= target)
-> +				break;
->  			continue;
->  		}
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. What
-happens to a reader that has copied some data but is still below target?
-
-In tls_sw_recvmsg(), target comes from:
-
-	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
-
-Under MSG_WAITALL, including MSG_DONTWAIT | MSG_WAITALL, that is the full
-len. With SO_RCVLOWAT set, it can also be larger than what was copied.
-
-Such a reader still takes the continue on every empty DATA record.
-Neither decrypted nor len advances.
-
-The timeout doesn't seem to limit this. tls_rx_rec_wait() recomputes the
-timeout on every call, but only checks it inside the wait loop:
-
-	timeo = sock_rcvtimeo(sk, nonblock);
-
-	while (!tls_strp_msg_ready(ctx)) {
-		...
-		if (!timeo)
-			return -EAGAIN;
-		...
-	}
-
-When a record is already parsed, the loop body never runs. So neither the
-zero MSG_DONTWAIT timeout nor SO_RCVTIMEO is checked.
-
-The backlog also keeps refilling. tls_read_flush_backlog() calls
-sk_flush_backlog() whenever tcp_inq() is small:
-
-	if (done - *flushed_at < SZ_128K && tcp_inq(sk) > max_rec)
-		return false;
-
-	*flushed_at = done;
-	return sk_flush_backlog(sk);
-
-Could a peer that keeps sending empty records hold a nonblocking
-MSG_WAITALL reader with partial progress in tls_sw_recvmsg()
-indefinitely?
-
-It looks like the call only ends on one of these:
-
-  - a pending signal (the nodata && signal_pending(current) check)
-  - an error
-  - the peer stops sending empty records
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007-tls-follow-on-v3-0-6d52d98389b3%40kernel.org
