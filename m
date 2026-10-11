@@ -1,167 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2F1463B9C;
-	Sun, 11 Oct 2026 19:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D003290C7
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 20:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791748292; cv=none; b=R5W13HvgtzE6UgQMfw+f2DMBSGLFYicS1BZ3F32zNGR3JoTYsmts4k6yLGwnBwtqwaVvF+nUXoWpQK+f4YjwbuubKwuWSyAoVvRvATPskPrzh7jBBGmf/wsLaAB/DfUsgaEOHzdKEPOxMXeF0aJltZ1lOsieSkZN3EnGC8qXrXY=
+	t=1791749934; cv=none; b=mNzyR6cITwvikZXxc1z7LyoPdomEK54FCg4cZGV0JWw4x/s1Hsoph+J5Z+bHrOX/qmVF+dhXHiwuyBamTDrqvFJQNb892Alo6b+EyoCyhMoehUxb9MJsNszs9cL/o3ZU0r6qjzqdXsjGNk86MRNj3X9VilX44zI/pLJC5H/IvKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791748292; c=relaxed/simple;
-	bh=4se4uHMC97QgGHXvxbMlmjwpHcbloYW4bCGbOKMnW+E=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KjCvfR0kLAowc3xMVrz3f7ngfLbH+Y5BrzUwYhgxcBSeMQpLYIuGNkcnbB686FvEWXN/WlchC2suIvLMIentCRJw+ieCgRLbT+DneQCr3tfeZne6L68ervNBGVnOipgBcHMqoU5RpT2axUnqyWc1KETtuAzysSqTxr5zJ7TrHVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZrqRE28R; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791749934; c=relaxed/simple;
+	bh=Gcg44s5pOEsHqe5yAMzNJ5yI/h+EQKqw2L0+QOdZ5j0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CG/FGQh43b75xIu/xbSzc57wgVba5Ew15ipL4foDWv5PFhYpkVzz9SpaBG54OuK5HmMzGp/g43S8Jos4POR1NeTtyXQzpqvJx2wO8j6sNnXeZnRHQpPTJIc0Z8YclQed5ubKb/1dpAOZcHjThmuzuIa7dVP5dpsfNJKcTgbSzTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENy8ZP7j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZrqRE28R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFC41F0089B;
-	Sun, 11 Oct 2026 19:51:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENy8ZP7j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574AF1F0089C
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 20:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791748291;
-	bh=/p/JZkpPRUTdvbzpofph+CHY3QC8tVZqhJXJcQRPyAg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZrqRE28RmGfpcLvZ97bAIv2q5/Cf4sbVKOPgks2D/ZxSZ4YdR+31LwQLP7DAluXQ4
-	 ValFeplE42H2PNSo1LDjKnxpwRvAU7ALxQcamMwEWbtMhcvS+6uPWWAmeXvLfzKsWS
-	 yqXdxER7mhMSN+vx6nHNJ/VwpqCFQc8H7a+1cehjt7jx0OF8Oihp/PC3wH1XVl/sXb
-	 RuknVkhtNDnzcOxxPWhcRhovbeX1rK/N47wwOk8EOyUAKjJ/N6oOVmMoJBe5p2HDee
-	 mvrCNSu9XSlWsjLtqmcMT52fC75oQQArEAGGDmZjIczqMpSx+1IM5xFPkeEpdBn5Cs
-	 G2m1mDzQDrnWw==
-Subject: Re: [PATCH net-next v3 9/9] net: dsa: realtek: rtl8365mb: add support
- for RTL8367S-VB
-From: netdev-bot+sashiko@kernel.org
-To: namiltd@yahoo.com
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 19:51:30 +0000
-Message-ID: <179174829036.434549.5346764045610555935@kernel.org>
-In-Reply-To: <8d3a9cc7-17cb-46b5-ac78-c7b4055989a7@yahoo.com>
-References: <8d3a9cc7-17cb-46b5-ac78-c7b4055989a7@yahoo.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1791749932;
+	bh=Gcg44s5pOEsHqe5yAMzNJ5yI/h+EQKqw2L0+QOdZ5j0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ENy8ZP7jGREjv2K/Qr2t7W6v3kFIJrzQodR5YMlLQLh95STBVDa0eVAnD2dOGzq4Y
+	 eVI1WEGOKg9Ukt96aKrSGY5D2Po+li18p2Vqo2JaS7TH3hxXJz/7PZQ2hfhV3IbBqg
+	 q+34Xmmi8WwZI54FGEjvHrVZTXO7l6i8nwT5Sva+0dtEO5Prw1xihYUoW/qwNzRgjl
+	 QR6L6jd49lWWmbCX7VDlIh6BVaEIXqqfOl3koTLHHrjnxmHt7Aasp/O5u+B/RPvV9u
+	 c3jx1914UuBugYQwbfZPRDMjpyqV0L3qco/GPXaMObRVa4tx0Orni3Q7yilPCyvKzt
+	 vQ7S+OMVZg+MQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5ba357a1929so950133e87.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 13:18:52 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy1knhFrznQCBWB9hOh5MpMNnt51J3fxMtxa3J4LFjWcs8sgp3FTUVbjocPS830DeBcj9NXXz4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL0S17tRFFTTLD9k5eVHvQW94LpnIuTWGcBfVQd4YQ3ISxaQobK
+	K+iyZxW0nKndQWAp+hrf0X0Hu/cxjrpuF3HliyaVDI6GtiKieQFr4safGVW8YSTloeTgNk33vF/
+	LtujEiKoXbKNEUfg6U/SaJZH0sLbGs7M=
+X-Received: by 2002:a05:6512:1094:b0:5bc:ca67:c329 with SMTP id
+ 2adb3069b0e04-5bcde3538b2mr2804085e87.4.1791749931095; Sun, 11 Oct 2026
+ 13:18:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261011131208.272131-3-blum@kernel.org>
+In-Reply-To: <20261011131208.272131-3-blum@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sun, 11 Oct 2026 22:18:38 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmaCFZ6MOek=n5h7pU=6_ihQJ3EarZSSGi=xhMqcLc3CA@mail.gmail.com>
+X-Gm-Features: AclHuK_f9oCezWet9D8wmptpScz-bKTuIXf20YhlSgnbTQakgm03SMJQJWbSXIs
+Message-ID: <CAD++jLmaCFZ6MOek=n5h7pU=6_ihQJ3EarZSSGi=xhMqcLc3CA@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: dsa: realtek: Remove unused buffer from
+ struct realtek_priv
+To: Thorsten Blum <blum@kernel.org>
+Cc: Luiz Angelo Daros de Luca <luizluca@gmail.com>, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sun, Oct 11, 2026 at 3:12=E2=80=AFPM Thorsten Blum <blum@kernel.org> wro=
+te:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> The buffer has never been used. Remove it.
+>
+> Signed-off-by: Thorsten Blum <blum@kernel.org>
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-- [Medium] On family D, rtl8365mb_pcs_get_state() replaces the configured
-  speed and duplex with fixed values.
-- [Low] The comment above RTL8365MB_SDS_EXT_INTERFACE_ID
-  (drivers/net/dsa/realtek/rtl8365mb_main.c:347-350) says "The embedded…
+Probably a leftover from initial development, thanks for finding this!
 
---
-
-net: dsa: realtek: rtl8365mb: add support for RTL8367S-VB
-
-This patch adds the RTL8367S-VB (chip ID 0x6642, version 0x0010) to the
-chip table as the first family D chip. On this chip the SGMII/HSGMII
-SerDes is on external interface 0 (port 6) and RGMII is on external
-interface 1 (port 7). The patch also caps priv->num_ports at 8 for
-family D and updates the comment on the learn limit.
-
-> diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-> index 5d804099f131a..c6045607ade06 100644
-> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-
-[ ... ]
-
-> @@ -874,6 +881,19 @@ static const struct rtl8365mb_chip_info rtl8365mb_chip_infos[] = {
->  		.jam_table = rtl8365mb_init_jam_8365mb_vc,
->  		.jam_size = ARRAY_SIZE(rtl8365mb_init_jam_8365mb_vc),
->  	},
-> +	{
-> +		.name = "RTL8367S-VB",
-> +		.chip_id = 0x6642,
-> +		.chip_ver = 0x0010,
-> +		.family = RTL8365MB_FAMILY_D,
-> +		.extints = {
-> +			{ 6, 0, PHY_INTF(SGMII) | PHY_INTF(HSGMII) },
-
-[Severity: Medium]
-This entry lets port 6 run SGMII on a family D chip. That makes the
-family D branch of rtl8365mb_pcs_get_state() reachable for the first
-time.
-
-Does that branch discard the forced speed and duplex that phylink has
-already filled in?
-
-drivers/net/dsa/realtek/rtl8365mb_main.c:rtl8365mb_pcs_get_state() {
-    ...
-	if (is_d) {
-		state->duplex = DUPLEX_FULL;
-		state->speed = state->interface == PHY_INTERFACE_MODE_2500BASEX ?
-				SPEED_2500 : SPEED_1000;
-		return;
-	}
-    ...
-}
-
-rtl8365mb_phylink_get_caps() advertises MAC_10 | MAC_100 | MAC_1000FD
-for this port, so phylink accepts a forced 10/100 setting.
-
-Take port 6 as a PHY-less SGMII user port with
-managed = "in-band-status", and run:
-
-  ethtool -s <port> autoneg off speed 100 duplex full
-
-phylink_ethtool_ksettings_set() stores link_config.speed = 100.
-phylink_pcs_neg_mode() then picks PHYLINK_PCS_NEG_OUTBAND, and the mode
-stays MLO_AN_INBAND because there is no phydev.
-
-After that:
-
-phylink_resolve()
-  phylink_mac_pcs_get_state()
-    state->speed = pl->link_config.speed;    /* 100 */
-    rtl8365mb_pcs_get_state()
-      state->speed = SPEED_1000;
-  phylink_link_up()
-    rtl8365mb_phylink_mac_link_up()          /* 1000/full */
-      rtl8365mb_ext_config_forcemode()
-
-Would the MAC then be forced to 1000 Mbps while the configured speed is
-100? Would ethtool get_link_ksettings also report 1000/full?
-
-The family C branch avoids this by reading the forced values back from
-SDS_MISC. When in-band autoneg is disabled, could the family D branch
-keep the speed and duplex that phylink passed in?
-
-[Severity: Low]
-This isn't a bug, but this entry makes the comment above
-RTL8365MB_SDS_EXT_INTERFACE_ID inaccurate:
-
-/* The embedded SerDes can only be muxed to external interface 1 (MAC8),
- * which is port 6.
- */
-#define RTL8365MB_SDS_EXT_INTERFACE_ID		1
-
-On RTL8367S-VB the SerDes is on external interface 0, and external
-interface 1 is the port 7 RGMII interface.
-
-rtl8365mb_pcs_config() still does:
-
-	const int id = RTL8365MB_SDS_EXT_INTERFACE_ID;
-
-This only works today because every use of id is in the !is_d branch.
-
-Could this comment be updated for family D, as was done for the
-LEARN_LIMIT comment?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/e84d76ee-03df-49b0-8c9a-b289dfae8728%40yahoo.com
+Yours,
+Linus Walleij
