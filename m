@@ -1,217 +1,148 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE98339386
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 16:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791735932; cv=pass; b=XdjBUC1hXLMFM53grtFYF9iQqnGpwD0ieLko8E7AMu9pRe/7isU3gi/VhbsYr79Xh9CfQB/YQbsExGC6zd0sgg2xZcVFuL5GRnxsXbD+r93JtJOHRV+pjybFg9/xPSAu8+Xq8XtJiqW6X+v5xJN0XVdlECCtHzPBDLwtclOATYk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791735932; c=relaxed/simple;
-	bh=ba9QqDkcrd3Mro0zu2+iADvo+PIFbtPGZiWLHSGlxdw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t0T1mY5ZjK2qhjywaOYD/9pkOojJTs81It5SBH7L+/T+zNm6Uo87EEEmfuN8guK5foEQSxvkc+NwEDEj9hitXio49uAokLvinZhZtxLxJSbC01Csp6IB0USwo24JGoxvzbuyQ8NOWfea2wUOzUrWZVa0KE0ouMQv7efzpv/NGug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T20g+rKu; arc=pass smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C11331A65
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 16:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791736113; cv=none; b=Rnkdl2a2ekSHDuzd8YkZ+rOnaIJoJkjisHobHnaBDMy4U0WxkDoPN3jtFSRCthtqRAknznSx2e9EmgHYzvikLAyXEWuKKXjM7GIFgBu6tSvnXv4UV8F5Idqwa9Y8qXQQecSz84fZS5OoKdT2x97Z0KX7YIMqTPO3NpeR+fJwxFg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791736113; c=relaxed/simple;
+	bh=gFt47LSAsQO+9dW+yOZPgrQ8Va/c7AWtExmCZjKK+GI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=bFFb1UA+a0gRYFvOO0Ka2MhsQOEaEVNCGum21HSgzO5YxNVm16WH3e1NVpieaTyH6kq+BFl5x9gr47SgoscN/lthIZJZzrXol4+LqnaPH4qwfdV4kzF30v5mq7jMkFCXEseVJGdw8cIqymfvwyLUsbzsBdQvgbxCIfN2NwWXlDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gox6cT+p; arc=none smtp.client-ip=74.125.224.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T20g+rKu"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-150ef97e790so4000c88.1
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 09:25:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791735930; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qm+hW8apLP//Yv18FD7BQxsNoE0qXQ/dXX1p/p1AbIIQ0lyepBsyf+vZBRbDqVSu82
-         HuVLOd1yKpc5dzlIT4Wb22koLIe15mY9vNuQB0I/rMQgqFNzvoCzOXR5VeEMkjDh73CO
-         viae1S0kw44N26P22XOaQjnAtxa8K/RDQJmpKEQp7ruwMDbj+2/WmHLNSmSzf3UtjZiH
-         RhlNzfHsSWjwCe7zkUyuuUC/IJF7iSqyudk4M5FL9pQTRBfcbiFLKsHihEVJHnR9XnnO
-         jORULXp+Y3imPpzlVVHqFGhQD0ibqpLqR/kqdWxRbk0Rls5ME3U73C+K/w7GiN9jLkK+
-         pE2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ba9QqDkcrd3Mro0zu2+iADvo+PIFbtPGZiWLHSGlxdw=;
-        fh=MCLNLOsAYM22HB8/4GjlfJGbZKg9Ri3tSUc6hHxm4qo=;
-        b=HGpCklupFxB7/Mz0YZ+VltSgi1w4Fc8CBC4oqQbNC7HGKUOim/h9KgTz1IPllZ69ve
-         WdgTVKQcuqKox+WCmSNPAhoi9mwQh2VjiZfnqypImZCODR6AnqF9wbuge7fnwjKNAT72
-         rdRRC1vGT0H8Rrto0lXKs0+XWEctgplgsyHOS7PgHQ7WPr1S/Vb3doFsXnsk9z8aWhpK
-         JRt3yXF0Gcbron/0I1gcGTKCb/tEisE6seDY1xomvpKHNthF0AyYXIRieE2W2Caqylgd
-         8YyDzJCIQuKpoiLC/WsqmJm5wkqo8M2ze7Ky9kWe1xIu7DnBsezlal/7XYiF69Xik11O
-         iBrA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gox6cT+p"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6793ff3d53dso735054d50.2
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 09:28:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791735930; x=1792340730; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ba9QqDkcrd3Mro0zu2+iADvo+PIFbtPGZiWLHSGlxdw=;
-        b=T20g+rKuexDaHBgmTj1yywctFL+KVF/SbLOdMmQOURWO5WcdxJzpUSn5jxAEGQzMcn
-         mhGExkzNY3IZnf+g73vFED5aod1Qm+TTlGeOCjNFtzZRbBRSRiBS7jHHXyIGlSY1w3Mi
-         MuDv8ylqIpFxdXTW2adfi9gP4ZvpBTpSJgOPRi219FQczvzjyjdx/5ydP9h2oK5aJPqw
-         ZIHm6yW3oZMQyEYHh6U6/Q0GBUkkDPL6Ss+gXwWLM0SY9xkcbO4SLjiXS0Nv17449WIY
-         JgjKKR20mOoETyTtOhp3t4voU1/KkUQlfdYRcTJEMpEN3Lw7gudOl0ywbRsormauNb7V
-         He5w==
+        d=gmail.com; s=20251104; t=1791736111; x=1792340911; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gFt47LSAsQO+9dW+yOZPgrQ8Va/c7AWtExmCZjKK+GI=;
+        b=Gox6cT+pbC4miYBOPFdFk5wPSbjPunDqPfcyJ+SlPz1/SaCEK6Euf20OBpBAsS7Tfs
+         IptAxlHxbBczKMMMYruNijg1Qciahg9xaxARXV6Z+csRTP6HtaMInHcRvKWbAXD2ut4a
+         +y/o4g7wmq0Iga4nF0up6fccIjAkRNXKUiMPNlKJjeXO5jtJc5sFjla2VlzVHSDXoCxs
+         aFL3Yed8a5XT1EHP+TYnIhUCYp/gm0ekv7VYdwKPWGR37dHcGLNAofhCvlgCzHTXHCaK
+         YcQzXmwrSsrLglfDX88awO+6CLlq+Bpbi8icVREGeIab7QwXQH8coese4WYS44SvoTvn
+         nJiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791735930; x=1792340730;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1791736111; x=1792340911;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ba9QqDkcrd3Mro0zu2+iADvo+PIFbtPGZiWLHSGlxdw=;
-        b=i4GGfRqdjy0PQhTZMMpa6rIU+9Wls26r3hWvzu0LKGDFdn8D35x/jqAGDpzjlxrCbU
-         Ap1VPw0yRZChrH77i2KnpXd5/2LyMezRu6F6Sw0cbAoYc3/B7T4v8f6fihqH0uCiHvDw
-         LS1dlP2hTdaXMXYdCR58/4heBEbQ2Q+zovPZnF4gLmSefhLFvAmcjUrUdBIYw4ospA7g
-         0E2nyQTsDvVnRo3ol6GuOo7mphMPJmT03JxSd3Z7Wqo2sWZ3kFuc95CPJ0Pkzi5XS0tX
-         merwIhZN2Kaub52gBzGIzcNJpikdhxMBHr9v2Cqq0y5FVlNr04kKUK1vdeizgF4ogGca
-         V10g==
-X-Forwarded-Encrypted: i=1; AKwUvBzoELb2LpdewihyECatNKWg9GGu2zcy2XslkyWqVJp/RX7jaRKcC4nBp8MlUyfriKkksniWCos=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLUSwUYWSc0vJOvKOs/WkkhNzPn7kyEt/cmJzoVLwGDERnBZc0H
-	t9UW5hOCzYFAfN37c48ZZvSlXuugcpAqBvWqpMnl1ywK9oXuVaug96GsAFvnn6CDwT32M/Ikpa9
-	Ece0r+Kqf/CYt2e3VXkkvwVLo0jtc069Ja7bx38PS
-X-Gm-Gg: AYBFou2bvexpW+oNb+NtCn6YC0H1qEfqJQ0UhjqyQx/BD1fSBPUy4L1EzjUK74WX7al
-	n6rou92cYPV1MYMvY9AVi1z40ezxAXzm4L9fqdoW2YcTcg+rvAtkGf7PWrBdqp0oN+90UQJvYri
-	7vxYN1oWMzhy9emRrOyeWVOFQSfsiuCLtfU/p74v48YkCViMHQBndkFerq71JAi5EorcdWZXviw
-	8pXEH5SDeYW7auBq8XQVEXZfUAvsI+e66H65UMW3oBOHQRgnouzzV9OOj20XWKXG5ekkAdRMeHk
-	5//L/dFz43ThrkTRGzZ09vLdz87SeNb/SJZJdF0OUpT/1n7swALNGg==
-X-Received: by 2002:a05:701b:2046:b0:12b:ff98:1ed9 with SMTP id
- a92af1059eb24-16ef393e90bmr155257c88.12.1791735928492; Sun, 11 Oct 2026
- 09:25:28 -0700 (PDT)
+        bh=gFt47LSAsQO+9dW+yOZPgrQ8Va/c7AWtExmCZjKK+GI=;
+        b=u8aaYFax6y3v6HrtaDxEkV19EoO7jii0rKf+vbOdryE6a0ifkKORno9RqWzsuqbPyg
+         tha0259BpnDQ9dBRmFB5guePXKRiytzCFeMS5ZPwb/xm/AtlMCKmQkSEp8dr2z7/N52h
+         jLCOeOASjDegmCEzHBmR+UoUUOZZbMbj5EZT7xBG0qO0OjkPKiiy95Le4OW3Wv8s+kjU
+         lQMfDeXN2kp+xP7S6rukq0tTsvZBWQadZKhsi5iHI2SEw1Cb+CgJAf2ta4NSBQcZrHwY
+         sGOmCvR7+5QAFiryJ4Bn8mnWeIVc6F6xGXJafwVsfgzoGHtWzDWTf7GrHTfZG1k85QzR
+         ehUQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwwi/vj/v8cJgKYK8yzbXoYD745D/RtwJ8IE2AfK9UeeuPRX85L+sA5TYfKY+Zee1cMzPYUpEA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJUtD0lJ/IL7yQMe95KjACvn4bVQ8kDYBJLuz3EuBfKkSdiZcZv
+	sg3RxSJFn6M9MvhgLS155UP8aSwcxs/vPl3Q5OtplIXIury72x8UUml+
+X-Gm-Gg: AYBFou29ie+e3dzm7oMtaf/sgu+3fHtdlrnzEKgH/E26XdcweJisAUzgE/k+jW3jBjy
+	fEgtwCYENrtcLVytNzYcWM88Gv0vVYpju11uBtGTbCqnGXNGxwgjVP/o8FRys1HUfxPGocHTS/X
+	qqPvj46gPeetSCLbaqgwRCooyMNwhIk4ALJrj8Z8YJ+1Rpv9o/NZusr2ggLwhZsJx/ejeTctxJC
+	z6VmloSB5zXwqVnN4vMAwfYzrZHwZltwhZuJorDErD2ukv2WHEl8mQ4jtL57S1POuo6Sx9GxOGP
+	UejE8CPMlKEjgv1HYl2eqDX84vGbklrpVLWzhUDrn06TLtrAySbTN+HwjT64jFB1qRU4t5Rzhoj
+	zQW7gagg8J6sD9WDClYZyGIHLHCceIWx9e9HptZUmX/WmpFxK73VGJ6xG8arWjZuDlFVaj8eby6
+	H4uZ2WMeU5LW9nQmO7v1rH7gwBtLVS/12geHzJi/Tjzd/XjMwC8Sc+513bWEVqLhmg5YDIrtZuE
+	do0b6T4p7CU1q9QgutWvze+CMtp3XOVLOiw1pgjybEOxiyRApXC5pR9aCRJpdDjiLYpCsxmJk9R
+	Gp1Hb/cZ++bVkT7ObCh0BynAtEnlxlPcjnpPNGav6y3VILdp
+X-Received: by 2002:a05:690e:d4b:b0:673:572:4492 with SMTP id 956f58d0204a3-6793600cd9dmr1293447d50.24.1791736110930;
+        Sun, 11 Oct 2026 09:28:30 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-679356d5a8esm2788846d50.18.2026.10.11.09.28.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Oct 2026 09:28:29 -0700 (PDT)
+Date: Sun, 11 Oct 2026 12:28:29 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: rafael@kernel.org, 
+ lenb@kernel.org, 
+ pavel@kernel.org, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ linux-pm@vger.kernel.org, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ =?UTF-8?B?SsOpcsOpbXkgSmVhbg==?= <jeremy.jean@oss.cyber.gouv.fr>, 
+ steffen.klassert@secunet.com
+Message-ID: <willemdebruijn.kernel.e128e48c07be@gmail.com>
+In-Reply-To: <CAHmME9rW6Pav4vLdHbvvuf65v-+gtoHpDagFpmqrHYnkTKKNuw@mail.gmail.com>
+References: <20261008124106.665014-1-Jason@zx2c4.com>
+ <willemdebruijn.kernel.cf8fec88827c@gmail.com>
+ <CAHmME9r+O=3i4JP94P0-gFwghfWtD=vLa1g3KB-LvW+xFbJWHA@mail.gmail.com>
+ <CAF=yD-LO0u5z8SU_Aktu0-0aeM-1UknYsGc+rCpD3y9bpwxtwg@mail.gmail.com>
+ <CAHmME9rW6Pav4vLdHbvvuf65v-+gtoHpDagFpmqrHYnkTKKNuw@mail.gmail.com>
+Subject: Re: [PATCH net] udp_tunnel: drop packets when hibernating
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008132815.654147-1-tariqt@nvidia.com> <CAHS8izNSo4YzXxD3C6c2HohdOfH2GK1M=51biuevLUk3vz5k4g@mail.gmail.com>
- <CAHS8izMKNeEmJM0wOgtoz9_3WRLUOqP0PEDMn5SZ+hXTKTwSyw@mail.gmail.com> <7a0bff03-2a7d-4819-b96e-a5ad8a5f6bf6@nvidia.com>
-In-Reply-To: <7a0bff03-2a7d-4819-b96e-a5ad8a5f6bf6@nvidia.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Sun, 11 Oct 2026 09:25:12 -0700
-X-Gm-Features: AclHuK96WOT_SJ9p7jbqKZ0R6AaK6MLbmYKOL8eVilAIXlLow0JHMppEEuz4fcY
-Message-ID: <CAHS8izOPRjO54w0ehXCXahn3LPD7uqyJYX=zBeDDYG91Sm+DXw@mail.gmail.com>
-Subject: Re: [PATCH net-next 00/10] net/mlx5e: Add netdev support for data direct
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Byungchul Park <byungchul@sk.com>, 
-	Carolina Jubran <cjubran@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>, 
-	Jacob Keller <Jacob.e.keller@intel.com>, Kees Cook <kees@kernel.org>, 
-	Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, 
-	Matt Fleming <mfleming@cloudflare.com>, Nikolay Aleksandrov <razor@blackwall.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shivaji Kant <shivajikant@google.com>, 
-	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, William Tu <witu@nvidia.com>, 
-	Yue Haibing <yuehaibing@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 10, 2026 at 7:16=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.com=
-> wrote:
->
->
->
-> On 10.10.26 01:54, Mina Almasry wrote:
-> > On Fri, Oct 9, 2026 at 9:42=E2=80=AFAM Mina Almasry <almasrymina@google=
-.com> wrote:
-> >>
-> >> On Thu, Oct 8, 2026 at 6:28=E2=80=AFAM Tariq Toukan <tariqt@nvidia.com=
-> wrote:
-> >>>
-> >>> Hi,
-> >>>
-> >>> This patch series by Dragos adds data direct support for netdev devic=
-es,
-> >>> allowing a mlx5 netdev to issue DMA commands through multiple paths.
-> >>> This feature is critical for improving performance and reaching line
-> >>> rate in certain environments where issuing PCI transactions over one
-> >>> path may be significantly faster than over another. These differences
-> >>> can arise from various PCI generations in the system or the specific
-> >>> system topology.
-> >>>
-> >>> Data direct for netdev will work with devmem by returning the data
-> >>> direct DMA device instead of the DMA device of the NIC. Each PF netde=
-v
-> >>> registers its own data direct device and support for RX and TX datapa=
-th
-> >>> is added. The feature is selected through a new data direct priv flag=
-.
-> >>>
-> >>> The feature is enabled though a ethtool private flag. When this flag
-> >>> is enabled, the driver will return the data direct device in the
-> >>> ndo_queue_get_dma_dev op.
-> >>>
-> >>> During data_direct device unbind, a re-creation of the channels is
-> >>> triggered.
-> >>>
-> >>> A note about the unbind: it does not does not tear down dmabuf bindin=
-gs
-> >>> attached to the data direct device; the recreated channels will still
-> >>> pick up the binding via rxq->mp_params and post DMA addresses from th=
-e
-> >>> data direct IOMMU domain to the PF, causing IOMMU faults. A devmem
-> >>> revoke hook is needed to close those bindings before the switch. This=
- is
-> >>> out of scope for this series.
-> >>>
-> >>
-> >> Elaborate on this please. Are you referring to the fact that on
-> >> page_pool_scrub we unmap the netmems dma-mapped by the page-pool, but
-> >> we don't unmap the netmems dma-mapped by the memory provider?
-> >>
-> >> What's the impact of leaving this unfixed? Is the machine going to
-> >> crash if the device goes away but we don't unmap the dmabuf?
-> >
-> IOMMU faults because the dma device is invalid. Either because the
-> DD dev is still in use and was unbound. Or because the non-DD
-> one is used and is invalid (due to channel reopen).
->
-> > Oh, you're referring to an even different bug than the one I had in
-> > mind. (I'll see if I can submit a fix for the bug I had in mind).
-> >
-> > But in general I think not addressing the issue you're referring to is
-> > way too messy. I think we do indeed need to unbind the dma-buf if the
-> > dma-dev is going away. The invariant should be that the
-> > binding->attachment->dev should not change at all during the entire
-> > lifetime of the binding. We already 'revoke' the dma-buf binding if
-> > the netdev is going away, sorta (there is a bug there I need to fix.
-> > The uninstall function in the provider doesn't actually unmap the
-> > dma-buf :sad face:).
-> >
-> > I've worked with my LLM to suggest some changes that (we think) make
-> > this work, but you may disagree. I'll post the suggestions. But please
-> > I think this should be handled one way or another.
-> >
-> My idea was to handle the unbind part in a subsequent series because
-> it probably needs some more back and forth to get this cleanup path
-> right.
->
-> If not acceptable I'll work on adding it to this series.
->
+Jason A. Donenfeld wrote:
+> On Thu, Oct 8, 2026 at 11:03=E2=80=AFPM Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> wrote:
+> > Since this is an issue specific with security protocols and reuse of
+> > their state across freeze and restore, is that the more suitable
+> > location for this check? Drop transmit of packets with that risk
+> > (unique for that connection nonce) only, if freezing.
+> =
 
-Since these are mostly driver-local changes I don't want to be so
-forceful to block it by saying it's unacceptable, but if at all
-possible lets try not to exacerbate the current mess. It looks like we
-already a bunch of lifetime bugs with regards to the device going
-away. I've posted this series, which - I think - gives you the devmem
-'revoke' mechanism that you want:
+> I was thinking this is a pretty common problem to UDP apps in general,
+> and it's confusing to have these sorts of replays due to hibernation
+> that userspace doesn't have. It's an odd problem to expect every
+> in-kernel user to fix independently, so maybe it'd be more clever to
+> do this all in one place. I can put it in only wireguard, instead, if
+> you feel really strongly about it. But I was thinking this just seemed
+> like an odd behavior difference that could be easily fixed for
+> everyone.
 
-https://lore.kernel.org/netdev/20261010025532.839559-1-almasrymina@google.c=
-om/
+When it comes to security protocols, this does not cover many of them,
+such as IPSec, MACSec, kTLS or PSP.
 
-Also working on that, I realized we don't use binding->vdev and
-binding->dev correctly on binding rx. binding->vdev is meant to be the
-device we do the bind to, and binding->dev is meant to be the
-underlying dma_device (if they're different). That fits into your
-model where you have the netdev you want to bind to, but have an
-underlying device that you want to dma-map to.
+Independent of security protocols, is there a replay on thaw issue?
+Your example points out that 6 and 8 can have different data, so this
+is not a replay because of thaw, but a second transmission by the
+security protocol, correct? If so, then other UDP protocols are not
+necessarily affected: only the nonce reuse is the problematic aspect.
 
-I've gotten some feedback on my series and I'm working on v2. If it
-makes sense for you to wait on my devmem core changes so you can
-integrate into them better and avoid these lifetime bugs, lets do
-that.
+To avoid across UDP, udp_tunnel_xmit_skb would also be too narrow,
+capturing only tunnel packets. Blocking transmission post snapshot
+entirely may require quiescing at the device layer, something like
+QUEUE_STATE_STACK_XOFF (if that isn't done yet, I don't know this
+freeze process well).
 
---=20
-Thanks,
-Mina
+> > udp_queue_rcv_one_skb is the UDP hot path. Since it touches all
+> > packets, the last resort for adding checks that are relevant too only=
+
+> > a small subset of packets.
+> =
+
+> Is there another way you'd suggest doing this? Some other trick for
+> disabling the socket? I also am not keen on adding branches to hot
+> paths.
+
+At this layer or another, making pm_freezing a static_branch toggled
+by freeze_processes() / thaw_processes() would make the branch a
+NOOP in het hot path.
+
+So far, most promising I see is blocking the new handshake in
+Wireguard itself to avoid this from being possible. But that would
+indeed require all other protocols to be warned and review for
+individual fixes. A single choke point would be preferable, but I
+do not think they share a single such code path.=
