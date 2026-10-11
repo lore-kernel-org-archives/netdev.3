@@ -1,179 +1,289 @@
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-oo2-f0.google.com (mail-oo2-f0.google.com [74.125.231.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E73A39CCE3
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 04:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791692101; cv=none; b=Q8UeV5sF6zLwcQEkKLRfPj7g76TvnVkimB9XSVbmyb+8u6gD/NmeAkxUM4++rJJNKABEzPXGiAEae4py4V+xtr5HpAsjH/thaRlIhP5WOqhOxP0to/x4PE5Ph3W21KrmRkYyGHu32i7dfTefXGxDiPLPlt3e/W6lU63j29FppEY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791692101; c=relaxed/simple;
-	bh=l1a/bWcOT2l+X9e047O+Zc0VAnzVT8S5JAO8GTa3MUU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gSTe2DhNbbFkiFgHDWxRgJXFZxe/PT8JmI/G1A10fZdIbDZWRhmwFYGT29vtWt4unUNb+2SmOaTrmwUFGAukDx4eyHgzFDUIcUtHNF7cmEdH+kLpDNohZ/wPfc3FICdIxb18n5ih4hgd/raqY4/0dfHpZMab+as+7k6/w7aga6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o9yaV1U3; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FCC19005E
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 04:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.128
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791692254; cv=pass; b=mnSdbAqyd2/2wbh4u17C6xyysv8kEOOdFs8X4puzZI0g43qKeQmS5fI3Lrfk1xV7ipU9roo4GMkhzAWnFGjbLDQ+5F+QIQ6GmqqJzOvHG/CZN85EKGg4UbZU5W1wLKFhzjBzAcwbFTFEWoV6xblq3et9VpicUHMZ7uCNaWGlz+A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791692254; c=relaxed/simple;
+	bh=EojC/6mtzUWJ7avmaSpCmXay/upr0JmdGGgyCBDDGzY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OcR5ccfrTV/m//SbjkVgJcbCzg1/gpUX4c0clnGDZdHw9gTO9mTOGWNQ+biRy4iyBdrwPyBmZ4Z4A1/OUS3wd/QdfGKU2T3wh9jaZjUDdfsuJh9yKZ0DL8wTDCae1rey0dY+bzfM49dPVjHte3PGo+ew1/0n4WkGP8nGztUjWiQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=acqmmXTL; arc=pass smtp.client-ip=74.125.231.128
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o9yaV1U3"
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-35834f72d94so1441728eec.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 21:14:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="acqmmXTL"
+Received: by mail-oo2-f0.google.com with SMTP id 46e09a7af769-824040a3379so398698a34.0
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 21:17:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791692251; cv=none;
+        d=google.com; s=arc-20260327;
+        b=m4DBXoI22tgVeDRoyovO5XZ19TTCbfY9MtkHe9ChN80/LEzXRA4jLgdoLME3S+F6PA
+         bsmWd4a1YpGM0kDMMdmgaTdK/a8ypJuaWVGbPq48ZInuwkiP8G+MYPWywXUBT7DdSmbv
+         PhZeD2iC2GOXVc4Odpkdt0zpqLxEfVuzJVqb/Ov7K7mhJ3rOdl5eXezopQJUP/vZf/NO
+         /dykoMxv1jQSqz3RJ8fXAdsB0yIljKEcQ285nQRDgskNeEXRmmVi2SjB/ag1DRJeZmva
+         RHTTAVHzMw0Xzs6b99TrfSaJ0Z1lJUNxKN1xw7I4M7r2v5tM58wToXACJabnb3+RR09K
+         wmFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ze3tU5ClgmV//hWYQFqIt/MG2FODlVRCQlPbo8m5k9w=;
+        fh=OOfZzHJZc7VF8olnIjmbnpxcBUpfWvHiME6ZW7a0zvQ=;
+        b=hOqIxPXIjeJXZ54n88tNjliwtaPh+noqAebNWfNRJ0v5LUu3CHjoZKgbJmOfDqxWLX
+         Np4ZHYNIu9+m1YTOmpZLAA9Vk4Spg0RvNPPy/jmMNXKL6sXIiDgtlsanTecn9GCFXkJ0
+         iLmxHMBBFOLl+4+5K6E9sG1+5e//MTapynxpua5VsYek3WIgJp9E8xdrpCfGLxzWlU8t
+         XCUJyR+b3tIoQsa3tpaU63O3D8CsSLFhUOPAq0XnKudX/FJvrzaCZ33b2rj7dULO6H0X
+         /e8La4429Nf6KNbYW9oY+IqlB0cht5wEpZrfj9ESkM0PQYgZQJJ09IqEzfdz6MH5sFSK
+         Fxcg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791692098; x=1792296898; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=q235uDx+bpsRBMkhHfqYFd51DmOA87ePC3AWPxfUoj4=;
-        b=o9yaV1U31wMmnaQHL+ez2fnFFV6N2pMjGb7lpKu/NOchnIWtlQHVoMAetbRVK5/u/g
-         owUsBcxgBk6AL3iIBgIe0QBqbabPSw9m1QVp7om0bRN7vk0MVsWdAlxDV/QC29Juibay
-         9nPuauqETthi8aR8Jr/CeCgXnSmm9jRsiSj/6/BHlfoYfEnJP/N4KujOgJmp7o0ywmDQ
-         rK6Ka3gFNcRqv/IwRRrmblBV1wo7Yxj1DX61jp9sPwME5HOlUGC7i/OtfzxlJNBRNaNr
-         4CMW2TIu8575AV75Ts3rDQVUT7nLSinLxBQKzhAZoYPFNQ0A4apdc1zQYCDu74NhhbQr
-         VGDA==
+        d=gmail.com; s=20251104; t=1791692251; x=1792297051; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ze3tU5ClgmV//hWYQFqIt/MG2FODlVRCQlPbo8m5k9w=;
+        b=acqmmXTLH3/JqLul4xg0YhnqrVxyfR3hxgvuPybOeTz/MIUiN972T+nMdl+nhNsiiZ
+         gvAHayn/EDi5xIoaRVVuIcMNda+TXC9UMymbknO+5KlK9Dg1n4Ix7EZeb+OrwClrjnw5
+         ELkGj3gVIPRiJv4h5eChhfSbpOiKnT7Ei1l/5/ovHXZzXdLecQXJXuyZGXUpVvoYC/XW
+         pAQ6j4JkRHG8A3QXwEp6L2TmagY8cMV/d2cHFeUL1QfLJgVBDPipiPrd1orkQKiBKQDL
+         8A8wAHFnu0Qz0C8xMnWMCA2UyPG3KIwR3ikjXCmS/+BpPCLddzYu0/wA0BirwanIMDQ6
+         V9gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791692098; x=1792296898;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=q235uDx+bpsRBMkhHfqYFd51DmOA87ePC3AWPxfUoj4=;
-        b=D4Vk7I/BfRvjLoyZ+LZaN9m6nBRq4zxO6MX/cv6kd/+AVd9NkmmGJLrJjitjwwe37L
-         c/iKfhrer0vpyNZYgKyUt+toopalubNnzLiHvARX+69S/SIbezgKIcppJDUgMW0BvZZH
-         tTP0DOJb0/cn2r0NChNxYIwZ8B3xUbIVRab2XV3rw5de17DDSJDYV9O/EVuCEkvFW4xU
-         /XZrfXS2cJ9qh5Mgs7qRg7/7DRm/8AS3HtNP43DnUrAVYVDqv/YMvue7HYnd4PRWm99f
-         uGqaunFjrMAYM4KA1rHGdrdlnU6hi4N+fjR235hXYzdQlDZO4D/zVfztreaHFLKe1H9L
-         B/cQ==
-X-Gm-Message-State: AFq9FYK24k+a+cmvcnRIN/W+7YPbgw6KRHwExSjsXmdFuNk1rmoscRXF
-	QL2lSolU9ytz6hMc5YefN/knF5lZoUnBAq8Qh+/nofkffZiu2sTnmxLJ
-X-Gm-Gg: AYBFou0OqqjwUqLAH1I2f7MtU+c+QfkFtt7j0zHdz8MBgMixHxgSlbx8phup/iMdseD
-	lhqPh364hLwqu0bhV2bxN78zbrulSSoIyX5Woko2APfajmfMr4lUh1SSOm6IWdEPaE7iea8uabo
-	sfriydW85zfbo2eFLWdpD1zkpuJWD6WUxLaUsNz+MC8rzK44IxUnmnqb41iVub5/J8cwzjcKNvp
-	J/B7jRaDnJI2LFVpRbzBfS0b77wFwNCFppXVZgPljOfWpIUyHxcaAYVNy9oZVBTKASxIWRGAntD
-	fzXegh2UPmDettCvrgrof4xazIHFu9FISOqSQe+21CZYdJ3bjSmTZiMG4rZRzLjaMIlxUHwQKUS
-	4me1W2OInVmP2tCJuPUKjur/8Sq559Ol4iTzjd0SHdEF0Rn3eEHqmH3xUA17VkH1cUOjaqhVkmp
-	W2uKXaXwLQM+9+Skj5MezwPFqiMbTJb6az+Kwh9nzBkUmbjoI3dXdawmoS8S5VUi+U3isqkc2W2
-	JFy6SBCI9cMbNcYoNhbRmZMR03nI1yUymXzuxyZiRE=
-X-Received: by 2002:a05:693c:60d4:b0:359:2f0b:aa89 with SMTP id 5a478bee46e88-3592f0bc083mr2769453eec.10.1791692097980;
-        Sat, 10 Oct 2026 21:14:57 -0700 (PDT)
-Received: from 192.168.50.3 ([198.176.50.208])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537c843079sm19707164eec.1.2026.10.10.21.14.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 21:14:57 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>,
-	zjamg <ndaugoing@gmail.com>,
-	Weiming Shi <bestswngs@gmail.com>,
-	stable@vger.kernel.org,
-	co+b3e1928dd33a1bd6@bugs.sh
-Subject: [PATCH net] net: mpls: keep transport offsets valid across label changes
-Date: Sun, 11 Oct 2026 12:14:37 +0800
-Message-ID: <20261011041436.1424222-2-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1791692251; x=1792297051;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ze3tU5ClgmV//hWYQFqIt/MG2FODlVRCQlPbo8m5k9w=;
+        b=hhR2iQtzHje9kCxVIsIXCdfd1EzP7oCMliJOb0u//mMbIOqTZ4bsZjtZil5E4AWTAE
+         LTBrLX4Di2Run8PkwPPkcjni8JIOWKuoEhnXZw+zhZiZFuwoaPCSqUM0o7lfWhJXEVZl
+         CVZ68a+N0d+xYy9eVY7LViYPzQ/79IkCfvjgYvIOfPeBmPdRnxzIa36/fFcVa3z3jFMU
+         rR/p8t0L9YedsnSc4Wq1EEDnccH4vTivd17+lYDBX5fKcnJDcYH+lSodrZA5KVrMRu22
+         mTgQrxD6YssaXu0XfJ27k1k6gREFH+0+efngRh29PkrBkPPKoioViPeHPspydZHV/gqN
+         x2Zg==
+X-Gm-Message-State: AFq9FYKh1k4CsifMOwqPeqk35Q2fChd8nRLHt3VReB0sEdB2/kQFt7BK
+	qEkeN64YPFbG5bRkTlf4LWcWJYnkpI6PKh+oUMYK0iOnFRNGoZ6eqXW+jJuXXqJWDmOvk7c+7QB
+	Lr8Y7t6zWp7LMI531kLZtP/ayOmzORnA=
+X-Gm-Gg: AYBFou3IVD0vyfnX65k1P3ilL13t+Xran2XBiiB1CZLanLuzIYoiBf33S1yNgqxvRBe
+	eUVFohBALq8jK56izfkTNz7WAjVHaZQx1cmdwFjHLNERiboCaZ4RkzzGwouBtgptjr6Z/PbV8R7
+	cRHcKfnch3iaj46Pql8Wq46hMuTLzdncoI6MRWmkcdcbZwAedd90iDLKoj026iadaQEl54D9NXA
+	HgrcSVUkx39PkAlLHXSUim325PCtaOngOccaDfHBgbMve8FlM1ktkCBtRLJNLix3DvJgpy+d0D1
+	ZWHqA5UIMVsk2iQ3apNuLqMZAUvnQ9zjFR2bXGdc6WKPf6I8HjzJHcMkIHZKxBpwCB/SG0RVVbG
+	pdlb1X0VVTqND2eNPlbrMKGM=
+X-Received: by 2002:a05:6808:1908:b0:4b9:a88b:8884 with SMTP id
+ 5614622812f47-50c50f2e1f2mr6409320b6e.26.1791692250833; Sat, 10 Oct 2026
+ 21:17:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261005041525.49111-1-xinsheng.zhu.ny@gmail.com> <179134657946.434549.14071341559835135672@kernel.org>
+In-Reply-To: <179134657946.434549.14071341559835135672@kernel.org>
+From: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+Date: Sun, 11 Oct 2026 00:17:18 -0400
+X-Gm-Features: AclHuK8R4vcLcP0LXZ-tOoywSVJ8FWjq2V0QOjKOAR5xzmbA-pdI0ZnoHItcWRs
+Message-ID: <CAFGKm+zjOtU8WGpcqqb6_XnFd3vmPw2RszPig9PJzbq3Uqh_Lw@mail.gmail.com>
+Subject: Re: [PATCH net] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, oliver@neukum.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-skb_mpls_push() and skb_mpls_pop() can leave a transport header at or
-inside the moved MPLS header behind. Repeated pops then make
-skb_transport_offset() negative; when a GSO skb is redirected to egress,
-qdisc_pkt_len_segs_init() widens that offset, wraps its pull length, and
-dereferences about 4 GiB past skb->data.
+Thanks for the review.
 
-For tunnel GSO, qdisc_pkt_len_segs_init() uses the inner transport header
-instead. skb_mpls_push() rejects encapsulated skbs because the networking
-stack does not support simultaneous tunnel and MPLS GSO, but
-skb_mpls_pop() did not. This leaves the same negative-offset path reachable
-through stale inner metadata.
+> Should this branch return a negative errno for short reads? For example:
+>
+>         return err < 0 ? err : -EIO;
 
-Align outer transport headers at or before the affected network header
-with its new position while preserving valid later L4 offsets. Reject
-encapsulated skbs from skb_mpls_pop(), matching skb_mpls_push(), and
-refresh mac_len after a pop.
+Yes. I changed the condition without adjusting the return value and
+overlooked the zero-length case.
 
-BUG: unable to handle page fault for address: ffffed10408b8e0b
-Oops: Oops: 0000 [#1] SMP KASAN NOPTI
-RIP: qdisc_pkt_len_segs_init (include/linux/tcp.h:31 net/core/dev.c:4193)
-Call Trace:
- __dev_queue_xmit (net/core/dev.c:4835)
- tcf_mirred_to_dev (net/sched/act_mirred.c:242 net/sched/act_mirred.c:237 net/sched/act_mirred.c:328)
- tcf_mirred_act (net/sched/act_mirred.c:489)
- tcf_action_exec (include/net/tc_wrapper.h:59 net/sched/act_api.c:1162 net/sched/act_api.c:1136)
- tcf_classify (include/net/tc_wrapper.h:178 net/sched/cls_api.c:1779 net/sched/cls_api.c:1875)
- tc_run (net/core/dev.c:4463)
- __netif_receive_skb_core.constprop.0 (net/core/dev.c:4538 net/core/dev.c:6115)
- __netif_receive_skb_one_core (net/core/dev.c:6262)
- netif_receive_skb (net/core/dev.c:6377 net/core/dev.c:6463 net/core/dev.c:6522)
- tun_get_user (drivers/net/tun.c:1595 drivers/net/tun.c:2045)
- tun_chr_write_iter (drivers/net/tun.c:2091)
- vfs_write (fs/read_write.c:595 fs/read_write.c:687)
- ksys_write (fs/read_write.c:739)
- do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
- entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-Kernel panic - not syncing: Fatal exception in interrupt
+When usbnet_read_cmd() returns 0, the new branch returns 0 before the
+remaining initialization has run. cdc_ncm_bind_common() then treats that
+as success. This is a regression introduced by v1.
 
-Cc: stable@vger.kernel.org
-Fixes: 48d2ab609b6b ("net: mpls: Fixups for GSO")
-Reported-by: <co+b3e1928dd33a1bd6@bugs.sh>
-Assisted-by: LLM
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
- net/core/skbuff.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+I will fix this in v2 by preserving negative errors and returning -EIO
+for short responses, including zero-length responses:
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index cc3b4b702..c09bb8ac2 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -6612,6 +6612,7 @@ int skb_mpls_push(struct sk_buff *skb, __be32 mpls_lse, __be16 mpls_proto,
- 		  int mac_len, bool ethernet)
- {
- 	struct mpls_shim_hdr *lse;
-+	bool trans_update;
- 	int err;
- 
- 	if (unlikely(!eth_p_mpls(mpls_proto)))
-@@ -6630,11 +6631,15 @@ int skb_mpls_push(struct sk_buff *skb, __be32 mpls_lse, __be16 mpls_proto,
- 		skb_set_inner_protocol(skb, skb->protocol);
- 	}
- 
-+	trans_update = skb_transport_header_was_set(skb) &&
-+		       skb->transport_header <= skb->network_header;
- 	skb_push(skb, MPLS_HLEN);
- 	memmove(skb_mac_header(skb) - MPLS_HLEN, skb_mac_header(skb),
- 		mac_len);
- 	skb_reset_mac_header(skb);
- 	skb_set_network_header(skb, mac_len);
-+	if (trans_update)
-+		skb->transport_header = skb->network_header;
- 	skb_reset_mac_len(skb);
- 
- 	lse = mpls_hdr(skb);
-@@ -6669,6 +6674,10 @@ int skb_mpls_pop(struct sk_buff *skb, __be16 next_proto, int mac_len,
- 	if (unlikely(!eth_p_mpls(skb->protocol)))
- 		return 0;
- 
-+	/* Networking stack does not allow simultaneous Tunnel and MPLS GSO. */
-+	if (skb->encapsulation)
-+		return -EINVAL;
-+
- 	err = skb_ensure_writable(skb, mac_len + MPLS_HLEN);
- 	if (unlikely(err))
- 		return err;
-@@ -6680,6 +6689,10 @@ int skb_mpls_pop(struct sk_buff *skb, __be16 next_proto, int mac_len,
- 	__skb_pull(skb, MPLS_HLEN);
- 	skb_reset_mac_header(skb);
- 	skb_set_network_header(skb, mac_len);
-+	if (skb_transport_header_was_set(skb) &&
-+	    skb->transport_header <= skb->network_header)
-+		skb->transport_header = skb->network_header;
-+	skb_reset_mac_len(skb);
- 
- 	if (ethernet && mac_len >= ETH_HLEN) {
- 		struct ethhdr *hdr;
+        if (err !=3D sizeof(ctx->ncm_parm)) {
+                dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
+                return err < 0 ? err : -EIO; /* GET_NTB_PARAMETERS is
+required */
+        }
+
+> Is it intended that these responses now cause a probe failure for
+> cdc_ncm, cdc_mbim and huawei_cdc_ncm, which all share this bind path?
+
+Rejecting incomplete GET_NTB_PARAMETERS responses here was the intent,
+to avoid continuing initialization with parameters that the device did
+not provide.
+
+> Should it carry a Fixes: tag?
+
+Yes. I will add the missing tag in v2:
+
+Fixes: 36c35416a94f ("cdc_ncm: fix endianness problem.")
+
+Thanks,
+Xinsheng
+
+pw-bot: cr
+
+On Wed, Oct 7, 2026 at 12:16=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 2
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] In cdc_ncm_init() (drivers/net/usb/cdc_ncm.c:527-529), the new
+>   check `if (err !=3D sizeof(ctx->ncm_parm)) { dev_err(...); return err;=
+=E2=80=A6
+> - [Low] The patch makes any GET_NTB_PARAMETERS response shorter than 28
+>   bytes fatal to bind (cdc_ncm_bind_common() -> error2 -> -ENODEV).
+> - [Low] The commit message describes a defect: cdc_ncm_init() only
+>   checked `err < 0`, so initialization continued with an incomplete=E2=80=
+=A6
+>
+> --
+>
+> net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
+>
+> This patch changes the GET_NTB_PARAMETERS check in cdc_ncm_init() from
+> err < 0 to an exact-length comparison against sizeof(ctx->ncm_parm). The
+> goal is to reject short responses instead of continuing initialization
+> with zero-filled NTB parameters.
+>
+> > Require the return value to equal sizeof(ctx->ncm_parm), consistent wit=
+h
+> > the existing exact-length check for GET_MAX_DATAGRAM_SIZE in
+> > cdc_ncm_set_dgram_size().
+> >
+> > Signed-off-by: Xinsheng Zhu <xinsheng.zhu.ny@gmail.com>
+>
+> [Severity: Low]
+> This isn't a bug, but this fixes the unchecked response length in
+> cdc_ncm_init(). Should it carry a Fixes: tag pointing at the commit that
+> added the err < 0 check, so stable backporters can follow it?
+>
+> > diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+> > index 35db38cb3e4a2..66f40f0d9c273 100644
+> > --- a/drivers/net/usb/cdc_ncm.c
+> > +++ b/drivers/net/usb/cdc_ncm.c
+> > @@ -524,7 +524,7 @@ static int cdc_ncm_init(struct usbnet *dev)
+> >                             |USB_RECIP_INTERFACE,
+> >                             0, iface_no, &ctx->ncm_parm,
+> >                             sizeof(ctx->ncm_parm));
+> > -     if (err < 0) {
+> > +     if (err !=3D sizeof(ctx->ncm_parm)) {
+>
+> [Severity: Low]
+> With this check, any response shorter than sizeof(ctx->ncm_parm) now make=
+s
+> bind fail. There is no fallback, and the wLength the device reports is no=
+t
+> used.
+>
+> Before this patch, short responses were accepted. The zero-filled fields
+> were then sanitized by cdc_ncm_fix_modulus(), by
+> cdc_ncm_check_rx_max()/cdc_ncm_check_tx_max(), and by the
+> tx_max_datagrams =3D=3D 0 default.
+>
+> The commit message calls this "consistent with the existing exact-length
+> check for GET_MAX_DATAGRAM_SIZE in cdc_ncm_set_dgram_size()". That check
+> is not fatal, though:
+>
+>         if (err !=3D sizeof(max_datagram_size)) {
+>                 dev_dbg(&dev->intf->dev, "GET_MAX_DATAGRAM_SIZE failed\n"=
+);
+>                 goto out;
+>         }
+>
+> No device that sends a short response has been identified. That makes
+> this a compatibility question, not confirmed breakage. Is it intended tha=
+t
+> these responses now cause a probe failure for cdc_ncm, cdc_mbim and
+> huawei_cdc_ncm, which all share this bind path?
+>
+> >               dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
+> >               return err; /* GET_NTB_PARAMETERS is required */
+>                         ^^^
+>
+> [Severity: High]
+> What happens when the device ends the GET_NTB_PARAMETERS data stage with
+> a zero-length packet? usbnet_read_cmd() then returns 0. Does this branch
+> log "failed GET_NTB_PARAMETERS" and still return 0, which the caller read=
+s
+> as success?
+>
+> __usbnet_read_cmd() passes the usb_control_msg() length through unchanged=
+:
+>
+> drivers/net/usb/usbnet.c:__usbnet_read_cmd() {
+>     ...
+>         err =3D usb_control_msg(dev->udev, usb_rcvctrlpipe(dev->udev, 0),
+>                               cmd, reqtype, value, index, buf, size,
+>                               USB_CTRL_GET_TIMEOUT);
+>         if (err > 0 && err <=3D size) {
+>     ...
+>         return err;
+> }
+>
+> cdc_ncm_bind_common() only treats a non-zero return as a failure:
+>
+>         if (cdc_ncm_init(dev))
+>                 goto error2;
+>
+> So bind would continue, but the rest of cdc_ncm_init() never runs.
+> SET_CRC_MODE and SET_NTB_FORMAT are never sent. ctx->is_ndp16,
+> ctx->tx_max_datagrams, ctx->max_ndp_size and ctx->timer_interval all keep
+> their zero values from the kzalloc.
+>
+> With ctx->tx_max_datagrams =3D=3D 0, this loop in cdc_ncm_fill_tx_frame()
+> never runs:
+>
+>         for (n =3D ctx->tx_curr_frame_num; n < ctx->tx_max_datagrams; n++=
+) {
+>
+> Each incoming skb then goes to the "free up any dangling skb" block, gets
+> freed and is counted in tx_dropped.
+>
+> On the RX side, is_ndp16 is 0, so cdc_ncm_rx_fixup() calls
+> cdc_ncm_rx_verify_nth32(). The device was never sent SET_NTB_FORMAT, so i=
+t
+> is still using its default NTB16 format.
+>
+> With CDC_NCM_FLAG_NDP_TO_END set, kzalloc(ctx->max_ndp_size) with a size
+> of 0 returns ZERO_SIZE_PTR. That passes the NULL check in
+> cdc_ncm_bind_common(), so the problem is not caught there either.
+>
+> Before this patch, a zero-length response went through the full
+> initialization with sanitized defaults. Isn't this a regression for the
+> zero-length case? Short reads of 1 to 27 bytes do fail bind, but only
+> because the positive byte count is non-zero.
+>
+> Should this branch return a negative errno for short reads? For example:
+>
+>         return err < 0 ? err : -EIO;
+>
+> >       }
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20261005041525.49111-1-xinsheng.zhu.ny%40gmail.com
