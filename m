@@ -1,428 +1,271 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568BF33F5BC
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 06:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10A922A7F6;
+	Sun, 11 Oct 2026 06:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791699160; cv=none; b=PkaynkRER4NC35lfwnrnD8IuLTr1+/aCOvmVLEpl1LFHqDtkbPd/UTYCn23Tbosc7caWr5vgYTngNUzyv/3ThpczwpLT8qalcLFZA2wrVXFg2l5tRNI6KZ4XiudFpVg5yzwBewcSqeM5PnO3vIKgBLYIS4O4A0U/nbHn3Yh1hII=
+	t=1791699354; cv=none; b=VNyE2SukK7h7dNUptz2s8QNsFoid16S3Bglp48pQCHl0j9lvp7zIPOgmCpZEGVBkvKl/MUFG3tuf4pU+X0KzGOKm4eyTlg3uAd7iNQaMxXBrQ9UFFoKwvZugZSPTRQbo8hOLjfjTcv3987K7Zs4ksCJIdgY9zyF1OHiylDAY40c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791699160; c=relaxed/simple;
-	bh=7ThhzBvOWHWuYU5Sp1diE1LOfa9vUSCF1XL1VWrwzUg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INfdfGH0V8fv11o8wyi5rdcrPhf64s+SdH2NK/NYmmOWFqIkEtNGBFZ6VnSMbQ+P4/HhoegmvmZGeRGs9bvfG1S2tc+vPyPNoYrVkwZEVqVQYE+/GJnk5xWKLtsgj0zrM5VjT9a44QvWZ7Gqpynn2jPc7RQqI9F9rGis1zEmofo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HZx6mEQX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791699354; c=relaxed/simple;
+	bh=QdwlSdD4e8pIxx8RaYVNZobwNMHOaf3eJSCGNU+vnrI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=t7IL7w011ZOQJpcqxigkAf3vDtq+WhwgCjS/6BI44NWYjKTrhP9Ib1Jx3vbyIsNu3PFNJyrWtpC+5gki4CG7L71DFleWxfgkzGwclqdHkMaBSyP4vNgA2guoyMqkIjpHtLgbVYHg3S1Wq97mq2akzmTDl1ZB1MKT92gb+TMY33A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fO5tj43I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HZx6mEQX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791699155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BU4+eQIdWGVJ9C2EKz8P+UqRUbc3IXVOq93kMZKF4Pg=;
-	b=HZx6mEQXoiL8hRenRzxuQEK/hi539/W690Z0TKlXWXCKdDPi/GZYmuuPJB0XRCdum1pxj9
-	K2XowxdVaznbIhzqotY6klu//JRvp6hgwHoSlB/y2q6NR+lXcAPJQpLPq35OYrDwqVUChT
-	cnSdREy/O/rReIM0aEWEws4ppjlthAo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-513-AOwQtuM5OG20NnM6VhKnng-1; Sun,
- 11 Oct 2026 06:12:33 +0000
-X-MC-Unique: AOwQtuM5OG20NnM6VhKnng-1
-X-Mimecast-MFC-AGG-ID: AOwQtuM5OG20NnM6VhKnng_1791699150
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BDDAB1800607;
-	Sun, 11 Oct 2026 06:12:30 +0000 (UTC)
-Received: from ivecera-thinkpadp16vgen1.tpbc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 20F291956095;
-	Sun, 11 Oct 2026 06:12:27 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Min Li <min.li@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v5 5/5] dpll: zl3073x: notify sibling pin when shared output config changes
-Date: Sun, 11 Oct 2026 08:12:11 +0200
-Message-ID: <20261011061211.448373-6-ivecera@redhat.com>
-In-Reply-To: <20261011061211.448373-1-ivecera@redhat.com>
-References: <20261011061211.448373-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fO5tj43I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33B51F0089B;
+	Sun, 11 Oct 2026 06:15:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791699352;
+	bh=Kw8eIFWLJdO0vJMNss4vKqPZ2tB+xPBa5E7C4a8Opp0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fO5tj43I2wMBVp9IPZVleY/HYOOdwCFtZmwWgyDRzA5BQ8iXxF9fxZyNddWXp5JLm
+	 07OuTjPBlvDktkabsFHZ0I2ovq1+s1ZRrxWs4cdWb8gDK48iF1wxQ7JmUCJ9zJZQga
+	 wsnoRFyIXMt8v4Rb2yiPNu3kS2O22iZu2XrvpJiIDBBJ5m2YsNXI6cil1Ci6Sh3rYG
+	 8Uq2+Z9Q8C0f/0inV+D28Z/ALWE/N0YtSC09BAla5aEIt3e21H20T5A20YLW53koAP
+	 8rjvOIPaiXF0/k2GKpen3uPnybEWex81Rr95YxMa7Je5oCiwnXAAeAzesg7jKOximT
+	 qOEr9l7yo1Ktg==
+Subject:
+ Re: [PATCH net] net: bridge: don't under-estimate the VLAN tunnel info size
+From: netdev-bot+sashiko@kernel.org
+To: yimingqian591@gmail.com
+Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 06:15:51 +0000
+Message-ID: <179169935141.434549.18249145287675691158@kernel.org>
+In-Reply-To: <20261007055939.63100-1-yimingqian591@gmail.com>
+References: <20261007055939.63100-1-yimingqian591@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-The P-pin and N-pin of an output share the divisor, clock type, eSync
-and phase compensation registers (outside N-divided mode). Changing
-them through one pin changes the other pin too, but only the requested
-pin gets a change notification.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Add zl3073x_dpll_output_pin_sibling_get() and notify the sibling from
-frequency_set(), esync_set() and phase_adjust_set(). The notification
-re-enters the pin get callbacks, so it has to be sent after
-zldpll->lock is released and the callbacks switch from guard(mutex)
-to explicit unlocking.
+Critical: 0 · High: 2 · Medium: 1 · Low: 0
 
-To always find a registered sibling, add a pin to zldpll->pins before
-dpll_pin_register() and remove it only after dpll_pin_unregister(),
-both under zldpll->lock. A pin that is on the list but not registered
-gets no netlink notification, as dpll_pin_event_send() skips such
-pins, and the only in-tree DPLL notifier ignores DPLL_PIN_CHANGED.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Found by code inspection, not triggered at runtime.
+- [High] The fix is incomplete.
+- [High] The commit message says the change 'keeps br_nlmsg_size() an
+  upper bound of what the fill needs', but the IFLA_BRIDGE_VLAN_INFO…
+- [Medium] On any bridge port with vlan_tunnel enabled,
+  br_get_vlan_tunnel_info_size() now reserves __get_vlan_tinfo_size()…
 
-Fixes: 634ca2cb06d2 ("dpll: zl3073x: Add support to get/set esync on pins")
-Fixes: ce26d7ca50a5 ("dpll: zl3073x: Add support to get/set frequency on pins")
-Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
-Reviewed-by: Petr Oros <poros@redhat.com>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/dpll.c | 155 +++++++++++++++++++++++++++++++-----
- 1 file changed, 135 insertions(+), 20 deletions(-)
+--
 
-diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
-index 6d9a6d21d30b..1cdadb8e46fb 100644
---- a/drivers/dpll/zl3073x/dpll.c
-+++ b/drivers/dpll/zl3073x/dpll.c
-@@ -123,6 +123,8 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
- {
- 	struct zl3073x_dpll_pin *pin;
- 
-+	lockdep_assert_held(&zldpll->lock);
-+
- 	list_for_each_entry(pin, &zldpll->pins, list) {
- 		if (zl3073x_dpll_is_input_pin(pin) &&
- 		    zl3073x_input_pin_ref_get(pin->id) == ref_id)
-@@ -132,11 +134,42 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
- 	return NULL;
- }
- 
-+/**
-+ * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
-+ * @pin: output pin whose sibling is sought
-+ *
-+ * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
-+ * single HW output. Looks up the other pin of the pair in the pin list
-+ * of this DPLL. A pin is on the list from just before its registration
-+ * until just after its unregistration, so a registered sibling is always
-+ * found, but the returned pin may also be one that is not (yet or any
-+ * longer) registered.
-+ *
-+ * Return: pointer to sibling pin, or NULL if it is not on the pin list
-+ */
-+static struct zl3073x_dpll_pin *
-+zl3073x_dpll_output_pin_sibling_get(struct zl3073x_dpll_pin *pin)
-+{
-+	struct zl3073x_dpll_pin *sibling;
-+
-+	lockdep_assert_held(&pin->dpll->lock);
-+
-+	list_for_each_entry(sibling, &pin->dpll->pins, list) {
-+		if (!zl3073x_dpll_is_input_pin(sibling) &&
-+		    sibling->id == (pin->id ^ 1))
-+			return sibling;
-+	}
-+
-+	return NULL;
-+}
-+
- static struct zl3073x_dpll_pin *
- zl3073x_dpll_nco_pin_get(struct zl3073x_dpll *zldpll)
- {
- 	struct zl3073x_dpll_pin *pin;
- 
-+	lockdep_assert_held(&zldpll->lock);
-+
- 	list_for_each_entry(pin, &zldpll->pins, list) {
- 		if (zl3073x_dpll_is_nco_pin(pin))
- 			return pin;
-@@ -909,12 +942,14 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll_pin *sibling = NULL;
- 	const struct zl3073x_synth *synth;
- 	struct zl3073x_out out;
- 	u32 synth_freq;
- 	u8 out_id;
-+	int rc;
- 
--	guard(mutex)(&zldpll->lock);
-+	mutex_lock(&zldpll->lock);
- 
- 	out_id = zl3073x_output_pin_out_get(pin->id);
- 	out = *zl3073x_out_state_get(zldev, out_id);
-@@ -923,12 +958,14 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
- 	 * for N-division is also used for the esync divider so both cannot
- 	 * be used.
- 	 */
--	if (zl3073x_out_is_ndiv(&out))
--		return -EOPNOTSUPP;
-+	if (zl3073x_out_is_ndiv(&out)) {
-+		rc = -EOPNOTSUPP;
-+		goto unlock;
-+	}
- 
- 	if (!freq) {
- 		zl3073x_out_esync_disable(&out);
--		return zl3073x_out_state_set(zldev, out_id, &out);
-+		goto commit;
- 	}
- 
- 	/* Get attached synth frequency */
-@@ -937,9 +974,24 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
- 
- 	/* Enable 1PPS eSync for this pin frequency */
- 	zl3073x_out_esync_enable(&out, synth_freq / out.div);
--
-+commit:
- 	/* Commit output configuration */
--	return zl3073x_out_state_set(zldev, out_id, &out);
-+	rc = zl3073x_out_state_set(zldev, out_id, &out);
-+	if (rc)
-+		goto unlock;
-+
-+	/* The clock type, esync period and esync width are all shared by
-+	 * both pins of the output pair, so the sibling pin's esync
-+	 * configuration changes too and userspace has to be notified.
-+	 */
-+	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-+unlock:
-+	mutex_unlock(&zldpll->lock);
-+
-+	if (!rc && sibling)
-+		__dpll_pin_change_ntf(sibling->dpll_pin);
-+
-+	return rc;
- }
- 
- static int
-@@ -969,13 +1021,15 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll_pin *sibling = NULL;
- 	const struct zl3073x_synth *synth;
- 	u32 new_div, synth_freq;
- 	struct zl3073x_out out;
- 	u64 n_period, rem;
- 	u8 out_id;
-+	int rc;
- 
--	guard(mutex)(&zldpll->lock);
-+	mutex_lock(&zldpll->lock);
- 
- 	out_id = zl3073x_output_pin_out_get(pin->id);
- 	out = *zl3073x_out_state_get(zldev, out_id);
-@@ -988,7 +1042,8 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 	/* Check signal format */
- 	if (!zl3073x_out_is_ndiv(&out)) {
- 		/* For non N-divided signal formats the frequency is computed
--		 * as division of synth frequency and output divisor.
-+		 * as division of synth frequency and output divisor, which
-+		 * is shared by both pins of the output pair.
- 		 */
- 		out.div = new_div;
- 
-@@ -1013,7 +1068,16 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 		}
- 
- 		/* Commit output configuration */
--		return zl3073x_out_state_set(zldev, out_id, &out);
-+		rc = zl3073x_out_state_set(zldev, out_id, &out);
-+		if (rc)
-+			goto unlock;
-+
-+		/* The other pin's frequency changed too - it has to be
-+		 * notified about the change.
-+		 */
-+		sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-+
-+		goto unlock;
- 	}
- 
- 	if (zl3073x_dpll_is_p_pin(pin)) {
-@@ -1039,19 +1103,22 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 		NL_SET_ERR_MSG_FMT(extack,
- 				   "OUT%uN freq must be at most half of OUT%uP freq",
- 				   out_id, out_id);
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 	if (n_period > U32_MAX) {
- 		NL_SET_ERR_MSG_FMT(extack,
- 				   "OUT%uN freq is too low for OUT%uP freq",
- 				   out_id, out_id);
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 	if (rem != 0) {
- 		NL_SET_ERR_MSG_FMT(extack,
- 				   "OUT%uN freq must divide OUT%uP freq",
- 				   out_id, out_id);
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto unlock;
- 	}
- 	out.esync_n_period = n_period;
- 
-@@ -1059,7 +1126,14 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
- 	out.esync_n_width = out.esync_n_period;
- 
- 	/* Commit output configuration */
--	return zl3073x_out_state_set(zldev, out_id, &out);
-+	rc = zl3073x_out_state_set(zldev, out_id, &out);
-+unlock:
-+	mutex_unlock(&zldpll->lock);
-+
-+	if (!rc && sibling)
-+		__dpll_pin_change_ntf(sibling->dpll_pin);
-+
-+	return rc;
- }
- 
- static int
-@@ -1098,10 +1172,12 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
- 	struct zl3073x_dpll *zldpll = dpll_priv;
- 	struct zl3073x_dev *zldev = zldpll->dev;
- 	struct zl3073x_dpll_pin *pin = pin_priv;
-+	struct zl3073x_dpll_pin *sibling = NULL;
- 	struct zl3073x_out out;
- 	u8 out_id;
-+	int rc;
- 
--	guard(mutex)(&zldpll->lock);
-+	mutex_lock(&zldpll->lock);
- 
- 	out_id = zl3073x_output_pin_out_get(pin->id);
- 	out = *zl3073x_out_state_get(zldev, out_id);
-@@ -1110,7 +1186,21 @@ zl3073x_dpll_output_pin_phase_adjust_set(const struct dpll_pin *dpll_pin,
- 	out.phase_comp = phase_adjust / pin->phase_gran;
- 
- 	/* Update output configuration from mailbox */
--	return zl3073x_out_state_set(zldev, out_id, &out);
-+	rc = zl3073x_out_state_set(zldev, out_id, &out);
-+	if (rc)
-+		goto unlock;
-+
-+	/* The phase compensation register is shared by both pins of the
-+	 * output pair, so the sibling pin's phase adjustment changes too.
-+	 */
-+	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
-+unlock:
-+	mutex_unlock(&zldpll->lock);
-+
-+	if (!rc && sibling)
-+		__dpll_pin_change_ntf(sibling->dpll_pin);
-+
-+	return rc;
- }
- 
- static int
-@@ -1734,6 +1824,13 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
- 	else
- 		ops = &zl3073x_dpll_output_pin_ops;
- 
-+	/* Add the pin to the list before registering it with the DPLL core so
-+	 * that it is findable as a sibling as soon as the core publishes it.
-+	 */
-+	mutex_lock(&zldpll->lock);
-+	list_add(&pin->list, &zldpll->pins);
-+	mutex_unlock(&zldpll->lock);
-+
- 	/* Register the pin */
- 	rc = dpll_pin_register(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
- 	if (rc)
-@@ -1745,6 +1842,9 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
- 	return 0;
- 
- err_register:
-+	mutex_lock(&zldpll->lock);
-+	list_del(&pin->list);
-+	mutex_unlock(&zldpll->lock);
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- err_pin_get:
- 	pin->dpll_pin = NULL;
-@@ -1779,6 +1879,13 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
- 	/* Unregister the pin */
- 	dpll_pin_unregister(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
- 
-+	/* Remove the pin from the list only after it has been unregistered so
-+	 * that a still-registered pin is always findable as a sibling.
-+	 */
-+	mutex_lock(&zldpll->lock);
-+	list_del(&pin->list);
-+	mutex_unlock(&zldpll->lock);
-+
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- 	pin->dpll_pin = NULL;
- 
-@@ -1798,9 +1905,11 @@ zl3073x_dpll_pins_unregister(struct zl3073x_dpll *zldpll)
- {
- 	struct zl3073x_dpll_pin *pin, *next;
- 
-+	/* Unregister each pin before removing it from the list so that a
-+	 * still-registered pin is always findable as a sibling.
-+	 */
- 	list_for_each_entry_safe(pin, next, &zldpll->pins, list) {
- 		zl3073x_dpll_pin_unregister(pin);
--		list_del(&pin->list);
- 		zl3073x_dpll_pin_free(pin);
- 	}
- }
-@@ -1913,16 +2022,24 @@ zl3073x_dpll_nco_pin_register(struct zl3073x_dpll *zldpll)
- 		goto err_pin_get;
- 	}
- 
-+	/* Add the pin to the list before registering it with the DPLL core so
-+	 * that a registered pin is always on the list.
-+	 */
-+	mutex_lock(&zldpll->lock);
-+	list_add(&pin->list, &zldpll->pins);
-+	mutex_unlock(&zldpll->lock);
-+
- 	rc = dpll_pin_register(zldpll->dpll_dev, pin->dpll_pin,
- 			       &zl3073x_dpll_nco_pin_ops, pin);
- 	if (rc)
- 		goto err_register;
- 
--	list_add(&pin->list, &zldpll->pins);
--
- 	return 0;
- 
- err_register:
-+	mutex_lock(&zldpll->lock);
-+	list_del(&pin->list);
-+	mutex_unlock(&zldpll->lock);
- 	dpll_pin_put(pin->dpll_pin, &pin->tracker);
- err_pin_get:
- 	pin->dpll_pin = NULL;
-@@ -1974,8 +2091,6 @@ zl3073x_dpll_pins_register(struct zl3073x_dpll *zldpll)
- 			zl3073x_dpll_pin_free(pin);
- 			goto error;
- 		}
--
--		list_add(&pin->list, &zldpll->pins);
- 	}
- 
- 	/* Register NCO virtual input pin */
+net: bridge: don't under-estimate the VLAN tunnel info size
+
+br_get_vlan_tunnel_info_size() used to count the compressed ranges of VLANs
+that currently have a tunnel mapping. This patch makes it reserve one
+IFLA_BRIDGE_VLAN_TUNNEL_INFO attribute for every usable VLAN in the group.
+The goal is to stop br_info_notify() from hitting
+WARN_ON(err == -EMSGSIZE) when mappings change between br_nlmsg_size() and
+br_fill_ifinfo() on the STP timer path, which runs without RTNL.
+
+> Size the tunnel info for the maximum number of attributes that
+> br_fill_vlan_tunnel_info() can emit for the VLAN group instead of for the
+> mappings that are currently installed.  Consecutive VIDs with consecutive
+> tunnel IDs are compressed into two attributes, so the fill never emits more
+> attributes than there are usable VLANs, which keeps br_nlmsg_size() an upper
+> bound of what the fill needs.
+
+[Severity: High]
+Does br_nlmsg_size() really become an upper bound with this change? The
+IFLA_BRIDGE_VLAN_INFO part of the same message is still sized from a
+snapshot.
+
+br_get_link_af_size_filtered() gets that size from __get_num_vlan_infos().
+That function counts compressed ranges using the current PVID, the
+BRIDGE_VLAN_INFO_UNTAGGED flag of each VLAN and the current VLAN set:
+
+net/bridge/br_netlink.c:br_get_link_af_size_filtered() {
+    ...
+	num_vlan_infos = br_get_num_vlan_infos(vg, filter_mask);
+    ...
+	vinfo_sz += num_vlan_infos * nla_total_size(sizeof(struct bridge_vlan_info));
+    ...
+}
+
+br_fill_ifvlaninfo_compressed() later works out the ranges again from live
+state. br_ifinfo_notify() always passes RTEXT_FILTER_BRVLAN_COMPRESSED,
+including on the br_forward_delay_timer_expired() path in the trace.
+
+Suppose an RTM_SETLINK under RTNL does one of the following while the timer
+is between sizing and filling:
+
+- toggles UNTAGGED on a VLAN in the middle of a range (one 2-attribute
+  range becomes 2+1+2)
+- changes the PVID
+- adds non-adjacent VLANs through __vlan_add()->__vlan_add_list()
+
+Can't br_fill_ifvlaninfo_compressed() still return -EMSGSIZE and hit the
+same WARN_ON in br_info_notify()? This applies to tunnel and non-tunnel
+ports alike.
+
+About 30 extra 8-byte attributes are enough to go past the kmalloc slack.
+A single setlink with many IFLA_BRIDGE_VLAN_INFO entries can produce that
+many.
+
+The patch only makes the tunnel half of br_get_link_af_size_filtered()
+pessimistic. The two halves now follow different sizing rules.
+
+> diff --git a/net/bridge/br_netlink_tunnel.c b/net/bridge/br_netlink_tunnel.c
+> index e7eceab5b515d..74627323711c1 100644
+> --- a/net/bridge/br_netlink_tunnel.c
+> +++ b/net/bridge/br_netlink_tunnel.c
+> @@ -35,39 +35,25 @@ bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
+>  	return (be32_to_cpu(tunid_curr) - be32_to_cpu(tunid_last)) == 1;
+>  }
+>  
+> -static int __get_num_vlan_tunnel_infos(struct net_bridge_vlan_group *vg)
+> +/* Upper bound of the number of IFLA_BRIDGE_VLAN_TUNNEL_INFO attributes that
+> + * br_fill_vlan_tunnel_info() can emit for @vg.
+> + *
+> + * br_info_notify() is also called without RTNL (e.g. from the STP timers), so
+> + * the set of VLANs that have a tunnel mapping can change between the size
+> + * calculation done by br_nlmsg_size() and the actual fill.  Account for the
+> + * maximum instead of the currently used mappings: consecutive VIDs with
+> + * consecutive tunnel IDs are compressed into two attributes, so the fill never
+> + * emits more attributes than there are usable VLANs in the group.
+> + */
+> +static int __get_max_num_vlan_tunnel_infos(struct net_bridge_vlan_group *vg)
+>  {
+> -	struct net_bridge_vlan *v, *vtbegin = NULL, *vtend = NULL;
+> +	struct net_bridge_vlan *v;
+>  	int num_tinfos = 0;
+>  
+> -	/* Count number of vlan infos */
+>  	list_for_each_entry_rcu(v, &vg->vlan_list, vlist) {
+>  		/* only a context, bridge vlan not activated */
+> -		if (!br_vlan_should_use(v) || !v->tinfo.tunnel_id)
+> -			continue;
+
+[ ... ]
+
+> +		if (br_vlan_should_use(v))
+> +			num_tinfos++;
+>  	}
+
+[Severity: High]
+Isn't this still only a bound on vlan_list as it looks at sizing time?
+
+When called from br_forward_delay_timer_expired(), br_info_notify() holds
+only br->lock and RCU. br_fill_ifinfo()->br_fill_vlan_tunnel_info() then
+walks the list again and checks BR_VLAN_TUNNEL_BIT again on its own:
+
+net/bridge/br_netlink.c:br_info_notify() {
+    ...
+	skb = nlmsg_new(br_nlmsg_size(dev, filter), GFP_ATOMIC);
+    ...
+	err = br_fill_ifinfo(skb, port, 0, 0, event, 0, filter, dev, false);
+	if (err < 0) {
+		/* -EMSGSIZE implies BUG in br_nlmsg_size() */
+		WARN_ON(err == -EMSGSIZE);
+    ...
+}
+
+The RTNL writers don't take br->lock, so two inputs can still change
+between those steps.
+
+First, VLANs can be added. __vlan_add()->__vlan_add_list() publishes them
+with list_add_rcu() under RTNL only. One RTM_SETLINK can carry
+IFLA_BRIDGE_VLAN_INFO followed by IFLA_BRIDGE_VLAN_TUNNEL_INFO for the new
+VIDs, and br_afspec() handles both. A VLAN that wasn't on the list when
+this loop ran isn't counted, but br_fill_vlan_tunnel_info() will emit it.
+
+Second, the flag can change. br_setport() sets BR_VLAN_TUNNEL with a
+lockless try_cmpxchg(), and br_setlink() then calls br_afspec() to install
+mappings. If sizing saw the bit clear, nothing is reserved:
+
+net/bridge/br_netlink.c:br_get_link_af_size_filtered() {
+    ...
+	if (p && test_bit(BR_VLAN_TUNNEL_BIT, &p->flags))
+		vinfo_sz += br_get_vlan_tunnel_info_size(vg);
+    ...
+}
+
+The fill can then see the bit set and emit one 28-byte attribute per
+mapped VLAN:
+
+net/bridge/br_netlink.c:br_fill_ifinfo() {
+    ...
+		if (port && test_bit(BR_VLAN_TUNNEL_BIT, &port->flags))
+			err = br_fill_vlan_tunnel_info(skb, vg);
+    ...
+}
+
+In either case, wouldn't br_fill_vlan_tinfo() return -EMSGSIZE and hit the
+WARN_ON quoted in the commit message? Nine or more tunnel attributes that
+can't be merged would exceed the usual kmalloc slack. This needs
+CAP_NET_ADMIN in a network namespace, which includes unprivileged user
+namespaces.
+
+The "upper bound" in the new comment only holds while the VLAN list and
+the flag stay the same, and nothing guarantees that without RTNL.
+
+Could the size and the fill be computed from one consistent view, or use a
+bound that doesn't depend on current membership? Another option is for the
+non-RTNL callers to stop treating -EMSGSIZE as a bug, for example by
+retrying with a larger skb.
+
+[ ... ]
+
+> @@ -81,7 +67,7 @@ int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg)
+>  		return 0;
+>  
+>  	rcu_read_lock();
+> -	num_tinfos = __get_num_vlan_tunnel_infos(vg);
+> +	num_tinfos = __get_max_num_vlan_tunnel_infos(vg);
+>  	rcu_read_unlock();
+>  
+>  	return num_tinfos * __get_vlan_tinfo_size();
+
+[Severity: Medium]
+On a vlan_tunnel port, this now reserves __get_vlan_tinfo_size() (28
+bytes) for every usable VLAN, whether it is mapped or not. Two examples:
+
+- VLANs 1000-1999 mapped to consecutive VNIs go from 56 bytes to about
+  28KB.
+- A port with 4094 VLANs and few mappings now reserves about 114KB.
+
+Is this cost intended on the br_info_notify() path itself? That path calls
+nlmsg_new(br_nlmsg_size(), GFP_ATOMIC) from STP timer softirq context, so
+these sizes become order-3 to order-5 atomic page allocations. When one
+fails, the notification is dropped and rtnl_set_sk_err() reports ENOBUFS.
+
+The inflated size also reaches messages outside the bridge code.
+br_get_link_af_size_filtered() adds it regardless of filter_mask. It is
+registered as get_link_af_size in br_af_ops, which has no fill_link_af:
+
+static struct rtnl_af_ops br_af_ops __read_mostly = {
+	.family			= AF_BRIDGE,
+	.get_link_af_size	= br_get_link_af_size_filtered,
+};
+
+That has two effects:
+
+- if_nlmsg_size()->rtnl_link_get_af_size() reserves the space for every
+  generic rtmsg_ifinfo() or RTM_GETLINK message for the port, and nothing
+  ever fills it.
+- rtnl_calcit() takes the max of if_nlmsg_size() over every netdev in the
+  netns as min_dump_alloc for RTM_GETLINK dumps that carry IFLA_EXT_MASK.
+  One such port inflates those dumps for the whole namespace.
+
+The commit message doesn't mention this cost. As noted above, the
+over-reservation still doesn't guarantee the bound.
+
 -- 
-2.56.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007055939.63100-1-yimingqian591%40gmail.com
