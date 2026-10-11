@@ -1,73 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210DA3B0587;
-	Sun, 11 Oct 2026 13:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168732D46A1;
+	Sun, 11 Oct 2026 13:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791724374; cv=none; b=Q18YPjHwG7gzyECzUoIYUmJPksvlztSSoc7YyIU2/p27rRK65E9aq+4sGamIQ3aioKWKnt+k5XuikktikEzhY+21DPROVBTCYmyDs0uaY5oMU+k9DKzNrdikyTMGROjzAVtPq2lN+1hWRbyCKeLdy3Athn/HesrUPWZWVavFy5I=
+	t=1791724941; cv=none; b=dig6t8xTpLO0rpt9Zorx8qYPv7gF7hN+V2r54TZOoSWDcA/GJsH2EISgzpVnzXypWeN2Y34nI+Rz8q0AJGTiAC4mlo9pl61bB8H8ZRUzQJYRM9NLvDI/L5hIfWOj0GDhUaI3U56OSY7fe/BOjKRZTW9rvb9SyLAuLD8IEJ3zPMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791724374; c=relaxed/simple;
-	bh=+rhbf1TUuMeAIAiZ3OqBQvQEbKTOw8e31SX4gTUCD14=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZVc6gofM6gnx5u4/5ivHEEJ9keKyvtySyJeAAfcSMyXKdL1sDgTYi81sAQ1XBb+gqjIvHutcDhPFyaVtdgP02N3n6Gu5elGVSqYqFl+WecZg3bPsk5J8iQkUO6GThhWtOnttubAO5nEZ0St9nbyixDU73a6MmVfyPD2nLnbe9ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hNDOMgB+; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791724941; c=relaxed/simple;
+	bh=xGyw+p++J/1JMNTZrdwyX2SWIyBvgqXVssblKq88W4I=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=DSyzT6lGrEAzxwBQq1gHo8Q0rnDVNWLZ50VQ0myTPZBfmtI2rnZ8DTVD++A0AwY/0fdb1tu7klK/bNexu9BdTD+PcmT883H1UycK5/4KVmSINSYR50n8nFu/RFuhUruf1O5186ZwoCNdSbCkRRn5YXxWZIzVNV20p0jADakQQ+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=0nKwhdZP; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hNDOMgB+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827C41F0089B;
-	Sun, 11 Oct 2026 13:12:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791724371;
-	bh=xguvO7Z0rKWV6cXidAMAFxVoApZEw+GahybnuKsVk3A=;
-	h=From:To:Cc:Subject:Date;
-	b=hNDOMgB+fS0BQfzcrRKQha1hr0RdNXuoKaX3n1NuVpYio9PBOaob4ZfgzcjIcOAv8
-	 WmpqVNn0Qo2CwZgKQzz5wz6Y6BC/Ck1gON2Pmxqi20QaG0T/OBa2vlPMzc4ZtX0eNS
-	 V8qdEqJ6o/EU3Pgq/dt/p69dZN1SkKU36yn8V5f0htpM3sxcFFsgQ49XYCBAShLYxH
-	 HgZqjVeVPN4RqHokaHcAOQwdmoigU/wENvYSZ5dXDzP9aiR+umwtxsuDX6ZEE8cmJb
-	 xy6DYwnsCBWcmDbnMGaykI+Zu1q9L1ReOVMBKnz4++w7KLnvh4uojVmh3h0hFoJLhG
-	 qSc39T/c7Bqzw==
-From: Thorsten Blum <blum@kernel.org>
-To: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Thorsten Blum <blum@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: dsa: realtek: Remove unused buffer from struct realtek_priv
-Date: Sun, 11 Oct 2026 15:12:10 +0200
-Message-ID: <20261011131208.272131-3-blum@kernel.org>
-X-Mailer: git-send-email 2.56.0
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="0nKwhdZP"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 58F69A1554;
+	Sun, 11 Oct 2026 15:22:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791724928; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=e5lNDVF0t/BQUG+yFHmQg6qoXpqlEkUU8002OK6qkY0=;
+	b=0nKwhdZP/MG1qcfOS421FUHepThtxVHGHj+AJtmxqPnc1udsSBoMtWBWnFq2EyiRWJtkb9
+	QWA3tDEATb2l2j9dfaQtLxtdCLWpO7GeY8jgY9D3YCgYfYM9DNDK69sXR8tL8Bx2jDW2+U
+	XYPa2NVYPSWlspPY77C8uFDUiQCbICiZzk0PsNQYkvsopooYTpiLxR6cNULaLBa2mCZocP
+	VeaIs92PDqFVNatsoPG9LlD34PA6cmXQioJCOakLZ/hHsA7loTg/RbitzZVE+jLSTW30Fq
+	ITplGMdX9++tPxg14p/td53jyPT1TioiBM9vFWrYqR1mw6G5DAWUqFlZf5D6yA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=559; i=blum@kernel.org; h=from:subject; bh=+rhbf1TUuMeAIAiZ3OqBQvQEbKTOw8e31SX4gTUCD14=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDFmnuzWmSu99aH3J/teP9T+X8PrLL65n8cjd5LykcZ1/i /x1r4NfOkpZGMS4GGTFFFkezPoxw7e0pnKTScROmDmsTCBDGLg4BWAiZh8YGW4aiIb/cKo7XX+p I+0/Y3vRlHcyU8z0GAR6Dnx3KF1zRp3hvz/zTMvaOP9ZzjPcwxf9CPq0fjf3UYmCGP9lX849/jx PkgMA
-X-Developer-Key: i=blum@kernel.org; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Date: Sun, 11 Oct 2026 15:22:04 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: James Clark <jjc@jclark.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Richard Cochran <richardcochran@gmail.com>, Doug
+ Berger <opendmb@gmail.com>, =?UTF-8?Q?Th=C3=A9o_Lebrun?=
+ <theo.lebrun@bootlin.com>, Russell King <linux@armlinux.org.uk>, Conor
+ Dooley <conor.dooley@microchip.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>,
+ Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 5/5] net: mdio: bcm-unimac: implement timestamped
+ MDIO writes
+In-Reply-To: <CANz3_EYfcBopo=HgRioXkhoT6P+4WWpfFT7UeWkXd5eM_RNpSA@mail.gmail.com>
+References: <20261009143506.2507607-1-jjc@jclark.com>
+ <20261009143506.2507607-6-jjc@jclark.com>
+ <3b1a2994-5251-4800-8c61-b63d7a435b21@broadcom.com>
+ <60accbd89cfaf0d4be1da5ec2fafd975@tipi-net.de>
+ <CANz3_EYfcBopo=HgRioXkhoT6P+4WWpfFT7UeWkXd5eM_RNpSA@mail.gmail.com>
+Message-ID: <41c32f5a6f38ec9df8a79ce896912fb9@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The buffer has never been used. Remove it.
+Hi James
 
-Signed-off-by: Thorsten Blum <blum@kernel.org>
----
- drivers/net/dsa/realtek/realtek.h | 1 -
- 1 file changed, 1 deletion(-)
+On 11.10.2026 09:20, James Clark wrote:
+> On Sat, Oct 10, 2026 at 10:18 PM Nicolai Buchwitz <nb@tipi-net.de> 
+> wrote:
+>> I dug a bit deeper on a CM4: AFAIU the MDC runs off the GISB clock,
+>> which the firmware sets to 200 MHz (CPRMAN 0x1d8, PLLD_PER 750 MHz /
+>> 3.75). Bumping that divider to 4.0 at runtime moves the MDIO busy time
+>> by exactly the same ratio, so that's the one. The 250 MHz you have in
+>> mind is genet250 / genet125, the RGMII side, a different generator.
+>> 
+>> So instead of a fixed clock or a compatible match this could just be
+>> BCM2711_CLOCK_GISB in clk-bcm2835 (critical, firmware owns it) and
+>> clocks = <&clocks BCM2711_CLOCK_GISB> on the mdio node. I can send 
+>> that
+>> if it helps.
 
-diff --git a/drivers/net/dsa/realtek/realtek.h b/drivers/net/dsa/realtek/realtek.h
-index 6e0148cee8d8..ca3a71876599 100644
---- a/drivers/net/dsa/realtek/realtek.h
-+++ b/drivers/net/dsa/realtek/realtek.h
-@@ -97,7 +97,6 @@ struct realtek_priv {
- 	int			vlan_enabled;
- 	int			vlan4k_enabled;
- 
--	char			buf[4096];
- 	void			*chip_data; /* Per-chip extra variant data */
- };
- 
+I've put together 3 patches, which do the clock plumbing:
+https://github.com/nbuchwitz/linux/commits/devel/bcm2711-gisb-clk/
+
+If we agree that this approach makes sense and Florian has verified that
+my experimental findings match the actual implementation (+ naming), I
+can send to the clk / stblinux people.
+
+> Thank you very much for looking into this. I think this would solve
+> the problem from my end.
+> 
+> Let me just confirm how I would need to adapt my patch with that fix:
+> in the pdata branch of the probe, I would call devm_clk_get_optional
+> to find the clock on the mdio node, falling back to pdata->clk. I
+> would still add the chip-specific compatible string because the number
+> of MDC periods has only been measured on that specific hardware.
+
+In the unimac patch you would only need clk_get_rate() and can gate
+write_sts() on it. Not sure about pdata->clk though: bcmgenet passes
+its "enet" MAC clock there, which isn't necessarily the MDC reference.
+If write_sts() only trusts a clock on the mdio node itself, you don't
+need the compatible either.
+
+Cheers
+Nicolai
