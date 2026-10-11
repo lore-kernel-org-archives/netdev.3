@@ -1,206 +1,131 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57883D47C2
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 06:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B143D9DB9;
+	Sun, 11 Oct 2026 06:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791698608; cv=none; b=RRWzTctaVRL6kvpJUhwN7TB8CRc9pPYANVuWNjaXfi2bX1/CiARgzS0ot5NOnrYg5AtOEk3/BhYeerjS0Y6uN7fotKIHfWTti2oet/z9KmF2f4H/LTOSAYtfYm7iJtzyS7T2J2nFbuFebPdVyS2f5/HU1IRmTDala4838QlDPXY=
+	t=1791698612; cv=none; b=iv0gZAWVzGuJcj22dI839vLY+5LQ2rEZFKKdT8NGStsWbfNy6Su73t1U5xrlb9EcnFq0w9kWfliYMHR6ROzIHBAB5zfpHQ3Fk7cKEoda09Kj6xrZLq2VNgtiHpWz0cFotXqqO8brwsF0wd8+TWgJMKPEwoUYqO9qo5iQM8gCbZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791698608; c=relaxed/simple;
-	bh=nQpvMCGgkyt9MSyqRY39sw1GnvJ/gaZQbXT41fvRwsw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=di3FuLHVcvIGWmpPJRN66aWwpiiX6o62emSy99mBEM31pwfaEyhQAErbGFQRYpuszFPsC1PesK2ai8lo0wnA/6BQrAWp9iT2ErNrXlgAYUVduMnvX+UabYo4y5qw4ppCw2ua9ZrYPs3me4OqUgl40GZ8Cne+X5E/X3KkGsnAJjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gfWLgMSA; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gfWLgMSA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791698604;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k1jVgua0NnXL0iJG6bxgz1clkCHyQrP2VfEQZ2SSg/I=;
-	b=gfWLgMSAUK+Zw3kL5jDb35XRxH6dwMWP3kDDu3MP+61oaHOH7zgKcl3HKBjspj14TxPvlB
-	oY8O6PAgn8unz8kWSGOo5XsnZBwXwr8V109aUYyEXglGfTWfwt10uH9egGOS3uO0Cx6gRS
-	8epZmP9SyIhvKfx5GMwzgGsKd9TrQjw=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-106-UiaRzfvqPSKaEQ0Evd5Nlg-1; Sun,
- 11 Oct 2026 06:03:20 +0000
-X-MC-Unique: UiaRzfvqPSKaEQ0Evd5Nlg-1
-X-Mimecast-MFC-AGG-ID: UiaRzfvqPSKaEQ0Evd5Nlg_1791698598
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 48852182F550;
-	Sun, 11 Oct 2026 06:03:18 +0000 (UTC)
-Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 33ECA472;
-	Sun, 11 Oct 2026 06:03:15 +0000 (UTC)
-Message-ID: <975fef61-6f4c-4e39-a800-ea1df868520e@redhat.com>
-Date: Sun, 11 Oct 2026 08:03:14 +0200
+	s=arc-20240116; t=1791698612; c=relaxed/simple;
+	bh=bJmutYSfU12J9m42/ZAR2XzxhB6aUUDLS/p13FCHDDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sgT9NjZsNJ7DHKn0NM2O/IKDAbhYvhp2GRprjmn/j9OAY+U86kFJqacB0irfiyRX/2KyxlM3d6twpzOJxWX64liwW/8rErlbhafurEm6LIpfADxglbiq83S0cTR8T11P1JmYB/QXZg944daODLH5PQLfmdLcGu/knGMJFk165Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id D45D01A00B4;
+	Sun, 11 Oct 2026 08:03:27 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B25C61A0031;
+	Sun, 11 Oct 2026 08:03:27 +0200 (CEST)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 29BEC20301;
+	Sun, 11 Oct 2026 08:03:27 +0200 (CEST)
+Date: Sun, 11 Oct 2026 08:03:27 +0200
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ionut Vicovan <ionut.vicovan@nxp.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 04/12] net: pcs: add NXP SerDes XPCS shared core
+Message-ID: <assmr2PH8064/pJn@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com>
+ <07c5ed86-755a-4094-b45a-6316d10f4515@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 2/5] dpll: zl3073x: reject output frequencies with
- too small divisor
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, poros@redhat.com, min.li@microchip.com,
- vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
- kuba@kernel.org, Prathosh.Satish@microchip.com, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-References: <20261009192556.272263-3-ivecera@redhat.com>
- <179166042155.434549.16991158418874345163@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <179166042155.434549.16991158418874345163@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <07c5ed86-755a-4094-b45a-6316d10f4515@lunn.ch>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On 10/10/26 21:27, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
+On Sun, Sep 20, 2026 at 08:39:26PM +0200, Andrew Lunn wrote:
+> On Sat, Sep 19, 2026 at 08:54:32AM +0200, Jan Petrous via B4 Relay wrote:
+> > From: Clark Wang <xiaoning.wang@nxp.com>
+> > 
+> > The SerDes subsystems found on NXP S32G and i.MX SoCs integrate a
+> > Synopsys DesignWare Ethernet XPCS and an Ethernet PHY (PMA) with an
+> > identical register layout. Only the register transport differs: indirect
+> > memory mapped access on S32G, Clause 45 MDIO on i.MX.
+> > 
+> > Add a transport agnostic phylink PCS core which operates on regmaps
+> > provided by the platform glue.
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> What is not transport agnostic with the current code.
 > 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
+> Think carefully about that, before you answer.
 > 
-> - [Medium] Kept only because requires_validation=true.
-> - [Low] The commit message does not say that the new `!freq` check fixes
->    a division by zero that firmware can trigger at probe time.
-> 
-> --
-> 
-> dpll: zl3073x: reject output frequencies with too small divisor
-> 
-> This patch makes zl3073x_pin_check_freq() reject output frequencies from
-> firmware when the resulting divisor is below 2. For the N-pin of an
-> N-divided output the minimum is 4. The patch also rejects 0 Hz for both
-> input and output pins.
-> 
->> diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
->> index 18a1bf3103326..4e006ed5950ad 100644
->> --- a/drivers/dpll/zl3073x/prop.c
->> +++ b/drivers/dpll/zl3073x/prop.c
-> 
-> [ ... ]
-> 
->> @@ -30,7 +31,7 @@ static bool
->>   zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
->>   		       u8 id, u64 freq)
->>   {
->> -	if (freq > U32_MAX)
->> +	if (!freq || freq > U32_MAX)
->>   		goto err_inv_freq;
-> 
-> [Severity: Low]
-> Should the commit message say that this check also fixes a divide error at
-> probe time?
-> 
-> Before this patch, the output path did:
-> 
-> 	if (synth_freq % (u32)freq)
-> 
-> zl3073x_pin_props_get() only skips a supported-frequencies-hz entry when it
-> equals curr_freq:
-> 
-> 	if (freqs[i] == curr_freq)
-> 		continue;
-> 	if (zl3073x_pin_check_freq(zldev, dir, index, freqs[i])) {
-> 
-> The dpll-pin.yaml binding doesn't set a minimum value. So an output pin
-> entry of 0 in firmware would reach the modulo and oops during probe.
-> 
-> The same check also changes how input pins behave. Before,
-> zl3073x_ref_freq_factorize(0, ...) succeeded, because 0 / 1 <= U16_MAX and
-> 0 % 1 == 0. That meant 0 Hz was advertised as a supported input frequency.
-> With this patch it is dropped.
-> 
-> The commit message only says "reject 0 Hz". Could it also describe the
-> crash fix and the change for input pins?
 
-I will move the 0Hz check to the first patch and update commit message
-accordingly.>
->> @@ -41,18 +42,38 @@ zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
-> 
-> [ ... ]
-> 
->>   		/* Check the frequency divides synth frequency */
->> -		if (synth_freq % (u32)freq)
->> +		div = div_u64_rem(synth_freq, freq, &rem);
->> +		if (rem)
->> +			goto err_inv_freq;
->> +
->> +		/* The driver requires an output divisor of at least 2 -
->> +		 * below that the hardware bypasses the divider and ignores
->> +		 * the pulse width and eSync registers the driver programs.
->> +		 * For the N-pin of an N-divided output the effective divisor
->> +		 * also includes the N divider (>= 2), so the minimum is 4.
->> +		 * For N-divided outputs this is only a necessary condition -
->> +		 * whether the frequency can be set also depends on the output
->> +		 * divisor shared by both pins, which is checked when the
->> +		 * frequency is set.
->> +		 */
-> 
-> [Severity: Medium]
-> Is the "checked when the frequency is set" part true at this commit? The
-> commit message makes the same claim:
-> 
->    "For N-divided outputs this is necessary but not sufficient, the rest
->     is checked by the frequency set callback."
-> 
-> In zl3073x_dpll_output_pin_frequency_set() in drivers/dpll/zl3073x/dpll.c,
-> both N-divided branches only reject an N period of zero:
-> 
-> 	if (zl3073x_dpll_is_p_pin(pin)) {
-> 		...
-> 		out.esync_n_period = (out.esync_n_period * out.div) / new_div;
-> 		if (!out.esync_n_period)
-> 			return -EINVAL;
-> 		...
-> 	} else {
-> 		...
-> 		out.esync_n_period = div64_u64(synth_freq, frequency * out.div);
-> 		if (!out.esync_n_period)
-> 			return -EINVAL;
-> 	}
-> 
-> Neither branch requires an N divider of at least 2, and neither checks for
-> a remainder.
-> 
-> For example, take a 1 GHz synth with out.div == 4:
-> 
-> - Requesting 250 MHz on the N-pin passes zl3073x_pin_check_freq(), since
->    div 4 >= min_div 4. The setter then programs an N divider of 1.
-> - Requesting 100 MHz on the N-pin gives esync_n_period == 2, so the pin
->    runs at 125 MHz instead of 100 MHz.
-> 
-> Neither request returns an error.
-> 
-> A later patch in this series, "dpll: zl3073x: reject inexact frequencies
-> for N-divided outputs", appears to add these checks. It uses
-> div64_u64_rem() and rejects n_period < 2, n_period > U32_MAX and a non-zero
-> remainder.
-> 
-> Could the series be reordered so the setter checks land first?
-> Alternatively, could the comment and commit message here be changed to
-> match what the code does at this point?
-Yes, will reorder.
+Ok, got it, pcs-xpcs only reaches the hardware through mdiodev_c45_*(), so
+whatever sits behind the mii_bus is the transport. pcs-xpcs-plat already
+puts the DW indirect MMIO viewport behind one, sja1105 and txgbe put
+their own register access behind one, and on i.MX the XPCS is on plain
+Clause 45 MDIO in the first place. The claim in the commit message was
+wrong, and with it the justification for a second core.
+
+For the next version I will drop this patch and move S32G onto
+pcs-xpcs. The SerDes PHY driver registers a mii_bus per XPCS instance
+over the existing indirect accessor and creates the PCS with
+xpcs_create_pcs_mdiodev(). The S32G PMA sequence becomes a
+dw_xpcs_compat .pma_config keyed on an S32G PMA ID, the same way the
+SJA1110 and TXGBE ones are.
+
+That leaves two things S32G needs from pcs-xpcs, neither of which is
+about the transport:
+
+ - skipping the generic soft reset. The vendor reset
+   (VR_MII_DIG_CTRL1.VR_RST) is part of an ordered bring-up of both
+   XPCS instances, which the SerDes PHY driver owns because the PMA is
+   shared with the PCIe lane. The PMA ID check that already clears
+   need_reset for TXGBE and FBNIC would cover it.
+
+ - no EEE. S32G3 does not implement VR_MII_EEE_MCTRL0/1, so
+   pcs_enable_eee/pcs_disable_eee must not touch them.
+
+Both will be separate small patches against pcs-xpcs so they can be
+judged on their own.
 
 Thanks,
-Ivan
-
+Jan
