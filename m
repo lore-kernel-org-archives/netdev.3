@@ -1,43 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9518536B90D;
-	Sun, 11 Oct 2026 22:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7830B45FFD3;
+	Sun, 11 Oct 2026 22:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791756155; cv=none; b=oExlwxnqY7Z21o5F1ijz3/WK3Q3R00w11PUeyU2oYTc9LbXl9aq5CvyEkccZo7VbEmjilRUdKDkVrEFFtHgakaYcaS06ncDkkwV9AnRtDjTc9Qq07mvHtwZ9J0g5BIDZv7n00jOvew2dnJ0acQ2l4VZQ4zv9LQSeiS4dZgUJBzU=
+	t=1791756157; cv=none; b=WE82+DoRyCWPZUJ1PZB9BPtCvfvR9odxGvVlh9RegGLD52zF/Xs5bPoxJ2orSF5Bo+DjCsac68HmVsjuIcQhdbHl4A8hVSjZ6HWBeVJYeU3d96rplSeaeAH16txuWLbjN5ACXb636HKnvKgb0b5Z1ZIQzVWvr4HeEsqsKHh/kRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791756155; c=relaxed/simple;
-	bh=IOQ6Kn361gzXZN/eP3CuzAftBE8aA1w+SPfEslOnw+I=;
+	s=arc-20240116; t=1791756157; c=relaxed/simple;
+	bh=nr/9dyWwQ8/7rDus24i2sml5MK/WWaozn8G6uswlxGc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gFrr0/FF/RZktS3NVGQGFpPyTjIFfmZcBQqQI5LTgX2dhKeipGEbbhY17QouAOJQ7DwxiR8GXOnDSFCheytjNNGnRAJgQ0F0DB0HFWkLOAocDYPzUB60O0hl6bUnmhzALPLNhZwpYoOlRnQaOVK7q+bHimwystYacFkqI9BbG1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJA+fGFY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=bC3hqA0cvPlmnDhllMey+TV/0/+LCdeOqOa2S4y4qNPtZ/cncTWoOcn2U7mSlq0xX7kVDlC9yxZYxPwbZmxb1VOIWiW+jHBY1rS8OignW5Zz/hFTp2WN/UQMDl5CuuouVZ5Ssg7VfCPVGarwFuTYxdZWVIl0IHTlR2q1xTaQoUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EGk0D/A2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJA+fGFY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C15F1F0089B;
-	Sun, 11 Oct 2026 22:02:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EGk0D/A2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9541F0089C;
+	Sun, 11 Oct 2026 22:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791756154;
-	bh=tKnWZFpBWK3QVqTzr3bEg1UobV+MSNnPRYy46L24/j0=;
+	s=k20260515; t=1791756156;
+	bh=iVwZC1zpaojyreCpC1U9ymCY1AzhHbrEKn75qtJ80T4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RJA+fGFY8N1J5xlRnoi+mvngNP5hv/KoJxGX4RtmWwAzQkJ1v2Px4VXy8sc8XKkeX
-	 WLSn6Oa+r15kMWLvYu2/94b73uEglYyMwMj8ij3SjgnPReu+QviBy8T23Pzh2CKzcx
-	 Kn0XfLfJMfoBtUC2fFeIJknKK7Nom1yn9m4Ugj9MKFUoNmbL/FJOThAJdLO4N8Jpwr
-	 3eIzkpWpOQ/dQMR/HWpByffTCVU0YwtihofGxWhN3rxXBAmaGs0H4WFE/dliIIwkNH
-	 QGlMzUZOv4VzBiLArQ0AX6eDk44rRf3qzN6mX89EawE4IoZAoRteO7st0Sj6a2FjJx
-	 O9Lvm7Mhn2dVA==
+	b=EGk0D/A2N5BvsTUXUCE+9ktn0CUc9Tw/PwOfsvHiu76L2/u0Etv82rrCMM3/gRy10
+	 GesSkjo4v1GcrGMVa4L7+Ri2fnuwPlqWuf1e9tQwCTLKyejggpedlnjrA31B1qYd2k
+	 uhR8N876g67gavywKUli8/EsRoOuSejg0SG3tfi5ACEbq78m7X5TMOI/Oz/j0Y9I0p
+	 foaUU7d74RkUTGiMvQpT2PkEmj7uuJLTq1SroaDQKx3SkjTd0VLaXNcaH/mkDp0Fui
+	 3RAQdSYVbVprNkWzGvci0uMZ412ZMhKGUHOpPAyz3bJd8QJpUgE91ukNqBQzM4Q8oW
+	 6ty0giaNt/Vag==
 Subject:
- Re: [PATCH net v3] usbnet: fix EVENT_RX_PAUSED race in usbnet_skb_return()
+ Re: [PATCH net] ipv4: validate checksum_start before completing checksum
 From: netdev-bot+sashiko@kernel.org
-To: omermetekaya0@gmail.com
-Cc: netdev@vger.kernel.org, oneukum@suse.com, andrew+netdev@lunn.ch,
+To: mst@redhat.com
+Cc: linux-kernel@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 22:02:33 +0000
-Message-ID: <179175615306.434549.2652185067157444525@kernel.org>
-In-Reply-To: <20261007220311.113827-1-omermetekaya0@gmail.com>
-References: <20261007220311.113827-1-omermetekaya0@gmail.com>
-X-sashiko-severity: Medium
+ horms@kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
+ razor@blackwall.org, steffen.klassert@secunet.com,
+ herbert@gondor.apana.org.au, willemdebruijn.kernel@gmail.com,
+ netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, bridge@lists.linux.dev
+Date: Sun, 11 Oct 2026 22:02:34 +0000
+Message-ID: <179175615475.434549.9706462488069659983@kernel.org>
+In-Reply-To:
+ <0a012b4923e189c4c593ef4f471e5ff0edbe9030.1791412497.git.mst@redhat.com>
+References:
+ <0a012b4923e189c4c593ef4f471e5ff0edbe9030.1791412497.git.mst@redhat.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,10 +53,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+Critical: 0 · High: 2 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,167 +64,323 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch takes dev->rxq_pause.lock with hardirqs enabled in
-  two places.
-
-Pre-existing issues:
-- [High] usbnet_resume_rx() always queues dev->bh_work, and
-  usbnet_change_mtu() reaches it even when the interface is down.
+- [High] The patch checks only IPv4, including inside shared code it
+  edits, and leaves IPv6 open to the same untrusted csum_start.
+- [High] The patch does not guard the most commonly reached checksum
+  completion on egress.
+- [Medium] IP-TFS SAs skip the new xfrm check entirely.
+- [Medium] The NFQUEUE check in nf_queue_checksum_help() keys on the
+  outer skb->protocol (`entskb->protocol == htons(ETH_P_IP)`), so PPPoE-…
+- [Low] ip_check_csum_start() takes its lower bound from the untrusted
+  iph->ihl field (`skb->network_header + ip_hdrlen(skb)`, with…
 
 --
 
-usbnet: fix EVENT_RX_PAUSED race in usbnet_skb_return()
+ipv4: validate checksum_start before completing checksum
 
-This patch closes a race where usbnet_skb_return() could queue an skb on
-rxq_pause after usbnet_resume_rx() had already cleared EVENT_RX_PAUSED
-and drained the queue. On the slow path it now rechecks the flag under
-rxq_pause.lock, and usbnet_resume_rx() clears the flag under the same
-lock. The patch also moves queue_work() after local_bh_enable() in
-usbnet_resume_rx().
+The patch adds an ip_check_csum_start() helper. It rejects CHECKSUM_PARTIAL
+skbs whose csum_start points inside the IPv4 header. The helper runs before
+skb_checksum_help() in ip_do_fragment(), nf_br_ip_fragment(),
+nf_queue_checksum_help(), the CHECKSUM target and xfrm_output(), as a
+defence in depth measure against bad checksum metadata coming from tun and
+packet sockets.
 
-> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> index a19ecf718f36a..d1ec3ba1e10e6 100644
-> --- a/drivers/net/usb/usbnet.c
-> +++ b/drivers/net/usb/usbnet.c
-> @@ -329,9 +329,14 @@ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
->  	unsigned long flags;
->  	int	status;
+Closes: https://lore.kernel.org/netdev/20260922030310.8684-2-habte.yibelo@gmail.com/
+
+> diff --git a/include/net/ip.h b/include/net/ip.h
+> index 6f602df72ee62..d07c2c5730240 100644
+> --- a/include/net/ip.h
+> +++ b/include/net/ip.h
+> @@ -74,6 +74,13 @@ static inline unsigned int ip_hdrlen(const struct sk_buff *skb)
+>  	return ip_hdr(skb)->ihl * 4;
+>  }
 >  
-> -	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
-> -		skb_queue_tail(&dev->rxq_pause, skb);
-> -		return;
-> +	if (unlikely(test_bit(EVENT_RX_PAUSED, &dev->flags))) {
-> +		spin_lock_bh(&dev->rxq_pause.lock);
-> +		if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
-> +			__skb_queue_tail(&dev->rxq_pause, skb);
-> +			spin_unlock_bh(&dev->rxq_pause.lock);
-> +			return;
-> +		}
-> +		spin_unlock_bh(&dev->rxq_pause.lock);
->  	}
+> +static inline int ip_check_csum_start(const struct sk_buff *skb)
+> +{
+> +	if (unlikely(skb->csum_start < skb->network_header + ip_hdrlen(skb)))
+> +		return -EINVAL;
 
-[Severity: Medium]
-Will lockdep complain now that this lock is taken with hardirqs enabled?
+[Severity: Low]
+The lower bound here comes from iph->ihl, and not every caller validates
+that field first. If ihl is below 5, can a csum_start inside the fixed
+20-byte IPv4 header still pass? With ihl == 0 the check becomes
+csum_start < network_header.
 
-Before this patch, rxq_pause.lock was only taken through skb_queue_tail()
-and skb_dequeue(). Both use spin_lock_irqsave(). Here the lock is taken
-with spin_lock_bh(). usbnet_resume_rx() below takes it with plain
-spin_lock() inside local_bh_disable().
+One caller that can see an unvalidated ihl is nf_queue_checksum_help(),
+which only pulls sizeof(struct iphdr). For a bridge-family nft queue rule,
+nft_do_chain_bridge() calls nft_set_pktinfo_ipv4_validate(). That function
+treats ihl < 5 as unspec, but the chain is still evaluated:
 
-usbnet_probe() initializes all four queues with the same inline helper,
-so they appear to share one lockdep class:
+tap frame with ihl = 0, csum_start = IP + 6..19
+  nft_do_chain_bridge()
+    nft_set_pktinfo_ipv4_validate()   -> falls back to unspec
+  queue verdict
+    nfqnl_build_packet_message()
+      nf_queue_checksum_help()
+        ip_check_csum_start()         -> returns 0
+        skb_checksum_help()           -> writes into IP header bytes 6..19
 
-usbnet_probe() {
-    ...
-	skb_queue_head_init (&dev->rxq);
-	skb_queue_head_init (&dev->txq);
-	skb_queue_head_init (&dev->done);
-	skb_queue_head_init(&dev->rxq_pause);
-    ...
-}
+The header is already invalid in this case, so the practical impact looks
+limited. Since this is a generic inline in include/net/ip.h, could the
+bound be clamped to at least sizeof(struct iphdr), or could ihl < 5 be
+rejected?
 
-defer_bh() relies on this too. It uses spin_lock_nested() for
-dev->done.lock while it holds rxq.lock or txq.lock.
+> +	return 0;
+> +}
+> +
 
-Some host controllers do not set HCD_BH (OHCI, UHCI, musb and others).
-On those, usb_hcd_giveback_urb() runs the completion directly from the
-HCD interrupt handler, so rx_complete()->defer_bh() takes that lock class
-in hardirq:
+[ ... ]
 
-defer_bh() {
-	spin_lock_irqsave(&list->lock, flags);
-	...
-	spin_lock_nested(&dev->done.lock, SINGLE_DEPTH_NESTING);
-    ...
-}
-
-With CONFIG_PROVE_LOCKING, wouldn't the first qualifying MTU increase
-through usbnet_change_mtu()->usbnet_resume_rx() then trigger an
-"inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage" report and turn
-lockdep off?
-
-No code takes rxq_pause.lock itself from hardirq today, so no real
-deadlock is known. Using spin_lock_irqsave()/spin_unlock_irqrestore() in
-both new critical sections would match every other sk_buff_head lock use
-in usbnet.c.
-
-> @@ -700,15 +705,16 @@ void usbnet_resume_rx(struct usbnet *dev)
->  	int num = 0;
+> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+> index a24cc8ee11d3e..eaa6fabda347e 100644
+> --- a/net/ipv4/ip_output.c
+> +++ b/net/ipv4/ip_output.c
+> @@ -771,9 +771,13 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+>  	int err = 0;
 >  
->  	local_bh_disable();
-> +	spin_lock(&dev->rxq_pause.lock);
->  	clear_bit(EVENT_RX_PAUSED, &dev->flags);
-> -
-> +	spin_unlock(&dev->rxq_pause.lock);
->  	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
->  		usbnet_skb_return(dev, skb);
->  		num++;
->  	}
->  
-> -	queue_work(system_bh_wq, &dev->bh_work);
->  	local_bh_enable();
-> +	queue_work(system_bh_wq, &dev->bh_work);
+>  	/* for offloaded checksums cleanup checksum before fragmentation */
+> -	if (skb->ip_summed == CHECKSUM_PARTIAL &&
+> -	    (err = skb_checksum_help(skb)))
+> -		goto fail;
+> +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+> +		err = ip_check_csum_start(skb);
+> +		if (!err)
+> +			err = skb_checksum_help(skb);
+> +		if (err)
+> +			goto fail;
+> +	}
 
 [Severity: High]
-This is a pre-existing issue, but moving queue_work() after
-local_bh_enable() seems to widen a use-after-free window on dev->bh_work.
+This covers the fragmentation path. What about the generic egress
+fallback? validate_xmit_skb()->skb_csum_hwoffload_help() finishes the
+checksum in software without any csum_start check:
 
-usbnet_change_mtu() can reach usbnet_resume_rx() while the interface is
-down. It only needs dev->rx_urb_size == old_hard_mtu and a larger new RX
-buffer:
-
-usbnet_change_mtu() {
+net/core/dev.c:skb_csum_hwoffload_help() {
     ...
-	if (dev->rx_urb_size == old_hard_mtu) {
-		dev->rx_urb_size = dev->hard_mtu;
-		if (dev->rx_urb_size > old_rx_urb_size) {
-			usbnet_pause_rx(dev);
-			usbnet_unlink_rx_urbs(dev);
-			usbnet_resume_rx(dev);
+	if (features & NETIF_F_HW_CSUM)
+		return 0;
+
+	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
+		if (skb_has_ipv6_extension_hdr(skb))
+			goto sw_checksum;
+
+		switch (skb->csum_offset) {
+		case offsetof(struct tcphdr, check):
+		case offsetof(struct udphdr, check):
+			return 0;
 		}
 	}
+
+sw_checksum:
+	return skb_checksum_help(skb);
+}
+
+Any device without NETIF_F_HW_CSUM takes this path. NETIF_F_IP_CSUM
+devices take it too whenever csum_offset is not the TCP or UDP check
+offset. The sender picks csum_offset, so it can force the software path.
+
+__virtio_net_hdr_to_skb() accepts csum_start >= skb->data + 20, which is
+IP + 6 on tap. Take a forwarded IPv4 packet with csum_start at IP + 12. It
+can pass through ip_rcv(), ip_forward(), FORWARD and POSTROUTING
+(including SNAT) with CHECKSUM_PARTIAL intact. Could its saddr, daddr or
+protocol then be overwritten here, at the last step?
+
+Other places that finish checksums on arbitrary IPv4 traffic also have no
+check. Examples are netem_enqueue() in sch_netem.c, the DSA taggers
+(tag_ksz.c, tag_ocelot_8021q.c, tag_rtl8_4.c, tag_hellcreek.c) and
+xfrm_iptfs.c.
+
+The commit message says:
+
+  let's also check before we complete the checksum.
+
+Is it intended that the most common completion site is left out? Or is
+this meant to be covered by the input validation the commit message
+describes as forthcoming?
+
+[ ... ]
+
+> diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+> index a3bc002800510..477fc632657f4 100644
+> --- a/net/netfilter/nfnetlink_queue.c
+> +++ b/net/netfilter/nfnetlink_queue.c
+
+[ ... ]
+
+> @@ -674,6 +675,12 @@ static int nfqnl_put_bridge(struct nf_queue_entry *entry, struct sk_buff *skb)
+>  
+>  static int nf_queue_checksum_help(struct sk_buff *entskb)
+>  {
+> +	if (entskb->protocol == htons(ETH_P_IP)) {
+
+[Severity: Medium]
+This test uses the outer skb->protocol. Can PPPoE-encapsulated IPv4 on a
+bridge skip the check?
+
+With br_netfilter and filter_pppoe_tagged enabled, br_nf_forward_ip()
+pulls the encapsulation and runs br_validate_ipv4() and the IPv4 FORWARD
+hooks. br_nf_forward_finish() then restores the outer protocol before the
+bridge FORWARD hooks continue:
+
+net/bridge/br_netfilter_hooks.c:br_nf_forward_finish() {
+    ...
+		nf_bridge_update_protocol(skb);
+	} else {
+		in = *((struct net_device **)(skb->cb));
+	}
+	nf_bridge_push_encap_header(skb);
     ...
 }
 
-If the device is then disconnected, unregister_netdev() does not call
-ndo_stop for a device that is not IFF_UP:
+A later bridge-family nft queue rule (copy-packet, without
+NFQA_CFG_F_GSO) would reach this function with protocol ETH_P_PPP_SES.
+ip_check_csum_start() is skipped, and skb_checksum_help() then writes into
+the inner IPv4 header that was already validated.
 
-netif_close_many() {
+The inner IP header sits at mac + 22, and virtio allows csum_start
+>= mac + 20, so the write can even hit version/ihl.
+
+After an accept verdict, br_nf_post_routing() treats the packet as IPv4
+again without revalidating it:
+
+net/bridge/br_netfilter_hooks.c:br_nf_post_routing() {
     ...
-		if (!(dev->flags & IFF_UP))
-			list_del_init(&dev->close_list);
+	nf_bridge_pull_encap_header(skb);
+	if (pf == NFPROTO_IPV4)
+		skb->protocol = htons(ETH_P_IP);
     ...
 }
 
-So usbnet_stop() and its cancel_work_sync(&dev->bh_work) never run.
-usbnet_disconnect() cancels only kevent before it frees the netdev:
+NF_INET_POST_ROUTING (conntrack/NAT) and br_nf_dev_queue_xmit() then run
+on the modified header.
 
-usbnet_disconnect() {
-    ...
-	unregister_netdev(net);
+> +		if (!pskb_network_may_pull(entskb, sizeof(struct iphdr)) ||
+> +		    ip_check_csum_start(entskb))
+> +			return -EINVAL;
+> +	}
+> +
+>  	if (skb_csum_is_sctp(entskb))
+>  		return skb_crc32c_csum_help(entskb);
+>  
+> diff --git a/net/netfilter/xt_CHECKSUM.c b/net/netfilter/xt_CHECKSUM.c
+> index 9d99f5a3d1764..1fb0f8118404d 100644
+> --- a/net/netfilter/xt_CHECKSUM.c
+> +++ b/net/netfilter/xt_CHECKSUM.c
 
-	cancel_work_sync(&dev->kevent);
+[ ... ]
+
+> @@ -25,8 +26,11 @@ MODULE_ALIAS("ip6t_CHECKSUM");
+>  static unsigned int
+>  checksum_tg(struct sk_buff *skb, const struct xt_action_param *par)
+>  {
+> -	if (skb->ip_summed == CHECKSUM_PARTIAL && !skb_is_gso(skb))
+> +	if (skb->ip_summed == CHECKSUM_PARTIAL && !skb_is_gso(skb)) {
+> +		if (xt_family(par) == NFPROTO_IPV4 && ip_check_csum_start(skb))
+> +			return NF_DROP;
+>  		skb_checksum_help(skb);
+
+[Severity: High]
+checksum_tg() is also registered for NFPROTO_IPV6 in checksum_tg_reg[], so
+ip6t_CHECKSUM still calls skb_checksum_help() with no check. Is IPv6 left
+out on purpose?
+
+The other shared paths in this patch work the same way.
+nf_queue_checksum_help() and xfrm_output() only check
+skb->protocol == htons(ETH_P_IP). The IPv6 versions of the two
+fragmenters hardened here keep the old pattern:
+
+net/ipv6/ip6_output.c:ip6_fragment() {
     ...
-	free_netdev(net);
+	if (skb->ip_summed == CHECKSUM_PARTIAL &&
+	    (err = skb_checksum_help(skb)))
+		goto fail;
+    ...
 }
 
-If bh_work is still pending at that point, can the BH workqueue run
-usbnet_bh_work()->usbnet_bh() on the freed struct usbnet (dev->done,
-dev->bql_spinlock, dev->wait, dev->net)?
+net/ipv6/netfilter.c:br_ip6_fragment() {
+    ...
+	if (skb->ip_summed == CHECKSUM_PARTIAL &&
+	    (err = skb_checksum_help(skb)))
+		goto blackhole;
+    ...
+}
 
-Before this patch, queue_work() ran inside the local_bh_disable()
-section. The work therefore almost always ran at local_bh_enable(),
-before usbnet_resume_rx() returned.
+Both commits named in Fixes: also send IPv6 through
+__virtio_net_hdr_to_skb(). For non-GSO packets, nh_min_len stays at
+sizeof(struct iphdr), so csum_start can point inside the 40-byte IPv6
+header.
 
-Now the work is queued from process context with BHs enabled, so the
-softirq is handed to ksoftirqd. The work can stay pending after the MTU
-change returns. With threadirqs, or with ksoftirqd starved on that CPU,
-it could stay pending through unregister_netdev() and free_netdev() on
-another CPU.
+Even in IFF_TUN mode, csum_start = IP + 20 is accepted, which lets the
+write land in daddr. With tap, nexthdr, hop_limit, saddr and daddr can
+all be reached.
 
-Would it make sense to add cancel_work_sync(&dev->bh_work) to
-usbnet_disconnect() before free_netdev(), once further submissions are
-blocked?
+Couldn't this rewrite an IPv6 header after ipv6_rcv() validation, routing
+and ip6tables/nft filtering, through ip6t_CHECKSUM, NFQUEUE reinjection or
+xfrm output? The commit message doesn't mention IPv6. Could both families
+be covered here, or could the commit message explain why IPv6 is left out?
+
+> +	}
+>  
+>  	return XT_CONTINUE;
+>  }
+> diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
+> index e305ba32e356b..f1f612cd7b438 100644
+> --- a/net/xfrm/xfrm_output.c
+> +++ b/net/xfrm/xfrm_output.c
+> @@ -823,16 +823,22 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
+>  	}
+>  
+>  	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+> -		err = skb_checksum_help(skb);
+> -		if (err) {
+> -			XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
+> -			kfree_skb(skb);
+> -			return err;
+> +		if (skb->protocol == htons(ETH_P_IP)) {
+> +			err = ip_check_csum_start(skb);
+> +			if (err)
+> +				goto error;
+>  		}
+
+[Severity: Medium]
+Do IP-TFS SAs bypass this check? xfrm_bundle_create() sets:
+
+	dst1->output = xfrm[i]->mode_cbs->output;
+
+For IP-TFS this is iptfs_output_collect(), so inner IPv4 packets never
+reach xfrm4_output()/xfrm_output() with their own checksum metadata.
+
+iptfs_output_collect() only segments GSO skbs. A non-GSO CHECKSUM_PARTIAL
+skb is queued as is, and its checksum is finished later without a
+csum_start check:
+
+net/xfrm/xfrm_iptfs.c:iptfs_first_skb() {
+    ...
+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+		err = skb_checksum_help(skb);
+		if (err)
+			return err;
+    ...
+}
+
+net/xfrm/xfrm_iptfs.c:iptfs_output_queued() {
+    ...
+			if (skb2->ip_summed == CHECKSUM_PARTIAL) {
+				if (skb_checksum_help(skb2)) {
+    ...
+}
+
+xfrm_output() only runs later, on the outer IP-TFS packet, which is
+already CHECKSUM_NONE. Consider a tap guest packet routed into an IP-TFS
+tunnel. Could its inner header still be rewritten after ip_rcv()
+validation and FORWARD filtering, then encrypted and sent to the peer?
+
+> +		err = skb_checksum_help(skb);
+> +		if (err)
+> +			goto error;
+>  	}
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007220311.113827-1-omermetekaya0%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0a012b4923e189c4c593ef4f471e5ff0edbe9030.1791412497.git.mst%40redhat.com
