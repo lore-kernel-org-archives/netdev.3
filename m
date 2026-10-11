@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10A922A7F6;
-	Sun, 11 Oct 2026 06:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B2B276050;
+	Sun, 11 Oct 2026 06:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791699354; cv=none; b=VNyE2SukK7h7dNUptz2s8QNsFoid16S3Bglp48pQCHl0j9lvp7zIPOgmCpZEGVBkvKl/MUFG3tuf4pU+X0KzGOKm4eyTlg3uAd7iNQaMxXBrQ9UFFoKwvZugZSPTRQbo8hOLjfjTcv3987K7Zs4ksCJIdgY9zyF1OHiylDAY40c=
+	t=1791700888; cv=none; b=E/xpKvSDyhLgftTL6ix+OgFPNtzn9o2gHw1gvxYcHkWCeUPWQE/3If7zgZfAGtO5MseaNL0I02Q9mMaqp9iwmp/tGbcEQEdlMZn036KNB5oKe3wCs5/ishy59w6JmuW7aRwMlVyXcTqkxi33gOF8BrD0/6PUrfmbTP42H/3tqNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791699354; c=relaxed/simple;
-	bh=QdwlSdD4e8pIxx8RaYVNZobwNMHOaf3eJSCGNU+vnrI=;
+	s=arc-20240116; t=1791700888; c=relaxed/simple;
+	bh=o1Cfjj4mgiFLSD4ehTkQrXze+HXV0jTSSUbP7u03vuA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t7IL7w011ZOQJpcqxigkAf3vDtq+WhwgCjS/6BI44NWYjKTrhP9Ib1Jx3vbyIsNu3PFNJyrWtpC+5gki4CG7L71DFleWxfgkzGwclqdHkMaBSyP4vNgA2guoyMqkIjpHtLgbVYHg3S1Wq97mq2akzmTDl1ZB1MKT92gb+TMY33A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fO5tj43I; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ebn/M8SkaXcwuLY5ZYaCvMDpBb4bWcUCFHLRjGK2FaQ+wWcQ4zJSgoVRxsHLjPv5Oj4vJaOH2MYp1oCkdSD2H0KI8n1SQn9AdU90FZTjccoONBOshQzUZVI7JYX2ZpO7xsL/S5tzofOsC1ydfGg3E+IsMVnb6g5Yq+RgJJ6zW0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9chI6SV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fO5tj43I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33B51F0089B;
-	Sun, 11 Oct 2026 06:15:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9chI6SV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AB51F0089B;
+	Sun, 11 Oct 2026 06:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791699352;
-	bh=Kw8eIFWLJdO0vJMNss4vKqPZ2tB+xPBa5E7C4a8Opp0=;
+	s=k20260515; t=1791700886;
+	bh=RmCZH95ehgU540OjvnS3MFoFEkyabpFbTjwYQ0ORD6k=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fO5tj43I2wMBVp9IPZVleY/HYOOdwCFtZmwWgyDRzA5BQ8iXxF9fxZyNddWXp5JLm
-	 07OuTjPBlvDktkabsFHZ0I2ovq1+s1ZRrxWs4cdWb8gDK48iF1wxQ7JmUCJ9zJZQga
-	 wsnoRFyIXMt8v4Rb2yiPNu3kS2O22iZu2XrvpJiIDBBJ5m2YsNXI6cil1Ci6Sh3rYG
-	 8Uq2+Z9Q8C0f/0inV+D28Z/ALWE/N0YtSC09BAla5aEIt3e21H20T5A20YLW53koAP
-	 8rjvOIPaiXF0/k2GKpen3uPnybEWex81Rr95YxMa7Je5oCiwnXAAeAzesg7jKOximT
-	 qOEr9l7yo1Ktg==
+	b=c9chI6SVxwWEhR9Gnfx7+wVHgTLMyFaMMMbouAiIIJ8tXrXAdCLpGVEGAI7GQiQ8V
+	 bkAwVt+B8Vvg5BPbs06QDrVTVF2oSORR708zdASXpEYMYiyGYqWkx8vqMG43SPf+lv
+	 IU2deCmPlDX3X7Ry72gkooZM7a12Tl5wl8Mbhj8ueMDaUdlovJCptQjjVq05yfHvbt
+	 rEe56RR8P0fOBWrZ0ATTZQmjsFwt/XB+2xIhX+1bHPnCQymMYSq0+NunDQvpFAJaW0
+	 DpC/mDB7+yGOmi4Qi4gQ39m6HrMfFCrP/pf8JTdvC97PE8c4OSRn5u0NksoXC26okx
+	 vFW5mpoM6PP9Q==
 Subject:
- Re: [PATCH net] net: bridge: don't under-estimate the VLAN tunnel info size
+ Re: [PATCH net] macvlan: require lower-netns admin for IFLA_MACVLAN_FLAGS
 From: netdev-bot+sashiko@kernel.org
-To: yimingqian591@gmail.com
-Cc: razor@blackwall.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- bridge@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 06:15:51 +0000
-Message-ID: <179169935141.434549.18249145287675691158@kernel.org>
-In-Reply-To: <20261007055939.63100-1-yimingqian591@gmail.com>
-References: <20261007055939.63100-1-yimingqian591@gmail.com>
+To: bsdhenrymartin@gmail.com
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 11 Oct 2026 06:41:25 +0000
+Message-ID: <179170088566.434549.4699134797461783473@kernel.org>
+In-Reply-To: <20261010062944.2671656-1-bsdhenrymartin@gmail.com>
+References: <20261010062944.2671656-1-bsdhenrymartin@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 1 (2) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,214 +58,202 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
-- [High] The commit message says the change 'keeps br_nlmsg_size() an
-  upper bound of what the fill needs', but the IFLA_BRIDGE_VLAN_INFO…
-- [Medium] On any bridge port with vlan_tunnel enabled,
-  br_get_vlan_tunnel_info_size() now reserves __get_vlan_tinfo_size()…
+- [High] macvlan: incomplete CAP_NET_ADMIN check allows traffic
+  interception
+- [Medium] The commit message presents commit 5b782a811e73 ("macvlan:
+  require lower-netns admin for shared port settings") as covering…
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but
+  macvlan_changelink() (drivers/net/macvlan.c:1665-1678) calls…
+- [Medium] This problem wasn't introduced by this patch, but the new
+  check relies on rtnl_dev_link_net_capable()…
 
 --
 
-net: bridge: don't under-estimate the VLAN tunnel info size
+macvlan: require lower-netns admin for IFLA_MACVLAN_FLAGS
 
-br_get_vlan_tunnel_info_size() used to count the compressed ranges of VLANs
-that currently have a tunnel mapping. This patch makes it reserve one
-IFLA_BRIDGE_VLAN_TUNNEL_INFO attribute for every usable VLAN in the group.
-The goal is to stop br_info_notify() from hitting
-WARN_ON(err == -EMSGSIZE) when mappings change between br_nlmsg_size() and
-br_fill_ifinfo() on the STP timer path, which runs without RTNL.
+This patch extends the rtnl_dev_link_net_capable() check in
+macvlan_changelink() to IFLA_MACVLAN_FLAGS. Changing that attribute now
+requires CAP_NET_ADMIN in the lower device's network namespace. The
+reason given is that toggling MACVLAN_FLAG_NOPROMISC in passthru mode
+calls dev_set_promiscuity() on the lower device.
 
-> Size the tunnel info for the maximum number of attributes that
-> br_fill_vlan_tunnel_info() can emit for the VLAN group instead of for the
-> mappings that are currently installed.  Consecutive VIDs with consecutive
-> tunnel IDs are compressed into two attributes, so the fill never emits more
-> attributes than there are usable VLANs, which keeps br_nlmsg_size() an upper
-> bound of what the fill needs.
+> diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+> index afad90b9222a2..d30cffddb1e1b 100644
+> --- a/drivers/net/macvlan.c
+> +++ b/drivers/net/macvlan.c
+> @@ -1641,7 +1641,8 @@ static int macvlan_changelink(struct net_device *dev,
+>  	int ret;
+>  
+>  	if (data &&
+> -	    (data[IFLA_MACVLAN_BC_QUEUE_LEN] || data[IFLA_MACVLAN_BC_CUTOFF]) &&
+> +	    (data[IFLA_MACVLAN_BC_QUEUE_LEN] || data[IFLA_MACVLAN_BC_CUTOFF] ||
+> +	     data[IFLA_MACVLAN_FLAGS]) &&
+>  	    !rtnl_dev_link_net_capable(dev, dev_net(vlan->lowerdev))) {
+>  		NL_SET_ERR_MSG(extack,
+>  			       "Changing shared macvlan port settings requires CAP_NET_ADMIN in the lower device network namespace");
 
 [Severity: High]
-Does br_nlmsg_size() really become an upper bound with this change? The
-IFLA_BRIDGE_VLAN_INFO part of the same message is still sized from a
-snapshot.
+This isn't introduced by this patch. Since the guard is being
+extended here, though, does it still miss the attributes that let a
+child netns admin receive traffic from the lower device?
 
-br_get_link_af_size_filtered() gets that size from __get_num_vlan_infos().
-That function counts compressed ranges using the current PVID, the
-BRIDGE_VLAN_INFO_UNTAGGED flag of each VLAN and the current VLAN set:
+IFLA_MACVLAN_MODE and IFLA_MACVLAN_MACADDR_MODE are not covered by the
+rtnl_dev_link_net_capable() check. One changelink request is enough
+for root in the macvlan's netns to do both of these:
 
-net/bridge/br_netlink.c:br_get_link_af_size_filtered() {
-    ...
-	num_vlan_infos = br_get_num_vlan_infos(vg, filter_mask);
-    ...
-	vinfo_sz += num_vlan_infos * nla_total_size(sizeof(struct bridge_vlan_info));
-    ...
-}
+  1. Switch a non-passthru macvlan to MACVLAN_MODE_SOURCE. set_mode is
+     applied before the IFLA_MACVLAN_MACADDR_MODE branch.
+  2. Pass MACVLAN_MACADDR_ADD with an arbitrary MAC address.
 
-br_fill_ifvlaninfo_compressed() later works out the ranges again from live
-state. br_ifinfo_notify() always passes RTEXT_FILTER_BRVLAN_COMPRESSED,
-including on the br_forward_delay_timer_expired() path in the trace.
+macvlan_changelink_sources() then calls macvlan_hash_add_source().
+That inserts the entry into vlan->port->vlan_source_hash, which
+belongs to the shared struct macvlan_port, not to the upper device.
 
-Suppose an RTM_SETLINK under RTNL does one of the following while the timer
-is between sizing and filling:
+On receive, macvlan_handle_frame() calls macvlan_forward_source() for
+every frame on the lower device, keyed on eth->h_source. For each
+matching entry, macvlan_forward_source_one() delivers a clone to that
+vlan. Nothing restricts the MAC to stations that belong to the child
+netns.
 
-- toggles UNTAGGED on a VLAN in the middle of a range (one 2-attribute
-  range becomes 2+1+2)
-- changes the PVID
-- adds non-adjacent VLANs through __vlan_add()->__vlan_add_list()
+A container that only owns the upper device could therefore add the
+MAC of, for example, the gateway on that segment. It would then get a
+copy of every frame that station sends on the lower device. That
+includes frames addressed to the lower device itself or to macvlans in
+other namespaces.
 
-Can't br_fill_ifvlaninfo_compressed() still return -EMSGSIZE and hit the
-same WARN_ON in br_info_notify()? This applies to tunnel and non-tunnel
-ports alike.
+If MACVLAN_FLAG_NODST is already set on that vlan, consume becomes
+true in macvlan_forward_source(). The frame is then dropped instead of
+reaching its real destination.
 
-About 30 extra 8-byte attributes are enough to go past the kmalloc slack.
-A single setlink with many IFLA_BRIDGE_VLAN_INFO entries can produce that
-many.
+5b782a811e73 treated mode as a per-upper setting. Does that still hold
+once MACVLAN_MODE_SOURCE fills a port-wide hash?
 
-The patch only makes the tunnel half of br_get_link_af_size_filtered()
-pessimistic. The two halves now follow different sizing rules.
-
-> diff --git a/net/bridge/br_netlink_tunnel.c b/net/bridge/br_netlink_tunnel.c
-> index e7eceab5b515d..74627323711c1 100644
-> --- a/net/bridge/br_netlink_tunnel.c
-> +++ b/net/bridge/br_netlink_tunnel.c
-> @@ -35,39 +35,25 @@ bool vlan_tunid_inrange(const struct net_bridge_vlan *v_curr,
->  	return (be32_to_cpu(tunid_curr) - be32_to_cpu(tunid_last)) == 1;
->  }
->  
-> -static int __get_num_vlan_tunnel_infos(struct net_bridge_vlan_group *vg)
-> +/* Upper bound of the number of IFLA_BRIDGE_VLAN_TUNNEL_INFO attributes that
-> + * br_fill_vlan_tunnel_info() can emit for @vg.
-> + *
-> + * br_info_notify() is also called without RTNL (e.g. from the STP timers), so
-> + * the set of VLANs that have a tunnel mapping can change between the size
-> + * calculation done by br_nlmsg_size() and the actual fill.  Account for the
-> + * maximum instead of the currently used mappings: consecutive VIDs with
-> + * consecutive tunnel IDs are compressed into two attributes, so the fill never
-> + * emits more attributes than there are usable VLANs in the group.
-> + */
-> +static int __get_max_num_vlan_tunnel_infos(struct net_bridge_vlan_group *vg)
->  {
-> -	struct net_bridge_vlan *v, *vtbegin = NULL, *vtend = NULL;
-> +	struct net_bridge_vlan *v;
->  	int num_tinfos = 0;
->  
-> -	/* Count number of vlan infos */
->  	list_for_each_entry_rcu(v, &vg->vlan_list, vlist) {
->  		/* only a context, bridge vlan not activated */
-> -		if (!br_vlan_should_use(v) || !v->tinfo.tunnel_id)
-> -			continue;
-
-[ ... ]
-
-> +		if (br_vlan_should_use(v))
-> +			num_tinfos++;
->  	}
-
-[Severity: High]
-Isn't this still only a bound on vlan_list as it looks at sizing time?
-
-When called from br_forward_delay_timer_expired(), br_info_notify() holds
-only br->lock and RCU. br_fill_ifinfo()->br_fill_vlan_tunnel_info() then
-walks the list again and checks BR_VLAN_TUNNEL_BIT again on its own:
-
-net/bridge/br_netlink.c:br_info_notify() {
-    ...
-	skb = nlmsg_new(br_nlmsg_size(dev, filter), GFP_ATOMIC);
-    ...
-	err = br_fill_ifinfo(skb, port, 0, 0, event, 0, filter, dev, false);
-	if (err < 0) {
-		/* -EMSGSIZE implies BUG in br_nlmsg_size() */
-		WARN_ON(err == -EMSGSIZE);
-    ...
-}
-
-The RTNL writers don't take br->lock, so two inputs can still change
-between those steps.
-
-First, VLANs can be added. __vlan_add()->__vlan_add_list() publishes them
-with list_add_rcu() under RTNL only. One RTM_SETLINK can carry
-IFLA_BRIDGE_VLAN_INFO followed by IFLA_BRIDGE_VLAN_TUNNEL_INFO for the new
-VIDs, and br_afspec() handles both. A VLAN that wasn't on the list when
-this loop ran isn't counted, but br_fill_vlan_tunnel_info() will emit it.
-
-Second, the flag can change. br_setport() sets BR_VLAN_TUNNEL with a
-lockless try_cmpxchg(), and br_setlink() then calls br_afspec() to install
-mappings. If sizing saw the bit clear, nothing is reserved:
-
-net/bridge/br_netlink.c:br_get_link_af_size_filtered() {
-    ...
-	if (p && test_bit(BR_VLAN_TUNNEL_BIT, &p->flags))
-		vinfo_sz += br_get_vlan_tunnel_info_size(vg);
-    ...
-}
-
-The fill can then see the bit set and emit one 28-byte attribute per
-mapped VLAN:
-
-net/bridge/br_netlink.c:br_fill_ifinfo() {
-    ...
-		if (port && test_bit(BR_VLAN_TUNNEL_BIT, &port->flags))
-			err = br_fill_vlan_tunnel_info(skb, vg);
-    ...
-}
-
-In either case, wouldn't br_fill_vlan_tinfo() return -EMSGSIZE and hit the
-WARN_ON quoted in the commit message? Nine or more tunnel attributes that
-can't be merged would exceed the usual kmalloc slack. This needs
-CAP_NET_ADMIN in a network namespace, which includes unprivileged user
-namespaces.
-
-The "upper bound" in the new comment only holds while the VLAN list and
-the flag stay the same, and nothing guarantees that without RTNL.
-
-Could the size and the fill be computed from one consistent view, or use a
-bound that doesn't depend on current membership? Another option is for the
-non-RTNL callers to stop treating -EMSGSIZE as a bug, for example by
-retrying with a larger skb.
-
-[ ... ]
-
-> @@ -81,7 +67,7 @@ int br_get_vlan_tunnel_info_size(struct net_bridge_vlan_group *vg)
->  		return 0;
->  
->  	rcu_read_lock();
-> -	num_tinfos = __get_num_vlan_tunnel_infos(vg);
-> +	num_tinfos = __get_max_num_vlan_tunnel_infos(vg);
->  	rcu_read_unlock();
->  
->  	return num_tinfos * __get_vlan_tinfo_size();
+Should the check also cover IFLA_MACVLAN_MACADDR_MODE, and maybe the
+switch into MACVLAN_MODE_SOURCE? Or is source-mode filtering meant to
+be allowed for an admin of the upper's namespace alone?
 
 [Severity: Medium]
-On a vlan_tunnel port, this now reserves __get_vlan_tinfo_size() (28
-bytes) for every usable VLAN, whether it is mapped or not. Two examples:
 
-- VLANs 1000-1999 mapped to consecutive VNIs go from 56 bytes to about
-  28KB.
-- A port with 4094 VLANs and few mappings now reserves about 114KB.
+The commit message says that 5b782a811e73 "only covered
+IFLA_MACVLAN_BC_QUEUE_LEN and IFLA_MACVLAN_BC_CUTOFF". That reads as if
+flags were overlooked. However, 5b782a811e73 left flags ungated on
+purpose:
 
-Is this cost intended on the br_info_notify() path itself? That path calls
-nlmsg_new(br_nlmsg_size(), GFP_ATOMIC) from STP timer softirq context, so
-these sizes become order-3 to order-5 atomic page allocations. When one
-fails, the notification is dropped and rtnl_set_sk_err() reports ENOBUFS.
+    rtnl_dev_link_net_capable() short-circuits when the lower
+    device shares the macvlan network namespace, so an ordinary
+    single-namespace configuration is unaffected, and per-upper settings
+    such as mode and flags stay available to an administrator of the
+    macvlan's own namespace. This is the model ipvlan has used since
+    commit 7cc9f7003a96 ("ipvlan: disallow userns cap_net_admin to change
+    global mode/flags").
 
-The inflated size also reaches messages outside the bridge code.
-br_get_link_af_size_filtered() adds it regardless of filter_mask. It is
-registered as get_link_af_size in br_af_ops, which has no fill_link_af:
+That commit also said the passthru-only port state cannot be reached
+from a second upper, since passthru requires port->count == 0.
 
-static struct rtnl_af_ops br_af_ops __read_mostly = {
-	.family			= AF_BRIDGE,
-	.get_link_af_size	= br_get_link_af_size_filtered,
-};
+Should the commit message say that this reverses the earlier decision,
+and explain why that reasoning no longer holds?
 
-That has two effects:
+The extack text is reused unchanged. IFLA_MACVLAN_FLAGS is stored in
+vlan->flags in struct macvlan_dev, not in the shared struct
+macvlan_port. Is "Changing shared macvlan port settings" accurate for
+this attribute?
 
-- if_nlmsg_size()->rtnl_link_get_af_size() reserves the space for every
-  generic rtmsg_ifinfo() or RTM_GETLINK message for the port, and nothing
-  ever fills it.
-- rtnl_calcit() takes the max of if_nlmsg_size() over every netdev in the
-  netns as min_dump_alloc for RTM_GETLINK dumps that carry IFLA_EXT_MASK.
-  One such port inflates those dumps for the whole namespace.
+The new check also covers more than the problem described. In the flags
+branch below, only this path touches the lower device:
 
-The commit message doesn't mention this cost. As noted above, the
-over-reservation still doesn't guarantee the bound.
+	if (macvlan_passthru(vlan->port) && promisc) {
+		...
+			err = dev_set_promiscuity(vlan->lowerdev, -1);
+		...
+	}
+	WRITE_ONCE(vlan->flags, flags);
+
+On a non-passthru macvlan, or for a change that leaves NOPROMISC alone
+(for example a NODST-only change), the branch only writes vlan->flags.
+After this patch, an admin of the macvlan's own netns without
+CAP_NET_ADMIN in the lower netns gets -EPERM for those changes too.
+
+Is this uAPI change intended? Could the check be limited to passthru
+mode when MACVLAN_FLAG_NOPROMISC actually changes?
+
+[Severity: Medium]
+
+This isn't a bug introduced by this patch, but the IFLA_MACVLAN_FLAGS
+branch in macvlan_changelink() changes the lower device's promiscuity
+without checking netif_running(dev):
+
+	if (data && data[IFLA_MACVLAN_FLAGS]) {
+		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
+		if (macvlan_passthru(vlan->port) && promisc) {
+			int err;
+
+			if (flags & MACVLAN_FLAG_NOPROMISC)
+				err = dev_set_promiscuity(vlan->lowerdev, -1);
+			else
+				err = dev_set_promiscuity(vlan->lowerdev, 1);
+
+Otherwise the passthru promiscuity reference is held only while the
+macvlan is up. macvlan_open() takes it:
+
+	if (macvlan_passthru(vlan->port)) {
+		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
+			err = dev_set_promiscuity(lowerdev, 1);
+
+macvlan_stop() drops it:
+
+	if (macvlan_passthru(vlan->port)) {
+		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
+			dev_set_promiscuity(lowerdev, -1);
+
+What happens if NOPROMISC is toggled while the macvlan is down?
+
+Clearing NOPROMISC while down adds 1. A later open adds another 1, but
+stop removes only one. Does the lower device then stay promiscuous for
+good?
+
+Setting NOPROMISC while down drops a reference that was never taken.
+That could take away another holder's reference. If the counter was 0,
+__dev_set_promiscuity() would wrap it to UINT_MAX with IFF_PROMISC set,
+and later +1 requests would fail with -EOVERFLOW.
+
+This goes back to df8ef8f3aaa6. With this patch applied, reaching this
+path needs CAP_NET_ADMIN in the lower netns, or both devices in the
+same netns.
+
+[Severity: Medium]
+
+This is a pre-existing issue, but the check extended here depends on
+rtnl_dev_link_net_capable(), which only looks at current's credentials:
+
+net/core/rtnetlink.c:rtnl_dev_link_net_capable() {
+	return net_eq(link_net, dev_net(dev)) ||
+	       ns_capable(link_net->user_ns, CAP_NET_ADMIN);
+}
+
+The other cross-netns checks in rtnetlink use
+netlink_ns_capable(skb, ...). That also requires the socket opener to
+hold the capability (the CVE-2014-0181 hardening).
+
+Could a confused deputy get past the lower-netns check here? For
+example:
+
+  1. An unprivileged user who owns a child userns opens a NETLINK_ROUTE
+     socket in the child netns.
+  2. A privileged program (for example a setuid-root one) is made to
+     write an attacker-controlled RTM_NEWLINK message to that fd.
+  3. netlink_net_capable() in rtnetlink_rcv_msg() passes, because the
+     opener is privileged in the child userns.
+  4. rtnl_dev_link_net_capable() in macvlan_changelink() passes,
+     because current is global root.
+
+Nothing checks that the opener lacks CAP_NET_ADMIN in the lower netns.
+
+The helper came from 8165f7ff57d966. Other callers such as ip_gre,
+vxlan and geneve share it, so a fix there would probably be a separate
+patch.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007055939.63100-1-yimingqian591%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010062944.2671656-1-bsdhenrymartin%40gmail.com
