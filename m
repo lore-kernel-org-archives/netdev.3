@@ -1,163 +1,269 @@
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F47E2F7EF3
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 14:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791729225; cv=pass; b=dulDTmar+hM7qac+CEK3R/ztqI8AjVdo4dZqA6eEjXdRcUdBaT5nTb8UIOJOTNtJ+QpEM9FpVmiBwdPq2GBqjokBgA5xORaj73t8XTQoHdCPMMFZUugNHilWa/DVy1zjPOIjTVLmOiD8gxeVjSM3vOEW6x5ey4DfmABGcEfI0hw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791729225; c=relaxed/simple;
-	bh=mfpOKnIb2lPxTOneML/VhNInEmWNxWvTH6pPXHsj6Mg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xbo5ieixIlKnwlfewI9DHKvlsH8MGD0GjbDjdBTCfYOF7wmdo2DkTZZpm7ZptWyjs9kwJiZW3foU7q7HHAlJ5PVbu/NZC3I1ZGPCxmGkm6T0e7yuxLoruW/Pq+iQ0uCWOnxNwhcm7IrsCORjHMYw1PGjLxfJEpsknwP6gaSNDJ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com; spf=pass smtp.mailfrom=jclark.com; dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b=U3IsH7xc; arc=pass smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EEF33A9610;
+	Sun, 11 Oct 2026 15:00:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791730842; cv=none; b=CXMxpewpqq3/SCGZku3x4oUzH3AZd+q405q4iu8Pc8ODxmaeZ5mmp4+xmwBgEeHJyEUv01P1GSO5vu8W0+ji51NvV3OhZQ2Fgq4HOtN4x2lg8Q+qi1Z/d65dMl84exP/00JUDI/tb/O+CkuLRnvbsawuJpk5NHQYKknLGg8r6b8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791730842; c=relaxed/simple;
+	bh=qAnQL4TPq/88O2MR/mjY3NH3AHX9H1/lbW+UwPLRsoo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ArGr1ON8/5bHNwvMKnFmp7QytIVRhdCGtqgoCtv+Qhk1fzaaS3gjbVqwKKi5j9TCXrKxyAe8gmkVjV/4cjIhHN0xkz2rAcJMd9RKSG/SgrJT0g6sDdk22EffuY/DAcd+9ACcUrKYO8nTWX8JMGIR1kUjHrqPCt89L+qu0fITEok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oN5J5gh4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b="U3IsH7xc"
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-91b83459526so76466d6.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 07:33:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791729223; cv=none;
-        d=google.com; s=arc-20260327;
-        b=TMQKSc97Bn+21klfIwyEiink48XemuwL6+ahal3lpFmSKq7mRMW6/o5wwJ3VqP3hPz
-         RCTcfXcC+XnKgceuQ+IkM5EIs/wJJIXdDSXSScCEfUhPXlkyMYgRO8vsI+6ij3I44OWH
-         1ar4X4hDq/7Y6T/CvF2d5aG+Y9T36LqkY44nF08qFSt8BH9kbPBVLPXL6smm2DNmrj8u
-         6kVmNN57JF/hjQCNxokwSha5ewgZF33NikmAbFU4kWYN8FUDgMGQ/7j6CAA/E01Ho2W0
-         CRdFPkCsKXo33Q5miSPgBhrhYj9GBm0lBs4B+uKBp1U1Jr0XaER6RjIX9+/dIVXSw+Jx
-         ttLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RimT+BJQr+BZd/nBQf4bNoeClkAHtE09xphYwHOsuq8=;
-        fh=QLvHrAuliOcCAK+wcwl3r0ftqneoyE6IjOjcoWXa54I=;
-        b=X+b2Mopo0FnVGOPSkT546tl8pxJAfDfFj4GzEEpGMmdJVs3LxeH430/4EATfaG7gb+
-         /Tub/67YuzNdRO1oL0+Lja+I7lUxX/4OrnPuSeod4Sc8rIwQYsiQC88JJKhZZJrw8P9c
-         b/rcqy3oi7mGFUJ4tgJDyMk24PJJpi2rKrH40g0Py0WUJbn4oh3zYngonIQOSEkfe15Y
-         mnYHGMtsGEgHgdeAo2POZC1mB7AirpCEslV1zCaL0QIzzDSsm33c4dXdIaAz92n7WSD5
-         vq0RwvHof9A7S1ag3MT3VfD4tTGm6nngTQXGvCfX2w/XqaIh/dLnmiSdQ4RzhUcE9ine
-         xx7w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1791729223; x=1792334023; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RimT+BJQr+BZd/nBQf4bNoeClkAHtE09xphYwHOsuq8=;
-        b=U3IsH7xc4UI1OMR8uEmylufAXs3JQYpiCszNIR7ghf2aMaxaTjeilvwDVJQuSiwC+M
-         2Y/IFQ+gQF8qI2Vftb6CdDDk6ca9Srq1MvpFUk32y/jyYY4Bb2GHz7lPGkCIDiW2yvxY
-         coRx/WrTRDVXcdInyFcSpdD9dp78yqqpI/mvNHWdqd80B5VlQJjQDmYgNfNTrRLvETGS
-         Jq8t8ZiADDV5Gv6WyxByJ2LtWBHNs7HxeTYbV7cBiQIhBYDmPdM6ULf0PLBtO/Pvglm5
-         Pe3d6sEx5iKm4sgaKvMTnGyTKbjzbtIU+RD80fcD+o6BgakySPV7CYfl5yanYskipydU
-         M3Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791729223; x=1792334023;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RimT+BJQr+BZd/nBQf4bNoeClkAHtE09xphYwHOsuq8=;
-        b=IRk4d37QpMBtsq1xiAH/PEyjiX9RvLNgMMC6oCTNFguQH71hzaT9KNbXPLy+Ab3u7+
-         m39GYAkZ+rtINeSen3KPcyy+nu0QskhxyuF2NBKyAtZJFBYqw9rotUzvN9WqE5zlnx8Q
-         WqAuwrkvil2V+1hdor9W08MCotONansgSMkfis8f0WRj8E8SFr9O84Em6M1Js2B7XRe0
-         cVhv3X91xoa9pUJuCmL9KDLIVOar6MTGS2/zfnfiBp6ls9ArWJac1re3NtRRb+AVGg86
-         paDDkpO/MOwEcT1c6mS6jQhAcC17BIXhBuUWDZe4c56dnMPvlfP67KEPGrFR8iQTJ9pP
-         fNJw==
-X-Forwarded-Encrypted: i=1; AKwUvByDN7hUuhyzx8K+fLAH9bB9HeD7wpFM6sfFhVoTkKNST6QEDKrYAOqqqHDbumUPpfMEx/tKhyA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKdz5/zNOuJplncDGluRKea2XYRGhHYrNaTaWIWwxlY3ataq/nF
-	J7lhS//QaVsaVy1M7FzNsyNE5KwD8cM8YbO6UqRPGzBUHmjUchPB5tnHLr0aPFoFItw5eClD7c3
-	wO4vQhj9MR9pF9kagZ8Ly2VyJlD7r+44SUI9f61LR
-X-Gm-Gg: AYBFou31hwaqwSOCdYu/jp+xPvt/3BB96+JFNfjBQ70ge0jcoBWLHlVj0DWNimAR3NX
-	BOBTI3rx6EYstKz9olKDCXSiOq3UTM3pRd3P9HQOnrvoYkPIHXL9WA0XFrz6oRQ6Vf4/50+saIu
-	R+bCNj3XALctnZinGi/N3yuGimlH+ldKbDczoaysGT4futARsLKpwyO70/v6c8BMH1JaTaN4VCo
-	MXW3YTbmfKdFT0xVMyiBbJrAlBBBmpjBPTaCAojXb85BnmYrUa0Q/ITxw9NeSlroEPdbmOA7Kp6
-	3esi+Tk4YK/IGD5bgn7HCtw/XOhRyJerFhhtUzBFyqgL1NyN9F+aX/I=
-X-Received: by 2002:a05:6214:ca4:b0:91b:5d3b:4ac0 with SMTP id
- 6a1803df08f44-91b5d3b4e68mr123540436d6.53.1791729223287; Sun, 11 Oct 2026
- 07:33:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oN5J5gh4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9A01F0089B;
+	Sun, 11 Oct 2026 15:00:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791730840;
+	bh=PJALqDt5bu15r0YG967irhHtAS42dFq6VRlVQNypGwc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=oN5J5gh40j+DvZP7jocRE/QrIXMjeNbo0JdlsFA/OMauMD+RAbBF+otk8IGrPS5xC
+	 sU9+Dz4xKI8wC3jvZjgXd89c7wzAR8cRmFRR2029drM5a4FpIQAsFY2nu/Uu5Z+Kqp
+	 85cqybbdDLxf7FUjCe2pmGITwLTdxI+3OKxD6usAUm7hDjKNQ8jbEE9MFrNXGF1z48
+	 ZxNb4wRE7EdPsNW0SBRPzi58F1ZsLYLDP4Ij4JqJ24jzFsMzFVp47Qnz8oO6s84f76
+	 HU2i/mqIqVAVtnQoErmEc4l0Ngpmzv+xYIlELrhn1wkYHdXNMouds+8Fl27DM0N9Qb
+	 xVJALGQXBJIyg==
+Subject: Re: [PATCH net v1] net: devmem: prevent mixing fragments from
+ different bindings
+From: netdev-bot+sashiko@kernel.org
+To: almasrymina@google.com
+Cc: netdev@vger.kernel.org, kaiyuanz@google.com, sdf@fomichev.me,
+ pabeni@redhat.com, linux-kernel@vger.kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, horms@kernel.org,
+ bobbyeshleman@meta.com, antonio@openvpn.net, asml.silence@gmail.com,
+ ralf@mandelbit.com
+Date: Sun, 11 Oct 2026 15:00:39 +0000
+Message-ID: <179173083927.434549.6834667881612626912@kernel.org>
+In-Reply-To: <20261008034027.1403188-1-almasrymina@google.com>
+References: <20261008034027.1403188-1-almasrymina@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009143506.2507607-1-jjc@jclark.com> <20261009143506.2507607-2-jjc@jclark.com>
- <af97fa4b-d817-4e8b-bbd7-aaefa23d4d7a@lunn.ch>
-In-Reply-To: <af97fa4b-d817-4e8b-bbd7-aaefa23d4d7a@lunn.ch>
-From: James Clark <jjc@jclark.com>
-Date: Sun, 11 Oct 2026 21:33:32 +0700
-X-Gm-Features: AclHuK9eexRlWA5M879Crhtnp6jM6vwO493yA7pfOJjE5VhMdHya6ZQFlGC7FHo
-Message-ID: <CANz3_Ead154hG=5H7fmnamUDbhEv==sGMHdiY+jUhjzYLRzLaw@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/5] net: mdio: add timestamped write operation
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
-	Nicolai Buchwitz <nb@tipi-net.de>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
-	Russell King <linux@armlinux.org.uk>, Conor Dooley <conor.dooley@microchip.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Oct 11, 2026 at 9:03=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > + * If @sts is NULL, perform an ordinary write.
-> > + *
->
-> Please don't do that. We don't want drivers calling this when they
-> don't need to.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Agreed.
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-> > +             if (!ktime_before(now.monoraw, sts->post_sts.monoraw))
-> > +                     return 0;
-> > +
-> > +             /* Cap the wait at 1 ms, which is more than any single
-> > +              * write's delay. This guards against an aux clock being
-> > +              * disabled and reenabled, which restarts its raw time.
-> > +              */
-> > +             if (!ktime_before(ktime_get_raw(), deadline))
-> > +                     return -EBUSY;
->
-> A bit banging MDIO bus might be slower.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-The comment is misleading; I'll fix it. The 1 ms doesn't limit how
-long the write takes, but how long the core waits after write_sts()
-returns. It allows for a driver that returns before the transfer is
-complete, at worst as soon as it has started. A bit-banging driver
-returns only after the last bit, so it doesn't wait at all.
+- [High] This patch makes a valid devmem MSG_ZEROCOPY sendmsg() fail with
+  -EFAULT.
+- [High] The commit says it prevents mixing fragments from different
+  devmem bindings in one skb, but it only guards the…
 
-> Also, i've not thought about the mux case, where the write gets
-> blocked until some other operation is performed on the shared hardware
-> of the mux.
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it undermines
+  the validation the patch hardens.
 
-In the mux case, mdio_mux_write_sts() takes the parent bus lock and
-switches the mux before calling the parent's write_sts(). So any time
-spent blocked on the mux comes before the lower bound. Or did you have
-another case in mind?
+--
 
-> > +     /**
-> > +      * @write_sts: Perform a write transfer on the bus,
-> > +      * with system timestamps bounding its completion. Set only
-> > +      * if timestamps can always be provided. Must not return
-> > +      * -EOPNOTSUPP.
-> > +      */
-> > +     int (*write_sts)(struct mii_bus *bus, int addr, int regnum, u16 v=
-al,
-> > +                      struct ptp_system_timestamp *sts);
->
-> I suggest putting C22 in the comment. At some point, somebody might
-> need C45. And that gets complex because of C45 over C22.
+net: devmem: prevent mixing fragments from different bindings
 
-Agreed.
+This patch adds net_devmem_skb_binding(), which returns the devmem binding
+of an unreadable skb's first frag. validate_xmit_unreadable_skb() now uses
+it, and zerocopy_fill_skb_from_devmem() now refuses to append frags from a
+different binding to an skb that already has frags. The aim is to stop
+consecutive sendmsg() calls with different dmabuf bindings from sharing
+one skb and getting past the per-device and unbind checks at xmit time.
 
-> Is there any need for read_sts?
+> diff --git a/net/core/datagram.c b/net/core/datagram.c
+> index 173b5d97bd409..ed8f1045f3cca 100644
+> --- a/net/core/datagram.c
+> +++ b/net/core/datagram.c
+> @@ -712,7 +712,7 @@ zerocopy_fill_skb_from_devmem(struct sk_buff *skb, struct iov_iter *from,
+>  	size_t virt_addr, size, off;
+>  	struct net_iov *niov;
+>  
+> -	if (i && skb_frags_readable(skb))
+> +	if (i && net_devmem_skb_binding(skb) != binding)
+>  		return -EFAULT;
 
-Not for this series, I think. The BCM54210PE captures its time on a
-write, so a timestamped read isn't needed here. I'd leave read_sts
-until a driver needs one.
+[Severity: High]
+Can this make a valid devmem MSG_ZEROCOPY sendmsg() fail with -EFAULT?
 
-James
+Segment selection in tcp_sendmsg_locked() still compares only readability,
+not binding identity:
+
+net/ipv4/tcp.c:tcp_sendmsg_locked() {
+    ...
+		if (copy <= 0 || !tcp_skb_can_collapse_to(skb) ||
+		    unlikely(skb_frags_readable(skb) != !binding)) {
+    ...
+}
+
+Say the unsent tail skb holds frags from binding A, and the next sendmsg()
+passes binding B through SCM_DEVMEM_DMABUF. The condition above is false,
+so TCP appends to the tail skb.
+
+On back-to-back calls, msg_zerocopy_realloc() extends and returns the same
+uarg, so skb_zerocopy_iter_stream() does not return -EEXIST. We then reach
+the new check with nr_frags > 0 and net_devmem_skb_binding(skb) == A != B.
+
+The -EFAULT is not one of the errors that start a new segment:
+
+net/ipv4/tcp.c:tcp_sendmsg_locked() {
+    ...
+			err = skb_zerocopy_iter_stream(sk, skb, msg, copy, uarg,
+						       binding);
+			if (err == -EMSGSIZE || err == -EEXIST) {
+				tcp_mark_push(tp, skb);
+				goto new_segment;
+			}
+			if (err < 0)
+				goto do_error;
+    ...
+}
+
+With copied == 0, userspace gets -EFAULT. Retries fail the same way until
+the tail skb leaves the write queue. That can take a while if the socket
+is corked, MSG_MORE is used, Nagle or TSO defers, or cwnd is the limit.
+
+The old "i && skb_frags_readable(skb)" check could not be reached from
+TCP, because the tcp_sendmsg_locked() condition above already filtered
+that case. The new check can be reached.
+
+net_devmem_get_binding() accepts any binding whose dev (or vdev) matches
+the socket's dst device. So using two dmabufs bound to the same NIC on one
+socket is legitimate, and it worked before this patch.
+
+Would it be better to start a new segment when the binding changes? One
+option is to add net_devmem_skb_binding(skb) != binding to the
+tcp_sendmsg_locked() condition. Another is to return -EEXIST or -EMSGSIZE
+here.
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index e76762e29360e..ad2b587dfee27 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -4054,8 +4054,7 @@ static struct sk_buff *sk_validate_xmit_skb(struct sk_buff *skb,
+>  static struct sk_buff *validate_xmit_unreadable_skb(struct sk_buff *skb,
+>  						    struct net_device *dev)
+>  {
+> -	struct skb_shared_info *shinfo;
+> -	struct net_iov *niov;
+> +	struct net_devmem_dmabuf_binding *binding;
+>  
+>  	if (likely(skb_frags_readable(skb) ||
+>  		   dev->netmem_tx == NETMEM_TX_NO_DMA))
+
+[Severity: High]
+This issue was not introduced by this patch, but does this early return
+let MTU probe skbs skip all of the devmem checks?
+
+tcp_mtu_probe() allocates the probe skb as a readable skb:
+
+net/ipv4/tcp_output.c:tcp_mtu_probe() {
+    ...
+	nskb = tcp_stream_alloc_skb(sk, GFP_ATOMIC, false);
+    ...
+}
+
+tcp_clone_payload() then copies the devmem net_iov frags into nskb with
+skb_frag_page_copy() and skb_frag_ref(). It never sets to->unreadable; it
+only propagates SKBFL_SHARED_FRAG.
+
+So skb_frags_readable(nskb) is true, and validate_xmit_unreadable_skb()
+returns here, before the NETMEM_TX_NONE, binding->dev and unbind checks.
+
+The mislabelled skb also looks readable to any code that reads the
+payload. With an AF_PACKET tap on the egress device, for example,
+tpacket_rcv() calls skb_copy_bits(). That passes its !skb_frags_readable()
+guard and then kmaps skb_frag_page(), which is NULL for a net_iov.
+
+packet_rcv() recvmsg, BPF socket filters and skb_checksum_help() appear to
+be exposed the same way.
+
+A separate question: skb_frag_page() is NULL for every net_iov, so can the
+merge test in tcp_clone_payload() join frags from different niovs?
+
+net/ipv4/tcp_output.c:tcp_clone_payload() {
+    ...
+			if (lastfrag &&
+			    skb_frag_page(fragfrom) == skb_frag_page(lastfrag) &&
+			    skb_frag_off(fragfrom) == skb_frag_off(lastfrag) +
+						      skb_frag_size(lastfrag)) {
+				skb_frag_size_add(lastfrag, todo);
+    ...
+}
+
+net_devmem_get_niov_at() sets off = virt_addr % PAGE_SIZE. Take an iov at
+dmabuf offset 0 with length 1000, followed by an iov at offset
+8192 + 1000. That gives niov0 {off 0, len 1000} and niov2 {off 1000}.
+
+Those two frags would be merged into one niov0 frag, and the wrong dmabuf
+bytes would go on the wire.
+
+> @@ -4064,14 +4063,9 @@ static struct sk_buff *validate_xmit_unreadable_skb(struct sk_buff *skb,
+>  	if (dev->netmem_tx == NETMEM_TX_NONE)
+>  		goto out_free;
+>  
+> -	shinfo = skb_shinfo(skb);
+> -
+> -	if (shinfo->nr_frags > 0) {
+> -		niov = netmem_to_net_iov(skb_frag_netmem(&shinfo->frags[0]));
+> -		if (net_is_devmem_iov(niov) &&
+> -		    READ_ONCE(net_devmem_iov_binding(niov)->dev) != dev)
+> -			goto out_free;
+> -	}
+> +	binding = net_devmem_skb_binding(skb);
+> +	if (binding && READ_ONCE(binding->dev) != dev)
+> +		goto out_free;
+
+[Severity: High]
+The commit message says this prevents mixing fragments from different
+bindings. Is the tcp_sendmsg_locked() append path the only place where
+that mixing can happen?
+
+Adjacent write-queue skbs with different bindings can still be created
+after this patch. This happens when the binding A skb reached size_goal,
+was sent with MSG_EOR, or msg_zerocopy_realloc() allocated a new uarg
+(-EEXIST).
+
+With MTU probing enabled and cwnd >= 11, tcp_mtu_probe() checks:
+
+net/ipv4/tcp_output.c:tcp_can_coalesce_send_queue_head() {
+    ...
+		if (tcp_has_tx_tstamp(skb) || !tcp_skb_can_collapse(skb, next))
+			return false;
+    ...
+}
+
+tcp_skb_can_collapse() compares readability but not the binding:
+
+include/net/tcp.h:tcp_skb_can_collapse() {
+	return likely(tcp_skb_can_collapse_to(to) &&
+		      mptcp_skb_can_collapse(to, from) &&
+		      !skb_cmp_decrypted(to, from) &&
+		      skb_pure_zcopy_same(to, from) &&
+		      skb_frags_readable(to) == skb_frags_readable(from));
+}
+
+tcp_clone_payload() then copies the frags of both skbs into one probe
+skb. net_devmem_skb_binding() only looks at frags[0]. So even if the probe
+skb were correctly marked unreadable (see above), this check would only
+validate binding A's dev. Binding B's dev and unbind state would never be
+checked.
+
+The other merge sites look covered. tcp_grow_skb() and SACK shifting go
+through skb_shift(), which refuses zerocopy skbs. Retransmit collapse is
+blocked because tcp_can_collapse() rejects unreadable skbs.
+
+Should tcp_skb_can_collapse() or tcp_can_coalesce_send_queue_head() also
+compare net_devmem_skb_binding() for the two skbs?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008034027.1403188-1-almasrymina%40google.com
