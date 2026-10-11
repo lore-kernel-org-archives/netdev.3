@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFDF3546EB;
-	Sun, 11 Oct 2026 16:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB943242D4;
+	Sun, 11 Oct 2026 16:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791737316; cv=none; b=S8B0jgEA81Yzj6q3udDKX2jMHEucbg1CLaWtXv4qlIJjoFeR5ZqauvM0dEIUop3wvd9I4f/azHoY4AbqjCDCv7UIqA98XdI3600au+aOVKJCPRiuutICNU/maClF9u6StmpAA7QJB2IA/8nl+ypyMqgpQRIsFQmcO/b2ZWXc2pc=
+	t=1791737322; cv=none; b=iX9SFfnWUFLILdDl7k01l6A9PhJ0FzK8mx+sTi2gYcCbN49B5R3OzylU+19u+7DH3LNMs4sWjgAD8mnAa/DIJMwz/f7a7sEOqFvZgXzGKb+oQjjJ90yTsdZycDxR4WIJ1lLV31FG9oJT+fMUh/zqrk9N2s/EJhN47KpKPu3RoIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791737316; c=relaxed/simple;
-	bh=/rsWNMg/nsXzMvPnUr0F14gaf8ZRtZ2HX9prd/eaSDQ=;
+	s=arc-20240116; t=1791737322; c=relaxed/simple;
+	bh=alh//LVdFtWmJOTTF7G48v6MxhzO7NPK/fRJTL7KjG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uFNzV/0V57vJ7OVlaqg/NhZs5rJab6kkXhsRcz33jEmwEAFZDoXZCRuVkKpiJA8sYJ75LprMMKdqQnUwV7e18GBlHd1msZHUJMf79tr0NDZj0RuzTxJmjYRWJZFnhIMiGrH5yKQtHlmEAgyAuD93uNj0Ea0FCLXHdvzp8lHbIIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbutxCJz; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=HDUT1HpaKeQucvtuoWArn2DAHYCUeZAk9QSOyJEsQq/4/66DRe7iC/c7KapMKSHuxIkgWQraa86X2UrFybl7X7yn0PqAQn3FKnpbCIUEBngltrlpxTbWr5l02Vs724wLvO7ZO3Hy+F/SZhX5klZQim7xTcKxq2x8AVQzvhHqqIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsnfuCWo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbutxCJz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A531F0089D;
-	Sun, 11 Oct 2026 16:48:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsnfuCWo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35691F0089D;
+	Sun, 11 Oct 2026 16:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791737315;
-	bh=fVEbiCGJkz6LGx8IU72XRlFet1ix+jfmxBA9eJo4Iog=;
+	s=k20260515; t=1791737321;
+	bh=VoSBOMlqsCH2193UXFn0wR9csHsjlgwdcJrgyih8Fes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QbutxCJzZ7AQ8IAZEtR3BeVv8pZc8dAhYmVgtjQNXiHw3fC/oc8s3YgO2uxF0vCRp
-	 6dFoHjZuUJjFb2G4k9C1SaqO8ELOQViROe2zNQdbj8mQXqB+4Wfo6VEzyZg0Rrg1aq
-	 3D7TDJ3CNJW5sfuzNM2JnYemTz7kLbaT0Za57zif9XPgDf+uZqtxAI6+E21rQZRw6w
-	 g6Ly47jrsb//8gmEgKQDHY6PaZ9Yuqgln1BLX3fS3iI62hY8h6E61MEjEk/6xR/6YN
-	 lUrMwYitVWx8Wto0oLoK4Pww1EjIrv7z9FDA6zZeZlaCK/zpZwVd6U3hcAPpO200kh
-	 b1t3UN8Dcj+Aw==
+	b=DsnfuCWolck8zux1RVWDpqixmRFp8z6JAlKkCSV8aes/lWPxXL5d0Cri/EaLiFNyH
+	 +txQvkUa25ziMyBgMrfapO9DP8b+6ak6Wipg7K1Wwu3FQbumG0DAhBXxvlcrfTeQ/p
+	 Th4V/naAe7Ukg6yz4zxta++V5K8cakeV/3R9B8SezSWJoy+LxOjGIjAYkWKRaRBiNc
+	 fJ5hyk8XweU+GoL9mlcVI6Ys2k/hsliHNkszLvzs5ksiGcG3+0Wihp1UaGQ8dNxJdf
+	 nICW3vYOCwLWcacdNDDaflb4ohDONoBUX3fLmLimVDQ584ww1xuhVWSvKQ6TkraY3Z
+	 kRC9uxLwMwVRg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
 	netdev@vger.kernel.org,
-	Rachel Menge <rachelmenge@linux.microsoft.com>
-Subject: Re: Request backport of bf5a54bc0e3d to 6.18.y
-Date: Sun, 11 Oct 2026 12:48:12 -0400
-Message-ID: <2026-10-11-1-daily-reply-0005-ynl-netlink-raw-max-6-18@kernel.org>
+	Aleksei Sviridkin <f@lex.la>
+Subject: Re: [PATCH 6.18.y] net: dsa: mt7530: fix .get_stats64 sleeping in atomic context
+Date: Sun, 11 Oct 2026 12:48:18 -0400
+Message-ID: <2026-10-11-1-daily-reply-0011-mt7530-get-stats64-6-18@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <899bd843-fd19-418e-8913-91bfb6e760a2@linux.microsoft.com>
-References: <899bd843-fd19-418e-8913-91bfb6e760a2@linux.microsoft.com>
+In-Reply-To: <20261009190808.1385789-1-f@lex.la>
+References: <20261009190808.1385789-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,13 +46,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> Please consider applying the following upstream commit to 6.18.y:
->
-> bf5a54bc0e3d8962474fcd611f1266eba036232f
-> doc/netlink: netlink-raw: Add max check
+> The .get_stats64 callback runs in atomic context, but on
+> MDIO-connected switches every register read acquires the MDIO bus
+> mutex, which can sleep:
 
-Queued for 6.18, along with the schema check fix Anton suggested,
-thanks.
+Queued for 6.18, thanks.
 
 -- 
 Thanks,
