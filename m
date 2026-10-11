@@ -1,222 +1,158 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC6B45FFAC
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 19:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5370135BDAA;
+	Sun, 11 Oct 2026 19:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791747767; cv=none; b=pVUMFV21P5GRcxq9+TqYu6hCPOw8svWh/TVurSqtfvdIXtiBM11MZaskH0+YigX/YFljwcUHXE9iMj0QBe5bJpYtQbqPgLmXLzPjk8E4Xddv8dAgMKBGPIzZDrtUaWdXcp4shgj2tPQoktFd4yAUTQR6lKoMkzh5Rm+qZQVwXxw=
+	t=1791747899; cv=none; b=neGjt42kk0tqrVYmU161naNBfoeYlt8ZaJBeDbHcHYzBqqHy9QBcNfpnBoEyQpPvFPBhHjngJrg7STr3flltdyukHvFgz+GERhn5+3yOWVBNdFhzM/qcxNP4F/Hbg31Gy57RXPL80Kxgz/Dr92WyZHCmanDleMrU8SgaFmAwrgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791747767; c=relaxed/simple;
-	bh=duwhY6Tg9tFTL1XOXarBBsKmWEqDi2jVDN3dH3CmJ4Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dA63C1chKwUxBdbN7Swi0Uqx9si7Tlgxlh13e22m1pRX4bAd5VSuILEsZDUJsEu+t/dlIDmj9PTVOwHp4tFErpwwPt0plsMBVuSME05etNyrINDxtxdB5ntvgygu1ANmWEKiz2rItVsN4539ZDOZvzAF3SEyx2F2Q3gQROVFiTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h50CcZEV; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791747899; c=relaxed/simple;
+	bh=i20Tc7f4556SiYFNNTw21l9Z8Rm27QzVFOFAjWI/HcU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WqKZ1Cohv7/fg8qm09KJGeJQQqFszeLIfIP0E1rI+qM0WUjGi2T4FXZv0bq57aQZoplkJFBtQRJiCSLi2HkPC7XR6R5gNHMI6G+kVxUt/bf/V3z+ZBaP+3oYTeVggLOydeVK1Pnk0rpBgxVpaMpg4MhdbjY7RcpB40GFgirFTZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ndio30F7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h50CcZEV"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c2e8c710847so150975266b.0
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 12:42:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791747760; x=1792352560; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P57ESlsV9SvC7jAyaXBqTiZZ0EEN4K1kw22rWzkVaQw=;
-        b=h50CcZEVKgMXP+VS13OBpeU9Qm+RLcRIl957khv4EIB90D/wHkS3s23xF6jwkK/gOr
-         nu8PZbvUu8eHVE/u3Jzww8RN2G0GTDREMEamlkoPW+2Cfm9V2JlGIVTU3eBYiAB9c4rS
-         V8qnLW2I2wy/7gZQhoB6RP3MClVrQ/tauQlx8poQbxfNkXYAVJHmc8fNwGRrQt5tXhTf
-         XcDNRViDF4fvuZfT9tPR9nIHtiP1hBQ8Et2AvcfxiSOGc3PznsoIzO65fIPXpV6msB8M
-         c8Ok3O55SpKc0/sFZfDPug60j6bvzaz+6l4fWLcZnIKDiwLGYZQZUNP5PV9xlOts8G2z
-         DPrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791747760; x=1792352560;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P57ESlsV9SvC7jAyaXBqTiZZ0EEN4K1kw22rWzkVaQw=;
-        b=TKXfhq80hd8kxXOwtDrQYknotT7ZAkrJQ0nHXwDMVtG+RyJ5oekUf63M+1hMUrd4yh
-         IGDahVgQ91rfzpn9hHkwER0vyyCIwCL7FPc/VnNFG9tkdyggmDAu4/k4RFp1VyG08A+N
-         zrCW4vO8FoxfaDHUKQmRj2nS6iMVqpZuDUgmX7ARQ3PrrQuFzk6f4BFmrTBJuAEo9Sii
-         3oFLMNcw15rL/o2p2vnDEQW/ZMWSu0dfpcm//hWymjHZLVEEsFILcs37bjSUsHXK4mM2
-         XiiN3J7K3dQbfCSwUqKViIQkbWlR1MRt6YbqXG9sGm56aGFiZPij9j+q1JTUdoVbr5Lu
-         kCxg==
-X-Forwarded-Encrypted: i=1; AKwUvByb0HqzhDQquw9N4591mcMaFMEM+sQJ8/VRslSbUjcq8iX+b0oytMulbTUK27QLA6vLhJ3mLC0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIP4NFP1hGqx3YxxeyB+wuMtn4d9Mxz6XNUssjUfxXAVENhTYxb
-	r8qjExxDGoaoNEZeuEMFk/7tdy5h+2u4InSjI/1is7buam/hG4HfOuLv
-X-Gm-Gg: AYBFou1tqf9b/VNu2TWes0YssDG/rQoZB1rFzHrFTR7n+YUCnZH4z0uozJVwZMF4XQM
-	HuW0BTDm6Oweers6tkZtZbVu5KRNSIkph5ubiHZIYsQMP0n/NrvGCpY53ATOZO/LHgZiA73aPF4
-	vpJtRhubHQ+T6IlQz2oRaAn+JGESfEVEUP/npgsYo2BTxH5lLS+b0K2PRwZhSw5A8FXjOcTd1+S
-	HYzUNz647TVPWd8QgR+4FFf1UrPmTEtzGhwiUhqsuUDWPG6M1wb9HElbsnDayhssB8b7PfU6P/V
-	ZW0Xe9qAgdVRDUgM0VAMovnyGTjwm0hcJ4ib2oUBUXiaDeUHKv63R9I1p7cflr6sij+2f4SQbcH
-	pt27UPI+uE/MO8MRViIe4SMOUDJKT4rk1Am+S1jsU6j0r/zu5mpUdVASlN5h65yFAqj6mNkn5PA
-	mbNdPpDFnSd8yX4i33h+yIq9vluAv4Z3Gujil3tQ8kqN6byakEhk8oPiSEtiglwy51w20+n/1kM
-	DiazuVboU8/KGJbQa2ymXVh4fVx2eP+IRS8CtLD
-X-Received: by 2002:a17:907:968f:b0:c31:8c48:e18b with SMTP id a640c23a62f3a-c31a9afb3b6mr819944966b.14.1791747760150;
-        Sun, 11 Oct 2026 12:42:40 -0700 (PDT)
-Received: from buildhost.darklands.se ([2001:9b1:ff:d701:51eb:176f:63d9:53f8])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9a74bcbsm387266166b.38.2026.10.11.12.42.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 12:42:38 -0700 (PDT)
-From: Magnus Lindholm <linmag7@gmail.com>
-To: pavan.chebbi@broadcom.com
-Cc: andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linmag7@gmail.com
-Subject: [PATCH net-next v3] tg3: normalize inherited BCM5718 register byte order
-Date: Sun, 11 Oct 2026 21:41:58 +0200
-Message-ID: <20261011194228.981141-1-linmag7@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ndio30F7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1161A1F0089B;
+	Sun, 11 Oct 2026 19:44:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791747897;
+	bh=ybSHNZN0sLAcAcqooYFFzMCFvgioFe6ifikT0RnbGgU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Ndio30F74QvWZ+l3sZghTVNaLQrlGwiAW9hNudalix1ZHnaJ44aeLb03WgP0NSS/C
+	 VPNIbWnqp+Mkht9eGZcLFmZgwRFdp62HhO2NKsTFISELXQDlpYaryNG2J9hFWz536e
+	 MFzCbMZn69Q20R9OOKXTg17sA58NU547H/ueNhk2oipXxfoTCqiEIY3I6vhpic0NNB
+	 r0dKLD5CXZ4qwhXZVkYkPP1kgGaHjt3yfsHoVKA5ps09hNymdNBIzDCpMJ+WulEjIU
+	 GT75hMdGW11rXmmhP9AkEGHq5hXnnucwEgDGuX4k8I8dMIAFmcoeIA6c+jgzz26wyr
+	 TUviXUhy/bJTg==
+Subject: Re: [PATCH net-next v7 1/3] dt-bindings: ptp: renesas,rcar-gen4-gptp:
+ Add R-Car Gen4
+From: netdev-bot+sashiko@kernel.org
+To: niklas.soderlund+renesas@ragnatech.se
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ geert+renesas@glider.be, magnus.damm@gmail.com, richardcochran@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
+ sergei.shtylyov@gmail.com, linux-renesas-soc@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+Date: Sun, 11 Oct 2026 19:44:56 +0000
+Message-ID: <179174789660.434549.18248086248544224654@kernel.org>
+In-Reply-To: <20261007185920.4042783-2-niklas.soderlund+renesas@ragnatech.se>
+References: <20261007185920.4042783-2-niklas.soderlund+renesas@ragnatech.se>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Firmware can leave BCM5718 vendor registers byte-swapped while standard
-PCI fields retain normal byte order. Detect this from the host-control
-revision marker, byte-swap bit and swapped product ID, without matching
-a platform model or PCI subsystem. Prefer the normal revision marker
-so already-normal controllers do not enter the normalization path.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Hardware swapping can accommodate big-endian register accesses, but tg3
-already initializes misc_host_ctrl with WORD_SWAP set and BYTE_SWAP clear
-on both little- and big-endian builds. Its normal MMIO path uses
-readl()/writel(); on SPARC64 these use little-endian accesses. Restore
-that existing register mode rather than choosing a mode based on host
-endianness. The swab32() on the initial write compensates for the device's
-inherited state; subsequent accesses use the normal driver path.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-DMA byte ordering is controlled separately through GRC_MODE. Leave those
-settings, including the __BIG_ENDIAN handling for non-frame data,
-unchanged. Check both register readbacks and keep this in probe so PCI
-access or validation failures can abort initialization.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Limit detection to BCM5718, whose register layout and inherited state
-were checked on M3000 hardware. Other controller families retain their
-existing initialization path.
+- [High] ptp: devm_ioremap_resource() conflict with rtsn Ethernet driver
 
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
----
-Changes since v2:
-- Expand the commit message in response to Andrew Lunn's review: explain
-  the existing register mode on both host endiannesses, the purpose of
-  the initial swab32(), and the separate big-endian DMA configuration.
-- No code changes; the diff is identical to the tested v2.
+--
 
-Changes since v1:
-- Detect BCM5718 register state without OF model or subsystem matching.
-- Prefer the normal revision marker and retain checked PCI accesses and
-  product-ID/readback validation. Use dev_dbg() for successful correction.
+> diff --git a/Documentation/devicetree/bindings/ptp/renesas,rcar-gen4-gptp.yaml b/Documentation/devicetree/bindings/ptp/renesas,rcar-gen4-gptp.yaml
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/ptp/renesas,rcar-gen4-gptp.yaml
+> @@ -0,0 +1,64 @@
+> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
+> +# Copyright (C) 2026 Renesas Electronics Corp.
+> +# Copyright (C) 2026 Niklas Söderlund <niklas.soderlund@ragnatech.se>
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/ptp/renesas,rcar-gen4-gptp.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Renesas R-Car Gen4 gPTP timer
+> +
+> +maintainers:
+> +  - Niklas Söderlund <niklas.soderlund@ragnatech.se>
+> +
+> +description:
+> +  The R-Car Gen4 gPTP timer enables accurate synchronization of the clock in
+> +  the control system. The timer is system-wide and used by different Ethernet
+> +  devices on each Gen4 platform.
+> +
+> +    - On R-Car S4 it is shared between RSWITCH and RAVB.
+> +    - On R-Car V4H it is shared between RTSN and RAVB.
+> +    - On R-Car V4M it is only used by RAVB.
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - renesas,r8a779f0-gptp # S4-8
+> +          - renesas,r8a779g0-gptp # V4H
+> +          - renesas,r8a779h0-gptp # V4M
+> +      - const: renesas,rcar-gen4-gptp
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +  resets:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - power-domains
+> +  - resets
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/r8a779g0-cpg-mssr.h>
+> +    #include <dt-bindings/power/r8a779g0-sysc.h>
+> +
+> +    ptp@e6449000 {
+> +            compatible = "renesas,r8a779g0-gptp", "renesas,rcar-gen4-gptp";
+> +            reg = <0xe6449000 0x500>;
+> +            clocks = <&cpg CPG_MOD 2723>;
+> +            power-domains = <&sysc R8A779G0_PD_ALWAYS_ON>;
+> +            resets = <&cpg 2723>;
+> +    };
 
-The unchanged v2 code was tested on big-endian SPARC64 with M3000 v2:
-normalization at boot on all four ports, rebind without further
-normalization, three active-link cycles and a 16 MiB bidirectional
-transfer with matching SHA-256. Kernel taint remained zero. Standalone
-SPARC and x86-64 CONFIG_OF=n driver builds passed; no little-endian
-hardware runtime test was performed.
+[Severity: High]
+This example places the timer at 0xe6449000. That is the same region
+renesas,ethertsn.yaml already describes as the second reg entry
+("gptp") of the RTSN node on V4H. rtsn_probe() looks that range up with
+platform_get_resource_byname(pdev, IORESOURCE_MEM, "gptp") and maps it
+with devm_ioremap_resource(), which requests the region exclusively.
 
- drivers/net/ethernet/broadcom/tg3.c | 72 ++++++++++++++++++++++++++++-
- 1 file changed, 70 insertions(+), 2 deletions(-)
+Suppose a V4H DT contains both the ethertsn node and this new ptp node,
+and a driver for this binding also maps its reg with
+devm_ioremap_resource(). Then whichever of the two probes second will
+fail with -EBUSY, and either Ethernet or the gPTP timer is lost at boot.
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 73a4b569b03e..ef0f6e5f6440 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -16248,6 +16248,65 @@ static bool tg3_10_100_only_device(struct tg3 *tp,
- 	return false;
- }
- 
-+static int tg3_fw_byteorder(struct tg3 *tp, u32 *misc_ctrl_reg)
-+{
-+	struct pci_dev *pdev = tp->pdev;
-+	u32 prodid, expected_prodid, normalized, readback;
-+	int reg, err;
-+
-+	/* Prefer the normal revision marker before testing the swapped state. */
-+	if (pdev->device != TG3PCI_DEVICE_TIGON3_5718 ||
-+	    (*misc_ctrl_reg >> 28) == ASIC_REV_USE_PROD_ID_REG ||
-+	    (swab32(*misc_ctrl_reg) >> 28) != ASIC_REV_USE_PROD_ID_REG ||
-+	    !(swab32(*misc_ctrl_reg) & MISC_HOST_CTRL_BYTE_SWAP))
-+		return 0;
-+
-+	/* Standard PCI fields are normal; verify the swapped vendor registers. */
-+	reg = TG3PCI_GEN2_PRODID_ASICREV;
-+	err = pci_read_config_dword(pdev, reg, &prodid);
-+	if (err)
-+		goto config_error;
-+	expected_prodid = swab32(prodid);
-+	if ((expected_prodid >> 12) != ASIC_REV_5717) {
-+		dev_err(&pdev->dev, "unexpected swapped BCM5718 product ID %08x\n",
-+			prodid);
-+		return -ENODEV;
-+	}
-+
-+	normalized = (swab32(*misc_ctrl_reg) & MISC_HOST_CTRL_CHIPREV) |
-+		     tp->misc_host_ctrl;
-+	reg = TG3PCI_MISC_HOST_CTRL;
-+	err = pci_write_config_dword(pdev, reg, swab32(normalized));
-+	if (err)
-+		goto config_error;
-+	err = pci_read_config_dword(pdev, reg, &readback);
-+	if (err)
-+		goto config_error;
-+	if (readback != normalized) {
-+		dev_err(&pdev->dev, "BCM5718 host-control readback mismatch %08x\n",
-+			readback);
-+		return -EIO;
-+	}
-+
-+	reg = TG3PCI_GEN2_PRODID_ASICREV;
-+	err = pci_read_config_dword(pdev, reg, &prodid);
-+	if (err)
-+		goto config_error;
-+	if (prodid != expected_prodid) {
-+		dev_err(&pdev->dev, "BCM5718 product-ID readback mismatch %08x\n",
-+			prodid);
-+		return -EIO;
-+	}
-+	*misc_ctrl_reg = readback;
-+	dev_dbg(&pdev->dev, "normalized firmware register byte order\n");
-+	return 0;
-+
-+config_error:
-+	dev_err(&pdev->dev, "BCM5718 PCI config access at %#x failed (%d)\n",
-+		reg, err);
-+	return pcibios_err_to_errno(err);
-+}
-+
- static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
- {
- 	u32 misc_ctrl_reg;
-@@ -16272,8 +16331,17 @@ static int tg3_get_invariants(struct tg3 *tp, const struct pci_device_id *ent)
- 	 * sure that indirect register accesses are enabled before
- 	 * the first operation.
- 	 */
--	pci_read_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
--			      &misc_ctrl_reg);
-+	err = pci_read_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
-+				    &misc_ctrl_reg);
-+	if (err && tp->pdev->device == TG3PCI_DEVICE_TIGON3_5718) {
-+		dev_err(&tp->pdev->dev, "PCI host-control read failed (%d)\n",
-+			err);
-+		return pcibios_err_to_errno(err);
-+	}
-+	err = tg3_fw_byteorder(tp, &misc_ctrl_reg);
-+	if (err)
-+		return err;
-+
- 	tp->misc_host_ctrl |= (misc_ctrl_reg &
- 			       MISC_HOST_CTRL_CHIPREV);
- 	pci_write_config_dword(tp->pdev, TG3PCI_MISC_HOST_CTRL,
+How is the transition meant to work here? One option is to update
+renesas,ethertsn.yaml to drop the gptp reg entry, reference this node
+with a phandle instead, and change rtsn.c to match. Or is the plan for
+the gPTP driver to avoid claiming the region exclusively? It would be
+good to have that spelled out in this series. As it stands, the
+bindings describe the same registers in two places.
 
-base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007185920.4042783-1-niklas.soderlund%2Brenesas%40ragnatech.se
