@@ -1,87 +1,244 @@
-Received: from sonic317-33.consmr.mail.ne1.yahoo.com (sonic317-33.consmr.mail.ne1.yahoo.com [66.163.184.44])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC718313543
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 23:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791761533; cv=none; b=ii41q0FyllIsK1qsYbnYUI7lifb/+6u6ZNADBE7z102iAREbyiEJ8W59UxARtIijnbEjESyj9ma0ZFCZOtDTp90U1e4Vxm6zQgp31w6ZGnXRhO490hjn86AIyYE7SXCBR9Q7IUkw2ZzvSuQtqcdPiI+Aj20oQj51Qg5FZPRKFXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791761533; c=relaxed/simple;
-	bh=EifIRG7TRl9QCR+3eHOvpf1UH+UR7E+QaGxfPiJk36k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qm8J7JZOAQBxw85JlyMR0wlUWiV+K2K0kGnQjx4AoKbfG+O6eBHtDbLAnIgFuRPmoEj5qtu9Tm6BE/ut5jeIZJMzs+IbZZDfGYCTodd/wCmgs8d4p4jRD3tp+an1IKjR1PZOf7s6MMeiwi1FNAIOrf/viLUkTtJM8NnN47ziUkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=BkAowf4m; arc=none smtp.client-ip=66.163.184.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D8E400E0D
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 23:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791762412; cv=pass; b=f3bOsoPvTNjmGnxLwwwST1E2mc/P6dlbwYHi0D+mjsIe5YCEV9559DmnbslMJNfCRTfSEw5ncxgfF8RiXZdR6ZdhpIFXv+og8PQmUf3TVP09rwfAbPh8EJ51Mv1cO2C0VSnISCr3wvh9wpnVMVuA/dBSDl1/05e2KCvGv5iRzRc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791762412; c=relaxed/simple;
+	bh=BRj+LKfnehsjDl/PKtVEYHuWbB8hMyAaL5EdDVQCgKI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uiHUoK/6qqY3J0CBhdMf0pxTcdjE+Po6EYkSXekJCrcx0gGkgCydKvxXyHQfMLqw0S2rxU0PtrqV2kOntL7+y+9hR528GfDWKFBMHSg9b7qdujKXoWIzt2D3D0ahXqGJIbO2r2v20gGB1EVP/hAH9NdHiqht0RltbxPd6noYQzo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=MXAg/T3k; arc=pass smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="BkAowf4m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791761526; bh=EifIRG7TRl9QCR+3eHOvpf1UH+UR7E+QaGxfPiJk36k=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=BkAowf4m8TvnzeHH8rKQiepN7G5Vjvj//EanLVk4SHlUOT6pUPl3mnCiGxxJYhtk5jIqgmgDZRHOU1wUhYAeCaXKt6jGjgsWx5TvCSMHqFOZMPA03JEQ75wXzo8EBX2mCX9nczYVFJ8VAOD/oDcdJO3u78YbLjVoq9yiDtz68FDRH3NG0xHckwai4zj+x+jbDVoQVP3hWoto3j5SUpolPS0YX1tw7kPO16M5Jdul/rWZw+o1Ne4QttmPufauuY4YY+cbWaKX2mPmpLJR8CD6OiTXrvMVXH8m54zwU4O1He4YtQvM7kbLjpnhqmVo2gQzGq8v/fai7wheY8fFQt+2CQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791761526; bh=z9MipcyLtU8DFvZPETXJ+LjAIlBJEvJIHnl7oSqbh/q=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=FiYu5nzY/zdHPKH29lEUbBdC11jvfVzUgl5FFxLbVQj2IzKmXjwsqvUJ6sSnZpMacybJr783Vb2KdseHMdi1858RGWVio2dXGzLKtD4N4Yw6WqJBkCL6oWgQxZqGUh1a+QGTCESpiKGzYOsMRcUH5HFA3fLnIshCOwOQM89utV8oPkW8VwprqNKCeU5P6wKiPk/o8q1WKxYWX2UtTmGlZqs0dIXP+SKvLIg5EN1UNiSXaSPnmTAJQu7/6Q1pCiytO84VJZHksRRwvzZWpKsoyJ9vS6RVtdIG3so14+fzXOJh2E9LhC0MB/zDFJu2vdjiJ7cnDmXGBzZcqxyMS7hxkg==
-X-YMail-OSG: gmIgQnYVM1nqFi7kPEEgXNJ.PiWF30XXk4uhPI176574TEu6TbcnGs01un.RTFQ
- kC3YS6bMjC6crWXQGkRvWwz52OoX2YBONXvlR9daMIAEsCE4f7N7wvsu0UEgBexPZZzTRlY4JrEr
- yjohAuvH2zEEbCRW4nl7B9CTm8GBzJ0EQw0JrePOvDO6Sprdrgd2WIxjWr0ONavLNuUxQBUUhMBJ
- vHcXeKWMjbTw5PAEOAno7doEswUpbs6JI4szqrOwVfz36dAzDrMecklt2BeqM8eEtcxOWzgN3qrs
- OCoghKXK.QD1zuYWKHR_QuMQkp0SPIuKlhJubf63skrGHQkz3l_EqR9dD9RFTLS6IY.XQbE6SmrD
- Sdxs3Diyby6ProutwkxLq9v.3FXkj7gvUme.xebGB0Yug4BLBmDHiEUtIF91bKnoLZIYfKF4uEK.
- 5SL49oaeDSXnWxTZ1c3NBuPqRtB.kfa4uX7VnwQbpDNtQVr.RlJjaGSK1XVo7Okb1PPvfy_9KOtM
- xQvA9l6ofGRo9cMfXGOKJMJF63YsbIdSn4loWh4pyTYxQPr.hWJAHXa_5u7XsxUbt_6shxGlJ8Yl
- ew6PHEaMS7TbMWZ9yV1YY4yxndZzIQ792N.GqJ0Ue9KoRxzX8hAqoAMlTPOKixCBXt.wNqGlJZ4c
- HgwJSk4rtZo.MZ5XJOHqQyF.OQX9oZ.KH7PWgB7VyChPVGbWbOOsbvSvVHx00xI6XYjRRALsqJWx
- lD6Iflcdeu2byPDSaFczQn1K6cUs7gNU_S3v76TUAtJln.rZZ2W8lLsh2wdZhmzVfH7aaWDJaGki
- 3SII7qjeE468TYsGMlvriRhqc0ury1lNMeQn1Oddt5VRk_RUXBUDY.Sc0ekB8A9oB9JJEdsegSws
- ngjgdLZP2DNoq8mk9SAwxRc_JJqHGFTDThGTiBP810DsgcNw7iYXYvhboE4RNaDEWeETcMWjuOzZ
- pK2J41vVPV07ANZxRLm3sqejdTcb7Yj1gqANBdJjs0c9ijEsB7qePEuv6Z0OWf3izSetjHUQwfbN
- hHmBjrBmONjzMABQBV_0YekOXbcQTmxvtWYwvQ53gp.xI_9YVOeOWZc0kCDQVdk_gBjDv8ZYLUPC
- I92v7dSPNv79cQvYEZDfhjWkvckVwMQscVmJ3XUe9E8x7s8cWdNypTZYk8DuV6ZIyQ5micGNSU6l
- HpklO_gIx0L_bgjuPH4FUeOZiU0.R8G2r37FL_6fYX5jMQ1M8C68nu5mMzqklwqGnbm_TaD6HrcQ
- u_0K3WjILSQc2tpDX2uRlfHL85e.3FBjV3M0axrfYlG9KEKLIQ9IATK2QMCJu3.xDlvAcY.OZvbq
- g_DWEMNyWj1pOllV9ly6K4BXpY.JcznjxXXLw.YYc7CR.VXeMGvMfuVzz0S5aXuajqaWaNHTyLag
- aDA7TtBY57egEdbqUTHH663DUsAySG._In94NVpCjkNQ2hB4OPNong2pqN3uU6Kul.cAIWtaWAC9
- GyLmmZ.dWfbOcipRn9bL3MDfIM7PouWRQZbbEyRDvmQJDtUGhyjTonXuHRvKCyxPy50cW4R6eck0
- VTP3WAEZTqsgwy7e4n8h5rwadJeMVvryGT0ee3ONZpI.VjwhGewCqanieIJTUAVlr53glpbk5rV5
- ULnQ4sXu1O7xabUdMf2EFpFMsT5bHlK9ZI3jyq7sX0YZ_6ML5z5XZ5ZwJiI3FVCrDCW9AGgPLnWS
- r5tQJNxz4pA53V8.HB1wgeQ80ppVPuRzEPJgTwhIuBlkwtxa9OmUOQCytbkHyvRJKMi_B668G9Es
- q2w20_7adF_p0Cb7aQVMJXu2G.7Sz3TQIX0PjQA2UxxjGIhV.9Xmofmf8DVIdoV5Pd9wRJ2ftqv2
- 1xh9ci0IiglbNUZMAsowmIl0G1H1Wl8G7kDi2nt8Dd.A28PbFvS79FvQa.tC5aeUFjRfpEKnVtIZ
- Yqey.clwHEmxAzwNLufbk.TT6qZ_3R__GxfFhRLJ0RVoP8EnxvMdZ.vPRqItIRgio9netDZOSDoR
- HdAp_ZFLOq0TMF7PZ1FXViSynP_2HengiezimrWAIJOgu.XSo_nC6o7m72JvgidF4M_vu3xBtx8x
- itKE9fXNtgdjfhpyE3ANi4CT9shygi0UIs_1rnI_l8iDD8fkvqPFQPKrSM_9K2gMPIM4vG.w13H_
- KSKny.u6Dr_rX_GOr7k3ej0mTsuCJxzzkYIuaijKDXiXWK7w9_syyWl35Hq2mlMNyh2FdzvJyz2F
- _MN83PyxwvF7oe2on8YOIjjEi577GSiu3LAvBbRcol_Mn.TneVBdSqZibWmYR4h3kg1HJKLRDxKk
- L605nvBjTARUWidMSuYUdqFMAESOPn6WXwZvyYp6hiA3IxZt5etI-
-X-Sonic-MF: <namiltd@yahoo.com>
-X-Sonic-ID: fddfef25-fbf7-4e84-b2e8-fe767513154c
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Sun, 11 Oct 2026 23:32:06 +0000
-Received: by hermes--production-ir2-5dd9bf4598-c45bs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 2d5afcc519ec4465e506c68bbc713318;
-          Sun, 11 Oct 2026 23:32:04 +0000 (UTC)
-Message-ID: <1c967962-fcf4-4974-90cc-c8a98b91217a@yahoo.com>
-Date: Mon, 12 Oct 2026 01:32:01 +0200
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="MXAg/T3k"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-890d52c7c7bso1129299b3a.2
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 16:46:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791762409; cv=none;
+        d=google.com; s=arc-20260327;
+        b=SX+Le4Xu5at1uMbixq0zRGvHMb2YZhbQsDmKEnTxf8v01p4NMiiDRhiKBrggMMVgdp
+         EW5dh+WOyVX44qPCLjjm1oWhnL9N28bQ7FL4XmgL34Dhfz8Pkw+WjPuom9L65vnZp0iG
+         9OTwjqFXfgYm5Gi0pNdqW1WFspFEMMiCX+hR8+BUFqGYzFAiT1fPxe/TiTPZWAxHaWw+
+         TZBlQEEEVhFCT/LBrTD01KKr4X1tuuDcUQCsBJ7sIcjnpPaXds9G5imNwPIL7bhBxYUc
+         EATSvHC/Zx/vR0o6GoY7onSBGbV7+gxraGfUgFsrWO/cmrerbZLABlaltWVaa1wyhTJo
+         qkxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KKgmFOu6bVAbbbCc5+OLEESffaB1jRdaI14yS1RT518=;
+        fh=qSN8Tu8kUMXv0dO3DDS2w+kh7gvrT9lKk2YqT5YMO8w=;
+        b=VQ6R4sR4tzlN4iTIF5cwYZV65iQwL2CIQHDtcYUa/e2hNFO4xrwsWouhpV71c7AaAG
+         o94NiiP5RhyNy+aO6ICF+Vy7Gv1x0qPljJsPZu6JEfo4Os6SXJoCGZklyzbNC7mcpW8x
+         x248MCT4WQvNpPREymDcbNriG2obrmKc1Ax8RqHJ878BY2QCmN3sMLZLZYdXEi9hvMz7
+         ckocoYlvF4MDc0aMO/KgaDEnw1sJDOPHjeOAtdAo7hhN8AsK4Z99VQYC7Y6p5Zm9j+wb
+         kCRkR7Ytji4FibkpbZd9+LOw39HkENv+0V1Qj4aQGrKE9uhdWLWxRFWghRiIEVo/YLEL
+         FQ8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1791762409; x=1792367209; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KKgmFOu6bVAbbbCc5+OLEESffaB1jRdaI14yS1RT518=;
+        b=MXAg/T3kybt7183nBRUChErctYUZl4OwvWFwoQo+7WcuPptSwwgIWJiSbw23Um9pSv
+         Ww6CrQtfGrrFdGb447dZVhs7w69FFPX/bwP4MGfRMDHiFN0rhbXBJ/Pihqo2FxDGC4z8
+         ulGd+TdFVTpzyKkNkiJqE4h/zW/uKF1vo+TgQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791762409; x=1792367209;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KKgmFOu6bVAbbbCc5+OLEESffaB1jRdaI14yS1RT518=;
+        b=hUQju12TNqgK5ve0SlJYivlkyuttoqUR6h9QB+qpLq6udhEX5aX96uBPXd8po2kpmC
+         DQfwokH4uAFkVK2IwMvj14RvQcsiNCxr6ygxCLD+H9qN8flggwos2fSu1EY4HhZ5QEJm
+         UhClh8T0Ehp0RXPOLYBxHzTeGHZ7j+KN3JXPTzXwjhZcIWwZ8zAe0mDe3TisuG/KGwbi
+         ZiDoiX8eQxAur44Sg1SdOrm2EeRURY7PKFzShtDzufBg6h23FLPsEBwEuKA+9+EvMYco
+         TXB9bAwSu+OHIO33TyALVEFkGZ9cC/Ok1AZZhD5SUu94vV/TBbzVElPjad3Ft+8XzD6S
+         IOmg==
+X-Forwarded-Encrypted: i=1; AKwUvBzDiBWtLyqIg4fnEVBBbPTP834zABA+zX6l00ggIDdtkg4cnnviC0b1CIkLL7+/gRceOK6oHUY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKhCZnX5VadA1gmbkZoCevX+6DLxRYn1btZcjcSRvQEbBAdDPyx
+	fwTVZFXFFY5sdfEzk8IqKOnxb0ynpkCKo2u+T+lGLVEk/KzmywJCn7XBz56G2DLYSqdqAoo490/
+	Y/HE9cETRbArpdpqe/tW/tW0ysMzahGnK7JUm1ito
+X-Gm-Gg: AYBFou3I5z50vm+8uCET2/cKNnt1GPIdg+Gan1YIH1fp/+75iaLn52KgtWB1B2x9amE
+	fS9xW9GvID1/RFIPJtg/NxG1nu1Qcrgi9eXKCYDStxpUrswqoktQlsHnNhh0LiVpvw1CcP+L4VE
+	ldoRU/8KvFfNMqUmHbhY6LFohJxDwRqEPtVVEGZycpXIxQCj5NUT5CNiaNSNVRCJq8Nga6OU9K/
+	82ipApZeeK90d+iT9SrgYL0w0J86nad++DfDmpTcW22NkyHpfKTZEELoEARfFuVm/X7h1GutfYF
+	deuo0/C/gIQCyhmuZVdf15H58Frzg6Ph5GtKteOTzR7b2uBLm9VYdNXai3quC7BiCfs7P3+aqS5
+	YMescJQn8qC9kBsZPNUebhF/AgeTTBWoF5w==
+X-Received: by 2002:a05:6a00:17a9:b0:893:1336:481d with SMTP id
+ d2e1a72fcca58-897c76e3c04mr7088669b3a.24.1791762409068; Sun, 11 Oct 2026
+ 16:46:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 9/9] net: dsa: realtek: rtl8365mb: add support
- for RTL8367S-VB
-To: netdev-bot+sashiko@kernel.org
-Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev-bot+sashiko@kernel.org
-References: <8d3a9cc7-17cb-46b5-ac78-c7b4055989a7@yahoo.com>
- <179174829036.434549.5346764045610555935@kernel.org>
-Content-Language: pl
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-In-Reply-To: <179174829036.434549.5346764045610555935@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.26668 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+References: <QDISC-H19Z.v2.20261007062551-3@mojatatu.com> <179171627521.434549.2707902365679392275@kernel.org>
+ <vPFrhbkwAui8zFPcGQTUDazQfsFDlr5GYuaYQ5BxJcrDiT6x1EljEze4cYadHqbeUW2ivLdpa8eC_cXC6ceACswgb-lW47aSVkHvHjhn_X8=@1g4.org>
+In-Reply-To: <vPFrhbkwAui8zFPcGQTUDazQfsFDlr5GYuaYQ5BxJcrDiT6x1EljEze4cYadHqbeUW2ivLdpa8eC_cXC6ceACswgb-lW47aSVkHvHjhn_X8=@1g4.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Sun, 11 Oct 2026 19:46:37 -0400
+X-Gm-Features: AclHuK-Hca3Oo7y22WkV-IQ7NAr03GdhhTT89LU4SzyRqKnf6bnxpVjip1zAEao
+Message-ID: <CAM0EoMmWDYmJjTGq8t7bdS9-rzd-3o0qQvsw4OKMwPCD2JAsFQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/2] net/sched: act_gate: cap the number of
+ scheduling entries
+To: Paul Moses <p@1g4.org>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, victor@mojatatu.com, 
+	jiri@resnulli.us, davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, olteanv@gmail.com, 
+	vladimir.oltean@nxp.com, eadavis@qq.com, dcaratti@redhat.com, 
+	dsahern@kernel.org, stephen@networkplumber.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for the review. The issues are valid; I will respin as v4.
+On Sun, Oct 11, 2026 at 2:56=E2=80=AFPM Paul Moses <p@1g4.org> wrote:
+>
+> > [Severity: Medium]
+> > This sizes the cap against the u16 nla_len of the nest. Should it also =
+be
+> > sized against the largest dump skb?
+> >
+> > netlink_recvmsg() limits the dump buffer size:
+> >
+> > net/netlink/af_netlink.c:netlink_recvmsg() {
+> >     ...
+> >       max_recvmsg_len =3D min_t(size_t, max_recvmsg_len,
+> >                               SKB_WITH_OVERHEAD(32768));
+> >     ...
+> > }
+> >
+> > For RTM_GETACTION dumps, netlink_dump() allocates at most about 32.4 KB=
+.
+> > dumping_entry() emits 36 or 40 bytes per entry. A gate with more than a=
+bout
+> > 810-900 entries therefore cannot be dumped, and the new cap still accep=
+ts
+> > it.
+> >
+> > When this happens, tcf_dump_walker() trims the action and returns witho=
+ut
+> > an error:
+> >
+> > net/sched/act_api.c:tcf_dump_walker() {
+> >     ...
+> >               if (err < 0) {
+> >                       index--;
+> >                       nlmsg_trim(skb, nest);
+> >                       goto done;
+> >               }
+> >     ...
+> > }
+> >
+> > If the gate is the first action in the skb, n_i is 0. tc_dump_action()
+> > then returns a skb->len of 0, and netlink_dump() sends NLMSG_DONE with
+> > success. If earlier actions fit, the next callback restarts at the gate=
+'s
+> > index and ends the same way.
+> >
+> > The result is that the gate and every later action in the IDR are missi=
+ng
+> > from "tc actions ls", and userspace gets no error.
+> >
+> > The commit message lists this truncation first under "The bugs:". The
+> > Caveat Emptor section then says the cap does not prevent it.
+> >
+> > Should the cap be small enough that a single gate fits in a dump skb? I=
+f
+> > not, should the commit message stop listing this truncation as somethin=
+g
+> > the cap fixes?
+> >
+>
+> This is the one I encountered, not that the cap should be smaller or that
+> this type of dump needs to work, it's confusing that it returns 0 and sto=
+ps.
+>
 
-pw-bot: cr
+I will look closely tommorow - if i can reproduce it i will add an
+extra patch to address this (already adding one for taprio with
+similar issue i caught earlier today).
 
+
+cheers,
+jamal
+
+> This needs more review with regard to other callers but to give you an id=
+ea.
+>
+> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> index e45a63be397c..4dfc050c48c4 100644
+> --- a/net/sched/act_api.c
+> +++ b/net/sched/act_api.c
+> @@ -589,18 +589,13 @@ static int tcf_dump_walker(struct tcf_idrinfo *idri=
+nfo, struct sk_buff *skb,
+>                 tcf_action_update_hw_stats(p);
+>
+>                 nest =3D nla_nest_start_noflag(skb, n_i);
+> -               if (!nest) {
+> -                       index--;
+> +               if (!nest)
+>                         goto nla_put_failure;
+> -               }
+>                 err =3D (act_flags & TCA_ACT_FLAG_TERSE_DUMP) ?
+>                         tcf_action_dump_terse(skb, p, true) :
+>                         tcf_action_dump_1(skb, p, 0, 0);
+> -               if (err < 0) {
+> -                       index--;
+> -                       nlmsg_trim(skb, nest);
+> -                       goto done;
+> -               }
+> +               if (err < 0)
+> +                       goto nla_put_failure;
+>                 nla_nest_end(skb, nest);
+>                 n_i++;
+>                 if (!(act_flags & TCA_ACT_FLAG_LARGE_DUMP_ON) &&
+> @@ -616,10 +611,15 @@ static int tcf_dump_walker(struct tcf_idrinfo *idri=
+nfo, struct sk_buff *skb,
+>                 if (act_flags & TCA_ACT_FLAG_LARGE_DUMP_ON)
+>                         cb->args[1] =3D n_i;
+>         }
+> -       return n_i;
+> +       return n_i ?: err;
+>
+>  nla_put_failure:
+> +       index--;
+>         nla_nest_cancel(skb, nest);
+> +       err =3D -EMSGSIZE;
+> +       if (!n_i)
+> +               NL_SET_ERR_MSG(cb->extack,
+> +                              "TC action is too large for the dump buffe=
+r");
+>         goto done;
+>  }
+>
+> @@ -2260,6 +2260,7 @@ static int tc_dump_action(struct sk_buff *skb, stru=
+ct netlink_callback *cb)
+>                 msecs_since =3D nla_get_u32(tb[TCA_ROOT_TIME_DELTA]);
+>         }
+>
+> +       ret =3D -EMSGSIZE;
+>         nlh =3D nlmsg_put(skb, NETLINK_CB(cb->skb).portid, cb->nlh->nlmsg=
+_seq,
+>                         cb->nlh->nlmsg_type, sizeof(*t), 0);
+>         if (!nlh)
+> @@ -2303,7 +2304,7 @@ static int tc_dump_action(struct sk_buff *skb, stru=
+ct netlink_callback *cb)
+>  out_module_put:
+>         module_put(a_o->owner);
+>         nlmsg_trim(skb, b);
+> -       return skb->len;
+> +       return ret;
+>  }
+>
+>  static const struct rtnl_msg_handler tc_action_rtnl_msg_handlers[] __ini=
+tconst =3D {
+>
+>
+>
