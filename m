@@ -1,46 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874123876D5;
-	Sun, 11 Oct 2026 20:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2054035C68D;
+	Sun, 11 Oct 2026 20:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791750163; cv=none; b=reswy602hqkyMu9v3qOLqo/KGYIJXRgsb0kDKq4zSA/XeXQ2S1ic7Rwtyv0503MXm8gmDrW1ox5VRZYQY9HFyXLmCLcAgzIjNBjWCxI7/Y4o3gMBNS33Ss/25vD1v0oPYs1EOY0fMNjqUh0UMu1UWJwWJBlO8FPG2W8iWvThYys=
+	t=1791750921; cv=none; b=HZ4/wnc/ojuzQ/hr/RuJKPYjj1noaH2/RjdrMoby67ZlFhVElyW7NCHyT+0XeINY51djqfxuO6eEXs7Iz3W1GXAaTD9+KS3PvgcrbPx0HUFEmBDfSdB3ke3Aw7jFiMDG/xm/LriqRHw3GVDrbLl1gcfre8cMoggMdwNbZAgg8Lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791750163; c=relaxed/simple;
-	bh=Grp5wMGxwoD3roPDxCWIS48obqzm7/Wjam0MlNUArCg=;
+	s=arc-20240116; t=1791750921; c=relaxed/simple;
+	bh=NOTqc4jLHqIZ2R0yahfyW8eKb8GSDxSmLGpwenvOYMM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EHs6er9kBmW2kRPKAtMWfsvOwFcu8SfyQR5PGfdR1aF+3XM1EjyzVnK7L/8ZMmG06UbFzRBf//gAdQ190xZEtA8rdRiGJSo1Iha4vA/fIvuI/oWlySg1loPzv32CDHDrW56f8CHoVnJd2zwKBaDm6kBptBqid3GhmRT7Nogmpko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxJojhUf; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=USRKoT8zUtd7jSt5pxQ6cN/Zh3lQSUFxtCttWhAWGqhkka9Vuc4R7Mqv76TknH/BjYUm1S62FyMbnYVmDDwcapxWOKuk+f7STdSjq9Z7eap9+C+AJLIpzDrdWeLkxBuOS3+vSQeEGnZKPu3u56mrrf1r5NGim9/SQpG1pAuEoTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YxPMj3oL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxJojhUf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCF31F0089C;
-	Sun, 11 Oct 2026 20:22:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YxPMj3oL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108B71F0089B;
+	Sun, 11 Oct 2026 20:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791750162;
-	bh=JwFNo1jSshDaw7CI1TXs8YLlCOnlboRNo6+TCGY9qDY=;
+	s=k20260515; t=1791750919;
+	bh=xhnuKwa6ZzypXCErad0gx6ScBd79TlcFxNQAJVk6U/o=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RxJojhUfyN8p25njqCm4Fdw/xzM/VSNJh64/a11dVoY8ihw6z0M2GfpiVyYS7IjI/
-	 SFPZb3o3lQ1LXJC0XcgvEPv1iEHsOuc0IjmYHhxhSVXePK8QBnFxfSrkyVe3T27WQU
-	 kHz1rBXDqZG24C9PxB/3ShNGoquNzamzmaWjEg8daDIlKeAwmytl/SRkpMtcUZReL9
-	 ij4M316W0i+bmszthMO6YaHw6+lVfqJxSMmHEUHo0y9RgoUYns2owhQjFC6akFG11M
-	 9JFTDjcD3uHghYILuyXjEGn+SSua+RQq8NBo0bMMlX6W5RU1oxOTJjNtsnLW7k+J7C
-	 lsmtaf93ovuGw==
-Subject: Re: [PATCH net v2 2/2] eth: fbnic: return the page reference taken
- for a dropped Rx fragment
+	b=YxPMj3oLSyfqYhAKpjQ1sBRVHlSDuyn+db0vF5wM6sSTuG0spYUV2dgPR8OmBbWQr
+	 KtPPTZ9lb5cM9PqI4N1S0YDcod1iYuJ3GD5Bh9UspQpB/E13F9c/O46v9dL+lp2Wf7
+	 32SVrCGzTQzOhcCJwMnzFLem1/K9kpqonbN83dwF8cCnXCIS9s3rYrxouBQ6+sYOno
+	 AhD79GNq9h+wXm71kjgRvs6PdGdbKJ/G6Xw0QBqclgHhXACLOoKjA3oVqC/46SHKRg
+	 186H+isD36EATXBCnVvPpfFdmewqrUdDKrAgf47x7JXSXIMRdT0XZDK1LEZ0OX3GfO
+	 wtBYYCrgBQE9A==
+Subject: Re: [PATCH net-next v3 1/9] tls: Bound consecutive no-data records in
+ tls_sw_read_sock()
 From: netdev-bot+sashiko@kernel.org
-To: yhlee@isslab.korea.ac.kr
-Cc: alexanderduyck@fb.com, kuba@kernel.org, netdev@vger.kernel.org,
- kernel-team@meta.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, daskald@meta.com,
- mohsin.bashr@gmail.com, bobbyeshleman@meta.com, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 20:22:41 +0000
-Message-ID: <179175016106.434549.17893353841904698919@kernel.org>
-In-Reply-To: =?utf-8?q?=3C57e762aa85874571b506e5b5a55004029b4b2a5d=2E1791659?=
- =?utf-8?q?860=2Egit=2Eyhlee=40isslab=2Ekorea=2Eac=2Ekr=3E?=
-References: =?utf-8?q?=3C57e762aa85874571b506e5b5a55004029b4b2a5d=2E17916598?=
- =?utf-8?q?60=2Egit=2Eyhlee=40isslab=2Ekorea=2Eac=2Ekr=3E?=
+To: cel@kernel.org
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
+ shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Date: Sun, 11 Oct 2026 20:35:18 +0000
+Message-ID: <179175091859.434549.6003999701782227362@kernel.org>
+In-Reply-To: <20261007-tls-follow-on-v3-1-6d52d98389b3@kernel.org>
+References: <20261007-tls-follow-on-v3-1-6d52d98389b3@kernel.org>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -62,140 +59,157 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] A device-supplied buffer ID that is in range but names a slot
-  holding no buffer still causes a NULL netmem dereference.
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but a second
-  header completion leaks pages.
+- [High] In net/tls/tls_sw.c:tls_sw_read_sock(), the new budget exit
+  rests on a false premise.
+- [Low] When tls_sw_read_sock() hits TLS_RX_NODATA_LIMIT, the only thing
+  that restarts the read_sock consumer is a work item queued with…
 
 --
 
-eth: fbnic: return the page reference taken for a dropped Rx fragment
+tls: Bound consecutive no-data records in tls_sw_read_sock()
 
-When xdp_buff_add_frag() fails in fbnic_add_rx_frag(), this patch restores
-the sub1 rx_buf pagecnt_bias. The page reference that
-fbnic_page_pool_get_data() took for a fragment past MAX_SKB_FRAGS is then
-returned to the page pool by fbnic_page_pool_drain().
+This commit limits how many zero-length application_data records in a
+row tls_sw_read_sock() will consume in one call. The limit is
+TLS_RX_NODATA_LIMIT. When the limit is reached, the loop breaks and
+schedules a work item that calls sk->sk_data_ready() under lock_sock(),
+so the read_sock consumer can resume.
 
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> index b4ca9f7e8bb2e..ba663fe7598f1 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-> @@ -1076,6 +1076,8 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
+> diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> index 312e51270f293..275a6047da9e3 100644
+> --- a/net/tls/tls_sw.c
+> +++ b/net/tls/tls_sw.c
+> @@ -2070,6 +2070,20 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
+>  	goto splice_read_end;
+>  }
 >  
->  	added = xdp_buff_add_frag(&pkt->buff, netmem, pg_off, len, truesize);
->  	if (unlikely(!added)) {
-> +		/* Give back the reference fbnic_page_pool_get_data() took */
-> +		qt->sub1.rx_buf[pg_idx].pagecnt_bias++;
->  		pkt->add_frag_failed = true;
->  		netdev_err_once(nv->napi.dev,
->  				"Failed to add fragment to xdp_buff\n");
+> +#define TLS_RX_NODATA_LIMIT	16
+> +
+> +static void tls_rx_data_ready_work(struct work_struct *w)
+> +{
+> +	struct tls_sw_context_rx *ctx =
+> +		container_of(w, struct tls_sw_context_rx, data_ready_work);
+> +	struct sock *sk = ctx->strp.sk;
+> +
+> +	/* A callback that finds the socket unowned reads from it. */
+> +	lock_sock(sk);
+> +	READ_ONCE(sk->sk_data_ready)(sk);
+> +	release_sock(sk);
+> +}
+
+[ ... ]
+
+> @@ -2136,14 +2151,22 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
+
+[ ... ]
+
+>  		if (rxm->full_len == 0) {
+> +			err = 0;
+>  			consume_skb(skb);
+> +			if (++nodata >= TLS_RX_NODATA_LIMIT) {
+> +				/* tls_rx_reader_release() does not call the
+> +				 * consumer's sk_data_ready, which can re-enter
+> +				 * this function.
+> +				 */
 
 [Severity: High]
-The new line runs only after netmem has already been used. That raises a
-question about the buffer ID check earlier in this function.
+Is this comment accurate? tls_rx_reader_release() begins by calling
+tls_rx_msg_maybe_announce(). That function calls the consumer's callback
+synchronously, and reader_present is still set when it does:
 
-The previous patch in this series, "eth: fbnic: validate the Rx completion
-buffer index", added only an upper bound check in fbnic_add_rx_frag():
+net/tls/tls_sw.c:tls_rx_reader_release() {
+	tls_rx_msg_maybe_announce(&ctx->strp);
+	...
+	WRITE_ONCE(ctx->reader_present, 0);
+}
 
-	if (unlikely(pg_idx > qt->sub1.size_mask)) {
-		pkt->add_frag_failed = true;
+net/tls/tls_sw.c:tls_rx_msg_maybe_announce() {
+	if (!READ_ONCE(strp->msg_ready) || strp->msg_announced)
 		return;
-	}
-
-	netmem = fbnic_page_pool_get_data(qt, pg_idx);
-
-fbnic_pkt_prepare() has the same kind of check on hdr_pg_idx against
-qt->sub0.size_mask. Its comment says:
-
-	/* A buffer ID the device never got from us cannot name a buffer we
-	 * own, so drop the packet instead of running off the end of rx_buf[].
-	 */
-
-Can an in-range ID still name a slot that holds no buffer?
-
-rx_buf[] comes from kvzalloc(), and fbnic_fill_bdq() only posts
-fbnic_desc_unused() slots:
-
-	return (ring->head - ring->tail - 1) & ring->size_mask;
-
-So the slot at ring->tail is never posted. fbnic_page_pool_drain() also
-clears every slot it drains:
-
-	rx_buf->netmem = 0;
-
-If a PAY_AL completion names sub1.tail, fbnic_page_pool_get_data() returns
-0. Would the dereference of NULL then happen in NAPI context? It could
-happen in page_pool_dma_sync_netmem_for_cpu(), or along this path:
-
-xdp_buff_add_frag()->netmem_is_pfmemalloc()->page_is_pfmemalloc(NULL)
-
-The HDR_AL case looks similar. If the completion names sub0.tail,
-fbnic_page_pool_get_head() returns netmem_to_page(0), which is NULL. In
-fbnic_pkt_prepare(), the dma_sync_single_range_for_cpu() call then passes
-page_pool_get_dma_addr(page), which dereferences it.
-
-fbnic_clean_bdq() also checks hw_head only against size_mask. Suppose
-fbnic_fill_bdq() left extra slots unposted after a page_pool allocation
-failure. Could an in-range hw_head past tail make the drain loop call
-page_pool_unref_netmem(0, ...)? That would be the same null-ptr-deref that
-the earlier commit message says it fixes.
-
-An in-range ID that names a slot which was drained and refilled would
-instead attach a recycled page_pool page. The device never wrote that page
-for this packet.
-
-Should the check also require rx_buf[idx].netmem to be non-zero, or idx to
-fall inside the posted window between ring->head and ring->tail?
-
-[Severity: Medium]
-This is a pre-existing issue and was not introduced by this patch. It is a
-separate path from the xdp_buff_add_frag() failure fixed here. Can a second
-header completion leak the pages of the packet that is still pending?
-
-fbnic_clean_rcq() calls fbnic_pkt_prepare() for every
-FBNIC_RCD_TYPE_HDR_AL completion. Only the FBNIC_RCD_TYPE_META case sets
-pkt->buff.data_hard_start back to NULL. fbnic_pkt_prepare() warns about a
-pending packet but carries on:
-
-	/* data_hard_start should always be NULL when this is called */
-	WARN_ON_ONCE(pkt->buff.data_hard_start);
+	strp->msg_announced = 1;
 	...
-	page = fbnic_page_pool_get_head(qt, hdr_pg_idx);
+	ctx->saved_data_ready(strp->sk);
+}
+
+The same concern applies to this part of the commit message:
+
+  "Records left queued do not raise another sk_data_ready(), so the
+  consumer needs one."
+
+The new break seems to produce exactly that state. By the 16th empty
+record, tls_rx_rec_done() has already run tls_strp_msg_consume(), which
+clears msg_ready and msg_announced. It has also run
+tls_strp_check_rcv(strp, false), which can parse the next fully received
+record without announcing it. The loop then breaks while the consumer's
+strparser is not paused.
+
+Take a consumer such as KCM that installed psock_data_ready before TLS
+RX was armed. tls_sw_strparser_arm() saves psock_data_ready as
+saved_data_ready and installs tls_data_ready. In softirq, under
+bh_lock_sock(), the outer reader is reached like this:
+
+tcp_data_ready()
+  tls_data_ready()
+    tls_strp_data_ready()
+      tls_strp_check_rcv()
+        tls_rx_msg_maybe_announce()
+          psock_data_ready()
+            strp_data_ready()
+              strp_read_sock()
+                tls_sw_read_sock()
+
+When that call takes the new break:
+
+tls_rx_reader_release()
+  tls_rx_msg_maybe_announce()
+    psock_data_ready()
+      strp_data_ready()          /* socket unowned, strp not paused */
+        strp_read_sock()
+          tls_sw_read_sock()     /* nested */
+            tls_rx_reader_acquire()   /* reader_present == 1 */
+              sk_wait_event()
+                release_sock()   /* spin_lock_bh(&sk->sk_lock.slock) */
+
+Can this self-deadlock on sk_lock.slock, which this CPU already holds
+through bh_lock_sock()? It looks like a peer only has to send 17 or more
+consecutive empty data records that arrive together in the receive
+queue.
+
+Before this patch the loop ran until no record was ready, so msg_ready
+was clear when the reader was released.
+
+In this configuration, does tls_rx_data_ready_work() reach the consumer
+at all? There sk->sk_data_ready is tls_data_ready, not psock_data_ready.
+Under lock_sock(), tls_data_ready only queues the tls_strp work, and
+tls_strp_check_rcv() then returns early because msg_ready is already
+set. The release-time announce goes to saved_data_ready while the work
+item goes to sk->sk_data_ready, so the two notification paths seem to
+disagree.
+
+> +				schedule_work(&ctx->data_ready_work);
+
+[Severity: Low]
+schedule_work() queues this on system_wq, which lacks WQ_MEM_RECLAIM.
+The existing TLS RX deferral uses tls_strp_wq instead:
+
+net/tls/tls_strp.c:tls_strp_dev_init() {
+	tls_strp_wq = create_workqueue("tls-strp");
 	...
-	xdp_init_buff(&pkt->buff, frame_sz, &qt->xdp_rxq);
-	...
-	xdp_prepare_buff(&pkt->buff, hdr_start, headroom,
-			 len - FBNIC_RX_PAD, true);
-	...
-	pkt->add_frag_failed = false;
+}
 
-Say the device sends HDR_AL, then some PAY_AL, then a second HDR_AL with no
-META in between. The second HDR_AL has these effects:
+Some read_sock consumers, such as nvme-tcp over kTLS, sit in the memory
+reclaim I/O path. After a burst of empty records, this work item is the
+only thing that restarts the consumer. Could RX stall under memory
+pressure until another event, such as new TCP data, arrives?
 
-- xdp_init_buff() clears XDP_FLAGS_HAS_FRAGS.
-- xdp_prepare_buff() replaces data_hard_start. This also moves the shinfo
-  that xdp_get_shared_info_from_buff() finds.
-- add_frag_failed is reset.
+Would tls_strp_wq, or another WQ_MEM_RECLAIM workqueue, be a better
+place for this work?
 
-At the next META, fbnic_put_pkt_buff() only releases what the current
-pkt->buff describes. The earlier head page and all sub1 fragments already
-attached to it can no longer be reached. That includes fragments of a
-packet that already hit the MAX_SKB_FRAGS failure handled in this patch.
+> +				break;
+> +			}
+>  			continue;
+>  		}
 
-Each of those references was already subtracted from pagecnt_bias. Does
-this leave fbnic_page_pool_drain() one short for each lost reference? If
-so, the pages never return to the pool and are still counted as inflight
-when the pool is destroyed.
-
-The warn-and-continue logic seems to date back to a29b8eb6e533 ("eth:
-fbnic: Add basic Rx handling"). The shinfo frag tracking came in with
-61f9a066c309 ("eth: fbnic: Use shinfo to track frags state on Rx").
-
-One option would be to call fbnic_put_pkt_buff() on a stale pending packet
-before the new one is prepared. That would be a separate change from this
-one.
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1791659860.git.yhlee%40isslab.korea.ac.kr
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007-tls-follow-on-v3-0-6d52d98389b3%40kernel.org
