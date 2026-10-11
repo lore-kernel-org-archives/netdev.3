@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CB745D1A5;
-	Sun, 11 Oct 2026 19:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E876A443AB4;
+	Sun, 11 Oct 2026 19:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791748287; cv=none; b=QYeRSAqVDVyOaJMfECe0lnR2dL5oMLupfsAs2sMaHElMTfYow4a11vH74Ps2ZRBPXgZQ43NWUsMk/u249w0XopO8wNCxRc46bpe/QSwLQaIhme1YkgtsMR4WFDSblvhzaCqag4SNe7zv7IbiNFF9jIU+0jmIaAJyQR9THnyNxHo=
+	t=1791748289; cv=none; b=sE9A/FsalgJ7dCnVdScGxpT9c4jasnARunWxbOCa3zqtPLLwPQp7DiHG1oeuTFpRpfgypg9N7wucLBl3JFR+lntzs/FBn10jLyspeP3qi9zOcRO7H1xhpxIhIVLiTZBVyvcUqHdB+4BI06yuJ3yXFBPrLpqwK7uvozWhX5Rhftg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791748287; c=relaxed/simple;
-	bh=GIJ9F2Np/KnoELKdLubUt0TAqiAWj1v87UsVkZJoiIU=;
+	s=arc-20240116; t=1791748289; c=relaxed/simple;
+	bh=f6FpqZ6fDrSQv4pH+BbNus34IMgIZbMYcnBFTNx97Hs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OBILEQ3WLTUHnfjkcxfYVa0jyna0pDiMk8xllZud7N2vM62ZGtPLrcjarDEnFjA9EcImunCCr6vMt7/ihLaXvCJ25iPAKu8MYlkjq0vZwttHvuD10yefjAcCA3km7n/vlNascXzbAYXmcQYH5i6lfnzEKBEwdtsDm9GCagdvSXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wct6DCv8; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Vbxli2JHal13SSdQQmG5FMv65s+oOJeENiTmxjC0UhnBizl0xZdMmRhMTfLSv0dMgqt/R+77F6YzpexTx7lSEaF2GLf6n7QsxcPM1v3PRlS8wkYJpr7IENAbF3mWL9szfc2dyjMFOgZPK5y089XgPxt1eDv9sVBQMHS+6SLr9xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4MWi4dN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wct6DCv8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54D21F0089B;
-	Sun, 11 Oct 2026 19:51:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4MWi4dN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E948B1F0089C;
+	Sun, 11 Oct 2026 19:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791748286;
-	bh=ixEiEmdMDrjOCwJWxWu04K8rpLNN5UqmwsEo5HnbdWw=;
+	s=k20260515; t=1791748287;
+	bh=OEnLYupWNFVpWrRQEQKNjOZ/yQ+6620YHEhGcUeoYnk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Wct6DCv8TFbXCrI81pl41bPBrFrIr/UEZOCXKM4hAejb+kixuIM/OvwMdoGNUBuwN
-	 4cPCiucDo2o7Dw1XERIbXu/rgJ1/BdoudUP/GcmTgT/FvIJrOSkHRO/iBDP+IvOh15
-	 KwXrOnB4LGtDq24yglF2enRV0TQ2mQIJSZvoTrz31Tp9Kughj/HDKqKwlZaS2GnfKn
-	 PGRb6utA3ov0tuyHB4/TRAgCguFYyq5/0Ouz2V3RlG0RQ7Vxi1Ybr1PqnuP7lDldQk
-	 U9E6BFsBsWDdG4oNaQ6ijhBXU7grRe45B/wWSp7u+fogTHI3hyRfRtW3NWfAH36B95
-	 gCasHT27cykJA==
-Subject: Re: [PATCH net-next v3 5/9] net: dsa: realtek: rtl8365mb: set and get
- vlan 4k for family D
+	b=S4MWi4dN4BNbo8hmdB24k/q4TPPBwB9V3V0qfK6vB/47IbJb+6GWBLEhVyGvDCC30
+	 XV00veHARqOBziqNKr48iO5rUt7c2p7BLC7+O172WcjxmqNM+qmRWQHyLd4dZCdkvN
+	 AKmE07QHz5rsAKOTLkkyePJaLD/DHqW4BZ8iLTtBi2yozO1XZpRJDEo/74Ppljk6aZ
+	 wc44RaOiVMCZpUImtxzHYvvLvrajy3JQlICEg0KeauwvjLskAzCieKD4kwMxxVAneo
+	 Pa1KJpY5BScZO/qPTJgxJaJhj4D0SXcH2NKbp+z/7u9zvObRcA42PALJ5KAVwPATgr
+	 HtRBcZir3Plsg==
+Subject: Re: [PATCH net-next v3 6/9] net: dsa: realtek: rtl8365mb: use raw VID
+ for PVID on family D
 From: netdev-bot+sashiko@kernel.org
 To: namiltd@yahoo.com
 Cc: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 19:51:25 +0000
-Message-ID: <179174828532.434549.7339327413845979862@kernel.org>
-In-Reply-To: <22c20407-e6bc-4171-92b5-33650de94a49@yahoo.com>
-References: <22c20407-e6bc-4171-92b5-33650de94a49@yahoo.com>
-X-sashiko-severity: Low
+Date: Sun, 11 Oct 2026 19:51:26 +0000
+Message-ID: <179174828653.434549.15521627518184901889@kernel.org>
+In-Reply-To: <13e3fcb3-895e-4c1a-a8f5-70dd9a0ed345@yahoo.com>
+References: <13e3fcb3-895e-4c1a-a8f5-70dd9a0ed345@yahoo.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,94 +48,109 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] In rtl8365mb_vlan_4k_write()
-  (drivers/net/dsa/realtek/rtl8365mb_vlan.c), the family-D branch sets…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] This patch adds a family D branch to
+  rtl8365mb_vlan_port_get_pvid()…
 
 --
 
-net: dsa: realtek: rtl8365mb: set and get vlan 4k for family D
+net: dsa: realtek: rtl8365mb: use raw VID for PVID on family D
 
-This commit gives family D its own two-word pack/unpack for the CVLAN
-(VLAN4k) table entry in rtl8365mb_vlan_4k_read() and
-rtl8365mb_vlan_4k_write(). Family C keeps its three-word layout. On
-family D the FID is narrowed to 2 bits and the write path forces the
-IVL selection bits.
+On family D chips, this commit reads the PVID as a raw 12-bit VID from the
+per-port register at 0x0700 + port. Family C keeps using the VLAN MC table
+index. It also adds direct-VID variants of the PVID set and clear paths
+that skip the MC table on family D.
 
 > diff --git a/drivers/net/dsa/realtek/rtl8365mb_vlan.c b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
-> index 8d49ffadce926..2c4c5baf93f10 100644
+> index 2c4c5baf93f10..ccfa764b98125 100644
 > --- a/drivers/net/dsa/realtek/rtl8365mb_vlan.c
 > +++ b/drivers/net/dsa/realtek/rtl8365mb_vlan.c
 
 [ ... ]
 
-> @@ -244,36 +284,59 @@ static int rtl8365mb_vlan_4k_write(struct realtek_priv *priv,
->  	val = FIELD_GET(RTL8365MB_CVLAN_UNTAG_LO_MASK, vlan4k->untag);
->  	data[0] |= FIELD_PREP(RTL8365MB_CVLAN_ENTRY_D0_UNTAG_MASK, val);
+> @@ -742,11 +751,25 @@ int rtl8365mb_vlan_port_get_pvid(struct realtek_priv *priv, int port, u16 *pvid)
+>  	u8 vlanmc_idx;
+>  	int ret;
 >  
+> -	ret = rtl8365mb_vlan_get_pvid_mc(priv, port, &vlanmc_idx, &vlanmc);
+> -	if (ret)
+> -		return ret;
+> +	if (rtl8365mb_get_family(priv) == RTL8365MB_FAMILY_D) {
+> +		u32 data;
+> +
+> +		ret = regmap_read(priv->map,
+> +				  RTL8365MB_D_VLAN_PVID_CTRL_REG(port),
+> +				  &data);
+> +		if (ret)
+> +			return ret;
+> +
+> +		*pvid = data & RTL8365MB_D_VLAN_PVID_CTRL_MASK;
 
-[ ... ]
+[Severity: Medium]
+Can this report a PVID that the bridge never configured?
 
-> +	if (is_d) {
-> +		/* The chip supports both IVL and SVL, but the caller (see
-> +		 * rtl8365mb_vlan_4k_port_set()) never requests SVL, so both
-> +		 * IVL/SVL selector bits are forced here rather than threaded
-> +		 * through from vlan4k->ivl_en, which family C does honor.
-> +		 */
-> +		data[1] |= FIELD_PREP(RTL8365MB_D_CVLAN_ENTRY_D1_IVL_EN_MASK,
-> +				      1) |
-> +			   FIELD_PREP(RTL8365MB_D_CVLAN_ENTRY_D1_SVLAN_CHK_IVL_SVL_MASK,
-> +				      1);
+The kernel-doc for rtl8365mb_vlan_port_get_pvid() still says:
 
-[Severity: Low]
+ * Returns the port PVID if defined or 0 if not.
 
-This doesn't change runtime behavior today, because
-rtl8365mb_vlan_4k_port_set() always sets vlan4k.ivl_en = true. However,
-the commit message and comments no longer match the code.
+On family C that holds. An unconfigured port has VLANMC index 0, and
+rtl8365mb_vlan_get_pvid_mc() memsets the entry, so evid is 0. On family D
+this branch returns whatever the register holds.
 
-The commit message says:
+rtl8365mb_vlan_setup() only calls
+rtl8365mb_port_vlan_filtering(ds, dp->index, false, NULL) for each port
+and then sets RTL8365MB_VLAN_CTRL_EN_MASK. Nothing there writes 0 to the
+family D PVID registers. The only code that writes 0 is
+rtl8365mb_vlan_pvid_port_clear_direct(), and it only does so when the
+bridge clears a VID that matches the register.
 
-    so that control bit is forced here to match existing driver behavior,
-    not a hardware limitation.
+After rtl8365mb_reset_chip(), the register holds its hardware default or
+a value loaded from EEPROM. If that value is non-zero, two callers act on
+it.
 
-Two bits are forced here, though: IVL_EN (bit 3) and SVLAN_CHK_IVL_SVL
-(bit 2). Could the commit message mention the second bit and say why 1
-is the right value for it?
+In rtl8365mb_port_vlan_filtering() with vlan_filtering set:
 
-Family D writes ignore vlan4k->ivl_en, but rtl8365mb_vlan_4k_read()
-still reports the field from hardware:
+	if (pvid_vid)
+		accepted_frame = RTL8365MB_FRAME_TYPE_ANY_FRAME;
 
-	vlan4k->ivl_en =
-		FIELD_GET(RTL8365MB_D_CVLAN_ENTRY_D1_IVL_EN_MASK,
-			  data[1]);
+Here, a VLAN-filtering port with no bridge PVID (for example a bridge
+with default_pvid 0) would accept untagged frames into the stale VID.
 
-So the read path and the write path handle the field differently.
+In the undo_set_pvid path of rtl8365mb_port_vlan_add():
 
-Some comments in the file are also out of date for family D. The
-kernel-doc for struct rtl8365mb_vlan4k still says:
+	if (pvid_vid)
+		(void)rtl8365mb_vlan_pvid_port_set(ds, port, pvid_vid,
+						   NULL);
 
- * @ivl_en: enable IVL instead of default SVL
+On error, this path would program the stale VID as the PVID.
 
-The file header still says VLAN4k entries can choose between IVL and
-SVL.
+I couldn't confirm the reset value of these registers from the tree, so
+this depends on the hardware or EEPROM default. The family D get_pvid
+branch and rtl8365mb_vlan_setup() also look unchanged at the end of the
+series.
 
-The layout comment above the new size define still says u16[3]:
+Should rtl8365mb_vlan_setup() clear the family D PVID registers to 0? That
+would match the family C convention of VLANMC index 0 as the neutral
+PVID.
 
-/* CVLAN (i.e. VLAN4k) table entry layout, u16[3] */
-#define RTL8365MB_CVLAN_ENTRY_SIZE			3 /* 48-bits */
-#define RTL8365MB_D_CVLAN_ENTRY_SIZE			2 /* 32-bits */
-
-The family D D1 masks are also mixed in with the family C masks under
-that comment. Later patches in the series don't update any of these
-comments either.
-
-Should these comments be updated to describe the family D layout and
-the forced IVL bits?
+> +	} else {
+> +		ret = rtl8365mb_vlan_get_pvid_mc(priv, port, &vlanmc_idx,
+> +						 &vlanmc);
+> +		if (ret)
+> +			return ret;
+> +
+> +		*pvid = vlanmc.evid;
+> +	}
 
 [ ... ]
 
