@@ -1,43 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AFF2F7EE0;
-	Sun, 11 Oct 2026 22:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9518536B90D;
+	Sun, 11 Oct 2026 22:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791756120; cv=none; b=FU+GH/96V4lhMlaJdsQ2k+/g7YfG+uF5hsn/kjRO5ym5Pgn1XqXGquEMsGPxpp3KXr7QoNgWHpfOT2r4x52UitdZtUUFnGLk7/ifN9Y2/ODv/iipmMiDTUwRYP4XwcuPdCuT1NaZXQLsj1MKAYZHlyClruEeoEZqtT+RtBaISeE=
+	t=1791756155; cv=none; b=oExlwxnqY7Z21o5F1ijz3/WK3Q3R00w11PUeyU2oYTc9LbXl9aq5CvyEkccZo7VbEmjilRUdKDkVrEFFtHgakaYcaS06ncDkkwV9AnRtDjTc9Qq07mvHtwZ9J0g5BIDZv7n00jOvew2dnJ0acQ2l4VZQ4zv9LQSeiS4dZgUJBzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791756120; c=relaxed/simple;
-	bh=1fW0XKYtdagdZuFVD5Q5U2KR8FhzkEtOyk1ibS6hp1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=M8nrmbtnn1bVsYlmFhSWsadVBjDsvRWDPvGJ1vKbdSNWGs6TMR0KeirUQ9S/DjG248CtdVWLOYCX95gKAJEFqdZtia/47QRZgCiFxKjLQjw4qdtY67JrU/JGPRSLYZUpK6mivjdbbAZIZ1e0/rhAVfPVSFhXiauEPWsfzePr5Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFXY2cuj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1791756155; c=relaxed/simple;
+	bh=IOQ6Kn361gzXZN/eP3CuzAftBE8aA1w+SPfEslOnw+I=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gFrr0/FF/RZktS3NVGQGFpPyTjIFfmZcBQqQI5LTgX2dhKeipGEbbhY17QouAOJQ7DwxiR8GXOnDSFCheytjNNGnRAJgQ0F0DB0HFWkLOAocDYPzUB60O0hl6bUnmhzALPLNhZwpYoOlRnQaOVK7q+bHimwystYacFkqI9BbG1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJA+fGFY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFXY2cuj"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D6FCBC2BCF5;
-	Sun, 11 Oct 2026 22:01:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1791756120;
-	bh=1fW0XKYtdagdZuFVD5Q5U2KR8FhzkEtOyk1ibS6hp1g=;
-	h=From:To:Cc:Subject:Date:Reply-To:From;
-	b=EFXY2cujf1OPa95w6QTbAur5NetU2BWeJpadFEwbjy+qlGU7SEgEvwyGOog1a6Ys8
-	 Nj8WGOoYheVVH06AWIM6Qkaq4TH5cL46AiwNHLhmMqGmdyE9OhX08RR4V7OHmeVGLb
-	 R6JVVAFIEehe9zYE5niorO0rWCluBKEsq/uyhcmwjmO4Q7JfsJQkNODd/dOZ3XOkg4
-	 A3d95yF9U4T3ZXty2QtG+0vweKyRqJBoCv6DSk1FfCEKLDIyWN5qdnNxP0Ij8fZ0Ff
-	 GoCpnItwNRCcS6GTG9cPgut+col+o9wTbGSbU1hWtt7S1UPw5DE49JG2uSKIcil9qd
-	 Bb5UVDcGOW67Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB5DDCA9EBD;
-	Sun, 11 Oct 2026 22:01:59 +0000 (UTC)
-From: Haseeb Malik via B4 Relay <devnull+haseebulhaq55.gmail.com@kernel.org>
-To: Sabrina Dubroca <sd@queasysnail.net>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] macsec: check for duplicate SCIs before
- registering the device
-Date: Sun, 11 Oct 2026 21:57:11 +0000
-Message-ID: <20261011-macsec-early-sci-check-2b1f06af193f@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJA+fGFY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C15F1F0089B;
+	Sun, 11 Oct 2026 22:02:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791756154;
+	bh=tKnWZFpBWK3QVqTzr3bEg1UobV+MSNnPRYy46L24/j0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RJA+fGFY8N1J5xlRnoi+mvngNP5hv/KoJxGX4RtmWwAzQkJ1v2Px4VXy8sc8XKkeX
+	 WLSn6Oa+r15kMWLvYu2/94b73uEglYyMwMj8ij3SjgnPReu+QviBy8T23Pzh2CKzcx
+	 Kn0XfLfJMfoBtUC2fFeIJknKK7Nom1yn9m4Ugj9MKFUoNmbL/FJOThAJdLO4N8Jpwr
+	 3eIzkpWpOQ/dQMR/HWpByffTCVU0YwtihofGxWhN3rxXBAmaGs0H4WFE/dliIIwkNH
+	 QGlMzUZOv4VzBiLArQ0AX6eDk44rRf3qzN6mX89EawE4IoZAoRteO7st0Sj6a2FjJx
+	 O9Lvm7Mhn2dVA==
+Subject:
+ Re: [PATCH net v3] usbnet: fix EVENT_RX_PAUSED race in usbnet_skb_return()
+From: netdev-bot+sashiko@kernel.org
+To: omermetekaya0@gmail.com
+Cc: netdev@vger.kernel.org, oneukum@suse.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 22:02:33 +0000
+Message-ID: <179175615306.434549.2652185067157444525@kernel.org>
+In-Reply-To: <20261007220311.113827-1-omermetekaya0@gmail.com>
+References: <20261007220311.113827-1-omermetekaya0@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,76 +46,179 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1791756119; l=2042;
- i=haseebulhaq55@gmail.com; s=default; h=from:subject:message-id;
- bh=3yrY3KSdmX2Lbj0TP8rJOIrBxb8TNoGAzNCgkYC5p74=;
- b=L5t3/FxbcRCZzHeu1Bp9cVnk4u93qX8LBwHeRupzFdJL6irVlyKzONIkG1rDbzH+NS7LSCIfl
- wByRJDDreD2A+fJATZUFNk1vaZng9LpqZUgYgZUPGwOwqDl7RLhyyWo
-X-Developer-Key: i=haseebulhaq55@gmail.com; a=ed25519;
- pk=U/yCVc6cTsqDqxWLzvoONZ7DUA3EfRU+rfO9Xxo4p2w=
-X-Endpoint-Received: by B4 Relay for haseebulhaq55@gmail.com/default with
- auth_id=1026
-X-Original-From: Haseeb Malik <haseebulhaq55@gmail.com>
-Reply-To: haseebulhaq55@gmail.com
 
-From: Haseeb Malik <haseebulhaq55@gmail.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-macsec_newlink() registers and links the device before rejecting a
-duplicate SCI. Registration can emit link notifications for a device
-whose creation ultimately fails with -EBUSY.
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
-The SCI is already resolved before SecY initialization, so check for a
-duplicate there and return -EBUSY directly. Remove the now-unused unlink
-label while preserving cleanup for failures after registration.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Suggested-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/netdev/ar2KmwhtCMbOKLsG@krikkit/
-Assisted-by: LLM
-Signed-off-by: Haseeb Malik <haseebulhaq55@gmail.com>
----
-Tested on arm64 in virtme with KASAN and lockdep: all 15 MACsec selftests
-and 80 offload/cleanup cycles pass. Rejected-device link notifications
-observed by the diagnostic drop from two to zero.
+- [Medium] The patch takes dev->rxq_pause.lock with hardirqs enabled in
+  two places.
 
- drivers/net/macsec.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Pre-existing issues:
+- [High] usbnet_resume_rx() always queues dev->bh_work, and
+  usbnet_change_mtu() reaches it even when the interface is down.
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 409fd855235ba29125e39bfd80e1c5656aea784f..4e3020586b1e53c5a17f7e31c1f15b87f6443e17 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -4264,6 +4264,9 @@ static int macsec_newlink(struct net_device *dev,
- 	if (sci == MACSEC_UNDEF_SCI)
- 		sci = dev_to_sci(dev, MACSEC_PORT_ES);
- 
-+	if (rx_handler && sci_exists(real_dev, sci))
-+		return -EBUSY;
-+
- 	/* Registration can notify listeners before returning. */
- 	macsec_init_secy(dev, sci, icv_len);
- 	if (data) {
-@@ -4284,11 +4287,6 @@ static int macsec_newlink(struct net_device *dev,
- 	if (err < 0)
- 		goto unregister;
- 
--	if (rx_handler && sci_exists(real_dev, sci)) {
--		err = -EBUSY;
--		goto unlink;
--	}
--
- 	/* If h/w offloading is available, propagate to the device */
- 	if (macsec_is_offloaded(macsec)) {
- 		const struct macsec_ops *ops;
-@@ -4320,7 +4318,6 @@ static int macsec_newlink(struct net_device *dev,
- 
- del_dev:
- 	macsec_del_dev(macsec);
--unlink:
- 	netdev_upper_dev_unlink(real_dev, dev);
- unregister:
- 	unregister_netdevice(dev);
+--
 
-base-commit: 8df0638138d3e0344fd1fb36cf2d1ca1cf5028f0
+usbnet: fix EVENT_RX_PAUSED race in usbnet_skb_return()
 
+This patch closes a race where usbnet_skb_return() could queue an skb on
+rxq_pause after usbnet_resume_rx() had already cleared EVENT_RX_PAUSED
+and drained the queue. On the slow path it now rechecks the flag under
+rxq_pause.lock, and usbnet_resume_rx() clears the flag under the same
+lock. The patch also moves queue_work() after local_bh_enable() in
+usbnet_resume_rx().
 
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index a19ecf718f36a..d1ec3ba1e10e6 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -329,9 +329,14 @@ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
+>  	unsigned long flags;
+>  	int	status;
+>  
+> -	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
+> -		skb_queue_tail(&dev->rxq_pause, skb);
+> -		return;
+> +	if (unlikely(test_bit(EVENT_RX_PAUSED, &dev->flags))) {
+> +		spin_lock_bh(&dev->rxq_pause.lock);
+> +		if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
+> +			__skb_queue_tail(&dev->rxq_pause, skb);
+> +			spin_unlock_bh(&dev->rxq_pause.lock);
+> +			return;
+> +		}
+> +		spin_unlock_bh(&dev->rxq_pause.lock);
+>  	}
+
+[Severity: Medium]
+Will lockdep complain now that this lock is taken with hardirqs enabled?
+
+Before this patch, rxq_pause.lock was only taken through skb_queue_tail()
+and skb_dequeue(). Both use spin_lock_irqsave(). Here the lock is taken
+with spin_lock_bh(). usbnet_resume_rx() below takes it with plain
+spin_lock() inside local_bh_disable().
+
+usbnet_probe() initializes all four queues with the same inline helper,
+so they appear to share one lockdep class:
+
+usbnet_probe() {
+    ...
+	skb_queue_head_init (&dev->rxq);
+	skb_queue_head_init (&dev->txq);
+	skb_queue_head_init (&dev->done);
+	skb_queue_head_init(&dev->rxq_pause);
+    ...
+}
+
+defer_bh() relies on this too. It uses spin_lock_nested() for
+dev->done.lock while it holds rxq.lock or txq.lock.
+
+Some host controllers do not set HCD_BH (OHCI, UHCI, musb and others).
+On those, usb_hcd_giveback_urb() runs the completion directly from the
+HCD interrupt handler, so rx_complete()->defer_bh() takes that lock class
+in hardirq:
+
+defer_bh() {
+	spin_lock_irqsave(&list->lock, flags);
+	...
+	spin_lock_nested(&dev->done.lock, SINGLE_DEPTH_NESTING);
+    ...
+}
+
+With CONFIG_PROVE_LOCKING, wouldn't the first qualifying MTU increase
+through usbnet_change_mtu()->usbnet_resume_rx() then trigger an
+"inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage" report and turn
+lockdep off?
+
+No code takes rxq_pause.lock itself from hardirq today, so no real
+deadlock is known. Using spin_lock_irqsave()/spin_unlock_irqrestore() in
+both new critical sections would match every other sk_buff_head lock use
+in usbnet.c.
+
+> @@ -700,15 +705,16 @@ void usbnet_resume_rx(struct usbnet *dev)
+>  	int num = 0;
+>  
+>  	local_bh_disable();
+> +	spin_lock(&dev->rxq_pause.lock);
+>  	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+> -
+> +	spin_unlock(&dev->rxq_pause.lock);
+>  	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
+>  		usbnet_skb_return(dev, skb);
+>  		num++;
+>  	}
+>  
+> -	queue_work(system_bh_wq, &dev->bh_work);
+>  	local_bh_enable();
+> +	queue_work(system_bh_wq, &dev->bh_work);
+
+[Severity: High]
+This is a pre-existing issue, but moving queue_work() after
+local_bh_enable() seems to widen a use-after-free window on dev->bh_work.
+
+usbnet_change_mtu() can reach usbnet_resume_rx() while the interface is
+down. It only needs dev->rx_urb_size == old_hard_mtu and a larger new RX
+buffer:
+
+usbnet_change_mtu() {
+    ...
+	if (dev->rx_urb_size == old_hard_mtu) {
+		dev->rx_urb_size = dev->hard_mtu;
+		if (dev->rx_urb_size > old_rx_urb_size) {
+			usbnet_pause_rx(dev);
+			usbnet_unlink_rx_urbs(dev);
+			usbnet_resume_rx(dev);
+		}
+	}
+    ...
+}
+
+If the device is then disconnected, unregister_netdev() does not call
+ndo_stop for a device that is not IFF_UP:
+
+netif_close_many() {
+    ...
+		if (!(dev->flags & IFF_UP))
+			list_del_init(&dev->close_list);
+    ...
+}
+
+So usbnet_stop() and its cancel_work_sync(&dev->bh_work) never run.
+usbnet_disconnect() cancels only kevent before it frees the netdev:
+
+usbnet_disconnect() {
+    ...
+	unregister_netdev(net);
+
+	cancel_work_sync(&dev->kevent);
+    ...
+	free_netdev(net);
+}
+
+If bh_work is still pending at that point, can the BH workqueue run
+usbnet_bh_work()->usbnet_bh() on the freed struct usbnet (dev->done,
+dev->bql_spinlock, dev->wait, dev->net)?
+
+Before this patch, queue_work() ran inside the local_bh_disable()
+section. The work therefore almost always ran at local_bh_enable(),
+before usbnet_resume_rx() returned.
+
+Now the work is queued from process context with BHs enabled, so the
+softirq is handed to ksoftirqd. The work can stay pending after the MTU
+change returns. With threadirqs, or with ksoftirqd starved on that CPU,
+it could stay pending through unregister_netdev() and free_netdev() on
+another CPU.
+
+Would it make sense to add cancel_work_sync(&dev->bh_work) to
+usbnet_disconnect() before free_netdev(), once further submissions are
+blocked?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007220311.113827-1-omermetekaya0%40gmail.com
