@@ -1,304 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7172EEE65
-	for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 23:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD6410F2
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 00:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791673907; cv=none; b=WIhuNK5atG634cVNrXHFU8HcoNbsf8Z9JHxBhruxHU82QJLtUjhYzf3g620XIJkR6mr3xG6YdcxFMWFa55+MJNpIYeTOlZ4aSASlU8mlrhWVdPgdEHVrNu93Ew9iPwPTzxmDQlIsELsdWavAWE04VjYdvvM+MtQSoUPhBSHzWSI=
+	t=1791677017; cv=none; b=l/XHCY8prxzNjcQlucyHMUSTmAzN2mMwgASsam/GxHB9mhERXmQ6N5dCH/7eZd6L4zlUNvwWabVVHacFn6U1rKQcMqfgxSs2kYqsFUluDOeBCtXgLDe543xnnP49Gt0Pwuv6o0iS5pSH5F9sbMTKYrFCsiBMZyW7GcRySpOw5mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791673907; c=relaxed/simple;
-	bh=cUlt01RNA9ngjgu5tLeQTHIa3NmbpY3sGxmZNz55RJc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DjCXyvPX1VsH+zITTg9curwJkKuJP7qtNf3I6FosgtOYsXGRFkKnxnaXj6XGU3zyVM0nTWUY6E5DTS4qvkGFFlCMhjAoGr/nakrM/Sqr+J9nFPdmcVnPauubYG2jMwx1XgZco2xIS5lLQJweydOgYzBScP4SjGqMEbgs4E0OOtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NY4H9Y8A; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NY4H9Y8A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0F91F000FF;
-	Sat, 10 Oct 2026 23:11:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791673906;
-	bh=nKSlhEAjR+YrV3tWNlwLFjrgP1ZVgWv5CeBVOTikFmU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NY4H9Y8AzKdJFUSlwA/maXvYYHZDwBbKNc5VjDArXdrtu3VqOZdGJoLMUt8ARij/P
-	 0TBKjcaZ0qdSqNAfp7y0M+e/9NZlbvGeCyzmja81q+ayt41buVzAIAUxucPizn8xQa
-	 ttIualhv2UNLx2w5ueIrniPyeoAHkBa1sZuCnJ7bu5Vl1RJ6PvHlWym/qogqfsdrkR
-	 BlJqn2+2Rd63Ht2Nxw8CMGKgnJWgXuDcKQ3eXMwOd3D4FKEcE2z3Fe8WbOKYypFqSo
-	 mQHbOWzVA5vqlUczXevGiJ27dzIZ/352Uvdry3RMqs13gi+kuNCgdoYnTIrlBu9duf
-	 sB+Pro8xRtmUA==
-Subject: Re: [PATCH net-next v2] net/mlx5e: advertise tcp-data-split support
-From: netdev-bot+sashiko@kernel.org
-To: dimitri.daskalakis1@gmail.com
-Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
- cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com, cjubran@nvidia.com,
- netdev@vger.kernel.org
-Date: Sat, 10 Oct 2026 23:11:44 +0000
-Message-ID: <179167390477.434549.15792233825005717153@kernel.org>
-In-Reply-To: <20261006225925.568263-1-dimitri.daskalakis1@gmail.com>
-References: <20261006225925.568263-1-dimitri.daskalakis1@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1791677017; c=relaxed/simple;
+	bh=QSOP/kYCpEGF7svKaFsq3hzt3Oy8wWXLUjk1jQb3R38=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=PUR4yc4rqdlQNvn8P/RoWrku8W+nkmIWPCwzm+2EOO8lRBRfV5rj4BcgyK7HNahQWt2VC0V8sTJE+fVJqkSWmuzlj1kjnZhyWXh/ZepnYnmaywKBhpseBgt6T8iqEGv6uaV38j3D42v03lUoBrqnpWffCC5SYyiiYLRxV7qR6DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4c734afb8deso1457511b6e.1
+        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 17:03:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791677014; x=1792281814;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CHGlembCHFZmJ6IcSYqXwq5eMI0DR636Yv8gH9CHiDE=;
+        b=LPjatdpTppjhlD1Ti5PVKP05DjDZ7TwkS5DxEn5HeOn8sdwh+tM3lrAtU9iO4bTYPK
+         Hh6ZNHqZXMWMjh+dtOgvOWaZTGM51xaawYkFZRdcV57uga4mT8/flc5oSWGw/VkMvmN2
+         qcbclqdikoDM9QGSqWnFPG0L3r21c9ZOXst5rfz9RqzjIQhq9S6b9TOq31k8IxtI9mGw
+         1ro1O/ZTtU5CaACavjrDOMFHTI3HEUFBGHHzc7K5En8Y9uvC+T26I3vL+8MFuUxGEC89
+         eGtSyHFam1wk8G/3tEf9xlaLq0e9z85fMt0f9ToXovuRdhBnoaiuLoIQz8iPXMfOhvCv
+         PN+A==
+X-Forwarded-Encrypted: i=1; AKwUvBxn22lYyoUgFkYTV3bScBVhR3dHfBihj5mgaknC0zabzF3O+W6sixh1wEHwF5+c1dO7HgbUFnQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKVevNEfioHdyRtKjkl7k/SiNb9SNovExEWYnBtqaUTKV6o50HV
+	krkabB32PdQjn0zfWy8zlyKDRm9msIeQenqT+jDt6EbnPSnhQ4dho/SWBlAG24WghOvozPMy+O7
+	v/1AeEoSAmyJYSWApalNH5YcNbNfjXcsH+IqO9Fp75Pc8JFY9r0HyiUUftPw=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Received: by 2002:a05:6808:e89:b0:4d5:27da:a496 with SMTP id
+ 5614622812f47-50c54842256mr4789336b6e.48.1791677014736; Sat, 10 Oct 2026
+ 17:03:34 -0700 (PDT)
+Date: Sat, 10 Oct 2026 17:03:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6acad256.a150a118.27e199.0030.GAE@google.com>
+Subject: [syzbot] [x25?] inconsistent lock state in x25_kill_by_neigh (2)
+From: syzbot <syzbot+300375dfd44665f063a6@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, 
+	ms@dev.tdt.de, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+Hello,
 
-Critical: 0 · High: 0 · Medium: 3 (2) · Low: 1 (1)
+syzbot found the following issue on:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+HEAD commit:    602042bf29f6 Merge tag 'wq-for-7.3-rc6-fixes' of git://git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13d66715580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=929e4854a828f434
+dashboard link: https://syzkaller.appspot.com/bug?extid=300375dfd44665f063a6
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=115d5f25580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=146adff5580000
 
-- [Medium] In mlx5e_ethtool_get_ringparam() (en_ethtool.c:382-384),
-  tcp_data_split is only ever set to ENABLED, and only while…
-- [Medium] With HW GRO enabled and HDS left in auto mode (cfg UNKNOWN),
-  mlx5e_ethtool_get_ringparam() now reports tcp-data-split='enabled'.
-- [Medium] mlx5e_ethtool_set_tcp_data_split() now calls
-  netdev_update_features() whenever dev->cfg->hds_config differs from…
-- [Low] The commit message says 'This is not a fix', yet part of the
-  patch restores the reporting that 46bcce5dfd33 removed.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-602042bf.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c804d2e9b640/vmlinux-602042bf.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/d6cd162ae59e/bzImage-602042bf.xz
 
-Pre-existing issues:
-- [Medium] The KeyError cited in the commit message comes from the
-  selftest helper _hds_reset() (hds.py:64-82).
-- [Medium] mlx5e_ethtool_get_ringparam() reports tcp-data-split=enabled
-  whenever SHAMPO is active, whether dev->cfg->hds_config is UNKNOWN or…
-- [Low] In hds.py set_hds_enable(), an EINVAL from the *enable* request
-  is reported with the skip reason 'disabling of HDS not supported by…
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+300375dfd44665f063a6@syzkaller.appspotmail.com
 
---
+================================
+WARNING: inconsistent lock state
+syzkaller #0 Not tainted
+--------------------------------
+inconsistent {SOFTIRQ-ON-W} -> {IN-SOFTIRQ-W} usage.
+ksoftirqd/0/15 [HC0[0]:SC1[1]:HE1:SE0] takes:
+ffff88802c938260 (sk_lock-AF_X25){+.?.}-{0:0}, at: lock_sock include/net/sock.h:1713 [inline]
+ffff88802c938260 (sk_lock-AF_X25){+.?.}-{0:0}, at: x25_kill_by_neigh+0x168/0x280 net/x25/af_x25.c:1778
+{SOFTIRQ-ON-W} state was registered at:
+  lock_acquire kernel/locking/lockdep.c:5942 [inline]
+  lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+  lock_sock_nested+0x41/0xf0 net/core/sock.c:3837
+  lock_sock include/net/sock.h:1713 [inline]
+  x25_bind+0x221/0x5c0 net/x25/af_x25.c:694
+  __sys_bind_socket net/socket.c:1945 [inline]
+  __sys_bind_socket net/socket.c:1937 [inline]
+  __sys_bind+0x1a9/0x260 net/socket.c:1976
+  __do_sys_bind net/socket.c:1981 [inline]
+  __se_sys_bind net/socket.c:1979 [inline]
+  __x64_sys_bind+0x72/0xb0 net/socket.c:1979
+  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+  do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+irq event stamp: 357794
+hardirqs last  enabled at (357794): [<ffffffff81ca5245>] __local_bh_enable_ip+0xa5/0x120 kernel/softirq.c:478
+hardirqs last disabled at (357793): [<ffffffff81ca526e>] __local_bh_enable_ip+0xce/0x120 kernel/softirq.c:455
+softirqs last  enabled at (357466): [<ffffffff81ca4d98>] run_ksoftirqd kernel/softirq.c:1099 [inline]
+softirqs last  enabled at (357466): [<ffffffff81ca4d98>] run_ksoftirqd+0x38/0x60 kernel/softirq.c:1091
+softirqs last disabled at (357471): [<ffffffff81ca4d98>] run_ksoftirqd kernel/softirq.c:1099 [inline]
+softirqs last disabled at (357471): [<ffffffff81ca4d98>] run_ksoftirqd+0x38/0x60 kernel/softirq.c:1091
 
-net/mlx5e: advertise tcp-data-split support
+other info that might help us debug this:
+ Possible unsafe locking scenario:
 
-This patch brings back tcp-data-split reporting in
-mlx5e_ethtool_get_ringparam() when SHAMPO packet merge is active.
-It also rejects requests to disable tcp-data-split. Finally, it changes
-mlx5e_ethtool_set_tcp_data_split() to call netdev_update_features()
-whenever the requested value differs from the current hds_config.
+       CPU0
+       ----
+  lock(sk_lock-AF_X25);
+  <Interrupt>
+    lock(sk_lock-AF_X25);
 
-> Between these two commits, the hds selftest helper _defer_reset_hds()
-> would skip the reset because neither hds-thresh or tcp-data-split was
-> present in the ring config. After the second commit this introduced
-> a KeyError in the hds.set_hds_enable/disable tests.
+ *** DEADLOCK ***
 
-[Severity: Medium]
-This is a pre-existing issue, but the KeyError itself comes from
-_hds_reset() in tools/testing/selftests/drivers/net/hds.py. After
-resetting to "unknown", that function reads the attribute directly:
+locks held by ksoftirqd/0/15: 1, last CPU#0:
+ #0: ffffffff8edec5a0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
+ #0: ffffffff8edec5a0 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
+ #0: ffffffff8edec5a0 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb_core+0x25/0x1a0 net/core/dev.c:6321
 
-        arg['tcp-data-split'] = "unknown"
-        netnl.rings_set(arg)
-        cur = netnl.rings_get({'header': {'dev-index': cfg.ifindex}})
-        if cur['tcp-data-split'] == rings['tcp-data-split']:
+stack backtrace:
+CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ print_usage_bug.part.0+0x258/0x340 kernel/locking/lockdep.c:4086
+ print_usage_bug kernel/locking/lockdep.c:4054 [inline]
+ valid_state kernel/locking/lockdep.c:4100 [inline]
+ mark_lock_irq kernel/locking/lockdep.c:4311 [inline]
+ mark_lock+0x956/0x1020 kernel/locking/lockdep.c:4797
+ mark_usage kernel/locking/lockdep.c:4686 [inline]
+ __lock_acquire+0x7f1/0x1f40 kernel/locking/lockdep.c:5242
+ lock_acquire kernel/locking/lockdep.c:5942 [inline]
+ lock_acquire+0x1d1/0x380 kernel/locking/lockdep.c:5899
+ lock_sock_nested+0x41/0xf0 net/core/sock.c:3837
+ lock_sock include/net/sock.h:1713 [inline]
+ x25_kill_by_neigh+0x168/0x280 net/x25/af_x25.c:1778
+ x25_lapb_receive_frame+0x4b1/0x1000 net/x25/x25_dev.c:138
+ __netif_receive_skb_one_core+0x1b2/0x1e0 net/core/dev.c:6297
+ netif_receive_skb_core+0x5a/0x1a0 net/core/dev.c:6322
+ lapbeth_napi_poll+0x42/0xc0 drivers/net/wan/lapbether.c:100
+ __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7830
+ napi_poll net/core/dev.c:7893 [inline]
+ net_rx_action+0xa40/0xf20 net/core/dev.c:8050
+ handle_softirqs+0x1e6/0x9d0 kernel/softirq.c:645
+ run_ksoftirqd kernel/softirq.c:1099 [inline]
+ run_ksoftirqd+0x38/0x60 kernel/softirq.c:1091
+ smpboot_thread_fn+0x3d3/0xab0 kernel/smpboot.c:160
+ kthread+0x373/0x450 kernel/kthread.c:436
+ ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: sleeping function called from invalid context at net/core/sock.c:3839
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 15, name: ksoftirqd/0
+preempt_count: 100, expected: 0
+RCU nest depth: 1, expected: 0
+INFO: lockdep is turned off.
+Preemption disabled at:
+[<ffffffff81ca41d3>] softirq_handle_begin kernel/softirq.c:486 [inline]
+[<ffffffff81ca41d3>] handle_softirqs+0xf3/0x9d0 kernel/softirq.c:621
+CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+ __might_resched.cold+0x1dc/0x222 kernel/sched/core.c:9264
+ lock_sock_nested+0x52/0xf0 net/core/sock.c:3839
+ lock_sock include/net/sock.h:1713 [inline]
+ x25_kill_by_neigh+0x168/0x280 net/x25/af_x25.c:1778
+ x25_lapb_receive_frame+0x4b1/0x1000 net/x25/x25_dev.c:138
+ __netif_receive_skb_one_core+0x1b2/0x1e0 net/core/dev.c:6297
+ netif_receive_skb_core+0x5a/0x1a0 net/core/dev.c:6322
+ lapbeth_napi_poll+0x42/0xc0 drivers/net/wan/lapbether.c:100
+ __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7830
+ napi_poll net/core/dev.c:7893 [inline]
+ net_rx_action+0xa40/0xf20 net/core/dev.c:8050
+ handle_softirqs+0x1e6/0x9d0 kernel/softirq.c:645
+ run_ksoftirqd kernel/softirq.c:1099 [inline]
+ run_ksoftirqd+0x38/0x60 kernel/softirq.c:1091
+ smpboot_thread_fn+0x3d3/0xab0 kernel/smpboot.c:160
+ kthread+0x373/0x450 kernel/kthread.c:436
+ ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
 
-This patch doesn't change the helper, and mlx5 still seems able to reach
-it.
 
-For example: rx-gro-hw on, tcp-data-split on, then rx-gro-hw off, so
-HW-GRO is kept on because of hds. In that state set_xdp() records
-"enabled" and then sets "unknown".
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-The new hds_config != tcp_data_split path calls netdev_update_features().
-That drops HW-GRO and SHAMPO, so the attribute disappears from the GET
-reply. The deferred _hds_reset() then sends "unknown" again and hits a
-KeyError on cur['tcp-data-split'].
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Would using .get() in _hds_reset() be more robust? Any other driver that
-accepts "disabled" and reports unknown in auto mode can hit the same
-KeyError.
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> This is not a fix since the feature is still functional with
-> HW GRO enabled.
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-[Severity: Low]
-Part of this patch puts back the reporting that commit 46bcce5dfd33
-removed from mlx5e_ethtool_get_ringparam(), which was the
-SHAMPO ? ENABLED : DISABLED assignment. Should this have a Fixes: tag for
-46bcce5dfd33?
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-The condition for calling netdev_update_features() also changes. It was
-(disabled requested && hds_config enabled) and is now (hds_config !=
-requested). That makes "auto" the only way to release HW-GRO that hds
-kept on.
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-The commit message doesn't say this. The new extack text, "TCP-data-split
-can not be disabled", also doesn't point users to "auto". Could both be
-mentioned?
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> index 261c466a4d362..f08a968acec49 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> @@ -378,6 +378,10 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
->  
->  	kernel_param->hds_thresh = 0;
->  	kernel_param->hds_thresh_max = 0;
-> +
-> +	if (priv->netdev->hw_features & NETIF_F_GRO_HW &&
-> +	    priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO)
-> +		kernel_param->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
-
-[Severity: Medium]
-There is only a branch for enabled here. When packet_merge.type is not
-SHAMPO, tcp_data_split keeps the value the core copied from
-dev->cfg->hds_config. That value is unknown by default, and
-rings_fill_reply() leaves the attribute out of the reply in that case:
-
-net/ethtool/rings.c:rings_fill_reply() {
-    ...
-	    (kr->tcp_data_split &&
-	     (nla_put_u8(skb, ETHTOOL_A_RINGS_TCP_DATA_SPLIT,
-			 kr->tcp_data_split))) ||
-    ...
-}
-
-mlx5e_build_nic_netdev() clears NETIF_F_GRO_HW by default. Doesn't that
-mean a freshly probed device that supports HW GRO still looks as if it
-doesn't support tcp-data-split? The "after" output in the changelog shows
-hds.get_hds still skipping with "tcp-data-split not supported by device".
-
-The v2 changelog says unknown is left only "if the device does not
-support HW GRO", and the hw_features test looks meant for that. But SHAMPO
-is only set in set_feature_hw_gro() on the enable path. So SHAMPO already
-means NETIF_F_GRO_HW is in hw_features, and the hw_features test never
-changes the result.
-
-Should this report ETHTOOL_TCP_DATA_SPLIT_DISABLED when HW GRO is
-supported but SHAMPO isn't active, like the code that 46bcce5dfd33
-removed?
-
-[Severity: Medium]
-This is a pre-existing limitation of the selftest rather than something
-this patch introduces. With this reporting, enabled is returned whenever
-SHAMPO is active, whether dev->cfg->hds_config is unknown or enabled.
-
-With HW GRO on and hds_config unknown, hds.py set_hds_enable() records
-"enabled", sets "enabled" (hds_config becomes enabled), and then checks
-for "enabled". The deferred _hds_reset() only acts when the reported
-values differ:
-
-    if cur.get('tcp-data-split') != rings.get('tcp-data-split'):
-
-So hds_config is never set back to unknown, and mlx5e_fix_features() keeps
-forcing HW-GRO on:
-
-	if (cfg && cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-	    !(features & NETIF_F_GRO_HW)) {
-
-The core then rejects single-buffer XDP with -EBUSY. In a full hds.py run,
-later tests reset to "unknown" and hide this. Running set_hds_enable on
-its own leaves the device changed. netdevsim has the same gap, since it
-also reports enabled when hds_config is unknown.
-
-[Severity: Medium]
-With rx-gro-hw on and HDS left in auto mode, this now reports "enabled",
-so hds.py set_xdp() and ioctl_set_xdp() no longer skip. set_xdp() does:
-
-    mode = _get_hds_mode(cfg, netnl)
-    if mode == 'enabled':
-        _defer_reset_hds(cfg, netnl)
-        netnl.rings_set({'header': {'dev-index': cfg.ifindex},
-                         'tcp-data-split': 'unknown'})
-
-    _xdp_onoff(cfg)
-
-hds_config is already unknown, so mlx5e_ethtool_set_tcp_data_split()
-doesn't call netdev_update_features(). HW-GRO is still in wanted_features
-anyway, so packet_merge stays SHAMPO. mlx5e_xdp_allowed() then rejects
-the program:
-
-	if (params->packet_merge.type != MLX5E_PACKET_MERGE_NONE) {
-		netdev_warn(netdev, "can't set XDP while HW-GRO/LRO is on, disable them first\n");
-		return -EINVAL;
-	}
-
-Does this turn two tests that used to skip into failures whenever
-rx-gro-hw is on? The tests expect XDP installation to work in auto mode,
-and the "after" run looks like it was done with HW GRO off.
-
->  static void mlx5e_get_ringparam(struct net_device *dev,
-> @@ -403,9 +407,14 @@ static bool mlx5e_ethtool_set_tcp_data_split(struct mlx5e_priv *priv,
->  		return false;
->  	}
->  
-
-[Severity: Low]
-This isn't a bug introduced by this patch. The check just above returns
-EINVAL for an enable request when HW GRO is off:
-
-	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-	    !(dev->features & NETIF_F_GRO_HW)) {
-
-hds.py set_hds_enable() reports that EINVAL with a skip reason copied from
-set_hds_disable():
-
-        if e.error == errno.EINVAL:
-            raise KsftSkipEx("disabling of HDS not supported by the device")
-
-The "after" output shows "hds.set_hds_enable # SKIP disabling of HDS not
-supported by the device", which names the wrong operation.
-
-> +	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_DISABLED) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "TCP-data-split can not be disabled");
-> +		return false;
-> +	}
-> +
->  	/* Might need to disable HW-GRO if it was kept on due to hds. */
-> -	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_DISABLED &&
-> -	    dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED)
-> +	if (dev->cfg->hds_config != tcp_data_split)
->  		netdev_update_features(priv->netdev);
-
-[Severity: Medium]
-With the wider condition, a change from enabled to unknown ("auto") now
-calls netdev_update_features() here. That happens before
-mlx5e_set_ringparam() validates the ring sizes:
-
-	if (!mlx5e_ethtool_set_tcp_data_split(priv,
-					      kernel_param->tcp_data_split,
-					      extack))
-		return -EINVAL;
-
-	return mlx5e_ethtool_set_ringparam(priv, param, extack);
-
-What happens if mlx5e_ethtool_set_ringparam() fails after this?
-
-ethnl_set_rings() has already set cfg_pending->hds_config to unknown.
-mlx5e_fix_features() reads cfg_pending, so it skips the "Keeping HW-GRO
-enabled" override. If the user had earlier turned rx-gro-hw off while hds
-kept it on, set_feature_hw_gro(false) switches packet_merge from SHAMPO to
-none.
-
-A request like "ethtool -G eth0 tcp-data-split auto rx 1" then fails the
-minimum rx size check in mlx5e_ethtool_set_ringparam().
-mlx5e_validate_params() or mlx5e_safe_switch_params() can fail at the
-same point too. ethnl_default_set_doit() skips the swap when ret < 0:
-
-	if (ret < 0)
-		goto out_ops;
-
-	swap(dev->cfg, dev->cfg_pending);
-
-So dev->cfg->hds_config stays enabled while the device no longer splits
-headers. GET still reports enabled, single-buffer XDP stays blocked with
--EBUSY, and the core's hds_config check for memory providers passes. The
-next unrelated netdev_update_features() forces GRO_HW back on.
-
-The disabled path had the same ordering before, and this patch now
-rejects that request, so the trigger has moved to "auto". Could the
-feature update happen only after the ring parameters are applied
-successfully?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261006225925.568263-1-dimitri.daskalakis1%40gmail.com
+If you want to undo deduplication, reply with:
+#syz undup
