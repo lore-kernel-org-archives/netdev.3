@@ -1,150 +1,134 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB6733E346
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 19:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791746293; cv=pass; b=OO/5r3sw+75vM+04JvIIBe6/v7NozX1BoVqfOtbf6pE6bTGoe5u1M8pNTYQ/aLSpzlrDuM+YmBDJIXUkwzT7BxJ8apeg1JfUgzMY7fmdyN1VAtdWxicz8adHW3e7RXySd0IpmhnTvkQG8DP+WbS6qVPIKWEPjgLImNwOoaQZUXE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791746293; c=relaxed/simple;
-	bh=IWM92jlv8+bItDuNLx6rWhbjIBftHslCpZwGdPKFMhA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a2ePBgLdZjIqJt1JtmSlc6zD5FT9ekpqpARgDsQJ9wMcV6COkzZLV1zRvjsENMB4Ks6iSZPPFMANQHsXx91EvhkQJK6weeIWWpc5CK3BnYiVN9w6zWaw5zp1TnatwA04dG9tXvqfBKPJVSnzJ60NRb7kAlB8lzuc4MiR4ZW0bog=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BPhi9XT8; arc=pass smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83682EEE84;
+	Sun, 11 Oct 2026 19:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791746666; cv=none; b=tPHMM7CipNxrULKDGAs19EHkaXHumeoFRCg1Y11ieBelWWa/AHU9O8cc/RyEwm3yimOW3axEMEGAbRaAk6W8+5SRVXBcg+r7EFYfImwFJgJN1M2u8ZgYUd2/CJUu97lOSsFss3nEsotTgnLSy4PqNDnmD0PWqHUaI2daicbXCG8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791746666; c=relaxed/simple;
+	bh=6z3edQlEDvC3IkHzHgPv3UOI4/fS4rwWs0AqgCIdqoA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MqoQPVejRMsyK1ApUzYoyvn5+tBYs05EggsteG8JD0x27ghemkSEWqit3J/PmYUHy5KQtEj4k1aRDRHxViGIfSZSmfNUG0WRiyceFUdxOODi3eRN1aSRmHmHtb6PmgYcTnxim+jeOCPETtG17pngpsDZDW8x/3FyHIt9k71mDqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=u/ZJ+GuB; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=ihOdGZ/0; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BPhi9XT8"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6790844c9b0so762500d50.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 12:18:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791746291; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VjH4UGSLC3TlR+QjdifPISQmRigbV3O/xpNzxcsJC4G/N1+Ixa2Lw8Tkr5ntFyR4J6
-         EElB8JA+I+G9+n5X86NmM4tM/GJ0BsVFXjMjc5KUfA4tGvK44esfH2kTIKRsuYXYWnbX
-         WmG/0msftFXw260ZSi5w2EckRlT86vRiO70VJEttuKD5Y9ikxKjBlXmA30msMC6OpQAl
-         2dwSlNOi+l2ARgoGSREOlHAAW49pVKwYbm8LYOq5IUgWb21Jes6KpSQx/hGkd4vAcz+Y
-         O/4miBSOyCNYX7Z+rMZyjkzmbQUqBufGpvEv7W2dYlFPSnQSS+6fo1zKw+P4xUDXWn+R
-         V/Dg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yLIfFMIqaxLJpdrdg/vzw0VW5DZQ1Rbzs/ibWNjyDT8=;
-        fh=zis7WR1u2H4FteD4jH1zxxBycNuvd0psYkSGb0JlBec=;
-        b=RywOXICbo+9AI14+PfDqlF6zxPwl1eYMp350ULI6p4RdmhZC1Lp2tGH3pu3j6NxjNG
-         /3WYsR7VjV/KaSWaDKCL/jcC+ph1rfruVGLkceW+iVS92gv08PfJ0Td711D+c4/08+Vi
-         bWFJX+nzKqVljq1OnZ3gpJe1BatDqkNv9lM881Rq8mdf9ZbkGZqSaUVPfIfQUommt1k0
-         i7HFL03zDukycW2O5zgn1aQ5lpYe+8HZjIy6Tk/3tbETIo062D0O73vn4nRhoIFAffxO
-         oj/STwuooRU19A/zhnO5YvXfUE5SW+nsPDJPT2Wd7uLgzYbTkr2V68WIHkMnLbXH5Kt1
-         +4dw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791746291; x=1792351091; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=yLIfFMIqaxLJpdrdg/vzw0VW5DZQ1Rbzs/ibWNjyDT8=;
-        b=BPhi9XT84rYDt+zxZ6gXkQxgHxvWlpvvlOPox30hZfYx2xsDsxCCGmjdxQ4kqO2uoT
-         mehK5dqkmYwyd0P93bROzbUnemwIjqF3MsB2Etm0u9qzrXqIOXjzIpuFjvw+000+/e00
-         kimg5GnrdclIHLmmFNXWQA/ErOIg2Z0P2kVHwgMumn1DWs2OdlnIAO1nnudzOocBmzTH
-         VhcJUNy1fQkJ3v6yg/FMXvsbSB+zfRJRGE72XKO0/R1ZfFRUlbXs+IYX5Qzb1Wt2BN9g
-         GITHrd5GN7iruDqYacitZ/MX5LmbH/Ts6ZjqGsC5Sulor/LO2OqWIpi1GmnN5cOU9W65
-         ri6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791746291; x=1792351091;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yLIfFMIqaxLJpdrdg/vzw0VW5DZQ1Rbzs/ibWNjyDT8=;
-        b=ZuGPU0MtmX587law/cVNeNbEZsPgSVszRjn97hO/n545QYJ9exlQy69tLB0NeGTUmx
-         yzAoXxUsJcG1Y606tggK+yqpcErnrRi/A7rGccN+L95WNIDqZQJn96T12oiIrvpiKiWD
-         Hhr3i86nCO9yfoxcqlf9WATsmCNg8OXbKX+gyKYxS92wttZlfX6+SBfFFQv4Suu6lX8C
-         mxFp371snmiUZr3SXtgTzLUlVna2XKz5dz0tuWo1j4tFmyJzxiBcQi9y0r67Mfm08KFt
-         wiaHZI951uJ5iCSe9l3Npd1f5dPXDx700ooCiRPMkRlpdt9zqv0cRXCBNMulK5aYmuQT
-         qSMw==
-X-Forwarded-Encrypted: i=1; AKwUvByciSdXtxHDcWxzxLUUAkgO3ki1fDbVI82J21oOdq5QhlWcjCU1cnA5nKFQG49m3sP+ny9PD/I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIDcXZ3iBRWFFFayy0PGhl3OXkGIIOULqh+PJSoapvCD/ffog1P
-	1HV2WFtz+XnI7UDrV4dVEi2wRvJ0DPACYbeDo62hRPdske9ISHJB8smDOEm4W2uqvYuzIuGHJfB
-	V64WlSZxWhKYxoLaO6jCrW8HjWU1s1hM=
-X-Gm-Gg: AYBFou1pXOj9ibbw0admG0/ZQ3/Smytr1Q9ifF1ZuU0HGbrkkqo19P/2J40tdI2hRIK
-	j7ka4qeVmAWTmyDg0rDBX4hybeGvCA+bSeXcN93SUmyjUvMjz3dRIGe9ab7tSZBHpvDctHVOrI7
-	hZPZ2I5gGlMc7xtV4ph9qdqR0rJkcEeQU32BBFro+TUoqsKv4n553e+bFVntnFa/VJLBpoQwjqb
-	BrmyG1FMW+FBVp8FsANABIk/BKqwa1jChYMDSaaJUGuN+p10M4LKoNx9naFuUEelLn+Okcvz7sB
-	mPOF0x95BX46qVCd7qlJloOANee4rrKvSbz5T9r3DtbDQVZLORoABD3uWZstj5c7nLl6IfcUN+l
-	pC0vz59pphOpq8LhKIQwfQckt4cGRWSS/71eFQZz9L95df1A44qm0
-X-Received: by 2002:a05:690e:43cc:20b0:677:d1d9:1277 with SMTP id
- 956f58d0204a3-67936aa750cmr1760899d50.82.1791746290718; Sun, 11 Oct 2026
- 12:18:10 -0700 (PDT)
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="u/ZJ+GuB";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="ihOdGZ/0"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69BJNbfe010945;
+	Sun, 11 Oct 2026 21:23:42 +0200
+Received: from localhost.localdomain (unknown [160.80.105.87])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 94916121E31;
+	Sun, 11 Oct 2026 21:23:32 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1791746612; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=RqIShypECdIvl2ppW+FzNE+VyiErw29bDc4KRYaYcfs=;
+	b=u/ZJ+GuBp3S24vw6iaTMjKsYOhrPqQjcVF65qQTDfRHeGDGknaXJY9MD7XddnhgSDA83n1
+	RgiroZC7VzEu/lDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1791746612; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=RqIShypECdIvl2ppW+FzNE+VyiErw29bDc4KRYaYcfs=;
+	b=ihOdGZ/0dKsv7wyrMyN0j1O3hxZU4yzpiScc9k4aJ4n+hLz0rvk58eWJVCN2MJnR+Zpdn1
+	uvPbmjNutHu6R/vWVHSdD3CqPRTbSncV5VBFRXKt3nYZ+Mr+gufCsmf7o5qVdUReNDmPTY
+	Pls0y9pecOt9yL3HIgyJqTHzXBDtpsRG7YUcqbvCMFnP2w3Wh+IKhgjgM6eSi9+j5aKwQn
+	mrMpnzFfcoElV5E92igmvHLuPF8GF+PUzjlJHnTVCvQKK5qvDxw616vTiU9AaAbJRRHEY+
+	yPPHtAQvBja4aw8GNZs7YwZSFet13SJXyjoGpMmRVdi2IlL3zYM+oozKEt3RnQ==
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
+        Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+        Hangbin Liu <hangbin.liu@linux.dev>,
+        Justin Iurman <justin.iurman@gmail.com>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Ahmed Abdelsalam <ahabdels@cisco.com>,
+        Stefano Salsano <stefano.salsano@uniroma2.it>,
+        Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: [PATCH net-next 0/5] seg6: fixes for the PSP flavor of SRv6 End
+Date: Sun, 11 Oct 2026 21:23:05 +0200
+Message-Id: <20261011192310.55-1-andrea.mayer@uniroma2.it>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261008220433.965791-1-linmag7@gmail.com> <038bffb2-e40d-44bb-b7ce-53e9de32e50d@lunn.ch>
- <CA+=Fv5QvhYd7EqVBYKWVgvf92SLE=FjE8EYcZvUQ7HKdx2kc3Q@mail.gmail.com>
- <becc8f95-4650-477b-b1c7-cc4952e5e980@lunn.ch> <CA+=Fv5TU1rOUimi8f+e0R4_48ki+X3qzD_+1QPyviTnJz-irvA@mail.gmail.com>
- <c8bc138e-2d62-4ee8-9020-5f1091efe015@lunn.ch>
-In-Reply-To: <c8bc138e-2d62-4ee8-9020-5f1091efe015@lunn.ch>
-From: Magnus Lindholm <linmag7@gmail.com>
-Date: Sun, 11 Oct 2026 21:17:58 +0200
-X-Gm-Features: AclHuK_XYA2IeX8EB_wQ6S_Y8XgepVmJIFtOKL2to5kfxrIk9XqHG7Csp2E4u_w
-Message-ID: <CA+=Fv5RiKoE07MVn5qRS1+WtLXUVO+HrXyLpVCcXGoCb7X6X3w@mail.gmail.com>
-Subject: Re: [PATCH net-next] tg3: normalize inherited M3000 register byte order
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: pavan.chebbi@broadcom.com, andrew+netdev@lunn.ch, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-Hi Andrew,
+This series addresses three related issues of the PSP flavor in the
+SRv6 End behavior, all present since commit bdf3c0b9c10b ("seg6: add PSP
+flavor support for SRv6 End behavior"). The three fixes build on each
+other.
 
-On Sun, Oct 11, 2026 at 3:33=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Fri, Oct 09, 2026 at 02:52:57PM +0200, Magnus Lindholm wrote:
-> > Hi Andrew,
-> >
-> > On Fri, Oct 9, 2026 at 2:09=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wro=
-te:
-> > >
-> > > > > Is there a legitimate reason you would want the bytes are swapped=
-?
-> > >
-> > > You missed answering this. I'm guessing, but does the hardware offer
-> > > this to make big endian machines more efficient?
-> > >
-> > > Please could you look at the driver and think about what would happen
-> > > on a big endian machine. Is the change still correct?
-> > >
-> > >         Andrew
-> >
-> > You're right, my earlier reply missed the underlying question.
-> >
-> > That is a plausible reason for providing the hardware swap mode:
-> > it can accommodate big-endian accesses without software byte
-> > swapping. I haven't verified Broadcom's design rationale.
-> >
-> > However, Linux tg3 alreadThanks, I'll expand the commit message with th=
-is explanation in v3.y initializes misc_host_ctrl with WORD_SWAP set
-> > and BYTE_SWAP clear on both little- and big-endian builds, before
-> > this helper runs.
-> >
-> > The helper restores that existing setting. Its swab32() compensates
-> > for the device's inherited register state, not CPU endianness.
-> > Subsequent accesses use the normal driver path, and the separate
-> > __BIG_ENDIAN handling for DMA remains unchanged.
-> >
-> > That is why I believe the correction is appropriate on either
-> > endianness. The runtime tests were on the M3000 running big-endian
-> > SPARC64.
->
-> Please expand the commit message to show you have thought about this.
->
+The main one is a route with both the NEXT-C-SID and PSP flavors.
+RFC 9800 says that the PSP flavor is unchanged when combined with
+NEXT-C-SID (NEXT-CSID in the RFC) [1]. Currently, a packet with a zero
+Argument (i.e. when the IPv6 DA carries no further C-SID) is processed
+as End without flavors, and PSP is not applied. With this series, such
+a packet is processed as End with PSP.
 
+The other two are:
 
-Thanks, I'll expand the commit message with this explanation in v3.
+ - A consumed SRH (Segments Left 0) before the SRH to process. This is
+   a corner case, e.g. when the seg6 inline mode inserts an SRH in front
+   of the one already in the packet, and a later End behavior consumes
+   the inserted SRH. End without flavors skips the consumed SRH, while
+   End with the PSP flavor alone drops the packet. With this series, End
+   with PSP skips the consumed SRH as well.
 
-Magnus
+ - A Fragment or AH header before the SRH. This order does not follow
+   RFC 8200 [2] for the Fragment header and RFC 4302 [3] for AH. At the
+   penultimate segment, End with the PSP flavor alone handles it
+   inconsistently: it drops the packet when other headers come between
+   the Fragment or AH header and the SRH, but removes the SRH when
+   nothing comes between them. With this series, End with PSP drops the
+   packet in both cases. Packets with the Fragment or AH header after
+   the SRH are not affected by patch 1/5.
+
+The series is organized as follows:
+
+ - Patch 1/5 fixes the Fragment or AH header case.
+ - Patch 2/5 fixes the consumed SRH case. It relies on patch 1/5.
+ - Patch 3/5 fixes the NEXT-C-SID and PSP route. It relies on patch 2/5.
+ - Patch 4/5 adds the selftests for PSP together with NEXT-C-SID.
+ - Patch 5/5 adds the selftests for PSP with a consumed SRH.
+
+The series targets net-next because the three issues have been there
+since PSP was added.
+
+Tested on net-next with the srv6_*.sh selftests, including the new tests
+of patches 4/5 and 5/5. The ping traffic of srv6_end_flavors_test.sh has
+no Fragment or AH header before the SRH. For this reason, patch 1/5 was
+also tested with crafted packets. KASAN reports no error.
+
+[1] - https://datatracker.ietf.org/doc/html/rfc9800#section-4.1.7
+[2] - https://datatracker.ietf.org/doc/html/rfc8200#section-4.5
+[3] - https://datatracker.ietf.org/doc/html/rfc4302#section-3.1.1
+
+Thanks,
+Andrea
+
+Andrea Mayer (5):
+  seg6: handle a Fragment or AH header before the SRH consistently in
+    PSP
+  seg6: handle a consumed SRH in SRv6 End with the PSP flavor
+  seg6: apply the PSP flavor together with NEXT-C-SID in SRv6 End
+  selftests: seg6: add tests for PSP together with NEXT-C-SID
+  selftests: seg6: add tests for PSP with a consumed SRH
+
+ net/ipv6/seg6_local.c                         |  87 +++-
+ .../selftests/net/srv6_end_flavors_test.sh    | 373 +++++++++++++++++-
+ 2 files changed, 444 insertions(+), 16 deletions(-)
+
+-- 
+2.43.0
+
