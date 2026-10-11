@@ -1,47 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47CC30F92E;
-	Sun, 11 Oct 2026 07:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210E91C75F9;
+	Sun, 11 Oct 2026 07:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791702216; cv=none; b=uCieIXVF34Op2ivjrQuH+c5Z0ApWvmzjRNy2z98CpnOSmyiEYe/w5No9AMRjH5cNKzwBCN25VOWSEf2ZHEBPeWweLZfDZVBxJx+q0bZsnbQs5BGHwQmhvYSie3b/jO23Z9TstzAh4ZtTUExNkADZuFwWRrqlzczwSEyUifG0sEg=
+	t=1791702343; cv=none; b=mHSP/wDEKuWFi421gl1CgHHR6tMxu38va3MI6lhf1XP4dlmtpMIGmQvX4aJqaansJbMbjTjii41Znz54VGcmsotSIXCyRkoZeKOIVD7daEq6kBwAgIVD5e7ONr83nKL3ddpnHbb6SJHb2tkNqkgCYE4V9EqqnPLbfYsfJFgv2xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791702216; c=relaxed/simple;
-	bh=4Ftfemtjb6xLoPE8Lirfyk8FuzXoN+pVExcr/CUwct0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OecLRYV9AZvjaqhZCCF6w0kO6vK9aS27Z0xxw21jyBLsVcEYwhXWoaOn9GMKhmRkvvkFUpiIHmKEVu69GlLAZofshPKedzZpQCCi2/afYfXKnfkHLxv4y78a3EhZx5RnKsPW6JukSlQtpfMspN+zc7m8xeD6zErFatoQgaUzwxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdbPRSME; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791702343; c=relaxed/simple;
+	bh=IP4Rskfz/GCQYzO9x9MDvphxN7sxTG9YrpYTeMGwA7U=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VMJ7ljqp+pIPCElS5fd/e9eck8aUv8v9GralC+XHf2ZXEZ9aSuEMPvJ/SGf9DwyxN8oM8hN0xKuyCsOWEKix7+tAlrrLromIFFRyVs6TpMi68wnCcT4b3aetTh8nN5GB0y3dg/H7TThzmOYIlEP17nm+rB4C6qm7av/IrZEuat4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HEAZeGM/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdbPRSME"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FCF1F0089B;
-	Sun, 11 Oct 2026 07:03:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEAZeGM/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E8F1F0089B;
+	Sun, 11 Oct 2026 07:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791702215;
-	bh=8OqT1qJsY3GVXrGF5l6DNP8Wtqtf3Z9gv+gvW6grqyA=;
+	s=k20260515; t=1791702342;
+	bh=Udrnn4cS7q6JKaUpjUsKRGSxz1A9hKmXkIAGTQIJMgU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FdbPRSMEIacZgECIsPurGouc3DzkfbWeSWMtZ9lVCm1/eyirH8tpq5RokDhfWJeYQ
-	 6JR4i6p3mXt/jIFPyTOgwBJBo7KjaZu4aITZe8e5wyy42ppKjO4rDAH85F1n1b8zqy
-	 VBVWBpy1eGFSNPLGR5sZ62icMexe7r8jTDddPOCrrQC9jmywfDv99KX2vbnvr1PmAD
-	 LT77GdP81y/m92V3Ph4n7EliDVX24djfJiz2Iq2HIMzUNLzN3gp5fJYGTpDrkjrIVI
-	 GSGc64PTwOFpk41XRuYKv9x4Em82+APwBMvTWukqW9+6TUVnD6sNOary+rHFLLPk6F
-	 7FhQvZyLc+T9A==
-Subject:
- Re: [PATCH net] vxlan: reject appending a remote to a nexthop fdb entry
-From: netdev-bot+sashiko@kernel.org
-To: bsdhenrymartin@gmail.com
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, kuniyu@google.com,
- idosch@nvidia.com, razor@blackwall.org, fmancera@suse.de, atenart@kernel.org,
- i.maximets@ovn.org, qotmddnjs@ajou.ac.kr, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Sun, 11 Oct 2026 07:03:33 +0000
-Message-ID: <179170221371.434549.11644886224016401666@kernel.org>
-In-Reply-To: <20261010064802.2741221-1-bsdhenrymartin@gmail.com>
-References: <20261010064802.2741221-1-bsdhenrymartin@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	b=HEAZeGM/zaQ3hOxN95kus4Sf31JgNyLP3MwTH7Gj1qb9/Co5ZTBE6RiwEuIG3kcHk
+	 zJhvE1E9KNf2GUm/yvReYJNF2mIYWmp3lriD0n0KkbdiowIvUw+zA8naI5TkzxCrg/
+	 taAM+vJ+HO0cwWl6g5C7P0Od4ul0ZXbDLC4w9fDBPJrInlmkLLEbd8qu7NxL62CyPj
+	 gBJt+WL6tsFcrcBrLwIWGwXQjZRc+0UN0j9VbbrRRTe1aayV1sVP1iDKenmii8Xt85
+	 6pJSrgOwJ3rw04BribWKPHwFuC0JNjttFIS2TdMo18iboKZIfv9rbhlbPDzybnujpn
+	 bp3tZvIIEnG1g==
+Message-ID: <9c5d7494fef90cee5404b2943409b2b41ce9b199.camel@kernel.org>
+Subject: Re: [PATCH net v3] net/rds: ib: zero the unwritten tail of a short
+ receive fragment
+From: Allison Henderson <achender@kernel.org>
+To: Shubham Antil <shubham@octane.security>, netdev@vger.kernel.org, 
+	linux-rdma@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, Giovanni Vignone <gio@octane.security>,
+ sungbyeongchan <tjdqudcks0424@naver.com>
+Date: Sun, 11 Oct 2026 00:05:40 -0700
+In-Reply-To: <20261008124940.13371-1-shubham@octane.security>
+References: <20261008124940.13371-1-shubham@octane.security>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,122 +50,118 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Thu, 2026-10-08 at 18:19 +0530, Shubham Antil wrote:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Hi Shubham,
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Thanks for the v3.  Some comments below:
+=20
+> rds_ib_process_recv() accepts an RDS/IB fragment once the receive
+> completion reports at least an RDS header, and then trusts the
+> header-declared message length h_len: rds_ib_inc_copy_to_user() later
+> copies up to h_len bytes from the fragment pages to userspace on
+> recvmsg().
+>=20
+> When a fragment carries fewer payload bytes than h_len accounts for, the
+> bytes between the end of the received payload and h_len are read from the
+> unwritten tail of the fragment page.  That page comes from the per-CPU
+> receive cache and is not zeroed, so recvmsg() returns stale page contents
+> to userspace.
+>=20
+> Zero the unwritten tail of a short fragment page on receipt, so the copy
+> can only ever return received payload or zeros.  Fragments that fill the
+> page are unaffected.
+>=20
+> Confirmed under KMSAN: without this change recvmsg() returns stale
+> frag-page bytes and KMSAN flags an uninitialised copy in
+> rds_ib_inc_copy_to_user(); with it the same over-read returns zeros and
+> KMSAN is clean.
+>=20
+> Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
+> Reported-by: sungbyeongchan <tjdqudcks0424@naver.com>
+> Closes: https://lore.kernel.org/netdev/20261006205204.1322102-1-tjdqudcks=
+0424@naver.com/
+> Reported-by: Shubham Antil <shubham@octane.security>
+nit: since youre the author, you wouldn't add yourself as the reporter, so =
+this tag should be trimmed out.
 
-- [Medium] In vxlan_fdb_update_existing()
-  (drivers/net/vxlan/vxlan_core.c), the new `if…
-- [Low] The commit message presents the change only as rejecting a
-  userspace `bridge fdb append` onto a nexthop entry.
+> Reported-by: Giovanni Vignone <gio@octane.security>
+> Reported-by: Robert van Eijk <robert@octane.security>
+> Reported-by: Paolo Gentry <paolo@octane.security>
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Shubham Antil <shubham@octane.security>
+> ---
+> v3:
+>  - Zero the unwritten fragment tail instead of dropping the connection.
+>    A zero-copy send with a small iovec segment can legitimately produce a
+>    non-final fragment shorter than RDS_FRAG_SIZE, so the v2 length check
+>    could force a reconnect on well-formed traffic; zeroing the tail avoid=
+s
+>    that while still keeping uninitialised bytes out of recvmsg().
+rds_sendmsg() rejects MSG_ZEROCOPY for any transport other than TCP, so I d=
+ont
+think this can happen over IB.
 
---
+>    (Raised by the Sashiko review.)
+I wasnt able to find the review that raised this, but the review for v2 lan=
+ded after v3
+was sent.  From your change log, it sounds like it was a different review, =
+but the v2
+findings are still valid, so those should be addressed:
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007062135.49946-1-=
+shubham%40octane.security
 
-vxlan: reject appending a remote to a nexthop fdb entry
+>  - Drop Reviewed-by, since the approach changed.
+> v2:
+>  - Add Reported-by (sungbyeongchan, first to report, and the Octane
+>    Security reporters).
+>  net/rds/ib_recv.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>=20
+> diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
+> index bd6cb3ffa..9695c7f24 100644
+> --- a/net/rds/ib_recv.c
+> +++ b/net/rds/ib_recv.c
+> @@ -35,6 +35,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/pci.h>
+>  #include <linux/dma-mapping.h>
+> +#include <linux/highmem.h>
+>  #include <rdma/rdma_cm.h>
+> =20
+>  #include "rds_single_path.h"
+> @@ -949,6 +950,19 @@ static void rds_ib_process_recv(struct rds_connectio=
+n *conn,
+>  		}
+>  	}
+> =20
+> +	/* The device wrote only data_len bytes into this recycled fragment
+> +	 * page.  Zero the unwritten tail so a later rds_ib_inc_copy_to_user(),
+> +	 * which copies up to the peer-declared h_len, cannot hand stale page
+> +	 * contents to userspace.
+> +	 */
+> +	if (data_len < RDS_FRAG_SIZE) {
+> +		void *frag =3D kmap_local_page(sg_page(&recv->r_frag->f_sg));
+> +
+> +		memset(frag + recv->r_frag->f_sg.offset + data_len, 0,
+> +		       RDS_FRAG_SIZE - data_len);
+I think padding with zeros would deliver a malformed message to the applica=
+tion as
+if it were valid. A short fragment is a protocol violation, and resetting t=
+he connection
+is what we already do for a fragment header mismatch.
 
-This patch adds a check to vxlan_fdb_update_existing(). An NLM_F_APPEND
-request on a multicast or zero MAC fdb entry now fails with -EOPNOTSUPP
-when the entry is backed by a nexthop group. Before this,
-vxlan_fdb_append() would link a remote onto such an entry, which breaks
-the rule that nexthop entries have no remote list.
+I notice the dashboard says a review is still queued, so I'd recommend wait=
+ing for the
+v3 review and then address both in a v4.
 
-> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-> index 278d41f58d895..e9c5ba7a74172 100644
-> --- a/drivers/net/vxlan/vxlan_core.c
-> +++ b/drivers/net/vxlan/vxlan_core.c
-> @@ -1047,6 +1047,11 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
->  	if ((flags & NLM_F_APPEND) &&
->  	    (is_multicast_ether_addr(f->key.eth_addr) ||
->  	     is_zero_ether_addr(f->key.eth_addr))) {
-> +		if (rcu_access_pointer(f->nh)) {
-> +			NL_SET_ERR_MSG(extack,
-> +				       "Cannot append a remote to a nexthop fdb");
-> +			return -EOPNOTSUPP;
-> +		}
+Thanks for working on this!
+Allison
 
-[Severity: Medium]
-Can this early return leave the entry partly updated? When this check
-runs, vxlan_fdb_update_existing() has already written the new state and
-flags:
+> +		kunmap_local(frag);
+> +	}
+> +
+>  	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
+>  	recv->r_frag =3D NULL;
+> =20
 
-	if (!(fdb_flags & NTF_EXT_LEARNED) ||
-	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
-		if (f->state != state) {
-			f->state = state;
-			notify = 1;
-		}
-		if (f->flags != fdb_flags) {
-			f->flags = fdb_flags;
-			notify = 1;
-		}
-	}
-
-Returning -EOPNOTSUPP here skips the if (notify) block, so no
-RTM_NEWNEIGH or switchdev notification goes out. It also skips the
-err_notify rollback.
-
-For example, create a zero MAC nexthop entry with:
-
-  bridge fdb add 00:00:00:00:00:00 dev vx0 nhid N self permanent
-
-Then run:
-
-  bridge fdb append 00:00:00:00:00:00 dev vx0 dst X self permanent router
-
-The append passes the earlier nexthop checks, because nhid is 0 and the
-state includes NUD_PERMANENT. It changes f->flags and then fails.
-vxlan_fdb_add() returns the error and restores nothing.
-
-The in-kernel callers vxlan_changelink() and
-vxlan_update_default_fdb_entry() also reach this point. They pass
-ndm_flags = NTF_SELF and state = NUD_REACHABLE | NUD_PERMANENT.
-
-On a nexthop default entry created by the user, f->flags is overwritten
-with NTF_SELF, which clears NTF_VXLAN_ADDED_BY_USER, and then the call
-fails. vxlan_changelink() treats the failure as if nothing changed and
-frees new_cfg.
-
-The other three nexthop checks near the top of this function all return
-before anything is changed. Could this check move up next to them, so
-that the failed request has no side effects?
-
-[Severity: Low]
-The commit message presents this as rejecting a user's bridge fdb append
-onto a nexthop entry. Two in-kernel paths also reach this check with
-NLM_F_APPEND | NLM_F_CREATE on all_zeros_mac and nhid = 0:
-
-  vxlan_changelink()
-    vxlan_fdb_update()
-      vxlan_fdb_update_existing()
-
-  vxlan_update_default_fdb_entry()
-    vxlan_fdb_update()
-      vxlan_fdb_update_existing()
-
-The first runs on "ip link set dev vx0 type vxlan remote <ip>". The
-second runs on vnifilter group add or change, for example
-"bridge vni add ... group ...".
-
-On a non-metadata device, the zero MAC lookup is keyed on cfg->vni. A
-nexthop entry created with "bridge fdb add 00:00:00:00:00:00 dev vx0
-nhid N self permanent" is therefore the same entry these paths update.
-
-Before this patch, these link and VNI changes succeeded, though they left
-an unused remote on the entry. With this patch they fail with
--EOPNOTSUPP and the extack "Cannot append a remote to a nexthop fdb".
-That message describes an fdb operation the user never issued.
-
-Rejecting these requests is probably the right result. Since the patch
-is tagged for stable, should the commit message mention this change in
-rtnetlink link and vnifilter behavior? Could the error message also be
-made accurate for these callers?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010064802.2741221-1-bsdhenrymartin%40gmail.com
