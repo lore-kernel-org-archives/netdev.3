@@ -1,292 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C364D3DD87A;
-	Sun, 11 Oct 2026 06:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86EA1D9A66
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 06:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791698773; cv=none; b=AF1J9DS9RJNAahrt5Sn/n2Tmr+rx3diRA8O5ECghn+01ib0CEgdNsrl4tyZwx94rbKzL0NYP75AB1LFHQvns2CUyJ8cUsl+nz3xA6mhPXWHjkam8+3R/AaZIKpJwhRq++PID+pBZPmtb90JD3f8mS6b1tn1/tTYJXFebu/6JQBo=
+	t=1791698914; cv=none; b=AC0iBjGQFkBA3WGgHF8DPnrtH2LdGqZOEDASMF2DmNzihzyYKZEqPLnFN7DR70W1xJA79n3xMBnnQ3p4I66sjUll46QnxpDkmO1gRuRl9G512HDApzmGr9ZD8eU26hX77jOr+PyApS+zH8kcumbLZWtS7j8p22ReUlFc8JoX4mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791698773; c=relaxed/simple;
-	bh=rOt1P/x3OD7pyzaN3zaoUoDU/UF+A9YSArGcJUf5oeU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T2UEW4FfmeoYc1EDZ4UNMzu0Ac68FV5uzIhg1CWwSSBMOP8nEjtOj7H35EciRcVd2It0QopC1bC4TLjoJAhubVTocs7+OB2Yjwi2Ej5eDRNhi67vcHV/t3Iws8gHzA9WDtSOqDIlorNcFRWNca461RFqlQiiKhVtKMF3Oax/XeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E406FT/K; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791698914; c=relaxed/simple;
+	bh=L83EC1yVpH8jPT98rYtWh0VLRV6lhwCzyCmbaCjzW9k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GPp28F3KF7qPjKWK2IA/wT1xdvSlj5iAe7IEv3rq+MjPlejlAKWe4g24SClXNiB9eHg7+i4t877Y3mpANsiTXxTY8oF5epXtlMq6f0jRXTEBQxIqTvjFjja1i2kV/1FbhSUH8KPC9MGMF/HhRjC8a+Yy+MT0zx0fS/oQr3J+5nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ASdBfMv5; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E406FT/K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C4C1F0089B;
-	Sun, 11 Oct 2026 06:06:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791698766;
-	bh=zB3+bKFhNuFp12yMORYKatx4F3PfEKORcFI6oTyIUyc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=E406FT/KzcHlFvcU1TvEdpVW+09QHEuu2hN0tLJet+DV0BDabS0z6B8kCx7SYF3hL
-	 HBic14t5zUxzaKajHhaTG5n1ox9wKXcdIHd7EE3Z+HMjrvpyVnTfyqedv7fm02iucG
-	 wr4Xypvhl6mfBtKKD89p8yCGz97FQ4+qD8DInSedNBslV7RS8wR62NWigNmT829h4J
-	 D+eMu67v7ojm/snnCnkYm2ykTFP90+3AoNDCLKoXLuaKxfhzZXuhb5ReXNMks8vHsY
-	 WrmzSpQQmvCPdLcyjwkYNv+SrxdvSa/+YrGrXMi92BcreXTg09LCaWmfrgj+3QVk4p
-	 JegWupMacqtIw==
-Subject: Re: [PATCH net v2 1/2] net: phy: xilinx-gmii2rgmii: Avoid overwriting
- PHY drvdata
-From: netdev-bot+sashiko@kernel.org
-To: vineeth.karumanchi@amd.com
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- michal.simek@amd.com, harini.katakam@xilinx.com, f.fainelli@gmail.com,
- appanad@xilinx.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- git@amd.com
-Date: Sun, 11 Oct 2026 06:06:04 +0000
-Message-ID: <179169876482.434549.4039467032611892577@kernel.org>
-In-Reply-To: <20261007054844.529363-2-vineeth.karumanchi@amd.com>
-References: <20261007054844.529363-2-vineeth.karumanchi@amd.com>
-X-sashiko-severity: Critical
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ASdBfMv5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791698911;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Wo1efaTMpeT/4NBcKrfwC/YnsyXmNc2l9OW89Ez3udA=;
+	b=ASdBfMv5bQgluO3ZWfLUH86xrfEgfHwbthcl6uCITgJ9EQ19PY9E01DI695i4Kj5n5bAtI
+	FOsl4BSL/MzKMhZ90oa2pn7SzMN8egYtbhttgGgTRyH0tV5ff++oRGFxjqGxLToRbWb774
+	5oRxDqQ2/eVNvn1VJqp2YY3RbwYEnv4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-4oJXwfekOxKwRo7fDzlc_A-1; Sun,
+ 11 Oct 2026 06:08:28 +0000
+X-MC-Unique: 4oJXwfekOxKwRo7fDzlc_A-1
+X-Mimecast-MFC-AGG-ID: 4oJXwfekOxKwRo7fDzlc_A_1791698906
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21040194510D;
+	Sun, 11 Oct 2026 06:08:26 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 60A5830000E3;
+	Sun, 11 Oct 2026 06:08:23 +0000 (UTC)
+Message-ID: <d4e4faab-002b-47c7-b437-0d8f92f8dbf3@redhat.com>
+Date: Sun, 11 Oct 2026 08:08:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4 5/5] dpll: zl3073x: notify sibling pin when shared
+ output config changes
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, poros@redhat.com, min.li@microchip.com,
+ vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
+ kuba@kernel.org, Prathosh.Satish@microchip.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+References: <20261009192556.272263-6-ivecera@redhat.com>
+ <179166042422.434549.15231909137129079099@kernel.org>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <179166042422.434549.15231909137129079099@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
 
-Critical: 1 · High: 1 (1) · Medium: 0 (3) · Low: 0
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On 10/10/26 21:27, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
+> 
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] Pins that are on the list but not registered get passed to
+>    __dpll_pin_change_ntf(), and the new NCO comment is wrong.
+> 
+> --
+> 
+> dpll: zl3073x: notify sibling pin when shared output config changes
+> 
+> This patch adds zl3073x_dpll_output_pin_sibling_get(). It sends a change
+> notification for the sibling P/N pin from frequency_set(), esync_set() and
+> phase_adjust_set() after zldpll->lock is dropped. Pins are now added to
+> zldpll->pins before dpll_pin_register() and removed after
+> dpll_pin_unregister(), so a registered sibling can always be found.
+> 
+>> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+>> index 6d9a6d21d30b7..1d61fe5fe5862 100644
+>> --- a/drivers/dpll/zl3073x/dpll.c
+>> +++ b/drivers/dpll/zl3073x/dpll.c
+> 
+> [ ... ]
+> 
+>> @@ -132,11 +134,42 @@ zl3073x_dpll_pin_get_by_ref(struct zl3073x_dpll *zldpll, u8 ref_id)
+>>   	return NULL;
+>>   }
+>>   
+>> +/**
+>> + * zl3073x_dpll_output_pin_sibling_get - get the other pin of an output pair
+>> + * @pin: output pin whose sibling is sought
+>> + *
+>> + * Output pin ids are allocated in P/N pairs (P even, N odd) that share a
+>> + * single HW output. Looks up the other pin of the pair in the pin list
+>> + * of this DPLL. A pin is on the list from just before its registration
+>> + * until just after its unregistration, so a registered sibling is always
+>> + * found, but the returned pin may also be one that is not (yet or any
+>> + * longer) registered.
+>> + *
+>> + * Return: pointer to sibling pin, or NULL if it is not on the pin list
+>> + */
+> 
+> [ ... ]
+> 
+>> @@ -937,9 +974,24 @@ zl3073x_dpll_output_pin_esync_set(const struct dpll_pin *dpll_pin,
+>>   
+>>   	/* Enable 1PPS eSync for this pin frequency */
+>>   	zl3073x_out_esync_enable(&out, synth_freq / out.div);
+>> -
+>> +commit:
+>>   	/* Commit output configuration */
+>> -	return zl3073x_out_state_set(zldev, out_id, &out);
+>> +	rc = zl3073x_out_state_set(zldev, out_id, &out);
+>> +	if (rc)
+>> +		goto unlock;
+>> +
+>> +	/* The clock type, esync period and esync width are all shared by
+>> +	 * both pins of the output pair, so the sibling pin's esync
+>> +	 * configuration changes too and userspace has to be notified.
+>> +	 */
+>> +	sibling = zl3073x_dpll_output_pin_sibling_get(pin);
+>> +unlock:
+>> +	mutex_unlock(&zldpll->lock);
+>> +
+>> +	if (!rc && sibling)
+>> +		__dpll_pin_change_ntf(sibling->dpll_pin);
+> 
+> [Severity: Low]
+> 
+> The kernel-doc for __dpll_pin_change_ntf() in drivers/dpll/dpll_netlink.c
+> says its argument is "@pin: registered pin pointer". The kernel-doc for
+> zl3073x_dpll_output_pin_sibling_get() above says the returned pin "may
+> also be one that is not (yet or any longer) registered".
+> 
+> Should the sibling's registration state be checked before it is passed to
+> __dpll_pin_change_ntf() here? The same question applies to the matching
+> calls in zl3073x_dpll_output_pin_frequency_set() and
+> zl3073x_dpll_output_pin_phase_adjust_set().
+> 
+> __dpll_pin_change_ntf() runs the notifier chain before the
+> dpll_pin_available() check in dpll_pin_event_send():
+> 
+> int __dpll_pin_change_ntf(struct dpll_pin *pin)
+> {
+> 	lockdep_assert_held(&dpll_lock);
+> 	dpll_pin_notify(pin, pin->clock_id, DPLL_PIN_CHANGED);
+> 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
+> }
+> 
+> This means a notifier subscriber can get DPLL_PIN_CHANGED for a pin
+> before it got DPLL_PIN_CREATED, or after it got DPLL_PIN_DELETED.
+> 
+> It looks like this can happen during probe:
+> 
+> - zl3073x_dpll_device_register() runs before zl3073x_dpll_pins_register().
+> - The P pin (even id) is registered before its N sibling.
+> - A userspace PIN_SET on the registered P pin holds dpll_lock.
+> - That PIN_SET can find N on the list after list_add(), while
+>    dpll_pin_register(N) is still waiting for dpll_lock.
+> 
+> list_add() now runs before dpll_pin_register() for every pin type. So the
+> existing callers of zl3073x_dpll_nco_pin_get() and
+> zl3073x_dpll_pin_get_by_ref() can also get a pin that is not registered
+> yet and pass it to __dpll_pin_change_ntf(). Before this patch, that could
+> only happen during teardown, between dpll_pin_unregister() and list_del().
+> 
+> As the commit message says, no netlink message is sent for such pins, and
+> ice_dpll_pin_notify() ignores DPLL_PIN_CHANGED. So nothing visibly breaks
+> today.
+> 
+> Would a per-pin registered flag be cleaner? It could be set and cleared
+> under zldpll->lock around dpll_pin_register() and dpll_pin_unregister(),
+> and checked before notifying. Another option is to relax the core
+> kernel-doc and have dpll_pin_notify() check registration.
 
-- [Critical] net: phy: data race and type confusion computing priv from
-  phydev->drv
-- [High] net: phy: TOCTOU race in xgmiitorgmii_read_status yielding
-  invalid pointer
+Such a pin gets no netlink notification and the only in-tree notifier
+ignores DPLL_PIN_CHANGED, so I would rather not add a registered flag
+in a net fix.
 
-Pre-existing issues:
-- [High] At this commit the converter has no .remove callback.
-- [Medium] xgmiitorgmii_configure() stores the int result of
-  mdiobus_read(bus, addr, XILINX_GMII2RGMII_REG) in a u16 without…
-- [Medium] At this commit, the device reference that of_phy_find_device()
-  takes in xgmiitorgmii_probe() is dropped only on the…
-- [Medium] xgmiitorgmii_probe() makes the wrapper visible with a plain
-  store `priv->phy_dev->drv = &priv->conv_phy_drv`.
+> Separately, the new comment in zl3073x_dpll_nco_pin_register() says:
+> 
+> 	/* Add the pin to the list before registering it with the DPLL core so
+> 	 * that the list reflects the DPLL registration state.
+> 	 */
+> 
+> Is this accurate? With the early list_add(), the list holds every
+> registered pin and also pins that are not registered yet.
 
---
+Right, will fix the comment in v5.
 
-net: phy: xilinx-gmii2rgmii: Avoid overwriting PHY drvdata
+Thanks,
+Ivan
 
-This commit stops the GMII-to-RGMII converter from storing its private
-data in the attached PHY's MDIO drvdata field, because that field belongs
-to the underlying PHY driver. The read_status and set_loopback wrappers
-now get struct gmii2rgmii by calling container_of_const() on phydev->drv.
-xgmiitorgmii_configure() now takes a const pointer.
-
-> diff --git a/drivers/net/phy/xilinx_gmii2rgmii.c b/drivers/net/phy/xilinx_gmii2rgmii.c
-> index 2024d8ef36d98..61f71e977a574 100644
-> --- a/drivers/net/phy/xilinx_gmii2rgmii.c
-> +++ b/drivers/net/phy/xilinx_gmii2rgmii.c
-> @@ -28,7 +28,7 @@ struct gmii2rgmii {
->  	struct mdio_device *mdio;
->  };
->  
-> -static void xgmiitorgmii_configure(struct gmii2rgmii *priv, int speed)
-> +static void xgmiitorgmii_configure(const struct gmii2rgmii *priv, int speed)
->  {
->  	struct mii_bus *bus = priv->mdio->bus;
->  	int addr = priv->mdio->addr;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but this function is being
-touched here. What happens if the MDIO read fails?
-
-drivers/net/phy/xilinx_gmii2rgmii.c:xgmiitorgmii_configure() {
-    ...
-	val = mdiobus_read(bus, addr, XILINX_GMII2RGMII_REG);
-	val &= ~XILINX_GMII2RGMII_SPEED_MASK;
-    ...
-	mdiobus_write(bus, addr, XILINX_GMII2RGMII_REG, val);
-}
-
-mdiobus_read() returns a negative errno on failure. Since val is a u16,
--EIO becomes 0xfffb.
-
-Only the speed bits are cleared before the write. Wouldn't that set other
-bits of the converter register to values the hardware never reported?
-
-The mdiobus_write() result is also ignored. Because the function returns
-void, xgmiitorgmii_read_status() and xgmiitorgmii_set_loopback() always
-return 0.
-
-Could the PHY layer then believe the converter is set to phydev->speed
-when it is not?
-
-> @@ -49,7 +49,9 @@ static void xgmiitorgmii_configure(struct gmii2rgmii *priv, int speed)
->  
->  static int xgmiitorgmii_read_status(struct phy_device *phydev)
->  {
-> -	struct gmii2rgmii *priv = mdiodev_get_drvdata(&phydev->mdio);
-> +	const struct gmii2rgmii *priv = container_of_const(phydev->drv,
-> +							   struct gmii2rgmii,
-> +							   conv_phy_drv);
->  	int err;
->  
->  	if (priv->phy_drv->read_status)
-
-[Severity: High]
-Can a caller that does not hold phydev->lock see phydev->drv change
-between selecting this callback and evaluating container_of_const()?
-
-phy_read_status() takes no lock and loads phydev->drv several times:
-
-include/linux/phy.h:phy_read_status() {
-    ...
-	if (phydev->drv->read_status)
-		return phydev->drv->read_status(phydev);
-    ...
-}
-
-xgmiitorgmii_read_status() then loads phydev->drv once more to compute
-priv. phy_state_machine() calls in with phydev->lock held. Some MAC
-drivers instead call phy_read_status() directly from their own link
-polling or self-test paths, without holding that lock.
-
-Suppose such a caller has already fetched xgmiitorgmii_read_status() as
-the function pointer and is preempted. Meanwhile the converter is
-unbound through sysfs. The xgmiitorgmii_remove() added by the next
-patch in this series restores phydev->drv to priv->phy_drv, and devres
-frees priv.
-
-When the caller resumes, container_of_const() is applied to the
-original phy_driver rather than to conv_phy_drv. priv is then a pointer
-into unrelated memory. priv->phy_drv->read_status is loaded through it
-and called.
-
-xgmiitorgmii_remove() takes phydev->lock, but that only serializes
-against callers that take the same lock. It does not close this window
-for lockless callers.
-
-Is the intent that every phy_read_status() caller must hold
-phydev->lock when this converter is in use? If not, how should the
-callbacks recover priv safely once phydev->drv can change under a
-running callback?
-
-[Severity: High]
-This is a pre-existing issue, but is phydev->drv still valid here after
-the converter has been unbound?
-
-xgmiitorgmii_probe() allocates priv with devm_kzalloc() on the converter's
-own device. It then installs &priv->conv_phy_drv as the attached PHY's
-phydev->drv.
-
-The driver has no .remove callback, so nothing restores the original
-driver:
-
-static struct mdio_driver xgmiitorgmii_driver = {
-	.probe	= xgmiitorgmii_probe,
-	...
-};
-
-After a sysfs unbind or rmmod of the converter, devres frees priv, but
-phydev->drv still points into it.
-
-The next call through phy_state_machine()->phy_read_status() would reach
-this function. Here container_of_const() resolves into freed memory, and
-priv->phy_drv and priv->mdio are then dereferenced.
-
-A rebind would also memcpy() from the freed copy in xgmiitorgmii_probe().
-
-The next patch in this series, "net: phy: xilinx-gmii2rgmii: Restore PHY
-driver on remove", adds xgmiitorgmii_remove(). Under phydev->lock, that
-function sets priv->phy_dev->drv back to priv->phy_drv, so this appears
-to be fixed there.
-
-[ ... ]
-
-> @@ -123,7 +127,6 @@ static int xgmiitorgmii_probe(struct mdio_device *mdiodev)
->  	       sizeof(struct phy_driver));
->  	priv->conv_phy_drv.read_status = xgmiitorgmii_read_status;
->  	priv->conv_phy_drv.set_loopback = xgmiitorgmii_set_loopback;
-> -	mdiodev_set_drvdata(&priv->phy_dev->mdio, priv);
->  	priv->phy_dev->drv = &priv->conv_phy_drv;
-
-[Severity: Critical]
-Does deriving priv from phydev->drv make the wrapper callbacks depend
-on a pointer that nothing synchronizes?
-
-xgmiitorgmii_probe() installs &priv->conv_phy_drv here with a plain
-store, without taking phydev->lock. The attached PHY may already be
-connected to a MAC with its state machine running. In that case
-phydev->drv is rewritten while other code is using it.
-
-With this patch, xgmiitorgmii_read_status() and
-xgmiitorgmii_set_loopback() no longer get priv from a field owned by
-the converter. They apply container_of_const() to phydev->drv, which
-they reload on entry, separately from the load the caller used to pick
-the callback.
-
-That is only correct while phydev->drv still equals
-&priv->conv_phy_drv. If it has been switched to another phy_driver in
-the meantime, the result is that driver's address minus
-offsetof(struct gmii2rgmii, conv_phy_drv). The remove path added in
-the next patch, which restores the original driver, is one way this
-can happen. The resulting pointer is not a struct gmii2rgmii at all.
-
-priv->phy_drv is then read from whatever memory precedes that
-phy_driver, and priv->phy_drv->read_status(phydev) becomes an indirect
-call through an arbitrary pointer. Wouldn't that crash the kernel, or
-let the call be steered somewhere else entirely?
-
-Even within this patch alone, phy_remove() clears phydev->drv when the
-attached PHY's own driver is unbound. Could a caller that is already
-inside xgmiitorgmii_read_status() then compute priv from NULL?
-
-Could the swap of phydev->drv be done under phydev->lock, with every
-path that calls into these callbacks holding it as well? Or could priv
-be found in a way that does not depend on the current value of
-phydev->drv?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but is this store ordered
-after the setup of the wrapper?
-
-The store to priv->phy_dev->drv is a plain store, done without
-phydev->lock and without smp_store_release(). It comes after the stores to
-priv->mdio and priv->phy_drv and the memcpy() into conv_phy_drv.
-
-The PHY may already be attached with its state machine running, for
-example when the converter module loads after the MAC opened the
-interface. On a weakly ordered CPU such as the arm64 Zynq parts, could
-another CPU see the new phydev->drv before those earlier stores?
-
-If so, phy_read_status() or phy_loopback() would call
-xgmiitorgmii_read_status() or xgmiitorgmii_set_loopback(). Those could
-read priv->phy_drv or priv->mdio while they are still NULL from
-devm_kzalloc().
-
->  
->  	return 0;
-
-[Severity: Medium]
-This is a pre-existing issue, but does a successful probe leak the
-reference on the phy_device?
-
-	priv->phy_dev = of_phy_find_device(phy_node);
-
-of_phy_find_device() takes a device reference. That reference is only
-dropped on the !priv->phy_dev->drv deferral path.
-
-There is no teardown callback, so nothing calls
-put_device(&priv->phy_dev->mdio.dev) after a successful probe. Each
-bind/unbind cycle would leak one reference and keep the phy_device from
-being freed.
-
-The next patch in this series, "net: phy: xilinx-gmii2rgmii: Restore PHY
-driver on remove", appears to fix this by calling put_device() in the new
-xgmiitorgmii_remove().
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007054844.529363-1-vineeth.karumanchi%40amd.com
