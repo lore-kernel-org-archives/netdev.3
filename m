@@ -1,367 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BD145FFC1;
-	Sun, 11 Oct 2026 14:25:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791728755; cv=none; b=Al0qKe7TWNyqurqAB6XPmBmZZ5OCb/irPqIOSVE79uEPtn5jnpucl4i1bBp+sfLAnpz2ToqQTqsRs6/O7jqkSlFUSJk8ic+PALeBAGmJXT+52dbxvXyqj8chsGqLpmxL2iP6yPoCUecZXhLlDcrsxWnoJqexg7UFGhBnmvMYpxM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791728755; c=relaxed/simple;
-	bh=Lito27FAcJjJgFKmuwJxNqlg4XB1uwuMiZ4brDv6PYI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=L/XMDhlzIwFcXka7PBYRnQCtpTQnxPuR3cEzVsixPMV8Bsscw13h3v1MLZu1uTqF6eH7KvvpUBvJEGCicKN2uVjg9ywB/UUDieYZALNjoTqhVWiE3ujv7fab9reR8MdfOuhvnBS+FdZt7BQPAkgrok6xtrXV2gTQNnt80+Ix/h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivZkunCJ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F47E2F7EF3
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 14:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791729225; cv=pass; b=dulDTmar+hM7qac+CEK3R/ztqI8AjVdo4dZqA6eEjXdRcUdBaT5nTb8UIOJOTNtJ+QpEM9FpVmiBwdPq2GBqjokBgA5xORaj73t8XTQoHdCPMMFZUugNHilWa/DVy1zjPOIjTVLmOiD8gxeVjSM3vOEW6x5ey4DfmABGcEfI0hw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791729225; c=relaxed/simple;
+	bh=mfpOKnIb2lPxTOneML/VhNInEmWNxWvTH6pPXHsj6Mg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xbo5ieixIlKnwlfewI9DHKvlsH8MGD0GjbDjdBTCfYOF7wmdo2DkTZZpm7ZptWyjs9kwJiZW3foU7q7HHAlJ5PVbu/NZC3I1ZGPCxmGkm6T0e7yuxLoruW/Pq+iQ0uCWOnxNwhcm7IrsCORjHMYw1PGjLxfJEpsknwP6gaSNDJ0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com; spf=pass smtp.mailfrom=jclark.com; dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b=U3IsH7xc; arc=pass smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivZkunCJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736FE1F0089B;
-	Sun, 11 Oct 2026 14:25:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791728753;
-	bh=vMTPsdj6wCJsOSGzLMqIJMkvsXUZ4bZ2rafitDf6kq4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ivZkunCJcA9HcgLmUv7jdH9+q3b9v8P1A4FDNlgpfX2BxSy5OZcNme+sAlnBuzXAV
-	 3mUVnOD5AM+cekKmc5i6XDzu7Ek/MEjCD/3wMv0EWL20RgRxqIHHUalZcCpAholfn/
-	 3tvZCDmNljS8fVoADHUO9wCOL9I47t468PJdpelgEI15/VAIeoavu6xntpx24MeEpd
-	 dP+ow+kYCM+uCEx6Iui7QUbl88fso4TB2jsvWzeKDQ2D/nTYI9BkQ+Ph00vt634E5p
-	 eGxqcVoIulpYs0hb2K7gM0oHK7e08//PMJZWLFNpqo5uIRhg89Dff2y7kEoNqrWO2c
-	 4Ik/8+MhfT93w==
-Subject: Re: [PATCH net-next v2 5/5] vsock/virtio: defer RX readable
- notifications until batch unlock
-From: netdev-bot+sashiko@kernel.org
-To: physicalmtea@gmail.com
-Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org,
- virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com,
- jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Date: Sun, 11 Oct 2026 14:25:52 +0000
-Message-ID: <179172875205.434549.8636973340087490564@kernel.org>
-In-Reply-To: <20261010142247.99223-6-physicalmtea@gmail.com>
-References: <20261010142247.99223-6-physicalmtea@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b="U3IsH7xc"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-91b83459526so76466d6.2
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 07:33:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791729223; cv=none;
+        d=google.com; s=arc-20260327;
+        b=TMQKSc97Bn+21klfIwyEiink48XemuwL6+ahal3lpFmSKq7mRMW6/o5wwJ3VqP3hPz
+         RCTcfXcC+XnKgceuQ+IkM5EIs/wJJIXdDSXSScCEfUhPXlkyMYgRO8vsI+6ij3I44OWH
+         1ar4X4hDq/7Y6T/CvF2d5aG+Y9T36LqkY44nF08qFSt8BH9kbPBVLPXL6smm2DNmrj8u
+         6kVmNN57JF/hjQCNxokwSha5ewgZF33NikmAbFU4kWYN8FUDgMGQ/7j6CAA/E01Ho2W0
+         CRdFPkCsKXo33Q5miSPgBhrhYj9GBm0lBs4B+uKBp1U1Jr0XaER6RjIX9+/dIVXSw+Jx
+         ttLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RimT+BJQr+BZd/nBQf4bNoeClkAHtE09xphYwHOsuq8=;
+        fh=QLvHrAuliOcCAK+wcwl3r0ftqneoyE6IjOjcoWXa54I=;
+        b=X+b2Mopo0FnVGOPSkT546tl8pxJAfDfFj4GzEEpGMmdJVs3LxeH430/4EATfaG7gb+
+         /Tub/67YuzNdRO1oL0+Lja+I7lUxX/4OrnPuSeod4Sc8rIwQYsiQC88JJKhZZJrw8P9c
+         b/rcqy3oi7mGFUJ4tgJDyMk24PJJpi2rKrH40g0Py0WUJbn4oh3zYngonIQOSEkfe15Y
+         mnYHGMtsGEgHgdeAo2POZC1mB7AirpCEslV1zCaL0QIzzDSsm33c4dXdIaAz92n7WSD5
+         vq0RwvHof9A7S1ag3MT3VfD4tTGm6nngTQXGvCfX2w/XqaIh/dLnmiSdQ4RzhUcE9ine
+         xx7w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1791729223; x=1792334023; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RimT+BJQr+BZd/nBQf4bNoeClkAHtE09xphYwHOsuq8=;
+        b=U3IsH7xc4UI1OMR8uEmylufAXs3JQYpiCszNIR7ghf2aMaxaTjeilvwDVJQuSiwC+M
+         2Y/IFQ+gQF8qI2Vftb6CdDDk6ca9Srq1MvpFUk32y/jyYY4Bb2GHz7lPGkCIDiW2yvxY
+         coRx/WrTRDVXcdInyFcSpdD9dp78yqqpI/mvNHWdqd80B5VlQJjQDmYgNfNTrRLvETGS
+         Jq8t8ZiADDV5Gv6WyxByJ2LtWBHNs7HxeTYbV7cBiQIhBYDmPdM6ULf0PLBtO/Pvglm5
+         Pe3d6sEx5iKm4sgaKvMTnGyTKbjzbtIU+RD80fcD+o6BgakySPV7CYfl5yanYskipydU
+         M3Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791729223; x=1792334023;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RimT+BJQr+BZd/nBQf4bNoeClkAHtE09xphYwHOsuq8=;
+        b=IRk4d37QpMBtsq1xiAH/PEyjiX9RvLNgMMC6oCTNFguQH71hzaT9KNbXPLy+Ab3u7+
+         m39GYAkZ+rtINeSen3KPcyy+nu0QskhxyuF2NBKyAtZJFBYqw9rotUzvN9WqE5zlnx8Q
+         WqAuwrkvil2V+1hdor9W08MCotONansgSMkfis8f0WRj8E8SFr9O84Em6M1Js2B7XRe0
+         cVhv3X91xoa9pUJuCmL9KDLIVOar6MTGS2/zfnfiBp6ls9ArWJac1re3NtRRb+AVGg86
+         paDDkpO/MOwEcT1c6mS6jQhAcC17BIXhBuUWDZe4c56dnMPvlfP67KEPGrFR8iQTJ9pP
+         fNJw==
+X-Forwarded-Encrypted: i=1; AKwUvByDN7hUuhyzx8K+fLAH9bB9HeD7wpFM6sfFhVoTkKNST6QEDKrYAOqqqHDbumUPpfMEx/tKhyA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKdz5/zNOuJplncDGluRKea2XYRGhHYrNaTaWIWwxlY3ataq/nF
+	J7lhS//QaVsaVy1M7FzNsyNE5KwD8cM8YbO6UqRPGzBUHmjUchPB5tnHLr0aPFoFItw5eClD7c3
+	wO4vQhj9MR9pF9kagZ8Ly2VyJlD7r+44SUI9f61LR
+X-Gm-Gg: AYBFou31hwaqwSOCdYu/jp+xPvt/3BB96+JFNfjBQ70ge0jcoBWLHlVj0DWNimAR3NX
+	BOBTI3rx6EYstKz9olKDCXSiOq3UTM3pRd3P9HQOnrvoYkPIHXL9WA0XFrz6oRQ6Vf4/50+saIu
+	R+bCNj3XALctnZinGi/N3yuGimlH+ldKbDczoaysGT4futARsLKpwyO70/v6c8BMH1JaTaN4VCo
+	MXW3YTbmfKdFT0xVMyiBbJrAlBBBmpjBPTaCAojXb85BnmYrUa0Q/ITxw9NeSlroEPdbmOA7Kp6
+	3esi+Tk4YK/IGD5bgn7HCtw/XOhRyJerFhhtUzBFyqgL1NyN9F+aX/I=
+X-Received: by 2002:a05:6214:ca4:b0:91b:5d3b:4ac0 with SMTP id
+ 6a1803df08f44-91b5d3b4e68mr123540436d6.53.1791729223287; Sun, 11 Oct 2026
+ 07:33:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261009143506.2507607-1-jjc@jclark.com> <20261009143506.2507607-2-jjc@jclark.com>
+ <af97fa4b-d817-4e8b-bbd7-aaefa23d4d7a@lunn.ch>
+In-Reply-To: <af97fa4b-d817-4e8b-bbd7-aaefa23d4d7a@lunn.ch>
+From: James Clark <jjc@jclark.com>
+Date: Sun, 11 Oct 2026 21:33:32 +0700
+X-Gm-Features: AclHuK9eexRlWA5M879Crhtnp6jM6vwO493yA7pfOJjE5VhMdHya6ZQFlGC7FHo
+Message-ID: <CANz3_Ead154hG=5H7fmnamUDbhEv==sGMHdiY+jUhjzYLRzLaw@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/5] net: mdio: add timestamped write operation
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Richard Cochran <richardcochran@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
+	Nicolai Buchwitz <nb@tipi-net.de>, =?UTF-8?B?VGjDqW8gTGVicnVu?= <theo.lebrun@bootlin.com>, 
+	Russell King <linux@armlinux.org.uk>, Conor Dooley <conor.dooley@microchip.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Sun, Oct 11, 2026 at 9:03=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> > + * If @sts is NULL, perform an ordinary write.
+> > + *
+>
+> Please don't do that. We don't want drivers calling this when they
+> don't need to.
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 2
+Agreed.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> > +             if (!ktime_before(now.monoraw, sts->post_sts.monoraw))
+> > +                     return 0;
+> > +
+> > +             /* Cap the wait at 1 ms, which is more than any single
+> > +              * write's delay. This guards against an aux clock being
+> > +              * disabled and reenabled, which restarts its raw time.
+> > +              */
+> > +             if (!ktime_before(ktime_get_raw(), deadline))
+> > +                     return -EBUSY;
+>
+> A bit banging MDIO bus might be slower.
 
-- [High] The new attach-time handoff passes partially read skbs to
-  read_skb, which ignores the read offset.
-- [Medium] Sockmap attach/detach now drains queued data on every vsock
-  socket, and the commit message wrongly says non-batched sockets keep…
-- [Low] The commit message says "Sampling at batch finish takes
-  sk_callback_lock once." That holds only on the native path.
-- [Low] vsock_rx_callback_handoff() calls sk_data_ready without the
-  sk_rcvlowat/SOCK_DONE check that vsock_data_ready() and the per-packet…
+The comment is misleading; I'll fix it. The 1 ms doesn't limit how
+long the write takes, but how long the core waits after write_sts()
+returns. It allows for a driver that returns before the transfer is
+complete, at worst as soon as it has started. A bit-banging driver
+returns only after the last bit, so it doesn't wait at all.
 
-Pre-existing issues:
-- [Medium] vsock_rx_callback_handoff() reads sk_data_ready under
-  read_lock_bh(&sk->sk_callback_lock), releases the lock, and only then…
+> Also, i've not thought about the mux case, where the write gets
+> blocked until some other operation is performed on the shared hardware
+> of the mux.
 
---
+In the mux case, mdio_mux_write_sts() takes the parent bus lock and
+switches the mux before calling the parent's write_sts(). So any time
+spent blocked on the mux comes before the lower bound. Or did you have
+another case in mind?
 
-vsock/virtio: defer RX readable notifications until batch unlock
+> > +     /**
+> > +      * @write_sts: Perform a write transfer on the bus,
+> > +      * with system timestamps bounding its completion. Set only
+> > +      * if timestamps can always be provided. Must not return
+> > +      * -EOPNOTSUPP.
+> > +      */
+> > +     int (*write_sts)(struct mii_bus *bus, int addr, int regnum, u16 v=
+al,
+> > +                      struct ptp_system_timestamp *sts);
+>
+> I suggest putting C22 in the comment. At some point, somebody might
+> need C45. And that gets complex because of C45 over C22.
 
-During virtio vsock RX batches, this commit holds back the native
-sock_def_readable() notification until the batch has dropped the socket
-lock. If sk_data_ready or sk_write_space has been replaced, for example
-by sockmap, a new vsock_rx_callback_handoff() passes queued skbs to the
-current callback one at a time. vsock_bpf_update_proto() now schedules
-that handoff on sockmap attach and detach.
+Agreed.
 
-> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-> index fe7f49da6c4bc..df6faee0bd37a 100644
-> --- a/net/vmw_vsock/af_vsock.c
-> +++ b/net/vmw_vsock/af_vsock.c
-> @@ -931,6 +931,107 @@ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr)
+> Is there any need for read_sts?
 
-[ ... ]
+Not for this series, I think. The BCM54210PE captures its time on a
+write, so a timestamped read isn't needed here. I'd leave read_sts
+until a driver needs one.
 
-> +/* Caller holds lock_sock(). */
-> +void vsock_rx_callback_handoff(struct sock *sk)
-> +{
-> +	struct vsock_sock *vsk = vsock_sk(sk);
-> +	void (*write_space)(struct sock *sk);
-> +	void (*data_ready)(struct sock *sk);
-> +	bool wrote = false;
-> +	s64 before, after;
-> +	int i;
-> +
-> +	if (sock_flag(sk, SOCK_DEAD) || !vsk->transport)
-> +		return;
-> +
-> +	read_lock_bh(&sk->sk_callback_lock);
-> +	data_ready = READ_ONCE(sk->sk_data_ready);
-> +	if (READ_ONCE(sk->sk_prot) != sk->sk_prot_creator &&
-> +	    data_ready == vsk->default_data_ready) {
-> +		read_unlock_bh(&sk->sk_callback_lock);
-> +		/*
-> +		 * start_verdict publishes sk_data_ready after the proto swap.
-> +		 * Retry once before treating this as a stable non-RX setup.
-> +		 */
-> +		if (!vsk->rx_cb_retried) {
-> +			vsk->rx_cb_retried = true;
-> +			vsock_rx_callback_queue(sk, 1);
-> +			return;
-> +		}
-> +		vsk->rx_cb_retried = false;
-> +		data_ready(sk);
-> +		return;
-> +	}
-> +	read_unlock_bh(&sk->sk_callback_lock);
-> +	vsk->rx_cb_retried = false;
-> +
-> +	for (i = 0; i < VSOCK_RX_CB_HANDOFF_MAX; i++) {
-> +		read_lock_bh(&sk->sk_callback_lock);
-> +		data_ready = READ_ONCE(sk->sk_data_ready);
-> +		write_space = READ_ONCE(sk->sk_write_space);
-> +		read_unlock_bh(&sk->sk_callback_lock);
-
-[Severity: Medium]
-This is a pre-existing issue, but sk_callback_lock here only covers
-reading the pointers, not calling them. Can a concurrent sockmap delete
-restore sk_data_ready and clear the psock between this read_unlock_bh()
-and the data_ready(sk) call below?
-
-The delete path takes only write_lock_bh(&sk->sk_callback_lock), not
-lock_sock():
-
-__sock_map_delete()
-  sock_map_unref()
-    sock_map_del_link() / sk_psock_drop()
-
-In that case the stale sk_psock_verdict_data_ready() still dequeues an
-skb through virtio_transport_read_skb(). That lowers rx_bytes and sends a
-credit update. sk_psock_verdict_recv() then finds no psock:
-
-net/core/skmsg.c:sk_psock_verdict_recv() {
-    ...
-	if (unlikely(!psock)) {
-		len = 0;
-		tcp_eat_skb(sk, skb);
-		sock_drop(sk, skb);
-		goto out;
-	}
-    ...
-}
-
-So the skb is dropped after it has already been credited to the peer.
-
-The baseline vsock_data_ready() has the same window. It calls
-sk->sk_data_ready(sk) under lock_sock() without sk_callback_lock, and
-tcp_data_ready() has the same issue. This patch adds more call sites
-with the same pattern: the attach-kicked work item and the batch-finish
-handoff. Taking the read lock here can also make it look as if the call
-is protected when it is not.
-
-> +
-> +		if (!wrote && write_space != vsk->default_write_space) {
-> +			write_space(sk);
-> +			wrote = true;
-> +		}
-> +		if (data_ready == vsk->default_data_ready) {
-> +			data_ready(sk);
-> +			break;
-> +		}
-> +		before = vsock_stream_has_data(vsk);
-> +		if (before <= 0)
-> +			break;
-> +		data_ready(sk);
-
-[Severity: Low]
-Neither of these data_ready(sk) calls checks sk->sk_rcvlowat or
-SOCK_DONE, unlike vsock_data_ready() and the per-packet path in
-virtio_transport_recv_connected(). Is that intended?
-
-For a replaced callback such as the sockmap verdict, data_ready(sk) runs
-whenever vsock_stream_has_data() > 0. The verdict program can then see
-data below SO_RCVLOWAT that the per-packet path would hold back.
-
-For the default callback the call is unconditional, both here and in the
-retry branch above:
-
-		vsk->rx_cb_retried = false;
-		data_ready(sk);
-		return;
-
-Doesn't this wake readers when no readable event was pending? That
-happens on every attach and restore kick from vsock_bpf_update_proto().
-It also happens when virtio_transport_rx_batch_finish() enters the
-handoff with only write_space_pending set.
-
-> +		after = vsock_stream_has_data(vsk);
-> +		if (after >= before)
-> +			break;
-
-[Severity: High]
-Can this hand a partially read skb to read_skb?
-
-A native stream read can consume only part of the head skb. In that
-case virtio_transport_stream_do_dequeue() advances the private offset,
-leaves the skb queued, and lowers rx_bytes only by the bytes copied:
-
-		VIRTIO_VSOCK_SKB_CB(skb)->offset += bytes;
-		...
-		virtio_transport_dec_rx_pkt(vvs, bytes, dequeued);
-
-If the socket is then added to a sockmap with a verdict program, the new
-kick in vsock_bpf_update_proto() runs this loop:
-
-vsock_rx_callback_work()
-  vsock_rx_callback_handoff()
-    sk_psock_verdict_data_ready()
-      vsock_read_skb()
-        virtio_transport_read_skb()
-
-virtio_transport_read_skb() does not look at the offset:
-
-	pkt_len = le32_to_cpu(hdr->len);
-	virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
-	...
-	return recv_actor(sk, skb);
-
-Take a 1000 byte skb with 400 bytes already read, so rx_bytes is 600.
-The verdict program sees all 1000 bytes, 400 of them a second time. The
-u32 rx_bytes then wraps to 4294966896.
-
-The after >= before check above sees no progress and stops. But
-vsock_stream_has_data() now reports about 4GB, so poll stays readable.
-The next native read hits WARN_ONCE("rx_queue is empty, but rx_bytes is
-non-zero") and returns -EFAULT.
-
-The offset handling in virtio_transport_read_skb() predates this patch.
-In the baseline the same corruption needs a partial read, then an
-attach, then another packet from the peer. With this patch the extra
-packet is no longer needed, and the new attach-time drain depends on
-read_skb handling already-queued skbs correctly.
-
-> +		if (i == VSOCK_RX_CB_HANDOFF_MAX - 1 && after > 0)
-> +			vsock_rx_callback_queue(sk, 0);
-> +	}
-> +}
-
-[ ... ]
-
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index e5637291f3185..6b96d8ac0d598 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-
-[ ... ]
-
-> @@ -1986,33 +2007,45 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
-
-[ ... ]
-
-> -	if (write_space_pending) {
-> -		vsk = vsock_sk(sk);
-> +	vsk = vsock_sk(sk);
-> +	if (write_space_pending)
->  		vsk->default_write_space(sk);
-> -		write_space = READ_ONCE(sk->sk_write_space);
-> -		if (write_space != vsk->default_write_space)
-> -			write_space(sk);
-> +
-> +	read_lock_bh(&sk->sk_callback_lock);
-> +	native = vsock_rx_cb_is_native(sk);
-> +	read_unlock_bh(&sk->sk_callback_lock);
-> +
-> +	if (native) {
-> +		release_sock(sk);
-> +		if (data_ready_pending)
-> +			vsk->default_data_ready(sk);
-> +		sock_put(sk);
-> +		return;
->  	}
->  
-> +	if (write_space_pending || data_ready_pending)
-> +		vsock_rx_callback_handoff(sk);
-
-[Severity: Low]
-The commit message says:
-
-    Sampling at batch finish takes sk_callback_lock once.
-
-Does that hold on the non-native path? sk_callback_lock is taken once
-here for vsock_rx_cb_is_native(). vsock_rx_callback_handoff() then takes
-it again at the top. It takes it once more on each loop iteration, up
-to VSOCK_RX_CB_HANDOFF_MAX (64) times, and the requeued work can do all
-of this again.
-
-[ ... ]
-
-> diff --git a/net/vmw_vsock/vsock_bpf.c b/net/vmw_vsock/vsock_bpf.c
-> index 9049d26486460..7770a6c51dbe5 100644
-> --- a/net/vmw_vsock/vsock_bpf.c
-> +++ b/net/vmw_vsock/vsock_bpf.c
-> @@ -154,6 +154,7 @@ int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore
->  	if (restore) {
->  		sk->sk_write_space = psock->saved_write_space;
->  		sock_replace_proto(sk, psock->sk_proto);
-> +		vsock_rx_callback_kick(sk);
->  		return 0;
->  	}
->  
-> @@ -166,6 +167,7 @@ int vsock_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore
->  
->  	vsock_bpf_check_needs_rebuild(psock->sk_proto);
->  	sock_replace_proto(sk, &vsock_bpf_prot);
-> +	vsock_rx_callback_kick(sk);
->  	return 0;
->  }
-
-[Severity: Medium]
-These kicks run for every AF_VSOCK socket added to or removed from a
-sockmap or sockhash, not only for sockets in a virtio RX batch. Is this
-change in behaviour intended?
-
-RX batching exists only in the guest virtio transport
-(virtio_transport_rx_work() -> virtio_transport_recv_pkt_batch()).
-vhost_vsock and vsock_loopback always use virtio_transport_recv_pkt().
-Both still set .read_skb = virtio_transport_read_skb, so their sockets
-reach this code too. The same is true of SOCK_SEQPACKET sockets, which
-virtio_transport_recv_pkt_batchable() rejects.
-
-Before this patch, sk_data_ready was not called by either path:
-
-sock_map_link() -> sock_map_init_proto() -> vsock_bpf_update_proto()
-sk_psock_start_verdict()
-
-Data queued before attach only reached the verdict program when a later
-packet arrived.
-
-Now the kick pushes that data through sk_psock_verdict_data_ready(), up
-to 64 skbs per pass, and requeues itself if data remains. The verdict
-program can redirect or drop data that arrived before attach, where it
-used to stay for the native reader.
-
-If only the prot was swapped, for example with a msg_parser-only map,
-the handoff calls the default callback unconditionally after one retry.
-That adds an extra wakeup on every attach and detach.
-
-The commit message says "non-batched sockets keep their existing
-behavior". It also says the handoff is scheduled "so an attach or detach
-outside the worker still drains skbs already queued".
-
-Neither statement seems to fit what the code does: this is a new sockmap
-behaviour for every vsock transport that has read_skb, and the subject
-line does not mention it. Could this be split out, or at least
-described in the commit message?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010142247.99223-1-physicalmtea%40gmail.com
+James
