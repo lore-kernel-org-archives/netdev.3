@@ -1,115 +1,170 @@
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BAD346777
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 07:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47CC30F92E;
+	Sun, 11 Oct 2026 07:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791702163; cv=none; b=ROmZ2CuGY4gtLqhI8LKld3WCG6wBLrcNTenl6TQiglrM69U7dAnJnBYf8MdLKBibxrlh5ajuw3nS1nzed5v3r3/gdmCsqu08CWZc/DFpfjhVE8LYCwYDJsT0AwHC4a0z1LSZ1uNVaGiSSAmWVPHAj2zp1QX+Ine1etlE3WjHsik=
+	t=1791702216; cv=none; b=uCieIXVF34Op2ivjrQuH+c5Z0ApWvmzjRNy2z98CpnOSmyiEYe/w5No9AMRjH5cNKzwBCN25VOWSEf2ZHEBPeWweLZfDZVBxJx+q0bZsnbQs5BGHwQmhvYSie3b/jO23Z9TstzAh4ZtTUExNkADZuFwWRrqlzczwSEyUifG0sEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791702163; c=relaxed/simple;
-	bh=hqmqGCwbVJx8ioHIcMYlbkKBe0xuh6mKFsHbvXI5YKg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=k3LVFBq+GvJ8kBXWccPi3q5wvN+zoyrLtuJCoFDOnupSNmh46QhJjL26KLOKCZlxj+lrHra/Yy7X/vatONBND75dZxo1OuryUptMxoXBaUjlt97hFhagDU/myWsplg21TmBb/q6xy3V9UinwqzygtF/UWwpV6gj7b4xz++ThsGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-815f2b1ecc3so2466909a34.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 00:02:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791702161; x=1792306961;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xVDCCtkvR+2GpVfroq+EMg9txxyO2n28YifI2CSvk/U=;
-        b=KCS8LAAltjVCBLuTZJ4KRiANaoMvRoyfWlF6F7I4Mw9aisoJ90DLsCyAk/rxsJjhTV
-         V1RDsAjkd1TmxuSdlT5nT0i+G/lkQ8nufRPIJqYYHpY/ZEtzl4dXYUzuD0l6aGJfkhcf
-         Q17uG7LbxYaukzUvQFR4jARDYgTwM4s/v2wzu9cSHhoaAnIAqSJwHHAQGRh/qQOkur/e
-         QPPxrpCmr1tH9XYAxWMEC6cif9gMjChniNfa12fLA2ooPBcmkSfANHflG9AifPfKUwRB
-         t44nbmF8ilyJ+iblu4c+9u9iOYUF8TuJt/f0fjHwPUK5VpF6fW7OpqZ/mudNFAPqrQAL
-         Tcrw==
-X-Forwarded-Encrypted: i=1; AKwUvBzj8dDmU5ruFd75z59mqAFLtyDWYmMn7S1HEqFvvuNpFNO21MwW654GBwcxoLY/9gv9NZYpDKI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ+D+JyheTlAqcw4swIVCxg7Rngu3YTMAUCozAwsKcVvwu12+PP
-	pnNsZU8Dl9mlhbSkUi3yAJvdn7tpQZ5M5Q6C/ovWmBBeNRrPq4jQgJ8QoHwsNvUpSUUdAInZ2jq
-	BpwhXWxNIvricQtc/+gR0wFyOAzbVDlxyuir+OmI5u9TwV4HO7329Qxorq6E=
+	s=arc-20240116; t=1791702216; c=relaxed/simple;
+	bh=4Ftfemtjb6xLoPE8Lirfyk8FuzXoN+pVExcr/CUwct0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OecLRYV9AZvjaqhZCCF6w0kO6vK9aS27Z0xxw21jyBLsVcEYwhXWoaOn9GMKhmRkvvkFUpiIHmKEVu69GlLAZofshPKedzZpQCCi2/afYfXKnfkHLxv4y78a3EhZx5RnKsPW6JukSlQtpfMspN+zc7m8xeD6zErFatoQgaUzwxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdbPRSME; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdbPRSME"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FCF1F0089B;
+	Sun, 11 Oct 2026 07:03:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791702215;
+	bh=8OqT1qJsY3GVXrGF5l6DNP8Wtqtf3Z9gv+gvW6grqyA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=FdbPRSMEIacZgECIsPurGouc3DzkfbWeSWMtZ9lVCm1/eyirH8tpq5RokDhfWJeYQ
+	 6JR4i6p3mXt/jIFPyTOgwBJBo7KjaZu4aITZe8e5wyy42ppKjO4rDAH85F1n1b8zqy
+	 VBVWBpy1eGFSNPLGR5sZ62icMexe7r8jTDddPOCrrQC9jmywfDv99KX2vbnvr1PmAD
+	 LT77GdP81y/m92V3Ph4n7EliDVX24djfJiz2Iq2HIMzUNLzN3gp5fJYGTpDrkjrIVI
+	 GSGc64PTwOFpk41XRuYKv9x4Em82+APwBMvTWukqW9+6TUVnD6sNOary+rHFLLPk6F
+	 7FhQvZyLc+T9A==
+Subject:
+ Re: [PATCH net] vxlan: reject appending a remote to a nexthop fdb entry
+From: netdev-bot+sashiko@kernel.org
+To: bsdhenrymartin@gmail.com
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, kuniyu@google.com,
+ idosch@nvidia.com, razor@blackwall.org, fmancera@suse.de, atenart@kernel.org,
+ i.maximets@ovn.org, qotmddnjs@ajou.ac.kr, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Sun, 11 Oct 2026 07:03:33 +0000
+Message-ID: <179170221371.434549.11644886224016401666@kernel.org>
+In-Reply-To: <20261010064802.2741221-1-bsdhenrymartin@gmail.com>
+References: <20261010064802.2741221-1-bsdhenrymartin@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:4f6c:b0:4f4:550a:3a86 with SMTP id
- 5614622812f47-50c599658bfmr6839516b6e.53.1791702161359; Sun, 11 Oct 2026
- 00:02:41 -0700 (PDT)
-Date: Sun, 11 Oct 2026 00:02:41 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6acb3491.a150a118.27e199.0039.GAE@google.com>
-Subject: [syzbot] [net?] INFO: task hung in addrconf_verify_work (10)
-From: syzbot <syzbot+95263979a9c3af871646@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@kernel.org, 
-	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-syzbot found the following issue on:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-HEAD commit:    3857c2fe5449 Merge tag 'pci-v7.3-fixes-4' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=1614c0a5580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4118aaa2d227be26
-dashboard link: https://syzkaller.appspot.com/bug?extid=95263979a9c3af871646
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Unfortunately, I don't have any reproducer for this issue yet.
+- [Medium] In vxlan_fdb_update_existing()
+  (drivers/net/vxlan/vxlan_core.c), the new `if…
+- [Low] The commit message presents the change only as rejecting a
+  userspace `bridge fdb append` onto a nexthop entry.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/891094e1d3d5/disk-3857c2fe.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ea13e7a03404/vmlinux-3857c2fe.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/853f16987787/bzImage-3857c2fe.xz
+--
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+95263979a9c3af871646@syzkaller.appspotmail.com
+vxlan: reject appending a remote to a nexthop fdb entry
 
-INFO: task kworker/R-ipv6_:3196 blocked for more than 158 seconds.
-      Tainted: G             L      syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/R-ipv6_ state:D stack:29528 pid:3196  tgid:3196  ppid:2      task_flags:0x4208060 flags:0x00080000
-Workqueue: ipv6_addrconf addrconf_verify_work
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5533 [inline]
- __schedule+0x17db/0x58f0 kernel/sched/core.c:7284
- __schedule_loop kernel/sched/core.c:7361 [inline]
- schedule+0x164/0x2b0 kernel/sched/core.c:7376
- schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7433
- __mutex_lock_common kernel/locking/mutex.c:726 [inline]
- __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
- rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
- addrconf_verify_work+0x19/0x30 net/ipv6/addrconf.c:4770
- process_one_work kernel/workqueue.c:3396 [inline]
- process_scheduled_works+0xc3d/0x1630 kernel/workqueue.c:3479
+This patch adds a check to vxlan_fdb_update_existing(). An NLM_F_APPEND
+request on a multicast or zero MAC fdb entry now fails with -EOPNOTSUPP
+when the entry is backed by a nexthop group. Before this,
+vxlan_fdb_append() would link a remote onto such an entry, which breaks
+the rule that nexthop entries have no remote list.
 
+> diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+> index 278d41f58d895..e9c5ba7a74172 100644
+> --- a/drivers/net/vxlan/vxlan_core.c
+> +++ b/drivers/net/vxlan/vxlan_core.c
+> @@ -1047,6 +1047,11 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+>  	if ((flags & NLM_F_APPEND) &&
+>  	    (is_multicast_ether_addr(f->key.eth_addr) ||
+>  	     is_zero_ether_addr(f->key.eth_addr))) {
+> +		if (rcu_access_pointer(f->nh)) {
+> +			NL_SET_ERR_MSG(extack,
+> +				       "Cannot append a remote to a nexthop fdb");
+> +			return -EOPNOTSUPP;
+> +		}
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+[Severity: Medium]
+Can this early return leave the entry partly updated? When this check
+runs, vxlan_fdb_update_existing() has already written the new state and
+flags:
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+	if (!(fdb_flags & NTF_EXT_LEARNED) ||
+	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
+		if (f->state != state) {
+			f->state = state;
+			notify = 1;
+		}
+		if (f->flags != fdb_flags) {
+			f->flags = fdb_flags;
+			notify = 1;
+		}
+	}
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Returning -EOPNOTSUPP here skips the if (notify) block, so no
+RTM_NEWNEIGH or switchdev notification goes out. It also skips the
+err_notify rollback.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+For example, create a zero MAC nexthop entry with:
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+  bridge fdb add 00:00:00:00:00:00 dev vx0 nhid N self permanent
 
-If you want to undo deduplication, reply with:
-#syz undup
+Then run:
+
+  bridge fdb append 00:00:00:00:00:00 dev vx0 dst X self permanent router
+
+The append passes the earlier nexthop checks, because nhid is 0 and the
+state includes NUD_PERMANENT. It changes f->flags and then fails.
+vxlan_fdb_add() returns the error and restores nothing.
+
+The in-kernel callers vxlan_changelink() and
+vxlan_update_default_fdb_entry() also reach this point. They pass
+ndm_flags = NTF_SELF and state = NUD_REACHABLE | NUD_PERMANENT.
+
+On a nexthop default entry created by the user, f->flags is overwritten
+with NTF_SELF, which clears NTF_VXLAN_ADDED_BY_USER, and then the call
+fails. vxlan_changelink() treats the failure as if nothing changed and
+frees new_cfg.
+
+The other three nexthop checks near the top of this function all return
+before anything is changed. Could this check move up next to them, so
+that the failed request has no side effects?
+
+[Severity: Low]
+The commit message presents this as rejecting a user's bridge fdb append
+onto a nexthop entry. Two in-kernel paths also reach this check with
+NLM_F_APPEND | NLM_F_CREATE on all_zeros_mac and nhid = 0:
+
+  vxlan_changelink()
+    vxlan_fdb_update()
+      vxlan_fdb_update_existing()
+
+  vxlan_update_default_fdb_entry()
+    vxlan_fdb_update()
+      vxlan_fdb_update_existing()
+
+The first runs on "ip link set dev vx0 type vxlan remote <ip>". The
+second runs on vnifilter group add or change, for example
+"bridge vni add ... group ...".
+
+On a non-metadata device, the zero MAC lookup is keyed on cfg->vni. A
+nexthop entry created with "bridge fdb add 00:00:00:00:00:00 dev vx0
+nhid N self permanent" is therefore the same entry these paths update.
+
+Before this patch, these link and VNI changes succeeded, though they left
+an unused remote on the entry. With this patch they fail with
+-EOPNOTSUPP and the extack "Cannot append a remote to a nexthop fdb".
+That message describes an fdb operation the user never issued.
+
+Rejecting these requests is probably the right result. Since the patch
+is tagged for stable, should the commit message mention this change in
+rtnetlink link and vnifilter behavior? Could the error message also be
+made accurate for these callers?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010064802.2741221-1-bsdhenrymartin%40gmail.com
