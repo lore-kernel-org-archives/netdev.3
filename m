@@ -1,48 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7830B45FFD3;
-	Sun, 11 Oct 2026 22:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8C735C6BE;
+	Sun, 11 Oct 2026 22:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791756157; cv=none; b=WE82+DoRyCWPZUJ1PZB9BPtCvfvR9odxGvVlh9RegGLD52zF/Xs5bPoxJ2orSF5Bo+DjCsac68HmVsjuIcQhdbHl4A8hVSjZ6HWBeVJYeU3d96rplSeaeAH16txuWLbjN5ACXb636HKnvKgb0b5Z1ZIQzVWvr4HeEsqsKHh/kRY=
+	t=1791758425; cv=none; b=SUDBetMxhPxFH2ANQvzKDhXFxSXfqeqdSnPLoGJFWNBaSDd1aZ3M+pbCwl31t1ntgoJmJkeHpPjJ/aAmVkrfog2FHLMbC3GbSQFNLLqFKVTv4s562ocR3SHpoQdieg2Toyx1LLgGecbHTR8t8RsTtLPDV7JR+Aj5QM+eGoBg1eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791756157; c=relaxed/simple;
-	bh=nr/9dyWwQ8/7rDus24i2sml5MK/WWaozn8G6uswlxGc=;
+	s=arc-20240116; t=1791758425; c=relaxed/simple;
+	bh=IxShT9PYMHtq0d2zYCfZWp4T5J7JzMrOrsnG6YCZE2Q=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bC3hqA0cvPlmnDhllMey+TV/0/+LCdeOqOa2S4y4qNPtZ/cncTWoOcn2U7mSlq0xX7kVDlC9yxZYxPwbZmxb1VOIWiW+jHBY1rS8OignW5Zz/hFTp2WN/UQMDl5CuuouVZ5Ssg7VfCPVGarwFuTYxdZWVIl0IHTlR2q1xTaQoUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EGk0D/A2; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=RXerKW1wpw3q4QajgQQSnUcAdcprVwZZPld4M6aO4UsQLyWeqjaEq96Et+6QoUbWwgERJau6BIJOsS9p1J1W5B5B32oW5vi4OIIEsDKxxLE+NQaBWibmnEQkU2WSHhx2rbxmKooGgzMJlgNG2Lai543MiLtPxNgftKRYDNvr9R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMUEr7/p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EGk0D/A2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9541F0089C;
-	Sun, 11 Oct 2026 22:02:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMUEr7/p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE521F0089B;
+	Sun, 11 Oct 2026 22:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791756156;
-	bh=iVwZC1zpaojyreCpC1U9ymCY1AzhHbrEKn75qtJ80T4=;
+	s=k20260515; t=1791758424;
+	bh=k6XlKFnfVi4/5k41hFdTt5y7yRrRlJp0WwmZIund+20=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EGk0D/A2N5BvsTUXUCE+9ktn0CUc9Tw/PwOfsvHiu76L2/u0Etv82rrCMM3/gRy10
-	 GesSkjo4v1GcrGMVa4L7+Ri2fnuwPlqWuf1e9tQwCTLKyejggpedlnjrA31B1qYd2k
-	 uhR8N876g67gavywKUli8/EsRoOuSejg0SG3tfi5ACEbq78m7X5TMOI/Oz/j0Y9I0p
-	 foaUU7d74RkUTGiMvQpT2PkEmj7uuJLTq1SroaDQKx3SkjTd0VLaXNcaH/mkDp0Fui
-	 3RAQdSYVbVprNkWzGvci0uMZ412ZMhKGUHOpPAyz3bJd8QJpUgE91ukNqBQzM4Q8oW
-	 6ty0giaNt/Vag==
-Subject:
- Re: [PATCH net] ipv4: validate checksum_start before completing checksum
+	b=OMUEr7/p18hHaEwb1ca2J4cCZAhv+xnM+tyOqHSXzaloMVFpm/arWyWLzbNb8Eurt
+	 O63M6/7da6ZOcFCA14QmovJX6mdyJhY2O5gbWmgV8+z7QDWR3obi3An4qFe5lAXnSW
+	 Qg9uz2KhEhBJ4pmHG/HZeeo8GyusWdH6U6kWpymjtmvIweaCe/9MZvSv88923mqXYC
+	 Gxl08qiBTezVfVrcTB+zWxC6zKNDI77llMGzzNKpub9XQ1PzKKONn28PvRoBWCAfAY
+	 hkeoc0yt8JrjZSIsJIWZBM2fnxazy/F/fubhNuUgyUK7iBSU2BpjyjM3a6Dvtejh29
+	 yOpsOljs57AIw==
+Subject: Re: [PATCH net] ip_tunnel: reserve headroom for the encap header
+ before pushing it
 From: netdev-bot+sashiko@kernel.org
-To: mst@redhat.com
-Cc: linux-kernel@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, pablo@netfilter.org, fw@strlen.de, phil@nwl.cc,
- razor@blackwall.org, steffen.klassert@secunet.com,
- herbert@gondor.apana.org.au, willemdebruijn.kernel@gmail.com,
- netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, bridge@lists.linux.dev
-Date: Sun, 11 Oct 2026 22:02:34 +0000
-Message-ID: <179175615475.434549.9706462488069659983@kernel.org>
-In-Reply-To:
- <0a012b4923e189c4c593ef4f471e5ff0edbe9030.1791412497.git.mst@redhat.com>
-References:
- <0a012b4923e189c4c593ef4f471e5ff0edbe9030.1791412497.git.mst@redhat.com>
+To: theodorlarionov@gmail.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org, idosch@nvidia.com,
+ cehrig@cloudflare.com, ast@kernel.org, tom@herbertland.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 22:40:22 +0000
+Message-ID: <179175842288.434549.1635440087778323337@kernel.org>
+In-Reply-To: <20261010223601.1193655-1-theodorlarionov@gmail.com>
+References: <20261010223601.1193655-1-theodorlarionov@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 2 · Medium: 2 · Low: 1
+Critical: 0 · High: 2 · Medium: 0 · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -64,323 +59,235 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The patch checks only IPv4, including inside shared code it
-  edits, and leaves IPv6 open to the same untrusted csum_start.
-- [High] The patch does not guard the most commonly reached checksum
-  completion on egress.
-- [Medium] IP-TFS SAs skip the new xfrm check entirely.
-- [Medium] The NFQUEUE check in nf_queue_checksum_help() keys on the
-  outer skb->protocol (`entskb->protocol == htons(ETH_P_IP)`), so PPPoE-…
-- [Low] ip_check_csum_start() takes its lower bound from the untrusted
-  iph->ihl field (`skb->network_header + ip_hdrlen(skb)`, with…
+- [High] The patch adds skb_cow_head(skb, encap_hlen) at the top of
+  ip_tunnel_xmit() (net/ipv4/ip_tunnel.c:700), before the first…
+- [High] In ip_md_tunnel_xmit(), the headroom is sized from one live read
+  of the shared tun_info->encap: `encap_hlen =…
+- [Low] The new early skb_cow_head(skb, encap_hlen) in ip_tunnel_xmit()
+  (net/ipv4/ip_tunnel.c:700) runs on every packet, including tunnels…
+
+Pre-existing issues:
+- [Low] ip_tunnel_xmit() now does `encap = READ_ONCE(tunnel->encap);`
+  (net/ipv4/ip_tunnel.c:696) under the comment 'Size and push the encap…
 
 --
 
-ipv4: validate checksum_start before completing checksum
+ip_tunnel: reserve headroom for the encap header before pushing it
 
-The patch adds an ip_check_csum_start() helper. It rejects CHECKSUM_PARTIAL
-skbs whose csum_start points inside the IPv4 header. The helper runs before
-skb_checksum_help() in ip_do_fragment(), nf_br_ip_fragment(),
-nf_queue_checksum_help(), the CHECKSUM target and xfrm_output(), as a
-defence in depth measure against bad checksum metadata coming from tun and
-packet sockets.
+This patch adds an early skb_cow_head() for the FOU/GUE encap header length
+at the start of ip_tunnel_xmit() and ip_md_tunnel_xmit(). The goal is that
+ip_tunnel_encap() no longer pushes the encap header into headroom that was
+never reserved. ip_tunnel_xmit() also takes one READ_ONCE() snapshot of
+tunnel->encap and uses it for both the reservation and the push.
 
-Closes: https://lore.kernel.org/netdev/20260922030310.8684-2-habte.yibelo@gmail.com/
+> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+> index e6bcf01411d0b..38ab3c3bf5c9a 100644
+> --- a/net/ipv4/ip_tunnel.c
+> +++ b/net/ipv4/ip_tunnel.c
 
-> diff --git a/include/net/ip.h b/include/net/ip.h
-> index 6f602df72ee62..d07c2c5730240 100644
-> --- a/include/net/ip.h
-> +++ b/include/net/ip.h
-> @@ -74,6 +74,13 @@ static inline unsigned int ip_hdrlen(const struct sk_buff *skb)
->  	return ip_hdr(skb)->ihl * 4;
->  }
->  
-> +static inline int ip_check_csum_start(const struct sk_buff *skb)
-> +{
-> +	if (unlikely(skb->csum_start < skb->network_header + ip_hdrlen(skb)))
-> +		return -EINVAL;
+[ ... ]
+
+> @@ -587,6 +588,11 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+>  		     ip_tunnel_info_af(tun_info) != AF_INET))
+>  		goto tx_error;
+>  	key = &tun_info->key;
+> +	encap_hlen = ip_encap_hlen(&tun_info->encap);
+> +	if (encap_hlen < 0)
+> +		goto tx_error;
+> +	if (skb_cow_head(skb, encap_hlen))
+> +		goto tx_dropped;
+
+[Severity: High]
+Is tun_info->encap stable between this reservation and the push?
+
+The headroom is sized here from one read of tun_info->encap. The header is
+then pushed later in ip_md_tunnel_xmit() using separate reads:
+
+	if (!tunnel_hlen)
+		tunnel_hlen = ip_encap_hlen(&tun_info->encap);
+
+	if (ip_tunnel_encap(skb, &tun_info->encap, &proto, &fl4) < 0)
+		goto tx_error;
+
+The fou/gue build_header callbacks also read e->flags again.
+
+tun_info is not necessarily private to this skb. bpf_skb_set_tunnel_key()
+attaches the per-CPU md_dst to every skb it handles on that CPU, and then
+rewrites it in place:
+
+net/core/filter.c:bpf_skb_set_tunnel_key() {
+	struct metadata_dst *md = this_cpu_ptr(md_dst);
+    ...
+	skb_dst_drop(skb);
+	dst_hold((struct dst_entry *) md);
+	skb_dst_set(skb, (struct dst_entry *) md);
+
+	info = &md->u.tun_info;
+	memset(info, 0, sizeof(*info));
+    ...
+}
+
+bpf_skb_set_fou_encap() also writes info->encap.type/flags/sport/dport in
+place.
+
+Suppose an skb is tagged on CPU0, queued on a qdisc of a collect_md ipip
+device, and sent from CPU1. Meanwhile CPU0's tc BPF program rewrites the
+same md_dst (memset to TUNNEL_ENCAP_NONE, then GUE). Could CPU1 reserve 0
+or 8 bytes here and then push a 12-20 byte GUE header?
+
+That would hit the same skb_under_panic() in fou_build_udp() that this
+patch fixes. In the mirred mirror case it would overwrite the bytes in
+front of skb->data instead.
+
+ip_tunnel_xmit() takes a local copy of the encap config for this reason.
+Would a local snapshot here close the same gap on the md path? For example:
+
+	struct ip_tunnel_encap encap = tun_info->encap;
+
+used for the reservation, tunnel_hlen and ip_tunnel_encap().
+
+>  	memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
+>  	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
+>  	tos = key->tos;
+
+[ ... ]
+
+> @@ -679,11 +686,23 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+
+[ ... ]
+
+> +	/* Size and push the encap header from one copy of the config. */
+> +	encap = READ_ONCE(tunnel->encap);
 
 [Severity: Low]
-The lower bound here comes from iph->ihl, and not every caller validates
-that field first. If ihl is below 5, can a csum_start inside the fixed
-20-byte IPv4 header still pass? With ihl == 0 the check becomes
-csum_start < network_header.
+This is a pre-existing issue, not one introduced by this patch, but the
+writer side has no matching marked store for this READ_ONCE().
+ip_tunnel_encap_setup() zeroes t->encap and then fills it in with plain
+stores:
 
-One caller that can see an unvalidated ihl is nf_queue_checksum_help(),
-which only pulls sizeof(struct iphdr). For a bridge-family nft queue rule,
-nft_do_chain_bridge() calls nft_set_pktinfo_ipv4_validate(). That function
-treats ihl < 5 as unspec, but the chain is still evaluated:
+net/ipv4/ip_tunnel.c:ip_tunnel_encap_setup() {
+    ...
+	memset(&t->encap, 0, sizeof(t->encap));
 
-tap frame with ihl = 0, csum_start = IP + 6..19
-  nft_do_chain_bridge()
-    nft_set_pktinfo_ipv4_validate()   -> falls back to unspec
-  queue verdict
-    nfqnl_build_packet_message()
-      nf_queue_checksum_help()
-        ip_check_csum_start()         -> returns 0
-        skb_checksum_help()           -> writes into IP header bytes 6..19
+	hlen = ip_encap_hlen(ipencap);
+	if (hlen < 0)
+		return hlen;
 
-The header is already invalid in this case, so the practical impact looks
-limited. Since this is a generic inline in include/net/ip.h, could the
-bound be clamped to at least sizeof(struct iphdr), or could ihl < 5 be
-rejected?
+	t->encap.type = ipencap->type;
+	t->encap.sport = ipencap->sport;
+	t->encap.dport = ipencap->dport;
+	t->encap.flags = ipencap->flags;
+    ...
+}
 
-> +	return 0;
-> +}
-> +
+So a snapshot taken during changelink can still be half-written. It might
+see type NONE right after the memset, or a new type with sport/dport still
+0.
 
-[ ... ]
+The length and the push now both come from the local copy. Because of
+that, the worst case is a few packets sent without encap or with UDP port
+0, plus a possible KCSAN report. The old plain reads could already see
+these same states.
 
-> diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-> index a24cc8ee11d3e..eaa6fabda347e 100644
-> --- a/net/ipv4/ip_output.c
-> +++ b/net/ipv4/ip_output.c
-> @@ -771,9 +771,13 @@ int ip_do_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
->  	int err = 0;
->  
->  	/* for offloaded checksums cleanup checksum before fragmentation */
-> -	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-> -	    (err = skb_checksum_help(skb)))
-> -		goto fail;
-> +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-> +		err = ip_check_csum_start(skb);
-> +		if (!err)
-> +			err = skb_checksum_help(skb);
-> +		if (err)
-> +			goto fail;
+Would it make sense to build the new config in a local struct and store it
+once on the writer side, as a follow-up?
+
+> +	encap_hlen = ip_encap_hlen(&encap);
+> +	if (encap_hlen < 0)
+> +		goto tx_error;
+> +	if (skb_cow_head(skb, encap_hlen)) {
+> +		DEV_STATS_INC(dev, tx_dropped);
+> +		kfree_skb(skb);
+> +		return;
 > +	}
 
 [Severity: High]
-This covers the fragmentation path. What about the generic egress
-fallback? validate_xmit_skb()->skb_csum_hwoffload_help() finishes the
-checksum in software without any csum_start check:
+Can this new skb_cow_head() free the memory that tnl_params points to?
 
-net/core/dev.c:skb_csum_hwoffload_help() {
+For GRE devices with header_ops (NBMA or a multicast remote), ipgre_xmit()
+passes ip_tunnel_xmit() a tnl_params pointer that lives inside the skb
+head:
+
+net/ipv4/ip_gre.c:ipgre_xmit() {
     ...
-	if (features & NETIF_F_HW_CSUM)
-		return 0;
+	if (dev->header_ops) {
+		int pull_len = tunnel->hlen + sizeof(struct iphdr);
 
-	if (features & (NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM)) {
-		if (skb_has_ipv6_extension_hdr(skb))
-			goto sw_checksum;
+		if (skb_cow_head(skb, 0))
+			goto free_skb;
+		...
+		tnl_params = (const struct iphdr *)skb->data;
 
-		switch (skb->csum_offset) {
-		case offsetof(struct tcphdr, check):
-		case offsetof(struct udphdr, check):
-			return 0;
-		}
-	}
-
-sw_checksum:
-	return skb_checksum_help(skb);
-}
-
-Any device without NETIF_F_HW_CSUM takes this path. NETIF_F_IP_CSUM
-devices take it too whenever csum_offset is not the TCP or UDP check
-offset. The sender picks csum_offset, so it can force the software path.
-
-__virtio_net_hdr_to_skb() accepts csum_start >= skb->data + 20, which is
-IP + 6 on tap. Take a forwarded IPv4 packet with csum_start at IP + 12. It
-can pass through ip_rcv(), ip_forward(), FORWARD and POSTROUTING
-(including SNAT) with CHECKSUM_PARTIAL intact. Could its saddr, daddr or
-protocol then be overwritten here, at the last step?
-
-Other places that finish checksums on arbitrary IPv4 traffic also have no
-check. Examples are netem_enqueue() in sch_netem.c, the DSA taggers
-(tag_ksz.c, tag_ocelot_8021q.c, tag_rtl8_4.c, tag_hellcreek.c) and
-xfrm_iptfs.c.
-
-The commit message says:
-
-  let's also check before we complete the checksum.
-
-Is it intended that the most common completion site is left out? Or is
-this meant to be covered by the input validation the commit message
-describes as forthcoming?
-
-[ ... ]
-
-> diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-> index a3bc002800510..477fc632657f4 100644
-> --- a/net/netfilter/nfnetlink_queue.c
-> +++ b/net/netfilter/nfnetlink_queue.c
-
-[ ... ]
-
-> @@ -674,6 +675,12 @@ static int nfqnl_put_bridge(struct nf_queue_entry *entry, struct sk_buff *skb)
->  
->  static int nf_queue_checksum_help(struct sk_buff *entskb)
->  {
-> +	if (entskb->protocol == htons(ETH_P_IP)) {
-
-[Severity: Medium]
-This test uses the outer skb->protocol. Can PPPoE-encapsulated IPv4 on a
-bridge skip the check?
-
-With br_netfilter and filter_pppoe_tagged enabled, br_nf_forward_ip()
-pulls the encapsulation and runs br_validate_ipv4() and the IPv4 FORWARD
-hooks. br_nf_forward_finish() then restores the outer protocol before the
-bridge FORWARD hooks continue:
-
-net/bridge/br_netfilter_hooks.c:br_nf_forward_finish() {
-    ...
-		nf_bridge_update_protocol(skb);
-	} else {
-		in = *((struct net_device **)(skb->cb));
-	}
-	nf_bridge_push_encap_header(skb);
+		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
+		skb_pull(skb, pull_len);
     ...
 }
 
-A later bridge-family nft queue rule (copy-packet, without
-NFQA_CFG_F_GSO) would reach this function with protocol ETH_P_PPP_SES.
-ip_check_csum_start() is skipped, and skb_checksum_help() then writes into
-the inner IPv4 header that was already validated.
+That pointer reaches ip_tunnel_xmit() through __gre_xmit():
 
-The inner IP header sits at mac + 22, and virtio allows csum_start
->= mac + 20, so the write can even hit version/ihl.
+	ip_tunnel_xmit(skb, dev, tnl_params, tnl_params->protocol);
 
-After an accept verdict, br_nf_post_routing() treats the packet as IPv4
-again without revalidating it:
+If skb_cow_head(skb, encap_hlen) ends up in pskb_expand_head(), the old head
+is freed. Every later read of tnl_params (->daddr, ->tos, ->saddr,
+->frag_off, ->ttl) then reads freed memory. Those values feed the route
+lookup and the outer IP header.
 
-net/bridge/br_netfilter_hooks.c:br_nf_post_routing() {
-    ...
-	nf_bridge_pull_encap_header(skb);
-	if (pf == NFPROTO_IPV4)
-		skb->protocol = htons(ETH_P_IP);
-    ...
-}
+Before this patch, the only skb_cow_head() in ip_tunnel_xmit() ran after the
+last tnl_params read.
 
-NF_INET_POST_ROUTING (conntrack/NAT) and br_nf_dev_queue_xmit() then run
-on the modified header.
+For the reallocation to happen, the headroom at entry has to be smaller than
+encap_hlen. In the GRE header_ops path the tunnel config is read three times
+without locking:
 
-> +		if (!pskb_network_may_pull(entskb, sizeof(struct iphdr)) ||
-> +		    ip_check_csum_start(entskb))
-> +			return -EINVAL;
-> +	}
+  - tunnel->hlen in ipgre_xmit(), for pull_len
+  - tunnel->tun_hlen in __gre_xmit()
+  - tunnel->encap here
+
+ipgre_changelink() writes t->encap and t->hlen in
+ipgre_newlink_encap_setup(). It later writes tun_hlen and hlen in
+ipgre_link_update(). There is no synchronize_net() in between.
+
+For example, take a single "ip link set" that changes encap from none to GUE
+with remcsum (0 -> 20 bytes) and o_flags to csum|key|seq (tun_hlen 4 -> 16).
+If a packet is between the hlen read and the tun_hlen read, it has about
+H0 + 8 bytes of headroom, where H0 is the headroom it arrived with. For
+small H0 that is below 20.
+
+Before the patch, that race ended in skb_under_panic(). With the patch it
+looks like it becomes a silent use-after-free read.
+
+Doesn't this contradict this part of the commit message?
+
+    ip_tunnel_xmit() reads tunnel->encap once, so a concurrent
+    changelink cannot change the length between the reservation and the
+    push.
+
+Would either of these avoid it: copying *tnl_params to a local struct before
+the early skb_cow_head(), or moving the reservation after the last
+tnl_params read?
+
+[Severity: Low]
+Should this skb_cow_head() be skipped when encap_hlen is 0?
+
+__skb_cow() calls pskb_expand_head() whenever skb_header_cloned() is true,
+even when delta is 0. ipip_tunnel_xmit() and sit pass skbs through without
+uncloning them.
+
+Take a header-cloned skb going into a plain ipip tunnel with no encap, such
+as the mirred mirror case from the commit message. It is now uncloned here.
+If its headroom is still too small, the later skb_cow_head(skb,
+max_headroom) reallocates it a second time.
+
+Before the patch, one pskb_expand_head() in the max_headroom call handled
+both. Either guarding this call with if (encap_hlen), or reserving the full
+estimate in one call, would avoid the extra allocation and copy per packet.
+
 > +
->  	if (skb_csum_is_sctp(entskb))
->  		return skb_crc32c_csum_help(entskb);
->  
-> diff --git a/net/netfilter/xt_CHECKSUM.c b/net/netfilter/xt_CHECKSUM.c
-> index 9d99f5a3d1764..1fb0f8118404d 100644
-> --- a/net/netfilter/xt_CHECKSUM.c
-> +++ b/net/netfilter/xt_CHECKSUM.c
-
-[ ... ]
-
-> @@ -25,8 +26,11 @@ MODULE_ALIAS("ip6t_CHECKSUM");
->  static unsigned int
->  checksum_tg(struct sk_buff *skb, const struct xt_action_param *par)
->  {
-> -	if (skb->ip_summed == CHECKSUM_PARTIAL && !skb_is_gso(skb))
-> +	if (skb->ip_summed == CHECKSUM_PARTIAL && !skb_is_gso(skb)) {
-> +		if (xt_family(par) == NFPROTO_IPV4 && ip_check_csum_start(skb))
-> +			return NF_DROP;
->  		skb_checksum_help(skb);
-
-[Severity: High]
-checksum_tg() is also registered for NFPROTO_IPV6 in checksum_tg_reg[], so
-ip6t_CHECKSUM still calls skb_checksum_help() with no check. Is IPv6 left
-out on purpose?
-
-The other shared paths in this patch work the same way.
-nf_queue_checksum_help() and xfrm_output() only check
-skb->protocol == htons(ETH_P_IP). The IPv6 versions of the two
-fragmenters hardened here keep the old pattern:
-
-net/ipv6/ip6_output.c:ip6_fragment() {
-    ...
-	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-	    (err = skb_checksum_help(skb)))
-		goto fail;
-    ...
-}
-
-net/ipv6/netfilter.c:br_ip6_fragment() {
-    ...
-	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-	    (err = skb_checksum_help(skb)))
-		goto blackhole;
-    ...
-}
-
-Both commits named in Fixes: also send IPv6 through
-__virtio_net_hdr_to_skb(). For non-GSO packets, nh_min_len stays at
-sizeof(struct iphdr), so csum_start can point inside the 40-byte IPv6
-header.
-
-Even in IFF_TUN mode, csum_start = IP + 20 is accepted, which lets the
-write land in daddr. With tap, nexthdr, hop_limit, saddr and daddr can
-all be reached.
-
-Couldn't this rewrite an IPv6 header after ipv6_rcv() validation, routing
-and ip6tables/nft filtering, through ip6t_CHECKSUM, NFQUEUE reinjection or
-xfrm output? The commit message doesn't mention IPv6. Could both families
-be covered here, or could the commit message explain why IPv6 is left out?
-
-> +	}
->  
->  	return XT_CONTINUE;
->  }
-> diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-> index e305ba32e356b..f1f612cd7b438 100644
-> --- a/net/xfrm/xfrm_output.c
-> +++ b/net/xfrm/xfrm_output.c
-> @@ -823,16 +823,22 @@ int xfrm_output(struct sock *sk, struct sk_buff *skb)
->  	}
->  
->  	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-> -		err = skb_checksum_help(skb);
-> -		if (err) {
-> -			XFRM_INC_STATS(net, LINUX_MIB_XFRMOUTERROR);
-> -			kfree_skb(skb);
-> -			return err;
-> +		if (skb->protocol == htons(ETH_P_IP)) {
-> +			err = ip_check_csum_start(skb);
-> +			if (err)
-> +				goto error;
->  		}
-
-[Severity: Medium]
-Do IP-TFS SAs bypass this check? xfrm_bundle_create() sets:
-
-	dst1->output = xfrm[i]->mode_cbs->output;
-
-For IP-TFS this is iptfs_output_collect(), so inner IPv4 packets never
-reach xfrm4_output()/xfrm_output() with their own checksum metadata.
-
-iptfs_output_collect() only segments GSO skbs. A non-GSO CHECKSUM_PARTIAL
-skb is queued as is, and its checksum is finished later without a
-csum_start check:
-
-net/xfrm/xfrm_iptfs.c:iptfs_first_skb() {
-    ...
-	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-		err = skb_checksum_help(skb);
-		if (err)
-			return err;
-    ...
-}
-
-net/xfrm/xfrm_iptfs.c:iptfs_output_queued() {
-    ...
-			if (skb2->ip_summed == CHECKSUM_PARTIAL) {
-				if (skb_checksum_help(skb2)) {
-    ...
-}
-
-xfrm_output() only runs later, on the outer IP-TFS packet, which is
-already CHECKSUM_NONE. Consider a tap guest packet routed into an IP-TFS
-tunnel. Could its inner header still be rewritten after ip_rcv()
-validation and FORWARD filtering, then encrypted and sent to the peer?
-
-> +		err = skb_checksum_help(skb);
-> +		if (err)
-> +			goto error;
->  	}
+>  	inner_iph = (const struct iphdr *)skb_inner_network_header(skb);
+>  	connected = (tunnel->parms.iph.daddr != 0);
+>  	payload_protocol = skb_protocol(skb, true);
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/0a012b4923e189c4c593ef4f471e5ff0edbe9030.1791412497.git.mst%40redhat.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010223601.1193655-1-theodorlarionov%40gmail.com
