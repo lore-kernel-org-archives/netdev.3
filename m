@@ -1,129 +1,120 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D33E305660;
-	Sun, 11 Oct 2026 21:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A99442AA9;
+	Sun, 11 Oct 2026 21:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791753066; cv=none; b=VcRkfdt95o8l0z4vRdb4sojK3pec8+QORUuj2yQ+ciW36OE+qDWb074QaWAubp0cpM3fi0DaskS7cD3+bZWSJcolUltwtbbPj7I4Pq4HUykSPPePsdw27jdgMQwL7qvH81zHuD9IvZBjgGUcoUFDZj3pOPib89FqgIBEaxKIQvI=
+	t=1791753241; cv=none; b=WnlanJHe5n5PKd5kXcB9CK3iKUGnWE76mCIOsDtdngwgo5ddXlb4uwzz/dR9dsQYZNQzZKUgLW2Dz1Nrk//2DN0PlLUj16RgcAdnA13qATAkDonptQcCIT43S9ams1vvYo8ytpAYp+1DrO1VTRa18bIpeptg61RvpojeR/8K9Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791753066; c=relaxed/simple;
-	bh=4yyfpQb1Lb/ngzoEFFI2DA+n4z26ZUH9URDMiUauJco=;
+	s=arc-20240116; t=1791753241; c=relaxed/simple;
+	bh=SvO4R3vxF4xR1wqicParlaqsB3sS5MVT1lmEeZOcGvU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mu7kl/8WegfUcwWjFpdM7Dk71sgfMy60HXylRXsa19+VGfW6+oQdj5RBrsEe8e8W3Ir03ci7E9jaVbEjqY9RG/OT1DoIR7Y0iS0S+qbr/tYt8fIxL71iW6OW5dd89ydooFSunMv0uwpzz+uS0T1wTlRe3GO8tm51PlzNtwHtYQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3GReNuwo; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=H+zEoproq0MR5Cy9I3o3sGHOb8YYOrjHFVCLUBzZdKyV7wXVYMxO9j8vJ5wkDSVNbao//U9ealO32ZCo65lQPN9xJjsZ7rp9HkXq5nwqS9EY96YdCrP2M1Gn+a+C1yE+N8DCtQ1fnNPbYT5dOMwCon8GvUCo7gIRbx6q/hqCWdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9R0nBAp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3GReNuwo"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=oLPXrTETwXIgCqbMdypfomsb/ybLwCg++xPL7zgFDGM=; b=3G
-	ReNuwoJDRjI4rZICKl4/qMwBbhbuUuLrm43jQolz01wttc+Nl6mlFoXuqa7A9ZKtVTkBhpxi4PoYj
-	J1ZzywYp7hz+KrMoDeCuUMjj07TzKxrtfInAlgWCFWu8DlfoG+pS8PSZEq33WXQskRvSCslQmhGKJ
-	AsHIqcXF2wNamjg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xG0og-00AASP-MW; Sun, 11 Oct 2026 23:10:46 +0200
-Date: Sun, 11 Oct 2026 23:10:46 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
-Cc: James Clark <jjc@jclark.com>, "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9R0nBAp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743761F0089B;
+	Sun, 11 Oct 2026 21:13:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791753239;
+	bh=cB64+7GIL/QejhQmJX5UmgahZ1S8lTXRVFKShlbGWQM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Y9R0nBApfEq3cFVA+VsinEcrUSzp6c6bkadfZbfDy1QEQ5rg5OoIhCrczxqxVS8kT
+	 2HCmsO3+W/T1abh2B3I65X7x5vUzr6/euVpLz62Vk52UmSYp3MrIvnlOMVrfn8H8DG
+	 MpMCa6Zs5ebzHvIYHcvddVChPsaMdWP/v7H2s8fzOx0wSu9M1w5a/ugCmIJ9EgQ/nh
+	 UphV13z3PHvIvffykWUVXTGisHUO9e8mRsmH3fY+RSHQKkQCWY35rny4nZbSsQaCUz
+	 FQL35cVSIfc3jQjVf9AmhNE73CU/WhMWFD8xNuZHj+izqQ3ViEg18rZ7Q2dL7efhbW
+	 GBotapyIPL2RQ==
+Date: Sun, 11 Oct 2026 22:13:53 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Lucas Tanure <tanure@linux.com>
+Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	xianwei.zhao@amlogic.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Doug Berger <opendmb@gmail.com>, Nicolai Buchwitz <nb@tipi-net.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>
-Subject: Re: [PATCH net-next 4/5] net: macb: implement timestamped MDIO writes
-Message-ID: <c136b0ad-6d7e-4695-b988-55eb37550d01@lunn.ch>
-References: <20261009143506.2507607-1-jjc@jclark.com>
- <20261009143506.2507607-5-jjc@jclark.com>
- <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: Re: [PATCH v3 1/8] dt-bindings: net: amlogic,meson-dwmac: list the
+ compatible combinations
+Message-ID: <20261011-starship-foyer-1105c1b35e31@spud>
+References: <20261010105900.247342-1-tanure@linux.com>
+ <20261010105900.247342-2-tanure@linux.com>
+ <CAFBinCAejxmeeHyDy+vMSg6dBm+9prhEo9qZ7FAsiWNB1W-HXw@mail.gmail.com>
+ <CAJX_Q+3JLn6oTt8qTPM-muKsY9JbTEMwqRvbamZ3vqg_Yymsmg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Li4Qmgdoe6LbIUh+"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com>
+In-Reply-To: <CAJX_Q+3JLn6oTt8qTPM-muKsY9JbTEMwqRvbamZ3vqg_Yymsmg@mail.gmail.com>
 
-On Sun, Oct 11, 2026 at 11:23:54AM +0200, Théo Lebrun wrote:
-> Hello James,
-> 
-> On Fri Oct 9, 2026 at 4:35 PM CEST, James Clark wrote:
-> > Implement write_sts to provide system timestamp bounds for completion
-> > of an MDIO write. This enables tighter system timestamp bounds in PHY
-> > implementations of gettimex64.
+--Li4Qmgdoe6LbIUh+
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Oct 11, 2026 at 03:16:18PM +0100, Lucas Tanure wrote:
+> On Sat, Oct 10, 2026 at 11:04=E2=80=AFPM Martin Blumenstingl
+> <martin.blumenstingl@googlemail.com> wrote:
 > >
-> > Take system timestamps around the command register write, then add
-> > the time from the command write until the MDC edge that clocks the
-> > last data bit, calculated from the peripheral clock rate and the
-> > configured MDC divider.
+> > Hi Lucas and Conor,
 > >
-> > On RP1 that edge comes 63.5 MDC periods after the command write. This
-> > was measured on a Raspberry Pi CM5 with its BCM54210PE PHY. The PHY's
-> > PHC was read with PTP_SYS_OFFSET_EXTENDED while the MDC divisor was
-> > switched between 48 and 128 through /dev/mem. Any error in the number
-> > of periods would make the PHC offset jump at each switch. After
-> > compensating for drift, the jump with 63.5 periods was under 2 ns.
-> > The MDC divider does not appear to run freely: the spread of the PHC
-> > offsets did not change with the divisor.
-> >
-> > Signed-off-by: James Clark <jjc@jclark.com>
-> > Assisted-by: LLM
-> > ---
-> > The 63.5-period delay has been measured only on RP1, but the code
-> > assumes it holds for all MACB and GEM variants. I am not sure whether
-> > that is a reasonable assumption; if not, write_sts could be enabled
-> > only for RP1.
-> 
-> I'm invoking my colleague @Maxime to get his opinion. What impacts the
-> MDIO write_c22 duration and how likely is it that this duration varies
-> (1) on the same MAC+PHY combo, (2) with a different PHY or (3) with a
-> different MACB revision?
+> > On Sat, Oct 10, 2026 at 12:59=E2=80=AFPM Lucas Tanure <tanure@linux.com=
+> wrote:
+> > [...]
+> > > +          - enum:
+> > > +              - amlogic,meson8b-dwmac
+> > > +              - amlogic,meson-gxbb-dwmac
+> > > +              - amlogic,meson-axg-dwmac
+> > > +              - amlogic,meson-g12a-dwmac
+> > > +          - const: snps,dwmac-3.70a
+> > > +          - const: snps,dwmac
+> > > +      - items:
+> > > +          - enum:
+> > > +              - amlogic,meson6-dwmac
+> > > +              - amlogic,meson8m2-dwmac
+> > Meson8m2 dwmac reports: User ID: 0x10, Synopsys ID: 0x37
+> > In case it helps I can submit a patch to change the Meson8m2 .dtsi to
+> > use "amlogic,meson8m2-dwmac", "snps,dwmac-3.70a", "snps,dwmac" - then
+> > we could move it here too.
+> > That leaves only Meson6 with a single fallback compatible. I don't
+> > have any Meson6 boards, so it'll have to stay that way.
+> Hi,
+>=20
+> Fine by me. But I think it is best to wait for this series to be merged.
 
-Putting the bits onto the bus should be a fixed time. It is just a big
-shift register, which is clocked at bus speed. There is no clock
-stretching, no ACK from the PHY, etc.
+In the second sentence, you're referring to the dts patch I assume?
+IMO, you should submit a new version of this with the 8m2 moved to the
+other enum and Martin can submit the dts patch now, since the current
+binding permits using dwmac-3.70a, no need to wait for this to be
+merged.
 
-What will introduce jitter is everything before the write hits the
-register. There are mutex which can be contended, because of other
-users on the bus, etc.
+--Li4Qmgdoe6LbIUh+
+Content-Type: application/pgp-signature; name=signature.asc
 
-> Sashiko makes an interesting point with PCLK that might change over
-> time, giving an example (which I've not checked) where it would be
-> derived from the CPU clk which might change with cpufreq.
+-----BEGIN PGP SIGNATURE-----
 
-Care would have to be taken here. IEEE 802.3 specifies the maximum bus
-speed is 2.5Mhz. I hope cpufreq can only make the clock slower, not
-faster, otherwise the MDIO bus is breaking the standard.
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCasv8EQAKCRB4tDGHoIJi
+0j98AP4rQ60xf6QZIR+UVdVPmdSR8xm6GMzsKTW5wwCVZq8gLAEAyM8L5JCUZzmE
+aBhkxeWELj13jV1WIQV+eunZ4dUaYgU=
+=+0qV
+-----END PGP SIGNATURE-----
 
-> I'm wondering if we could do better than a hardcoded delay? For example
-> we could busy-wait for NSR.IDLE inside the prets/postts region, but
-> that implies at least 25µs with IRQs disabled. Or we could do a few
-> measurements at init to sample our platform delay?
-
-> It doesn't solve the PCLK changing issue, but it solves the hardcoded
-> 63.5 value.
-
-Each C22 MDIO bus transaction is 64 bits. It is defined in the
-standard. So hard coding this value is fine. But it should be made
-generic, it should be the same for all implementations, all that
-changes is the bus speed.
-
-	Andrew
+--Li4Qmgdoe6LbIUh+--
