@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23273D76;
-	Sun, 11 Oct 2026 05:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2DF3D3D00;
+	Sun, 11 Oct 2026 05:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791697610; cv=none; b=j82g0r3x60rbsUUmpFrh0ZGo0sr7aG1tdt5eyVkOwVTCKIUF5+slJBhY8Vxtzm8qcgczSUDH3nMbeXFSPXGSb9ylaESdiaQESvC6nqsiu3f1I3egcxzDkDiK20PpR+jxTUc7vEuPoXDvfEhxINMPcmW9HjVYJIzcu5AVZMjLHyQ=
+	t=1791697997; cv=none; b=DbW5qE59mPucJD6ksdaOV3iD04F4NE1FIAvGTmG2QOHHeJxhZ0mAWYcHG5NCzo25/41UIUdiDllGD0MJAGfq3K1+eklZL4O2/9aqkyCreLQlElSiNCVvnmq19F8V1A4M+JVIj6TynNAuWb4nhoJfml3yDnzN6p4NgZXh45SGwJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791697610; c=relaxed/simple;
-	bh=gZJSG8A/67hd3B6zA/aibPN5rKBiq2RmBmooSMkx+x0=;
+	s=arc-20240116; t=1791697997; c=relaxed/simple;
+	bh=/JEOgZ3eYmFSe3KoSY7A5cJK3JwgsNSncPcoS7dJKzM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I7NA1OV32LFOLLp8aLXlhM+ypxhqs0AFP8hGCJws18HUcZev1Ol9MJYN/kowb2NtQClf+Hv0mXpYG5UgzrHQIptS3z2KsJvt8gJPdBfnrfDvALahdp3eXmp+nsJbnCmnhOkbF10gNJPjQakkEY3owUzTizU5cbbcyd8cRpdRNiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jgOfn4ma; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=QCGVHs9O8Cw1KVG53IO3DAFQ1JbSNT3ZOUcHbohLdMWQNSX/qVF0UrlYqTk8Va/TmrsoCM3KEh57KOww5a6Ls2KMvmhxx8iJWMILq8l7ti42gNgQdLdVjeri0nlrUCjcvJV1mcYlVDqrucq0dVqGZEX44GKZOIcW1y1CBut4GxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ul96iwhu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jgOfn4ma"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC7E1F0089B;
-	Sun, 11 Oct 2026 05:46:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ul96iwhu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6346D1F0089B;
+	Sun, 11 Oct 2026 05:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791697609;
-	bh=Oesar8D5nvboPxSOo8Pi6hgOJ1kvG714xpYkndMYUF0=;
+	s=k20260515; t=1791697996;
+	bh=a3FOLcjIN8evxZyxygCISj6Dhd32z8kPF603HHjyYtA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jgOfn4maWmQqxaHU2Nk5brkkJElNUBKf3lPAXYY3VF1o/p1onEFkWBGVJYlepOev7
-	 cd/v+HpKjox96ArNbHAA9aZJLPDfePgVhVTNxhzvcrYuYW/RBOaBkr62cTIaIcMhH2
-	 /j7+Y5dUpo7PBM7rhCzkOdcCpe7qbwviXY0V9XjLt9HFH/tPwOQXe6TYVwEbuf/6ph
-	 Bazzm9OMOZOfCVOXPEnQnk7WFNUN5bZWfHjqFcj/5KMkwOSKhQgAW5Ex7DjiiwC8e3
-	 3XYHg/M6aWPf6JZ2hMZu2kVcYk2qyxfeK6Eu5jOW2tDowgfLP5vg87pI9jXAEHroK1
-	 wFU26UujEHFew==
-Subject: Re: [PATCH net v4] net: macb: rate limit netdev error info print in
- the data path
+	b=Ul96iwhutDBjmTJxQj+Y6/GUXs2dt+jhcKmvybQsH5fyC82w8jLjIcCRao3js1kn7
+	 V9svvuocJDI/TAlgtdMm51Ktve5N3D1RtfjDCr/PubIKlF4FXNQIrvXmo6FxWHM9Yk
+	 GEW2oVnOhqkehvJuJUtmnaVWkaJMTL5dWIZMPgBC6xCTmAr5yf/c8RhWMr8GjZOXm1
+	 TQXJSJZ1l0iC29JvepFFWBQlmCVaSISafjMLXCIQPx+BNuqwM5NyErF0CMmU+tqMyo
+	 nEJXzwPAfWC71R0558gdZyy9G2KzuZtHCxAwTzYrh+I3PC27Q4HELXF8pmNarFJAWj
+	 McPC2HEYU5lcA==
+Subject: Re: [PATCH net v2] ipv4: fib_trie: prevent speculative out-of-bounds
+ child access
 From: netdev-bot+sashiko@kernel.org
-To: taozj888@163.com
-Cc: theo.lebrun@bootlin.com, stable@vger.kernel.org,
- conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jeff@garzik.org,
- hskinnemoen@atmel.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 05:46:48 +0000
-Message-ID: <179169760819.434549.4959180308311606456@kernel.org>
-In-Reply-To: <20261007053211.572073-1-taozj888@163.com>
-References: <20261007053211.572073-1-taozj888@163.com>
-X-sashiko-severity: High
+To: datrujillo@nvidia.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ alexander.h.duyck@redhat.com
+Date: Sun, 11 Oct 2026 05:53:14 +0000
+Message-ID: <179169799489.434549.6127227149225091641@kernel.org>
+In-Reply-To: <20261010-fib-trie-nospec-v2-1-30319b4db8d0@nvidia.com>
+References: <20261010-fib-trie-nospec-v2-1-30319b4db8d0@nvidia.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,148 +59,83 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
-- [Low] macb: mismatch between commit message and implementation for TX
-  rate limiting
+- [Medium] The patch's Spectre-v1 hardening leaves out
+  fib_trie_get_next() in net/ipv4/fib_trie.c, which is the depth-first…
 
 --
 
-net: macb: rate limit netdev error info print in the data path
+ipv4: fib_trie: prevent speculative out-of-bounds child access
 
-This commit wraps the netdev_err() calls in gem_rx(), macb_rx() and
-macb_interrupt_misc() with net_ratelimit(). The goal is to stop a flood of
-bad RX descriptors from filling the console and delaying boot. It is tagged
-for stable as a fix for the original Atmel MACB driver.
+This patch adds array_index_nospec() sanitization of the child index
+before get_child_rcu() in fib_table_lookup(), fib_find_node() and both
+loops of leaf_walk_rcu(). It closes a Spectre-v1 gadget where a
+mispredicted bounds check lets an out-of-bounds tnode[] slot be
+transiently used as a node pointer.
 
-> So rate limit the netdev error information print in the receive
-> and transmit data path.
-
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 8e5c034dc3a48..ca60960bec362 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -1617,16 +1617,16 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
->  		count++;
->  
->  		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
-> -			netdev_err(bp->netdev,
-> -				   "not whole frame pointed by descriptor\n");
-> +			if (net_ratelimit())
-> +				netdev_err(bp->netdev, "not whole frame pointed by descriptor\n");
->  			bp->netdev->stats.rx_dropped++;
->  			queue->stats.rx_dropped++;
->  			break;
->  		}
->  		skb = queue->rx_skbuff[entry];
->  		if (unlikely(!skb)) {
-> -			netdev_err(bp->netdev,
-> -				   "inconsistent Rx descriptor chain\n");
-> +			if (net_ratelimit())
-> +				netdev_err(bp->netdev, "inconsistent Rx descriptor chain\n");
->  			bp->netdev->stats.rx_dropped++;
->  			queue->stats.rx_dropped++;
->  			break;
-
-[Severity: High]
-The commit message says prints in both the receive and transmit data
-paths are rate limited, but this patch doesn't change any TX path. Are
-there other per-packet or per-interrupt netdev_err() calls in
-macb_main.c that can still flood the console in the same way?
-
-An empty rx_skbuff[] entry usually means a refill failed. gem_rx() calls
-gem_rx_refill() at the end of every NAPI poll, and the print there is
-still unconditional:
-
-gem_rx_refill() {
-    ...
-			skb = netdev_alloc_skb(bp->netdev, bp->rx_buffer_size);
-			if (unlikely(!skb)) {
-				netdev_err(bp->netdev,
-					   "Unable to allocate sk_buff\n");
-				break;
-			}
-    ...
-}
-
-Under memory pressure, won't this print on every poll of every queue?
-
-On the TX side, macb_start_xmit() returns NETDEV_TX_BUSY after a print
-that has no rate limit:
-
-macb_start_xmit() {
-    ...
-		if (skb_headlen(skb) < hdrlen) {
-			netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
-			/* if this is required, would need to copy to single buffer */
-			return NETDEV_TX_BUSY;
-		}
-    ...
-}
-
-The qdisc requeues the same skb and tries again. Can this message keep
-repeating for as long as that skb stays at the head of the queue?
-
-macb_tx_map() also prints once for every packet whose DMA mapping fails:
-
-macb_tx_map() {
-    ...
-dma_error:
-	netdev_err(bp->netdev, "TX DMA map failed\n");
-    ...
-}
-
-at91ether_start_xmit() has the same pattern:
-
-			netdev_err(netdev, "%s: DMA mapping error\n", __func__);
-			return NETDEV_TX_OK;
-
-at91ether_interrupt() prints from hardirq context on every RX overrun:
-
-	if (intstatus & MACB_BIT(ISR_ROVR))
-		netdev_err(netdev, "ROVR error\n");
-
-ISR_ROVR is enabled in IER for at91ether. The driver has only
-AT91ETHER_MAX_RX_DESCR (9) RX descriptors and handles RX inside the IRQ
-handler. Could a remote sender flooding the link trigger this print in
-the way the commit message describes for gem_rx()?
-
-For comparison, the ISR_ROVR handling in macb_interrupt_misc() only
-increments a counter.
-
-Since this is going to stable as a fix for console flooding, should
-these sites be rate limited as well?
+> diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+> index 248514dce0cdd..bdffeff58c950 100644
+> --- a/net/ipv4/fib_trie.c
+> +++ b/net/ipv4/fib_trie.c
 
 [ ... ]
 
-> @@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
+> @@ -1787,6 +1794,8 @@ static struct key_vector *leaf_walk_rcu(struct key_vector **tn, t_key key)
+>  			continue;
+>  		}
 >  
->  	if (status & MACB_BIT(HRESP)) {
->  		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
-> -		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
-> +		if (net_ratelimit())
-> +			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
->  		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
->  	}
->  
+> +		cindex = array_index_nospec(cindex, 1ul << pn->bits);
+> +
+>  		/* grab the next available node */
+>  		n = get_child_rcu(pn, cindex++);
+>  		if (!n)
 
-[Severity: Low]
-The commit message says this rate limits the error prints in the
-receive and transmit data paths, but none of the sites changed here
-are in the TX path. gem_rx() and macb_rx() are RX. The HRESP print in
-macb_interrupt_misc() reports a DMA bus error from the misc interrupt
-handler.
+[Severity: Medium]
 
-The TX side still has unconditional prints that can fire once per
-packet. macb_tx_map() prints "TX DMA map failed" every time a mapping
-fails. macb_start_xmit() prints
-"Error - LSO headers fragmented!!!" before returning NETDEV_TX_BUSY,
-so the qdisc requeues the same skb and hits the print again on the
-next attempt. This patch does not touch either site.
+The commit message says "leaf_walk_rcu() has a similar checked cindex
+before get_child_rcu(), and the traversed state can be influenced by
+userspace actions". Should fib_trie_get_next() get the same treatment?
 
-Should these TX sites be rate limited as well? Or should the commit
-message be reworded so it only claims the RX and interrupt paths?
-Since this is tagged for stable, the description needs to match what
-the backport actually changes.
+It has the same shape as this sibling walk in leaf_walk_rcu(). The only
+bound is the loop condition:
+
+net/ipv4/fib_trie.c:fib_trie_get_next() {
+    ...
+	while (!IS_TRIE(pn)) {
+		while (cindex < child_length(pn)) {
+			struct key_vector *n = get_child_rcu(pn, cindex++);
+
+			if (!n)
+				continue;
+
+			if (IS_LEAF(n)) {
+    ...
+		/* Current node exhausted, pop back up */
+		pkey = pn->key;
+		pn = node_parent_rcu(pn);
+		cindex = get_index(pkey, pn) + 1;
+    ...
+}
+
+Suppose the cindex < child_length(pn) check is mispredicted on the last
+iteration. Could pn->tnode[child_length(pn)] then be loaded transiently
+and dereferenced as a node pointer by IS_LEAF(n)? This hunk sanitizes
+the same one-past-the-end case in leaf_walk_rcu().
+
+fib_trie_get_next() is reachable from the 0444 /proc/net/fib_trie and
+/proc/net/fib_triestat files, via fib_trie_seq_ops and
+fib_triestat_seq_show()->trie_collect_stats(). Any local user can drive
+it, and an unprivileged user and net namespace can shape the trie
+contents.
+
+Here the out-of-bounds index is always one past the end, so an attacker
+can't choose it. That makes exploitation speculative. Would something
+like this keep the hardening consistent?
+
+		while (cindex < child_length(pn)) {
+			struct key_vector *n;
+
+			cindex = array_index_nospec(cindex, child_length(pn));
+			n = get_child_rcu(pn, cindex++);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007053211.572073-1-taozj888%40163.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010-fib-trie-nospec-v2-1-30319b4db8d0%40nvidia.com
