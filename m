@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E754443DEB8;
-	Sun, 11 Oct 2026 10:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2516243498C
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 10:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791715890; cv=none; b=W9b66rJ+Ez0KgqdPtmqTNMKHe+vBkJ46KCvG4+RAzuHIUp6M2t4qMiWLtbP2lRzQ+HTKMbGO75sX3dRt0q7rWBZcXy9qRoOQeb29w2uY7Lt5NOAyD5uBvk413wLiMhIn3o6+wWl67Px6jYE/GCWcN8Z6tTsj62+4IKgM/M+OsfM=
+	t=1791716276; cv=none; b=WgLgSniYec7wLezWBC/XFqXAP3xEYvOQzSMu0yTo67VYj/RnTvh6TynaElmEanZg1T3rKuDhX9tSWTu7twnt2fK01HXjeR1tVVHGyUtGlECupVTn/7pg62HqUouBreoEe/Lxcs2/jVNa2ifMStRGMVSvNFOjuVlLGngRAW3sOUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791715890; c=relaxed/simple;
-	bh=PsAfYd49OHMeODQ3Mq0wT33FkMnFYX6UM6ikRWGaNWc=;
+	s=arc-20240116; t=1791716276; c=relaxed/simple;
+	bh=m6E0m6NvNzK4Qq6gQgXPGfKfnmJGivi9gSrulwox1Z0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GhBFK/IX15S1/obhPd+G8Oa4B71IWAHgsYsL9BA+V2rZ8t3fzDBTS5jKWnbwIaQd1AyJP5uhRzSOoMbh7aBOJoFep1LBuDjViSfOvcVsLBAnbL1IqkxOy0PhSEMkOttobgDYJZn0t+y1LJeJw6TKrTxbCSDdlaLqDh2iyT4LiJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ry7xQ0Wp; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=u/JxM2VNC+QG0aKbAFSNQviXUjh4uk9Pzi15qabK16+5B7A7nvwqkhoB6EAn9YiA38l0Jz5g7lUWsGaS4rYruiBv1ss1VU//uxJgTCT5KG2bLfwBrpCihUvA4Worh1/1beT84+4rDJ1guQHeDofql2GgNPTrxZ/QQpcxYz/lIVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWoTejUi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ry7xQ0Wp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DFB1F0089B;
-	Sun, 11 Oct 2026 10:51:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWoTejUi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C581F0089B;
+	Sun, 11 Oct 2026 10:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791715887;
-	bh=0ZiPzLLsunpFjxud+nHoxtXRJRmla9xr/zDYtqM4KTI=;
+	s=k20260515; t=1791716275;
+	bh=qKA4NXD9C+s5AK+TvomnwKBq6jJUyIjSrqijefcbJj8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Ry7xQ0WpNpx+d/XSf42nU2gaGasqQz/ToTZZuQaocnBX8DEHs7RYqa8ZhkO1n+W3f
-	 qFSCYtkD1xrxMEfPkJAQ4TCKFm7wkGn/LAAILsBwGUJ09yiH0vEwlMm5Vvrz9CczKo
-	 Kjj/HGkMZ1A5cbk3/VTU53mR9jG8e544ieYIdDMIafPrx2qasU85jFQr8f0CE+Kaes
-	 gl7b7A93k1I3OtQDrpt9QFE8Xy6x9GYxhJfVzO2Y9mNDFzjDhdOEcKzoPZPKNT49As
-	 e3fMTZFIQ82Tr51+ARF196KBEMMSZbjJhMFVfTU746IQdtR7pl6aiQXG22CTMsuaVR
-	 3NsGtU7YckJjw==
-Subject: Re: [PATCH v31 net-next 7/8] net/nebula-matrix: add common/ctrl dev
- init/remove operation
+	b=gWoTejUi4y0kdAdAYAGrkRF9Pd/e7mtSMMF6KFduQxL07DP6knqq9nmO3krlJJoDH
+	 GhCcEFEwHYrP4a1qqhSJ1INPsrvMZx5oegt1Pb/IjggXs/97NfRUqBVUhwsTzYXLHB
+	 8MgTI1bTKiKWgOXiukXw3uvMM3BWR13pxT3r+2SOxLRsrubyqF/aTEi/dVNpMKOWsw
+	 4M5hTi3si+a+rFbiYLs00E6KpPnN7cYa/W4Y8GfGi12a3j3Jvam4jQTIxrnhpoIFQD
+	 01bpXRffxnHQPPA253IJOfnhuW9WmziMz7KoLKS8Nf5+MFwvEkT07b0KjDt9XzO7f3
+	 PNYK5UEcK/puQ==
+Subject: Re: [PATCH net-next 1/2] net/sched: act_gate: reject oversized dumps
+ instead of wrapping them
 From: netdev-bot+sashiko@kernel.org
-To: illusion.wang@nebula-matrix.com
-Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
- sam.chen@nebula-matrix.com, netdev@vger.kernel.org, kuba@kernel.org,
- edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 10:51:26 +0000
-Message-ID: <179171588699.434549.5822865886335028632@kernel.org>
-In-Reply-To: <20261010095939.2230-8-illusion.wang@nebula-matrix.com>
-References: <20261010095939.2230-8-illusion.wang@nebula-matrix.com>
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, victor@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, olteanv@gmail.com, vladimir.oltean@nxp.com, p@1g4.org,
+ eadavis@qq.com, dcaratti@redhat.com, dsahern@kernel.org,
+ stephen@networkplumber.org, sashiko-bot@kernel.org
+Date: Sun, 11 Oct 2026 10:57:53 +0000
+Message-ID: <179171627364.434549.1472397105608939135@kernel.org>
+In-Reply-To: <QDISC-H19Z.v2.20261007062551-2@mojatatu.com>
+References: <QDISC-H19Z.v2.20261007062551-2@mojatatu.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 3
+Critical: 0 · High: 1 · Medium: 1 (1) · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,227 +60,279 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] On the control PF, nbl_dev_init() runs its steps in an order
-  that conflicts with the stale-status recovery in nbl_hw_init_module().
-- [Low] On the control PF, nbl_dev_init() writes
-  NBL_MAILBOX_QINFO_MAP_REG_ARR entries for every enabled PF (via…
-- [Low] The error-path comment in nbl_dev_setup_common_dev() says no
-  unwinding is needed after a failed setup_queue() because the partially…
-- [Low] nbl_dev_remove_common_dev() calls
-  nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL) right…
+- [High] This patch makes an unbuildable notification block
+  RTM_DELACTION.
+- [Medium] RTM_NEWACTION for an action set whose dump exceeds U16_MAX now
+  returns -EINVAL even though the actions have already been created or…
+- [Low] On the -EMSGSIZE branch, tfilter_del_notify()
+  (net/sched/cls_api.c) sets the extack message "Filter deleted; del…
+- [Low] The commit message misdescribes what the code did before the
+  patch.
+- [Low] In tfilter_del_notify(), -EMSGSIZE is taken to mean that the dump
+  cannot be represented in a u16 nest ('no notification can ever be…
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but
+  tfilter_del_notify() still returns without calling ->delete() when…
 
 --
 
-net/nebula-matrix: add common/ctrl dev init/remove operation
+net/sched: act_gate: reject oversized dumps instead of wrapping them
 
-This adds nbl_dev.c with nbl_dev_init() and nbl_dev_remove().  On every
-PF they set up the mailbox channel queue and its clean work.  On the
-control PF they also program the mailbox QINFO routing and run
-init_module.  The new entry points are called from nbl_core_init() and
-nbl_core_remove().
+This commit switches the nest closes on the tc action and classifier dump
+paths to nla_nest_end_safe(). A dump larger than U16_MAX now reports
+-EMSGSIZE instead of writing a wrapped nla_len. It also bounds the
+tfilter_notify_prep() retry loop, and makes tfilter_del_notify() drop a
+notification it cannot build and delete the filter anyway.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> new file mode 100644
-> index 0000000000000..390bc2b177e21
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+Link: https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
+Link: https://lore.kernel.org/netdev/179111893181.434549.13449660670267048994@kernel.org/
 
-[ ... ]
-
-> +static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
-> +{
-
-[ ... ]
-
-> +	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-> +	if (ret) {
-> +		/*
-> +		 * Nothing to unwind: chan_info->active is only set on a
-> +		 * successful setup_queue(), so a failed one left no
-> +		 * sender, no registered work item and no mailbox
-> +		 * traffic.  Calling teardown_queue() here would only
-> +		 * take its "channel not active" early exit and emit a
-> +		 * misleading duplicate-teardown warning.  The partially
-> +		 * allocated DMA rings are intentionally kept until devres
-> +		 * releases them at detach (chan_info->dma_allocated
-> +		 * blocks a re-setup).
-> +		 */
-> +		return ret;
-> +	}
+> tfilter_notify_prep() treats that as socket-buffer exhaustion and
+> retries with an ever larger alloc_skb(); a dump that does not fit a u16
+> nest cannot be built at any skb size, so the loop only spins until the
+> allocation itself fails.
 
 [Severity: Low]
-Is the "chan_info->dma_allocated blocks a re-setup" part of this comment
-accurate?  nbl_chan_setup_queue() clears the flag again when
-nbl_chan_init_queue() fails:
+Does this describe the code as it was before this patch?
 
-nbl_channel/nbl_channel.c:nbl_chan_setup_queue() {
-    ...
-	chan_info->dma_allocated = true;
-	err = nbl_chan_init_queue(common, chan_info);
-	if (err) {
-		chan_info->dma_allocated = false;
-		return err;
-	}
-    ...
+Before, nla_nest_end() could not fail:
+
+include/net/netlink.h:nla_nest_end() {
+	unsigned long diff = skb_tail_pointer(skb) - (unsigned char *)start;
+
+	DEBUG_NET_WARN_ON_ONCE(diff > U16_MAX);
+	start->nla_len = diff;
+	return skb->len;
 }
 
-The TX and RX init helpers use dmam_alloc_coherent() and devm_kcalloc().
-They free nothing on a partial failure, for example when the TX rings
-are allocated and the RX descriptor allocation then fails.
+Nothing under net/sched used nla_nest_end_safe(). So tcf_fill_node()
+returned -EMSGSIZE only while the skb was short on tailroom. Once
+tfilter_notify_prep() had grown the skb enough, the fill succeeded with a
+wrapped length and the loop stopped.
 
-After such a failure, active and dma_allocated are both false.  A second
-setup_queue() would get past both checks and allocate a second set of
-coherent rings, and the first set would be orphaned until detach.
+The loop that runs until alloc_skb() fails seems to exist only after this
+patch turns the u16 overflow into a fill failure. That makes the new bound
+in tfilter_notify_prep() a requirement of the nla_nest_end_safe()
+conversions, not a fix for an existing loop.
 
-The channel code has its own comment just above that reset ("a retry
-must be rejected instead of allocating a second set and orphaning the
-first one"), and the reset contradicts it as well.
+Could the commit message say this? A backport that takes the conversions
+without the bound would bring in the allocation escalation loop.
 
-Nothing retries today, so for now the comment just doesn't match the
-code.
-
-> +static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
-> +{
-> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-> +
-> +	if (!common_dev)
-> +		return;
-> +	cancel_work_sync(&common_dev->clean_mbx_task);
+> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> index 6e48b4bc2d75..747d91ae6446 100644
+> --- a/net/sched/act_api.c
+> +++ b/net/sched/act_api.c
 
 [ ... ]
 
-> +	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-> +	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
-> +}
-
-[Severity: Low]
-Does the nbl_dev_register_chan_task(..., NULL) call here have any
-effect?
-
-common_dev is only set after setup_queue() succeeds, so the channel is
-always active by the time this runs.  nbl_chan_teardown_queue() then
-sets shutdn and clears clean_task under state_lock.  After that,
-nbl_chan_register_chan_task() ignores the write:
-
-nbl_channel/nbl_channel.c:nbl_chan_register_chan_task() {
-    ...
-	mutex_lock(&chan_info->state_lock);
-	if (!READ_ONCE(chan_info->shutdn))
-		WRITE_ONCE(chan_info->clean_task, task);
-	mutex_unlock(&chan_info->state_lock);
-}
-
-teardown_queue() does the real unregister and drain: it clears
-clean_task and calls cancel_work_sync() on it.  The cancel_work_sync()
-above runs before teardown, while the sender poll paths can still
-re-queue the work.
-
-This has no functional effect today.  The problem is that this sequence
-reads as if the dev layer does the unregister and drain, when the
-channel layer actually does it.  Could the NULL registration be dropped,
-or a comment added saying which layer is responsible?
-
-> +int nbl_dev_init(struct nbl_adapter *adapter)
-> +{
-
-[ ... ]
-
-> +	adapter->core.dev_mgt = dev_mgt;
-> +	if (common->has_ctrl)
-> +		nbl_dev_setup_chan_qinfo(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-> +	/*
-> +	 * Chip hardware initialization is completed by firmware at power-up.
-> +	 * Only driver functional table/register config follows here, safe to
-> +	 * access hardware registers before ctrl dev setup.
-> +	 */
-> +	ret = nbl_dev_setup_common_dev(adapter);
-> +	if (ret)
-> +		goto setup_err;
-> +
-> +	if (common->has_ctrl) {
-> +		ret = nbl_dev_setup_ctrl_dev(adapter);
-> +		if (ret)
-> +			goto setup_ctrl_dev_fail;
-> +	}
+> @@ -1693,7 +1696,8 @@ static int tca_get_fill(struct sk_buff *skb, struct tc_action *actions[],
+>  	if (tcf_action_dump(skb, actions, bind, ref, false) < 0)
+>  		goto out_nlmsg_trim;
+>  
+> -	nla_nest_end(skb, nest);
+> +	if (nla_nest_end_safe(skb, nest) < 0)
+> +		goto out_nlmsg_trim;
 
 [Severity: High]
-Can this ordering make firmware wipe the mailbox state that this probe
-has just programmed?
+With this change, tca_get_fill() fails for an action set whose TCA_ACT_TAB
+is larger than U16_MAX. Before, the same fill succeeded with a wrapped
+length. Does this make a failed notification build refuse an
+RTM_DELACTION?
 
-On the control PF the sequence is:
+tcf_del_notify() builds the notification before it deletes anything:
 
-nbl_dev_init()
-    nbl_dev_setup_chan_qinfo()      /* QINFO routing for all PFs */
-    nbl_dev_setup_common_dev()
-        nbl_chan_setup_queue()      /* TX/RX queue config, active=true */
-    nbl_dev_setup_ctrl_dev()
-        init_module -> nbl_hw_init_module()
-
-If the active bit in NBL_DRIVER_STATUS_REG is still set,
-nbl_hw_init_module() forces it from 1 to 0:
-
-nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c:nbl_hw_init_module() {
+net/sched/act_api.c:tcf_del_notify() {
     ...
-	status = nbl_hw_rd32(hw_mgt, NBL_DRIVER_STATUS_REG);
-	if (status & BIT(NBL_DRIVER_STATUS_BIT)) {
-		dev_warn(hw_mgt->common->dev,
-			 "driver_status already set at init, cleanup forced\n");
-		nbl_hw_set_driver_status(hw_mgt, false);
-		nbl_flush_writes(hw_mgt);
-		usleep_range(NBL_FW_CLEANUP_SYNC_MIN_US,
-			     NBL_FW_CLEANUP_SYNC_MAX_US);
+	} else {
+		skb = tcf_del_notify_msg(net, n, actions, portid, attr_size,
+					 extack);
+		if (IS_ERR(skb))
+			return PTR_ERR(skb);
+	}
+
+	/* now do the delete */
+	ret = tcf_action_delete(net, actions);
     ...
 }
 
-The bit can still be set after kexec or kdump, because nbl_pci_driver
-has no .shutdown callback.  It can also be set after an unload that
-never reached deinit_module().
+tcf_del_notify_msg() turns any tca_get_fill() failure into -EINVAL:
 
-The commit message says firmware asynchronously reclaims "mailbox QINFO
-routing, qinfo registers and the like" when the bit goes from 1 to 0.
-Here that happens after the new routing and the live queue registers are
-in place.  Nothing later in init, or in the start path, programs them
-again.
+	if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, 0, RTM_DELACTION,
+			 0, 2, extack) <= 0) {
+		NL_SET_ERR_MSG(extack, "Failed to fill netlink TC action attributes");
+		kfree_skb(skb);
+		return ERR_PTR(-EINVAL);
+	}
 
-Wouldn't that leave the control PF mailbox dead, so that sibling-PF RPCs
-in nbl_dev_start() time out?  Firmware could also reclaim the routing
-while a mailbox transfer is in flight, which is the hazard the teardown
-ordering is meant to avoid.
+The full path is:
 
-Should the stale-status cleanup run before nbl_dev_setup_chan_qinfo()
-and setup_queue()?
+tc_ctl_action(RTM_DELACTION)
+  tca_action_gd()
+    tcf_del_notify()
+      tcf_del_notify_msg()
+        tca_get_fill()
+          nla_nest_end_safe() < 0
 
-> +
-> +	return 0;
-> +setup_ctrl_dev_fail:
-> +	nbl_dev_remove_common_dev(adapter);
-> +setup_err:
-> +	return ret;
-> +}
+tcf_action_delete() is never reached.
+
+With the 1024-entry cap applied, "tc actions del action gate index 1
+action gate index 2" on two 1024-entry gate actions looks like it would
+fail with -EINVAL and leave both actions installed. The commit message
+says this two-action shape survives the cap.
+
+The cap patch later in this series only adds GATE_ENTRIES_MAX in
+parse_gate_list(). It does not touch tcf_del_notify(). Without the cap
+patch, a single gate action with about 1815 or more entries could not be
+deleted by index.
+
+This needs rtnl_notify_needed() to be true, meaning an RTNLGRP_TC
+listener or NLM_F_ECHO. rtnetlink allows non-root receive, so an
+unprivileged listener in the netns seems to be enough to make an admin's
+delete fail.
+
+The commit message says "A notification that cannot be serialised must
+not veto the state change the caller asked for", and tfilter_del_notify()
+is changed to match. tcf_reoffload_del_notify() in this file already
+drops a notification it cannot build:
+
+		if (IS_ERR(skb))
+			skb = NULL;
+
+Should tcf_del_notify() be changed the same way? tca_get_fill() returns a
+bare -1, so -EMSGSIZE would also need to be passed up. Otherwise the
+delete path cannot tell the structural overflow from other failures,
+which tfilter_del_notify() now relies on.
+
+[Severity: Medium]
+The same failure also shows up on the add side.
+tcf_action_add()->tcf_action_init() has already inserted or replaced the
+actions by the time tcf_add_notify()->tcf_add_notify_msg() calls
+tca_get_fill():
+
+	if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, n->nlmsg_flags,
+			 RTM_NEWACTION, 0, 0, extack) <= 0) {
+		NL_SET_ERR_MSG(extack, "Failed to fill netlink attributes while adding TC action");
+		kfree_skb(skb);
+		return ERR_PTR(-EINVAL);
+	}
+
+The commit message notes this case and leaves it for later. However,
+before this patch an oversized set still filled (with wrapped lengths)
+and the add reported success. Isn't the "-EINVAL after the actions were
+created" result new for these sets?
+
+For example, with the cap applied, adding two 1024-entry gate actions in
+one request now returns -EINVAL with the actions installed. This happens
+when an RTNLGRP_TC listener exists or NLM_F_ECHO is set. A retry would
+then hit -EEXIST.
+
+>  
+>  	nlh->nlmsg_len = skb_tail_pointer(skb) - b;
+>  
+> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> index a9f54988561f..3f0ce567fa2d 100644
+> --- a/net/sched/cls_api.c
+> +++ b/net/sched/cls_api.c
+
+[ ... ]
+
+> @@ -2200,8 +2209,16 @@ static int tfilter_del_notify(struct net *net, struct sk_buff *oskb,
+>  	skb = tfilter_notify_prep(net, oskb, n, tp, block, q, parent, fh,
+>  				  RTM_DELTFILTER, portid, rtnl_held, extack);
+>  	if (IS_ERR(skb)) {
+> -		NL_SET_ERR_MSG(extack, "Failed to build del event notification");
+> -		return PTR_ERR(skb);
+> +		if (PTR_ERR(skb) != -EMSGSIZE) {
+> +			NL_SET_ERR_MSG(extack, "Failed to build del event notification");
+> +			return PTR_ERR(skb);
+> +		}
+
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch. This
+branch still returns without calling ->delete() when
+tfilter_notify_prep() fails with something other than -EMSGSIZE, such as
+-ENOBUFS from alloc_skb() or -EINVAL. Does that leak the flower filter
+reference taken during the lookup?
+
+In tc_del_tfilter(), fh comes from tp->ops->get(). For flower,
+fl_get()->__fl_get() takes a reference:
+
+	if (f && !refcount_inc_not_zero(&f->refcnt))
+		f = NULL;
+
+fl_delete() normally drops it with __fl_put(f). On this error path,
+tc_del_tfilter() does:
+
+		err = tfilter_del_notify(net, skb, n, tp, block, q, parent, fh,
+					 &last, rtnl_held, extack);
+
+		if (err)
+			goto errout;
+
+errout releases tp, chain and block, but never calls tfilter_put(tp, fh).
+After that, even a later successful delete would not free the filter or
+the actions bound to it.
+
+The alloc_skb() failure seems realistic here. The retry loop grows the
+skb toward U16_MAX + NLMSG_GOODSIZE, which needs order 4-5 allocations.
+
+> +		/* The filter's dump cannot be represented in a u16 nest, so no
+> +		 * notification can ever be built for it. Drop the notification
+> +		 * rather than refusing to delete the filter.
+> +		 */
 
 [Severity: Low]
-Do these error paths leave the NBL_MAILBOX_QINFO_MAP_REG_ARR entries
-written by nbl_dev_setup_chan_qinfo() in hardware?
+Does -EMSGSIZE always mean the dump cannot fit in a u16 nest?
+tcf_fill_node() starts with:
 
-The comment above nbl_dev_remove_ctrl_dev() says the map "is not
-explicitly cleared; firmware handles it on driver_status change".  But
-neither label clears the entries or calls deinit_module().
+	int ret = -EMSGSIZE;
 
-This applies in two cases:
+and returns that for every ->dump() failure. Some dumps fail for reasons
+that have nothing to do with size. One example is tcf_pedit_dump():
 
-- nbl_dev_setup_common_dev() fails.
-- nbl_hw_init_module() fails, either in the eth_speed/eth_num checks or
-  in nbl_dp_init().  Both return before
-  nbl_hw_set_driver_status(true).
+	opt = kzalloc(s, GFP_ATOMIC);
+	if (unlikely(!opt)) {
+		rcu_read_unlock();
+		return -ENOBUFS;
 
-In both cases driver_status never goes from 1 to 0, so the firmware
-reclaim never runs.  The routing entries stay until a later successful
-probe overwrites them or the chip is reset.
+u32_dump() also allocates with kzalloc_flex(), and tcf_action_dump_1()
+reduces any error to -1.
 
-The practical impact looks small, since sibling PFs can't bind without
-the control PF.  The hardware state still no longer matches what the
-driver thinks it is.
+If such a failure repeats through every retry in tfilter_notify_prep()
+(about 17 with 4K pages), the loop returns ERR_PTR(-EMSGSIZE). This
+branch then drops an RTM_DELTFILTER event that could have been built. The
+comment in tfilter_notify_prep() only mentions structural overflow and
+genuine capacity exhaustion.
+
+> +		NL_SET_ERR_MSG(extack, "Filter deleted; del event notification could not be built");
+> +		return tp->ops->delete(tp, fh, last, rtnl_held, extack);
+
+[Severity: Low]
+The extack text is set before ->delete() runs. If ->delete() then fails
+without writing its own extack message, won't userspace get "Filter
+deleted" together with a negative errno?
+
+Flower, for example, runs without rtnl on an unlocked qdisc. Two
+concurrent RTM_DELTFILTER requests for the same oversized filter can both
+get through fl_get() and both hit -EMSGSIZE in prep. The second one then
+reaches __fl_delete():
+
+	if (f->deleted) {
+		spin_unlock(&tp->lock);
+		return -ENOENT;
+	}
+
+That path does not set extack. fw_delete() can return -EINVAL the same
+way.
+
+Could the message be set only after ->delete() returns 0?
+
+>  	}
+>  
+>  	err = tp->ops->delete(tp, fh, last, rtnl_held, extack);
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010095939.2230-1-illusion.wang%40nebula-matrix.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-H19Z.v2.20261007062551%40mojatatu.com
