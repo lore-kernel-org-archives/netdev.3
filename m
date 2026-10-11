@@ -1,190 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CCE23ED5E;
-	Sun, 11 Oct 2026 13:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56723B6BF2
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 13:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791726281; cv=none; b=js+FAV2LN7oPE7PxxyP5Hgcmy2SYo0mERqvBPZdnXcUJjsCoZhDuF+qQlYEHiSR1XCV8Qf3mWXX5/CMjasWfO5NTE3iEdC0Ou10+rJNiiQkE+WTMvZSu1jdSCKuad267k/IEuRwjSrYxDycQaozyo8angAd04BiJ7/YFNZxResQ=
+	t=1791726618; cv=none; b=s7eqB6RkHLSo39tWQPFZlBvC5z6+p/2cJAP/HcmjuXS4JEWw7181VbR9wA1k3gXQhwPkbX3BHPtX9+jJ8XY6Bjm3HQt1TcRCVqCmUumi/FR+RZpCq2apnPd5CJOyHIEnuhJIjvb18dahFt9HTFXc0YNxAPnYVvqGjwRi5jFwP0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791726281; c=relaxed/simple;
-	bh=SY1aZ5FFRmCf+dJslwGoOhZMH+FBGqIQNpQZvMzedXI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jeovNFrx76ArL5Hm/Po5qQLbXgdD3w2dU+PgT2gASgQHmPbIDIFMfO1dBtCwjg/8VMflCVHTOWngVm8BsXKsk7rMXMZCFG3U1RJvqfFVEoPJZYJLXn0Hy4MQ84aKYVIa6Fn2h2VzZKNYOULgGHXEIkfiYSblPO7eRRlQ9jDoZ5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PMI/KlHo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791726618; c=relaxed/simple;
+	bh=0v/kQeAmy4x+8XIOhQaHxvrM62/KclzeLGA+YUnlpDU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fwwHeJtuJQHCSXYUb98NDp6/sJwmHAUvd7AaLoPdoz7SbrRNIuDypV6rZwGiyoPCUFXxAoG5TQTZWZF0wgC6DzJg3sggH9GMQhSrhIn6joxvWxohol4lq26s20p6g8Bh2zQhvWx06c07PNzUIXlK+X4nRXlWUYSzafS8Rq1yrAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iWWLXuiP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AFDzhyKm; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PMI/KlHo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8AC1F0089B;
-	Sun, 11 Oct 2026 13:44:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791726279;
-	bh=vu2YEMKauIpc7tvvbmbxBOjYQhZ2cgVTT1RoZH61C8c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PMI/KlHobLaSx5EuU461CGRAlXhLirQE/q/5v8VIxncXoqknMmuf8MeEeX8LuYoBC
-	 neaMqygQiTTbD6ygjWM/oDvBRyO5EpxVCr/e6L7Av0diTQ871vJBvgzvg/DvPcJP6a
-	 u52WQ7sy6y9Wzaws0IIkpVMuxKo0Hk2C1lhYJFhWTxIcMDAAqMXxVTQqOo2aTOVjPW
-	 W2Xk9K7AFd5jGiKXgqb1pFuouDul/HKBC1sW0/8TkgZqugd5Jg/OYgy5YC8IYsLGQD
-	 gDjmKJPahwzBMOcFcY2O0FjKCuK2R4iHWuPn9IZ6RR9svSWxNt1eqlv9EDJXL/vzgn
-	 A2G7RdhdQNm4A==
-Subject: Re: [PATCH net] ipmr: do not drop GSO packets that fit the MTU after
- segmentation
-From: netdev-bot+sashiko@kernel.org
-To: julius@bairaktaris.de
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, steffen.klassert@secunet.com, willemb@google.com,
- linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 13:44:38 +0000
-Message-ID: <179172627842.434549.17722584347227331391@kernel.org>
-In-Reply-To: <20261010131842.2157365-1-julius@bairaktaris.de>
-References: <20261010131842.2157365-1-julius@bairaktaris.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iWWLXuiP";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AFDzhyKm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791726615;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1N6bIdacRp0M0H1pJUiWwskkKxr0wGWO9NcWl5lfvN8=;
+	b=iWWLXuiPwE2qmbf1692WZArjojlhVdxqCo2k/kC87pVJaUqjwcKlEYaNz8A8dFj6dyCwji
+	biRS+rOSRRcUuhAMKSYayY1NCpuS8jqM1J1h1b0eEtriKzaxgE/dRe6U33lfHy+yCNRZRo
+	O+sfiktdByj1rmQgTr8qtYmFm/12BiM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-570-qCEFdhrwNaiRXRzB5LucvA-1; Sun, 11 Oct 2026 13:50:14 +0000
+X-MC-Unique: qCEFdhrwNaiRXRzB5LucvA-1
+X-Mimecast-MFC-AGG-ID: qCEFdhrwNaiRXRzB5LucvA_1791726613
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a013ea30c0so7017295e9.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 06:50:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791726613; x=1792331413; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1N6bIdacRp0M0H1pJUiWwskkKxr0wGWO9NcWl5lfvN8=;
+        b=AFDzhyKmFLRt18adImoq2M79fvff7dQGz4IF+bJlVVoRTxIl9k+mrqpqzjcI1z5kjl
+         8l/q2pzJvNxMNDqXUR0Kgl3PS2NZofnJtjoJMMzi19AST2X6OdfjFU4Aso38FMOfApR6
+         PqM/VhWkDmMUlGF59qhloXBrsU9YqQq/hjkryZtFSWwZdNJ7yDLdElXCSvrUlm24a4gj
+         KMJbUeagOxnpgwwEAdsGXGSoTcBxMiDyjEwjZLqhvIyIT2l3n1uAlr5uuPr4e7GhhRwL
+         BdnIYc/d6mCPIEvmGs9RDhpRoQ10oPMAiY0/gxQUNWk/h4SlE2OBpdt10DRqSQoPO3qL
+         qbCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791726613; x=1792331413;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1N6bIdacRp0M0H1pJUiWwskkKxr0wGWO9NcWl5lfvN8=;
+        b=nPuN+3HmFQWoUi3++cMv4ual4OT19/GC2t23tEu3Qr59vMfBhS+qkQT6nfAcdgrT1l
+         Eu9OsJ8F4wtyJqAFvxr4ZBDJcZtv4p3qdjX+C2Oq5MheNYIguxYbF/xHwt0eFCEu/m3c
+         7Sza9AB1jQ2T+Vpd6Wfh6ikMCe6kfyJJaX/IsrFjmer1KiGL/4zpC2iOIsPQVwYQac1D
+         uOEgUTxFGu9CTR1NHWGMOaePjI/Ro5Hqql2Zfr+ca0hAlbNHNNhk8EoEl7QZn4WPMz0h
+         dXclMZW8DdwAc2T8ghtCAliw7fWwaEuwsS0pv873lZRXjhUmM/9ITx3DcGdF7ZskD9sL
+         88EQ==
+X-Gm-Message-State: AFq9FYJXLR1RUS0uR7mz7Gpi0il5c0AeWhYd3MTuatuA2uraJHt7cCp7
+	cWd+HG6yy4SrvpIRxr3iOjBSKID/yfu4Tr9cSVZ7p8ORdO4T1Bo8Hb7eEf2lXP3NSaBCfnnW/zk
+	HOJ65NOtJyc1OOc2qA3IUS4E3EDCMULU7jE+lKpRwwHAIpfFER6gm9eh9tA==
+X-Gm-Gg: AYBFou3LOY7D0VGaZr1SfSin9gJkLQoTekjz4j+j9WMGx8kUPn4s6YofJHvVWECvlNz
+	89A72a0g69Wz0zKQ9s/qwPyIKYSOSr6bRyA7wKeap6OhAlAWO8gEc+YW9Qgmtjhj/oUAFYIiTX0
+	yNKHjSDg8ddoUdmpHVrbWfeZhLV2F/Gknbs+cZAJk8tG+Mqmsz1MZgpI9K7CUaS08jmMpb1IVTO
+	iFdyxAF4/7NncVhKvHYQAuRzUPmmpcVNLy3dpLGQyvRkdh70EtBPGhMDDJNiYG6ZHt5ZkxVht7+
+	9Ft6yi83X388FG1erGTBE70kTtuYIxTIR0BL5Y6YqO0nhRJZ2QFyswHq6Na5ZrWe8Z0ANa12Msf
+	AJqsTENpNL5/zvxHCi4YFvvWC39E6HmAF
+X-Received: by 2002:a05:600c:19ca:b0:4a1:7e76:d02f with SMTP id 5b1f17b1804b1-4a18e4ac650mr128003455e9.14.1791726612852;
+        Sun, 11 Oct 2026 06:50:12 -0700 (PDT)
+X-Received: by 2002:a05:600c:19ca:b0:4a1:7e76:d02f with SMTP id 5b1f17b1804b1-4a18e4ac650mr128003135e9.14.1791726612398;
+        Sun, 11 Oct 2026 06:50:12 -0700 (PDT)
+Received: from mheib-thinkpadp16vgen1.rmtil.csb ([216.128.14.202])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a19f249692sm13334125e9.3.2026.10.11.06.50.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Oct 2026 06:50:11 -0700 (PDT)
+From: mheib@redhat.com
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Mohammad Heib <mheib@redhat.com>
+Subject: [PATCH iwl-next v6 0/2] i40e: add runtime-tunable ATR sample rate
+Date: Sun, 11 Oct 2026 16:49:50 +0300
+Message-ID: <20261011134952.54887-1-mheib@redhat.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+From: Mohammad Heib <mheib@redhat.com>
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+This series makes the Flow Director ATR sample rate configurable at
+runtime through a devlink parameter.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On systems with many queues and high-rate TCP workloads, the fixed
+default sampling interval can cause frequent Flow Director
+reprogramming and TCP packet reordering. The optimal interval depends
+on the workload and system configuration.
 
-- [High] On VIFF_TUNNEL vifs the patch does not stop the drop it claims
-  to fix.
-- [Low] The patch rewrites the DF/MTU check in ipmr_prepare_xmit() from
-  `skb->len + encap > dst4_mtu(&rt->dst)` (which cannot wrap) to `mtu =…
+Patch 1 moves atr_sample_rate from per-ring to PF level, since it is
+a global policy. It also triggers a PF reset when re-enabling ATR via
+ethtool private flags so that fd_ena is reprogrammed in the TX queue
+HW context.
 
---
+Patch 2 exposes atr_sample_rate as a devlink runtime parameter so
+administrators can tune it without rebuilding the driver.
 
-ipmr: do not drop GSO packets that fit the MTU after segmentation
+Testing with iperf3 -t 60 showed ~7k TCP reordering events at the
+default sample rate (20). Setting atr_sample_rate to 10000 reduced
+reordering to ~769 (~90% reduction).
 
-This patch changes ipmr_prepare_xmit() so a DF packet larger than the
-route MTU is no longer dropped if it is a GSO packet whose segments fit
-that MTU. This matches the skb_gso_validate_network_len() check in
-ip_forward(). The MTU used for the check is now dst4_mtu() minus the
-tunnel encapsulation overhead.
+Changes since v5:
+- Use '|=' instead of '=' when setting reset_needed for the ATR
+  re-enable path, to avoid overwriting unrelated reset requests
+  (Sashiko)
 
-> diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-> index b9c544d48c452..06c37b4e653bf 100644
-> --- a/net/ipv4/ipmr.c
-> +++ b/net/ipv4/ipmr.c
-> @@ -1908,6 +1908,7 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
->  	struct rtable *rt;
->  	struct flowi4 fl4;
->  	int    encap = 0;
-> +	unsigned int mtu;
->  
->  	vif_dev = vif_dev_read(vif);
->  	if (!vif_dev)
-> @@ -1940,7 +1941,9 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
->  			return -1;
->  	}
->  
-> -	if (skb->len+encap > dst4_mtu(&rt->dst) && (ntohs(iph->frag_off) & IP_DF)) {
-> +	mtu = dst4_mtu(&rt->dst) - encap;
-> +	if (skb->len > mtu && (ntohs(iph->frag_off) & IP_DF) &&
-> +	    !(skb_is_gso(skb) && skb_gso_validate_network_len(skb, mtu))) {
+Changes since v4:
+- Folded the PF reset patch into patch 1 for bisect cleanliness
+  (was patch 3/3 in v4)
+- Skip PF reset when FD_SB (ntuple) already holds fd_ena high,
+  avoiding unnecessary traffic disruption
+- Fix LLDP EEXIST path to not drop unrelated reset requests
+  (reset_needed &= ~REBUILD_FLAG instead of = 0)
+- Flush existing ATR entries when setting atr_sample_rate to 0 via
+  devlink, so stale filters do not persist on devices without HW
+  ATR eviction
+- Documentation: clarify that the sampling interval is per Tx queue
+  and counts TCP packets only; fix formatting
 
-[Severity: High]
-The new mtu value subtracts encap, so this check seems meant to cover
-VIFF_TUNNEL vifs too. Can a DF GSO aggregate that passes it actually be
-transmitted on a tunnel vif?
+Mohammad Heib (2):
+  i40e: move ATR sample rate from ring to PF level
+  i40e: add devlink parameter for Flow Director ATR sample rate
 
-Further down in ipmr_prepare_xmit(), such an skb goes to ip_encap():
-
-	if (vif->flags & VIFF_TUNNEL) {
-		ip_encap(net, skb, vif->local, vif->remote);
-
-ip_encap() only adds the outer header:
-
-	skb_push(skb, sizeof(struct iphdr));
-	skb->transport_header = skb->network_header;
-	skb_reset_network_header(skb);
-	...
-	iph->protocol	=	IPPROTO_IPIP;
-	...
-	iph->tot_len	=	htons(skb->len);
-
-It does not add SKB_GSO_IPXIP4 to gso_type, set skb->encapsulation or
-set the inner header offsets. ipip_tunnel_xmit() does set up that state,
-by calling iptunnel_handle_offloads(skb, SKB_GSO_IPXIP4) first.
-
-Software segmentation runs for fraglist GSO, and on any device without
-hardware USO. In that case the path is:
-
-validate_xmit_skb()
-  skb_gso_segment()
-    inet_gso_segment()
-      ipip_gso_segment()
-
-and ipip_gso_segment() rejects the skb:
-
-	if (!(skb_shinfo(skb)->gso_type & SKB_GSO_IPXIP4))
-		return ERR_PTR(-EINVAL);
-
-validate_xmit_skb() then frees the skb and only increments tx_dropped.
-The skb_gso_network_seglen() check in ip_finish_output_gso() does not
-catch this either. After ip_encap(), transport minus network covers only
-the 20-byte outer header.
-
-So on tunnel vifs, are these packets still dropped, just no longer
-counted in FragFails? Meanwhile vif->pkt_out, vif->bytes_out,
-tx_packets and OUTFORWDATAGRAMS count them as sent.
-
-There is also a hardware case, which I have not fully traced. If the
-egress device advertises NETIF_F_GSO_UDP_L4 and the aggregate is plain
-UDP_L4 from UDP GRO forwarding, could the device get a GSO skb whose
-transport offset points at the inner IP header and has no encapsulation
-flag? Could it then send malformed segments?
-
-Before this patch these DF aggregates were dropped up front here. The
-ip_encap() GSO problem already existed for non-DF GSO skbs, but this
-change lets DF traffic reach it as well.
-
-Would it work to apply the exemption only when encap == 0? Other options
-are to segment before ip_encap(), or to have ip_encap() set up the
-IPXIP4 GSO state the way iptunnel_handle_offloads() does.
-
-[Severity: Low]
-The old check was additive and could not wrap:
-
-	if (skb->len+encap > dst4_mtu(&rt->dst) && ...
-
-The new code does an unsigned subtraction instead. On the VIFF_TUNNEL
-path encap is sizeof(struct iphdr), which is 20. If the route to
-vif->remote has an MTU below 20, can mtu wrap to a value near UINT_MAX?
-
-ip_metrics_convert() only clamps RTAX_MTU from above:
-
-	if (type == RTAX_MTU && val > 65535 - 15)
-		val = 65535 - 15;
-
-ip_dst_mtu_maybe_forward() also returns the metric with no lower bound,
-apart from subtracting the lwtunnel headroom.
-
-If mtu wraps, skb->len > mtu is false for every DF packet, GSO or not,
-so the drop and its IPSTATS_MIB_FRAGFAILS count are skipped. The packet
-then gets vif and device tx accounting and goes through the
-NF_INET_FORWARD hook. It is only dropped later, by the mtu < hlen + 8
-check in ip_do_fragment(), or during GSO segmentation.
-
-This needs a privileged and odd route configuration. Would keeping the
-additive comparison, or checking that dst4_mtu() > encap before
-subtracting, avoid it?
-
->  		/* Do not fragment multicasts. Alas, IPv4 does not
->  		 * allow to send ICMP, so that packets will disappear
->  		 * to blackhole.
+ Documentation/networking/devlink/i40e.rst     | 21 +++++++++
+ drivers/net/ethernet/intel/i40e/i40e.h        |  1 +
+ .../net/ethernet/intel/i40e/i40e_devlink.c    | 46 +++++++++++++++++++
+ .../net/ethernet/intel/i40e/i40e_ethtool.c    | 12 ++++-
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |  9 ++--
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   |  6 ++-
+ drivers/net/ethernet/intel/i40e/i40e_txrx.h   |  3 +-
+ 7 files changed, 87 insertions(+), 11 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010131842.2157365-1-julius%40bairaktaris.de
+2.56.0
+
