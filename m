@@ -1,23 +1,23 @@
-Received: from out28-53.mail.aliyun.com (out28-53.mail.aliyun.com [115.124.28.53])
+Received: from out28-221.mail.aliyun.com (out28-221.mail.aliyun.com [115.124.28.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6C328690;
-	Sun, 11 Oct 2026 02:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E02F28690;
+	Sun, 11 Oct 2026 02:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791687375; cv=none; b=O6yEboicwxWUCLVgATNJU+olag8DljnJ1VUmbaUb+jnAiPyGWJNBVua+iUCkSkQx4IPsMQisB6eRDKeyRenZLvhn8sIkujUkEb7ZFphvn8/XCKPUNstBOWD46VvZ2FiPhFPLR7q3MmI3m15rxBwfuGlwzzcAYoqRhllifrsrB4E=
+	t=1791687380; cv=none; b=MQexrApWyVjl/CrdCfSn2mhO3szu1skMOb1OPAtsV+netmhzWX/fnAWNSqunVEZx6IheGejDIpwA4ibMgsEY+kPjlviCmNGFuB2Zcc4y5eydQZQuPMe9Nk4PpqyC4s7beOHKiaWtF4+TQo4VEK7tw1ReKqU4KOieONiYKihUQM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791687375; c=relaxed/simple;
-	bh=yW5sHWXX2om1TauqpZkux7z7FQgeW4JCNLuP0AzqY5k=;
+	s=arc-20240116; t=1791687380; c=relaxed/simple;
+	bh=MGJ0OTCxFGVmbf92zNCab8ppSblh9l9H3JItFIKGrWA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e7ebp4md4uwwtnjcrJ7Ti4UGschLw9FktT0l/Iut0c60HUoZrol4tim/z9DkLucb7siJ+odY3i9PqTmr/iXmTBdd7kVl9mCkF5zCTX/F/IrLmhmLy3ocKkkPgWC/sILUMBMWsDD539DPqAeiqOgHLcvcB6URBAbbiITe0WFw+qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.53
+	 MIME-Version; b=N6essP8pw0ykXWzXnmZSIC2LX8M5SmZu/cptwiz2QK5C6/q3P0At8Z8dBLT9DJZLmREFVKfofbqakBXC433H3wh6d7lDoZAJ2ZvIXyc9ELIne1JtRuXSg9htudDvUwk8XOvbjosxiHyrdBM/gC14aXMmdC8IIO6OpTZOpE63jcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.221
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2343658|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00928265-0.000186091-0.990531;FP=12062864084650593942|14|2|17|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jYiPJX7_1791687051;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jYiPJX7_1791687051 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0793125|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.00587506-7.46963e-05-0.99405;FP=11562894019351203478|14|2|17|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jYiPJWJ_1791687051;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jYiPJWJ_1791687051 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Sun, 11 Oct 2026 10:50:52 +0800
+          Sun, 11 Oct 2026 10:50:51 +0800
 From: Kyle Switch <kyle.switch@motor-comm.com>
 To: andrew@lunn.ch,
 	olteanv@gmail.com,
@@ -35,9 +35,9 @@ Cc: ming.xu@motor-comm.com,
 	jianmin.wang@motor-comm.com,
 	wei.zhang@gl-inet.com,
 	sijia.huang@gl-inet.com
-Subject: [PATCH net-next v13 3/5] net: dsa: motorcomm: use fixed-width GENMASK_U*() helpers
-Date: Sun, 11 Oct 2026 10:50:41 +0800
-Message-Id: <20261011025043.1859940-4-kyle.switch@motor-comm.com>
+Subject: [PATCH net-next v13 2/5] net: dsa: motorcomm: use max_ports in series for port bounds checking
+Date: Sun, 11 Oct 2026 10:50:40 +0800
+Message-Id: <20261011025043.1859940-3-kyle.switch@motor-comm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261011025043.1859940-1-kyle.switch@motor-comm.com>
 References: <20261011025043.1859940-1-kyle.switch@motor-comm.com>
@@ -49,83 +49,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Some masks assigned to u16 and u32 fields are defined with
-GENMASK(),which is an unsigned long constant and wider than
-the field type on 64-bit builds. Convert the affected
-internal_mask entries in chip.c and the YT921X_MBUS_CTRL_*
-masks used by mdio_bus.c to fixed-width helpers.
+Replace the hardcoded YT921X_PORT_NUM macro with the per-series
+max_ports field in port validation. This removes family-specific
+constants from the common code path and simplifies adding new
+switch families with different port counts.
 
-This is a type cleanup only, with no functional change.  Other
-GENMASK() uses in the driver are intentionally left untouched.
+No functional change for existing YT921X devices.
 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 ---
- drivers/net/dsa/motorcomm/chip.c     | 12 ++++++------
- drivers/net/dsa/motorcomm/mdio_bus.c |  2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/dsa/motorcomm/mdio_bus.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index d4c20658216a..ba988e121d68 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -36,19 +36,19 @@
- static const struct yt921x_info yt921x_infos[] = {
- 	{
- 		"YT9215SC", YT9215_MAJOR, 1, 0,
--		GENMASK(4, 0),
-+		GENMASK_U16(4, 0),
- 		BIT(9),
- 		BIT(8) | BIT(9),
- 	},
- 	{
- 		"YT9215S", YT9215_MAJOR, 2, 0,
--		GENMASK(4, 0),
-+		GENMASK_U16(4, 0),
- 		BIT(9),
- 		BIT(8),
- 	},
- 	{
- 		"YT9215RB", YT9215_MAJOR, 3, 0,
--		GENMASK(4, 0),
-+		GENMASK_U16(4, 0),
- 		BIT(8) | BIT(9),
- 		0,
- 	},
-@@ -66,13 +66,13 @@ static const struct yt921x_info yt921x_infos[] = {
- 	},
- 	{
- 		"YT9218N", YT9218_MAJOR, 0, 0,
--		GENMASK(7, 0),
-+		GENMASK_U16(7, 0),
- 		0,
- 		0,
- 	},
- 	{
- 		"YT9218MB", YT9218_MAJOR, 1, 0,
--		GENMASK(7, 0),
-+		GENMASK_U16(7, 0),
- 		BIT(8) | BIT(9),
- 		BIT(8) | BIT(9),
- 	},
-@@ -3741,7 +3741,7 @@ static int yt921x_chip_setup_dsa(struct yt921x_priv *priv)
- 	if (res)
- 		return res;
- 
--	ctrl = GENMASK(10, 0);
-+	ctrl = GENMASK_U32(10, 0);
- 	res = yt921x_reg_write(priv, YT921X_FILTER_UNK_UCAST, ctrl);
- 	if (res)
- 		return res;
 diff --git a/drivers/net/dsa/motorcomm/mdio_bus.c b/drivers/net/dsa/motorcomm/mdio_bus.c
-index 83f0212551ff..3aa1111efaa4 100644
+index dd6c52f37bbf..83f0212551ff 100644
 --- a/drivers/net/dsa/motorcomm/mdio_bus.c
 +++ b/drivers/net/dsa/motorcomm/mdio_bus.c
-@@ -159,7 +159,7 @@ int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
+@@ -113,7 +113,7 @@ static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
+ 	u16 val;
+ 	int res;
+ 
+-	if (port >= YT921X_PORT_NUM)
++	if (port >= priv->series->max_ports)
+ 		return U16_MAX;
+ 
+ 	mutex_lock(&priv->reg_lock);
+@@ -131,7 +131,7 @@ yt921x_mbus_int_write(struct mii_bus *mbus, int port, int reg, u16 data)
+ 	struct yt921x_priv *priv = mbus->priv;
+ 	int res;
+ 
+-	if (port >= YT921X_PORT_NUM)
++	if (port >= priv->series->max_ports)
+ 		return -ENODEV;
+ 
+ 	mutex_lock(&priv->reg_lock);
+@@ -145,6 +145,7 @@ int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
+ {
+ 	struct device *dev = yt921x_priv_to_device(priv);
+ 	struct mii_bus *mbus;
++	u32 max_ports;
+ 	int res;
+ 
+ 	mbus = devm_mdiobus_alloc(dev);
+@@ -157,7 +158,8 @@ int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
+ 	mbus->read = yt921x_mbus_int_read;
  	mbus->write = yt921x_mbus_int_write;
  	mbus->parent = dev;
- 	max_ports = priv->series->max_ports;
--	mbus->phy_mask = (u32)~GENMASK(max_ports - 1, 0);
-+	mbus->phy_mask = ~GENMASK_U32(max_ports - 1, 0);
+-	mbus->phy_mask = (u32)~GENMASK(YT921X_PORT_NUM - 1, 0);
++	max_ports = priv->series->max_ports;
++	mbus->phy_mask = (u32)~GENMASK(max_ports - 1, 0);
  
  	res = devm_of_mdiobus_register(dev, mbus, mnp);
  	if (res)
