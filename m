@@ -1,302 +1,240 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565F23B6377
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 03:29:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A1E2EEE65;
+	Sun, 11 Oct 2026 03:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791689355; cv=none; b=d5tVWRLA8zv+T3yD3QKzTgVTfoA7qD4Z3OshMemKpqifCpyyJsK48r6xpqsk5S4rHocuXiriyf5W0JvsfCdMgBh8GquMxevqsh98pq0NRdSzBEBm8X6euGQdAhvC90w6o7Qq0PcgkCERGhCPS8EkkITMRhd93ZkEWT0ecqaTJzo=
+	t=1791689899; cv=none; b=Obmse/WL8K3W/H7v49sQ6ahXvqBlwpxwApuHrhO0bZWW2zdb8mOcqEOJi/U2++HkAoH8dYNnPAwhKQnI0NXucDuRR80pq7d71Ky3PSDiCKPe8f34r9Wcs/VJgkA1YtO9Z0yIuksNyOBqApt75HZJyJKS0y4tEjMicEfoq2z94sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791689355; c=relaxed/simple;
-	bh=xJuYFqxVvGK/QyKcLtDJP0wBd+Pbo7Vi8SjVsBjNgzo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jEEQFC5/QX5mSLKzD5jVqatRANUsitVP+UtsnRAIr+XGmsVtulyhw/FYf5w+A6iYwKjV/z1J3jeR78yeDlF98UychKPgHrQDE8o/tmbH050tr0wRYgZtDYBaVQUtrgtqKIU6ssmWrguk5BoXbcR+cFnPR9mJaxALQbs4JUkd++E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ogkrIKCt; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791689899; c=relaxed/simple;
+	bh=5xKbhOaGID9Pwo5cuLWrKk/sfw0dg/1AYDf7kuhse+4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZiV7/lmYz0OANS2MBH+n5GqRamviIamYDSdia7Q6uTYdET19bzzOlZaMdOyUeU2Awxebf0h2vsYiWN4la9642ay1WqeLkKI9Q3pOygWwD7+mJ2s97zzVLcbRuxd7yvoCPF5dn5jlGXNZGUwiMYqtggcY+CyIyBxN1NvfV4C/XPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EGinSXvX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ogkrIKCt"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-30b6dad2382so2075478eec.0
-        for <netdev@vger.kernel.org>; Sat, 10 Oct 2026 20:29:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791689353; x=1792294153; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=DMvdaSKwMRcNUnAFlSuJUiJIEor6Huzh2QKml94ZCNY=;
-        b=ogkrIKCthVKmCSWy3tcNhH7j3g2/oHBX5ANEgTaaBfN84p9LVnQF0NwNWDpRv+OaJn
-         rDDXowJBa8HJMwhP02PdzgFvEEnQ/4KCJrwkzU/wSvz84kpk7F8jJiDhzpvWgoraSDcb
-         1uyMMeSv5j6q/aExtFkXB7LgZCUFF2eUYG1rcSjdSCfnXNe+DWiEc5RDbyBsFhLGYIpJ
-         oiplcGdgl8bvB/JB+y9Yamrlrc4LdXdaIQn5a4/MOBqKo5onXwc+TzFICFKkzdRlFQ0k
-         gH+jJwUdDurokY1FcpU8eDA5v/PeEF9Ll0swbeYLcI9fJ2UWuQozlKqQEJ4XMoCzl3Wn
-         zzYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791689353; x=1792294153;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=DMvdaSKwMRcNUnAFlSuJUiJIEor6Huzh2QKml94ZCNY=;
-        b=b0IKW/nl/xZAdpo21BEayfjVfFUVopyVxrNahrdOA9Mw84q1oVOwcfGRgkTuD5RcWF
-         6E4X65DC+gciGVsGILkAlp2q0ZvwKz3zt6MQ0gFRnXZvQdQ66sRl5sJ+Zct3SvRqbLp/
-         C9Bdok4bbuZIll8hGTr+waN+otaQWNDJx/SwtArwL4n+ZcXVwMzkEieEC6hIILitI9J3
-         dg+kMz6EODzVWGIl59DlgWcbDeCT6NqmNYBEXYK9s1k+8EZmWnjGMzgecZocEc9PI4iG
-         ouTiONrhLRkfzUjfKLsRYdYzfjoWnwGp6CysWfcxhfJmXC/rDhPyJja/6rHiRTv2UNeX
-         Vmuw==
-X-Forwarded-Encrypted: i=1; AKwUvBxHCef9UlSorHPvokRAdsrMZtg8CVQqetj/svBsdjiMD40Rx9IH9E8CwpfHuo/GqH0yxTT43N8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJOM1LY+6ZW8/V3SyMdx0qZR5whFtrOve1IHcpCtuPHVXSlXw73
-	4oLpMIS/UJmjm/9rfRpmst18Spoa71tn8p1eXObt80Yrki+KyvNn5/Bw6s+kqg==
-X-Gm-Gg: AYBFou3ADjs6y2DxWnwOpQxxQIYQt7y46IoT4k7VA1u2iTSLMOIuGARrJeiLln0zBn5
-	pT8DSflHOwJzg07qIfzUlo+o8xjJVrc26PnlvWxh9aRiBLv0SlpQi6vGMrVLL5DUB9Kr2trYe6b
-	mOzzI1mObCDOA5C/wPG77vS7OCyf5Jqn4EfLmrD9ZwDpZZ59JZMHH5DuaP6KMQYowwLawxkgvr6
-	Q5r8PHOerV46amO/YJMbGzSi5EhJrRIohVvXuh1vfQgct090Q9hD3keUx/bEhYdbv0JZpop1N+u
-	cJoh3k6vLpbC0UBChmg1/EZir3qkUGzUrlorhVUrUFNYZe8llALIXyf+ddF9KLtQxl6zsDxlfrW
-	OTOrbl7wyIRD6ORvTzadQKSe1WHcWLiPZj7t9iYXBdyNY+v6X0DtgXrxxz0ZnkdDTHdQj9uiNIK
-	r1vC79k7Gbp/9pBCY5JMZwuSCRGbjU7GIxrpLGFsFoSOxHcGJP0iwm1kRfxC9TNiv3ji77qVUSp
-	QacsZQQTPDDK/QBG1GW4qAHM3Kh7ucjT+J2qApWr19oxka4ZsNrarogog1To2r6NRFtNtjzq8v6
-	II40oMlYlJIC8oM=
-X-Received: by 2002:a05:693c:62c5:b0:353:7d40:6636 with SMTP id 5a478bee46e88-3537dedaae9mr7802343eec.1.1791689352457;
-        Sat, 10 Oct 2026 20:29:12 -0700 (PDT)
-Received: from l ([2603:8002:ea00:6800:4112:f5be:f9b3:803f])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cab27d5sm22393297eec.17.2026.10.10.20.29.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Oct 2026 20:29:12 -0700 (PDT)
-From: Dave Seddon <dave.seddon.ca@gmail.com>
-To: dave.seddon.ca@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH iproute2 3/3] testsuite: add bond slave LACP port state test
-Date: Sat, 10 Oct 2026 20:29:06 -0700
-Message-ID: <20261011032906.1398174-4-dave.seddon.ca@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261011032906.1398174-1-dave.seddon.ca@gmail.com>
-References: <20261011032906.1398174-1-dave.seddon.ca@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EGinSXvX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2501F000FF;
+	Sun, 11 Oct 2026 03:38:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791689898;
+	bh=IHiq471lI34tMV6DI159H0HPk05JOLQKG1SqobU79J0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=EGinSXvXpMfm+BKNZSmdSSntxAhl9mXZyU1CvvbHybYYrOFEAUplRFw93WoCpsrlz
+	 AE6R27g5xwx8YepMEIMSbWA4MwPWl6/taP2phdnYblY4lplz5F39EL9vjm/NrzR0vH
+	 5njyL8cZX7SFm8XCVC5pmp8CEKTWplmCsErFuEaqeCI+hDWFWthMtmM3gm1kEyxdA1
+	 QvgS9q1lBn6fRVzg44hJMFcLIz/pQbeSsYyWqnYyTtgVvZZ9DEFPX14XgsIaC6kigN
+	 vtr+AQJHdwJ+AFq19iQsmjkgkujLMqg0eVkTKkHpIgcK7BzaBC5kvk+hKgJTakkwig
+	 CU7u0yQ6Sk14Q==
+Subject: Re: [PATCH net v1 1/4] net: devmem: unmap dma_buf synchronously on
+ queue uninstall
+From: netdev-bot+sashiko@kernel.org
+To: almasrymina@google.com
+Cc: kuba@kernel.org, dw@davidwei.uk, asml.silence@gmail.com,
+ ap420073@gmail.com, sdf@fomichev.me, pabeni@redhat.com, kaiyuanz@google.com,
+ bobbyeshleman@meta.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, horms@kernel.org, shuah@kernel.org,
+ sumit.semwal@linaro.org, christian.koenig@amd.com, daniel@iogearbox.net,
+ razor@blackwall.org, tariqt@nvidia.com, kaifengw@google.com
+Date: Sun, 11 Oct 2026 03:38:16 +0000
+Message-ID: <179168989611.434549.16378879758158058625@kernel.org>
+In-Reply-To: <20261010025532.839559-2-almasrymina@google.com>
+References: <20261010025532.839559-2-almasrymina@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Decode generated RTM_NEWLINK messages with ip -d monitor file and
-check the partner state value and flags, the u8 actor state, and
-zero and absent partner attributes.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Use a synthetic 0x0100 partner state to detect a one-byte reader on
-both endian types: it returns 0 on little-endian and 1 on big-endian
-instead of 256. Real LACP states use only the low eight bits.
+Critical: 0 · High: 2 · Medium: 0 · Low: 2
 
-Check the actor state before asserting partner attribute absence,
-so empty output cannot satisfy that test.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Assisted-by: LLM
-Signed-off-by: Dave Seddon <dave.seddon.ca@gmail.com>
----
- .gitignore                                    |   1 +
- testsuite/Makefile                            |   1 +
- .../ip/link/show_bond_slave_lacp_state.t      |  33 ++++++
- testsuite/tools/generate_nlmsg.c              | 103 ++++++++++++++++--
- 4 files changed, 129 insertions(+), 9 deletions(-)
- create mode 100755 testsuite/tests/ip/link/show_bond_slave_lacp_state.t
+- [High] Incomplete fix: a binding that has already been unbound (netlink
+  socket closed) but is still alive because a TCP socket or page pool…
+- [High] The patch unmaps and detaches the dma-buf in
+  mp_dmabuf_devmem_uninstall() as soon as bound_rxqs becomes empty.
+- [Low] The comment on struct net_devmem_dmabuf_binding::lock in
+  net/core/devmem.h still reads '/* Protect dev */'.
+- [Low] The comment on struct net_devmem_dmabuf_binding::ref in
+  net/core/devmem.h still says 'The binding undos itself and unmaps the…
 
-diff --git a/.gitignore b/.gitignore
-index e5234a3d..a16f6362 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -39,3 +39,4 @@ testsuite/results
- testsuite/iproute2/iproute2-this
- testsuite/tools/generate_nlmsg
- testsuite/tests/ip/link/dev_wo_vf_rate.nl
-+testsuite/tests/ip/link/bond_slave_partner_*.nl
-diff --git a/testsuite/Makefile b/testsuite/Makefile
-index fb50f618..bef66002 100644
---- a/testsuite/Makefile
-+++ b/testsuite/Makefile
-@@ -48,6 +48,7 @@ testclean:
- clean: testclean
- 	@rm -f iproute2/iproute2-this
- 	@rm -f tests/ip/link/dev_wo_vf_rate.nl
-+	@rm -f tests/ip/link/bond_slave_partner_*.nl
- 	$(MAKE) -C tools clean
- 
- distclean: clean
-diff --git a/testsuite/tests/ip/link/show_bond_slave_lacp_state.t b/testsuite/tests/ip/link/show_bond_slave_lacp_state.t
-new file mode 100755
-index 00000000..4ccf3960
---- /dev/null
-+++ b/testsuite/tests/ip/link/show_bond_slave_lacp_state.t
-@@ -0,0 +1,33 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+
-+. lib/generic.sh
-+
-+# IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE is a u16 on the wire; the
-+# actor state next to it is a u8. Each row decodes one blob written by
-+# tools/generate_nlmsg and checks the printed value.
-+#
-+# The synthetic 0x0100 state checks the full attribute width on either
-+# endian: a u8 reader returns 0 on little-endian and 1 on big-endian.
-+#
-+# row: file suffix | description | expected regex (!regex: must be absent)
-+while IFS='|' read -r suffix desc expect; do
-+	[ -z "$suffix" ] && continue
-+	NL_FILE="tests/ip/link/bond_slave_partner_${suffix}.nl"
-+	ts_ip "$0" "$desc" -d monitor file "$NL_FILE"
-+	case "$expect" in
-+	!*)
-+		test_on "ad_actor_oper_port_state 63[^0-9]"
-+		test_on_not "${expect#!}"
-+		;;
-+	*)
-+		test_on "$expect"
-+		;;
-+	esac
-+done <<EOF
-+fast|partner state 0x3f|ad_partner_oper_port_state 63 ad_partner_oper_port_state_str <active,short_timeout,aggregating,in_sync,collecting,distributing>
-+fast|actor state stays u8|ad_actor_oper_port_state 63[^0-9]
-+zero|partner state 0|ad_partner_oper_port_state 0 ad_partner_oper_port_state_str <>
-+hionly|partner state 0x0100, high byte only|ad_partner_oper_port_state 256[^0-9]
-+absent|no partner attribute|!ad_partner_oper_port_state
-+EOF
-diff --git a/testsuite/tools/generate_nlmsg.c b/testsuite/tools/generate_nlmsg.c
-index 106dca63..7c0aed3a 100644
---- a/testsuite/tools/generate_nlmsg.c
-+++ b/testsuite/tools/generate_nlmsg.c
-@@ -11,6 +11,9 @@
- #include <linux/if.h>
- #include <errno.h>
- #include <stdio.h>
-+#include <string.h>
-+#include <linux/if_link.h>
-+#include "utils.h"
- 
- int fill_vf_rate_test(void *buf, size_t buflen)
- {
-@@ -40,6 +43,7 @@ int fill_vf_rate_test(void *buf, size_t buflen)
- #define ASSERT(x) if (x < 0) return -1
- #define ATTR_L(t, v, l)	ASSERT(addattr_l(h, buflen, t, v, l))
- #define ATTR_8(t, v)	ASSERT(addattr8(h, buflen, t, v))
-+#define ATTR_16(t, v)	ASSERT(addattr16(h, buflen, t, v))
- #define ATTR_32(t, v)	ASSERT(addattr32(h, buflen, t, v))
- #define ATTR_STRZ(t, v)	ASSERT(addattrstrz(h, buflen, t, v))
- 
-@@ -87,26 +91,107 @@ int fill_vf_rate_test(void *buf, size_t buflen)
- 	return h->nlmsg_len;
- }
- 
-+/* The synthetic 0x0100 state detects a u8 reader on either endian. */
-+struct bond_slave_case {
-+	const char *file;
-+	__u16 partner_state;
-+	bool has_partner;
-+};
-+
-+static const struct bond_slave_case bond_slave_cases[] = {
-+	{ "tests/ip/link/bond_slave_partner_fast.nl",	0x003f, true },
-+	{ "tests/ip/link/bond_slave_partner_zero.nl",	0x0000, true },
-+	{ "tests/ip/link/bond_slave_partner_hionly.nl",	0x0100, true },
-+	{ "tests/ip/link/bond_slave_partner_absent.nl",	0x0000, false },
-+};
-+
-+static int fill_bond_slave_test(void *buf, size_t buflen,
-+				const struct bond_slave_case *c)
-+{
-+	__u8 mac[ETH_ALEN] = { 0x02, 0x00, 0x00, 0x00, 0x00, 0x01 };
-+	struct rtattr *linkinfo, *slave_data;
-+	struct nlmsghdr *h = buf;
-+	struct ifinfomsg *ifi;
-+
-+	memset(buf, 0, buflen);
-+	h->nlmsg_type = RTM_NEWLINK;
-+	h->nlmsg_len = NLMSG_LENGTH(sizeof(*ifi));
-+
-+	ifi = NLMSG_DATA(h);
-+	ifi->ifi_type = ARPHRD_ETHER;
-+	ifi->ifi_index = 2;
-+	ifi->ifi_flags = IFF_RUNNING | IFF_BROADCAST | IFF_MULTICAST |
-+			 IFF_UP | IFF_LOWER_UP | IFF_SLAVE;
-+
-+	ATTR_STRZ(IFLA_IFNAME, "eth1");
-+	ATTR_32(IFLA_MTU, 1500);
-+	ATTR_L(IFLA_ADDRESS, mac, sizeof(mac));
-+
-+	linkinfo = NEST(IFLA_LINKINFO);
-+	ATTR_STRZ(IFLA_INFO_SLAVE_KIND, "bond");
-+	slave_data = NEST(IFLA_INFO_SLAVE_DATA);
-+	ATTR_8(IFLA_BOND_SLAVE_STATE, 0);
-+	ATTR_8(IFLA_BOND_SLAVE_MII_STATUS, 0);
-+	ATTR_32(IFLA_BOND_SLAVE_LINK_FAILURE_COUNT, 0);
-+	ATTR_L(IFLA_BOND_SLAVE_PERM_HWADDR, mac, sizeof(mac));
-+	ATTR_16(IFLA_BOND_SLAVE_QUEUE_ID, 0);
-+	ATTR_16(IFLA_BOND_SLAVE_AD_AGGREGATOR_ID, 1);
-+	ATTR_8(IFLA_BOND_SLAVE_AD_ACTOR_OPER_PORT_STATE, 0x3f);
-+	if (c->has_partner)
-+		ATTR_16(IFLA_BOND_SLAVE_AD_PARTNER_OPER_PORT_STATE,
-+			c->partner_state);
-+	NEST_END(slave_data);
-+	NEST_END(linkinfo);
-+
-+	return h->nlmsg_len;
-+}
-+
-+static int write_nlmsg(const char *file, const void *buf, int msglen)
-+{
-+	FILE *fp;
-+
-+	fp = fopen(file, "wb");
-+	if (!fp) {
-+		perror("fopen()");
-+		return -1;
-+	}
-+	if (fwrite(buf, msglen, 1, fp) != 1) {
-+		perror("fwrite()");
-+		fclose(fp);
-+		return -1;
-+	}
-+	if (fclose(fp)) {
-+		perror("fclose()");
-+		return -1;
-+	}
-+	return 0;
-+}
-+
- int main(void)
- {
- 	char buf[16384] = { 0 };
-+	unsigned int i;
- 	int msglen;
--	FILE *fp;
- 
- 	msglen = fill_vf_rate_test(buf, sizeof(buf));
- 	if (msglen < 0) {
- 		fprintf(stderr, "fill_vf_rate_test() failed!\n");
- 		return 1;
- 	}
--	fp = fopen("tests/ip/link/dev_wo_vf_rate.nl", "w");
--	if (!fp) {
--		perror("fopen()");
--		return 1;
--	}
--	if (fwrite(buf, msglen, 1, fp) != 1) {
--		perror("fwrite()");
-+	if (write_nlmsg("tests/ip/link/dev_wo_vf_rate.nl", buf, msglen))
- 		return 1;
-+
-+	for (i = 0; i < ARRAY_SIZE(bond_slave_cases); i++) {
-+		const struct bond_slave_case *c = &bond_slave_cases[i];
-+
-+		msglen = fill_bond_slave_test(buf, sizeof(buf), c);
-+		if (msglen < 0) {
-+			fprintf(stderr, "fill_bond_slave_test(%s) failed!\n",
-+				c->file);
-+			return 1;
-+		}
-+		if (write_nlmsg(c->file, buf, msglen))
-+			return 1;
- 	}
--	fclose(fp);
- 	return 0;
- }
+--
+
+net: devmem: unmap dma_buf synchronously on queue uninstall
+
+This patch adds net_devmem_dmabuf_binding_unmap(), which runs under
+binding->lock and clears binding->sgt and binding->attachment so that
+unmapping is idempotent. It is called from mp_dmabuf_devmem_uninstall()
+when the last bound RX queue is uninstalled, so the dma_buf is no longer
+unmapped against a freed dma_dev after device unregister.
+
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index f4d60654ce7fd..5e4070b82df44 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -58,6 +58,21 @@ static void net_devmem_dmabuf_binding_release(struct percpu_ref *ref)
+>  	schedule_work(&binding->unbind_w);
+>  }
+>  
+> +static void
+> +net_devmem_dmabuf_binding_unmap(struct net_devmem_dmabuf_binding *binding)
+> +{
+> +	lockdep_assert_held(&binding->lock);
+
+[Severity: Low]
+This isn't a bug, but the comment on binding->lock in net/core/devmem.h
+still reads:
+
+	/* Protect dev */
+	struct mutex lock;
+
+The lock now also protects binding->sgt and binding->attachment, and the
+lockdep_assert_held() here enforces that. Should the comment in the header
+be updated as well?
+
+> +
+> +	if (!binding->sgt)
+> +		return;
+
+[ ... ]
+
+> @@ -74,9 +89,10 @@ void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
+>  		  size, avail))
+>  		gen_pool_destroy(binding->chunk_pool);
+>  
+> -	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
+> -					  binding->direction);
+> -	dma_buf_detach(binding->dmabuf, binding->attachment);
+> +	mutex_lock(&binding->lock);
+> +	net_devmem_dmabuf_binding_unmap(binding);
+> +	mutex_unlock(&binding->lock);
+
+[Severity: High]
+Can this deferred unmap still run against a freed dma_dev when the binding
+was already unbound before the device went away?
+
+The commit message says the fix covers unregister "while userspace still
+holds a netlink or TCP socket reference". However, the only synchronous
+unmap is in mp_dmabuf_devmem_uninstall(), and dev_memory_provider_uninstall()
+only reaches that for RX queues whose rxq->mp_params is still set.
+
+Closing the netlink socket does this, with no unmap:
+
+netdev_nl_sock_priv_destroy()
+  net_devmem_unbind_dmabuf()
+    xa_erase(&net_devmem_dmabuf_bindings, binding->id);
+    netif_mp_close_rxq()
+      __netif_mp_close_rxq()
+        memset(&rxq->mp_params, 0, sizeof(rxq->mp_params));
+    percpu_ref_kill(&binding->ref);
+
+Other references can keep the binding alive past that point. On RX,
+unreturned devmem tokens keep the old page pool alive. On TX, unacked
+devmem skbs in a TCP retransmit queue hold refs taken via
+net_devmem_get_net_iov(). The TX binding can be created through
+netdev_nl_bind_tx_doit(), which does not check for CAP_NET_ADMIN.
+
+A later unregister then finds no installed provider, so
+mp_dmabuf_devmem_uninstall() is never called for this binding. After the
+parent device is freed (for example in nsim_bus_dev_release()), dropping
+the last reference goes through:
+
+__net_devmem_dmabuf_binding_free()
+  net_devmem_dmabuf_binding_unmap()
+    dma_buf_unmap_attachment_unlocked()
+      unmap_udmabuf()
+        dma_unmap_sg_attrs()    <-- freed attach->dev
+
+That looks like the same KASAN report quoted in the commit message.
+
+The follow-up commit "net: devmem: detach TX bindings on NETDEV_UNREGISTER"
+fixes the TX case while the netlink socket is still open. Its
+net_devmem_dev_unregister() only walks net_devmem_dmabuf_bindings, though,
+and unbound bindings are no longer in that xarray.
+
+A narrower variant needs no extra references. The unbind_w work queued by
+net_devmem_dmabuf_binding_release() runs asynchronously, and nothing makes
+it run before device removal.
+
+Would a complete fix need to track every binding that is still mapped
+against a device, and not only the ones installed on an RX queue?
+
+> +
+>  	dma_buf_put(binding->dmabuf);
+>  	xa_destroy(&binding->bound_rxqs);
+>  	percpu_ref_exit(&binding->ref);
+> @@ -535,6 +551,7 @@ static void mp_dmabuf_devmem_uninstall(void *mp_priv,
+>  				mutex_lock(&binding->lock);
+>  				ASSERT_EXCLUSIVE_WRITER(binding->dev);
+>  				WRITE_ONCE(binding->dev, NULL);
+> +				net_devmem_dmabuf_binding_unmap(binding);
+
+[Severity: High]
+Is it safe to unmap here just because bound_rxqs became empty? Nothing
+here checks whether the hardware queue has actually stopped using the
+binding.
+
+On queue lease teardown the physical NIC is still registered and running:
+
+netkit_queue_unlease()
+  netdev_rx_queue_unlease()
+    netif_rxq_cleanup_unlease()
+      __netif_mp_close_rxq(phys_rxq->dev, rxq_idx, &p);
+      __netif_mp_uninstall_rxq(virt_rxq, &p);
+        mp_dmabuf_devmem_uninstall()
+          net_devmem_dmabuf_binding_unmap()
+
+If the reconfig fails, __netif_mp_close_rxq() only warns:
+
+	err = netdev_rx_queue_reconfig(dev, rxq_idx, &qcfg[0], &qcfg[1]);
+	WARN_ON(err && err != -ENETDOWN);
+
+netdev_rx_queue_reconfig() can fail in ndo_queue_mem_alloc() before
+ndo_queue_stop() is called. It can also fail in stop or start, with the
+old queue restored. In both cases the old devmem page pool keeps running,
+and its ring holds DMA addresses from binding->sgt.
+
+netif_rxq_cleanup_unlease() still calls uninstall unconditionally. The
+virtual rxq is the one recorded in bound_rxqs, so removing it empties the
+xarray. The dma-buf is then unmapped and detached while the NIC can still
+DMA into those IOVAs, and the pool can keep refilling from
+binding->chunk_pool.
+
+Before this patch the mapping lasted until __net_devmem_dmabuf_binding_free()
+ran, which only happens after every page pool has dropped its binding ref.
+The commit message only talks about unregistration. Was the lease
+teardown path also meant to unmap synchronously here?
+
+[Severity: Low]
+This isn't a bug, but the comment on the ref field of struct
+net_devmem_dmabuf_binding in net/core/devmem.h still says:
+
+	 * The binding undos itself and unmaps the underlying dmabuf once all
+	 * those refs are dropped and the binding is no longer desired or in
+	 * use.
+
+With this call, the mapping can go away while netlink, page pool or
+net_iov refs are still held. The follow-up commit "net: devmem: detach TX
+bindings on NETDEV_UNREGISTER" adds another early unmap in
+net_devmem_dev_unregister(). Should this comment be updated to match?
+
+>  				mutex_unlock(&binding->lock);
+>  			}
+>  			break;
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010025532.839559-1-almasrymina%40google.com
