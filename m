@@ -1,105 +1,154 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EE3353EE0
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 10:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE54337CD47;
+	Sun, 11 Oct 2026 10:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791713000; cv=none; b=VcVJp+IXE/wJI8fIW1YVZzCndHCvZEsC/FmxXL2Ko9fVMOQLqM/5oKABX+PXNOF0N8GUdqMFw6A0DwU2jviHq1Ona8WREP19mj8XzQUmof7YbpCrGRHv9gKMnunAZdgtyeNKh6veYXvDT2IO0M8ave+UQKhOWqZ6buH9IJk5ckM=
+	t=1791713373; cv=none; b=raVxnYDV7ygiTUGSq4hQIiAoyUkQpEwq938eohsyWVm1augjKp6dtEKVKypF6KaM7FO/eh72vESq5cXwlA63iFWYuSxjENStJydrKw4aeTq3qs1q6EecJBt8museQ86hou9HSh/pFFri+4ISixBvQJlVSKmZEZQ+TwLkAtd/cEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791713000; c=relaxed/simple;
-	bh=k/XQh/MJlqPWCVt5FLiN1T6hCj4rmGW0HaI5AuWXLeg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SL7wn3jnX2CTbIJ2s/0nloVQJRJ1ZgrTKCGJE80pkvaM7Zt3G5bPiMGMNnRw5RiWzvLHRkXshiTljomnV1z3xGp78GvgjnNoBKsWvxrt3dm1o9oIiTSVgg1fF8XcDJs4nHWbT8vKjmgACw6bmK5xyM7WLgQCsrr/daXWeVNqUpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JceIeC8Q; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791713373; c=relaxed/simple;
+	bh=jbNmyJjrEXDxOp7d3pKoQ3NSbsUIImzqR3Ryd+bSubI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=my9NpyIYHdjidBBOmfLECLSfy2daIgeL6HuXxKBMHpjuti88AGnfl+VnxEgN2qvuEWMunWQtfm+Ik7/6e+tMxAB1zllSGZtb0sKpGvBhZCcRCxtX2D73mQexoDiuIOjovvWfvCpp2mWbs8ZR+39fdx/2yuhdfTxr8D8Xr7878Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lc2KzYxg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JceIeC8Q"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 814354E411DA;
-	Sun, 11 Oct 2026 10:03:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 369F0605CC;
-	Sun, 11 Oct 2026 10:03:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1532A11D70920;
-	Sun, 11 Oct 2026 12:03:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791712988; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=glsBEN8UdkpCjmn6qnLJewyzVA6lDTi/CcC0os/V9hc=;
-	b=JceIeC8Qx38nNsdR6enEhOxzo5ALR6/kUHAMC4+46kjfxP/bphaPSg6iturKNycI8nml3a
-	Mwj4bVZOs2/QWyyRML9RrAzIiovfc7eWbkKp+8DQ3i1cGeJt8n/OoTB2kz0mxakWO3UEQ+
-	sync5mLjHdgfcrHP2tNc7s+9xs6JVOBL81q8ZkEy0EndZNPhB/QvKoPCfwxIXl6p1Mkhik
-	r2zmcrOKbkCx6vqc+WyarGlifmnC+YzGsiUJxgBZtcIrFR1oBojNXPtsp1wUxe7gstxzG+
-	Iqr2IDuAbnW8k4sPTOTTNHcLc+Aa+4QgFD7UxQ5/Vy9d9lv1L7sbkaESHKuFnA==
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lc2KzYxg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA53D1F0089B;
+	Sun, 11 Oct 2026 10:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791713371;
+	bh=mkMWltT9oxH5lohmqxjpV5mhcOv97kZTIRXdDoPQww0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Lc2KzYxgPnuJbjk6WVwgPbn4jcbHBvhvSQeQJiveQeYkoOmAS8oKXUgRDFBwo49uu
+	 3mjm3ieDCldIKuBo+7h0rQSlGFmpYW7sqeDrdCozMPMSKSRxv8VM+mvoFgl6XOp2pu
+	 piCbahEap59H4p39rZMGK7eiW8q9mYP5HVcqU/Ik6DMleVCWL2BAqjZfstUZgbKR/A
+	 nuJZxxi9hfHXRMEoQ4IsjAiflT5IP1u1S7D/1H7Thx2iiTDmDIl+yt87T8JNxJqPA/
+	 GA3p2nimu2AFhwm7zLpCiCnLGiOn3wOH/yi6ROqVo/PUW/We+l4oaScs/FobytDmNE
+	 dFRwMYmRV/VOw==
+Subject: Re: [PATCH net v5] net: macb: rate limit netdev error info print in
+ the data path
+From: netdev-bot+sashiko@kernel.org
+To: taozj888@163.com
+Cc: theo.lebrun@bootlin.com, stable@vger.kernel.org,
+ conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ nicolas.ferre@microchip.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 10:09:30 +0000
+Message-ID: <179171337032.434549.9838916167952285277@kernel.org>
+In-Reply-To: <20261010092134.130564-1-taozj888@163.com>
+References: <20261010092134.130564-1-taozj888@163.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 11 Oct 2026 12:02:59 +0200
-Message-Id: <DM1X8RPY7556.2VHDX3Z5VKKM1@bootlin.com>
-Subject: Re: [PATCH net-next 4/5] net: macb: implement timestamped MDIO
- writes
-Cc: "Russell King" <linux@armlinux.org.uk>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Broadcom internal kernel review list"
- <bcm-kernel-feedback-list@broadcom.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Miroslav Lichvar" <mlichvar@redhat.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Maxime
- Chevallier" <maxime.chevallier@bootlin.com>
-To: "James Clark" <jjc@jclark.com>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "Heiner Kallweit" <hkallweit1@gmail.com>, "Richard Cochran"
- <richardcochran@gmail.com>, "Florian Fainelli"
- <florian.fainelli@broadcom.com>, "Doug Berger" <opendmb@gmail.com>,
- "Nicolai Buchwitz" <nb@tipi-net.de>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261009143506.2507607-1-jjc@jclark.com>
- <20261009143506.2507607-5-jjc@jclark.com>
- <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com>
-In-Reply-To: <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
 
-On Sun Oct 11, 2026 at 11:23 AM CEST, Th=C3=A9o Lebrun wrote:
->> -static int macb_mdio_write_c22(struct mii_bus *bus, int mii_id, int reg=
-num,
->> -			       u16 value)
->> +static u64 macb_mdio_sts_delay(struct macb *bp)
->> +{
->> +	static const u16 gem_divisors[] =3D {
->> +		[GEM_CLK_DIV8] =3D 8,
->> +		[GEM_CLK_DIV16] =3D 16,
->> +		[GEM_CLK_DIV32] =3D 32,
->> +		[GEM_CLK_DIV48] =3D 48,
->> +		[GEM_CLK_DIV64] =3D 64,
->> +		[GEM_CLK_DIV96] =3D 96,
->> +		[GEM_CLK_DIV128] =3D 128,
->> +		[GEM_CLK_DIV224] =3D 224,
->> +	};
->> +	static const u16 macb_divisors[] =3D {
->> +		[MACB_CLK_DIV8] =3D 8,
->> +		[MACB_CLK_DIV16] =3D 16,
->> +		[MACB_CLK_DIV32] =3D 32,
->> +		[MACB_CLK_DIV64] =3D 64,
->> +	};
->
-> Do I sound crazy if I say we could use a single array for both?
-> Both GEM_CLK_DIV* and MACB_CLK_DIV* are enums and are ordered in the
-> same way. First four GEM_* are the same ones as MACB_* and it will
-> never change.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Ignore this comment because gem_divisors[3] !=3D macb_divisors[3].
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Thanks,
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message says the patch will "rate limit the netdev
+  error information print in the receive and transmit data path" of the…
 
 --
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
+net: macb: rate limit netdev error info print in the data path
+
+This commit wraps five netdev_err() calls in gem_rx(), macb_rx(),
+macb_interrupt_misc() and macb_start_xmit() with net_ratelimit(). The goal
+is to stop the console from flooding when many bad or oversized frames
+arrive, for example during boot.
+
+> So rate limit the netdev error information print in the receive
+> and transmit data path.
+
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> index 261a7e87520a4..9f31ad7bf8e13 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+
+[ ... ]
+
+> @@ -2102,7 +2103,8 @@ static int macb_interrupt_misc(struct macb_queue *queue, u32 status)
+>  
+>  	if (status & MACB_BIT(HRESP)) {
+>  		queue_work(system_bh_wq, &bp->hresp_err_bh_work);
+> -		netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+> +		if (net_ratelimit())
+> +			netdev_err(netdev, "DMA bus error: HRESP not OK\n");
+>  		macb_queue_isr_clear(bp, queue, MACB_BIT(HRESP));
+>  	}
+>  
+> @@ -2505,7 +2507,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb,
+>  		else
+>  			hdrlen = skb_tcp_all_headers(skb);
+>  		if (skb_headlen(skb) < hdrlen) {
+> -			netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
+> +			if (net_ratelimit())
+> +				netdev_err(bp->netdev, "Error - LSO headers fragmented!!!\n");
+>  			/* if this is required, would need to copy to single buffer */
+>  			return NETDEV_TX_BUSY;
+>  		}
+
+[Severity: Medium]
+
+The commit message says the patch rate limits error prints "in the receive
+and transmit data path". Are there other data path prints in macb_main.c
+that need the same change? Several netdev_err() calls on these paths still
+have no rate limit.
+
+gem_rx_refill(), which runs at the end of every gem_rx() poll:
+
+	if (unlikely(!skb)) {
+		netdev_err(bp->netdev,
+			   "Unable to allocate sk_buff\n");
+		break;
+	}
+
+macb_tx_map(), called from macb_start_xmit():
+
+	netdev_err(bp->netdev, "BUG! empty skb!\n");
+	...
+dma_error:
+	netdev_err(bp->netdev, "TX DMA map failed\n");
+
+at91ether_start_xmit(), the at91rm9200 counterpart of macb_start_xmit():
+
+	netdev_err(netdev, "%s: DMA mapping error\n", __func__);
+	...
+	} else {
+		netdev_err(netdev, "%s called, but device is busy!\n",
+			   __func__);
+		return NETDEV_TX_BUSY;
+
+This path returns NETDEV_TX_BUSY, so the qdisc requeues and retries.
+Wouldn't the message then print again on every retry?
+
+at91ether_interrupt(), the counterpart of macb_interrupt_misc():
+
+	if (intstatus & MACB_BIT(ISR_ROVR))
+		netdev_err(netdev, "ROVR error\n");
+
+This prints from hardirq context on every receive overrun, and an inbound
+packet flood can cause overruns. Can this produce the same console flood
+the commit message describes? The HRESP message in macb_interrupt_misc()
+is now rate limited, but this one is not.
+
+Should these sites be converted too? Alternatively, the commit message
+could be narrowed to the sites this patch actually changes.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261010092134.130564-1-taozj888%40163.com
