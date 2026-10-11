@@ -1,269 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D94926656D;
-	Sun, 11 Oct 2026 19:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863A53932F7
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 19:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791745821; cv=none; b=NxzzD7ilpQ5T2N80U5eOwwquhqO3TfmAFath6LBFnTkAgwNH70UVSPSLxy3GMpd9kGCYgnoA5PldEkWaNkhjT716A1LvEixk+Bz94wNXXywpeZR9//NC9ArgaHIYQNGkVjxRfu4S30AlAJzNLyQF6LWHr0r+c1yxyNDeisOab8g=
+	t=1791745832; cv=none; b=oo2VreaJqRXdJzvKRTcf3qM1xEYN9c80qRAJ5oMt6OzqMeV7srwaNyCSMJoR4oh1JyKg7bxoKyKzULDSZQh0QLMm0jurF0OaLPF5YXLmqSuIP9iZUV+gFcKcE2ky7elT8h9Sq00rD1denFxsBUog15Lzis6lrfKce/Q9Tjoky+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791745821; c=relaxed/simple;
-	bh=qDvZvY3t7hPBznqwwJ+9XczPsawEOtlVdSajCz4MMMc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VoMzhDn+v2dbTVLtMi2nJ9XEk0DWLhnuHmrMlPHhYozirGSrnssXwMd/ZujhcyD73gCYUDGWcowlTMylJlEDhFUvNZbbLHEoW+A/Sh7urDo7Hez0h5UMRbrkUADcTQC4FP2Tk9DVg0yjPqDxT8LB1xvBeuVthB5M3Nf0RBzuUEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+/4SCc3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791745832; c=relaxed/simple;
+	bh=RjdAH3Y9wwiPn80wJQYztLmuKKN61VaF2ABE+OfYkgA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jwbZ5SgXPq9kO4WJAxfic6VSVf1KZUxrszyP8BsSTC34V3Q6lagoJRxxTlsN/qDa3zVfuIffg/3ZioRgfhAwukWC6kXMh6ekhyu6bxrpnBOPpw17GWm7mxuwJMNAlwC5HiFq7bVbTsYs6AhslLt2RzyYB7jaZY2JtGZIbI28VLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j9+4JP/U; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+/4SCc3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561401F0089B;
-	Sun, 11 Oct 2026 19:10:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791745820;
-	bh=2vyZRcclnaItmGAKqgI1HPyUldWBjcsCTc7GSgZUYEU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=c+/4SCc3fez9GSe4bV2mAmxQ4W2rLXhxk6ne92ehHUsVdVXKJzvwC+LJqLzu3w8S+
-	 R+2QiU7ZCj0Kdhvlwoc9YsVRLtjEOIZzftFuv5DWxrfI1kTDP6jt8BPSpcnrAmQ7UB
-	 cMd9G697S7tcSy8F8jPanCKaJ7R9y4bryfx2MR7aGeIEY776AZ2bZ/Bs5JY5QafhXa
-	 PRhcdyh8Ry/PUno5a7GbyjAFinpadfz5vVxnV2Se/M8n6GMrK+Y0J5nx5DQA949iDu
-	 JYpejDL2SI9Koa0s273vt6ihy9KffRrEfDRemrOgecgEsISXHhgyk/NWg1hIr8YEHl
-	 JjL04K0eukjNw==
-Subject: Re: [PATCH net-next v8 2/2] net: wwan: mhi_wwan_ctrl: drive DTR/RTS
- via the IP_CTRL channel
-From: netdev-bot+sashiko@kernel.org
-To: peter.hunt@opengear.com
-Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- johannes@sipsolutions.net, mani@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 11 Oct 2026 19:10:18 +0000
-Message-ID: <179174581889.434549.17109268914009115980@kernel.org>
-In-Reply-To: <20261007182238.1154851-3-peter.hunt@opengear.com>
-References: <20261007182238.1154851-3-peter.hunt@opengear.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j9+4JP/U"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48b060ec084so645861f8f.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 12:10:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791745829; x=1792350629; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QTR42Go9m+6eVHpUpw7SmlR7Yrf00JHufO82pWXeBX8=;
+        b=j9+4JP/Uj4Dl6xmXO6DoyVkVC8LvFhEAQzdApR4lBDZAhKq22zR3/L1p4h0BtNCpsW
+         c96uqK7y7U4zKw5UP+oQWUqOE7z6LSJWoo4vmhdZmdxLiY6RjFlaTr4cLJkrC+6LPkOE
+         HYmYmj+CIkWcynQZV/AwOAd2U0wGu0UHuJM5PzAP7ghGsO5CetgQ8SlPlFMgKgqYPuAk
+         uiU6K1cRwSU/L6FQzX+EY0QCMm9BinfbyONx+BK7PMujjw7JOpbMMtx6YXaGmk5CxKBe
+         EZx8JQ9COk9mHWVZ/ImzeI6+VXp5RpcsUg1qsOZS1zCbgRgBptxohHBCuDpd4/nnr0So
+         jGLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791745829; x=1792350629;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QTR42Go9m+6eVHpUpw7SmlR7Yrf00JHufO82pWXeBX8=;
+        b=e0tdsUekf5/zFz6J9gfSxW9YAkcuE3QF5GWmyWWRo2pRfjThjt+jFp050LkzFPudG3
+         ITKG338cZsJ2UILIIbzKbm7qZkP0MWyt4GvkfLszn/nFrSETK8KE8W0okGS5+1wS+KGV
+         C79ImPE0FAQmLT5GYRIS1m2SJkHzIXKoPxb+UNCz1G8FIDQeh012bXv/sWBP4vzTrk8u
+         2HT44h1pLheyyu49MmG9iY5qJZjKvsYGff2WWipTMqvfJ+Pcc26GG9PjVsWIRXmSEhOG
+         vzw527mqikJPfhxOdIs7Ju/IzwKBEMDgm3Lq4DDPdGYxlqsEIjBh9ex5+YWwUnExtIKg
+         zLbw==
+X-Gm-Message-State: AFq9FYL+soe8y9jnQqPvfvEzm0a6X/TPGGdiZLANLqpx/ZijVnb4f2j7
+	jvE8pJgNb2MmFw+LPQ0LPG85XE5s837P6WDQLzntFjKf+VUvkpB1O+M+
+X-Gm-Gg: AYBFou0LQeYzkKoTgoetRzfj/d4J8wDKqVgUIgpWdzrB5h0dT3E6/UsHsciNSmrbmFl
+	zCQ7BIkIYlA8wPZ9mbjg8pywFpLtEIeyBTLqPx3Lgb9MJEHWUt3rv40x/DYJhfC5S1shh1V1hx/
+	8hQd8SN2Vgab/iqa8Qn4unbygUDgys29YtQ0cd6F2gjaMkNpV7O5EmxX6e7TOW6XX60Cr+1/cXJ
+	Ipg/BS8+d2WxmWflfmQnz7T/xlO7AEufnS5FkqdttYcCiOrkoj8S6VJYy0S/yaRmiO15pAU9IYb
+	lBE09MzH8w4bTQt5fBaD0B8fgKS5Z6MdXvUys+qlMf6RapldkVvLxgJszXDRfwdEIZVX6N0CP4S
+	5Slhu2fN9YigzYmHcz/FEwK8w8ss+rU95fv15UI+LjwRRMw2AY02wqPm07e+eGjBvFSxGdGbUtO
+	m37r9arcvoBa59lANk6/jLGPH1ouQCejKGsS03ekac6p3P9BjiAcAA6AEUTqfpBJUErelvLB4+g
+	/63CHOMn1PHv+w2Vb1w9MOZ7l3ljIdR/Mft5UENiAVPZhkGL/W3OB76OIJTZ0avExiLHYHgPR4a
+	lHhf84ch3bvznWa0exPtyFjSgiMMvhPYBDQPEMEHwWDQlmsFdkzUYT1oFCT77Gh1h8xU/CUxu5Z
+	bIYna
+X-Received: by 2002:a05:600c:8518:b0:49f:cbf3:551c with SMTP id 5b1f17b1804b1-4a18e4a8ca6mr128648855e9.12.1791745828643;
+        Sun, 11 Oct 2026 12:10:28 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-a124-4001-d491-d32f-6b9f-21c5.310.pool.telefonica.de. [2a02:3100:a124:4001:d491:d32f:6b9f:21c5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9adf5e6sm15237808f8f.56.2026.10.11.12.10.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Oct 2026 12:10:27 -0700 (PDT)
+Date: Sun, 11 Oct 2026 21:10:23 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Stephen Hemminger <stephen@networkplumber.org>, Arend van Spriel <arend.vanspriel@broadcom.com>, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH net v2 1/2] netpoll: use a raw lock for the deferred
+ transmit queue
+Message-ID: <asveuLDEf6a44bkD@gmail.com>
+References: <20260928064239.32456-1-kmehltretter@gmail.com>
+ <20260930192103.62973-2-kmehltretter@gmail.com>
+ <20261001074819.gQ3w8q6P@linutronix.de>
+ <ar7sTVun7mF-4nl6@gmail.com>
+ <20261009155225.6Uy7b0wd@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261009155225.6Uy7b0wd@linutronix.de>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+On Fri, Oct 09, 2026 at 05:52:25PM +0100, Sebastian Andrzej Siewior wrote:
+> 
+> I would suggest to untangle that local-irq-disable assumption. Then we
+> end up with the ::write_atomic callback on PREEMPT_RT which will raise
+> warnings. But those will appear only on panic() and as the last console
+> due to CON_NBCON_ATOMIC_UNSAFE so everything will go according to the
+> plan.
+> On !RT the whole __netpoll_send_skb() will be with disabled interrupts
+> due to the console lock. On RT it won't and I don't know if anything
+> down the call chain assumes that.
+> 
+> To illustrate my idea a bit
+> 
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+I've got a candidate based on your sketch. It keeps interrupts enabled
+for the RT printer thread and the deferred worker. IRQ-disabled direct
+sends keep their existing path.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I have one question about retries. I've kept netpoll's retry budget of
+about one tick, with BH disabled until deferring to the worker. The
+IRQ-enabled RT sender cannot poll, and with the BH lock enabled the wait
+holds off local completion work.
 
-- [High] In drivers/net/wwan/mhi_wwan_ctrl.c, mhi_wwan_dtr_remove() calls
-  mhi_unprepare_from_transfer() at line 448.
-- [Medium] The driver keeps no record of DTR/RTS updates that have not
-  yet reached the modem.
-- [Medium] mhi_wwan_dtr_remove()
-  (drivers/net/wwan/mhi_wwan_ctrl.c:448-454) relies on the comment's…
+Would you instead defer immediately, or enable BH between attempts?
 
---
+So far, the RT locking tests look good, including on hardware. The
+generic change also removes the sleeping-lock reports with macb and ENA
+on Ethernet.
 
-net: wwan: mhi_wwan_ctrl: drive DTR/RTS via the IP_CTRL channel
+Panic handling and record ordering remain open. The non-RT console and
+IRQ-disabled atomic paths still need to be addressed.
 
-This patch adds a second mhi_driver to mhi_wwan_ctrl that binds the
-IP_CTRL MHI channel. It implements the wwan ->dtr_rts op by sending a
-HOST_STATE message on the IP_CTRL channel of the same controller. A
-single DL sink buffer stays queued on IP_CTRL, and a delayed work item
-retries the requeue when it fails with -ENOMEM.
-
-> diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
-> index a31d8540fbb85..feb9c03b6392b 100644
-> --- a/drivers/net/wwan/mhi_wwan_ctrl.c
-> +++ b/drivers/net/wwan/mhi_wwan_ctrl.c
-
-[ ... ]
-
-> @@ -103,6 +134,61 @@ static void mhi_wwan_ctrl_refill_work(struct work_struct *work)
->  	}
->  }
->  
-> +/* Signal the modem's DTR/RTS lines over its own controller's IP_CTRL channel */
-> +static int mhi_wwan_ctrl_send_dtr(struct mhi_wwan_dev *mhiwwan, unsigned int mdmbits)
-> +{
-
-[ ... ]
-
-> +	if (!ctrl_dev) {
-> +		dev_dbg(&mhiwwan->mhi_dev->dev,
-> +			"IP_CTRL not enumerated; DTR/RTS not signalled to modem\n");
-> +		return 0;
-> +	}
-
-[ ... ]
-
-> +	ret = mhi_queue_buf(ctrl_dev, DMA_TO_DEVICE, dtr_msg, sizeof(*dtr_msg),
-> +			    MHI_EOT);
-> +	if (ret) {
-> +		dev_dbg(&mhiwwan->mhi_dev->dev,
-> +			"failed to queue DTR/RTS signal: %d\n", ret);
-> +		kfree(dtr_msg);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static void mhi_wwan_ctrl_dtr_rts(struct wwan_port *port, unsigned int mdmbits)
-> +{
-> +	mhi_wwan_ctrl_send_dtr(wwan_port_get_drvdata(port), mdmbits);
-> +}
-
-[Severity: Medium]
-The HOST_STATE update is dropped in these cases:
-
-- mhi_queue_buf() fails here (-EAGAIN on a full UL ring, -EIO, -ENOMEM).
-- No IP_CTRL entry is registered yet.
-
-mhi_wwan_ctrl_dtr_rts() ignores the return value, and the wwan core has
-already committed at_data.mdmbits.
-
-Could TIOCMGET then report DTR as asserted when the modem never received
-it? If so, the modem would hold back URCs until the next TIOCM* ioctl or
-reopen.
-
-A related case: mhi_wwan_dtr_probe() can register IP_CTRL after an AT
-port is already open, for example after an unbind/rebind of the IP_CTRL
-device. The port's current mdmbits are not replayed to the modem in that
-case.
-
-The commit message describes this as intended:
-
-  Delivery is best-effort: at_data.mdmbits always reflects the committed
-  userspace intent for TIOCMGET regardless of whether the IP_CTRL message
-  was queued, and the next ioctl or open/close cycle will resynchronise
-  the modem state.
-
-Each TIOCMSET/TIOCMBIS/TIOCMBIC does resend the full bits. Would it still
-be worth replaying the state from mhi_wwan_dtr_probe() for ports that are
-already open, or retrying a failed send?
-
-[ ... ]
-
-> @@ -255,6 +342,118 @@ static void mhi_wwan_ctrl_remove(struct mhi_device *mhi_dev)
-
-[ ... ]
-
-> +static void mhi_wwan_dtr_remove(struct mhi_device *mhi_dev)
-> +{
-> +	struct mhi_wwan_dtr *dtr = dev_get_drvdata(&mhi_dev->dev);
-> +
-> +	mutex_lock(&mhi_wwan_dtr_lock);
-> +	list_del(&dtr->node);
-> +	mutex_unlock(&mhi_wwan_dtr_lock);
-> +
-> +	mhi_unprepare_from_transfer(mhi_dev);
-> +	/* No DL callbacks after unprepare, and a pending retry now fails on
-> +	 * the disabled channel without rescheduling
-> +	 */
-> +	cancel_delayed_work_sync(&dtr->rx_refill);
-
-[Severity: High]
-Can mhi_wwan_dtr_refill_work() still be inside mhi_queue_buf() when
-mhi_unprepare_from_transfer() tears the channel down here?
-
-The work is only cancelled after unprepare. Suppose a DL sink requeue
-failed with -ENOMEM (for example map_single failed) and scheduled
-rx_refill. The work may already have passed the ENABLED check in
-mhi_gen_tre(). chan->lock is dropped before the doorbell is rung:
-
-mhi_wwan_dtr_refill_work()
-  mhi_wwan_dtr_queue_rx()
-    mhi_queue_buf()
-      mhi_queue()
-        mhi_gen_tre()     <- ch_state checked under chan->lock, then dropped
-        read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
-        ...
-        mhi_ring_chan_db()
-          *ring->ctxt_wp = cpu_to_le64(db);
-
-At the same time, on the remove side:
-
-mhi_wwan_dtr_remove()
-  mhi_unprepare_from_transfer()
-    mhi_unprepare_channel()
-      mhi_reset_chan()    <- takes pm_lock only as a reader
-      mhi_deinit_chan_ctxt()
-        dma_free_coherent(... tre_ring ...);
-        vfree(buf_ring->base);
-        tre_ring->ctxt_wp = NULL;
-
-On a normal unbind or rmmod, pm_state is still M0, so
-MHI_DB_ACCESS_VALID() passes. Wouldn't the doorbell write then go through
-a NULL ctxt_wp?
-
-The comment says a pending retry fails on the disabled channel. That
-seems to hold only for a work run that starts after the channel is
-DISABLED, not one that overlaps unprepare.
-
-mhi_wwan_ctrl_stop() in the same file cancels its refill work before it
-calls mhi_unprepare_from_transfer(). Would calling
-disable_delayed_work_sync(&dtr->rx_refill) before
-mhi_unprepare_from_transfer() here close this? It would also make any
-later schedule_delayed_work() from a DL callback a no-op.
-
-> +	kfree(dtr->rx_buf);
-> +	kfree(dtr);
-> +}
-
-[Severity: Medium]
-Is the "No DL callbacks after unprepare" assumption guaranteed for this
-channel?
-
-In the pci_generic configs, software channels are on event ring 0, which
-is MHI_ER_CTRL. mhi_ctrl_ev_task() processes that ring without taking
-mhi_event->lock. parse_xfer_event() drops mhi_chan->lock before it calls
-the client callback:
-
-parse_xfer_event() {
-    ...
-			read_unlock_bh(&mhi_chan->lock);
-
-			/* notify client */
-			mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
-    ...
-}
-
-mhi_unprepare_channel() only takes chan->lock to set DISABLED, so it does
-not appear to wait for a callback that is already running.
-
-Consider this sequence:
-
-1. mhi_wwan_dtr_dl_xfer_cb() calls mhi_wwan_dtr_queue_rx(), which gets
-   -ENOMEM from mhi_gen_tre() while the channel is still ENABLED.
-2. The callback is then delayed, for example by the
-   dev_warn_ratelimited() output or by threaded softirqs on PREEMPT_RT.
-
-Could remove finish unprepare, cancel_delayed_work_sync() and kfree(dtr)
-before the callback continues? The callback would then run:
-
-    schedule_delayed_work(&dtr->rx_refill, msecs_to_jiffies(100));
-
-on freed memory, and mhi_wwan_dtr_refill_work() would later dereference
-the freed dtr.
-
-In the common case, the same ctrl tasklet that runs the callback also
-handles the UL RESET command completion, which closes the window. The
-window opens in two cases:
-
-- mhi_unprepare_channel() skips the RESET waits through the
-  !(BIT(mhi_cntrl->ee) & mhi_chan->ee_mask) branch.
-- The event and command rings are split.
-
-So this one is more speculative. Would the disable_delayed_work_sync()
-before mhi_unprepare_from_transfer() suggested above also prevent this
-re-arm?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261007182238.1154851-1-peter.hunt%40opengear.com
+Thanks,
+Karl
