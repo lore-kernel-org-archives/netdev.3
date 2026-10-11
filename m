@@ -1,66 +1,182 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DE51B87C9;
-	Sun, 11 Oct 2026 00:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B285523D2B1;
+	Sun, 11 Oct 2026 01:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791679891; cv=none; b=eBAggIL/6ZEWiAfhZJ9trVSylfcC2Td9zfSK0cwRAGAoLXk7gQA35DEfFa2m6Dj5jU4/cETovsP5LNIaoBqlwNPac6CYaGQaMt57N6kY8clWihPGc/rpFWP1x2+aTD0VSW7fOQtvZ80+08KyfOPjXqSrbAWMbiJ+PbBTKtouT10=
+	t=1791681807; cv=none; b=qKQcJzTEIUaNpm8nOv3Yni9OsVk2NPGEyQ9uMaylmnVSyJaXt7Lfau4GPkeHzOcsOx0oUvieTkI5OP17jvvRpH9B0cFnMMqFM0w+MuuQdXiyJCJ9os7NgBqgV5LWYXzx4jtqNS/nYWsgMwovbKmttn5xft0zdHL0njkNBwkkSXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791679891; c=relaxed/simple;
-	bh=DcxkDcnvlybE5aprTjKgL+Sw0SO1onWzZZMQyEUG5Ok=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=fCTJdzSeHIfmE5c0sAc2LFrqhapOttvE3NV2nct1OEiIb/buxGeLqZDmDb1XlXZ4QGuxACgwGeYQoBRyDc2UOlglyy9DBN9au21jqAQpuVcP1jQ+D5RkLPrAe789njpJRVbgoq05hOLo19WIYL+5zPOcZ9AylWyriSekC1VWd2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100.1)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1xFhmX-000000005u9-2N0t;
-	Sun, 11 Oct 2026 00:51:17 +0000
-Date: Sun, 11 Oct 2026 01:51:14 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Josef Schlehofer <pepe.schlehofer@gmail.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] net: sfp: add quirk for TP-LINK SM410U
-Message-ID: <172a4fed74d35b1be51f4e8aba2222aa33845b08.1791679663.git.daniel@makrotopia.org>
+	s=arc-20240116; t=1791681807; c=relaxed/simple;
+	bh=S/iR5ZwEHwlqso+EA2qul9oFNcD0effkoti8sZFvXcA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D1/BbTZLgN7RfTaTdatKt/y8kTn9TYrIIH3oRk6hZQQLVDoWTW3iujXu8dcfVd8yaZSa8n357Sc9F+kTs8oSm8YUYoae+4Gxqb9W/EbOcfEEbactTzIY1K9/vq8gFApW62AsGHLwA6IOD2MbsZngrU94FPVITN5vmnfaWppQf+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JH2Q9sOp; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JH2Q9sOp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2811F000FF;
+	Sun, 11 Oct 2026 01:23:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791681806;
+	bh=n7E0hFoL1L830TCgQ2PQGlQVAtS4G3r4ObSfPqRqlew=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=JH2Q9sOpWLqAHEdnkOrBhwueQLGpriY7wxXHmohKvxswT6LRjHGTnFtS0pKBVvg9e
+	 jFtXzovBvMHYzNCSmyaf2uyjDvjOy8OGC9LXbyoouzvGD3jqnBtTAnh9kHZx50IT8K
+	 D/pH9AnacF8aGj8VLUYOIr49SLnXMsmBI2aJw1p8ojpukXUjC5Jvvs3eAJfLGY+q93
+	 h4Xb1cqqBECwqh1/AqSD4nJqJoJsobM0Z74SAEy8doFoFYesIy5ctukmemI9NjzTUs
+	 4nW0VDHedqYiUt7ODN8U0yOCJ8Ca+Z2aBOVJxrUeF60NseFFIbcmiVXLEJRl1MtITD
+	 zmNr0xzqj98dA==
+Subject: Re: [PATCH net-next] selftests: net: bareudp: Add stream tests with
+ software GSO
+From: netdev-bot+sashiko@kernel.org
+To: yanhaishuang@cmss.chinamobile.com
+Cc: netdev@vger.kernel.org, willemb@google.com, martin.varghese@nokia.com,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sun, 11 Oct 2026 01:23:25 +0000
+Message-ID: <179168180510.434549.891701914488385708@kernel.org>
+In-Reply-To: <20261008055920.1560930-1-yanhaishuang@cmss.chinamobile.com>
+References: <20261008055920.1560930-1-yanhaishuang@cmss.chinamobile.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-The TP-LINK SM410U is a 2.5G copper module which is based on RealTek
-RTL8221B, but doesn't seem to offer any way to access the PHY over I2C.
-Add a quirk to disable in-band which isn't supported by the PHY.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
----
- drivers/net/phy/sfp.c | 1 +
- 1 file changed, 1 insertion(+)
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 2b5528ae930d1..a2aaffeb2063d 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -652,6 +652,7 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK_F("XikeStor", "SKT-2.5G-100M", sfp_fixup_xikestor_2_5g),
- 
- 	SFP_QUIRK_S("ZOERAX", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
-+	SFP_QUIRK_S("TP-LINK", "TL-SM410U", sfp_quirk_oem_2_5g),
- };
- 
- static size_t sfp_strlen(const char *str, size_t maxlen)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The two new "Unicast MPLS stream over UDPv4/UDPv6" tests never
+  push a GSO packet through bareudp's UDP-tunnel software segmentation.
+- [Low] exit_cleanup() calls cleanup_all_ns before the new `[ -n
+  "${TMPFILE}" ] && rm -f "${TMPFILE}"`.
+
+--
+
+selftests: net: bareudp: Add stream tests with software GSO
+
+This patch adds TCP stream tests to bareudp.sh. After each ping test, a
+16 MiB file is copied with socat from NS0 to NS3. UDP tunnel segmentation
+offload is turned off on the underlay veths so that bareudp's GSO packets
+are segmented in software.
+
+> diff --git a/tools/testing/selftests/net/bareudp.sh b/tools/testing/selftests/net/bareudp.sh
+> index d9e5b967f8151..4b6d3a64f3c3f 100755
+> --- a/tools/testing/selftests/net/bareudp.sh
+> +++ b/tools/testing/selftests/net/bareudp.sh
+> @@ -105,17 +105,27 @@
+
+[ ... ]
+
+>  # Exit the script after having removed the network namespaces it created
+>  exit_cleanup()
+>  {
+>  	cleanup_all_ns
+> +	[ -n "${TMPFILE}" ] && rm -f "${TMPFILE}"
+
+[Severity: Low]
+exit_cleanup() runs from the EXIT trap, and set -e is still active at that
+point. cleanup_all_ns can return non-zero. For example, cleanup_ns() in
+lib.sh sets ret=1 when it hits this path:
+
+tools/testing/selftests/net/lib.sh:cleanup_ns() {
+    ...
+		if ! busywait $BUSYWAIT_TIMEOUT ip netns list \| grep -vq "^$ns$" &> /dev/null; then
+			echo "Warn: Failed to remove namespace $ns"
+			ret=1
+    ...
+}
+
+When that happens, does the shell exit before the rm? That would leave the
+16 MiB file that setup_underlay() created with mktemp and dd in $TMPDIR.
+
+Would it help to remove TMPFILE before calling cleanup_all_ns, or to
+tolerate its failure?
+
+[ ... ]
+
+> @@ -307,12 +380,18 @@ ping_test()
+
+[ ... ]
+
+>  	if [ $MPLS_UC ]; then
+>  		ping_test_one "${PING6}" "2001:db8::203" "Unicast MPLS packets over ${UNDERLAY}${MODE}"
+> +		stream_test_one "TCP6:[2001:db8::203]:${STREAM_PORT}" \
+> +			"Unicast MPLS stream over ${UNDERLAY}${MODE}"
+>  	fi
+>  }
+
+[Severity: Medium]
+The new header comment says:
+
+  so that the GSO packets encapsulated by bareudp are segmented in software.
+
+Does that hold for the two Unicast MPLS stream tests?
+
+In NS0, mpls_xmit() sets skb->protocol to ETH_P_MPLS_UC. veth01 advertises
+GSO in its MPLS features:
+
+drivers/net/veth.c:veth_setup() {
+    ...
+	dev->mpls_features = NETIF_F_HW_CSUM | NETIF_F_GSO_SOFTWARE;
+    ...
+}
+
+So the TSO skb reaches NS1 unsegmented, and the veth10 ingress rule
+redirects it to bareudp_ns1. There, validate_xmit_skb() masks the features
+through netif_skb_features()->harmonize_features()->net_mpls_features():
+
+net/core/dev.c:net_mpls_features() {
+    ...
+	features &= skb->dev->mpls_features;
+    ...
+}
+
+bareudp_setup() sets dev->features and dev->hw_features but never
+dev->mpls_features. That field only holds NETIF_F_SG, which
+register_netdevice() adds, so all the TSO bits are cleared.
+
+If mpls_gso is loaded, mpls_gso_segment() splits the skb before
+bareudp_xmit(). bareudp then only encapsulates single segment packets, and
+software UDP tunnel segmentation on veth12/veth21 never runs for MPLS.
+
+If no ETH_P_MPLS_UC offload is registered, skb_mac_gso_segment() returns
+-EPROTONOSUPPORT and the skb is dropped. With CONFIG_NET_MPLS_GSO=n, the
+drop happens later instead, in skb_udp_tunnel_segment() at veth12, because
+the inner protocol is MPLS.
+
+tools/testing/selftests/net/config doesn't list CONFIG_NET_MPLS_GSO. It
+only ends up =m through CONFIG_OPENVSWITCH=m, and nothing loads
+mpls_gso.ko automatically. In those setups, could the MPLS stream tests
+time out on a correct kernel?
+
+The commit message also suggests these tests don't reach the tunnel GSO
+path:
+
+  Without commit c57b2e60d4bf ("bareudp: set the inner protocol to the
+  protocol of the packet"), the IPv4 and IPv6 streams over UDPv6, and the
+  IPv6 stream over UDPv4 in multiproto mode, time out.
+
+Before that commit, an MPLS GSO skb reaching UDPv6 tunnel segmentation
+would have kept the stale ETH_P_IPV6 inner protocol from mpls_xmit(). Yet
+the MPLS stream over UDPv6 isn't listed as timing out.
+
+Should the MPLS stream tests be dropped? Alternatively, the header comment
+and commit message could be updated and CONFIG_NET_MPLS_GSO added to the
+selftests config.
 
 -- 
-2.56.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008055920.1560930-1-yanhaishuang%40cmss.chinamobile.com
