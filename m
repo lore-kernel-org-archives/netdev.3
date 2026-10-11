@@ -1,85 +1,57 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cvsmtppost36.nm.naver.com (cvsmtppost36.nm.naver.com [114.111.35.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF9534E75D
-	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 16:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3072D2DC357
+	for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 16:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.111.35.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791736213; cv=none; b=TmSSnP6uxGR2qydzTQBa/7DpZcMNY/x/xeFczi/C429zJQwDlMSWM4GMhSsgW4OYGJt6Dr88DTrod6uDSuZiNpEvG/nFNAx1r9lSJkluNrE0fMNe9B8ZIk/k4CJFazUNkwP6qrZtRMjlugej0gvAAXEuuhi0i8/Oa4uFEqWfSl0=
+	t=1791736683; cv=none; b=GjKJ2dPCt+y2b9lk2Sct2758Hz4MkAV2QoLw5ceD2sULbp/vcLEk8CpPhf1o/zj77XdLLqxyLWxvWlB6V2puVPM1hfW9Q0PZaq2SgXjZl8KJlggs3F0HMvL/4NDfhhaAU8HTeGlru972V+97CWbUB7W2ZaD7O1uOlEJjwBeENmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791736213; c=relaxed/simple;
-	bh=hEc0kCOZfiUiEVRrrIDOsGo2o7eOAQwwDExOmAG8wnk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnbiXx3izMbWYhjUMMB8Y0YM7Q1hCoHQwRCWf3vlDfzZA4g+NQ8Xm/4rv/HE1+Dm5aBt3wjtvnN+3iTfO3he8VyLGEmrD/7fWBcYV8WcR+jN9Y6EWivkcQAiNdBBSxaFrLVvC7HcQmYHpBbjVCjEU3eRk2PQwUIXwrrlswvlYSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=E5o32VkB; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	s=arc-20240116; t=1791736683; c=relaxed/simple;
+	bh=mfRz2zk9VSkKhAjFcY7J3woD/6Sps4QomEr2JVkpR0E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mzeZjLAVERn/Zc00EYZ9OM2SbLsmYW/UBS0lIf+gs9Q7xoEhiGC2MQlUxHL3zDty5kbXJy4+HjMx6vEAA9D0hguEgQ0VCl0IMWcdoMwUOtQbMiimdNQz4Dze9QN8AnxnSJv6VuInLb/PYQvaTh2uTSfq3iVLBa75n1tHIWpg4UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com; spf=pass smtp.mailfrom=naver.com; dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b=GG23faiI; arc=none smtp.client-ip=114.111.35.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=naver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=naver.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="E5o32VkB"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a018dc1f98so9055825e9.3
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 09:30:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1791736206; x=1792341006; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IAgIBxS7QL67cIVzFUUyXiPNC+DuOESUIt9z3Xwqot0=;
-        b=E5o32VkBFUzMHQRHx4jBWnA/wI3H7iAaw3hVn5jnobA4t2hdgxVT8zAz1/377VgTue
-         yR+bjHD+D/6C8EsB5WnpfWkJh76MVSlcSiJUTgBHzgGBT9ZlalzBV3WH1DVqgA6hvBws
-         DWnEakL7S0yYGmLics/zDc7GmstJ0w9VFM7NbD3kG7slFO6/6UnI3BRX5qEW1i3xlGr6
-         YffIK1RQHglZePGxSmSDdYpykAcaexzxez08hzAhMfBAGJQOlWJkDt3AiIq1P5Qp4BYn
-         9ThV0zWUUUYIwUh59ES9ioE8TmhaRVwTpDQbzrSg+o5xcZwHPtgtxDjL2OS68MiuUFId
-         Ybpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791736206; x=1792341006;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IAgIBxS7QL67cIVzFUUyXiPNC+DuOESUIt9z3Xwqot0=;
-        b=rczwLpSO9vpU2mf1lmuTtbqx2m9nTEmLVTH9TZzKnmEZk9DcSpMxfccgJano0QNPq3
-         DaBfWqn7Gc/J3MDCeIm2oT/iGuiHf+gMYKJNjNd3bfzxw6n0fHYuV0Knt+6t218HMTay
-         hw6xvG85OrWs3SrHLJ4/HFM7MeVrX370IC6iLMq7DxtAHvbtRfYViIbH3o6paMkDU5lG
-         HgNv2he4JlizsLP4wcx4zYiVptEf+Zz8ytdMpEmfWbvJysW86bG/oZDfLzpevY3shZiU
-         Qy5LUmHjZJL4KheGUI5gzUEDGcZiMOqYnUZB7HWiJnrWKJ1fD0Jmisv/+/cEU5dl4xUD
-         uAaQ==
-X-Gm-Message-State: AFq9FYJIVOcD9if/gDwJ4KESW0QhRDc9KQyhSYkuPFRt6DSgqEWeZ6q/
-	N8rkAO6kU9CEy41nIJIlRhK1o/8y4N27cfVZlFQ0O4Acp+JuoSnGlBZyIekBqnIeVNtZR4yRa2A
-	WCexAig==
-X-Gm-Gg: AYBFou3oAGiSnRb91r4loqk2MOvBhkmh+R1jIiOlzyxtMTS9hfDvsmCuQLaDDOdkpjz
-	mT9Q9TXo57/p0v16sgwHroei5PfOYR/OjQU4gTcZ4U56FnAJdzVCqoFAtNwS3xxSmeDhMIe3lHC
-	Y1JJcJOhTdkzug1WulBMhwK3xt+ghAp4d5pSZUlgM763rXpBrlrS4WYjIm6+4KLV3fTC74NpI6u
-	UyYxGCerBoBtY7B2u8hP+s+YOak7WBdfhG50DHZXSTuUKixs0Pl2b+R4sT0E4r6MHH0/7lSJv/t
-	uj2NV0dgKsiNxxcWrDZUiwf+mVC+M+mx6nK20E7zfmrkIi6Wbt6tcNuSjVtrxaeYjTaBOT/t4aM
-	6vMyMQH5ldLnDul+zLBqwSB+EJWVRR9IT5L2mE9SnMH+Rb3qEvutY3sE1uIvF8VSHp0rXgMfRVk
-	NDu15NXxZGYBv+tG4z4BkSS9w0/WJ5MDpJKJJXWq7QnA7cOb4WvZ9KL4S8v1hnH3ROATOki5hRS
-	NE2SVpn1gXy68FOEhG+UoxJqwPN2654asbtxKwtdW8baXQ91zFnu6ZIGdB6PcpYPOg5PB05gulY
-	QdrasNiiJSRxSwEMAOOlAgfvEezLegWrOWG0fr+j6ayk1oIJFsR7z3rLbygR5FdYUXAuUXB9kIR
-	YiIf6tAHycu+i6kVEoyMhnhHR7Vu+rSI5rC81szUGKH1qN745TpMc4X+g6AMbrBzpTfy+dQvEFw
-	mTknRkk8rvGONnk4FUW92O2dPwhMBf8//BwIUALLkeztrD1BjF
-X-Received: by 2002:a05:600c:4747:b0:4a1:88de:9e8b with SMTP id 5b1f17b1804b1-4a18e49d65dmr136454365e9.5.1791736205975;
-        Sun, 11 Oct 2026 09:30:05 -0700 (PDT)
-Received: from Desktop.vpn.uni-hamburg.de (dhcp-40-52.vpn.uni-hamburg.de. [134.100.40.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9acc936sm14657920f8f.44.2026.10.11.09.30.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 09:30:05 -0700 (PDT)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	steffen.klassert@secunet.com,
-	willemb@google.com,
+	dkim=pass (2048-bit key) header.d=naver.com header.i=@naver.com header.b="GG23faiI"
+Received: from cvsendbo016.nm ([10.112.24.39])
+  by cvsmtppost36.nm.naver.com with ESMTP id LjU5JPdhQLSOxvzj12PYIA
+  for <netdev@vger.kernel.org>;
+  Sun, 11 Oct 2026 16:27:51 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=naver.com; s=s20171208;
+	t=1791736071; bh=mfRz2zk9VSkKhAjFcY7J3woD/6Sps4QomEr2JVkpR0E=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=GG23faiIDkvzzL9ASf//+PBZ0J78fWOf0B2a3HzDTvRlZj06LY0LdgOgcjy7v/F3G
+	 7/fOWD8Cp85kAO/5B9MieEVH28hRbctRt2andbisnWxUrA4m5O5iQDPW/ksH3ZUYjU
+	 xr6iUN8FxdjJn8ll7asG6uTWV++j6DiFJQPcwl55QevEQoYxqhWLeNp0CCzbz+D1HL
+	 F/PTJPN2Lad3Lpem1S4OsvfSyB0xMq9GkO0v7HMUtOG8E0zcu6VA/IuZJoauyMNPSD
+	 NkAmYd8XATWN2Qz7nt9/f47v3OVjo3DaHeTT7thTyzHGShbnphKwjn1y44AS0D9mre
+	 J+QDTgQLoGDVQ==
+X-Session-ID: NltzlvSiR0Wm6FzDlyrr8Q
+X-Works-Send-Opt: 0rRoWNkNjHmmKAidp4JZKHmmjAumjAurKAKmKqtwaACYkEljxBmwjAg=
+X-Works-Smtp-Source: lqKmFqulFqJZ+HmmFqMq+6E=
+Received: from localhost.localdomain ([125.130.170.186])
+  by cvnsmtp003.nm.naver.com with ESMTP id NltzlvSiR0Wm6FzDlyrr8Q
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Sun, 11 Oct 2026 16:27:50 -0000
+From: Seung Min Shin <guncraft2000@naver.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 3/3] ipmr: do not drop GSO packets that fit the MTU after segmentation
-Date: Sun, 11 Oct 2026 18:29:57 +0200
-Message-ID: <20261011162957.1328474-4-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261011162957.1328474-1-julius@bairaktaris.de>
-References: <20261011162957.1328474-1-julius@bairaktaris.de>
+Subject: [PATCH net v2] sctp: hold transport reference across connect wait
+Date: Sun, 11 Oct 2026 16:27:50 +0000
+Message-Id: <20261011162750.1529631-1-guncraft2000@naver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,50 +60,142 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ipmr_prepare_xmit() drops a packet with DF set when skb->len exceeds the
-route MTU, without checking whether it is a GSO packet. A UDP multicast
-stream received with fraglist GRO or UDP GRO forwarding enabled is
-aggregated into GSO packets, and every aggregate is dropped with
-FragFails, while ip_forward() lets the same packets pass by checking
-skb_gso_validate_network_len(). Do the same for multicast routing,
-leaving room for the outer header on tunnel vifs. ip6mr has no such
-check and leaves GSO packets to ip6_output().
+sctp_sendmsg_to_asoc() selects a transport before waiting for a new
+interleaved association to become established. sctp_wait_for_connect()
+drops the socket lock while sleeping.
 
-On an IPQ8074 router with fraglist GRO on, a 10 Mbit/s stream of
-1316-byte DF datagrams routed by igmpproxy loses 14.5 to 15.5% (n=3)
-and 0% with this change.
+While the lock is dropped, backlog processing can handle a COOKIE ACK and
+an ASCONF DEL-IP that removes the selected transport. sctp_assoc_rm_peer()
+then marks the transport dead and drops its association-owned reference.
+The transport can be freed through RCU before the send path resumes.
 
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Assisted-by: Claude:claude-opus-5-5
-Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
+After the wait, the stale pointer is assigned to newly created DATA or
+I-DATA chunks and later dereferenced by sctp_outq_select_transport().
+
+Hold a reference to the selected transport across
+sctp_wait_for_connect(). After the socket lock is reacquired, abort the
+send if the transport was marked dead. Callers without a selected
+transport pass NULL and retain their existing behavior.
+
+Cc: stable@vger.kernel.org
+Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Assisted-by: LLM
+Signed-off-by: Seung Min Shin <guncraft2000@naver.com>
 ---
- net/ipv4/ipmr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index f0666749b14a7..983565c0711fa 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -1914,6 +1914,7 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
- 	struct rtable *rt;
- 	struct flowi4 fl4;
- 	int    encap = 0;
-+	unsigned int mtu;
+Notes (sctp-connect-wait-v2):
+    v2:
+    - Rebase onto current net/main after commit 4f1da630d13de.
+    - Preserve the RCV_SHUTDOWN check added by that commit.
+    - Add the stable list now that the issue is public.
+    
+    v1: https://lore.kernel.org/netdev/20260928152132.3705137-1-guncraft2000@naver.com/
+    
+    Tested on net/main af32da41b032 with CONFIG_KASAN=y on x86-64.
+    
+    Before the patch, the reproducer triggered a KASAN slab-use-after-free in
+    sctp_outq_select_transport() on its first run. After the patch, 64 attempts
+    completed without a KASAN, refcount, BUG, WARNING, oops, or panic report. A
+    diagnostic run returned ESRCH in all 64 attempts and left the association in
+    SCTP_ESTABLISHED state. A normal interleaved connect/send smoke test passed.
+
+ net/sctp/socket.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
+
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index e35692dd8d30..189b89a40d46 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -75,7 +75,8 @@ static int sctp_wait_for_sndbuf(struct sctp_association *asoc,
+ 				struct sctp_transport *transport,
+ 				long *timeo_p, size_t msg_len);
+ static int sctp_wait_for_packet(struct sock *sk, int *err, long *timeo_p);
+-static int sctp_wait_for_connect(struct sctp_association *, long *timeo_p);
++static int sctp_wait_for_connect(struct sctp_association *,
++				 struct sctp_transport *, long *timeo_p);
+ static int sctp_wait_for_accept(struct sock *sk, long timeo);
+ static void sctp_wait_for_close(struct sock *sk, long timeo);
+ static void sctp_destruct_sock(struct sock *sk);
+@@ -1245,7 +1246,7 @@ static int __sctp_connect(struct sock *sk, struct sockaddr *kaddrs,
+ 		*assoc_id = asoc->assoc_id;
  
- 	vif_dev = vif_dev_read(vif);
- 	if (!vif_dev)
-@@ -1946,7 +1947,10 @@ static int ipmr_prepare_xmit(struct net *net, struct mr_table *mrt,
- 			return -1;
+ 	timeo = sock_sndtimeo(sk, flags & O_NONBLOCK);
+-	return sctp_wait_for_connect(asoc, &timeo);
++	return sctp_wait_for_connect(asoc, NULL, &timeo);
+ 
+ out_free:
+ 	pr_debug("%s: took out_free path with asoc:%p kaddrs:%p err:%d\n",
+@@ -1843,7 +1844,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+ 
+ 		if (asoc->ep->intl_enable) {
+ 			timeo = sock_sndtimeo(sk, 0);
+-			err = sctp_wait_for_connect(asoc, &timeo);
++			err = sctp_wait_for_connect(asoc, transport, &timeo);
+ 			if (err || sk->sk_shutdown & RCV_SHUTDOWN) {
+ 				err = -ESRCH;
+ 				goto err;
+@@ -1881,7 +1882,7 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+ 
+ 	if (unlikely(wait_connect)) {
+ 		timeo = sock_sndtimeo(sk, msg->msg_flags & MSG_DONTWAIT);
+-		sctp_wait_for_connect(asoc, &timeo);
++		sctp_wait_for_connect(asoc, NULL, &timeo);
  	}
  
--	if (skb->len+encap > dst4_mtu(&rt->dst) && (ntohs(iph->frag_off) & IP_DF)) {
-+	mtu = dst4_mtu(&rt->dst);
-+	if (skb->len + encap > mtu && (ntohs(iph->frag_off) & IP_DF) &&
-+	    !(skb_is_gso(skb) && mtu > encap &&
-+	      skb_gso_validate_network_len(skb, mtu - encap))) {
- 		/* Do not fragment multicasts. Alas, IPv4 does not
- 		 * allow to send ICMP, so that packets will disappear
- 		 * to blackhole.
+ 	err = msg_len;
+@@ -9381,7 +9382,9 @@ static bool sctp_writeable(const struct sock *sk)
+ /* Wait for an association to go into ESTABLISHED state. If timeout is 0,
+  * returns immediately with EINPROGRESS.
+  */
+-static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
++static int sctp_wait_for_connect(struct sctp_association *asoc,
++				 struct sctp_transport *transport,
++				 long *timeo_p)
+ {
+ 	struct sock *sk = asoc->base.sk;
+ 	int err = 0;
+@@ -9390,12 +9393,16 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
+ 
+ 	pr_debug("%s: asoc:%p, timeo:%ld\n", __func__, asoc, *timeo_p);
+ 
+-	/* Increment the association's refcnt.  */
++	/* Hold references while the socket lock is dropped. */
++	if (transport)
++		sctp_transport_hold(transport);
+ 	sctp_association_hold(asoc);
+ 
+ 	for (;;) {
+ 		prepare_to_wait_exclusive(&asoc->wait, &wait,
+ 					  TASK_INTERRUPTIBLE);
++		if (transport && transport->dead)
++			goto do_transport_dead;
+ 		if (!*timeo_p)
+ 			goto do_nonblock;
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+@@ -9424,7 +9431,8 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
+ out:
+ 	finish_wait(&asoc->wait, &wait);
+ 
+-	/* Release the association's refcnt.  */
++	if (transport)
++		sctp_transport_put(transport);
+ 	sctp_association_put(asoc);
+ 
+ 	return err;
+@@ -9443,6 +9451,10 @@ static int sctp_wait_for_connect(struct sctp_association *asoc, long *timeo_p)
+ do_nonblock:
+ 	err = -EINPROGRESS;
+ 	goto out;
++
++do_transport_dead:
++	err = -EAGAIN;
++	goto out;
+ }
+ 
+ static int sctp_wait_for_accept(struct sock *sk, long timeo)
+
+base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
 -- 
-2.53.0
+2.34.1
 
