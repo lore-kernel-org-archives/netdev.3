@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4803139022A;
-	Mon, 12 Oct 2026 18:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A623B3BE9;
+	Mon, 12 Oct 2026 18:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791831307; cv=none; b=mLAPVwkhkby5SQuqByhA8O9wp72I2d24xnCiDpoe0Rmap2zNapMigzOrIqLRUA3SQPN4zG8slfyoiRdCqY6T663LG4oYKnmazBYsXv7pFZ/erdyI+BwLVEVdmMYnPwXnB30sEfMpPYXJtkuOhSBmkwxM2VIM8ItZ5N60qBXKqMg=
+	t=1791831308; cv=none; b=IWLVNMLcPWzockNtaY4ZVz5OC1g3XIoBaxKPtMIMw40xO3+0p47UYQAmTkBea0fAOMvJKJzS/UpunP6gyGgBLqRTk+7f41Y1tdZxpceoC/9pG84PZpaWeFVG2VMffSZ/O1q0n08lCqFNXZ5vOSz9jKtcP2DlL0XFAVlWtpcryX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791831307; c=relaxed/simple;
-	bh=mn54VEFSO9BYGS9DJrNKynPu0E3YTdfhj48FM7wXe+c=;
+	s=arc-20240116; t=1791831308; c=relaxed/simple;
+	bh=8hELTSxHlCkmI97AVMjsFD7U8AjcRzKvsoJ0jemvbLo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HEPg45FnI35daafq6HalYcN9yFgkfNMGek73An//pJR8Y0SMVi1APjUYLUEAVkNc1U2IW5CVdJe5PkWhcZv4+LrtN0lDTKF6cKjIukoPTzgOgePL2Dazxers4PDYhgRgAli++qbb1VrkfsHieBkrSrXcw9v1FV2EfjdBRL209FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XsQD45KZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Ms76kSqeN8nIJXOosTvNxX3L8MDfJpABcbR7TDhtoBwHTxNRnED7YkzLqJV8MCF+puieN6OsCcQJLg/byyMyokgJtjJNN8d8bk6kMTTpX07Y74FT8RiV0NlLiNGl4zuXWdFFxWZz1dxRvA+MHhKboGnWYH7MqXg0MwqEN+gqcxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7Q0duKk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XsQD45KZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1C51F008A3;
-	Mon, 12 Oct 2026 18:55:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7Q0duKk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770861F0089B;
+	Mon, 12 Oct 2026 18:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791831305;
-	bh=FWf8BEPAafAqioNWSHTG/VKLEJntaaSOQcfM4GN5d9U=;
+	s=k20260515; t=1791831307;
+	bh=6vfqQO2QrV6a6SUEG26degKJt9tS+iPZ7F4DeqIuSUU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XsQD45KZxxd55koTO/Gr5WMjNTXladhUvZ8zTtj4qZk33NTHxS6kr7of9ODvUMZTk
-	 EDt1f2J0uXPn4+jPFZuBN4uOYICGVmbHUCcEnb+NFNnQq6LsPGExXn2gTGJOXLROe2
-	 VWrrSXoKe8wZdy12u7xe09zzu/Dx5VDSOE/rO4Ttqp/C25p7CRChUhr32y6FJOM6yP
-	 guKoI8msYPMdRtqZsoagUnOziyPI5o3YC9PZkuQ8VsQSONeLgSLw1TK7loYKJxNULa
-	 LHOsMCrOiUJ8mfqqzG1aZ9I93ryMoRrwYNwpTqXMuY/P7eWqm7Wm/iVFpmMK4CuPoB
-	 JuZCZJHpwpKLw==
-Subject:
- Re: [PATCH net-next v2 2/3] netlink: specs: add genetlink-legacy spec for GTP
+	b=d7Q0duKkPOgJgsD7HggLgdoH2++bwmjww1MuoPk6EYJ5tPcnC/wzgWF1Umq85+aec
+	 +2FpbGIfAoS2wo14iB+Gwdry2wwtyOjrhu8BGcTvHjJa4tteRqTJpTug+5wmN2Z0SY
+	 4ml7gsyA1N1nYteowWR1eB6VfsNpSzHNLcGSnDPOk4IFluu+wv8PjWRpP+nrJDjIRy
+	 IatT4EHqC0dFAbRYZNCiie15KBcMT7jHh1SQavuPD16O3nIaFiuGijsIxenyACqXSi
+	 sQFiTpvNoJmkIp8VLgQwqI6RvwyxvBFDPKAipYQoQxOjz5ycwZXXfaNCK2vb7d+4IR
+	 Dtdu2bSwFLDfA==
+Subject: Re: [PATCH net-next v2 3/3] selftests: net: add a test for the gtp
+ netlink family
 From: netdev-bot+sashiko@kernel.org
 To: anilkaushikwireless@gmail.com
 Cc: pablo@netfilter.org, laforge@gnumonks.org, donald.hunter@gmail.com,
  kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  horms@kernel.org, netdev@vger.kernel.org, osmocom-net-gprs@lists.osmocom.org,
  linux-kernel@vger.kernel.org
-Date: Mon, 12 Oct 2026 18:55:04 +0000
-Message-ID: <179183130475.434549.3854225855048467985@kernel.org>
-In-Reply-To: <20261008181031.4129029-3-anilkaushikwireless@gmail.com>
-References: <20261008181031.4129029-3-anilkaushikwireless@gmail.com>
+Date: Mon, 12 Oct 2026 18:55:06 +0000
+Message-ID: <179183130606.434549.10085139421249310466@kernel.org>
+In-Reply-To: <20261008181031.4129029-4-anilkaushikwireless@gmail.com>
+References: <20261008181031.4129029-4-anilkaushikwireless@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 4 · Low: 2
+Critical: 0 · High: 0 · Medium: 3 · Low: 3
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,243 +59,214 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The echoreq request attribute list in
-  Documentation/netlink/specs/gtp.yaml (lines 159-165: link, version,…
-- [Medium] The getpdp reply attribute list (&pdp-reply,
-  Documentation/netlink/specs/gtp.yaml lines 138-149), which the dump…
-- [Medium] The spec declares the 'gtp' multicast group
-  (Documentation/netlink/specs/gtp.yaml lines 167-170) but describes no…
-- [Medium] Adding Documentation/netlink/specs/gtp.yaml makes
-  tools/net/ynl/generated/Makefile generate and compile gtp-user.c/gtp-…
-- [Low] peer-addr6 and ms-addr6 are declared in
-  Documentation/netlink/specs/gtp.yaml with `checks: exact-len: 16`…
-- [Low] delpdp in Documentation/netlink/specs/gtp.yaml (line 120,
-  `request: *pdp-attrs`) reuses the full newpdp request list, so it…
+- [Medium] In tools/testing/selftests/net/gtp.py, main() calls
+  GtpFamily() (line 71) inside NetNSEnter, before ksft_run() and before…
+- [Medium] The patch adds gtp.py to TEST_PROGS in
+  tools/testing/selftests/net/Makefile (line 47) but does not add…
+- [Medium] Documentation/netlink/specs/gtp.yaml was added by commit
+  "netlink: specs: add genetlink-legacy spec for GTP" in this series and…
+- [Low] Both delpdp calls in gtp.py, add_del_pdp (lines 42-43) and
+  del_unknown_pdp (lines 64-65), send 'i-tei' together with 'ms-address'.
+- [Low] _add_gtp_dev() in tools/testing/selftests/net/gtp.py catches
+  every CmdExitFailure from `ip link add gtp0 type gtp role ggsn` and…
+- [Low] tools/testing/selftests/net/gtp.py is added with `new file mode
+  100644` (confirmed in the commit diff) but is listed in TEST_PROGS,…
 
 --
 
-netlink: specs: add genetlink-legacy spec for GTP
+selftests: net: add a test for the gtp netlink family
 
-This commit adds a genetlink-legacy YAML spec for the existing GTP generic
-netlink family. It covers the NEWPDP, DELPDP, GETPDP and ECHOREQ commands,
-the GTPA_* attribute set and the "gtp" multicast group. It also adds the
-spec to the GTP entry in MAINTAINERS.
+This adds a Python selftest for the gtp generic netlink family, driven by
+its ynl spec. It creates a gtp device and checks newpdp, getpdp and
+delpdp. It also adds a GtpFamily ynl wrapper to the selftest library and
+registers gtp.py in TEST_PROGS.
 
-> diff --git a/Documentation/netlink/specs/gtp.yaml b/Documentation/netlink/specs/gtp.yaml
+> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+> index 54beea2e348c4..3b9279bcdb6ec 100644
+> --- a/tools/testing/selftests/net/Makefile
+> +++ b/tools/testing/selftests/net/Makefile
+> @@ -44,6 +44,7 @@ TEST_PROGS := \
+>  	fin_ack_lat.sh \
+>  	fou_mcast_encap.sh \
+>  	fq_band_pktlimit.sh \
+> +	gtp.py \
+
+[Severity: Medium]
+Should CONFIG_GTP=m also be added to tools/testing/selftests/net/config?
+
+The config fragment has no CONFIG_GTP entry, and GTP is an opt-in
+tristate. Kernels built from the net selftest config fragment, as CI
+does, will not have the gtp driver or the gtp genl family. On those
+kernels newpdp, getpdp and delpdp never get exercised.
+
+Other tests in this directory that need a driver list it there, for
+example CONFIG_GENEVE=m, CONFIG_VXLAN=m, CONFIG_AMT=m and
+CONFIG_BAREUDP=m.
+
+Because of the GtpFamily() ordering in main() (see below), those runs
+would also be reported as failures, not skips.
+
+[ ... ]
+
+> diff --git a/tools/testing/selftests/net/gtp.py b/tools/testing/selftests/net/gtp.py
 > new file mode 100644
-> index 0000000000000..7193f5e53a257
+> index 0000000000000..984c626b7172a
 > --- /dev/null
-> +++ b/Documentation/netlink/specs/gtp.yaml
-> @@ -0,0 +1,170 @@
-
-[ ... ]
-
-> +      -
-> +        name: peer-addr6
-> +        type: binary
-> +        checks:
-> +          exact-len: 16
-> +        byte-order: big-endian
-> +        display-hint: ipv6
-> +        doc: IPv6 address of the remote GSN peer (GGSN or SGSN).
-> +      -
-> +        name: ms-addr6
-> +        type: binary
-> +        checks:
-> +          exact-len: 16
-> +        byte-order: big-endian
-> +        display-hint: ipv6
-> +        doc: IPv6 address of the mobile subscriber served by the context.
+> +++ b/tools/testing/selftests/net/gtp.py
+> @@ -0,0 +1,77 @@
+> +#!/usr/bin/env python3
 
 [Severity: Low]
-Does exact-len: 16 match what the kernel accepts for these two attributes?
-In gtp_genl_policy in drivers/net/gtp.c they have no type:
+This isn't a bug, but gtp.py is added with mode 100644 even though it is
+listed in TEST_PROGS.
 
-	[GTPA_PEER_ADDR6]	= { .len = sizeof(struct in6_addr), },
-	[GTPA_MS_ADDR6]		= { .len = sizeof(struct in6_addr), },
+For a non-executable test, run_one() in
+tools/testing/selftests/kselftest/runner.sh prints:
 
-That makes them NLA_UNSPEC. With the family's liberal validation, .len is
-a minimum length, so the kernel accepts longer payloads and
-nla_get_in6_addr() reads the first 16 bytes.
+    Warning: file $TEST is not executable
 
-ynl_gen_c.py turns exact-len into NLA_POLICY_EXACT_LEN(). A policy
-generated from this spec would therefore reject input the kernel accepts
-today.
+It then falls back to parsing the shebang. Running ./gtp.py directly
+fails with permission denied.
 
-For the same .len = sizeof(struct in6_addr) pattern, mptcp_pm.yaml,
-nfsd.yaml and wireguard.yaml use min-len: 16. Should these two use min-len
-as well?
-
-> +      -
-> +        name: family
-> +        type: u8
-> +        doc: Address family (AF_INET or AF_INET6) of the context addresses.
-
-[Severity: Medium]
-With this spec in place, tools/net/ynl/generated/Makefile will start
-generating and compiling gtp-user.c. That Makefile picks up every spec
-via SPECS_PATHS=$(wildcard $(SPECS_DIR)/*.yaml), and GENS_UNSUP only
-excludes conntrack and nftables.
-
-The compile uses -idirafter $(UAPI_PATH), so #include <linux/gtp.h> finds
-the build host's /usr/include/linux/gtp.h before the in-tree uAPI header.
-The generated tables use GTPA_PEER_ADDR6, GTPA_MS_ADDR6, GTPA_FAMILY and
-GTP_CMD_ECHOREQ.
-
-Older installed kernel headers (for example 6.1-era distro headers) don't
-define these identifiers. On such hosts, would make -C tools/net/ynl fail
-to build gtp-user.o?
-
-Other families with recent uAPI additions (ovpn, psp, wireguard, ovs_*,
-mptcp_pm and others) force the in-tree header in
-tools/net/ynl/Makefile.deps. Does gtp need a similar entry, like this:
-
-CFLAGS_gtp:=$(call get_hdr_inc,_LINUX_GTP_H_,gtp.h)
-
-> +
-> +operations:
-> +  list:
+Could the file be committed with the executable bit set?
 
 [ ... ]
 
-> +    -
-> +      name: delpdp
-> +      doc: Delete a PDP context.
-> +      attribute-set: gtp
-> +      dont-validate: [strict, dump]
-> +      flags: [admin-perm]
-> +      do:
-> +        request: *pdp-attrs
+> +def _add_gtp_dev(ns):
+> +    try:
+> +        ip("link add gtp0 type gtp role ggsn", ns=str(ns))
+> +    except CmdExitFailure:
+> +        raise KsftSkipEx("no gtp support (CONFIG_GTP, iproute2)")
 
 [Severity: Low]
-Is reusing the full newpdp request list correct for delpdp?
+Should this skip only when gtp is actually unsupported?
 
-gtp_genl_del_pdp() only checks GTPA_VERSION, then calls
-gtp_find_pdp()->gtp_find_pdp_by_link(). That lookup reads only LINK,
-NET_NS_FD (through gtp_find_dev()), FAMILY, MS_ADDRESS, MS_ADDR6, VERSION,
-TID and I_TEI.
+Right now any CmdExitFailure from ip link add becomes a KsftSkipEx. A
+real failure would be reported by ksft_run() as a skip, not a fail. That
+covers a regression in gtp_newlink() or gtp_create_sockets(), and also
+an EEXIST for gtp0, which all three cases share in one netns.
 
-The kernel silently ignores peer-address, peer-addr6, flow and o-tei on
-delete. Listing them here suggests in the spec, generated docs and
-generated C API that they help pick which context gets deleted.
-
-The getpdp request list below matches the lookup. Could delpdp use that
-list instead?
-
-> +    -
-> +      name: getpdp
-> +      doc: Get or dump one or more PDP contexts.
+> +    defer(ip, "link del gtp0", ns=str(ns))
+> +    ip("link set gtp0 up", ns=str(ns))
+> +    return ip("-d link show gtp0", ns=str(ns), json=True)[0]["ifindex"]
 
 [ ... ]
 
-> +        reply: &pdp-reply
-> +          attributes:
-> +            - version
-> +            - tid
-> +            - peer-address
-> +            - peer-addr6
-> +            - ms-address
-> +            - ms-addr6
-> +            - flow
-> +            - i-tei
-> +            - o-tei
-> +            - family
-> +      dump:
-> +        reply: *pdp-reply
+> +    pdp = [c for c in gtp.getpdp({}, dump=True) if c.get("i-tei") == 0x100]
 
 [Severity: Medium]
-Should link be in this reply list? gtp_genl_fill_info() always emits it:
+Is the link attribute missing from the getpdp reply in
+Documentation/netlink/specs/gtp.yaml? That spec was added earlier in this
+series by "netlink: specs: add genetlink-legacy spec for GTP", and this
+test is its first user.
+
+The reply attribute list is:
+
+        reply: &pdp-reply
+          attributes:
+            - version
+            - tid
+            - peer-address
+            - peer-addr6
+            - ms-address
+            - ms-addr6
+            - flow
+            - i-tei
+            - o-tei
+            - family
+
+The dump reply reuses the same list. However, gtp_genl_fill_info() in
+drivers/net/gtp.c always sends it:
 
 	if (nla_put_u32(skb, GTPA_VERSION, pctx->gtp_version) ||
 	    nla_put_u32(skb, GTPA_LINK, pctx->dev->ifindex) ||
 	    nla_put_u8(skb, GTPA_FAMILY, pctx->af))
-		goto nla_put_failure;
 
-That layout is used for GETPDP replies, for dump entries and for the
-NEWPDP/DELPDP notifications. ynl-gen-c builds reply structs and parsers
-only from the listed attributes, so generated C clients will drop the
-ifindex.
+Python ynl decodes against the whole attribute set, so this test is not
+affected. The generated C ynl code only parses the reply attributes
+that are listed. C users of getpdp would therefore not see which gtp
+device a dumped context belongs to.
 
-gtp_genl_dump_pdp() walks every gtp netdevice in the namespace. The
-per-message GTPA_LINK is the only way to tell which device a dumped
-context belongs to.
+Should link be added to pdp-reply?
 
-> +    -
-> +      name: echoreq
-> +      doc: Send a GTP-U echo request to a peer.
-> +      attribute-set: gtp
-> +      dont-validate: [strict, dump]
-> +      flags: [admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - link
-> +            - version
-> +            - peer-address
-> +            - peer-addr6
-> +            - family
+[ ... ]
 
-[Severity: Medium]
-This list doesn't seem to match gtp_genl_send_echo_req(), which requires
-ms-address:
+> +def del_unknown_pdp(gtp, ns) -> None:
+> +    link = _add_gtp_dev(ns)
+> +    with ksft_raises(NlError):
+> +        gtp.delpdp({"link": link, "version": 1,
+> +                    "i-tei": 0x999, "ms-address": "10.9.9.9"})
 
-	if (!info->attrs[GTPA_VERSION] ||
-	    !info->attrs[GTPA_LINK] ||
-	    !info->attrs[GTPA_PEER_ADDRESS] ||
-	    !info->attrs[GTPA_MS_ADDRESS])
-		return -EINVAL;
-	...
-	src_ip = nla_get_be32(info->attrs[GTPA_MS_ADDRESS]);
+[Severity: Low]
+Is i-tei actually used for the lookup in this call, and in the delpdp
+call in add_del_pdp()?
 
-ynl-gen-c only generates setters for the attributes listed for the op, so
-a generated C client has no way to send ms-address. Would every echoreq
-from such a client fail with -EINVAL?
+gtp_find_pdp_by_link() in drivers/net/gtp.c checks the MS address first:
 
-The handler is also IPv4-only. It uses ip4_route_output_gtp() and an IPv4
-udp_tunnel_xmit_skb(), and it never reads GTPA_PEER_ADDR6 or GTPA_FAMILY.
-Should peer-addr6 and family be dropped from this list?
+	if (nla[GTPA_MS_ADDRESS]) {
+		__be32 ip = nla_get_be32(nla[GTPA_MS_ADDRESS]);
+		...
+		return ipv4_pdp_find(gtp, ip);
+	} else if (nla[GTPA_MS_ADDR6]) {
+		...
+	} else if (nla[GTPA_VERSION]) {
 
-net-ns-fd is not listed either, but gtp_find_dev() honours it when
-resolving GTPA_LINK for this command:
+When ms-address is passed, the i-tei values (0x999 here, 0x100 in
+add_del_pdp()) are ignored. The GTPv1 TEI lookup through gtp1_pdp_find()
+is never exercised on the delete path.
 
-	if (nla[GTPA_NET_NS_FD])
-		net = get_net_ns_by_fd(nla_get_u32(nla[GTPA_NET_NS_FD]));
+Also, ksft_raises(NlError) accepts any netlink error. gtp_find_pdp()
+maps a failed lookup to ENOENT:
 
-Finally, the ms-address doc reads "IPv4 address of the mobile subscriber
-served by the context". For echoreq the value is used as the local source
-address of the echo request instead.
+	if (!pctx)
+		pctx = ERR_PTR(-ENOENT);
+
+Could this case check for ENOENT? Otherwise an unrelated EINVAL, ENODEV
+or EPERM would also pass.
 
 > +
-> +mcast-groups:
-> +  list:
-> +    -
-> +      name: gtp
+> +
+> +def main() -> None:
+> +    with NetNS() as ns:
+> +        with NetNSEnter(str(ns)):
+> +            gtp = GtpFamily()
+> +        ksft_run([add_del_pdp, add_two_pdp, del_unknown_pdp], args=(gtp, ns))
 
 [Severity: Medium]
-The gtp multicast group is declared, but no operation has notify:, event:
-or mcgrp:. Where are the messages the kernel multicasts on this group
-described?
+Can this fail instead of skip when the gtp module is not loaded yet?
 
-The kernel sends three kinds of message on GTP_GENL_MCGRP:
+GtpFamily() runs before any test has done ip link add ... type gtp.
+YnlFamily resolves the family id in _genl_load_families(), which uses a
+CTRL_CMD_GETFAMILY dump.
 
-  gtp_genl_new_pdp()->gtp_tunnel_notify(pctx, GTP_CMD_NEWPDP, ...)
-  gtp_genl_del_pdp()->gtp_tunnel_notify(pctx, GTP_CMD_DELPDP, ...)
-  gtp0_handle_echo_resp() / gtp1u_handle_echo_resp()
-      ->gtp_genl_fill_echo(msg, 0, 0, 0, GTP_CMD_ECHOREQ, echo)
+ctrl_dumpfamily() only walks families that are already registered.
+request_module() is only called from ctrl_getfamily(), so the dump does
+not autoload gtp.ko.
 
-The first two use the gtp_genl_fill_info() layout. The echo responses
-carry version, peer-address and ms-address.
+This happens with CONFIG_GTP=m before gtp.ko is loaded (the default
+after boot), and with CONFIG_GTP=n:
 
-In tools/net/ynl/pyynl/lib/ynl.py, pyynl only accepts notifications whose
-IDs are in async_msg_ids. YnlFamily.__init__() fills that set only from
-async ops.
+main()
+  GtpFamily()
+    YnlFamily.__init__()
+      GenlProtocol.__init__()
+        _genl_load_families()      -> KeyError on 'gtp'
+      raise YnlException("Family 'gtp' not supported by the kernel")
 
-A ynl client that subscribes to gtp would therefore drop each of these
-messages with "Unexpected msg id while checking for ntf". C codegen also
-won't produce any notification parsers.
+Nothing in main() catches this exception. The script exits with
+status 1, and the KsftSkipEx in _add_gtp_dev() is never reached.
 
-Echo responses only arrive through this multicast. Can a spec-based client
-send echoreq but never see the result?
+Could the module be loaded before GtpFamily() is created, for example by
+creating the device first? A missing family could then be turned into a
+skip.
+
+> +    ksft_exit()
+> +
+> +
+> +if __name__ == "__main__":
+> +    main()
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008181031.4129029-1-anilkaushikwireless%40gmail.com
