@@ -1,42 +1,81 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A63388881
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73B735A38C
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791771139; cv=none; b=C+bEdrFSpCWkJdrkDT+QWmN+pp18dcskQhSFnw2KczqH5FW0cRg38m+Hn0xRZCzpnDeX8BPbZ3a+WnCri8zcTFQjDCbwqjUcbx13KHbpIesRVZE++8oSJjuS782IEGavoEkBZn4+WRSCaURBXi7v4mp0hykXPOVgpspJ/vwspS8=
+	t=1791773291; cv=none; b=hmF64R7gFfBExpYoSiix9FGM4QwBkevBNNT8GVTdkZvpNe9LksLTvTHYVCTw6QN15GLFeGGnIu0Q6hcOjS3vZPvyn6uoDkv3Hw6Ga2xtKW7A8Di9SvDg0e4wApaYh36D92rBNrLXoqXN21INIWVcuMDp1BenlWdf3ejY2UfLHK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791771139; c=relaxed/simple;
-	bh=40AiFgw2qAMbIm0kZ+A7xzifSkJyqKyN5xXudD70nEw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FEURzoZRfXeC5D0D6IYdhPK2qVHxibQCby0JxfhYQDpPKF9ksaYs+d5lTIs9mqOgfAaApkGzpjtrumf3G7zaxqwfr1oKj2qTCosLAf7nbJX8Fuy8hKH29Z/ORUWcsMui8msZRJlzFrqWcdX58Y/JTi57yv7weZfhYabYSMmkGD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=IwdUEqpo; arc=none smtp.client-ip=117.135.210.4
+	s=arc-20240116; t=1791773291; c=relaxed/simple;
+	bh=wV1N0EMtebqy+ViUTneYqlfzv0kZ43eOEZ5LQbIFAjY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rohCPUr6qtX9CKMOsBxtdAvYjWRsFREw/6Vf22k+kMe+K3CJHLM/B/SyGffALOtQqayGZzqFI0RDj3BhnPE2FskltI0QScYl+hOpLr7nSxwRuA94tAIqwUjcw11lyUaGHI5s61n4BTsdJq8HgktapZD0UtmTXtkC5FJVE3CMA0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IsW03kCj; arc=none smtp.client-ip=74.125.82.169
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="IwdUEqpo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Mw
-	rXM1nqIep/CmBNVWkgKR3SCM0UQ9BfG6FkfeK1kV8=; b=IwdUEqpo387rDmV0ni
-	0gRzJ0uKWpGargMcgwGmlgig1r4PcPoYKIlLUSdiwMPcyFdwEJzHWx48U5f5Wky7
-	fHAAAhTopv3t9XiRlCrUZY1JmCXwd/vRHxam1i+Rm5C0BIqtw7uL0tUFp0M5Gi7r
-	D81YQDHcYg0vsJGGgUzfS1GF4=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wBHksPDQcxq9pjpDw--.11839S3;
-	Mon, 12 Oct 2026 10:11:19 +0800 (CST)
-From: Rongguang Wei <clementwei90@163.com>
-To: netdev@vger.kernel.org
-Cc: willemdebruijn.kernel@gmail.com,
-	jasowangio@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	Rongguang Wei <weirongguang@kylinos.cn>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [RESEND PATCH net v5 1/2] tun: keep a kernel copy of the socket filter program
-Date: Mon, 12 Oct 2026 10:11:12 +0800
-Message-Id: <20261012021113.45939-2-clementwei90@163.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IsW03kCj"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-3550c917fd3so2127792eec.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 19:48:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791773288; x=1792378088; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uP+7PH/D8Dh+nlraV4xc/jtLrXAcsGGaqtx5xWCT1ME=;
+        b=IsW03kCjrqG8gsW79hxVdCzY/nFBqhBfS7z+iv+8e3sk+FO28kAGX4XDI+Zz9E05jq
+         QCLY1XpINSku9ugXSHn40sEDkY4NhCdGl44EVO37YST5qrM85l8i7aqmG40hBqr4aRlO
+         rFoUVUOBoCpDuEqFoZpBI/jR6uGspP6N3+/QT5sIRnaa20WpxOdn+717dshqvOp0O1Zo
+         gyoIlinc4CuBlkT9st7y3a3kfpSUZTdLIuH548k3Lttctg6Vi7bhvWpDqj6lwsU0qWLn
+         ClaQY0F71+9P2mw9d6G8zgcoQc3EsqfosOee7UnVKKe2jSFVy2YKLC3o0EN4rZiUkc2m
+         X3xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791773288; x=1792378088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uP+7PH/D8Dh+nlraV4xc/jtLrXAcsGGaqtx5xWCT1ME=;
+        b=2Jo5ZpgyAf5HShL42cvQ3IZre/VY6USE17ncZRr4pc/QL7HKrzv+W7xtoze60LybZl
+         smz/QxRsxhrYgRUMLALiLevV1fFyi5BGz8qXIGrASx8SzHKO84TNHhAbu5rNG1aPGG0T
+         ixPFzK9sqsVZb893Wh1x8nKamA35rp63H9QeBjopsCnKDbTxUhhrYnuZzX2xidkRZXkm
+         zE8LYF67oOqTL+0Y8dN4DBoQ9ShyvG3I0PPPhK3KfFKGGtghyRrDICMM7W9X2qcj5Zee
+         ikrkT2Pk1FwqR0m3vnCBoXuP+0rn8ZCfJTAhaPpV/368ivA4KPmmrRAySyrZYMqSXSCK
+         nPqQ==
+X-Forwarded-Encrypted: i=1; AKwUvByg1gsoPnl4s1+K4KK/jSgWypa3OVoHBJbFTWWsX3LsgPA1fwH/jviqWBHNO+GbQ/u0dLYvn3w=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJN+yK+uj+J6S2F5dAeV3Bplgp9EQc1FFHz3Sz1vFsPZuq++W5P
+	Jv3QB0VBv0VbekqKQXV/PcrdgQowmJL15OG6olMDqdgcAeGRu2Ufi5iD
+X-Gm-Gg: AYBFou2yO9UYnEf5uyT2EdVq7+i68xNt5bLM1gVLLR8AiPgTI5xTjs6v/vk96fwGWMC
+	ivq5FEKold2Ip1wf1qsapY313hJlNWjT7jTmvBNxxmYWxbDHTK5jMBPBP4T871Ub6JrmDnfokvH
+	40vGXC7roXzJ7Xyahi1s3H4fz18619+chFd1L0AoN1gxJ2lOkhmyXOCJJzJJITA+XtH/ju/rLvY
+	/xn2AthDQ+WISScyHa9eogha4UsISVb77jL5YtH3JJwz1wfPAte8733JOLgk8Xwfj4V1h5sGIiK
+	RZBLNrzLaGt+58UyaYMgvl9b5mt6Vw7W34CzCSMiRj0LyqVwMSrI2TMPOPAYSNLHzJb2K4Ip8hf
+	2/S3srHhXYL8d7PWTSr6leyVRJlzUXb0JBWo09PmzIRseXXzW1X83iPUMp3kbZj1w3Kw3NpjV8v
+	6+FA3dii+7W87kCpCyQJa0CjXfcyKa33dzgpFcX/+gGJF/QpODQGo1kD2wVQakg4bCPkIfjZ2B2
+	36x00ULqs5WzFPYkZnVIW50ghD5hMfmqNVvPscAKe+ydE3tDjEKePs8zzdPanh8dQcidw5r0h6/
+	3t/7bcXeYLn6gtCstYO1W5vsWY40J1h58PZ4ThlXlecTy4rT31xfiQ==
+X-Received: by 2002:a05:7300:e9d6:10b0:359:bdc8:c9d5 with SMTP id 5a478bee46e88-359bdd83104mr4936824eec.21.1791773287658;
+        Sun, 11 Oct 2026 19:48:07 -0700 (PDT)
+Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca1b53dsm26075299eec.6.2026.10.11.19.48.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Oct 2026 19:48:07 -0700 (PDT)
+From: Anil Kaushik <anilkaushikwireless@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Shuah Khan <shuah@kernel.org>,
+	osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Anil Kaushik <anilkaushikwireless@gmail.com>
+Subject: [PATCH net-next v5 0/3] gtp: ynl spec for the GTP netlink family, a reply-command fix, and a selftest
+Date: Mon, 12 Oct 2026 02:47:57 +0000
+Message-Id: <20261012024800.400616-1-anilkaushikwireless@gmail.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261012021113.45939-1-clementwei90@163.com>
-References: <20261012021113.45939-1-clementwei90@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,254 +83,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBHksPDQcxq9pjpDw--.11839S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AFyrZr48GFyUKFy5XrWfAFb_yoWfAw17pF
-	W5W3W5tr15WF4xWwnxAFW0yF1aqw18Wa47ury8G34Y9F1qgr18u3y2gryYvwn8ArWUu3WI
-	vw1jgr9ruw1DZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jzlksUUUUU=
-X-CM-SenderInfo: 5fohzv5qwzvxizq6il2tof0z/xtbC-gdPumrMQcd6sQAA3n
 
-From: Rongguang Wei <weirongguang@kylinos.cn>
+This adds a ynl spec for the gtp genetlink family, a small driver fix
+it needed, and a selftest.
 
-TUNATTACHFILTER copies only the sock_fprog header, so tun->fprog.filter
-stays a pointer into the address space of the process that issued the
-ioctl. tun_attach() reads it again whenever a queue is attached to the
-persistent device later on.
+Patch 1: the GET and dump replies carried the family id in the command
+field, so ynl dropped them. Use GTP_CMD_GETPDP instead.
+Patch 2: the spec (NEWPDP/DELPDP/GETPDP/ECHOREQ), no uapi change.
+Patch 3: a selftest that adds, dumps and deletes PDP contexts.
 
-Rebuilding the filter from that pointer is not reliable. With the inverted
-check below, a failed read (-EFAULT for an unmapped address, -EINVAL for
-bytes that are not a valid classic BPF program) was not fatal: for a new
-tfile err is overwritten by "err = 0", so the queue was attached without a
-filter. And when the read succeeded, the early return meant the queue was
-never published at all.
+The multicast notifications are not in the spec: they reuse the request
+command values, which the ynl C generator can't express with the
+current uapi header. I can look at generator support as a follow-up.
 
-Keep the program in the kernel instead: tun->fprog_kern holds the
-instructions, and each queue gets its own program built from it with the
-new sk_attach_filter_kern(), the kernel memory counterpart of
-sk_attach_filter(). The copy is freed when the filter is detached or
-replaced and with the device, and tun->fprog is left untouched so
-TUNGETFILTER keeps its uapi behaviour.
+v5:
+ - ynl: add CFLAGS_gtp so the generated code builds with older headers
+ - spec: doc fixes (notifications, version 0, echoreq ms-address,
+   ms-addr6 /64), min-len for the IPv6 attributes
+ - selftest: only skip when GTP is unavailable, close the ynl handle
+v4:
+ - spec: request/reply attributes now match the handlers
+ - selftest: fix the gtp.ko autoload crash, check ENOENT, delete by
+   TEI and by MS address
 
-Also fix the inverted check at the same time when tun_attach() returns
-early when sk_attach_filter_kern() succeeds instead of when it fails.
-Neither change works on its own: with only the kernel copy, every re-attach
-returns 0 without publishing the queue; with only the check fixed, a
-re-attach that used to succeed without installing a filter would start to
-fail.
+v4: https://lore.kernel.org/netdev/20261010105740.223992-1-anilkaushikwireless@gmail.com/
+v3: https://lore.kernel.org/netdev/20261009060615.4177402-1-anilkaushikwireless@gmail.com/
+v2: https://lore.kernel.org/netdev/20261008181031.4129029-1-anilkaushikwireless@gmail.com/
 
-sk_attach_filter_kern() builds the program with bpf_prog_create(), which
-does not keep an original program, so SO_GET_FILTER returns -EACCES and
-sock_diag omits the filter for sockets that use it. tun sockets are not
-exposed as file descriptors, so this is not user visible.
+Anil Kaushik (3):
+  gtp: set a valid genl command in PDP context get and dump replies
+  netlink: specs: add genetlink-legacy spec for GTP
+  selftests: net: add a test for the gtp netlink family
 
-Because the length is checked in tun_copy_filter() before anything is
-replaced, a TUNATTACHFILTER with a bad header now fails early and leaves
-the previously attached filter in place; before this series the failure
-happened on queue 0 and cleared filter_attached.
+ Documentation/netlink/specs/gtp.yaml          | 183 ++++++++++++++++++
+ MAINTAINERS                                   |   2 +
+ drivers/net/gtp.c                             |   4 +-
+ tools/net/ynl/Makefile.deps                   |   1 +
+ tools/testing/selftests/net/Makefile          |   1 +
+ tools/testing/selftests/net/config            |   1 +
+ tools/testing/selftests/net/gtp.py            | 122 ++++++++++++
+ .../testing/selftests/net/lib/py/__init__.py  |   5 +-
+ tools/testing/selftests/net/lib/py/ynl.py     |   8 +-
+ 9 files changed, 322 insertions(+), 5 deletions(-)
+ create mode 100644 Documentation/netlink/specs/gtp.yaml
+ create mode 100755 tools/testing/selftests/net/gtp.py
 
-The inverted check was discovered by manual code inspection first [1], and
-the review of v1 reported the other things.
-
-[1] https://lore.kernel.org/netdev/20260923025653.59348-1-clementwei90@163.com/
-
-Fixes: 54f968d6efdb ("tuntap: move socket to tun_file")
-Link: https://lore.kernel.org/netdev/179027275318.2160803.4185895144088175048@kernel.org/
-Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
----
- drivers/net/tun.c      | 56 ++++++++++++++++++++++++++++++++++++++----
- include/linux/filter.h |  1 +
- net/core/filter.c      | 37 ++++++++++++++++++++++++++++
- 3 files changed, 89 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 242899f7fd07..e493c4554d5d 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -197,6 +197,7 @@ struct tun_struct {
- 	int			sndbuf;
- 	struct tap_filter	txflt;
- 	struct sock_fprog	fprog;
-+	struct sock_fprog_kern	fprog_kern;
- 	/* protected by rtnl lock */
- 	bool			filter_attached;
- 	u32			msg_enable;
-@@ -722,12 +723,47 @@ static void tun_force_wake_queue(struct tun_struct *tun,
- 	spin_unlock_bh(&tfile->tx_ring.consumer_lock);
- }
- 
-+/* Copy the filter that @argp points at into the kernel, so that it can be
-+ * installed again later, independent of the ioctl caller's address space.
-+ * tun->fprog and tun->fprog_kern are updated only once the copy succeeded.
-+ */
-+static int tun_copy_filter(struct tun_struct *tun, struct sock_fprog __user *argp)
-+{
-+	struct sock_fprog fprog;
-+	struct sock_filter *insns;
-+
-+	if (copy_from_user(&fprog, argp, sizeof(fprog)))
-+		return -EFAULT;
-+
-+	if (!fprog.len || fprog.len > BPF_MAXINSNS)
-+		return -EINVAL;
-+
-+	insns = kmalloc_array(fprog.len, sizeof(struct sock_filter),
-+			      GFP_KERNEL_ACCOUNT);
-+	if (!insns)
-+		return -ENOMEM;
-+
-+	if (copy_from_user(insns, fprog.filter,
-+			   fprog.len * sizeof(struct sock_filter))) {
-+		kfree(insns);
-+		return -EFAULT;
-+	}
-+
-+	kfree(tun->fprog_kern.filter);
-+	tun->fprog_kern.len = fprog.len;
-+	tun->fprog_kern.filter = insns;
-+	tun->fprog = fprog;
-+
-+	return 0;
-+}
-+
- static int tun_attach(struct tun_struct *tun, struct file *file,
- 		      bool skip_filter, bool napi, bool napi_frags,
- 		      bool publish_tun)
- {
- 	struct tun_file *tfile = file->private_data;
- 	struct net_device *dev = tun->dev;
-+	bool rollback_filter = false;
- 	int err;
- 
- 	err = security_tun_dev_attach(tfile->socket.sk, tun->security);
-@@ -752,10 +788,11 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- 	/* Re-attach the filter to persist device */
- 	if (!skip_filter && (tun->filter_attached == true)) {
- 		lock_sock(tfile->socket.sk);
--		err = sk_attach_filter(&tun->fprog, tfile->socket.sk);
-+		err = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
- 		release_sock(tfile->socket.sk);
--		if (!err)
-+		if (err)
- 			goto out;
-+		rollback_filter = true;
- 	}
- 
- 	if (!tfile->detached &&
-@@ -817,6 +854,11 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- 	WRITE_ONCE(tun->numqueues, tun->numqueues + 1);
- 	tun_set_real_num_queues(tun);
- out:
-+	if (err && rollback_filter) {
-+		lock_sock(tfile->socket.sk);
-+		sk_detach_filter(tfile->socket.sk);
-+		release_sock(tfile->socket.sk);
-+	}
- 	return err;
- }
- 
-@@ -2400,6 +2442,7 @@ static void tun_free_netdev(struct net_device *dev)
- 	security_tun_dev_free_security(tun->security);
- 	__tun_set_ebpf(tun, &tun->steering_prog, NULL);
- 	__tun_set_ebpf(tun, &tun->filter_prog, NULL);
-+	kfree(tun->fprog_kern.filter);
- }
- 
- static void tun_setup(struct net_device *dev)
-@@ -3064,6 +3107,9 @@ static void tun_detach_filter(struct tun_struct *tun, int n)
- 		release_sock(tfile->socket.sk);
- 	}
- 
-+	kfree(tun->fprog_kern.filter);
-+	tun->fprog_kern.filter = NULL;
-+	tun->fprog_kern.len = 0;
- 	tun->filter_attached = false;
- }
- 
-@@ -3075,7 +3121,7 @@ static int tun_attach_filter(struct tun_struct *tun)
- 	for (i = 0; i < tun->numqueues; i++) {
- 		tfile = rtnl_dereference(tun->tfiles[i]);
- 		lock_sock(tfile->socket.sk);
--		ret = sk_attach_filter(&tun->fprog, tfile->socket.sk);
-+		ret = sk_attach_filter_kern(&tun->fprog_kern, tfile->socket.sk);
- 		release_sock(tfile->socket.sk);
- 		if (ret) {
- 			tun_detach_filter(tun, i);
-@@ -3423,8 +3469,8 @@ static long __tun_chr_ioctl(struct file *file, unsigned int cmd,
- 		ret = -EINVAL;
- 		if ((tun->flags & TUN_TYPE_MASK) != IFF_TAP)
- 			break;
--		ret = -EFAULT;
--		if (copy_from_user(&tun->fprog, argp, sizeof(tun->fprog)))
-+		ret = tun_copy_filter(tun, argp);
-+		if (ret)
- 			break;
- 
- 		ret = tun_attach_filter(tun);
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 39decde7fc73..0de5a738fb26 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -1218,6 +1218,7 @@ int bpf_prog_create_from_user(struct bpf_prog **pfp, struct sock_fprog *fprog,
- void bpf_prog_destroy(struct bpf_prog *fp);
- 
- int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk);
-+int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk);
- int sk_attach_bpf(u32 ufd, struct sock *sk);
- int sk_reuseport_attach_filter(struct sock_fprog *fprog, struct sock *sk);
- int sk_reuseport_attach_bpf(u32 ufd, struct sock *sk);
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 70dc621672f2..53cdf4ec4ef5 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -1567,6 +1567,43 @@ int sk_attach_filter(struct sock_fprog *fprog, struct sock *sk)
- }
- EXPORT_SYMBOL_GPL(sk_attach_filter);
- 
-+/**
-+ * sk_attach_filter_kern - attach a classic BPF filter held in kernel memory
-+ * @fprog: program to attach, with @fprog->filter pointing at kernel memory
-+ * @sk: socket to attach the filter to
-+ *
-+ * Attach a copy of a classic BPF program that the kernel already holds, the
-+ * way sk_attach_filter() does for one that still lives in user space. The
-+ * caller must hold the socket lock; SOCK_FILTER_LOCKED is checked here.
-+ *
-+ * The program is built by bpf_prog_create(), which does not keep an original
-+ * copy of the instructions. sk_get_filter() therefore returns -EACCES and
-+ * sock_diag leaves the filter out for a socket that uses this helper. A
-+ * classic BPF program cannot be duplicated with bpf_prog_copy(), so keeping
-+ * the original would cost another allocation and a copy per attach.
-+ */
-+int sk_attach_filter_kern(struct sock_fprog_kern *fprog, struct sock *sk)
-+{
-+	struct bpf_prog *prog;
-+	int err;
-+
-+	if (sock_flag(sk, SOCK_FILTER_LOCKED))
-+		return -EPERM;
-+
-+	err = bpf_prog_create(&prog, fprog);
-+	if (err)
-+		return err;
-+
-+	err = __sk_attach_prog(prog, sk);
-+	if (err < 0) {
-+		__bpf_prog_release(prog);
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(sk_attach_filter_kern);
-+
- int sk_reuseport_attach_filter(struct sock_fprog *fprog, struct sock *sk)
- {
- 	struct bpf_prog *prog = __get_filter(fprog, sk);
 -- 
 2.25.1
-
-
-No virus found
-		Checked by Hillstone Network AntiVirus
 
