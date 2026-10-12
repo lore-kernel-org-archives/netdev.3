@@ -1,63 +1,64 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F6C48F00E
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AA348F02F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791809996; cv=none; b=gHuAp9ltK+AG/uO/2G0qaZJqPfwq/6wL5OEhf6jrTN5InLMwq45QK3HMEDAoBrCwnXF30E7OwVyzQ+VnDunO/vTM8pnpELEyXGYAARcQ17gP+QnOM8SDJjADjJr4OPPY2bNvk/+bMZR4GSmoq4d1/6zVenStJTVnkJkdApIKtuA=
+	t=1791809997; cv=none; b=TDaMr6er+wQiQRUTGJJSXOkK+K/GgPgznLZFIJPORa+FIZtD1vlux+D6Snjj5CFvf4+PM7iI05JxmRKwHE6gnT0CldDU7he9bJ2H9VqVX73e4bvMhcivtXhi//4C+wEY2oBJAN9KUezPxMsjwIKULBhCf9eze76OhQoKmSY07a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791809996; c=relaxed/simple;
-	bh=4YxlfpqouDUTd7pKJE+77n7XcSDshQKAyhhUUOVpyLs=;
+	s=arc-20240116; t=1791809997; c=relaxed/simple;
+	bh=+sguhb5W5A9ufBhXXrUOEbtvslc2+EnOPXa+UGtdZxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSgVcnEAyRR3fvDtKPwqF550mq1XGo/o/BjwT7End/g7SBOwxB0rXb5zylXRYKZzYMXf2Yy2BDRTrRzWGjsmpDEoGEqAuihPx6o77Bnb844mYN4z7A2wkETcpRnIsGZl1qN9ziQGQH62vhM8LmZAwNyjB1gZcVlPrqpbZRa1CkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=poEXWODT; arc=none smtp.client-ip=74.125.82.171
+	 MIME-Version; b=SS2d+FVIJM0HBQARH5EbZ4dTM0grwgteNX9QX0FHLxoTV2vA3UKHMvq05WRhSZs+S+DdGQVMJqKSMomQvt46CBNTtECynTZb46ooJnuLS4dB4CPWql87LEwImKVv7YQfAoCfkTeAYdgCZJkVNHLepRM3+qwX7U2HdVL1SRbVEQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=FZ3novAk; arc=none smtp.client-ip=74.125.82.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="poEXWODT"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-3535a54bed9so2597323eec.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 05:59:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="FZ3novAk"
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-35834f72d94so3132870eec.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 05:59:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1791809993; x=1792414793; darn=vger.kernel.org;
+        d=blockcast.net; s=google; t=1791809995; x=1792414795; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=22CBQ74hzoBRLA5eRugQI9KistKHZXGwVfxrCq6wnU8=;
-        b=poEXWODTxejzH1139i66EPgljIfdgMSJ1HZVcja2lBXyc6w7yMQc6Pnj4BySZMICzk
-         PFbBLYAYPnhxwu2Ait+pIb0ChMJPUPOL9RGj31KwqkEiDryD0A8xJum0KwbKoydhhRIe
-         I4+ILj4PlqfYf8xuF/MmhgdkqxVa5c0v2/TWC6i8vXCBkTpbTaKYhPPEGOmxw8u30TUJ
-         8C8iRu/7YE1T4eqbdG/A8L02hvwAUUibU5/HVVV2wA8KPQIM1jNyelRMQiSldetVKAy4
-         ZeBQnSt1XS9brh9663Y7kErLwMYcM4QF2dRxzqiPEtlXzp1wrhCSDDDXV8y3/uo6Y1ss
-         KaCw==
+        bh=l/YD2PthIXuKbIegQAp4lU8CkrkTGnFWWU88rL4EQAU=;
+        b=FZ3novAkRp2UwGiAqhgkSijmBV7Q0P5D5/HUisApXZo8gfLfkbqzDnLFOdqw6iFCwW
+         qwt4tONpOzGOWJjn9fVl5AOHNcLoIqN+JgoTlMGlvjsCl+TaxT8/Yax8U4bjMmVd9h+T
+         NPZMVoMw9JsFqGH89UTWO8K5GfRoOczqQaCi/EtR+2llGepm+Zimh/EiY5WDm6XFDnFU
+         o/+BNBaiYVUjz7SEbc5/Av6xRKmxKdShrnz//2GXK1x3WaEJ1uS6FNwcC+OAIr1+C3eo
+         Aj38iZyIbo0/X5ZBt2MTsUFf66Ok/M8rA1TwJltTegP7pO7EcetxtcgGtw6qiNcy6IHs
+         wi8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791809993; x=1792414793;
+        d=1e100.net; s=20260707; t=1791809995; x=1792414795;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=22CBQ74hzoBRLA5eRugQI9KistKHZXGwVfxrCq6wnU8=;
-        b=SlP28knlzo7kRgHMoXi3fWZB5rgzJiSg9t8/YU8XlJ1K79cXoK4V9jyu6h83IYSbiF
-         OHQMXNE+NHzQIwqcwbfLgxh3hfflAsp3VnG34irpTvHYT3oV4Twgqy9BL7oIZhMYk84U
-         PwypxCb7V84VLntXJwms9P7jD7JH1H4ep+RMCK619fRfqBhzIQJkLhi6YPoaHwS4tPGW
-         853hL5dc7tF/TuKgPrXDJS6/VAD1MKlZqo5ap6mzBetzJrifsDHio2fDGVR42S3FPyuv
-         B3R6HGBmfbQiKdIRo83Z4ls+WYqX3C8xRgu5NFxKaq7ZgxWaPR+iZ/G+dAQ5qT2I18i4
-         Fn0g==
-X-Gm-Message-State: AFq9FYJ1217Tgw3WuPkbROwiZnLgZhhCAR/7aLP4fvrxrMHUd1LIFz8C
-	p8Dl4NTCA/7Rrxt2Uw30RYN573U8nFaQUC69v8ssHWCuAjnxBMawAKcCkah9zArbnIU=
-X-Gm-Gg: AYBFou0XLSqNjNKkIc6o4cam256IuuBMSl/CvYgMoINN4+ToX1je3u1Q3fQmCdYDv7P
-	Z9vb4TY7FY2mbKyLl7Ysvp+NZ6KD57FPZmYUa5fNEBKvAXGFwQR+YS90MeT0CSAAixZ1HgmpCr1
-	Myrv8jyJCYy33HA/ZdP1zHEDxYHYRDX5rZ3uzamRcRo27OPXXQTuHy+xqyM97i7c82fslos+hOy
-	auU9AYxWelSmMZ8oSxXgcGelPSlx+qsK1YGeAAOhAFdaBTsQbIPkWjl3bvtd74oNptisoCbwiu+
-	k5RydntNbD7Q31icrXraU2+khHYtaX31fkp0VvxMWyNGj9Uaj554viiRMcN75yvmq2naQvRmh5d
-	6A/xOJRp2AkLppScNiL+G2jjKSSOBmqtLjiZqjri1KDl1SiCafujngF1ISqZj3o+4UjqtZcOEhY
-	FEBax/r7mj0xtLwkK3SCOuRi8dfi7efTrmefyE70UxUIBZgwreRtHwtLSd6O1NmrY2onpEImLEN
-	te+5PDenXB280NdYkhV+6/9H0K/h9lZ4g1Eifw9oEd7xCqVzstPeVZiQBeOFvg=
-X-Received: by 2002:a05:7301:1a17:b0:34c:fb30:3e30 with SMTP id 5a478bee46e88-3537e0333e8mr12488904eec.7.1791809993276;
-        Mon, 12 Oct 2026 05:59:53 -0700 (PDT)
+        bh=l/YD2PthIXuKbIegQAp4lU8CkrkTGnFWWU88rL4EQAU=;
+        b=Q4DPlKdrNdLD758+OHBYN4K8LTA4CCOtV/iPpK2/oCxjeanjL4tM65Q93nThqkNe9M
+         wY+PvxLcn9XzbHZAr76CIraZjMkrrL8qSomgUHFtdHnmlGQXOUXnWSbv4uwlZM9KRmvw
+         Eg02mYwZ+1X7UIxU68PDqWpNkYd/mmj8ovKgS6NKM47ZplX6DIuYKwTKku9VhgaDUFQa
+         pTO9vUKVFrohVqP/gC8z6FMvLLv10JiqDFRyAhM2Etwl9n/zdCMC02i1vkxLM3h9d1WK
+         Rv5heFiwW/lYqaQFxHusprsFGoIHtDvHCd0xIc0fY+QTCcmc68X+zwsJkV63owUkqGTp
+         ZJaw==
+X-Gm-Message-State: AFq9FYKlanG738kWduKPQS+hIAeWF25m2ayLKhMwr80SyYSl6JXO+A0s
+	jS5Z/1U5plKVqL4tP4vYOVQNk0DjQwIvb3awoKjpd24/nuSaDBtRuUzJeZyw4UxX3HQNSwXn9qg
+	OstGB8h1dj/x8
+X-Gm-Gg: AYBFou29NNetoClRE/E7MYgaNPzjmrbJfDyQ9brQGenO7rMI5tkuIAK8cCxoq9aYKZf
+	7TFnhc3FsA+kUf1tpq2r3tZ4O8TaZxtXS0HS8WoX/oK6Ev0kymeIZF0EW2ZZS/W6H+ftKLTZnht
+	Nl3fid7m+FfXJ4+R5ZFkxuIuzUxpIXFJwqUg+mCaZRuRE7YMxcw2Fbu3OF5oZ8ztx0a1sPMWAJE
+	jw5TAdAdUV84vTDM4ZackLyFuGPA0uXX/ZMyCkkFCtkfhG+NthqdzLjw2h3WJDVeusPrC8MVNq8
+	qfOjtIRAY62OXRCOsidSCngwn/sGEXCFls6bjuYtmzYOaVwVISdCzWZR+8DYkva13H9p0b2XJnT
+	CEMwIQlnihLW1WRM6kEnVJBK1ZvwlEMoX1gkcp5VC/lYCZy6Jo1gRRftyhkn9mBC5cWMi6ofQUQ
+	/2g2v+arcf3jBssQFi+dwPrvAuYcWIcID2NbBvac4L3PeBVbSwwKCaANyR7N/EOZ1+Hu7jhfZ7A
+	7v6Nt6faLEES7a317mbHpzecYGN+Ey0SZFs0Y8rL5W8fQfE1TEKiAA9Xgje7kjjc3fdVHWpDA==
+X-Received: by 2002:a05:7301:3f07:b0:358:8f02:e0ca with SMTP id 5a478bee46e88-3588f02e0f2mr12060523eec.9.1791809995129;
+        Mon, 12 Oct 2026 05:59:55 -0700 (PDT)
 Received: from devbox.ts.blockcast.net ([69.25.95.32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cacb61asm35348067eec.21.2026.10.12.05.59.51
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cacb61asm35348067eec.21.2026.10.12.05.59.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 05:59:51 -0700 (PDT)
+        Mon, 12 Oct 2026 05:59:54 -0700 (PDT)
 From: Omar Ramadan <omar@blockcast.net>
 To: Taehee Yoo <ap420073@gmail.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -68,9 +69,9 @@ To: Taehee Yoo <ap420073@gmail.com>,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH net v3 3/6] amt: reject an IPv6 address passed in an IPv4 address attribute
-Date: Mon, 12 Oct 2026 12:59:40 +0000
-Message-ID: <20261012125943.558629-4-omar@blockcast.net>
+Subject: [PATCH net v3 4/6] amt: key relay tunnel state on the (address, port) endpoint, not the address
+Date: Mon, 12 Oct 2026 12:59:41 +0000
+Message-ID: <20261012125943.558629-5-omar@blockcast.net>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261012125943.558629-1-omar@blockcast.net>
 References: <20261012125943.558629-1-omar@blockcast.net>
@@ -82,64 +83,117 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The netlink policy for IFLA_AMT_LOCAL_IP and IFLA_AMT_DISCOVERY_IP sets
-only a minimum length (the size of an IPv4 address), so an iproute2 that
-puts a 16-byte IPv6 literal in one of these IPv4 attributes passes
-validation.  nla_get_in_addr() then reads just the first four bytes, so
-"2001:db8::" silently becomes 32.1.13.184 and the device is created with an
-address the user never asked for.
+amt_request_handler and amt_update_handler both look a tunnel up by the
+outer source address alone:
 
-Reject an attribute whose length is exactly an IPv6 address for the two
-IPv4 attributes, so the mistake is refused with an extack instead of being
-truncated.
+	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list)
+		if (tunnel->ip4 == iph->saddr)
+			goto send;
 
-Fixes: b9022b53adad ("amt: add control plane of amt interface")
+RFC 7450 s4.2.2 defines the unit of relay tunnel state differently: "an
+AMT 'tunnel' is identified by the IP address and UDP port pair used as
+the destination address for sending encapsulated multicast IP datagrams
+to a gateway", and "each unique combination represents a unique tunnel
+endpoint".
+
+Because the port term is missing, two distinct endpoints that share a
+source address alias onto one tunnel. The second Request to arrive
+reaches `send:`, overwrites tunnel->nonce and re-derives tunnel->mac, so
+the first gateway's subsequent Membership Updates no longer match and
+are dropped at the "Invalid MAC" arm. That arm returns rather than
+continuing the walk, so there is no recovery path: the first gateway has
+had its Request answered and its membership accepted, and simply never
+receives data again. The failure is silent on both sides.
+
+Two deployments reach this, and the same RFC section names both:
+
+ - NAT, which s4.2.2 calls out explicitly ("this address may differ from
+   that carried by the message when it exited the gateway as a result of
+   network address translation"). CGNAT, a single-WAN site with a
+   redundant gateway pair, or two subscriber devices behind one
+   residential NAT all present as one source address.
+ - A single gateway host, with no NAT anywhere, which s4.2.2 says "may
+   use separate ports for the IPv4/IGMP and IPv6/MLD protocols".
+
+Add the port term to both lookups. amt_update_handler snapshots the
+source port before iptunnel_pull_header() strips the encap, alongside
+the existing pre-pull reads.
+
+With the endpoint keyed correctly, a gateway that re-Requests from a new
+ephemeral port no longer aliases onto its own previous tunnel: it gets a
+new one addressed to the port it is listening on, and the old one ages
+out on gc_wq. That is the same stale-Membership-Query symptom addressed
+by refreshing tunnel->source_port at `send:`, fixed at the cause instead
+-- so this change supersedes that approach rather than stacking on it.
+
+Note this removes an accidental bound: while tunnels were keyed on the
+address alone, one source address could never hold more than one tunnel,
+whatever it did. RFC 7450 s5.3.3 asks for that bound explicitly, and it
+is restored in a companion net-next patch ("amt: bound relay tunnels
+admitted per source address") rather than here, since it adds UAPI and
+this is a fix.
+
+Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
 Assisted-by: LLM
 Signed-off-by: Omar Ramadan <omar@blockcast.net>
 ---
- drivers/net/amt.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/amt.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index c3716ba..550b0a5 100644
+index 550b0a5..2feb418 100644
 --- a/drivers/net/amt.c
 +++ b/drivers/net/amt.c
-@@ -3194,6 +3194,15 @@ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
- 	[IFLA_AMT_MAX_TUNNELS]	= { .type = NLA_U32 },
- };
+@@ -2492,6 +2492,7 @@ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 	u64 response_mac;
+ 	__be32 saddr;
+ 	__be32 nonce;
++	__be16 sport;
  
-+static bool amt_ip6_in_ip4_attr(const struct nlattr *attr,
-+				struct netlink_ext_ack *extack)
-+{
-+	if (!attr || nla_len(attr) != sizeof(struct in6_addr))
-+		return false;
-+	NL_SET_ERR_MSG_ATTR(extack, attr, "IPv6 address in an IPv4 attribute");
-+	return true;
-+}
-+
- static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
- 			struct netlink_ext_ack *extack)
- {
-@@ -3224,6 +3233,9 @@ static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
- 		return -EINVAL;
- 	}
+ 	saddr = ip_hdr(skb)->saddr;
  
-+	if (amt_ip6_in_ip4_attr(data[IFLA_AMT_LOCAL_IP], extack))
-+		return -EINVAL;
-+
- 	if (!data[IFLA_AMT_DISCOVERY_IP] &&
- 	    nla_get_u32(data[IFLA_AMT_MODE]) == AMT_MODE_GATEWAY) {
- 		NL_SET_ERR_MSG_ATTR(extack, data[IFLA_AMT_LOCAL_IP],
-@@ -3231,6 +3243,9 @@ static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
- 		return -EINVAL;
- 	}
+@@ -2505,6 +2506,8 @@ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
  
-+	if (amt_ip6_in_ip4_attr(data[IFLA_AMT_DISCOVERY_IP], extack))
-+		return -EINVAL;
-+
- 	return 0;
- }
+ 	nonce = amtmu->nonce;
+ 	response_mac = amtmu->response_mac;
++	/* Snapshot the tunnel endpoint port before the encap is stripped. */
++	sport = udp_hdr(skb)->source;
  
+ 	if (iptunnel_pull_header(skb, hdr_size, skb->protocol, false))
+ 		return true;
+@@ -2512,7 +2515,8 @@ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 	skb_reset_network_header(skb);
+ 
+ 	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
+-		if (tunnel->ip4 == saddr) {
++		if (tunnel->ip4 == saddr &&
++		    tunnel->source_port == sport) {
+ 			if ((nonce == tunnel->nonce &&
+ 			     response_mac == tunnel->mac)) {
+ 				/* Refresh liveness only.  gc_wq is re-armed by
+@@ -2729,7 +2733,8 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 		return true;
+ 
+ 	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list)
+-		if (tunnel->ip4 == iph->saddr)
++		if (tunnel->ip4 == iph->saddr &&
++		    tunnel->source_port == udph->source)
+ 			goto send;
+ 
+ 	spin_lock_bh(&amt->lock);
+@@ -2768,6 +2773,12 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 	spin_unlock_bh(&amt->lock);
+ 
+ send:
++	/* source_port is part of the tunnel's identity and is set once, in
++	 * the allocation path above; the lookup only reaches here on an exact
++	 * (address, port) match, so it already equals udph->source.  Do not
++	 * "refresh" it here: doing so let a colliding Request from a new port
++	 * steal an established tunnel outright.
++	 */
+ 	tunnel->nonce = amtrh->nonce;
+ 	mac = siphash_3u32((__force u32)tunnel->ip4,
+ 			   (__force u32)tunnel->source_port,
 -- 
 2.43.0
 
