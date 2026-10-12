@@ -1,179 +1,299 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011070.outbound.protection.outlook.com [52.101.57.70])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F122D400E0C
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.70
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791804934; cv=fail; b=J3Fve3YhzOHdCiDP9dsKQkuWclIHKiNqKQPHLesbPCfkXn9q7MTsv2lLi3YL/D80mRDHo4rXDe5i2IEm30V0zSrbSn7GrJ6/No3BThdTHE7+kPHElRwc/ew7DnlqzC7vvnS5sh8apfMffyMcmU3uFvAiNrfakRM0yT/HK6g1ZJs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791804934; c=relaxed/simple;
-	bh=Z7NgPM28EGeCR9cdn640+6srF41mZWEaE8KxZVHuJpc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=h/YCoRBW8OrKYZ1LwRJ+rWoE5aa0+fajKgAYrDIsBd7dnSgdUyKH8LfZ2DOSRCAfRn8QaXbPT+fMGprJg4nm6j3HPGzF4JoUYjA5fKi6dHFc5aBRka9QPvcIlZp2amZArHOi7CzSAl5EGQe7xt0u+c21x67xSAecYNgFDUlaW3A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bKmFJc9Y; arc=fail smtp.client-ip=52.101.57.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8683B6BFA;
+	Mon, 12 Oct 2026 11:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791805412; cv=none; b=IMv6ZqYYKdg7mI3KJvgGPIi2N2XKmm9VyT/mFI4jMdiSudLH7Proa3IOvcM0O2thpEtGaSOuC03m7T5jMOxQxcmxt3I/W/iMhmjfLvW8PbX7mE0yziOfsxxMpibK9VJJQj3u5E7khJXYYzz8U2n5rIDio4zg9F1rTGt7EEyWQYM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791805412; c=relaxed/simple;
+	bh=QywlOtHVCWjGzDGEYVoq8CHeQJUpWd2ryrHm5jfxzoo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jG0tCbPKB740w0E0nw5kkBuQsR8GuJhIH+29MlmLCHaNRmNsbn5kgRT9fWnT4tFE+FOyp/m+u70LfV4Ur4jDvu1Vk3ukiqKaOb7k1kJn3e0p7sP/E6B5RvlqenZG5GfFwazJkpJ5VqjRSdBgqX2ZoLovxmgGaKXS4XooL2WbbwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XD8fruwF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bKmFJc9Y"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mC8YFUQkcGaDbA80iF2c7vG+3fHC6Rzc2i2zbKKOf6RybpLaISmEW31q0grXXj7B67X48lAQ6BBe/3HzfmgYyDMgX0LXHVABphyHHb/b6rxZFQVtzt7xpHLqJVZKlV3OIp/O8Hmz0cnpXSPjJXTm4p47Jm+X+eHwwxF3vX/0gWwGoxA4TECywriEhHKDPrFAk5lWF9obCbnrbuciF+IdBWeNNepLrZph60Oo/AojlPFg3lrmKYTjXPBoTmEwYAUe0Yf5DTyWBA15xCUhTP7qQwozy8hMs6sG8Is5I3KCaDqc6HjLM6w3rjE9ZCH6uOhpCxXMNnfVJxd1g+vlQeZbvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2cljMvzU9jfFPFmBUhYTgU3/v//H7IaDsM7RewIHiAk=;
- b=R+rd+ORY1ok/qojcXUQW/skV2oeTT35UHV0IrupEk7q0t9X2IGzFOrpcmw+UUWMoqM1+/Bc6u2+5rMvsGjhzZ+lBKu6MaeqgR6QsH9QJJ47KStRjdV09/BZDn5ZwZWShc097v+etd/9jVxgFrDO9+txakVYYSZ3q6/EAcQT1TzxUFiotB7daIAc5pGW4NaJuIxrD0YUsSy0P0DsI0t+mMXUQfQvyE6KbmFm3DDK8mDwI+GHACyjUyfTkwIb4feBhNDdQwI/pmBn19P+SBgaptPRaRqf7GUDXptdE2MfoxTZBrv5Jh5bVyN3Lkv/RvmzVOdXvvkAVGi2V6Fli3+zoAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2cljMvzU9jfFPFmBUhYTgU3/v//H7IaDsM7RewIHiAk=;
- b=bKmFJc9YlurUIlnlczRHbd+QhvL9OJLJs44aCXIwxbejVQTIM6siZJ/BDeaqDGOVsFy2NzycgG9BlyDDBC901Zb4n3q0aIij2eqGbZ4ZIU2ozxKBMODzYBUxsE5+Owh2CBRjeFecQwTqyg34GT3ACZj/hTF+FVmU6reYAGHRQKGLDL9RhBcnNgDwsPkHqmOmErWPRRIAN73uliqJInMw7LmAyiL+QvkS/gBZbQwrN9Ej5k8k6iEUjPwYF9TLDRN7jnnzistBxVOlii6jQa9tZ1u89bbEakDpQaTdRP5qYebx38yOP6M9SFG6BYCgmjodaZ/QOpqt0BWs/2RTyiVgiA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from MW4PR12MB6802.namprd12.prod.outlook.com (2603:10b6:303:20f::19)
- by IA0PR12MB8932.namprd12.prod.outlook.com (2603:10b6:208:492::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.21; Mon, 12 Oct
- 2026 11:35:29 +0000
-Received: from MW4PR12MB6802.namprd12.prod.outlook.com
- ([fe80::51f4:a3d9:b44e:9587]) by MW4PR12MB6802.namprd12.prod.outlook.com
- ([fe80::51f4:a3d9:b44e:9587%4]) with mapi id 15.21.0496.020; Mon, 12 Oct 2026
- 11:35:29 +0000
-Message-ID: <0c4ce4ef-4133-4cf9-ad20-7a4fdc4f0b19@nvidia.com>
-Date: Mon, 12 Oct 2026 14:35:20 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net/mlx5e: advertise tcp-data-split support
-To: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
- "David S . Miller" <davem@davemloft.net>
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Gal Pressman <gal@nvidia.com>, Cosmin Ratiu <cratiu@nvidia.com>,
- Dragos Tatulea <dtatulea@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, netdev@vger.kernel.org
-References: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
-Content-Language: en-US
-From: Nimrod Oren <noren@nvidia.com>
-In-Reply-To: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0073.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1f::17) To MW4PR12MB6802.namprd12.prod.outlook.com
- (2603:10b6:303:20f::19)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XD8fruwF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E911F0089D;
+	Mon, 12 Oct 2026 11:43:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791805408;
+	bh=5UxJrnWb6DUWlRK98/7z/XIw7Ci0cIBCbPmLnyjbiss=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XD8fruwFh0qa/PYAcaRWNY4ybAX/Xa59SwCqMrxJZWurpcbLbolbAJ4VrdISih0xY
+	 81j5lHiFbzQAhtzYc2mLNjdtmsi6DWFYpow2gqnC8qzT5I5H4AAJGLv19RrF1CiNv7
+	 SAPhp4LCJbJrSTE85fkrRBYrCpdShlI4StCjIAPeeiKBts4lEUeJjydmHDti7wdN4a
+	 hRkDQugJ+4U+FAlcnGMtOsU01Hxn0KT6ptuqbw4Vqlc6T+j9PxeRDI7xBXkVPtFJNs
+	 S0fO0+KmizjW3fxR3LYObD2cTT2QYAWZaEg3HnYFcF+/gtQZUAU+ig2scqm8o9J5JI
+	 cA15IWBJHOiYA==
+Subject: Re: [PATCH mptcp-next] selftests: mptcp: sockopt: test passive Fast
+ Open early write push
+From: netdev-bot+sashiko@kernel.org
+To: rameshsv06@gmail.com
+Cc: matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ rameshkumar.t@phytecembedded.in, kuba@kernel.org
+Date: Mon, 12 Oct 2026 11:43:27 +0000
+Message-ID: <179180540754.434549.14278237692861809718@kernel.org>
+In-Reply-To: <20261008111003.136143-1-rameshkumar.t@phytecembedded.in>
+References: <20261008111003.136143-1-rameshkumar.t@phytecembedded.in>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR12MB6802:EE_|IA0PR12MB8932:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05c5bc47-35b8-45a4-039e-08df2854ea99
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|56012099006|11063799006|261009223027099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	f+kyW5mHbTruX3nPVALQbxqMFgAGXQuks7Wd/sF8mSnHu88vbrCMGHCZSaRZSaMV0I8E7aQEWhEHj2FHe4uwVqtmk7ja5H7jBdFk9LIzL6GL7E+BdANRe4t98yzF8gOAHF2gjWlXXZVTQLSfzFsau30oGVpfD7K6YaGJrP1ZlRrmA/vWkG/gphQbB2CCAqy0ylxdlaV8XfYbCYZWBOvlsbZv388DO8Gvt1E1uWezyQG2VymzNV5wb8LeyWCsVFX6DHDolF+jcZJPy6ibANz6ISh1cn5GYAo3pjDLl8WLuaKS+9x6SgV/gZF4mjD7KbYXjvH4qOR4hGy8C7+nUiVuR08pftc/lIY4jfIuIVVioRrywX7353OyU6VqI54E+kuw/oMLg1tUEKat3ErFMPd1tM8JnuLohs0QPHod5awt7xuLSfRqh5JKDlyXM277LVFrEkWlFbc/dghXV2plAarlOvkvcyhI6zl6MNrhxb63Mo+nXUiSanZ9KsdePtKrQ6erjtYQGj65Ad3N0nw2wRNMW3arfUsy52mg78c4xQ7fK+MNjwyEM38pfPEaa3nlcnVrhqHPwFQ0fTkTPw4CDiPRx2aIiAbtgfFTdEJhJowj2AL1uELASE8wRQ/uf9rkozGxKlbflEIs1CAOi+AQSgTkoetVD56cQR4bFxvI7OvxI18=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR12MB6802.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aEtwWndQTkZJSElvZVlJdEtrdEdUUnZtOCtUcnpZWlhwaWFlTzVjNUs1QmdG?=
- =?utf-8?B?ZGpSMXRwNGQ5V0RIREhPMXRUbGI1cnBDaGlMUnVvaGJidjFKYnR2Mi9MVDJu?=
- =?utf-8?B?Zm5BMHpqeEZ6VUdYcDRtVFB4K0s0Z204bGI0T3dGYlRDbm5NejlFcmgyV2xn?=
- =?utf-8?B?eVRKWFg3YkVaTGRpa1VhME9VY1g1OUhwSHd4YXhZMHRKMWdvTHV5RU90NjNO?=
- =?utf-8?B?T3RucDBqM2RqUnhaYTVQSkF2TmVPSmQxSVBUK2NaT0l4OFhjYWJoVDJSbHdr?=
- =?utf-8?B?dlIwaklNbVVhS3B4d1d0SlBNWFFZV0FHcG9kTWtVNXRvdXNUWFdJL2F0bWFS?=
- =?utf-8?B?WDZ6VE9TdFNHTElrMmJtMUNEY3ZXM3ZKUXNlK3BtYnI5cGxpYjcyN3RZREh1?=
- =?utf-8?B?anNRakgxVmp6YnlwYzFDTnIveStyY2M3Ukk3WUdYMlNWQm5IeEc3S1ZtZ1Nr?=
- =?utf-8?B?ZHNlU0REaVJVY3ZhaXIyTC92dklGWlJtdnljSG5JUzlnS2h1ellCWHdnUE1j?=
- =?utf-8?B?aU0yd0ZjcnlvczZ4b0tBdzNMb2hNRGtsb2ZqK1ZsQk91UFNJb29tMURqQjNY?=
- =?utf-8?B?TmxvYnYxVVRicWRsbmtTWUxVQllDRlh4bWhkZG04Z1pnRHV1dUYwYUdmMlE2?=
- =?utf-8?B?d3QyRkw5Y0w3R0dSZGNFc0NlWi9SQzFhbFhtYzA1bFZNVkE2Q083dGNQTTNj?=
- =?utf-8?B?NVNnM3dnUkVEUngyUnNNSE01aG1mNnhSRHMvcXlGdk0zRHlxbklmV0xybHQ5?=
- =?utf-8?B?U3J0NnR0bWxpM09tNnkrVytSUkluc2g1V0NZYzZBT1lQS2M2ZVNOSDBLcWNz?=
- =?utf-8?B?ZFY0TSt6dC9xaEFwTEY0RU4xamxSY2o0ZWtWREhBejAzY2w4bklxcStUeTg0?=
- =?utf-8?B?bFQ1bFEzTU90M2pHU0xvMmFVS2VxREdWYXJJRWdla3JWRTNyTHZBY0ZHUmdO?=
- =?utf-8?B?TDBCcWg5Z3lqTHFtQWE4bUw0bUw0QkZNNTdhRzZCMjh2VjBnWWJLaEhIcFpQ?=
- =?utf-8?B?QzBXN0FaM0sraitHNER1T09LektKT3hhbHh0eWY0QXNnRklISWJRTjU1ZnF0?=
- =?utf-8?B?UHVmajhOTjZVb2doRU9VN3JrbE5nbHorMm16Rlo3ZStnUlRBbjBBOEswM29i?=
- =?utf-8?B?VFpabzdubWZ5VkNkL2lKejRDdkVvWnFrV2t0MTlUcDcxbjAwRUxXK1dCTDNl?=
- =?utf-8?B?Zk96T3JlS3Uzc0VHQnVyUnJ6Y014eThZcTV1YzRWZUhFbzNBZXdoNHBCa3Rm?=
- =?utf-8?B?bGQrL1c5YjB5TGZGU2I1OTdJeVFxOEdpQUp1bGp1eDg3UnFwemh3d3JmbkRk?=
- =?utf-8?B?OVZ5MzFOd0RSMTMxMXBqRUw3TkUydDdnTEFPdk5hdG44azVIZkNla3VpeHVT?=
- =?utf-8?B?Vk5aOGRNazVUNWl0ZDhaYkx0MnJMV21keWhqRlBRM1EyNzZqL3h1MC9RbjFF?=
- =?utf-8?B?WWRhYUQwYmZoSEEza0JKbkxweE1jVTBzcFVaN1VISUlBZU5jNkYxZWV0eTFL?=
- =?utf-8?B?a2lHa3FjaXR6OGFOMjBwOXV1ZGVac1FBS0M4dEMwWVFqZXFReHBqMVZjenhp?=
- =?utf-8?B?Zy9GMVZ2cWpBeGI1OEdEeHV1dXlNbXFKTkNmRFhFSEJlMGtheFpld29FSXYv?=
- =?utf-8?B?L1hjSGRzc1VhV1d3cTZpaXhhQ2ZpeG5ROSt5R21DSEdsR3k0Uy84QmdyMHBO?=
- =?utf-8?B?UzZHVlFuMlYvVDQwYVFPbWY1VmNCRHgva1FtVzhvbjRPMExtbkNnaUJ3blo2?=
- =?utf-8?B?YnhGVkZFaW1NNy80TW1ML0lsMzBYWWtkdHVvYkFiR1Uwbmgva1ExTEtIeVpP?=
- =?utf-8?B?bEZQdlFEdFhZTG1RSTIrQ0gybDVZcTZhQ2ZUTFM3MDQwUmxBQkF2ZVZ5bjVV?=
- =?utf-8?B?SFNVVmpnWHNlTG85bmtYTlRlTTdJeXZLYm5ZTFoza2R4VkJLNjZCVU9oQXBh?=
- =?utf-8?B?cG03Zjc2UjVpYUxMNktIS0w2bktMUHVpazhUUUp5aEFlYzFzNXNxV1JLNUhw?=
- =?utf-8?B?Y2VOOUxjd1R2MXVvdmV2NHliYVZrVkY2U2JJWnVLdnlzRHNMcGo1bG93VlNr?=
- =?utf-8?B?VmsvNjR5dlNyZ1FsRWROWHZYTURYUm5wRkRwYXM2cjJqaTRkcUtqakVhWDhl?=
- =?utf-8?B?UkRoOG5pMnNtaHBGSHhMR1l6YXRySHJQeUFTNW1PUzlvampVK0IrbXBqMWZm?=
- =?utf-8?B?bjJQblpvR1gxVDQzeUpMNEIzOW9MTXNLOUY3d3BsOU0wWkFxTlJJZXBuL0E0?=
- =?utf-8?B?MU1hWjJGdnpNemFQbWdqdEl4VzAwaHI2Y2c3aUdqUHNWUitITUZubk5JMEpB?=
- =?utf-8?Q?bfXHzMuoAD/rNooJOD?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05c5bc47-35b8-45a4-039e-08df2854ea99
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR12MB6802.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 11:35:29.1559
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2rJra90gYfZW9EPFmjIL/DGAk1QJxLQo3P/SGMSvq84ZRug1c493eYkRQyX6wRSpeyIvY/QGNJvW3mZKZkqEhg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8932
 
-Thanks for working on this, a few comments below.
+Thank you for your contribution! Sashiko AI review found 7 potential
+issue(s) to consider.
 
-On 09/10/2026 5:51, Dimitri Daskalakis wrote:
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> index 261c466a4d36..c30d751cac2f 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> @@ -378,6 +378,9 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
+Critical: 0 · High: 1 · Medium: 3 · Low: 3
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The new test never runs the code path it was written to cover.
+- [Medium] do_fastopen_tests() runs the TFO subtests without first
+  checking that the kernel supports MPTCP Fast Open.
+- [Medium] The TFO branches of client() and server() in mptcp_sockopt.c
+  skip every MPTCP-level check.
+- [Medium] Even if passive TFO were actually triggered (see the
+  sysctl/cookie finding), the test has nothing that keeps the handshake…
+- [Low] The commit author is 'T S Rameshkumar <rameshsv06@gmail.com>',
+  but the only Signed-off-by is 'T S Rameshkumar…
+- [Low] parse_opts() in mptcp_sockopt.c now accepts '-f' (the getopt
+  string changed from "h6" to "h6f"), but die_usage(), which both -h and…
+- [Low] Result checking in the TFO path is fragile and weaker than in the
+  non-TFO path.
+
+--
+
+selftests: mptcp: sockopt: test passive Fast Open early write push
+
+This adds a -f option to mptcp_sockopt. It enables TCP_FASTOPEN on the
+MPTCP listener and TCP_FASTOPEN_CONNECT on the client, then exchanges a
+short request and reply. mptcp_sockopt.sh gains do_fastopen_tests(),
+which sets net.ipv4.tcp_fastopen=3 in ns_sbox and runs the helper over
+IPv4 and IPv6.
+
+> Signed-off-by: T S Rameshkumar <rameshkumar.t@phytecembedded.in>
+
+[Severity: Low]
+The author is T S Rameshkumar <rameshsv06@gmail.com>, but the only
+Signed-off-by uses rameshkumar.t@phytecembedded.in. checkpatch reports
+this as FROM_SIGN_OFF_MISMATCH.
+
+Could the Signed-off-by, the author, or an explicit From: line be
+updated so they match?
+
+> diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+> index d68515b7903b8..861de909abbd8 100644
+> --- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+> +++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.c
+
+[ ... ]
+
+> @@ -271,7 +280,7 @@ static void parse_opts(int argc, char **argv)
+>  {
+>  	int c;
 >  
->  	kernel_param->hds_thresh = 0;
->  	kernel_param->hds_thresh_max = 0;
+> -	while ((c = getopt(argc, argv, "h6")) != -1) {
+> +	while ((c = getopt(argc, argv, "h6f")) != -1) {
+
+[Severity: Low]
+This isn't a bug, but die_usage() still prints:
+
+	fprintf(stderr, "Usage: mptcp_sockopt [-6]\n");
+
+Should the usage string also list the new -f option?
+
+[ ... ]
+
+> @@ -726,13 +738,36 @@ static int server(int pipefd)
+
+[ ... ]
+
+>  	alarm(15);
+>  	r = xaccept(fd);
+>  
+> -	process_one_client(r, pipefd);
+> +	if (do_tfo) {
+> +		char buf[64] = {0};
+> +		ssize_t n;
 > +
-> +	if (priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO)
-> +		kernel_param->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
+> +		n = read(r, buf, sizeof(buf) - 1);
+> +		if (n <= 0)
+> +			die_perror("read tfo syn data");
+> +
+> +		n = write(r, "PONG_REPLY", 10);
+> +		if (n != 10)
+> +			die_perror("write tfo reply");
+
+[Severity: Medium]
+Even if passive TFO were triggered, what keeps the handshake incomplete
+while this write runs? server() does xaccept() -> read() ->
+write("PONG_REPLY").
+
+On loopback, the server stack is likely to process the client's final
+ACK in softirq before the process returns from accept(), or between the
+read() and the write().
+
+Nothing in the test holds that ACK back (for example, a netfilter rule
+that drops the final ACK). Nothing checks that the socket is still in
+SYN_RECV when the write happens either.
+
+Wouldn't a normal write on an established socket still be reported as a
+"Fast Open early write" pass?
+
+> +
+> +		n = read(r, buf, 1);
+> +		close(r);
+> +	} else {
+> +		process_one_client(r, pipefd);
+> +	}
+
+[Severity: Medium]
+This TFO branch, and the one added to client(), skip every MPTCP-level
+check. In the non-TFO path, process_one_client() and
+connect_one_server() call do_getsockopts() (MPTCP_INFO, MPTCP_TCPINFO,
+...). They also check mptcpi_rcv_delta and the bytes_sent, received and
+acked counters.
+
+The new branches only do a plain write/read exchange and never call
+getsockopt(SOL_MPTCP, ...).
+
+If MPTCP with TFO silently fell back to plain TCP, wouldn't this still
+pass?
+
+> @@ -844,6 +879,26 @@ static int client(int pipefd)
+>  
+>  	alarm(15);
+>  
+> +	if (do_tfo) {
+
+[ ... ]
+
+> +		setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+> +		n = read(fd, buf, sizeof(buf) - 1);
+> +		if (n <= 0 || strcmp(buf, "PONG_REPLY") != 0)
+> +			xerror("Fastopen early write failed: received %zd bytes '%s'", n, buf);
+
+[Severity: Low]
+On a stream socket, read() can return fewer than the 10 bytes the
+server wrote. Could a short read here cause a spurious failure, since
+the result is compared exactly against "PONG_REPLY" with strcmp()?
+
+On the server side, the return value of the final read in server() is
+stored but never checked:
+
+		n = read(r, buf, 1);
+		close(r);
+
+process_one_client() checks for EOF instead:
+
+	ret3 = read(fd, buf, 1);
+	if (ret3 != 0)
+		xerror("expected EOF, got %lu", ret3);
+
+Should the TFO path do the same, so that read errors or unexpected extra
+data are not silently ignored?
+
+[ ... ]
+
+> diff --git a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+> index b4e3eddc9cf21..e88a8bbeb6e36 100755
+> --- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+> +++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
+> @@ -359,6 +359,39 @@ do_tcpinq_tests()
+>  	return $?
 >  }
+>  
+> +do_fastopen_tests()
+> +{
+> +	local lret=0
+> +
 
-With HW-GRO off, tcp-data-split is omitted and appears unsupported.
-I think it should report disabled when HW-GRO is supported but inactive.
+[Severity: Medium]
+Should this function check for MPTCP Fast Open support before it runs?
 
-...
+On a kernel without that support, one of two setsockopt() calls fails:
+TCP_FASTOPEN in server() or TCP_FASTOPEN_CONNECT in
+sock_connect_mptcp(). die_perror() then exits with 1. The script
+records "Fast Open early write v4" as a failure and sets ret, where a
+skip would be expected.
 
-> +	if (tcp_data_split == ETHTOOL_TCP_DATA_SPLIT_DISABLED) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "TCP-data-split can not be disabled");
-> +		return false;
+do_tcpinq_tests() in this script already handles this case:
 
-I think the message should emphasize that TCP-data-split can't be
-directly/explicitly disabled.
+	if ! mptcp_lib_kallsyms_has "mptcp_ioctl$"; then
+		mptcp_lib_pr_skip "TCP_INQ not supported"
+		mptcp_lib_result_skip "TCP_INQ"
+		return
+	fi
 
-...
-> +	/* Disable HW-GRO if it was only kept on for HDS. */
-> +	if (dev->cfg->hds_config != kernel_param->tcp_data_split)
-> +		netdev_update_features(priv->netdev);
+run_tests_mptfo() in mptcp_connect.sh does the same with
+mptcp_lib_kallsyms_has "mptcp_fastopen_".
 
-nit: the only transition that needs this is enabled -> auto,
-so maybe something like this is preferable:
+> +	ip netns exec "$ns_sbox" sysctl -q net.ipv4.tcp_fastopen=3
 
-  if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-      kernel_param->tcp_data_split != ETHTOOL_TCP_DATA_SPLIT_ENABLED)
+[Severity: High]
+Does this test ever reach the passive Fast Open path it is meant to
+cover?
 
-Thanks,
-Nimrod
+The value 3 is TFO_CLIENT_ENABLE | TFO_SERVER_ENABLE. It does not set
+TFO_CLIENT_NO_COOKIE (0x4) or TFO_SERVER_COOKIE_NOT_REQD (0x200). Also,
+sock_connect_mptcp() does not set TCP_FASTOPEN_NO_COOKIE.
 
+Each mptcp_sockopt -f run makes a single connection, first to 127.0.0.1
+and then to ::1. So no cookie is cached for either destination in
+ns_sbox. On the client, tcp_fastopen_defer_connect() then gets false
+from here:
+
+net/ipv4/tcp_fastopen.c:tcp_fastopen_cookie_check() {
+    ...
+	if (cookie->len > 0)
+		return true;
+	tcp_sk(sk)->fastopen_client_fail = TFO_COOKIE_UNAVAILABLE;
+	return false;
+}
+
+As a result, connect() does a normal handshake and sends a cookie-request
+SYN with no data.
+
+On the server, tcp_try_fastopen() only generates a cookie:
+
+	if (foc->len == 0) {
+		/* Client requests a cookie. */
+		tcp_fastopen_cookie_gen(sk, req, skb, &valid_foc);
+
+No TFO child socket is created. accept() returns an ESTABLISHED socket,
+PING_DATA arrives after the handshake, and PONG_REPLY is an ordinary
+write.
+
+Neither side checks that TFO actually happened. There is no
+TCPI_OPT_SYN_DATA check on tcpi_options and no TcpExtTCPFastOpenPassive
+check, and the server doesn't compare the payload it reads.
+
+Wouldn't this pass whether or not the MPTCP passive TFO early write path
+works?
+
+This also seems to contradict the commit message, which says the server:
+
+  "accepts an incoming connection with SYN payload data, and immediately
+  writes reply bytes before the 3-way handshake fully completes"
+
+For comparison, run_tests_mptfo() in mptcp_connect.sh connects to each
+address twice, so the second connection has a cookie:
+
+	run_tests_lo "$ns1" "$ns2" 10.0.1.1 0 "-o MPTFO"
+	run_tests_lo "$ns1" "$ns2" 10.0.1.1 0 "-o MPTFO"
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008111003.136143-1-rameshkumar.t%40phytecembedded.in
