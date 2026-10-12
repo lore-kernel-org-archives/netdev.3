@@ -1,168 +1,166 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE44431A51
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 07:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791789062; cv=pass; b=J9WYd+N+mHhCxEaMlOT6SI2+8GaMDU0gQ1oQUMcol7rIcOyXkAlwaPzMU03WFgDjoAw9yxIQcTGeMmk7epCz6S6o8r/S0tXX9TXXWg+YSyEOMHeosTF6Ny0BOvmhGREw2+sWaMfj4PWtFLgqw1UEpO+KJqYoTyEPtsAK4ymOZmU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791789062; c=relaxed/simple;
-	bh=PC8D8DHXuvHBfrK9enAy6y2ARRnFH6LXThA9ycvKtWw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uvOHgQPSrKS29scGy5tyLyJpRnzQ9rdFVHueGDab2pXi3DFq28Tg81Ps7kyz5KfboiZmcJOEn5ku2jhStfmBtXpQNuMxv9u4rupK1D5JVdKH373TZQUoXh6hT5yfK9EXlr5NYv0FESUHbIl726BRVaXFqwOe6iZQLMWQbimxPZs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k1NO0pDj; arc=pass smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3113A5E8F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 07:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791789264; cv=none; b=P6ylavrhlzqh/LS0pvm+/Xnv4ZPoTvwlAx7CJJuD/HQRsPJe1RyT0FHWNYJnAnYlSjoMpohQHbuK34wwnrnG8BHlkqg5h8Y+r1+yFiP/L4I9QJbC02LN58tTfXYOeRAG5dyCMMjBtNZspm7nS3yCR5Xrv/ZxPUefnNEeOr7VKzs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791789264; c=relaxed/simple;
+	bh=9WaIHFKSEp1Mh0EY4LzoXVDcItB39+QZBsM6F7Y9/bM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hoUtP+HcZ0NDz77kCfgZ7n5Z2T1S/hetH/K8mMU5jbQSG6pW7UQTa6CZSiJc119gsuJ/OEs5rUzWmShFh2LndEvCZ44DrO84xrDSopMkRcwWjED2RN8MYIY/si9KkwFkIGRUMwNnYDfgYKi841bBa+vI5AjlncW/qk0yWaIlsKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wo8p7fTy; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k1NO0pDj"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5bccecba199so977348e87.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 00:11:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791789059; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ONm/qqiYnQMbU8kUqIS4UfcHN6I97J2CZtA+9fFMSkdClF0DAJVcsmRKpD013MFsZ6
-         y+K9zv0WGZj11irMkmnPoaxx0B1upwAn3YfubKxGPEDUiaZerLXe80jKwC8pF4SBtEWd
-         B7fzniXFmJBl6l/rKvvAQXzy5Gj1XGGZCi94oTPeqYHCsJX82/ZdpbmzZA+VGODidf2W
-         VnveoYDWh0xdimTnorKok2BfRf3ubte6QgtRdoFZiVBnudkf1+y/y2ymV7ESPTB5TTAI
-         ZCMYEuzyGDeTXGs51M+5XDrUMxX8RAcFKyzeQUEQrvEn50CeFse3+bupqFX56TdmnABp
-         /j7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=PKxPJeHaul4WGcorf+peGk6s2c2jregG736LW2nonAg=;
-        fh=3J6DmbxdyYzuvimhy57IL48bv8AHv9jOZc1s4q9YbQU=;
-        b=hc/kE/koOlXk1Qcmttg8++Nnl0LfaIa+xs0b/8ThWFawuSiRRYK/8Mqqh8qUiMcnLE
-         +uu88EVJcUtrB/TyVMDa7xq6wQrOSHaZKCNjUlsF0KnSyujChheytthlWwmpfPzdjmm4
-         Xw1s6VRxPT4r5xnT8R61HLD69w90n9GFXIJFknQikWkiBrQ0F9tRGqgHDzLbOtrpd9DK
-         kU07VKR4U/zUpCz57cImuuvESLwhXJkuSxe5dBqzQ1x1DUfyk51FKbd3rY+4ea8cbD/J
-         4W0CPWjRdLvP1qx2bNzKXLQpkioOIf72RseF8jryTcYPz/ZBQGZyqn9zfClwbRgNiwOl
-         LGPg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791789059; x=1792393859; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PKxPJeHaul4WGcorf+peGk6s2c2jregG736LW2nonAg=;
-        b=k1NO0pDjM6jAtmlJRpW1/gbBqqWpDBR9s7PpQmv02fFkBj5b/ChZJoDQS6/H7phrur
-         GAaCAVv5ThB7kclYIUt0hYBSTjmakw0BIR6/v9MxPM7GoxiAv4KctcbVCVWlUtMDw7OP
-         2UY1GUf57TyiwIrjkVSKAjyeR8jhbvuw5swMdTdQTNZZyBy9YgUnf+l8iNk7YJZtSppD
-         Bln4k84ReAVXHsZn+Wv0CaQkyBczxGCM97xL0xoMMKYSAr9Gv1t/f1cvdMiycv28Eycy
-         DeSRwmHLolBjyjnktlxP5XiaGPd1uwtGcPumr1NgpF3xSUrCajz2dL9SEbX4oEgEkUs9
-         jrMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791789059; x=1792393859;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=PKxPJeHaul4WGcorf+peGk6s2c2jregG736LW2nonAg=;
-        b=aMXTOM0g/zyYtztPQWLj4zjjUA9xv6vo5A68bVx2FM1IvEC1T95yUuVQj/96I+E+fl
-         MHv6r9RFktqYmaVQ/kvvJW8uKMcJu7GkXXwbTYBtg/zy35InRKCSHmSSWNyzR2rgrXMv
-         6ZFn+2RT6knT9cyyFNesLSb7MlwtlSl9Myyi+vDRb8AK60agiJPF8VtdTuqEPsNN3I84
-         dOJgWa+yZZMQS4wSp4bs/V2s51U31ffLEjZr58VbKmRXCZDDpw6anQ/AdMlP9NbCxWHE
-         3jJRQZYX/I0aMXeEaOc0gMrnMCbF6qD2H5njeuQ0ZG7q420f0aD3uNyijUgwK3T2VlEU
-         SPyw==
-X-Gm-Message-State: AFq9FYJdwNesSGqPl5QW6mcR9PsFojo8IjJ09hneEjyyQ2IgMT/rHOhG
-	5Kqpq+ElzXIbLTD72H6vXfWDDnDqFvkA4+Xj2Bbakc3x0pgSTcNXYBow/BiApd1Js9P8D3KOzO5
-	ONApNmsjTkmhBHwPaysl/pbfaW0HUwaE4Ky6QTwCsGA==
-X-Gm-Gg: AYBFou0KIQ4xC6nqlYp4gRmojifnkNwASENDEAikkLg3+/EUEhdFeCmBN3nvGg7TF/9
-	BXOB8s5d6NYtjFWIaCuofiUt/81NgI5jIe1a3SrK36r3ifrMUDhlUVra+smYC63jHJ3lt3HMawr
-	Rz6wj3H4IcTrp/xKFYnkxWSUOtNgMQe5I26Dq+rfCUO+iheP6YkTF/F53Bsibym2oFKyG4LOwS2
-	waNzNTyoHWtLOr0V8UNdXU3szJ1sxoGTaKmmRexTAk9FWiyJ+PvgpHa4dmEZc4iDWAyxwDAWBRE
-	fPT/S9GNE7EIRaetLoIVsZ8Gn7PJ6J5IhBBP2SoOQRF/hkRd3g3lptIvM7hir2MrcQ==
-X-Received: by 2002:a05:6512:3f1d:b0:5b8:e4d0:9040 with SMTP id
- 2adb3069b0e04-5bcde6bd1e9mr3313023e87.11.1791789058754; Mon, 12 Oct 2026
- 00:10:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wo8p7fTy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791789262;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7kQhW7XHwd2bgZ0aOycOAbqVJ+65LKVZRmOarAwwtYo=;
+	b=Wo8p7fTyi4Y7X6Q53yDA5BamQ7Wf0G2nYR4Ycqog/hR/CviM/EEatqezLulbM6CUIGaEB9
+	IM++9VF7DDUlbKxCBZEcxesVWD1a9ve8RBR1pob5yh/wh5tIhT0FnpuIUEKzvkMokfTOzo
+	gtPSr+qX+3zRAsK0S8I54VyyJXKndtQ=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-353-a7cONxfTP1G9uCsl59Fj5A-1; Mon,
+ 12 Oct 2026 07:14:19 +0000
+X-MC-Unique: a7cONxfTP1G9uCsl59Fj5A-1
+X-Mimecast-MFC-AGG-ID: a7cONxfTP1G9uCsl59Fj5A_1791789257
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C0921800D84;
+	Mon, 12 Oct 2026 07:14:17 +0000 (UTC)
+Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4C22830000E7;
+	Mon, 12 Oct 2026 07:14:14 +0000 (UTC)
+Message-ID: <2f91b950-1daf-4e41-829c-5c0f02b19ace@redhat.com>
+Date: Mon, 12 Oct 2026 09:14:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPZ+gd9d1P+xDSrxxZkGJr32zjubP=KfQegeGkWykKGvEH0=oA@mail.gmail.com>
-In-Reply-To: <CAPZ+gd9d1P+xDSrxxZkGJr32zjubP=KfQegeGkWykKGvEH0=oA@mail.gmail.com>
-From: =?UTF-8?B?6ZmI6ICA5piO?= <cc201008@gmail.com>
-Date: Mon, 12 Oct 2026 15:10:46 +0800
-X-Gm-Features: AclHuK9zqsCSqKaZL-No2oYZGnFlUiG1tvJRKnc3YYARIdJB75fdIO839OkOa6U
-Message-ID: <CAPZ+gd8TPNnvEDOv_H=fdvy2ysG63uBD0MvmEMjhkMa8i-y1NA@mail.gmail.com>
-Subject: [PATCH net] net: airoha: Keep UPDMEM egress MAC in sync for offloaded
- IPv6 flows
-To: netdev@vger.kernel.org
-Cc: lorenzo@kernel.org, horms@kernel.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v5 1/5] dpll: zl3073x: do not offer 0 Hz as a
+ supported pin frequency
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, poros@redhat.com, min.li@microchip.com,
+ vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
+ kuba@kernel.org, Prathosh.Satish@microchip.com, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
+References: <20261011061211.448373-2-ivecera@redhat.com>
+ <179178562093.434549.11224993829134202451@kernel.org>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <179178562093.434549.11224993829134202451@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-PPE routed IPv6 FOE entries do not carry the egress source MAC inline;
-they store an SMAC id and the hardware resolves the address through the
-UPDMEM table, which airoha_ppe_init_upd_mem() only programs with the GDM
-port own dev_addr at probe time.
+On 10/12/26 08:13, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in case
+> you want to address the nit picks below when you respin.
+> 
+> Low priority / nit picks for your consideration:
+> 
+> - [Low] The patch fixes two separate 0 Hz bugs, but its only Fixes: tag
+>    names 85a9aaac4a38 ("dpll: zl3073x: Include current frequency in…
+> 
+> Pre-existing issues:
+> - [Medium] zl3073x_pin_props_get() still adds the probe-time current
+>    frequency at index 0 after only a zero check (prop.c line 302).
+> 
+> --
+> 
+> dpll: zl3073x: do not offer 0 Hz as a supported pin frequency
+> 
+> This patch stops zl3073x_pin_props_get() from adding a 0 Hz current
+> frequency to the supported list. It also makes zl3073x_pin_check_freq()
+> reject 0 Hz firmware node entries. If the resulting list is empty, it is
+> not published.
+> 
+>> diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
+>> index ac9d41d0f978e..768e5424de2d2 100644
+>> --- a/drivers/dpll/zl3073x/prop.c
+>> +++ b/drivers/dpll/zl3073x/prop.c
+>> @@ -30,7 +30,7 @@ static bool
+>>   zl3073x_pin_check_freq(struct zl3073x_dev *zldev, enum dpll_pin_direction dir,
+>>   		       u8 id, u64 freq)
+>>   {
+>> -	if (freq > U32_MAX)
+>> +	if (!freq || freq > U32_MAX)
+>>   		goto err_inv_freq;
+> 
+> [Severity: Low]
+> 
+> The commit message also says that a 0 Hz firmware node entry is divided by
+> in zl3073x_pin_check_freq() at probe time. Does the Fixes: tag cover that
+> part of the fix?
+> 
+> Before this patch, zl3073x_pin_check_freq() had:
+> 
+> 	if (freq > U32_MAX)
+> 		goto err_inv_freq;
+> 	...
+> 		if (synth_freq % (u32)freq)
+> 			goto err_inv_freq;
+> 
+> Both checks came from a99a9f0ebdaa ("dpll: zl3073x: Read DPLL types and pin
+> properties from system firmware"), not from 85a9aaac4a38. On input pins,
+> zl3073x_ref_freq_factorize(0) also succeeds, so 0 Hz was accepted there too.
+> 
+> Would it make sense to add this tag as well?
+> 
+> Fixes: a99a9f0ebdaa ("dpll: zl3073x: Read DPLL types and pin properties from system firmware")
 
-The netdev the flow actually egresses can legally carry a different
-address: on PON setups the authentication MAC belongs to the pon device
-while each service VLAN routes with its own address, so offloaded IPv6
-frames left the port with a stale source MAC and were silently dropped
-upstream. IPv4 was unaffected since HNAPT entries embed the MAC inline,
-which made the failure hard to diagnose: TCP handshake and TLS completed
-over the slow path and the transfer stalled exactly when the flow got
-offloaded.
+Maybe, does it make sense to make another respin? Paulo,Jakub?
+> Without it, stable trees that have a99a9f0ebdaa but not 85a9aaac4a38 might
+> not pick this up.
+> 
+> The later patch in this series, "dpll: zl3073x: reject output frequencies
+> with too small divisor", carries Fixes: a99a9f0ebdaa. It still divides by
+> freq via div_u64_rem(), so it seems to depend on the !freq guard added here.
+> 
+>>   
+>>   	if (dir == DPLL_PIN_DIRECTION_INPUT) {
+>> @@ -295,13 +295,20 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
+>>   		goto err_alloc_ranges;
+>>   	}
+>>   
+>> -	/* Start with current frequency at index 0 */
+>> -	ranges[0] = (struct dpll_pin_frequency)DPLL_PIN_FREQUENCY(curr_freq);
+>> +	/* Start with current frequency at index 0. A sub-Hz frequency is
+>> +	 * read back as 0 Hz and cannot be set, so it is not offered.
+>> +	 */
+>> +	j = 0;
+>> +	if (curr_freq) {
+>> +		struct dpll_pin_frequency freq = DPLL_PIN_FREQUENCY(curr_freq);
+>> +
+>> +		ranges[j++] = freq;
+>> +	}
+> 
+> [Severity: Medium]
+> 
+> This is a pre-existing issue and was not introduced by this patch. The new
+> comment says a frequency that cannot be set is not offered, but only 0 Hz
+> is filtered here. Should curr_freq also go through
+> zl3073x_pin_check_freq(), as the firmware node entries do?
+No. The current frequency is listed so that the pin always reports
+a frequency from its supported list, even when the flash configuration
+uses a value the driver itself would not set. Going back to such a
+value can then be inexact or fail.
 
-Before writing smac_id for routed IPv6 entries, program the UPDMEM slot
-with the source address of this flow.
+Thanks,
+Ivan
 
-airoha_set_macaddr() writes the same slot from the ndo_open and
-ndo_set_mac_address paths: take flow_offload_mutex there too so the two
-UPDMEM writers cannot interleave their two-step DATA/CTRL sequence and
-leave a stale address behind.
-
-Tested on a Nokia XG-040G-MD (AN7581, GPON WAN, PPPoE over a service
-VLAN carrying its own MAC address): IPv6 HTTPS transfers went from
-stalling at the 15 s curl cap with partial bytes to completing at line
-rate with hardware offloading enabled, matching IPv4 throughput.
-
-Fixes: 00a7678310fe3 ("net: airoha: Introduce flowtable offload support")
-Signed-off-by: Yaoming Chen <cc201008@gmail.com>
----
- drivers/net/ethernet/airoha/airoha_eth.c  |  8 ++++++++
- drivers/net/ethernet/airoha/airoha_ppe.c | 13 +++++++++++++
- 2 files changed, 21 insertions(+)
-
---- a/drivers/net/ethernet/airoha/airoha_eth.c
-+++ b/drivers/net/ethernet/airoha/airoha_eth.c
-@@ -138,7 +138,15 @@ airoha_set_macaddr(struct airoha_gdm_dev *dev,
-  airoha_fe_wr(eth, REG_FE_MAC_LMIN(reg), lmin);
-  airoha_fe_wr(eth, REG_FE_MAC_LMAX(reg), lmax);
-
-+ /*
-+ * Serialize with the flowtable offload path: both writers program the
-+ * same UPDMEM slot with a two-step DATA/CTRL sequence and concurrent
-+ * updates would interleave, leaving a stale source MAC under already
-+ * bound IPv6 entries.
-+ */
-+ mutex_lock(&flow_offload_mutex);
-  airoha_ppe_init_upd_mem(dev, addr);
-+ mutex_unlock(&flow_offload_mutex);
-
-  return 0;
- }
-
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -414,6 +414,19 @@ airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
-   dsa_port);
-
-  smac_id = port->id;
-+ /*
-+ * Routed IPv6 entries resolve the egress source MAC
-+ * through the UPDMEM table indexed by smac_id. The
-+ * egress netdev can legally carry a different address
-+ * than the GDM port itself: on PON setups the
-+ * authentication MAC lives on the pon device while
-+ * each service VLAN routes with its own address. Keep
-+ * the table entry in sync with the source address this
-+ * flow is actually going to use.
-+ */
-+ if (type >= PPE_PKT_TYPE_IPV6_ROUTE_3T)
-+ airoha_ppe_init_upd_mem(dev,
-+ data->eth.h_source);
-  }
-  }
