@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244C213777E;
-	Mon, 12 Oct 2026 03:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF59F391838;
+	Mon, 12 Oct 2026 03:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791774114; cv=none; b=cObZq+9njCBkp+IxJa6Oof6VC0VO+znaR6PRm0Qcqw1rBHAPpUI/7QPxty7miEduorHbWK4uyzoZgOKOHsw0cVi3lGUz2MCThJZYpkyMgInY6QfP1OFzTD++j4Le+fG5r+knZP+ypJ9yhUm9jmH4nRns9nnXq1E40HWycanG2zA=
+	t=1791774115; cv=none; b=Ciqdsn+iPR9qvaZ6B2RBaWlyZQOOy5Z3yJ/JjRsZX47flkKrAfg9Di6gXZsuMRc2IoxbjM9Twq5uf5tGhKQN/QKuUggZ+vc18qMsR/ft3yhaBXM8N01MktA760ee/TsateFF8yBgMC07/A8KE3hWHEqjwTGU2cEeMPrr/GHOWuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791774114; c=relaxed/simple;
-	bh=/DSZWa9njgA2gJBbrqczJDySU39sjfYx6qEBEZX/aQM=;
+	s=arc-20240116; t=1791774115; c=relaxed/simple;
+	bh=4lovSobfyYeIj0BJYkI3mOUw4greSek31OIDz6d1PGw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mse651zcDQgxvBj4i9en2yt2TCHFgM9Q7uqgBCl8ga/cXItDHLqUynohib1a3NZBphcpM/wdSDaFdFh7YXQupRsrFB1l0KG2N3ZduQEO78CcGc4w/6LqQKqzHT0pRabgkk+9ypKrq0nDSaYtBEbqRTiGPlBtIQzW9vMiNadGyDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f57QizkW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=QmURZAThjCckph621Ns28mTk8zb/gVoGaIWP/91tOr6cfRFg7Ttpne2rLxYJvJ2bvUEint5bOLaJOXTGIyfLFxBdDSG4T3AyCSIYgPD/20+MJuOzL5L4ZKTqkHVRCUaHaOYmag6tzy8qqXRMc1HSnajVWawM/yohwUd+9dNgYdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxMB4YEN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f57QizkW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1996F1F0089B;
-	Mon, 12 Oct 2026 03:01:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxMB4YEN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987F71F0089C;
+	Mon, 12 Oct 2026 03:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791774113;
-	bh=oI3lzkdahAm/zXK7Q5T7j+FGZ2ppaib+hrM7wL53O4o=;
+	s=k20260515; t=1791774114;
+	bh=fqI52G4/N1h0CFnjgU+cnVh70cY42HCFyRQNFN7g/V4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=f57QizkW7t7EgScg5TD+MpsQZJwepgSI6gS/iAWd7tvu3DtMbtzGMznlBgI8zHCX9
-	 RDpfMNOwDZJeYAXwSGOVI3TXLzUSRhuGC/UuEhBDqWBubZTAcTCtRowFZOZdXECSH5
-	 z73mQ2i6ugRcOkQX1oyiSSD9m1MueSbUwNXydlNeaGksqMsaQgGMfd+GsnmZ5IWpq/
-	 KDroRC4RFGkbF4GucqRSenfNj/sNN1DXlFZghs0/8BIs4iw+dPubeqE55dgopYm8vf
-	 k3wjRco5FXxuCO1g4dyQWKSB3Ly990C5ksQxoUdOYfKy1VT4g+la3aA9RapNNTTxIg
-	 Jb2lCcaygZ8lg==
-Subject: Re: [PATCH net-next v13 1/5] net: dsa: motorcomm: initialize
- dsa_switch based on chipid
+	b=bxMB4YENae6siclAo+FSSk+31dZ4l24KsCJ10PiryGVGKO6/NhT5EfkkLwRNn9OaP
+	 Ma73h8l85Fo6VyEtDjldSBeG+CRXzZvCTll3KFFkEhPfTMsu+4RM4f0OBThCeo1CF8
+	 60LnE5/T+VuPRzVpX7hYlRNcJP6PlBFlh5nKa82QZam/XPXFwMK4NA9Wy2LNXzaFAX
+	 AhaprButnipqgkfP8q9DPNHSJ/Lvg9oOBeNCT3+oTpvgrX+CswzGXVKl0hv+idpJHD
+	 PwsKKQXz2oDnA4rbDPHitA9IazX0n7CIQHnNmxH5/j3nvuXGUDPEZR5Dqw9jLBbGyv
+	 q0QrZX4FVMiZw==
+Subject: Re: [PATCH net-next v13 3/5] net: dsa: motorcomm: use fixed-width
+ GENMASK_U*() helpers
 From: netdev-bot+sashiko@kernel.org
 To: kyle.switch@motor-comm.com
 Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
@@ -36,10 +36,10 @@ Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
  linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
  xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com,
  sijia.huang@gl-inet.com
-Date: Mon, 12 Oct 2026 03:01:51 +0000
-Message-ID: <179177411161.434549.11883600135286117076@kernel.org>
-In-Reply-To: <20261011025043.1859940-2-kyle.switch@motor-comm.com>
-References: <20261011025043.1859940-2-kyle.switch@motor-comm.com>
+Date: Mon, 12 Oct 2026 03:01:53 +0000
+Message-ID: <179177411317.434549.9487392652475811243@kernel.org>
+In-Reply-To: <20261011025043.1859940-4-kyle.switch@motor-comm.com>
+References: <20261011025043.1859940-4-kyle.switch@motor-comm.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,109 +56,55 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message does not describe the patch accurately.
-- [Low] In yt92xx_register_switch(), `u32 chipid;` has no initializer.
+- [Low] The commit message for "net: dsa: motorcomm: use fixed-width
+  GENMASK_U*() helpers" does not match the diff.
 
 --
 
-net: dsa: motorcomm: initialize dsa_switch based on chipid
+net: dsa: motorcomm: use fixed-width GENMASK_U*() helpers
 
-This commit moves the dsa_switch field setup out of yt921x_mdio_probe()
-and into a new helper, yt92xx_register_switch(). The helper reads
-YT921X_CHIP_ID at probe time and takes the per-series parameters from a
-new yt92xx_series table. If the major is unknown, probe fails with
--ENODEV.
+This commit changes several GENMASK() uses in the motorcomm DSA driver to
+GENMASK_U16() or GENMASK_U32(). The changed uses are the internal_mask
+entries in yt921x_infos[], the ctrl value in yt921x_chip_setup_dsa() and
+the phy_mask in yt921x_mbus_int_init(). The commit message calls it a type
+cleanup with no functional change.
 
-> Replace the hardcoded chip handling in yt92xx_register_switch() with a
-> data-driven loopup based on the chip ID.
-
-[Severity: Low]
-Is this description accurate? yt92xx_register_switch() does not exist
-before this patch; the patch adds it. The hardcoded ds-> assignments
-that get replaced were in yt921x_mdio_probe().
-
-There's also a typo: "loopup" should be "lookup".
-
-yt92xx_series_lookup() is an if-chain on the major, not a table-driven
-lookup.
-
-Could the message also mention the behaviour change? yt921x_mdio_probe()
-now reads YT921X_CHIP_ID over MDIO before dsa_register_switch(), and it
-fails probe with -ENODEV for an unknown major. Before this patch, the chip
-was only identified later, in the setup path:
-
-yt921x_dsa_setup()->yt921x_chip_reset()->yt921x_chip_detect()
-
-That path still reads the same register, so every probe now reads the
-chip ID twice.
-
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index 91cc5647f2b66..d4c20658216a6 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -4078,6 +4078,67 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
-
-[ ... ]
-
-> +static int yt92xx_register_switch(struct dsa_switch *ds)
-> +{
-> +	struct yt921x_priv *priv = dsa_to_yt921x_priv(ds);
-> +	struct device *dev = yt921x_priv_to_device(priv);
-> +	const struct yt92xx_series *series;
-> +	u32 chipid;
-> +	u32 major;
-> +	int res;
-> +
-> +	mutex_lock(&priv->reg_lock);
-> +	res = yt921x_reg_read(priv, YT921X_CHIP_ID, &chipid);
-> +	mutex_unlock(&priv->reg_lock);
-> +	if (res) {
-> +		dev_err(dev, "Unexpected chipid 0x%x\n", chipid);
-> +		return res;
-> +	}
+> Some masks assigned to u16 and u32 fields are defined with
+> GENMASK(),which is an unsigned long constant and wider than
+> the field type on 64-bit builds. Convert the affected
+> internal_mask entries in chip.c and the YT921X_MBUS_CTRL_*
+> masks used by mdio_bus.c to fixed-width helpers.
 
 [Severity: Low]
-Can this print an uninitialized chipid? chipid has no initializer.
-yt921x_reg_mdio_read() only stores to *valp after all four MDIO
-transactions succeed, and every error path jumps past that store:
+Does this description match the diff?
 
-drivers/net/dsa/motorcomm/chip.c:yt921x_reg_mdio_read() {
-    ...
-	val = (val << 16) | (u16)res;
+The patch doesn't touch drivers/net/dsa/motorcomm/mdio_bus.h. The
+YT921X_MBUS_CTRL_* masks there still use plain GENMASK():
 
-	*valp = val;
-	res = 0;
+#define  YT921X_MBUS_CTRL_PORT_M		GENMASK(25, 21)
+#define  YT921X_MBUS_CTRL_REG_M			GENMASK(20, 16)
+#define  YT921X_MBUS_CTRL_TYPE_M		GENMASK(11, 8)  /* wild guess */
+#define  YT921X_MBUS_CTRL_OP_M			GENMASK(3, 2)  /* wild guess */
 
-end:
-	mutex_unlock(&bus->mdio_lock);
-	return res;
-}
+The masks are still like this at the end of the series too.
 
-So if the MDIO bus fails during yt921x_mdio_probe(), this message prints
-whatever is on the stack as if the switch had returned an unknown ID. It
-also never prints the actual error in res.
+The only change in mdio_bus.c is to the PHY probe mask in
+yt921x_mbus_int_init(), which is not an MBUS_CTRL register mask:
 
-yt921x_chip_detect() does it the other way round. It returns quietly when
-the read fails, and prints "Unexpected chipid" only after a successful
-read with an unknown major.
+-	mbus->phy_mask = (u32)~GENMASK(max_ports - 1, 0);
++	mbus->phy_mask = ~GENMASK_U32(max_ports - 1, 0);
 
-> +
-> +	major = FIELD_GET(YT921X_CHIP_ID_MAJOR, chipid);
-> +	series = yt92xx_series_lookup(major);
-> +	if (!series) {
-> +		dev_err(dev, "Undefined series info for the corresponding major\n");
-> +		return -ENODEV;
-> +	}
+For chip.c, the message only mentions the internal_mask entries. The patch
+also changes the local ctrl value in yt921x_chip_setup_dsa(), which is
+written to YT921X_FILTER_UNK_UCAST:
 
-The real unknown-chip case here has the opposite gap: it doesn't print
-the chipid or major that was read.
+-	ctrl = GENMASK(10, 0);
++	ctrl = GENMASK_U32(10, 0);
 
-The last patch in the series, "net: dsa: motorcomm: Add support for
-Motorcomm YT922x", appears to fix both. The read-failure branch becomes a
-plain return res, and the unknown-major branch prints chipid. Even so, the
-bad message is still there at this commit for anyone bisecting.
+Could the commit message be updated to describe the phy_mask and ctrl
+changes, and to drop the YT921X_MBUS_CTRL_* claim?
 
-[ ... ]
+Also, there's a missing space after the comma in "GENMASK(),which".
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011025043.1859940-1-kyle.switch%40motor-comm.com
