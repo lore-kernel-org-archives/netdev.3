@@ -1,128 +1,120 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166A33EEAE5
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791807065; cv=pass; b=JYLtBquhXtukFzL7imt9OUGvo1nOrTAE9cnmKPk3j3TPxSKopY136dkExcBHhi6cY5zMOomLCTW0Yzwcn6BPsKffUbVZ7BJbOb2phDoEEdz62uVCaJ+Wd/tpq3aMNc1F/wJQSdapYLnVzsq6GH8+fKx6KMqfwhchqjIG4kGKvbY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791807065; c=relaxed/simple;
-	bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q+6LSAmde16hHq/cexH7nQ8AHBg58ehpv+QqBj9ZPNRNCJx+UCC4llrNfjuc8YRCwmbVUvsOHVrUjf6tY2K57vHvrQ+pctobmPQeghLPHih9xws33wiHewZdsgpdnIM+qo+orLEEmCWCp/e4SzTP1k1xN6v9x1dlZjf0sWKNEQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz; spf=pass smtp.mailfrom=sairon.cz; dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b=O8wXIpmj; arc=pass smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1A5472535
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791807108; cv=none; b=NdMqKXwWwhOmYmznEHOtBz9bEX6ypXSxntLqboS7yd1GhxxI0oy6AnpecZvJWUj50/5vAsS+ZxsEnZEK5vNmXOiV0nXXOTPkt/Frj0iyq4pFbhOcuAJIBvke/StraYiIpveh+4RvurIKbAWFCaEapEzA/mCOYS9lq5i62v9yvfg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791807108; c=relaxed/simple;
+	bh=rJRyqsVFQ5O/gwaiMQNwRrhpcjKtpLZTgSfCzqO+3p0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S2nDXbYnabnyusYUg+fzcscJcrEMw9ixBBVvVwuNar01rUz1DRIRoZIT8xDUWt9qRGnd/kHkcHAG6yCNID/ipUmQMekM54f7b4cNRTc3qWTRn191XFDLsM88YCn5Rt3jtHD7BZV9FHFCH6rZnMa+hSgbScNKmGGMF1+Z6ap7a0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b3Apgy63; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="O8wXIpmj"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e61ac64ec3so16634355ad.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 05:11:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791807063; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ux/ohBRyvj4lsg7AjCbRv+BPaLjuILkWcQiPXTgtuHzLuHI7f0W9klFPS9+pYJmmmB
-         6lGmw/UJr/uraCj6z8KanWFmGrlYaAMBZDj/KoNzhHQWKAP1gzEBJCCRxfyMKOdCWabo
-         JycBTdyxMf1z+3PhI2McSwkcveY0JSTqLXafd24/RrWpAhRn9v3lE5J3sxiFrfj7/jGA
-         AIn47xfZg+9/bmNG8Qt9J7YE4lF22cgTgu8kvGPdc5YaGxkwRhuxl96ifcgcKeUPo5vn
-         mS5LHCtT0FXZgZRDPxHVL/0Q6D5t7nzK0MuovM6q53BQjlQmGBnDNcQ6IIfdgo4PZcHr
-         1EUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
-        fh=/rs/fgyi9w9QUgH09l/T+kGtjll/c+C+hvhImozp47s=;
-        b=DWTuDi61fR16x0oSH+CLle+q9QUB1OkwEaiv1VHS8P1F8+OqjE6VyEcNZNne2NZt0Z
-         iy5HzD6/QKGopSEKsEudKCCIhzixS9mUvlJUU2jKZTxJK6X6tZ+5Y+b/YJirtOOE4zzr
-         LCWr3kQccFvKWbrxJ9H48Y9hY2RtEonwpsQpqhN4LSjONav3CLMnlUmAJLG1gYx0lX1T
-         wHqJUi+GSeeS0nYT7v0kfZtTvvlLgzehL6Rvf/HCN8EnBGil6bJJH291nOp/Zl7G4hrM
-         mat+Jnpu9fECfB7KPa9H7U+kbeeJP7oj37vwbzYPG/IceEIujdKSmTL4/Kx8fFfZgSD0
-         QjiQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b3Apgy63"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-398b3c37877so818695a91.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 05:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sairon.cz; s=google; t=1791807063; x=1792411863; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
-        b=O8wXIpmjCqQb2c3pZiZJd1h3FrNYD97RxCU9+GuWMu1dQJjMMyGD+m4vTRKvCyRuAI
-         ekegyVpPpUAouF3pCuILzCFwOCQOSm9yKlQ/l2DREEQNjnahdj4zVbH7VlCgTlniWwAk
-         vIuoY0BvD2AS16x6H0DBIu2Nr//UklzoEbwAYLohfEtNFXs6SWe+Pz1vLZR0HtPjhX+l
-         g5bebGFJlRG6cOd0NmpPwXVx4ZDreoFxjlNeaJ8nd+Gi2Jc8UF/1iu1qJ1nG8ThllUeM
-         x3gXLiFjdMYoVTYW8RRM1uQq931z8AlL0msiobydw6SZhOx1zAR96uxivzxaj0+FUGlE
-         fcJQ==
+        d=gmail.com; s=20251104; t=1791807106; x=1792411906; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OV6YDNYPeiFdz/Nxte2QGUp1Bj1LDwNwasKSm/sFXFo=;
+        b=b3Apgy63FWMLwVPmHN3wh9f4xzAM3GdDB41jXVjjSPnyDpvq8kxFe5G8PKoB9pNgjg
+         FU42D1aBCglELYWhmFByaurhcZRfkJgL/uPvu9zMCV8e1bsUwY2BLblrbNnvkXK/8H/E
+         1+4dahN1WxCjexnvTU40+oD+EZxkErHT9ic96Y22ExRC/OWA0zz8pOrgtH+6GMhxsy1j
+         zHmfKsCVcmiINLV3kNZMHRY1MLSc37ZaFPiTEqQxDcRPTZjIlnPbFUd5inNJliDT3zPW
+         w8Fpk5ilfdtu63IAiG/zBdWbO1AEFqx9D+ThYM5buU/ip7BhDl3xS1L6ve2zv3K6pljc
+         CIeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791807063; x=1792411863;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
-        b=yBgyfyl1VcUzv//672CbxsnvaaGcYFsMKXBx8N9SEIGfBdP8ohfdUBur6wEaJGS4j6
-         EZ7xonFLYdVTMacqSGJw6D9cKmWp723Wj2/ojEbx9/s86kGJ6PVYc34JnarbJYD0W7GI
-         pAIOxXXmPVCQzgnl58oX1vCormj0rnqFWFczWzchzBpykSThXTH/e2nkOf/RK7dDcJG+
-         gOGn6dzbZym3xRU885PorRvEITbh93JPv303ecHQXt7ZiUN/QX5irQ1FVS6p8fAy8nEZ
-         14bh750H0OGQNUJ2bTBHft/nMklf99urBWlJCy+WxqPfpk51Irhx3Zd3M9HkfOuA1AHy
-         fJOw==
-X-Forwarded-Encrypted: i=1; AKwUvBzoJoI/UEpe1v/ABTOBx1MCeDRnG/cCCML/s9gWic3tI48XA/NF5wtCdSyOZ56nwTUhIMbvAr4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKfsz1cskZzbqZSXZaRDIHVW+Dj/LrBqSFp35LXG067cz8eAaLL
-	E+BqDD3/3K6i2w0exB49fIUtDjKRPJmJ/JOPTv5MpgYl7u0zO4Jn/TY2JphETffWtpG74aHx29Y
-	6bPcRvBrzUoDUKwxeoNGatImcALr+LCgfN7hftWbWYA==
-X-Gm-Gg: AYBFou2cum/c65KKpgswk5r34Fzcr5twWQnWl6/4XkGLNdhXJDZ7PBpqvpEexEFiVGB
-	NPWQzpyjsNdMmbemKX5J1pSmJvDx/RKadk+lZTUPJnWrUmT4t4Dd57FrN0Iu0yrVHRnJL6VSi2p
-	yMFCV8TezA4Ga4b/ecqyxGOwA5RrW4zsKBgJ1gZWrtx8exUGcT9m+Oa+IrJFIAYH6yerP89zeLc
-	yGW1QNlr1FlkEX46a5woAdvh1UAKDG8JCeYCBaTEYvK9UviHNWmZBkaQ1Wz4GUCDNnymiMkEZG5
-	3s9RM4N6xl9taro/ComYBVtobtr8osiOEwq+iGmeMxqu7LIL55JaifgrA5fQqWlL8runupqduMt
-	zCalGBwChd7+lc7qC9juiLqKHFSF+Bn3oMz9W2RQjYNgj3N1jfQGlCa942QlXsQ4InEjwyk78Gd
-	I=
-X-Received: by 2002:a17:903:230b:b0:2dd:c100:a5e1 with SMTP id
- d9443c01a7336-2e842df9c64mr84761985ad.53.1791807063406; Mon, 12 Oct 2026
- 05:11:03 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791807106; x=1792411906;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OV6YDNYPeiFdz/Nxte2QGUp1Bj1LDwNwasKSm/sFXFo=;
+        b=HVkSD3uY7U9uwOfofCdtFHIgmwXEbo9BzwKqWPnju5jpFgH/xj3ISVCvEhPz+Iuwiq
+         GeLPA2iftF9S5+5EtX8G+iV6AC+o1lGmIyvH36maauPvRGplHg/IU3lUBDqZifNx5+0m
+         uNWMraH/QotTnpfbPeFfV4/kuZWPfVeBj9AkT7yP66Qj/bN0JQ4ThbUlnUbV+Z/GogiC
+         a6WjJjs2848PWFuwb3tET+GOdyDZAATaZhcQ2cMMEuInvtaUEr6Br2WZRAKfUVqCGvPv
+         /9MXZ7u7dPbqqPrcuy5Y9tpII7UXmBnTnwaMcC8nxcjOMhEEn/WtmStKeSLHORvXRSng
+         dZ6w==
+X-Forwarded-Encrypted: i=1; AKwUvBzMIEdA6X8fVFyhvPu5jaBsJpSY+4XIaMrs37qMZwRGpwefxba/t95c8cX8XIDbAMyZw+goNEg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIVMsat/87Lg+I3L0x8RF7Vlr4kFvHztYfPr1QLPeMb8OUTGd9l
+	NRW9fJ+euS9u1s9QMjb/EKjKlY63lMnnVhdtGmlFcai41VwHWb2A7ka7
+X-Gm-Gg: AYBFou2ocK4SkXaRS2kuGc6INPJtXOp9zeJJfYPgzd35szKVUXwnic7E8oTK1Re7l0l
+	1hHrfpcuWznsq8XXAIUK4djtoQSLVtYH8gmGe96RW338BGrJ/s+WgaDcTO8amnfAPDBB5sIIGdd
+	VRRZ21RvpUft4fCJMv6G8W4K13l9hcY+xeegpw7btskD787Zd2AOsGw6yivS1Hy9ulmi02DeSRi
+	E9TRXK8oyWfs/cMfhuXIw5KC/Y/n50pGuXSJ6btik78qwbzOs+mYeLtd/ttk9p/XgiH7DDGXWc7
+	rcOFHhOOlCmw6fQ9ZFGbDbIO+A8ZcySs2zNEBcsFYFPonoUuEOf12HtAphLfEJVVBv12oRTUfW6
+	d8NpvIDJs5Rbdx49xqCDrSCk+HiZBQ7J5rTprlbUG8S9no1JwLj1SxenGdCf0SIZavW/GKxlkC5
+	VQQ2jkXfibmh6eh+TPWqDLrsa/GqtsOe3VV6MfPm1bI3wT7/eUsn8EU3DcVZzBKLUeKzX7U2pKR
+	ENUbk/eTpF49vvH9QYR/mURytUhfFyxgb3sp2VF
+X-Received: by 2002:a17:90b:2d0b:b0:3a4:945e:bc33 with SMTP id 98e67ed59e1d1-3ab3af7177amr7138783a91.47.1791807106338;
+        Mon, 12 Oct 2026 05:11:46 -0700 (PDT)
+Received: from localhost.localdomain ([2409:40f2:102b:51cf:2018:b37:8e19:d019])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab38fc9e52sm16255591a91.13.2026.10.12.05.11.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 12 Oct 2026 05:11:35 -0700 (PDT)
+From: Aryan Arora <aryanarora.w1@gmail.com>
+To: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	David Girault <david.girault@qorvo.com>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+19cbce4cc656ecd4febc@syzkaller.appspotmail.com,
+	Aryan Arora <aryanarora.w1@gmail.com>
+Subject: [PATCH] mac802154: Cancel scan work synchronously during hardware teardown
+Date: Mon, 12 Oct 2026 17:39:34 +0530
+Message-ID: <20261012120934.64632-1-aryanarora.w1@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261010145106.773639-1-edumazet@kernel.org>
-In-Reply-To: <20261010145106.773639-1-edumazet@kernel.org>
-From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
-Date: Mon, 12 Oct 2026 14:10:37 +0200
-X-Gm-Features: AclHuK8DRF7h4yoRuEUgqqSib73XTa3xTkHTUF9D0mRimi4RFLmab13pLm3GGQY
-Message-ID: <CAPa5EdAioOoMNj+kH8+Ko822tSyLJL-CxpXr3Q=ZWx0jwFNdOA@mail.gmail.com>
-Subject: Re: [PATCH net v3] vlan: restore HW VLAN tag insertion with
- reorder_hdr off
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Stefan Agner <stefan@agner.ch>, hitchin999 <hitchin999@users.noreply.github.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Eric,
+Scan cleanup uses cancel_delayed_work(), which does not wait for a
+running scan worker. The worker can requeue itself after cancellation,
+leaving an active delayed-work timer when the PHY allocation is freed.
 
-as I wrote in [1], the bug also affected cards using the r8152 driver,
-so I used that in my setup for testing.
+Cancel scan work synchronously before destroying the workqueue.
 
-I applied this patch to v6.18.54, which was previously used as base
-for testing, and I confirm the issue is gone, and the VLAN interface
-can be normally used. On vanilla v6.18.54 toggling reorder_hdr to off
-triggered the issue (even when the VLAN was created with it enabled),
-so this step was enough to verify the regression is mitigated
-kernel-side, so:
+Fixes: 57588c71177f ("mac802154: Handle passive scanning")
+Reported-by: syzbot+19cbce4cc656ecd4febc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=19cbce4cc656ecd4febc
+Tested-by: syzbot+19cbce4cc656ecd4febc@syzkaller.appspotmail.com
+Signed-off-by: Aryan Arora <aryanarora.w1@gmail.com>
+---
+syzbot reproduced no crash on 7.3-rc7 with the PIB teardown patch [1]
+applied (base 08fa34e14e2d).
+Test log: https://syzkaller.appspot.com/x/bisect.txt?x=128c8f15580000
 
-Tested-by: Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz>
+[1] https://lore.kernel.org/all/20260627235805.17310-1-alhouseenyousef@gmail.com/#t
 
-Previous v2 of the patch was confirmed to fix the issue with r8169 as
-well by hitchin999 in [2].
+ net/mac802154/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks for looking into that!
-
-Cheers,
-Jan
-
-[1] https://lore.kernel.org/netdev/CAPa5EdD7tFRyDztEanTwQXTzVEE8T0FLkbXAtWx=
-UcGGaLYt_bA@mail.gmail.com/
-[2] https://github.com/home-assistant/operating-system/issues/5019#issuecom=
-ment-6065756866
+diff --git a/net/mac802154/main.c b/net/mac802154/main.c
+index ea1efef3572a..5a2ab501244b 100644
+--- a/net/mac802154/main.c
++++ b/net/mac802154/main.c
+@@ -283,6 +283,8 @@ void ieee802154_unregister_hw(struct ieee802154_hw *hw)
+ 
+ 	rtnl_unlock();
+ 
++	cancel_delayed_work_sync(&local->scan_work);
++
+ 	destroy_workqueue(local->mac_wq);
+ 	destroy_workqueue(local->workqueue);
+ 	wpan_phy_unregister(local->phy);
