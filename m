@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC503DAC13
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544CB3DAABD
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791846921; cv=none; b=bp8Qr6+nQj3achIuGbjRYwcItnTxLflL2nPz2DOZ3T0rEFAC2aSSnl/Iz8txhNB3DKjumGNC1D5cvkpZmlt4Q9M+DW3hALbVim8EfHjmhUk1XCoadX97DnVITAoFnXlgOvrhYatJWpkBPr1yBf55+mSZA/+0hKA1lEGvw0nnTBE=
+	t=1791846922; cv=none; b=pfQZYUGwuxWKzqm5eqzbeL8w85gZcBrHH2i1C2XUcTR6vENZSRooWC5rPwgDtbXngP6VXJjDutAIyUd+IbPtKAy/GtggUIDY8sb1UWUSrq6JJ8qiGbNNLAmywuE+IKKujnSSfsGGiXv4Gg3ls0G2qcd9NDGXXO1vQNUC2GGQv1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791846921; c=relaxed/simple;
-	bh=78EP13SeR8CZpaSSWhWLL346nfC+Flhi1Nb9EW8Q5HY=;
+	s=arc-20240116; t=1791846922; c=relaxed/simple;
+	bh=524S6bZHwnAQ7oeU3WiwygCs11qhkot0wfva+mW8frQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ndaj3vVu9gMQMKWbFAAH9eS8rr8KEOCk+tKNwDgDuVKBwxmahnVcoULfPQwdY2rmnGSKo+63sGGDqxtjtWpvDd9+FsLPU+IewuFY/mF0PjiG4sWgph+d3SkiCbUU2GaMK6PG3uwlQ3c/wrnMhZ2ZEpev7wXQ3QDMBTM0xUgmF9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0dtRYig; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=M4/Jz6hqY1uan2WncU5PP4BDnfLTajWbmSAxoNe/ZpW1KPg5xElEolrwU+McaA0FropYNP420dHioq/enMK75bOgsxPgNyxxoF6Gq8248lDiL/rzg/xcbx6d9DajRADLncKbTosBIOTKWBU0iBWU9iEtNTa9zngefZSX3tIMZE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOu0PZLi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0dtRYig"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4C51F008A1;
-	Mon, 12 Oct 2026 23:15:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOu0PZLi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D1E1F008A2;
+	Mon, 12 Oct 2026 23:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791846919;
-	bh=nMBY2yWHbP63tpSqtiMy9TKiRHMxbn8wNvOwVwaDI8o=;
+	s=k20260515; t=1791846920;
+	bh=zNgcWX8wHTIEB7S3TM6Ad9lKWAOugE2roniz1H/kmUI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=F0dtRYigWYySKs50LsLTYw8IsKlKeoDa1Ay58UOavuySiNbJmMlhzFksFoFQqAFh+
-	 keScHmnwgU+YhTLobxfkWEhoXjkML8kjyLdPbkgGb3SZDnh7Em5BT5czsgoayKJgov
-	 d+fNFngv2ltxZ22p0BKh6+eP3+V0mAPqOKsovGd56Qrr5fmZQW+WvfAw1dopFpEJG5
-	 YmZumXx+wdhn4Y4DUVDsRp9T4xB8dpIXR3bxQ7zjwNzH/upBV6C6AdWVKPoOgXcj0i
-	 wepbtxatouBnQVojDdKS2AtBPVI98Q3oyXOCNmgnVOy243QAhaiYoqImbcz3J4UxPo
-	 zismrcUvZM/wg==
-Subject: Re: [PATCH net v2 01/15] ice: fix removal of PTP timestamp tracker
- during reset
+	b=aOu0PZLiOiYzW2c+CPWKKAgFCxRxl0SFQegR3/wWvXeib2BNx/se7PNZFYY/HeQIB
+	 P+Bl1PM7XGzTq0JZMD7viFMT786QZhUCD33lzREqbC6Dw0dqc2o+ayapveI3D+A5Dr
+	 JrFF2XofE4MUceIc2FHHG7jcjUgPKfosgTQEoShE6GcFPq9LeumrDkcaKeqP5o8xxh
+	 pqaYEVBQrJEI4zk/YUqmB/cn7c4sdWsxel5iRMzCzX0/H0phDHu7oBmjIV6CeReEN9
+	 UNxaxqYMEFgnENu7ScfVpZC27rV6xxg1cBOJCqRo1iB1zMqqQXGuNXcAsLzXDm+rM8
+	 oWxowGizt/41A==
+Subject: Re: [PATCH net v2 02/15] ice: use reference counting and SRCU for PTP
+ port access
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -38,10 +38,10 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  poros@redhat.com, richardcochran@gmail.com, horms@kernel.org,
  pmenzel@molgen.mpg.de, aleksandr.loktionov@intel.com,
  alexander.nowlin@intel.com
-Date: Mon, 12 Oct 2026 23:15:18 +0000
-Message-ID: <179184691805.434549.1970305171129280416@kernel.org>
-In-Reply-To: <20261008215614.1987250-2-anthony.l.nguyen@intel.com>
-References: <20261008215614.1987250-2-anthony.l.nguyen@intel.com>
+Date: Mon, 12 Oct 2026 23:15:19 +0000
+Message-ID: <179184691959.434549.12801470720231194166@kernel.org>
+In-Reply-To: <20261008215614.1987250-3-anthony.l.nguyen@intel.com>
+References: <20261008215614.1987250-3-anthony.l.nguyen@intel.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,10 +52,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 3 (4) · Low: 0
+Critical: 0 · High: 1 · Medium: 1 (2) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,323 +63,286 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The new non-READY (ERROR/RESETTING) branch of ice_ptp_release()
-  destroys the worker too early.
-- [Medium] The patch removes ice_ptp_release_tx_tracker() from
-  ice_ptp_prepare_for_reset() and puts nothing in its place.
-- [Medium] At this commit, when ice_ptp_init_work() fails, the code now
-  jumps to err_clean_pf.
-- [Medium] Now that the Tx tracker survives CORE/GLOBAL/EMP resets, its
-  per-index tstamps[idx].cached_tstamp and last_ll_ts_idx_read are never…
+- [High] In the non-READY branch of ice_ptp_release() (state
+  ICE_PTP_RESETTING or ICE_PTP_ERROR), the PF cancels its work, calls…
+- [Medium] Lost-wakeup hang in ice_ptp_cleanup_pf()
+  (drivers/net/ethernet/intel/ice/ice_ptp.c).
 
 Pre-existing issues:
-- [Medium] The non-READY branch of ice_ptp_release() tears everything
-  down: kworker, clock, list_del via ice_ptp_cleanup_pf(), the Tx…
-- [Medium] At this commit, ice_ptp_flush_all_tx_tracker(),
-  ice_ptp_restart_all_phy() and ice_ptp_prepare_rebuild_sec() walk…
-- [Medium] On E825, ice_ptp_setup_pf() sets this port's bit in the
-  control PF's shared tx_refclks[phy][tx_clk] map.
-- [Medium] Neither the ice_ptp_init() error unwind (after
-  ice_ptp_reset_phy_timestamping() and ice_ptp_cfg_tx_interrupt()) nor…
+- [Medium] ice_ptp_cleanup_pf() cannot safely run twice, and the non-
+  READY branch of ice_ptp_release() can run it twice.
+- [Medium] ice_ptp_prepare_rebuild_sec() (E825 clock owner, non-PFR
+  reset) calls ice_ptp_prepare_for_reset(peer_pf) while holding only…
 
 --
 
-ice: fix removal of PTP timestamp tracker during reset
+ice: use reference counting and SRCU for PTP port access
 
-This commit stops releasing the PTP Tx timestamp tracker in
-ice_ptp_prepare_for_reset(), so timestamping can resume after CORE, GLOBAL
-or EMP resets. It reorders ice_ptp_init() so the tracker is allocated
-before the port is added to the port list, and the tracker is released on
-error. ice_ptp_release() now cancels the kworker and releases the tracker
-when PTP is not in the READY state.
+This patch replaces the mutex that protects the ice adapter PTP port list
+with an SRCU-protected list and adds a kref to each ice_ptp_port. Readers
+skip ports whose kref has already dropped to zero.
 
-Closes: https://sashiko.dev/#/patchset/20260821-jk-e825c-minimized-fixes-v1-0-9d0731eb4858%40intel.com?part=8
-Closes: https://lore.kernel.org/netdev/20260916011213.1632286-1-kuba@kernel.org/
+ice_ptp_cleanup_pf() unlinks the port, drops the initial reference, waits
+for the count to reach zero with wait_var_event(), and then calls
+synchronize_srcu().
 
 > diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index eaec36ab6ae3f..fe21cee4f9dee 100644
+> index fe21cee4f9dee..94a66e9d8c05d 100644
 > --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 > +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -2939,8 +2939,6 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
->  	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
->  		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
->  
-> -	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
-> -
-
-[Severity: Medium]
-
-With this call removed, nothing clears tx->init or calls synchronize_irq()
-before a CORE, GLOBAL or EMP reset. Is that intended?
-
-The Tx timestamp paths check only tx->init and tx->calibrating. They never
-check ptp->state. Suppose ice_ptp_rebuild() fails:
-
-ice_ptp_rebuild()
-    err:
-        ptp->state = ICE_PTP_ERROR;
-
-ice_rebuild() still calls ice_ptp_restore_timestamp_mode()
-unconditionally, and that re-enables the Tx timestamp interrupt. After
-that, ice_tstamp()->ice_ptp_request_ts() only checks:
-
-    if (!ice_ptp_is_tx_tracker_up(tx)) {
-
-So slots are still handed out (skb_get() plus SKBTX_IN_PROGRESS) against a
-PHC that isn't running. In the ERROR state cached_phc_jiffies is never
-refreshed, so ice_ptp_extend_40b_ts() would discard the result. Before
-this patch, these requests were refused and counted in
-tx_hwtstamp_skipped.
-
-During the reset window itself, ice_ll_ts_intr() only checks tx->init:
-
-    if (tx->init) {
-        ice_ptp_complete_tx_single_tstamp(tx);
-
-The E810 path in ice_ptp_ts_irq() also checks ice_pf_state_is_nominal().
-Can the LL proxy registers now be accessed in the middle of a reset?
-
-The commit message doesn't mention this change in behaviour. Later patches
-in the series only add link_up and calibrating gating, so tx->init still
-stays set across the reset.
-
-[Severity: Medium]
-
-The tracker now survives the reset, so tstamps[idx].cached_tstamp and
-last_ll_ts_idx_read are no longer reset. The E810 PHY timestamp memory is
-still reset. Can the two get out of sync?
-
-On rebuild, ice_ptp_rebuild_owner()->ice_ptp_flush_all_tx_tracker()->
-ice_ptp_flush_tx_tracker() calls ice_clear_phy_tstamp() for every in_use
-index, because tstamp_ready is all ones on E810.
-ice_clear_phy_tstamp_e810() then writes 0 to both halves:
-
-    err = ice_write_phy_reg_e810(hw, lo_addr, 0);
-    ...
-    err = ice_write_phy_reg_e810(hw, hi_addr, 0);
-
-E810 has no ready bitmap. It detects a new capture by checking raw_tstamp
-!= cached_tstamp. After the reset, a reused index that hasn't captured yet
-reads 0, and 0 differs from the stale cached value.
-
-In ice_ptp_process_tx_tstamp(), the missing VALID bit makes it drop the
-timestamp and release the slot. Because raw is 0, cached_tstamp isn't
-updated, so the later real capture could be credited to the next request
-that uses that index.
-
-ice_ptp_complete_tx_single_tstamp() has no VALID check:
-
-    if (raw_tstamp == tx->tstamps[idx].cached_tstamp)
-        return;
-
-    tx->tstamps[idx].cached_tstamp = raw_tstamp;
-    clear_bit(idx, tx->in_use);
-
-It would then pass ice_ptp_extend_40b_ts(pf, 0) to skb_tstamp_tx().
-
-Before 7a25fe5cd5fb the tracker was reallocated with zeroed cached values,
-so software and hardware stayed in sync. This is still present at the end
-of the series.
-
->  	/* Disable periodic outputs */
->  	ice_ptp_disable_all_perout(pf);
->  
-> @@ -3347,13 +3345,13 @@ void ice_ptp_init(struct ice_pf *pf)
->  		}
->  	}
->  
-> -	err = ice_ptp_setup_pf(pf);
-> +	err = ice_ptp_init_port(pf, &ptp->port);
->  	if (err)
-> -		goto err_exit;
-> +		goto err_destroy_ps_lock;
->  
-> -	err = ice_ptp_init_port(pf, &ptp->port);
-> +	err = ice_ptp_setup_pf(pf);
->  	if (err)
-> -		goto err_clean_pf;
-> +		goto err_release_tx_tracker;
->  
->  	/* Start the PHY timestamping block */
->  	ice_ptp_reset_phy_timestamping(pf);
-
-[Severity: Medium]
-
-This isn't a bug introduced by this patch, but neither the ice_ptp_init()
-error unwind nor the non-READY branch of ice_ptp_release() puts the
-hardware back into a quiet state.
-
-ice_ptp_reset_phy_timestamping() and ice_ptp_cfg_tx_interrupt() run before
-ice_ptp_init_work(). If ice_ptp_init_work() then fails, the unwind never
-calls ice_ptp_disable_timestamp_mode(), ice_ptp_port_phy_stop() or the
-perout/extts disables.
-
-Can OICR TSYN_TX, PHY timestamping and the SDP outputs stay armed after the
-software state has been torn down?
 
 [ ... ]
 
-> @@ -3365,14 +3363,17 @@ void ice_ptp_init(struct ice_pf *pf)
+> @@ -673,20 +676,33 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+>  	pf->ptp.tx_hwtstamp_good += tstamp_good;
+>  }
 >  
->  	err = ice_ptp_init_work(pf, ptp);
->  	if (err)
-> -		goto err_exit;
-> +		goto err_clean_pf;
+> +static void ice_ptp_release_port_srcu(struct kref *ref)
+> +{
+> +	wake_up_var(ref);
+> +}
 
 [Severity: Medium]
+Is a full memory barrier needed before this wake_up_var()?
 
-When ice_ptp_init_work() fails, this path now frees the Tx tracker and
-destroys ps_lock. However, ptp->state was set just above:
+The kernel-doc for wake_up_var() in kernel/sched/wait_bit.c says:
 
-    ptp->state = ICE_PTP_READY;
+  In order for this to function properly there must be a full memory
+  barrier after the variable is updated ... If the variable was updated
+  by a fully ordered operation such as atomic_dec_and_test() then no
+  extra barrier is required. Otherwise smb_mb() is needed.
 
-    err = ice_ptp_init_work(pf, ptp);
-    if (err)
-        goto err_clean_pf;
+kref_put() goes through refcount_dec_and_test(). That is
+atomic_fetch_sub_release() followed by smp_acquire__after_ctrl_dep() on
+success, so it gives release ordering plus acquire on success. It is not
+fully ordered. __wake_up_bit() then checks waitqueue_active() without
+taking the waitqueue lock.
 
-The PHC is also still registered at this point. Could ice_ptp_link_change(),
-ice_ptp_queue_work() or the PHC callbacks touch the freed tracker or the
-destroyed mutex in this window? One example is
-ice_ptp_reset_cached_phctime()->ice_ptp_mark_tx_tracker_stale().
+Can this interleaving happen on a weakly ordered architecture such as
+arm64?
 
-The NULL kworker exposure while READY was already there before. Later in
-the series, ice_ptp_init() creates the kworker earlier and sets
-ICE_PTP_READY only after ice_ptp_init_work() succeeds, which appears to
-close this. At this commit the window is still open.
+CPU1 (last reader, e.g. ice_ptp_tx_tstamp_owner)
+kref_put()
+  refcount_dec_and_test()      /* refs 1 -> 0, release only */
+  ice_ptp_release_port_srcu()
+    wake_up_var(ref)
+      waitqueue_active() sees an empty queue
 
->  
->  	dev_info(ice_pf_to_dev(pf), "PTP init successful\n");
->  	return;
->  
->  err_clean_pf:
-> -	mutex_destroy(&ptp->port.ps_lock);
->  	ice_ptp_cleanup_pf(pf);
+CPU2 (ice_ptp_cleanup_pf)
+wait_var_event(ref, !kref_read(ref))
+  adds itself to the waitqueue, set_current_state()
+  kref_read(ref) still returns 1
+  schedule()
 
-[Severity: Medium]
+If so, the remover sleeps in TASK_UNINTERRUPTIBLE with no timeout.
+var_wake_function() filters on the key, so an unrelated wakeup on the
+same hashed queue would not wake it.
 
-This is a pre-existing issue, but on E825 ice_ptp_setup_pf() sets this
-port's bit in the control PF's shared map:
+Would adding smp_mb__after_atomic() before wake_up_var(), or using a
+fully ordered decrement, avoid this?
 
-    set_bit(port_num,
-            &ctrl_ptp->tx_refclks[phy][pf->ptp.port.tx_clk]);
-
-ice_ptp_cleanup_pf() only does list_del() and never clears that bit. After
-this error path, or after an unbind, would ice_txclk_any_port_uses() still
-count this port as a user of the reference clock?
-
-> +err_release_tx_tracker:
-> +	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
-> +err_destroy_ps_lock:
-> +	mutex_destroy(&ptp->port.ps_lock);
->  err_exit:
+>  static void ice_ptp_tx_tstamp_owner(struct ice_pf *pf)
+>  {
 
 [ ... ]
 
-> @@ -3399,12 +3400,20 @@ void ice_ptp_release(struct ice_pf *pf)
->  		return;
+> @@ -1424,16 +1449,22 @@ static void ice_ptp_reset_phy_timestamping(struct ice_pf *pf)
+>   */
+>  static void ice_ptp_restart_all_phy(struct ice_pf *pf)
+>  {
+> -	struct list_head *entry;
+> +	struct ice_port_list *ports = &pf->adapter->ports;
+> +	struct ice_ptp_port *port;
+> +	int srcu_idx;
 >  
->  	if (pf->ptp.state != ICE_PTP_READY) {
-> -		mutex_destroy(&pf->ptp.port.ps_lock);
-> -		ice_ptp_cleanup_pf(pf);
-> +		if (pf->ptp.kworker) {
-> +			kthread_cancel_delayed_work_sync(&pf->ptp.work);
-> +			if (pf->hw.mac_type == ICE_MAC_GENERIC)
-> +				kthread_cancel_delayed_work_sync(&pf->ptp.port.ov_work);
-> +			kthread_destroy_worker(pf->ptp.kworker);
-> +			pf->ptp.kworker = NULL;
-> +		}
+> -	list_for_each(entry, &pf->adapter->ports.ports) {
+> -		struct ice_ptp_port *port = list_entry(entry,
+> -						       struct ice_ptp_port,
+> -						       list_node);
+> +	srcu_idx = srcu_read_lock(&ports->srcu);
+> +	list_for_each_entry_srcu(port, &ports->list, list_node,
+> +				 srcu_read_lock_held(&ports->srcu)) {
+> +		if (!kref_get_unless_zero(&port->ref))
+> +			continue;
+>  
+>  		if (port->link_up)
+>  			ice_ptp_port_phy_restart(port);
 
 [Severity: High]
+Can this loop reach a port whose PF has already destroyed its kthread
+worker?
 
-The worker is destroyed here and pf->ptp.kworker is set to NULL. The PHC is
-only unregistered further down, and the port stays on
-adapter->ports.ports until ice_ptp_cleanup_pf() runs. Can anything still
-reach this worker in between?
+When the state is ICE_PTP_RESETTING or ICE_PTP_ERROR, ice_ptp_release()
+takes its non-READY branch. That branch tears down the worker and the
+clock before the port is removed from the list:
 
-On ICE_MAC_GENERIC, ice_ptp_settime64() calls ice_ptp_restart_all_phy()
-without checking ptp->state. ice_ptp_adjtime() does the same through its
-non-atomic path. ice_ptp_restart_all_phy() walks the list without
-ports.lock:
+ice_ptp_release() {
+    ...
+	if (pf->ptp.state != ICE_PTP_READY) {
+		if (pf->ptp.kworker) {
+			kthread_cancel_delayed_work_sync(&pf->ptp.work);
+			...
+			kthread_destroy_worker(pf->ptp.kworker);
+			pf->ptp.kworker = NULL;
+		}
+		if (pf->ptp.clock) {
+			ptp_clock_unregister(pf->ptp.clock);
+			pf->ptp.clock = NULL;
+		}
+		ice_ptp_cleanup_pf(pf);
+    ...
+}
 
-    list_for_each(entry, &pf->adapter->ports.ports) {
-        ...
-        if (port->link_up)
-            ice_ptp_port_phy_restart(port);
-    }
+ice_ptp_cleanup_pf() is the only place that unlinks the port, so
+kref_get_unless_zero() here still succeeds until it runs. port->link_up
+can also still be true, because only ice_ptp_link_change() rewrites it,
+and only in the READY state.
 
-ice_ptp_port_phy_restart() then does:
+For ICE_MAC_GENERIC, ice_ptp_port_phy_restart() then does:
 
-    case ICE_MAC_GENERIC:
-        kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
-        ...
-        kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
-                                   0);
+	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
+	...
+	kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
+				   0);
 
-Here pf is the releasing PF. That covers the releasing PF's own port, and
-also its port when it is a peer and the owner PF is the one calling
-settime.
+kthread_destroy_worker() frees the worker but does not clear
+ov_work.work.worker. The cancel would therefore take the lock of a freed
+worker. The queue call would then pass a NULL pf->ptp.kworker.
 
-ice_ptp_reset_cached_phctime() also queues on pf->ptp.kworker when
-ICE_CFG_BUSY is set, with no NULL or state check.
+The clock owner can hit this through ice_ptp_rebuild_owner(). Because
+ptp_clock_unregister() can sleep, the window is wider than it looks.
 
-Before this patch the non-READY branch leaked the worker rather than
-freeing it, so this NULL dereference or use-after-free of the
-kthread_worker looks new. It can be hit if a PF in ERROR or RESETTING
-state is unbound while userspace calls clock_settime() on the owner PHC.
+The same window seems to affect ice_ptp_prepare_rebuild_sec(). It calls
+ice_ptp_prepare_for_reset(peer_pf), which runs
+kthread_cancel_delayed_work_sync(&ptp->work) on the peer.
 
-Could the clock be unregistered and the port removed from the list before
-the worker is destroyed? The commit message already describes that
-ordering for ps_lock. The ordering here is unchanged at the end of the
-series.
+The READY branch already calls ice_ptp_cleanup_pf() before it cancels
+any work. Should the non-READY branch also call ice_ptp_cleanup_pf()
+before destroying the worker?
 
->  		if (pf->ptp.clock) {
->  			ptp_clock_unregister(pf->ptp.clock);
->  			pf->ptp.clock = NULL;
->  		}
-> +		ice_ptp_cleanup_pf(pf);
-> +		ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+The commit message says the kref "ensures that a PF will have a valid
+lifetime and not be removed until the reference is released". It also
+lists ice_ptp_restart_all_phy() as one of the iterations being fixed.
 
-[Severity: Medium]
-
-This is a pre-existing issue, but three functions walk
-adapter->ports.ports without ports.lock: ice_ptp_flush_all_tx_tracker(),
-ice_ptp_restart_all_phy() and ice_ptp_prepare_rebuild_sec(). For example:
-
-    list_for_each_entry(port, &pf->adapter->ports.ports, list_node)
-        ice_ptp_flush_tx_tracker(ptp_port_to_pf(port), &port->tx);
-
-Meanwhile ice_ptp_cleanup_pf() unlinks the port under the lock, and
-ice_ptp_release_tx_tracker() then frees the tracker. Trackers now stay
-allocated across CORE/GLOBAL resets, so the owner's rebuild-time flush
-works on live peer trackers. Can one of these walkers race with this
-teardown?
-
-A later patch in this series, "ice: use reference counting and SRCU for
-PTP port access", converts these walkers to SRCU with kref and appears to
-close this race.
-
-> +		mutex_destroy(&pf->ptp.port.ps_lock);
->  		return;
+> +
+> +		kref_put(&port->ref, ice_ptp_release_port_srcu);
 >  	}
+> +	srcu_read_unlock(&ports->srcu, srcu_idx);
+>  }
+
+[ ... ]
+
+> @@ -2890,14 +2930,18 @@ void ice_ptp_queue_work(struct ice_pf *pf)
+>  static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+>  					enum ice_reset_req reset_type)
+>  {
+
+[ ... ]
+
+> +		if (!kref_get_unless_zero(&port->ref))
+> +			continue;
+> +
+>  		if (!ice_is_primary(&peer_pf->hw)) {
+>  			if (rebuild) {
+>  				/* TODO: When implementing rebuild=true:
+> @@ -2909,7 +2953,10 @@ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+>  				ice_ptp_prepare_for_reset(peer_pf, reset_type);
+>  			}
+>  		}
 
 [Severity: Medium]
+This is a pre-existing issue, but does anything here serialize the peer's
+ptp->state against the peer's own ice_ptp_release()?
 
-This isn't a bug introduced by this patch, but this branch tears
-everything down and returns without setting pf->ptp.state to
-ICE_PTP_UNINIT. If ice_ptp_release() runs again before ice_ptp_init()
-resets the state, would ice_ptp_cleanup_pf() call list_del() on a node
-that already holds LIST_POISON pointers?
+ice_ptp_prepare_for_reset() checks and sets the peer's state without a
+lock:
 
-One possible sequence:
+	if (ptp->state != ICE_PTP_READY)
+		return;
 
-1. devlink reinit_down runs while PTP is in ERROR or RESETTING, which goes
-   through ice_unload()->ice_ptp_release().
-2. reinit_up fails before ice_load().
-3. ice_remove()->ice_unload()->ice_deinit_features()->ice_ptp_release()
-   runs again.
+	ptp->state = ICE_PTP_RESETTING;
 
-The old branch had the same list_del() without a state change, and the end
-of the series still doesn't set ICE_PTP_UNINIT here.
+	/* Disable timestamping for both Tx and Rx */
+	ice_ptp_disable_timestamp_mode(pf);
+
+	kthread_cancel_delayed_work_sync(&ptp->work);
+
+At the same time, ice_ptp_release() on the peer reads this field and
+writes ICE_PTP_UNINIT to it.
+
+If the owner writes RESETTING after the peer has written UNINIT, the
+peer exits release in a non-READY state. A later ice_ptp_release() would
+then repeat the cleanup.
+
+In the opposite order, the peer takes the non-READY branch and destroys
+its kworker while the owner is about to cancel work on it. That is the
+same ordering problem described above for ice_ptp_restart_all_phy().
+Calling ice_ptp_cleanup_pf() first in that branch would fix this case
+too.
+
+The kref and SRCU here protect the port memory and the list linkage. They
+do not protect the PF state machine. The commit message notes that the
+change "focuses solely on the port list".
+
+> +
+> +		kref_put(&port->ref, ice_ptp_release_port_srcu);
+>  	}
+> +	srcu_read_unlock(&ports->srcu, srcu_idx);
+>  }
+
+[ ... ]
+
+> @@ -3110,13 +3157,23 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+>  
+>  static void ice_ptp_cleanup_pf(struct ice_pf *pf)
+>  {
+
+[ ... ]
+
+> +	spin_lock(&ports->lock);
+> +	list_del_rcu(&ptp->port.list_node);
+> +	spin_unlock(&ports->lock);
+> +
+> +	ref = &ptp->port.ref;
+> +	kref_put(ref, ice_ptp_release_port_srcu);
+> +
+> +	wait_var_event(ref, !kref_read(ref));
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but what happens if
+ice_ptp_cleanup_pf() runs twice for the same PF?
+
+The non-READY branch of ice_ptp_release() calls ice_ptp_cleanup_pf() and
+returns without setting ptp.state to ICE_PTP_UNINIT. This sequence seems
+to run the cleanup twice:
+
+ice_devlink_reinit_down()->ice_unload()->ice_deinit_features()
+  ->ice_ptp_release()
+    (state is ICE_PTP_ERROR or ICE_PTP_RESETTING, cleanup #1)
+
+ice_devlink_reinit_up() fails before ice_init_features()
+    (ice_ptp_init() never resets the state)
+
+ice_remove()->ice_unload()->...->ice_ptp_release()
+    (cleanup #2)
+
+Before this patch, the second list_del() on a poisoned node either
+faulted or, with LIST_HARDENED/DEBUG_LIST, warned and was skipped.
+
+With this patch, the second kref_put() runs on a kref that is already
+zero. refcount_dec_and_test() warns and saturates the counter without
+calling the release function.
+
+kref_read() then never returns zero. wait_var_event() would block
+uninterruptibly forever while devl_lock is held. On hardened-list
+kernels, the result changes from a warning to a hang.
+
+Should the non-READY branch move the state to ICE_PTP_UNINIT, or should
+ice_ptp_cleanup_pf() be made safe to call twice?
+
+> +
+> +	synchronize_srcu(&ports->srcu);
+>  }
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008215614.1987250-1-anthony.l.nguyen%40intel.com
