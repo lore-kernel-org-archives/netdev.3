@@ -1,172 +1,194 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF5F489871
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791805720; cv=pass; b=BWohdoTthKrrkc954wlHOKn7OVe5mq+/u1PCOk2vE+LvAfvTPURTtgGKsI2DUy6PplK4NRnzFfd7vWTvSwxGP+ZxwcapXGHHEXO+BIiK9xq4EAcjkgQjE4Y3kS2lon0xJdkqr4ugtSEZpzCBxucmp6x+PjTznmJuSyiT17HolhQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791805720; c=relaxed/simple;
-	bh=25MaDiCijQjJi5Nq/OZhHLCoLB3Tp+j19xb/65bo4dI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nXVydSTvl3NqNK3xITqCHknrRNCSdS/Ghg2kPM+Y5ns5uTXqHNYs6h05LcB+ywR37Sy/tDFp5kNpur5K092WN0fRwBUi6Lk+RTaEP55a0rpJkzOlSp4WUnLw+PxoY8C0gNSIMB1kKFcBMsySyKLTl5OroYtSpTKiL0O5PQf/aYg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=JWVp32Og; arc=pass smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561D44766B1;
+	Mon, 12 Oct 2026 11:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791805791; cv=none; b=aRoBXpZKQPTfkDD7wYsE5nuYE5zFTLIFHz0DZOqQYkS39jHh3K/QRWKpcLuwRRsVbLwPj48oxxdSCd1np3REAUFtZhBI7oy/h5gmPDcznfzPpLDtMw8Uorer43FbyVCxF0+/1c0u4JnPPWEZaxQUNUCfm22wxS6Z2P8rwYHVwRs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791805791; c=relaxed/simple;
+	bh=eEGHR1mGzXV2D56jleqiwMUkHuS2xYotBOpfGB3XqRI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=F50CmbVwv/KDJHWRYr/0/NpYVdiepKwKxbo1qfqIxruBFGNA01MvFDeVY3pITgCFsiu7F9hW4gdaB91Nh8xlbQEXP7YxmFLirc8N5BsSaHxPPRp4SUNaVvBWSFoQP3sNO9pCvCgKdlrVt9nDfH5GEj6vmeqH37wFo2Z5HaoseWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kXmx+Frb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="JWVp32Og"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-8875d220446so796201b3a.3
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:48:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791805717; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DzpY8rUlbmhVpeOS4brRDyyp2PycQs6XqywYBK6/ChQ3aExYjPxQGHdT3grp9uGXnQ
-         Wy0w8QaCwRjrVOAjC8I5CREclY46jKX3Np40szStWihAfplm4bvv+IbWRbZRMVjD7Ck9
-         Qc9KkSq1VCnuFFV0QtDuVr5ccAiPeDl9ClH2jeHUP6vEsXnWjEeayelM/bXAAPDgfgUR
-         3Aixd/LD9QnVCIp2vfkzYicB6y5nHRnO67JnCyShuTnfslHGqwad3CNsTUbhdn3xJv9i
-         z40JToVk5mjbmd8+F2dingAoI9+XgwGu5uUnTOxe4AyhZzHQY6RBmTbl/kLcA4FPYYer
-         8mJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wMeYWEYN8KzEQPXP0L4WoCWffnxhef4oKwkPCI3RFi8=;
-        fh=6WfP1UAkmRj8pC2UUxW5SkHQeXKejxeoK9yB8bY2J/I=;
-        b=nUSl19KCd9lAblstJBSgbQoFQ0bbnOXCoV1MMmY/LpgBNOXYypaVl4/oRpD4pkdcKb
-         Jf5V1PAQnsc9CewrbP5Hp7uIXWJgSbejtRA2k0F7R83osAAfmV8zirJhdA5jXHanp1cY
-         mFLRdgZyHn0Fa4pxLvK+gO/G0oU6IGQRSnzdGGjBf9L8+AH/5sMmZwutFX/4VIy51h3J
-         eJ5C/xDva+qKHwXMqfSZq8ZmVO3ttt1PDN+t47RWTRqpBcR06pVKP1yeksbniKIFO6jP
-         R7HNMBoYNU1NqG5GR8WnhG0KC57pIu+KVMdVs7/bYyKJelGlE7cZEXUnA0s4e/lMj7px
-         RFHg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791805717; x=1792410517; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=wMeYWEYN8KzEQPXP0L4WoCWffnxhef4oKwkPCI3RFi8=;
-        b=JWVp32OgD6iBmsrj3UDNZq1eOMkdQZyqQx+v5gjtCVaF83i+OfujHKCqlOYVDUr+Sq
-         39o8bybOe+sDxPUCipUahUaSJb/eCQNFHilcuP7ZAbKKyBcnEtjHDT6P0m2ofluijwp3
-         BwtussVqp7rNmnrSt88nL2Epe/7HEAeKDOvt4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791805717; x=1792410517;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wMeYWEYN8KzEQPXP0L4WoCWffnxhef4oKwkPCI3RFi8=;
-        b=RojePUMfJCyaxPatnnPHN3TIMcJd2JKkkMLoe0hARe2X7Ov9NuBIblEjEFir7Ar1Vh
-         zfn6e6W3H9cWmoj77YkSD4FaCwhx3dPhgkIXMeyFf1QJvDptTwVyMkWSPE/R0K/NSIQF
-         ZdlIALMBhM1GQiQecyMKnhvmkzZ9CZfZ831xJx8xIO/+6MleDM7PouQ1XETVUTxHeVSL
-         N8pIP6f/CMiV1b8XcSNsdNxYtownTKVTYETlp0BDN/osOA6TdYcLbRdJiv8e1BiGbf8L
-         EKlkvo2bQBtP1QGKXGI/zeIGNAY3FGN78NFvtR+yZPo/oX8ZLWKrsuroB/hBMrvSEiDi
-         r0ng==
-X-Forwarded-Encrypted: i=1; AKwUvBzWpsiCD/aoukJW4aP7/H352QI+7u3LrRxAeNu8gIxjptPUh1FYp45e7jUZJHY3Dg6OWbAvOr0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJMjIlL+BqujLLkZL/eNbB/bplWD74tzqdGTE4QLzONW5Ce47vA
-	YPxk4KJLmXskAdAb582BsbusccLJQPTP2QTRiTfVEL00MqEzWNjLu/8XjaWBfERsCCzn9fMvYNH
-	Uw7lxc+/LlmR0neg2asymO5pRmqlWhkCoW5x8Ov/u
-X-Gm-Gg: AYBFou2jbWEOUpMj+b5p0/GqmRExu/M9r/pTQHB0RYQRL7fVhyXHCxL/mpIxewY/FqT
-	s3ictOxxftaEz1Uga7kMHE3kCklVOH29scETmvo+NDgLUWm5/ULglHNXghrSqXCxytFiBQbO7qD
-	A1zgLBOxwugjKGnXR9Q+ayNDP1DYJHECpIJ1FJykvKVCFOp+5mQbMsvdcB1rTAew8JMZYa+S9KJ
-	sIOFOeuu5yXpWKJo48mQ/QVSLRys9S+4FH8hx0Mfv1OdzYU5nLsFLKLlpsEhawoDgqAkvckHQ+x
-	VXw5uazf5WGDBXQx0hQ5P3BfEyHhHktwwmJKtlhXG43gNA8JEDNaGiQcHvhY233WY/CcddChL9P
-	re+zFZzyVkck4ksvduyt8T4ZhW+mobJqnUFIwWTI0vIbs
-X-Received: by 2002:a05:6a00:2e86:b0:874:705d:f65d with SMTP id
- d2e1a72fcca58-897c6e18d04mr7892912b3a.43.1791805716900; Mon, 12 Oct 2026
- 04:48:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kXmx+Frb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7931E1F0089B;
+	Mon, 12 Oct 2026 11:49:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791805788;
+	bh=PaRI2t53VPJ+0vnPAZfKfUr2oOawUBTdE9uZt78o1Uc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kXmx+FrbPvCsEW2vEl21Q/yVnEthdkJSytQmPizNFEsodSCilD0W/WvMklCWfIwUY
+	 GDpsGQC7cxBmotApKOmze5p9lwyEoPeeahfNhKXGu0jEPib35XcDC+rmuHb9PzH78O
+	 aoCFLjU2I0rA9OUGi0kXD+BM/VhT5AFmsmlPZXdfNaxC6DcNQrzwwLYJEIhpjS03Eg
+	 SvtrvUuh05md8ltiTsK3NgurxraDY1njvesDM90QQ4jYMg+Tj3OXtOi11FAksJU1+Z
+	 M2l2Wsq+XliKD95SiU/tlfBnLUAPA/RgEyio7RY+Zey3FdekkPcZGtTOgI4Db436GH
+	 lwWrgJlVsLMyw==
+Subject: Re: [PATCH v3] mptcp: push queued data on passive TFO subflows
+ becoming established
+From: netdev-bot+sashiko@kernel.org
+To: rameshsv06@gmail.com
+Cc: matttbe@kernel.org, martineau@kernel.org, geliang@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ petar.sakic@ink.fish, rameshkumar.t@phytecembedded.in, kuba@kernel.org
+Date: Mon, 12 Oct 2026 11:49:46 +0000
+Message-ID: <179180578699.434549.17104698101547866638@kernel.org>
+In-Reply-To: <20261008104840.131986-1-rameshkumar.t@phytecembedded.in>
+References: <20261008104840.131986-1-rameshkumar.t@phytecembedded.in>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAM0EoMn6JoLVHdhX1GB1wBcw3fVZ42ePKXDqsWK-4STj87vEEQ@mail.gmail.com>
- <a3a68d65-9eca-41ee-a70a-0db8dbb0385c@redhat.com>
-In-Reply-To: <a3a68d65-9eca-41ee-a70a-0db8dbb0385c@redhat.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 12 Oct 2026 07:48:25 -0400
-X-Gm-Features: AclHuK__BYRLkYqIXx_xBjzjPUMQ2thzt1A5mfD6-zL7ObiOzWtLnP8OfIBIi04
-Message-ID: <CAM0EoMmrrWhQigRLQLqhh+2jD1W_bboQGJspWdRhF66e4nspFA@mail.gmail.com>
-Subject: Re: sashiko or lore confused?
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
-	Victor Nogueira <victor@mojatatu.com>, 
-	Linux Kernel Network Developers <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 6:58=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wro=
-te:
->
-> On 10/12/26 02:00, Jamal Hadi Salim wrote:
-> > Some threads seem stuck somewhere in the ether for sometime now. I
-> > asking because i have a backlog and dont want to flood things..
-> >
-> > 1) Sashiko nipa review is missing on the act_api duplicate-index series
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > The nipa sashiko never produced a review for this series: gemini
-> > sahiko reviewed it ("No issues found").
-> >
-> >    Original posting (v1, 2026-09-22):
-> >      https://lore.kernel.org/netdev/QDISC-K1TH.v1.20260922072206@mojata=
-tu.com/
-> >        [PATCH net 1/2] net/sched: act_api: reject duplicate actions in =
-a batch
->
-> We had a few PW outages recently, and that impacts directly clashiko. Als=
-o the
-> threading (new version in reply to the old one) tends to confuse PW.
->
-> > 2) What is still left on these two?
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > (a) act_api_delete_duplicate_index_refcount_uaf (links above). After th=
-e
-> >      2/2 delivery glitch and the two reposts, is anything still
-> >      outstanding from the maintainer side, or is this only waiting on t=
-he
-> >      missing nipa review?
->
-> PW still did not handle the repost correctly. I think you need to send ag=
-ain the
-> patches, and please send them in a new thread!
->
-> > (b) teql_xmit_path_pre_existing_bugs -- series [PATCH net 0/2] QDISC-6H=
-S9,
-> >      sent 2026-09-29. Both Sashiko providers reviewed it: gemini "No
-> >      issues found"; nipa one Medium (commit-message doc wording) plus a
-> >      pre-existing, out-of-scope item (the consumed-skb UAF, tracked
-> >      separately). We do not plan a respin for the doc wording. Is
-> >      anything else outstanding before merge?
-> >
-> >      cover:  https://lore.kernel.org/netdev/QDISC-6HS9.v1.2026092806475=
-4@mojatatu.com/
-> >      1/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.2026092806475=
-4@mojatatu.com.1/
-> >      2/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.2026092806475=
-4@mojatatu.com.2/
-> >
-> I'm unsure who set the above to changes requested. Your reply looks legit=
-.
-> I reset the series to 'new' status, but we have a long backlog, I'm unsur=
-e
-> I'll be able to process the above before PW will archive the post. In suc=
-h
-> a case a repost would be needed :(
->
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Thanks for looking Paolo.
+Critical: 0 · High: 1 · Medium: 1 · Low: 1
 
-I can resend all 3. I probably screwed up the message ids and it ended
-being threaded to the old posting.
-How do i force it to "new"? Should i send the subject line? I already
-added "repost3" on net/sched: act_api: reject duplicate actions in a
-batch thread but it was still not reviewed.
-If you are unsure - we can experiment: I will change both the message
-id and add "repost4" on just that one it and see if it still good on
-lore and sashiko can see it.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-cheers,
-jamal
+- [High] The fix only covers passive TFO children whose SYN carried data.
+- [Medium] If the passive TFO subflow's third ACK has no MP_CAPABLE
+  option (for example a middlebox strips MPTCP options from non-SYN…
+- [Low] The author and sign-off addresses do not match.
+
+--
+
+mptcp: push queued data on passive TFO subflows becoming established
+
+This patch handles data that the server application writes while a
+passive TFO subflow is still in SYN_RECV. When the MPC third ACK makes
+the subflow fully established in check_fully_established(), the patch
+calls __mptcp_check_push() under mptcp_data_lock() if subflow->is_mptfo
+is set, and then clears is_mptfo.
+
+Closes: https://lore.kernel.org/netdev/CAFPPu1gU2Y-D+d4i3F0MoNkYK+e1U+=X3qf6QycjfKBw+8snPg@mail.gmail.com/
+
+> Signed-off-by: T S Rameshkumar <rameshkumar.t@phytecembedded.in>
+
+[Severity: Low]
+This isn't a bug, but the author address (rameshsv06@gmail.com) does not
+match the only Signed-off-by address (rameshkumar.t@phytecembedded.in).
+checkpatch.pl reports this as FROM_SIGN_OFF_MISMATCH.
+
+Could the sign-off or the From: line be changed so they match?
+
+> diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+> index ce0de02f5a3a1..b865ee6afb00c 100644
+> --- a/net/mptcp/options.c
+> +++ b/net/mptcp/options.c
+> @@ -1042,6 +1042,15 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
+>  
+>  	mptcp_data_lock((struct sock *)msk);
+>  	__mptcp_subflow_fully_established(msk, subflow, mp_opt);
+> +	/* Passive TFO: the application may have written data while the
+> +	 * subflow was still in SYN_RECV; __mptcp_subflow_active() refused
+> +	 * it then and nothing else spools the msk write queue when the
+> +	 * MPC third ack (no DSS) arrives. Push it now.
+> +	 */
+> +	if (subflow->is_mptfo) {
+> +		subflow->is_mptfo = 0;
+> +		__mptcp_check_push((struct sock *)msk, ssk);
+> +	}
+
+[Severity: High]
+Does this cover passive TFO children created from a SYN that carried no
+data?
+
+Only mptcp_fastopen_subflow_synack_set_params() sets is_mptfo, and only
+when SYN data is on the child's receive queue:
+
+net/mptcp/fastopen.c:mptcp_fastopen_subflow_synack_set_params() {
+    ...
+	/* A valid TFO cookie does not guarantee SYN data. */
+	skb = skb_peek(&ssk->sk_receive_queue);
+	if (!skb)
+		return;
+
+	subflow->is_mptfo = 1;
+    ...
+}
+
+tcp_try_fastopen() still creates a full TFO child in TCP_SYN_RECV from a
+data-less SYN in two cases:
+
+  - a SYN with a valid cookie and no payload
+  - a cookie-request SYN when TFO_SERVER_COOKIE_NOT_REQD is set
+
+The comment in tcp_try_fastopen() says:
+
+	 * Note: Data-less SYN with valid cookie is allowed to
+	 * send data in SYN_RECV state.
+
+In both cases tcp_fastopen_add_skb() returns early on
+end_seq == rcv_nxt. Nothing gets queued, so is_mptfo stays 0.
+
+The msk is cloned in TCP_ESTABLISHED, so the server can accept() and
+write right away. __mptcp_subflow_active() rejects the SYN_RECV ssk, so
+the data stays at msk->first_pending.
+
+When the pure MPC third ACK arrives, check_fully_established() reaches
+set_fully_established but skips this push. mptcp_incoming_options() then
+returns before ack_update_msk():
+
+		if (!(mp_opt.suboptions & OPTION_MPTCP_DSS))
+			return true;
+
+Neither subflow_state_change() nor mptcp_pm_fully_established() pushes
+the msk write queue. No rtx timer is armed either, because nothing was
+ever sent.
+
+Wouldn't a server-speaks-first protocol still stall in this case? That
+is the same symptom the commit message describes.
+
+Would it work better to trigger the push when a passive MPC subflow
+becomes fully established while msk->first_pending is set, rather than
+on is_mptfo?
+
+[Severity: Medium]
+What happens if the third ACK on a passive TFO subflow with SYN data has
+no MP_CAPABLE option? That can happen if a middlebox strips MPTCP
+options from non-SYN segments, or if the peer leaves them out.
+
+The SYN payload advanced ssn_offset, so the third ACK has
+seq == ssn_offset + 1 and skips the out-of-order branch. Without DSS or
+ADD_ADDR, it then takes the fallback branch earlier in
+check_fully_established():
+
+	if (!(mp_opt->suboptions & OPTIONS_MPTCP_MPC)) {
+		if (subflow->mp_join)
+			goto reset;
+		subflow->mp_capable = 0;
+		if (!mptcp_try_fallback(ssk, MPTCP_MIB_MPCAPABLEDATAFALLBACK)) {
+			...
+		}
+		return false;
+	}
+
+That branch returns before set_fully_established, so the new push never
+runs. mptcp_incoming_options() then returns without pushing:
+
+	if (!check_fully_established(msk, sk, subflow, skb, &mp_opt))
+		return sk->sk_state != TCP_CLOSE;
+
+tcp_data_snd_check() finds the ssk write queue empty, because the data
+is still in the msk write queue. __mptcp_check_push() only runs on the
+next incoming segment, through the __mptcp_check_fallback() branch at
+the top of mptcp_incoming_options().
+
+If the client is waiting for the server's reply to its TFO request,
+could the data written in SYN_RECV stay stuck in this fallback case too?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008104840.131986-1-rameshkumar.t%40phytecembedded.in
