@@ -1,64 +1,64 @@
 Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7288C39B969
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75050356742
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791778589; cv=none; b=Bd/DOlCf7XT3oLllMmht8HAbMIMJakyqPIcT9pBp9DMi9XsBJFasu7YDexmOf6yWS2cQ+h0knirPfRM4Ae1JlCdahnyLDWqAeq41RCUkKL0Zyca1LJwXx530TBA4ajLGqgyuX7o2ytccfIDPFsBZWz7qV9uwTKrwka3XYSGIwZY=
+	t=1791778592; cv=none; b=XEuS4VL2Msc+PZqd7uyMwcE4U9bGJim+Z1ZRktENOPTz5zfvzzSgFcMg3/oDteDpiexU0cc/WMYkAiZYup2SzKgU7wra78kd+xrlIlgbDkQ1Pnz04uljhiMxwmmlho0i/wP1Q7pTF409UkNrIwzVa46kHudXZ2G7N5S3WjKym3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791778589; c=relaxed/simple;
-	bh=ik6Xbq3F+FFAo/jf+qyeXH66b6QWgVj/WZo2MGXe4N0=;
+	s=arc-20240116; t=1791778592; c=relaxed/simple;
+	bh=k6P5jy0WQDTaz2aaIa44CjnDPszeWZrbdA+QJq0ZtZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blWjjHylp4hvyj9FXctT7ReQ9+VjkSQyx1frOar27hA+bnnAcVwn5IW4Vd0vRdQKOji0idQbrQNmqO19mhyOwZemDCu+nqSZPno0NZRAxw/8BStDGc2bDpzGcHReeNixcc6dEAYBFBUxXzXBGDxNPX5c3C211VwY1KPjxh/ly3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=Ae7uRQ72; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=P36aPJfEA1iD4fdKEE4Fx7HwI0G5i+FrYuGY23bN1uPgyqtwj5zzQejFe1s93ncRY1pAgQrqWWTvHFwiLhn/n8V4+4gS6j1OB5/olzQ1t9mpTT2IPzGWOL7tP0cpuY5h5mj8pptWGaqUaz9Uy3khVPbdiZigdAFiImSxe0hyJaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=RTN9UJaZ; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="Ae7uRQ72"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e60f9af6e6so12849345ad.3
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 21:16:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="RTN9UJaZ"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2e812e2b31bso7185635ad.3
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 21:16:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1791778585; x=1792383385; darn=vger.kernel.org;
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1791778591; x=1792383391; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+ozoBovyE5iIy57BdoSb6WWm/3cssooBkyf+Ta3lJtw=;
-        b=Ae7uRQ72RKaBmBSIGpsMT+ptcIsmIbbXwD9x9IZmscuZS7vvwUEhbQpgIVaoBPlxuI
-         SAtqF1FzqHKumdawEfblrpHDHStykJfixgtrQfKATLsvvEWcvPZ91upzNUWhDuteZ0vR
-         1PzwNrdpvVNXz9R1T0L57MywUS3BcfKu7d5r3sFi2kxJ4sEOGtW4UdcUAR5kHLQNttUr
-         KV/Q35PkEgzwVAhvJFBLk3YeS1zbi1cTPN0qU1XueN7ZJPRQ7fujx7jb35ACgaBYLq4E
-         6uVCDg2SKqQ0PhvY9MuUelRVgwVqohO9i/peRpLkCtxGOqDkDVi9zU26S36BimFhzOHG
-         h5VA==
+        bh=9DlUEUGLS7Nt4T4pXLTvciuKtlGeSVjzlDjaczYVQW0=;
+        b=RTN9UJaZ6d/DSZ6EcqIYffVTi3SXmgfx0PtAibT4Kd7FG9cObqkL1QS7n2xswfGoLv
+         GV1ysC58P1bd78MUg56YNVF5Y7doeouFVtd2riipWuW84UpzoCJsyYt757A8zV8yN2pU
+         R69fzXtR80mYM2XuqR3wbmrw/lM6IxjwQFxShAnw4B7lDcTLlW4AFe33NMXOE7uXTSfh
+         9iiAYWbPqp9UJpZ/UIJT3Sk20lbkM1zKNczBK+vyWFgOvxYttxEM7SUwgYa3ZMqAGRnw
+         dPUSSNGPK2hqUvvmEfQIQ0eJbHGkiprmDKePjGqtASZB5H2HBfXCvhnzr69kLVNz/B1a
+         gWyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791778585; x=1792383385;
+        d=1e100.net; s=20260707; t=1791778591; x=1792383391;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+ozoBovyE5iIy57BdoSb6WWm/3cssooBkyf+Ta3lJtw=;
-        b=O0qlVfi9Bo/+7vSi8tptT6UHs2agqxDMCm4HytaZy1gPvbap7lwQRHINjr8SuTldxi
-         K/QN3VIbI+ksucWKInXl/KE9kcpLeaYePTUNcuo335zqLPOiJQc775oYfMf/aZl0knRq
-         fO5c3RIOuP1YxWN0dNjvvZowOMYefG9QvXZDtWvWTSIncZkryBsFkdfPunhDt/5kK8dv
-         wfslSL+8/1LhneGrZxaVbW/dPpidmGWeiaBm70AceP3ZFeR2yb5lbSevmlXY2Z201Cs6
-         UdbPD8TW+sEKp0cBDv9C012ZAE/H9ZRxv3GZjZbcaZzHhCC0MrStcGOnWnbeEa7br9Gk
-         0qJg==
-X-Forwarded-Encrypted: i=1; AKwUvBzpwFnssCQBdeSXZIUKK1huPrXOYhd2s1G7kDfmTAR6WDcSxHTOCZgv6yDWMKoCbDOpg/HieiM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKI6l9N7zZVSBLxGNin1zIkVhVMzytJvQMbYymfrqYHoUg5K/4E
-	bD8K8/fE/ez3xJJniTIz/2VhT9Qm8r8Bc2MV4QNuG7EEvb2Q5gFDOhaS1mxBmM+X2R0=
-X-Gm-Gg: AYBFou1yZJFk+HurPkrhoT+tT1jWKO3+PAVUXIwNGBYlyWTD4JTvAEOBECdH8EtpC6P
-	DzdXtgE3s+U8chRQ0Fdd570rPANe1UoydVlJ4oWlb9Fnuav0HZnPlb/CC3/aDCmCHowvoDKeZUC
-	KGh+McIcr64vDM9oHx4SbdCqK0XtX4XMHf2zi+cemE03eaRuUzujwquzJntCyXxfFYnDxffp+e+
-	X7ahUV1kqM3UaoXHPEldonz0wIWmeHzmCjF9Ea+q2zc8WU0D06d05VsqTkdeMJCw7zaLA/kt38x
-	EsYjaMUg7cH5W3mIXvIsI4vtVv3CfOjQVnNoKVls7smFDhRaNOIeqkzzoBRPsp7ziRCkO7SLsq7
-	0P+pT3mQgg8bwKp/jelOxe48ZWsF5j99yyeevl8sL7hyg3SN9iNim6jXD6rqg26b5caj+25MvW4
-	lcR3XyysHyF8ofLuNnOxvbH8kkCPIQIRlyQ6jgOgWaKkugdEBwPLKszYvqaFpIe2hVOSmpCdJhO
-	+kZWg==
-X-Received: by 2002:a17:902:ec8d:b0:2e8:3cab:3af1 with SMTP id d9443c01a7336-2e842cfbc69mr72576765ad.23.1791778584424;
-        Sun, 11 Oct 2026 21:16:24 -0700 (PDT)
+        bh=9DlUEUGLS7Nt4T4pXLTvciuKtlGeSVjzlDjaczYVQW0=;
+        b=UL/8dUQoe0ZcTDvEC40l7+Znlph/oIsfMnqaOVe6dwOuV4RuuWzb7XCyZvSubKxv3L
+         tUrStkXsP2J8Db/KJ3gGKlE9MWuuwOPZ3hv3xvLHTQ7vf15zQHBoOfyVsT/NHbT0oNL/
+         pre3YplpprytcmfjXEdJVS4WTLHqx8OZZOmWuDCkfe0dlL8VCDm5Bi8sUNy9S+yRoYSN
+         Wt1dCbLEZKmETaRh/xZ2n350Pca8iueEPZO6C4zLiw2JOFejIK0f/oqg0AYDJEhr6DNI
+         jIwpLmWJlfdZbcJPmaVX5+tQ9A7bAbdeMI2eooaZaOHoAwJnQh0nvtaUXF6g89xPI1qb
+         Rn3A==
+X-Forwarded-Encrypted: i=1; AKwUvBzsmZoZ5G7P5jo/hGPApEGApli02aBuyXN1GfR/gaVFLQXXW+b6xlOjqNMpuOE+loiF/omRTc4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJiyZMSuU24MyApojXNqKvrhNB6P6UvKJrtLtoh59W5sJrm0Grh
+	lQy2DsH0Q+KBStFd5rzM76ZwUkoIGcqTyd07p6kVuW73+fRf3qz3xs9cNpGhVQhHTnU=
+X-Gm-Gg: AYBFou0rEhuAWno22XoDK/8weZGroFd3DM/OfB2vLPGIaAce5xpe6zCOW0TCTDOTyT9
+	7tYLBbvTdKkaGJ+IViuJUydJWasUfHJj72exNVbK8FMM78s3GJ+7jkNuM4lCou4GxJfeAIHkqhC
+	pLfF/f9ShKETX6ogCtL386olfshjurR7wZk2wtEybMgGvQKrfMelXu7a320J8NJcMQibEwbWCEt
+	PYLkwErfEtc8jM4J/PXpa+JwZV1ot2EXwp/+cFq9dleI/7PQrie/3BWGG06eflCvCZ5UI+eV91R
+	htUS4xlLa5RAB45/4W98tD/QBmEPmW2W5nXGqs9uU/nwr1oaZ8041AYfX8Ddwl9gDexdgdz8VEr
+	BtMuRTyrpjLLOl+sHSrUBr6pV6uUhX3omj9chUYkOntnlER3A8MCJt+bagVPpHCsBNsF8bwK9wX
+	6v0S0WFrCwsY5O8U6bK90luFQl9jW7YZaKMHHeZV7yrE8WZdoKrBW7LVLqu7Rtz/Xv9EIW2Z3pP
+	4kyQg==
+X-Received: by 2002:a17:902:ce12:b0:2e2:aa17:477f with SMTP id d9443c01a7336-2e842f11b4bmr67470145ad.58.1791778590797;
+        Sun, 11 Oct 2026 21:16:30 -0700 (PDT)
 Received: from yhlee-960QFG.. ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8421af46asm38240025ad.39.2026.10.11.21.16.19
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8421af46asm38240025ad.39.2026.10.11.21.16.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 21:16:23 -0700 (PDT)
+        Sun, 11 Oct 2026 21:16:29 -0700 (PDT)
 From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 To: Alexander Duyck <alexanderduyck@fb.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -76,9 +76,9 @@ Cc: kernel-team@meta.com,
 	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Subject: [PATCH net v3 1/5] eth: fbnic: only act on Rx completions naming a posted buffer
-Date: Mon, 12 Oct 2026 13:15:56 +0900
-Message-ID: <25ce85c9821fba5d94932b36b9c9afb9a2fbd12a.1791775409.git.yhlee@isslab.korea.ac.kr>
+Subject: [PATCH net v3 2/5] eth: fbnic: validate the Rx completion offset and length
+Date: Mon, 12 Oct 2026 13:15:57 +0900
+Message-ID: <5b7c2618b56d35f50b6847d565a0050cf2a7f371.1791775409.git.yhlee@isslab.korea.ac.kr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1791775409.git.yhlee@isslab.korea.ac.kr>
 References: <cover.1791775409.git.yhlee@isslab.korea.ac.kr>
@@ -90,194 +90,113 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An Rx completion descriptor carries a 16-bit buffer id that the driver
-uses to index the rx_buf[] array (FBNIC_RCD_AL_BUFF_PAGE_MASK). The fill
-path masks the id to the ring size, but the completion path does not, so
-the device can hand back an id that is past the array or that names a
-slot which was never posted. An unposted in-range slot holds netmem 0,
-and netmem_to_page(0) returns NULL, which fbnic_pkt_prepare() and
-fbnic_add_rx_frag() then dereference.
+fbnic_pkt_prepare() and fbnic_add_rx_frag() take the offset and length
+from the completion descriptor (FBNIC_RCD_AL_BUFF_OFF_MASK and _LEN_MASK)
+and use them to place data in the fragment page without checking them. A
+device that reports an offset below the reserved headroom, or a length
+that runs past the 4K fragment, produces a negative headroom and a frame
+that extends beyond the page, which is then read out past the page into
+adjacent memory.
 
-Masking the id would not fix this: it aliases an out-of-range id onto a
-posted buffer and corrupts that buffer's page_pool reference count.
-Reject a completion whose id is outside the array or outside the posted
-window and take the existing drop path.
+Reject a header whose offset is below FBNIC_RX_HROOM or whose offset plus
+length exceeds the fragment, and a payload whose offset plus length
+exceeds the fragment, via the drop path. Clamp the derived frame end and
+truesize to the fragment so a FIN descriptor cannot push them past the
+page. A maximum-size header (offset 192, length 3584) stays inside the
+fragment and is still accepted.
 
-The same id is used as the BDQ head in fbnic_clean_bdq(), where an
-out-of-range value spins the cleanup loop; bound it there with the same
-test. Validate head0/head1 in fbnic_clean_rcq() before they are assigned,
-and drop a META completion that arrives with no header buffer rather than
-building an skb around a NULL pointer.
-
-  Oops: general protection fault, probably for non-canonical address
-  0xdffffc0000000004: 0000 [#1] SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
-  RIP: 0010:fbnic_pkt_prepare+0x1a2/0x5a0 [fbnic]
+  BUG: unable to handle page fault for address: ffffed1021a8ee10
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  Oops: Oops: 0000 [#1] SMP KASAN NOPTI
+  RIP: 0010:kasan_check_range+0x15e/0x1b0
   Call Trace:
    <TASK>
-   fbnic_clean_rcq+0x1ba/0x1350 [fbnic]
+   __asan_memset+0x23/0x50
+   __build_skb_around+0x222/0x320
+   napi_build_skb+0x50/0x1e0
+   xdp_build_skb_from_buff+0xda/0x8b0
+   fbnic_run_xdp+0x29a/0x1040 [fbnic]
+
+An offset and length that keep the frame inside the page but past the
+valid data produce no splat: the read lands in adjacent page_pool memory,
+which carries no KASAN redzone, and is copied into the skb silently.
 
 Fixes: a29b8eb6e533 ("eth: fbnic: Add basic Rx handling")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 87 ++++++++++++++++++--
- 1 file changed, 82 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 41 ++++++++++++++++++--
+ 1 file changed, 38 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index 10caacffee0f0..305fe6d2f511f 100644
+index 305fe6d2f511f..7dda59bba14ee 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -797,6 +797,34 @@ static void fbnic_page_pool_drain(struct fbnic_ring *ring, unsigned int idx,
- 	rx_buf->netmem = 0;
- }
- 
-+/* The device names an Rx buffer by its index in the buffer descriptor
-+ * ring.  A completion may only name a buffer we posted, that is one in
-+ * [head, tail), so test the index against the array and against the
-+ * posted window.  The window test is not enough on its own: it masks the
-+ * index, so an index past the end of the array can fold back into the
-+ * window and run off rx_buf[].
-+ */
-+static bool fbnic_rx_buf_posted(struct fbnic_ring *ring, unsigned int idx)
-+{
-+	if (idx > ring->size_mask)
-+		return false;
-+
-+	return ((idx - ring->head) & ring->size_mask) < fbnic_desc_used(ring);
-+}
-+
-+/* fbnic_clean_bdq() is given a position to consume up to rather than a
-+ * buffer to use, so unlike fbnic_rx_buf_posted() it also accepts tail,
-+ * which is how the teardown path asks for the whole ring to be drained.
-+ */
-+static bool fbnic_bdq_head_valid(struct fbnic_ring *ring, unsigned int hw_head)
-+{
-+	if (hw_head > ring->size_mask)
-+		return false;
-+
-+	return ((hw_head - ring->head) & ring->size_mask) <=
-+	       fbnic_desc_used(ring);
-+}
-+
- static void fbnic_clean_twq(struct fbnic_napi_vector *nv, int napi_budget,
- 			    struct fbnic_q_triad *qt, s32 ts_head, s32 head0,
- 			    s32 head1)
-@@ -882,6 +910,13 @@ static void fbnic_clean_bdq(struct fbnic_ring *ring, unsigned int hw_head,
- {
- 	unsigned int head = ring->head;
- 
-+	/* A head we never posted cannot name a buffer we own, and the loop
-+	 * below masks head to the ring so it would never reach it.  Leave
-+	 * the ring alone and wait for a head we can act on.
-+	 */
-+	if (unlikely(!fbnic_bdq_head_valid(ring, hw_head)))
-+		return;
-+
- 	if (head == hw_head)
+@@ -1037,13 +1037,34 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
  		return;
+ 	}
  
-@@ -985,14 +1020,25 @@ static void fbnic_pkt_prepare(struct fbnic_napi_vector *nv, u64 rcd,
- {
- 	unsigned int hdr_pg_idx = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
- 	unsigned int hdr_pg_off = FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
--	struct page *page = fbnic_page_pool_get_head(qt, hdr_pg_idx);
- 	unsigned int len = FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
- 	unsigned int frame_sz, hdr_pg_start, hdr_pg_end, headroom;
- 	unsigned char *hdr_start;
-+	struct page *page;
- 
- 	/* data_hard_start should always be NULL when this is called */
- 	WARN_ON_ONCE(pkt->buff.data_hard_start);
- 
-+	/* A buffer ID we never posted cannot name a buffer we own, so drop
-+	 * the packet instead of running off the end of rx_buf[] or picking
-+	 * up a slot we have already drained.
+-	page = fbnic_page_pool_get_head(qt, hdr_pg_idx);
++	/* The completion describes one frame inside the one
++	 * FBNIC_BD_FRAG_SIZE fragment it names.  fbnic_hdr_pg_start() takes
++	 * the headroom back out of the offset, so an offset below the
++	 * headroom underflows it, and the frame data runs to
++	 * hdr_pg_off + len, which has to stay inside the fragment.
 +	 */
-+	if (unlikely(!fbnic_rx_buf_posted(&qt->sub0, hdr_pg_idx))) {
++	if (unlikely(hdr_pg_off < FBNIC_RX_HROOM ||
++		     hdr_pg_off + len > FBNIC_BD_FRAG_SIZE)) {
 +		pkt->add_frag_failed = true;
 +		return;
 +	}
-+
-+	page = fbnic_page_pool_get_head(qt, hdr_pg_idx);
-+
+ 
  	/* Short-cut the end calculation if we know page is fully consumed */
  	hdr_pg_end = FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
  		     FBNIC_BD_FRAG_SIZE : fbnic_hdr_pg_end(hdr_pg_off, len);
-@@ -1026,10 +1072,27 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
- 	unsigned int pg_idx = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
- 	unsigned int pg_off = FIELD_GET(FBNIC_RCD_AL_BUFF_OFF_MASK, rcd);
- 	unsigned int len = FIELD_GET(FBNIC_RCD_AL_BUFF_LEN_MASK, rcd);
--	netmem_ref netmem = fbnic_page_pool_get_data(qt, pg_idx);
- 	unsigned int truesize;
-+	netmem_ref netmem;
- 	bool added;
+ 	hdr_pg_start = fbnic_hdr_pg_start(hdr_pg_off);
  
-+	/* No header completion has set buff up, either because one was
-+	 * rejected or because the device sent none, so there is nothing to
-+	 * add a fragment to.  Mark the packet so the metadata descriptor
-+	 * drops it instead of building an skb on an empty buffer.
++	/* fbnic_hdr_pg_end() rounds the frame up to where the next header
++	 * would start, which can be past the end of the fragment when this
++	 * frame is the last one in it.  napi_build_skb() puts the shared
++	 * info at the end of the frame, so hold the frame inside the
++	 * fragment, which is what the FBNIC_RCD_AL_PAGE_FIN case above
++	 * already does.
 +	 */
-+	if (unlikely(!pkt->buff.data_hard_start)) {
-+		pkt->add_frag_failed = true;
-+		return;
-+	}
++	hdr_pg_end = min(hdr_pg_end, FBNIC_BD_FRAG_SIZE);
 +
-+	if (unlikely(!fbnic_rx_buf_posted(&qt->sub1, pg_idx))) {
-+		pkt->add_frag_failed = true;
-+		return;
-+	}
++	page = fbnic_page_pool_get_head(qt, hdr_pg_idx);
 +
-+	netmem = fbnic_page_pool_get_data(qt, pg_idx);
-+
+ 	headroom = hdr_pg_off - hdr_pg_start + FBNIC_RX_PAD;
+ 	frame_sz = hdr_pg_end - hdr_pg_start;
+ 	xdp_init_buff(&pkt->buff, frame_sz, &qt->xdp_rxq);
+@@ -1091,11 +1112,25 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
+ 		return;
+ 	}
+ 
+-	netmem = fbnic_page_pool_get_data(qt, pg_idx);
+-
  	truesize = FIELD_GET(FBNIC_RCD_AL_PAGE_FIN, rcd) ?
  		   FBNIC_BD_FRAG_SIZE - pg_off : ALIGN(len, 128);
  
-@@ -1270,6 +1333,7 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
- 	while (likely(packets < budget)) {
- 		struct sk_buff *skb = ERR_PTR(-EINVAL);
- 		u32 pkt_bytes;
-+		u32 pg_idx;
- 		u64 rcd;
++	/* The data has to stay inside the FBNIC_BD_FRAG_SIZE fragment the
++	 * completion names.
++	 */
++	if (unlikely(pg_off + len > FBNIC_BD_FRAG_SIZE)) {
++		pkt->add_frag_failed = true;
++		return;
++	}
++
++	/* ALIGN() can round the charged size past the end of the fragment
++	 * when this is the last fragment in it, so hold it inside, which is
++	 * what the FBNIC_RCD_AL_PAGE_FIN case above already does.
++	 */
++	truesize = min(truesize, FBNIC_BD_FRAG_SIZE - pg_off);
++
++	netmem = fbnic_page_pool_get_data(qt, pg_idx);
++
+ 	pg_off += (FBNIC_RCD_AL_BUFF_FRAG_MASK & rcd) *
+ 		  FBNIC_BD_FRAG_SIZE;
  
- 		if ((*raw_rcd & cpu_to_le64(FBNIC_RCD_DONE)) == done)
-@@ -1281,12 +1345,21 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
- 
- 		switch (FIELD_GET(FBNIC_RCD_TYPE_MASK, rcd)) {
- 		case FBNIC_RCD_TYPE_HDR_AL:
--			head0 = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
-+			pg_idx = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
-+			/* Only take the head from a completion we are going
-+			 * to act on, so that one rejected ID does not discard
-+			 * the progress an earlier completion in this poll has
-+			 * already reported.
-+			 */
-+			if (likely(fbnic_rx_buf_posted(&qt->sub0, pg_idx)))
-+				head0 = pg_idx;
- 			fbnic_pkt_prepare(nv, rcd, pkt, qt);
- 
- 			break;
- 		case FBNIC_RCD_TYPE_PAY_AL:
--			head1 = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
-+			pg_idx = FIELD_GET(FBNIC_RCD_AL_BUFF_PAGE_MASK, rcd);
-+			if (likely(fbnic_rx_buf_posted(&qt->sub1, pg_idx)))
-+				head1 = pg_idx;
- 			fbnic_add_rx_frag(nv, rcd, pkt, qt);
- 
- 			break;
-@@ -1300,7 +1373,11 @@ static int fbnic_clean_rcq(struct fbnic_napi_vector *nv,
- 			/* We currently ignore the action table index */
- 			break;
- 		case FBNIC_RCD_TYPE_META:
--			if (likely(!fbnic_rcd_metadata_err(rcd) &&
-+			/* A metadata completion with no header completion
-+			 * ahead of it leaves nothing to build a frame from.
-+			 */
-+			if (likely(pkt->buff.data_hard_start &&
-+				   !fbnic_rcd_metadata_err(rcd) &&
- 				   !pkt->add_frag_failed)) {
- 				pkt_bytes = xdp_get_buff_len(&pkt->buff);
- 				skb = fbnic_run_xdp(nv, pkt);
 -- 
 2.43.0
 
