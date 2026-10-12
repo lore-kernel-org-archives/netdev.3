@@ -1,68 +1,85 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476CA4B0E57
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:42:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCE14B0E28
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791823343; cv=none; b=jDQwQijb/r4MlyusRJ4ZVRYD3UzZFGgzW9wUcbInbnq0Np5CStRRrsv8NgkEkrv+D/Dt9VOxsI5cTIF2OmlOaAhB/yey3Kf0ZUTdSdYIQHCj+wucEUuwaPuufJncEu01bHtjFPZTFcHuV1hyjlZfvSJbmjrQiGqvGoL8zKJVpH0=
+	t=1791823482; cv=none; b=QZNv/ajg66bcAlFmgIICy8Dyl9c5O6xg0xPulPxJnB7FsG0cZTS6e3Dj8NvwTgBRuap0JMLf6ebnspndhdd5B785pPTxBzz5dACetkN4gpYEg3Sl/2eNVjKgu8GY4NQLt9gIv2YklGkPhChrFHJFA1Ls00Fg9/sH6UA9OJsWgSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791823343; c=relaxed/simple;
-	bh=3oxtSu9bUyqv8eRvbOTaaLELzhbhyErWddsiC7w31RQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lOizl3PfCPZJI8bzHKutWd5AI+ZH4E5Teq/Zi/oemHhAiahGF/aZyF5el/JjqCKNmfZ8WxHqLNCDGjRfvtwYL1Ot5EPPYwBG7j2PVtGCWW8cAWqBa9Pwu2v6or7B9e7q/FjmcAQUTkhWFv3hjJmoWDFVyxrTEHDi0GHluIMb5Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p7v480xu; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791823482; c=relaxed/simple;
+	bh=G0ezcRMpi5gXGDahbwuNWo8UmJmJcsj7WUdt8DYFug4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NQJwYIotTeuziwqqRHpztGnkmQlH3Am6ngCAOzFsW/ioWTwEFNQ6yPxD8Y/ax0TZG+Zf/h0GTZlbURdxFbmFo0X6eEAVHb/FuzbVKY952OJLr+n87Sbj9yiPMd400TSDA74Wk16p6XSJ4IUwk6ehY7R/YD9Fld5RXRxHog8uT5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=C74kC4st; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NxffjAb2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p7v480xu"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48affdf66f8so314482f8f.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:42:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="C74kC4st";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NxffjAb2"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CFfkLf2768693
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=64A0NSLF+RhR7KJefaxknO
+	3D/6HTCylIyUlf60T2HYE=; b=C74kC4stmosWAflzTj8xlB+5cXLSEfqQFmx+W2
+	NzmmGeiknym4AXBILTt/5h576z5z/RLQkxOKlipJPIqPo+HnuRh7h+PuqcLF036b
+	jICrv43i+d15WVXEv2kTwqXCrRPIKZXKsho/UPDjVRjSHaXN96BQaStR/a+I7aV2
+	13Cco/23nuhbiYICbxCY1uhPDyUxjBhuvXkh9+2tZu+KYuxeOmjjqosemcVrZFE2
+	s9uBNBrw1dUq/w4SVv2sbZdD6wfAw8qnGZDQ7CCmm8nVcrPIexzPEs6mEXrYd+GY
+	fQK06Y/7qhfw9jUy6o5sH1PbyqIaTomHyEZmaLVPqlnD6uRQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h8udq2e7g-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:40 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93ea8067974so550100185a.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:44:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791823340; x=1792428140; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UzBAet1nTx5+JCjWlEVDo/FdC70Ip2kEQYD2LrqnUXY=;
-        b=p7v480xuUura5wDXwn6aDvUwHjUY7fbpmLIz/swBgQ7QrPKrpccDrA67Zs9MyqCksi
-         trbA1sHCkGomBMHHyT5J4YvYreXRcY0UvWpjf9dDr7Rhx9AnR+/hZHXSFPVbxpDcbmVJ
-         9N/EdYK1Walzbe9NW7B70m+YmlqOfKc+4sIp/f6SL91PAEntHUQjzCvx6lysumAXVLCG
-         b1LB2loosVXl/7HvnXggLNokaQQDatmo7DkSJtTk+VmrotcB40HWehB3ctiujn87j6cH
-         8c1tEo0Ch6+9w2LEj41RCy01g6koBonMMsxq95T/IJzso4ASyuk2aZd6/5uRMRGC3rfx
-         w3+w==
+        d=oss.qualcomm.com; s=google; t=1791823479; x=1792428279; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=64A0NSLF+RhR7KJefaxknO3D/6HTCylIyUlf60T2HYE=;
+        b=NxffjAb2dpG7ja28RSlsJArPS/rwE33HnUZYQ/KnDcoe2b++DKf+Rofq3fEmYHqxHL
+         tJc99CfHGVFLyQjx9LLKRaGDqXysM+TXJ73Q+aAqEirlvlbHo95vjeJbU3wl1sklh5BM
+         /FWxUoxd46LdWOLggN0ytTVXNFvknemfMtRwbf8J3nThPF/XJTWd9nGW9pWgApdQAsb0
+         ghGIrnZ9lbdQqK2LyTfZC57422bnrv7FclleiNqpwyT6oVdD+GyVx99ChUOFH0Iraa/c
+         9qO0zHX3x0CvwWY1n9VFYz3L1eAxfa5RvbDc3VJhcP9Zi9dSC4Bo3yOe9yA6Won6FkwX
+         Q1Ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791823340; x=1792428140;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UzBAet1nTx5+JCjWlEVDo/FdC70Ip2kEQYD2LrqnUXY=;
-        b=w/N0SbHkZFX314remfkdUiY4AGDIoT9w1y4HGaUh3Dy9gsHGrAkjvH+EFoh0D+DZWO
-         sDWC+vKLBMh7SItlFZUYINnWuzWBDPUphAKXR9i/J03RpqEKrmXBLrvEcciaXWRSnV7H
-         NWeHUTgFWD930eIIrx/OkMOfy5NL/0DuRbd6cB6SGfY3EB+DNbwQawsYuc8s3oxGN7nt
-         2gxmNqn/MEjJdTEgPq8BNDjZI64OQg+PWd6YV3DEz8ETQelQaYr6mTZVDu7KTYH2G/Ns
-         oFRBTWLVg7KDexTKFaPQwleetyAJJ6H3y/oIWXGWYwmVwN0Y1vKotyou+jZp6/MzE27Z
-         Kz6w==
-X-Forwarded-Encrypted: i=1; AKwUvBx1a8UWi9KHUrvBIqGpR2vsBmYeWPQnrhiV9GqCXSEGXIhbaRT8hSwdwnxrHyWs5qT3DJ+Kmps=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI775tJn1jNub505hxvCsJTq9gYFsl1JDdoZK1eHR0v3wPHiDJq
-	7RKANw5GAa6DJ+FOTC4eu5ivCkzeb4am2ZzJtZUmkPEBF5NxUt4yQbXW
-X-Gm-Gg: AYBFou375vkOYcgskUST0CZhDcRhOQB0FlyrzzX/DoHbrUwYhhzZvhjsvVsjM/HVAYl
-	i6/c3d8DOyBE8fI1OwzrGNV7ehZBpB0b5klh3oqEYCxv3Jsymvj+iXO4O8eeyaTcGg0HVXWlYpK
-	HYDgGo8816tLCDWso6+djkVovTGFGlb2I1aTCinksUe2k2BrsnhMy83vl3rnu7yCh1sL0v2B3u6
-	vSFigVEKYqRiTauV+uYms9BbyFR1NGAV8+IepHjORFqtTo/dPO4Q1E+9G57gdkGo6RU4L9Cd5qM
-	SjiarXzv5Tq4yXs+53HwimNDmPAiSkFiDYAQQTW+JWq8sVQ8k5J19F/C/FDFW27r+pr0ibHW3zD
-	5ClXIPzDG2hpcgnWKz0E9AGmRzIR07Z1jbxBMttBmQNTr2wFQ0sWlyj0fkB4h1adRGAljeKY+Wg
-	bvRGDpeOvJbJz9rA6XemTVJCvctzypEO+LSGSOyGpyKZBx0bsk88yH
-X-Received: by 2002:a05:600c:5246:b0:4a1:7e9b:e0b5 with SMTP id 5b1f17b1804b1-4a18e3ee9d3mr162847075e9.0.1791823340401;
-        Mon, 12 Oct 2026 09:42:20 -0700 (PDT)
-Received: from localhost ([2620:10d:c092:500::4:c555])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a198c80cb3sm127695195e9.3.2026.10.12.09.42.19
+        d=1e100.net; s=20260707; t=1791823479; x=1792428279;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=64A0NSLF+RhR7KJefaxknO3D/6HTCylIyUlf60T2HYE=;
+        b=skU+WjRXdOpFFdTn9kuH4FXA0ftFUva/vSveLlyiJUqYnfNaHqN13wUPkuuFZY1q63
+         BsUy33q5gpZIQL2m2pSe3MbXOTwquysoly1xjzZavmVhurerfZF+xF1srBjiRyY5h9Ff
+         NahUKx+F1Qhwbt7uKJuM8CFUW/TjCGDpHpGp0O+IsZtw+MpLZRrFi4Oef6u7nNwSfvsI
+         GabpPm3h9K29kbJlSyqMGagtBlcsuQ4KJKzQuhaFd0YEeVypav0IancmdKH/7zoOiFMp
+         0eZywicEKmBQhKHk37+DTlBOzphpCxI4UfDpAM7kTCPUpf5qxQkkR53ZWDHI5da2KKFt
+         FNWg==
+X-Gm-Message-State: AFq9FYLMAI6vYqxH9DCX62eOX6l1U3v5qsG9pJeJ6B6mdZzJxPl1SJ3L
+	6ycOSX9lv6ewdmcox30Do2Emx7cV+p5U8Mz32CrLWcWLtmO3hN2gnwDStuTHfKGzAFCGPIup9th
+	L+XRG4Zbdk4FF3R74bOelOxRyXkPIEc/JtvwSCK7lXJB6maW9OAeV5GgqMK9PlDXZJetz8A==
+X-Gm-Gg: AYBFou3aatYT5a2wSIBEXrSAhicVFQKt6ZSwEImyy9kbdo5puLZpB1eXgtUSCNd/0gm
+	eG/4oSCTGt8h4FhoynxdaWVfwNdXef34sm9LTTDO6cnfEpqhGazFrpkZKTguoNqIR1jHiYd5SUw
+	JKzpO1DIK8dnHYZH/Q3KsYNh/SxBVwhY33vcf4qSQnHECenSQ+Ds1VWQYjY+XuBQeEWWJddTNjc
+	ply50/9+aiR8XbO4+pqOMaLhNSiRMsJ8b+rQHKhgVEDEYLcVq9juwqfjWFflhY48sDU171GDFKA
+	i80de5HE9jDv5ZGECDVFCkgcrClN7hcWa9adP+rRwEefAlfFoxrgezvYmfdzGFUVxukSr3SNxjf
+	sXS4EWHyE22dMXA==
+X-Received: by 2002:a05:620a:1d01:b0:93e:8542:4f4d with SMTP id af79cd13be357-93ebd2923c0mr1685102185a.57.1791823479289;
+        Mon, 12 Oct 2026 09:44:39 -0700 (PDT)
+X-Received: by 2002:a05:620a:1d01:b0:93e:8542:4f4d with SMTP id af79cd13be357-93ebd2923c0mr1685096985a.57.1791823478730;
+        Mon, 12 Oct 2026 09:44:38 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be96549sm419749845e9.6.2026.10.12.09.44.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 09:42:19 -0700 (PDT)
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Mon, 12 Oct 2026 17:41:58 +0100
-Subject: [PATCH net v3 2/2] netconsole: read np.dev under target_list_lock
- in local_mac_show()
+        Mon, 12 Oct 2026 09:44:37 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Subject: [PATCH net-next v6 0/4] net: stmmac: introduce XDP rx multi-buff
+ support
+Date: Mon, 12 Oct 2026 18:44:22 +0200
+Message-Id: <20261012-stmmac-rx-mb-v6-0-2225050915c1@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,85 +88,118 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261012-netcons-fixes-v3-2-1aac85ed7665@gmail.com>
-References: <20261012-netcons-fixes-v3-0-1aac85ed7665@gmail.com>
-In-Reply-To: <20261012-netcons-fixes-v3-0-1aac85ed7665@gmail.com>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Stephen Hemminger <stephen@networkplumber.org>
-Cc: Gustavo Luiz Duarte <gustavold@gmail.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.15.2
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XNQWrDMBAF0KsEraugkcay3VXvUbKYyKNGUNmp5
+ BiX4LtXeFGMiTcDn89/8xSZU+As3k9PkXgKOQx9CfbtJNyN+i+WoStZaKWtaqGReYyRnEyzjFc
+ JFm1LugZkEmVyT+zDvHKfoudR9jyP4lKaW8jjkH7XPxOs/WtyAglSXbGCukOF5D+GnM8/D/p2Q
+ 4znclZv0htDw87QxbDcaMvgvVH2wDD/BiiFO8NIJSvlCWog37I7MHBr2J2BxWBP6KitkU13YFR
+ bo90ZVTGcaYrCRGCaF8ayLH/2Dm6ByQEAAA==
+X-Change-ID: 20260918-stmmac-rx-mb-16469a2714ea
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Jose Abreu <Jose.Abreu@synopsys.com>,
+        Ong Boon Leong <boon.leong.ong@intel.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        bpf@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Authority-Analysis: v=2.4 cv=evJKXYpX c=1 sm=1 tr=0 ts=6acd0e78 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=e9kd2x7fyNmJAygvsboA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA2NiBTYWx0ZWRfX7D2EgBWFKj10
+ nr1Nz41WVHBUKUXRCaovblXz/9GGgyKklS7zorzzNQE/CxvRw4QhPZ+6fTZ7XVtkqczsQIsbnCv
+ 1KhvBteqmRG6ageFZB7LezmMC3KjMsc=
+X-Proofpoint-GUID: G0UO_ZD0RXQJQ7n8xT6HKlmdJyq6msIO
+X-Proofpoint-ORIG-GUID: G0UO_ZD0RXQJQ7n8xT6HKlmdJyq6msIO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA2NiBTYWx0ZWRfX7AQQG8XzTQmH
+ tYOX4PvFJ9s2Hf0foxCvFLDZTVYmpuZaepgpVY2HMatGOpr6K4KD90wpiGby3bbKfTIsGbC9FCK
+ jRAOv9aulGmvmyv3RILzYsJbuP2PTJpyWpZaxZiexTrrmyIN9FjFPS/ak0a8jTXQpLOmzAA/CNx
+ LHHfYWjHfW9DPrY+sZRIUSGdNwRXc68wvAae0KS6TrfHa7uf9QP5fqZgEP5G3gm2PKkUM5x0y/I
+ wv2p9tADB5qIyuzeTbeMz1voBjUFeH3a0HMyn6zhjYhzkHuH0QGi3BWzzsyodsnsx48j3AZY/mZ
+ 22wEVS0a5ienP6O2YnUTCxDJPe87WybWvHkYr/LmmjutXNSFEnEmpGFLFQixej3tPX4JpReCMRN
+ c9TsB/o9RE3CTfdoUKtvwHjepifLI2nrbZbFhzn1Cm4c1uZYYfRlXOUMtudJ6huPvOiATOKc9BX
+ iYOk5db2zhhQyfY7pgw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_05,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 bulkscore=0
+ phishscore=0 adultscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610120066
 
-local_mac_show() loads nt->np.dev and dereferences it with no lock. It
-can race with the interface going away and netconsole_netdev_event()
-eventually calling netdev_put() and freeing the device before we
-dereference it, leading to a UAF.
+Rework stmmac_rx() to build the xdp_buff from all the descriptors that make
+up a frame, so the XDP program runs on the whole (possibly fragmented)
+packet instead of the first buffer only. Fix possible rx_q state leaks
+when closing/opening the interface.
 
-The window is only a few instructions wide, so I could only reproduce it
-with an artificially widened window between the load and the
-dereference:
-
-  BUG: KASAN: slab-use-after-free in local_mac_show+0x4e/0x80
-  Read of size 8 at addr ffff88800e990458 by task uaf/130
-   local_mac_show+0x4e/0x80
-   configfs_read_iter+0x187/0x260
-   vfs_read+0x453/0x5a0
-
-  Allocated by task 116:
-   alloc_netdev_mqs+0x78/0x830
-   rtnl_create_link+0x53b/0x5c0
-
-  Freed by task 121:
-   kfree+0x159/0x420
-   device_release+0x77/0x120
-   kobject_put+0xb5/0x160
-   netdev_run_todo+0x420/0x850
-   rtnl_dellink+0x259/0x5b0
-
-Two places can free np.dev: (1) netconsole_netdev_event() moves a target
-out of STATE_ENABLED under target_list_lock before netdev_put(), and (2)
-process_resume_target() releases np.dev under dynamic_netconsole_mutex.
-
-Fixes: 0953864160bd ("[NETPOLL]: no need to store local_mac")
-Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
 ---
- drivers/net/netconsole.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+Changes in v6:
+- Drop patch 'net: stmmac: allow non-linear xdp_buff in XDP mode' since
+  it requires some XDP fixes.
+- Introduce patch 'net: stmmac: drop split frames on AF_XDP zero-copy
+  RX' to always drop XDP multi-buff frames for AF_XDP mode since it not
+  yet supported there.
+- Introduce patch 'net: stmmac: drop multi-buffer frames in XDP mode' to
+  fix pending bugs due to missing XDP multi-buffer support before patch
+  'net: stmmac: rework stmmac_rx to support XDP rx multi-buff'
+- Link to v5: https://lore.kernel.org/r/20261009-stmmac-rx-mb-v5-0-c38fa4eaa138@oss.qualcomm.com
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index 1fb846ad07d1..be7eb632ee42 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -888,10 +888,23 @@ static ssize_t remote_ip_show(struct config_item *item, char *buf)
- 
- static ssize_t local_mac_show(struct config_item *item, char *buf)
- {
--	struct net_device *dev = to_target(item)->np.dev;
--	static const u8 bcast[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-+	struct netconsole_target *nt = to_target(item);
-+	unsigned long flags;
-+	u8 mac[ETH_ALEN];
-+
-+	eth_broadcast_addr(mac);
-+
-+	dynamic_netconsole_mutex_lock();
-+	/* Hold target_list_lock here so netconsole_netdev_event() doesn't tear
-+	 * down np.dev from under us.
-+	 */
-+	spin_lock_irqsave(&target_list_lock, flags);
-+	if (nt->state == STATE_ENABLED && nt->np.dev)
-+		memcpy(mac, nt->np.dev->dev_addr, ETH_ALEN);
-+	spin_unlock_irqrestore(&target_list_lock, flags);
-+	dynamic_netconsole_mutex_unlock();
- 
--	return sysfs_emit(buf, "%pM\n", dev ? dev->dev_addr : bcast);
-+	return sysfs_emit(buf, "%pM\n", mac);
- }
- 
- static ssize_t remote_mac_show(struct config_item *item, char *buf)
+Changes in v5:
+- Fix possible read after bound issue in patch 1/3.
+- Do not allow parsing non-linear XDP buffers if the program loaded does
+  not support frags.
+- Add patch 3/3 to remove MTU constraint for XDP prog.
+- Link to v4: https://lore.kernel.org/r/20261006-stmmac-rx-mb-v4-0-efa4ca974e3d@oss.qualcomm.com
 
+Changes in v4:
+- Reset in_progress flag when the packet is fully consumed.
+- Advetise NETDEV_XDP_ACT_RX_SG capability.
+- Link to v3: https://lore.kernel.org/r/20261004-stmmac-rx-mb-v3-0-50fa171af9ec@oss.qualcomm.com
+
+Changes in v3:
+- Return secondary page in case of error.
+- Introduce stmmac_xdp_shrink_tail() to remove the ethernet FCS.
+- Add patch 'net: stmmac: take ownership of saved RX state at poll
+  entry' from James.
+- Link to v2: https://lore.kernel.org/r/20260921-stmmac-rx-mb-v2-1-6e826e1ff306@oss.qualcomm.com
+
+Changes in v2:
+- Rely on xdp_buff_add_frag() to create xdp fragments
+- Fix bugs in rx_q state recording
+- Fix the corner case where we receive more than MAX_SKB_FRAGS fragments
+- Cosmetics
+- Link to v1: https://lore.kernel.org/r/20260918-stmmac-rx-mb-v1-1-0b4517d404af@oss.qualcomm.com
+
+---
+James Hilliard (1):
+      net: stmmac: take ownership of saved RX state at poll entry
+
+Lorenzo Bianconi (3):
+      net: stmmac: drop split frames on AF_XDP zero-copy RX
+      net: stmmac: drop multi-buffer frames in XDP mode
+      net: stmmac: rework stmmac_rx to support XDP rx multi-buff
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h      |   3 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 407 ++++++++++++++--------
+ 2 files changed, 257 insertions(+), 153 deletions(-)
+---
+base-commit: 29f144016f03608abfddcd6ebaeabafd7aeaadd2
+change-id: 20260918-stmmac-rx-mb-16469a2714ea
+
+Best regards,
 -- 
-2.56.0
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
