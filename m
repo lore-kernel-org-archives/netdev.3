@@ -1,266 +1,108 @@
-Received: from va-2-29.ptr.blmpb.com (va-2-29.ptr.blmpb.com [209.127.231.29])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B007F471CF8
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.29
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791805488; cv=none; b=m1CgyWkNWvrYTvpvYw8lLo01nDwQ140taT13vY/CTQ1Ehe4NhqkB/tyAjtz5HKEuKO6PKedJbh+G+RhVjUuU2ZrKvSDTm09TaY42yuB+KBQOyHvUQwTZpFYefpYG8FpYKAne8vA47Tqi8K69oINtV/o4SWy1iY/6Y6A2iEzRx3o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791805488; c=relaxed/simple;
-	bh=HToLxxu0WzbsMpSA8kp/jcY9OVKb88lCh+F/zvSnpGY=;
-	h=To:Content-Type:Cc:Date:Mime-Version:Subject:Message-Id:From; b=q81LQpSReABbXFHcIHsJuA3ce+/QrkMq1NBo/Q99XW1gA7CFASMtt+RY/CN/yjN9wph9CwYN+az0mEbWfnMW1qJO4Msj+XoUjS7iMPxkAo00wZhRCtEU2wm+DpQqC6jNBgvso6HGhPv4edrbwFUWjgBCD0rLoJH789sOO9xmHlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=ON5EVqXV; arc=none smtp.client-ip=209.127.231.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F48A480321
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791805495; cv=pass; b=Y8Qw3b136q0Pp2+/1WMZ+vW8QSTQ0FfiRYYzhV7a9WwHw9sscR3bFCM25CAaeJ9o/1kIYZwt+GjOI7N3AXUZxo5KbVPTRx8a3AAeb6RwNHuWn2+3ZtWVHMmoVNxSXW4goqUyMg1MIoWWCHU0QvUwDkt0l4eifWIo5KZci+psUrU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791805495; c=relaxed/simple;
+	bh=K6a+uG2V+IR5Io6i+GqIRtQTxPtGAXil8uNEAa2cL8k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mzWTlqh/9O5cGMtmwXXvquGI8e7uhz52ikMn0HfDoY8wJhjIUofdFCFJVWEusPZndPTniK1S5Xi5RFvVwK6kCdli8CQwhVQrejkk/ZGip1e9FcOE3Hpr0w0BPHEDrxeKSwL9lyDvlscSoVbdwLxzyb2RK+QGBEbHVecd+4Gyg0s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz; spf=pass smtp.mailfrom=sairon.cz; dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b=IEFSVWtm; arc=pass smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="ON5EVqXV"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1791805474; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=fly9DHH9Krk5wGnL+DaOoC0lr9tfXVWa7+uz0rxSomU=;
- b=ON5EVqXVJmldZ7l0Z+3ib0y3h8Q2MRrjh1W2BbRmadP4XGZsBBNmbKhhpmfqCqJqF7NRdD
- nj03OfKz83p137u1NzLu+Z+DAYEM7nUwADNVShQ2g1ah7UxKwoFsdQuFrfFFtRhxbfDogL
- PUxmWBBIyA5/SxIKwV7O6ggNj92gRVfDDXV26XCGYEtBE2ru5HeSicTrZOrKWpZ/lLP3B+
- TqtZUeKWkRavjwsSv8BU43h4xo4qVWw+x6kMm0TjAtGm9nD2QxzsMB7Jqps8E+FKZ850AH
- DS/6CNpniYijjWYzhgPi4fIHMoXfOvqKoZSoxKb+OVehR4y5R36vN0GvA6BanQ==
-To: "Andrew Lunn" <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, 
-	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
-	"Paolo Abeni" <pabeni@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, 
-	"Leon Romanovsky" <leon@kernel.org>
-X-Lms-Return-Path: <lba+26accc820+ffcb22+vger.kernel.org+tianx@yunsilicon.com>
-Received: from sw-dev-sha252.yunsilicon.com ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Mon, 12 Oct 2026 19:44:32 +0800
-Content-Type: text/plain; charset=UTF-8
-Cc: <weihg@yunsilicon.com>, <linux-kernel@vger.kernel.org>, 
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
-Date: Mon, 12 Oct 2026 19:44:32 +0800
+	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="IEFSVWtm"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2db710396ffso22608675ad.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:44:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791805485; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R+qSknokDnQRbSbIPX0J9RLXdCe7jvnbDOvvczCr0VvZyfzBhfCtqJwlT56fsoptbp
+         HqPc/kS96P3W5rlPXu2hnWiSJN40oG6nqx2eoeEau8jwxSsmDyWRP0sQiZ9CgmmDp/9S
+         yyKfPmOsFhG+LJj30fwSvLe3D5jEFX5K2k/i3Phw1w98H4alxdPKblQWgv/ysubE5Tar
+         OeSUY/PVAtlXAc8eZpKLRUGJXAW/hvN7647gSKOv8j+fRQ9ByoVdfjNBzkOACD/PkHOO
+         sZgKETuvJGLBMoXb92PteFQ8dOM5HLTCWcNJyUiaSAPvNuQGacP3GgLtuC7L+MtpqZyU
+         zG3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=K6a+uG2V+IR5Io6i+GqIRtQTxPtGAXil8uNEAa2cL8k=;
+        fh=o35q+2TjwVXYQojqSks8RlSKI1dtZyJHiTn/u4Lanbg=;
+        b=OIairtv13byGfkkdPGx6ODBfRGlymNwRi6nQyG8fTHrMLrp4l1YSmiEYqY8D/hmE3k
+         6/Rern4HDJMnvSfBGD8e3HDHw2C8dYqN4rz4yxZ7Ak1fPfXBylpZw46nnTcxOaWw2vlX
+         EOFUx8MrtlnbvXWHtcWFFhgmz22bybBaQCAJxwZbhk4uVtrYgvRDaFPFXdFHXoq1vqIF
+         zPOAVbjTfRg6AFnv5wliyDnfXmm93nsnY4sr0StQqQ6kouz6mssrItEvprvYtQKW7Nsr
+         qUpOJjvAgb9L4RXGCB9yE9fQrVoLSgoFJkX+ttDQuaOCMCo3SmOc4EM8nLFmnbw+mdq2
+         5JBA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sairon.cz; s=google; t=1791805485; x=1792410285; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K6a+uG2V+IR5Io6i+GqIRtQTxPtGAXil8uNEAa2cL8k=;
+        b=IEFSVWtmlNm2VN1Z/jBh3oV+qIqPPNXMWDBMjPPefkt5SKaFOjoLtiRE0oxh9hyfSA
+         LUu7LIU4nNJsim9yIkhJWLH0GKg7l5X1+YFuYh5F4RjS/Xm67IsBBFMQqnZ7tbgjwuk5
+         5CfNQq2Yvf5F575ke1gylG3lXSTqvsQboFW4x7vjLtzf1aa80u85zXVv5MOxNXWckjtO
+         dailra+8edkDAbBTU6xe+9JsEGH7Odx5G7ApbxuUqx+1bYdIml8Szvv+4JrZ6gWKw2oa
+         dWFkxeDSoVXzUanVj3Lo1FBwwRYhRMVx4xWyETxmELlLuSBXyaVhg9r1yVsM6gBJ0jzD
+         9x1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791805485; x=1792410285;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=K6a+uG2V+IR5Io6i+GqIRtQTxPtGAXil8uNEAa2cL8k=;
+        b=2rMnOa0QJ9RwtKYNzM6RR3RBCU4K8gK1O3FxEC5ZY7FoqvRKSjfmKlwxoKs3qmfaYc
+         qkXcckhXPYk3Wa65OMEIhYnc7yLGtJ6ll4pT+MhNAPmM5Ryl0Kv+idqgSKaWkKyb7YZ8
+         1AQko0DK8ltAcvb02Tt1hk3nX32wR90b2SakDMcVmwone82O+U/LOkduRzEjQ7ukHpLY
+         Wlcnp5rAGI7MmeEw+qfue2jYDuhxFJwO9UMI9L+qBjWiJEvnPuQGY4QIsalxK2guT1yW
+         EBHDZ+xtlad2SgQa2QnWAoDzVfif27hiN5qIaLBvXALHmmFTLgwQdbxHK42Rh15bq+R0
+         5XHw==
+X-Gm-Message-State: AFq9FYKucy2iHihzilzlmCvSL8SUdopplMMZbX0I/KyEOcLYS2yX8CjX
+	gyYX2TrbImoPTVljqoy9gXzTo9UEHWaiYzKdH/VpsEw4Orj2tf8fFY70QNjrZkI/A2xPVpSzJY0
+	4Qni8XeM55g3t05D+WikzQF6SCcRw7GfBYWbO98mWWw==
+X-Gm-Gg: AYBFou0ENjRyMO5DeZGz7Av5cOYFxCiX8iRCyW+bHWmk4euxYT208n82jofo9PcrfCg
+	rR+dUGbD7OiFcjwkxpInwzsVBvEjyJe+nNn699XN7dqGTr6m7IrZybYD1W+lakkJuCwhAz0GMEm
+	o1fT9rh2TzQxCZASytw2t3EAB5W8fke+2ukFrCYbke9a0V5jweuBhY3jZbOcTflu+Zhxmx9PvOc
+	gJSz0EsraxJH5ojxlRA1+oL8495T9WMUs0t8J3ZgEi3o64YN7O3HKWl99g9DuFJX4tHYf4m0Ugg
+	8SCZewJyeOXG6wus5ntjekt3RIzPdyZTbTXgxY9aks/PTpl3KwhoQzCHbd9f548RsEEbrpeHitx
+	FnranEMZiheEbuNimpOiVg1RD1xVbuLySN7Mkh97pu6iJjZUyJBUO25qrnSa2bTA4k1HGCykah2
+	k=
+X-Received: by 2002:a17:903:3885:b0:2e7:ff36:c4d1 with SMTP id
+ d9443c01a7336-2e840517a80mr65819775ad.31.1791805485551; Mon, 12 Oct 2026
+ 04:44:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 7bit
-Subject: [PATCH 00/15] Yunsilicon ethernet and RDMA drivers
-Message-Id: <20261012114352.2471317-1-tianx@yunsilicon.com>
-From: "Xin Tian" <tianx@yunsilicon.com>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
+MIME-Version: 1.0
+References: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+In-Reply-To: <CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com>
+From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+Date: Mon, 12 Oct 2026 13:44:19 +0200
+X-Gm-Features: AclHuK9deDiVZ9f5xu6gGTRgmzdiz6FT9YboEHc7TBFHIaXDKq-IUEmQQbcQAvY
+Message-ID: <CAPa5EdD7tFRyDztEanTwQXTzVEE8T0FLkbXAtWxUcGGaLYt_bA@mail.gmail.com>
+Subject: Re: [REGRESSION][BISECTED] r8169: TX stall with checksum offload on
+ VLAN frames with inline tag (REORDER_HDR off) since 1517d1996b52
+To: Eric Dumazet <edumazet@google.com>, Heiner Kallweit <hkallweit1@gmail.com>
+Cc: netdev@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	nic_swsd@realtek.com, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi all,
+To keep the reports at a single place, the bug affects not only r8169,
+but apparently some r8152 USB cards as well, as reported in [1].
 
-This is a new submission from Yunsilicon to upstream our converged
-network adapter driver.  The hardware is a dual-function PCIe device
-(PCI vendor 0x1f67) that supports both ethernet and RDMA operations.
+I had this one (0bda:8153) lying around, so I will conduct the testing
+of the patches with that.
 
-The series adds three drivers, which share the xsc prefix.  A shared PCI
-core driver binds to the physical function, brings up the command queue,
-the event queues and the interrupt handling, and publishes one auxiliary
-device per function.  The ethernet and RDMA drivers bind to that
-auxiliary device instead of driving the PCI function themselves, so the
-two personalities share a single probe and resource set.
+[1] https://github.com/home-assistant/operating-system/issues/5019#issuecomment-6111103634
 
-  1. xsc_pci - the PCI core driver (CONFIG_YUNSILICON_XSC_PCI).
-     Owns the PCI function, the command queue, the event queues, the
-     interrupt vectors, the register access layer and the CQ/QP/SRQ
-     resource pools.  Patches 01-05.
-
-  2. xsc_eth - the ethernet driver (CONFIG_YUNSILICON_XSC_ETH).
-     Registers the netdev, implements the TX/RX packet paths with NAPI
-     and page_pool, RSS, checksum offloads and statistics.  Patches
-     06-08, on top of the core.
-
-  3. xsc_ib - the RDMA driver (CONFIG_INFINIBAND_XSC).
-     Registers the ib_device and provides the PD/MR, CQ/SRQ/AH and QP
-     verbs including the send/receive data paths, plus RDMA counters and
-     sysfs attributes.  Patches 09-14, on top of the core and the
-     ethernet driver (the netdev supplies port state and GID).
-
-Patch 15 adds the MAINTAINERS entry.
-
-The series is split so that every commit builds: the core patches
-introduce the register access, the command queue, the event queues and
-the resource pools incrementally, and the ethernet and RDMA patches only
-start creating queues once their dependencies are in place.  Patch 05
-(core CQ/QP pools) is deliberately shared by both upper drivers; that is
-why it precedes the ethernet patches.
-
-The RDMA device is registered at patch 09, before all verbs exist, so
-kverbs_provider stays false until the mandatory verbs appear in patches
-10-13.  This keeps each intermediate tree compilable.
-
-Please review.
-
-Thanks,
-Xin Tian
-
-Xin Tian (15):
-  yunsilicon: add PCI core driver skeleton
-  yunsilicon: add the register HAL
-  yunsilicon: add the command queue
-  yunsilicon: add event queues, interrupts and the auxiliary bus
-  yunsilicon: add the CQ and QP resource pools
-  yunsilicon: add ethernet netdev registration
-  yunsilicon: add ethernet TX path
-  yunsilicon: add ethernet RX path and statistics
-  yunsilicon: add RDMA device support
-  yunsilicon: add RDMA PD/MR
-  yunsilicon: add RDMA CQ/SRQ/AH
-  yunsilicon: add RDMA QP verbs
-  yunsilicon: add the RDMA send path
-  yunsilicon: add RDMA counters and sysfs
-  MAINTAINERS: add the Yunsilicon XSC drivers
-
- MAINTAINERS                                   |    9 +
- drivers/infiniband/Kconfig                    |    1 +
- drivers/infiniband/hw/Makefile                |    1 +
- drivers/infiniband/hw/xsc/Kconfig             |   17 +
- drivers/infiniband/hw/xsc/Makefile            |   10 +
- drivers/infiniband/hw/xsc/ah.c                |  144 ++
- drivers/infiniband/hw/xsc/counters.c          |  422 +++
- drivers/infiniband/hw/xsc/counters.h          |   31 +
- drivers/infiniband/hw/xsc/cq.c                |  895 +++++++
- drivers/infiniband/hw/xsc/main.c              |  887 +++++++
- drivers/infiniband/hw/xsc/mem.c               |  161 ++
- drivers/infiniband/hw/xsc/mr.c                |  313 +++
- drivers/infiniband/hw/xsc/qp.c                | 2251 +++++++++++++++++
- drivers/infiniband/hw/xsc/srq.c               |  426 ++++
- drivers/infiniband/hw/xsc/xsc_ib.h            |  542 ++++
- drivers/infiniband/hw/xsc/xsc_ib_sysfs.c      |   64 +
- drivers/net/ethernet/Kconfig                  |    1 +
- drivers/net/ethernet/Makefile                 |    1 +
- drivers/net/ethernet/yunsilicon/Kconfig       |   26 +
- drivers/net/ethernet/yunsilicon/Makefile      |    8 +
- .../net/ethernet/yunsilicon/xsc/common/cq.h   |   30 +
- .../ethernet/yunsilicon/xsc/common/driver.h   |   95 +
- .../net/ethernet/yunsilicon/xsc/common/qp.h   |  104 +
- .../net/ethernet/yunsilicon/xsc/common/srq.h  |   54 +
- .../ethernet/yunsilicon/xsc/common/xsc_cmd.h  | 1022 ++++++++
- .../yunsilicon/xsc/common/xsc_cmd_api.h       |   25 +
- .../ethernet/yunsilicon/xsc/common/xsc_cmdq.h |  192 ++
- .../ethernet/yunsilicon/xsc/common/xsc_core.h |  707 ++++++
- .../yunsilicon/xsc/common/xsc_device.h        |   94 +
- .../ethernet/yunsilicon/xsc/common/xsc_hsi.h  |  123 +
- .../ethernet/yunsilicon/xsc/common/xsc_reg.h  |   28 +
- .../net/ethernet/yunsilicon/xsc/net/Kconfig   |   17 +
- .../net/ethernet/yunsilicon/xsc/net/Makefile  |    9 +
- .../net/ethernet/yunsilicon/xsc/net/main.c    | 1724 +++++++++++++
- .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |   45 +
- .../yunsilicon/xsc/net/xsc_eth_common.h       |  124 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  |  551 ++++
- .../yunsilicon/xsc/net/xsc_eth_stats.c        |   39 +
- .../yunsilicon/xsc/net/xsc_eth_stats.h        |   34 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  |  309 +++
- .../yunsilicon/xsc/net/xsc_eth_txrx.c         |  159 ++
- .../yunsilicon/xsc/net/xsc_eth_txrx.h         |   91 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_wq.c  |   80 +
- .../ethernet/yunsilicon/xsc/net/xsc_eth_wq.h  |  185 ++
- .../net/ethernet/yunsilicon/xsc/net/xsc_pp.h  |   38 +
- .../net/ethernet/yunsilicon/xsc/net/xsc_pph.h |   42 +
- .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  185 ++
- .../net/ethernet/yunsilicon/xsc/pci/Kconfig   |   15 +
- .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   10 +
- .../net/ethernet/yunsilicon/xsc/pci/adev.c    |  142 ++
- .../net/ethernet/yunsilicon/xsc/pci/adev.h    |   17 +
- .../net/ethernet/yunsilicon/xsc/pci/alloc.c   |  237 ++
- .../net/ethernet/yunsilicon/xsc/pci/alloc.h   |   17 +
- .../net/ethernet/yunsilicon/xsc/pci/cmdq.c    | 1247 +++++++++
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.c  |  316 +++
- drivers/net/ethernet/yunsilicon/xsc/pci/cq.h  |   17 +
- drivers/net/ethernet/yunsilicon/xsc/pci/eq.c  |  320 +++
- drivers/net/ethernet/yunsilicon/xsc/pci/eq.h  |   39 +
- .../yunsilicon/xsc/pci/hal/andes_impl.c       |  708 ++++++
- .../yunsilicon/xsc/pci/hal/andes_reg.h        |   43 +
- .../ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h |   85 +
- drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  |  310 +++
- drivers/net/ethernet/yunsilicon/xsc/pci/hw.h  |   18 +
- .../net/ethernet/yunsilicon/xsc/pci/link.c    |   35 +
- .../net/ethernet/yunsilicon/xsc/pci/main.c    |  348 +++
- drivers/net/ethernet/yunsilicon/xsc/pci/mr.c  |  212 ++
- drivers/net/ethernet/yunsilicon/xsc/pci/mr.h  |   18 +
- .../net/ethernet/yunsilicon/xsc/pci/pci_irq.c |  498 ++++
- .../net/ethernet/yunsilicon/xsc/pci/pci_irq.h |   18 +
- drivers/net/ethernet/yunsilicon/xsc/pci/pd.c  |   55 +
- drivers/net/ethernet/yunsilicon/xsc/pci/pd.h  |   14 +
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.c  |  356 +++
- drivers/net/ethernet/yunsilicon/xsc/pci/qp.h  |   28 +
- drivers/net/ethernet/yunsilicon/xsc/pci/srq.c |   92 +
- drivers/net/ethernet/yunsilicon/xsc/pci/srq.h |   16 +
- .../net/ethernet/yunsilicon/xsc/pci/vport.c   |   34 +
- include/uapi/rdma/ib_user_ioctl_verbs.h       |    1 +
- include/uapi/rdma/xsc-abi.h                   |  295 +++
- 78 files changed, 17877 insertions(+)
- create mode 100644 drivers/infiniband/hw/xsc/Kconfig
- create mode 100644 drivers/infiniband/hw/xsc/Makefile
- create mode 100644 drivers/infiniband/hw/xsc/ah.c
- create mode 100644 drivers/infiniband/hw/xsc/counters.c
- create mode 100644 drivers/infiniband/hw/xsc/counters.h
- create mode 100644 drivers/infiniband/hw/xsc/cq.c
- create mode 100644 drivers/infiniband/hw/xsc/main.c
- create mode 100644 drivers/infiniband/hw/xsc/mem.c
- create mode 100644 drivers/infiniband/hw/xsc/mr.c
- create mode 100644 drivers/infiniband/hw/xsc/qp.c
- create mode 100644 drivers/infiniband/hw/xsc/srq.c
- create mode 100644 drivers/infiniband/hw/xsc/xsc_ib.h
- create mode 100644 drivers/infiniband/hw/xsc/xsc_ib_sysfs.c
- create mode 100644 drivers/net/ethernet/yunsilicon/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/cq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/driver.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/qp.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/srq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmd.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmd_api.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmdq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_device.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_hsi.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_reg.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/main.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_wq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_wq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_pp.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_pph.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/link.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/main.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/mr.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/mr.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pd.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pd.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/srq.c
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/srq.h
- create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/vport.c
- create mode 100644 include/uapi/rdma/xsc-abi.h
+Regards,
+Jan
