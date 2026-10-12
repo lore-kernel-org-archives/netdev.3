@@ -1,87 +1,39 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8BA5A79B
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6F73A544C
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791802697; cv=none; b=A02O+q9qrzye463ayP784C7H7CumuwJNP1HVHBKuVWDTqUayYSQ6cRuKHk71F6bEE+F+34Tvlh/S9Ak8+riQ8O0DyI7WZAdXfgfL3M9YY2tLXUDKFMvK9k9eeRVxDOjvORmnPp5aq72sQDL6XbSLP8rpfALbvqOsQpa7CoHObWM=
+	t=1791802733; cv=none; b=ZGDEANhTYkIrGO69I9vC9HOuUX6zVF3HrlIvCXwqXHkO4Y31/T2aWMRulo/rKO1ierD1/muC42hG6YLYuJ8W9lll0QLhGyip6Xwe+Y801seVgIDz7aqaI7+wMUEG0lV4F5hnObBJDPADschy7+jSw3k8XXFmOyS6vMxUgPNqMWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791802697; c=relaxed/simple;
-	bh=mYlrlJgFeVCHozLO0+MQdb2+PCAxLjm+lI3W+/LM7Vk=;
+	s=arc-20240116; t=1791802733; c=relaxed/simple;
+	bh=zPyVaVyvhYNUOiedu3alkRsn6aUyZXSsiNQ7CI+e/Iw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ThfMXoJWdorsHb3NsQKCplanhbVAiJVPdGBWXgRWyGKgswLTnjEENPGrJY5Spx2GSx+XW8pHQhrTl6yr4sZxCblZIgkl+d8QCAqSmS43rsm6gTVaJwqfuiNSrRQbZj6BMQFpUin32JMAqoFNmGPclQgsaJhtsKgc/jnX34N391o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JjglatXH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pLviPd27; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=njGYne5HxMJGZFXpGtLGo9PctdEr/Lp6G4ePpLS4zeo83EQPkIc0eioxyuMGo59FFAGi54SOJRVz5i05kW4no+P1mlho7MDqA/NzTwTw+u5Em/PEmwbB3jpxZmG7+nr5dkXy0C4QBD0naT/NCCKVTUW0mxSfhwFRxceFevqEuoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=JkOPZfuk; arc=none smtp.client-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JjglatXH";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pLviPd27"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791802694;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eUuiHbXQnWICSpkBTJy4/s1c90Jor1+ZUUNEm83yB2E=;
-	b=JjglatXHwL98YOlDIShVy24XsdZzFqjPiKMSmi3ovUyGfg8pVR+gjQ4WSGfn3lwBhkz+rP
-	Fmz/+0egecFRnR6MXVEpQuCMz5YnIMroOBUDZfbtIY2JY2NsDm5Ss3cCU5yYIYTjjVtE5Y
-	dYeMogttpzDuuegSfyLRsJ/l1RZ5Uy8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-17-UroIo1deNUOQioglbzjdCA-1; Mon, 12 Oct 2026 10:58:13 +0000
-X-MC-Unique: UroIo1deNUOQioglbzjdCA-1
-X-Mimecast-MFC-AGG-ID: UroIo1deNUOQioglbzjdCA_1791802692
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a021b1b561so14110135e9.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 03:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791802692; x=1792407492; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eUuiHbXQnWICSpkBTJy4/s1c90Jor1+ZUUNEm83yB2E=;
-        b=pLviPd27qxZpTKxz9qc4sQVTr5cxB/CPL/ffFTofkH6y5srfQvcZpg/MjbhsfGkrWm
-         ypOdx/JVjlCmdlMMQiriQFzy3mNEs2T+SLyrmn6Rps9Y/FwXrMhMLHo7so/9SgxshVYl
-         rBv4xJd0xgVmrkrzJq+2Ws05Or5vAJtYaGroStkElJbYYBQJc6mraYNYKbMVB+RKkJSP
-         dGybjNKw81UV251U1ndCAZY9BqZpmnhf0JxB/Hc4zScaSTLfTAdBkinq0JywKPID8tSm
-         kdJVTH+xjbQAPFdFoORSrsxIVs1m9QvHuLHuU2t1JCv+4IGOXmnxMdx7n/d6slPp43Pq
-         2hww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791802692; x=1792407492;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eUuiHbXQnWICSpkBTJy4/s1c90Jor1+ZUUNEm83yB2E=;
-        b=GB92seB9ASxzk8bciEvNxOokiZ1CFv+SotWB+8b3CAzJAdcSM/tGoBhiCtSUU0U1hd
-         56b5i8TaEk19SgM5bBS1n6hQqg7d0a9bGs5wK/zYo7DDhDLl1oZw9cgrta1Be/HiSkbS
-         Wao+CtO/9VMFN5a5H4SrAjuugUfOgXeOBWJEaMz14iujXZe0PeT4S6wc3RsQfG6S7PeP
-         gCg8pJHoHVEX8acZAxZutxtXieIHQklXlpSAPMmI5ICXVF+xsPVogTYkmO2Cfqm9pAkF
-         vWzXVtFJcRnmNQOIVtGDRXmjWQ80U99zdy2HF6j6B89mMfPHgaBGzUSbDLwbT/S1ly6s
-         sQSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxJb/CAvRYrGqFsoAoib/OB3XAIApmJIbeJ1p/iceVt1tYJIVYgOdf0aEa62m4RLocRRyE+3yg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI81q9FE3MCvn4y7rfAhqqjO/WQcYN4TSu2E0XuB5mF4y6FU/+z
-	YSc6olIVJrqFCRjDuOeviEVY97Mrx9gciSmnUH4C5gjbcy/16crKVJA0eP1o3KyBeafi08kEfmR
-	cwwqR5EdH8eB2RXvXKqhluqwDlAIAoRuFM4FywlalrYH4Q07G6Z466bF3jLRD5VJuVQ==
-X-Gm-Gg: AYBFou0G5nG1WZGZRVhnTUkIBTiC36ykVARsgfso+xTkEyEIHQYuUSPKxg8vQTGrC8D
-	19dywsgvWQbDkw6/Fl3bX8HpgUjslOjwSBT2HJl99C7WtXunFh9kMBRHFDpr40Glf6D2ULFgV7n
-	Iy7FjtDc6zJi2ukjkVMni7yrTWa5rV2T0897rh+YP2QSiINz9m+tYMBN3yJDJ1fMA9Dg2yKFQME
-	5esEuIUr+3IC7mX/Va46e2MaO30YW3PMvuRBzP3j/Cvr6TQj31FhKNJr+c6NRpMPCNl+hXOe9lN
-	lzMtarTbZy0JzcVPb2/8CZAhrHRbEkZLUmG3aI6Eg8Jq0MpUxKu8xpn6D8M7Cy85wREITkcJbu3
-	E1vcgYcwI+vzvGv+f32fOOYBcmkyKw+5AhQ1iPY0BA6W15IH/+PSRcHusEGC2fbxf33bbBQgkbA
-	==
-X-Received: by 2002:a05:600c:630f:b0:4a1:9f59:ee7 with SMTP id 5b1f17b1804b1-4a19f5911f4mr43922035e9.0.1791802691888;
-        Mon, 12 Oct 2026 03:58:11 -0700 (PDT)
-X-Received: by 2002:a05:600c:630f:b0:4a1:9f59:ee7 with SMTP id 5b1f17b1804b1-4a19f5911f4mr43921625e9.0.1791802691322;
-        Mon, 12 Oct 2026 03:58:11 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db94e530esm17905855f8f.13.2026.10.12.03.58.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Oct 2026 03:58:10 -0700 (PDT)
-Message-ID: <a3a68d65-9eca-41ee-a70a-0db8dbb0385c@redhat.com>
-Date: Mon, 12 Oct 2026 12:58:09 +0200
+	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="JkOPZfuk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-13eddc7e57; t=1791802725;
+ bh=CBzU/DbFkPodcQIJtknJ/CiYh1KKMe/dU2qPgDfKfWI=;
+ b=JkOPZfuk1IjJxo97QLId2WtT9Ov8Wc6nTcWRd9rHbj+Hq1IpoO8HovdfiSQqg2z7+M9VKMLL9
+ 1Oe1y5OT2SXogivJXv2KaP8gZFQFNwKe3gTpALLMxwdP9A3+Dv7CFUUCnBVuzUqJjwTn6ImZJbC
+ qBR2l5gbIXFgg8NxBCGN/2U=
+X-Forward-Email-ID: 6accbd61fe1a5e835a5ac2b7
+X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 2.18.4
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <b8312d04-fc22-4d35-9e18-952ad7cf2ed1@ovn.org>
+Date: Mon, 12 Oct 2026 12:58:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,58 +41,86 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: sashiko or lore confused?
-To: Jamal Hadi Salim <jhs@mojatatu.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>,
- Linux Kernel Network Developers <netdev@vger.kernel.org>
-References: <CAM0EoMn6JoLVHdhX1GB1wBcw3fVZ42ePKXDqsWK-4STj87vEEQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] selftests: openvswitch: Test SET on later IPv6
+ fragments
+To: Sahaj Chaudhari <sahaj123.sc@gmail.com>, netdev@vger.kernel.org
+Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dev@openvswitch.org,
+ linux-kselftest@vger.kernel.org
+References: <20261012095000.3188473-1-sahaj123.sc@gmail.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CAM0EoMn6JoLVHdhX1GB1wBcw3fVZ42ePKXDqsWK-4STj87vEEQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20261012095000.3188473-1-sahaj123.sc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 10/12/26 02:00, Jamal Hadi Salim wrote:
-> Some threads seem stuck somewhere in the ether for sometime now. I
-> asking because i have a backlog and dont want to flood things..
+On 10/12/26 11:50 AM, Sahaj Chaudhari wrote:
+> Send the crafted later fragment through OVS_PACKET_CMD_EXECUTE to preserve the unset transport-header path from the report. Set frag=2 in the action key and match DEBUG_NET warnings at the skb header check rather than a potentially inlined helper. Skip when CONFIG_DEBUG_NET cannot be confirmed and enable CONFIG_DEBUG_KERNEL in the OVS fragment. Drop the flow-counter assertion because its SET-action dump relies on broken formatting.
 > 
-> 1) Sashiko nipa review is missing on the act_api duplicate-index series
-> ========================================================================
-> The nipa sashiko never produced a review for this series: gemini
-> sahiko reviewed it ("No issues found").
-> 
->    Original posting (v1, 2026-09-22):
->      https://lore.kernel.org/netdev/QDISC-K1TH.v1.20260922072206@mojatatu.com/
->        [PATCH net 1/2] net/sched: act_api: reject duplicate actions in a batch
+> Link: https://lore.kernel.org/r/20261009090629.1694991-1-sahaj123.sc@gmail.com
+> Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+> ---
+>  .../testing/selftests/net/openvswitch/config  |  1 +
+>  .../selftests/net/openvswitch/openvswitch.sh  | 33 ++++++++-------
+>  .../selftests/net/openvswitch/ovs-dpctl.py    | 40 +++++++++++++++++++
+>  .../net/openvswitch/ovs-ipv6-frag.py          | 27 ++++++++-----
+>  4 files changed, 76 insertions(+), 25 deletions(-)
+Hi, Sahaj.  This patch is not formatted properly.  Please, read the
+documentation on how to format and submit patches before sending.
+Also, every new version must be a complete patch, not a diff with the
+previous one, which I believe, is also covered by the submitting patches
+guide in the docs.
 
-We had a few PW outages recently, and that impacts directly clashiko. Also the
-threading (new version in reply to the old one) tends to confuse PW.
+For the patch itself, I don't think it is worth adding 100 lines of test
+code for this specific issue.  If we do that for every one-liner fix, the
+kernel code will just explode in size.  If you have some thoughts on how
+to make a more generic test that would be useful not just for this one
+issue, but would cover a larger class of functionality that is not already
+covered, then we could consider that.  But as it is right now, I don't
+think we need such a narrow test.
 
-> 2) What is still left on these two?
-> ===================================
-> (a) act_api_delete_duplicate_index_refcount_uaf (links above). After the
->      2/2 delivery glitch and the two reposts, is anything still
->      outstanding from the maintainer side, or is this only waiting on the
->      missing nipa review?
-
-PW still did not handle the repost correctly. I think you need to send again the
-patches, and please send them in a new thread!
-
-> (b) teql_xmit_path_pre_existing_bugs -- series [PATCH net 0/2] QDISC-6HS9,
->      sent 2026-09-29. Both Sashiko providers reviewed it: gemini "No
->      issues found"; nipa one Medium (commit-message doc wording) plus a
->      pre-existing, out-of-scope item (the consumed-skb UAF, tracked
->      separately). We do not plan a respin for the doc wording. Is
->      anything else outstanding before merge?
-> 
->      cover:  https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com/
->      1/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com.1/
->      2/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com.2/
-> 
-I'm unsure who set the above to changes requested. Your reply looks legit.
-I reset the series to 'new' status, but we have a long backlog, I'm unsure
-I'll be able to process the above before PW will archive the post. In such
-a case a repost would be needed :(
-
-/P
-
+Best regards, Ilya Maximets.
