@@ -1,65 +1,65 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0243D7D74
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF1C3CB55F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798922; cv=none; b=ZZhEqRBKKfBxepM0TG4XF7mUqV/7qFuuj5O27IJWhv2pCz/YXOiSK/iO4gbG5HrZm3gOzZ3fVXm9N/zji2Mhf9PCG7eKqTFSASZk+gAT1UOu5mtUTaEUA955SM54oGeLHQI0fCvlg0CzkfM7R6Fi/25z4i3eupSb/K+R6kVcCW8=
+	t=1791798922; cv=none; b=dh2Zvye4hnRd3h2QkAloz60kZTlFqwZr8Spl/GhkSybDkLCbDRP3w/vCnWd9d+Kh7/c97youpK2V1RmkGlOfXlUYgfyESqWJwoNobn5hSZw9Hk4jhMfyvSuj/wpS7HR2hZYoTGyiYF6y1zzeDka3eQimsJbkgm+lGPiUn0DJizI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791798922; c=relaxed/simple;
-	bh=ARn259GPopKaQ1nz80eSAsTTBgPnnvNnnQsFuBBTrVU=;
+	bh=sLZ8j+4e09ehCDAv46JbKrWsd4lbBbirQ0NIo/TsacA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C3qZK82LG/uTvSTDwDnIm7pSHG1dh9T30yBhimzFsomgW32mJjonwjghBg9lCnZano2bs0APAQ8bVx7Rw1hfc7NmE4FppA8T7bVt98qsTp44ORDmqP0QfQC0fGWJ0qMSGDWsfkkFFrJxOCDvIbGd4ZH4y3GvrbKiYG88tdEXNfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=N5p/Z+jn; arc=none smtp.client-ip=209.85.221.49
+	 MIME-Version:Content-Type; b=GRH5fYlz/bfuWEGp+Ug73ovAdrbkx3X0toORF7VmVxKSZEna9yhCOs2aOUwdt4jNsSmS3PE35KGgOF/OGGzkFsrigNo4FI+yr8KRIH6jMSjPdBYcKhWL48JXgUnB/zw4MfdyUC3xwtc8c2cyHVD/pPRB/zyg2aF2FyyDzVXxO+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LnhHlmkW; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="N5p/Z+jn"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48af27fe287so1436000f8f.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:55:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LnhHlmkW"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48b02a2359aso1558485f8f.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:55:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791798912; x=1792403712; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1791798915; x=1792403715; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0CM5VfsqOao7iGtSvqmBNpy0L/RVrXCLn8weNJqgTC4=;
-        b=N5p/Z+jn7o58pAAUKfKnEQgrV6Af09QVVRF1tv9/R0n0N+P9ywatrp8jSY8UqdnRV6
-         CjCXD8ZnWiyK+3LcuyMb2OGn3fCMuCjijeWojZK7wgbt9n7cGEHszkcoSfhMQO9iNChu
-         9/ejjevxQ739ofrj+v0S5JfndTavuoWD2g3RPiCAipt7m21DAOBZZcfVEli0/53kb8mt
-         OFe2DKAEYBEqSp268EReC/DzFLnQV7ZKwUqHMdAI8xFeC2BHU5F2SAonTAfmfZ8xp158
-         owZZ8k/rqBbStYzx/CDVTD7jpB4LqivZA2T3bSOG0n67+vLNZaJsmWLoa09x4rzaoSvW
-         kmbA==
+        bh=QX8lSFW7S3WysnbG31BxJSIjyuhVgxUvAyesKtj3CLs=;
+        b=LnhHlmkW+o0fkb9PwZonZuPyO2hQNLnTXP+JFZPMme2tecwBmwdbUsq1eSifJPIjbG
+         wxtpjMZP02izprMuo6f24uM2viR1udoJ+Tos1NS7uqQsnd62D+OawFg2jBLRPn37BROe
+         +1vm3BzOp9N8Ksx11So/b3xX6wFkKL3He6RV8lmZPP5q8d5O7JkSPPG+QCSyniL9HhvM
+         s0r8JAHWyXdUG7rd+/B9B6791pf+6uWROtO6d5Rte4AW+iY4AXGnxTbNDzc2HSMFa1Dy
+         YzMi5MpY2figisnWA5CDACsAzYSvvb5N+TaRSKcVUilsjg8LEnhLgoFlGlHiufBg6Etx
+         plkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791798912; x=1792403712;
+        d=1e100.net; s=20260707; t=1791798915; x=1792403715;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0CM5VfsqOao7iGtSvqmBNpy0L/RVrXCLn8weNJqgTC4=;
-        b=hBd+i83Ao5DW6EY6ZoQQom3kw07N8KmZPIfFSHvy/rSSWcfGBNuwg/xRvr6VEDPQ/Y
-         NUe69Ed3GXYWaP1lRAxqKdGCprVc/PPlMJcW10n0tE4uDzc7lQolGaqZSAw8OeMOFFdT
-         NTS7eafTf6Rdq+lKsOTAqdD6O6J0++tSS/HjfP6bilQ1DjEXffd8LZ5vh6p0xGhhSaPH
-         6Yhrc91jyQw0fGpwV9/n4SkOkK6BRgKC9rVLEla6+nX38xAUIdNd8rTKu6up/sWmd5O+
-         Id3WhIHfxiif4ERX9FFb3jdD+52Rr+0Zp1YbAt/6yka0ErGLXeFYuAhauBSRQNgxcm4x
-         WVbA==
-X-Forwarded-Encrypted: i=1; AKwUvBzLHRN/QZcdy3wnXyjN4uTR3oOaFrHGsHOZgEdhNiEAhXK5E1F9Zl5u/JGujuvUoIqOIzBUpOY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJUVwtCTTy+zqFp64x5BqM/G7yRnDdzmLMqka3Sl54xy25GQe0o
-	QTRNMnWh6SBrXAADaKVn5QxPFM4P36TfnCKgbvizOz+afZCUV+cpp0kTnCjttmlUqm4=
-X-Gm-Gg: AYBFou2lHd7OhJ8hfciqHBRxHJWAtE9CHGfctkKOY5p6QuLYh8oSo9/ud47a2KrdcAc
-	EIUyVv9NsdiUNeq3rlimuxtJnbOwHsxjDQgcqpDzCwpMNJ/ZiOSnwvXv7ddHYBlh5IYkzMEbVsA
-	HJ3Sr+qG8LJSbD8eNp+1McmdisMabsM1DEniS0S7iFBPDR35DmkE/uNOrsoAxfwH3KQBW4g+2R5
-	HKTu3TBlaX9AK9WJo61zhAClUCnVTur9/eC0DW4Vr8VPy5QBmtQNgzvPEwp0RU4tPaJGn1+zrlf
-	Sd5TeG8ovMvzSYGWH+7TuUp8q7jV1wQ5w/uerulJ5SJR5BIpxaIPhNwPy/gVLXvAZmRIYLTC5S8
-	8RP25cV7xd7ew9daNO8YArAOVUTX5uHdwhm5pmQUBmPQgbJuo414tya0ybcgzsmb4wI8FE0WdOi
-	tuVitMwy44ZeCWa/dpQJl8V8/calFL//nhrcIXsf6HewPxKfbmka2GNVxFvKUQ3vhPXMuvVFP4d
-	NHMQzetodu6qSFFh80+JxGIvuBCLGq6Rw==
-X-Received: by 2002:a05:6000:24c8:b0:48d:bb54:779d with SMTP id ffacd0b85a97d-48dbb547a7amr16282034f8f.9.1791798911237;
-        Mon, 12 Oct 2026 02:55:11 -0700 (PDT)
+        bh=QX8lSFW7S3WysnbG31BxJSIjyuhVgxUvAyesKtj3CLs=;
+        b=GTnneuNh4m2T9UD6Ks/xOovuBOQ6d4I9lXRGvZVaCy9gTOiWn7NEQ+6PI+/103xV/I
+         J7Bf/8ZWN8IctfCFXBKLTM6SOkjhTRb5zb6zRE5LF3iALDLvWi/BWmFsoh7c6x6T3MVX
+         rmEEz01hao6dbMymgLRbuaw3KNsClSom1s5KRsx2zNPAHUFwN6z05AggHeJ2nWU72IUP
+         p+bTr+UFEbOOimlR7DP/ept6IN6TmLymzrvaW3l23FknPIn1hW+kCjaBh4yqCNjDtl/C
+         IWLKseCuwNJEye/K4ZbGwZHozYq24C6el0Tjkci07GSTJfkaIA6TghHHYTvn0G7VKDyN
+         Cn0w==
+X-Forwarded-Encrypted: i=1; AKwUvBxIvmizDFSSr0EsbvnHVt5kb9BUxSejR8stiYP0tcfFsRar05bYbeGYwWz70V50KVa3FmXFXeY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLcl49EEmG9W8btHAgDYI+uMjQGpgFUZACcwT9dkJIz46oxeZxk
+	fXPlNnMksSD9c5l+JWzRO0TEvIb0zuzS8KBCrLiVDX8MIqJVdGgZPNqH/ZYcmccIF4g=
+X-Gm-Gg: AYBFou1l0cq37uEch0w+xkwAkZkbmcKmMnMGqWDEy/p0fKiRcOqoAa3SustEQaF05Yl
+	BoL1QHYSV2Rhd2InsfKD2gzHPGGVZK6u8Ed6SAVF9r9ji9ou0hBmep30ESMOIAlEXlbJwKpzyRG
+	qEKgP+ew5wRWDMS7mGKuyAtG1YmTLPURblxkbtFRHxtEiXKhuz2t8TqP1HMaOMxrsOvHOrxRArL
+	7d5mIgOZ/k13860stkgtZnM6KvRmhIWooYnwfVnfsek+dpbV0kUq+XVbTycPSkAZhIdVRZTc37K
+	lcAFXARpNRUfZAVp8vz7O9UtRr/dD2r0EPYSU6+Z8Gb5eNtInCiZRRRenqzaiTSl/FMY+Ew+QcY
+	aOGzgDJ+93nYviXhDTIH9qmBeWdMI/7BqDurFCzjEflU2tEDB59FiTd8+jz+ChEeKzUe8Xyile9
+	G8pVL8KbR/zDMJoOMyGyQtrECEWzHS3dJHFddXRs/ARi8GwxOgkDmzekLIOTr6dkG7RubQrK7NT
+	Fd8W+oT2Mfd0ZGHdbxCPA==
+X-Received: by 2002:a5d:588b:0:b0:48d:deb0:f1a7 with SMTP id ffacd0b85a97d-48ddeb0f1c5mr222734f8f.10.1791798914652;
+        Mon, 12 Oct 2026 02:55:14 -0700 (PDT)
 Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db98c2800sm18539103f8f.26.2026.10.12.02.55.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db98c2800sm18539103f8f.26.2026.10.12.02.55.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 02:55:10 -0700 (PDT)
+        Mon, 12 Oct 2026 02:55:12 -0700 (PDT)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -74,11 +74,11 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Mika Westerberg <westeri@kernel.org>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>
-Subject: [PATCH net-next v4 4/6] net: thunderbolt: Move long delayed work on system_dfl_long_wq
-Date: Mon, 12 Oct 2026 11:54:43 +0200
-Message-ID: <20261012095452.135828-5-marco.crivellari@suse.com>
+	Petko Manolov <petkan@nucleusys.com>,
+	linux-usb@vger.kernel.org
+Subject: [PATCH net-next v4 5/6] net: usb: pegasus: Move long delayed work on system_dfl_long_wq
+Date: Mon, 12 Oct 2026 11:54:44 +0200
+Message-ID: <20261012095452.135828-6-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261012095452.135828-1-marco.crivellari@suse.com>
 References: <20261012095452.135828-1-marco.crivellari@suse.com>
@@ -112,46 +112,48 @@ obvious reason that justify the use of a per-cpu workqueue. So change
 system_long_wq with system_dfl_long_wq so that the work may benefit from
 scheduler task placement.
 
-Cc: Mika Westerberg <westeri@kernel.org>
-Cc: Yehezkel Bernat <YehezkelShB@gmail.com>
+Cc: Petko Manolov <petkan@nucleusys.com>
+Cc: linux-usb@vger.kernel.org
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Acked-by: Mika Westerberg <westeri@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- drivers/net/thunderbolt/main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/usb/pegasus.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/thunderbolt/main.c b/drivers/net/thunderbolt/main.c
-index d9fb587a62c5..59a4dcf719b8 100644
---- a/drivers/net/thunderbolt/main.c
-+++ b/drivers/net/thunderbolt/main.c
-@@ -316,7 +316,7 @@ static void start_login(struct tbnet *net)
- 	net->login_received = false;
- 	mutex_unlock(&net->connection_lock);
- 
--	queue_delayed_work(system_long_wq, &net->login_work,
-+	queue_delayed_work(system_dfl_long_wq, &net->login_work,
- 			   msecs_to_jiffies(1000));
+diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
+index aba1a640fc26..ed3f8d555c2a 100644
+--- a/drivers/net/usb/pegasus.c
++++ b/drivers/net/usb/pegasus.c
+@@ -1118,8 +1118,9 @@ static void check_carrier(struct work_struct *work)
+ 	pegasus_t *pegasus = container_of(work, pegasus_t, carrier_check.work);
+ 	set_carrier(pegasus->net);
+ 	if (!(pegasus->flags & PEGASUS_UNPLUG)) {
+-		queue_delayed_work(system_long_wq, &pegasus->carrier_check,
+-			CARRIER_CHECK_DELAY);
++		queue_delayed_work(system_dfl_long_wq,
++				   &pegasus->carrier_check,
++				   CARRIER_CHECK_DELAY);
+ 	}
  }
  
-@@ -470,7 +470,7 @@ static int tbnet_handle_packet(const void *buf, size_t size, void *data)
- 			if (net->login_retries >= TBNET_LOGIN_RETRIES ||
- 			    !net->login_sent) {
- 				net->login_retries = 0;
--				queue_delayed_work(system_long_wq,
-+				queue_delayed_work(system_dfl_long_wq,
- 						   &net->login_work, 0);
- 			}
- 			mutex_unlock(&net->connection_lock);
-@@ -722,7 +722,8 @@ static void tbnet_login_work(struct work_struct *work)
- 		netdev_dbg(net->dev, "sending login request failed, ret=%d\n",
- 			   ret);
- 		if (net->login_retries++ < TBNET_LOGIN_RETRIES) {
--			queue_delayed_work(system_long_wq, &net->login_work,
-+			queue_delayed_work(system_dfl_long_wq,
-+					   &net->login_work,
- 					   delay);
- 		} else {
- 			netdev_info(net->dev, "ThunderboltIP login timed out\n");
+@@ -1223,7 +1224,7 @@ static int pegasus_probe(struct usb_interface *intf,
+ 	res = register_netdev(net);
+ 	if (res)
+ 		goto out3;
+-	queue_delayed_work(system_long_wq, &pegasus->carrier_check,
++	queue_delayed_work(system_dfl_long_wq, &pegasus->carrier_check,
+ 			   CARRIER_CHECK_DELAY);
+ 	dev_info(&intf->dev, "%s, %s, %pM\n", net->name,
+ 		 info ? info->name : "(unknown)", net->dev_addr);
+@@ -1288,7 +1289,7 @@ static int pegasus_resume(struct usb_interface *intf)
+ 		pegasus->intr_urb->actual_length = 0;
+ 		intr_callback(pegasus->intr_urb);
+ 	}
+-	queue_delayed_work(system_long_wq, &pegasus->carrier_check,
++	queue_delayed_work(system_dfl_long_wq, &pegasus->carrier_check,
+ 				CARRIER_CHECK_DELAY);
+ 	return 0;
+ }
 -- 
 2.55.0
 
