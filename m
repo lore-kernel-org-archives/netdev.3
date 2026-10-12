@@ -1,208 +1,126 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36163290AF
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 07:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80AF433BD4;
+	Mon, 12 Oct 2026 07:16:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791789391; cv=none; b=NPhWDLLfofRdq5Gi3ZZtEhPmB1AMdpwlWscX9G2ZdtwHV8Qw+0GYAa/9c7dZw/MeXTMLMnVunC6xj0rt653wEKVmpBxbD75vHqilHrRYRL60rhwq9BfElgt/UUXEKgzvQ69XeOeDp0na6ImHkbDxkgPXhMNN+PUCz43oHidk9PU=
+	t=1791789406; cv=none; b=JyjdtLkUaA3Qs8CB1f+RVr+op9lcHRBwsr22yEjub2XzmrMoayAwyk82y3lRoI/VB7Gq3xrh3Gr1vdt+mEYaMXYxLL5/QlT63JmwwLbh2G+X4TSAKh87vHAADW3F8+5jVI5PdX/OVUI/DnPhmrVLywmjHFsehzOOVTp2cjGg7HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791789391; c=relaxed/simple;
-	bh=Ltepxoxgsvwi/c+zVbGbBb5nUiL/dfxeLhn5Yz8DHU8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YgTZzmGwpk8L/egVOcnXnhYn2dGnkVU1HCZa2AgEpmIADwpb5NOAnrjbtfmP2Pef6EklA6TjizVKx1NCQkK2t5bHT2r3MQ3eiNg4gfQLS/qBhKc6D2gOh7O4DbwTP5W/y/qtaLou3TTrd4mza89R/sTf/DTN/NiyEHiNvmlvipE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JIZwFDLX; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791789406; c=relaxed/simple;
+	bh=zg26uMNz8Rod70GTBPQkyNHcw/orcT7Ofvka2N0cUcc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rQ0qeAomt1hhgOxiMFL0HII8i8KS0+ioQ2VN6kugVzg0plW0yFtPjoBImcFMppOmY15kQjkd/kM4NbLROjOoQK44pdpNN2oCVReoOsyidLx6a4npq7EBZxrJRUKDgN9RJkps7WdZ3cb8k25bQSJXfV4fjzM2XkLrMov1C96OTB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=dw/eFeLi; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JIZwFDLX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791789388;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8TxRBaTllIGO8wccGzCsg07PDjlTm9+uFFv0sibxJJA=;
-	b=JIZwFDLXpViF/aozlyDI+5VQghJcGSv4yTTz2DbKWVGLcKWMwf6nPyWHoI5znokAH7ZAjj
-	dhuk8J6rG+WsiWCNdBBT8x7X8XI+IwD6xe1nK6G6Bd4joSqbFNcVBNBHutuUpdMZX7UTPa
-	C4fcEQHADEEzGeCc778MsF5GCfEWarY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-258-bd08KXrdPXmmteXhr7NK7g-1; Mon,
- 12 Oct 2026 07:16:23 +0000
-X-MC-Unique: bd08KXrdPXmmteXhr7NK7g-1
-X-Mimecast-MFC-AGG-ID: bd08KXrdPXmmteXhr7NK7g_1791789381
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BD9971955EA8;
-	Mon, 12 Oct 2026 07:16:21 +0000 (UTC)
-Received: from [100.91.101.41] (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0DEBD1800351;
-	Mon, 12 Oct 2026 07:16:18 +0000 (UTC)
-Message-ID: <8c0f0cdd-9de7-4f33-9864-d25585bcd589@redhat.com>
-Date: Mon, 12 Oct 2026 09:16:17 +0200
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="dw/eFeLi"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69C7G8nhC3614875, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1791789368; bh=zg26uMNz8Rod70GTBPQkyNHcw/orcT7Ofvka2N0cUcc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=dw/eFeLiOAmeSmIsASeNoi0W8/wTTq1CWZ0sFsdDitIr8Jkaaz3Dv5eo/wZNAqBUk
+	 nqBkFNhk6Qe0bffj1FweN8jsd503v5CLQl/WNYsxWbDmDIc6iieREm2UemhupPooF2
+	 Y4x7YCLhfnphfXmiZtMqyPYQODCqCipmsqAIOpigYFI3FAUvYWfLm+EeKhL76Y0b6N
+	 4nefZqwwcqGB28vVpR5n24O2Bu/D+pXsNkXZNcrqsrnVQ7T+azm2r+4alGY00GrhFV
+	 BX2aUoiWzs+Xgvv2JwK9GpIwvxwzxHLzq21Y0fRfnKGFZqE7bMrLWdk6PAZI+Mg9TQ
+	 +9ruhObL/NqSw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69C7G8nhC3614875
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 12 Oct 2026 15:16:08 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 12 Oct 2026 15:16:15 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Mon, 12 Oct 2026 15:16:15 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: Birger Koblitz <mail@birger-koblitz.de>, "davem@davemloft.net"
+	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, nic_swsd
+	<nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: RE: [PATCH net-next v6 01/10] r8152: split r8156_init per chip and
+ factor out wait_autoload_done
+Thread-Topic: [PATCH net-next v6 01/10] r8152: split r8156_init per chip and
+ factor out wait_autoload_done
+Thread-Index: AQHdVv1AdBx9zD4lckuTWpQnvZF0MLbzCemAgAZd6BA=
+Date: Mon, 12 Oct 2026 07:16:15 +0000
+Message-ID: <52a5180dfe614973b22696d30338dc7a@realtek.com>
+References: <20261008081556.47901-1-nic_swsd@realtek.com>
+ <20261008081556.47901-2-nic_swsd@realtek.com>
+ <633a0f2b-67b3-4896-8464-6a4d0c05498f@birger-koblitz.de>
+In-Reply-To: <633a0f2b-67b3-4896-8464-6a4d0c05498f@birger-koblitz.de>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5 2/5] dpll: zl3073x: reject inexact frequencies for
- N-divided outputs
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, poros@redhat.com, min.li@microchip.com,
- vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
- kuba@kernel.org, Prathosh.Satish@microchip.com, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
-References: <20261011061211.448373-3-ivecera@redhat.com>
- <179178562205.434549.16391656740065795175@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <179178562205.434549.16391656740065795175@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On 10/12/26 08:13, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in case
-> you want to address the nit picks below when you respin.
-> 
-> Low priority / nit picks for your consideration:
-> 
-> - [Low] Concern: zl3073x_pin_props_get() always lists the current
->    (truncated) frequency as supported.
-> 
-> Pre-existing issues:
-> - [Low] Concern: userspace never sees the three new extack messages added
->    in `zl3073x_dpll_output_pin_frequency_set()` ("must be at most half",…
-> 
-> --
-> 
-> dpll: zl3073x: reject inexact frequencies for N-divided outputs
-> 
-> This commit tightens zl3073x_dpll_output_pin_frequency_set() for
-> N-divided outputs. It computes esync_n_period in 64 bits and requires it
-> to be at least 2 and to fit into 32 bits. It also rejects any request
-> whose division leaves a remainder, and reports each failure case through
-> extack.
-> 
->> diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
->> index f2e137475b40f..7a617d9bd6712 100644
->> --- a/drivers/dpll/zl3073x/dpll.c
->> +++ b/drivers/dpll/zl3073x/dpll.c
-> 
-> [ ... ]
-> 
->> @@ -1031,17 +1027,31 @@ zl3073x_dpll_output_pin_frequency_set(const struct dpll_pin *dpll_pin,
->>   		/* For 50/50 duty cycle the divisor is equal to width */
->>   		out.width = out.div;
->>   	} else {
-> 
-> [ ... ]
-> 
->> +		n_period = frequency * out.div;
->> +		n_period = div64_u64_rem(synth_freq, n_period, &rem);
->> +	}
->> +	if (n_period < 2) {
->> +		NL_SET_ERR_MSG_FMT(extack,
->> +				   "OUT%uN freq must be at most half of OUT%uP freq",
->> +				   out_id, out_id);
->> +		return -EINVAL;
->> +	}
-> 
-> [Severity: Low]
-> This is a pre-existing issue and was not introduced by this patch, but
-> will userspace ever see this message, or the two added below it?
-
-No, as I mentioned in v4, dpll_pin_freq_set() overwrites them. That is a DPLL
-core issue and out of scope for this series.
-
-> 
-> When ops->frequency_set() fails, the DPLL core overwrites the driver's
-> extack text:
-> 
-> drivers/dpll/dpll_netlink.c:dpll_pin_freq_set() {
->      ...
-> 	ret = ops->frequency_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
-> 				 dpll, dpll_priv(dpll), freq, extack);
-> 	if (ret) {
-> 		NL_SET_ERR_MSG_FMT(extack,
-> 				   "frequency set failed for dpll_id:%u",
-> 				   dpll->id);
-> 		return ret;
-> 	}
->      ...
-> }
-> 
-> NL_SET_ERR_MSG_FMT() always writes into extack->_msg_buf and resets
-> _msg. The "must be at most half", "is too low" and "must divide" messages
-> are therefore replaced by the generic text, and they can only be seen
-> through the netlink_extack tracepoint. The -EINVAL return is still
-> correct.
-> 
->> +	if (n_period > U32_MAX) {
->> +		NL_SET_ERR_MSG_FMT(extack,
->> +				   "OUT%uN freq is too low for OUT%uP freq",
->> +				   out_id, out_id);
->> +		return -EINVAL;
->> +	}
->> +	if (rem != 0) {
->> +		NL_SET_ERR_MSG_FMT(extack,
->> +				   "OUT%uN freq must divide OUT%uP freq",
->> +				   out_id, out_id);
->> +		return -EINVAL;
->>   	}
-> 
-> [Severity: Low]
-> Can this check reject a frequency that zl3073x_pin_props_get() lists as
-> supported?
-> 
-> zl3073x_pin_props_get() always puts the current frequency into the
-> supported list. For an N-pin, that value comes from a truncating
-> division:
-> 
-> drivers/dpll/zl3073x/core.h:zl3073x_dev_output_pin_freq_get() {
->      ...
-> 	if (zl3073x_out_is_ndiv(out) && zl3073x_is_n_pin(id))
-> 		freq /= out->esync_n_period;
->      ...
-> }
-> 
-> Also, zl3073x_out_state_fetch() only refuses esync_n_period == 0, so a
-> boot config with esync_n_period == 1 is accepted.
-> 
-> A request for the current value never reaches the driver, because
-> dpll_pin_freq_set() returns early when freq == old_freq. If the pin is
-> first moved to another frequency, though, a later request for the
-> advertised boot value can fail.
-> 
-> Take a 600 MHz synth, div=60 and a boot esync_n_period of 7. The N-pin
-> is advertised as 1428571 Hz. After N is moved to 1 MHz, a request for
-> 1428571 gives rem=180 and returns -EINVAL.
-> 
-> In the same way, a P-pin frequency that would bring back
-> esync_n_period == 1 now fails the n_period < 2 check. According to the
-> series commit "dpll: zl3073x: reject output frequencies with too small
-> divisor", that state gave no N-pin output.
-> 
-> This looks consistent with the goal of rejecting inexact N frequencies.
-> A later comment in prop.c in this series also says the supported list
-> for N-divided outputs is only a necessary condition. The old code
-> already rejected some advertised values, such as N-pin frequencies at or
-> above the P-pin frequency.
-> 
-> Is it intended that a user cannot go back to an inexact boot-time N-pin
-> setting by asking for its advertised value?
-
-Yes. Such a value can only come from the flash configuration and cannot
-be requested exactly in whole Hz. Accepting truncated values would
-bring back the silent rounding this patch removes.
-
-Thanks,
-Ivan
-
+SGkgQmlyZ2VyLA0KVGhhbmtzIGZvciB0aGUgcmV2aWV3Lg0KDQpPbiBUaHVyc2RheSwgT2N0b2Jl
+ciA4LCAyMDI2LCA4OjE4IFBNLCBCaXJnZXIgd3JvdGU6DQo+IEhpIENoaWggS2FpLA0KPiANCj4g
+T24gMDgvMTAvMjAyNiAxMDoxNSBhbSwgQ2hpaCBLYWkgSHN1IHdyb3RlOg0KPiA+IFJUTDgxNTYs
+IFJUTDgxNTZCLCBSVEw4MTU3IGFuZCBSVEw4MTU5IHNoYXJlZCBhIHNpbmdsZSByODE1Nl9pbml0
+KCksDQo+ID4gZ2F0ZWQgYnkgYSBkZW5zZSBzZXQgb2YgdHAtPnZlcnNpb24gcmFuZ2UgY2hlY2tz
+LiBUaGF0IG1hZGUgdGhlIGluaXQNCj4gPiBzZXF1ZW5jZSBoYXJkIHRvIGZvbGxvdy4NCj4gPg0K
+PiA+IFNwbGl0IHI4MTU2X2luaXQoKSBpbnRvIG9uZSBmdW5jdGlvbiBwZXIgY2hpcCBmYW1pbHk6
+DQo+ID4gLSByODE1Nl9pbml0ICAoVkVSXzEwLzExKQ0KPiA+IC0gcjgxNTZiX2luaXQgKFZFUl8x
+Mi8xMy8xNSkNCj4gPiAtIHI4MTU3X2luaXQgIChWRVJfMTYpDQo+ID4gLSByODE1OV9pbml0ICAo
+VkVSXzE3KQ0KPiBJIGhhdmUgYSBoYXJkIHRpbWUgdG8gdW5kZXJzdGFuZCB3aHkgeW91IHdhbnQg
+dG8gc2VwYXJhdGUgb3V0IG9uZSBpbml0DQo+IGZ1bmN0aW9uIGludG8gNCBkaWZmZXJlbnQgb25l
+cywgZm9yIGVhY2ggY2hpcCBvbmUuIEVzcGVjaWFsbHksIGlmLCBhcyB5b3Ugc2F5IG5vDQo+IGZ1
+bmN0aW9uYWwgY2hhbmdlcyBhcmUgaW50ZW5kZWQsIHdoaWNoIG1pZ2h0IGp1c3RpZnkgdGhlIHJl
+LWZhY3RvcmluZyBpbiB0aGlzDQo+IG1hbm5lci4gQnkgbXVsdGlwbHlpbmcgdGhlIGZ1bmN0aW9u
+cywgaXQgd2lsbCBiZWNvbWUgbW9yZSBkaWZmaWN1bHQgdG8gbWFpbnRhaW4NCj4gdGhlIGNvZGU6
+IGlmIGFuIGlzc3VlIGlzIGZvdW5kIGluIHRoZSBpbml0LXNlcXVlbmNlLCBpdCBtYXkgbm93IGJl
+IG5lY2Vzc2FyeSB0bw0KPiBmaXggaXQgNC10aW1lcyBhbmQgZnV0dXJlIGRldmVsb3BtZW50cyB0
+b3VjaGluZyB0aGUgaW5pdC1zZXF1ZW5jZSB3aWxsIGFsc28NCj4gbmVlZCB0byBiZSByZXBsaWNh
+dGVkIG11bHRpcGxlIHRpbWVzLiBJbiB0b3RhbCwgdGhlcmUgd291bGQgYWZ0ZXJ3YXJkcyBiZSA4
+KCEpDQo+IGRpZmZlcmVudCBpbml0IHNlcXVlbmNlcyBpbmNsdWRpbmcgdGhlIG90aGVyIG9uZXMg
+Zm9yIHRoZSBSVEw4MTUyIGFuZCBkaWZmZXJlbnQNCj4gdmVyc2lvbnMgb2YgdGhlIFJUTDgxNTMu
+IFRoZSBzYW1lIHBhdHRlcm4gcmVwZWF0cyB3aXRoIF91cCgpLCBfZG93bigpIGFuZA0KPiBvdGhl
+ciBjb25maWd1cmF0aW9uIGZ1bmN0aW9ucy4NCg0KVGhlIHNwbGl0IGlzIG1lYW50IHRvIG1ha2Ug
+ZWFjaCBmdW5jdGlvbiByZWFkYWJsZSBvbiBpdHMgb3duLiBJbiBhIHNpbmdsZSBzaGFyZWQgZnVu
+Y3Rpb24sIGV2ZXJ5IGNoaXAgZGlmZmVyZW5jZSBpcyBhIHRwLT52ZXJzaW9uIHJhbmdlIGNoZWNr
+LCBhbmQgdGhlIGZ1bmN0aW9uIGlzIGhhcmQgdG8gZm9sbG93LiBZb3VyIGNvbmNlcm4gaXMgdmFs
+aWQ6IGlmIGEgZml4IG5lZWRzIHRvIGJlIGFwcGxpZWQgdG8gdGhlIGZvdXIgY2hpcHMsIGl0IHdp
+bGwgbmVlZCB0byBiZSBhcHBsaWVkIGZvdXIgdGltZXMuIEJ1dCBpZiBhIGNoaXAgZ2V0cyBjaGlw
+LXNwZWNpZmljIGZpeGVzLCB0aGUgaW5pdCBvciBvdGhlciBmdW5jdGlvbnMgd2lsbCBiZSBtb3Jl
+IGNvbXBsZXggd2l0aCBzZXZlcmFsIHRwLT52ZXJzaW9uIGNoZWNrcy4gT24gdGhlIG90aGVyIGhh
+bmQsIHVzaW5nIGEgc2luZ2xlIHNoYXJlZCBmdW5jdGlvbiB3aWxsIG1ha2UgdGhlIGZ1bmN0aW9u
+IHZlcnkgY29tcGxleCB3aGVuIG5ldyBJQ3MgYXJlIGFkZGVkLg0KDQo+IA0KPiBXb3VsZCBpdCBu
+b3QgbWFrZSBtb3JlIHNlbnNlIHRvIHRyeSB0byBmdXJ0aGVyIGNvbWJpbmUgdGhlIGluaXQgc2Vx
+dWVuY2VzIG9yDQo+IHRyeSB0byBkaXNlbnRhbmdsZSB0aGUgY29kZSBieSBlc3RhYmxpc2hpbmcg
+Y29tbW9uIGxpYnJhcnkgcm91dGluZXMgcHV0IGludG8gYQ0KPiBfbGliLmMgZmlsZSBhbmQgcG9z
+c2libHkgZGlmZmVyZW50IC5jIGZpbGVzIGZvciB0aGUgZGlmZmVyZW50IGdlbmVyYXRpb25zIG9m
+IHRoZSBjaGlwcz8NCj4gRm9yIGV4YW1wbGUsIGl0IGFwcGVhcnMgdGhhdCB0aGUNCj4gcnRsODE1
+Ny85IGJlbG9uZyB0byBvbmUgZ2VuZXJhdGlvbiBvZiBjaGlwcywgYmFzZWQgb24gdGhlIHJ0bDgx
+NTYgZGVzaWduLiBPbg0KPiB0aGUgb3RoZXIgaGFuZCwgcnRsODE1Mi8zIGFwcGVhciB0byBiZSBh
+IGRpZmZlcmVudCBnZW5lcmF0aW9uIHdpdGggdmFyaW91cw0KPiBmYW1pbHkgbWVtYmVycy4gVGhh
+dCB3b3VsZCBhbGxvdyB0byBidWlsZCBhIGJhc2lzIGZvciBmdXR1cmUgZGV2ZWxvcG1lbnQgbGlr
+ZQ0KPiB0byByZWx5IG9uIHVzaW5nIHBoeWxpbmsgdG8gaGFuZGxlIHRoZSBQSFlzIGludGVncmF0
+ZWQgaW4gdGhlIGNoaXBzLCB3aGljaCBhbGwNCj4gYXBwZWFyIHRvIGJlIGFscmVhZHkgc3VwcG9y
+dGVkIGJ5IHRoZSBSZWFsdGVrLVBIWSBkcml2ZXIuDQoNCkkgYWdyZWUgdGhhdCBjaGlwcyB3aXRo
+IHRoZSBzYW1lIGdlbmVyYXRpb24gb3IgdmVyeSBzaW1pbGFyIHNlcXVlbmNlcyBzaG91bGQgYmUg
+Y29tYmluZWQuDQoNCkkgcHJlZmVyIHRvIGNvbWJpbmUgdGhlIGNhbGxiYWNrcywgaW5jbHVkaW5n
+IGluaXQsIHVwLCBkb3duLCBhbmQgZW5hYmxlLiANCi0gRm9yIGluaXQsIEkgY2FuIG1lcmdlIHI4
+MTU2Yl9pbml0IGludG8gcjgxNTZfaW5pdCBhbmQgcjgxNTlfaW5pdCBpbnRvIHI4MTU3X2luaXQu
+IA0KLSBGb3IgdXAvZG93biwgSSBjYW4gbW92ZSB0aGUgc2VxdWVuY2Ugc2hhcmVkIGJ5IHJ0bDgx
+NTZfdXAvcnRsODE1N191cCBhbmQgYnkgdGhlIGRvd24gZnVuY3Rpb25zIGludG8gY29tbW9uIGhl
+bHBlcnMsIGFzIHJ0bDgxNTJiLzMgZG8gd2l0aCBleGl0X29vYi9lbnRlcl9vb2IuIA0KLSBGb3Ig
+ZW5hYmxlLCBJIGNhbiBjb21iaW5lIHJ0bDgxNTZfZW5hYmxlIGFuZCBydGw4MTU2Yl9lbmFibGUu
+DQoNCj4gDQo+IFsuLi5dDQo+ID4NCj4gPiBObyBmdW5jdGlvbmFsIGNoYW5nZSBpbnRlbmRlZC4N
+Cj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IENoaWggS2FpIEhzdSA8aHN1LmNoaWgua2FpQHJlYWx0
+ZWsuY29tPg0KPiBCZXN0LA0KPiAgICBCaXJnZXINCkJlc3QsDQpDaGloLUthaQ0K
