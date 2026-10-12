@@ -1,246 +1,193 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143DB49B5C2
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:51:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1158D4A387F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791820285; cv=none; b=lj35Pz2zOMC6WhUfuIIUGNNzF7k+/5CXuPVMR3HZDlbbr30XlW9hOaOsQKsPVE1932K1HwHAgHxeERVAD5+6DmkOsTINZo3X/E9flySiefuldkkBBWhsmeEwciXHfHApIxdZmGBlyXcq/tQ2cJFqDNRopKn+/MppWiaWQnJ3ge4=
+	t=1791820377; cv=none; b=QSdr749pdVZKgsz6xjJNj7EFI03E/x7Mi8nxWZyzo4GykO4p+GkPpSwDmNmsgenZ6SNZb5tqAK5ECRYHlfzgjKGvD9tkB6t3e674EZhtcz7tk/5/Gw2H4aeF8SQpiFWgjoHBpznU1m+l7AlgBIGZMG0ASSIbmqW96wl795Y8v50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791820285; c=relaxed/simple;
-	bh=C5SCJZoK5UcouByAp0+ZeIIqJRd25nkmh3Q/2YtmiRQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mxthl0B03AAJScLYK8FbWkWkx0VE81tAlvhDCcx1sNOYNY/SakrCj1IGahQC2lR2Osz9DmpmzG6u5xVthe71A0qBUmX4OEATuLq3Gk8mQnD2ObAy7ox5Ipc1tmMqDNkbAa3r8SrdHndAJqBAJ+/RQv3l/vFDuerHiTBBFImnikE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FJIEnP0c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791820377; c=relaxed/simple;
+	bh=LHMwAWagy6GhPKXqHPYzseRLeMTAefpgZrXkoLY3gD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iYgxchr6UnNivaSJpdhQev66uStCwBAzz96dcDG/TTiJq9vqF/tH25OBh9AYt+QzNvwP2lqHbIzAJu/R97VcC4cN7NUJH4Qgsgo5TI6DEpk0QQAHE3XIgFvnrsq4Is56PD47UXoZj8r221UUWJv98Ova1GibOgz2AGuqcev4XJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jxBot3MI; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Lm/UyzQp; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FJIEnP0c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0D31F0089C;
-	Mon, 12 Oct 2026 15:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791820283;
-	bh=U/ihydZnnr6jBYp16IZgRDVGbQrWmnhNVlzD4JRrywA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FJIEnP0cU8Z3MO+KjClQZWiuJYL8wf68L1KMdMEVGPpDp3a79JiufmULoM4AyksfX
-	 tkvwZAYvp9W8FsIMmZLVeKCthRJhZ9rYCAL9I0cagh9Al05zrjPUQ7Ov3IorYLEwSj
-	 pr1h044rxgJRHBSsTU5pBsZ4qcjRit9hqMyifsIVYuZNO+nAwhONNj+AqEJvWR+QoX
-	 2bQRvF5fJWksmLIEMy9zTRfileE/SqkOaOIjsX99qIEskngwiDr1cC6UEDcOn5LbIH
-	 2csvfAtxNrh1z/WKPcF1KHKUCkGKn635WiC5XOS46KCBpQzT3WFaAvwGTl9+u3CO8b
-	 TM8xHK6AoL2mw==
-Subject: Re: [PATCH net-next 2/2] selftests: tc-testing: add DRR deficit
- refill regression tests
-From: netdev-bot+sashiko@kernel.org
-To: victor@mojatatu.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, netdev@vger.kernel.org,
- horms@kernel.org, sashiko-bot@kernel.org, shuah@kernel.org
-Date: Mon, 12 Oct 2026 15:51:22 +0000
-Message-ID: <179182028286.434549.16253622180736690555@kernel.org>
-In-Reply-To: <QDISC-TIAE.v1.20261008110502-2@mojatatu.com>
-References: <QDISC-TIAE.v1.20261008110502-2@mojatatu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jxBot3MI";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Lm/UyzQp"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CFes0h3272311
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:52:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=/oJKRRR72jg/nPW1o56vlRji
+	pAWluWMfTze5tftOJ0s=; b=jxBot3MIDZXo+S4b8hKG6K9YVcffzgO8qTGXTEUZ
+	6r0GS8QRiOcJ2yVqRwUc9uJqBSRH58zMt1ba3UW5e2A8IX7POOtYiuyZmUKUtYsr
+	BB1aCcGF1/7LyEfcPpWqFUe51Ai3SvnneFTemqoJqyydGFVPpaqBiLkMV0fIXL6Z
+	Fja2TuT3xoC45r5iWBdn06h/ADKGk6kBvUS+L8tLt0PLdyQq38ISyfx8MvOOyUXu
+	1fWd6bpmpiU+yefqSY+cWSbLfWe4igTiOPm7fxNynK28cQ0SewoaNj0uB6CLoHzB
+	pu1uFc9lxJ2vDATlJlxfesX9sKvwNF+80olV2vCk013RDg==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h8wffhg58-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:52:54 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93a1de6d5c3so482393785a.3
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1791820374; x=1792425174; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/oJKRRR72jg/nPW1o56vlRjipAWluWMfTze5tftOJ0s=;
+        b=Lm/UyzQpwk8njeemVkodiv5aV9oGcKTIK4jVsQzAej9CbumLKQdFpV+zePopifqQm7
+         YCZVTAjG9hamTzPc/C67e/4+XnLYGm+VDBfTmTodZcKwQYNJUzRLgxgnROdEOM9H3fix
+         ogM9d+Vwaod2woxo/CZzD3a64LUxqlX6QCKdn1DmEXwtB4Aew9WluUe6mKAkMz8Yg2O1
+         82GLhn7N6dAXcskL4604WskLEU5ObH2hkU8q31QlL8mbMSWG1IPJEthZhRfWHtvxJDvK
+         KmGS1gzckICaJj8CbSAYxri2lXI+VTrrjHX7kXmdwPC9v1bDag0pUmKfZIvLle2F+t9H
+         gV9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791820374; x=1792425174;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/oJKRRR72jg/nPW1o56vlRjipAWluWMfTze5tftOJ0s=;
+        b=qTqfWZNKs/lcItXzDGXcdE+vOQhpf1j+DD6/2oNKexr+vvwx4Ws+o27gbJyIk5bNH1
+         SfaOmcJ/6jBFuW2NRrmj1SULLcQLO2/Pe5f7SRBg1C+nJj6X9LOQtswaXb4vmLN/sPIX
+         sxnylZRkiJZfSKWHgqNaSWlecRKmKQrCFN08dSBngutd6yqiUuEgUOLq0nZIr1N7WE5e
+         S9xuNwD9+6n6GTnzduKBuX332myRaSj5+uVu1bM8GzBTnqTVU228HHNLGxHfrnKgAwm6
+         oaBP+LHfXuCslN5aJVowyVs0B9KT+2txxKSG7Kixtn+LZVpXLQJAH18mS8FqAmYL3LPW
+         qgbQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzjyEPfNAKIxroLvHdJBT0SvKaEYrCDTyfU0s0R3GVCYQoBzZQhuEhIeWfdXpB2i7d/VJwwVQI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJYwdljd1GhmqlsYN2cVI7S/hHuGes2XOhQ8C5WjTSw3uMXK/ld
+	R9SwfnqJ2r/75CxQyMOgXJltuyOAHvglumzDg0gEUhUNk2admeaFhTzJfqV+Bl/SRSmSRIDyBPD
+	9S544ycdRqMk5bc4VJZgTP69+BgwvvAczIaxb5/Ye4ES6wGVdHW/MAHW0q0o=
+X-Gm-Gg: AYBFou0oQlxI8M8xECNr/15UFnzs/9bTAb9q7Vb7VV65yVBTnw03BKK8gH//aNHwz6T
+	xeKa9sdp5IURan3GrfDwUqKMvIGy86Ju5NUD8uef7e0B5/LpV3LZI+whTvMpiQkAxItDLuyQ+iT
+	WueI0rGUwlmyj0j6cto5uPUZsBuArPq/Dh+84xYfq38d+ILrQfex3PUCAQNOFSFo42E0wQ44n3i
+	sHKcqTZtXopG9+fVtSpo/OUCTfH2jJ341eryQIChXTTwcuWCsP4NYL2KjOGc+4xMdnZ/NvB9+EH
+	KZBdRFACuHMO0bSdMKjx2mKJYZSsxUUC4DCZzcWMEd8JAO37gXquAwZrdWxukL9GOXRlpeE+cse
+	6R0/DSdpP1YfpWw==
+X-Received: by 2002:a05:620a:4383:b0:93e:74b4:3115 with SMTP id af79cd13be357-93ebd248c51mr1554726985a.38.1791820373999;
+        Mon, 12 Oct 2026 08:52:53 -0700 (PDT)
+X-Received: by 2002:a05:620a:4383:b0:93e:74b4:3115 with SMTP id af79cd13be357-93ebd248c51mr1554723385a.38.1791820373370;
+        Mon, 12 Oct 2026 08:52:53 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaaa34sm165063f8f.20.2026.10.12.08.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 08:52:52 -0700 (PDT)
+Date: Mon, 12 Oct 2026 17:52:51 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: netdev-bot+sinfo@kernel.org
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next 0/2] stmmac: some XDP fixes in XDP_TX path
+Message-ID: <as0CUyuWNOrV4WPP@lore-desk>
+References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
+ <179181904740.2527009.16307700795539761723@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="or10+gSup2yG4+kv"
+Content-Disposition: inline
+In-Reply-To: <179181904740.2527009.16307700795539761723@kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA2MyBTYWx0ZWRfX9UKXCuW1l6+p
+ KtD3oNF+ET/0u8UvpF5/Jc8LGRO5BQ9QA8FdwgB67E1bn9lM4y1WqF8xp15IvTTr9wzQ0Xals/t
+ 9EFCUdpsVu0k8QnwJZHKV3t7rCmAE7Q9JeViD0v2Bi5grzSfzX3vZwlYwI5RbcSnDAaFTD/uGzm
+ i0NyEbQSdUyzEkOkafDH0kYs5soUz7njgqIuPyExqFcU3HNADMLxnFeK5NW15rpWDgb/kyLaA2R
+ Uoa0aksP/KtO4Xq2x5ab7ZQQeW9AF08T24eUba4Pdx5kkWlWtfC7PBwS1du78oV8Rr9aXVmhxNz
+ naa+g7wsbHXS90kDhrv9STw6qDtJtHSBCKOQljvNIokAukwybI+MLLvZZmzilmDR6ZjXRJpXVWg
+ O5rXpiKZcXlzWUj43DUyEApjpsPbi/2zaK1K9n4Eo4Z60KJlr3XldZx9w4T4bBKHQZO2HxgvbIk
+ 2qDvxOGAlIeGXY1Y85Q==
+X-Proofpoint-GUID: Fz_sTU-fprQducSnlmh2DoQhVTnNgHhg
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA2MyBTYWx0ZWRfX2o5sa7MaFCpB
+ AEJsSdVBf4+HHhfAWZKmCfT0z6FiN+x0MEdA0AP73tKwn2AIS7js8v0I0sj6mpcYCthg5PoYF2G
+ dGgDWovDNvz62NvI01LOPavMTpGUCwk=
+X-Authority-Analysis: v=2.4 cv=ZcWIpcVA c=1 sm=1 tr=0 ts=6acd0256 cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=jeKYxtEjmYGD5WCmXysA:9
+ a=CjuIK1q_8ugA:10 a=aJ77pqhsylUep-8PoN0A:9 a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-ORIG-GUID: Fz_sTU-fprQducSnlmh2DoQhVTnNgHhg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_05,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610120063
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+--or10+gSup2yG4+kv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+> Hi!
+>=20
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>=20
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+these issues have been reported by sashiko.
 
-- [Medium] Both new tdc cases in tools/testing/selftests/tc-testing/tc-
-  tests/qdiscs/drr.json only pass if the verify command lands inside a…
-- [Medium] Test 57a1 is meant to catch a 'per-class bulk refill that
-  advances each class to its own eligibility point', as the commit…
+>=20
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
 
---
+they are real problems spotted by sashiko.
 
-selftests: tc-testing: add DRR deficit refill regression tests
+>=20
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
 
-This adds two tdc cases to drr.json. The first checks the deficit left on a
-quantum 256 class after one 1514 byte packet is served (22 bytes), while a
-second packet is still queued behind a netem child. The second checks
-service order: with two active quantum 256 classes, the 514 byte packet
-should be dequeued before the 1514 byte packet at the list head.
+I tested them on a Qualcomm Rb3-gen2 board.
 
-> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
-> index 2b61d8d79bde8..bb0995d8358fc 100644
-> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
-> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/drr.json
-> @@ -86,5 +86,87 @@
+Regards,
+Lorenzo
 
-[ ... ]
+>=20
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>=20
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
 
-> +    {
-> +        "id": "3f3e",
-> +        "name": "DRR deficit refill converges to the loop-equivalent value",
+--or10+gSup2yG4+kv
+Content-Type: application/pgp-signature; name=signature.asc
 
-[ ... ]
+-----BEGIN PGP SIGNATURE-----
 
-> +        "setup": [
-> +            "$IP addr add 10.10.11.10/24 dev $DUMMY",
-> +            "$TC qdisc add dev $DUMMY root handle 1: drr",
-> +            "$TC class add dev $DUMMY parent 1: classid 1:1 drr quantum 256",
-> +            "$TC qdisc add dev $DUMMY parent 1:1 handle 10: netem delay 2s limit 10",
-> +            "$TC filter add dev $DUMMY parent 1: protocol ip prio 1 u32 match u32 0 0 flowid 1:1",
-> +            "ping -c 2 -s 1472 -i 1 10.10.11.11 -I $DUMMY -W 0.01 >/dev/null 2>&1 &"
-> +        ],
-> +        "cmdUnderTest": "sleep 2.5",
-> +        "expExitCode": "0",
-> +        "verifyCmd": "$TC -s class show dev $DUMMY",
-> +        "matchPattern": "deficit 22b",
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCas0CUwAKCRA6cBh0uS2t
+rNW3AQC2/QeMrn5IqfOYKh+NSNDgIXxUvz26WKNJJ4xN0lVxgAEA/W1AUeFJcriu
+MA8eHjFtt2TSRtfyi2A3pmw9qVuFYAE=
+=Ixfu
+-----END PGP SIGNATURE-----
 
-[Severity: Medium]
-Can this case fail on a kernel that is behaving correctly, purely because of
-timing?
-
-The pattern only matches inside a window about one second wide. Say ping
-sends packet 1 at T0 and packet 2 at T0+1. With netem delay 2s, they are
-released at T0+2 and T0+3:
-
-  before T0+2:        deficit is still 256, tc prints "deficit 256b"
-  T0+2 .. T0+3:       packet 1 served, deficit is 22
-  after T0+3:         packet 2 dequeued, child qlen drops to 0
-
-Once qlen is 0, the dump reports zero:
-
-net/sched/sch_drr.c:drr_dump_class_stats() {
-    ...
-	memset(&xstats, 0, sizeof(xstats));
-	if (qlen)
-		xstats.deficit = READ_ONCE(cl->deficit);
-    ...
-}
-
-so tc prints "deficit 0b".
-
-The verify command runs at the end of setup, plus the sleep 2.5, plus the
-cost of spawning cmdUnderTest and verifyCmd through ip netns exec. That
-leaves about 0.5s of slack either way for the difference between that
-overhead and ping's startup time.
-
-Test 57a1 below has the same shape. B1 is released about two seconds after
-the first python3 sends. B2 is released about two seconds after the second
-python3 sends. At that point 1:2 is at the head with a deficit of 254 and a
-514 byte packet. The refill then serves both B2 and A1, which changes every
-bytes/packets/backlog/qlen value in its matchJSON.
-
-The verify at setup end plus sleep 1.5 has to land between those two
-releases. That again depends on python3 startup and spawn overhead staying
-under about 0.5s.
-
-tdc.sh runs ./tdc.py -J"$(nproc)", so these cases run in parallel with
-other tests. That adds fork/exec, python3 startup and scheduling jitter,
-especially on debug kernels with KASAN or lockdep.
-
-Most existing sleep based tdc cases only need a lower bound. These two need
-both a lower and an upper bound.
-
-> +        "matchCount": "1",
-> +        "teardown": [
-> +            "$TC qdisc del dev $DUMMY root"
-> +        ]
-> +    },
-> +    {
-> +        "id": "57a1",
-> +        "name": "DRR skips only rounds where no class can dequeue (keeps order)",
-
-[ ... ]
-
-> +        "setup": [
-> +            "$IP addr add 10.10.11.10/24 dev $DUMMY",
-> +            "$TC qdisc add dev $DUMMY root handle 1: drr",
-> +            "$TC class add dev $DUMMY parent 1: classid 1:1 drr quantum 256",
-> +            "$TC class add dev $DUMMY parent 1: classid 1:2 drr quantum 256",
-> +            "$TC qdisc add dev $DUMMY parent 1:1 handle 10: netem delay 2s limit 10",
-> +            "$TC qdisc add dev $DUMMY parent 1:2 handle 20: netem delay 2s limit 10",
-
-[Severity: Medium]
-Does this case reliably catch the regression the commit message describes?
-
-  A per-class bulk refill that advances each class to its own
-  eligibility point would dequeue the head class instead.
-
-To tell the two refill styles apart, A1 (in 1:1, the list head) and B1 (in
-1:2) both have to be ready in the same drr_dequeue() pass.
-
-Both netem children use delay 2s. netem_dequeue() compares time_to_send
-against ktime_get_ns() at peek time. So B1 becomes sendable a small delta
-after A1, where the delta is the gap between the two sendto() calls in the
-same python3 process.
-
-What happens if the hrtimer -> NET_TX softirq -> drr_dequeue() latency is
-shorter than that delta?
-
-1. At A1's release, 1:1 peeks A1 and 1514 > 256. first is set to 1:1, its
-   deficit becomes 512, and list_move_tail() leaves the list as [1:2, 1:1].
-
-2. 1:2 peeks NULL, and drr_dequeue() bails out:
-
-		if (skb == NULL) {
-			qdisc_warn_nonwc(__func__, cl->qdisc);
-			goto out;
-		}
-
-   1:2 is now the list head.
-
-3. At B1's release, 1:2 goes 256 -> 512 and 1:1 goes 512 -> 768. The bulk
-   refill scan, with 1:2 at the head, computes
-   rounds = min(DIV_ROUND_UP(2, 256), DIV_ROUND_UP(746, 256)) = 1. That
-   gives 1:2 = 768 and 1:1 = 1024, and B1 is dequeued.
-
-In that state, a per-class variant would give 1:2 = 768 and 1:1 = 1536. It
-would still visit 1:2 first and dequeue B1, so the matchJSON below would
-still match.
-
-The test only fails as intended when B1 is already sendable at A1's
-release. Then the scan starts with 1:1 at the head and both classes at 512.
-
-The ratio between that delta and softirq latency varies across bare metal,
-KVM and TCG. Could netem 20 use a slightly shorter delay than netem 10? That
-way B1 is always ready when child 10's watchdog fires.
-
-> +            "$TC filter add dev $DUMMY parent 1: protocol ip prio 1 u32 match ip dport 1111 0xffff flowid 1:1",
-> +            "$TC filter add dev $DUMMY parent 1: protocol ip prio 1 u32 match ip dport 2222 0xffff flowid 1:2",
-
-[ ... ]
-
-> +        "matchJSON": [
-> +            {
-> +                "class": "drr",
-> +                "handle": "1:1",
-> +                "root": true,
-> +                "stats": {
-> +                    "bytes": 0,
-> +                    "packets": 0,
-> +                    "backlog": 3028,
-> +                    "qlen": 2
-> +                }
-> +            },
-> +            {
-> +                "class": "drr",
-> +                "handle": "1:2",
-> +                "root": true,
-> +                "stats": {
-> +                    "bytes": 514,
-> +                    "packets": 1,
-> +                    "backlog": 514,
-> +                    "qlen": 1
-> +                }
-> +            }
-> +        ],
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-TIAE.v1.20261008110502%40mojatatu.com
+--or10+gSup2yG4+kv--
