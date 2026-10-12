@@ -1,173 +1,157 @@
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+Received: from mta0.migadu.com (out-163.mta0.migadu.com [91.218.175.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206A4388396
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229C1388396
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791770374; cv=none; b=fpzBOkOeRPt/hEIAwsGV1wyETkVZmXn4fZ3koa/GRY9rX9v4L1wtqOb7JW9Q8bJWdgNT/td1Av7XWdvUJcKbYG5J28bWoZJ6bmbpGGmGcnBSgKuALLfR5hgc7kY7GmuBZL8XGkXJQ5xzSM6bUgJvFxk8CyZnWxlp1mqnosZLeI0=
+	t=1791770379; cv=none; b=lGi5wsNruQEiRxe5RFJEk3wVXfbp72ua4eSXuUkQKCA19m1/uNxK6sUTJfMmxcI9yiuQ1MVXhGPU+b3eE5upRdMw3+HvcKYaoksPKN5ASu949vmGmDS1BedOq+NP1jMSE9P4eGtEwo97ibbWaj/9AVjHgaxWOzc9mpa1vbPAZ6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791770374; c=relaxed/simple;
-	bh=oahBO1025qVPSPugkA64I7iVejIAS2a4Gsh5Tbhx5fk=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ZS6bsO0sZAPmctxaz8pc0eGBjN2tyrEIikvTi33qXeT5SIZgLoBg5Zc/07XWfWQ6WVQzSPZDilrRf0lzFipulQs+WrUMk0JsEzkEIYwdZK0ZO0FZiQDqLUTs9YoS7ntxTIFOcyLBHxG5l83LXBLsQRwdj9UgoazV0G5Y8DRVdKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.199
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4d2f0f77124so2107088b6e.3
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:59:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791770372; x=1792375172;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gKk9txmv0mZCyRJL6L+tG/6jg3Fga3i3/ojfl8+Y39s=;
-        b=kEYrWu3mlAF578o0O6Eo4+qYSqT5gEratvdzkR6PG3wBUNs967VUg5m7WqrfrgjACB
-         pEb3oj//MmPX5U1oocOEe5jqgSdNXJbtuKgJigZQcIz4HL3lE0oJolUvcLBcWQi9Sm30
-         gOTHphW8yKcpyi4zcUS1n1yTPwwIW3ps/xa2QM8ZjB526se3MSFyyEzrBfqrxcXQ7Cyk
-         lJ0pBbZnJMhMq0ilDNlfDy/UIjH9K04Djz3fQNPn7CMrvI/F0JjYCyR3aZNdgG+FZ4yP
-         gs+ZBzDF57yOvgDuObwLBOxLNmageTYccZjwnlgOzuQ6uYNs/ns2ZyEYlio52eJ38Kwr
-         y4LA==
-X-Forwarded-Encrypted: i=1; AKwUvByupI2gf4GX3a+Xuhj9pCGg5w8q47eUlSieQP0I8jaZgwRDkfa9fZDM3qo73wiNsg3iBkySFy0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ2vBplpgM/EsKfF2YJeRuS3G+L5fGc8VU6jTRQf/y5Oou8+ftu
-	/l0VAsuAOeS7oRxybzfdp9ZFcKe7PV9L4lZK6gLPp+OywriTNOnrKMi7W+57l0ZFY2XQiXlNZq3
-	SQkEsC0V3JxIbE8ZQkYUxZdUrg7Wr9KBiXnfBPTzf+s2ssal/Z3aS93rm0oc=
+	s=arc-20240116; t=1791770379; c=relaxed/simple;
+	bh=moBHlWf8jgOs/rYSsRmHzU2nJBmQG8lbqQxc+Xan938=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AgCdTkDlB1paBxx/r2zPjFBo/Piahh2ueNSnkk9tGbcNec5LLTDM1fmp7/7zWK0YCDIkEDY84p2i+bG2j+0ClqZuvC0793WEDg3lIOgjvJDHJuGH4c//g2VMV98ZWojmR3L2Scfu5r30WjsGPFnkpTX0IZkBlG6D739CcQOZQAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=D4tnk9S6; arc=none smtp.client-ip=91.218.175.163
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="D4tnk9S6"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=moBHlWf8jgOs/rYSsRmHzU2nJBmQG8lbqQxc+Xan938=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791770375; v=1; x=1792375175;
+ b=D4tnk9S6wtHb6mDP/quLnO0cCahq120jKBiAAaR0yD/g5GVM2DejYzLPz0delcFFnUnXp8Zh
+ dcKtqCzsJ76ozUA5xawJ+be8Wo3NGNSSkVMd8Wxear9pDleXsokAf3LWVieSBK34ypsIE09I+W1
+ WyH++gLMseLHFJ8luyCF+1SU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 967f2161ab6b936c;
+	Mon, 12 Oct 2026 01:59:34 +0000
+X-Mizu-Trace-ID: 967f2161ab6b936c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <06f54345-4ca6-455f-9519-138e0b6db24b@linux.dev>
+Date: Mon, 12 Oct 2026 09:59:22 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c3c2:b0:4ed:7045:d3bc with SMTP id
- 5614622812f47-50c50f29bf2mr7110424b6e.32.1791770372245; Sun, 11 Oct 2026
- 18:59:32 -0700 (PDT)
-Date: Sun, 11 Oct 2026 18:59:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6acc3f04.a150a118.27e199.003f.GAE@google.com>
-Subject: [syzbot] [mptcp?] WARNING in __mptcp_move_skbs_from_subflow (3)
-From: syzbot <syzbot+a0f240a492551e97b466@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@kernel.org, geliang@kernel.org, 
-	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	martineau@kernel.org, matttbe@kernel.org, mptcp@lists.linux.dev, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    af32da41b032 Merge tag 'net-7.3-rc7' of git://git.kernel.o..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=14b48c9c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4118aaa2d227be26
-dashboard link: https://syzkaller.appspot.com/bug?extid=a0f240a492551e97b466
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/67d1818d6d97/disk-af32da41.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/903b9a3843fb/vmlinux-af32da41.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/b878ac72b487/bzImage-af32da41.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a0f240a492551e97b466@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-1
-WARNING: net/mptcp/protocol.c:855 at __mptcp_move_skbs_from_subflow+0x11cf/0x19a0 net/mptcp/protocol.c:855, CPU#1: syz.4.337/7111
-Modules linked in:
-CPU: 1 UID: 0 PID: 7111 Comm: syz.4.337 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/16/2026
-RIP: 0010:__mptcp_move_skbs_from_subflow+0x11cf/0x19a0 net/mptcp/protocol.c:855
-Code: b6 04 26 84 c0 0f 85 57 05 00 00 41 c6 07 00 e9 e6 f5 ff ff e8 92 5d f7 f5 90 0f 0b 90 48 8b 5c 24 30 eb 0c e8 82 5d f7 f5 90 <0f> 0b 90 4d 89 ec 48 8b 7c 24 68 e8 11 13 01 00 e9 50 fd ff ff e8
-RSP: 0018:ffffc90000a18120 EFLAGS: 00010246
-RAX: ffffffff8bd0b1be RBX: ffff88802a7bf8e0 RCX: ffff888035d8be80
-RDX: 8000000000000300 RSI: 0000000000000100 RDI: 0000000000004500
-RBP: ffffc90000a18328 R08: 0000000000000100 R09: 1ffff110048f1958
-R10: dffffc0000000000 R11: ffffed10048f1959 R12: 0000000000007fe4
-R13: dffffc0000000000 R14: 000000002f8eae63 R15: 0000000000004500
-FS:  00007f14a00f66c0(0000) GS:ffff888123bbf000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000287000 CR3: 000000007ec44000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- move_skbs_to_msk net/mptcp/protocol.c:971 [inline]
- mptcp_data_ready+0x3f5/0xc20 net/mptcp/protocol.c:1028
- subflow_data_ready+0x2bc/0x7f0 net/mptcp/subflow.c:1540
- tcp_data_queue+0x1e94/0x5fa0 net/ipv4/tcp_input.c:5700
- tcp_rcv_established+0xb05/0x2940 net/ipv4/tcp_input.c:6696
- tcp_v4_do_rcv+0x727/0x13b0 net/ipv4/tcp_ipv4.c:1854
- tcp_v4_rcv+0x27d4/0x3170 net/ipv4/tcp_ipv4.c:2248
- ip_protocol_deliver_rcu+0x21d/0x440 net/ipv4/ip_input.c:207
- ip_local_deliver_finish+0x3bb/0x6f0 net/ipv4/ip_input.c:241
- NF_HOOK+0x336/0x3c0 include/linux/netfilter.h:325
- NF_HOOK+0x336/0x3c0 include/linux/netfilter.h:325
- __netif_receive_skb_one_core net/core/dev.c:6297 [inline]
- __netif_receive_skb net/core/dev.c:6410 [inline]
- process_backlog+0xa6b/0x18b0 net/core/dev.c:6761
- __napi_poll+0xaa/0x330 net/core/dev.c:7830
- napi_poll net/core/dev.c:7893 [inline]
- net_rx_action+0x61d/0xf50 net/core/dev.c:8050
- handle_softirqs+0x226/0x860 kernel/softirq.c:645
- do_softirq+0x77/0xd0 kernel/softirq.c:546
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0x100/0x140 kernel/softirq.c:473
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- rcu_read_unlock_bh include/linux/rcupdate.h:923 [inline]
- __dev_queue_xmit+0x1efb/0x3920 net/core/dev.c:4993
- dev_queue_xmit include/linux/netdevice.h:3464 [inline]
- neigh_hh_output include/net/neighbour.h:544 [inline]
- neigh_output include/net/neighbour.h:558 [inline]
- ip_finish_output2+0xbda/0x10b0 net/ipv4/ip_output.c:236
- NF_HOOK_COND include/linux/netfilter.h:314 [inline]
- ip_output+0x29f/0x450 net/ipv4/ip_output.c:437
- __ip_queue_xmit+0x10df/0x1b10 net/ipv4/ip_output.c:533
- __tcp_transmit_skb+0x2d18/0x47c0 net/ipv4/tcp_output.c:1717
- tcp_transmit_skb net/ipv4/tcp_output.c:1734 [inline]
- tcp_write_xmit+0x1bfa/0x6400 net/ipv4/tcp_output.c:3062
- __tcp_push_pending_frames+0x96/0x380 net/ipv4/tcp_output.c:3245
- mptcp_push_release net/mptcp/protocol.c:1668 [inline]
- __mptcp_push_pending+0x60f/0x900 net/mptcp/protocol.c:1809
- mptcp_sendmsg+0x11ea/0x1d10 net/mptcp/protocol.c:2110
- sock_sendmsg_nosec+0x90/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f149f19e1d9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f14a00f6028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f149f425fa0 RCX: 00007f149f19e1d9
-RDX: 0000000000040010 RSI: 00002000000008c0 RDI: 0000000000000007
-RBP: 00007f149f235888 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f149f426038 R14: 00007f149f425fa0 R15: 00007ffe2ec5e878
- </TASK>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf] bpf, sockmap: Fix UAF when map user reference is
+ revived
+To: Jan-Gerd Tenberge <janten@gmail.com>, bpf@vger.kernel.org
+Cc: ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ jakub@cloudflare.com, edumazet@kernel.org, kuniyu@google.com,
+ pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org,
+ horms@kernel.org, yonghong.song@linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261008095656.92793-1-janten@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20261008095656.92793-1-janten@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+On 10/8/26 5:56 PM, Jan-Gerd Tenberge wrote:
+> bpf_map_put_uref() invokes map_release_uref after usercnt reaches zero,
+> before bpf_map_put() drops the map reference. BPF_MAP_GET_FD_BY_ID can
+> find the map during that callback and raise usercnt again.
+>
+> The sockmap and sockhash release callbacks unconditionally drop programs
+> without taking sockmap_mutex. A concurrent attach through the revived fd
+> can therefore publish a new program before the stale callback drops it.
+>
+> For a bpf_link attachment, this leaves plink set while pprog is NULL, so
+> link release warns and leaves the attachment slot unusable. The callback
+> can also drop the program between sock_map_prog_update() and the later
+> bpf_prog_inc(). If the program fd is closed concurrently, this removes
+> the last reference and schedules an RCU free. The subsequent increment
+> then resurrects a zero reference and leaves link->prog pointing to memory
+> that will be freed. A KASAN reproducer triggers a slab-use-after-free when
+> reading information from that link.
+>
+> Triggering the race requires CAP_SYS_ADMIN in the initial user namespace,
+> because reviving the map uses BPF_MAP_GET_FD_BY_ID. A deterministic KASAN
+> reproducer is available privately on request. It was used to verify the
+> UAF before this change and its absence afterwards.
+>
+> Serialize the release callbacks with program updates using sockmap_mutex
+> and recheck usercnt under the mutex. If the map was revived, leave its
+> programs intact. Move the map user-reference put in link release outside
+> the mutex to avoid recursively taking sockmap_mutex when it drops the last
+> user reference.
+>
+> Fixes: 699c23f02c65 ("bpf: Add bpf_link support for sk_msg and sk_skb progs")
+> Assisted-by: LLM
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jan-Gerd Tenberge <janten@gmail.com>
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+> ---
+>   net/core/sock_map.c | 18 ++++++++++++++----
+>   1 file changed, 14 insertions(+), 4 deletions(-)
+>
+> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+> index 38df84284328..32ccf4ca3c76 100644
+> --- a/net/core/sock_map.c
+> +++ b/net/core/sock_map.c
+> @@ -26,7 +26,8 @@ struct bpf_stab {
+>   
+>   /* This mutex is used to
+>    *  - protect race between prog/link attach/detach and link prog update, and
+> - *  - protect race between releasing and accessing map in bpf_link.
+> + *  - protect race between releasing and accessing map in bpf_link, and
+> + *  - protect race between map user-reference release and prog/link updates.
+>    * A single global mutex lock is used since it is expected contention is low.
+>    */
+>   static DEFINE_MUTEX(sockmap_mutex);
+> @@ -372,7 +373,10 @@ static void sock_map_free(struct bpf_map *map)
+>   
+>   static void sock_map_release_progs(struct bpf_map *map)
+>   {
+> -	psock_progs_drop(&container_of(map, struct bpf_stab, map)->progs);
+> +	mutex_lock(&sockmap_mutex);
+> +	if (!atomic64_read(&map->usercnt))
+> +		psock_progs_drop(&container_of(map, struct bpf_stab, map)->progs);
+> +	mutex_unlock(&sockmap_mutex);
+>   }
+>   
+>   static struct sock *__sock_map_lookup_elem(struct bpf_map *map, u32 key)
+> @@ -1226,7 +1230,10 @@ static void *sock_hash_lookup(struct bpf_map *map, void *key)
+>   
+>   static void sock_hash_release_progs(struct bpf_map *map)
+>   {
+> -	psock_progs_drop(&container_of(map, struct bpf_shtab, map)->progs);
+> +	mutex_lock(&sockmap_mutex);
+> +	if (!atomic64_read(&map->usercnt))
+> +		psock_progs_drop(&container_of(map, struct bpf_shtab, map)->progs);
+> +	mutex_unlock(&sockmap_mutex);
+>   }
+>   
+>   BPF_CALL_4(bpf_sock_hash_update, struct bpf_sock_ops_kern *, sops,
+> @@ -1743,6 +1750,7 @@ struct sockmap_link {
+>   static void sock_map_link_release(struct bpf_link *link)
+>   {
+>   	struct sockmap_link *sockmap_link = container_of(link, struct sockmap_link, link);
+> +	struct bpf_map *map = NULL;
+>   
+>   	mutex_lock(&sockmap_mutex);
+>   	if (!sockmap_link->map)
+> @@ -1751,10 +1759,12 @@ static void sock_map_link_release(struct bpf_link *link)
+>   	WARN_ON_ONCE(sock_map_prog_update(sockmap_link->map, NULL, link->prog, link,
+>   					  link->attach_type));
+>   
+> -	bpf_map_put_with_uref(sockmap_link->map);
+> +	map = sockmap_link->map;
+>   	sockmap_link->map = NULL;
+>   out:
+>   	mutex_unlock(&sockmap_mutex);
+> +	if (map)
+> +		bpf_map_put_with_uref(map);
+>   }
+>   
+>   static int sock_map_link_detach(struct bpf_link *link)
+>
+> base-commit: ff47652a4b66c067c765a7ad464d930b5a9367cc
