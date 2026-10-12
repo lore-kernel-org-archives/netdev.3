@@ -1,182 +1,314 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E08836B93C;
-	Mon, 12 Oct 2026 13:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9549381EBD;
+	Mon, 12 Oct 2026 13:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791813189; cv=none; b=sYSl9tBj9/tFlGVGIf9Ddp3a7bGs5n58STUxKUOo+w0BFn+p7wZJMEdRvRzaje+b8s2c98fdsm0tVeh8raUD9+w0YoVMYSS3UDIzkXwawafZf9GiVfAxNwOxR7NJqmGJuZbgAi8DERNw5PBqLSOXmeh+txi3rDfGLbHtrID34eU=
+	t=1791813285; cv=none; b=GZpwVSpforXWSepMvsgK/ZyMTn3VmBQ96lqjSxpo1qmuMtXM2Uh8Mhe0/w19QccA1ytjPqp/ZYq5Bgv1KrIk8SAUHB4YhedDEOrvWgd4YsfLA6diutJj42mRN0C50+lCm/vm6z3YQAPVCmgNmB/bDSgy6dAi7uLD4OLAHS50yF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791813189; c=relaxed/simple;
-	bh=ty92T9DIYoaFJgqiIsGaVgwgaRXfKBk//M0JGEOokgE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=B2TGPfALLfF8cd5fC0lFhFgxL//Ctz1AYkhvrkB641wH8Oc6Ps3YbaoOQfULFZ1w9HnDWlpzYAFxJ8AARfXTvWcAcSkeyFmWXcpQywTwG7o9XaKzBQlVVN/NDp2vdOfVeHl1JDSY8MA7QrUvRWSw0qgUJ2UHvfiBbnJyWvKyO+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCTIHzqn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791813285; c=relaxed/simple;
+	bh=qsHhbyHd5ClEZ7oMoiJT8a3BMLWB+4J+MzNBY5jNaxk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MU9bRexAq9zCC9GBO1gUPcmO0H9ggMRfnyxrQCHViPClJtaU4maMNPdRXJcjU7DAXpG52CkVeURX2rdr4//oKbeeFFRCBaUZDa2+HwnrCV1ZYFtmdtCA0VZxmd20yExma78DHUcP0rxgPUNuLtEy3oceJneACyC6Zwtai2zISZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOwMkcw6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCTIHzqn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1016A1F0089B;
-	Mon, 12 Oct 2026 13:53:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOwMkcw6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F891F0089B;
+	Mon, 12 Oct 2026 13:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791813187;
-	bh=GzKb4Ad7HkW8BrqEc5W4LYKOWUBVf/CLkGtUNjDmfbw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=YCTIHzqn72vjsJTW7DN54VLFkp+SEk1NrFctnxBpEBhPFVs1HjRsyb9z09WjCjrMh
-	 aIoy/knzExgia6fSnVS8REcAs7frk82ybWlSfWazq6e1yDWXN5jeUbuBn1OwfktQA7
-	 o6t4F1aYgYCLlP+onpjLne7b/QjTo1lwpS0M1myBXo/sE2AcXHT52K+21IRe9bFzzw
-	 0iopNBZLcIOSnmljYjCoVkScRrjYEZuAsYBE9/xzbNCluVoivBsZzaQ2ivuxSh/uVq
-	 zxuoNspDBYnkuswY5N9ZLp46OSPjz6wtLVmLY7UKlKMPBYXvDOhS+fTXRtvEv19TVP
-	 PeUOn3kF4SnVA==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
- kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard
- Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Pavel
- Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
- <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
- <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, io-uring@vger.kernel.org,
- "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi
- <bestswngs@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, David
- Wei <dw@davidwei.uk>, Alexander Lobakin <aleksander.lobakin@intel.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Mina Almasry
- <almasrymina@google.com>
-Subject: Re: [RFC net-next 05/15] page_pool: Extend memory provider operations
-In-Reply-To: <asPUZ8DPllHd6Yu9@devvm7509.cco0.facebook.com>
-References: <20261002190018.696925-1-bjorn@kernel.org>
- <20261002190018.696925-6-bjorn@kernel.org>
- <asPUZ8DPllHd6Yu9@devvm7509.cco0.facebook.com>
-Date: Mon, 12 Oct 2026 15:53:05 +0200
-Message-ID: <877bjnc9fi.fsf@all.your.base.are.belong.to.us>
+	s=k20260515; t=1791813283;
+	bh=M6rLpFajnX3vFtlMbngZuiF+uDlviL+v1lN0wEQgdBM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=nOwMkcw6PDNOfrrtjGI6MTQmJuxwp5Um/OuL1fOic+KDGDhmEn+izpINDX/nMMdDM
+	 HNS1FQTKJya3tx4GSZPfrqSo2y+q2jepYAzfhbZqUxWig5u3W8OjfGiz0Rm4/KvN6x
+	 BwsBDDrkkX74FUOk/nIeWJwhuriYgNWbYC0rkvoNFptWfy+mbsyWUscr6IY18XLaSL
+	 SRma88aCRiUY5xAcZFZrSGwHhfxb8Nto6ZJxfrLtq/7jdsgM7DgugN8u7MJz0uIuXJ
+	 HWKym0aHKFRgAohiA/8Zn30LU+3Y5Tmh6gvbF8uRDkwEKAceLx+r1ikntUatLoOkI2
+	 AS8SC28X30cBQ==
+Subject: Re: [PATCH net-next v10] net: reduce ARFS flow updates by checking
+ LLC affinity
+From: netdev-bot+sashiko@kernel.org
+To: nashuiliang@gmail.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, sdf.kernel@gmail.com,
+ liuhangbin@gmail.com, skhawaja@google.com, ncardwell@google.com,
+ roman.gushchin@linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 12 Oct 2026 13:54:42 +0000
+Message-ID: <179181328227.434549.4613846834686834625@kernel.org>
+In-Reply-To: <20261008133252.3750-1-nashuiliang@gmail.com>
+References: <20261008133252.3750-1-nashuiliang@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Stanislav Fomichev <sdf.kernel@gmail.com> writes:
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider.
 
-> On 10/02, Bj=C3=B6rn T=C3=B6pel wrote:
->> The current memory providers give memory that the CPU cannot read,
->> and they can always refill. An AF_XDP provider is different. The CPU
->> can read its memory, it has only the buffers that userspace puts in
->> the FILL ring, and its buffers go back to userspace instead of being
->> freed. It needs four things from page_pool:
->>=20
->> - A CPU address for each net_iov. A provider can set the address of
->>   the first net_iov in its net_iov_area and the size each net_iov
->>   covers. netmem_address() then computes the address without a call
->>   into the provider; drivers call it for every packet. A
->>   net_iov_area without an address stays unreadable.
->>   page_pool_is_unreadable() is false for a readable provider.
->>=20
->> - A way to say that the refill is not done. The new refill_done
->>   callback tells the driver whether it may stop refilling. A
->>   provider that still has buffers returns false, and the driver
->>   keeps NAPI scheduled.
->>=20
->> - A way to give up a buffer without freeing it. Add a batched call
->>   that ends page_pool ownership of buffers that leave through the
->>   provider, for example to userspace. It clears the page_pool link,
->>   so a later page pool can take the buffer. Add the matching batched
->>   call that sets the link, and a DMA sync helper for drivers that
->>   post a buffer again directly.
->>=20
->> - No buffer splitting, because a split buffer has several owners.
->>   Add MP_CAP_FRAG. page_pool refuses fragment allocation from a
->>   provider without it.
->>=20
->> devmem and io_uring set MP_CAP_FRAG and keep their fragment
->> behaviour. Their refill paths now use the batched call that sets the
->> link.
->>=20
->> Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
->> ---
->>  include/net/netmem.h                    | 31 ++++++++++-
->>  include/net/page_pool/helpers.h         | 62 +++++++++++++++++++++-
->>  include/net/page_pool/memory_provider.h | 28 +++++-----
->>  io_uring/zcrx.c                         |  4 +-
->>  net/core/devmem.c                       |  7 ++-
->>  net/core/page_pool.c                    | 68 ++++++++++++++++++++-----
->>  6 files changed, 165 insertions(+), 35 deletions(-)
->>=20
->> diff --git a/include/net/netmem.h b/include/net/netmem.h
->> index cc97611632dc..e6dff0b01581 100644
->> --- a/include/net/netmem.h
->> +++ b/include/net/netmem.h
->> @@ -105,6 +105,12 @@ struct net_iov_area {
->>=20=20
+Critical: 0 · High: 0 (1) · Medium: 2 · Low: 4
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] When the new LLC shortcut in set_rps_cpu()
+  (net/core/dev.c:5196-5199) fires, it skips ndo_rx_flow_steer().
+- [Medium] The new check in set_rps_cpu() relies on
+  cpus_share_cache(old_cpu, next_cpu), which in this tree compares raw…
+- [Low] The new comment in set_rps_cpu() says 'Reduce RFS/ARFS flow
+  updates by checking LLC affinity' and 'This strategy only updates the…
+- [Low] The patch adds a user-visible sysctl,
+  /proc/sys/net/core/rps_feat_llc_affinity (net_core_table,…
+- [Low] The aRFS section of Documentation/networking/scaling.rst (lines
+  443-448) says the stack 'automatically calls this function…
+- [Low] The rps_feat_llc_affinity static key (dev.c:5125) and its sysctl
+  (sysctl_net_core.c:563-569) are built under CONFIG_RPS.
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but writing 1 to
+  /sys/class/net/<dev>/queues/rx-N/rps_flow_cnt gives a flow table whose…
+
+--
+
+net: reduce ARFS flow updates by checking LLC affinity
+
+With this commit, set_rps_cpu() skips the ndo_rx_flow_steer() call when
+the flow's previous target CPU and the new one share an LLC. rflow->cpu
+is still updated in that case. A new sysctl,
+net.core.rps_feat_llc_affinity, backed by a static key and off by
+default, turns the behaviour on.
+
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index f587645e930a1..8b046100525a4 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -5122,6 +5122,7 @@ struct static_key_false rps_needed __read_mostly;
+>  EXPORT_SYMBOL(rps_needed);
+>  struct static_key_false rfs_needed __read_mostly;
+>  EXPORT_SYMBOL(rfs_needed);
+> +struct static_key_false rps_feat_llc_affinity __read_mostly;
 >
-> [..]
->
->>  	/* Offset into the dma-buf where this chunk starts.  */
->>  	unsigned long base_virtual;
->
-> Will send a patch to drop this one, don't think we use it anymore..
+>  static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
+>  {
 
-Ok!
+[Severity: High]
+This regression wasn't introduced by this patch, but can rfs_slot()
+return an index past the end of a one-entry flow table?
 
->> +	/* CPU address of the first net_iov's memory, or NULL when the CPU
->> +	 * cannot read the area. Each net_iov covers 1 << @niov_shift bytes.
->> +	 */
->> +	void *vaddr;
->
-> Who is setting this? Somewhere in another patch? Can we keep it here?
+Writing 1 to /sys/class/net/<dev>/queues/rx-N/rps_flow_cnt gives
+mask = 0 in store_rps_dev_flow_table_cnt(). The runtime ilog2(0) is -1,
+so the encoded log becomes 0:
 
-xp_pp_create() sets vaddr in patch 9. I'll move that closer.
+    tag_ptr |= (ilog2(mask) + 1);
 
->> +	u8 niov_shift;
->
-> If we need niov_shift at area level, let's move the one from binding here?
-> Then the existing callers can do binding->area.niov_shift.
+rfs_slot() then calls hash_32(hash, 0), which does:
 
-Good! I'll consolidate the binding's shift (and rebase on your
-base_virtual cleanup)
+    return __hash_32(val) >> (32 - bits);
 
->>  };
->>=20=20
->>  static inline struct net_iov_area *net_iov_owner(const struct net_iov *=
-niov)
->> @@ -117,6 +123,23 @@ static inline unsigned int net_iov_idx(const struct=
- net_iov *niov)
->>  	return niov - net_iov_owner(niov)->niovs;
->>  }
->>=20=20
->> +static inline bool net_iov_is_readable(const struct net_iov *niov)
->> +{
->> +	return net_iov_owner(niov)->vaddr;
->> +}
->> +
->> +static inline void *net_iov_address(const struct net_iov *niov)
->> +{
->> +	const struct net_iov_area *area =3D net_iov_owner(niov);
->> +	unsigned long off;
->> +
->> +	if (!area->vaddr)
->> +		return NULL;
->> +
->> +	off =3D (unsigned long)net_iov_idx(niov) << area->niov_shift;
->> +	return area->vaddr + off;
->
-> Or, alternatively, store dma_base in area and do:
->
-> return niov->dma_addr - area.dma_base + vadd ?
+Shifting a u32 by 32 is undefined. On x86-64 and arm64 the shift count
+is masked, so the full 32-bit hash product comes back instead of 0.
 
-UMEM pages don't have to have contiguous DMA addresses, so I'd keep the
-index-based CPU offset.
+get_rps_cpu() uses that value directly:
 
+    rflow = flow_table + flow_id;
 
-Bj=C3=B6rn
+set_rps_cpu() later writes through the same pointer with
+WRITE_ONCE(rflow->cpu, next_cpu) and the last_qtail update. On the aRFS
+path it also writes to the target queue's tmp_rflow.
+
+rps_may_expire_flow() checks flow_id against 1UL << log, but
+get_rps_cpu() and set_rps_cpu() don't.
+
+Could this cause out-of-bounds reads and writes in NET_RX softirq? That
+would need CAP_NET_ADMIN to configure such a table and
+rps_sock_flow_entries to be set. It looks like this goes back to commit
+a435163d3100b0.
+
+[ ... ]
+
+> @@ -5179,6 +5180,24 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+>  		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
+>  		    !(dev->features & NETIF_F_NTUPLE))
+>  			goto out;
+> +
+> +		/*
+> +		 * RPS LLC Affinity Feature:
+> +		 * Reduce RFS/ARFS flow updates by checking LLC affinity.
+> +		 *
+> +		 * Frequent flow table updates can trigger constant hardware steering
+> +		 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
+> +		 * contention on driver internal locks (like mlx5's arfs_lock).
+> +		 *
+> +		 * This strategy only updates the flow record if it migrates across LLC
+> +		 * boundaries. This minimizes expensive hardware updates while
+> +		 * preserving cache locality for the application.
+> +		 */
+
+[Severity: Low]
+This isn't a bug, but does this comment still match the code now that
+the check lives in set_rps_cpu()? After goto out, the code still runs:
+
+    head = READ_ONCE(per_cpu(softnet_data, next_cpu).input_queue_head);
+    rps_input_queue_tail_save(&rflow->last_qtail, head);
+    ...
+    WRITE_ONCE(rflow->cpu, next_cpu);
+
+So the flow record is updated every time, and only the
+ndo_rx_flow_steer() call is skipped. The commit message agrees: "The
+per-queue flow bookkeeping (rflow->cpu) is still updated".
+
+The comment looks left over from v9, where the check was in
+rps_record_sock_flow().
+
+> +		if (static_branch_unlikely(&rps_feat_llc_affinity) &&
+> +		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
+> +			cpus_share_cache(old_cpu, next_cpu))
+> +			goto out;
+
+[Severity: Medium]
+Does old_cpu reliably show where the hardware is delivering this flow
+right now?
+
+old_cpu is the tcpu that get_rps_cpu() reads from rflow->cpu in the
+arrival queue's software table. set_rps_cpu() writes next_cpu into
+rflow->cpu on every goto out path, including paths that never install a
+hardware filter. One is a driver failure:
+
+    rc = dev->netdev_ops->ndo_rx_flow_steer(dev, skb,
+                                            rxq_index, flow_id);
+    if (rc < 0)
+        goto out;
+
+For example, mlx5e_rx_flow_steer() returns -EPERM when ARFS is disabled
+and -ENOMEM when the GFP_ATOMIC allocation fails. Another is the
+collision skip:
+
+    if (hash != READ_ONCE(tmp_rflow->hash) ||
+        next_cpu == tmp_cpu)
+        goto out;
+
+Hash slots are also shared between flows and never reset, so the
+arrival queue's slot can hold a stale or colliding CPU.
+
+Here is an example. Flow F arrives by RSS on queue R, whose IRQ CPU is
+in LLC A. The application runs on CPU Y in LLC B, and the earlier steer
+to Y failed or collided. When the application moves to CPU Z, also in
+LLC B:
+
+get_rps_cpu()
+  set_rps_cpu(dev, skb, rflow, Y, Z, hash)
+    cpus_share_cache(Y, Z) is true
+    goto out
+  rflow->cpu = Z
+
+>From then on tcpu == next_cpu, so set_rps_cpu() is not called again for
+this flow. Any later move inside LLC B takes the same shortcut.
+
+Could F stay on the remote queue R indefinitely, with every packet
+crossing LLCs through an RPS backlog enqueue and an IPI? Before this
+patch, every CPU change retried ndo_rx_flow_steer().
+
+The commit message says "cache locality for the application is
+preserved either way". That seems to hold only when the hardware
+already delivers to old_cpu's LLC, and nothing here checks that.
+
+Would it be better to compare next_cpu with the CPU that services the
+arrival queue (smp_processor_id() on this path, or the rmap CPU for
+skb_get_rx_queue())? Another option is to skip only when a filter is
+known to be installed.
+
+[Severity: Medium]
+How does this check behave for CPUs that have no sched domain?
+
+cpus_share_cache() compares the raw sd_llc_id values:
+
+    return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
+
+sd_llc_id defaults to -1. It is only assigned for CPUs in the map
+passed to build_sched_domains(), and sched_init_domains() masks that
+map with housekeeping_cpumask(HK_TYPE_DOMAIN). CPUs isolated with
+isolcpus=domain therefore keep -1.
+
+sched_cpu_deactivate() also resets sd_llc_id to -1, through
+sched_domains_free_llc_id() -> __sched_domains_free_llc_id(), while
+the CPU is still cpu_online().
+
+If so, any two isolated CPUs compare as sharing an LLC, even when they
+are on different sockets. With rps_feat_llc_affinity enabled, a flow
+whose consumer moves between isolated CPUs on different LLCs would skip
+ndo_rx_flow_steer() and record rflow->cpu = next_cpu. Wouldn't that
+flow then never be re-steered?
+
+A short-lived version of this looks possible during hotplug. A
+deactivating old_cpu (still online, sd_llc_id == -1) could be compared
+with an isolated or offline next_cpu. Nothing here checks whether
+next_cpu is online.
+
+[Severity: Low]
+Should Documentation/networking/scaling.rst be updated as well? Its
+Accelerated RFS section says the stack "automatically calls this
+function every time a flow entry in rps_dev_flow_table is updated".
+
+With rps_feat_llc_affinity enabled, set_rps_cpu() updates the entry
+(last_qtail and cpu) but skips ndo_rx_flow_steer() when old_cpu and
+next_cpu share an LLC. The hardware filter then keeps pointing at the
+old queue, and software RFS forwards packets to next_cpu.
+
+[ ... ]
+
+> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> index 473c162736d69..6043ccb52cffa 100644
+> --- a/net/core/sysctl_net_core.c
+> +++ b/net/core/sysctl_net_core.c
+> @@ -560,6 +560,13 @@ static struct ctl_table net_core_table[] = {
+>  		.mode		= 0644,
+>  		.proc_handler	= rps_sock_flow_sysctl
+>  	},
+> +	{
+> +		.procname	= "rps_feat_llc_affinity",
+> +		.data		= &rps_feat_llc_affinity.key,
+> +		.maxlen		= sizeof(rps_feat_llc_affinity.key),
+> +		.mode		= 0644,
+> +		.proc_handler	= proc_do_static_key
+> +	},
+>  #endif
+
+[Severity: Low]
+Should this new sysctl get an entry in
+Documentation/admin-guide/sysctl/net.rst? high_order_alloc_disable,
+another proc_do_static_key knob in this table, is documented there.
+rps_sock_flow_entries is covered in Documentation/networking/scaling.rst.
+rps_feat_llc_affinity has no entry anywhere under Documentation/.
+
+The name also suggests it affects plain RPS. In fact it only takes
+effect on the aRFS path, when skb_rx_queue_recorded(), dev->rx_cpu_rmap
+and NETIF_F_NTUPLE are all set. Could the documentation say this, and
+also give the default (off) and the accepted values (0/1)?
+
+[Severity: Low]
+This entry and the rps_feat_llc_affinity key are built under
+CONFIG_RPS. The key's only reader is in set_rps_cpu(), inside
+#ifdef CONFIG_RFS_ACCEL, and RFS_ACCEL can be turned off on its own:
+
+    config RFS_ACCEL
+        bool "Hardware acceleration of RFS"
+        depends on RPS
+
+On a kernel with RPS=y and RFS_ACCEL=n, won't this sysctl accept writes
+and toggle a static key that nothing reads? The new old_cpu argument to
+set_rps_cpu() is also unused in that configuration.
+
+Would it make sense to put the key and this sysctl entry under
+CONFIG_RFS_ACCEL?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008133252.3750-1-nashuiliang%40gmail.com
