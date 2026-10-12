@@ -1,158 +1,203 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013034.outbound.protection.outlook.com [40.107.201.34])
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE714766A8
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A76A48CD41
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791808269; cv=fail; b=CnuUOxoo2wXtRgBclO6WqpJN/J4ktExntFQgEnkRkAOMnUlKXAch1RMHGSZK50zyK8ItToVo5m4oMjynQqetM8zJ6zwEOn8CHdiZZezKZX866bkwMLpviDpyqAqg0tfLTi0f9wMRViJ+zprEeZaQAx/DEiK8iKUUoDtSr60d0IA=
+	t=1791808909; cv=pass; b=XNHS0Y7p56csYZNbOTOVFzGgLpzbK1eN8mJsoZtxCjdkPJyfeH6IH99bNL9I41Y4IzCk5CEFy71OMb+sJ7uPItO2a7UmOPfKp++MThFj9lrn1KwzOEHh8dUbMF+m8JIfcGa8yIKCKnTsCnLSu1eUZyeeHFIsGSvvekJPWvWIwKU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791808269; c=relaxed/simple;
-	bh=M6i1HbxqBFQbWZ7MpcbXJ8Rneci25Od9vNvk2+TJb3E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PRruhzYXbZMhGFEePGlHnJB3zMTgIqHvIqqcowLzNNHmcw1mOruV9Tm/WfpjLVgtC055qG+4YBqzNKsBUkJLmR1Y6v1h9MhOLfT66P2rcRumIyniyzY2tsNbWBGhKoBRC5oQjCzQJa1mVgklUT1ezRyezpvkdHdShkObHkItR48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UaCnBNCD; arc=fail smtp.client-ip=40.107.201.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1791808909; c=relaxed/simple;
+	bh=ivqNPVXL7OqIZDuLsVmeCbMqASDvzUWEXRb/AaR+vTE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=azGAcDOrQVQrwSBwU2PnNDb1MyClUyV4pg/pJ1a9DHl6U86ngZo5f91AqX8dwUQ2+7LtgFrS4/1QnNEn1CzsHOXXkX6A3nz68A+k1HrjeenYPZfO3ts3Nrqj99krO4eUtadV4ml3+dvkfNsqeE9HI/DCH0ooH2cfkQQtf1/o/oA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=p/VJQl4B; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=bsosk5bD; arc=pass smtp.client-ip=85.215.255.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UaCnBNCD"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=L9iD6MLMQCQpQOyulKsX7kK5rHqGrlKavQj5V6o/8W5cpR3f5RtoLfSxs9JdM2nVb9i5LteQm3zXifw2KlPl8SzQvxXZZ3m8eTHpo3h5zCDGsSChaHrjOG3irywogErihVCDtF+3haTaNqiuwqvfcs+9DJn9jE6XWt2D4SZw0jmiYe3U1v+TuIORYBXUGDtTlWacJDgoqjHaoarkRDVRT4xwRddVGo3f4Wn3RlFJH2+s8k8ezyKlzUbWoVndw/i/npPo5wL/pTuUaRWTUvjkXedfcLpmMSADL2HfT5cJH2KlA3qDsInetnrkj1fAn7hD5AgCOiIX7Sc+Ax3X2dGOIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9C8IkefF70lqB8kwZKdnTS6YIzfNryigm/9IvPA1SOg=;
- b=RxOB4NRWLz91XU+uSxXeymW9GFQaIj4pUPU4t9fQcDkrMG+p0Tir8Fvk13AZKx8F9+4XHFyB3a+xr4NuA97iCjbikNAYmBHh3xAnzK9o0p1j5OhBmc4HrbZMU/Gvb7ZHN9GS2kUq2O4qWeP9potjB9V6JskOI1N2vzQZHURIU1a+LoHCaJ+KPULZYg7OEFIk4N30u7XiyRy9fDKzh8DJrMwtTL3fFa2RF1UHz3UsjnBxWRsOK/4sO+UuhWDreTW9OVD6uNZJPrIN+oUsl9WqOEnYRQl+QHZm3zU/HKFzuwvCUMy5LMgu9o3ktUoN7WswAN8MJj5y+YhNUB/F3RDEQA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9C8IkefF70lqB8kwZKdnTS6YIzfNryigm/9IvPA1SOg=;
- b=UaCnBNCDi5O/pftihiJRdSjQ6j0V6WumaX8mu3Sv0FNVckuL7JtGQSyX4CaXskuayd7E0uMjyvTgePvskTNG2aYKqHPSGYhSHHyM531jRdEbvBHjAejzFiNum8GFZitMREsakKFrVbdZJDQzF80iNYF3Gp+AzQ/iQYqjpuboskjNRuSxSYQXfCQsZVWIsvevsZs7OqGANN6BFzQj114yejLtjpdRKYcOwKPqJhujBy+ly4T70vtgJ4gwYsAcWOGnDGrht7FiQS/pL1ufW4T3sCxRA3LLQVFY7vIymolFJ2tDkZ/7K4qyJMuiEd2+JOtYPSM/90uKET+5D0hgfErHrA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by CYYPR12MB8924.namprd12.prod.outlook.com (2603:10b6:930:bd::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.20; Mon, 12 Oct
- 2026 12:31:01 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.015; Mon, 12 Oct 2026
- 12:31:01 +0000
-Date: Mon, 12 Oct 2026 15:30:51 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Jun Yang <juny24602@gmail.com>
-Cc: razor@blackwall.org, davem@davemloft.net, edumazet@kernel.org,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	horatiu.vultur@microchip.com, bridge@lists.linux.dev,
-	netdev@vger.kernel.org, Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org, TencentOS Corvus AI <corvus@tencent.com>
-Subject: Re: [PATCH net] net: bridge: don't re-arm the STP port timers on MRP
- driven ports
-Message-ID: <20261012123051.GA714215@shredder>
-References: <20261012080357.29015-1-juny24602@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012080357.29015-1-juny24602@gmail.com>
-X-ClientProxiedBy: FR2P281CA0056.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:93::7) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="p/VJQl4B";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="bsosk5bD"
+ARC-Seal: i=1; a=rsa-sha256; t=1791808889; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=lyPn5Ydtz2Ahq52hdova4GmiTobJm3d2g1eTqtOodtw8T3SzF0JeIcoqVRGo5MC3VK
+    GUKKN8zF1kQpwb3xXnGQaJxl96HvOypKAJX/kS1xzWzlkDJ9KDT65zeMpUDzym93YXIs
+    6RfCCzs8i6mLu4qoPNY/B5189AwvC69NET/IGiz1v7/ORLYJOshKj5NFFcB+0McQ+I8s
+    0VR8iXRE3F42FWBuAdgKpUzqXWI+4CqRasCLAGwO9Y3svvsU0ivWxaBIRxMqwy8kZaBc
+    4n6KWRKSrJa6E/4O43zBufBjamtDnpUFihCJIuqK3oFgEr0UAEJbyyZP3GQFJyMCzplY
+    EJtw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1791808889;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=StUrXaRC7D4BdiUXCth7tTCik81EUIu96LhGMmEPtfY=;
+    b=Ni4W7c3Dxn0Pzv8w8UBF5TlbuP7j99uSIwNNQtGTjdISFpbLGFXl3T6QHZkiyKda6D
+    jvIU6osfdNyivW6z7APgVPLq2T+8ghHwo06j8AxWCHx/O2cSEDqDqRP23+A6f538cnZl
+    MC2tgl8TxgdJg+XhVWLcVrObKxp2tC/ktNvCSc0OlPiy3lpfAZchVQyKwuCGai8WzH1w
+    NIBXBEjx10dsCsS46hbT5NwVf96KgLLepb75memoG5K8kc68aCWZihWhX95ILR65j8Ks
+    Bm1KtUoNxwIEANu+G4optK/kYolpsmDmXjJtRkHInxpsEGRK9fADYiyFW3YVF2Gp8WHO
+    GzKg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1791808889;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=StUrXaRC7D4BdiUXCth7tTCik81EUIu96LhGMmEPtfY=;
+    b=p/VJQl4B1V/3FIsnwQECK3+t8pvlGvwS22JFz5CaTwxjc30/8L5MEKNkXnrP4Y4bv+
+    PCC4ueqjcn8BKb/iqN5gmzJC4oBZxoQ/7qzfaaAf4eZa8mEdCoDdjCItsly5YhBvv77L
+    BytPU+HbEF18NLK7e3fYOBU2yPUdPUOGwZAWGI4LmceYpZSfsGHo+IwIQWc9omjpxrTk
+    pqBiq4WKgr7uBGVijNi2Uu9uB7rSnpy842E7tsSX6cz73CtLQBUWEm8VNffj0Ka5lU1x
+    NSNs1CS1sYW1x8CmtP/xP2nRxwxfqo73HDhmK84tNN4EEFOBTtUVUv/n+aGNJLr0X6q3
+    VRJQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1791808889;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=StUrXaRC7D4BdiUXCth7tTCik81EUIu96LhGMmEPtfY=;
+    b=bsosk5bD+gOhiKk5ib8o7uPEe2AyVDfGzlJcJsIUbIGsDNjWc32rxow2UbNpUwVh1r
+    qwyaK77mgmu4kWnMmsAQ==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from [IPV6:2a00:6020:4a38:6810::989]
+    by smtp.strato.de (RZmta 55.6.2 AUTH)
+    with ESMTPSA id K04b9a29CCfSfWD
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 12 Oct 2026 14:41:28 +0200 (CEST)
+Message-ID: <3050c887-a9cb-491d-816c-0d7b6384923c@hartkopp.net>
+Date: Mon, 12 Oct 2026 14:41:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CYYPR12MB8924:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09bc64c8-fbb2-483a-2c02-08df285cacc3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|7416014|1800799024|366016|10067099003|18002099003|22082099003|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	OjcOpfrJLQDLF0epwDBSC478DsSrEt7q9LVP+6xtVaFbcVLXAR/XcIa4clIYQc7vzHftEJhR2z3LZjrOdpIM3fyKExh9+9Wb9xSdfFALp8i1U2e+vVyFB9u9HjnsdXR2+rDC+QEDTTU48i6sI7FWipIJZ6NSBX6paYFmFwCxelhNt177A5YVXu4H5bvTTECrNzV2uG0NIy7ucfMadLwp89lMoTcBK8jFJbRTz1RUR632OAsaF7CQueUtlVZgOnd+/NFR0jHN8lxAlGERViRqK9+twZkz7IQoT3FThMPEfBhdifI9BJ2WIYw+V7aXT1ImOzIavcJVv50q1pYcGw6KSsidfLNMptXk9KREPeAd5BYpJW3i8QGy4ZdJVHgXaKgtN36y3jtZXx2wSLYpPpvGs968y5S3WnVO7yl3dBm0Wm3TxaF4sZLQ4R3s4MY7dlvCg9g4TtHtk44zr44RoMDN75DQ2UGDkd/VzAlv0XDQAMbDKL00CrpUzf1WjDRztme2lwe2BL3QQOfE10SCXqaL0aoHGUv7xoIwkZFJmWKRy8UkhHYX1eRBD4LgPEwu+lSkaGLB7YUi/jLvyBV9yLlj2jw8zY6MrcEXHGUp+ef6cQnIHt22yRtxg1SXFiSxLV6XJ3/Qg5h8b1exIwXncOiOBYiK0ugUtdyZDkppZn/hmco=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(1800799024)(366016)(10067099003)(18002099003)(22082099003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?j6hV/NINAZ4ggbtUiZrv0xA+xhNvIGUP1WBOsxphWZ+tpHw1I837CY8mhfg2?=
- =?us-ascii?Q?56GzKHJCKlfFKokygzqYkN/mDvVMHVNSDI8yF/PfcPSXBvPUHM2TRvPhaLem?=
- =?us-ascii?Q?w8PLlTDmnWOl266YRPvPKkfOn6x2CGDT8XcIB1bzKxIvOoUvERqSFFpQLf/P?=
- =?us-ascii?Q?/YwZNSYrkJhyr/Uhdc+82TIITa5ckrdR0SYLZemqsBDZp9SC465Yo/TvWqqe?=
- =?us-ascii?Q?NMvpjQB1UCABOZ6eOiPJdR9gZuJPVLF/7YNJKdzoTu5qs+cSR1iCltul46vi?=
- =?us-ascii?Q?UAVOd3t7wcEQP+DHvyxm19enMhGsTR5HISiN8gVZl2T0i0Dkeez1JILi3CZd?=
- =?us-ascii?Q?UYRlPoYxNgyBGIYuw4BRieCHuVWflpCjruMCYywNHUkVIl5QVUVetD+QCZNX?=
- =?us-ascii?Q?PmXCLRttfCF13yyTDNCCm8Sm0awP60ndHpTd2puUAVWwoKFE4jNQ0976V6LW?=
- =?us-ascii?Q?EtPRZYi7xdAHXabyUhL3R3a+2RnksaplJwSBNrtgR6z7Twjl5g5JSlYXClMS?=
- =?us-ascii?Q?IYGSh26Mxu5m+GfXIbuhnWVZ37SbON9w2zuI5Sh3ZonaJJXV406Mktkh8ZBs?=
- =?us-ascii?Q?2y9Heu/Il4sexUWWL9jwkupHDUHZV4hJE9w7O9O1paQrzhmu57O2hAWp3Fh8?=
- =?us-ascii?Q?Gm00ELZJE1NFPozYLzN04hwEk3EpIqelmm3CGod0WP/UBInuWZJYA+3nQ0Ue?=
- =?us-ascii?Q?oVQ0wL4PIgvH2jVO1H/fOsSgWgLUg+c90HOQHSKItFr9CUwH5N0nkQUI6yU0?=
- =?us-ascii?Q?3Pueb0tZU3wJmZnran8vJNr8eavGvHpHVSNZi7Z+drQkEduLmArLilq0/ERH?=
- =?us-ascii?Q?MdtlBL9+dv1jsbQ3nqvWi/RVwy+7+q8Nni2gJYnnwE8hvXPAvrrWYU8KKLUr?=
- =?us-ascii?Q?ejQeUEv0Y/+WyKilX9Mpxn/blCbskJD/HagnYkJ0RCijwA4MH8e3DNfZmKAl?=
- =?us-ascii?Q?W4qfvkWIRZ8Tg2U6Med6XoYV6SYFqTKdUNUocgU8DzjTDQuNHjB3cSZpnIiB?=
- =?us-ascii?Q?6LSpo7tf5+WfWxVd93QHznxW2qAPCn9WrOQlrH83TO8okq4f2um/IbUIzz5F?=
- =?us-ascii?Q?3JAb4DjvAyDcw7aUtLMfhLvKl2090Kb0HSY3P/7jJaQyZ2AtF0jzqYVYtBo7?=
- =?us-ascii?Q?RN1PDBZnjxKrGg1l8n5p6rcPsgsGkpOR5wiEhQWZVIbMkM2ROK/9nxyPyTLO?=
- =?us-ascii?Q?5oo/zoUH5zGSvD5blTZOEfGZebMaV9wP4WEbtXHD/G3n748o0qBqLx5osJWv?=
- =?us-ascii?Q?eTJHciOAKeOQWtCbOI8f6vXwXmHCxOS+8EVOfdlXsD5ecwIdL4hdvGPdTovr?=
- =?us-ascii?Q?3t1j+QfUNwKVlwF57nKqJTh4McX1qp9dEAhtlvZhWVRhMaVvcpx+LiOKQbQt?=
- =?us-ascii?Q?WJR6H/6kZY4hK2qgt/bfFp/Ma3GHedy3YP8uzABHdkJN+oc+RMVevJ60MQNi?=
- =?us-ascii?Q?xqjXBMxB/ujnHhKX021qU4jCjfIaqS2SNj0H9TfXLZZ+9uj2uejd9u7bDctT?=
- =?us-ascii?Q?4JkQuK68lkPL64E1j5Xm817Q68JkyvarMQMFLOl08jN0iaxvN+K1xv2SPk4O?=
- =?us-ascii?Q?dAgM4xPd11D1Hpp9l5fDQFegbaGKQfu3uNx+p9I1UJP3jyWADC4OJY9OhU5H?=
- =?us-ascii?Q?ibC9hmT9BCNMGGunekN5guwwpJQ0uar4VgraNi4iflETcVg8PjPGpXO42Lg3?=
- =?us-ascii?Q?5eDHEUjbujGgnEtG0o5pTWrPrbb7DW+Ww4tmgDbBwtBnsVOe?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09bc64c8-fbb2-483a-2c02-08df285cacc3
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 12:31:01.1505
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e6K7fhvOy+P7XRNwwKtwt29Dn+vG3xNEE9cUyc065Lm8tuoumkR78VOlV1mNbjzNm4Nc3e2vJdAdOYcG9+OikQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8924
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: do not bond/team netdevices which use ml_priv
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+To: Hangbin Liu <hangbin.liu@linux.dev>, Jiale Yao <yaojiale02@163.com>
+Cc: Alexandra Winter <wintera@linux.ibm.com>,
+ Stephen Hemminger <stephen@networkplumber.org>, netdev@vger.kernel.org,
+ Jiri Pirko <jiri@resnulli.us>, Jay Vosburgh <jv@jvosburgh.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Aswin Karuvally <aswin@linux.ibm.com>
+References: <20260815153938.187073-1-socketcan@hartkopp.net>
+ <20260815090015.4a518a54@phoenix.local>
+ <02333bd9-89c4-4952-8ae2-ff3c15dcd4df@hartkopp.net> <aoQwCj9AXNI1qfsu@fedora>
+ <072004e8-d5a8-4f01-9dd5-da2d3aeaa447@hartkopp.net> <aoVzaHfKWG-_OJOY@fedora>
+ <9cad8318-049c-4ba5-9e3e-fe1d843055f4@linux.ibm.com>
+ <9e3e44ac-8725-4372-af4b-e5092c8a3810@hartkopp.net> <aoet6aHyJI5lGNOX@fedora>
+ <6001bd73-ef68-4820-8371-a22775fb820a@hartkopp.net>
+Content-Language: en-US
+In-Reply-To: <6001bd73-ef68-4820-8371-a22775fb820a@hartkopp.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Oct 12, 2026 at 04:03:53PM +0800, Jun Yang wrote:
-> From: Jun Yang <junvyyang@tencent.com>
+
+
+On 21.08.26 13:17, Oliver Hartkopp wrote:
+> On 21.08.26 03:46, Hangbin Liu wrote:
 > 
-> br_set_state() returns without touching p->state when the port is MRP
-> aware, so br_stp_disable_port() cannot move such a port to
-> BR_STATE_DISABLED.
+>>> This caused a problem on CAN devices that were not created by the CAN 
+>>> driver
+>>> infrastructure (creating proper ml_priv content). When TUN/TAP set the
+>>> dev->type of an ethernet device to ARPHRD_CAN the CAN ml_priv is NULL 
+>>> (not
+>>> initialized).
+>>
+>> I don't know why a user change the tun/tap dev->type to CAN. Can they 
+>> work
+>> together? If it's a miss config, I think we can just leave it since we 
+>> already
+>> block CAN slave.
+> 
+> Correct. We currently block ARPHRD_CAN in bond_main.c
+> 
+>>> Not sure if collecting a bunch of ARPHRD values is the right approach or
+>>> whether team/bonding should check required features and settings 
+>>> (like IFF
+>>> flags, e.g. IFF_ARP or specific address length)?
+>>
+>> Bond supports none arp devices. It also supports infiniband devices. 
+>> So we
+>> can't check it with IFF_ARP or address length.
+>>
+>>  From my perspective, we can keep the existing check as it only causes 
+>> issues
+>> with CAN devices. We can work out a better solution if more incompatible
+>> devices are found under bond/team.
+> 
+> I've checked some whitelisting ideas for bond and team which did not 
+> really work and turned out to be risky.
+> 
+> In the end the V2 patch from Jiale Yao testing for ARPHRD_CAN and 
+> ARPHRD_IEEE802154 / ARPHRD_IEEE802154_MONITOR (suggested by Gemini/ 
+> Jakub) seems to be the best idea!
+> 
+> https://lore.kernel.org/netdev/20260728151240.89434-1-yaojiale02@163.com/
 
-Why not fix that instead? With something like [1].
+What happened to this patch above?
 
-Please wait at least 24h before posting another version:
+I still can't see anything of it in net-next.
 
-https://docs.kernel.org/next/process/maintainer-netdev.html
+Best regards,
+Oliver
 
-[1]
-diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-index c52613431f88..45642b6a5866 100644
---- a/net/bridge/br_if.c
-+++ b/net/bridge/br_if.c
-@@ -340,13 +340,13 @@ static void del_nbp(struct net_bridge_port *p)
- 
- 	nbp_delete_promisc(p);
- 
-+	br_mrp_port_del(br, p);
-+	br_cfm_port_del(br, p);
-+
- 	spin_lock_bh(&br->lock);
- 	br_stp_disable_port(p);
- 	spin_unlock_bh(&br->lock);
- 
--	br_mrp_port_del(br, p);
--	br_cfm_port_del(br, p);
--
- 	br_ifinfo_notify(RTM_DELLINK, NULL, p);
- 
- 	list_del_rcu(&p->list);
+> 
+> ARPHRD_IEEE802154 / ARPHRD_IEEE802154_MONITOR do similar things like the 
+> CAN dev->ml_priv approach but with dev->ieee802154_ptr :-/
+> 
+> diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+> index feaa75fbf8fc..d8c46105fc8b 100644
+> --- a/drivers/net/team/team_core.c
+> +++ b/drivers/net/team/team_core.c
+> @@ -1224,6 +1224,17 @@ static int team_port_add(struct team *team, 
+> struct net_device *port_dev,
+>           return -EINVAL;
+>       }
+> 
+> +        if (port_dev->type == ARPHRD_CAN ||
+> +            port_dev->type == ARPHRD_IEEE802154 ||
+> +            port_dev->type == ARPHRD_IEEE802154_MONITOR) {
+> +            NL_SET_ERR_MSG(extack,
+> +                       "CAN and IEEE 802.15.4 devices can't be added as 
+> a team port");
+> +            netdev_err(dev, "Device %s is CAN or IEEE 802.15.4. These 
+> device types can't be added as a team port\n",
+> +                   portname);
+> +            return -EINVAL;
+> +        }
+> +    }
+> +
+> 
+> And for the same reason the same checks for ARPHRD_IEEE802154 / 
+> ARPHRD_IEEE802154_MONITOR need to be added in bond_main.c where 
+> currently only ARPHRD_CAN is blocked.
+> 
+> And I would suggest to have two separate patches for team/bond and not 
+> create a common function for now. Also to provide proper Fixes tags.
+> 
+> @Jiale Yao: Would you like to pick up the bond patch too, so that your 
+> team V2 patch together with the new bond patch will solve this entire 
+> issue?
+> 
+> Finally this will fix these three users of "ml_priv"-style non-ethernet 
+> device types.
+> 
+> The general discussion about the ml_priv usage in
+> 
+> - qeth
+> - ctcm
+> - cxgb2
+> - i596
+> - wilc1000
+> 
+> gets relaxed after drilling down the shown critical cases. The use of 
+> ml_priv is simply legacy code and we can make some cleanups/enhancements 
+> there without pressure.
+> 
+> Best regards,
+> Oliver
+> 
 
