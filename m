@@ -1,216 +1,328 @@
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8FD343883
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D84A3A2E28;
+	Mon, 12 Oct 2026 22:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791845562; cv=none; b=hHTdSxjEe7dQ2sz+pv/zpH8mTToXzvvRXn6YUavvJsN0CrGoje4BnxM6buiopqFHLHXOph7ktQzmWjQppRFzChW+JkNQDI4Dyhw2fADFsP1dWI92IDATVApBxMjhRCbKN1Te48RSzoZ/52G2uHEeGEWbZjrszibyhRtlzyno8G0=
+	t=1791845600; cv=none; b=ECv8EJSGyYqg9UwlZk9wl3DyLXvLhzUH/oLZ7s0Tb3L2teZ84SmV2JPLXlKVvoAxR5KugZ6n5njmf/38e3fSP/Q915RKGJS6F8Tkjs3v9IGFNPs5GYVFfPD0E+5djnZouww7JXLzBhbOXdxsfjUXjrimMgBdWG28WA5z0Hl02j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791845562; c=relaxed/simple;
-	bh=GZWneV3pkV6ZGzVEBwaa2IauTOCWWilGp7S4NzVa1MA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qpfDHp+hSOFkrOEhJmjlVKLt/Ochc24SRsVwZ9MTYkWSkp8HZyQW/CtbeEjPd8kkstRytmTWTibmh/gQVdQ1IlV7IlC1iIex62QsUy/qmJNK9sAnFIJqeOSSFp6SX/HZkfErSJFxIEBDRIC1nNM0PU4CKTLqNPUzlWupEOyUS+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Bfy7xQc6; arc=none smtp.client-ip=209.85.216.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1791845600; c=relaxed/simple;
+	bh=QKLFS6h5vmh0bfFzlLeaMUIP0TIZeyxgb+FOI6Y66GU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=iTDr0WhrNayc/xZEc7IVYkHCWMB6+1fOSRSpzbCPsdVcwkBea9o0vyM0PXVXUsWPXt/w2K8mub6GRIMXHBJnp6SY4GCfRkxb85BJoee/McyY/aSptRtUiAB8PMUaYmj2CS+ECOD0caQQobMQuMyWXd9SBKBZcs5ZevXCuqKbTA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N6NremcM; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Bfy7xQc6"
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3a0aaa0fd13so1587758a91.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:52:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791845561; x=1792450361;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=r1mqm/Jc3jA4GKaZyqWtHUWhabhcJrfuyicLgQd8HEg=;
-        b=2q7wgkVBPwi3LzD/TBopLdbjN8rx3igQtS4nlRJ3f3QJ1OcSVKSJya1oQjeZq2LcZy
-         FXiM5rAh9eIFbYwzothAWxu26bPBTaLWYUjCUdXMAwu21cqdlxDElNzLQ5M9ZWTaPmc+
-         vJcM4KjJLWDP8wi/WiEnQ9nH4WLAZPBbIGOFEMk+i361C9H1xP87hOOpmrDA/ViC4xBf
-         ZD59glXg8gXgXI0wHdxbaJoi+8lTnfcoIzLX6hKlNslqoYetzrSNDxTF30NxJIpaYrSs
-         ZSbfQittgccQeY/GekOU9ofvG0TUgZkd+jqAq5RNNuovu5KC3j4kV7Hm9z0i9EiNM8mp
-         X3uQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxlAb+6LxjzSJ5kluNeDsCejaaI8HZ79XuDdgcXFz+L3vbFMT30RE3aVrkvqgodyY2h7lXL8Pw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLwaUkGe5P3YazdxkMbrIEcG8k1bd/f1zBbYquioKQfcEDejg9G
-	M2+iR7S1jmwGmeOvBAXPS8cRFlMP9xZG+Xe8rVxyoJt6QsT+1PPjCB9I0aZP/EMQQrdr80es6gN
-	Yjb2QfZNG+pfGCbY+N19xRKcaLDnpKZgidTbzxphFNUEW25P1UT1gYWzWC2FPWGzoPiPibTryDi
-	I+9ghk/PnV1nGDXr6KAu4V7k3ADCYZaMze5h95gXKccXB99eL+ygK7bM/sLLt15+Obh4Se8PgOY
-	idk3bCXx4M=
-X-Gm-Gg: AYBFou0ReKhj6BEWKGGw/khRaCq8r0Jus30Vs9ZWtVQnHWiJIVIqP5cY+sHYTm/pEl0
-	xviZ/EQRSLvBXbrYrfxCR7K5ic52SjH9lHOQHzhmPIoxiMmxW7h8LdGFHMg3wNJ9A7G7nwSw9dA
-	umcMqnYA+sMk7ksPv1gt6gSQRvj1cwdeduLsrvMPQ3N4/bmm8z51MJ41mHqQpniyvNTnTupSAru
-	octjEQqHGeQKsiwRi9mkNkO1LmN1yKQnhwknSSEjgu3d9/JCZxc5ikUO5EJokdFjbFEdsG9pIqg
-	tEH9D5wvKhYTUEv95/kTaCgKU2Qk0BgEKXEXAeYJ4ZEWCdiYMuOWX0h97qVCAYPZ7+WTSl1d5nE
-	k4MMXNIqYav3gBXcEhpkro1kBGyQq2a1ektYm4+rV+f3IY/XgG8V2VbNid/fx8mrYGGC/gfKKkI
-	sr0wC0n3WoAHjIMl2cfA6mAOEOqS5JNk63Vp9BhA==
-X-Received: by 2002:a17:90b:1d48:b0:3aa:f2c4:12ee with SMTP id 98e67ed59e1d1-3ab3a3001demr8977683a91.8.1791845560473;
-        Mon, 12 Oct 2026 15:52:40 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ab370e4b6csm6170742a91.2.2026.10.12.15.52.39
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Oct 2026 15:52:40 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c29466736e3so251383466b.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791845558; x=1792450358; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=r1mqm/Jc3jA4GKaZyqWtHUWhabhcJrfuyicLgQd8HEg=;
-        b=Bfy7xQc6LuyyBuR76nuMqBvJ1G2hI5BmipLk/47EvpreGzGNAIfD2k5yv+Q7kjvb4P
-         PJRpG0U2JeWcLERUajfU5lrtgeb1l4HbaTF5h/q4tH8YOOQUlsypfwBGlofoU27HgJ/r
-         hOVa78yNhjtT5CQhDItorpp5zsLm2iTi42zHo=
-X-Forwarded-Encrypted: i=1; AKwUvBz5LqMHEGFKroRZd3Imivh++/d6t9cqBaLEAHuoPq1LuuG7kFOWX7RJd9rd0ibpP7X4gbFLDzc=@vger.kernel.org
-X-Received: by 2002:a17:907:9451:b0:c33:ae8b:817d with SMTP id a640c23a62f3a-c33ae8b8566mr567498566b.46.1791845558407;
-        Mon, 12 Oct 2026 15:52:38 -0700 (PDT)
-X-Received: by 2002:a17:907:9451:b0:c33:ae8b:817d with SMTP id
- a640c23a62f3a-c33ae8b8566mr567497566b.46.1791845558065; Mon, 12 Oct 2026
- 15:52:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N6NremcM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791845599; x=1823381599;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=QKLFS6h5vmh0bfFzlLeaMUIP0TIZeyxgb+FOI6Y66GU=;
+  b=N6NremcMS4DIdB6aMURUyXa2v7pgbj0cpAdBBsQNUPK6ty+KKYiUjc9R
+   g2BNwt25c2woAafUMQ6PPnGItzpJIxOmzja1r0zZMAoAZQcWIu6mconPw
+   nIQGHVnVLnSz0OOHDRyqZc1AJ2JFb0GdfImf51iZSl3jQcoLo8ACjjZdl
+   1B86mE+mgzFXwOmw61ONXs4DUIsH4fm4tAq/AodYzYI9k7d+vylksh9lb
+   Xb7bkzp1xRdOCjHWqq0C1Hy1Zk21vVoMdgeIzpmViYlt5xPP0jlVkBnJd
+   aQaJ5RXmemGm7f4dhUG9BsT6RAUgVTCMh728b+AHno7svuTAbgNB5N0n4
+   Q==;
+X-CSE-ConnectionGUID: a1XViGtlSP2rucTFwGqc6g==
+X-CSE-MsgGUID: Z6x9jzkOQka5zwuhgsIjhQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="448729"
+X-IronPort-AV: E=Sophos;i="6.27,154,1787036400"; 
+   d="scan'208";a="448729"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 15:53:18 -0700
+X-CSE-ConnectionGUID: C/DEypYpR3epeort+QbWig==
+X-CSE-MsgGUID: 21eJ7L1eRXipUJZhrHFH9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,154,1787036400"; 
+   d="scan'208";a="945329"
+Received: from vcostago-desk1.jf.intel.com (HELO vcostago-desk1) ([10.241.243.117])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 15:53:19 -0700
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+To: Krystian Kaniewski <krystianmkaniewski@gmail.com>, Jamal Hadi Salim
+ <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+e044a9b6370ed8ca9737@syzkaller.appspotmail.com
+Subject: Re: [PATCH net v2 2/2] net/sched: taprio: do not replay missed
+ entries in advance_sched()
+In-Reply-To: <20261009123309.284193-3-krystianmkaniewski@gmail.com>
+References: <20261009123309.284193-1-krystianmkaniewski@gmail.com>
+ <20261009123309.284193-3-krystianmkaniewski@gmail.com>
+Date: Mon, 12 Oct 2026 15:53:18 -0700
+Message-ID: <87ik36lee9.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012220827.340998-1-michael.chan@broadcom.com> <179184330708.2527009.13518324856778830889@kernel.org>
-In-Reply-To: <179184330708.2527009.13518324856778830889@kernel.org>
-From: Michael Chan <michael.chan@broadcom.com>
-Date: Mon, 12 Oct 2026 15:52:26 -0700
-X-Gm-Features: AclHuK_8XgCEqgU5BIx1oBqnVRrdOpQGtTYpgXSJUgrWqUBCjel5AHr4ctvUAag
-Message-ID: <CACKFLimaXb6sPWgpq9mAY0zjGfaqP+hheuWs9N9nD6oS7trz2A@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/7] bnxt_en: Ring accounting fixes
-To: netdev-bot+sinfo@kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
-	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000003c9a6065dac8e9a"
+Content-Type: text/plain
 
---00000000000003c9a6065dac8e9a
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Krystian Kaniewski <krystianmkaniewski@gmail.com> writes:
 
-On Mon, Oct 12, 2026 at 3:15=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
+> advance_sched() advances the software schedule by one entry per hrtimer
+> expiry and rearms the timer at the nominal end of that entry, without
+> reading the clock. When that time has already passed, the hrtimer core
+> runs the callback again inside the same interrupt, once for every missed
+> entry.
 >
-> Hi!
+> syzbot hits this with a single 127 ns entry on a veth device.
+> fill_sched_entry() only rejects intervals below the transmission time of
+> a minimum sized frame, which is 48 ns at the 10 Gb/s reported by veth,
+> so 127 ns is accepted. One expiry takes longer than 127 ns, so the
+> backlog grows instead of shrinking, the CPU stays in the timer interrupt
+> and RCU reports a stall. Lateness from a forward step of CLOCK_REALTIME
+> or CLOCK_TAI, from resume with CLOCK_BOOTTIME, or from a long time with
+> interrupts disabled leads to the same replay with any interval.
 >
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> Record when the schedule starts and the period after which it repeats,
+> which is the cycle time, or the sum of the intervals when the entries
+> end before the cycle does. Whenever the entry that advance_sched() is
+> about to start has already ended, find the entry in progress from these
+> two values and continue from there. This selects the entry and the end
+> time that the replay would have reached, so a schedule that keeps up
+> with its timer behaves as before. The same check covers the first entry
+> after taprio_change() resets the current entry of a running schedule,
+> and the first entry of an admin schedule that takes over late.
 >
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
+> advance_sched() now evaluates should_change_schedules() once on the
+> caught up end time instead of once per missed entry. That is only
+> equivalent if the test is monotonic in the end time, so make the
+> cycle_time_extension sum in that helper saturate instead of wrap. The
+> extension comes from netlink as an unbounded signed value.
 >
-Sorry, missed this information:
+> This bounds the work done per expiry. It does not limit how often the
+> timer fires. Unless the clock is stepped backward between the hrtimer
+> core reading it and the callback reading it, the timer is rearmed after
+> the current time and the CPU leaves the timer interrupt between
+> expiries. On the high-resolution hard interrupt path, a schedule whose
+> intervals are shorter than one expiry is then held back by the hang
+> detection in hrtimer_interrupt().
+>
+> Fixes: 5a781ccbd19e ("tc: Add support for configuring the taprio scheduler")
+> Reported-by: syzbot+e044a9b6370ed8ca9737@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=e044a9b6370ed8ca9737
+> Assisted-by: Codex:gpt-6.1-sol
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+> ---
 
-The patches were tested on 5750X and 5760X chips using production FW
-version 237.x.x.x.
+This one I need more time to review, from a quick look it looks good.
+Just a few minor comments for now.
 
---00000000000003c9a6065dac8e9a
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+>  struct taprio_sched {
+> @@ -902,8 +909,19 @@ static bool should_change_schedules(const struct sched_gate_list *admin,
+>  	 * plus the amount that can be extended would fall after the
+>  	 * next schedule base_time, we can extend the current schedule
+>  	 * for that amount.
+> +	 *
+> +	 * cycle_time_extension is an unbounded signed value from netlink, so
+> +	 * clamp the sum instead of letting it wrap. A wrap would make this
+> +	 * test non-monotonic in end_time, and advance_sched() relies on it
+> +	 * being monotonic to check it once after catching up instead of once
+> +	 * per skipped entry.
+>  	 */
+> -	extension_time = ktime_add_ns(end_time, oper->cycle_time_extension);
+> +	if (oper->cycle_time_extension > 0 &&
+> +	    end_time > KTIME_MAX - oper->cycle_time_extension)
+> +		extension_time = KTIME_MAX;
+> +	else
+> +		extension_time = ktime_add_ns(end_time,
+> +					      oper->cycle_time_extension);
+>
 
-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
-DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
-qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
-5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
-rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
-qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
-2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
-K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
-H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
-Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
-WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
-q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
-2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
-bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
-R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBQ9Z3F
-WoHe2X1XSqp+JepWo7+jZJjLY9td4qLG92Uw5jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjEwMTIyMjUyMzhaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBnFPhCw7/ZP3zOn1Adjd9l0nBB4/3Ve0WbR83nsrfw
-QBTCoR7N1YTJiNUehXrRGWK7Lb+TA8hg/4IPsjytYAywb4wHYt8Ihzae74siR0w2d2ZthW2QNgVt
-esNrEZmrB1ddZiT1Pb4KxiAph3CGb2Sc4fSbvcu7SfBLePbuXXlgqKwSRpHIGxHSWnca4Y+7hZny
-mw6f+fAgntQinmHDzYsuXP3inIEcT08SYODDgyZaamcnio7kbKJlXrMsR82/dKWDcsI4JnINNcnF
-x23nw3EYalh7Sdts3peo14WmmuFGYbr10ejS76Xe50LTcR0I54PZHXIoSGaAG5Okqh1IuItY
---00000000000003c9a6065dac8e9a--
+This one I could argue that it could be in a separate patch. As the
+wrapping could cause issues even before these changes, no?
+
+>  	/* FIXME: the IEEE 802.1Q-2018 Specification isn't clear about
+>  	 * how precisely the extension should be made. So after
+> @@ -915,6 +933,51 @@ static bool should_change_schedules(const struct sched_gate_list *admin,
+>  	return false;
+>  }
+>  
+> +/* Returns the entry of @sched which is in progress at @now, the one that
+> + * advance_sched() reaches by moving one entry per expiry from the start of
+> + * the schedule, and sets @start and @end to the times at which it started
+> + * and ends. Also sets the end of the cycle which contains it.
+> + */
+> +static struct sched_entry *taprio_entry_at(struct sched_gate_list *sched,
+> +					   ktime_t now, ktime_t *start,
+> +					   ktime_t *end)
+> +{
+
+I like the idea of having this primitive.
+
+> +	struct sched_entry *entry, *found = NULL;
+> +	ktime_t cycle_start = sched->start_time;
+> +	s64 offset, entry_end = 0, elapsed = 0;
+> +
+> +	if (ktime_after(now, cycle_start)) {
+> +		s64 periods = div64_s64(ktime_sub(now, cycle_start),
+> +					sched->period);
+> +
+> +		cycle_start = ktime_add_ns(cycle_start,
+> +					   periods * sched->period);
+> +	}
+> +	offset = ktime_sub(now, cycle_start);
+> +
+> +	/* The offset is less than one period, so an entry which ends after
+> +	 * @now is found at the latest at the entry which reaches the end of
+> +	 * the cycle, or at the last entry. A schedule has at least one entry,
+> +	 * so the loop always sets found.
+> +	 */
+> +	list_for_each_entry(entry, &sched->entries, list) {
+> +		entry_end = min_t(s64, elapsed + entry->interval,
+> +				  sched->cycle_time);
+> +		if (offset < entry_end ||
+> +		    list_is_last(&entry->list, &sched->entries)) {
+> +			found = entry;
+> +			break;
+> +		}
+> +		elapsed = entry_end;
+> +	}
+> +
+> +	*start = ktime_add_ns(cycle_start, elapsed);
+> +	*end = ktime_add_ns(cycle_start, entry_end);
+> +	sched->cycle_end_time = ktime_add_ns(cycle_start,
+> sched->cycle_time);
+
+Having this side effect here was unexpected. I think this would make
+more sense outside this function.
+
+> +
+> +	return found;
+> +}
+> +
+>  static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+>  {
+>  	struct taprio_sched *q = container_of(timer, struct taprio_sched,
+> @@ -923,8 +986,8 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+>  	struct sched_gate_list *oper, *admin;
+>  	int num_tc = netdev_get_num_tc(dev);
+>  	struct sched_entry *entry, *next;
+> +	ktime_t end_time, start, now;
+>  	struct Qdisc *sch = q->root;
+> -	ktime_t end_time;
+>  	int tc;
+>  
+>  	spin_lock(&q->current_entry_lock);
+> @@ -938,6 +1001,15 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+>  	if (!oper)
+>  		switch_schedules(q, &admin, &oper);
+>  
+> +	/* The entry selected below can be over already, after a clock step,
+> +	 * a long time with interrupts disabled, or because the intervals are
+> +	 * shorter than one expiry takes. Moving on by one entry and arming the
+> +	 * timer in the past would run this function again for every missed
+> +	 * entry without leaving the timer interrupt. Take the entry which is in
+> +	 * progress now instead, so that the timer is always armed after now.
+> +	 */
+> +	now = taprio_get_time(q);
+> +
+>  	/* This can happen in two cases: 1. this is the very first run
+>  	 * of this function (i.e. we weren't running any schedule
+>  	 * previously); 2. The previous schedule just ended. The first
+> @@ -948,27 +1020,26 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+>  		next = list_first_entry(&oper->entries, struct sched_entry,
+>  					list);
+>  		end_time = next->end_time;
+> -		goto first_run;
+> -	}
+> -
+> -	if (should_restart_cycle(oper, entry)) {
+> -		next = list_first_entry(&oper->entries, struct sched_entry,
+> -					list);
+> -		oper->cycle_end_time = ktime_add_ns(oper->cycle_end_time,
+> -						    oper->cycle_time);
+> +		if (likely(ktime_after(end_time, now)))
+> +			goto first_run;
+> +		/* Also after taprio_change() while the schedule runs */
+> +		next = taprio_entry_at(oper, now, &start, &end_time);
+>  	} else {
+> -		next = list_next_entry(entry, list);
+> -	}
+> -
+> -	end_time = ktime_add_ns(entry->end_time, next->interval);
+> -	end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+> +		if (should_restart_cycle(oper, entry)) {
+> +			next = list_first_entry(&oper->entries,
+> +						struct sched_entry, list);
+> +			oper->cycle_end_time =
+> +				ktime_add_ns(oper->cycle_end_time,
+> +					     oper->cycle_time);
+> +		} else {
+> +			next = list_next_entry(entry, list);
+> +		}
+>  
+> -	for (tc = 0; tc < num_tc; tc++) {
+> -		if (next->gate_duration[tc] == oper->cycle_time)
+> -			next->gate_close_time[tc] = KTIME_MAX;
+> -		else
+> -			next->gate_close_time[tc] = ktime_add_ns(entry->end_time,
+> -								 next->gate_duration[tc]);
+> +		start = entry->end_time;
+> +		end_time = ktime_add_ns(start, next->interval);
+> +		end_time = min_t(ktime_t, end_time, oper->cycle_end_time);
+> +		if (unlikely(!ktime_after(end_time, now)))
+> +			next = taprio_entry_at(oper, now, &start, &end_time);
+>  	}
+>  
+>  	if (should_change_schedules(admin, oper, end_time)) {
+> @@ -978,8 +1049,20 @@ static enum hrtimer_restart advance_sched(struct hrtimer *timer)
+>  		 */
+>  		next = list_first_entry(&oper->entries, struct sched_entry, list);
+>  		end_time = next->end_time;
+> +		if (likely(ktime_after(end_time, now)))
+> +			goto set_budgets;
+> +		next = taprio_entry_at(oper, now, &start, &end_time);
+> +	}
+> +
+> +	for (tc = 0; tc < num_tc; tc++) {
+> +		if (next->gate_duration[tc] == oper->cycle_time)
+> +			next->gate_close_time[tc] = KTIME_MAX;
+> +		else
+> +			next->gate_close_time[tc] =
+> +				ktime_add_ns(start, next->gate_duration[tc]);
+>  	}
+>  
+> +set_budgets:
+>  	next->end_time = end_time;
+>  	taprio_set_budgets(q, oper, next);
+>  
+> @@ -1285,7 +1368,8 @@ static void setup_first_end_time(struct taprio_sched *q,
+>  {
+>  	struct net_device *dev = qdisc_dev(q->root);
+>  	int num_tc = netdev_get_num_tc(dev);
+> -	struct sched_entry *first;
+> +	struct sched_entry *first, *entry;
+> +	s64 intervals = 0;
+>  	ktime_t cycle;
+>  	int tc;
+>  
+> @@ -1297,6 +1381,11 @@ static void setup_first_end_time(struct taprio_sched *q,
+>  	/* FIXME: find a better place to do this */
+>  	sched->cycle_end_time = ktime_add_ns(base, cycle);
+>  
+> +	list_for_each_entry(entry, &sched->entries, list)
+> +		intervals += entry->interval;
+> +	sched->start_time = base;
+> +	sched->period = min_t(s64, intervals, cycle);
+> +
+>  	first->end_time = ktime_add_ns(base, first->interval);
+>  	taprio_set_budgets(q, sched, first);
+>  
+> -- 
+> 2.53.0
+>
+
+-- 
+Vinicius
