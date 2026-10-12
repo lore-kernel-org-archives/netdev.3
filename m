@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F69318B83;
-	Mon, 12 Oct 2026 04:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10E42BD033;
+	Mon, 12 Oct 2026 04:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791779244; cv=none; b=OTG0JQR/ka7WLUoUdkE2AwGGN6S1C8q9Zb/oejPogHI3dWbAbGD8dNn77o9rvRqz5KwHWPDynfoAvL5Noe5FzRhTwkj/MLnQDhJCxiMzeBW0DCCpKPlJplzgZdEg5Fg63Rlo0sL4U+rG57lKnb5uJfs61G+dbHJ66Gn3UaJzwPs=
+	t=1791779433; cv=none; b=FBR9GR0PN2x21bqRg6HTmdLxzahaEL7bJGHSTJUfgHz7zMSiGurvn2K8l4y2Cp1iNlQK/60fThjP+YLATwd/QOn97dpJf/w/kaoy6RRJlgw4btiaM/oqybiR01sJQiWcU+cq3vY8MeA22WOEHQGUwGQ7EqYSGhQwiGOI3tD5WOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791779244; c=relaxed/simple;
-	bh=OSualuFA1JNLwwDkgs3/qCuuG8cnTESHH3RVN3CNw0Q=;
+	s=arc-20240116; t=1791779433; c=relaxed/simple;
+	bh=9jY69FiLw6WSt8t0W8Yy55L0q0eRB4ZdxPkG7etOsrY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sWH50S+R56yVaK2ArwB+xFaKylJjSXBEyPmazuRsNk4c+AIPmTZPPdKEwTwK43ytrlFOHdH21Ew+OO43/tJhDnTWaQ1NezehjGf8d/98esecqLcRelp4rP2nqe8ns4rjMh5fIj5ust5T8LkrsyTkkP4QmPinpHIZXWTTT8tNnQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cb3kZnQL; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=uafmnLycmqdBEOcoxv+WVKgRVoIobEZ+I6Z392E7ey4qD8j5N+i1nk3e7ZnIYFlShosYbq5WaPRK4CilACBAgg+giHu9Ydcn1KeVSgdNW5HlWOPcDzb/sz22Bemw7SJhd8TZUK7YMU2WvW/Tng096W8PD+8xY2asODiAuvHesNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5nto+yM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cb3kZnQL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF091F0089B;
-	Mon, 12 Oct 2026 04:27:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5nto+yM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990131F0089B;
+	Mon, 12 Oct 2026 04:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791779241;
-	bh=QJh9QaUYrLN+/jImyp2k/Z7vS07GIEVHDzwZt/doNeE=;
+	s=k20260515; t=1791779429;
+	bh=LmxiW8ecbgTyq0XIhapOQCCxxMkdGoDLUc516Nsm02M=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Cb3kZnQL9KjNvfhws20mp2cemQVwc1a68eWhAX7KdVkpLxv5pkggQV3Q+pyQ7ibni
-	 IDRYIlW0liiMWn7U3dtInxjRmY9PU2XMydKFZxTGJfGKgg1URa9X8B+IUaGeUpSZFz
-	 XHdj+PCOhv+3K45GA2BIkYE4C0nxgYKNT0ARj4xJvaSs+Mvd7AUipiIt4CMo7Gr3A4
-	 oHvfppuj0d55QlclGLIrzciAiGzvsYl/HRpi+UMXxL4RpEfl7spPUydi3TR+hB+XHJ
-	 XNK3nWcC1srlPuWITKu8uzKOsuFLq5YXczDG0JRdqsJb6zi9nEeeaZBA0sHHzD8WzH
-	 lwaflmLjxVq9Q==
-Subject: Re: [PATCH] net/sched: sch_netem: prevent packet length underflow
- with negative overhead
+	b=C5nto+yMoAyhCwKUjoMBZoQCrTiJKbs7f3q8Unhlryl2rZfBdsFRQS2i50Y4YtQiA
+	 hDg2rYfglnSu1WVGVyetbMNYLP+KsSgEBaMVilNqli4YUVsPz2ivvtvicGvOF0V/Ky
+	 RrbxQScvT9epn5hXe1eneKENaQRH+miF3IaNeUrs28/7JcFzG2PJaetzX9aDb9srJl
+	 qMc9HnMi34xLUCZjqa63/EvIpt1X2YzATqU4KsC1GkZp849UGn2KkPUu2k+2aZiJ1K
+	 ua6URIEwm1cYuz/QLpAWsuEogTSih50xV1ndwdIaEw1cRi2rnaJRTDcWgJqGb00OTF
+	 VAdmdriFWEZZA==
+Subject: Re: [PATCH net v2] net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS
+ responses
 From: netdev-bot+sashiko@kernel.org
-To: dungvn2345@gmail.com
-Cc: stephen@networkplumber.org, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Mon, 12 Oct 2026 04:27:20 +0000
-Message-ID: <179177924024.434549.1159457377130534867@kernel.org>
-In-Reply-To: <20261008035656.330667-1-dungvn2345@gmail.com>
-References: <20261008035656.330667-1-dungvn2345@gmail.com>
+To: xinsheng.zhu.ny@gmail.com
+Cc: netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, oliver@neukum.org,
+ giuseppe@southpole.se
+Date: Mon, 12 Oct 2026 04:30:28 +0000
+Message-ID: <179177942813.434549.3756195226539512858@kernel.org>
+In-Reply-To: <20261011035150.53315-1-xinsheng.zhu.ny@gmail.com>
+References: <20261011035150.53315-1-xinsheng.zhu.ny@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,136 +59,102 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In net/sched/sch_netem.c, packet_time_ns() line 376 now does
-  `s32 cell_len = (s32)q->cell_size + q->cell_overhead;`, and lines…
-- [Low] In net/sched/sch_netem.c, packet_time_ns() now computes the cell-
-  adjusted length as `len = (u64)cells * cell_len;` (line 382) instead…
-- [Low] The commit message says the new clamping is 'matching the
-  behavior in sch_cake and sch_tbf'.
+- [Medium] The patch makes binding stricter for every CDC NCM, MBIM and
+  Huawei NCM device, but the commit message does not say so.
 
 --
 
-net/sched: sch_netem: prevent packet length underflow with negative overhead
+net: usb: cdc_ncm: reject short GET_NTB_PARAMETERS responses
 
-This patch changes packet_time_ns() in sch_netem. It now returns 0 when
-the packet length plus a negative packet_overhead is non-positive, and
-also when cell_size + cell_overhead is non-positive. The cell-adjusted
-length is now computed as a u64 product instead of a u32 one.
+This patch changes cdc_ncm_init() so that GET_NTB_PARAMETERS must return
+the full 28-byte NTB parameter structure. Before, only negative errors from
+usbnet_read_cmd() were rejected. Short and zero-length responses now fail
+with -EIO, and negative errors are passed through unchanged.
 
-> Clamp the effective packet length to 0 if the overhead adjustment
-> would underflow, and return 0 delay if effective cell length is
-> non-positive, matching the behavior in sch_cake and sch_tbf.
-
-[Severity: Low]
-Is the comparison to sch_cake and sch_tbf accurate?
-
-sch_tbf uses psched_l2t_ns() with struct psched_ratecfg, where overhead is
-a u16. Its overhead cannot be negative, so there is no negative-overhead
-behavior to match there.
-
-sch_cake's cake_calc_overhead() clamps to the MPU rather than to zero:
-
-	len = max((s32)len + q->rate_overhead, (s32)q->rate_mpu);
-
-Its ATM/PTM framing is fixed, so it has no configurable cell size and no
-rule like "return 0 delay when cell_size + cell_overhead <= 0".
-
-The commit message also doesn't mention that the cell product is now
-computed as (u64)cells * cell_len instead of in wrapping u32 arithmetic.
-That changes the computed delay for large configurations.
-
-Since this is tagged for stable, could the message describe this as a new
-policy (a non-positive effective length means no rate shaping for that
-packet) instead of an existing convention?
-
-> diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-> index 8a1b89a289d8f..a3dcd33bec499 100644
-> --- a/net/sched/sch_netem.c
-> +++ b/net/sched/sch_netem.c
-> @@ -366,14 +366,20 @@ static s64 tabledist(s64 mu, s32 sigma,
->  
->  static u64 packet_time_ns(u64 len, const struct netem_sched_data *q)
->  {
-> +	if ((s64)len + q->packet_overhead <= 0)
-> +		return 0;
-> +
->  	len += q->packet_overhead;
->  
->  	if (q->cell_size) {
->  		u32 cells = reciprocal_divide(len, q->cell_size_reciprocal);
-> +		s32 cell_len = (s32)q->cell_size + q->cell_overhead;
->  
->  		if (len > cells * q->cell_size)	/* extra cell needed for remainder */
->  			cells++;
-> -		len = cells * (q->cell_size + q->cell_overhead);
-> +		if (cell_len <= 0)
-> +			return 0;
+> diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+> index 35db38cb3e4a2..79893d2342ca1 100644
+> --- a/drivers/net/usb/cdc_ncm.c
+> +++ b/drivers/net/usb/cdc_ncm.c
+> @@ -524,9 +524,9 @@ static int cdc_ncm_init(struct usbnet *dev)
+>  			      |USB_RECIP_INTERFACE,
+>  			      0, iface_no, &ctx->ncm_parm,
+>  			      sizeof(ctx->ncm_parm));
+> -	if (err < 0) {
+> +	if (err != sizeof(ctx->ncm_parm)) {
+>  		dev_err(&dev->intf->dev, "failed GET_NTB_PARAMETERS\n");
+> -		return err; /* GET_NTB_PARAMETERS is required */
+> +		return err < 0 ? err : -EIO; /* GET_NTB_PARAMETERS is required */
+>  	}
 
 [Severity: Medium]
-Can cell_len come out negative here for configurations the kernel already
-accepts?
+Can this turn a short GET_NTB_PARAMETERS reply, which used to be tolerated,
+into a bind failure for devices that currently work?
 
-q->cell_size comes from the __u32 cell_size field of struct tc_netem_rate.
-get_rate() stores it without any range check:
+ctx->ncm_parm sits in the ctx that cdc_ncm_bind_common() allocates zeroed.
+__usbnet_read_cmd() copies only the bytes the device actually returns, so
+any fields that are missing read as zero.
 
-net/sched/sch_netem.c:get_rate() {
-    ...
-	q->cell_size = r->cell_size;
-	q->cell_overhead = r->cell_overhead;
-    ...
-}
+The driver already replaces a zero value in each of these fields:
 
-In two cases cell_len goes negative even though the real cell length is
-large and positive:
+  cdc_ncm_check_rx_max() raises a too-small dwNtbInMaxSize to
+  USB_CDC_NCM_NTB_MIN_IN_SIZE.
 
-  - any cell_size >= 0x80000000 turns negative after the (s32) cast
-  - cell_size = 0x7fffffff with cell_overhead = 1 wraps the s32 addition
-    past INT_MAX
+  cdc_ncm_check_tx_max():
+	if (le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize) == 0)
+		max = CDC_NCM_NTB_MAX_SIZE_TX; /* dwNtbOutMaxSize not set */
 
-In both cases packet_time_ns() returns 0, so this line in netem_enqueue()
-adds no serialization delay:
+  cdc_ncm_fix_modulus() resets tx_ndp_modulus, tx_modulus and tx_remainder
+  to defaults.
 
-	delay += packet_time_ns(qdisc_pkt_len(skb), q);
+  cdc_ncm_init() itself:
+	/* devices prior to NCM Errata shall set this field to zero */
+	ctx->tx_max_datagrams = le16_to_cpu(ctx->ncm_parm.wNtbOutMaxDatagrams);
+	[ ... ]
+	if ((ctx->tx_max_datagrams == 0) ||
+			(ctx->tx_max_datagrams > CDC_NCM_DPT_DATAGRAMS_MAX))
+		ctx->tx_max_datagrams = CDC_NCM_DPT_DATAGRAMS_MAX;
 
-The configured rate shaping is then silently skipped. Before this patch,
-cell_size = 0x80000000 with cell_overhead = 0 still produced a large
-positive delay, and netem_dump() reports the value back unchanged.
+  If bmNtbFormatsSupported is 0, the driver simply keeps the mandatory
+  NTB16 format.
 
-Would computing the sum in a wider type avoid this? For example:
+With this change, any reply of 0 to 27 bytes makes cdc_ncm_init() return
+-EIO, and cdc_ncm_bind_common() then takes the error path:
 
-	s64 cell_len = (s64)q->cell_size + q->cell_overhead;
+	if (cdc_ncm_init(dev))
+		goto error2;
 
-Another option is to reject these values in get_rate()/netem_change()
-with an extack error.
+cdc_ncm_bind(), cdc_mbim_bind() and huawei_cdc_ncm_bind() all call
+cdc_ncm_bind_common(). Would any NCM, MBIM or Huawei NCM device whose
+firmware sends a short reply now lose its network interface?
 
-> +		len = (u64)cells * cell_len;
->  	}
->  
->  	return div64_u64(len * NSEC_PER_SEC, q->rate);
+For example, a pre-errata device that leaves out only the trailing
+wNtbOutMaxDatagrams field would have worked before this patch. Would it
+work to require only the bytes up to and including dwNtbOutMaxSize (or
+wNdpOutAlignment)? Another option is to log a warning and continue.
 
-[Severity: Low]
-len is now a u64 product, so it is no longer bounded by 2^32 - 1. Can
-len * NSEC_PER_SEC overflow here?
+The commit message says:
 
-Take cell_size = 1, cell_overhead = 0x7ffffffe (so cell_len = 0x7fffffff)
-and a 1500 byte packet. reciprocal_value(1) gives cells = 1500, so len is
-about 3.2e12. len * NSEC_PER_SEC is then about 3.2e21, which wraps u64.
+  "A short response therefore leaves the missing bytes zero-filled, and
+   initialization continues with parameters that were not supplied by
+   the device."
 
-With a small q->rate (for example 1 byte/s) the quotient can also exceed
-S64_MAX. The s64 delay in netem_enqueue() would then turn negative:
+It does not say that those zero values are already replaced with
+defaults, or that a tolerated firmware quirk now becomes a probe failure.
+Could the commit message describe this trade-off?
 
-	delay += packet_time_ns(qdisc_pkt_len(skb), q);
-	...
-	cb->time_to_send = now + delay;
+About the tag:
 
-and time_to_send would land in the past. The old u32 product capped this
-at about 4.3e18, which is below S64_MAX.
+  "Fixes: 36c35416a94f ("cdc_ncm: fix endianness problem.")"
 
-The same configuration already gave a meaningless delay before this patch,
-because the u32 product wrapped. The patch moves the wrap into the 64-bit
-multiply and adds the negative-delay case.
+Before 36c35416a94f, this code went through cdc_ncm_do_request() with
+actlen == NULL. That returned 0 for any non-negative usb_control_msg()
+result, so the reply length was not checked there either.
 
-Would mul_u64_u64_div_u64() or an explicit clamp make this well-defined?
+Is 36c35416a94f the right commit for the Fixes tag? Because the tag points
+at a 2011 commit, this behaviour change is likely to be backported to
+stable kernels.
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008035656.330667-1-dungvn2345%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011035150.53315-1-xinsheng.zhu.ny%40gmail.com
