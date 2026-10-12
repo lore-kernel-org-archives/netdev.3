@@ -1,82 +1,69 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD7A23C51D
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CF92367B60
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791784937; cv=none; b=bCnAhGm0F7ZsCeShxRZHhtOvVVRgQxY27dw7tQTL5VsbD5eGWMRDMf4ZLPo8XXo1uwjRvGwnMby3CCyXCz7HYojRxlrqgDT8OuPlH6CrgmBMyHgFhV7EY1Qqk6bgCux8DerdQlN4VeUNEmdS7e08EtelT6mRXthzDBAPYbSoHx0=
+	t=1791785094; cv=none; b=YwomlzEI6TSHgRAVbIlFjzIDcwxC9mpuyBgbboX8cxBiiYTtKDfBp0cK8HQOoNhf1ygvILwVy/+pIh//1nKBLKcAhhmmds2cibcc+pDLCp99Emkil/APyPGzuazmB30e34GA1JZPDyXcgCF22xbwp1D9e7nCKfHTr1Eo7pKTTJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791784937; c=relaxed/simple;
-	bh=3ds6Kxo8KcToMGKlp0BSgF6Z+8tStFHjy+wAKuW4LJY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MMnv05FQb3VwTbfWDBiVVwlzvvYfFQ1kfzkWy0+Uw5xozr9IyQZNqOVq7N7UnBhNMXyjluMrg9ca0tYUR3nd+M3N16TGcAyEjOTj9ZE6OtY8wHeZGtm/5VFvPP5nVhG92usHOLEtnrBc+H+gYxrr+xsjdBLtjh7Usj62VfHqkYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fpKEVUJg; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1791785094; c=relaxed/simple;
+	bh=Lnpl8QkNrNnJXHNnW30vJHk7Gb3yHrhHJLxs2uLzIS4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iRqSgB/hkt4d5WR/Enb7noBu3LJAJoRmBm+MGw942jNH8NN17kDNpchX0dbkC8eMvCdMTgiDck4gTX3VVMmCBL97u+ER6whpkEl2x/kDbc6GgusQqnslQurF6V/QY0scNM33RSUnWjPf0en2u2lfoAixQrYb9btaa0DppNNMNtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n+K94cug; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fpKEVUJg"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d6d28aa26cso6541575ad.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 23:02:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n+K94cug"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3a4cdc9025bso639325a91.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 23:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791784936; x=1792389736; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791785091; x=1792389891; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R/ggKxDXF1W4YTObb0Gqmnak9Gw8ra8VXEN2yWLxx6o=;
-        b=fpKEVUJgS+E8Ugk5K/rMEtfMNqEQ/gSzQtjKnVZNG0WxiLYl3WSLXvBs1C4JNf3tT0
-         KihZhyE5c5aXMow/hEW7WSBA/8fJuifFI5MV20quz4QeuhbKFnybP4GAF2yUFpeEKLha
-         4yw7wHjKm5sP2OEl0zoqYag3+L4LuMc7U9xh+WGXAy+NbQJaLxYsqtGPtW7H4gXeDOoK
-         oiN3zd7vMf46M9moQ571LWSFpShqoETOI3206Cg7x8aT/WU0aclIXmyXMACnm50RyKJT
-         9+ezW9gyUFNRLOHWPKGbR15W1GzVXVObAwQHUWXJQoZJwSgeBjfW72eQQQf0yo8OuQCj
-         3MTQ==
+        bh=Lq1g9tbRNoRmlpmv+DYsr8gVEEolEwzNV4RTVW+b/7s=;
+        b=n+K94cug21Nz3l+svE3YUpbxgmLNir7JV1rLQlEwm91G10a2VM+gJYDqVxgZ/ChjV4
+         xBsr32Gs5iVu4Ud2CGVxIzrcus1DESJxS15TrMlrl1xuqV9lGEUgafu2tdConuBGe0M/
+         mC8MC3M/kVKuJoWurxa67EIGbIGyKdrPitATiD3Ic1fSWwTrEyc+84boHbqLJBhwNiuY
+         Yzc1Qf71RTZ5IXucKWV/YM/j9TaaYk6umFvySaz7s6+cyEwMzNoKXYusrLeA/EPJH+xM
+         9KEJKL8E/Qpd7N/nMpGtKWJ/FJ523FWCYqMltnpEHa+NVWm0qsMm3zW22e3QSjgEvA7u
+         hdyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791784936; x=1792389736;
+        d=1e100.net; s=20260707; t=1791785091; x=1792389891;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=R/ggKxDXF1W4YTObb0Gqmnak9Gw8ra8VXEN2yWLxx6o=;
-        b=hBNx27QUBDQWcS6z0TaT4wWZtO/P6ePwTUlqIkS56vUheLtAjQZG3J9nyX966TEUwx
-         3vBRIGgoTh39YC4e9sXE1I4LTKG+zIhCepIaVjAvTh5289JaWaTnzZoExX+TLtgPw3JZ
-         ra+QCSijPFO26DhZpDgMFcAJQgiT83LMmrdhKWnVONPcGNbSMHWBTa7VF0WwJ03QhFn0
-         kkQlmwpxc15sh706p9/VbFGEI1O/4udRiqcLQzGHQEOvIJMLwnzjBUW4ggYUnJrkrw+i
-         EDyZtWNzp1hfYYkugcPQzdJWqE6h2ENnfcAuu8zxM2w0ECez9JD3t4ptYEVtX9pel8Us
-         LufQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwSV8+JRHYNsRkBnKMiN8jnxeYeKxg99p3HEqgsdlMWVLqvZyMnNM8qKMONcEU4Jghkz+0ulE8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK8IzS2mDYDCGZImFZGc/HoXCzzngc46FNNnJVV/sAAoaa3IE5q
-	SnfHsigFBCTHTG4Smxdj1tPAkpHBz7y7tJOpE8mXncpu6OJ4YBAAFZTQ
-X-Gm-Gg: AYBFou32yYeLMstTKMFHOGhytRZVCzQUlIZWYRgNLGbg/2fIdhUUA0bw/KMuXzU7v2k
-	X4KG+6FktwjTpkKQd9rgPtqTQOqR0o80nacaaYYllRFFjo1ZcPdI47TC5/QI1+7fal4gyow4akd
-	LCpZWi62eRtT1L52yeWwKXYxyxVNHPAytxyKK7kfK72byTDzq4+/4Yt6MYn4a7OPypZ8G7GAxgc
-	tG5BVTARRtKm5dzoYxiFPvtV+BfXr5b0bALfVG7nEujko2VeVfuMFQ0B9hgaKp61w+TKz9Z9X8X
-	if5hNTXafvr0xpUkRF20bwCTb9J41vxh4lhJ0wD35x4utQwC0yTC5Q2O2i1OjOs2czxtri3BC9+
-	QolYEs4rMi6tyT+7hLFyfkmK9KZJE6DJEdXYBCMySV9QTgRS+HxGsYxH8GlN6+KP9Z2grCUMNjn
-	M4KD4L6t7ee2orxoOjJTiZ0J4uNS0iBvsDibKm4HdgyKKKFptmLUi4+ynRDPXBt8h1Tg1SWUBxL
-	rW2kxSKpjKzR7x9h6MgzkUk/+EtWVUhLYAdjg==
-X-Received: by 2002:a17:902:d2c8:b0:2e6:646:8ee5 with SMTP id d9443c01a7336-2e842cd3e90mr71251985ad.39.1791784935605;
-        Sun, 11 Oct 2026 23:02:15 -0700 (PDT)
-Received: from localhost.localdomain ([2409:891f:1a03:88e9:69f9:d4b:a47:6619])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e84219f2bfsm39746645ad.21.2026.10.11.23.02.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 11 Oct 2026 23:02:15 -0700 (PDT)
-From: Chuang Wang <nashuiliang@gmail.com>
-To: 
-Cc: Chuang Wang <nashuiliang@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v11] net: reduce ARFS flow updates by checking LLC affinity
-Date: Mon, 12 Oct 2026 14:01:08 +0800
-Message-ID: <20261012060152.2930-1-nashuiliang@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        bh=Lq1g9tbRNoRmlpmv+DYsr8gVEEolEwzNV4RTVW+b/7s=;
+        b=WxF0+WNhosMLb25U/xKnoQqFh0ermZbt8qD4+cYoafYX10Eroc5wKFoaALfT6L8L/9
+         kLXHdaNNPCjzeHTLNkS7npvPf1KmSq6HsbjbPx7Kf4/mXgI3/lesbIYv/Tifex7Hbs/r
+         Tzenkwr1adWV/64U8lgcnir8qNpf0241gT9MrntdnU3aLv/SBuBvUIs+czsgJYWbQspz
+         dvRyQXhBC2CCM9h4MsEmzmlWoFcCggl2KRUNcB2eWL4BA6krkGfCX1x3R2A1MWc8gdE9
+         gsY9zGV3XPxqhaQ4oNsiuPJXxIPxyVilgKjZPK4Y2LP4FS+RZVw79AIDXaVMy0ULsoXf
+         vUlA==
+X-Gm-Message-State: AFq9FYL+zpu3dO0y4UPCXHALGxSCxzZnNVxdr0mVpUkDqxKGHf2w+Qdr
+	3ze/UMXGhk8696BuSkzLbdf7l//dA1EhLPtMjNHWy3XKxmr1Xng639VUpyV+YEVB
+X-Gm-Gg: AYBFou3jXWDjqDF+hZIUj4k0gknkOGpeQl7drvSjg7luyoQf+uPeybRsDBj85iHVLPq
+	Uvwt3GPSI2vMm4knhjjl2WLk9KjpRqtEMkKCLTLzWPT+G/eTz1vRHc7CoCG6v0wfSkEPreWKU2J
+	e1MZvQXl7jqv/d8eZ1Gu+SRmRnVEW9kOMCOsuq+5VfDMIOI3nCQQkS+eqdDDu/Ua5j4iB6TPrE8
+	ibVQkzVBIfouGc9LnH7kak5aP5XgdUaSvKTYeSDTHWjmwnK8myfmQ290wVGtW8oywRnL732vnDp
+	yxQ9yhMkzx8VLZJ5MRgQtW0XHiQcVhJ+lOQv7pF70TL3u5o5/YXTIS2x+gaykNCjhlqUgyF7yO9
+	n5IoORS2JcBb6z9Ev174n9GDoRjOq3YQWOsxLcVXtOgzMmw5H+k/9XVeplxruMDN7bvcCmYZdEF
+	aPJDJWz1YcKezT0reokQTBplzwGVGqXGXXBkKhqlvEJM8SYYJwo8RVsNtbIGPDEMyhEJyzhA==
+X-Received: by 2002:a17:90b:314e:b0:3a4:cb6d:aca9 with SMTP id 98e67ed59e1d1-3ab3acdda28mr6371170a91.64.1791785091293;
+        Sun, 11 Oct 2026 23:04:51 -0700 (PDT)
+Received: from fedora ([116.88.36.231])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab32c0f59bsm9286062a91.0.2026.10.11.23.04.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Oct 2026 23:04:50 -0700 (PDT)
+From: Wong Boon Jhee <wongboonjhee52@gmail.com>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	kuba@kernel.org,
+	Wong Boon Jhee <wongboonjhee52@gmail.com>
+Subject: [PATCH v10] net/ncsi: Fix use-after-free in NCSI teardown
+Date: Mon, 12 Oct 2026 14:04:34 +0800
+Message-ID: <20261012060434.1974740-1-wongboonjhee52@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,173 +72,1097 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The current implementation of rps_record_sock_flow() updates the flow
-table every time a socket is processed on a different CPU. In high-load
-scenarios, especially with Accelerated RFS (ARFS), this triggers
-frequent flow steering updates via ndo_rx_flow_steer.
+Unlink NCSI devices from the global list and wait for RCU readers before
+freeing packages and channels. Protect read-only Netlink package-info
+lookups with RCU; serialize mutating Netlink and VLAN operations with
+teardown using ncsi_dev_mutex. Stop channel monitors and request timers
+synchronously.
 
-For drivers like mlx5 that implement hardware flow steering, these
-constant updates lead to significant contention on internal driver locks
-(e.g., arfs_lock). In high-load scenarios, this contention often becomes
-a performance bottleneck that outweighs the steering benefits.
+Remove the leaked network-namespace references from the Netlink handlers.
+Allow PKG_INFO to handle sparse package IDs by removing the package_num
+range check and advancing dump cursors across gaps. Avoid cancelling a
+NULL generic-Netlink header, and read timeout package IDs from the skb
+network header. Initialize VLAN ID selection, free pending requests and
+VLAN entries at unregister, and guard channel queue additions against
+duplicates. Keep channel state and queue transitions under a consistent
+ndp-before-channel lock order, and preserve the suspend path for
+single-channel link loss.
 
-This patch introduces a cache-aware update strategy: the hardware
-steering update is skipped when the flow's previous target CPU and the
-new one share the same Last Level Cache (LLC), as cache locality for
-the application is preserved either way. The per-queue flow bookkeeping
-(rflow->cpu) is still updated, so RFS keeps steering packets to the CPU
-the application is running on, and subsequent packets take the fast path
-in get_rps_cpu() (tcpu == next_cpu). A new sysctl,
-net.core.arfs_llc_affinity, is added to toggle this feature (default:
-off).
+Split ftgmac100 NCSI removal into preparation and final cleanup. Before
+unregister_netdev(), remove NCSI lookups and packet reception, then drain
+work and timers. Keep the NCSI allocation alive through
+unregister_netdev() because ndo_stop() still calls ncsi_stop_dev(); free
+NCSI state after unregister_netdev() returns.
 
-Performance Test Results:
-The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
-with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
+Fixes: 2d283bdd079c ("net/ncsi: Resource management")
 
-rpc_press Commands:
-
-  for i in {1..8}; do
-    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
-    -server=<IP>:8000 -input='{"message":"hello"}'
-    -qps=0 -thread_num=512 -connection_type=pooled &
-  done
-
-Monitor mlx5e_rx_flow_steer frequency:
-
-  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
-
-Frequency of mlx5e_rx_flow_steer (via funccount[2]):
-
-  Before: ~200,000 counts/sec
-  After:       ~10 counts/sec (reduced by ~99%)
-
-These results demonstrate that filtering updates by LLC affinity
-significantly reduces driver lock contention and improves overall
-CPU efficiency under heavy network load.
-
-[1] https://github.com/apache/brpc/
-[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
-
-Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+Signed-off-by: Wong Boon Jhee <wongboonjhee52@gmail.com>
 ---
-v10 -> v11:
-- rename the sysctl from net.core.rps_feat_llc_affinity to
-  net.core.arfs_llc_affinity, per Neal Cardwell
-v9 -> v10:
-- move the LLC check from rps_record_sock_flow() into set_rps_cpu(),
-  so that only the ARFS hardware steering is skipped while rflow->cpu
-  is still updated, per Eric Dumazet
-- drop the sock_rps_record_flow_hash()/sock_rps_record_flow() exports,
-  which are no longer needed
-v6 -> v9:
-- simplify code and fix errors in AI submissions, per Simon Horman
-v5 -> v6:
-- remove the multi-check 'old_val == new_val', per Xuan Zhuo
-- fix 'modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko]
-  undefined!', per kernel test robot
-- fix 'tcp.c:(.text+0x3e90): undefined reference to
-  `sock_rps_record_flow'', per kernel test robot
-v4 -> v5:
-- fix 'modpost: "rps_llc_check" [net/sctp/sctp.ko] undefined!', per
-  kernel test robot
-v3 -> v4:
-- add rps_llc_check, per Eric Dumazet
-v2 -> v3:
-- patch net -> net-next, per Jakub Kicinski
-v1 -> v2:
-- add rps_feat_llc_affinity; add brpc tests
- include/net/rps.h          |  1 +
- net/core/dev.c             | 23 +++++++++++++++++++++--
- net/core/sysctl_net_core.c |  7 +++++++
- 3 files changed, 29 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/faraday/ftgmac100.c |  10 +-
+ include/net/ncsi.h                       |   9 +
+ net/ncsi/internal.h                      |   5 +
+ net/ncsi/ncsi-aen.c                      |  32 ++-
+ net/ncsi/ncsi-manage.c                   | 271 +++++++++++++++++------
+ net/ncsi/ncsi-netlink.c                  | 111 +++++++---
+ 6 files changed, 332 insertions(+), 106 deletions(-)
 
-diff --git a/include/net/rps.h b/include/net/rps.h
-index e33c6a2fa8bb..6664970e68d6 100644
---- a/include/net/rps.h
-+++ b/include/net/rps.h
-@@ -12,6 +12,7 @@
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+index 6d2fe5c2f390..f45388810570 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.c
++++ b/drivers/net/ethernet/faraday/ftgmac100.c
+@@ -2094,8 +2094,10 @@ static int ftgmac100_probe(struct platform_device *pdev)
  
- extern struct static_key_false rps_needed;
- extern struct static_key_false rfs_needed;
-+extern struct static_key_false arfs_llc_affinity;
+ err:
+ 	ftgmac100_phy_disconnect(netdev);
+-	if (priv->ndev)
++	if (priv->ndev) {
+ 		ncsi_unregister_dev(priv->ndev);
++		priv->ndev = NULL;
++	}
+ 	return err;
+ }
  
- /*
-  * This structure holds an RPS map which can be of variable length.  The
-diff --git a/net/core/dev.c b/net/core/dev.c
-index a6951ea08961..434ad5499906 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5122,6 +5122,7 @@ struct static_key_false rps_needed __read_mostly;
- EXPORT_SYMBOL(rps_needed);
- struct static_key_false rfs_needed __read_mostly;
- EXPORT_SYMBOL(rfs_needed);
-+struct static_key_false arfs_llc_affinity __read_mostly;
+@@ -2108,8 +2110,12 @@ static void ftgmac100_remove(struct platform_device *pdev)
+ 	priv = netdev_priv(netdev);
  
- static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
+ 	if (priv->ndev)
+-		ncsi_unregister_dev(priv->ndev);
++		ncsi_unregister_dev_prepare(priv->ndev);
+ 	unregister_netdev(netdev);
++	if (priv->ndev) {
++		ncsi_unregister_dev(priv->ndev);
++		priv->ndev = NULL;
++	}
+ 
+ 	/* There's a small chance the reset task will have been re-queued,
+ 	 * during stop, make sure it's gone before we free the structure.
+diff --git a/include/net/ncsi.h b/include/net/ncsi.h
+index e886358207aa..049c02b61169 100644
+--- a/include/net/ncsi.h
++++ b/include/net/ncsi.h
+@@ -37,6 +37,11 @@ struct ncsi_dev *ncsi_register_dev(struct net_device *dev,
+ 				   void (*notifier)(struct ncsi_dev *nd));
+ int ncsi_start_dev(struct ncsi_dev *nd);
+ void ncsi_stop_dev(struct ncsi_dev *nd);
++/*
++ * Remove NCSI lookups and packet reception before unregistering the netdev.
++ * The object remains valid until ncsi_unregister_dev() completes teardown.
++ */
++void ncsi_unregister_dev_prepare(struct ncsi_dev *nd);
+ void ncsi_unregister_dev(struct ncsi_dev *nd);
+ #else /* !CONFIG_NET_NCSI */
+ static inline int ncsi_vlan_rx_add_vid(struct net_device *dev, __be16 proto, u16 vid)
+@@ -64,6 +69,10 @@ static inline void ncsi_stop_dev(struct ncsi_dev *nd)
  {
-@@ -5160,7 +5161,7 @@ static bool rps_flow_is_active(struct rps_dev_flow *rflow,
+ }
  
- static struct rps_dev_flow *
- set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
--	    struct rps_dev_flow *rflow, u16 next_cpu, u32 hash)
-+	    struct rps_dev_flow *rflow, u16 old_cpu, u16 next_cpu, u32 hash)
++static inline void ncsi_unregister_dev_prepare(struct ncsi_dev *nd)
++{
++}
++
+ static inline void ncsi_unregister_dev(struct ncsi_dev *nd)
  {
- 	if (next_cpu < nr_cpu_ids) {
- 		u32 head;
-@@ -5179,6 +5180,24 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
- 		    !(dev->features & NETIF_F_NTUPLE))
- 			goto out;
+ }
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index adee6dcabdc3..8a53e6ccbd9a 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -6,6 +6,8 @@
+ #ifndef __NCSI_INTERNAL_H__
+ #define __NCSI_INTERNAL_H__
+ 
++#include <linux/mutex.h>
 +
-+		/*
-+		 * ARFS LLC Affinity Feature:
-+		 * Reduce ARFS flow updates by checking LLC affinity.
-+		 *
-+		 * Frequent flow table updates can trigger constant hardware steering
-+		 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-+		 * contention on driver internal locks (like mlx5's arfs_lock).
-+		 *
-+		 * Skip the expensive hardware steering update if the flow's previous
-+		 * target CPU and the new one share the last level cache: cache locality
-+		 * for the application is preserved either way.
-+		 */
-+		if (static_branch_unlikely(&arfs_llc_affinity) &&
-+		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
-+			cpus_share_cache(old_cpu, next_cpu))
-+			goto out;
-+
- 		rxq_index = cpu_rmap_lookup_index(dev->rx_cpu_rmap, next_cpu);
- 		if (rxq_index == skb_get_rx_queue(skb))
- 			goto out;
-@@ -5308,8 +5327,8 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		    (tcpu >= nr_cpu_ids || !cpu_online(tcpu) ||
- 		     ((int)(READ_ONCE(per_cpu(softnet_data, tcpu).input_queue_head) -
- 		      rflow->last_qtail)) >= 0)) {
-+			rflow = set_rps_cpu(dev, skb, rflow, tcpu, next_cpu, hash);
- 			tcpu = next_cpu;
--			rflow = set_rps_cpu(dev, skb, rflow, next_cpu, hash);
+ enum {
+ 	NCSI_CAP_BASE		= 0,
+ 	NCSI_CAP_GENERIC	= 0,
+@@ -310,12 +312,14 @@ enum {
+ 
+ struct vlan_vid {
+ 	struct list_head list;
++	struct rcu_head rcu;
+ 	__be16 proto;
+ 	u16 vid;
+ };
+ 
+ struct ncsi_dev_priv {
+ 	struct ncsi_dev     ndev;            /* Associated NCSI device     */
++	bool                unregister_prepared;
+ 	unsigned int        flags;           /* NCSI device flags          */
+ #define NCSI_DEV_PROBED		1            /* Finalized NCSI topology    */
+ #define NCSI_DEV_HWA		2            /* Enabled HW arbitration     */
+@@ -367,6 +371,7 @@ struct ncsi_cmd_arg {
+ 
+ extern struct list_head ncsi_dev_list;
+ extern spinlock_t ncsi_dev_lock;
++extern struct mutex ncsi_dev_mutex;
+ 
+ #define TO_NCSI_DEV_PRIV(nd) \
+ 	container_of(nd, struct ncsi_dev_priv, ndev)
+diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
+index 040a31557201..c3614f064864 100644
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -64,7 +64,8 @@ static int ncsi_aen_handler_lsc(struct ncsi_dev_priv *ndp,
+ 	/* Update the link status */
+ 	lsc = (struct ncsi_aen_lsc_pkt *)h;
+ 
+-	spin_lock_irqsave(&nc->lock, flags);
++	spin_lock_irqsave(&ndp->lock, flags);
++	spin_lock(&nc->lock);
+ 	ncm = &nc->modes[NCSI_MODE_LINK];
+ 	old_data = ncm->data[2];
+ 	data = ntohl(lsc->status);
+@@ -79,7 +80,8 @@ static int ncsi_aen_handler_lsc(struct ncsi_dev_priv *ndp,
+ 
+ 	chained = !list_empty(&nc->link);
+ 	state = nc->state;
+-	spin_unlock_irqrestore(&nc->lock, flags);
++	spin_unlock(&nc->lock);
++	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 	if (state == NCSI_CHANNEL_INACTIVE)
+ 		netdev_warn(ndp->ndev.dev,
+@@ -94,7 +96,11 @@ static int ncsi_aen_handler_lsc(struct ncsi_dev_priv *ndp,
+ 			ndp->flags |= NCSI_DEV_RESHUFFLE;
+ 			ncsi_stop_channel_monitor(nc);
+ 			spin_lock_irqsave(&ndp->lock, flags);
+-			list_add_tail_rcu(&nc->link, &ndp->channel_queue);
++			spin_lock(&nc->lock);
++			if (nc->state == NCSI_CHANNEL_ACTIVE &&
++			    list_empty(&nc->link))
++				list_add_tail_rcu(&nc->link, &ndp->channel_queue);
++			spin_unlock(&nc->lock);
+ 			spin_unlock_irqrestore(&ndp->lock, flags);
+ 			return ncsi_process_next_channel(ndp);
  		}
+@@ -148,22 +154,28 @@ static int ncsi_aen_handler_cr(struct ncsi_dev_priv *ndp,
+ 	if (!nc)
+ 		return -ENODEV;
  
- 		if (tcpu < nr_cpu_ids && cpu_online(tcpu)) {
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 473c162736d6..9ce0bbe454c8 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -560,6 +560,13 @@ static struct ctl_table net_core_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= rps_sock_flow_sysctl
- 	},
-+	{
-+		.procname	= "arfs_llc_affinity",
-+		.data		= &arfs_llc_affinity.key,
-+		.maxlen		= sizeof(arfs_llc_affinity.key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key
-+	},
- #endif
- #ifdef CONFIG_NET_FLOW_LIMIT
- 	{
+-	spin_lock_irqsave(&nc->lock, flags);
++	spin_lock_irqsave(&ndp->lock, flags);
++	spin_lock(&nc->lock);
+ 	if (!list_empty(&nc->link) ||
+ 	    nc->state != NCSI_CHANNEL_ACTIVE) {
+-		spin_unlock_irqrestore(&nc->lock, flags);
++		spin_unlock(&nc->lock);
++		spin_unlock_irqrestore(&ndp->lock, flags);
+ 		return 0;
+ 	}
+-	spin_unlock_irqrestore(&nc->lock, flags);
++	spin_unlock(&nc->lock);
++	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 	ncsi_stop_channel_monitor(nc);
+-	spin_lock_irqsave(&nc->lock, flags);
+-	nc->state = NCSI_CHANNEL_INVISIBLE;
+-	spin_unlock_irqrestore(&nc->lock, flags);
+-
+ 	spin_lock_irqsave(&ndp->lock, flags);
++	spin_lock(&nc->lock);
++	if (nc->state != NCSI_CHANNEL_ACTIVE || !list_empty(&nc->link)) {
++		spin_unlock(&nc->lock);
++		spin_unlock_irqrestore(&ndp->lock, flags);
++		return 0;
++	}
+ 	nc->state = NCSI_CHANNEL_INACTIVE;
+ 	list_add_tail_rcu(&nc->link, &ndp->channel_queue);
++	spin_unlock(&nc->lock);
+ 	spin_unlock_irqrestore(&ndp->lock, flags);
+ 	nc->modes[NCSI_MODE_TX_ENABLE].enable = 0;
+ 
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 54d0df0a9efe..f84e7da098fe 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -10,6 +10,7 @@
+ #include <linux/skbuff.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
++#include <linux/mutex.h>
+ 
+ #include <net/ncsi.h>
+ #include <net/net_namespace.h>
+@@ -24,6 +25,8 @@
+ 
+ LIST_HEAD(ncsi_dev_list);
+ DEFINE_SPINLOCK(ncsi_dev_lock);
++/* Serializes NCSI device lookups and mutations with teardown. */
++DEFINE_MUTEX(ncsi_dev_mutex);
+ 
+ bool ncsi_channel_has_link(struct ncsi_channel *channel)
+ {
+@@ -64,21 +67,25 @@ static void ncsi_report_link(struct ncsi_dev_priv *ndp, bool force_down)
+ 	nd->link_up = 0;
+ 	NCSI_FOR_EACH_PACKAGE(ndp, np) {
+ 		NCSI_FOR_EACH_CHANNEL(np, nc) {
+-			spin_lock_irqsave(&nc->lock, flags);
++			spin_lock_irqsave(&ndp->lock, flags);
++			spin_lock(&nc->lock);
+ 
+ 			if (!list_empty(&nc->link) ||
+ 			    nc->state != NCSI_CHANNEL_ACTIVE) {
+-				spin_unlock_irqrestore(&nc->lock, flags);
++				spin_unlock(&nc->lock);
++				spin_unlock_irqrestore(&ndp->lock, flags);
+ 				continue;
+ 			}
+ 
+ 			if (ncsi_channel_has_link(nc)) {
+-				spin_unlock_irqrestore(&nc->lock, flags);
++				spin_unlock(&nc->lock);
++				spin_unlock_irqrestore(&ndp->lock, flags);
+ 				nd->link_up = 1;
+ 				goto report;
+ 			}
+ 
+-			spin_unlock_irqrestore(&nc->lock, flags);
++			spin_unlock(&nc->lock);
++			spin_unlock_irqrestore(&ndp->lock, flags);
+ 		}
+ 	}
+ 
+@@ -98,12 +105,14 @@ static void ncsi_channel_monitor(struct timer_list *t)
+ 	unsigned long flags;
+ 	int state, ret;
+ 
+-	spin_lock_irqsave(&nc->lock, flags);
++	spin_lock_irqsave(&ndp->lock, flags);
++	spin_lock(&nc->lock);
+ 	state = nc->state;
+ 	chained = !list_empty(&nc->link);
+ 	enabled = nc->monitor.enabled;
+ 	monitor_state = nc->monitor.state;
+-	spin_unlock_irqrestore(&nc->lock, flags);
++	spin_unlock(&nc->lock);
++	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 	if (!enabled)
+ 		return;		/* expected race disabling timer */
+@@ -151,8 +160,11 @@ static void ncsi_channel_monitor(struct timer_list *t)
+ 		spin_unlock_irqrestore(&nc->lock, flags);
+ 
+ 		spin_lock_irqsave(&ndp->lock, flags);
++		spin_lock(&nc->lock);
+ 		nc->state = NCSI_CHANNEL_ACTIVE;
+-		list_add_tail_rcu(&nc->link, &ndp->channel_queue);
++		if (list_empty(&nc->link))
++			list_add_tail_rcu(&nc->link, &ndp->channel_queue);
++		spin_unlock(&nc->lock);
+ 		spin_unlock_irqrestore(&ndp->lock, flags);
+ 		ncsi_process_next_channel(ndp);
+ 		return;
+@@ -182,13 +194,10 @@ void ncsi_stop_channel_monitor(struct ncsi_channel *nc)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&nc->lock, flags);
+-	if (!nc->monitor.enabled) {
+-		spin_unlock_irqrestore(&nc->lock, flags);
+-		return;
+-	}
+ 	nc->monitor.enabled = false;
+ 	spin_unlock_irqrestore(&nc->lock, flags);
+ 
++	/* The callback may have cleared enabled and still be running. */
+ 	timer_delete_sync(&nc->monitor.timer);
+ }
+ 
+@@ -640,7 +649,7 @@ static int set_one_vid(struct ncsi_dev_priv *ndp, struct ncsi_channel *nc,
+ 	unsigned long flags;
+ 	int i, index;
+ 	void *bitmap;
+-	u16 vid;
++	u16 vid = 0;
+ 
+ 	if (list_empty(&ndp->vlan_vids))
+ 		return -1;
+@@ -1238,7 +1247,7 @@ static int ncsi_choose_active_channel(struct ncsi_dev_priv *ndp)
+ {
+ 	struct ncsi_channel *nc, *found, *hot_nc;
+ 	struct ncsi_channel_mode *ncm;
+-	unsigned long flags, cflags;
++	unsigned long flags;
+ 	struct ncsi_package *np;
+ 	bool with_link;
+ 
+@@ -1260,11 +1269,13 @@ static int ncsi_choose_active_channel(struct ncsi_dev_priv *ndp)
+ 			if (!(np->channel_whitelist & (0x1 << nc->id)))
+ 				continue;
+ 
+-			spin_lock_irqsave(&nc->lock, cflags);
++			spin_lock_irqsave(&ndp->lock, flags);
++			spin_lock(&nc->lock);
+ 
+ 			if (!list_empty(&nc->link) ||
+ 			    nc->state != NCSI_CHANNEL_INACTIVE) {
+-				spin_unlock_irqrestore(&nc->lock, cflags);
++				spin_unlock(&nc->lock);
++				spin_unlock_irqrestore(&ndp->lock, flags);
+ 				continue;
+ 			}
+ 
+@@ -1285,10 +1296,8 @@ static int ncsi_choose_active_channel(struct ncsi_dev_priv *ndp)
+ 			 * so they will have AENs enabled.
+ 			 */
+ 			if (with_link || np->multi_channel) {
+-				spin_lock_irqsave(&ndp->lock, flags);
+ 				list_add_tail_rcu(&nc->link,
+ 						  &ndp->channel_queue);
+-				spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 				netdev_dbg(ndp->ndev.dev,
+ 					   "NCSI: Channel %u added to queue (link %s)\n",
+@@ -1296,7 +1305,8 @@ static int ncsi_choose_active_channel(struct ncsi_dev_priv *ndp)
+ 					   ncm->data[2] & 0x1 ? "up" : "down");
+ 			}
+ 
+-			spin_unlock_irqrestore(&nc->lock, cflags);
++			spin_unlock(&nc->lock);
++			spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 			if (with_link && !np->multi_channel)
+ 				break;
+@@ -1305,19 +1315,24 @@ static int ncsi_choose_active_channel(struct ncsi_dev_priv *ndp)
+ 			break;
+ 	}
+ 
++	spin_lock_irqsave(&ndp->lock, flags);
+ 	if (list_empty(&ndp->channel_queue) && found) {
+ 		netdev_info(ndp->ndev.dev,
+ 			    "NCSI: No channel with link found, configuring channel %u\n",
+ 			    found->id);
+-		spin_lock_irqsave(&ndp->lock, flags);
+-		list_add_tail_rcu(&found->link, &ndp->channel_queue);
+-		spin_unlock_irqrestore(&ndp->lock, flags);
++		spin_lock(&found->lock);
++		if (found->state == NCSI_CHANNEL_INACTIVE &&
++		    list_empty(&found->link))
++			list_add_tail_rcu(&found->link, &ndp->channel_queue);
++		spin_unlock(&found->lock);
+ 	} else if (!found) {
++		spin_unlock_irqrestore(&ndp->lock, flags);
+ 		netdev_warn(ndp->ndev.dev,
+ 			    "NCSI: No channel found to configure!\n");
+ 		ncsi_report_link(ndp, true);
+ 		return -ENODEV;
+ 	}
++	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 	return ncsi_process_next_channel(ndp);
+ }
+@@ -1567,13 +1582,12 @@ int ncsi_process_next_channel(struct ncsi_dev_priv *ndp)
+ 		goto out;
+ 	}
+ 
++	spin_lock(&nc->lock);
+ 	list_del_init(&nc->link);
+-	spin_unlock_irqrestore(&ndp->lock, flags);
+-
+-	spin_lock_irqsave(&nc->lock, flags);
+ 	old_state = nc->state;
+ 	nc->state = NCSI_CHANNEL_INVISIBLE;
+-	spin_unlock_irqrestore(&nc->lock, flags);
++	spin_unlock(&nc->lock);
++	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 	ndp->active_channel = nc;
+ 	ndp->active_package = nc->package;
+@@ -1615,14 +1629,49 @@ int ncsi_process_next_channel(struct ncsi_dev_priv *ndp)
+ static int ncsi_kick_channels(struct ncsi_dev_priv *ndp)
+ {
+ 	struct ncsi_dev *nd = &ndp->ndev;
++	struct ncsi_channel *batch[NCSI_MAX_CHANNEL];
++	struct ncsi_channel *last = NULL;
+ 	struct ncsi_channel *nc;
+ 	struct ncsi_package *np;
+ 	unsigned long flags;
+-	unsigned int n = 0;
++	bool kicked;
++	unsigned int n = 0, count, i;
+ 
+-	NCSI_FOR_EACH_PACKAGE(ndp, np) {
+-		NCSI_FOR_EACH_CHANNEL(np, nc) {
+-			spin_lock_irqsave(&nc->lock, flags);
++	lockdep_assert_held(&ncsi_dev_mutex);
++
++	/*
++	 * Keep the RCU read-side section limited to list traversal. Kicking a
++	 * channel synchronously stops its monitor timer and must happen outside
++	 * the read-side section. The caller holds ncsi_dev_mutex, so the package
++	 * and channel objects remain alive while each batch is processed.
++	 */
++	do {
++		bool past_last = !last;
++
++		count = 0;
++		rcu_read_lock();
++		NCSI_FOR_EACH_PACKAGE(ndp, np) {
++			NCSI_FOR_EACH_CHANNEL(np, nc) {
++				if (!past_last) {
++					if (nc == last)
++						past_last = true;
++					continue;
++				}
++
++				batch[count++] = nc;
++				if (count == ARRAY_SIZE(batch)) {
++					last = nc;
++					goto batch_full;
++				}
++			}
++		}
++batch_full:
++		rcu_read_unlock();
++
++		for (i = 0; i < count; i++) {
++			nc = batch[i];
++			spin_lock_irqsave(&ndp->lock, flags);
++			spin_lock(&nc->lock);
+ 
+ 			/* Channels may be busy, mark dirty instead of
+ 			 * kicking if;
+@@ -1639,25 +1688,32 @@ static int ncsi_kick_channels(struct ncsi_dev_priv *ndp)
+ 						   nc);
+ 					nc->reconfigure_needed = true;
+ 				}
+-				spin_unlock_irqrestore(&nc->lock, flags);
++				spin_unlock(&nc->lock);
++				spin_unlock_irqrestore(&ndp->lock, flags);
+ 				continue;
+ 			}
+ 
+-			spin_unlock_irqrestore(&nc->lock, flags);
++			spin_unlock(&nc->lock);
++			spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 			ncsi_stop_channel_monitor(nc);
+-			spin_lock_irqsave(&nc->lock, flags);
+-			nc->state = NCSI_CHANNEL_INACTIVE;
+-			spin_unlock_irqrestore(&nc->lock, flags);
+-
+ 			spin_lock_irqsave(&ndp->lock, flags);
+-			list_add_tail_rcu(&nc->link, &ndp->channel_queue);
++			spin_lock(&nc->lock);
++			kicked = false;
++			if (nc->state == NCSI_CHANNEL_ACTIVE &&
++			    list_empty(&nc->link)) {
++				nc->state = NCSI_CHANNEL_INACTIVE;
++				list_add_tail_rcu(&nc->link, &ndp->channel_queue);
++				kicked = true;
++				n++;
++			}
++			spin_unlock(&nc->lock);
+ 			spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+-			netdev_dbg(nd->dev, "NCSI: kicked channel %p\n", nc);
+-			n++;
++			if (kicked)
++				netdev_dbg(nd->dev, "NCSI: kicked channel %p\n", nc);
+ 		}
+-	}
++	} while (count == ARRAY_SIZE(batch));
+ 
+ 	return n;
+ }
+@@ -1669,37 +1725,49 @@ int ncsi_vlan_rx_add_vid(struct net_device *dev, __be16 proto, u16 vid)
+ 	struct vlan_vid *vlan;
+ 	struct ncsi_dev *nd;
+ 	bool found = false;
++	int ret;
+ 
+ 	if (vid == 0)
+ 		return 0;
+ 
++	mutex_lock(&ncsi_dev_mutex);
++	rcu_read_lock();
+ 	nd = ncsi_find_dev(dev);
++	rcu_read_unlock();
+ 	if (!nd) {
+ 		netdev_warn(dev, "NCSI: No net_device?\n");
+-		return 0;
++		ret = 0;
++		goto out_unlock;
+ 	}
+ 
+ 	ndp = TO_NCSI_DEV_PRIV(nd);
+ 
+ 	/* Add the VLAN id to our internal list */
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(vlan, &ndp->vlan_vids, list) {
+ 		n_vids++;
+ 		if (vlan->vid == vid) {
+ 			netdev_dbg(dev, "NCSI: vid %u already registered\n",
+ 				   vid);
+-			return 0;
++			rcu_read_unlock();
++			ret = 0;
++			goto out_unlock;
+ 		}
+ 	}
++	rcu_read_unlock();
+ 	if (n_vids >= NCSI_MAX_VLAN_VIDS) {
+ 		netdev_warn(dev,
+ 			    "tried to add vlan id %u but NCSI max already registered (%u)\n",
+ 			    vid, NCSI_MAX_VLAN_VIDS);
+-		return -ENOSPC;
++		ret = -ENOSPC;
++		goto out_unlock;
+ 	}
+ 
+ 	vlan = kzalloc_obj(*vlan);
+-	if (!vlan)
+-		return -ENOMEM;
++	if (!vlan) {
++		ret = -ENOMEM;
++		goto out_unlock;
++	}
+ 
+ 	vlan->proto = proto;
+ 	vlan->vid = vid;
+@@ -1709,45 +1777,60 @@ int ncsi_vlan_rx_add_vid(struct net_device *dev, __be16 proto, u16 vid)
+ 
+ 	found = ncsi_kick_channels(ndp) != 0;
+ 
+-	return found ? ncsi_process_next_channel(ndp) : 0;
++	ret = found ? ncsi_process_next_channel(ndp) : 0;
++out_unlock:
++	mutex_unlock(&ncsi_dev_mutex);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(ncsi_vlan_rx_add_vid);
+ 
+ int ncsi_vlan_rx_kill_vid(struct net_device *dev, __be16 proto, u16 vid)
+ {
+-	struct vlan_vid *vlan, *tmp;
++	struct vlan_vid *vlan;
+ 	struct ncsi_dev_priv *ndp;
+ 	struct ncsi_dev *nd;
+ 	bool found = false;
++	int ret;
+ 
+ 	if (vid == 0)
+ 		return 0;
+ 
++	mutex_lock(&ncsi_dev_mutex);
++	rcu_read_lock();
+ 	nd = ncsi_find_dev(dev);
++	rcu_read_unlock();
+ 	if (!nd) {
+ 		netdev_warn(dev, "NCSI: no net_device?\n");
+-		return 0;
++		ret = 0;
++		goto out_unlock;
+ 	}
+ 
+ 	ndp = TO_NCSI_DEV_PRIV(nd);
+ 
+ 	/* Remove the VLAN id from our internal list */
+-	list_for_each_entry_safe(vlan, tmp, &ndp->vlan_vids, list)
++	rcu_read_lock();
++	list_for_each_entry_rcu(vlan, &ndp->vlan_vids, list)
+ 		if (vlan->vid == vid) {
+ 			netdev_dbg(dev, "NCSI: vid %u found, removing\n", vid);
+ 			list_del_rcu(&vlan->list);
+ 			found = true;
+-			kfree(vlan);
++			kfree_rcu(vlan, rcu);
++			break;
+ 		}
++	rcu_read_unlock();
+ 
+ 	if (!found) {
+ 		netdev_err(dev, "NCSI: vid %u wasn't registered!\n", vid);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto out_unlock;
+ 	}
+ 
+ 	found = ncsi_kick_channels(ndp) != 0;
+ 
+-	return found ? ncsi_process_next_channel(ndp) : 0;
++	ret = found ? ncsi_process_next_channel(ndp) : 0;
++out_unlock:
++	mutex_unlock(&ncsi_dev_mutex);
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(ncsi_vlan_rx_kill_vid);
+ 
+@@ -1762,14 +1845,21 @@ struct ncsi_dev *ncsi_register_dev(struct net_device *dev,
+ 	int i;
+ 
+ 	/* Check if the device has been registered or not */
++	mutex_lock(&ncsi_dev_mutex);
++	rcu_read_lock();
+ 	nd = ncsi_find_dev(dev);
+-	if (nd)
++	rcu_read_unlock();
++	if (nd) {
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return nd;
++	}
+ 
+ 	/* Create NCSI device */
+ 	ndp = kzalloc_obj(*ndp, GFP_ATOMIC);
+-	if (!ndp)
++	if (!ndp) {
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return NULL;
++	}
+ 
+ 	nd = &ndp->ndev;
+ 	nd->state = ncsi_dev_state_registered;
+@@ -1810,6 +1900,7 @@ struct ncsi_dev *ncsi_register_dev(struct net_device *dev,
+ 			ndp->mlx_multi_host = true;
+ 	}
+ 
++	mutex_unlock(&ncsi_dev_mutex);
+ 	return nd;
+ }
+ EXPORT_SYMBOL_GPL(ncsi_register_dev);
+@@ -1851,10 +1942,12 @@ void ncsi_stop_dev(struct ncsi_dev *nd)
+ 		NCSI_FOR_EACH_CHANNEL(np, nc) {
+ 			ncsi_stop_channel_monitor(nc);
+ 
+-			spin_lock_irqsave(&nc->lock, flags);
++			spin_lock_irqsave(&ndp->lock, flags);
++			spin_lock(&nc->lock);
+ 			chained = !list_empty(&nc->link);
+ 			old_state = nc->state;
+-			spin_unlock_irqrestore(&nc->lock, flags);
++			spin_unlock(&nc->lock);
++			spin_unlock_irqrestore(&ndp->lock, flags);
+ 
+ 			WARN_ON_ONCE(chained ||
+ 				     old_state == NCSI_CHANNEL_INVISIBLE);
+@@ -1952,22 +2045,74 @@ int ncsi_reset_dev(struct ncsi_dev *nd)
+ 	return 0;
+ }
+ 
++void ncsi_unregister_dev_prepare(struct ncsi_dev *nd)
++{
++	struct ncsi_dev_priv *ndp = TO_NCSI_DEV_PRIV(nd);
++	struct ncsi_package *np;
++	struct ncsi_channel *nc;
++	int i;
++	unsigned long flags;
++
++	mutex_lock(&ncsi_dev_mutex);
++	if (!ndp->unregister_prepared) {
++		ndp->unregister_prepared = true;
++		spin_lock_irqsave(&ncsi_dev_lock, flags);
++		list_del_rcu(&ndp->node);
++		spin_unlock_irqrestore(&ncsi_dev_lock, flags);
++
++		dev_remove_pack(&ndp->ptype);
++
++		/* Wait for lookups that found this device before it was unlinked. */
++		synchronize_rcu();
++
++		/* Quiesce NCSI activity before the netdev is stopped. */
++		disable_work_sync(&ndp->work);
++		list_for_each_entry(np, &ndp->packages, node)
++			list_for_each_entry(nc, &np->channels, node)
++				ncsi_stop_channel_monitor(nc);
++		for (i = 0; i < ARRAY_SIZE(ndp->requests); i++)
++			timer_delete_sync(&ndp->requests[i].timer);
++	}
++	mutex_unlock(&ncsi_dev_mutex);
++}
++EXPORT_SYMBOL_GPL(ncsi_unregister_dev_prepare);
++
+ void ncsi_unregister_dev(struct ncsi_dev *nd)
+ {
+ 	struct ncsi_dev_priv *ndp = TO_NCSI_DEV_PRIV(nd);
+ 	struct ncsi_package *np, *tmp;
+-	unsigned long flags;
++	struct ncsi_channel *nc;
++	struct vlan_vid *vlan, *vlan_tmp;
++	int i;
+ 
+-	dev_remove_pack(&ndp->ptype);
++	ncsi_unregister_dev_prepare(nd);
++	for (i = 0; i < ARRAY_SIZE(ndp->requests); i++) {
++		struct ncsi_request *nr = &ndp->requests[i];
+ 
+-	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
+-		ncsi_remove_package(np);
++		if (!nr->used)
++			continue;
+ 
+-	spin_lock_irqsave(&ncsi_dev_lock, flags);
+-	list_del_rcu(&ndp->node);
+-	spin_unlock_irqrestore(&ncsi_dev_lock, flags);
++		if (nr->flags == NCSI_REQ_FLAG_NETLINK_DRIVEN && nr->cmd) {
++			struct ncsi_cmd_pkt *cmd = (struct ncsi_cmd_pkt *)
++				skb_network_header(nr->cmd);
++
++			rcu_read_lock();
++			ncsi_find_package_and_channel(ndp,
++						      cmd->cmd.common.channel,
++						      &np, &nc);
++			rcu_read_unlock();
++			ncsi_send_netlink_timeout(nr, np, nc);
++		}
++		ncsi_free_request(nr);
++	}
+ 
+-	disable_work_sync(&ndp->work);
++	list_for_each_entry_safe(vlan, vlan_tmp, &ndp->vlan_vids, list) {
++		list_del_rcu(&vlan->list);
++		kfree_rcu(vlan, rcu);
++	}
++
++	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
++		ncsi_remove_package(np);
+ 
+ 	kfree(ndp);
+ }
+diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
+index 8cc538358f6a..9d821cc22062 100644
+--- a/net/ncsi/ncsi-netlink.c
++++ b/net/ncsi/ncsi-netlink.c
+@@ -47,7 +47,9 @@ static struct ncsi_dev_priv *ndp_from_ifindex(struct net *net, u32 ifindex)
+ 		return NULL;
+ 	}
+ 
++	rcu_read_lock();
+ 	nd = ncsi_find_dev(dev);
++	rcu_read_unlock();
+ 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+ 
+ 	dev_put(dev);
+@@ -100,11 +102,6 @@ static int ncsi_write_package_info(struct sk_buff *skb,
+ 	bool found;
+ 	int rc;
+ 
+-	if (id > ndp->package_num - 1) {
+-		netdev_info(ndp->ndev.dev, "NCSI: No package with id %u\n", id);
+-		return -ENODEV;
+-	}
+-
+ 	found = false;
+ 	NCSI_FOR_EACH_PACKAGE(ndp, np) {
+ 		if (np->id != id)
+@@ -169,19 +166,24 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
+ 	if (!info->attrs[NCSI_ATTR_PACKAGE_ID])
+ 		return -EINVAL;
+ 
+-	ndp = ndp_from_ifindex(genl_info_net(info),
+-			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+-	if (!ndp)
+-		return -ENODEV;
+-
+ 	skb = genlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOMEM;
+ 
++	rcu_read_lock();
++	ndp = ndp_from_ifindex(genl_info_net(info),
++			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
++	if (!ndp) {
++		rcu_read_unlock();
++		kfree_skb(skb);
++		return -ENODEV;
++	}
++
+ 	hdr = genlmsg_put(skb, info->snd_portid, info->snd_seq,
+ 			  &ncsi_genl_family, 0, NCSI_CMD_PKG_INFO);
+ 	if (!hdr) {
+ 		kfree_skb(skb);
++		rcu_read_unlock();
+ 		return -EMSGSIZE;
+ 	}
+ 
+@@ -190,6 +192,7 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
+ 	attr = nla_nest_start_noflag(skb, NCSI_ATTR_PACKAGE_LIST);
+ 	if (!attr) {
+ 		kfree_skb(skb);
++		rcu_read_unlock();
+ 		return -EMSGSIZE;
+ 	}
+ 	rc = ncsi_write_package_info(skb, ndp, package_id);
+@@ -202,10 +205,12 @@ static int ncsi_pkg_info_nl(struct sk_buff *msg, struct genl_info *info)
+ 	nla_nest_end(skb, attr);
+ 
+ 	genlmsg_end(skb, hdr);
++	rcu_read_unlock();
+ 	return genlmsg_reply(skb, info);
+ 
+ err:
+ 	kfree_skb(skb);
++	rcu_read_unlock();
+ 	return rc;
+ }
+ 
+@@ -228,32 +233,39 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
+ 	if (!attrs[NCSI_ATTR_IFINDEX])
+ 		return -EINVAL;
+ 
+-	ndp = ndp_from_ifindex(get_net(sock_net(skb->sk)),
++	rcu_read_lock();
++	ndp = ndp_from_ifindex(sock_net(skb->sk),
+ 			       nla_get_u32(attrs[NCSI_ATTR_IFINDEX]));
+ 
+-	if (!ndp)
++	if (!ndp) {
++		rcu_read_unlock();
+ 		return -ENODEV;
++	}
+ 
+ 	package_id = cb->args[0];
+ 	package = NULL;
+ 	NCSI_FOR_EACH_PACKAGE(ndp, np)
+-		if (np->id == package_id)
++		if (np->id >= package_id &&
++		    (!package || np->id < package->id))
+ 			package = np;
+ 
+-	if (!package)
++	if (!package) {
++		rcu_read_unlock();
+ 		return 0; /* done */
++	}
+ 
+ 	hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid, cb->nlh->nlmsg_seq,
+ 			  &ncsi_genl_family, NLM_F_MULTI,  NCSI_CMD_PKG_INFO);
+ 	if (!hdr) {
+-		rc = -EMSGSIZE;
+-		goto err;
++		rcu_read_unlock();
++		return -EMSGSIZE;
+ 	}
+ 
+ 	attr = nla_nest_start_noflag(skb, NCSI_ATTR_PACKAGE_LIST);
+ 	if (!attr) {
+-		rc = -EMSGSIZE;
+-		goto err;
++		genlmsg_cancel(skb, hdr);
++		rcu_read_unlock();
++		return -EMSGSIZE;
+ 	}
+ 	rc = ncsi_write_package_info(skb, ndp, package->id);
+ 	if (rc) {
+@@ -264,11 +276,14 @@ static int ncsi_pkg_info_all_nl(struct sk_buff *skb,
+ 	nla_nest_end(skb, attr);
+ 	genlmsg_end(skb, hdr);
+ 
+-	cb->args[0] = package_id + 1;
++	cb->args[0] = package->id + 1;
+ 
+-	return skb->len;
++	rc = skb->len;
++	rcu_read_unlock();
++	return rc;
+ err:
+ 	genlmsg_cancel(skb, hdr);
++	rcu_read_unlock();
+ 	return rc;
+ }
+ 
+@@ -289,34 +304,43 @@ static int ncsi_set_interface_nl(struct sk_buff *msg, struct genl_info *info)
+ 	if (!info->attrs[NCSI_ATTR_PACKAGE_ID])
+ 		return -EINVAL;
+ 
+-	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
++	mutex_lock(&ncsi_dev_mutex);
++	ndp = ndp_from_ifindex(sock_net(msg->sk),
+ 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+-	if (!ndp)
++	if (!ndp) {
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return -ENODEV;
++	}
+ 
+ 	package_id = nla_get_u32(info->attrs[NCSI_ATTR_PACKAGE_ID]);
+ 	package = NULL;
+ 
++	rcu_read_lock();
+ 	NCSI_FOR_EACH_PACKAGE(ndp, np)
+ 		if (np->id == package_id)
+ 			package = np;
++	rcu_read_unlock();
+ 	if (!package) {
+ 		/* The user has set a package that does not exist */
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return -ERANGE;
+ 	}
+ 
+ 	channel = NULL;
+ 	if (info->attrs[NCSI_ATTR_CHANNEL_ID]) {
+ 		channel_id = nla_get_u32(info->attrs[NCSI_ATTR_CHANNEL_ID]);
++		rcu_read_lock();
+ 		NCSI_FOR_EACH_CHANNEL(package, nc)
+ 			if (nc->id == channel_id) {
+ 				channel = nc;
+ 				break;
+ 			}
++		rcu_read_unlock();
+ 		if (!channel) {
+ 			netdev_info(ndp->ndev.dev,
+ 				    "NCSI: Channel %u does not exist!\n",
+ 				    channel_id);
++			mutex_unlock(&ncsi_dev_mutex);
+ 			return -ERANGE;
+ 		}
+ 	}
+@@ -350,6 +374,7 @@ static int ncsi_set_interface_nl(struct sk_buff *msg, struct genl_info *info)
+ 	if (!(ndp->flags & NCSI_DEV_RESET))
+ 		ncsi_reset_dev(&ndp->ndev);
+ 
++	mutex_unlock(&ncsi_dev_mutex);
+ 	return 0;
+ }
+ 
+@@ -365,10 +390,13 @@ static int ncsi_clear_interface_nl(struct sk_buff *msg, struct genl_info *info)
+ 	if (!info->attrs[NCSI_ATTR_IFINDEX])
+ 		return -EINVAL;
+ 
+-	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
++	mutex_lock(&ncsi_dev_mutex);
++	ndp = ndp_from_ifindex(sock_net(msg->sk),
+ 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+-	if (!ndp)
++	if (!ndp) {
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return -ENODEV;
++	}
+ 
+ 	/* Reset any whitelists and disable multi mode */
+ 	spin_lock_irqsave(&ndp->lock, flags);
+@@ -376,6 +404,7 @@ static int ncsi_clear_interface_nl(struct sk_buff *msg, struct genl_info *info)
+ 	ndp->multi_package = false;
+ 	spin_unlock_irqrestore(&ndp->lock, flags);
+ 
++	rcu_read_lock();
+ 	NCSI_FOR_EACH_PACKAGE(ndp, np) {
+ 		spin_lock_irqsave(&np->lock, flags);
+ 		np->multi_channel = false;
+@@ -383,12 +412,14 @@ static int ncsi_clear_interface_nl(struct sk_buff *msg, struct genl_info *info)
+ 		np->preferred_channel = NULL;
+ 		spin_unlock_irqrestore(&np->lock, flags);
+ 	}
++	rcu_read_unlock();
+ 	netdev_info(ndp->ndev.dev, "NCSI: Cleared preferred package/channel\n");
+ 
+ 	/* Update channel configuration */
+ 	if (!(ndp->flags & NCSI_DEV_RESET))
+ 		ncsi_reset_dev(&ndp->ndev);
+ 
++	mutex_unlock(&ncsi_dev_mutex);
+ 	return 0;
+ }
+ 
+@@ -427,10 +458,12 @@ static int ncsi_send_cmd_nl(struct sk_buff *msg, struct genl_info *info)
+ 		goto out;
+ 	}
+ 
+-	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
++	mutex_lock(&ncsi_dev_mutex);
++	ndp = ndp_from_ifindex(sock_net(msg->sk),
+ 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+ 	if (!ndp) {
+ 		ret = -ENODEV;
++		mutex_unlock(&ncsi_dev_mutex);
+ 		goto out;
+ 	}
+ 
+@@ -479,6 +512,7 @@ static int ncsi_send_cmd_nl(struct sk_buff *msg, struct genl_info *info)
+ 				      info->nlhdr,
+ 				      ret);
+ 	}
++	mutex_unlock(&ncsi_dev_mutex);
+ out:
+ 	return ret;
+ }
+@@ -553,7 +587,7 @@ int ncsi_send_netlink_timeout(struct ncsi_request *nr,
+ 	else
+ 		nla_put_u32(skb, NCSI_ATTR_PACKAGE_ID,
+ 			    NCSI_PACKAGE_INDEX((((struct ncsi_pkt_hdr *)
+-						 nr->cmd->data)->channel)));
++						 skb_network_header(nr->cmd))->channel)));
+ 
+ 	if (nc)
+ 		nla_put_u32(skb, NCSI_ATTR_CHANNEL_ID, nc->id);
+@@ -608,10 +642,13 @@ static int ncsi_set_package_mask_nl(struct sk_buff *msg,
+ 	if (!info->attrs[NCSI_ATTR_PACKAGE_MASK])
+ 		return -EINVAL;
+ 
+-	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
++	mutex_lock(&ncsi_dev_mutex);
++	ndp = ndp_from_ifindex(sock_net(msg->sk),
+ 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+-	if (!ndp)
++	if (!ndp) {
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return -ENODEV;
++	}
+ 
+ 	spin_lock_irqsave(&ndp->lock, flags);
+ 	if (nla_get_flag(info->attrs[NCSI_ATTR_MULTI_FLAG])) {
+@@ -639,6 +676,7 @@ static int ncsi_set_package_mask_nl(struct sk_buff *msg,
+ 			ncsi_reset_dev(&ndp->ndev);
+ 	}
+ 
++	mutex_unlock(&ncsi_dev_mutex);
+ 	return rc;
+ }
+ 
+@@ -663,33 +701,43 @@ static int ncsi_set_channel_mask_nl(struct sk_buff *msg,
+ 	if (!info->attrs[NCSI_ATTR_CHANNEL_MASK])
+ 		return -EINVAL;
+ 
+-	ndp = ndp_from_ifindex(get_net(sock_net(msg->sk)),
++	mutex_lock(&ncsi_dev_mutex);
++	ndp = ndp_from_ifindex(sock_net(msg->sk),
+ 			       nla_get_u32(info->attrs[NCSI_ATTR_IFINDEX]));
+-	if (!ndp)
++	if (!ndp) {
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return -ENODEV;
++	}
+ 
+ 	package_id = nla_get_u32(info->attrs[NCSI_ATTR_PACKAGE_ID]);
+ 	package = NULL;
++	rcu_read_lock();
+ 	NCSI_FOR_EACH_PACKAGE(ndp, np)
+ 		if (np->id == package_id) {
+ 			package = np;
+ 			break;
+ 		}
+-	if (!package)
++	rcu_read_unlock();
++	if (!package) {
++		mutex_unlock(&ncsi_dev_mutex);
+ 		return -ERANGE;
++	}
+ 
+ 	spin_lock_irqsave(&package->lock, flags);
+ 
+ 	channel = NULL;
+ 	if (info->attrs[NCSI_ATTR_CHANNEL_ID]) {
+ 		channel_id = nla_get_u32(info->attrs[NCSI_ATTR_CHANNEL_ID]);
++		rcu_read_lock();
+ 		NCSI_FOR_EACH_CHANNEL(np, nc)
+ 			if (nc->id == channel_id) {
+ 				channel = nc;
+ 				break;
+ 			}
++		rcu_read_unlock();
+ 		if (!channel) {
+ 			spin_unlock_irqrestore(&package->lock, flags);
++			mutex_unlock(&ncsi_dev_mutex);
+ 			return -ERANGE;
+ 		}
+ 		netdev_dbg(ndp->ndev.dev,
+@@ -721,6 +769,7 @@ static int ncsi_set_channel_mask_nl(struct sk_buff *msg,
+ 	if (!(ndp->flags & NCSI_DEV_RESET))
+ 		ncsi_reset_dev(&ndp->ndev);
+ 
++	mutex_unlock(&ncsi_dev_mutex);
+ 	return 0;
+ }
+ 
 -- 
-2.47.3
+2.55.0
 
