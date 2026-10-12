@@ -1,70 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F150048F03F
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791816282; cv=none; b=LwB0QrDx61SAgJLgKci3m+Iav9iUOsSTFGa5IJnLTCIGjFHrIlS1fU6BqmT89PBgFfvoIeq08WCa82YCI0YV428tgl5KRk6jpHNpamyn3i6JCeOourmrcSDr1AoPxpEXZlHJ12x6RVYMfadxcmUVm8ih78y1K2X6LDYMlp2P8tw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791816282; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=a83seJdba9m1o44C/JfAWZIz9/bPt79XFzCQU8zO7CwoCLaKXAASOAtNJ/EPFL/3ujqpjbNWwGvXtYXaFov0VgPihxFsPPc5S15yPe/yuhjPnuz1MoWV+UwMc1BTeEvk85L0fjvtB1VpEdncRHVWV/iwKaKx2y7ZsuJGg2YZyZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmRpUgyx; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2848748FF92
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791816351; cv=pass; b=j7ZgTYPpihooec6Q+uHD/J06bpjvL3Id6vp4yMCnAL7RkMVtqxnTzhy7ZcrYP3MJ342hWnkCQVBD8HQDVzIriFNyZtdeXc9soZgi3KSazpmCP8OH7KFc93981SgzPCfjVcft2B/xQP4EFCnznsHyOEFx5/Trt8BReD14vsRaZL0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791816351; c=relaxed/simple;
+	bh=gGrNTBjii+g6uIsj6txOBfGumy2pNID11P1zmPmCOWs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vsiy8O2aDjNg+/jMFLAeBT0eNlapXD/cdxqSP6S115bTX2J7M80otmgWuwHnQhHlNkpKk0b21iX07FkWoTPdtFO2uzgA71I4k10vBRKNAkAxjl3+uoSdG+2QRp3yAXwb/R+fwYR4mtP0M2/mTWR5RCF6ctlShmZLq8gB9QiYewY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aMDpyKm6; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmRpUgyx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6B41F0089B;
-	Mon, 12 Oct 2026 14:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791816280;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JmRpUgyxe4iGsmozHUp1FIlTjO4hyIqWJ+nrYRv48ZMvlq8fZzJUZ+2vS0Ucc8AbA
-	 ST97NYjdJMja/nSPYDvCKL/ucUyz8oQwp6ocEWrtAXQrahtWpjwcSKTKWZcg6t+lwE
-	 fBhZqd9y6l1dl5xJrc5AI5zfoBHfRwSUE4jkTZPpmTH/NlcllUPfeq95rjq+DCiqAX
-	 VF576NxmypPNVg89xnnl2Cy9xczWsOyDffVz5w2XN7mg8q089efK5tOMYD3eqswRsp
-	 O9TYYCR+otDbLiahjVVzkUxctGP2DqL1FNR+HGnrscX/FrD6cgZkrl6lyYbJFVJ3Ro
-	 Yr4QaLYfQy89A==
-From: netdev-bot+sinfo@kernel.org
-To: Adrian Martinez Garcia <adrimg3196@gmail.com>
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH v2] xfrm: account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in
- acquire/polexpire/expire size calculations
-Date: Mon, 12 Oct 2026 14:44:40 +0000
-Message-ID: <179181628012.2527009.1279721489172027773@kernel.org>
-In-Reply-To: 
- <CACO1+RQUrGS3VN-hrdKk+BK2uuRP7J_Fyadahz1QpO00JXyw3A@mail.gmail.com>
-References: 
- <CACO1+RQUrGS3VN-hrdKk+BK2uuRP7J_Fyadahz1QpO00JXyw3A@mail.gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aMDpyKm6"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so69785ad.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 07:45:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791816349; cv=none;
+        d=google.com; s=arc-20260327;
+        b=c36sKr5RVHfojAQs0oKPwHZ1TplSGE5qzbXKS1l3C6kEid+QYv+HTnFPEnYtqnNglS
+         /3gP2AKXZ9RHsKrO/oZvMHxuxH7o12IGd86z6zc67WUa/NbTcelN+F0u17Qdx8jq7qYb
+         pHIoo0RzjKxZcUxCnLeyFFcbdqGhGyev5WsDAgWKeVVQYst2E/+NbRjvLMaHjAKzjJea
+         zsFTCo0QgezKQMH6PACMcMguCv42tJVaUzCBgm2tT7VLqAR55Ox+5Rm/DU1a3yXcAn3Y
+         txobGKdwspN+pftzGS6ODZYZl4781yy+JEiGun/BL7oKXlEsg34toYvCu4O7WSUvBbus
+         ZhyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gGrNTBjii+g6uIsj6txOBfGumy2pNID11P1zmPmCOWs=;
+        fh=EKSISYEoqyLRMKpCHz3TtWAsAaCeajTcANXBWRJ0bTo=;
+        b=JoQt54yzVBCmKu8YIZGC2KFvBN7doJ2krEtn3dyz7kZQ3pl+Luy7CFOa9TgvWATLsM
+         2+Cic18ITMBJZw/tXx1L+fIXlN/7PK99dMkgrSsaF2svE3XX1Vzy4ZOqz23H8IT+5np/
+         AiXTXT3DloCULQSeYmDbdFHkXL0UkTSzHUg7y6F0fnzU/AJsn53lIeO1Ki8iXaEySoPV
+         k98VDCCmSV9Vj2+zTDoG7mFAGUDrIbVdyLyx6EPtSn3rPAuB7EsGvJtRE05FcUV4qLT/
+         3Ja1RLGmUgNVydYsEmpVzFs+CG8qtVrl0IrcZsM476rLGXiynOGHe2S+YmwoJltgu4Wp
+         lWFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791816349; x=1792421149; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gGrNTBjii+g6uIsj6txOBfGumy2pNID11P1zmPmCOWs=;
+        b=aMDpyKm61Dj4iTeFbZKh5kA8qVzqM1Nn/OvWPYweC9o3OrELzTjp10jAUHpq4KKlXo
+         pbpIM1+uhrwn4SH4/GO8L3oUMvvy5CS93hjhq07OxeBwqg01lr0wAVRJ5EElJoxsP3Cg
+         +9OXX+J99PrFvFcruk13JI6ZPiLvvBFE3a++qf03XNndGVFC67cQRPe45vr33sxdSPrN
+         YCX1TalQ6lDvefnd004OJTwBsalkZla3FHqday5Y/7JPzIO+b+/Jj5FJkqJ9bNAyWx6S
+         J5/UlKxHI0gthGhLaGikUJmxbayHyqr5jb3Lil17hajiD+trv5jLkm2o9JsWNF8wZGsJ
+         H29A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791816349; x=1792421149;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gGrNTBjii+g6uIsj6txOBfGumy2pNID11P1zmPmCOWs=;
+        b=d73/92MxzpEvn2ge12PpEnvbPimrCVIxJp6WSmaVOXJHFCgBauY1K9nzYfAlMdnJM2
+         wAHbgfqv80be9GZjczKZ4Ds90q7G2IpQwjTbEIXlqvQCmwW679AH+1R1s2FbkiUtOSzb
+         FJ2b9D96YRD5wOA0IyzCWvpLPnIwM4P/IUsSYvYSiLbkw46TtZ7roKAX5M6TPKwbDBQb
+         qYr9fdIyqCa5bw57z2hlf1UcUwHRWbTtmnN2H3zzlvhEMXi7JA5QR0znJ1gm+PtOpBqB
+         1eTbGak6oLClDfj+Vb3FHh2YqXlONJbKloiuCCT9YHnCzm/HZyPrfp83HR7v25N1eoY9
+         DUZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy4B6RYTF4OXwXlb5rXlhjuqPYG7bl+7fTf7qPQ9cWyr1EFvPLToZYPx72CLmboP1fk9PoOJ54=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKAconpgLMxJHfA/CVi1N/pzUP40SMaeR6fwoJ7dQQkN6OhcfH+
+	TeIsoa4WnKAFUJesGL0hWsT/1ketZ6oPpdEDHFp5HQyNF+68NtVHo2bczrof68FTYhni+IO2Maz
+	ziWQv3yUlA5fOJBbAXOfBoNzU4tzPc383EQ5OaAMK
+X-Gm-Gg: AYBFou2ovjXMYULKooGgQ5Ayhyr44DT09cYtuKB4GmtczqNp10G5UlPozuFBj7H6eTd
+	nnMZ1ZYBuwrMSKFNAl3G0LQbU8Vo4CHpcshiuEEKdEb13vcArnQPDaYDEu3dC5QTYdnXqQ+7tC3
+	mJ7b+UimadiDaawaaRxeSNDlQWBtPa/E1QXVbL1giN3Syye8aUpZZJqBWmMzh+fcVRTdwqB5ei6
+	qN4BudirU9Lmh9hIUpN2oU+0oxbkjpPFwueTMJqUSkfla0D4Lrn46bIutccVIpy9zUR8VSsM7uW
+	ptdaQuXu+Setl1M3/d62F1e0zvlA9aLAzrfFi/iWJKCgxa11oU+jAL8l
+X-Received: by 2002:a17:902:ebc6:b0:2e2:d665:6ad8 with SMTP id
+ d9443c01a7336-2e87bc2190fmr6225715ad.4.1791816347416; Mon, 12 Oct 2026
+ 07:45:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261003212241.3432303-1-lrizzo@google.com> <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+In-Reply-To: <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Mon, 12 Oct 2026 16:45:11 +0200
+X-Gm-Features: AclHuK-i8fHHmdGq1sG19E58z4J25P_7xaX9lSE-RrDdVmPDw1ep2a8coGIVdbw
+Message-ID: <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Mon, Oct 12, 2026 at 3:51=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 10/3/26 23:22, Luigi Rizzo wrote:
+> > Here is a subsystem called DMA_PMD on which I would like feedback on
+> > architecture, possible enhancements, or kernel components that could be
+> > reused to avoid duplication.
+>
+> Here is a feedback to a subsystem called DMA_PMD ;)
+>
+> Why is basing this on PMDs (and embedding it in the name) the right appro=
+ach?
+>
+> On architctures with large PMDs (512 MiB on arm64 with 64k), would we rea=
+lly
+> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that=
+ might
+> possibly also have TLB benefits (cont-pte)?
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I had to call it something... an earlier prototype used the name IOMMU_2M,
+but I didn't want to suggest that the design was limited to 2M (it is not).
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Aside from the name, the _current_ prototype restricts to 2M allocations,
+exactly because too large units are expensive and wasteful.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+In the code, decoupling the allocation size from the PMD size is trivial.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+To enjoy the reduced IOTLB pressure the architecture needs to support
+IOMMU leaves with the correct size. Looks like ARM supports a
+"Contiguous" hint, but I am not sure how to tell if the hint is honored
+(ie the IOTLB actually uses one entry for the full contiguous range)
+other than measuring.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+cheers
+luigi
