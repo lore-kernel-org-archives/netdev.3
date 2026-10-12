@@ -1,161 +1,96 @@
-Received: from mta0.migadu.com (out-90.mta0.migadu.com [91.218.175.90])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319AE47A0A9
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF1D477991
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798763; cv=none; b=f4C1b20mbcr5qS/DN3DY/6NLoGthDY6/63Z4oHntFTnXkeTM93R1TOl60pWLgxrhg86IvJIcT6VaIDdhb8ZpmltJ3BsvSxihnSwWrAZQudqUVKwWNIDUl8wJRLiERjhvZTVOB4dc/ps2GQyrrl8HOiBgdLtks/ug5PxFg06Eebc=
+	t=1791798775; cv=none; b=JHHvl+H+i+hClKPFyPsNgkyKZl+pBHHfUTp1JXU67lUW+yRbN99U9qvOnqKk8Z6Bd1sy3tQUSDSXEtFl+6pkDW75p5JVV3L9mRAMLzZeKDteV8gfSECJLVIPfQrFPlmMNOaaOzN4DjW34syGVau80O2YmWZ6hAy2n7/+ktMLFpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798763; c=relaxed/simple;
-	bh=AHIA+RwpuT28qbCBDhX6p5dPp+xOpJIdP2j0VIC8bKI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qa2yt0yA/9iznMNJqF0b3dnIDo9LgiQH1vnD+uCvigwMNALCAsArs1UyDXlEwJoeHyOpwRz7i4hr+SK3t8dBnvFISabmGlCw9OmjPeg0oEmw+YRkdHFLIlzZv1TFaOZrtJDN9oVeqknDaar8eefJEM3NnLJVQ9BPU3+jMi6gGZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pWHlIX+T; arc=none smtp.client-ip=91.218.175.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791798775; c=relaxed/simple;
+	bh=g+eiYRaDlWc8NjpLGUhd5rVDJrvMRpN/6l2pR2vwbTM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lupnd/mqa0xO9byQfkNSQFp2kNwEKzSD9pLIOkN1jFwpxlFjOiJImopkIlqMbjqcn7irC4rzu3Qe64tgTlVc6IbdT71rQQqAVL6Oi7oYsHBV27Q00HrNrS03YBF1cT2SLCTdrEFXr6FNf5oxA+TbLawWp6CQlGZWiLCcc93azm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=frJs6bvH; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pWHlIX+T"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=AHIA+RwpuT28qbCBDhX6p5dPp+xOpJIdP2j0VIC8bKI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791798756; v=1; x=1792403556;
- b=pWHlIX+T2F9isaGrLL5ap4n9saxm9Dvs7pvZ7myYA+uFu/OigHyZbvm7k/l1WpKf7gxK0Qma
- kbAEErrsYVwLOn8S1Fz0IFzDLtf9DmPBd8Q2ROus1WBrv0hflYsNPJb/NcFdXMkLLD+JRefjAU6
- yRjI1BvVxKzEKtbFBf3rAl4g=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id d5efb0101126e00b;
-	Mon, 12 Oct 2026 09:52:36 +0000
-X-Mizu-Trace-ID: d5efb0101126e00b
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 12 Oct 2026 17:52:24 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: luyun <luyun_611@163.com>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	maheshb@google.com, razor@blackwall.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net v3] bonding: 3ad: select a port when the TX array is
- empty
-Message-ID: <asyt2Gt4LzKWWnZS@fedora>
-References: <20261008024031.16224-1-luyun_611@163.com>
- <asoItm3JVXSC5GQ4@fedora>
- <463c6b0e-8b46-4c70-b9d8-56b42beaa7d0@163.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="frJs6bvH"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-868b3248b2cso1364193b3a.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:52:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791798772; x=1792403572; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=g+eiYRaDlWc8NjpLGUhd5rVDJrvMRpN/6l2pR2vwbTM=;
+        b=frJs6bvHieGDA6PRbKUQfd3z+Uxy4OULY502osYW1j3gyrlCzKcSDvszOLAgpzCLiN
+         t5Epsj65lTWxN59tncCLIQeR8uGUZMHU5Wz+Bykq/I1ZZ8L1G4L54d0UzKMeJnfDONS1
+         hoLOmjicbgzjOHEhPU3gu2zwPcxFh17szpNV/XJ1zF1h9T1kQqXM3GQyeBc++dglcrs2
+         y0h6av6pr/dnGDAPYUorsR/A/WRdVpJTXdIeXG1MgefQZnsqtw6VmCpgcCo41J7lFxD8
+         iGEEs9OUuOyuTcmve2EXzt/am36316WiBJkLRd3q+wSYhYm/5jIeXWDTl5qSPmgykNse
+         ypag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791798772; x=1792403572;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=g+eiYRaDlWc8NjpLGUhd5rVDJrvMRpN/6l2pR2vwbTM=;
+        b=L9P9tQWMvoi+XiE06PrB2DCooW0eJjTT0RnE3IXreH0CuOUrNnntG5iDFQJsrwXqhU
+         MkUin9Q8qohmAw8ru4bDfO7YnhRt7jO9xKdeTsqRh33f4yZASBI+8CCGbngLGDx1b9rU
+         V6jGIgET4QYyPFzypsgl+cJEl7Irm2LhWihvQOELtjlwrOeNTVxVNbvN2apXtFsfAcgY
+         Y2UgFWTFuWIc5JDzxUfSbJrgNCyxo3OHC1zkHFYNFfxRfD0oQEPx9I/qMenMHe7BfT+U
+         npTa10dqKEULgYRExhLoXDuEJbkmT/v0negP3d/w4QSndjuofkuNrZJ/UfA/hR0Xwunt
+         warg==
+X-Gm-Message-State: AFq9FYJ3+SDx4VVJ9zPhtAq4DxYf2jly2J/27UOEI5eLfJJsgzhZuklx
+	X+CouXCnGcB1xv+xdbyY4C1b/Lxxp1xAGxqcISZq4wxZSzkhUer6dznrnQPTjthb
+X-Gm-Gg: AYBFou0lVlsevSQUo+FyG2lJd2YTnn/IL2Dl6zwYQv2NI3c9iRRgxMRjE4MNJqZQSdP
+	NmgXI9eOsfa/Rkbq1Vgya9ynyKaUD7RZoaaqGngxcsgBbp09L63Xon2vKU3wrp96dblL9u1Ilzg
+	jE8u5xl1/K9sn2N/NXj30Yhb2qnC+L/AgHtYLZpz6ojZ/Gi1agTOQNI/zuOKDa/KOxhy9rgha3T
+	zzyJdFzYP7SCJoI8HIjkcm9sqWjrw7k3WWVtg5kyquS6WQxIFV2VZ1QspKgAFyGRFcwfZj4Hc44
+	OpjE104Bqdb0awUkH2R8LxAQDFsmF19J2QLE4pqjdsAIt5f8D7iCnDGobWnDMHYWK11VFc/iR5k
+	Hdc4NhTexb9gC/hsd5ZNEhUTFriKrm5yWbhh50LH1hQavYVpl3bcXW8fFCVeqA8xJOnHyMoyOYm
+	3OTTszKXT/Oh3RJ2afQFvZHZBfIXNnEHj0VQJQ33ZHedvahYitkpMJh8ogVsEh9JywH4XyIQjFg
+	daWsOTaSwvFo9/EiMevZZ53AcbeFMBuYuFDFA==
+X-Received: by 2002:a05:6a00:f93:b0:890:92c9:9630 with SMTP id d2e1a72fcca58-897c8f6e633mr7215044b3a.60.1791798772504;
+        Mon, 12 Oct 2026 02:52:52 -0700 (PDT)
+Received: from obadmin-Precision-3680.atlascopco.group ([167.103.3.1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c41bbb27sm3671550b3a.40.2026.10.12.02.52.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 02:52:51 -0700 (PDT)
+From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org,
+	aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	sahaj123.sc@gmail.com
+Subject: Re: [PATCH net] selftests: openvswitch: Test SET on later IPv6 fragments
+Date: Mon, 12 Oct 2026 15:23:28 +0530
+Message-ID: <20261012095328.3194911-1-sahaj123.sc@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <179162316732.434549.3008431843792004994@kernel.org>
+References: <20261009090629.1694991-1-sahaj123.sc@gmail.com> <179162316732.434549.3008431843792004994@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <463c6b0e-8b46-4c70-b9d8-56b42beaa7d0@163.com>
 
-Hi Lu Yun,
+The issues identified in the review have been addressed in v2, sent as a
+fresh thread per netdev process. The v2 links to the original submission:
+https://lore.kernel.org/r/20261009090629.1694991-1-sahaj123.sc@gmail.com
 
-On Mon, Oct 12, 2026 at 03:20:09PM +0800, luyun wrote:
-> 
-> 在 2026/10/10 17:43, Hangbin Liu 写道:
-> > Hi Lu Yun,
-> > On Thu, Oct 08, 2026 at 10:40:31AM +0800, Yun Lu wrote:
-> > > From: Yun Lu <luyun@kylinos.cn>
-> > > 
-> > > This issue was observed on a machine in real use. During 802.3ad
-> > > bring-up in production, packets were dropped even though the bond's
-> > > carrier was up and LACP had enabled ports for distribution. The
-> > > transmit path only consults usable_slaves and returns no slave when
-> > > the array is NULL or its count is zero.
-> > > 
-> > > LACP port eligibility and the TX array are updated separately. The
-> > > state machine enables ports and updates carrier before scheduling
-> > > slave_arr_work to rebuild and publish the array. The worker requires
-> > > RTNL and retries if rtnl_trylock() fails, so RTNL contention can
-> > > prolong the interval in which eligible ports exist but the cached
-> > > array is empty.
-> > > 
-> > > Add a fallback for 802.3ad when the usable array is empty and carrier
-> > > is up. Walk the RCU-protected slave list and use ports whose
-> > > aggregator is active and which pass bond_slave_can_tx(), without
-> > > taking mode_lock or changing LACP state. In 802.3ad mode the
-> > > per-slave active flag is set only by the mux machine for ports of the
-> > > active aggregator, so these lockless reads identify distributable
-> > > ports with the same criteria bond_update_slave_arr() applies when
-> > > building the array.
-> > `bond_update_slave_arr()` is called from `bond_enslave()`, and it should be
-> > very fast. Could we add a check in `bond_3ad_state_machine_handler()` or
-> > another suitable place to ensure usable slaves exist before entering the
-> > distribution state?
-> > 
-> > The fallback path seems somewhat complex and costly. Or you can wait for
-> > Jay's feedback.
-> 
-> Hi Hangbin,
-> 
-> Thanks for the review and the suggestion.
-> 
-> bond_enslave() does call bond_update_slave_arr() synchronously, but at
-> that point the newly enslaved 802.3ad port is still inactive and there
-> is usually no active aggregator yet, so that call typically resets both
-> arrays to NULL. The problematic window opens later, when LACP
+The v2 Message-ID is <20261012095000.3188473-1-sahaj123.sc@gmail.com>.
 
-Ah, yes.
-
-> convergence completes, and it comes from the delay stages between port
-> enablement and array publication:
-> 
-> 1) The state machine enables the port and brings carrier up inside the
->    sweep (__enable_port() -> bond_3ad_set_carrier()), but slave_arr_work
->    is only queued after mode_lock is released.
-> 
-> 2) bond->wq is an ordered workqueue shared with ad_work, mcast_work and
->    peer_notify_work, so slave_arr_work runs only after the work items
->    queued ahead of it finish, on top of normal scheduler latency under
->    boot load.
-> 
-> 3) The worker needs RTNL. rtnl_lock is global: any concurrent netdev
->    operation (e.g. udev / network manager churn during boot) makes
->    rtnl_trylock() fail, and the worker requeues itself with a 1 jiffy
->    delay, retrying until RTNL becomes available. This was exactly the
->    situation on the production machine where we hit the problem.
-> 
-> During this window carrier is up and the ports are already
-> collecting/distributing, but usable_slaves is still NULL or empty, so
-> every packet goes through bond_tx_drop() and the sender sees no error.
-> In production ARP simply never went out.
-> 
-> A control-path check before entering the distribution state would be
-> circular with the current builder: bond_update_slave_arr() only picks
-> ports that already pass bond_slave_can_tx(), and that flag is set by
-> the mux machine itself on entering collecting/distributing. Waiting
-> for a non-empty array before enabling the first port never converges.
-
-I feel calling bond_update_slave_arr after collecting/distributing is a bit
-late. Maybe we should start updating slave array after entering
-LACP_STATE_SYNCHRONIZATION, cause after that we start sending
-LACP sync messages, which means the port is already up and usable.
-
-> 
-> Deferring the mux transition instead would delay carrier-on, be
-> visible to the LACP partner, and under RTNL contention extend bring-up
-> by the same delay the fallback covers, so traffic would not flow any
-> sooner. The builder also needs RTNL, may sleep and takes mode_lock
-> itself, so it cannot be called from the mux critical section; a
-> control-path fix means splitting array preparation from port
-> enablement, with recovery when RTNL or allocation fails.
-> 
-> On cost: the fallback only runs when the array is empty, so the normal
-> transmit path is untouched. Inside the window it is a lockless RCU list
-> walk with no new state; the second pass and the broadcast branch are
-> there to keep the array path's hash mapping and broadcast_neighbor
-> semantics.
-> 
-> I would also like Jay's feedback on the preferred direction. If a
-> control-path solution is preferred, I am open to working on separating
-> array preparation from port enablement, as long as it does not change
-> LACP convergence behavior.
-
-+1
-
-Thanks
-Hangbin
+pw-bot: cr
