@@ -1,227 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-193.mta0.migadu.com [91.218.175.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D6038735D;
-	Mon, 12 Oct 2026 01:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3269B23FC41
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791768447; cv=none; b=g95Py22Pa5dLjw6fZd6MADatZOukAotsHFvrGlavTKp3wI+8jVD3sYPsID0cFsb+5jfqXU/5wUaIMOPgaWdrXWmG2dvReP4tFZaAiaDHGlDcxIxmGqEfFf5dmjNaN2IMpMi0NkJtl7GEAtENh3tKaNmdqyoHFZS9OT56I9tjhB8=
+	t=1791769097; cv=none; b=VSO6nR08bQSPmOKC6/r/1NdIgi6tuNzI1TpA515RIyJSauP8KnTQc3RtK4frTTE15igxCnTGGeSBWvREoq+bpwbxsdv2eGKhjKnNoAdozydb0yQH99/dfpcqYRkO3igHksg3Yd5aSVV27MA830V+5MH4PtjL0kpq1iINPI5TeZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791768447; c=relaxed/simple;
-	bh=Z4YbKlMYfwjeCSuNzqsvvMhdovAKYj8NiZstvX0GOtc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z2Knk7K/Bu6Sjz2eCfQDPmQcCH2jZN1yItV6z51p5D2vkTMlaR6TZ6UdJmBiIoQKtxqKWbfzjWtaU9PtBCephp/78vmejYgKfU4iECtJx3KOn7H5sYyjQdu9rxPcdboA/T0xTQyPkHHbC38K3JFGbbZbstY2UznuqjitfP2xMgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NrsxjV8Y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791769097; c=relaxed/simple;
+	bh=DwPAqyo+kbHR4QZnsyXrErGHTcNhB6rs1BCvftMQZjw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WGdNoho3rroR3Mj3fYhTayjnxZZN5Pz/xPkwf6AQzfbhbDBM4gx8CY/dd9ezoAfkbjyqsHDj5WPOoEAbxlFER91DRpdCoTic6FflDH+F9iJT/0hQPa65nHepLwiWRb/5o2hDG/OhzAgHIGw2gYOoXKrMxqkKjoCtKKIgtXSpZBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JXM8zNSI; arc=none smtp.client-ip=91.218.175.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NrsxjV8Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470B41F0089B;
-	Mon, 12 Oct 2026 01:27:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791768446;
-	bh=VMCIw3R1Suzemsm2WOv45XkZoDR3phWGGRoHPSwTczA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NrsxjV8YWqZxwVWNHhzzsDoASrDAQIWFpgQ7ZRSM47lAK+J23jHgsUr6i1K7O4ZGi
-	 DDOfs51gwBL38aEM7NTOAKuV9Wbx9dAR+p1f7up7aiyg4VFktXr8O1zMmXzLbZi0zc
-	 QY5/Hf3wdQyObEOlTmEAk9sccnO07XmzMN9RON8wnIjSDXZxz8kqpVnRNlbhyvNRBF
-	 uBzbEBAKV0hn1uWOmCz0ylY15ZI2O8mUkLRv4FfEJnlsjmYriiHav99+hfcslR3RVX
-	 NZ2nQhojwTslxyFPDt1AbqbGjtF0xu8YmJqgC+V8iVChya24octqnCsqSEPsaeXykx
-	 zR7Mp+UvbHVsw==
-Subject: Re: [PATCH net v6] ip6_gre: use skb_vlan_inet_prepare() instead of
- pskb_inet_may_pull()
-From: netdev-bot+sashiko@kernel.org
-To: littlesmilingcloud@gmail.com
-Cc: netdev@vger.kernel.org, edumazet@kernel.org, fw@strlen.de, kuba@kernel.org,
- pabeni@redhat.com, davem@davemloft.net, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, mazin@getstate.dev, matthias.may@westermo.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Mon, 12 Oct 2026 01:27:24 +0000
-Message-ID: <179176844482.434549.5708346025808067831@kernel.org>
-In-Reply-To: <20261008012554.202925-1-littlesmilingcloud@gmail.com>
-References: <20261008012554.202925-1-littlesmilingcloud@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JXM8zNSI"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=DwPAqyo+kbHR4QZnsyXrErGHTcNhB6rs1BCvftMQZjw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791769093; v=1; x=1792373893;
+ b=JXM8zNSI7eQgQQGm5PphOuaxKoQrEX4Kxkovv9MMM5okDUB2kEBdXpDrAhK8+qjnBZ131aMi
+ m6HvJ6YEq+W7YqfzqU2OybwlUA1e8fbDqql8y4Miv83DyHovkEwFUe3xYCs07SewXAhVM8pHOjh
+ hCKjg6zEW2lrhk03p3JRlU0Y=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id a7f938bb652c49cd;
+	Mon, 12 Oct 2026 01:38:12 +0000
+X-Mizu-Trace-ID: a7f938bb652c49cd
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 12 Oct 2026 09:38:05 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Hangbin Liu <liuhangbin@kylinos.cn>, stefano.salsano@uniroma2.it,
+	andrea@common-net.org
+Subject: Re: [PATCH net-next v2 2/5] seg6: add RFC8986 flavor support for
+ End.X
+Message-ID: <asw5_RwRV5JKLg3l@fedora>
+References: <20261009-srv6_flavors_endx-v2-0-56ac7f838f41@kylinos.cn>
+ <20261009-srv6_flavors_endx-v2-2-56ac7f838f41@kylinos.cn>
+ <20261012025900.c2321bfa92c5863d21efdba3@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012025900.c2321bfa92c5863d21efdba3@uniroma2.it>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi Andrea,
+On Mon, Oct 12, 2026 at 02:59:00AM +0200, Andrea Mayer wrote:
+> On Fri, 09 Oct 2026 17:58:38 +0800
+> Hangbin Liu <hangbin.liu@linux.dev> wrote:
+> 
+> > From: Hangbin Liu <liuhangbin@kylinos.cn>
+> > 
+> > Previously End.X only supported NEXT-C-SID, with a plain fallback to
+> > input_action_end_x_core(). Add PSP End.X processing by reusing
+> > end_flv8986_core().
+> > 
+> > Add SEG6_LOCAL_FLV8986_SUPP_OPS to SEG6_LOCAL_END_X_FLV_SUPP_OPS so
+> > End.X advertises PSP flavor support.
+> > 
+> > Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> > ---
+> > 
+> > For Sashiko:
+> > 
+> > With the SEG6_LOCAL_END_X_FLV_SUPP_OPS mask widened, parse_nla_flavors()
+> > now accept the combination next-csid plus psp for an End.X instance. And
+> > the current code is unable to handle this combination. The End instance
+> > also has this issue. Andrea is preparing a fix for this bug.
+> 
+> Hi Hangbin,
+> 
+> thanks for v2, and for your work.
+> 
+> The End fix is now posted, to net-next and not to net as I wrote on
+> v1, since the issues it fixes have been there since PSP was added:
+> 
+>   https://lore.kernel.org/netdev/20261011192310.55-1-andrea.mayer@uniroma2.it/
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+Yes, I saw it.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> 
+> > ---
+> >  net/ipv6/seg6_local.c | 15 ++++++++++++---
+> >  1 file changed, 12 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> > index 4fcfcd48cfae..521a9b0c0929 100644
+> > --- a/net/ipv6/seg6_local.c
+> > +++ b/net/ipv6/seg6_local.c
+> > @@ -121,7 +121,8 @@ struct bpf_lwt_prog {
+> >  
+> >  #define SEG6_LOCAL_END_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+> >  					 SEG6_LOCAL_FLV8986_SUPP_OPS)
+> > -#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	SEG6_F_LOCAL_FLV_NEXT_CSID
+> > +#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
+> > +					 SEG6_LOCAL_FLV8986_SUPP_OPS)
+> >  
+> >  struct seg6_flavors_info {
+> >  	/* Flavor operations */
+> > [snip]
+> > @@ -923,12 +924,20 @@ static int input_action_end_x(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+> >  {
+> >  	const struct seg6_flavors_info *finfo = &slwt->flv_info;
+> >  	__u32 fops = finfo->flv_ops;
+> > +	int ret;
+> > +
+> > +	if (!fops)
+> > +		return input_action_end_x_core(skb, slwt);
+> >  
+> >  	/* check for the presence of NEXT-C-SID since it applies first */
+> >  	if (seg6_next_csid_enabled(fops))
+> >  		return end_x_next_csid_core(skb, slwt);
+> 
+> Here End.X could do what End does in the fix: call
+> seg6_use_next_csid() instead of seg6_next_csid_enabled(), so that a
+> packet with a zero Argument is processed as End.X with PSP.
+> 
+> Does it work for you to rebase this series on top of the End fix,
+> once it is merged, and make that change in this patch? Then End.X
+> handles the combination from the beginning.
 
-- [Medium] Regression: in ip6gre_tunnel_xmit() (ip6gretap branch) and
-  ip6erspan_tunnel_xmit(), skb_vlan_inet_prepare() now always calls…
+OK, hope it doesn't take too long time.
 
-Pre-existing issues:
-- [Medium] ip6_tnl_xmit() calls skb_protocol(skb, true) again (line 1119)
-  after the GRE header (and, for ip6erspan, the ERSPAN header) has been…
+> 
+> The selftests of the two series conflict in srv6_end_flavors_test.sh,
+> and they set up the test environment differently. If you want a hand
+> with that part, I am glad to help.
 
---
+I will review the selftest update and try rebase my test on yours.
+If there is a need, I will ask for your help.
 
-ip6_gre: use skb_vlan_inet_prepare() instead of pskb_inet_may_pull()
+> 
+> Side note: I received only part of this series. Could you please also
+> Cc andrea@common-net.org, in this thread and on the next versions?
 
-This patch changes ip6gre_tunnel_xmit() and ip6erspan_tunnel_xmit() to
-use skb_vlan_inet_prepare() instead of pskb_inet_may_pull(). The length
-check then matches the VLAN-aware skb_protocol() parsing that comes after
-it. For Ethernet devices it first clears skb->mac_len, and it keeps
-pskb_inet_may_pull() for ip6gre devices that use ip6gre_header_ops.
+Sure, I will.
 
-Closes: https://syzkaller.appspot.com/bug?extid=6023ea32e206eef7920a
-
-> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index 04f7c70b7320e..06dd53c5a9e25 100644
-> --- a/net/ipv6/ip6_gre.c
-> +++ b/net/ipv6/ip6_gre.c
-> @@ -883,8 +883,23 @@ static netdev_tx_t ip6gre_tunnel_xmit(struct sk_buff *skb,
->  	__be16 payload_protocol;
->  	int ret;
->  
-> -	if (!pskb_inet_may_pull(skb))
-> -		goto tx_err;
-> +	if (dev->type != ARPHRD_ETHER && dev->header_ops) {
-> +		/* ip6gre_header() has pushed a pseudo header in front of
-> +		 * the packet, so skb->data is not where the packet starts.
-> +		 */
-> +		if (!pskb_inet_may_pull(skb))
-> +			goto tx_err;
-> +	} else {
-> +		/* skb_vlan_inet_prepare() and the skb_protocol() dispatch
-> +		 * below walk the VLAN tags from skb->mac_len - VLAN_HLEN, or
-> +		 * from ETH_HLEN if it is 0; a forwarded skb still has the
-> +		 * mac_len of the device it was received on.
-> +		 */
-> +		if (dev->type == ARPHRD_ETHER)
-> +			skb->mac_len = 0;
-> +		if (skb_vlan_inet_prepare(skb, dev->type != ARPHRD_ETHER))
-> +			goto tx_err;
-
-[Severity: Medium]
-
-Can this move the network header onto the VLAN TCI? This would happen for
-skbs that already carry an in-band tag while skb->protocol holds the inner
-protocol.
-
-skb_vlan_inet_prepare() works out maclen from skb->protocol alone, and then
-always sets the network header:
-
-include/net/ip_tunnels.h:skb_vlan_inet_prepare() {
-    ...
-	if (eth_type_vlan(type))
-		type = __vlan_get_protocol(skb, type, &maclen);
-    ...
-	skb_set_network_header(skb, maclen);
-}
-
-vlan_do_receive() creates such skbs on a VLAN device with reorder_hdr off
-that is not a bridge or macvlan port:
-
-net/8021q/vlan_core.c:vlan_do_receive() {
-    ...
-		skb = *skbp = vlan_insert_inner_tag(skb, skb->vlan_proto,
-						    skb->vlan_tci, skb->mac_len);
-    ...
-		skb_reset_mac_len(skb);
-}
-
-That leaves skb->protocol as ETH_P_IP or ETH_P_IPV6, with the tag at
-offset 12 and the network header at offset 18 (mac_len is 18). Say tc
-mirred on that VLAN device's ingress sends the skb to ip6gretap or
-ip6erspan. tcf_mirred_to_dev() pushes mac_len, so the frame reaches the
-tunnel with the tag still in-band.
-
-With pskb_inet_may_pull() the network header stayed at 18. Here
-eth_type_vlan(ETH_P_IP) is false, so maclen stays ETH_HLEN and the network
-header moves to 14, which is the TCI.
-
-Would everything after the check then read the inner header 4 bytes off?
-For example:
-
-  - prepare_ip6gre_xmit_ipv4() with IP6_TNL_F_USE_ORIG_TCLASS takes the
-    dsfield from the low byte of the TCI.
-
-  - In ip6erspan_tunnel_xmit(), ip_hdr(skb)->tot_len reads the
-    encapsulated EtherType (0x0800). ipv6_hdr(skb)->payload_len reads the
-    0x6xxx version word. Either way truncate (the ERSPAN T bit) is set
-    for nearly every mirrored frame.
-
-  - prepare_ip6gre_xmit_ipv6() does the raddr loop check and
-    ip6_tnl_parse_tlv_enc_lim() on shifted bytes, so a flow label byte
-    acts as nexthdr. That can cause drops or bogus ICMPV6_PARAMPROB
-    replies.
-
-  - ICMP errors sent on -EMSGSIZE, and the inherited hop limit in
-    ip6_tnl_xmit(), are taken from the shifted header.
-
-All of these reads stay inside the pulled area.
-
-> +	}
->  
->  	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
->  		goto tx_err;
-> @@ -933,7 +948,13 @@ static netdev_tx_t ip6erspan_tunnel_xmit(struct sk_buff *skb,
->  	__u32 mtu;
->  	int nhoff;
->  
-> -	if (!pskb_inet_may_pull(skb))
-> +	/* skb_vlan_inet_prepare() below walks the VLAN tags from
-> +	 * skb->mac_len - VLAN_HLEN, or from ETH_HLEN if it is 0, to check
-> +	 * the length; a forwarded skb still has the mac_len of the device
-> +	 * it was received on.
-> +	 */
-> +	skb->mac_len = 0;
-
-[Severity: Medium]
-
-This is a pre-existing issue that the patch did not introduce, and the
-commit message already lists it as a follow-up. Still, clearing mac_len
-here changes where the second VLAN walk in ip6_tnl_xmit() lands.
-
-ip6_tnl_xmit() runs after the GRE header has been pushed (for ip6erspan,
-the ERSPAN header too):
-
-net/ipv6/ip6_tunnel.c:ip6_tnl_xmit() {
-    ...
-	payload_protocol = skb_protocol(skb, true);
-    ...
-	if (hop_limit == 0) {
-		if (payload_protocol == htons(ETH_P_IP))
-			hop_limit = ip_hdr(skb)->ttl;
-		else if (payload_protocol == htons(ETH_P_IPV6))
-			hop_limit = ipv6_hdr(skb)->hop_limit;
-    ...
-}
-
-Now that mac_len is 0, the walk starts ETH_HLEN past the GRE header. For
-keyed ip6gretap and for ip6erspan, that is on MAC or ERSPAN bytes the
-sender controls.
-
-Suppose those bytes read as ETH_P_IP or ETH_P_IPV6 and hop limit
-inheritance is on. Then ttl or hop_limit is read at the network header
-that skb_vlan_inet_prepare() set. For a short tagged frame with a non-IP
-inner type, only maclen bytes were pulled.
-
-Could this read a byte past skb->tail and put it in the outer IPv6 hop
-limit? A locally generated short frame, for example from veth or
-AF_PACKET, could hit this.
-
-In the other cases the real inner TTL and traffic class are just not
-inherited. For unkeyed ip6gretap, the second walk now lands on the real
-inner protocol.
-
-> +	if (skb_vlan_inet_prepare(skb, false))
->  		goto tx_err;
->  
->  	if (!ip6_tnl_xmit_ctl(t, &t->parms.laddr, &t->parms.raddr))
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008012554.202925-1-littlesmilingcloud%40gmail.com
+Thanks
+Hangbin
