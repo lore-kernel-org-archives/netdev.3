@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5674A4A5EA9;
-	Mon, 12 Oct 2026 15:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB114A68B1;
+	Mon, 12 Oct 2026 15:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791819714; cv=none; b=Xc6RQDMQifqkKbW5TUrJ4f+xQCxTYcKViR7G6tJa0fds9SYN7qhsx8HtO9qAMqIEkJqXQO+u0CNWbnFrnB7g/VFHTmlbKEXkoL5k2Rv5xUreCS1F5ll7AEDhVKOjFA4p3JoPqz8wZr53ZflROBAxoIBFBMZMYDin/Kxy5EHF1AY=
+	t=1791819716; cv=none; b=iFSWUYEYoQio1Edny+qRLAPg/smsAkfqvwqM6+so0VcNB0ibmu/QcUrJ9GL8LnaQ5iBi68nGfJdtpldkWSvb/PaBS5iY6vQYEfQMebvauxFY35ZHhkwd35OiR/VPzbjma4Q5wVP340uGADJB0/2QdNLOsQBYCmNmwoJloANYzhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791819714; c=relaxed/simple;
-	bh=7rRa2JfmdB0drekEYd2cRrxKBrtqOOfu/77GrlvI/X8=;
+	s=arc-20240116; t=1791819716; c=relaxed/simple;
+	bh=CvcHpCagw7aiVxZi71wMmvK0LSPx0bhxUYodmC3aIgc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GAD1RmNHnkabqjxg1I1ZF68ezfdMeSzO1A+axkFvn5tFDOImZ4VUc47USDjBYBjRiCJiXh5AKo49qoXiieRXBuFasqKZL0X52pTH/JRVb5fL5AIUYz/hut7eHoGilckbAPGPAKVXdJnoo6PcmlBuBX8inBzhhKq8NBoFnsnyuEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i15zmgja; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JiBk8a+CI8onwfy/1E14ZtVXbzoEiG1HDr68OQ8j0dqlDKbK4ySFOOD9MPAVuplaxt+nb5ne/ByKEM2Pqm6h6u7CsqJW1TNi4tpd/ZZoRbJVSVmoxJONi59FQNqr5E+/VsJGXUVF8j239KwH10tmVz6841S8w6LmjNQ6Y/qAUso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mM4J2rHg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i15zmgja"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BE71F0089B;
-	Mon, 12 Oct 2026 15:41:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mM4J2rHg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0411F0089D;
+	Mon, 12 Oct 2026 15:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791819713;
-	bh=nHbMapHTKZ727vEhoiXUoP/oNdKkaDpyXh4LAmd4I7s=;
+	s=k20260515; t=1791819715;
+	bh=4nsDm25o7DG9h7olAyIABAQtiGgwDIygOlaQU2Ir5mY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=i15zmgjafBp2j8RNHxrFcF4MgDU7NCq0yNbq+XtCB2WsHy/o+PxLcpCt9WSDFWcQp
-	 k1o0U0S2m3Nv4v7LXrwjdwI+JB/bs6R9/l6PY2bgttGsJdVqXFCgKq06fUfNSK9c0C
-	 i966B8YLZJzbGnR8syObeUwOyw+sXrHAvXoy8K1pwL6Hdi/5FtEq7ES/8zn0yUaGPy
-	 8CKr6UaDNey6ZyzGTH32TVkfhf3HzENfWPc2kO9n7se/oz6LzycM5yF525XO91wmAx
-	 t/+LlRcx0ad00/UaOFaNY+JcmRmTGsI4b3P+9OosNWA+uZhy5e+1Ohyz5YF0JVDLFK
-	 ZVJHZr5fy/Whw==
-Subject: Re: [PATCH net-next 03/11] dt-bindings: net: qcom,ipq9574-ppe: Add
- IPQ5424 PPE support
+	b=mM4J2rHgntddia5vdn0Z3g1v9UKg7OPewEL0oyjpEMylDkryKhjPQR1HRdsSD3WgY
+	 hB4iBYlFYR+8JHQboQo8yGIE6gLP+ukfHUjA4jSM1e77Q2zo/uCLrUWNzMtinV5JIT
+	 fV5BbRryCUmpWDN+7KvdKWFZKD+qQEQ+s0o9Vvwjj+lq/a66q+aPVAC1cTNQhZzhzD
+	 4xbWErQpAa/Ml8HU1XWSfUuRScke+lOcOwkkjD4hLndRdJw8dUThN6AgWrPci0W+Zs
+	 Kd8VEejlOQGMxx/z23mqn7ixzf4A7upXiHFqGNG0EwZ5ywG2KUZcIKtzWQNPJZ1fTa
+	 Cl26Di/T+kkSw==
+Subject: Re: [PATCH net-next 04/11] docs: networking: Document IPQ5424 as a
+ supported SoC
 From: netdev-bot+sashiko@kernel.org
 To: jie.luo@oss.qualcomm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -38,11 +38,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com
-Date: Mon, 12 Oct 2026 15:41:51 +0000
-Message-ID: <179181971156.434549.6954774066445278330@kernel.org>
-In-Reply-To: <20261008-qcom_ipq5424_ppe-v1-3-16caf43e44ee@oss.qualcomm.com>
-References: <20261008-qcom_ipq5424_ppe-v1-3-16caf43e44ee@oss.qualcomm.com>
-X-sashiko-severity: Medium
+Date: Mon, 12 Oct 2026 15:41:53 +0000
+Message-ID: <179181971340.434549.9619050534779483357@kernel.org>
+In-Reply-To: <20261008-qcom_ipq5424_ppe-v1-4-16caf43e44ee@oss.qualcomm.com>
+References: <20261008-qcom_ipq5424_ppe-v1-4-16caf43e44ee@oss.qualcomm.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,148 +52,78 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The IPQ5424 port limit in
-  Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml is…
-- [Low] The new prose in the binding description
-  (Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml, lines…
+- [Low] At this commit ("docs: networking: Document IPQ5424 as a
+  supported SoC"), ppe.rst lists IPQ5424 as supported by the PPE driver,…
 
 --
 
-dt-bindings: net: qcom,ipq9574-ppe: Add IPQ5424 PPE support
+docs: networking: Document IPQ5424 as a supported SoC
 
-This patch adds the qcom,ipq5424-ppe compatible to the IPQ9574 PPE
-binding. It moves the interconnect lists into per-compatible allOf
-conditionals, with a smaller interconnect set for IPQ5424. It also tries
-to limit IPQ5424 to Ethernet ports 1-3.
+This commit updates the Qualcomm PPE driver documentation to add IPQ5424
+to the list of supported SoCs. It also describes how the PPE hardware
+differs between SoCs: clock rate, front panel ports and FIFO interfaces.
 
-> diff --git a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> index c899f4b569458..e5d218fc5d825 100644
-> --- a/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> +++ b/Documentation/devicetree/bindings/net/qcom,ipq9574-ppe.yaml
-> @@ -74,9 +74,14 @@ description: |
->      +------->|             QCA8075 PHY             | | PHY4  | | PHY5  |
->       (clock) +-------------------------------------+ +-------+ +-------+
+> diff --git a/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst b/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst
+> index 4ab299a28969a..04c48cec66d53 100644
+> --- a/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst
+> +++ b/Documentation/networking/device_drivers/ethernet/qualcomm/ppe/ppe.rst
+> @@ -167,6 +167,14 @@ PPE Driver Supported SoCs
+>  The PPE driver supports the following IPQ SoC:
 >  
-> +  The IPQ5424 PPE reuses the same switch core, but wires up only 3
-> +  front panel ports (GMAC0-2) and the single EDMA FIFO interface; it
-> +  has no EIP FIFO and no ports 4-6.
+>  - IPQ9574
+> +    The PPE runs at a clock rate of 353 MHz. The switch core has 6 front panel
+> +    ports (port1 to port6) and two FIFO interfaces: the EDMA FIFO (port0) for
+> +    the host CPU communication and the EIP FIFO (port7) for the EIP engine.
+> +- IPQ5424
+> +    The PPE reuses the same switch core as IPQ9574 and runs at a clock rate of
+> +    375 MHz. It supports 3 front panel ports (port1 to port3) with MAC0 to MAC2,
+> +    and only the EDMA FIFO interface (port0) for the host CPU communication. The
+> +    EIP FIFO and port4 to port6 are not available.
 
 [Severity: Low]
-Is "GMAC0-2" accurate here? The series' own driver has this comment above
-ppe_reserved_ranges_ipq5424 in drivers/net/ethernet/qualcomm/ppe/ppe.c:
+This isn't a bug, but should this patch go after the driver patches in the
+series? At this commit the driver does not support IPQ5424 yet.
 
-/* For IPQ5424, there are only three Ethernet ports, the register space of
- * GMAC/XGMAC 3-5 is unavailable.
- */
+In drivers/net/ethernet/qualcomm/ppe/ppe.c, qcom_ppe_of_match[] still has
+only the IPQ9574 compatible:
 
-That suggests both GMAC0-2 and XGMAC0-2 are present. Also,
-include/dt-bindings/clock/qcom,ipq5424-nsscc.h defines
-NSS_CC_XGMAC0_PTP_REF_CLK through NSS_CC_XGMAC2_PTP_REF_CLK.
+    { .compatible = "qcom,ipq9574-ppe" },
 
-The IPQ9574 text above calls the same blocks "GMAC/XGMACs". Would
-"GMAC/XGMAC0-2" be more accurate here?
+The clock rate and port count are also fixed to the IPQ9574 values, and
+qcom_ppe_probe() applies them unconditionally:
 
-> +
->  properties:
->    compatible:
->      enum:
-> +      - qcom,ipq5424-ppe
->        - qcom,ipq9574-ppe
-
-[ ... ]
-
-> @@ -182,7 +179,7 @@ properties:
->  
->    ethernet-ports:
->      patternProperties:
-> -      "^ethernet-port@[1-6]+$":
-> +      "^ethernet-port@[1-6]$":
->          type: object
->          unevaluatedProperties: false
->          $ref: ethernet-switch-port.yaml#
-> @@ -236,6 +233,62 @@ required:
->  
->  allOf:
->    - $ref: ethernet-switch.yaml
-
-[ ... ]
-
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: qcom,ipq5424-ppe
-> +    then:
-> +      properties:
-
-[ ... ]
-
-> +        ethernet-ports:
-> +          patternProperties:
-> +            "^ethernet-port@[1-3]$":
-> +              properties:
-> +                reg:
-> +                  maximum: 3
-> +            "^ethernet-port@[4-6]$": false
-
-[Severity: Medium]
-Does this fully limit IPQ5424 to ports 1-3, as the commit message says?
-
-The allOf also pulls in ethernet-switch.yaml, and its ports container has
-a catch-all child pattern:
-
-Documentation/devicetree/bindings/net/ethernet-switch.yaml:
-  '^(ethernet-)?ports$':
-    type: object
-    unevaluatedProperties: false
+    #define PPE_PORT_MAX		8
+    #define PPE_CLK_RATE		353000000
     ...
-    patternProperties:
-      '^(ethernet-)?port@[0-9a-f]+$':
-        type: object
-        description: Ethernet switch ports
+    ppe_dev->clk_rate = PPE_CLK_RATE;
+    ppe_dev->num_ports = PPE_PORT_MAX;
 
-If a child name matches none of the PPE patterns, this generic pattern
-still marks it as evaluated, so the inner unevaluatedProperties: false
-doesn't reject it. Only type: object is checked.
+At this commit, ppe_icc_data[] has only the IPQ9574 interconnect paths.
+In ppe_config.c, ipq9574_ppe_bm_port_config also still includes the EIP
+BM port.
 
-So on qcom,ipq5424-ppe, it looks like these nodes pass dtbs_check without
-a reg range check and without the required clocks, resets and
-reset-names:
+Later patches in the series close this gap:
 
-  ethernet-port@0, ethernet-port@7, ethernet-port@a, ethernet-port@10
+- "net: ethernet: qualcomm: ppe: Add platform support for IPQ5424" adds
+  struct ppe_of_data, IPQ5424_PPE_CLK_RATE (375000000),
+  IPQ5424_PPE_PORT_MAX (4), ipq5424_ppe_icc_data and the
+  "qcom,ipq5424-ppe" match entry.
+- "net: ethernet: qualcomm: ppe: Add IPQ5424 BM buffer configuration"
+  adds ipq5424_ppe_bm_port_config.
 
-The same applies to a ports container that uses port@N, for example
-ports { port@4 { reg = <4>; }; }. The oneOf in ethernet-switch.yaml
-accepts either ports or ethernet-ports, but the PPE schema only constrains
-ethernet-ports.
+The ppe.rst text does not change by the end of the series and matches the
+final driver. The only concern is that, when bisecting to this commit,
+the documentation lists support that does not exist yet.
 
-Could the IPQ5424 branch constrain every name the base schema accepts?
-For example, it could use '^(ethernet-)?port@[0-9a-f]+$' with
-reg: maximum: 3 and disallow the ports container.
-
-There's a related question about the change to the shared pattern under
-properties.ethernet-ports:
-
-    "^ethernet-port@[1-6]+$"  ->  "^ethernet-port@[1-6]$"
-
-This also affects the existing qcom,ipq9574-ppe compatible, and the
-commit message doesn't mention it. Before this change, a node like
-ethernet-port@11 matched the PPE port schema and reg: maximum: 6 rejected
-it. Now it only matches the generic ethernet-switch.yaml pattern, so it is
-accepted.
-
-Is that loosening of the IPQ9574 validation intended?
+>  
+>  
+>  Enabling the Driver
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-qcom_ipq5424_ppe-v1-0-16caf43e44ee%40oss.qualcomm.com
