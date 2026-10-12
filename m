@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFF8339389;
-	Mon, 12 Oct 2026 17:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B041F48EBC5;
+	Mon, 12 Oct 2026 17:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791825589; cv=none; b=Q3Gp2Nr+u/i8xMLDsCm6TvsD12CXUggXcy2PWDMkJIo6X8miq60tXCuP46m3vrDWbOxL7p/2e2Uv7OU2pqIsCpbqyORohfZTqok3CI/A3Z8tqp/ePBWY0Eryh0V++A4CB2xizzfCTLRnAkjxI39wOYab/1z3oxC7TUDp3KGRkWw=
+	t=1791825590; cv=none; b=hckzaxksOwA44eosHkEKAOQNu9nI2JAbSZqfmF2ppRkjWJHBG0PWb5aRTKcFJh6mOB4grJ0kMtqqgOiBrpXgHHjCs5s1bH2FM+odshYx5IP/WgvELOmrd/DAI4G9+6XC93VQZK5flFo41JCV1p2r0Z7Ge1cw2bFlkvUCSztlPPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791825589; c=relaxed/simple;
-	bh=sc7oMQB1iIsG9Tjs2+oy2Y8ewhoddExXpMgmQfLoQT0=;
+	s=arc-20240116; t=1791825590; c=relaxed/simple;
+	bh=4qUcr0qTenisD18TVuFES5obRPPVDR82BpQapAPcCCU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oNO2/WmPxnSZ7mhYJO0IlmU0LhedffpU2O6vxrbm90D29xa3x5Pp4YcPjExChhGppw6hUfdamqqj7vvCaWr6agRJtCXI/hApRqMNOOMsWPpTY/Dbmm8/Ej1ZZARCB7+dJU0TKLbGcaWVmXHRa68PAU4bCGIjPtrvr5o4z78fP1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UefLQ8N6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=MMpCFHKA/uXsk0w4OJO7qNLEp0GW2OvdfFUaFM380rc8ewF+WyoV2ifD6crgYLTYtkbMUyHCqanVQfEGA4YtNAFz5t1gk0YgFchxWr0ItEZv12dD/2WYRBcz8B0f9hI09eNODIYGPzTjTrGROnz23hMSZAcjnqqUFLtuxfRU+48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DDpjMqte; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UefLQ8N6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177A51F0089B;
-	Mon, 12 Oct 2026 17:19:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DDpjMqte"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAD21F0089C;
+	Mon, 12 Oct 2026 17:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791825587;
-	bh=Cb6WTYEtjlNKiWfB8xZNRoCChqjPhaokfbd+nwT/PAY=;
+	s=k20260515; t=1791825588;
+	bh=W8nzKHZeRQ3lBDX3WHX6H5mmwgueCYe3aSG3qXouAfc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UefLQ8N63gX5dfbi2PS/zIgVvhCePt/VWii4YiArHw6myceHsHJMggVpu/ikX2iFJ
-	 MELnwRWJr5/AiXS6E+kgq6eArR9ZseNTULyJgzdX6+Trco55Mr0oM0sfsNMOikmojJ
-	 eHBLBekGGmnq6IyHg+BDtpL3A0bH3/h0R75Z+7RKYXAPLOhjBfqsjhb7IRWZj7EFGg
-	 QnHS8Pez20cbXukdXgO6eBqW6U6cwupCufdm3jc3SDdFyQvXDihSfkdF74l8XvYIk3
-	 jt2K1XGGxv8un9jJ9UvN+oRszmtCcYKzG4FYCia9ufkcUXyRUKyh3JYVVk2HGNF7ZT
-	 ujDouP8u5qLGQ==
-Subject: Re: [PATCH net-next V2 1/5] net/mlx5: nodnic: Introduce the
- mlx5_nodnic driver
+	b=DDpjMqteKeW6B6VK4Dn8IF0twUVSE4c8S7AUgH/j9hwj17FWebuhtk4hfMPIeg+l1
+	 xCQg/iusdARSAH0c2EUdW3SPRSuX/NeiiribT0z9ZNyn/wl47yjn83X1Tx6yHz/Lb9
+	 BDUZwG/vCSAH5vfH9lLsuydlA3G5c3WoZNmyrnl+p39/nt5WUULxxP7wIbsfqpbjuK
+	 llBWFfhM1m43UBQzTVwTXhxXyPrpctSC7/27b0U0wgva5oS66N9NSx+OPUhKMjaVjc
+	 uOuUVYaFDewcBvuHSv+iL+/zlX61OeMqTYJnwwGeOuiTmTUhHBW5aJpcjm2QPIURC3
+	 ad4NllfNvoz8Q==
+Subject: Re: [PATCH net-next V2 2/5] net/mlx5: nodnic: Implement data path
 From: netdev-bot+sashiko@kernel.org
 To: tariqt@nvidia.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -35,11 +34,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  cjubran@nvidia.com, gal@nvidia.com, linux-kernel@vger.kernel.org,
  shshitrit@nvidia.com, leon@kernel.org, mbloch@nvidia.com, saeedm@nvidia.com,
  dtatulea@nvidia.com, horms@kernel.org
-Date: Mon, 12 Oct 2026 17:19:45 +0000
-Message-ID: <179182558562.434549.15918325290379101624@kernel.org>
-In-Reply-To: <20261008171821.660739-2-tariqt@nvidia.com>
-References: <20261008171821.660739-2-tariqt@nvidia.com>
-X-sashiko-severity: Critical
+Date: Mon, 12 Oct 2026 17:19:47 +0000
+Message-ID: <179182558716.434549.11018514583239999958@kernel.org>
+In-Reply-To: <20261008171821.660739-3-tariqt@nvidia.com>
+References: <20261008171821.660739-3-tariqt@nvidia.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 10 potential
+Thank you for your contribution! Sashiko AI review found 9 potential
 issue(s) to consider.
 
-Critical: 1 · High: 4 · Medium: 1 · Low: 4
+Critical: 0 · High: 3 · Medium: 6 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,1211 +59,494 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Critical] mlx5: Fatal SQ/RQ size calculation mismatch causes DMA
-  buffer overflow
-- [High] Raw positive PCIBIOS_* codes from config-space accessors reach
-  the PCI probe return, leading to use-after-free and double kfree.
-- [High] Device DMA buffers can be freed while the device still has DMA
-  enabled.
-- [High] mlx5: CQ log_size hardware register is overwritten with zero
-  during init
-- [High] mlx5: 32-bit multiplication overflow in UAR physical address
-  calculation
-- [Medium] The only device this driver binds, 0x15b3:0xc2d6, is already
-  listed by mlx5_core in mgt_ifc_device_ids[] (fw_reset.c:394,…
-- [Low] mlx5_nodnic_build_netdev() installs the MAC that
-  mlx5_nodnic_read_mac_address() read from device registers…
-- [Low] (Baseline: not valid; fixed later in the series.) This patch
-  registers a netdev whose ops have no ndo_start_xmit and no RX/NAPI…
-- [Low] (Baseline: not valid.) The device-supplied size exponents
-  (log_cq_size, log_max_ring_size, log_uar_page_size) are used in shifts…
-- [Low] (Baseline: not valid.) The VSC read/write helpers mask address
-  bits 31:30 instead of rejecting them, and do not check the syndrome…
+- [High] mlx5_nodnic_activate_queues() (en_cfg.c) calls
+  napi_enable_locked() first.
+- [High] mlx5_nodnic_deactivate_queues() (en_cfg.c, added in this patch)
+  calls mlx5_nodnic_disable_port() only if…
+- [High] TX stop/wake between mlx5_nodnic_xmit() and
+  mlx5_nodnic_complete_send_wqe() uses plain, unannotated sq->cc/sq->pc…
+- [Medium] mlx5_nodnic_handle_err_cqe()
+  (drivers/net/ethernet/mellanox/mlx5/nodnic/en.c) handles…
+- [Medium] mlx5_nodnic_napi_poll() (en.c) does not handle budget == 0.
+- [Medium] In mlx5_nodnic_napi_poll() (en.c), when '++tx_work_done >=
+  MLX5_NODNIC_TX_CQ_POLL_BUDGET' (128) the loop jumps to poll_done while…
+- [Medium] The CQ consumer-index doorbell record (cq->dbr.db[0], set_ci)
+  is written only in mlx5_nodnic_arm_cq(), which runs only after…
+- [Medium] mlx5_nodnic_handle_recv_cqe() (rx.c) passes the device-
+  reported byte_cnt to page_pool_dma_sync_for_cpu() and skb_put()…
+- [Medium] mlx5_nodnic_enable_port() makes three separate PORT_NETWORK
+  writes: data/event MSI-X enable, then network_en plus…
 
 --
 
-net/mlx5: nodnic: Introduce the mlx5_nodnic driver
+net/mlx5: nodnic: Implement data path
 
-This commit adds mlx5_nodnic, a PCI driver for DRAM-less ConnectX NIC
-functions. It covers probe and remove (FLR, firmware readiness polling,
-interface negotiation and capability discovery). It also adds a VSC layer
-for config-space access to the init segment and the NODNIC registers, and
-a netdev with ndo_open/ndo_stop and a link-event IRQ.
+This commit implements the TX and RX data paths for the mlx5_nodnic driver.
+It adds WQE posting with a BlueFlame doorbell, page pool backed RX, and a
+single NAPI context that dispatches TX and RX CQEs. It also wires up
+ndo_start_xmit and ndo_features_check and enables TX/RX checksum offload.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/en.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/en.c
 > new file mode 100644
-> index 0000000000000..5724ed41d8b89
+> index 0000000000000..3572aff50194f
 > --- /dev/null
-> +++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
-> @@ -0,0 +1,828 @@
+> +++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/en.c
 
 [ ... ]
 
-> +/* log_cq_size should be read after rq and sq ring sizes were set. */
-> +static int mlx5_nodnic_read_cq_ring_size(struct mlx5_nodnic_core_dev *dev)
+> +static void mlx5_nodnic_handle_err_cqe(struct mlx5_nodnic_cq *cq,
+> +				       struct mlx5_cqe64 *cqe64,
+> +				       int napi_budget)
 > +{
 
 [ ... ]
 
-> +	log_cq_size = MLX5_GET(nodnic_q_addr_l, &cq_addr_l, log_size);
-> +	cq->num_entries = 1ULL << log_cq_size;
-> +	cq->log_num_entries = log_cq_size;
-
-[Severity: Low]
-This isn't a bug, but log_cq_size comes straight from a device register.
-The same is true of log_max_ring_size in mlx5_nodnic_calc_ring_size() and
-log_uar_page_size in mlx5_nodnic_init_uar_map(). All three are used in
-shifts and size calculations with no range check.
-
-mlx5_core also trusts FW-reported exponents, so this is only a hardening
-question. Would a sanity check on these values be worth adding?
-
-[ ... ]
-
-> +static void mlx5_nodnic_close_queues(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = dev->priv;
+> +	netdev_err(priv->netdev,
+> +		   "%s CQE error: syndrome=0x%02x (%s), vendor_syndrome=0x%02x, wqe_counter=%u, cq_ci=%d\n",
+> +		   queue_type,
+> +		   syndrome, mlx5_nodnic_cqe_err_syndrome_str(syndrome),
+> +		   vendor_syndrome, wqe_counter, cq->cc);
 > +
-> +	mlx5_nodnic_free_ring(dev, &priv->working_buffer);
-> +	mlx5_nodnic_close_cq(&priv->cq);
-> +	mlx5_nodnic_close_rq(dev);
-> +	mlx5_nodnic_close_sq(dev);
-> +	mlx5_nodnic_free_dbr(dev, &priv->dbr);
+> +	print_hex_dump(KERN_ERR, "mlx5_nodnic err CQE: ", DUMP_PREFIX_OFFSET,
+> +		       16, 1, err_cqe, sizeof(*err_cqe), false);
+> +
+> +	if (opcode == OPCODE_CQ_SEND_ERR) {
+> +		struct mlx5_nodnic_sq *sq = &priv->sq;
+> +		u16 sq_pi = mlx5_nodnic_sq_get_pi(sq, wqe_counter);
+> +
+> +		mlx5_nodnic_complete_send_wqe(sq, &sq->wqe_info[sq_pi],
+> +					      napi_budget);
+> +	} else {
+> +		struct mlx5_nodnic_rq *rq = &priv->rq;
+> +		u16 ci = wqe_counter & (rq->ring.num_entries - 1);
+> +
+> +		mlx5_nodnic_release_rx_wqe(rq, ci);
+> +	}
 > +}
-
-[Severity: High]
-Can the device still DMA into these buffers after they are freed?
-
-mlx5_nodnic_open_queues() writes the ring, CQ, doorbell record and working
-buffer addresses to the device. Nothing here clears those registers
-before dma_free_coherent().
-
-This patch doesn't call mlx5_nodnic_enable_port() yet. Later in the
-series, "net/mlx5: nodnic: Implement data path" adds
-mlx5_nodnic_deactivate_queues(), but it only disables the port if the VSC
-acquire succeeds:
-
-	if (!mlx5_nodnic_vsc_context_acquire(dev->vsc_ctx)) {
-		mlx5_nodnic_disable_port(dev);
-		mlx5_nodnic_vsc_context_release(dev->vsc_ctx);
-	}
-
-	mlx5_nodnic_deactivate_sq(&dev->priv->sq);
-	napi_disable_locked(&dev->priv->cq.napi);
-	mlx5_nodnic_deactivate_rq(dev);
-
-The acquire can fail with -EBUSY after VSC_MAX_RETRIES, with -EACCES, or
-on a set_space failure. A write inside mlx5_nodnic_disable_port() can
-also fail, and that only produces a warning. In any of these cases the RX
-pages go back to the page pool and the coherent buffers are freed. At
-that point network_en and dma_en are still set and bus mastering is
-still on.
-
-The error paths in mlx5_nodnic_init_ring(), mlx5_nodnic_init_cq_ring()
-and mlx5_nodnic_init_working_buffer() follow the same pattern. Each one
-frees a buffer after its address has already been written to the device.
-
-In mlx5_nodnic_remove_one(), mlx5_nodnic_cleanup_netdev() frees all of
-these buffers first. Only after that does mlx5_nodnic_dev_cleanup() set
-the interface to DISABLED and pci_disable_device() clear bus mastering.
-
-Should the device side be shut down, or pci_clear_master() called as a
-fallback, before these buffers are freed?
-
-[ ... ]
-
-> +static const struct net_device_ops mlx5_nodnic_netdev_ops = {
-> +	.ndo_open		= mlx5_nodnic_open,
-> +	.ndo_stop		= mlx5_nodnic_close,
-> +};
-
-[Severity: Low]
-This isn't a bug, but this patch registers a netdev with no ndo_start_xmit
-and no RX path. netif_tx_disable() in mlx5_nodnic_create_netdev() keeps
-the TX queue stopped, so the core never calls the missing callback.
-
-The data path is added later in the series by "net/mlx5: nodnic:
-Implement data path". Is it intended that this patch registers an
-interface that can't pass traffic yet?
-
-> +
-> +void mlx5_nodnic_build_netdev(struct net_device *netdev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = netdev_priv(netdev);
-> +	struct mlx5_nodnic_core_dev *core_dev;
-> +
-> +	core_dev = priv->core_dev;
-> +
-> +	SET_NETDEV_DEV(netdev, core_dev->device);
-> +
-> +	netdev->netdev_ops = &mlx5_nodnic_netdev_ops;
-> +	netdev->request_ops_lock = true;
-> +
-> +	eth_hw_addr_set(netdev, core_dev->mac_address);
-
-[Severity: Low]
-Should the MAC from mlx5_nodnic_read_mac_address() be checked with
-is_valid_ether_addr() before it is installed here? If the device reports
-an all-zero or multicast address, that address is registered as the
-interface's unicast address.
-
-For comparison, mlx5e_set_netdev_dev_addr() in mlx5_core falls back to
-eth_hw_addr_random() when the FW MAC is zero.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/main.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/main.c
-> new file mode 100644
-> index 0000000000000..a533232bf6ef4
-> --- /dev/null
-> +++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/main.c
-> @@ -0,0 +1,864 @@
-
-[ ... ]
-
-> +static const struct pci_device_id mlx5_nodnic_core_pci_table[] = {
-> +	{ PCI_VDEVICE(MELLANOX, 0xc2d6) }, /* BlueField-4 nodnic rshim PF */
-> +	{ }
-> +};
-> +
-> +MODULE_DEVICE_TABLE(pci, mlx5_nodnic_core_pci_table);
-> +
-> +static struct pci_driver mlx5_nodnic_core_driver = {
-> +	.name = KBUILD_MODNAME,
-> +	.id_table = mlx5_nodnic_core_pci_table,
-> +	.probe = mlx5_nodnic_probe_one,
-> +	.remove = mlx5_nodnic_remove_one,
-> +};
 
 [Severity: Medium]
-How is this driver meant to interact with mlx5_core's sync FW reset?
-mlx5_core already lists 0xc2d6 in mgt_ifc_device_ids[] in
-drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c:
+Is there a recovery path for the SQ or RQ after an error CQE?
 
-	{ PCI_VDEVICE(MELLANOX, 0xc2d6) }, /* BlueField4 MGT interface device ID */
+mlx5_nodnic_handle_err_cqe() calls netdev_err() and does a 64 byte
+print_hex_dump() at KERN_ERR. Neither is rate limited. It then completes or
+releases the one WQE named by wqe_counter and carries on. Nothing stops,
+resets or recovers the queue.
 
-Because of that entry, mlx5_check_dev_ids() lets the reset go ahead with
-this function present. mlx5_pci_link_toggle() then saves and locks every
-function on the bus, toggles the link and restores config space:
+The driver decodes MLX5_CQE_SYNDROME_WR_FLUSH_ERR, so it seems to expect
+mlx5 flush-after-error behaviour. If so, one non-flush error (for example
+LOCAL_LENGTH_ERR) would make every later TX WQE come back as a flush error.
 
-	list_for_each_entry(sdev, &bridge_bus->devices, bus_list) {
-		pci_save_state(sdev);
-		pci_cfg_access_lock(sdev);
-	}
+mlx5_nodnic_napi_poll() also reposts every released RX WQE through
+mlx5_nodnic_rq_post_wqes(). An errored RQ would flush them straight back.
 
-This driver has no .err_handler and no reset_prepare/reset_done hooks,
-and none are added later in the series. Take a devlink reload with action
-fw_activate on the PF as an example. Afterwards, the device-side state
-this driver programmed would be gone: nic_interface=NO_DRAM_NIC, the
-ring/CQ/DBR/working buffer addresses, and the port and MSI-X enables. The
-netdev would stay registered with stale software state.
-
-The commit message doesn't mention this coupling with mlx5_core's reset
-flow. Is it expected?
+Could one hardware error then become a flood of KERN_ERR output from
+softirq context? TX and RX would stay dead until the interface is bounced,
+while the queue and carrier still look up.
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/nodnic_pci_vsc.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/nodnic_pci_vsc.c
+> +int mlx5_nodnic_napi_poll(struct napi_struct *napi, int budget)
+> +{
+
+[ ... ]
+
+> +	while (true) {
+> +		cqe = mlx5_nodnic_cq_get_cqe(cq);
+> +		if (!cqe)
+> +			break;
+> +
+> +		result = mlx5_nodnic_handle_cqe(cq, cqe, budget);
+> +		switch (result) {
+> +		case MLX5_NODNIC_CQE_TX:
+> +			if (++tx_work_done >= MLX5_NODNIC_TX_CQ_POLL_BUDGET)
+> +				goto poll_done;
+> +			break;
+> +		case MLX5_NODNIC_CQE_RX:
+> +			if (++rx_work_done >= budget)
+> +				goto poll_done;
+> +			break;
+
+[Severity: Medium]
+Does this poll handle budget == 0? netpoll calls it with a zero budget:
+
+net/core/netpoll.c:poll_one_napi() {
+    ...
+	work = napi->poll(napi, 0);
+    ...
+}
+
+The next CQE is fully handled before the budget is checked.
+
+For an RX CQE, mlx5_nodnic_handle_recv_cqe() calls
+page_pool_dma_sync_for_cpu(), napi_build_skb() and napi_gro_receive(). For
+an RX error CQE, mlx5_nodnic_release_rx_wqe() calls
+page_pool_put_full_page() with allow_direct set to true.
+
+Only after that does ++rx_work_done >= budget exit the loop. poll_done then
+always calls mlx5_nodnic_rq_post_wqes(), which allocates from the page pool.
+
+Documentation/networking/napi.rst says that with a zero budget only TX
+completions should be processed, and page pool and RX APIs must not be
+used.
+
+With netconsole on this netdev, netpoll can run from hardirq or printk
+context. Can this path then touch the page pool's lockless cache, the
+per-CPU NAPI skb cache and GRO? Could those get corrupted if it interrupts
+a softirq user on the same CPU?
+
+> +		case MLX5_NODNIC_CQE_IGNORED:
+> +			break;
+> +		}
+> +	}
+> +
+> +poll_done:
+> +	if (!mlx5_nodnic_rq_post_wqes(priv))
+> +		return budget;
+> +
+> +	if (rx_work_done >= budget)
+> +		return budget;
+
+[Severity: Medium]
+On both return budget paths, does the device ever see an updated CQ
+consumer index?
+
+The CQ doorbell record consumer index is only written in
+mlx5_nodnic_arm_cq():
+
+	cq->dbr.db[0] = cpu_to_be32(ci);
+
+That only runs after napi_complete_done() succeeds.
+
+Under sustained RX that fills the budget on every pass, NAPI never
+completes. cq->cc keeps advancing in software, but db[0] keeps the value
+from the last arm.
+
+Meanwhile mlx5_nodnic_rq_post_wqes() keeps reposting RX WQEs based on the
+software rq->cc. mlx5_nodnic_complete_send_wqe() keeps freeing SQ slots
+and waking TX.
+
+Suppose the device uses set_ci for CQ overrun detection like other mlx5
+devices. Could it then see more outstanding CQEs than the CQ size and
+report an overrun or stall, even though software has consumed every entry?
+
+For comparison, mlx5e updates the CQ doorbell record with
+mlx5_cqwq_update_db_record() at the end of every poll pass.
+
+> +
+> +	if (napi_complete_done(napi, rx_work_done))
+> +		mlx5_nodnic_arm_cq(cq);
+> +
+> +	return rx_work_done;
+> +}
+
+[Severity: Medium]
+When the loop exits because tx_work_done reached
+MLX5_NODNIC_TX_CQ_POLL_BUDGET, more CQEs may still be pending:
+
+		case MLX5_NODNIC_CQE_TX:
+			if (++tx_work_done >= MLX5_NODNIC_TX_CQ_POLL_BUDGET)
+				goto poll_done;
+
+Suppose the RQ refill succeeds and rx_work_done < budget. This path then
+calls napi_complete_done(), re-arms the CQ and returns less than budget,
+even though polling stopped with work left.
+
+Should this return budget instead, as mlx5e does when its TX poll hits its
+limit?
+
+As written, the remaining TX completions, and any RX CQEs behind them,
+depend on the device raising an event when armed with unconsumed CQEs. If
+it only signals on new CQE writes, TX completions could stall with the SQ
+stopped. There is no ndo_tx_timeout to recover.
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
+> index 5724ed41d8b89..9657c43e9958f 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/en_cfg.c
+
+[ ... ]
+
+> @@ -573,6 +643,143 @@ void mlx5_nodnic_refresh_carrier(struct mlx5_nodnic_priv *priv)
+
+[ ... ]
+
+> +static int mlx5_nodnic_activate_queues(struct mlx5_nodnic_core_dev *dev)
+> +{
+> +	struct mlx5_nodnic_cq *cq = &dev->priv->cq;
+> +	int err;
+> +
+> +	napi_enable_locked(&cq->napi);
+> +
+> +	mlx5_nodnic_init_cqes_ownership(cq);
+> +
+> +	err = mlx5_nodnic_activate_rq(dev);
+> +	if (err)
+> +		goto err_napi;
+> +
+> +	err = mlx5_nodnic_vsc_context_acquire(dev->vsc_ctx);
+> +	if (err)
+> +		goto err_rq;
+> +
+> +	err = mlx5_nodnic_enable_port(dev);
+> +	mlx5_nodnic_vsc_context_release(dev->vsc_ctx);
+> +	if (err)
+> +		goto err_rq;
+
+[Severity: Medium]
+If mlx5_nodnic_enable_port() fails after its first or second write, is the
+port left partly enabled?
+
+mlx5_nodnic_enable_port() makes three separate PORT_NETWORK writes: MSI-X
+enable, then network_en plus receive_filter_en, then dma_en. It returns
+early on failure and does not roll back.
+
+This unwind goes to err_rq without calling mlx5_nodnic_disable_port().
+mlx5_nodnic_open_locked() then reaches:
+
+err_close:
+	clear_bit(MLX5_NODNIC_STATE_OPENED, &priv->state);
+	mlx5_nodnic_close_queues(dev);
+
+That frees the rings, DBRs and working buffer, but their addresses are
+still programmed in the device.
+
+The dma_en write might take effect but still be reported as failed, for
+example on a VSC flag-wait timeout. Could the device then DMA into freed
+memory?
+
+mlx5_nodnic_disable_port() also notes that data_msix_en and event_msix_en
+can't be modified while the port is active. Could the leftover state make
+the first enable_port write on the next open ineffective?
+
+> +
+> +	mlx5_nodnic_arm_cq(cq);
+> +	napi_schedule(&cq->napi);
+> +
+> +	mlx5_nodnic_activate_sq(dev);
+> +
+> +	return 0;
+> +
+> +err_rq:
+> +	mlx5_nodnic_deactivate_rq(dev);
+> +err_napi:
+> +	napi_disable_locked(&cq->napi);
+> +
+> +	return err;
+> +}
+
+[Severity: High]
+Is this unwind order safe?
+
+mlx5_nodnic_activate_rq() creates the page pool with
+.napi = &priv->cq.napi. On the err_rq path, mlx5_nodnic_deactivate_rq()
+frees rq->pages and calls page_pool_destroy() while NAPI is still enabled.
+Only after that does err_napi call napi_disable_locked(). The
+err_destroy_page_pool path inside mlx5_nodnic_activate_rq() has the same
+problem.
+
+page_pool_destroy() reaches this check through
+page_pool_disable_direct_recycling()->napi_assert_will_not_race():
+
+	WARN_ON(!test_bit(NAPI_STATE_SCHED, &napi->state));
+
+napi_enable_locked() has already cleared that bit. So wouldn't any open
+failure after page_pool_create() hit this WARN? That covers RX page
+allocation, VSC acquire and enable_port failures. The pool is also torn
+down without synchronizing against a running poll.
+
+mlx5_nodnic_deactivate_queues() uses the other order: it calls
+napi_disable_locked() before mlx5_nodnic_deactivate_rq().
+
+A related question is why napi_enable_locked() runs first. It comes before
+mlx5_nodnic_init_cqes_ownership(), before mlx5_nodnic_activate_rq() sets up
+rq->page_pool and rq->pages, and before mlx5_nodnic_activate_sq() sets
+sq->txq.
+
+napi_enable_locked()->napi_restore_config() re-hashes the napi_id kept from
+the previous session. A busy-polling socket can then call
+mlx5_nodnic_napi_poll() straight away, without the netdev or state lock.
+
+On reopen, rq->pages still points at the array freed by
+mlx5_nodnic_rq_free_pages() during the previous close:
+
+	kvfree(rq->pages);
+
+rq->page_pool still points at the pool destroyed then, and open_rq has
+reset rq->pc and rq->cc to 0. Can
+mlx5_nodnic_rq_post_wqes()->mlx5_nodnic_rq_post_one() then read
+rq->pages[pi] and call page_pool_dev_alloc_pages(rq->page_pool) on freed
+memory?
+
+Before the ownership init runs, the zeroed CQ ring has op_own == 0. That
+matches software ownership 0 and opcode OPCODE_CQ_SEND. Would a poll in
+that window complete a bogus send through wqe_info[0] and push sq->cc past
+sq->pc?
+
+> +
+> +static void mlx5_nodnic_deactivate_queues(struct mlx5_nodnic_core_dev *dev)
+> +{
+> +	if (!mlx5_nodnic_vsc_context_acquire(dev->vsc_ctx)) {
+> +		mlx5_nodnic_disable_port(dev);
+> +		mlx5_nodnic_vsc_context_release(dev->vsc_ctx);
+> +	}
+> +
+> +	mlx5_nodnic_deactivate_sq(&dev->priv->sq);
+> +	napi_disable_locked(&dev->priv->cq.napi);
+> +	mlx5_nodnic_deactivate_rq(dev);
+> +}
+
+[Severity: High]
+What happens to the device if mlx5_nodnic_vsc_context_acquire() fails here?
+
+Acquire can fail with -EBUSY when the gateway semaphore is still held after
+VSC_MAX_RETRIES in mlx5_nodnic_vsc_gw_lock(). It can also fail with
+-EACCES, or when setting the space fails. In all of these cases
+mlx5_nodnic_disable_port() is skipped. Even when it is called, it returns
+void and only warns if its read or write of PORT_NETWORK fails.
+
+Either way teardown continues. mlx5_nodnic_deactivate_rq() returns the
+device-owned RX pages to the page pool and destroys it.
+mlx5_nodnic_close_queues() then frees the coherent memory:
+
+	mlx5_nodnic_free_ring(dev, &priv->working_buffer);
+	mlx5_nodnic_close_cq(&priv->cq);
+	mlx5_nodnic_close_rq(dev);
+	mlx5_nodnic_close_sq(dev);
+	mlx5_nodnic_free_dbr(dev, &priv->dbr);
+
+At that point the device still has network_en and dma_en set and the ring
+and DBR addresses programmed. Its RX WQEs still point at the freed pages.
+
+Can an incoming packet then be DMA-written into pages that are back in the
+page allocator? Can the device keep fetching the freed SQ ring and doorbell
+records?
+
+Even when the disable write succeeds, nothing reads back or waits for
+in-flight DMA to drain.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c
 > new file mode 100644
-> index 0000000000000..6ddbf045a8d48
+> index 0000000000000..7736a1f24ea5b
 > --- /dev/null
-> +++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/nodnic_pci_vsc.c
-> @@ -0,0 +1,343 @@
+> +++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/rx.c
 
 [ ... ]
 
-> +static int mlx5_nodnic_vsc_pci_read(struct mlx5_nodnic_vsc_ctx *ctx,
-> +				    unsigned int offset, u32 *val)
+> +void mlx5_nodnic_handle_recv_cqe(struct mlx5_nodnic_cq *cq,
+> +				 struct mlx5_cqe64 *cqe)
 > +{
-> +	return pci_read_config_dword(ctx->pdev, ctx->addr + offset, val);
-> +}
-> +
-> +static int mlx5_nodnic_vsc_pci_write(struct mlx5_nodnic_vsc_ctx *ctx,
-> +				     unsigned int offset, u32 val)
-> +{
-> +	return pci_write_config_dword(ctx->pdev, ctx->addr + offset, val);
-> +}
-
-[Severity: High]
-Should these convert the return value with pcibios_err_to_errno()?
-
-pci_read_config_dword() and pci_write_config_dword() return positive
-PCIBIOS_* codes, for example PCIBIOS_DEVICE_NOT_FOUND once the device is
-disconnected. Every caller up the stack only checks if (err) and passes
-the value up unchanged, so mlx5_nodnic_probe_one() can end up returning
-a positive value:
-
-mlx5_nodnic_probe_one()
-  mlx5_nodnic_dev_init()
-    mlx5_nodnic_wait_fw_init()
-      mlx5_nodnic_vsc_context_acquire()
-        mlx5_nodnic_vsc_gw_lock()
-          mlx5_nodnic_vsc_pci_read()
-
-On that path, probe calls kfree(dev) and returns the positive value.
-drvdata, set in mlx5_nodnic_pci_init(), still points at dev.
-local_pci_probe() treats a positive return as success:
-
-	if (rc < 0) {
-		pci_dev->driver = NULL;
-		pm_runtime_put_sync(dev);
-		return rc;
-	}
-	...
-	pci_warn(pci_dev, "Driver probe function unexpectedly returned %d\n",
-		 rc);
-	return 0;
-
-So the driver stays bound, and the next unbind calls
-mlx5_nodnic_remove_one(). It gets the freed dev from pci_get_drvdata(),
-releases the IRQ vectors, the iseg mapping, the regions and vsc_ctx a
-second time, and then calls kfree(dev) again.
-
-mlx5_nodnic_vsc_gw_lock() checks pci_channel_offline() only at the top of
-each loop iteration. Probe can also spend minutes in
-mlx5_nodnic_wait_fw_init(). A surprise removal or DPC event in that
-window looks like enough to hit this.
-
-ndo_open can return the same kind of value through
-mlx5_nodnic_open()->mlx5_nodnic_open_locked()->mlx5_nodnic_open_queues()
-->mlx5_nodnic_vsc_context_acquire(). netif_open() only checks for
-ret < 0:
-
-	ret = __dev_open(dev, extack);
-	if (ret < 0)
-		return ret;
-
-	rtmsg_ifinfo(RTM_NEWLINK, dev, IFF_UP | IFF_RUNNING, GFP_KERNEL, 0, NULL);
-	call_netdevice_notifiers(NETDEV_UP, dev);
-
-That would send RTM_NEWLINK and NETDEV_UP for an interface that
-__dev_open() left down.
 
 [ ... ]
 
-> +static int mlx5_nodnic_vsc_read(struct mlx5_nodnic_vsc_ctx *ctx,
-> +				unsigned int address, u32 *data)
-> +{
-> +	int err;
-> +
-> +	/* Write the address with the flag and syndrome bits cleared */
-> +	address &= ~(MLX5_NODNIC_VSC_ADDR_FLAG | MLX5_NODNIC_VSC_ADDR_SYND);
-
-[Severity: Low]
-This isn't a bug, but this masks off bits 31:30 of the address instead of
-rejecting it. Neither mlx5_nodnic_vsc_read() nor mlx5_nodnic_vsc_write()
-checks the syndrome bit after the flag changes.
-
-Those address bits can only be set if the FW-supplied ctx->offset is
-1 GiB or more. mlx5_vsc_gw_read() and mlx5_vsc_gw_write() in mlx5_core
-skip the syndrome check as well.
-
-Should an out-of-range address or a reported syndrome be returned as an
-error here?
+> +	u32 byte_count = be32_to_cpu(cqe->byte_cnt);
 
 [ ... ]
 
-> @@ -0,0 +1,828 @@
-> +// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
-> +// Copyright (c) 2026, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+> +	page_pool_dma_sync_for_cpu(rq->page_pool, page, 0, byte_count);
 > +
-> +#include <linux/bitops.h>
-> +#include <linux/dma-mapping.h>
-> +#include <linux/etherdevice.h>
-> +#include <linux/ethtool.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/log2.h>
-> +#include <linux/pci.h>
-> +#include <net/netdev_lock.h>
-> +#include <net/net_namespace.h>
+> +	skb = napi_build_skb(page_address(page), PAGE_SIZE);
+> +	if (unlikely(!skb))
+> +		goto err_recycle;
 > +
-> +#include "en.h"
-> +#include "nodnic_ifc.h"
-> +#include "nodnic.h"
-> +#include "nodnic_pci_vsc.h"
+> +	skb_mark_for_recycle(skb);
+> +	rq->pages[ci] = NULL;
 > +
-> +#define MLX5_NODNIC_CQ_INIT_CMD_SN cpu_to_be32(2 << 28)
-> +
-> +static int mlx5_nodnic_write_ring_addr(struct mlx5_nodnic_core_dev *dev,
-> +				       dma_addr_t dma_handle, u32 offset_h,
-> +				       u32 offset_l)
+> +	skb_reserve(skb, MLX5_NODNIC_SKB_HEADROOM_BYTES);
+> +	skb_put(skb, byte_count);
+
+[Severity: Medium]
+This is mostly a hardening question. byte_count comes straight from the
+CQE and is passed to page_pool_dma_sync_for_cpu() and skb_put(). It is
+never checked against the posted buffer size (MLX5_NODNIC_HW_MTU) or the
+skb tailroom.
+
+A CQE with byte_cnt above roughly PAGE_SIZE - NET_SKB_PAD minus the
+skb_shared_info size would hit skb_over_panic()->BUG().
+
+This needs a buggy or misbehaving device. Every RX WQE is posted with
+byte_count = MLX5_NODNIC_HW_MTU, mlx5-family hardware normally reports
+oversize frames as LOCAL_LENGTH_ERR, and the mlx5e linear RX path doesn't
+check this either. Would a cheap bound check here still be worthwhile?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c b/drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c
+> new file mode 100644
+> index 0000000000000..f2efc8d3f5b85
+> --- /dev/null
+> +++ b/drivers/net/ethernet/mellanox/mlx5/nodnic/tx.c
+
+[ ... ]
+
+> +static int mlx5_nodnic_tx_is_sq_full(struct mlx5_nodnic_sq *sq)
 > +{
-> +	__be32 addr_h, addr_l;
-> +	int err;
+> +	u16 pending = (u16)(sq->pc - sq->cc);
 > +
-> +	addr_h = cpu_to_be32(upper_32_bits(dma_handle));
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(dev->vsc_ctx, offset_h, addr_h);
+> +	return pending == sq->ring.num_entries - MLX5_NODNIC_SQ_STOP_ROOM;
+> +}
+
+[ ... ]
+
+> +netdev_tx_t mlx5_nodnic_xmit(struct sk_buff *skb, struct net_device *netdev)
+> +{
+
+[ ... ]
+
+> +	if (unlikely(mlx5_nodnic_tx_is_sq_full(sq)))
+> +		netif_tx_stop_queue(sq->txq);
+> +
+> +	next_offset = mlx5_nodnic_tx_get_next_sq_offset(sq);
+> +
+> +	wqe = (struct mlx5_nodnic_tx_wqe *)((u8 *)sq->ring.wq + next_offset);
+> +
+> +	err = mlx5_nodnic_tx_write_wqe(sq, skb, wqe);
 > +	if (err) {
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write ring addr high: %d\n",
-> +				     err);
-> +		return err;
+> +		dev_kfree_skb_any(skb);
+> +
+> +		return NETDEV_TX_OK;
 > +	}
-> +
-> +	addr_l = 0;
-> +	MLX5_SET(nodnic_q_addr_l, &addr_l, q_addr_l,
-> +		 lower_32_bits(dma_handle) >> 12);
-> +
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(dev->vsc_ctx, offset_l, addr_l);
-> +	if (err)
-> +		mlx5_nodnic_core_err(dev, "failed to write ring addr low: %d\n",
-> +				     err);
-> +	return err;
-> +}
-> +
-> +static u32 mlx5_nodnic_calc_ring_size(struct mlx5_nodnic_core_dev *dev,
-> +				      int stride)
-> +{
-> +	u32 ring_size = MLX5_NODNIC_RING_ENTRIES * stride;
-> +	u32 max_supported = 1U << dev->log_max_ring_size;
-> +
-> +	return min(ring_size, max_supported);
-> +}
-> +
-> +static int mlx5_nodnic_write_ring_size(struct mlx5_nodnic_core_dev *dev,
-> +				       int offset, int size)
-> +{
-> +	__be32 addr_l;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_vsc_cfg_read_be32(dev->vsc_ctx, offset, &addr_l);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev, "failed to read ring size: %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	MLX5_SET(nodnic_q_addr_l, &addr_l, log_size, ilog2(size));
-> +
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(dev->vsc_ctx, offset, addr_l);
-> +	if (err)
-> +		mlx5_nodnic_core_err(dev, "failed to write ring size: %d\n",
-> +				     err);
-> +	return err;
-> +}
-> +
-> +static int mlx5_nodnic_read_qn(struct mlx5_nodnic_core_dev *dev,
-> +			       struct mlx5_nodnic_ring *ring, u32 offset)
-> +{
-> +	__be32 qn_dword;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_vsc_cfg_read_be32(dev->vsc_ctx, offset, &qn_dword);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev, "failed to read queue number: %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	ring->qn = MLX5_GET(nodnic_ring_q_number, &qn_dword, queue_number);
-> +
-> +	return 0;
-> +}
-> +
-> +static int mlx5_nodnic_write_ring_dbr_addr(struct mlx5_nodnic_core_dev *dev,
-> +					   u32 ring_offset)
-> +{
-> +	int off_h = ring_offset + MLX5_NODNIC_RING_DBR_ADDR_H;
-> +	int off_l = ring_offset + MLX5_NODNIC_RING_DBR_ADDR_L;
-> +	struct mlx5_nodnic_dbr *dbr = &dev->priv->dbr;
-> +	__be32 dbr_h, dbr_l;
-> +	int err;
-> +
-> +	dbr_l = 0;
-> +	MLX5_SET(nodnic_ring_dbr_addr_l, &dbr_l, db_record_addr_l,
-> +		 (u32)(dbr->dma_handle >> 2));
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(dev->vsc_ctx, off_l, dbr_l);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write ring DBR addr low: %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	dbr_h = cpu_to_be32(upper_32_bits(dbr->dma_handle));
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(dev->vsc_ctx, off_h, dbr_h);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write ring DBR addr high: %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int mlx5_nodnic_alloc_ring(struct mlx5_nodnic_core_dev *dev,
-> +				  struct mlx5_nodnic_ring *ring, int size)
-> +{
-> +	dma_addr_t dma_handle;
-> +	void *buf;
-> +
-> +	buf = dma_alloc_coherent(dev->device, size, &dma_handle, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	*ring = (struct mlx5_nodnic_ring) {
-> +		.wq		= buf,
-> +		.dma_handle	= dma_handle,
-> +		.size		= size,
-> +	};
-> +
-> +	return 0;
-> +}
-> +
-> +static void mlx5_nodnic_free_ring(struct mlx5_nodnic_core_dev *dev,
-> +				  struct mlx5_nodnic_ring *ring)
-> +{
-> +	dma_free_coherent(dev->device, ring->size, ring->wq,
-> +			  ring->dma_handle);
-> +	memset(ring, 0, sizeof(*ring));
-> +}
-> +
-> +static int mlx5_nodnic_init_ring(struct mlx5_nodnic_core_dev *dev,
-> +				 struct mlx5_nodnic_ring *ring, u32 ring_offset,
-> +				 int stride)
-> +{
-> +	int ring_addr_h = ring_offset + MLX5_NODNIC_RING_ADDR_H;
-> +	int ring_addr_l = ring_offset + MLX5_NODNIC_RING_ADDR_L;
-> +	int size, err;
-> +
-> +	size = mlx5_nodnic_calc_ring_size(dev, stride);
-> +
-> +	err = mlx5_nodnic_alloc_ring(dev, ring, size);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_write_ring_addr(dev, ring->dma_handle, ring_addr_h,
-> +					  ring_addr_l);
-> +	if (err)
-> +		goto err_ring_free;
-> +
-> +	err = mlx5_nodnic_write_ring_size(dev, ring_addr_l, size);
-> +	if (err)
-> +		goto err_ring_free;
-> +
-> +	ring->num_entries = size / stride;
-> +
-> +	err = mlx5_nodnic_read_qn(dev, ring,
-> +				  ring_offset + MLX5_NODNIC_RING_QUEUE_NUMBER);
-> +	if (err)
-> +		goto err_ring_free;
-> +
-> +	err = mlx5_nodnic_write_ring_dbr_addr(dev, ring_offset);
-> +	if (err)
-> +		goto err_ring_free;
-> +
-> +	return 0;
-> +
-> +err_ring_free:
-> +	mlx5_nodnic_free_ring(dev, ring);
-> +	return err;
-> +}
-> +
-> +static int mlx5_nodnic_alloc_dbr(struct mlx5_nodnic_core_dev *dev,
-> +				 struct mlx5_nodnic_dbr *dbr)
-> +{
-> +	const u32 bytes = MLX5_NODNIC_DBR_WORDS * sizeof(__be32);
-> +	dma_addr_t dma_handle;
-> +	void *buf;
-> +
-> +	buf = dma_alloc_coherent(dev->device, bytes, &dma_handle, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	*dbr = (struct mlx5_nodnic_dbr) {
-> +		.db		= (__be32 *)buf,
-> +		.alloc_size	= bytes,
-> +		.dma_handle	= dma_handle,
-> +	};
-> +
-> +	return 0;
-> +}
-> +
-> +static void mlx5_nodnic_free_dbr(struct mlx5_nodnic_core_dev *dev,
-> +				 struct mlx5_nodnic_dbr *dbr)
-> +{
-> +	if (!dbr->db)
-> +		return;
-> +
-> +	dma_free_coherent(dev->device, dbr->alloc_size, dbr->db,
-> +			  dbr->dma_handle);
-> +}
-> +
-> +static int mlx5_nodnic_init_cq_dbr(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_dbr *dbr = &dev->priv->cq.dbr;
-> +	__be32 dbr_h, dbr_l;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_alloc_dbr(dev, dbr);
-> +	if (err)
-> +		return err;
-> +
-> +	dbr_l = cpu_to_be32(lower_32_bits(dbr->dma_handle));
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(dev->vsc_ctx,
-> +					     MLX5_NODNIC_CQ_DBR_ADDR_L,
-> +					     dbr_l);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write CQ DBR addr low: %d\n",
-> +				     err);
-> +		goto err_free_dbr;
-> +	}
-> +
-> +	dbr_h = cpu_to_be32(upper_32_bits(dbr->dma_handle));
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(dev->vsc_ctx,
-> +					     MLX5_NODNIC_CQ_DBR_ADDR_H,
-> +					     dbr_h);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write CQ DBR addr high: %d\n",
-> +				     err);
-> +		goto err_free_dbr;
-> +	}
-> +
-> +	dev->priv->cq.dbr.db[1] = MLX5_NODNIC_CQ_INIT_CMD_SN;
-> +
-> +	return 0;
-> +
-> +err_free_dbr:
-> +	mlx5_nodnic_free_dbr(dev, &dev->priv->cq.dbr);
-> +	return err;
-> +}
-> +
-> +static void mlx5_nodnic_cleanup_cq_dbr(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	mlx5_nodnic_free_dbr(dev,  &dev->priv->cq.dbr);
-> +}
-> +
-> +/* log_cq_size should be read after rq and sq ring sizes were set. */
-> +static int mlx5_nodnic_read_cq_ring_size(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_cq *cq = &dev->priv->cq;
-> +	__be32 cq_addr_l;
-> +	u32 log_cq_size;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_vsc_cfg_read_be32(dev->vsc_ctx,
-> +					    MLX5_NODNIC_PORT_CQ_ADDR_L,
-> +					    &cq_addr_l);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev, "failed to read CQ ring size: %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	log_cq_size = MLX5_GET(nodnic_q_addr_l, &cq_addr_l, log_size);
-> +	cq->num_entries = 1ULL << log_cq_size;
-> +	cq->log_num_entries = log_cq_size;
-> +
-> +	return 0;
-> +}
-> +
-> +static int mlx5_nodnic_init_cq_ring(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_cq *cq = &dev->priv->cq;
-> +	struct mlx5_nodnic_ring *ring;
-> +	int err;
-> +
-> +	ring = &cq->ring;
-> +
-> +	err = mlx5_nodnic_read_cq_ring_size(dev);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_alloc_ring(dev, ring,
-> +				     cq->num_entries * MLX5_NODNIC_CQE_SIZE_B);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_write_ring_addr(dev, ring->dma_handle,
 
 [Severity: High]
-Does this leave the CQ log_size field set to zero?
+Is the stop/wake handshake between mlx5_nodnic_xmit() and
+mlx5_nodnic_complete_send_wqe() safe on weakly ordered CPUs?
 
-mlx5_nodnic_read_cq_ring_size() reads log_size out of
-MLX5_NODNIC_PORT_CQ_ADDR_L and sizes the CQ from it. Right after that,
-mlx5_nodnic_write_ring_addr() starts from addr_l = 0, sets only q_addr_l
-and writes the whole dword back to the same register. That clears the
-log_size bits that were just read.
+sq->pc and sq->cc use plain loads and stores with no barriers. xmit does
+not re-check after stopping, and the full test only matches
+pending == num_entries - 1.
 
-For the SQ and RQ, mlx5_nodnic_init_ring() follows the address write
-with mlx5_nodnic_write_ring_size(), which does a read-modify-write and
-puts log_size back. mlx5_nodnic_init_cq_ring() has no equivalent step,
-and nothing else in mlx5_nodnic_open_cq() writes the CQ size.
+When pending == N - 1, xmit stops the queue and still posts, which leaves
+the ring full (pending == N). NAPI then does:
 
-FW might stop looking at log_size in this register once it has set it.
-If it doesn't, the device would see a single-entry CQ while
-cq->num_entries in the driver says otherwise. Completions would then
-keep landing on the first CQE.
+	sq->cc++;
 
-Should mlx5_nodnic_write_ring_addr() preserve the other bits of the low
-dword with a read-modify-write? Or should the CQ path rewrite log_size
-after the address, the way the SQ/RQ path does?
+	if (netif_tx_queue_stopped(txq))
+		netif_tx_wake_queue(txq);
 
-> +					  MLX5_NODNIC_PORT_CQ_ADDR_H,
-> +					  MLX5_NODNIC_PORT_CQ_ADDR_L);
-> +	if (err)
-> +		goto err_free_cq;
-> +
-> +	return 0;
-> +
-> +err_free_cq:
-> +	mlx5_nodnic_free_ring(dev, &cq->ring);
-> +	return err;
-> +}
-> +
-> +static void mlx5_nodnic_cleanup_cq_ring(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	return mlx5_nodnic_free_ring(dev, &dev->priv->cq.ring);
-> +}
-> +
-> +static int mlx5_nodnic_read_cq_n(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	__be32 cq_n;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_vsc_cfg_read_be32(dev->vsc_ctx, MLX5_NODNIC_CQ_N,
-> +					    &cq_n);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev, "failed to read CQ number: %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	dev->priv->cq.cqn = MLX5_GET(nodnic_cqn, &cq_n, cq_n);
-> +
-> +	return 0;
-> +}
-> +
-> +int mlx5_nodnic_init_working_buffer(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_ring *work_buf = &dev->priv->working_buffer;
-> +	u32 size = 1U << dev->log_working_buffer_size;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_alloc_ring(dev, work_buf, size);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_write_ring_addr(dev, work_buf->dma_handle,
-> +					  MLX5_NODNIC_PORT_WORK_BUF_ADDR_H,
-> +					  MLX5_NODNIC_PORT_WORK_BUF_ADDR_L);
-> +	if (err)
-> +		goto err_free_working_buffer;
-> +
-> +	return 0;
-> +
-> +err_free_working_buffer:
-> +	mlx5_nodnic_free_ring(dev, work_buf);
-> +	return err;
-> +}
-> +
-> +int mlx5_nodnic_open_cq(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_cq *cq = &dev->priv->cq;
-> +	int err;
-> +
-> +	cq->cc = 0;
-> +
-> +	err = mlx5_nodnic_init_cq_ring(dev);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_init_cq_dbr(dev);
-> +	if (err)
-> +		goto err_cleanup_ring;
-> +
-> +	err = mlx5_nodnic_read_cq_n(dev);
-> +	if (err)
-> +		goto err_cleanup_dbr;
-> +
-> +	return 0;
-> +
-> +err_cleanup_dbr:
-> +	mlx5_nodnic_cleanup_cq_dbr(dev);
-> +err_cleanup_ring:
-> +	mlx5_nodnic_cleanup_cq_ring(dev);
-> +	return err;
-> +}
-> +
-> +static void mlx5_nodnic_close_cq(struct mlx5_nodnic_cq *cq)
-> +{
-> +	struct mlx5_nodnic_core_dev *dev =
-> +		container_of(cq, struct mlx5_nodnic_priv, cq)->core_dev;
-> +
-> +	mlx5_nodnic_cleanup_cq_dbr(dev);
-> +	mlx5_nodnic_cleanup_cq_ring(dev);
-> +}
-> +
-> +int mlx5_nodnic_open_sq(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = dev->priv;
-> +	struct mlx5_nodnic_sq *sq = &priv->sq;
-> +	struct mlx5_nodnic_ring *ring;
-> +	int err;
-> +
-> +	sq->netdev = priv->netdev;
-> +	sq->device = dev->device;
-> +	sq->pc = 0;
-> +	sq->cc = 0;
-> +	ring = &sq->ring;
-> +
-> +	err = mlx5_nodnic_init_ring(dev, ring, MLX5_NODNIC_SEND_RING_OFFSET,
-> +				    MLX5_NODNIC_SQ_WQEBB_B);
-> +	if (err)
-> +		return err;
-> +
-> +	ring->lkey = dev->lkey;
-> +
-> +	return 0;
-> +}
-> +
-> +static void mlx5_nodnic_close_sq(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_sq *sq = &dev->priv->sq;
-> +
-> +	mlx5_nodnic_free_ring(dev, &sq->ring);
-> +}
-> +
-> +int mlx5_nodnic_open_rq(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_rq *rq = &dev->priv->rq;
-> +	struct mlx5_nodnic_ring *ring;
-> +	int err;
-> +
-> +	rq->pc = 0;
-> +	rq->cc = 0;
-> +	ring = &rq->ring;
-> +
-> +	err = mlx5_nodnic_init_ring(dev, ring, MLX5_NODNIC_RECEIVE_RING_OFFSET,
-> +				    MLX5_NODNIC_RQ_STRIDE_BYTES);
-> +	if (err)
-> +		return err;
-> +
-> +	ring->lkey = dev->lkey;
-> +
-> +	return 0;
-> +}
-> +
-> +static void mlx5_nodnic_close_rq(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_rq *rq = &dev->priv->rq;
-> +
-> +	mlx5_nodnic_free_ring(dev, &rq->ring);
-> +}
-> +
-> +static int mlx5_nodnic_open_queues(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_vsc_ctx *vsc_ctx = dev->vsc_ctx;
-> +	int err;
-> +
-> +	/* one doorbell record shared by both SQ and RQ */
-> +	err = mlx5_nodnic_alloc_dbr(dev, &dev->priv->dbr);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_vsc_context_acquire(vsc_ctx);
-> +	if (err)
-> +		goto err_free_dbr;
-> +
-> +	err = mlx5_nodnic_open_sq(dev);
-> +	if (err)
-> +		goto err_release_vsc;
-> +
-> +	err = mlx5_nodnic_open_rq(dev);
-> +	if (err)
-> +		goto err_close_sq;
-> +
-> +	err = mlx5_nodnic_open_cq(dev);
-> +	if (err)
-> +		goto err_close_rq;
-> +
-> +	err = mlx5_nodnic_init_working_buffer(dev);
-> +	if (err)
-> +		goto err_close_cq;
-> +
-> +	mlx5_nodnic_vsc_context_release(vsc_ctx);
-> +
-> +	return 0;
-> +
-> +err_close_cq:
-> +	mlx5_nodnic_close_cq(&dev->priv->cq);
-> +err_close_rq:
-> +	mlx5_nodnic_close_rq(dev);
-> +err_close_sq:
-> +	mlx5_nodnic_close_sq(dev);
-> +err_release_vsc:
-> +	mlx5_nodnic_vsc_context_release(vsc_ctx);
-> +err_free_dbr:
-> +	mlx5_nodnic_free_dbr(dev, &dev->priv->dbr);
-> +
-> +	return err;
-> +}
-> +
-> +static void mlx5_nodnic_close_queues(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = dev->priv;
-> +
-> +	mlx5_nodnic_free_ring(dev, &priv->working_buffer);
-> +	mlx5_nodnic_close_cq(&priv->cq);
-> +	mlx5_nodnic_close_rq(dev);
-> +	mlx5_nodnic_close_sq(dev);
-> +	mlx5_nodnic_free_dbr(dev, &priv->dbr);
-> +}
-> +
-> +static void mlx5_nodnic_update_carrier(struct mlx5_nodnic_priv *priv,
-> +				       __be32 event)
-> +{
-> +	u32 port_state = MLX5_GET(nodnic_port_event, &event, port_state);
-> +	bool up = port_state == MLX5_NODNIC_PORT_STATE_ACTIVE;
-> +
-> +	/* Force re-notification if state is unchanged */
-> +	if (up == netif_carrier_ok(priv->netdev)) {
-> +		netif_carrier_event(priv->netdev);
-> +		return;
-> +	}
-> +	if (up) {
-> +		netif_carrier_on(priv->netdev);
-> +		netdev_info(priv->netdev, "Link up\n");
-> +	} else {
-> +		netif_carrier_off(priv->netdev);
-> +		netdev_info(priv->netdev, "Link down\n");
-> +	}
-> +}
-> +
-> +static int mlx5_nodnic_refresh_carrier_locked(struct mlx5_nodnic_priv *priv)
-> +{
-> +	struct mlx5_nodnic_core_dev *dev = priv->core_dev;
-> +	struct mlx5_nodnic_vsc_ctx *vsc_ctx;
-> +	__be32 event;
-> +	int err;
-> +
-> +	vsc_ctx = dev->vsc_ctx;
-> +	err = mlx5_nodnic_vsc_context_acquire(vsc_ctx);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_vsc_cfg_read_be32(vsc_ctx, MLX5_NODNIC_PORT_EVENT,
-> +					    &event);
-> +	mlx5_nodnic_vsc_context_release(vsc_ctx);
-> +
-> +	if (!err)
-> +		mlx5_nodnic_update_carrier(priv, event);
-> +
-> +	return err;
-> +}
-> +
-> +void mlx5_nodnic_refresh_carrier(struct mlx5_nodnic_priv *priv)
-> +{
-> +	mutex_lock(&priv->state_lock);
-> +	if (test_bit(MLX5_NODNIC_STATE_OPENED, &priv->state))
-> +		mlx5_nodnic_refresh_carrier_locked(priv);
-> +	mutex_unlock(&priv->state_lock);
-> +}
-> +
-> +int mlx5_nodnic_enable_port(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_vsc_ctx *vsc_ctx = dev->vsc_ctx;
-> +	__be32 val = 0;
-> +	int err;
-> +
-> +	/* data_msix_en, event_msix_en must be set before activating port */
-> +	MLX5_SET(nodnic_port_network, &val, data_msix_en, 1);
-> +	MLX5_SET(nodnic_port_network, &val, event_msix_en, 1);
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(vsc_ctx, MLX5_NODNIC_PORT_NETWORK,
-> +					     val);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write port network (msix): %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	MLX5_SET(nodnic_port_network, &val, network_en, 1);
-> +	MLX5_SET(nodnic_port_network, &val, receive_filter_en, BIT(0));
-> +
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(vsc_ctx, MLX5_NODNIC_PORT_NETWORK,
-> +					     val);
-> +	if (err) {
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write port network (enable): %d\n",
-> +				     err);
-> +		return err;
-> +	}
-> +
-> +	/* dma enabling requires a separate write */
-> +	MLX5_SET(nodnic_port_network, &val, dma_en, 1);
-> +
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(vsc_ctx, MLX5_NODNIC_PORT_NETWORK,
-> +					     val);
-> +	if (err)
-> +		mlx5_nodnic_core_err(dev,
-> +				     "failed to write port network (dma): %d\n",
-> +				     err);
-> +	return err;
-> +}
-> +
-> +void mlx5_nodnic_disable_port(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_vsc_ctx *vsc_ctx = dev->vsc_ctx;
-> +	__be32 val;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_vsc_cfg_read_be32(vsc_ctx, MLX5_NODNIC_PORT_NETWORK,
-> +					    &val);
-> +	if (err)
-> +		goto out;
-> +
-> +	MLX5_SET(nodnic_port_network, &val, dma_en, 0);
-> +	MLX5_SET(nodnic_port_network, &val, network_en, 0);
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(vsc_ctx, MLX5_NODNIC_PORT_NETWORK,
-> +					     val);
-> +	if (err)
-> +		goto out;
-> +
-> +	/* data_msix_en, event_msix_en can't be modified while port is active */
-> +	MLX5_SET(nodnic_port_network, &val, data_msix_en, 0);
-> +	MLX5_SET(nodnic_port_network, &val, event_msix_en, 0);
-> +	err = mlx5_nodnic_vsc_cfg_write_be32(vsc_ctx, MLX5_NODNIC_PORT_NETWORK,
-> +					     val);
-> +
-> +out:
-> +	if (err)
-> +		mlx5_nodnic_core_warn(dev,
-> +				      "failed to read/write to vsc err %d\n",
-> +				      err);
-> +}
-> +
-> +static int mlx5_nodnic_init_uar_map(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	void __iomem *base;
-> +	phys_addr_t paddr;
-> +	u32 uar_page_size;
-> +
-> +	uar_page_size = 1 << dev->log_uar_page_size;
-> +
-> +	paddr = dev->bar_addr + (dev->send_ring0_uar_index * uar_page_size);
+On the next xmit, nothing orders the load of sq->cc after the observation
+that XOFF was cleared. On arm64 or POWER that load can return the old cc.
+pending is then N, the == N - 1 check fails, and the queue is not stopped.
+That post uses the slot just freed, so the ring is now truly full with the
+queue still running.
 
-[Severity: High]
-Can this multiplication wrap?
+The xmit after that again sees pending == N and does not stop. It writes
+the WQE and wqe_info at pc & (N - 1), the slot of the oldest WQE the
+hardware still owns.
 
-dev->send_ring0_uar_index and uar_page_size are both u32, so the product
-is computed in 32 bits and only widened to phys_addr_t for the addition
-to dev->bar_addr. With a 4 KiB UAR page, any index of 0x100000 or more
-wraps. ioremap() then maps a page at the wrong offset in BAR 0, possibly
-overlapping the init segment or other device registers.
+Can this corrupt an in-flight descriptor, lose its skb and DMA mapping, and
+let pc run past cc + N?
 
-dev->uar_base is meant to be the TX doorbell page; probe insists on
-support_uar_tx_doorbell. With a wrapped offset, doorbell writes would go
-to whatever register happens to sit at that offset.
+On the completion side, cc++ followed by test_bit() of XOFF has no full
+barrier to pair with xmit's load of cc followed by set_bit().
 
-Should the product be computed as
-(phys_addr_t)dev->send_ring0_uar_index * uar_page_size? Both values come
-from FW, so it also seems worth checking that the mapped range fits
-inside pci_resource_len(pdev, 0) before calling ioremap().
+The dma mapping failure path above also returns after netif_tx_stop_queue()
+without posting anything. With that path in the mix, could the queue end up
+stopped with nothing outstanding to wake it?
 
-> +
-> +	base = ioremap(paddr, uar_page_size);
-> +	if (!base) {
-> +		mlx5_nodnic_core_err(dev, "failed to map UAR\n");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	dev->uar_base = base;
-> +
-> +	return 0;
-> +}
-> +
-> +static void mlx5_nodnic_cleanup_uar_map(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	if (!dev->uar_base)
-> +		return;
-> +
-> +	iounmap(dev->uar_base);
-> +	dev->uar_base = NULL;
-> +}
-> +
-> +static int mlx5_nodnic_open_locked(struct net_device *netdev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = netdev_priv(netdev);
-> +	struct mlx5_nodnic_core_dev *dev = priv->core_dev;
-> +	int err;
-> +
-> +	err = mlx5_nodnic_init_uar_map(dev);
-> +	if (err)
-> +		return err;
-> +
-> +	err = mlx5_nodnic_open_queues(dev);
-> +	if (err)
-> +		goto err_uar;
-> +
-> +	set_bit(MLX5_NODNIC_STATE_OPENED, &priv->state);
-> +
-> +	err = mlx5_nodnic_refresh_carrier_locked(dev->priv);
-> +	if (err)
-> +		netdev_err(dev->priv->netdev,
-> +			   "failed to query carrier, err=%d\n", err);
-> +
-> +	return 0;
-> +
-> +err_uar:
-> +	mlx5_nodnic_cleanup_uar_map(dev);
-> +	return err;
-> +}
-> +
-> +int mlx5_nodnic_open(struct net_device *netdev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = netdev_priv(netdev);
-> +	int err;
-> +
-> +	mutex_lock(&priv->state_lock);
-> +	err = mlx5_nodnic_open_locked(netdev);
-> +	mutex_unlock(&priv->state_lock);
-> +
-> +	return err;
-> +}
-> +
-> +static int mlx5_nodnic_close_locked(struct net_device *netdev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = netdev_priv(netdev);
-> +	struct mlx5_nodnic_core_dev *dev = priv->core_dev;
-> +
-> +	clear_bit(MLX5_NODNIC_STATE_OPENED, &priv->state);
-> +	netif_carrier_off(priv->netdev);
-> +	netdev_info(priv->netdev, "Link down\n");
-> +	mlx5_nodnic_close_queues(dev);
-> +
-> +	return 0;
-> +}
-> +
-> +int mlx5_nodnic_close(struct net_device *netdev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = netdev_priv(netdev);
-> +	int err = 0;
-> +
-> +	mutex_lock(&priv->state_lock);
-> +	if (!test_bit(MLX5_NODNIC_STATE_OPENED, &priv->state)) {
-> +		mutex_unlock(&priv->state_lock);
-> +		return 0;
-> +	}
-> +
-> +	err = mlx5_nodnic_close_locked(netdev);
-> +	mutex_unlock(&priv->state_lock);
-> +
-> +	mlx5_nodnic_cleanup_uar_map(priv->core_dev);
-> +
-> +	return err;
-> +}
-> +
-> +static const struct net_device_ops mlx5_nodnic_netdev_ops = {
-> +	.ndo_open		= mlx5_nodnic_open,
-> +	.ndo_stop		= mlx5_nodnic_close,
-> +};
-> +
-> +void mlx5_nodnic_build_netdev(struct net_device *netdev)
-> +{
-> +	struct mlx5_nodnic_priv *priv = netdev_priv(netdev);
-> +	struct mlx5_nodnic_core_dev *core_dev;
-> +
-> +	core_dev = priv->core_dev;
-> +
-> +	SET_NETDEV_DEV(netdev, core_dev->device);
-> +
-> +	netdev->netdev_ops = &mlx5_nodnic_netdev_ops;
-> +	netdev->request_ops_lock = true;
-> +
-> +	eth_hw_addr_set(netdev, core_dev->mac_address);
-> +}
-> +
-> +static void mlx5_nodnic_init_priv(struct mlx5_nodnic_priv *priv,
-> +				  struct net_device *netdev,
-> +				  struct mlx5_nodnic_core_dev *core_dev)
-> +{
-> +	priv->netdev = netdev;
-> +	priv->core_dev = core_dev;
-> +	mutex_init(&priv->state_lock);
-> +}
-> +
-> +static void mlx5_nodnic_cleanup_priv(struct mlx5_nodnic_priv *priv)
-> +{
-> +	mutex_destroy(&priv->state_lock);
-> +}
-> +
-> +struct net_device *mlx5_nodnic_create_netdev(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_priv *priv;
-> +	struct net_device *netdev;
-> +
-> +	netdev = alloc_etherdev_mqs(sizeof(struct mlx5_nodnic_priv), 1, 1);
-> +	if (!netdev)
-> +		return NULL;
-> +
-> +	priv = netdev_priv(netdev);
-> +	mlx5_nodnic_init_priv(priv, netdev, dev);
-> +	dev->priv = priv;
-> +
-> +	netif_carrier_off(netdev);
-> +	netif_tx_disable(netdev);
-> +	dev_net_set(netdev, &init_net);
-> +
-> +	return netdev;
-> +}
-> +
-> +void mlx5_nodnic_cleanup_netdev(struct mlx5_nodnic_core_dev *dev)
-> +{
-> +	struct mlx5_nodnic_priv *priv;
-> +	struct net_device *netdev;
-> +
-> +	if (!dev->priv)
-> +		return;
-> +
-> +	priv = dev->priv;
-> +	netdev = priv->netdev;
-> +	if (!netdev)
-> +		return;
-> +
-> +	if (dev->netdev_registered) {
-> +		netif_device_detach(netdev);
-> +		unregister_netdev(netdev);
-> +		dev->netdev_registered = false;
-> +	}
-> +
-> +	mlx5_nodnic_cleanup_priv(priv);
-> +	dev->priv = NULL;
-> +
-> +	free_netdev(netdev);
-> +}
-
-[Severity: Critical]
-Is the log_size written here meant to be in bytes or in entries?
-
-mlx5_nodnic_calc_ring_size() returns a byte count,
-MLX5_NODNIC_RING_ENTRIES * stride. That is 1024 * 64 = 64 KiB for the
-SQ and 1024 * 16 = 16 KiB for the RQ. mlx5_nodnic_write_ring_size() then
-programs ilog2() of that byte count into the log_size field of
-nodnic_q_addr_l.
-
-The CQ path reads the same log_size field of nodnic_q_addr_l and treats
-it as an entry count. mlx5_nodnic_read_cq_ring_size() sets
-cq->num_entries to 1 << log_cq_size, and mlx5_nodnic_init_cq_ring()
-allocates num_entries * MLX5_NODNIC_CQE_SIZE_B bytes.
-
-If the SQ/RQ field has the same meaning, the device is told the SQ has
-65536 WQEBBs and the RQ has 16384 entries. Only 1024 of each were
-allocated with dma_alloc_coherent(). Once the device's view of the ring
-goes past the allocation, it would read or write beyond the end of the
-coherent buffer.
-
-The clamp in mlx5_nodnic_calc_ring_size() has the same problem. It
-compares the byte count against 1U << dev->log_max_ring_size, so if
-log_max_ring_size is in entries, the cap is off by a factor of stride.
-log_max_ring_size is also a 6-bit FW field, so a value of 32 or more
-makes the shift undefined.
-
-Could you confirm which units the HW spec uses for log_size and
-log_max_ring_size, and make the SQ, RQ and CQ paths agree on them?
+netif_txq_maybe_stop() and netif_txq_completed_wake() in
+include/net/netdev_queues.h provide the smp_mb(), a >= test and the
+re-check. Would they fit here?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008171821.660739-1-tariqt%40nvidia.com
