@@ -1,175 +1,138 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4F234A796
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8583783D5;
+	Mon, 12 Oct 2026 08:40:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791794345; cv=none; b=FzwDP23BmgoYJTeTb6BaHV/V466E5LKFAigPT7P2ML0tS1fJDcE9NuvAEzJQg9NaWJixH9jOG9IwimtYWsiIaRbYCwXSZyoTMlBxhxVN+NRSxnd3LiFPNLsXZYzl3tTnqjPdadRcbh5AO70WrR/XFycpG9K79oX6UwsUeH5NKmk=
+	t=1791794456; cv=none; b=bsxoj+I3hGae3t3tN5oJW5D00S2itQydJ4w/9S9rFG3ohoo9Cfi0J7hDcWuN1QWqPGxfydtOYgLjWCTqhgpdqARCWZwAxdY5t01E/10u4iPonRjxtF0E5vtb3vJ+QqW4FeSv2tSU5fwaFHi0LzLITShbeFsbYX6Egi9oIEvEV7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791794345; c=relaxed/simple;
-	bh=8deJ0SmJCOcNPsWSe0IKJTMfB7NVEr+sfErU5XXltVc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D4QsAFyrJFfZFd9ONqMfP4hQ2jNgNzaOn6RnNEnevMzuciz5rkDfKf96iHny2yrPjDbsUPZGVlr4jFXakXgfYdRItJY+mqk7grCiw5TGVIxRjZ/aITTxM7MTJCEpaDUKtPXgIGYWBkB6Vlgjese9Oszv2hgIVFUtg60MCAWkDo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sr8iTDJ0; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791794456; c=relaxed/simple;
+	bh=LAMxuxhHscs8NE7hspmXi6UndFgzjMg2SOUUiOs1320=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TQgyF5kPNDASwFc1jjsp8s9u5P/JdnAU8kvr+i+S498Hbb6naXtqwHb52i/OZJ8ZCj1Tk55XXW4UBsSF5ieIfJIcXV3PM7Rn5La7ucVQXAUlE8TYV+rfZGB+Z+ra0ZjZQx+JAYClVw47J4Q8ftGaLFm+ARLbZr7C+PSkCLyROZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtuJ5PUw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sr8iTDJ0"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e618db81c0so14165195ad.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:39:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791794344; x=1792399144; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0fH2wtCeYIH7fxQP2FbdZIo9RnDH4xLIDypfRPvi78Y=;
-        b=sr8iTDJ0EvBrh40bu0eF/NX22+XPG6nC49+1ne0YAp0ZDVb9UdQaxj5oD+bf1TLGbj
-         1VMWW7kKxaY4FMZnQnUz/r4CAo5OLCu99RXDYJeQO5uNaaJu5KEgGu6AN5oHVMomjwNi
-         cQAMFB1Ta0b7KGtGayLLMDDFXnZatkaVG/Qq7uRv8aeX5cfYOVKT/w8ZZi3D8NncVXU2
-         kn+mOFNgCn9oWt2mWdAHK6i9BKCdf4NVzc3Hks+zWXaBfBs9GuitMl9nGWHrudub+vR4
-         NNO2vQVR2tux5fv2D9xSO1RmksT0jFn9OmoZd/oqgG2fEhjGzvLGEFrbBrSuriWDHG5/
-         GSoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791794344; x=1792399144;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0fH2wtCeYIH7fxQP2FbdZIo9RnDH4xLIDypfRPvi78Y=;
-        b=IWJS3wh73Zor4cZo0oEV9Fb2fO6Ip95GNnjJcXVUGg5U1+aIu2qBinu8v+Fvv0N96M
-         0LyRo4ZlmndBVG5cPLiNIrKJzVQJ9uuPoyLAsNTyTp1AGnNZxWFepvBSE3vXs4ovegIt
-         g9ijNY7PWyV1n1Ym/5t58EP5r20mwJ8aRPWKasxxCltYns5CBHt3knXo5FkZWc9wyuBU
-         NXn9cnCSxKCwzgPEBuUEQkW9wXSDtltN6Ofg6dnq9jrCG0P2wNcre7IUxw80WnWVuXgd
-         FmGUeD0EhuhFsnKi/WavHu+YqkCc3lz5gbFZnCr1Oe1GsKp024wdwqKinH1hDNOTwnZV
-         CmFA==
-X-Forwarded-Encrypted: i=1; AKwUvBzG89OUZEztQboCkl90xDn/gaJEnYpWNdkNpORifuPVGMKoyuOK1nw7JW1fUoGGJvvsHC1coTg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIBa1bG4/mdy4RXLR11GuuhQOIWFSA6xTIIAtSiW1wnxUhNI45+
-	MXr4snajIUS7o6N5evRLL52HiPSHN3eebB9iIPwFO5Bt4Mwvjrx6Lcvb9+RPCGCMHxw=
-X-Gm-Gg: AYBFou1njZWT3gKEm92F2k0TqZaDlwembdhuxhLobW65dzuQwVM4bUrTOKQtWH1RUwG
-	ZEmvrC9lDcgKEF+1xk1RhEeqQzblgeWeZI59k+f/Ri7O/jtc5Hr4jfNh+CPHvnkg6pmZ5rnJhe6
-	gCt4DVqjrSWAcgVf9tYJbylDvRyFGqSCVmF6fEbexbHTbTWA23DLfemsoeocko0WHsv6n9/XFH0
-	rK1sTWakFeMPkvc6rlX3SKCORn8uKxoa7UM2t2ay9n5Ai0iYk66zcr/s+YP3QalEKLaP2KdCXDH
-	2sSjH95oTilQQGmarGpP7NLnAxhYWYo/UOoi4AYhmd00wYvtj84pAN4skD7QvLrp7FWbvjJdm6i
-	hz8eoh9gMgpgeLj2XavtF8tkmxdjkXLwLWEWC0YuQ+P/4FX6vpOJKqpUQbjETohnnYWV7FCWQZd
-	nAYw4g1ivB+gHo1kkD64LmsucfNEW3yVU7jCqI7HQZcA5fTx97v0xR+JRyElYTBOkzb7xiIN7dh
-	PiyaWOdqMifds7udNU8rBoPd/nMMVgxWp+OkEpBgYsbuoa0gXl6gMQ30A==
-X-Received: by 2002:a17:903:1b6b:b0:2d9:383a:30f1 with SMTP id d9443c01a7336-2e842820605mr84465605ad.4.1791794343388;
-        Mon, 12 Oct 2026 01:39:03 -0700 (PDT)
-Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.24])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422b5924sm40200745ad.47.2026.10.12.01.38.51
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 12 Oct 2026 01:39:03 -0700 (PDT)
-From: Jun Yang <juny24602@gmail.com>
-To: dsahern@kernel.org,
-	idosch@nvidia.com
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	kaber@trash.net,
-	netdev@vger.kernel.org,
-	Jun Yang <junvyyang@tencent.com>,
-	stable@kernel.org,
-	TencentOS Corvus AI <corvus@tencent.com>
-Subject: [PATCH net] ipv6: take tb6_lock across the fib6 dump sernum snapshot
-Date: Mon, 12 Oct 2026 16:38:20 +0800
-Message-ID: <20261012083843.60510-1-juny24602@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtuJ5PUw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED1A1F0089B;
+	Mon, 12 Oct 2026 08:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791794455;
+	bh=5E9xSO8DIYSvBb1Ky5K5ev0GKP63TAtwQKXkGT6KEGo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jtuJ5PUw97ANu14XRPo1/bOlOUlYZWOcxfQSzwdSYKvzyW+FCwiSez6nQsa+BGvNp
+	 lbSLIRCwOmtbDHcc2xQKn7kccYyrpNrunXGmcMDlhAzi21Xafk8FIoWuKPogMd7vTk
+	 R7Uh/GUu2htThEAnfRfmI1GQjCT2gFV6PrWIlnLrUW+BT2qks5G3NHeLZLQrWYFpja
+	 5Kb2GQ2z4dSKoITWyvSgDEbOM/6qRcpGw44RrsPQaxLBDUoFA7iuVhp43Do7GZWyAF
+	 p9m3B/TRth0j/1SgICBTma8UFfACdE4aU+0t5KXK6sKswg6Yp7xuUmQIbk0uYNUjSo
+	 lVoHpEB9u4leA==
+Subject:
+ Re: [PATCH net] qrtr: make repeated lookups from one client idempotent
+From: netdev-bot+sashiko@kernel.org
+To: tjdqudcks0424@naver.com
+Cc: mani@kernel.org, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ kuba@kernel.org
+Date: Mon, 12 Oct 2026 08:40:54 +0000
+Message-ID: <179179445439.434549.690451607886863842@kernel.org>
+In-Reply-To: <20261008082518.347350-1-tjdqudcks0424@naver.com>
+References: <20261008082518.347350-1-tjdqudcks0424@naver.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Jun Yang <junvyyang@tencent.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-A resumable RTM_GETROUTE dump parks a raw struct fib6_info pointer in
-w->leaf when the skb fills (fib6_dump_node()) and resumes from it on the
-next recvmsg(). No reference is held across the suspension; the only
-thing standing between the walker and a freed route is the fn_sernum
-check in fib6_dump_table(), which restarts from the root when the tree
-changed.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-That check is done outside tb6_lock at both ends: the snapshot after the
-first walk is taken after spin_unlock_bh(), and on continuation the
-compare runs before spin_lock_bh(). A writer that slips in between, e.g.
-RTM_NEWROUTE with NLM_F_REPLACE on the route the walker is parked on,
-frees the route via fib6_info_release() (the replace path has no
-FOR_WALKERS fixup, unlike fib6_del_route()) and bumps fn_sernum, yet the
-dump records the new serial next to the stale w->leaf, or passes the
-compare and only then takes the lock. Either way the restart is skipped
-and fib6_walk_continue() hands the freed route to rt6_fill_node():
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-  BUG: KASAN: slab-use-after-free in rt6_fill_node (net/ipv6/route.c:5821)
-  Read of size 4 at addr ffff88810adb0c64 by task fib6dump-repro/541
-  CPU: 0 UID: 1000 PID: 541 Comm: fib6dump-repro Not tainted 7.3.0-rc6 #1 PREEMPT
-  Call Trace:
-   rt6_fill_node (net/ipv6/route.c:5821)
-   rt6_dump_route (net/ipv6/route.c:6130)
-   fib6_dump_node (net/ipv6/ip6_fib.c:534)
-   fib6_walk_continue (net/ipv6/ip6_fib.c:2180)
-   fib6_dump_table (net/ipv6/ip6_fib.c:620)
-   inet6_dump_fib (net/ipv6/ip6_fib.c:714)
-   rtnl_dumpit (net/core/rtnetlink.c:7006)
-   netlink_dump (net/netlink/af_netlink.c:2350)
-   netlink_recvmsg (net/netlink/af_netlink.c:2001)
-   sock_recvmsg (net/socket.c:1173)
-   __sys_recvfrom (net/socket.c:2331)
+- [High] The fix does not close the denial of service its commit message
+  describes.
 
-Take tb6_lock once at the top of fib6_dump_table() and hold it across
-the snapshot, the comparison and the walker call, so fn_sernum is read
-in the same critical section as the walk it describes.
+--
 
-Fixes: 2bec5a369ee7 ("ipv6: fib: fix crash when changing large fib while dumping it")
-Cc: stable@kernel.org
-Reported-by: TencentOS Corvus AI <corvus@tencent.com>
-Assisted-by: tencentos-corvus-ai:hy4-preview
-Signed-off-by: Jun Yang <junvyyang@tencent.com>
----
-A KASAN reproducer for this issue is available if requested.
+qrtr: make repeated lookups from one client idempotent
 
- net/ipv6/ip6_fib.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+This patch adds a check to ctrl_cmd_new_lookup(). If a NEW_LOOKUP
+request has the same node, port, service and instance as an existing
+lookup, that row is reused and no new one is allocated. The goal is to
+stop one unprivileged local socket from filling all 128 global lookup
+rows with duplicates and locking out other observers.
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 9ff761962b45..70482381165f 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -592,14 +592,13 @@ static int fib6_dump_table(struct fib6_table *table, struct sk_buff *skb,
- 	w = (void *)cb->args[2];
- 	w->root = &table->tb6_root;
- 
-+	spin_lock_bh(&table->tb6_lock);
- 	if (cb->args[4] == 0) {
- 		w->count = 0;
- 		w->skip = 0;
- 		w->skip_in_node = 0;
- 
--		spin_lock_bh(&table->tb6_lock);
- 		res = fib6_walk(net, w);
--		spin_unlock_bh(&table->tb6_lock);
- 		if (res > 0) {
- 			cb->args[4] = 1;
- 			cb->args[5] = READ_ONCE(w->root->fn_sernum);
-@@ -616,14 +615,13 @@ static int fib6_dump_table(struct fib6_table *table, struct sk_buff *skb,
- 		} else
- 			w->skip = 0;
- 
--		spin_lock_bh(&table->tb6_lock);
- 		res = fib6_walk_continue(w);
--		spin_unlock_bh(&table->tb6_lock);
- 		if (res <= 0) {
- 			fib6_walker_unlink(net, w);
- 			cb->args[4] = 0;
- 		}
- 	}
-+	spin_unlock_bh(&table->tb6_lock);
- 
- 	return res;
- }
+> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+> index bcb090ee79d49..ae0dc2474e5e9 100644
+> --- a/net/qrtr/ns.c
+> +++ b/net/qrtr/ns.c
+> @@ -547,6 +547,14 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+>  	if (from->sq_node != qrtr_ns.local_node)
+>  		return -EINVAL;
+>  
+> +	list_for_each_entry(lookup, &qrtr_ns.lookups, li) {
+> +		if (lookup->sq.sq_node == from->sq_node &&
+> +		    lookup->sq.sq_port == from->sq_port &&
+> +		    lookup->service == service &&
+> +		    lookup->instance == instance)
+> +			goto notify;
+> +	}
+> +
+>  	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
+>  		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
+>  		return -ENOSPC;
 
-base-commit: a90ee4305c4a5df72c11b31dacfdc76e00fcf78a
+[Severity: High]
+Does this close the denial of service described in the commit message?
+
+The new loop only skips allocation when (sq_node, sq_port, service,
+instance) exactly matches an existing row. Any other tuple falls through
+to the unchanged global limit and takes a new row through list_add_tail()
+and qrtr_ns.lookup_count++.
+
+The service and instance values come straight from the client packet in
+qrtr_ns_worker(), and nothing checks them:
+
+		case QRTR_TYPE_NEW_LOOKUP:
+			ret = ctrl_cmd_new_lookup(&sq,
+					 le32_to_cpu(pkt->server.service),
+					 le32_to_cpu(pkt->server.instance));
+
+Can a single unprivileged AF_QIPCRTR socket still fill all 128 rows?
+It could send NEW_LOOKUP for services 1..128, or for one service with
+instances 1..128. Requests spread across several sockets would also miss
+the exact-tuple check, because each autobound socket gets its own port.
+
+Once qrtr_ns.lookup_count reaches QRTR_NS_MAX_LOOKUPS, an independent
+observer still gets -ENOSPC. The rows are only freed by DEL_LOOKUP or
+DEL_CLIENT from the owning port, so the attacker can hold them as long as
+the socket stays open.
+
+The test in the commit message seems to cover only identical duplicates.
+
+The root cause looks like the single global limit, which has no
+per-owner accounting:
+
+#define QRTR_NS_MAX_LOOKUPS 128
+
+Would per-owner accounting fit better than extending the exact-tuple
+dedup? Options include a per-port quota under a global ceiling, or
+per-uid or memcg based accounting.
+
+Also, the global limit is hit by whichever client sends the next
+request. So the "QRTR client node exceeds max lookup limit!" message
+names the observer that was rejected, not the client that filled the
+table.
+
+[ ... ]
+
 -- 
-2.43.7
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008082518.347350-1-tjdqudcks0424%40naver.com
