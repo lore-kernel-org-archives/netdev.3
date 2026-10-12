@@ -1,111 +1,167 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4066383300
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791812315; cv=none; b=WvWUBfdBmMZix/aiGDxLC3TdvjiSVQvuVnqk5u9vk2weqcQBXAvpxrvXpmbUF0x4qwUSGJVbKroxtyQbVQmSS1rcUEzDJKY2+v8p/FDHQ/bL+GQ3OUeLQyhmvgY1HXIsjCHiOPi4A47Q4djCpttgj9e1ooC5kEqo+hTf/BBVgYc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791812315; c=relaxed/simple;
-	bh=aSnCXbZM8BYBAMBqwPXMqAAZYfgHkX/jiSwoFupHskU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QX7V68MnCBUOLhjDCsfA7N5pNkrVj7cLN+7GxXsJUmoaQzJd6eObDOXCe932vfZ7pXpJCaK84xlpmV76YT1/yWoIwxqpk36aevtOqwzRLezjjw8OfDWi+jlZfb3pj7FP3t76DilKGVKkr3pFd1Tp6BnBYFu/Y0i6R9AhgIB+aSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=DDzCUCFt; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD2B383C8F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791812453; cv=pass; b=unjBNntx4Erz+71i0DZnzSHc0xIYvF72ft+P7qOpSc9UYD/uXlqVssgl20f+EIjskP6MyzMpH+P7tEIsEwsgD3k1ayqAfdaAyUbrDPsuV4su+7MIr+ooPnNKguTttKOJnNkb9R7EcMjZGnSMh6ARi2RWLgsERurI6v2d7itYClw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791812453; c=relaxed/simple;
+	bh=tr28fG4ZEXTsiIAwMe0wjF7BnaOQzBQT7Xkb6b/2La0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sMyxS5pLNegz6mjIgxwKYFRZfAVXZlRDUhg+2vMlrCnweFeMx3sMbMqABA69VYrJq8WsTwLMBxMNKNi0s8Zf30Q4ZaAhSVt/ia2XxfRuE5RWckd/iWEZeb1bRGomqhun67VuBxDrWc5WDjd8I499Lx+77hE7lbCntgn8asS8Jz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pRyjw5dn; arc=pass smtp.client-ip=209.85.222.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="DDzCUCFt"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so19740455e9.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:38:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pRyjw5dn"
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-988c90ee9e8so438957241.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:40:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791812450; cv=none;
+        d=google.com; s=arc-20260327;
+        b=IjGtVBP+WH3IwhQL/ybmlpNgSmSk9T75c7mdvMG2h7jLFcFhsKJd6AVjZMkP8wlL/K
+         dVZmnyFOC0u1zOTLwHTn4HNDv7DxlQ9rWOvozfblZhflC+4QRteXABLQVkZjlvExQd9t
+         jmpQCFyzSXIvvNh/5wx7/0lEj3O2uynGUzIcPQ/z2N3ikJy90UkNmfF0CkUyem/UhD6E
+         MFMV8fOQFbUkLNCvdWTeAdXPikqo/i/Puv4zwUFO6Rx5pOiHst5rRpByCjQ1KmKEaZdE
+         HwPoAgLCRFZJ0ausftQAmJ7GYGF6sSMrOGF1XtX6DEuKuk60CWNifpMb2q9ewWgUHfXY
+         tPQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fISPJgkN0H7LYXqIa8i3iQfM2z/jXKgb3BG/d5Eps08=;
+        fh=/pCTdGd1k1AbRjIwudvLe4kPUOX/4Vc1RC5HhyDyosc=;
+        b=jRX7hAFEf6yi4T97ckf+Wa2CN8c1if5wUkcSGkl+HEplpYh8Ys2h1Mrtn89/qFUyOW
+         bzvwkHsg+5JCbEXYTjRw3LYXH6pwK2Z3TSELjJAwXBO1wa0sCDSf8n8P7H/YiobSr5NN
+         QlBISxqyVs/uqqOyfTpV2FfyHdX5FXMBCc7uHPri5u8iANF79J7dfwnnAYGTd/u0iFUq
+         K2Iwz/Lqu1R/WMPr4FXsv42ynNEPOAdue+v493G6QTUjb6uKS3X3iOsEQ9HBnDXjp+wI
+         +GrSLltrv4qELUmSdelgX5ev9vzuCo51tfDrmw39DEkf1WFXR6YJQxeiezr+SeCKbFFd
+         v9ZQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1791812312; x=1792417112; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HE8jVH9zuQDEEoUJ0njDiO8FruebfwpUiWYdsTL+13c=;
-        b=DDzCUCFtPQ1CO/I2KfuLfaEZ1KJOR5awlS/z5KBZXEzUT4XkHdD0Hichv28kGXAhPb
-         R0LYN3rbMLNAgGkz4dGa/vr9vQpT62IbjhXxDFFVMkPdzxDXjdh3YiQndFCz+NZaTc5S
-         FqmEWI35X/BA3AiwbTLGyu3Uabls/rBweFO2bo/Mtnmwmu0MpC5/N22aRp3iLX/Pa0tI
-         TDUyAdV6Ir3HDTHen/okxUvZxJsscndP8oyanECxPzrL4jwaDJ7dMSQBZcZ8OT84rLYU
-         zRCUUzOdk7JM58O/LpSNqtuu6UpQmAAnFC0Asvg081p58WjW3HE9QOSnRVRXyfU9EhGa
-         J98Q==
+        d=gmail.com; s=20251104; t=1791812450; x=1792417250; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fISPJgkN0H7LYXqIa8i3iQfM2z/jXKgb3BG/d5Eps08=;
+        b=pRyjw5dn/Kruk86zA3s6mVhdAv8ouj8o7tcJm6whzyn4iWhpQ3HHDSic7Xl1JDla1i
+         S93Ivg8rG53EMXchKK2D4dQI+ku4SKe1rMmTJrdsN5woBsaOK1lfMUPsYZuvFzrdiBik
+         znZmmtWYeAH/W0Uv9VUm0tgU7kOSG05qmowkKcBohyGzJjyxE4OWMkF9MTSDbASdNUYV
+         t/G6TP1PJSahD6Dg8URPLbg+mNMjnHolUiVZQz5FQ6/cuh0lMDaztNBLN8zAc7EJdY9s
+         0hPVlflfGWec5E8dbNP5LXf29vF03gaQqlokKoeNX/VuiqwOIWbGMe9raxJNqknwvteZ
+         pNxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791812312; x=1792417112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HE8jVH9zuQDEEoUJ0njDiO8FruebfwpUiWYdsTL+13c=;
-        b=N1qh3G7qzOSsxELa0dY4efsBxJAyvcBxhqM+2z5Hqz75g3k2Vmov3CWoRoc9cFnAww
-         83Ira4SiWsJAuD5YCVQO3DdbwU7e69PVrY0vEaNui3HmkEx1EfXZDMbbZwKtzVObtKEO
-         QQb5FnahgbdNLNH5wFR8Nnf1Hmbr+Ln84/NyyPnUCPmWU+CNn3+CDXwzSdjJJ8SGfeKW
-         EJB29bhf/s5IlfNzjmjkRev8HNqtvjCSFwl5PjONDqs/X/vKJzOTldJhWNZoIYCSYFza
-         C9jct0En2LqT7aZxndMrTq/8xFMTEA6N/+I5fxngZnUcWVGgOlmUNXbyTBp8JAe3hUD4
-         5H+A==
-X-Gm-Message-State: AFq9FYJ4yUowTa6xyKUJApajyeVpyxQ0IMOf1p9AZ52F8j+rRHuJOW4Q
-	gvr3xfIyliHjzvBr1g/SiqEJvpbWffBGqwiGqh10MITzlycoxLjBIdk7Uc+Ig0j0WoC2GkxizKh
-	S43dku1dLrCf2zOgqOisHj0Nj1nuhBdVTFHZdbAu9zod13eRiRmKz54+pTtE2bsQIc3k=
-X-Gm-Gg: AYBFou0bmmCeee4teUfY1q2R5+HzzYZVzmJQFiTNKGR44JqVvtyf9l58u7SfziTTOqp
-	nys1ns6S7a07100jPNVRkFj/ZnBRRM1MQHVRaeQpCJ08+mjXnizXQhrliVmPg04urhysi/bOWcp
-	cHajT+HyrXdIf8ev3JlBXTOwMKkYm9wybQpGuPc341wm4zIgXpvsyNupA4gJnTJx0YrswHARatK
-	tcBANkT76JFdXEgvADpJVUvBSGwMrbP5CUilHPqj3CfrS2kDMNJ2ehE8lpiAWkQleqaCz6WMsAZ
-	ZmXKu9FNNqf9r12yDGBSMAO3RnjtX3kRzJfZzRZ23CER7yLf2qTdT823f8BiafOfyzf+lAqVZP5
-	coqPW4njufWAmVgAz1owA5iOIc/luWWROem1/0RzcG39Z8Ghk5vKVeH7f2VO73brGc8LKEo4gzn
-	6U8eoAYXmZuzk5+QP7mH0XMrcC2cFTTF5znc2PnXzx1v5MDRjS4yEG64Z6+GZNluxmflRDzBKL/
-	JOyeqaT/Uc=
-X-Received: by 2002:a05:600c:3b98:b0:499:79b9:e220 with SMTP id 5b1f17b1804b1-4a18e49886amr205846595e9.10.1791812309804;
-        Mon, 12 Oct 2026 06:38:29 -0700 (PDT)
-Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:2e28:6511:e6d6:deef])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm418114735e9.9.2026.10.12.06.38.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 06:38:29 -0700 (PDT)
-From: Antonio Quartulli <antonio@openvpn.net>
-To: netdev@vger.kernel.org
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Ralf Lici <ralf@mandelbit.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH net-next 6/6] MAINTAINERS: ovpn: add Ralf Lici as reviewer
-Date: Mon, 12 Oct 2026 15:38:03 +0200
-Message-ID: <20261012133809.2477063-7-antonio@openvpn.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261012133809.2477063-1-antonio@openvpn.net>
-References: <20261012133809.2477063-1-antonio@openvpn.net>
+        d=1e100.net; s=20260707; t=1791812450; x=1792417250;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fISPJgkN0H7LYXqIa8i3iQfM2z/jXKgb3BG/d5Eps08=;
+        b=A9RCm6Y9n0j0amWH7UVqChhRhfjnmlwNVxafGy5N341Ipnnds9uS5Vtvr8mT+w6LDM
+         2iD98ecwehM7BJ+qPWEJdp3FtSP3FfNapdGX4tlBXcRCp5buOCeZu16Y87TyyGJyNXnf
+         zxifqRjAzwyd9DaZ2tHFqLq782AuG4Okd+/woLHC9RlIdfaadx2TYIikaHOcG/eWWDg9
+         deDsizQ7TmqePZ8Cr4vI6AXuzYlWYpXsp6o/8JdtfbNIm9LVK2u4Zd8LaNATR3jid4cQ
+         5WmzTt775oiMNwf3E9cBLB0kaZwj/Bf/Lr+vz0ObOyC4r03KqImWsAeubj1KSJ+o2Pwv
+         uZag==
+X-Forwarded-Encrypted: i=1; AKwUvBxrXSH+wGlz1gSMW83/pWAkdnD9TdnvP2TGGte2B61Tm1mVMCRY6ClT5Nx2Xx15Jg1QTD8Bzqk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIRfAa83Iq+sn6I5l+b3MKPgg6W7OXgU2CYJpBgkZUtLBMbFI6/
+	kECVeQsVqE5ystnXytERv4LQBs5S0Z3Rpku7YGn94CkgnwVz5AFpSb69cRBul2j4J/HlObBqAa/
+	SSpN9b7OhBC68fu1p3x69Irs3HKHfyGI=
+X-Gm-Gg: AYBFou0ovz+6bNlfiHaaFHjiaxWmUNPH/46EfG+rHlxL1pUsRqEGXJI0K6zo+1b7Mmd
+	bT18L9XyP5x+VxzQPeMnA3/w7j45PVutnQkML9hx0cdGEduzb1v/i3b4v096txxSDS185NDiA1M
+	lfUaVtasQLzXqXEyrA2PJNY5u7pZiBw5Z84l3vVRNNxpp5lBnm1NqeM9QfXGZM4zKIn9LJ8yFQ+
+	NTg0Y+wO4sOOZw3i5Mtlz1Qfv8Kri+dvyF8IZZflH+HA/FNu5Pb9Ve81jsTRBgeojWkz5FOFQ27
+	Exx5VXYG/BbZvXT7XxnZkYKXnikma97gYgbxZHbNrUW0CzOLLQu69sG7W3VsQ+3U4vNILWeuamU
+	ar5cHZFZs
+X-Received: by 2002:a05:6102:f10:b0:7c1:918d:d188 with SMTP id
+ ada2fe7eead31-7cb373e9685mr2247621137.35.1791812450478; Mon, 12 Oct 2026
+ 06:40:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261007182238.1154851-2-peter.hunt@opengear.com>
+ <CAFEp6-2QsKyZfEdSotVPhxVNOyRzncUphqLY5cRwHXGJiEbzuA@mail.gmail.com>
+ <20261009001714.1078580-1-peter.hunt@opengear.com> <20261010171531.1659006-1-peter.hunt@opengear.com>
+ <CAFEp6-0vuU2sy3pfgyprMMiLOaKCoZMQN=nHQ+dQR1ku9dbwkw@mail.gmail.com>
+In-Reply-To: <CAFEp6-0vuU2sy3pfgyprMMiLOaKCoZMQN=nHQ+dQR1ku9dbwkw@mail.gmail.com>
+From: Daniele Palmas <dnlplm@gmail.com>
+Date: Mon, 12 Oct 2026 15:40:39 +0200
+X-Gm-Features: AclHuK99dZi0qD-kjTJ8chj2shsT6zJyFcPaX8IvEYin0Vx-u0gytz2jHkZuBVk
+Message-ID: <CAGRyCJFnszYkYbB8fJneue_DgJY_9yOwK2_T1aB-b+RuK7mqjA@mail.gmail.com>
+Subject: Re: [PATCH net-next v8 1/2] net: wwan: core: propagate modem control
+ signals to port drivers
+To: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Peter Hunt <peter.hunt@opengear.com>, ryazanov.s.a@gmail.com, 
+	johannes@sipsolutions.net, mani@kernel.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ralf has authored 39 of the ovpn commits merged so far, second only to
-the maintainer, and is already involved in the review of most changes
-posted to the list. Add him as designated reviewer so that he is CCed
-on incoming patches.
+Hi Peter and Loic,
 
-Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
-Acked-by: Ralf Lici <ralf@mandelbit.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+Il giorno lun 12 ott 2026 alle ore 14:15 Loic Poulain
+<loic.poulain@oss.qualcomm.com> ha scritto:
+>
+> Hi Peter,
+>
+> On Sat, Oct 10, 2026 at 7:16=E2=80=AFPM Peter Hunt <peter.hunt@opengear.c=
+om> wrote:
+> >
+> > Hi Loic,
+> >
+> > A follow-up to my reply, as I overstated one point and would rather ask
+> > than argue on both. (Adding Daniele, as the first question touches his
+> > recent QCDM ioctl work.)
+> >
+> > On the AT-only check: I said QCDM has no DTR semantics, but I don't
+> > actually know that. I've only verified DTR/RTS on the AT (DUN) port of =
+a
+> > Sierra EM9291. I don't know whether the DIAG channel behind QCDM ports
+> > honours DTR on these modems, or whether libqcdm relies on it now that
+> > QCDM ports have the TIOCM ioctls. So I see two options:
+> >
+> >   a) Keep it AT-only in all four places (open, close, removal, ioctl).
+> >   b) Call ->dtr_rts for any port with the TIOCM ioctls (AT and QCDM)
+> >      whenever the driver implements it, again in all four places, and
+> >      leave it to the driver to ignore ports where it doesn't apply.
+> >
+> > Which would you prefer? If you or Daniele know that QCDM/DIAG ports
+> > care about DTR, that would settle it for b).
+>
+> I think we can go with option a) for now. The documentation I have
+> only references virtual RS-232 control signals for DUN, and we can
+> always revisit this later if additional use cases arise.
+>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 509b35b5a0e7..9e5fa06b2b51 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20537,6 +20537,7 @@ F:	drivers/irqchip/irq-or1k-*
- 
- OPENVPN DATA CHANNEL OFFLOAD
- M:	Antonio Quartulli <antonio@openvpn.net>
-+R:	Ralf Lici <ralf@mandelbit.com>
- R:	Sabrina Dubroca <sd@queasysnail.net>
- L:	openvpn-devel@lists.sourceforge.net (subscribers-only)
- L:	netdev@vger.kernel.org
--- 
-2.55.0
+Agree, I don't think control signals are used for diag.
 
+Regards,
+Daniele
+
+> >
+> > On the locking: I agree the data_lock/ops_lock split is awkward, and
+> > it's this series that made the two locks interact. Most of the races
+> > found in earlier versions came from it. My only concern is the blocking
+> > write case I mentioned, so the options as I see them are:
+> >
+> >   a) Use only ops_lock, with the whole ioctl handler under a guard and
+> >      mutex_lock_interruptible() so a waiting ioctl can be interrupted,
+> >      accepting the wait behind a blocking write on rpmsg ports.
+> >   b) Keep data_lock for the termios/TIOCM state and take ops_lock,
+> >      interruptibly, only around the ->dtr_rts call. v9 already limits
+> >      that to when DTR or RTS actually changes.
+> >
+> > I'm happy to do either in v9, which do you prefer?
+>
+> I would also lean toward option a). We may want more fine-grained
+> locking in the future, particularly given the blocking write path, but
+> I think the current approach is acceptable for now.
+>
+> Regards,
+> Loic
