@@ -1,137 +1,161 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-90.mta0.migadu.com [91.218.175.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD3B46A5E3;
-	Mon, 12 Oct 2026 09:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319AE47A0A9
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798583; cv=none; b=cXOtXok2V8HMVjt6ejQNS6ruYXMYVuX57eGu7okUPqD/SdtTLPfLyI6gXReywd/hkATUs1OKv6F+MF6bdyZWgKie7O/4jiBZNwnheUDkoFU1A5yGumCs1k93JhcxT+t3gHBAkDe3M+EASck2dJP1gWSCeRnkpkm9NGRL8vSkiQk=
+	t=1791798763; cv=none; b=f4C1b20mbcr5qS/DN3DY/6NLoGthDY6/63Z4oHntFTnXkeTM93R1TOl60pWLgxrhg86IvJIcT6VaIDdhb8ZpmltJ3BsvSxihnSwWrAZQudqUVKwWNIDUl8wJRLiERjhvZTVOB4dc/ps2GQyrrl8HOiBgdLtks/ug5PxFg06Eebc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798583; c=relaxed/simple;
-	bh=JSrO162Bb0xVGY82I6TqZjOWNSQgDe1p/FuUG32frlk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kRfRMTw4eg0d9Cx/ZMf3snCy7OFGP9TRoUZD6c5rx0Tq6UVo05BBBG1vJ0PdbhC+/V//SkSZYdvim6+RRNFcMs1VTRs3UQqsIGtgjIoIPohpd4iE0avRtGvDQVbT1OphFMY1SR7oS7/sm/xr3VsdBhBdIruZoQN2vO4lC7ipriQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eGIHhL7e; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791798763; c=relaxed/simple;
+	bh=AHIA+RwpuT28qbCBDhX6p5dPp+xOpJIdP2j0VIC8bKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qa2yt0yA/9iznMNJqF0b3dnIDo9LgiQH1vnD+uCvigwMNALCAsArs1UyDXlEwJoeHyOpwRz7i4hr+SK3t8dBnvFISabmGlCw9OmjPeg0oEmw+YRkdHFLIlzZv1TFaOZrtJDN9oVeqknDaar8eefJEM3NnLJVQ9BPU3+jMi6gGZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pWHlIX+T; arc=none smtp.client-ip=91.218.175.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eGIHhL7e"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69C8iMLL2750236;
-	Mon, 12 Oct 2026 09:49:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=yWvg31
-	cmrWnAjP2Wz00NBC1QFW9PNKonLylsY2mzdeA=; b=eGIHhL7e0x0iI3v9aBt57d
-	hrYh4W14NOpNG2QAIif1jkPBwxaETovTFlApuebW799+kGWpAcQ+dKI4+CsyOFpd
-	gZe7h/PFxepQOVi6rveoBo1/yGQOcgP6D3fG3qFd4y7wsDnXjbBZE3vEeVB9GXp0
-	JmXbaB61xtwJttII1WXLhG9SLIyjWeq/BErU8R0BLG+UeDWba+swF0Snk15lfT/G
-	BqBv4/p7MA7uMk7TSMzz3Cl/I+6mTFmRMDdOa11oli9Z8+NOi6jo0zLIIOdsdsbD
-	SEys/gqeXXMRq+z/HSkggZyy/t056Cp1GhntuXeJPNcWRC/ekmIQ7Tmak9jYy8Lw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dv07wqf-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Mon, 12 Oct 2026 09:49:31 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69C8K3NL1013624;
-	Mon, 12 Oct 2026 09:49:30 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h82cycass-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Oct 2026 09:49:30 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69C9nU3h13107784
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 Oct 2026 09:49:30 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0DD97581F6;
-	Mon, 12 Oct 2026 09:49:29 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B3AB581FA;
-	Mon, 12 Oct 2026 09:49:22 +0000 (GMT)
-Received: from [9.124.213.153] (unknown [9.124.213.153])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 12 Oct 2026 09:49:21 +0000 (GMT)
-Message-ID: <8af035ab-fe01-4ca4-8f39-6a409127d915@linux.ibm.com>
-Date: Mon, 12 Oct 2026 15:19:20 +0530
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pWHlIX+T"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=AHIA+RwpuT28qbCBDhX6p5dPp+xOpJIdP2j0VIC8bKI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791798756; v=1; x=1792403556;
+ b=pWHlIX+T2F9isaGrLL5ap4n9saxm9Dvs7pvZ7myYA+uFu/OigHyZbvm7k/l1WpKf7gxK0Qma
+ kbAEErrsYVwLOn8S1Fz0IFzDLtf9DmPBd8Q2ROus1WBrv0hflYsNPJb/NcFdXMkLLD+JRefjAU6
+ yRjI1BvVxKzEKtbFBf3rAl4g=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id d5efb0101126e00b;
+	Mon, 12 Oct 2026 09:52:36 +0000
+X-Mizu-Trace-ID: d5efb0101126e00b
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 12 Oct 2026 17:52:24 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: luyun <luyun_611@163.com>
+Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	maheshb@google.com, razor@blackwall.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net v3] bonding: 3ad: select a port when the TX array is
+ empty
+Message-ID: <asyt2Gt4LzKWWnZS@fedora>
+References: <20261008024031.16224-1-luyun_611@163.com>
+ <asoItm3JVXSC5GQ4@fedora>
+ <463c6b0e-8b46-4c70-b9d8-56b42beaa7d0@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v9] net/smc: fix lgr/lnk lifetime vs diag reader race
-To: netdev-bot+sinfo@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
-        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
-        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
-        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
-        stable@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20261012080034.38770-1-mjambigi@linux.ibm.com>
- <179179225758.2527009.15422843250132893660@kernel.org>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <179179225758.2527009.15422843250132893660@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDAzOCBTYWx0ZWRfX+PbO2ah4xNx+
- A5Aq60JZ6kdHydakK4Zg6vyl1tRHadwf1Jr9xm4pgTqvnhC4B8UKwN09T0ZU9RpWlAQXtkPJjy4
- RzFC8fN3w6iltxC23GopTDBRKDUDI52qYwanODuPGe5fkNkxojtWIyoSOLMWpg+Myol2oZkKMgk
- DEmcCSGnsoWGVk/3BboyONa2zCYiYjuYsKFXI9UpeT+DuUS8jdO7nNwhuBgvoLWg5gJ77UJDdZD
- tDFPq0dco3CxO+5+qbPfD0Sv2XvFcDjzqZ3ArV0TdL/zeO7zwVL2cxouG3zCDKEeR4SDzUmunXa
- 0YN4KYGO29tvi1f5Y9ndpAno4AbMuhLQpv2Mnm/dE2RAydfW6481buC1k8ISmNpMCx6ivXXKFXy
- crX5pszzeKiHInwAOgcMY/9vS0Jpre0A6bq4MTzVGvHIcDc78UYGcRwn7wmQYSktnTw5zYMlGkP
- iobEOUmF5xB7U12Ct7w==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDAzOCBTYWx0ZWRfX71zX/M//M6qq
- CkxGghcfMhuAeLeyNTZT7uWNaNJio+CBgOWZkMO7hRFHnF3cuEb3Sn/gUyAjovB25eY8r4ZAY5O
- o/XGFGEghltDBNUbnQA5IItf5LaCrl8=
-X-Proofpoint-ORIG-GUID: gpN-nQqL1g5TVOLUHsXe2_cpzlA37IxF
-X-Authority-Analysis: v=2.4 cv=a6KlZkSF c=1 sm=1 tr=0 ts=6accad2c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=8WImSUdLa4LpenjYlHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: mNU-isJH3YWoj62YpE7kxzk7RJ5jxZqF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-12_03,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0 clxscore=1015
- phishscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
- definitions=main-2610120038
+In-Reply-To: <463c6b0e-8b46-4c70-b9d8-56b42beaa7d0@163.com>
 
-On 12/10/26 1:34 pm, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+Hi Lu Yun,
+
+On Mon, Oct 12, 2026 at 03:20:09PM +0800, luyun wrote:
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+> 在 2026/10/10 17:43, Hangbin Liu 写道:
+> > Hi Lu Yun,
+> > On Thu, Oct 08, 2026 at 10:40:31AM +0800, Yun Lu wrote:
+> > > From: Yun Lu <luyun@kylinos.cn>
+> > > 
+> > > This issue was observed on a machine in real use. During 802.3ad
+> > > bring-up in production, packets were dropped even though the bond's
+> > > carrier was up and LACP had enabled ports for distribution. The
+> > > transmit path only consults usable_slaves and returns no slave when
+> > > the array is NULL or its count is zero.
+> > > 
+> > > LACP port eligibility and the TX array are updated separately. The
+> > > state machine enables ports and updates carrier before scheduling
+> > > slave_arr_work to rebuild and publish the array. The worker requires
+> > > RTNL and retries if rtnl_trylock() fails, so RTNL contention can
+> > > prolong the interval in which eligible ports exist but the cached
+> > > array is empty.
+> > > 
+> > > Add a fallback for 802.3ad when the usable array is empty and carrier
+> > > is up. Walk the RCU-protected slave list and use ports whose
+> > > aggregator is active and which pass bond_slave_can_tx(), without
+> > > taking mode_lock or changing LACP state. In 802.3ad mode the
+> > > per-slave active flag is set only by the mux machine for ports of the
+> > > active aggregator, so these lockless reads identify distributable
+> > > ports with the same criteria bond_update_slave_arr() applies when
+> > > building the array.
+> > `bond_update_slave_arr()` is called from `bond_enslave()`, and it should be
+> > very fast. Could we add a check in `bond_3ad_state_machine_handler()` or
+> > another suitable place to ensure usable slaves exist before entering the
+> > distribution state?
+> > 
+> > The fallback path seems somewhat complex and costly. Or you can wait for
+> > Jay's feedback.
 > 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+> Hi Hangbin,
+> 
+> Thanks for the review and the suggestion.
+> 
+> bond_enslave() does call bond_update_slave_arr() synchronously, but at
+> that point the newly enslaved 802.3ad port is still inactive and there
+> is usually no active aggregator yet, so that call typically resets both
+> arrays to NULL. The problematic window opens later, when LACP
 
-The issue was found by manual code inspection while reviewing the diag
-dump path in net/smc/smc_diag.c.
+Ah, yes.
+
+> convergence completes, and it comes from the delay stages between port
+> enablement and array publication:
+> 
+> 1) The state machine enables the port and brings carrier up inside the
+>    sweep (__enable_port() -> bond_3ad_set_carrier()), but slave_arr_work
+>    is only queued after mode_lock is released.
+> 
+> 2) bond->wq is an ordered workqueue shared with ad_work, mcast_work and
+>    peer_notify_work, so slave_arr_work runs only after the work items
+>    queued ahead of it finish, on top of normal scheduler latency under
+>    boot load.
+> 
+> 3) The worker needs RTNL. rtnl_lock is global: any concurrent netdev
+>    operation (e.g. udev / network manager churn during boot) makes
+>    rtnl_trylock() fail, and the worker requeues itself with a 1 jiffy
+>    delay, retrying until RTNL becomes available. This was exactly the
+>    situation on the production machine where we hit the problem.
+> 
+> During this window carrier is up and the ports are already
+> collecting/distributing, but usable_slaves is still NULL or empty, so
+> every packet goes through bond_tx_drop() and the sender sees no error.
+> In production ARP simply never went out.
+> 
+> A control-path check before entering the distribution state would be
+> circular with the current builder: bond_update_slave_arr() only picks
+> ports that already pass bond_slave_can_tx(), and that flag is set by
+> the mux machine itself on entering collecting/distributing. Waiting
+> for a non-empty array before enabling the first port never converges.
+
+I feel calling bond_update_slave_arr after collecting/distributing is a bit
+late. Maybe we should start updating slave array after entering
+LACP_STATE_SYNCHRONIZATION, cause after that we start sending
+LACP sync messages, which means the port is already up and usable.
 
 > 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+> Deferring the mux transition instead would delay carrier-on, be
+> visible to the LACP partner, and under RTNL contention extend bring-up
+> by the same delay the fallback covers, so traffic would not flow any
+> sooner. The builder also needs RTNL, may sleep and takes mode_lock
+> itself, so it cannot be called from the mux critical section; a
+> control-path fix means splitting array preparation from port
+> enablement, with recovery when RTNL or allocation fails.
+> 
+> On cost: the fallback only runs when the array is empty, so the normal
+> transmit path is untouched. Inside the window it is a lockless RCU list
+> walk with no new state; the second pass and the broadcast branch are
+> there to keep the array path's hash mapping and broadcast_neighbor
+> semantics.
+> 
+> I would also like Jay's feedback on the preferred direction. If a
+> control-path solution is preferred, I am open to working on separating
+> array preparation from port enablement, as long as it does not change
+> LACP convergence behavior.
 
-The races are theoretical — none of the four windows were triggered in
-practice. The smc_conn_kill() / smcd_buf_detach() race requires an
-active smcss poll to coincide with an SMC-D lgr termination on the
-dmb_nocopy path; the smc_close_active_abort() and
-smc_close_passive_work() races require a concurrent diag dump during the
-narrow teardown window between sk_state = SMC_CLOSED and
-smc_conn_free(). No stack trace or error message is available since the
-bugs were not hit in a running system.
++1
 
+Thanks
+Hangbin
