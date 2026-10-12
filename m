@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CF73E172B
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB1D3E44E0
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791846926; cv=none; b=F5VFCyqZpiFyr9RSe2FoTyJ/Ad/ObY7ax9Q2+RT0l3Eei3yDgDRMRsZ5rlP2Wy1jmPOHuGijyUM+llh8aKL4ugi3H16qvOj3bt8X7j3MQHm7Gj4E9FZ8195lFhVPvk1bwaiWvHL+JQ2ix9abPVaLqNPZSRzCNlUtRblzZZsK7lI=
+	t=1791846928; cv=none; b=OT+d9DokkP7CMUaKjjOkFbQ9wSpHCn23qJm3/TxCGNAOtlxJjnjCzP2+OomyJpF2Oy3rJXmtYDHQEjXdoo1xppe46MuNkLdH4p/kQ9FahlnVBtQZSlB/ERg2opRYCkYgfiTTrg6vubiuRSNI2Zs4xR/rr0GVToDCfO2kHu2fVFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791846926; c=relaxed/simple;
-	bh=8B/WvnwpQLw8ig4+50DaHklfkQAXbT/SVeyMDkdFQk4=;
+	s=arc-20240116; t=1791846928; c=relaxed/simple;
+	bh=b7vVZELbIVPCfv6u5Ew+JBKdj1XgYXBR1ih7lPmAxXc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F+NxpcAUdLGbe14DA7I7edTfgTnlgKaO7Hs2lWG2lotPuhiyxculvpJfaidbJxmTiF2eD7/7BIihL+ce5P6Mls/q2rtwMydEs1ABJ4D2r9wlGyJ+vbBXdYuLjfRNBYsXev4JWXk0G8yODJl/d+g4JqYLPnj1PJ4CIhva60QTMzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOj6RTH6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=PUMRPbMwwqItRcqMCx4b9uWrMIt+bNvWKRllszZ3PQFFjLrtPdnNG/aUTuDNkBVVxmQ9Vhup0jB8C1MHa6ii6wsvpUhwRRrgN3ihHnf0H1y2ZmQjXRO5z4ro5hnHV5K+phHGClRw9HNdJfpIgw0JwEHW60qY1FhVQTQfBvFwf7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBW2Bxa+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOj6RTH6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A86C1F008A1;
-	Mon, 12 Oct 2026 23:15:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBW2Bxa+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171D31F008A2;
+	Mon, 12 Oct 2026 23:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791846925;
-	bh=PxK3XHhioH8mJN1qJ+3oxzwUnN4kDm//D71ec0533x0=;
+	s=k20260515; t=1791846927;
+	bh=S6RE7CCQg2sdYUx2wVBbmTIS4iCpq5ftYqKHYv04iuI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XOj6RTH6qyg8ly629AywfjvQReB6xH8iEvMP9Vs0RaYGEAGfKed7Z//1vtPnD/2cV
-	 jewTJvJJS07E5pp0GM0lBi4EbR1eiAZwZpVqYDxNHFNmgBsFHZB8A+MVGYQDZnRjBr
-	 usfIBychVchXDrt6SFxGegaZH56nTnSZv8ndx37tQlu/RscTnZUuoB21M9LYDf5vWs
-	 C9bDeeJRNRXL0mtIUU2iBfBtiSTPK09aYIBJhWJwGijl1CU5QBjEWUxzoSKcDM76Rp
-	 WGARa2DISXmPlcBC+Qie/1gR2EplVDzfmcaVfYN4Bx+mm/8+E7rabtq0USevRZK76b
-	 w12GtDPr4qiTQ==
-Subject: Re: [PATCH net v2 07/15] ice: E822: cancel offset verification work
- during reset preparation
+	b=kBW2Bxa+MPK7ilXn/F/hXI5nfIpsOnEZOsWt6pmPRkpONIaSN3/qT6OFfrXDmrA5R
+	 NO24YBXJPXxXseqUgkZ8d5Wkp6K0R/IPAV51vBQAyQRLMs970F++MqoYYpYSrsDUUB
+	 Rw80AtkuuTEalf2US4MvJsUSPVNkMN4PlxKHeZDTjd6D4Sn2VDpaqn+GrEZjFIAt2p
+	 GwRx5ZR73czXFUFfnwGeQ//7IdTEst9Bd2oebcCO7FRirWkabMpmNOP9nP68c41E0Y
+	 p++f5X6jW3TAKHnSRnToBjRnziXQRBReU3GslOenXw2s7zcc8d+Hi4mgaedd0KSfNE
+	 WbCe8bj8Q5+Ig==
+Subject:
+ Re: [PATCH net v2 08/15] ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -38,11 +38,11 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  poros@redhat.com, richardcochran@gmail.com, horms@kernel.org,
  pmenzel@molgen.mpg.de, aleksandr.loktionov@intel.com,
  alexander.nowlin@intel.com
-Date: Mon, 12 Oct 2026 23:15:24 +0000
-Message-ID: <179184692414.434549.12037498977381126452@kernel.org>
-In-Reply-To: <20261008215614.1987250-8-anthony.l.nguyen@intel.com>
-References: <20261008215614.1987250-8-anthony.l.nguyen@intel.com>
-X-sashiko-severity: Medium
+Date: Mon, 12 Oct 2026 23:15:25 +0000
+Message-ID: <179184692566.434549.13285577131769636984@kernel.org>
+In-Reply-To: <20261008215614.1987250-9-anthony.l.nguyen@intel.com>
+References: <20261008215614.1987250-9-anthony.l.nguyen@intel.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,10 +52,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,95 +63,145 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The commit message gives a false reason for leaving PF resets
-  out of the new cancellation.
+- [High] Concern: the new ice_ptp_mark_tx_tracker_stale() calls in the
+  E825 branches of ice_ptp_port_phy_restart() (line 1322) and…
+- [Low] The new error message in ice_ptp_port_phy_restart()
+  (drivers/net/ethernet/intel/ice/ice_ptp.c:1340) blames a link-up…
 
 --
 
-ice: E822: cancel offset verification work during reset preparation
+ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
 
-This patch cancels the E822 offset verification work (ov_work) in
-ice_ptp_prepare_for_reset() for CORE, GLOBAL and EMP resets, so the
-work does not keep polling while the PHY is restarted. PF resets
-return early and skip the cancel. The commit message says this is
-because nothing else would restart the task after a PF reset.
+On E825, ice_stop_phy_timer_eth56g() no longer clears
+PHY_REG_TX_OFFSET_READY, because clearing it leaves the hardware Tx
+timestamp counter out of sync. The E825 stop and restart paths now set
+tx.calibrating and mark outstanding Tx timestamps stale, then clear
+tx.calibrating once the PHY start succeeds. The patch also drops the
+unused soft_reset argument and rewords the restart failure message.
 
-> The larger resets will restart the PHY, canceling any outstanding vernier
-> calibration and forcing a restart. Preemptively cancel the task for non-PF
-> resets to avoid doing unnecessary checks while resetting. The task is not
-> canceled for a PF reset, otherwise nothing would restart the task to finish
-> vernier calibration after the reset.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index 7cc151b01a13e..818e2e265a7e5 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 7f82439c47ee5..7cc151b01a13e 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -3006,6 +3006,9 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
->  	if (reset_type == ICE_RESET_PFR)
->  		return;
->  
-> +	if (hw->mac_type == ICE_MAC_GENERIC)
-> +		kthread_cancel_delayed_work_sync(&ptp->port.ov_work);
+> @@ -1302,15 +1310,35 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
+>  					   0);
+>  		break;
+>  	case ICE_MAC_GENERIC_3K_E825:
+> +		/* ice_ptp_port_phy_stop() may have already disabled
+> +		 * timestamps, but some restarts occur without first stopping
+> +		 * the timer, so we ensure that new requests are disabled
+> +		 * here.
+> +		 */
+> +		spin_lock_irqsave(&ptp_port->tx.lock, flags);
+> +		ptp_port->tx.calibrating = true;
+> +		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
 > +
+> +		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
 
-[Severity: Medium]
-Is the statement "nothing would restart the task to finish vernier
-calibration after the reset" accurate for this tree?
+[Severity: High]
+Can this call race with ice_ptp_release() freeing the Tx tracker bitmaps?
 
-Near the end of ice_rebuild(), ice_ptp_link_change() is called for
-every reset type, PF reset included:
+At this commit, ice_ptp_mark_tx_tracker_stale() does not check tx->init:
 
-drivers/net/ethernet/intel/ice/ice_main.c:ice_rebuild() {
-    ...
-	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) && pf->hw.port_info) {
-		bool link_up;
-
-		link_up = !!(pf->hw.port_info->phy.link_info.link_info &
-			     ICE_AQ_LINK_UP);
-		ice_ptp_link_change(pf, link_up);
-	}
-    ...
+ice_ptp_mark_tx_tracker_stale() {
+	spin_lock_irqsave(&tx->lock, flags);
+	bitmap_or(tx->stale, tx->stale, tx->in_use, tx->len);
+	spin_unlock_irqrestore(&tx->lock, flags);
 }
 
-ice_misc_intr() sets hw->reset_ongoing only on the OICR path for
-CORER/GLOBR/EMPR. For a PF reset, ice_ptp_link_change() therefore does
-not skip the hardware writes. On ICE_MAC_GENERIC it reaches
-ice_ptp_port_phy_restart(), which cancels ov_work and queues it again:
+ice_ptp_release_tx_tracker() clears tx->init under tx->lock. It then
+frees the bitmaps without holding tx->lock or ps_lock:
 
-drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_port_phy_restart() {
-    ...
-	case ICE_MAC_GENERIC:
-		/* Start the PHY timer in Vernier mode */
-		kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
-		...
-		kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
-					   0);
-		break;
-    ...
+	bitmap_free(tx->in_use);
+	tx->in_use = NULL;
+
+	bitmap_free(tx->stale);
+	tx->stale = NULL;
+
+	tx->len = 0;
+
+ice_ptp_link_change() checks pf->ptp.state against ICE_PTP_READY without
+a lock, before it takes ps_lock. ice_ptp_release() sets ICE_PTP_UNINIT
+without holding ps_lock.
+
+So on E825, the service task could handle a link-up event during driver
+removal and reach this path:
+
+ice_ptp_link_change()
+  ice_ptp_port_phy_restart()
+    ice_ptp_mark_tx_tracker_stale()
+      bitmap_or(tx->stale, tx->stale, tx->in_use, tx->len)
+
+If that happens while ice_ptp_release_tx_tracker() is freeing or clearing
+tx->stale and tx->in_use, this would touch freed or NULL bitmaps. The new
+call in the E825 branch of ice_ptp_port_phy_stop() has the same
+exposure.
+
+The direct call ice_ptp_release() -> ice_ptp_port_phy_stop() is safe,
+because it runs after tx->len has already been set to 0.
+
+A later patch in the series, "ice: keep Tx timestamp slots tracked until
+completion or timeout", appears to fix this. It wraps the bitmap_or() in
+ice_ptp_mark_tx_tracker_stale() with an if (tx->init) check under
+tx->lock.
+
+Could that check be added here, or could that patch be ordered before
+this one, so the tree stays safe at every commit for bisection?
+
+> +
+>  		err = ice_start_phy_timer_eth56g(hw, port);
+> +		if (err)
+> +			break;
+> +
+> +		spin_lock_irqsave(&ptp_port->tx.lock, flags);
+> +		ptp_port->tx.calibrating = false;
+> +		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
+> +
+>  		break;
+>  	default:
+> -		err = -ENODEV;
+> +		dev_dbg(ice_pf_to_dev(pf), "PTP failed to restart PHY port %u with unknown MAC type %d\n",
+> +			port, hw->mac_type);
+> +		return -ENODEV;
+>  	}
+>  
+>  	if (err)
+> -		dev_err(ice_pf_to_dev(pf), "PTP failed to set PHY port %d up, err %d\n",
+> -			port, err);
+> +		dev_err(ice_pf_to_dev(pf), "PTP failed to restart PHY port %u on link-up with err %pe; Timestamping remains disabled; A link-toggle may recover.\n",
+> +			port, ERR_PTR(err));
+
+[Severity: Low]
+Is "on link-up" accurate for every caller of ice_ptp_port_phy_restart()?
+
+ice_ptp_link_change() calls it, but so does ice_ptp_restart_all_phy(),
+which runs from the reset rebuild path and from ice_ptp_settime64():
+
+ice_ptp_restart_all_phy() {
+	...
+		if (READ_ONCE(port->link_up))
+			ice_ptp_port_phy_restart(port);
+	...
 }
 
-When the link is down, the same function calls ice_ptp_port_phy_stop()
-instead, which also cancels ov_work.
+ice_ptp_init() also calls it directly:
 
-The call chain for a PF reset looks like this:
+	/* Start the PHY timestamping block */
+	ice_ptp_port_phy_restart(&ptp->port);
 
-ice_do_reset(PFR)->ice_rebuild()->ice_ptp_link_change()
-    ->ice_ptp_port_phy_restart()
+At this commit, the settime64 path only applies to E822. Later in the
+series, "ice: Recalibrate PHY after settime64 on E825-C" extends it to
+E825 as well.
 
-If that is right, cancelling ov_work for PF resets would also be safe.
-With the early ICE_RESET_PFR return placed before the new cancel, PF
-resets still go through the 100 ms reschedule loop in
-ice_ptp_wait_for_offsets(), because ICE_PFR_REQ makes
-ice_is_reset_in_progress() return true.
+If the PHY start fails during rebuild, init or settime, this message
+says a link-up event caused it. The wording is still the same at the end
+of the series.
 
-Could the cancel be moved above the PFR early return? If not, could the
-commit message give the actual reason for exempting PF resets?
-
->  	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
->  		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
->
+Would something like "PTP failed to restart PHY port %u" without the "on
+link-up" part be more accurate?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008215614.1987250-1-anthony.l.nguyen%40intel.com
