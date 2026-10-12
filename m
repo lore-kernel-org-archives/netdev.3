@@ -1,456 +1,152 @@
-Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010014.outbound.protection.outlook.com [52.101.85.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F093B372EC1;
-	Mon, 12 Oct 2026 08:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791792632; cv=none; b=QCmKeT6NYiI2lO0COZ67fXlONxFPOiUsKlCvsQfx/ykiNNLcdjNpUg3UQkhb0ffIT8/5W906e79SZhYV+tybMtHpQsxp4QJYlRLH7JjsOo7tFSVIoytVvT2PFSb5z4mq2HcnJiN/NR44nXHFROw4Xj/+Y1nl5QecHtQ5rtz81nk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791792632; c=relaxed/simple;
-	bh=DEux4xfpTsHMCrkoqZuZiLUBMLlC23n4EI5ObgM0iC0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iPRvPO4nqYvEtJYTjuCJDieeDvS6+o0Zh5bqB3pe/rjZCcW6HQWP8EInVpDMy5O6LhzQaNPog9wzWjiHpmvoCKXPAtjLv8H6Q6AguVhojstAf/7EY6PQ/9wCtsc7D7x2parBoiXS9XYUq9yW2VBE5KDECeGFs3d2REWT5WLVhdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.243.244.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpsz11t1791792558tbc1d51be
-X-QQ-Originating-IP: XuDCakJyhqZ5EbitY+0Bc69o9NC/l6hVYO3ncUo4q2I=
-Received: from localhost.localdomain ( [115.198.217.6])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 12 Oct 2026 16:09:16 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 8330384946093858897
-EX-QQ-RecipientCnt: 12
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	linglingzhang@net-swift.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	hramamurthy@google.com,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v5] net: libwx: fix VF PM suspend/resume flow
-Date: Mon, 12 Oct 2026 16:09:13 +0800
-Message-Id: <20261012080913.49444-1-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.30.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCEC2F7EE6
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791792776; cv=fail; b=oEEkCRRrI5wXbI68rA58wi+KpUXXm4IaZCjrHGOxSvaEoefl6CPzcG7uCHUAQ0ZfbWjWMJdRC0hdhSyaXc1RnoxHyI13i2GcehBBGyc6jGQ+vd58l76HD+HZTHwi8+YirUkDd03/83/AP7j4eYNiOQHG6M5T9IVhXDVYtIEiTog=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791792776; c=relaxed/simple;
+	bh=+2j41Wp7PNTzaXa5mxZeZCI3Je/an1uWXGwFVgrNpRY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Qk3OCG2GThhEJEDkoqDNg6fUnEUfHhLi/RqH5iPThzZUqhTV1xGboWBS5YSBC6P9RmG6P4w7ZQJmozypTjGRCikPn5+3mQj1PsQuEGmuBhRA9QG5//dwOWhj+bCxtOuQOZuzgxmZ2hMvxMMa6swA7JSjLIWEaCoNI4hZT3lkMu8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=O7qwQ/1A; arc=fail smtp.client-ip=52.101.85.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="O7qwQ/1A"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oO/EDXmvXLxcZDSre1lOOf9wOUTC1Ys5752jjFpkhwTxfK+JS3W2+Jq1tso3uVsStKTb4hydSqKJNN9EHyX9mZqyqmTUIVCSYFD8DFWQ81uv26ug0npw3rVeWOG1trPHaiupmGyKetaXMY6B+EOt5zC1V+87KY2F21jFqQ45yVI7JeLp0N0cianxghon511PKpJ8vQXBHfIBPvojkMcXrPPS+tbscDN3zEKSiVua1NxNXP9kPPBq1a2PTScuUZAe1YNip0VtwGByBRJ/Zo3xXebGdGWuH96f9lZ/arkycI3m9qs3uBfY7n6s9WeXPWBLHlTRbHL2kxSN2fnBmfgGMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l6zgqftog2buu1ydURosOgh3YRsRyhLT5wHYI8Zn7EU=;
+ b=RwG00suDhkb20b/a0d8Y91v1JJmL4dUrdPwpUaxGJiJu2R6U830UPNZ0MWESNr5lA3PjyMWHdIPA5vchxIjpSSFUkfyxct/qJ+wI2cqkgLGSYeg7hj/ImQUjbk2r+cs/u7mBOllBE3bYf1bOsWfeCAsE1gzi809JZmSIgQeS95/jgLNCRmG0wxZ2c8uOfOzFwENurTXjA8xkrEQBJ4bYFkhbq+UPdftcPpuZcTxs/NGt/PO8gddRem771SsD3+b42Yb+BBvqg4IICVal40/Gfj4QRLV7/foQKz2RND09NqZZ4YVX3iM9p4n9dGVRFI5OxEfGmjOG8ww1BllqMNcv5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l6zgqftog2buu1ydURosOgh3YRsRyhLT5wHYI8Zn7EU=;
+ b=O7qwQ/1A4LLYZDw0NfGaEmxFz7t5sT9VNgu4GBWBuWuidsneXriH4gU8Y3WG8Q9PpzmF82xi6YArT9RH6Ft9UF5elUkdrDRl1qF5xIn0LBoeEf7t1AcGnUfKdQqd1iCcCMc1edQlNB1pzY8NQW4wJb+cGkrwz9ES6iSGi0+amZurCiBTgr6htxPGR+hfjEWs4950iM13dyH5ZVWH/LBiaFfPPJKW7VbUa51wPS3Ts/wRtVXvoNBc0npXoMX4rT1GYLRG1/+ZB6qmgrHlbpH744DMRAHaQLCz8IlnNANE+N/w3fc3UXBrtP39ShTgKiytLnevOxi0gILUmRjYn/zO3g==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by SN7PR12MB7275.namprd12.prod.outlook.com (2603:10b6:806:2ae::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.20; Mon, 12 Oct
+ 2026 08:12:50 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.015; Mon, 12 Oct 2026
+ 08:12:50 +0000
+Date: Mon, 12 Oct 2026 11:12:40 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>, Baul Lee <baul.lee@xbow.com>,
+	Cen Zhang <zzzccc427@gmail.com>
+Subject: Re: [PATCH net] ipv4: use RCU protection in
+ inet_netconf_get_devconf()
+Message-ID: <20261012081240.GA601865@shredder>
+References: <20261009074405.727999-1-edumazet@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261009074405.727999-1-edumazet@kernel.org>
+X-ClientProxiedBy: FR0P281CA0255.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:af::18) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: NbhrksM5CKG1Kjszl1PLy2GGg0bQeqD2NTntznbFWaTNbMVhixP8dmPV
-	zR5pcJEIzovGY75rAZC5OEdT1qERUjRzmiTEqcPEyj6MPlAWJ+4/cH2Nc9FAt154T3F0iF7
-	CYoIBLtUyql9Zo4hHoa6/gvdAoan+07j9zoXCk3aQxGWft7+EfgfTK1d/BlTl9ut73mLRK6
-	4Qewy95cmQRtp5Ao7zthxx0RhippkLJ5VA5AzFNaOsrNKF06SQiXFoSJUze44XdgZqAYQgK
-	PPAqWZAjOt+xrDSzGpql+gZinGyOIRT9HvmSFdAU4fHJ5mKWEcVsiJw3D7aPcfWs9MPWbrc
-	zLM1mQUG0mleodp+E9z3KF8DLJbH1UAHjVtt2ntkH7VOYMVE6t6EGQoXT/xclUZLr2vjagw
-	a2ipZG+Th2GAkY0GQ0/SdXypiKV3yg59HXHW3OGEnDJAu3H67eVH27Wka4QTTvi8LVldSlv
-	hJaPf/YhaZnGH46ftcm1ZQSC/3DE8/0aEHIea2Wrh8xJ/JEtBFpFgHeVfYPNbeXhajYkyUF
-	u0M39XhxKxwu8jcdPhCCYGb4c6z7+hJZ/dVaCXjRtiN8nZA1FpC//co+KHxrJIpp0G5LGRv
-	0N78Gt9+fxFMU+HUT6hHFBrj4+FrWGtrFWkgnCzBRzB2E9OnUO4L3Iv/7JmR35B+AWcRGud
-	mPyQ1M0udXx8MxqkuPo8owNHSRrPeQH+V2xzCAX56PLUp13xaujbd5PW/1FAwvQ0/pc4l8Z
-	3GXYofvzxu2wdc1/rl6YlucC1of23rIq3RwD5oDeiGYdi8U/1G6CcwAEZTtSp/GLFKxFm1s
-	QQGeomQX03VNf7xlRQqXx0ovJxMDljf3zqkTY/12s/I9wlRqJBhOdWYKD88CxxU1nCDT58P
-	QgN0lTdRN+PHfDV7nRfItLteq5FAn7lnZnn/RJhbc+hipZRqti5YhVCsl2DoRJwnvxlh/Fd
-	aZZ12tJ00FdZdg3dcHDjqvTxdhjt0O0XxKx/lA9K5mxs/KQRCi3zjFMzvUdb02NvIr5Ku5L
-	vLDDsB034KcNScOhe51nSod6UseLnFsv86NPqv3PdRrsjR0R5aI95X0O+Z0i8/GCalRA6TK
-	5jP4PUJE06m0Zk9wnPfomRAqHQT1srWaA==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SN7PR12MB7275:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95975191-847f-4898-cbb4-08df28389b8b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|11063799006|56012099006|22082099003|18002099003|6133799003|261009223027099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	xSVir36q673f/Bzf7sulKVtyafDchKnDDEWmWb+4KaofiMqBf8aZDWeUU0FNrVgTvb7VwypVPD0393C2944fODVoN9EBWck1ROOKd2xjsZIAT+cWU0zVjjVettHXIdusK6XKSPVyYy5Xxz34BRLY29uyEZzgFEZ9jPjunL5MOSzR/w3Zf94x4+xfUiKZMz61CeeKEI1PpWY2u9nSTj+UhWPBbCKwwTbSIIQCzs/niNYfcmVrZ5lfN4JFNWchsiJielcHUG74bmC6TT3CRNkvdX9ooeq9SU3tyD84bQMYrBUXDW7AX6JHiHloZ99rQ0NKWzQ9cs/plnVal3gIBmqUsX2T9kjc/n+eJmyDzYyt/9+wPK1ljOS0ZmATnu+Me8JilPLUPdTVE+XY4EU4rKSe5eDuds/wigNITcy6GagfQBhNF6A98anUtJzExAEprk92MhchJqWXFDR08uA6UTwtQK8OFqSAu0eibH9CgAOXfUk2i9fItufRqZM+b2pE+BP8ICJ1EMHQD8tdxJ0kVhpD9pVGl4s7HzjX123ylrwShQoRfQ4gpx2namgH8g6wqhCeFHPm+WqE5Y6b0k+L4mmGcR4nyzzt3tEWKyinKBKGVj5Ka5Tf+8xQO/ftlYb61c+Iw0/EJfY7pxHFuyH5DYDquph3cWlPdtkXboVXMbGGO5Y=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(11063799006)(56012099006)(22082099003)(18002099003)(6133799003)(261009223027099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bdcJSCucRnjrVWuDOPd7ohIs3Te7PLc5PQw6B/n46Gnoc8d4ll5T4KQMls7w?=
+ =?us-ascii?Q?BjCUvL21r1TFHyTYNyKHq6/J/bf+Sx9bbxeWSPEEv2KwjZ4792GAD67dvwQZ?=
+ =?us-ascii?Q?CO9cbamWtxDAuRcMHFbguTRpIRyDj5TfMgLfrT3O5mC+4UNB+XLFdwHGwFZQ?=
+ =?us-ascii?Q?MmHO1/NePvRcRO3WnW7vOc+OPRmcGHie06VdVY5jFbb8dQM5J7VrSlHvCtYf?=
+ =?us-ascii?Q?8IBxyCE65jTqEHU3IFqKIk5IgqMqhkWKxUW+5hWFTEHAt9OOTgVCrOgsFzSU?=
+ =?us-ascii?Q?/hhfH/rK5wleV5X2ZpeLw90olhAp3VWGtyMz+7ApdqRtpWgDe1IZo4HnyUbE?=
+ =?us-ascii?Q?UTLSvKL9L2yD5asfqxurjntM0i4w+aVUnEESf4cra2xbel2kr+6TbwGUy+wR?=
+ =?us-ascii?Q?BQGiPLrLQXt4YcZzbXk/8OO7OIAuMI12e9Hh/WUTqAQMFP+IoJF5obVCPs6/?=
+ =?us-ascii?Q?TC5CkxzrabjYPtiaNHzWUCXm+bFf+3g6zCy7syTMpI25Xqq1pr1MOCn9gJcK?=
+ =?us-ascii?Q?9W6nqh4jjCiZ6Xpy3uJIKhMrKdfAqKdOgpZDY6mVXerAC4eV/SyFbEOmYhGn?=
+ =?us-ascii?Q?rxdR4oN9XrJgnJuE6x/3e4EZsCjopXzOBHG8mbfBxsk1qyfQDtrffce5gJP5?=
+ =?us-ascii?Q?rcLx03BhFHPmd6QuZtdvjtwkN2F6Xxd2rR+t4NVJOsUaqSOO94pXxI+lagxj?=
+ =?us-ascii?Q?VKj1Xz/YKAGNFamrLWhnPK1w3vskRpbrFwLX6R6taKkH0tIC20De8dLK8MtT?=
+ =?us-ascii?Q?vssFrYQS9uBFR/YwWrel7IVewb3gOkAvSCH72Mg+dzjh2o/KNh8DBKOKR5/O?=
+ =?us-ascii?Q?SvSeGTJLLFsoylhX9OhjpdOhnywE5s8j42OurXqvq4eNjG9qGgyFYxWxBXiS?=
+ =?us-ascii?Q?AMo7c5Je80pTlwS12CPRdxQpez2mAjSixT1512Twryy3wx2ZzC2Cu7aKknm7?=
+ =?us-ascii?Q?AsPgGc0XosIYMbSvSUKcHQMDL7zXn7TTQ+aDWHFtJvdyACapadVycnCrtyIY?=
+ =?us-ascii?Q?XmhT+fvjArtYBKzulHtzW3XDP69uF4UfbpoScE4pp519y2prFfTsQwxRMp5J?=
+ =?us-ascii?Q?lexPBUiP9BZheSzgpkxhOGXoI0YwJhAX8wSh4LvMPe1+5qeWrxx+8aLGUov2?=
+ =?us-ascii?Q?IkqlLmYfHH08thTd80VXfd8jSj4XvewYQ4tITf4T+lvpd0wiez4MPDAQOwVd?=
+ =?us-ascii?Q?l+4bOEPi/eeM5/fIA9N6WvKS0Uf+LtOgBWIjOIMAf6+pELhjlCSde/+tZC7O?=
+ =?us-ascii?Q?YTyA8++f6ici6Pmy+9+EnpY/Xhf9U6H1SvnsxhSG7TpqBcXU+/PYXOBtQz9G?=
+ =?us-ascii?Q?ATPwEGq2qgeTJn/YldVSsEy2tm5Jd2geAWyNw0LbZWWfQNLY3igqKSE9vaCR?=
+ =?us-ascii?Q?nZzYT8Kk83PkIhf3LYlXoi7cJRopvyAJ6NggiW4bdQgmwyiNyZAvdkXjmeJQ?=
+ =?us-ascii?Q?A5hmI9HBr01mXwLwBpEv+BFPymKFMtYsGaEwVdhMOaGRMvip7CwzkZqD8JWd?=
+ =?us-ascii?Q?5D16F7gcDt3aH0AHHp9TFVE/g/U6arSHCrHvW06PvtBAtMRXhhJe9rbQ89ZU?=
+ =?us-ascii?Q?HYEUyOfX8717++2QJsEPWjxgi+P8x77NorjEnOczt3+sh9+E2GFa+gl/i411?=
+ =?us-ascii?Q?t5eaGzXeBpU4pDvrxqf5Hmtcly0rsI7LRPs02501mFqyBrXA8AK7q4v1NE5V?=
+ =?us-ascii?Q?gQbraiBbYvLqPtZ1qF/lLo3YjX+myPrctBgKAXNQCWLL0l9m?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95975191-847f-4898-cbb4-08df28389b8b
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 08:12:50.3936
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SKA8Cp28sIBksM/Npni+zhSE11SL5EmlDGpf9yWRvFTBPK+LkKpEJE9UeeqKOHGm30RzXcVyrXjTtNY+n6TNuA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7275
 
-The shared PM callbacks used by txgbevf and ngbevf free queue vectors and
-disable PCI without first stopping a running VF or draining service
-activity. Resume does not re-enable PCI or restore a running VF's queues
-and IRQs. Service work can therefore access torn-down resources, and a
-running interface is not restored correctly after resume.
+On Fri, Oct 09, 2026 at 09:44:05AM +0200, Eric Dumazet wrote:
+> From: Eric Dumazet <edumazet@google.com>
+> 
+> inet_netconf_get_devconf() runs without RTNL. It uses dev_get_by_index()
+> and in_dev_get() to pin the device and its in_device while the reply is
+> allocated and filled.
+> 
+> in_dev_get() is not safe for a lockless caller. Since commit 9d40c84cf5bc
+> ("net: devinet: Reduce refcount before grace period"), inetdev_destroy()
+> drops the final reference before the RCU grace period. A reader can load
+> dev->ip_ptr, then call refcount_inc() on a zero refcount after
+> in_dev_free_rcu() has been queued, and keep using the in_device once it
+> has been freed.
+> 
+> None of these references are needed. An in_device is freed after an RCU
+> grace period, ipv4_devconf is embedded in it, and
+> inet_netconf_fill_devconf() does not sleep.
+> 
+> Allocate the skb first, then perform the lookup and the fill under
+> rcu_read_lock(), using dev_get_by_index_rcu() and __in_dev_get_rcu(),
+> like inet_netconf_dump_devconf() already does.
+> 
+> Fixes: bbcf91053bb6 ("inet: do not use RTNL in inet_netconf_get_devconf()")
+> Reported-by: Baul Lee <baul.lee@xbow.com>
+> Closes: https://lore.kernel.org/netdev/20260815172032.79740-1-baul.lee@xbow.com/
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: Cen Zhang <zzzccc427@gmail.com>
 
-Stop a running VF under RTNL before freeing its interrupt resources,
-preserving its administrative running state. Drain the service timer and
-work before disabling PCI.
-
-Re-enable PCI on resume and defer PF readiness checks, VF reset and
-interrupt setup to the service task. Retry readiness and reset failures
-while keeping the device detached. Reopen the interface only if it is
-still administratively running. If interrupt setup or reopening fails,
-stop recovery, close the interface if necessary, and leave the device
-detached with PCI disabled.
-
-Track freed resources and PCI enable state to avoid duplicate teardown.
-Reject ring-parameter changes while queue vectors are unavailable.
-
-Fixes: 377d180bd71c ("net: wangxun: add txgbevf build")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
----
-Changelogs:
-v5:
-- Serialize the PF mailbox probe with mbx_lock, send a firmware-version
-  request, and propagate VF reset failures.
-- Serialize link updates with RTNL and skip them while reopening is pending.
-- Track PCI and resource state to avoid duplicate teardown. Use dev_close()
-  on reopen failure and reject ring-parameter changes without queue vectors.
-v4: https://lore.kernel.org/netdev/20260908095801.61346-1-mengyuanlou@net-swift.com/
-- Refactor patch description and subject to focus on PM flow rework for
-  net-next instead of bug fixes, removing the Fixes tag.
-- Unconditionally restore the interrupt scheme in wxvf_reopen_subtask()
-  to fix NULL msix_entry dereference on previously admin-DOWN interfaces.
-- Add WX_FLAG_NEED_REOPEN guard in wxvf_link_config_subtask() to block
-  mailbox and register operations before reopening completes.
-- Validate netif_running() under rtnl_lock() in wxvf_reopen_subtask()
-  before invoking wxvf_open() to respect administrative DOWN events
-  during deferral.
-- Synchronize core netdev flags (__LINK_STATE_START and IFF_UP) and
-  trigger DOWN notifications on wxvf_reopen_subtask() failure paths.
-- Flushed service timer and work synchronously during suspend to avoid
-  tasks running after PCI device teardown.
-v3: https://lore.kernel.org/netdev/20260904085216.43469-1-mengyuanlou@net-swift.com/
-- Fix DMA-after-free and UAF races in wxvf_suspend() by invoking
-  wxvf_close() when running, ensuring DMA engines are stopped and
-  NAPI/IRQs/rings are cleanly freed before clearing PCI state.
-- Replace manual resource allocation in wxvf_resume() with deferred
-  reopening via WX_FLAG_NEED_REOPEN, scheduling wxvf_reopen_subtask() to
-  run full wxvf_open() sequence under rtnl_lock().
-- Move timer/work synchronization after rtnl_lock() release in
-  wxvf_suspend() to prevent service tasks from re-arming the timer.
-- Add error unwinding in wxvf_reopen_subtask() to set WX_STATE_DOWN,
-  clear bus mastering, and log errors if reopen fails.
-- Skip wxvf_link_config_subtask() when WX_STATE_DOWN is set to prevent
-  link updates on downed interfaces.
-v2: https://lore.kernel.org/netdev/20260829091423.83097-1-mengyuanlou@net-swift.com/
-- Refactored the suspend and resume logic to eliminate full netdevice
-  close/open cycles in favor of lightweight interrupt and queue manipulation:
-  * In wxvf_suspend(), replaced wxvf_close() with explicit queue stopping
-    (netif_tx_disable), carrier drop, NAPI disabling (wx_napi_disable_all), IRQ
-    releasing (wx_free_irq), and resource freeing (wx_free_resources).
-  * In wxvf_resume(), replaced wxvf_open() with granular resource allocation
-    (wx_setup_resources), MSI-X IRQ requesting (wx_request_msix_irqs_vf),
-    and deferred hardware reconfiguration via WX_FLAG_NEED_DO_RESET flag.
-- Dropped the addition of device_link_add() to parent PF in ngbevf and txgbevf
-  probe() paths to keep the patch focused strictly on libwx PM suspend/resume flow.
-v1: https://lore.kernel.org/netdev/20260826095243.16939-1-mengyuanlou@net-swift.com/
----
- .../net/ethernet/wangxun/libwx/wx_ethtool.c   |   3 +
- drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   3 +-
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |   1 +
- drivers/net/ethernet/wangxun/libwx/wx_vf.c    |   4 +-
- drivers/net/ethernet/wangxun/libwx/wx_vf.h    |   2 +
- .../net/ethernet/wangxun/libwx/wx_vf_common.c | 133 ++++++++++++++++--
- .../net/ethernet/wangxun/libwx/wx_vf_common.h |   2 +-
- 7 files changed, 133 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-index 940d2e59876c..729b1ec65bd7 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
-@@ -790,6 +790,9 @@ static int wx_set_ringparam_vf(struct net_device *netdev,
- 	struct wx_ring *temp_ring;
- 	int i, err = 0;
- 
-+	if (!wx->num_q_vectors)
-+		return -EBUSY;
-+
- 	new_tx_count = clamp_t(u32, ring->tx_pending, WX_MIN_TXD, WX_MAX_TXD);
- 	new_tx_count = ALIGN(new_tx_count, WX_REQ_TX_DESCRIPTOR_MULTIPLE);
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index dcbf5811046e..701d239ab13c 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -3402,7 +3402,8 @@ EXPORT_SYMBOL(wx_set_ring);
- 
- void wx_service_event_schedule(struct wx *wx)
- {
--	if (!test_bit(WX_STATE_DOWN, wx->state) &&
-+	if ((!test_bit(WX_STATE_DOWN, wx->state) ||
-+	     test_bit(WX_FLAG_NEED_REOPEN, wx->flags)) &&
- 	    !test_and_set_bit(WX_STATE_SERVICE_SCHED, wx->state))
- 		queue_work(system_power_efficient_wq, &wx->service_task);
- }
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index afd980dbb793..d8551923cdea 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1288,6 +1288,7 @@ enum wx_pf_flags {
- 	WX_FLAG_NEED_MODULE_RESET,
- 	WX_FLAG_NEED_UPDATE_LINK,
- 	WX_FLAG_NEED_DO_RESET,
-+	WX_FLAG_NEED_REOPEN,
- 	WX_FLAG_RX_MERGE_ENABLED,
- 	WX_FLAG_TXHEAD_WB_ENABLED,
- 	WX_FLAG_NEED_PCIE_RECOVERY,
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf.c b/drivers/net/ethernet/wangxun/libwx/wx_vf.c
-index 7567216a005f..213d13d26070 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf.c
-@@ -38,8 +38,8 @@ void wx_init_hw_vf(struct wx *wx)
- }
- EXPORT_SYMBOL(wx_init_hw_vf);
- 
--static int wx_mbx_write_and_read_reply(struct wx *wx, u32 *req_buf,
--				       u32 *resp_buf, u16 size)
-+int wx_mbx_write_and_read_reply(struct wx *wx, u32 *req_buf,
-+				u32 *resp_buf, u16 size)
- {
- 	int ret;
- 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf.h b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
-index b64a4de089f2..e8001d5856a9 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf.h
-@@ -109,6 +109,8 @@ struct wx_link_reg_fields {
- };
- 
- void wx_init_hw_vf(struct wx *wx);
-+int wx_mbx_write_and_read_reply(struct wx *wx, u32 *req_buf,
-+				u32 *resp_buf, u16 size);
- int wx_reset_hw_vf(struct wx *wx);
- void wx_get_mac_addr_vf(struct wx *wx, u8 *mac_addr);
- void wx_stop_adapter_vf(struct wx *wx);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-index 26de78e9a69e..1e65cc281b68 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-@@ -16,9 +16,23 @@ int wxvf_suspend(struct device *dev_d)
- 	struct pci_dev *pdev = to_pci_dev(dev_d);
- 	struct wx *wx = pci_get_drvdata(pdev);
- 
-+	rtnl_lock();
- 	netif_device_detach(wx->netdev);
-+	if (netif_running(wx->netdev))
-+		wxvf_close(wx->netdev);
-+
-+	clear_bit(WX_FLAG_NEED_REOPEN, wx->flags);
- 	wx_clear_interrupt_scheme(wx);
--	pci_disable_device(pdev);
-+	set_bit(WX_STATE_RES_FREED, wx->state);
-+	rtnl_unlock();
-+
-+	timer_delete_sync(&wx->service_timer);
-+	cancel_work_sync(&wx->service_task);
-+	clear_bit(WX_STATE_SERVICE_SCHED, wx->state);
-+
-+	pci_clear_master(pdev);
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(pdev);
- 
- 	return 0;
- }
-@@ -34,11 +48,20 @@ int wxvf_resume(struct device *dev_d)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev_d);
- 	struct wx *wx = pci_get_drvdata(pdev);
-+	int err;
- 
--	pci_set_master(pdev);
--	wx_init_interrupt_scheme(wx);
--	netif_device_attach(wx->netdev);
-+	err = pci_enable_device_mem(pdev);
-+	if (err) {
-+		dev_err(&pdev->dev, "Cannot enable PCI device from suspend\n");
-+		return err;
-+	}
- 
-+	clear_bit(WX_STATE_DISABLED, wx->state);
-+	pci_set_master(pdev);
-+	rtnl_lock();
-+	mod_timer(&wx->service_timer, jiffies + HZ);
-+	set_bit(WX_FLAG_NEED_REOPEN, wx->flags);
-+	rtnl_unlock();
- 	return 0;
- }
- EXPORT_SYMBOL(wxvf_resume);
-@@ -52,13 +75,15 @@ void wxvf_remove(struct pci_dev *pdev)
- 	unregister_netdev(netdev);
- 	timer_shutdown_sync(&wx->service_timer);
- 	cancel_work_sync(&wx->service_task);
-+	clear_bit(WX_STATE_SERVICE_SCHED, wx->state);
- 	kfree(wx->vfinfo);
- 	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
- 	wx_clear_interrupt_scheme(wx);
- 	pci_release_selected_regions(pdev,
- 				     pci_select_bars(pdev, IORESOURCE_MEM));
--	pci_disable_device(pdev);
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(pdev);
- }
- EXPORT_SYMBOL(wxvf_remove);
- 
-@@ -137,19 +162,23 @@ void wx_negotiate_api_vf(struct wx *wx)
- }
- EXPORT_SYMBOL(wx_negotiate_api_vf);
- 
--void wx_reset_vf(struct wx *wx)
-+int wx_reset_vf(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
--	int ret = 0;
-+	int ret;
- 
- 	ret = wx_reset_hw_vf(wx);
--	if (!ret)
--		wx_init_hw_vf(wx);
-+	if (ret)
-+		return ret;
-+
-+	wx_init_hw_vf(wx);
- 	wx_negotiate_api_vf(wx);
- 	if (is_valid_ether_addr(wx->mac.addr)) {
- 		eth_hw_addr_set(netdev, wx->mac.addr);
- 		ether_addr_copy(netdev->perm_addr, wx->mac.addr);
- 	}
-+
-+	return 0;
- }
- EXPORT_SYMBOL(wx_reset_vf);
- 
-@@ -279,6 +308,7 @@ void wxvf_up_complete(struct wx *wx)
- 	wx_configure_msix_vf(wx);
- 	smp_mb__before_atomic();
- 	clear_bit(WX_STATE_DOWN, wx->state);
-+	clear_bit(WX_STATE_RES_FREED, wx->state);
- 	wx_napi_enable_all(wx);
- 
- 	/* clear any pending interrupts, may auto mask */
-@@ -376,6 +406,9 @@ int wxvf_close(struct net_device *netdev)
- {
- 	struct wx *wx = netdev_priv(netdev);
- 
-+	if (test_and_set_bit(WX_STATE_RES_FREED, wx->state))
-+		return 0;
-+
- 	wxvf_down(wx);
- 	wx_free_irq(wx);
- 	wx_free_resources(wx);
-@@ -388,25 +421,103 @@ static void wxvf_link_config_subtask(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
- 
-+	rtnl_lock();
-+	if (test_bit(WX_STATE_DOWN, wx->state) ||
-+	    test_bit(WX_FLAG_NEED_REOPEN, wx->flags))
-+		goto out;
-+
- 	wxvf_watchdog_update_link(wx);
- 	if (wx->link) {
- 		if (netif_carrier_ok(netdev))
--			return;
-+			goto out;
- 		netif_carrier_on(netdev);
- 		netdev_info(netdev, "Link is Up - %s\n",
- 			    phy_speed_to_str(wx->speed));
- 	} else {
- 		if (!netif_carrier_ok(netdev))
--			return;
-+			goto out;
- 		netif_carrier_off(netdev);
- 		netdev_info(netdev, "Link is Down\n");
- 	}
-+
-+out:
-+	rtnl_unlock();
-+}
-+
-+static void wxvf_reopen_subtask(struct wx *wx)
-+{
-+	u32 ping[2] = { WX_VF_GET_FW_VERSION };
-+	int ret;
-+
-+	if (!test_bit(WX_FLAG_NEED_REOPEN, wx->flags))
-+		return;
-+
-+	rtnl_lock();
-+	if (!test_bit(WX_FLAG_NEED_REOPEN, wx->flags) ||
-+	    test_bit(WX_STATE_DISABLED, wx->state)) {
-+		rtnl_unlock();
-+		return;
-+	}
-+
-+	/* Serialize the ping with other VF mailbox accesses.
-+	 * The helper sends the request and waits for the PF reply.
-+	 */
-+	spin_lock_bh(&wx->mbx.mbx_lock);
-+	ret = wx_mbx_write_and_read_reply(wx, ping, ping, ARRAY_SIZE(ping));
-+	spin_unlock_bh(&wx->mbx.mbx_lock);
-+	if (ret) {
-+		rtnl_unlock();
-+		return;
-+	}
-+
-+	ret = wx_reset_vf(wx);
-+	if (ret) {
-+		rtnl_unlock();
-+		return;
-+	}
-+
-+	if (wx_init_interrupt_scheme(wx)) {
-+		dev_err(&wx->pdev->dev, "Failed to initialize interrupt scheme\n");
-+		goto hard_failure;
-+	}
-+
-+	if (netif_running(wx->netdev)) {
-+		if (wxvf_open(wx->netdev))
-+			goto open_failed;
-+	}
-+
-+	clear_bit(WX_FLAG_NEED_REOPEN, wx->flags);
-+	if (!netif_running(wx->netdev))
-+		timer_delete_sync(&wx->service_timer);
-+	netif_device_attach(wx->netdev);
-+	rtnl_unlock();
-+	return;
-+open_failed:
-+hard_failure:
-+	/* Do not retry interrupt setup or reopen from the service task. Keep the
-+	 * netdev detached and down, and disable PCI.
-+	 * Retry by rebinding the driver or through a later PM resume; bring the
-+	 * interface up after recovery.
-+	 */
-+	timer_delete_sync(&wx->service_timer);
-+	wx_clear_interrupt_scheme(wx);
-+	clear_bit(WX_FLAG_NEED_REOPEN, wx->flags);
-+	set_bit(WX_STATE_DOWN, wx->state);
-+
-+	if (netif_running(wx->netdev))
-+		dev_close(wx->netdev);
-+
-+	rtnl_unlock();
-+	if (!test_and_set_bit(WX_STATE_DISABLED, wx->state))
-+		pci_disable_device(wx->pdev);
-+	dev_err(&wx->pdev->dev, "Failed to fully resume device\n");
- }
- 
- static void wxvf_service_task(struct work_struct *work)
- {
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
-+	wxvf_reopen_subtask(wx);
- 	wxvf_link_config_subtask(wx);
- 	wxvf_reset_subtask(wx);
- 	wx_service_event_complete(wx);
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-index d45d5d8ac3ab..5bfeab6fdde6 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.h
-@@ -10,7 +10,7 @@ int wxvf_resume(struct device *dev_d);
- void wxvf_remove(struct pci_dev *pdev);
- int wx_request_msix_irqs_vf(struct wx *wx);
- void wx_negotiate_api_vf(struct wx *wx);
--void wx_reset_vf(struct wx *wx);
-+int wx_reset_vf(struct wx *wx);
- void wx_set_rx_mode_vf(struct net_device *netdev);
- void wx_configure_vf(struct wx *wx);
- int wx_set_mac_vf(struct net_device *netdev, void *p);
--- 
-2.30.1
-
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
