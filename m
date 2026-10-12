@@ -1,151 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ACC49E5FE
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BFA4A5EAA
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791820607; cv=none; b=pW1nqcN7b9643+CitY487MbXIs0RAdO/7DDXQhayCHk1rm+xdaLHFcXrMOEzEHFaVV7bxdwpbQWPurAWhzB2sJ/xVc0ZUU2K8GB+mVcYHtTHR7e75mG2WsP+17/6HdYdOF3EEnXZ3hauiYjQHAWsV4YYgze39VvqMkgG7ZFc6Vo=
+	t=1791820662; cv=none; b=cz4tpLICGJpOTLMU95w3Ll3wTLjxlECyy4uRCw15g9HOoOC1QFRFZgL/s9QCTdypQSTvI+gTHmzIgq/hICSWesF5rLy5D2MGp9nb2iIgytKJ/MD7es1eO2khm1lunHJ1Mbda7RjXPQWNw8FmRxH7dAx1RNmPmzwlVAG9JrZG804=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791820607; c=relaxed/simple;
-	bh=x+II2C4NzEp/tgLOxIxV6XDF9wkhlBsS7NDjudONlTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jV15EW0hLC5KhIfZIy3yXwgT9rUfaDJa1wMzprkw1W3PH9cmIkOVjGfBXuoxN4vhmyKfHPlpt9/dMICXEz/aBPeHj0OW63v0EsMzl1ZlIIVieQh0Y/My+3elLLaUswnBsuPVL4/izhMtfcnflxj9zaTe44g4CB2g9uA5jn7u8vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKF2J721; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791820662; c=relaxed/simple;
+	bh=xKMv7zdu/h5menKe8wtJEeGQA31ZWvZMlO5iNYVOftc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZtMWMK0xQt9fH4LUr1UAJdaKkge0AlYPf7NV1h37+qclojpjCiCh6h86rK4ymMlySiwEOS6FJkUFEuUDLaPf01ONX6y4bNHgy42Zifa+8/M7SeXS5ad+gd5w1Q1w+o4mpdgtKogAlXThC8OwF2Sh3mYXw9JLTH7Bwl/WNIQi5Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=RaWpHayg; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKF2J721"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1679D1F0089B;
-	Mon, 12 Oct 2026 15:56:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791820605;
-	bh=SLHzIePtUtQg66m5nrwYqo88M3o3A1elf8s8U3DZucw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PKF2J721gleu2jMI4dW+07EWVthufc4abF+3N4bdWtQIJg+0R5I1t9vEcM9T1sUaw
-	 dpEf8YscK3Aw/wuyy+NKyIHRM5hibmifdGOmlPfphrdvvft1yEdKzpwy6T9OVOpCjZ
-	 tuO2YMi7dIajKkmPVtl+DrFXUHrgK17zjNjh1ZC4V6gC0/xo/JLHNnVVb2rAuJ2YBi
-	 TcvuK/JffqeO/m8f6mLhpdqreDTvDX0mda5Ked8aK8V8LwQOh07R5P2nVMCgyakwaG
-	 Wms75F6g3flf7RKZTjjEAmlWmkO+NMVKLBieRlNRuwvvAkRyBJbZTAjQY/dw0rNxP/
-	 nM5irFimaPDVg==
-Date: Mon, 12 Oct 2026 17:56:43 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: =?utf-8?B?6ZmI6ICA5piO?= <cc201008@gmail.com>
-Cc: netdev@vger.kernel.org, horms@kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net] net: airoha: Keep UPDMEM egress MAC in sync for
- offloaded IPv6 flows
-Message-ID: <as0DO7n5SCr2j3Z2@lore-desk>
-References: <CAPZ+gd9d1P+xDSrxxZkGJr32zjubP=KfQegeGkWykKGvEH0=oA@mail.gmail.com>
- <CAPZ+gd8TPNnvEDOv_H=fdvy2ysG63uBD0MvmEMjhkMa8i-y1NA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="RaWpHayg"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48afcb1e5f9so205353f8f.2
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:57:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1791820659; x=1792425459; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:from:references:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Idiv+4U2FgCRq4dwCpw16/0Dk3laDwvMdRlPR+5trT0=;
+        b=RaWpHayg3rb8ZVMfobSu6V4SFrHKX8Vdym1imBwrY3OJkUpot65j7vjypG5IOmlEBd
+         nnVv8GqYaZytFvswBOCm+4W4IHAuQWZYGjSLJJ/kW3tYsti9zgpiI4BXc9ZeD+Z+ubTi
+         le73wvDhlMyq9llXPlkMiKGj9TAilWuQ4VarjWodBG3CmvmRdGMZLHnCLilQBlcDMRsn
+         T99AK59qqv6OyzCkxuUff8A3lZrDKQ5IgLsfJqS5TVSWkP2819fKhCSoYVZdH4kJCwaa
+         Bm6Fgh2fVHiH7+/8wEqHDH3JOvDhocWQeib+j33/sKLtTxn0MWee+T5jZxDB+Lv6at/H
+         A3gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791820659; x=1792425459;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:from:references:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Idiv+4U2FgCRq4dwCpw16/0Dk3laDwvMdRlPR+5trT0=;
+        b=xBz4XKJ+/5Wi7OE7szOsE43ilW5aZwYACLvVSLq39GUBDVZTTsbma/PpEhv0PQ9Sxm
+         Qb0XlSEWYT+RrdXo9MP7jUnF0RdffRl7iR6uHDrzU6FYDHnhdnS2hVxE7Y6GtU80pjKo
+         v8GlRDemj+2mmutTmU3jo1IahBuOZJ7Toi2zaFt/yTBBRd63yL/w0Xi/dal4VQQMtioq
+         cbk8ymMzJudgyIV1ZsE9FcHPFVg5KE1bs97iPeThnkY1p+Dai3YZzFGBe/rFyxWwt5Ki
+         Uuqig/K0wtUw0sPCznJ1gECzEAXOatO7Xk/CVWLHpVoTrnDlfk0EwZUqIGNscxpJZLVL
+         cHdg==
+X-Forwarded-Encrypted: i=1; AKwUvBxzvEkpELNca72mQVZQp/7CESQGupKEUtl1JZT3WGs1t0xd8XzXGEnAQTrlGi1/1QMO94QhPdU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIZ0xuseTL9XQ9plY0nklk1ezVISK0imPUEcTabXH8ZWAxDn3d1
+	+hWh0ay9tnp8zxHwEZiUM5NB+eHw3GNcpGqjenAhHtZDb3tKUbL3x2P5sv1wk64MV04=
+X-Gm-Gg: AYBFou1VpYTuL4SFYj6rGTBHzid+FjBcGf+QMm03HMrCDeoXWAyOaYISXFJWAMkgYR8
+	o3J+QPvySHo716hrTefI/d2IlYc+OVXJ3oASf5bY1QOYQAW+cKlcDyOhRFHbhNlBu0GuYOwMEVz
+	QKhmKqC7sX8J2Cy0PINchbeLWRtnQlgEo6kO8C8NFYjz1Jm1uLiA3w1EM987RwpG0emK+xLeQQL
+	A4TqQcjePIjNMeRHGoJgq5OpXKdD9bNaPgGVohBgT6sUSvczViQ7e/zpBmNuVrhDgJP8FQiRjxw
+	ZFjv+iT2kNS6OSyNQw5nXeKV+7Kkbh/wEVtuIiuoyHpS5JVdVtg7dVZMbkVImshiTiMD/MMeNjV
+	BMzLq5ErLAXOGEhYeT7iY0000rs/S6Eq6QomtAr+8M2c2migkXHqw4evqMSl/swNX7Dt7kZb6X4
+	VKTIulrpLUKtko31zWvi5KicygHLt2nW48zkJh8PUsXAN2WROOil/UATYyfgBcBm0f119w0DuRD
+	++OrZEJqiKxiYk9aJGVzShY5EC32g+CJAqYBpdB/udtlTmu7Vc=
+X-Received: by 2002:a05:6000:4911:b0:48a:f41d:846 with SMTP id ffacd0b85a97d-48dbaaf0956mr17339713f8f.3.1791820659280;
+        Mon, 12 Oct 2026 08:57:39 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0514ab1sm380597f8f.0.2026.10.12.08.57.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Oct 2026 08:57:38 -0700 (PDT)
+Message-ID: <b29c6e63-18e4-40f6-9332-204cb151c3a1@6wind.com>
+Date: Mon, 12 Oct 2026 17:57:38 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7loBx0NG4ClbL5mp"
-Content-Disposition: inline
-In-Reply-To: <CAPZ+gd8TPNnvEDOv_H=fdvy2ysG63uBD0MvmEMjhkMa8i-y1NA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH v2] xfrm: account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in
+ acquire/polexpire/expire size calculations
+To: Adrian Martinez Garcia <adrimg3196@gmail.com>, netdev@vger.kernel.org
+References: <CACO1+RQUrGS3VN-hrdKk+BK2uuRP7J_Fyadahz1QpO00JXyw3A@mail.gmail.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <CACO1+RQUrGS3VN-hrdKk+BK2uuRP7J_Fyadahz1QpO00JXyw3A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
---7loBx0NG4ClbL5mp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Le 12/10/2026 à 16:39, Adrian Martinez Garcia a écrit :
+> From 534cb2b5fb8da81677f2955aac8a98d9aa89694b Mon Sep 17 00:00:00 2001
+> From: Adrian Martinez <adrimg3196@gmail.com>
+> Date: Sun, 11 Oct 2026 06:53:31 +0000
+> Subject: [PATCH] xfrm: account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in
+>  acquire/polexpire/expire size calculations
+> 
+> xfrm_send_acquire() and xfrm_exp_policy_notify() allocate their reply skb
+> with xfrm_acquire_msgsize() and xfrm_polexpire_msgsize(), then build_acquire()
+> and build_polexpire() append attributes including XFRMA_IF_ID (when the
+> policy if_id is set) and XFRMA_OFFLOAD_DEV (when the policy is bound to an
+> xfrm offload device).  Neither size helper reserves space for these two
+> conditionally emitted attributes, so for policies carrying if_id, mark,
+> pcpu and/or an offload device the builders can run out of skb tailroom,
+> fail with -EMSGSIZE and hit BUG_ON(err < 0), turning a netlink event into
+> a kernel panic.
+> 
+> build_expire() has the same XFRMA_IF_ID undercount in xfrm_expire_msgsize();
+> its caller already handles -EMSGSIZE gracefully, so the only effect there
+> is a dropped EXPIRE notification.
+> 
+> This is the same bug class as CVE-2026-43107, whose fix (7081d46d32)
+> only covered the aevent pair.
+> 
+> Account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in the three size calculations
+> unconditionally, and replace the two BUG_ONs with normal error unwinding,
+> mirroring the aevent fix.
+> 
+> Fixes: 7e6526404ade ("xfrm: Add a new lookup key to match xfrm interfaces.")
+> Signed-off-by: Adrian Martinez <adrimg3196@gmail.com>
+Please, keep in CC people who have made comments (me in this case ;-)).
 
-> PPE routed IPv6 FOE entries do not carry the egress source MAC inline;
-> they store an SMAC id and the hardware resolves the address through the
-> UPDMEM table, which airoha_ppe_init_upd_mem() only programs with the GDM
-> port own dev_addr at probe time.
->=20
-> The netdev the flow actually egresses can legally carry a different
-> address: on PON setups the authentication MAC belongs to the pon device
-> while each service VLAN routes with its own address, so offloaded IPv6
-> frames left the port with a stale source MAC and were silently dropped
-> upstream. IPv4 was unaffected since HNAPT entries embed the MAC inline,
-> which made the failure hard to diagnose: TCP handshake and TLS completed
-> over the slow path and the transfer stalled exactly when the flow got
-> offloaded.
->=20
-> Before writing smac_id for routed IPv6 entries, program the UPDMEM slot
-> with the source address of this flow.
->=20
-> airoha_set_macaddr() writes the same slot from the ndo_open and
-> ndo_set_mac_address paths: take flow_offload_mutex there too so the two
-> UPDMEM writers cannot interleave their two-step DATA/CTRL sequence and
-> leave a stale address behind.
->=20
-> Tested on a Nokia XG-040G-MD (AN7581, GPON WAN, PPPoE over a service
-> VLAN carrying its own MAC address): IPv6 HTTPS transfers went from
-> stalling at the 15 s curl cap with partial bytes to completing at line
-> rate with hardware offloading enabled, matching IPv4 throughput.
->=20
-> Fixes: 00a7678310fe3 ("net: airoha: Introduce flowtable offload support")
-> Signed-off-by: Yaoming Chen <cc201008@gmail.com>
 > ---
->  drivers/net/ethernet/airoha/airoha_eth.c  |  8 ++++++++
->  drivers/net/ethernet/airoha/airoha_ppe.c | 13 +++++++++++++
->  2 files changed, 21 insertions(+)
->=20
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> @@ -138,7 +138,15 @@ airoha_set_macaddr(struct airoha_gdm_dev *dev,
->   airoha_fe_wr(eth, REG_FE_MAC_LMIN(reg), lmin);
->   airoha_fe_wr(eth, REG_FE_MAC_LMAX(reg), lmax);
->=20
-> + /*
-> + * Serialize with the flowtable offload path: both writers program the
-> + * same UPDMEM slot with a two-step DATA/CTRL sequence and concurrent
-> + * updates would interleave, leaving a stale source MAC under already
-> + * bound IPv6 entries.
-> + */
-> + mutex_lock(&flow_offload_mutex);
->   airoha_ppe_init_upd_mem(dev, addr);
-> + mutex_unlock(&flow_offload_mutex);
-
-This seems a deadlock to me since airoha_set_macaddr() is running holding
-flow_offload_mutex mutex in airoha_enable_qos_for_gdm34().
-
->=20
->   return 0;
+>  net/xfrm/xfrm_user.c | 17 ++++++++++++++---
+>  1 file changed, 14 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+> index a2587c7e..5eb79b0b 100644
+> --- a/net/xfrm/xfrm_user.c
+> +++ b/net/xfrm/xfrm_user.c
+> @@ -3927,7 +3927,8 @@ static inline unsigned int xfrm_expire_msgsize(void)
+>  	return NLMSG_ALIGN(sizeof(struct xfrm_user_expire)) +
+>  	       nla_total_size(sizeof(struct xfrm_mark)) +
+>  	       nla_total_size(sizeof_field(struct xfrm_state, dir)) +
+> -	       nla_total_size(4); /* XFRMA_SA_PCPU */
+> +	       nla_total_size(4) + /* XFRMA_SA_PCPU */
+> +	       nla_total_size(4); /* XFRMA_IF_ID */
 >  }
->=20
-> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> @@ -414,6 +414,19 @@ airoha_ppe_foe_entry_prepare(struct airoha_eth *eth,
->    dsa_port);
->=20
->   smac_id =3D port->id;
-> + /*
-> + * Routed IPv6 entries resolve the egress source MAC
-> + * through the UPDMEM table indexed by smac_id. The
-> + * egress netdev can legally carry a different address
-> + * than the GDM port itself: on PON setups the
-> + * authentication MAC lives on the pon device while
-> + * each service VLAN routes with its own address. Keep
-> + * the table entry in sync with the source address this
-> + * flow is actually going to use.
-> + */
-> + if (type >=3D PPE_PKT_TYPE_IPV6_ROUTE_3T)
-> + airoha_ppe_init_upd_mem(dev,
-> + data->eth.h_source);
+> 
+>  static int build_expire(struct sk_buff *skb, struct xfrm_state *x,
+> const struct km_event *c)
+> @@ -4177,6 +4178,8 @@ static inline unsigned int
+> xfrm_acquire_msgsize(struct xfrm_state *x,
+>  	       + nla_total_size(sizeof(struct xfrm_mark))
+>  	       + nla_total_size(xfrm_user_sec_ctx_size(x->security))
+>  	       + nla_total_size(4) /* XFRMA_SA_PCPU */
+> +	       + nla_total_size(sizeof(xp->if_id)) /* XFRMA_IF_ID */
+> +	       + nla_total_size(sizeof(struct xfrm_user_offload)) /*
+> XFRMA_OFFLOAD_DEV */
+>  	       + userpolicy_type_attrsize();
+>  }
+> 
+> @@ -4236,7 +4239,10 @@ static int xfrm_send_acquire(struct xfrm_state
+> *x, struct xfrm_tmpl *xt,
+>  		return -ENOMEM;
+> 
+>  	err = build_acquire(skb, x, xt, xp);
+> -	BUG_ON(err < 0);
+> +	if (err < 0) {
+> +		kfree_skb(skb);
+> +		return err;
+> +	}
+Silently dropping a netlink message is not an option. As this fix shows, if this
+happens, the kernel is buggy.
+WARN_ON_ONCE() maybe, but it should be done in a separate patch.
 
-I do not think you used checkpatch here.
+> 
+>  	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_ACQUIRE);
+>  }
+> @@ -4307,6 +4313,8 @@ static inline unsigned int
+> xfrm_polexpire_msgsize(struct xfrm_policy *xp)
+>  	       + nla_total_size(sizeof(struct xfrm_user_tmpl) * xp->xfrm_nr)
+>  	       + nla_total_size(xfrm_user_sec_ctx_size(xp->security))
+>  	       + nla_total_size(sizeof(struct xfrm_mark))
+> +	       + nla_total_size(sizeof(xp->if_id)) /* XFRMA_IF_ID */
+> +	       + nla_total_size(sizeof(struct xfrm_user_offload)) /*
+> XFRMA_OFFLOAD_DEV */
+>  	       + userpolicy_type_attrsize();
+>  }
+> 
+> @@ -4358,7 +4366,10 @@ static int xfrm_exp_policy_notify(struct
+> xfrm_policy *xp, int dir, const struct
+>  		return -ENOMEM;
+> 
+>  	err = build_polexpire(skb, xp, dir, c);
+> -	BUG_ON(err < 0);
+> +	if (err < 0) {
+> +		kfree_skb(skb);
+> +		return err;
+> +	}
+> 
+>  	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_EXPIRE);
+>  }
 
-Regards,
-Lorenzo
-
->   }
->   }
-
---7loBx0NG4ClbL5mp
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCas0DOwAKCRA6cBh0uS2t
-rK9aAP9PNyueczLuKOh6HqOy9UG4JJo/Y70ApaV7gfwe/UqkKQEAg1vnuG8yRZy7
-CSfsA8crmPEQSI4RS1bv4G6GvRjz7QE=
-=I85x
------END PGP SIGNATURE-----
-
---7loBx0NG4ClbL5mp--
