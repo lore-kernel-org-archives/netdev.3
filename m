@@ -1,193 +1,305 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56052AD36;
-	Mon, 12 Oct 2026 09:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6E2450404
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798049; cv=none; b=AhIoQpDPjMAiXxRLQ6ez+kut24y2Il/QXWC6Z3EsFdFr2vZrtjQrbi5hRaw6ETV3tR4GZdeA1Lkdknh2YH1rqintpSfaffucvyRNy8uz4Vh2S5AZsmatYz5KXSJ5Om/ly3vvDK9IQ37i32thI6OfTrwv9TvRJcZDtK17Fq3h/jU=
+	t=1791798567; cv=none; b=snk1/LKLq+2MRmSjgGI4dbBIu7SPJ/Q8LzpxUv+A0C1ko651SPUIXIojr5dpZ2glAElE01BWotSqo+CiCuDRZyKrZzmhgmquuLI5g0G9ksNE31ThiEwpnTh1HiLr9+u2v6Nlmpae1R2wonbdzr5/NFzY9DMX/bp21EVzyGMaW7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798049; c=relaxed/simple;
-	bh=a6FvpKy2Z1vtgnntPtKf+UWcUhRmkqdd5O8tdJ5HVP8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lz9nPz53l6TTu4ZHPxndkl1hEbSWukYoUSmGvU88FuflWQj92IqQdN+ZRO+1Xx2dlSWeHprzIBFX1uHVWBIbYZ5Hc5VL0wiKfVRNMcC/S8FfoFUJbRnHaO9dnqfy97Z7U+vz+l7CJgjmYIccP6tK7+1bgeWwJUNAOFJ3hjXdH0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8rGZPJm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791798567; c=relaxed/simple;
+	bh=QLQaEzIvYSIkTz2cD8EzTLAAc5HmHplw2gWBKjsuX8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HwMeNtD8jaMe5BFzbX9hjGRDP1o5g/EsB4oPUKC3Yn/FytSYKY36pVkSSTZnbn8lIPh2+ThX8c0l4buyevf9BfpoNMEeQ44far3v9DI/pZJXyDUOJ1HCKfnKK/vYcDFKkiUE17Sw6HJ2Nc9cShKFNQp3Y5JUuRLkwnEthlF+ZLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wj1ocLAI; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8rGZPJm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193621F0089D;
-	Mon, 12 Oct 2026 09:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791798047;
-	bh=ZzTdgKXEL3BVoaE1Vc+qFEalY2IjFij49xzMtVOaX44=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=e8rGZPJmlk9vGjVE0GMJXTi2yzoes3DQkJN+9veJ4/H2CH8S0wVK3juo+U3mReCok
-	 PMYI611mdsSD8QHFqUACqHfsp2ueJAycQdtvWXxhTSDzpU0zAc+Cn5EVIAApzZWVfM
-	 iezEHOJGExTU4pM/GYeUrusXlODXp9UUxf1E/zE5zgj9qP1evZSu85mS3GUBqPDWd/
-	 fySIBvvi3rhHWcmDYaJN5Ij1ro1QXJE839m5LdjwnNPqvhPPj88d6Z6C8klEBKwDAG
-	 6e//OQda/9ZKKiHNnMNjD4QZnhKTP+o6hwLIbMtMEU6Hfn5BefVsaDf+xjuwaCEmPR
-	 Zs/2U7ABgq/Tw==
-Subject:
- Re: [PATCH net-next] net/mlx5: Remove max_external_SFs device resource
-From: netdev-bot+sashiko@kernel.org
-To: tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- cjubran@nvidia.com, cmi@nvidia.com, cratiu@nvidia.com, gal@nvidia.com,
- jiri@resnulli.us, corbet@lwn.net, kees@kernel.org, leon@kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, mbloch@nvidia.com, moshe@nvidia.com,
- ohartoov@nvidia.com, rdunlap@infradead.org, saeedm@nvidia.com,
- shayd@nvidia.com, skhan@linuxfoundation.org, horms@kernel.org
-Date: Mon, 12 Oct 2026 09:40:45 +0000
-Message-ID: <179179804565.434549.2194696630956114111@kernel.org>
-In-Reply-To: <20261011093828.784454-1-tariqt@nvidia.com>
-References: <20261011093828.784454-1-tariqt@nvidia.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wj1ocLAI"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so641736a91.2
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:49:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791798563; x=1792403363; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nW9s5No7cnl56d7FIHcHMDsAYwjGzDzga7SpovNA6ys=;
+        b=Wj1ocLAIJ/feTd6E/Kd1jA3p8rRWaibwPK329i2VptoWCflOwH/vbVjg2Dasmn5tj9
+         zfAiytY1dyF6agSotmpn/iiVG7XXLLpy4ngW2xI21IUTir80SZM8ntawPwgA8RnJ6L1C
+         3h9KzQiP2e6b/RnijTrRYJmfk5AIKrPxdVY7uLjsuH/jQOv5K8/5TUJC1UIHIt7OahJ1
+         n25qKnCKgX5SMvFd4xy220/KpLyP3NtF8nPfNIEK6DJNoxng24tIDtQoLDb76ojViCU1
+         84mRUML/3Y+RRkRoxrPFVm6uPtCrWWZ4CRAPDJ3gzP1m8gaSsHVeTFGxCLXKXTQOD24S
+         KbkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791798563; x=1792403363;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=nW9s5No7cnl56d7FIHcHMDsAYwjGzDzga7SpovNA6ys=;
+        b=tGt1kn4uj18Lzd+M1+/esnZHd73e4EFCm+rUjW11MjhqtgEutSYUH+MUWH2wNlXXtD
+         wen89pZjwI06rkj7tZHo97Hdg3wpwDtIMr67w2nFBuuF6mYAYUzYaqVA/qhLWGrodwVC
+         +N6x+xolqhg+7UIPiQR6dVq72kMtI/T4rc5Ht/4JQ6W2HLJegNF9Kc/5lIB0cLzgBZa/
+         VqKqLznY5+f8/BfibSfTq4Dakb2FUyOWcrqDFfCwkJ47hIa6On3gXvVno0fAiXErfDy5
+         A+1OE/Gn8bMrebZLlvsdzWYteolqkWLPwDs6bDpRcqrvw7PJgH7mNG/twtR4npgyLEst
+         0YJw==
+X-Gm-Message-State: AFq9FYJ4zT4kQIQMoMRsPrCBcYO5nbkGqZbERbwJPXR4rnH47XXdLqGn
+	uPSF6iOlyFumOJCl7v3rjcaYS85fWPPv8hInWuGEyvv/zfn11nncxFB8dt+d0NRT
+X-Gm-Gg: AYBFou1sgH7ENUI2k9wy3UdbqH0WbWUP8mNh4ui1mS4xHVgr0Q9mMPZbUEt3IHeF8TW
+	ZOn6NXPdC0ZjVIkFxYB3XWyV4B8QBp6r9Muv6wu3Xg5JOrSDtfIXd4jK+xOUhIHF+S1G/U0hfmH
+	1NtA7VFi8Hj8coFVdVTdzWgQVADygXIwYUlBspDYI45b6NNNVvKnm7gA6QDF+dVf36HBD4sW8MZ
+	jxjnOf+W+71LnCJf/NbwA77QTnCTJy805vHz2S+7fUp21JESYSzEZEYhC29zIy+9k9WFfKmuYie
+	+IASyCi51B+NFcE/E6WzLtPQs8hfFLZLkmdtYKbBiWhJZQy+zZeQHBlQoiMvww66eTgnopyG3vo
+	l/jaUznaJGi79H3XKINSrvCcOOExVeXH8CxbaYyAvyvHBQo+Bbc8IeaG+geTqrSAPE4nNtRI4ii
+	ZZf2VTJan2BJdn3A+jttjzgW8KdsV1YCgjKJod7zSBQC6DFA0iNdohbSU2j1jXUc5keJa9TR8QD
+	5MPcK/HKZjku2SDQqQJ+rjYfeUiCXZcq6SQpuBntbtz
+X-Received: by 2002:a17:90b:2681:b0:3aa:ff61:9504 with SMTP id 98e67ed59e1d1-3ab3a9127f1mr6855981a91.20.1791798563154;
+        Mon, 12 Oct 2026 02:49:23 -0700 (PDT)
+Received: from obadmin-Precision-3680.atlascopco.group ([167.103.3.1])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac05cac83bsm3372342a91.10.2026.10.12.02.49.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 02:49:22 -0700 (PDT)
+From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+To: netdev@vger.kernel.org
+Cc: aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v2] selftests: openvswitch: Test SET on later IPv6 fragments
+Date: Mon, 12 Oct 2026 15:20:00 +0530
+Message-ID: <20261012095000.3188473-1-sahaj123.sc@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Send the crafted later fragment through OVS_PACKET_CMD_EXECUTE to preserve the unset transport-header path from the report. Set frag=2 in the action key and match DEBUG_NET warnings at the skb header check rather than a potentially inlined helper. Skip when CONFIG_DEBUG_NET cannot be confirmed and enable CONFIG_DEBUG_KERNEL in the OVS fragment. Drop the flow-counter assertion because its SET-action dump relies on broken formatting.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Link: https://lore.kernel.org/r/20261009090629.1694991-1-sahaj123.sc@gmail.com
+Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
+---
+ .../testing/selftests/net/openvswitch/config  |  1 +
+ .../selftests/net/openvswitch/openvswitch.sh  | 33 ++++++++-------
+ .../selftests/net/openvswitch/ovs-dpctl.py    | 40 +++++++++++++++++++
+ .../net/openvswitch/ovs-ipv6-frag.py          | 27 ++++++++-----
+ 4 files changed, 76 insertions(+), 25 deletions(-)
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The patch removes the device-scope devlink resource
-  `max_external_SFs` (resource id 2, MLX5_DL_RES_MAX_EXTERNAL_SFS) from…
-- [Low] The commit message says "Users can look up SF limits per-port
-  directly via 'devlink port show'".
-
---
-
-net/mlx5: Remove max_external_SFs device resource
-
-This commit removes the device-level max_external_SFs devlink resource
-from mlx5. The reason given is that the per-port max_SFs resources on
-each PF port representor make it redundant. The devlink-resource.rst
-examples are updated to match.
-
-> Users can look up SF limits per-port directly via 'devlink port show'
-> to correlate with controller number and pfnum.
-
-[Severity: Low]
-Is 'devlink port show' the right command here? Port-scoped resources are
-returned by DEVLINK_CMD_RESOURCE_DUMP in net/devlink/resource.c. The port
-get reply does not include them:
-
-net/devlink/resource.c:devlink_nl_resource_dump_doit() {
-    ...
-	resource_list = devlink_port ?
-		&devlink_port->resource_list : &devlink->resource_list;
-    ...
-}
-
-The devlink-resource.rst updated by this patch lists port resources with
-'devlink resource show pci/0000:03:00.0/196608' and 'devlink resource
-show scope port'.
-
-Could the commit message say that the max_SFs values come from devlink
-resource show, and that devlink port show only maps the port index to
-controller and pfnum?
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/hw_table.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/hw_table.c
-> index 1724bf7e0e7af..c36dbd7de8778 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/sf/hw_table.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/hw_table.c
-> @@ -262,24 +262,17 @@ static void mlx5_sf_hw_table_res_unregister(struct mlx5_core_dev *dev)
->  	devl_resources_unregister(priv_to_devlink(dev));
->  }
->  
-> -static int mlx5_sf_hw_table_res_register(struct mlx5_core_dev *dev, u16 max_fn,
-> -					 u16 max_ext_fn)
-> +static int mlx5_sf_hw_table_res_register(struct mlx5_core_dev *dev,
-> +					 u16 max_fn)
->  {
->  	struct devlink_resource_size_params size_params;
->  	struct devlink *devlink = priv_to_devlink(dev);
-> -	int err;
->  
->  	devlink_resource_size_params_init(&size_params, max_fn, max_fn, 1,
->  					  DEVLINK_RESOURCE_UNIT_ENTRY);
-> -	err = devl_resource_register(devlink, "max_local_SFs", max_fn, MLX5_DL_RES_MAX_LOCAL_SFS,
-> -				     DEVLINK_RESOURCE_ID_PARENT_TOP, &size_params);
-> -	if (err)
-> -		return err;
-> -
-> -	devlink_resource_size_params_init(&size_params, max_ext_fn, max_ext_fn, 1,
-> -					  DEVLINK_RESOURCE_UNIT_ENTRY);
-> -	return devl_resource_register(devlink, "max_external_SFs", max_ext_fn,
-> -				      MLX5_DL_RES_MAX_EXTERNAL_SFS, DEVLINK_RESOURCE_ID_PARENT_TOP,
-> +	return devl_resource_register(devlink, "max_local_SFs", max_fn,
-> +				      MLX5_DL_RES_MAX_LOCAL_SFS,
-> +				      DEVLINK_RESOURCE_ID_PARENT_TOP,
->  				      &size_params);
->  }
-
-[Severity: Medium]
-Does the per-port max_SFs fully replace max_external_SFs?
-
-max_external_SFs has been visible on pci/<bdf> since commit 6486c0f44ed8
-("net/mlx5: Expose max possible SFs via devlink resource"). It was
-registered at probe, gated only by mlx5_vhca_event_supported(). Anything
-that looks it up by name, or by resource id 2, will no longer find it in
-any eswitch mode.
-
-The replacement is registered only on this path:
-
-mlx5_esw_offloads_load_rep()
-  mlx5_esw_offloads_devlink_port_register()
-    mlx5_esw_devlink_port_res_register()
-
-Both ends of that path can skip it:
-
-eswitch_offloads.c:mlx5_esw_offloads_load_rep() {
-	if (esw->mode != MLX5_ESWITCH_OFFLOADS)
-		return 0;
-    ...
-}
-
-esw/devlink_port.c:mlx5_esw_devlink_port_res_register() {
-    ...
-	if (vport_num != MLX5_VPORT_HOST_PF &&
-	    !mlx5_esw_is_spf_vport(esw, vport_num))
-		return 0;
-    ...
-}
-
-In legacy mode (the default at probe), or when the host PF representor
-isn't loaded, does any devlink resource still report the external host
-SF capacity?
-
-mlx5_sf_hw_table_init() still computes max_ext_fn through
-mlx5_esw_sf_max_hpf_functions() and uses it for MLX5_SF_HWC_EXT_HOST. So
-the driver still has the value, but no longer exposes it.
-
-Also, mlx5_esw_offloads_devlink_port_register() only reports a failure
-from mlx5_esw_devlink_port_res_register() through mlx5_core_dbg(). If
-that registration fails, nothing exposes the value at all.
-
-max_local_SFs stays device-level and is always visible, so the two
-limits are now exposed in different ways.
-
-SF port creation already requires switchdev mode, so in legacy mode the
-missing value is planning information rather than something needed at
-runtime. Even so, neither the commit message nor the devlink-resource.rst
-update says that a user-visible resource is being removed. Neither says
-that the port-level max_SFs entries exist only in switchdev mode.
-
-Could this be stated, or could the device-level entry be kept for
-compatibility?
-
+diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
+index b062ebbce0f0..5cb3c0d395f1 100644
+--- a/tools/testing/selftests/net/openvswitch/config
++++ b/tools/testing/selftests/net/openvswitch/config
+@@ -3,6 +3,7 @@ CONFIG_INET_DIAG=y
+ CONFIG_IP_SCTP=y
+ CONFIG_IPV6=y
+ CONFIG_NETFILTER=y
++CONFIG_DEBUG_KERNEL=y
+ CONFIG_DEBUG_NET=y
+ CONFIG_NET_IPGRE=m
+ CONFIG_NET_IPGRE_DEMUX=m
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index b9a4c4bf4067..394cd45a292d 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -67,11 +67,6 @@ ovs_wait() {
+ 	return 1
+ }
+ 
+-ovs_flow_has_packets() {
+-	python3 "$ovs_base/ovs-dpctl.py" dump-flows "$1" |
+-		grep -Eq 'packets:[1-9][0-9]*,'
+-}
+-
+ ovs_base=`pwd`
+ sbxs=
+ sbx_add () {
+@@ -453,9 +448,23 @@ test_action_set() {
+ 
+ test_ipv6_later_frag() {
+ 	local t="test_ipv6_later_frag"
+-	local warning="WARNING:.*set_ipv6_addr"
++	local warning="WARNING:.*include/linux/skbuff\.h:"
++	local config=""
++	local config_file="/boot/config-$(uname -r)"
+ 	local before after
+ 
++	if [ -r /proc/config.gz ] && command -v zcat >/dev/null 2>&1; then
++		config=$(zcat /proc/config.gz 2>/dev/null |
++			grep -m1 -E '^(CONFIG_DEBUG_NET=y|# CONFIG_DEBUG_NET is not set)$' || true)
++	elif [ -r "$config_file" ]; then
++		config=$(grep -m1 -E '^(CONFIG_DEBUG_NET=y|# CONFIG_DEBUG_NET is not set)$' \
++			"$config_file" || true)
++	fi
++	if [ "$config" != "CONFIG_DEBUG_NET=y" ]; then
++		info "CONFIG_DEBUG_NET is disabled or kernel config unavailable - skipping"
++		return $ksft_skip
++	fi
++
+ 	if ! dmesg >/dev/null 2>&1; then
+ 		info "dmesg unavailable - cannot check for kernel warning"
+ 		return $ksft_skip
+@@ -463,25 +472,19 @@ test_ipv6_later_frag() {
+ 
+ 	before=$(dmesg | grep -c "$warning" || true)
+ 	if [ "$before" -ne 0 ]; then
+-		info "set_ipv6_addr warning already present - skipping"
++		info "skb transport-header warning already present - skipping"
+ 		return $ksft_skip
+ 	fi
+ 
+ 	sbx_add "$t" || return 1
+ 	ovs_add_dp "$t" fragtest || return 1
+-	ovs_add_netns_and_veths "$t" fragtest client c0 c1 || return 1
+-
+-	ovs_add_flow "$t" fragtest \
+-		'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=44)' \
+-		'set(ipv6(src=2001:db8::99,proto=44)),drop' || return 1
+ 
+-	ip netns exec client python3 "$ovs_base/ovs-ipv6-frag.py" c1 || \
++	ovs_sbx "$t" python3 "$ovs_base/ovs-ipv6-frag.py" fragtest || \
+ 		return 1
+-	ovs_wait ovs_flow_has_packets fragtest || return 1
+ 
+ 	after=$(dmesg | grep -c "$warning" || true)
+ 	if [ "$after" -ne "$before" ]; then
+-		info "set_ipv6_addr warning emitted for later IPv6 fragment"
++		info "skb transport-header warning emitted for later IPv6 fragment"
+ 		return 1
+ 	fi
+ 
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+index 1615843c225e..a653353ec100 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -47,6 +47,7 @@ OVS_METER_FAMILY = "ovs_meter"
+ OVS_CT_LIMIT_FAMILY = "ovs_ct_limit"
+ 
+ OVS_DATAPATH_VERSION = 2
++OVS_PACKET_VERSION = 1
+ OVS_DP_CMD_NEW = 1
+ OVS_DP_CMD_DEL = 2
+ OVS_DP_CMD_GET = 3
+@@ -2218,6 +2219,28 @@ class OvsPacket(GenericNetlinkSocket):
+         GenericNetlinkSocket.__init__(self)
+         self.bind(OVS_PACKET_FAMILY, OvsPacket.ovs_packet_msg)
+ 
++    def execute_packet(self, dpifindex, packet, keystr, actstr):
++        msg = OvsPacket.ovs_packet_msg()
++        msg["cmd"] = self.OVS_PACKET_CMD_EXECUTE
++        msg["version"] = OVS_PACKET_VERSION
++        msg["reserved"] = 0
++        msg["dpifindex"] = dpifindex
++
++        key = ovskey()
++        key.parse(keystr)
++        actions = ovsactions()
++        actions.parse(actstr)
++
++        msg["attrs"].append(["OVS_PACKET_ATTR_PACKET", list(packet)])
++        msg["attrs"].append(["OVS_PACKET_ATTR_KEY", key])
++        msg["attrs"].append(["OVS_PACKET_ATTR_ACTIONS", actions])
++
++        return self.nlm_request(
++            msg,
++            msg_type=self.prid,
++            msg_flags=NLM_F_REQUEST | NLM_F_ACK,
++        )
++
+     def upcall_handler(self, up=None):
+         print("listening on upcall packet handler:", self.epid)
+         while True:
+@@ -3010,6 +3033,12 @@ def main(argv):
+     delfscmd = subparsers.add_parser("del-flows")
+     delfscmd.add_argument("flsbr", help="Datapath name")
+ 
++    execcmd = subparsers.add_parser("execute")
++    execcmd.add_argument("execdp", help="Datapath name")
++    execcmd.add_argument("execpacket", help="Ethernet packet as hexadecimal")
++    execcmd.add_argument("execkey", help="Flow key")
++    execcmd.add_argument("execacts", help="Flow actions")
++
+     subparsers.add_parser("psample-events")
+ 
+     args = parser.parse_args()
+@@ -3088,6 +3117,17 @@ def main(argv):
+         if args.dellink:
+             ipr = pyroute2.iproute.IPRoute()
+             ipr.link("del", index=ipr.link_lookup(ifname=args.delif)[0])
++    elif hasattr(args, "execdp"):
++        rep = ovsdp.info(args.execdp, 0)
++        if rep is None:
++            print("DP '%s' not found." % args.execdp)
++            return 1
++        ovspk.execute_packet(
++            rep["dpifindex"],
++            bytes.fromhex(args.execpacket),
++            args.execkey,
++            args.execacts,
++        )
+     elif hasattr(args, "dumpdp"):
+         rep = ovsdp.info(args.dumpdp, 0)
+         if rep is None:
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py b/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
+index 869f9d6503ef..927676e83314 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
+@@ -2,17 +2,19 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ import ipaddress
++import os
+ import socket
+ import struct
++import subprocess
+ import sys
+ 
+ 
+ def main():
+     if len(sys.argv) != 2:
+-        print(f"Usage: {sys.argv[0]} INTERFACE", file=sys.stderr)
++        print(f"Usage: {sys.argv[0]} DATAPATH", file=sys.stderr)
+         return 2
+ 
+-    interface = sys.argv[1]
++    datapath = sys.argv[1]
+     payload = bytes(range(8))
+     # Offset 1 and M=1 make this a noninitial fragment.
+     fragment = struct.pack("!BBHI", socket.IPPROTO_TCP, 0, 0x0009, 1)
+@@ -33,14 +35,19 @@ def main():
+     )
+     packet = ethernet + ipv6 + fragment + payload
+ 
+-    with socket.socket(
+-        socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003)
+-    ) as sock:
+-        sock.bind((interface, 0))
+-        sent = sock.send(packet)
+-
+-    if sent != len(packet):
+-        raise OSError(f"short packet send: {sent} of {len(packet)} bytes")
++    ovs_dpctl = os.path.join(os.path.dirname(__file__), "ovs-dpctl.py")
++    subprocess.run(
++        [
++            sys.executable,
++            ovs_dpctl,
++            "execute",
++            datapath,
++            packet.hex(),
++            "eth(),eth_type(0x86dd),ipv6(proto=44)",
++            "set(ipv6(src=2001:db8::99,proto=44,frag=2)),drop",
++        ],
++        check=True,
++    )
+     return 0
+ 
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011093828.784454-1-tariqt%40nvidia.com
+2.43.0
+
