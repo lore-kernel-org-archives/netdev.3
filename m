@@ -1,87 +1,87 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B040B4B4056
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F224B7141
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791823486; cv=none; b=vAZEMWA1zKCLo5utZdI6CLh+BQe9jcf/nhTU/aUg74geS2C0juw7l/0c7tCGocLCBQgJHAbXJgGfbrEf430eiBTNmvO81crWjYNYwBJXNR0QTKwiGFtc6f3U21+ykkng7ZXT2A/YI1PAVdH6iwkAqMs7XGS0rGk+bCdQxr7mez0=
+	t=1791823488; cv=none; b=mV78clwvtGRtBW97Q0qADtOEcfvaWxt4wrH2HbGK8fSnkgEmCn9dWxYggiL7GKZV+rkDOg11oK7AuZzvVnweKBvEPFpW/LMOgd/zK1IesyzlGs01fFgG3JEsH+ntehxkEYaA6OXSzJwSqiRPXI87hLjTJAb93tnMHrNTKlZHNZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791823486; c=relaxed/simple;
-	bh=PNzCV9hPwNjNkKsDZsW+5abejAnYdpudy6D3Gu4mjoo=;
+	s=arc-20240116; t=1791823488; c=relaxed/simple;
+	bh=0xyEjyBSKDu4MiSCbk7jL5Uqm6SKc87RAS6DG+0iwAs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y9wrDQt8bJ2pFGEBFwi/VX8L/uveWc+4o3gl2CPWK/Ktrz2oI9hhh7YrzbOJQLidtWSNC8ts/llnCwcqDldSei/fzNnKf8G7omq2/s19idUR/WvnTy5/5GjBDuaaCcmHg5DxQu8Xme9g00R8ZMpjxiLK6D9JZKdOdJ03wgOkc1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ApX9a17M; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=M9zzU0RA; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=AF3ZLF81Ms+n2ro8gnScC+FIzCMH6qy/rnFwfEiBUHkQpOxJRQFuH9e+C/QmlYPsI74f1+mDmXYjfCyo/x4vgLkK7+AWXn64HB18EdjK9Lx7X6WKwXhYexyRkolwkjb5oYdsQpWBMkYSuRssJHmiDwcVeCvWMCmKt8yuEZZtcsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=kzPAHmLu; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AZKg4tSD; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ApX9a17M";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="M9zzU0RA"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CFei4j3782523
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:44 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="kzPAHmLu";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AZKg4tSD"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CFf0vK1290983
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:46 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	y5uGbkqYL5BqGtvqhH6fP3VPuTl/sxkQyH/3ZIuzOc8=; b=ApX9a17MgDArd3zz
-	IEIomvFkQPdFNEZXNs0jrcGizyMFUeVYF5lLWptmDLl/KpgiQOSxKV7kL/4U1TYy
-	AmW1tc/2b0Wi/uciNkWXg9kAfBjMGrGiBjAI2xAd8eeaeEeeUOiYvhx8ovtORrXD
-	Jho97VAk7gsoSqIDdOSEcqr/jOkCGozpykNCLSOsW/OB5qV2JdU5gxeL1ctrt9w6
-	fCQa28y+eWoRtycqglvvfeaSXs545imSmPbpeQmrEaqCK9KEAETaoxNbzSYt/G1F
-	nbIouPblNllnfcbOvdapMheFfjc/zuIxAo3U5YsNHzsqTbEEN7RBZbzcbyBzGVE7
-	KRDq+w==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h8uh3jdre-1
+	avi+XkrV3WTbZAOaZMmBOeG+lzogrfppC5qF3amD0t4=; b=kzPAHmLutDUCWOIo
+	TeKbEZ26MR3CLzAgFhnsG/ta5bEZzMI0YqJwwsHqoCABr7wn+WdxDDZYDYuWIdnv
+	0f840MWLQuxHyrW3M0dMLOeLQQ2KuxEkDLuIdmBIvdAEK8Q6i107LW6bzw96leFH
+	R8Gl77woPwRsCHIiKETQHAuSrrz5T6L62W0mDyfIAwcHNqJU3fqe8FkqsenXqEFf
+	y+KyHyqQU94ZGvztBjCOO7qu2PCrK9ZSr7TSjILjuen1B9zN0FyBnKY4qsVMS4t1
+	IKpTIL7TgavlCEFW6ecE2ptyLnKbnnR06/Xw47L3w/NHgGuhW9ozck63pO9g4NXQ
+	kNTcQA==
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h8wfcsru6-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:43 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-9308eafb465so598547885a.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:44:43 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:44:46 +0000 (GMT)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-91b861c0618so16534386d6.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:44:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791823483; x=1792428283; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1791823485; x=1792428285; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=y5uGbkqYL5BqGtvqhH6fP3VPuTl/sxkQyH/3ZIuzOc8=;
-        b=M9zzU0RAFJETF1FoBMNP3aj6wxhyVCFQPMFVGIz1SrryrC94oqXUT21/330jtC2vGT
-         VDEqiDEUUpbi6klSk6ZnTjfGs3vgIrhqvfT4lygs3EqIUX7ZJFn/3hqJp0+QeQoig6ui
-         g/GI7Nh787rJ43lwmO6UxmOuEH9ZEpv2D/LrnE0JjltjR5CZvl2iNfBn0aDwmfXsO3as
-         GIpJ2zD1s8RRAflTbsBfFOPalZvBvpRiZVHx5/oS13OJSxg1oIu8TBDvp3dXhghyaHHQ
-         rfdKy+kyej6ESdGKBncyDTjpsaiHKWnekJJqX1APO/8VmGpBQf1MQKli4ttcZkgmfUr8
-         NqQA==
+        bh=avi+XkrV3WTbZAOaZMmBOeG+lzogrfppC5qF3amD0t4=;
+        b=AZKg4tSDA2X5FRKcpkTaD93bVqvh5rRB8vih19/yVChjjZmBi3Zsb0ykUFn0gaQCVa
+         Xcx4zWB4oDyv72IOAPlPohWpC9HAAW5WAeHHCpx6ZueNIKVNPcsgJh/L1gFE6PEV4Rqf
+         Q1ZPo5WSyHoy/SRRvxPL/6E/e4gosTMuxO6mcG4eOxnAnSRHAYpjcTum2BavSIGjtbB3
+         VqBX0/HqdSegAcmPMPOvbHA4E3BAKUerCW60NZIWoegkX77EpZZLqnCJoKaq7UUZMel2
+         SPwQ/RMQ2mUxSq+JV88qgwqDduZdreS4XToAoYU/G7cqAAnGsFhGemoDqBh0j6482b33
+         G9cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791823483; x=1792428283;
+        d=1e100.net; s=20260707; t=1791823485; x=1792428285;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=y5uGbkqYL5BqGtvqhH6fP3VPuTl/sxkQyH/3ZIuzOc8=;
-        b=hwVGcO2+CLLO4ZXeVdHTl2ivMxEBTUyAVnBAwaB9M/o6nVYhV13ZJXTUjuBORepkGQ
-         uYv0ECwjgowsVUcsk/9ytM7/75hniqECCZlEATs8nadDWrJsGpVlz2nXnpBxO1Fj0H+3
-         HStgkQRNsRNF5AYc9faBd4KXAo9gkREVS5NPRB6pwSbqocBPpFCnpzVjnl2JTjYtNneo
-         2N5mMaBRruRVU/L+/TMIx/ExQgCYmlC6HwRHwogvoOF6L2fTV5lfzpSGJgzcUajllO/+
-         muh1gX90WCESDgUHz9CIJoZYjND7ChStupNUgAfuYQgNuUfGHnAzNIULVlPTBoGSK9RU
-         s1oQ==
-X-Gm-Message-State: AFq9FYJewRsFS02HnuLKRIoJiV+LsOpfwyQRbT7FJB2Z2tJiARvx/hjH
-	o98YfkYZB97ykdpl0nJth5YEe0rvw4PdBTfnGZyynE80D+rKSpBJM3HJZkpIr0JRLxjfZId5YBX
-	03seUgiwQzcxDYb879WHVKB19VMmBV6nYXS1THzCu7y+RDHdNgxo1PyeNWq3VuE2zLWsc7Q==
-X-Gm-Gg: AYBFou1gnk5LjYbd1yP5Fd94RNoJqBmafNE6ewwH2Hh+BmYtyHs200UiIqX1k89UCip
-	5pcAPFx97I4ozxOp0oPFkhwhZr4ArhjHe2eZYeC8qrO7CjBpY6HsWQuh7ddt/QiWArQa77yln60
-	mCXGrWogR1NMwSqFAsIv93wuEqEwls6XzH8VTZLYq/rtAgAxSYaC75irapX4s6V+06SYYuLrPN4
-	I1vyO77w42Kc4h4mWto0Od9kVwqu0kD6QTkfWsvGPWsTqa4OhTfCjojEba6TrHotqr6otj5XRTU
-	JOOIrvoz7sO4pFF7tqDc4/rQvc7ZXqIafkyb/z2lYG+VdbKxeyQ1RBspeiGQfh158EWx6kkbTh+
-	Rclx6SXEiAesmiQ==
-X-Received: by 2002:a05:620a:a0d6:20b0:93e:c12c:fbc2 with SMTP id af79cd13be357-93ec12d0818mr1145454085a.79.1791823482757;
-        Mon, 12 Oct 2026 09:44:42 -0700 (PDT)
-X-Received: by 2002:a05:620a:a0d6:20b0:93e:c12c:fbc2 with SMTP id af79cd13be357-93ec12d0818mr1145449385a.79.1791823482159;
-        Mon, 12 Oct 2026 09:44:42 -0700 (PDT)
+        bh=avi+XkrV3WTbZAOaZMmBOeG+lzogrfppC5qF3amD0t4=;
+        b=vMGMS+3lLUT7MUM0XqilIdCng0dyYVnHVj2BCGFqNXurErL87KmQdkxw8q3nyIW8Iw
+         +Nx8SJ9zH5UNhoKqcNBLfjlqZpu/WpscuiMgHW1TjzHqSc4b66IfFB51roPDZxiwQpAN
+         nAO7aUTtfdIwLjJz+pzUv4IRwUi3vKbWNPxrjUZc/Df5zXyxKOPWm3wSstNofFAUJo06
+         j3yj5drhzDXhqjts2ckp9k7clCjz+fIPY2Xx/8a51HJUtcdZMV97nC4XaIJDDAACaBrf
+         hr0x2EJW3GkAZgIXgu2LR3aUBm/d5koq95iIZsdiI//06Co2HcjfsSqYMzcwwREpTDay
+         H3oA==
+X-Gm-Message-State: AFq9FYKu01v9g7i5JATIgc12ZwiENZWEII+vuVJ8U48dhpGXvNwSOhRH
+	iHryUcBoeWxuTxfzaHMNs+SJqvoyU+zB+2AewrGB7JROfjBHxISt5C6vjNe/KC4B78069uTLjMD
+	8dLm7LSp1kKkqUjm87kF78sSOVRV02kb2C8GBKvC0I1c2wxhBHv+4BDHlmvqffP/vm22gKg==
+X-Gm-Gg: AYBFou1yqRCnq1wAl/7lNPy4U1j5M9S0XqzR5YPGJDUZIs5UVaXsLJJOHovJiOb+6dq
+	vaJiBjUNUZxoJ9PoJPyuGSMLZ1wZOFe0/vlnn/X6GFPrcjWlZM8v8PoLHpdBg6IC0PkhAxCFjMa
+	0wRtUvAHxFFUbqq8CuTL6VvBZomDYYQbhs0Q2H9sS2ZpVIrTmDnB8TNEGu4L1vAta5HlJN571RL
+	qhfJEb7MRZLEbk3uk2APFb882ZvbFAngNpOX63iYRGBIkh2zsGGYdugrVtBw7nIM1Pzf80nnz/w
+	zZSsRVNT31/PwH95JRcLsBzAUiORGPYUSjEoRL6L9l483tyn58LZ9rQO5j7FkoxcN085FDToTnY
+	6NBo9BdprHrCQzw==
+X-Received: by 2002:a05:620a:198b:b0:92e:76a1:96cd with SMTP id af79cd13be357-93ebd1e041emr1762532385a.13.1791823484920;
+        Mon, 12 Oct 2026 09:44:44 -0700 (PDT)
+X-Received: by 2002:a05:620a:198b:b0:92e:76a1:96cd with SMTP id af79cd13be357-93ebd1e041emr1762527385a.13.1791823484302;
+        Mon, 12 Oct 2026 09:44:44 -0700 (PDT)
 Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaaa21sm424502f8f.9.2026.10.12.09.44.41
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc506asm326879f8f.47.2026.10.12.09.44.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 09:44:41 -0700 (PDT)
+        Mon, 12 Oct 2026 09:44:42 -0700 (PDT)
 From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Mon, 12 Oct 2026 18:44:24 +0200
-Subject: [PATCH net-next v6 2/4] net: stmmac: drop split frames on AF_XDP
- zero-copy RX
+Date: Mon, 12 Oct 2026 18:44:25 +0200
+Subject: [PATCH net-next v6 3/4] net: stmmac: drop multi-buffer frames in
+ XDP mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -90,7 +90,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261012-stmmac-rx-mb-v6-2-2225050915c1@oss.qualcomm.com>
+Message-Id: <20261012-stmmac-rx-mb-v6-3-2225050915c1@oss.qualcomm.com>
 References: <20261012-stmmac-rx-mb-v6-0-2225050915c1@oss.qualcomm.com>
 In-Reply-To: <20261012-stmmac-rx-mb-v6-0-2225050915c1@oss.qualcomm.com>
 To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -111,88 +111,86 @@ Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         bpf@vger.kernel.org,
         Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA2NiBTYWx0ZWRfX7j6SMOSJQX3L
- 06XPXngi0Hg9t8nkovK0VsYUI39J1j5apftLOAGHRQ7fodpx3Oru8BKuvcz8iQ072BXc4wo2rw1
- duJqqVeYHHLYCCji7vS8InvpsTDG5iRRAJL6efEgYndgt1haV4bes4mTbISl7tb+lqNPtr65II2
- THzSvlA+h9KiYHewlNWnzkp4m15uJc7v/C7pyAr4RzdgSEkjOlWEQYwxKQbsNB+iPwyL1CFALXI
- +I4+mYblHwBNWRhTE2KrSq5mcrFDBA+ta1vMHnkr2WB+RoOJYymTVn+G6qXm1wPTlbBYvVN7JLA
- lqd8DyBQZHdhTCrZrqZbvpw51kFLCO3c2lbGIkGQaBAA644navxIYKg4MBCB2dgp3qIBag+Sool
- 9xPlw5FVAoNQSvEwP8UO4mQAC84XKBQ1nzKVxeNHUeGMOrscByxQQHrEMtuxWpOrpCgS6lEK6rV
- Mcbc0FfkgsPBPB5CxyQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA2NiBTYWx0ZWRfXxrMpdsuLdR2O
- OhRYx0muhH1B0+73VLiXL2rjyNitkY4+FtywTiJSwt9X1A6p5MnaBxZH2EaiImQLnmztAln9Okb
- 9Mgw0m/ksSd1rMDXvkF7Kr6iQPh90c0=
-X-Authority-Analysis: v=2.4 cv=QO391QLL c=1 sm=1 tr=0 ts=6acd0e7b cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+X-Proofpoint-GUID: 8L_vvAGmEJcl9V4rx1Pe_sNlnWtUpQQj
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA2NiBTYWx0ZWRfX/adCqfTNd/BV
+ WoaCE1csVyGqiTCHE34KnglNq5GbJILKGUIyQH4Me4cfHuOVLmcHl3s2+OyGEkyVgNdCWYInM3j
+ Kaewa17MR2U6ShGfEtsNnNhM2jHQENQ=
+X-Proofpoint-ORIG-GUID: 8L_vvAGmEJcl9V4rx1Pe_sNlnWtUpQQj
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA2NiBTYWx0ZWRfX6VhJOk0QpGaF
+ fIc0zyTWvUBee2DujC/qWWoDD7o3iF0GyTLm0su8aFOlmHblQU9t0MYEKsKI7GHydz7ndPQno7G
+ 82ba0ulLu6DB4khmwXuEn8OhG9y6GAWfvrFRfKI6x4tqx3c8EzGP1QoL8H/ZUM7EDmX5M4WrQVY
+ 9qMvsyk3IX6ktEf9jCpGvSrP3RB3o3X42ijHlyewvNmHwQCUaZnPYPwaSF1aABer51ynEs6DrRP
+ U2zabreQI0Ef3GEySU1Lc1S3QL/AUOastI3r8bXWsqlrjvKlrZNseF0Hi46kkslPwCJD1+YKZXJ
+ JkWOJ9ZynX8ASAnQcI/rZctkOOs/2yg3X589umnAJsjVqyAcFqe2L+WaWvFhK4zM3KPpFupRgFe
+ EOgWY0s4wbcEB301KPzZD3oyXTOwjye2ZyjtBoDZRvw5RrL5/OJvb5mOybDdf3kPzqQjbQMOI4n
+ LQ49IzWIUz/pyLlC7GQ==
+X-Authority-Analysis: v=2.4 cv=PbhqFShd c=1 sm=1 tr=0 ts=6acd0e7e cx=c_pps
+ a=UgVkIMxJMSkC9lv97toC5g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
  a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=EUspDBNiAAAA:8 a=lO1k50BjLTqofN_Ss1gA:9 a=QEXdDO2ut3YA:10
- a=bTQJ7kPSJx9SKPbeHEYW:22
-X-Proofpoint-ORIG-GUID: CMG0CLdkfy_LsPzrvlhqhqPV54X9yb3a
-X-Proofpoint-GUID: CMG0CLdkfy_LsPzrvlhqhqPV54X9yb3a
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
+ a=EUspDBNiAAAA:8 a=DrIia4gTWQP6Z4KYkkQA:9 a=QEXdDO2ut3YA:10
+ a=1HOtulTD9v-eNWfpl4qZ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-12_05,2026-10-09_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 clxscore=1015 impostorscore=0 spamscore=0
+ phishscore=0 suspectscore=0 priorityscore=1501 malwarescore=0 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610120066
 
-stmmac_rx_zc() assumes a 1:1 mapping between a received frame and an
-XSK pool buffer and drops any frame that spans more than one RX
-descriptor:
+stmmac_rx() runs the XDP program once per descriptor buffer and uses
+skb == NULL as the only marker for the start of a frame. A frame larger
+than one buffer is split by the hardware across several descriptors;
+GMAC4 enables jumbo frames unconditionally (GMAC_CONFIG_JE in
+GMAC_CORE_INIT), so an on-link peer can deliver such a frame even when
+the interface MTU is left at 1500.
 
-        /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
-        if (likely(status & rx_not_ls)) {
-                xsk_buff_free(buf->xdp);
-                buf->xdp = NULL;
-                rx_dropped++;
-                error = 1;
-                dirty++;
-                goto read_again;
-        }
+When an XDP verdict ends a non-last descriptor, skb is cleared and the
+next descriptor of the same hardware frame is parsed as a new frame.
+For XDP_CONSUMED this happens via read_again with len preserved, so
+stmmac_rx_buf1_len() then returns min(dma_buf_sz, plen - len) for the
+last descriptor, which can be as small as 0-3 bytes. buf1_len -=
+ETH_FCS_LEN underflows and xdp_prepare_buff() puts data_end far past
+data; on XDP_PASS this produces an skb whose length is close to 4G that
+reaches the network stack (skb->tail and skb->len are 32-bit and wrap
+below skb->end, so skb_over_panic() does not fire). A 4+ byte tail is
+instead offered to the XDP program and delivered as a standalone
+mid-payload Ethernet frame on XDP_PASS. XDP_TX/XDP_REDIRECT instead
+falls through to the next iteration, resetting the running length, so
+the tail is re-parsed as a full-size new frame.
 
-The non-last descriptors are freed and dropped, but the frame is not
-marked as errored. When the poll reaches the last descriptor of the
-same frame, error is still 0, so the fragment is handled as a complete
-frame: it is passed to the XDP program, copied into an skb on XDP_PASS,
-or converted for XDP_TX. The tail starts in the middle of the original
-payload at a predictable offset and, parsed as a fresh frame (len == 0),
-stmmac_rx_buf1_len() reports the full dma_buf_sz length for it even
-though the DMA engine only wrote the tail remainder into that buffer, so
-the reads extend past the received bytes and can reach beyond the end of
-the XSK pool buffer. GMAC4 always enables jumbo frames (GMAC_CONFIG_JE
-in GMAC_CORE_INIT), so an on-link peer can trigger such a split even
-when the interface MTU is left at 1500.
+XDP does not support scatter-gather frames until the multi-buffer
+rework, so drop the whole frame instead: mark it as errored as soon as
+a non-last descriptor is seen while an XDP program is attached, drain
+and release every descriptor - including the last - and account the
+frame once in rx_dropped. Removing the re-parse lets both XDP verdict
+branches simply complete the packet via next.
 
-Set error when the 1:1 mapping check drops a descriptor, so the
-remaining descriptors of the frame - including the last one - are
-drained and released with xsk_buff_free() instead of being processed as
-a new frame. Account every freed buffer with dirty and count the
-dropped frame once in the poll budget / rx_pkt_n, and once in
-rx_dropped.
+Note: the subsequent "net: stmmac: rework stmmac_rx to support XDP rx
+multi-buff" accumulates the whole frame into a single xdp_buff and
+supersedes this patch; the fix is kept so the net portion of the series
+stands on its own.
 
-Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
+Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
 Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 28 ++++++++++-------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f66b796f7725..426bb68c9bbc 100644
+index 426bb68c9bbc..8c08d44fdbd3 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5701,18 +5701,21 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+@@ -5893,18 +5893,24 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 
  		if (priv->extend_desc)
- 			stmmac_rx_extended_status(priv, &priv->xstats,
- 						  rx_q->dma_erx + entry);
+ 			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx + entry);
 -		if (unlikely(status == discard_frame)) {
--			xsk_buff_free(buf->xdp);
--			buf->xdp = NULL;
--			dirty++;
+-			page_pool_put_page(rx_q->page_pool, buf->page, 0, true);
+-			buf->page = NULL;
 +
-+		if (unlikely(status == discard_frame) && !error) {
++		if (unlikely(!error && status == discard_frame)) {
  			error = 1;
  			if (!priv->hwts_rx_en)
  				rx_errors++;
@@ -200,28 +198,39 @@ index f66b796f7725..426bb68c9bbc 100644
  
 -		if (unlikely(error && (status & rx_not_ls)))
 -			goto read_again;
++		/* We do not support SG in XDP mode */
++		if (unlikely(!error && (status & rx_not_ls) &&
++			     stmmac_xdp_is_enabled(priv))) {
++			rx_dropped++;
++			error = 1;
++		}
+ 
  		if (unlikely(error)) {
-+			xsk_buff_free(buf->xdp);
-+			buf->xdp = NULL;
-+			dirty++;
-+
 +			if (status & rx_not_ls)
 +				goto read_again;
 +
- 			count++;
- 			continue;
+ 			dev_kfree_skb(skb);
+ 			goto next;
  		}
-@@ -5721,8 +5724,9 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
- 		if (likely(status & rx_not_ls)) {
- 			xsk_buff_free(buf->xdp);
- 			buf->xdp = NULL;
-+			rx_dropped++;
-+			error = 1;
- 			dirty++;
--			count++;
- 			goto read_again;
- 		}
- 
+@@ -5965,17 +5971,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 							   sync_len, true);
+ 					buf->page = NULL;
+ 					rx_dropped++;
+-
+-					/* Clear skb as it was set as
+-					 * status by XDP program.
+-					 */
+-					skb = NULL;
+-
+-					if (unlikely((status & rx_not_ls)))
+-						goto read_again;
+-
+-					count++;
+-					continue;
++					goto next;
+ 				} else if (xdp_res & (STMMAC_XDP_TX |
+ 						      STMMAC_XDP_REDIRECT)) {
+ 					xdp_status |= xdp_res;
 
 -- 
 2.56.0
