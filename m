@@ -1,58 +1,43 @@
-Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2C14949F1;
-	Mon, 12 Oct 2026 14:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F150048F03F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791816147; cv=none; b=nwyeefXopqbd6G9Nr9N4u4QtbcxEqqjDpCHoaGcqnpuPdPGnfO+Jn3PcXc5hXV+9i4mGILRVveYY2r0mBGaLsE+bdV12P5Kxd9ADVRI0NXa9S1wR89lDDBDV9r6JkVZzf+1iGc6xHr7We55jOXoWfJ2nF8+jVDMctGArDKcRbQI=
+	t=1791816282; cv=none; b=LwB0QrDx61SAgJLgKci3m+Iav9iUOsSTFGa5IJnLTCIGjFHrIlS1fU6BqmT89PBgFfvoIeq08WCa82YCI0YV428tgl5KRk6jpHNpamyn3i6JCeOourmrcSDr1AoPxpEXZlHJ12x6RVYMfadxcmUVm8ih78y1K2X6LDYMlp2P8tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791816147; c=relaxed/simple;
-	bh=PVEwYHklGLWAZuFoyY81aDvq5AOiMo4HhqyvJLq9tuM=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k4Zj2yd1drYp/x9xFhAjC4CpiEdXNOJ7qfRCNQEbD7L5G3sYT5yZE/z40Boukbb2Ui6UzCO8v0XGnnTzLywHlNq4szdtQdZqRU4Mmsn6srBd8zkHyVMFtWHt8G2p2zlhfqUDMje82x99paq8jGOxHRCgK/OODGYQ+p43Fg5mvlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=EGApePle; arc=none smtp.client-ip=203.205.221.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1791816282; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=a83seJdba9m1o44C/JfAWZIz9/bPt79XFzCQU8zO7CwoCLaKXAASOAtNJ/EPFL/3ujqpjbNWwGvXtYXaFov0VgPihxFsPPc5S15yPe/yuhjPnuz1MoWV+UwMc1BTeEvk85L0fjvtB1VpEdncRHVWV/iwKaKx2y7ZsuJGg2YZyZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmRpUgyx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="EGApePle"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1791816141; bh=2VEm7q/HIkYpzW+SEVecgzfCZuKc+GEETju1hsbGD/E=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmRpUgyx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6B41F0089B;
+	Mon, 12 Oct 2026 14:44:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791816280;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EGApePle6AyqmyUiLLqjhLwJqVCYtEWYIgf6kZJ/3J7FH5d45Ojeu0L9NNAFb9uY+
-	 T9VJRT6eMbOchquJ20aaZXCX4GnQVkWROTULTHfhXRavwFtW4JYxb6ZXydJs5rTwTt
-	 iESlTbcbYikeKMPCoD7EORnf7aPVd0Zz2zdZA50s=
-Received: from chichu-arch.localdomain ([27.38.246.181])
-	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
-	id A940E078; Mon, 12 Oct 2026 22:42:20 +0800
-X-QQ-mid: xmsmtpt1791816140t9znfmw8p
-Message-ID: <tencent_BDAFB5F66ABB48BD69F6E3DA67A99678E50A@qq.com>
-X-QQ-XMAILINFO: NnYhxYSyuBnLke0xbi5hjiZejB50zyzEvmbVAoVlJD/lOrGpUxNXa8XwRYjFrE
-	 DjecvH61Xx8HObzJxVWVW4t0guYgIp+UESZLUqBKGt/9V4ie+4Rd9EbFp+ScSGdNkaVGDY9vU1YX
-	 J8frPl/rCxmSePE2REL1lYGZ2d5Mwwz3iKYcCeCyQHCLlvTzfYaSj9C5sOYN7yHZNwSpTcNqes+Z
-	 pM4fQPWcA+P3IcJ/D6wW32qEnAPqPIO1Z+g8anv9inaYgG6lTRj4iBmJKe8t0cgnTkb5mEbA6t1S
-	 MIEPzj4ZGYusTAUOLiqotzuIyL7/qjxKL2ZktXH7XOzBDPMxT67R5mJnGimzezqf04jUa39dLf9r
-	 btRl1Md3ftvQ7nqZtrQKQBTeQaURlh2nDwK4Dw1nzD7CjEsg8Qw5QTJQdbITzu68yGVRzkXw2TP/
-	 kKIOVceiGds3JcN3nXN1rigO48dD8sIKKQnxjlX7yVQ006tJ+KeJ09rEOHzCYgzBUooQQole0X/9
-	 0yxRsWGDOwzD6rssCgmYG5KvWLfOQk4EbjSVFfZCj9Yd615m1+OJlNaAQ9dUXUU7oWf7zY771bCn
-	 UanwfAHCPlTUOnUR7W3YzT3OnAopQ+UC4fhE7V/197xXnKsNkgxwr2s/7acZgTxeOzsyoNPLQU7r
-	 nkwze3yIRaGOfky/sqHKB2ORKmojofQ9xdW+oFY1PckC/KVP97J6VOMsGYO9oyjAZ6rPWRKHSvJG
-	 9ibju5WxaJW7XN3rOwfN1RXVZ2qTMhPWgaC96g/PAnImCiOE/ZX6hexibBWx9gaHfouIcFb1qqNE
-	 4EHPTlxO1B2+Z13+MXMdI+iixRbS8i2c8lOBQ2ImOINSasqQUoQJsPm320D30fnx/91sVBuUin6U
-	 BmoZFQpGclPKqfI+x8Tb+jWR2RUXwD3o3R2JmCGycvGpvUjxEo7OGIuanJX2Sg9o84oyT8w8eHwO
-	 uYYFnxxb2onXRO3g3s7a+4rrfCdwDfDj7aczN0KndWSGSba56pP5cYHCc9mq1y8DLRWTx13m4eZx
-	 TY2agcUukZoJeAqJgOWZF74ker2MpHLagmiUF3D+LFoDxt/UCy20SwXgb28Hw=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: TangYi <1914018426@qq.com>
-To: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org, johannes@sipsolutions.net, 1914018426@qq.com
-Subject: Re: [PATCH] wifi: cfg80211: allow IR on a channel the wiphy already
- operates on
-Date: Mon, 12 Oct 2026 22:42:20 +0800
-X-OQ-MSGID: <179181614019.1582433.13387085985919889800@qq.com>
-In-Reply-To: <0361e4f89508eaf9fea291d949e4eb21f8d6e839.camel@sipsolutions.net>
-References: <tencent_2B956CE56BB4DE6A4748896922E04666FD0A@qq.com>
- <0361e4f89508eaf9fea291d949e4eb21f8d6e839.camel@sipsolutions.net>
+	b=JmRpUgyxe4iGsmozHUp1FIlTjO4hyIqWJ+nrYRv48ZMvlq8fZzJUZ+2vS0Ucc8AbA
+	 ST97NYjdJMja/nSPYDvCKL/ucUyz8oQwp6ocEWrtAXQrahtWpjwcSKTKWZcg6t+lwE
+	 fBhZqd9y6l1dl5xJrc5AI5zfoBHfRwSUE4jkTZPpmTH/NlcllUPfeq95rjq+DCiqAX
+	 VF576NxmypPNVg89xnnl2Cy9xczWsOyDffVz5w2XN7mg8q089efK5tOMYD3eqswRsp
+	 O9TYYCR+otDbLiahjVVzkUxctGP2DqL1FNR+HGnrscX/FrD6cgZkrl6lyYbJFVJ3Ro
+	 Yr4QaLYfQy89A==
+From: netdev-bot+sinfo@kernel.org
+To: Adrian Martinez Garcia <adrimg3196@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH v2] xfrm: account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in
+ acquire/polexpire/expire size calculations
+Date: Mon, 12 Oct 2026 14:44:40 +0000
+Message-ID: <179181628012.2527009.1279721489172027773@kernel.org>
+In-Reply-To: 
+ <CACO1+RQUrGS3VN-hrdKk+BK2uuRP7J_Fyadahz1QpO00JXyw3A@mail.gmail.com>
+References: 
+ <CACO1+RQUrGS3VN-hrdKk+BK2uuRP7J_Fyadahz1QpO00JXyw3A@mail.gmail.com>
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
@@ -62,38 +47,24 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hello,
+Hi!
 
-First of all, apologies for the broken threading in my previous reply,
-and thank you for the patient guidance. The cause is now found: the
-SMTP relay (QQ mail) rewrites Message-Ids in transit, and git
-send-email generated its own threading headers on top, so my references
-pointed at ids that never existed on the list. This reply is threaded
-against the ids as recorded on lore/patchwork.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-On the substance, I'd like to make sure I understand correctly, and I
-truly appreciate the correction. The concrete observation that led to
-the patch:
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
- - after the station associates on ch149, the learned domain (iw reg
-   get, phy section) marks 5735-5775 MHz as IR-CONCURRENT;
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
- - the channel itself (iw phy) shows plain "no IR" without the
-   IR_CONCURRENT flag;
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
- - and the iwlwifi source contains no IR_CONCURRENT handling at all.
-
-So the domain rules and the per-channel flags disagree, and the
-reg_can_beacon relaxation cannot trigger (it requires the channel
-flag). If this is worth addressing at all, I would be glad to learn
-where the right place is - e.g. the driver propagating the domain's
-IR_CONCURRENT rule onto the channel flags - or whether AP operation on
-such channels is simply not intended until the device properly learns
-a regulatory domain. Any pointer would be greatly appreciated, and I
-am happy to do the work on the driver side if that's where it belongs.
-
-Thank you again for your time.
-
-Best regards,
-TangYi
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
