@@ -1,304 +1,249 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C5839B954
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791804166; cv=pass; b=fR5BSdP6UqHVhmfC4ZRSCww9YlM+SR8M9/2RA/7ZrnSR993sdFzc9unCx7CpCARLtwL/gVl+bkdp/PQi29sdQsKsAaPC2EemEwME/4BXAW3vTSU1agck92d6EZQspfmfB5gmucVubjomfp1ijNVJ9l1PY0lyWo8p8u4qTtwcVGI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791804166; c=relaxed/simple;
-	bh=Cu6g4P8eaaVMFmhl7P4pmrcQWyqeH0bMbfnLebqDS1c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hByuhp2vABcATcPHd6BZmd4Ulk/zhJGh+rTZ8PQuaUJ/QlalfZg/vAHvOE1RO+WoNJfhTikWiRn4bAkwkr5f0zdb8yA049IPwW6qoc7sO8CyNBR19MHiVE2DuPrW5lCoxhcLWw2YZOQuVyohlo1tUpAhLQzwyhAJlQSmmCuJYSA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uu7aFix7; arc=pass smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7543AE71E;
+	Mon, 12 Oct 2026 11:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791804280; cv=none; b=HOT89q2fZafHJw9dHdXlkCeyTbUvQx/9O50/VS/ej1zGPLMcL1L9O3tP93mYjGChFFH/lMQ+cRP7YmWVvWF/Fj6g3Bhjjbw1qa+01udBOk+3MN5XzBixR4ZViJ/hK4+tTnzBWbnkYfe9sYtU2xRzb3fQG8As+i1FYrFa3iW0Puk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791804280; c=relaxed/simple;
+	bh=fQknfqD2eh1+4Zwnmtmm7WnfEFmN00kQHDmtqEhm5lk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NeVCTH5Vjwu137a/FfHmjrrMdSDNG0iBYyPlA62sfidgTpWYAbksjhSfJzCZdz+vljHt2FFWqOUwPnMI0l26kjuaYSC/9jZk2zcydl+qExvZybUiBEUBlUEJq9f3enHz6K1HQjBk1Rmy5L/6Uwe2VcfwgR4E1oRWrsYeCHZg2Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCAFLWYR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uu7aFix7"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-53396adbc53so23284181cf.3
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:22:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791804163; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NT+7lI7Ysyn4DfYdyuqQHmoW7dpYp76xW6eD4P9qhtZQllICIaBWoCk4kA+wVNIu6x
-         7c6iJF0jwo/CCxuvkj5xr/AcuBDSZl2scbZ0RJVqY+uqeNrQDAlqC/0/7uZxDuo1kius
-         nFYNkv/5eUndEg79KF30bbhyyrbB8H9W+vIK0BJUuZtRt6bkN4k8Bz7QXus/V2iRh3KS
-         v2BJDnEZrGRriXTjBArG2KvkhBK5sdoQ9vWyK7cztKFz1iUQLfx4tFh+TVjzyY+okyPY
-         kdUVffNMtd5uR79IwMdhfPUNuqnyzB3m002CpeEQsx7SWWrWw+MuBwkU3j/R1IvNuln9
-         wgcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3OwFa260kD1QeEDOJDnNKPaewbdFhFz1lAeTcMiE4DI=;
-        fh=oDbjlJ4+gwzeEQRu6rnjzMnkrtsBHyhdiR/KU9qF+R8=;
-        b=q8YAanJqcVsE4pzKpgU7t5IDhyve6CgIgluEec7LVodBI1JtV5fyMTxrGGeB2Xgb7A
-         GK3XCayDafLinrQqrEuwaRlmd2lTJCisoFKwUls3IUlr/ugr3gHF2KPLPMPiGnmq+M61
-         pYTxwtItulQPdf/yk1Ul6uWEf2kyztzYN+Bil5GjsQ2jNo5bdvL/W0KehdV/7Wju1NcP
-         33ZilfcrP+6xyJx8WcWMLH1s+ckssNvzVwEiUMIY8+bCR3rcftqsV4k75v+LIZrK9FZk
-         wqnYGyycxD0smazf9YrMVbFHHah2dpiZJfDVCTRq0qcQetXtiGEEszR2iJb4C0e+4Ry1
-         bXaw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791804163; x=1792408963; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3OwFa260kD1QeEDOJDnNKPaewbdFhFz1lAeTcMiE4DI=;
-        b=Uu7aFix7+2Js4PoT8miko7utuFvIs0RSi0fcNaI7UImzCJEql4zaC+XcUsTwrqp07B
-         xrrWDBiiuXOHbhhAAnSXZUHitp7eyV4k/TDnbDjpELOwAlrTiWaDBSi8hnyhu042fVDX
-         Enn+vJQ6F9S17RYRjiu67raSnnxiSJm4RtLn9vnkrSapsAXZg6Ms62CDOWZlbSeT4vVw
-         qJIdGzmji2jB52717MKMrwPHNBy8eFJtf59DH9iGWxw+c8oxVb70ypDOm9c2wN/qrlpM
-         IPKoJbcWIHoip8hCr/SyzpQZBK6wR7Ijai5HqKv/6jrAkhUzApmJPhYzWG+O3jOtAU6H
-         0+eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791804163; x=1792408963;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3OwFa260kD1QeEDOJDnNKPaewbdFhFz1lAeTcMiE4DI=;
-        b=A/Z9gikJeN+adkmm2nOlndhjTuUx4TPXxpCke81be4a33PbPQwjniiQdftVWManEsG
-         WCQxAglz3twCHMCtJFifFrVAZo57c1vGUmu1grqwejw3Tftwf8FA12BSJoxUKtoj7hE6
-         +wRLc8lVPJsH8w/gupFQoFqePVUDYLirLQs0tv7bNdw/68dzTIBjYChPJnvXj4o8kEnV
-         dIaAs62p02EBgcgAElksVdO/ul35m/bwq+L5VdMGqnDnzFyj3IOVXx7GUV/86fDYAsZO
-         4REl1lynSFEQPjNqAAzWWgKX2bQ8rDwl1b+pflNQ9j5Fd0F//Ns8Tkv/v+m3DE33pg0x
-         7mAw==
-X-Forwarded-Encrypted: i=1; AKwUvByYkUzk5sVjpLgG4KO728Y4RZAFbEX85b16uN+fyXq9tkL8zXjVzV0tONxhvtQ6K/IyahUC/f4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJnQvv7/zEGCb4/KEZN6QQHhC7xX6gPaQZgfWgvm3JFmmZJjJIw
-	bnNzwfkJBCHZFVIg3jS06OvNR7wUDiM1mnfvrYTit2k7TpTOP9RKWarT2bZbhAlzLBfc8nNYDTC
-	ZJDrq+qcIvfqEldl2N3iLB3lj+kq68w8=
-X-Gm-Gg: AYBFou3kDkR7JO7ubIHHzCg3RuBBPKL1pcTze74NVKdCxHrYEdf/VmJAO6PsCjzpMQb
-	VaNBgq4gTHmlcWlSwfg6YhXzRIhJKVDGggHNVIBBIbuicxCrUXb166i7sc7pbX/pps8tGluS4VB
-	+0Ae//jstCLmB7tPL9au2AV7mIm2VexbeDJ3d5NAatC3jewphtr78QWb5q/ZhqK7jbiDAYeTgBp
-	OPRaON/gbHaYa3x39ZtTL+ZWwR7N9lkGQq1y/vgHpEkwclT+RRGuBMRN4A/lc/FRHj4gsiodTda
-	X3J1lq0q6fYJGCqxSW14XuEAC0gSrEOqQWrzmorI0Eubyo/7lpQs6zoqe0jRp4BlY6KGKTpvck3
-	6cI3Te5nDPQlqtDsQJ9Lea0k6GcrIZjY3T1MSbDAI+88SoTP4Ntx+EoEKvo9PpoVXcGjFTQ8gQq
-	LI39ukkNTrbqXP5ybyXhSwB2GPX6/D2aN0UJl8iZKgE5UqY8XhFk0J3NzTU8oOA7ufl1uC3GCx8
-	uk19yIOoKGlb8jNR4fUWnVsK/GF+Xe2rkDOuH8E
-X-Received: by 2002:ac8:5cc8:0:b0:534:7742:e5f7 with SMTP id
- d75a77b69052e-5359f059b4amr158442881cf.0.1791804163302; Mon, 12 Oct 2026
- 04:22:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCAFLWYR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1C41F0089B;
+	Mon, 12 Oct 2026 11:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791804278;
+	bh=CykgXqTEqc+/3207dxc9jLbv7AL3FJhqFGyO7eq6Hxs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TCAFLWYR+s8Mh1t4k32L9rtMFwFFF19Wwb9MOojtSymI3VEIpZDVe6ZRaD8pLrMpD
+	 SgImpwLdrcJj2Mg1rTAKgp3tuhdXyh3MXyLMtu2CghjyAx943izanIBRQSFRL8+Eui
+	 OpB5O9+3lSQz+V/HZZUOUC9ILx49eKEnZrAeDLbu8ceuAcWIvCEmxTTvJfqhDHlP1X
+	 033uH44GJIHiCEaLYqTZCaE1sDDRK66rUCWEREjmU29rlTmsBbAzBYvx3eeY1PQ9uU
+	 CK7tNI8Nd8aJDp0cRdXvai0ZTv0qq0aA7IxsDnvIfFf9Nnfd3DWl1begfAdW/REeDe
+	 k3ltO0F7Bl93g==
+Subject: Re: [PATCH net-next v14 1/9] net: dsa: add tag driver for LAN9645X
+From: netdev-bot+sashiko@kernel.org
+To: jensemil.schulzostergaard@microchip.com
+Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ woojung.huh@microchip.com, linux@armlinux.org.uk,
+ Steen.Hegelund@microchip.com, daniel.machon@microchip.com,
+ geert+renesas@glider.be, magnus.damm@gmail.com, edumazet@kernel.org,
+ richardcochran@gmail.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org
+Date: Mon, 12 Oct 2026 11:24:37 +0000
+Message-ID: <179180427718.434549.18360749106735687436@kernel.org>
+In-Reply-To:
+ <20261008-dsa_lan9645x_switch_driver_base-v14-1-3d2a72661213@microchip.com>
+References:
+ <20261008-dsa_lan9645x_switch_driver_base-v14-1-3d2a72661213@microchip.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261011111606.14753-2-jain.sm@gmail.com> <179180390054.434549.3187163637190599944@kernel.org>
-In-Reply-To: <179180390054.434549.3187163637190599944@kernel.org>
-From: shashank Jain <jain.sm@gmail.com>
-Date: Mon, 12 Oct 2026 16:52:31 +0530
-X-Gm-Features: AclHuK-d1p7euAL71QPQsYvRtvGGJgHBCTIGyH35IF3f6bC2DDgMA90_5vS1ZS0
-Message-ID: <CA+FWx=n4WhnLeO6NcPR05nDF3NtqGOuniyvtXummuwEB9VSM-g@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/2] tcp: don't set window_clamp from SO_RCVBUF
- before the socket is connected
-To: netdev-bot+sashiko@kernel.org
-Cc: edumazet@kernel.org, ncardwell@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, davem@davemloft.net, kuniyu@google.com, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026, netdev-bot+sashiko@kernel.org wrote:
-> [High] Does this check cover every case where SO_RCVBUF is applied
-> before tcp_connect_init() runs?
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-You are right, it does not. The socket is already in TCP_SYN_SENT before
-tcp_connect_init() runs, so SO_RCVBUF applied in that gap - via
-TCP_FASTOPEN_CONNECT before the first write, or via bpf_setsockopt() in a
-BPF_SOCK_OPS_TCP_CONNECT_CB program (as samples/bpf/tcp_clamp_kern.c and
-friends do) - still writes window_clamp and still overrides the route
-metric, and a state-based check cannot tell that SYN_SENT apart from a
-post-init one. v3 will instead distinguish a user TCP_WINDOW_CLAMP from an
-sk_rcvbuf-derived clamp, so tcp_connect_init() and tcp_openreq_init_rwin()
-apply the route metric whenever the clamp was not set via
-TCP_WINDOW_CLAMP; the selftest will cover the fastopen and sock_ops paths.
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 2
 
-> [Medium] Is the part about the case without a route metric accurate?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-No, you are correct. With no RTAX_WINDOW metric both the old and the
-patched kernel end at tcp_full_space() - the old kernel through the
-"window_clamp > tcp_full_space()" branch, the patched one through
-"window_clamp =3D=3D 0" - so the advertised window and wscale are identical
-and derived from sk_rcvbuf, not from the defaults; the patch changes
-nothing there. The real impact is only (1) routes with an RTAX_WINDOW
-metric and (2) a TCP_WINDOW_CLAMP that a later SO_RCVBUF on an unconnected
-socket or listener overwrites. v3's changelog will say exactly that and
-drop the "any application" / "without a metric" claims.
+- [Medium] In lan9645x_rcv() (net/dsa/tag_lan9645x.c:459), every tag
+  popped by the hardware is restored as an 802.1Q hwaccel tag with…
+- [Low] The comment above skb_postpull_rcsum() in lan9645x_rcv()
+  (net/dsa/tag_lan9645x.c:416-421) says the bytes to subtract are "what…
+- [Low] lan9645x_rcv() (net/dsa/tag_lan9645x.c:450) restores the popped
+  VLAN tag only when `dsa_port_is_vlan_filtering(dp) && ifh_gap_len`.
 
-pw-bot: cr
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the new
+  tagger adds another lockless reader of it.
 
-Thanks for the careful review.
-Shashank
+--
 
-On Mon, Oct 12, 2026 at 4:48=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The fix is incomplete.
-> - [Medium] The commit message misstates and overstates the impact.
->
-> --
->
-> tcp: don't set window_clamp from SO_RCVBUF before the socket is connected
->
-> This patch makes tcp_set_rcvbuf() skip the window_clamp update while the
-> socket is in TCP_CLOSE or TCP_LISTEN. The aim is to stop a clamp derived
-> from SO_RCVBUF from overriding the RTAX_WINDOW route metric in
-> tcp_connect_init() and tcp_openreq_init_rwin().
->
-> > tcp_connect_init() and tcp_openreq_init_rwin() treat a non-zero
-> > window_clamp as a user clamp and, in that case, skip the route window
-> > metric (RTAX_WINDOW, "ip route ... window N"). A clamp left behind by a=
-n
-> > SO_RCVBUF call made before connect(), or on a listener, therefore
-> > changes the window and window scale advertised in the SYN and SYN-ACK:
-> > the route metric is no longer applied, and even without a route metric
-> > the advertised window and scale come from SO_RCVBUF instead of the
-> > defaults. This affects any application that sets SO_RCVBUF before
-> > connect() or listen(), which is more common than using the route metric=
-.
->
-> [Severity: Medium]
-> Is the part about the case without a route metric accurate?
->
-> __sock_set_rcvbuf() always sets SOCK_RCVBUF_LOCK and then calls
-> tcp_set_rcvbuf(sk, sk->sk_rcvbuf). On the old kernel, the clamp left
-> behind is therefore tcp_win_from_space(sk, sk_rcvbuf), which equals
-> tcp_full_space(), or SOCK_MIN_RCVBUF / 2 if that is larger.
-> scaling_ratio cannot change before connect.
->
-> With no RTAX_WINDOW metric, the patched kernel sees window_clamp =3D=3D 0=
- and
-> reads a zero metric. Then this block runs:
->
-> net/ipv4/tcp_output.c:tcp_connect_init() {
->     ...
->         if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
->             (tp->window_clamp > tcp_full_space(sk) || tp->window_clamp =
-=3D=3D 0))
->                 WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
->     ...
-> }
->
-> The old kernel reaches the same tcp_full_space() value through the
-> "window_clamp > tcp_full_space(sk)" branch. tcp_openreq_init_rwin() does
-> the same for req->rsk_window_clamp.
->
-> Wouldn't both kernels then pass the same window_clamp to
-> tcp_select_initial_window(), and advertise the same window and wscale in
-> the SYN and SYN-ACK?
->
-> If so, the visible change is limited to two cases:
->
-> - routes with an RTAX_WINDOW metric
-> - TCP_WINDOW_CLAMP followed by SO_RCVBUF on an unconnected socket or
->   listener, where SO_RCVBUF no longer overwrites the clamp
->
-> The message does not mention the second case. Neither case is "any
-> application that sets SO_RCVBUF before connect() or listen()".
->
-> The message also seems to contradict itself further down:
->
-> > The "after" values match a kernel with b025461303d8 reverted; with no
-> > route metric the SYN window and scale are the defaults in both cases.
->
-> In both cases, wouldn't the values come from SO_RCVBUF via
-> tcp_full_space() rather than from the defaults?
->
-> > diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> > index f4c9101e5996..e523cb71b905 100644
-> > --- a/net/ipv4/tcp.c
-> > +++ b/net/ipv4/tcp.c
-> > @@ -1858,6 +1858,14 @@ int tcp_set_rcvlowat(struct sock *sk, int val)
-> >
-> >  void tcp_set_rcvbuf(struct sock *sk, int val)
-> >  {
-> > +     /* Without a connection there is no clamp to update: it is chosen
-> > +      * from the route's window metric and the buffer size when the
-> > +      * connection is set up, see tcp_connect_init() and
-> > +      * tcp_openreq_init_rwin().
-> > +      */
-> > +     if ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN))
-> > +             return;
->
-> [Severity: High]
-> Does this check cover every case where SO_RCVBUF is applied before
-> tcp_connect_init() runs?
->
-> tcp_v4_connect() and tcp_v6_connect() switch the socket to TCP_SYN_SENT
-> before tcp_connect()->tcp_connect_init(). A clamp written in that gap
-> still passes this check, and there seem to be two ways to get there.
->
-> The first is TCP_FASTOPEN_CONNECT with a cached cookie, where connect()
-> returns early:
->
-> net/ipv4/tcp_ipv4.c:tcp_v4_connect() {
->     ...
->         tcp_set_state(sk, TCP_SYN_SENT);
->     ...
->         if (tcp_fastopen_defer_connect(sk, &err))
->                 return err;
->     ...
-> }
->
-> If the application calls setsockopt(SO_RCVBUF) before its first write(),
-> tcp_set_rcvbuf() sees TCP_SYN_SENT and stores a non-zero window_clamp.
-> tcp_sendmsg_fastopen() later calls tcp_connect()->tcp_connect_init().
->
-> The second is a sock_ops BPF program. tcp_connect() runs the callback
-> before tcp_connect_init():
->
-> net/ipv4/tcp_output.c:tcp_connect() {
->     ...
->         tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_CONNECT_CB, 0, NULL);
->     ...
->         tcp_connect_init(sk);
->     ...
-> }
->
-> sol_socket_sockopt() allows SO_RCVBUF for bpf_setsockopt(). That call
-> reaches __sock_set_rcvbuf()->tcp_set_rcvbuf() while the socket is in
-> TCP_SYN_SENT. samples/bpf/tcp_bufs_kern.c, tcp_clamp_kern.c and
-> tcp_iw_kern.c all use this pattern.
->
-> In both cases tcp_connect_init() then skips the route metric:
->
->         if (!tp->window_clamp)
->                 WRITE_ONCE(tp->window_clamp, dst_metric(dst, RTAX_WINDOW)=
-);
->
-> The SOCK_RCVBUF_LOCK block afterwards can only lower the clamp to
-> tcp_full_space().
->
-> Doesn't that leave the b025461303d8 regression in place on these paths,
-> even though this patch carries the Fixes: tag for it? The selftest in thi=
-s
-> series only covers SO_RCVBUF set before connect().
->
-> Would it work to base the check on whether tcp_connect_init() has run yet=
-?
-> Another option would be to let tcp_connect_init() and
-> tcp_openreq_init_rwin() tell a TCP_WINDOW_CLAMP value apart from one
-> derived from sk_rcvbuf.
->
-> > +
-> >       tcp_set_window_clamp(sk, tcp_win_from_space(sk, val));
-> >  }
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261011111606.14753-1-jain.sm%40gmail.com
+net: dsa: add tag driver for LAN9645X
+
+This adds a DSA tag driver for the Microchip LAN9645x switch when a front
+port is used as the CPU (NPI) port. Extraction uses a long prefix plus a
+28 byte IFH, and injection uses only the IFH. VLAN tags popped by the
+hardware are restored on receive as 802.1Q hwaccel tags, and on transmit
+the VLAN tag is moved from the payload into the IFH.
+
+> diff --git a/net/dsa/tag_lan9645x.c b/net/dsa/tag_lan9645x.c
+> new file mode 100644
+> index 0000000000000..00339daecfcbd
+> --- /dev/null
+> +++ b/net/dsa/tag_lan9645x.c
+> @@ -0,0 +1,514 @@
+
+[ ... ]
+
+> +static struct sk_buff *lan9645x_xmit(struct sk_buff *skb,
+> +				     struct net_device *ndev)
+> +{
+> +	struct dsa_port *dp = dsa_user_to_port(ndev);
+> +	u32 vlan_tci, tag_type;
+> +	u32 qos_class;
+> +	void *ifh;
+> +
+> +	skb = lan9645x_xmit_get_vlan_info(skb, dsa_port_bridge_dev_get(dp),
+> +					  &vlan_tci, &tag_type);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but this adds one more lockless
+reader of dp->bridge in the xmit path.
+
+dsa_port_bridge_dev_get() does this with no READ_ONCE() and no lifetime
+protection:
+
+	return dp->bridge ? dp->bridge->dev : NULL;
+
+On bridge leave, dsa_port_bridge_leave()->dsa_port_bridge_destroy() clears
+the pointer and frees the last reference right away:
+
+	dp->bridge = NULL;
+
+	if (!refcount_dec_and_test(&bridge->refcount))
+		return;
+	...
+	kfree(bridge);
+
+There is no RCU grace period between the two. Can a transmit on the user
+port that races with the bridge leave load the old dp->bridge and then read
+->dev from a freed dsa_bridge?
+
+The window is narrow. tag_ocelot.c, tag_sja1105.c and the
+dsa_software_vlan_untag() helpers use the same pattern, so the root cause
+is in the DSA core and not in this tagger.
+
+[ ... ]
+
+> +	/* Reset skb->data past the actual ethernet header. */
+> +	skb_pull(skb, ETH_HLEN);
+> +
+> +	/* We must deliver the skb so skb->csum only covers the data beyond the
+> +	 * real ethernet header. The fake ethernet header in the prefix is
+> +	 * not part of skb->csum already. We must subtract what remains of the
+> +	 * prefix, the ifh and the gap. The start is derived from the current
+> +	 * skb->data rather than saved on entry, because the pskb_may_pull()
+> +	 * calls above may have reallocated skb->head.
+> +	 */
+> +	skb_postpull_rcsum(skb,
+> +			   skb->data - LAN9645X_TOTAL_TAG_LEN - ifh_gap_len,
+> +			   LAN9645X_TOTAL_TAG_LEN + ifh_gap_len);
+
+[Severity: Low]
+This isn't a bug, but the comment doesn't list everything the call
+subtracts.
+
+The length is LAN9645X_TOTAL_TAG_LEN + ifh_gap_len, which is 44 + gap
+bytes. That is 2 bytes of prefix remainder, plus 28 bytes of IFH, plus the
+gap, plus the 14 byte real Ethernet header.
+
+The code looks right, because dsa_switch_rcv() does skb_push(ETH_HLEN) and
+then eth_type_trans() without adjusting the checksum. Could the comment
+also mention the real Ethernet header? Otherwise someone might later
+shorten the length to match the comment.
+
+[ ... ]
+
+> +	dp = dsa_user_to_port(skb->dev);
+> +
+> +	if (dsa_port_is_vlan_filtering(dp) && ifh_gap_len) {
+
+[Severity: Low]
+Can frames lose their VLAN tag while vlan_filtering is changing?
+
+dsa_port_vlan_filtering() calls the driver op before it updates the
+software flag:
+
+	err = ds->ops->port_vlan_filtering(ds, dp->index, vlan_filtering,
+					   extack);
+	...
+		dp->vlan_filtering = vlan_filtering;
+
+In this series, lan9645x_port_vlan_filtering() programs VLAN_POP_CNT right
+away through lan9645x_vlan_port_apply(). Frames that the hardware pops in
+that window reach lan9645x_rcv() with ifh_gap_len != 0 while
+dsa_port_is_vlan_filtering(dp) is still false. They are delivered with no
+tag.
+
+The reverse transition has the same problem, including bridge leave via
+lan9645x_vlan_set_hostmode(). Frames popped before the change but handled
+after dp->vlan_filtering is cleared also lose their tag.
+
+POP_CNT is 0 on non-filtering ports, so the gap is already 0 there. Would
+checking only ifh_gap_len keep the CPU view consistent with what the
+hardware did?
+
+> +		/* The tag is restored as a C-tag, not as the TAG_TYPE the IFH
+> +		 * reports. The classifier recognizes both TPIDs as VLAN tags,
+> +		 * so an S-tag has already been used for classification by the
+> +		 * time we get here. Restoring it as 802.1AD would make the
+> +		 * bridge push it back into the payload and reclassify the frame
+> +		 * to the port pvid, on a different VID than the one the
+> +		 * hardware forwarded it on.
+> +		 */
+> +		__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vlan_tci);
+> +	}
+
+[Severity: Medium]
+Is the 802.1Q-only assumption enforced anywhere? The commit message says:
+
+  This assumes a bridge vlan_protocol of 802.1Q, which is the only
+  protocol the driver offloads.
+
+The xmit side of this file does handle non-802.1Q bridges, in
+lan9645x_xmit_get_vlan_info():
+
+	br_vlan_get_proto(br, &proto);
+	...
+		if (ntohs(hdr->h_vlan_proto) == proto &&
+		    ntohs(hdr->h_vlan_TCI) & VLAN_VID_MASK) {
+	...
+	*tag_type = (proto != ETH_P_8021Q) ? LAN9645X_IFH_TAG_TYPE_S :
+					     LAN9645X_IFH_TAG_TYPE_C;
+
+DSA doesn't handle SWITCHDEV_ATTR_ID_BRIDGE_VLAN_PROTOCOL.
+__br_vlan_set_proto() sends that attribute with
+SWITCHDEV_F_SKIP_EOPNOTSUPP, so setting "vlan_protocol 802.1ad" on the
+bridge seems to succeed while the lan9645x ports stay offloaded. The switch
+driver in this series doesn't appear to check the bridge vlan_protocol
+either.
+
+On such a bridge, every tag restored here has an 0x8100 TPID, and
+__allowed_ingress() in net/bridge/br_vlan.c then does:
+
+	if (skb->vlan_proto != br->vlan_proto) {
+		/* Protocol-mismatch, empty out vlan_tci for new tag */
+		skb_push(skb, ETH_HLEN);
+		skb = vlan_insert_tag_set_proto(skb, skb->vlan_proto,
+						skb_vlan_tag_get(skb));
+
+This pushes the tag back into the payload and classifies the frame to the
+pvid. Wouldn't frames trapped or copied to the CPU then land on the pvid?
+That is the same misclassification the C-tag normalization is meant to
+avoid, only in the opposite configuration.
+
+Should rcv follow the bridge vlan_protocol the way xmit does? Or should the
+driver refuse 802.1ad bridges?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-dsa_lan9645x_switch_driver_base-v14-0-3d2a72661213%40microchip.com
