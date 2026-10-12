@@ -1,198 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABC037B41E;
-	Mon, 12 Oct 2026 19:26:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418573B8BB9;
+	Mon, 12 Oct 2026 19:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791833194; cv=none; b=kOltEfqw6T9A1/fjF95lmQy32uVOYDtyIbE+7Ff/P5witonDpG5Q9f8M6j33as8uJpMJlL7aHTmd/dt5oUv3REtHEj6tmmUwAVfcHmjKTIyL3WCwqJ9a1T5yxpn8doyrXLcIP2V6aWU9NSjntUPWlszMzBO92YIU3O3GNvIZMUc=
+	t=1791833716; cv=none; b=hZXzsejW3/bGgOyimZvxCYEicRvpSAr1xFKbZbmBePpCvX72rJPk99pVdJO/m4FITFqUeFZlpJFb2EnJogpY+cg++LMRNGcR2+ce8aRtCO9e/QDeFzhG6nyscLWa3rVJCxbUeaQjVP05eTBjE3mYxp964+f5MOjErM/agGPzKTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791833194; c=relaxed/simple;
-	bh=MI8FBv3ZLeAWsD3GgiB7oP7eDzEv714+Cesghwwu6lw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M5DWeEvyjxNAKDb+RGyZ4Z5gcau00TJHPNDT+A0JGI25xwDBsS4jLWCU+qbU1BJx7wINu3b64CqXo+v7npVAAe1QBezItHAvCJa6CKMjA+NlxPrkGp60N4lO8+Tvu4Yw9lLtxjE0W2w2bsCY/XV1Dwv9792ZIDK7ebjmv2nIu/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZfYx/Yb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791833716; c=relaxed/simple;
+	bh=89/NnPsfwuCkv8ZB6AdQ4JRQdoqo21JdqqusKN4QNPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iqLEo3Ec/Jx2RSOtQl2sTNCfj4z0G2JIIwKE/8uzqxaPEmJ2sMaiWa0zTW5qBCKkOEmKcu0QPeWZL/GXNYZQ2z1RuemMIOXWqMlEf+esyk6zIbJ2VXVqnnqqmzWyWRgvSv1DwvtxTOC8euQI8Q6YVUSQElG2ej9OF7yJGnQZ5Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cY6jEMhN; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZfYx/Yb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BDD1F0089B;
-	Mon, 12 Oct 2026 19:26:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791833192;
-	bh=0020vnQWwqXZ2vQ5kKSIywm1OiEyD3J0aXV405czT4c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KZfYx/YbUBwW/L7fQm/QxGdzuXlDR+BmJRN/VF1VBBy3uhyVj8BPTeyJpkEfswSb2
-	 KjgFa570gRl9o1a6O052x3XBWXAvTxWbDV8UlMkxaD+iOzSSz2vToTfsHXuE10w+FM
-	 cyxIkgsG4gpblpFwLhvRD4thyW6y2dYPnsr1akZI2TJFFy5REy388chM9Z/qTzuSNU
-	 /rgzHsWEmMj8T0RWAsmydQR51F0UpcNTeu0K/00/NebtQdNDXC91j5qFcQ0T+Yt6o0
-	 NLhAZuYKFfN4OonXRMRByHpOiCuHtwg9ELL7ot1sAIh9any0LcYN6KqbPNJufN7Fc0
-	 jWSXcOGtyr2aQ==
-Subject: Re: [PATCH net-next 5/5] selftests: seg6: add tests for PSP with a
- consumed SRH
-From: netdev-bot+sashiko@kernel.org
-To: andrea.mayer@uniroma2.it
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, shuah@kernel.org, hangbin.liu@linux.dev,
- justin.iurman@gmail.com, nicolas.dichtel@6wind.com, ahabdels@cisco.com,
- stefano.salsano@uniroma2.it
-Date: Mon, 12 Oct 2026 19:26:31 +0000
-Message-ID: <179183319121.434549.16235006579764445540@kernel.org>
-In-Reply-To: <20261011192310.55-6-andrea.mayer@uniroma2.it>
-References: <20261011192310.55-6-andrea.mayer@uniroma2.it>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cY6jEMhN"
+Received: by linux.microsoft.com (Postfix, from userid 1216)
+	id 4334B20B7166; Mon, 12 Oct 2026 12:35:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4334B20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791833712;
+	bh=tJkueSXegGJXKDCj/TsWJrVg8sccm8K33NEo8WI4FeY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cY6jEMhNTknS+40Ilj4ehtKrii/6wZISBW8JvpoDin5txzeG/0I1etLEmxalUEs5M
+	 NvNVAFUnFtLqYsFnpxlS/2QaPi+DCnEV7YBpjgmA7tMctbqkMYRjFdwq84V6/gVvxy
+	 RF3uonJ8OTELKxiCw4DbH1kwD4dP/gWhCrmFoV7E=
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: netdev@vger.kernel.org
+Cc: Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH net-next v2] net: mana: add BQL support
+Date: Mon, 12 Oct 2026 15:33:25 -0400
+Message-ID: <20261012193325.4071665-1-hamzamahfooz@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+MANA doesn't support byte queue limits, so each TX queue can hold 256
+WQEs by default, and up to 16384, of up to 64 KB TSO packets, before the
+qdisc layer sees any backpressure. This adds latency to all the flows
+sharing a queue, and defeats AQM qdiscs such as fq_codel, which rely on
+BQL to keep the driver queues short.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Report the bytes queued and completed to BQL. XDP_TX and XDP_REDIRECT
+packets go through the same SQs, so they are accounted too. BQL doesn't
+drop or delay them, since the XDP paths send even when the queue is
+stopped, it only holds back the stack's packets. For the packets sent on
+a stopped queue, only count the bytes: stopping the queue again would
+refresh its trans_start, so XDP traffic would keep the TX watchdog from
+firing.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Reset the BQL state when destroying the queues, once their NAPI is
+disabled, since the SKBs still pending after a drain timeout are freed
+without being completed.
 
-- [Medium] The consumed-SRH tests in
-  host_srv6_end_flv_consumed_srh_tests()…
-- [Low] setup_rt_consumed_srh() runs `ip -netns ... -6 route add "${sid}"
-  table 90 encap seg6 mode inline segs ... dev dum0` and does not check…
+Lost TX completions can now stop a queue sooner: it also stops when the
+bytes in flight exceed the BQL limit, not only when the SQ is full, and
+the limit may never grow enough to cover the lost bytes. The TX watchdog
+covers the queues stopped by BQL, and its handler resets the queues
+along with their BQL state.
 
---
+Tested on two Standard_D16ds_v6 Azure VMs in a proximity placement
+group, where the throughput is capped at 10.6 Gbps, with the DUT
+alternately booting net-next (c1c1f0a31712) with and without this patch
+applied.
 
-selftests: seg6: add tests for PSP with a consumed SRH
+The throughput stays at the cap with 1, 8 and 64 TCP flows, and the idle
+TCP_RR latency doesn't change (p50 of 47 us with vs. without the patch).
+With 16 senders of 64-byte UDP packets, the DUT sends 3.7 to 4.0 Mpps
+without the patch and 3.7 to 4.1 Mpps with it. With bulk TCP flows
+sharing the queues, the netperf TCP_RR latency drops (medians of 6
+runs):
 
-This extends srv6_end_flavors_test.sh with tests for the SRv6 End behavior
-with the PSP flavor, alone and with NEXT-C-SID, on packets that carry a
-consumed SRH in front of the SRH to process. A router on the path inserts an
-extra SRH through a seg6 inline route, and another router consumes it. A test
-passes if the ping succeeds while seg6_enabled is set to 1 on the hosts.
+  16 queues, 64 flows: p50 4649 -> 2182 us, p99 5621 -> 2677 us
+  1 queue, 8 flows:    p50 2554 ->  418 us, p99 2723 ->  624 us
 
-> diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> index baa1b09a1aab3..b5dbf53a7f238 100755
-> --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+The standing queue moves from the SQs to fq_codel, which now drops
+packets: about 2500 qdisc drops and 88K TCP retransmissions per 48 s run
+with 64 flows, against at most 29 retransmissions before. The
+retransmissions are about 0.2% of the segments sent. The TCP_RR flows
+lose no packets, and the packets of the bulk flows are dropped before
+they reach the wire, so the goodput changes by less than 0.01%.
 
-[ ... ]
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+---
+v2: Only count the bytes of the packets sent on a stopped queue, so that
+    XDP traffic doesn't keep the TX watchdog from firing on a queue
+    stopped by BQL. (Sashiko)
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 21 ++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-> @@ -258,6 +257,60 @@
-
-[ ... ]
-
-> +#  - rt-2 (End with PSP) skips the extra SRH, processes the Policy's SRH and
-> +#    removes it:
-> +#      IPv6 DA=cafe::2 | extra SRH, SL=0 | Payload
-> +#
-> +# The extra SRH reaches hs-2, which skips it as its SL is 0. The other
-> +# Policies work in the same way:
-
-[ ... ]
-
-> +# The hosts need seg6_enabled set to 1 to accept the extra SRH, and it is set
-> +# back to 0 at the end. These tests only check that the ping succeeds: PSP
-> +# itself is checked by the PSP flavor and NEXT-C-SID,PSP tests, which run with
-> +# seg6_enabled set to 0.
-
-[Severity: Medium]
-If rt-2 removes the wrong SRH, or no SRH at all, would these tests notice?
-
-The commit message says the router connected to the host "must then remove
-only the Policy's SRH". The comment above expects
-"IPv6 DA=cafe::2 | extra SRH, SL=0 | Payload" to reach hs-2.
-
-However, in host_srv6_end_flv_consumed_srh_tests(), set_hs_seg6_enabled 1
-enables both all.seg6_enabled and veth0.seg6_enabled on the hosts. Ping
-success is the only pass condition.
-
-With seg6_enabled set, the host skips any SRH whose SL is 0:
-
-net/ipv6/exthdrs.c:ipv6_srh_rcv() {
-    ...
-	if (hdr->segments_left == 0) {
-		...
-		opt->srcrt = skb_network_header_len(skb);
-		...
-		skb->transport_header += (hdr->hdrlen + 1) << 3;
-		...
-		return 1;
-	}
-    ...
-}
-
-So two possible kernel regressions on the multi-SRH path would still pass:
-
-  - end_flv8986_core() takes srhoff from the first routing header instead of
-    the one found with IP6_FH_F_SKIP_RH. seg6_pop_srh() then removes the
-    consumed SRH at offset 40 and leaves
-    "IPv6 | Policy's SRH, SL=0 | ICMPv6".
-
-  - PSP falls back to plain End without calling seg6_pop_srh(), which leaves
-    "IPv6 | extra SRH, SL=0 | Policy's SRH, SL=0 | ICMPv6".
-
-In both cases ipv6_srh_rcv() skips each SL=0 SRH, the echo request is
-delivered, and the ping succeeds.
-
-The comment and the commit message say "PSP itself is checked by the PSP
-flavor and NEXT-C-SID,PSP tests". Those tests only carry a single SRH, so
-srhoff is always sizeof(struct ipv6hdr). They never pick an SRH at
-srhoff > 40, and they never run the positional nexthdr fix-up in the else
-branch of seg6_pop_srh():
-
-	if (srhoff == sizeof(*iph)) {
-		iph->nexthdr = srh_nexthdr;
-	} else {
-		...
-
-Could a host-side check of what is left in the packet close this gap? One
-option is an ip6tables "-m srh" match on the host's veth0. It would accept
-only a first SRH with --srh-last-entry-eq 1 and --srh-next-hdr 58.
-
-[ ... ]
-
-> @@ -967,6 +1020,92 @@ host_srv6_end_flv_next_csid_psp_tests()
-
-[ ... ]
-
-> +setup_rt_consumed_srh()
-> +{
-> +	local rt="$1"
-> +	local sid="$2"
-> +	local end_rt="$3"
-> +	local nsname
-> +
-> +	nsname="$(get_rtname "${rt}")"
-> +
-> +	ip -netns "${nsname}" -6 route \
-> +		add "${sid}" table "${LOCALSID_TABLE_ID}" \
-> +		encap seg6 mode inline \
-> +		segs "${LOCATOR_SERVICE}:${end_rt}::${END_FUNC}" \
-> +		dev "${DUMMY_DEVNAME}"
-> +}
-
-[Severity: Low]
-Should setup_rt_consumed_srh() check the exit status of this ip route add?
-
-The test body runs with set +e, so a failure here is ignored. Without the
-route, the extra SRH is never inserted.
-
-The packet would then follow the plain Policy path that the earlier PSP and
-NEXT-C-SID tests already cover. The ping would succeed, since the hosts have
-seg6_enabled=1. log_test would then record a pass for the consumed SRH case
-without running that path.
-
-I could not find a way for this route add to fail in the current topology.
-setup() already uses the same features under set -e, so this is a
-robustness question more than a confirmed failure.
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 489558176a5d..7f081c2d16d0 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -543,6 +543,16 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	err = NETDEV_TX_OK;
+ 	atomic_inc(&txq->pending_sends);
+ 
++	/* Account the skb in BQL before the doorbell lets the hardware
++	 * complete it. The XDP paths send even when the queue is stopped,
++	 * only count the bytes then, since stopping the queue again would
++	 * refresh its trans_start and keep the TX watchdog from firing.
++	 */
++	if (netif_xmit_stopped(net_txq))
++		__netdev_tx_sent_queue(net_txq, len, true);
++	else
++		netdev_tx_sent_queue(net_txq, len);
++
+ 	mana_gd_wq_ring_doorbell(gd->gdma_context, gdma_sq);
+ 
+ 	/* skb may be freed after mana_gd_post_work_request. Do not use it. */
+@@ -2038,10 +2048,12 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
+ 	gdma_wq = txq->gdma_sq;
+ 	avail_space = mana_gd_wq_avail_space(gdma_wq);
+ 
++	net_txq = txq->net_txq;
++	netdev_tx_completed_queue(net_txq, pkt_transmitted, tx_bytes);
++
+ 	/* Ensure tail updated before checking q stop */
+ 	smp_mb();
+ 
+-	net_txq = txq->net_txq;
+ 	txq_stopped = netif_tx_queue_stopped(net_txq);
+ 
+ 	/* Ensure checking txq_stopped before apc->port_is_up. */
+@@ -2694,6 +2706,13 @@ static void mana_destroy_txq(struct mana_port_context *apc)
+ 			apc->tx_qp[i]->txq.napi_initialized = false;
+ 		}
+ 
++		/* Forget the SKBs freed without being completed after a drain
++		 * timeout, now that NAPI can't complete any. Doing it here also
++		 * covers the queues that a lower channel count won't recreate,
++		 * which could otherwise stay stopped.
++		 */
++		netdev_tx_reset_queue(apc->tx_qp[i]->txq.net_txq);
++
+ 		if (apc->tx_qp[i]->tx_object != INVALID_MANA_HANDLE)
+ 			mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i]->tx_object);
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011192310.55-1-andrea.mayer%40uniroma2.it
+2.56.0
+
