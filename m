@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAC6468C15;
-	Mon, 12 Oct 2026 11:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FED044F560;
+	Mon, 12 Oct 2026 11:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791804287; cv=none; b=ULgB1wbxfUwQBkuc0ysQbtLFKItCyphJGf8lVb8QwMDk3xT9GOyYJ6ngl5dMStWjuHmp9quA776RNC6+EIF10TU3QWxm9UGIF84UPOasSUCaTmr3yXkuCJEJNMdqMXztG1RZYpnVQjNFn4NwnaTXhLLoAhTPF4L2d0U4/fYtvEM=
+	t=1791804289; cv=none; b=AHAOKH5A8TeUyDiIKa9pPyzToY0qEqysxzmBQsz8EpwJ9pEq0eel0uIYkMtHKn6XzWtYKFMhFkC/yANIVFhG6xRpFYIwKCcs4LD7m5JS9TpCGK9V33cle42YeaKmoQkFNeahH9qupjHZ1zSAsye/NuJtFmf3y5qAZscBrhbe6hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791804287; c=relaxed/simple;
-	bh=qXCjsSajxYUZt5jb5tBqFNdLNGNE6VrZEUE6rneziFM=;
+	s=arc-20240116; t=1791804289; c=relaxed/simple;
+	bh=B38smwblruWXCvJoUx6OXaz/01bEA2GO33Qy6S+3Xmc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O1KW/G9T1TROEUlQenJfQcOxC9KVCKVLCleoczeWp0kJdTO3XpCRKJdN92GQA602vanLxXU7hOP86uDRv4YcpVPWfCx8YsxAUERc5Sk8YK7c9fvYDLwGJ8NA1BEwmTXrKh135eiihgyBEBiawrgz4KJcSGsUfhfxZqtM9v/nPpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzHtgtTS; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=rhMcs/Z9gWZp/1J93nkOz7HX4I8qzkJSfTNa4TJruUeXDRh9sXNBTFx1/h/ics4hCMdQw8CusnSowGjAT6KNzmqfq637TQmLEauUIZFv/6chOgdGOibSw+vFVfnHTFj12POUyAEupIqpsO8b8aETMb6gZmrXgGAXqxlFCNhmRLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfTFIKkS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzHtgtTS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FED1F0089B;
-	Mon, 12 Oct 2026 11:24:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfTFIKkS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9BB1F0089C;
+	Mon, 12 Oct 2026 11:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791804286;
-	bh=X30SNXknF9NI/g34Cw2nk704NrABhgP7NkOGB9Vd1rs=;
+	s=k20260515; t=1791804287;
+	bh=ZZF0VsQlliE8ftBpHaOqIBhgbCxZAYs8JB6TOzbqebg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=SzHtgtTSmNPbxRUOuMPyDJlbKIUzDvb8sa9hOUxOvLcC8mYwVZJtRRtZAwqP3VSkB
-	 S4PDVFknA3wanvUxw7gn/dFDr7uGv248CWGkUdK+QchNq8FShtKOsVTUj/mpWRXKsX
-	 SK9dJGHXXdNrAXGYgPFxKHfkM0YWPw+jTL4Ljlbqsf0lWVNWLfLzCr36hjmr9hExUO
-	 YG6Tm2GRbg1OcPjtwgWa2KHatCkDEBQGrSYWwsqs2IUL+y/BTBs+ILPos6+u/7tiTX
-	 c8QwNu5SZ5L0vBCtOfo+PQckDw9POMHVeNalXtvMOxHGrAEt85QWiK4F5xflpSUqi8
-	 vMps7DS6WPxjA==
-Subject: Re: [PATCH net-next v14 7/9] net: dsa: lan9645x: add mdb management
+	b=bfTFIKkSTiM7RpwO6vRWlJu2DV7gRuwr4No4/sX7KfOZLzc1uVUliA0PVhkmpJqDJ
+	 Ti/ugc80UlrlowcSa+equRLDudH+9+d9g8HxuWMEjIrQdcZJs0eq6gPWIx6OPYh4bm
+	 rdOL1oSoz5KFqVdVCpDCyfloZ3iF+1Slwcffq/3AVJ1nAOASQN5qbFx63+HGxQUpYr
+	 Nc+cM3zsZb3WDzEPba+1iRUvRal5tiQWSfmarBcj/ECbujL2PIyXN0Q646LyAJeGlE
+	 9cO3hvZPnsgswbrRwDEOWxCFnE6eUHYNilgqO3zcr8f68YDELlhm53MUISFxjxyxq4
+	 LhfLRSkXNLtdg==
+Subject: Re: [PATCH net-next v14 8/9] net: dsa: lan9645x: add bridge support
 From: netdev-bot+sashiko@kernel.org
 To: jensemil.schulzostergaard@microchip.com
 Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
@@ -38,12 +38,12 @@ Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
  richardcochran@gmail.com, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-renesas-soc@vger.kernel.org
-Date: Mon, 12 Oct 2026 11:24:44 +0000
-Message-ID: <179180428452.434549.6426245799435607203@kernel.org>
+Date: Mon, 12 Oct 2026 11:24:46 +0000
+Message-ID: <179180428624.434549.14425623884223795761@kernel.org>
 In-Reply-To:
- <20261008-dsa_lan9645x_switch_driver_base-v14-7-3d2a72661213@microchip.com>
+ <20261008-dsa_lan9645x_switch_driver_base-v14-8-3d2a72661213@microchip.com>
 References:
- <20261008-dsa_lan9645x_switch_driver_base-v14-7-3d2a72661213@microchip.com>
+ <20261008-dsa_lan9645x_switch_driver_base-v14-8-3d2a72661213@microchip.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,10 +54,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -65,258 +65,219 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] Separate IP multicast groups that map to the same multicast
-  MAC collapse into one per-port bit, so leaving one group removes…
-- [Medium] Several error paths deliberately keep a PGID reference, but
-  nothing owns it afterwards and it is only freed in…
-- [Low] A comment in lan9645x_setup()
-  (drivers/net/dsa/microchip/lan9645x/lan9645x_main.c, lines 210-214,…
-- [Low] PGID destination-mask writes in lan9645x_pgid_entry_alloc() and
-  in the overwrite-in-place branch of __lan9645x_mdb_del() go through…
+- [Medium] When the general-purpose PGIDs run out, L2 multicast groups
+  fall back to PGID_MC.
+- [Medium] Setting ds->ageing_time_min/max makes a bridge join fail late,
+  and the failed join leaves DSA's dp->vlan_filtering out of step with…
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the new
+  lan9645x_set_ageing_time() is affected by it.
 
 --
 
-net: dsa: lan9645x: add mdb management
+net: dsa: lan9645x: add bridge support
 
-This patch adds .port_mdb_add and .port_mdb_del support to the lan9645x DSA
-driver. IP multicast entries store the port mask inline in the mac table
-entry. L2 multicast entries point at a refcounted PGID, and CPU membership
-is carried by MAC_CPU_COPY. The patch also redirects IGMP and MLD to the
-CPU and copies IPv4 multicast control frames to it.
+This adds hardware bridge offload to the lan9645x DSA driver for a single
+bridge. It adds ageing time configuration with min/max limits enforced by
+the DSA core, plus bridge port flags and STP state handling. Host flooding
+is done by adding the CPU port module to the global flood masks.
 
 > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> index c55161f8bafff..a0f48f3ad9aff 100644
+> index a0f48f3ad9aff..cefe643fce182 100644
 > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
 > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
 
 [ ... ]
 
-> @@ -253,6 +255,17 @@ static int lan9645x_setup(struct dsa_switch *ds)
->  			lan9645x, ANA_CPUQ_8021_CFG(i));
->  	}
+> @@ -306,6 +302,19 @@ static int lan9645x_setup(struct dsa_switch *ds)
+>  	ds->fdb_isolation = true;
+>  	ds->max_num_bridges = 1;
 >  
-> +	/* Use CPU queues to communicate frame classification to the CPU */
-> +	lan_rmw(ANA_CPUQ_CFG_CPUQ_MAC_COPY_SET(LAN9645X_CPUQ_DEF) |
-> +		ANA_CPUQ_CFG_CPUQ_IGMP_SET(LAN9645X_CPUQ_TRAP) |
-> +		ANA_CPUQ_CFG_CPUQ_MLD_SET(LAN9645X_CPUQ_TRAP) |
-> +		ANA_CPUQ_CFG_CPUQ_IPMC_CTRL_SET(LAN9645X_CPUQ_COPY),
-> +		ANA_CPUQ_CFG_CPUQ_MAC_COPY |
-> +		ANA_CPUQ_CFG_CPUQ_IGMP |
-> +		ANA_CPUQ_CFG_CPUQ_MLD |
-> +		ANA_CPUQ_CFG_CPUQ_IPMC_CTRL,
-> +		lan9645x, ANA_CPUQ_CFG);
-> +
+> +	/* ANA_AUTOAGE_AGE_PERIOD is a seconds-based field and entries are
+> +	 * aged after 2 * AGE_PERIOD, giving (2 * FIELD_MAX) seconds of
+> +	 * maximum aging and 2 seconds of minimum aging.
+> +	 *
+> +	 * An AGE_PERIOD of 0 stops the analyzer from aging at all, which is
+> +	 * the opposite of what a bridge ageing_time of 0 asks for. The bridge
+> +	 * expires every dynamic entry immediately in that case and floods, so
+> +	 * reject it rather than keep learned addresses forever.
+> +	 */
+> +	ds->ageing_time_min = 2U * MSEC_PER_SEC;
+> +	ds->ageing_time_max = 2U * MSEC_PER_SEC *
+> +			      FIELD_MAX(ANA_AUTOAGE_AGE_PERIOD);
 
-[Severity: Low]
+[Severity: Medium]
+Can a bridge join that fails on these limits leave the port VLAN-unaware
+in hardware after the next successful join?
 
-Is the comment above the ANA_FLOODING_IPMC write in lan9645x_setup() still
-accurate after this change?
+With ageing_time_min set, dsa_switch_ageing_time() returns -ERANGE for any
+bridge ageing_time below 2s, including 0. For example:
 
-lan9645x_setup() {
+  ip link add br0 type bridge vlan_filtering 1 ageing_time 0
+
+dsa_port_switchdev_sync_attrs() applies the ageing time last. By then,
+dsa_port_vlan_filtering(dp, br_vlan_enabled(br)) has already called
+lan9645x_port_vlan_filtering(true) and set dp->vlan_filtering = true.
+
+The rollback in dsa_port_bridge_join() then does:
+
+net/dsa/port.c:dsa_port_bridge_join() {
     ...
-	/* Setup flooding PGIDs for IPv4/IPv6 multicast. Control and dataplane
-	 * use the same masks. Control frames are redirected to CPU, and
-	 * the network stack is responsible for forwarding these.
+out_rollback_unoffload:
+	switchdev_bridge_port_unoffload(...);
+	dsa_flush_workqueue();
+out_rollback_unbridge:
+	dsa_broadcast(DSA_NOTIFIER_BRIDGE_LEAVE, &info);
+out_rollback:
+	dsa_port_bridge_destroy(dp, br);
     ...
 }
 
-This patch copies IPv4 multicast control frames to the CPU instead of
-redirecting them. lan9645x_port_setup() sets
-ANA_CPU_FWD_CFG_IPMC_CTRL_COPY_ENA, and IPMC_CTRL is mapped to
-LAN9645X_CPUQ_COPY here.
+This path never calls dsa_port_switchdev_unsync_attrs() or
+dsa_port_reset_vlan_filtering(), so dp->vlan_filtering stays true.
 
-lan9645x_offload_fwd_mark() in net/dsa/tag_lan9645x.c only clears
-skb->offload_fwd_mark for LAN9645X_CPUQ_TRAP:
+Meanwhile the BRIDGE_LEAVE notifier reaches lan9645x_port_bridge_leave().
+That function calls lan9645x_vlan_set_hostmode(), which sets
+p->vlan_aware = false.
 
-	if (cpuq & BIT(LAN9645X_CPUQ_TRAP)) {
-		skb->offload_fwd_mark = 0;
-		return;
-	}
+Now suppose the ageing time is fixed and the port is added to a
+vlan_filtering=1 bridge again. dsa_port_vlan_filtering() returns early:
 
-So the hardware forwards these copied frames through
-FLD_MC4_CTRL=PGID_MC, and the stack does not. Only IGMP and MLD are
-redirected.
+	if (dsa_port_is_vlan_filtering(dp) == vlan_filtering)
+		return 0;
 
-The commit message gets this right. Could the code comment be updated to
-match?
+So .port_vlan_filtering is never called. Neither
+lan9645x_port_bridge_join() nor lan9645x_vlan_clear_hostmode() restores
+p->vlan_aware.
 
->  	/* Reserve 1664 bytes, 26 buffer cells, per (port, prio) for source
->  	 * tracking (resource 0, indices 0..95) and destination tracking
->  	 * (resource 2, indices 512..607). These are access watermarks, not
+Would the port then stay at VLAN_AWARE_ENA=0 in ANA_VLAN_CFG while it is
+in a VLAN-aware bridge? That would give wrong ingress VLAN classification
+and filtering.
 
-[ ... ]
-
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c
-> new file mode 100644
-> index 0000000000000..ca333d43904fd
-> --- /dev/null
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c
-> @@ -0,0 +1,582 @@
+The incomplete rollback is in the DSA core. This patch makes it reachable
+through the new ageing limits, and the new bridge_leave creates the
+mismatch on the driver side. The issue still seems to be there at the end
+of the series.
 
 [ ... ]
 
-> +static struct lan9645x_pgid_entry *
-> +lan9645x_pgid_entry_alloc(struct lan9645x *lan9645x, int index, u16 ports)
+> @@ -324,6 +333,246 @@ static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
+>  	lan9645x_phylink_get_caps(ds->priv, port, config);
+>  }
+>  
+> +static int lan9645x_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
 > +{
-
-[ ... ]
-
-> +	dev_dbg(lan9645x->dev, "index=%d ports=0x%x\n", pgid_entry->index,
-> +		pgid_entry->ports);
+> +	struct lan9645x *lan9645x = ds->priv;
 > +
-> +	lan_rmw(ANA_PGID_PGID_SET(pgid_entry->ports),
-> +		ANA_PGID_PGID, lan9645x,
-> +		ANA_PGID(pgid_entry->index));
+> +	/* Entry must suffer two aging scans before it is removed, so it is
+> +	 * aged after 2*AGE_PERIOD, and the unit is in seconds.
+> +	 */
+> +	lan_rmw(ANA_AUTOAGE_AGE_PERIOD_SET(msecs / (2 * MSEC_PER_SEC)),
+> +		ANA_AUTOAGE_AGE_PERIOD,
+> +		lan9645x, ANA_AUTOAGE);
 > +
-> +	return pgid_entry;
-> +}
-
-[Severity: Low]
-
-lan9645x_pgid_entry_put() leaves the old destination mask in hardware on
-purpose and relies on this write to replace it when the index is reused.
-lan_rmw() only does WARN_ON_ONCE() when regmap_update_bits() fails, and
-lan9645x_pgid_entry_alloc() returns success either way.
-
-If this write is lost, would the new group forward to the previous group's
-ports?
-
-The overwrite in place branch in __lan9645x_mdb_del() has the same shape.
-It updates mdb_entry->pgid->ports before an unchecked lan_rmw(), so the
-departing port would keep receiving traffic.
-
-This follows the lan_wr()/lan_rmw() convention used across the driver, and
-in lan966x and ocelot too. It is also not clear that this regmap can fail
-at all. So this is more of a hardening question than a defect in the mdb
-logic.
-
-[ ... ]
-
-> +static int lan9645x_mdb_widen_dest(struct lan9645x *lan9645x,
-> +				   struct lan9645x_mdb_entry *mdb_entry,
-> +				   enum macaccess_entry_type type,
-> +				   struct lan9645x_pgid_entry *new_pgid,
-> +				   int pgid_index, u16 new_ports)
-> +{
-> +	struct lan9645x_pgid_entry *old_pgid = mdb_entry->pgid;
-> +	int err;
-> +
-> +	lockdep_assert_held(&lan9645x->mdb_lock);
-> +
-> +	err = lan9645x_mdb_write_dest(lan9645x, mdb_entry, type, pgid_index,
-> +				      new_ports);
-> +	if (err) {
-
-[ ... ]
-
-> +		/* A failed write leaves the hardware state unknown, the mac
-> +		 * entry may point at old_pgid or new_pgid. Keep the reference
-> +		 * taken on new_pgid, so its index cannot be handed to an
-> +		 * unrelated group. If the entry already holds new_pgid, e.g.
-> +		 * when the CPU port module joins, drop the extra reference.
-> +		 */
-> +		if (new_pgid == old_pgid)
-> +			lan9645x_pgid_entry_put(lan9645x, new_pgid);
-> +		return err;
-> +	}
-> +	mdb_entry->pgid = new_pgid;
-> +	mdb_entry->ports = new_ports;
-> +	lan9645x_pgid_entry_put(lan9645x, old_pgid);
 > +	return 0;
 > +}
 
 [Severity: Medium]
+This is a pre-existing issue in the DSA core and was not introduced by
+this patch, but it affects the new lan9645x_set_ageing_time(). Does
+raising the bridge ageing time ever reach the hardware?
 
-If lan9645x_mdb_write_dest() fails and new_pgid != old_pgid, the reference
-on new_pgid is kept but never stored in mdb_entry->pgid. What drops it
-later?
+dsa_port_ageing_time() sends the notifier before it updates the cached
+value:
 
-Later successful updates only put mdb_entry->pgid, so this reference seems
-to be released only in lan9645x_mdb_deinit().
-
-A few other error paths do the same.
-
-lan9645x_mdb_narrow_dest() switches mdb_entry->pgid to new_pgid before the
-write. On failure it returns without putting old_pgid:
-
-		if (old_pgid != new_pgid)
-			return;
-
-In __lan9645x_mdb_del(), when CMD_FORGET fails for the last port:
-
-			mdb_entry->pgid = NULL;
-		}
-		lan9645x_mdb_entry_dealloc(lan9645x, mdb_entry);
-
-In __lan9645x_mdb_add(), when both the learn and the cleanup forget fail
-for a fresh entry, the new_pgid reference is kept and the mdb entry is
-freed.
-
-Each transient ANA_MACACCESS poll timeout or regmap read error would then
-use up one index from the PGID_GP_START..PGID_GP_END pool for good. A
-shared PGID that holds an orphaned reference can also never get back to
-refcount 1, which disables the overwrite in place branch in
-__lan9645x_mdb_del().
-
-The v14 changelog explains why the reference is held while the hardware
-state is uncertain. Is there anything that releases it once a later
-successful CMD_LEARN or CMD_FORGET for the same (mac, vid) makes the state
-known again? Without that, could L2 multicast adds eventually fail with
--ENOSPC?
-
-[ ... ]
-
-> +static int __lan9645x_mdb_add(struct lan9645x *lan9645x, int chip_port,
-> +			      const unsigned char addr[ETH_ALEN], u16 vid,
-> +			      enum macaccess_entry_type type)
-> +{
-
-[ ... ]
-
-> +	mdb_entry = lan9645x_mdb_entry_lookup(lan9645x, addr, vid);
-> +	if (!mdb_entry) {
-> +		mdb_entry = lan9645x_mdb_entry_alloc(lan9645x, addr, vid);
-> +		if (IS_ERR(mdb_entry))
-> +			return PTR_ERR(mdb_entry);
-> +	}
-> +
-> +	if (mdb_entry->ports & BIT(chip_port))
-> +		return 0;
-
-[Severity: Medium]
-
-What happens when two IP groups on the same port map to the same multicast
-MAC?
-
-br_switchdev_mdb_populate() converts each group with ip_eth_mc_map() or
-ipv6_eth_mc_map(). For example, 239.1.1.1 and 239.129.1.1 both become
-01:00:5e:01:01:01.
-
-For user ports, DSA passes the call straight to the driver without
-refcounting:
-
-net/dsa/switch.c:dsa_port_do_mdb_add() {
+net/dsa/port.c:dsa_port_ageing_time() {
     ...
-	/* No need to bother with refcounting for user ports */
-	if (!(dsa_port_is_cpu(dp) || dsa_port_is_dsa(dp))) {
-		err = ds->ops->port_mdb_add(ds, port, mdb, db);
+	err = dsa_port_notify(dp, DSA_NOTIFIER_AGEING_TIME, &info);
+	if (err)
+		return err;
+
+	dp->ageing_time = ageing_time;
     ...
 }
 
-The second join returns 0 here and nothing records it. When the first
-group leaves or expires, __lan9645x_mdb_del() runs:
+dsa_switch_fastest_ageing_time() then takes the minimum over all ports,
+including the old value of the requesting port:
 
-	new_ports = mdb_entry->ports & ~BIT(chip_port);
+	dsa_switch_for_each_port(dp, ds)
+		if (dp->ageing_time && dp->ageing_time < ageing_time)
+			ageing_time = dp->ageing_time;
 
-It then either narrows the destination or forgets the entry. Does the port
-then stop receiving traffic for the group it is still a member of?
+So a change from 300000 ms to 600000 ms programs 300000 ms through
+lan9645x_set_ageing_time() and returns success. 600000 ms is then cached
+in dp->ageing_time, with no further hardware write.
 
-The bridge does not send another add while the remaining group keeps being
-refreshed. The loss would last until that group expires and is created
-again. With the bridge support patch later in the series, ordinary
-IGMP/MLD snooping looks like enough to trigger this.
+The fix probably belongs in the DSA core rather than in this driver: the
+requester's cached value could be updated, or left out, before the
+minimum is computed.
 
-Does the mdb entry need a per-port membership count here?
+[ ... ]
+
+> +static int lan9645x_port_bridge_flags(struct dsa_switch *ds, int port,
+> +				      struct switchdev_brport_flags f,
+> +				      struct netlink_ext_ack *extack)
+> +{
+> +	struct lan9645x *lan9645x = ds->priv;
+> +
+
+[ ... ]
+
+> +	if (f.mask & BR_MCAST_FLOOD) {
+> +		bool ena = !!(f.val & BR_MCAST_FLOOD);
+> +
+> +		lan9645x_port_pgid_set(lan9645x, PGID_MC, port, ena);
+> +		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV4, port, ena);
+> +		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV6, port, ena);
+> +	}
+
+[Severity: Medium]
+Does this break the PGID_MC fallback that the mdb code uses when the
+general-purpose PGIDs run out?
+
+When a group's PGID is shared or no PGID is free, __lan9645x_mdb_del()
+points the L2 group at PGID_MC:
+
+drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c:__lan9645x_mdb_del() {
+    ...
+	/* Shared PGID or on flood mask. Point the entry at the L2 MC flood mask
+	 * instead. This way our mac table entry survives and MAC_CPU_COPY
+	 * keeps host membership working.
+	 */
+    ...
+	lan9645x_mdb_narrow_dest(lan9645x, mdb_entry, type, NULL, PGID_MC,
+				 new_ports);
+    ...
+}
+
+__lan9645x_mdb_add() also keeps a group that is already on the flood mask
+pointed at PGID_MC:
+
+		/* For a L2 MC group already on the flood mask, we keep it there
+		 * so that the host can still join/leave a group we had to give
+		 * up offloading. A front port that joins forwards according to
+		 * the flood masks, like the other members.
+		 */
+		if (lan9645x_mdb_on_flood_mask(mdb_entry, type))
+			return lan9645x_mdb_widen_dest(lan9645x, mdb_entry,
+						       type, NULL, PGID_MC,
+						       new_ports);
+
+This fallback depended on PGID_MC holding every front port, as
+lan9645x_setup() sets it. With this change, a port configured with:
+
+  bridge link set dev swpN mcast_flood off
+
+is removed from PGID_MC. If that port is also a registered member of an
+L2 group in the fallback state, will it stop receiving that group's
+traffic?
+
+The software bridge still delivers registered groups to their members
+whatever their mcast_flood setting, so hardware forwarding would no
+longer match it. Also, when such a port joins through
+__lan9645x_mdb_add(), the join reports success but the port gets no
+traffic. The issue still seems to be there at the end of the series.
 
 [ ... ]
 
