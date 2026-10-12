@@ -1,207 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3EF41A4E4;
-	Mon, 12 Oct 2026 12:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791807023; cv=none; b=KSCqyYJVK5rxHaHr588zr4b0VQY+VuUouJgtMn31qS/c/71a09g14ZXy5ARjEsy3iIFzg8lNGAisbX1e32nlJB6RP/wVu6cgt9sXX3MS6xoCJrG1M8zoejrsB03ie/ga0x1GZeIUdobnnWI6JvmRdi2sabM0yWG1fn5rA2nVmNs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791807023; c=relaxed/simple;
-	bh=l6raZMAXhf9dMLYNhLhwY95pksikfmORW40GrE2iy34=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nInVNdaoB5+ou5BrSIWJ/rC513dAXiyKAnLv43p4ymKXfP2xg/0hqDIAIPjqeA24nuMhZJQn5f4ALK9uawcb4NwVXxX9i4iB0BxJEe3LOT75SmYBAtEM6c6xbrrUEOfJ1HC7p1K+9b77Zt5DbPJgWb1ktKUXAzQ1enxsM7WKtis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mZSClGga; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166A33EEAE5
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791807065; cv=pass; b=JYLtBquhXtukFzL7imt9OUGvo1nOrTAE9cnmKPk3j3TPxSKopY136dkExcBHhi6cY5zMOomLCTW0Yzwcn6BPsKffUbVZ7BJbOb2phDoEEdz62uVCaJ+Wd/tpq3aMNc1F/wJQSdapYLnVzsq6GH8+fKx6KMqfwhchqjIG4kGKvbY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791807065; c=relaxed/simple;
+	bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q+6LSAmde16hHq/cexH7nQ8AHBg58ehpv+QqBj9ZPNRNCJx+UCC4llrNfjuc8YRCwmbVUvsOHVrUjf6tY2K57vHvrQ+pctobmPQeghLPHih9xws33wiHewZdsgpdnIM+qo+orLEEmCWCp/e4SzTP1k1xN6v9x1dlZjf0sWKNEQg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz; spf=pass smtp.mailfrom=sairon.cz; dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b=O8wXIpmj; arc=pass smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mZSClGga"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F901F0089B;
-	Mon, 12 Oct 2026 12:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791807018;
-	bh=anrg1c6253FnLZIpERC0khiiG86vNVw6etBg+OrCLc8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mZSClGgaM9kY1Is7etP7rlPP+pnJ++gzStyBSiAKSb3o2d7g6hYUPN8qzhmwWur0m
-	 NsAXQprs6JKO3MITKNcLWubZvuZ0M40zk9oJ4ML4II0ICaUAfw25ab5G4k8S/3Hjz1
-	 B0+6ogGRFDaKz/kGUrWFy/VU7jAMitI+kOwYNrVtwFPqMsLMwnJenRneOHrHm4I19f
-	 bLbAhsHIvhQVVGgeKq1/ySL5o+/wQnIE975nRdyC+SLHUikKHi5pjpasCEZ8FctnR3
-	 hcL7skuJ4q7q8Uh3GR2a7RQom7GiNdtJ/xupw6uqpYhODwy/QcatODAc3NA7Eyarqk
-	 9Hw+yiePDzBIg==
-Subject: Re: [PATCH net-next 1/2] net/mlx5e: Select DCBX HOST/AUTO from
- capability flags in setdcbx
-From: netdev-bot+sashiko@kernel.org
-To: tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, alazar@nvidia.com,
- cjubran@nvidia.com, dtatulea@nvidia.com, gal@nvidia.com, leon@kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
- saeedm@nvidia.com
-Date: Mon, 12 Oct 2026 12:10:17 +0000
-Message-ID: <179180701752.434549.16734295951082648234@kernel.org>
-In-Reply-To: <20261011112900.802150-2-tariqt@nvidia.com>
-References: <20261011112900.802150-2-tariqt@nvidia.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="O8wXIpmj"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e61ac64ec3so16634355ad.2
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 05:11:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791807063; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ux/ohBRyvj4lsg7AjCbRv+BPaLjuILkWcQiPXTgtuHzLuHI7f0W9klFPS9+pYJmmmB
+         6lGmw/UJr/uraCj6z8KanWFmGrlYaAMBZDj/KoNzhHQWKAP1gzEBJCCRxfyMKOdCWabo
+         JycBTdyxMf1z+3PhI2McSwkcveY0JSTqLXafd24/RrWpAhRn9v3lE5J3sxiFrfj7/jGA
+         AIn47xfZg+9/bmNG8Qt9J7YE4lF22cgTgu8kvGPdc5YaGxkwRhuxl96ifcgcKeUPo5vn
+         mS5LHCtT0FXZgZRDPxHVL/0Q6D5t7nzK0MuovM6q53BQjlQmGBnDNcQ6IIfdgo4PZcHr
+         1EUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
+        fh=/rs/fgyi9w9QUgH09l/T+kGtjll/c+C+hvhImozp47s=;
+        b=DWTuDi61fR16x0oSH+CLle+q9QUB1OkwEaiv1VHS8P1F8+OqjE6VyEcNZNne2NZt0Z
+         iy5HzD6/QKGopSEKsEudKCCIhzixS9mUvlJUU2jKZTxJK6X6tZ+5Y+b/YJirtOOE4zzr
+         LCWr3kQccFvKWbrxJ9H48Y9hY2RtEonwpsQpqhN4LSjONav3CLMnlUmAJLG1gYx0lX1T
+         wHqJUi+GSeeS0nYT7v0kfZtTvvlLgzehL6Rvf/HCN8EnBGil6bJJH291nOp/Zl7G4hrM
+         mat+Jnpu9fECfB7KPa9H7U+kbeeJP7oj37vwbzYPG/IceEIujdKSmTL4/Kx8fFfZgSD0
+         QjiQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sairon.cz; s=google; t=1791807063; x=1792411863; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
+        b=O8wXIpmjCqQb2c3pZiZJd1h3FrNYD97RxCU9+GuWMu1dQJjMMyGD+m4vTRKvCyRuAI
+         ekegyVpPpUAouF3pCuILzCFwOCQOSm9yKlQ/l2DREEQNjnahdj4zVbH7VlCgTlniWwAk
+         vIuoY0BvD2AS16x6H0DBIu2Nr//UklzoEbwAYLohfEtNFXs6SWe+Pz1vLZR0HtPjhX+l
+         g5bebGFJlRG6cOd0NmpPwXVx4ZDreoFxjlNeaJ8nd+Gi2Jc8UF/1iu1qJ1nG8ThllUeM
+         x3gXLiFjdMYoVTYW8RRM1uQq931z8AlL0msiobydw6SZhOx1zAR96uxivzxaj0+FUGlE
+         fcJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791807063; x=1792411863;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5imneF5bi5jgun8fbbTMbMv1DWb2Fv2Q5/2HNHuLOkQ=;
+        b=yBgyfyl1VcUzv//672CbxsnvaaGcYFsMKXBx8N9SEIGfBdP8ohfdUBur6wEaJGS4j6
+         EZ7xonFLYdVTMacqSGJw6D9cKmWp723Wj2/ojEbx9/s86kGJ6PVYc34JnarbJYD0W7GI
+         pAIOxXXmPVCQzgnl58oX1vCormj0rnqFWFczWzchzBpykSThXTH/e2nkOf/RK7dDcJG+
+         gOGn6dzbZym3xRU885PorRvEITbh93JPv303ecHQXt7ZiUN/QX5irQ1FVS6p8fAy8nEZ
+         14bh750H0OGQNUJ2bTBHft/nMklf99urBWlJCy+WxqPfpk51Irhx3Zd3M9HkfOuA1AHy
+         fJOw==
+X-Forwarded-Encrypted: i=1; AKwUvBzoJoI/UEpe1v/ABTOBx1MCeDRnG/cCCML/s9gWic3tI48XA/NF5wtCdSyOZ56nwTUhIMbvAr4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKfsz1cskZzbqZSXZaRDIHVW+Dj/LrBqSFp35LXG067cz8eAaLL
+	E+BqDD3/3K6i2w0exB49fIUtDjKRPJmJ/JOPTv5MpgYl7u0zO4Jn/TY2JphETffWtpG74aHx29Y
+	6bPcRvBrzUoDUKwxeoNGatImcALr+LCgfN7hftWbWYA==
+X-Gm-Gg: AYBFou2cum/c65KKpgswk5r34Fzcr5twWQnWl6/4XkGLNdhXJDZ7PBpqvpEexEFiVGB
+	NPWQzpyjsNdMmbemKX5J1pSmJvDx/RKadk+lZTUPJnWrUmT4t4Dd57FrN0Iu0yrVHRnJL6VSi2p
+	yMFCV8TezA4Ga4b/ecqyxGOwA5RrW4zsKBgJ1gZWrtx8exUGcT9m+Oa+IrJFIAYH6yerP89zeLc
+	yGW1QNlr1FlkEX46a5woAdvh1UAKDG8JCeYCBaTEYvK9UviHNWmZBkaQ1Wz4GUCDNnymiMkEZG5
+	3s9RM4N6xl9taro/ComYBVtobtr8osiOEwq+iGmeMxqu7LIL55JaifgrA5fQqWlL8runupqduMt
+	zCalGBwChd7+lc7qC9juiLqKHFSF+Bn3oMz9W2RQjYNgj3N1jfQGlCa942QlXsQ4InEjwyk78Gd
+	I=
+X-Received: by 2002:a17:903:230b:b0:2dd:c100:a5e1 with SMTP id
+ d9443c01a7336-2e842df9c64mr84761985ad.53.1791807063406; Mon, 12 Oct 2026
+ 05:11:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261010145106.773639-1-edumazet@kernel.org>
+In-Reply-To: <20261010145106.773639-1-edumazet@kernel.org>
+From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+Date: Mon, 12 Oct 2026 14:10:37 +0200
+X-Gm-Features: AclHuK8DRF7h4yoRuEUgqqSib73XTa3xTkHTUF9D0mRimi4RFLmab13pLm3GGQY
+Message-ID: <CAPa5EdAioOoMNj+kH8+Ko822tSyLJL-CxpXr3Q=ZWx0jwFNdOA@mail.gmail.com>
+Subject: Re: [PATCH net v3] vlan: restore HW VLAN tag insertion with
+ reorder_hdr off
+To: Eric Dumazet <edumazet@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Stefan Agner <stefan@agner.ch>, hitchin999 <hitchin999@users.noreply.github.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Eric,
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+as I wrote in [1], the bug also affected cards using the r8152 driver,
+so I used that in my setup for testing.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+I applied this patch to v6.18.54, which was previously used as base
+for testing, and I confirm the issue is gone, and the VLAN interface
+can be normally used. On vanilla v6.18.54 toggling reorder_hdr to off
+triggered the issue (even when the VLAN was created with it enabled),
+so this step was enough to verify the regression is mitigated
+kernel-side, so:
 
-- [Medium] mlx5e_dcbnl_setdcbx()
-  (drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c) now returns…
-- [Medium] The patch reports firmware AUTO mode as CEE|IEEE|LLD_MANAGED
-  (0x0e), but only on the setdcbx HOST->AUTO transition path.
+Tested-by: Jan =C4=8Cerm=C3=A1k <sairon@sairon.cz>
 
---
+Previous v2 of the patch was confirmed to fix the issue with r8169 as
+well by hitchin999 in [2].
 
-net/mlx5e: Select DCBX HOST/AUTO from capability flags in setdcbx
+Thanks for looking into that!
 
-This commit changes mlx5e_dcbnl_setdcbx() so that the DCB_CAP_DCBX_HOST
-bit selects firmware HOST or AUTO DCBX mode. That merges the two old code
-paths into one. When it switches to firmware-controlled mode, it reports
-CEE, IEEE and LLD_MANAGED together because of a firmware limitation.
+Cheers,
+Jan
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-> index 741f75b5bfec..4eef929f5ae9 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_dcbnl.c
-
-[ ... ]
-
-> @@ -453,32 +434,31 @@ static u8 mlx5e_dcbnl_getdcbx(struct net_device *dev)
->  
->  static u8 mlx5e_dcbnl_setdcbx(struct net_device *dev, u8 mode)
->  {
-> +	bool new_is_host = mode & DCB_CAP_DCBX_HOST;
->  	struct mlx5e_priv *priv = netdev_priv(dev);
->  	struct mlx5e_dcbx *dcbx = &priv->dcbx;
-> +	enum mlx5_dcbx_oper_mode target_mode;
->  
->  	if (mode & DCB_CAP_DCBX_LLD_MANAGED)
->  		return 1;
->  
-> -	if ((!mode) && MLX5_CAP_GEN(priv->mdev, dcbx)) {
-> -		if (dcbx->mode == MLX5E_DCBX_PARAM_VER_OPER_AUTO)
-> -			return 0;
-> -
-> -		/* set dcbx to fw controlled */
-> -		if (!mlx5e_dcbnl_set_dcbx_mode(priv, MLX5E_DCBX_PARAM_VER_OPER_AUTO)) {
-> -			dcbx->mode = MLX5E_DCBX_PARAM_VER_OPER_AUTO;
-> -			dcbx->cap &= ~DCB_CAP_DCBX_HOST;
-> -			return 0;
-> -		}
-> +	if (!MLX5_CAP_GEN(priv->mdev, dcbx))
-> +		return !new_is_host;
->  
-> -		return 1;
-> -	}
-> +	target_mode = new_is_host ? MLX5E_DCBX_PARAM_VER_OPER_HOST :
-> +				    MLX5E_DCBX_PARAM_VER_OPER_AUTO;
-> +	if (dcbx->mode == target_mode)
-> +		return 0;
-
-[Severity: Medium]
-Do these two early returns lose the requested DCBX flags?
-
-If the device lacks the dcbx HCA capability, the first check returns 0
-for any HOST request.
-
-If firmware is already in the target mode, the second check returns 0.
-One example is a host LLDP agent sending HOST|VER_IEEE (0x09) while the
-port is already in HOST mode.
-
-Neither path reaches the "dcbx->cap = mode;" at the end of the function.
-
-Before this patch, both cases went through
-mlx5e_dcbnl_switch_to_host_mode(). That helper returned 0 when the cap was
-missing or the mode was already HOST, and the caller then did:
-
-	dcbx->cap = mode;
-	return 0;
-
-Now dcbnl_setdcbx() reports success to userspace, but
-mlx5e_dcbnl_getdcbx() keeps returning the initial CEE|IEEE|HOST (0x0d).
-The same stale value goes into DCB_ATTR_DCBX in the IEEE/CEE get and
-notify paths, and into event.dcbx for dcb_app notifier events.
-
-fcoe_dcb_app_notification() in drivers/scsi/fcoe/fcoe.c consumes that
-value:
-
-	if (entry->dcbx & DCB_CAP_DCBX_VER_CEE)
-		prio = ffs(entry->app.priority) - 1;
-
-If VER_CEE is still set after userspace selected IEEE only, could FCoE
-read an IEEE priority as a CEE bitmap?
-
-The commit message only talks about folding the two code paths into one.
-Was this change in behaviour intended? It is still present at the end of
-the series.
-
->  
-> -	if (!(mode & DCB_CAP_DCBX_HOST))
-> +	if (mlx5e_dcbnl_set_dcbx_mode(priv, target_mode))
->  		return 1;
->  
-> -	if (mlx5e_dcbnl_switch_to_host_mode(netdev_priv(dev)))
-> -		return 1;
-> +	if (!new_is_host)
-> +		mode = DCB_CAP_DCBX_VER_CEE |
-> +		       DCB_CAP_DCBX_VER_IEEE |
-> +		       DCB_CAP_DCBX_LLD_MANAGED;
-
-[Severity: Medium]
-Does the reported AUTO state now depend on history rather than on the
-firmware state?
-
-This sets cap to CEE|IEEE|LLD_MANAGED (0x0e), but only after an actual
-HOST to AUTO transition. mlx5e_dcbnl_initialize() was not updated. When
-firmware is in a non-host mode at probe time, it still does:
-
-	priv->dcbx.cap = DCB_CAP_DCBX_VER_CEE |
-			 DCB_CAP_DCBX_VER_IEEE;
-	if (priv->dcbx.mode == MLX5E_DCBX_PARAM_VER_OPER_HOST)
-		priv->dcbx.cap |= DCB_CAP_DCBX_HOST;
-
-That gives 0x0c, without LLD_MANAGED. A later non-host setdcbx request
-then hits the "if (dcbx->mode == target_mode) return 0;" check above, so
-LLD_MANAGED is never added.
-
-So the same firmware state is reported as 0x0c after booting in AUTO, but
-as 0x0e after a runtime switch to AUTO. The difference shows up in:
-
-  - getdcbx
-  - DCB_CAP_ATTR_DCBX, since mlx5e_dcbnl_getcap() ORs in dcbx->cap
-  - DCB_ATTR_DCBX in the IEEE/CEE get and notify paths
-  - event.dcbx
-
-Before this patch, both paths reported 0x0c.
-
-Should mlx5e_dcbnl_initialize() also set LLD_MANAGED in the AUTO case?
-That would match "report CEE, IEEE and LLD_MANAGED together" from the
-commit message.
-
-There is a related problem in the same function. setdcbx still rejects
-LLD_MANAGED at the top even though it now reports it, which breaks a get
-then set round trip.
-
-The later patch in this series, "net/mlx5e: Add DCB_CAP_DCBX_LLD_MANAGED
-support in setdcbx", fixes that part by removing the check. The
-history-dependent reporting is still present at the end of the series.
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011112900.802150-1-tariqt%40nvidia.com
+[1] https://lore.kernel.org/netdev/CAPa5EdD7tFRyDztEanTwQXTzVEE8T0FLkbXAtWx=
+UcGGaLYt_bA@mail.gmail.com/
+[2] https://github.com/home-assistant/operating-system/issues/5019#issuecom=
+ment-6065756866
