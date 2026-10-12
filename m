@@ -1,198 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E9B3D8127;
-	Mon, 12 Oct 2026 19:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CC14CB8BC;
+	Mon, 12 Oct 2026 19:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791833750; cv=none; b=HwEC286YOIG4Etk9x5XSrwK53nnXwCAdWkgVvJdxkAuOqW0dxe4rkq76hV0T8SkaRfsFGwklw0bgcAkeas1eopYqMFPq0CjMq8IVqQ72CMvPYcDb/0blnGE+OPmVl45BZfscL6SI8OJzadQw9qs1nk8K9Hqg/5CPqWouAsxwx0c=
+	t=1791834204; cv=none; b=nnHy1ePUi4zMAG+OI3RUP0mpvBtM+MOsfsGg/8xN11sYe8q8JqM21WrEmCHrTNrbWtpqsrKHWRqrKYjkTEaqEjrKsDT094XITDxJca8Y8dUGB5ULyRThkOr0lN3L6rZYaHaGm54PcxhxOOXBCWL99AQsrseRDj40Rdk87R9ZmAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791833750; c=relaxed/simple;
-	bh=R8q/CVxg39d4TdckOQsEKL3d35bhQoZkiqJfYJn/BUU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ls1IDfjvQeaWClbcEEtk+bhev2AX8ORPanXV3d90i0yZHYGNMGs5tzsyUfsJgN/I7J/P/ycZNelQPzvX2UT/mQMIRHEKEEe4GTpcT498AfONMY8kVuI3eKy6i1Jdn+V1ND72LsE8V0AbpX8Lzg+rZx4FJtUU/FyEgpF3CW8pXtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDPEdGXe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791834204; c=relaxed/simple;
+	bh=46e1U6DavjbOemIRYpekVuACQIQhaJ1HQ/H/m0zwm8Y=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SwkvXEaTIpByS4EfbhJ7D8eKNbn2RvNgrJXXfaeaiEn7UF4bwODfW39ftH6tTBFHRJjgUVD0NkYYrshRBcF5cCOOI6dAPtpC9WSwng5pbMRkVF9EigTNwK4oCfPhCrhEaYHQCr70Sv3U1xikeasgRQA9WZJXlQKdzAT9QiOvxTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=S6YyxZoc; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDPEdGXe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A5B1F0089B;
-	Mon, 12 Oct 2026 19:35:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791833749;
-	bh=DMKUIq2evMqbV9iZZVZrgW3vUtUC3TC5DJ5ooCvuKew=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RDPEdGXeei8e7Azd26bOsJ2oUy+7x3jjeWxt+KQYGWn50Q6CxGnSmhPauR7UuBv5h
-	 kzrPs3FA/0MSVBUun25XjPgG29jUjNZhK3nw2PHbop6V4Vjt4K6ljIMEjguYyh8CFa
-	 u3F/MeKcOnbK3u6JW3Pg24JgRS3l8KE0XcJt77HGvWf5l+oOgrg0Qn25N5WLgP7v1G
-	 fxi9gN95EOoefQ4Ft99HnIvrb0A+r9DCJQI8CBUXkrXvxCkf9RDam3pGmnGJxDMX3L
-	 fhWkdZlIa92vTnLPS0pKeOjRZVOk/HCrUwK7cric+t5GF+nE9nIBinsRX7xwvnG901
-	 T3NQnrLTyFD3w==
-Subject:
- Re: [PATCH net v4] net: phy: qca83xx: read resolved QCA8337 link status
-From: netdev-bot+sashiko@kernel.org
-To: yongzhao.derek@gmail.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 12 Oct 2026 19:35:48 +0000
-Message-ID: <179183374827.434549.12054936309141943394@kernel.org>
-In-Reply-To: <20261008193515.14880-1-yongzhao.derek@gmail.com>
-References: <20261008193515.14880-1-yongzhao.derek@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="S6YyxZoc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791834203; x=1823370203;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=46e1U6DavjbOemIRYpekVuACQIQhaJ1HQ/H/m0zwm8Y=;
+  b=S6YyxZocILMkVLT9tUsbO/MhBIK94Sq1l0fxgOXD/E+JmMRCUm3vaei3
+   EfdoWNOxgVDKHX/1rrred9bIKwwUTdYYfrVOtVK7V2SAoprEWNQRUkgqh
+   OehSKrSF1bRDPLkvSRqQLp+350tm4Q7Kr+h3KTidA0dmXOTulFrJP1u8X
+   COqk8ULn5hIXVGi8VpgcYX7Xvs1Xhfu1D3OliyFJ5pewSuzxBgm78W8K/
+   HQnuT0YDSFWwxquwoqTfcwY35G4LWvcIWvHEhw97JzQxTy0o0Di2T/erZ
+   XrFE2fc7rwQ6IJ6TGw7EyJCrXC2roPUJHUtba81NfguVKFo0EbR6OJJar
+   w==;
+X-CSE-ConnectionGUID: Z5px7yJ/SWqdbS/RQmR7RQ==
+X-CSE-MsgGUID: ri7xwyZNQO+xB8N1XTZv9A==
+X-IronPort-AV: E=Sophos;i="6.27,154,1787036400"; 
+   d="scan'208";a="75255144"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 12:43:22 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Mon, 12 Oct 2026 12:43:21 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 12 Oct 2026 12:43:18 -0700
+Date: Mon, 12 Oct 2026 21:43:17 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+CC: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
+ Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
+	<hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
+ Fomichev <sdf@fomichev.me>, Ong Boon Leong <boon.leong.ong@intel.com>,
+	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<bpf@vger.kernel.org>
+Subject: Re: [PATCH net-next 1/2] net: stmmac: fix XDP TX DMA address for
+ compound RX pages
+Message-ID: <20261012194317.o642ym7ddsmny25x@DEN-DL-M70577.microsemi.net>
+References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
+ <20261012-stmmac-xdp-tx-pre-fixes-v1-1-05fd0c90f7e1@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261012-stmmac-xdp-tx-pre-fixes-v1-1-05fd0c90f7e1@oss.qualcomm.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Lorenzo,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> When RX buffers are compound pages (order > 0), only the head page
+> carries the DMA address programmed by the page pool
+> (page_pool_get_dma_addr()). stmmac_xdp_xmit_xdpf() computed the head
+> buffer's bus address from the page that happens to contain the data:
+> 
+> 	page = frag ? skb_frag_page(frag)
+> 		    : virt_to_page(xdpf->data);
+> 	dma_addr = page_pool_get_dma_addr(page);
+> 	...
+> 
+> RX pages become compound as soon as dma_buf_sz needs more than one page
+> (pp_params.order = order_base_2(num_pages) > 0), which happens from an
+> MTU around 3000 bytes once dma_buf_sz reaches 4096. If an XDP program
+> moves the data forward with bpf_xdp_adjust_head() by more than about a
+> page, xdpf->data points into a tail page whose struct page has no DMA
+> address: page_pool_get_dma_addr() then returns a bogus bus address, and
+> dma_sync_single_for_device() together with the TX descriptor transmit
+> from the wrong location.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Looks to me like mtu > ETH_DATA_LAN is rejected when setting a prog, and also
+on mtu change when a prog is attached. So can this even happen today?
 
-- [Medium] The fix covers only the QCA8337 entry of qca83xx_driver[] in
-  drivers/net/phy/qcom/qca83xx.c.
-- [Low] In qca8337_read_status() (drivers/net/phy/qcom/qca83xx.c), the
-  link is forced down when at803x_read_specific_status() leaves speed or…
+> 
+> Use virt_to_head_page() to read the DMA base of the buffer and keep the
+> offset relative to the head page (sizeof(*xdpf) + xdpf->headroom), which
+> is correct no matter which page the data ends up in.
 
---
+I think the fix looks correct.
 
-net: phy: qca83xx: read resolved QCA8337 link status
-
-This adds a read_status callback for the QCA8337 internal PHY. It wraps
-genphy_read_status() and, when an autonegotiated link comes up, replaces
-speed and duplex with the values from at803x_read_specific_status(). It
-also reports the link as down until the PHY-specific status says it is
-resolved.
-
-> diff --git a/drivers/net/phy/qcom/qca83xx.c b/drivers/net/phy/qcom/qca83xx.c
-> index bc70ed8efd86a..be00bc7cda0b9 100644
-> --- a/drivers/net/phy/qcom/qca83xx.c
-> +++ b/drivers/net/phy/qcom/qca83xx.c
-> @@ -92,6 +92,58 @@ static int qca83xx_probe(struct phy_device *phydev)
->  	return 0;
->  }
+> 
+> Fixes: be8b38a722e6 ("net: stmmac: Add support for XDP_TX action")
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index b8b4de4c5b1a..ca61ab449e32 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -5301,7 +5301,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+>  			struct page *page;
 >  
-> +static int qca8337_read_status(struct phy_device *phydev)
-> +{
+>  			page = frag ? skb_frag_page(frag)
+> -				    : virt_to_page(xdpf->data);
+> +				    : virt_to_head_page(xdpf->data);
+>  			dma_addr = page_pool_get_dma_addr(page);
+>  			if (frag)
+>  				dma_addr += skb_frag_off(frag);
+> 
+> -- 
+> 2.56.0
+> 
 
-[ ... ]
-
-> +	if (phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete &&
-> +	    phydev->link) {
-> +		phydev->speed = SPEED_UNKNOWN;
-> +		phydev->duplex = DUPLEX_UNKNOWN;
-> +		phydev->pause = false;
-> +		phydev->asym_pause = false;
-> +
-> +		ret = at803x_read_specific_status(phydev, ss_mask);
-> +		if (ret)
-> +			return ret;
-> +
-> +		/* Report the link down until speed and duplex are resolved,
-> +		 * so that the next poll reads them again.
-> +		 */
-> +		if (phydev->speed == SPEED_UNKNOWN ||
-> +		    phydev->duplex == DUPLEX_UNKNOWN) {
-> +			phydev->link = 0;
-> +			phydev->mdix = ETH_TP_MDI_INVALID;
-
-[Severity: Low]
-Should more of the link-up state be cleared here?
-
-By the time qca8337_read_status() forces link to 0, genphy_read_status()
-has already run with link=1 and autoneg_complete=1. That means:
-
-  genphy_read_master_slave() has set master_slave_state to MASTER or SLAVE
-  genphy_read_lpa() has filled lp_advertising
-
-There is also the case where the 2-bit speed field holds the reserved
-value 3. There, at803x_read_specific_status() leaves speed as
-SPEED_UNKNOWN but still sets duplex to DUPLEX_FULL or DUPLEX_HALF.
-
-Only link and mdix are reset. Until the next poll, could ethtool report
-"Link detected: no" together with a master/slave state, a link partner
-advertisement and possibly a concrete duplex?
-
-The commit message names marvell_read_status_page_an() as the model. Its
-caller, marvell_read_status_page(), clears lp_advertising first:
-
-drivers/net/phy/marvell.c:marvell_read_status_page() {
-    ...
-	linkmode_zero(phydev->lp_advertising);
-	phydev->pause = 0;
-	phydev->asym_pause = 0;
-	phydev->speed = SPEED_UNKNOWN;
-	phydev->duplex = DUPLEX_UNKNOWN;
-    ...
-}
-
-The PHY_HALTED path in _phy_state_machine() also resets
-master_slave_state, mdix and lp_advertising together when it forces the
-link down.
-
-> +		} else {
-> +			phy_resolve_aneg_pause(phydev);
-> +		}
-> +	}
-
-[ ... ]
-
-> @@ -220,6 +272,7 @@ static struct phy_driver qca83xx_driver[] = {
->  	.flags			= PHY_IS_INTERNAL,
->  	.config_init		= qca83xx_config_init,
->  	.soft_reset		= genphy_soft_reset,
-> +	.read_status		= qca8337_read_status,
-
-[Severity: Medium]
-Does the QCA8327 internal PHY need the same fix?
-
-In the same qca83xx_driver[] table, the QCA8327-A and QCA8327-B entries
-still have no .read_status, so phylib uses genphy_read_status() for them.
-
-If those PHYs can also do a SmartSpeed downshift, the same path would
-report 1000 Mbit/s while the PHY runs at 100 Mbit/s:
-
-genphy_read_status()
-  phy_resolve_aneg_linkmode()     picks 1000
-phylink
-  qca8k_phylink_mac_link_up()
-    case SPEED_1000:
-        reg = QCA8K_PORT_STATUS_SPEED_1000;
-
-The Fixes: commit (the qca8k switch to phylink) covers every qca8k
-switch, not only QCA8337.
-
-On QCA8327 the wrong speed has a second user.
-qca83xx_link_change_notify() only applies the 100M DAC amplitude
-adjustment when phydev->speed is SPEED_100:
-
-drivers/net/phy/qcom/qca83xx.c:qca83xx_link_change_notify() {
-	if (phydev->state == PHY_RUNNING) {
-		if (phydev->speed == SPEED_100)
-			at803x_debug_reg_mask(phydev, AT803X_DEBUG_ANALOG_TEST_CTRL,
-					      QCA8327_DEBUG_MANU_CTRL_EN,
-					      QCA8327_DEBUG_MANU_CTRL_EN);
-    ...
-}
-
-If the link is misreported as 1000, would that adjustment be skipped?
-
-The commit message does not mention QCA8327. Could it say whether these
-PHYs can downshift, or why they were left out?
-
->  	.get_sset_count		= qca83xx_get_sset_count,
->  	.get_strings		= qca83xx_get_strings,
->  	.get_stats		= qca83xx_get_stats,
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008193515.14880-1-yongzhao.derek%40gmail.com
+/Daniel
