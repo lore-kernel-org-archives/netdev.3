@@ -1,38 +1,38 @@
 Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.166.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BFF4B7A40;
-	Mon, 12 Oct 2026 16:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DE94B2055;
+	Mon, 12 Oct 2026 16:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791824291; cv=none; b=PXj1OQ+Wrb1l1LiAA+t/00yUs573MKQj0T2/8QcKS0UZuXLShEQdszNlgMSB6DuwQolKQVQGDK7LuIqdrAXZ9JQll0UVIhFTRn8wOTNB3Hu17rLvG3pA6kV/UXq7YJIYPPfjbs3FoEPUWYVjluXVKCENqkxN2C1VgPn8RN0Rdaw=
+	t=1791824294; cv=none; b=grUorCQRPUGPoxgOyiNnbwq3qiPC1zsDczn4XA/NCPvEaA1+FnzIYq7bEwxrpUwpAHb2RHtxsrY96E5kzlRiEou90YUIkLpWUvA/esqYyDjT62GAV4d7p9v4xY8MDrxHs3AiB+NzgpmDiB2chElU3xvl87ZVqLbTeyRYjtINz5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791824291; c=relaxed/simple;
-	bh=+1K4HSp6pmkiyvbf8tMwek+cg4bb7uAnoYbeytWGhB8=;
+	s=arc-20240116; t=1791824294; c=relaxed/simple;
+	bh=RbKEQ9Ao6sfM8uo8Xav6MW10A4+TnfLMYt6FY1stsN4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k60IgcI9H0MWCZ8GLnJpcBNs3i7A9gVqTVep9rYC/KVSpTpkCodEdV09c1H/52h2aiS0a2k4Qf0oMxafOtKPs2oxESlIY2AOV7f2eQe3FvvQyOMOlZrnBIE1JXaBYFTk34L3X0GcFRU8gasgiCIJFG52+GlfCJ+n3Hgx8s4sElo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TmQJ8Opi; arc=none smtp.client-ip=192.19.166.228
+	 MIME-Version; b=ECxxF9YIyUTIaZCsUtmRm7wh47oqtGB0qKrvy9LJ3M2qt0Gt0Or37B7Atzd0CtJb27wWU/2QalWQXFvKoo6A5LdWhdI5q2I31vbwUQ3atHMQuF1dsE5IKeu3vAdjQv80yTbnaGHDZfAIwS1axidS3wsdDoo+J6dl4aFU966RQdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ljTh4B2z; arc=none smtp.client-ip=192.19.166.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TmQJ8Opi"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ljTh4B2z"
 Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id AC534C0000DE;
-	Mon, 12 Oct 2026 09:57:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com AC534C0000DE
+	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id E28F4C0000E2;
+	Mon, 12 Oct 2026 09:58:00 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com E28F4C0000E2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1791824279;
-	bh=+1K4HSp6pmkiyvbf8tMwek+cg4bb7uAnoYbeytWGhB8=;
+	s=dkimrelay; t=1791824281;
+	bh=RbKEQ9Ao6sfM8uo8Xav6MW10A4+TnfLMYt6FY1stsN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TmQJ8OpilLjGMIWXqCJKtmgBRm0JWJDCz/bp+sLcIQfDt7b0bl8pFHzgoNJ077VxW
-	 WENJNGlnuxTa6M78aFtcM+UI6VVjXKnPIknQLkhi8rEr470Hsx+HpKvlPbGxaJ7xDh
-	 zFs3CN38BArhsIHP9inpwtr6pLv6jLRosBS+N5Jc=
+	b=ljTh4B2z1rdjJRbLBSvxvosP7gSxtvi0gfOCulJMoFJSIvJCF5hrZCGfkaMyhih9p
+	 KycwRFcw3KzQ5/+Hr29LVUY3A2z5EF4qtIfof7YnLDpCBhVSpJVCqvZWqfXn7ZBPw2
+	 j3u1DUZfobhjjGkiE3lK+igDm5+FsA175tyEtvv4=
 Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 6492CAEA3;
-	Mon, 12 Oct 2026 12:57:58 -0400 (EDT)
+	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 9A54EAEA2;
+	Mon, 12 Oct 2026 12:57:59 -0400 (EDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
@@ -49,9 +49,9 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Simon Horman <horms@kernel.org>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v3 1/6] net: bcmasp: fix mib counters struct alignment with ethtool stats
-Date: Mon, 12 Oct 2026 09:56:49 -0700
-Message-Id: <20261012165654.3480668-2-florian.fainelli@broadcom.com>
+Subject: [PATCH net v3 2/6] net: bcmasp: unmap previous DMA mappings on TX map failure
+Date: Mon, 12 Oct 2026 09:56:50 -0700
+Message-Id: <20261012165654.3480668-3-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261012165654.3480668-1-florian.fainelli@broadcom.com>
 References: <20261012165654.3480668-1-florian.fainelli@broadcom.com>
@@ -63,47 +63,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When EDPKT stats were removed in commit e9f31435ee7d ("net: bcmasp: Add
-support for asp-v3.0"), the corresponding entries were removed from
-bcmasp_gstrings_stats in bcmasp_ethtool.c, but the edpkt_* fields were
-left at the beginning of struct bcmasp_mib_counters in bcmasp.h.
+When mapping an skb with fragments for transmission in bcmasp_xmit(),
+if mapping fails on fragment i > 0, the error handler calls
+bcmasp_clean_txcb() for previous iterations j < i. However,
+bcmasp_clean_txcb() only zeroes the control block fields without
+unmapping the DMA buffers, leaking the DMA mappings allocated for the
+head and earlier fragments.
 
-Because bcmasp_update_mib_counters() and bcmasp_get_ethtool_stats() index
-into struct bcmasp_mib_counters sequentially based on the order of
-bcmasp_gstrings_stats, this 16-byte offset caused ethtool to read from
-shifted offsets: the first four software counters read unused fields and
-reported 0, the next four software counters reported the values of
-alloc_rx_skb_failed, tx_dma_failed, mc_filters_full_cnt, and
-uc_filters_full_cnt, while filters_combine_cnt, promisc_filters_cnt,
-tx_realloc_offload_failed, and tx_timeout_cnt were never reported.
+Call dma_unmap_single() before calling bcmasp_clean_txcb() in the error
+cleanup loop.
 
-Remove the obsolete edpkt_* fields from struct bcmasp_mib_counters so
-that it aligns with bcmasp_gstrings_stats.
-
-Fixes: e9f31435ee7d ("net: bcmasp: Add support for asp-v3.0")
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
 Assisted-by: LLM
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Reviewed-by: Justin Chen <justin.chen@broadcom.com>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp.h | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.h b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-index 8c8ffaeadc79..9c9721da1662 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-@@ -250,10 +250,6 @@ struct bcmasp_intf_stats64 {
- };
- 
- struct bcmasp_mib_counters {
--	u32	edpkt_ts;
--	u32	edpkt_rx_pkt_cnt;
--	u32	edpkt_hdr_ext_cnt;
--	u32	edpkt_hdr_out_cnt;
- 	u32	umac_frm_cnt;
- 	u32	fb_frm_cnt;
- 	u32	fb_rx_fifo_depth;
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index f2176ef3a127..9ad5a982542f 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -285,6 +285,11 @@ static netdev_tx_t bcmasp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			intf->mib.tx_dma_failed++;
+ 			spb_index = intf->tx_spb_index;
+ 			for (j = 0; j < i; j++) {
++				txcb = &intf->tx_cbs[spb_index];
++				dma_unmap_single(kdev,
++						 dma_unmap_addr(txcb, dma_addr),
++						 dma_unmap_len(txcb, dma_len),
++						 DMA_TO_DEVICE);
+ 				bcmasp_clean_txcb(intf, spb_index);
+ 				spb_index = incr_ring(spb_index,
+ 						      DESC_RING_COUNT);
 -- 
 2.34.1
 
