@@ -1,144 +1,109 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC80B49B1FF;
-	Mon, 12 Oct 2026 15:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4110049DBBE;
+	Mon, 12 Oct 2026 15:25:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791818478; cv=none; b=PRNE+TQl4as+x7ZyGfuhtdqEsOXmZ3RdgmR/4CIJTUzX7pCCP5+tZP9mrto/cMrRLjzww5gpZizRVfPvE0V8hGfkHKj8NX3Vjhnm0qqlduikdGOa9DozaUKUwkQpKpZee7sKYIx/mzn5RSe/H9PfdFv4lQRsU2ap0/6gCRri97w=
+	t=1791818713; cv=none; b=O5PM2i+vRBeOUpuTyM6ZF8kE8OpE1PxXCnlWvitKC9muu3p/Pu9iTlCUZV2+VCA3cAj4oWN8ENCHhjAtSMAqVqGgBsIbcX07NLYl9pkln+hmfujFmS+iAP2g0S9Q3I1+mAuOxbk34hT9B7l/urkXSR1cYwkov9ZG72xAmuvTm70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791818478; c=relaxed/simple;
-	bh=ycpCiI1Kso8pgVV7aTQnjkF2GotpSaIp+0Wlek1u+pM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWLsiFWIFN7EeK9+63uc+WaS9OV637DRPSqp9apX3jtndSNjoL9EbEENd3M4L+X5yR7TgAFg2LxIi10poNJiuUvXfvXkyhsoYmfSrh1Yjp3vJBnwm/KtEGMhAeJmED/tLZ3xsz636Sr0bEACewbMC4Axrx6MHGXoktldPuGu/G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xEy7UmDi; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791818713; c=relaxed/simple;
+	bh=bgCkOaW6e1+isC74eKNQ1VVmKd0oNZQtZ7jjnfh34Lk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=n5P0X5G7Xz9L/36apDIvKs3bShrACytd3wsURW4o0uk/Fjb9EbnY2YHKkw/DlvSkeotwxdDcJ9w/7DIRHSTEy1dTsfZBjWs1Hb+8wa+/masGPLHjJut/E6P3X44n6Ol7qUB++X1rN4vIT8cE89l/aG5GacxHq/wRPf4semFzIng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=INosGET8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xEy7UmDi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Y30aZcmhfSW3cW3UZF1TKGwOZx6lNawDnr5gaKUlFb8=; b=xEy7UmDiK/3QlHWmawceDe/2Vv
-	6S8oMDVWiQ9TivuWl8SZFgRT61BPRUbQ1LR+gBZMI6MnHljzXOXKd+1r/9y9rBKgmntXhgnjCQUwe
-	e00S0PIkP8tn577CtBxNVB7ftVXT48xD2idN+8BbPStHlKY30QqfvFd9t04tMExcsOss=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xGHpl-00ALtQ-R4; Mon, 12 Oct 2026 17:21:01 +0200
-Date: Mon, 12 Oct 2026 17:21:01 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Xin Tian <tianx@yunsilicon.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	weihg@yunsilicon.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH 02/15] yunsilicon: add the register HAL
-Message-ID: <d9d02f67-558f-426f-b3a4-b13bd0a95c0e@lunn.ch>
-References: <20261012114352.2471317-1-tianx@yunsilicon.com>
- <20261012114354.2471317-3-tianx@yunsilicon.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="INosGET8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBDB1F0089D;
+	Mon, 12 Oct 2026 15:25:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791818710;
+	bh=6hbVwLc+Eobakx5L2leuGY1znHSunoczQPN33A9OPuQ=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=INosGET8+gkJY3NiKfECcItxHVcDRcrTtJjRWL+EEazcwlebusLiQd2hb2SE+63KL
+	 k1W27SZfpzwc2NFtpURMZw3GI3g4AotUC7N2c6in+kf1NksOeTUJ5tIKMD3CCMH9Z5
+	 gp75xEq25LL8gQnl8nw68QOJaBD7m3HuZRKJduIMyU9MJjRjtfydJMgBiiLv6/j+e5
+	 JqqdAIKcL9bxm5hucOCwOYnQcw8q4aqnbnKvMgCqUn2oB8tFan+vnfvgah/sY+5Hur
+	 8VlJd9IRr55yzf/Ipzg1l4ePxQWIzE4p1SecQ6U5U/5hnIB8d/j7qehOb+m+VbYWof
+	 nwWuz3Zz/9X5w==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DA063F40066;
+	Mon, 12 Oct 2026 11:25:09 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Mon, 12 Oct 2026 11:25:09 -0400
+X-ME-Sender: <xms:1fvMavdm_-o250QfC2x2xyX1RtqXTJT0g9KjwN7mNElNeSyBBfzXhA>
+    <xme:1fvMagCVg34-PS09WFYsu0tZOgFDhPBJ7UDuBD7PFte5BcU_SH9o-P5Zy0J3pQfy7
+    O43vyRPR7uJvlrn4buz5etWs0WnJquTbsL5D4G8gU_j-mRGWMyoiuE>
+X-ME-Proxy-Cause: dmFkZTEOnW4i8X4wWC901D8Y1o9KOcazIEmT/stD4L/DlfyOxF0GACBQdDeRx6eDgNyQI3
+    yshvgdYsfIacm1KxlDOAS8BqDJUmN2mF6k6sdeR3gAyweWrXhQIBXl3adS3ouMv5M8U6az
+    E9Q5k6ge7GIIAFY0x7OLY1UQDSw9WyN1mq/gaKSrF6P1o57m9iFMPL/zAzz32BHXGoscXB
+    naeawCkdb4jtBH9vmRiUyj98QkmvUwJenJERcUsQsKKm4pi2+e87Qac4CKPVHDUdCY/76y
+    yKksX9K8fThe5AUJukG8iFUW5raJvMVcy78fQw9/usYzM8HKAwvGcLUB8JLMW4hfksHGcB
+    +3frmvmwaLl3y218Wpfnky149QjTX2qBEHaBcaV+oA1fNAOVPzLXYBlDSFuECebz24OZQ9
+    R4RU1yvk9FjEfCR5CiJ5waBE+tbtfYaX72QBKS9/J+8c7szqOzVFulRB5D4TP7SQ10Ez7y
+    pPRHwcMRE3pNNludtWkhoYAuhl920+92UrPMGYSNgvxk9CUp3KHCCeORI9FO3/K2ddrCOp
+    Av3X88wjeBupknfFqAI6JIDMrg0TxqxRpvC28LmUckm20RRLjdIPXHIXij+enkpWX2ukGI
+    FlHZ5PUB2Gv1iRRtJTKCb61MXfCr45gKy6RDmWlzXxPkmA7xSDGo8co2gk9A
+X-ME-Proxy: <xmx:1fvMajQgGIiG1W-3sM68lWQj0qShzvc1Om_9L-RUI8jXma4iEgnccw>
+    <xmx:1fvMahe6znQfPR3PTJxSbokXHXaGh84JgezRVROG5DEkBtdA_1X7VA>
+    <xmx:1fvMasvIV3DrXIHmS62ddPaFhO60WQDoH5X68IxytmGSoBpbR16wRg>
+    <xmx:1fvMatLTsHaa5FC22LgShujHd0isPJl3t99Kj2cdDSgo41vXjhPvfA>
+    <xmx:1fvMagYqqJD_fcjqxuTAT562-Ec6KUoMCCKDzHUhjLxlIP2zUdrwC9eG>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B0BE1782738; Mon, 12 Oct 2026 11:25:09 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012114354.2471317-3-tianx@yunsilicon.com>
+X-ThreadId: AcXweelUJT4B
+Date: Mon, 12 Oct 2026 11:24:49 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
+ davem@davemloft.net, pabeni@redhat.com, horms@kernel.org, davejwatson@fb.com,
+ shuah@kernel.org, qingfang.deng@linux.dev, edumazet@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Message-Id: <daf8b73a-f3df-424a-86ca-6ef67430671b@slotpi15m67>
+In-Reply-To: <179175091859.434549.6003999701782227362@kernel.org>
+References: <20261007-tls-follow-on-v3-1-6d52d98389b3@kernel.org>
+ <179175091859.434549.6003999701782227362@kernel.org>
+Subject: Re: [PATCH net-next v3 1/9] tls: Bound consecutive no-data records in
+ tls_sw_read_sock()
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 12, 2026 at 07:43:55PM +0800, Xin Tian wrote:
-> Add the register access layer and the per-device register map: doorbell
-> and interrupt registers, the command queue pointers and the device
-> capability queries that the upper layers call.  The register map is
-> described by xsc_hal.h and implemented for the Andes device.
-> 
-> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
-> ---
->  .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   2 +-
->  .../yunsilicon/xsc/pci/hal/andes_impl.c       | 708 ++++++++++++++++++
->  .../yunsilicon/xsc/pci/hal/andes_reg.h        |  43 ++
->  .../ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h |  85 +++
->  .../net/ethernet/yunsilicon/xsc/pci/main.c    |   3 +
->  5 files changed, 840 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
->  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h
->  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h
-> 
-> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-> index c163aa950..81b65232e 100644
-> --- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
-> @@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
->  
->  obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
->  
-> -xsc_pci-y := main.o
-> +xsc_pci-y := main.o hal/andes_impl.o
-> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
-> new file mode 100644
-> index 000000000..46fc045f9
-> --- /dev/null
-> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
-> @@ -0,0 +1,708 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (C) 2024 - 2026, Shanghai Yunsilicon Technology Co., Ltd.
-> + * All rights reserved.
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/pci.h>
-> +#include "andes_reg.h"
-> +#include "common/xsc_core.h"
-> +#include "common/xsc_cmd.h"
-> +#include "common/xsc_hsi.h"
-> +#include "common/xsc_reg.h"
-> +#include "xsc_hal.h"
-> +
-> +/* message opcode */
-> +enum {
-> +	XSC_MSG_OPCODE_SEND		= 0,
-> +	XSC_MSG_OPCODE_RDMA_WRITE	= 1,
-> +	XSC_MSG_OPCODE_RDMA_READ	= 2,
-> +	XSC_MSG_OPCODE_MAD		= 3,
-> +	XSC_MSG_OPCODE_RDMA_ACK		= 4,
-> +	XSC_MSG_OPCODE_RDMA_ACK_READ	= 5,
-> +	XSC_MSG_OPCODE_RDMA_CNP		= 6,
-> +	XSC_MSG_OPCODE_RAW		= 7,
-> +	XSC_MSG_OPCODE_VIRTIO_NET	= 8,
-> +	XSC_MSG_OPCODE_VIRTIO_BLK	= 9,
-> +	XSC_MSG_OPCODE_RAW_TPE		= 10,
-> +	XSC_MSG_OPCODE_INIT_QP_REQ	= 11,
-> +	XSC_MSG_OPCODE_INIT_QP_RSP	= 12,
-> +	XSC_MSG_OPCODE_INIT_PATH_REQ	= 13,
-> +	XSC_MSG_OPCODE_INIT_PATH_RSP	= 14,
-> +
-> +	XSC_MSG_OPCODE_UNSUPPORT	= -1,
-> +};
-> +
-> +#define REG_ADDR(bp, offset)	((bp) + (offset))
-> +
-> +static void xsc_read32(void __iomem *bar, u32 off, void *data, int len)
-> +{
-> +	u32 val = readl(REG_ADDR(bar, off));
-> +
-> +	memcpy(data, &val, len);
+> [Severity: High]
+> Is this comment accurate? tls_rx_reader_release() begins by calling
+> tls_rx_msg_maybe_announce(). That function calls the consumer's callback
+> synchronously, and reader_present is still set when it does:
 
-Why memcpy. Probably because the types are messed up.
+The comment is wrong, and so is the claim in the patch description
+that records left queued raise no sk_data_ready(). Since commit
+22f8bf8808dc ("tls: Suppress spurious saved_data_ready on all receive
+paths"), tls_rx_reader_release() announces a record that was parsed
+but not delivered, and that is the state the new break leaves behind.
+The work item adds no value: when no record is parsed at the break,
+the next TCP segment or the strparser's own work item raises the
+notification. v4 will drop the work item and correct the comment.
 
-> +}
-> +
-> +static void xsc_write32(void __iomem *bar, u32 off, void *data)
-> +{
-> +	writel(*(u32 *)data, REG_ADDR(bar, off));
-> +}
+> Can this self-deadlock on sk_lock.slock, which this CPU already holds
+> through bh_lock_sock()?
 
-Please sort out your types. You should not be passing a void *. Pass
-u32 *. Casts are a red flag, they are generally not needed and
-normally indicate bad design.
+Only with KCM attached under TLS, and that pairing does not work
+today: tls_sw_read_sock() reaches sk_flush_backlog(), which takes
+sk_lock.slock. The release-time announce already fires on the other
+read_sock exits, so the break does not add a new path.
 
-	Andrew
+> [Severity: Low]
+> schedule_work() queues this on system_wq, which lacks WQ_MEM_RECLAIM.
+
+Moot once the work item is gone.
+
+pw-bot: cr
+
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
