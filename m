@@ -1,133 +1,129 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA933BBA0D
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 19:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791835104; cv=pass; b=iN55TptIzvsBBWzVGu1CFYCcnBoTzt3PuDkK62o7WQoELH97IMyM5hCToqEkLFnchllEUgQ6Khh1XGJZlr4Y0nMakav+a9SlG8SofPC4W+60GjR+ravXczY/KaQD5N2pKDixk/d4vCwX2lfW1nw2n5VILM4YenBjO/8nqyS3ugc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791835104; c=relaxed/simple;
-	bh=9CqODtrMg3/CWIZedjDFXAmbYBfJDtfkHV0FmFGgZcs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OGa5TsfdE6ZLNpvEDtTbLYU717shKvVrH8882u3lA48rZUwvhMa7vnBqL7BQdD4OUXe7afEXcgMGtirsX/kLpfTOQxZ128eESSelOeHuvifFbGa0th5sPu9DmayqZ4GmwQxY23+pN9kB8wr1qU6dZZCdyi8EgKIErW6LuJBr9rs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nLYUJKKr; arc=pass smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6314E141D;
+	Mon, 12 Oct 2026 19:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791835116; cv=none; b=qy0PFblW0qrpyUcmYPAW5/8F1qcYlzix+dpB2DPtZp423K5kqxcPOIzaLmQ9VhHJjX+funDkGLz0z7+1ARiZgt8a0lQDK1vpWpSjOGiAtBD3BNz3ptQWi7dCSSls8F/6T6B/lmUf447cbicyOOoEHQZxml2V40swmzgDfn0Y9i0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791835116; c=relaxed/simple;
+	bh=LHDpUqoIUY73agKLC0JPTYyrCYH/uP7gZDbQ0lKiftQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=b8Sjx3bzjRDcfvv0i1epE5Ua8pkWES/XoWNDQkqzrr13Yw3Ce7bqkY1WpWl8QzRd/DtLdmtsEkuNX4emSVb1uSNn429tT89NjzwnEjq1OZrZ+v5dEKc3wK3bw/C+1WcNTZyHQ2qXhBrYnbQUR8JeLApG3ZXnZgpv0qZstqD7WYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NkIVWrnF; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nLYUJKKr"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-15ea896ddc8so3161842c88.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 12:58:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791835102; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SfqEbhAq2s56/aesH+tXThNEEZoWdz0jxepHInu2KmVJHUaFkvkNTLnPOXB9zs3SZk
-         nWz8ZzrnUO3HG10iICVXA6iFMO7s3W1RAKrUFyPqUfC/HIxTSqStC6PnUHXTaQ+g6NE5
-         fGZEb1vtDvFWi0vdzmFIqBzRYrUrso9strAsBeY4E8zthTB2Vi436P6+74nyz9RkA7gu
-         G5PD9nj0KG4v4IQCXlHDiKVTvXmRfexwPuDbI3teliLEqym9y2rwW4cDxsv+1nKIkcK2
-         7TozsNyY+7XnpJjr8kQ3S6BNCHtD0NW9SsyPSbsdPicDYFa/Cb8Wh25xvizBJXo+zoBp
-         Fj2w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9CqODtrMg3/CWIZedjDFXAmbYBfJDtfkHV0FmFGgZcs=;
-        fh=sn2/MVxEyDmQBvKVuXg4Y/RxixRTHCYfwO1lSgWSCG0=;
-        b=faUyeZJuQOU2g54TBF4vH/Jx5OQVaFmKlqnIjBtabFngRQBxh+jDUNJ+8Zp7N4CWkS
-         rr3kT4rf345k9pTPn9Isnxemxm21b/RB/bGW/raYsKAByTu7Syx8uNyCab3M96dVKSZu
-         l7pM3tQYcJHPm6lqvgKiL6kGudPFA4JQpHBucS9Fdk+Vs6KWc3CgWd94IcdxsUPr72c0
-         7c6XAuUYn4+6XeVyLrW6wCXM+koyfHdxu+bdI4VPIgnW+UHGQJ9vCRDhVDB48lwBR9SI
-         k5OUM09iErc3jXQSSjl8AJ0kKcb2kfXbH8ZwYYGMwN4kJfTtiNaC4OQlfUeyZ3Fp4Oqc
-         6VIw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791835102; x=1792439902; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9CqODtrMg3/CWIZedjDFXAmbYBfJDtfkHV0FmFGgZcs=;
-        b=nLYUJKKrRc90LpSgylw8vAQXOBWdZpod7ks5uelSm805CGyKvb2ouSbdoJcG42tOth
-         03ey2TBV/hMV8HVjbOskG08X+HeitUysERlWPJ7Hxz9JRFmbFesZa4856kU08LWyHavS
-         6wzE3P3W7EzKA4TtwpXx3hWBQeUShxXakWgoj3j3XQOm/KTrf6TsErkISI5ofyVVpJ3S
-         k7PH2OrQGYAyGGMbSkM5L3oYimxTN5p0gewakKcJheMFyGDMaw2zkCglk0SW5luuM0sr
-         yV8P0b3hGSo3nGY2qKeWiEd5+dXlYikuaDtlSNupGA4qvH+/xfhzTs+NBT9ltdH1QY5T
-         vWlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791835102; x=1792439902;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9CqODtrMg3/CWIZedjDFXAmbYBfJDtfkHV0FmFGgZcs=;
-        b=PqXqoTyMTSD45cST/3gDmQ/KP1sGOpykxE0v/ndpduOmcP6wE5U//rSuk7Y6mwdgrw
-         j0ZC+xaSeB8GexpZtZEJf+gNXg/eX+ckEkdYpJEDF+xFZ2oMEKHmU5RXc96F8OXDnftD
-         M+x2v3GXSY7Vn2PLbKk50Irh5gaoAaee8Gx/ARJWJSD6jJKKwZkS7i8pyWFPm+LF05Fg
-         p2Yj4vg6Tmv7r+Wv2q7GbdpcIGmw19b6CAJgItVmKEsLrb0IdqPAJLkEDS1xbHvP9Ck6
-         W2F0czdZOboG6e9HcR+inox15NatX6GTAnEoZpbdbklU+sLFhWcua8RrLj/XZrhDiFhl
-         /3CQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwGYG4mG/NX8xwG2kk4CznpJgUpljVlU8epe9n8edCbdKyOGXn0tuZg8U+UmdKds2vD2B57MKI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYICwtkD++HWrZCKR0486xzF2gZbwx1rz2cEGMAhSniyWdaX1rpJ
-	AKEuDq+FuW7ZtMZgyBvZ+jOUrB4w2llbAYEy9xQuJMRPC5XtCWWaNJT6X+SCzelCtQ1R05DgCId
-	d4Hodxlr+6kM6jawEvc3E8k4jiwMNBveXtjuR5NKW
-X-Gm-Gg: AYBFou1i/8s1OZB8j7OeZaZUZ54dh1+PeCL4p+eJq5m0H0+dNoYlA4i8yaDyqSJCrtw
-	Pro+JGhyhGtgWcIv2MlUMGAc3EPif7HLddyqOrnNF+JgM6dsxZxORijub9rN1g9DFOPFuz8e5rN
-	e3ch+KVnF1msYYau6dlMMQBzPoQoo1VXsDgfiV54NvcJ2qXeD2n7yKo6ia2hdsARqs847IXwaYO
-	blLHTM3t9y0nd4GOjd7RUpBEkZI4Vk7mrvuk1JHETKAu9JQIBo6orkWAYA2NSEod4ON6CQJWtM/
-	+8PS7cGpIRt4GS/06zD/Dja2ekx6cLls0nHEIY4jVL69IfkVfYd0jtShMawjdJ9U02aunAH8Xd+
-	eyXMrA8F4G7fd0vabCQ9aVd0XQz8qnYqe+eHqUszIIZOFSCIQgfUUativxugSPXc57K1OzVmTav
-	gmCrO0zW36od4zDTBrf588e+CSZ+yumtJw
-X-Received: by 2002:a05:7022:927:b0:150:c9c5:1ce4 with SMTP id
- a92af1059eb24-16a56ab133dmr18137447c88.6.1791835099991; Mon, 12 Oct 2026
- 12:58:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NkIVWrnF"
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CJO5Ms1953201;
+	Mon, 12 Oct 2026 12:58:28 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=aySQG+wpA
+	fhuaLrRAC0TXgBqWFy64W/qu6r3MZnQmOs=; b=NkIVWrnF9Mo0Ah2iHKueG4WqA
+	ANIMpNOtxzQLT1j7FxRmsjh+SyePN/OigIKb9u8B33p/Q/LHDQeDhT1VyZ6VSbTh
+	9gzDnRovggCx8636rYKqXQ+6eKUBd//9wi9gMMPSFsSoGIv2wt7giTinkUcVvUJN
+	tNSu9mzPiSxG22soSp2kQmG5JXhbfQSFO7BkaplLt5l8km48yl+nyh8zwzipqxBc
+	X7QNhTHpf+62plkFXlCPRpPoQXMbo4XLrrMVMzywVjnuJdwzFgtVjjU3KzISdQut
+	GABUr/iBOOnoAgG2JR9KlJSGFSLAy/UNoRvf6bnThjsEaelkVII7G4pFdqyJg==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h89yjsmk0-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 12 Oct 2026 12:58:27 -0700 (PDT)
+Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
+ (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Mon, 12 Oct
+ 2026 19:58:27 +0000
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+Date: Mon, 12 Oct 2026 12:58:08 -0700
+Subject: [PATCH net] MAINTAINERS: add Bobby Eshleman as vsock reviewer
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009074405.727999-1-edumazet@kernel.org>
-In-Reply-To: <20261009074405.727999-1-edumazet@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 12 Oct 2026 12:58:07 -0700
-X-Gm-Features: AclHuK8Ph1QicxKSbFP6g7v6tRyuraJCu_WyYr7x5BkbyhfjX4NwZ3JJFI1RoWI
-Message-ID: <CAAVpQUA5FEMWV1R4vy2+uzQc+_iLDaz4m-D6kfKYngGf2sE0Eg@mail.gmail.com>
-Subject: Re: [PATCH net] ipv4: use RCU protection in inet_netconf_get_devconf()
-To: Eric Dumazet <edumazet@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
-	Eric Dumazet <edumazet@google.com>, Baul Lee <baul.lee@xbow.com>, Cen Zhang <zzzccc427@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
+X-B4-Tracking: v=1; b=H4sIANA7zWoC/x3MwQmAMAwF0FXCP1uwPRTpKuIh2qg5GKUVEcTdB
+ d8A70GVolKR6EGRS6vuhkS+IUwr2yJOMxIhtCH61gfHObuN1U5Wk1LdOEXpOM4cuxEN4Sgy6/2
+ PPUxODO/7AaLHUMtmAAAA
+X-Change-ID: 20261012-add-maintainers-bc6e8a6fa68b
+To: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
+        <kvm@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet
+	<edumazet@kernel.org>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        "Michael
+ S. Tsirkin" <mst@redhat.com>, <linux-kernel@vger.kernel.org>,
+        Bobby Eshleman
+	<bobbyeshleman@gmail.com>
+CC: Bobby Eshleman <bobbyeshleman@meta.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-GUID: 30UUzFJCRlRT9JyEHzj6nT4uM6MJ5sDW
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA3OSBTYWx0ZWRfX1xOF1rEgGnxV
+ Rg50UoHUwXKcQwh9pig03bdolJX6KqA3wCXyaCbzREHr1mqpL6d7mZee+8AMXjMc+zrFwz5+/ON
+ TujjMjOMFoax8UiCDEgkQ0N0W7hJvu0=
+X-Authority-Analysis: v=2.4 cv=YaUodARf c=1 sm=1 tr=0 ts=6acd3be3 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22 a=VabnemYjAAAA:8
+ a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=YPFdDlkatZT_ntEAilkA:9 a=QEXdDO2ut3YA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA3OSBTYWx0ZWRfXy7ZpZF9Ocwzf
+ FePX7xoY9jPRXtsanQ0ZHyAcnidYMUBQSiIAY9lz5DiBHklWo2noNfUNvBcILravUK2QmmR4S1q
+ TbvgWp728ApKuhuWEpffX8gWxKWU/ILejvR79Euc+U7KNBWtLVJTWPVcRzHazNTS0bEDUaYNrcd
+ UZvr/rWEIO7nAWIrsj8XXVJq1dyma6lqa6USIn2cihoiHn6gkzrb1ILkOiMpLHz34/TzOGd2BrX
+ SqDWkVwPg4LTViJw7JEXtOBvm6ygEtNL73ak3XI87K43ejRcG6geARxhBdLbGZotykXjZtaLNjg
+ DJRyhogVeMCldDW+NnQ6IyDxD8X1WzDWe8aubro461yc5xsZGsG1KJuBy3E83t4fOpDNNgTnuMt
+ zcrNpCVuvTTNm4lzR1xG+uBW2p0PwG+ffaU8czJ3zsvmjZvGsxafYsXflEaeGiUbnCGCPrTaQrR
+ Af6ixAlCcEptHzrhN2Q==
+X-Proofpoint-ORIG-GUID: 30UUzFJCRlRT9JyEHzj6nT4uM6MJ5sDW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_06,2026-10-09_01,2025-10-01_01
 
-On Fri, Oct 9, 2026 at 12:44=E2=80=AFAM Eric Dumazet <edumazet@kernel.org> =
-wrote:
->
-> From: Eric Dumazet <edumazet@google.com>
->
-> inet_netconf_get_devconf() runs without RTNL. It uses dev_get_by_index()
-> and in_dev_get() to pin the device and its in_device while the reply is
-> allocated and filled.
->
-> in_dev_get() is not safe for a lockless caller. Since commit 9d40c84cf5bc
-> ("net: devinet: Reduce refcount before grace period"), inetdev_destroy()
-> drops the final reference before the RCU grace period. A reader can load
-> dev->ip_ptr, then call refcount_inc() on a zero refcount after
-> in_dev_free_rcu() has been queued, and keep using the in_device once it
-> has been freed.
->
-> None of these references are needed. An in_device is freed after an RCU
-> grace period, ipv4_devconf is embedded in it, and
-> inet_netconf_fill_devconf() does not sleep.
->
-> Allocate the skb first, then perform the lookup and the fill under
-> rcu_read_lock(), using dev_get_by_index_rcu() and __in_dev_get_rcu(),
-> like inet_netconf_dump_devconf() already does.
->
-> Fixes: bbcf91053bb6 ("inet: do not use RTNL in inet_netconf_get_devconf()=
-")
-> Reported-by: Baul Lee <baul.lee@xbow.com>
-> Closes: https://lore.kernel.org/netdev/20260815172032.79740-1-baul.lee@xb=
-ow.com/
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+I've been reviewing vsock via lore+lei for a while now.
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Finally adding myself as a formal reviewer, since vsock will continue
+being stuck with me for the foreseeable future.
+
+Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+---
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f53047aa8d3c..cc1341f6e15c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -28840,6 +28840,7 @@ F:	virt/lib/
+ VIRTIO AND VHOST VSOCK DRIVER
+ M:	Stefan Hajnoczi <stefanha@redhat.com>
+ M:	Stefano Garzarella <sgarzare@redhat.com>
++R:	Bobby Eshleman <bobbyeshleman@meta.com>
+ L:	kvm@vger.kernel.org
+ L:	virtualization@lists.linux.dev
+ L:	netdev@vger.kernel.org
+@@ -29145,6 +29146,7 @@ F:	drivers/media/test-drivers/vivid/*
+ 
+ VM SOCKETS (AF_VSOCK)
+ M:	Stefano Garzarella <sgarzare@redhat.com>
++R:	Bobby Eshleman <bobbyeshleman@meta.com>
+ L:	virtualization@lists.linux.dev
+ L:	netdev@vger.kernel.org
+ S:	Maintained
+
+---
+base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
+change-id: 20261012-add-maintainers-bc6e8a6fa68b
+
+Best regards,
+-- 
+Bobby Eshleman <bobbyeshleman@meta.com>
+
