@@ -1,748 +1,216 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06833E5EF7;
-	Mon, 12 Oct 2026 22:49:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8FD343883
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791845393; cv=none; b=lgM5NLEi6ZHMwmc5UNfcWJRvDiNEMp7T5e67YADI9qmjPwhufzAKI39ZRL/4HvBySXZtupi2zorF0WV/C46RPJVziANrQwD1qaB4KjJzsYhhjvwCHolqA+vwyVnDG1X6XysBPXIyivMURLI75owhcfnrST6bX5ghLoanOmnQ3mk=
+	t=1791845562; cv=none; b=hHTdSxjEe7dQ2sz+pv/zpH8mTToXzvvRXn6YUavvJsN0CrGoje4BnxM6buiopqFHLHXOph7ktQzmWjQppRFzChW+JkNQDI4Dyhw2fADFsP1dWI92IDATVApBxMjhRCbKN1Te48RSzoZ/52G2uHEeGEWbZjrszibyhRtlzyno8G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791845393; c=relaxed/simple;
-	bh=nmdygpifJ2JNHPtHmIQKnMfWjg92y8dqbfv281SOtdM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=uc0GZrN73io6aoJRUpl7jVRganVyaSBzFVxgVnyMQN6plNqSK0jH/n9MHhdjAXKScyDxDpnGciTpRK7mzUgsPSHexCoSD1Pm8QKgIy9w3yiW43GkzOCMpnQubAEvEqVdashgeSDqt3bFbt5GxpreJGSuUgBgwl8YLF9ijEtgkOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=GD1Dbjay; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1791845562; c=relaxed/simple;
+	bh=GZWneV3pkV6ZGzVEBwaa2IauTOCWWilGp7S4NzVa1MA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qpfDHp+hSOFkrOEhJmjlVKLt/Ochc24SRsVwZ9MTYkWSkp8HZyQW/CtbeEjPd8kkstRytmTWTibmh/gQVdQ1IlV7IlC1iIex62QsUy/qmJNK9sAnFIJqeOSSFp6SX/HZkfErSJFxIEBDRIC1nNM0PU4CKTLqNPUzlWupEOyUS+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Bfy7xQc6; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="GD1Dbjay"
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CJOhFU1060277;
-	Mon, 12 Oct 2026 15:49:23 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=WXlxidSFg0cx2lwleLPsE1w03jQZ2kwbFHaGq
-	RzAm+k=; b=GD1DbjayV3vxn3miIG7h7x9x2UxecNC5tcX8dJ1Gvwpyihn2M9eMs
-	w3ghWdaiHsMRvOMbtySJiItuhlD4OtidMbE5IbOPBSnWHomkJAsEQzHG+ztAA3Xt
-	K45YMGtiP0xXn9K35qFKoyzuJcuihJGsu9CzSY23C5zCu2jaXCecVby/QDPu9rsc
-	a+HOTVWglLI+qWxCbaGL+mEc3nDSc7R9TH9p0asJOr1h+lvwy7/vr6SPbRKgEgCl
-	kHwtLtlN7CYEjY/rgm253+N+b+5bNwQmgxrBeqtr84kzPAlgbkAEqK7P8uI5dCw5
-	ZhxbtoXZGhQv78fTPme5SBSz/6TBwDWLw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h7k208a4p-10
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 12 Oct 2026 15:49:23 -0700 (PDT)
-Received: from localhost (2620:10d:c085:208::f) by mail.thefacebook.com
- (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Mon, 12 Oct
- 2026 22:49:20 +0000
-From: Bobby Eshleman <bobbyeshleman@meta.com>
-Date: Mon, 12 Oct 2026 15:48:37 -0700
-Subject: [PATCH net-next v3 6/7] selftests/vsock: test the guest vsock
- device network namespace
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Bfy7xQc6"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3a0aaa0fd13so1587758a91.2
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:52:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791845561; x=1792450361;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=r1mqm/Jc3jA4GKaZyqWtHUWhabhcJrfuyicLgQd8HEg=;
+        b=2q7wgkVBPwi3LzD/TBopLdbjN8rx3igQtS4nlRJ3f3QJ1OcSVKSJya1oQjeZq2LcZy
+         FXiM5rAh9eIFbYwzothAWxu26bPBTaLWYUjCUdXMAwu21cqdlxDElNzLQ5M9ZWTaPmc+
+         vJcM4KjJLWDP8wi/WiEnQ9nH4WLAZPBbIGOFEMk+i361C9H1xP87hOOpmrDA/ViC4xBf
+         ZD59glXg8gXgXI0wHdxbaJoi+8lTnfcoIzLX6hKlNslqoYetzrSNDxTF30NxJIpaYrSs
+         ZSbfQittgccQeY/GekOU9ofvG0TUgZkd+jqAq5RNNuovu5KC3j4kV7Hm9z0i9EiNM8mp
+         X3uQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxlAb+6LxjzSJ5kluNeDsCejaaI8HZ79XuDdgcXFz+L3vbFMT30RE3aVrkvqgodyY2h7lXL8Pw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLwaUkGe5P3YazdxkMbrIEcG8k1bd/f1zBbYquioKQfcEDejg9G
+	M2+iR7S1jmwGmeOvBAXPS8cRFlMP9xZG+Xe8rVxyoJt6QsT+1PPjCB9I0aZP/EMQQrdr80es6gN
+	Yjb2QfZNG+pfGCbY+N19xRKcaLDnpKZgidTbzxphFNUEW25P1UT1gYWzWC2FPWGzoPiPibTryDi
+	I+9ghk/PnV1nGDXr6KAu4V7k3ADCYZaMze5h95gXKccXB99eL+ygK7bM/sLLt15+Obh4Se8PgOY
+	idk3bCXx4M=
+X-Gm-Gg: AYBFou0ReKhj6BEWKGGw/khRaCq8r0Jus30Vs9ZWtVQnHWiJIVIqP5cY+sHYTm/pEl0
+	xviZ/EQRSLvBXbrYrfxCR7K5ic52SjH9lHOQHzhmPIoxiMmxW7h8LdGFHMg3wNJ9A7G7nwSw9dA
+	umcMqnYA+sMk7ksPv1gt6gSQRvj1cwdeduLsrvMPQ3N4/bmm8z51MJ41mHqQpniyvNTnTupSAru
+	octjEQqHGeQKsiwRi9mkNkO1LmN1yKQnhwknSSEjgu3d9/JCZxc5ikUO5EJokdFjbFEdsG9pIqg
+	tEH9D5wvKhYTUEv95/kTaCgKU2Qk0BgEKXEXAeYJ4ZEWCdiYMuOWX0h97qVCAYPZ7+WTSl1d5nE
+	k4MMXNIqYav3gBXcEhpkro1kBGyQq2a1ektYm4+rV+f3IY/XgG8V2VbNid/fx8mrYGGC/gfKKkI
+	sr0wC0n3WoAHjIMl2cfA6mAOEOqS5JNk63Vp9BhA==
+X-Received: by 2002:a17:90b:1d48:b0:3aa:f2c4:12ee with SMTP id 98e67ed59e1d1-3ab3a3001demr8977683a91.8.1791845560473;
+        Mon, 12 Oct 2026 15:52:40 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ab370e4b6csm6170742a91.2.2026.10.12.15.52.39
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Oct 2026 15:52:40 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c29466736e3so251383466b.2
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:52:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1791845558; x=1792450358; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=r1mqm/Jc3jA4GKaZyqWtHUWhabhcJrfuyicLgQd8HEg=;
+        b=Bfy7xQc6LuyyBuR76nuMqBvJ1G2hI5BmipLk/47EvpreGzGNAIfD2k5yv+Q7kjvb4P
+         PJRpG0U2JeWcLERUajfU5lrtgeb1l4HbaTF5h/q4tH8YOOQUlsypfwBGlofoU27HgJ/r
+         hOVa78yNhjtT5CQhDItorpp5zsLm2iTi42zHo=
+X-Forwarded-Encrypted: i=1; AKwUvBz5LqMHEGFKroRZd3Imivh++/d6t9cqBaLEAHuoPq1LuuG7kFOWX7RJd9rd0ibpP7X4gbFLDzc=@vger.kernel.org
+X-Received: by 2002:a17:907:9451:b0:c33:ae8b:817d with SMTP id a640c23a62f3a-c33ae8b8566mr567498566b.46.1791845558407;
+        Mon, 12 Oct 2026 15:52:38 -0700 (PDT)
+X-Received: by 2002:a17:907:9451:b0:c33:ae8b:817d with SMTP id
+ a640c23a62f3a-c33ae8b8566mr567497566b.46.1791845558065; Mon, 12 Oct 2026
+ 15:52:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261012-vsock-guest-ns-v3-6-b32447c66b23@meta.com>
-References: <20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com>
-In-Reply-To: <20261012-vsock-guest-ns-v3-0-b32447c66b23@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>,
-        Simon Horman <horms@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Stefan Hajnoczi
-	<stefanha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang
-	<jasowangio@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
-        Shuah Khan
-	<shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-        Donald Hunter
-	<donald.hunter@gmail.com>,
-        Eric Dumazet <edumazet@kernel.org>,
-        Eric Dumazet
-	<edumazet@kernel.org>
-CC: <virtualization@lists.linux.dev>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <kvm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-        <sargun@sargun.me>, <jlinbox@meta.com>,
-        Bobby Eshleman <bobbyeshleman@gmail.com>,
-        Bobby Eshleman
-	<bobbyeshleman@meta.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA5MCBTYWx0ZWRfX8DXjT6V+outD
- 3uDRSTQigvluS/KUnK9tr8waX1Tk3jqPTvXgL1Y+gagc2QYjbsBoLkr+wCfbSBZC+34RUKdN8fn
- SxNXks9vB8LeyOEZKglZOErWw71KNL0=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA5MCBTYWx0ZWRfX3N2bxoh3XQg+
- wWrs3B02EaXM2zlm3J8FtJE1L7E/vbaaumrOJS/qF2XrXCKkSVlwTJgsxIKRcvZOnmExVMGK81s
- F7Y2057K1gi9Jd8hW7MlOd3VmOh/CbnEj3g9tR1dtvIia9gcu+iAeLJbzg/bPWTWe33bozcpslW
- Ir9j+PHD7rsM5ZsL0+gF8po4hA1kz0FmflJpZukCE/UyOldL1ctN6LsdsXhFmKbKtlpA0hIsBlW
- Y1ghMd+K5s5TsPfy80ap26tjcoal2ugNG9jOwVkDKhxCcZFS6aPl/b7OO/x4aaF2YPhQ45/Xbqm
- tReDLfnpS9K5s5RC2JcA3fPUuDDSHp3uYaIW1gvGh73ZDf5p3nv1cvX8InExiVZeDk1KDnFywAa
- mQEHKGnB43ISa8seS57dXFq2Uc1pFBnyGzpofl90+o8SOJ1hS3zNwMGQcsI3hJtyM30546ojlMq
- nrjitIuAfa+KOJVmo1Q==
-X-Proofpoint-ORIG-GUID: g9ZT7JmFuwC3MRAOapaeImWQ8DiXDyOo
-X-Authority-Analysis: v=2.4 cv=Z/V5j3RA c=1 sm=1 tr=0 ts=6acd63f3 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=PAz_-FQ8hEVmOPYdF0yf:22 a=VabnemYjAAAA:8
- a=bwb2axNAknaXDuCKphUA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: g9ZT7JmFuwC3MRAOapaeImWQ8DiXDyOo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-12_06,2026-10-09_01,2025-10-01_01
+References: <20261012220827.340998-1-michael.chan@broadcom.com> <179184330708.2527009.13518324856778830889@kernel.org>
+In-Reply-To: <179184330708.2527009.13518324856778830889@kernel.org>
+From: Michael Chan <michael.chan@broadcom.com>
+Date: Mon, 12 Oct 2026 15:52:26 -0700
+X-Gm-Features: AclHuK_8XgCEqgU5BIx1oBqnVRrdOpQGtTYpgXSJUgrWqUBCjel5AHr4ctvUAag
+Message-ID: <CACKFLimaXb6sPWgpq9mAY0zjGfaqP+hheuWs9N9nD6oS7trz2A@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/7] bnxt_en: Ring accounting fixes
+To: netdev-bot+sinfo@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, 
+	pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000003c9a6065dac8e9a"
 
-Add tests for guest vsock device namespace assignment, including ns
-destruction and the device moving between namespaces.
+--00000000000003c9a6065dac8e9a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The tests drive the device through ynl's cli.py and create guest
-namespaces with unshare, so they need python3, PyYAML and unshare. A
-missing one skips only these tests, not the whole script.
+On Mon, Oct 12, 2026 at 3:15=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
+:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
+>
+Sorry, missed this information:
 
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
-Changes in v3:
-- Replace reset_on_ns_delete_ok with pins_ns_ok, to cover the netns
-  pinning
-- Skip only the ns_guest_ tests when PyYAML or the ynl CLI or spec is
-  missing, and ship the ynl bits via TEST_FILES for installed trees
-  (Sashiko)
-- Also skip only the ns_guest_ tests when unshare or python3 is missing
-- Make vm_ns_start() wait for the namespace and report failure (Sashiko)
-- Poll for FIRST in old_conn_send_fails instead of sleeping, and report
-  an over-long assign as a skip (Sashiko)
-- Kill the guest-side socat by name, $! names a local subshell (Sashiko)
-- Wait for the host listener to exit before the next test binds its
-  port (Sashiko)
+The patches were tested on 5750X and 5760X chips using production FW
+version 237.x.x.x.
 
-Changes in v2:
-- Drive the assign with ynl cli.py, drop the vsock_assign_g2h_netns
-  ioctl helper and its patch
-- Terminate the guest socat sender too, it sometimes outlived the test
-  and kept holding on to a port the next test binds
----
- tools/testing/selftests/vsock/Makefile  |   5 +
- tools/testing/selftests/vsock/vmtest.sh | 502 +++++++++++++++++++++++++++++++-
- 2 files changed, 501 insertions(+), 6 deletions(-)
+--00000000000003c9a6065dac8e9a
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-diff --git a/tools/testing/selftests/vsock/Makefile b/tools/testing/selftests/vsock/Makefile
-index c407c0afd938..2b066ba91bcd 100644
---- a/tools/testing/selftests/vsock/Makefile
-+++ b/tools/testing/selftests/vsock/Makefile
-@@ -13,5 +13,10 @@ $(VSOCK_TEST_DIR)/vsock_test: $(VSOCK_TEST_SRCS)
- TEST_PROGS += vmtest.sh
- TEST_GEN_FILES := vsock_test
- 
-+TEST_FILES := \
-+	../../../net/ynl/pyynl/cli.py \
-+	../../../net/ynl/pyynl/lib \
-+	../../../../Documentation/netlink/specs/vsock.yaml
-+
- include ../lib.mk
- 
-diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-index 310dfc2a39ad..7693d5e0a1d0 100755
---- a/tools/testing/selftests/vsock/vmtest.sh
-+++ b/tools/testing/selftests/vsock/vmtest.sh
-@@ -17,6 +17,20 @@ readonly KERNEL_CHECKOUT=$(realpath "${SCRIPT_DIR}"/../../../../)
- source "${SCRIPT_DIR}"/../kselftest/ktap_helpers.sh
- 
- readonly VSOCK_TEST="${SCRIPT_DIR}"/vsock_test
-+
-+# "make install" copies the ynl CLI, its lib package and the spec next to this
-+# script (see TEST_FILES); in a source tree they stay where they are built.
-+if [[ -r "${SCRIPT_DIR}"/cli.py ]]; then
-+	readonly YNL_CLI="${SCRIPT_DIR}"/cli.py
-+	readonly YNL_LIB="${SCRIPT_DIR}"/lib
-+	readonly VSOCK_SPEC="${SCRIPT_DIR}"/vsock.yaml
-+else
-+	readonly YNL_DIR="${KERNEL_CHECKOUT}"/tools/net/ynl/pyynl
-+	readonly YNL_CLI="${YNL_DIR}"/cli.py
-+	readonly YNL_LIB="${YNL_DIR}"/lib
-+	readonly SPEC_DIR="${KERNEL_CHECKOUT}"/Documentation/netlink/specs
-+	readonly VSOCK_SPEC="${SPEC_DIR}"/vsock.yaml
-+fi
- readonly TEST_GUEST_PORT=51000
- readonly TEST_HOST_PORT=50000
- readonly TEST_HOST_PORT_LISTENER=50001
-@@ -73,6 +87,12 @@ readonly TEST_NAMES=(
- 	ns_delete_vm_ok
- 	ns_delete_host_ok
- 	ns_delete_both_ok
-+	ns_guest_local_connect_to_host_fails
-+	ns_guest_assign_g2h_netns_connect_to_host_ok
-+	ns_guest_assign_g2h_netns_init_ns_connect_fails
-+	ns_guest_assign_g2h_netns_host_connect_ok
-+	ns_guest_assign_g2h_netns_pins_ns_ok
-+	ns_guest_assign_g2h_netns_old_conn_send_fails
- )
- readonly TEST_DESCS=(
- 	# vm_server_host_client
-@@ -149,12 +169,36 @@ readonly TEST_DESCS=(
- 
- 	# ns_delete_both_ok
- 	"Check that deleting the VM and host's namespaces does not break the socket connection"
-+
-+	# ns_guest_local_connect_to_host_fails
-+	"Check a guest process in a local ns cannot reach the host without the netns assign."
-+
-+	# ns_guest_assign_g2h_netns_connect_to_host_ok
-+	"Check a guest process in a local ns reaches the host once the vsock device is assigned to it."
-+
-+	# ns_guest_assign_g2h_netns_init_ns_connect_fails
-+	"Check the guest's initial ns loses vsock once the device is assigned to another ns."
-+
-+	# ns_guest_assign_g2h_netns_host_connect_ok
-+	"Check the host reaches a guest listener in the ns the vsock device is assigned to."
-+
-+	# ns_guest_assign_g2h_netns_pins_ns_ok
-+	"Check the assignment keeps the ns alive when deleted, and that reassigning releases it."
-+
-+	# ns_guest_assign_g2h_netns_old_conn_send_fails
-+	"Check connections made before the assign stop sending once they lose the device."
- )
- 
- readonly USE_SHARED_VM=(
- 	vm_server_host_client
- 	vm_client_host_server
- 	vm_loopback
-+	ns_guest_local_connect_to_host_fails
-+	ns_guest_assign_g2h_netns_connect_to_host_ok
-+	ns_guest_assign_g2h_netns_init_ns_connect_fails
-+	ns_guest_assign_g2h_netns_host_connect_ok
-+	ns_guest_assign_g2h_netns_pins_ns_ok
-+	ns_guest_assign_g2h_netns_old_conn_send_fails
- )
- readonly NS_MODES=("local" "global")
- 
-@@ -316,6 +360,34 @@ check_deps() {
- 	fi
- }
- 
-+check_ns_guest_deps() {
-+	local tname=$1
-+	local dep
-+
-+	if [[ ! "${tname}" =~ ^ns_guest_ ]]; then
-+		return 0
-+	fi
-+
-+	for dep in unshare python3; do
-+		if [[ ! -x $(command -v "${dep}") ]]; then
-+			log_host "no ${dep} for test ${tname}"
-+			return 1
-+		fi
-+	done
-+
-+	if ! python3 -c "import yaml" &>/dev/null; then
-+		log_host "no python3 yaml module for test ${tname}"
-+		return 1
-+	fi
-+
-+	if [[ ! -r "${YNL_CLI}" ]] || [[ ! -r "${VSOCK_SPEC}" ]]; then
-+		log_host "no ynl cli or vsock spec for test ${tname}"
-+		return 1
-+	fi
-+
-+	return 0
-+}
-+
- check_netns() {
- 	local tname=$1
- 
-@@ -401,6 +473,19 @@ setup_home() {
- 	mkdir -p "$(dirname "${SSH_KEY_PATH}")"
- 	ssh-keygen -t ed25519 -f "${SSH_KEY_PATH}" -N "" -q
- 	cp "${VSOCK_TEST}" "${TEST_HOME}"/vsock_test
-+
-+	mkdir -p "${TEST_HOME}"/ynl
-+	if [[ -r "${YNL_CLI}" ]]; then
-+		cp "${YNL_CLI}" "${TEST_HOME}"/ynl/
-+		cp -r "${YNL_LIB}" "${TEST_HOME}"/ynl/
-+		cp "${VSOCK_SPEC}" "${TEST_HOME}"/ynl/
-+	fi
-+
-+	# One of the tests runs the CLI as an unprivileged user, so the CLI
-+	# has to be reachable by one.
-+	chmod -R a+rX "${TEST_HOME}"/ynl
-+
-+	chmod 755 "${TEST_HOME}"
- }
- 
- create_pidfile() {
-@@ -528,6 +613,82 @@ vm_wait_for_ssh() {
- 	done
- }
- 
-+# Create a local mode namespace in the VM and echo the pid holding it open.
-+vm_ns_start() {
-+	local ns=$1
-+	local initns
-+	local nspid
-+	local newns
-+	local i
-+
-+	local mode=/proc/sys/net/vsock/child_ns_mode
-+
-+	if ! vm_ssh "${ns}" -- "echo local > ${mode}" &>/dev/null; then
-+		return
-+	fi
-+
-+	nspid=$(vm_ssh "${ns}" -- "unshare -n sleep infinity" \
-+		'>/dev/null 2>&1 & echo $!')
-+	if [[ -z "${nspid}" ]]; then
-+		return
-+	fi
-+
-+	initns=$(vm_ssh "${ns}" -- "readlink /proc/self/ns/net")
-+	for ((i = 0; i < WAIT_PERIOD_MAX; i++)); do
-+		newns=$(vm_ssh "${ns}" -- "readlink /proc/${nspid}/ns/net" \
-+			2>/dev/null)
-+		if [[ -n "${newns}" ]] && [[ "${newns}" != "${initns}" ]]; then
-+			echo "${nspid}"
-+			return
-+		fi
-+		sleep 1
-+	done
-+
-+	vm_ns_stop "${ns}" "${nspid}"
-+}
-+
-+# Returns once the holder is gone, so that the namespace is unreferenced and
-+# the kernel can start tearing it down.
-+vm_ns_stop() {
-+	local ns=$1
-+	local nspid=$2
-+
-+	vm_ssh "${ns}" <<-EOF &>/dev/null
-+		kill ${nspid}
-+		for ((i = 0; i < ${WAIT_PERIOD_MAX}; i++)); do
-+			kill -0 ${nspid} 2>/dev/null || break
-+			sleep 1
-+		done
-+	EOF
-+}
-+
-+# Runs in the guest's initial namespace when <nspid> is empty. The command must
-+# not contain single quotes.
-+vm_ns_exec() {
-+	local ns=$1
-+	local nspid=$2
-+	local cmd=$3
-+
-+	if [[ -z "${nspid}" ]]; then
-+		vm_ssh "${ns}" -- "${cmd}"
-+		return
-+	fi
-+
-+	vm_ssh "${ns}" -- nsenter -t "${nspid}" -n sh -c "'${cmd}'"
-+}
-+
-+vm_ns_assign_g2h() {
-+	local ns=$1
-+	local nspid=$2
-+
-+	vm_ns_exec "${ns}" "${nspid}" "python3 /root/ynl/cli.py --no-schema \
-+		--spec /root/ynl/vsock.yaml --do dev-netns-set"
-+}
-+
-+vm_reset_g2h() {
-+	vm_ns_assign_g2h "init_ns" "" &>/dev/null
-+}
-+
- # derived from selftests/net/net_helper.sh
- wait_for_listener()
- {
-@@ -564,17 +725,33 @@ wait_for_listener()
- 	done
- }
- 
--vm_wait_for_listener() {
-+# Runs in the guest's initial namespace when <nspid> is empty.
-+vm_ns_wait_for_listener() {
- 	local ns=$1
--	local port=$2
--	local protocol=$3
-+	local nspid=$2
-+	local port=$3
-+	local protocol=$4
-+	local nsenter=
-+	local args
-+
-+	[[ -n "${nspid}" ]] && nsenter="nsenter -t ${nspid} -n"
-+	args="${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX} ${protocol}"
- 
- 	vm_ssh "${ns}" <<EOF
- $(declare -f wait_for_listener)
--wait_for_listener ${port} ${WAIT_PERIOD} ${WAIT_PERIOD_MAX} ${protocol}
-+export -f wait_for_listener
-+${nsenter} bash -c "wait_for_listener ${args}"
- EOF
- }
- 
-+vm_wait_for_listener() {
-+	local ns=$1
-+	local port=$2
-+	local protocol=$3
-+
-+	vm_ns_wait_for_listener "${ns}" "" "${port}" "${protocol}"
-+}
-+
- host_wait_for_listener() {
- 	local ns=$1
- 	local port=$2
-@@ -1421,6 +1598,317 @@ test_ns_delete_both_ok() {
- 	check_ns_delete_doesnt_break_connection "both"
- }
- 
-+# Send a string from the guest to a host listener and leave what the host
-+# received in <outfile>.
-+guest_send_to_host() {
-+	local ns=$1
-+	local nspid=$2
-+	local port=$3
-+	local outfile=$4
-+	local cmd="echo TEST | socat -u STDIN VSOCK-CONNECT:2:${port}"
-+	local pid
-+
-+	socat -u VSOCK-LISTEN:"${port}" STDOUT > "${outfile}" 2>/dev/null &
-+	pid=$!
-+	host_wait_for_listener "${ns}" "${port}" "vsock"
-+
-+	vm_ns_exec "${ns}" "${nspid}" "${cmd}" 2>/dev/null
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done'
-+
-+	# Wait for the listener to actually go, or the next test binding the
-+	# same port races it and silently reads nothing.
-+	terminate_pids "${pid}"
-+	wait "${pid}" 2>/dev/null
-+}
-+
-+# Send a string from the host to a listener in the guest and leave what the
-+# guest received in <outfile>.
-+host_send_to_guest() {
-+	local ns=$1
-+	local nspid=$2
-+	local port=$3
-+	local outfile=$4
-+	local cmd="socat -u VSOCK-LISTEN:${port} STDOUT"
-+	local dst="VSOCK-CONNECT:${VSOCK_CID}:${port}"
-+	local pid
-+
-+	vm_ns_exec "${ns}" "${nspid}" "${cmd}" > "${outfile}" 2>/dev/null &
-+	pid=$!
-+	vm_ns_wait_for_listener "${ns}" "${nspid}" "${port}" "vsock"
-+
-+	echo TEST | socat -u STDIN "${dst}" 2>/dev/null
-+
-+	timeout "${WAIT_PERIOD}" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done'
-+
-+	vm_ns_exec "${ns}" "${nspid}" \
-+		"pkill -f VSOCK-LISTEN:${port}" &>/dev/null
-+	terminate_pids "${pid}"
-+	wait "${pid}" 2>/dev/null
-+}
-+
-+ns_old_conn_cleanup() {
-+	local port=$1
-+	local pid=$2
-+	local sender=$3
-+	local outfile=$4
-+	local nspid=$5
-+
-+	vm_ns_exec "init_ns" "" "pkill -f VSOCK-CONNECT:2:${port}" &>/dev/null
-+	terminate_pids "${pid}" "${sender}"
-+	wait "${pid}" "${sender}" 2>/dev/null
-+	rm -f "${outfile}"
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+}
-+
-+test_ns_guest_assign_g2h_netns_old_conn_send_fails() {
-+	local gap=$(( WAIT_PERIOD * 3 ))
-+	local port=12346
-+	local elapsed
-+	local started
-+	local outfile
-+	local result
-+	local sender
-+	local nspid
-+	local pid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	socat -u VSOCK-LISTEN:"${port}" STDOUT > "${outfile}" 2>/dev/null &
-+	pid=$!
-+	host_wait_for_listener "init_ns" "${port}" "vsock"
-+
-+	# Send a message, wait, then send another. While waiting, assign the
-+	# device to a namespace. Confirm the second message does not arrive.
-+	vm_ssh "init_ns" -- \
-+		"(echo FIRST; sleep ${gap}; echo SECOND) |" \
-+		"socat -u STDIN VSOCK-CONNECT:2:${port}" &>/dev/null &
-+	sender=$!
-+
-+	timeout "$(( WAIT_PERIOD * WAIT_PERIOD_MAX ))" \
-+		bash -c 'while [[ ! -s '"${outfile}"' ]]; do sleep 1; done'
-+
-+	started=${SECONDS}
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		ns_old_conn_cleanup "${port}" "${pid}" "${sender}" \
-+			"${outfile}" "${nspid}"
-+		return "${KSFT_FAIL}"
-+	fi
-+	elapsed=$(( SECONDS - started ))
-+
-+	sleep $(( gap + WAIT_PERIOD ))
-+
-+	result=$(cat "${outfile}")
-+	ns_old_conn_cleanup "${port}" "${pid}" "${sender}" \
-+		"${outfile}" "${nspid}"
-+
-+	if [[ "${result}" != *FIRST* ]]; then
-+		log_host "no connection before the assign: [${result}]"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if [[ ${elapsed} -ge ${gap} ]]; then
-+		log_host "assign took ${elapsed}s, longer than the ${gap}s gap"
-+		return "${KSFT_SKIP}"
-+	fi
-+
-+	if [[ "${result}" == *SECOND* ]]; then
-+		log_host "old connection still delivered after the assign"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_local_connect_to_host_fails() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "${nspid}" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" == TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_connect_to_host_ok() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "${nspid}" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_init_ns_connect_fails() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" == TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_host_connect_ok() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	outfile=$(mktemp)
-+	host_send_to_guest "init_ns" "${nspid}" "${port}" "${outfile}"
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	vm_reset_g2h
-+
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]]; then
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
-+test_ns_guest_assign_g2h_netns_pins_ns_ok() {
-+	local port=12345
-+	local outfile
-+	local result
-+	local nspid
-+
-+	nspid=$(vm_ns_start "init_ns")
-+	if [[ -z "${nspid}" ]]; then
-+		log_host "failed to create a namespace inside the guest"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	if ! vm_ns_assign_g2h "init_ns" "${nspid}"; then
-+		log_host "failed to assign the vsock device to the guest ns"
-+		vm_ns_stop "init_ns" "${nspid}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	vm_ns_stop "init_ns" "${nspid}"
-+	sleep "${WAIT_PERIOD}"
-+
-+	outfile=$(mktemp)
-+	guest_send_to_host "init_ns" "" "${port}" "${outfile}"
-+	result=$(cat "${outfile}")
-+	if [[ "${result}" == TEST ]]; then
-+		log_host "device returned to the init ns instead of pinning it"
-+		rm -f "${outfile}"
-+		vm_reset_g2h
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	# Assigning it back is what releases the deleted namespace.
-+	vm_reset_g2h
-+
-+	guest_send_to_host "init_ns" "" "$(( port + 1 ))" "${outfile}"
-+	result=$(cat "${outfile}")
-+	rm -f "${outfile}"
-+
-+	if [[ "${result}" != TEST ]]; then
-+		log_host "device did not come back on reassign: [${result}]"
-+		return "${KSFT_FAIL}"
-+	fi
-+
-+	return "${KSFT_PASS}"
-+}
-+
- shared_vm_test() {
- 	local tname
- 
-@@ -1453,7 +1941,8 @@ run_shared_vm_tests() {
- 			continue
- 		fi
- 
--		if ! check_netns "${arg}"; then
-+		if ! check_netns "${arg}" ||
-+		   ! check_ns_guest_deps "${arg}"; then
- 			check_result "${KSFT_SKIP}" "${arg}"
- 			continue
- 		fi
-@@ -1517,7 +2006,8 @@ run_ns_tests() {
- 			continue
- 		fi
- 
--		if ! check_netns "${arg}"; then
-+		if ! check_netns "${arg}" ||
-+		   ! check_ns_guest_deps "${arg}"; then
- 			check_result "${KSFT_SKIP}" "${arg}"
- 			continue
- 		fi
-
--- 
-2.53.0-Meta
-
+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
+DPVtLUtep/P3evQuAtTQRaKedjamBcUpJ7qUhBuv/Z07LlLIlB/vfNSPWe1V+njTezc8m3VfvNEC
+qEpXasPSfDgfcuUhcPR+7++oUDaTt9iqGFOjwiURxx08pL6ogSuiT41O4Xu7msabnUE6RY0O0xR5
+5UGwbpC1QSmnBq7TAy8oQg/nNw4vowEh3S2lmjdHCOdR270Ygd7jet8WQKa5ia4ZK4QdkS8+5uLt
+rMMRyM3QurndiZZJBipjPvEWJR/+jod8867f3n0CAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
+oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
+Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
+BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
+IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
+FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
+hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
+BB0wG4EZbWljaGFlbC5jaGFuQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
+HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUJbO/Fi7RhZHYmATVQf6NlAH2
+qUcwDQYJKoZIhvcNAQELBQADggIBABcLQEF8mPE9o6GHJd52vmHFsKsf8vRmdMEouFxrW+GhXXzg
+2/AqqhXeeFZki82D6/5VAPkeVcgDeGZ43Bv89GHnjh/Vv0iCUGHgClZezpWdKCAXkn698xoh1+Wx
+K/c/SHMqGWfBSVm1ygKAWkmzJLF/rd4vUE0pjvZVBpNSVkjXgc80dTZcs7OvoFnt14UgvjuYe+Ia
+H/ux6819kbi0Tmmj5LwSZW8GXw3zcPmAyEYc0ZDCZk9QckL5yPzMlTAsy0Q+NMVpJ8onLj/mHgTk
+Ev8zt1OUE8MlXZj2+wgVY+az2T8rGmqRU2iOzRlJnc86qVwuwjL9AA9v4R13Yt8zYyA7jL0NiBNP
+WaOSajKBB5Z/4ZVtcvOMILD1+G+CVZX7GUWERT9NRXw/SyIEMU59lFbuvy4zxe3+RbOleCgp3pze
+q8HE2p9rkOJT3MkCNLxe+ij4RytIvPQXACsZeLdfTDUnjeXCDDJ9KugVhuqMelAZc4NissPz8FOn
+2NK++r5/QamlFqYRhsFxSBIvhkh2Q/hD3/zy4j17Yf/FUje5uyg03FblSBOk2WYpRpXEuCpyn5pb
+bYVIzfhQJgwGfO+L8BAeZIFjO1QL3s/zzn+RBlTl4wdDzh8L9eS+QEDhMcSsqb4fFRDbsoVuRjpx
+R5MunSUzk4GcmmM19m7oHhPGeKwIMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
+ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
+MjAyMwIMZh03KTi4m/vsqWZxMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCBQ9Z3F
+WoHe2X1XSqp+JepWo7+jZJjLY9td4qLG92Uw5jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
+CSqGSIb3DQEJBTEPFw0yNjEwMTIyMjUyMzhaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
+MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
+SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBnFPhCw7/ZP3zOn1Adjd9l0nBB4/3Ve0WbR83nsrfw
+QBTCoR7N1YTJiNUehXrRGWK7Lb+TA8hg/4IPsjytYAywb4wHYt8Ihzae74siR0w2d2ZthW2QNgVt
+esNrEZmrB1ddZiT1Pb4KxiAph3CGb2Sc4fSbvcu7SfBLePbuXXlgqKwSRpHIGxHSWnca4Y+7hZny
+mw6f+fAgntQinmHDzYsuXP3inIEcT08SYODDgyZaamcnio7kbKJlXrMsR82/dKWDcsI4JnINNcnF
+x23nw3EYalh7Sdts3peo14WmmuFGYbr10ejS76Xe50LTcR0I54PZHXIoSGaAG5Okqh1IuItY
+--00000000000003c9a6065dac8e9a--
