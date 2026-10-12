@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD82C3859E9
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D0137754C
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791830739; cv=none; b=ZcNxIva3abRtLTgtWrubxH5mdkf+PCCZFv11+Itbf7CWRwkKdKIHX26FOitr6XNrkOUkkntEU7ZZd8/6TJsNW/uz8Byzfr09UvkfDDF1ZD0wBr2Md8iFoYUtzD8O7PNMqz8G/526zRc/ZZWq7f8uz4oJ9BruE6cqXU2RZgisyfw=
+	t=1791830741; cv=none; b=dHXVizmpL/Jwp6EmgsT1l2gvrauCb2UFBv+BlnFiIneEPon/Foc8l/UOCUxtaMy5WH3yHYwB7lJtaXdJICKafvP+efUzl8pYsmuf2vrx0x3BVsT6Z9nqxbwduq+/4fMm0j930MX89Ovu2NQ+t429az7pwMZB60ttvPshbR0TQb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791830739; c=relaxed/simple;
-	bh=i8hHhz2MKfAePGjYilbDi0iz4dhuCB+h/jKp1ZgWPSo=;
+	s=arc-20240116; t=1791830741; c=relaxed/simple;
+	bh=TBZqYx33HE3ih+WWK+uF+GxXbEdmKzLOnlyNfWJ4Jfw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GlKTtZIDbCPbaLiT0T7q9vWePygfT6iu8hBKYE2T5NulZl05+nP1LRtq8R6ebob1y4ktupISZRWB1ZsogGiXv+OE8m+RmHIbQfQ007Ej/sNT5ZjvbZ3pbKmnJEvqv0VJR7bDCKjIs/5VIwi22t5D2M+N/hP5ZiUtJSHt6SeEgKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVsiL9XY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=tUd40rUA5G7fW+ReqjOOwFV9TX5J0GYVjT7h5GUX3TVZKweg9J96XZj2SP3pimsVGApGDaEiDHxaq/2eA1rhQ1PPFM/xaEO4cdMqk1s3Xw2I/behI9gux8P8J20jO/RUgI4gznUh0Lf9F5jYRJcD8eQwW8qjBlCiVi3197SsGNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXAjMLoi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVsiL9XY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5EC1F0089B;
-	Mon, 12 Oct 2026 18:45:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXAjMLoi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214251F008A3;
+	Mon, 12 Oct 2026 18:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791830736;
-	bh=B52craXkHAtouuaphH3VPohrGH5hHy0E/oTSsw1jiPE=;
+	s=k20260515; t=1791830737;
+	bh=QD+LVVWBRcflMS7lbWq2ZwtMpYdHv2mT0wAAzbX2y6c=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YVsiL9XYKx83KG7FyqBNGRETVnO2ELn0bRyDiY1ouXOI7vrdMZ8vDmaZGcJYH1ovX
-	 w4Ulo08sT8u7UfD55HHiNys/daQQ8fKXrXBtQNACochoq8Fvy0LbYa2H1s4LXmwTL0
-	 +udnEgt9l4dm9QtCwj1fodBAIOERKqBpubfg31x4Ucw6LM6u3Zp2+l6QANHccSQSWM
-	 y+vM3VIDprAziaOvuxt/3eapvZiwbHZvO/MqjZJ7VTlQa8v1y05TpQuqif14iDjwmj
-	 OEAyxbUnKgR+JR/nArWmPA8NnBs89Khncx8eIFUOTGxulF95goc7Rl42toQdYpsgNl
-	 zotulVZeuYcpA==
-Subject: Re: [PATCH net-next v4 10/15] net: ethernet: cortina: Recycle claimed
- free queue pages
+	b=GXAjMLoi2q9cAfxTLyG5I17vy7Lnds+yrX8+7pSQ+4PKvo6yXUxs4+eZx2xcuzyyL
+	 1li0omVBiQDGxM01wJ8ZCeixkuSguQLUBkebJjEWSpwOMxXr6IALIOHSzTltx9nqSN
+	 OiTdaUhIpFQEnbWKHc0FTioMob8yrGvAgE/b40oKX0thFsRoPQb01cDD3EQOGQ0O9J
+	 G5Hrear8QitO7s/0fKrw4T+0KTAphebhVrzg2OWylNwpgDiwwPHirG9KRpci3t9V5c
+	 7OLGIGLn14cOYyF2HPSf6Xdq60E23xD+wR7jMPO9B4bqoKy4qSRxePnsTPCopxtMQD
+	 t2mHPBoIh+6Zg==
+Subject: Re: [PATCH net-next v4 11/15] net: ethernet: cortina: Validate RX
+ fragment lengths
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
  mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Mon, 12 Oct 2026 18:45:35 +0000
-Message-ID: <179183073562.434549.5772914368674443780@kernel.org>
-In-Reply-To: <20261011-gemini-ethernet-fixes-3-v4-10-4b1631b08f5d@kernel.org>
-References: <20261011-gemini-ethernet-fixes-3-v4-10-4b1631b08f5d@kernel.org>
-X-sashiko-severity: Low
+Date: Mon, 12 Oct 2026 18:45:36 +0000
+Message-ID: <179183073671.434549.15826123693290172054@kernel.org>
+In-Reply-To: <20261011-gemini-ethernet-fixes-3-v4-11-4b1631b08f5d@kernel.org>
+References: <20261011-gemini-ethernet-fixes-3-v4-11-4b1631b08f5d@kernel.org>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,107 +47,164 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 1 · Medium: 0 · Low: 2
 
-- [Low] geth_fill_freeq() (drivers/net/ethernet/cortina/gemini.c) sets
-  its local `recycle` flag to false the first time…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] net: gmac_rx() drops entire valid packet on zero-length EOF
+  fragment
+- [Low] The commit describes itself as a bug fix and has no Fixes: tag.
+- [Low] The patch makes RX word0.bits.buffer_size a strict byte-length
+  bound on every EOF descriptor.
 
 --
 
-net: ethernet: cortina: Recycle claimed free queue pages
+net: ethernet: cortina: Validate RX fragment lengths
 
-With this patch, a free queue page keeps its base reference and streaming
-mapping after its last fragment is claimed. The slot is marked in a new
-recycle bitmap. During refill, geth_fill_freeq() reuses the page if its
-refcount has dropped back to one, and otherwise unmaps and releases it
-before allocating a replacement.
+This patch adds bounds checks on RX descriptor lengths in gmac_rx(). It
+rejects short initial fragments, frame length underflow and fragments that
+extend past the DMA fragment or the page. Zero-length fragments are now
+dropped instead of being appended to the skb.
+
+> Reject a short initial fragment before applying NET_IP_ALIGN, reject frame
+> length underflow and ranges extending beyond either the DMA fragment or the
+> page, and drop zero-length fragments instead of adding them to the skb.
+
+[Severity: Low]
+Should this patch carry a Fixes: tag?
+
+Three of the issues addressed here appear to date back to the original
+driver:
+
+  - the unchecked frag_len -= NET_IP_ALIGN
+  - the unsigned underflow in frag_len = frame_len - skb->len
+  - zero-length fragments that are logged but still appended
+
+That would make the tag:
+
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+
+Other patches in the same series, such as "Keep shared free queue
+parent-owned" and "Correct free queue DMA mappings", already carry this
+tag.
 
 > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index 3bb96c51e0b71..943c31c026743 100644
+> index 943c31c026743..d8bafcdf4d5f1 100644
 > --- a/drivers/net/ethernet/cortina/gemini.c
 > +++ b/drivers/net/ethernet/cortina/gemini.c
 
 [ ... ]
 
-> @@ -997,9 +1078,26 @@ static unsigned int geth_fill_freeq(struct gemini_ethernet *geth)
->  		pn = (rw.bits.wptr >> fpp_order) & m_pn;
->  		epn = (rw.bits.rptr >> fpp_order) - 1;
->  		epn &= m_pn;
-> +		ret = -ENOSPC;
-> +		if (pn != epn && recycle) {
-> +			ret = geth_freeq_recycle_page(geth, pn);
-> +			if (!ret) {
-> +				count += 1 << fpp_order;
-> +				pn++;
-> +				pn &= m_pn;
-> +				writew(pn << fpp_order,
-> +				       geth->base + GLOBAL_SWFQ_RWPTR_REG + 2);
-> +			}
-> +			if (ret == -ENOSPC)
-> +				recycle = false;
+> @@ -1811,6 +1812,9 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+>  			if (!skb)
+>  				goto err_drop;
+>  
+> +			if (frag_len < NET_IP_ALIGN)
+> +				goto err_drop;
+> +
+>  			page_offs += NET_IP_ALIGN;
+>  			frag_len -= NET_IP_ALIGN;
+>  			frag_nr = 0;
+> @@ -1819,15 +1823,28 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+>  			goto err_drop;
+>  		}
+>  
+> -		if (word3.bits32 & EOF_BIT)
+> +		if (word3.bits32 & EOF_BIT) {
+> +			if (frame_len < ETH_ZLEN ||
+> +			    frame_len < skb->len ||
+> +			    frame_len - skb->len > frag_len)
+> +				goto err_drop;
+>  			frag_len = frame_len - skb->len;
+> +		}
+
+[Severity: High]
+Does this drop more than the commit message says it does?
+
+The message says zero-length fragments are dropped instead of being
+added to the skb. The goto err_drop does not skip just that fragment.
+It calls napi_free_frags() on the whole skb assembled so far, puts the
+page and increments rx_dropped.
+
+Consider a multi-descriptor frame where the earlier descriptors
+already carry all of the data. One example is a frame that exactly
+fills the first free queue fragment after the NET_IP_ALIGN offset,
+which is 2046 bytes with the default 2 KiB fragment.
+
+If the hardware then closes the chain with an EOF descriptor that
+carries no new data, frame_len equals skb->len. The new EOF checks
+all pass and frag_len becomes frame_len - skb->len == 0. gmac_rx()
+then lands in the !frag_len branch.
+
+Before this patch that frame was handed to napi_gro_frags() with an
+empty trailing fragment. After it, a complete and valid frame is
+discarded and counted as rx_dropped. Nothing later in the series
+seems to change this.
+
+Can the Gemini DMA engine emit such a trailing descriptor at the end
+of a chain?
+
+If it can, the EOF case with nothing left to append could be handled
+separately: put_page() the unused fragment and still pass the skb to
+napi_gro_frags(). err_drop would then be kept for zero-length
+descriptors in the middle of a chain. Note that the
+frag_nr == MAX_SKB_FRAGS check runs first, so an empty EOF arriving
+after a full frags array would also discard the frame unless that
+case is handled before it.
 
 [Severity: Low]
+Before this patch, gmac_rx() never used word0.bits.buffer_size on an EOF
+descriptor, because frag_len was always overwritten with
+frame_len - skb->len. Now buffer_size on every EOF descriptor is a strict
+byte bound on whether the frame gets delivered.
 
-Once geth_freeq_recycle_page() returns -ENOSPC because freeq_recycle_pending
-was 0, recycle stays false for the rest of this geth_fill_freeq() call.
-Can new recyclable slots show up after that point?
+For a single-descriptor (SOF|EOF) frame, the NET_IP_ALIGN subtraction plus
+this check now require:
 
-freeq_lock is dropped at the end of each iteration and around
-geth_freeq_map_page(). In that window gmac_rx()->geth_freeq_claim() can
-retire pages. One example is the NAPI softirq running at hardirq exit while
-gemini_port_irq_thread() is inside geth_fill_freeq():
+    buffer_size >= frame_len + NET_IP_ALIGN
 
-geth_freeq_claim()
-    if (!--gpage->fragments) {
-        slot = gpage - geth->freeq_pages;
-        __set_bit(slot, geth->freeq_recycle_bitmap);
-        geth->freeq_recycle_pending++;
-    }
+What guarantees that the hardware reports buffer_size this way? The driver
+never writes buffer_size into free queue entries. geth_freeq_post_page()
+and geth_setup_freeq() only set word2.buf_adr, so the hardware supplies the
+value.
 
-These retired slots keep their freeq_page_bitmap bit set. Even so, the
-remaining iterations still allocate and map a fresh page. Each one takes a
-new metadata slot through geth_freeq_add_page()->geth_freeq_alloc_slot().
+The only in-tree definition, in gemini.h, describes the field as a
+descriptor count:
 
-Can slot usage then exceed what geth_freeq_page_slots() sizes for (ring
-pages plus rxq entries)? Retired pages now count on top of posted pages and
-pages held by unclaimed RX descriptors.
+union gmac_rxdesc_0 {
+	...
+		/* bit 15:0 number of descriptors used for the current frame */
+		unsigned int buffer_size:16;
+		/* bit 21:16 number of descriptors used for the current frame */
+		unsigned int desc_count:6;
 
-If the table fills up, geth_freeq_alloc_slot() returns -ENOSPC.
-geth_fill_freeq() then throws away the page it just mapped and stops:
+That comment looks copied from desc_count. It doesn't say whether the value
+includes the bytes inserted via rd_insert_bytes = NET_IP_ALIGN in
+gmac_start_dma(). It also doesn't say how the field is filled on an EOF
+descriptor that is not the SOF.
 
-    if (ret) {
-        dma_unmap_single(geth->dev, page_mapping, PAGE_SIZE,
-                         DMA_FROM_DEVICE);
-        put_page(page);
-        break;
-    }
+If buffer_size excluded the inserted bytes, wouldn't every
+single-descriptor frame be dropped?
 
-This leaves the free queue under-filled while recyclable slots are still
-pending.
+There is a second case with an MTU above 1530, where frames span multiple
+descriptors. If buffer_size is filled differently on the last descriptor,
+could good jumbo frames be silently counted as rx_dropped?
 
-The next geth_fill_freeq() call starts with recycle = true and drains them,
-so this recovers on its own. It does still cause extra fresh page
-allocations and mappings during the call, which the commit message is
-trying to avoid.
+The DIR-685 testing at standard MTU suggests the SOF|EOF case works. The
+commit message also says:
 
-Could the latch be dropped, or freeq_recycle_pending re-checked under
-freeq_lock, before falling back to a fresh allocation?
+  "validated against the Gemini receive descriptor definitions"
 
-> +		}
->  		spin_unlock_irqrestore(&geth->freeq_lock, flags);
->  		if (pn == epn)
->  			break;
-> +		if (!ret)
-> +			continue;
-> +		if (ret != -ENOSPC && ret != -EAGAIN)
-> +			break;
->  
->  		ret = geth_freeq_map_page(geth, &page, &page_mapping);
->  		if (ret)
+The in-tree definitions don't seem to support that. Could the buffer_size
+comment in gemini.h be corrected to describe the byte-length semantics this
+patch now relies on, including whether the NET_IP_ALIGN bytes are counted?
 
 [ ... ]
 
