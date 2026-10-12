@@ -1,263 +1,153 @@
-Received: from mta1.migadu.com (out-198.mta1.migadu.com [95.215.58.198])
+Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73445517D
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B345644A400
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791793181; cv=none; b=dBTmhGHzTwfRwSfpA1m7My93MZC1mABODTYrL+GXODT+AIEYzaX0/2c4bEGd6KyA/47N/G3k1t3f02Xr8q9rQaxFdL752fVOW6ZHwGZ5EEGXstdtWVfk2XzOkzskZ99a3fxWzWo6OwRcFCncWtylGybEZZ9Rzh/vRel360W6oOA=
+	t=1791793313; cv=none; b=ZBSMMJnt0tDOTSRTU/y7iJISphKFzQL+WpnbgwxpDO3JqHSxxLnPnmn9D6ELuqUM0sVVHVPJ4KpMl2AuiM1zYm3+4D8Be0h/v7ZDXu0tVpkpXXMSPCLlvirlzVFYCDQ0gZDkKOv3KIvwFImo3YtIWaSKOqVOv3ZJPgSKgKDsDqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791793181; c=relaxed/simple;
-	bh=+0IUaIU2Hg6vgVtzIiAk0ER+tmaZVB6S423CcHSSaeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mNVCERMTHGBBcpXL4VwaVM3FGXUoFdHUj0f/Qq09Ok3A7lS5Wt5wwxEYQxJDhPGKvLCjc0T84x5vlUMP3QcZvxZNMb1dxFknw2siI/F5JKMCIEpfMwR+IpmbfU4jvpaAZA58ZDxq9R3AEafJf/uCGPioecW/dtl/vLvqR1Yy3O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iNboU+L/; arc=none smtp.client-ip=95.215.58.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791793313; c=relaxed/simple;
+	bh=v/y7NXaWbJ6lQjdzR8N8Ksy8XPIBfzpcBd6y5+X6xcY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pXwYtM6IFoz5bB7hXslh95etwNwaeA+MGugiHoJi3E3+e2mLcmLU+p5CaAggyKwnt5y4ebUEbkt2DQ9Wke2WqQp++p1wlqH0N1IQYeslntrhX6I7rv67IUUaV/y52/fQHza7flXQzbV9z8QnwonKwO9Hrq4XsxbCkxlI4LfhqPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ptmtu0MC; arc=none smtp.client-ip=74.125.82.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iNboU+L/"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=+0IUaIU2Hg6vgVtzIiAk0ER+tmaZVB6S423CcHSSaeE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791793176; v=1; x=1792397976;
- b=iNboU+L/0zPXBbaUU1Zuxl5Aal+SpGnmXDnNI35U8ow2GegPNNMnJeV5uua8w1Y6AhSCyFpP
- 9rMYAS+3UEmx5gjsvoHLht1Q5eKaPXVD8UhYAPHvhp5qfDa3YID5H5wZq1gje8MdOKbvwe3dQIp
- akXJtTW7r8Oo2OzYyX0Xf7/Q=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id a4ab9e5f10eb1965;
-	Mon, 12 Oct 2026 08:19:36 +0000
-X-Mizu-Trace-ID: a4ab9e5f10eb1965
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 12 Oct 2026 16:19:22 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Ahmed Abdelsalam <ahabdels@cisco.com>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>
-Subject: Re: [PATCH net-next 5/5] selftests: seg6: add tests for PSP with a
- consumed SRH
-Message-ID: <asyYCoMwGjh6XG3S@fedora>
-References: <20261011192310.55-1-andrea.mayer@uniroma2.it>
- <20261011192310.55-6-andrea.mayer@uniroma2.it>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ptmtu0MC"
+Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-147be78cd56so7364188c88.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:21:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791793310; x=1792398110; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j/HfGjAac+AZaYIKh17jKsISYIpx8gEa0S85wJAbcwk=;
+        b=ptmtu0MC0FZf26nwNy1PD9LrKtxFJa1fop433HtVfZ46RM8ELyjokb62rQzGaUG7mq
+         h9Wjpb558BDrWhL4/GeIjlITxTsHTC92Cy+c+M2fG3Et5toZlbDHjJcYPiTqTvR03sBT
+         s4BhER54ZtFRbRnwp0UuBJPgzzmAn+fWvRih6FwHOpS+wfnN6E0uTYStCpyNfMWxMor9
+         b+FzOpm5Hq8Cp3DYXlwKlxNB/1Ls+CLCEPJgmvxctN3LfmntZZeASR/c7i0WBQ+Y/BWx
+         QsfmzArTLlFaMDIl3khB+5i9xpcSbH6AXLh4hQcExoNB0y3mgFgPrepby6v9ttnZ1ED1
+         SMyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791793310; x=1792398110;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=j/HfGjAac+AZaYIKh17jKsISYIpx8gEa0S85wJAbcwk=;
+        b=o4EdQvr1Ofx5lPI7IR6a2mS1tTxRIWX08pyl3f1bse0l9XTExsE+iNOM+o/MImE4y7
+         TevbAawjYmK0FlG+wtey+1qgydIIDJ8sddVE4f6uiZ0d4mU1WSnjEFobL0ZJ5QjjfFpy
+         a5vv0Ao2rl2HR1fKuhnAbWGacC6B+KKcL1aR0uDmo/FwKYgr/wekrBNIhouiR75VJ5rF
+         tPZ9A6IVfrUuIIypa3TXBUQUia4q2cFQ0Qq3p4PU4EfDszr8vLfnTQEqBWTNp8XWNz2g
+         7OpQvJGNIC7WWj6FOtj0gu/1KLgW2TiE6luWVzh6betvUGftC0rM1HeREXemAbqWz5Jc
+         j8kw==
+X-Gm-Message-State: AFq9FYLx5RBFdy9ayOpUHODlmBqzwNBX6nVZDq4Cx70r1FCL2rvzHIyg
+	svDVYFJO9khmtb/Ye1mQFG/jEoqEAvM7drolwdjN8elegQktigi/kwatFyzgjex+I3ncgTRxzzj
+	xsnavo/5yfCKnGa9CfoxE+SjpX8rIHDPArH5d9NylNMILrzqSZR+gPuC3zUISQJv0MQ0FhqVjDi
+	DhnczHCnS+CJFtQekvvI5kAQVUwsmGbM5lfEoKc/cuO9khIYn4jTMlFaQtlNjp3dk=
+X-Received: from dybco9.prod.google.com ([2002:a05:7300:a189:b0:352:3bdd:a9d7])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:701b:2713:b0:168:6ad8:e8b0 with SMTP id a92af1059eb24-16a6187f095mr14622288c88.14.1791793309400;
+ Mon, 12 Oct 2026 01:21:49 -0700 (PDT)
+Date: Mon, 12 Oct 2026 08:21:42 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261011192310.55-6-andrea.mayer@uniroma2.it>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
+Message-ID: <20261012082148.1698596-1-almasrymina@google.com>
+Subject: [PATCH net-next v2 0/6] net: unify symmetric netmem and page_pool refcounting
+From: Mina Almasry <almasrymina@google.com>
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org
+Cc: Mina Almasry <almasrymina@google.com>, Ayush Sawal <ayush.sawal@chelsio.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Tariq Toukan <tariqt@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, 
+	Eric Biggers <ebiggers@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, 
+	"=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?=" <u.kleine-koenig@baylibre.com>, Jijie Shao <shaojijie@huawei.com>, 
+	Michael Grzeschik <mgr@kernel.org>, Jakub Raczynski <j.raczynski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Oct 11, 2026 at 09:23:10PM +0200, Andrea Mayer wrote:
-> Extend srv6_end_flavors_test.sh with tests for the SRv6 End behavior
-> with the PSP flavor, alone and together with NEXT-C-SID, on packets that
-> carry a consumed SRH in front of the SRH to process.
-> 
-> Each test sends a ping along an existing SRv6 Policy, and a router on
-> the path inserts an extra SRH in front of the Policy's SRH. An End
-> behavior on another router consumes the extra SRH, and the router
-> connected to the host must then remove only the Policy's SRH. A test
-> passes if the ping succeeds.
-> 
-> These tests set seg6_enabled to 1 on the hosts, which must accept the
-> extra SRH, and set it back to 0 at the end. PSP itself is checked
-> by the other PSP tests, which run with seg6_enabled set to 0.
-> 
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  .../selftests/net/srv6_end_flavors_test.sh    | 144 +++++++++++++++++-
->  1 file changed, 142 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> index baa1b09a1aab..b5dbf53a7f23 100755
-> --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
-> @@ -22,8 +22,7 @@
->  # flavors will be supported in the kernel.
->  #
->  # The purpose of the PSP flavor consists in instructing the penultimate node
-> -# listed in the SRv6 policy to remove (i.e. pop) the outermost SRH from the IPv6
-> -# header.
-> +# listed in the SRv6 policy to remove (i.e. pop) the SRH from the IPv6 header.
->  # A PSP enabled SRv6 End behavior instance processes the SRH by:
->  #  - decrementing the Segment Left (SL) value from 1 to 0;
->  #  - copying the last SID from the SID List into the IPv6 Destination Address
-> @@ -258,6 +257,60 @@
->  # the hosts). The loopback address of a host is reached only through the
->  # router connected to that host: the ping succeeds only if the SRH is removed
->  # by that router.
-> +#
-> +# Traffic with a consumed SRH
-> +# ---------------------------
-> +#
-> +# A packet can carry more than one SRH. The SRv6 End behavior skips an SRH with
-> +# SL=0 and processes the next header [1].
-> +#
-> +# The traffic of this section reuses the Policies (i.a), (i.b), (i.c) and (i.d).
-> +# A router on the path inserts an extra SRH in front of the Policy's SRH, and
-> +# another router then consumes the extra SRH.
-> +#
-> +# The Policy (i.a) has SID List=fcff:3::e,fcff:4::ef1,fcff:2::ef1,cafe::2. A
-> +# packet from hs-1 to hs-2 goes as follows:
-> +#
-> +#  - rt-1 applies the Policy and sends the packet to rt-3:
-> +#      IPv6 DA=fcff:3::e | Policy's SRH, SL=3 | Payload
-> +#
-> +#  - rt-3 (End) processes the Policy's SRH and sends the packet to rt-4:
-> +#      IPv6 DA=fcff:4::ef1 | Policy's SRH, SL=2 | Payload
-> +#
-> +#  - rt-4 (End with PSP and SL>1, acting as End) processes the Policy's SRH.
-> +#    The new DA is fcff:2::ef1:
-> +#      IPv6 DA=fcff:2::ef1 | Policy's SRH, SL=1 | Payload
-> +#    On rt-4, the route added by the test for fcff:2::ef1 then inserts the
-> +#    extra SRH, with SID List=fcff:3::e,fcff:2::ef1, and the packet goes back to
-> +#    rt-3:
-> +#      IPv6 DA=fcff:3::e | extra SRH, SL=1 | Policy's SRH, SL=1 | Payload
-> +#
-> +#  - rt-3 (End) consumes the extra SRH and sets the DA back to fcff:2::ef1:
-> +#      IPv6 DA=fcff:2::ef1 | extra SRH, SL=0 | Policy's SRH, SL=1 | Payload
-> +#
-> +#  - rt-2 (End with PSP) skips the extra SRH, processes the Policy's SRH and
-> +#    removes it:
-> +#      IPv6 DA=cafe::2 | extra SRH, SL=0 | Payload
-> +#
-> +# The extra SRH reaches hs-2, which skips it as its SL is 0. The other
-> +# Policies work in the same way:
-> +#
-> +#   (i.b) hs-2 -> hs-1: on the packets with DA=fcff:1::ef1, rt-2 inserts the
-> +#         extra SRH with SID List=fcff:3::e,fcff:1::ef1, and rt-3 consumes it.
-> +#   (i.c) hs-1 -> hs-2: on the packets with DA=fcbb:0:02a1::, rt-4 inserts the
-> +#         extra SRH with SID List=fcff:3::e,fcbb:0:02a1::, and rt-3 consumes it.
-> +#   (i.d) hs-2 -> hs-1: on the packets with DA=fcbb:0:01a1::, rt-3 inserts the
-> +#         extra SRH with SID List=fcff:4::e,fcbb:0:01a1::, and rt-4 consumes it.
-> +#
-> +# The Policy (i.b) has no router between rt-2 and rt-1. For this reason, rt-2
-> +# applies the Policy, inserts the extra SRH and sends the packet to rt-3:
-> +#      IPv6 DA=fcff:3::e | extra SRH, SL=1 | Policy's SRH, SL=1 | Payload
-> +# rt-3 consumes the extra SRH, and rt-1 removes the Policy's SRH.
-> +#
-> +# The hosts need seg6_enabled set to 1 to accept the extra SRH, and it is set
-> +# back to 0 at the end. These tests only check that the ping succeeds: PSP
-> +# itself is checked by the PSP flavor and NEXT-C-SID,PSP tests, which run with
-> +# seg6_enabled set to 0.
->  
->  # shellcheck source=lib.sh
->  source lib.sh
-> @@ -967,6 +1020,92 @@ host_srv6_end_flv_next_csid_psp_tests()
->  	check_and_log_hs_lo_addr_connectivity 2 1 "${END_CSID_PSP_FUNC}"
->  }
->  
-> +# On a router, add a route for a SID with seg6 encap in inline mode. The packets
-> +# that the router forwards to that SID get an extra SRH with the End SID of the
-> +# router that consumes it.
-> +# args:
-> +#  $1 - router on which the route is added
-> +#  $2 - SID of the route
-> +#  $3 - router with the SRv6 End behavior that consumes the extra SRH
-> +setup_rt_consumed_srh()
-> +{
-> +	local rt="$1"
-> +	local sid="$2"
-> +	local end_rt="$3"
-> +	local nsname
-> +
-> +	nsname="$(get_rtname "${rt}")"
-> +
-> +	ip -netns "${nsname}" -6 route \
-> +		add "${sid}" table "${LOCALSID_TABLE_ID}" \
-> +		encap seg6 mode inline \
-> +		segs "${LOCATOR_SERVICE}:${end_rt}::${END_FUNC}" \
-> +		dev "${DUMMY_DEVNAME}"
-> +}
-> +
-> +cleanup_rt_consumed_srh()
-> +{
-> +	local rt="$1"
-> +	local sid="$2"
-> +	local nsname
-> +
-> +	nsname="$(get_rtname "${rt}")"
-> +
-> +	ip -netns "${nsname}" -6 route \
-> +		del "${sid}" table "${LOCALSID_TABLE_ID}"
-> +}
-> +
-> +set_hs_seg6_enabled()
-> +{
-> +	local val="$1"
-> +	local hsname
-> +	local hs
-> +
-> +	for hs in ${HOSTS}; do
-> +		hsname="$(get_hsname "${hs}")"
-> +
-> +		ip netns exec "${hsname}" \
-> +			sysctl -wq net.ipv6.conf.all.seg6_enabled="${val}"
-> +		ip netns exec "${hsname}" \
-> +			sysctl -wq net.ipv6.conf.veth0.seg6_enabled="${val}"
-> +	done
-> +}
-> +
-> +host_srv6_end_flv_consumed_srh_tests()
-> +{
-> +	local sid
-> +
-> +	log_section "SRv6 connectivity test hosts (h1 <-> h2, consumed SRH)"
-> +
-> +	set_hs_seg6_enabled 1
-> +
-> +	# Policy (i.a): rt-4 inserts the extra SRH consumed by rt-3
-> +	sid="${LOCATOR_SERVICE}:2::${END_PSP_FUNC}"
-> +	setup_rt_consumed_srh 4 "${sid}" 3
-> +	check_and_log_hs_connectivity 1 2
-> +	cleanup_rt_consumed_srh 4 "${sid}"
-> +
-> +	# Policy (i.b): rt-2 inserts the extra SRH consumed by rt-3
-> +	sid="${LOCATOR_SERVICE}:1::${END_PSP_FUNC}"
-> +	setup_rt_consumed_srh 2 "${sid}" 3
-> +	check_and_log_hs_connectivity 2 1
-> +	cleanup_rt_consumed_srh 2 "${sid}"
-> +
-> +	# Policy (i.c): rt-4 inserts the extra SRH consumed by rt-3
-> +	sid="$(build_csid_container 2 "${END_CSID_PSP_FUNC}")"
-> +	setup_rt_consumed_srh 4 "${sid}" 3
-> +	check_and_log_hs_lo_addr_connectivity 1 2 "${END_CSID_PSP_FUNC}"
-> +	cleanup_rt_consumed_srh 4 "${sid}"
-> +
-> +	# Policy (i.d): rt-3 inserts the extra SRH consumed by rt-4
-> +	sid="$(build_csid_container 1 "${END_CSID_PSP_FUNC}")"
-> +	setup_rt_consumed_srh 3 "${sid}" 4
-> +	check_and_log_hs_lo_addr_connectivity 2 1 "${END_CSID_PSP_FUNC}"
-> +	cleanup_rt_consumed_srh 3 "${sid}"
-> +
-> +	set_hs_seg6_enabled 0
-> +}
-> +
->  test_iproute2_supp_or_ksft_skip()
->  {
->  	local flavor="$1"
-> @@ -1071,5 +1210,6 @@ router_tests
->  host2gateway_tests
->  host_srv6_end_flv_psp_tests
->  host_srv6_end_flv_next_csid_psp_tests
-> +host_srv6_end_flv_consumed_srh_tests
->  
->  print_log_test_results
-> -- 
-> 2.43.0
-> 
+netmems (pages and net_iovs) have two independent refcounts: a non-pp
+refcount (page._refcount or binding->ref) governing backing memory
+lifetime, and pp_ref_count governing recycling within a page_pool while
+page_pool holds a single backing non-pp reference. SKBs with
+pp_recycle=1 own pp_ref_count references on page_pool fragments; SKBs
+with pp_recycle=0 own non-pp references.
 
-Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Core helpers currently mix these two refcounts asymmetrically:
+skb_frag_ref() always increments the non-pp refcount via get_netmem(),
+whereas skb_frag_unref() decrements pp_ref_count when skb->pp_recycle
+is set. Any path that refs a fragment on a pp_recycle=1 SKB (or unrefs
+with a hardcoded recycle=false) increments one counter and decrements
+the other, leaking the backing memory while underflowing pp_ref_count
+(e.g., IP-TFS [1], skb_split(), skb_shift(), and cloned SKB uncloning).
+Unclear core APIs also led drivers and ULPs to open-code pp_ref_count
+manipulations or add one-off helpers like skb_pp_frag_ref().
 
-Thanks
-Hangbin
+Unify fragment refcounting into symmetric pairs where each layer clearly
+specifies which refcount it touches:
+
+- Non-PP refcount: get/put_page(), get/put_net_iov(), get/put_netmem()
+- PP refcount:     napi_pp_get/put_page()
+- SKB netmem:      skb_netmem_ref/unref(netmem, recycle)
+- SKB fragment:    skb_frag_ref/unref(skb, f)
+
+Found by code inspection while reviewing [1] and confirmed with the KUnit
+tests in patch 6; not observed in production. Driver and ULP call-site
+changes are compile-tested only.
+
+Link: https://lore.kernel.org/netdev/xfrm-iptfs-pp_ref_count-underflow-v4-1-912fa72106f0@secunet.com/ [1]
+
+---
+v2:
+- Clear NETIF_F_SG in skb_segment() when frag_list SKBs mix pp_recycle
+  flags (patch 4).
+- Export skb_shift() via EXPORT_SYMBOL_IF_KUNIT() to fix the
+  CONFIG_NET_TEST=m modpost error reported by NIPA (patch 6).
+- Reset mac_header before skb_segment() and check skb_clone() results in
+  KUnit (Sashiko), and extend KUnit coverage to compound tail pages,
+  skb_try_coalesce(), TCP devmem recvmsg, skb_zerocopy() rollbacks,
+  skb_split()/skb_shift() edge cases, and mixed pp_recycle frag_list GSO.
+- Note how the issues were found and tested (netdev-bot), and add
+  Assisted-by tags.
+- Link to v1: https://lore.kernel.org/netdev/20261010083935.3274178-1-almasrymina@google.com/
+
+Mina Almasry (6):
+  netmem: rename __get/__put_netmem() to get/put_net_iov()
+  net: skbuff: add napi_pp_get_page() and use it in tcp_recvmsg_dmabuf()
+  net: skbuff: replace skb_page_unref() and __skb_frag_unref() with
+    skb_netmem_unref()
+  net: skbuff: replace __skb_frag_ref() with symmetric skb_netmem_ref()
+  net: skbuff: use skb_frag_ref() in skb_try_coalesce()
+  net: kunit: test netmem, page_pool, and skb frag refcounting
+
+ .../chelsio/inline_crypto/ch_ktls/chcr_ktls.c |    2 +-
+ drivers/net/ethernet/marvell/sky2.c           |    2 +-
+ drivers/net/ethernet/mellanox/mlx4/en_rx.c    |    2 +-
+ drivers/net/ethernet/sun/cassini.c            |    4 +-
+ drivers/net/veth.c                            |    2 +-
+ include/linux/skbuff_ref.h                    |   64 +-
+ include/net/netmem.h                          |   24 +-
+ net/core/net_test.c                           | 1204 +++++++++++++++++
+ net/core/skbuff.c                             |  161 ++-
+ net/ipv4/esp4.c                               |    4 +-
+ net/ipv4/tcp.c                                |    6 +-
+ net/ipv6/esp6.c                               |    4 +-
+ net/tls/tls_device.c                          |    2 +-
+ net/tls/tls_device_fallback.c                 |    2 +-
+ net/tls/tls_strp.c                            |    2 +-
+ net/xfrm/xfrm_iptfs.c                         |    3 +-
+ 16 files changed, 1373 insertions(+), 115 deletions(-)
+
+
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+-- 
+2.56.0.385.gd3acb90ef8-goog
+
