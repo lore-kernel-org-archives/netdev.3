@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F0E41D204;
-	Mon, 12 Oct 2026 19:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2828420472;
+	Mon, 12 Oct 2026 19:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791831688; cv=none; b=Hqnohop/mzShwHrZTR5Kokk2OLKG9Mq7ydmk4xwCW/yuLxHPNuMFcjCRGoI+LclBojAsuDyb3LJPLY5A36pzW0R15KSpmIJBorA/xzBneiccl3XiY62d7QvoIe4EoRrI4R+4xK7FxFuxWBKd9A7+xwJ7a7qqPcaUAmUz8hbDVHs=
+	t=1791831690; cv=none; b=T1TDKpounyCFtOLdKk4M7nK2aU6B9+TOuyLXWcCfQqvtHH8R+cFf0mOh3Qo0McM3f1HCDS5E2V+qpfeswbwtouU+lsQWAwAeMEfKZoByzLiCMpGM4leSfS8yiUFP4DIQCFi1hUNUgs2mSznR8uJly3HdpoezUuGxTtKjrf08If8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791831688; c=relaxed/simple;
-	bh=Xw0bqyRW3ITXCi2hZd3bEZrfhGIbqBTBV2UFIBh226o=;
+	s=arc-20240116; t=1791831690; c=relaxed/simple;
+	bh=hkJayNZQgrwdqqCuojchsmQlG6+Vkhn//x49kMEmH1I=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gU1rOc92Sm6yzt1zPaJHWs9TUxzUKnfUZPN8DqWkM7bn9AGq1lF8YzsNxeGzcscn8WbsUPmzt94WUKAzKvERviaabowBX31x8qWTAIEgicy2AasL5GZUuyoSGy5gMCgEZJnJKjcqY6oAgkH/KKseAji3SKMDz23GkYo9KKoNYXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RplrdsM/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=nrUdw02TAgf1xhNVGlcUDhgqMv6bzmH7yxqJbnuhm+hA36jlU4Kqr0htA6MT9pBZpBP7ZzsawuDd7r16+ejbVqBoutvVKqSVMyrCtHi/YQWgrzegrzGDiPqSfL9K/gW36S5k/K1WtXE74jx+8tH6Z0wf49aD+fQ3sS4E04sfksI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7oJfps7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RplrdsM/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C2A1F0089B;
-	Mon, 12 Oct 2026 19:01:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7oJfps7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D71A1F008A1;
+	Mon, 12 Oct 2026 19:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791831686;
-	bh=UIqOJLYRdV+MzZLicS2TDxnQpeZCtKLQ/MbxYjbovPs=;
+	s=k20260515; t=1791831688;
+	bh=xk+6pVVCUnWUK9IgM7r73lRfaDtOS1AqOjhCfpJf030=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RplrdsM/XL3+pKgGomBxpyHHtQHdDi2HSTfFFaUwOJ88H2YpW/nnYCrbI9nFwoymT
-	 NG4UuOWMgv6G7QMGmvkQW35ynpuy/fMxpWRaX3/csTv8La3T7Dw6oDbz0xxHuQAhXR
-	 sRmT771ipZm7pJdz0zA1vxGQn03FIwzmNs39ZwOIVLMHkzAZPTjI/EHjvAD4U42H1j
-	 XH3W/yQyrXELrn7l93jyGp9L1gTfl3/45Pgg7LQqJPOqAbjCX3Quz3rrRVGtrxmlkW
-	 Kulwfu4QceH+j66gMx8PAoLxl9gSb/Umb+kxofRg2WBdyGN2yl9yhUU4WK6tGrAISQ
-	 3Wp/jr0qz+wCg==
-Subject: Re: [PATCH net-next v11 1/6] net: pcs: xpcs: add ANRESTART support
- for SGMII link recovery
+	b=l7oJfps7OydmdVFQdL8dS9pBt+n65dUip9H0ZEO7xSKTWtHAbYRwCtjeXiOREazIw
+	 yeb8gkyBgiJZJ4y+Ns/8KBTQ92H4xWWZFkO4LKYnF6EmrtAGLA0jVHLhYLeAgjp079
+	 Q08BuXxkaZXM/+txQ4jDAJzfj3eo/VnhK0vbwg0y4AQXBMnDJM1Zd22xmNS3hhc/eS
+	 MRfVGUf4Gb5sJvvUsQJe6jxqN7m6sh9It1rEfvzfio/jg0Rh4GBVy+1b7oHCTlgvNP
+	 flAUcbfddRcLaSFteFoymlntXLXmQknLG+LfhO43TX3VnsFWLk6OabYpiwJp3954nV
+	 kk/PuK07up5YA==
+Subject: Re: [PATCH net-next v11 2/6] dt-bindings: net: pcs: add
+ rockchip,rk3568-xpcs support
 From: netdev-bot+sashiko@kernel.org
 To: coiaprant@gmail.com
 Cc: kuba@kernel.org, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
@@ -38,10 +38,10 @@ Cc: kuba@kernel.org, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
  david.wu@rock-chips.com, linux-rockchip@lists.infradead.org,
  devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
-Date: Mon, 12 Oct 2026 19:01:25 +0000
-Message-ID: <179183168522.434549.14619345397319265452@kernel.org>
-In-Reply-To: <20261008175225.3375274-2-coiaprant@gmail.com>
-References: <20261008175225.3375274-2-coiaprant@gmail.com>
+Date: Mon, 12 Oct 2026 19:01:27 +0000
+Message-ID: <179183168700.434549.4839888235106301371@kernel.org>
+In-Reply-To: <20261008175225.3375274-3-coiaprant@gmail.com>
+References: <20261008175225.3375274-3-coiaprant@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,10 +52,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,118 +63,100 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] xpcs_get_state_c37_sgmii() now does a non-atomic read -> act
-  sequence.
-- [Low] Concern: in xpcs_get_state_c37_sgmii() the ANCMPLT latch is
-  cleared (pcs-xpcs.c:1112) before BMCR_ANRESTART is issued (pcs-…
+- [Medium] The new binding
+  Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml…
 
 --
 
-net: pcs: xpcs: add ANRESTART support for SGMII link recovery
+dt-bindings: net: pcs: add rockchip,rk3568-xpcs support
 
-This patch sets BMCR_ANRESTART alongside BMCR_ANENABLE when configuring
-C37 SGMII AN. It also clears DW_VR_MII_AN_INTR_STS before AN starts. In
-xpcs_get_state_c37_sgmii(), when AN completion is seen with the link down,
-it clears the ANCMPLT latch and restarts AN, so that parts such as RK3568
-can recover the link.
+This adds a new device tree binding for the Synopsys DesignWare XPCS on
+the Rockchip RK3568 SoC. The XPCS is accessed over APB3 and connected to a
+Naneng Combo SerDes PHY. The binding covers reg, the csr and eee clocks,
+one phy and one power domain, and on purpose leaves out the CRU reset
+lines.
 
-> diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
-> index b415b93d77c15..6466e0ff2a98b 100644
-> --- a/drivers/net/pcs/pcs-xpcs.c
-> +++ b/drivers/net/pcs/pcs-xpcs.c
+> diff --git a/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> new file mode 100644
+> index 0000000000000..a331880eb11c1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
+> @@ -0,0 +1,69 @@
 
 [ ... ]
 
-> @@ -1093,9 +1107,18 @@ static int xpcs_get_state_c37_sgmii(struct dw_xpcs *xpcs,
->  		return 0;
->  	}
->  
-> -	/* Clear AN complete status or interrupt */
-> -	if (state->an_complete)
-> -		xpcs_write(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS, 0);
-> +	if (state->an_complete) {
-> +		/* Clear AN complete status or interrupt */
-> +		ret = xpcs_write(xpcs, MDIO_MMD_VEND2, DW_VR_MII_AN_INTR_STS, 0);
-> +		if (ret < 0)
-> +			return ret;
+> +  phys:
+> +    maxItems: 1
 > +
-> +		/* Initiate the next round of AN */
-> +		ret = xpcs_modify(xpcs, MDIO_MMD_VEND2, MII_BMCR, BMCR_ANRESTART,
-> +				  BMCR_ANRESTART);
-> +		if (ret < 0)
-> +			return ret;
+> +  power-domains:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +  - clock-names
+> +  - phys
+> +  - power-domains
+> +
+> +additionalProperties: false
 
 [Severity: Medium]
-Can two callers of .pcs_get_state() race here and restart a negotiation
-that has just finished with the link up?
+The properties list has no resets or interrupts entries, and
+additionalProperties is false. Would a DT that fully describes this block
+then fail dt_binding_check?
 
-The read of DW_VR_MII_AN_INTR_STS at the top of the function and the
-clear and restart here are not atomic. phylink calls .pcs_get_state()
-from contexts that do not share a lock:
+The SoC has four CRU reset inputs for this IP, defined in
+include/dt-bindings/clock/rk3568-cru.h:
 
-  phylink_resolve()                   holds pl->state_mutex, not RTNL
-  phylink_ethtool_ksettings_get()     holds RTNL only (MLO_AN_INBAND,
-                                      no phydev)
-  phylink_mii_ioctl()->phylink_mii_read()   holds RTNL only
+#define SRST_XPCS		150
+#define SRST_XPCS_TX_DIV10	151
+#define SRST_XPCS_RX_DIV10	152
+#define SRST_XPCS_XGXS_RX	153
 
-struct dw_xpcs has no lock of its own, and the MDIO bus lock only covers
-each single access.
+The commit message says they are left out because "no in-tree user
+requests them". Documentation/devicetree/bindings/writing-bindings.rst
+says the opposite:
 
-A possible interleaving:
+  - DO attempt to make bindings complete even if a driver doesn't support some
+    features. For example, if a device has an interrupt, then include the
+    'interrupts' property even if the driver is only polled mode.
 
-CPU1 (ethtool get)                  CPU0 (phylink_resolve)
-xpcs_read(INTR_STS)
-  link=0, ANCMPLT=1
-                                    xpcs_read(INTR_STS)
-                                      link=0, ANCMPLT=1
-                                    xpcs_write(INTR_STS, 0)
-                                    xpcs_modify(BMCR, ANRESTART)
-                                    ... AN completes, link up ...
-xpcs_write(INTR_STS, 0)
-xpcs_modify(BMCR, ANRESTART)
+  - DON'T refer to Linux or "device driver" in bindings. Bindings should be
+    based on what the hardware has, not what an OS and driver currently support.
 
-CPU1 acts on its stale sample. It clears the newly latched ANCMPLT and
-restarts AN on a link that has just come up.
+Could resets and reset-names be added now, so the binding matches the
+hardware?
 
-Before this patch, a concurrent caller could only clear the latch. The
-extra restart is new. Unprivileged users can issue ethtool get link
-settings.
+The commit message also says the resets "can be added later as optional
+without breaking ABI". Once DTs ship without them, though, they would have
+to stay optional for good.
 
-The commit message's reason for clearing the latch before the restart
-assumes that get_state calls are serialized. Does phylink actually
-guarantee that for these callers?
+Could a driver then ever rely on putting the TX/RX div10 and XGXS RX
+domains into a known state? The in-IP soft reset may not cover those
+domains.
 
-[Severity: Low]
-What retries the restart if the xpcs_write() of DW_VR_MII_AN_INTR_STS
-succeeds and then this xpcs_modify() of MII_BMCR fails?
+The same question applies to interrupts. The generic binding for this IP,
+snps,dw-xpcs.yaml, documents an auto-negotiation interrupt output:
 
-The latched ANCMPLT that triggers this path has already been cleared. No
-restart is pending, and xpcs_get_state() only logs the error:
+  interrupts:
+    description:
+      System interface interrupt output (sbd_intr_o) indicating Clause 73/37
+      auto-negotiation events':' Page received, AN is completed or incompatible
+      link partner.
+    maxItems: 1
 
-phylink_resolve()
-  xpcs_get_state()
-    xpcs_get_state_c37_sgmii()
-      xpcs_write(DW_VR_MII_AN_INTR_STS, 0)    succeeds
-      xpcs_modify(MII_BMCR, BMCR_ANRESTART)   fails
-    dev_err(..., "xpcs_get_state_c37_sgmii", ...)
+Is sbd_intr_o routed to the GIC on RK3568? If it is, should this binding
+have an interrupts property too? If it isn't, could the commit message say
+so?
 
-On parts that do not restart AN by themselves, the link would then stay
-down until the interface is reconfigured.
+The later patches in this series leave this binding unchanged, so neither
+point is addressed later in the series.
 
-The commit message covers this case:
+> +
+> +examples:
 
-  "If an MDIO access fails at this point, it indicates an unrecoverable
-  hardware condition until reset."
-
-On RK3568, the MMIO-based MDIO back end added later in the series seems
-to fail only through pm_runtime_resume_and_get(). That failure is not
-transient. On other XPCS platforms the databook says AN restarts on its
-own. So the documented behaviour may be fine as it is.
-
-> +	}
->  
->  	return 0;
->  }
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008175225.3375274-1-coiaprant%40gmail.com
