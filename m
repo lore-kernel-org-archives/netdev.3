@@ -1,61 +1,63 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700A23BED42
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428C53E51FF
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791849332; cv=none; b=GmSIRDpRnieQ0oo7pVbdm4NkbeUQ4HgIjOKBvXwxHJSSgWGC7g9SvLIDJAF908tHd8bT7QXSD3xYvkKG5A7xJXFatBult+HO3OcYhENtzVhlYq7IYfvYdKmlOgEOdWTAtj1UqnCo7dFsjm18i82DaUcGGcCqZZTj+GrdzL1xwpA=
+	t=1791849334; cv=none; b=b+UzS+oZwHPSBlz+0hlCCHvzrfvWF8j9nKpavXpViHhtAB5o0BjfbpF+ClrmmcAWs6LUMs72Boq/Z7DJ03ipN6x8UG4kw722lOf1poFx0BdElaCwTGHFZ4T1xf9m5CXJKbuHVSx8ynVXDTmOb3kk8fK82nHb3O2VEOYmj3i6RqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791849332; c=relaxed/simple;
-	bh=1w1F988jNPgirGYn7lWZqWgUsbQey03z212sKRJwP10=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ihe+Zu7ljTU20LJPtpgmtUCoF3GZ2sjurboOzwyCMdP7GDly2jwZox+BeD6nFsZhqEjKHCtcb/xN1td4mW14eM4alYw0PAKAq1pcKuesnAocwQpeGeETg40fYS/CJ7zjJMZuTC7iXZNQeBfR3jMLgq6mZ6Efn1hWuaajNxTOWzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XckFBGxi; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1791849334; c=relaxed/simple;
+	bh=7Jppg6yM4EgF1LiDYJeOE79I8PpMZq9yJUvSKhHYuQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QMJfwdKCiwyel6Z8VjdwJtMchmheU9BmvvnqyxGwEP6KYS7ctOFHaaUBAP77Zn9BvxEzf0SqLACV/yDm1t3eQwk0zVXhV0cNDBzTthC4BUpeXBMplPzUenFece4DcMyvLoVAr9MNyZWaqcIarn5Wl97FU2zW9bJouNXslRi2TyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mTIiAExt; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XckFBGxi"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48c411d6615so1654349f8f.3
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:55:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mTIiAExt"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48afe0081a6so1600417f8f.2
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 16:55:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791849330; x=1792454130; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/evjTB7G1IHnw2ZoU85Mql0h2mL/HYgEXMQE1oqOuN0=;
-        b=XckFBGxic3rN23q5lYFNzH4V1bj9+xn7Gjkz0C1xc7hRqA8IWWxpGZgr7fIh6DpOR0
-         FJBZiI+BLgoM4GTLtYBAY08CYuXkxRe30WM0jRysriQ3DCnlnDh/QD0VRyap4Zu+iv74
-         kQIPFLNeCgg9qFHSHgJjBhPhqtwFR5a8Or7QF8Pk5dCYf2qd+lOF4WnWaxJ/EeucfgWy
-         eThgyYAdOScTyv8tyZ1g4E1Cuoe72j8GuX+emCxssFeDxNy+8zNFGSYVu0p7pEP47oZ1
-         y3PxN6Uezxv6VIfNJ8lIMVurppu+CpiQ8vO2CQA30M7GfC6ZsgjmhlDhBsG5YhCJrSIM
-         uIQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791849330; x=1792454130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1791849331; x=1792454131; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/evjTB7G1IHnw2ZoU85Mql0h2mL/HYgEXMQE1oqOuN0=;
-        b=vX1GA1KXEIEzMXWIhBwIqM0AirWep8VK9tvEZKJb/WXV6PAByEOhWjPj7kxuzLLLt6
-         RfvPWneco5d9sTg3kS+cW7Df1eJC452qoRsHEHQOSTruVcIZPSGRoA9h8EcmW/7/n0DS
-         hzMAecEVRoKFoN9SuI0ZHkC/Gj+upwpxu08ldpCHM2Z9/XYSE3ST6YfUxwS3gPYY+T61
-         px/DvmOGURkQQGRNcmSUNsUZw/OVuYa1Kf72PBkfoNatYyy4LJfpUuQeTudRjZ8PSh1/
-         M+2dIgp6l89LRw3wYte3N2xnMRSP2faht7MylVJGOfAmxPMsSdoIiFzbz1E2OwrTjoo3
-         2C0w==
-X-Gm-Message-State: AFq9FYIe3R6p3PxB7uLAiJvQHUeIAnVXlNKr9Ujv+nhohMskFQSVX4jj
-	81uRrA2mo0cq755yCbSxLAonHKMN8diyg43vct2vTirNqPdU1TbPgq1gIWa3ow==
-X-Gm-Gg: AYBFou3l+nRup5B3CyUiEKdYXbq4xesyt0Kks9+DubMNw8xLBFiq189f/S3foKSSavG
-	ieEfzxGfAhus4mScMcMVxrDDSMr9C+fxzevlIbur332IyIrdDOxfAQFckZYQ/57FquSGHkzUJnb
-	ILJepkupo/I1ncqyzgHAI4UYgv3j3ZHtx12uweewRVKCNagxyGvcQ2jLXMGBWkXHZEU/QzOx0is
-	xB1lxJlbXaKOnbnhXUDZkeliq1H8dKmnANAmiyytIwqhjvobR6y8WwDMQo0ev39QXM8StWK0HPf
-	a/NsQFEAtTsCmKQhRNi0cw2CPd0ndn0DxRY+NPrOSPl8LlkmcH/Hlid4QY/9sT3HeEcKU+5imt1
-	RB/rvrPMuyOM7avSugfC6NZBjCfHHt0AIdhfnDlMFTnO1eAgMeD2i/GBev/9J84vTnuoQX55nm1
-	S9UZHlQ8ZMQIYtp2llcza/XOa6OFaRlRoG91N40XkYwpXR+Djnjck3Dfi1EzAOQNFVNYBgqhZ9T
-	eskI4uU8N3ixo4QvZK4DWk/h47IELOvZ8flYi9M0r77H09pZSzd/NNRxr0=
-X-Received: by 2002:a5d:6b92:0:b0:48c:8126:a266 with SMTP id ffacd0b85a97d-48dbace9838mr16800523f8f.34.1791849329200;
-        Mon, 12 Oct 2026 16:55:29 -0700 (PDT)
+        bh=gBDjfcYpOnFL2AwGB62aVDEEQFBwxjTJIGQXAUNz3X8=;
+        b=mTIiAExtp+vzTD3O9gYjellUybDuRPWQLdJbEwn+wHzhpp0Gk8Ye0d5sDxArWvlTgf
+         xoP6QekHy5aJOwW+GzV0/ZVHx7Yuv1RqMBBzThto0HrpwYYuqCThyujVdS/cJYgcWhhh
+         8CLn677wd1KYS5Ta0l+yU8P/hNJ2MS+Tw+kOeP1q+at5//2bWRlFadA4n0M3W5MXM37A
+         wXZPwWT8g4Mouk3nEdujwolsqiXts6Eldp+8k5tAObRHee/iFFGlpVukHhrkt2QeopP8
+         Tk4ul8sz+6gD5UXRYTXw4hc9COctb5QInfJRR0F5LeYHOr3gMOJI8ENeJqh84Pvnr7EQ
+         YHgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791849331; x=1792454131;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gBDjfcYpOnFL2AwGB62aVDEEQFBwxjTJIGQXAUNz3X8=;
+        b=ha2/JezGO4IDtcpEb3NsjFXTtFyPBq19RQaKKOnyekz43pnwFWAPS8kGrVjrliKroS
+         QVgY9AxrSuySU8qsNWp4xKSKfFqITOxEE5k3ZbTez3ffINW0oUc8CDOLrkVcEv2xRmr4
+         gh2lcKDWNgyeC0fQ1wfTb8ln/QuoSrxtlVPzByih4bdrd5yd18CpQv6P0/YLsRWAjVtf
+         2wkzYL8Bqd5T2McEfv0i50CNnCH5qcYoqAZsOFodlbFnzhh0YZLcIXQ1wFj06Fw25SiQ
+         9vNVMxKMrzEIm0rYj5PW0kuIkMDIitLyxvDul6qvcR5pv9LkBMH1BWf0S45pwJkm19Pq
+         Ysxg==
+X-Gm-Message-State: AFq9FYKNHiaMKz2M6S2TyZ7bhQa2oAQnTDYEjw7ze3usoNKR39HEQg/l
+	r74tdKyNRVQdt2IgknDuVTfUBiCtD7UlgFv/FM53Nb2bT3eTnGw7WoJVmXIO/Q==
+X-Gm-Gg: AYBFou28HlxQmXJdR/e6h6HVgfBg6E4csdaX9vaMkTL+xvpSPCu2TpvyeNSvz13HwUm
+	6h3scu3oewkDTMQrm9DclRCS4Gp1bDEl5QYWcxT7zq86FYMzsHGl4Ms9o2sJNCjs2A6KoTTpS41
+	0wY4Rtj3fIIt4K/K3ulmpPK2svCtBBollp4A23VklC3HZmA2QxbZPkddtyHC8PfgE0Reju6hZ2i
+	UuxZsP+VHhmXuOur7EbvBpJwajkQGQxFYnfxjgv8k8o0SXoWQF9Fxf7wckGiTtxNG5M43fNoYMT
+	sx/etxRRK3m2g5ScRdOXJwRjU2iXjJSM94xI2ZBLF4LvzJ4Ib9ZnzhJCeBoIKisp5phvFQ4P2UB
+	LdPy65duzomfScyl6R/JPtcfqAXnezIRyK334K3Q/VJ5YoWmrDJHrsee+Mi8sJnbH0SzwIC9jpg
+	X1mVyUCeLZyILOUcNWFA1PiVkV62pjaQXqd8ecsxTyPx/BfwgowQm1ZDwd0uLkgYz6ekazrO0Dt
+	g/uNuFFA3cKKu+cYDizaQs6KFTupAyH7TrXKb+aw3gbRgqaVw/iWPztJa8r
+X-Received: by 2002:a05:6000:290b:b0:487:2805:6834 with SMTP id ffacd0b85a97d-48dbace156emr19400809f8f.42.1791849331313;
+        Mon, 12 Oct 2026 16:55:31 -0700 (PDT)
 Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0967a0dsm1933762f8f.3.2026.10.12.16.55.26
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0967a0dsm1933762f8f.3.2026.10.12.16.55.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 16:55:27 -0700 (PDT)
+        Mon, 12 Oct 2026 16:55:30 -0700 (PDT)
 From: David Carlier <devnexen@gmail.com>
 To: netdev@vger.kernel.org
 Cc: sgarzare@redhat.com,
@@ -68,10 +70,12 @@ Cc: sgarzare@redhat.com,
 	virtualization@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	David Carlier <devnexen@gmail.com>
-Subject: [PATCH net-next 0/2] vsock: SO_INQ for stream sockets
-Date: Tue, 13 Oct 2026 00:55:22 +0100
-Message-ID: <20261012235524.41468-1-devnexen@gmail.com>
+Subject: [PATCH net-next 1/2] vsock: support SO_INQ on stream sockets
+Date: Tue, 13 Oct 2026 00:55:23 +0100
+Message-ID: <20261012235524.41468-2-devnexen@gmail.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261012235524.41468-1-devnexen@gmail.com>
+References: <20261012235524.41468-1-devnexen@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,28 +84,123 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is the follow-up announced in the receive queue hint series [1]:
-SO_INQ and SCM_INQ for AF_VSOCK stream sockets, as AF_UNIX has.
+SO_INQ makes recvmsg() return the bytes left in the receive queue in an
+SCM_INQ cmsg, saving a SIOCINQ call per receive. AF_UNIX stream sockets
+support it, AF_VSOCK fails with ENOPROTOOPT.
 
-The value is the one SIOCINQ returns, so on Hyper-V it covers the
-current packet only. The flag is per socket, is not inherited by
-accepted sockets, and the sockmap receive path does not report it.
+Add it for SOCK_STREAM, reusing the hint already computed for io_uring.
+As with TCP_INQ, 1 is reported once the stream is finished so the caller
+reads again and sees EOF. No cmsg is sent when the transport cannot
+report the queue length.
 
-Tested over loopback with vsock_test and vsock_uring_test.
+SOCK_SEQPACKET is refused, as on AF_UNIX: its transport callback counts
+messages, not bytes.
 
-[1] https://lore.kernel.org/netdev/20260923184008.153541-1-devnexen@gmail.com/
+Signed-off-by: David Carlier <devnexen@gmail.com>
+---
+ include/net/af_vsock.h   |  1 +
+ net/vmw_vsock/af_vsock.c | 41 +++++++++++++++++++++++++++++++---------
+ 2 files changed, 33 insertions(+), 9 deletions(-)
 
-David Carlier (2):
-  vsock: support SO_INQ on stream sockets
-  vsock/test: cover SO_INQ
-
- include/net/af_vsock.h           |   1 +
- net/vmw_vsock/af_vsock.c         |  41 +++++--
- tools/testing/vsock/vsock_test.c | 191 +++++++++++++++++++++++++++++++
- 3 files changed, 224 insertions(+), 9 deletions(-)
-
-
-base-commit: a4057f51efc2b74ddf46721e83f45e9efb13649d
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index 5549298c1ec6..e8481f12312e 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -68,6 +68,7 @@ struct vsock_sock {
+ 	u64 buffer_size;
+ 	u64 buffer_min_size;
+ 	u64 buffer_max_size;
++	bool recvmsg_inq;
+ 
+ 	/* Private to transport. */
+ 	void *trans;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 1c2d1cea67f4..874dc1545a35 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -2050,29 +2050,38 @@ static int vsock_connectible_setsockopt(struct socket *sock,
+ 	transport = vsk->transport;
+ 
+ 	if (level == SOL_SOCKET) {
+-		int zerocopy;
++		int v;
+ 
+-		if (optname != SO_ZEROCOPY) {
++		if (optname != SO_ZEROCOPY && optname != SO_INQ) {
+ 			release_sock(sk);
+ 			return sock_setsockopt(sock, level, optname, optval, optlen);
+ 		}
+ 
+ 		/* Use 'int' type here, because variable to
+-		 * set this option usually has this type.
++		 * set these options usually has this type.
+ 		 */
+-		COPY_IN(zerocopy);
++		COPY_IN(v);
+ 
+-		if (zerocopy < 0 || zerocopy > 1) {
++		if (v < 0 || v > 1) {
+ 			err = -EINVAL;
+ 			goto exit;
+ 		}
+ 
++		if (optname == SO_INQ) {
++			if (sk->sk_type != SOCK_STREAM) {
++				err = -ENOPROTOOPT;
++				goto exit;
++			}
++			vsk->recvmsg_inq = v;
++			goto exit;
++		}
++
+ 		if (transport && !vsock_msgzerocopy_allow(transport)) {
+ 			err = -EOPNOTSUPP;
+ 			goto exit;
+ 		}
+ 
+-		sock_valbool_flag(sk, SOCK_ZEROCOPY, zerocopy);
++		sock_valbool_flag(sk, SOCK_ZEROCOPY, v);
+ 		goto exit;
+ 	}
+ 
+@@ -2581,6 +2590,7 @@ __vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 	struct sock *sk;
+ 	struct vsock_sock *vsk;
+ 	const struct vsock_transport *transport;
++	bool do_cmsg = false;
+ 	int err;
+ 
+ 	sk = sock->sk;
+@@ -2637,13 +2647,26 @@ __vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		err = __vsock_seqpacket_recvmsg(sk, msg, len, flags);
+ 
+ out:
+-	/* Seqpacket has_data counts messages, while io_uring treats msg_inq as
+-	 * a byte length when sizing retries, so only streams report a hint.
++	/* Seqpacket has_data counts messages, while SCM_INQ reports bytes and
++	 * io_uring treats msg_inq as a byte length when sizing retries, so
++	 * only streams report it.
+ 	 */
+-	if (msg->msg_get_inq && err >= 0 && sk->sk_type == SOCK_STREAM)
++	if ((vsk->recvmsg_inq | msg->msg_get_inq) && err >= 0 &&
++	    sk->sk_type == SOCK_STREAM) {
+ 		msg->msg_inq = vsock_stream_inq_hint(sk);
+ 
++		/* A negative hint means the transport could not tell. SCM_INQ
++		 * has no encoding for that, so report nothing.
++		 */
++		do_cmsg = vsk->recvmsg_inq && msg->msg_inq >= 0;
++	}
++
+ 	release_sock(sk);
++
++	if (do_cmsg)
++		put_cmsg(msg, SOL_SOCKET, SCM_INQ, sizeof(msg->msg_inq),
++			 &msg->msg_inq);
++
+ 	return err;
+ }
+ 
 -- 
 2.55.0
 
