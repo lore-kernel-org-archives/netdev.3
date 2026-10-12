@@ -1,177 +1,223 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f10.google.com (mail-oi2-f10.google.com [74.125.231.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D295449B5C2
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708814A0129
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791819211; cv=none; b=DO0pVlC52+p4LDiIr3guUWPBMYFWuh+Y+j0TjZslrv4vPlV+jOqqANWgKIK2VGzM6MFON6AeDNp/FyPurJjGVcKfWyzSDxTvq/SoaCeqSMhynpoEj0NyCW14n4UbzSFj9aZyI893oFkwHgByRheOePuA3jHMLYU/QCn+Ql3isYE=
+	t=1791819251; cv=none; b=jhy+FfGEuM+xBZ7vIPhQGZaBGYd6BS3SSyDZb3S8sgx27Rd+HigeSq8opGNB3nGgPAr2ErvsG8bmYcIQlvzwTPIavU+G6aikVStriEjZv4Lb9nykQqtvC1I0lgYavcAHSAvL5JA6yEvwFHhyw3CwepRjjJwAAJzT891FQ6n/Bao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791819211; c=relaxed/simple;
-	bh=QKyIDWs4Yg0YOBXKbAJ/BZSzK06X3AdXprSE+BcPPcQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aIrnoCUwVD38CNPmRNFjYqwSa7jrfKk84BxJ+6xq/5UH0Z3Ao4hW+zBXmWRNuldyVJwstR5loU6yFtYSXCV1BVqBq/SezhSnwTcN7YMLc7ZQRelaeKwnU64X83dtXhyQQJUOeou1F4wi7xwWLSNjaLswTxjybSZ0DD+8KJzQpGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gtv1tFsz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PVsqozTQ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1791819251; c=relaxed/simple;
+	bh=nAu3ZVRMYQC2AoGQ3nSWEl3h3H5j+54En4gscuWuZbw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nLAyZ4cCKu2wiIM7xpc//WonHE2nqOE2s6vCkvH0759Zhg/uTARvJHE9rTTDWUkMViMTJWZDg5Sxnc17miLC/dK9POdawUWqxVJTbS4z/+NottUmci+9L3wlyzjca9FRo0hD3pxThmtGlcxDuQojzLgUWK8hJ/XPAXDqeBniv3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QNOthILa; arc=none smtp.client-ip=74.125.231.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gtv1tFsz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PVsqozTQ"
-Date: Mon, 12 Oct 2026 17:33:24 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791819206;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1osWiF4wkmuhqxvwGegPz+/CYWT5ehZKYMUCxnJOcmQ=;
-	b=gtv1tFszEaGRSl0kRr7yd3aYByuAhexPAVDcF9P5Gf6OOpyKtSwlwOD3q3Kf2dC1V2l+8d
-	k13XHcAPrvLh/r0tWFvHdo1p7XX1knRtksqHJAHS1hfvnKcOvpNd1ltKWkSvXc5QkK70tT
-	lOEbDCyVYKxCXdXyf1CNm2OEwnuu3tDMcrBdnnVGO4kUV/cJ1vVpDHia4zO6Va2kv3bP4h
-	YLxJe/B76waOMQhLxvTpx59qVVk9MjdmaU9Q07EkZoLbNkTVcxKeM1t8wGV1+/nsB4xCxF
-	28Afthuqpl/MwYCsufszY5Y8RxsSqpaoZsLKGBDo0g4G3RQ7isfynQJs3nr51A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791819206;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1osWiF4wkmuhqxvwGegPz+/CYWT5ehZKYMUCxnJOcmQ=;
-	b=PVsqozTQJBHJsqkaPvRfv08QW/oxVcsRyv0fAkfhwd2Y31hZk51rE2XwDyT3DU1NOwx9RK
-	g59+f2engnF/p/Dw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
-	c-vankar@ti.com, danishanwar@ti.com, d-qiu@ti.com,
-	davem@davemloft.net, edumazet@google.com, fmaurer@redhat.com,
-	kuba@kernel.org, neelima@ti.com, pabeni@redhat.com, praneeth@ti.com,
-	pratheesh@ti.com, richardcochran@gmail.com, horms@kernel.org,
-	vigneshr@ti.com, willemdebruijn.kernel@gmail.com
-Subject: Re: [PATCH net-next v8 6/8] hsr: Assign a socket for cloned skbs
-Message-ID: <20261012153324.fsnDpWZy@linutronix.de>
-References: <20261002-hsr_ptp-v8-6-60dabc07e554@linutronix.de>
- <179129708052.434549.14508967433709198337@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QNOthILa"
+Received: by mail-oi2-f10.google.com with SMTP id 5614622812f47-4b94bb43008so251655b6e.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:34:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791819249; x=1792424049; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lSBqC/hD/Ly2AYbmjcrAztV3m8h2DttoWUWYtWCfyss=;
+        b=QNOthILauayXohnPwGj5vbx67/Czhn2tTG5Qwd88GtRQOH6gtySETKpkttIk8oNexd
+         /q2+dJczkhoi0RQOMogYdFDlywj1XRgZsCnvTQfiNvJRNzMqffmpQjrqXK+ZSrWJHwKU
+         JlWtke0rjjXle4hOMwXdqIrs5tampqltkFKMwEJBxcx3U1ioO1NdNFO6B7dhRChBtQdu
+         cXMjbijnik7E2ssiWdF+hIEaKGuVlhQ0Tl8g/1quMEVYbxNHmrVE48rcIwsowGm9I5Zg
+         Moh5f+KYlntmVPDpnS3crm5RDS7SNLZf8c2liVraquQDxda0Bbqk/m8h8Cs4boWiBbqu
+         FIYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791819249; x=1792424049;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lSBqC/hD/Ly2AYbmjcrAztV3m8h2DttoWUWYtWCfyss=;
+        b=j39QRAOpyzieegWz32QXPrLv9wQDg+3qIthMaQ1z2ZmXmtbn1IhcJcfBSE1qcbtOg3
+         noNLKbm/XKx4n9W1/LtfaKthVUpg60vyWzCsXBRHy9CJCJsSr9+/Us2HkuHwIgbOr+fD
+         Siw32tCRHQOPn2TR6kc/oSUwAzw/ZHlAWvZ0RX84ePGJ1TSHNBaetYRRy0uTCB5ip5d3
+         eOPkLalGznPGMQwnyTYYX9iFPAshhh4RxbgVcvmrAbb3MBSa9jsb5DtvbRvU1FJW2HZx
+         jZBCk7AFdrlFszWwQyvvEPs6yfZziUUHdA9/ot8prd2IsWQOUqDWk9F1HLGLypAwq/ys
+         jwNw==
+X-Gm-Message-State: AFq9FYJjFCl3V9TRmXdWr/Xmj4FVGwc6Va2pE5nyoAcl/YiQzeW7zfSA
+	b0HccgWWMBGWmz1+S7MnKh2eJ2QDAhdz0ADiLZzpgFjV+4g3gUTqNWOQ
+X-Gm-Gg: AYBFou1pvhsZNZ3v2zTTAx8eFWuuu8X6S3ELpLcvMal1GHz/ZOu161kvvjf7XHfcqj5
+	PMWYMmRT13fCvcpT+pLVt5e+mMpFX8uTNdHgRNz7zXN0MrMedVnaQkPh8VRZTXM1lf7WA9Ry9o1
+	x0s4bdJBiFYSbPYtFPBhGqzb+Ej1bPkAucvTA9mQ45ZGEjG/3QbteR/qZM/YBUK9+f/n3fQvVi1
+	XNCM2kBNPK+XCrWS0ZY6xZXdPtbwA7eZ+sCagrZX51YoTmiHov5lVirt/Fn6fMsnyl8VLVofTAu
+	vRzfRLyLJaCdmnSNf6ejmCJ4Nw+Aet4Dn/OsW5frjJHi8fWD9hfrOt3b6hHcHvHPxLeVBm/yDXc
+	H9lF1G7XY/Yo31oOcGCMUrHZf8Kxy/vwRUThdF+tq0JUh5QleR+fs6kofpYpvVi44nbuLCxsG4p
+	2cTeQhcrgXNrPAiP0+6j3vp124uEgDFZaK9yNwvYDb/qhNwJgO83w64xSkyYm3EC+QUwsxzLGcJ
+	7HMuQnUvf+0wb4rP1nL/R+MFePL6/Z8Mlp7
+X-Received: by 2002:a05:6808:138e:b0:4fb:ac9b:b076 with SMTP id 5614622812f47-50c5b473884mr8343784b6e.67.1791819249230;
+        Mon, 12 Oct 2026 08:34:09 -0700 (PDT)
+Received: from localhost.localdomain ([14.22.11.163])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a2a85edf81sm9920375fac.15.2026.10.12.08.34.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 08:34:08 -0700 (PDT)
+From: Henry Martin <bsdhenrymartin@gmail.com>
+To: Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
+	Jon Maloy <jmaloy@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Ying Xue <ying.xue@windriver.com>
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] tipc: fix broadcast sender hang on last acker departure
+Date: Mon, 12 Oct 2026 23:33:57 +0800
+Message-ID: <20261012153357.1863316-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <AM7P189MB113731FB3655F88C6079EF1CC69F2@AM7P189MB1137.EURP189.PROD.OUTLOOK.COM>
+References: <AM7P189MB113731FB3655F88C6079EF1CC69F2@AM7P189MB1137.EURP189.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <179129708052.434549.14508967433709198337@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On 2026-10-06 14:31:20 [+0000], netdev-bot+sashiko@kernel.org wrote:
-> [Severity: Low]
-> Could the commit message say that this only covers port-directed PTP
-> frames?
->=20
-> hsr_create_tagged_frame() only assigns the socket when
-> frame->req_tx_port !=3D HSR_PT_NONE. hsr_dev_xmit() only moves tx_port aw=
-ay
-> from HSR_PT_NONE for ETH_P_1588 frames that carry the inline HSR header.
-> The has_foreign_header path in hsr_forward_do() also needs a port.
->=20
-> Other traffic that asks for TX timestamps still reaches the slaves as
-> clones with skb->sk =3D=3D NULL. One example is a UDP socket using
-> SO_TIMESTAMPING over hsr0. For those clones, __skb_tstamp_tx() returns
-> early:
-=E2=80=A6
-UDP timestamping is not a thing here (in HSR).
+TIPC group broadcast senders are blocked while a replicast still has
+outstanding member acks: poll(EPOLLOUT) only fires when
+tsk->group_is_open, and writers keep re-sleeping on every unrelated
+data-ready wakeup because tipc_group_bc_cong() keeps seeing
+*grp->open == false (the default sk_sndtimeo is MAX_SCHEDULE_TIMEOUT,
+so there is no bounded send timeout either).
 
-> The restriction looks deliberate, since it avoids one timestamp per slave
-> and double charging. The message, though, reads as if it applies to all
-> cloned skbs.
->=20
-> The message also leaves out the side effects of skb_set_owner_w(). The
-> clone is now charged to the sender's sk_wmem_alloc, and its skb->hash and
-> ooo_okay now come from the socket.
+When the last outstanding acker departs before acking,
+tipc_group_delete_member() decrements grp->bc_ackers but never
+restores *grp->open, and the blocked senders are never woken.
+Commit 99cc2a62e07a ("tipc: reject invalid and unexpected
+GRP_ACK_MSG to prevent bc_ackers underflow") already calls this out
+in its changelog as a pre-existing issue.
 
-Right. None of this should have an impact that should be mentioned
-explicitly. The primary motivation is the timestamp information which
-requires the socket.
-The accounting for sk_wmem_alloc happens, too. The original skb is freed
-early.
+Reproduced on a two-node TIPC group cluster (v7.3-rc5, two QEMU
+guests over a UDP bearer): with one member's ack outstanding and
+that member then departing, poll(POLLOUT) on the sender never
+fired and a blocking sendmsg() never returned; with the fix
+applied both are released when the leave event is delivered (log
+below the fold).
 
-> > diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-> > index 562802ddff003..46f9bd5039821 100644
-> > --- a/net/hsr/hsr_forward.c
-> > +++ b/net/hsr/hsr_forward.c
->=20
-> [ ... ]
->=20
-> > @@ -348,6 +349,9 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_=
-frame_info *frame,
-> >  	if (!skb)
-> >  		return NULL;
-> > =20
-> > +	if (frame->req_tx_port !=3D HSR_PT_NONE && frame->skb_std->sk)
-> > +		skb_set_owner_w(skb, frame->skb_std->sk);
-> > +
-> >  	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
-> >  		return skb;
-> > =20
->=20
-> [Severity: High]
-> Does the timestamp still get lost on PRP devices?
-=E2=80=A6
+Restore the open state exactly on the 1->0 transition in the delete
+path, mirroring the GRP_ACK_MSG completion path, and invoke
+sk->sk_write_space() from tipc_sk_filter_rcv() when the group just
+became writable again.
 
-Not really. PTP+PRP is a bit different compared to PTP+HSR. According to
-the specification, there is no PRP header attached to PTP message (where
-we would need Kernel's sequence number for the packet and so on).
-Therefore for the PRP case the prp0 device isn't used but the interface
-of the underlying slave device.
+While at it, make the accounting precise: the delete path used to
+test less(m->bc_acked, grp->bc_snd_nxt - 1), which also matches
+members that were never counted for the current replicast
+(JOINING/LEAVING members keep a stale bc_acked).  Zeroing
+bc_ackers on such a member could silently void a still-outstanding
+ack from a real acker.  Track whether a member owes an ack for the
+current replicast in a new per-member bc_pending flag, set when the
+member is counted and cleared when its ack arrives, and test that
+in the delete path instead.  Suggested by Tung Quang Nguyen.
 
-> [ ... ]
->=20
-> > @@ -581,6 +585,8 @@ static void hsr_forward_do(struct hsr_frame_info *f=
-rame)
-> >  		 */
-> >  		if (frame->has_foreign_header && frame->skb_std) {
-> >  			skb =3D skb_clone(frame->skb_std, GFP_ATOMIC);
-> > +			if (skb && frame->skb_std->sk)
-> > +				skb_set_owner_w(skb, frame->skb_std->sk);
-> >  			goto inject_into_stack;
-> >  		}
->=20
-> [Severity: Medium]
-> Is it safe to call skb_set_owner_w() here, and in
-> hsr_create_tagged_frame(), without checking how the original skb holds
-> skb_std->sk?
->=20
-> skb_set_owner_w() adds the clone's truesize to sk->sk_wmem_alloc. It does
-> not take an sk_refcnt reference. That is fine when the original skb is
-> owned through sock_wfree, which is the usual AF_PACKET case, because that
-> charge keeps the socket alive. For comparison, skb_clone_sk() calls
-> refcount_inc_not_zero() on sk_refcnt.
->=20
-> An egress skb can carry a socket that nothing pins, though.
-> bpf_sk_assign() at TC ingress does:
->=20
-> 	skb->sk =3D sk;
-> 	skb->destructor =3D sock_pfree;
->=20
-> It takes no reference for SOCK_RCU_FREE sockets. The tcx ingress redirect
-> path and __bpf_tx_skb() do not orphan the skb before dev_queue_xmit().
-> hsr_dev_xmit() accepts any ETH_P_1588 skb with the inline magic,
-> whatever its destructor.
->=20
-> Suppose that socket is being closed at the same time and sk_wmem_alloc
-> has already reached zero. Could skb_set_owner_w() then add to a zero
-> refcount? After the clone leaves the RCU section through the slave qdisc
-> or driver, could its sock_wfree() touch the freed socket?
->=20
-> Triggering this needs CAP_BPF or CAP_NET_ADMIN and a narrow close race,
-> and the full race has not been shown in practice.
->=20
-> Would it make sense to transfer ownership only when
-> frame->skb_std->destructor =3D=3D sock_wfree, like the copy_dtor check in
-> UDP GSO? ip_frag_next() calls skb_set_owner_w(skb2, skb->sk)
-> unconditionally, so similar exposure exists elsewhere in the kernel.
+This issue was discovered by Tencent CodeBuddy Security.
 
-That skb arrives from the user on that socket so this skb holds a
-reference on that socket. That original skb is returned to the stack
-after the skb_set_owner_w() so none of this should happen.
+Cc: stable@vger.kernel.org
+Fixes: 2f487712b893 ("tipc: guarantee that group broadcast doesn't bypass group unicast")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+---
 
-Sebastian
+v2: Subject no longer claims a leak; describe the actual wakeup
+    mechanics and add the reproduction; the delete path now
+    discriminates members that were actually counted for the
+    current replicast via a new per-member bc_pending flag instead
+    of comparing a possibly stale bc_acked (Tung Quang Nguyen).
+
+Reproduction (two QEMU guests, TIPC over UDP bearer; the acking
+peer withheld GRP_ACK_MSG via a test-only knob to emulate the
+lossy peer, the sender's kernel ran unmodified TIPC):
+
+    UNPATCHED (#88/#90, fix absent):
+      sender:  NO POLLOUT for 30s after member departed -> STALL
+      sender2: R2 NEVER returned in 32s (blocked writer not woken)
+    PATCHED (#89, this patch):
+      sender:  POLLOUT at t=18.5s, when the leave event was delivered
+      sender2: R2 returned at t=18.6s, EHOSTUNREACH on now-empty group
+
+ net/tipc/group.c  | 13 ++++++++++---
+ net/tipc/socket.c | 12 +++++++++++-
+ 2 files changed, 21 insertions(+), 4 deletions(-)
+
+diff --git a/net/tipc/group.c b/net/tipc/group.c
+index 74f6d3dac0784..e9c77f12c9819 100644
+--- a/net/tipc/group.c
++++ b/net/tipc/group.c
+@@ -75,6 +75,7 @@ struct tipc_member {
+ 	u16 bc_rcv_nxt;
+ 	u16 bc_syncpt;
+ 	u16 bc_acked;
++	bool bc_pending;
+ };
+ 
+ struct tipc_group {
+@@ -340,9 +341,12 @@ static void tipc_group_delete_member(struct tipc_group *grp,
+ 	rb_erase(&m->tree_node, &grp->members);
+ 	grp->member_cnt--;
+ 
+-	/* Check if we were waiting for replicast ack from this member */
+-	if (grp->bc_ackers && less(m->bc_acked, grp->bc_snd_nxt - 1))
+-		grp->bc_ackers--;
++	/* If this member owed an ack for the current replicast and it
++	 * was the last one, restore the open state so blocked broadcast
++	 * senders can proceed.
++	 */
++	if (grp->bc_ackers && m->bc_pending && !--grp->bc_ackers)
++		*grp->open = true;
+ 
+ 	list_del_init(&m->list);
+ 	list_del_init(&m->small_win);
+@@ -406,6 +410,8 @@ void tipc_group_update_bc_members(struct tipc_group *grp, int len, bool ack)
+ 			m->bc_acked = prev;
+ 			ackers++;
+ 		}
++		if (ack)
++			m->bc_pending = tipc_group_is_receiver(m);
+ 	}
+ 
+ 	/* Mark number of acknowledges to expect, if any */
+@@ -803,6 +809,7 @@ void tipc_group_proto_rcv(struct tipc_group *grp, bool *usr_wakeup,
+ 		if (acked != grp->bc_snd_nxt || m->bc_acked == acked)
+ 			return;
+ 		m->bc_acked = acked;
++		m->bc_pending = false;
+ 		if (--grp->bc_ackers)
+ 			return;
+ 		list_del_init(&m->small_win);
+diff --git a/net/tipc/socket.c b/net/tipc/socket.c
+index d5d70eb230b56..65cc0c4964b31 100644
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -2356,8 +2356,18 @@ static void tipc_sk_filter_rcv(struct sock *sk, struct sk_buff *skb,
+ 	if (unlikely(!msg_isdata(hdr)))
+ 		tipc_sk_proto_rcv(sk, &inputq, xmitq);
+ 
+-	if (unlikely(grp))
++	if (unlikely(grp)) {
++		bool was_open = tsk->group_is_open;
++
+ 		tipc_group_filter_msg(grp, &inputq, xmitq);
++		/* A departing member may have held the last outstanding
++		 * replicast ack, which can restore the open state inside
++		 * tipc_group_filter_msg(); wake up senders blocked in
++		 * poll()/write() if the group just became writable.
++		 */
++		if (!was_open && tsk->group_is_open)
++			sk->sk_write_space(sk);
++	}
+ 
+ 	if (unlikely(!grp) && mtyp == TIPC_MCAST_MSG)
+ 		tipc_mcast_filter_msg(net, &tsk->mc_method.deferredq, &inputq);
+-- 
+2.43.7
