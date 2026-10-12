@@ -1,305 +1,137 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6E2450404
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD3B46A5E3;
+	Mon, 12 Oct 2026 09:49:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798567; cv=none; b=snk1/LKLq+2MRmSjgGI4dbBIu7SPJ/Q8LzpxUv+A0C1ko651SPUIXIojr5dpZ2glAElE01BWotSqo+CiCuDRZyKrZzmhgmquuLI5g0G9ksNE31ThiEwpnTh1HiLr9+u2v6Nlmpae1R2wonbdzr5/NFzY9DMX/bp21EVzyGMaW7o=
+	t=1791798583; cv=none; b=cXOtXok2V8HMVjt6ejQNS6ruYXMYVuX57eGu7okUPqD/SdtTLPfLyI6gXReywd/hkATUs1OKv6F+MF6bdyZWgKie7O/4jiBZNwnheUDkoFU1A5yGumCs1k93JhcxT+t3gHBAkDe3M+EASck2dJP1gWSCeRnkpkm9NGRL8vSkiQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798567; c=relaxed/simple;
-	bh=QLQaEzIvYSIkTz2cD8EzTLAAc5HmHplw2gWBKjsuX8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HwMeNtD8jaMe5BFzbX9hjGRDP1o5g/EsB4oPUKC3Yn/FytSYKY36pVkSSTZnbn8lIPh2+ThX8c0l4buyevf9BfpoNMEeQ44far3v9DI/pZJXyDUOJ1HCKfnKK/vYcDFKkiUE17Sw6HJ2Nc9cShKFNQp3Y5JUuRLkwnEthlF+ZLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wj1ocLAI; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791798583; c=relaxed/simple;
+	bh=JSrO162Bb0xVGY82I6TqZjOWNSQgDe1p/FuUG32frlk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kRfRMTw4eg0d9Cx/ZMf3snCy7OFGP9TRoUZD6c5rx0Tq6UVo05BBBG1vJ0PdbhC+/V//SkSZYdvim6+RRNFcMs1VTRs3UQqsIGtgjIoIPohpd4iE0avRtGvDQVbT1OphFMY1SR7oS7/sm/xr3VsdBhBdIruZoQN2vO4lC7ipriQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=eGIHhL7e; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wj1ocLAI"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so641736a91.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:49:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791798563; x=1792403363; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nW9s5No7cnl56d7FIHcHMDsAYwjGzDzga7SpovNA6ys=;
-        b=Wj1ocLAIJ/feTd6E/Kd1jA3p8rRWaibwPK329i2VptoWCflOwH/vbVjg2Dasmn5tj9
-         zfAiytY1dyF6agSotmpn/iiVG7XXLLpy4ngW2xI21IUTir80SZM8ntawPwgA8RnJ6L1C
-         3h9KzQiP2e6b/RnijTrRYJmfk5AIKrPxdVY7uLjsuH/jQOv5K8/5TUJC1UIHIt7OahJ1
-         n25qKnCKgX5SMvFd4xy220/KpLyP3NtF8nPfNIEK6DJNoxng24tIDtQoLDb76ojViCU1
-         84mRUML/3Y+RRkRoxrPFVm6uPtCrWWZ4CRAPDJ3gzP1m8gaSsHVeTFGxCLXKXTQOD24S
-         KbkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791798563; x=1792403363;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nW9s5No7cnl56d7FIHcHMDsAYwjGzDzga7SpovNA6ys=;
-        b=tGt1kn4uj18Lzd+M1+/esnZHd73e4EFCm+rUjW11MjhqtgEutSYUH+MUWH2wNlXXtD
-         wen89pZjwI06rkj7tZHo97Hdg3wpwDtIMr67w2nFBuuF6mYAYUzYaqVA/qhLWGrodwVC
-         +N6x+xolqhg+7UIPiQR6dVq72kMtI/T4rc5Ht/4JQ6W2HLJegNF9Kc/5lIB0cLzgBZa/
-         VqKqLznY5+f8/BfibSfTq4Dakb2FUyOWcrqDFfCwkJ47hIa6On3gXvVno0fAiXErfDy5
-         A+1OE/Gn8bMrebZLlvsdzWYteolqkWLPwDs6bDpRcqrvw7PJgH7mNG/twtR4npgyLEst
-         0YJw==
-X-Gm-Message-State: AFq9FYJ4zT4kQIQMoMRsPrCBcYO5nbkGqZbERbwJPXR4rnH47XXdLqGn
-	uPSF6iOlyFumOJCl7v3rjcaYS85fWPPv8hInWuGEyvv/zfn11nncxFB8dt+d0NRT
-X-Gm-Gg: AYBFou1sgH7ENUI2k9wy3UdbqH0WbWUP8mNh4ui1mS4xHVgr0Q9mMPZbUEt3IHeF8TW
-	ZOn6NXPdC0ZjVIkFxYB3XWyV4B8QBp6r9Muv6wu3Xg5JOrSDtfIXd4jK+xOUhIHF+S1G/U0hfmH
-	1NtA7VFi8Hj8coFVdVTdzWgQVADygXIwYUlBspDYI45b6NNNVvKnm7gA6QDF+dVf36HBD4sW8MZ
-	jxjnOf+W+71LnCJf/NbwA77QTnCTJy805vHz2S+7fUp21JESYSzEZEYhC29zIy+9k9WFfKmuYie
-	+IASyCi51B+NFcE/E6WzLtPQs8hfFLZLkmdtYKbBiWhJZQy+zZeQHBlQoiMvww66eTgnopyG3vo
-	l/jaUznaJGi79H3XKINSrvCcOOExVeXH8CxbaYyAvyvHBQo+Bbc8IeaG+geTqrSAPE4nNtRI4ii
-	ZZf2VTJan2BJdn3A+jttjzgW8KdsV1YCgjKJod7zSBQC6DFA0iNdohbSU2j1jXUc5keJa9TR8QD
-	5MPcK/HKZjku2SDQqQJ+rjYfeUiCXZcq6SQpuBntbtz
-X-Received: by 2002:a17:90b:2681:b0:3aa:ff61:9504 with SMTP id 98e67ed59e1d1-3ab3a9127f1mr6855981a91.20.1791798563154;
-        Mon, 12 Oct 2026 02:49:23 -0700 (PDT)
-Received: from obadmin-Precision-3680.atlascopco.group ([167.103.3.1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac05cac83bsm3372342a91.10.2026.10.12.02.49.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 02:49:22 -0700 (PDT)
-From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-To: netdev@vger.kernel.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v2] selftests: openvswitch: Test SET on later IPv6 fragments
-Date: Mon, 12 Oct 2026 15:20:00 +0530
-Message-ID: <20261012095000.3188473-1-sahaj123.sc@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="eGIHhL7e"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69C8iMLL2750236;
+	Mon, 12 Oct 2026 09:49:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=yWvg31
+	cmrWnAjP2Wz00NBC1QFW9PNKonLylsY2mzdeA=; b=eGIHhL7e0x0iI3v9aBt57d
+	hrYh4W14NOpNG2QAIif1jkPBwxaETovTFlApuebW799+kGWpAcQ+dKI4+CsyOFpd
+	gZe7h/PFxepQOVi6rveoBo1/yGQOcgP6D3fG3qFd4y7wsDnXjbBZE3vEeVB9GXp0
+	JmXbaB61xtwJttII1WXLhG9SLIyjWeq/BErU8R0BLG+UeDWba+swF0Snk15lfT/G
+	BqBv4/p7MA7uMk7TSMzz3Cl/I+6mTFmRMDdOa11oli9Z8+NOi6jo0zLIIOdsdsbD
+	SEys/gqeXXMRq+z/HSkggZyy/t056Cp1GhntuXeJPNcWRC/ekmIQ7Tmak9jYy8Lw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dv07wqf-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 09:49:31 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69C8K3NL1013624;
+	Mon, 12 Oct 2026 09:49:30 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4h82cycass-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 09:49:30 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69C9nU3h13107784
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Oct 2026 09:49:30 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0DD97581F6;
+	Mon, 12 Oct 2026 09:49:29 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B3AB581FA;
+	Mon, 12 Oct 2026 09:49:22 +0000 (GMT)
+Received: from [9.124.213.153] (unknown [9.124.213.153])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 12 Oct 2026 09:49:21 +0000 (GMT)
+Message-ID: <8af035ab-fe01-4ca4-8f39-6a409127d915@linux.ibm.com>
+Date: Mon, 12 Oct 2026 15:19:20 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v9] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: netdev-bot+sinfo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
+        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20261012080034.38770-1-mjambigi@linux.ibm.com>
+ <179179225758.2527009.15422843250132893660@kernel.org>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <179179225758.2527009.15422843250132893660@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDAzOCBTYWx0ZWRfX+PbO2ah4xNx+
+ A5Aq60JZ6kdHydakK4Zg6vyl1tRHadwf1Jr9xm4pgTqvnhC4B8UKwN09T0ZU9RpWlAQXtkPJjy4
+ RzFC8fN3w6iltxC23GopTDBRKDUDI52qYwanODuPGe5fkNkxojtWIyoSOLMWpg+Myol2oZkKMgk
+ DEmcCSGnsoWGVk/3BboyONa2zCYiYjuYsKFXI9UpeT+DuUS8jdO7nNwhuBgvoLWg5gJ77UJDdZD
+ tDFPq0dco3CxO+5+qbPfD0Sv2XvFcDjzqZ3ArV0TdL/zeO7zwVL2cxouG3zCDKEeR4SDzUmunXa
+ 0YN4KYGO29tvi1f5Y9ndpAno4AbMuhLQpv2Mnm/dE2RAydfW6481buC1k8ISmNpMCx6ivXXKFXy
+ crX5pszzeKiHInwAOgcMY/9vS0Jpre0A6bq4MTzVGvHIcDc78UYGcRwn7wmQYSktnTw5zYMlGkP
+ iobEOUmF5xB7U12Ct7w==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDAzOCBTYWx0ZWRfX71zX/M//M6qq
+ CkxGghcfMhuAeLeyNTZT7uWNaNJio+CBgOWZkMO7hRFHnF3cuEb3Sn/gUyAjovB25eY8r4ZAY5O
+ o/XGFGEghltDBNUbnQA5IItf5LaCrl8=
+X-Proofpoint-ORIG-GUID: gpN-nQqL1g5TVOLUHsXe2_cpzlA37IxF
+X-Authority-Analysis: v=2.4 cv=a6KlZkSF c=1 sm=1 tr=0 ts=6accad2c cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
+ a=8WImSUdLa4LpenjYlHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: mNU-isJH3YWoj62YpE7kxzk7RJ5jxZqF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_03,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 spamscore=0 suspectscore=0 clxscore=1015
+ phishscore=0 priorityscore=1501 lowpriorityscore=0 impostorscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610120038
 
-Send the crafted later fragment through OVS_PACKET_CMD_EXECUTE to preserve the unset transport-header path from the report. Set frag=2 in the action key and match DEBUG_NET warnings at the skb header check rather than a potentially inlined helper. Skip when CONFIG_DEBUG_NET cannot be confirmed and enable CONFIG_DEBUG_KERNEL in the OVS fragment. Drop the flow-counter assertion because its SET-action dump relies on broken formatting.
+On 12/10/26 1:34 pm, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
+> 
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+> 
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-Link: https://lore.kernel.org/r/20261009090629.1694991-1-sahaj123.sc@gmail.com
-Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
----
- .../testing/selftests/net/openvswitch/config  |  1 +
- .../selftests/net/openvswitch/openvswitch.sh  | 33 ++++++++-------
- .../selftests/net/openvswitch/ovs-dpctl.py    | 40 +++++++++++++++++++
- .../net/openvswitch/ovs-ipv6-frag.py          | 27 ++++++++-----
- 4 files changed, 76 insertions(+), 25 deletions(-)
+The issue was found by manual code inspection while reviewing the diag
+dump path in net/smc/smc_diag.c.
 
-diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
-index b062ebbce0f0..5cb3c0d395f1 100644
---- a/tools/testing/selftests/net/openvswitch/config
-+++ b/tools/testing/selftests/net/openvswitch/config
-@@ -3,6 +3,7 @@ CONFIG_INET_DIAG=y
- CONFIG_IP_SCTP=y
- CONFIG_IPV6=y
- CONFIG_NETFILTER=y
-+CONFIG_DEBUG_KERNEL=y
- CONFIG_DEBUG_NET=y
- CONFIG_NET_IPGRE=m
- CONFIG_NET_IPGRE_DEMUX=m
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index b9a4c4bf4067..394cd45a292d 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -67,11 +67,6 @@ ovs_wait() {
- 	return 1
- }
- 
--ovs_flow_has_packets() {
--	python3 "$ovs_base/ovs-dpctl.py" dump-flows "$1" |
--		grep -Eq 'packets:[1-9][0-9]*,'
--}
--
- ovs_base=`pwd`
- sbxs=
- sbx_add () {
-@@ -453,9 +448,23 @@ test_action_set() {
- 
- test_ipv6_later_frag() {
- 	local t="test_ipv6_later_frag"
--	local warning="WARNING:.*set_ipv6_addr"
-+	local warning="WARNING:.*include/linux/skbuff\.h:"
-+	local config=""
-+	local config_file="/boot/config-$(uname -r)"
- 	local before after
- 
-+	if [ -r /proc/config.gz ] && command -v zcat >/dev/null 2>&1; then
-+		config=$(zcat /proc/config.gz 2>/dev/null |
-+			grep -m1 -E '^(CONFIG_DEBUG_NET=y|# CONFIG_DEBUG_NET is not set)$' || true)
-+	elif [ -r "$config_file" ]; then
-+		config=$(grep -m1 -E '^(CONFIG_DEBUG_NET=y|# CONFIG_DEBUG_NET is not set)$' \
-+			"$config_file" || true)
-+	fi
-+	if [ "$config" != "CONFIG_DEBUG_NET=y" ]; then
-+		info "CONFIG_DEBUG_NET is disabled or kernel config unavailable - skipping"
-+		return $ksft_skip
-+	fi
-+
- 	if ! dmesg >/dev/null 2>&1; then
- 		info "dmesg unavailable - cannot check for kernel warning"
- 		return $ksft_skip
-@@ -463,25 +472,19 @@ test_ipv6_later_frag() {
- 
- 	before=$(dmesg | grep -c "$warning" || true)
- 	if [ "$before" -ne 0 ]; then
--		info "set_ipv6_addr warning already present - skipping"
-+		info "skb transport-header warning already present - skipping"
- 		return $ksft_skip
- 	fi
- 
- 	sbx_add "$t" || return 1
- 	ovs_add_dp "$t" fragtest || return 1
--	ovs_add_netns_and_veths "$t" fragtest client c0 c1 || return 1
--
--	ovs_add_flow "$t" fragtest \
--		'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=44)' \
--		'set(ipv6(src=2001:db8::99,proto=44)),drop' || return 1
- 
--	ip netns exec client python3 "$ovs_base/ovs-ipv6-frag.py" c1 || \
-+	ovs_sbx "$t" python3 "$ovs_base/ovs-ipv6-frag.py" fragtest || \
- 		return 1
--	ovs_wait ovs_flow_has_packets fragtest || return 1
- 
- 	after=$(dmesg | grep -c "$warning" || true)
- 	if [ "$after" -ne "$before" ]; then
--		info "set_ipv6_addr warning emitted for later IPv6 fragment"
-+		info "skb transport-header warning emitted for later IPv6 fragment"
- 		return 1
- 	fi
- 
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index 1615843c225e..a653353ec100 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -47,6 +47,7 @@ OVS_METER_FAMILY = "ovs_meter"
- OVS_CT_LIMIT_FAMILY = "ovs_ct_limit"
- 
- OVS_DATAPATH_VERSION = 2
-+OVS_PACKET_VERSION = 1
- OVS_DP_CMD_NEW = 1
- OVS_DP_CMD_DEL = 2
- OVS_DP_CMD_GET = 3
-@@ -2218,6 +2219,28 @@ class OvsPacket(GenericNetlinkSocket):
-         GenericNetlinkSocket.__init__(self)
-         self.bind(OVS_PACKET_FAMILY, OvsPacket.ovs_packet_msg)
- 
-+    def execute_packet(self, dpifindex, packet, keystr, actstr):
-+        msg = OvsPacket.ovs_packet_msg()
-+        msg["cmd"] = self.OVS_PACKET_CMD_EXECUTE
-+        msg["version"] = OVS_PACKET_VERSION
-+        msg["reserved"] = 0
-+        msg["dpifindex"] = dpifindex
-+
-+        key = ovskey()
-+        key.parse(keystr)
-+        actions = ovsactions()
-+        actions.parse(actstr)
-+
-+        msg["attrs"].append(["OVS_PACKET_ATTR_PACKET", list(packet)])
-+        msg["attrs"].append(["OVS_PACKET_ATTR_KEY", key])
-+        msg["attrs"].append(["OVS_PACKET_ATTR_ACTIONS", actions])
-+
-+        return self.nlm_request(
-+            msg,
-+            msg_type=self.prid,
-+            msg_flags=NLM_F_REQUEST | NLM_F_ACK,
-+        )
-+
-     def upcall_handler(self, up=None):
-         print("listening on upcall packet handler:", self.epid)
-         while True:
-@@ -3010,6 +3033,12 @@ def main(argv):
-     delfscmd = subparsers.add_parser("del-flows")
-     delfscmd.add_argument("flsbr", help="Datapath name")
- 
-+    execcmd = subparsers.add_parser("execute")
-+    execcmd.add_argument("execdp", help="Datapath name")
-+    execcmd.add_argument("execpacket", help="Ethernet packet as hexadecimal")
-+    execcmd.add_argument("execkey", help="Flow key")
-+    execcmd.add_argument("execacts", help="Flow actions")
-+
-     subparsers.add_parser("psample-events")
- 
-     args = parser.parse_args()
-@@ -3088,6 +3117,17 @@ def main(argv):
-         if args.dellink:
-             ipr = pyroute2.iproute.IPRoute()
-             ipr.link("del", index=ipr.link_lookup(ifname=args.delif)[0])
-+    elif hasattr(args, "execdp"):
-+        rep = ovsdp.info(args.execdp, 0)
-+        if rep is None:
-+            print("DP '%s' not found." % args.execdp)
-+            return 1
-+        ovspk.execute_packet(
-+            rep["dpifindex"],
-+            bytes.fromhex(args.execpacket),
-+            args.execkey,
-+            args.execacts,
-+        )
-     elif hasattr(args, "dumpdp"):
-         rep = ovsdp.info(args.dumpdp, 0)
-         if rep is None:
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py b/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
-index 869f9d6503ef..927676e83314 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-ipv6-frag.py
-@@ -2,17 +2,19 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- import ipaddress
-+import os
- import socket
- import struct
-+import subprocess
- import sys
- 
- 
- def main():
-     if len(sys.argv) != 2:
--        print(f"Usage: {sys.argv[0]} INTERFACE", file=sys.stderr)
-+        print(f"Usage: {sys.argv[0]} DATAPATH", file=sys.stderr)
-         return 2
- 
--    interface = sys.argv[1]
-+    datapath = sys.argv[1]
-     payload = bytes(range(8))
-     # Offset 1 and M=1 make this a noninitial fragment.
-     fragment = struct.pack("!BBHI", socket.IPPROTO_TCP, 0, 0x0009, 1)
-@@ -33,14 +35,19 @@ def main():
-     )
-     packet = ethernet + ipv6 + fragment + payload
- 
--    with socket.socket(
--        socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003)
--    ) as sock:
--        sock.bind((interface, 0))
--        sent = sock.send(packet)
--
--    if sent != len(packet):
--        raise OSError(f"short packet send: {sent} of {len(packet)} bytes")
-+    ovs_dpctl = os.path.join(os.path.dirname(__file__), "ovs-dpctl.py")
-+    subprocess.run(
-+        [
-+            sys.executable,
-+            ovs_dpctl,
-+            "execute",
-+            datapath,
-+            packet.hex(),
-+            "eth(),eth_type(0x86dd),ipv6(proto=44)",
-+            "set(ipv6(src=2001:db8::99,proto=44,frag=2)),drop",
-+        ],
-+        check=True,
-+    )
-     return 0
- 
- 
--- 
-2.43.0
+> 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
+
+The races are theoretical — none of the four windows were triggered in
+practice. The smc_conn_kill() / smcd_buf_detach() race requires an
+active smcss poll to coincide with an SMC-D lgr termination on the
+dmb_nocopy path; the smc_close_active_abort() and
+smc_close_passive_work() races require a concurrent diag dump during the
+narrow teardown window between sk_state = SMC_CLOSED and
+smc_conn_free(). No stack trace or error message is available since the
+bugs were not hit in a running system.
 
