@@ -1,65 +1,66 @@
 Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD503BC668
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380434779B1
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798915; cv=none; b=SScYiShFN8XU9G0l1zTWPoHEsOkfroMDnv6eiSiH65fhLew61x6yZtdmdREdZiZVKnT/SJwP5aozByC1bqwnZTIbYnyI0SeWvGRkmmxX7WnpULYSFhq+WYaDQE8fCv1KK+J1qfdflTWp0sYg04cv9ins6gZdhMqmrjKduc6BOqU=
+	t=1791798917; cv=none; b=LaK009FKULJrxgDEUA6UyMsO7Mzy1Q56KcApTVR2lXY4fiv0w3NLW2awY+5QrkVCL3ZswvHdec9HB5TqO+m/ZjSYFK8aqTZ5UiBAff3PCj3yGLUjdKc2jMnqMXSpkM7M4VSiKXRw/b55AmpRpBOFwt3S4qhkNT30fT7rlb2XEbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798915; c=relaxed/simple;
-	bh=Amk8uD3HNfuuztl7q0RyRF92LjutyVBvE3JyMlDZ8Xk=;
+	s=arc-20240116; t=1791798917; c=relaxed/simple;
+	bh=4YHiet3WJomPE2v26NzpBGjI/jedOlYKrNCQC8kfQY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E9xTo6iar1+J5stRQI0JDJg0z0q7R8UGJypigA9uS2IdHoK3a8xwwHse7GHwW+IQvBUMAVSzBztJfU6m4gL+bbOcU4kBphvDtqrxVy74L60/RjcQUDb1sHy2tlZaYuWl9HkRTgHM8CMEImsUBDA7RTr5GFvbyr2RUirw1QcJ38Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Kg5QErhB; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version:Content-Type; b=ugg1lUMtdL5CK5G7fo8RFCpfyWgVMD37UxLEF4UujZ4mwmwaWw+RHaSmRkw/2xCpN+w+hG/KdbK/26+QJaozhILWtFg7GV8GbFOxjUNE0qZGh31wv2LBBhFY8WMKI4yRCPIghVFVGC+JB7u2oPYMz9aw9ckwk8a3b0MZ9GzVX2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=U3jg9ID8; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Kg5QErhB"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48b042c0759so1213936f8f.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:55:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="U3jg9ID8"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48af27fe287so1435970f8f.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:55:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791798908; x=1792403708; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1791798910; x=1792403710; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=kVFVSCKYu4LMX2OyBp2Sx2+yDSioFsB6HDpmMFcR8pE=;
-        b=Kg5QErhBsDRv7M7FGg+n0K+CPIswYEEbpLKbRmc9qYGEWeRI0zW8BiLTYyNN4iqwY/
-         Ci0+rkdqARj6dgW7W7bHyd6yDK64GRosR8U9GCOkqwPQQIOWgzxwr6wC/tc7h3kFv/Zt
-         757kWpgj3ZMEva2cnZCDDGGjrHpOmSATwRhREarnFmpcoGztgHY3+dKY8c83DE20fdA0
-         y++Fc5UXIV5lPy86N4S86+693h0tT+Zgr/z7LLU1A3QbKQJwrxQotdEJWutItPfiVfpJ
-         qUwMYM9KTcqoloIDSTaikoMUOXxqWxZsVvrPIpQnTt5NTJSAaYt2oTeFlIJQA1EV/NXi
-         3uGQ==
+        bh=wvY8pxckv87pPYHiPwsm0hl8WKWmZCkoV9NdQknppn8=;
+        b=U3jg9ID8yPFqEhcnXfUQpOfjfKF+QPO3ce35bQgRWDMJsAqB4Tj04Jni+s7rzj1IZe
+         jcweuNi5QL0CB99c1+pBSa9Th/JUl3+Ti89eskfS/HbFVVS98RhKTS4c6vTEjc73fHa5
+         xO6ctjgqGb7Sw/ls0NNR91p5HI9QML8nGIJr/x4BpGZWf9QvTLPbVMXHorNep1MyMQRh
+         54HMJ7YJBgHr6bY3WDKUyYJBdDkXCpbxgEIigaXxbvqITTDqoCI08mKnI6RS0xjmgM+r
+         uStEafhl44ZF8OY1GW1maLIdtGyWnWQKZ8yMev5Kt1gt3pU70xoxWciwBOFJt0tabNZS
+         lpTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791798908; x=1792403708;
+        d=1e100.net; s=20260707; t=1791798910; x=1792403710;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kVFVSCKYu4LMX2OyBp2Sx2+yDSioFsB6HDpmMFcR8pE=;
-        b=Ay4xRxJCONk1iRM3xUsrg+Ysi3h2psXCe4pqPwxYaixaOh6e0M4UGbYAxtEguJ5sUl
-         bMQqwY+hgK/FSszLmyhdwr7wVecmjd/ZCgCjFs0t5PQYzIwT1YedZo8pkHYS27n7ULYF
-         0HXSXZoeeVTuVKrYnI5jMxZ2E3caG72R/qZxxgElQNSea9QOvFg3OXgaNrNKpxOtmaK3
-         wI1lpyE9CfU5KV+tERz77lXJeXVtqhpgb7yPEEIiv/JTaFjM2ex+v5FCQGdcdUjUHfZr
-         JFobFBDWXw7yG3vR67N7ZenbaAzxUYzXdgb8CQJvW/xJ4tqq3Cim30zhGY7jYdluF0Em
-         Ldzg==
-X-Forwarded-Encrypted: i=1; AKwUvBzmUCQWt4OyoLpPqnrkFFJERBA0QSZVEt/GzYsNO/Pffpw1VZAwoMaosiUMEVJZgbXavq0HtIQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLlZnNvVKNuQgPELD+48DsiRRfQesIBNV5G04o+XNUxV9MrHg76
-	wgHWHWype/Ia+GrT/8ba9d1uSIteiCqVW34A+mXwYqWXy/dxcDAJvCstVGKTgKa/6Tk=
-X-Gm-Gg: AYBFou3C+vO5ZABRGwyQTBzNgEzFdsOWSQ1bevG2EyuHB7/Gn58xN953BJr/F1nIpKA
-	u7FMv6yArhO78TmKqVBDiWX4BmLbv8T2q4+Mv8C4VjfWv4z7IgEBUc5njMq5hlv2TOaaGq2SYqA
-	UDmZwwKY3EIOIvRiUgwHMk+t/rCavCqOOPeSooQ8GpTusDalo63TziLRDY91vZkxBqOESBdj2Sk
-	mOgUSj7C2TydBcuN/Niy3JWyRQG6gpLM1+MyH6qEfvy4BxqMmGRB7jERsKuZlxsqqc0fhgcCLdd
-	/r+ib1gsPb6bHNBsjaTh+qUqmG5yRp9AW7DPc4KV+UGsgJwQS3xCtJDiG2crWGXPWJvtq/qXyY8
-	0IioOso2cF4cHWPp5DInsQA8xOTYjtI06yPg9exs8OwmDo38rtNmSKkwrENJyRiONvQbKZpvJtz
-	yhw69AZBVb9f9nxGrhKhXK4m5OYNeoWDl1NDb5M4xyp+kfk7xA52LNI1zra247bhLc6CEgO9igb
-	YBUhxGNhsWAdksAsctAYA==
-X-Received: by 2002:a05:6000:2505:b0:485:8a47:5b91 with SMTP id ffacd0b85a97d-48dbacf6fc4mr14133924f8f.46.1791798907696;
-        Mon, 12 Oct 2026 02:55:07 -0700 (PDT)
+        bh=wvY8pxckv87pPYHiPwsm0hl8WKWmZCkoV9NdQknppn8=;
+        b=LxZAojXYG+lptOLKNjLWIzZqrxa3wfhOY5D00E2a53C9eUo83AVgJnCQG1oLxd2nsQ
+         HczVdAAfyVSh5xjMbgPIUrcpJ3k8kcsusJf79+cQeDclJRylgzAwIYVu9HKahuDUBSsJ
+         OutiQMz3dS2f3FjjPz2Q2+Sr8UqKkKXQ6J0YsKzaMNiQzodxm33YWiaKuih/qwqpZyvi
+         z/beXeU8kzNG0+/CNMRSE2NpPb0HyIURxq16g40nMFc/IC03T8ZDEw3hKJRRPcPOhyLE
+         BgbaPFjvfsOMyd0rMmT89RLOj1feNngVFRz9IseIj3lxrls1vyHBQfulS30QUJMikxsY
+         tRGg==
+X-Forwarded-Encrypted: i=1; AKwUvByujETyHQim/VgSVFLk+m096nvKZWKgH4QU1A1oBxQs3mXtl46jEMsyAdrg8ZWAjmi2pI526+c=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIPRBkI042tzOtpYg0Ws901sRyFfZQ/hP+i5L+lpXbCuRF8pFn0
+	wEcY/vut5fJn0H387eRGsWjEF86nRoazanyURbqY+xK+/nduySjxo4JBuU6JDihAjJAeUFgyQIm
+	BFc+c3P8=
+X-Gm-Gg: AYBFou0MaqlPce5SR8YhapBzuut5lXiSm3wTaFkoQXnbiin3grB7wq41HuK62Bn+UCv
+	9JUfi7u6jn9EHrEBpWkjRXsulLXRoyJLZSImzomDzmSNHrpFGw8uKh10ISC9bR1o/MzLjX56xpO
+	qV9c+jESGR3trxGQkTwnmVNDJUCeX0GfNAAgZW5KEfoLz4wOTmxxpilcj4gR3HPyvciMBaAhsnn
+	zwLVq017kvg2p8rGsP/eXlF5ka7XnbbToCQcTIkdcWAkAHqmzw6LDlKGGYehr2bDmVFdR6AjiyE
+	6wfLyiqRfSbRLkKiO9xVFsXb9kXTfqfgONT+W/IfXUMvlE9UHkGpdbKf+DKi5wAQFA4kBLIgQLC
+	ysDe/59P+NJ8MlyJ/qKjjkgR+P3UViXhsq3UPK4oSv2dG162DYqDwfLheyTHbokGf4D+UrMbL+B
+	PkHtCgBWll2LvCgaqeRRKC9XLpNN3OTyLNNo3YISSnNh71a+mEup1LlHe8IGWlEMWodgVRvWiYX
+	2zJkfr5ejx3sghuytdD1g==
+X-Received: by 2002:a05:6000:4550:b0:48c:4d74:d7d2 with SMTP id ffacd0b85a97d-48dba9db092mr10670448f8f.12.1791798909689;
+        Mon, 12 Oct 2026 02:55:09 -0700 (PDT)
 Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db98c2800sm18539103f8f.26.2026.10.12.02.55.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db98c2800sm18539103f8f.26.2026.10.12.02.55.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 02:55:06 -0700 (PDT)
+        Mon, 12 Oct 2026 02:55:08 -0700 (PDT)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -75,12 +76,10 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	MD Danish Anwar <danishanwar@ti.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Richard Cheng <icheng@nvidia.com>
-Subject: [PATCH net-next v4 2/6] net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq
-Date: Mon, 12 Oct 2026 11:54:41 +0200
-Message-ID: <20261012095452.135828-3-marco.crivellari@suse.com>
+	Roger Quadros <rogerq@kernel.org>
+Subject: [PATCH net-next v4 3/6] net: ti: icssg-prueth: Move long delayed work on system_dfl_long_wq
+Date: Mon, 12 Oct 2026 11:54:42 +0200
+Message-ID: <20261012095452.135828-4-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261012095452.135828-1-marco.crivellari@suse.com>
 References: <20261012095452.135828-1-marco.crivellari@suse.com>
@@ -116,26 +115,24 @@ scheduler task placement.
 
 Cc: MD Danish Anwar <danishanwar@ti.com>
 Cc: Roger Quadros <rogerq@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Reviewed-by: Richard Cheng <icheng@nvidia.com>
 ---
- drivers/net/ethernet/ti/icssg/icssg_stats.c | 2 +-
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.c b/drivers/net/ethernet/ti/icssg/icssg_stats.c
-index 7159baa0155c..7d6d6692d819 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_stats.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_stats.c
-@@ -69,7 +69,7 @@ void icssg_stats_work_handler(struct work_struct *work)
- 						stats_work.work);
- 	emac_update_hardware_stats(emac);
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 591be5c8056b..0fba22c1046e 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -1100,7 +1100,7 @@ static int emac_ndo_open(struct net_device *ndev)
  
--	queue_delayed_work(system_long_wq, &emac->stats_work,
-+	queue_delayed_work(system_dfl_long_wq, &emac->stats_work,
- 			   msecs_to_jiffies((STATS_TIME_LIMIT_1G_MS * 1000) / emac->speed));
- }
- EXPORT_SYMBOL_GPL(icssg_stats_work_handler);
+ 	prueth->emacs_initialized++;
+ 
+-	queue_work(system_long_wq, &emac->stats_work.work);
++	queue_work(system_dfl_long_wq, &emac->stats_work.work);
+ 
+ 	return 0;
+ 
 -- 
 2.55.0
 
