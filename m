@@ -1,121 +1,86 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4333A4A387F;
-	Mon, 12 Oct 2026 16:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147BF49DBBE;
+	Mon, 12 Oct 2026 16:20:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791821640; cv=none; b=TBziZ5cSx/i0hO1gV+qpfWTW3BhMCKsGdfer/qYu7iFAJi4l1Gm24S8EoMtb2JRuOBFMhU8hUSRWySx1N9Kjy7IE+5U2Vm3Nc7po74Er3t77WLA1RWQYIHjNuCjFAAmB3zFLoIL6tIN8g26R48I32kBWpUZAFY/oyUdmMmXdxUU=
+	t=1791822008; cv=none; b=eEGXCF+88nO/GaSrCZ8OLxx7AN1E1WUFhjdsC55GnHAo2uCeaN/9w+tbmnAzBnDpcGYg59N0NsVh7a9Q60B9zpz2drTG1I5WepcJ2WndVEDZKUk4L+uircnI99EOVtMxpt6xAWduD0FE0KDjUvEClTh6RiCjkwe0JSlEeNUPSpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791821640; c=relaxed/simple;
-	bh=ZchrZpqtkvDWRfz8meSczFuSA2w/MUsx6xnD2KxnOTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lRkyzNm8Ry3kNZzAzrNMwxR374xFWreJTUxji3SqrJ9UUXjcZINjpRbqDJRqSuIHl9Wxt9hM4EXL0OD+HEhFJR+qE0GPmnbFM77f94hpZM01nISAxJvIy5g5kioI64oyChSxxGnd0dGZqfI9LERwP2qw3XKqQC0fpzliuSBvzjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Odp6rZsc; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=qJylqf3c; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1791822008; c=relaxed/simple;
+	bh=oO/9OvzsNv9yAEOKpmwFo1I13eXsovRVaqug9NVsDlY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=btCvQi9ejkzc4uv6pB2wx6qaTwgFr4HuHOWC+bAMomb/Vz1Ltux4z1mRi3jSxjMxLf5Vr+Vl6SeCIv4MsubG41ccvsGbzZqMRy94FaXVYeiChmSBjGrwNv2uJzKKnVwWhNJ90nAhvIJxcp00ILA3qifOerERackkZGi+ok71RSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dx9HqwAJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Odp6rZsc";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="qJylqf3c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791821637;
-	bh=ZchrZpqtkvDWRfz8meSczFuSA2w/MUsx6xnD2KxnOTM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Odp6rZscQ04kuWx8JGESmYnO+ECGUUTzbu2RHovx1TTdovQ7AXDrmvZM2qO5/OO5n
-	 weYYsIdeKhGwsYg2J4i/zuCdV74Kj0x85qL//bpNLWZMb5Ffn8dOFhp0L5obiszUoH
-	 NnUJ2mVdYv1WutNiugbRY0f+Qsk1xnpbnnUunWKUaECq/PamXgk3bSv2SDVvvzAlPx
-	 YPXTjlK61yK30+XVD0ItCX63Xmy8ixM62SC4EbY9Smf6oZttSbMy0L3dm//CfRu+W7
-	 EpWKhYM8A0QPME2Hkcp/LyFyLRMs4OIv5eBilMyE/YGsfSlFdrRs66BD6FrwoyzWEs
-	 olaP3ZBnLQfig==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 2032648452; Mon, 12 Oct 2026 16:13:57 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1791821636;
-	bh=ZchrZpqtkvDWRfz8meSczFuSA2w/MUsx6xnD2KxnOTM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qJylqf3cE2g56hAKdEK09Z5qLT8oxkEQNhyUblWVJmtDPpwCW4cKAUhgI1DkGW0/0
-	 whoHw78rnwKC6mTWvdLb+8VQzIqZyqyb+SzwGFi6I/juZ0vR4sIvEdAf31b1ApmtFf
-	 6C+2VzuxuGJQ+hUMKn2QbFmGc+Zo8mZZtwQMUwTzmHFWZvfwbQLwe6JaO4yj0Jm+Ii
-	 i94bEJOZNELin7EflQmO7kXGH9JTtjzJhq06nSTaTAlFJYHuy9imgA9JdzRT5rRCIU
-	 Vg1KmHb/mQXOs21w4ZlrJEWCLBwjkWanhhQs5WVkARVkILm/nD0XPjwEfApMRRnWRU
-	 o8IjeBITOw4Vg==
-Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id E92354825F;
-	Mon, 12 Oct 2026 16:13:55 +0000 (UTC)
-Message-ID: <6030ce9b-1e93-4d11-b9f3-6101fec2229e@birger-koblitz.de>
-Date: Mon, 12 Oct 2026 18:13:53 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dx9HqwAJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD98C1F0089B;
+	Mon, 12 Oct 2026 16:20:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791822006;
+	bh=zhqAnRnsa47xjlXiUf6w9ICr6x9CkLhuiI0AeQO0imY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=dx9HqwAJK7CDfjq+thP0ST8ALc2PppDAfkXOXnpPQ0qf14OMbnWr0tZXpjTU6O/Z1
+	 BVeFr8zHkzxsFY2d03e/3tFtw72PxXPxYNe3nqIP6EuefV9iWo2L6qiwX4DOW2C4Xo
+	 0jHcgQp5s1UMwlEP+dJEKeY/WDonhx+JlyYWEtaMo8Nz52lpBPJQa/WjYuRmxp2PVk
+	 TNpR+dxYJP13kwOuefyeGjnR6T3yy2IGd3rTFvFjiizuDXUSE6nFkScEH3Z+HeZVLp
+	 ekSd1q3chGDZ9KNagpq3AFx2Qii5xpNTvK/eTxhijdFM5Mgx8rfskOpIULwjY63LF1
+	 xqvCCiCm8TEiA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44A73924A5F;
+	Mon, 12 Oct 2026 16:20:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] r8152: Use BMSR to detect the link state
-To: Linmao Li <lilinmao@kylinos.cn>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Chih Kai Hsu <hsu.chih.kai@realtek.com>, nic_swsd@realtek.com,
- Xiangqian Zhang <zhangxiangqian@kylinos.cn>, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
- <ee122a12-eae8-40a6-bad9-086228ae76f2@birger-koblitz.de>
- <b56624e0-d1e4-4b52-9d3d-de923c471a58@kylinos.cn>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <b56624e0-d1e4-4b52-9d3d-de923c471a58@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v4 0/2] net/rds: RDMA-CM event handler fixes for
+ non-IB
+ devices
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179182200552.3524695.4623096369791034138.git-patchwork-notify@kernel.org>
+Date: Mon, 12 Oct 2026 16:20:05 +0000
+References: <20261003163408.250568-1-achender@kernel.org>
+In-Reply-To: <20261003163408.250568-1-achender@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ ljp1205831794@gmail.com, henrymei@tencent.com
 
-Hi Linmao,
+Hello:
 
-On 09/10/2026 9:18 am, Linmao Li wrote:
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> Hi Birger,
+On Sat,  3 Oct 2026 09:34:06 -0700 you wrote:
+> Hi all,
 > 
-> Thanks for testing. Only the first BMSR read after link up returns the
-> latched value, so ethtool shows the problem only if nothing else reads
-> the PHY first. On my systems NetworkManager reads it right after
-> carrier up, so a later ethtool reports 1000Mb/s while NetworkManager
-> keeps the unknown speed it read.
+> This is v4 of Aohan Mei's fix for the uninitialized transport pointer
+> in the RDMA-CM event handler (v1 at [1], v2 at [2], v3 at [3]), now a
+> two-patch set.
 > 
-> With an RTL8153B on v7.3-rc6, stopping NetworkManager was enough for
-> ethtool alone to show it after 3 of 3 USB rebinds:
+>   Patch 1 is the fix itself.  v3 only rejected a connect request
+>   arriving on a non-IB device; the active side can bind an id to one
+>   as well, and resolving a route on an iWARP id leaves
+>   cm_id->route.path_rec unset, which the ROUTE_RESOLVED case
+>   dereferences.  Such a connection is now dropped at ADDR_RESOLVED
+>   instead of resolving a route.
 > 
->    # systemctl stop NetworkManager
->    # (rebind the device, bring the interface up, wait for carrier)
->    # ethtool <iface> | grep Speed
->            Speed: Unknown!
->    # ethtool <iface> | grep Speed
->            Speed: 1000Mb/s
-> 
-> I got the same result with cable replugs on a 6.6-based kernel. The
-> latch does not time out: the first ethtool still reported Unknown 3 s
-> after carrier up. On the 6.6-based system, the network service of a
-> Chromium-based browser also read the PHY first, so other tools may
-> need to be stopped too. I have not checked your setup and have not
-> tested an RTL8153A.
+> [...]
 
-Thanks for the explanation. I re-did the test and confirm that the fix 
-works. I tested on:
+Here is the summary with links:
+  - [net,v4,1/2] net: rds: fix uninitialized trans dereference in CM event handler
+    https://git.kernel.org/netdev/net/c/492ba6ac1b1f
+  - [net,v4,2/2] net/rds: don't let the rdma_cm destroy an id RDS still owns on route failure
+    https://git.kernel.org/netdev/net/c/98d446b7c013
 
-RTL8157 (5GBit device, 2.5GBit link)
-driver: r8152
-version: 7.1.8+deb13-amd64
-firmware-version: rtl8157-1 v1 2026/01/01
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-RTL8153A (1GBit device, 1GBit link)
-driver: r8152
-version: 7.1.8+deb13-amd64
-firmware-version: rtl8153a-4 v2 02/07/20
 
-both worked flawlessly. I tested
-- plug/unplug during normal operation
-- link-changes by peer in normal operation
-- plug or unplug during suspend, then resume
-
-Tested-by: Birger Koblitz <mail@birger-koblitz.de>
-
-Birger
