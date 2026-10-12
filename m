@@ -1,98 +1,103 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469DC374A0B;
-	Mon, 12 Oct 2026 13:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0426846D2DA;
+	Mon, 12 Oct 2026 13:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791811107; cv=none; b=ekas9nq0/10ngVssNf9RHkFaFhbUsPr6NKk6cA65UgliXkmx/drBVJsPzJveiAJD3/XnsqmifHOaCCT5kr9uIMElKi+glnO+2uRCYpgKSA5Y9q8xLtcYy3sdKCHrRYsjGgEQ5mJf4KlpYNiuFb4Fv0UPb6QDjjESQ3gRKDIs7Gw=
+	t=1791811113; cv=none; b=CeCwTagLhJFSZi1P1S66Ss/B2YgYoW4+PeG8mGuNJo7wnMXXjICra8vfoJ8qwIGK9erYHS8EupBsFlfQ4eKVtcJrNT2/mzZQt978VHVphLtDrYYB+CUHjpcnYLaWrDQl3bopI3gnI6k+z1a3aSIMFf0rcSaswV989KbXDYKMEE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791811107; c=relaxed/simple;
-	bh=AzjuoH0vknrDz4e3haaF13WLjGpDY0yTb/N/9QPV9qc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nLdLtWATuEYrchUgBg84JzpYDbpH15G+VZJoV+UHmLLIjSDyqJG20cFz/SBPmdEVnqe4Vej9Q7ahQmNzfL2GbE6YNGHhwBC27iHDJ6+ygHIgpgn0K6L5iePckB/4cQGlsIiozAk8MmLBBR3g+83EJD5+J5PgrRiKB0Y4J8d1qxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5FRHr7lv; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791811113; c=relaxed/simple;
+	bh=Bq/Kjg6CoCViVVMbPOG+5JtQptYfGBlE43kVe6rqTgU=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=AC4Vw06o79pbPlhWWDwJSTwvvQ+4E7MUIjjPLIdBRqfoElIRq2sIOAqCXpaNKRh0m88jd+T97eJ9ytZp7yuDWhy5ML3AqnP1MPt7o6G1Z+Ky7xiUncxyuROtxae2H9afbXQNeGsgvrhnNWVXz/0jxv1ohgN28Ezkd9tezaC6IAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=HwqI2EOv; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5FRHr7lv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=s6P2PLaoKfqE5tTicRYyiqRKnLpbtn3os9hoyNl9VUA=; b=5F
-	RHr7lvu58c3UpyMIhbyKOyYeeBVwV76JqvoZoDUmUuBgavwobHJPrDwqAehoDLGN22jCKOiP3a6uB
-	YJOs/TfCX9nJxJQcPCOM56h6q1qFAOnwFygem++CsJJUVEGb9abtVvsVFQhSV0+igy9ieNZEC3rpI
-	Opm4O7Jf4vnbUtA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xGFuu-00AKP8-2g; Mon, 12 Oct 2026 15:18:12 +0200
-Date: Mon, 12 Oct 2026 15:18:12 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: James Clark <jjc@jclark.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Doug Berger <opendmb@gmail.com>,
-	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/5] net: mdio: add timestamped MDIO writes for
- PHY gettimex64
-Message-ID: <23454c46-95cf-4e46-9621-149bf9350199@lunn.ch>
-References: <20261009143506.2507607-1-jjc@jclark.com>
- <804e7c63-e762-4040-9d60-35d21df75531@lunn.ch>
- <db3a0f73c1883645f51294ca46cffe05@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="HwqI2EOv"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 07A3EA012B;
+	Mon, 12 Oct 2026 15:18:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791811104; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Bq/Kjg6CoCViVVMbPOG+5JtQptYfGBlE43kVe6rqTgU=;
+	b=HwqI2EOvmzNJQCcgUVfX+jdD29+XEkBwuw99rgT21hWqWS8SfMH04iWELdUW7sU87gWxDx
+	SXwFVowM1FdnPmuT6J88AXonOFyMv1efY8AfB5J8lvL7TG+JcwZkUaY13W09zUJwZpZ6Ob
+	152r3huJ8Ehi5OJNjMAf0Jbj01i9rwzCYyBNYbs1wOZbXVDOUfnf9ApwefUaVVGDJsr2IL
+	7jEIDbVjh6b+YQvMDWyg4tYSuUJf34OCoa0PLdMgdmpDB+pvfbXVmT9mPhMFZtsGU+0GBX
+	CXiclk4ppm4HitJwogpbAZqy03Tzh6hJa0KBwoau5lUABrwlLP5JM2fS113vmg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <db3a0f73c1883645f51294ca46cffe05@tipi-net.de>
+Date: Mon, 12 Oct 2026 15:18:21 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: James Clark <jjc@jclark.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Richard
+ Cochran <richardcochran@gmail.com>, Doug Berger <opendmb@gmail.com>,
+ =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, Russell King
+ <linux@armlinux.org.uk>, Conor Dooley <conor.dooley@microchip.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Thomas
+ Gleixner <tglx@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 5/5] net: mdio: bcm-unimac: implement timestamped
+ MDIO writes
+In-Reply-To: <CANz3_Eae-M6V9XROx4GqPB+BVjVWWuO5JqGoBOybh0-D7DNZVw@mail.gmail.com>
+References: <20261009143506.2507607-1-jjc@jclark.com>
+ <20261009143506.2507607-6-jjc@jclark.com>
+ <3b1a2994-5251-4800-8c61-b63d7a435b21@broadcom.com>
+ <60accbd89cfaf0d4be1da5ec2fafd975@tipi-net.de>
+ <CANz3_EYfcBopo=HgRioXkhoT6P+4WWpfFT7UeWkXd5eM_RNpSA@mail.gmail.com>
+ <41c32f5a6f38ec9df8a79ce896912fb9@tipi-net.de>
+ <CANz3_Eae-M6V9XROx4GqPB+BVjVWWuO5JqGoBOybh0-D7DNZVw@mail.gmail.com>
+Message-ID: <365bd3473c9375d467663738f217ac51@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sun, Oct 11, 2026 at 08:07:13PM +0200, Nicolai Buchwitz wrote:
-> Hi Andrew
-> 
-> On 11.10.2026 15:50, Andrew Lunn wrote:
-> > > For example, using PTP_SYS_OFFSET_EXTENDED on the Raspberry Pi CM5 to
-> > > synchronize the system clock from the BCM54210PE PHY PHC leads to the
-> > > system clock being 32 µs ahead of the PHC. On the CM4, it is about 7
-> > > µs.
-> > > (The difference is because the MDIO clock frequency is higher on the
-> > > CM4: 10 MHz as opposed to 2.08 MHz on the CM5.)
-> > 
-> > IEEE 802.3 says the clock should be 2.5Mhz. Does the CM4 use a
-> > clock-frequency DT property to enable this faster clock?
-> > 
-> > 	Andrew
-> 
-> The Pi 400 is the only BCM2711 board with clock-frequency in DT
-> (1950000, from a downstream "Limit MDIO clock speed" commit with no
-> further explanation). There the driver's assumed 250 MHz reference
-> gives divider 63, which with the real 200 MHz (see my comments on
-> patch 5) is about 1.56 MHz.
-> 
-> Pi 4 and CM4 (the one with the PTP PHY) have no clock-frequency, so
-> the driver keeps the firmware's divider 9, and 200 MHz / 20 is the
-> 10 MHz James mentions.
+Hi James
 
-For CM4, i think the PHY is on the board? Does the MDIO bus get
-exported via a connector? If it is a closed system, then running the
-bus faster by default is O.K, since it is impossible to connect a
-device which is only standards compliant. But if the bus does get
-connected to the carrier board, it would be better to stick to 2.5MHz.
+On 12.10.2026 02:54, James Clark wrote:
 
-	  Andrew
+> [...]
+
+> Sashiko wanted write_sts limited to BCM2711 because the 63.5 to 64.5
+> window has only been measured on BCM2711 and we don't have evidence
+> that it applies elsewhere. If it doesn't, then we could potentially
+> violate what PTP_SYS_OFFSET_EXTENDED promises. I think one could argue
+> that this is too conservative: clause 22 specifies 64 bits and the
+> 63.5 to 64.5 range falls out of that given a free-running MDC and some
+> other reasonable assumptions. Andrew made a similar point on 4/5
+> (https://lore.kernel.org/netdev/c136b0ad-6d7e-4695-b988-55eb37550d01@lunn.ch/).
+> Florian said he wanted a compatible string but I am not sure whether
+> because of this or because of the clock. In any case, I am happy to do
+> it whichever way you and Florian decide.
+
+I'd drop the compatible. Gating on a clock on the mdio node is BCM2711
+only in-tree anyway, and as Andrew said on 4/5, 64 bits is clause 22.
+Florian can still shout when he confirms the clock name :)
+
+> In the probe, I believe I still need to add a call to
+> devm_clk_get_optional() in the pdata branch, which is used when GENET
+> creates the UniMAC device. At the moment this branch does priv->clk =
+> pdata->clk, so it would not pick up the new GISB clock from the mdio
+> node. I think this new clock would live alongside the existing
+> pdata->clk: the write_sts rate would come from the mdio node clock,
+> but pdata->clk would be used for gating. I was not planning for this
+> series to make clk_set use the new GISB clock.
+
+Fine, I can do that as a follow-up together with Andrew's 2.5 MHz
+default once the clock is in.
+
+> [...]
+
+Thanks,
+Nicolai
