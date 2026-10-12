@@ -1,65 +1,65 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF1C3CB55F
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D4F47CC6B
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798922; cv=none; b=dh2Zvye4hnRd3h2QkAloz60kZTlFqwZr8Spl/GhkSybDkLCbDRP3w/vCnWd9d+Kh7/c97youpK2V1RmkGlOfXlUYgfyESqWJwoNobn5hSZw9Hk4jhMfyvSuj/wpS7HR2hZYoTGyiYF6y1zzeDka3eQimsJbkgm+lGPiUn0DJizI=
+	t=1791798925; cv=none; b=sDBAtruFP/f9i59LoLb7LyQvoQ+ZnD5iQJU6KaUbwYjdxhPah75eoq8ri4nhkEZmEs2P7Pxu+T68RRqRApUDYPcuw4XNH3Dm1bsICNQsmUtSnVq2VdbmdND/+O6dTj/P1OlsNTY6sKCx/Ox1taHbDgiZBEuw3/8tmbGOcvxDG+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798922; c=relaxed/simple;
-	bh=sLZ8j+4e09ehCDAv46JbKrWsd4lbBbirQ0NIo/TsacA=;
+	s=arc-20240116; t=1791798925; c=relaxed/simple;
+	bh=BnrYo/A6G2OaUvK9kvg2KfCzfxVlIgzJGfpX6upOnUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GRH5fYlz/bfuWEGp+Ug73ovAdrbkx3X0toORF7VmVxKSZEna9yhCOs2aOUwdt4jNsSmS3PE35KGgOF/OGGzkFsrigNo4FI+yr8KRIH6jMSjPdBYcKhWL48JXgUnB/zw4MfdyUC3xwtc8c2cyHVD/pPRB/zyg2aF2FyyDzVXxO+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=LnhHlmkW; arc=none smtp.client-ip=209.85.221.53
+	 MIME-Version:Content-Type; b=szng5wi1gcB7PvmWPCvnw6FoJBWLHr53HwOFPeYaOrxsGrCtjNiNEsufPAkqvPGtjXvICLf/clMNSClDuWCA5rSNuM5cEwpgYN/tnBoCZgsoSgtOEvUxEFjSn71SN+eTEA8K+MkJ/DTGlXMse/p9lOqs5LK7CgjRKuO0iVNhiU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=OCErpna2; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="LnhHlmkW"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48b02a2359aso1558485f8f.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:55:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="OCErpna2"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48c4be28b82so1617111f8f.2
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:55:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791798915; x=1792403715; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1791798917; x=1792403717; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=QX8lSFW7S3WysnbG31BxJSIjyuhVgxUvAyesKtj3CLs=;
-        b=LnhHlmkW+o0fkb9PwZonZuPyO2hQNLnTXP+JFZPMme2tecwBmwdbUsq1eSifJPIjbG
-         wxtpjMZP02izprMuo6f24uM2viR1udoJ+Tos1NS7uqQsnd62D+OawFg2jBLRPn37BROe
-         +1vm3BzOp9N8Ksx11So/b3xX6wFkKL3He6RV8lmZPP5q8d5O7JkSPPG+QCSyniL9HhvM
-         s0r8JAHWyXdUG7rd+/B9B6791pf+6uWROtO6d5Rte4AW+iY4AXGnxTbNDzc2HSMFa1Dy
-         YzMi5MpY2figisnWA5CDACsAzYSvvb5N+TaRSKcVUilsjg8LEnhLgoFlGlHiufBg6Etx
-         plkg==
+        bh=YT1SExoYLuIMwneaSCPvUsBJ4hnC+2ocE7ZXG4QBttQ=;
+        b=OCErpna2ECroNC3rlatBilK0R68Ons075WiIqwHU2rgk8R0PvF+wRB68DlPzgFh4wu
+         7fvA+Dbr1kVuw/3FkIfYOl8h2claD6YsU7iOSK9pju6WbpjpAWX19gfetwA2tW7F0NPW
+         mxpQ47LeJjjR+flJ8W2JBSVe1RBuZaAsh8ErYMqzgYkMme2WuuQv64OtZF3E1iSaAMNS
+         IC3h7vE5d7ji2K9cFsqdD/bwa6pvpmgQQqu0zJ5gBoaOyN+pKLRx6zyRs+/VPC48UuPD
+         eWfIwq5w+x+bg+lKK20uv0gxcCoXa5D92Ub7ivWHuH8mW2IPMoFToUFpJYPiEfh0ZUxN
+         rkCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791798915; x=1792403715;
+        d=1e100.net; s=20260707; t=1791798917; x=1792403717;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QX8lSFW7S3WysnbG31BxJSIjyuhVgxUvAyesKtj3CLs=;
-        b=GTnneuNh4m2T9UD6Ks/xOovuBOQ6d4I9lXRGvZVaCy9gTOiWn7NEQ+6PI+/103xV/I
-         J7Bf/8ZWN8IctfCFXBKLTM6SOkjhTRb5zb6zRE5LF3iALDLvWi/BWmFsoh7c6x6T3MVX
-         rmEEz01hao6dbMymgLRbuaw3KNsClSom1s5KRsx2zNPAHUFwN6z05AggHeJ2nWU72IUP
-         p+bTr+UFEbOOimlR7DP/ept6IN6TmLymzrvaW3l23FknPIn1hW+kCjaBh4yqCNjDtl/C
-         IWLKseCuwNJEye/K4ZbGwZHozYq24C6el0Tjkci07GSTJfkaIA6TghHHYTvn0G7VKDyN
-         Cn0w==
-X-Forwarded-Encrypted: i=1; AKwUvBxIvmizDFSSr0EsbvnHVt5kb9BUxSejR8stiYP0tcfFsRar05bYbeGYwWz70V50KVa3FmXFXeY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLcl49EEmG9W8btHAgDYI+uMjQGpgFUZACcwT9dkJIz46oxeZxk
-	fXPlNnMksSD9c5l+JWzRO0TEvIb0zuzS8KBCrLiVDX8MIqJVdGgZPNqH/ZYcmccIF4g=
-X-Gm-Gg: AYBFou1l0cq37uEch0w+xkwAkZkbmcKmMnMGqWDEy/p0fKiRcOqoAa3SustEQaF05Yl
-	BoL1QHYSV2Rhd2InsfKD2gzHPGGVZK6u8Ed6SAVF9r9ji9ou0hBmep30ESMOIAlEXlbJwKpzyRG
-	qEKgP+ew5wRWDMS7mGKuyAtG1YmTLPURblxkbtFRHxtEiXKhuz2t8TqP1HMaOMxrsOvHOrxRArL
-	7d5mIgOZ/k13860stkgtZnM6KvRmhIWooYnwfVnfsek+dpbV0kUq+XVbTycPSkAZhIdVRZTc37K
-	lcAFXARpNRUfZAVp8vz7O9UtRr/dD2r0EPYSU6+Z8Gb5eNtInCiZRRRenqzaiTSl/FMY+Ew+QcY
-	aOGzgDJ+93nYviXhDTIH9qmBeWdMI/7BqDurFCzjEflU2tEDB59FiTd8+jz+ChEeKzUe8Xyile9
-	G8pVL8KbR/zDMJoOMyGyQtrECEWzHS3dJHFddXRs/ARi8GwxOgkDmzekLIOTr6dkG7RubQrK7NT
-	Fd8W+oT2Mfd0ZGHdbxCPA==
-X-Received: by 2002:a5d:588b:0:b0:48d:deb0:f1a7 with SMTP id ffacd0b85a97d-48ddeb0f1c5mr222734f8f.10.1791798914652;
-        Mon, 12 Oct 2026 02:55:14 -0700 (PDT)
+        bh=YT1SExoYLuIMwneaSCPvUsBJ4hnC+2ocE7ZXG4QBttQ=;
+        b=R2BtOiT3fZmFbFtTB1XXF+9JYFMd1mp6fnlzY2CNTWiW4ouBkMCgCtfsE1PaPsAwOq
+         u5UnfyF8F/f5oUvkFnD60OvDiHyLkuGyk563OeImt1oEmhZbLLovmfNENdGEy8kqKPzf
+         YdXTALODUdg/3U7UKKPdgmgZxnLYFPETlDCxs0TgroVvvK15F4da3wqaH4/905ckuFM0
+         i/o8KXdztwFV11B8DC63glpcGd4RuRRZTfhZxTn0959RBSPqXm36vKWn3INNmwcCqjYe
+         b+T/E8Sb1RTEQEnOgBHWDdZlz8TDcCsqgohEdtWFZe04tmF/C92QBlJwX4lvPGPj8Mxo
+         9cKg==
+X-Forwarded-Encrypted: i=1; AKwUvBxnRh9fByzezA25s2t6sDJU8XuKPp/0hon7eGv2nsSNt7p/4v2QyVMX4KH/61nE1mwl8Y0oTLo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK6ETPsLifUHyaUdBWdkfCEKKiZxQx7gw6WWo6fkoU+s+GJ3ysQ
+	MN3B2pzFD251yV3Dnt8tG749FEsNBXUeYVVQKBh/5n5luTjxhStGJ+B3+52crMnQkqo=
+X-Gm-Gg: AYBFou10FzJTMOPAXqqou3VwKeI+ax6OhmE+3vvP/YoMUGh+KMeeTiMLudZrF2MwVEO
+	Fi2SecEB2CaLaBjYD/I0ic3Krl+iNq5wgAcmhMduuaIwGVzhwV09Ggd0mVC6mPA6AxUCkFfaHUm
+	WPZ62gJRCSHYuK6Ltj4o9gu/fu3o5F2SfGozgC3TEKD15f9B8C/+RKzcaz1kLXj76VjyZ3sMaus
+	NZL2RSK9wOhyWAI0ZumqNECh7NCzT/LmzlL9T7rzipL+Bt0UWxt5PIowgtj0butwuaVMeKmI+vV
+	mC/fSGYGSNbtQznhmNWZsd+s1VB9AdeddfBT0jeRPM5LC8QEnveNlYBqfMGw8KV0PkKgOxsIp7y
+	DfkqChDrp0LqKwXXmjDaNNzhpD0IEvtK1NcwfILsg/2jdLnes6s5a5V+iOqeF1U2ljeZlkr+c5y
+	BzswHMsplEjrmNueF3zkrjLffR+s/3zvp84l8n4hu0KUZZ6njxGMDeLNsarGKpycLQQcbCoQcqm
+	jzWJufRJFXGB9PuLjCYUw==
+X-Received: by 2002:a05:6000:2505:b0:487:27f9:840 with SMTP id ffacd0b85a97d-48dbace65bcmr17485319f8f.53.1791798916694;
+        Mon, 12 Oct 2026 02:55:16 -0700 (PDT)
 Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db98c2800sm18539103f8f.26.2026.10.12.02.55.12
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db98c2800sm18539103f8f.26.2026.10.12.02.55.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 02:55:12 -0700 (PDT)
+        Mon, 12 Oct 2026 02:55:15 -0700 (PDT)
 From: Marco Crivellari <marco.crivellari@suse.com>
 To: linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -74,11 +74,11 @@ Cc: Tejun Heo <tj@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Petko Manolov <petkan@nucleusys.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
 	linux-usb@vger.kernel.org
-Subject: [PATCH net-next v4 5/6] net: usb: pegasus: Move long delayed work on system_dfl_long_wq
-Date: Mon, 12 Oct 2026 11:54:44 +0200
-Message-ID: <20261012095452.135828-6-marco.crivellari@suse.com>
+Subject: [PATCH net-next v4 6/6] net: usb: r8152: Move long delayed work on system_dfl_long_wq
+Date: Mon, 12 Oct 2026 11:54:45 +0200
+Message-ID: <20261012095452.135828-7-marco.crivellari@suse.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261012095452.135828-1-marco.crivellari@suse.com>
 References: <20261012095452.135828-1-marco.crivellari@suse.com>
@@ -112,48 +112,45 @@ obvious reason that justify the use of a per-cpu workqueue. So change
 system_long_wq with system_dfl_long_wq so that the work may benefit from
 scheduler task placement.
 
-Cc: Petko Manolov <petkan@nucleusys.com>
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 Cc: linux-usb@vger.kernel.org
 Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- drivers/net/usb/pegasus.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/usb/r8152.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
-index aba1a640fc26..ed3f8d555c2a 100644
---- a/drivers/net/usb/pegasus.c
-+++ b/drivers/net/usb/pegasus.c
-@@ -1118,8 +1118,9 @@ static void check_carrier(struct work_struct *work)
- 	pegasus_t *pegasus = container_of(work, pegasus_t, carrier_check.work);
- 	set_carrier(pegasus->net);
- 	if (!(pegasus->flags & PEGASUS_UNPLUG)) {
--		queue_delayed_work(system_long_wq, &pegasus->carrier_check,
--			CARRIER_CHECK_DELAY);
-+		queue_delayed_work(system_dfl_long_wq,
-+				   &pegasus->carrier_check,
-+				   CARRIER_CHECK_DELAY);
- 	}
- }
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index f61686433031..f6af66f294db 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -7072,7 +7072,8 @@ static void rtl_hw_phy_work_func_t(struct work_struct *work)
  
-@@ -1223,7 +1224,7 @@ static int pegasus_probe(struct usb_interface *intf,
- 	res = register_netdev(net);
- 	if (res)
- 		goto out3;
--	queue_delayed_work(system_long_wq, &pegasus->carrier_check,
-+	queue_delayed_work(system_dfl_long_wq, &pegasus->carrier_check,
- 			   CARRIER_CHECK_DELAY);
- 	dev_info(&intf->dev, "%s, %s, %pM\n", net->name,
- 		 info ? info->name : "(unknown)", net->dev_addr);
-@@ -1288,7 +1289,7 @@ static int pegasus_resume(struct usb_interface *intf)
- 		pegasus->intr_urb->actual_length = 0;
- 		intr_callback(pegasus->intr_urb);
+ 		/* Delay execution in case request_firmware() is not ready yet.
+ 		 */
+-		queue_delayed_work(system_long_wq, &tp->hw_phy_work, HZ * 10);
++		queue_delayed_work(system_dfl_long_wq, &tp->hw_phy_work,
++				   HZ * 10);
+ 		goto ignore_once;
  	}
--	queue_delayed_work(system_long_wq, &pegasus->carrier_check,
-+	queue_delayed_work(system_dfl_long_wq, &pegasus->carrier_check,
- 				CARRIER_CHECK_DELAY);
- 	return 0;
+ 
+@@ -8840,7 +8841,7 @@ static int rtl8152_reset_resume(struct usb_interface *intf)
+ 	clear_bit(SELECTIVE_SUSPEND, &tp->flags);
+ 	rtl_reset_ocp_base(tp);
+ 	tp->rtl_ops.init(tp);
+-	queue_delayed_work(system_long_wq, &tp->hw_phy_work, 0);
++	queue_delayed_work(system_dfl_long_wq, &tp->hw_phy_work, 0);
+ 	set_ethernet_addr(tp, true);
+ 	return rtl8152_resume(intf);
  }
+@@ -10295,7 +10296,7 @@ static int rtl8152_probe_once(struct usb_interface *intf,
+ 	/* Retry in case request_firmware() is not ready yet. */
+ 	tp->rtl_fw.retry = true;
+ #endif
+-	queue_delayed_work(system_long_wq, &tp->hw_phy_work, 0);
++	queue_delayed_work(system_dfl_long_wq, &tp->hw_phy_work, 0);
+ 	set_ethernet_addr(tp, false);
+ 
+ 	usb_set_intfdata(intf, tp);
 -- 
 2.55.0
 
