@@ -1,206 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6773ACA64;
-	Mon, 12 Oct 2026 11:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791803903; cv=none; b=jDbpVjqHcSpOzXamOJuzI4JM0bh4FngLq2vDaPEoIQpBcqMSrG1KiFN+KFtUdIV/umLNfDpw6F5oK3fkRFqrlwh6Ujxkts5ulyv5+76seG3mi/SlE2E1Ivr9DC/KQfpv3Rk1SGZg2ETNBX01Hs74M/xjpwKVFr7BDjNAjgZ1a5A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791803903; c=relaxed/simple;
-	bh=LQf0qk4sV6UDVR7RukePLilxROge+43Oc2FIzBgx+i0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CH7YV7fpDmlJ4pGL5Z4flVOfVTcJ2OQEHqTkrXYmyNxP98E8pZ6xc+Wi7NA3S7z4BNVyfIF8mkz04lJriAXaBDp7XGvMUC4ErpQ6RIIUyLKvNyTQ4toOKvprvKAIXdKqDEIKwAO2J51rAZr1v/gHTI0LNoT4hLL24K3QTBpV6es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErmAX66L; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1072E0914
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791804131; cv=pass; b=RBE9PKldBtRL+HkrTaaynuYwd4WQZZTY6LHBbTM32hdnoFuoasH29D0oOxGD9UjG8+gZILCyRFcdEh5aHU2zlrWq1VaOQLE1CPGlRQQg1XYzi5kd/NJLZD90FqCn7Pj3j5rPcdjLXkAFvomeP5DvDUycHeLGwH8gLA7AtgWHoY4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791804131; c=relaxed/simple;
+	bh=ImImow3e+fihOWO7VmT8//WIECuyQ9MyP0HEjqwJ2y4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lDv8dCRHDe6bsf8uQ5eh59PY9odeER1ytPA9r9BmloKYnTgG7orboRfiBevk0DV9GUee+S7UpyYckYc/koi5MnT7qBcfJLG10V1+D29bK+5qmgq9n4uRAMMnaoNGm/I/7f/nO/GB6C0zSyOAthR8N8dLBBC1LEvjSuuK3F0j9e8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F+HnvCps; arc=pass smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErmAX66L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029491F0089B;
-	Mon, 12 Oct 2026 11:18:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791803901;
-	bh=qERazqb8eyeXYj8ho8FOKcuAMRROCm/gPcydjpaESMU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ErmAX66LB/nMEV8t/vdKHp/n3oavbzTQvU1QCCOrJ0AWPzl+v+JrphP1B9zfOJ8FZ
-	 YRRK2j7y63Q2GHrQkwW4ZVYxOi2P7jQEUURI6YkxmWglYJlKjscvdZM+7h4VfiZax1
-	 qaD/XsBK4qDWBbKbYsIA2S796yadcZa8WhieXWUYwcvPyZkPVyNI6/VLsgWHJlAOQI
-	 yCh45CoBQfLQxjzqzWbOyKwQ8JM05rDjz239qZDiUjNB2P9b7x/hsjyV6wD1EvJT4R
-	 7riWw/aKQkWohGUBudOYh7onFsZl5kN87PFdgAbtj5CGUQ4cCJ5O+VGBYz8pSVicDU
-	 XFyXjwj5yYsEA==
-Subject: Re: [PATCH net-next 1/2] tcp: don't set window_clamp from SO_RCVBUF
- before the socket is connected
-From: netdev-bot+sashiko@kernel.org
-To: jain.sm@gmail.com
-Cc: edumazet@kernel.org, ncardwell@google.com, kuba@kernel.org,
- pabeni@redhat.com, davem@davemloft.net, kuniyu@google.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 12 Oct 2026 11:18:20 +0000
-Message-ID: <179180390054.434549.3187163637190599944@kernel.org>
-In-Reply-To: <20261011111606.14753-2-jain.sm@gmail.com>
-References: <20261011111606.14753-2-jain.sm@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F+HnvCps"
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cd1da64fe53so60093a12.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:22:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791804130; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LGxlupUiq5DppRxEY660RxzAvG2bX346GEqz0xyQXPx1LPO0n5/y/pZWLhhiG9Jdaz
+         d25/F1nroXge9dEjjlHafNczzh9L5ScXzb06K6vbG0XVIkuwK99yvaRDR8EUV2giPuJG
+         ewP6Kh2yOdkU5bIopraA55Zv23quGxr3/4f3jsdEZIFsRUZTIX7O8Ay8IuOy8hRJ1cbX
+         3AJP2q/i98PwtmMFR9LY6DhXzq8OIXl89YUizl45e93Wbntyd3rft868HEqlKZt3xOQv
+         tKZqc7fqS4ZYhKca2ZIj4Rr2EsGthFtf6Oa2yQx9KZIKlmlu81Ln3Rnb9mBd422NPnMR
+         EoSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3niU6cqp7D6Vf8l66QKyYfhCi9eIbqKTTvZBBqGYZyk=;
+        fh=AxqNxQJ9uweIZne4+VugnBIO5c6o/WyAngGLTyMrB+s=;
+        b=AnWymgrHswYqwIBRudXOKsNdcwlMMaKvyk2XzklnLqSw0SAbeQCpHMdVG1TvAnO3HR
+         HCpQyLQmj9eyjOspx5jSlu9m6TBpG5ZuPJnmuAf8UWxKd+Eeddz12cuFh2pd8x3Rhrlg
+         6R6U3nsDN722RyYOj3OpOib6YS3OeiAPdKryBh5SJYLZGTsh+iz7TB/ThtYWxuCFeYyu
+         AgTtHNZ8veRwVfG1+GLF+fP5WAWgw8aJCP9x8oeHvpBWjc96bh3laJqfFnmddLoAdpwa
+         fmk/5ysUJcT4j2sG1qDZWx7mfKrxx6gU0I/P0pg/Uuuc+TWK/0HQTFbJEFVVeihzL2cl
+         KIwg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791804130; x=1792408930; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3niU6cqp7D6Vf8l66QKyYfhCi9eIbqKTTvZBBqGYZyk=;
+        b=F+HnvCpsEua9MuqAFyVw22du5Pid1X/pNWVfMszv250sQYOVqrLA8gtoeEtF8PM9RX
+         /n6M07q1oyB3s4+fqPhZ+m+jrNoacOPlKtxM4m47fXZJqEXCqZulXG9btDlpd9KuO93c
+         RKrJ8Nc3Q4knawmB2m/E/r5DM/tAwsVgcr8MTvPRqf/9CbvCeXB53P2vx+dx6Q2GOgnv
+         cPsgpjtiXek4r6FZbLknHeiuHEs/xhRlseYtLsOSNbl5jpaPNZJ6E7PJRX7aVmNYVMsl
+         a3ydeOiiJfgFJ4ZkJ7o4hm0scYavx8LVdgv0FPulvbHvfMhTNHee2tz1uhppgHHDiwWQ
+         J34w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791804130; x=1792408930;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3niU6cqp7D6Vf8l66QKyYfhCi9eIbqKTTvZBBqGYZyk=;
+        b=M2AxHMOFEa3ngdZpr3i2WLM9ydaaZ8w6vXfmqEhveRkfMFnD3d+dRlNDwRHFMz01rm
+         J5LmXCEnfJ1AOj+WOBgI2zak6enyVFsqmXLuJEqMOymrIGaJr9BjH/aty3Cui+mVJ9Tz
+         enBBHJ/0V7kP8C3qFxGshZxoL5M62IqgOp7CvTnQKjbpZIDEz9s3BFrzo9GZ8Vyxl0kH
+         PmjsYDqAYcs5SiHEa8UmNtcFm4oGvTMOQReNn2PMTM8orOlSG2dGi06LBIgJC54liHLg
+         Angqu4YkgMfHDljkG2wUJIu0f3aC8J59LTFtyV2+qdrjqcHy91yZD7QQJWHVoRyJXQ7x
+         oAag==
+X-Gm-Message-State: AFq9FYKhTcefLZcbBRH3muwXovSBo0IMlKIpKm10b3vFWEpa326rcOoX
+	08PPT0tIVH2UrSTpksO0t/6aMChbPrwrMaGz9x9SVf65lWuXflFNzO4GX1qBK6/PzBtmFnBikP9
+	X07an51SmbUXVxGaletwSLYuILsMbgQY=
+X-Gm-Gg: AYBFou3B7TJg2t9+RDh4c+KD7WyOHDhwpAJY4KILwHHLjBFrPMTyEkq7NxB0Dzr6iKu
+	FoS/AQAEWzvUumLl/CauDOUdbUWVgkZ//+Xx5zp8RAspFcLP/6dLjgwLR73rHo7pTIgjDpaI2En
+	0xuk+R7u6888by5vIwxuB7KsrUgctordTZ424lqTOBrpebMGjGIJcDrx/PMlQ0Nno7zT7m3XvoF
+	N0Q5D/7NgC2L93SeTlhDXhu6heO2AFeXGpVUFpxMyBbLZg6SM18SgCrgq7OFhvAc5Xd5Kd1Il+T
+	aodNqR0cdDUdyzWOsCf0bYOqhR4/quJexxXAItrA7RBNKLHFvWWaca98srpblLL7P/JrX6VDdKv
+	WqwPTCs9ec04e
+X-Received: by 2002:a17:902:da4f:b0:2da:dd0a:99e0 with SMTP id
+ d9443c01a7336-2e8428a2c77mr122171625ad.2.1791804129626; Mon, 12 Oct 2026
+ 04:22:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260930090813.73901-1-q.h.hack.winter@gmail.com>
+ <20260930090813.73901-2-q.h.hack.winter@gmail.com> <179110850671.434549.2584497019282941556@kernel.org>
+ <1791424156.460.8ed76b88c7@gmail.com> <asySLDyakgLAKVdf@secunet.com>
+ <CAH78Gvt0gUELPSeqf348P4-B8E7RH3L3PhFdgVdjfK=WKEpzdQ@mail.gmail.com> <asyytFvHJGf_KB_D@secunet.com>
+In-Reply-To: <asyytFvHJGf_KB_D@secunet.com>
+From: Qihang <q.h.hack.winter@gmail.com>
+Date: Mon, 12 Oct 2026 19:21:57 +0800
+X-Gm-Features: AclHuK_rUMnN31SSB_KN6FhkpZSAxBkc67iXhJ2qmDZZxPegZYe3XhyfD991XX0
+Message-ID: <CAH78GvuFZxvHWqpbBv3cOQAA-TqvjgS14vH-GsTF58wJ8_vLvA@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] vti: fix tunnel device use-after-free across
+ async crypto resumption
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org, Christian Hopps <chopps@labn.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Hi Steffen,
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Sounds good -- thanks for taking the patchset.  Ccing Chris on the IPTFS
+part makes sense.  I'll follow the thread, and I'm happy to review it
+if that helps.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Qihang
 
-- [High] The fix is incomplete.
-- [Medium] The commit message misstates and overstates the impact.
-
---
-
-tcp: don't set window_clamp from SO_RCVBUF before the socket is connected
-
-This patch makes tcp_set_rcvbuf() skip the window_clamp update while the
-socket is in TCP_CLOSE or TCP_LISTEN. The aim is to stop a clamp derived
-from SO_RCVBUF from overriding the RTAX_WINDOW route metric in
-tcp_connect_init() and tcp_openreq_init_rwin().
-
-> tcp_connect_init() and tcp_openreq_init_rwin() treat a non-zero
-> window_clamp as a user clamp and, in that case, skip the route window
-> metric (RTAX_WINDOW, "ip route ... window N"). A clamp left behind by an
-> SO_RCVBUF call made before connect(), or on a listener, therefore
-> changes the window and window scale advertised in the SYN and SYN-ACK:
-> the route metric is no longer applied, and even without a route metric
-> the advertised window and scale come from SO_RCVBUF instead of the
-> defaults. This affects any application that sets SO_RCVBUF before
-> connect() or listen(), which is more common than using the route metric.
-
-[Severity: Medium]
-Is the part about the case without a route metric accurate?
-
-__sock_set_rcvbuf() always sets SOCK_RCVBUF_LOCK and then calls
-tcp_set_rcvbuf(sk, sk->sk_rcvbuf). On the old kernel, the clamp left
-behind is therefore tcp_win_from_space(sk, sk_rcvbuf), which equals
-tcp_full_space(), or SOCK_MIN_RCVBUF / 2 if that is larger.
-scaling_ratio cannot change before connect.
-
-With no RTAX_WINDOW metric, the patched kernel sees window_clamp == 0 and
-reads a zero metric. Then this block runs:
-
-net/ipv4/tcp_output.c:tcp_connect_init() {
-    ...
-	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
-	    (tp->window_clamp > tcp_full_space(sk) || tp->window_clamp == 0))
-		WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
-    ...
-}
-
-The old kernel reaches the same tcp_full_space() value through the
-"window_clamp > tcp_full_space(sk)" branch. tcp_openreq_init_rwin() does
-the same for req->rsk_window_clamp.
-
-Wouldn't both kernels then pass the same window_clamp to
-tcp_select_initial_window(), and advertise the same window and wscale in
-the SYN and SYN-ACK?
-
-If so, the visible change is limited to two cases:
-
-- routes with an RTAX_WINDOW metric
-- TCP_WINDOW_CLAMP followed by SO_RCVBUF on an unconnected socket or
-  listener, where SO_RCVBUF no longer overwrites the clamp
-
-The message does not mention the second case. Neither case is "any
-application that sets SO_RCVBUF before connect() or listen()".
-
-The message also seems to contradict itself further down:
-
-> The "after" values match a kernel with b025461303d8 reverted; with no
-> route metric the SYN window and scale are the defaults in both cases.
-
-In both cases, wouldn't the values come from SO_RCVBUF via
-tcp_full_space() rather than from the defaults?
-
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index f4c9101e5996..e523cb71b905 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -1858,6 +1858,14 @@ int tcp_set_rcvlowat(struct sock *sk, int val)
->  
->  void tcp_set_rcvbuf(struct sock *sk, int val)
->  {
-> +	/* Without a connection there is no clamp to update: it is chosen
-> +	 * from the route's window metric and the buffer size when the
-> +	 * connection is set up, see tcp_connect_init() and
-> +	 * tcp_openreq_init_rwin().
-> +	 */
-> +	if ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN))
-> +		return;
-
-[Severity: High]
-Does this check cover every case where SO_RCVBUF is applied before
-tcp_connect_init() runs?
-
-tcp_v4_connect() and tcp_v6_connect() switch the socket to TCP_SYN_SENT
-before tcp_connect()->tcp_connect_init(). A clamp written in that gap
-still passes this check, and there seem to be two ways to get there.
-
-The first is TCP_FASTOPEN_CONNECT with a cached cookie, where connect()
-returns early:
-
-net/ipv4/tcp_ipv4.c:tcp_v4_connect() {
-    ...
-	tcp_set_state(sk, TCP_SYN_SENT);
-    ...
-	if (tcp_fastopen_defer_connect(sk, &err))
-		return err;
-    ...
-}
-
-If the application calls setsockopt(SO_RCVBUF) before its first write(),
-tcp_set_rcvbuf() sees TCP_SYN_SENT and stores a non-zero window_clamp.
-tcp_sendmsg_fastopen() later calls tcp_connect()->tcp_connect_init().
-
-The second is a sock_ops BPF program. tcp_connect() runs the callback
-before tcp_connect_init():
-
-net/ipv4/tcp_output.c:tcp_connect() {
-    ...
-	tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_CONNECT_CB, 0, NULL);
-    ...
-	tcp_connect_init(sk);
-    ...
-}
-
-sol_socket_sockopt() allows SO_RCVBUF for bpf_setsockopt(). That call
-reaches __sock_set_rcvbuf()->tcp_set_rcvbuf() while the socket is in
-TCP_SYN_SENT. samples/bpf/tcp_bufs_kern.c, tcp_clamp_kern.c and
-tcp_iw_kern.c all use this pattern.
-
-In both cases tcp_connect_init() then skips the route metric:
-
-	if (!tp->window_clamp)
-		WRITE_ONCE(tp->window_clamp, dst_metric(dst, RTAX_WINDOW));
-
-The SOCK_RCVBUF_LOCK block afterwards can only lower the clamp to
-tcp_full_space().
-
-Doesn't that leave the b025461303d8 regression in place on these paths,
-even though this patch carries the Fixes: tag for it? The selftest in this
-series only covers SO_RCVBUF set before connect().
-
-Would it work to base the check on whether tcp_connect_init() has run yet?
-Another option would be to let tcp_connect_init() and
-tcp_openreq_init_rwin() tell a TCP_WINDOW_CLAMP value apart from one
-derived from sk_rcvbuf.
-
-> +
->  	tcp_set_window_clamp(sk, tcp_win_from_space(sk, val));
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011111606.14753-1-jain.sm%40gmail.com
+On Mon, Oct 12, 2026 at 6:13=E2=80=AFPM Steffen Klassert
+<steffen.klassert@secunet.com> wrote:
+>
+> On Mon, Oct 12, 2026 at 05:07:43PM +0800, Qihang wrote:
+> > Hi Steffen,
+> >
+> > Thanks a lot for the guidance, much appreciated.
+> >
+> > Your three points make sense. For IPTFS, the skbs freed without the
+> > receive callback are the outer xfrm skbs, and it's only a handful of
+> > places in xfrm_iptfs.c -- a small shared helper would be cleaner than
+> > open-coding it at each site.  The two xfrm_input changes (set family
+> > before the early drop, and hold the skb->dev reference unconditionally)
+> > look straightforward too.
+> >
+> > Would you prefer to handle the IPTFS and xfrm_input fixes yourself
+> > (Christian for IPTFS?), or should I send them as part of this series?
+> > Either way is fine with me.
+>
+> I'll handle the full patchset, but Cc Chris on IPTFS.
