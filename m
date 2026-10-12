@@ -1,314 +1,577 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9549381EBD;
-	Mon, 12 Oct 2026 13:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791813285; cv=none; b=GZpwVSpforXWSepMvsgK/ZyMTn3VmBQ96lqjSxpo1qmuMtXM2Uh8Mhe0/w19QccA1ytjPqp/ZYq5Bgv1KrIk8SAUHB4YhedDEOrvWgd4YsfLA6diutJj42mRN0C50+lCm/vm6z3YQAPVCmgNmB/bDSgy6dAi7uLD4OLAHS50yF0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791813285; c=relaxed/simple;
-	bh=qsHhbyHd5ClEZ7oMoiJT8a3BMLWB+4J+MzNBY5jNaxk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MU9bRexAq9zCC9GBO1gUPcmO0H9ggMRfnyxrQCHViPClJtaU4maMNPdRXJcjU7DAXpG52CkVeURX2rdr4//oKbeeFFRCBaUZDa2+HwnrCV1ZYFtmdtCA0VZxmd20yExma78DHUcP0rxgPUNuLtEy3oceJneACyC6Zwtai2zISZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOwMkcw6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C404F36B93C;
+	Mon, 12 Oct 2026 13:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791813324; cv=fail; b=ZalPDSElDl26yTJdwWJIVvLlL2z7i0tqYNB3T7pPV4tMUS4Dv6EvpM+vEmE8oPDI3LDQRtPO6sNeepR22SO/TqsKj0WqRf8qSwKoYA05+27mpf4nELMD5VT9p3u1EccCn1uRc1pQqvAX3oh+avlebwgX0hXqMyuBazxcSwzNmqg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791813324; c=relaxed/simple;
+	bh=gsCfzGDyqRLFXA2bYuwlx0GWQfX8Ju5Qtp7Huxhbxqs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=KyNrQ3NXsHkBBM7niMoFb+iuvVhGVetHu+oRmwyghtayleBgd9oWd+SgstUpBBNXEUhrMLRm7y2+1D8Nu8NBd9NRp+MPm8c+V20osh1vGcOHZDU/xaNy85zXVzkJRTG74tVgoMgWodQ1RLIhA11UuF7pJ+JjqjZG2i0CaKVQRM8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dGrlt+w+; arc=fail smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOwMkcw6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F891F0089B;
-	Mon, 12 Oct 2026 13:54:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791813283;
-	bh=M6rLpFajnX3vFtlMbngZuiF+uDlviL+v1lN0wEQgdBM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nOwMkcw6PDNOfrrtjGI6MTQmJuxwp5Um/OuL1fOic+KDGDhmEn+izpINDX/nMMdDM
-	 HNS1FQTKJya3tx4GSZPfrqSo2y+q2jepYAzfhbZqUxWig5u3W8OjfGiz0Rm4/KvN6x
-	 BwsBDDrkkX74FUOk/nIeWJwhuriYgNWbYC0rkvoNFptWfy+mbsyWUscr6IY18XLaSL
-	 SRma88aCRiUY5xAcZFZrSGwHhfxb8Nto6ZJxfrLtq/7jdsgM7DgugN8u7MJz0uIuXJ
-	 HWKym0aHKFRgAohiA/8Zn30LU+3Y5Tmh6gvbF8uRDkwEKAceLx+r1ikntUatLoOkI2
-	 AS8SC28X30cBQ==
-Subject: Re: [PATCH net-next v10] net: reduce ARFS flow updates by checking
- LLC affinity
-From: netdev-bot+sashiko@kernel.org
-To: nashuiliang@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, sdf.kernel@gmail.com,
- liuhangbin@gmail.com, skhawaja@google.com, ncardwell@google.com,
- roman.gushchin@linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Mon, 12 Oct 2026 13:54:42 +0000
-Message-ID: <179181328227.434549.4613846834686834625@kernel.org>
-In-Reply-To: <20261008133252.3750-1-nashuiliang@gmail.com>
-References: <20261008133252.3750-1-nashuiliang@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dGrlt+w+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791813322; x=1823349322;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=gsCfzGDyqRLFXA2bYuwlx0GWQfX8Ju5Qtp7Huxhbxqs=;
+  b=dGrlt+w+Adjp+09Yv785256f04zoqpyt/3ZYktIXXFLRmRTKO56DvaHw
+   1NbmOvlyPKYBVSfnbgErBVF5v7emufBwntQqlHmzIvTtsGTPBU6rjXQhV
+   vkKz0ZSVb0/Otn59bjPEE3+aYbTCAUogdB4OYNoym0Def4Pu5gySd/32E
+   7n0Lj3/uyTPA97DEqOvbHscBW1wz0iaWt4J8tt/koR/V7sUBwUxGgh4cg
+   rGQfJfMDcXWZ+Ysf7RYTzkocog4Gg8OY/VSSQnNDGTibGhXFN7jmmybLT
+   c+GKVOUH7yTZvyb+MANmmutDxoADdj//sRn5fRMmpuexSIurK/ngogyP1
+   g==;
+X-CSE-ConnectionGUID: uUIdQolLQCibPMAFg31wcg==
+X-CSE-MsgGUID: 0Y+M3hOZQ9G2fnhcyyzypA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="397483"
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="397483"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 06:55:21 -0700
+X-CSE-ConnectionGUID: hD3Nsws9QoCJCHfeBGN6Sw==
+X-CSE-MsgGUID: urCLmptdSC2odcXJ97S2Ag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="1227632"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 06:55:22 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 12 Oct 2026 06:55:20 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Mon, 12 Oct 2026 06:55:20 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.71) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Mon, 12 Oct 2026 06:55:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=D71lRXG0GwDzOOeghAaHtVKb98nJlgsNw/SWh8M/LbS9VZ6+G6yllOSJ1eZrN6uUsE3mcPirb0W+tTLxqwQrq3MPRihhLUjUsofdRwbKkriMlkaCXS8vYODRGoX9mYWFCLqq+19vs+LphE60VN2yNbqC+sg40Lr7dJV5yTOl/BPWEcV5NTuAYDNsoKB+NJ9b2JLOaf5aaqCH3QLvPvdF7Aw8dBa06vQA+tjX0rpHQo+k2dbiCiGel+mFdSegwN4uRdp1YTQywPL+3f7+Kxp3D7fPL9/rwP825t706pv925+y7qcw8reL6IU2ml5t1VURsrTN1votIZuZGmQwCW2SPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kb+zkIxX1CWvzORZI9PYvBtVnQwIwYCZmuJLsJrbh6k=;
+ b=mc9h/uEdSizZptHATK6pAmJ8EmOuB0/95UTY2G4v4FHVoM9izup6DVPw9gRQv0ncmRS11DLVNGVkoyZ88Kb2aGJBA6VfsI/uDC59R/sN/5eC+xB8IRUOjO8Iip+Hg6W+kH1vm2FwNT91jOhFeux7exsqMzR+I6RtwSVnzHy3AR8Nb358CiwYlm5d/h/TSl2oJu7SJ74Ym6Q1f4TkVsVFCK+mfocuupA/0JBNfY653yxxaVh2LG3oO7XkdTcsrpJB6ZW2bcZZNpTv8ZLWd11r51StzZt7QV8vnbs7NZM/nlgZye20iPRCzwCtBuYA74Ov2xBt+yAQUKlg0zHBZRPfVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB9301.namprd11.prod.outlook.com (2603:10b6:208:573::20)
+ by MW3PR11MB4652.namprd11.prod.outlook.com (2603:10b6:303:5a::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.21; Mon, 12 Oct
+ 2026 13:54:41 +0000
+Received: from IA3PR11MB9301.namprd11.prod.outlook.com
+ ([fe80::714b:7d3e:aa0:104c]) by IA3PR11MB9301.namprd11.prod.outlook.com
+ ([fe80::714b:7d3e:aa0:104c%5]) with mapi id 15.21.0496.020; Mon, 12 Oct 2026
+ 13:54:41 +0000
+From: "Holda, Patryk" <patryk.holda@intel.com>
+To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Oros, Petr" <poros@redhat.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Kushwaha,
+ Priyalee" <priyalee.kushwaha@intel.com>, Kiran Patil <kiran.patil@intel.com>,
+	"Drewek, Wojciech" <wojciech.drewek@intel.com>, Michal Swiatkowski
+	<michal.swiatkowski@linux.intel.com>, "Loktionov, Aleksandr"
+	<aleksandr.loktionov@intel.com>, Simon Horman <horms@kernel.org>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH iwl-next v2 2/2] ice: don't offload drop filters that
+ bypass higher priority filters
+Thread-Topic: [PATCH iwl-next v2 2/2] ice: don't offload drop filters that
+ bypass higher priority filters
+Thread-Index: AQHdRemW7uA2mDJfAU+90sesbDyyo7b6Fo7A
+Date: Mon, 12 Oct 2026 13:54:41 +0000
+Message-ID: <IA3PR11MB93012B036857018EC5938E218A9F2@IA3PR11MB9301.namprd11.prod.outlook.com>
+References: <20260916144130.2699902-1-poros@redhat.com>
+ <20260916144130.2699902-3-poros@redhat.com>
+In-Reply-To: <20260916144130.2699902-3-poros@redhat.com>
+Accept-Language: en-US, pl-PL
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB9301:EE_|MW3PR11MB4652:EE_
+x-ms-office365-filtering-correlation-id: 1ac0f93d-f0c0-43ca-75f2-08df28685d1b
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|22082099003|10067099003|18002099003|3023799007|38070700021|261009223027099003|4143699003|11063799006|56012099006;
+x-microsoft-antispam-message-info: r+3AAsrrH4fEKxrhX5+93+KEAftGIw4uual0xnQHTXFWBGAJLbv6TNdky/XETpPewhwqp5J5n5TmR66W8PQEQ1UcZaWCQ62erNOmdsJ+ThTov57JnLz70MMLKcPOJZJwg+aT50NQmQGzaAjYac1lSoFwWIG1dfRinQjeoJxTHaFpGaSEOg7+vGNrHgut/Sl+yIHQc10orR+GcwF8+nUl2inqBuULkRGhLGNwIkij+3LodYcK6bLDFg9RB0gAwX8HQ+L6cqCmyZ0pn9hUn61ppZV/x8iSNVuLG89GFpaPajl87gGVUJ7NlLqyfABGv3h8NIukE6Ib38D3kg3aErfZVt2f4ug8j2DVINSV5+oLp/gJiy4wk6EaMLXKE8RsdL19MXFpp+8RiwkJzEctDm64FlWvEMUu2KbmW+AuyI8wwSyya5330yaybE9cK9YQJRmgFjAKiIaAQjxx+w5Wrv+D3o9YjgkEK9+fkBS8SUC5VmE06CBprxEMRJrgCe1Ub1WU9mcYyPRljduvDVBoZ5JYkL2ixvrLG3gkpI08ryusfzjJt46mE5w8enKSSILlE9GZuh88UV0d8KZeynU+0ErDi6HoX5rh2Te52fBpGsW1tirPAS0egzp6kw/zEnaiGbZu2XFQ+ZYn/SKN+9Fs4QWG+Bh4p6ynleNcwAYzuiAl9wpwFK9t1x1jX0s4Yga3x98dvEqlLZDltZy8K5bh3jN6tdoQjzkOskgdPRl1nIi+b2w=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB9301.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(22082099003)(10067099003)(18002099003)(3023799007)(38070700021)(261009223027099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?ENh8YB0SiuDKoPHTIVVftWRTmnES3Yv5OsMug0EXV5HmX0gBZwZ7eMUQwG?=
+ =?iso-8859-1?Q?c8vLw9LQC9FDBFD2KkqG3ndfXI9SZvsE8GHiJ4Vpe/w2qFh06wr9Rpfov1?=
+ =?iso-8859-1?Q?Otct5GntluxmQIGF7MT1tQXUz2iOK5Haiai86xEK8sdEalCVcw9GQ08b+J?=
+ =?iso-8859-1?Q?jo4qvS3Jlp+7kKz+PMtlXeo22Dt9OBerR8OAKq5WW07p4Oi+rT6YA5EEw3?=
+ =?iso-8859-1?Q?wXg7i5WxF76qJPuqKnVpLEsze/IDtXH2b1SslkuJ6jbCJBpsz8SVsTEfa/?=
+ =?iso-8859-1?Q?sfHq8O7bMpwyKv5nsEjMA1jx20rKavmD5SEUjjXUuaUPTZIkDGjkBSHKOo?=
+ =?iso-8859-1?Q?okho25fM/kmENyH9yZGgjyXyj+r8UTgkpgcxV5lv6iCxbelo8+MXbm+5Ph?=
+ =?iso-8859-1?Q?8rL0omfhPzyFJB2ju9GaF1pZJKE8U28P/fwf0NFP3C9qEioazIUExOuuGk?=
+ =?iso-8859-1?Q?NzAMYiFWMJ1iaRleDj/mjJH+SZDHei2qM1LAS1PQEFHE5XgorY/ecMZfxC?=
+ =?iso-8859-1?Q?bWB+eBeYYkXxc1u35ui903+mdHdcT4Xa7IPGdrq+QAtLQtJley+08tLy/J?=
+ =?iso-8859-1?Q?9oBXVxIZagFl6oumPLkDK1WigGh0F9KgRIxho5GhAn4Y+lmG918ASLWLkS?=
+ =?iso-8859-1?Q?X+cK/ADLBpAblqfRNoSXfWxuJFoeiGTjYIp1WQp2dq2UtWhMIEtqqM3Pl9?=
+ =?iso-8859-1?Q?IAJ7JiQrnuzP10fQogNqGNQ8yG2zMXi2ZELlgTCodK7e29SZ1oOTdpYbos?=
+ =?iso-8859-1?Q?nEc1Ro3/YVAJLT3+QTfNhWT6lvnYtNW+4OobLmpzzLtvkTf/VdzX9UdJ/U?=
+ =?iso-8859-1?Q?EdFyAiGPsnW0wdq9R6aZineV2DPwQvSR8gzJaNbCGDb6y5ixBcu4eIxzDN?=
+ =?iso-8859-1?Q?bunnLenDFH6AfIs3DNAAotYGo7Sc4Kgh37RyqZFxEPYDYvoN9mGRm/9Vl7?=
+ =?iso-8859-1?Q?JvEU/9Y0HbEQs+5w5d61MZwWC1VDtF/MgUc/c0O1CqJHOlfNDqVrBO59I2?=
+ =?iso-8859-1?Q?qOmpuBXQzBsn1uHxZDSVvAABf7TY6LVAX7fz7J6UI18VHCDr1f484f/dAY?=
+ =?iso-8859-1?Q?KHNxfJ5DEDcrI/kYObidXjAqQflweS5FSyyzwzNGZ0QMmG9pyUwiSfzVVR?=
+ =?iso-8859-1?Q?cMFSR8WGP89w2+LzTE2z1KjCE9QQe6IJDvKVNmdXf9E6larjWKU5Fdb3oi?=
+ =?iso-8859-1?Q?Gkfj45oW9yZgU8afmqi7OveSe3r6cKnqsu23Wy2AMzUvFTHANDAvsItz4N?=
+ =?iso-8859-1?Q?WR87MKdhFLhYb/rUZVG396pA4/sJf7WwKW8BgZUSPgVJdYyadc2Z0aO/Tb?=
+ =?iso-8859-1?Q?VTCcwMMpAe3u51jioEFWC+sqVSiPtmW+Ols96W+Ve0s2T8y0NhMJi5F3Jv?=
+ =?iso-8859-1?Q?vn9/+fYlrIVHr5nvL7SPBOuW3orfiwUwNQ5YfvtP2866oKsNdQOhuKz0EZ?=
+ =?iso-8859-1?Q?EorbFGNylsAniQt1Xz1tOYvRqx6d4nY53bJJbOlnlueDm8epPdEfsavzlZ?=
+ =?iso-8859-1?Q?7jtFgVnE+DFiSAjp/7Uj4SuhUSblsi111dS0yv7fHk8PbdiSwNadd+xo7S?=
+ =?iso-8859-1?Q?as5x9ikpSlk5j/Rm/4ScOoOPHYKyZ5dkqSxSu7celVGsMtug9cIEkzERe5?=
+ =?iso-8859-1?Q?Pqcliy8NlV70EVynj0Cd8+K1b+VA7+T/d6rzbNTmEgO7abvrRAc5n6AA5D?=
+ =?iso-8859-1?Q?oBXPn4zdB57wnNE0TRb3Bciyov1ig1nNUD591KGLDo+iKsrYNBo9IhyC/r?=
+ =?iso-8859-1?Q?TcYig41rmjAr2lfHYQVwds9+ax2hrMYEDVwmu3cUAr0TR8?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: OJYdgdRwFGLc8XflPiuPC8x5fjrNSib+5mExQGnVCy1Yx0aQRmjdieOAYTppp9smiQuiKCH8M3nWG8ws99VXVzVEUCqRsFIIcaTXYrlsscDf3/PNGfxhFtrnVuPcpUmWJDJVZvqgZWzXZ0I228ckFiHOxMx+mqPpvNovgq7Fr71/zKD0QrlxN8DgDTzW7vSBh3wVMAKqQBeAFUQB5Xnc98XcBvUZI15BM+tsyUu3xj7ewnVBfooeVe7bBCZZPRTBGw/mhdyadLi2Sx/Htnr8R+cqECA+vCPt8WFSFpTEZOPk+gswzW1wtGG7BBzvFL1hz8qHTpGmKz8pjWC9G9NYAA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB9301.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1ac0f93d-f0c0-43ca-75f2-08df28685d1b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2026 13:54:41.3653
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: A+1kmA61bJmjQO2MrgnEQatgl88nvhzxcARstALJWSmwE7FD1x/W4XHWrhSY9L5/AdTQqDTfc4fqvqMXpr4VgA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4652
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 (1) · Medium: 2 · Low: 4
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] When the new LLC shortcut in set_rps_cpu()
-  (net/core/dev.c:5196-5199) fires, it skips ndo_rx_flow_steer().
-- [Medium] The new check in set_rps_cpu() relies on
-  cpus_share_cache(old_cpu, next_cpu), which in this tree compares raw…
-- [Low] The new comment in set_rps_cpu() says 'Reduce RFS/ARFS flow
-  updates by checking LLC affinity' and 'This strategy only updates the…
-- [Low] The patch adds a user-visible sysctl,
-  /proc/sys/net/core/rps_feat_llc_affinity (net_core_table,…
-- [Low] The aRFS section of Documentation/networking/scaling.rst (lines
-  443-448) says the stack 'automatically calls this function…
-- [Low] The rps_feat_llc_affinity static key (dev.c:5125) and its sysctl
-  (sysctl_net_core.c:563-569) are built under CONFIG_RPS.
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but writing 1 to
-  /sys/class/net/<dev>/queues/rx-N/rps_flow_cnt gives a flow table whose…
-
---
-
-net: reduce ARFS flow updates by checking LLC affinity
-
-With this commit, set_rps_cpu() skips the ndo_rx_flow_steer() call when
-the flow's previous target CPU and the new one share an LLC. rflow->cpu
-is still updated in that case. A new sysctl,
-net.core.rps_feat_llc_affinity, backed by a static key and off by
-default, turns the behaviour on.
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index f587645e930a1..8b046100525a4 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -5122,6 +5122,7 @@ struct static_key_false rps_needed __read_mostly;
->  EXPORT_SYMBOL(rps_needed);
->  struct static_key_false rfs_needed __read_mostly;
->  EXPORT_SYMBOL(rfs_needed);
-> +struct static_key_false rps_feat_llc_affinity __read_mostly;
->
->  static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
->  {
-
-[Severity: High]
-This regression wasn't introduced by this patch, but can rfs_slot()
-return an index past the end of a one-entry flow table?
-
-Writing 1 to /sys/class/net/<dev>/queues/rx-N/rps_flow_cnt gives
-mask = 0 in store_rps_dev_flow_table_cnt(). The runtime ilog2(0) is -1,
-so the encoded log becomes 0:
-
-    tag_ptr |= (ilog2(mask) + 1);
-
-rfs_slot() then calls hash_32(hash, 0), which does:
-
-    return __hash_32(val) >> (32 - bits);
-
-Shifting a u32 by 32 is undefined. On x86-64 and arm64 the shift count
-is masked, so the full 32-bit hash product comes back instead of 0.
-
-get_rps_cpu() uses that value directly:
-
-    rflow = flow_table + flow_id;
-
-set_rps_cpu() later writes through the same pointer with
-WRITE_ONCE(rflow->cpu, next_cpu) and the last_qtail update. On the aRFS
-path it also writes to the target queue's tmp_rflow.
-
-rps_may_expire_flow() checks flow_id against 1UL << log, but
-get_rps_cpu() and set_rps_cpu() don't.
-
-Could this cause out-of-bounds reads and writes in NET_RX softirq? That
-would need CAP_NET_ADMIN to configure such a table and
-rps_sock_flow_entries to be set. It looks like this goes back to commit
-a435163d3100b0.
-
-[ ... ]
-
-> @@ -5179,6 +5180,24 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
->  		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
->  		    !(dev->features & NETIF_F_NTUPLE))
->  			goto out;
+> -----Original Message-----
+> From: Petr Oros <poros@redhat.com>
+> Sent: Wednesday, September 16, 2026 4:42 PM
+> To: netdev@vger.kernel.org
+> Cc: Oros, Petr <poros@redhat.com>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>;
+> David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; Kushwaha, Priyalee <priyalee.kushwaha@intel.com>;
+> Kiran Patil <kiran.patil@intel.com>; Drewek, Wojciech
+> <wojciech.drewek@intel.com>; Michal Swiatkowski
+> <michal.swiatkowski@linux.intel.com>; Loktionov, Aleksandr
+> <aleksandr.loktionov@intel.com>; Simon Horman <horms@kernel.org>; intel-
+> wired-lan@lists.osuosl.org; linux-kernel@vger.kernel.org
+> Subject: [PATCH iwl-next v2 2/2] ice: don't offload drop filters that byp=
+ass
+> higher priority filters
+>=20
+> The E810 switch gives drop rules absolute precedence over forwarding rule=
+s
+> regardless of recipe priority (verified on E810 in every combination of
+> installation order and match specificity). TC however requires filters to=
+ be
+> evaluated in priority order, so when a higher priority filter stays softw=
+are-only
+> because its match or action cannot be offloaded while a lower priority dr=
+op
+> filter is offloaded, the hardware drops packets the higher priority filte=
+r should
+> have seen:
+>=20
+>   tc filter add dev $pf ingress prio 1 protocol ip flower \
+>       ip_proto l2tp action pass
+>   tc filter add dev $pf ingress prio 2 protocol ip flower action drop
+>=20
+> The pass filter is rejected (unsupported action), the drop filter is offl=
+oaded and
+> the hardware drops all IPv4 traffic including the L2TP packets the prio 1=
+ filter
+> should accept.
+>=20
+> Track filters that were presented to the driver but not offloaded and ref=
+use to
+> offload a drop filter when a higher priority filter on the same device bl=
+ock and
+> direction is software-only or is offloaded with a forwarding action, whic=
+h the
+> hardware drop would equally override. The refused drop filter keeps worki=
+ng
+> in software. Filters are compared only within one device block since TC
+> priorities are not ordered across blocks, and a shared block bound to mul=
+tiple
+> devices is tracked once per binding. Filters with skip_sw bypass the chec=
+k
+> because the user explicitly requested hardware-only operation and refusin=
+g
+> would fail the filter add entirely, and the tracking applies to the legac=
+y switch
+> mode only, switchdev pipelines manage rule priorities themselves.
+>=20
+> The check does not analyze match overlap, so it is conservative, and it r=
+uns
+> only at drop offload time. A conflicting filter installed after a drop fi=
+lter was
+> already offloaded cannot un-offload it, and filters the driver never saw =
+(added
+> while hw-tc-offload was off) are invisible to it. Installing filters in p=
+riority order
+> with offload enabled avoids both.
+>=20
+> Fixes: 0d08a441fb1a ("ice: ndo_setup_tc implementation for PF")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+> v2:
+> - track one entry per cookie and filter_dev pair instead of one per
+>   cookie, so a shared block bound to multiple devices of one PF is
+>   protected on every binding and each DESTROY invocation removes its
+>   own entry instead of returning -EINVAL for the later bindings
+>   (sashiko review via Simon Horman)
+> - pass the filter device to ice_del_cls_flower() for the lookup above
+>=20
+> v1: https://lore.kernel.org/all/20260910154824.3603687-3-
+> poros@redhat.com/
+>  drivers/net/ethernet/intel/ice/ice.h        |   1 +
+>  drivers/net/ethernet/intel/ice/ice_main.c   |   2 +-
+>  drivers/net/ethernet/intel/ice/ice_repr.c   |   2 +-
+>  drivers/net/ethernet/intel/ice/ice_tc_lib.c | 159 +++++++++++++++++++-
+> drivers/net/ethernet/intel/ice/ice_tc_lib.h |  23 ++-
+>  5 files changed, 177 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/ice/ice.h
+> b/drivers/net/ethernet/intel/ice/ice.h
+> index db3c7015c56c43..6c596e5a315175 100644
+> --- a/drivers/net/ethernet/intel/ice/ice.h
+> +++ b/drivers/net/ethernet/intel/ice/ice.h
+> @@ -643,6 +643,7 @@ struct ice_pf {
+>  	 */
+>  	u16 num_dmac_chnl_fltrs;
+>  	struct hlist_head tc_flower_fltr_list;
+> +	struct hlist_head tc_sw_fltr_list;
+>=20
+>  	u64 supported_rxdids;
+>=20
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c
+> b/drivers/net/ethernet/intel/ice/ice_main.c
+> index 3b76eb58666c07..3e6976cbb45c22 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+> @@ -8392,7 +8392,7 @@ ice_setup_tc_cls_flower(struct ice_netdev_priv
+> *np,
+>  	case FLOW_CLS_REPLACE:
+>  		return ice_add_cls_flower(filter_dev, vsi, cls_flower, ingress);
+>  	case FLOW_CLS_DESTROY:
+> -		return ice_del_cls_flower(vsi, cls_flower);
+> +		return ice_del_cls_flower(filter_dev, vsi, cls_flower);
+>  	default:
+>  		return -EINVAL;
+>  	}
+> diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c
+> b/drivers/net/ethernet/intel/ice/ice_repr.c
+> index 096566c697f444..312a1bda460035 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_repr.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+> @@ -223,7 +223,7 @@ ice_repr_setup_tc_cls_flower(struct ice_repr *repr,
+>  		return ice_add_cls_flower(repr->netdev, repr->src_vsi, flower,
+>  					  true);
+>  	case FLOW_CLS_DESTROY:
+> -		return ice_del_cls_flower(repr->src_vsi, flower);
+> +		return ice_del_cls_flower(repr->netdev, repr->src_vsi, flower);
+>  	default:
+>  		return -EINVAL;
+>  	}
+> diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+> b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+> index fbd8cbad150a98..fec6970a74cfbf 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+> @@ -2269,6 +2269,117 @@ ice_find_tc_flower_fltr(struct ice_pf *pf,
+> unsigned long cookie)
+>  	return NULL;
+>  }
+>=20
+> +/**
+> + * ice_tc_fltr_is_drop - check if a filter carries a drop action
+> + * @cls_flower: offload request describing the filter
+> + *
+> + * Return: true if any action of the filter is a drop, false otherwise.
+> + */
+> +static bool ice_tc_fltr_is_drop(struct flow_cls_offload *cls_flower) {
+> +	struct flow_rule *rule =3D flow_cls_offload_flow_rule(cls_flower);
+> +	struct flow_action_entry *act;
+> +	int i;
 > +
-> +		/*
-> +		 * RPS LLC Affinity Feature:
-> +		 * Reduce RFS/ARFS flow updates by checking LLC affinity.
-> +		 *
-> +		 * Frequent flow table updates can trigger constant hardware steering
-> +		 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-> +		 * contention on driver internal locks (like mlx5's arfs_lock).
-> +		 *
-> +		 * This strategy only updates the flow record if it migrates across LLC
-> +		 * boundaries. This minimizes expensive hardware updates while
-> +		 * preserving cache locality for the application.
-> +		 */
+> +	if (cls_flower->classid)
+> +		return false;
+> +
+> +	flow_action_for_each(i, act, &rule->action)
+> +		if (act->id =3D=3D FLOW_ACTION_DROP)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * ice_tc_untrack_sw_fltr - forget a tracked software-only filter
+> + * @pf: pointer to PF structure
+> + * @filter_dev: device the filter was requested on
+> + * @cookie: unique filter identifier from the offload request
+> + *
+> + * Return: true if the filter was tracked, false otherwise.
+> + */
+> +static bool ice_tc_untrack_sw_fltr(struct ice_pf *pf,
+> +				   struct net_device *filter_dev,
+> +				   unsigned long cookie)
+> +{
+> +	struct ice_tc_sw_fltr *sw_fltr;
+> +
+> +	hlist_for_each_entry(sw_fltr, &pf->tc_sw_fltr_list, node) {
+> +		if (sw_fltr->cookie !=3D cookie ||
+> +		    sw_fltr->filter_dev !=3D filter_dev)
+> +			continue;
+> +
+> +		hlist_del(&sw_fltr->node);
+> +		kfree(sw_fltr);
+> +		return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * ice_tc_track_sw_fltr - remember a filter that was not offloaded
+> + * @pf: pointer to PF structure
+> + * @filter_dev: device the filter was requested on
+> + * @cls_flower: offload request describing the filter
+> + * @direction: block direction the filter was requested for  */ static
+> +void ice_tc_track_sw_fltr(struct ice_pf *pf,
+> +				 struct net_device *filter_dev,
+> +				 struct flow_cls_offload *cls_flower,
+> +				 enum ice_eswitch_fltr_direction direction) {
+> +	struct ice_tc_sw_fltr *sw_fltr;
+> +
+> +	hlist_for_each_entry(sw_fltr, &pf->tc_sw_fltr_list, node)
+> +		if (sw_fltr->cookie =3D=3D cls_flower->cookie &&
+> +		    sw_fltr->filter_dev =3D=3D filter_dev)
+> +			return;
+> +
+> +	sw_fltr =3D kzalloc_obj(*sw_fltr);
+> +	if (!sw_fltr)
+> +		return;
+> +
+> +	sw_fltr->cookie =3D cls_flower->cookie;
+> +	sw_fltr->filter_dev =3D filter_dev;
+> +	sw_fltr->prio =3D cls_flower->common.prio;
+> +	sw_fltr->direction =3D direction;
+> +	sw_fltr->is_drop =3D ice_tc_fltr_is_drop(cls_flower);
+> +	hlist_add_head(&sw_fltr->node, &pf->tc_sw_fltr_list); }
+> +
+> +/**
+> + * ice_tc_drop_bypasses_fltr - check if a drop rule would bypass a
+> +filter
+> + * @pf: pointer to PF structure
+> + * @filter_dev: device the drop filter is requested on
+> + * @prio: TC priority of the drop filter
+> + * @direction: block direction of the drop filter
+> + *
+> + * Return: true if such a filter exists, false otherwise.
+> + */
+> +static bool
+> +ice_tc_drop_bypasses_fltr(struct ice_pf *pf, struct net_device *filter_d=
+ev,
+> +			  u32 prio, enum ice_eswitch_fltr_direction direction) {
+> +	struct ice_tc_flower_fltr *fltr;
+> +	struct ice_tc_sw_fltr *sw_fltr;
+> +
+> +	hlist_for_each_entry(sw_fltr, &pf->tc_sw_fltr_list, node)
+> +		if (sw_fltr->filter_dev =3D=3D filter_dev &&
+> +		    sw_fltr->direction =3D=3D direction && sw_fltr->prio < prio &&
+> +		    !sw_fltr->is_drop)
+> +			return true;
+> +
+> +	hlist_for_each_entry(fltr, &pf->tc_flower_fltr_list, tc_flower_node)
+> +		if (fltr->filter_dev =3D=3D filter_dev &&
+> +		    fltr->direction =3D=3D direction && fltr->prio < prio &&
+> +		    fltr->action.fltr_act !=3D ICE_DROP_PACKET)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+>  /**
+>   * ice_add_cls_flower - add TC flower filters
+>   * @netdev: Pointer to filter device
+> @@ -2284,14 +2395,24 @@ int ice_add_cls_flower(struct net_device
+> *netdev, struct ice_vsi *vsi,  {
+>  	struct netlink_ext_ack *extack =3D cls_flower->common.extack;
+>  	struct net_device *vsi_netdev =3D vsi->netdev;
+> +	enum ice_eswitch_fltr_direction direction;
+>  	struct ice_tc_flower_fltr *fltr;
+>  	struct ice_pf *pf =3D vsi->back;
+> +	bool track_sw_fltrs;
+>  	int err;
+>=20
+> -	if (ice_is_reset_in_progress(pf->state))
+> -		return -EBUSY;
+> -	if (test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags))
+> -		return -EINVAL;
+> +	direction =3D ingress ? ICE_ESWITCH_FLTR_INGRESS :
+> +			      ICE_ESWITCH_FLTR_EGRESS;
+> +	track_sw_fltrs =3D !ice_is_eswitch_mode_switchdev(pf);
+> +
+> +	if (ice_is_reset_in_progress(pf->state)) {
+> +		err =3D -EBUSY;
+> +		goto track_sw;
+> +	}
+> +	if (test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags)) {
+> +		err =3D -EINVAL;
+> +		goto track_sw;
+> +	}
+>=20
+>  	if (ice_is_port_repr_netdev(netdev))
+>  		vsi_netdev =3D netdev;
+> @@ -2304,7 +2425,8 @@ int ice_add_cls_flower(struct net_device *netdev,
+> struct ice_vsi *vsi,
+>  		 */
+>  		if (netdev =3D=3D vsi_netdev)
+>  			NL_SET_ERR_MSG_MOD(extack, "can't apply TC
+> flower filters, turn ON hw-tc-offload and try again");
+> -		return -EINVAL;
+> +		err =3D -EINVAL;
+> +		goto track_sw;
+>  	}
+>=20
+>  	/* avoid duplicate entries, if exists - return error */ @@ -2314,28
+> +2436,51 @@ int ice_add_cls_flower(struct net_device *netdev, struct ice_=
+vsi
+> *vsi,
+>  		return -EEXIST;
+>  	}
+>=20
+> +	if (track_sw_fltrs && !cls_flower->common.skip_sw &&
+> +	    ice_tc_fltr_is_drop(cls_flower) &&
+> +	    ice_tc_drop_bypasses_fltr(pf, netdev, cls_flower->common.prio,
+> +				      direction)) {
+> +		NL_SET_ERR_MSG_MOD(extack,
+> +				   "Drop filter not offloaded because it would
+> bypass a higher priority filter");
+> +		err =3D -EOPNOTSUPP;
+> +		goto track_sw;
+> +	}
+> +
+>  	/* prep and add TC-flower filter in HW */
+>  	err =3D ice_add_tc_fltr(netdev, vsi, cls_flower, &fltr, ingress);
+>  	if (err)
+> -		return err;
+> +		goto track_sw;
+> +
+> +	fltr->filter_dev =3D netdev;
+> +	fltr->prio =3D cls_flower->common.prio;
+>=20
+>  	/* add filter into an ordered list */
+>  	hlist_add_head(&fltr->tc_flower_node, &pf->tc_flower_fltr_list);
+>  	return 0;
+> +
+> +track_sw:
+> +	if (track_sw_fltrs && !cls_flower->common.skip_sw)
+> +		ice_tc_track_sw_fltr(pf, netdev, cls_flower, direction);
+> +	return err;
+>  }
+>=20
+>  /**
+>   * ice_del_cls_flower - delete TC flower filters
+> + * @netdev: Pointer to filter device
+>   * @vsi: Pointer to VSI
+>   * @cls_flower: Pointer to struct flow_cls_offload
+>   */
+>  int
+> -ice_del_cls_flower(struct ice_vsi *vsi, struct flow_cls_offload *cls_flo=
+wer)
+> +ice_del_cls_flower(struct net_device *netdev, struct ice_vsi *vsi,
+> +		   struct flow_cls_offload *cls_flower)
+>  {
+>  	struct ice_tc_flower_fltr *fltr;
+>  	struct ice_pf *pf =3D vsi->back;
+>  	int err;
+>=20
+> +	if (ice_tc_untrack_sw_fltr(pf, netdev, cls_flower->cookie))
+> +		return 0;
+> +
+>  	/* find filter */
+>  	fltr =3D ice_find_tc_flower_fltr(pf, cls_flower->cookie);
+>  	if (!fltr) {
+> diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.h
+> b/drivers/net/ethernet/intel/ice/ice_tc_lib.h
+> index 752af65e70b7bf..47444b7dadd257 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_tc_lib.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.h
+> @@ -139,12 +139,33 @@ enum ice_eswitch_fltr_direction {
+>  	ICE_ESWITCH_FLTR_EGRESS,
+>  };
+>=20
+> +/**
+> + * struct ice_tc_sw_fltr - filter presented to the driver but not
+> +offloaded
+> + * @node: node in the pf->tc_sw_fltr_list
+> + * @cookie: unique filter identifier from the offload request
+> + * @filter_dev: device the filter was requested on
+> + * @prio: TC priority, lower value is evaluated first
+> + * @direction: block direction the filter was requested for
+> + * @is_drop: the filter carries a drop action  */ struct ice_tc_sw_fltr
+> +{
+> +	struct hlist_node node;
+> +	unsigned long cookie;
+> +	struct net_device *filter_dev;
+> +	u32 prio;
+> +	enum ice_eswitch_fltr_direction direction;
+> +	bool is_drop;
+> +};
+> +
+>  struct ice_tc_flower_fltr {
+>  	struct hlist_node tc_flower_node;
+>=20
+>  	/* cookie becomes filter_rule_id if rule is added successfully */
+>  	unsigned long cookie;
+>=20
+> +	struct net_device *filter_dev;
+> +	u32 prio;
+> +
+>  	/* add_adv_rule returns information like recipe ID, rule_id. Store
+>  	 * those values since they are needed to remove advanced rule
+>  	 */
+> @@ -214,7 +235,7 @@ static inline int ice_chnl_dmac_fltr_cnt(struct ice_p=
+f
+> *pf)  struct ice_vsi *ice_locate_vsi_using_queue(struct ice_vsi *vsi, int=
+ queue);
+> int ice_add_cls_flower(struct net_device *netdev, struct ice_vsi *vsi,
+>  		       struct flow_cls_offload *cls_flower, bool ingress); -int
+> ice_del_cls_flower(struct ice_vsi *vsi,
+> +int ice_del_cls_flower(struct net_device *netdev, struct ice_vsi *vsi,
+>  		       struct flow_cls_offload *cls_flower);  void
+> ice_replay_tc_fltrs(struct ice_pf *pf);  bool ice_is_tunnel_supported(str=
+uct
+> net_device *dev);
+> --
+> 2.55.0
 
-[Severity: Low]
-This isn't a bug, but does this comment still match the code now that
-the check lives in set_rps_cpu()? After goto out, the code still runs:
+Tested-by: Patryk Holda <patryk.holda@intel.com>=A0
 
-    head = READ_ONCE(per_cpu(softnet_data, next_cpu).input_queue_head);
-    rps_input_queue_tail_save(&rflow->last_qtail, head);
-    ...
-    WRITE_ONCE(rflow->cpu, next_cpu);
 
-So the flow record is updated every time, and only the
-ndo_rx_flow_steer() call is skipped. The commit message agrees: "The
-per-queue flow bookkeeping (rflow->cpu) is still updated".
-
-The comment looks left over from v9, where the check was in
-rps_record_sock_flow().
-
-> +		if (static_branch_unlikely(&rps_feat_llc_affinity) &&
-> +		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
-> +			cpus_share_cache(old_cpu, next_cpu))
-> +			goto out;
-
-[Severity: Medium]
-Does old_cpu reliably show where the hardware is delivering this flow
-right now?
-
-old_cpu is the tcpu that get_rps_cpu() reads from rflow->cpu in the
-arrival queue's software table. set_rps_cpu() writes next_cpu into
-rflow->cpu on every goto out path, including paths that never install a
-hardware filter. One is a driver failure:
-
-    rc = dev->netdev_ops->ndo_rx_flow_steer(dev, skb,
-                                            rxq_index, flow_id);
-    if (rc < 0)
-        goto out;
-
-For example, mlx5e_rx_flow_steer() returns -EPERM when ARFS is disabled
-and -ENOMEM when the GFP_ATOMIC allocation fails. Another is the
-collision skip:
-
-    if (hash != READ_ONCE(tmp_rflow->hash) ||
-        next_cpu == tmp_cpu)
-        goto out;
-
-Hash slots are also shared between flows and never reset, so the
-arrival queue's slot can hold a stale or colliding CPU.
-
-Here is an example. Flow F arrives by RSS on queue R, whose IRQ CPU is
-in LLC A. The application runs on CPU Y in LLC B, and the earlier steer
-to Y failed or collided. When the application moves to CPU Z, also in
-LLC B:
-
-get_rps_cpu()
-  set_rps_cpu(dev, skb, rflow, Y, Z, hash)
-    cpus_share_cache(Y, Z) is true
-    goto out
-  rflow->cpu = Z
-
->From then on tcpu == next_cpu, so set_rps_cpu() is not called again for
-this flow. Any later move inside LLC B takes the same shortcut.
-
-Could F stay on the remote queue R indefinitely, with every packet
-crossing LLCs through an RPS backlog enqueue and an IPI? Before this
-patch, every CPU change retried ndo_rx_flow_steer().
-
-The commit message says "cache locality for the application is
-preserved either way". That seems to hold only when the hardware
-already delivers to old_cpu's LLC, and nothing here checks that.
-
-Would it be better to compare next_cpu with the CPU that services the
-arrival queue (smp_processor_id() on this path, or the rmap CPU for
-skb_get_rx_queue())? Another option is to skip only when a filter is
-known to be installed.
-
-[Severity: Medium]
-How does this check behave for CPUs that have no sched domain?
-
-cpus_share_cache() compares the raw sd_llc_id values:
-
-    return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
-
-sd_llc_id defaults to -1. It is only assigned for CPUs in the map
-passed to build_sched_domains(), and sched_init_domains() masks that
-map with housekeeping_cpumask(HK_TYPE_DOMAIN). CPUs isolated with
-isolcpus=domain therefore keep -1.
-
-sched_cpu_deactivate() also resets sd_llc_id to -1, through
-sched_domains_free_llc_id() -> __sched_domains_free_llc_id(), while
-the CPU is still cpu_online().
-
-If so, any two isolated CPUs compare as sharing an LLC, even when they
-are on different sockets. With rps_feat_llc_affinity enabled, a flow
-whose consumer moves between isolated CPUs on different LLCs would skip
-ndo_rx_flow_steer() and record rflow->cpu = next_cpu. Wouldn't that
-flow then never be re-steered?
-
-A short-lived version of this looks possible during hotplug. A
-deactivating old_cpu (still online, sd_llc_id == -1) could be compared
-with an isolated or offline next_cpu. Nothing here checks whether
-next_cpu is online.
-
-[Severity: Low]
-Should Documentation/networking/scaling.rst be updated as well? Its
-Accelerated RFS section says the stack "automatically calls this
-function every time a flow entry in rps_dev_flow_table is updated".
-
-With rps_feat_llc_affinity enabled, set_rps_cpu() updates the entry
-(last_qtail and cpu) but skips ndo_rx_flow_steer() when old_cpu and
-next_cpu share an LLC. The hardware filter then keeps pointing at the
-old queue, and software RFS forwards packets to next_cpu.
-
-[ ... ]
-
-> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-> index 473c162736d69..6043ccb52cffa 100644
-> --- a/net/core/sysctl_net_core.c
-> +++ b/net/core/sysctl_net_core.c
-> @@ -560,6 +560,13 @@ static struct ctl_table net_core_table[] = {
->  		.mode		= 0644,
->  		.proc_handler	= rps_sock_flow_sysctl
->  	},
-> +	{
-> +		.procname	= "rps_feat_llc_affinity",
-> +		.data		= &rps_feat_llc_affinity.key,
-> +		.maxlen		= sizeof(rps_feat_llc_affinity.key),
-> +		.mode		= 0644,
-> +		.proc_handler	= proc_do_static_key
-> +	},
->  #endif
-
-[Severity: Low]
-Should this new sysctl get an entry in
-Documentation/admin-guide/sysctl/net.rst? high_order_alloc_disable,
-another proc_do_static_key knob in this table, is documented there.
-rps_sock_flow_entries is covered in Documentation/networking/scaling.rst.
-rps_feat_llc_affinity has no entry anywhere under Documentation/.
-
-The name also suggests it affects plain RPS. In fact it only takes
-effect on the aRFS path, when skb_rx_queue_recorded(), dev->rx_cpu_rmap
-and NETIF_F_NTUPLE are all set. Could the documentation say this, and
-also give the default (off) and the accepted values (0/1)?
-
-[Severity: Low]
-This entry and the rps_feat_llc_affinity key are built under
-CONFIG_RPS. The key's only reader is in set_rps_cpu(), inside
-#ifdef CONFIG_RFS_ACCEL, and RFS_ACCEL can be turned off on its own:
-
-    config RFS_ACCEL
-        bool "Hardware acceleration of RFS"
-        depends on RPS
-
-On a kernel with RPS=y and RFS_ACCEL=n, won't this sysctl accept writes
-and toggle a static key that nothing reads? The new old_cpu argument to
-set_rps_cpu() is also unused in that configuration.
-
-Would it make sense to put the key and this sysctl entry under
-CONFIG_RFS_ACCEL?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008133252.3750-1-nashuiliang%40gmail.com
