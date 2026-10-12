@@ -1,160 +1,198 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418573B8BB9;
-	Mon, 12 Oct 2026 19:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E9B3D8127;
+	Mon, 12 Oct 2026 19:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791833716; cv=none; b=hZXzsejW3/bGgOyimZvxCYEicRvpSAr1xFKbZbmBePpCvX72rJPk99pVdJO/m4FITFqUeFZlpJFb2EnJogpY+cg++LMRNGcR2+ce8aRtCO9e/QDeFzhG6nyscLWa3rVJCxbUeaQjVP05eTBjE3mYxp964+f5MOjErM/agGPzKTA=
+	t=1791833750; cv=none; b=HwEC286YOIG4Etk9x5XSrwK53nnXwCAdWkgVvJdxkAuOqW0dxe4rkq76hV0T8SkaRfsFGwklw0bgcAkeas1eopYqMFPq0CjMq8IVqQ72CMvPYcDb/0blnGE+OPmVl45BZfscL6SI8OJzadQw9qs1nk8K9Hqg/5CPqWouAsxwx0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791833716; c=relaxed/simple;
-	bh=89/NnPsfwuCkv8ZB6AdQ4JRQdoqo21JdqqusKN4QNPo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iqLEo3Ec/Jx2RSOtQl2sTNCfj4z0G2JIIwKE/8uzqxaPEmJ2sMaiWa0zTW5qBCKkOEmKcu0QPeWZL/GXNYZQ2z1RuemMIOXWqMlEf+esyk6zIbJ2VXVqnnqqmzWyWRgvSv1DwvtxTOC8euQI8Q6YVUSQElG2ej9OF7yJGnQZ5Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cY6jEMhN; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1791833750; c=relaxed/simple;
+	bh=R8q/CVxg39d4TdckOQsEKL3d35bhQoZkiqJfYJn/BUU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ls1IDfjvQeaWClbcEEtk+bhev2AX8ORPanXV3d90i0yZHYGNMGs5tzsyUfsJgN/I7J/P/ycZNelQPzvX2UT/mQMIRHEKEEe4GTpcT498AfONMY8kVuI3eKy6i1Jdn+V1ND72LsE8V0AbpX8Lzg+rZx4FJtUU/FyEgpF3CW8pXtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDPEdGXe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cY6jEMhN"
-Received: by linux.microsoft.com (Postfix, from userid 1216)
-	id 4334B20B7166; Mon, 12 Oct 2026 12:35:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4334B20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1791833712;
-	bh=tJkueSXegGJXKDCj/TsWJrVg8sccm8K33NEo8WI4FeY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cY6jEMhNTknS+40Ilj4ehtKrii/6wZISBW8JvpoDin5txzeG/0I1etLEmxalUEs5M
-	 NvNVAFUnFtLqYsFnpxlS/2QaPi+DCnEV7YBpjgmA7tMctbqkMYRjFdwq84V6/gVvxy
-	 RF3uonJ8OTELKxiCw4DbH1kwD4dP/gWhCrmFoV7E=
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-To: netdev@vger.kernel.org
-Cc: Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Subject: [PATCH net-next v2] net: mana: add BQL support
-Date: Mon, 12 Oct 2026 15:33:25 -0400
-Message-ID: <20261012193325.4071665-1-hamzamahfooz@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDPEdGXe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A5B1F0089B;
+	Mon, 12 Oct 2026 19:35:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791833749;
+	bh=DMKUIq2evMqbV9iZZVZrgW3vUtUC3TC5DJ5ooCvuKew=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RDPEdGXeei8e7Azd26bOsJ2oUy+7x3jjeWxt+KQYGWn50Q6CxGnSmhPauR7UuBv5h
+	 kzrPs3FA/0MSVBUun25XjPgG29jUjNZhK3nw2PHbop6V4Vjt4K6ljIMEjguYyh8CFa
+	 u3F/MeKcOnbK3u6JW3Pg24JgRS3l8KE0XcJt77HGvWf5l+oOgrg0Qn25N5WLgP7v1G
+	 fxi9gN95EOoefQ4Ft99HnIvrb0A+r9DCJQI8CBUXkrXvxCkf9RDam3pGmnGJxDMX3L
+	 fhWkdZlIa92vTnLPS0pKeOjRZVOk/HCrUwK7cric+t5GF+nE9nIBinsRX7xwvnG901
+	 T3NQnrLTyFD3w==
+Subject:
+ Re: [PATCH net v4] net: phy: qca83xx: read resolved QCA8337 link status
+From: netdev-bot+sashiko@kernel.org
+To: yongzhao.derek@gmail.com
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Mon, 12 Oct 2026 19:35:48 +0000
+Message-ID: <179183374827.434549.12054936309141943394@kernel.org>
+In-Reply-To: <20261008193515.14880-1-yongzhao.derek@gmail.com>
+References: <20261008193515.14880-1-yongzhao.derek@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-MANA doesn't support byte queue limits, so each TX queue can hold 256
-WQEs by default, and up to 16384, of up to 64 KB TSO packets, before the
-qdisc layer sees any backpressure. This adds latency to all the flows
-sharing a queue, and defeats AQM qdiscs such as fq_codel, which rely on
-BQL to keep the driver queues short.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-Report the bytes queued and completed to BQL. XDP_TX and XDP_REDIRECT
-packets go through the same SQs, so they are accounted too. BQL doesn't
-drop or delay them, since the XDP paths send even when the queue is
-stopped, it only holds back the stack's packets. For the packets sent on
-a stopped queue, only count the bytes: stopping the queue again would
-refresh its trans_start, so XDP traffic would keep the TX watchdog from
-firing.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Reset the BQL state when destroying the queues, once their NAPI is
-disabled, since the SKBs still pending after a drain timeout are freed
-without being completed.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Lost TX completions can now stop a queue sooner: it also stops when the
-bytes in flight exceed the BQL limit, not only when the SQ is full, and
-the limit may never grow enough to cover the lost bytes. The TX watchdog
-covers the queues stopped by BQL, and its handler resets the queues
-along with their BQL state.
+- [Medium] The fix covers only the QCA8337 entry of qca83xx_driver[] in
+  drivers/net/phy/qcom/qca83xx.c.
+- [Low] In qca8337_read_status() (drivers/net/phy/qcom/qca83xx.c), the
+  link is forced down when at803x_read_specific_status() leaves speed or…
 
-Tested on two Standard_D16ds_v6 Azure VMs in a proximity placement
-group, where the throughput is capped at 10.6 Gbps, with the DUT
-alternately booting net-next (c1c1f0a31712) with and without this patch
-applied.
+--
 
-The throughput stays at the cap with 1, 8 and 64 TCP flows, and the idle
-TCP_RR latency doesn't change (p50 of 47 us with vs. without the patch).
-With 16 senders of 64-byte UDP packets, the DUT sends 3.7 to 4.0 Mpps
-without the patch and 3.7 to 4.1 Mpps with it. With bulk TCP flows
-sharing the queues, the netperf TCP_RR latency drops (medians of 6
-runs):
+net: phy: qca83xx: read resolved QCA8337 link status
 
-  16 queues, 64 flows: p50 4649 -> 2182 us, p99 5621 -> 2677 us
-  1 queue, 8 flows:    p50 2554 ->  418 us, p99 2723 ->  624 us
+This adds a read_status callback for the QCA8337 internal PHY. It wraps
+genphy_read_status() and, when an autonegotiated link comes up, replaces
+speed and duplex with the values from at803x_read_specific_status(). It
+also reports the link as down until the PHY-specific status says it is
+resolved.
 
-The standing queue moves from the SQs to fq_codel, which now drops
-packets: about 2500 qdisc drops and 88K TCP retransmissions per 48 s run
-with 64 flows, against at most 29 retransmissions before. The
-retransmissions are about 0.2% of the segments sent. The TCP_RR flows
-lose no packets, and the packets of the bulk flows are dropped before
-they reach the wire, so the goodput changes by less than 0.01%.
+> diff --git a/drivers/net/phy/qcom/qca83xx.c b/drivers/net/phy/qcom/qca83xx.c
+> index bc70ed8efd86a..be00bc7cda0b9 100644
+> --- a/drivers/net/phy/qcom/qca83xx.c
+> +++ b/drivers/net/phy/qcom/qca83xx.c
+> @@ -92,6 +92,58 @@ static int qca83xx_probe(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> +static int qca8337_read_status(struct phy_device *phydev)
+> +{
 
-Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
----
-v2: Only count the bytes of the packets sent on a stopped queue, so that
-    XDP traffic doesn't keep the TX watchdog from firing on a queue
-    stopped by BQL. (Sashiko)
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 21 ++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+[ ... ]
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 489558176a5d..7f081c2d16d0 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -543,6 +543,16 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	err = NETDEV_TX_OK;
- 	atomic_inc(&txq->pending_sends);
- 
-+	/* Account the skb in BQL before the doorbell lets the hardware
-+	 * complete it. The XDP paths send even when the queue is stopped,
-+	 * only count the bytes then, since stopping the queue again would
-+	 * refresh its trans_start and keep the TX watchdog from firing.
-+	 */
-+	if (netif_xmit_stopped(net_txq))
-+		__netdev_tx_sent_queue(net_txq, len, true);
-+	else
-+		netdev_tx_sent_queue(net_txq, len);
-+
- 	mana_gd_wq_ring_doorbell(gd->gdma_context, gdma_sq);
- 
- 	/* skb may be freed after mana_gd_post_work_request. Do not use it. */
-@@ -2038,10 +2048,12 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
- 	gdma_wq = txq->gdma_sq;
- 	avail_space = mana_gd_wq_avail_space(gdma_wq);
- 
-+	net_txq = txq->net_txq;
-+	netdev_tx_completed_queue(net_txq, pkt_transmitted, tx_bytes);
-+
- 	/* Ensure tail updated before checking q stop */
- 	smp_mb();
- 
--	net_txq = txq->net_txq;
- 	txq_stopped = netif_tx_queue_stopped(net_txq);
- 
- 	/* Ensure checking txq_stopped before apc->port_is_up. */
-@@ -2694,6 +2706,13 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 			apc->tx_qp[i]->txq.napi_initialized = false;
- 		}
- 
-+		/* Forget the SKBs freed without being completed after a drain
-+		 * timeout, now that NAPI can't complete any. Doing it here also
-+		 * covers the queues that a lower channel count won't recreate,
-+		 * which could otherwise stay stopped.
-+		 */
-+		netdev_tx_reset_queue(apc->tx_qp[i]->txq.net_txq);
-+
- 		if (apc->tx_qp[i]->tx_object != INVALID_MANA_HANDLE)
- 			mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i]->tx_object);
- 
+> +	if (phydev->autoneg == AUTONEG_ENABLE && phydev->autoneg_complete &&
+> +	    phydev->link) {
+> +		phydev->speed = SPEED_UNKNOWN;
+> +		phydev->duplex = DUPLEX_UNKNOWN;
+> +		phydev->pause = false;
+> +		phydev->asym_pause = false;
+> +
+> +		ret = at803x_read_specific_status(phydev, ss_mask);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Report the link down until speed and duplex are resolved,
+> +		 * so that the next poll reads them again.
+> +		 */
+> +		if (phydev->speed == SPEED_UNKNOWN ||
+> +		    phydev->duplex == DUPLEX_UNKNOWN) {
+> +			phydev->link = 0;
+> +			phydev->mdix = ETH_TP_MDI_INVALID;
+
+[Severity: Low]
+Should more of the link-up state be cleared here?
+
+By the time qca8337_read_status() forces link to 0, genphy_read_status()
+has already run with link=1 and autoneg_complete=1. That means:
+
+  genphy_read_master_slave() has set master_slave_state to MASTER or SLAVE
+  genphy_read_lpa() has filled lp_advertising
+
+There is also the case where the 2-bit speed field holds the reserved
+value 3. There, at803x_read_specific_status() leaves speed as
+SPEED_UNKNOWN but still sets duplex to DUPLEX_FULL or DUPLEX_HALF.
+
+Only link and mdix are reset. Until the next poll, could ethtool report
+"Link detected: no" together with a master/slave state, a link partner
+advertisement and possibly a concrete duplex?
+
+The commit message names marvell_read_status_page_an() as the model. Its
+caller, marvell_read_status_page(), clears lp_advertising first:
+
+drivers/net/phy/marvell.c:marvell_read_status_page() {
+    ...
+	linkmode_zero(phydev->lp_advertising);
+	phydev->pause = 0;
+	phydev->asym_pause = 0;
+	phydev->speed = SPEED_UNKNOWN;
+	phydev->duplex = DUPLEX_UNKNOWN;
+    ...
+}
+
+The PHY_HALTED path in _phy_state_machine() also resets
+master_slave_state, mdix and lp_advertising together when it forces the
+link down.
+
+> +		} else {
+> +			phy_resolve_aneg_pause(phydev);
+> +		}
+> +	}
+
+[ ... ]
+
+> @@ -220,6 +272,7 @@ static struct phy_driver qca83xx_driver[] = {
+>  	.flags			= PHY_IS_INTERNAL,
+>  	.config_init		= qca83xx_config_init,
+>  	.soft_reset		= genphy_soft_reset,
+> +	.read_status		= qca8337_read_status,
+
+[Severity: Medium]
+Does the QCA8327 internal PHY need the same fix?
+
+In the same qca83xx_driver[] table, the QCA8327-A and QCA8327-B entries
+still have no .read_status, so phylib uses genphy_read_status() for them.
+
+If those PHYs can also do a SmartSpeed downshift, the same path would
+report 1000 Mbit/s while the PHY runs at 100 Mbit/s:
+
+genphy_read_status()
+  phy_resolve_aneg_linkmode()     picks 1000
+phylink
+  qca8k_phylink_mac_link_up()
+    case SPEED_1000:
+        reg = QCA8K_PORT_STATUS_SPEED_1000;
+
+The Fixes: commit (the qca8k switch to phylink) covers every qca8k
+switch, not only QCA8337.
+
+On QCA8327 the wrong speed has a second user.
+qca83xx_link_change_notify() only applies the 100M DAC amplitude
+adjustment when phydev->speed is SPEED_100:
+
+drivers/net/phy/qcom/qca83xx.c:qca83xx_link_change_notify() {
+	if (phydev->state == PHY_RUNNING) {
+		if (phydev->speed == SPEED_100)
+			at803x_debug_reg_mask(phydev, AT803X_DEBUG_ANALOG_TEST_CTRL,
+					      QCA8327_DEBUG_MANU_CTRL_EN,
+					      QCA8327_DEBUG_MANU_CTRL_EN);
+    ...
+}
+
+If the link is misreported as 1000, would that adjustment be skipped?
+
+The commit message does not mention QCA8327. Could it say whether these
+PHYs can downshift, or why they were left out?
+
+>  	.get_sset_count		= qca83xx_get_sset_count,
+>  	.get_strings		= qca83xx_get_strings,
+>  	.get_stats		= qca83xx_get_stats,
+
 -- 
-2.56.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008193515.14880-1-yongzhao.derek%40gmail.com
