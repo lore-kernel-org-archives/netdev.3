@@ -1,64 +1,170 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D4F371D1D;
-	Mon, 12 Oct 2026 13:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7483376A1E;
+	Mon, 12 Oct 2026 13:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791811844; cv=none; b=eBrYAjxFwXfAhSvEIRC0Bhh1F8H9XluR/dctxFe7HClGTZUxnipJ8tNZXHdGn0pw+znajFpkIQAYfEvVSSv0GTinGf7AiAT9i/DCrPYbn6TMvhnSDAFz1VNZq6t2FgnP8dbyGW3Gn4GcR1CX3na3uEXrZaBwmrINsvTEXGdBO+s=
+	t=1791812077; cv=none; b=gAjsu8RTa/eaXYHoPLl6rjNjM/sDqaRVPk84ZCqZCw1zptDBIv3AiFoWHVWMGimKKdFtP69fV2YoFaej8sYYv/DxOFVLDH8EG8fj3JrWKGIruO6u6saIxY42coNqirIDonA1ciYs+4VHshQIZV1y/H9ezMBlou9y51naFNDBRhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791811844; c=relaxed/simple;
-	bh=QV7drw0uq/lEPN9PsDrWoSjvlDZyx4+3SeJGInytyzc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uLHVLZI74YDWkKHAkyCRBrM3RtpHCsbes1AzpTCaaim5cOSWCkQq3ptIU/DUIpKJuP11jpZrV6wptwNoaYq068GZ9UgVDZnyQbYxg1NGU4PQ9Mo7ImM5gvOm2x3tr1K/uLLGZ+HpSopsxPMJfq4zz0ZswDKtGBO32Q7Do3RjXTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2d75lBRE; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791812077; c=relaxed/simple;
+	bh=fJGw0cpjBTi5/7bzqDmqo6fj6jl7Cb/zKCJc7n6Iuf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FB/LnBMNcW4qvKzBd1rVemcPyHoFqQILhsyqNk0TfiJP9c9gsVKMQOe9n72MhF6wf/yporMeccKuoKqu1diJpWDzRBwN7GRQyuXXIHxZVfdv/2N+cSkSTGSMX23RVrVzGxgSNvI8Qg563nN4orb7dHHpXeALLeK9re3pHtUhHlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pb2qwS6e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2d75lBRE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DuZiGly6MG//A57XdYfMe+CWCXBXfmwcJvA+lJ6Y3zY=; b=2d75lBRE+dNphuw/Jhcwgoo2Ww
-	e4wvtn04bBClXiJaeoxCLrf2sZvV8E0QWfvrABR0JfUfvGyLg6Vh+MXeUk7WLgwl5F5L0vLRHVmFx
-	6d43mkH3XEiuCq6CQEU5nhB7fvwk4wP+2OUr/j/XZoIttEu4O+CgAZuatGN/X20UG2eQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xGG6n-00AKVT-Hy; Mon, 12 Oct 2026 15:30:29 +0200
-Date: Mon, 12 Oct 2026 15:30:29 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dsa: motorcomm: Do not do the redundant
- MIB clear
-Message-ID: <c920abea-8334-4d27-98cb-4fdfbc309e04@lunn.ch>
-References: <20261010231015.2600207-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pb2qwS6e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2831F0089C;
+	Mon, 12 Oct 2026 13:34:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791812076;
+	bh=BJoKG/6UOVhJtQlfQRanKoyfmf6h8PW7vA7hrTi9Uzs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Pb2qwS6eWHO6MPz6e6Cjv4IRYSsPioj8ppCtOqUDgtF5oADW4amg4Rm2d7JZotQw+
+	 GFRMFOZog5JGPM/vi3cITAw2xXHYkWcOPUPNdygjRLcToiGgwezrK2esxqasNlm41c
+	 1la4YDWxCXqPasGkTAzsjlnXTL7QG0XFmaUTZCWQM5YHTijpXSoU7Muk8T1pOm9B7l
+	 ZZHzIWI0J0W7qyl17QBn7c43TRFfYVV3Wlb3cuiMiz0WsECUXjk40joq6b92W/zoFC
+	 2Ha28M5aDVhTHoRDPbawlXzi8d0o6txkkqde30XTk7KbDZoIMKa3RK1ttNOfJtAfJL
+	 esL/Yl33fruSQ==
+Message-ID: <01349eb9-8833-4cf4-bb42-b1d5a608c83d@kernel.org>
+Date: Mon, 12 Oct 2026 15:34:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261010231015.2600207-1-mmyangfl@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/1] mm: page_frag: account page_frag pages in vmstat
+ and meminfo
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Yifan Li <liyifan21@xiaomi.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, mhocko@suse.com, netdev@vger.kernel.org
+References: <20261010025941.1253-1-liyifan21@xiaomi.com>
+ <40fc5d04-2a20-42c4-9557-7277bc981172@kernel.org>
+ <asy9PzW41-Wi0JXC@pedro-suse.tail5790ac.ts.net>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <asy9PzW41-Wi0JXC@pedro-suse.tail5790ac.ts.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Oct 11, 2026 at 07:10:12AM +0800, David Yang wrote:
-> The MIB clear in yt921x_chip_setup() is redundant: it runs right after
-> hard reset of the hardware, which already zeroes MIB counters.
+On 10/12/26 13:27, Pedro Falcato wrote:
+> On Mon, Oct 12, 2026 at 12:36:35PM +0200, David Hildenbrand (Arm) wrote:
+>> On 10/10/26 04:59, Yifan Li wrote:
+>>> This is an RFC.
+>>>
+>>> Pages held by the page_frag cache are not accounted by any memory
+>>> statistics counter, so on systems that derive "LostRAM" as MemTotal
+>>> minus the sum of accounted memory they inflate LostRAM and lead to
+>>
+>> Sorry, what exactly is subtracted from MemTotal?
+>>
+>> How would any other kernel allocations be treated?
+> 
+> I suppose those would mostly show up as Slab:. But yes, I agree the metric
+> is a little dubious.
+> 
+>>
+>>> misleading "leak" conclusions, even though the memory is legitimately
+>>> used by the network path.
+>>
+>> Assuming "leak" in such scenarios is questionable, sorry.
+>>
+>> Aren't most page_frag allocations short-lived? Or is this more about the
+>> page_frag cache?
+> 
+> page_frag allocations are kinda arbitrarily lived. If you queue (send) some
+> data to a socket to send over the wire, they are more likely than not
+> short-lived, unless the protocol/qdisc says no (for example, you're hitting
+> the TCP congestion window and as such can't send more data over the wire).
+> If you send it over loopback/veth you get arbitrarily livetimes as sockets
+> can keep the page frag alive if the application never reads them.
+> 
+> On the regular RX side you can also (AIUI) keep page frags randomly pinned
+> as long as you don't read them.
+> 
+> (note that all of these allocations are bounded by each protocol's memory
+> limits)
+> 
+> 
+> In any case, I remember an off-list discussion with mhocko regarding a
+> downstream bug, where I suggested adding a counter for this, and he said
+> networking is somewhat sensitive to extra accounting on the fast paths.
+> Added netdev in case they have comments.
 
-Please reword the commit message to address the AI comment, but the
-change itself makes sense.
+That makes sense.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>> Certainly no page flag.
+>>
+>> A page type might be the right choice. I don't think Willy planned for that [1],
+>> IIUC, the bump allocator was something different, but another page type
+>> shouldn't hurt at this point.
+> 
+> A page type might not work, these pages _may_ need to be mappable. I know
+> that was an issue for page_pool (Yet Another Networking Page Allocator) + TCP
+> zero-copy RX using mmap.
 
-    Andrew
+I'll have to trust on networking experts, I was reading:
 
----
-pw-bot: cr
+	 (requires that page_frag pages are never
+     mapped into userspace; true for the current RX paths).
+
+> 
+> Of course, if you have a page frag under PAGE_SIZE or misaligned then you can't map that.
+
+It would be best if we could disallow that entirely :)
+
+(of if required, map them through a PFNMAP or similar that does not care about
+page metadata ... but the interactions with GUP are tricky)
+
+-- 
+Cheers,
+
+David
