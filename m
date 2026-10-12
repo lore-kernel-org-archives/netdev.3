@@ -1,1085 +1,515 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013060.outbound.protection.outlook.com [40.107.159.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE144A387F
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791820385; cv=none; b=anz7CI6c9M9XUCbyk3MFYf+4pMUqQS2oj1/b5Ef4PqlTdH1bHLt3pLsmYRZtphHzCBwTeZeU2ega7I/p7/fXBGj9MdF78wa4Y/mL8wvh6D4qv/xdim7O9VcmggFNH53W0laNe68hMxUV8n+8msAZkgz0HDWX5nf+1IpcEUi2gYY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791820385; c=relaxed/simple;
-	bh=AQAuc/zSKiSJcv5IyPIVypN58rqY7ejB3uFQycxmjT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MnjbFBr8oH2Lul82G4zWJFZOFdg3rNyxf/J9+vb5JRdBdElEsF1am2kbI+nhJ02XDwbMARW9wmmxtIFKFQakirbky76rasouK729BiDCSr1HJM3zZeA88BcZ7BRf+4pzBjjBqVP2zwSb6QAnrWNuB9oMVJErBUkzXoAJW1Vqd0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BqJtAObX; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463724A8A39
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791820567; cv=fail; b=Xqri5BFG+ktxe8A3PdBuHpRNaesTRrkJ5kSPp8sQADMHt7/wsIDupJGqR3vHFmD6Mv+2pux02kboQLBt46Z3Wk+VGrbU+O15VS6w3wJ9s6aYWNTnNm7qidykGQmH8bZ6HaAtlTAdIyZGUE6MXBJyEpLOcVhV+zfAmEmM73biL7c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791820567; c=relaxed/simple;
+	bh=A1evB6yqikpHFZXYwNFwuSthR0EynmYaR/XtkKA3c/I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=QZek5IjN84CB2uHYQ5VONGt75JwPGCGeB4k551Ir9D5ODwTNay6lBElEm0lFvCbgMf/l05Ur9Ke5R/67ARoFBwsvPXtg5LRyCfZ4TEHK72VcrDJQT2JA2l4UNc73OYeU2X+9M9CWUufn5M19+0+wLLVGFLWRGRHBx9yBNySAWPo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=E+H//2zC; arc=fail smtp.client-ip=40.107.159.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BqJtAObX"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-33e6279a1d7so198164eec.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:53:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791820382; x=1792425182; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0y4XD29oo6SmskqHXUBJlGIyLLjbOFona57ZkfhzlxM=;
-        b=BqJtAObX5t8lYrweFfiIZ3UJ2/wBPMPZc0Nd3+Bvne2Cqllpx+k5Q7p80QxQvonTlh
-         ww4RO51MHvD4R+lPGRmWOEFIu34gziWeO8H9smCebnJIBmUWAHBiAbIDlDbsru6dJ82j
-         4/A0Nb51FiV6pcnhbkDhxkfBcZyR+GYQ5A9Ka7lrRseFMAbWb+cSl94a7AETf9aqmit4
-         2NugruQuXvsLS0iMftr/ATyRw9EVxaDXbNdQl9TVZqX+dWE+a+2skq2bAYTOmtTP19Wx
-         IW77RSn47ACBXucYmRKbHuXpVQdWllDOx0C56W0EazT4W0p5bjCwaV4KxC0Qg8rKx/H0
-         xerw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791820382; x=1792425182;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0y4XD29oo6SmskqHXUBJlGIyLLjbOFona57ZkfhzlxM=;
-        b=oh0W2q+TSddsp8H4HB0HoMLyOxm88FoOD+ucaJh5xcCxNWXZqIb+7DOfxr8RS4qEcZ
-         h0azMvQ90Ugrd7Riws1OS0kG5a6eg92OnKpFZaID2p/Vbi8AKYDza98yda8gdcDb/+B3
-         3e2xWK5xvcuUpYN5kWzqKmv69viI2ynYGPpQOPShZaNZG/HnX4zkMMcLPscBAs+n9mQA
-         qHnwe+XTlgJvw1bs7f2g1iOStXsvfHzZzc6sfkYSXC5zqpf2lWfHtwXsOdUg6aVi5eo0
-         p6OmwvqtkQSS8TPfHeYt+DGxdHoKh9sETuBtpCBVTbfAmS+q7vFOCMiD2FNM9apJrhEQ
-         ZPrQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwCIuFVi+UfwCmBwN1Cnx6ZHd6CDcPpQqAQxT4g5vwINDvQCtV9GeitQUBTytkqwRti6QppIaQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYItY6nwlvVeg+FJAQjI7G8TF2qzT0NN2M7E/uNIRgqsm+tvmF9W
-	5SxBw4Hdy71lu5392+ouC0feZ/rGJ7fElielHdr8R7zHePPini63104C
-X-Gm-Gg: AYBFou1tWbDmdDRUIsgxrE1WZteUXC8CyKwMSc2lvHfY2hr1bnQKIz3F+KPTAZS8uKi
-	VClPMpk2hzQzWpztgb6SeLhB3Km9iP/6voMW6hfl0FjY4G7NW5TRmqz8nex8VErvMpqUGgta/Cb
-	+Jc1/eJqJL1sgZWTBary6XaUte9NJmX2nMeMJftuhowxcgogovi+LzYwF9P3m7kJ4rZPx/KuDAf
-	XmeF4e1+wBXf/O/UjEO+SzhQewAWRshcCC/vCBAseKo9jfMpXBMq1ZZzieSPwBWB3DGvauhqmTw
-	2A1zKhYBzJ6RI65vhS5v/ymiKFuCShEhEVdm4nFCoufl93uH0TMy0ogZqOSqWA6cSkV0hFfpDdf
-	+xEhV25QOLJfqtJOeBnirtHr2wD0vfvJlDazjY/EsXzejOXLKtvESP4oqfJhSy+A+nWO7yJw3K7
-	FyVllFwkCroDAqsHW2Hk+zu/9nmoh341Oqpe6Puv94zq2tUWVsnF1u032PbuITLh5wjg38IDmnu
-	hRF/w6DDuYQW3ERBmtH6E736cBmjG91ylQhkDHU9pGHRacpCQ==
-X-Received: by 2002:a05:693c:87c7:20b0:351:516f:7576 with SMTP id 5a478bee46e88-3537e01e8a0mr14633910eec.10.1791820381861;
-        Mon, 12 Oct 2026 08:53:01 -0700 (PDT)
-Received: from obadmin-Precision-3680.atlascopco.group ([136.226.232.167])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3595e0858c6sm20873528eec.22.2026.10.12.08.52.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 08:53:01 -0700 (PDT)
-From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-To: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net] selftests/net: test network sysctl extremes
-Date: Mon, 12 Oct 2026 21:23:39 +0530
-Message-ID: <20261012155339.3799130-1-sahaj123.sc@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="E+H//2zC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=T9MYIm8NIPQnO4E30qC5FpK6XPrXg2j71ZCHPcG/Ra90zeZWUa5LjqbI3K9/dbKStiUJ4A81RUeZdzgWoXHmKM6QvFmkMytO671FRk5Yff3Mx2PTabaqZelP9jMQca9N+/rQAw2uqvBihkIa3JFH4gX1sE1FJfBM2tsXJVYXndfmZCu8Dbn/96G6KqZlqCu5gl1OrDDzbRW1FSbKIJqaDePHBtg5LijpAlsbwXNO+tPH4KuN5fMt7EsC0ZSBAzXFuM5xjg05w2okvHbb9WQGS8qDtN+Q8QjQsgH/uAf3hpEW8pBi6unh8GYHQYi1THCIDC+cY1+Ly97NmW4ROwv1CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JhbFb3qpPFGZDU+R7zglyqT0wwcJtyJAsIBPaeqCQ1w=;
+ b=M6LnqzCrpqV2Q5hPr4OEZ4SVwORM5fvEONZFAJvtiIpZme22O65LPkWlutkpekHWoNEPrvQn3eKq2J61T4Uxep352BO8p9nYjUwNPF8bi9jbO1kvzsjhawwS56c8ZzkSRvHIiRh49vTGHwdGwKXoxu9EASrTfew2CZ8dKEgvE4sR1+DLfhW8+7+lpJRNB1g8MZ4vhRYd14TvHcKzRAknLDi4tt+Ajosp/Uv9egGKS0YWX8Qxx5+pavnJpTzRde+/QFeZLkNVSpXgsdHOLniFXbIO/KUIvod3Gy2qaKTC74mdhsyv+j9iwiJg9tiYp0kxMoCVAvgXtviDp5vd3Wr69A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
+ dkim=pass header.d=est.tech; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JhbFb3qpPFGZDU+R7zglyqT0wwcJtyJAsIBPaeqCQ1w=;
+ b=E+H//2zCL9aknLaLGqv8nIjN+/CAZ8nRrUbdLPtwN4WmrxzQJqlF6h8xGObS5WHQqEuW20WJNJVpGTgFUGzH9sJ6OR324aO5mbDxDpqU11BiOIzQDBGdBsBDs0PN8CjxSJ+5bOJo9VmwiUetVCsFyk4CfyRaYtTIDNW5kkBEUDWgt/eTm+rqOATPt+UWdiaBf7iFsfMnSGl7Fd/nHXpUhFFrw1GuC36hOQuW7cjHzqwAUlqbyQA5WK+wDq/VKd+KLY/T2D0ChUckZZUSHJkKGcFDa57df9dPg3B3+K6K0IGaCKRmi1STPVPJZpY0jbgtu30wQvdLDY3WmVtF6XDQ9A==
+Received: from DB8P189MB1144.EURP189.PROD.OUTLOOK.COM (2603:10a6:10:167::9) by
+ AS8P189MB1256.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:288::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.496.23; Mon, 12 Oct 2026 15:56:01 +0000
+Received: from DB8P189MB1144.EURP189.PROD.OUTLOOK.COM
+ ([fe80::fc41:e57d:d1f6:46d4]) by DB8P189MB1144.EURP189.PROD.OUTLOOK.COM
+ ([fe80::fc41:e57d:d1f6:46d4%6]) with mapi id 15.21.0496.020; Mon, 12 Oct 2026
+ 15:56:01 +0000
+From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
+To: Joas Antonio dos Santos <joasantonio108@gmail.com>
+CC: "David S.Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"tipc-discussion@lists.sourceforge.net"
+	<tipc-discussion@lists.sourceforge.net>, Jon Maloy <jmaloy@redhat.com>
+Subject: RE: [PATCH net] tipc: raise the minimum bearer MTU to fit tunnel and
+ crypto overhead
+Thread-Topic: [PATCH net] tipc: raise the minimum bearer MTU to fit tunnel and
+ crypto overhead
+Thread-Index: AQHdV+0taEaIrQWkG0iveC+sgNCicLb5zrfw
+Date: Mon, 12 Oct 2026 15:56:01 +0000
+Message-ID:
+ <AM7P189MB11375A32648F33B53BA95A4AC69F2@AM7P189MB1137.EURP189.PROD.OUTLOOK.COM>
+References: <179155039490.29136.3966310214361645960@gmail.com>
+In-Reply-To: <179155039490.29136.3966310214361645960@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=est.tech;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB8P189MB1144:EE_|AS8P189MB1256:EE_
+x-ms-office365-filtering-correlation-id: 8716bdd2-4f9f-4761-e8e3-08df28795081
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|1800799024|10070799003|366016|376014|6133799003|18002099003|22082099003|10067099003|11063799006|261009223027099003|38070700021|56012099006;
+x-microsoft-antispam-message-info:
+ 3WMax2hkrms6ByfOZZAghzQDq/6hVfQe7txJzCxbGlNTx5bQu4c77l432+ptXT8q0b4COMpAblB+tnU7clYeKcupV8emAU9iDXn6emeYNdUMtj3Vjr5hKuDj6Ua1xd3iEUfPsdIW5jqERaXj2+KnyJGJTIEXtytoWv1vEvacD5Tq81aEwwzsmDaVkW7Q2/Jw8xyFwcvX1FDExtDBbizOKluI9vV2UpRvlsO4iCEIOyRF0Hf28DLzsqZFWyfEaVafsdXLH53bz2gp8Z2PM8ZdiGwHlhLJrKpf/u7LecgLmnTAbMaFQaJaYxSePLYk+j/BXW4Rw5vLBaHF1M5Kkhzm7EYofQFNC+YGWwgDzwJ7lV2RGsasps7WNXGwDPOTfYca8ZG41bAjOOhCj836q9fr2KSKrPPjSkLLexDJlyTae4XQtNoGclUvwHUJGVmt2iCLkUuW8wHGrGB9XKJuQaJ5JfEv8mMXabgY/B7vdq3icxiJFKXVE222MPsqufnJJ1zCcXvjsJ9PI6mt46mJ68bwpsDKv6Qw41nRKhQGsuZDVwqj/0uzrZSx41znElsrEk8fGJyR7Rw3pXuT71ltJjf9F0kM+Gt4k/utCKiS4MFZAH4eVvrXXaYSNitEfyUYHTl/yacwxIV714TKAiEF0Nyi5A7NQ6Czg4iiLolO7nI+OWFlwtGsjxUbJ1WE/1wDG4FWMG8igATWxB57eN1KALZaD1y/dJ3f4ScmWAA6RJ3O59w=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8P189MB1144.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(10070799003)(366016)(376014)(6133799003)(18002099003)(22082099003)(10067099003)(11063799006)(261009223027099003)(38070700021)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?O3tsTA/vXrJCTitm7nfX2x0UI1v4KwpQoXbHhmrLAVRh6iKBj7hWYX3oAO?=
+ =?iso-8859-1?Q?IV/KlGueQJiuzPA2kNp4y2Kft1Xr+FmrGZREpRK9kHVUztNl+LJeuS0akA?=
+ =?iso-8859-1?Q?iU7rH+hwNPxVge9V6zlbNL7VI27j+Llxpawnl16soXnz9qSxrpGVdADYx/?=
+ =?iso-8859-1?Q?zvMfj3rhnA1lUWDBDTaCmci3xrfhSrRf/RvE4Fs0BbToem7p0p4uVKI30D?=
+ =?iso-8859-1?Q?TbAXxp7VVehlKr+jt2dsfiwCjxYa0zqZ+XK4H5CcbSax3P/LxVmI5bzCux?=
+ =?iso-8859-1?Q?0kQGZi3Ja13Mu9KE/ctfAY0sup3/f/W6iWcNzyM1OZyXyfZSfYB47Hj7zP?=
+ =?iso-8859-1?Q?tWag3/y4SylDE23pSAznmkolpPd4KWTgTHdIkg84Jk4JIbJcxzaBHtpDcH?=
+ =?iso-8859-1?Q?jyIf/4s/lMxBX+2huzbgiaa1cORecfmV9Qr2Vu93L0iCWMSBsVVmxuHkVa?=
+ =?iso-8859-1?Q?SW4XFmm3wVMx4REP9FdTvg1b5VNjCXME4Q3cI9jmBJM8UpP5J6jkZCft/o?=
+ =?iso-8859-1?Q?HmrKYg0Xj//R5b/AyFW7psGqR+Q+K/mleyaBC+h0pUv7m2CoCo3Mk4EGwz?=
+ =?iso-8859-1?Q?HRfleLneUVS8fngAC9APrvGNOYLnp3N9jxrD/CFuWs5Jq4KcYHDsJ8RRL6?=
+ =?iso-8859-1?Q?a74fHN3zdXI6ToTO/ShlpzeZPeDSyUxgCLv9xu4y0g1/5jkAkzanYCaiBQ?=
+ =?iso-8859-1?Q?Mz+9HhMzD/pQOruLrLOxvHxsqtq8G79uY2UMkKySAZlId4p6TFPJYsPlnn?=
+ =?iso-8859-1?Q?LbXcS++UeoX9fieRD0vRKGXdMP2H02nFiB4nHoyZTaONlgGWVr9W9Ahw8c?=
+ =?iso-8859-1?Q?5NwGBYHz+dOHWVSnzJNC0lcHbbYWpA6Y8wYr0Ch9EjYurLrlDu1mFZ8ZJE?=
+ =?iso-8859-1?Q?RW/VME+BzR/W8c+xMjdx6j2sMtfPFC1fX+7YLdxbfEWry+kYc5tQ4ehKCj?=
+ =?iso-8859-1?Q?Mfn6WdTP6d/BwCAhdDe8RXow6qLaoYBlvUgc1ZZ3lf+K8+LNZ1q+TmGh/E?=
+ =?iso-8859-1?Q?ngGEYuOswgCHCtkGPYMI7prke/EIwy1segfizY5YeM2LsZpCu6SIQQkSDQ?=
+ =?iso-8859-1?Q?l/wfEqKRlSOU9J+lsVyDFYkdjKTxzu0iZRMHFqGgkrK5xDsJClwJuaGwpj?=
+ =?iso-8859-1?Q?18hxOEPXuxllcPVktGBq5hfKNWVxjrUdzsy69s8vLLBK4FVmpq4xYk2z/v?=
+ =?iso-8859-1?Q?0To01mj9N7PZZ8Aaiihxm4BI0QcET+AhW/FDrNCouQLsF9g9SLq5JuCIRa?=
+ =?iso-8859-1?Q?t3QSszwUHQaDN/3J4EcKvB2JFYn1uFfFT9perwNVEn7x2NTSewwBozm+R5?=
+ =?iso-8859-1?Q?fpJUwqgAE5Fo/WTAaqNNrLS1lAu9Httm8zsyWCS4VRX8EWnCPfKGYCsCUh?=
+ =?iso-8859-1?Q?cc+ryZdK/SMLNLh+UlMUTSlwWm0N/8g/Vf9ol5kgmO9MC5fjCZe4QyFCZz?=
+ =?iso-8859-1?Q?sGXBgFmOBPo0ToTDGMdJc1ofHjd2Lts0J7Cr34YkiiSIVPU4KffN9BjrQf?=
+ =?iso-8859-1?Q?YSseoQ0NjuSE1WHzBtJy/H7Twsihy1EDJFAaCvX1tfYSEvD1beBDKbxW5M?=
+ =?iso-8859-1?Q?n3w3ab7gcOCwXOOgu5I0cITF1XgfIvSyXu1cMlYzM5hamZEvKrD6qKqSgc?=
+ =?iso-8859-1?Q?AVCOkaZ3GWjcGtKBhKUqI2cS50MPWVRKCP0WpcFn17BvWruPqF6HMQFVim?=
+ =?iso-8859-1?Q?FnEEiHTL2DapBs93scqNgunnL+h+4O4mi15mj4tEOcawsOERXVnf/PLQLI?=
+ =?iso-8859-1?Q?q8WMdLeIQjNahSS/R4AJMvYGz5HycGP15LM+ReuDV5sgtkjoxFrKsoNp/6?=
+ =?iso-8859-1?Q?uAE64gep98dQJf20TxzpNsNKPeP2CqcDfLD2y1XrGh0s3inXV+wObrtc5q?=
+ =?iso-8859-1?Q?GW?=
+x-ms-exchange-antispam-messagedata-1: VfigLx+3VcwLPQ==
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: est.tech
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB8P189MB1144.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8716bdd2-4f9f-4761-e8e3-08df28795081
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Oct 2026 15:56:01.6163
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: hU1BxTB/AJIWOeR0Cp+1cTssRN5X1pZLg6etlKt7tMjo4hvb0f//ZpKYCp8JIirfaVPdo+7ZxN8jE+Gf0DxDMQ7Y9ahHsV8ZjKnu1oJFBmo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P189MB1256
 
-Probe accepted bounds for writable network sysctls and exercise
-TCP and UDP loopback traffic at each bound. Test representative
-per-network-namespace TCP/UDP settings by default, with options to
-select from the set or scan all writable numeric network sysctls
-for diagnostics.
-
-Tested: Focused selftest build and CLI checks. QEMU on rebuilt Linux
-7.3.0-rc7 passed default mode (4 sysctls/8 values, TCP 16/16, UDP
-16/16), selected tcp_rmem mode (TCP and UDP 6/6), and --all mode
-(497 sysctls/503 values, TCP 1005/1006, UDP 1006/1006). The exhaustive
-run had one TCP EAGAIN at tcp_notsent_lowat[0]=0. On an AArch64 Linux
-6.12.57 board, default mode (4 sysctls/8 values) met aggregate criteria
-(TCP 15/16, UDP 16/16), with one TCP timeout at tcp_rmem[1]=1. No
-kernel splats were found.
-
-Link: https://lore.kernel.org/r/20261007054508.1059927-1-sahaj123.sc@gmail.com
-Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
----
- tools/testing/selftests/net/.gitignore        |   1 +
- tools/testing/selftests/net/Makefile          |   1 +
- tools/testing/selftests/net/sysctl_net_test.c | 947 ++++++++++++++++++
- 3 files changed, 949 insertions(+)
- create mode 100644 tools/testing/selftests/net/sysctl_net_test.c
-
-diff --git a/tools/testing/selftests/net/.gitignore b/tools/testing/selftests/net/.gitignore
-index dacd36ed8455..842cb359bbf6 100644
---- a/tools/testing/selftests/net/.gitignore
-+++ b/tools/testing/selftests/net/.gitignore
-@@ -43,6 +43,7 @@ so_incoming_cpu
- so_netns_cookie
- so_rcv_listener
- stress_reuseport_listen
-+sysctl_net_test
- tap
- tcp_fastopen_backup_key
- tcp_inq
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index 590b33e16d9f..8926fcfef6e9 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -196,6 +196,7 @@ TEST_GEN_PROGS := \
- 	sk_connect_zero_addr \
- 	sk_so_peek_off \
- 	so_incoming_cpu \
-+	sysctl_net_test \
- 	tap \
- 	tcp_port_share \
- 	tls \
-diff --git a/tools/testing/selftests/net/sysctl_net_test.c b/tools/testing/selftests/net/sysctl_net_test.c
-new file mode 100644
-index 000000000000..cb2f0570d337
---- /dev/null
-+++ b/tools/testing/selftests/net/sysctl_net_test.c
-@@ -0,0 +1,947 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define _GNU_SOURCE
-+#include <arpa/inet.h>
-+#include <ctype.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <ftw.h>
-+#include <getopt.h>
-+#include <limits.h>
-+#include <net/if.h>
-+#include <netinet/in.h>
-+#include <poll.h>
-+#include <sched.h>
-+#include <stdarg.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/socket.h>
-+#include <sys/stat.h>
-+#include <sys/time.h>
-+#include <unistd.h>
-+
-+#include "kselftest.h"
-+
-+#define SYSCTL_ROOT		"/proc/sys/net"
-+#define SYSCTL_TEXT_SIZE	4096
-+#define SYSCTL_MAX_VALUES	256
-+#define KMSG_TEXT_SIZE		4096
-+#define FIRST_TEST_PORT		20000
-+#define LAST_TEST_PORT		59998
-+
-+struct sysctl_number {
-+	uint64_t magnitude;
-+	bool negative;
-+};
-+
-+struct sysctl_values {
-+	struct sysctl_number value[SYSCTL_MAX_VALUES];
-+	size_t count;
-+};
-+
-+static int kmsg_fd = -1;
-+static unsigned int next_tcp_port = FIRST_TEST_PORT;
-+static unsigned int next_udp_port = FIRST_TEST_PORT;
-+static size_t tested_files;
-+static size_t skipped_files;
-+static size_t tested_values;
-+static size_t tcp_attempts;
-+static size_t tcp_successes;
-+static size_t udp_attempts;
-+static size_t udp_successes;
-+static char failure[256];
-+static char tcp_delivery_failure[256];
-+static char udp_delivery_failure[256];
-+
-+static const char * const representative_sysctls[] = {
-+	"ipv4/tcp_rmem",
-+	"ipv4/tcp_wmem",
-+	"ipv4/udp_rmem_min",
-+	"ipv4/udp_wmem_min",
-+};
-+
-+static bool selected_sysctls[ARRAY_SIZE(representative_sysctls)];
-+
-+static void set_failure(const char *fmt, ...)
-+{
-+	va_list args;
-+
-+	if (failure[0])
-+		return;
-+
-+	va_start(args, fmt);
-+	vsnprintf(failure, sizeof(failure), fmt, args);
-+	va_end(args);
-+}
-+
-+static struct sysctl_number number_from_signed(int64_t value)
-+{
-+	struct sysctl_number number = {};
-+
-+	if (value < 0) {
-+		number.negative = true;
-+		number.magnitude = (uint64_t)(-(value + 1)) + 1;
-+	} else {
-+		number.magnitude = value;
-+	}
-+	return number;
-+}
-+
-+static struct sysctl_number number_from_unsigned(uint64_t value)
-+{
-+	struct sysctl_number number = {
-+		.magnitude = value,
-+	};
-+
-+	return number;
-+}
-+
-+static int64_t number_to_signed(struct sysctl_number number)
-+{
-+	if (!number.negative)
-+		return (int64_t)number.magnitude;
-+	if (number.magnitude == (UINT64_C(1) << 63))
-+		return INT64_MIN;
-+	return -(int64_t)number.magnitude;
-+}
-+
-+static bool numbers_equal(struct sysctl_number a, struct sysctl_number b)
-+{
-+	return a.magnitude == b.magnitude &&
-+	       (a.magnitude == 0 || a.negative == b.negative);
-+}
-+
-+static bool format_number(struct sysctl_number number, char *text,
-+			  size_t text_size)
-+{
-+	int n = snprintf(text, text_size, number.negative ? "-%llu" : "%llu",
-+			 (unsigned long long)number.magnitude);
-+
-+	return n >= 0 && (size_t)n < text_size;
-+}
-+
-+static bool parse_values(char *text, struct sysctl_values *values)
-+{
-+	char *pos = text;
-+
-+	values->count = 0;
-+	while (*pos) {
-+		char *end;
-+		struct sysctl_number value;
-+
-+		while (isspace((unsigned char)*pos))
-+			pos++;
-+		if (!*pos)
-+			break;
-+		if (values->count == SYSCTL_MAX_VALUES)
-+			return false;
-+
-+		errno = 0;
-+		if (*pos == '-') {
-+			long long signed_value = strtoll(pos, &end, 10);
-+
-+			if (end == pos || errno == ERANGE)
-+				return false;
-+			value = number_from_signed(signed_value);
-+		} else {
-+			unsigned long long unsigned_value = strtoull(pos, &end, 10);
-+
-+			if (end == pos || errno == ERANGE)
-+				return false;
-+			value = number_from_unsigned(unsigned_value);
-+		}
-+		if (*end && !isspace((unsigned char)*end))
-+			return false;
-+
-+		values->value[values->count++] = value;
-+		pos = end;
-+	}
-+
-+	return values->count > 0;
-+}
-+
-+static bool read_values(const char *path, struct sysctl_values *values)
-+{
-+	char text[SYSCTL_TEXT_SIZE];
-+	size_t len = 0;
-+	int fd;
-+	bool ok = false;
-+
-+	fd = open(path, O_RDONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return false;
-+
-+	while (len < sizeof(text) - 1) {
-+		ssize_t n = read(fd, text + len, sizeof(text) - 1 - len);
-+
-+		if (n < 0 && errno == EINTR)
-+			continue;
-+		if (n < 0)
-+			goto out;
-+		if (!n)
-+			break;
-+		len += n;
-+	}
-+	if (len == sizeof(text) - 1)
-+		goto out;
-+
-+	text[len] = '\0';
-+	ok = parse_values(text, values);
-+out:
-+	close(fd);
-+	return ok;
-+}
-+
-+static bool values_equal(const struct sysctl_values *a,
-+			 const struct sysctl_values *b)
-+{
-+	size_t i;
-+
-+	if (a->count != b->count)
-+		return false;
-+	for (i = 0; i < a->count; i++) {
-+		if (!numbers_equal(a->value[i], b->value[i]))
-+			return false;
-+	}
-+	return true;
-+}
-+
-+static bool format_values(const struct sysctl_values *values, char *text,
-+			  size_t text_size)
-+{
-+	size_t i, len = 0;
-+
-+	for (i = 0; i < values->count; i++) {
-+		char number[32];
-+		int n;
-+
-+		if (!format_number(values->value[i], number, sizeof(number)))
-+			return false;
-+		n = snprintf(text + len, text_size - len, "%s%c", number,
-+			     i + 1 == values->count ? '\n' : ' ');
-+		if (n < 0 || (size_t)n >= text_size - len)
-+			return false;
-+		len += n;
-+	}
-+	return len > 0;
-+}
-+
-+static bool write_values(const char *path,
-+			 const struct sysctl_values *values)
-+{
-+	char text[SYSCTL_TEXT_SIZE];
-+	size_t len;
-+	ssize_t n;
-+	int fd;
-+	bool ok;
-+
-+	if (!format_values(values, text, sizeof(text)))
-+		return false;
-+	len = strlen(text);
-+
-+	fd = open(path, O_WRONLY | O_CLOEXEC);
-+	if (fd < 0)
-+		return false;
-+	do {
-+		n = write(fd, text, len);
-+	} while (n < 0 && errno == EINTR);
-+	ok = n == (ssize_t)len;
-+	if (close(fd) < 0)
-+		ok = false;
-+	return ok;
-+}
-+
-+static bool restore_values(const char *path,
-+			   const struct sysctl_values *original)
-+{
-+	struct sysctl_values current;
-+
-+	if (read_values(path, &current) && values_equal(original, &current))
-+		return true;
-+	return write_values(path, original) &&
-+	       read_values(path, &current) &&
-+	       values_equal(original, &current);
-+}
-+
-+static bool check_kernel_log(void)
-+{
-+	static const char * const splats[] = {
-+		"WARNING:",
-+		"BUG:",
-+		"Oops:",
-+		"divide error",
-+		"general protection fault",
-+		"invalid opcode",
-+		"kernel BUG at",
-+		"Kernel panic",
-+		"KASAN:",
-+		"UBSAN:",
-+		"soft lockup",
-+		"hard LOCKUP",
-+		"blocked for more than",
-+		"possible circular locking dependency",
-+	};
-+	char record[KMSG_TEXT_SIZE + 1];
-+
-+	for (;;) {
-+		ssize_t n = read(kmsg_fd, record, sizeof(record) - 1);
-+		char *message;
-+		size_t i;
-+
-+		if (n < 0 && errno == EINTR)
-+			continue;
-+		if (n < 0 && (errno == EAGAIN || errno == EWOULDBLOCK))
-+			return true;
-+		if (n < 0) {
-+			set_failure("cannot read /dev/kmsg: %s", strerror(errno));
-+			return false;
-+		}
-+		if (!n)
-+			return true;
-+
-+		record[n] = '\0';
-+		message = strchr(record, ';');
-+		message = message ? message + 1 : record;
-+		for (i = 0; i < ARRAY_SIZE(splats); i++) {
-+			if (!strstr(message, splats[i]))
-+				continue;
-+			set_failure("kernel splat detected: %.180s", message);
-+			return false;
-+		}
-+	}
-+}
-+
-+static uint64_t ordered_value(int64_t value)
-+{
-+	/* Map signed integers to unsigned keys in numeric order. */
-+	return (uint64_t)value ^ (UINT64_C(1) << 63);
-+}
-+
-+static int64_t unordered_value(uint64_t key)
-+{
-+	uint64_t raw = key ^ (UINT64_C(1) << 63);
-+
-+	if (raw <= INT64_MAX)
-+		return (int64_t)raw;
-+	return -1 - (int64_t)(UINT64_MAX - raw);
-+}
-+
-+static int probe_value(const char *path, const struct sysctl_values *original,
-+		       size_t index, struct sysctl_number candidate,
-+		       bool *accepted)
-+{
-+	struct sysctl_values expected = *original;
-+	struct sysctl_values current;
-+	char text[32];
-+
-+	expected.value[index] = candidate;
-+	*accepted = false;
-+
-+	if (write_values(path, &expected) &&
-+	    read_values(path, &current) &&
-+	    values_equal(&expected, &current))
-+		*accepted = true;
-+
-+	if (!restore_values(path, original)) {
-+		format_number(candidate, text, sizeof(text));
-+		set_failure("failed to restore %s after probing %s", path, text);
-+		return -1;
-+	}
-+	if (!check_kernel_log())
-+		return -1;
-+	return 0;
-+}
-+
-+static uint64_t next_step(uint64_t step)
-+{
-+	if (step > UINT64_MAX / 2)
-+		return UINT64_MAX;
-+	return step * 2;
-+}
-+
-+static int find_bound(const char *path,
-+		      const struct sysctl_values *original, size_t index,
-+		      bool lower, bool unsigned_domain,
-+		      struct sysctl_number *bound)
-+{
-+	struct sysctl_number start = original->value[index];
-+	uint64_t valid = unsigned_domain ? start.magnitude :
-+			 ordered_value(number_to_signed(start));
-+	uint64_t step = 1;
-+
-+	for (;;) {
-+		uint64_t candidate, invalid;
-+		bool accepted;
-+
-+		if (lower) {
-+			if (!valid)
-+				break;
-+			candidate = valid > step ? valid - step : 0;
-+		} else {
-+			if (valid == UINT64_MAX)
-+				break;
-+			candidate = UINT64_MAX - valid < step ?
-+				    UINT64_MAX : valid + step;
-+		}
-+		if (candidate == valid)
-+			break;
-+
-+		if (probe_value(path, original, index,
-+				unsigned_domain ? number_from_unsigned(candidate) :
-+				number_from_signed(unordered_value(candidate)),
-+				&accepted))
-+			return -1;
-+		if (accepted) {
-+			valid = candidate;
-+			step = next_step(step);
-+			continue;
-+		}
-+
-+		invalid = candidate;
-+		while (lower ? valid - invalid > 1 : invalid - valid > 1) {
-+			uint64_t middle = lower ?
-+					  invalid + (valid - invalid) / 2 :
-+					  valid + (invalid - valid) / 2;
-+
-+			if (probe_value(path, original, index,
-+					unsigned_domain ?
-+					number_from_unsigned(middle) :
-+					number_from_signed(unordered_value(middle)),
-+					&accepted))
-+				return -1;
-+			if (accepted)
-+				valid = middle;
-+			else
-+				invalid = middle;
-+		}
-+		break;
-+	}
-+
-+	*bound = unsigned_domain ? number_from_unsigned(valid) :
-+		 number_from_signed(unordered_value(valid));
-+	return 0;
-+}
-+
-+static int find_lower_bound(const char *path,
-+			    const struct sysctl_values *original,
-+			    size_t index, struct sysctl_number *bound)
-+{
-+	struct sysctl_number start = original->value[index];
-+	bool unsigned_domain = !start.negative && start.magnitude > INT64_MAX;
-+
-+	return find_bound(path, original, index, true, unsigned_domain, bound);
-+}
-+
-+static int find_upper_bound(const char *path,
-+			    const struct sysctl_values *original,
-+			    size_t index, struct sysctl_number *bound)
-+{
-+	bool unsigned_domain = !original->value[index].negative;
-+
-+	return find_bound(path, original, index, false, unsigned_domain, bound);
-+}
-+
-+static int get_port_pair(bool tcp, uint16_t *server, uint16_t *client)
-+{
-+	unsigned int *next = tcp ? &next_tcp_port : &next_udp_port;
-+
-+	if (*next > LAST_TEST_PORT) {
-+		errno = EADDRNOTAVAIL;
-+		return -1;
-+	}
-+	*server = *next;
-+	*client = *next + 1;
-+	*next += 2;
-+	return 0;
-+}
-+
-+static int bind_loopback(int fd, uint16_t port)
-+{
-+	struct sockaddr_in addr = {
-+		.sin_family = AF_INET,
-+		.sin_port = htons(port),
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+	};
-+
-+	return bind(fd, (struct sockaddr *)&addr, sizeof(addr));
-+}
-+
-+static int wait_readable(int fd)
-+{
-+	struct pollfd pfd = {
-+		.fd = fd,
-+		.events = POLLIN,
-+	};
-+	int ret;
-+
-+	ret = poll(&pfd, 1, 1000);
-+	if (ret < 0)
-+		return -1;
-+	if (!ret) {
-+		errno = ETIMEDOUT;
-+		return -1;
-+	}
-+	if (!(pfd.revents & POLLIN)) {
-+		errno = EIO;
-+		return -1;
-+	}
-+	return 0;
-+}
-+
-+static int tcp_loopback(void)
-+{
-+	struct timeval timeout = { .tv_sec = 1 };
-+	uint16_t server_port, client_port;
-+	char data[64] = { 1 };
-+	char received[sizeof(data)];
-+	int listener = -1, client = -1, server = -1;
-+	int ret = -1;
-+	ssize_t n;
-+
-+	if (get_port_pair(true, &server_port, &client_port))
-+		return -1;
-+	listener = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
-+	client = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
-+	if (listener < 0 || client < 0 ||
-+	    setsockopt(client, SOL_SOCKET, SO_SNDTIMEO, &timeout,
-+		       sizeof(timeout)) ||
-+	    bind_loopback(listener, server_port) ||
-+	    listen(listener, 1) || bind_loopback(client, client_port))
-+		goto out;
-+
-+	{
-+		struct sockaddr_in addr = {
-+			.sin_family = AF_INET,
-+			.sin_port = htons(server_port),
-+			.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+		};
-+
-+		if (connect(client, (struct sockaddr *)&addr, sizeof(addr)))
-+			goto out;
-+	}
-+
-+	if (wait_readable(listener))
-+		goto out;
-+	server = accept4(listener, NULL, NULL, SOCK_CLOEXEC);
-+	if (server < 0)
-+		goto out;
-+	n = send(client, data, sizeof(data), MSG_NOSIGNAL);
-+	if (n <= 0) {
-+		if (!n)
-+			errno = EPIPE;
-+		goto out;
-+	}
-+	if (wait_readable(server))
-+		goto out;
-+
-+	n = recv(server, received, sizeof(received), 0);
-+	if (n <= 0) {
-+		if (!n)
-+			errno = ECONNRESET;
-+		goto out;
-+	}
-+	ret = 0;
-+out:
-+	if (server >= 0)
-+		close(server);
-+	if (client >= 0)
-+		close(client);
-+	if (listener >= 0)
-+		close(listener);
-+	return ret;
-+}
-+
-+static int udp_loopback(void)
-+{
-+	uint16_t server_port, client_port;
-+	struct sockaddr_in addr = {
-+		.sin_family = AF_INET,
-+		.sin_addr.s_addr = htonl(INADDR_LOOPBACK),
-+	};
-+	char data = 1, received;
-+	int server = -1, client = -1;
-+	int ret = -1;
-+	ssize_t n;
-+
-+	if (get_port_pair(false, &server_port, &client_port))
-+		return -1;
-+	server = socket(AF_INET, SOCK_DGRAM | SOCK_CLOEXEC, 0);
-+	client = socket(AF_INET, SOCK_DGRAM | SOCK_CLOEXEC, 0);
-+	if (server < 0 || client < 0 || bind_loopback(server, server_port) ||
-+	    bind_loopback(client, client_port))
-+		goto out;
-+
-+	addr.sin_port = htons(server_port);
-+	n = sendto(client, &data, sizeof(data), 0, (struct sockaddr *)&addr,
-+		   sizeof(addr));
-+	if (n != sizeof(data)) {
-+		if (n >= 0)
-+			errno = EIO;
-+		goto out;
-+	}
-+	if (wait_readable(server))
-+		goto out;
-+
-+	n = recv(server, &received, sizeof(received), 0);
-+	if (n != sizeof(received)) {
-+		if (n >= 0)
-+			errno = EIO;
-+		goto out;
-+	}
-+	ret = 0;
-+out:
-+	if (client >= 0)
-+		close(client);
-+	if (server >= 0)
-+		close(server);
-+	return ret;
-+}
-+
-+static void run_loopback_traffic(const char *path, size_t index,
-+				 const char *value)
-+{
-+	int err;
-+
-+	tcp_attempts++;
-+	if (!tcp_loopback()) {
-+		tcp_successes++;
-+	} else {
-+		err = errno;
-+		if (!tcp_delivery_failure[0])
-+			snprintf(tcp_delivery_failure,
-+				 sizeof(tcp_delivery_failure),
-+				 "%s[%zu]=%s: %s", path, index, value,
-+				 strerror(err));
-+	}
-+
-+	udp_attempts++;
-+	if (!udp_loopback()) {
-+		udp_successes++;
-+	} else {
-+		err = errno;
-+		if (!udp_delivery_failure[0])
-+			snprintf(udp_delivery_failure,
-+				 sizeof(udp_delivery_failure),
-+				 "%s[%zu]=%s: %s", path, index, value,
-+				 strerror(err));
-+	}
-+}
-+
-+static int exercise_value(const char *path,
-+			  const struct sysctl_values *original,
-+			  size_t index, struct sysctl_number value)
-+{
-+	struct sysctl_values expected = *original;
-+	char text[32];
-+	bool restore = !numbers_equal(value, original->value[index]);
-+	bool applied = false;
-+
-+	if (!format_number(value, text, sizeof(text))) {
-+		set_failure("cannot format boundary for %s", path);
-+		return -1;
-+	}
-+	if (restore) {
-+		struct sysctl_values current;
-+
-+		expected.value[index] = value;
-+		applied = write_values(path, &expected) &&
-+			  read_values(path, &current) &&
-+			  values_equal(&expected, &current);
-+		if (!applied) {
-+			if (!restore_values(path, original)) {
-+				set_failure("failed to restore %s after setting %s",
-+					    path, text);
-+				return -1;
-+			}
-+			set_failure("%s no longer accepts boundary %s", path, text);
-+			return -1;
-+		}
-+	}
-+
-+	check_kernel_log();
-+	if (!failure[0])
-+		run_loopback_traffic(path, index, text);
-+
-+	if (restore && !restore_values(path, original)) {
-+		format_number(value, text, sizeof(text));
-+		set_failure("failed to restore %s after traffic at %s", path,
-+			    text);
-+	}
-+	check_kernel_log();
-+	return failure[0] ? -1 : 0;
-+}
-+
-+static bool prepare_sysctl(const char *path,
-+			   const struct sysctl_values *original)
-+{
-+	struct sysctl_values current;
-+	bool writable;
-+
-+	writable = write_values(path, original) &&
-+		   read_values(path, &current) &&
-+		   values_equal(original, &current);
-+	if (!writable && !restore_values(path, original)) {
-+		set_failure("failed to restore %s after initial write", path);
-+		return false;
-+	}
-+	if (!check_kernel_log())
-+		return false;
-+	return writable;
-+}
-+
-+static int test_sysctl(const char *path, const struct sysctl_values *original)
-+{
-+	size_t i;
-+
-+	if (!prepare_sysctl(path, original)) {
-+		if (!failure[0]) {
-+			skipped_files++;
-+			printf("# SKIP %s: sysctl is not writable\n", path);
-+		}
-+		return failure[0] ? -1 : 0;
-+	}
-+
-+	tested_files++;
-+	for (i = 0; i < original->count; i++) {
-+		struct sysctl_number lower, upper;
-+
-+		if (find_lower_bound(path, original, i, &lower) ||
-+		    find_upper_bound(path, original, i, &upper))
-+			return -1;
-+		if (exercise_value(path, original, i, lower) ||
-+		    (!numbers_equal(upper, lower) &&
-+		     exercise_value(path, original, i, upper)))
-+			return -1;
-+		tested_values++;
-+	}
-+	return 0;
-+}
-+
-+static int scan_sysctl(const char *path, const struct stat *statbuf,
-+		       int type, struct FTW *ftwbuf)
-+{
-+	struct sysctl_values values;
-+
-+	(void)statbuf;
-+	(void)ftwbuf;
-+	if (type != FTW_F || access(path, W_OK))
-+		return 0;
-+	if (!read_values(path, &values))
-+		return 0;
-+	return test_sysctl(path, &values) ? 1 : 0;
-+}
-+
-+static void print_usage(FILE *stream, const char *program)
-+{
-+	size_t i;
-+
-+	fprintf(stream, "Usage: %s [-a | -s SYSCTL ...]\n", program);
-+	fprintf(stream, "  -s, --sysctl SYSCTL  Test a representative sysctl (repeatable)\n");
-+	fprintf(stream, "  -a, --all            Test all writable numeric sysctls under %s\n",
-+		SYSCTL_ROOT);
-+	fprintf(stream, "  -h, --help           Show this help\n");
-+	fprintf(stream, "Default sysctls:\n");
-+	for (i = 0; i < ARRAY_SIZE(representative_sysctls); i++)
-+		fprintf(stream, "  %s\n", representative_sysctls[i]);
-+}
-+
-+static int parse_options(int argc, char **argv, bool *all_sysctls)
-+{
-+	static const struct option options[] = {
-+		{ "all", no_argument, NULL, 'a' },
-+		{ "help", no_argument, NULL, 'h' },
-+		{ "sysctl", required_argument, NULL, 's' },
-+		{}
-+	};
-+	bool selection_given = false;
-+	int option;
-+
-+	while ((option = getopt_long(argc, argv, "ahs:", options, NULL)) != -1) {
-+		switch (option) {
-+		case 'a':
-+			if (selection_given)
-+				goto invalid_options;
-+			selection_given = true;
-+			*all_sysctls = true;
-+			break;
-+		case 's': {
-+			size_t i;
-+
-+			if (*all_sysctls)
-+				goto invalid_options;
-+			selection_given = true;
-+			for (i = 0; i < ARRAY_SIZE(representative_sysctls); i++) {
-+				if (strcmp(optarg, representative_sysctls[i]))
-+					continue;
-+				selected_sysctls[i] = true;
-+				break;
-+			}
-+			if (i == ARRAY_SIZE(representative_sysctls)) {
-+				fprintf(stderr, "Unknown sysctl: %s\n", optarg);
-+				goto invalid_options;
-+			}
-+			break;
-+		}
-+		case 'h':
-+			print_usage(stdout, argv[0]);
-+			return 1;
-+		default:
-+			goto invalid_options;
-+		}
-+	}
-+	if (optind != argc)
-+		goto invalid_options;
-+
-+	if (!selection_given) {
-+		size_t i;
-+
-+		for (i = 0; i < ARRAY_SIZE(representative_sysctls); i++)
-+			selected_sysctls[i] = true;
-+	}
-+	return 0;
-+
-+invalid_options:
-+	print_usage(stderr, argv[0]);
-+	return -1;
-+}
-+
-+static int test_selected_sysctl(const char *name)
-+{
-+	char path[PATH_MAX];
-+	struct sysctl_values values;
-+	int n;
-+
-+	n = snprintf(path, sizeof(path), "%s/%s", SYSCTL_ROOT, name);
-+	if (n < 0 || (size_t)n >= sizeof(path)) {
-+		set_failure("sysctl path is too long: %s", name);
-+		return -1;
-+	}
-+
-+	if (access(path, F_OK)) {
-+		if (errno == ENOENT || errno == ENOTDIR) {
-+			skipped_files++;
-+			printf("# SKIP %s: not available\n", name);
-+			return 0;
-+		}
-+		set_failure("cannot inspect %s: %s", path, strerror(errno));
-+		return -1;
-+	}
-+	if (access(path, R_OK)) {
-+		int err = errno;
-+
-+		skipped_files++;
-+		printf("# SKIP %s: not readable (%s)\n", name, strerror(err));
-+		return 0;
-+	}
-+	if (!read_values(path, &values)) {
-+		set_failure("%s is not a readable numeric sysctl", path);
-+		return -1;
-+	}
-+	if (access(path, W_OK)) {
-+		int err = errno;
-+
-+		skipped_files++;
-+		printf("# SKIP %s: not writable (%s)\n", name, strerror(err));
-+		return 0;
-+	}
-+
-+	printf("# Testing %s\n", name);
-+	return test_sysctl(path, &values);
-+}
-+
-+static int set_loopback_up(void)
-+{
-+	struct ifreq ifr = {};
-+	int fd, ret = -1;
-+
-+	fd = socket(AF_INET, SOCK_DGRAM | SOCK_CLOEXEC, 0);
-+	if (fd < 0)
-+		return -1;
-+	strncpy(ifr.ifr_name, "lo", IFNAMSIZ - 1);
-+	if (ioctl(fd, SIOCGIFFLAGS, &ifr))
-+		goto out;
-+	ifr.ifr_flags |= IFF_UP;
-+	ret = ioctl(fd, SIOCSIFFLAGS, &ifr);
-+out:
-+	close(fd);
-+	return ret;
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	bool all_sysctls = false;
-+	int option_status, ret;
-+	size_t i;
-+
-+	option_status = parse_options(argc, argv, &all_sysctls);
-+	if (option_status > 0)
-+		return KSFT_PASS;
-+	if (option_status < 0)
-+		return KSFT_FAIL;
-+
-+	ksft_print_header();
-+	ksft_set_plan(1);
-+
-+	if (unshare(CLONE_NEWNET))
-+		ksft_exit_skip("cannot create network namespace: %s\n",
-+			       strerror(errno));
-+
-+	kmsg_fd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK | O_CLOEXEC);
-+	if (kmsg_fd < 0)
-+		ksft_exit_skip("cannot read /dev/kmsg: %s\n", strerror(errno));
-+	if (lseek(kmsg_fd, 0, SEEK_END) < 0)
-+		ksft_exit_skip("cannot seek /dev/kmsg: %s\n", strerror(errno));
-+	if (set_loopback_up())
-+		ksft_exit_skip("cannot bring loopback up: %s\n", strerror(errno));
-+	if (!check_kernel_log())
-+		goto fail;
-+
-+	if (all_sysctls) {
-+		ret = nftw(SYSCTL_ROOT, scan_sysctl, 32, FTW_PHYS);
-+		if (ret < 0 && !failure[0])
-+			set_failure("cannot scan %s: %s", SYSCTL_ROOT,
-+				    strerror(errno));
-+	} else {
-+		for (i = 0; i < ARRAY_SIZE(representative_sysctls); i++) {
-+			if (!selected_sysctls[i])
-+				continue;
-+			if (test_selected_sysctl(representative_sysctls[i]))
-+				break;
-+		}
-+	}
-+	if (!failure[0] && !tested_files)
-+		ksft_exit_skip("no selected writable numeric network sysctls found\n");
-+	if (!failure[0] && (!tcp_successes || !udp_successes))
-+		set_failure("loopback delivery incomplete: TCP %zu/%zu, UDP %zu/%zu",
-+			    tcp_successes, tcp_attempts,
-+			    udp_successes, udp_attempts);
-+	if (!failure[0] && !check_kernel_log())
-+		goto fail;
-+	if (tcp_delivery_failure[0])
-+		printf("# first TCP delivery failure: %s\n",
-+		       tcp_delivery_failure);
-+	if (udp_delivery_failure[0])
-+		printf("# first UDP delivery failure: %s\n",
-+		       udp_delivery_failure);
-+	if (failure[0])
-+		goto fail;
-+
-+	printf("# tested %zu sysctls, %zu values; skipped %zu\n",
-+	       tested_files, tested_values, skipped_files);
-+	ksft_test_result_pass("TCP %zu/%zu, UDP %zu/%zu deliveries succeeded\n",
-+			      tcp_successes, tcp_attempts,
-+			      udp_successes, udp_attempts);
-+	ksft_finished();
-+	close(kmsg_fd);
-+	return KSFT_PASS;
-+
-+fail:
-+	ksft_test_result_fail("%s\n", failure);
-+	ksft_finished();
-+	close(kmsg_fd);
-+	return KSFT_FAIL;
-+}
--- 
-2.43.0
-
+>Subject: [PATCH net] tipc: raise the minimum bearer MTU to fit tunnel and=
+=0A=
+>crypto overhead=0A=
+>=0A=
+>A peer can lower the link MTU to TIPC_MIN_BEARER_MTU (100 bytes, plus the=
+=0A=
+>UDP encapsulation header) with the max_pkt field of a RESET or ACTIVATE=0A=
+>message; tipc_link_proto_rcv() only checks the lower bound returned by=0A=
+>tipc_bearer_min_mtu().  The same bound is applied to the device MTU when a=
+=0A=
+>bearer is enabled.=0A=
+>=0A=
+>That bound predates two later reductions of the link MSS:=0A=
+>=0A=
+>  tipc_link_mss() =3D mtu - INT_H_SIZE                    (tunnel header)=
+=0A=
+>                         - EMSG_OVERHEAD               (CONFIG_TIPC_CRYPTO=
+)=0A=
+>=0A=
+>With CONFIG_TIPC_CRYPTO=3Dy, which is the default, an MTU of 100 gives an=
+=0A=
+>MSS of 28.  Once the link comes up, tipc_named_node_up() calls=0A=
+>named_distribute(), which computes=0A=
+>=0A=
+>  msg_dsz =3D ((tipc_node_get_mtu() - INT_H_SIZE) / ITEM_SIZE) * ITEM_SIZE=
+;=0A=
+>=0A=
+>For an MSS of 28 the subtraction is negative and the result truncates to=
+=0A=
+>0xfffffff0; for an MSS between 40 and 59 it is 0.  named_prepare_buf() the=
+n=0A=
+>allocates a buffer with no room for any item (the u32 size wraps), and=0A=
+>msg_rem never reaches zero, so every cluster-scope publication on the node=
+ is=0A=
+>written with publ_to_item() past the end of that one skb, over=0A=
+>skb_shared_info and into adjacent memory.=0A=
+>=0A=
+>Without crypto the MSS is at least 60, which still does not hold the first=
+=0A=
+>fragment built by tipc_msg_build(): INT_H_SIZE fragment header plus a=0A=
+>message header of up to MAX_H_SIZE.  With pktmax below that, the header=0A=
+>copies run past the pktmax bytes allocated for the fragment.=0A=
+>=0A=
+>Raise the minimum so the MSS can always hold INT_H_SIZE + MAX_H_SIZE,=0A=
+>which also leaves room for name table items: MAX_H_SIZE + 2 * INT_H_SIZE,=
+=0A=
+>plus EMSG_OVERHEAD when crypto is enabled.  EMSG_OVERHEAD is defined=0A=
+>in crypto.h, which bearer.h cannot include, so the value is spelled out an=
+d=0A=
+>checked with BUILD_BUG_ON() in tipc_bearer_min_mtu().=0A=
+>=0A=
+>Found by manual code review, assisted by an LLM, and reproduced with KASAN=
+=0A=
+>using two network namespaces joined by a veth pair (see below).=0A=
+>=0A=
+>Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")=
+=0A=
+>Fixes: 2320bcdae628 ("tipc: fix changeover issues due to large packet")=0A=
+>Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>=0A=
+>Assisted-by: Claude:claude-opus-5-5=0A=
+>---=0A=
+>Reproduced on 602042bf29f6 (arm64, QEMU, KASAN,=0A=
+>CONFIG_TIPC_CRYPTO=3Dy) with two network namespaces joined by a veth pair.=
+=0A=
+>Node A binds 40 cluster-scope services, node B enables its bearer on a vet=
+h=0A=
+>with MTU 100, so A negotiates a link MTU of 100 (a remote peer can do the=
+=0A=
+>same with=0A=
+>max_pkt=3D100 in RESET/ACTIVATE).  As soon as the link comes up:=0A=
+>=0A=
+>  BUG: KASAN: slab-out-of-bounds in publ_to_item+0x23c/0x288=0A=
+>  Write of size 4 at addr fff000001036ad00 by task ksoftirqd/1/22=0A=
+>   publ_to_item+0x23c/0x288=0A=
+>   tipc_named_node_up+0x2b0/0x714=0A=
+>   tipc_node_write_unlock+0x330/0x44c=0A=
+>   tipc_rcv+0x94c/0x2188=0A=
+>   tipc_l2_rcv_msg+0x118/0x1f4=0A=
+>  Allocated by task 22:=0A=
+>   ...=0A=
+>   tipc_buf_acquire+0x24/0xd4=0A=
+>   named_prepare_buf+0x3c/0x1dc=0A=
+>   tipc_named_node_up+0x528/0x714=0A=
+>  The buggy address is located 0 bytes to the right of=0A=
+>   allocated 704-byte region [fff000001036aa40, fff000001036ad00)=0A=
+>  tipc: Too large msg, purging xmit list 1 11 0 860 100!=0A=
+>  Unable to handle kernel paging request at virtual address 001fe000022e18=
+a9=0A=
+>  pc : kfree_skb_list_reason+0xa4/0x32c=0A=
+>=0A=
+>The final oops is the purge freeing the frag_list pointer that the overflo=
+w wrote=0A=
+>into skb_shared_info.=0A=
+>=0A=
+>With the patch: MTU 100 is refused at bearer enable ("MTU too low for tipc=
+=0A=
+>bearer"); MTU 172 and 1500 bring the link up with no KASAN report.=0A=
+>Builds cleanly with W=3D1 with and without CONFIG_TIPC_CRYPTO.=0A=
+>This was first reported to security@kernel.org; Tung Nguyen reproduced it =
+with=0A=
+>the reproducer below and asked for the patch to go to netdev.=0A=
+>=0A=
+>Reproducer (as root, CONFIG_TIPC=3Dy, CONFIG_TIPC_CRYPTO=3Dy; build with "=
+gcc=0A=
+>-Wall -O2 -o pub pub.c", run "sh tipc_repro.sh"):=0A=
+>=0A=
+>pub.c:=0A=
+>=0A=
+>  /* Bind N TIPC services with cluster scope, then sleep. */=0A=
+>  #include <linux/tipc.h>=0A=
+>  #include <stdio.h>=0A=
+>  #include <stdlib.h>=0A=
+>  #include <sys/socket.h>=0A=
+>  #include <unistd.h>=0A=
+>=0A=
+>  int main(int argc, char **argv)=0A=
+>  {=0A=
+>  	int n =3D argc > 1 ? atoi(argv[1]) : 40;=0A=
+>  	for (int i =3D 0; i < n; i++) {=0A=
+>  		struct sockaddr_tipc a =3D {=0A=
+>  			.family =3D AF_TIPC,=0A=
+>  			.addrtype =3D TIPC_SERVICE_RANGE,=0A=
+>  			.scope =3D TIPC_CLUSTER_SCOPE,=0A=
+>  			.addr.nameseq =3D { .type =3D 1000 + i, .lower =3D 0, .upper =3D=0A=
+>0 },=0A=
+>  		};=0A=
+>  		int s =3D socket(AF_TIPC, SOCK_RDM, 0);=0A=
+>  		if (s < 0 || bind(s, (struct sockaddr *)&a, sizeof(a))) {=0A=
+>  			perror("tipc bind");=0A=
+>  			return 1;=0A=
+>  		}=0A=
+>  	}=0A=
+>  	printf("pub: bound %d cluster-scope services\n", n);=0A=
+>  	fflush(stdout);=0A=
+>  	pause();=0A=
+>  	return 0;=0A=
+>  }=0A=
+>=0A=
+>tipc_repro.sh:=0A=
+>=0A=
+>  #!/bin/sh=0A=
+>  # TIPC named_distribute() overflow reproducer.=0A=
+>  # Needs root, CONFIG_TIPC=3Dy, CONFIG_TIPC_CRYPTO=3Dy (default), KASAN=
+=0A=
+>recommended.=0A=
+>  # Usage: ./tipc_repro.sh [peer_mtu]   (default 100; 100..131 trigger it)=
+=0A=
+>  PEER_MTU=3D${1:-100}=0A=
+>=0A=
+>  ip netns add A=0A=
+>  ip netns add B=0A=
+>  ip link add va type veth peer name vb=0A=
+>  ip link set va netns A=0A=
+>  ip link set vb netns B=0A=
+>  ip -n A link set lo up=0A=
+>  ip -n B link set lo up=0A=
+>  ip -n A link set va mtu 1500 up=0A=
+>  ip -n B link set vb mtu "$PEER_MTU" up=0A=
+>=0A=
+>  # node A: 40 cluster-scope publications (any number >=3D 1 overflows;=0A=
+>  # more publications write further past the buffer)=0A=
+>  ip netns exec A ./pub 40 &=0A=
+>  sleep 2=0A=
+>=0A=
+>  # node A uses MTU 1500, node B uses PEER_MTU; the link MTU is=0A=
+>  # negotiated down to PEER_MTU, the link MSS becomes PEER_MTU - 72=0A=
+>  ip netns exec A tipc bearer enable media eth dev va=0A=
+>  ip netns exec B tipc bearer enable media eth dev vb=0A=
+>=0A=
+>  # the overflow happens in tipc_named_node_up() as soon as the link=0A=
+>  # comes up (a few seconds)=0A=
+>  sleep 20=0A=
+>  dmesg | grep -A30 -E "KASAN|BUG:|Oops"=0A=
+>=0A=
+>This edits the lines next to the ones touched by Yunpeng Tian's=0A=
+>"tipc: bound the device MTU accepted ..." (upper bound, posted 2026-10-03)=
+.=0A=
+>The two are independent; I can rebase on top of it if that one is applied =
+first.=0A=
+>=0A=
+>tipc_msg_build() / named_distribute() could also get local sanity checks; =
+I kept=0A=
+>this to the MTU floor so there is one fix point.=0A=
+>=0A=
+> net/tipc/bearer.c |  4 ++++=0A=
+> net/tipc/bearer.h | 16 ++++++++++++++--=0A=
+> 2 files changed, 18 insertions(+), 2 deletions(-)=0A=
+>=0A=
+>diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c index 05dcd2f9e..bcf031=
+fdd=0A=
+>100644=0A=
+>--- a/net/tipc/bearer.c=0A=
+>+++ b/net/tipc/bearer.c=0A=
+>@@ -549,6 +549,10 @@ int tipc_bearer_min_mtu(struct net *net, u32=0A=
+>bearer_id)=0A=
+> 	int mtu =3D TIPC_MIN_BEARER_MTU;=0A=
+> 	struct tipc_bearer *b;=0A=
+>=0A=
+>+#ifdef CONFIG_TIPC_CRYPTO=0A=
+>+	BUILD_BUG_ON(TIPC_MIN_BEARER_MTU !=3D=0A=
+>+		     MAX_H_SIZE + 2 * INT_H_SIZE + EMSG_OVERHEAD); #endif=0A=
+> 	rcu_read_lock();=0A=
+> 	b =3D bearer_get(net, bearer_id);=0A=
+> 	if (b)=0A=
+>diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h index 41eac1ee0..b99dcd=
+23c=0A=
+>100644=0A=
+>--- a/net/tipc/bearer.h=0A=
+>+++ b/net/tipc/bearer.h=0A=
+>@@ -60,8 +60,20 @@=0A=
+> #define TIPC_MEDIA_TYPE_IB	2=0A=
+> #define TIPC_MEDIA_TYPE_UDP	3=0A=
+>=0A=
+>-/* Minimum bearer MTU */=0A=
+>-#define TIPC_MIN_BEARER_MTU	(MAX_H_SIZE + INT_H_SIZE)=0A=
+>+/* Minimum bearer MTU=0A=
+>+ *=0A=
+>+ * The link MSS (see tipc_link_mss()) is the MTU minus a tunnel header=0A=
+>+ * (INT_H_SIZE) and, with encryption, minus EMSG_OVERHEAD (32 bytes,=0A=
+>+checked=0A=
+>+ * in tipc_bearer_min_mtu()).  The MSS must still hold a fragment=0A=
+>+header=0A=
+>+ * (INT_H_SIZE) followed by the largest message header (MAX_H_SIZE),=0A=
+>+which is=0A=
+>+ * what tipc_msg_build() puts in the first fragment, and leaves room=0A=
+>+for at=0A=
+>+ * least one name table item in named_distribute().=0A=
+>+ */=0A=
+>+#ifdef CONFIG_TIPC_CRYPTO=0A=
+>+#define TIPC_MIN_BEARER_MTU	(MAX_H_SIZE + 2 * INT_H_SIZE + 32)=0A=
+=0A=
+This approach is not good because  it uses hard-coded size of TIPC crypto h=
+eader (32).=0A=
+The size should be calculated based on tipc_ehdr.=0A=
+Could you please test below general approach ?=0A=
+=0A=
+---=0A=
+ net/tipc/bearer.c    | 16 ++++++++++++++++=0A=
+ net/tipc/bearer.h    |  2 +-=0A=
+ net/tipc/crypto.h    | 19 +++++++++++++++++++=0A=
+ net/tipc/udp_media.h | 10 ++++++++--=0A=
+ 4 files changed, 44 insertions(+), 3 deletions(-)=0A=
+=0A=
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c=0A=
+index 05dcd2f9e887..02b2e9f56cc5 100644=0A=
+--- a/net/tipc/bearer.c=0A=
++++ b/net/tipc/bearer.c=0A=
+@@ -433,7 +433,11 @@ int tipc_enable_l2_media(struct net *net, struct tipc_=
+bearer *b,=0A=
+        dev =3D dev_get_by_name(net, dev_name);=0A=
+        if (!dev)=0A=
+                return -ENODEV;=0A=
++#ifdef CONFIG_TIPC_CRYPTO=0A=
++       if (tipc_mtu_bad_crypto(dev)) {=0A=
++#else=0A=
+        if (tipc_mtu_bad(dev)) {=0A=
++#endif=0A=
+                dev_put(dev);=0A=
+                return -EINVAL;=0A=
+        }=0A=
+@@ -546,7 +550,11 @@ int tipc_bearer_mtu(struct net *net, u32 bearer_id)=0A=
+=0A=
+ int tipc_bearer_min_mtu(struct net *net, u32 bearer_id)=0A=
+ {=0A=
++#ifdef CONFIG_TIPC_CRYPTO=0A=
++       int mtu =3D TIPC_MIN_BEARER_MTU_CRYPTO;=0A=
++#else=0A=
+        int mtu =3D TIPC_MIN_BEARER_MTU;=0A=
++#endif=0A=
+        struct tipc_bearer *b;=0A=
+=0A=
+        rcu_read_lock();=0A=
+@@ -711,7 +719,11 @@ static int tipc_l2_device_event(struct notifier_block =
+*nb, unsigned long evt,=0A=
+                test_and_set_bit_lock(0, &b->up);=0A=
+                break;=0A=
+        case NETDEV_CHANGEMTU:=0A=
++#ifdef CONFIG_TIPC_CRYPTO=0A=
++               if (tipc_mtu_bad_crypto(dev)) {=0A=
++#else=0A=
+                if (tipc_mtu_bad(dev)) {=0A=
++#endif=0A=
+                        bearer_disable(net, b);=0A=
+                        break;=0A=
+                }=0A=
+@@ -1158,7 +1170,11 @@ int __tipc_nl_bearer_set(struct sk_buff *skb, struct=
+ genl_info *info)=0A=
+                        }=0A=
+ #ifdef CONFIG_TIPC_MEDIA_UDP=0A=
+                        if (nla_get_u32(props[TIPC_NLA_PROP_MTU]) <=0A=
++#ifdef CONFIG_TIPC_CRYPTO=0A=
++                           b->encap_hlen + TIPC_MIN_BEARER_MTU_CRYPTO) {=
+=0A=
++#else=0A=
+                            b->encap_hlen + TIPC_MIN_BEARER_MTU) {=0A=
++#endif=0A=
+                                NL_SET_ERR_MSG(info->extack,=0A=
+                                               "MTU value is out-of-range")=
+;=0A=
+                                return -EINVAL;=0A=
+diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h=0A=
+index 41eac1ee0c09..1bf629f2e626 100644=0A=
+--- a/net/tipc/bearer.h=0A=
++++ b/net/tipc/bearer.h=0A=
+@@ -61,7 +61,7 @@=0A=
+ #define TIPC_MEDIA_TYPE_UDP    3=0A=
+=0A=
+ /* Minimum bearer MTU */=0A=
+-#define TIPC_MIN_BEARER_MTU    (MAX_H_SIZE + INT_H_SIZE)=0A=
++#define TIPC_MIN_BEARER_MTU    (MAX_H_SIZE + 2 * INT_H_SIZE)=0A=
+=0A=
+ /* Identifiers for distinguishing between broadcast/multicast and replicas=
+t=0A=
+  */=0A=
+diff --git a/net/tipc/crypto.h b/net/tipc/crypto.h=0A=
+index ce7d4cc8a9e0..1d5a4839d639 100644=0A=
+--- a/net/tipc/crypto.h=0A=
++++ b/net/tipc/crypto.h=0A=
+@@ -156,6 +156,8 @@ struct tipc_ehdr {=0A=
+ #define EMSG_OVERHEAD  (EHDR_SIZE + TIPC_AES_GCM_TAG_SIZE)=0A=
+ } __packed;=0A=
+=0A=
++#define TIPC_MIN_BEARER_MTU_CRYPTO     (TIPC_MIN_BEARER_MTU + EMSG_OVERHEA=
+D)=0A=
++=0A=
+ int tipc_crypto_start(struct tipc_crypto **crypto, struct net *net,=0A=
+                      struct tipc_node *node);=0A=
+ void tipc_crypto_stop(struct tipc_crypto **crypto);=0A=
+@@ -196,5 +198,22 @@ static inline void msg_set_key_mode(struct tipc_msg *m=
+, u32 mode)=0A=
+        msg_set_bits(m, 4, 0, 0xf, mode);=0A=
+ }=0A=
+=0A=
++/**=0A=
++ * tipc_mtu_bad_crypto - check if device MTU is too low for encrypted head=
+ers=0A=
++ * @dev: the net device that its MTU needs to be checked=0A=
++ *=0A=
++ * Return:=0A=
++ * * false - valid MTU=0A=
++ * * true  - invalid MTU=0A=
++ *=0A=
++ */=0A=
++static inline bool tipc_mtu_bad_crypto(struct net_device *dev)=0A=
++{=0A=
++       if (dev->mtu >=3D TIPC_MIN_BEARER_MTU_CRYPTO)=0A=
++               return false;=0A=
++       netdev_warn(dev, "MTU too low for tipc bearer\n");=0A=
++       return true;=0A=
++}=0A=
++=0A=
+ #endif /* _TIPC_CRYPTO_H */=0A=
+ #endif=0A=
+diff --git a/net/tipc/udp_media.h b/net/tipc/udp_media.h=0A=
+index e7455cc73e16..43f895bec039 100644=0A=
+--- a/net/tipc/udp_media.h=0A=
++++ b/net/tipc/udp_media.h=0A=
+@@ -40,6 +40,7 @@=0A=
+=0A=
+ #include <linux/ip.h>=0A=
+ #include <linux/udp.h>=0A=
++#include "crypto.h"=0A=
+=0A=
+ int tipc_udp_nl_bearer_add(struct tipc_bearer *b, struct nlattr *attr);=0A=
+ int tipc_udp_nl_add_bearer_data(struct tipc_nl_msg *msg, struct tipc_beare=
+r *b);=0A=
+@@ -48,8 +49,13 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struc=
+t netlink_callback *cb);=0A=
+ /* check if configured MTU is too low for tipc headers */=0A=
+ static inline bool tipc_udp_mtu_bad(u32 mtu)=0A=
+ {=0A=
+-       if (mtu >=3D (TIPC_MIN_BEARER_MTU + sizeof(struct iphdr) +=0A=
+-           sizeof(struct udphdr)))=0A=
++#ifdef CONFIG_TIPC_CRYPTO=0A=
++       int mtu_min =3D TIPC_MIN_BEARER_MTU_CRYPTO;=0A=
++#else=0A=
++       int mtu_min =3D TIPC_MIN_BEARER_MTU;=0A=
++#endif=0A=
++=0A=
++       if (mtu >=3D (mtu_min + sizeof(struct iphdr) + sizeof(struct udphdr=
+)))=0A=
+                return false;=0A=
+=0A=
+        pr_warn("MTU too low for tipc bearer\n");=0A=
