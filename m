@@ -1,126 +1,206 @@
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6F73A544C
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6773ACA64;
+	Mon, 12 Oct 2026 11:18:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791802733; cv=none; b=ZGDEANhTYkIrGO69I9vC9HOuUX6zVF3HrlIvCXwqXHkO4Y31/T2aWMRulo/rKO1ierD1/muC42hG6YLYuJ8W9lll0QLhGyip6Xwe+Y801seVgIDz7aqaI7+wMUEG0lV4F5hnObBJDPADschy7+jSw3k8XXFmOyS6vMxUgPNqMWg=
+	t=1791803903; cv=none; b=jDbpVjqHcSpOzXamOJuzI4JM0bh4FngLq2vDaPEoIQpBcqMSrG1KiFN+KFtUdIV/umLNfDpw6F5oK3fkRFqrlwh6Ujxkts5ulyv5+76seG3mi/SlE2E1Ivr9DC/KQfpv3Rk1SGZg2ETNBX01Hs74M/xjpwKVFr7BDjNAjgZ1a5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791802733; c=relaxed/simple;
-	bh=zPyVaVyvhYNUOiedu3alkRsn6aUyZXSsiNQ7CI+e/Iw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=njGYne5HxMJGZFXpGtLGo9PctdEr/Lp6G4ePpLS4zeo83EQPkIc0eioxyuMGo59FFAGi54SOJRVz5i05kW4no+P1mlho7MDqA/NzTwTw+u5Em/PEmwbB3jpxZmG7+nr5dkXy0C4QBD0naT/NCCKVTUW0mxSfhwFRxceFevqEuoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=JkOPZfuk; arc=none smtp.client-ip=149.28.215.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
+	s=arc-20240116; t=1791803903; c=relaxed/simple;
+	bh=LQf0qk4sV6UDVR7RukePLilxROge+43Oc2FIzBgx+i0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CH7YV7fpDmlJ4pGL5Z4flVOfVTcJ2OQEHqTkrXYmyNxP98E8pZ6xc+Wi7NA3S7z4BNVyfIF8mkz04lJriAXaBDp7XGvMUC4ErpQ6RIIUyLKvNyTQ4toOKvprvKAIXdKqDEIKwAO2J51rAZr1v/gHTI0LNoT4hLL24K3QTBpV6es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ErmAX66L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="JkOPZfuk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
- h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
- Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
- s=fe-13eddc7e57; t=1791802725;
- bh=CBzU/DbFkPodcQIJtknJ/CiYh1KKMe/dU2qPgDfKfWI=;
- b=JkOPZfuk1IjJxo97QLId2WtT9Ov8Wc6nTcWRd9rHbj+Hq1IpoO8HovdfiSQqg2z7+M9VKMLL9
- 1Oe1y5OT2SXogivJXv2KaP8gZFQFNwKe3gTpALLMxwdP9A3+Dv7CFUUCnBVuzUqJjwTn6ImZJbC
- qBR2l5gbIXFgg8NxBCGN/2U=
-X-Forward-Email-ID: 6accbd61fe1a5e835a5ac2b7
-X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
- 149.28.215.223
-X-Forward-Email-Version: 2.18.4
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-Message-ID: <b8312d04-fc22-4d35-9e18-952ad7cf2ed1@ovn.org>
-Date: Mon, 12 Oct 2026 12:58:36 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ErmAX66L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029491F0089B;
+	Mon, 12 Oct 2026 11:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791803901;
+	bh=qERazqb8eyeXYj8ho8FOKcuAMRROCm/gPcydjpaESMU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ErmAX66LB/nMEV8t/vdKHp/n3oavbzTQvU1QCCOrJ0AWPzl+v+JrphP1B9zfOJ8FZ
+	 YRRK2j7y63Q2GHrQkwW4ZVYxOi2P7jQEUURI6YkxmWglYJlKjscvdZM+7h4VfiZax1
+	 qaD/XsBK4qDWBbKbYsIA2S796yadcZa8WhieXWUYwcvPyZkPVyNI6/VLsgWHJlAOQI
+	 yCh45CoBQfLQxjzqzWbOyKwQ8JM05rDjz239qZDiUjNB2P9b7x/hsjyV6wD1EvJT4R
+	 7riWw/aKQkWohGUBudOYh7onFsZl5kN87PFdgAbtj5CGUQ4cCJ5O+VGBYz8pSVicDU
+	 XFyXjwj5yYsEA==
+Subject: Re: [PATCH net-next 1/2] tcp: don't set window_clamp from SO_RCVBUF
+ before the socket is connected
+From: netdev-bot+sashiko@kernel.org
+To: jain.sm@gmail.com
+Cc: edumazet@kernel.org, ncardwell@google.com, kuba@kernel.org,
+ pabeni@redhat.com, davem@davemloft.net, kuniyu@google.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 12 Oct 2026 11:18:20 +0000
+Message-ID: <179180390054.434549.3187163637190599944@kernel.org>
+In-Reply-To: <20261011111606.14753-2-jain.sm@gmail.com>
+References: <20261011111606.14753-2-jain.sm@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] selftests: openvswitch: Test SET on later IPv6
- fragments
-To: Sahaj Chaudhari <sahaj123.sc@gmail.com>, netdev@vger.kernel.org
-Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dev@openvswitch.org,
- linux-kselftest@vger.kernel.org
-References: <20261012095000.3188473-1-sahaj123.sc@gmail.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20261012095000.3188473-1-sahaj123.sc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 10/12/26 11:50 AM, Sahaj Chaudhari wrote:
-> Send the crafted later fragment through OVS_PACKET_CMD_EXECUTE to preserve the unset transport-header path from the report. Set frag=2 in the action key and match DEBUG_NET warnings at the skb header check rather than a potentially inlined helper. Skip when CONFIG_DEBUG_NET cannot be confirmed and enable CONFIG_DEBUG_KERNEL in the OVS fragment. Drop the flow-counter assertion because its SET-action dump relies on broken formatting.
-> 
-> Link: https://lore.kernel.org/r/20261009090629.1694991-1-sahaj123.sc@gmail.com
-> Signed-off-by: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-> ---
->  .../testing/selftests/net/openvswitch/config  |  1 +
->  .../selftests/net/openvswitch/openvswitch.sh  | 33 ++++++++-------
->  .../selftests/net/openvswitch/ovs-dpctl.py    | 40 +++++++++++++++++++
->  .../net/openvswitch/ovs-ipv6-frag.py          | 27 ++++++++-----
->  4 files changed, 76 insertions(+), 25 deletions(-)
-Hi, Sahaj.  This patch is not formatted properly.  Please, read the
-documentation on how to format and submit patches before sending.
-Also, every new version must be a complete patch, not a diff with the
-previous one, which I believe, is also covered by the submitting patches
-guide in the docs.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-For the patch itself, I don't think it is worth adding 100 lines of test
-code for this specific issue.  If we do that for every one-liner fix, the
-kernel code will just explode in size.  If you have some thoughts on how
-to make a more generic test that would be useful not just for this one
-issue, but would cover a larger class of functionality that is not already
-covered, then we could consider that.  But as it is right now, I don't
-think we need such a narrow test.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-Best regards, Ilya Maximets.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The fix is incomplete.
+- [Medium] The commit message misstates and overstates the impact.
+
+--
+
+tcp: don't set window_clamp from SO_RCVBUF before the socket is connected
+
+This patch makes tcp_set_rcvbuf() skip the window_clamp update while the
+socket is in TCP_CLOSE or TCP_LISTEN. The aim is to stop a clamp derived
+from SO_RCVBUF from overriding the RTAX_WINDOW route metric in
+tcp_connect_init() and tcp_openreq_init_rwin().
+
+> tcp_connect_init() and tcp_openreq_init_rwin() treat a non-zero
+> window_clamp as a user clamp and, in that case, skip the route window
+> metric (RTAX_WINDOW, "ip route ... window N"). A clamp left behind by an
+> SO_RCVBUF call made before connect(), or on a listener, therefore
+> changes the window and window scale advertised in the SYN and SYN-ACK:
+> the route metric is no longer applied, and even without a route metric
+> the advertised window and scale come from SO_RCVBUF instead of the
+> defaults. This affects any application that sets SO_RCVBUF before
+> connect() or listen(), which is more common than using the route metric.
+
+[Severity: Medium]
+Is the part about the case without a route metric accurate?
+
+__sock_set_rcvbuf() always sets SOCK_RCVBUF_LOCK and then calls
+tcp_set_rcvbuf(sk, sk->sk_rcvbuf). On the old kernel, the clamp left
+behind is therefore tcp_win_from_space(sk, sk_rcvbuf), which equals
+tcp_full_space(), or SOCK_MIN_RCVBUF / 2 if that is larger.
+scaling_ratio cannot change before connect.
+
+With no RTAX_WINDOW metric, the patched kernel sees window_clamp == 0 and
+reads a zero metric. Then this block runs:
+
+net/ipv4/tcp_output.c:tcp_connect_init() {
+    ...
+	if (sk->sk_userlocks & SOCK_RCVBUF_LOCK &&
+	    (tp->window_clamp > tcp_full_space(sk) || tp->window_clamp == 0))
+		WRITE_ONCE(tp->window_clamp, tcp_full_space(sk));
+    ...
+}
+
+The old kernel reaches the same tcp_full_space() value through the
+"window_clamp > tcp_full_space(sk)" branch. tcp_openreq_init_rwin() does
+the same for req->rsk_window_clamp.
+
+Wouldn't both kernels then pass the same window_clamp to
+tcp_select_initial_window(), and advertise the same window and wscale in
+the SYN and SYN-ACK?
+
+If so, the visible change is limited to two cases:
+
+- routes with an RTAX_WINDOW metric
+- TCP_WINDOW_CLAMP followed by SO_RCVBUF on an unconnected socket or
+  listener, where SO_RCVBUF no longer overwrites the clamp
+
+The message does not mention the second case. Neither case is "any
+application that sets SO_RCVBUF before connect() or listen()".
+
+The message also seems to contradict itself further down:
+
+> The "after" values match a kernel with b025461303d8 reverted; with no
+> route metric the SYN window and scale are the defaults in both cases.
+
+In both cases, wouldn't the values come from SO_RCVBUF via
+tcp_full_space() rather than from the defaults?
+
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index f4c9101e5996..e523cb71b905 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -1858,6 +1858,14 @@ int tcp_set_rcvlowat(struct sock *sk, int val)
+>  
+>  void tcp_set_rcvbuf(struct sock *sk, int val)
+>  {
+> +	/* Without a connection there is no clamp to update: it is chosen
+> +	 * from the route's window metric and the buffer size when the
+> +	 * connection is set up, see tcp_connect_init() and
+> +	 * tcp_openreq_init_rwin().
+> +	 */
+> +	if ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN))
+> +		return;
+
+[Severity: High]
+Does this check cover every case where SO_RCVBUF is applied before
+tcp_connect_init() runs?
+
+tcp_v4_connect() and tcp_v6_connect() switch the socket to TCP_SYN_SENT
+before tcp_connect()->tcp_connect_init(). A clamp written in that gap
+still passes this check, and there seem to be two ways to get there.
+
+The first is TCP_FASTOPEN_CONNECT with a cached cookie, where connect()
+returns early:
+
+net/ipv4/tcp_ipv4.c:tcp_v4_connect() {
+    ...
+	tcp_set_state(sk, TCP_SYN_SENT);
+    ...
+	if (tcp_fastopen_defer_connect(sk, &err))
+		return err;
+    ...
+}
+
+If the application calls setsockopt(SO_RCVBUF) before its first write(),
+tcp_set_rcvbuf() sees TCP_SYN_SENT and stores a non-zero window_clamp.
+tcp_sendmsg_fastopen() later calls tcp_connect()->tcp_connect_init().
+
+The second is a sock_ops BPF program. tcp_connect() runs the callback
+before tcp_connect_init():
+
+net/ipv4/tcp_output.c:tcp_connect() {
+    ...
+	tcp_call_bpf(sk, BPF_SOCK_OPS_TCP_CONNECT_CB, 0, NULL);
+    ...
+	tcp_connect_init(sk);
+    ...
+}
+
+sol_socket_sockopt() allows SO_RCVBUF for bpf_setsockopt(). That call
+reaches __sock_set_rcvbuf()->tcp_set_rcvbuf() while the socket is in
+TCP_SYN_SENT. samples/bpf/tcp_bufs_kern.c, tcp_clamp_kern.c and
+tcp_iw_kern.c all use this pattern.
+
+In both cases tcp_connect_init() then skips the route metric:
+
+	if (!tp->window_clamp)
+		WRITE_ONCE(tp->window_clamp, dst_metric(dst, RTAX_WINDOW));
+
+The SOCK_RCVBUF_LOCK block afterwards can only lower the clamp to
+tcp_full_space().
+
+Doesn't that leave the b025461303d8 regression in place on these paths,
+even though this patch carries the Fixes: tag for it? The selftest in this
+series only covers SO_RCVBUF set before connect().
+
+Would it work to base the check on whether tcp_connect_init() has run yet?
+Another option would be to let tcp_connect_init() and
+tcp_openreq_init_rwin() tell a TCP_WINDOW_CLAMP value apart from one
+derived from sk_rcvbuf.
+
+> +
+>  	tcp_set_window_clamp(sk, tcp_win_from_space(sk, val));
+>  }
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011111606.14753-1-jain.sm%40gmail.com
