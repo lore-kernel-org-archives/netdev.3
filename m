@@ -1,62 +1,64 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1BB3BF695
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43774378823
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791786640; cv=none; b=boVEJbynCtK0jRxx15mS0hVyJWiG2BHeb4aqQ4QvTuY0IOeccDkDf+qpFnuP3OSl5hWMIy/Hzd+4YceFCiORtWSvnbvLD/e3BuDz6pH0k9meLWj1pcq7FoYqzjhq5BXhmbGvjMOyWCuGuS9oqowY1vvo1Q63ND6h5kgQD72vhz4=
+	t=1791786658; cv=none; b=LpNv/SiokbkAEo4soj0CC9yriUDbOJJbbUaoT9BndUi/iTCbPAdQsj/Axbe//xOAEIKMvqgoMqnhOi18BK9pQwX8W78erE6XADCWVu77eY405e1xrdPkfGmtI8Pw8UM+86aFvNdVkGmCEu+CLEHPHHq6Hax93OUKJKRX+++S/Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791786640; c=relaxed/simple;
-	bh=X/1pjwpB60sNcmBCCby0YPwVX4KJqgJkG6sqsXTh78o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pQqIprRjI0YBfXEFgjMMsirBq0ga5p3XwpZ2GcxY9eU1ZGfCjPKCYp0T9XjaKffSFdVOJRLRr6Gxaaf8DE2fS9chk61Fwh2pnR5FP+z+hIcbUeux/SCsdxKMgnOIcJeoe0+A68QK7Eh7Emfla0Im3Cc7BFot5wF4VQoKL4mfRvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izXmNVB4; arc=none smtp.client-ip=209.85.215.181
+	s=arc-20240116; t=1791786658; c=relaxed/simple;
+	bh=kqGYYmpnV7KlZAFQSkzh/nxBloiBLrcHvcWft9zEJB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q19OjPDS7gSh7H+SEzbg8l1LqhOZYc987VXpJkKwdF6szTQ78jnX71qDs8BcGNhSUnXa1hmacLjNKiqBdA4cWm0cli7cvM5GbgBzaVL+aPEax2ggytygqRtfKYITklPg4W+QVIlOrIDTYko4IYPtFNfyJcLTOYt7SoPB9QSGR10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CiAnYWeu; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izXmNVB4"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc4b62d118aso906577a12.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 23:30:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CiAnYWeu"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3a7fecf8440so679146a91.1
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 23:30:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791786637; x=1792391437; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WfFi2at/lgAH1/xbqXNWbCEaLwYnM/ZF1CQqtE9gXAU=;
-        b=izXmNVB4swda6S6DRAdkghF4IEGnsN9/QHh4NbLsEhjivEGLUBh1z/Og90rc+FEzaW
-         1IeEs4y6NqhxMSUKVpCr4EQlxKGjpzYCVrTWkBQyx0WC2bxXM9xfOxtDW58o6k3le7YV
-         YnMXyQ8nW3anCwsfXWmr8opGRTHZDkWbW//oiKow40XhSy7jNweyKSEodV7GFXrvimRI
-         8OgW+JF7MWNLqhll+fHioYCT+caZ49C1l6Gf8GkxuqI1VhoMSvdR1M7vGajuqKhc0IHH
-         H3rVobS7Le6npbDeRgQej4mdwKaHzVNgpihgQ+PZuo22ddVuE1w589yrljpbGu1z4CLt
-         TSwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791786637; x=1792391437;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1791786655; x=1792391455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=WfFi2at/lgAH1/xbqXNWbCEaLwYnM/ZF1CQqtE9gXAU=;
-        b=dY+EW/gjFnGqq7pfRruR8o6OAOTNcfAkafCrTBwMEtJQWMIgBvGKV+vC7qrJ1rGnrh
-         k+3a5r05Epb8VEPjBxljlqw3Hke5GWx15PAH6jm6nzeMHUouzK673eFRDHBDklmYJQKR
-         3U/jy40MC4Ofrze8gVTp1lCVAFUzbwaEo998Q2/oZTmbRny1t4uyggKni0fxeiupuith
-         zHBxTuL9tY5bN4GaWFnWJM7dXvn+GF0ZANJZAUM+aFch7jZOJTPkKxkcyRbmm6qFqJbh
-         bo+7SAnNUfSAWDbojzp4ia+BCNz6ddD8xQpYlW/Vtj181GlFy1teJN/l89ZIYkhqrLLo
-         OP3w==
-X-Gm-Message-State: AFq9FYJ3m/7GmVKz5B2Ku8HgF219xNXcE9oukzWXYz7xKGiiZFQMq14Q
-	vBvbvnHu+pnKvqQJuXEOsjkO6APXUocdxBE8W2rv+6V9VBV1Z/NlsV4b
-X-Gm-Gg: AYBFou2PiEWPu5FIgPySDYPFMqp1z4AF1F6kbKewFR1oEh0Fy9ne4QFaY3ykMcumCXG
-	MHZLrAVAS0dvR3zfcG8zRZZdj9SFGHiCrL88OyYZp5Aiio9BJ3ySW100mx3W7GMML57lM5tZeRG
-	BW+ek+kIo3E2l3Va6HueQemLwu9ch/6L0S1kMfH9UCTMk9JSmOAoDEVwQ9gBXDSz7OcIee1P0Mp
-	ER+D7ZtnWrDXyXksDJVKKu2zXzOTl+K4+0HoC34Y77lhyZ0bEaF9nzMFE/47NRXFBfKDmsldIga
-	Q9PfKd23pXM19DwmvSk0VlhRmSXleYmNjzCt/IHHS03+kFZAdo33ve02agCeQ+IHZspEucXzx4v
-	RQkDW43SWL0pgqUz9qHc0yR4fP/rmWW8cNgjDCokc3l+49MjAcfbKOgggujaqy4s72xVe++8R+G
-	1LxSw7+oEMTR8PnbMrenM2J3QPmQWUMkfqzuty7inR/Xbf4fUlMsXgea0o8934aZaCvsM9aAr6G
-	73fxv8FRYi9bW3CdXq9Y7TAI+XzajPm0TFDVlulcqBWLtdlN4RIWHeEJRNDF5lu634Tu3Zf3TPG
-	Qh+2w5yw1S2A7Q==
-X-Received: by 2002:a17:90b:5346:b0:3ab:235b:185b with SMTP id 98e67ed59e1d1-3ab3a77980emr6448875a91.31.1791786637261;
-        Sun, 11 Oct 2026 23:30:37 -0700 (PDT)
+        bh=seozyzMPcRgvoknCy8U1DFhAaYhZLfvbDoE5+Gd/ZQc=;
+        b=CiAnYWeuIz9YYTYmIx1sNeaosY/lFvJhdIRJP54oTkpMzLGqVV126bh7ynNXg9+8Dl
+         HjVWUVV2EJlQXbXz8RRExQ1RLt88SnzAUGccuKnRVJZtVkQJSUXiFLxBJLyD44L1NyFx
+         KZYuBTxi5hj5RZkftWAZAFa5CuJH+r10I7URTi7EId9dYsO8cgskWso+WmUTpkQfjyQr
+         U37EZ1d28yza7iFjp/HUm2f5KYaaX0761nkQH/H7nJRXauqezEiN1gNN7+bhnlfvDi2h
+         P3uhb2hyp/oZWhlfpHGeDmZodiVa1KEv23QKpdrzo2GAAzL2ZhVgvo45iV30NrQdXZLs
+         GuZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791786655; x=1792391455;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=seozyzMPcRgvoknCy8U1DFhAaYhZLfvbDoE5+Gd/ZQc=;
+        b=LeXCoqM6AZOyQ6DZw6HDacGsCU8r4ahzju6P9xl7BdyUIeLIakzhLJGkzFKX0TaUbg
+         +SfpFfGbQOBYuRPXGRt1KqjYBSon3P7u/3MNdzsfA+HsnaIwuLTNOhloEjMDnI+LjxvI
+         4WKOgCdakqXQIuQpIi4jWtIiJfkpyp+9Y8zUYTrzbhLTs8xju8mk3dsuTJy3pUjTcK0O
+         ghrtOHCpRRodyDKfjPHMRowQdrdYGHswivoeVgUp6BjO7zB1rs9swcpwyJ+5n58I1RpY
+         V5sHg03y6BUbJviMivYtl7OsLYtGDhtnlvNILCatVpGWou1mMQvEDgRxOV3mVI261Ica
+         scMg==
+X-Gm-Message-State: AFq9FYJxHvmmK+NJh0LCdqMUKoe/XSPYyfLshK0FZ1AnoKyKJASWOjBj
+	PCEVaimQ02gzEaAfm9YSgkAaWrgTrt4SJvtx/UO0RLw2QgBAd6nEiolV
+X-Gm-Gg: AYBFou0GKnrMKd/pvZnLEik8JvXYiuJ8bJvmzND/qyfOxe8HjPr4wOH9qPQ1oms4/kt
+	FHQkyBxfXPBRgEOzPHKdPU2ykgpasQe3mO+sJVKL+CW26jKbw4KKkS+k6uN79yj7Ey0W3Y+YyFz
+	3TtfFSvcg+HnRQez6uvdKL0AvDRLl22ExD/KeOz8CtDfBl7p5sPCCv4c+sqfjTGpLEJmkS4rfT0
+	kRA9qx9xVegE6RQOEFVd2EVG8nfja+zcO78Dv1fdMH/HBq7mOO8pJIRBKw5EGjoDyZRz0TwS9k2
+	WMIMbab/PShoNI8DcodjCIj2UNQHO5k91/e7AOXKiDa+zGWn0SkIE78Z3jHMOES8uNOvi6MXNKF
+	QIm4CiLj2DIATstKlw4x8mU8zQWUXo9V5UNytEDLteIG3eaKjsPnu8eQk1nvN9+4qwIpAmZh10v
+	HT2zUC53zSKY4tHgLqGY3JVXKs7yqrj7F4dXpRzugI1kygR2TxhVWDNOESQlUSvnaAyBGEsHFcS
+	O5QNgE+331l3d4P69IpzwIkv1vzQ32P/7O7twcU60ytkJ/jCiGkLmbXZ3AKY90j5TnT0j6ezoFo
+	WLk=
+X-Received: by 2002:a17:90b:3b84:b0:3aa:f4af:1e16 with SMTP id 98e67ed59e1d1-3ab3a4871e5mr6638806a91.7.1791786655244;
+        Sun, 11 Oct 2026 23:30:55 -0700 (PDT)
 Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab371c32cesm14452767a91.16.2026.10.11.23.30.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab371c32cesm14452767a91.16.2026.10.11.23.30.50
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 11 Oct 2026 23:30:36 -0700 (PDT)
+        Sun, 11 Oct 2026 23:30:54 -0700 (PDT)
 From: Tian Xun Ng <luckilystar08@gmail.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
@@ -74,10 +76,12 @@ Cc: netdev@vger.kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	Tian Xun Ng <tianxun.ng@bytedance.com>
-Subject: [PATCH iwl-net v4 0/2] idpf: destroy the vports on shutdown
-Date: Mon, 12 Oct 2026 14:30:25 +0800
-Message-ID: <20261012063027.27750-1-luckilystar08@gmail.com>
+Subject: [PATCH iwl-net v4 1/2] idpf: don't use the Tx timestamp trackers once removal has started
+Date: Mon, 12 Oct 2026 14:30:26 +0800
+Message-ID: <20261012063027.27750-2-luckilystar08@gmail.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261012063027.27750-1-luckilystar08@gmail.com>
+References: <20261012063027.27750-1-luckilystar08@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,71 +92,70 @@ Content-Transfer-Encoding: 8bit
 
 From: Tian Xun Ng <tianxun.ng@bytedance.com>
 
-On shutdown idpf shuts its virtchnl transaction manager down before the
-vports are torn down, so the device is never told that they are gone.
-Patch 2 keeps the mailbox up for that teardown, as remove already does,
-with a short timeout so that an unresponsive control plane cannot hold
-up a reboot for long. Doing so would expose shutdown to an existing
-remove-path race between the async PTP Tx timestamp callback and
-idpf_ptp_release(), which patch 1 closes first.
+On remove, idpf_vc_core_deinit() keeps the virtchnl transaction manager
+up until the vports have been torn down, so mbx_task keeps processing
+replies while idpf_ptp_release() frees the Tx timestamp trackers. An
+async VIRTCHNL2_OP_PTP_GET_VPORT_TX_TSTAMP reply handled in that window
+reaches idpf_ptp_get_tx_tstamp_async_handler(), which reads
+vport->tx_tstamp_caps and takes its lock after
+idpf_ptp_release_vport_tstamp() may already have freed it.
 
-An LLM coding assistant helped analyse the problem and draft the changes
-and their messages. Both patches carry an Assisted-by tag.
+Once IDPF_REMOVE_IN_PROG is set, wait for a mailbox task that may be
+running a callback before releasing anything, and make the Tx timestamp
+callback return when the bit is set. Matched replies to synchronous
+transactions are not affected, so the vport teardown still receives
+them; mbx_task is requeued straight away for that.
 
-Changes in v4:
-- New patch 1, closing the Tx timestamp callback race that Sashiko
-  pointed out on v3. It already affects remove; with patch 2 it would
-  also reach shutdown.
-- Patch 2: the Tx queue SW marker wait follows the same bail-out as the
-  mailbox transactions, so a control plane that acks DISABLE_QUEUES but
-  posts no markers costs one marker timeout instead of one per queue
-  (Emil).
-- Patch 2: the statistics task stops sending once IDPF_REMOVE_IN_PROG is
-  set (Emil).
-- Patch 2: the shutdown comment now says that a transaction already in
-  flight keeps its own timeout; bounding that would need support in
-  libie.
-- Not changed: if one teardown reply or Tx queue marker takes longer
-  than 500 ms, the rest of the teardown is skipped. On the tested PFs
-  the queue-related messages took at most 240 ms, and the slowest,
-  DEALLOC_VECTORS (about 300 ms), is sent last, after DESTROY_VPORT.
-  With the driver made to treat the first Tx queue marker as missing, so
-  that UNMAP_QUEUE_VECTOR, DESTROY_VPORT and DEALLOC_VECTORS were
-  skipped, 3 of 3 warm reboots were still clean on these devices. A
-  function reset as a fallback was patch 2 of v1; in our tests a
-  function reset on shutdown did not stop the faults, so it was dropped.
-  I can add one for when the timeout fires if that is preferred.
+The next patch sets IDPF_REMOVE_IN_PROG on shutdown too, which would
+otherwise expose shutdown to the same window.
 
-Testing, besides what patch 2 describes: W=1 builds of idpf and libie
-with allmodconfig and allyesconfig showed no new warnings after either
-patch. On one server, modprobe -r idpf and a reload completed without
-warnings or IOMMU faults. These devices do not support PTP, so the path
-that patch 1 changes was not exercised on hardware.
+Fixes: 1a49cf814fe1 ("idpf: add Tx timestamp flows")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c     | 12 +++++++++++-
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c |  3 ++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-Changes in v3:
-- No new flags: adapter->vc_xn_timeout_ms (60 s from probe) is lowered
-  to 500 ms on shutdown, and idpf_send_mb_msg() fails the rest at once
-  after a shortened transaction times out (Emil).
-- IDPF_REMOVE_IN_PROG is set before the service and event tasks are
-  cancelled (Emil); the comment and message no longer state that a reset
-  does not clear the vports (Emil).
-
-v3: https://lore.kernel.org/all/20261009032706.94324-1-luckilystar08@gmail.com/
-v2: https://lore.kernel.org/all/20261007055741.30629-1-luckilystar08@gmail.com/
-v1: https://lore.kernel.org/all/20260917105205.37561-1-luckilystar08@gmail.com/
-
-Tian Xun Ng (2):
-  idpf: don't use the Tx timestamp trackers once removal has started
-  idpf: keep the mailbox up while tearing down vports on shutdown
-
- drivers/net/ethernet/intel/idpf/idpf.h        |  3 +
- drivers/net/ethernet/intel/idpf/idpf_lib.c    |  3 +
- drivers/net/ethernet/intel/idpf/idpf_main.c   | 11 +++
- .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 68 ++++++++++++++++---
- .../net/ethernet/intel/idpf/idpf_virtchnl.h   |  1 +
- .../ethernet/intel/idpf/idpf_virtchnl_ptp.c   |  3 +-
- 6 files changed, 80 insertions(+), 9 deletions(-)
-
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 1caf52706..d0db60647 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -3204,8 +3204,18 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ 
+ 	/* Avoid transaction timeouts when called during reset */
+ 	remove_in_prog = test_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
+-	if (!remove_in_prog)
++	if (!remove_in_prog) {
+ 		libie_ctlq_xn_shutdown(adapter->xnm);
++	} else {
++		/* The transaction manager stays up for the teardown below, so
++		 * async replies can still arrive. Wait for a mailbox task that
++		 * may be running an async callback; callbacks that run later
++		 * see IDPF_REMOVE_IN_PROG and leave the state released below
++		 * alone.
++		 */
++		cancel_delayed_work_sync(&adapter->mbx_task);
++		queue_delayed_work(adapter->mbx_wq, &adapter->mbx_task, 0);
++	}
+ 
+ 	idpf_ptp_release(adapter);
+ 	idpf_deinit_task(adapter);
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+index 14dba40a9..1422b30d0 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl_ptp.c
+@@ -550,7 +550,8 @@ idpf_ptp_get_tx_tstamp_async_handler(void *ctx, struct kvec *mem, int status)
+ 	u16 num_latches;
+ 	u32 vport_id;
+ 
+-	if (status)
++	/* The Tx timestamp trackers are released on remove and shutdown */
++	if (status || test_bit(IDPF_REMOVE_IN_PROG, adapter->flags))
+ 		return;
+ 
+ 	recv_tx_tstamp_msg = mem->iov_base;
 -- 
 2.50.1 (Apple Git-155)
 
