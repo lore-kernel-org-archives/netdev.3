@@ -1,430 +1,364 @@
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from smtp.forwardemail.net (smtp.forwardemail.net [149.28.215.223])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39D9417BFE
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B36B3D47C2
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=149.28.215.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791843323; cv=none; b=IEHcPGylZBNeWqEm+xoWRFHvSIGZj2H8gUiKoNwEsmVvP0RqoDgf+YCnen814ugpIiU3x+gzSyX8zUURcKYzoB9IpEl5sZ3/MmTCjy8a7RA8PjsbzGRuZ6MduNza13kHGbtUpPIP7E3uKwbq4jeRiXqp9rJTsIM/28PaYbW6ZwI=
+	t=1791843396; cv=none; b=Yw8h49FmhfFiyvcxJ024LhGomaotuJswGrHwewmyK1992ZpPJHhXGl3vuPgr2TdippeX3ZClew7+QGLvMmwLbx76c20hdWAO7/VM/xHJr0zx26AoBSARAynHfqA9fdpl6asI0WKPlKOw++M5xWPWZPwhbjTv2FfOMJHiF89atro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791843323; c=relaxed/simple;
-	bh=KLLHBkwffB4FH6eWApevsbF2omxVdj0foutoIwY7pjs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HK9BsecMNNMLv589ki9sPZiBNDpyUgy1fwnIK4wtDF4yQ0ymdByViNgJf+Qcg9ipuQ4VLz4is37uctbnU/rbBUb/1w/YDjjiXKUl+YdKJlbkA9vw/DHjLnH/uudTzTsl02ysnU8vfFfx/5xrEndwKGwWxKc8KiKw413a41iU98s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FwcOyC4r; arc=none smtp.client-ip=74.125.82.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791843396; c=relaxed/simple;
+	bh=xi3n5MbOVU2PADP4sNxZy7npriMtRthKGdvBZZbb5bI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CIQgdoodPFWCchLCTpPOQBS+DfMf8cdGfjHxa+4EjuRpq7KTTUSQU/+sGNcvG+BDnw+J3PPrQYZovcGUGVPsvxb8OOwD0OKCnFdYLg394zbxuWiz4eK0LdrIXVfheAooCxZwdjH1d1bGoS04z3TiyhO0mB+74PqCW1z2qVFez5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org; dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b=UlbpfNUL; arc=none smtp.client-ip=149.28.215.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.ovn.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FwcOyC4r"
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-15ea896ddc8so3300856c88.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:15:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791843321; x=1792448121; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TtcIhJO+YxSdNgQJHhkhykF/808DucRHJuxBcDn/sJE=;
-        b=FwcOyC4r2zM0nTFm3RZzLw6bN0drRBs5TEhVwL7KMI1JIgPctwRk6gVBsDtdy5ZsTb
-         pzoNvRrgfZjDG0f7/yfN9C6WUIEix+adUvOdSndCWeF7iHlu/cuDUPhPLRbu+ITQlu5+
-         O3jfDmg0wSWxH59br88U/3KBlOuDpVgEcZDxgsoHXVVRCRWuPXhACxnyE0OTiaiM1q+n
-         4bF0QJ+mju3f+N5rCJHol9osnXa88FL5TOFiNebtRE3de3DHKnuq4cm/fwPn9+BwkpCe
-         81FEanoKGfP5vMD9ua+fYJGzfojEeKtU5jDqeCN/uiYI7eFLXeTdv0Nz+G37bVHDwnbb
-         pLaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791843321; x=1792448121;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TtcIhJO+YxSdNgQJHhkhykF/808DucRHJuxBcDn/sJE=;
-        b=b91O73l5tzzo2/XQTkCGREsnYBp9KOWriPrTNPeEGUWgzt+N+YrzLPItyU04uLv9n6
-         M3rVfMGzmfig0MGOP68dZlxekODQHIGcXBa/7L9Z14yHzl4iUSgOLUFWOv0F4oWbInoM
-         k2XCGYBkwCpTTsVAY9qtHXp4e5ttsK4Us1tH5hPCNhBetu3fYwFADPjHXsA9vqvb+SBP
-         VCfGBkqmhj3MdPOF5REozYZCIqwg3BgtDxr84m1oINEZ5LM1ilctdVp922txdAzB3uOf
-         7XQY5rVzAAL3b3Jbo0UCL1hGnqgEzpLCFHdEIs8QUzm6ou7MWw2YsxadsUNFqTpvIRQe
-         62jA==
-X-Forwarded-Encrypted: i=1; AKwUvBz7wxOSMVkaz29V9Yvzk/w39L3gf5tEFZuiqv1AemiW4JFVPRn3NQrVGFaTUwHQYvx8iZE3juY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ2cM7b74UUrYGLe6bx6aM0oqklUoOqASMPCplZ18bXaWn8HiBl
-	XNPvzfeoUURb8hYQ0BkarxVOfDP0decCFTrb95NzBuTjo7h6uJ6mAO/XJfblKQ==
-X-Gm-Gg: AYBFou1Vr3Ug9O9oJVhllYSW1zCfXwgxvwDrjjYg5DKf9i9NScYMfv/JpooNPUGjvv1
-	b2lw6jkE+Y/ELTDUq+6FDfAQ9o8u7RFGIZca+TRfzDSG8t3YFhmvGsV7azq6y9TnUIA5T5eXkVr
-	BTcIz5jCBv9byE7g4e5Mo6IddhylFRB67s75p6UfxXmjWDR2ZwJrQyaFH34yzCOR15enk9pwy3D
-	ZvNSGLsUdNbd98rQV1f5RJ3LgAvaqWKUDA/LIHloOzySY5vcrirjPjsfu3pa6wROGcAXml5RZ9j
-	0AuRWVTjfLXGz7C77xZ7ndLQ2s0EIAEmpIL8CsqAwikJ8r5Eg+1MiNDolCpZ/gnyRWqp4dvLShG
-	q4aLTAmREifavz8GqwBVd4cUU+uOsHwqtLe4IxHBP0JBSCHzbOygRRvM0LbpSC2P/GpOHTsrHdY
-	eYL5jVItSW9ko1jruhJcuBveIP+wXcwDeSCBOF9gD1QB/uT6QyfhwmLMO5fqQlIDQPW7gKKijL9
-	PxKQy5HV5+hNxa8qXY=
-X-Received: by 2002:a05:701b:21db:b0:166:29a2:f83f with SMTP id a92af1059eb24-16a56ab04e9mr15192436c88.5.1791843320773;
-        Mon, 12 Oct 2026 15:15:20 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:1::])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a4429603sm31302727c88.17.2026.10.12.15.15.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 15:15:19 -0700 (PDT)
-Date: Mon, 12 Oct 2026 15:15:15 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com,
-	jasowangio@gmail.com, eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/5] vsock/virtio: amortize RX socket locking
- for stream packets
-Message-ID: <as1b8+vIy8K8J5cN@devvm29614.prn0.facebook.com>
-References: <20261010142247.99223-1-physicalmtea@gmail.com>
- <20261010142247.99223-3-physicalmtea@gmail.com>
+	dkim=pass (1024-bit key) header.d=ovn.org header.i=@ovn.org header.b="UlbpfNUL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovn.org;
+ h=Content-Transfer-Encoding: Content-Type: In-Reply-To: From: References:
+ Cc: To: Subject: MIME-Version: Date: Message-ID; q=dns/txt;
+ s=fe-13eddc7e57; t=1791843394;
+ bh=wchQfqcyrBVL2nr5RpKL0fHh6Mylhy+Px8EJFVPf+6k=;
+ b=UlbpfNULN4+aYjs1luRA0AGHtXXm1Q9JmMSF/vpjb27bDldyeknsCfn/KveeexpIuvjBrYwY1
+ ouMT40PhAdNwIWMQ0gOeCnNWOLQS2U7JkduIkeyjj86k0wtwV7zU17opVZaF7AxYHMXzoZhgYUL
+ 4+XeE/yUZIyWIvxRDRr2/wg=
+X-Forward-Email-ID: 6acd5c3bc497634d444505bf
+X-Forward-Email-Sender: rfc822; i.maximets@ovn.org, smtp.forwardemail.net,
+ 149.28.215.223
+X-Forward-Email-Version: 2.18.4
+X-Forward-Email-Website: https://forwardemail.net
+X-Complaints-To: abuse@forwardemail.net
+X-Report-Abuse: abuse@forwardemail.net
+X-Report-Abuse-To: abuse@forwardemail.net
+Message-ID: <d4fc14f3-4308-4560-9012-43c09c1b3845@ovn.org>
+Date: Tue, 13 Oct 2026 00:16:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261010142247.99223-3-physicalmtea@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: openvswitch: do not set transport header
+ on later IPv4 fragments
+To: Fernando Fernandez Mancera <fmancera@suse.de>,
+ netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, dev@openvswitch.org, joe@wand.net.nz,
+ horms@kernel.org, pabeni@redhat.com, kuba@kernel.org, edumazet@kernel.org,
+ davem@davemloft.net, i.maximets@ovn.org, echaudro@redhat.com,
+ aconole@redhat.com
+References: <20261005150831.4831-1-fmancera@suse.de>
+ <179142893147.434549.15118225602165856295@kernel.org>
+ <b877c0b9-1e1e-4860-b35a-9a27524bea3e@suse.de>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <b877c0b9-1e1e-4860-b35a-9a27524bea3e@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 10, 2026 at 10:22:44PM +0800, Jia Jia wrote:
-> The virtio-vsock RX worker currently acquires and releases the socket lock
-> for every received packet. Keep the lock held while processing a bounded
-> run of packets that belongs to the same socket.
+On 10/8/26 2:24 PM, Fernando Fernandez Mancera wrote:
+> Hi all,
 > 
-> Only ordinary RW packets for an established STREAM socket whose transport
-> and protocol remain unchanged are eligible. Control packets, SEQPACKET
-> traffic, state or transport changes, malformed packets, and sockets whose
-> protocol has been replaced end the active batch and retain their existing
-> handling.
+> I have reviewed both comments, please see my reply below.
 > 
-> Serialize the initial eligibility check with sk_callback_lock because
-> sockmap removal restores the protocol without taking the socket lock.
+> On 10/8/26 5:08 AM, netdev-bot+sashiko@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential
+>> issue(s) to consider.
+>>
+>> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+>>
+>> If you believe none of the issues are legitimate, please reply to each
+>> issue of Medium severity or higher and explain why the AI is wrong.
+>> If any of them are legitimate and you plan to respin, please let patchwork
+>> know by including "pw-bot: cr" as a separate line at the end of your reply
+>> (one such reply per series is enough).
+>>
+>> - [Medium] The patch changes check_iphdr() (net/openvswitch/flow.c) so
+>>    that it no longer sets skb->transport_header for IPv4 later fragments…
+>>
+>> Pre-existing issues:
+>> - [Medium] set_sctp() (net/openvswitch/actions.c) still runs on
+>>    OVS_FRAG_TYPE_FIRST fragments of IPv4 and IPv6 SCTP packets.
+>>
+>> --
+>>
+>> net: openvswitch: do not set transport header on later IPv4 fragments
+>>
+>> The patch stops check_iphdr() from setting the transport header on IPv4
+>> later fragments. It also moves the fragment offset check in
+>> update_ip_l4_checksum() before the transport offset is read. Finally, it
+>> adds OVS_FRAG_TYPE_LATER guards to set_tcp(), set_udp() and set_sctp() so
+>> these actions no longer corrupt fragment pajesuly martillo y cincelyloads.
+>>
+>> Link: https://lore.kernel.org/netdev/59d32c37-6151-4649-97bf-bad050dc3f13@ovn.org/
+>>
+>>> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+>>> index dc5ff859f1145..8556a5a74ccd0 100644
+>>> --- a/net/openvswitch/actions.c
+>>> +++ b/net/openvswitch/actions.c
+>>
+>> [ ... ]
+>>
+>>> @@ -658,11 +666,16 @@ static int set_sctp(struct sk_buff *skb, struct sw_flow_key *flow_key,
+>>>   		    const struct ovs_key_sctp *key,
+>>>   		    const struct ovs_key_sctp *mask)
+>>>   {
+>>> -	unsigned int sctphoff = skb_transport_offset(skb);
+>>> -	struct sctphdr *sh;
+>>>   	__le32 old_correct_csum, new_csum, old_csum;
+>>> +	unsigned int sctphoff;
+>>> +	struct sctphdr *sh;
+>>>   	int err;
+>>>   
+>>> +	if (flow_key->ip.frag == OVS_FRAG_TYPE_LATER)
+>>> +		return 0;
+>>> +
+>>
+>> [Severity: Medium]
+>> This is a pre-existing issue and was not introduced by this patch. Even
+>> so, set_sctp() still runs on OVS_FRAG_TYPE_FIRST fragments of both IPv4
+>> and IPv6 SCTP packets.
+>>
+>> key_extract_l3l4() marks a fragment at offset 0 with IP_MF set as FIRST:
+>>
+>> net/openvswitch/flow.c:key_extract_l3l4() {
+>>      ...
+>> 		if (nh->frag_off & htons(IP_MF) ||
+>> 			skb_shinfo(skb)->gso_type & SKB_GSO_UDP)
+>> 			key->ip.frag = OVS_FRAG_TYPE_FIRST;
+>>      ...
+>> }
+>>
+>> For OVS_KEY_ATTR_SCTP, validate_set() checks only eth_type and
+>> ip.proto == IPPROTO_SCTP, so it accepts the action for such a flow.
+>>
+>> set_sctp() then computes old_correct_csum and new_csum with
+>> sctp_compute_cksum(). That function covers only this fragment's bytes:
+>>
+>> include/net/sctp/checksum.h:sctp_compute_cksum() {
+>>      ...
+>> 	new = ~skb_crc32c(skb, offset, skb->len - offset, ~0);
+>>      ...
+>> }
+>>
+>> How much a CRC32c changes depends on how many bytes follow the changed
+>> bytes. Does that make this result wrong for the reassembled datagram?
+>>
+>> 	sh->checksum = old_csum ^ old_correct_csum ^ new_csum;
+>>
+>> If so, the receiver would drop the reassembled packet. After this patch,
+>> port rewrites on fragmented SCTP flows seem to remain broken end to end.
+>> Only the corruption of later fragment payloads is fixed.
+>>
 > 
-> Limit each batch to 64 packets or 64KB of payload, bounding the work under
-> one socket lock. Keep the lookup reference until the batch finishes.
-> 
-> Keep a batch only while another skb metadata charge fits in the receive
-> buffer. Share this predicate with virtio_transport_inc_rx_pkt(). When an
-> enqueued skb consumes the final metadata slot, finish the batch and release
-> the socket lock before processing another packet, restoring the reader's
-> scheduling opportunity from the per-packet path.
-> 
-> The virtqueue callback remains a queue_work() callback. Batching runs only
-> in the process-context RX worker.
-> 
-> Introduce virtio_transport_rx_batch_finish() to tear down the batch and
-> release the socket lock and lookup reference.
-> 
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> ---
->  include/linux/virtio_vsock.h            |  11 ++
->  net/vmw_vsock/virtio_transport.c        |  29 ++++-
->  net/vmw_vsock/virtio_transport_common.c | 147 +++++++++++++++++++++++-
->  3 files changed, 183 insertions(+), 4 deletions(-)
-> 
-> diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-> index f91704731057..26dde6909c4e 100644
-> --- a/include/linux/virtio_vsock.h
-> +++ b/include/linux/virtio_vsock.h
-> @@ -282,6 +282,17 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
->  
->  void virtio_transport_recv_pkt(struct virtio_transport *t,
->  			       struct sk_buff *skb, struct net *net);
-> +
-> +struct virtio_transport_rx_batch {
-> +	struct sock *sk;
-> +	unsigned int pkts;
-> +	size_t bytes;
-> +};
-> +
-> +void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-> +				     struct sk_buff *skb, struct net *net,
-> +				     struct virtio_transport_rx_batch *batch);
-> +void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch);
->  void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
->  u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
->  void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
-> diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> index 4f9aa9c4c3aa..ef076732158d 100644
-> --- a/net/vmw_vsock/virtio_transport.c
-> +++ b/net/vmw_vsock/virtio_transport.c
-> @@ -629,8 +629,16 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
->  	return seqpacket_allow;
->  }
->  
-> +/*
-> + * Keep a bounded run of packets for one socket under a single socket lock.
-> + * Limit packet count and payload size to bound the work done while locked.
-> + */
-> +#define VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS	64
-> +#define VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES	(64 * 1024)
+> I think this feedback is correct but I don't see a possible solution 
+> other than reassembling the whole packet. Not sure how common fragmented 
+> SCTP traffic is..
 
-Why both? Seems like MAX_PKTS would sufficiently bound the lock hold
-time.
+AFAIU the RFC, SCTP does it's own PMTUD and fragments the DATA chunks
+inside of it based on path MTU.  So, IP fragmentation only comes into
+play when effective path MTU changes after the discovery and the nodes
+have to re-fragment in transit.  I hope, that means that IP-fragmented
+SCTP should not be very common in practice.
 
-> +
->  static void virtio_transport_rx_work(struct work_struct *work)
->  {
-> +	struct virtio_transport_rx_batch batch = {};
->  	struct virtio_vsock *vsock =
->  		container_of(work, struct virtio_vsock, rx_work);
->  	struct virtqueue *vq;
-> @@ -666,6 +674,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  			/* Drop short/long packets */
->  			if (unlikely(len < sizeof(*hdr) ||
->  				     len > virtio_vsock_skb_len(skb))) {
-> +				virtio_transport_rx_batch_finish(&batch);
->  				kfree_skb(skb);
->  				continue;
->  			}
-> @@ -673,6 +682,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  			hdr = virtio_vsock_hdr(skb);
->  			payload_len = le32_to_cpu(hdr->len);
->  			if (unlikely(payload_len > len - sizeof(*hdr))) {
-> +				virtio_transport_rx_batch_finish(&batch);
->  				kfree_skb(skb);
->  				continue;
->  			}
-> @@ -680,16 +690,33 @@ static void virtio_transport_rx_work(struct work_struct *work)
->  			if (payload_len)
->  				virtio_vsock_skb_put(skb, payload_len);
->  
-> +			if (batch.sk &&
-> +			    payload_len > VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES -
-> +					  batch.bytes) {
-> +				virtio_transport_rx_batch_finish(&batch);
-> +			}
-> +
->  			virtio_transport_deliver_tap_pkt(skb);
->  
->  			/* Force virtio-transport into global mode since it
->  			 * does not yet support local-mode namespacing.
->  			 */
-> -			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
-> +			virtio_transport_recv_pkt_batch(&virtio_transport, skb, NULL,
-> +							&batch);
-> +
-> +			if (batch.sk) {
-> +				batch.pkts++;
-> +				batch.bytes += payload_len;
-> +				if (batch.pkts >= VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS ||
-> +				    batch.bytes >= VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES) {
-> +					virtio_transport_rx_batch_finish(&batch);
+> but maybe we can just return an error for fragmented 
+> traffic and document it for SCTP. Any opinion?
 
-I'm not fundamentally opposed to the batch struct, but I wonder if its
-needed? If we can get rid of BATCH_MAX_BYTES, then we only need to do
-pkts++ in a local var, and can pass an &sk ptr-ptr to
-virtio_transport_recv_pkt_batch()?
+In general, I'd say we should not allow the actions be installed for
+the flow that doesn't ensure that the headers exist and it is safe to
+update them.  I.e. flows that allow TCP/UDP later fragments should not
+be allowed to have set(tcp/udp) actions and flows that allow any type
+of IP-fragmented SCTP should not be allowed to have set(sctp) actions.
 
-Best,
-Bobby
+This aligns with the base assumption of openvswitch module that if the
+actions are being executed, they must be safe.
 
-> +				}
-> +			}
->  		}
->  	} while (!virtqueue_enable_cb(vq));
->  
->  out:
-> +	virtio_transport_rx_batch_finish(&batch);
->  	if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
->  		virtio_vsock_rx_fill(vsock);
->  out_nofill:
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index e3e75e59896f..a73e37b3fa62 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -576,10 +576,16 @@ virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs,
->  	skb_queue_splice(&new_queue, &vvs->rx_queue);
->  }
->  
-> +static bool
-> +virtio_transport_rx_skb_has_headroom(struct virtio_vsock_sock *vvs)
-> +{
-> +	return (u64)(skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0) <=
-> +		vvs->buf_alloc;
-> +}
-> +
->  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->  					u32 len)
->  {
-> -	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->  
->  	/* Allow at most buf_alloc * 2 total budget (payload + overhead),
->  	 * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
-> @@ -588,7 +594,7 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->  	 * queue growth.
->  	 */
->  	if ((u64)vvs->buf_used + len > vvs->buf_alloc ||
-> -	    skb_overhead > vvs->buf_alloc)
-> +	    !virtio_transport_rx_skb_has_headroom(vvs))
->  		return false;
->  
->  	vvs->rx_bytes += len;
-> @@ -1834,10 +1840,28 @@ struct virtio_transport_rx_pkt_ctx {
->  	struct net *net;
->  	const struct sockaddr_vm *src;
->  	const struct sockaddr_vm *dst;
-> +	bool *batchable;
->  };
->  
-> +static bool
-> +virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
-> +				    struct sock *sk)
-> +{
-> +	struct vsock_sock *vsk = vsock_sk(sk);
-> +	struct virtio_vsock_sock *vvs = vsk->trans;
-> +
-> +	return sk->sk_state == TCP_ESTABLISHED &&
-> +	       sk->sk_type == SOCK_STREAM &&
-> +	       READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
-> +	       !sock_flag(sk, SOCK_DONE) &&
-> +	       vsk->transport == &t->transport &&
-> +	       vvs && virtio_transport_rx_skb_has_headroom(vvs);
-> +}
-> +
->  /*
-> - * The caller holds sk's socket lock and must free skb if this returns true.
-> + * The caller holds sk's socket lock.  Set @batchable if the socket can remain
-> + * locked for another ordinary STREAM/RW packet.  Return true if the caller
-> + * must free @skb.
->   */
->  static bool
->  virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-> @@ -1850,6 +1874,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->  	struct net *net = ctx->net;
->  	bool space_available;
->  
-> +	if (ctx->batchable)
-> +		*ctx->batchable = false;
-> +
->  	/* Check after acquiring the socket lock. Listener sockets accept packets
->  	 * from any source and are not assigned to a transport.
->  	 */
-> @@ -1891,6 +1918,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
->  		break;
->  	}
->  
-> +	if (ctx->batchable)
-> +		*ctx->batchable = virtio_transport_recv_pkt_batchable(t, sk);
-> +
->  	return false;
->  }
->  
-> @@ -1941,6 +1971,117 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->  }
->  EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
->  
-> +/*
-> + * Finish the RX batch.
-> + * For a non-empty batch, the caller must hold the socket lock acquired with
-> + * lock_sock(). This function releases the lock and the batch's lookup
-> + * reference.
-> + * An empty batch is a no-op.
-> + */
-> +void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
-> +{
-> +	struct sock *sk = batch->sk;
-> +
-> +	batch->sk = NULL;
-> +	batch->pkts = 0;
-> +	batch->bytes = 0;
-> +
-> +	if (!sk)
-> +		return;
-> +
-> +	release_sock(sk);
-> +	sock_put(sk);
-> +}
-> +EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
-> +
-> +void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-> +				     struct sk_buff *skb, struct net *net,
-> +				     struct virtio_transport_rx_batch *batch)
-> +{
-> +	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> +	struct virtio_transport_rx_pkt_ctx ctx;
-> +	struct sockaddr_vm src, dst;
-> +	bool batchable, start_batch;
-> +	struct sock *sk;
-> +	bool free_pkt;
-> +
-> +	/* Only STREAM/RW packets can share a socket lock. */
-> +	if (le16_to_cpu(hdr->type) != VIRTIO_VSOCK_TYPE_STREAM ||
-> +	    le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW) {
-> +		virtio_transport_rx_batch_finish(batch);
-> +		virtio_transport_recv_pkt(t, skb, net);
-> +		return;
-> +	}
-> +
-> +	virtio_transport_recv_pkt_init_addrs(skb, &src, &dst);
-> +	virtio_transport_trace_recv_pkt(skb, &src, &dst);
-> +
-> +	sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
-> +	if (!sk) {
-> +		virtio_transport_rx_batch_finish(batch);
-> +		(void)virtio_transport_reset_no_sock(t, skb, net);
-> +		kfree_skb(skb);
-> +		return;
-> +	}
-> +
-> +	if (!skb_set_owner_sk_safe(skb, sk)) {
-> +		WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-> +		virtio_transport_rx_batch_finish(batch);
-> +		kfree_skb(skb);
-> +		return;
-> +	}
-> +
-> +	if (batch->sk && batch->sk != sk) {
-> +		/* Never acquire a second socket lock. */
-> +		virtio_transport_rx_batch_finish(batch);
-> +	}
-> +
-> +	if (batch->sk == sk) {
-> +		/* Keep the batch reference; drop this packet's lookup reference. */
-> +		sock_put(sk);
-> +		ctx = (struct virtio_transport_rx_pkt_ctx) {
-> +			.net = net,
-> +			.src = &src,
-> +			.dst = &dst,
-> +			.batchable = &batchable,
-> +		};
-> +		free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
-> +		if (!batchable)
-> +			virtio_transport_rx_batch_finish(batch);
-> +		if (free_pkt)
-> +			kfree_skb(skb);
-> +		return;
-> +	}
-> +
-> +	lock_sock(sk);
-> +	/*
-> +	 * Sockmap removal restores the native protocol under sk_callback_lock.
-> +	 * Serialize this initial eligibility check with that update.
-> +	 */
-> +	read_lock_bh(&sk->sk_callback_lock);
-> +	start_batch = virtio_transport_recv_pkt_batchable(t, sk);
-> +	read_unlock_bh(&sk->sk_callback_lock);
-> +
-> +	ctx = (struct virtio_transport_rx_pkt_ctx) {
-> +		.net = net,
-> +		.src = &src,
-> +		.dst = &dst,
-> +		.batchable = start_batch ? &batchable : NULL,
-> +	};
-> +	free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
-> +	if (start_batch && batchable) {
-> +		/* Keep the lookup reference until the batch is released. */
-> +		batch->sk = sk;
-> +		return;
-> +	}
-> +
-> +	release_sock(sk);
-> +	sock_put(sk);
-> +	if (free_pkt)
-> +		kfree_skb(skb);
-> +}
-> +EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt_batch);
-> +
->  /* Remove skbs found in a queue that have a vsk that matches.
->   *
->   * Each skb is freed.
-> -- 
-> 2.34.1
+The way to achieve that is to reject such flows inside validate_set().
+
+While, I'm sure, sashiko would complain about uAPI, this should not
+affect existing OVS users, as ovs-vswitchd always has an exact match
+on the fragmentation bits.
+
+However, validate_set() currently doesn't get the mask, only the masked
+key.  Which means we can't distinguish a flow that exactly matches on
+the OVS_FRAG_TYPE_NONE, from the one that doesn't match on the ip.frag
+at all.  So, we'd need to provide that mask (either a full mask struct
+or specifically the frag_mask), wiring it through the call stack, which
+is not nice.  And also kind of misaligned with the fact that we're
+passing down the masked key.  So, I'm not sure.
+
+For now we may just do what your patch is doing for TCP and UDP, which
+is return zero and just ignore the action this way.  This is safe for
+TCP/UDP.
+
+For SCTP, I agree, if we're not rejecting the flow in the first place,
+then returning an error and dropping the packet might be reasonable
+as we can't actually update the checksum for any type of an IP-fragment.
+
+Note: there are might be some issues with the way the SCTP checksum
+is calculated in general, as it does not seem to take into account L2
+padding or CHECKSUM_PARTIAL/COMPLETE.
+
+> 
+> In any case, that is out of scope for this patch. I will write a script 
+> to test this actually and find out what are the consequences.
+> 
+>>>   	err = skb_ensure_writable(skb, sctphoff + sizeof(struct sctphdr));
+>>>   	if (unlikely(err))
+>>>   		return err;
+>>> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
+>>> index 1c4f3a0790443..52cc63837445b 100644
+>>> --- a/net/openvswitch/flow.c
+>>> +++ b/net/openvswitch/flow.c
+>>
+>> [ ... ]
+>>
+>>> @@ -201,7 +202,10 @@ static int check_iphdr(struct sk_buff *skb)
+>>>   		     skb->len < nh_ofs + ip_len))
+>>>   		return -EINVAL;
+>>>   
+>>> -	skb_set_transport_header(skb, nh_ofs + ip_len);
+>>> +	nh = ip_hdr(skb);
+>>> +	if (!(nh->frag_off & htons(IP_OFFSET)))
+>>> +		skb_set_transport_header(skb, nh_ofs + ip_len);
+>>> +
+>>
+>> [Severity: Medium]
+>> With this change, an IPv4 later fragment leaves the OVS datapath with
+>> the transport_header it arrived with:
+>>
+>> - On the normal RX path it is the network header, because
+>>    __netif_receive_skb_core() resets it.
+>> - With CONFIG_DEBUG_NET, or for packets built through
+>>    OVS_PACKET_CMD_EXECUTE, it is unset (~0).
+>>
+>> Before this patch it always pointed just past the IP header, as
+>> ip_rcv_core() and ip_frag_next() do.
+>>
+>> The commit message says:
+>>
+>>      That is only safe if no later code relies on it.
+>>
+>> Is there code that runs after OVS and does rely on it? One example is
+>> mlx5e_skb_l3_header_offset() in
+>> drivers/net/ethernet/mellanox/mlx5/core/en_tx.c:
+>>
+>> 	if (skb_transport_header_was_set(skb))
+>> 		return skb_transport_offset(skb);
+>> 	else
+>> 		return mlx5e_skb_l2_header_offset(skb);
+>>
+>> With tx_min_inline_mode == MLX5_INLINE_MODE_IP, mlx5e_calc_min_inline()
+>> used to inline L2 and L3 for these fragments. It now seems to inline only
+>> L2.
+>>
+>> That mode is forced on a DSCP trust port by
+>> mlx5e_trust_update_tx_min_inline_mode():
+>>
+>> 	if (trust_state == MLX5_QPTS_TRUST_DSCP &&
+>> 	    params->tx_min_inline_mode == MLX5_INLINE_MODE_L2)
+>> 		params->tx_min_inline_mode = MLX5_INLINE_MODE_IP;
+>>
+>> Could later fragments then be classified into a different traffic class
+>> than the first fragment of the same datagram?
+>>
+>> The new OVS_FRAG_TYPE_LATER guards in set_tcp(), set_udp() and set_sctp()
+>> appear to fix the payload corruption on their own. Only the reorder in
+>> update_ip_l4_checksum() depends on this check_iphdr() change. Is the
+>> change needed for the fix?
+> 
+> I can split the changes if needed but I would put them together anyway, 
+> the check on set_tcp() and other variants is something I found while 
+> writing the check_iphdr() change. What is the preference in this situation?
+> 
+> I can send a series of patches including the SCTP issue mentioned above.
+
+I'd say the issue with set_tcp/udp/sctp and the check_iphdr() one
+are a bit different, I'd suggest splitting in two patches.  The
+set_tcp/udp/sctp shouldn't cause any serious issues since the write
+is contained within the skb itself, so it may still be fine to have
+it in net-next only even though it is sort of a bug fix.  I haven't
+seen issues related to in in real world.  Also, because ovs-vswitchd
+always has an exact mask on the fragmentation bits and it will never
+produce an action that modifies L4 for the later fragment.
+
+It may however produce SCTP port modification for the first fragment,
+which I'll need to address in userspace as well.  But it is still a
+bug, ovs-vswitchd shouldn't allow for that either.
+
+Best regards, Ilya Maximets.
+
+> 
+>>
+>> OVS already behaves this way for IPv6 later fragments since commit
+>> 41e4e2cd7534. Bridged IPv4 fragments also already arrive with
+>> transport_header == network_header, so this matches existing behaviour.
+>>
+>> If the change stays, could the commit message say why it is needed and
+>> mention this effect on code that runs after OVS? The Fixes: tags will
+>> carry it to stable together with the actual fix.
+> 
+> I think the explanation is correct but the fix belongs to the driver as 
+> the problem would still be there for IPv6 OVS fragmented traffic and 
+> bridged traffic for example.
+> 
+> I could try to find a NIC that I could use for testing this driver and 
+> this path. In any case, I would not include this fix as part of the 
+> openvswitch series.
+> 
+> Thanks,
+> Fernando.
+> 
+>>
+>>>   	return 0;
+>>>   }
+>>
+>> [ ... ]
+>>
+> 
+
