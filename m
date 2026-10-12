@@ -1,218 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75426348C7C;
-	Mon, 12 Oct 2026 10:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CF13AAF5F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:40:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791801621; cv=none; b=FhzSMHJUD8gvUyKhp3l2oJMSyl2EbWxiRpAYL9hlsCAlXaXOkSFxziobqaA5Z6e45uIz8nVvip0CZpZFm233uXooYWeqItKdjlwo1xu/Pf862eTe6dMTIYZuTx8ovbPuSRWCB0KU+TLXgyUqLJs4uzfJb5jsORTpW9yKyfoYRc4=
+	t=1791801627; cv=none; b=OwU0KSVWki5YMu75Nm511JyDK/SdC5QGiDv9C7GJtiAxvU5pcHStd80TutlNpNONdHJKjGfUoKMnr9oLgRxHCBjiwQeeLxedpA+2V2WWq4NmPv7nFLqHIVjCflhwv3ytbn1q0wDOGPhRv2cDpBw7ETy/hwrZo+RRFU7nhpDwbTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791801621; c=relaxed/simple;
-	bh=ziE8lAg3olNuSPnNtCsX4WIsjvjUwg80ecfSocDyoD8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=itRz1wMsGIkqPA6fv/UfOsi2kaC7ocYXEspqy57FcIjtJhR6If/wXds59bZjgbDKcxm5SDRHJdm//CbrIiz2q31JTRXEXdvVfZQaomJMNqEHg6BKFdwvP1xZ1CPMf9P+MbcV5mT/2831xoI6M8WBSabXol0F6aKW8W6lahNH14E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/Nktul3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791801627; c=relaxed/simple;
+	bh=vFkCRtgxGCnpOhlZA7FYzY49jEv/8nkM8zfXlvjQOfQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=faYLlsXM377KMsNh9vMig81jPXG+fX0fsSJuCGUWObUqDdU0yd48qXTP5yVfOBRj+zhiCkdz13h0OyDauqVNpFZH49FT6gJ8xpW80FEhCZYb8LhDuf6eCpK+Wlcqt+v3ciF864onj6eJLOs9+IoPRMtKTy1aqeFTLecb39WMIkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hufXMIw0; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/Nktul3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1801F0089D;
-	Mon, 12 Oct 2026 10:40:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791801620;
-	bh=DiBrVZcOQoLTxCiDd+wbtrX+JX6LPS58GRReWsBaeBQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=H/Nktul3XbOANsYijkOC5ePkVrHQOC0uRPlV60y7LN0u+Xh+3+eBecM+T7ooGJ1b6
-	 a8NhBRTlEUhmr3bk1SFhnmlK72FjGruPjpBdm3mSVRVapw9cPhyENRdU+2vBPKaB/m
-	 y8x/bImRbpfZXotM1UE+UKvNjfXsTvfelgfG+LR7FM2DE68un39OSqYZrRnNYs9M9u
-	 uB+JCdEq7svUO4LqtsZXumg5CX2fY+ov1zTG5Ic8num1yD5GxRVYdeAJM7W8K8z+0S
-	 VNdu+cFfFOlPTXtoYx6mIY2FflWS64tNiezBXrrmjtfctabCAtrT5Zhy5ORREc6Bkb
-	 PmyaUdwAzDQow==
-Subject:
- Re: [PATCH] udp: let rx-udp-gro-forwarding aggregate under encapsulation
-From: netdev-bot+sashiko@kernel.org
-To: eva.kurchatova@virtuozzo.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, willemb@google.com, alobakin@pm.me,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Date: Mon, 12 Oct 2026 10:40:19 +0000
-Message-ID: <179180161935.434549.5518274080541032248@kernel.org>
-In-Reply-To: <20261008163817.2983484-1-eva.kurchatova@virtuozzo.com>
-References: <20261008163817.2983484-1-eva.kurchatova@virtuozzo.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hufXMIw0"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-33e6279a1d7so459987eec.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 03:40:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791801626; x=1792406426; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3l61iXys9UAgeiq6Qoow/JEP0G8Esaw8ppQEGcd0fNQ=;
+        b=hufXMIw0EVpInfTHhpYb/QUt24+17FSeX5h06Wfnpgb8Jkqyyg8piXuqxx0i625Ai/
+         d1vDYYMkZ+rRr30gF8oMr/6BYgyg9nnWRXXjq7qrdsMkFBencCoYq0KKVxe4dFuKqDdA
+         duwdxgMF+BUMMevDDeIs/s9YhAgGSLzDgmafK5TY7GcB1laaUuybDctQojzxBOeaoBdN
+         V7kDovVSMCCZs+TYIVIFuBUB7ZLi5fnvzeA/FT0HhRFFbgD6IbZS/j77mtX+TwzxYbJ4
+         RPfwXqe2M2dA8zSmwVeABniRXbFeYUNUG1Pqnk2e2EU+NrxUOc5FgDbkatK5yVGjHi09
+         80mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791801626; x=1792406426;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3l61iXys9UAgeiq6Qoow/JEP0G8Esaw8ppQEGcd0fNQ=;
+        b=p3I7d+P92do1eWD1TkDpRnb3QAvoSKazlgJqecUMOOOoZC/v9KSFgROyfslCFLOaaI
+         7GxOO0Z8aDaIQNe4epxcO8j0gcSXvOGi6c/Umvw1KhA4/NiISxP1J+hsxgxPEal4DRht
+         m2fZgNRC6MDqtF0MlUvNP7PHRPjgpDx//0fqAK9nkArYL2SHFLOKb6UNntded6Db+jVW
+         BPe98wqG+02cPkQ1sT0lLDZGk8RpljgOKsn3mhwubVuGtJfdg3KMUf6VeBvhf0sQjgGX
+         WLk3CtXiSSk+kjjVaWKW0pQ3Y7fOvrxYx9pmaUq4kClLnz47EtFdp5YDptXCU7l9iqRL
+         bI6w==
+X-Forwarded-Encrypted: i=1; AKwUvBxY91VI57d2/fr5McCxKw1vW5IEbC1g34JWaJHoB2IN+LrfOeRD25t56OGW/9al4bx4GhT1hAY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKNmjTlnxJPd5q3mBQKwnzsbho6hbV1RDj0ijc1/H5OWFCLdDKd
+	CXUjnMXVbpZXPI9sUmJkvU1Alc4VrNNmvQGvFifVbtLFxSncgXZqyZUL
+X-Gm-Gg: AYBFou3/DCZFb90aCn92ZO4YU/YfNEn8WmPmavpaNpaYv8I3eRrFG5UUlZUhGTeis0k
+	6iQasRpQ66E5UmHY6tYMvnKSFbYcTI6FmTHD5xjTtbJKJumEK45kDXSAFfPdAC4vn6vOvPIGIK4
+	cYBZZG8+3qMbMr5rky3G/Oipi9QMCLnAn2cFQXrMuRvrWFfYxU7L/UGL75RQQSbeC4F91k7ja/K
+	8L2OoESN2TSbtl0KugrANkEskQw6F6f6qasGsTmIOnTHLiqldK+3pheg+N1XqJhRhtcDP8diNEj
+	KqU3U1svTlwELvlBfLHfAxytifK7fcOWDerPLI3V9xQxz3DVEpBED2SfDZr8ldtkFUDsYGV95Fa
+	m9+7yTvV4/asfxAJzR+vxb4vYw58RFlG6k/gu5E7YU4Uk/SH+7HtrjQNbnKBvZBsX1g2iZR6XLR
+	sypcVcKBuzbdM5kbz4l3sMBBT63qZHC+yfod+YlfEAnF4nr2F0Kb9k5IpycLidGaKvOYX4QQ==
+X-Received: by 2002:a05:701b:2058:20b0:15c:20b8:7964 with SMTP id a92af1059eb24-16a63386d86mr13548313c88.27.1791801625139;
+        Mon, 12 Oct 2026 03:40:25 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2fd33sm31434866eec.28.2026.10.12.03.40.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 03:40:24 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: Mike Christie <michael.christie@oracle.com>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Nicholas Bellinger <nab@linux-iscsi.org>,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jia Jia <physicalmtea@gmail.com>
+Subject: [PATCH v3] vhost-scsi: do not count PI bytes in the data length
+Date: Mon, 12 Oct 2026 18:39:54 +0800
+Message-Id: <20261012103954.136698-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+vhost_scsi_handle_vq() moves pi_bytesout or pi_bytesin into the
+protection sgl and subtracts those bytes from exp_data_len.  The length
+passed to TCM is still exp_data_len + prot_bytes.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+prot_bytes comes from virtio_scsi_cmd_req_pi.  With
+VIRTIO_SCSI_F_T10_PI negotiated, vhost reads that header and does not
+check that the CDB is a READ or WRITE.  sbc_check_prot() replaces
+data_length from the CDB only when the protect field is non-zero.
+target_cmd_size_check() leaves a write's data_length unchanged when the
+CDB size is smaller, so a command that does not get that replacement
+keeps a data_length larger than the data sgl.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The KASAN report is a MODE SELECT whose header had pi_bytesout set.
+The data sgl held only the parameter list.  spc_emulate_modeselect()
+walked data_length and read the next physical page.
 
-- [Medium] The commit message says "a tunnel socket keeps its own receive
-  path" and that the new behaviour is "what every host without a tunnel…
-- [Medium] The patch treats as a kernel regression a behaviour the in-
-  tree selftests already document and work around.
-- [Low] tools/testing/selftests/net/udpgro_fwd.sh still explains its DNAT
-  setup with the socket-lookup restriction this patch removes.
+Pass the data sgl length.  Protected READ and WRITE still take their
+length from the CDB in sbc_check_prot().
 
---
+KASAN reports:
 
-udp: let rx-udp-gro-forwarding aggregate under encapsulation
+  BUG: KASAN: use-after-free in spc_emulate_modeselect+0x145/0x380 [target_core_mod]
+  Read of size 1
 
-This patch removes the !sk requirement from the NETIF_F_GRO_UDP_FWD check
-in udp_gro_receive(). With it, plain UDP L4 aggregation happens whenever
-the device has rx-udp-gro-forwarding enabled, even if the GRO lookup
-found a receiving socket. The motivation is a veth.sh kselftest that
-fails on hosts where udp_encap_needed_key is enabled.
+  spc_emulate_modeselect
+  __target_execute_cmd
+  target_execute_cmd
+  vhost_scsi_write_pending
+  transport_generic_new_cmd
+  __target_submit
+  target_queued_submit_work
+  process_one_work
+  worker_thread
+  kthread
+  ret_from_fork
+  ret_from_fork_asm
 
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index cf07c3c6611a2..d4e0e6bb9959f 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -804,7 +804,7 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
->  		if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
->  			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
->  
-> -		if ((!sk && (skb->dev->features & NETIF_F_GRO_UDP_FWD)) ||
-> +		if ((skb->dev->features & NETIF_F_GRO_UDP_FWD) ||
->  		    (sk && udp_test_bit(GRO_ENABLED, sk)) || NAPI_GRO_CB(skb)->is_flist)
->  			return call_gro_receive(udp_gro_receive_segment, head, skb);
+Fixes: 9f977ef7b671 ("vhost-scsi: Include prot_bytes into expected data transfer length")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+v3:
+  - Rewrite the inline comment to distinguish the data and protection
+    SGLs and explain why TCM receives only the data SGL length.
+  - Note the related target-core patches for PI tuple accesses at
+    protection-SGL boundaries:
+    https://lore.kernel.org/all/20261006093338.27342-5-physicalmtea@gmail.com/
+    https://lore.kernel.org/all/20261006093338.27342-6-physicalmtea@gmail.com/
+    https://lore.kernel.org/all/20261006093338.27342-7-physicalmtea@gmail.com/
 
-[Severity: Medium]
-Is the commit message accurate for UDP tunnel sockets that set encap_rcv
-but not gro_receive? It says:
+v2:
+  - Drop the claim that target used to subtract prot_length.
+    9f977ef7b671 cites 14ef9200, which is not in the tree
+  - prot_bytes comes from virtio_scsi_cmd_req_pi
 
-  "That is what every host without a tunnel has done all along: a local
-  socket without UDP_GRO gets the packets resegmented on delivery, and a
-  tunnel socket keeps its own receive path."
+ drivers/vhost/scsi.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-Wireguard, L2TP, GTP, AMT, bareudp, rxrpc, SCTP-over-UDP, TIPC, ovpn,
-pfcp, rxe, and ESP-in-UDP without UDP_GRO all go through
-setup_udp_tunnel_sock()->udp_tunnel_encap_enable(). That turns on
-udp_encap_needed_key. On any host with one of these sockets, the GRO
-lookup always runs and finds the socket.
-
-For such a socket, udp_gro_receive() takes the
-"!sk || !udp_sk(sk)->gro_receive" branch. Before this patch, the !sk term
-kept plain L4 aggregation away from the socket when GRO_ENABLED and
-fraglist were not set. After this patch, its traffic is aggregated as
-SKB_GSO_UDP_L4 whenever the ingress device has rx-udp-gro-forwarding on.
-
-These packets only get resegmented because of the last-resort check in
-udp_unexpected_gso(), which udp_queue_rcv_skb() calls:
-
-include/linux/udp.h:udp_unexpected_gso() {
-    ...
-	/* GSO packets lacking the SKB_GSO_UDP_TUNNEL/_CSUM bits might still
-	 * land in a tunnel as the socket check in udp_gro_receive cannot be
-	 * foolproof.
-	 */
-	if (udp_encap_needed() &&
-	    READ_ONCE(udp_sk(sk)->encap_rcv) &&
-	    !(skb_shinfo(skb)->gso_type &
-	      (SKB_GSO_UDP_TUNNEL | SKB_GSO_UDP_TUNNEL_CSUM)))
-    ...
-}
-
-This doesn't appear to cause corruption. However, every wireguard, L2TP,
-GTP, etc. packet that arrives on an rx-udp-gro-forwarding device is now
-aggregated and then resegmented. Hosts without a tunnel never did this,
-because these sockets are exactly what enable the key.
-
-The fraglist path already relied on udp_unexpected_gso() for found
-tunnel sockets. Plain L4 aggregation through the FWD feature is new here.
-
-The comment at the top of this block in udp_gro_receive() still says:
-
-	/* We can do L4 aggregation only if the packet can't land in a tunnel
-	 * otherwise we could corrupt the inner stream. Detecting such packets
-	 * cannot be foolproof and the aggregation might still happen in some
-	 * cases. Such packets should be caught in udp_unexpected_gso later.
-	 */
-
-The code now aggregates on purpose when the found socket is a tunnel
-socket. Should this comment and the commit message be updated to match?
-
-[Severity: Medium]
-Does this change the meaning of rx-udp-gro-forwarding? Commit 36707061d6ba
-allowed plain UDP GRO "if we are on forwarding path", and the !sk test was
-how that path was detected. The feature bit is still documented that way:
-
-include/linux/netdev_features.h:
-	NETIF_F_GRO_UDP_FWD_BIT,	/* Allow UDP GRO for forwarding */
-
-After this patch, the feature means "always aggregate plain UDP on this
-device". That includes traffic that ends at a local socket without
-UDP_GRO, which udp_queue_rcv_skb() then resegments.
-
-The skip that this patch removes was already known, and the tree works
-around it. tools/testing/selftests/net/udpgro_fwd.sh says:
-
-	# UDP GRO fwd skips aggregation when find an udp socket with the GRO option
-	# if there is an UDP tunnel in the running system, such lookup happen
-	# take place.
-	# use NAT to circumvent GRO FWD check
-
-The failing veth.sh check sends through chk_gro() to a local receiver
-that runs without -G:
-
-	ip netns exec $BASE$DST ./udpgso_bench_rx -C 1000 -R 10 &
-
-That is local delivery, not forwarding. Its result depends on whether
-udp_encap_needed_key happens to be set on the host.
-
-Would it be better to make veth.sh robust instead, for example with the
-DNAT approach udpgro_fwd.sh already uses? The Fixes: tag will carry this
-change in feature semantics into stable.
-
-If the kernel change is intended, could the commit message describe the
-semantic change, and could the feature bit comment be updated?
-
-The commit message also says:
-
-  "the receiving socket is looked up only once a tunnel socket exists"
-
-Isn't the trigger wider than that? udp_lib_setsockopt() also calls
-udp_tunnel_encap_enable() when UDP_GRO is set on any socket:
-
-net/ipv4/udp.c:udp_lib_setsockopt() {
-    ...
-	case UDP_GRO:
-		sockopt_lock_sock(sk);
-		/* when enabling GRO, accept the related GSO packet type */
-		if (valbool)
-			udp_tunnel_encap_enable(sk);
-    ...
-}
-
-[Severity: Low]
-The udpgro_fwd.sh comments quoted above explain the DNAT setup with the
-!sk restriction that this patch removes. The same explanation appears
-again before create_vxlan_pair:
-
-	# use NAT to circumvent GRO FWD check
-
-Should these comments be updated?
-
-The DNAT setup also forces sk == NULL during the GRO lookup. As a result,
-the "GRO fwd" and "GRO fwd over UDP tunnel" tests behave the same with
-and without this patch.
-
-Does any test reliably cover the changed path, where a socket is found
-while the encap key is enabled and rx-udp-gro-forwarding is on? veth.sh
-only reaches it when udp_encap_needed_key happens to be enabled on the
-host. Nothing seems to cover FWD aggregation followed by resegmentation
-for tunnel sockets that set only encap_rcv.
-
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 4f8c0260bc9e..4bd29c2ceed9 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -1534,9 +1534,17 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
+ 		 * vhost_scsi_queue_data_in() and vhost_scsi_queue_status()
+ 		 */
+ 		cmd->tvc_vq_desc = vc.head;
++		/*
++		 * vhost_scsi_mapal() maps the PI bytes into cmd->prot_table.
++		 * It maps the remaining exp_data_len bytes into cmd->table,
++		 * which is the data SGL passed to the target core.  Its
++		 * expected length must therefore exclude prot_bytes.
++		 *
++		 * sbc_check_prot() derives the data length for protected READ
++		 * and WRITE commands from the CDB.
++		 */
+ 		vhost_scsi_target_queue_cmd(nexus, cmd, cdb, lun, task_attr,
+-					    data_direction,
+-					    exp_data_len + prot_bytes);
++					    data_direction, exp_data_len);
+ 		ret = 0;
+ err:
+ 		/*
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008163817.2983484-1-eva.kurchatova%40virtuozzo.com
+2.53.0
