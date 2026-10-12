@@ -1,135 +1,123 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A194F7CAE;
-	Mon, 12 Oct 2026 21:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081E04F7CB2
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 21:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791840333; cv=none; b=djlwk174gtZmnVGe8ajbPCShUzpU8vAWRR9q4yxvOtbzdfyIJ/6i+GjBjwhXaTUegsWiKN49HJMbaEiD87hqSitFm5d+VmXGOd8q74jP2saOsP3bHGr4LJ6+pZs/6I0qaSfWcSnQTqS09Y/WGjAW0cMEjNsWqCGZFKhx833ZFnA=
+	t=1791840425; cv=none; b=GwoCqpozpWPbnFEZvFO1goLl33vKAcUgLFcVhiLsXcfx7bQbZAMWu3zF4y6rgz+ScgQajaAI7rsf4R+CgEIWyLwlrz7IJgqynHBe/2I38udFMQjDNSg2x4T5kyjlNHfn7QyNqjIa1nV1PSVC3F4N58meCrx/QsbVMFTvkjVE1tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791840333; c=relaxed/simple;
-	bh=fvjje0IIW6MOjzpPa7bXnEazhGyVa6KL4EdFPoxyr1M=;
+	s=arc-20240116; t=1791840425; c=relaxed/simple;
+	bh=vFCTPi6RkqhF5HPuqeIigpw8olvShpvLUVqeUIoJdYg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KjVY5rMupFVzNEuye0zi8Qu6EJIT5P0VHyq0zBl2nPl14WLDmqIJ43j/8H0p/gGQJuevguOpu2f6ITx4oF1zO85tagKuEAJ3dJMtqZCKaTFWElubYsuJSHxYOCOrf5mRZ32iweRnBDma3DdPfVQwfK5jtJYVouC5k8h06DM2/5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3MORn/rI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=17yHSlhA; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=pSvUJPE4N/L/+duKKo0sqJLF7Vz0sJ464Ls9foEh3D21AtKsHM85U29IOM+l0Am/dKDpgWIDkvzIBBWuZRbb4BloyhQ4hgewFe12y0RYunzKmght6BFhlVqtrqvtpdU5YSldcDen/fmQ+bq+eZLegb1y7q8EKw0krPIq3bCrhlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=UuPUM0He; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3MORn/rI";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="17yHSlhA"
-Date: Mon, 12 Oct 2026 23:25:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791840329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iAiScCw3xT8qTEUpGk6BjUljTycDujh4sIDNa9F0P6Y=;
-	b=3MORn/rIhXC6vXHl+Ic4CJZNg4nCzhRynPtsaXuNdTdZQyU7/8gOg7C00CPcz+KYO5IWn+
-	bBouNB2iVrq2lI3yjbDrJ4Mj1Cr/0zZz8uKtOC4AxfYduH5k0wQGUGiHtFrCZv24rjsPY7
-	RNolF2ITKJyBEjiF+oJXYBlGFeakqjkmWM356qJrl8bCLLpR5NX8aFOOOCN09N8S0FsbG5
-	+mPS7xcGwAw8rxaA4QmkqhJkP9oUmQq3pnUJcPv5sr8//jhj32YrkD7f15BPSn/xJUmlen
-	aGQGUDU4lOcapu4NFcVIvLwHqEu9/5A250b6OiwimsH/so/suZ6iEUZOaJGmhw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791840329;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iAiScCw3xT8qTEUpGk6BjUljTycDujh4sIDNa9F0P6Y=;
-	b=17yHSlhAgmgweZpYB2yF8SSxvq0aiaHhIdD0JuRpHX7jKQo8h/igxWvs4KjIw8Ym9+gFMu
-	hLLYGAapiJUxyiAQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?utf-8?B?w5ZtZXI=?= Mete Kaya <omermetekaya0@gmail.com>,
-	oneukum@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	david.laight.linux@gmail.com,
-	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v6] usbnet: fix smp_processor_id() use in preemptible
- context
-Message-ID: <20261012212527.5sFqlGYu@linutronix.de>
-References: <20261004215937.302247-1-omermetekaya0@gmail.com>
- <20261007200049.079aeb75@kernel.org>
- <7c4a2f1c-f16d-479b-a11f-cef962d5e2c7@rowland.harvard.edu>
- <20261008094338.301a75fa@kernel.org>
- <06a81ea1-b17d-40bd-82d9-922de946b86f@rowland.harvard.edu>
- <2026100910-petition-embattled-94cb@gregkh>
- <20261012194902.aEq58Q6b@linutronix.de>
- <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="UuPUM0He"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-881269371acso2062311b3a.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:27:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1791840423; x=1792445223; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=00lr0ueSHjjLFpqBUflLoQS+JH73YrWnwKwvoX92I9o=;
+        b=UuPUM0HeTJ/ADEIghcha+FZah2r1LoSTx/oKR1mcAhddvveQVx+4banNqP2RU3CsTY
+         LJ++V2f0XycCs4OQM6j3dOCi6hmgN3I4a8ATKZmItwuAeFCIyAYiX63tMUmNaQWXeqxA
+         FRo9JNB3KvPQjw97HmOqQMAZsH5OM2xHx1E5PcmH8ODMIXZOgEV9UHxwryORjEAM539C
+         k1h4aIjiBHEEI6b3aCwPPZBxbriyEzUxl4P+CQQYn7av7Rx1194ZgGy+P1sOpMKVKiVa
+         o5B4e38Yv9ieFFKRRqYzydXFevulTXLoTGVb6YqtbgNIWFIv7Wy51EHhDGn3CIb8oRyR
+         +13w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791840423; x=1792445223;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=00lr0ueSHjjLFpqBUflLoQS+JH73YrWnwKwvoX92I9o=;
+        b=yHZHAh8isOWC7qfz6JSYxoFtk+xKoug6g0wpTw/DstBBgZ4ntwPp8c6MH8dDiR6Z74
+         C5K8WbgkANkiDQD1IjWf13owJnO0wCDaaaG5V+UygHTsMV1SUwWTH27OaYmw7Agelf21
+         Uk6PsLWrzOihKv01zIG/OwfookI9VAVSXfOUf/TEGlRUh5JYGyF0OG+lk9rNa8sClNMM
+         O8eMoJCtRLHWAtJ9yG5cVGyAOyqGr8zrGj5x2QkK4kcKeQy4/rf+PtoD585kaM/gRc2K
+         TGn8j14HtUxE1ZrUokVQMaDWRLhvKZIZqHm5ongKheFlX85NY9Dk6Isi6Mz0c6s/abik
+         ZyUg==
+X-Gm-Message-State: AFq9FYJzi3+i0LjrmFj3o6IhRk1dkLuCghvPltzXedM7d0udNaBj1lBU
+	1YStxIQgAgVzm+YxwQpPMiIDqupbgzzzO8C+C8H97P33SWlCeJ9Nw6TbjT5WRpC+WlWHeImUvMZ
+	LeQRd
+X-Gm-Gg: AYBFou0SfrhROrW9Dws537CZFCwAEhx8fsK93Y2zbB6DBdGsudBVOBmDnWuGvnnmVpz
+	SqL+aJPKe/qHzkkJ3r+8w/mFQhuoGwQa7YwZJsLEXAAn9X7+QGTAXi3U3iZRTF/Z4VFhyikJOh2
+	dYz5LkYNOvJu1g1M1sbHr7w3V1xpwAPzrvEqdYrbMkf8dPPuAWFNKNGicsJLeRgTgF6BE79a/rY
+	tulsGGDX6YCOjf2ygTUDVRc/hamHj55JjeMu2KEW/uXfgL2uW5Q2gyOq2FVlSwN3mRF66pWpIn7
+	TrGBl0Uo1nj6to2v9HjlwYiR+U+sXDJei7PJxCRThc8/dmf7ytpJKCkE8Sm5vthnrcTg8G+J0OI
+	uD1rkkXzjzJy+RRTv2DB4MPV4V4c6UDvJmB79J39pr6xKsTQFo2y15seRTEWtRTitdHyLaFp5MV
+	L5UNhr7Ckfd6DhMtkw9G7GnSIAYXkc6WaY+fjqP62VIqpijl1xnHVYxXJuLh2G0CPyPDF73L1UT
+	XexD0lhrjI61VDwKuOMZCU=
+X-Received: by 2002:a05:6300:6698:b0:3e1:4fbc:5ce9 with SMTP id adf61e73a8af0-3e164f32a4emr6971521637.20.1791840423279;
+        Mon, 12 Oct 2026 14:27:03 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:58::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd3d9e53f8bsm4705338a12.24.2026.10.12.14.27.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 14:27:02 -0700 (PDT)
+Date: Mon, 12 Oct 2026 14:27:01 -0700
+From: Joe Damato <joe@dama.to>
+To: netdev@vger.kernel.org, Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] bnxt_en: Pad short SW USO segments to
+ BNXT_MIN_PKT_SIZE
+Message-ID: <as1QpaiN8tTtZ1vx@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>, netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	edumazet@google.com, horms@kernel.org, linux-kernel@vger.kernel.org
+References: <20261009215426.2377946-1-joe@dama.to>
+ <20261009215426.2377946-3-joe@dama.to>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
+In-Reply-To: <20261009215426.2377946-3-joe@dama.to>
 
-On 2026-10-12 16:26:28 [-0400], Alan Stern wrote:
-> On Mon, Oct 12, 2026 at 09:49:02PM +0200, Sebastian Andrzej Siewior wrote:
-> > On 2026-10-09 13:31:17 [+0200], Greg Kroah-Hartman wrote:
-> > > > As far as I am aware, there aren't really any guarantees on the=20
-> > > > context of a USB URB-completion callback.  The kerneldoc for struct=
- urb=20
-> > > > in include/linux/usb.h says "The completion callback is made=20
-> > > > in_interrupt()", but that is most definitely out of date.
-> > >=20
-> > > I don't think so, I think some platforms still have those callbacks in
-> > > irq context, unless we changed to threaded irq handlers everywhere?  I
-> > > could have missed that, but we should still write the callbacks to
-> > > assume that and then we should be fine even if we aren't in irq conte=
-xt,
-> > > right?
-> >=20
-> > The HCD invokes the completion callback usually in IRQ context. I think
-> > the VHCI is an exception here.
-> > For the forced-threaded mode we disable BH before the IRQ handler is
-> > invoked. I think even dummy_hcd invokes them from the timer if my memory
-> > is right.
-> >=20
-> > > > Drivers shouldn't rely on any particular context guarantees.  Not e=
-ven=20
-> > > > whether local irqs are enabled/disabled.
-> > >=20
-> > > Agreed.
-> >=20
-> > I would suggest to make VHCI invoke the completion callback with BH
-> > disabled. usbnet's tx_complete() does also defer_bh() which schedules a
-> > BH worker via queue_work(). While this works without disabling BH it
-> > leads to waking ksoftirqd and an additional context switch which we
-> > could avoid by dealing with it directly.
->=20
-> Today you fix VHCI, tomorrow some other virtual HCD will cause problems.
+On Fri, Oct 09, 2026 at 02:54:24PM -0700, Joe Damato wrote:
+> Each SW USO segment is hdr_len + seg_payload bytes. With IPv4, hdr_len
+> is 42 bytes, so a segment carrying less than 10 bytes of UDP payload is
+> sent shorter than BNXT_MIN_PKT_SIZE. This happens with a short last
+> segment (e.g. gso_size 1400 and 1405 bytes of payload) or with a
+> gso_size below 10 bytes.
 
-We don't have other virtual HCDs, do we?
-The other driver is drivers/net/mctp/mctp-usb.c.
-mctp_usb_out_complete() -> =E2=80=A6 -> mctp_usblib_tx_stats_update() does
-get_cpu_ptr() for stats. But mctp_usb_in_complete() has=20
-mctp_usblib_rx_complete() -> mctp_usblib_rx_stats_single_drop() and
-mctp_usblib_rx() which do just this_cpu_ptr(). Plus the queue wakes &
-netif_rx() which wake ksoftirqd.
+[...]
 
-That makes two drivers from a quick grep. But I guess it is just
-networking for the per-CPU stats.
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+> index ef04c9d08066..80d5c4f963a9 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_gso.c
+> @@ -82,11 +82,19 @@ int bnxt_sw_udp_gso_xmit(struct bnxt *bp, struct bnxt_tx_ring_info *txr,
+>  	if (unlikely(num_segs <= 1))
+>  		goto drop;
+>  
+> +	/* bnxt_features_check() makes the stack segment these, but paths
+> +	 * that skip validate_xmit_skb() (e.g. generic XDP_TX of a GRO'd
+> +	 * skb) can still get here. Padding every segment would need more
+> +	 * BDs than bds_needed reserves below, so drop instead.
+> +	 */
+> +	if (unlikely(bnxt_sw_gso_pad_len(hdr_len, mss)))
+> +		goto drop;
+> +
 
-> Should we document any requirements that all HCDs will have to follow=20
-> and that all completion handlers can rely on?
+I could be wrong, but I think if [1] is applied this drop can go away (?)
 
-It used to complete in IRQ context. Then you added the possibility to
-complete BH for those HCDs marked as such (except for the RH). I think
-it was always reasonable to assume that it is either IRQ-context
-(force-threaded or not for !HCD_BH) or BH (for HCD_BH). It makes hardly
-a difference, BH is always off and networking uses to rely on it.
-So yes, documenting would make sense.
-
-Do you want to document it yourself and have me do the VHCI bits?
-
-> Alan Stern
-
-Sebastian
+[1]: https://lore.kernel.org/netdev/20260928223648.2739371-6-kuba@kernel.org/
