@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021404718CD;
-	Mon, 12 Oct 2026 09:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308624718DC;
+	Mon, 12 Oct 2026 09:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791795971; cv=none; b=ewelWOGETi0FGC1XodMGX0ixdktzp0hre6Xx4WIrirVXCPvbeB7pMEcZTVKMJbBDwcDJqxbP6eWiXrJ4fS+pWiStqGZWwAIdIt255uMnb0CzMpQBCJHb9dJGs031sYyrAPv6VlkIEKkFb1kVvliKE1fl64siymUgdi9QJhVAC0M=
+	t=1791795972; cv=none; b=KNLbK9n2faszjlqq2HqobifYwcqF0yrWkmGcEVPrGcKr7kT90h6ZrSyXR1MV/Ag27NAFXLRQeuoz+BONDja1geWETVsUk/w1HfZM868pPjt+yY6YlKbEDZm+rokRX5Z6csOaXMW7ZDXSQ6AWAHvov7pe9WJO/DTNuLCLaSiNdDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791795971; c=relaxed/simple;
-	bh=fdODk147uKvfexPqzNJoo7LmCAd6OhiwGOB+AD2dfiE=;
+	s=arc-20240116; t=1791795972; c=relaxed/simple;
+	bh=Rg9k11PI6ANXVeJhl2Qom17DQcEZHRpf0nc+KISuIpM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EQvLF03yENaOwBGem8lfmfUP6JB9bc2liluVMEq9JASM9dta2JcUE2TLUax7PBpG7HvPKTkcbKpGXaDWNGigmJ5g7HlBytaEs3mFqA0hwBOhV2AfTfNz4sgP7KSbjGETa1ELU5Nllxakt+QgvFOLT/Nz/PiJahZR5k2xrNGJ1Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDzSMCLy; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ulxaSQMiO8xYaZf+8UNHG4XUoPY6vk+wUcAWIDUigWVacArER2jX/bPgqCkXmxBkmt2FrL3Qyuc7uVV7BNjFcQCrjikqh696Bwkl/LMMGy3oRgthVxdH3iRu3UbuLj2ltLai/jxwzMmbace2IdAPs0pJADzj2ZBhSQNyAtQ7A0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOoONOuC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDzSMCLy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06B81F0089D;
-	Mon, 12 Oct 2026 09:06:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOoONOuC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9AA1F0089B;
+	Mon, 12 Oct 2026 09:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791795969;
-	bh=1CUky8K5fZyI/nFfSG8VjBYptTlpbZjyLQYpDWDWlDE=;
+	s=k20260515; t=1791795970;
+	bh=kiRst8VrOSUVDEdv0FkjcfIgg69NK0SOd3kRjtqelyc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lDzSMCLyG37+QMx1xusgmbwGGrQr6mgjrVTXIlkXi57WGE+Q+HbYuCFqFNLq+5csO
-	 zcNp0EYEIyYP0X2GNmG2l6d5FSGWCGDVFWADyARVFFfIpizAzhegNMMTslK2EC5WgI
-	 9QsXaTD/r6zYWPvy6WQOGu3cNQQzPuj7lhzAT+5P/KFc4WUa6iO0z+xd8ru7WcsmDF
-	 ETqfJ52zrYrCPo/AbIzcFGnjcxm5s/4Opu5mTOOBl0/Daxf7NwRMBh1I90yUxWQubv
-	 0YucqEcKihcMNiCJvm+IBXVrXheh2QnVfhjDUJMzxxSgCuR4CHVaiSvH989cxmgvFL
-	 D7KkXBJPylgCA==
-Subject: Re: [PATCH net-next v6 02/10] r8152: add new init writes for
- RTL8156B/8157/8159
+	b=hOoONOuCGmcQs+MINDlkk/mF1C0rRncqrhsOaDEzZb08EJ9zcxuyzkfbDJS6gr5HI
+	 n2Kb/efUZGEyTrEiiW+kA7Qrr/AFTsAHywm9XmrReHyZw0jj7qSpxDPR0Fw05zmRiI
+	 zKieRdoUBosIP68RRw8pztzfketR8OK9V8KePYFgRj4gqwKQ/ZPwngplfJeGXnlqOp
+	 GEfjZQzAOMPi2LBUU5gkRplqpJsdPfiosSZ8S1yks/zmkYgEHqo6zuzUADNz2XMPwT
+	 E4ZKO4SgeQfojICWBAq9PclvSs4BVuYY6D+HbXHBRsgNxQWQeVNZ9BZ11Os//YAbDw
+	 NmU6bCxdoS/6g==
+Subject: Re: [PATCH net-next v6 03/10] r8152: split RTL_VER_17 into QFN68 and
+ QFN100 package variants
 From: netdev-bot+sashiko@kernel.org
 To: hsu.chih.kai@realtek.com
 Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
  nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch,
  mail@birger-koblitz.de
-Date: Mon, 12 Oct 2026 09:06:08 +0000
-Message-ID: <179179596844.434549.4859424794231631979@kernel.org>
-In-Reply-To: <20261008081556.47901-3-nic_swsd@realtek.com>
-References: <20261008081556.47901-3-nic_swsd@realtek.com>
-X-sashiko-severity: Medium
+Date: Mon, 12 Oct 2026 09:06:09 +0000
+Message-ID: <179179596974.434549.7242394414003313759@kernel.org>
+In-Reply-To: <20261008081556.47901-4-nic_swsd@realtek.com>
+References: <20261008081556.47901-4-nic_swsd@realtek.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,102 +48,87 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The patch defines PLA_RMT_WAKE (0xe0c8) with RMT_WAKE_EN =
-  BIT(0) and clears that bit on every init.
-- [Low] The subject says 'add new init writes for RTL8156B/8157/8159',
-  but the patch also changes r8156_init().
+- [Low] The retry count printed by __rtl_get_pkg_det() is one too high.
 
 --
 
-r8152: add new init writes for RTL8156B/8157/8159
+r8152: split RTL_VER_17 into QFN68 and QFN100 package variants
 
-This patch brings the per-chip init functions closer to the vendor init
-sequence. It clears PREBOOT_OPTION and RMT_WAKE_EN in all four init
-functions and adds a u2phy backup for RTL8156B. On RTL8157/8159 it also
-disables auto speedup and interrupt mitigation, clears reset event flags
-and clears RX_END_TRANSFER_EN.
-
-> r8152: add new init writes for RTL8156B/8157/8159
-
-[Severity: Low]
-Should the subject also name RTL8156? The patch changes r8156_init() too.
-rtl_ops_init() uses that function for RTL_VER_10/11, which is the original
-RTL8156, not the RTL8156B path:
-
-	case RTL_VER_10:
-		ops->init		= r8156_init;
-
-The body says "all four init functions", but the subject lists only
-RTL8156B/8157/8159. Anyone searching history or picking backports by
-subject could miss that RTL8156 (non-B) devices are affected.
+This patch splits RTL_VER_17 into RTL_VER_17_QFN68 and RTL_VER_17_QFN100.
+It tells them apart at probe time by reading the new PLA_PKG_DET register
+through a new __rtl_get_pkg_det() helper. r8159_init() also gets a
+QFN68-only write that enables the u2phy backup restore patch.
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 30543c5799232..f62bfa659a985 100644
+> index f62bfa659a985..eae76be4fad50 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
 
 [ ... ]
 
-> @@ -8344,6 +8350,10 @@ static void r8156_init(struct r8152 *tp)
->  	r8153_queue_wake(tp, false);
->  	rtl_runtime_suspend_enable(tp, false);
+> @@ -10180,9 +10202,38 @@ static int rtl_fw_init(struct r8152 *tp)
+>  	return 0;
+>  }
 >  
-> +	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_INDICATE_FALG, PREBOOT_OPTION);
+> +static u32 __rtl_get_pkg_det(struct usb_device *udev)
+> +{
+> +	u32 pkg_det = 0;
+> +	__le32 *tmp;
+> +	int ret, i;
 > +
-> +	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_RMT_WAKE, RMT_WAKE_EN);
+> +	tmp = kmalloc_obj(*tmp);
+> +	if (!tmp)
+> +		return 0;
 > +
+> +	for (i = 0, ret = 0; i < 3 && ret != 4; i++)
+> +		ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
+> +				      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
+> +				      PLA_PKG_DET, MCU_TYPE_PLA, tmp,
+> +				      sizeof(*tmp), USB_CTRL_GET_TIMEOUT);
+> +
+> +	if (ret == sizeof(*tmp)) {
+> +		if (i != 1)
+> +			dev_warn(&udev->dev,
+> +				 "Needed %d retries to read package\n", i);
 
-[Severity: Medium]
-Can clearing RMT_WAKE_EN here stop wake-on-LAN or runtime PM remote wakeup
-from working?
+[Severity: Low]
+Is the count printed here one higher than the real number of retries?
 
-The same clear is added to r8156_init(), r8156b_init(), r8157_init() and
-r8159_init(). The only uses of PLA_RMT_WAKE and RMT_WAKE_EN in the driver
-are the define and these four clears. Nothing sets the bit again.
+The loop increments i before it checks ret in the for condition, so when
+the loop exits, i holds the number of attempts. If the first read fails
+and the second one returns 4 bytes, i is 2. The message then says "Needed
+2 retries" when only one retry was done.
 
-tp->rtl_ops.init() runs from both rtl8152_probe_once() and
-rtl8152_reset_resume(), so the bit is cleared on every probe and every
-reset-resume. Neither wake setup path writes 0xe0c8:
+The loop in __rtl_get_hw_ver() breaks before i++, so the same message
+there shows the actual retry count:
 
-  __rtl_set_wol() only programs PLA_CONFIG34, PLA_CONFIG5 and PLA_CFG_WOL,
-  then calls device_set_wakeup_enable().
+	for (i = 0; i < 3; i++) {
+		ret = usb_control_msg(...);
+		if (ret > 0) {
+			...
+			break;
+		}
+	}
 
-  rtl_runtime_suspend_enable() and r8153_queue_wake() handle runtime
-  suspend, and probe sets intf->needs_remote_wakeup = 1.
+	if (i != 0 && ret > 0)
+		dev_warn(&udev->dev, "Needed %d retries to read version\n", i);
 
-UPCOMING_RUNTIME_D3 behaves differently. Init clears it, and
-rtl_runtime_suspend_enable(tp, true) sets it again. RMT_WAKE_EN is only
-ever cleared.
+Could this print i - 1, or use the same loop shape as __rtl_get_hw_ver(),
+so both helpers report retries the same way?
 
-Suppose the bit is the MAC-side remote wake enable that its name
-suggests. Then after probe or reset_resume, RTL8156/8156B/8157/8159
-devices would still report WoL as armed but could not wake the host.
-Runtime autosuspend wake on link change could fail as well.
-
-It may instead be a flag left over from pre-boot firmware, like the
-PREBOOT_OPTION bit cleared next to it. In that case clearing it would be
-harmless. Neither the code nor the commit message says which. The message
-only says "Clear PREBOOT_OPTION and RMT_WAKE_EN in all four init
-functions".
-
-Could the commit message explain what PREBOOT_OPTION and RMT_WAKE_EN
-control and why clearing them unconditionally is safe for WoL and runtime
-PM? It already does this for RX_END_TRANSFER_EN.
-
->  	if (tp->udev->speed >= USB_SPEED_SUPER)
->  		r8153b_u1u2en(tp, true);
->  
+> +
+> +		pkg_det = __le32_to_cpu(*tmp) & PKG_MASK;
+> +	}
+> +
+> +	kfree(tmp);
+> +	return pkg_det;
+> +}
 
 [ ... ]
 
