@@ -1,284 +1,185 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.205])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2894AE134;
-	Mon, 12 Oct 2026 16:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.205
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791824300; cv=none; b=gv07Rc4dC9hykRXuRfcOwWg/UKGPdvkDXoiapwDlyEY5MbgeHoHuMxnVJbN4V7PbJdxxOZQgBKvGnt62BZpLyl7QVTRLrU/36TNvVw9pgvruru+boOgMUtw3Opq9rj2HJ+E8wGQkyYI0B4+G1c6Ab6INQOeYYMS9eEwaVYbg7uc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791824300; c=relaxed/simple;
-	bh=vUpcsez7CgnIpw4YbzcmYEoAjaaVFIIoSzz7dzlZask=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aMs0VfX4mw1ED5shAH2BjUj8JtXX/8Ng8UNvUUIOQ91j5TJ8CtA9PNMQmmi+lLA13lbSuYHuvLkUFBTartYNSTXnkZZCQt7y6zbb3sm/dwXOh/+fNpMZBQy1tIsz5iVztC3iiOOE+gjPFosssx5nLMZ8nXnvxXK2W1DjH987/a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=XAvIrLB8; arc=none smtp.client-ip=192.19.144.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DAB5190473;
+	Mon, 12 Oct 2026 16:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.165
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791824350; cv=pass; b=qyWDdjL3fuUADvOC8o5nV3SyXatQCslpVG29RQiPtz6BxBPZbM6TPTqw5b1VKomablsC7vzCdMYrzDKw89dT8hQBhtqBKONEe8JnusU+bZDhu9sQ35tkOKQ+bPt5i9j1R1IrFc8y51jqT4HHzs6VAYetVnP8oz/+Lub2ymJudu0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791824350; c=relaxed/simple;
+	bh=yqFSCRZNjVlGfAyTQ0FmdQdbn/SaJ4SVEkyO2LG6mWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n6PJbtSgaisbdjvnGzYPXUpHGGgwoh+1JKu7XLGIqTDg0AICJN4E/vD89CsD8kqczXvf6zCpgmsipzJ0PUqQZ6/vNGZ1CnvCYq/nI7gk8hIVgC1T6qf/EW4Gtmj8uFgv350JwYoXhP+rL24Phd/NtO3lbFB4njnss+ImRTr2Xbo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=AXmE5Vdu; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=RRpsf6ds; arc=pass smtp.client-ip=81.169.146.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="XAvIrLB8"
-Received: from mail-acc-it-01.broadcom.com (mail-acc-it-01.acc.broadcom.net [10.35.36.83])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 8059AC0000E2;
-	Mon, 12 Oct 2026 09:58:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 8059AC0000E2
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1791824285;
-	bh=vUpcsez7CgnIpw4YbzcmYEoAjaaVFIIoSzz7dzlZask=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAvIrLB8WPb2dhO7ruLj7EVjtdibmdrr58EzFVqeWjcL4o1tmuN3CO/KMS3qjMhYb
-	 5BqNRYJmNn3TJoxovVy9M0YpQfQDKBk0Fx51T3hBR2IPXwD2sUJ++4jSbpvYdyxIki
-	 rBs7R1u5OyRB6LozNuC3xRCkFrTjPZc42Tn7F7sU=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-acc-it-01.broadcom.com (Postfix) with ESMTPSA id 7BDB1AEA2;
-	Mon, 12 Oct 2026 12:58:04 -0400 (EDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: netdev@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zak Kemble <zakkemble@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	linux-kernel@vger.kernel.org (open list),
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net v3 6/6] net: bcmasp: fix network filter lookup and wake filter pair allocation
-Date: Mon, 12 Oct 2026 09:56:54 -0700
-Message-Id: <20261012165654.3480668-7-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261012165654.3480668-1-florian.fainelli@broadcom.com>
-References: <20261012165654.3480668-1-florian.fainelli@broadcom.com>
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="AXmE5Vdu";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="RRpsf6ds"
+ARC-Seal: i=1; a=rsa-sha256; t=1791824342; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=THVj9wLscJMeKtqjE7daqghbwHIRRBoHwrBazu9h1d4yDI0IV5MXE/MM/baQmp/cCo
+    iO/oF+bzk4WTmPpA2lT+0ASHs+4Ov53iH3+SXz2J7C3AIsU9zwhPPWB4OeOb3bfCJglm
+    isDnRLsgiJOmoDwobHze21xeTLHaLeT5CiwvbH0cZEX1WKLGGNn/vzNHIaBF6LMhr9F0
+    Oar3/mLObp3npfHabAFhnA0xQ3vRj0mt17G3Su1ljXONj/QTdpmkQQIH7H5YOTZESD8H
+    V8oh2fIevan9XOEMm8thtevvGRqYw8voVAco9aW1n8PbIhpRhVEFIQhvgaTdD10x4pTc
+    +yDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1791824342;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=aA+U9eHyMpzg8/BD0pL+ZX/wNUx1vYbNDbLfoh9BV+0=;
+    b=h227hTf9xgS4rx2QfL/O/WrwK41uMaXcTiKHzIFJI0274wyv/Bfj8Umqa/lDRKMaYw
+    Nn1O9NEdsCFB3fJ0cdSUP8eYlkRWxFUqitW7+N5r3GYnFeHwtw2/fcTHlGbtdZeuHFCf
+    kvBANHWG8gfaCkgilJ66K+uCmjh2WBMTlA4VVVDBRfye4v1CxG3TkcgSIGRFrqgdpVLw
+    kolAWFKZalwa4li8zqRSnn6QPvZrmakOxlzgtOEzj7boz45wgsZzVhn+LqB9AFblKdJd
+    cZTWm8FXl4wgwhm7XvnCJwOsQL+E0uEjPRrVEV3MFVMGGV8Ja48pQq8wpr+g/fJfsKjX
+    4vRg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1791824342;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=aA+U9eHyMpzg8/BD0pL+ZX/wNUx1vYbNDbLfoh9BV+0=;
+    b=AXmE5Vdu1njTJq/VejAMNLH1OLooeFDXndDPhP87MLAgxhVajaOcElix9SZaBENEtF
+    wd+O/ybqTBgMLVCmYyrscqCVG4UwcHbXem+m7OXkfs087k6hLaXo233hdHYV7RbPYPt1
+    dIFrGj4gWDDD47QZQ+68M3Y/g7p4NSvZWeGNT9EBBxqMugmHPEPMhXS6U4dbEAtL1Gaj
+    rEcMEpXC+rziazx9kvp4xJbK7GB1B8+OpBtL0Bepl/KGryErsaT35JPtKpqikvIGdpBc
+    7e4TwfJww1BnElWQUiY6TgHf0G25O9Vwv3AdQ1dOWv4tYttV1nuguiiVVVgdKmGLpXNZ
+    lwZg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1791824342;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=aA+U9eHyMpzg8/BD0pL+ZX/wNUx1vYbNDbLfoh9BV+0=;
+    b=RRpsf6ds5jce2DIei9xhpRZnSHGm4H+uS8TD6AsNzjFGjYZFFjjWIXO4ILPSljhBxv
+    vCBRbr4fjk0xKAxvRuCw==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from [IPV6:2a00:6020:4a38:6810::989]
+    by smtp.strato.de (RZmta 55.6.3 AUTH)
+    with ESMTPSA id Kfdf2a29CGx11vf
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 12 Oct 2026 18:59:01 +0200 (CEST)
+Message-ID: <ce295e92-9080-4886-b1e3-70d8efa8a2cf@hartkopp.net>
+Date: Mon, 12 Oct 2026 18:59:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 03/37] can: convert unreliable ARPHRD_CAN type
+ checks to robust can_get_ml_priv()
+To: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org,
+ davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
+ kernel@pengutronix.de, hemanth.selam@gmail.com
+References: <20261009134323.64064-4-mkl@pengutronix.de>
+ <179164096840.434549.11863787117718202775@kernel.org>
+ <135a3c74-078a-48eb-9c2a-ef1abe55cb5a@hartkopp.net>
+ <20261012-victorious-sponge-of-progress-f32376-mkl@pengutronix.de>
+Content-Language: en-US
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <20261012-victorious-sponge-of-progress-f32376-mkl@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-In bcmasp_netfilt_get_init(), when looking up an existing filter (!init)
-for a specified location, if the filter at loc was not claimed, the
-previous loop continued searching higher indices and could return an
-arbitrary unrelated filter belonging to the port. This caused flow get or
-delete operations on an empty rule location to return or delete an
-unintended filter.
 
-Fix this by checking only the requested location on lookup and rejecting
-RX_CLS_LOC_ANY when !init. In addition, harden wake filter allocation
-and release by ensuring wake filter pair searches stay on even boundaries
-where both entries are free, checking that loc + 1 is free for positioned
-wake filters, and validating parity and bounds on release.
 
-Fixes: c5d511c49587 ("net: bcmasp: Add support for wake on net filters")
-Assisted-by: LLM
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 121 +++++++++++---------
- 1 file changed, 70 insertions(+), 51 deletions(-)
+On 12.10.26 15:09, Marc Kleine-Budde wrote:
+> On 12.10.2026 14:58:09, Oliver Hartkopp wrote:
+>>
+>>
+>> On 10.10.26 16:02, netdev-bot+sashiko@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found more severe
+>>> issue(s) in other patches of this series. This mail is only an FYI, in case
+>>> you want to address the nit picks below when you respin.
+>>>
+>>> Low priority / nit picks for your consideration:
+>>>
+>>> - [Low] The commit message calls the change a conversion of 'unreliable'
+>>>     ARPHRD_CAN checks to 'robust' can_get_ml_priv() checks.
+>>>
+>>> Pre-existing issues:
+>>> - [Medium] This problem wasn't introduced by this patch, but isotp_bind()
+>>>     in net/can/isotp.c ignores the return values of both can_rx_register()…
+>>>
+>>> --
+>>>
+>>> can: convert unreliable ARPHRD_CAN type checks to robust can_get_ml_priv()
+>>>
+>>> This patch replaces the remaining dev->type != ARPHRD_CAN checks in
+>>> af_can, bcm, gw, isotp and raw with can_get_ml_priv(). The reason given is
+>>> that TUNSETLINK can switch a down TUN/TAP device to ARPHRD_CAN while its
+>>> ml_priv stays NULL.
+>>>
+>>> Link: https://patch.msgid.link/20261009121115.61012-1-socketcan@hartkopp.net
+>>>
+>>>> diff --git a/net/can/af_can.c b/net/can/af_can.c
+>>>> index 34fe3b28d576f..dc27ace43719d 100644
+>>>> --- a/net/can/af_can.c
+>>>> +++ b/net/can/af_can.c
+>>>
+>>> [ ... ]
+>>>
+>>>> @@ -519,7 +519,7 @@ void can_rx_unregister(struct net *net, struct net_device *dev, canid_t can_id,
+>>>>    	struct can_rcv_lists_stats *rcv_lists_stats = net->can.rcv_lists_stats;
+>>>>    	struct can_dev_rcv_lists *dev_rcv_lists;
+>>>> -	if (dev && dev->type != ARPHRD_CAN)
+>>>> +	if (dev && !can_get_ml_priv(dev))
+>>>>    		return;
+>>>
+>>> [Severity: Low]
+>>> The commit message describes this change as replacing "unreliable" checks
+>>> with "robust" ones. Should it also say that the change closes a NULL
+>>> pointer dereference that a user can trigger?
+>>>
+>>> Before this patch, the sequence looks like this:
+>>>
+>>>     ioctl(TUNSETLINK, ARPHRD_CAN) on a down tun device
+>>>       tun->dev->type = (int) arg;      /* ml_priv stays NULL */
+>>>     isotp_bind()
+>>>       old dev->type != ARPHRD_CAN check passes
+>>>       can_rx_register() returns -ENODEV, return value ignored
+>>>       so->bound = 1; so->dev = dev;
+>>>     isotp_release() or isotp_notify()
+>>>       can_rx_unregister(net, so->dev, ...)
+>>>         old dev->type != ARPHRD_CAN guard passes
+>>>         can_dev_rcv_lists_find()
+>>>           can_ml = can_get_ml_priv(dev);   /* NULL */
+>>>           return &can_ml->dev_rcv_lists;
+>>>         hlist_for_each_entry_rcu() walks the near-NULL pointer
+>>>
+>>> dev_rcv_lists sits at offset 0 of struct can_ml_priv, so the returned
+>>> pointer is near-NULL and the list walk oopses.
+>>>
+>>> Triggering this only requires owning a tun device, or CAP_NET_ADMIN inside
+>>> an unprivileged user namespace.
+>>>
+>>> The patch carries a Cc: stable tag. Could the message name the oops in
+>>> can_rx_unregister() (reached through isotp_release() or isotp_notify()) and
+>>> the privilege needed to trigger it?
+>>
+>> Hi Marc,
+>>
+>> do you want me to rephrase the commit message?
+>>
+>> The referenced "Fixes" commit from Oleksij
+>> 4e096a18867a5a989b ("net: introduce CAN specific pointer in the struct
+>> net_device") was introduced in Linux 5.12 but is available in stable 5.10.
+> 
+> please go ahead!
+> 
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index 972474893a6b..f41a79529f10 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -511,6 +511,13 @@ static int bcmasp_netfilt_wr_to_hw(struct bcmasp_priv *priv,
- 	return 0;
- }
- 
-+static bool bcmasp_netfilt_is_companion(struct bcmasp_priv *priv, int i)
-+{
-+	return i > 0 && (i % 2) &&
-+	       priv->net_filters[i].wake_filter &&
-+	       priv->net_filters[i - 1].wake_filter;
-+}
-+
- void bcmasp_netfilt_suspend(struct bcmasp_intf *intf)
- {
- 	struct bcmasp_priv *priv = intf->parent;
-@@ -524,9 +531,7 @@ void bcmasp_netfilt_suspend(struct bcmasp_intf *intf)
- 		    priv->net_filters[i].port != intf->port)
- 			continue;
- 
--		if (i > 0 && (i % 2) &&
--		    priv->net_filters[i].wake_filter &&
--		    priv->net_filters[i - 1].wake_filter)
-+		if (bcmasp_netfilt_is_companion(priv, i))
- 			continue;
- 
- 		ret = bcmasp_netfilt_wr_to_hw(priv, &priv->net_filters[i]);
-@@ -556,9 +561,7 @@ int bcmasp_netfilt_get_all_active(struct bcmasp_intf *intf, u32 *rule_locs,
- 		    priv->net_filters[i].port != intf->port)
- 			continue;
- 
--		if (i > 0 && (i % 2) &&
--		    priv->net_filters[i].wake_filter &&
--		    priv->net_filters[i - 1].wake_filter)
-+		if (bcmasp_netfilt_is_companion(priv, i))
- 			continue;
- 
- 		if (j == *rule_cnt)
-@@ -583,9 +586,7 @@ int bcmasp_netfilt_get_active(struct bcmasp_intf *intf)
- 			continue;
- 
- 		/* Skip over a wake filter pair */
--		if (i > 0 && (i % 2) &&
--		    priv->net_filters[i].wake_filter &&
--		    priv->net_filters[i - 1].wake_filter)
-+		if (bcmasp_netfilt_is_companion(priv, i))
- 			continue;
- 
- 		cnt++;
-@@ -607,6 +608,9 @@ bool bcmasp_netfilt_check_dup(struct bcmasp_intf *intf,
- 		    priv->net_filters[i].port != intf->port)
- 			continue;
- 
-+		if (bcmasp_netfilt_is_companion(priv, i))
-+			continue;
-+
- 		cur = &priv->net_filters[i].fs;
- 
- 		if (cur->flow_type != fs->flow_type ||
-@@ -659,7 +663,7 @@ bool bcmasp_netfilt_check_dup(struct bcmasp_intf *intf,
- }
- 
- /* If no network filter found, return open filter.
-- * If no more open filters return NULL
-+ * If no more open filters return error.
-  */
- struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
- 						  u32 loc, bool wake_filter,
-@@ -669,45 +673,55 @@ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
- 	struct bcmasp_priv *priv = intf->parent;
- 	int i, open_index = -1;
- 
--	/* Check whether we exceed the filter table capacity */
-+	if (!init) {
-+		if (loc == RX_CLS_LOC_ANY || loc >= priv->num_net_filters)
-+			return ERR_PTR(-EINVAL);
-+
-+		if (priv->net_filters[loc].claimed &&
-+		    priv->net_filters[loc].port == intf->port &&
-+		    !bcmasp_netfilt_is_companion(priv, loc))
-+			return &priv->net_filters[loc];
-+
-+		return ERR_PTR(-ENOENT);
-+	}
-+
- 	if (loc != RX_CLS_LOC_ANY && loc >= priv->num_net_filters)
- 		return ERR_PTR(-EINVAL);
- 
- 	/* If the filter location is busy (already claimed) and we are initializing
- 	 * the filter (insertion), return a busy error code.
- 	 */
--	if (loc != RX_CLS_LOC_ANY && init && priv->net_filters[loc].claimed)
--		return ERR_PTR(-EBUSY);
--
--	/* We need two filters for wake-up, so we cannot use an odd filter */
--	if (wake_filter && loc != RX_CLS_LOC_ANY && (loc % 2))
--		return ERR_PTR(-EINVAL);
--
--	/* Initialize the loop index based on the desired location or from 0 */
--	i = loc == RX_CLS_LOC_ANY ? 0 : loc;
--
--	for ( ; i < priv->num_net_filters; i++) {
--		/* Found matching network filter */
--		if (!init &&
--		    priv->net_filters[i].claimed &&
--		    priv->net_filters[i].hw_index == i &&
--		    priv->net_filters[i].port == intf->port)
--			return &priv->net_filters[i];
--
--		/* If we don't need a new filter or new filter already found */
--		if (!init || open_index >= 0)
--			continue;
--
--		/* Wake filter conslidates two filters to cover more bytes
--		 * Wake filter is open if...
--		 * 1. It is an even filter
--		 * 2. The current and next filter is not claimed
--		 */
--		if (wake_filter && !(i % 2) && !priv->net_filters[i].claimed &&
--		    !priv->net_filters[i + 1].claimed)
--			open_index = i;
--		else if (!priv->net_filters[i].claimed)
--			open_index = i;
-+	if (loc != RX_CLS_LOC_ANY) {
-+		if (priv->net_filters[loc].claimed)
-+			return ERR_PTR(-EBUSY);
-+
-+		/* We need two filters for wake-up, so we cannot use an odd filter */
-+		if (wake_filter) {
-+			if ((loc % 2) || loc + 1 >= priv->num_net_filters)
-+				return ERR_PTR(-EINVAL);
-+			if (priv->net_filters[loc + 1].claimed)
-+				return ERR_PTR(-EBUSY);
-+		}
-+		open_index = loc;
-+	} else {
-+		for (i = 0; i < priv->num_net_filters; i++) {
-+			/* Wake filter consolidates two filters to cover more bytes.
-+			 * Wake filter is open if:
-+			 * 1. It is an even filter
-+			 * 2. The current and next filter is not claimed
-+			 */
-+			if (wake_filter) {
-+				if (!(i % 2) && (i + 1 < priv->num_net_filters) &&
-+				    !priv->net_filters[i].claimed &&
-+				    !priv->net_filters[i + 1].claimed) {
-+					open_index = i;
-+					break;
-+				}
-+			} else if (!priv->net_filters[i].claimed) {
-+				open_index = i;
-+				break;
-+			}
-+		}
- 	}
- 
- 	if (open_index >= 0) {
-@@ -716,16 +730,20 @@ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
- 		nfilter->port = intf->port;
- 		nfilter->ch = intf->channel + priv->tx_chan_offset;
- 		nfilter->hw_index = open_index;
--	}
- 
--	if (wake_filter && open_index >= 0) {
--		/* Claim next filter */
--		priv->net_filters[open_index + 1].claimed = true;
--		priv->net_filters[open_index + 1].wake_filter = true;
--		nfilter->wake_filter = true;
-+		if (wake_filter) {
-+			/* Claim next filter */
-+			priv->net_filters[open_index + 1].claimed = true;
-+			priv->net_filters[open_index + 1].wake_filter = true;
-+			priv->net_filters[open_index + 1].hw_index = open_index + 1;
-+			priv->net_filters[open_index + 1].port = intf->port;
-+			priv->net_filters[open_index + 1].ch = intf->channel +
-+							       priv->tx_chan_offset;
-+			nfilter->wake_filter = true;
-+		}
- 	}
- 
--	return nfilter ? nfilter : ERR_PTR(-EINVAL);
-+	return nfilter ? nfilter : ERR_PTR(-ENOSPC);
- }
- 
- void bcmasp_netfilt_release(struct bcmasp_intf *intf,
-@@ -733,7 +751,8 @@ void bcmasp_netfilt_release(struct bcmasp_intf *intf,
- {
- 	struct bcmasp_priv *priv = intf->parent;
- 
--	if (nfilt->wake_filter) {
-+	if (nfilt->wake_filter && !(nfilt->hw_index % 2) &&
-+	    nfilt->hw_index + 1 < priv->num_net_filters) {
- 		memset(&priv->net_filters[nfilt->hw_index + 1], 0,
- 		       sizeof(struct bcmasp_net_filter));
- 	}
--- 
-2.34.1
+done!
 
+https://lore.kernel.org/linux-can/20261012164802.94113-1-socketcan@hartkopp.net/
+
+Best regards,
+Oliver
