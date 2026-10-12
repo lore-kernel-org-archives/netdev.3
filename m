@@ -1,149 +1,387 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B1E424D6B;
-	Mon, 12 Oct 2026 19:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91343750D7;
+	Mon, 12 Oct 2026 19:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791834244; cv=none; b=eEoXg6+mkMGDWgdHfKgL1fw5hPvadfDEgkZuVP7gGTSUeX8PseV3MUREce6Wc0rzjD1+e+1RDpTKL6lccNyN12wVnnHzPyzH1rLdbu7M12UkVX9EZZBXi2ot8OGnXhTrXUModxDs7qIFOUoSXj6IarlOyoflXm7OZW+hwdhu8zU=
+	t=1791834316; cv=none; b=E6wWgnifWBbxt94tyB6dB5F60gQDdznKVSs7I7LxwQS9gx6MP3zEO+XhmdYqAHUrzuy183cfKv8rC5mnGvX7FIEXqNAi8BBoPjMSTAKyTxSdIWawPxxp//eZOT1nVUDWGuCMDhXdOHjJT5Kx67GYfoUwB1rXu/5Q9oSnXs4DYPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791834244; c=relaxed/simple;
-	bh=MPGZKtD/RTcFEOFJZmB5GQSkZkVbmx4jkYKcEBeTcGM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cDDPL8EdPDbIk3DH4VVxiEWLJ4w0cNXIdtPMuL1IzpN2MPTT/WWRbHmU/zde/S5UEbkJOOCi94GhEc+vyLp1FtlxwZXWkhOgL+AVdbVZ6K31QXGkt3r36NHK7F9gW1qYDuZehmaZ9LsZhT/iVUdCTQDTJzZp8RBE1sFpOiysvAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HBvJzKuB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791834316; c=relaxed/simple;
+	bh=cc+Ex5Pf9MIkayOb7OWzUPtrUX1g6irviRgr90qyPkY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VZ/UzGca1TeYwdbKaA5jkLWOGj5IQMFtAdpUWzi8ln6P2F4ceLsZ7Op0g2W1xhVybJOOirvSFu/QV4PybBUXQNUhpXGhbi4HWqVamglPS6ulaGJjv1oiGTQ9yHptguujrlopJXQi1bwhQaHNU7ZEitiStB3j5nMjv9ldvK+Z/YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwIp+PW3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HBvJzKuB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77A11F0089B;
-	Mon, 12 Oct 2026 19:43:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwIp+PW3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35751F0089B;
+	Mon, 12 Oct 2026 19:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791834242;
-	bh=dGLjQMre0HMGUZXG9eppSTB0wCfCdRy2DDP9ymJkK9U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HBvJzKuBOdeBqh/QLKaqbF4vvScglNF1iPQzZnras/u1vdP8rIsJVOAlS4mVUbJtV
-	 UmZW+8j78SfxSmWKbwA6OBme8ceC+KRnzfW0KF/H2rwJqaEMIzGLsMczRgu5h4k9YB
-	 i28BL29d1QfoM5ZN1D7Nc7ZYnFYMFufPkNIhwA/D2t39zLDFhnB/PNYxRk3AAOhG0N
-	 Uw4qb3awkuboFPoF++jrktejbNGLI4kmDMuVMGmwTQ2IduoR6c+FQ+T8YCd4gdldE9
-	 n/NjaVoFm+8Cn8APSaUjyNSGCZvSBWwi6e6v+s7K8pAPIjNWvWujPT6uAywcOtkePv
-	 Uu2rgqxwodJ9A==
-Message-ID: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
-Date: Mon, 12 Oct 2026 21:43:50 +0200
+	s=k20260515; t=1791834314;
+	bh=DXWntqGWQj73+xnSqgXATZJNzk0A8N0jjDplCxsKpH0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=hwIp+PW3HaOTTMBYr9WRzn0dwzZXqdSlW/55xedlbRrKk5zqs1lOfvynxr8ZI5Tus
+	 vERcOpjekc+IdnLxgS0stOMX9qbYpolSESAiUYFMIdiQcY0+oy6nHtNhaXezvyCKOy
+	 O6ruVfoPSKfB5WPgpenAfjxgxx9b7ZqVczvaBADPx2quiWaoZrnVZ1i66MzxbV/vZG
+	 0vqTjW02Bj90z95VZSahk6SgJtxhcDggUzIYnMiUIiLObA6/lO66ZTrE17pWsVNuZo
+	 UJi5TqyLtH465nrhdbH7BHMFP05xbwoag/I6CusBrtSyySRXOZezzWb4ETkr+XhxTI
+	 F2dMOnxmuEIVw==
+Subject: Re: [PATCH net-next] net/iucv: serialize HiperSockets receive with
+ the socket lock
+From: netdev-bot+sashiko@kernel.org
+To: hexlabsecurity@proton.me
+Cc: pabeni@redhat.com, kuba@kernel.org, twinkler@linux.ibm.com,
+ edumazet@kernel.org, wintera@linux.ibm.com, davem@davemloft.net,
+ nagamani@linux.ibm.com, hidayath@linux.ibm.com, netdev@vger.kernel.org,
+ horms@kernel.org, linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 12 Oct 2026 19:45:13 +0000
+Message-ID: <179183431327.434549.446348148837850426@kernel.org>
+In-Reply-To: <20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me>
+References: <20261011-b4-disp-410518f4-v1-1-753bf3258292@proton.me>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Luigi Rizzo <lrizzo@google.com>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Christoph Hellwig <hch@lst.de>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
- netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 10/12/26 16:45, Luigi Rizzo wrote:
-> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 10/3/26 23:22, Luigi Rizzo wrote:
->>> Here is a subsystem called DMA_PMD on which I would like feedback on
->>> architecture, possible enhancements, or kernel components that could be
->>> reused to avoid duplication.
->>
->> Here is a feedback to a subsystem called DMA_PMD ;)
->>
->> Why is basing this on PMDs (and embedding it in the name) the right approach?
->>
->> On architctures with large PMDs (512 MiB on arm64 with 64k), would we really
->> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that might
->> possibly also have TLB benefits (cont-pte)?
-> 
-> I had to call it something... an earlier prototype used the name IOMMU_2M,
-> but I didn't want to suggest that the design was limited to 2M (it is not).
-> 
-> Aside from the name, the _current_ prototype restricts to 2M allocations,
-> exactly because too large units are expensive and wasteful.
-> 
-> In the code, decoupling the allocation size from the PMD size is trivial.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider.
 
-Yeah, we should do that.
+Critical: 0 · High: 0 (1) · Medium: 3 · Low: 1 (1)
 
-We should probably just find a way to describe that this is a POOL that focuses
-on physical contiguity in some configured granularity.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] afiucv_hs_backlog_add() takes the data budget from the live
+  READ_ONCE(iucv->msglimit) + 1, on the assumption that this equals the…
+- [Medium] The comments on afiucv_hs_defer() and afiucv_hs_backlog_add()
+  size both budgets on one claim: data and WIN frames only ever wait…
+- [Medium] Repeated SHT frames can still push msg_recv past msglimit, so
+  recvmsg() takes WARN_ON(1), __iucv_sock_close() and -EFAULT instead of…
+- [Low] The commit message describes user-visible bugs that date back to
+  3881ac441f64 ("af_iucv: add HiperSockets transport"): a FIN or SYN|ACK…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but it is high
+  severity.
+- [Low] In iucv_sock_recv_skb(), a reader that is asleep when the peer's
+  FIN arrives gets -ENOTCONN, while a recvmsg() that starts after the…
+
+--
+
+net/iucv: serialize HiperSockets receive with the socket lock
+
+This patch makes afiucv_hs_rcv() take bh_lock_sock() once. While a task
+owns the socket, frames are deferred to the socket backlog, which is
+bounded by frame count and drained by a per-socket sk_backlog_rcv. It also
+runs recvmsg() under lock_sock(), lets sendmsg() wait for send memory
+without the lock, and sends the FIN and first SHT past sk_sndbuf.
+
+Link: https://lore.kernel.org/all/20260724222917.134769-1-hexlabsecurity@proton.me/
+
+> diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
+> index 5ba875798aa41..1fcb47a087551 100644
+> --- a/net/iucv/af_iucv.c
+> +++ b/net/iucv/af_iucv.c
+
+[ ... ]
+
+> @@ -374,26 +377,28 @@ static void iucv_sever_path(struct sock *sk, int with_user_data)
+>  static int iucv_send_ctrl(struct sock *sk, u8 flags)
+>  {
+
+[ ... ]
+
+> -	skb = sock_alloc_send_skb(sk, blen, 1, &err);
+> -	if (skb) {
+> -		skb_reserve(skb, blen);
+> -		err = afiucv_hs_send(NULL, sk, skb, flags);
+> +	/* Control frames go out after a shutdown too. The FIN and the first SHT
+> +	 * end the stream and may exceed sk_sndbuf, like TCP's FIN; at sk_sndbuf
+> +	 * the others get -EAGAIN and arm SIGIO, as sock_alloc_send_skb() does.
+> +	 */
+> +	force = flags == AF_IUCV_FLAG_FIN ||
+> +		(flags == AF_IUCV_FLAG_SHT &&
+> +		 !(sk->sk_shutdown & SEND_SHUTDOWN));
+
+[Severity: Low]
+The only trailers are Suggested-by, Link and Signed-off-by. There is no
+Fixes: tag.
+
+The changelog describes bugs users can see that go back to 3881ac441f64
+("af_iucv: add HiperSockets transport"):
+
+- a SHT or FIN lost to a full send buffer
+- a window update that fails and keeps its credit, so recvmsg() hits
+  WARN_ON(1) and returns -EFAULT
+
+The notes below the --- line say this iucv_send_ctrl() change could go to
+net on its own with Fixes: 3881ac441f64. They also say the credit drop in
+recvmsg() fixes a bug in net today.
+
+If both stay folded into one net-next patch, will stable pick them up?
+Could the iucv_send_ctrl() fix, and possibly the credit drop, go to net
+as separate patches with Fixes: tags?
+
+[ ... ]
+
+> @@ -1245,6 +1267,47 @@ static void iucv_process_message_q(struct sock *sk)
+>  	}
+>  }
+>
+> +/*
+> + * Like skb_recv_datagram(), but sleep with the socket lock released, so that
+> + * release_sock() runs the backlog and a deferred FIN reaches the reader.
+> + */
+> +static struct sk_buff *iucv_sock_recv_skb(struct sock *sk, int flags, int *err)
+> +{
+
+[ ... ]
+
+> +		if (!timeo)
+> +			break;
+> +		if (sk->sk_state != IUCV_CONNECTED) {
+> +			*err = -ENOTCONN;
+> +			break;
+> +		}
+
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch. A
+reader that is asleep here when the peer's FIN arrives gets -ENOTCONN. A
+recvmsg() that starts after the FIN returns 0 through the IUCV_DISCONN
+shortcut at the top of iucv_sock_recvmsg().
+
+The old path, skb_recv_datagram()->__skb_wait_for_more_packets(), also
+returned -ENOTCONN in this case, because IUCV_CONNECTED equals
+TCP_ESTABLISHED. So this keeps the existing behaviour.
+
+Should a blocked reader also see EOF here, like a reader that arrives
+after the FIN?
+
+[ ... ]
+
+> @@ -1322,8 +1386,9 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+>  			atomic_inc(&iucv->msg_recv);
+>  			if (atomic_read(&iucv->msg_recv) > iucv->msglimit) {
+>  				WARN_ON(1);
+> -				iucv_sock_close(sk);
+> -				return -EFAULT;
+> +				__iucv_sock_close(sk);
+> +				err = -EFAULT;
+> +				goto out_err;
+>  			}
+>  		}
+>
+> @@ -1350,13 +1415,18 @@ static int iucv_sock_recvmsg(struct socket *sock, struct msghdr *msg,
+>  		}
+>  		spin_unlock_bh(&iucv->message_q.lock);
+>
+> -		if (send_win) {
+> +		if (send_win && sk->sk_state == IUCV_CONNECTED) {
+>  			err = iucv_send_ctrl(sk, AF_IUCV_FLAG_WIN);
+>  			if (err) {
+>  				sk->sk_state = IUCV_DISCONN;
+>  				sk->sk_state_change(sk);
+>  			}
+>  		}
+> +		/* the peer won't take this credit: drop it, or a SHT's
+> +		 * zero-length skb counts past msglimit
+> +		 */
+> +		if (send_win && sk->sk_state != IUCV_CONNECTED)
+> +			atomic_set(&iucv->msg_recv, 0);
+
+[Severity: Medium]
+Can repeated SHT frames still drive recvmsg() into the WARN_ON(1) and
+-EFAULT above?
+
+On the peer, every shutdown(SHUT_WR) while connected sends another SHT:
+
+iucv_sock_shutdown()
+    ...
+    } else
+        iucv_send_ctrl(sk, AF_IUCV_FLAG_SHT);
+
+These SHTs don't use any window, since only sendmsg() increments
+msg_sent. Here, each one becomes a zero-length skb, and consuming it does
+atomic_inc(&iucv->msg_recv).
+
+msg_recv is only reset through send_win. send_win is only set when
+backlog_skb_q is empty after the requeue loop, and the new credit drop
+depends on send_win too.
+
+Suppose the peer sends a full window of data, then enough repeated SHTs
+that the receive queue spills into backlog_skb_q. backlog_skb_q may then
+stay non-empty while msg_recv keeps climbing.
+
+Would the first SHT read then push msg_recv past iucv->msglimit? That
+would make recvmsg() call __iucv_sock_close() and return -EFAULT instead
+of EOF. The comment in afiucv_hs_backlog_add() says "a repeated one
+carries nothing", but such an SHT still seems to count here.
+
+[ ... ]
+
+> @@ -1894,7 +1966,6 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
+>  	}
+>
+>  	nsk = iucv_sock_alloc(NULL, sk->sk_protocol, GFP_ATOMIC, 0);
+> -	bh_lock_sock(sk);
+>  	if ((sk->sk_state != IUCV_LISTEN) ||
+>  	    sk_acceptq_is_full(sk) ||
+>  	    !nsk) {
+> @@ -1904,7 +1975,6 @@ static int afiucv_hs_callback_syn(struct sock *sk, struct sk_buff *skb)
+>  		err = dev_queue_xmit(skb);
+>  		if (nsk)
+>  			iucv_sock_kill(nsk);
+> -		bh_unlock_sock(sk);
+>  		goto out;
+>  	}
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does this refusal path
+leak nsk?
+
+iucv_sock_kill() does nothing unless SOCK_ZAPPED is set:
+
+static void iucv_sock_kill(struct sock *sk)
+{
+	if (!sock_flag(sk, SOCK_ZAPPED) || sk->sk_socket)
+		return;
+	...
+}
+
+iucv_sock_alloc() clears SOCK_ZAPPED, and only __iucv_sock_close() sets
+it. None of these paths call __iucv_sock_close(). So each SYN refused
+here seems to leave a whole iucv_sock linked on iucv_sk_list, still
+holding its sk_alloc() reference. That covers a listener not in
+IUCV_LISTEN and a full accept queue.
+
+The same applies to the iucv_sock_kill(nsk) after a failed
+dev_queue_xmit() of the SYN|ACK further down. There, the
+dev_hold(niucv->hs_dev) reference would leak too, and
+unregister_netdev() of that device could wait forever.
+
+A peer on the HiperSockets LAN can repeat connect() against a listener
+with a full accept queue, so this can grow without bound. The leaked
+sockets also lengthen the iucv_sk_list walk in afiucv_hs_rcv() for every
+frame.
+
+With this patch, deferred SYNs reach the same path through
+afiucv_hs_backlog_rcv()->afiucv_hs_dispatch()->afiucv_hs_callback_syn().
+The changelog also names the full-accept-queue refusal as the model for
+the new refusal past the budget.
+
+[ ... ]
+
+> @@ -2066,6 +2131,64 @@ static int afiucv_hs_callback_rx(struct sock *sk, struct sk_buff *skb)
+>  	return NET_RX_SUCCESS;
+>  }
+>
+> +/* data, SHT and WIN frames: they leave sk_state alone */
+> +static bool afiucv_hs_is_data(u8 flags)
+> +{
+> +	return !flags || flags == AF_IUCV_FLAG_SHT || flags == AF_IUCV_FLAG_WIN;
+> +}
+> +
+> +/*
+> + * Frames that change sk_state wait while the user owns the socket. Data, SHT
+> + * and WIN frames go through, but never past waiting ones: sk_backlog.len stays
+> + * set until __release_sock() has run them all. So they wait only behind a FIN,
+> + * which voids them, or a SYN|ACK, when we have sent nothing for a WIN to ack.
+> + */
+> +static bool afiucv_hs_defer(struct sock *sk, u8 flags)
+> +{
+> +	return !afiucv_hs_is_data(flags) || sk->sk_backlog.len != 0;
+> +}
+
+[Severity: Medium]
+Does this classification hold up for frames the dispatcher doesn't act
+on?
+
+While the socket is owned, every flags value outside {0, SHT, WIN} is
+deferred and charged to sk_backlog_ctrl. That includes values that
+afiucv_hs_dispatch() only frees in its default case. It also includes a
+SYN|ACK or SYN|FIN for a socket that isn't IUCV_BOUND, which the
+callbacks just drop.
+
+On a socket that isn't listening, the control limit is
+sk_max_ack_backlog + 2, which is 2. Two such frames in one ownership
+period would leave no room for a real FIN. The FIN would then go to
+kfree_skb_reason(skb, SKB_DROP_REASON_SOCKET_BACKLOG) and never be
+resent.
+
+Each deferred stray frame also makes sk_backlog.len non-zero. Later data
+and pure WIN frames are then deferred too and charged to the
+msglimit + 1 data budget.
+
+With traffic in both directions, msglimit data frames plus two or more
+pure WINs, could data frames be dropped as well? Before this patch these
+stray frames were freed right away.
+
+Would it make sense to drop unknown flags in afiucv_hs_rcv() before
+deciding whether to defer?
+
+> +
+> +/*
+> + * Not sk_add_backlog(): its limit is in bytes, and nothing resends a frame it
+> + * drops. Count frames instead. Data, SHT and WIN frames get msglimit + 1: a
+> + * peer that keeps to the window has at most msglimit data frames and one SHT
+> + * waiting (a repeated one carries nothing); WINs need no room (see above). The
+> + * rest get sk_max_ack_backlog + 2: a SYN|ACK and a FIN, or a listener's SYNs up
+> + * to its accept queue and one more. Both counts restart only once
+> + * __release_sock() has run every frame: a flood cannot keep the owner draining.
+> + */
+> +static void afiucv_hs_backlog_add(struct sock *sk, struct sk_buff *skb,
+> +				  u8 flags)
+> +{
+> +	struct iucv_sock *iucv = iucv_sk(sk);
+> +	unsigned int *count, limit;
+> +
+> +	if (!sk->sk_backlog.len) {
+> +		iucv->sk_backlog_data = 0;
+> +		iucv->sk_backlog_ctrl = 0;
+> +	}
+> +	if (afiucv_hs_is_data(flags)) {
+> +		count = &iucv->sk_backlog_data;
+> +		limit = READ_ONCE(iucv->msglimit) + 1;
+
+[Severity: Medium]
+Can this budget end up smaller than the window the peer was granted?
+
+The SYN advertises the msglimit that is current at connect() time:
+
+afiucv_hs_send()
+	if (flags == AF_IUCV_FLAG_SYN)
+		phs_hdr->window = iucv->msglimit;
+
+However, iucv_sock_setsockopt(SO_MSGLIMIT) still accepts the option in
+IUCV_BOUND. A HiperSockets socket stays in IUCV_BOUND from the moment
+iucv_sock_connect() sends its SYN until the SYN|ACK arrives. That window
+is open after:
+
+- a non-blocking, timed-out or interrupted connect()
+- another thread calls setsockopt() while a blocking connect() sleeps in
+  iucv_sock_wait() with the lock released
+
+If msglimit is lowered in that window, the peer can still send a full
+window of the old size. Those frames wait behind the deferred SYN|ACK.
+Every frame past the new msglimit + 1 is dropped here with
+SKB_DROP_REASON_SOCKET_BACKLOG and never resent, so stream data is lost
+without any error. The msg_recv > iucv->msglimit check in
+iucv_sock_recvmsg() would also use the lowered value.
+
+The notes below the --- line call this the one remaining gap, but the
+code still allows it. Could SO_MSGLIMIT be rejected once a HiperSockets
+SYN has gone out? Alternatively, could the advertised window be saved and
+used for this budget?
+
+[ ... ]
 
 -- 
-Cheers,
-
-David
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011-b4-disp-410518f4-v1-1-753bf3258292%40proton.me
