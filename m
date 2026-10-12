@@ -1,83 +1,86 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30122E7384
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E882E7384
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791768308; cv=none; b=qPupQZfo1XM9QS8f4h+cxG4CI9yn7HCVvkAygH5OoVSJyOVFSDUS7crIwwkQdMWXD00CRzzU2qcRfCuz3K+V8l5BAocjeP7YCmPgl+bUlEAxfiLbrDvsoWUiwlYZsTeq/s/R+Fb00jRvoxhVrDt1077Q48AZUGbGM4bW3asedwI=
+	t=1791768370; cv=none; b=FjiLdJ+fMA/0Q9/aNVMKBRXnYOgIuDvlqc20mj2LZcJLGnBjV5qRtnRCZEj64a1olFzUe+9ZWrEwRZvRk6+fLWyAHKMz5LBtsuMPnWh+zNt3atsQBojYWI6pa56nPkaZQYTT3//214BSc6ezngZBbneBjl7fYNEqCgHNM43soUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791768308; c=relaxed/simple;
-	bh=yWi7Q1J2djTBuVueWn5sOUMdqjsqhx3pjQnh0zBQZBI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=eZzap2kFuSdorK0yudLNB1Hvc+D6oBDPNNod4N3YJWVMm53tdl/F/NwWrfOdK7LkYaaKcHAnlxN0sjOxCr1VLHd21jQIWzQiAVpYt9QqOyQfa2l0DGEephkwlDtiHzkPGRbu66Ttitxk+KDFC8H52OESzE8GI3ucxl3F5Ez5hYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S49ZcmwL; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791768370; c=relaxed/simple;
+	bh=tzLBJAojfuIfb94wAwFqFt4eYKDn0B41zIhjFfxqZYI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OO4zaSE2n+Wz08h3LwkKRIKLgUrUjdE8vTz71yVwFS0tY+lH8vS2kAD1V3GlrwgvsaCMol9xdiE05nJ7irhSZep+dElE7P09HWPB3OBzQYHbHrS2vDu24bGBUNcxIyrrVSJ/Gl4GlvGbwaeXCE6NoFdQHPd6yCG5J3EDKHNU3Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=fqJfeVfz; arc=none smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S49ZcmwL"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ab4178ee33so615924a91.3
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:25:05 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="fqJfeVfz"
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6deb848ddd7so968832eaf.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:26:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791768305; x=1792373105; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NGNfDe4PH3EHur5xwCh9qmvE7IvKd55G+GXc+WjRDUQ=;
-        b=S49ZcmwLH2MZBnOGpyrojMIqR1WAg4CSID293pxDSQcar1+GUGz4ll05KLPOET1I9Y
-         GSeiAcZUvL1Jv8tM4o0WQfVeYBs7lsjA2iQ89jDcBQTjj9jb0G3OhAoh7UvaVy5kYOl4
-         kHhNaeZj7RTgwNGDE02YG4S+vUtFmzhWU0HL30hzxQyVQg/n8pRyS11PKg/6VYTOJ2E+
-         w/pXAcyOMOtI6volip2dqdQtssPxs34O0DdazBaTQPoZ7uvsWQLztmrk/fCE7qBJxluQ
-         qsG4rSZLKXyHulAEG36NbLkVLmGX+PgG0bQh2ojw2TQVHfA0xC3EM6RP9IOxMdw/1qI1
-         RhWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791768305; x=1792373105;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=openai.com; s=google; t=1791768368; x=1792373168; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NGNfDe4PH3EHur5xwCh9qmvE7IvKd55G+GXc+WjRDUQ=;
-        b=TFJgXjsU5yOlw+JWARjLQ8TJSgoGvMRlx8u4itIEuhevPI/nQn/cVsVDRIw8m3A9nD
-         +OwVViyyrLmIbcl29GVkY/omKaN9XJWnUFqoZSj9y491uAXbyUHxMzyz531na6dpb23w
-         AY/YxrYQ2Oeak2qv4ICmXClTcYTLnfA03Y73FMAtJx1WjuCb+O32bDntgQ2sSjQl33L2
-         WRct7An+CuS3Lq7kWU42OfxjHph+BXSmRsf81LOwUfEJIHDO8kwpm+6JYWRwBGdR+1LB
-         KqX1Z4HYacBkZCLFHjKrZnHYp/EBwLg6sZRxFGXURhoy70IP6737XfBw+WWnHGMl8FfE
-         WLUQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwEWMHR6y9IGefrmPGT2kcmiYpCsfgBu1d7W4/UHHxatHFXEEYAVKHN6KmZaKTYBAaO51Fc9AI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL8lzNsMvQqAaTFnTrXUCdECkUN3jG2qRvvyF3yyFd6LJz0j9Z0
-	w4mKiQyeHyDVRJd5Y7nA5rhtMWN9qs3GY2Pcn85o+Jbb0vS1GlX6N7Ez
-X-Gm-Gg: AYBFou2InI9IIdFaOvciQY9bdic+d955su8jPeN92c2RjdmAM03kqE+u65Abvj0Kde1
-	enPjGLGbQBF5kfX2WTYh5HjdeQuAFMk6+KHLCJYpElNLrIVr4Gab5vFobLKcUw0+oQGtYNhc2Yp
-	fxZIarp/vNS32+4kGH7XN6jw+5bGiilR6G92vsbQv6E/SGXKcC+rUmHyXwH1ZM7PBWTEGL/G/mq
-	ahhETJ7LmhKhOHk3ucfg380LgGZn7DZdP8vl/I+CduKHu49iZLCJWWy93OjHX0b0Ge0wpAZwgcc
-	pk46q+qf/0ozjMkFufApR7evd6w4vE2TNz3P4wP5KnRO2WVcgOxLXYeydZQmyUykPaWoYl+MfiG
-	pmrPFPueE7l61eefJjEaFwJf7/RdUQEhOczj6fM9R/xaml8xLK7QIcwBkN1p54dsS8/M5cuGg8O
-	I8nhpwAVR7nonG/q7xC21s3Cs2KsrhUWkShhzRlOVBkvou/9MVDN36dniLzHCL4LX8GA==
-X-Received: by 2002:a17:90b:3c0d:b0:3ab:b39f:41da with SMTP id 98e67ed59e1d1-3abb39f450amr2604770a91.11.1791768304968;
-        Sun, 11 Oct 2026 18:25:04 -0700 (PDT)
-Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab36ed0daesm14104449a91.5.2026.10.11.18.25.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 18:25:04 -0700 (PDT)
-From: Cen Zhang <zzzccc427@gmail.com>
-To: alex.aring@gmail.com,
-	stefan@datenfreihafen.org,
-	miquel.raynal@bootlin.com,
+        bh=u+eNfrR0vfA3cM3B1uHRjef6pcqbiMOdYjlGJEphPzc=;
+        b=fqJfeVfzt5JtzZaWbAfim+Ssh6Ae2D3P2+oW/WoKq/4DcxS1AElmYqy9w8gxbbDYxz
+         MK/2DZ0iryEtEnvxgBw9qjCKGhcztaoccq6RXQRmTcKmZdbFv5MlHe41jUJs80vtSlb3
+         wSzkW9d37OOSJ4rG9M5CIv2KfCGcXvbOqWoh0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791768368; x=1792373168;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=u+eNfrR0vfA3cM3B1uHRjef6pcqbiMOdYjlGJEphPzc=;
+        b=0a5Z9/rtFovcT4OVehabtAPiU+tCCjcnAsp8VJUA/isMjdULMin7OXSqQPfXp5yqul
+         ChK+NILQZhZ6129/BzpnbGu7Bjd1Lb6XmD20204/Twk8K7X1R15YirWzpxslnkrTBUXe
+         EoHwhdEcMOYt3SYlg8W/ZHylYAIfAKnAY4Ekz7fMwgv1qwff/NwHcvdYxYnGXIK4Xj4j
+         HxK1jcWxktTeoATwjqcWZV3FJTxEno0ODIXpFRnmaxxpveOrCP3sZ1W45CbfqaUR2Ul8
+         WzXI+sROs96sGNhr6eviJWHfcZON3BfR8wOsa8UUU4tZ65v5bqTWbhC7QBUuESV4Aj+1
+         gpYA==
+X-Forwarded-Encrypted: i=1; AKwUvBxn/cqWkeRvDK9vnMKNeZk/4WKfBWDQ2KgATxTfXCk7ezFKSXr8W0XrHN25L1vQ97tSftrEz/s=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK08YEr4EguuNX+0dZjAtEPdQ8a0h9foth3+7LcQTIdOocCcaqq
+	Qvrm9T5pvEr9Yeg+tnhRPKhdpwJgfauI2SyHP3En9drreeTO+uZGHCEjVaaZYMmDQjvQzwdiaOK
+	Dev61VCg9+Q==
+X-Gm-Gg: AYBFou0JzHkqnDKUnjGFuvG2sSqxspR+F3opTFsuG6/sqTJ885st2QAlu7SRQs7xpcJ
+	1emkuDoLsO7sThSUXph89CbUXPAT2pQglSNB8lU4yIXz5Ktd0mD+SM7FN6iFxmNGO0CFv1YQLS2
+	PmuzzndnY8tQODBgW7mHtLH/LbKceQ377+lT7xGmaSWMVyl0XdZTuBbTJkg6mNGj3cgQcBcUgvd
+	qcFY6YJ04VtjX3L0/yFZcHwd4R2Tz+0yDBHFqkTj1Kvtc4k9nq9v0FKh6Oc15p+kQ8doWdhz1gF
+	uQhmnfjyUyBVaT5nk7yj5dMXM1YOBX53nyJgO9Bv03yJlNZ7pLP8c/CsNjuMMZ7FH0KvJMsK4oB
+	IZQ5EdXd3Vjo+YoYrdr5RsP+VTFCA3knidMekjVJIdkuISsXv4pYMZ/hG9Q78xq1XTGZ1NuD8EV
+	YKXKxGkNP9r6oE9YcFk/A4fo/ac4TRMw7hYBJSL3x0f93cpyLC+Dyagzq+dSWt4n+Vtm0Xpxw7n
+	DLUhVSt6AMLVKRWC9ucawrsQvwdDSGjPnYiVvTVcTfxgrpmqiC/AOIiJ0TSHODlTeDBFtv4Ybif
+	QGakz5WdROesGQByC1qsptzHi9ihMC2K0FUepw==
+X-Received: by 2002:a05:6820:f031:b0:6cd:3ffc:e330 with SMTP id 006d021491bc7-6ef129e2d89mr6079783eaf.78.1791768367710;
+        Sun, 11 Oct 2026 18:26:07 -0700 (PDT)
+Received: from com-68297.corp.openai.org (vpn-centralus-01.tradc-corp.com. [172.169.249.3])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6f634860481sm1584254eaf.13.2026.10.11.18.26.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 11 Oct 2026 18:26:07 -0700 (PDT)
+From: nramaswamy@openai.com
+To: Neal Cardwell <ncardwell.sw@gmail.com>,
+	Eric Dumazet <edumazet@kernel.org>
+Cc: Neil Ramaswamy <nramaswamy@openai.com>,
 	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
 	horms@kernel.org,
-	zhilinz@nebusec.ai,
-	lucien.xin@gmail.com
-Cc: linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
+	jiayuan.chen@linux.dev,
+	kuba@kernel.org,
+	kuniyu@google.com,
 	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	jjzuming@gmail.com,
-	zzzccc427@gmail.com
-Subject: [PATCH net] ieee802154: 6lowpan: Hold wpan reference until lowpan destruction
-Date: Mon, 12 Oct 2026 09:24:57 +0800
-Message-Id: <pm-ip-core-objects-candidate-0015-v5-006dffdec5c84633dfbe@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	linux-kselftest@vger.kernel.org,
+	ncardwell@google.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	ycheng@google.com
+Subject: Re: [PATCH net v3 3/3] selftests: net: packetdrill: test RTO fallback after partial undo
+Date: Sun, 11 Oct 2026 18:25:56 -0700
+Message-ID: <20261012012601.27658-1-nramaswamy@openai.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261009171447.291802-1-ncardwell.sw@gmail.com>
+References: <CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com> <20261009171447.291802-1-ncardwell.sw@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,203 +90,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The underlying wpan device must remain alive while users of the lowpan
-netdevice can invoke its neighbour discovery callbacks. lowpan_newlink()
-retains wdev, but lowpan_dellink() drops that reference immediately
-after unregistering ldev, before ldev's outstanding references have
-drained.
+From: Neil Ramaswamy <nramaswamy@openai.com>
 
-With router reachability probing enabled, rt6_probe_deferred() holds
-ldev while sending a neighbour solicitation. If the worker selects a
-valid link-local source before physical wpan unregister, it can continue
-into option sizing after address teardown. The following order is
-possible:
+Thanks for the feedback Eric and the patch Neal. I took some time to read 
+through the code, and I have a few questions.
 
-1. The RT6 worker enters ndisc_send_ns() with its reference to ldev.
-2. ipv6_get_lladdr() copies the source and releases its lock and RCU
-   read section. The worker is preempted before ndisc_ns_create().
-3. Physical wpan unregister calls lowpan_device_event(), which calls
-   lowpan_dellink(). It unregisters ldev and drops the wdev reference.
-4. netdev_run_todo() skips the still-referenced ldev and frees wdev.
-5. The worker resumes into lowpan_ndisc_opt_addr_space(), dereferencing
-   the freed wdev through ldev's stored pointer.
+First, I think the core invariant we're trying to maintain is that
+tsorted_sent_queue and tsorted_lost_queue are always themselves sorted by
+transmission timestamp. A nice property to have would be that all the
+skbs in tsorted_lost_queue precede everything in tsorted_sent_queue in
+transmission order so that partial undo can always list splice these
+together, but there's the edge case you point out:
 
-RTNL and synchronize_net() do not join this workqueue execution after
-source selection. Out-of-order netdevice finalization therefore permits
-a use-after-free read of wdev->ieee802154_ptr and its embedded wpan_dev.
+> The "often" is the RTO case: tcp_timeout_mark_lost() leaves the skbs it
+> marks in tsorted_sent_queue, and they can be older than what RACK moves
+> to the lost queue afterwards.
 
-Release the existing wdev reference from ldev's private destructor so it
-covers the worker's entire use of ldev. Install the destructor only
-after successful registration, preserving the existing reference release
-on registration failure. Once ldev's users finish, its destructor drops
-the wdev reference and physical device finalization can proceed.
+I'm struggling to see why RACK cannot move all LOST (going to use this as
+shorthand instead of TCPCB_LOST) and RACK-eligible segments from
+tsorted_sent_queue to the lost queue; I think that this would actually
+maintain the simpler invariant that tsorted and tlost are both sorted and
+that all of tlost precedes tsorted, allowing for O(1) splice. To do
+this, I believe that we would have to remove:
 
-KASAN report as below:
+		/* Skip ones marked lost but not yet retransmitted */
+		if ((scb->sacked & TCPCB_LOST) &&
+		    !(scb->sacked & TCPCB_SACKED_RETRANS))
+			continue;
 
-    BUG: KASAN: slab-use-after-free in lowpan_ndisc_opt_addr_space+0x324/0x380
-    Read of size 8 at addr ffff8881077d44c8 by task kworker/0:1/11
+from tcp_rack_detect_loss, and instead continue to check whether remaining
+<= 0; if it is, we add the segment to a local queue, which we then can
+splice to the end of the lost queue at the end of the function. We would
+probably want to retain the skip for LOST segments without SACKED_RETRANS
+when remaining > 0 to avoid updating reo_timeout.
 
-    CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 7.2.0-rc5-pmb-bt-functional-v1+ #1 PREEMPT(lazy)
-    Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-    Workqueue: events rt6_probe_deferred
-    Call Trace:
-     <TASK>
-     dump_stack_lvl+0x93/0xd0
-     print_report+0xce/0x630
-     ? lowpan_ndisc_opt_addr_space+0x324/0x380
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __virt_addr_valid+0x20d/0x410
-     ? lowpan_ndisc_opt_addr_space+0x324/0x380
-     kasan_report+0xe0/0x110
-     ? lowpan_ndisc_opt_addr_space+0x324/0x380
-     ? __pfx_lowpan_ndisc_opt_addr_space+0x10/0x10
-     lowpan_ndisc_opt_addr_space+0x324/0x380
-     ndisc_ns_create+0x5c9/0x760
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? pmbd_probe_hit_cookie+0xee/0x1c0
-     ? __pfx_ndisc_ns_create+0x10/0x10
-     ? __pfx_pmbd_probe_hit_cookie+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? ipv6_get_lladdr+0x287/0x470
-     ndisc_send_ns+0xae/0x1a0
-     ? __pfx_ndisc_send_ns+0x10/0x10
-     ? __pfx_pmbd_probe_hit_cookie+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? debug_object_deactivate+0x2f8/0x3c0
-     rt6_probe_deferred+0xf4/0x290
-     ? process_one_work+0x895/0x19c0
-     ? __pfx_rt6_probe_deferred+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     process_one_work+0x908/0x19c0
-     ? __pfx_process_one_work+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? lock_is_held_type+0x8f/0x100
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     worker_thread+0x65c/0xe40
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __kthread_parkme+0x175/0x220
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __pfx_worker_thread+0x10/0x10
-     kthread+0x34f/0x460
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __pfx_kthread+0x10/0x10
-     ret_from_fork+0x659/0x940
-     ? __pfx_ret_from_fork+0x10/0x10
-     ? srso_alias_return_thunk+0x5/0xfbef5
-     ? __switch_to+0x74f/0xf80
-     ? __pfx_kthread+0x10/0x10
-     ret_from_fork_asm+0x1a/0x30
-     </TASK>
+It seems like this would also prevent subsequent RACK scans from having to
+ever reconsider this segment, since it would have been moved out to the
+LOST list. But mostly, this seems like a conceptual simplification. Perhaps
+it's undesirable to have RACK be moving around segments marked LOST by the
+RTO, but I will leave that call to someone else. 
 
-    Allocated by task 1:
-     kasan_save_stack+0x33/0x60
-     kasan_save_track+0x14/0x30
-     __kasan_kmalloc+0xaa/0xb0
-     __kvmalloc_node_noprof+0x358/0x900
-     alloc_netdev_mqs+0xa0/0x1250
-     ieee802154_if_add+0xdb/0x10e0
-     ieee802154_register_hw+0x6ef/0xa10
-     hwsim_add_one+0x699/0x12e0
-     hwsim_probe+0x2c/0x130
-     platform_probe+0xbe/0x1d0
-     really_probe+0x21f/0xa90
-     __driver_probe_device+0x1ec/0x490
-     driver_probe_device+0x4f/0x130
-     __driver_attach+0x248/0x580
-     bus_for_each_dev+0x143/0x1d0
-     bus_add_driver+0x2ea/0x660
-     driver_register+0x155/0x490
-     hwsim_init_module+0x11f/0x170
-     do_one_initcall+0xf3/0x4e0
-     kernel_init_freeable+0x59d/0xae0
-     kernel_init+0x24/0x280
-     ret_from_fork+0x659/0x940
-     ret_from_fork_asm+0x1a/0x30
+Finally, I handed the invariant that both lists are always sorted to an LLM
+and asked it to try to find exceptions. I think it provided a plausible
+suggestion that the RTX scan for retransmission can see a segment that is
+LOST, attempt to retransmit it in __tcp_transmit_skb, update its
+transmission timestamp, and then fail with -ENOBUFS, leaving the new
+timestamp there. This could cause either list to have a timestamp that's
+out-of-order which can cause a subsequent RACK scan to stop early and miss
+segements.
 
-    Freed by task 535:
-     kasan_save_stack+0x33/0x60
-     kasan_save_track+0x14/0x30
-     kasan_save_free_info+0x3b/0x60
-     __kasan_slab_free+0x5f/0x80
-     kfree+0x236/0x5a0
-     device_release+0xd7/0x280
-     kobject_put+0x1ad/0x610
-     netdev_run_todo+0x931/0x1460
-     ieee802154_unregister_hw+0x5f/0x100
-     hwsim_del+0x304/0x580
-     hwsim_del_radio_nl+0x158/0x1f0
-     genl_family_rcv_msg_doit+0x1f6/0x2e0
-     genl_rcv_msg+0x48b/0x700
-     netlink_rcv_skb+0x133/0x390
-     genl_rcv+0x2d/0x40
-     netlink_unicast+0x504/0x840
-     netlink_sendmsg+0x7f7/0xcf0
-     __sys_sendto+0x425/0x470
-     __x64_sys_sendto+0xe5/0x1c0
-     do_syscall_64+0x115/0x6a0
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+I'm not sure if restoring the timestamp to what it was before the failure
+is safe. I also couldn't figure out how to get packetdrill to simulate an
+error like this so I'm not sure how to create a repro for you. Let me know
+if I should write out a sequence of events.
 
-    The buggy address belongs to the object at ffff8881077d4000
-     which belongs to the cache dyn-kmalloc-8k of size 8192
-    The buggy address is located 1224 bytes inside of
-     freed 8192-byte region [ffff8881077d4000, ffff8881077d6000)
+> in case that is useful for discussion or using. It also proposed 2 packetdrill
+> tests (one that claims "This is the case that Eric suggested for segments with
+> TCPCB_EVER_RETRANS."), which I can post if there is interest.
 
-    The buggy address belongs to the physical page:
-    page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1077d0
-    head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-    flags: 0x200000000000040(head|node=0|zone=2)
-    page_type: f5(slab)
-    raw: 0200000000000040 ffff888100048280 dead000000000122 0000000000000000
-    raw: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
-    head: 0200000000000040 ffff888100048280 dead000000000122 0000000000000000
-    head: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
-    head: 0200000000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
-    head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
-    page dumped because: kasan: bad access detected
+Did it propose 2 different packetdrill tests? If I understand Eric's
+suggestion correctly, he's proposing to just take the test from 3/3 and
+modify its final lines to ensure prompt retransmission without an RTO. Are
+your LLM's proposed tests covering cases beyond this? 
 
-    Memory state around the buggy address:
-     ffff8881077d4380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-     ffff8881077d4400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-    >ffff8881077d4480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                                                  ^
-     ffff8881077d4500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-     ffff8881077d4580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-    ==================================================================
-
-Fixes: faab39f63c1f ("net: allow out-of-order netdev unregistration")
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
-Assisted-by: LLM
-
----
-diff --git a/net/ieee802154/6lowpan/core.c b/net/ieee802154/6lowpan/core.c
-index 6a8d6852cb93..42ae2df8b9a4 100644
---- a/net/ieee802154/6lowpan/core.c
-+++ b/net/ieee802154/6lowpan/core.c
-@@ -67,6 +67,11 @@ static int lowpan_dev_init(struct net_device *ldev)
- 	return 0;
- }
- 
-+static void lowpan_dev_free(struct net_device *ldev)
-+{
-+	dev_put(lowpan_802154_dev(ldev)->wdev);
-+}
-+
- static int lowpan_open(struct net_device *dev)
- {
- 	if (!open_count)
-@@ -181,6 +186,7 @@ static int lowpan_newlink(struct net_device *ldev,
- 		return ret;
- 	}
- 
-+	ldev->priv_destructor = lowpan_dev_free;
- 	wdev->ieee802154_ptr->lowpan_dev = ldev;
- 	return 0;
- }
-@@ -193,7 +199,6 @@ static void lowpan_dellink(struct net_device *ldev, struct list_head *head)
- 
- 	wdev->ieee802154_ptr->lowpan_dev = NULL;
- 	lowpan_unregister_netdevice(ldev);
--	dev_put(wdev);
- }
- 
- static struct rtnl_link_ops lowpan_link_ops __read_mostly = {
+Thanks.
