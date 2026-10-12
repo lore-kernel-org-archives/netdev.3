@@ -1,45 +1,61 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314F43B5303;
-	Mon, 12 Oct 2026 11:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28F73438A0;
+	Mon, 12 Oct 2026 11:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791805865; cv=none; b=aIm0rFrmpH25+3olJwidME/iZea7AnRNWPSTdHMKaHk5VWUmLTN4rjYt5DXf9qZ8FRQHCUmlKjhR08SiI0d/W3MqaqKk+UTmdYSxIpBm0utuP+UUiZpWcALNX9B/b1bO/dMyiQ4Ea2X20VkcPdP8LtB7fP93vt3t1KYmoQymazw=
+	t=1791805916; cv=none; b=cievcEQQ7mc3brTWOXDlltgOjmU8voMvt9jnvOurUosfpODHGgFEUhDgn887MLoX8tt4z5J1uxAoMipzSn5y/F3MA1skIZqYWDIEcUwuuYHlAPSmYZ8sS6+R8m7KgpO7VOz2+s2oDOrncHvcn0/fjrpBOEhgTrnpJTSsq7KPLqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791805865; c=relaxed/simple;
-	bh=auwg9QgxLhnE1InTXXGJFHS16ZPGCnIel6Upaaciny4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jNd4mLCp7tgj0M1C41juowgRTbc/n1YtCqqIkIQ0Js8H0AFkeXq81ko1LNQMnCr8H/TZU72y0mzXdS6hnfr6YY+YmPPth5MTw0mBBPAqjIBARVRa4Itzfd1jnzuYXNlnLCvn0Oof17dRl+XU73savcHb3VOXUHXUOtH/dad3Eso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SU5mfdAz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791805916; c=relaxed/simple;
+	bh=RJtJANzAk6DHDx/mlpc2S7FJYP+FwI/6QcnRA5HKNdc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NXFq9kPAZyfnTa8aOUil7Y27X/s68yGDakW3Pl6PR9xRb1/KOxQw5qagk5JLssrZucr2KOa7d/Z8PrbwzXb3OYGAzFZ+QN6XG+zuDlozFwO6oZ4SOBwLekZrbkxwIE1nWw5z+Rzt0Y1BkbTnqsqKlPcuwFfSRXod6TLWS6SSwh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BskqUePM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SU5mfdAz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDF01F0089B;
-	Mon, 12 Oct 2026 11:51:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791805863;
-	bh=ooyxWk2yObkRmeRDkrc6crB49O5NVRfnR1NX/ptc5P8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=SU5mfdAz6DvWVc+2DyuN7OaFoWw0TX5aDDkc6PJdUWrNuq90JuZe1ayynCgSMPidp
-	 xBBi6OnUUqj1ly3lNO/qoFf7x/FQKh1t9wfkMxvxtKseDGJ19suNcGJeRgGWUKQu3M
-	 hid3dwSx8rjRVNgF8UoSubXCLl/+VQfhpu7E4wH/Zj7ZbaV5bWXgYkkaVu9DWSlDnT
-	 Z2GC4my/e1+hOWXQwu+Sf6aIwDQ+iW71uToKjQpjUiOK/ZAnxu7UEQvdoLGgj3d/b9
-	 vm+5CKBl5fRBUc6QSY8GYd2Vpxb78XG1DjAOCD5g3pk+VcWhThkEOTUFikiv+HhQoD
-	 9g9Io5yNKY8Gg==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Vikas Gupta <vikas.gupta@broadcom.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
- vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
- dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com, Vikas Gupta
- <vikas.gupta@broadcom.com>
-Subject: Re: [PATCH net 0/2] bnge fixes
-In-Reply-To: <20261012054325.1782819-1-vikas.gupta@broadcom.com>
-References: <20261012054325.1782819-1-vikas.gupta@broadcom.com>
-Date: Mon, 12 Oct 2026 13:51:00 +0200
-Message-ID: <87o6czcf2z.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BskqUePM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=4mYreJU3/9ctvW9f76EbuNSnfvvRh98Nwxnm3uacts0=; b=Bs
+	kqUePMTC7jcHUtnJucA9TnYpbUhUKv1Uctr6KxiXAtZL0wQ/GCI1fL5cTpFII4G2tgbIQaJTXL/zw
+	8QqUvkJR2NggrKSgQ/uT04a08g9tnOxLIRG9h/SaOjiV8CGf5Nws2txlq3SHTc2/eS/rIXjLDrUzW
+	i/H9MLWPECre39w=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xGEZ6-00AJcu-Et; Mon, 12 Oct 2026 13:51:36 +0200
+Date: Mon, 12 Oct 2026 13:51:36 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: James Clark <jjc@jclark.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Doug Berger <opendmb@gmail.com>,
+	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 5/5] net: mdio: bcm-unimac: implement
+ timestamped MDIO writes
+Message-ID: <68eeee64-7f62-459c-b53d-61ec04b4d8e3@lunn.ch>
+References: <20261009143506.2507607-1-jjc@jclark.com>
+ <20261009143506.2507607-6-jjc@jclark.com>
+ <3b1a2994-5251-4800-8c61-b63d7a435b21@broadcom.com>
+ <60accbd89cfaf0d4be1da5ec2fafd975@tipi-net.de>
+ <CANz3_EYfcBopo=HgRioXkhoT6P+4WWpfFT7UeWkXd5eM_RNpSA@mail.gmail.com>
+ <41c32f5a6f38ec9df8a79ce896912fb9@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,26 +63,33 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <41c32f5a6f38ec9df8a79ce896912fb9@tipi-net.de>
 
-Vikas Gupta <vikas.gupta@broadcom.com> writes:
+On Sun, Oct 11, 2026 at 03:22:04PM +0200, Nicolai Buchwitz wrote:
+> Hi James
+> 
+> On 11.10.2026 09:20, James Clark wrote:
+> > On Sat, Oct 10, 2026 at 10:18 PM Nicolai Buchwitz <nb@tipi-net.de>
+> > wrote:
+> > > I dug a bit deeper on a CM4: AFAIU the MDC runs off the GISB clock,
+> > > which the firmware sets to 200 MHz (CPRMAN 0x1d8, PLLD_PER 750 MHz /
+> > > 3.75). Bumping that divider to 4.0 at runtime moves the MDIO busy time
+> > > by exactly the same ratio, so that's the one. The 250 MHz you have in
+> > > mind is genet250 / genet125, the RGMII side, a different generator.
+> > > 
+> > > So instead of a fixed clock or a compatible match this could just be
+> > > BCM2711_CLOCK_GISB in clk-bcm2835 (critical, firmware owns it) and
+> > > clocks = <&clocks BCM2711_CLOCK_GISB> on the mdio node. I can send
+> > > that
+> > > if it helps.
+> 
+> I've put together 3 patches, which do the clock plumbing:
+> https://github.com/nbuchwitz/linux/commits/devel/bcm2711-gisb-clk/
 
-> Hi,
->
-> This series fixes RSS indirection table and context sizing for large RX
-> ring counts. Patch 1 caps the hardware RSS context count and RX rings
-> to the RSS table size, preventing out-of-bounds writes and an oversized
-> memset(). Patch 2 fixes the indirection table sizing so rings above
-> the table size still receive default RSS traffic.
->
-> Thanks,
-> Vikas
->
-> Dharmender Garg (2):
->   bnge: fix RSS table sizing for large RX ring counts
->   bnge: cap RSS contexts and RX rings to the RSS table size
+It would be nice to extend this and set the divider based on this to
+give 2.5Mhz, as required by 802.3, as the default. Allow boards to
+override this using the clock-frequency property.
 
-LGTM. Tiny nit: If you respin for some reason, the patch order should be
-reversed -- capping before the rounding fix?
-
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+	Andrew
