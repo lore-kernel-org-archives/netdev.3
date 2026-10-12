@@ -1,214 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACD744A400
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E1B44A400
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791792955; cv=none; b=hMkWt8C+Mn7lb9/F35/IQJ5USbiW0U+fsbPQuqkMY1u+AuP2B32dtxbYpIR9Cfu8J8ERHH+jQ25Wo5QEi6eyv2KywwIoloW3L6VrtubL1pqfGDtoWrJYVP2DiFYP1LcJ/Ayb+DeJRfsLIVZSdQIitJjaAMp1cn3F/9UETYuJ/eQ=
+	t=1791793074; cv=none; b=ieWqtyCAcU7iSkrHPh6byvcYVRWpbeDbptbPo0CJiM6F5dqwbZAxcIlwA8JgzUo5afAo1FU3T01zfLu4bifqudrTA4WZNUK/PLY/S60GLp+qFoHpL2WQ4YQbeScKOjNZrbAC2qH0DknHK5f8w4jAggShJG4Jr9ltgMuOfjGCAxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791792955; c=relaxed/simple;
-	bh=ek9+Z6XXlFj732Y5gKP3la4jx3ftOdIzxtQQ0yZOkIU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BrStC0nBNbHeL8OLd/qk8pE9y/MEzZRBmGuB7LkKEpCUtKnP6uQBEHPcAkW7V9m7k6Y38iEML+UE7Gihbjg3L6hnCEs3Efdyp/4uiJjbRXphwyKuLFFLmkNePMPn3/1POUOues2uWB9jugLXWGxtk1skLCDc6ESdJJvQMJjZGh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/GyCllJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791793074; c=relaxed/simple;
+	bh=oiQs+XaAPXnhj3q2rBXJEJ5pvTTgbC4S2aepl5uzLe4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u1HzeZdMrYmvxiCrLLLIhaig+VRMLN118e9DkC4zCHPFtORXAEwchH/aIAdRj8Ns4XpSdfWoeMJJoaGC/j3VoJknNkpQll2mgc37qzoYlbdqLADVxBYbQrKQrP1o9/SlmVE1q5nuea7DU1RE/fDSk/O1bwkupBaWzX/QKVAqEI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=r9Yw1yA4; arc=none smtp.client-ip=95.215.58.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/GyCllJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6721A1F0089C;
-	Mon, 12 Oct 2026 08:15:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791792954;
-	bh=bYnLKZ4Jyzi+2xKFahIav0LtJz6GbA1FxUVDRYszYes=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D/GyCllJygbrVbOgHPlZugaDlrBl/dL5LxSU5CO2HnlNomfsFZqjY4mNJmEGW2ibX
-	 4hCGwzEgFS/TtNtUPexusaSc/7SVgkOnxiOOdnmyBV0Gpw140mdT41t5ihzcxn3QAc
-	 DWtDo0o8XlJDftvdq0+FbSzfG1nMZMcfkL+SfVbj6wXiGDE07OyA0CTHZU7AaHJMcx
-	 1qwnsWcMjq5YnfGcTuswvxlDeZnOCxoLdYU2v++vAJ159EZaOl4yXJL72fJCpmYtmi
-	 gPTBGFvkgizfmvzAkDYYFsim6VGWtO+THx80ksc322hgm6rxUJL8Mw64ATwSsY/nSx
-	 kUzwL6ilZ94bA==
-Subject: Re: [PATCH net-next 3/4] net/sched/sch_cake: widen buffer_used to u64
-From: netdev-bot+sashiko@kernel.org
-To: jhs@mojatatu.com
-Cc: netdev@vger.kernel.org, toke@toke.dk, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, victor@mojatatu.com, cake@lists.bufferbloat.net
-Date: Mon, 12 Oct 2026 08:15:52 +0000
-Message-ID: <179179295297.434549.16953478712242899575@kernel.org>
-In-Reply-To: <QDISC-5RTM.v1.20261007130704-4@mojatatu.com>
-References: <QDISC-5RTM.v1.20261007130704-4@mojatatu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="r9Yw1yA4"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=oiQs+XaAPXnhj3q2rBXJEJ5pvTTgbC4S2aepl5uzLe4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791793069; v=1; x=1792397869;
+ b=r9Yw1yA480UQrT66imwaLswS7CZn4oX+fMt7jmieYKMuZU4LQfE6oIIP5C7UCcXkKcDfehT8
+ eM10ev1x6JvfVP7/6/Jh8lDIFp3VxXpSVvFudxcXJc30IS+bKgxBOPdB7RHAXQ4xwDaPteHRUDn
+ YO0wSWfo61PmlygbqCjc0ZCc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 108c7064bb8ec50c;
+	Mon, 12 Oct 2026 08:17:49 +0000
+X-Mizu-Trace-ID: 108c7064bb8ec50c
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 12 Oct 2026 16:17:41 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Ahmed Abdelsalam <ahabdels@cisco.com>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>
+Subject: Re: [PATCH net-next 3/5] seg6: apply the PSP flavor together with
+ NEXT-C-SID in SRv6 End
+Message-ID: <asyXpWXMeKnPw9U6@fedora>
+References: <20261011192310.55-1-andrea.mayer@uniroma2.it>
+ <20261011192310.55-4-andrea.mayer@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261011192310.55-4-andrea.mayer@uniroma2.it>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The patch widens cake_sched_data.buffer_max_used to u64, but
-  cake_dump_stats() still exports it with PUT_STAT_U32(MEMORY_USED,…
-- [Low] The commit fixes a user-visible bug: with a large memlimit, the
-  u32 cake_sched_data.buffer_used wraps, the memory-limit drop loop in…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the memory-
-  limit drop loop in cake_enqueue() can spin forever when a populated…
-
---
-
-net/sched/sch_cake: widen buffer_used to u64
-
-This patch widens cake_sched_data.buffer_used and buffer_max_used from u32
-to u64. CAKE's truesize accounting can then no longer wrap past 2^32 and
-skip the memory-limit drop loop in cake_enqueue(). The patch also splits
-the ACK-filter replacement accounting into a separate add and subtract, so
-a wrapped u32 delta does not stay in the wider counter.
-
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818095927.15901-1-jhs@mojatatu.com
-Link: https://lore.kernel.org/netdev/20260818095927.15901-1-jhs@mojatatu.com/
-
-> Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260818095927.15901-1-jhs@mojatatu.com
-> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818095927.15901-1-jhs@mojatatu.com
-> Link: https://lore.kernel.org/netdev/20260818095927.15901-1-jhs@mojatatu.com/
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-
-[Severity: Low]
-Should this patch have a Fixes: tag?
-
-The u32 buffer_used, buffer_max_used and buffer_limit fields all seem to
-come from the original CAKE commit. The related fix this patch follows,
-4c660ee8c809, has a Fixes: tag. Without one, stable backporters may miss
-this OOM fix. Perhaps:
-
-Fixes: 046f6fd5daef ("sched: Add Common Applications Kept Enhanced (cake) qdisc")
-
-> diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-> index 2bad0b6eb13fd..4caf9718c9bda 100644
-> --- a/net/sched/sch_cake.c
-> +++ b/net/sched/sch_cake.c
-> @@ -234,8 +234,9 @@ struct cake_sched_data {
->  	u16		tin_cnt;
+On Sun, Oct 11, 2026 at 09:23:08PM +0200, Andrea Mayer wrote:
+> Since commit bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End
+> behavior"), an SRv6 End route can be set up with both the NEXT-C-SID and
+> the PSP flavors, e.g.:
+> 
+>   ip -6 route add fcbb:0:100::/48 encap seg6local action End \
+>           flavors next-csid,psp lblen 32 nflen 16 dev dum0
+> 
+> In RFC 9800, the NEXT-C-SID flavor (NEXT-CSID in the RFC) changes the
+> End processing only when the Argument is not zero [1]. With a zero
+> Argument (i.e. when the IPv6 DA carries no further C-SID), End is
+> processed as in RFC 8986, and the PSP flavor (when set) applies
+> unchanged [2]. If the packet arrives with Segments Left 1, PSP must
+> then remove the SRH.
+> 
+> However, on a route with both the NEXT-C-SID and PSP flavors,
+> input_action_end() always uses the NEXT-C-SID processing. The
+> NEXT-C-SID processing handles a packet with a zero Argument as End
+> without flavors, ignoring PSP. Therefore, if this packet arrives with
+> Segments Left 1, the SRH is not removed.
+> 
+> Fix this by using the NEXT-C-SID processing only when the Argument is
+> not zero or the route has no RFC 8986 flavor. Otherwise, the packet is
+> processed as End with its RFC 8986 flavors, in end_flv8986_core(). With
+> a zero Argument and Segments Left 1, PSP now removes the SRH before the
+> packet is forwarded. If seg6_pop_srh() cannot remove the SRH, the packet
+> is dropped, as on a route with the PSP flavor alone.
+> 
+> Found by manual code inspection and reproduced in a VM without kernel
+> changes or error injection. A following commit adds tests for this case
+> to srv6_end_flavors_test.sh. The tests reproduce the issue: they fail
+> without this change and pass with it.
+> 
+> [1] - https://datatracker.ietf.org/doc/html/rfc9800#section-4.1.1
+> [2] - https://datatracker.ietf.org/doc/html/rfc9800#section-4.1.7
+> 
+> Fixes: bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End behavior")
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>  net/ipv6/seg6_local.c | 50 ++++++++++++++++++++++++++++++++++++++++---
+>  1 file changed, 47 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index 26cd4facbe36..427d12fedfc3 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -551,6 +551,47 @@ static bool seg6_next_csid_enabled(__u32 fops)
+>  	return fops & SEG6_F_LOCAL_FLV_NEXT_CSID;
+>  }
 >  
->  	/* resource tracking */
-> -	u32		buffer_used;
-> -	u32		buffer_max_used;
+> +static bool seg6_flv8986_enabled(__u32 fops)
+> +{
+> +	return fops & SEG6_LOCAL_FLV8986_SUPP_OPS;
+> +}
 > +
-> +	u64		buffer_max_used;
+> +/* check whether the NEXT-C-SID processing has to be used for the packet,
+> + * instead of the RFC8986 flavors set for the given SRv6 End* behavior
+> + * instance.
+> + *
+> + * This function returns:
+> + *  - true, when the packet has to go through the NEXT-C-SID processing;
+> + *  - false, when NEXT-C-SID is not configured or the packet has to be
+> + *    processed on the basis of the RFC8986 flavors.
+> + */
+> +static bool seg6_use_next_csid(struct sk_buff *skb,
+> +			       const struct seg6_flavors_info *finfo)
+> +{
+> +	const struct in6_addr *addr;
+> +	__u32 fops = finfo->flv_ops;
+> +
+> +	if (!seg6_next_csid_enabled(fops))
+> +		return false;
+> +
+> +	addr = &ipv6_hdr(skb)->daddr;
+> +
+> +	/* NEXT-C-SID and the RFC8986 flavors combine according to the
+> +	 * DA.Argument (see RFC9800, sections 4.1.1 and 4.1.7):
+> +	 *
+> +	 *       DA.Argument   RFC8986 flavors   processing
+> +	 *   (1) != 0          any               NEXT-C-SID only, SL unchanged
+> +	 *   (2) == 0          none              the behavior, e.g. End
+> +	 *   (3) == 0          one or more       the behavior with its flavors,
+> +	 *                                       e.g. End with PSP
+> +	 *
+> +	 * In (2), the packet still goes through the NEXT-C-SID processing,
+> +	 * which runs the behavior (e.g. End) when the DA.Argument is zero.
+> +	 */
+> +	return !seg6_flv8986_enabled(fops) ||
+> +	       !seg6_next_csid_is_arg_zero(addr, finfo);
 
-[Severity: Medium]
-With buffer_max_used now u64, can the memory-used stat get truncated?
-cake_dump_stats() still exports it as a u32:
+nit: based on the comment, maybe we can change the order to
 
-net/sched/sch_cake.c:cake_dump_stats() {
-    ...
-	PUT_STAT_U32(MEMORY_LIMIT, READ_ONCE(q->buffer_limit));
-	PUT_STAT_U32(MEMORY_USED, READ_ONCE(q->buffer_max_used));
-    ...
-}
+	return !seg6_next_csid_is_arg_zero(addr, finfo) ||
+	       !seg6_flv8986_enabled(fops);
 
-Documentation/netlink/specs/tc.yaml also declares memory-used in
-cake-stats-attrs as u32.
+No need to change if there is no new version patch.
 
-cake_enqueue() records the high-water mark before the drop loop runs:
+> +}
+> +
+>  /* Processing of SRv6 End, End.X, and End.T behaviors can be extended through
+>   * the flavors framework. These behaviors must report the subset of (flavor)
+>   * operations they currently implement. In this way, if a user specifies a
+> @@ -865,7 +906,10 @@ static int end_flv8986_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+>  	if (srh && !seg6_hmac_validate_skb(skb, srh))
+>  		goto drop;
+>  #endif
+> -	flvmask = finfo->flv_ops;
+> +	/* NEXT-C-SID, when configured, has already been evaluated by the
+> +	 * caller. Only the RFC8986 flavors are left here.
+> +	 */
+> +	flvmask = finfo->flv_ops & ~SEG6_F_LOCAL_FLV_NEXT_CSID;
+>  	if (unlikely(flvmask & ~SEG6_LOCAL_FLV8986_SUPP_OPS)) {
+>  		pr_warn_once("seg6local: invalid RFC8986 flavors\n");
+>  		goto drop;
+> @@ -919,8 +963,8 @@ static int input_action_end(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+>  	if (!fops)
+>  		return input_action_end_core(skb, slwt);
+>  
+> -	/* check for the presence of NEXT-C-SID since it applies first */
+> -	if (seg6_next_csid_enabled(fops))
+> +	/* NEXT-C-SID is evaluated first, when configured */
+> +	if (seg6_use_next_csid(skb, finfo))
+>  		return end_next_csid_core(skb, slwt);
+>  
+>  	/* the specific processing function to be performed on the packet
+> -- 
+> 2.43.0
+> 
 
-	if (q->buffer_used > q->buffer_max_used)
-		WRITE_ONCE(q->buffer_max_used, q->buffer_used);
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
 
-	if (q->buffer_used <= q->buffer_limit)
-		return NET_XMIT_SUCCESS;
-	...
-	while (q->buffer_used > q->buffer_limit) {
-
-With memlimit 4294967295, buffer_limit is U32_MAX. Once about 4 GiB of
-truesize is queued, the next enqueue pushes buffer_used past 2^32. It
-overshoots by up to that skb's truesize, or by the whole segmented GSO
-aggregate with split-gso. The commit message says this case can happen:
-"the counter passes the limit without wrapping".
-
-Nothing ever lowers buffer_max_used. After that, nla_put_u32() reports
-memory-used as peak - 2^32, which is a few KB, for the rest of the qdisc's
-life. The final patch in the series does not change this.
-
-Could the value be clamped, e.g. with min_t(u64, ..., U32_MAX)? Or could
-it be exported through a new 64-bit attribute, the way CAPACITY_ESTIMATE64
-uses PUT_STAT_U64 with TCA_CAKE_STATS_PAD?
-
-> +	u64		buffer_used;
->  	u32		buffer_limit;
-
-[Severity: High]
-This issue is pre-existing and was not introduced by this patch. Can the
-memory-limit drop loop in cake_enqueue() spin forever when a flow's u32
-backlog wraps to 0?
-
-The heap uses per-flow byte counters as keys to pick drop victims, and
-those counters are still u32:
-
-struct cake_tin_data {
-    ...
-	u32	backlogs[CAKE_QUEUES];
-    ...
-};
-
-A size table can push qdisc_pkt_len() as high as QDISC_PKT_LEN_MAX
-(1 << 20). For example, with tsize=0 and overhead >= 1 MiB,
-__qdisc_calculate_pkt_len() clamps the length to that value.
-
-If 4096 such non-GSO packets sit in one flow, backlogs[idx] wraps to
-exactly 0. Those packets use only a few MB of real truesize. If that
-truesize is above a small memlimit, every heap key is now 0.
-
-cake_drop() rebuilds the heap, but cake_heapify() only swaps when it finds
-a strictly larger backlog:
-
-		if (lb > mb) {
-			m  = l;
-			mb = lb;
-		}
-
-So the root stays at the initial tin0/flow0 entry, or at a flow that was
-already drained. The root flow is empty, so cake_drop() returns without
-lowering buffer_used:
-
-	skb = dequeue_head(flow);
-	if (unlikely(!skb)) {
-		/* heap has gone wrong, rebuild it next time */
-		q->overflow_timeout = 0;
-		return idx + (tin << 16);
-	}
-
-The caller in cake_enqueue() has no other way out of the loop:
-
-	while (q->buffer_used > q->buffer_limit) {
-		drop_id = cake_drop(sch, to_free);
-		...
-	}
-
-This loop runs in the xmit path with the qdisc root lock held and BH
-disabled. A CAP_NET_ADMIN user in a user namespace can set it up with a
-stopped tun TX ring, as in the commit message's reproducer.
-
-This patch widens buffer_used but leaves backlogs[], tin_backlog and the
-heap keys at u32. The final patch in the series does not change this
-either.
-
-Should the drop loop also stop when cake_drop() makes no progress?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-5RTM.v1.20261007130704%40mojatatu.com
+Thanks
+Hangbin
