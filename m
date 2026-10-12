@@ -1,193 +1,148 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0CA49A3B4
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:02:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF807389DF0
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791842579; cv=none; b=HKdEsuI8L8KYoFH1Kl09A2dE5zF78b+dSvtTYNfri1iHjSQwLriDtSb8O8p2tqFaTNCZ7SAgfW+YjBE+8g/4QXYIfJOfbtrnJCsse2jqg29kp/xUSMUcfcYeTXQDIA0J+TpdTx9Ha1pzSEMKt1H7nWM/MxxaYeTn3GWNnqoFaeg=
+	t=1791842949; cv=none; b=CEo2uDMZ5yvowMOlj95XfHNacETzkd1ANSy296HEhx8e1VPkZlc7wAcrYjtLKdycalyMtKiTLkZo0Crg0shhFwN2FB3TbEjv1HcV4mNqSLLAh3+LOY3zB52ZVnZ/VPt2dDe3aGOC4LY4JXNSvBnCPRDogM9rwFDEdxEUqvH1poo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791842579; c=relaxed/simple;
-	bh=xrEfK09sOgKPL8tRakdgdLoY5A4I63z1FJ2ZQnHI7pc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nuU1lCcb+wVLfDD06d0bwA7V77mnddshru+McxfMP4a7LqQ7tdn66MTjLxW4fREcelwmK4DvoagAKYFcc37O+ZSObjalWez7hLH5bUXJnL4Wx2vk0W1EYRrNtzFfL8s6Y7S5EPQBgNMd9EdHybGipLUEjtBKe2ZYKUpBLQhvZCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kRiydYkw; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791842949; c=relaxed/simple;
+	bh=PpygydwRrL4vnusldI09wTyer9R6Lecq22TSqpR5fcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jjv+smtRf1cJX23viq1nA+9yA7E41nbK7Za+trOeCny8yJQH0vdSUrh0ajv2x7XQ6GgrAZz5mDStkMwBU1z3LcFKUKmKTWPFuSaqofb0ZfL/xy8TdmfAraSxFN04LMkkhyZWiOQA9PGuI2fANlaCfHh3HEUnnsQQ5URUqkb4cPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Zk4inVj3; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kRiydYkw"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-824e6e6ed71so1961394a34.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:02:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791842575; x=1792447375; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I34AgC3qXFsIWry2eO2C25CSCiy4N0N7n6VOFiD93pA=;
-        b=kRiydYkwm255TVNGaaXvWy0gF4ej5bPf3TqHDwP3qKW0UQGyjZQ780kY3RNVw4HJup
-         7FWZPEJde/7aULp3ql+ntkK990fXm/oUCr0HaTgLyKms9PnoQVCl2iG/tULiR4UBQFnq
-         ylW+eb1e+rPaNKFkzqApVWG2dHMFnNBsxACTFeCYL0KpzlLT4Qt4jSlpm7i0kcJTWW5B
-         OcOJt6mQwDfU3fUU6Lq/UqZRaBmRZl1o7GcaHzUh6ADz16dTNwoWs8tjvtByTesE2+3L
-         yK8SWpsslmB23wVOL8Y2F4wAyUyFKBBd9gkkuvveLznuZwf6OJLWdIS5W9WXbmvbfrtt
-         SKDA==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Zk4inVj3"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ab2bf5e75bso1161919a91.3
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:09:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791842575; x=1792447375;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I34AgC3qXFsIWry2eO2C25CSCiy4N0N7n6VOFiD93pA=;
-        b=x01OlNvOu5Bcp518LI0RBXgtOrZ4aG6/+pQnviOuUVjnur7zmfyn6xDihUVnSYBngR
-         +JiMY3ge7EWJ9BDMygVCctSWzsGxypYvYkn8y5GoQmVPsKpbwtdMllfQTSzSQAwFFDw2
-         1/F5ulQAoVpI+5vg5LZOz4hZqyi9mgI7UvCjgwXASMzR7QyQnIz/axyNNcIIiSro6jJM
-         tOdkU+w4y/TUVD3KV5qH2Rky4eFSMuf3O95vrEi06YKHiHoQ/0ZrGZQi6zNgLqvBElV8
-         Ccq6uvbcOKVY2ni9OMRJMnOKBkRiSnzJ4J6uRKMsczO2kRlaz+OLvcUHlRB2SgkOIQgp
-         WEKA==
-X-Forwarded-Encrypted: i=1; AKwUvBx2FCAruhqptn2UFWgsqgaTbur4riYbycoPM2t/tfuLvjOzVcsJ3ttcfvFGXXjQHhVKxEviXSM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKcjgz5Pi1fRfz+UxA6SNjB7O5VW9JU4z1zOvHC4rJOE966V3Qh
-	fuwdZPXrz0hokZzOZyNDW07KfT4Q1PuEBqffJfU3Y1qYuK73ynE9dJR0
-X-Gm-Gg: AYBFou3U9eqADzvja4LCO1Af8bopk+9Zj2Fg+ql5gtSRKZ3gDP1GRG1IRDC4TIjZXFT
-	q3/14he2miMHqqBnlIZQou1dnRRsf1QJCkxR7mSjoptKmQ/jnylACM7WoVw34++sMet/Nlq+CAt
-	o351ey9zhYN02GQjT9rHJEUTWajo10ojOzAEzsJ74akU1ve7EeJeWNCZ8JknDMG9N97Pijv5Qfv
-	3BkGFUG/UFTjQNdokw564IIKXo0C9jI+Hwk3YNLj40FG2fNtUF7WBDABlD/dHwivDlfNV66ZXSw
-	xUX8w1sgwsQhNJ7ddnE8EeXV/f5/ZjIZyfBFOpVshACNZylCvgILBJUGfnplHdnEcWHCOEMD0/C
-	3/rmS0UtClbO3s/BZmgAhLiGSE3+skujFGFT2nuNCkN8nDqFpHYTaSr/E9Zcy6EbGlLuJdTBmDD
-	98OvhRT6f4cnUyLXI+8rvfV6qMaoWqP+8pWMEo2l8c624W21ZNHST0TVUKu69OXKmgwWm5Vgj+y
-	PFmYUeI71ObX+sq4B3ZEC4Nki1v9w==
-X-Received: by 2002:a05:6830:43a0:b0:81c:4784:a5e2 with SMTP id 46e09a7af769-83094e738d8mr9929561a34.6.1791842575557;
-        Mon, 12 Oct 2026 15:02:55 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8303494f64csm10655830a34.3.2026.10.12.15.02.52
+        d=1e100.net; s=20260707; t=1791842947; x=1792447747;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tJJ7ewYXsWBtmg69ttLKKwXZgStX2WDfRLXk7asg2jQ=;
+        b=TckGu37pKXX+EbrMt6kOYijvlftFeiff9CoqvwGKypVEPQwmDwifHSIDko0Ha7QCUy
+         LYAERFyaHrxJf7apv/sTSxlwXB9hy1u3Pt1c4agLXGQdWaje87ert7xZ3Tw4j9LtUn2D
+         DkY9COquqNnFO906Eos0a8K+BoC05nrEDAaUV9ALbxs4QGD0kn4X/jO5OKzwItVEZBSi
+         Xrh6w5Zu9ap995RwawcbcJ2tKPImW6UcO1kYS3ZUig1C5YGvQvcO5G4rMahDC+siKqWR
+         Q4X08rxvLSoAePNIHiUxdspy4HpAOrt+OP7kYrfDZ19aGVNrqsa4Qlh4eY1r3sljjUn6
+         7+4A==
+X-Gm-Message-State: AFq9FYKpQ6fFbYnk5ivqe+gjsjSkhQ91OBN8ZK8fL8vwF5AHofQktj9M
+	flvdj50SWK4NBBjkGNyJQ0YYHMb1NS8gUkH9zps2n78xJli7MnTwo29VyG/fvqVWNDVEqnV71Bc
+	DkzYZ3HgCO+TEAN8vcFIaOU6B+Cqi3kE/ilebPQI7dq/C10D0oekZmBcvzbqBOTNBN4K1/lawTh
+	2n+2cnL6QkpvrUbKg1cuw0Q/jIwQSsnAUfgODEm7piRX/qVyaAooZtHFvrVsb6cCmdxnpshEFEx
+	PJbM6nKtsg=
+X-Gm-Gg: AYBFou1X1yJZ/xok3s1qBFr5wJ4DFjJcbF0HI5DH68L4lcPIAR3RCsr+x6BPjNY1Ojr
+	+mtfZw2cfNgu/EfiRAvo4F+foJeoDXJMZO+7S5YLb/MscZSxj9/E88WFncWCzj5eX1g8TjwVPUn
+	S72W2T1vx7i5iEV+ZxRVf3UDkTLF4nBtWxw97rrFAUJBimPERm0o875w2pPpuK1D3jTr2n3mYQR
+	KFZh588iOUqAE6hGp/Dmu0ph1XEOVuz5UJjUvqeJYePFnS55x74emzHvU0Fz/yGeYeXYMd4Gjvd
+	6qiKYh/26mfesQuYb9x68XXoKAzJUA9Dal6djWeyJcabUNiRB0jlmQoliWUR2XojlB3wVg8CuSW
+	mXUNTW9EVcdtJMmvtyJ4CXpVGtmsG6aD4vNE6JZbqNnCVznHVSaCmrww2rqIafDJENs3lHmxVDj
+	ahzF3sUZgMVix8JeB2WmyJndUKtWGfhzwwNkUZwA==
+X-Received: by 2002:a17:90b:2681:b0:3aa:ff61:9504 with SMTP id 98e67ed59e1d1-3ab3a9127f1mr8080838a91.20.1791842947204;
+        Mon, 12 Oct 2026 15:09:07 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ab32d54b27sm2073812a91.0.2026.10.12.15.09.05
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Oct 2026 15:09:07 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-3510d0baf63so6615627eec.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1791842944; x=1792447744; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tJJ7ewYXsWBtmg69ttLKKwXZgStX2WDfRLXk7asg2jQ=;
+        b=Zk4inVj3PLvsc7x4bl3kqYTxnhW/0rLdOq9Yefgry3VdWzt3HDzG8qvHvCdGx+EfZg
+         vKBgsyDvy2FPj4hB/C6+geB5v+OSMyoRemgYX+RVT/yU+sFnlheOGoEPt6yWgLtdFLmz
+         7bGVp9XOCIDTMEFG5mrsD/xHTpe5iIUty3gbQ=
+X-Received: by 2002:a05:7022:1584:b0:14a:725b:7b40 with SMTP id a92af1059eb24-16a6203a4b8mr21864066c88.44.1791842943998;
+        Mon, 12 Oct 2026 15:09:03 -0700 (PDT)
+X-Received: by 2002:a05:7022:1584:b0:14a:725b:7b40 with SMTP id a92af1059eb24-16a6203a4b8mr21864025c88.44.1791842943348;
+        Mon, 12 Oct 2026 15:09:03 -0700 (PDT)
+Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1746482c978sm12483206c88.13.2026.10.12.15.09.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 15:02:53 -0700 (PDT)
-Date: Mon, 12 Oct 2026 15:02:50 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com,
-	jasowangio@gmail.com, eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/5] vsock/virtio: split socket lookup from
- locked RX processing
-Message-ID: <as1ZCkbya2jn72ip@devvm29614.prn0.facebook.com>
-References: <20261010142247.99223-1-physicalmtea@gmail.com>
- <20261010142247.99223-2-physicalmtea@gmail.com>
+        Mon, 12 Oct 2026 15:09:02 -0700 (PDT)
+From: Michael Chan <michael.chan@broadcom.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	pavan.chebbi@broadcom.com,
+	andrew.gospodarek@broadcom.com
+Subject: [PATCH net-next v3 0/7] bnxt_en: Ring accounting fixes
+Date: Mon, 12 Oct 2026 15:08:20 -0700
+Message-ID: <20261012220827.340998-1-michael.chan@broadcom.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261010142247.99223-2-physicalmtea@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Sat, Oct 10, 2026 at 10:22:43PM +0800, Jia Jia wrote:
-> Split virtio_transport_recv_pkt() so socket lookup is separate from the
-> receive state machine that runs under the socket lock.
-> 
-> Keep virtio_transport_recv_pkt() on its existing per-packet locking path.
-> Pass the source and destination addresses used for lookup to the locked
-> receive path so they are decoded only once.
-> 
-> Pass the network namespace and decoded address tuple through a packet
-> context to the locked receive path.
-> 
-> Preserve source validation and failure handling. Keep the lookup reference
-> separate from the skb owner reference so the locked receive path can manage
-> the two lifetimes independently.
-> 
-> Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 139 ++++++++++++++++--------
->  1 file changed, 96 insertions(+), 43 deletions(-)
-> 
+The main purpose of this patchset is to fix ring accounting bugs
+specifically when FW is unable to reserve all the rings requested
+by the driver.  This issue was first reported by Sashiko when
+reviewing the driver patches to support kTLS (patch #3 of 15):
 
-[...]
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810051358.1244418-7-michael.chan@broadcom.com
 
-> +/*
-> + * The caller holds sk's socket lock and must free skb if this returns true.
-> + */
-> +static bool
-> +virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-> +				 struct sk_buff *skb, struct sock *sk,
-> +				 const struct virtio_transport_rx_pkt_ctx *ctx)
-> +{
-> +	const struct sockaddr_vm *src = ctx->src;
-> +	const struct sockaddr_vm *dst = ctx->dst;
-> +	struct vsock_sock *vsk = vsock_sk(sk);
-> +	struct net *net = ctx->net;
-> +	bool space_available;
->  
-> -	/* Check if sk has been closed or assigned to another transport before
-> -	 * lock_sock (note: listener sockets are not assigned to any transport)
-> +	/* Check after acquiring the socket lock. Listener sockets accept packets
-> +	 * from any source and are not assigned to a transport.
->  	 */
->  	if (sock_flag(sk, SOCK_DONE) ||
->  	    (sk->sk_state != TCP_LISTEN &&
-> -	     !vsock_check_source(vsk, &t->transport, &src))) {
-> +	     !vsock_check_source(vsk, &t->transport, src))) {
->  		(void)virtio_transport_reset_no_sock(t, skb, net);
-> -		release_sock(sk);
-> -		sock_put(sk);
-> -		goto free_pkt;
-> +		return true;
->  	}
->  
->  	space_available = virtio_transport_space_update(sk, skb);
->  
->  	/* Update CID in case it has changed after a transport reset event */
->  	if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
-> -		vsk->local_addr.svm_cid = dst.svm_cid;
-> +		vsk->local_addr.svm_cid = dst->svm_cid;
->  
->  	if (space_available)
->  		sk->sk_write_space(sk);
-> @@ -1875,12 +1891,49 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
->  		break;
->  	}
->  
-> +	return false;
-> +}
-> +
-> +/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
-> + * lock.
-> + */
-> +void virtio_transport_recv_pkt(struct virtio_transport *t,
-> +			       struct sk_buff *skb, struct net *net)
-> +{
-> +	struct virtio_transport_rx_pkt_ctx ctx;
-> +	struct sockaddr_vm src, dst;
-> +	struct sock *sk;
-> +	bool free_pkt;
-> +
-> +	virtio_transport_recv_pkt_init_addrs(skb, &src, &dst);
-> +	virtio_transport_trace_recv_pkt(skb, &src, &dst);
-> +
-> +	sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
-> +	if (!sk) {
-> +		(void)virtio_transport_reset_no_sock(t, skb, net);
-> +		goto free_pkt;
-> +	}
-> +
-> +	if (!skb_set_owner_sk_safe(skb, sk)) {
-> +		WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-> +		goto free_pkt;
-> +	}
-> +
-> +	lock_sock(sk);
-> +	ctx = (struct virtio_transport_rx_pkt_ctx) {
-> +		.net = net,
-> +		.src = &src,
-> +		.dst = &dst,
-> +	};
-> +	free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
+kTLS support requires the new MPC rings, so the patches touch
+the existing ring reservstion logic and exposed the issues to
+Sashiko.  The issues are real but only likely to be hit with a
+large number of VFs, stressing the ring resources to the limit.
+These issues were not found in the lab or by users, so Jakub
+suggested splitting these out and posting them to net-next.
 
-At this point the socket lookup succeeded with src/dst/net, why not just
-pass sk which already has all of them?
+The patchset includes some refactoring and some related fixes
+in this code path.  The driver will now scale down the rings
+properly when FW is unable reserve all the rings requested by
+the driver.  The default RSS context is also reset if the RX
+rings have been reduced if needed.   Note that additional RSS
+contexts and n-tuple filters have similar problems if the RX
+rings are reduced and the fixes are deferred to a future
+patchset.
 
-Best,
-Bobby
+Patch #6 is new and removes support for the obsolete NITRO A0,
+to make the fixes in patch #7 simpler.
+
+v3:
+Split from the original -net patchset (patchs 1 to 6)
+Updated to address some more Sashiko comments.
+Added the new patch #6 to remove NITRO A0.
+
+v2:
+Updated to address some Sashiko comments.
+
+https://lore.kernel.org/netdev/20260928041712.3467803-1-michael.chan@broadcom.com/
+
+v1:
+https://lore.kernel.org/netdev/20260831024342.2161156-1-michael.chan@broadcom.com/
+
+Michael Chan (7):
+  bnxt_en: Clear bp->total_irqs in bnxt_init_int_mode() during error
+  bnxt_en: Fix bnxt_reinit_features() when irq_re_init is true
+  bnxt_en: Refactor RSS table check logic
+  bnxt_en: Refactor IRQs required logic
+  bnxt_en: Reinit IRQ when configuring LRO/GRO/HDS
+  bnxt_en: Remove support for the old NITRO A0 chip
+  bnxt_en: Fix ring accounting and validation when rings are constrained
+
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 446 ++++++++----------
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  12 +-
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  22 +-
+ 3 files changed, 211 insertions(+), 269 deletions(-)
+
+-- 
+2.51.0
+
