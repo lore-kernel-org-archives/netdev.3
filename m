@@ -1,47 +1,37 @@
-Received: from sg-3-26.ptr.tlmpb.com (sg-3-26.ptr.tlmpb.com [101.45.255.26])
+Received: from va-2-26.ptr.blmpb.com (va-2-26.ptr.blmpb.com [209.127.231.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA3A489882
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:45:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.45.255.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438DA419FD2
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791805518; cv=none; b=eECsthePrOpk9i3iMp53rM9ccMGdVfKauslmjIV5GB5C6LgK2SJnHbKDjOieqh2K6MbLe1hxUUHYilmxJTsb+HQitYuh0Y0UDjS1m4VgdhkMdaTeHg/9MJ9RzrXfsdkI2QrQ6zLHPe2rIPjC7UjNNpBoESLR6xMCkShCuaZo91M=
+	t=1791805562; cv=none; b=p4ztU8JKFGp8iJ66MyU4trrXfwuA7VK4H7eYb1N1xTuXoHGjoc5yiXG/nFfLwvU74dCGHN0jmrdoaqAyyZfI0sogViKZLcDly++B62PEzM/WUdZjRsl59BcgpD4SbetQkmScexUTOd5NcY0qVdZE3X3vo5nyyGiNaJq6mn4ACFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791805518; c=relaxed/simple;
-	bh=/g91i9DtlXWnHnp4O+2PFM4DzwuacHVuxkNqWsVJrjo=;
-	h=Cc:Subject:Date:References:Content-Type:To:Message-Id:
-	 Mime-Version:From:In-Reply-To; b=HfTTbj/zkcLJWwcLF/Ptzoc+HSQecN6Rxn4qBB13FRaEJyQHJojL7a+DqFxnvhT8lZgjUawaHz84iXV5UsLXoDgIGVYVj71n2I9aZ3zDEBF1t+LjS2raUTtR2noi3jRuxKSQfD3HOVeNcVhivNwKv6nyqIDcXBjTvG31h2FrN5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=K3G7MX9W; arc=none smtp.client-ip=101.45.255.26
+	s=arc-20240116; t=1791805562; c=relaxed/simple;
+	bh=q+8cUntyTxvjSHdbm2dOSp/wJXsAblcjKqectgchWkM=;
+	h=Content-Type:Cc:Date:Message-Id:Mime-Version:From:Subject:To:
+	 In-Reply-To:References; b=NKW+BYjAV1f5W3OnN+txrjzZBHK8p2kyDsgb6sKbUs6LTo+dLCdUW9oImxQ9hIAbpnNfI/Uff6+uAG1AHdN2x77h0jasUcHiYwYE2dB4+4TBdwbZtHylUlbVq5iSEKEPr4Zu2pyddi0vISBUf61g+8tiuOpCPn8nX7gguupOlak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=VgksOacc; arc=none smtp.client-ip=209.127.231.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="K3G7MX9W"
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="VgksOacc"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1791805465; h=from:subject:
+ s=feishu2403070942; d=yunsilicon.com; t=1791805438; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=pwcf5Ck/7DxtmRe1k97L/Zw34qbEOaD6TxXf8pUN06Y=;
- b=K3G7MX9WgkaLFTTewXKI0adEDISjIR49FT5YXAepX2Zb/ZGcrxoFtBSljHa/iTTw3GyMTA
- Ib5SZwlrMPnYybRITlP/cMLlhGv3QdnRyM54aabcqjaR4Irr611eaEE9FcyRxoDbvjdQ4l
- N6sEACNvMPq9Nw9d/vhk5h6xV+975tUxhIiLMDfget4kEQWZKaRdRoogh+82OfdwOiq86a
- HN4IhlnAAhhxTtP6q4zGqOu2sIzTPNfltuTJbCg5M9cJO3Smz4kNw2xrJNqYEPehgJRyok
- ZK5UpyHVll9E5ghAqhEMf0gWK2OyYW/1AC1bLCodXILyHu6PA4ZLSwa2bNLxRQ==
-X-Lms-Return-Path: <lba+26accc817+d68b11+vger.kernel.org+tianx@yunsilicon.com>
+ bh=XxslRRDY5BhoHnulsCHR0UTN93/W2n7/aHHo0hTJP8c=;
+ b=VgksOaccUUtOeKXrtw+8c4zPSe+yMkErtGCZjnyNdoAkOTXK29DFCWbdGHati1vdveR+h1
+ vTdbQ94dK9ufP9FthNvVwiiB2pXHZ8R/MY7kt3NaUTZHtJPmDLe8qXfHHxB+E9OpQU8abt
+ u1zHQhET974eb65Z8OBXtX7lrZXD0E33SBxLGDObBCBw+g1h+5PlikTCzA+fPMtZGqdE3J
+ MGq18e50b4GoGlvXUlXi9QfIvCTZW2vKeP08VW0eUfT5sWYJx6Rv1BU0onYNNYaptE0jAz
+ AUJ0zaMGoZOsDAdhf0dwQ3apZMYN5NI5DyneMfxkEQ4fBXsY2PxfS/ALRc9G7g==
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
+Content-Type: text/plain; charset=UTF-8
 Cc: <weihg@yunsilicon.com>, <linux-kernel@vger.kernel.org>, 
 	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
-Subject: [PATCH 12/15] yunsilicon: add RDMA QP verbs
-X-Mailer: git-send-email 2.25.1
-Date: Mon, 12 Oct 2026 19:44:22 +0800
-References: <20261012114352.2471317-1-tianx@yunsilicon.com>
-Content-Type: text/plain; charset=UTF-8
-Received: from sw-dev-sha252.yunsilicon.com ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Mon, 12 Oct 2026 19:44:22 +0800
-Content-Transfer-Encoding: 7bit
-To: "Andrew Lunn" <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, 
-	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
-	"Paolo Abeni" <pabeni@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, 
-	"Leon Romanovsky" <leon@kernel.org>
-Message-Id: <20261012114421.2471317-13-tianx@yunsilicon.com>
+Date: Mon, 12 Oct 2026 19:43:55 +0800
+Message-Id: <20261012114354.2471317-3-tianx@yunsilicon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,1409 +39,918 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 From: "Xin Tian" <tianx@yunsilicon.com>
+Subject: [PATCH 02/15] yunsilicon: add the register HAL
+X-Lms-Return-Path: <lba+26accc7fc+e099fa+vger.kernel.org+tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
+To: "Andrew Lunn" <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, 
+	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
+	"Paolo Abeni" <pabeni@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, 
+	"Leon Romanovsky" <leon@kernel.org>
+Received: from sw-dev-sha252.yunsilicon.com ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Mon, 12 Oct 2026 19:43:55 +0800
 In-Reply-To: <20261012114352.2471317-1-tianx@yunsilicon.com>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
+Content-Transfer-Encoding: 7bit
+References: <20261012114352.2471317-1-tianx@yunsilicon.com>
 
-Add the queue pair control path: create, destroy, modify and query, for
-both kernel and user queue pairs, including the address path setup for
-RoCE.
+Add the register access layer and the per-device register map: doorbell
+and interrupt registers, the command queue pointers and the device
+capability queries that the upper layers call.  The register map is
+described by xsc_hal.h and implemented for the Andes device.
 
 Signed-off-by: Xin Tian <tianx@yunsilicon.com>
 ---
- drivers/infiniband/hw/xsc/main.c |    6 +
- drivers/infiniband/hw/xsc/qp.c   | 1321 ++++++++++++++++++++++++++++++
- 2 files changed, 1327 insertions(+)
+ .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   2 +-
+ .../yunsilicon/xsc/pci/hal/andes_impl.c       | 708 ++++++++++++++++++
+ .../yunsilicon/xsc/pci/hal/andes_reg.h        |  43 ++
+ .../ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h |  85 +++
+ .../net/ethernet/yunsilicon/xsc/pci/main.c    |   3 +
+ 5 files changed, 840 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h
 
-diff --git a/drivers/infiniband/hw/xsc/main.c b/drivers/infiniband/hw/xsc/main.c
-index e9a9ba114..c4f306318 100644
---- a/drivers/infiniband/hw/xsc/main.c
-+++ b/drivers/infiniband/hw/xsc/main.c
-@@ -570,6 +570,11 @@ static void xsc_ib_dev_setting(struct xsc_ib_dev *dev)
- 	dev->ib_dev.ops.get_link_layer	= xsc_ib_port_link_layer;
- 	dev->ib_dev.ops.get_netdev		= xsc_get_netdev;
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+index c163aa950..81b65232e 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+@@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
  
-+	dev->ib_dev.ops.create_qp		= xsc_ib_create_qp;
-+	dev->ib_dev.ops.modify_qp		= xsc_ib_modify_qp;
-+	dev->ib_dev.ops.query_qp		= xsc_ib_query_qp;
-+	dev->ib_dev.ops.destroy_qp		= xsc_ib_destroy_qp;
-+	dev->ib_dev.ops.post_recv		= xsc_ib_post_recv;
- 	dev->ib_dev.ops.create_cq		= xsc_ib_create_cq;
- 	dev->ib_dev.ops.destroy_cq		= xsc_ib_destroy_cq;
- 	dev->ib_dev.ops.poll_cq		= xsc_ib_poll_cq;
-@@ -592,6 +597,7 @@ static void xsc_ib_dev_setting(struct xsc_ib_dev *dev)
- 	dev->ib_dev.ops INIT_RDMA_OBJ_SIZE(ib_ah, xsc_ib_ah, ibah);
- 	dev->ib_dev.ops INIT_RDMA_OBJ_SIZE(ib_cq, xsc_ib_cq, ibcq);
- 	dev->ib_dev.ops INIT_RDMA_OBJ_SIZE(ib_pd, xsc_ib_pd, ibpd);
-+	dev->ib_dev.ops INIT_RDMA_OBJ_SIZE(ib_qp, xsc_ib_qp, ibqp);
- 	dev->ib_dev.ops INIT_RDMA_OBJ_SIZE(ib_srq, xsc_ib_srq, ibsrq);
- }
+ obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
  
-diff --git a/drivers/infiniband/hw/xsc/qp.c b/drivers/infiniband/hw/xsc/qp.c
-index 28c8a1246..6a83adc9c 100644
---- a/drivers/infiniband/hw/xsc/qp.c
-+++ b/drivers/infiniband/hw/xsc/qp.c
-@@ -28,11 +28,21 @@ enum {
- #define UDP_SPORT_MASK			0xffff
- #define UDP_SPORT_OFFSET		0
- 
-+static int is_qp0(enum ib_qp_type qp_type)
+-xsc_pci-y := main.o
++xsc_pci-y := main.o hal/andes_impl.o
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
+new file mode 100644
+index 000000000..46fc045f9
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
+@@ -0,0 +1,708 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright (C) 2024 - 2026, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#include <linux/kernel.h>
++#include <linux/pci.h>
++#include "andes_reg.h"
++#include "common/xsc_core.h"
++#include "common/xsc_cmd.h"
++#include "common/xsc_hsi.h"
++#include "common/xsc_reg.h"
++#include "xsc_hal.h"
++
++/* message opcode */
++enum {
++	XSC_MSG_OPCODE_SEND		= 0,
++	XSC_MSG_OPCODE_RDMA_WRITE	= 1,
++	XSC_MSG_OPCODE_RDMA_READ	= 2,
++	XSC_MSG_OPCODE_MAD		= 3,
++	XSC_MSG_OPCODE_RDMA_ACK		= 4,
++	XSC_MSG_OPCODE_RDMA_ACK_READ	= 5,
++	XSC_MSG_OPCODE_RDMA_CNP		= 6,
++	XSC_MSG_OPCODE_RAW		= 7,
++	XSC_MSG_OPCODE_VIRTIO_NET	= 8,
++	XSC_MSG_OPCODE_VIRTIO_BLK	= 9,
++	XSC_MSG_OPCODE_RAW_TPE		= 10,
++	XSC_MSG_OPCODE_INIT_QP_REQ	= 11,
++	XSC_MSG_OPCODE_INIT_QP_RSP	= 12,
++	XSC_MSG_OPCODE_INIT_PATH_REQ	= 13,
++	XSC_MSG_OPCODE_INIT_PATH_RSP	= 14,
++
++	XSC_MSG_OPCODE_UNSUPPORT	= -1,
++};
++
++#define REG_ADDR(bp, offset)	((bp) + (offset))
++
++static void xsc_read32(void __iomem *bar, u32 off, void *data, int len)
 +{
-+	return qp_type == IB_QPT_SMI;
++	u32 val = readl(REG_ADDR(bar, off));
++
++	memcpy(data, &val, len);
 +}
 +
- static int is_qp1(enum ib_qp_type qp_type)
- {
- 	return qp_type == IB_QPT_GSI;
- }
- 
-+static int is_sqp(enum ib_qp_type qp_type)
++static void xsc_write32(void __iomem *bar, u32 off, void *data)
 +{
-+	return is_qp0(qp_type) || is_qp1(qp_type);
++	writel(*(u32 *)data, REG_ADDR(bar, off));
 +}
 +
- static void *get_wqe(struct xsc_ib_qp *qp, int offset)
- {
- 	return xsc_buf_offset(&qp->buf, offset);
-@@ -48,6 +58,258 @@ static void *get_seg_wqe(void *first, int n)
- 	return first + (n << XSC_BASE_WQE_SHIFT);
- }
- 
-+static void xsc_ib_qp_event(struct xsc_core_qp *qp, int type)
++static void andes_ring_tx_doorbell(struct xsc_core_device *xdev,
++				   struct xsc_hw_reg *regs,
++				   void __iomem *bar, u32 sqn, u32 next_pid,
++				   bool mdb)
 +{
-+	struct ib_qp *ibqp = &core_to_xqp(qp)->ibqp;
-+	struct ib_event event;
++	union xsc_send_doorbell {
++		struct{
++			u32  next_pid : 16;
++			u32 qp_id : 15;
++		};
++		u32 raw;
++	} db;
++	u32 db_reg = mdb ? QPM_TX_MDB_BASE_REG_ADDR + (sqn & (MDB_NUM - 1)) * sizeof(u32) :
++		regs->tx_db;
 +
-+	if (ibqp->event_handler) {
-+		event.device     = ibqp->device;
-+		event.element.qp = ibqp;
-+		switch (type) {
-+		case XSC_EVENT_TYPE_WQ_CATAS_ERROR:
-+			event.event = IB_EVENT_QP_FATAL;
-+			break;
-+		case XSC_EVENT_TYPE_WQ_INVAL_REQ_ERROR:
-+			event.event = IB_EVENT_QP_REQ_ERR;
-+			break;
-+		case XSC_EVENT_TYPE_WQ_ACCESS_ERROR:
-+			event.event = IB_EVENT_QP_ACCESS_ERR;
-+			break;
-+		default:
-+			pr_warn("xsc_ib: Unexpected event type %d on QP %06x\n", type, qp->qpn);
-+			return;
-+		}
++	db.next_pid = next_pid;
++	db.qp_id = sqn;
 +
-+		ibqp->event_handler(&event, ibqp->qp_context);
-+		pr_info("xsc_ib: xsc async event 0x%x, ib event %d\n", type, event.event);
-+	}
++	/* Make sure that descriptors are written before
++	 * updating doorbell record and ringing the doorbell
++	 */
++	wmb();
++
++	writel(db.raw, REG_ADDR(bar, db_reg));
 +}
 +
-+static int set_rq_size(struct xsc_ib_dev *dev, struct ib_qp_init_attr *init_attr,
-+		       int has_rq, struct xsc_ib_qp *qp, struct xsc_ib_create_qp *ucmd)
++static void andes_ring_rx_doorbell(struct xsc_hw_reg *regs,
++				   void __iomem *bar, u32 rqn, u32 next_pid)
 +{
-+	bool check_res = false;
-+	u32 wqe_cnt = init_attr->cap.max_recv_wr ?
-+		roundup_pow_of_two(init_attr->cap.max_recv_wr) : 0;
++	union xsc_recv_doorbell {
++		struct{
++			u32  next_pid : 13;
++			u32 qp_id : 15;
++		};
++		u32 raw;
++	} db;
 +
-+	if (init_attr->srq)
-+		wqe_cnt = to_xsrq(init_attr->srq)->xsrq.max;
++	db.next_pid = next_pid;
++	db.qp_id = rqn;
 +
-+	/* Sanity check RQ size before proceeding */
-+	check_res = xsc_check_max_qp_depth(dev->xdev, &wqe_cnt, dev->xdev->caps.max_wqes);
-+	if (check_res) {
-+		ibdev_err(&dev->ib_dev, "max_recv_wr:%d exceed max rq depth\n",
-+			  init_attr->cap.max_recv_wr);
-+		return -EINVAL;
-+	}
++	/* Make sure that descriptors are written before
++	 * updating doorbell record and ringing the doorbell
++	 */
++	wmb();
 +
-+	if (!has_rq) {
-+		qp->rq.max_gs = 0;
-+		qp->rq.wqe_cnt = 0;
-+		qp->rq.wqe_shift = 0;
-+	} else {
-+		if (ucmd) {
-+			qp->rq.wqe_cnt = ucmd->rq_wqe_count;
-+			qp->rq.wqe_shift = ucmd->rq_wqe_shift;
-+			qp->rq.max_gs = 1;
-+			qp->rq.max_post = qp->rq.wqe_cnt;
-+		} else {
-+			qp->rq.wqe_cnt = wqe_cnt;
-+			if (qp->xqp.qp_type == IB_QPT_GSI)
-+				qp->rq.wqe_shift = ilog2(xsc_get_recv_ds_num(dev->xdev))
-+					+ XSC_RECV_WQE_SHIFT;
-+			else
-+				qp->rq.wqe_shift = dev->xdev->caps.recv_wqe_shift;
-+			qp->rq.max_gs = dev->xdev->caps.recv_ds_num;
-+			qp->rq.max_post = qp->rq.wqe_cnt;
-+		}
-+	}
-+
-+	return 0;
++	writel(db.raw, REG_ADDR(bar, regs->rx_db));
 +}
 +
-+static int calc_sq_size(struct xsc_ib_dev *dev, struct ib_qp_init_attr *attr,
-+			struct xsc_ib_qp *qp)
++static void andes_update_cq_db(struct xsc_hw_reg *regs,
++			       void __iomem *bar, u32 cqn, u32 next_cid,
++			       u8 solicited)
 +{
-+	int wqe_size;
-+	int wq_size;
-+	bool check_res = false;
++	union andes_cq_doorbell {
++		struct{
++			u32     cq_next_cid:16;
++			u32     cq_id:15;
++			u32     arm:1;
++		};
++		u32     val;
++	} db;
 +
-+	if (!attr->cap.max_send_wr) {
-+		ibdev_err(&dev->ib_dev, "invalid max_send_wr:%d\n", attr->cap.max_send_wr);
-+		return -1;
-+	}
++	db.cq_next_cid = next_cid;
++	db.cq_id = cqn;
++	db.arm = solicited;
 +
-+	wqe_size = 1 << dev->xdev->caps.send_wqe_shift;
-+	qp->max_inline_data = (dev->xdev->caps.send_ds_num - 2) * sizeof(struct xsc_wqe_data_seg);
-+	attr->cap.max_inline_data = qp->max_inline_data;
-+
-+	attr->cap.max_send_wr = min_t(u32, attr->cap.max_send_wr, dev->xdev->caps.max_wqes);
-+	qp->sq.wqe_cnt = roundup_pow_of_two(attr->cap.max_send_wr);
-+
-+	check_res = xsc_check_max_qp_depth(dev->xdev, &qp->sq.wqe_cnt, dev->xdev->caps.max_wqes);
-+	if (check_res) {
-+		ibdev_err(&dev->ib_dev, "max_send_wr:%d exceed max sq depth\n",
-+			  attr->cap.max_send_wr);
-+		return -EINVAL;
-+	}
-+	qp->sq.ds_cnt = qp->sq.wqe_cnt << (dev->xdev->caps.send_wqe_shift - XSC_BASE_WQE_SHIFT);
-+	wq_size = qp->sq.wqe_cnt * wqe_size;
-+	qp->sq.wqe_shift = ilog2(wqe_size);
-+	qp->sq.max_gs = dev->xdev->caps.send_ds_num - XSC_CTRL_SEG_NUM - XSC_RADDR_SEG_NUM;
-+	qp->sq.max_post = qp->sq.wqe_cnt;
-+
-+	return wq_size;
++	/* Make sure that the doorbell record in host memory is
++	 * written before ringing the doorbell via PCI MMIO.
++	 */
++	wmb();
++	writel(db.val, REG_ADDR(bar, regs->complete_db));
 +}
 +
-+static int qp_has_rq(struct ib_qp_init_attr *attr)
++static void andes_set_cq_ci(struct xsc_hw_reg *regs,
++			    void __iomem *bar, u32 cqn, u32 next_cid)
 +{
-+	if (!attr->srq && !attr->cap.max_recv_wr)
-+		return 0;
++	union andes_cq_doorbell {
++		struct{
++			u32     cq_next_cid:16;
++			u32     cq_id:15;
++			u32     arm:1;
++		};
++		u32     val;
++	} db;
 +
-+	return 1;
++	db.val = 0;
++	db.cq_next_cid = next_cid;
++	db.cq_id = cqn;
++	/* make sure val write to memory done */
++	wmb();
++	writel(db.val, REG_ADDR(bar, regs->complete_reg));
 +}
 +
-+static enum xsc_qp_state to_xsc_state(enum ib_qp_state state)
++static void andes_set_eq_ci(struct xsc_hw_reg *regs,
++			    void __iomem *bar, u32 eqn, u32 next_cid,
++			    u8 arm)
 +{
-+	switch (state) {
-+	case IB_QPS_RESET:	return XSC_QP_STATE_RST;
-+	case IB_QPS_INIT:	return XSC_QP_STATE_INIT;
-+	case IB_QPS_RTR:	return XSC_QP_STATE_RTR;
-+	case IB_QPS_RTS:	return XSC_QP_STATE_RTS;
-+	case IB_QPS_SQD:	return XSC_QP_STATE_SQD;
-+	case IB_QPS_SQE:	return XSC_QP_STATE_SQER;
-+	case IB_QPS_ERR:	return XSC_QP_STATE_ERR;
-+	default:		return -1;
-+	}
++	union andes_eq_doorbell {
++		struct{
++			u32 eq_next_cid : 11;
++			u32 eq_id : 11;
++			u32 arm : 1;
++		};
++		u32 val;
++	} db;
++
++	db.eq_next_cid = next_cid;
++	db.eq_id = eqn;
++	db.arm = !!arm;
++
++	/* make sure val write to memory done */
++	wmb();
++	writel(db.val, REG_ADDR(bar, regs->event_db));
 +}
 +
-+static char *qp_state_to_str(enum ib_qp_state state)
++static u8 andes_get_mr_page_mode(u8 page_shift)
 +{
-+	switch (state) {
-+	case IB_QPS_RESET:	return "RST";
-+	case IB_QPS_INIT:	return "INIT";
-+	case IB_QPS_RTR:	return "RTR";
-+	case IB_QPS_RTS:	return "RTS";
-+	case IB_QPS_SQD:	return "SQD";
-+	case IB_QPS_SQE:	return "SQE";
-+	case IB_QPS_ERR:	return "ERR";
-+	default:		return "UNKNOWN";
-+	}
++enum {
++	XSC_PAGE_SHIFT_4K	= 12,
++	XSC_PAGE_SHIFT_64K	= 16,
++	XSC_PAGE_SHIFT_2M	= 21,
++	XSC_PAGE_SHIFT_1G	= 30,
++};
++
++enum {
++	XSC_PAGE_MODE_4K	= 0,
++	XSC_PAGE_MODE_64K	= 1,
++	XSC_PAGE_MODE_2M	= 2,
++	XSC_PAGE_MODE_1G	= 3,
++};
++
++	return (page_shift == XSC_PAGE_SHIFT_4K ? XSC_PAGE_MODE_4K :
++		(page_shift == XSC_PAGE_SHIFT_64K ? XSC_PAGE_MODE_64K :
++		(page_shift == XSC_PAGE_SHIFT_2M ? XSC_PAGE_MODE_2M : XSC_PAGE_MODE_1G)));
 +}
 +
-+static struct ib_umem *qp_umem_get(struct xsc_ib_dev *dev, struct xsc_ib_qp *qp,
-+				   struct ib_udata *udata, struct ib_pd *pd,
-+	struct xsc_ib_create_qp *ucmd)
++static inline u32 andes_mkey_to_idx(u32 mkey)
 +{
-+	struct ib_umem *umem;
-+
-+	umem = ib_umem_get_va(&dev->ib_dev, ucmd->buf_addr, qp->buf_size,
-+			      IB_ACCESS_LOCAL_WRITE);
-+	return umem;
++	return mkey >> 17;
 +}
 +
-+static int create_user_qp(struct xsc_ib_dev *dev, struct ib_pd *pd,
-+			  struct xsc_ib_qp *qp, struct ib_udata *udata,
-+			  struct xsc_create_qp_mbox_in **in,
-+			  struct xsc_ib_create_qp_resp *resp, int *inlen)
++static inline u32 andes_idx_to_mkey(u32 mkey_idx)
 +{
-+	struct xsc_ib_create_qp ucmd;
-+	int page_shift;
-+	int npages;
-+	u32 offset;
-+	int ncont;
-+	int err;
-+	int hw_npages;
-+	struct ib_umem_dmabuf *umem_dmabuf;
-+
-+	err = ib_copy_from_udata(&ucmd, udata, sizeof(ucmd));
-+	if (err) {
-+		ibdev_err(&dev->ib_dev, "failed to copy from udata, err=%d\n", err);
-+		return err;
-+	}
-+	ibdev_dbg(&dev->ib_dev, "buf_addr:0x%lx db_addr:0x%lx sq cnt:%u, rq cnt:%u, rq shift:%u\n",
-+		  (uintptr_t)ucmd.buf_addr, (uintptr_t)ucmd.db_addr,
-+		    ucmd.sq_wqe_count, ucmd.rq_wqe_count, ucmd.rq_wqe_shift);
-+
-+	qp->sq.ds_cnt = ucmd.sq_wqe_count;
-+	qp->sq.wqe_cnt = ucmd.sq_wqe_count;
-+	qp->sq.wqe_shift = XSC_BASE_WQE_SHIFT;
-+	qp->rq.ds_cnt = ucmd.rq_wqe_count;
-+	qp->rq.wqe_cnt = ucmd.rq_wqe_count;
-+	qp->rq.wqe_shift = XSC_BASE_WQE_SHIFT;
-+
-+	qp->buf_size = (qp->sq.wqe_cnt << qp->sq.wqe_shift) + (qp->rq.wqe_cnt << qp->rq.wqe_shift);
-+
-+	if (ucmd.dmabuf_fd != -1) {
-+		umem_dmabuf = ib_umem_dmabuf_get_pinned(&dev->ib_dev, 0, ucmd.dmabuf_sz,
-+							ucmd.dmabuf_fd, IB_ACCESS_LOCAL_WRITE);
-+
-+		if (IS_ERR(umem_dmabuf)) {
-+			ibdev_warn(&dev->ib_dev, "qp umem_dmabuf get failed (%ld)\n",
-+				   PTR_ERR(umem_dmabuf));
-+			return -ENOMEM;
-+		}
-+
-+		qp->umem = &umem_dmabuf->umem;
-+	} else {
-+		qp->umem = qp_umem_get(dev, qp, udata, pd, &ucmd);
-+	}
-+
-+	if (IS_ERR(qp->umem)) {
-+		ibdev_err(&dev->ib_dev, "umem_get failed\n");
-+		err = PTR_ERR(qp->umem);
-+		goto err_uuar;
-+	}
-+
-+	xsc_ib_cont_pages(qp->umem, ucmd.buf_addr, &npages, &page_shift,
-+			  &ncont);
-+	if (ncont != npages) {
-+		/* TODO: peer memory support failed */
-+		page_shift = PAGE_SHIFT;
-+		ncont = npages;
-+	}
-+
-+	hw_npages = DIV_ROUND_UP(qp->buf_size, PAGE_SIZE_4K);
-+	err = xsc_ib_get_buf_offset(ucmd.buf_addr, page_shift, &offset);
-+	if (err) {
-+		ibdev_err(&dev->ib_dev, "bad offset:%d\n", offset);
-+		goto err_umem;
-+	}
-+	ibdev_dbg(&dev->ib_dev, "npage:%d, page_shift:%d, ncont:%d, offset:%d, hw_npages %d\n",
-+		  npages, page_shift, ncont, offset, hw_npages);
-+
-+	*inlen = sizeof(**in) + sizeof(*((*in)->req.pas)) * hw_npages;
-+	*in = xsc_vzalloc(*inlen);
-+	if (!*in) {
-+		err = -ENOMEM;
-+		goto err_umem;
-+	}
-+	xsc_ib_populate_pas(dev, qp->umem, page_shift, (*in)->req.pas, hw_npages, true);
-+	(*in)->req.pa_num = cpu_to_be16(hw_npages);
-+
-+	err = ib_copy_to_udata(udata, resp, sizeof(*resp));
-+	if (err) {
-+		ibdev_err(&dev->ib_dev, "failed to copy to udata, err=%d\n", err);
-+		goto err_umem;
-+	}
-+	qp->create_type = XSC_QP_USER;
-+
-+	return 0;
-+
-+err_umem:
-+	ib_umem_release(qp->umem);
-+
-+err_uuar:
-+	return err;
++	return mkey_idx << 17;
 +}
 +
-+static void destroy_qp_user(struct ib_pd *__maybe_unused pd, struct xsc_ib_qp *qp)
++static const u32 xsc_msg_opcode[][2][2] = {
++	[XSC_MSG_OPCODE_SEND][XSC_REQ][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_REQ_SEND,
++	[XSC_MSG_OPCODE_SEND][XSC_REQ][XSC_WITH_IMMDT] = XSC_OPCODE_RDMA_REQ_SEND_IMMDT,
++	[XSC_MSG_OPCODE_SEND][XSC_RSP][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_RSP_RECV,
++	[XSC_MSG_OPCODE_SEND][XSC_RSP][XSC_WITH_IMMDT] = XSC_OPCODE_RDMA_RSP_RECV_IMMDT,
++	[XSC_MSG_OPCODE_RDMA_WRITE][XSC_REQ][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_REQ_WRITE,
++	[XSC_MSG_OPCODE_RDMA_WRITE][XSC_REQ][XSC_WITH_IMMDT] = XSC_OPCODE_RDMA_REQ_WRITE_IMMDT,
++	[XSC_MSG_OPCODE_RDMA_WRITE][XSC_RSP][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_CQE_ERROR,
++	[XSC_MSG_OPCODE_RDMA_WRITE][XSC_RSP][XSC_WITH_IMMDT] = XSC_OPCODE_RDMA_RSP_WRITE_IMMDT,
++	[XSC_MSG_OPCODE_RDMA_READ][XSC_REQ][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_REQ_READ,
++	[XSC_MSG_OPCODE_RDMA_READ][XSC_REQ][XSC_WITH_IMMDT] = XSC_OPCODE_RDMA_CQE_ERROR,
++	[XSC_MSG_OPCODE_RDMA_READ][XSC_RSP][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_CQE_ERROR,
++	[XSC_MSG_OPCODE_RDMA_READ][XSC_RSP][XSC_WITH_IMMDT] = XSC_OPCODE_RDMA_CQE_ERROR,
++	[XSC_MSG_OPCODE_MAD][XSC_REQ][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_MAD_REQ_SEND,
++	[XSC_MSG_OPCODE_MAD][XSC_RSP][XSC_WITHOUT_IMMDT] = XSC_OPCODE_RDMA_MAD_RSP_RECV,
++};
++
++struct andes_cqe {
++	union {
++		u8		msg_opcode;
++		struct {
++			u8		error_code:7;
++			u8		is_error:1;
++		};
++	};
++	__le32		qp_id:15;
++	u8		rsv1:1;
++	u8		se:1;
++	u8		has_pph:1;
++	u8		type:1;
++	u8		with_immdt:1;
++	u8		csum_err:4;
++	__le32		imm_data;
++	__le32		msg_len;
++	__le32		vni;
++	__le64		ts:48;
++	__le16		wqe_id;
++	__le16		rsv[3];
++	__le16		rsv2:15;
++	u8		owner:1;
++};
++
++static int andes_get_cqe_wqe_id(void *cqe)
 +{
-+	ib_umem_release(qp->umem);
++	return ((struct andes_cqe *)cqe)->wqe_id;
 +}
 +
- #define MAX_QP1_SQ_HDR_SIZE_V2	512
- #define MAX_QP1_SQ_HDR_SIZE	86
- 	/* Ethernet header	=  14 */
-@@ -57,6 +319,690 @@ static void *get_seg_wqe(void *first, int n)
- 	/* iCRC			=   4 */
- #define MAX_QP1_RQ_HDR_SIZE_V2	512
- 
-+static int create_kernel_qp(struct xsc_ib_dev *dev,
-+			    struct ib_qp_init_attr *init_attr,
-+			    struct xsc_ib_qp *qp,
-+			    struct xsc_create_qp_mbox_in **in, int *inlen)
++static u8 andes_get_cqe_opcode(void *cqe)
 +{
-+	int err;
-+	int sq_size;
-+	int hw_npages;
++	struct andes_cqe *_cqe = cqe;
++	u8 msg_opcode = _cqe->msg_opcode;
 +
-+	sq_size = calc_sq_size(dev, init_attr, qp);
-+	if (sq_size < 0) {
-+		err = -EINVAL;
-+		ibdev_err(&dev->ib_dev, "err %d\n", err);
-+		return err;
-+	}
-+
-+	qp->rq.ds_cnt = qp->rq.wqe_cnt << (qp->rq.wqe_shift - XSC_BASE_WQE_SHIFT);
-+	qp->rq.offset = 0;
-+	qp->sq.offset = qp->rq.wqe_cnt << qp->rq.wqe_shift;
-+	qp->buf_size = qp->sq.offset + sq_size;
-+	qp->send_psn = 0;
-+
-+	err = xsc_buf_alloc(dev->xdev, qp->buf_size, PAGE_SIZE, &qp->buf);
-+	if (err) {
-+		ibdev_err(&dev->ib_dev, "failed to alloc qp buffer,err=%d\n", err);
-+		return err;
-+	}
-+
-+	qp->sq.qend = qp->buf.direct.buf + qp->sq.offset + sq_size;
-+	hw_npages = DIV_ROUND_UP(qp->buf_size, PAGE_SIZE_4K);
-+	*inlen = sizeof(**in) + sizeof(*(*in)->req.pas) * hw_npages;
-+	*in = xsc_vzalloc(*inlen);
-+	if (!*in) {
-+		err = -ENOMEM;
-+		goto err_buf;
-+	}
-+
-+	xsc_fill_page_array(&qp->buf, (*in)->req.pas, hw_npages);
-+	(*in)->req.pa_num = cpu_to_be16(hw_npages);
-+
-+	qp->sq.wrid = kcalloc(qp->sq.wqe_cnt, sizeof(*qp->sq.wrid), GFP_KERNEL);
-+	qp->sq.wr_data = kcalloc(qp->sq.wqe_cnt, sizeof(*qp->sq.wr_data), GFP_KERNEL);
-+	qp->rq.wrid = kcalloc(qp->rq.wqe_cnt, sizeof(*qp->rq.wrid), GFP_KERNEL);
-+	qp->sq.w_list = kcalloc(qp->sq.wqe_cnt, sizeof(*qp->sq.w_list), GFP_KERNEL);
-+	qp->sq.wqe_head = kcalloc(qp->sq.wqe_cnt, sizeof(*qp->sq.wqe_head), GFP_KERNEL);
-+	qp->sq.wr_opcode = kcalloc(qp->sq.wqe_cnt, sizeof(*qp->sq.wr_opcode), GFP_KERNEL);
-+	qp->sq.need_flush = kcalloc(qp->sq.wqe_cnt, sizeof(*qp->sq.need_flush), GFP_KERNEL);
-+	qp->sq.prev_ce_wqe = kcalloc(qp->sq.wqe_cnt, sizeof(*qp->sq.prev_ce_wqe), GFP_KERNEL);
-+	qp->sq.last_comp_ce_wqe = -1;
-+	qp->sq.last_post_ce_wqe = -1;
-+
-+	if (!qp->sq.wrid || !qp->sq.wr_data || !qp->rq.wrid || !qp->sq.prev_ce_wqe ||
-+	    !qp->sq.w_list || !qp->sq.wqe_head || !qp->sq.wr_opcode || !qp->sq.need_flush) {
-+		err = -ENOMEM;
-+		goto err_wrid;
-+	}
-+	qp->create_type = XSC_QP_KERNEL;
-+
-+	if (init_attr->qp_type == IB_QPT_GSI) {
-+		qp->sq.mad_index = 0;
-+		qp->sq.mad_queue_depth = MAD_QUEUE_DEPTH;
-+		qp->sq.hdr_size = MAX_QP1_SQ_HDR_SIZE_V2 * MAD_QUEUE_DEPTH;
-+		qp->sq.hdr_buf = dma_alloc_coherent(dev->ib_dev.dma_device,
-+						    qp->sq.hdr_size,
-+						    &qp->sq.hdr_dma,
-+						    GFP_KERNEL);
-+		if (!qp->sq.hdr_buf) {
-+			err = -ENOMEM;
-+			ibdev_err(&dev->ib_dev, "Failed to create sq_hdr_buf");
-+			goto err_wrid;
-+		}
-+	}
-+
-+	return 0;
-+
-+err_wrid:
-+	kfree(qp->sq.prev_ce_wqe);
-+	kfree(qp->sq.need_flush);
-+	kfree(qp->sq.wr_opcode);
-+	kfree(qp->sq.wqe_head);
-+	kfree(qp->sq.w_list);
-+	kfree(qp->sq.wrid);
-+	kfree(qp->sq.wr_data);
-+	kfree(qp->rq.wrid);
-+
-+err_buf:
-+	xsc_buf_free(dev->xdev, &qp->buf);
-+	return err;
++	if (_cqe->is_error)
++		return _cqe->type ? XSC_OPCODE_RDMA_RSP_ERROR : XSC_OPCODE_RDMA_REQ_ERROR;
++	if (msg_opcode > XSC_MSG_OPCODE_MAD)
++		return XSC_OPCODE_RDMA_CQE_ERROR;
++	return xsc_msg_opcode[msg_opcode][_cqe->type][_cqe->with_immdt];
 +}
 +
-+static void destroy_qp_kernel(struct xsc_ib_dev *dev, struct xsc_ib_qp *qp)
++struct andes_data_seg {
++	u32	in_line:1;
++	u32	length:31;
++	u32	key;
++	u64	addr;
++};
++
++static void andes_set_data_seg(void *data_seg, u32 length, u32 key, u64 addr)
 +{
-+	if (qp->sq.hdr_buf)
-+		dma_free_coherent(dev->ib_dev.dma_device, qp->sq.hdr_size,
-+				  qp->sq.hdr_buf, qp->sq.hdr_dma);
-+	kfree(qp->sq.prev_ce_wqe);
-+	kfree(qp->sq.need_flush);
-+	kfree(qp->sq.wr_opcode);
-+	kfree(qp->sq.wqe_head);
-+	kfree(qp->sq.w_list);
-+	kfree(qp->sq.wrid);
-+	kfree(qp->sq.wr_data);
-+	kfree(qp->rq.wrid);
-+	xsc_buf_free(dev->xdev, &qp->buf);
++	struct andes_data_seg *seg = data_seg;
++
++	seg->length = length;
++	seg->key = key;
++	seg->addr = addr;
 +}
 +
-+static u8 ib_to_xsc_qp_type(enum ib_qp_type qp_type, __u32 flags)
++struct andes_send_wqe_ctrl_seg {
++	__le32		msg_opcode:8;
++	__le32		with_immdt:1;
++	__le32		csum_en:2;
++	__le32		ds_data_num:5;
++	__le32		wqe_id:16;
++	__le32		msg_len;
++	union {
++		__le32		opcode_data;
++		struct {
++			u8		has_pph:1;
++			u8		so_type:1;
++			__le16		so_data_size:14;
++			u8:8;
++			u8		so_hdr_len:8;
++		};
++		struct {
++			__le16		desc_id;
++			__le16		is_last_wqe:1;
++			__le16		dst_qp_id:15;
++		};
++	};
++	__le32		se:1;
++	__le32		ce:1;
++	__le32:30;
++};
++
++static void andes_set_wqe_id(void *cseg, u32 wqe_id)
 +{
-+	if (qp_type == IB_QPT_RC) {
-+		if (flags & XSC_QP_FLAG_WORC)
-+			return XSC_QUEUE_TYPE_WORC;
-+		else
-+			return XSC_QUEUE_TYPE_RDMA_RC;
-+	} else if ((qp_type == IB_QPT_GSI) || (qp_type == IB_QPT_SMI)) {
-+		return XSC_QUEUE_TYPE_RDMA_MAD;
-+	} else if (qp_type == IB_QPT_RAW_PACKET) {
-+		if (flags & XSC_QP_FLAG_RAWPACKET_TSO)
-+			return XSC_QUEUE_TYPE_RAW_TSO;
-+		else if (flags & XSC_QP_FLAG_RAWPACKET_TX)
-+			return XSC_QUEUE_TYPE_RAW_TX;
-+		else if (flags & XSC_QP_FLAG_RAWPACKET_SNIFFER)
-+			return XSC_QUEUE_TYPE_SNIFFER;
-+		else
-+			return XSC_QUEUE_TYPE_RAW;
-+	} else {
-+		return XSC_QUEUE_TYPE_INVALID;
-+	}
++	u16 _wqe_id = wqe_id;
++
++	((struct andes_send_wqe_ctrl_seg *)cseg)->wqe_id = cpu_to_le16(_wqe_id);
 +}
 +
-+static void get_cqs(enum ib_qp_type qp_type,
-+		    struct ib_cq *ib_send_cq, struct ib_cq *ib_recv_cq,
-+		    struct xsc_ib_cq **send_cq, struct xsc_ib_cq **recv_cq)
++static struct xsc_msg_opcode xsc_ib_opcode = {
++	.send = XSC_MSG_OPCODE_SEND,
++	.send_with_imm = XSC_MSG_OPCODE_SEND,
++	.rdma_write = XSC_MSG_OPCODE_RDMA_WRITE,
++	.rdma_write_with_imm = XSC_MSG_OPCODE_RDMA_WRITE,
++	.rdma_read = XSC_MSG_OPCODE_RDMA_READ,
++	.atomic_cmp_and_swp = XSC_MSG_OPCODE_UNSUPPORT,
++	.atomic_fetch_and_add = XSC_MSG_OPCODE_UNSUPPORT,
++	.masked_atomic_cmp_and_swp = XSC_MSG_OPCODE_UNSUPPORT,
++	.masked_atomic_fetch_and_add = XSC_MSG_OPCODE_UNSUPPORT,
++	.mad = XSC_MSG_OPCODE_MAD,
++};
++
++static struct xsc_msg_opcode *andes_get_msg_opcode(void)
 +{
-+	switch (qp_type) {
-+	case IB_QPT_SMI:
-+	case IB_QPT_GSI:
-+	case IB_QPT_RC:
-+	case IB_QPT_UC:
-+	case IB_QPT_UD:
-+	case IB_QPT_RAW_PACKET:
-+		*send_cq = ib_send_cq ? to_xcq(ib_send_cq) : NULL;
-+		*recv_cq = ib_recv_cq ? to_xcq(ib_recv_cq) : NULL;
++	return &xsc_ib_opcode;
++}
++
++static struct xsc_hw_reg andes_pf_regs = {
++	.req_pid_addr = HIF_CMDQM_HOST_REQ_PID_MEM_ADDR - 0xa0000000,
++	.req_cid_addr = HIF_CMDQM_HOST_REQ_CID_MEM_ADDR - 0xa0000000,
++	.rsp_pid_addr = HIF_CMDQM_HOST_RSP_PID_MEM_ADDR - 0xa0000000,
++	.rsp_cid_addr = HIF_CMDQM_HOST_RSP_CID_MEM_ADDR - 0xa0000000,
++	.req_buf_h_addr = HIF_CMDQM_HOST_REQ_BUF_BASE_H_ADDR_MEM_ADDR - 0xa0000000,
++	.req_buf_l_addr = HIF_CMDQM_HOST_REQ_BUF_BASE_L_ADDR_MEM_ADDR - 0xa0000000,
++	.rsp_buf_h_addr = HIF_CMDQM_HOST_RSP_BUF_BASE_H_ADDR_MEM_ADDR - 0xa0000000,
++	.rsp_buf_l_addr = HIF_CMDQM_HOST_RSP_BUF_BASE_L_ADDR_MEM_ADDR - 0xa0000000,
++	.msix_vec_addr = HIF_CMDQM_VECTOR_ID_MEM_ADDR - 0xa0000000,
++	.interrupt_stat_addr = HIF_CMDQM_HOST_VF_ERR_STS_MEM_ADDR - 0xa0000000,
++	.mpt_tbl_addr = MMC_MPT_TBL_MEM_ADDR - 0xa0000000,
++	.mpt_tbl_depth = MMC_MPT_TBL_MEM_DEPTH,
++	.mpt_tbl_width = MMC_MPT_TBL_MEM_WIDTH,
++	.mtt_inst_base_addr = MMC_MTT_TBL_MEM_ADDR - 0xa0000000,
++	.mtt_inst_stride = 0,
++	.mtt_inst_num_log = 0,
++	.mtt_inst_depth = MMC_MTT_TBL_MEM_DEPTH,
++};
++
++/* BAR-relative window shared by bar-compressed PF and VF */
++static struct xsc_hw_reg andes_compressed_regs = {
++	.tx_db = TX_DB_FUNC_MEM_ADDR,
++	.rx_db = RX_DB_FUNC_MEM_ADDR,
++	.complete_db = DB_CQ_FUNC_MEM_ADDR,
++	.complete_reg = DB_CQ_CID_DIRECT_MEM_ADDR,
++	.event_db = DB_EQ_FUNC_MEM_ADDR,
++	.req_pid_addr = CMDQM_HOST_REQ_PID_MEM_ADDR,
++	.req_cid_addr = CMDQM_HOST_REQ_CID_MEM_ADDR,
++	.rsp_pid_addr = CMDQM_HOST_RSP_PID_MEM_ADDR,
++	.rsp_cid_addr = CMDQM_HOST_RSP_CID_MEM_ADDR,
++	.req_buf_h_addr = CMDQM_HOST_REQ_BUF_BASE_H_ADDR_MEM_ADDR,
++	.req_buf_l_addr = CMDQM_HOST_REQ_BUF_BASE_L_ADDR_MEM_ADDR,
++	.rsp_buf_h_addr = CMDQM_HOST_RSP_BUF_BASE_H_ADDR_MEM_ADDR,
++	.rsp_buf_l_addr = CMDQM_HOST_RSP_BUF_BASE_L_ADDR_MEM_ADDR,
++	.msix_vec_addr = CMDQM_VECTOR_ID_MEM_ADDR,
++	.interrupt_stat_addr = CMDQM_HOST_VF_ERR_STS_MEM_ADDR,
++	.mpt_tbl_addr = MMC_MPT_TBL_MEM_ADDR - 0xa0000000,
++	.mpt_tbl_depth = MMC_MPT_TBL_MEM_DEPTH,
++	.mpt_tbl_width = MMC_MPT_TBL_MEM_WIDTH,
++	.mtt_inst_base_addr = MMC_MTT_TBL_MEM_ADDR - 0xa0000000,
++	.mtt_inst_stride = 0,
++	.mtt_inst_num_log = 0,
++	.mtt_inst_depth = MMC_MTT_TBL_MEM_DEPTH,
++};
++
++void xsc_init_hal(struct xsc_core_device *xdev, u32 device_id)
++{
++	switch (device_id) {
++	case XSC_MC_VF_DEV_ID:
++	case XSC_MF_HOST_VF_DEV_ID:
++	case XSC_MS_VF_DEV_ID:
++	case XSC_MV_HOST_VF_DEV_ID:
++		/* VFs expose the same BAR-relative window as a bar-compressed PF */
++		xdev->hal_regs = &andes_compressed_regs;
 +		break;
 +	default:
-+		*send_cq = NULL;
-+		*recv_cq = NULL;
++		if (is_pf_bar_compressed(xdev))
++			xdev->hal_regs = &andes_compressed_regs;
++		else
++			xdev->hal_regs = &andes_pf_regs;
 +		break;
 +	}
 +}
 +
-+static void xsc_ib_lock_cqs(struct xsc_ib_cq *send_cq, struct xsc_ib_cq *recv_cq)
-+	__acquires(&send_cq->lock) __acquires(&recv_cq->lock)
++void xsc_set_mtt_info(struct xsc_core_device *xdev)
 +{
-+	if (send_cq) {
-+		if (recv_cq) {
-+			if (send_cq->xcq.cqn < recv_cq->xcq.cqn)  {
-+				spin_lock_irq(&send_cq->lock);
-+				spin_lock_nested(&recv_cq->lock,
-+						 SINGLE_DEPTH_NESTING);
-+			} else if (send_cq->xcq.cqn == recv_cq->xcq.cqn) {
-+				spin_lock_irq(&send_cq->lock);
-+				__acquire(&recv_cq->lock);
-+			} else {
-+				spin_lock_irq(&recv_cq->lock);
-+				spin_lock_nested(&send_cq->lock,
-+						 SINGLE_DEPTH_NESTING);
-+			}
-+		} else {
-+			spin_lock_irq(&send_cq->lock);
-+		}
-+	} else if (recv_cq) {
-+		spin_lock_irq(&recv_cq->lock);
-+	}
++	struct xsc_hw_reg *regs = xdev->hal_regs;
++
++	regs->mpt_tbl_addr = xdev->caps.mpt_tbl_addr - 0xa0000000;
++	regs->mpt_tbl_depth = xdev->caps.mpt_tbl_depth;
++	regs->mpt_tbl_width = xdev->caps.mpt_tbl_width;
++	regs->mtt_inst_base_addr = xdev->caps.mtt_inst_base_addr - 0xa0000000;
++	regs->mtt_inst_stride = xdev->caps.mtt_inst_stride;
++	regs->mtt_inst_num_log = xdev->caps.mtt_inst_num_log;
++	regs->mtt_inst_depth = xdev->caps.mtt_inst_depth;
 +}
 +
-+static void xsc_ib_unlock_cqs(struct xsc_ib_cq *send_cq, struct xsc_ib_cq *recv_cq)
-+	__releases(&send_cq->lock) __releases(&recv_cq->lock)
++void xsc_set_pf_db_addr(struct xsc_core_device *xdev,
++			u64 tx_db, u64 rx_db, u64 cq_db, u64 cq_reg, u64 eq_db)
 +{
-+	if (send_cq) {
-+		if (recv_cq) {
-+			if (send_cq->xcq.cqn < recv_cq->xcq.cqn)  {
-+				spin_unlock(&recv_cq->lock);
-+				spin_unlock_irq(&send_cq->lock);
-+			} else if (send_cq->xcq.cqn == recv_cq->xcq.cqn) {
-+				__release(&recv_cq->lock);
-+				spin_unlock_irq(&send_cq->lock);
-+			} else {
-+				spin_unlock(&send_cq->lock);
-+				spin_unlock_irq(&recv_cq->lock);
-+			}
-+		} else {
-+			spin_unlock_irq(&send_cq->lock);
-+		}
-+	} else if (recv_cq) {
-+		spin_unlock_irq(&recv_cq->lock);
-+	}
-+}
++	struct xsc_hw_reg *regs = xdev->hal_regs;
 +
-+static int create_qp_common(struct xsc_ib_dev *dev, struct ib_pd *pd,
-+			    struct ib_qp_init_attr *init_attr,
-+			    struct ib_udata *udata, struct xsc_ib_qp *qp)
-+{
-+	struct xsc_ib_create_qp_resp resp;
-+	struct xsc_create_qp_mbox_in *in = NULL;
-+	struct xsc_ib_create_qp ucmd;
-+	struct xsc_ib_cq *send_cq;
-+	struct xsc_ib_cq *recv_cq;
-+	struct xsc_srq_qp_node *qp_node;
-+	int inlen = sizeof(*in);
-+	int err;
-+	char buf[256];
-+	char *ptr = buf;
-+	int ret = 0;
-+
-+	mutex_init(&qp->mutex);
-+	spin_lock_init(&qp->sq.lock);
-+	spin_lock_init(&qp->rq.lock);
-+	spin_lock_init(&qp->lock);
-+
-+	if (init_attr->sq_sig_type == IB_SIGNAL_ALL_WR)
-+		qp->sq_signal_bits = XSC_WQE_CTRL_CQ_UPDATE;
-+
-+	if (pd->uobject) {
-+		if (ib_copy_from_udata(&ucmd, udata, sizeof(ucmd))) {
-+			ibdev_err(&dev->ib_dev, "failed to copy from udata\n");
-+			return -EFAULT;
-+		}
-+	}
-+
-+	qp->has_rq = qp_has_rq(init_attr);
-+
-+	err = set_rq_size(dev, init_attr, qp->has_rq,
-+			  qp, pd->uobject ? &ucmd : NULL);
-+	if (err) {
-+		ibdev_err(&dev->ib_dev, "failed to set rq size %d\n", err);
-+		return err;
-+	}
-+
-+	if (pd->uobject) {
-+		err = create_user_qp(dev, pd, qp, udata, &in, &resp, &inlen);
-+		if (err)
-+			ibdev_err(&dev->ib_dev, "failed to create user qp, err = %d\n", err);
-+	} else {
-+		err = create_kernel_qp(dev, init_attr, qp, &in, &inlen);
-+		if (err)
-+			ibdev_err(&dev->ib_dev, "failed to create kernel qp, err = %d\n", err);
-+		else
-+			qp->pa_lkey = to_xpd(pd)->pa_lkey;
-+	}
-+
-+	if (err)
-+		return err;
-+
-+	if (is_sqp(init_attr->qp_type))
-+		qp->port = init_attr->port_num;
-+
-+	if (is_qp1(init_attr->qp_type))
-+		in->req.input_qpn = cpu_to_be16(1);
-+
-+	in->req.pdn = cpu_to_be32(to_xpd(pd)->pdn);
-+
-+	if (qp->rq.ds_cnt)
-+		in->req.log_rq_sz = ilog2(qp->rq.ds_cnt);
-+
-+	if (qp->sq.ds_cnt)
-+		in->req.log_sq_sz = ilog2(qp->sq.ds_cnt);
-+	else
-+		in->req.log_sq_sz = ilog2(0x80);
-+
-+	if (init_attr->send_cq) {
-+		qp->send_cq = init_attr->send_cq;
-+		in->req.cqn_send = to_xcq(init_attr->send_cq)->xcq.cqn;
-+		in->req.cqn_send = cpu_to_be16(in->req.cqn_send);
-+	}
-+
-+	if (init_attr->recv_cq) {
-+		qp->recv_cq = init_attr->recv_cq;
-+		in->req.cqn_recv = to_xcq(init_attr->recv_cq)->xcq.cqn;
-+		in->req.cqn_recv = cpu_to_be16(in->req.cqn_recv);
-+	}
-+
-+	in->req.qp_type = ib_to_xsc_qp_type(init_attr->qp_type, pd->uobject ?
-+					    ucmd.flags : 0);
-+
-+	if (in->req.qp_type == XSC_QUEUE_TYPE_INVALID) {
-+		ibdev_err(&dev->ib_dev, "invalid qp type:%d\n", init_attr->qp_type);
-+		goto err_create;
-+	}
-+	in->req.glb_funcid = cpu_to_be16(dev->xdev->glb_func_id);
-+	in->req.page_shift = PAGE_SHIFT;
-+
-+	qp->xqp.qp_type_internal = in->req.qp_type;
-+
-+	err = xsc_core_create_qp(dev->xdev, &qp->xqp, in, inlen);
-+	if (err) {
-+		ibdev_err(&dev->ib_dev, "create qp failed, err=%d\n", err);
-+		goto err_create;
-+	}
-+
-+	qp->doorbell_qpn = qp->xqp.qpn;
-+
-+	qp->xqp.event = xsc_ib_qp_event;
-+	qp->xqp.qp_type = init_attr->qp_type;
-+	ret += snprintf(ptr + ret, 256 - ret, "pdn=%d,", to_xpd(pd)->pdn);
-+	ret += snprintf(ptr + ret, 256 - ret, "log_rq_sz=%d,", in->req.log_rq_sz);
-+	ret += snprintf(ptr + ret, 256 - ret, "log_sq_sz=%d,", in->req.log_sq_sz);
-+	ret += snprintf(ptr + ret, 256 - ret, "scqn=%d,", to_xcq(init_attr->send_cq)->xcq.cqn);
-+	ret += snprintf(ptr + ret, 256 - ret, "rcqn=%d", to_xcq(init_attr->recv_cq)->xcq.cqn);
-+
-+	get_cqs(init_attr->qp_type, init_attr->send_cq, init_attr->recv_cq, &send_cq, &recv_cq);
-+	xsc_ib_lock_cqs(send_cq, recv_cq);
-+	if (send_cq)
-+		list_add_tail(&qp->cq_send_list, &send_cq->send_qp_list);
-+	if (recv_cq)
-+		list_add_tail(&qp->cq_recv_list, &recv_cq->recv_qp_list);
-+	xsc_ib_unlock_cqs(send_cq, recv_cq);
-+
-+	if (!pd->uobject && init_attr->srq) {
-+		qp_node = kvzalloc_obj(*qp_node, GFP_KERNEL);
-+		if (!qp_node)
-+			goto err_create;
-+		qp_node->ibqp = &qp->ibqp;
-+		qp_node->qp_id = qp->xqp.qpn;
-+		ibdev_dbg(&dev->ib_dev, "qpn:%u add into srq_qp_list\n", qp_node->qp_id);
-+		list_add_tail(&qp_node->entry, &to_xsrq(init_attr->srq)->xsrq.srq_qp_list);
-+	}
-+
-+	qp->xqp.qp_protocol_mode = dev->xdev->rdma_proto_mode;
-+
-+	ibdev_dbg(&dev->ib_dev, "succeeded to create qp:%d, %s\n", qp->xqp.qpn, buf);
-+
-+	xsc_vfree(in);
-+
-+	return 0;
-+
-+err_create:
-+	if (qp->create_type == XSC_QP_USER)
-+		destroy_qp_user(pd, qp);
-+	else if (qp->create_type == XSC_QP_KERNEL)
-+		destroy_qp_kernel(dev, qp);
-+
-+	xsc_vfree(in);
-+	return err;
-+}
-+
-+static struct xsc_ib_pd *get_pd(struct xsc_ib_qp *qp)
-+{
-+	return to_xpd(qp->ibqp.pd);
-+}
-+
-+static void destroy_qp_common(struct xsc_ib_dev *dev, struct xsc_ib_qp *qp)
-+{
-+	struct xsc_ib_cq *send_cq = NULL;
-+	struct xsc_ib_cq *recv_cq = NULL;
-+	struct xsc_modify_qp_mbox_in *in;
-+	int err;
-+
-+	in = kzalloc_obj(*in, GFP_KERNEL);
-+	if (!in)
++	if (is_pf_bar_compressed(xdev))
 +		return;
 +
-+	if (qp->xqp.qp_type_internal == XSC_QUEUE_TYPE_RAW ||
-+	    qp->xqp.qp_type_internal == XSC_QUEUE_TYPE_RAW_TSO ||
-+	    qp->xqp.qp_type_internal == XSC_QUEUE_TYPE_RAW_TX ||
-+	    qp->state != IB_QPS_RESET)
-+		if (xsc_core_qp_modify(dev->xdev, to_xsc_state(qp->state),
-+				       XSC_QP_STATE_RST, in, sizeof(*in), &qp->xqp))
-+			ibdev_warn(&dev->ib_dev, "modify QP %06x to RESET failed\n", qp->xqp.qpn);
-+
-+	get_cqs(qp->xqp.qp_type, qp->ibqp.send_cq, qp->ibqp.recv_cq, &send_cq, &recv_cq);
-+	xsc_ib_lock_cqs(send_cq, recv_cq);
-+	if (send_cq)
-+		list_del(&qp->cq_send_list);
-+
-+	if (recv_cq)
-+		list_del(&qp->cq_recv_list);
-+
-+	if (qp->create_type == XSC_QP_KERNEL) {
-+		__xsc_ib_cq_clean(recv_cq, qp->xqp.qpn);
-+		if (send_cq != recv_cq)
-+			__xsc_ib_cq_clean(send_cq, qp->xqp.qpn);
-+	}
-+	xsc_ib_unlock_cqs(send_cq, recv_cq);
-+
-+	err = xsc_core_destroy_qp(dev->xdev, &qp->xqp);
-+	if (err)
-+		ibdev_warn(&dev->ib_dev, "failed to destroy QP 0x%x\n", qp->xqp.qpn);
-+	kfree(in);
-+
-+	if (qp->create_type == XSC_QP_KERNEL)
-+		destroy_qp_kernel(dev, qp);
-+	else if (qp->create_type == XSC_QP_USER)
-+		destroy_qp_user(&get_pd(qp)->ibpd, qp);
-+}
-+
-+static const char *ib_qp_type_str(enum ib_qp_type type)
-+{
-+	switch (type) {
-+	case IB_QPT_SMI:
-+		return "IB_QPT_SMI";
-+	case IB_QPT_GSI:
-+		return "IB_QPT_GSI";
-+	case IB_QPT_RC:
-+		return "IB_QPT_RC";
-+	case IB_QPT_UC:
-+		return "IB_QPT_UC";
-+	case IB_QPT_UD:
-+		return "IB_QPT_UD";
-+	case IB_QPT_RAW_IPV6:
-+		return "IB_QPT_RAW_IPV6";
-+	case IB_QPT_RAW_ETHERTYPE:
-+		return "IB_QPT_RAW_ETHERTYPE";
-+	case IB_QPT_RAW_PACKET:
-+		return "IB_QPT_RAW_PACKET";
-+	case IB_QPT_MAX:
-+	default:
-+		return "Invalid QP type";
++	if (xsc_core_is_pf(xdev)) {
++		regs->tx_db = tx_db - 0xa0000000;
++		regs->rx_db = rx_db - 0xa0000000;
++		regs->complete_db = cq_db - 0xa0000000;
++		regs->complete_reg = cq_reg - 0xa0000000;
++		regs->event_db = eq_db - 0xa0000000;
 +	}
 +}
 +
-+int xsc_ib_create_qp(struct ib_qp *ibqp,
-+		     struct ib_qp_init_attr *init_attr,
-+		     struct ib_udata *udata)
++void xsc_get_db_addr(struct xsc_core_device *xdev,
++		     u64 *tx_db, u64 *rx_db, u64 *cq_db, u64 *cq_reg, u64 *eq_db)
 +{
-+	struct xsc_ib_dev *dev;
-+	struct xsc_ib_qp *qp;
-+	struct ib_pd *pd = ibqp->pd;
-+	int err;
++	struct xsc_hw_reg *regs = xdev->hal_regs;
 +
-+	if (pd) {
-+		dev = to_xdev(pd->device);
++	if (!xsc_core_is_pf(xdev) || is_pf_bar_compressed(xdev)) {
++		if (tx_db)
++			*tx_db = regs->tx_db;
++		if (rx_db)
++			*rx_db = regs->rx_db;
++		if (cq_db)
++			*cq_db = regs->complete_db;
++		if (cq_reg)
++			*cq_reg = regs->complete_reg;
++		if (eq_db)
++			*eq_db = regs->event_db;
 +	} else {
-+		pr_warn("%s: no PD for transport %s\n", __func__,
-+			ib_qp_type_str(init_attr->qp_type));
-+		return -EINVAL;
++		if (tx_db)
++			*tx_db = regs->tx_db + 0xa0000000;
++		if (rx_db)
++			*rx_db = regs->rx_db + 0xa0000000;
++		if (cq_db)
++			*cq_db = regs->complete_db + 0xa0000000;
++		if (cq_reg)
++			*cq_reg = regs->complete_reg + 0xa0000000;
++		if (eq_db)
++			*eq_db = regs->event_db + 0xa0000000;
 +	}
++}
++EXPORT_SYMBOL_GPL(xsc_get_db_addr);
 +
-+	if (init_attr->qp_type != IB_QPT_RAW_PACKET) {
-+		if (!is_support_rdma(dev->xdev) ||
-+		    (is_qp1(init_attr->qp_type) && !is_support_rdma_cm(dev->xdev))) {
-+			return -EPROTONOSUPPORT;
-+		}
-+	}
++void xsc_update_tx_db(struct xsc_core_device *xdev, u32 sqn, u32 next_pid)
++{
++	bool mdb = is_support_multi_doorbell(xdev);
 +
-+	qp = to_xqp(ibqp);
++	andes_ring_tx_doorbell(xdev, xdev->hal_regs, xdev->bar, sqn,
++			       next_pid, mdb);
++}
++EXPORT_SYMBOL_GPL(xsc_update_tx_db);
 +
-+	qp->xqp.qp_type = init_attr->qp_type;
++void xsc_update_rx_db(struct xsc_core_device *xdev, u32 rqn, u32 next_pid)
++{
++	andes_ring_rx_doorbell(xdev->hal_regs, xdev->bar, rqn, next_pid);
++}
++EXPORT_SYMBOL_GPL(xsc_update_rx_db);
 +
-+	switch (init_attr->qp_type) {
-+	case IB_QPT_RC:
-+	case IB_QPT_SMI:
-+	case IB_QPT_GSI:
-+	case IB_QPT_RAW_PACKET:
-+		err = create_qp_common(dev, pd, init_attr, udata, qp);
-+		if (err) {
-+			ibdev_err(&dev->ib_dev, "create_qp_common failed\n");
-+			return err;
-+		}
++void xsc_arm_cq(struct xsc_core_device *xdev, u32 cqn, u32 next_cid, u8 solicited)
++{
++	andes_update_cq_db(xdev->hal_regs, xdev->bar, cqn, next_cid, solicited);
++}
++EXPORT_SYMBOL_GPL(xsc_arm_cq);
 +
-+		if (is_qp0(init_attr->qp_type)) {
-+			qp->ibqp.qp_num = 0;
-+		} else if (is_qp1(init_attr->qp_type)) {
-+			qp->ibqp.qp_num = 1;
-+			dev->xdev->gsi_qpn = qp->xqp.qpn;
-+		} else {
-+			qp->ibqp.qp_num = qp->xqp.qpn;
-+		}
++void xsc_update_cq_ci(struct xsc_core_device *xdev, u32 cqn, u32 next_cid)
++{
++	andes_set_cq_ci(xdev->hal_regs, xdev->bar, cqn, next_cid);
++}
++EXPORT_SYMBOL_GPL(xsc_update_cq_ci);
 +
-+		break;
-+
-+	case IB_QPT_RAW_IPV6:
-+	case IB_QPT_RAW_ETHERTYPE:
-+	case IB_QPT_MAX:
-+	default:
-+		ibdev_err(&dev->ib_dev, "unsupported qp type %d\n",
-+			  init_attr->qp_type);
-+		/* Don't support raw QPs */
-+		return -EINVAL;
-+	}
-+
-+	return 0;
++void xsc_update_eq_ci(struct xsc_core_device *xdev, u32 eqn, u32 next_cid, u8 arm)
++{
++	andes_set_eq_ci(xdev->hal_regs, xdev->bar, eqn, next_cid, arm);
 +}
 +
-+int xsc_ib_destroy_qp(struct ib_qp *qp, struct ib_udata *udata)
++void xsc_update_cmdq_req_pid(struct xsc_core_device *xdev, u32 req_pid)
 +{
-+	struct xsc_ib_dev *dev = to_xdev(qp->device);
-+	struct xsc_ib_qp *xqp = to_xqp(qp);
-+	struct xsc_err_state_qp_node *tmp = NULL, *err_rq_node = NULL, *err_sq_node = NULL;
-+	struct xsc_srq_qp_node *qp_node = NULL, *tmp_qp_node = NULL;
-+	unsigned long flags;
-+	struct xsc_ib_srq *xsrq;
-+
-+	if (qp->qp_type == IB_QPT_RC) {
-+		if (xqp->recv_cq) {
-+			spin_lock_irq(&to_xcq(xqp->recv_cq)->lock);
-+			list_for_each_entry_safe(err_rq_node, tmp,
-+						 &to_xcq(xqp->recv_cq)->err_state_qp_list, entry) {
-+				if (err_rq_node->qp_id == xqp->xqp.qpn && !err_rq_node->is_sq) {
-+					list_del(&err_rq_node->entry);
-+					kfree(err_rq_node);
-+				}
-+			}
-+			spin_unlock_irq(&to_xcq(xqp->recv_cq)->lock);
-+		}
-+
-+		if (xqp->send_cq) {
-+			spin_lock_irq(&to_xcq(xqp->send_cq)->lock);
-+			list_for_each_entry_safe(err_sq_node, tmp,
-+						 &to_xcq(xqp->send_cq)->err_state_qp_list, entry) {
-+				if (err_sq_node->qp_id == xqp->xqp.qpn && err_sq_node->is_sq) {
-+					list_del(&err_sq_node->entry);
-+					kfree(err_sq_node);
-+				}
-+			}
-+			spin_unlock_irq(&to_xcq(xqp->send_cq)->lock);
-+		}
-+	}
-+
-+	if (xqp->create_type == XSC_QP_KERNEL && qp->srq) {
-+		if (!to_xsrq(qp->srq) || list_empty(&to_xsrq(qp->srq)->xsrq.srq_qp_list))
-+			ibdev_warn(&dev->ib_dev, "srq_qp_list is empty!\n");
-+
-+		xsrq = to_xsrq(qp->srq);
-+		spin_lock_irqsave(&xsrq->lock, flags);
-+		xsc_restore_cache_srq_wrs(xsrq, xqp);
-+		list_for_each_entry_safe(qp_node, tmp_qp_node,
-+					 &to_xsrq(qp->srq)->xsrq.srq_qp_list, entry) {
-+			if (qp_node->qp_id == xqp->xqp.qpn) {
-+				to_xsrq(qp->srq)->qp_num--;
-+				ibdev_dbg(&dev->ib_dev, "srq_qp_list del node qpn:%u qp_num:%d\n",
-+					  qp_node->qp_id, to_xsrq(qp->srq)->qp_num);
-+				list_del_init(&qp_node->entry);
-+				kvfree(qp_node);
-+				break;
-+			}
-+		}
-+		spin_unlock_irqrestore(&xsrq->lock, flags);
-+	}
-+
-+	destroy_qp_common(dev, xqp);
-+
-+	return 0;
++	xsc_write32(xdev->bar, xdev->hal_regs->req_pid_addr, &req_pid);
 +}
 +
-+static inline u16 xsc_calc_udp_sport(u32 lqpn, u32 rqpn)
++void xsc_update_cmdq_rsp_cid(struct xsc_core_device *xdev, u32 rsp_cid)
 +{
-+	unsigned char *p;
-+	u8 ports[2];
-+	u16 sport;
-+	u64 tqpn;
-+
-+	tqpn = ((u64)(lqpn & 0xffffff)) * ((u64)(rqpn & 0xffffff));
-+	p = (unsigned char *)&tqpn;
-+	ports[0] = p[0] ^ p[2] ^ p[4];
-+	ports[1] = p[1] ^ p[3] ^ p[5];
-+	sport = *((u16 *)ports) | 0xC000;
-+
-+	return sport;
++	xsc_write32(xdev->bar, xdev->hal_regs->rsp_cid_addr, &rsp_cid);
 +}
 +
-+static inline void xsc_path_set_udp_sport(struct xsc_qp_path *path,
-+					  const struct rdma_ah_attr *ah,
-+					  u32 lqpn, u32 rqpn)
++u32 xsc_get_cmdq_req_pid(struct xsc_core_device *xdev)
 +{
-+	if ((ah->grh.flow_label & UDP_SPORT_MASK) != 0) {
-+		if ((ah->grh.flow_label & UDP_SPORT_MASK_EN) == 0)
-+			path->sport = cpu_to_be16(rdma_flow_label_to_udp_sport(ah->grh.flow_label));
-+		else
-+			path->sport = cpu_to_be16((ah->grh.flow_label & UDP_SPORT_MASK) >>
-+							UDP_SPORT_OFFSET);
-+	} else {
-+		path->sport = cpu_to_be16(xsc_calc_udp_sport(lqpn, rqpn));
++	u32 val;
++
++	xsc_read32(xdev->bar, xdev->hal_regs->req_pid_addr, &val, sizeof(val));
++	return val;
++}
++
++u32 xsc_get_cmdq_req_cid(struct xsc_core_device *xdev)
++{
++	u32 val;
++
++	xsc_read32(xdev->bar, xdev->hal_regs->req_cid_addr, &val, sizeof(val));
++	return val;
++}
++
++u32 xsc_get_cmdq_rsp_pid(struct xsc_core_device *xdev)
++{
++	u32 val;
++
++	xsc_read32(xdev->bar, xdev->hal_regs->rsp_pid_addr, &val, sizeof(val));
++	return val;
++}
++
++u32 xsc_get_cmdq_rsp_cid(struct xsc_core_device *xdev)
++{
++	u32 val;
++
++	xsc_read32(xdev->bar, xdev->hal_regs->rsp_cid_addr, &val, sizeof(val));
++	return val;
++}
++
++void xsc_set_cmdq_req_buf_addr(struct xsc_core_device *xdev, u32 haddr, u32 laddr)
++{
++	xsc_write32(xdev->bar, xdev->hal_regs->req_buf_h_addr, &haddr);
++	xsc_write32(xdev->bar, xdev->hal_regs->req_buf_l_addr, &laddr);
++}
++
++void xsc_set_cmdq_rsp_buf_addr(struct xsc_core_device *xdev, u32 haddr, u32 laddr)
++{
++	xsc_write32(xdev->bar, xdev->hal_regs->rsp_buf_h_addr, &haddr);
++	xsc_write32(xdev->bar, xdev->hal_regs->rsp_buf_l_addr, &laddr);
++}
++
++void xsc_set_cmdq_msix_vector(struct xsc_core_device *xdev, u32 vector)
++{
++	xsc_write32(xdev->bar, xdev->hal_regs->msix_vec_addr, &vector);
++}
++
++void xsc_check_cmdq_status(struct xsc_core_device *xdev)
++{
++	u32 status;
++
++	xsc_read32(xdev->bar, xdev->hal_regs->interrupt_stat_addr, &status,
++		   sizeof(status));
++	if (status) {
++		status = 0xf;
++		xsc_write32(xdev->bar, xdev->hal_regs->interrupt_stat_addr, &status);
 +	}
 +}
 +
-+static int xsc_set_path(struct xsc_ib_dev *dev, const struct rdma_ah_attr *ah,
-+			struct xsc_qp_path *path, u8 port, int attr_mask,
-+			u32 path_flags, const struct ib_qp_attr *attr, struct xsc_ib_qp *qp)
++int xsc_handle_cmdq_interrupt(struct xsc_core_device *xdev)
 +{
-+	struct ib_global_route *grh = rdma_ah_retrieve_grh((struct rdma_ah_attr *)ah);
-+	union ib_gid *dgid = &grh->dgid;
-+	const struct ib_gid_attr *sgid_attr = grh->sgid_attr;
-+	union ib_gid *sgid = &((struct ib_gid_attr *)sgid_attr)->gid;
-+	union {
-+		struct sockaddr     _sockaddr;
-+		struct sockaddr_in  _sockaddr_in;
-+		struct sockaddr_in6 _sockaddr_in6;
-+	} sgid_addr, dgid_addr;
-+	int force_pcp, force_dscp;
-+	char buf[256] = {0};
-+	char *ptr = buf;
-+	int ret = 0;
++	union interrupt_stat {
++		struct {
++			u32	hw_read_req_err:1;
++			u32	hw_write_req_err:1;
++			u32	req_pid_err:1;
++			u32	rsp_cid_err:1;
++		};
++		u32	raw;
++	} stat;
 +
-+	if (ah->type == RDMA_AH_ATTR_TYPE_ROCE) {
-+		if (!(rdma_ah_get_ah_flags(ah) & IB_AH_GRH))
-+			return -EINVAL;
-+
-+		if (qp->ibqp.qp_type == IB_QPT_RC ||
-+		    qp->ibqp.qp_type == IB_QPT_UC) {
-+			if (((ah->grh.flow_label & UDP_SPORT_MASK_EN) != 0) &&
-+			    qp->xqp.qp_protocol_mode == RDMA_PROTO_VEROCE) {
-+				ibdev_err(&dev->ib_dev,
-+					  "qp type is  RDMA_PROTO_VEROCE, using flow_label to set the UDP sport %d is not allowed.",
-+					   (ah->grh.flow_label & UDP_SPORT_MASK) >>
-+					   UDP_SPORT_OFFSET);
-+				return -EINVAL;
-+			}
-+			xsc_path_set_udp_sport(path, ah, qp->ibqp.qp_num, attr->dest_qp_num);
-+		}
-+
-+		if (sgid_attr->gid_type != IB_GID_TYPE_ROCE_UDP_ENCAP) {
-+			ibdev_err(&dev->ib_dev, "gid type not ROCEv2\n");
-+			return -EINVAL;
-+		}
-+
-+		force_dscp = dev->xdev->priv.force_dscp;
-+		if (force_dscp == DSCP_PCP_UNSET)
-+			path->ecn_dscp = (grh->traffic_class >> 2) & 0x3f;
-+		else
-+			path->ecn_dscp = force_dscp;
-+		path->hop_limit = grh->hop_limit;
-+
-+		rdma_gid2ip((struct sockaddr *)&sgid_addr, sgid);
-+		rdma_gid2ip((struct sockaddr *)&dgid_addr, dgid);
-+
-+		if (sgid_addr._sockaddr.sa_family == AF_INET &&
-+		    dgid_addr._sockaddr.sa_family == AF_INET) {
-+			memcpy(path->sip, &sgid_addr._sockaddr_in.sin_addr.s_addr,
-+			       sizeof(struct in_addr));
-+			memcpy(path->dip, &dgid_addr._sockaddr_in.sin_addr.s_addr,
-+			       sizeof(struct in_addr));
-+			path->af_type = AF_INET;
-+			ret += snprintf(ptr + ret, 256 - ret, "sip=%#x,",
-+					be32_to_cpu(path->sip[0]));
-+			ret += snprintf(ptr + ret, 256 - ret, "dip=%#x,",
-+					be32_to_cpu(path->dip[0]));
-+		} else if (sgid_addr._sockaddr.sa_family == AF_INET6 &&
-+			   dgid_addr._sockaddr.sa_family == AF_INET6) {
-+			memcpy(path->sip, &sgid_addr._sockaddr_in6.sin6_addr.s6_addr,
-+			       sizeof(path->sip));
-+			memcpy(path->dip, &dgid_addr._sockaddr_in6.sin6_addr.s6_addr,
-+			       sizeof(path->dip));
-+			path->af_type = AF_INET6;
-+			ret += snprintf(ptr + ret, 256 - ret, "sip=%08x%08x%08x%08x,",
-+					be32_to_cpu(path->sip[0]), be32_to_cpu(path->sip[1]),
-+					be32_to_cpu(path->sip[2]), be32_to_cpu(path->sip[3]));
-+			ret += snprintf(ptr + ret, 256 - ret, "dip=%08x%08x%08x%08x,",
-+					be32_to_cpu(path->dip[0]), be32_to_cpu(path->dip[1]),
-+					be32_to_cpu(path->dip[2]), be32_to_cpu(path->dip[3]));
-+		} else {
-+			return -EINVAL;
-+		}
-+
-+		ether_addr_copy(path->smac, dev->netdev->dev_addr);
-+
-+		memcpy(path->dmac, ah->roce.dmac, sizeof(ah->roce.dmac));
-+		ret += snprintf(ptr + ret, 256 - ret, "smac=%02x%02x%02x%02x%02x%02x,",
-+				path->smac[0], path->smac[1], path->smac[2],
-+				path->smac[3], path->smac[4], path->smac[5]);
-+		ret += snprintf(ptr + ret, 256 - ret, "dmac=%02x%02x%02x%02x%02x%02x",
-+				path->dmac[0], path->dmac[1], path->dmac[2],
-+				path->dmac[3], path->dmac[4], path->dmac[5]);
-+		if (is_zero_ether_addr(path->dmac))
-+			ibdev_err(&dev->ib_dev, "path dmac is zero!\n");
-+		else
-+			ibdev_dbg(&dev->ib_dev, "ib path info:%s\n", buf);
-+
-+		if (is_vlan_dev(sgid_attr->ndev)) {
-+			path->vlan_valid = 1;
-+			path->vlan_id = cpu_to_be16(vlan_dev_vlan_id(sgid_attr->ndev));
-+
-+			force_pcp = dev->xdev->priv.force_pcp;
-+			if (force_pcp == DSCP_PCP_UNSET)
-+				path->dci_cfi_prio_sl = (ah->sl & 0x7);
-+			else
-+				path->dci_cfi_prio_sl = force_pcp;
-+		} else {
-+			path->vlan_valid = 0;
-+		}
-+	}
-+	ibdev_dbg(&dev->ib_dev, "path dscp %d pcp %d\n", path->ecn_dscp, path->dci_cfi_prio_sl);
-+	return 0;
-+}
-+
- static inline void xsc_ib_trigger_cq_comp_handler(struct ib_cq *send_cq, struct ib_cq *recv_cq)
- {
- 	if (send_cq)
-@@ -127,10 +1073,285 @@ int xsc_ib_err_state_qp(struct xsc_ib_dev *dev, struct xsc_ib_qp *qp,
- 	return 0;
- }
- 
-+static inline void xsc_set_qp_access_flag(struct xsc_modify_qp_mbox_in *in,
-+					  struct xsc_qp_context *context, int access_flags)
-+{
-+	in->hdr.ver = cpu_to_be16(XSC_QP_CONTEXT_V1);
-+	context->qp_access_flags = 0;
-+
-+	if (access_flags & IB_ACCESS_REMOTE_READ)
-+		context->qp_access_flags |= QP_ACCESS_REMOTE_READ;
-+	if (access_flags & IB_ACCESS_REMOTE_WRITE)
-+		context->qp_access_flags |= QP_ACCESS_REMOTE_WRITE;
-+	if (access_flags & IB_ACCESS_REMOTE_ATOMIC)
-+		context->qp_access_flags |= QP_ACCESS_REMOTE_ATOMIC;
-+
-+	context->qp_access_flags = cpu_to_be32(context->qp_access_flags);
-+}
-+
-+static int __xsc_ib_modify_qp(struct ib_qp *ibqp,
-+			      const struct ib_qp_attr *attr, int attr_mask,
-+			      enum ib_qp_state cur_state, enum ib_qp_state new_state,
-+			      const struct xsc_ib_modify_qp *ucmd,
-+			      struct ib_udata *udata)
-+{
-+	struct xsc_ib_dev *dev = to_xdev(ibqp->device);
-+	struct xsc_ib_qp *qp = to_xqp(ibqp);
-+	struct xsc_ib_cq *send_cq, *recv_cq;
-+	struct xsc_qp_context *context;
-+	struct xsc_modify_qp_mbox_in *in;
-+	struct xsc_qp_path path;
-+	int sqd_event;
-+	int err;
-+	char buf[256] = {0};
-+	char *ptr = buf;
-+	int ret = 0;
-+	struct xsc_core_device *xdev = dev->xdev;
-+
-+	in = kzalloc_obj(*in, GFP_KERNEL);
-+	if (!in)
-+		return -ENOMEM;
-+
-+	context = &qp->ctx;
-+
-+	if (attr_mask & IB_QP_PATH_MTU) {
-+		if (attr->path_mtu != IB_MTU_1024 &&
-+		    attr->path_mtu != IB_MTU_4096 &&
-+		    attr->path_mtu != IB_MTU_8192) {
-+			ibdev_warn(&dev->ib_dev, "invalid mtu %d\n", attr->path_mtu);
-+		}
-+
-+		if (attr->path_mtu < IB_MTU_4096)
-+			context->mtu_mode = 0;
-+		else if (attr->path_mtu < IB_MTU_8192)
-+			context->mtu_mode = 1;
-+		else
-+			context->mtu_mode = 2;
-+		ret = snprintf(ptr, 256, "path_mtu=%d,", attr->path_mtu);
-+	}
-+
-+	if (attr_mask & IB_QP_DEST_QPN) {
-+		context->remote_qpn = cpu_to_be32(attr->dest_qp_num);
-+		ret += snprintf(ptr + ret, 256 - ret, "dest_qp_num=%d,", attr->dest_qp_num);
-+	}
-+
-+	if (attr_mask & IB_QP_AV) {
-+		err = xsc_set_path(dev, &attr->ah_attr, &path,
-+				   attr_mask & IB_QP_PORT ? attr->port_num : qp->port,
-+				   attr_mask, 0, attr, qp);
-+		if (err)
-+			goto out;
-+
-+		context->src_udp_port = path.sport;
-+		context->dscp = path.ecn_dscp;
-+		context->hop_limit = path.hop_limit;
-+		context->ip_type = (path.af_type == AF_INET ? 0 : 1);
-+		context->ip_type = cpu_to_be16(context->ip_type);
-+		memcpy(context->dip, path.dip, sizeof(context->dip));
-+		memcpy(context->sip, path.sip, sizeof(context->sip));
-+		memcpy(context->dmac, path.dmac, sizeof(path.dmac));
-+		memcpy(context->smac, path.smac, sizeof(path.smac));
-+
-+		context->vlan_valid = path.vlan_valid;
-+		context->dci_cfi_prio_sl = path.dci_cfi_prio_sl;
-+		context->vlan_id = path.vlan_id;
-+	}
-+
-+	if (attr_mask & IB_QP_RNR_RETRY) {
-+		context->rnr_retry = attr->rnr_retry;
-+		ret += snprintf(ptr + ret, 256 - ret, "rnr_retry=%d,", attr->rnr_retry);
-+	}
-+
-+	if (attr_mask & IB_QP_RETRY_CNT) {
-+		context->retry_cnt = attr->retry_cnt;
-+		ret += snprintf(ptr + ret, 256 - ret, "retry_cnt=%d,", attr->retry_cnt);
-+	}
-+
-+	if (attr_mask & IB_QP_MAX_QP_RD_ATOMIC && attr->max_rd_atomic)
-+		context->max_sra = min_t(u32, attr->max_rd_atomic, dev->xdev->caps.max_ra_req_qp);
-+
-+	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC && attr->max_dest_rd_atomic)
-+		context->max_rra = attr->max_dest_rd_atomic;
-+
-+	if (attr_mask & IB_QP_SQ_PSN) {
-+		context->next_send_psn = cpu_to_be32(attr->sq_psn);
-+		ret += snprintf(ptr + ret, 256 - ret, "sq_psn=%#x,", attr->sq_psn);
-+	}
-+
-+	if (attr_mask & IB_QP_RQ_PSN) {
-+		context->next_recv_psn = cpu_to_be32(attr->rq_psn);
-+		ret += snprintf(ptr + ret, 256 - ret, "rq_psn=%#x,", attr->rq_psn);
-+	}
-+
-+	if (attr_mask & IB_QP_ACCESS_FLAGS) {
-+		xsc_set_qp_access_flag(in, context, attr->qp_access_flags);
-+		ret += snprintf(ptr + ret, 256 - ret, "qp_access_flags=%#x,\n",
-+				attr->qp_access_flags);
-+	}
-+
-+	if (udata && udata->inlen && attr_mask & IB_QP_STATE && new_state == IB_QPS_RTR) {
-+		if (!ucmd->profile &&
-+		    xdev->rdma_proto_mode == RDMA_PROTO_VEROCE) {
-+			context->swith_qp_type = 1;
-+			context->qp_access_flags |= QP_ACCESS_MODIFY_QP_TYPE;
-+			context->qp_access_flags = cpu_to_be32(context->qp_access_flags);
-+			qp->xqp.qp_protocol_mode =
-+				ucmd->profile ? RDMA_PROTO_VEROCE : RDMA_PROTO_ROCEV2;
-+			in->hdr.ver = cpu_to_be16(XSC_QP_CONTEXT_V2);
-+			ibdev_dbg(&dev->ib_dev,
-+				  "local is VEROCE,remote is RoCEv2, switch qp_type from VEROCE to RoCEv2!\n");
-+		}
-+	}
-+
-+	if (attr_mask & IB_QP_STATE && new_state == IB_QPS_RESET)
-+		qp->xqp.qp_protocol_mode = xdev->rdma_proto_mode;
-+
-+	if (cur_state == IB_QPS_RTS && new_state == IB_QPS_SQD	&&
-+	    attr_mask & IB_QP_EN_SQD_ASYNC_NOTIFY && attr->en_sqd_async_notify)
-+		sqd_event = 1;
-+	else
-+		sqd_event = 0;
-+
-+	memcpy(&in->ctx, context, sizeof(*context));
-+	err = xsc_core_qp_modify(xdev, to_xsc_state(cur_state),
-+				 to_xsc_state(new_state), in, sqd_event,
-+				 &qp->xqp);
-+	if (err) {
-+		ibdev_err(&dev->ib_dev, "failed to modify qp[%d] from %s to %s\n",
-+			  qp->xqp.qpn, qp_state_to_str(cur_state), qp_state_to_str(new_state));
-+		goto out;
-+	}
-+
-+	qp->state = new_state;
-+	ibdev_dbg(&dev->ib_dev, "succeeded to modify qp[%d] from %s to %s with attr_mask=%#x, %s\n",
-+		  qp->xqp.qpn, qp_state_to_str(cur_state), qp_state_to_str(new_state),
-+		    attr_mask, buf);
-+
-+	if (qp->state == IB_QPS_INIT) {
-+		qp->post_recv_invalid = false;
-+		qp->post_send_invalid = false;
-+	}
-+
-+	if (attr_mask & IB_QP_ACCESS_FLAGS)
-+		qp->atomic_rd_en = attr->qp_access_flags;
-+	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC)
-+		qp->resp_depth = attr->max_dest_rd_atomic;
-+	if (attr_mask & IB_QP_PORT)
-+		qp->port = attr->port_num;
-+	if (attr_mask & IB_QP_ALT_PATH)
-+		qp->alt_port = attr->alt_port_num;
-+
-+	/*
-+	 * If we moved a kernel QP to RESET, clean up all old CQ
-+	 * entries and reinitialize the QP.
-+	 */
-+	if (new_state == IB_QPS_RESET && !ibqp->uobject) {
-+		get_cqs(qp->xqp.qp_type, qp->ibqp.send_cq, qp->ibqp.recv_cq, &send_cq, &recv_cq);
-+		xsc_ib_cq_clean(recv_cq, qp->xqp.qpn);
-+		if (send_cq != recv_cq)
-+			xsc_ib_cq_clean(send_cq, qp->xqp.qpn);
-+
-+		qp->rq.head = 0;
-+		qp->rq.tail = 0;
-+		qp->sq.head = 0;
-+		qp->sq.tail = 0;
-+		qp->sq.cur_post = 0;
-+		qp->sq.last_poll = 0;
-+		qp->sq.last_comp_ce_wqe = -1;
-+		qp->sq.last_post_ce_wqe = -1;
-+		qp->has_trig_cq_comp_handle = false;
-+	}
-+
-+out:
-+	kfree(in);
-+	return err;
-+}
-+
- enum xsc_ib_qp_ex_attr_mask {
- 	XSC_IB_QP_FLUSH		= 1 << 21,
- };
- 
-+int xsc_ib_modify_qp(struct ib_qp *ibqp, struct ib_qp_attr *attr,
-+		     int attr_mask, struct ib_udata *udata)
-+{
-+	struct xsc_ib_dev *dev = to_xdev(ibqp->device);
-+	struct xsc_ib_qp *qp = to_xqp(ibqp);
-+	enum ib_qp_state cur_state, new_state;
-+	int err = -EINVAL;
-+	int wr_num;
-+	struct xsc_ib_srq *srq;
-+	unsigned long flags;
-+	struct xsc_ib_cq *send_cq;
-+	struct xsc_ib_cq *recv_cq;
-+	struct xsc_ib_modify_qp ucmd = {};
-+
-+	if (udata && udata->inlen) {
-+		if (udata->inlen < offsetofend(typeof(ucmd), profile))
-+			return -EINVAL;
-+
-+		if (ib_copy_from_udata(&ucmd, udata,
-+				       min(udata->inlen, sizeof(ucmd))))
-+			return -EFAULT;
-+	}
-+
-+	mutex_lock(&qp->mutex);
-+
-+	cur_state = attr_mask & IB_QP_CUR_STATE ? attr->cur_qp_state : qp->state;
-+	new_state = attr_mask & IB_QP_STATE ? attr->qp_state : cur_state;
-+
-+	if ((attr_mask & IB_QP_PORT) &&
-+	    (attr->port_num == 0 || attr->port_num > dev->xdev->caps.num_ports)) {
-+		ibdev_err(&dev->ib_dev, "error port num\n");
-+		goto out;
-+	}
-+
-+	if (attr_mask & IB_QP_MAX_DEST_RD_ATOMIC &&
-+	    attr->max_dest_rd_atomic > dev->xdev->caps.max_ra_res_qp) {
-+		ibdev_err(&dev->ib_dev, "dest rd atomic:%u exeeded", attr->max_dest_rd_atomic);
-+		goto out;
-+	}
-+
-+	if (cur_state == new_state && cur_state == IB_QPS_RESET) {
-+		err = 0;
-+		goto out;
-+	}
-+
-+	if (!ib_modify_qp_is_ok(cur_state, new_state, ibqp->qp_type, attr_mask)) {
-+		ibdev_err(&dev->ib_dev, "ib_modify_qp not ok, type=%d mask=0x%x state from%d to%d\n",
-+			  ibqp->qp_type, attr_mask, cur_state, new_state);
-+		goto out;
-+	}
-+
-+	err = __xsc_ib_modify_qp(ibqp, attr, attr_mask, cur_state, new_state, &ucmd, udata);
-+
-+	if (!err && (attr_mask & IB_QP_STATE) && !udata) {
-+		get_cqs(qp->xqp.qp_type, qp->send_cq, qp->recv_cq, &send_cq, &recv_cq);
-+		xsc_ib_lock_cqs(send_cq, recv_cq);
-+		err = xsc_ib_err_state_qp(dev, qp, to_xsc_state(cur_state),
-+					  to_xsc_state(new_state));
-+		xsc_ib_unlock_cqs(send_cq, recv_cq);
-+
-+		if (!ibqp->srq)
-+			goto out;
-+
-+		if (cur_state == IB_QPS_RESET && new_state == IB_QPS_INIT) {
-+			srq = to_xsrq(ibqp->srq);
-+			spin_lock_irqsave(&srq->lock, flags);
-+			srq->qp_num++;
-+			wr_num = XSC_SRQ_MIN_WR_NUM;
-+			ibdev_dbg(&dev->ib_dev,
-+				  "SRQ %d: qp %d to INIT, post %d srq wrs, qp_num %d\n",
-+				   srq->xsrq.srqn, qp->xqp.qpn, wr_num, srq->qp_num);
-+			xsc_post_cache_wrs(srq, qp, wr_num, true);
-+			spin_unlock_irqrestore(&srq->lock, flags);
-+		}
-+	}
-+
-+out:
-+	mutex_unlock(&qp->mutex);
-+	return err;
-+}
-+
- static int xsc_wq_overflow(struct xsc_ib_wq *wq, int nreq, struct xsc_ib_cq *cq)
- {
- 	unsigned int cur;
-@@ -231,6 +1452,106 @@ int xsc_ib_post_recv(struct ib_qp *ibqp, const struct ib_recv_wr *wr,
- 	return err;
- }
- 
-+static inline enum ib_qp_state to_ib_qp_state(enum xsc_qp_state xsc_state)
-+{
-+	switch (xsc_state) {
-+	case XSC_QP_STATE_RST:      return IB_QPS_RESET;
-+	case XSC_QP_STATE_INIT:     return IB_QPS_INIT;
-+	case XSC_QP_STATE_RTR:      return IB_QPS_RTR;
-+	case XSC_QP_STATE_RTS:      return IB_QPS_RTS;
-+	case XSC_QP_STATE_SQ_DRAINING:
-+	case XSC_QP_STATE_SQD:      return IB_QPS_SQD;
-+	case XSC_QP_STATE_SQER:     return IB_QPS_SQE;
-+	case XSC_QP_STATE_ERR:      return IB_QPS_ERR;
-+	default:		     return -1;
-+	}
-+}
-+
-+static inline enum ib_mig_state to_ib_mig_state(int xsc_mig_state)
-+{
-+	switch (xsc_mig_state) {
-+	case XSC_QP_PM_ARMED:		return IB_MIG_ARMED;
-+	case XSC_QP_PM_REARM:		return IB_MIG_REARM;
-+	case XSC_QP_PM_MIGRATED:	return IB_MIG_MIGRATED;
-+	default: return -1;
-+	}
-+}
-+
-+int xsc_ib_query_qp(struct ib_qp *ibqp, struct ib_qp_attr *qp_attr, int qp_attr_mask,
-+		    struct ib_qp_init_attr *qp_init_attr)
-+{
-+	struct xsc_ib_dev *dev = to_xdev(ibqp->device);
-+	struct xsc_ib_qp *qp = to_xqp(ibqp);
-+	struct xsc_query_qp_mbox_out *outb;
-+	struct xsc_qp_context *context;
 +	int err = 0;
++	int retry = 0;
 +
-+	mutex_lock(&qp->mutex);
-+
-+	if (qp_attr_mask & XSC_IB_QP_FLUSH) {
-+		xsc_ib_trigger_cq_comp_handler(qp->send_cq, qp->recv_cq);
-+		goto out;
++	xsc_read32(xdev->bar, xdev->hal_regs->interrupt_stat_addr, &stat.raw,
++		   sizeof(stat.raw));
++	while (stat.raw != 0) {
++		err++;
++		if (stat.hw_read_req_err) {
++			retry = 1;
++			stat.hw_read_req_err = 0;
++			pci_err(xdev->pdev, "hw report read req from host failed!\n");
++		} else if (stat.hw_write_req_err) {
++			retry = 1;
++			stat.hw_write_req_err = 0;
++			pci_err(xdev->pdev, "hw report write req to fw failed!\n");
++		} else if (stat.req_pid_err) {
++			stat.req_pid_err = 0;
++			pci_err(xdev->pdev, "hw report unexpected req pid!\n");
++		} else if (stat.rsp_cid_err) {
++			stat.rsp_cid_err = 0;
++			pci_err(xdev->pdev, "hw report unexpected rsp cid!\n");
++		} else {
++			stat.raw = 0;
++			pci_err(xdev->pdev, "ignore unknown interrupt!\n");
++		}
 +	}
 +
-+	outb = kzalloc_obj(*outb, GFP_KERNEL);
-+	if (!outb) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+	context = &outb->ctx;
-+	err = xsc_core_qp_query(dev->xdev, &qp->xqp, outb, sizeof(*outb));
-+	if (err)
-+		goto out_free;
-+
-+	if (qp->xqp.err_occurred) {
-+		qp->state = IB_QPS_ERR;
-+		qp->xqp.err_occurred = 0;
-+	}
-+	qp_attr->qp_state	     = qp->state;
-+	qp_attr->path_mtu	     = context->mtu_mode ? IB_MTU_4096 : IB_MTU_1024;
-+	qp_attr->rq_psn		     = be32_to_cpu(context->next_recv_psn) & 0xffffff;
-+	qp_attr->sq_psn		     = be32_to_cpu(context->next_send_psn) & 0xffffff;
-+	qp_attr->dest_qp_num	     = be32_to_cpu(context->remote_qpn) & 0xffffff;
-+	qp_attr->sq_draining = 0;
-+	qp_attr->retry_cnt	    = context->retry_cnt;
-+	qp_attr->rnr_retry	    = context->rnr_retry;
-+	qp_attr->cur_qp_state	     = qp_attr->qp_state;
-+	qp_attr->cap.max_recv_wr     = qp->rq.wqe_cnt;
-+	qp_attr->cap.max_recv_sge    = qp->rq.max_gs;
-+	qp_attr->max_rd_atomic = context->max_sra;
-+	qp_attr->max_dest_rd_atomic = context->max_rra;
-+	qp_attr->port_num = 1;
-+
-+	if (!ibqp->uobject) {
-+		qp_attr->cap.max_send_wr  = qp->sq.wqe_cnt;
-+		qp_attr->cap.max_send_sge = qp->sq.max_gs;
-+	} else {
-+		qp_attr->cap.max_send_wr  = qp->sq.wqe_cnt;
-+		qp_attr->cap.max_send_sge = qp->sq.max_gs;
++	if (retry) {
++		if (xdev->cmd.retry_cnt >= XSC_CMD_MAX_RETRY_CNT) {
++			pci_warn(xdev->pdev, "err handler have retried for %d times, stop retry\n",
++				 xdev->cmd.retry_cnt);
++			goto clear_err_int;
++		}
++		xsc_write32(xdev->bar, xdev->hal_regs->req_pid_addr,
++			    &xdev->cmd.cmd_pid);
++		xdev->cmd.retry_cnt++;
 +	}
 +
-+	/* We don't support inline sends for kernel QPs (yet), and we
-+	 * don't know what userspace's value should be.
-+	 */
-+	qp_attr->cap.max_inline_data = 0;
++clear_err_int:
++	if (err) {
++		stat.raw = 0xf;
++		xsc_write32(xdev->bar, xdev->hal_regs->interrupt_stat_addr, &stat.raw);
++	}
 +
-+	qp_init_attr->cap	     = qp_attr->cap;
-+
-+	qp_init_attr->create_flags = 0;
-+	if (qp->flags & XSC_IB_QP_BLOCK_MULTICAST_LOOPBACK)
-+		qp_init_attr->create_flags |= IB_QP_CREATE_BLOCK_MULTICAST_LOOPBACK;
-+
-+	qp_init_attr->sq_sig_type = qp->sq_signal_bits & XSC_WQE_CTRL_CQ_UPDATE ?
-+		IB_SIGNAL_ALL_WR : IB_SIGNAL_REQ_WR;
-+
-+out_free:
-+	kfree(outb);
-+
-+out:
-+	mutex_unlock(&qp->mutex);
 +	return err;
 +}
 +
- struct xsc_ib_drain_cqe {
- 	struct ib_cqe cqe;
- 	struct completion done;
++u8 xsc_get_mr_page_mode(struct xsc_core_device *xdev, u8 page_shift)
++{
++	return andes_get_mr_page_mode(page_shift);
++}
++EXPORT_SYMBOL_GPL(xsc_get_mr_page_mode);
++
++u32 xsc_mkey_to_idx(struct xsc_core_device *xdev, u32 mkey)
++{
++	return andes_mkey_to_idx(mkey);
++}
++
++u32 xsc_idx_to_mkey(struct xsc_core_device *xdev, u32 mkey_idx)
++{
++	return andes_idx_to_mkey(mkey_idx);
++}
++
++u8 xsc_get_cqe_opcode(struct xsc_core_device *xdev, void *cqe)
++{
++	return andes_get_cqe_opcode(cqe);
++}
++EXPORT_SYMBOL_GPL(xsc_get_cqe_opcode);
++
++u64 xsc_get_rdma_stat_mask(struct xsc_core_device *xdev, u16 ver)
++{
++	u64 mask;
++
++	if (xsc_core_is_pf(xdev))
++		mask = 0xFFFFFF;
++	else
++		mask = 0xfff;
++
++	return mask;
++}
++EXPORT_SYMBOL_GPL(xsc_get_rdma_stat_mask);
++
++void xsc_set_data_seg(struct xsc_core_device *xdev, void *data_seg, u64 addr, u32 key, u32 length)
++{
++	andes_set_data_seg(data_seg, length, key, addr);
++}
++EXPORT_SYMBOL_GPL(xsc_set_data_seg);
++
++u32 xsc_get_max_qp_depth(struct xsc_core_device *xdev)
++{
++	return 32 * 1024;
++}
++EXPORT_SYMBOL_GPL(xsc_get_max_qp_depth);
++
++bool xsc_check_max_qp_depth(struct xsc_core_device *xdev, u32 *wqe_cnt, u32 max_qp_depth)
++{
++	if (*wqe_cnt > max_qp_depth)
++		*wqe_cnt = max_qp_depth;
++
++	return false;
++}
++EXPORT_SYMBOL_GPL(xsc_check_max_qp_depth);
++
++u32 xsc_get_recv_ds_num(struct xsc_core_device *xdev)
++{
++	return xdev->caps.recv_ds_num;
++}
++EXPORT_SYMBOL_GPL(xsc_get_recv_ds_num);
++
++void *xsc_get_msg_opcode(struct xsc_core_device *xdev)
++{
++	return andes_get_msg_opcode();
++}
++
++u64 xsc_get_max_mr_size(struct xsc_core_device *xdev)
++{
++	u64 max_mpt_mr_size = xdev->caps.max_mr_size;
++	u64 max_mtt_mr_size = xdev->caps.max_mtt * PAGE_SIZE;
++
++	return min_t(u64, max_mpt_mr_size, max_mtt_mr_size);
++}
++EXPORT_SYMBOL_GPL(xsc_get_max_mr_size);
++
++void xsc_get_multidb_info(struct xsc_core_device *xdev, u32 *num, u32 *base)
++{
++	if (is_support_multi_doorbell(xdev)) {
++		*num = MDB_NUM;
++		*base = QPM_TX_MDB_BASE_REG_ADDR;
++	} else {
++		*num = 0;
++		*base = 0;
++	}
++}
++EXPORT_SYMBOL_GPL(xsc_get_multidb_info);
++
++void xsc_set_wqe_id(struct xsc_core_device *dev, void *cseg, u32 wqe_id)
++{
++	andes_set_wqe_id(cseg, wqe_id);
++}
++EXPORT_SYMBOL_GPL(xsc_set_wqe_id);
++
++int xsc_get_cqe_wqe_id(struct xsc_core_device *dev, void *cqe)
++{
++	return andes_get_cqe_wqe_id(cqe);
++}
++EXPORT_SYMBOL_GPL(xsc_get_cqe_wqe_id);
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h
+new file mode 100644
+index 000000000..cd25b64a5
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2021 - 2026, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++/* generated time:
++ * Thu Feb 29 15:33:50 CST 2024
++ */
++
++#ifndef ANDES_REG_H
++#define ANDES_REG_H
++
++//hif_irq_csr_defines.h
++
++//hif_cpm_csr_defines.h
++
++//mmc_csr_defines.h
++#define MMC_MPT_TBL_MEM_DEPTH  32768
++#define MMC_MTT_TBL_MEM_DEPTH  262144
++#define MMC_MPT_TBL_MEM_WIDTH  256
++#define MMC_MPT_TBL_MEM_ADDR   0xa4100000
++#define MMC_MTT_TBL_MEM_ADDR   0xa4200000
++
++//clsf_dma_csr_defines.h
++
++//hif_tbl_csr_defines.h
++
++//hif_cmdqm_csr_defines.h
++#define HIF_CMDQM_HOST_REQ_PID_MEM_ADDR   0xa1026000
++#define HIF_CMDQM_HOST_REQ_CID_MEM_ADDR   0xa1028000
++#define HIF_CMDQM_HOST_RSP_PID_MEM_ADDR   0xa102e000
++#define HIF_CMDQM_HOST_RSP_CID_MEM_ADDR   0xa1030000
++#define HIF_CMDQM_HOST_REQ_BUF_BASE_H_ADDR_MEM_ADDR   0xa1022000
++#define HIF_CMDQM_HOST_REQ_BUF_BASE_L_ADDR_MEM_ADDR   0xa1024000
++#define HIF_CMDQM_HOST_RSP_BUF_BASE_H_ADDR_MEM_ADDR   0xa102a000
++#define HIF_CMDQM_HOST_RSP_BUF_BASE_L_ADDR_MEM_ADDR   0xa102c000
++#define HIF_CMDQM_VECTOR_ID_MEM_ADDR   0xa1034000
++#define HIF_CMDQM_HOST_VF_ERR_STS_MEM_ADDR   0xa1032000
++
++//PSV use
++//hif_irq_csr_defines.h
++
++#endif /* XSC_HW_H  */
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h
+new file mode 100644
+index 000000000..5a3a7e27f
+--- /dev/null
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h
+@@ -0,0 +1,85 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (C) 2024 - 2026, Shanghai Yunsilicon Technology Co., Ltd.
++ * All rights reserved.
++ */
++
++#ifndef XSC_HAL_H
++#define XSC_HAL_H
++
++struct xsc_core_device;
++
++struct xsc_hw_reg {
++	u32 tx_db;
++	u32 rx_db;
++	u32 complete_db;
++	u32 complete_reg;
++	u32 event_db;
++	u32 req_pid_addr;
++	u32 req_cid_addr;
++	u32 rsp_pid_addr;
++	u32 rsp_cid_addr;
++	u32 req_buf_h_addr;
++	u32 req_buf_l_addr;
++	u32 rsp_buf_h_addr;
++	u32 rsp_buf_l_addr;
++	u32 msix_vec_addr;
++	u32 interrupt_stat_addr;
++	u32 mpt_tbl_addr;
++	u32 mpt_tbl_depth;
++	u32 mpt_tbl_width;
++	u32 mtt_inst_base_addr;
++	u32 mtt_inst_stride;
++	u32 mtt_inst_num_log;
++	u32 mtt_inst_depth;
++};
++
++/* HAL entry points exported to the PCI/RDMA/ETH layers */
++void xsc_init_hal(struct xsc_core_device *xdev, u32 device_id);
++void xsc_set_mtt_info(struct xsc_core_device *xdev);
++void xsc_set_pf_db_addr(struct xsc_core_device *xdev,
++			u64 tx_db, u64 rx_db, u64 cq_db, u64 cq_reg, u64 eq_db);
++void xsc_get_db_addr(struct xsc_core_device *xdev,
++		     u64 *tx_db, u64 *rx_db, u64 *cq_db, u64 *cq_reg, u64 *eq_db);
++
++void xsc_update_tx_db(struct xsc_core_device *xdev, u32 sqn, u32 next_pid);
++void xsc_update_rx_db(struct xsc_core_device *xdev, u32 rqn, u32 next_pid);
++void xsc_arm_cq(struct xsc_core_device *xdev, u32 cqn, u32 next_cid, u8 solicited);
++void xsc_update_cq_ci(struct xsc_core_device *xdev, u32 cqn, u32 next_cid);
++void xsc_update_eq_ci(struct xsc_core_device *xdev, u32 eqn, u32 next_cid, u8 arm);
++
++void xsc_update_cmdq_req_pid(struct xsc_core_device *xdev, u32 req_pid);
++void xsc_update_cmdq_rsp_cid(struct xsc_core_device *xdev, u32 rsp_cid);
++u32 xsc_get_cmdq_req_pid(struct xsc_core_device *xdev);
++u32 xsc_get_cmdq_req_cid(struct xsc_core_device *xdev);
++u32 xsc_get_cmdq_rsp_pid(struct xsc_core_device *xdev);
++u32 xsc_get_cmdq_rsp_cid(struct xsc_core_device *xdev);
++void xsc_set_cmdq_req_buf_addr(struct xsc_core_device *xdev, u32 haddr, u32 laddr);
++void xsc_set_cmdq_rsp_buf_addr(struct xsc_core_device *xdev, u32 haddr, u32 laddr);
++void xsc_set_cmdq_msix_vector(struct xsc_core_device *xdev, u32 vector);
++void xsc_check_cmdq_status(struct xsc_core_device *xdev);
++int xsc_handle_cmdq_interrupt(struct xsc_core_device *xdev);
++
++u8 xsc_get_mr_page_mode(struct xsc_core_device *xdev, u8 page_shift);
++u32 xsc_mkey_to_idx(struct xsc_core_device *xdev, u32 mkey);
++u32 xsc_idx_to_mkey(struct xsc_core_device *xdev, u32 mkey_idx);
++
++u8 xsc_get_cqe_opcode(struct xsc_core_device *xdev, void *cqe);
++u64 xsc_get_rdma_stat_mask(struct xsc_core_device *xdev, u16 ver);
++void xsc_set_data_seg(struct xsc_core_device *xdev, void *data_seg, u64 addr, u32 key, u32 length);
++u32 xsc_get_max_qp_depth(struct xsc_core_device *xdev);
++bool xsc_check_max_qp_depth(struct xsc_core_device *xdev, u32 *wqe_cnt, u32 max_qp_depth);
++u32 xsc_get_recv_ds_num(struct xsc_core_device *xdev);
++void *xsc_get_msg_opcode(struct xsc_core_device *xdev);
++u64 xsc_get_max_mr_size(struct xsc_core_device *xdev);
++void xsc_get_multidb_info(struct xsc_core_device *xdev, u32 *num, u32 *base);
++void xsc_set_wqe_id(struct xsc_core_device *dev, void *cseg, u32 wqe_id);
++int xsc_get_cqe_wqe_id(struct xsc_core_device *dev, void *cqe);
++
++enum {
++	CQ_STAT_FIRED,
++	CQ_STAT_KEEP,
++	CQ_STAT_ARM_NEXT,
++	CQ_STAT_ARM_SOLICITED,
++};
++
++#endif
+diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+index 734d48825..35dff401a 100644
+--- a/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
++++ b/drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include "common/xsc_core.h"
++#include "hal/xsc_hal.h"
+ 
+ static const struct pci_device_id xsc_pci_id_table[] = {
+ 	{ PCI_DEVICE(XSC_PCI_VENDOR_ID, XSC_MC_PF_DEV_ID) },
+@@ -75,6 +76,8 @@ static int xsc_pci_init(struct xsc_core_device *xdev,
+ 	xdev->bar_num = bar_num;
+ 	xdev->bar = bar_base;
+ 
++	xsc_init_hal(xdev, pdev->device);
++
+ 	return 0;
+ 
+ err_io_unmap:
