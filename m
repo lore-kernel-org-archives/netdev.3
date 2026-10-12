@@ -1,83 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136514A0923;
-	Mon, 12 Oct 2026 15:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D295449B5C2
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791819050; cv=none; b=smyz5DeeMPetOodv/0deeLCAjOdDGIKfCx55RaYz/UPqV4EFxfmUkH3Hl2WJ3Aes2p8cIf74h4YO70fdrCPy1y8EHAnLjzMQ7PLrbUecYBdKV7lGLdFORVnJADgCfNInrfHpx8o/rHSKnRq0wVH0z7wLVkkDVEI1qkvhG5aBvL8=
+	t=1791819211; cv=none; b=DO0pVlC52+p4LDiIr3guUWPBMYFWuh+Y+j0TjZslrv4vPlV+jOqqANWgKIK2VGzM6MFON6AeDNp/FyPurJjGVcKfWyzSDxTvq/SoaCeqSMhynpoEj0NyCW14n4UbzSFj9aZyI893oFkwHgByRheOePuA3jHMLYU/QCn+Ql3isYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791819050; c=relaxed/simple;
-	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pYf74UyxkKl2ZTahWjpGuDaRNJZbh2QcOmeKfWXTxUi9dXOFNtafq8tAdDbOVYg+gjFS7SUa2fF1K5nONSO+UIaK7N16p2CUc3DBJ9fm8wRlyo9N4kRhyKnMp8xztujicj0loZ24aZZweVGxm+Q6J62RnZ7byGrKgDaAYR14PCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKkW2znF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791819211; c=relaxed/simple;
+	bh=QKyIDWs4Yg0YOBXKbAJ/BZSzK06X3AdXprSE+BcPPcQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aIrnoCUwVD38CNPmRNFjYqwSa7jrfKk84BxJ+6xq/5UH0Z3Ao4hW+zBXmWRNuldyVJwstR5loU6yFtYSXCV1BVqBq/SezhSnwTcN7YMLc7ZQRelaeKwnU64X83dtXhyQQJUOeou1F4wi7xwWLSNjaLswTxjybSZ0DD+8KJzQpGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gtv1tFsz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PVsqozTQ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKkW2znF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41501F0089C;
-	Mon, 12 Oct 2026 15:30:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791819048;
-	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hKkW2znF0TQvi5ugzZKk3qwCJSKhgDn4ZbnNdIwbIibdCq/pKY99M/ZLYeb8txmQM
-	 GNGFiFMtmBC43gCUqrptLkqvs5u3CyTnRk5huMQq7q0iP9e6oLxiCyrxpdNqtTE1WD
-	 PQMXUU6UP3Iv54/gGqCM22HbgQ9Bm4Pxd90ix+6wRvtJuXCBzDEGt7P/5dlRtxvUfJ
-	 YNEIAPB4bcpNdgVP4Mj5o7YsVadjXVyGY7yrjSl5ifvumoCaFWJKX+vT0ZIFnbmfMJ
-	 k/7H6CzeFz8HxCfvW/NtEtwNjwphmiYvsfHq+/MYs+tNV5h8ViAnxnG/x2mz6z1US1
-	 Hl6itQDYej2rw==
-From: netdev-bot+sinfo@kernel.org
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] stmmac: some XDP fixes in XDP_TX path
-Date: Mon, 12 Oct 2026 15:30:47 +0000
-Message-ID: <179181904740.2527009.16307700795539761723@kernel.org>
-In-Reply-To: 
- <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
-References: 
- <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gtv1tFsz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PVsqozTQ"
+Date: Mon, 12 Oct 2026 17:33:24 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791819206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1osWiF4wkmuhqxvwGegPz+/CYWT5ehZKYMUCxnJOcmQ=;
+	b=gtv1tFszEaGRSl0kRr7yd3aYByuAhexPAVDcF9P5Gf6OOpyKtSwlwOD3q3Kf2dC1V2l+8d
+	k13XHcAPrvLh/r0tWFvHdo1p7XX1knRtksqHJAHS1hfvnKcOvpNd1ltKWkSvXc5QkK70tT
+	lOEbDCyVYKxCXdXyf1CNm2OEwnuu3tDMcrBdnnVGO4kUV/cJ1vVpDHia4zO6Va2kv3bP4h
+	YLxJe/B76waOMQhLxvTpx59qVVk9MjdmaU9Q07EkZoLbNkTVcxKeM1t8wGV1+/nsB4xCxF
+	28Afthuqpl/MwYCsufszY5Y8RxsSqpaoZsLKGBDo0g4G3RQ7isfynQJs3nr51A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791819206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1osWiF4wkmuhqxvwGegPz+/CYWT5ehZKYMUCxnJOcmQ=;
+	b=PVsqozTQJBHJsqkaPvRfv08QW/oxVcsRyv0fAkfhwd2Y31hZk51rE2XwDyT3DU1NOwx9RK
+	g59+f2engnF/p/Dw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
+	c-vankar@ti.com, danishanwar@ti.com, d-qiu@ti.com,
+	davem@davemloft.net, edumazet@google.com, fmaurer@redhat.com,
+	kuba@kernel.org, neelima@ti.com, pabeni@redhat.com, praneeth@ti.com,
+	pratheesh@ti.com, richardcochran@gmail.com, horms@kernel.org,
+	vigneshr@ti.com, willemdebruijn.kernel@gmail.com
+Subject: Re: [PATCH net-next v8 6/8] hsr: Assign a socket for cloned skbs
+Message-ID: <20261012153324.fsnDpWZy@linutronix.de>
+References: <20261002-hsr_ptp-v8-6-60dabc07e554@linutronix.de>
+ <179129708052.434549.14508967433709198337@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <179129708052.434549.14508967433709198337@kernel.org>
 
-Hi!
+On 2026-10-06 14:31:20 [+0000], netdev-bot+sashiko@kernel.org wrote:
+> [Severity: Low]
+> Could the commit message say that this only covers port-directed PTP
+> frames?
+>=20
+> hsr_create_tagged_frame() only assigns the socket when
+> frame->req_tx_port !=3D HSR_PT_NONE. hsr_dev_xmit() only moves tx_port aw=
+ay
+> from HSR_PT_NONE for ETH_P_1588 frames that carry the inline HSR header.
+> The has_foreign_header path in hsr_forward_do() also needs a port.
+>=20
+> Other traffic that asks for TX timestamps still reaches the slaves as
+> clones with skb->sk =3D=3D NULL. One example is a UDP socket using
+> SO_TIMESTAMPING over hsr0. For those clones, __skb_tstamp_tx() returns
+> early:
+=E2=80=A6
+UDP timestamping is not a thing here (in HSR).
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+> The restriction looks deliberate, since it avoids one timestamp per slave
+> and double charging. The message, though, reads as if it applies to all
+> cloned skbs.
+>=20
+> The message also leaves out the side effects of skb_set_owner_w(). The
+> clone is now charged to the sender's sk_wmem_alloc, and its skb->hash and
+> ooo_okay now come from the socket.
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+Right. None of this should have an impact that should be mentioned
+explicitly. The primary motivation is the timestamp information which
+requires the socket.
+The accounting for sk_wmem_alloc happens, too. The original skb is freed
+early.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+> > diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> > index 562802ddff003..46f9bd5039821 100644
+> > --- a/net/hsr/hsr_forward.c
+> > +++ b/net/hsr/hsr_forward.c
+>=20
+> [ ... ]
+>=20
+> > @@ -348,6 +349,9 @@ struct sk_buff *hsr_create_tagged_frame(struct hsr_=
+frame_info *frame,
+> >  	if (!skb)
+> >  		return NULL;
+> > =20
+> > +	if (frame->req_tx_port !=3D HSR_PT_NONE && frame->skb_std->sk)
+> > +		skb_set_owner_w(skb, frame->skb_std->sk);
+> > +
+> >  	if (port->dev->features & NETIF_F_HW_HSR_TAG_INS)
+> >  		return skb;
+> > =20
+>=20
+> [Severity: High]
+> Does the timestamp still get lost on PRP devices?
+=E2=80=A6
 
- - What hardware the change was tested on. For driver fixes please
-   mention the device (and if relevant firmware version) used for
-   testing, or say that the change was not tested on real hardware.
+Not really. PTP+PRP is a bit different compared to PTP+HSR. According to
+the specification, there is no PRP header attached to PTP message (where
+we would need Kernel's sequence number for the packet and so on).
+Therefore for the PRP case the prp0 device isn't used but the interface
+of the underlying slave device.
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+> [ ... ]
+>=20
+> > @@ -581,6 +585,8 @@ static void hsr_forward_do(struct hsr_frame_info *f=
+rame)
+> >  		 */
+> >  		if (frame->has_foreign_header && frame->skb_std) {
+> >  			skb =3D skb_clone(frame->skb_std, GFP_ATOMIC);
+> > +			if (skb && frame->skb_std->sk)
+> > +				skb_set_owner_w(skb, frame->skb_std->sk);
+> >  			goto inject_into_stack;
+> >  		}
+>=20
+> [Severity: Medium]
+> Is it safe to call skb_set_owner_w() here, and in
+> hsr_create_tagged_frame(), without checking how the original skb holds
+> skb_std->sk?
+>=20
+> skb_set_owner_w() adds the clone's truesize to sk->sk_wmem_alloc. It does
+> not take an sk_refcnt reference. That is fine when the original skb is
+> owned through sock_wfree, which is the usual AF_PACKET case, because that
+> charge keeps the socket alive. For comparison, skb_clone_sk() calls
+> refcount_inc_not_zero() on sk_refcnt.
+>=20
+> An egress skb can carry a socket that nothing pins, though.
+> bpf_sk_assign() at TC ingress does:
+>=20
+> 	skb->sk =3D sk;
+> 	skb->destructor =3D sock_pfree;
+>=20
+> It takes no reference for SOCK_RCU_FREE sockets. The tcx ingress redirect
+> path and __bpf_tx_skb() do not orphan the skb before dev_queue_xmit().
+> hsr_dev_xmit() accepts any ETH_P_1588 skb with the inline magic,
+> whatever its destructor.
+>=20
+> Suppose that socket is being closed at the same time and sk_wmem_alloc
+> has already reached zero. Could skb_set_owner_w() then add to a zero
+> refcount? After the clone leaves the RCU section through the slave qdisc
+> or driver, could its sock_wfree() touch the freed socket?
+>=20
+> Triggering this needs CAP_BPF or CAP_NET_ADMIN and a narrow close race,
+> and the full race has not been shown in practice.
+>=20
+> Would it make sense to transfer ownership only when
+> frame->skb_std->destructor =3D=3D sock_wfree, like the copy_dtor check in
+> UDP GSO? ip_frag_next() calls skb_set_owner_w(skb2, skb->sk)
+> unconditionally, so similar exposure exists elsewhere in the kernel.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+That skb arrives from the user on that socket so this skb holds a
+reference on that socket. That original skb is returned to the stack
+after the skb_set_owner_w() so none of this should happen.
+
+Sebastian
