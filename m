@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE6F476CFE
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2C844CF52
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791799854; cv=none; b=D/jT0pJqkLAbhO4Pg9JVxx39v88wzN4/EkMjMnUbAutZs/PBAQD52WLVTgUGKL51fdgUTrk8jqgYF1ieYrYQ2QC4Dkw3huyC22XEBVTDcsHZkzNzhuACsKWqmBIZUyyTnc//UKG0Z/6jXL1gRQrxeIZUYMIk+HGYFvjbz//z7pU=
+	t=1791799855; cv=none; b=BVF3uurN867k75MXLX1tJXncjjbGxr4ECPgZP0GgNK4qiNnv8vKZI9b7dvioS5hGjrTuAP/vLu2KdniEbzTHVn1PAIMKJIITqNgRSEIkDoruaQCszGwXPuaDyiPk7O4HPXm+BdEC8XN5QY4BwhXrctOKtbqWH/bNnVnWhzBJE2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791799854; c=relaxed/simple;
-	bh=G0jFP3uJN4JXgWL4hsy7EIywbqGb8YxJWShXTkzCyY4=;
+	s=arc-20240116; t=1791799855; c=relaxed/simple;
+	bh=xECSW4d1vLvpuH2hQQ0xP+B+zasHTAiB77HZkYJpzgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNAO9/sgXCTomO2gR6fy6J6P9cNe51rFzFGji2iw3kHNf7NMsK6PwTnquodFjfuBlQt8RWn8lga2syCCy+EIQtTB6A/QplgBz5jEuLKqoDu3s4Q/hqZGwMO5HwFA0TMvE55Dx9tqmbblHw9R6GIVolnDEjKz/vokqRHLV2SurSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kw+fDuo2; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Lxqm7YGrQ75vxw4j1WPF7QCeq0fbdvIns9HNpu2SJ29HqWh/7J9AGGmoPgcoV1+EiJVZxXaDDsWYVMMDTDBikovpy78QPqAW6/dRVNNhnWN6BZzlNxGa2KdbbSqkJ3td+K11+/bMbxBJoksfqIkIQ7v71y6Wgmin0O5jIzndz1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kKyi0ZFM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kw+fDuo2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47CB1F0089C;
-	Mon, 12 Oct 2026 10:10:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kKyi0ZFM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F8F1F0089B;
+	Mon, 12 Oct 2026 10:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791799843;
-	bh=SSeSbI5Bc24i46wkLAxVBJgOQZD85g1N/Fv5ET6IbWs=;
+	s=k20260515; t=1791799847;
+	bh=7SaiIrHpO4xHOePMxxkGpn90obrjAosd3s3sZ3YJ5EA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kw+fDuo2CgvQOt0wTqJ9zrD+MugTzmQhWjAP8SRJbubTkVkopgVFgQrgcVQNB4aXP
-	 DKO+fHDJVIzp6qbUd5OqQX4zlGKmrtQCTEZjlaMJdVM+8tB9yOTRn9G58GXpejA9ZC
-	 DjSPDy2fnXTctD136jMiuUJvwBA2baO9vHJAULCDdSGQ0JyZz0rs5NCKnAq3RHQ8JI
-	 N1zPpDypD2pumPjtznrZYdtsJJdXm+He5sXMUFSixYXhuFRqTZxWLKGKQF5LmoyVTg
-	 iOuN2vFdmbA/GOleyDn7g8PSnpVw2pMaB+wV79HgyGdUszG29NnEPUmDHa+DVLIKXx
-	 /pY6hz9d3YM4w==
+	b=kKyi0ZFMEUhZRFL88Y1BTkY9KsaiQoxP2IF/r5IJyl7Jno3YgPhgsVWOb0CHm8SXb
+	 BMAEUEQ6Tt6xOfmCVSa5ELnUeSv+CVgmMBjKgi1p2jUemT/bct1WHi7gYU2wgGg7pj
+	 Zdl4YVH8e7+dhxAY32mHnnuTeHIgbKR4CagoJxq3sg7oSAEFesK1AIVlGRTwT2RURq
+	 969XjATeSp5kh1ugRlCjg64sePBGygkKB6GZzcbB86F/9YOLsr+L2vUiCo/UQB1vEW
+	 QY8BdCXXCUE3MRaDAdVEWs0ZeLp/mbToW65sNh2SLSCp29vUiK1R9PXXS5feIEtNwM
+	 o++7lbN5MAB4Q==
 From: Eric Dumazet <edumazet@kernel.org>
 To: "David S . Miller" <davem@davemloft.net>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -37,9 +37,9 @@ Cc: Kuniyuki Iwashima <kuniyu@google.com>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH v3 net 1/2] net: use the full socket in sk_mc_loop()
-Date: Mon, 12 Oct 2026 12:10:28 +0200
-Message-ID: <20261012101029.927296-2-edumazet@kernel.org>
+Subject: [PATCH v3 net 2/2] tcp: use the echoed source route in cookie_v4_check()
+Date: Mon, 12 Oct 2026 12:10:29 +0200
+Message-ID: <20261012101029.927296-3-edumazet@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261012101029.927296-1-edumazet@kernel.org>
 References: <20261012101029.927296-1-edumazet@kernel.org>
@@ -51,94 +51,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
+When the ACK carries a source route option, cookie_v4_check() routes
+the new socket to opt->faddr, where opt points to the options of the
+received packet.
 
-sk_mc_loop() is called from ip_mc_output() and ip6_finish_output2()
-with skb->sk, which is not always a full socket:
+ip_options_compile() only fills faddr for options given by
+setsockopt() (when called without an skb), so on receive faddr is 0
+and the lookup is done for daddr 0, which gives a local route.
 
-- Since commit ca6fb0651883 ("tcp: attach SYNACK messages to request
-  sockets instead of listener"), a SYNACK is attached to its request
-  socket.
+Use the options echoed by tcp_v4_save_options() instead, as
+inet_csk_route_req() and inet_csk_route_child_sock() do with
+ireq->ireq_opt. Read them after security_inet_conn_request(),
+since CIPSO can replace ireq->ireq_opt there.
 
-- Since commit 79636038d37e ("ipv4: tcp: give socket pointer to control
-  skbs"), an ACK or RST sent by ip_send_unicast_reply() on behalf of a
-  TIME_WAIT socket is attached to the timewait socket.
+The route now goes to the first hop of the source route, so also
+refuse a strict source route through a gateway, as
+inet_csk_route_req() does.
 
-When such a packet uses a multicast route, inet_test_bit(MC_LOOP, sk)
-reads inet_flags past the end of the request or timewait socket.
+Found by sashiko while reviewing the sk_mc_loop() fix.
 
-This happens for instance when a SYN with a multicast source address
-reaches a listener, after being looped back with its dst attached, so
-that ip_rcv_finish_core() skips the martian source check. A raw
-IP_HDRINCL socket sending to a local address does this, as does
-re-injection by nft dup or the iptables TEE target. The destination
-can also come from a source route option, or from a route of type
-multicast covering a unicast prefix.
-
-BUG: KASAN: slab-out-of-bounds in sk_mc_loop+0x111/0x170
-Read of size 8 at addr ffff88800f2b7f10 by task repro-raw/470
-Call Trace:
- <IRQ>
- sk_mc_loop+0x111/0x170
- ip_mc_output+0x355/0x930
- ip_build_and_send_pkt+0xb87/0xc50
- tcp_v4_send_synack+0x500/0x6f0
- tcp_conn_request+0x2135/0x2d90
- tcp_v4_conn_request+0xa5/0x210
- tcp_rcv_state_process+0x136e/0x6920
- tcp_v4_do_rcv+0x339/0xb10
- tcp_v4_rcv+0x34ab/0x3ab0
- ip_protocol_deliver_rcu+0x6e/0x3e0
- ip_local_deliver_finish+0x34d/0x510
- ip_local_deliver+0x1bc/0x310
- ip_rcv+0x390/0x410
- __netif_receive_skb_one_core+0x199/0x1e0
- process_backlog+0x239/0x680
- __napi_poll+0xb5/0x650
- net_rx_action+0x980/0xd60
- handle_softirqs+0x17f/0x590
- do_softirq+0x3f/0x60
- </IRQ>
-
-The buggy address belongs to the object at ffff88800f2b7d60
- which belongs to the cache request_sock_TCP of size 312
-The buggy address is located 120 bytes to the right of
- allocated 312-byte region [ffff88800f2b7d60, ffff88800f2b7e98)
-
-Use sk_const_to_full_sk(), which restores the behavior from before
-the two commits above: a request socket uses the setting of its
-listener, and a timewait socket gets the default (loop back), as the
-per-cpu control socket used before had.
-
-Fixes: ca6fb0651883 ("tcp: attach SYNACK messages to request sockets instead of listener")
-Fixes: 79636038d37e ("ipv4: tcp: give socket pointer to control skbs")
-Signed-off-by: Theodor Arsenij Larionov Trichkine <theodorlarionov@gmail.com>
-[edumazet: rewrote the changelog, added the TIME_WAIT case]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: Eric Dumazet <edumazet@kernel.org>
 ---
-v3:
-- Back to the v1 approach: checking the destination in TCP (v2) does
-  not cover source routes, multicast typed routes on unicast prefixes,
-  or the TIME_WAIT reply path (sashiko).
-- Add the TIME_WAIT case and its Fixes tag.
-v2: https://lore.kernel.org/netdev/20261008114942.1376889-1-theodorlarionov@gmail.com/
-v1: https://lore.kernel.org/netdev/20261008100423.1256884-1-theodorlarionov@gmail.com/
+v3: new patch.
 
- net/core/sock.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/syncookies.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e8551df8330ff4b1d662b0d0133e20d1f74eb728..1302c1e848b2a3c40e86ff37af9c20c1a9f4662a 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -769,6 +769,7 @@ bool sk_mc_loop(const struct sock *sk)
+diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
+index 73e12976818473277e83ab47f271a43991217e3e..8c9691569e01af0140b8db8990ceeddc3c5fd8fb 100644
+--- a/net/ipv4/syncookies.c
++++ b/net/ipv4/syncookies.c
+@@ -404,12 +404,12 @@ static struct request_sock *cookie_tcp_check(struct net *net, struct sock *sk,
+  */
+ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
  {
- 	if (dev_recursion_level())
- 		return false;
-+	sk = sk_const_to_full_sk(sk);
- 	if (!sk)
- 		return true;
- 	/* IPV6_ADDRFORM can change sk->sk_family under us. */
+-	struct ip_options *opt = &TCP_SKB_CB(skb)->header.h4.opt;
+ 	const struct tcphdr *th = tcp_hdr(skb);
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct inet_request_sock *ireq;
+ 	struct net *net = sock_net(sk);
+ 	struct tcp_request_sock *treq;
++	struct ip_options_rcu *opt;
+ 	struct request_sock *req;
+ 	struct sock *ret = sk;
+ 	struct flowi4 fl4;
+@@ -449,6 +449,8 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
+ 		SKB_DR_SET(reason, SECURITY_HOOK);
+ 		goto out_free;
+ 	}
++	/* Load ireq->ireq_opt after the LSM hook, which can replace it. */
++	opt = rcu_dereference_protected(ireq->ireq_opt, true);
+ 
+ 	tcp_ao_syncookie(sk, skb, req, AF_INET);
+ 
+@@ -461,7 +463,7 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
+ 	flowi4_init_output(&fl4, ireq->ir_iif, ireq->ir_mark,
+ 			   ip_sock_rt_tos(sk), ip_sock_rt_scope(sk),
+ 			   IPPROTO_TCP, inet_sk_flowi_flags(sk),
+-			   opt->srr ? opt->faddr : ireq->ir_rmt_addr,
++			   (opt && opt->opt.srr) ? opt->opt.faddr : ireq->ir_rmt_addr,
+ 			   ireq->ir_loc_addr, th->source, th->dest,
+ 			   sk_uid(sk));
+ 	security_req_classify_flow(req, flowi4_to_flowi_common(&fl4));
+@@ -470,6 +472,12 @@ struct sock *cookie_v4_check(struct sock *sk, struct sk_buff *skb)
+ 		SKB_DR_SET(reason, IP_OUTNOROUTES);
+ 		goto out_free;
+ 	}
++	/* Same check as in inet_csk_route_req(). */
++	if (opt && opt->opt.is_strictroute && rt->rt_uses_gateway) {
++		ip_rt_put(rt);
++		SKB_DR_SET(reason, IP_OUTNOROUTES);
++		goto out_free;
++	}
+ 
+ 	/* Try to redo what tcp_v4_send_synack did. */
+ 	req->rsk_window_clamp = READ_ONCE(tp->window_clamp) ? :
 -- 
 2.53.0
 
