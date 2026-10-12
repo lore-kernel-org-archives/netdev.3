@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CC837187B
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1BC384223
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791830738; cv=none; b=JnWS6UjYPBdiJE/SdTfQnhG30mWHLnLwl7SaueEGfTw8pWM95VUmef7Hqt+0FXdnoaNZ/MSR4fS4ZvxKjc5jhAVdRDKH/cb/4ZGaBDnM4oSaZlXMLZXnLjp6Ifrza4vibKzuWKS7naywsD63XmxBaR8TZ8b1eq7kqdWH9K/JRXc=
+	t=1791830739; cv=none; b=hZnELI4DXcAMxOm+wFQADj+g9pOVFRf05eBi0eQ3wlzDzaBkCwNOkehHL8PJ5DC6CY0FPpSWftHaTOMoFmxHv34R26hO4GOTs8q5ow9Z+ThexqlbOuNjX7HHUB1n2hB/JVjslZr5D2gfz39wtVLn/S7u4TuhKAiA1+xCLkrfFCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791830738; c=relaxed/simple;
-	bh=1bbkFkLP7pnSHkQQP4ZwXWJRhL3vdpPNajoy92+KDz4=;
+	s=arc-20240116; t=1791830739; c=relaxed/simple;
+	bh=0xUAR/oT7tiSr88DFF6QIpwP1+Vn7NtKjs/ZUrI4J98=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ndP40/vQitpHRFcJy3FDUPVDz0gViitMhrswKxwEBbJymo3cA5VvRNGYUOsNPH8dcQLU4WY20iPirtccXnNb14vEZxnPi6P+OQ2YwiNsJkyX0xKHUb+mqpAIB/toooTyuMQkJbk/R4dQVqFdOX/WLsh5sXRegjExQPtM5RoXCVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msVxycHQ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=GtQTBqI40GWfXNFcGULeKXzjdUs/EsUiqPMJQeSeADrYJxgG/vuGf4o+MZGs7koYKvVDa8kc/2PmKC2HU5U+V6bLo+jEANL5rhT/5mOM1cxN4mU2Ph7G+rmOw959MNQGE/a9Dkw8dat3A2X61sxIEKOTNTzUnWYLf0G03S1w8Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6OLC0wv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msVxycHQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4C31F008A2;
-	Mon, 12 Oct 2026 18:45:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6OLC0wv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEFFF1F008A5;
+	Mon, 12 Oct 2026 18:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791830733;
-	bh=HEGVPqALgHlzITUAmP7DMNBSFKGurHrhdsTe/eosx/0=;
+	s=k20260515; t=1791830735;
+	bh=DGrdhb5y9zUZo2Hw84jzgdRN0BVMsPmcQSDyWjpeuTw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=msVxycHQf9GzEmeJSPeBVsNLPwAL3FtUqri77s4QrU8m/LNcPQADoB/tU6q90qFA3
-	 lJ7fTfQFV0jU0drzgaAgFYCNQWPmKOX/FEHsoS38SeN1Lc/2whzpnGiEtaAFlmdEUL
-	 zKTY9YsKPT/DknSAj2nlDnQoTooiqd2p8FOCTGGCxDqMYtYauseS9BJk8ZgFIwbfbr
-	 efyjCdc2WThxwShbPwAJRbIWUpvs7mo4MLRfGfbhNdXuRsixBSjs+gB34FT9CjOTpz
-	 rfyvJr3eruanvQiTKfPe0iNc0YCCL2sWVxYe9s6qFn7mKoD0zlKVLfJqsXuLDQHn3E
-	 bnPkGIvCjmfHw==
-Subject: Re: [PATCH net-next v4 05/15] net: ethernet: cortina: Correct free
- queue DMA mappings
+	b=V6OLC0wvRZ/SGOC4KJyoAwd9o+xUEYzUTUn0R5mfU/PdH+t9XV/k6JULwnHLdCU0e
+	 LLrifsuuOW0z058QpGQ8GVN0FS7UcNllhzSYOyJSoH8P12suPvbSovuKpZSOT28YHg
+	 vqVB4bFsgRySDH5SxtFEWp7JXN/jYosVU6rQE8c20Zkjh8jJ/1M51TggITeFfcRlwt
+	 bMv5kjvYfeFJhtSA/qKZlFW4snSjYHVXiDuFdfrvFIYmKtvPK0A/dU3Chr+ssAQ2DP
+	 sLspKwmXugW440ALepvOZHTcSapFSE6hn7KvUA/UsvZ1Iq5i3ilCgglFChupSpHo3p
+	 g8i5iQyHeMYQg==
+Subject: Re: [PATCH net-next v4 08/15] net: ethernet: cortina: Rebuild free
+ queue metadata for RX ring changes
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
  mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Mon, 12 Oct 2026 18:45:32 +0000
-Message-ID: <179183073213.434549.2828275647437130509@kernel.org>
-In-Reply-To: <20261011-gemini-ethernet-fixes-3-v4-5-4b1631b08f5d@kernel.org>
-References: <20261011-gemini-ethernet-fixes-3-v4-5-4b1631b08f5d@kernel.org>
+Date: Mon, 12 Oct 2026 18:45:34 +0000
+Message-ID: <179183073445.434549.4156334302029834248@kernel.org>
+In-Reply-To: <20261011-gemini-ethernet-fixes-3-v4-8-4b1631b08f5d@kernel.org>
+References: <20261011-gemini-ethernet-fixes-3-v4-8-4b1631b08f5d@kernel.org>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 (2) · Medium: 2 (1) · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,224 +58,128 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] In geth_cleanup_freeq()
-  (drivers/net/ethernet/cortina/gemini.c:1038-1039), teardown still…
-- [Medium] When geth_fill_freeq() replaces a slot whose page still has
-  outstanding references (page_ref_count(page) > 1, lines 919-927),…
+- [Medium] The patch fixes a regression from an earlier patch in the same
+  series, but it has no Fixes: tag and does not say where that…
 
 Pre-existing issues:
-- [High] geth_fill_freeq() (lines 919-927) replaces freeq_pages[pn]
-  whenever page_ref_count(page) > 1.
-- [High] geth_cleanup_freeq() (lines 1041-1042) runs 'while
-  (page_ref_count(gpage->page) > 0) put_page(gpage->page);'.
-- [Medium] geth_freeq_lookup() checks the fragment start offset, but
-  gmac_rx() never bounds the length it passes to skb_fill_page_desc()…
+- [Low] This problem wasn't introduced by this patch, but
+  gmac_set_ringparam() rounds rx_pending/tx_pending up to a power of two…
 
 --
 
-net: ethernet: cortina: Correct free queue DMA mappings
+net: ethernet: cortina: Rebuild free queue metadata for RX ring changes
 
-This patch keeps the free queue page DMA base separate from the fragment
-iterator and removes the replacement unmap, which was unmapping the new
-buffer. It also uses PAGE_SIZE in the setup unwind path and rejects
-mappings above 32 bits. It replaces gmac_get_queue_page() with
-geth_freeq_lookup(), which derives fragment offsets from the saved DMA
-base under freeq_lock.
+This commit adds geth_freeq_page_slots(), which computes how much free
+queue metadata is needed. The geth_resize_freeq() fast path now uses it,
+so an RX ring change that keeps the same free queue order no longer keeps
+an undersized metadata pool. gmac_open() now fails when geth_resize_freeq()
+returns any error, and gmac_set_ringparam() restores the old rxq_order if
+the resize fails.
 
 > diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index c3d1abdbebf61..3b915a4c89009 100644
+> index 284823bdfd50c..cd5ded7384a51 100644
 > --- a/drivers/net/ethernet/cortina/gemini.c
 > +++ b/drivers/net/ethernet/cortina/gemini.c
 
 [ ... ]
 
-> @@ -835,31 +855,25 @@ static struct page *geth_freeq_alloc_map_page(struct gemini_ethernet *geth,
->  	 */
->  	frag_len = 1 << geth->freeq_frag_order; /* Usually 2048 */
->  	fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
-> +	gpage = &geth->freeq_pages[pn];
-> +	if (gpage->page)
-> +		put_page(gpage->page);
+> @@ -1234,8 +1244,16 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
+>  	if (new_order <= PAGE_SHIFT - geth->freeq_frag_order)
+>  		return -EINVAL;
+>  
+> -	if (geth->freeq_ring && geth->freeq_order == new_order)
+> -		return 0;
+> +	if (geth->freeq_ring) {
+> +		page_slots = geth_freeq_page_slots(geth, geth->freeq_order);
+> +		if (geth->num_freeq_pages >= page_slots &&
+> +		    (geth->freeq_order == new_order ||
+> +		     (other_running && geth->freeq_order > new_order)))
+> +			return 0;
+> +	}
 > +
-> +	/* Then put our new mapping into the page table */
-> +	gpage->mapping = page_mapping;
-> +	gpage->page = page;
-> +
->  	freeq_entry = geth->freeq_ring + (pn << fpp_order);
-
-[ ... ]
-
-> -
-> -	/* If the freeq entry already has a page mapped, then unmap it. */
-> -	gpage = &geth->freeq_pages[pn];
-> -	if (gpage->page) {
-> -		mapping = geth->freeq_ring[pn << fpp_order].word2.buf_adr;
-> -		dma_unmap_single(geth->dev, mapping, frag_len, DMA_FROM_DEVICE);
-> -		/* This should be the last reference to the page so it gets
-> -		 * released
-> -		 */
-> -		put_page(gpage->page);
-> -	}
+> +	if (other_running)
+> +		return -EBUSY;
 
 [Severity: Medium]
-With the replacement unmap removed, what releases the old page's DMA
-mapping here?
+The code change looks right to me. Should this patch carry Fixes: tags,
+though, or should the fast path part go into the earlier patch?
 
-When geth_fill_freeq() sees page_ref_count(page) > 1 and calls
-geth_freeq_alloc_map_page(), the old page is put and gpage->mapping is
-overwritten with the new page_mapping. The old PAGE_SIZE DMA_FROM_DEVICE
-mapping is never unmapped. Its handle is not recorded anywhere else, so
-geth_cleanup_freeq() can't release it either.
+The undersized pool comes from the previous patch in this series, "net:
+ethernet: cortina: Preserve in-flight free queue pages". That patch sizes
+freeq_pages and the bitmaps as the free queue pages plus
+(1 << port0->rxq_order) plus (1 << port1->rxq_order). But it keeps the
+fast path that only checks the order:
 
-The old code unmapped the wrong buffer, but every mapping was at least
-partly released. After this change, each refill replacement under RX
-load leaves one more streaming mapping live.
+	if (geth->freeq_ring && geth->freeq_order == new_order)
+		return 0;
 
-The commit message says "Releasing mappings with in-flight fragments is
-handled together with their lifetime later in the series". The later
-commits "net: ethernet: cortina: Preserve in-flight free queue pages" and
-"net: ethernet: cortina: Recycle claimed free queue pages" do unmap
-gpage->mapping with PAGE_SIZE.
+With only that patch applied, raising an RX ring without changing the
+computed freeq order keeps the old, smaller pool. For example, take a port
+whose rxq_order goes from 8 to 9 while the other port stays at 10. new_size
+goes from 2560 to 3072, but new_order is 12 both times. The same thing
+happens once new_order hits the cap of 15.
 
-This patch has a Fixes: tag. Would a standalone stable backport pick up
-this leaking intermediate state?
+geth_freeq_alloc_slot() then returns -ENOSPC and geth_fill_freeq() stops
+refilling early.
 
-[ ... ]
+"Preserve in-flight free queue pages" carries a Fixes: 4d5ae32f5e1e tag,
+which makes it a stable candidate. Could a stable kernel take it without
+this untagged follow-up and end up with the undersized pool after
+ethtool -G rx N? It also leaves a bisect window between the two patches.
 
-> @@ -1025,7 +1037,6 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
->  
->  		mapping = geth->freeq_ring[pn << fpp_order].word2.buf_adr;
->  		dma_unmap_single(geth->dev, mapping, frag_len, DMA_FROM_DEVICE);
-> -
->  		gpage = &geth->freeq_pages[pn];
+The other two changes here fix behavior that goes back to the original
+driver (4d5ae32f5e1e): gmac_set_ringparam() leaving the new rxq_order
+installed after a failed resize, and gmac_open() accepting -EBUSY.
 
-[Severity: Medium]
-Should this unmap also use gpage->mapping and PAGE_SIZE?
-
-The page is mapped in geth_freeq_alloc_map_page() with:
-
-    page_mapping = dma_map_single(geth->dev, page_address(page),
-                                  PAGE_SIZE, DMA_FROM_DEVICE);
-
-This patch changes the geth_setup_freeq() error unwind to:
-
-    dma_unmap_single(geth->dev, gpage->mapping, PAGE_SIZE,
-                     DMA_FROM_DEVICE);
-
-However, geth_cleanup_freeq() still unmaps only frag_len bytes, at the
-address read back from the descriptor. This path runs from
-geth_resize_freeq() on open and on ethtool set_ringparam, and from the
-remove path. CONFIG_DMA_API_DEBUG would flag the size mismatch.
-
-The later commit "net: ethernet: cortina: Preserve in-flight free queue
-pages" replaces this loop with geth_freeq_release_pages(), which unmaps
-gpage->mapping with PAGE_SIZE. The end state of the series looks
-correct.
-
->  		while (page_ref_count(gpage->page) > 0)
->  			put_page(gpage->page);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but can this loop free pages
-that skbs still reference?
-
-gmac_rx() passes fragments of these pages to the stack through
-skb_fill_page_desc() and napi_gro_frags(). Suppose one of those skbs is
-still queued (on an unread socket, for example) when this runs:
-
-    geth_resize_freeq()
-      geth_cleanup_freeq()
-        while (page_ref_count(gpage->page) > 0)
-            put_page(gpage->page);
-
-The page goes back to the allocator while the skb still points to it.
-The later kfree_skb() would then put a page that is already free.
-
-This can be reached by bringing the ports down and up with a different
-ring order, by ethtool set_ringparam, or by removing the device.
-
-The later commit "net: ethernet: cortina: Preserve in-flight free queue
-pages" replaces this loop with geth_freeq_release_pages(). That function
-drops only the gpage->fragments references plus the base reference.
+Could the fast path change be folded into "Preserve in-flight free queue
+pages"? If not, could this patch get Fixes: tags so backporters keep the
+two together?
 
 [ ... ]
 
-> @@ -1516,8 +1526,6 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+> @@ -2376,14 +2391,20 @@ static int gmac_set_ringparam(struct net_device *netdev,
+>  			      struct netlink_ext_ack *extack)
+>  {
+>  	struct gemini_ethernet_port *port = netdev_priv(netdev);
+> +	unsigned int old_rxq_order;
+>  	int err = 0;
 >  
->  		frag_len = word0.bits.buffer_size;
->  		frame_len = word1.bits.byte_count;
-> -		page_offs = mapping & ~PAGE_MASK;
-> -
->  		if (word3.bits32 & SOF_BIT) {
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but is frag_len checked
-anywhere before it reaches skb_fill_page_desc()?
-
-geth_freeq_lookup() now checks the fragment start offset. The length,
-though, still comes straight from the descriptor in gmac_rx():
-
-    frag_len = word0.bits.buffer_size;
-    ...
-        page_offs += NET_IP_ALIGN;
-        frag_len -= NET_IP_ALIGN;
-    ...
-    if (word3.bits32 & EOF_BIT)
-        frag_len = frame_len - skb->len;
-    ...
-    skb_fill_page_desc(skb, frag_nr, page, page_offs, frag_len);
-
-The NET_IP_ALIGN subtraction has no lower bound, and frame_len - skb->len
-can wrap. If the MAC reports inconsistent lengths, could the page frag
-cover memory past the 2 KiB fragment or past the end of the page?
-
-The later commit "net: ethernet: cortina: Validate RX fragment lengths"
-appears to add these checks.
-
-[ ... ]
-
-> @@ -1536,14 +1544,12 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
->  			goto err_drop;
->  		}
+>  	if (netif_running(netdev))
+>  		return -EBUSY;
 >  
-> -		/* Freeq pointers are one page off */
-> -		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
-> -		if (!gpage) {
-> +		page = geth_freeq_lookup(geth, mapping, &page_offs);
-> +		if (!page) {
->  			dev_err_ratelimited(geth->dev,
->  					    "could not find mapping\n");
->  			goto err_drop;
->  		}
+>  	if (rp->rx_pending) {
+> +		old_rxq_order = port->rxq_order;
+>  		port->rxq_order = min(15, ilog2(rp->rx_pending - 1) + 1);
 
-[Severity: High]
-This is a pre-existing issue, but what happens here if a refill has
-already replaced the fragment's page?
+[Severity: Low]
+This isn't a bug introduced by this patch, but gmac_set_ringparam() rounds
+rx_pending up to a power of two and never writes the applied size back
+into rp. include/linux/ethtool.h says:
 
-geth_fill_freeq() decides to replace freeq_pages[pn] from the refcount
-alone:
+ * @set_ringparam: Set ring sizes. The &struct ethtool_ringparam argument is
+ *	also an output; drivers which normalize requested sizes must update it
+ *	with the applied sizes.
 
-    if (page_ref_count(page) > 1) {
-        ...
-        page = geth_freeq_alloc_map_page(geth, pn);
+After the callback returns, ethnl_set_rings() in net/ethtool/rings.c picks
+up the driver's adjustments:
 
-That count also includes fragments the hardware has already written into
-RX descriptors that gmac_rx() hasn't processed yet. Once gpage->page and
-gpage->mapping are overwritten, geth_freeq_lookup() finds no match for
-the old buf_adr and returns NULL. The frame is then dropped with "could
-not find mapping", and err_drop skips the put:
+	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
 
-    if (page)
-        put_page(page);
+So a request for rx 300 stores 300 in cfg_pending, while the driver
+actually uses 512 (rxq_order 9).
 
-Doesn't that leak the reference page_ref_add() took for this fragment,
-and so the old page itself? gmac_cleanup_rxq() hits the same lookup
-failure and also skips put_page().
+Should rp->rx_pending be set to 1 << port->rxq_order once the resize
+succeeds? tx_pending is rounded the same way further down, so it could be
+updated too.
 
-The new locking in geth_freeq_lookup() only covers the window between
-lookup and use. The later commit "net: ethernet: cortina: Preserve
-in-flight free queue pages" tracks each fragment address in an XArray
-until geth_freeq_claim(). That looks like it resolves this.
+>  		err = geth_resize_freeq(port);
+> +		if (err) {
+> +			port->rxq_order = old_rxq_order;
+> +			return err;
+> +		}
+>  	}
+>  	if (rp->tx_pending) {
+>  		port->txq_order = min(15, ilog2(rp->tx_pending - 1) + 1);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011-gemini-ethernet-fixes-3-v4-0-4b1631b08f5d%40kernel.org
