@@ -1,226 +1,289 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC433385D9E
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:17:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30122E7384
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791767874; cv=none; b=CdxBJOel/pYoU8r6qv6idH/ijeZTmuAk4kt5BrQmfF776FLoaODxqmbj05OblhnESEFMc6O3SUSK55ftJbRGk+Xes+4g5B1yeBHc8WSm4wz5PPw4eBI/vGqvsONE6X9Zz8yzPkpm7/TONhDVmOgmrRKYluKpkINcOjkW8eiayOM=
+	t=1791768308; cv=none; b=qPupQZfo1XM9QS8f4h+cxG4CI9yn7HCVvkAygH5OoVSJyOVFSDUS7crIwwkQdMWXD00CRzzU2qcRfCuz3K+V8l5BAocjeP7YCmPgl+bUlEAxfiLbrDvsoWUiwlYZsTeq/s/R+Fb00jRvoxhVrDt1077Q48AZUGbGM4bW3asedwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791767874; c=relaxed/simple;
-	bh=6I9/o2fsb95RZ/cdcrjocTXvh86feiHHlbzI4OFSZMY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T87qzIrEhFSqUrRR0P73E4W+GrNW72WxjXniR6do0ZrIyVe0HZLtYe/ZR2mVYKDmLcEuehNA4lC+wC583iO8QhbrEeAP2XbIeJldlU61i6m72kEBBzBRprxIlFBN3FJ4CLVdcvurPaAGunuZIJ05b+cuFVzrg8yqoaslrJBGjAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KygHaENb; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1791768308; c=relaxed/simple;
+	bh=yWi7Q1J2djTBuVueWn5sOUMdqjsqhx3pjQnh0zBQZBI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=eZzap2kFuSdorK0yudLNB1Hvc+D6oBDPNNod4N3YJWVMm53tdl/F/NwWrfOdK7LkYaaKcHAnlxN0sjOxCr1VLHd21jQIWzQiAVpYt9QqOyQfa2l0DGEephkwlDtiHzkPGRbu66Ttitxk+KDFC8H52OESzE8GI3ucxl3F5Ez5hYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S49ZcmwL; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KygHaENb"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3a4b9732d5aso988691a91.3
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:17:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S49ZcmwL"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ab4178ee33so615924a91.3
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:25:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791767873; x=1792372673; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8tVHCGk2Xwqu+yf2mIq4Pai4+4x8BJRwBsQH1o/snK8=;
-        b=KygHaENb2fxkCWmR9OsxI/hUXRS91DrD7vgPECd+1Xzf3rvB1DQYwTXhRWtc3fyIpO
-         fvHw6dJ/peyFQt/xTyAdlbIbdd+ekW4r2+LQNhoQNA66QgyrINczMJpitY8gHcK2H4T7
-         cVZ7UaSXDBNjWP/QpTuA0KdhWZOYwN0IdXnaw+WRlakuplgXdsCpHA/LbQzoqwVznnVR
-         xqT4Xn/MLz/+1Y30Yax9R5j3uH/BNASk+3688Wsg+GfwdBAqNHMowsPFbmSX0KCN8HEr
-         qr3ZaO54bcfkVszVaiiyFDeXXT9mwPGvKpMjjnfzTwes9oPBu6tk4ATvmQqzMF2L6pfJ
-         6IXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791767873; x=1792372673;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1791768305; x=1792373105; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8tVHCGk2Xwqu+yf2mIq4Pai4+4x8BJRwBsQH1o/snK8=;
-        b=xDzbu7g2cIS6/uw3v5Nk/2j/oGvuW00lv07YZU/0ewh2ubKtXM/WU0NylTzriw5HUT
-         ilx/bEkOeYghB/kx/hKoXGjH+cJWL4H1uItFsbbYGBKwaPToyv8zAGpMkKMlqbPoTJ4o
-         kcaUUosvjfrffFYCcCG4RfRjGu0c35d2lTIdGCi5aKNjzUg3g58re2rJMaS73A21WOuu
-         n2emaKNWMsZWKDNdGSwbHmw2Wr+l+YzhfDV/mmPRvBgNkwaKcSnkVrYaF8vFBZNlWYZp
-         5LtWM5KqXfeM6ErdOMmHWszHBrMmCsPLDiSH75UhPRNApCtpqQyfhtlykJ9UyTDJQK17
-         HFVA==
-X-Forwarded-Encrypted: i=1; AKwUvBxiqTh/ttYrLVhWgyl3cV21hQQZCidqk8b72YXIhIv8L3tHykAPLwmwbJjsDHgXUmdvxH7W3/U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKDRcLwtnjo5ftLhVbZvFXyI9kf/0z3fc23vR2j6EIg39KVVaz1
-	ibgyt087baDtarAHESNmVKL4GkRFXDpKoRswnNDBMqDc0KW8/nHwrLuN
-X-Gm-Gg: AYBFou3WHuDcMvLy4Kv/xlBq4eAtEWOZXTa4vOnN1iHkuoPzvWQ/IXcYc0CfTlHb3CN
-	jAC8dyu9unrB+Mfo/6GwOd8zP64p+1bfeuwDe4eR0/wuuX9YcAWFqTtRTadNCoRntFw5F1OKULQ
-	ChX+RJ2jxkRNWRA2agFYZWZ80k7byHllckEu8lRptOaoXZZ/2UaKBru0YIu1EuRePPJJGfTspV2
-	rKsWu+ccNmd3LBBDZfJWKRlaI7NN8MRLcH3bXz/yvUgoHwSC9Zv8KyGlsvxTxRzahOhmu1p9+b+
-	r3QlfPdLvzTO/BntimD+bDZgi3t/+HX4mv9eAgKgMBQ+tZ7g/vdeVgqssO5eHVz2DGdL4ECK7i3
-	d0QKKd3ZvK1Wpvm+fpTu4crk8Y85K2r7K7Svd2OYkxQU12RVYgnclENCD/3z4euDCkz8J4U9uPC
-	QZNZ3JzZDrOm+BliaLi7J0kOW5zs7TOA4+lWpoi5GvxSa4KnD+u3y7ibh0GIgfxXMAEteKZYNvq
-	8KBELiAdnlNEftVlOSywhzg9YULYrb2Hv+ThHExIko8UIfM93qsEfNQ33GdsJcbkBfZJLnhXeRI
-X-Received: by 2002:a17:90a:d006:b0:39e:53a:c8d4 with SMTP id 98e67ed59e1d1-3ab3a90e57amr5759375a91.12.1791767872977;
-        Sun, 11 Oct 2026 18:17:52 -0700 (PDT)
-Received: from m-upc-A520M-HDV.lan (oki-109-236-14-10.jptransit.net. [109.236.14.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab38dd5864sm13743307a91.8.2026.10.11.18.17.47
+        bh=NGNfDe4PH3EHur5xwCh9qmvE7IvKd55G+GXc+WjRDUQ=;
+        b=S49ZcmwLH2MZBnOGpyrojMIqR1WAg4CSID293pxDSQcar1+GUGz4ll05KLPOET1I9Y
+         GSeiAcZUvL1Jv8tM4o0WQfVeYBs7lsjA2iQ89jDcBQTjj9jb0G3OhAoh7UvaVy5kYOl4
+         kHhNaeZj7RTgwNGDE02YG4S+vUtFmzhWU0HL30hzxQyVQg/n8pRyS11PKg/6VYTOJ2E+
+         w/pXAcyOMOtI6volip2dqdQtssPxs34O0DdazBaTQPoZ7uvsWQLztmrk/fCE7qBJxluQ
+         qsG4rSZLKXyHulAEG36NbLkVLmGX+PgG0bQh2ojw2TQVHfA0xC3EM6RP9IOxMdw/1qI1
+         RhWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791768305; x=1792373105;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NGNfDe4PH3EHur5xwCh9qmvE7IvKd55G+GXc+WjRDUQ=;
+        b=TFJgXjsU5yOlw+JWARjLQ8TJSgoGvMRlx8u4itIEuhevPI/nQn/cVsVDRIw8m3A9nD
+         +OwVViyyrLmIbcl29GVkY/omKaN9XJWnUFqoZSj9y491uAXbyUHxMzyz531na6dpb23w
+         AY/YxrYQ2Oeak2qv4ICmXClTcYTLnfA03Y73FMAtJx1WjuCb+O32bDntgQ2sSjQl33L2
+         WRct7An+CuS3Lq7kWU42OfxjHph+BXSmRsf81LOwUfEJIHDO8kwpm+6JYWRwBGdR+1LB
+         KqX1Z4HYacBkZCLFHjKrZnHYp/EBwLg6sZRxFGXURhoy70IP6737XfBw+WWnHGMl8FfE
+         WLUQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwEWMHR6y9IGefrmPGT2kcmiYpCsfgBu1d7W4/UHHxatHFXEEYAVKHN6KmZaKTYBAaO51Fc9AI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL8lzNsMvQqAaTFnTrXUCdECkUN3jG2qRvvyF3yyFd6LJz0j9Z0
+	w4mKiQyeHyDVRJd5Y7nA5rhtMWN9qs3GY2Pcn85o+Jbb0vS1GlX6N7Ez
+X-Gm-Gg: AYBFou2InI9IIdFaOvciQY9bdic+d955su8jPeN92c2RjdmAM03kqE+u65Abvj0Kde1
+	enPjGLGbQBF5kfX2WTYh5HjdeQuAFMk6+KHLCJYpElNLrIVr4Gab5vFobLKcUw0+oQGtYNhc2Yp
+	fxZIarp/vNS32+4kGH7XN6jw+5bGiilR6G92vsbQv6E/SGXKcC+rUmHyXwH1ZM7PBWTEGL/G/mq
+	ahhETJ7LmhKhOHk3ucfg380LgGZn7DZdP8vl/I+CduKHu49iZLCJWWy93OjHX0b0Ge0wpAZwgcc
+	pk46q+qf/0ozjMkFufApR7evd6w4vE2TNz3P4wP5KnRO2WVcgOxLXYeydZQmyUykPaWoYl+MfiG
+	pmrPFPueE7l61eefJjEaFwJf7/RdUQEhOczj6fM9R/xaml8xLK7QIcwBkN1p54dsS8/M5cuGg8O
+	I8nhpwAVR7nonG/q7xC21s3Cs2KsrhUWkShhzRlOVBkvou/9MVDN36dniLzHCL4LX8GA==
+X-Received: by 2002:a17:90b:3c0d:b0:3ab:b39f:41da with SMTP id 98e67ed59e1d1-3abb39f450amr2604770a91.11.1791768304968;
+        Sun, 11 Oct 2026 18:25:04 -0700 (PDT)
+Received: from localhost ([111.228.63.84])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab36ed0daesm14104449a91.5.2026.10.11.18.25.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 18:17:52 -0700 (PDT)
-Sender: Yuyang Huang <uyoko90@gmail.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Kees Cook <kees@kernel.org>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Nikolaos Gkarlis <nickgarlis@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Willem de Bruijn <willemb@google.com>,
+        Sun, 11 Oct 2026 18:25:04 -0700 (PDT)
+From: Cen Zhang <zzzccc427@gmail.com>
+To: alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	zhilinz@nebusec.ai,
+	lucien.xin@gmail.com
+Cc: linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v11 6/6] selftests: net: test AF_PACKET multicast dumps
-Date: Mon, 12 Oct 2026 10:17:07 +0900
-Message-ID: <20261012011707.3378-7-sigefriedhyy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261012011707.3378-1-sigefriedhyy@gmail.com>
-References: <20261012011707.3378-1-sigefriedhyy@gmail.com>
+	baijiaju1990@gmail.com,
+	jjzuming@gmail.com,
+	zzzccc427@gmail.com
+Subject: [PATCH net] ieee802154: 6lowpan: Hold wpan reference until lowpan destruction
+Date: Mon, 12 Oct 2026 09:24:57 +0800
+Message-Id: <pm-ip-core-objects-candidate-0015-v5-006dffdec5c84633dfbe@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Dump the link-layer multicast addresses of a dummy device and verify
-that ifa_index restricts the dump to that device, that the all-hosts
-address joined on link up is listed without IFA_F_GLOBAL, that an
-address added with SIOCADDMULTI is listed with IFA_F_GLOBAL and
-IFA_MC_USERS, and that IFA_TARGET_NETNSID dumps another netns.
+The underlying wpan device must remain alive while users of the lowpan
+netdevice can invoke its neighbour discovery callbacks. lowpan_newlink()
+retains wdev, but lowpan_dellink() drops that reference immediately
+after unregistering ldev, before ldev's outstanding references have
+drained.
 
-Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+With router reachability probing enabled, rt6_probe_deferred() holds
+ldev while sending a neighbour solicitation. If the worker selects a
+valid link-local source before physical wpan unregister, it can continue
+into option sizing after address teardown. The following order is
+possible:
+
+1. The RT6 worker enters ndisc_send_ns() with its reference to ldev.
+2. ipv6_get_lladdr() copies the source and releases its lock and RCU
+   read section. The worker is preempted before ndisc_ns_create().
+3. Physical wpan unregister calls lowpan_device_event(), which calls
+   lowpan_dellink(). It unregisters ldev and drops the wdev reference.
+4. netdev_run_todo() skips the still-referenced ldev and frees wdev.
+5. The worker resumes into lowpan_ndisc_opt_addr_space(), dereferencing
+   the freed wdev through ldev's stored pointer.
+
+RTNL and synchronize_net() do not join this workqueue execution after
+source selection. Out-of-order netdevice finalization therefore permits
+a use-after-free read of wdev->ieee802154_ptr and its embedded wpan_dev.
+
+Release the existing wdev reference from ldev's private destructor so it
+covers the worker's entire use of ldev. Install the destructor only
+after successful registration, preserving the existing reference release
+on registration failure. Once ldev's users finish, its destructor drops
+the wdev reference and physical device finalization can proceed.
+
+KASAN report as below:
+
+    BUG: KASAN: slab-use-after-free in lowpan_ndisc_opt_addr_space+0x324/0x380
+    Read of size 8 at addr ffff8881077d44c8 by task kworker/0:1/11
+
+    CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 7.2.0-rc5-pmb-bt-functional-v1+ #1 PREEMPT(lazy)
+    Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+    Workqueue: events rt6_probe_deferred
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x93/0xd0
+     print_report+0xce/0x630
+     ? lowpan_ndisc_opt_addr_space+0x324/0x380
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? __virt_addr_valid+0x20d/0x410
+     ? lowpan_ndisc_opt_addr_space+0x324/0x380
+     kasan_report+0xe0/0x110
+     ? lowpan_ndisc_opt_addr_space+0x324/0x380
+     ? __pfx_lowpan_ndisc_opt_addr_space+0x10/0x10
+     lowpan_ndisc_opt_addr_space+0x324/0x380
+     ndisc_ns_create+0x5c9/0x760
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? pmbd_probe_hit_cookie+0xee/0x1c0
+     ? __pfx_ndisc_ns_create+0x10/0x10
+     ? __pfx_pmbd_probe_hit_cookie+0x10/0x10
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? ipv6_get_lladdr+0x287/0x470
+     ndisc_send_ns+0xae/0x1a0
+     ? __pfx_ndisc_send_ns+0x10/0x10
+     ? __pfx_pmbd_probe_hit_cookie+0x10/0x10
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? debug_object_deactivate+0x2f8/0x3c0
+     rt6_probe_deferred+0xf4/0x290
+     ? process_one_work+0x895/0x19c0
+     ? __pfx_rt6_probe_deferred+0x10/0x10
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     process_one_work+0x908/0x19c0
+     ? __pfx_process_one_work+0x10/0x10
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? lock_is_held_type+0x8f/0x100
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     worker_thread+0x65c/0xe40
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? __kthread_parkme+0x175/0x220
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? __pfx_worker_thread+0x10/0x10
+     kthread+0x34f/0x460
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork+0x659/0x940
+     ? __pfx_ret_from_fork+0x10/0x10
+     ? srso_alias_return_thunk+0x5/0xfbef5
+     ? __switch_to+0x74f/0xf80
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork_asm+0x1a/0x30
+     </TASK>
+
+    Allocated by task 1:
+     kasan_save_stack+0x33/0x60
+     kasan_save_track+0x14/0x30
+     __kasan_kmalloc+0xaa/0xb0
+     __kvmalloc_node_noprof+0x358/0x900
+     alloc_netdev_mqs+0xa0/0x1250
+     ieee802154_if_add+0xdb/0x10e0
+     ieee802154_register_hw+0x6ef/0xa10
+     hwsim_add_one+0x699/0x12e0
+     hwsim_probe+0x2c/0x130
+     platform_probe+0xbe/0x1d0
+     really_probe+0x21f/0xa90
+     __driver_probe_device+0x1ec/0x490
+     driver_probe_device+0x4f/0x130
+     __driver_attach+0x248/0x580
+     bus_for_each_dev+0x143/0x1d0
+     bus_add_driver+0x2ea/0x660
+     driver_register+0x155/0x490
+     hwsim_init_module+0x11f/0x170
+     do_one_initcall+0xf3/0x4e0
+     kernel_init_freeable+0x59d/0xae0
+     kernel_init+0x24/0x280
+     ret_from_fork+0x659/0x940
+     ret_from_fork_asm+0x1a/0x30
+
+    Freed by task 535:
+     kasan_save_stack+0x33/0x60
+     kasan_save_track+0x14/0x30
+     kasan_save_free_info+0x3b/0x60
+     __kasan_slab_free+0x5f/0x80
+     kfree+0x236/0x5a0
+     device_release+0xd7/0x280
+     kobject_put+0x1ad/0x610
+     netdev_run_todo+0x931/0x1460
+     ieee802154_unregister_hw+0x5f/0x100
+     hwsim_del+0x304/0x580
+     hwsim_del_radio_nl+0x158/0x1f0
+     genl_family_rcv_msg_doit+0x1f6/0x2e0
+     genl_rcv_msg+0x48b/0x700
+     netlink_rcv_skb+0x133/0x390
+     genl_rcv+0x2d/0x40
+     netlink_unicast+0x504/0x840
+     netlink_sendmsg+0x7f7/0xcf0
+     __sys_sendto+0x425/0x470
+     __x64_sys_sendto+0xe5/0x1c0
+     do_syscall_64+0x115/0x6a0
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+    The buggy address belongs to the object at ffff8881077d4000
+     which belongs to the cache dyn-kmalloc-8k of size 8192
+    The buggy address is located 1224 bytes inside of
+     freed 8192-byte region [ffff8881077d4000, ffff8881077d6000)
+
+    The buggy address belongs to the physical page:
+    page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1077d0
+    head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+    flags: 0x200000000000040(head|node=0|zone=2)
+    page_type: f5(slab)
+    raw: 0200000000000040 ffff888100048280 dead000000000122 0000000000000000
+    raw: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+    head: 0200000000000040 ffff888100048280 dead000000000122 0000000000000000
+    head: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+    head: 0200000000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
+    head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+    page dumped because: kasan: bad access detected
+
+    Memory state around the buggy address:
+     ffff8881077d4380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     ffff8881077d4400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    >ffff8881077d4480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                  ^
+     ffff8881077d4500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+     ffff8881077d4580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+    ==================================================================
+
+Fixes: faab39f63c1f ("net: allow out-of-order netdev unregistration")
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Assisted-by: LLM
+
 ---
- tools/testing/selftests/net/rtnetlink.py | 73 +++++++++++++++++++++++-
- 1 file changed, 71 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-index dc8c77db48974..5534ade056a5c 100755
---- a/tools/testing/selftests/net/rtnetlink.py
-+++ b/tools/testing/selftests/net/rtnetlink.py
-@@ -5,13 +5,18 @@ import socket
- import struct
- import time
- from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
--from lib.py import ksft_not_in, ksft_not_none
-+from lib.py import ksft_in, ksft_not_in, ksft_not_none
- from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
- from lib.py import defer
+diff --git a/net/ieee802154/6lowpan/core.c b/net/ieee802154/6lowpan/core.c
+index 6a8d6852cb93..42ae2df8b9a4 100644
+--- a/net/ieee802154/6lowpan/core.c
++++ b/net/ieee802154/6lowpan/core.c
+@@ -67,6 +67,11 @@ static int lowpan_dev_init(struct net_device *ldev)
+ 	return 0;
+ }
  
- IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
- IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
- IPV6_TEST_MULTICAST = bytes.fromhex('ff020000000000000000000000000123')
-+ETH_ALL_HOSTS_MULTICAST = bytes.fromhex('01005e000001')
-+ETH_TEST_MULTICAST_STR = '01:00:5e:01:01:01'
-+ETH_TEST_MULTICAST = bytes.fromhex(ETH_TEST_MULTICAST_STR.replace(':', ''))
-+ETH_PEER_MULTICAST_STR = '01:00:5e:02:02:02'
-+ETH_PEER_MULTICAST = bytes.fromhex(ETH_PEER_MULTICAST_STR.replace(':', ''))
++static void lowpan_dev_free(struct net_device *ldev)
++{
++	dev_put(lowpan_802154_dev(ldev)->wdev);
++}
++
+ static int lowpan_open(struct net_device *dev)
+ {
+ 	if (!open_count)
+@@ -181,6 +186,7 @@ static int lowpan_newlink(struct net_device *ldev,
+ 		return ret;
+ 	}
  
++	ldev->priv_destructor = lowpan_dev_free;
+ 	wdev->ieee802154_ptr->lowpan_dev = ldev;
+ 	return 0;
+ }
+@@ -193,7 +199,6 @@ static void lowpan_dellink(struct net_device *ldev, struct list_head *head)
  
- def _users_for(rtnl: RtnlAddrFamily, family: int, grp: bytes, ifindex: int):
-@@ -105,6 +110,69 @@ def dump_mcaddr6_check() -> None:
-                 s2.close()
+ 	wdev->ieee802154_ptr->lowpan_dev = NULL;
+ 	lowpan_unregister_netdevice(ldev);
+-	dev_put(wdev);
+ }
  
- 
-+def dump_mcaddr_l2_check() -> None:
-+    """
-+    Verify link-layer multicast addresses in an AF_PACKET RTM_GETMULTICAST
-+    dump: the ifa-index filter, mc-users, the global flag and
-+    target-netnsid.
-+    """
-+
-+    with NetNS() as ns, NetNSEnter(str(ns)):
-+        for ifname in ("dummy1", "dummy2"):
-+            ip(f"link add name {ifname} type dummy")
-+            ip(f"link set {ifname} up")
-+        dev_idx = socket.if_nametoindex("dummy1")
-+        ip(f"maddr add {ETH_TEST_MULTICAST_STR} dev dummy1")
-+
-+        rtnl = RtnlAddrFamily()
-+        defer(rtnl.close)
-+        addresses = rtnl.getmulticast(
-+            {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx},
-+            dump=True)
-+
-+        # dummy2 has entries as well, only dummy1 may be listed
-+        ksft_eq({addr['ifa-index'] for addr in addresses}, {dev_idx},
-+                "AF_PACKET multicast dump ignored ifa-index filter")
-+
-+        entries = {addr['multicast']: addr for addr in addresses}
-+
-+        # Bringing an Ethernet device up joins 224.0.0.1, which maps
-+        # to 01:00:5e:00:00:01 in the device multicast list.
-+        all_hosts = entries.get(ETH_ALL_HOSTS_MULTICAST)
-+        ksft_not_none(all_hosts,
-+                      "dummy1 does not have the all-hosts link-layer address")
-+        if all_hosts is not None:
-+            ksft_not_in('global', all_hosts['flags'],
-+                        "protocol entry is global")
-+
-+        static = entries.get(ETH_TEST_MULTICAST)
-+        ksft_not_none(static, "dummy1 does not have the SIOCADDMULTI address")
-+        if static is not None:
-+            ksft_eq(static['mc-users'], 1,
-+                    "unexpected mc-users for the SIOCADDMULTI address")
-+            ksft_in('global', static['flags'],
-+                    "SIOCADDMULTI entry is not global")
-+
-+        # target-netnsid dumps another netns, ifa-index is relative to it
-+        with NetNS() as peer:
-+            ip(f"netns set {peer} 5")
-+            ip("link add name dummy3 type dummy", ns=peer)
-+            ip("link set dummy3 up", ns=peer)
-+            ip(f"maddr add {ETH_PEER_MULTICAST_STR} dev dummy3", ns=peer)
-+            peer_idx = ip("link show dummy3", json=True, ns=peer)[0]['ifindex']
-+
-+            addresses = rtnl.getmulticast(
-+                {"ifa-family": socket.AF_PACKET, "target-netnsid": 5,
-+                 "ifa-index": peer_idx}, dump=True)
-+            ksft_eq({(addr['ifa-index'], addr['target-netnsid'])
-+                     for addr in addresses}, {(peer_idx, 5)},
-+                    "target-netnsid did not dump the peer netns")
-+            # dummy1 in this netns can have the same ifindex as dummy3
-+            ksft_in(ETH_PEER_MULTICAST,
-+                    {addr['multicast'] for addr in addresses},
-+                    "target-netnsid did not dump the peer device")
-+
-+
- def ipv4_devconf_notify() -> None:
-     """
-     Configure an interface and set ipv4-devconf values through netlink
-@@ -424,7 +492,8 @@ def ipv6_verify_inter_scope_addr_order() -> None:
- 
- 
- def main() -> None:
--    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
-+    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, dump_mcaddr_l2_check,
-+              ipv4_devconf_notify,
-               ipv6_route_del_reason_expired,
-               ipv6_route_del_reason_ra_withdrawn,
-               ipv6_route_del_reason_absent,
--- 
-2.43.0
-
+ static struct rtnl_link_ops lowpan_link_ops __read_mostly = {
