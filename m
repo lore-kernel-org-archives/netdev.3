@@ -1,127 +1,177 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mta1.migadu.com (out-200.mta1.migadu.com [95.215.58.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB762AD03;
-	Mon, 12 Oct 2026 09:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B22B440A2C
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791797115; cv=none; b=O4xerkMkTefocydu+k/aZ6w43v5DTlI00DPRq+4HQ8RW3zBuS8dNiXKcqbqSrU/eYoWphccim1Dl3kbm4A+YnNRqRWDXQH2PMdiSgcKzR/7cEV6vMY87K9tOFLqF+qhY/3BAHclE51j0OJdgLO0/vO4m6TsNnZBPXbIKi0oYo24=
+	t=1791797298; cv=none; b=eZ5C0oHnt39/lBQfYB9QhlthI+jMMQMSv3NBXHRR2I90hZt3nycXmv6/B4igjeEfc2/oSw2gursrhGtmpyYvCnY9z8EF29kWFo2Vz1SaBiFB643L6O7AModqhpDVnTiGMgdR9GadYZYe+6P5ss5U0Zox+Kjj7m5gyThUMSY6Jjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791797115; c=relaxed/simple;
-	bh=IQpHB5+tqQEypajGabUCg71V1OUvDtXBIEiXuV4XzJA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ONhf7cw4M5Z61Ml7KYIBYy2oKuec92FKeu382w5Tn6oGH53rY1AqxZjajEZ5/6vJVBhAIyYuv1Fv/uMJ225r1iL5zdMhbC5mx94L/NdKK46U+M0FEnGlefobGhNN+eQ8iasCEXZ1IYubXQQo6EJbgY0Zbf46Kq/zBIycioeLv8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=iXX7VGaz; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1791797298; c=relaxed/simple;
+	bh=pH88RZZhMUO+72nSU0zMXA1Vsw+3gSUAjVT/E/uSjCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iunMnusFS9VDrCpl/tVSnipNzk0w8YhKHanxsE/J5LhUwVgZDtLWMcGSZGb7pqk/fry/V5tOdiNxQFkiVVET/3lkwE9GSTRsfRvohiqYPRGe1iyeomyS4zNBRC1vI4YAIh4/7RyplVTpSMbL6OgUhH7LITAiwc/ceUaCIZW7Coc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AB3Kg6zP; arc=none smtp.client-ip=95.215.58.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="iXX7VGaz"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69C9OTTo83670355, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1791797069; bh=IQpHB5+tqQEypajGabUCg71V1OUvDtXBIEiXuV4XzJA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=iXX7VGazYiCKqO0o0Ouv8JPZS1PMpJRk3OHCb2mfphoUm97t2RaLO4QYCVqepiYBi
-	 xdCmc0Vh/hD4vaN+adZpSroNWFBNfmwLTBcPPwtw4+n8X/cEQmknNPYtrYGbOF2slb
-	 DboRv7hf9slP3pmmmX8RFe4nBqBGGpFgfVNvFSkJpH8wSo7r2M/bocwDyvbUqx8z7K
-	 dEna/H9qp4XuJnF9sZS/lSNpFymaefOAYG5di+HnJup66YlL5M/SKR8Qn3Kfzwqqnv
-	 f6Mn/k5xTXuxIQ2ctgX1kuhgp3rKC0IEyccWD644TCFSs85bdkoezpePDeQJfg3KWM
-	 YmZPjfndx6ZBw==
-Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69C9OTTo83670355
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 12 Oct 2026 17:24:29 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 12 Oct 2026 17:24:36 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
- 15.02.2562.049; Mon, 12 Oct 2026 17:24:36 +0800
-From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-To: Birger Koblitz <mail@birger-koblitz.de>, "davem@davemloft.net"
-	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, nic_swsd
-	<nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
-Subject: RE: [PATCH net-next v6 01/10] r8152: split r8156_init per chip and
- factor out wait_autoload_done
-Thread-Topic: [PATCH net-next v6 01/10] r8152: split r8156_init per chip and
- factor out wait_autoload_done
-Thread-Index: AQHdVv1AdBx9zD4lckuTWpQnvZF0MLbzCemAgAadrcA=
-Date: Mon, 12 Oct 2026 09:24:36 +0000
-Message-ID: <816bbc26531f411283f43e24c6156b5c@realtek.com>
-References: <20261008081556.47901-1-nic_swsd@realtek.com>
- <20261008081556.47901-2-nic_swsd@realtek.com>
- <633a0f2b-67b3-4896-8464-6a4d0c05498f@birger-koblitz.de>
-In-Reply-To: <633a0f2b-67b3-4896-8464-6a4d0c05498f@birger-koblitz.de>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AB3Kg6zP"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=pH88RZZhMUO+72nSU0zMXA1Vsw+3gSUAjVT/E/uSjCY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791797294; v=1; x=1792402094;
+ b=AB3Kg6zPzCKD4q28IOfvYaCNzlVLZtnK240tJUcHbtnWZdisrScorFNs7HdThIq2SsySAt6x
+ 58eElE4wn8y6oLjGpnGQVwzlJ4ZFLbXvhROjqHyFtQHszS/uu3zJZ26twjvjXFo1G1YVUdlNBNk
+ NLrRm2Ba7DxI7XEVqJVBAsQ4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id fb9bf159fe42bfa0;
+	Mon, 12 Oct 2026 09:28:13 +0000
+X-Mizu-Trace-ID: fb9bf159fe42bfa0
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 12 Oct 2026 17:28:06 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Ahmed Abdelsalam <ahabdels@cisco.com>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>
+Subject: Re: [PATCH net-next 2/5] seg6: handle a consumed SRH in SRv6 End
+ with the PSP flavor
+Message-ID: <asyoJvcaU14ip-d4@fedora>
+References: <20261011192310.55-1-andrea.mayer@uniroma2.it>
+ <20261011192310.55-3-andrea.mayer@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261011192310.55-3-andrea.mayer@uniroma2.it>
 
-SGkgQmlyZ2VyLA0KSSdtIHNvcnJ5IGZvciBtYWtpbmcgdGhlIHByZXZpb3VzIHJlcGx5IGhhcmQg
-dG8gcmVhZCwgc28gSSByZXNlbnQgdGhpcy4NCg0KT24gVGh1cnNkYXksIE9jdG9iZXIgOCwgMjAy
-NiwgODoxOCBQTSwgQmlyZ2VyIHdyb3RlOg0KPiBIaSBDaGloIEthaSwNCj4gDQo+IE9uIDA4LzEw
-LzIwMjYgMTA6MTUgYW0sIENoaWggS2FpIEhzdSB3cm90ZToNCj4gPiBSVEw4MTU2LCBSVEw4MTU2
-QiwgUlRMODE1NyBhbmQgUlRMODE1OSBzaGFyZWQgYSBzaW5nbGUgcjgxNTZfaW5pdCgpLA0KPiA+
-IGdhdGVkIGJ5IGEgZGVuc2Ugc2V0IG9mIHRwLT52ZXJzaW9uIHJhbmdlIGNoZWNrcy4gVGhhdCBt
-YWRlIHRoZSBpbml0DQo+ID4gc2VxdWVuY2UgaGFyZCB0byBmb2xsb3cuDQo+ID4NCj4gPiBTcGxp
-dCByODE1Nl9pbml0KCkgaW50byBvbmUgZnVuY3Rpb24gcGVyIGNoaXAgZmFtaWx5Og0KPiA+IC0g
-cjgxNTZfaW5pdCAgKFZFUl8xMC8xMSkNCj4gPiAtIHI4MTU2Yl9pbml0IChWRVJfMTIvMTMvMTUp
-DQo+ID4gLSByODE1N19pbml0ICAoVkVSXzE2KQ0KPiA+IC0gcjgxNTlfaW5pdCAgKFZFUl8xNykN
-Cj4gSSBoYXZlIGEgaGFyZCB0aW1lIHRvIHVuZGVyc3RhbmQgd2h5IHlvdSB3YW50IHRvIHNlcGFy
-YXRlIG91dCBvbmUgaW5pdA0KPiBmdW5jdGlvbiBpbnRvIDQgZGlmZmVyZW50IG9uZXMsIGZvciBl
-YWNoIGNoaXAgb25lLiBFc3BlY2lhbGx5LCBpZiwgYXMgeW91IHNheSBubw0KPiBmdW5jdGlvbmFs
-IGNoYW5nZXMgYXJlIGludGVuZGVkLCB3aGljaCBtaWdodCBqdXN0aWZ5IHRoZSByZS1mYWN0b3Jp
-bmcgaW4gdGhpcw0KPiBtYW5uZXIuIEJ5IG11bHRpcGx5aW5nIHRoZSBmdW5jdGlvbnMsIGl0IHdp
-bGwgYmVjb21lIG1vcmUgZGlmZmljdWx0IHRvIG1haW50YWluDQo+IHRoZSBjb2RlOiBpZiBhbiBp
-c3N1ZSBpcyBmb3VuZCBpbiB0aGUgaW5pdC1zZXF1ZW5jZSwgaXQgbWF5IG5vdyBiZSBuZWNlc3Nh
-cnkgdG8NCj4gZml4IGl0IDQtdGltZXMgYW5kIGZ1dHVyZSBkZXZlbG9wbWVudHMgdG91Y2hpbmcg
-dGhlIGluaXQtc2VxdWVuY2Ugd2lsbCBhbHNvDQo+IG5lZWQgdG8gYmUgcmVwbGljYXRlZCBtdWx0
-aXBsZSB0aW1lcy4gSW4gdG90YWwsIHRoZXJlIHdvdWxkIGFmdGVyd2FyZHMgYmUgOCghKQ0KPiBk
-aWZmZXJlbnQgaW5pdCBzZXF1ZW5jZXMgaW5jbHVkaW5nIHRoZSBvdGhlciBvbmVzIGZvciB0aGUg
-UlRMODE1MiBhbmQgZGlmZmVyZW50DQo+IHZlcnNpb25zIG9mIHRoZSBSVEw4MTUzLiBUaGUgc2Ft
-ZSBwYXR0ZXJuIHJlcGVhdHMgd2l0aCBfdXAoKSwgX2Rvd24oKSBhbmQNCj4gb3RoZXIgY29uZmln
-dXJhdGlvbiBmdW5jdGlvbnMuDQoNClRoZSBzcGxpdCBpcyBtZWFudCB0byBtYWtlIGVhY2ggZnVu
-Y3Rpb24gcmVhZGFibGUgb24gaXRzIG93bi4gSW4gYSBzaW5nbGUgc2hhcmVkDQpmdW5jdGlvbiwg
-ZXZlcnkgY2hpcCBkaWZmZXJlbmNlIGlzIGEgdHAtPnZlcnNpb24gcmFuZ2UgY2hlY2ssIGFuZCB0
-aGUgZnVuY3Rpb24gaXMNCmhhcmQgdG8gZm9sbG93LiBZb3VyIGNvbmNlcm4gaXMgdmFsaWQ6IGlm
-IGEgZml4IG5lZWRzIHRvIGJlIGFwcGxpZWQgdG8gdGhlIGZvdXIgY2hpcHMsDQppdCB3aWxsIG5l
-ZWQgdG8gYmUgYXBwbGllZCBmb3VyIHRpbWVzLiBCdXQgaWYgYSBjaGlwIGdldHMgY2hpcC1zcGVj
-aWZpYyBmaXhlcywgdGhlIGluaXQgDQpvciBvdGhlciBmdW5jdGlvbnMgd2lsbCBiZSBtb3JlIGNv
-bXBsZXggd2l0aCBzZXZlcmFsIHRwLT52ZXJzaW9uIGNoZWNrcy4NCg0KT24gdGhlIG90aGVyIGhh
-bmQsIHVzaW5nIGEgc2luZ2xlIHNoYXJlZCBmdW5jdGlvbiB3aWxsIG1ha2UgdGhlIGZ1bmN0aW9u
-IHZlcnkgDQpjb21wbGV4IHdoZW4gbmV3IElDcyBhcmUgYWRkZWQuDQoNCj4gDQo+IFdvdWxkIGl0
-IG5vdCBtYWtlIG1vcmUgc2Vuc2UgdG8gdHJ5IHRvIGZ1cnRoZXIgY29tYmluZSB0aGUgaW5pdCBz
-ZXF1ZW5jZXMgb3INCj4gdHJ5IHRvIGRpc2VudGFuZ2xlIHRoZSBjb2RlIGJ5IGVzdGFibGlzaGlu
-ZyBjb21tb24gbGlicmFyeSByb3V0aW5lcyBwdXQgaW50byBhDQo+IF9saWIuYyBmaWxlIGFuZCBw
-b3NzaWJseSBkaWZmZXJlbnQgLmMgZmlsZXMgZm9yIHRoZSBkaWZmZXJlbnQgZ2VuZXJhdGlvbnMg
-b2YgdGhlIGNoaXBzPw0KPiBGb3IgZXhhbXBsZSwgaXQgYXBwZWFycyB0aGF0IHRoZQ0KPiBydGw4
-MTU3LzkgYmVsb25nIHRvIG9uZSBnZW5lcmF0aW9uIG9mIGNoaXBzLCBiYXNlZCBvbiB0aGUgcnRs
-ODE1NiBkZXNpZ24uIE9uDQo+IHRoZSBvdGhlciBoYW5kLCBydGw4MTUyLzMgYXBwZWFyIHRvIGJl
-IGEgZGlmZmVyZW50IGdlbmVyYXRpb24gd2l0aCB2YXJpb3VzDQo+IGZhbWlseSBtZW1iZXJzLiBU
-aGF0IHdvdWxkIGFsbG93IHRvIGJ1aWxkIGEgYmFzaXMgZm9yIGZ1dHVyZSBkZXZlbG9wbWVudCBs
-aWtlDQo+IHRvIHJlbHkgb24gdXNpbmcgcGh5bGluayB0byBoYW5kbGUgdGhlIFBIWXMgaW50ZWdy
-YXRlZCBpbiB0aGUgY2hpcHMsIHdoaWNoIGFsbA0KPiBhcHBlYXIgdG8gYmUgYWxyZWFkeSBzdXBw
-b3J0ZWQgYnkgdGhlIFJlYWx0ZWstUEhZIGRyaXZlci4NCg0KSSBhZ3JlZSB0aGF0IGNoaXBzIHdp
-dGggdGhlIHNhbWUgZ2VuZXJhdGlvbiBvciB2ZXJ5IHNpbWlsYXIgc2VxdWVuY2VzIHNob3VsZCBi
-ZSBjb21iaW5lZC4NCg0KSSBwcmVmZXIgdG8gY29tYmluZSB0aGUgY2FsbGJhY2tzLCBpbmNsdWRp
-bmcgaW5pdCwgdXAsIGRvd24sIGFuZCBlbmFibGUuIA0KLSBGb3IgaW5pdCwgSSBjYW4gbWVyZ2Ug
-cjgxNTZiX2luaXQgaW50byByODE1Nl9pbml0IGFuZCByODE1OV9pbml0IGludG8gcjgxNTdfaW5p
-dC4gDQotIEZvciB1cC9kb3duLCBJIGNhbiBtb3ZlIHRoZSBzZXF1ZW5jZSBzaGFyZWQgYnkgcnRs
-ODE1Nl91cC9ydGw4MTU3X3VwIGFuZCBieSB0aGUgZG93biANCiBmdW5jdGlvbnMgaW50byBjb21t
-b24gaGVscGVycywgYXMgcnRsODE1MmIvMyBkbyB3aXRoIGV4aXRfb29iL2VudGVyX29vYi4gDQot
-IEZvciBlbmFibGUsIEkgY2FuIGNvbWJpbmUgcnRsODE1Nl9lbmFibGUgYW5kIHJ0bDgxNTZiX2Vu
-YWJsZS4NCg0KPiANCj4gWy4uLl0NCj4gPg0KPiA+IE5vIGZ1bmN0aW9uYWwgY2hhbmdlIGludGVu
-ZGVkLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogQ2hpaCBLYWkgSHN1IDxoc3UuY2hpaC5rYWlA
-cmVhbHRlay5jb20+DQo+IEJlc3QsDQo+ICAgIEJpcmdlcg0KDQpCZXN0LA0KQ2hpaC1LYWkNCg==
+Hi Andrea,
+On Sun, Oct 11, 2026 at 09:23:07PM +0200, Andrea Mayer wrote:
+> With the seg6 inline mode, a packet can carry more than one SRH. The
+> SRHs with Segments Left 0 are considered consumed SRHs, and they can
+> come before the SRH to process (Segments Left > 0), as in this packet:
+> 
+>   +------+----------------------+----------------------+---------+
+>   | IPv6 | SRH, Segments Left 0 | SRH, Segments Left 1 | payload |
+>   +------+----------------------+----------------------+---------+
+> 
+> End without flavors skips the consumed SRH and processes the next
+> one [1]. With the PSP flavor, End should do the same. When the SRH to
+> process arrives with Segments Left 1, as in the diagram, End with PSP
+> should then also remove it [2]. However, End with PSP alone currently
+> looks only at the first routing header of the packet, finds Segments
+> Left 0 there, and drops the packet.
+> 
+> Make End with PSP alone skip the consumed SRHs, and any other routing
+> header with Segments Left 0, and process the SRH that follows them. If
+> there is no SRH to process, the packet is dropped as before. When the
+> SRH to process arrives with Segments Left 1, End with PSP now removes
+> it even if consumed SRHs come before it.
+> 
+> Found by manual code inspection and reproduced in a VM without kernel
+> changes or error injection. A following commit adds tests for this case
+> to srv6_end_flavors_test.sh. Without this change, the new tests with a
+> consumed SRH fail for End with PSP alone. With this series, all tests
+> pass and KASAN reports no error.
+> 
+> [1] - https://datatracker.ietf.org/doc/html/rfc8986#section-4.1
+> [2] - https://datatracker.ietf.org/doc/html/rfc8986#section-4.16.1.2
+> 
+> Fixes: bdf3c0b9c10b ("seg6: add PSP flavor support for SRv6 End behavior")
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>  net/ipv6/seg6_local.c | 29 +++++++++++++++++++++++++----
+>  1 file changed, 25 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+> index da8225591fe3..26cd4facbe36 100644
+> --- a/net/ipv6/seg6_local.c
+> +++ b/net/ipv6/seg6_local.c
+> @@ -775,11 +775,14 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
+>  		skb_set_transport_header(skb, thoff);
+>  
+>  	iph = ipv6_hdr(skb);
+> -	if (iph->nexthdr == NEXTHDR_ROUTING) {
+> +	if (srhoff == sizeof(*iph)) {
+>  		iph->nexthdr = srh_nexthdr;
+>  	} else {
+>  		/* we must look for the extension header (EXTH, for short) that
+> -		 * immediately precedes the SRH we have just removed.
+> +		 * immediately precedes the SRH we have just removed, i.e. the
+> +		 * EXTH that ends at srhoff. We find it by its position and not
+> +		 * by its nexthdr, since another routing header (e.g. an SRH
+> +		 * with SL = 0) may come before the removed SRH.
+>  		 * Then, we update the value of the EXTH nexthdr with the one
+>  		 * contained in the SRH nexthdr.
+>  		 */
+> @@ -807,7 +810,7 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
+>  				break;
+>  			}
+>  
+> -			if (hp->nexthdr == NEXTHDR_ROUTING) {
+> +			if (off == srhoff) {
+>  				hp->nexthdr = srh_nexthdr;
+>  				break;
+>  			}
+> @@ -823,6 +826,24 @@ static bool seg6_pop_srh(struct sk_buff *skb, int srhoff)
+>  	return true;
+>  }
+>  
+> +/* look up the SRH to be processed by the RFC8986 flavors. As End does, a
+> + * routing header with SL = 0 is skipped (e.g. an SRH already consumed).
+> + * This function returns NULL when no valid SRH is found.
+> + */
+> +static struct ipv6_sr_hdr *seg6_flv8986_get_srh(struct sk_buff *skb)
+> +{
+> +	struct ipv6_sr_hdr *srh;
+> +
+> +	srh = seg6_get_srh(skb, IP6_FH_F_SKIP_RH);
+> +	if (srh)
+> +		return srh;
+> +
+> +	/* we take the first routing header without skipping it. In this way,
+> +	 * seg6_get_srh_pktinfo() reports SL = 0 and not a missing SRH.
+> +	 */
+> +	return seg6_get_srh(skb, 0);
+> +}
+> +
+>  /* process the packet on the basis of the RFC8986 flavors set for the given
+>   * SRv6 End behavior instance.
+>   */
+> @@ -837,7 +858,7 @@ static int end_flv8986_core(struct sk_buff *skb, struct seg6_local_lwt *slwt)
+>  	__u32 flvmask;
+>  	int srhoff;
+>  
+> -	srh = seg6_get_srh(skb, 0);
+> +	srh = seg6_flv8986_get_srh(skb);
+
+Hmm, here we always try skip the SL = 0 SRH when multi SRH exists. What if
+we want to add USP flavor support in future? Then we will not able to remove
+the first SRH which SL = 0, right? e.g.
+
+   +------+----------------------+----------------------+---------+
+   | IPv6 | SRH, Segments Left 0 | SRH, Segments Left 2 | payload |
+   +------+----------------------+----------------------+---------+
+
+Thanks
+Hangbin
+
+>  	srhoff = srh ? ((unsigned char *)srh - skb->data) : 0;
+>  	pinfo = seg6_get_srh_pktinfo(srh);
+>  #ifdef CONFIG_IPV6_SEG6_HMAC
+> -- 
+> 2.43.0
+> 
+
