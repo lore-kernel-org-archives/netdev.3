@@ -1,86 +1,85 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E882E7384
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFD938A29A
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791768370; cv=none; b=FjiLdJ+fMA/0Q9/aNVMKBRXnYOgIuDvlqc20mj2LZcJLGnBjV5qRtnRCZEj64a1olFzUe+9ZWrEwRZvRk6+fLWyAHKMz5LBtsuMPnWh+zNt3atsQBojYWI6pa56nPkaZQYTT3//214BSc6ezngZBbneBjl7fYNEqCgHNM43soUw=
+	t=1791768372; cv=none; b=TOd8Segma6Fx/KkTt+Uvhj6v+t1YU3LyXmwW8uZScvyExeylJF35DC0g4SpZRsg05qgT0qppA4S9qrwPbBszhLNsDIBWnVAiidarC0qtaw5rULYyRZ/NqiTbdvmBP8IaeelIoj3+7oMSQXY8ZtAdo4xUf8e5/DC5ClMhttw8oTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791768370; c=relaxed/simple;
-	bh=tzLBJAojfuIfb94wAwFqFt4eYKDn0B41zIhjFfxqZYI=;
+	s=arc-20240116; t=1791768372; c=relaxed/simple;
+	bh=7yjAEKuRmZZSVW1wABNqX2gPlNcusDazDo3bH3zKwTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OO4zaSE2n+Wz08h3LwkKRIKLgUrUjdE8vTz71yVwFS0tY+lH8vS2kAD1V3GlrwgvsaCMol9xdiE05nJ7irhSZep+dElE7P09HWPB3OBzQYHbHrS2vDu24bGBUNcxIyrrVSJ/Gl4GlvGbwaeXCE6NoFdQHPd6yCG5J3EDKHNU3Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=fqJfeVfz; arc=none smtp.client-ip=209.85.161.45
+	 MIME-Version:Content-Type; b=iLJ//C0HlHGKsX9OH7jjNkRqB7JK8DzAFX1GWgXWt9oE3Km6K6nbOvsikJ4x+lFfuLuI0UHNqzyIBjKrU8a0lhVLF+D314azU20D/O084cdpxXtC3f9R2sMB8HB9rCN1SaqJuJIH/axnvcVI64aPW9+l782/k4NMbnsSu0pYUvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com; spf=pass smtp.mailfrom=openai.com; dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b=H/H8/mTL; arc=none smtp.client-ip=209.85.161.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=openai.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openai.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="fqJfeVfz"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6deb848ddd7so968832eaf.0
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:26:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=openai.com header.i=@openai.com header.b="H/H8/mTL"
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6deeeb892d2so808130eaf.3
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 18:26:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openai.com; s=google; t=1791768368; x=1792373168; darn=vger.kernel.org;
+        d=openai.com; s=google; t=1791768370; x=1792373170; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=u+eNfrR0vfA3cM3B1uHRjef6pcqbiMOdYjlGJEphPzc=;
-        b=fqJfeVfzt5JtzZaWbAfim+Ssh6Ae2D3P2+oW/WoKq/4DcxS1AElmYqy9w8gxbbDYxz
-         MK/2DZ0iryEtEnvxgBw9qjCKGhcztaoccq6RXQRmTcKmZdbFv5MlHe41jUJs80vtSlb3
-         wSzkW9d37OOSJ4rG9M5CIv2KfCGcXvbOqWoh0=
+        bh=7yjAEKuRmZZSVW1wABNqX2gPlNcusDazDo3bH3zKwTY=;
+        b=H/H8/mTLkyXvpKmYhg9xcirznaALpC4U1xW9lVzwYby8Iqd5A03o3rjoSNmrU7geV8
+         TRKXpdraFBaCEkaSf4iPuyNdyciT++UrQjCcMb4LHQdlb533vkyEORPNcGrfM+eCFkV3
+         xkqg7no1nZp7IV/hlM1lKa4rfzGnCJGgynHdE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791768368; x=1792373168;
+        d=1e100.net; s=20260707; t=1791768370; x=1792373170;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=u+eNfrR0vfA3cM3B1uHRjef6pcqbiMOdYjlGJEphPzc=;
-        b=0a5Z9/rtFovcT4OVehabtAPiU+tCCjcnAsp8VJUA/isMjdULMin7OXSqQPfXp5yqul
-         ChK+NILQZhZ6129/BzpnbGu7Bjd1Lb6XmD20204/Twk8K7X1R15YirWzpxslnkrTBUXe
-         EoHwhdEcMOYt3SYlg8W/ZHylYAIfAKnAY4Ekz7fMwgv1qwff/NwHcvdYxYnGXIK4Xj4j
-         HxK1jcWxktTeoATwjqcWZV3FJTxEno0ODIXpFRnmaxxpveOrCP3sZ1W45CbfqaUR2Ul8
-         WzXI+sROs96sGNhr6eviJWHfcZON3BfR8wOsa8UUU4tZ65v5bqTWbhC7QBUuESV4Aj+1
-         gpYA==
-X-Forwarded-Encrypted: i=1; AKwUvBxn/cqWkeRvDK9vnMKNeZk/4WKfBWDQ2KgATxTfXCk7ezFKSXr8W0XrHN25L1vQ97tSftrEz/s=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK08YEr4EguuNX+0dZjAtEPdQ8a0h9foth3+7LcQTIdOocCcaqq
-	Qvrm9T5pvEr9Yeg+tnhRPKhdpwJgfauI2SyHP3En9drreeTO+uZGHCEjVaaZYMmDQjvQzwdiaOK
-	Dev61VCg9+Q==
-X-Gm-Gg: AYBFou0JzHkqnDKUnjGFuvG2sSqxspR+F3opTFsuG6/sqTJ885st2QAlu7SRQs7xpcJ
-	1emkuDoLsO7sThSUXph89CbUXPAT2pQglSNB8lU4yIXz5Ktd0mD+SM7FN6iFxmNGO0CFv1YQLS2
-	PmuzzndnY8tQODBgW7mHtLH/LbKceQ377+lT7xGmaSWMVyl0XdZTuBbTJkg6mNGj3cgQcBcUgvd
-	qcFY6YJ04VtjX3L0/yFZcHwd4R2Tz+0yDBHFqkTj1Kvtc4k9nq9v0FKh6Oc15p+kQ8doWdhz1gF
-	uQhmnfjyUyBVaT5nk7yj5dMXM1YOBX53nyJgO9Bv03yJlNZ7pLP8c/CsNjuMMZ7FH0KvJMsK4oB
-	IZQ5EdXd3Vjo+YoYrdr5RsP+VTFCA3knidMekjVJIdkuISsXv4pYMZ/hG9Q78xq1XTGZ1NuD8EV
-	YKXKxGkNP9r6oE9YcFk/A4fo/ac4TRMw7hYBJSL3x0f93cpyLC+Dyagzq+dSWt4n+Vtm0Xpxw7n
-	DLUhVSt6AMLVKRWC9ucawrsQvwdDSGjPnYiVvTVcTfxgrpmqiC/AOIiJ0TSHODlTeDBFtv4Ybif
-	QGakz5WdROesGQByC1qsptzHi9ihMC2K0FUepw==
-X-Received: by 2002:a05:6820:f031:b0:6cd:3ffc:e330 with SMTP id 006d021491bc7-6ef129e2d89mr6079783eaf.78.1791768367710;
-        Sun, 11 Oct 2026 18:26:07 -0700 (PDT)
+        bh=7yjAEKuRmZZSVW1wABNqX2gPlNcusDazDo3bH3zKwTY=;
+        b=qjFI8DtARWQHpjjJ5h5zJJlIvGIKHE5o6lDzsYytmYCIXKV+7ZNCy/IpRfr+Q2tIbh
+         PkMXqJWvugipf8E0AFU/MKRh+U8atsYKRkCcESMkh4gnyNSoVK06mMSqHYEdb05aMU6o
+         SjzYm1Ab1A/KQzrRNbWM6NI/iKeOmLD8k1RdGbYfG4Abgh2FR9/ujHIBFydMPfFSBSol
+         lnRAXedq8/n4TWXBpjbYyKsPot0PZMa6fpUAXbQn8W9aTlao3DRzB2aRmvIprGFvGPQ4
+         l0fQCgbrzPY8L0hdHOEWq7DxcTNyinvT3EjWwrSgkONFWof33xfrpHpYk2DsawKjzPaS
+         1W1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzHZqSNEFFt85xKn/nUyxeRCbf5lf+2zWeFtQJerTbq4NsTtcoQQuF5qt2QEadF7QICQFEEfHM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLQDKbJrQL1/SvEdUW5EZbjRq48EHtVKwXMoYyPwAxV31DmPpta
+	vlYwt6HGN0iSJ/f9w/T1/iCr7dRl5VYELaBhrrNco6T+J5MGIIA+l+HT2xdsN/w2vJE=
+X-Gm-Gg: AYBFou2/p5Oa9Jj+thzRNjtxL2/VLLyAbJGAkbniju9x5GukazBqAMi2+uod/S8rsnX
+	sQwNpFh8IPuvemvrtRESg4+RVqWvT9h4OP4Qz9DpcY+1ADfPQ9Y7ycOS1jBBczSsSquRlEZ4lKh
+	F5zJWVQOtHM62pY/x8LWCT/pIV4B8LS4ENdz6YtER/xzlSuW+kBkbERUtTwfn4a374ecjGP/8xy
+	jkGyIPhZfZh8TzvSkDwi+jMBdKWA2y79AzRyI4tF/22V9RKDEtPoD3ukE5L7tUtmBYVaiXMXsTC
+	lB2LjSGfUuqurLDJckNrkbhNWf7+PgtzlSwmE3FE1CowF5/kTTxwk2jM+sidNbbLv+d9ezkkhbd
+	5lrZ5TMCZZMzospWMSit/WUaB6u3QwB2A178oeedZ/P5AdfnRDs+s7xPNIpH/S7fdFXUS2ml3FU
+	AbadfAZBiOVDyt7FX3VZVbKUK2bP0odimDryKTj2oyMhYQUr3cQPLKPRQE/TeuayQXCkSTcdwqI
+	MrQs63R+ww01QtBxJdJz4KNPXC77AN0kQhpbQzmwuotAacTUYablybCA7w5Gnxk/Q27k+2GEi/c
+	LyWdVthlDUSsNbsZ3u76BhHBS/KckU0wiTrfhg==
+X-Received: by 2002:a05:6820:a291:20b0:6f4:eca8:b1ee with SMTP id 006d021491bc7-6f4eca8b8d7mr1090389eaf.25.1791768370024;
+        Sun, 11 Oct 2026 18:26:10 -0700 (PDT)
 Received: from com-68297.corp.openai.org (vpn-centralus-01.tradc-corp.com. [172.169.249.3])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6f634860481sm1584254eaf.13.2026.10.11.18.26.05
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6f634860481sm1584254eaf.13.2026.10.11.18.26.07
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 11 Oct 2026 18:26:07 -0700 (PDT)
+        Sun, 11 Oct 2026 18:26:09 -0700 (PDT)
 From: nramaswamy@openai.com
-To: Neal Cardwell <ncardwell.sw@gmail.com>,
-	Eric Dumazet <edumazet@kernel.org>
+To: Eric Dumazet <edumazet@kernel.org>,
+	netdev@vger.kernel.org
 Cc: Neil Ramaswamy <nramaswamy@openai.com>,
-	davem@davemloft.net,
-	horms@kernel.org,
-	jiayuan.chen@linux.dev,
-	kuba@kernel.org,
-	kuniyu@google.com,
+	Neal Cardwell <ncardwell@google.com>,
+	Neal Cardwell <ncardwell.sw@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	ncardwell@google.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	ycheng@google.com
-Subject: Re: [PATCH net v3 3/3] selftests: net: packetdrill: test RTO fallback after partial undo
-Date: Sun, 11 Oct 2026 18:25:56 -0700
-Message-ID: <20261012012601.27658-1-nramaswamy@openai.com>
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net v3 2/3] selftests: net: packetdrill: test RACK after partial undo
+Date: Sun, 11 Oct 2026 18:25:57 -0700
+Message-ID: <20261012012601.27658-2-nramaswamy@openai.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261009171447.291802-1-ncardwell.sw@gmail.com>
-References: <CAL4Wiip9RyA-2=p0SVwBcn-oe0864FqqF3QMTCX_7=+ErcJp6Q@mail.gmail.com> <20261009171447.291802-1-ncardwell.sw@gmail.com>
+In-Reply-To: <5ce181b5-af31-48c4-9199-feadf24af27a@kernel.org>
+References: <cover.1791506907.git.nramaswamy@openai.com> <d0c538a03fb1cabd090927cb30a3b78fb485ba72.1791506907.git.nramaswamy@openai.com> <5ce181b5-af31-48c4-9199-feadf24af27a@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,65 +91,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Neil Ramaswamy <nramaswamy@openai.com>
 
-Thanks for the feedback Eric and the patch Neal. I took some time to read 
-through the code, and I have a few questions.
+Hi Eric,
 
-First, I think the core invariant we're trying to maintain is that
-tsorted_sent_queue and tsorted_lost_queue are always themselves sorted by
-transmission timestamp. A nice property to have would be that all the
-skbs in tsorted_lost_queue precede everything in tsorted_sent_queue in
-transmission order so that partial undo can always list splice these
-together, but there's the edge case you point out:
+> Was this test changed since last time?
+>
+> I thought I already reviewed it.
 
-> The "often" is the RTO case: tcp_timeout_mark_lost() leaves the skbs it
-> marks in tsorted_sent_queue, and they can be older than what RACK moves
-> to the lost queue afterwards.
-
-I'm struggling to see why RACK cannot move all LOST (going to use this as
-shorthand instead of TCPCB_LOST) and RACK-eligible segments from
-tsorted_sent_queue to the lost queue; I think that this would actually
-maintain the simpler invariant that tsorted and tlost are both sorted and
-that all of tlost precedes tsorted, allowing for O(1) splice. To do
-this, I believe that we would have to remove:
-
-		/* Skip ones marked lost but not yet retransmitted */
-		if ((scb->sacked & TCPCB_LOST) &&
-		    !(scb->sacked & TCPCB_SACKED_RETRANS))
-			continue;
-
-from tcp_rack_detect_loss, and instead continue to check whether remaining
-<= 0; if it is, we add the segment to a local queue, which we then can
-splice to the end of the lost queue at the end of the function. We would
-probably want to retain the skip for LOST segments without SACKED_RETRANS
-when remaining > 0 to avoid updating reo_timeout.
-
-It seems like this would also prevent subsequent RACK scans from having to
-ever reconsider this segment, since it would have been moved out to the
-LOST list. But mostly, this seems like a conceptual simplification. Perhaps
-it's undesirable to have RACK be moving around segments marked LOST by the
-RTO, but I will leave that call to someone else. 
-
-Finally, I handed the invariant that both lists are always sorted to an LLM
-and asked it to try to find exceptions. I think it provided a plausible
-suggestion that the RTX scan for retransmission can see a segment that is
-LOST, attempt to retransmit it in __tcp_transmit_skb, update its
-transmission timestamp, and then fail with -ENOBUFS, leaving the new
-timestamp there. This could cause either list to have a timestamp that's
-out-of-order which can cause a subsequent RACK scan to stop early and miss
-segements.
-
-I'm not sure if restoring the timestamp to what it was before the failure
-is safe. I also couldn't figure out how to get packetdrill to simulate an
-error like this so I'm not sure how to create a repro for you. Let me know
-if I should write out a sequence of events.
-
-> in case that is useful for discussion or using. It also proposed 2 packetdrill
-> tests (one that claims "This is the case that Eric suggested for segments with
-> TCPCB_EVER_RETRANS."), which I can post if there is interest.
-
-Did it propose 2 different packetdrill tests? If I understand Eric's
-suggestion correctly, he's proposing to just take the test from 3/3 and
-modify its final lines to ensure prompt retransmission without an RTO. Are
-your LLM's proposed tests covering cases beyond this? 
-
-Thanks.
+Sorry, I only changed the comment about partial undo to align it with
+the second implementation. Nothing else changed. I'll carry reviews
+foward in the future. Thanks for the review.
