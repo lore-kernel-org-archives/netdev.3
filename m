@@ -1,123 +1,103 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6C134F24E
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979D2385D64;
+	Mon, 12 Oct 2026 13:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791812944; cv=none; b=rkmm+QOBwqp5bN/v/mssfl1pTl3Ozwa6bNr98h2RuUcx3CVOrLwV1YJMcfcMRDYbDzs98qWhzXwxnCKorpqZAps/GqQCPLzYyd3QNmitowkWUiMCP85caY2hF87nFEY28r0lQV41HwC2ztwoBN9qFN7FWM4SzcyYkDrZgHfx/SA=
+	t=1791813072; cv=none; b=bmExEnhnZZg4hLi2mdVvtWqgoN6uSBpPTiUESiiGne4L3sLVQ+Ta4eEUevCBlny4IWEK49n6GKPtLBg9JJ6LjwsESjgySH8s5wQvsZHAjPxZS9Xoa3ggzB/IWzfCdpWuic0F6LQ/3k4HggA+BQbaZnFd3P6c4A9jlXyKjw5QrA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791812944; c=relaxed/simple;
-	bh=rGWBxA5Leg7jRIZfZqhjk4LTRA/0KXbi4AqEB9RQjHo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nQO+Dtd1HiiZksKIqESp94qhMaf4vHTJe/zLF7NI5bnCHJ3TWr3zPvQsspopcRYM1FgCKSp890QoRxbOEyhNn5j0qFMLtQ4ctAh220kJBYcXOfQd/JM87Y6OM9GrpZM/9ODAZsFzqMncSFXZ/01QJIDODfTLwLcaXEEyhL/M3dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LU9eFgS+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fY1z1iBQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791813072; c=relaxed/simple;
+	bh=wioaFwY7xuRuoR5xR/3foYooAYk/dKFJiHC1NDrxkjo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AW97NalftfYOaaTKlK6fAqAH/46LOxQkV3Ia3hKS6u6YOYqq5VqXHmf3pSwhXqUt964MY7dBLuRQAGuq9CVcCvWmw49vutcV90Tb6OdPBf+rh2Sx4lvYRdw3sHSuVkj2TuOiapHx2cRs2i5KfdlAU1ElyL9pD9UruhoVwiQ8eIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=aFDbhmSt; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LU9eFgS+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fY1z1iBQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791812942;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jsrdtBORkwTwhqxArtXou9zZU6guyDnY+FE3EhTpPw8=;
-	b=LU9eFgS+xPI+bPpKVvmQlyBb+Hs9h8qO7lPNNRsoxpmRgC6XCM6w87De1YNHbgYEUpLlHM
-	u/86/5LlbcM13qJvnrFpVqzT1Q20XkvSQmpbLsW1W8v+X6vBvTs1uJGN2moTwPx+T7VnGQ
-	cONzkvKX18DM5f6n9u5WiDUFtzCm+FQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-EDrNInkxNoSqXUQyfPAoTg-1; Mon, 12 Oct 2026 13:49:01 +0000
-X-MC-Unique: EDrNInkxNoSqXUQyfPAoTg-1
-X-Mimecast-MFC-AGG-ID: EDrNInkxNoSqXUQyfPAoTg_1791812940
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a020cf06c3so10344255e9.3
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:49:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791812940; x=1792417740; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jsrdtBORkwTwhqxArtXou9zZU6guyDnY+FE3EhTpPw8=;
-        b=fY1z1iBQVyeWuK0tpzTMsipqRnXMoR8HUA/YN5L4I1GuUWrx2ThwCUZdWcN9dgcPeb
-         vEU2m8BLoxsFw5omnYtnFqEeSq5KKQIXtPtRDOC1VyGjhAve4dKe7UA7CbOsC1wWRgQ1
-         Il0MulZ/oPfK1FP4pqIuc5LKV+UaB7iANk6Of2/Kid7ap/0l9+FIgNp3fhrX3xkArYjY
-         doMchNb6HxEsOeEY67XjalRWucSydFksHb14UOHkI06xjfHdCSkuz8HA6/2XqRIDxd5y
-         888WQTQcnCOphn8rmu9dyYKP3CEPHvX/OSJWwZsWog61I0Zf748U4Dv/x9tl8wBcDBxj
-         z+Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791812940; x=1792417740;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jsrdtBORkwTwhqxArtXou9zZU6guyDnY+FE3EhTpPw8=;
-        b=Aw+kik0cNunK3i9o/K/inMYf9iBTkGODNtGqDddxUvHMbZvZDXyWqDb8piz49UxJbp
-         TFRHf4qPTHddvdFccSiCQejfjjad/6ntB500vv42yfF8h9oJHezJUwQ1DtgP6YW58zxA
-         ebJlJGqFXzOML4RSFOKV7d+Awn733YKCiTuNquxTa6A2NGgmorTW5k8VgAS752WzvFfo
-         c04+9tLC18Aks+EJf3JxAf2/K7Ih3kgT2958AYUsvC73j0eggQc9cjBzehV6J3lRBu+L
-         5qDOQXnf6StbmQMKu6bM518H6bKgpclDlBR7KqDe0QG4x7ZzME+qfhqxlymvaEpNr4qX
-         s0Ow==
-X-Gm-Message-State: AFq9FYIt9VaunVaWncrKZeB+ICgOlRUmCHoM+A2z3ua7W+fJZiuCjQgu
-	InDklnRJknCx6PZg9GX9alGk0GEUsUEUYYwTpiz1p8+ZEspXFro9ryk/jM+MFXcPifsCQZ2rahW
-	6klJkA+E8wfShoOECCWpJOFYMI4COeu5m/kAgS7JOadzarJEeDA94I5nobrWllDO83A==
-X-Gm-Gg: AYBFou3aqINHhlO3gpUGwTyUinZB6oA1Qm1qyBrCw9pf/0hLjALBEmnFAUNELvLqy96
-	K9SbehVEafGCM4WHYk8bI2H8Wo5tgz0NVlTMpp2gS4tSYGwFM/EDhZcz2U4EtFL1nPsCrTKOWIw
-	cAG5NTC9KFACjJUwk9OcGteMxe/hfAct1eJ0v8jcf+zyN6Hz0lAQK5MFcjtFU/6XSyxya7sUwnm
-	+7l7kOoiMPfoVlNJFsGbvqnx/VsLfEMK3908PoV9mg3dQxseH6Ja6G0cwB66nBCvPYudT7gu8V+
-	YF4CrJ3aexEClOJGwpAQz0c9AUs3QC27Yb0yELS36SgS8/ZTk9b7Qt7HgBW2ek3wXDaYAGv083t
-	ksDo0OMF8po6uFoujrVULf1L4wfp7ZWus7YK3DV/W0ln6KhdxOSdncoh/QS3wXBCDqOXp1ujm7g
-	==
-X-Received: by 2002:a05:600d:8488:10b0:4a1:9078:911 with SMTP id 5b1f17b1804b1-4a190780997mr116146175e9.31.1791812939702;
-        Mon, 12 Oct 2026 06:48:59 -0700 (PDT)
-X-Received: by 2002:a05:600d:8488:10b0:4a1:9078:911 with SMTP id 5b1f17b1804b1-4a190780997mr116145785e9.31.1791812939169;
-        Mon, 12 Oct 2026 06:48:59 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18c1e33d2sm399106975e9.0.2026.10.12.06.48.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Oct 2026 06:48:58 -0700 (PDT)
-Message-ID: <833b5ef9-eda9-4c15-85cd-29202e0f87ca@redhat.com>
-Date: Mon, 12 Oct 2026 15:48:57 +0200
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="aFDbhmSt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791813072; x=1823349072;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wioaFwY7xuRuoR5xR/3foYooAYk/dKFJiHC1NDrxkjo=;
+  b=aFDbhmSthh7p4T+ewtnVIgZm7ZGSmNggmer+IGs8RsR8UCZ6XknjYyM6
+   rN5K+wy48KE3SYzE3DTFSHj8XbZZGiRRcth69foX2s/ozBOnEQb77Y1ht
+   M1jOnoNZQWQmvNEeq7F0KpUk/gjsMneZ4+9LiTQI+JQnj+QmbWTfL7/ns
+   ZOMaIhTaH9Qs662gPDhaI8IGUQ76E4Am2cYaDWmBVKM7/76d+fLvDrAjo
+   hKGPZWiO5Dopc8mHGc6kfiynDiMWLvgxuGLBVwi02t81/m8gXfNvpJZ+F
+   W249HDuZ37B5DdtSbPq3EH7HDH7y9CNt7GdpQ/uAbZmLsaKwowYYV/0q9
+   A==;
+X-CSE-ConnectionGUID: XjH6BadORmyCy/Lnbmh7Hw==
+X-CSE-MsgGUID: Aac2ORbtQzuFJC2QvNC/RQ==
+X-IronPort-AV: E=Sophos;i="6.27,153,1787036400"; 
+   d="scan'208";a="64904604"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2026 06:51:05 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Mon, 12 Oct 2026 06:51:03 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Mon, 12 Oct 2026 06:51:01 -0700
+Date: Mon, 12 Oct 2026 15:51:00 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+CC: <netdev@vger.kernel.org>, Doug Berger <opendmb@gmail.com>, Broadcom
+ internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
+	<horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>, open list
+	<linux-kernel@vger.kernel.org>, Nicolai Buchwitz <nb@tipi-net.de>
+Subject: Re: [PATCH net v2 0/6] net: bcmasp: Collection of fixes
+Message-ID: <20261012135100.n5fsyqsvwieq2q7y@DEN-DL-M70577.microsemi.net>
+References: <20261008210621.1374785-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: devmem: check uid and netns in
- net_devmem_get_binding()
-To: Kaifeng Wang <kaifengw@google.com>, netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, almasrymina@google.com, edumazet@google.com,
- willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
- sdf@fomichev.me, bobbyeshleman@meta.com, kaiyuanz@google.com,
- linux-kernel@vger.kernel.org
-References: <20261005210403.3206872-1-kaifengw@google.com>
- <179141784973.434549.3492874220530662715@kernel.org>
- <CAKkY-qOKHkuPfMk+1vhQjRymPKcG5P69CWFLYv46Xp6BiTXO5g@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CAKkY-qOKHkuPfMk+1vhQjRymPKcG5P69CWFLYv46Xp6BiTXO5g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261008210621.1374785-1-florian.fainelli@broadcom.com>
 
-On 10/8/26 23:40, Kaifeng Wang wrote:
->> Could this break existing devmem TX users whose TCP socket and netlink
->> socket have different owners?
+Hi Florian,
+
+> This patch series is a collection of bug fixes accumulated during a LLM
+> coding session. Thanks to Justin for the internal review and helping
+> with the last patch.
 > 
-> This restriction is intentional. NETDEV_CMD_BIND_TX was made
-> unprivileged specifically so that an application can bind its own
-> dmabuf directly and transmit on its own sockets without needing a
-> separate privileged helper process. As noted in the comment above
-> netdev_nl_bind_tx_doit(), bind-tx is meant for the caller to transmit
-> "on their own sockets". We are not aware of any userspace workloads
-> that split bind-tx and TCP socket creation across different UIDs or
-> network namespaces.
-Still there is slight possibility of breaking some weird setup, so
-I'm going to apply this one to net-next.
+> Changes in v2:
+> 
+> - address Sashiko's feedback and correct the commit messages and code
+>   accordingly
+> - add Nicolai's R-b tag where collected
+> 
+> Florian Fainelli (6):
+>   net: bcmasp: fix mib counters struct alignment with ethtool stats
+>   net: bcmasp: unmap previous DMA mappings on TX map failure
+>   net: bcmasp: validate minimum RX packet size in bcmasp_rx_poll()
+>   net: bcmasp: fix OF node reference leak for phy_dn
+>   net: bcmasp: account for offload header in TX short packet padding
 
-/P
+I tried to apply the series, but it seems like this particular patch got lost. As
+a consequence, it cant be applied with e.g. b4 shazam, and PW did not run the
+sashiko check.
 
+>   net: bcmasp: fix network filter lookup and wake filter pair allocation
+> 
+>  drivers/net/ethernet/broadcom/asp2/bcmasp.c   | 121 ++++++++++--------
+>  drivers/net/ethernet/broadcom/asp2/bcmasp.h   |   4 -
+>  .../net/ethernet/broadcom/asp2/bcmasp_intf.c  |  32 ++++-
+>  3 files changed, 95 insertions(+), 62 deletions(-)
+> 
+> -- 
+> 2.34.1
+>
+
+/Daniel
