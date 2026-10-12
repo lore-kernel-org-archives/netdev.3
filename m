@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33614AB1A6;
-	Mon, 12 Oct 2026 15:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A944A4821;
+	Mon, 12 Oct 2026 15:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791819720; cv=none; b=ERq8eeTEJclNJ8jP9pIn4uXnx/Wh5m56NcGIMdLixyVUadWZYDcIK5i07pFNoCxx4PAiMB2OnRBe7v904um5/mRxR67OhosNgAk4i0a9/HJ66bnkAOh6/DP/BHhySvgd7tHudDsuX6aS/X5dp5PbTnGIbR3FVxvRjHdXX20Kvjk=
+	t=1791819721; cv=none; b=mvZ0qjt28tRpfTdGglzImRuhvoLAjWWibKRc8O81Qfq4xFOU2rEe6S7+vO/mofIO3r+kcq2hjLsJy8Rv2/6DUl/4IzKPBwWgX0+uiidTVPY5vaw0V8/UWkgyscTvjUzQGsXKWTqboM47AoMBXEykOY/Na++F21wgvLolZQwvMJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791819720; c=relaxed/simple;
-	bh=yZ9SsIc249aRwfRHlkDfG8fT/TgA5OCr6NuE69xYyDs=;
+	s=arc-20240116; t=1791819721; c=relaxed/simple;
+	bh=XAnhz1mirDwmVj3aOExItfgA4mwZ21O63+rFq0efbFc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=g+wa6zgqhudsUeEXN4xauW9XmGrQ1TICPVeDa+i6m6p6Yc89dOMUvNaNtBCjtPABLSwrikVuTUmU1JrtNkaw2tbu0TmK1zHCbPLxbxdXtb+GcrrJ5S/O3Qhsu9BabzGVgSDgdbYo37enXHRhaXcEr6RBBPr/Z9bx7zDHbNOt6VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYXsfCUT; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=HR1bF64IfJPog6K0Eg/+blMoxcH4lN6i3aDetSDxqsd9/B0OvTCXUre2etuUzdraKZ71S0MF2hmTvwpuLALWyPjddMT7DoIMyU6M2zmq09sxxFmnVq6kwkgf1ukLDZrQ0SnIVsU07MzhOtxw2LcKjvznGFki1xqtlB77CFa1cEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fC52byWd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYXsfCUT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFA71F0089D;
-	Mon, 12 Oct 2026 15:41:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fC52byWd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A8E1F0089C;
+	Mon, 12 Oct 2026 15:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791819718;
-	bh=ujwFhpLz3XKASWHL3YRWTgjhGqU2MyFjle4dKcAC3s4=;
+	s=k20260515; t=1791819720;
+	bh=wuLf0VrLEynp1JMveews2MJ12aRA4lFDnGWjYHOdqT0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HYXsfCUTZ/ABUJW2XWAQCOeE0QSo8eGPn8RXD0FtVxDe+FVWGieulRPn+KW0s3/Hi
-	 NG6c5aFQWuZoRdr4zmYlV/cznfjmH8PN2kFU47+bMuxxiDdpVnO06vN6vl+isi8c3N
-	 UQ88+2+xzzO0iY4eBdAjH5lZHKHdHh7VNf6juX3mEJ7RGp8G6YfxDYCXWIa6LSZu2Z
-	 /f8CT3r9in2z36m1aTAlol+uQFGmo1M3sY5ER/Av9IwCdbw+ZzkZCl7oM1RkzT87VM
-	 EV/qpaczIXqft2B/iqlZwXMc1/UtOY5aQDYFXige3vCuGSMU4ATGinFQnuqhXZce0+
-	 9KuPe7b4DTn1g==
-Subject: Re: [PATCH net-next 06/11] net: ethernet: qualcomm: ppe: Add IPQ5424
- BM buffer configuration
+	b=fC52byWdfO2ZG6dmR23zbwbId4Uq0J5tDNvIZNz6W5wm6pwmCfwaED/zZwLpUVsrF
+	 dLM5oiyvSrn7nqKyQrKwJh2BahNPHPpO8E3CxYG8vIK+IYuKdNGJ+OAYcydNqixi/t
+	 X7BZiWPFgMLYMwgad3WbEPzlZj88VIqpwprE/tZUJ1mvaic5CsEdeTafT5BhH9GuYY
+	 84r1jUJ4iGPIsEq7+ghow9FAvOkbzXfSxnEsa44SchVsdbxP/6jCkqawMK5BfN88Ze
+	 t5w1Q9Jc/iTo77kHzHsaZVj3MRokMlTRZqEd+L9Fdn2m/ztaJhiHqYmC7aAn6aZBRY
+	 PYY7BuINC8vqw==
+Subject: Re: [PATCH net-next 07/11] net: ethernet: qualcomm: ppe: Add IPQ5424
+ QM configuration
 From: netdev-bot+sashiko@kernel.org
 To: jie.luo@oss.qualcomm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -38,10 +38,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com
-Date: Mon, 12 Oct 2026 15:41:57 +0000
-Message-ID: <179181971709.434549.2234734092674556107@kernel.org>
-In-Reply-To: <20261008-qcom_ipq5424_ppe-v1-6-16caf43e44ee@oss.qualcomm.com>
-References: <20261008-qcom_ipq5424_ppe-v1-6-16caf43e44ee@oss.qualcomm.com>
+Date: Mon, 12 Oct 2026 15:41:58 +0000
+Message-ID: <179181971879.434549.6176463312872998713@kernel.org>
+In-Reply-To: <20261008-qcom_ipq5424_ppe-v1-7-16caf43e44ee@oss.qualcomm.com>
+References: <20261008-qcom_ipq5424_ppe-v1-7-16caf43e44ee@oss.qualcomm.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,7 +55,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,126 +63,149 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] IPQ5424 probe fails at this one commit and works again after
-  the next patch.
-- [Low] The IPQ5424 BM USED/REACT debugfs dump reads the wrong registers
-  at this one commit and is fixed later in the series.
+- [Medium] At this commit, ppe_config_qm() succeeds on IPQ5424 for the
+  first time, so probe goes on to ppe_config_scheduler().
+- [Low] The new comment above ipq5424_ppe_qm_group_config
+  (ppe_config.c:317-321) says multicast queues 284-299 are missing…
+
+Pre-existing issues:
+- [Low] This problem wasn't introduced by this patch, but
+  ppe_queue_counter_get() in ppe_debugfs.c still loops `for (i = 0; i <…
 
 --
 
-net: ethernet: qualcomm: ppe: Add IPQ5424 BM buffer configuration
+net: ethernet: qualcomm: ppe: Add IPQ5424 QM configuration
 
-This commit adds a PPE type field so the driver can pick settings per SoC.
-It also adds the IPQ5424 BM port and shared group buffer configuration. Some
-BM register addresses and entry counts become per-device macros, because
-IPQ5424 has 19 BM ports and some BM tables sit at different addresses.
+This commit adds an IPQ5424 case to ppe_config_qm(). It sets the shared
+group0 buffer pool to 2010 buffers, unicast queues to 0-255, and multicast
+queues to 256-283, because IPQ5424 has fewer PPE ports than IPQ9574.
 
 > diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-> index 8a553902ffad1..3afa571193238 100644
+> index 3afa571193238..dec8eed772539 100644
 > --- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
 > +++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-
-[ ... ]
-
-> @@ -1472,12 +1535,23 @@ static int ppe_config_bm(struct ppe_device *ppe_dev)
->   */
->  static int ppe_config_qm(struct ppe_device *ppe_dev)
->  {
-> +	int ret, i, group_buffer_cfg, queue_id, queue_cfg_count;
->  	const struct ppe_qm_queue_config *queue_cfg;
-> -	int ret, i, queue_id, queue_cfg_count;
->  	u32 reg, multicast_queue_cfg[5];
->  	u32 unicast_queue_cfg[4];
->  	u32 group_cfg[3];
+> @@ -314,6 +314,37 @@ static const struct ppe_qm_queue_config ipq9574_ppe_qm_queue_config[] = {
+>  	},
+>  };
 >  
-> +	switch (ppe_dev->type) {
-> +	case IPQ9574_PPE:
-> +		group_buffer_cfg = ipq9574_ppe_qm_group_config;
-> +		queue_cfg = ipq9574_ppe_qm_queue_config;
-> +		queue_cfg_count = ARRAY_SIZE(ipq9574_ppe_qm_queue_config);
-> +		break;
-> +	default:
-> +		dev_err(ppe_dev->dev, "Invalid PPE type %d\n", ppe_dev->type);
-> +		return -EINVAL;
-> +	}
-
-[Severity: Medium]
-Does IPQ5424 fail to probe at this commit? This switch has no IPQ5424_PPE
-case. However, this patch now sets ppe_dev->type = IPQ5424_PPE for the
-qcom,ipq5424-ppe compatible.
-
-ppe_hw_config() always calls ppe_config_qm() right after ppe_config_bm().
-On IPQ5424 the path is:
-
-qcom_ppe_probe()
-  ppe_hw_config()
-    ppe_config_bm()    <- succeeds with the new IPQ5424 tables
-    ppe_config_qm()    <- default branch, returns -EINVAL
-
-Probe then fails with "PPE HW config failed".
-
-The next patch in the series, "net: ethernet: qualcomm: ppe: Add IPQ5424
-QM configuration", adds the IPQ5424_PPE case, so the series works once it
-is fully applied.
-
-Could the QM case be added here, or the ppe_config_qm() refactor be moved
-into the next patch? Either way, this commit would stay bisectable on
-IPQ5424.
-
-Also, the commit message only describes the BM changes. It doesn't mention
-the ppe_config_qm() refactor.
-
-> diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_regs.h b/drivers/net/ethernet/qualcomm/ppe/ppe_regs.h
-> index 746dfbb5a6821..441e8e04a80b1 100644
-> --- a/drivers/net/ethernet/qualcomm/ppe/ppe_regs.h
-> +++ b/drivers/net/ethernet/qualcomm/ppe/ppe_regs.h
-> @@ -386,17 +386,32 @@
-
-[ ... ]
-
-> -#define PPE_BM_PORT_GROUP_ID_ADDR		0x600180
-> -#define PPE_BM_PORT_GROUP_ID_ENTRIES		15
-> +#define PPE_BM_PORT_GROUP_ID_IPQ9574_ADDR	0x600180
-> +#define PPE_BM_PORT_GROUP_ID_IPQ5424_ADDR	0x6001c0
+> +/* Multicast queues are dedicated per PPE port. IPQ5424 has only 3 physical
+> + * PPE ports, versus IPQ9574's 6 PPE ports, so multicast queues 284 to 299
+> + * are not available on IPQ5424, and the buffer pool assigned to the general
+> + * 'group0' is larger here, 2010 versus IPQ9574's 2000.
+> + */
 
 [Severity: Low]
-Does the BM USED/REACT dump in debugfs read the wrong registers on IPQ5424
-at this commit?
+This isn't a bug, but is the explanation in this comment complete?
 
-The IPQ5424 group ID table now starts at 0x6001c0. The counter tables
-further down this file still use the IPQ9574 addresses and entry counts:
+ppe_scheduler_res gives each port 4 multicast queues. On IPQ9574, ports 4,
+5, 6 and 7 own 284-287, 288-291, 292-295 and 296-299. Three fewer physical
+ports only cover 12 of the 16 missing queues.
 
-drivers/net/ethernet/qualcomm/ppe/ppe_regs.h:
-#define PPE_BM_USED_CNT_TBL_ADDR		0x6001c0
-#define PPE_BM_USED_CNT_TBL_ENTRIES		15
-...
-#define PPE_BM_REACT_CNT_TBL_ADDR		0x600240
-#define PPE_BM_REACT_CNT_TBL_ENTRIES		15
+Port 7 is the EIP FIFO, and IPQ5424 doesn't have one either:
 
-ppe_bm_counter_get() uses these values whatever ppe_dev->type is:
+drivers/net/ethernet/qualcomm/ppe/ppe.c:
+/* 6 physical ports, 1 EDMA FIFO and 1 EIP FIFO. */
+#define IPQ9574_PPE_PORT_MAX		8
+/* 3 physical ports and 1 EDMA FIFO. */
+#define IPQ5424_PPE_PORT_MAX		4
 
-drivers/net/ethernet/qualcomm/ppe/ppe_debugfs.c:ppe_bm_counter_get() {
+The 256-283 range itself looks correct. The commit message gives the same
+reason:
+
+  IPQ5424 has only 3 physical PPE ports, versus IPQ9574's 6 PPE ports, so
+  multicast queues 284 to 299 are not available on IPQ5424
+
+Could the comment and the commit message also mention the missing EIP FIFO?
+The comment is still the same at the end of the series.
+
+> +static const int ipq5424_ppe_qm_group_config = 2010;
+> +
+> +/* Default QM settings for unicast and multicast queues for IPQ5424. */
+> +static const struct ppe_qm_queue_config ipq5424_ppe_qm_queue_config[] = {
+
+[ ... ]
+
+> +	{
+> +		/* QM settings for multicast queues 256 to 283. */
+> +		.queue_start	= 256,
+> +		.queue_end	= 283,
+
+[Severity: Low]
+This is a pre-existing issue, not one introduced by this patch. IPQ5424 is
+now limited to multicast queues 256-283, but ppe_queue_counter_get() in
+ppe_debugfs.c still loops over all 300 queues on every SoC:
+
+drivers/net/ethernet/qualcomm/ppe/ppe_debugfs.c:ppe_queue_counter_get() {
     ...
-	for (i = 0; i < PPE_BM_USED_CNT_TBL_ENTRIES; i++) {
-		reg = PPE_BM_USED_CNT_TBL_ADDR + i * PPE_BM_USED_CNT_TBL_INC;
-    ...
-		reg = PPE_BM_REACT_CNT_TBL_ADDR + i * PPE_BM_REACT_CNT_TBL_INC;
+	for (i = 0; i < PPE_QUEUE_TX_COUNTER_TBL_ENTRIES; i++) {
+		reg = PPE_QUEUE_TX_COUNTER_TBL_ADDR + PPE_QUEUE_TX_COUNTER_TBL_INC * i;
     ...
 }
 
-On IPQ5424 this has three effects:
+PPE_QUEUE_TX_COUNTER_TBL_ENTRIES is defined as 300. The PPE_CNT_QM clear
+path in ppe_packet_counter_write() does the same.
 
-- The group ID registers are reported as used buffer counts.
-- The react counts are read from the wrong address.
-- BM ports 15-18 are never read.
+On IPQ5424, wouldn't this read the queue TX, multicast pending and
+per-port multicast drop counters for queues 284-299? The clear path would
+also write to them, even though this patch says those queues don't exist.
 
-The last patch in the series, "net: ethernet: qualcomm: ppe: Add IPQ5424
-counter debugfs support", appears to fix this. It adds per-device
-PPE_BM_USED_CNT_TBL_ADDR(ppe_dev) (0x600220) and
-PPE_BM_REACT_CNT_TBL_ADDR(ppe_dev) (0x600280), both with 19 entries.
+A later commit in the series, "Add IPQ5424 counter debugfs support", makes
+the BM counter tables per-SoC but leaves the QM loops at 300. Queues 284-299
+get no traffic on IPQ5424 and only non-zero counters are printed, so the
+output may look the same.
 
-Could those definitions move into this patch with the other BM address
-changes?
+Should the QM loops have a per-SoC limit too?
+
+> +		.prealloc_buf	= 0,
+> +		.ceil		= 250,
+> +		.weight		= 0,
+> +		.resume_offset	= 36,
+> +		.dynamic	= false,
+> +	},
+> +};
+
+[ ... ]
+
+> @@ -1547,6 +1578,11 @@ static int ppe_config_qm(struct ppe_device *ppe_dev)
+>  		queue_cfg = ipq9574_ppe_qm_queue_config;
+>  		queue_cfg_count = ARRAY_SIZE(ipq9574_ppe_qm_queue_config);
+>  		break;
+> +	case IPQ5424_PPE:
+> +		group_buffer_cfg = ipq5424_ppe_qm_group_config;
+> +		queue_cfg = ipq5424_ppe_qm_queue_config;
+> +		queue_cfg_count = ARRAY_SIZE(ipq5424_ppe_qm_queue_config);
+> +		break;
+
+[Severity: Medium]
+With this case added, ppe_config_qm() now succeeds on IPQ5424, so probe
+goes on to ppe_config_scheduler(). At this commit, that function uses the
+IPQ9574 tables on every SoC:
+
+drivers/net/ethernet/qualcomm/ppe/ppe_config.c:ppe_config_scheduler() {
+    ...
+	count = ARRAY_SIZE(ipq9574_ppe_sch_bm_config);
+	bm_cfg = ipq9574_ppe_sch_bm_config;
+    ...
+}
+
+ipq9574_ppe_sch_bm_config and ipq9574_ppe_sch_qm_config give BM and QM
+arbitration slots to ports 4-7, and IPQ5424 doesn't have those ports.
+
+If a kernel is built from this commit, won't an IPQ5424 device get the
+IPQ9574 BM and QM scheduler calendars?
+
+A later patch in this series, "net: ethernet: qualcomm: ppe: Add IPQ5424
+scheduler configuration", adds ipq5424_ppe_sch_bm_config and
+ipq5424_ppe_sch_qm_config and a per-SoC switch in ppe_config_scheduler().
+That means this only affects builds between the two commits, for example
+during bisection.
+
+Could the scheduler configuration patch come before this one, so that each
+commit configures IPQ5424 correctly?
+
+>  	default:
+>  		dev_err(ppe_dev->dev, "Invalid PPE type %d\n", ppe_dev->type);
+>  		return -EINVAL;
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-qcom_ipq5424_ppe-v1-0-16caf43e44ee%40oss.qualcomm.com
