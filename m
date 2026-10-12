@@ -1,154 +1,158 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826C56FC5
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 00:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791763266; cv=pass; b=OxISpt80dV+bbwRF2ejan8b1ih4n7bKwpnt8g8DAZkNBG2gvE/F32dP3aWptih0Er/7+yFJXyb01NRGvhmma+SO6DKO8KI/jg7CqEDUaBXPyJs2sL71FNw22F4OhD8BX4UYza2jeOB6zDMSRnTWyNI4Xpjmpm3TvIf5zaG6k8KM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791763266; c=relaxed/simple;
-	bh=/eVb51aiLoTZPo76+XhF1s6aUGtH8cwOHZxfUJnZmJg=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=qYRZVPgwtkMTeEiVf6nUEGr/252LuQ3Dcj3bJ2ynFTZCRjzfaqrwjEIkqpsz8EIlWmKoKy17+tkcuVCSM8zSsU2ujXS5tOW1lHG7xKNLvr/+t5MOXRBpA8qcXA7xRjhRqCRZuB209X6YSaO0cWwOqnoSLyzOb3hThxYYYitIZyU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=vLnnYV2n; arc=pass smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E45A21FF2A;
+	Mon, 12 Oct 2026 00:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791763329; cv=none; b=Nvlh+iwh2Ie23GVH6s0DgfMD/3f8RILUjAGEElQS48j8DThAmfvQ4g8GCWMbOGQUYplvMVRVChnjJvaml8OSbCRfzkpUsSdZFC5wBYOISE2iVFKHKuGh24KJIiS2QEcZTVGqyoer2KPA5LcjQj8O1M2zNtMrn1r2p6z0qcQXpa4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791763329; c=relaxed/simple;
+	bh=q7xHYe+k0mPe1R+mJYS433as71ocv2X4aSPPcqnLYvI=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q2HhorM0iec6j/fFWw93RRwLjAzXjdISNdrmiPGKpRx9TgBww0KS1h9cwuVHYN3vNlAv9dRgTCFpdI8nRuOG7pTzokr/4f6o9jkMKrbu+FXgFvEnGEcKbTQD6vH/kf7q07IfiLjdOt/jlWDzv+Vtr/6I/AqJLJ5dWvnsTlQzTZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqFLIEAE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="vLnnYV2n"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-85377c8bc96so481941b3a.3
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 17:01:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791763264; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jSVoqvtnUSVoF8NJxo4DA6bOaiLXyQHtN2XPsvY5/jbdRCgT85l2ufaDXTNpJYI13o
-         DCVRPPHdYS7gUEmMEIMkazHEDxhud54xN4mu63JUuhtSGbbw2AwjyTP3YvyxgOxNqdbh
-         3Qzl/zKR5K9IyH4e/pmuu5nc16l24Wb8aUgTYj3x3T6zGe4PxiFmm0vOwuTxlcc8sJpX
-         5tFLW1WDCu79MVp423XPdBbkYEP1TU7DGfAdcxl0BRLvI+Q8CuOJChoEfjaaaARhndWK
-         rp/CTCvS9l4Pz7eCefHIUvw8SERWEm0kYDqLMBozCSF7g1bZTrfMnMmH3qjxJ9/ICAfN
-         gBqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=FdPTdSTHcvE2jwUYkG1pwEXG6KFrPTpT43gQS/R7sp0=;
-        fh=00TA1EFqu8bgPT+f+LMnPCDzYCpV0heaxcwSrsm7aso=;
-        b=aU0J7kZ9e7zCGDAtMkyz/xNknB/C1IWPg3UcoBVCwzwbGpnE3xPE4Ak9L19Ta94G2X
-         4hdsxOj83NJMwcq5XV2WoUzJRy3yuCxwUtI1XzMiOzLeBHd9OjWm2Af7WBES/QRDetZx
-         qGML5xVduFcVn4PbrzjT3mLqkBc2DyhP/ccgGfdrXWRdl0uwM57t8GUsEN6qWCHS1JBR
-         3ZnDglYzCfz0TnPSQ6Z/TsrL+wtswz76cA0NcuBNGciZTv1h8Cs7bOUzUW1Y58Yt4INP
-         1Mkem7JT2IZs71uXIZAw8Spm+zgzJwODsvDzwvLAV0zrEEDAZuyDl0dkW9+jtEjCXXST
-         VUfA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791763264; x=1792368064; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FdPTdSTHcvE2jwUYkG1pwEXG6KFrPTpT43gQS/R7sp0=;
-        b=vLnnYV2nmOkg4LInR0SObLjhE+z5e0X91VP3AjjXgvM5/PLz9mb1u5AArZdc7TTiVn
-         qv9JrEOl+8iOwVBW/6MIfpS9xr6gf2g8erXoZtupRhx+Nw6YVyYFQ9o9201WU4HOxkYK
-         /nyDjU7caHoPr8+hsLactmTLQCtQIeVUU5Ouw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791763264; x=1792368064;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=FdPTdSTHcvE2jwUYkG1pwEXG6KFrPTpT43gQS/R7sp0=;
-        b=ei1itLtRD/9qbFS/s7vQtK1QaFZb64dwFP67WJIGmeA4vDyZWQuuBNiGoImi7m1wtm
-         HMuFGd4HY9ojbS9o6FsmUYYMfdUFBwBT9ZAQupM0kVByDIRp6yAaKqhDbqC2LqYF1kyh
-         z5TVbEcxnYK0mSWZwMTQsIh7IcZpRlAeK6+xhhxx3n0Muzym5xmYQe9AKIgnKg2n8TiX
-         pHbZelMuNvQWPYE4UR/SMBl2hDYW59DavF2GVW+KDZtVn+XQJPtTgoallOvzIfIZBN1M
-         exCsYHqwbF4sItclzBFQzy/vF3vwTPhgk1HPyTYcbbw4TE/IZiN+wWLC0CFPVjnwSWcZ
-         H5zA==
-X-Forwarded-Encrypted: i=1; AKwUvByNxI9bC7GyNJEPLSbK3RADO+kESPlphPRRcnbC/rQVKSYXf5Hs1MKU4wQA+z/jJOVbgZ+3mrc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLkJ+Wl8V27CQ64WPXESvXWh+ZP3OZvcBjmHas2WoDarKqwjJuk
-	iZArFMmlvkccP0ZdCEEwQFjHrbwKNG/pLnDDX951bejgwCt+9UBT96XQab79wtLQtLvNIQoAvAx
-	/Z9oDn8IpB3A/fR9OuzjUp0gpBUmZ7pPVUkw/DFPu
-X-Gm-Gg: AYBFou3vaXrTW3T6A/nYlq2mY5A/i5qX7KteRKCIzIWT5fISpW+DNcCDVHl+4R32kw4
-	jZkRFG7QMisXmfeYXqPe27yFgYYBuSXxvfowHvcC1dz4b3rNvrOPMaSUQqFwEmIhZKFG0oZyOyq
-	MtXvkfX8OMVg+gsDfPJsDM/7mBnr2QAQN8Bc6+YpU6bWgqjpbtoiGTTh2DbA7l2Zoyrmd1XgNs6
-	UDgg4ns3B4rEQhBsyqQw2hM5JyeSaqq9+8nz9uj4azx9M3nvgfRffyJS8vsUaM6YNXkpWH9IU39
-	H6V9FYhhJ+AP0zBJswpI1Mu059QggDye5n0zUBmBVKBX+IHxI0UnsFZCscnAMNJt25G+xj+zNZ3
-	tbFQOX6pIDTfrb3lklLLNsCPnoNgN9yYnAg==
-X-Received: by 2002:a05:6a00:4f87:b0:881:1fb6:a81 with SMTP id
- d2e1a72fcca58-897c3ff538amr6409692b3a.3.1791763263617; Sun, 11 Oct 2026
- 17:01:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqFLIEAE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7A41F0089C;
+	Mon, 12 Oct 2026 00:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791763327;
+	bh=UOBLYemmNMySix3BY2EnTEqYJu43hmHq/DXqqMBM8PE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lqFLIEAEHlPW4cfy1h+9Kf9T4Z10wWPgq2PVKAzXmqJ/RFOQP2VuYM4FmH/99GOYW
+	 aHjALvaU0lZUx1D9ZdwGPkS92L7ZHxWpS/QegI68SuVDDotExHIFSoY/RSLHHak4dJ
+	 lO/0RKs60cP5sDWxYw/YvCZ6qUMdNaV6itD6uS0r5xdpG+XjvaPkDv0I34eKSvEGYh
+	 c091zi9moFHz+Z6eyMhXYQ9eAR8LMYsX239Ldi9W8trsCYQTUs8L8RWpkJuXJTqkmf
+	 kViIyINhffiNztV3/BEk2RBdbMw25goa+UxvIqUkZCOX/ljYICiYYnCeaPZrrOcwQA
+	 93exXXblq0X1Q==
+Subject:
+ Re: [PATCH net v2 3/3] ptp: qoriq: fix support for PTP_EXTTS_REQUEST2 ioctl
+From: netdev-bot+sashiko@kernel.org
+To: vjardin@free.fr
+Cc: yangbo.lu@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com, jacob.e.keller@intel.com, kory.maincent@bootlin.com,
+ claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, wei.fang@nxp.com,
+ xiaoning.wang@nxp.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, ioana.ciornei@nxp.com
+Date: Mon, 12 Oct 2026 00:02:05 +0000
+Message-ID: <179176332574.434549.17881202126873427960@kernel.org>
+In-Reply-To:
+ <20261009-for-upstream-qoriq-ptp-extts-flags-v2-3-0f4eeff2295d@free.fr>
+References:
+ <20261009-for-upstream-qoriq-ptp-extts-flags-v2-3-0f4eeff2295d@free.fr>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sun, 11 Oct 2026 20:00:49 -0400
-X-Gm-Features: AclHuK9ageku3n-y1VbBhtDWxP_mIgLctOxdIk013W-IfXTTayhTYte9JAaENEE
-Message-ID: <CAM0EoMn6JoLVHdhX1GB1wBcw3fVZ42ePKXDqsWK-4STj87vEEQ@mail.gmail.com>
-Subject: sashiko or lore confused?
-To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Victor Nogueira <victor@mojatatu.com>, 
-	Linux Kernel Network Developers <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 
-Some threads seem stuck somewhere in the ether for sometime now. I
-asking because i have a backlog and dont want to flood things..
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-1) Sashiko nipa review is missing on the act_api duplicate-index series
-========================================================================
-The nipa sashiko never produced a review for this series: gemini
-sahiko reviewed it ("No issues found").
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-  Original posting (v1, 2026-09-22):
-    https://lore.kernel.org/netdev/QDISC-K1TH.v1.20260922072206@mojatatu.com/
-      [PATCH net 1/2] net/sched: act_api: reject duplicate actions in a batch
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-  Reposts (same content, no version bump) after Jakub flagged that 2/2
-did not land and Simon on that repost  it was probably the W=1 failure
-that deterred sashiko from reviewing:
+- [Medium] The commit message says that making the legacy
+  PTP_EXTTS_REQUEST ioctl strict "cannot be avoided", because the core…
 
-    https://lore.kernel.org/netdev/20260925082237.xktTTrRQRmp_V8OKNBxFnnUlj6a452UO12AQPOXYlPc@z/
-    https://lore.kernel.org/netdev/20260925082238.ApYMOyeo4f2cyHtNpBH4bmakwqO17BYdV-HiDQLVM3s@z/
-    https://lore.kernel.org/netdev/20261003095453.4jiXbPK5mkXck0VOLiLu3sM9l-NGfDiZ4G96YKNDV-0@z/
-    https://lore.kernel.org/netdev/20261003095454.A4i__8DE05M3wQB_gihs9BDHXVQXu0XpMHEs0y-k3Ow@z/
+--
 
-  Thread traffic:
-    https://lore.kernel.org/netdev/20260924102910.09e9c601@kernel.org/
-    https://lore.kernel.org/netdev/20260924103222.239e3d45@kernel.org/
-    https://lore.kernel.org/netdev/20260924134244.1824ed80@kernel.org/
+ptp: qoriq: fix support for PTP_EXTTS_REQUEST2 ioctl
 
-  Sashiko:
-    gemini:
-https://sashiko.dev/#/patchset/QDISC-K1TH.v1.20260922072206@mojatatu.com
+This patch sets .supported_extts_flags in ptp_qoriq_caps to
+PTP_RISING_EDGE | PTP_STRICT_FLAGS, so that the PTP core stops rejecting
+every PTP_EXTTS_REQUEST2 request. Because of this, the legacy
+PTP_EXTTS_REQUEST ioctl now also rejects falling-edge and both-edge
+requests.
 
-2) What is still left on these two?
-===================================
-(a) act_api_delete_duplicate_index_refcount_uaf (links above). After the
-    2/2 delivery glitch and the two reposts, is anything still
-    outstanding from the maintainer side, or is this only waiting on the
-    missing nipa review?
+> This also makes the legacy PTP_EXTTS_REQUEST ioctl strict: a request for
+> the falling edge, or for both edges, now fails with -EOPNOTSUPP instead
+> of being timestamped on the rising edge. That cannot be avoided: the core
+> adds PTP_STRICT_FLAGS to every PTP_EXTTS_REQUEST2 request, so a driver
+> has to declare it to accept them, and once declared it applies to both
+> ioctls.
 
-(b) teql_xmit_path_pre_existing_bugs -- series [PATCH net 0/2] QDISC-6HS9,
-    sent 2026-09-29. Both Sashiko providers reviewed it: gemini "No
-    issues found"; nipa one Medium (commit-message doc wording) plus a
-    pre-existing, out-of-scope item (the consumed-skb UAF, tracked
-    separately). We do not plan a respin for the doc wording. Is
-    anything else outstanding before merge?
+> diff --git a/drivers/ptp/ptp_qoriq.c b/drivers/ptp/ptp_qoriq.c
+> index 76272e5ac5b85..bcd29104effe7 100644
+> --- a/drivers/ptp/ptp_qoriq.c
+> +++ b/drivers/ptp/ptp_qoriq.c
+> @@ -355,6 +355,7 @@ static const struct ptp_clock_info ptp_qoriq_caps = {
+>  	.n_per_out	= 0,
+>  	.n_pins		= 0,
+>  	.pps		= 1,
+> +	.supported_extts_flags = PTP_RISING_EDGE | PTP_STRICT_FLAGS,
 
-    cover:  https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com/
-    1/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com.1/
-    2/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com.2/
+[Severity: Medium]
+Is the "cannot be avoided" part of the commit message accurate?
 
-    Sashiko:
-      gemini 1/2:
-https://sashiko.dev/#/patchset/QDISC-6HS9.v1.20260928064754%40mojatatu.com.1
-      nipa   1/2:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v1.20260928064754%40mojatatu.com.1
-      gemini 2/2:
-https://sashiko.dev/#/patchset/QDISC-6HS9.v1.20260928064754%40mojatatu.com.2
-      nipa   2/2:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-6HS9.v1.20260928064754%40mojatatu.com.2
+In ptp_extts_request() in drivers/ptp/ptp_chardev.c, the strict bit is
+only added for PTP_EXTTS_REQUEST2. For the legacy ioctl it is always
+removed by the mask:
 
-    nipa review replies on lore:
-      https://lore.kernel.org/netdev/179077366943.434549.8458923511073715827@kernel.org/
- (1/2)
-      https://lore.kernel.org/netdev/179077367081.434549.3367341827161501919@kernel.org/
- (2/2)
+drivers/ptp/ptp_chardev.c:ptp_extts_request() {
+    ...
+	if (cmd == PTP_EXTTS_REQUEST2) {
+		/* Tell the drivers to check the flags carefully. */
+		req.extts.flags |= PTP_STRICT_FLAGS;
+    ...
+	} else {
+		req.extts.flags &= PTP_EXTTS_V1_VALID_FLAGS;
+    ...
+}
 
-cheers,
-jamal
+PTP_EXTTS_V1_VALID_FLAGS contains only ENABLE, RISING and FALLING. The
+.enable callback can therefore tell the two ioctls apart by checking
+PTP_STRICT_FLAGS in rq->extts.flags.
+
+Drivers in the tree already do this. mv88e6xxx declares
+RISING | FALLING | STRICT and rejects the unsupported edge combination
+only for strict requests:
+
+drivers/net/dsa/mv88e6xxx/ptp.c:mv88e6352_ptp_enable_extts() {
+    ...
+	if ((rq->extts.flags & PTP_STRICT_FLAGS) &&
+	    (rq->extts.flags & PTP_ENABLE_FEATURE) &&
+	    (rq->extts.flags & PTP_EXTTS_EDGES) == PTP_EXTTS_EDGES)
+		return -EOPNOTSUPP;
+    ...
+}
+
+sja1105 does something similar in sja1105_ptp.c.
+
+Could qoriq do the same? It would declare PTP_RISING_EDGE |
+PTP_FALLING_EDGE | PTP_STRICT_FLAGS in ptp_qoriq_caps. Then
+ptp_qoriq_enable() would return -EOPNOTSUPP when STRICT, ENABLE and
+FALLING are all set. That fixes PTP_EXTTS_REQUEST2 and leaves the legacy
+ioctl lenient. enetc_ptp.c also uses ptp_qoriq_enable(), so the same
+check would cover enetc.
+
+As written, with the Fixes: tag, this is going to stable. Legacy
+PTP_EXTTS_REQUEST calls on QorIQ timers that ask for the falling edge or
+for both edges now fail with -EOPNOTSUPP. Before this patch they
+succeeded and were timestamped on the rising edge. Commit 7c571ac57d9d
+calls the legacy edge flags hints that are not expected to be enforced.
+
+testptp hits this path. Running it with -e and -E 2 or -E 3 sends
+PTP_EXTTS_REQUEST with PTP_FALLING_EDGE set.
+
+If the stricter legacy behaviour is intended, could the commit message
+say that a lenient alternative exists, rather than saying the change
+cannot be avoided?
+
+>  	.adjfine	= ptp_qoriq_adjfine,
+>  	.adjtime	= ptp_qoriq_adjtime,
+>  	.gettime64	= ptp_qoriq_gettime,
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261009-for-upstream-qoriq-ptp-extts-flags-v2-0-0f4eeff2295d%40free.fr
