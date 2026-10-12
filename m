@@ -1,100 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3E5377A85;
-	Mon, 12 Oct 2026 13:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10864379C5E;
+	Mon, 12 Oct 2026 13:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791812151; cv=none; b=A686UbDryzNrlKL9HMdLxNIScI/JpU6ZkT8I6LCB6znHqbNDRrdtVqm1kYGRhINvHIW13Rz0bVfAuAFiECqcKZibfnqdOO/CWu8Qfv2iiiecXkV6lzrmYjXCmYdhNGitlJRCTm+eUrGswaq4mIRGRYGA5H9ZXF2BK8A62QP9fxE=
+	t=1791812156; cv=none; b=RS3CeuomPl5s6ELs/AX30XefsYeWX4d72MW/yiU7vMteKcQDSEUejIzhZj+Z7lgbnJDY8ziNojrTt1sxcozpsaQNz8t1Ktrou9rSZ5rTKMvhT8pjxzvPJEzHAsn2SH26jfBczYTAuM8Yg5tkEQf5WWHVkIidn5hL/rvHjdmzAp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791812151; c=relaxed/simple;
-	bh=o+uCDYJoalpmAuog8NV49AnsAlRF13+Piyp8UDICu2o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=o0K9VbVfkZ2dznuqWrpw99P+pPYXdwDDGWZl9iJ1Hic+CsljEEmf5IzyQe/3WDFPz1sSoETkBJKrEFVFa1yuEz9878nBgrOHEearklapm7r6dj3tJ8UbBDqtu165nAioyPV36k8Bh01sJA18o6dKsRryqSsIWPQHovnBoIbdhCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/2WL+e6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791812156; c=relaxed/simple;
+	bh=Pj+zytdzrV/KVroohs8MURj9Nv6CGRAXvzVJT1zVv+4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tzL68afB7TEoxylCjYfz9HNQh5qqzi5q+O1codpPPvb54BC2V7mvPIbLAchMvqaBZUaLHU/iqrfTPAg73hdp0NNG5bBqScXOrObNuk8S4j4aoQbq5T4a2PHifsor8ZZIj80sk5F2wff6Xf0agbwmxOpPM3pruQ1DWcwhi9mexDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OJvI5iJz; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/2WL+e6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995621F0089B;
-	Mon, 12 Oct 2026 13:35:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791812150;
-	bh=o+uCDYJoalpmAuog8NV49AnsAlRF13+Piyp8UDICu2o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=P/2WL+e6tvtsoWcuP1/W1CbAFCWX76eSnnRd2rI+MdYmKTxpUvBBVRAfO43q0jIbd
-	 cyCRRSikZj4+Rv+LoAffYF6r+6ARwS2V2SDiKtPLNLydcTSC4Jqp9cg6Yag5yZxIO7
-	 sleoR9wlkoYUlKZd+9/uZuxGXDfV30ece5Yhc7xNNTq7h4dmRs6GYiA+KoJ7vlh4Uq
-	 vJxTo8Xh01DqDP9QoGGDFbm/NigqCIeOOB2J4NcBnwc0vAA76p+aQk9+aduExqYJvi
-	 wHmP9EhPEr96f3I0B4Bw2XGSQorxdja748qwIRzBJl8TdmsCNcMEbnqTXkUWhPNkXy
-	 YIhX0N8sy9lVQ==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Magnus Karlsson <magnus.karlsson@intel.com>, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
- <rdunlap@infradead.org>, Alexander Duyck <alexanderduyck@fb.com>,
- kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, Jesper Dangaard
- Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
- <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, Pavel
- Begunkov <asml.silence@gmail.com>, Jens Axboe <axboe@kernel.dk>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
- <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
- <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>,
- netdev@vger.kernel.org, bpf@vger.kernel.org, io-uring@vger.kernel.org,
- "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, Weiming Shi
- <bestswngs@gmail.com>, Nikolay Aleksandrov <razor@blackwall.org>, David
- Wei <dw@davidwei.uk>, Alexander Lobakin <aleksander.lobakin@intel.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, Mina Almasry
- <almasrymina@google.com>
-Subject: Re: [RFC net-next 04/15] net: Let memory providers set RX buffer
- headroom
-In-Reply-To: <asPVkD_QwZtqVLs4@devvm7509.cco0.facebook.com>
-References: <20261002190018.696925-1-bjorn@kernel.org>
- <20261002190018.696925-5-bjorn@kernel.org>
- <asPVkD_QwZtqVLs4@devvm7509.cco0.facebook.com>
-Date: Mon, 12 Oct 2026 15:35:47 +0200
-Message-ID: <87cxtfca8c.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OJvI5iJz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Pj+zytdzrV/KVroohs8MURj9Nv6CGRAXvzVJT1zVv+4=;
+	t=1791812153; x=1793021753; b=OJvI5iJzMf4wiYa5zObYZRJm/pVupZBmc8uQxoCVcQiu1Kp
+	d7EvyuEyQSBLECQYO/VPdjYojTps95+sRvMxV7JfRK/2mXp3bXYnQgU1ttSTtvklj4MkIPCN9xuwz
+	by6HdcpuN85QgAVmVjJxcZioE8aj7uUMAtoahNTA7b5MAbS2xkUh2+SpR83Itzye8zlIDZVBADHVP
+	vsGgcUxi2RmFKJZTPnGbCaJR74RUZVVQLV25Sy7mxJ45eLtGQTUjFNFWHcClJzumNaklGCjfushkH
+	8u4cVC5TGal0zSIkmF9jilDkDgxe2zbhMqkaCRc7eMzOG4OOXFWMYp3J3kbWMzYA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xGGBr-0000000FfzR-2qWo;
+	Mon, 12 Oct 2026 15:35:43 +0200
+Message-ID: <0361e4f89508eaf9fea291d949e4eb21f8d6e839.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: cfg80211: allow IR on a channel the wiphy already
+ operates on
+From: Johannes Berg <johannes@sipsolutions.net>
+To: TangYi <1914018426@qq.com>, linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Date: Mon, 12 Oct 2026 15:35:42 +0200
+In-Reply-To: <tencent_2B956CE56BB4DE6A4748896922E04666FD0A@qq.com>
+References: <tencent_2B956CE56BB4DE6A4748896922E04666FD0A@qq.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-Stanislav Fomichev <sdf.kernel@gmail.com> writes:
+On Mon, 2026-10-12 at 20:59 +0800, TangYi wrote:
+> Self-managed LAR devices (e.g. iwlwifi) that have not yet learned a
+> regulatory domain flag their channels as NO-IR, typically without
+> setting IEEE80211_CHAN_IR_CONCURRENT, even while the device is
+> associated and communicating on that very channel.
 
-> On 10/02, Bj=C3=B6rn T=C3=B6pel wrote:
->> AF_XDP lets userspace choose a headroom in front of the packet data
->> in each UMEM chunk, and the kernel adds XDP_PACKET_HEADROOM to it. A
->> driver whose buffers come from an AF_XDP memory provider must put
->> packets after this headroom. The driver sees only the page pool, so
->> it has no generic way to learn the value, and nothing checks that
->> the driver supports it.
->>=20
->> Add rx_headroom to the provider parameters and to the queue
->> configuration. It is the full headroom, including
->> XDP_PACKET_HEADROOM; zero means the driver default. Add
->> QCFG_RX_HEADROOM. A provider that sets a headroom can only be
->> installed on a queue that supports it; otherwise the install fails
->> with -EOPNOTSUPP. The driver checks the value with the rest of the
->> queue configuration.
->>=20
->> Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
->
-> This is also a bit confusing to read on its own. Do we not need to
-> convert existing users? The next patch does not seem to use this new rx_h=
-eadroom?
+This isn't how regulatory works, sorry.
 
-Existing providers leave it at zero and keep their defaults. XSK sets it
-in patch 9, and fbnic uses it in patch 13. I'll fix the split so the
-users are easier to follow.
-
-
-Bj=C3=B6rn
+johannes
