@@ -1,96 +1,216 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazon11013004.outbound.protection.outlook.com [40.107.159.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF1D477991
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798775; cv=none; b=JHHvl+H+i+hClKPFyPsNgkyKZl+pBHHfUTp1JXU67lUW+yRbN99U9qvOnqKk8Z6Bd1sy3tQUSDSXEtFl+6pkDW75p5JVV3L9mRAMLzZeKDteV8gfSECJLVIPfQrFPlmMNOaaOzN4DjW34syGVau80O2YmWZ6hAy2n7/+ktMLFpM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798775; c=relaxed/simple;
-	bh=g+eiYRaDlWc8NjpLGUhd5rVDJrvMRpN/6l2pR2vwbTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lupnd/mqa0xO9byQfkNSQFp2kNwEKzSD9pLIOkN1jFwpxlFjOiJImopkIlqMbjqcn7irC4rzu3Qe64tgTlVc6IbdT71rQQqAVL6Oi7oYsHBV27Q00HrNrS03YBF1cT2SLCTdrEFXr6FNf5oxA+TbLawWp6CQlGZWiLCcc93azm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=frJs6bvH; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33E533F37A;
+	Mon, 12 Oct 2026 09:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.159.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791798898; cv=fail; b=VSsSsGCMO/lan0YLb815QWJlcjHWQNGQtoEAHwHYswDPieyb8X1s9NWc6sgXqmNVRVLMuAgcuUV9W9Hp+B8qTVzRCp3wOfMolSH5oxHmmR7L/OVyNRiqMn7MtuTEBq+uOg6ZxdgKBQtBA8GjJNEJCTyT5DdA0F4KQ6b3ZC7Oxqg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791798898; c=relaxed/simple;
+	bh=qLiWIIpxY+eCUm2ZBc1GhFjvc6/RJ+HI7ylaHf8Rcds=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=OH2ja+jAaoGtnD1vuxQVwoIab9K9b037KvubnOU4BfKRheIG+bedIYAVAJSAp85V//hNW7k+gHxwpxPnz6qsmoecsqNe3ioZK2/juFrijWcmULo8VOxlIyIbm/rwvBIEOJEJvJ3ND+THCv1hN/eLhPwZnSE5LfsahNIKz8ZKe/g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=WiolY92s; arc=fail smtp.client-ip=40.107.159.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="frJs6bvH"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-868b3248b2cso1364193b3a.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:52:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791798772; x=1792403572; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=g+eiYRaDlWc8NjpLGUhd5rVDJrvMRpN/6l2pR2vwbTM=;
-        b=frJs6bvHieGDA6PRbKUQfd3z+Uxy4OULY502osYW1j3gyrlCzKcSDvszOLAgpzCLiN
-         t5Epsj65lTWxN59tncCLIQeR8uGUZMHU5Wz+Bykq/I1ZZ8L1G4L54d0UzKMeJnfDONS1
-         hoLOmjicbgzjOHEhPU3gu2zwPcxFh17szpNV/XJ1zF1h9T1kQqXM3GQyeBc++dglcrs2
-         y0h6av6pr/dnGDAPYUorsR/A/WRdVpJTXdIeXG1MgefQZnsqtw6VmCpgcCo41J7lFxD8
-         iGEEs9OUuOyuTcmve2EXzt/am36316WiBJkLRd3q+wSYhYm/5jIeXWDTl5qSPmgykNse
-         ypag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791798772; x=1792403572;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=g+eiYRaDlWc8NjpLGUhd5rVDJrvMRpN/6l2pR2vwbTM=;
-        b=L9P9tQWMvoi+XiE06PrB2DCooW0eJjTT0RnE3IXreH0CuOUrNnntG5iDFQJsrwXqhU
-         MkUin9Q8qohmAw8ru4bDfO7YnhRt7jO9xKdeTsqRh33f4yZASBI+8CCGbngLGDx1b9rU
-         V6jGIgET4QYyPFzypsgl+cJEl7Irm2LhWihvQOELtjlwrOeNTVxVNbvN2apXtFsfAcgY
-         Y2UgFWTFuWIc5JDzxUfSbJrgNCyxo3OHC1zkHFYNFfxRfD0oQEPx9I/qMenMHe7BfT+U
-         npTa10dqKEULgYRExhLoXDuEJbkmT/v0negP3d/w4QSndjuofkuNrZJ/UfA/hR0Xwunt
-         warg==
-X-Gm-Message-State: AFq9FYJ3+SDx4VVJ9zPhtAq4DxYf2jly2J/27UOEI5eLfJJsgzhZuklx
-	X+CouXCnGcB1xv+xdbyY4C1b/Lxxp1xAGxqcISZq4wxZSzkhUer6dznrnQPTjthb
-X-Gm-Gg: AYBFou0lVlsevSQUo+FyG2lJd2YTnn/IL2Dl6zwYQv2NI3c9iRRgxMRjE4MNJqZQSdP
-	NmgXI9eOsfa/Rkbq1Vgya9ynyKaUD7RZoaaqGngxcsgBbp09L63Xon2vKU3wrp96dblL9u1Ilzg
-	jE8u5xl1/K9sn2N/NXj30Yhb2qnC+L/AgHtYLZpz6ojZ/Gi1agTOQNI/zuOKDa/KOxhy9rgha3T
-	zzyJdFzYP7SCJoI8HIjkcm9sqWjrw7k3WWVtg5kyquS6WQxIFV2VZ1QspKgAFyGRFcwfZj4Hc44
-	OpjE104Bqdb0awUkH2R8LxAQDFsmF19J2QLE4pqjdsAIt5f8D7iCnDGobWnDMHYWK11VFc/iR5k
-	Hdc4NhTexb9gC/hsd5ZNEhUTFriKrm5yWbhh50LH1hQavYVpl3bcXW8fFCVeqA8xJOnHyMoyOYm
-	3OTTszKXT/Oh3RJ2afQFvZHZBfIXNnEHj0VQJQ33ZHedvahYitkpMJh8ogVsEh9JywH4XyIQjFg
-	daWsOTaSwvFo9/EiMevZZ53AcbeFMBuYuFDFA==
-X-Received: by 2002:a05:6a00:f93:b0:890:92c9:9630 with SMTP id d2e1a72fcca58-897c8f6e633mr7215044b3a.60.1791798772504;
-        Mon, 12 Oct 2026 02:52:52 -0700 (PDT)
-Received: from obadmin-Precision-3680.atlascopco.group ([167.103.3.1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c41bbb27sm3671550b3a.40.2026.10.12.02.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 02:52:51 -0700 (PDT)
-From: Sahaj Chaudhari <sahaj123.sc@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org,
-	aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="WiolY92s"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zGcT9My1ZHRNyTRsHsSGZA01lenu6FTFC8sCQaDq4y82g25k54jVs0Y7rbVTvBXK3hNXv8Ava8iOXc+isuxoEf2CJwPa1dt8v00ii+nIpw2sx8CHp7qupPp6EgoVt8B8xlYIX8fumSCILU45K94L1seZ74Bb4aKLZMaLA9K4fgyVE2jA119AUCfFFHg0DOBO/kkFSAlZ12Ke+mhLPVNes94ObfOhK9pvTtJqSuwhiCFAEgiSlLBVZoqe4MzeAFv0qH5U5kNcAKUcDdh7jH9JVYtuXphumayuvfXz0pZW/XcM39DVmklV8rt81Lj25SkzYJ8XdWDTu3DKVvl+VA08YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=infw5/sJ0BLaKSBh6uwlSvMKrz1OwLcPBMHdfAIFrxw=;
+ b=bZeQN/DHQxfAEMPNxASvNc0MF0WsyT74iUsO7oq5hn7xnlaeLq+A49g8j3ME2L5a2yRFGfu3qr0MHqazE3lT1kXNEAmmBIuxPkg1gmSnAqFeFhvbOywbqr3BQFkT+v4UZ/Mdn8fiPLrV2awUuLcCZD2z/FBmO2tfWfPXr0zq0W9hswa27nJHADwBkoQLAbfLAgvVhR8kNJ8diC4kXX0cTWPaEhM7L7zOgbiEpaYrx5EBcbIIyFc9+nwfFpxJwbxV2KF9wk0OOvlKl+otjBrkDdxHipy3jYm3NMfkpF4WM0/M35L/Pnf0H/ebsrnYy1TRU5a6nevlYcXfn1Jwf6QFGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=infw5/sJ0BLaKSBh6uwlSvMKrz1OwLcPBMHdfAIFrxw=;
+ b=WiolY92sX4t8k6CP2rrLzyjiDnJwyIlVyG34+DYOvkAqKC5/AyPXfKeCJI2WgtYird3C2JCCz7pEWWcqkTDsNuWgMjjRw+K6kmliY91++YeYLJDe38BSRRjloIXZz6ZCxrs6r9FV+rZDSAcIijQqMYjsmWbRkURhufzZF3oUdrotsEcvTpHKfhgqGjJ8WUA5brTMzIg8m8M2bTlC+r1UfUiBRhYljTTBm5v3hG0Ra1G6Kb7HUVGDYP6lc3vCfPLwM6uMc7bjustt/jmZMIchj5NbvqD9b3eO8WVBI1mtQgLbBYmogPmhyoN/jiIltSqqFDsKaKhU2Nc/nWtNTgI+Ag==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
+ by DBAPR04MB7480.eurprd04.prod.outlook.com (2603:10a6:10:1a3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Mon, 12 Oct
+ 2026 09:54:53 +0000
+Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
+ ([fe80::a9a5:cf83:dbe8:1f74%6]) with mapi id 15.21.0496.018; Mon, 12 Oct 2026
+ 09:54:52 +0000
+From: wei.fang@oss.nxp.com
+To: xiaoning.wang@nxp.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	edumazet@kernel.org,
+	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	shuah@kernel.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org,
-	sahaj123.sc@gmail.com
-Subject: Re: [PATCH net] selftests: openvswitch: Test SET on later IPv6 fragments
-Date: Mon, 12 Oct 2026 15:23:28 +0530
-Message-ID: <20261012095328.3194911-1-sahaj123.sc@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <179162316732.434549.3008431843792004994@kernel.org>
-References: <20261009090629.1694991-1-sahaj123.sc@gmail.com> <179162316732.434549.3008431843792004994@kernel.org>
+	richardcochran@gmail.com,
+	linusw@kernel.org
+Cc: wei.fang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v5 net-next 0/9] net: dsa: netc: add PTP support for NETC switch
+Date: Mon, 12 Oct 2026 17:59:15 +0800
+Message-Id: <20261012095924.1129312-1-wei.fang@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0046.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:193::18) To VE1PR04MB7216.eurprd04.prod.outlook.com
+ (2603:10a6:800:1b0::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|DBAPR04MB7480:EE_
+X-MS-Office365-Filtering-Correlation-Id: 230bfe9a-7922-4d65-268f-08df2846dc18
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|19092799006|1800799024|11063799006|921020|56012099006|18002099003|6133799003|10067099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info:
+	7DrsEYbOzSrAAnnn9JZv/jxfOazoEYnlVCJxkKKlh3LAx05L4UX/s5wQKnqMdwi228DiWuYKSveyWTZDmdJpPBsEAnhE5MicJSWp/obkaW4NTZrBBeZ6jdhn03d4kIiuw1Lye3KH9UcwF735AgU8YD1tEzwRyHIJl/7gCAELVjpYsaWVaxi3j/e7gugICe8oxKv6NXxMvcwfLmnWPKrP1IQDgkH/191x804MYbq5A7ndl9raOHJAiGqG97h9t5KR7ehv6pKuVqHibyvo1TohKpzJmP8JtTq5NsJ0fI/JEmXO/oLtPEMPPlWjujZCChLQ/2zqsiPi2Xnev+lpScsbJtUlDm6tKau4GNpgrpysD79ZkzL67TVy0vQS7jCI2WROEs4BRvtkAUxB5Wn4DYd/9Qwb3lOUR+LngvintVn9vewSFnxwzmsbXg/hUl4FDHptZvXHF/2Ekk1LT+8gYWM/GrOVQpNJAofdM+OnVUQGqn/J1avurRVZpkyjpETr74tINZvmhcErEj33Fxon0u2Q09h6bO3dJec/JBNpTx9Abf5XWbOzQtS78RGI0P/UVixm8wxCBjk/1sajq9R+8llr0OR4LGSjr+QVbW0YGc/T9sn4N0DznSIvhJ9v6aTdgQ9r8ge2fuCPaKYI6ce544todkKLv8hPOQft5yd0chSSpts2ek3LOPSpU40wBWwBxYRTqLdYhkKKxSALXjRwJelYUA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(19092799006)(1800799024)(11063799006)(921020)(56012099006)(18002099003)(6133799003)(10067099003)(261009223027099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?0YJCmquvxbs4Yb8JmvHLanIlgIRBy+2SU79pyx3J2x5p03HvwMquY/oNFmGU?=
+ =?us-ascii?Q?qnvwjtUa7KWLgvMxLBm1xop/wsn5R+RLnEINPIYPgNUj+MocN+05I5EsGdeU?=
+ =?us-ascii?Q?gvFetVudTy5MTlDHJIKur8xr88jo/7CAxt0JlxscQi2WZOQybgwY4QHY3kMZ?=
+ =?us-ascii?Q?8S/diTL2Yuq8nY1RvYzCKYOU3E++6C0ZWdIz7WCgB/IWl83xBPeTvSSyfEAm?=
+ =?us-ascii?Q?OWyxIFdQ5o2hfnP+2BAEoazB5aIXWRICgt44ho3Q6g1YJyXdz1MEdfXXVIld?=
+ =?us-ascii?Q?wHvqbvlDWU21yUHoWFq9qHW604yj4E82rT9AAsib5z2Bf7HyRzNqnCjDbwHr?=
+ =?us-ascii?Q?ygO+iAaD+r8/mqyCzDnGcvrd5zIYQMiK5Vt8RrN8lLYyfHDCZz75w1fwmPGj?=
+ =?us-ascii?Q?cPgPFYEmZrVJb6dKjPP7i8gd+slQxaMwF2XA77ziXHaULQmBJh+CHCB3cEAU?=
+ =?us-ascii?Q?C1V3W9Mpt2oW6m7vKRzhIwmZ11J+r55TSrAOCXtI4Fefk7kunAzUSRpVklds?=
+ =?us-ascii?Q?Dl9Y/SrZNYXCQuJNYIEtA/tM4JBKOTV4P91BXL8gx5dMM0UeS5Z9WkGxBuFR?=
+ =?us-ascii?Q?zLhOne9v1IHtgXlMPUItZaeWvkMNYHvLBF+57RKx4xrqL0BsKIg1mZiTgfep?=
+ =?us-ascii?Q?anFngcPvXzauQkvL55HC8ygyYnslmI7j37DhYv3MQ8Rhwz4c8g/dwHpiUJOx?=
+ =?us-ascii?Q?RBIfAjPZVKejGv+IMN6McYBy9UbTrlSOCCqL/ujUdTbAEQlo/Peoh2kvy2G+?=
+ =?us-ascii?Q?RLmmWnU8MYJIQgf43vVLbVNKDsDbEhWA34KrXS81J2YZw1HpFUvJenItzjWb?=
+ =?us-ascii?Q?IxNTCCf+KL+3m4fpd/rEhGY3qaRMo3BZTaGLhDnDttetK8W27vUaIznsouDR?=
+ =?us-ascii?Q?zsDgfeMM+RzJXAJS5jnegncJ1DA//ZIltU5UeGXPFbN3nCwHc39DsGcjgjym?=
+ =?us-ascii?Q?eai09XQqaUkKrdsPNt/Ad9hNsf/9xaEIX9apD4WUjpK9FHzUnn6WffmN/e5V?=
+ =?us-ascii?Q?77JunvqA6yFTAW4XhrGGFLGKMVjzTO7mPETAKRc122qmOl+hAB5PQeHCqSkT?=
+ =?us-ascii?Q?LO6JtF929cXKUiK0oK2lJZQAnFyxPjYUuuyQc57uHVEOkLMf+vK4IXIJ+k2M?=
+ =?us-ascii?Q?8DLM7AMpU6N0xPRpKwleDv7nR7IgFsYbLYagVlNEo1LMUfYfh/mwoqbeyIQv?=
+ =?us-ascii?Q?QRmMcRe7WugXCJiIxezuuSsu83MCIURCM/dXvVyZRmwywMciCJ28k3RhzSJL?=
+ =?us-ascii?Q?hh1E/0P92x1+QGoJ2vOLKHXM1HYMl4PzSuM+a1QZOGFnobNfRM//mUcZ5P+v?=
+ =?us-ascii?Q?A3UafxHd8+FBoeGx9JJ2uwtCR9YIWhTXZM142dLO+vuu4erwBQHtf3CjNgSm?=
+ =?us-ascii?Q?pRhEfmXvmNXtJpnz5MiaP57Sh32KQj2IBZrbpvYaOJH43m9fJ0KgKMpDeTpZ?=
+ =?us-ascii?Q?HHSJnhmotyywbXqK2onlkCb5QwgVhV1dlkZ+7M9h8qOb7eDZT4nRBKiGDVLC?=
+ =?us-ascii?Q?SsytGiiZ79Ngwxri4WKAlTSDjKCbVPbXrWliHUUhfivGAuCZNx4wdAkWtt6P?=
+ =?us-ascii?Q?/o2Y75hm8IUw7AsLMxRv286wU9ywO5s7EuXq9jsoQISGJ+fE6G+SgspmKLo3?=
+ =?us-ascii?Q?3OIiniIRxGZ/mQZH4ywTD3JVTYh5kyaF9uoitlJHhzQPdv7W8Z2KXNpjNFy7?=
+ =?us-ascii?Q?gahaPhFQhE+jQ0P3p9Ie4YdFUC//uRldPDfkctwDxnwP/ObP8w6Z1EO5A9qD?=
+ =?us-ascii?Q?664DSIT45pIzfGOGWbl88gAk32OKhXsCoPBDsT3/6p0MHypY73yu?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 230bfe9a-7922-4d65-268f-08df2846dc18
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 09:54:52.8917
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /R5x7SQqY9iSqE+7uDqOFiM+KgiA901z7UtymJOUJhm7aO5qOUosLmYKmySP+zDyaW3fM9T+6oOY6EhIYBeJhZKq7fej+seqh+F7w4IuvpqsAkcoAS5yVVZ+V4bRLGOb
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7480
 
-The issues identified in the review have been addressed in v2, sent as a
-fresh thread per netdev process. The v2 links to the original submission:
-https://lore.kernel.org/r/20261009090629.1694991-1-sahaj123.sc@gmail.com
+From: Wei Fang <wei.fang@nxp.com>
 
-The v2 Message-ID is <20261012095000.3188473-1-sahaj123.sc@gmail.com>.
+This patch set adds PTP timestamping support to the NETC switch, so that
+the switch ports can be used for IEEE 1588 PTP synchronization.
 
-pw-bot: cr
+The NETC switch has no time registers of its own and instead shares the
+PTP time of the NETC Timer, which is a separate PCIe function driven by
+its own driver. The first 3 patches prepare the Timer driver for this
+role: tidy up its 64-bit register access, drop an ineffective reset, and
+export netc_timer_get_current_time() so the switch driver can read the
+current PTP time across the driver boundary in a race-free way.
+
+The switch redirects PTP frames to the CPU through the ingress port
+filter table (IPFT). A few patches harden and simplify the existing IPFT
+and host flood handling first, then enable the ingress port filtering
+lookup by default so PTP filter rules take effect without extra software
+tracking.
+
+On top of that groundwork, the switch driver gains RX timestamping and
+both flavours of TX timestamping. Timestamps are carried between the
+hardware and the driver through dedicated switch tags: the ingress and
+transmit timestamps ride in To_Host tags, and per-frame requests ride in
+To_Port tags. Two-step TX matches a queued skb clone against the
+timestamp response echoed back by the hardware. One-step TX defers the
+Sync frame to a per-port work, where the driver reads a fresh PTP time
+and writes it into the Sync frame's timestamp field, then programs the
+single-step register and transmits the frame so the hardware can add the
+residence time to the correction field on the wire.
+
+Together these changes let standard user-space PTP stacks drive hardware
+timestamping on the NETC switch ports.
+
+---
+v5 changes:
+1. Patch 3: clarify the commit message and kernel-doc
+2. Patch 4: new patch
+3. Patch 6: reword as a hardening change and add a bounded retry when
+   restoring the host flood rule fails
+4. Patch 8: derive the RX filter from the IPFT handles instead of
+   caching it
+5. Patch 8: use get_jiffies_64() instead of reading jiffies_64 directly
+6. Patch 9: count all dropped PTP frames in the interface tx_dropped
+   statistics
+7. Patch 9: resume the one-step drain from the timeout work when the
+   reclaimed ts_req_id belongs to the in-flight frame, so queued frames
+   are not stranded
+8. Patch 9: use a dedicated zero-length dummy_skb as the ts_req_id token
+   instead of an skb_clone()
+9. Patch 9: remove udp_hdr() from netc_port_program_onestep()
+v4 link: https://lore.kernel.org/imx/20260918072852.501420-1-wei.fang@oss.nxp.com/
+v3 link: https://lore.kernel.org/imx/20260831082335.1184605-1-wei.fang@oss.nxp.com/
+v2 link: https://lore.kernel.org/imx/20260808032146.2335723-1-wei.fang@oss.nxp.com/
+v1 link: https://lore.kernel.org/imx/20260728104548.3301214-1-wei.fang@oss.nxp.com/
+---
+
+Wei Fang (9):
+  ptp: netc: use ioread64_lo_hi/iowrite64_lo_hi for 64-bit register
+    access
+  ptp: netc: remove unnecessary pcie_flr() call in probe
+  ptp: netc: export netc_timer_get_current_time() for cross-driver use
+  net: dsa: netc: tie setup resources and reset to DSA setup/teardown
+  net: dsa: netc: use entry ID instead of pointer to track host flood
+    rule
+  net: dsa: netc: check return value of ntmp_ipft_delete_entry()
+  net: dsa: netc: enable ingress port filtering lookup by default
+  net: dsa: netc: add PTP two-step timestamping support
+  net: dsa: netc: add PTP one-step timestamping support
+
+ drivers/net/dsa/netc/Kconfig          |   2 +
+ drivers/net/dsa/netc/Makefile         |   3 +-
+ drivers/net/dsa/netc/netc_main.c      | 355 +++++++---
+ drivers/net/dsa/netc/netc_platform.c  |   1 +
+ drivers/net/dsa/netc/netc_ptp.c       | 897 ++++++++++++++++++++++++++
+ drivers/net/dsa/netc/netc_switch.h    |  67 +-
+ drivers/net/dsa/netc/netc_switch_hw.h |   5 +
+ drivers/ptp/ptp_netc.c                | 136 ++--
+ include/linux/dsa/tag_netc.h          |  38 ++
+ include/linux/fsl/netc_global.h       |  10 +
+ net/dsa/tag_netc.c                    | 228 ++++++-
+ 11 files changed, 1580 insertions(+), 162 deletions(-)
+ create mode 100644 drivers/net/dsa/netc/netc_ptp.c
+
+-- 
+2.34.1
+
