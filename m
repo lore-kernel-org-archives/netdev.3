@@ -1,177 +1,195 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BA2246762
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0E4377ED4
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791812269; cv=none; b=M8NuQ4y43TCE5yO6pdr5kAopeEeL+i2S8CvIE1fHWA0Lh2VbxcGzxfPRYn+Qa1BkOb17ORbmUca2pp954Ezx0jeXuY6jXbAmuZWb68joOcd6PDWooZzMeMUu8fY8MEbWeroXlRUWb9Ok8CF3cOZhhZNkQvS1WV4H9TY7d+N/0H4=
+	t=1791812306; cv=none; b=XBtutvUcBAd1EO/1Lxn+DB7+yUHWsf1GBILwF8NpayXwN0Ron3tRhpSYCNLWGyPpD2vl5yeEy6plIq+sM2ln8wznjbwaXu6jLCG2cpiVw/PKEHWCvN6S9208DSPnTrdMf7sRbYgzIxJ4j99wsXoksY89slazniUsPnN26HrEpAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791812269; c=relaxed/simple;
-	bh=XfIIwn2piL8Vg4RdtbjUR/Beq6SvNyE9ZkaxsCNGhrg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BryRwR7FA5+LWlLmAsmnSRHFH6MJh5CSp7kRZQxKczpJ/RTYysqtTRHRqM/1rrSS1exLE6GUUORR78YgNz3rEsl4/5KxHvEpjvTPKl9H5xaqvId2obilbvGssiBJQYpJfFzutJtqV8q0fRO51DJZ9IrlrefnsY92M2NMoQirjXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D/CrzV3y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=C/5mKraI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791812306; c=relaxed/simple;
+	bh=FPLPofI2QFzLL0p6D+Nm9zg6m6zRkz72ef/jl5xabRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PT1myW9ykQLj7nKZXzLmOoDP8fd+pU3vAiOhvn2GqrrqW5POk2muHc/9burjvvlqcv7AKY6bRxMtMWvbROsGv0Axq3n3eim+yE4wZfP2RbHQx7AhAFe1FXlcRDw/VkR/K3igOSoCGY6kOMxChSkyxvllPJjWjsW6CEfh/I64W6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=bFAXQZNd; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D/CrzV3y";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="C/5mKraI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791812266;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lVoAiBjHAMcorla3HPUaKN4HYRvMV3/JwljxT+atZbw=;
-	b=D/CrzV3yd4trbii08NjCEM9TMjAfWME3gyOhxbtKjxxlCDfpIBmStqqAYU9P7h3NDsKhHM
-	rZuV6UO3MfAJq0y77NoeamKDg2v0s5QprZIcUuWCw6WaNkHgrU1LcsOe6WvMCyqS1Bb6Lx
-	74Pqsoa9lCr9//CJQgP8s0uA/cFMm1c=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-SL2-rg4pMUyPr7xDRBWltQ-1; Mon, 12 Oct 2026 13:37:45 +0000
-X-MC-Unique: SL2-rg4pMUyPr7xDRBWltQ-1
-X-Mimecast-MFC-AGG-ID: SL2-rg4pMUyPr7xDRBWltQ_1791812264
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49cdc4080ddso14814565e9.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:37:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="bFAXQZNd"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a0e1b0681bso13667885e9.3
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:38:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791812264; x=1792417064; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lVoAiBjHAMcorla3HPUaKN4HYRvMV3/JwljxT+atZbw=;
-        b=C/5mKraIW9yInfthZbnmJouG9ISEkyKX00O4Bkttb4+YaEV4j8Z3qEWkvcBJv5l95Q
-         W927BjuZVBY30hWkYTB0cmCxd+QxXiuKnjcpV6hp9aefkvMkfEOfbZ8OT4TFKMql+uXV
-         kx/MMWA9a8cNqQ2BBc1MHyhqULaIdCjvtbLqgOkDqOeKvXa8WQOmYwyFNxjjZ0vdyHfo
-         eOwy4ntm7SZJcQNW/zP9iWxIG5GkwZmjnIQsi0Om3zfNnGR9i+6vYrjuUSvVQvpWlsTQ
-         XtKR5i5CqEW9wvg/DqWmlqIJcifUBA9oUwF+IRDlPmeTGH8K88RuMHHBxYDyayC827CK
-         zi+A==
+        d=openvpn.net; s=google; t=1791812302; x=1792417102; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ScMCsM4pCo+ij3K/Wfdga2QbxFpFa8vxcDwTQ/NUfeU=;
+        b=bFAXQZNdjVmeNYeYq9GmczOk2AQWWRL86h4JOHvw4D/fou6CMj+4iCztGBqvk/S84Q
+         iMFAvVQW9SjOKnrgB5oq6S+FqsUhGaWaZUFHm1l2WJGJ6FCgrsiq9HM4fU5RD9UUSRhD
+         JINA3WQ/ryn5sEGq+XJcxJ/D0PP3UD5NhVuUJG2JvxIooE3BijKGVLPE7HUuYjHsB+uj
+         RRmu5w0w6+nPoQ2ygWYyal+d53N2tA01TAXyVv6Bre3TbdmRVWRT/p0CfyDsdT2anANu
+         8Rmu5dyH8oa3HcKvunl0dYkxyRVdltrTbv02h5N1fK4UDFqPW1nPnGnBAEuuM1XWs3HJ
+         Lggw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791812264; x=1792417064;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791812302; x=1792417102;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lVoAiBjHAMcorla3HPUaKN4HYRvMV3/JwljxT+atZbw=;
-        b=oBsanjggZgpWBUGSDKA/bxyFRJ9JQiu0Prx7AADkl2MxGt7VaK27U08xV23ts02yJ/
-         SPzqVSGDv5onLUlv8IThJcJDZ/cpy+PKucKZdE0ny/m9EzeFlIpzmYUUaKfRoYoXMF7C
-         PJnOsJ3da0OshA60goqa+gIrfGyYIPrSE1n87fInjYsGbM9t0v9Gu3BUQFcgC90mheOm
-         MLhs8s+WEuByTgH0RB8THfaZ49V4/NEtmENbTUyMBrAfhTEB81OLqy74xBDIaVO7dc2g
-         CCxIk14v5aCj5+yPjDAD6YsT8brUpRxbwVyoce7nRbwxt912iIT410kBhylgN5U32oQM
-         7stw==
-X-Forwarded-Encrypted: i=1; AKwUvBzkDdR16E37od4RrVvpwjfHv3EF1V6begW5T5UXwEfH4yjJe2g61md5SWaHpVoF5ei4i8psatY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLd2EKXU5fiSixVS+dBYFYdW2sRtoRtiwAMYOI6YsjOo0Nyx+PI
-	3aOVD2q49zuL2l7PCrOoCIUOh4khtbl7rexcO18b84K0dFtXWZiPxOwyjsoz0H3im3xfj3CqqPQ
-	/5SodqFQSO021eBYk2c99M4Gjb51whFrbMkg/DHdebkozOFgph1MXtRClzA==
-X-Gm-Gg: AYBFou1Y2bQGK2rV8Io1YUjxwNOnnLYfOIKfmLC8AaY5dIngE9S0xl5jq+uQe3IvNGe
-	aWRvgruI3rSm8MNj0QFUBNl+TV1yk0U9nhfTVAJ6gkK/ZKWyuNnxHmytIC6Axuz3Hn7N47ACIFC
-	9DIzE1O8h0ON4CUIXmaI41upH5UH1ZrvXwv5RZfNPi0MUbXiRSxGo8avuD8NRAq5+88GNRNHbMK
-	4xuXN3wJ2NfbA8CJ7Evv4e02CXDYEzbIshTjSEnQR+FPQh1z55cFQEc3Jr99NOBRxcogPqw4F4T
-	NSnXxtc6XudEt7RFpfJVsga/A84ll9y3i0YT2mx+XW7QEVW7+tA9WngzfCePfPxzR+wkjm+g70f
-	2WgCunS4YL/8TJp6hujHhzb0xHoFVF8jfLTJLg8zvnrtb9GuKX5M3JDcOs6Zc7yMHeLcFXX0FHQ
-	==
-X-Received: by 2002:a05:600c:4e12:b0:4a1:98b0:2617 with SMTP id 5b1f17b1804b1-4a1a2063c6fmr42956325e9.13.1791812262645;
-        Mon, 12 Oct 2026 06:37:42 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e12:b0:4a1:98b0:2617 with SMTP id 5b1f17b1804b1-4a1a2063c6fmr42953345e9.13.1791812260429;
-        Mon, 12 Oct 2026 06:37:40 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db9ab981asm20082049f8f.30.2026.10.12.06.37.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Oct 2026 06:37:39 -0700 (PDT)
-Message-ID: <64903617-3d04-475a-b77d-56409eae5892@redhat.com>
-Date: Mon, 12 Oct 2026 15:37:38 +0200
+        bh=ScMCsM4pCo+ij3K/Wfdga2QbxFpFa8vxcDwTQ/NUfeU=;
+        b=YsnlaCO8AsrZpjUXadLgQD/vAZUPOeaLq+GVdiEcW1ERwaf0dVW45p9Iz0jW678kW7
+         E2x3YYVVE21uE5vR/aAEXpK1ysLvcocbHlty7ix9EAs1wpqYl8xHbvehcFSoCeT1eR1p
+         4xONkexWs2WQJTp6VXGLty3cAgUvoB0fuY7sC78sU3uhXx0ETtRNTbumxbGCSL7LbOdU
+         +DAO1X5V0umtwoUbc+2Sq/fvI5H6wqjg0vepPmkBaIlAYU8/eRvWYqgRDQNu3e5KeZOA
+         u7+OFaHPfN2rnQ/aIc+NUy8+WRXvEeIkW/mf93m4BUxz4dZK+Q++l0rbLx1Ec+9Q3Nmj
+         Lt2g==
+X-Gm-Message-State: AFq9FYKuVjp5x0pthM8oQtpoxBo1hs/CZL+9cSYIo6D/YlxqsHK9EzRo
+	+Hznv4gjWlHbbliX9wcC8bD5VbO+l6tEDjrVIgv1idAzQ8fFpeaNPA/qa6KzM8CYZaiA9so2jQM
+	eMEopdLvLv+Xwm7tqiLcrVnR8FGrwzn4JA6wq1Fl2SIZFrVkoZ/mOGKMY8gSd0SQbTbw=
+X-Gm-Gg: AYBFou3lu2CqzqTW26U8TNcvy4Pm2fDH1BIyR7zzxFJDtwhGBMfTtTL1qr5XVPsJK3R
+	8opgiZEG4aCNaWRqXvF8dyIjziEH1gU6J5tqaDXle6mUcrmbIl6MlKDoFQro35gs/0G9NICAFVi
+	VR/ENgUbQXNRk0fBp8m/Sc6vAPBsOMSo7zG4zhJw1FX1BHko8G/zTUfS4tnDmV9qwfSxXwDOrcD
+	f9dsdxn+egK2ZJLfGWiOOdKz6FJXzxtgwgIMbxiZaeHbSfxkaJTaEBF1JEcJRbm9MCN2RSEIH4B
+	DKsKWW6OmDoSfYEfebLc/PdFLTEoq5UvQGqeB/z2k99hMlbuQf1SaUF3KHIUFdl+Zx0tgoYvAuZ
+	c439TVKAynLd2uOlKzZg3wpOpv24WZmWrgY7i2z6mUVLtiElPyYSkGM710Wa2mp2IwoJtBmRLOz
+	HYSsJU9+xo+YLv8B87AmwttbDVeybazJCO4hHgxsC3vxW/jrBeeD9ipLn7KPnI6I93vgVF/T5AJ
+	0EU8exlf7jci6OSnP4P2w==
+X-Received: by 2002:a05:600c:3e0a:b0:4a0:1c10:1372 with SMTP id 5b1f17b1804b1-4a18e4aa206mr194508495e9.27.1791812302391;
+        Mon, 12 Oct 2026 06:38:22 -0700 (PDT)
+Received: from inifinity.mandelbit.com ([2001:67c:2fbc:1:2e28:6511:e6d6:deef])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm418114735e9.9.2026.10.12.06.38.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 06:38:21 -0700 (PDT)
+From: Antonio Quartulli <antonio@openvpn.net>
+To: netdev@vger.kernel.org
+Cc: Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Ralf Lici <ralf@mandelbit.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net-next 0/6] pull request: ovpn 2026-10-12
+Date: Mon, 12 Oct 2026 15:37:57 +0200
+Message-ID: <20261012133809.2477063-1-antonio@openvpn.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: sashiko or lore confused?
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
- Victor Nogueira <victor@mojatatu.com>,
- Linux Kernel Network Developers <netdev@vger.kernel.org>
-References: <CAM0EoMn6JoLVHdhX1GB1wBcw3fVZ42ePKXDqsWK-4STj87vEEQ@mail.gmail.com>
- <a3a68d65-9eca-41ee-a70a-0db8dbb0385c@redhat.com>
- <CAM0EoMmrrWhQigRLQLqhh+2jD1W_bboQGJspWdRhF66e4nspFA@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CAM0EoMmrrWhQigRLQLqhh+2jD1W_bboQGJspWdRhF66e4nspFA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 10/12/26 13:48, Jamal Hadi Salim wrote:
-> On Mon, Oct 12, 2026 at 6:58 AM Paolo Abeni <pabeni@redhat.com> wrote:
->>
->> On 10/12/26 02:00, Jamal Hadi Salim wrote:
->>> Some threads seem stuck somewhere in the ether for sometime now. I
->>> asking because i have a backlog and dont want to flood things..
->>>
->>> 1) Sashiko nipa review is missing on the act_api duplicate-index series
->>> ========================================================================
->>> The nipa sashiko never produced a review for this series: gemini
->>> sahiko reviewed it ("No issues found").
->>>
->>>     Original posting (v1, 2026-09-22):
->>>       https://lore.kernel.org/netdev/QDISC-K1TH.v1.20260922072206@mojatatu.com/
->>>         [PATCH net 1/2] net/sched: act_api: reject duplicate actions in a batch
->>
->> We had a few PW outages recently, and that impacts directly clashiko. Also the
->> threading (new version in reply to the old one) tends to confuse PW.
->>
->>> 2) What is still left on these two?
->>> ===================================
->>> (a) act_api_delete_duplicate_index_refcount_uaf (links above). After the
->>>       2/2 delivery glitch and the two reposts, is anything still
->>>       outstanding from the maintainer side, or is this only waiting on the
->>>       missing nipa review?
->>
->> PW still did not handle the repost correctly. I think you need to send again the
->> patches, and please send them in a new thread!
->>
->>> (b) teql_xmit_path_pre_existing_bugs -- series [PATCH net 0/2] QDISC-6HS9,
->>>       sent 2026-09-29. Both Sashiko providers reviewed it: gemini "No
->>>       issues found"; nipa one Medium (commit-message doc wording) plus a
->>>       pre-existing, out-of-scope item (the consumed-skb UAF, tracked
->>>       separately). We do not plan a respin for the doc wording. Is
->>>       anything else outstanding before merge?
->>>
->>>       cover:  https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com/
->>>       1/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com.1/
->>>       2/2:    https://lore.kernel.org/netdev/QDISC-6HS9.v1.20260928064754@mojatatu.com.2/
->>>
->> I'm unsure who set the above to changes requested. Your reply looks legit.
->> I reset the series to 'new' status, but we have a long backlog, I'm unsure
->> I'll be able to process the above before PW will archive the post. In such
->> a case a repost would be needed :(
->>
-> 
-> Thanks for looking Paolo.
-> 
-> I can resend all 3. I probably screwed up the message ids and it ended
-> being threaded to the old posting.
-> How do i force it to "new"? Should i send the subject line? I already
-> added "repost3" on net/sched: act_api: reject duplicate actions in a
-> batch thread but it was still not reviewed.
+Hi all!
 
-emails are threaded by lore according to the `Message-id` identifier and
-the `In-Reply-To` field.
+Here is v4 of the ovpn batch for net-next.
 
-AFAICS there is something unusual on you setup, as i.e.  the `repost` message
-contains:
+It is all cleanup and selftest work this time: no functional change to
+the driver. The selftests get TCP_NODELAY on ovpn-cli's TCP sockets and
+proper synchronization against the server-side key setup. Ralf is added
+to MAINTAINERS as ovpn reviewer.
 
-Message-ID: <QDISC-K1TH.v1.20260922072206@mojatatu.com>
-Message-ID: <20261003095453.4jiXbPK5mkXck0VOLiLu3sM9l-NGfDiZ4G96YKNDV-0@z>
+Changes since v3:
+* dropped "ovpn: send peer object along with PEER_DEL_NTF" (6/7 in v3).
+  Sashiko pointed out that the peers multicast group carries no
+  capability flag, so any process able to open a generic netlink socket
+  can bind to it and would receive the full peer object. Putting that
+  object on the group needs the matching policy change to go with it,
+  and that deserves its own discussion, so both will be sent as a
+  separate series.
+* 4/6: ovpn-cli still sets TCP_NODELAY by default, matching what openvpn
+  does since 2.7.6, but it can now be turned off with
+  OVPN_TCP_NODELAY=0. The new test-tcp-nagle.sh runs the TCP suite that
+  way, so peers running 2.7.0 to 2.7.5 do not lose coverage. Commit
+  message reworded to say which userspace version this mirrors.
+* 5/6: the background subshell that installs the server-side keys now
+  writes to a log of its own, dumped when the wait fails or times out.
+  It inherited a temporary file that ovpn_cmd_run() had already removed,
+  so a failed new_key produced no output and only showed up later as a
+  ping failure.
 
-where the first message-id refers to the original posting and should not be
-there.
+Patches 1 to 3 are unchanged from v3.
 
-Please check the output of `git format-patch`
+Please pull or let me know of any issue!
 
-/P
+Thanks a lot,
+	Antonio
 
-p.s. I don't see a `report3` revision yet? also feel free to move this off-list.
+Antonio Quartulli (2):
+  selftests: ovpn: wait for the TCP server key setup before traffic
+  MAINTAINERS: ovpn: add Ralf Lici as reviewer
 
+Karl Mehltretter (1):
+  ovpn: Fix the return value in ovpn_bind_from_sockaddr() kernel-doc
+
+Marco Baffo (2):
+  ovpn: remove redundant peer NULL checks in crypto post functions
+  selftests: ovpn: enable TCP_NODELAY on TCP sockets
+
+Ralf Lici (1):
+  ovpn: remove unused work field from struct ovpn_socket
+
+ MAINTAINERS                                   |  1 +
+ drivers/net/ovpn/bind.c                       |  2 +-
+ drivers/net/ovpn/io.c                         |  6 +-
+ drivers/net/ovpn/socket.h                     |  2 -
+ tools/testing/selftests/net/ovpn/Makefile     |  1 +
+ tools/testing/selftests/net/ovpn/common.sh    | 81 +++++++++++++++----
+ tools/testing/selftests/net/ovpn/ovpn-cli.c   | 39 +++++++++
+ .../selftests/net/ovpn/test-close-socket.sh   |  2 +
+ .../selftests/net/ovpn/test-tcp-nagle.sh      | 12 +++
+ tools/testing/selftests/net/ovpn/test.sh      | 56 ++++++-------
+ 10 files changed, 153 insertions(+), 49 deletions(-)
+ create mode 100755 tools/testing/selftests/net/ovpn/test-tcp-nagle.sh
+
+-- 
+2.55.0
+
+The following changes since commit d8674294aefef02266c4d47ad10131f1bffbe534:
+
+  Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-10-08 22:21:56 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/OpenVPN/ovpn-net-next.git tags/ovpn-net-next-20261012
+
+for you to fetch changes up to b2ed202907d654337d72825d743a833009010740:
+
+  MAINTAINERS: ovpn: add Ralf Lici as reviewer (2026-10-12 15:16:49 +0200)
+
+----------------------------------------------------------------
+Included changes:
+* add Ralf Lici as ovpn reviewer
+* wait for the server-side key setup before generating TCP traffic in
+  selftests
+* enable TCP_NODELAY on TCP sockets in selftests
+* drop redundant peer NULL checks in the crypto post functions
+* remove the unused work field from struct ovpn_socket
+* fix the documented return value of ovpn_bind_from_sockaddr()
+
+----------------------------------------------------------------
+Antonio Quartulli (2):
+      selftests: ovpn: wait for the TCP server key setup before traffic
+      MAINTAINERS: ovpn: add Ralf Lici as reviewer
+
+Karl Mehltretter (1):
+      ovpn: Fix the return value in ovpn_bind_from_sockaddr() kernel-doc
+
+Marco Baffo (2):
+      ovpn: remove redundant peer NULL checks in crypto post functions
+      selftests: ovpn: enable TCP_NODELAY on TCP sockets
+
+Ralf Lici (1):
+      ovpn: remove unused work field from struct ovpn_socket
+
+ MAINTAINERS                                        |  1 +
+ drivers/net/ovpn/bind.c                            |  2 +-
+ drivers/net/ovpn/io.c                              |  6 +-
+ drivers/net/ovpn/socket.h                          |  2 -
+ tools/testing/selftests/net/ovpn/Makefile          |  1 +
+ tools/testing/selftests/net/ovpn/common.sh         | 81 ++++++++++++++++++----
+ tools/testing/selftests/net/ovpn/ovpn-cli.c        | 39 +++++++++++
+ .../selftests/net/ovpn/test-close-socket.sh        |  2 +
+ tools/testing/selftests/net/ovpn/test-tcp-nagle.sh | 12 ++++
+ tools/testing/selftests/net/ovpn/test.sh           | 56 +++++++--------
+ 10 files changed, 153 insertions(+), 49 deletions(-)
+ create mode 100755 tools/testing/selftests/net/ovpn/test-tcp-nagle.sh
