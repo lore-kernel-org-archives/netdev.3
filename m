@@ -1,147 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E5B4AA1EB;
-	Mon, 12 Oct 2026 18:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940D94CEE45
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791829077; cv=none; b=Xmk+CP1YGe62+OOL+byO/b2kIY54ZRdSPKgC1DPlx+OONDCmXFrdmkTCjZkjwmzMjuVufdqSXIK2dr9y8azteBt3yVSHQSpmN9WhxOa/IdUhx86OAfmwd5gG+BX+KhrxX07Sut9jLlDbmCZJd4WukzEy6qG3kd57T1nWroT1lcM=
+	t=1791829272; cv=none; b=Ixwcd1Qh1HOyCoGTGwWDxnnToFp5gLDWXHmLR8PxReKrK1MtxlsezYIRCJoosJ7CgwODMFe/bsZFS4PufLCM3pHUJh6smZtY4A5ZS9LSS48rBlVsSAfkvvDo3Iq7x/Eg7Hctqe10r48mHcR9m6VYhAEzkF2QXoCOibC2r8N5UfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791829077; c=relaxed/simple;
-	bh=2BkQe0cPMfnSaWkaR260fccQkLruK74GyLLMi/bkJVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kOuekeBmRYxP/TiKH5/AsZi5bPzZyX9P6SfRLNh4vFajDnIdO/fVYsafWiAvixyCvWc4l1HVxkEU0v5AK7ZNIi+W9HEg2cT9YYzOvdPCdHH2HsPlKi1ThiBnujN0bjLecIyl5cs8jh7aH0UaanthbGyORcM+kaake8I3GN4NGII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+mieiEj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791829272; c=relaxed/simple;
+	bh=35anN/46F/wn7lyuyc64Wn3s2LfGYLVid8tSiXKPycI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JPtXRP5W0weabEQATSHno7UYpOMal9W+lcsQ15VN5i5GWpV5inUQv0tWhm5lITLIz3gBIh4JVjuqhctqoF9FoRxl19CJFEwx6y1JfdMJv2IeQVpdEuI3FihQZK/Hs6oxF773F3E7QwVT/8Dc4EjI8zqtqP2CrXWrg7jedI3sVaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=DRTw348y; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+mieiEj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51BF1F0089B;
-	Mon, 12 Oct 2026 18:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791829076;
-	bh=CBeQqtobZlJEzGuyYJNrwxZ4pA/3QS4wDhBW1e67RRw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R+mieiEj0R6HLEJ19czXCyv8eLqxr1urLGS/lBP8kgfwAWQcC3oANujjH93ykSxV4
-	 hQcCgSrQ+YUBkU09aVqAZr6qgpmET6odwK2iaMR8zZV6IS61cIEYF/u5yhMm69rAj4
-	 sp7Js44YvQlCMoo6sgEvYW9EIe21nxP88eJ3kNWn+Uoss5f/Xm2XpSad4Ow1OdgZ/w
-	 fAGqVQjdRAH6ixWNTR1qgLSWHXRfg8loeiHORzCFm6s8QCBfUUOBXHlKJRYNzPnfsr
-	 7i6rmTRXvXwSbdMkws94vb8SMEjnvycGvFoH1Waa4Va7kg8XgmWIS5+YbBi4fyzI6j
-	 TiDnizU4yeoJA==
-Date: Mon, 12 Oct 2026 19:17:51 +0100
-From: Conor Dooley <conor@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: jacky_chou@aspeedtech.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, ratbert@faraday-tech.com,
-	edumazet@kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/6] dt-bindings: net: ftgmac100: Add AST2700
- compatible
-Message-ID: <20261012-aide-wimp-4edf96aaca1d@spud>
-References: <20261006-support_ast2700-v2-1-36de51fb8066@aspeedtech.com>
- <179161911824.434549.4075299707625994950@kernel.org>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="DRTw348y"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-93e50170ba7so144518785a.3
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:21:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1791829267; x=1792434067; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=szEWv1HNLVZ5mm2G563EJn2Ompg5wLmZpZr1jwSri6M=;
+        b=DRTw348ye0Q3NufTvpCTVucO86QKPbR+W/yBKdzWMTBNTJTXXtk4CJkeYmXOoUgkS+
+         HgkK/aCAIDyysGkEKG4ey/tbsFTTH+V3ODGfR5lfuCZd8crFGVzqJ/w0+28g/kvEQL2u
+         80JuZvfSd2DY6imV1nuaFiLgNkS6QC1ugwQVw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791829267; x=1792434067;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=szEWv1HNLVZ5mm2G563EJn2Ompg5wLmZpZr1jwSri6M=;
+        b=vgvEEyDGr5eZH/rktlafLtmluJYbmlsyB+IY5F37eRnqvkVwa6Fg2RtXGYzpiREO/a
+         RZeCvAqqx8og2BuqrzFzvK0qpHKelXZTwESDk1mrb76rq547lIVFlqf/KvI4etGA15PF
+         wx0hsaPajZRvO8a+7RPm4NvaSFRLX9vpuz3fJQy6NiV7gchz8o1Ar1HqBrrSI+AP9ddx
+         bpdJt4q1JIOw9ja46UhOn7y/NHAJL+fObzxFkxK6R1M1bjylBvq8tCFEQpKsJ8MQFD0L
+         5f9iwADp6PY0BkXq/fA+sNEWP4m7vXYvFiqEdUAsmFP/5+glktXdBwZt8Xo9Gob8drB6
+         fdJQ==
+X-Gm-Message-State: AFq9FYLTnwOKApFFrkD2Tg99AqfZ6Ojx9OqgllZS9rSlxVcNdCar2v3h
+	K6IXkNE388Zdua4fGfgloH2zkKAHI4vbmBbhY10n5v2k/8yxxQa0py6/sLeL0+ksXuE8U82IkoW
+	si/o=
+X-Gm-Gg: AYBFou3sQl1C+oftzTc+Vc89GL2hjdnrT5JVFklvOTm+GD0LiPCgTQ/f5xVm7Pcdmz2
+	CI56y5MFn7NPqNMpLH8+h5qJXfrjLSdFLwnXqbHKlo+Sr8BeQ8n4Bl34WW3w6+ZJkaDSyUTN8VA
+	oGezpAUdU4UKFx5HTihwvl9eEeePHj1Bf0hLLSrHwalBmLOE2NG0PQY8JUzIpQyuzGK5gfg1p2D
+	jx59d7p0ALt/wmcaAx3/XwUE2ivdLePRzrNTCqOX/0zdJEKCywnACewQdpc4h6flAGWztNvnNum
+	lCNUCNActyfOUh5kgoeY2C2pQgkXUPvb5Z6ljZ9nnNbDx37Wx+wKRSS+Ok3ZsqmFG0hRAhLpbG1
+	i19zogjLWrtTlhQLYcdFjiHy6M78rCHySkkFBWXZKGJFPP+smUw84nS/qvYkfLJ4Opz/c8KLK2C
+	dSQoc79TJhjx6vneT/whdx/UdkvIk4/5NYJkHmfJv1d1IWOqgKXHV527G0CVvPWviScY9+XGLUc
+	+vGezY3XNH5WYiB33hGNXlAdtt3cpBLpLBexd2WuZRl
+X-Received: by 2002:a05:620a:a0c1:10b0:93e:c12c:4417 with SMTP id af79cd13be357-93ec12c4ad4mr1206566185a.83.1791829267285;
+        Mon, 12 Oct 2026 11:21:07 -0700 (PDT)
+Received: from mbili.waya ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef50b6c4fsm45130985a.47.2026.10.12.11.21.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 11:21:06 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	stable@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net 2/2 repost1] net/sched: sch_teql: keep skb->dev consistent on the arp-queue path
+Date: Mon, 12 Oct 2026 14:21:04 -0400
+Message-Id: <QDISC-6HS9.v1.r1.20261012134711-2@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="SKpaERQPP4yzf68I"
-Content-Disposition: inline
-In-Reply-To: <179161911824.434549.4075299707625994950@kernel.org>
+Content-Transfer-Encoding: 8bit
 
---SKpaERQPP4yzf68I
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+teql_master_xmit() sets skb->dev = slave only right before calling the
+slave's ndo_start_xmit(). When the slave has no resolved neighbour,
+teql_resolve() hands the skb to neigh_event_send(), which queues it on
+the slave's neighbour arp_queue while skb->dev still points at the
+teql* master. skb->dev takes no netdev reference, and the master is
+freed unconditionally on teql_exit() while the slave is still alive, so
+a queued skb that runs the ARP retransmit path can dereference a freed
+device.
 
-On Sat, Oct 10, 2026 at 07:58:38AM +0000, netdev-bot+sashiko@kernel.org wro=
-te:
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
->=20
-> Low priority / nit picks for your consideration:
->=20
-> - [Low] Already fixed later in this series, so the baseline decision is
->   false.
->=20
-> --
->=20
-> dt-bindings: net: ftgmac100: Add AST2700 compatible
->=20
-> This adds aspeed,ast2700-mac to the FTGMAC100 compatible list, which
-> requires the faraday,ftgmac100 fallback. It also updates the RMII RCLK
-> clock description to include AST2700, and allows the resets property for
-> AST2700 in the same way as for AST2600.
->=20
-> > diff --git a/Documentation/devicetree/bindings/net/faraday,ftgmac100.ya=
-ml b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
-> > index d14410018bcf6..bee9570a6f63f 100644
-> > --- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
-> > +++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
-> > @@ -18,6 +18,7 @@ properties:
-> >                - aspeed,ast2400-mac
-> >                - aspeed,ast2500-mac
-> >                - aspeed,ast2600-mac
-> > +              - aspeed,ast2700-mac
-> >            - const: faraday,ftgmac100
->=20
-> [Severity: Low]
-> With this patch, "aspeed,ast2700-mac", "faraday,ftgmac100" becomes a
-> valid compatible pair. However, at this commit, ftgmac100_of_match[] in
-> drivers/net/ethernet/faraday/ftgmac100.c has no aspeed,ast2700-mac entry.
-> Such a node could only bind through the generic faraday,ftgmac100 entry
-> (FTGMAC100_FARADAY).
->=20
-> On that path, ftgmac100_probe() would do the following:
->=20
->   - program the ring-end bits at BIT(15) instead of the Aspeed BIT(30)
->   - leave is_aspeed false, so ftgmac100_setup_clk() never claims
->     MACCLK/RCLK
->   - register the embedded MDIO bus through ftgmac100_setup_mdio()
->   - never set a DMA mask wider than 32 bits
->=20
-> Would an AST2700 node work correctly if it fell back to the Faraday
-> match?
+Move the assignment to before teql_resolve(), so a skb parked on the
+slave's arp_queue carries the slave's device and is flushed with it.
 
-Sounds like no, can the submitter please clarify if the fallback is
-valid?
+That alone is not enough: when the neighbour resolves,
+neigh_update_process_arp_queue() re-looks-up the top-level neighbour so
+shaper, eql and teql can be re-entered, but it calls n1->output()
+without restoring skb->dev. A skb that was parked with skb->dev set to
+the slave then leaves through the slave directly, skipping
+teql_master_xmit() and the dev_hard_header() call that builds the
+slave's link-layer header, and is transmitted headerless. Restore
+skb->dev = n1->dev at the reinjection point; this is the identity for
+every other parker (neigh_resolve_output() parks with skb->dev ==
+neigh->dev, ndisc probes carry no skb) and the needed repair for teql.
 
->=20
-> Later patches in this series fix this. "net: ftgmac100: Add AST2700
-> compatible support" adds FTGMAC100_AST2700 and an aspeed,ast2700-mac
-> match entry, ahead of the faraday fallback. That entry selects the
-> BIT(30) and is_aspeed path.
->=20
-> "net: ftgmac100: Add AST2700 upper DMA address support" then adds
-> dma_set_mask_and_coherent(..., DMA_BIT_MASK(35)).
->=20
-> So the problem only shows up when bisecting to this commit, and only with
-> an out-of-tree AST2700 DTS on an ARM64 build. ARM64 builds are only
-> enabled by "net: ftgmac100: Allow building on ARM64". Landing the binding
-> before the driver match is the usual order for dt-bindings series.
->=20
-> [ ... ]
->=20
-> ^ annotation: none needed for the [ ... ] above; snipped hunks are the RC=
-LK description and the resets allOf block.
->=20
-> --=20
-> Sashiko AI review =B7 https://netdev-ai.bots.linux.dev/sashiko/#/patchset=
-/20261006-support_ast2700-v2-0-36de51fb8066%40aspeedtech.com
+This is a follow-up to commit dc4b95b8fee9 ("net/sched: sch_teql:
+restore skb->dev on the slave failure path"), which restored skb->dev
+to the master after each slave iteration but left the master-vs-slave
+mismatch on the neighbour/ARP-queue path, and left the queued skb
+naming the master rather than the device whose neighbour took it.
 
---SKpaERQPP4yzf68I
-Content-Type: application/pgp-signature; name=signature.asc
+Conditions to recreate the bug: a teql master with a slave whose
+neighbour is unresolved; send one packet through the master so the skb
+parks on the slave's arp_queue. On the unfixed tree the parked skb
+names the master (kprobe on __neigh_event_send shows skb->dev=teql0);
+with only the first hunk applied, the parked packet is delivered to the
+slave's peer without a link-layer header when ARP completes.
 
------BEGIN PGP SIGNATURE-----
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824115928.4099988-1-victor@mojatatu.com
+Link: https://lore.kernel.org/netdev/20260824115928.4099988-1-victor@mojatatu.com/
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ net/core/neighbour.c | 1 +
+ net/sched/sch_teql.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCas0kTwAKCRB4tDGHoIJi
-0kA1AP9CO8HcgI3YQSQVtiyE5eYE1WX8RXey9PsMPJ//+flR8AEA/oL5cohuyAl0
-GG/lUTcGDK6NdK6nkVGVfCV/N+mkVAo=
-=uWkZ
------END PGP SIGNATURE-----
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 7448320f7ad5..5823f5007812 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -1336,6 +1336,7 @@ static void neigh_update_process_arp_queue(struct neighbour *neigh)
+ 			if (n2)
+ 				n1 = n2;
+ 		}
++		skb->dev = n1->dev;
+ 		READ_ONCE(n1->output)(n1, skb);
+ 		if (n2)
+ 			neigh_release(n2);
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index acd03f9afc6b..3fbd5af10028 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -348,12 +348,12 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			continue;
+ 		}
+ 
++		skb->dev = slave;
+ 		switch (teql_resolve(skb, skb_res, slave, slave_txq, &hlen)) {
+ 		case 0:
+ 			if (__netif_tx_trylock(slave_txq)) {
+ 				unsigned int length = qdisc_pkt_len(skb);
+ 
+-				skb->dev = slave;
+ 				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
+ 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+ 				    NETDEV_TX_OK) {
+-- 
+2.43.0
 
---SKpaERQPP4yzf68I--
