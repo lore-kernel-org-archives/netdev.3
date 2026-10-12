@@ -1,82 +1,266 @@
-Received: from va-2-39.ptr.blmpb.com (va-2-39.ptr.blmpb.com [209.127.231.39])
+Received: from va-2-29.ptr.blmpb.com (va-2-29.ptr.blmpb.com [209.127.231.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1591471249
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B007F471CF8
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 11:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791805484; cv=none; b=rCHP7+BnCdztJjrluxiM0sbT8cFfud6YKBE+TF0JSgLljDZauMMOQSXz1cDMePnC47eMZciaOhPx8783zHcor2AD1j+y4o+D/re9tPHYt7/J9bgvUnEiLR3sBR567JM3m7t7yeF9MrUJ2wG26ili37PULYF2eMoLQYezy71eIWw=
+	t=1791805488; cv=none; b=m1CgyWkNWvrYTvpvYw8lLo01nDwQ140taT13vY/CTQ1Ehe4NhqkB/tyAjtz5HKEuKO6PKedJbh+G+RhVjUuU2ZrKvSDTm09TaY42yuB+KBQOyHvUQwTZpFYefpYG8FpYKAne8vA47Tqi8K69oINtV/o4SWy1iY/6Y6A2iEzRx3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791805484; c=relaxed/simple;
-	bh=DPGdWzT1CJcG0Yk1taVhln21IgwRRBWxi+igSzrXD7I=;
-	h=Subject:In-Reply-To:To:Content-Type:References:Mime-Version:From:
-	 Message-Id:Cc:Date; b=Twazvw9sgLhlnQw8N5fdkKApBmU3reaD9MpSVunkbcXgDmoNE4iEWzO/ED80iNs5wqscMzOz+88KIoggB+80JTj61ai7ky6gBJ+NZpzefmLlH1/qMPSlFPPg+0XBe9ZRNVviwSUxZvJNvhmrN0ksrQAWCzIULuQwnmmUM5JOulE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=If8viC/j; arc=none smtp.client-ip=209.127.231.39
+	s=arc-20240116; t=1791805488; c=relaxed/simple;
+	bh=HToLxxu0WzbsMpSA8kp/jcY9OVKb88lCh+F/zvSnpGY=;
+	h=To:Content-Type:Cc:Date:Mime-Version:Subject:Message-Id:From; b=q81LQpSReABbXFHcIHsJuA3ce+/QrkMq1NBo/Q99XW1gA7CFASMtt+RY/CN/yjN9wph9CwYN+az0mEbWfnMW1qJO4Msj+XoUjS7iMPxkAo00wZhRCtEU2wm+DpQqC6jNBgvso6HGhPv4edrbwFUWjgBCD0rLoJH789sOO9xmHlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com; spf=pass smtp.mailfrom=yunsilicon.com; dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b=ON5EVqXV; arc=none smtp.client-ip=209.127.231.29
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yunsilicon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="If8viC/j"
+	dkim=pass (2048-bit key) header.d=yunsilicon.com header.i=@yunsilicon.com header.b="ON5EVqXV"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2403070942; d=yunsilicon.com; t=1791805472; h=from:subject:
+ s=feishu2403070942; d=yunsilicon.com; t=1791805474; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=koqUHj3+MS63DOSiOOGzZI3vsnbqGHyGSggg6dem0bw=;
- b=If8viC/jspqBn03cNaA80ImbuLrdR6vs2aFH8OYLcCz7tdatrKrc61dWCPkTKZrAyvBNa2
- 7jBou5LIbq5or1a76qrKpHpv/6OSGzg3qdEixJ4uUuy3EMCkEixCNaxzl24acQbyN5JwoY
- 4ZDUh8FkBi0H3Cj8+1a2C8fkHKSFLtDKqzSKDdJ2hjA883a2QYhtdR2gf/WpaCJuFsFWTd
- WxA+5qRFATpCQnI+XgcdQG73N9XrgvOUNVEkzj/ohgaNqRl99hHsts2hV/Peg9QDBNyt1x
- WCilADbvjmDeZxG3zjJaSl+QyypNwhxtwmMm6CecmlasHbwTQPNjUCIwQHZnTA==
-Subject: [PATCH 15/15] MAINTAINERS: add the Yunsilicon XSC drivers
-In-Reply-To: <20261012114352.2471317-1-tianx@yunsilicon.com>
-X-Mailer: git-send-email 2.25.1
-Received: from sw-dev-sha252.yunsilicon.com ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Mon, 12 Oct 2026 19:44:29 +0800
+ bh=fly9DHH9Krk5wGnL+DaOoC0lr9tfXVWa7+uz0rxSomU=;
+ b=ON5EVqXVJmldZ7l0Z+3ib0y3h8Q2MRrjh1W2BbRmadP4XGZsBBNmbKhhpmfqCqJqF7NRdD
+ nj03OfKz83p137u1NzLu+Z+DAYEM7nUwADNVShQ2g1ah7UxKwoFsdQuFrfFFtRhxbfDogL
+ PUxmWBBIyA5/SxIKwV7O6ggNj92gRVfDDXV26XCGYEtBE2ru5HeSicTrZOrKWpZ/lLP3B+
+ TqtZUeKWkRavjwsSv8BU43h4xo4qVWw+x6kMm0TjAtGm9nD2QxzsMB7Jqps8E+FKZ850AH
+ DS/6CNpniYijjWYzhgPi4fIHMoXfOvqKoZSoxKb+OVehR4y5R36vN0GvA6BanQ==
 To: "Andrew Lunn" <andrew+netdev@lunn.ch>, 
 	"David S. Miller" <davem@davemloft.net>, 
 	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
 	"Paolo Abeni" <pabeni@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, 
 	"Leon Romanovsky" <leon@kernel.org>
+X-Lms-Return-Path: <lba+26accc820+ffcb22+vger.kernel.org+tianx@yunsilicon.com>
+Received: from sw-dev-sha252.yunsilicon.com ([180.152.18.210]) by smtp.feishu.cn with ESMTPS; Mon, 12 Oct 2026 19:44:32 +0800
 Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26accc81e+62f4bd+vger.kernel.org+tianx@yunsilicon.com>
-References: <20261012114352.2471317-1-tianx@yunsilicon.com>
+Cc: <weihg@yunsilicon.com>, <linux-kernel@vger.kernel.org>, 
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
+Date: Mon, 12 Oct 2026 19:44:32 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-From: "Xin Tian" <tianx@yunsilicon.com>
-Message-Id: <20261012114428.2471317-16-tianx@yunsilicon.com>
-Cc: <weihg@yunsilicon.com>, <linux-kernel@vger.kernel.org>, 
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
-X-Original-From: Xin Tian <tianx@yunsilicon.com>
+X-Mailer: git-send-email 2.25.1
 Content-Transfer-Encoding: 7bit
-Date: Mon, 12 Oct 2026 19:44:29 +0800
+Subject: [PATCH 00/15] Yunsilicon ethernet and RDMA drivers
+Message-Id: <20261012114352.2471317-1-tianx@yunsilicon.com>
+From: "Xin Tian" <tianx@yunsilicon.com>
+X-Original-From: Xin Tian <tianx@yunsilicon.com>
 
-Add an entry covering the Yunsilicon XSC ethernet and RDMA drivers, with
-the netdev and linux-rdma lists on Cc.
+Hi all,
 
-Signed-off-by: Xin Tian <tianx@yunsilicon.com>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+This is a new submission from Yunsilicon to upstream our converged
+network adapter driver.  The hardware is a dual-function PCIe device
+(PCI vendor 0x1f67) that supports both ethernet and RDMA operations.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c24144478..34902a130 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -30069,6 +30069,15 @@ S:	Maintained
- F:	Documentation/input/devices/yealink.rst
- F:	drivers/input/misc/yealink.*
- 
-+YUNSILICON XSC DRIVERS
-+M:	Honggang Wei <weihg@yunsilicon.com>
-+M:	Xin Tian <tianx@yunsilicon.com>
-+L:	netdev@vger.kernel.org
-+L:	linux-rdma@vger.kernel.org
-+S:	Maintained
-+F:	drivers/infiniband/hw/xsc
-+F:	drivers/net/ethernet/yunsilicon/xsc
-+
- ZD1211RW WIRELESS DRIVER
- L:	linux-wireless@vger.kernel.org
- S:	Orphan
+The series adds three drivers, which share the xsc prefix.  A shared PCI
+core driver binds to the physical function, brings up the command queue,
+the event queues and the interrupt handling, and publishes one auxiliary
+device per function.  The ethernet and RDMA drivers bind to that
+auxiliary device instead of driving the PCI function themselves, so the
+two personalities share a single probe and resource set.
+
+  1. xsc_pci - the PCI core driver (CONFIG_YUNSILICON_XSC_PCI).
+     Owns the PCI function, the command queue, the event queues, the
+     interrupt vectors, the register access layer and the CQ/QP/SRQ
+     resource pools.  Patches 01-05.
+
+  2. xsc_eth - the ethernet driver (CONFIG_YUNSILICON_XSC_ETH).
+     Registers the netdev, implements the TX/RX packet paths with NAPI
+     and page_pool, RSS, checksum offloads and statistics.  Patches
+     06-08, on top of the core.
+
+  3. xsc_ib - the RDMA driver (CONFIG_INFINIBAND_XSC).
+     Registers the ib_device and provides the PD/MR, CQ/SRQ/AH and QP
+     verbs including the send/receive data paths, plus RDMA counters and
+     sysfs attributes.  Patches 09-14, on top of the core and the
+     ethernet driver (the netdev supplies port state and GID).
+
+Patch 15 adds the MAINTAINERS entry.
+
+The series is split so that every commit builds: the core patches
+introduce the register access, the command queue, the event queues and
+the resource pools incrementally, and the ethernet and RDMA patches only
+start creating queues once their dependencies are in place.  Patch 05
+(core CQ/QP pools) is deliberately shared by both upper drivers; that is
+why it precedes the ethernet patches.
+
+The RDMA device is registered at patch 09, before all verbs exist, so
+kverbs_provider stays false until the mandatory verbs appear in patches
+10-13.  This keeps each intermediate tree compilable.
+
+Please review.
+
+Thanks,
+Xin Tian
+
+Xin Tian (15):
+  yunsilicon: add PCI core driver skeleton
+  yunsilicon: add the register HAL
+  yunsilicon: add the command queue
+  yunsilicon: add event queues, interrupts and the auxiliary bus
+  yunsilicon: add the CQ and QP resource pools
+  yunsilicon: add ethernet netdev registration
+  yunsilicon: add ethernet TX path
+  yunsilicon: add ethernet RX path and statistics
+  yunsilicon: add RDMA device support
+  yunsilicon: add RDMA PD/MR
+  yunsilicon: add RDMA CQ/SRQ/AH
+  yunsilicon: add RDMA QP verbs
+  yunsilicon: add the RDMA send path
+  yunsilicon: add RDMA counters and sysfs
+  MAINTAINERS: add the Yunsilicon XSC drivers
+
+ MAINTAINERS                                   |    9 +
+ drivers/infiniband/Kconfig                    |    1 +
+ drivers/infiniband/hw/Makefile                |    1 +
+ drivers/infiniband/hw/xsc/Kconfig             |   17 +
+ drivers/infiniband/hw/xsc/Makefile            |   10 +
+ drivers/infiniband/hw/xsc/ah.c                |  144 ++
+ drivers/infiniband/hw/xsc/counters.c          |  422 +++
+ drivers/infiniband/hw/xsc/counters.h          |   31 +
+ drivers/infiniband/hw/xsc/cq.c                |  895 +++++++
+ drivers/infiniband/hw/xsc/main.c              |  887 +++++++
+ drivers/infiniband/hw/xsc/mem.c               |  161 ++
+ drivers/infiniband/hw/xsc/mr.c                |  313 +++
+ drivers/infiniband/hw/xsc/qp.c                | 2251 +++++++++++++++++
+ drivers/infiniband/hw/xsc/srq.c               |  426 ++++
+ drivers/infiniband/hw/xsc/xsc_ib.h            |  542 ++++
+ drivers/infiniband/hw/xsc/xsc_ib_sysfs.c      |   64 +
+ drivers/net/ethernet/Kconfig                  |    1 +
+ drivers/net/ethernet/Makefile                 |    1 +
+ drivers/net/ethernet/yunsilicon/Kconfig       |   26 +
+ drivers/net/ethernet/yunsilicon/Makefile      |    8 +
+ .../net/ethernet/yunsilicon/xsc/common/cq.h   |   30 +
+ .../ethernet/yunsilicon/xsc/common/driver.h   |   95 +
+ .../net/ethernet/yunsilicon/xsc/common/qp.h   |  104 +
+ .../net/ethernet/yunsilicon/xsc/common/srq.h  |   54 +
+ .../ethernet/yunsilicon/xsc/common/xsc_cmd.h  | 1022 ++++++++
+ .../yunsilicon/xsc/common/xsc_cmd_api.h       |   25 +
+ .../ethernet/yunsilicon/xsc/common/xsc_cmdq.h |  192 ++
+ .../ethernet/yunsilicon/xsc/common/xsc_core.h |  707 ++++++
+ .../yunsilicon/xsc/common/xsc_device.h        |   94 +
+ .../ethernet/yunsilicon/xsc/common/xsc_hsi.h  |  123 +
+ .../ethernet/yunsilicon/xsc/common/xsc_reg.h  |   28 +
+ .../net/ethernet/yunsilicon/xsc/net/Kconfig   |   17 +
+ .../net/ethernet/yunsilicon/xsc/net/Makefile  |    9 +
+ .../net/ethernet/yunsilicon/xsc/net/main.c    | 1724 +++++++++++++
+ .../net/ethernet/yunsilicon/xsc/net/xsc_eth.h |   45 +
+ .../yunsilicon/xsc/net/xsc_eth_common.h       |  124 +
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_rx.c  |  551 ++++
+ .../yunsilicon/xsc/net/xsc_eth_stats.c        |   39 +
+ .../yunsilicon/xsc/net/xsc_eth_stats.h        |   34 +
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_tx.c  |  309 +++
+ .../yunsilicon/xsc/net/xsc_eth_txrx.c         |  159 ++
+ .../yunsilicon/xsc/net/xsc_eth_txrx.h         |   91 +
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_wq.c  |   80 +
+ .../ethernet/yunsilicon/xsc/net/xsc_eth_wq.h  |  185 ++
+ .../net/ethernet/yunsilicon/xsc/net/xsc_pp.h  |   38 +
+ .../net/ethernet/yunsilicon/xsc/net/xsc_pph.h |   42 +
+ .../ethernet/yunsilicon/xsc/net/xsc_queue.h   |  185 ++
+ .../net/ethernet/yunsilicon/xsc/pci/Kconfig   |   15 +
+ .../net/ethernet/yunsilicon/xsc/pci/Makefile  |   10 +
+ .../net/ethernet/yunsilicon/xsc/pci/adev.c    |  142 ++
+ .../net/ethernet/yunsilicon/xsc/pci/adev.h    |   17 +
+ .../net/ethernet/yunsilicon/xsc/pci/alloc.c   |  237 ++
+ .../net/ethernet/yunsilicon/xsc/pci/alloc.h   |   17 +
+ .../net/ethernet/yunsilicon/xsc/pci/cmdq.c    | 1247 +++++++++
+ drivers/net/ethernet/yunsilicon/xsc/pci/cq.c  |  316 +++
+ drivers/net/ethernet/yunsilicon/xsc/pci/cq.h  |   17 +
+ drivers/net/ethernet/yunsilicon/xsc/pci/eq.c  |  320 +++
+ drivers/net/ethernet/yunsilicon/xsc/pci/eq.h  |   39 +
+ .../yunsilicon/xsc/pci/hal/andes_impl.c       |  708 ++++++
+ .../yunsilicon/xsc/pci/hal/andes_reg.h        |   43 +
+ .../ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h |   85 +
+ drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  |  310 +++
+ drivers/net/ethernet/yunsilicon/xsc/pci/hw.h  |   18 +
+ .../net/ethernet/yunsilicon/xsc/pci/link.c    |   35 +
+ .../net/ethernet/yunsilicon/xsc/pci/main.c    |  348 +++
+ drivers/net/ethernet/yunsilicon/xsc/pci/mr.c  |  212 ++
+ drivers/net/ethernet/yunsilicon/xsc/pci/mr.h  |   18 +
+ .../net/ethernet/yunsilicon/xsc/pci/pci_irq.c |  498 ++++
+ .../net/ethernet/yunsilicon/xsc/pci/pci_irq.h |   18 +
+ drivers/net/ethernet/yunsilicon/xsc/pci/pd.c  |   55 +
+ drivers/net/ethernet/yunsilicon/xsc/pci/pd.h  |   14 +
+ drivers/net/ethernet/yunsilicon/xsc/pci/qp.c  |  356 +++
+ drivers/net/ethernet/yunsilicon/xsc/pci/qp.h  |   28 +
+ drivers/net/ethernet/yunsilicon/xsc/pci/srq.c |   92 +
+ drivers/net/ethernet/yunsilicon/xsc/pci/srq.h |   16 +
+ .../net/ethernet/yunsilicon/xsc/pci/vport.c   |   34 +
+ include/uapi/rdma/ib_user_ioctl_verbs.h       |    1 +
+ include/uapi/rdma/xsc-abi.h                   |  295 +++
+ 78 files changed, 17877 insertions(+)
+ create mode 100644 drivers/infiniband/hw/xsc/Kconfig
+ create mode 100644 drivers/infiniband/hw/xsc/Makefile
+ create mode 100644 drivers/infiniband/hw/xsc/ah.c
+ create mode 100644 drivers/infiniband/hw/xsc/counters.c
+ create mode 100644 drivers/infiniband/hw/xsc/counters.h
+ create mode 100644 drivers/infiniband/hw/xsc/cq.c
+ create mode 100644 drivers/infiniband/hw/xsc/main.c
+ create mode 100644 drivers/infiniband/hw/xsc/mem.c
+ create mode 100644 drivers/infiniband/hw/xsc/mr.c
+ create mode 100644 drivers/infiniband/hw/xsc/qp.c
+ create mode 100644 drivers/infiniband/hw/xsc/srq.c
+ create mode 100644 drivers/infiniband/hw/xsc/xsc_ib.h
+ create mode 100644 drivers/infiniband/hw/xsc/xsc_ib_sysfs.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/Kconfig
+ create mode 100644 drivers/net/ethernet/yunsilicon/Makefile
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/cq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/driver.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/qp.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/srq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmd.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmd_api.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_cmdq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_core.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_device.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_hsi.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/common/xsc_reg.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Kconfig
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/Makefile
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/main.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_common.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_rx.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_stats.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_tx.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_txrx.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_wq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_eth_wq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_pp.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_pph.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/net/xsc_queue.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Kconfig
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/adev.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/alloc.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/eq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_impl.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/andes_reg.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hal/xsc_hal.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/link.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/main.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/mr.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/mr.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pci_irq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pd.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/pd.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/qp.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/srq.c
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/srq.h
+ create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/vport.c
+ create mode 100644 include/uapi/rdma/xsc-abi.h
