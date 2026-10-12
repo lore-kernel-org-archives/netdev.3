@@ -1,156 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE243F326A
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D874A3D20;
+	Mon, 12 Oct 2026 15:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791819267; cv=none; b=KzodqF7KjZE1GtV/TiTPR3idDELCDckKJL95hOMorOpyXZrXNK+WRmaFNl9za23kdRXeIyd1CuLtOY8MbelQnmgrD67SWWsCvv+Z/Kq6D3eQY1s/WFOhke9YVyKyZbxw3W2xRD36Nx8xDE6h9YUqFlFCLXitJsb13HiXfzHPJS8=
+	t=1791819712; cv=none; b=cfzTHpGIjcn7iRT+p9WfkokVF0+IUTiP+1932TEgFo0tQVqR/6ZnTb4HpEWU3CRzzDg0lW4u2u2REWGkJ1qfbT6EZhlvPLvxLO4hmqVWSwivSZ0ZPPoFvIyd03liftjzO0u3nCzPSVa+Yy6aKxma0JS47w5yo1J+XbWhEqdd0ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791819267; c=relaxed/simple;
-	bh=xLZf1kGF5shHGn7VtBPMlBDgabDY+duTErr45LXA/HU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SxeI3TvM6w4RxBuZ8XPEoGu49M0vrhke8s+xgdsJ/3lRcQdMDJx7kw8qSKACUQV1RGtyAsKn/6BTC74CZga4ggcnrJq0zV60yLo5nXK+AIyeyhdR8g8z7NoQvrkhbV0QjTplOpQBkImMUGLY/7s4Xrpbc6fa2hdL/Ic8UZEOzvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Aa7vCdax; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dWEm03IS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791819712; c=relaxed/simple;
+	bh=/R4rj72R6/b+FnXNe0GqrFiWBQUvYfke5/tz6T1QZYg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Km0NTmDX0IU8ryZXae5bWV2oombHs4aSDfW+1CMxEZV/zPgd42jCD/lWx9QK42gSyz5p1PNyNc3s5cKlj4IRRCbq07bVofe0lbQUrwjbu5d4hcGxIjXUz8B71xGv7xqogkGwFfl5F8QKROfqfPNL8950J8kXOXgxs5qrhJMselk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TNeIxByw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Aa7vCdax";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dWEm03IS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791819264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=myjUzaBL+K2P3k1wyYvU0ibyOmHh6KLF5zYoWPKwyNU=;
-	b=Aa7vCdax0jt26GX0lhvl+02jp5klLaPYOG+wbPfm21MYx9whg3l5DDiY0eq1UVN8NSS03j
-	h22TqV1kH68Bs2G2zKt8gN6iYDztb8yBN9xK2hR68EcOJJVP3T/slbDEbhJWMU/IEfLw4w
-	CU0S60lNo78xpcHHG0sOYkYE6cRjj48=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-652-5Dm4HGBXPpm3vvEHdslA3Q-1; Mon, 12 Oct 2026 15:34:17 +0000
-X-MC-Unique: 5Dm4HGBXPpm3vvEHdslA3Q-1
-X-Mimecast-MFC-AGG-ID: 5Dm4HGBXPpm3vvEHdslA3Q_1791819256
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a0228f4a1bso11521195e9.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 08:34:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791819256; x=1792424056; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=myjUzaBL+K2P3k1wyYvU0ibyOmHh6KLF5zYoWPKwyNU=;
-        b=dWEm03IS9flsws4+jYlAFsTth5Ljj/bBuenEQdM7qFv2LqehHU7yMueDtxwfWm0bjQ
-         IwZsjk8yn5cFxtiWzoi8RWzyoRIlAQCo4GSUTRLyaJJ1vn59D20LoA0Ql0PyM84q1XuX
-         JMkTXIxzPoLIN4qpdEJGP1lEj/oVaHHIptTs2ulh1IDg9Hqm1YgShVRRghS3veeo8ExJ
-         cbcWtWrDdmapXIEoOz3VG+Zk5zHocnddgKQRhdGkGmCfBcgxorMHsDVbGRpptKdqUe1+
-         Ms1RqiOjbwqc2rqqK99vc09GjDXC4Go/2HfEQzhSWCgRynBBcIPoodMKw0G9lii6zaG9
-         1f2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791819256; x=1792424056;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=myjUzaBL+K2P3k1wyYvU0ibyOmHh6KLF5zYoWPKwyNU=;
-        b=WyjxmcP+JM96cN3kwlDTDU1tL7NjqXMc8d9BCt7nOt2G21K/Si6Ftp99IjyCRK+x0q
-         paAI03ihX+zK30UgGh6TYYw1kezKi/XV34k7ZqNS/qICRp5Qtw1+zKsaRwkccweQBpSO
-         KplEx4s7XyeEGdRD93226T+5L3/kspfHLjcxADo/6Nsdx5u3YezyY6L3bpkJtLdFbQDs
-         om8WjK9bdu/H0RaTqPVt8Z8fttIPRG/o/eza11fvgT07Xeyc5NyRvntb6EHGmeb8ITyf
-         WamKt+0xW1g8Tbgi6jUbTL80urqhKh1tyusazJxdNbF1FGOCGA94PWp82EOXpk8m6zo4
-         /E4g==
-X-Gm-Message-State: AFq9FYJKIP9jS0IRVaxYxo1LEsk+gFrVgMpdgkR/aZ/04L+x7C3AVguv
-	1VtbtQqXGmKR05c0ab4+ph1ElLhHsLnBmfdp2vz7K8ZM67rBv9ABuyg7Es74l4Q/oy30ZbjDmR9
-	ZoEZ4cAJTBfLTr7vWwEymBn7O1EHvO3iHngHoBg+BH5VddmuD78recv+j/Q==
-X-Gm-Gg: AYBFou2zv6do+8YvaY4QyJnuLP6ldsBkh4tZTPhBsjK3r4PL8w1KGD7DDg2lwTUv7pU
-	Kq6cmFtkNLgydMHRbZ9kSTuj1iA04YJjyQ3BRoFoO5bcGylZ+3ZckYvMEz7geHkAqaQZPYUgYlg
-	CjDd+x5TwLknyIcCuvLd3k23w2v4HZrFkSXDVUwwI652UKjj8dLjoaUWHQMT9+MUjyDhf+pBnUV
-	/8FMt2CC5wRO50jFwvY1guU20g6N8sHhacj0LtGXb7+qwSrAAGrbcsNmr8oIAtZzFr8FesgNTNs
-	ms/rsaDgEQEF2H7lnr89ISuOQxS+Wwg+E9LPU/k5z1joge6vSL36bobgmoLq2De1MpMldrCCTQJ
-	ZlCbFcgrF9Kdh3AsJN0OkwSFXuFeIZEc0Mis89EMwfKEWQ/uKfM00j0pthJ/k5Gx7BBN0ZnWPpg
-	==
-X-Received: by 2002:a05:600c:698d:b0:4a1:97c6:d2b4 with SMTP id 5b1f17b1804b1-4a197c6d614mr112401485e9.15.1791819255803;
-        Mon, 12 Oct 2026 08:34:15 -0700 (PDT)
-X-Received: by 2002:a05:600c:698d:b0:4a1:97c6:d2b4 with SMTP id 5b1f17b1804b1-4a197c6d614mr112400725e9.15.1791819255303;
-        Mon, 12 Oct 2026 08:34:15 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a190344032sm299361335e9.15.2026.10.12.08.34.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Oct 2026 08:34:14 -0700 (PDT)
-Message-ID: <baf77454-2a6b-4f10-836b-9e3612fbeed2@redhat.com>
-Date: Mon, 12 Oct 2026 17:34:13 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TNeIxByw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C01E1F0089E;
+	Mon, 12 Oct 2026 15:41:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791819711;
+	bh=ITI+vc9E+8NnDyyiLVVjVGZ2Ww05idVQo2C14NgwAvk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TNeIxByw7FXKgW0cKnv0x4s8XeVfEb1A/SeHNUZrkqiBUVN4xmn+k2Yux6/lJMMnC
+	 aByfBbiTKo8PvoHJvQ8dpBAsHpTfhqYN1tR7X25v0w+7sxfPzb6if+VU68HyPPoR9e
+	 LMXFlLBeYZcp3Zv45RwO1bv3iBdqktSNV+sYc2qpYgvAzPpCx3T7+6yJ+8ddFcgzQw
+	 b8lYVZdrJqcVErt4Ue1Sc7KecewhFfoQkVIdzEw7wcnZjB2Lw9+fgj12WxEK/1WBbF
+	 A/uB2YhHv8lMAt3hDPU/LKgPBloYb6+bfgRVl1VWMdmJpD3mLtrZW29Q5Lbc8CuHvx
+	 Mw+640LVU56/w==
+Subject: Re: [PATCH net-next 02/11] net: ethernet: qualcomm: ppe: Fix
+ multicast queue config table index
+From: netdev-bot+sashiko@kernel.org
+To: jie.luo@oss.qualcomm.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, quic_leiwei@quicinc.com, quic_suruchia@quicinc.com,
+ quic_pavir@quicinc.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, netdev@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com
+Date: Mon, 12 Oct 2026 15:41:49 +0000
+Message-ID: <179181970969.434549.5801202132735347195@kernel.org>
+In-Reply-To: <20261008-qcom_ipq5424_ppe-v1-2-16caf43e44ee@oss.qualcomm.com>
+References: <20261008-qcom_ipq5424_ppe-v1-2-16caf43e44ee@oss.qualcomm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] lib/dim: fix 32-bit overflow of epms in
- dim_calc_stats()
-To: Shashank Mohan Jain <jain.sm@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
- Tal Gilboa <talgi@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- linux-kernel@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
- Sashiko <sashiko-bot@kernel.org>
-References: <20261005014411.78626-1-jain.sm@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261005014411.78626-1-jain.sm@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 10/5/26 03:44, Shashank Mohan Jain wrote:
-> Commit 0843b2389064 ("lib/dim: fix 32-bit overflow in dim_calc_stats()
-> rates") moved the packet, byte and completion rates in dim_calc_stats()
-> to 64-bit arithmetic, but left the event rate as
-> 
-> 	DIV_ROUND_UP(DIM_NEVENTS * USEC_PER_MSEC, delta_us)
-> 
-> DIV_ROUND_UP() computes (64000 + delta_us - 1) / delta_us. On 32-bit
-> architectures that sum is done in a 32-bit unsigned long and wraps for
-> delta_us >= 4294903297, the last 64 ms of the u32 microsecond range
-> that the function is meant to cover ("u32 holds up to 71 minutes").
-> epms then becomes 0 instead of 1.
-> 
-> net_dim() and rdma_dim() only wait for DIM_NEVENTS events before they
-> call dim_calc_stats(), with no time limit, so on an almost idle
-> interface a window can last that long. With epms == 0, cpe_ratio is
-> set to 0, net_dim_stats_compare() returns DIM_STATS_BETTER instead of
-> DIM_STATS_SAME when bpms and ppms did not change significantly, and
-> rdma_dim_stats_compare() compares a cpe_ratio of 0. The algorithm can
-> then step to another moderation profile based on a wrong rate.
-> 
-> Compute epms with DIV_ROUND_UP_ULL() as well. The result does not
-> change on 64-bit, or on 32-bit for windows shorter than 4294903297 us.
-> 
-> The issue was found by the Sashiko AI review of the original patch
-> (see the Closes: link). The fix and the test were written with an LLM
-> assistant. The dim KUnit suite computed the expected epms with the same
-> DIV_ROUND_UP() expression as dim_calc_stats(), so it could not catch
-> this; it now uses explicit expected values and gains two cases with
-> delta_us of 4294903297 and U32_MAX. Without the fix both new cases fail
-> on UML i386 and on qemu i386 (epms 0, expected 1) and pass on UML and
-> qemu x86_64; with the fix all 10 dim cases pass on all four.
-> 
-> Fixes: 0843b2389064 ("lib/dim: fix 32-bit overflow in dim_calc_stats() rates")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260927051743.71460-1-jain.sm@gmail.com
-> Assisted-by: LLM
-> Signed-off-by: Shashank Mohan Jain <jain.sm@gmail.com>
-Sashiko pointed to yet another 32bit overflow, and I prefer
-avoiding a stream of incremental fixes, especially this late
-in the cycle.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Please address even the latter, and prepare a net-next series,
-moving the kunit test to a separate patch.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Thanks,
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Paolo
+- [Medium] The fix leaves a mismatch between the multicast queue config
+  table layout and the access width used in ppe_config_qm()…
 
+--
+
+net: ethernet: qualcomm: ppe: Fix multicast queue config table index
+
+ppe_config_qm() used the absolute queue ID as the index into the multicast
+queue configuration table. The table is indexed from 0 for the first
+multicast queue. This patch subtracts PPE_AC_UNICAST_QUEUE_CFG_TBL_ENTRIES
+so that multicast queues 256 and above map to the correct table entries.
+
+> diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
+> index 125b73be92b13..8a553902ffad1 100644
+> --- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
+> +++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
+> @@ -1530,8 +1530,13 @@ static int ppe_config_qm(struct ppe_device *ppe_dev)
+>  				if (ret)
+>  					goto qm_config_fail;
+>  			} else {
+> +				/* The multicast queue table is indexed from 0 for
+> +				 * the first multicast queue, which follows the
+> +				 * unicast queues.
+> +				 */
+>  				reg = PPE_AC_MULTICAST_QUEUE_CFG_TBL_ADDR +
+> -				      PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC * queue_id;
+> +				      PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC *
+> +				      (queue_id - PPE_AC_UNICAST_QUEUE_CFG_TBL_ENTRIES);
+>  
+>  				ret = regmap_bulk_read(ppe_dev->regmap, reg,
+>  						       multicast_queue_cfg,
+
+[Severity: Medium]
+Now that the index is correct, does the bulk access width still match the
+table stride?
+
+In ppe_config_qm(), the multicast buffer has 5 words while the unicast
+buffer has 4:
+
+    u32 reg, multicast_queue_cfg[5];
+    u32 unicast_queue_cfg[4];
+
+ARRAY_SIZE(multicast_queue_cfg) is passed to both regmap_bulk_read() and
+regmap_bulk_write(). That is 20 bytes per entry.
+
+In ppe_regs.h, however, the table is defined with a 16-byte stride:
+
+    #define PPE_AC_MULTICAST_QUEUE_CFG_TBL_ADDR     0x84a000
+    #define PPE_AC_MULTICAST_QUEUE_CFG_TBL_ENTRIES  44
+    #define PPE_AC_MULTICAST_QUEUE_CFG_TBL_INC      0x10
+
+The highest field defined there is PPE_AC_MULTICAST_QUEUE_CFG_W2_RESUME, in
+word 2.
+
+With the corrected index, each multicast read-modify-write covers word 0
+of the next entry as well. For the last IPQ9574 multicast queue (queue
+299, index 43), the 5th word is:
+
+    0x84a000 + 0x10 * 43 = 0x84a2b0, plus 4 words = 0x84a2c0
+
+That is one register past the end of the 44-entry table, which ends at
+0x84a2bf. regmap does not reject this, because ppe_reg_table includes the
+whole 0x800000-0x9fffff QM range.
+
+The commit message says unrelated QM registers were being written. Could
+a register outside the multicast table still be read and written back
+here after this fix?
+
+If the entry really is 4 words, should multicast_queue_cfg[] be [4]? Only
+W0..W2 are used.
+
+If the entry really is 5 words, the 0x10 stride would be wrong. In that
+case, would multicast queues 257-299 still be configured at the wrong
+addresses even with the new index?
+
+The later IPQ5424 patches in the series reuse the same 5-word access and
+the same 0x10 stride for multicast queues 256-283, so the same question
+applies there.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-qcom_ipq5424_ppe-v1-0-16caf43e44ee%40oss.qualcomm.com
