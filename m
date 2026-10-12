@@ -1,229 +1,186 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2742E737D;
-	Mon, 12 Oct 2026 16:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEC73FCB32;
+	Mon, 12 Oct 2026 16:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791823903; cv=none; b=LJD3LY18LOBu63OdgOVcU8U21vcIfg3jwYIUI7Ehj700JtX08qlu7G870kI8wCptUPJmHTmKmWVioYwuPPOLlpHKMOUS/7xfPowxQtJz+TtcpE5RBYT72Y5Dl5DJdhL3npsoh1SCjfjmQu0L/2WCF92fzh/ts59NDhVG3PRANjI=
+	t=1791824082; cv=none; b=psD6EAwQZDja4+6F91QoDCe7qR/DN3HviFRlcJTF4apABduNqwSc+0nqe/nkrYpOa94PUZxyktmEACQ2gxYVK2tWjO14Q0qI9Ns/TjWLKpV9gdwCktrrapHDO1e7j/ptVZjMU7EuoGISGqjjQn882tqeKRjl/qPSMrP6kuWdb5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791823903; c=relaxed/simple;
-	bh=RQydqv4XJcasiRQuUFPvomHpu3S+M+YdF/tmAgc4t00=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TBK3pribfF15U3HALttorKcr7bjeXrMQzwdM4BKImlYnMk13dnmIF/A+NjHLZlHiR/GU5SPO30CFl9fJ5xx5fxrZt1Q3YqRtLXsMAPjAE5x5l2pHu7gRepRYOzFrxV6bY3l8D6V/3+jDjxa7Qk0apoVudXf6TUv+vXchsBrrcx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=aCJvWEq3; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1791824082; c=relaxed/simple;
+	bh=x9wz9JjXgx9QSm2ge9ebY1KM5lLelapl//gXR5hfebY=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Y93L9TnFdZqGVYwaD+Qt7LRYATirDgI6u8Vi0Y5kgWtIvSUW+k92XCTN3g+KxUQA9YTdtT25CDfAP2TryTSs9af8fUdaeUI8/YPZKrKIMMEJN/IgtcNH7g80+V9ajw1BInBoNn52XhsA1YDw1RCOQJDRFdI2XaWVRv8hzMSKOT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ixulb86s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="aCJvWEq3"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=aCJvWEq3;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.2/8.18.2) with ESMTPSA id 69CGZWEc790305
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 12 Oct 2026 17:35:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1791822932; bh=nHOetBiDekJwWPGeGPktITGpQNmqnuv3FWLxPY57pPs=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=aCJvWEq33ThyxGcgvykeF24eHjFSIln8357sLW74qJt9qmu21hG2zoZxYBn+Z2HE1
-	 /Z6xkZ3UOgcgYbpC8nE8k6rPREVBMYkx0lf9MMfUqsBuIf5BN2DwcnZ8BLRRKYUdJV
-	 1KRZBb0ul1kl22HnJAox9twwuc7POS/pmTHIrf0g=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.2/8.18.2) with ESMTPSA id 69CGZWcL894584
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 12 Oct 2026 18:35:32 +0200
-Received: (nullmailer pid 905597 invoked by uid 1000);
-	Mon, 12 Oct 2026 16:35:32 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: Vladislav Karmanov <vladislav.karmanov.dev@gmail.com>
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, daniel@makrotopia.org,
-        dqfext@gmail.com, SkyLake.Huang@mediatek.com, hkallweit1@gmail.com,
-        linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com,
-        angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com,
-        sean.wang@mediatek.com, olteanv@gmail.com, yangshiji66@outlook.com,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH net v3] net: phy: mediatek-ge: disable EEE on the MT7530
- PHY
-In-Reply-To: <20260904202800.3410838-1-vladislav.karmanov.dev@gmail.com>
-	(Vladislav Karmanov's message of "Fri, 4 Sep 2026 23:28:00 +0300")
-Organization: m
-References: <20260904202800.3410838-1-vladislav.karmanov.dev@gmail.com>
-Date: Mon, 12 Oct 2026 18:35:32 +0200
-Message-ID: <87cxteri5n.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ixulb86s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A0D1F0089B;
+	Mon, 12 Oct 2026 16:54:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791824081;
+	bh=/0LLAYE84Hs0+AqFqH67O/smM4bU/0+rUKWG9IN4Vlw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Ixulb86sjXVmEsRylqbooEFUGLMovYrx8suPMVDK3bLwfyBXfGY3wet/01bbPeFSi
+	 /tL7nfl1wF+v0iVHHXAy93UNFOiGWnpgHyi00eATq6LWtrLkOdJxaO2/YJWrq7d4eJ
+	 TmfR7lsQcLR9BtOqNvv5G4nSTqVIdZFzeXv5VS26j/hqxT1o8zMygRBhHBzTx3KIre
+	 dmeOy3RHi11BYvwc//hCQRZThh85sgjq7U3xLM5lAHehTzobyIWUrE0cjWg4fyurFg
+	 UPG4knxasN/ZADdINrv+WmyA1LZVlYo4HOkKkv0stqk6PqO0/WGQm72fHFxC6KeBLp
+	 9krNOeMB6Sy6Q==
+Subject:
+ Re: [PATCH] rds: fix out-of-bounds conn_path access via handshake NPATHS
+From: netdev-bot+sashiko@kernel.org
+To: bsdhenrymartin@gmail.com
+Cc: achender@kernel.org, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Mon, 12 Oct 2026 16:54:40 +0000
+Message-ID: <179182408008.434549.9079047641584992003@kernel.org>
+In-Reply-To: <20261008163843.957325-1-bsdhenrymartin@gmail.com>
+References: <20261008163843.957325-1-bsdhenrymartin@gmail.com>
+X-sashiko-severity: Critical
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
-X-Virus-Status: Clean
 
-Vladislav Karmanov <vladislav.karmanov.dev@gmail.com> writes:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-> The MT7530 internal GE PHY advertises EEE by hardware default, but its
-> EEE support is defective: with EEE advertised, some link partners fail
-> to establish a stable link. On a 2-pair (4-wire) cable where both ends
-> advertise gigabit, 1000BASE-T training cannot succeed, and instead of
-> falling back to 100 Mbps the port loops, so no link or DHCP lease is
-> ever obtained.
+Critical: 1 · High: 0 · Medium: 1 · Low: 0
 
-I realize that I'm too late at the party here, but I still want to state
-this for the record:
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I just tried to reproduce this bug on a Zyxel NR7101, using a cable with
-pair 4 cut, connecting to the I219-LM controller in my laptop.  Without
-success.
+- [Critical] This fix leaves the same out-of-bounds walk reachable
+  through another lane loop.
+- [Medium] The Fixes: tag names the wrong commit.
 
-EEE enabled or not does not make any difference.  The link is negotiated
-as 100Mb/s as expected, and it is completely stable.  Absolutely no
-issues observed.  I even added a .link_change_notify callback with a
-counter and a printk to the phy driver to make sure I didn't miss any
-flapping.
+--
 
-MT7621 side:
+rds: fix out-of-bounds conn_path access via handshake NPATHS
 
-root@OpenWrt:~# ethtool --show-eee lan
-EEE settings for lan:
-        EEE status: enabled - active
-        Tx LPI: 30 (us)
-        Supported EEE link modes:  100baseT/Full
-                                   1000baseT/Full
-        Advertised EEE link modes:  100baseT/Full
-                                    1000baseT/Full
-        Link partner advertised EEE link modes:  100baseT/Full
-                                                 1000baseT/Full
-root@OpenWrt:~# ethtool lan
-Settings for lan:
-        Supported ports: [ TP    MII ]
-        Supported link modes:   10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-        Supported pause frame use: Symmetric Receive-only
-        Supports auto-negotiation: Yes
-        Supported FEC modes: Not reported
-        Advertised link modes:  10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-        Advertised pause frame use: Symmetric Receive-only
-        Advertised auto-negotiation: Yes
-        Advertised FEC modes: Not reported
-        Link partner advertised link modes:  10baseT/Half 10baseT/Full
-                                             100baseT/Half 100baseT/Full
-        Link partner advertised pause frame use: No
-        Link partner advertised auto-negotiation: Yes
-        Link partner advertised FEC modes: Not reported
-        Speed: 100Mb/s
-        Duplex: Full
-        Auto-negotiation: on
-        master-slave cfg: preferred master
-        master-slave status: master
-        Port: Twisted Pair
-        PHYAD: 2
-        Transceiver: external
-        MDI-X: Unknown
-        Supports Wake-on: d
-        Wake-on: d
-        Link detected: yes
+This patch clamps the RDS_EXTHDR_NPATHS value the peer sends in
+rds_recv_hs_exthdrs() to the number of rds_conn_path slots the transport
+was allocated with. As a result, IB connections (t_mp_capable unset)
+negotiate at most one lane. The aim is to stop fan-out paths such as
+rds_start_mprds() from walking past the single allocated c_path entry.
 
-I219-LM side:
+> Cc: stable@vger.kernel.org
+> Fixes: ba3d1f480c7a ("net/rds: size a connection's path set by the transport it ends up with")
 
-root@miraculix:/tmp# ethtool --show-eee eth0
-EEE settings for eth0:
-        EEE status: enabled - active
-        Tx LPI: 17 (us)
-        Supported EEE link modes:  100baseT/Full
-                                   1000baseT/Full
-        Advertised EEE link modes:  100baseT/Full
-                                    1000baseT/Full
-        Link partner advertised EEE link modes:  100baseT/Full
-                                                 1000baseT/Full
-root@miraculix:/tmp# ethtool eth0
-Settings for eth0:
-        Supported ports: [ TP ]
-        Supported link modes:   10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-        Supported pause frame use: Symmetric Receive-only
-        Supports auto-negotiation: Yes
-        Supported FEC modes: Not reported
-        Advertised link modes:  10baseT/Half 10baseT/Full
-                                100baseT/Half 100baseT/Full
-                                1000baseT/Full
-        Advertised pause frame use: Symmetric Receive-only
-        Advertised auto-negotiation: Yes
-        Advertised FEC modes: Not reported
-        Link partner advertised link modes:  10baseT/Half 10baseT/Full
-                                             100baseT/Half 100baseT/Full
-        Link partner advertised pause frame use: Symmetric Receive-only
-        Link partner advertised auto-negotiation: Yes
-        Link partner advertised FEC modes: Not reported
-        Speed: 100Mb/s
-        Duplex: Full
-        Auto-negotiation: on
-        Port: Twisted Pair
-        PHYAD: 2
-        Transceiver: internal
-        MDI-X: on (auto)
-        Supports Wake-on: pumbg
-        Wake-on: d
-        Current message level: 0x00000007 (7)
-                               drv probe link
-        Link detected: yes
+[Severity: Medium]
+Is this the right commit for the Fixes: tag?
 
+All ba3d1f480c7a does is recompute npaths a second time after the
+loopback swap in __rds_conn_create():
 
-So now I am curious to know:  What am I doing wrong here?
+    npaths = (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
 
-I primarily did this test because I wanted to implement a smarter
-workaround, without forcibly disabling EEE for everyone based on one
-pretty obscure configuration.  But that's hard without being able to
-reproduce the problem.
+Its own message says "The c_path array stays sized for the caller's
+transport". So it doesn't change how many slots an IB connection gets.
 
-So let me ask you, who seem to be able to reproduce it:  Why is it
-necessary to block EEE for everyone? Why can't you disable EEE by
-default, but let me enable it on my systems - where I know it works?
+IB connections have had a one-element c_path since 840df162b3eb ("rds:
+reduce memory footprint for RDS when transport is RDMA"). That commit
+replaced the inline c_path[RDS_MPATH_WORKERS] array with an allocation
+sized by:
 
-Or even better:  Why can't you detect the link flaps and only disable
-EEE when required? (this was my plan)
+    int npaths = (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
 
-FWIW, I have been using EEE on MT7621 devices for years without ever
-noticing the claimed issue.  I have heard the rumours that the SoC is
-supposed to have occasional link issues, and that they are related to
-EEE.  But reproducing the issue has so far been impossible.
+The NPATHS clamp to RDS_MPATH_WORKERS and the rds_start_mprds() loop over
+c_npaths are even older (5916e2c1554f and 69b92b5b7419).
 
-> MediaTek confirms the hardware is the root cause (Landen
-> Chao, 2021): "EEE of the 10-year-old MT7530 internal gephy has many IOT
-> problems, so it is recommended to disable its EEE."
+Stable tooling chooses target trees from the Fixes: tag. Would LTS trees
+that carry 840df162b3eb but not ba3d1f480c7a miss this fix? Should the
+tag be:
 
-This is BS. I don't doubt that there are bugs in the MT7530 gephy. But
-the EEE feature of the MT7530 internal gephy works fine for me.  And
-always has.
+Fixes: 840df162b3eb ("rds: reduce memory footprint for RDS when transport is RDMA")
 
-Vendors have no interest in making older hardware work. There is no
-reason to ask them or trust them when it comes to hardware they don't
-sell anymore.
+> diff --git a/net/rds/recv.c b/net/rds/recv.c
+> index 6204e577a90ae..c9528812edef1 100644
+> --- a/net/rds/recv.c
+> +++ b/net/rds/recv.c
+> @@ -224,7 +224,8 @@ static void rds_recv_hs_exthdrs(struct rds_header *hdr,
+>  		/* Process extension header here */
+>  		switch (type) {
+>  		case RDS_EXTHDR_NPATHS:
+> -			new_npaths = min_t(int, RDS_MPATH_WORKERS,
+> +			new_npaths = min_t(int, conn->c_trans->t_mp_capable ?
+> +					   RDS_MPATH_WORKERS : 1,
+>  					   be16_to_cpu(buffer.rds_npaths));
+>  			break;
+>  		case RDS_EXTHDR_GEN_NUM:
 
-We can do better. And we have, by for example bringing DSA to the
-MT7621. Please, let's try to make even old hardware work as good as
-possible.  Disabling features is not the way to go.
+[Severity: Critical]
+This clamps NPATHS. Can the RDS_EXTHDR_GEN_NUM case just below it still
+cause the same out-of-bounds walk on IB connections?
 
-> Auto-negotiation then falls back to a stable 100 Mbps link instead of
-> looping at gigabit. Tested on ASUS RT-AX53U (MT7621): with a 2-pair
-> cable on the WAN port, a single clean 100 Mbps link comes up and a
-> DHCP lease is obtained, where the unpatched driver loops.
+rds_recv_hs_exthdrs() always calls rds_conn_peer_gen_update() at the end.
+The call does not depend on c_npaths, fan_out or t_mp_capable:
 
-And no I've tested the same configuration with EEE enabled, and it
-doesn't loop either.
+    conn->c_ping_triggered = 0;
+    rds_conn_peer_gen_update(conn, new_peer_gen_num);
 
-Where does that put us?
+rds_conn_peer_gen_update() then loops over a fixed RDS_MPATH_WORKERS
+lanes:
 
+net/rds/recv.c:rds_conn_peer_gen_update() {
+    ...
+	WARN_ON(conn->c_trans->t_type != RDS_TRANS_TCP);
+	if (peer_gen_num != 0) {
+		if (conn->c_peer_gen_num != 0 &&
+		    peer_gen_num != conn->c_peer_gen_num) {
+			for (i = 0; i < RDS_MPATH_WORKERS; i++) {
+				struct rds_conn_path *cp;
 
-Bj=C3=B8rn
+				cp = &conn->c_path[i];
+				spin_lock_irqsave(&cp->cp_lock, flags);
+				cp->cp_next_tx_seq = 1;
+				cp->cp_next_rx_seq = 0;
+				list_for_each_entry_safe(rm, tmp,
+							 &cp->cp_retrans,
+							 m_conn_item) {
+					set_bit(RDS_MSG_FLUSH, &rm->m_flags);
+				}
+    ...
+}
+
+The WARN_ON() only prints a warning. It doesn't return.
+
+On IB, __rds_conn_create() allocates a single c_path slot. A peer can
+send two handshake probes carrying different nonzero GEN_NUM values. A
+pong (h_sport == 0, h_dport == RDS_FLAG_PROBE_PORT) has no sysctl or
+transport gate. A ping also works if rds_sysctl_ping_enable is set. The
+call chain is:
+
+rds_ib_process_recv()
+  rds_recv_incoming()
+    rds_recv_hs_exthdrs()
+      rds_conn_peer_gen_update()
+
+The first probe stores c_peer_gen_num, and the second enters the loop.
+For i=1..7, would the loop take a spinlock and write cp_next_tx_seq and
+cp_next_rx_seq in heap memory past the allocated slot? It would also walk
+a cp_retrans list head read from that memory and call set_bit() through
+whatever pointers it finds there.
+
+If so, the commit message's claim "so a peer can never ask us to walk
+lanes that do not exist" doesn't hold yet.
+
+Could this loop also be bounded by:
+
+    conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1
+
+which is the count __rds_conn_create() already uses? Another option is to
+skip handshake extension processing entirely on transports that are not
+mp-capable.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008163843.957325-1-bsdhenrymartin%40gmail.com
