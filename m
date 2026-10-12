@@ -1,283 +1,232 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA153D955C
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791837812; cv=pass; b=U5rNi///wj48sNl7DeeEP/Lxkq6eG/XYiYnVfOhURPfMHcZbFr3+kAAzTudETO2Ypuh6/WqV9Hls3OwvLUcmKEn4eEqfKpBZXM6IWbEnTHPFzH9KaCvgi+rCBMjWI/2gM3wizCJ9cq7ehrxV56KPme1dqqkgFJ3jYmjuUpt4oiM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791837812; c=relaxed/simple;
-	bh=V9thtctaEPB6lL/KXtYDegVWUvfdX7j2N6TX62uRfpI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oUlWCAKXgvtlfwiAJ3FVBtthsWySqf2irs0c+eOFrzcxaPDbNCHneO/4U2cA8/xgCgTKUjLPXkgiPxKZwXgF581YWYCzYAzkaS1jCGfBvHttMSYBxA7a8Njc1ouWoP5OD1KqonYuF5PC2TQUdd7/azWfMi1QTr6kDX2QbefC1CE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pLtp9PA2; arc=pass smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF71438C406
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791838044; cv=none; b=jXsfRL796/Xhh3WM27QybnUCcGwkPt+7M9y8Sls4RsRpFCU1raVb/A+E5E7zX+foa49HJ+mVj07VzIONSbcCNDBTT9B45yL3q/Yh2aOS05jTHgmLyXTEzkJ2p3QDXHh++7WkbigLuzwGkE0hEA+WRmOtuFKS08oHucGjoJSKKrc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791838044; c=relaxed/simple;
+	bh=q6Q4p9L2p5sbRwQUJO3Ou0yNu2TiX+tOHHXXPtjGu9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hEer1RjCSOXrmQVELoVv/OuwKzIo+upX/o1QHwyCLCpW93DnL8NiA1QQ5L8V+WYv1KBiosDjuuKT6MMswvy0YBuEycLjJKb+3zz5WtR/mCvwOVObA+k4UHtgOVg0fHHrxXshuiRXG32V2L36DxyA4IEu4Wga0dNVq4MRRrqL4zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EX45kSNR; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=h25My5Ra; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pLtp9PA2"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-cc4c02ddd62so982041a12.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:43:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791837811; cv=none;
-        d=google.com; s=arc-20260327;
-        b=L+SLKlOFQKTkZLETwmKYCvnEABVBLspxdLvOpPK5JUj08KIyyVwh4mE1nI8MSnaW6n
-         2bKtEIx9fwVfWDA4w+kSS59QeRT3k3PCpG7+L1s+9yB6XwbXQuTihlQXziz93N3dA2hN
-         ssoUpqoibkx2Iourk4xYVzcFcYW5u+RGZDrp0aQWNyn8eFaSRpw4kQWUrcLC8PDrO9cZ
-         j41+uGTTDah7rYtqunGGMQmRLbf+c0fFfmxXVRpNh7NATD762V6u8jv5D80RcMZRoRbd
-         Q6s7+gusDubgh5emYB/wHtws1fm9HRqoTsKVKIQciP/khjbs7ofdKrVLgevu17Lct+Rv
-         EiKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gBTKp/yDTh6RzoG3bbVkNoxEHUElC4XTCqvtS+EhVmE=;
-        fh=44VQk+4rrRTro7CPT0fvzo80Qs0Um3vP4Y09dSn4TbA=;
-        b=pNk06QT6Unc1jis7VMOyqcG4I8XHh9wY5zqYyTKjydfInHMUiIBsUNVUD5LpDgeKJ4
-         tnJGDnHBZGkpkxgQfy6+rHohhxn57gROQtibs/hDS/nv7E7TtiN4T4cXvCmTo9WwJZVe
-         JybG2xBz2nzamooZo+Tlw7mu4+taziJeeUJm68NKIdgHMAgVD267QERr5YUC0/AUhUAJ
-         HAr+IyiS4jnTcI0Sz9DzTjG62PsLu2hq/cLQ122m/BHOSOONI8E1+0mgapfI8r97AF9/
-         EFXBaGevZFcSExBTad1UQYpMvhF6gWn05Em36FavjNyutxkqEQ3YivwkrOfWkZq8GmZ9
-         JokA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EX45kSNR";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="h25My5Ra"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CJMoLS144145
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:47:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=9ui4j5yz4g/dtRXMgKLud1I1
+	DvziHiRoVyUoK39Y/Zc=; b=EX45kSNRSaYQtkyMnaXXe8ey+pfV9qDzQ+gww7g1
+	zxp7/sIks3/O1C3cWygmAWJ+ZqJY+JgsZlqWfU7oWk+CduN6mh5jCEljRfbzcLNn
+	9hZ5IdEqu2YuJe0BhaX6aKExUoC9d4+ACYNVIS5twZ3mhPuKu3iLUOrFOq3iwguq
+	SsdIvgqGxW6ynwnkKMZ7ouGtD5t3jlzwFoPO5xEA4m8xVoqhOrJ3UE67M5c3w/Nn
+	hqXsaac86FlJtzA7qYBfmbsfk5OS4o8eYU8y39ldiQKNJfJ4hfHTKcD9PgIn8fkr
+	d3a8ak/QL10bcjayLiaXXXlU2S1nz/Mdgbk2aGZgxjJBVA==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h8wdrarkx-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:47:22 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93e92aad34aso445708885a.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791837811; x=1792442611; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=oss.qualcomm.com; s=google; t=1791838041; x=1792442841; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=gBTKp/yDTh6RzoG3bbVkNoxEHUElC4XTCqvtS+EhVmE=;
-        b=pLtp9PA2RAqjY7DSMRJvq4Zsh9sbldCLLKKPH35EPwjd4Jjj7CHmM38YJ0shnL+dlw
-         l93RHLRt/m5FVQbXV88j/4HcoLKELGT4xfyxX/6wkU9Z6WU5TzYMWYDy2LuEZF263X7X
-         bxIvNIQ5K1a/A8aFpaVGbf0szBHVhMuugH8gFO+DuPPvOnWgGKkuK6V6SlZs+CWxrUPn
-         gQ7uJzb45Yhau7AQ/W/NmdPgwW0pfz4JDGV9z+vGJYhIPZL0Qcj31HfHX9VmkrPX0QET
-         GQcKecrrTjCV2bmb5jG2ZEgFh2OPhCRYgcG5QHK7eSf/OmHgazdvSjD7hhmcHPi1hiza
-         37Eg==
+        bh=9ui4j5yz4g/dtRXMgKLud1I1DvziHiRoVyUoK39Y/Zc=;
+        b=h25My5Ra3R2CWGiJvIjDARZlX75T7do/q1b0oBKx4HsHGQyFtSeYe2Y2IBiYmXpMAf
+         Pz+hdfJ1MjriT97f891NlUY+ZAKlyeg//FCbGMNjhOikCSZvLo+6+UquLD47h/E1a614
+         IXOE7AGJEHe4fgF54+i1mdKsdC/SdrblKFFu5FUNTS5Nz7sHI2rHViZZeOcaVNVOSTww
+         VF3BAAdsY2izHFq+WwleXcL6eupAM3BW3ImcUTYsmZ5+NM6YRh132oyR/4kIDLqc4su8
+         xHkoxw1xDpXmDLZHdM+K5yB061Bf7KipiP2xNxIWe1qq48qy8JR6Jo3jSW41TyKtP+cg
+         /ETg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791837811; x=1792442611;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1791838041; x=1792442841;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gBTKp/yDTh6RzoG3bbVkNoxEHUElC4XTCqvtS+EhVmE=;
-        b=puhjRBRjTsDlx6Ie/QTuJeSHtXW8h6dQN/bPtz82rOnkamJ4NEMwzA+X8QQDFCc58s
-         l2rxrkk6xx00odj1JnI8c+HWhAfBIEtYa0jPJGUoRxCwKlNNLfgwhfizVlcnYn2pSY3t
-         fk5Z/BCmQz7R0eTxjHDV3qYkhqRTidDJsUG379zZKZTAazEF6va70jN29kUjMBrP1OM5
-         4oT0eOtndvGl7ETB5lTecYt24vGENpiVZBBV+jLz5QPryTdH5CHaMXvsV3P7JaKgcA5l
-         uTRaj76RS+4xhrXX9f1yBSGcgr+rPDUpWipaAAdy+z4fX1eOMBtSGho+DAkjcXnPJOYc
-         DwNQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxZpTR4gmnB/R+CschEQSspRECWcN2Rrxm1f6d8nF3tZdGmNsOHhAqFcwX+SKRUHKENUuOrmBk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGi2yPg7YJFrEllwQcW+Fn3cRWa9NX37oqUCQHY8mHAXem85eu
-	+SAN0IpKR5KrUjw3qXujiombpziJQFMKErhARjF3iE5XBMbXLzRRce71Ypi1hwtOw9knOjwrb8H
-	Zni/RR0UBgvU5Nn23gNZZBBBve5kETTA=
-X-Gm-Gg: AYBFou2fvZ+Wv1ZXAl6QNR2uKPC4cmyqvPFXuRz1bCDl7UiVLtQa6M0aa2DB1cIenA3
-	QXhvwsL8nXReOPB8wpWgkKLIMJdRU/N+8FcrE88J1uMO0LSGJZGRFjxZxSxlK37ECAZ1igwO+ur
-	UjzRwES6D8mVlwSi02pL0tEemKE+H+X+QLfHiVXSosrDJEwil+FTeYNW0xwUR/hguwtQ5/krT5C
-	U3y0KulERHjSkZ7kYlHtewNwNamUHYFOGuog40ecZYraDqvxaMEzdsgcp2ST/AFwJAx4XcZhhAS
-	wYtoSm9hFg+6onqH3l8H2gW0MyuFgV6CLCrtRACEHvwdxaeHddj6yFtjNjbCe1d1CK6MgYz4S5a
-	9p18XSS1qrNxSC3wdmk33BLamba8rn7qpKruE3NqQ6hDj+ZdzpN46QB1c2g==
-X-Received: by 2002:a05:6a21:4ea8:b0:3cc:92d9:80cb with SMTP id
- adf61e73a8af0-3e16bf7b29amr8270211637.12.1791837810715; Mon, 12 Oct 2026
- 13:43:30 -0700 (PDT)
+        bh=9ui4j5yz4g/dtRXMgKLud1I1DvziHiRoVyUoK39Y/Zc=;
+        b=ZtZs2/ZXW0/Q0tGNWnABSpEGUlJwFbpRyzZSwg+a//qtKJ8HTPrs//pHK7WBlW75/l
+         cx3usaq0oMgntKk1rWAJnYx3ockn1cQg3JfCILfu0Yl6u1tGlb27lLFxHmDCTzg6uNaS
+         JGu7E6kyf1ERUna7EbMQgJCQ9dNG+r/GnDFsa6BmKRHG+IBR+pWaItnr2Kg17ngIUr+C
+         FNw4ijLqAVA8ZG0FLwuQa3tYj+DBB1hJtgiRQsDS9d/hv4mbBrYWw7Gt9qoDhWXZfcMK
+         TNWJ67yu6TSorRq/Bh6EgoRESzokUgjsnmxsuBwAFxtVglYLDAgETYkQiYeurGm5pe0+
+         t0tA==
+X-Forwarded-Encrypted: i=1; AKwUvBwSB4x15ET0qL542q0dXn3ubdR0CgVep7eRv8l0sJRyDq/2scE0l2B35iueWIwJZ0BSANp2zfI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIElBCACGZAScTBIO14j17Z+m5xcExv1xKMx8VIOIKI1uO16vwu
+	0r2+sg6c8KV9xxy51XREH++A8QgffLPRSYQSlnfTqKzG281qUS0++ep963+nj6lNt29KIdl3Yiq
+	74IVvGPQepMpxy7kWP2pQoJzuHrSvvymdYeDgOkdR7/E8OuHLadklLTN1KM8=
+X-Gm-Gg: AYBFou14D73Zlr0gRXgxDkTnx0tv88pa+t9kcx3anY/4ZHH1si6bsASAGIHRxKU63hY
+	5nTgj5/AvMT0GN4zh2qlUCkCm9EqKi8SRGWJBUcmVgM61xWs4xTEQSJZtDVp99HIouI4H2iutln
+	J1SPFGX3HMR+omRat9NVm42bgA2bH/VafYKBP0IfGEgTmR/n0XDKWo+vATqC1UpmmefAzthPU6H
+	mMyzHa0v2lQ5bUFDd15C6jNzitTdQiXi6XO/4/mfhKi7D69sJQLDrkvNS1bv1rCEVjv/yKnDCJI
+	15R3pFrvkO9o57wHOFnJ/MofkrFTKvVvu0NnHWYbgn8XJZITjvy/uvqE9eUEe2vwvH8MnKcUbSa
+	X2GeMmWIuAnNzlg==
+X-Received: by 2002:a05:620a:270d:b0:93b:d79a:c462 with SMTP id af79cd13be357-93ebd26b606mr1757756185a.58.1791838040364;
+        Mon, 12 Oct 2026 13:47:20 -0700 (PDT)
+X-Received: by 2002:a05:620a:270d:b0:93b:d79a:c462 with SMTP id af79cd13be357-93ebd26b606mr1757752685a.58.1791838039787;
+        Mon, 12 Oct 2026 13:47:19 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc6b82sm1192371f8f.51.2026.10.12.13.47.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 13:47:17 -0700 (PDT)
+Date: Mon, 12 Oct 2026 22:47:17 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next 1/2] net: stmmac: fix XDP TX DMA address for
+ compound RX pages
+Message-ID: <as1HVdDa4yN4yp11@lore-desk>
+References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
+ <20261012-stmmac-xdp-tx-pre-fixes-v1-1-05fd0c90f7e1@oss.qualcomm.com>
+ <20261012194317.o642ym7ddsmny25x@DEN-DL-M70577.microsemi.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261009074601.3954275-1-hdthky0@gmail.com> <179162162010.434549.13276446555925201942@kernel.org>
-In-Reply-To: <179162162010.434549.13276446555925201942@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 12 Oct 2026 16:43:16 -0400
-X-Gm-Features: AclHuK__f9Fmh30gHFKiGhSOt6lO_--K35IuH8GJSBpMK6CIFrgoJ7zRY7PfsL8
-Message-ID: <CADvbK_c49wgA41_NwOig7TosQKAnNdkUa3HwgPCSukTpJ9DAtg@mail.gmail.com>
-Subject: Re: [PATCH v4] sctp: reject forged cookie peer_addr with unknown
- address family
-To: netdev-bot+sashiko@kernel.org
-Cc: hdthky0@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="OnyHBvnZ49WjZumz"
+Content-Disposition: inline
+In-Reply-To: <20261012194317.o642ym7ddsmny25x@DEN-DL-M70577.microsemi.net>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA4MiBTYWx0ZWRfXyaSlkfSgl69B
+ Vr34aSGEpfvdGaCVsn7+iBiNvks21Gib/X9KDoVKPrRUOdxHegc5XK+i68QxtoFZERiT7ispbv9
+ LWVeJvpr4ob64t4Iu5Kg/fG98I09KeXaKJPnzKcn3A9/MdkPBkMxP+O9KqRzmmCr4/V9Vc7CHTI
+ QTDT+w0miLaOTipUv6ZjU99Pw8D5J52a6yLrAhC0HywMiW21/GRv9+P+iYeFNKWONe6bW2DSepU
+ x4T5AyXUY0f6AApOWPl+96rg5mMLb9ey3gDlEEmXgu/VA5oHKH7sly/4Qp3B/D6FBJ4NiFLiyaV
+ FNjfwtw3Zr2huDAO1+ut6vKFnzn0qmYklcBIhRS1FJnTVc7LcjjxYD8uzNEwY17/ZCdIYI/eSec
+ q12KGgClkUiQfCBdvW4epdCqaNltKU8UtuMUq0CFFb8pagKiTlwqCjYKddCr1bokG+2mj630R/l
+ onfNWNbT9BOZCsveyWQ==
+X-Authority-Analysis: v=2.4 cv=SvAFe/O0 c=1 sm=1 tr=0 ts=6acd475a cx=c_pps
+ a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
+ a=Q9ur2bmSGazcmIiCI3kA:9 a=CjuIK1q_8ugA:10 a=Lm50YIOymODnlXrnE8UA:9
+ a=IoWCM6iH3mJn3m4BftBB:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA4MiBTYWx0ZWRfXynvmn9y7UHnC
+ ibpKUPjw324yFuUlBj6EqTbW0vVnR13NhHMyW8t9w4cljg1TswTBPa+EntAHCRLX48+HYGBP2a7
+ hzMFZYVK71MGxJ79VNY2+g+K/uAhHLc=
+X-Proofpoint-ORIG-GUID: F372iiak2PRw3irSp8gP0UbuV0MYbOaa
+X-Proofpoint-GUID: F372iiak2PRw3irSp8gP0UbuV0MYbOaa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_06,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 malwarescore=0 clxscore=1015 phishscore=0 bulkscore=0
+ priorityscore=1501 adultscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610120082
+
+--OnyHBvnZ49WjZumz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 10, 2026 at 4:40=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0 (1)
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The patch now validates peer_addr in place.
->
-> Pre-existing issues:
-> - [Low] Two comments next to the code this patch changes contradict the
->   implementation.
->
-> --
->
-> sctp: reject forged cookie peer_addr with unknown address family
->
-> This patch validates the COOKIE-ECHO peer_addr with af->addr_valid() in
-> sctp_unpack_cookie(). Bad families are rejected, and v4-mapped addresses
-> are normalised in place. It also makes sctp_v6_addr_valid() reject
-> non-v4-mapped addresses on non-PF_INET6 sockets, uses addr_valid() to
-> simplify sctp_process_param(), and adds a missing !af check in
-> sctp_process_init().
->
-> > diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-> > index ef26878f1282a..97390569c4bdc 100644
-> > --- a/net/sctp/ipv6.c
-> > +++ b/net/sctp/ipv6.c
-> > @@ -725,7 +725,8 @@ static int sctp_v6_available(union sctp_addr *addr,=
- struct sctp_sock *sp)
-> >   * SCTP.
-> >   *
-> >   * Output:
-> > - * Return 0 - If the address is a non-unicast or an illegal address.
-> > + * Return 0 - If the address is a non-unicast or an illegal address,
-> > + *            or a non-v4-mapped address on a non-PF_INET6 socket.
-> >   * Return 1 - If the address is a unicast.
-> >   */
-> >  static int sctp_v6_addr_valid(union sctp_addr *addr,
->
-> [Severity: Low]
->
-> This isn't a bug introduced by this patch, but two nearby comments
-> don't match the code that this patch now relies on.
->
-> The v4-mapped branch of sctp_v6_addr_valid() says:
->
->         /* Note: This routine is used in input, so v4-mapped-v6
->          * are disallowed here when there is no sctp_sock.
->          */
->         if (sp && ipv6_only_sock(sctp_opt2sk(sp)))
->                 return 0;
->         sctp_v6_map_v4(addr);
->
-> When sp is NULL, as in the sctp_rcv() input path, the code maps and
-> accepts the address instead of rejecting it.
->
-> The header comment of sctp_v4_addr_valid() in net/sctp/protocol.c only
-> lists non-unicast or illegal addresses as reasons to return 0. The
-> function also returns 0 for any IPv4 address on an IPV6_V6ONLY socket:
->
->         /* IPv4 addresses not allowed */
->         if (sp && ipv6_only_sock(sctp_opt2sk(sp)))
->                 return 0;
->
-> This patch removes the explicit ipv6_only_sock() test from
-> sctp_process_param(), so that function now depends on this check.
->
-> The sctp_v6_addr_valid() header comment is already being updated here.
-> Could these two comments be updated as well?
->
-> [ ... ]
->
-> > diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> > index 84a4c97d0f755..175dbb242e1cb 100644
-> > --- a/net/sctp/sm_make_chunk.c
-> > +++ b/net/sctp/sm_make_chunk.c
->
-> [ ... ]
->
-> > @@ -1841,6 +1843,11 @@ struct sctp_association *sctp_unpack_cookie(
-> >               goto fail;
-> >       }
-> >
-> > +     paddr =3D &bear_cookie->peer_addr;
-> > +     af =3D sctp_get_af_specific(paddr->sa.sa_family);
-> > +     if (!af || !af->addr_valid(paddr, sctp_sk(ep->base.sk), NULL))
-> > +             goto malformed;
-> > +
->
-> [Severity: Medium]
->
-> Can this modify packet data that is shared with a clone? bear_cookie
-> points into the received skb. sctp_sf_do_5_1D_ce() and
-> sctp_sf_do_5_2_4_dupcook() both set:
->
->         chunk->subh.cookie_hdr =3D
->                 (struct sctp_signed_cookie *)chunk->skb->data;
->
-> For an AF_INET6 v4-mapped peer_addr, sctp_v6_addr_valid() calls
-> sctp_v6_map_v4(), which writes directly into that buffer:
->
->         addr->v4.sin_family =3D AF_INET;
->         addr->v4.sin_port =3D addr->v6.sin6_port;
->         addr->v4.sin_addr.s_addr =3D addr->v6.sin6_addr.s6_addr32[3];
->
-> No skb_cloned() or skb_unshare() check happens before this write.
->
-> If an AUTH chunk is bundled before the COOKIE-ECHO,
-> sctp_endpoint_bh_rcv() and sctp_assoc_bh_rcv() do:
->
->         chunk->auth_chunk =3D skb_clone(chunk->skb,
->                                 GFP_ATOMIC);
->
-> The clone shares the same data.
->
-> sctp_sf_do_5_1D_ce() calls sctp_unpack_cookie() first. AUTH is verified
-> only afterwards:
->
-> sctp_auth_chunk_verify()
->   sctp_sf_authenticate()
->     sctp_auth_calculate_hmac()
->       data_len =3D skb_tail_pointer(skb) - (unsigned char *)auth;
->
-> That HMAC covers the COOKIE-ECHO body, including the rewritten
-> peer_addr. The peer computed its HMAC over the original bytes. Would
-> verification then fail and the COOKIE-ECHO be dropped through
-> sctp_sf_pdiscard()? The duplicate-cookie handlers use the same order:
-> unpack first, then verify AUTH.
->
-> Other holders of a clone, such as raw IPPROTO_SCTP sockets and non-mmap
-> AF_PACKET readers, would also see the changed bytes. sctp_rcv() doesn't
-> prevent this, because skb_linearize() does nothing to an skb that is
-> already linear but cloned.
->
-> A v4-mapped peer_addr doesn't have to be forged. For an INIT that
-> arrives over IPv6 from a ::ffff:a.b.c.d source, sctp_make_temp_asoc()
-> stores the raw source in the signed cookie:
->
->         SCTP_INPUT_CB(skb)->af->from_skb(&asoc->c.peer_addr, skb, 1);
->
-> It can also be forged directly when cookie authentication is disabled.
->
-> In that case, the commit message statement "peer_addr is validated in
-> place, so a v4-mapped v6 address is normalised to AF_INET before the
-> association and its primary transport are built from it" would not hold
-> when AUTH is bundled.
->
-> Would it work to validate and normalise a stack copy of peer_addr, and
-> pass that copy to the association and transport setup, instead of
-> writing into the packet buffer?
+> Hi Lorenzo,
 
-This looks like a valid issue. We can't modify bear_cookie->peer_addr
-through skb->data, so please restore your previous copy method. To address
-the report from v3, you can then restore retval->c.peer_addr after copying
-the cookie into the new association in sctp_unpack_cookie():
+Hi Daniel,
 
-        /* Populate the association from the cookie.  */
-        memcpy(&retval->c, bear_cookie, sizeof(*bear_cookie));
-+       retval->c.peer_addr =3D paddr;
+>=20
+> > When RX buffers are compound pages (order > 0), only the head page
+> > carries the DMA address programmed by the page pool
+> > (page_pool_get_dma_addr()). stmmac_xdp_xmit_xdpf() computed the head
+> > buffer's bus address from the page that happens to contain the data:
+> >=20
+> > 	page =3D frag ? skb_frag_page(frag)
+> > 		    : virt_to_page(xdpf->data);
+> > 	dma_addr =3D page_pool_get_dma_addr(page);
+> > 	...
+> >=20
+> > RX pages become compound as soon as dma_buf_sz needs more than one page
+> > (pp_params.order =3D order_base_2(num_pages) > 0), which happens from an
+> > MTU around 3000 bytes once dma_buf_sz reaches 4096. If an XDP program
+> > moves the data forward with bpf_xdp_adjust_head() by more than about a
+> > page, xdpf->data points into a tail page whose struct page has no DMA
+> > address: page_pool_get_dma_addr() then returns a bogus bus address, and
+> > dma_sync_single_for_device() together with the TX descriptor transmit
+> > from the wrong location.
+>=20
+> Looks to me like mtu > ETH_DATA_LAN is rejected when setting a prog, and =
+also
+> on mtu change when a prog is attached. So can this even happen today?
 
-Also, change to use &new_asoc->c.peer_addr instead of
-&chunk->subh.cookie_hdr->c.peer_addr in sctp_sf_do_5_1D_ce():
+yes, these issues are real but at the moment we can't trigger them since we
+have the MTU limitation in stmmac_change_mtu()/stmmac_xdp_set_prog().
+These are preliminary fixes in order to remove this limitation.
+There is a leftover issue we still need to fix about jumbo frames in
+stmmac_xdp_xmit_xdpf().
 
-        if (!sctp_process_init(new_asoc, chunk,
--                              &chunk->subh.cookie_hdr->c.peer_addr,
-+                              &new_asoc->c.peer_addr,
-                               peer_init, GFP_ATOMIC))
+Regards,
+Lorenzo
 
-Please give it a try.
+>=20
+> >=20
+> > Use virt_to_head_page() to read the DMA base of the buffer and keep the
+> > offset relative to the head page (sizeof(*xdpf) + xdpf->headroom), which
+> > is correct no matter which page the data ends up in.
+>=20
+> I think the fix looks correct.
+>=20
+> >=20
+> > Fixes: be8b38a722e6 ("net: stmmac: Add support for XDP_TX action")
+> > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+> > ---
+> >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/driver=
+s/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > index b8b4de4c5b1a..ca61ab449e32 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > @@ -5301,7 +5301,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_pri=
+v *priv, int queue,
+> >  			struct page *page;
+> > =20
+> >  			page =3D frag ? skb_frag_page(frag)
+> > -				    : virt_to_page(xdpf->data);
+> > +				    : virt_to_head_page(xdpf->data);
+> >  			dma_addr =3D page_pool_get_dma_addr(page);
+> >  			if (frag)
+> >  				dma_addr +=3D skb_frag_off(frag);
+> >=20
+> > --=20
+> > 2.56.0
+> >=20
+>=20
+> /Daniel
 
-Thanks.
+--OnyHBvnZ49WjZumz
+Content-Type: application/pgp-signature; name=signature.asc
 
-pw-bot: cr
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCas1HVQAKCRA6cBh0uS2t
+rIgPAQCjz6dgW4WzgWlr9t4ttzrDaei6tXlT3nHR4akPNo83RAD+JXVPBbU0Xk0O
+2ElGsVp8MPfiFKQMvS5xx31fZ8o3kgg=
+=OIOM
+-----END PGP SIGNATURE-----
+
+--OnyHBvnZ49WjZumz--
