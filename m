@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FED044F560;
-	Mon, 12 Oct 2026 11:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B104B47255A;
+	Mon, 12 Oct 2026 11:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791804289; cv=none; b=AHAOKH5A8TeUyDiIKa9pPyzToY0qEqysxzmBQsz8EpwJ9pEq0eel0uIYkMtHKn6XzWtYKFMhFkC/yANIVFhG6xRpFYIwKCcs4LD7m5JS9TpCGK9V33cle42YeaKmoQkFNeahH9qupjHZ1zSAsye/NuJtFmf3y5qAZscBrhbe6hw=
+	t=1791804291; cv=none; b=OuT120H+8gKkC/GxLDWjhfDcr/+NuyIKw+Gf23Gqc/XJFy0Ce2d7bU/o0Kq+I8qK2Mg7cVr55ojETbsfduCCsK02f1N7JiCDNMN73gy5PNHN3TKt6n5xtAoDOsA/86bcm87CZzfs8y7q5Mqo/WZm4RI05hZijcyQ0P+5AincsJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791804289; c=relaxed/simple;
-	bh=B38smwblruWXCvJoUx6OXaz/01bEA2GO33Qy6S+3Xmc=;
+	s=arc-20240116; t=1791804291; c=relaxed/simple;
+	bh=g4qevxVz3AcnTU/97rt3xsS9O47PFPuJdtQLDJuY5R8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rhMcs/Z9gWZp/1J93nkOz7HX4I8qzkJSfTNa4TJruUeXDRh9sXNBTFx1/h/ics4hCMdQw8CusnSowGjAT6KNzmqfq637TQmLEauUIZFv/6chOgdGOibSw+vFVfnHTFj12POUyAEupIqpsO8b8aETMb6gZmrXgGAXqxlFCNhmRLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bfTFIKkS; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=kZEF8Ki0SyAHmYTVKHCdcCNQ49rEuutDixF0cQBesx+QSLQw1KCAsjLjxbTC3QrjzfYY30Iw96awxWHNmVVbiUappi/knGm2HS0o6uDvLrlFamQlfzYQ0C4StE0HLsmOrppqqiESUCEdo7G2TrhhIHEYZRQI39Al3BVI5xHt9eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+MJvNBU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bfTFIKkS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9BB1F0089C;
-	Mon, 12 Oct 2026 11:24:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+MJvNBU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D441F0089B;
+	Mon, 12 Oct 2026 11:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791804287;
-	bh=ZZF0VsQlliE8ftBpHaOqIBhgbCxZAYs8JB6TOzbqebg=;
+	s=k20260515; t=1791804289;
+	bh=ddz8Bd0JqmYgGYTNHVNCIiwClFYJwEhG2zPnAVwxs1o=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bfTFIKkSTiM7RpwO6vRWlJu2DV7gRuwr4No4/sX7KfOZLzc1uVUliA0PVhkmpJqDJ
-	 Ti/ugc80UlrlowcSa+equRLDudH+9+d9g8HxuWMEjIrQdcZJs0eq6gPWIx6OPYh4bm
-	 rdOL1oSoz5KFqVdVCpDCyfloZ3iF+1Slwcffq/3AVJ1nAOASQN5qbFx63+HGxQUpYr
-	 Nc+cM3zsZb3WDzEPba+1iRUvRal5tiQWSfmarBcj/ECbujL2PIyXN0Q646LyAJeGlE
-	 9cO3hvZPnsgswbrRwDEOWxCFnE6eUHYNilgqO3zcr8f68YDELlhm53MUISFxjxyxq4
-	 LhfLRSkXNLtdg==
-Subject: Re: [PATCH net-next v14 8/9] net: dsa: lan9645x: add bridge support
+	b=F+MJvNBU0/1xkQJUVJ03hSahp37H6nfPse8hPLR5orEz0ctkxfSRjYKTr/TzHBbbQ
+	 SwkUG3f9OsvACEbTb0tTSfOlOX6pT7OTDuk1OGSBNNG/0LksrBai5xPnFvLWzRVFV2
+	 hehSxSW3SzM2iwKpD7LTKxKtXEZ1F0MRTyipsmLcpgaOaciG/rAoAvYpGlxXCD4Fw8
+	 gpJIvbagibxG2X474AFpF1aFGxGN2NXHCrrM+fu6DjRXGyKmIm3vTbJ5O6Dow3sgPF
+	 Np+ck3lX0rYOYlANJyx0spr4zhFQjcfPXMF2N51dUTK9RC2Z3ixFA0LRHA94WAtMMs
+	 OngqjWS/OB2KQ==
+Subject: Re: [PATCH net-next v14 9/9] net: dsa: lan9645x: add port statistics
 From: netdev-bot+sashiko@kernel.org
 To: jensemil.schulzostergaard@microchip.com
 Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
@@ -38,12 +38,12 @@ Cc: UNGLinuxDriver@microchip.com, andrew@lunn.ch, olteanv@gmail.com,
  richardcochran@gmail.com, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org, devicetree@vger.kernel.org,
  linux-renesas-soc@vger.kernel.org
-Date: Mon, 12 Oct 2026 11:24:46 +0000
-Message-ID: <179180428624.434549.14425623884223795761@kernel.org>
+Date: Mon, 12 Oct 2026 11:24:47 +0000
+Message-ID: <179180428793.434549.2970303377957273063@kernel.org>
 In-Reply-To:
- <20261008-dsa_lan9645x_switch_driver_base-v14-8-3d2a72661213@microchip.com>
+ <20261008-dsa_lan9645x_switch_driver_base-v14-9-3d2a72661213@microchip.com>
 References:
- <20261008-dsa_lan9645x_switch_driver_base-v14-8-3d2a72661213@microchip.com>
+ <20261008-dsa_lan9645x_switch_driver_base-v14-9-3d2a72661213@microchip.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,10 +54,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 (1) · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -65,221 +65,191 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] When the general-purpose PGIDs run out, L2 multicast groups
-  fall back to PGID_MC.
-- [Medium] Setting ds->ageing_time_min/max makes a bridge join fail late,
-  and the failed join leaves DSA's dp->vlan_filtering out of step with…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the new
-  lan9645x_set_ageing_time() is affected by it.
+- [Medium] lan9645x_stats_get_stats64() counts bad frames in
+  rtnl_link_stats64.rx_packets.
+- [Low] In lan9645x_stats_get_stats64(), rx_errors is the sum
+  c[SCNT_RX_SHORT] + c[SCNT_RX_JABBER] + c[SCNT_RX_CRC] +…
+- [Low] __lan9645x_stats_view_idx_hw_read() selects the port with
+  lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(idx), lan9645x, SYS_STAT_CFG).
 
 --
 
-net: dsa: lan9645x: add bridge support
+net: dsa: lan9645x: add port statistics
 
-This adds hardware bridge offload to the lan9645x DSA driver for a single
-bridge. It adds ageing time configuration with min/max limits enforced by
-the DSA core, plus bridge port flags and STP state handling. Host flooding
-is done by adding the CPU port module to the global flood masks.
+This commit adds port statistics support to the lan9645x DSA driver. A
+delayed work polls the 32-bit hardware counters every 3 seconds and
+accumulates them into 64-bit software counters. The counters are exposed
+through ethtool -S, the standard ethtool stats groups and get_stats64, with
+the pMAC counters summed into the aggregate source.
 
-> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> index a0f48f3ad9aff..cefe643fce182 100644
-> --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-
-[ ... ]
-
-> @@ -306,6 +302,19 @@ static int lan9645x_setup(struct dsa_switch *ds)
->  	ds->fdb_isolation = true;
->  	ds->max_num_bridges = 1;
->  
-> +	/* ANA_AUTOAGE_AGE_PERIOD is a seconds-based field and entries are
-> +	 * aged after 2 * AGE_PERIOD, giving (2 * FIELD_MAX) seconds of
-> +	 * maximum aging and 2 seconds of minimum aging.
-> +	 *
-> +	 * An AGE_PERIOD of 0 stops the analyzer from aging at all, which is
-> +	 * the opposite of what a bridge ageing_time of 0 asks for. The bridge
-> +	 * expires every dynamic entry immediately in that case and floods, so
-> +	 * reject it rather than keep learned addresses forever.
-> +	 */
-> +	ds->ageing_time_min = 2U * MSEC_PER_SEC;
-> +	ds->ageing_time_max = 2U * MSEC_PER_SEC *
-> +			      FIELD_MAX(ANA_AUTOAGE_AGE_PERIOD);
-
-[Severity: Medium]
-Can a bridge join that fails on these limits leave the port VLAN-unaware
-in hardware after the next successful join?
-
-With ageing_time_min set, dsa_switch_ageing_time() returns -ERANGE for any
-bridge ageing_time below 2s, including 0. For example:
-
-  ip link add br0 type bridge vlan_filtering 1 ageing_time 0
-
-dsa_port_switchdev_sync_attrs() applies the ageing time last. By then,
-dsa_port_vlan_filtering(dp, br_vlan_enabled(br)) has already called
-lan9645x_port_vlan_filtering(true) and set dp->vlan_filtering = true.
-
-The rollback in dsa_port_bridge_join() then does:
-
-net/dsa/port.c:dsa_port_bridge_join() {
-    ...
-out_rollback_unoffload:
-	switchdev_bridge_port_unoffload(...);
-	dsa_flush_workqueue();
-out_rollback_unbridge:
-	dsa_broadcast(DSA_NOTIFIER_BRIDGE_LEAVE, &info);
-out_rollback:
-	dsa_port_bridge_destroy(dp, br);
-    ...
-}
-
-This path never calls dsa_port_switchdev_unsync_attrs() or
-dsa_port_reset_vlan_filtering(), so dp->vlan_filtering stays true.
-
-Meanwhile the BRIDGE_LEAVE notifier reaches lan9645x_port_bridge_leave().
-That function calls lan9645x_vlan_set_hostmode(), which sets
-p->vlan_aware = false.
-
-Now suppose the ageing time is fixed and the port is added to a
-vlan_filtering=1 bridge again. dsa_port_vlan_filtering() returns early:
-
-	if (dsa_port_is_vlan_filtering(dp) == vlan_filtering)
-		return 0;
-
-So .port_vlan_filtering is never called. Neither
-lan9645x_port_bridge_join() nor lan9645x_vlan_clear_hostmode() restores
-p->vlan_aware.
-
-Would the port then stay at VLAN_AWARE_ENA=0 in ANA_VLAN_CFG while it is
-in a VLAN-aware bridge? That would give wrong ingress VLAN classification
-and filtering.
-
-The incomplete rollback is in the DSA core. This patch makes it reachable
-through the new ageing limits, and the new bridge_leave creates the
-mismatch on the driver side. The issue still seems to be there at the end
-of the series.
+> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
+> new file mode 100644
+> index 0000000000000..a21afb4d98532
+> --- /dev/null
+> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
+> @@ -0,0 +1,854 @@
 
 [ ... ]
 
-> @@ -324,6 +333,246 @@ static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
->  	lan9645x_phylink_get_caps(ds->priv, port, config);
->  }
->  
-> +static int lan9645x_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
+> +static void lan9645x_stats_update_counter(u64 *sw, u32 hw)
 > +{
-> +	struct lan9645x *lan9645x = ds->priv;
+> +	if (hw < (*sw & U32_MAX))
+> +		*sw += (u64)1 << 32; /* value has wrapped */
 > +
-> +	/* Entry must suffer two aging scans before it is removed, so it is
-> +	 * aged after 2*AGE_PERIOD, and the unit is in seconds.
-> +	 */
-> +	lan_rmw(ANA_AUTOAGE_AGE_PERIOD_SET(msecs / (2 * MSEC_PER_SEC)),
-> +		ANA_AUTOAGE_AGE_PERIOD,
-> +		lan9645x, ANA_AUTOAGE);
-> +
-> +	return 0;
+> +	*sw = (*sw & ~(u64)U32_MAX) + hw;
 > +}
-
-[Severity: Medium]
-This is a pre-existing issue in the DSA core and was not introduced by
-this patch, but it affects the new lan9645x_set_ageing_time(). Does
-raising the bridge ageing time ever reach the hardware?
-
-dsa_port_ageing_time() sends the notifier before it updates the cached
-value:
-
-net/dsa/port.c:dsa_port_ageing_time() {
-    ...
-	err = dsa_port_notify(dp, DSA_NOTIFIER_AGEING_TIME, &info);
-	if (err)
-		return err;
-
-	dp->ageing_time = ageing_time;
-    ...
-}
-
-dsa_switch_fastest_ageing_time() then takes the minimum over all ports,
-including the old value of the requesting port:
-
-	dsa_switch_for_each_port(dp, ds)
-		if (dp->ageing_time && dp->ageing_time < ageing_time)
-			ageing_time = dp->ageing_time;
-
-So a change from 300000 ms to 600000 ms programs 300000 ms through
-lan9645x_set_ageing_time() and returns success. 600000 ms is then cached
-in dp->ageing_time, with no further hardware write.
-
-The fix probably belongs in the DSA core rather than in this driver: the
-requester's cached value could be updated, or left out, before the
-minimum is computed.
-
-[ ... ]
-
-> +static int lan9645x_port_bridge_flags(struct dsa_switch *ds, int port,
-> +				      struct switchdev_brport_flags f,
-> +				      struct netlink_ext_ack *extack)
+> +
+> +static int __lan9645x_stats_view_idx_hw_read(struct lan9645x *lan9645x,
+> +					     enum lan9645x_view_stat_type vtype,
+> +					     int idx)
 > +{
-> +	struct lan9645x *lan9645x = ds->priv;
-> +
 
 [ ... ]
 
-> +	if (f.mask & BR_MCAST_FLOOD) {
-> +		bool ena = !!(f.val & BR_MCAST_FLOOD);
+> +	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(idx), lan9645x, SYS_STAT_CFG);
+
+[Severity: Low]
+What happens to the counters if this lan_wr() fails?
+
+lan_wr() returns void and only does WARN_ON_ONCE(regmap_write(...)), so
+this function never sees a failed STAT_VIEW select. The SYS_CNT window
+read by the lan_bulk_rd() calls below is the same for every port. If the
+reads still succeed, buf holds the counters of the previously selected
+port.
+
+__lan9645x_stats_view_idx_transfer() then passes those values through
+lan9645x_stats_update_counter() into the requested port's shadow. If the
+wrong value is larger, the shadow takes it. On the next correct poll,
+this check:
+
+	if (hw < (*sw & U32_MAX))
+		*sw += (u64)1 << 32; /* value has wrapped */
+
+adds 2^32. That counter then stays about 4G too high until the next
+setup.
+
+lan9645x_stats_clear_view() has the same unchecked write:
+
+	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(idx) |
+	       SYS_STAT_CFG_STAT_CLEAR_SHOT_SET(groups),
+	       lan9645x, SYS_STAT_CFG);
+
+If that write is dropped, the poll for !CLEAR_SHOT passes at once and a
+clear that never happened is reported as success. That case looks
+harmless, since the shadow later takes the uncleared hardware value.
+
+ocelot_port_update_stats() follows the same pattern, and every other
+lan_wr() in this driver also ignores write errors. Fixing this would
+probably mean having the helper return the regmap_write() result.
+
 > +
-> +		lan9645x_port_pgid_set(lan9645x, PGID_MC, port, ena);
-> +		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV4, port, ena);
-> +		lan9645x_port_pgid_set(lan9645x, PGID_MCIPV6, port, ena);
-> +	}
+> +	/* Each region for this index contains counters which are at sequential
+> +	 * addresses, so we can use bulk reads to ease lock pressure a bit.
+> +	 */
+> +	for (int r = 0; r < vstats->num_regions; r++) {
+> +		region = vstats->regions[r];
+> +		err = lan_bulk_rd(&vstats->buf[region.cnts_base_idx],
+> +				  region.cnt, lan9645x,
+> +				  SYS_CNT(region.base_offset));
+
+[ ... ]
+
+> +void lan9645x_stats_get_stats64(struct lan9645x *lan9645x, int port,
+> +				struct rtnl_link_stats64 *stats)
+> +{
+
+[ ... ]
+
+> +	stats->rx_bytes = c[SCNT_RX_OCT] + c[SCNT_RX_PMAC_OCT];
+> +
+> +	stats->rx_packets = c[SCNT_RX_SHORT] +
+> +			    c[SCNT_RX_JABBER] +
+> +			    c[SCNT_RX_SZ_64] +
+> +			    c[SCNT_RX_SZ_65_127] +
+> +			    c[SCNT_RX_SZ_128_255] +
+> +			    c[SCNT_RX_SZ_256_511] +
+> +			    c[SCNT_RX_SZ_512_1023] +
+> +			    c[SCNT_RX_SZ_1024_1526] +
+> +			    c[SCNT_RX_SZ_JUMBO] +
+> +			    c[SCNT_RX_LONG] +
+> +			    c[SCNT_RX_PMAC_SHORT] +
+> +			    c[SCNT_RX_PMAC_FRAG] +
+> +			    c[SCNT_RX_PMAC_JABBER] +
+> +			    c[SCNT_RX_PMAC_SZ_64] +
+> +			    c[SCNT_RX_PMAC_SZ_65_127] +
+> +			    c[SCNT_RX_PMAC_SZ_128_255] +
+> +			    c[SCNT_RX_PMAC_SZ_256_511] +
+> +			    c[SCNT_RX_PMAC_SZ_512_1023] +
+> +			    c[SCNT_RX_PMAC_SZ_1024_1526] +
+> +			    c[SCNT_RX_PMAC_SZ_JUMBO] +
+> +			    c[SCNT_RX_PMAC_LONG];
 
 [Severity: Medium]
-Does this break the PGID_MC fallback that the mdb code uses when the
-general-purpose PGIDs run out?
+Should rx_packets include the error counters?
 
-When a group's PGID is shared or no PGID is free, __lan9645x_mdb_del()
-points the L2 group at PGID_MC:
+The rtnl_link_stats64 documentation in include/uapi/linux/if_link.h
+describes rx_packets as "Number of good packets received by the
+interface". It describes rx_errors as "Total number of bad packets
+received on this network device".
 
-drivers/net/dsa/microchip/lan9645x/lan9645x_mdb.c:__lan9645x_mdb_del() {
-    ...
-	/* Shared PGID or on flood mask. Point the entry at the L2 MC flood mask
-	 * instead. This way our mac table entry survives and MAC_CPU_COPY
-	 * keeps host membership working.
-	 */
-    ...
-	lan9645x_mdb_narrow_dest(lan9645x, mdb_entry, type, NULL, PGID_MC,
-				 new_ports);
-    ...
-}
+SCNT_RX_SHORT, SCNT_RX_JABBER and SCNT_RX_LONG, plus their pMAC
+versions, are added to both rx_packets and rx_errors. Each runt, jabber
+and oversize frame is therefore counted as good and as bad.
 
-__lan9645x_mdb_add() also keeps a group that is already on the flood mask
-pointed at PGID_MC:
+The SZ_* buckets also seem to include CRC-errored frames. The v5
+changelog removed rx_crc from rx_packets "as they are already counted in
+SZ_* buckets". So rx_packets ends up counting every frame received.
 
-		/* For a L2 MC group already on the flood mask, we keep it there
-		 * so that the host can still join/leave a group we had to give
-		 * up offloading. A front port that joins forwards according to
-		 * the flood masks, like the other members.
-		 */
-		if (lan9645x_mdb_on_flood_mask(mdb_entry, type))
-			return lan9645x_mdb_widen_dest(lan9645x, mdb_entry,
-						       type, NULL, PGID_MC,
-						       new_ports);
+This also does not match FramesReceivedOK in
+lan9645x_stats_get_eth_mac_stats(), which is UC + MC + BC. The two
+standard interfaces would report different good RX counts for the same
+port.
 
-This fallback depended on PGID_MC holding every front port, as
-lan9645x_setup() sets it. With this change, a port configured with:
+ocelot_port_get_stats64() uses a similar formula. Is that the intended
+meaning of rx_packets for this new driver?
 
-  bridge link set dev swpN mcast_flood off
+Separately, c[SCNT_RX_PMAC_FRAG] is added to rx_packets but not to
+rx_errors, while c[SCNT_RX_PMAC_SHORT] is added to both. The comment in
+lan9645x_stats_get_rmon_stats() says SCNT_RX_PMAC_FRAG counts runts with
+an invalid CRC.
 
-is removed from PGID_MC. If that port is also a registered member of an
-L2 group in the fallback state, will it stop receiving that group's
-traffic?
+Should SCNT_RX_PMAC_FRAG go into rx_errors too, or be removed from
+rx_packets? This has no effect until MAC merge sends traffic to the pMAC.
 
-The software bridge still delivers registered groups to their members
-whatever their mcast_flood setting, so hardware forwarding would no
-longer match it. Also, when such a port joins through
-__lan9645x_mdb_add(), the join reports success but the port gets no
-traffic. The issue still seems to be there at the end of the series.
+> +
+> +	stats->multicast = c[SCNT_RX_MC] + c[SCNT_RX_PMAC_MC];
+> +
+> +	stats->rx_errors = c[SCNT_RX_SHORT] +
+> +			   c[SCNT_RX_JABBER] +
+> +			   c[SCNT_RX_CRC] +
+> +			   c[SCNT_RX_LONG] +
+> +			   c[SCNT_RX_PMAC_SHORT] +
+> +			   c[SCNT_RX_PMAC_JABBER] +
+> +			   c[SCNT_RX_PMAC_CRC] +
+> +			   c[SCNT_RX_PMAC_LONG];
+> +
+> +	stats->rx_length_errors = c[SCNT_RX_JABBER] +
+> +				  c[SCNT_RX_LONG] +
+> +				  c[SCNT_RX_PMAC_JABBER] +
+> +				  c[SCNT_RX_PMAC_LONG];
+> +
+> +	/* SCNT_RX_CRC counts CRC errors, alignment errors and RX_ER events at
+> +	 * any frame size, so a short frame with a bad CRC is counted here.
+> +	 */
+> +	stats->rx_crc_errors = c[SCNT_RX_CRC] + c[SCNT_RX_PMAC_CRC];
 
-[ ... ]
+[Severity: Low]
+Is a jabber frame counted twice in rx_errors?
+
+This comment says SCNT_RX_CRC counts CRC errors "at any frame size". The
+v12 changelog describes SCNT_RX_JABBER as "the too-long-with-bad-CRC half
+of the event".
+
+If both are true, an oversize frame with a bad FCS increments both
+SCNT_RX_CRC and SCNT_RX_JABBER. rx_errors above adds the two together.
+
+If the hardware keeps these two counters disjoint, is the "any frame
+size" wording in this comment accurate?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008-dsa_lan9645x_switch_driver_base-v14-0-3d2a72661213%40microchip.com
