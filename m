@@ -1,278 +1,194 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010060.outbound.protection.outlook.com [52.101.69.60])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF82443C19;
-	Mon, 12 Oct 2026 09:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791798905; cv=fail; b=QeqCqvTX0qPisCUxogqNX4Mu6EZCVTon1jx+Gp+GMlRNizoY3phW/bZhzAWSf8kzHPzWiDi/NNnzGfET5qkJZimyDpbLS0MxOdBn6PK6wWGg57WB2+vmZ0lukORykuf9e2YEczmi5grxo+jf17nB8GvgL9XG2RFLuBrj0UFDImI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791798905; c=relaxed/simple;
-	bh=9j8U8mGyr7MVX4K1cnhWIq/48ID4JeGcrm4QfBOQ7tU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YhKC0wgC8zO4qkY3Eh2olNG5FZ10gkDaYbpm6+/oAshEkQpRpqwnCf55RX8vdd7HstXxupTKo2tZRecwVyjf2t4Kw8uhKDEnVNJBR/NGzM9hmzfIvNg9HGAr3bcolvY5X104RkTqdoN40UlEjSJWs09NfzG1DQDSR/Z3CBY0C6E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=J+0GdSF0; arc=fail smtp.client-ip=52.101.69.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE3146AEF0
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 09:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791798909; cv=none; b=AEU9IYempOXngMkrkCX+2G5EpcFqa1VlsPPfONF+Wpy97JzXH7HQk+43BOo+/DP7W4vlfV8I98RgoVrSRF1uNM7cePMcn7aiPCmtz5vmPEnVUg0BI3z+12O0OInAAICEbpSKP89zCI6Y9KK5xoI/IBQHaZMhV20WNjaWRmn4QsA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791798909; c=relaxed/simple;
+	bh=sDMuLxeEzbRgqeYq9AruGzBsPzZYJLQbxcH0SOUV7NY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LUZoWR3DLaF8PPhxuPIclcZrNi9vfY6t/5LInEkJt9HKJzm1+xkWa2iu1Ybad4lq+U8EyBy69RDDyG6zoGL6BcrxjkPX2lw1oavmaJo6fkwW3vNcLqgYDn0F8dS3D70iwR1CxyY7c4tLwXzyXC4lhiVtyulxh2FNgpGv5feX9/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=S5MYqxCP; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="J+0GdSF0"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vOhQizyfyNA92c+VfzrCGtok6OsGglfZeeenYBPOmtrbHGkG8l7PGhYHE5cu52W5YbUfz5NFgGU9TV6WMXHNvBHqHGZglTZgbb8t329PsAhHpudLr1YBoBbMKpvnU+JWnXfSTJ/NzYaZd/Ux69AP2wiuVHumAccKtXi1OHPXSdhT2oDAFTHsO2WXZJqEWJDloAHSQhkuT0ajhqgjQAPJBZuXAaECF1mJBETOPlp+CqMVhYbVFUNOoeOxIleGtCg04Vj3BPLEYmWSN+a45bx3SzRkWub29OGTVZs4qHn80hL9A3+3gys39C1TAGZ4I6OeZsebHWRYfxRyraIMfUeXCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WwlXh3LktFHI7zSBsD/SZac3qhtr52wShddo+pQGDSs=;
- b=wh5vTHOj9sCmZEvZ/+9khlYXtinZvYg1qhfMSaGFL5TeOo+3yjV6yR0IhYt9ojbUBsRBFNSq3ZzYux5GG0K2SF4e3+noM0s692ecScog1WJjc5N+5YouJVt3ol8kWQWVTxayvBU9ZzSlXqLFJkl7gTagUmkdpvSH7v9Y9fPV2hMvvF9LOfoY1dinCOztT9L2tuRIHRcx+tNhw6THAJJ6dr7l0x+ZF7BZHc+31cAfpihIiy6Hf9cv66Hy2VF6+R+6uTPR1r/DMKDAmVDjovNY/1V/eCDde8/Z9o7OlKv5kNgdhaoMK7ejXT6/zUufDLQSzaCFZlF8GxK+y9SGT96bkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
- dkim=pass header.d=oss.nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
- s=selector1-NXP1-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WwlXh3LktFHI7zSBsD/SZac3qhtr52wShddo+pQGDSs=;
- b=J+0GdSF0vGrCHKVcjAtmXc7FuSzTEKgTtJ9i2nQ2vKRllabJPoAbAMlraYYUB3bCrxC3gvsv/d4xbyjBqXuHifh4hl4NH8cSRnoEx4tnN1y/ziIR4SIWW1CUb2XovfngGGFyr3nxP5NG45XN5ELbUcN9OSXG0liqUMkxZyN0/XKjRH3a/ALOanLt0aH2kWqsFl8sDXkYSMdBGIwpZhZKZcvHOyf6qH24TF4d6QNwoa2ht2sa2OmKrKPRWUhWIDv+ql5GxuwQx2zBUpMRtuac2OOvjr/mDHF36a1lzjudjCljQlRLEusPAzRPx3MPwI9eWhRzy2SK88iEJtpX669hJQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=oss.nxp.com;
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22)
- by DBAPR04MB7480.eurprd04.prod.outlook.com (2603:10a6:10:1a3::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Mon, 12 Oct
- 2026 09:54:59 +0000
-Received: from VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74]) by VE1PR04MB7216.eurprd04.prod.outlook.com
- ([fe80::a9a5:cf83:dbe8:1f74%6]) with mapi id 15.21.0496.018; Mon, 12 Oct 2026
- 09:54:59 +0000
-From: wei.fang@oss.nxp.com
-To: xiaoning.wang@nxp.com,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	richardcochran@gmail.com,
-	linusw@kernel.org
-Cc: wei.fang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v5 net-next 1/9] ptp: netc: use ioread64_lo_hi/iowrite64_lo_hi for 64-bit register access
-Date: Mon, 12 Oct 2026 17:59:16 +0800
-Message-Id: <20261012095924.1129312-2-wei.fang@oss.nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261012095924.1129312-1-wei.fang@oss.nxp.com>
-References: <20261012095924.1129312-1-wei.fang@oss.nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0198.apcprd01.prod.exchangelabs.com
- (2603:1096:4:189::7) To VE1PR04MB7216.eurprd04.prod.outlook.com
- (2603:10a6:800:1b0::22)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="S5MYqxCP"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48af27fe287so1435879f8f.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 02:55:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1791798904; x=1792403704; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oc8KVWrl/1bTXSFXHOfJ6AdPh/E0VhbTYjHSfv/v5Fk=;
+        b=S5MYqxCPw/Jhg37YuDI0l0opM0OvSkru62mZa5VrOEjmailDNfTfWiNf32SOi964fb
+         AChPNUiA5InRLIvIb0l6Givg/qqqsAd+0vI4t4hzXZdW0Ob0G1F3Ly8Jd3U1482YfrM9
+         9nSvsP6uPB/yXRZyOdY6P48AwxbowD2TIelFgLxQ60wZKRV2Tiln13aAlNeS2+XuAkyP
+         9XfKK9X/B+HNg/R8LpKHJTdypOa8VIQAn3oRNWKu2nxOj3zE1vCuaPU5sLD4Ep6PlGTd
+         8M2o4AXqG3y7El9RoKcAvpz7feTbHDAOJ87ZG9VaX8/0Nwy5OyBx1Z0ckHQjgVcSgVm2
+         u7dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791798904; x=1792403704;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=oc8KVWrl/1bTXSFXHOfJ6AdPh/E0VhbTYjHSfv/v5Fk=;
+        b=GyJmU2WOeHFRaEEG0XKCR01+3q6U+m0zyDy+Td90tLbkpZ56g/2bSoRj4bzNLy3cZm
+         OVb99IwcEdDBiskdBKU5W11eqWjsshexOPSgAzNuNLA1vXADWYpGtlO/gdB7wFMyuKUJ
+         Ik+iqZhrPRqiDGOY6Z29EbB+rTcAAB3N736rArzIaYFie7tX+0QHzkeTwx4RpU/oDlvh
+         aDN0c4Rf1+jm2c078/XVowYw+Q+mTWgMqpC91/iX+RRu8wRryF2jq088KWSBNOUOjUJk
+         cLQATNbmzeMA2gTgE+t3qFDgal+6iHSANhasNkqahvIsOUZbB5/+g1OzmlQVIqMDcMKa
+         70xg==
+X-Forwarded-Encrypted: i=1; AKwUvBzLsGgj/DsqsOcubzCVnEYPn5aTy88dXwDuDRBvie7Qoq3Rk+yy+SEz5+6v0Q+ml2eMjtO7/Ok=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLLDkW7Wtfhrnn2gFEvidNr2F4c2JIX2SgV+U1yUlWerr/mpufl
+	Y1kjBGfVATqXlUBxPso9/+/kj/NnnKVrKDuL8gU6zRfhACPk61G1VZi0d62IF3SnzgI=
+X-Gm-Gg: AYBFou3BiJTob84NEh3kd8bpcfGow6NQ6HKcnT00DwzLA6ImfyruvUc/KK7fZ/0Gucg
+	D9B8IOrZwc+o+v1qKL9w9rg8GlbXaDUqsvB6ze/KvEWY5AUs4Bc1hH+CYGnOKO+S3956VnM3xRJ
+	+UcY4ha02tXigkOpQmywR+vp4XaVMp9I3aWM5fluUaDjhTP6ApPvjH0NZ28s4bG/KJNqxpC1KmI
+	iUt5UuJhS0Oe+7Pb6C8+QwxBRJLGgrp+Yp0JcLui4eE39aWLSCo09nUCI5KnfMYW7Lxz6K8vnKG
+	O/ltwdMbJfofuGkAGvocF/Z0qwrGatPlmi7Qt6eWC6teWV68+PSpv2JxiDkFLUbwoavJG+7I+Kp
+	ZhIjTiDSOul+gtZIfggtAAB9PcCSIFpTSrg86h1QS0wGOcQb0aT0BKCq6e8Gdahgg2OerKJhLtH
+	B6WAiJTG5AmarY6S5NUwOORciC4czHE5VnEpDgFi6TkLrs0VYKMuNeSOpy7Q+gsBKlLiZD3Ncw+
+	8PVtyqUXzS67pxhAiW/t6SWNyfWHzxG
+X-Received: by 2002:a05:6000:2082:b0:488:89ad:56b8 with SMTP id ffacd0b85a97d-48dba6f52abmr16620045f8f.0.1791798904225;
+        Mon, 12 Oct 2026 02:55:04 -0700 (PDT)
+Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48db98c2800sm18539103f8f.26.2026.10.12.02.55.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 02:55:03 -0700 (PDT)
+From: Marco Crivellari <marco.crivellari@suse.com>
+To: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Mika Westerberg <westeri@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Petko Manolov <petkan@nucleusys.com>,
+	Richard Cheng <icheng@nvidia.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Yehezkel Bernat <YehezkelShB@gmail.com>
+Subject: [PATCH net-next v4 0/6] net: Move system_long_wq to system_dfl_long_wq
+Date: Mon, 12 Oct 2026 11:54:39 +0200
+Message-ID: <20261012095452.135828-1-marco.crivellari@suse.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: VE1PR04MB7216:EE_|DBAPR04MB7480:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3cee79cf-a9ca-4c62-c759-08df2846e05e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|23010399003|19092799006|1800799024|11063799006|921020|56012099006|22082099003|18002099003|10067099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	jGNrz9yDep7RV1JTJOVoCNI0GH35vxXKyGOsl81jO1PG8qT+nLrZbteOBK19wRm0VaE8gynYGerbThOfdx9J4pnyJOp6/0hRlAUxNNTxSER6VS+ifzYNp2zS+fRIZX8/ayMnht3VMBIE+wHk6O4ucYFreSYe056wKppJE5zqU98UY21FUne1+fbES2wyjEOF/3siGlm88KOFYIpYcvJJIcn4ly4nrzbxqUxXT3acWQxVaSaVtZfGJAZwHUzTmMnOWjaauRtZwb3KehkIpOoSMn1+nRrYEUqQ20s0ozdYBq1MXcRvcchcgSHD7Zk1vgnEUMsjhhyuDRLyxMP4XePaf3s1KLUaCYcaPPKoCRpAGj8ibW94sdpqbkgoTYq8KKvU3M7czlVx4AFDpUc/65eJV4xcAZ9oZpQ2DfPx/U7j2ekFuG4D/GC9r9//tJMy0KbuvS7li1b8YfCtS5EhZ5NhQC4Ey11VKxPuayHEjAeq4rwk/J7uN3zdAGPrzABJHb218+gDUuB7ubeP6f4wRkFawoTxG4BMcwWlVFFZ4YjHZw/oiqh9eyB2XyoQU9Gc2IC6dD1zwPNZDZvPJiLeJBmQyGSULmumCR6k3p8AH5Hn0SRCNA26vu1TJbzn2GYQuELbFNYCLnJULnXi1tvncL1NbEDUpCVfX1Us6ETP1aKxOu5EZJW09jY6b6BsQb25Xdhg2pFhFPaf48lAepVduOMG2w==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB7216.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(19092799006)(1800799024)(11063799006)(921020)(56012099006)(22082099003)(18002099003)(10067099003)(261009223027099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?t9EAgsxjodkrjWuiUeWp864uyOv3doA/wxe/lQSzUDBilZQ4Vsw6nHWHUXKz?=
- =?us-ascii?Q?oATDMv/g8pRwXCAJFlk0AcQ8UcteHLGXhoFZfJRasRqJh/lhEOWnMA9oPDnP?=
- =?us-ascii?Q?/+ZzomXYZw+55mX2FLCdERPolc/9hijEoLmYGn561ZKzXtLtCLUwLrh6FEXF?=
- =?us-ascii?Q?7ElqzKRuxej9g9iwpBoPM5mnRxIslGkltfN+qAl9hJ+9GYKVW2g6uMw5DW34?=
- =?us-ascii?Q?Jh3HEOwSzx5v4GA0jJDpHX6Cdncu/TroiXOAiebqTQnoapp9gequbRSk6cVb?=
- =?us-ascii?Q?Pjs8tploq/baMog4tDpwC8NA5PM716CESBvnexJ6OF9NoBt1PHL24Oi1/r7h?=
- =?us-ascii?Q?YIJeb/QO23cAied8vp97MWZBiGBEgrA+MJzRAwre2G6/laMGBsgtiIZndjKz?=
- =?us-ascii?Q?0qPX9QNNvxrtZPeIivMuMWz/nBUo8RWyFFrAtHP74KWtxNnf51t6S/64YMEC?=
- =?us-ascii?Q?rA05wMhcW37kAFtcvdTCUr3zzWTTvMv0rE23u05yuQDfn79bVhJOsqnlc4qo?=
- =?us-ascii?Q?W82dqckgpZSXRO+0qVYZ8SaQRpbNApYSR2RLifoZaLScRsOAPnORk9lQIhyA?=
- =?us-ascii?Q?/PtyxEOB6bN1IMAfvH9tIrTDZv2vTDpMLqO8v9O+hhaANqOz83zXC+2IzLzL?=
- =?us-ascii?Q?pB2u4LaDsoFhhAh72dGuVU2Ms1rt1VPWiNJdCpUuqa5VX9NsBpYsoTzy0AHD?=
- =?us-ascii?Q?Kj+uHqVuFGIpdMvrRWh01WUrkQdWclsPabVjdIQHiajel3cK5TrxITZETebh?=
- =?us-ascii?Q?UdchRz2pSpFjCJwreUhqquOf4yTPvemOugGx+Gyhv+eX9zcXh9sZW5kRgaLy?=
- =?us-ascii?Q?CGcq6WDT9InBOFYRYAk1UkAqhU0tsXfN+QGEYQsV1dIhM1P2ww6sK+DEIRhn?=
- =?us-ascii?Q?Szpqmf+s+4HXTpwSZkOJmVWly4uxj2d6ph7xi8LkAUxvy8nsUo0CG0JMHbYk?=
- =?us-ascii?Q?Y5XIO/Dz5fQ9iGag7abK1YGnDIxAnX5RiZx7FQZT1FU0Hp9DFA1+yEohKndq?=
- =?us-ascii?Q?xzIMAb78Wr6j0+Az/T13zIG9k6ayOYXGBAuCl6O5fV1WFVDTS4PsaHxpZc8C?=
- =?us-ascii?Q?lDKIf9EGQZoFIpvgKrFyEdEhEMgBAUNY6BnZYcBJHW1VpeZRr/e//8lUTWS1?=
- =?us-ascii?Q?uvAHRG1rHoURvds9ilHJGBAP+Vi6CkDADSnscynJ29KlMZ83Cz/xctYZ46Et?=
- =?us-ascii?Q?k7/YveYSQAPMAm6SyulKbBtDHX5PWDQjy712JvNmULz8XHEK+pzvuzYwts1k?=
- =?us-ascii?Q?BfnhGWGNXsi+5UpctvWZeWsniuneCfNEWZbYo8OvmAKyFIOCOJ4XEpf2R4NO?=
- =?us-ascii?Q?NCWje2S97JexUzdPjMWo1oMpzStdcS7pDN6nj/CNmo7EUbxN1f//k9eW47uB?=
- =?us-ascii?Q?R+/Zu705ixJ96Fi8jtv4UpP2cgeZDwzeI9QYNFBmXzaC6EdaoJB9xbANZGZV?=
- =?us-ascii?Q?FLTzasPok3jDlDqajXBO/G9RW+TsXKLQgKqBB+GOm4zFcpJLbSWPyZyDTvHZ?=
- =?us-ascii?Q?e3pjAQHX+UbRmztPiGOVbHrvPoibR4ap/pC/PlClhqlq0gWzDUH+kJJVxyU5?=
- =?us-ascii?Q?dzIu0DRA1TyLoeAaSg17ejSLra4GOmWhx6viYZxEMDGaEGk8VNyxUG54Z1Wv?=
- =?us-ascii?Q?SuaR8+mb3ZRca5wSZDi+Qzbb0rNDjSltSxxt0M9TCK4Klnq46mzoimNWoF07?=
- =?us-ascii?Q?UrRt3xJDz1DEG0U2IUJBF6yu++w835mW9pA8eMWCvKF3fRn8fcmt81UtoP15?=
- =?us-ascii?Q?z82eihxdqU5qvloX+Nzgl8/1hKEAbCSaTrEdXEaWuf4WlrZh8pyE?=
-X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3cee79cf-a9ca-4c62-c759-08df2846e05e
-X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB7216.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 09:54:59.1460
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YlPz0u8tqprT4gbmMHUrVGJeMaRUx2+Xl6ihhnssnBLU6/C11eO75tv9CnYkFvJTLhn2bU3EX7syjlGzBqd1gJtyrLXFvCb5Vtofx2xK4isSuMAil9l2fIQixC7e71ZI
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7480
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Wei Fang <wei.fang@nxp.com>
+Hello,
 
-Replace the open-coded 64-bit register read/write sequences with
-ioread64_lo_hi() and iowrite64_lo_hi() helpers. Introduce two new macros
-netc_timer_rd64() and netc_timer_wr64() that wrap these helpers and use
-them throughout the driver. This reduces boilerplate and makes the intent
-of each operation clearer.
+This is only rebased as it seems the patches didn't land in the next
+release because are marked as Rejected (likely because of initial feedback
+on 5/6),despite the general positive overall feedbacks (also on Patch 5/6,
+later):
 
-The high-half register defines (NETC_TMR_*_H) are kept to document the
-register map; they are not used directly since netc_timer_rd/wr64()
-address the 64-bit register pair via the low-half offset, relying on the
-hardware layout where H is always at L + 4.
+  https://lore.kernel.org/all/20260906080818.GC6356@carbon.k.g/
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/ptp/ptp_netc.c | 72 ++++++++++++------------------------------
- 1 file changed, 21 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/ptp/ptp_netc.c b/drivers/ptp/ptp_netc.c
-index 19ca99d80e95..376b3b0d1a38 100644
---- a/drivers/ptp/ptp_netc.c
-+++ b/drivers/ptp/ptp_netc.c
-@@ -127,6 +127,17 @@ struct netc_timer {
- 
- #define netc_timer_rd(p, o)		netc_read((p)->base + (o))
- #define netc_timer_wr(p, o, v)		netc_write((p)->base + (o), v)
-+
-+/* The 64-bit timer registers consist of a low (L) and high (H) register pair.
-+ * Hardware requires a strict access order: for writes, TMR_xxx_L must be
-+ * written first, which latches the value into a shadow register; the write
-+ * to TMR_xxx_H then atomically transfers both shadow registers into the live
-+ * counter. For reads, TMR_xxx_L must be read first to capture a coherent
-+ * snapshot. iowrite64_lo_hi() and ioread64_lo_hi() enforce this L-before-H
-+ * ordering.
-+ */
-+#define netc_timer_rd64(p, o)		ioread64_lo_hi((p)->base + (o))
-+#define netc_timer_wr64(p, o, v)	iowrite64_lo_hi(v, (p)->base + (o))
- #define ptp_to_netc_timer(ptp)		container_of((ptp), struct netc_timer, caps)
- 
- static const char *const timer_clk_src[] = {
-@@ -136,66 +147,28 @@ static const char *const timer_clk_src[] = {
- 
- static void netc_timer_cnt_write(struct netc_timer *priv, u64 ns)
- {
--	u32 tmr_cnt_h = upper_32_bits(ns);
--	u32 tmr_cnt_l = lower_32_bits(ns);
--
--	/* Writes to the TMR_CNT_L register copies the written value
--	 * into the shadow TMR_CNT_L register. Writes to the TMR_CNT_H
--	 * register copies the values written into the shadow TMR_CNT_H
--	 * register. Contents of the shadow registers are copied into
--	 * the TMR_CNT_L and TMR_CNT_H registers following a write into
--	 * the TMR_CNT_H register. So the user must writes to TMR_CNT_L
--	 * register first. Other H/L registers should have the same
--	 * behavior.
--	 */
--	netc_timer_wr(priv, NETC_TMR_CNT_L, tmr_cnt_l);
--	netc_timer_wr(priv, NETC_TMR_CNT_H, tmr_cnt_h);
-+	netc_timer_wr64(priv, NETC_TMR_CNT_L, ns);
- }
- 
- static u64 netc_timer_offset_read(struct netc_timer *priv)
- {
--	u32 tmr_off_l, tmr_off_h;
--	u64 offset;
--
--	tmr_off_l = netc_timer_rd(priv, NETC_TMR_OFF_L);
--	tmr_off_h = netc_timer_rd(priv, NETC_TMR_OFF_H);
--	offset = (((u64)tmr_off_h) << 32) | tmr_off_l;
--
--	return offset;
-+	return netc_timer_rd64(priv, NETC_TMR_OFF_L);
- }
- 
- static void netc_timer_offset_write(struct netc_timer *priv, u64 offset)
- {
--	u32 tmr_off_h = upper_32_bits(offset);
--	u32 tmr_off_l = lower_32_bits(offset);
--
--	netc_timer_wr(priv, NETC_TMR_OFF_L, tmr_off_l);
--	netc_timer_wr(priv, NETC_TMR_OFF_H, tmr_off_h);
-+	netc_timer_wr64(priv, NETC_TMR_OFF_L, offset);
- }
- 
- static u64 netc_timer_cur_time_read(struct netc_timer *priv)
- {
--	u32 time_h, time_l;
--	u64 ns;
--
--	/* The user should read NETC_TMR_CUR_TIME_L first to
--	 * get correct current time.
--	 */
--	time_l = netc_timer_rd(priv, NETC_TMR_CUR_TIME_L);
--	time_h = netc_timer_rd(priv, NETC_TMR_CUR_TIME_H);
--	ns = (u64)time_h << 32 | time_l;
--
--	return ns;
-+	return netc_timer_rd64(priv, NETC_TMR_CUR_TIME_L);
- }
- 
- static void netc_timer_alarm_write(struct netc_timer *priv,
- 				   u64 alarm, int index)
- {
--	u32 alarm_h = upper_32_bits(alarm);
--	u32 alarm_l = lower_32_bits(alarm);
--
--	netc_timer_wr(priv, NETC_TMR_ALARM_L(index), alarm_l);
--	netc_timer_wr(priv, NETC_TMR_ALARM_H(index), alarm_h);
-+	netc_timer_wr64(priv, NETC_TMR_ALARM_L(index), alarm);
- }
- 
- static u32 netc_timer_get_integral_period(struct netc_timer *priv)
-@@ -500,22 +473,19 @@ static void netc_timer_handle_etts_event(struct netc_timer *priv, int index,
- 					 bool update_event)
- {
- 	struct ptp_clock_event event;
--	u32 etts_l = 0, etts_h = 0;
-+	u64 etts = 0;
- 
--	while (netc_timer_rd(priv, NETC_TMR_STAT) & TMR_STAT_ETS_VLD(index)) {
--		etts_l = netc_timer_rd(priv, NETC_TMR_ETTS_L(index));
--		etts_h = netc_timer_rd(priv, NETC_TMR_ETTS_H(index));
--	}
-+	while (netc_timer_rd(priv, NETC_TMR_STAT) & TMR_STAT_ETS_VLD(index))
-+		etts = netc_timer_rd64(priv, NETC_TMR_ETTS_L(index));
- 
- 	/* Invalid time stamp */
--	if (!etts_l && !etts_h)
-+	if (!etts)
- 		return;
- 
- 	if (update_event) {
- 		event.type = PTP_CLOCK_EXTTS;
- 		event.index = index;
--		event.timestamp = (u64)etts_h << 32;
--		event.timestamp |= etts_l;
-+		event.timestamp = etts;
- 		ptp_clock_event(priv->clock, &event);
- 	}
- }
+Currently the code uses the per-cpu workqueue system_long_wq to schedule
+long running works.
+
+Unbound works could benefit from scheduler task placement, to optimize
+performance and power consumption. Another good reason to have this unbound,
+is the "queue_delayed_work()" function, used to enqueue the work item.
+More details on this will follow in the next section.
+
+Recently, a new unbound workqueue specific for long running work has been
+added:
+
+    c116737e972e ("workqueue: Add system_dfl_long_wq for long unbound works")
+
+~~~ Details about queue_delayed_work ~~~
+
+system_long_wq is a per-cpu workqueue and it is used as a parameter of
+queue_delayed_work(). This function schedule an item that it will later
+be enqueued (once the timer will fire). __queue_delayed_work() does the job
+receiving as "cpu" WORK_CPU_UNBOUND:
+
+    if (housekeeping_enabled(HK_TYPE_TIMER)) {
+    //      [....]
+    } else {
+            if (likely(cpu == WORK_CPU_UNBOUND))
+                    add_timer_global(timer);
+            else
+                    add_timer_on(timer, cpu);
+    }
+
+The timer is global, so can fire everywhere, and the work item will be
+enqueued where the timer fired.
+
+Since the workqueue work doesn't rely on per-cpu variables, there is no
+obvious reason that justify the use of a per-cpu workqueue. So change the
+workqueue with the new system_dfl_long_wq, so that the used workqueue is
+now unbound and can benefit from scheduler task placement.
+
+Thanks!
+
+---
+Changes in v4:
+- rebased on v7.3-rc7
+
+- added review-by Sebastian on 5/6
+
+Link to v3: https://lore.kernel.org/all/20260720100902.155605-1-marco.crivellari@suse.com/
+
+Changes in v3:
+- rebased on v7.2-rc4
+
+- added "net: ti: icssg-prueth: Move long delayed work on system_dfl_long_wq"
+
+- changed also the workqueue in ibmvnic_reset().
+
+Link to v2: https://lore.kernel.org/all/20260706134033.244295-1-marco.crivellari@suse.com/
+
+Changes in v2:
+- rebased on v7.2-rc2
+
+- dropped the RFC prefix, kept Ack and review tags
+
+Link to v1: https://lore.kernel.org/all/20260511092846.120141-1-marco.crivellari@suse.com/
+
+Marco Crivellari (6):
+  ibmvnic: Move long delayed work on system_dfl_long_wq
+  net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq
+  net: ti: icssg-prueth: Move long delayed work on system_dfl_long_wq
+  net: thunderbolt: Move long delayed work on system_dfl_long_wq
+  net: usb: pegasus: Move long delayed work on system_dfl_long_wq
+  net: usb: r8152: Move long delayed work on system_dfl_long_wq
+
+ drivers/net/ethernet/ibm/ibmvnic.c           | 6 +++---
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 2 +-
+ drivers/net/ethernet/ti/icssg/icssg_stats.c  | 2 +-
+ drivers/net/thunderbolt/main.c               | 7 ++++---
+ drivers/net/usb/pegasus.c                    | 9 +++++----
+ drivers/net/usb/r8152.c                      | 7 ++++---
+ 6 files changed, 18 insertions(+), 15 deletions(-)
+
 -- 
-2.34.1
+2.55.0
 
