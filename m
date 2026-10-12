@@ -1,42 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8583783D5;
-	Mon, 12 Oct 2026 08:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA8745C6E6;
+	Mon, 12 Oct 2026 08:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791794456; cv=none; b=bsxoj+I3hGae3t3tN5oJW5D00S2itQydJ4w/9S9rFG3ohoo9Cfi0J7hDcWuN1QWqPGxfydtOYgLjWCTqhgpdqARCWZwAxdY5t01E/10u4iPonRjxtF0E5vtb3vJ+QqW4FeSv2tSU5fwaFHi0LzLITShbeFsbYX6Egi9oIEvEV7s=
+	t=1791794458; cv=none; b=h83jilmrCRCDcqDkzG2ecuuI/wSxvxMOVe0eneFq6p9aL3Y27yclOLCR1dZ0P6M125LNKd6m/9mz25j8u7rs3M9TYIA0pzm1Aifa2ZKFTWZ82K5m8gbj0IsJiksNnfI9siAUyzPOprwW431zFRMYm1yGaIvzjxJPuwPvt56WHdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791794456; c=relaxed/simple;
-	bh=LAMxuxhHscs8NE7hspmXi6UndFgzjMg2SOUUiOs1320=;
+	s=arc-20240116; t=1791794458; c=relaxed/simple;
+	bh=mpvdjSjG6yKlGSAbffcGXjSwVQRMw+hHYg5VMZur0QU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TQgyF5kPNDASwFc1jjsp8s9u5P/JdnAU8kvr+i+S498Hbb6naXtqwHb52i/OZJ8ZCj1Tk55XXW4UBsSF5ieIfJIcXV3PM7Rn5La7ucVQXAUlE8TYV+rfZGB+Z+ra0ZjZQx+JAYClVw47J4Q8ftGaLFm+ARLbZr7C+PSkCLyROZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtuJ5PUw; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DVPYwM/ZA6ul3cihEcL+/+SUxJtGGIiB0kyvkCZRlFz4y6zjWt4afksKt/2W+dQ+R5rYU3jxzXqVuESz8PmG497JYyLE0f8C1r3OlafMGg2fhuhXaNasfj8Bx9DazAmv6Bl7hI1V0Z7Lghtt4ArmnIdVJycuQAvWszCD9p7tMYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PI99TSF0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtuJ5PUw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED1A1F0089B;
-	Mon, 12 Oct 2026 08:40:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PI99TSF0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC141F0089C;
+	Mon, 12 Oct 2026 08:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791794455;
-	bh=5E9xSO8DIYSvBb1Ky5K5ev0GKP63TAtwQKXkGT6KEGo=;
+	s=k20260515; t=1791794456;
+	bh=egYXV60732DYc0+bH0RPt7he1vgoVrW8edxdByobZDg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jtuJ5PUw97ANu14XRPo1/bOlOUlYZWOcxfQSzwdSYKvzyW+FCwiSez6nQsa+BGvNp
-	 lbSLIRCwOmtbDHcc2xQKn7kccYyrpNrunXGmcMDlhAzi21Xafk8FIoWuKPogMd7vTk
-	 R7Uh/GUu2htThEAnfRfmI1GQjCT2gFV6PrWIlnLrUW+BT2qks5G3NHeLZLQrWYFpja
-	 5Kb2GQ2z4dSKoITWyvSgDEbOM/6qRcpGw44RrsPQaxLBDUoFA7iuVhp43Do7GZWyAF
-	 p9m3B/TRth0j/1SgICBTma8UFfACdE4aU+0t5KXK6sKswg6Yp7xuUmQIbk0uYNUjSo
-	 lVoHpEB9u4leA==
-Subject:
- Re: [PATCH net] qrtr: make repeated lookups from one client idempotent
+	b=PI99TSF0iYNzndubYyDTZ+03YppPeNcizePvAPTNFy3IVTg5zwBSx0BT9vJuAZS8m
+	 FOZNnzV5f7VV6Ga9hT3RDc1ouCrfFG8SwuJHiq3iWA6rwhPfGoWeR76fJSBEo/Laun
+	 d8B4zLo0vD6PtOupUwBgbhJZsZEiUSaNWmGXBCWjEPAduEipcQXf7p/29z1mTV2dCk
+	 chLLo8O9vuveoXYrYeop7nK6fl8gZ5jW3msYRPmEPJ96hfV++E6GxuAYt8H4iFRax8
+	 QRU44RDyUAw5iXXvC1AEx3wz8/KkoYeA6sNxW4JM3Y2H9sBLOLtpQCoXK8T5FYP6V3
+	 kO9BnCM22M7Mw==
+Subject: Re: [PATCH net-next V2] net/dcb: Validate bandwidth for non-ETS
+ traffic classes
 From: netdev-bot+sashiko@kernel.org
-To: tjdqudcks0424@naver.com
-Cc: mani@kernel.org, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- kuba@kernel.org
-Date: Mon, 12 Oct 2026 08:40:54 +0000
-Message-ID: <179179445439.434549.690451607886863842@kernel.org>
-In-Reply-To: <20261008082518.347350-1-tjdqudcks0424@naver.com>
-References: <20261008082518.347350-1-tjdqudcks0424@naver.com>
-X-sashiko-severity: High
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, alazar@nvidia.com,
+ cjubran@nvidia.com, gal@nvidia.com, kees@kernel.org,
+ linux-kernel@vger.kernel.org, oss-drivers@corigine.com, horms@kernel.org
+Date: Mon, 12 Oct 2026 08:40:55 +0000
+Message-ID: <179179445567.434549.13418460679554314301@kernel.org>
+In-Reply-To: <20261011083929.739261-1-tariqt@nvidia.com>
+References: <20261011083929.739261-1-tariqt@nvidia.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,7 +51,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -57,82 +59,138 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix does not close the denial of service its commit message
-  describes.
+- [Medium] Round-trip mismatch: the kernel now rejects an ETS config that
+  ice itself reports.
+
+Pre-existing issues:
+- [Medium] This problem was not introduced by this patch, but NFP's ETS
+  path uses unchecked user-supplied prio_tc values as indexes into the…
 
 --
 
-qrtr: make repeated lookups from one client idempotent
+net/dcb: Validate bandwidth for non-ETS traffic classes
 
-This patch adds a check to ctrl_cmd_new_lookup(). If a NEW_LOOKUP
-request has the same node, port, service and instance as an existing
-lookup, that row is reused and no new one is allocated. The goal is to
-stop one unprivileged local socket from filling all 128 global lookup
-rows with duplicates and locking out other observers.
+This commit moves the check that rejects non-zero tc_tx_bw for non-ETS
+traffic classes from the NFP driver into dcbnl_ieee_set(). Every driver
+now gets this check. NFP's ETS bandwidth-sum check is left as it is.
 
-> diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-> index bcb090ee79d49..ae0dc2474e5e9 100644
-> --- a/net/qrtr/ns.c
-> +++ b/net/qrtr/ns.c
-> @@ -547,6 +547,14 @@ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
->  	if (from->sq_node != qrtr_ns.local_node)
->  		return -EINVAL;
+> diff --git a/drivers/net/ethernet/netronome/nfp/nic/dcb.c b/drivers/net/ethernet/netronome/nfp/nic/dcb.c
+> index bb498ac6bd7d6..91fbfa3708fc8 100644
+> --- a/drivers/net/ethernet/netronome/nfp/nic/dcb.c
+> +++ b/drivers/net/ethernet/netronome/nfp/nic/dcb.c
+> @@ -218,9 +218,6 @@ static int dcb_ets_check(struct net_device *dev, struct ieee_ets *ets)
+>  		if (ets->tc_tsa[i] == IEEE_8021QAZ_TSA_ETS) {
+>  			ets_exists = true;
+>  			sum += ets->tc_tx_bw[i];
+> -		} else if (ets->tc_tx_bw[i]) {
+> -			nfp_warn(app->cpp, "ETS BW for strict/vendor TC must be 0.");
+> -			return -EINVAL;
+>  		}
+>  	}
+
+[Severity: Medium]
+This problem was not introduced by this patch, but NFP's ETS path still
+does not check the user-supplied prio_tc values. Can they index past the
+end of the 8-entry dcb->tc2idx[] array?
+
+Neither dcbnl_ieee_set() nor the DCB_ATTR_IEEE_ETS policy checks prio_tc.
+After this patch, dcb_ets_check() only checks the bandwidth sum. An
+all-strict config with all tc_tx_bw set to 0 and prio_tc[0] = 255 passes
+both checks. nfp_nic_dcbnl_ieee_setets() then stores the value as is:
+
+drivers/net/ethernet/netronome/nfp/nic/dcb.c:nfp_nic_dcbnl_ieee_setets() {
+    ...
+		dcb->prio2tc[i] = ets->prio_tc[i];
+    ...
+}
+
+nfp_nic_fill_ets() later uses it as an index:
+
+drivers/net/ethernet/netronome/nfp/nic/dcb.c:nfp_nic_fill_ets() {
+    ...
+		writeb(dcb->tc2idx[dcb->prio2tc[i]],
+		       dcb->dcbcfg_tbl + dcb->cfg_offset + NFP_DCB_DATA_OFF_PCP2IDX + i);
+    ...
+}
+
+This reads tc2idx[255], which is well past the end of the kzalloc'd
+nfp_app_nic_private. The byte read goes into the device's PCP2IDX table.
+update_dscp_maxrate() has the same index pattern:
+
+		writeb(dcb->tc2idx[dcb->prio2tc[dcb->dscp2prio[i]]],
+
+So does the setapp path, which looks up dcb->tc2idx[dcb->prio2tc[prio]].
+Should prio_tc[i] < IEEE_8021QAZ_MAX_TCS be enforced somewhere on this
+path?
+
+> diff --git a/net/dcb/dcbnl.c b/net/dcb/dcbnl.c
+> index 35164bfa563d1..ab71f53128760 100644
+> --- a/net/dcb/dcbnl.c
+> +++ b/net/dcb/dcbnl.c
+> @@ -1578,6 +1578,15 @@ static int dcbnl_ieee_set(struct net_device *netdev, struct nlmsghdr *nlh,
 >  
-> +	list_for_each_entry(lookup, &qrtr_ns.lookups, li) {
-> +		if (lookup->sq.sq_node == from->sq_node &&
-> +		    lookup->sq.sq_port == from->sq_port &&
-> +		    lookup->service == service &&
-> +		    lookup->instance == instance)
-> +			goto notify;
-> +	}
+>  	if (ieee[DCB_ATTR_IEEE_ETS] && ops->ieee_setets) {
+>  		struct ieee_ets *ets = nla_data(ieee[DCB_ATTR_IEEE_ETS]);
 > +
->  	if (qrtr_ns.lookup_count >= QRTR_NS_MAX_LOOKUPS) {
->  		pr_err_ratelimited("QRTR client node exceeds max lookup limit!\n");
->  		return -ENOSPC;
+> +		/* IEEE 802.1Qaz: BW allocation applies only to ETS TCs */
+> +		for (int i = 0; i < IEEE_8021QAZ_MAX_TCS; i++) {
+> +			if (ets->tc_tsa[i] != IEEE_8021QAZ_TSA_ETS &&
+> +			    ets->tc_tx_bw[i]) {
+> +				err = -EINVAL;
+> +				goto err;
+> +			}
+> +		}
 
-[Severity: High]
-Does this close the denial of service described in the commit message?
+[Severity: Medium]
+Can this reject an ETS object that a driver itself reported back to user
+space?
 
-The new loop only skips allocation when (sq_node, sq_port, service,
-instance) exactly matches an existing row. Any other tuple falls through
-to the unchanged global limit and takes a new row through list_add_tail()
-and qrtr_ns.lookup_count++.
+On ice in host-managed IEEE mode, take an all-strict config with all
+tc_tx_bw set to 0, or one with every priority mapped to a strict TC0.
+That config passes this new check. ice_dcbnl_setets() then gives TC0 100%
+bandwidth without looking at tsatable[0]:
 
-The service and instance values come straight from the client packet in
-qrtr_ns_worker(), and nothing checks them:
+drivers/net/ethernet/intel/ice/ice_dcb_nl.c:ice_dcbnl_setets() {
+    ...
+	if (!bwcfg)
+		new_cfg->etscfg.tcbwtable[0] = 100;
+    ...
+}
 
-		case QRTR_TYPE_NEW_LOOKUP:
-			ret = ctrl_cmd_new_lookup(&sq,
-					 le32_to_cpu(pkt->server.service),
-					 le32_to_cpu(pkt->server.instance));
+ice_dcb_bwchk() does the same when num_tc == 1 or total_bw == 0:
 
-Can a single unprivileged AF_QIPCRTR socket still fill all 128 rows?
-It could send NEW_LOOKUP for services 1..128, or for one service with
-instances 1..128. Requests spread across several sockets would also miss
-the exact-tuple check, because each autobound socket gets its own port.
+drivers/net/ethernet/intel/ice/ice_dcb_lib.c:ice_dcb_bwchk() {
+    ...
+	if (num_tc == 1) {
+		etscfg->tcbwtable[0] = ICE_TC_MAX_BW;
+		return 0;
+	}
+    ...
+	if (!total_bw) {
+		etscfg->tcbwtable[0] = ICE_TC_MAX_BW;
+    ...
+}
 
-Once qrtr_ns.lookup_count reaches QRTR_NS_MAX_LOOKUPS, an independent
-observer still gets -ENOSPC. The rows are only freed by DEL_LOOKUP or
-DEL_CLIENT from the owning port, so the attacker can hold them as long as
-the socket stays open.
+ice_pf_dcb_cfg() copies new_cfg into local_dcbx_cfg. ice_dcbnl_getets()
+then copies tcbwtable and tsatable into struct ieee_ets as they are. So
+both GET replies and the RTM_SETDCB notification from dcbnl_ieee_notify()
+report tc_tsa[0] = STRICT and tc_tx_bw[0] = 100.
 
-The test in the commit message seems to cover only identical duplicates.
+If that object is sent back to DCB_CMD_IEEE_SET, it now fails here with
+-EINVAL. Before this patch the same round trip worked on ice.
 
-The root cause looks like the single global limit, which has no
-per-owner accounting:
+Read-modify-write users such as iproute2's dcb ets set read the current
+ETS object before applying a change. Wouldn't a change to an unrelated
+field like prio-tc or willing now fail, unless the user also clears the
+strict TC's bandwidth each time? Save and restore of the reported object
+would fail the same way.
 
-#define QRTR_NS_MAX_LOOKUPS 128
+Should drivers like ice be changed to stop reporting bandwidth for
+non-ETS TCs before the core enforces this rule?
 
-Would per-owner accounting fit better than extending the exact-tuple
-dedup? Options include a per-port quota under a global ceiling, or
-per-uid or memcg based accounting.
-
-Also, the global limit is hit by whichever client sends the next
-request. So the "QRTR client node exceeds max lookup limit!" message
-names the observer that was rejected, not the client that filled the
-table.
-
-[ ... ]
+>  		err = ops->ieee_setets(netdev, ets);
+>  		if (err)
+>  			goto err;
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008082518.347350-1-tjdqudcks0424%40naver.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011083929.739261-1-tariqt%40nvidia.com
