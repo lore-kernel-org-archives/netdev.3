@@ -1,191 +1,186 @@
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55B048F008
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791815986; cv=pass; b=FOCgEGK1XpLxeH9W3zkN7EnhKj/vkcX1CupOkMpTzT8Ut76oEg08fI6mdBIiLab+eQG8BbDafUZpUSdtZY9p8WJ8Aw9dGvvvhMECS1BD9Epyap5RUUWypgTZmnQKhZQiKCeTFdW6d3KxmElsGKVVTTfxmhmLhv7DG0KbERtxk+Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791815986; c=relaxed/simple;
-	bh=nngk+BZ+vTXefE0Yqob9PVP82o7UfLMNfOhRUEtBGw4=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=fQWQYstRfqx1PoR/IA+z1vQkNNZstCvzOcyzXm4t+96yPT+BZ9Vqy8jSHnJ3W3a1EulTiIadDYDfOh76/WKCsPX/seK8UvhCgZpcbY6HVcqa96C+y2mo9+4U4dcRThu6f0sKVG0xqYCrE+CPHy5hxqmEPIscrxehxFTrnJvIY58=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O50DKfK7; arc=pass smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB473BFE4F
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791816051; cv=none; b=fgDHq0NIeBu58Q0K4RlPwEmU6jQDB5ZqgMBGsuHLqYIgb924awFDeEPilxMCD/5yQv5Z81sE8TvtHgmxnvZiXAKa70E6G8AyuAcnYMFr62a/GvPawBcpkMVlXaRSNbgatxdTeKhs2ihXK0T8ROfM749QJgdMeEnErS0+qhoNlaE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791816051; c=relaxed/simple;
+	bh=OpCKGsuEEQudaupBRlEcFM/4I8uPP0jHGdefzxFkaC8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbcbKMnQgO5QnD3k2om/PYM74ZIUA9VgEePBv5dJZbWtGzHZAnkOIPu9xJEKOOnipm2Zgp7vIzj807UEVS+H8fVfmvDih6qiNDih5qpVMkTKc0P15XgcYi/ilCC7cHAJeSuVKntAgA8zUWKACeqTNT9yQTSD7OZjYbl1pzZ2Zc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=V9p7WEgZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eiNdgPYd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O50DKfK7"
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-504db7f7870so1539099b6e.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 07:39:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791815984; cv=none;
-        d=google.com; s=arc-20260327;
-        b=I5wAs7VVogb2lxgQjJGDivMFdB/mT4sCvOo6nZ3IEEuXtiS2r3/e+u9ieCW/KVNQfP
-         d2/yEnddrDLl6dz0iKnC67dP3Gyy5ggaf/9oE1yp3F+3tqCDKDIIhR/dwG9cciexrajP
-         9dfu4fs86dqPAjKTdploRs5u/uu/jGZewPSXBd+gIYUal3iF6qvmEehbCtDOrjtxDTLM
-         kQ7mkh1+gInI4b4WkhDXatSDcoCr4Fy8Dc/XXYMBWxndJVeHUyW3DegnGUHC3ZKpZ4V0
-         WN6o0MSKldlsfTIRXfHpb3YXMgeAFETjVOu9ZbaE6g2QwEZvqhj+LwmxJcuQedWPguC6
-         OZkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=N9NrF4HR6dSGtkml8i5MPBuV3FD1qad4rvyy3srm/AU=;
-        fh=aDUZZ9N6NPmO6DMPx8G1ADwl9DVnQFUvUJ2oivftvxg=;
-        b=r4WP2jrdInRDuKCyISq/K2unyMufhK3RzWjqQQ1g+q6jHN5wuGdAoSnrg5oNOJSbBs
-         LktNDkdzG+q4tYFvY8jAGjCyoGHNhU/NYl9kdfY2w59Hn2NZ+pkFabQ4qjkvHR7uAnF7
-         UCing0oeGbi97I8nAmx2YZ2ADTzx1XS9o2Fd3sBUzyvjDT3Tic8vqPC8uDWy8XPuQ/J6
-         Z6yQepZvf2QZHFtTpga4c+Jf4MxFgMY3ucZg+erPO72TDOApGENjhuwMhifbe3oKL731
-         gSPDDWg8qu13Yl86fPcB7mOX+M9pFldtkDlLqAm4+9WY1u28uNx6hWGfF0eKGL8aZEeJ
-         qOkg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791815984; x=1792420784; darn=vger.kernel.org;
-        h=content-type:to:subject:message-id:date:from:mime-version:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=N9NrF4HR6dSGtkml8i5MPBuV3FD1qad4rvyy3srm/AU=;
-        b=O50DKfK7uuHFgCLWYL3lAReRK4VwkNE7eZL7o0je/nb14eYRZL9v+Owl/jc0N/qgFM
-         dAHb94aUkwqOVNqQFfJkSrX/6tpQnSFI+7Fb7YpGRzYfG7BiBMp/qqh5oqI5XoLpTJu8
-         fHwhHAMMddDz1wY7CazhebDR9aIhsJfjPmcwWucq5iFOUJePyv6tnrkSAqXGXbKeq90y
-         0HJCH7lGOyqoAxWUV4Ptm/ZJlbTacZRN7Vt/fnuRl+9f3ekIhLKuR8jPM3TC0PzpFkaG
-         8OawPCgkfixVVVmiZJW6Xv15ySnMbBvLJisgD3UxQQuth8IALedZCFGwUCHnQrUE4q5+
-         a0jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791815984; x=1792420784;
-        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=N9NrF4HR6dSGtkml8i5MPBuV3FD1qad4rvyy3srm/AU=;
-        b=UcKmF/L0j76rpBgwHSUsc97aT40hsFsliV47ekBTq8rWCzfFb864B9rquwgA8YvE0J
-         XYm+LXxePAAIeEEugAypiWhNZeAi7bZa5BS7dW5dzrSEzdLlh8KdZFmWu820aCxHBWqe
-         xVtT/N1Tpum2UfWdGaovka4phor35XdpxlF/qkVqeHFJWFIYb+0F9vZKThdDjP2PIJNw
-         ilBPJmpdlkLTvnyNeiH5oE/0oJXow+gfLQfbsFjSqr0Fu7pG3jXmoPDlc9aAw4hRtONy
-         AsvyVokhwkNFNGjNhkBsnBccRU2Aewsn2Ih2r9Zw3mke+a1cyT676VLOHNrls1JAO53t
-         bxnw==
-X-Gm-Message-State: AFq9FYJJ0NoRnexsglaK8zqsSfAn17dmkQrF1ua3qOO93TJFcLIMFe4A
-	JAdqgrAqjuxEqpJ4AaJwLgrhipZE9Gt64YQnjHlfIDxWNnec47qlVOUj//TCxtSG92VLji8cBQU
-	LI3+ILWdrvGCQiNZXsroPdCKzUzGNJdXXswdmKXBFjdFu
-X-Gm-Gg: AYBFou1gAz1qwFYY6Ir7uyrFK+nzfeOT+HkwFYDiLSsNqxkitl6Z7OhroY9QYmerhhe
-	J5JDJpLQfwM5E+56LSN18yMWJjyzLCYnygSZxiFC8kPDS06ugvEKVU5UXY+rMGXnuXJO/eYKkGB
-	jq0lv4YU7aMkT4pxHna6zvieb8C9Sik/fctn2N5xyHdAE34pTr4uhqMVzulVBp2pLY9xqW3jC/X
-	kZhNhyejhhyNwI55oqDO+d2jy19f/h+MopCyPwWaYOh3WwnVg9nS2nrzKF/nNX3JbKs+ngpP6Ql
-	TLoQBZSUVOrUZv/zJfmg6M9cWprJzGE2pUcilZmTvu9Bt1h//1Bjq4dVQQ8eyKFthhVqzO8e5HY
-	r0vsVGlvv769mK/MuXvDfvlnTvbaAV6/gE0fOZjGJ8I0+OCzgU5+A4AUY
-X-Received: by 2002:a05:6808:23c9:b0:4f9:a153:8730 with SMTP id
- 5614622812f47-50c33641592mr11310848b6e.0.1791815983753; Mon, 12 Oct 2026
- 07:39:43 -0700 (PDT)
-Received: from 138594053405 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 12 Oct 2026 10:39:42 -0400
-Received: from 138594053405 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 12 Oct 2026 10:39:42 -0400
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="V9p7WEgZ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eiNdgPYd"
+Date: Mon, 12 Oct 2026 16:40:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791816047;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BFOS6LHTgsAWTs1TcMPNNosAGr6AqDD5RgF/NzKrfQs=;
+	b=V9p7WEgZKEjhvSn7cG0pFFXCYwKvpKn7qjWya2XljHfN/UrQNUywxxriWVPMUI3a0ixJru
+	/GXUjbQsJpaS5X1JLxFNJL6wHog/kHty3WM1oXAsp7srKEl4g45WW8iEM0H3FgtLL+JzgV
+	Zpa2+jworFevBF8KB3CE3iHHUG9UnBQFKLTgOm3Bw4rZMQg0O+tqgFT8lA7O5zoUFrEvCE
+	VTpdSBQ0L4p49R0NhiHcnuYeEvb3wlISF34F+S7N2eRBoWdsDhCvaAb8bBdSKDSxd2gPn8
+	WZv7FLdlDXrfbBJoC/HVD24Fh1TaO+lHvQgQJAXi4aC2hJCf6B0wjaBMkxTIEw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791816047;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BFOS6LHTgsAWTs1TcMPNNosAGr6AqDD5RgF/NzKrfQs=;
+	b=eiNdgPYd00UawSxm7xIyX1yEQTSriqPbUW4fRP3BCKgJUofpJRCplhm+Ci+Z4icwueGKw5
+	BZPUIGZXrkQeBwBQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
+	c-vankar@ti.com, danishanwar@ti.com, d-qiu@ti.com,
+	davem@davemloft.net, edumazet@google.com, fmaurer@redhat.com,
+	kuba@kernel.org, neelima@ti.com, pabeni@redhat.com, praneeth@ti.com,
+	pratheesh@ti.com, richardcochran@gmail.com, horms@kernel.org,
+	vigneshr@ti.com, willemdebruijn.kernel@gmail.com
+Subject: Re: [PATCH net-next v8 3/8] hsr: Add a magic header for sending PTP
+ packets
+Message-ID: <20261012144046.X-Bi2B6J@linutronix.de>
+References: <20261002-hsr_ptp-v8-3-60dabc07e554@linutronix.de>
+ <179129707549.434549.12538393070496080930@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Adrian Martinez Garcia <adrimg3196@gmail.com>
-Date: Mon, 12 Oct 2026 10:39:42 -0400
-X-Gm-Features: AclHuK_Hldl3JgTTeifVbBwgCOjth8ddyfiNZlOzqZh4HTxOamWQs2kzpdRKnzo
-Message-ID: <CACO1+RQUrGS3VN-hrdKk+BK2uuRP7J_Fyadahz1QpO00JXyw3A@mail.gmail.com>
-Subject: [PATCH v2] xfrm: account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in
- acquire/polexpire/expire size calculations
-To: netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <179129707549.434549.12538393070496080930@kernel.org>
 
-From 534cb2b5fb8da81677f2955aac8a98d9aa89694b Mon Sep 17 00:00:00 2001
-From: Adrian Martinez <adrimg3196@gmail.com>
-Date: Sun, 11 Oct 2026 06:53:31 +0000
-Subject: [PATCH] xfrm: account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in
- acquire/polexpire/expire size calculations
+On 2026-10-06 14:31:15 [+0000], netdev-bot+sashiko@kernel.org wrote:
+> > +	skb->dev =3D master->dev;
+> > +	if (skb->protocol =3D=3D htons(ETH_P_1588)) {
+>=20
+> [Severity: Medium]
+> Does this drop every PTP frame that lacks the new inline header?
 
-xfrm_send_acquire() and xfrm_exp_policy_notify() allocate their reply skb
-with xfrm_acquire_msgsize() and xfrm_polexpire_msgsize(), then build_acquire()
-and build_polexpire() append attributes including XFRMA_IF_ID (when the
-policy if_id is set) and XFRMA_OFFLOAD_DEV (when the policy is bound to an
-xfrm offload device).  Neither size helper reserves space for these two
-conditionally emitted attributes, so for policies carrying if_id, mark,
-pcpu and/or an offload device the builders can run out of skb tailroom,
-fail with -EMSGSIZE and hit BUG_ON(err < 0), turning a netlink event into
-a kernel panic.
+Yes. Intended.
 
-build_expire() has the same XFRMA_IF_ID undercount in xfrm_expire_msgsize();
-its caller already handles -EMSGSIZE gracefully, so the only effect there
-is a dropped EXPIRE notification.
+=E2=80=A6
+> That covers local senders that ask for TX timestamps. Does it also hold
+> for transit PTP traffic, or for PTP traffic that doesn't use
+> timestamps?
 
-This is the same bug class as CVE-2026-43107, whose fix (7081d46d32)
-only covered the aevent pair.
+PTP traffic without timestamps does not sound like accurate usage of
+PTP.
 
-Account XFRMA_IF_ID and XFRMA_OFFLOAD_DEV in the three size calculations
-unconditionally, and replace the two BUG_ONs with normal error unwinding,
-mirroring the aevent fix.
+> The commit message calls the header mandatory. It doesn't mention that
+> existing senders without the header now lose their traffic.
+> hsr_dev_xmit() isn't changed later in the series, so this stays in place.
 
-Fixes: 7e6526404ade ("xfrm: Add a new lookup key to match xfrm interfaces.")
-Signed-off-by: Adrian Martinez <adrimg3196@gmail.com>
----
- net/xfrm/xfrm_user.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+Mandatory implies this.
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index a2587c7e..5eb79b0b 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -3927,7 +3927,8 @@ static inline unsigned int xfrm_expire_msgsize(void)
- 	return NLMSG_ALIGN(sizeof(struct xfrm_user_expire)) +
- 	       nla_total_size(sizeof(struct xfrm_mark)) +
- 	       nla_total_size(sizeof_field(struct xfrm_state, dir)) +
--	       nla_total_size(4); /* XFRMA_SA_PCPU */
-+	       nla_total_size(4) + /* XFRMA_SA_PCPU */
-+	       nla_total_size(4); /* XFRMA_IF_ID */
- }
+> > +		struct hsr_inline_header *hsr_opt;
+> > +		struct ethhdr *eth_hdr;
+> > +		unsigned int hdr_len;
+> > +
+> > +		BUILD_BUG_ON(sizeof(struct hsr_inline_header) !=3D sizeof(struct eth=
+hdr));
+> > +
+> > +		/* need to access the magic header */
+> > +		if (!pskb_may_pull(skb, sizeof(struct hsr_inline_header)))
+> > +			goto drop;
+> > +
+> > +		hsr_opt =3D (struct hsr_inline_header *)skb_mac_header(skb);
+> > +		if (hsr_opt->magic !=3D htonl(HSR_INLINE_HDR))
+> > +			goto drop;
+>=20
+> [Severity: Medium]
+> Can a remote host provide this control header?
+>=20
+> The only check is a constant magic in the source MAC position, and the
+> struct maps directly onto dst MAC, src MAC and ethertype.
+>=20
+> Some frames are received from the wire and forwarded into hsr0 by tc
+> mirred (ingress to egress) or by an OVS output action. They keep
+> skb->protocol =3D ETH_P_1588 from eth_type_trans(). Their first 14 bytes
+> are the Ethernet header that the remote sender chose.
+>=20
+> Consider a frame with:
+>=20
+>   - dst MAC {01 or 02, hsr_hdr, 00, 00, 00, 00}
+>   - src MAC {af:48:53:52, 00, 00}
+>   - ethertype 0x88f7
 
- static int build_expire(struct sk_buff *skb, struct xfrm_state *x,
-const struct km_event *c)
-@@ -4177,6 +4178,8 @@ static inline unsigned int
-xfrm_acquire_msgsize(struct xfrm_state *x,
- 	       + nla_total_size(sizeof(struct xfrm_mark))
- 	       + nla_total_size(xfrm_user_sec_ctx_size(x->security))
- 	       + nla_total_size(4) /* XFRMA_SA_PCPU */
-+	       + nla_total_size(sizeof(xp->if_id)) /* XFRMA_IF_ID */
-+	       + nla_total_size(sizeof(struct xfrm_user_offload)) /*
-XFRMA_OFFLOAD_DEV */
- 	       + userpolicy_type_attrsize();
- }
+This shouldn't happen. This injection/ magic header is in hsr_dev_xmit()
+and only for the HSR_PT_MASTER port which is the hsr0 interface. So it
+does not happen on received packets which would be the HSR_PT_SLAVE_{AB}
+interface. So no.
 
-@@ -4236,7 +4239,10 @@ static int xfrm_send_acquire(struct xfrm_state
-*x, struct xfrm_tmpl *xt,
- 		return -ENOMEM;
+=E2=80=A6
+> [Severity: Low]
+> Should hsr_hdr be checked against the inner frame before it is trusted
+> here?
+>=20
+> With hsr_hdr set, mac_len becomes ETH_HLEN + HSR_HLEN. Nothing checks
+> that eth_hdr->h_proto is really an HSR ethertype.
+>=20
+> Take a VLAN-tagged frame with an encapsulated ETH_P_HSR and hsr_hdr =3D 1.
+> It gets past this guard in hsr_fill_frame_info(), which would otherwise
+> reject it:
+>=20
+> 	if (skb->mac_len < sizeof(struct hsr_ethhdr))
+> 		return -EINVAL;
+>=20
+> Then hsr_get_skb_sequence_nr() and hsr_set_path_id() read and write the
+> tag at mac_header + 14, which is inside the VLAN header, instead of at
+> mac_header + 18.
+>=20
+> The pskb_may_pull() above keeps these accesses within the linear data.
+>=20
+> The later commit "hsr: Use the port and header information in
+> hsr_forward_skb()" makes hsr_fill_frame_info() return early when
+> has_foreign_header is set. hsr_forward_do() then sends a clone of
+> skb_std without calling hsr_set_path_id(). So this affects only this
+> intermediate commit.
 
- 	err = build_acquire(skb, x, xt, xp);
--	BUG_ON(err < 0);
-+	if (err < 0) {
-+		kfree_skb(skb);
-+		return err;
-+	}
+If this only effects intermediate commit, then it should be fine.
 
- 	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_ACQUIRE);
- }
-@@ -4307,6 +4313,8 @@ static inline unsigned int
-xfrm_polexpire_msgsize(struct xfrm_policy *xp)
- 	       + nla_total_size(sizeof(struct xfrm_user_tmpl) * xp->xfrm_nr)
- 	       + nla_total_size(xfrm_user_sec_ctx_size(xp->security))
- 	       + nla_total_size(sizeof(struct xfrm_mark))
-+	       + nla_total_size(sizeof(xp->if_id)) /* XFRMA_IF_ID */
-+	       + nla_total_size(sizeof(struct xfrm_user_offload)) /*
-XFRMA_OFFLOAD_DEV */
- 	       + userpolicy_type_attrsize();
- }
+> [ ... ]
+>=20
+> > diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
+> > index 73bc4b8950071..4afe9e1d65b7e 100644
+> > --- a/net/hsr/hsr_forward.c
+> > +++ b/net/hsr/hsr_forward.c
+> > @@ -773,7 +773,8 @@ static int fill_frame_info(struct hsr_frame_info *f=
+rame,
+> >  }
+> > =20
+> >  /* Must be called holding rcu read lock (because of the port parameter=
+) */
+> > -void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port)
+> > +void hsr_forward_skb(struct sk_buff *skb, struct hsr_port *port,
+> > +		     enum hsr_port_type tx_port, bool has_hsr_header)
+> >  {
+> >  	struct hsr_frame_info frame;
+> > =20
+>=20
+> [Severity: Low]
+> At this commit, hsr_forward_skb() accepts tx_port and has_hsr_header but
+> doesn't use them. The body still does:
+=E2=80=A6
+> The commit message says the values "will be used later". The follow-up
+> commit "hsr: Use the port and header information in hsr_forward_skb()"
+> adds frame->req_tx_port and frame->has_foreign_header. It acts on them in
+> fill_frame_info(), hsr_fill_frame_info(), hsr_forward_do() and
+> hsr_xmit(). So this only matters when bisecting onto this commit.
 
-@@ -4358,7 +4366,10 @@ static int xfrm_exp_policy_notify(struct
-xfrm_policy *xp, int dir, const struct
- 		return -ENOMEM;
+This is fine as-is.
 
- 	err = build_polexpire(skb, xp, dir, c);
--	BUG_ON(err < 0);
-+	if (err < 0) {
-+		kfree_skb(skb);
-+		return err;
-+	}
-
- 	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_EXPIRE);
- }
--- 
-2.43.0
+Sebastian
