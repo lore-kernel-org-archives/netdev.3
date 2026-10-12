@@ -1,102 +1,100 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F022729E10F
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE502F8E98
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791780810; cv=none; b=nGZjwZ536jnQW56YJ8hJTJhNlAhEiBvfz6gDxITWuKlXYe+gFVt6EnkZ8acZKBlnqwjifWh6XezCaBlXTglWaD2SoHC1h4gntg8xidJX5vWwyOt/7sgJNFvZ4D64uRPyKzSQNh1VQHimV8ss9u+B2mWbyBpVxejYp0myjMpY6Uc=
+	t=1791781081; cv=none; b=BKpvbtFRvD20x6LrC483YUvh9yqU85JCt9yHT+ZnJV3L6JsVlpLuJnwzY0AUlx2haILQ24OZ6TOmnPzaxPYkljoCLXCndXoS63N+1PyXE/uqILLquCzpkz0izK17u6/SJXaI5cFaPXkN5OTjjTVJ698mAimbzqTTDkyRMsyeII0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791780810; c=relaxed/simple;
-	bh=+zV7sFiMSvN0UbgFYqMAE/i3qFVYLZt2GxL4VcuKrGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qLwFbajC7kg+hUJ58vT4wts4zPznf3C5xJMiw7oVTlVzAOsdRWtfq7TLsid5ngxKV1baJ6Qcuu0derBMiPCoyP4LR8GX+vgSbE03xEYUoMscjFXQHgcu16mGwp1bFUADFG7qnZOpRbAdb3HUYcjUgfwxMc7ZS4rVyYRPcSCzwMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D84sYLaR; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1791781081; c=relaxed/simple;
+	bh=VHRDacBvIcvaD3EeGZjqUhghQgLI0/sOWRk6kjCWSHY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X+iY4hO7VLOBvfW9IKiPs6eKyuJXqYKJskpPvsiWd0k1kiHpe3Fv0C7UGRRmc1dyEQipJg0yQOhrE/kbPEueOYs6UHxG/5VaJspxAMxIIx2h/624FZVfLdxabPCY7zGQy16YvmNzWr1hWvyOSsIFvOyTYNkABaUhxG0dKXh7b4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ddcD+7oR; arc=none smtp.client-ip=74.125.82.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D84sYLaR"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2dd76b1361dso8393225ad.1
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 21:53:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ddcD+7oR"
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-144f79153f5so3777499c88.0
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 21:57:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791780808; x=1792385608; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Q+hTqAW+4rixFX4ZbUNxn8AzXmHJNOSXE7y5h2vkHY8=;
-        b=D84sYLaR4YuGJ3Tl+CCeHEOrE/swfnapvDTcgX/UlfMyrMB9l5Od1taZsXL0YYbE9W
-         AA1bZaJuZ2l1tvvTcbzDsUBOa0vdQWoRWD8xs0u9G2kU+3CxN/sKFzeU0UVxOO7MssXh
-         1dsj+HXLnPChNW5S7Zc8kkv2u0XMmZ1lFP2rhhAT9MMqE9tHmyLjyO9vmaOgtGIT6Rim
-         KbN5YeG9UyVbejodzFAn8XNp+HHjxQTt/J5tHamoaiK0GQV4dlHAvmAPsCgvDBZA6bHN
-         xPfh1kb/LoDqfvSc8RBRPCW+qYT05RptmKrRjb7Vgxp4POx8s6FD35EIyF0oFm6lH+Kj
-         T02A==
+        d=gmail.com; s=20251104; t=1791781079; x=1792385879; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4r2duJGpWXQRzkludK1kNjL6OFMP61EO9Bgn2dWvRnU=;
+        b=ddcD+7oRxaxZGswhIygytO2hY0JtyP8knSGJ0w5COI9w2IPK1FcZE6b6BZ8jRFu/c/
+         wBmcrIGMD/exIKKOF4OmakYsLLAINMeixgkQNB0TbYq1PN2wHa473Fx+f8pbIoGKbakR
+         umItDo88LtXnuJgRTGrxQxwao3slT/ZpF2Q6thOFHTmKbk4rOryYTpu+Mk5+/LoLuznQ
+         E6Im5AJjGr6erQjBMRMcfKdFAnc3jh3MNMoaIONcQzVHIr60EEdSlG4PoYzAozzCblhF
+         K1GewhlnQGUA0mw1MFfjbpFuV+755RYVWXWLlTmPGZ5qnx87swlIv+yK49fhtT4wc3Rc
+         Ahuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791780808; x=1792385608;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Q+hTqAW+4rixFX4ZbUNxn8AzXmHJNOSXE7y5h2vkHY8=;
-        b=Dhrqk77XHuaVnIbIaTDCxOczJY+/+qSVhA3aD4mZkc2f7qFYNPBEQrDYAHDlwD4yxn
-         YrR16mGeTtkJjcDSU4NgezAgmr1FFN/ZCdGoYe4BOFnO9zSTg4lDK4IZ/6iuji4IA46V
-         623KIDTR1MHe9zlHrnPgEOA5RJVqdnNplaC73+peykrJMkXnKqJPGoKbF2XoKcdOBB69
-         uygRcDg5kVT6S0wN/b9b52QBLYOi4KFwUzoeONBiPQ7VvQG8QFWU0vsVlHhugVm2XhL+
-         s8QdhmYcC08z8UDeywFZrPQ+RhmJgcYq9Ind+K8r4pyNowWCJL1vzYuwgwaokKFedENK
-         7SQA==
-X-Gm-Message-State: AFq9FYLq8q9XfPFrnGCLOYOojpZfXwiNVPL3t31ZviLpv2N0gJS4okld
-	YgTYjyLEay+ik+WU1eV3EEBHzD2TUwYMA4bXgK1EB5RwfTFiVt+zpPY6
-X-Gm-Gg: AYBFou3/6IENQ2r3pUyblkem7He2PZzbVCCxb86bo4lJw2wmN35ttGOjlO6WmMB1uj3
-	pJuZv8vVfQrMt9OYk4KOy0NlNapgscmK/UyVhbSb2qtO7/9i4QtOfXQRWfK8ccxTdfpKZcUzfMS
-	69fH1vfM/1UIb8Z51BOBWUp9uOnS7xFCzl2rP2/wRC6tGXUkUenm7nlMxgafuN2M/BIpnAt7gtl
-	LgEmONNut4dLue/Bgs+jDIcFIM2MoUGVtXvTOoefW/Gg8ip2NyuDvT9VZHsKbWz0AW45PPWcifV
-	UZdym/xi6COe9EoOehScsXVHTs5L0mPyxFtT39d4LXWQNRR1flB0xj/RoVLgyXNWhiqe+SCYIgY
-	RYVqfsw0UNxyM3/zxmHOAeugUH+pSGsjH7JDA2NSsxjOn5qc8u2AChL5C70botPiz9ZgO8M4wmE
-	r1jWtZyzluDmOVLUE7VkbIBscFp9Ja7iZHRbJqICrzK9KZyiBeeuzbl6wjLHu1D0lKxPVmMtE=
-X-Received: by 2002:a17:902:d50a:b0:2e6:943:39df with SMTP id d9443c01a7336-2e842bc7e0bmr68793605ad.25.1791780808097;
-        Sun, 11 Oct 2026 21:53:28 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:7ff:5b::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422b8cb6sm38358745ad.60.2026.10.11.21.53.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 21:53:27 -0700 (PDT)
-Date: Sun, 11 Oct 2026 21:53:10 -0700
-From: Narcisa Vasile <narcisav.kernel@gmail.com>
-To: Tianyi Gao <tianyi@cloudflare.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, shuah@kernel.org, toke@toke.dk,
-	lorenzo@kernel.org, hawk@kernel.org, ast@kernel.org,
-	daniel@iogearbox.net, john.fastabend@gmail.com, sdf@fomichev.me,
-	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kernel-team@cloudflare.com
-Subject: Re: [PATCH net-next] selftests: net: veth: test own ndo-xmit after
- peer GRO toggle while down
-Message-ID: <asxntk6HV+jmAlKe@gmail.com>
-References: <20261010192914.83651-1-tianyi@cloudflare.com>
+        d=1e100.net; s=20260707; t=1791781079; x=1792385879;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4r2duJGpWXQRzkludK1kNjL6OFMP61EO9Bgn2dWvRnU=;
+        b=x0NpDRmB+TmqOgeC+2rc9pIDA3eLJIPyUIHrsn4UE78RuzyKUyr29u+ejjkAXGTvlx
+         RK3mvMYFPlYHZ8Tlx1cFddpviIoD4c+iDv+eXoQSsCmnEdjkJNaBTVuTptpxhxL80S5Q
+         CnXShRwwuyKXefeECouSAjxcPpN+jswiZRMcNnWMryKb+R9lOim8TFBTDbkf0E3kyK3Y
+         J4NS3SEyz+JU519s3kj4Sp5j1ueGBEAGgq3EK5u85Z+xTXcGiTquAP8CaS03gEgivQeL
+         plVHvGcCYyyP7KY8MOOv1O7Ik2/hSPG//xKFBuVWW8TengRKk4jsfvn3TYX7GSZGqwtm
+         pRbg==
+X-Forwarded-Encrypted: i=1; AKwUvBy4GTw83ZgjgSRGe9T/dvISRL/Bzl0OJM/sw3bhh/mKBAbpMkCkr6Cl0Ffoqo8QsE/gKsus7as=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIPmeZtBCi1ZsqN2TXLne4yobyQ3JpRBe+taVqI0M9jOWP0g8yG
+	+RsrWTeKgrFuB7fl73LhER49TKb1Lz9bwKEZZi5xXB92YMk3sU39kupGrGgzkV9Q
+X-Gm-Gg: AYBFou27U+qPvUcgoAuzmG+aBato3jUgHgt72ZQ2wXKQk4M2o9grxh6bFO/fq8aRW2P
+	OElTItSoA53QMQF8yJStAjR0EkaVk3hkRwA7rgjB5BmhCsSQYc9EOCAsHYS8gZe9XDA4IvhZWrU
+	n8O6tK5nLkDkVAPMRlIHLpe/rdtj6ReGUT6YueqdbtICGyrjpxiD2U99xtSjnOFl9JmQUkDL4PX
+	6pYHBU3Pf41MzbOkhaRO3tN51e4V/MxeWrFSIHMY0uGDI2fSaa1f89I4uEu/NfpAsRd9okRc4LC
+	jSxRWStgQGTskBMnAiRYG1cUCFxTz+R7IAm0+giJ21k4S7Hw7xfBqHwAh1O1VP1o+OhT4LtrL30
+	1HAmMWnXgyuvwYlzsSpfLpKmHQy5yboJ0vrFRcCfeLbSkKC3vECR6HJDQ1uhjuecoAH3ytulVQT
+	7MuvB6dBKEKqjfI59bKdOgx9InN4e9lKwIFJNh0ooQEUWcZAwOfmv0gv2I4nJrGuQOliuHoPnjA
+	nnZrSgYLoOKDh4AWNuXg0sz+jp1Xl4e5oPl/cj73czCEFWF2se6JkZE5yDlXemURXfkZGLZc3R+
+	jxrMVShi+tqQAyUwVPncnSIZp4h2ItP5tyDt+kK4C86MSHHSKMV9/fm7GA3k5WjhZD0NcI6cqnQ
+	MXWdZSLAb/o60WBK3Z1uH3b0Y9QLQ4U/wDyB12AqcB8bz7/ra736DKFo=
+X-Received: by 2002:a05:7023:889:b0:155:4a09:a228 with SMTP id a92af1059eb24-16a5afe5e1dmr11902752c88.8.1791781078853;
+        Sun, 11 Oct 2026 21:57:58 -0700 (PDT)
+Received: from FT6N242TWK ([223.181.119.248])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1699718c547sm25367340c88.3.2026.10.11.21.57.55
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 11 Oct 2026 21:57:58 -0700 (PDT)
+From: Shashank Mohan Jain <jain.sm@gmail.com>
+To: Eric Dumazet <edumazet@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>
+Cc: Kuniyuki Iwashima <kuniyu@google.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/2] tcp: keep the route window on the SYN when SO_RCVBUF is set before connect
+Date: Mon, 12 Oct 2026 10:27:51 +0530
+Message-ID: <20261012045751.47179-1-jain.sm@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <179171754826.2527009.561712354727529429@kernel.org>
+References: <179171754826.2527009.561712354727529429@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261010192914.83651-1-tianyi@cloudflare.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 10, 2026 at 08:29:14PM +0100, Tianyi Gao wrote:
-> Test that a veth device advertises ndo-xmit when GRO is enabled on its
-> peer while both are down and only the device is brought up.
-> 
-> Commit 7a6102aa6df0 ("veth: Update XDP feature set when bringing up
-> device") made veth_open() set the flag in this case, and selftests were
-> requested in its review [1].
-> 
-> The block now ends with GRO enabled while the peer is down, so the
-> aggregation check that follows covers NAPI enabled by veth_open() again.
-> Commit c017800af5c7 ("selftests: net: veth: test peer ndo-xmit after GRO
-> toggle while down") had moved it to veth_set_features() [2].
-> 
-> Link: https://lore.kernel.org/all/155aabf8b873bb8cdcafbd6139c42b08513e5fe6.camel@redhat.com/ [1]
-> Link: https://lore.kernel.org/all/179165459278.434549.1711113374323842550@kernel.org/ [2]
-> Signed-off-by: Tianyi Gao <tianyi@cloudflare.com>
-> ---
-Reviewed-by: Narcisa Vasile <narcisav.kernel@gmail.com>
+On Sun, Oct 11, 2026, netdev-bot+sinfo@kernel.org wrote:
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>  - How the issue was discovered ...
+
+Found by manual code inspection assisted by an LLM (Claude Code, Claude
+Opus) while reviewing the networking changes that set window_clamp on
+unconnected sockets, then confirmed before posting with the packetdrill
+test included as patch 2/2 and a veth/netns reproducer. The patches
+carry an "Assisted-by: LLM" tag for that reason.
+
+Thanks,
+Shashank
