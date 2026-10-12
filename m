@@ -1,52 +1,60 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A2348F856;
-	Mon, 12 Oct 2026 14:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2C14949F1;
+	Mon, 12 Oct 2026 14:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791816143; cv=none; b=rSKeSYXJ15NPCrgR+PuF/ILgpJ3MtwoO7YVlxBOIabv6/5QKsDhf5dsP8X/rbDGaV2nE2XLhFPngb8C2SkKyQsUh+wuSHAPh/6WLl6xq5YyVOBBLwz2MrZO1m4DvOmuZU4NmzaSbF1uUlDjtT73Wp+dGIJ849ThXtFQBFRCGlCY=
+	t=1791816147; cv=none; b=nwyeefXopqbd6G9Nr9N4u4QtbcxEqqjDpCHoaGcqnpuPdPGnfO+Jn3PcXc5hXV+9i4mGILRVveYY2r0mBGaLsE+bdV12P5Kxd9ADVRI0NXa9S1wR89lDDBDV9r6JkVZzf+1iGc6xHr7We55jOXoWfJ2nF8+jVDMctGArDKcRbQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791816143; c=relaxed/simple;
-	bh=1lQvQwvjWy67EpJChMqUQ8ieh9OoI2R7zYjYkx4oYpA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iOHTORBZdHRPiQBYJAY/OZ03uNw37yk7eeiWGQ+tIhX/PWHNhd1EgjZnbwu/LGpLCDAtbv99wt+hGSeTYoYSYo/6gUJY9BIsulKXG7bjr7kV67PqlAoTZzOrAmMbDUVqXUHWMpcW2tf5mPEymBZiPJ+1DS0c6gWIOG7oiZNqWTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YG05CT7i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791816147; c=relaxed/simple;
+	bh=PVEwYHklGLWAZuFoyY81aDvq5AOiMo4HhqyvJLq9tuM=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=k4Zj2yd1drYp/x9xFhAjC4CpiEdXNOJ7qfRCNQEbD7L5G3sYT5yZE/z40Boukbb2Ui6UzCO8v0XGnnTzLywHlNq4szdtQdZqRU4Mmsn6srBd8zkHyVMFtWHt8G2p2zlhfqUDMje82x99paq8jGOxHRCgK/OODGYQ+p43Fg5mvlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=EGApePle; arc=none smtp.client-ip=203.205.221.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YG05CT7i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D0D1F0089C;
-	Mon, 12 Oct 2026 14:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791816141;
-	bh=9kkg6vVzXjctboclnlhLJzLnBK/wncsMNmzmF3tNzJ0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YG05CT7iL2YX+wrgdCg1eZO6LYDiLbUSmtURE6Ohc8zpBoUW2ZlltePUA8ohqtOm7
-	 oBrSy92Eny4V0Ek1C8qTvWX1vfjqLDPIktbADAsCvtOhbA9vf1UEV/CB6brCuVX7KR
-	 Pa+y4JxKUZqjMPSUHeboYdJcAnPJyN1hcIt0n57bTgA6c+ZqpHFxu75lqgStdV3rnN
-	 wXc5gIPNdIM3SvJXdqQO/M3WpFpY7ViGr5lMzH/nHvK2VIuWtv4+aNVlzheh8V5DZl
-	 VvZtj9eJuf+NHF9ctQgeCQTEEgmZJktJietnmyEM49snP1GA5wn4jxnwO5H8TPs7RF
-	 L/wdxxGUQIDqQ==
-Subject:
- Re: [PATCH net-next 10/10] net/mlx5e: Enable the data direct netdev feature
-From: netdev-bot+sashiko@kernel.org
-To: tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- bobbyeshleman@meta.com, byungchul@sk.com, cjubran@nvidia.com,
- cratiu@nvidia.com, dtatulea@nvidia.com, gal@nvidia.com,
- Jacob.e.keller@intel.com, kees@kernel.org, leon@kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
- mfleming@cloudflare.com, almasrymina@google.com, razor@blackwall.org,
- saeedm@nvidia.com, shivajikant@google.com, horms@kernel.org, sdf@fomichev.me,
- sdf.kernel@gmail.com, witu@nvidia.com, yuehaibing@huawei.com,
- bobbyeshleman@gmail.com
-Date: Mon, 12 Oct 2026 14:42:19 +0000
-Message-ID: <179181613986.434549.15185486433326152669@kernel.org>
-In-Reply-To: <20261008132815.654147-11-tariqt@nvidia.com>
-References: <20261008132815.654147-11-tariqt@nvidia.com>
-X-sashiko-severity: High
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="EGApePle"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1791816141; bh=2VEm7q/HIkYpzW+SEVecgzfCZuKc+GEETju1hsbGD/E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EGApePle6AyqmyUiLLqjhLwJqVCYtEWYIgf6kZJ/3J7FH5d45Ojeu0L9NNAFb9uY+
+	 T9VJRT6eMbOchquJ20aaZXCX4GnQVkWROTULTHfhXRavwFtW4JYxb6ZXydJs5rTwTt
+	 iESlTbcbYikeKMPCoD7EORnf7aPVd0Zz2zdZA50s=
+Received: from chichu-arch.localdomain ([27.38.246.181])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id A940E078; Mon, 12 Oct 2026 22:42:20 +0800
+X-QQ-mid: xmsmtpt1791816140t9znfmw8p
+Message-ID: <tencent_BDAFB5F66ABB48BD69F6E3DA67A99678E50A@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLke0xbi5hjiZejB50zyzEvmbVAoVlJD/lOrGpUxNXa8XwRYjFrE
+	 DjecvH61Xx8HObzJxVWVW4t0guYgIp+UESZLUqBKGt/9V4ie+4Rd9EbFp+ScSGdNkaVGDY9vU1YX
+	 J8frPl/rCxmSePE2REL1lYGZ2d5Mwwz3iKYcCeCyQHCLlvTzfYaSj9C5sOYN7yHZNwSpTcNqes+Z
+	 pM4fQPWcA+P3IcJ/D6wW32qEnAPqPIO1Z+g8anv9inaYgG6lTRj4iBmJKe8t0cgnTkb5mEbA6t1S
+	 MIEPzj4ZGYusTAUOLiqotzuIyL7/qjxKL2ZktXH7XOzBDPMxT67R5mJnGimzezqf04jUa39dLf9r
+	 btRl1Md3ftvQ7nqZtrQKQBTeQaURlh2nDwK4Dw1nzD7CjEsg8Qw5QTJQdbITzu68yGVRzkXw2TP/
+	 kKIOVceiGds3JcN3nXN1rigO48dD8sIKKQnxjlX7yVQ006tJ+KeJ09rEOHzCYgzBUooQQole0X/9
+	 0yxRsWGDOwzD6rssCgmYG5KvWLfOQk4EbjSVFfZCj9Yd615m1+OJlNaAQ9dUXUU7oWf7zY771bCn
+	 UanwfAHCPlTUOnUR7W3YzT3OnAopQ+UC4fhE7V/197xXnKsNkgxwr2s/7acZgTxeOzsyoNPLQU7r
+	 nkwze3yIRaGOfky/sqHKB2ORKmojofQ9xdW+oFY1PckC/KVP97J6VOMsGYO9oyjAZ6rPWRKHSvJG
+	 9ibju5WxaJW7XN3rOwfN1RXVZ2qTMhPWgaC96g/PAnImCiOE/ZX6hexibBWx9gaHfouIcFb1qqNE
+	 4EHPTlxO1B2+Z13+MXMdI+iixRbS8i2c8lOBQ2ImOINSasqQUoQJsPm320D30fnx/91sVBuUin6U
+	 BmoZFQpGclPKqfI+x8Tb+jWR2RUXwD3o3R2JmCGycvGpvUjxEo7OGIuanJX2Sg9o84oyT8w8eHwO
+	 uYYFnxxb2onXRO3g3s7a+4rrfCdwDfDj7aczN0KndWSGSba56pP5cYHCc9mq1y8DLRWTx13m4eZx
+	 TY2agcUukZoJeAqJgOWZF74ker2MpHLagmiUF3D+LFoDxt/UCy20SwXgb28Hw=
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+From: TangYi <1914018426@qq.com>
+To: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org, johannes@sipsolutions.net, 1914018426@qq.com
+Subject: Re: [PATCH] wifi: cfg80211: allow IR on a channel the wiphy already
+ operates on
+Date: Mon, 12 Oct 2026 22:42:20 +0800
+X-OQ-MSGID: <179181614019.1582433.13387085985919889800@qq.com>
+In-Reply-To: <0361e4f89508eaf9fea291d949e4eb21f8d6e839.camel@sipsolutions.net>
+References: <tencent_2B956CE56BB4DE6A4748896922E04666FD0A@qq.com>
+ <0361e4f89508eaf9fea291d949e4eb21f8d6e839.camel@sipsolutions.net>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,203 +62,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
+Hello,
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
+First of all, apologies for the broken threading in my previous reply,
+and thank you for the patient guidance. The cause is now found: the
+SMTP relay (QQ mail) rewrites Message-Ids in transit, and git
+send-email generated its own threading headers on top, so my references
+pointed at ids that never existed on the list. This reply is threaded
+against the ids as recorded on lore/patchwork.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+On the substance, I'd like to make sure I understand correctly, and I
+truly appreciate the correction. The concrete observation that led to
+the patch:
 
-- [High] set_pflag_data_direct()
-  (drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c:2431) is meant…
-- [High] Before this commit, set_pflag_data_direct() always returned
-  -EOPNOTSUPP, so the body of mlx5e_data_direct_event() never ran.
-- [Medium] This commit makes mlx5e_data_direct_event() reachable, and
-  that handler throws away the return value of…
+ - after the station associates on ch149, the learned domain (iw reg
+   get, phy section) marks 5735-5775 MHz as IR-CONCURRENT;
 
---
+ - the channel itself (iw phy) shows plain "no IR" without the
+   IR_CONCURRENT flag;
 
-net/mlx5e: Enable the data direct netdev feature
+ - and the iwlwifi source contains no IR_CONCURRENT handling at all.
 
-This commit adds the setter for the mlx5e data_direct private flag, which
-turns the data direct feature on. It also refuses to change the flag while
-dmabufs are bound to the netdev.
+So the domain rules and the per-channel flags disagree, and the
+reg_can_beacon relaxation cannot trigger (it requires the channel
+flag). If this is worth addressing at all, I would be glad to learn
+where the right place is - e.g. the driver propagating the domain's
+IR_CONCURRENT rule onto the channel flags - or whether AP operation on
+such channels is simply not intended until the device properly learns
+a regulatory domain. Any pointer would be greatly appreciated, and I
+am happy to do the work on the driver side if that's where it belongs.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> index b3eced1dd43fd..8ab1150ce3f20 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+Thank you again for your time.
 
-[ ... ]
+Best regards,
+TangYi
 
-> @@ -2402,7 +2403,40 @@ static int set_pflag_tx_port_ts(struct net_device *netdev, bool enable)
->  
->  static int set_pflag_data_direct(struct net_device *netdev, bool enable)
->  {
-> -	return -EOPNOTSUPP;
-> +	struct mlx5e_priv *priv = netdev_priv(netdev);
-> +	struct mlx5_core_dev *mdev = priv->mdev;
-> +	struct mlx5e_params new_params;
-> +
-
-[ ... ]
-
-> +	/* Changing the flag reopens the channels with a different DMA device,
-> +	 * which would break any dmabuf currently bound to this netdev.
-> +	 */
-> +	if (netdev_has_dmabuf_binding(netdev, NULL)) {
-> +		netdev_err(netdev, "Can't change data_direct while dmabufs are bound\n");
-> +		return -EBUSY;
-> +	}
-
-[Severity: High]
-Does this check catch every memory provider that can be installed on an
-mlx5 RX queue?
-
-netdev_has_dmabuf_binding() only walks net_devmem_live_bindings and
-matches on binding->dev:
-
-net/core/devmem.c:netdev_has_dmabuf_binding() {
-    ...
-	list_for_each_entry(binding, &net_devmem_live_bindings, live_list) {
-		if (dev == READ_ONCE(binding->dev) &&
-		    (!dma_dev || binding->attachment->dev == dma_dev)) {
-    ...
-}
-
-This seems to miss two cases.
-
-The first is a devmem RX binding made through a leased queue. In
-netdev_nl_bind_rx_doit(), net_devmem_bind_dmabuf() is called with the
-leasee netdev, so binding->dev is the virtual device. The dma_dev still
-comes from mlx5e_queue_get_dma_dev() through the lease, and
-netif_mp_open_rxq() installs the provider on the physical mlx5 rxq.
-
-The second is io_uring zcrx. zcrx_register_netdev() does:
-
-	ifq->dev = netdev_queue_get_dma_dev(ifq->netdev, if_rxq, NETDEV_QUEUE_TYPE_RX);
-
-It then maps its area for that device and installs io_uring_pp_zc_ops
-with netif_mp_open_rxq(). It never adds anything to
-net_devmem_live_bindings.
-
-In both cases the flag change is accepted and mlx5e_safe_switch_params()
-reopens the channels. mlx5e_open_channel() then does:
-
-	data_direct = MLX5E_GET_PFLAG(params, MLX5E_PFLAG_DATA_DIRECT) &&
-		      netif_rxq_has_unreadable_mp(netdev, ix);
-
-That is true for any unreadable provider, so the RQ switches between the
-PF MTT UMR mkey and the data direct KSM crossing mkey. The page pool
-netmems still hold IOVAs mapped for the old DMA device, and
-mlx5e_alloc_rx_mpwqe() writes them into the KSM/MTT entries:
-
-	if (test_bit(MLX5E_RQ_STATE_DATA_DIRECT, &rq->state))
-		umr_wqe->inline_ksms[i] = (struct mlx5_ksm) {
-			.key = rq->mpwqe.ksm_child_mkey_be,
-			.va  = cpu_to_be64(addr),
-
-Could the NIC then DMA to IOVAs resolved through the other function's
-IOMMU domain? That would mean IOMMU faults, or writes into unrelated pages
-if the same IOVA happens to be mapped there.
-
-The commit message says "Do not allow state changes while dmabufs are
-still bound to the netdev". Should the setter also refuse the change when
-any RX queue has a memory provider installed? One way would be to check
-netif_rxq_has_unreadable_mp() for each queue below real_num_rx_queues.
-
-> +
-> +	new_params = priv->channels.params;
-> +	MLX5E_SET_PFLAG(&new_params, MLX5E_PFLAG_DATA_DIRECT, enable);
-> +
-> +	return mlx5e_safe_switch_params(priv, &new_params, NULL, NULL, true);
-
-[Severity: High]
-Before this patch, set_pflag_data_direct() always returned -EOPNOTSUPP,
-so the body of mlx5e_data_direct_event() never ran. Now that the flag can
-be set, what keeps the dmabuf invariant when the data direct PCI function
-unbinds?
-
-While the flag is set, mlx5e_queue_get_dma_dev() returns the data direct
-device:
-
-	dd_dev = mlx5_data_direct_get_dev(mdev->data_direct);
-	if (dd_dev)
-		pdev = &dd_dev->pdev->dev;
-
-So devmem bindings and zcrx areas created during that time are attached
-to, and mapped for, the data direct function.
-
-On sysfs unbind or hot-unplug the call chain is:
-
-mlx5_data_direct_remove()
-  mlx5_data_direct_dev_unreg()
-    mlx5_data_direct_do_unbind()
-      mlx5e_data_direct_event()
-        mlx5e_safe_switch_params()
-
-mlx5e_data_direct_event() clears the flag and reopens the channels. It
-does not call netdev_has_dmabuf_binding() or
-netif_rxq_has_unreadable_mp(), and it does not revoke anything:
-
-	MLX5E_SET_PFLAG(&new_params, MLX5E_PFLAG_DATA_DIRECT, false);
-	mlx5e_safe_switch_params(priv, &new_params, NULL, NULL, true);
-
-rxq->mp_params is left in place. Would the recreated PF RQs keep posting
-net_iovs whose DMA addresses come from the data direct function's IOMMU
-domain?
-
-After the notifier returns, mlx5_data_direct_remove() continues with:
-
-	mlx5_data_direct_dev_unreg(dev);
-	pci_disable_device(pdev);
-	kfree(dev->vuid);
-	kfree(dev);
-
-It does not wait for the outstanding attachments. Later, the deferred
-__net_devmem_dmabuf_binding_free() calls
-dma_buf_unmap_attachment_unlocked() on an attachment whose device is the
-removed function.
-
-An earlier commit in this series, "net/mlx5e: Recreate netdev channels on
-data direct device unbind", acknowledges the IOMMU faults and says a
-devmem revoke hook is needed. No later commit in the series adds one.
-Should the flag stay disabled until that revoke path exists?
-
-[Severity: Medium]
-This patch also makes the error handling in mlx5e_data_direct_event()
-reachable. The handler ignores the return value of
-mlx5e_safe_switch_params() and returns NOTIFY_OK:
-
-	mlx5e_safe_switch_params(priv, &new_params, NULL, NULL, true);
-	netdev_info(priv->netdev,
-		    "data_direct device unbound, disabled data_direct\n");
-
-Suppose the interface is open and mlx5e_safe_switch_params() fails in
-kzalloc_obj() or mlx5e_open_channels(). priv->channels is then left
-unchanged. MLX5E_PFLAG_DATA_DIRECT stays set, and the old RQs/SQs keep
-their data direct state, their KSM crossing mkeys and their page pools
-mapped for the data direct device.
-
-mlx5_data_direct_remove() then goes on to pci_disable_device() and
-kfree(dev). Would the live queues still be routing DMA through a disabled
-PCI function at that point?
-
-mlx5_data_direct_do_unbind() has also already done:
-
-	WRITE_ONCE(reg->dd.dev, NULL);
-
-Because the flag is stale, mlx5e_queue_get_dma_dev() still takes the data
-direct branch. It returns NULL instead of falling back to ch->pdev, so new
-zero-copy bindings would fail until someone clears the flag by hand.
-
-On this forced path, should a failure take the affected channels down, or
-otherwise make sure the data direct path is gone, before PCI teardown
-continues?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008132815.654147-1-tariqt%40nvidia.com
