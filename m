@@ -1,150 +1,176 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F18F39478D;
-	Mon, 12 Oct 2026 21:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9664B4DA9C3
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 21:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791839059; cv=none; b=HYaAPUxVv0pMIgGqxcJZX5Kzzl0b4LREPR2GMo4b30XwZzogx6qt6GwV6ZTXs870seR+e/c/8niS1197mmW9WDaOr42J5SCOtzhK8abL4GigGMFfh0/xW4we6Gj57EHmEqwRgEFCoGP8gsRTrU+aqHh+SAlgKxj/1trssWylZoA=
+	t=1791839291; cv=none; b=pmzsNtGMd9QVqUWtyZMJ0aqA0hdyuGCO08DDs+l2rHBAFYgaZ2qde/a9iv56xvgdDcskSCCqERYtG4hcCXsn1XU3Rvq7C2BN5R0s7Q2dKf5DqvtU57GeG1o+DM86uK+2yp1xsaDgA+W0i2BBD2vcH12zWjgQ+4DvKh2/GOQCHDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791839059; c=relaxed/simple;
-	bh=BGk7NAr2tTPjGgJaR62RozGUhRW+14yYSRcXHRoh4U8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=lNotmWSpgLkW0AEPgdGTJ+Uqmre7ng9OQnXXI5b/tzpSY0OEX0Fbu9kJ5i5Lj/u+3FgocJa4mWQTnb39zzObwsOQNqDp6jYcerI1cBZ+lcVcEHbtp9u+xK4c2Me9tBgtl08Jb9NVl2AyEPTykegmr8L1i6YWCag+XRDiU9C23/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=k9r/oLnD; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1791839291; c=relaxed/simple;
+	bh=jsl71V5FtC06/50t0daXqqjNV/VyEyXzqcTiVIacV2Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cH5wLmtlHFAB1H66SuhScclaT/cdVmxokG87l9Mcj+M2dgyPpIFeb8Yi6Br9tNzKgMsj3PCCl3PfmaEpSUsI1xMPrnlU+W0Mh/li6fyCnrzGG8VtL42oAodPE/m11fm6PZOpWWZWAII2my3KCxh1fRhtq2wOGQbvhnTe5u3irgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G9j1vyDX; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="k9r/oLnD"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D0919A1310;
-	Mon, 12 Oct 2026 23:04:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791839054; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ATDlnVkVpmBsbQi4Z42Xo1+upTwPMCBzGpQyazaRSrc=;
-	b=k9r/oLnDGvjr3FmAMuH3CPaV+y2P+c3qben785WrqLhJh6pNaTakZQNJ2ky9wt6Fs+bsOj
-	3WSgg2NAc5OKhJX23eXNt1jiABziDNN2fCCMwcKeqME3fBwIqAJt440qMlGsOU+rpzeAH7
-	72lLMvjBBi1UQli8/iGnDKkwSWxF9EaTsEf90YetDK4Z4v07vpGCsTx0cIggwISc/JSVRH
-	IYn3lkSC16pe8NfQCQ5/N024S+AMypBUpNCWml7VEbP06nEbjB/JCOittk0yd1IxPN9CZb
-	CeNkg8TM8nk2zYFMHSgeS3CamxRvBPKWzjCjMl6V2M/99r7QGb8ry4VxOKAINA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G9j1vyDX"
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5d7daf06158so779143e0c.3
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:08:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791839288; x=1792444088; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Uap5kT9XS9XvCOY+jEh6of0VhCK5p2hjX0LTl9bySnk=;
+        b=G9j1vyDXOEc4fLsnZ7c8uHPDNTk0igRuOWOel8qlsl4E8qvej4t9DpSKroMjgspDGc
+         JDnjNWMh3KXZ+TUGw+VlYLUcBV+AqR+JsL/vDK83YQP5VDpVsBmlhsiuwUmkC9+UFiBi
+         qV1NK94k/IYYn2BmdtISu4Glt/5ftws2ZsaDFnrKM4JO2PS61y3Va69+Puh87VpUyI40
+         XNhm7UoJwWaeXINH3v1yinoi0M53iWNtvuzIO/4j8TqQEKIfwFvEF5BYopUE2D0gT2EN
+         5Fdqs//LahvRinYwGTR6mQmtnUyIG1TC/jZ3dcwiDSTRy9dKw3TAmANyQQtzrx6Wm29B
+         OE0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791839288; x=1792444088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Uap5kT9XS9XvCOY+jEh6of0VhCK5p2hjX0LTl9bySnk=;
+        b=dzhyX80+wUuzhW2hXXixE3uWdG9zbD5ggCt7TWTOKNjDW3gCpv97Gv4zCscOhomsNd
+         FYstwulaS5bOHlRGoZrdTJx7dOxUCJOgHLAWmRSLO9FUi3hvDvWBGDj4msjlpLfWQBuS
+         CdcPAJUcJWSpKFR+JjUUaSbrL/jm4UtUzzMYaG4nvLuTj1r7JEjykbvzEpb5sHpXNzjq
+         SYxU90u1aEKgh/Agu93/Lp6bQ7SpIMuekx85Y4xoiFuo5fnVCiivB0+HTtUeu37QH5mj
+         4Puoc1fIFPUqLydor+uafnu4yafwVIHzN5x9Khw/2smdNdzrZik2+Dyzh4xta893Kbl2
+         4szw==
+X-Forwarded-Encrypted: i=1; AKwUvBzFAp2J8DR3kfkH0WyeKxP7cL+P5BNIYV8R1MQmqsXHbqIC4B3QpY4Fcgou+YW7Ui89ffwwRJc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLlTVVubCQoLEb2K+TGVI3l3cQ7DQ4BHPBNyKCLUvqISj2jnQiV
+	v2xnA1SAeZACpucYiDcQfPdvKC3eBZEmTUppGzASJ2qNUkGrIrmDtDoupikYKw==
+X-Gm-Gg: AYBFou1MFumt7Cdoe818WH8w85VpndxLUdCQZN+HBhNjY2+jxsSfkpyM2vAi3O5kL76
+	4JEGQ1VwgGibqrCf4H//k1jDGwY2Cb3cjkrKI8SO+c8hhYMC0Y5dO91N+GveF5EJeStyU4x/MaY
+	UD1+V/GV86yKFOANN9Sq+fVN7LAzfk35VJOBCZisCPFWzrn8OU/x4OvVnqeCMEGp6ZGC0nH0LCH
+	Q9cnNL1BTpjbEs9RvbgVJ2YoO2LSGsW/DYLBoEohqAPeL8pHgUXfvPh1HhsP3TI+dPJp3u93POi
+	iFrMTxuNCeEH4uTQSGizGKO2YNCpsW96LvL74OlEDC+fr0FOePq/siioFT7QvFT7ju5j0fi3z1F
+	aFoxDnCYArZaHaSiTrNuLoAd/GRcTPpXkTch/WHkvt9TdxzHlsbTnGOoCRzMH2g3XjxZqU3O7ix
+	1OVyc+wx7h603FwkzTNqiVA/tsjT5puXI4S+ipM051p1mtElZJapdfFSXmlczPcLZzq7NQyY4G6
+	K3rmCgZw3fD6jRYaPYPx54EOqwyS6g2XpuBp+M/i5kiukJSl+fV+C+hwY89NgMv
+X-Received: by 2002:a05:6102:5114:b0:7a7:195a:1b29 with SMTP id ada2fe7eead31-7cb375057ebmr2406907137.35.1791839288359;
+        Mon, 12 Oct 2026 14:08:08 -0700 (PDT)
+Received: from lvondent-mobl5 ([72.188.211.115])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7cb354016d6sm7389871137.8.2026.10.12.14.08.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 14:08:07 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [GIT PULL] bluetooth 2026-10-12
+Date: Mon, 12 Oct 2026 17:07:58 -0400
+Message-ID: <20261012210758.275556-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 12 Oct 2026 23:04:11 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
- <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
- Fomichev <sdf@fomichev.me>, Jose Abreu <Jose.Abreu@synopsys.com>, Ong Boon
- Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v6 3/4] net: stmmac: drop multi-buffer frames in
- XDP mode
-In-Reply-To: <20261012-stmmac-rx-mb-v6-3-2225050915c1@oss.qualcomm.com>
-References: <20261012-stmmac-rx-mb-v6-0-2225050915c1@oss.qualcomm.com>
- <20261012-stmmac-rx-mb-v6-3-2225050915c1@oss.qualcomm.com>
-Message-ID: <b11af7d5d430dcddcc681484b50ae7e2@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-Hi Lorenzo
+The following changes since commit e32d80293a0e1a160d5e5101daa8c82148c07510:
 
-On 12.10.2026 18:44, Lorenzo Bianconi wrote:
-> stmmac_rx() runs the XDP program once per descriptor buffer and uses
-> skb == NULL as the only marker for the start of a frame. A frame larger
-> than one buffer is split by the hardware across several descriptors;
-> GMAC4 enables jumbo frames unconditionally (GMAC_CONFIG_JE in
-> GMAC_CORE_INIT), so an on-link peer can deliver such a frame even when
-> the interface MTU is left at 1500.
-> 
-> When an XDP verdict ends a non-last descriptor, skb is cleared and the
-> next descriptor of the same hardware frame is parsed as a new frame.
-> For XDP_CONSUMED this happens via read_again with len preserved, so
-> stmmac_rx_buf1_len() then returns min(dma_buf_sz, plen - len) for the
-> last descriptor, which can be as small as 0-3 bytes. buf1_len -=
-> ETH_FCS_LEN underflows and xdp_prepare_buff() puts data_end far past
-> data; on XDP_PASS this produces an skb whose length is close to 4G that
-> reaches the network stack (skb->tail and skb->len are 32-bit and wrap
-> below skb->end, so skb_over_panic() does not fire). A 4+ byte tail is
-> instead offered to the XDP program and delivered as a standalone
-> mid-payload Ethernet frame on XDP_PASS. XDP_TX/XDP_REDIRECT instead
-> falls through to the next iteration, resetting the running length, so
-> the tail is re-parsed as a full-size new frame.
-> 
-> XDP does not support scatter-gather frames until the multi-buffer
-> rework, so drop the whole frame instead: mark it as errored as soon as
-> a non-last descriptor is seen while an XDP program is attached, drain
-> and release every descriptor - including the last - and account the
-> frame once in rx_dropped. Removing the re-parse lets both XDP verdict
-> branches simply complete the packet via next.
-> 
-> Note: the subsequent "net: stmmac: rework stmmac_rx to support XDP rx
-> multi-buff" accumulates the whole frame into a single xdp_buff and
-> supersedes this patch; the fix is kept so the net portion of the series
-> stands on its own.
-> 
-> Fixes: 5fabb01207a2 ("net: stmmac: Add initial XDP support")
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 28 
-> ++++++++++-------------
->  1 file changed, 12 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c 
-> b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 426bb68c9bbc..8c08d44fdbd3 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5893,18 +5893,24 @@ static int stmmac_rx(struct stmmac_priv *priv, 
-> int limit, u32 queue)
-> 
->  		if (priv->extend_desc)
->  			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx + 
-> entry);
-> -		if (unlikely(status == discard_frame)) {
-> -			page_pool_put_page(rx_q->page_pool, buf->page, 0, true);
-> -			buf->page = NULL;
-> +
-> +		if (unlikely(!error && status == discard_frame)) {
->  			error = 1;
->  			if (!priv->hwts_rx_en)
->  				rx_errors++;
->  		}
-> 
-> -		if (unlikely(error && (status & rx_not_ls)))
-> -			goto read_again;
-> +		/* We do not support SG in XDP mode */
-> +		if (unlikely(!error && (status & rx_not_ls) &&
-> +			     stmmac_xdp_is_enabled(priv))) {
-> +			rx_dropped++;
-> +			error = 1;
-> +		}
+  Bluetooth: ISO: Serialize concurrent connect calls (2026-10-05 13:10:47 -0400)
 
-AFAIU GMAC4 and XGMAC always use the second buffer of a descriptor. If
-so, at MTU 1500 a frame of up to 3072 bytes can fit in one descriptor,
-and this check would not catch it?
+are available in the Git repository at:
 
-The XDP program would then only see the first buffer. With XDP_TX the
-frame is cut and sent too short. With XDP_PASS the second buffer is 
-added
-after the program already decided.
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-10-12
 
-Patch 4 fixes this. But if this patch should work on its own, should it
-also drop the frame when buf2_len is not zero? Or am I missing
-something?
+for you to fetch changes up to 23ad91f6a21a830b67f5eee790caa0053bd6537d:
 
-> [...]
+  Bluetooth: MSFT: Serialize handle map cleanup with event processing (2026-10-12 16:27:16 -0400)
 
-Thanks,
-Nicolai
+----------------------------------------------------------------
+bluetooth pull request for net:
+
+Core:
+
+ - hci_core: Keep RCU protection through LTK filtering
+ - hci_sync: Serialize devcoredump reset during device open
+ - hci_sync: Protect IRK identity reads with RCU
+ - hci_sync: fix mesh adv timeout units
+ - hci_debugfs: Pin module for debugfs file operations
+ - L2CAP: Hold the listener while notifying child teardown
+ - ISO: Hold the listener during disconnect notification
+ - MGMT: Reject quality report requests during unregister
+ - MGMT: Fix advertising instances with Global Advertising
+ - MGMT: Fix pending state of instances added without HCI traffic
+ - MGMT: Fix leaking instance on Add Extended Advertising Parameters
+ - MGMT: Allow connection rate request as peripheral
+ - selftest: Pin module for selftest debugfs file operations
+ - 6lowpan: Pin module for 6lowpan_control debugfs file
+ - 6LoWPAN: Use RCU-safe device list removal
+ - 6lowpan: Drain RCU readers on registration failure
+ - msft: Lock failed probe cleanup against feature readers
+ - MSFT: Serialize handle map cleanup with event processing
+ - Add missing newline to bt_dev_{err,warn}_ratelimited()
+ - Fix tracking of instances sharing handle 0x00
+
+Drivers:
+
+ - btintel: Zero version data before parsing TLVs
+ - btmtk: fix skb double free on ISO padding failure
+ - hci_vhci: Pin module for debugfs file operations
+
+----------------------------------------------------------------
+Bui Viet Dung (4):
+      Bluetooth: 6lowpan: Pin module for 6lowpan_control debugfs file
+      Bluetooth: hci_debugfs: Pin module for debugfs file operations
+      Bluetooth: hci_vhci: Pin module for debugfs file operations
+      Bluetooth: selftest: Pin module for selftest debugfs file operations
+
+Cen Zhang (10):
+      Bluetooth: 6LoWPAN: Use RCU-safe device list removal
+      Bluetooth: hci_core: Keep RCU protection through LTK filtering
+      Bluetooth: hci_sync: Serialize devcoredump reset during device open
+      Bluetooth: ISO: Hold the listener during disconnect notification
+      Bluetooth: MGMT: Reject quality report requests during unregister
+      Bluetooth: msft: Lock failed probe cleanup against feature readers
+      Bluetooth: 6lowpan: Drain RCU readers on registration failure
+      Bluetooth: hci_sync: Protect IRK identity reads with RCU
+      Bluetooth: L2CAP: Hold the listener while notifying child teardown
+      Bluetooth: MSFT: Serialize handle map cleanup with event processing
+
+Eric Dumazet (1):
+      Bluetooth: btmtk: fix skb double free on ISO padding failure
+
+Hitalo Souza (1):
+      Bluetooth: Add missing newline to bt_dev_{err,warn}_ratelimited()
+
+Kiran K (1):
+      Bluetooth: btintel: Zero version data before parsing TLVs
+
+Luiz Augusto von Dentz (5):
+      Bluetooth: MGMT: Fix advertising instances with Global Advertising
+      Bluetooth: HCI: Fix tracking of instances sharing handle 0x00
+      Bluetooth: MGMT: Fix pending state of instances added without HCI traffic
+      Bluetooth: MGMT: Fix leaking instance on Add Extended Advertising Parameters
+      Bluetooth: MGMT: Allow connection rate request as peripheral
+
+Pauli Virtanen (1):
+      Bluetooth: hci_sync: fix mesh adv timeout units
+
+ drivers/bluetooth/btintel.c       |   1 +
+ drivers/bluetooth/btmtk.c         |   8 +--
+ drivers/bluetooth/hci_vhci.c      |   4 ++
+ drivers/bluetooth/virtio_bt.c     |   4 +-
+ include/net/bluetooth/bluetooth.h |   4 +-
+ include/net/bluetooth/hci_sync.h  |   1 +
+ net/bluetooth/6lowpan.c           |   4 +-
+ net/bluetooth/hci_core.c          |   4 +-
+ net/bluetooth/hci_debugfs.c       |   9 +++
+ net/bluetooth/hci_event.c         |  58 ++++++++++++++----
+ net/bluetooth/hci_sync.c          |  53 +++++++++++++++--
+ net/bluetooth/iso.c               |   3 +
+ net/bluetooth/l2cap_sock.c        |   6 ++
+ net/bluetooth/mgmt.c              | 122 ++++++++++++++++++++++++++++++++------
+ net/bluetooth/msft.c              |   6 ++
+ net/bluetooth/selftest.c          |   1 +
+ net/bluetooth/smp.c               |   1 +
+ 17 files changed, 241 insertions(+), 48 deletions(-)
