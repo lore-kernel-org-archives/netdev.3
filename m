@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5547492E55;
-	Mon, 12 Oct 2026 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C580549362B;
+	Mon, 12 Oct 2026 13:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791810222; cv=none; b=OntBhNpLN0eK0nnj8DSOY92kkqA1NPIodNWemwaNDshCB2ZWvyXxMlzoz0itOIUXLaRefEYmKQZSrAkMAoJaTTLkmKNKoXERJaevc5+lur3yJ3VfhNy1/HXFRrc67DHJfkeZocIEj34k1/+TUbWmV6t6VI7Za0ftpgTXeXp2560=
+	t=1791810223; cv=none; b=eu6VY17B5dF/Kov1cCvEundNSQiUoawRqXDr4dO/1bXVNtwqXSTQnuV55Z6FQpHpsdz4iWe1twWUpz/dUXPmtbjpq0MYNkHM1tRhnq0/mpdYttKRuTpYfb9IepBQ1zjNY/3KKGqZfFRDa5HZ+dyM6lhtymc+tnVZVX86Y3LU+6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791810222; c=relaxed/simple;
-	bh=cvbfgS5g+7JPRPJCscUOGp885XiFHsQ+KJlNe9yeZmU=;
+	s=arc-20240116; t=1791810223; c=relaxed/simple;
+	bh=Fy6EQ1hvo1qkHMUSGHPTavf8NwgB9mnbk+GClbMxdOI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UDpLa2cSxXzj2m3KtlJ9hJvS/gRnbNfy5oQfFQLvzDMOp1860Fa8wXZoAop9SXFAekBvF6s/aE8mgSXBmAEYUJiVHlc42v8zlCsuJry26QU56M6BDz6yAdmJujWu7UGpjyMCITaZq3XeoKymOurjMPLwxq/roFm0NuBm8sc8A70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MxDo/WJV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=fGbOQYTSUE/N2nWMFofieOruuQbLcIy7LIye+b8Q71R2yn77wzjWSQVpe83xagTWT6h7qQcRu6MGHryTdUkfCVomB5JgnSSL9bv3+V2/tRUO5D2gkrxkVRjBD1IfT4XAs6OyHoehmm8gJZmefbls2/ZMQYGlshoP2yPngGFx1Ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fvKAgha3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MxDo/WJV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760F21F0089B;
-	Mon, 12 Oct 2026 13:03:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvKAgha3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340E11F0089C;
+	Mon, 12 Oct 2026 13:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791810220;
-	bh=3XqSrKCa84e+HqE5gbWTI47m1f8S2aJtTZICNp1fLtM=;
+	s=k20260515; t=1791810222;
+	bh=f6inhc7CPFDGcYJa2C4KqUDQQZ32edNwZz4wJcTeMkk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MxDo/WJVaR18b7UeYusUJyFBi0tkEDHSETEpw45jChK6GziwcjjhWjkqmr15dDzDp
-	 5MenHo/eqihjaUgRbRNr8ZBfvo5nKZdXGiWPUj8NFnQ/bfYPE1ssOynr0P45qjMJ0q
-	 4WfPa3yVH+m2zq53utlvrvaSYa+f+6xMRJWNQZWwW9DcGr3+1WR0bRlXTKyHdsLhmr
-	 hyUGfvduv+89HVNsFO9uiWJjEUWaEzFZTULqYyzgRpCUJmWvAx3oEMRG0hFBhthP57
-	 nGBnK1IBWiMQJSV71tdWPsO6slmartlKL1uCKX+MMhHc0S7QsUbK7cHl+e9MDh5K2S
-	 WKY4/PIMYLgRw==
-Subject: Re: [PATCH net-next v2 07/11] net: ethernet: qualcomm: ppe: Add
- IPQ5424 QM configuration
+	b=fvKAgha3DHVf7LA0KXBT0gQiYllV4XVt/Uhpp3Zd/ONdvDoz1TFS/EOAXzFBRA0rg
+	 nvYbaDDxqWOAnwibrmUycs3RiLg0doG9PpWyVrsDbWeWQLmT8/eFY2fTOKp+5lPyjc
+	 JIKnsR0Yx+KAr5XGx2ZeTjBgxpiWaMJzmRI71IffeZvUtYAiBqCv/+kBIQpMaA4Sd1
+	 K0QdrGtcKNkqn3Pv5drF18ZTLzmpsvQBIgwvo3UsbE1hXcJScX9IrohnzXB7ngkoWk
+	 ZqVQGOPrjSrj9vFrEPR7qJjh3P8jsaFv2zVF6CagIq3Rh8waX0G4pOSw8Ha5oo5SB7
+	 tTk1L71rj/aQw==
+Subject: Re: [PATCH net-next v2 10/11] net: ethernet: qualcomm: ppe: Add
+ IPQ5424 service code configuration
 From: netdev-bot+sashiko@kernel.org
 To: jie.luo@oss.qualcomm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
@@ -38,10 +38,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  quic_kkumarcs@quicinc.com, quic_linchen@quicinc.com
-Date: Mon, 12 Oct 2026 13:03:39 +0000
-Message-ID: <179181021906.434549.13205983754847009473@kernel.org>
-In-Reply-To: <20261011-qcom_ipq5424_ppe-v2-7-8c7b057e2c43@oss.qualcomm.com>
-References: <20261011-qcom_ipq5424_ppe-v2-7-8c7b057e2c43@oss.qualcomm.com>
+Date: Mon, 12 Oct 2026 13:03:40 +0000
+Message-ID: <179181022076.434549.16206547099593179570@kernel.org>
+In-Reply-To: <20261011-qcom_ipq5424_ppe-v2-10-8c7b057e2c43@oss.qualcomm.com>
+References: <20261011-qcom_ipq5424_ppe-v2-10-8c7b057e2c43@oss.qualcomm.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -58,108 +58,74 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message and the new code comment above
-  ipq5424_ppe_qm_group_config in…
-
-Pre-existing issues:
-- [Low] At this commit, ppe_port_resource_get() checks `port >
-  ppe_dev->num_ports` and then indexes the single IPQ9574-shaped…
+- [Low] The patch adds PPE_SC_BYPASS_EGRESS_SMAC_MC_DROP (24),
+  PPE_SC_BYPASS_EGRESS_L2_FLOODING (25) and…
 
 --
 
-net: ethernet: qualcomm: ppe: Add IPQ5424 QM configuration
+net: ethernet: qualcomm: ppe: Add IPQ5424 service code configuration
 
-This commit adds IPQ5424-specific QM settings, which ppe_config_qm() selects
-based on ppe_dev->type. On IPQ5424 the multicast queue range ends at 283
-instead of 299. The group0 shared buffer pool is set to 2010 buffers
-instead of 2000.
+This patch makes the stride of the L2 service code table depend on the
+SoC: 0x20 on IPQ5424 and 0x10 on IPQ9574. On IPQ5424 it also writes a
+second word per entry with the extended egress bypass bitmap. Three new
+egress bypass bits (24-26) are added for source MAC multicast drop, L2
+flooding and tunnel exception counter control.
 
 > diff --git a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-> index ef46e9b133fe..d2bd78853b98 100644
+> index 017d2e8342511..3dc1bcc8949eb 100644
 > --- a/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
 > +++ b/drivers/net/ethernet/qualcomm/ppe/ppe_config.c
-> @@ -314,6 +314,37 @@ static const struct ppe_qm_queue_config ipq9574_ppe_qm_queue_config[] = {
->  	},
->  };
->  
-> +/* Multicast queues are dedicated per PPE port. IPQ5424 has only 3 physical
-> + * PPE ports, versus IPQ9574's 6 PPE ports, so multicast queues 284 to 299
-> + * are not available on IPQ5424, and the buffer pool assigned to the general
-> + * 'group0' is larger here, 2010 versus IPQ9574's 2000.
-> + */
-
-[Severity: Low]
-Is this explanation complete? The commit message uses the same wording.
-
-In ppe_scheduler_res[], ports 4 to 7 each get four multicast queues:
-
-    port 4: mcastq 284-287
-    port 5: mcastq 288-291
-    port 6: mcastq 292-295
-    port 7: mcastq 296-299
-
-The three missing physical ports only cover queues 284-295. Queues 296-299
-belong to port 7, the EIP FIFO port, which IPQ5424 also does not have.
-
-The queue range in ipq5424_ppe_qm_queue_config[] looks correct. Could the
-comment and the commit message also mention the missing EIP port?
-
-> +static const int ipq5424_ppe_qm_group_config = 2010;
-> +
-> +/* Default QM settings for unicast and multicast queues for IPQ5424. */
-> +static const struct ppe_qm_queue_config ipq5424_ppe_qm_queue_config[] = {
 
 [ ... ]
 
-> +	{
-> +		/* QM settings for multicast queues 256 to 283. */
-> +		.queue_start	= 256,
-> +		.queue_end	= 283,
-> +		.prealloc_buf	= 0,
-> +		.ceil		= 250,
-> +		.weight		= 0,
-> +		.resume_offset	= 36,
-> +		.dynamic	= false,
-> +	},
-> +};
+> @@ -1490,9 +1490,16 @@ int ppe_sc_config_set(struct ppe_device *ppe_dev, int sc, struct ppe_sc_cfg cfg)
+>  			  test_bit(PPE_SC_BYPASS_COUNTER_RX, cfg.bitmaps.counter));
+>  	val |= FIELD_PREP(PPE_IN_L2_SERVICE_TBL_TX_CNT_EN,
+>  			  test_bit(PPE_SC_BYPASS_COUNTER_TX, cfg.bitmaps.counter));
+> -	reg = PPE_IN_L2_SERVICE_TBL_ADDR + PPE_IN_L2_SERVICE_TBL_INC * sc;
+> +	reg = PPE_IN_L2_SERVICE_TBL_ADDR + PPE_IN_L2_SERVICE_TBL_INC(ppe_dev) * sc;
+>
+> -	ret = regmap_write(ppe_dev->regmap, reg, val);
+> +	in_l2_val[0] = val;
+> +
+> +	bitmap_value = bitmap_read(cfg.bitmaps.egress, PPE_SC_BYPASS_EGRESS_SMAC_MC_DROP,
+> +				   PPE_SC_BYPASS_EGRESS_SIZE - PPE_SC_BYPASS_EGRESS_SMAC_MC_DROP);
+> +	in_l2_val[1] = FIELD_PREP(PPE_IN_L2_SERVICE_TBL_W1_BYPASS_BITMAP_EXT, bitmap_value);
 
 [Severity: Low]
-This is a pre-existing issue, not one introduced by this patch, but it
-interacts with the multicast range set here. ppe_port_resource_get() still
-indexes the single IPQ9574-shaped ppe_scheduler_res[] table:
+Is the CPU service code meant to bypass all three new checks on IPQ5424?
 
-drivers/net/ethernet/qualcomm/ppe/ppe_config.c:ppe_port_resource_get() {
-    ...
-	/* The reserved resource with the maximum port ID of PPE is
-	 * also allowed to be acquired.
-	 */
-	if (port > ppe_dev->num_ports)
-		return -EINVAL;
+The new enum values raise PPE_SC_BYPASS_EGRESS_SIZE from 24 to 27.
+ppe_servcode_init() is unchanged, and it still fills the whole egress
+bitmap and clears only one bit:
 
-	res = ppe_scheduler_res[port];
+drivers/net/ethernet/qualcomm/ppe/ppe_config.c:ppe_servcode_init() {
     ...
+	bitmap_fill(sc_cfg.bitmaps.egress, PPE_SC_BYPASS_EGRESS_SIZE);
+	clear_bit(PPE_SC_BYPASS_EGRESS_ACL_POST_ROUTING_CHECK, sc_cfg.bitmaps.egress);
+
+	return ppe_sc_config_set(ppe_dev, PPE_EDMA_SC_BYPASS_ID, sc_cfg);
 }
 
-On IPQ5424, num_ports is 4. A request for the reserved resource
-(port == 4) would return the IPQ9574 port 4 entry, which has unicast
-queues 192-207 and multicast queues 284-287.
+Because of this, bitmap_read() here returns 0x7, and that value goes
+into word 1 of the entry for PPE_EDMA_SC_BYPASS_ID on IPQ5424. Service
+code 1 then bypasses source MAC multicast drop, L2 flooding and tunnel
+exception counter control.
 
-This patch leaves multicast queues 284-287 unconfigured in QM, so
-enqueue and dequeue stay disabled for them. The correct reserved entry for
-IPQ5424 would be unicast queues 64-143 with no multicast queues.
+This matches the existing policy of bypassing every egress feature
+except the ACL post-routing check, and IPQ9574 is unaffected. However,
+neither the commit message nor a code comment says that the default CPU
+service code now enables these bypasses.
 
-Can ppe_port_resource_get() hand out multicast queue IDs that are disabled
-in QM on IPQ5424?
+Could the commit message, or a comment in ppe_servcode_init(), say
+whether this is intended?
 
-No in-tree caller passes port == num_ports at this commit, so the problem
-is latent. ppe_queue_dest_init() loops while port_id < num_ports, and the
-other caller passes port 0.
-
-A later patch in this series, "net: ethernet: qualcomm: ppe: Add IPQ5424
-scheduler resource configuration", fixes this. It adds
-ipq5424_ppe_scheduler_res[], where index 4 is the reserved entry. It also
-changes ppe_port_resource_get() to pick the table by ppe_dev->type and to
-bound the index by the table size.
+> +
+> +	ret = regmap_bulk_write(ppe_dev->regmap, reg, in_l2_val,
+> +				PPE_IN_L2_SERVICE_TBL_WORDS(ppe_dev));
+>  	if (ret)
+>  		return ret;
+>
 
 [ ... ]
 
