@@ -1,44 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643FA3A1D02;
-	Mon, 12 Oct 2026 04:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BAF2F90C5;
+	Mon, 12 Oct 2026 04:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791778675; cv=none; b=nU0L8NZBcXAY5Wh9c0y0VIwjg5scp3+8VKTpzApWU85SaUtoh5xfyaZygawalljNXAT+55R3iN2iujeWZXdKnBo7yH5WdGJuZNtuQEL4mU0Nn/EM/A+MkZhw2bBUke8P1QQ1M6Nlfk54nJtEkPLMCxYvdvucZ3mzo/gRGXbzYlc=
+	t=1791778817; cv=none; b=OEe1KSfsrFVVKR9Ax+ar3HFMNDHYV5hVCfEA7QRc/oTGsca2FYa3+Z/qOLRJAWbIkJUxPvMAofoXtIchdzTdYfd82OsJ+jN0jPwYfxM3f4lAfKEMzz2MwlxiYX89dAXApKUGIzsaTKFWvVMXHHSh3deNlRFjeKwY/bLesGAG07I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791778675; c=relaxed/simple;
-	bh=ubRW8ZjcpVAzfxMZu5PF2y+wMwQMGvAbUuCbysq+iS8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S11kvzMKFEsMfNsivEgD1I2B3eIj3a2vHMwfkQUcqQA/YCkMOyWo3AapnxwMdqBtg94NVgyZyqP1vHCu1jLFjFQ8cDi0M3hlOuVZwE1lQVzOCkIu1pP0Vj6NQUA8SZe2/e0LOaG9EaObVxtMEUWWUrzwO8Hh2/hKFNvAtXZMCmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVzMHXqy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791778817; c=relaxed/simple;
+	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dwGvMEP93F1WlL3LXwF4QvbTJWp3HsvMBAJUnmI9DG/ODSQmXbtu9kmH5Q0lHXEJJtwEqU7lFgYGEK1KY4mVyPgV0YOIBhglG9aHXWYezoW8oV+JyGap30HVox1oEQNFZtkhU1WmhjQ5zqhP2aStJ8ZOSM4l7QBMVB1V/o+9lpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Krr6Smb5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVzMHXqy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F441F0089B;
-	Mon, 12 Oct 2026 04:17:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Krr6Smb5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F871F0089B;
+	Mon, 12 Oct 2026 04:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791778669;
-	bh=YHoRLb9iqxerjC8rW1H47+58wAtLkdc4MBbuATQYxeo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cVzMHXqyvgMq/O13p+7GjTeTelK0lZBkN8+T9Q1pnGOhZpFXXRf2xCUVUs4wqpPso
-	 094f3AHzDpjqEJvQT0DbfQoulkRiakcSpwiTfuIeoQlkfnBdski9hKp3K7LSimeYYv
-	 nFUfQ8vnrI3YEML/KkNttNo8LilFcK8OJRrn3ou0T5L0ACHbMewJd/Hpn073M/6MMl
-	 SCuUCR3sRWyjxJH+T5/YllYIrWgA7giB+NX+4rD30fTcdAg1X8UjRPWmsYAKT0JNOK
-	 s63Lr5gRL/LCTFRG3P+mS5f4zv5i2FaTTPVMge/RKGcCmz8V5GcWD6MiYQJXstQNDl
-	 iQ3Bd4z5FlD6Q==
-Subject: Re: [PATCH net-next v9 11/13] net/rds: hold connection references in
- lookup, sockets and c_passive
-From: netdev-bot+sashiko@kernel.org
-To: achender@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Date: Mon, 12 Oct 2026 04:17:48 +0000
-Message-ID: <179177866895.434549.7210189401396244719@kernel.org>
-In-Reply-To: <20261008031333.1142174-12-achender@kernel.org>
-References: <20261008031333.1142174-12-achender@kernel.org>
-X-sashiko-severity: Low
+	s=k20260515; t=1791778816;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Krr6Smb5DTw75eGL09iYZekDNw8dvwY1H/OWKLmzfuWs5z6LL6qpVOBSwwY7uDwE/
+	 4LCcNss+h1UFc5ZAtmj5zqmIR89AMFqCEqzT/KM2pVFPP2pL2ozUPUZ6Rt83fEE1us
+	 IldfD8pzbtdrQJzH5vLTMViI+UUSc5dRYygacM2sBNY2pFIWjaonoyanEY/rdU6MPC
+	 JWaxYXWw+ES+H7VFQFIsanHudMko4UJ30WqYg2kEAtyPkMNMDrfS/E8cjTaPuKE2wT
+	 Nn3hloeWQh4I2eqaDKUyd8NfZBfXhUDnQ1DGR1WQzFg1/y5XW6gC9fIvts++ZuO/1B
+	 cateCGUPgW3Fg==
+From: netdev-bot+sinfo@kernel.org
+To: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
+Cc: Alexander Duyck <alexanderduyck@fb.com>, Jakub Kicinski <kuba@kernel.org>,
+ netdev@vger.kernel.org, kernel-team@meta.com,
+ Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Dimitri Daskalakis <daskald@meta.com>,
+ Mohsin Bashir <mohsin.bashr@gmail.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>,
+ Daniel Zahka <daniel.zahka@gmail.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH net v3 0/5] eth: fbnic: harden Rx and Tx completion handling
+Date: Mon, 12 Oct 2026 04:20:15 +0000
+Message-ID: <179177881542.2527009.15617337640537625893@kernel.org>
+In-Reply-To: <cover.1791775409.git.yhlee@isslab.korea.ac.kr>
+References: <cover.1791775409.git.yhlee@isslab.korea.ac.kr>
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,67 +53,20 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Hi!
 
-Low priority / nit picks for your consideration:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-- [Low] The commit's attribution trailers contradict each other.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
---
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-net/rds: hold connection references in lookup, sockets and c_passive
-
-This patch makes struct rds_connection pointers carry real references in
-rds_conn_lookup(), __rds_conn_create(), the rs->rs_conn sendmsg cache and
-parent->c_passive. It also serializes the rs_conn cache and the ToS
-ioctls under rs_lock, which closes a syzbot-reported KCSAN data race
-between concurrent rds_sendmsg() calls on the same socket.
-
-Closes: https://syzkaller.appspot.com/bug?extid=879c1877016972360186
-
-> Reported-by: syzbot+879c1877016972360186@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=879c1877016972360186
-> Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-> [achender: substantial reimplementation for net-next: upstream has no
->  conn reaper, per-conn workers hold no references (destroy cancels
->  them synchronously before the final put), and the sendmsg cache is
->  serialized with rs_lock instead of UEK's socket flag; rewrite commit
->  message]
-> Assisted-by: Claude-Code:claude-fable-5
-> Signed-off-by: Allison Henderson <achender@kernel.org>
-
-[Severity: Low]
-This isn't a bug, but do the attribution trailers match each other?
-
-The From: author is Allison Henderson. The first Signed-off-by is
-Sharath Srinivasan's, though, and there is no Co-developed-by: tag for
-him.
-
-Documentation/process/submitting-patches.rst says the first SoB entry
-signals primary authorship. It also says each Co-developed-by: must be
-immediately followed by that co-author's SoB.
-
-The "[achender: ...]" bracket note is the convention a handler uses when
-editing someone else's patch. Because of it, the chain reads as Sharath's
-patch carried by Allison.
-
-The message also calls this a "substantial reimplementation" that is only
-"Based on the Oracle UEK commits". That suggests Sharath's bare SoB
-certifies code he did not write in this form.
-
-Would it be better to pick one of these two layouts?
-
-  - Make Sharath the author and keep the bracket note.
-
-  - Keep Allison as the author, add "Co-developed-by: Sharath Srinivasan"
-    immediately before his Signed-off-by, and drop the bracket note.
-
-For comparison, "net/rds: split connection destroy into quiesce and
-kref-governed free" and "net/rds: wait for connections to be freed on
-transport unload" in the same series are authored by Sharath. They use
-this same trailer layout, and there it is consistent.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008031333.1142174-1-achender%40kernel.org
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
