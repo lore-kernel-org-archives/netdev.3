@@ -1,205 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076C7384CE5
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:45:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB0D37FF76
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791830752; cv=none; b=MZS5WSderugsFfUPhYuU9fFPI5LCJTnNNl4c+LVWI4LfAbptcq5BZHMSiuCwjWXVikkKEeLcKCd5wRr5H/w+zBGl9p4rFX7RtQLdAa/sJq/AOGxG+Au3UEwA1BcnhB6P5cNNX4KhJi1JND59ap758//7TaWokOeZACex7xmSqSg=
+	t=1791830859; cv=none; b=QlVeanPWyhsBo4NAMSQQz0k5RqANZZrO3EoYmonUI3S03ddjSk3v27TmUlR+XvztR56L1pTIhoiiyU52s4iD/z7guh/GbAwuVmoFRGsqQUPnec8Vivc9k9pQAMwiA9w0KR3jqlgn53Th0WNeQjU3XLl3tND9znBtz4WydSLJ+7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791830752; c=relaxed/simple;
-	bh=J6d+y//vMWwp8Nw2FBW3BzQJwhdqfPE+0G1WLofT+w0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nXEBEbOHyi65p4moRyc37Dkb07sbkzTj62h8Lhv+4orclbl2FUrdyq3Urx6O/O2EJDlhCMKuJsijqPWAL4BAC0XqfqOvV2Ol2qu1u2+J8cbjHIT3cMdbEimJ00E2C7Ey360SwqoPhesRmnAT/Uk2+UeKBBL1/PiWixwQBvrB4+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gr1fbk9u; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791830859; c=relaxed/simple;
+	bh=ijNlhyv4xCTmTbbejLtSuQAfF6caH2RK4q9or0ieFkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZBHfn6mi9VXUoGddQs7T9AOQjpAuxYQrKW0j9193dDAWsZlKamJY+Jqlv2YL8qvPIiRGTXzbMxtmpngu+hqHTP0xm8qPqRAJTUr6GbRHUYgaM5XLIcCoR8xSsp5PGDo/0cnp6oaoqtNxOUmNkzghrXIGxV/y2TDe5ixoXEgnzYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=ZhGqK3aC; arc=none smtp.client-ip=95.215.58.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gr1fbk9u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597501F008A2;
-	Mon, 12 Oct 2026 18:45:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791830739;
-	bh=ikcYy6pzNtyCQEEtIkuJmYK4C59q2374+tU9M1BKrNU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Gr1fbk9u8F5I4FFlmXtxmkzRb/burRgmkslZOJ3zj8voxBedDdAGUgcvVi4EodeJN
-	 ICh9IP9DoyKYv7BEt2GqLv6kpQpeJSDEFxjE6zkyudn/E/6iBMWQURqL1a/Ib/dJiK
-	 0HNiqJJD6cyTzfqu15Sh2biZK3zZJTqqauHFwWzTIJexC0HKsifJHPArFBTQ1SQT6F
-	 Rtsl5fUV+diEfA10yGYH3HukLb96RvhAlHQkdaD5jY0S0RnHXKQ4N2rj1h++aJc23w
-	 k89qXaxKi0S7ny22kE2t6KOOmYkW3TNuUUPNRmDh2ZsN7UJ6qgOKdZ5Gs4982/g7Ca
-	 iHF4phzNSMTzg==
-Subject: Re: [PATCH net-next v4 13/15] net: ethernet: cortina: Release partial
- RX frames on stop
-From: netdev-bot+sashiko@kernel.org
-To: linusw@kernel.org
-Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
- mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
-Date: Mon, 12 Oct 2026 18:45:38 +0000
-Message-ID: <179183073891.434549.14362423377968840090@kernel.org>
-In-Reply-To: <20261011-gemini-ethernet-fixes-3-v4-13-4b1631b08f5d@kernel.org>
-References: <20261011-gemini-ethernet-fixes-3-v4-13-4b1631b08f5d@kernel.org>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="ZhGqK3aC"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ijNlhyv4xCTmTbbejLtSuQAfF6caH2RK4q9or0ieFkM=;
+ c=simple/simple; d=packett.cool;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791830854; v=1; x=1792435654;
+ b=ZhGqK3aC1dEA6AFriFzlD2Uk6O50NhTH/2K58qAsaTd7mFMFOlu5POxCR+JigEyzvGCWQiDS
+ vk5o4HHjFh6qaPdGJL47AyXYO3LgvtuNa4GytcrJULEY/pSR3fMSfhv2og6HKefhVqemO9FJvPB
+ Vol8ZNoKL/vfXpXMn+34E/KmdzI4X+XcTh+vqMZyax0+RDMOB5GavCFS7kY4slu4IZ5wYH7LBBK
+ 6B2EHq0HW5u8aGqg/2o9clsVjr+iUc0kRf3W1547SmPnjYAY0OKplQZ1oqhg2aA92ezHr4bp27P
+ k1AOIMo9B1efaHZeVNX677Asu7Vitt1ClXYKYLRopboCw==
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id f67ebc8caef7985e;
+	Mon, 12 Oct 2026 18:47:34 +0000
+X-Mizu-Trace-ID: f67ebc8caef7985e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a3464be4-bd4d-4590-9804-147e16016a07@packett.cool>
+Date: Mon, 12 Oct 2026 15:47:24 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/4] nfc: st-nci: Fairphone 5 NFC bring-up (ST21NFCD)
+To: Kristian Brox <isyourbrainfoss@proton.me>,
+ David Heidelberg <david@ixit.cz>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ Luca Weiss <luca.weiss@fairphone.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+ Tim auf der Landwehr <tadl-git@taufderl.de>,
+ Abel Vesa <abel.vesa@oss.qualcomm.com>
+References: <20261005-fp5-st21nfcd-v5-v5-0-7be15a86c61c@proton.me>
+Content-Language: en-US
+From: Val Packett <val@packett.cool>
+In-Reply-To: <20261005-fp5-st21nfcd-v5-v5-0-7be15a86c61c@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
 
-Low priority / nit picks for your consideration:
+On 10/5/26 5:51 PM, Kristian Brox wrote:
+> This adds NFC on the Fairphone 5 (qcm6490). The board uses an ST21NFCD
+> on I2C. That part speaks raw NCI; the current st-nci driver always
+> wraps NDLC, so using st,st21nfcb-i2c leaves the adapter unusable.
+>
+> The series adds a st,st21nfcd compatible for the raw-NCI path and the
+> Fairphone 5 DT node. Boards that already use st21nfcb / st21nfcc keep
+> the NDLC path.
+>
+> A later poll start that times out in "failed to set local general bytes"
+> is still unreproduced on this phone.
+>
+> Signed-off-by: Kristian Brox <isyourbrainfoss@proton.me>
+> ---
+> Link to v4:
+> https://lore.kernel.org/oe-linux-nfc/20260902-fp5-st21nfcd-v4-v4-0-ded2f1c501be@proton.me/
+>
+> Changes in v5:
+> - Map proprietary RF protocol 0x90 to MIFARE (Tim). On this phone a
+>    Classic 1K was accepted as 0x90 and was not dropped.
+> - Binding carries Reviewed-by from Krzysztof Kozlowski. DTS carries
+>    Reviewed-by from Konrad Dybcio and Abel Vesa. The patch bodies are
+>    the v4 patches. The raw-NCI driver change is unchanged.
+> - Tim's reference-clock restart and leading-0x7e check were tried on
+>    this phone and left out.
 
-- [Low] The commit fixes a real leak in gmac_stop() but has no Fixes:
-  trailer (and no Cc: stable).
+Hi, I've been trying to enable the st21nfcj on the Motorola Edge 30, 
+which uses the same protocol.
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the
-  rx_coalesce_timer lifecycle in gmac_open()/gmac_stop() is out of order…
-- [Low] This problem wasn't introduced by this patch, but
-  port->rx_stats_syncp (and tx_stats_syncp/ir_stats_syncp) is never…
+These mentioned left-out patches seemed like they would help, but they 
+didn't really. The leading-0x7e check does skip over the "7e 60 00" but 
+is not enough to untangle the desynced mess that starts with "79 3e 59 c0"..
 
---
+sendQlen=1 unackQlen=0
+ndlc frame written:
+ndlc: 00000000: 20 00 01 01
+incoming frame:
+ndlc: 00000000: 7e 60 00
+incoming frame:
+ndlc: 00000000: 1f 01 01 20
+rcvQlen=1
+incoming frame:
+ndlc: 00000000: 02 1a 04 04 01 20 92
+rcvQlen=1
+incoming frame:
+ndlc: 00000000: 80 02 03 01 59 c0
+rcvQlen=1
+nci: nci_rx_work: unknown MT 0x4
+incoming frame:
+ndlc: 00000000: 79 3e 59 c0 47 75 00 00 00 01 00 00 61 66 02 7e
+ndlc: 00000010: 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 40
+ndlc: 00000020: 00 01 00 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e
+ndlc: 00000030: 60 00 1f 02 01 20 02 1a 04 04 01 20 92 80 02 03
+ndlc: 00000040: 01 59 c0 79 3e 59 c0 47 75 00 00 00 01 00 00 61
+ndlc: 00000050: 66 02 7e 7e 7e 7e 7e 7e 7e 7e 7e 7e
+rcvQlen=1
+nci: nci_ntf_packet: unknown ntf opcode 0x93e
+nci: __nci_request: wait_for_completion_interruptible_timeout failed 0
 
-net: ethernet: cortina: Release partial RX frames on stop
+I've tried changing things like interrupt trigger (with rising edge 
+only 1f 01 01 20 arrives, with falling edge nothing) but nothing seems 
+to help. I wonder if anyone has any idea of what might be the actual 
+cause of those strange frames. It's interesting that these two 
+workaround patches were found necessary on one phone but not on another..
 
-This patch frees any partially assembled RX frag skb in gmac_stop() after
-napi_disable() and before the saved RX state is cleared. The discarded
-frame is counted in rx_dropped, using the irqsave u64_stats helpers.
+Thanks,
+~val
 
-> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-> index 43fd8fd773e3c..32291d4c33904 100644
-> --- a/drivers/net/ethernet/cortina/gemini.c
-> +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -2209,12 +2209,19 @@ static int gmac_open(struct net_device *netdev)
->  static int gmac_stop(struct net_device *netdev)
->  {
->  	struct gemini_ethernet_port *port = netdev_priv(netdev);
-> +	unsigned long flags;
->  
->  	hrtimer_cancel(&port->rx_coalesce_timer);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is rx_coalesce_timer
-cancelled too early here?
-
-hrtimer_cancel() runs before gmac_enable_irq(netdev, 0) masks the RX
-interrupt, and before free_irq(). While NAPI is idle the RX queue interrupt
-is enabled, because gmac_napi_poll() calls gmac_enable_rx_irq(napi->dev, 1)
-when it completes. If rx_coalesce_nsecs is non-zero, an RX interrupt in
-that window re-arms the timer from gmac_irq():
-
-drivers/net/ethernet/cortina/gemini.c:gmac_irq() {
-    ...
-	if (val & (DEFAULT_Q0_INT_BIT << netdev->dev_id)) {
-		gmac_enable_rx_irq(netdev, 0);
-
-		if (!port->rx_coalesce_nsecs) {
-			napi_schedule(&port->napi);
-		} else {
-			...
-			hrtimer_start(&port->rx_coalesce_timer, ktime,
-				      HRTIMER_MODE_REL);
-		}
-	}
-    ...
-}
-
-Can the timer then still be pending after gmac_stop() returns? On device
-removal, the netdev private area that embeds the hrtimer could be freed
-while the timer is enqueued. gmac_coalesce_delay_expired() would then run
-on freed memory.
-
-On a quick reopen, gmac_open() calls hrtimer_setup(). Its
-__hrtimer_setup() does a memset() on a timer that may still be linked into
-the hrtimer base rbtree.
-
-gmac_open() has a similar ordering problem, because interrupts are enabled
-before the timer is set up:
-
-drivers/net/ethernet/cortina/gemini.c:gmac_open() {
-    ...
-	gmac_start_dma(port);
-	gmac_enable_irq(netdev, 1);
-	gmac_enable_tx_rx(netdev);
-	netif_tx_start_all_queues(netdev);
-
-	hrtimer_setup(&port->rx_coalesce_timer, &gmac_coalesce_delay_expired, CLOCK_MONOTONIC,
-		      HRTIMER_MODE_REL);
-    ...
-}
-
-gmac_set_coalesce() accepts a non-zero rx-usecs while the interface is
-down. On the first open after that, an RX interrupt in this window would
-call hrtimer_start() on a zeroed hrtimer. lock_hrtimer_base() would then
-dereference a NULL timer->base in hardirq context.
-
-On later opens, an interrupt in the same window can arm the old timer just
-before hrtimer_setup() clears it.
-
-Would it make sense to set up the timer once at probe time, and to cancel
-it in gmac_stop() only after the RX interrupt is masked?
-
->  	netif_tx_stop_all_queues(netdev);
->  	gmac_disable_tx_rx(netdev);
->  	gmac_stop_dma(port);
->  	napi_disable(&port->napi);
-> +	if (port->rx_skb) {
-> +		napi_free_frags(&port->napi);
-> +		flags = u64_stats_update_begin_irqsave(&port->rx_stats_syncp);
-
-[Severity: Low]
-This is a pre-existing issue, but is rx_stats_syncp ever initialized with
-u64_stats_init()?
-
-The port is allocated with devm_alloc_etherdev_mqs() in
-gemini_ethernet_port_probe(). The driver has no u64_stats_init() call for
-rx_stats_syncp, tx_stats_syncp or ir_stats_syncp.
-
-On 32-bit builds with CONFIG_DEBUG_LOCK_ALLOC, write_seqcount_begin()
-calls lock_acquire() on a dep_map that has no key. Lockdep then prints
-"trying to register non-static key" and turns itself off.
-
-The existing writer in gmac_napi_poll() and the readers already run into
-this. The new call in gmac_stop() is one more user.
-
-> +		port->stats.rx_dropped++;
-> +		u64_stats_update_end_irqrestore(&port->rx_stats_syncp, flags);
-> +	}
->  	port->rx_skb = NULL;
-
-[Severity: Low]
-Should this patch have a Fixes: tag?
-
-The leak seems to come from commit 06937db21ee3 ("net: ethernet: cortina:
-Make RX SKB per-port"). That commit added the "port->rx_skb = NULL;" line
-in gmac_stop() without freeing napi->skb.
-
-Before 06937db21ee3, the static skb in gmac_rx() kept its value across
-stop and open. The start-of-frame handling in gmac_rx() would then free the
-stale partial frame:
-
-	if (skb) {
-		napi_free_frags(&port->napi);
-		port->stats.rx_dropped++;
-		...
-	}
-
-napi_disable() and napi_enable() do not release napi->skb, and
-napi_get_frags() returns the existing napi->skb. After a reopen, the stale
-skb and its old frags are reused, and the page references they hold are
-leaked.
-
-06937db21ee3 carries its own Fixes: tag and is headed for stable. Would it
-help to add the following, so this fix reaches the same trees?
-
-Fixes: 06937db21ee3 ("net: ethernet: cortina: Make RX SKB per-port")
-
->  	port->rx_frag_nr = 0;
->  	port->rx_dropping = false;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011-gemini-ethernet-fixes-3-v4-0-4b1631b08f5d%40kernel.org
