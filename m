@@ -1,129 +1,373 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E169B391E7A
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A62E2DC789;
+	Mon, 12 Oct 2026 05:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791781091; cv=none; b=nb+T/wTVcNilfbkgXOZZA+6YvHklJUWKhckgUWrKfv2h8yOJERQAfktHvpKs+WPkZPyjwPJddxHIn3DwCjjSE351Ds7yAxCPoXz+y2pA5VDmT86EnshuTIwxMmtQzycTck8k8b97rUM8B5mry4CyaQA9TlgdX/hbdCEWD+gPufE=
+	t=1791781462; cv=none; b=E+mDWzStsTGNzt1RKcjyEWFxMtQGfOVQBJOpqDoI71rjYHIUC4d9vqubDyx4QSP97QXrBxAff92Yx8DK8BSS/zftvv2dxKvGlR9T5oFBLqk+TIJwAevUcdNAXLvH6VWLIuQFjp3BDS9IP1upi3fGPegAgvuC2nT8BWYySwNWYdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791781091; c=relaxed/simple;
-	bh=unQ8Kv3Fy+buE9N5m0DeZVnQ6loHexCxxXoC2t0MmFo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7boYM7xKL8oyk5HV0FnrN0NSogSIwwEJ/jkABNP81X5lJ9ebq3Jy+caBBQEeUsCn2xIn5JifHvPyucm6tOyWu8r8snctSZ8ZTwuOaMeC8tGUslpgnzklaW8R6kEjc8fKf/7bRrbVQyv3iWI99dht/pNtmIRsEaGwHeMyaZW/to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yp2cRVit; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791781462; c=relaxed/simple;
+	bh=C4Ea626KD2fOLwnOzLsKy66i+uyKiHvSgwm19t6Ixhk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NP+mRPTg/28Q8SuX+LdG8KV+B+Zd76s1cDJBuuz3vW45fAhQwTR2QC0dCTwks+IOEO20AamrNPscKBCsLjo5URvKFWfD3Nha8ZKcs80CV8XN76F1joLtiqoX7XTxyVLn75DcfXQh1BN+NhFw+1nslh0YqbVr1/mGCjaZDDsxSOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DkX5FW+e; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yp2cRVit"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-35829219da8so1368395eec.0
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 21:58:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791781089; x=1792385889; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OPxwWFgnfVFbchTbdw0or35TN+U5yCxRRFvUU5bcKZM=;
-        b=Yp2cRVitNSlNqdGxhTzqznvtp50R0HC7g+MqHapP8Ur7R4J95+RCUhOHeSqa1dduR+
-         cwmCQVTQOReAMbHovTYBraiOTXwNIPy0LUAssjdFTGlEU3Ua0eAxrnFrAHj/+IweXkIl
-         ScF+9p23+ZkQa8+wno0ExUprSKDWdElK8Qa101YL1KWsMsJkdpr6i95nXKeCE8evhtKv
-         O8SksGt9Q2SwJ6w4k3r+Hfs/4kLxq1IdqtGIBvYShFnUWH4wR2ZdNKal1V2NSnAe9eDE
-         G9QweBcpMnAuQYe9U/p5prP9nZoEbnalnX6WL1jiBuYY40BEUP3oe2dGFW87m+t4tgnf
-         vC+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791781089; x=1792385889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OPxwWFgnfVFbchTbdw0or35TN+U5yCxRRFvUU5bcKZM=;
-        b=0dBXJqgA1wYjozenhLsEs/5n0DUcVLhk5k8U/7o15/RwB3tTIILxrywnbWwDAiuO8J
-         Qlumd3I+EvBWiM8jvAYoVvwTRtt4rgGiYogbI8Nn6jJFGhevpAujlOlwf9vTcdSiJxnF
-         KLNXb3WuJdSrnXwrnISxAXDsqcJ1DCieQvHFCWW2q5yyDpcTPy3gasRXV8AGU2vUsoUT
-         7hX59P9SjXzknhbKqaEW1tinKAaau4tsUpU7hJoPLtgZo9l4+rTo3kgSQ77c6BOcyXCi
-         K5gOrUoEA4Lq/vzbEPt3WacsHxdCONBW7YUViYlLcjBB4l6959XRTuvU3T/UZ3z4JIIa
-         dELg==
-X-Forwarded-Encrypted: i=1; AKwUvBxidrm3vJ6yn5MiZcCC8J1rBx+gx7lxzqpoD71jmfIbs2C66EDYcgC5Hb+eZQ/nxMljhRUVwBM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI3rtyMDD/IUvlDA6zTV4HOzwS0CygXn/iO6ZuxYQwwe5iDxBWg
-	h+gVL/BfMW5uro9JIBw3Nf7DwUZmbeprgDQjTyPLuoL3O6gLw43JcflB
-X-Gm-Gg: AYBFou2JhMe7ZmViYg4Qm2UHbfrFRXX2nXMSEv0Va/wwLmA70bMuHPCkqNLz/GnlAQD
-	i34RaDJ8JU8cwskF1TovXQNj4V/K0QdW6Wg2DNFL2SMcRpEfrcEN/6dHHwkQqbEisXGAbhX+bUQ
-	baQ6ZSA0NjozqtrMOGJxCqqG7pByesWdebdyWqTGXHEn0DKrCRj5kl1a3aaABfdnuk7bpOQseVv
-	3v8JRWd8by3ifh2aRAIY2OMJeZnH+7nTcEtZ+oyOV1gGKjyaxal/xysZK0HRzgdzpwul/O83eZ9
-	9wZqskwjv9RvD232nXP7cIGTz6nUsrJmZzsWLpZ3OUW5x//Mrsp0agxQSeM/J9Nd+H8+VzZU538
-	1G3WD3J9fU5yPOY9JEy9QLSq4KzjQGXZMFt4316P87f2YU3TQtUE7D50RNEnIz1x7BNcLoBwA7+
-	ciGnksSnzkONPnYrrvXvZ1F4zo1ZEJN7twoKuSTcmYbFztsrdC+AP9IEPff2ChfnNpgvgcsexKs
-	LGnmNk4cGuhM83NI04C8ZWWrFIEzag6s8ojq9pIuFzk6sW3A3bMVed/yS/z9ZDl/NzpK8aL8OvR
-	ANi7bvDl9iU45la4N95Rk0A5B/JHwbHSuQW3PcPshdnEM3WxagksEcVAe9tgpLJJUiCoxTGRt2v
-	6+8HZmuAuZ6qKNTyh6prd9Oz8LA0YTmKyvSLFU0Rq8ZD4O2qAIaa7xUE=
-X-Received: by 2002:a05:7300:fb8a:b0:353:82a3:eb86 with SMTP id 5a478bee46e88-35382a3ef76mr16701172eec.0.1791781088584;
-        Sun, 11 Oct 2026 21:58:08 -0700 (PDT)
-Received: from FT6N242TWK ([223.181.119.248])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537c841648sm32829284eec.3.2026.10.11.21.58.05
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 11 Oct 2026 21:58:08 -0700 (PDT)
-From: Shashank Mohan Jain <jain.sm@gmail.com>
-To: Eric Dumazet <edumazet@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] tcp: keep the route window metric when SO_RCVBUF is set before connect
-Date: Mon, 12 Oct 2026 10:28:02 +0530
-Message-ID: <20261012045802.47339-1-jain.sm@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <CAL4Wiio1bAsM_Z2LEQz9r0-ehHoWpzTneWy49hd2FGeoVVEQhQ@mail.gmail.com>
-References: <CAL4Wiio1bAsM_Z2LEQz9r0-ehHoWpzTneWy49hd2FGeoVVEQhQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DkX5FW+e"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69C2F1K73019042;
+	Mon, 12 Oct 2026 05:04:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uFU+80
+	0bsccEesRqUvmAZL8rkHq2KyNXzUK3BpApTmQ=; b=DkX5FW+ef8GuEuJ39as0op
+	1dIYFeNLUk/6glGuRGp/1lbaFHMxPT286whRxbhPxQZXzl7/QwL2yT2fQY6ZcADn
+	f6RjXBhhbV255H34DBz+xORxklanf3fbOCAm3sIb535cEZ60PCO0qLrl+UZtfarl
+	LdM8c4eqAcQ1YcprlJ6RyFn7PxkZ/mQIUkpQ94TazyHFFbFUJiFTI+mcUqdSWodm
+	tQwNThnI6wT86SgHrE8IBptudwrlHqEZkwncAiSS46z23jxXbRu3TwvZt1Ey8I7m
+	LK6hYhiAK3gkaXhpjeqRjDls3Rpl+oa7GHgg2JCyHbodHPHMXYxgVd++kkCMqXjA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dv3789u-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 05:04:02 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69C1o6ih522249;
+	Mon, 12 Oct 2026 05:04:01 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h80pjks8c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Oct 2026 05:04:01 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69C53x7466519326
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Oct 2026 05:03:59 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0BF505810F;
+	Mon, 12 Oct 2026 05:03:59 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0949858115;
+	Mon, 12 Oct 2026 05:03:56 +0000 (GMT)
+Received: from [9.67.163.79] (unknown [9.67.163.79])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 12 Oct 2026 05:03:55 +0000 (GMT)
+Message-ID: <93cc87b4-14ce-43d9-a29e-d9a6795bb0d5@linux.ibm.com>
+Date: Sun, 11 Oct 2026 22:03:55 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3 4/8] ibmveth: step past bad RX correlators
+ instead of spinning or oopsing
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, chleroy@kernel.org, ritesh.list@gmail.com,
+        sshegde@linux.ibm.com, nnac123@linux.ibm.com, andrew+netdev@lunn.ch,
+        davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+        pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, horms@kernel.org, davemarq@linux.ibm.com,
+        bjking1@linux.ibm.com, stephen@networkplumber.org
+References: <20261009183258.18624-5-mmc@linux.ibm.com>
+ <179166081271.434549.2458181310224040226@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <179166081271.434549.2458181310224040226@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: u8b1v0peDjrQLPqgg1Rb4ofNq2OGPsxd
+X-Proofpoint-ORIG-GUID: cYnn2M_sA5Qw1tEFTV2dg9lLqStR4cIJ
+X-Authority-Analysis: v=2.4 cv=aqInmiZV c=1 sm=1 tr=0 ts=6acc6a42 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
+ a=CpsONLjkRwPTLDU7ZUkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDAxOCBTYWx0ZWRfX0LOxcmnFJ4dc
+ BI4qRXd4zf5kCznDK4thDyVPE7LxnW6oc8+nvUrnRYyWjT3eyIYM8xEwWRYdV34qf3QJm7+tNkW
+ RJQP5Y2dciV0/C+ywTBya3FZAddMm30=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDAxOCBTYWx0ZWRfX8zhWFzwWO9wA
+ omUqgpMfkwrOTzz7Wldo7Ho54u3HX8h2b4/k1I+nDwVQ+5KLiFzbE81ov0ge9dzjKSTmGqPIEmZ
+ FX7ZdEJyQQpYnA/WWiZosTaFFavqhGq+fGgu/0I6mBsogyOvzmGfELCJ7r4CGhduK/JSE1ptDHz
+ foMRmpq/HRlAEOgl1r8941PnkogOu6mfx0AOP3/A2tjckvkg6KKher9V2jWpX7zdztg2o3Zf6KP
+ B3uSAEzlPicXNJDwzrARJW7SFIkvn9vxozHZB8PYUOkkqbZTiMFqLgPtk68s+O/zWDEtqSyA8ED
+ G4Ln8vOGoyXtGj2s85vuSeeb0zI5e4e500F88QwR7PPInNyByhUF3GtOaKhNpQYmot19ZCS4TbA
+ 1RZXRId0ON99Pcp/4b7WmM8PJVoo9YX5Mx9maYPFQkCaDS0pCuAusBstQuQ6+Mk673ubn1GW8GF
+ fJgVFWS8Qoh+S9UeXzg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-12_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 spamscore=0 malwarescore=0 suspectscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610120018
 
-On Sun, Oct 11, 2026, Eric Dumazet <edumazet@kernel.org> wrote:
-> Note that we ask to not top post on netdev@ mailing list.
 
-Understood, replying inline from here on.
+On 10/10/26 12:33 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 · High: 3 (1) · Medium: 0 · Low: 0
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+>
+> - [High] This patch's short-frame check is incomplete.
+> - [High] Returning budget - 1 does not make ibmveth_poll()'s schedule-
+>    and-continue path safe when threaded NAPI and busy polling are both…
+> - [High] net/ibmveth: TOCTOU double-fetch of RX correlator in
+>    harvest_buffer
+>
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but
+>    ibmveth_rx_csum_helper() calls ip_fast_csum(iph, iph->ihl) whenever…
+>
+> --
 
-> 1) "TCP_WINDOW_CLAMP 4096" only holds until the first data segment.
-> ... What the patch really restores is the SYN/SYN-ACK window and the
-> window scale. Please say so.
 
-Agreed, presenting the clamp as persistent was wrong. v2 says the patch
-restores the window and window scale advertised in the SYN / SYN-ACK,
-and notes that since a2cbb1603943 ("tcp: Update window clamping
-condition") tcp_measure_rcv_mss() recomputes window_clamp from sk_rcvbuf
-once the scaling ratio changes, independent of this change.
+Thank you for the review. I agree with all four High findings on this
+patch.
 
-> 2) "no window scaling" is not accurate: we still send the option,
-> with a shift of 0.
+I will address them in v4 on the same net-next base (d8674294aefe).
+Patches 1-3 and 5-8 are unchanged from v3. Patch 4 fixes the poll
+tail (no restart_poll after napi_complete_done; mask then queue the
+NAPI), passes the correlator poll already read into harvest, and
+keeps the buffer-bound and ETH_HLEN drops without claiming they cover
+the RX offload helpers.
 
-Right; changed to "wscale 0 (the window scale option is still sent,
-with a shift of 0)".
+The helper header checks (short frames, ihl,
+doff, fragments, and the ip_fast_csum() case) are split into a new
+patch 9 at the end of the series, with their own Fixes: tags and KUnit
+cases.
 
-> 3) This also fixes TCP_WINDOW_CLAMP being overwritten by a later
-> SO_RCVBUF on a not yet connected socket or a listener. ... worth
-> mentioning.
+I will post v4 on netdev shortly.
+v4 was tested with KUnit on qemu pseries and on a POWER10 LPAR (the v3
+suite plus large-send iperf3 over IPv4/IPv6 at MTU 1500 and 9000).
 
-Done - v2 leads with the SO_RCVBUF-before-connect / listener case as the
-common one, with the route metric as a second effect.
+Thanks,
+Mingming
 
-> A packetdrill test covering the SYN window and wscale would be nice.
+pw-bot: cr
 
-I'll add a packetdrill test for the SYN window and wscale, with and
-without SO_RCVBUF set before connect, in v2.
-
-> It seems to be a net-next candidate ...
-
-Will repost as [PATCH net-next].
-
-Reposted as v2:
-  https://lore.kernel.org/all/20261011111606.14753-1-jain.sm@gmail.com/
-
-Thanks for the review.
-Shashank
+> ibmveth: step past bad RX correlators instead of spinning or oopsing
+>
+> This patch makes ibmveth_poll() advance the RX ring past slots with a bad
+> correlator, including correlators that name an inactive pool, instead of
+> breaking out and restarting on the same slot. It counts those slots as
+> drops and schedules a reset. It also drops frames that do not fit the pool
+> buffer or are shorter than an Ethernet header, and returns budget - 1 once
+> napi_schedule() has queued the NAPI.
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> index cee0e9783b2ab..55c0b5d6e0a9f 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> @@ -1481,19 +1525,46 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+> [ ... ]
+>
+>>   		} else {
+>>   			struct sk_buff *skb, *new_skb;
+>>   			int length = ibmveth_rxq_frame_length(adapter);
+>>   			int offset = ibmveth_rxq_frame_offset(adapter);
+>>   			int csum_good = ibmveth_rxq_csum_good(adapter);
+>>   			int lrg_pkt = ibmveth_rxq_large_packet(adapter);
+>> +			u64 correlator = ibmveth_rxq_correlator(adapter);
+>> +			unsigned int pool, room, off, len;
+>>   			__sum16 iph_check = 0;
+> [Severity: High]
+> The commit message says the bound uses the pool "from the correlator
+> that was validated, read once, not from a second read of the ring".
+> Doesn't ibmveth_rxq_harvest_buffer() still do that second read?
+>
+> ibmveth_poll() now reads the correlator once with
+> ibmveth_rxq_correlator(). It uses that value to look up skb in
+> ibmveth_rxq_get_buffer() and to compute room. Every harvest after that
+> ignores it, though: this call, the copybreak call and the one on the
+> bad-frame path. ibmveth_rxq_harvest_buffer() loads
+> queue_addr[rx_queue.index].correlator again with a plain load and
+> passes that to ibmveth_remove_buffer_from_pool(). Nothing ties the
+> second value to the one poll validated.
+>
+> Suppose the entry changes between the two loads, so skb is looked up
+> from slot A and harvested from slot B. On this reuse=false path:
+>
+> - rx_buff_pool[].skbuff[B] is cleared and dma_addr[B] is unmapped.
+>    B goes on free_map, and the skb that was in slot B is leaked.
+>
+> - skb A goes to napi_gro_receive() while it is still in skbuff[A],
+>    still DMA mapped and not on free_map. The driver still treats it
+>    as a posted buffer.
+>
+> - On close or reset, ibmveth_free_buffer_pool() finds skb A in
+>    skbuff[A], unmaps it and calls dev_kfree_skb_any() on it after the
+>    stack has already freed it.
+>
+> The copybreak and bad-frame paths would recycle slot B instead of A
+> in the same way.
+>
+> ibmveth_rxq_correlator_valid() does not catch this, because both
+> correlators can be in range and name live skbs.
+>
+> PHYP should not rewrite an entry once the toggle is set. But this
+> patch treats the correlator as untrusted, and the changelog says it
+> is read once. Should ibmveth_rxq_harvest_buffer() take the correlator
+> from its caller, so poll uses one value for lookup, bound check and
+> harvest? The new KUnit harvest test could read the ring entry itself
+> before calling it.
+>
+> [ ... ]
+>
+>> +			pool = correlator >> 32;
+>> +			room = min_t(unsigned int, skb_tailroom(skb),
+>> +				     adapter->rx_buff_pool[pool].buff_size);
+>> +			off = offset;
+>> +			len = length;
+>> +			if (unlikely(len < ETH_HLEN || off >= room ||
+>> +				     len > room - off)) {
+>> +				if (net_ratelimit())
+>> +					netdev_err(netdev,
+>> +						   "bad RX frame offset %u length %u (buffer %u), dropping\n",
+>> +						   off, len, room);
+>> +				ibmveth_rxq_harvest_buffer(adapter, true);
+>> +				netdev->stats.rx_dropped++;
+>> +				frames_processed++;
+>> +				continue;
+>> +			}
+> [Severity: High]
+>
+> The commit message says this check fixes the case where "the checksum
+> helpers would write past a short frame". Is an ETH_HLEN minimum enough
+> for that?
+>
+> Once this check passes, ibmveth_poll() and its helpers assume a full IP
+> header and TCP header and never look at skb->len:
+>
+> ibmveth_poll()
+>      iph_check = iph->check;
+>      ibmveth_rx_mss_helper()     /* lrg_pkt or iph_check == 0xffff */
+>          skb_shinfo(skb)->gso_size = ntohs(tcph->check);
+>          tcph->check = 0;
+>          hdr_len = offset + tcph->doff * 4;
+>          skb_shinfo(skb)->gso_segs =
+>                  DIV_ROUND_UP(skb->len - hdr_len, ...);
+>      ibmveth_rx_csum_helper()    /* csum_good */
+>          iph->check = ip_fast_csum((unsigned char *)iph, iph->ihl);
+>          struct tcphdr *tcph = (struct tcphdr *)(skb->data + iphlen);
+>          if (tcph->check == 0x0000) {
+>              tcph->check = ~csum_tcpudp_magic(...);
+>
+> A frame of about 14 to 92 bytes passes the new check, but these helpers
+> still read and write past the end of the frame. In
+> ibmveth_rx_mss_helper(), skb->len - hdr_len can also wrap.
+>
+> On the copybreak path, those accesses land in the uninitialized tailroom
+> of new_skb.
+>
+> On the non-copybreak path, they land in the pool buffer past the frame.
+> That path runs when the GFP_ATOMIC copybreak allocation fails, or when
+> rx_copybreak is set at or below the frame length.
+>
+> The new bound also accepts a short frame at the very end of the buffer.
+> For pool 0 with room = 512, off = room - 34 and len = 34 leave
+> skb->tail == skb->end after skb_put(). eth_type_trans() then leaves 20
+> bytes of IPv4 header, so tcph sits at skb->end.
+>
+> Wouldn't the tcph->check writes then land in struct skb_shared_info
+> (hwtstamps, gso_type, tskey or dataref, depending on ihl)?
+> skb_partial_csum_set() rejects this only after the write has already
+> happened.
+>
+> Should there be per-protocol skb->len checks, or pskb_may_pull(), before
+> the IP and TCP headers are parsed, rather than a fixed minimum?
+>
+> [Severity: High]
+>
+> This isn't a bug introduced by this patch, but since this patch hardens
+> the RX path: should ibmveth_rx_csum_helper() check iph->ihl before it
+> calls ip_fast_csum()?
+>
+>      if (iph->check == 0xffff) {
+>          iph->check = 0;
+>          iph->check = ip_fast_csum((unsigned char *)iph,
+>                                    iph->ihl);
+>      }
+>
+> On ppc64, ip_fast_csum_nofold() in arch/powerpc/include/asm/checksum.h
+> documents that ihl "is always >= 5" and does:
+>
+>      for (i = 0; i < ihl - 1; i++, ptr++)
+>          s += *ptr;
+>
+> ihl is unsigned, so with ihl == 0, ihl - 1 wraps to 0xFFFFFFFF and the
+> loop reads about 16 GiB starting at the RX buffer, in NAPI softirq
+> context.
+>
+> The ihl, check and ethertype fields and the IBMVETH_RXQ_CSUM_GOOD flag
+> all come from the sending partition. Could a single IPv4 frame with
+> ihl = 0 and check = 0xffff from a peer on the same virtual LAN oops or
+> stall this partition?
+>
+> [ ... ]
+>
+>> @@ -1581,10 +1661,16 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
+>>   	if (ibmveth_rxq_pending_buffer(adapter) && napi_schedule(napi)) {
+>>   		lpar_rc = h_vio_signal(adapter->vdev->unit_address,
+>>   				       VIO_IRQ_DISABLE);
+>> +		rescheduled = 1;
+>>   		goto restart_poll;
+>>   	}
+>>   
+>>   out:
+>> +	/* napi_schedule() already queued us. Returning budget would
+>> +	 * make busy_poll_stop() queue the napi a second time.
+>> +	 */
+>> +	if (rescheduled && budget && frames_processed >= budget)
+>> +		return budget - 1;
+>>   	return frames_processed;
+>>   }
+> [Severity: High]
+>
+> Does returning budget - 1 cover the case where threaded NAPI and busy
+> polling are both enabled?
+>
+> busy_poll_stop() clears NAPI_STATE_IN_BUSY_POLL before it calls the
+> driver poll. Its own comment says "Unless rc == budget we no longer own
+> the NAPI instance". From there:
+>
+> busy_poll_stop()
+>    ibmveth_poll()
+>      napi_complete_done()             /* succeeds */
+>      h_vio_signal(..., VIO_IRQ_ENABLE)
+>      napi_schedule()
+>        ____napi_schedule()
+>          set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
+>          wake_up_process(thread);
+>      goto restart_poll;               /* keeps processing the ring */
+>
+> The woken kthread sees NAPI_STATE_SCHED_THREADED in napi_thread_wait()
+> and calls __napi_poll()->ibmveth_poll() on another CPU. Meanwhile the
+> original call is still running from restart_poll.
+>
+> Can the two pollers then race, with no lock, on rx_queue.index and
+> toggle, rx_buff_pool[].skbuff[], free_map and producer_index? For
+> example, one harvest with reuse=false could clear and unmap an skb while
+> the other poller passes the same skb to napi_gro_receive().
+>
+> The budget - 1 return only runs after this overlap. Continuing to poll
+> after napi_schedule() predates this patch, but this patch now reasons
+> about NAPI ownership after napi_schedule(). Would it be better to stop
+> processing once napi_schedule() succeeds, instead of jumping back to
+> restart_poll?
+>
