@@ -1,64 +1,64 @@
 Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237E03624D3
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50666FC5
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 04:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791778604; cv=none; b=tNJJ8OqeptqqTFci37Rr6Vi6GCchQ7Hugw20oR1uHBvshAWyWytqjH1kRsdOvOt7/7Pd2Zqknt/RyHg6ax7gT5Zxtuol+faVqnZz34o/CF7Jgc6JzNKpKDzuePgOJOuKXOTyxNvFMzVlSmt+weKHD0j+YVdFEv2jLdNDgtnR4y4=
+	t=1791778609; cv=none; b=mme8t+Kq67g8xq53BGhcmiD2fW0z/S5BNw+dkz0W7difPToxeUtrVAJbMlmcJ8VLfT2r1+co3ILD58lpKFYBMIDRklIHLl2C+qJjioCs4VZLZTzZwCiID4X1WwzSptSEJ5cVDUC7clYqr1fj6qP7hY69xZgsGUvKCL8dFMJPUwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791778604; c=relaxed/simple;
-	bh=sQrj9NtsIHkxF9w49pSeMNv9N9eQxQbKMSBF5j2fiVE=;
+	s=arc-20240116; t=1791778609; c=relaxed/simple;
+	bh=gSlfGsopcGf9FK8Zaap1vOZBQpbIoDFRmIjKXx13pc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQSb5tlS3ag8fTQjSVCya89oiC0O/wqvr3uYPBeMyS+DFxOCBN8wp72aVYuzlvwDvMap08nKusysSSX2AF54SW99hldKRH0Bd9ngF+fbE4EacnIvbL9KHll7TOMRsGmj8p7KXgLF284TDofavPNTRrf1EYQXaV2++yCue3H5kuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=x8Vos/3A; arc=none smtp.client-ip=209.85.214.173
+	 MIME-Version; b=qaLyKRFLQI9WwVyLO45hO/B79agOC0v4pUIe7dpUU4F31OXoh14aVdLj0mbnGCeqpLQtTrDoUTsOZLpZZE3/X5FbfKMuubVDqmBrw+rbcHu+WDY49BcVf7hX8L8sQFHQyO1sRSxjegFbwHbeF6/vlM0zXV2GTHkD4RYrhHowf44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr; spf=none smtp.mailfrom=isslab.korea.ac.kr; dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b=0evk00us; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=isslab.korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="x8Vos/3A"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e618db81c0so12582245ad.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 21:16:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isslab-korea-ac-kr.20251104.gappssmtp.com header.i=@isslab-korea-ac-kr.20251104.gappssmtp.com header.b="0evk00us"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2e8b20a899fso2972475ad.1
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 21:16:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1791778602; x=1792383402; darn=vger.kernel.org;
+        d=isslab-korea-ac-kr.20251104.gappssmtp.com; s=20251104; t=1791778607; x=1792383407; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EMjXa7fPM07GEuEQK3ZTCMVcOkPQnQoQnjCjmIDRcqQ=;
-        b=x8Vos/3ArQXH7ozq2MhfZZcBKIpHhdhsdOHUoRlOz/1CBTS8k8UU5VFep0BygGr/50
-         lOTwOaGgsWBnCx+KYAMgbVGo3t32Xw7DdWuVTlgoy34YT8C5WKdl/0oR5ONkQVbLPp/D
-         2K0Ai+3F06MZujNzI7O7EpQid4OTVy8EPqUiyTR5yKO2ZOT9BA+MjPb9f/D6lZXxmNyE
-         BFJm1bbrljGBlITbVEbDdtUzJ/hsdZIhRRmWuB6fJUmWP2NwSbb7QrBvqb9stJlpjWtM
-         dnZKbOvvY3cKndt237sPG9qHnBuyZvpNSTrdVx6CF0Cr3mq2ClR22en96F0FJUCoIFxq
-         zTEQ==
+        bh=rP4KsK1HtGSJGS/ybx9BjunDk3siJwpiSOpuzBq9Cq8=;
+        b=0evk00usViC3KOgz7hu/yjDo5ynT39w/hTcVoEa2GtNgPKLoj3mQjpveBsLiP/r1eP
+         jhIYmefLcusQ0HREha6d/EqqFPT/aLj/xOAP6llBBmuQzTnVLWTm/thZe16cifLuB6B6
+         XfghTVw8KzXQUtK+wueNQ1JM6JufydM7j5vup1NmjhbIqOkwjgahMH3M5lUuHLMKdtzd
+         DOKi6DLGeec33Foif0U0V6eD+IIq7zbVU3ofxhsZ3LqpAhiB4t55A6IcISIAgImd5BuM
+         pWEF9GjzziidVLXeVcfLzUe5VJBw7fNfwpfg/mwcthLAiBA0Iri1wWVpe+DyiVf1guvX
+         hunA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791778602; x=1792383402;
+        d=1e100.net; s=20260707; t=1791778607; x=1792383407;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EMjXa7fPM07GEuEQK3ZTCMVcOkPQnQoQnjCjmIDRcqQ=;
-        b=D34z2ReeAX1tFM9Ux0BtDF53Tydq5vi8qB6sn8FKAXOODKIBZOXL4WXp8Qd7xOEqa6
-         Ev7NBUtslkwBuGreL9iKWlbzD3ZWsWc6pKSdsNSgTgkCWSGmtcsrA7J+9MU/Ywcll/7p
-         gUnkRUmGa66CsPI6XXe5iOguG87TAob1sEqPJGGs7d129l2i7ODgHrmRg1x1hkhPomMx
-         I092SMXOQxTImZwbpJiQJbCntywLBVyoZMBblQ0lHiGNBHPHjZTaK+xIZS9PQxsmO7Xp
-         aqH0djM3J6TypgySvZSu9P+WpvMHSN+wgCWkOKZ2kIUWSt0pXf3md0mRjgGQ5jkKOMHu
-         KX4w==
-X-Forwarded-Encrypted: i=1; AKwUvByouhSwCRi6xE7NGz1ir+a5TbySoZpnmdRcs6N/CMswQ68OomYvrZfFi66JFjui83ksbc20Z6k=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKx+RDgaLGDYhngTqV9q1N55QuHcfbyZcrjXzmXtghKlRen2hUt
-	yBTugCbERbhL2VdxzKXEIYJGEIQruNqte0g6Y1/b7kO6lNJ1XEddRXCx5HiGGBewXYg=
-X-Gm-Gg: AYBFou1lh/oLv/VHt//WZri0dXfkBJuwtSwmv6veme6dGRuCdJ+DK8WBf4KFpENrpgQ
-	AaLpAkC9enhezEPafsAEZLSY268/IraL7UbTEi1USuR2VYRX5dbZ5ORb9RaUYqlRdIc+H5if6ye
-	G3WUvbhcBl52TEEiNi/dqUr67hsqIeox/qZou5WxC7KmWTatP6HuCcb4QAgk6/Snm4QMb3F2kYA
-	g4oCeLyoZA4aVHJ+E/eqcdTtt11X8fAew+tUSznU6xfgZ1L/rqy1tmP2s6nSbmiPh0Pky4CAbh2
-	R5VGjXAQSrzEzSH1USiYA3kUG7C/kOWxHThfQDowBQdCK6Iy7lFC4ESij9tT6pJuVIaJg4b+g+2
-	cPUbJoS+5n/BDsgqim6zS/+jTjz9hCpSJc9tT1gMbFZPvZeecDRGseXIYz3RmywJ+nSDyRF3unL
-	cjJxLxClBAlRDAHEA03dPmJ1FJr3DhhQDVZkmXE9hAgwHs9M05ZcrzU/UQzgwftE7a4q/GMJTbT
-	uXe6xm3J0xcvR1W
-X-Received: by 2002:a17:902:e790:b0:2dd:ad74:ac1d with SMTP id d9443c01a7336-2e842cfc98dmr74612865ad.24.1791778602300;
-        Sun, 11 Oct 2026 21:16:42 -0700 (PDT)
+        bh=rP4KsK1HtGSJGS/ybx9BjunDk3siJwpiSOpuzBq9Cq8=;
+        b=CM/JxcyLWjYm1n7JyNhdxdvRpVH23O9tp3npgQzuDLF0Mz46hOb9xLT4HpSyjw99db
+         qDsk/p1q8qxmuxNYxeT3Vwz+910rHcwJ97XUM/0oHxYESYUrpIahMIGUTl0GyluzBBKA
+         RrgOwj63PSVGnXDQ1mVB6RCRNt9GvbRriO5stKkiPQfLn5eEggo2GV7GsbiV1Xuggytg
+         coQ2cJ5fB8urBJoggwJLhw4J7suf5aygGs9csq/4jpRZDTPx01yJktGRzcE9DOIKoADO
+         cbNX8NlRKtVlboTYJVsEpVFNvxKfriOBf3IfWWDTD8l4xFn4Om6eoqv1HFljRamxs1pd
+         S4Zw==
+X-Forwarded-Encrypted: i=1; AKwUvBycMCQAsCJqJ8cgb34cqLEEOzkGeUwpg/ytd1439yfX7AP2y4nX0gi6zWFEd74VEeDbV7/x5Ck=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL5oZXzAE0OKIWzOBgaUwkujI/1mtywkN6AxLaAPMO86hLE/8V2
+	t1PCIIDnTVCj/S80t4FxBBej7mg9OTs2D1aCexlepQ80ALCDQ0bR8QHw9dttpXxL2Rg=
+X-Gm-Gg: AYBFou02KbvzWB3kPRdbldHEZafixuNAInp9+OzvXEqcYzpWBKe6ddKf7SH/S7FT1Cf
+	onZFOOVAq1uQYMFkRrUFJiBIaf5TVJxVCTDV/EnJjL74ECsto6zs0S/IO3o7UN6pRsViEp46Z2d
+	DUNOYu1Sqmt5nrJkjI8+t+1E5G19sctYYNbqtveUx+somFlGc/nfCCalqaBvMOnVXvqypte/H94
+	5+OByH3FYT7iTQV2sE49PcN7HnW/byp17tmiI0b2CrYfGrpBVkRtOe3rDMJOC1BuwE+xbzztk53
+	deTfV+g9w1chBvPZt5caI/K0Ggd+bYjxTEJSXz0czvwpYVBMzegmDuQ9aJR44ZueXOT2wUBZKyq
+	fh5m3h1EISrvY9Czuy6TCtB4kLALwNOM/87mQy25BKmtF9g5B2g2o8zM1xLM7u1PNiRaTgKA2Zn
+	ey3H6Ey+xYdedFSOuvFZJ2wbFJAK+UmkPVJud3mqlsJMKZGi7ld/n7eIPueIfBPE+ViNM4KLzs4
+	Df2Hg==
+X-Received: by 2002:a17:902:ec8f:b0:2e8:31ef:d24 with SMTP id d9443c01a7336-2e842bc2b36mr71098925ad.38.1791778606855;
+        Sun, 11 Oct 2026 21:16:46 -0700 (PDT)
 Received: from yhlee-960QFG.. ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8421af46asm38240025ad.39.2026.10.11.21.16.36
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8421af46asm38240025ad.39.2026.10.11.21.16.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2026 21:16:40 -0700 (PDT)
+        Sun, 11 Oct 2026 21:16:46 -0700 (PDT)
 From: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 To: Alexander Duyck <alexanderduyck@fb.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -76,9 +76,9 @@ Cc: kernel-team@meta.com,
 	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yehyeong Lee <yhlee@isslab.korea.ac.kr>
-Subject: [PATCH net v3 4/5] eth: fbnic: return the page reference taken for a dropped Rx fragment
-Date: Mon, 12 Oct 2026 13:15:59 +0900
-Message-ID: <9d77812119330cd316b7eea7fd35fa4038ff86a0.1791775409.git.yhlee@isslab.korea.ac.kr>
+Subject: [PATCH net v3 5/5] eth: fbnic: bound the XDP Tx completion head to the ring
+Date: Mon, 12 Oct 2026 13:16:00 +0900
+Message-ID: <99790c3eceac9ac0bc9afbd90e8adb9789a08c50.1791775409.git.yhlee@isslab.korea.ac.kr>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1791775409.git.yhlee@isslab.korea.ac.kr>
 References: <cover.1791775409.git.yhlee@isslab.korea.ac.kr>
@@ -90,41 +90,58 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fbnic_add_rx_frag() takes a page reference through
-fbnic_page_pool_get_data(), which decrements the buffer's pagecnt_bias,
-before handing the page to xdp_buff_add_frag().  xdp_buff_add_frag()
-fails when the buffer already holds MAX_SKB_FRAGS fragments, and on that
-path the reference is lost: add_frag_failed is set and the frame is
-dropped, but the bias is not restored and fbnic_put_pkt_buff() only
-returns the fragments that were actually attached.
+fbnic_clean_twq1() walks tx_buf[] from ring->head to the head the device
+reports in the Tx completion (FBNIC_TCD_TYPE0_HEAD1_MASK, a 16-bit
+field). head is masked to the ring, the device head is not, so a head
+outside the 1024-entry ring is never reached and the loop does not
+terminate; it keeps releasing the same buffers to the page pool. A head
+that is inside the ring but past the posted tail walks over descriptors
+from an earlier wrap and releases their pages a second time.
 
-The page is then never returned to the page pool.  A device that keeps
-sending payload completions for one packet past MAX_SKB_FRAGS leaks a
-page for every completion beyond the limit.
+Return without cleaning if the device head is outside the ring or outside
+the posted window, the way fbnic_clean_bdq() already guards its head.
+fbnic_clean_twq0() masks the head difference to the ring and is finite;
+twq1 did not, which this brings in line. A head equal to the tail is
+accepted, as fbnic_nv_flush() passes the tail to drain the whole ring.
 
-Restore pagecnt_bias on the failure path, the exact inverse of the get,
-so fbnic_page_pool_drain() reclaims the page.
+  Oops: general protection fault, probably for non-canonical address
+  0xfbd59c000000002b: 0000 [#1] SMP KASAN NOPTI
+  KASAN: maybe wild-memory-access in range
+  [0xdead000000000158-0xdead00000000015f]
+  RIP: 0010:page_pool_return_netmem+0x2a/0x3f0
+  Call Trace:
+   <TASK>
+   fbnic_clean_twq1.isra.0+0x20c/0x410 [fbnic]
 
-Fixes: 61f9a066c309 ("eth: fbnic: Use shinfo to track frags state on Rx")
+The loop was exercised by passing a crafted completion head to
+fbnic_clean_twq1() under KASAN; no hardware is involved. On a kernel
+without soft-lockup detection the repeated release trips a page_pool
+use-after-free before the loop is otherwise noticed.
+
+Fixes: cf4facfb132a ("eth: fbnic: Add support for XDP queues")
 Cc: stable@vger.kernel.org
 Signed-off-by: Yehyeong Lee <yhlee@isslab.korea.ac.kr>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index 47ded7a9e0a81..7a9bd91bcc41c 100644
+index 7a9bd91bcc41c..3a148eb4e560f 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -1171,6 +1171,8 @@ static void fbnic_add_rx_frag(struct fbnic_napi_vector *nv, u64 rcd,
+@@ -661,6 +661,12 @@ static void fbnic_clean_twq1(struct fbnic_napi_vector *nv, bool pp_allow_direct,
+ 	u64 total_bytes = 0, total_packets = 0;
+ 	unsigned int head = ring->head;
  
- 	added = xdp_buff_add_frag(&pkt->buff, netmem, pg_off, len, truesize);
- 	if (unlikely(!added)) {
-+		/* Give back the reference fbnic_page_pool_get_data() took */
-+		qt->sub1.rx_buf[pg_idx].pagecnt_bias++;
- 		pkt->add_frag_failed = true;
- 		netdev_err_once(nv->napi.dev,
- 				"Failed to add fragment to xdp_buff\n");
++	/* bound the device head to the ring; see fbnic_clean_twq0() */
++	if (unlikely(hw_head > ring->size_mask ||
++		     ((hw_head - head) & ring->size_mask) >
++		     fbnic_desc_used(ring)))
++		return;
++
+ 	while (hw_head != head) {
+ 		struct page *page;
+ 		u64 twd;
 -- 
 2.43.0
 
