@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6190F3DC87A
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9073E317B
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791846931; cv=none; b=DF9hUZiOapAwMit9NoSP9qEBa5WAJED2CXWDIKCGP1YSZ5WeiB2E/ceLz2oqf+Vo0ueZUcCbw858xOhG4U2i+6+lz+QnSkfNSpbxmNjKJM64QfpapS4eYkKZMs8irG8pav9PXKgBXh5PpNiHvFQXSWJWQ7oPpg3+Iie1HYsK4KE=
+	t=1791846932; cv=none; b=GIsBwf2x4L9/R+4Jcq/VmH/Ynv7kP+kopDOpQoURyE5K1E8clIrupEJkMAaWUgzJqHIftYKe2e7EniD4Bg8AtmD2d0x7HYeCv36zOG9o7FpZTB4m7BDsaDHCQpZQoPYVcTTNyZti1Z0f/+Z+7QAQvhyFNtROS0NN7SYegffT4cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791846931; c=relaxed/simple;
-	bh=AymXMQmt+3em8zDOFYZJhTL3YBpqKBUgiFhs5BH0asw=;
+	s=arc-20240116; t=1791846932; c=relaxed/simple;
+	bh=caFZMsXPTe8fscQ9kBJQMJMKhzeXuQGmkRQR54yP2k0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i2P+TcKO84lLPw4QI02tlMChIMGVXxTy/ryOOlioc5Uh2lJZQ0e4gKQzMhUq0xCVdWh3f2RfJcxORW+v+tTg+V7MbzBBOUsfuTbtkauQEt1TCDOKh4jGLky/HXiUGdmK/cmRq3GQLotyWes0wW7x+h9y7bGSbmIWtSLnCORri6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iy9v7uRp; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=MJafXYJGZOeksi0wuAVuvZPtpDMFHl5/xVk3zgLqLr2XOMzXsFgNRhOVj+cyu3aRpF631TUh62L7jJ1biDY2OY2RmiinyuN6mF7OXAvy8d5oWXGDud7GxdqALtQauN3ug2zyUN9qtsnLZCzjlq5ZUbUvKhl2kG+NNoduRimv+vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COkpJ+No; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iy9v7uRp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1760E1F008A2;
-	Mon, 12 Oct 2026 23:15:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="COkpJ+No"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95AD71F008A1;
+	Mon, 12 Oct 2026 23:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791846930;
-	bh=jkhPWV2GXNaFsqIDa1OHO/6ewuL3a7PJfwVTq1ubvfU=;
+	s=k20260515; t=1791846931;
+	bh=Z5kA9mQevNCzRqctBOtgmPUbzLyAWl49+s2VlpFfwo0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iy9v7uRpMlGF3Uc/lw76o20J8C4POQK6uToY8ue9TVU9/mf7d3peS7hf/WAKzo50c
-	 /RAq7LvAwVy3WUMbRcUFJU415EOG3+BKDF2x0OT5Hkh8bhUmj7eUbyW152ylf2pTfy
-	 oSLBbo2oIZ3uxKtVR8SkrFdSdLEQPgc8IXfDOy3mQQASkhu7vBQSFiWkf11i91SV14
-	 jJpbPSj6Ver2LMS3Saz+PqJf/P3jEuFskXmA2nhcORPnHZrovTNzQapidfWX/MOH6Q
-	 FIiT2Ak4c3X7SDoPkY0JH/ynH1YW4AgNg8tKHKrMU0UKwlUrc7Huxn1cdNoHKYK3Kq
-	 sFKqWip0vjmtg==
-Subject: Re: [PATCH net v2 10/15] ice: E825: perform a soft reset when
- starting the PHY timer
+	b=COkpJ+No7IRez+DPHTCvSO+Ri9ogkhI7tFzwFBBx3MrAyKpXmChA/F4aj1ssp3c6B
+	 dd6t1KsIEc8AyzBWC3B7d5E8zamKrAdH9vv3UusgXle+pGhoXJaSVFNgvsu4B7VWk7
+	 R4XgQKE/NIR27gqnTubdNfEZXCmxp1mvzqdU7ETEA6xyiYcpmnoMnoUu62yUK2e89R
+	 +5xKsZ+2lw4cMAA17Pm5kW4vQpxAkjfAPOpxC2fOkLzWve3GWFVPlhOQHpNeFEdgyF
+	 j3JePaMWNPFMxsufJ2x5+kYs+vbJBDdIWm59ZW9xkoHLfZ9LadT6pbQucseagSbweT
+	 bBsdDOVwysBjA==
+Subject: Re: [PATCH net v2 11/15] ice: wait for in-flight Tx timestamps before
+ flushing the tracker
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -38,10 +38,10 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  poros@redhat.com, richardcochran@gmail.com, horms@kernel.org,
  pmenzel@molgen.mpg.de, aleksandr.loktionov@intel.com,
  alexander.nowlin@intel.com
-Date: Mon, 12 Oct 2026 23:15:28 +0000
-Message-ID: <179184692867.434549.17457545223529058481@kernel.org>
-In-Reply-To: <20261008215614.1987250-11-anthony.l.nguyen@intel.com>
-References: <20261008215614.1987250-11-anthony.l.nguyen@intel.com>
+Date: Mon, 12 Oct 2026 23:15:30 +0000
+Message-ID: <179184693018.434549.11776352686949111433@kernel.org>
+In-Reply-To: <20261008215614.1987250-12-anthony.l.nguyen@intel.com>
+References: <20261008215614.1987250-12-anthony.l.nguyen@intel.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,10 +52,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -63,201 +63,175 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] The patch adds a call to ice_ptp_phy_soft_reset_eth56g() in
-  ice_start_phy_timer_eth56g() (ice_ptp_hw.c:2155), so every runtime…
-- [Medium] The patch runs the sweep plus soft reset on the live restart
-  path (link-up, rebuild, and at the end of the series settime64) but…
-- [Medium] The runtime sweep and soft reset added by this patch are not
-  synchronized with the Tx timestamp consumer.
-- [Low] ice_ptp_clear_tx_memory_status_eth56g() returns void.
+- [Medium] On E830 the flush still leaves hardware-ready entries
+  unacknowledged, so the drain does nothing for a device the commit…
+- [Low] ice_ptp_rebuild_owner() calls ice_ptp_flush_all_tx_tracker(),
+  which now runs ice_ptp_wait_for_tracker_drain() on every port of the…
+
+Pre-existing issues:
+- [Low] At this commit, ice_ptp_process_tx_tstamp() sets drop_ts =
+  !link_up (line 592).
 
 --
 
-ice: E825: perform a soft reset when starting the PHY timer
+ice: wait for in-flight Tx timestamps before flushing the tracker
 
-This commit makes ice_start_phy_timer_eth56g() call
-ice_ptp_phy_soft_reset_eth56g() right after the PHY timer is stopped.
-The E825 PHY timer block is now soft reset, and its Tx timestamp memory
-swept, before the PHY is reprogrammed. ice_start_phy_timer_eth56g() is
-used by the runtime restart paths, so the sweep and reset now also run on
-live ports.
+This patch adds a poll to ice_ptp_flush_tx_tracker(). For up to 10 ms per
+port, it waits for the PHY to publish ready bits for all in-use Tx
+timestamp slots, and only then flushes the tracker. E810 has no ready
+bitmap, so it skips the wait.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> index e83ad2bb8d420..e5bfede904314 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index 818e2e265a7e5..5220de274819a 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> @@ -744,6 +744,68 @@ ice_ptp_alloc_tx_tracker(struct ice_ptp_tx *tx)
 
 [ ... ]
 
-> @@ -2150,6 +2152,10 @@ int ice_start_phy_timer_eth56g(struct ice_hw *hw, u8 port)
->  	if (err)
->  		return err;
->  
-> +	err = ice_ptp_phy_soft_reset_eth56g(hw, port);
-> +	if (err)
-> +		return err;
+> +static void
+> +ice_ptp_wait_for_tracker_drain(struct ice_pf *pf, struct ice_ptp_tx *tx)
+> +{
+> +	bool drained;
+> +	int err;
 > +
+> +	if (!tx->has_ready_bitmap)
+> +		return;
 
 [Severity: Medium]
-Does this discard Tx timestamps that the software tracker still treats as
-outstanding?
+Does the drain actually help on E830? E830 has has_ready_bitmap set, so it
+enters this wait. The commit message also lists it among the devices that
+benefit:
 
-ice_ptp_phy_soft_reset_eth56g() starts by calling
-ice_ptp_clear_tx_memory_status_eth56g(). That function reads all
-INDEX_PER_PORT entries, which clears every valid/ready bit on the port.
+  "Only later devices (E822, E825, E830) have the bitmap ... Thus, skip
+  the wait for E810"
 
-On the E825 branch of ice_ptp_port_phy_restart(), the tracker is only
-marked stale before this runs:
+However, ice_clear_phy_tstamp() in ice_ptp_hw.c has no E830 case:
 
-drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_port_phy_restart() {
-    ...
-		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
-
-		err = ice_start_phy_timer_eth56g(hw, port);
-    ...
+ice_clear_phy_tstamp() {
+	switch (hw->mac_type) {
+	case ICE_MAC_E810:
+		return ice_clear_phy_tstamp_e810(hw, block, idx);
+	case ICE_MAC_GENERIC:
+		return ice_clear_phy_tstamp_e82x(hw, block, idx);
+	case ICE_MAC_GENERIC_3K_E825:
+		return ice_clear_ptp_tstamp_eth56g(hw, block, idx);
+	default:
+		return -EOPNOTSUPP;
+	}
 }
 
-So outstanding entries keep their in_use bit and their skb reference.
+ice_ptp_flush_tx_tracker() ignores that return value, then clears in_use
+and frees the skb anyway:
 
-Suppose hardware has captured a timestamp, but the IRQ thread has not
-consumed it when the sweep reaches that index. Its ready bit is then gone
-and will not be set again. ice_ptp_process_tx_tstamp() skips the entry
-until the 2 second timeout:
+	if (!hw->reset_ongoing && (tstamp_ready & BIT_ULL(phy_idx)))
+		ice_clear_phy_tstamp(hw, tx->block, phy_idx);
 
-	if (tx->has_ready_bitmap &&
-	    !(tstamp_ready & BIT_ULL(phy_idx))) {
-		if (drop_ts)
-			goto skip_ts_read;
+ice_ptp_reset_ts_memory(), ice_ptp_port_phy_stop() and
+ice_ptp_port_phy_restart() also do nothing for E830.
 
-		continue;
-	}
+So on E830, wouldn't an entry that becomes ready during the wait stay set
+in E830_PRTMAC_TS_TX_MEM_VALID with no owner? That is the orphaned ready
+bit state this patch is trying to prevent.
 
-When the timeout expires, it increments pf->ptp.tx_hwtstamp_timeouts.
-Before this change the timestamp memory survived the restart, so the
-stale entry would have been read and dropped quietly.
+On the rebuild path the tracker stays initialized. For E830,
+ice_ptp_ts_irq() re-arms PFINT_OICR whenever ice_ptp_tx_tstamps_pending()
+sees a hardware ready bit.
 
-At this commit, ice_ptp_tx_tstamps_pending() also sees in_use as
-non-empty. It keeps re-arming PFINT_OICR_TSYN_TX for those 2 seconds.
+Could such an orphan keep re-triggering the interrupt, or be picked up as
+a stale timestamp by a later request that reuses the index?
 
-A later patch in the series stops counting stale entries in IRQ context.
-The 2 second slot/skb hold and the timeout count are still there at the
-end of the series, though.
+The actual effect depends on two hardware details: whether E830 valid bits
+clear only when the timestamp is read, and whether CORER resets the PRTMAC
+timestamp memory. The E830 case is still missing from
+ice_clear_phy_tstamp() at the end of the series.
 
-The final patch, "ice: Recalibrate PHY after settime64 on E825-C", makes
-ice_ptp_settime64() call ice_ptp_restart_all_phy() on live ports without
-flushing, which makes this easier to hit. The rebuild path is not
-affected, because ice_ptp_rebuild_owner() calls
-ice_ptp_flush_all_tx_tracker() first.
-
-Would it make sense to flush the tracker with ice_ptp_flush_tx_tracker()
-before the soft reset, instead of only marking it stale? The commit
-message also does not mention that in-flight timestamps are discarded on
-every restart.
-
-[Severity: Medium]
-Is Tx timestamp capture still enabled while this sequence runs?
-
-ice_stop_phy_timer_eth56g() only clears PHY_REG_RX_OFFSET_READY. Its
-kernel-doc says PHY_REG_TX_OFFSET_READY is left set, and that "Tx
-timestamp requests should be disabled by other means".
-
-In ice_ptp_port_phy_restart(), the only other means are setting
-tx.calibrating = true and calling ice_ptp_mark_tx_tracker_stale(). These
-block new ice_ptp_request_ts() reservations. Descriptors already posted to
-the Tx ring with a timestamp request are still outstanding in hardware.
-
-Inside ice_ptp_phy_soft_reset_eth56g(), the memory sweep happens first.
-Then come a PHY_REG_GLOBAL read/write and a sleep, and only after that is
-the reset asserted:
-
-	ice_ptp_clear_tx_memory_status_eth56g(hw, port);
-	...
-	usleep_range(5000, 6000);
-
-	global_val |= PHY_REG_GLOBAL_SOFT_RESET_M;
-
-A timestamp might be captured after the sweep has passed its index but
-before the assert. The memory entry would then stay valid while the reset
-zeroes the internal outstanding-timestamp counter.
-
-Wouldn't that cause the counter/memory mismatch that the comment on
-ice_ptp_clear_tx_memory_status_eth56g() warns "may become out of sync and
-prevent new timestamp interrupts"?
-
-On the rebuild path, ice_ptp_flush_all_tx_tracker() has already freed the
-software index. A new request that reuses the index could then read the
-leftover ready entry.
-
-Previously the soft reset only ran at PHC init, with no traffic. Later in
-the series, "ice: wait for in-flight Tx timestamps before flushing the
-tracker" adds drain logic, but only to ice_ptp_flush_tx_tracker() and not
-to this restart path. The window is still there at the end of the series.
+> +
+> +	err = read_poll_timeout(ice_ptp_is_tracker_drained,
+> +				drained, drained, 500, 10 * USEC_PER_MSEC, false,
+> +				pf, tx);
 
 [Severity: Low]
-What happens if one of the sweep reads fails here?
+Will this poll always run until its full 10 ms timeout on the post-reset
+rebuild path?
 
-ice_ptp_clear_tx_memory_status_eth56g() returns void and only warns:
+This call chain reaches the poll for every port on the adapter, one port
+after another:
 
-	for (idx = 0; idx < INDEX_PER_PORT; idx++) {
-		err = ice_clear_ptp_tstamp_eth56g(hw, port, idx);
-		if (err)
-			failed++;
-	}
+ice_rebuild()->ice_ptp_rebuild()->ice_ptp_rebuild_owner()->
+ice_ptp_flush_all_tx_tracker()->ice_ptp_flush_tx_tracker()
 
-	if (failed)
-		dev_warn(ice_hw_to_dev(hw), "Failed to clear %d PHY timestamp registers for port %u\n",
-			 failed, port);
+ice_reset_subtask() clears reset_ongoing before the rebuild:
 
-ice_ptp_phy_soft_reset_eth56g() then toggles the soft reset anyway. Next,
-ice_start_phy_timer_eth56g() sets TX/RX_OFFSET_READY and returns success,
-and ice_ptp_port_phy_restart() clears tx.calibrating.
+		} else {
+			/* done with reset. start rebuild */
+			pf->hw.reset_ongoing = false;
+			ice_rebuild(pf, reset_type);
 
-The comment justifies this by saying software only reads indices it
-already knows are ready. If the failed read was on a valid entry, though,
-the reset zeroes the outstanding-timestamp counter while that entry stays
-in memory. That is the same counter/memory desync the comment warns can
-prevent new timestamp interrupts.
+So the reset_ongoing early return in ice_ptp_is_tracker_drained() does not
+skip the poll.
 
-Before this patch the sweep and reset never ran at runtime, so a
-transient sideband failure during a restart could not cause this.
+A CORER/GLOBR/EMPR reset drops the Tx rings. A request whose packet was
+dropped that way will never get a ready bit, so
+ice_ptp_is_tracker_drained() keeps returning false. That costs about 20
+rounds of SBQ ready-bitmap reads per port. On an 8-port adapter it adds
+roughly 80 ms to reset recovery.
 
-The commit message says "This ensures that we clear any outstanding Tx
-timestamp memory", which does not hold when a sweep read fails. Should
-the sweep failure be propagated to the caller?
+A Tx hang is a common reason for the reset, and it is also the case most
+likely to leave such entries behind.
 
-[Severity: Medium]
-Does anything keep the Tx timestamp IRQ thread out while the sweep and
-soft reset run?
+The wait also seems unnecessary there. Right after the flush,
+ice_ptp_rebuild_owner() does:
 
-ice_ptp_port_phy_restart() holds adapter->ps_lock. The consumer path does
-not take ps_lock, or anything else that excludes the restart:
+	ice_ptp_flush_all_tx_tracker(pf);
 
-ice_misc_intr_thread_fn()
-  ice_ptp_process_ts()
-    ice_ptp_process_tx_tstamp() / ice_ptp_tx_tstamp_owner()
+	/* Enable quad interrupts */
+	err = ice_ptp_cfg_phy_interrupt(pf, true, 1);
 
-tx->lock only covers the in_use/skb bookkeeping.
+ice_ptp_cfg_phy_interrupt() calls ice_ptp_reset_ts_memory(), which resets
+the E82x timestamp memory. On E825 ports with link up,
+ice_ptp_restart_all_phy() then does a PHY soft reset.
 
-ice_ptp_process_tx_tstamp() reads the ready bitmap once with
-ice_get_phy_tx_tstamp_ready(). It then calls ice_read_phy_tstamp() for
-each in_use index that bitmap marked ready. Those reads can interleave
-with ice_ptp_clear_tx_memory_status_eth56g() and with the roughly 10ms
-PHY_REG_GLOBAL toggle.
+Would it make sense to wait only on the release path? That is where new
+requests are blocked and captures can still be in flight.
 
-Suppose the bitmap snapshot is taken before the sweep, and the per-index
-read happens after the reset. The IRQ thread then reads an entry that was
-already cleared, against a counter that was just zeroed.
+> +	if (err) {
+> +		dev_dbg(ice_pf_to_dev(pf), "Timed out waiting for in-flight Tx timestamps on block %u\n",
+> +			tx->block);
+> +	}
+> +}
+> +
 
-The comment on ice_ptp_clear_tx_memory_status_eth56g() says reads outside
-the soft reset procedure can put the counter out of sync and prevent new
-timestamp interrupts. The IRQ thread could also issue sideband reads to
-the port's timestamp block while the reset is asserted.
+[ ... ]
 
-ice_ptp_restart_all_phy() runs this sequence on every live port on the
-adapter, including other PFs' ports. It is called on rebuild, and on
-settime64 at the end of the series. Nothing in the series adds
-synchronize_irq() or similar to keep the consumer out during this
-sequence.
+> @@ -760,6 +822,8 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
+>  	int err;
+>  	u8 idx;
+>  
+> +	ice_ptp_wait_for_tracker_drain(pf, tx);
+> +
+
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch. The new
+drain only covers ice_ptp_flush_tx_tracker(). At this commit,
+ice_ptp_process_tx_tstamp() can still create the same orphan when the link
+goes down:
+
+	bool drop_ts = !link_up;
+	...
+			if (drop_ts)
+				goto skip_ts_read;
+
+When a slot is not ready yet, this path clears in_use and frees the skb
+without touching the PHY entry. If the capture finishes later, its ready
+bit has no owner. That is the case the commit message describes.
+
+The next patch in the series, "ice: keep Tx timestamp slots tracked until
+completion or timeout", removes the link-down drop. After that patch, only
+the 2 second timeout frees a slot that is not ready. That timeout is
+intentional and is documented both in the ice_ptp_process_tx_tstamp()
+kernel-doc and in that patch's commit message. So by the end of the series
+this no longer applies.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008215614.1987250-1-anthony.l.nguyen%40intel.com
