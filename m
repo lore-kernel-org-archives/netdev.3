@@ -1,81 +1,162 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4314246762;
-	Mon, 12 Oct 2026 13:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58592236EB;
+	Mon, 12 Oct 2026 13:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791811724; cv=none; b=I0cbZz7iXIzd0h+Z1u42DoT++FPON1BnjklJaNziS4rNAb+5/9IiA/uxGqeL5kXZhlowCzGYlfhyFW6/4obB7aMPBug+BYPNYvMvgFY/dI/knu1eoEP3CIeGF3YlkSTXXRxgHyUOwihZhG83Y1z97ZxPd11tQmy29pJsVDNn3Gw=
+	t=1791811776; cv=none; b=tMVL4dnwOahsTDCua7kIRCtPuN9ZHUO0QnsBtj2V8I+gRTBaTRYY9fAQxxHlb/ZgcVS6xDfQVT9e/Zv1OXQdG9hklA6icH/Yb1lFWYBSjYTM3xECLTWiT6xHZ/c4xniSIsraC07zx4FbPKa7dpTPlBhNtccQDjJ0kijsrdFrFzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791811724; c=relaxed/simple;
-	bh=K0Obv5/zq4Q+xZ7fYSMKMHEO5mo1oQXLTSqqs+AnRfM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EtZawGIO8qT5Q6HZ5Zcxz2AH6fxjIeUGQHY/gp09rROVxQuwsPrQcBByw3UpkRAtxF/xRWqQdpwIrwzTq+6ywXloqmZJ1cfEmCMvEuHhFkmapKj5MvSHb6dmqx0llfAr0GWlA1l7NiVoX4WeW5eEfk7c/8kdk0nJEEs6YKxVJ6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100.1)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1xGG4r-000000006ZI-2Wlu;
-	Mon, 12 Oct 2026 13:28:29 +0000
-Date: Mon, 12 Oct 2026 14:28:26 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Hee-Suk Kim <hskim@dilluti0n.com>, netdev@vger.kernel.org,
-	javen <javen_xu@realsil.com.cn>, nic_swsd@realtek.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] r8169: allow Giga Lite fallback on RTL8168EP
-Message-ID: <aszgerrI8yoLTaX0@makrotopia.org>
-References: <20261010135356.85454-1-hskim@dilluti0n.com>
- <dbdd5abd-f1b1-443c-adc3-6ecdc95f4854@gmail.com>
- <4435b286-1638-464a-821c-f486b647c9f7@lunn.ch>
+	s=arc-20240116; t=1791811776; c=relaxed/simple;
+	bh=1/h8OGci7sib4x6nRXRpLYPTLvff9hRPycVbbE11w10=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EndohHbj9pNFW9ihhbB5hwwfY6fRIfvMGbcQi7+ZB1JZNhtesudqvc7zbrfXNB94fWFNVjrwy8/dqKNxHFG+0Sg4OOjFmcMo3jC7nE5kOMoIIWvTnM3m6Z1qs6I0pPS5rhGiQXoW/PCsFotxUgPoXdLZHondkFjYNTruZJQ0DbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3rJo9mF; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3rJo9mF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA4A1F0089B;
+	Mon, 12 Oct 2026 13:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791811775;
+	bh=Qt71Wpe5vZz/eJo/NTKl4S8jSBeNz9JRB3NW9TiAP+Q=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=P3rJo9mFl5uX74K17iAzES6Zh2fPEWw9qO3gf5/8cWp9MOsdEz+NTkndRuUKl+t+c
+	 KIcZT0heGNIsx6tsIMrp+iApc7TRZhqXhTHCYzlfM5o50ETlVCcV8mW6eNAxvSN2A5
+	 3+zmYEJB/R8wTQ2v3gkji3eBPzdwMtQpLmKEhw71k3EH6gNn2bWu4b4upI0JZZRu5h
+	 GUfRzaVMdKjTt6X6Zu8AO7h2uxOHI9w9uzINRrjLXOIOYP8oubO+gVnZsRrWvSvQF2
+	 q2X2yjUWcKRnpsoGiO5kBgsPfVOGk1PyEM4SSN7+WbMRD5Vm+FLl9V/HU3TbqcJKN2
+	 FYrjLoPnICjHA==
+Subject: Re: [PATCH net v3] net/rds: ib: zero the unwritten tail of a short
+ receive fragment
+From: netdev-bot+sashiko@kernel.org
+To: shubham@octane.security
+Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, achender@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org, gio@octane.security,
+ tjdqudcks0424@naver.com
+Date: Mon, 12 Oct 2026 13:29:34 +0000
+Message-ID: <179181177407.434549.13953919662725859235@kernel.org>
+In-Reply-To: <20261008124940.13371-1-shubham@octane.security>
+References: <20261008124940.13371-1-shubham@octane.security>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4435b286-1638-464a-821c-f486b647c9f7@lunn.ch>
 
-On Mon, Oct 12, 2026 at 02:46:27PM +0200, Andrew Lunn wrote:
-> On Sun, Oct 11, 2026 at 10:59:42PM +0200, Heiner Kallweit wrote:
-> > On 10.10.2026 15:53, Hee-Suk Kim wrote:
-> > > Giga Lite is a Realtek proprietary mode which allows links of up to
-> > > 500 Mbps over two-pair cabling. In South Korea, it is widely used to
-> > > support 500 Mbps plans by most ISPs. The vendor driver [1] sets PHY
-> > > page 0xa42, reg 0x14, bit 9 to allow it on RTL8168H and FP. The driver
-> > > does not handle RTL8168EP but I confirmed the same works for it by
-> > > setting the PHY register via SIOCSMIIREG on an SK Broadband 500 Mbps
-> > > plan [2].
-> > > 
-> > > With the bit set, the link still came up at about 470 Mbps even when
-> > > only 10/100 was advertised. So set it only when autonegotiating with
-> > > 1000baseT/Full advertised, and clear it otherwise, to respect a lower
-> > > advertised speed. This matches what the vendor driver does for
-> > > RTL8168H and FP.
-> > > 
-> > > PHYSR reports 0x30 in its speed field to denote a Giga Lite link. This
-> > > value is not handled in rtlgen_decode_physr(), so the reported speed
-> > > varies between 100 and 1000 Mbps on the same link. Handle it to report
-> > > 1000, as there is no 500 Mbps uAPI.
-> > > 
-> > > [1] https://github.com/mtorromeo/r8168/blob/b3e24e4aa74a3561618d0abf01b708bd55def57a/src/r8168_n.c#L6375-L6390
-> > > [2] https://www.tworld.co.kr/web/product/callplan/NI00000567
-> 
-> I'm in agreement with Heiner here. If we add this, we do it properly.
-> 
-> Please add ETHTOOL_LINK_MODE_500baseT2_Full. Make the PHY report this
-> link mode in it features, add the speed, allow it to be negotiated,
-> reported in ethtool etc.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-While at it also consider ETHTOOL_LINK_MODE_1000baseT2_Full which is
-supported as "2.5G Lite" by the RTL8221/RTL8226 2.5G PHY family.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch closes the info leak, but its v3 approach rests on a
+  false premise, and the commit message leaves out what the new memset…
+
+--
+
+net/rds: ib: zero the unwritten tail of a short receive fragment
+
+This patch zeroes the unwritten tail of an RDS/IB receive fragment page in
+rds_ib_process_recv() when the received payload is shorter than
+RDS_FRAG_SIZE. The goal is to stop rds_ib_inc_copy_to_user() from copying
+stale page contents to userspace when a peer sends a fragment shorter than
+its h_len implies.
+
+Closes: https://lore.kernel.org/netdev/20261006205204.1322102-1-tjdqudcks0424@naver.com/
+
+> diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
+> index bd6cb3ffaa571..9695c7f24eaa7 100644
+> --- a/net/rds/ib_recv.c
+> +++ b/net/rds/ib_recv.c
+
+[ ... ]
+
+> @@ -949,6 +950,19 @@ static void rds_ib_process_recv(struct rds_connection *conn,
+>  		}
+>  	}
+>  
+> +	/* The device wrote only data_len bytes into this recycled fragment
+> +	 * page.  Zero the unwritten tail so a later rds_ib_inc_copy_to_user(),
+> +	 * which copies up to the peer-declared h_len, cannot hand stale page
+> +	 * contents to userspace.
+> +	 */
+> +	if (data_len < RDS_FRAG_SIZE) {
+> +		void *frag = kmap_local_page(sg_page(&recv->r_frag->f_sg));
+> +
+> +		memset(frag + recv->r_frag->f_sg.offset + data_len, 0,
+> +		       RDS_FRAG_SIZE - data_len);
+> +		kunmap_local(frag);
+> +	}
+
+[Severity: Medium]
+Isn't this condition true for the final fragment of almost every well-formed
+message? A message whose h_len is not a multiple of RDS_FRAG_SIZE always
+ends with a short fragment. So a 100 byte message now pays for a kmap and a
+memset of roughly 4KB in the receive completion path.
+
+For well-formed traffic that work doesn't look necessary, because
+rds_ib_inc_copy_to_user() already stops at h_len:
+
+net/rds/ib_recv.c:rds_ib_inc_copy_to_user() {
+    ...
+		to_copy = min_t(unsigned long, to_copy, len - copied);
+    ...
+}
+
+The stale tail can only be reached when a peer sends a short non-final
+fragment, meaning data_len < min(RDS_FRAG_SIZE, ic->i_recv_data_rem).
+
+The v3 changelog gives this reason for dropping the v2 length check:
+
+  A zero-copy send with a small iovec segment can legitimately produce a
+  non-final fragment shorter than RDS_FRAG_SIZE
+
+Can that happen on RDS/IB? rds_sendmsg() rejects zero-copy on every
+transport except TCP:
+
+net/rds/send.c:rds_sendmsg() {
+    ...
+	if (zcopy) {
+		if (rs->rs_transport->t_type != RDS_TRANS_TCP) {
+			ret = -EOPNOTSUPP;
+			goto out;
+		}
+    ...
+}
+
+On the copy path, rds_message_copy_from_user() gets its sg entries from
+rds_page_remainder_alloc(). Every entry it returns is a full PAGE_SIZE
+except the last one. rds_ib_xmit() then splits each entry with:
+
+	len = min(RDS_FRAG_SIZE, sg_dma_len(scat) - rm->data.op_dmaoff);
+
+That means only the last fragment of a message should ever be short.
+
+Would it be better to bound the memset by
+min(RDS_FRAG_SIZE, ic->i_recv_data_rem), which is already set at this
+point? Rejecting that case as v2 did is another option. Either one should
+still close the leak and leave well-formed traffic alone.
+
+As written, a peer that sends short non-final fragments also gets its
+message passed to the application with zero-filled holes, as if it were
+valid.
+
+The commit message also says:
+
+  Fragments that fill the page are unaffected.
+
+In the common small-message case the final fragment doesn't fill the page.
+Could the changelog say that the memset runs on most messages?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008124940.13371-1-shubham%40octane.security
