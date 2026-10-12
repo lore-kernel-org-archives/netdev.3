@@ -1,238 +1,257 @@
-Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1CF38C2C3
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 05:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD7A23C51D
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791784594; cv=none; b=nUsRfr/CdAiYkU5reylzs+ORAa0uvx7J/jsPe7pKUAwp9hgm2DKnLl+JqPeRoxUgAKnvWA7aiVVfy5rEmNpF+ad/4mHoigAsu89LduldjcxxiIN16fKXe1YwAu4zFSVDFUBnzXoXUFrejl+ln6xQQ6NMYwk6uo1R/6Y3XrUsEI8=
+	t=1791784937; cv=none; b=bCnAhGm0F7ZsCeShxRZHhtOvVVRgQxY27dw7tQTL5VsbD5eGWMRDMf4ZLPo8XXo1uwjRvGwnMby3CCyXCz7HYojRxlrqgDT8OuPlH6CrgmBMyHgFhV7EY1Qqk6bgCux8DerdQlN4VeUNEmdS7e08EtelT6mRXthzDBAPYbSoHx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791784594; c=relaxed/simple;
-	bh=R7+pNuMnVhTz8er90gckMPTynWEFrbXWv1jEqQ9CjJc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mvKcK1MoXXZn/cdEwhodN3MpoVdUPyWQJ6bGm7eyXZfapIk+DUXmTKZtK82WO1Y71IaFO26TgkqEC+y7H3lrfTzkfPZLMy3cFsGEQ9cIX5BVEEWheyTfSGSQHnif55J1fKKJ/P/FmJOvec7xBAHFucNEZWh7SnsICbQ8+GEo+nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=KrdCONyT; arc=none smtp.client-ip=209.85.216.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1791784937; c=relaxed/simple;
+	bh=3ds6Kxo8KcToMGKlp0BSgF6Z+8tStFHjy+wAKuW4LJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MMnv05FQb3VwTbfWDBiVVwlzvvYfFQ1kfzkWy0+Uw5xozr9IyQZNqOVq7N7UnBhNMXyjluMrg9ca0tYUR3nd+M3N16TGcAyEjOTj9ZE6OtY8wHeZGtm/5VFvPP5nVhG92usHOLEtnrBc+H+gYxrr+xsjdBLtjh7Usj62VfHqkYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fpKEVUJg; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="KrdCONyT"
-Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-3aacde0cc0fso527253a91.2
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 22:56:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791784592; x=1792389392;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W9WQ3+3ZifgwVkbgBZpdadVgJrE2kqbEwfTbwGcfcNw=;
-        b=MIWTnZaKV9U/DTka8Yo0qHAFhGuYAAD6k5XA0CdrkN6lU1Udyu6FRQXgFn5C78BYNu
-         /mmbrmqpe02VjOxONsIFL3FUvcxbBJRfBtT43ZreTBSA96Pk2ZQvjBGOtQnOHclBc2zU
-         769FcZKHbfxNmx6KwyPwno4wvln18HUEfVpnCZ9XH9GTP+i3QW6IfmgetSTo7jK6iUtd
-         gay6gsyfeOHtUqW+6sObW1FTUjoFcboHny67mh3WPdifYkAs2FvZYy5OluJtltCFuytP
-         ad8Vy8k/g3Fxoem3RPxLQa4s5N+FcZPNzsLRwOHmWudtBWPS9DjncEwxzJ9n9M0MF7dO
-         tTCw==
-X-Forwarded-Encrypted: i=1; AKwUvByrCe7Wefsr4r+V3diuDFkvL3FUMf/+iqrOqAWWt2QNfUFvgKc+PWlULta/tM9vCIyj/eknwFw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLSnhjSaD70v2lgq1ZYqaAaeyH/BwdflCNzW8eUl/jF+UZFGI5i
-	mfeY//zFtHKOf8pSvC1uLB8FjVSPhNrIGaklFclQ97K1Irc4Gfz3Jdvb9cYkXA+xoq19tzQjo8s
-	sJQ4/FVqOOdSExKTrZPxqUo3oYoaT+tiY5oBDk5CkU3udNgTz5zmxSU+1nyR4Unks4XT/LPZHPN
-	jH50sohrlAstduhKJ+FmFwmQKWRfJZDdU6WJZzegPFzqdx+9WTeSm7l4KsNwhd9ulLvyz2NWP5R
-	Els09VJMA==
-X-Gm-Gg: AYBFou0BPoai5FSL3cqbpSX/yKMVe6cRY3C6oNpSpy9QkXDRA6Rd/R0QPg5vY2bhCi5
-	ZCzt9ioq5ma/EUF8jxToTi2IgDNt5RVKDAgGnNFR4VCmN0oGaLL5+CXcnVqSEewkID/8wR20UAB
-	GXzUe8jBvQY/pQaoiPOAwWy1YCM30tU6PFRNStiQjQUjiEJf1bHWGbeXF766y8xaGRx1+WPq8Tn
-	/k4HjOe2q9+Kc6jckYgz5Hj+2GqBwGJHsVXvT/VYb5GyvFlcCbn5GXT2sFiqQLCxGKfia3N8tf1
-	W/BW4SU2HWVDqRf4qkIU0IpwPh9oWQDQwEj0ntToZHE4QdqqNFzl6vV0rHMQj3dH2NJRtMJruUk
-	G6oMXpD6ZXaZDEyM0dQsSZgJjs3We6yn2KQCKIVZm/bv9VAnsnCCSd+XkDtiBf5LZEtJSsUmvb3
-	AOc/HapSvlHf6t8LpESv38+ot4hFH6YOW9xiPe
-X-Received: by 2002:a17:90b:164b:b0:3aa:fc22:8ab4 with SMTP id 98e67ed59e1d1-3ab3a97eb66mr6368773a91.29.1791784592069;
-        Sun, 11 Oct 2026 22:56:32 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3abdd5d09d2sm1641756a91.8.2026.10.11.22.56.31
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 11 Oct 2026 22:56:32 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-vk1-f198.google.com with SMTP id 71dfb90a1353d-5d6d5ea0757so2179118e0c.1
-        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 22:56:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fpKEVUJg"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2d6d28aa26cso6541575ad.2
+        for <netdev@vger.kernel.org>; Sun, 11 Oct 2026 23:02:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791784591; x=1792389391; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W9WQ3+3ZifgwVkbgBZpdadVgJrE2kqbEwfTbwGcfcNw=;
-        b=KrdCONyTiYvHg4b3bTd74Ciy7icYBiFl30QANc+B36g2s6xBrbnlLFl0HynfgfK3HX
-         upnLZ5Ax7Bunc9Gxdw665v8ttTKAB83kTWf2O749ytLon0IRHXgMutixffkWsrSl+TVa
-         0hrg3cfhSUYGyr8el7vby7LDgxnLiKtKJTYf4=
-X-Forwarded-Encrypted: i=1; AKwUvByLFaBr+DQxhzspFqvsWS0jjKaqG6Dp4+/+XBfOMfetVdshKnVHtAj66jT9h8C/vmfRrAcJWp8=@vger.kernel.org
-X-Received: by 2002:a05:6122:1781:b0:5ce:b65d:22ab with SMTP id 71dfb90a1353d-5e91f4acb9emr2774932e0c.16.1791784591075;
-        Sun, 11 Oct 2026 22:56:31 -0700 (PDT)
-X-Received: by 2002:a05:6122:1781:b0:5ce:b65d:22ab with SMTP id
- 71dfb90a1353d-5e91f4acb9emr2774927e0c.16.1791784590685; Sun, 11 Oct 2026
- 22:56:30 -0700 (PDT)
+        d=gmail.com; s=20251104; t=1791784936; x=1792389736; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=R/ggKxDXF1W4YTObb0Gqmnak9Gw8ra8VXEN2yWLxx6o=;
+        b=fpKEVUJgS+E8Ugk5K/rMEtfMNqEQ/gSzQtjKnVZNG0WxiLYl3WSLXvBs1C4JNf3tT0
+         KihZhyE5c5aXMow/hEW7WSBA/8fJuifFI5MV20quz4QeuhbKFnybP4GAF2yUFpeEKLha
+         4yw7wHjKm5sP2OEl0zoqYag3+L4LuMc7U9xh+WGXAy+NbQJaLxYsqtGPtW7H4gXeDOoK
+         oiN3zd7vMf46M9moQ571LWSFpShqoETOI3206Cg7x8aT/WU0aclIXmyXMACnm50RyKJT
+         9+ezW9gyUFNRLOHWPKGbR15W1GzVXVObAwQHUWXJQoZJwSgeBjfW72eQQQf0yo8OuQCj
+         3MTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791784936; x=1792389736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=R/ggKxDXF1W4YTObb0Gqmnak9Gw8ra8VXEN2yWLxx6o=;
+        b=hBNx27QUBDQWcS6z0TaT4wWZtO/P6ePwTUlqIkS56vUheLtAjQZG3J9nyX966TEUwx
+         3vBRIGgoTh39YC4e9sXE1I4LTKG+zIhCepIaVjAvTh5289JaWaTnzZoExX+TLtgPw3JZ
+         ra+QCSijPFO26DhZpDgMFcAJQgiT83LMmrdhKWnVONPcGNbSMHWBTa7VF0WwJ03QhFn0
+         kkQlmwpxc15sh706p9/VbFGEI1O/4udRiqcLQzGHQEOvIJMLwnzjBUW4ggYUnJrkrw+i
+         EDyZtWNzp1hfYYkugcPQzdJWqE6h2ENnfcAuu8zxM2w0ECez9JD3t4ptYEVtX9pel8Us
+         LufQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwSV8+JRHYNsRkBnKMiN8jnxeYeKxg99p3HEqgsdlMWVLqvZyMnNM8qKMONcEU4Jghkz+0ulE8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK8IzS2mDYDCGZImFZGc/HoXCzzngc46FNNnJVV/sAAoaa3IE5q
+	SnfHsigFBCTHTG4Smxdj1tPAkpHBz7y7tJOpE8mXncpu6OJ4YBAAFZTQ
+X-Gm-Gg: AYBFou32yYeLMstTKMFHOGhytRZVCzQUlIZWYRgNLGbg/2fIdhUUA0bw/KMuXzU7v2k
+	X4KG+6FktwjTpkKQd9rgPtqTQOqR0o80nacaaYYllRFFjo1ZcPdI47TC5/QI1+7fal4gyow4akd
+	LCpZWi62eRtT1L52yeWwKXYxyxVNHPAytxyKK7kfK72byTDzq4+/4Yt6MYn4a7OPypZ8G7GAxgc
+	tG5BVTARRtKm5dzoYxiFPvtV+BfXr5b0bALfVG7nEujko2VeVfuMFQ0B9hgaKp61w+TKz9Z9X8X
+	if5hNTXafvr0xpUkRF20bwCTb9J41vxh4lhJ0wD35x4utQwC0yTC5Q2O2i1OjOs2czxtri3BC9+
+	QolYEs4rMi6tyT+7hLFyfkmK9KZJE6DJEdXYBCMySV9QTgRS+HxGsYxH8GlN6+KP9Z2grCUMNjn
+	M4KD4L6t7ee2orxoOjJTiZ0J4uNS0iBvsDibKm4HdgyKKKFptmLUi4+ynRDPXBt8h1Tg1SWUBxL
+	rW2kxSKpjKzR7x9h6MgzkUk/+EtWVUhLYAdjg==
+X-Received: by 2002:a17:902:d2c8:b0:2e6:646:8ee5 with SMTP id d9443c01a7336-2e842cd3e90mr71251985ad.39.1791784935605;
+        Sun, 11 Oct 2026 23:02:15 -0700 (PDT)
+Received: from localhost.localdomain ([2409:891f:1a03:88e9:69f9:d4b:a47:6619])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e84219f2bfsm39746645ad.21.2026.10.11.23.02.10
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 11 Oct 2026 23:02:15 -0700 (PDT)
+From: Chuang Wang <nashuiliang@gmail.com>
+To: 
+Cc: Chuang Wang <nashuiliang@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v11] net: reduce ARFS flow updates by checking LLC affinity
+Date: Mon, 12 Oct 2026 14:01:08 +0800
+Message-ID: <20261012060152.2930-1-nashuiliang@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012054325.1782819-1-vikas.gupta@broadcom.com> <179178421647.2527009.1868476498128575514@kernel.org>
-In-Reply-To: <179178421647.2527009.1868476498128575514@kernel.org>
-From: Vikas Gupta <vikas.gupta@broadcom.com>
-Date: Mon, 12 Oct 2026 11:26:18 +0530
-X-Gm-Features: AclHuK8yocvhnp3_xm81RaPc0ULXM9MWOfpNH4-ti8ODMv57CzXDiJAqKvuNHcg
-Message-ID: <CAHLZf_vjUidyWt1SNkq3SD7O7bjxGNqJXAjoM0d3Xi6P+2ATug@mail.gmail.com>
-Subject: Re: [PATCH net 0/2] bnge fixes
-To: netdev-bot+sinfo@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com, 
-	vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com, 
-	dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000157bd5065d9e5ca5"
+Content-Transfer-Encoding: 8bit
 
---000000000000157bd5065d9e5ca5
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The current implementation of rps_record_sock_flow() updates the flow
+table every time a socket is processed on a different CPU. In high-load
+scenarios, especially with Accelerated RFS (ARFS), this triggers
+frequent flow steering updates via ndo_rx_flow_steer.
 
-Hi,
-  We found these issues during the Sashiko code review.
-  The fixes were tested on the Thor Ultra platform.
+For drivers like mlx5 that implement hardware flow steering, these
+constant updates lead to significant contention on internal driver locks
+(e.g., arfs_lock). In high-load scenarios, this contention often becomes
+a performance bottleneck that outweighs the steering benefits.
 
-Thanks,
-Vikas
+This patch introduces a cache-aware update strategy: the hardware
+steering update is skipped when the flow's previous target CPU and the
+new one share the same Last Level Cache (LLC), as cache locality for
+the application is preserved either way. The per-queue flow bookkeeping
+(rflow->cpu) is still updated, so RFS keeps steering packets to the CPU
+the application is running on, and subsequent packets take the fast path
+in get_rps_cpu() (tcpu == next_cpu). A new sysctl,
+net.core.arfs_llc_affinity, is added to toggle this feature (default:
+off).
 
-On Mon, Oct 12, 2026 at 11:20=E2=80=AFAM <netdev-bot+sinfo@kernel.org> wrot=
-e:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
->
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Performance Test Results:
+The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
+with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
 
---000000000000157bd5065d9e5ca5
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+rpc_press Commands:
 
-MIIVVQYJKoZIhvcNAQcCoIIVRjCCFUICAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
-ghLCMIIGqDCCBJCgAwIBAgIQfofDCS7XZu8vIeKo0KeY9DANBgkqhkiG9w0BAQwFADBMMSAwHgYD
-VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
-AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNTNaFw0yOTA0MTkwMDAwMDBaMFIxCzAJBgNVBAYT
-AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBS
-NiBTTUlNRSBDQSAyMDIzMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwjAEbSkPcSyn
-26Zn9VtoE/xBvzYmNW29bW1pJZ7jrzKwPJm/GakCvy0IIgObMsx9bpFaq30X1kEJZnLUzuE1/hlc
-hatYqyORVBeHlv5V0QRSXY4faR0dCkIhXhoGknZ2O0bUJithcN1IsEADNizZ1AJIaWsWbQ4tYEYj
-ytEdvfkxz1WtX3SjtecZR+9wLJLt6HNa4sC//QKdjyfr/NhDCzYrdIzAssoXFnp4t+HcMyQTrj0r
-pD8KkPj96sy9axzegLbzte7wgTHbWBeJGp0sKg7BAu+G0Rk6teO1yPd75arbCvfY/NaRRQHk6tmG
-71gpLdB1ZhP9IcNYyeTKXIgfMh2tVK9DnXGaksYCyi6WisJa1Oa+poUroX2ESXO6o03lVxiA1xyf
-G8lUzpUNZonGVrUjhG5+MdY16/6b0uKejZCLbgu6HLPvIyqdTb9XqF4XWWKu+OMDs/rWyQ64v3mv
-Sa0te5Q5tchm4m9K0Pe9LlIKBk/gsgfaOHJDp4hYx4wocDr8DeCZe5d5wCFkxoGc1ckM8ZoMgpUc
-4pgkQE5ShxYMmKbPvNRPa5YFzbFtcFn5RMr1Mju8gt8J0c+dxYco2hi7dEW391KKxGhv7MJBcc+0
-x3FFTnmhU+5t6+CnkKMlrmzyaoeVryRTvOiH4FnTNHtVKUYDsCM0CLDdMNgoxgkCAwEAAaOCAX4w
-ggF6MA4GA1UdDwEB/wQEAwIBhjBMBgNVHSUERTBDBggrBgEFBQcDAgYIKwYBBQUHAwQGCisGAQQB
-gjcUAgIGCisGAQQBgjcKAwwGCisGAQQBgjcKAwQGCSsGAQQBgjcVBjASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBQAKTaeXHq6D68tUC3boCOFGLCgkjAfBgNVHSMEGDAWgBSubAWjkxPioufi
-1xzWx/B/yGdToDB7BggrBgEFBQcBAQRvMG0wLgYIKwYBBQUHMAGGImh0dHA6Ly9vY3NwMi5nbG9i
-YWxzaWduLmNvbS9yb290cjYwOwYIKwYBBQUHMAKGL2h0dHA6Ly9zZWN1cmUuZ2xvYmFsc2lnbi5j
-b20vY2FjZXJ0L3Jvb3QtcjYuY3J0MDYGA1UdHwQvMC0wK6ApoCeGJWh0dHA6Ly9jcmwuZ2xvYmFs
-c2lnbi5jb20vcm9vdC1yNi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUAA4IC
-AQCRkUdr1aIDRmkNI5jx5ggapGUThq0KcM2dzpMu314mJne8yKVXwzfKBtqbBjbUNMODnBkhvZcn
-bHUStur2/nt1tP3ee8KyNhYxzv4DkI0NbV93JChXipfsan7YjdfEk5vI2Fq+wpbGALyyWBgfy79Y
-IgbYWATB158tvEh5UO8kpGpjY95xv+070X3FYuGyeZyIvao26mN872FuxRxYhNLwGHIy38N9ASa1
-Q3BTNKSrHrZngadofHglG5W3TMFR11JOEOAUHhUgpbVVvgCYgGA6dSX0y5z7k3rXVyjFOs7KBSXr
-dJPKadpl4vqYphH7+P40nzBRcxJHrv5FeXlTrb+drjyXNjZSCmzfkOuCqPspBuJ7vab0/9oeNERg
-nz6SLCjLKcDXbMbKcRXgNhFBlzN4OUBqieSBXk80w2Nzx12KvNj758WavxOsXIbX0Zxwo1h3uw75
-AI2v8qwFWXNclO8qW2VXoq6kihWpeiuvDmFfSAwRLxwwIjgUuzG9SaQ+pOomuaC7QTKWMI0hL0b4
-mEPq9GsPPQq1UmwkcYFJ/Z4I93DZuKcXmKMmuANTS6wxwIEw8Q5MQ6y9fbJxGEOgOgYL4QIqNULb
-5CYPnt2LeiIiEnh8Uuh8tawqSjnR0h7Bv5q4mgo3L1Z9QQuexUntWD96t4o0q1jXWLyrpgP7Zcnu
-CzCCBYMwggNroAMCAQICDkXmuwODM8OFZUjm/0VRMA0GCSqGSIb3DQEBDAUAMEwxIDAeBgNVBAsT
-F0dsb2JhbFNpZ24gUm9vdCBDQSAtIFI2MRMwEQYDVQQKEwpHbG9iYWxTaWduMRMwEQYDVQQDEwpH
-bG9iYWxTaWduMB4XDTE0MTIxMDAwMDAwMFoXDTM0MTIxMDAwMDAwMFowTDEgMB4GA1UECxMXR2xv
-YmFsU2lnbiBSb290IENBIC0gUjYxEzARBgNVBAoTCkdsb2JhbFNpZ24xEzARBgNVBAMTCkdsb2Jh
-bFNpZ24wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQCVB+hzymb57BTKezz3DQjxtEUL
-LIK0SMbrWzyug7hBkjMUpG9/6SrMxrCIa8W2idHGsv8UzlEUIexK3RtaxtaH7k06FQbtZGYLkoDK
-RN5zlE7zp4l/T3hjCMgSUG1CZi9NuXkoTVIaihqAtxmBDn7EirxkTCEcQ2jXPTyKxbJm1ZCatzEG
-xb7ibTIGph75ueuqo7i/voJjUNDwGInf5A959eqiHyrScC5757yTu21T4kh8jBAHOP9msndhfuDq
-jDyqtKT285VKEgdt/Yyyic/QoGF3yFh0sNQjOvddOsqi250J3l1ELZDxgc1Xkvp+vFAEYzTfa5MY
-vms2sjnkrCQ2t/DvthwTV5O23rL44oW3c6K4NapF8uCdNqFvVIrxclZuLojFUUJEFZTuo8U4lptO
-TloLR/MGNkl3MLxxN+Wm7CEIdfzmYRY/d9XZkZeECmzUAk10wBTt/Tn7g/JeFKEEsAvp/u6P4W4L
-sgizYWYJarEGOmWWWcDwNf3J2iiNGhGHcIEKqJp1HZ46hgUAntuA1iX53AWeJ1lMdjlb6vmlodiD
-D9H/3zAR+YXPM0j1ym1kFCx6WE/TSwhJxZVkGmMOeT31s4zKWK2cQkV5bg6HGVxUsWW2v4yb3BPp
-DW+4LtxnbsmLEbWEFIoAGXCDeZGXkdQaJ783HjIH2BRjPChMrwIDAQABo2MwYTAOBgNVHQ8BAf8E
-BAMCAQYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUrmwFo5MT4qLn4tcc1sfwf8hnU6AwHwYD
-VR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwDQYJKoZIhvcNAQEMBQADggIBAIMl7ejR/ZVS
-zZ7ABKCRaeZc0ITe3K2iT+hHeNZlmKlbqDyHfAKK0W63FnPmX8BUmNV0vsHN4hGRrSMYPd3hckSW
-tJVewHuOmXgWQxNWV7Oiszu1d9xAcqyj65s1PrEIIaHnxEM3eTK+teecLEy8QymZjjDTrCHg4x36
-2AczdlQAIiq5TSAucGja5VP8g1zTnfL/RAxEZvLS471GABptArolXY2hMVHdVEYcTduZlu8aHARc
-phXveOB5/l3bPqpMVf2aFalv4ab733Aw6cPuQkbtwpMFifp9Y3s/0HGBfADomK4OeDTDJfuvCp8g
-a907E48SjOJBGkh6c6B3ace2XH+CyB7+WBsoK6hsrV5twAXSe7frgP4lN/4Cm2isQl3D7vXM3PBQ
-ddI2aZzmewTfbgZptt4KCUhZh+t7FGB6ZKppQ++Rx0zsGN1s71MtjJnhXvJyPs9UyL1n7KQPTEX/
-07kwIwdMjxC/hpbZmVq0mVccpMy7FYlTuiwFD+TEnhmxGDTVTJ267fcfrySVBHioA7vugeXaX3yL
-SqGQdCWnsz5LyCxWvcfI7zjiXJLwefechLp0LWEBIH5+0fJPB1lfiy1DUutGDJTh9WZHeXfVVFsf
-rSQ3y0VaTqBESMjYsJnFFYQJ9tZJScBluOYacW6gqPGC6EU+bNYC1wpngwVayaQQMIIGizCCBHOg
-AwIBAgIMbfHmsZjcB+HruaVKMA0GCSqGSIb3DQEBCwUAMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQK
-ExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAy
-MDIzMB4XDTI1MDYyMDEzNDMzNFoXDTI3MDYyMTEzNDMzNFowgdQxCzAJBgNVBAYTAlVTMRMwEQYD
-VQQIEwpDYWxpZm9ybmlhMREwDwYDVQQHEwhTYW4gSm9zZTEZMBcGA1UEYRMQTlRSVVMrREUtNjYx
-MDExNzEOMAwGA1UEBBMFR3VwdGExDjAMBgNVBCoTBVZpa2FzMRYwFAYDVQQKEw1CUk9BRENPTSBJ
-TkMuMSEwHwYDVQQDDBh2aWthcy5ndXB0YUBicm9hZGNvbS5jb20xJzAlBgkqhkiG9w0BCQEWGHZp
-a2FzLmd1cHRhQGJyb2FkY29tLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANg8
-iuIMIJTRhFElF5kiGA/iibojGqPcfDgZCPyMvuucV7LpWj77dMx05lOtPOr5ol6QoQf3DzLny2Fm
-ZKzsTDzWEhPsCM5DcbMg/B7eD9n+rBWHxsk+yKJKdkLpkpTKdxxTd1Y5Ln+k5KCTjxlCUQQ7Q2Zz
-qYU8bfRq5ZMwUVJD3NZCqEKbEIgSX2vXFS61zdPwnLyHyaC/erAWmgHLu4kzpk/V10NcnUjX9FYK
-f/Ggi9MeMNG20gEIUbCg3RgYf89YLXUJDOuoz/Yajw/VuiVlwS81wF44DmJhAVcGzrI00uydpksG
-oQY2qVlhYsvNTqU2V/uaBrKQnyM0PkU140cCAwEAAaOCAdwwggHYMA4GA1UdDwEB/wQEAwIFoDAM
-BgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3NlY3Vy
-ZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEFBQcw
-AYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1UdIARe
-MFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIBFiZo
-dHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAyhjBo
-dHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwIwYDVR0RBBww
-GoEYdmlrYXMuZ3VwdGFAYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8GA1UdIwQY
-MBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQI6pBWVwIN47wGrC1m7lYfqN94QjAN
-BgkqhkiG9w0BAQsFAAOCAgEAOdSnSEyuTvTtsnmEilB0JfgRKx1MM7kNdv0pfWcINJhssfHD8Fc5
-wm+JzenYR9yJAkntX0Lr9yv+OG0Jqhvy7u9gKljfI4jXO4qxZ2jf1YvI+fDK29/NV3JAQuipT3Vs
-IxBI73CQO11VwMePOTsUNM1s+9cWT5zLuqOEEu+95jRo5KEtH1/4nahrToLU1Y+flylsBaAUhB72
-KoBBzdewa+psa32lY8X23AWDoczIlUBmPt0hmApBvHOUCYszSiBu4/VhVDuq2iMBtnYAj2j9Q7Ct
-pZHPj6fQv247S9dTDDym05r8arHAsUw7B29KvPfxeaqexL4gwQQjIsfdZeh88XYLXA+mvEej6OlO
-YO3546G7bczFxIjO6V9RrvYEeAb+n7udXYymuIm02XtxIkr/Uk0gRuFoOpG2Dw1OH8xsOUER1+16
-qGb2QKMgaKL/IIM3gXAuCxNVBOT+Fj/wh5hw7MFvTTXPFA8IKusoHZYpxdrr9xjoJ/wt6j4/E6K4
-IO/WuSc4nM6kshiwIu5c6r97213ZtJFOrjoITiBIYFP0WQsTsEbWvaBX/7daT5IVr9rvCOCk2JA8
-bOWwP4OYXCKJY5nZOntb0ECSI7RM0kGelGY4MAD42+OBWHxKU1Qvt5WK4kIXdKpdFp9Drv17PyCU
-dR4AvAJyWnkqZyi5QuRg/hMxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBH
-bG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBDQSAyMDIz
-Agxt8eaxmNwH4eu5pUowDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIBpqs4tR5Me4
-jPgAwvnGCJqukOihHKu1d5AbHQ+8XsPZMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZI
-hvcNAQkFMQ8XDTI2MTAxMjA1NTYzMVowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJ
-YIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUD
-BAIBMA0GCSqGSIb3DQEBAQUABIIBADggTsbCQVaRDH/bWkZTVVzTQ5FzRwQiOk9HzkSTTDNMXrac
-LevJEXy6xXmtYp7CqMnbG2BAgoqd3V99cq80QDJVylfN3KyaV9e8wk18L5/il7f9HDB97HLad3R9
-Mf26Y6TS8pGYfD+l0i8AdTLHoprC30PztoyuC7g7aYhyk5A/8AfmsxaGnyxkyv9muJ6NL8kRwZFf
-DNR0Y7MV0B7j/VTbtm9/woD/uxcrzkJyC23GWOEAfnkQFTYYu5wHTypxpFwmjLa2t6vnUbs4iu3L
-BWrcnuPJM69mUFdzU2uo1Sh1UfOblt1/qo0wZDXMox/lTr7zu1Ij7alS8UV45OsJl/A=
---000000000000157bd5065d9e5ca5--
+  for i in {1..8}; do
+    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
+    -server=<IP>:8000 -input='{"message":"hello"}'
+    -qps=0 -thread_num=512 -connection_type=pooled &
+  done
+
+Monitor mlx5e_rx_flow_steer frequency:
+
+  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
+
+Frequency of mlx5e_rx_flow_steer (via funccount[2]):
+
+  Before: ~200,000 counts/sec
+  After:       ~10 counts/sec (reduced by ~99%)
+
+These results demonstrate that filtering updates by LLC affinity
+significantly reduces driver lock contention and improves overall
+CPU efficiency under heavy network load.
+
+[1] https://github.com/apache/brpc/
+[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
+
+Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+---
+v10 -> v11:
+- rename the sysctl from net.core.rps_feat_llc_affinity to
+  net.core.arfs_llc_affinity, per Neal Cardwell
+v9 -> v10:
+- move the LLC check from rps_record_sock_flow() into set_rps_cpu(),
+  so that only the ARFS hardware steering is skipped while rflow->cpu
+  is still updated, per Eric Dumazet
+- drop the sock_rps_record_flow_hash()/sock_rps_record_flow() exports,
+  which are no longer needed
+v6 -> v9:
+- simplify code and fix errors in AI submissions, per Simon Horman
+v5 -> v6:
+- remove the multi-check 'old_val == new_val', per Xuan Zhuo
+- fix 'modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko]
+  undefined!', per kernel test robot
+- fix 'tcp.c:(.text+0x3e90): undefined reference to
+  `sock_rps_record_flow'', per kernel test robot
+v4 -> v5:
+- fix 'modpost: "rps_llc_check" [net/sctp/sctp.ko] undefined!', per
+  kernel test robot
+v3 -> v4:
+- add rps_llc_check, per Eric Dumazet
+v2 -> v3:
+- patch net -> net-next, per Jakub Kicinski
+v1 -> v2:
+- add rps_feat_llc_affinity; add brpc tests
+ include/net/rps.h          |  1 +
+ net/core/dev.c             | 23 +++++++++++++++++++++--
+ net/core/sysctl_net_core.c |  7 +++++++
+ 3 files changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/include/net/rps.h b/include/net/rps.h
+index e33c6a2fa8bb..6664970e68d6 100644
+--- a/include/net/rps.h
++++ b/include/net/rps.h
+@@ -12,6 +12,7 @@
+ 
+ extern struct static_key_false rps_needed;
+ extern struct static_key_false rfs_needed;
++extern struct static_key_false arfs_llc_affinity;
+ 
+ /*
+  * This structure holds an RPS map which can be of variable length.  The
+diff --git a/net/core/dev.c b/net/core/dev.c
+index a6951ea08961..434ad5499906 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -5122,6 +5122,7 @@ struct static_key_false rps_needed __read_mostly;
+ EXPORT_SYMBOL(rps_needed);
+ struct static_key_false rfs_needed __read_mostly;
+ EXPORT_SYMBOL(rfs_needed);
++struct static_key_false arfs_llc_affinity __read_mostly;
+ 
+ static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
+ {
+@@ -5160,7 +5161,7 @@ static bool rps_flow_is_active(struct rps_dev_flow *rflow,
+ 
+ static struct rps_dev_flow *
+ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+-	    struct rps_dev_flow *rflow, u16 next_cpu, u32 hash)
++	    struct rps_dev_flow *rflow, u16 old_cpu, u16 next_cpu, u32 hash)
+ {
+ 	if (next_cpu < nr_cpu_ids) {
+ 		u32 head;
+@@ -5179,6 +5180,24 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ 		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
+ 		    !(dev->features & NETIF_F_NTUPLE))
+ 			goto out;
++
++		/*
++		 * ARFS LLC Affinity Feature:
++		 * Reduce ARFS flow updates by checking LLC affinity.
++		 *
++		 * Frequent flow table updates can trigger constant hardware steering
++		 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
++		 * contention on driver internal locks (like mlx5's arfs_lock).
++		 *
++		 * Skip the expensive hardware steering update if the flow's previous
++		 * target CPU and the new one share the last level cache: cache locality
++		 * for the application is preserved either way.
++		 */
++		if (static_branch_unlikely(&arfs_llc_affinity) &&
++		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
++			cpus_share_cache(old_cpu, next_cpu))
++			goto out;
++
+ 		rxq_index = cpu_rmap_lookup_index(dev->rx_cpu_rmap, next_cpu);
+ 		if (rxq_index == skb_get_rx_queue(skb))
+ 			goto out;
+@@ -5308,8 +5327,8 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ 		    (tcpu >= nr_cpu_ids || !cpu_online(tcpu) ||
+ 		     ((int)(READ_ONCE(per_cpu(softnet_data, tcpu).input_queue_head) -
+ 		      rflow->last_qtail)) >= 0)) {
++			rflow = set_rps_cpu(dev, skb, rflow, tcpu, next_cpu, hash);
+ 			tcpu = next_cpu;
+-			rflow = set_rps_cpu(dev, skb, rflow, next_cpu, hash);
+ 		}
+ 
+ 		if (tcpu < nr_cpu_ids && cpu_online(tcpu)) {
+diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+index 473c162736d6..9ce0bbe454c8 100644
+--- a/net/core/sysctl_net_core.c
++++ b/net/core/sysctl_net_core.c
+@@ -560,6 +560,13 @@ static struct ctl_table net_core_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= rps_sock_flow_sysctl
+ 	},
++	{
++		.procname	= "arfs_llc_affinity",
++		.data		= &arfs_llc_affinity.key,
++		.maxlen		= sizeof(arfs_llc_affinity.key),
++		.mode		= 0644,
++		.proc_handler	= proc_do_static_key
++	},
+ #endif
+ #ifdef CONFIG_NET_FLOW_LIMIT
+ 	{
+-- 
+2.47.3
+
