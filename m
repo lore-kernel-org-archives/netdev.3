@@ -1,43 +1,67 @@
-Received: from out28-5.mail.aliyun.com (out28-5.mail.aliyun.com [115.124.28.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A50531AABF;
-	Mon, 12 Oct 2026 07:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A2342AFB1
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 07:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791790071; cv=none; b=pzdmkpe4lUHaU/VJPafgIROXCXASi4/jlWXH9ynM+AieAGtPC9HPd166MRnPna7R8AvychaMsheLJou8osZrr6dskq3ZrcX+6cUKtQF0Ffgn9IKnPSuvv8rj3R22XyPYQ77pWakaf8zSCnK0hH3+d0Zu38rKjpG3iB8J/vPkZ68=
+	t=1791790096; cv=none; b=n3sCOk/56FMQn5QlBe7+XW6gZnKh2Xg4jyStdQLwebXp/HN2jvqwV/1O3ad1mzBvA2Q4vpJ++HjKQnuLjCy8dRYh2zHhov8f0XF7m7OoS/d3rhAb9ogpqAHEWMk56cqDJ/AVWQETLS+qNPePkU5NlyHqDQN3fBHUAccrVXDb9HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791790071; c=relaxed/simple;
-	bh=cQQasB83hW+IIFrMPWO/YXArsGHooJTtS1M0lBe8izY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRMl2ptIG1UQNKUMuAc0JEvb+IO7+q4/T8jRzjGpp5CPAdGbjmfdgjJAIgBg2vhL4OA0dQ4mQERHu5IxHbP2j+9z4pLMeGHX7RAtDFOgdUUJlOGqa6DFsnznVd/1ixTwK1I2abvg4l7XPn2A57UxzkEr2NXF/+co3gk6mr6L7HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=uq/zDFv2; arc=none smtp.client-ip=115.124.28.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1791790096; c=relaxed/simple;
+	bh=i5vXG8WcFQpNI29mEmej2KCDO/kthf+LUyR9oix9ZYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=muv8RKSWcWReTTeLd1+fRcth2/hxcNzhixOhlmkKbP0Sq0QR9x4Di/lmxRkW7qWUIfhTKjW1O1/NwBpmIpLQZvh5fD974rRNjSR+FTXqkP0TZhnURC+LHeJUoz7Q5iQKix7Yyn3/TkkttQ51EXNQyddBTzZc+/vg8HN0LW62+hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EMwLVedP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="uq/zDFv2"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1791790058; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=XorIrIplWxJhQV21amxhTVYV0lJGwdY32+kptBAZQTc=;
-	b=uq/zDFv271/mA27pip5vV8aI8gXdwS3iigG6SItnsBHaYlmAz10N2mjtVliOn1WlFXqJLOr+2pyCxdoImnuL+rNauvObr6SyjpccEfVhGb7cpBkp/Ch/7XVc7oDMn32cHC5aH5hMkUNKk90kv3wHvW+RS3pWdcQjdxLGYAQ/IOU=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1052275|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0167187-0.0089166-0.974365;FP=18446590920149191191|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=guozh23@xiaopeng.com;NM=1;PH=DS;RN=6;RT=6;SR=0;TI=SMTPD_---.jZjoirn_1791790057;
-Received: from localhost(mailfrom:guozh23@xiaopeng.com fp:SMTPD_---.jZjoirn_1791790057 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Mon, 12 Oct 2026 15:27:38 +0800
-From: Guo Zihao <guozh23@xiaopeng.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EMwLVedP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791790093;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JFMSjsXe5UI1XI9T1nXH98CQv6v+PtVDqGkYRf/nSkw=;
+	b=EMwLVedPu3MiUFookJA0PkLiz/+lK3Nc5Xe6ETn7XGPOcmXY4yPYYXfZDYcPfn5i5whH9n
+	X+r0aQd3LRz9SyWuHsnjtE/EDcsuAHeA5yV7mB7heQUEjhUrjDkkjCKvkPeLimDxrIXC7X
+	thksli5ByOYFbOg04z8BcarX6RRGsGA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-455-IxSNE_aGO9arFrm5FvexEg-1; Mon,
+ 12 Oct 2026 07:28:10 +0000
+X-MC-Unique: IxSNE_aGO9arFrm5FvexEg-1
+X-Mimecast-MFC-AGG-ID: IxSNE_aGO9arFrm5FvexEg_1791790088
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C3E91955F3B;
+	Mon, 12 Oct 2026 07:28:07 +0000 (UTC)
+Received: from localhost (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C6D5B1956041;
+	Mon, 12 Oct 2026 07:28:05 +0000 (UTC)
+From: Vaibhav Nagare <vnagare@redhat.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com
+Cc: ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] netfilter: ebtables: ebt_802_3: check the LLC fields before reading them
-Date: Mon, 12 Oct 2026 15:27:37 +0800
-Message-ID: <20261012072737.3313804-1-guozh23@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <asd1uX2tWn9LtsUT@chamomile>
-References: <asd1uX2tWn9LtsUT@chamomile>
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nagarevaibhav@gmail.com,
+	Vaibhav Nagare <vnagare@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v4] bnxt_en: don't leave an XDP program installed when the open fails
+Date: Mon, 12 Oct 2026 12:58:02 +0530
+Message-ID: <20261012072802.2153706-1-vnagare@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,47 +69,148 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Hi Pablo,
+bnxt_xdp_set() stores the new program and drops the reference on the old
+one before reopening the NIC.  If bnxt_open_nic() then fails, ndo_bpf()
+returns an error with the new program still in bp->xdp_prog.  The caller
+treats the error as "nothing was installed" and drops its own reference,
+so bp->xdp_prog is left pointing at a freed program and the next XDP
+update dereferences it:
 
-thanks for looking at this.
+  BUG: unable to handle page fault for address: ff78ecc80ddd1038
+  RIP: 0010:__bpf_prog_put+0x5/0x80
+  Call Trace:
+   bnxt_xdp_set+0xad/0x1b0 [bnxt_en]
+   dev_xdp_propagate+0x36/0xa0
+   bond_xdp_set+0xeb/0x2d0 [bonding]
+   dev_xdp_install+0x1b1/0x350
+   bpf_xdp_link_update+0xc5/0x1b0
+   link_update+0x104/0x1e0
+   __sys_bpf+0x662/0xcf0
 
-On the target tree: right, there is no reproducer, and I did not run
-anything against a real crash, so v3 is tagged [PATCH nf-next v3].
+Seen on a 6.12 based kernel after bnxt_alloc_mem() failed an order-4
+allocation on a fragmented host:
 
-On llc support being removed: I could not find that. The last commit
-touching net/bridge/netfilter/ebt_802_3.c in net-next is Jeremy's
-header-inlining change from 2019 (85cfbc25e5c5), and the module still
-registers "802_3" for NFPROTO_BRIDGE today. Were you thinking of a
-pending removal, or of something else? If you do want to drop the
-match instead, I am happy to withdraw this series.
+  bnxt_en 0000:a0:00.1 ens4f1np1: nic open fail (rc: fffffff4)
+  bond1: (slave ens4f1np1): Error -12 calling ndo_bpf
 
-The comments are gone in v3, you are right that the call plus git
-blame says enough.
+Bonding is not required to hit this; a plain XDP attach on a bnxt
+interface takes the same path.
 
-Sashiko reported four more items against v2 (1 Low, 3 Medium). All
-four check out and v3 deals with them:
+Restore the previous program when an attach or a replace fails, and
+recompute the page-mode and XDP TX ring configuration from it.  The
+configuration matters because bnxt_init_one_rx_ring() only assigns
+rxr->xdp_prog in page mode, and __bnxt_set_rx_skb_mode() derives
+dev->max_mtu from the installed program.  Release the old program only
+once the change has been committed.
 
- - the commit messages no longer claim that ebt_basic_match()
-   pre-filters the protocol; they now say the match is not restricted
-   to 802.3 frames and that the kernel never enforced the userspace
-   "-p Length" pairing,
+A detach is not undone.  dev_xdp_detach_link() clears the core's record
+of the program even when the driver returns an error, so putting the
+program back would leave the driver running a program the core has
+already dropped.  If the reopen fails during a detach, bnxt_xdp_set()
+therefore returns 0 with the device closed; bnxt_open_nic() has already
+logged the failure.
 
- - the TYPE match now reads the header in two steps (dsap/ssap plus
-   control first, then the type from the ui or the ni layout), so a
-   complete 21/22-byte SNAP UI frame still matches; the 24-byte
-   sizeof() requirement is only imposed where the ni type is really
-   read,
+Found in a crash dump; the change was not tested on hardware.
 
- - the S/I format test is now (ctrl & IS_UI) == IS_UI, patched 2/2,
+Fixes: c6d30e8391b8 ("bnxt_en: Add basic XDP support.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Vaibhav Nagare <vnagare@redhat.com>
+---
+  v4:
+   - no functional change.  Correct the comment and commit message: the
+     core clears its record of the program on a failed detach, it does
+     not drop a reference itself, and note that a failed reopen during a
+     detach returns 0 with the device closed (Sashiko AI review)
+   - the same review notes the rollback does not restore the RX
+     aggregation-ring mode.  That is real but pre-existing: without this
+     patch the failed attach leaves the same bp->flags behind and the
+     next open fails the same way.  Restoring it needs a snapshot of
+     bp->flags, the LRO/GRO_HW feature bits and the ring parameters,
+     which is a separate change for net-next
+   - v3: https://lore.kernel.org/netdev/20261001142516.1386525-1-vnagare@redhat.com/
+   - v2: https://lore.kernel.org/netdev/20260930070901.1218980-1-vnagare@redhat.com/
+   - v1: https://lore.kernel.org/netdev/20260928131458.1012180-1-vnagare@redhat.com/
 
- - 2/2 reads the ni-view type at the wire offset with
-   get_unaligned_be16(); the padding in struct hdr_ni cannot be
-   fixed because the uAPI struct is shared with ebtables userspace.
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 49 +++++++++++++------
+ 1 file changed, 33 insertions(+), 16 deletions(-)
 
-Series at https://lore.kernel.org/netdev/20261012072721.3306308-1-guozh23@xiaopeng.com/
-([PATCH nf-next v3 1/2]) and thread.
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index 9e5009be8e98..96845c8646e0 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -381,11 +381,31 @@ int bnxt_xdp_xmit(struct net_device *dev, int num_frames,
+ 	return nxmit;
+ }
+ 
++static void bnxt_xdp_apply_cfg(struct bnxt *bp, int tx_xdp)
++{
++	struct net_device *dev = bp->dev;
++	int tc = bp->num_tc ? : 1;
++
++	if (bp->xdp_prog) {
++		bnxt_set_rx_skb_mode(bp, true);
++		xdp_features_set_redirect_target_locked(dev, true);
++	} else {
++		xdp_features_clear_redirect_target_locked(dev);
++		bnxt_set_rx_skb_mode(bp, false);
++	}
++	bp->tx_nr_rings_xdp = tx_xdp;
++	bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tc + tx_xdp;
++	bnxt_set_cp_rings(bp, true);
++	bnxt_set_tpa_flags(bp);
++	bnxt_set_ring_params(bp);
++}
++
+ static int bnxt_xdp_set(struct bnxt *bp, struct bpf_prog *prog)
+ {
+ 	struct net_device *dev = bp->dev;
+ 	int tx_xdp = 0, rc, tc;
+ 	struct bpf_prog *old;
++	int old_tx_xdp;
+ 
+ 	netdev_assert_locked(dev);
+ 
+@@ -418,25 +438,22 @@ static int bnxt_xdp_set(struct bnxt *bp, struct bpf_prog *prog)
+ 	if (netif_running(dev))
+ 		bnxt_close_nic(bp, true, false);
+ 
++	old_tx_xdp = bp->tx_nr_rings_xdp;
+ 	old = xchg(&bp->xdp_prog, prog);
+-	if (old)
+-		bpf_prog_put(old);
+-
+-	if (prog) {
+-		bnxt_set_rx_skb_mode(bp, true);
+-		xdp_features_set_redirect_target_locked(dev, true);
+-	} else {
+-		xdp_features_clear_redirect_target_locked(dev);
+-		bnxt_set_rx_skb_mode(bp, false);
++	bnxt_xdp_apply_cfg(bp, tx_xdp);
++
++	if (netif_running(dev)) {
++		rc = bnxt_open_nic(bp, true, false);
++		/* a detach cannot be undone, only an attach */
++		if (rc && prog) {
++			WRITE_ONCE(bp->xdp_prog, old);
++			bnxt_xdp_apply_cfg(bp, old_tx_xdp);
++			return rc;
++		}
+ 	}
+-	bp->tx_nr_rings_xdp = tx_xdp;
+-	bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tc + tx_xdp;
+-	bnxt_set_cp_rings(bp, true);
+-	bnxt_set_tpa_flags(bp);
+-	bnxt_set_ring_params(bp);
+ 
+-	if (netif_running(dev))
+-		return bnxt_open_nic(bp, true, false);
++	if (old)
++		bpf_prog_put(old);
+ 
+ 	return 0;
+ }
+-- 
+2.55.0
 
-pw-bot: cr
-
-Guo Zihao
