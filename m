@@ -1,170 +1,139 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7483376A1E;
-	Mon, 12 Oct 2026 13:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791812077; cv=none; b=gAjsu8RTa/eaXYHoPLl6rjNjM/sDqaRVPk84ZCqZCw1zptDBIv3AiFoWHVWMGimKKdFtP69fV2YoFaej8sYYv/DxOFVLDH8EG8fj3JrWKGIruO6u6saIxY42coNqirIDonA1ciYs+4VHshQIZV1y/H9ezMBlou9y51naFNDBRhg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791812077; c=relaxed/simple;
-	bh=fJGw0cpjBTi5/7bzqDmqo6fj6jl7Cb/zKCJc7n6Iuf4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FB/LnBMNcW4qvKzBd1rVemcPyHoFqQILhsyqNk0TfiJP9c9gsVKMQOe9n72MhF6wf/yporMeccKuoKqu1diJpWDzRBwN7GRQyuXXIHxZVfdv/2N+cSkSTGSMX23RVrVzGxgSNvI8Qg563nN4orb7dHHpXeALLeK9re3pHtUhHlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pb2qwS6e; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69573EBF16
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791812083; cv=pass; b=LSW4oWEh1oiKXc3bSy9waVMdpioKWDHtMQ/Ye8yHCs1vUGc5/Y2MG8VWI9MFJPaLPyuNKSvzS2PwWQVgfE5ofMiZlAK88eZg7CAsgnsCohDIdsHHWQ4m+sonXomWh00tUdNPK6D91f6r0WFnCkXUpYjp/iEeQeUrQxWjAHl5kIs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791812083; c=relaxed/simple;
+	bh=Hjh9Sc1Z8WiXuHtP/aanprIfbIR9xjT2RLWFLTycrHk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C5vWxtwsYH+3ak8V4BYsT0s02lZAG05ityDWXaTKONPufnRwqop900ld4Xb09E0pz6FwkJsF1KhzB2WujBo9DdtMp1dKR44izEbvyB1FtdptLCeTBI9dJaPO6iHCBanm+7IxByCJyjN/A5bmV6jif8XCfJQ+tIr+rb+ImfS1kOM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i60sjgN8; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pb2qwS6e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2831F0089C;
-	Mon, 12 Oct 2026 13:34:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791812076;
-	bh=BJoKG/6UOVhJtQlfQRanKoyfmf6h8PW7vA7hrTi9Uzs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Pb2qwS6eWHO6MPz6e6Cjv4IRYSsPioj8ppCtOqUDgtF5oADW4amg4Rm2d7JZotQw+
-	 GFRMFOZog5JGPM/vi3cITAw2xXHYkWcOPUPNdygjRLcToiGgwezrK2esxqasNlm41c
-	 1la4YDWxCXqPasGkTAzsjlnXTL7QG0XFmaUTZCWQM5YHTijpXSoU7Muk8T1pOm9B7l
-	 ZZHzIWI0J0W7qyl17QBn7c43TRFfYVV3Wlb3cuiMiz0WsECUXjk40joq6b92W/zoFC
-	 2Ha28M5aDVhTHoRDPbawlXzi8d0o6txkkqde30XTk7KbDZoIMKa3RK1ttNOfJtAfJL
-	 esL/Yl33fruSQ==
-Message-ID: <01349eb9-8833-4cf4-bb42-b1d5a608c83d@kernel.org>
-Date: Mon, 12 Oct 2026 15:34:32 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i60sjgN8"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-53505bc6524so89044671cf.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 06:34:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791812081; cv=none;
+        d=google.com; s=arc-20260327;
+        b=V+akMNa8l8bYuwacgo5Ll4HXbvy294APwMF1qCqPqG+v8zGYm7GS63Fez2vqdZH2/X
+         SwnbN98NQXQO4D05d9HGqmWDgoKBeawPPIiPdhIfezN2jy1x41QKkOk0ACYgUPqR/sTY
+         VDTKffmxunRduUDMZYvVBWisUu4k7XN421G1gHmk0QJJrUifnsuk/PmUzWSjP+W9EQPo
+         bXF2JJnZwN1wGZgEVr86NsfRUxrxXaaIK4759V4NQMwcWCXr3uhlnnWplTZoBswhqUbh
+         hLX9nI7sdZLrpqvDdycWuzmzunkMIKLn/Wg540rc6QMICVjSmDySaRbKpCI2BAwJMb+n
+         7P4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/pQuL3QRG7ONHZtCsU3bcCCqTHvrsEAV12C8i1xPxyc=;
+        fh=kSW/Pbr3b29vtBjeKsUgynNUdoNNvKlvAwAr5G3EsNM=;
+        b=JKVYUD2Syyy7rIgeNTIo4W1694apLhqKQG2ausGv1rwBYjx4R2rpRmblVHtqUUoNER
+         p7VQUY6adUNqnLEu2eAdFP2bB78UMKIQZ0zboid3hXT/48y7wTRgCl0SUt05wcDxLExA
+         GQBPX5n8CN8aWN2DEop9UnRfXekrGkRXHyI+t0osdD0UFO1CU8Irj+tnf9NNh2xv6VWm
+         JsqWPDBHXE9/gs5KtFqPHz7q7C+VRHckza3iWkPv65YvL/MaMKgrWChxjze85MBFTdxz
+         uWECfqykdKOp79dal6kF4EmHYtH9GUb16OMHM0KhoJrwmvHY/akSAVMLJDZWLnTCRlPo
+         PUUg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791812081; x=1792416881; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/pQuL3QRG7ONHZtCsU3bcCCqTHvrsEAV12C8i1xPxyc=;
+        b=i60sjgN8Pg2KFoMIbqsgzNQ4h4khD3JMnyQLM7f3cidu4wTAnA9e+9b5egoC50ImhI
+         1ccyJGnZFn3LQxSaSDwKedStLu510UnnRkwfD0emti7topz9C/tIo8If9gBVglRBoGqI
+         lDzke/3kYan1cHxlIPloNUN6BiqKHj2rrcjYvxJr36+NqeEBiNMg7+/OH5vLnllmOrhl
+         M9DHVv9SL9tGNov/bIHVMa5mBEHHgmff5+nBg783OUQCOBRmZuTtku4PgEp0dKZnQydh
+         RJt3CIpqBcghIyEgYmasKehYxo2OduK7G4IXnYrljDJDCrE9/lKsqhTSuao7sxB7xKUD
+         GTfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791812081; x=1792416881;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/pQuL3QRG7ONHZtCsU3bcCCqTHvrsEAV12C8i1xPxyc=;
+        b=cWtuKlN2a3dOVYtHHwPS3ik3ZBmy2MDRMowNgBCEj3MwvPYQeZdVhwda7DAk5sA4UO
+         I7y8U0GjVZd1v5mLka9dFde37BZexg6n3Tg8LNBzoADiZPnDeGFPfpWEuqXcB3q274XU
+         LH2rOy3Jn4GycCTdTf1vMiotVC2Vd0DZHyFFJpgffxKWasv8sfX21R7HmZMib3u7IS0L
+         xDKaCoB2VmFh9c7fz7d+9j45Jcdqy+AVQmiLcuDEfUNV23wnedJ1MFZRhMXhvBxaMhhA
+         WcCXLKl2EKxwcbryKP5toRJQ/Bhc8klo3RRR/uMFiZQuG/zvJRO2eGqQl6bReKVzMyi8
+         INHA==
+X-Forwarded-Encrypted: i=1; AKwUvBztovGpnePTEeEimmjEyZpbUN0eALpRf3oacmm59XCSQYcMLM1+LuYbgOBt1dQN71MNn6788ss=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJFNojueHMDEzY1XTFsNYVAi6p9ry6YSZD0Wac1/nBhcc5Fghyq
+	6mgGR4uNI7uZ59lraPUSIHXQMmNjE/abgo3ytnyE8lVrftEFMZyFBVeiQOp6XxtocsLesjVK7s8
+	IjqxF4946mduweP5l+yV2YBQ3yEpGqYY=
+X-Gm-Gg: AYBFou1EbME+u2/MKbwHoOeShGGeqrug/4RxvxII5XXG97o+2Gdg/2JDqs8DgnaPpV1
+	FQaFJloYMd/MbLP6eZO3oqSt1qDEN/olxLICtuh4Ega+yj9Cu0+zvWZZMkSD3dwTO721fG6Tp/H
+	fjWWimLKrgs9yFuQsiSIFVds9X2oqPr9SvSY7j0svnytcmeAC96zYmsg3Il5GxJ8JXKFYeXvRct
+	4nm/6ndzVUKEE2G9IApNREOJ0gE0DngoI8KlnPvvWBE9DcerD+TFK2r4tQFu1W36b1qh5nXuXws
+	a9XXs4WkqJf0JO+SGkVKufrszGlkfCu4x8CcGiaw08buJAFWam+5upPHSW+uVaoGb6SiSxUkGsW
+	125R7kwLQiD2xBfEV30v/heOTCZWjYuhh2no0MaB7dSe0SSnIdV9r7d9eSHU9wBBAoLtOdsbnn4
+	iwSAWXVzNZ6JsXHfvIhA6gzvcBrF0bNW2yvIWUiN88qkZ+Y6bylXwwFrmP6NGNakvWYi/B8+XrJ
+	LJ6ewpFqG1QRi95uwzAQyxOMXbI4Io=
+X-Received: by 2002:ac8:5a84:0:b0:535:1b18:211 with SMTP id
+ d75a77b69052e-535a6167c2dmr141612981cf.19.1791812080480; Mon, 12 Oct 2026
+ 06:34:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/1] mm: page_frag: account page_frag pages in vmstat
- and meminfo
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Yifan Li <liyifan21@xiaomi.com>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, mhocko@suse.com, netdev@vger.kernel.org
-References: <20261010025941.1253-1-liyifan21@xiaomi.com>
- <40fc5d04-2a20-42c4-9557-7277bc981172@kernel.org>
- <asy9PzW41-Wi0JXC@pedro-suse.tail5790ac.ts.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <asy9PzW41-Wi0JXC@pedro-suse.tail5790ac.ts.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20261012132622.48550-1-jain.sm@gmail.com> <179181183946.2527009.5855837780305581870@kernel.org>
+In-Reply-To: <179181183946.2527009.5855837780305581870@kernel.org>
+From: shashank Jain <jain.sm@gmail.com>
+Date: Mon, 12 Oct 2026 19:04:27 +0530
+X-Gm-Features: AclHuK_kfEe-9ObjWtrZZzSOuT5ZHZoYK7KuO9E7Qd1UmZm7snqpktX-gyYDV3Q
+Message-ID: <CA+FWx=mA0dsOSopCNBiA_8BrYSDYD7=jxMO7uLpxT1OOU-BkWw@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 0/2] tcp: keep the route window metric when
+ SO_RCVBUF is set before connect
+To: netdev-bot+sinfo@kernel.org
+Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Kuniyuki Iwashima <kuniyu@google.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/12/26 13:27, Pedro Falcato wrote:
-> On Mon, Oct 12, 2026 at 12:36:35PM +0200, David Hildenbrand (Arm) wrote:
->> On 10/10/26 04:59, Yifan Li wrote:
->>> This is an RFC.
->>>
->>> Pages held by the page_frag cache are not accounted by any memory
->>> statistics counter, so on systems that derive "LostRAM" as MemTotal
->>> minus the sum of accounted memory they inflate LostRAM and lead to
->>
->> Sorry, what exactly is subtracted from MemTotal?
->>
->> How would any other kernel allocations be treated?
-> 
-> I suppose those would mostly show up as Slab:. But yes, I agree the metric
-> is a little dubious.
-> 
->>
->>> misleading "leak" conclusions, even though the memory is legitimately
->>> used by the network path.
->>
->> Assuming "leak" in such scenarios is questionable, sorry.
->>
->> Aren't most page_frag allocations short-lived? Or is this more about the
->> page_frag cache?
-> 
-> page_frag allocations are kinda arbitrarily lived. If you queue (send) some
-> data to a socket to send over the wire, they are more likely than not
-> short-lived, unless the protocol/qdisc says no (for example, you're hitting
-> the TCP congestion window and as such can't send more data over the wire).
-> If you send it over loopback/veth you get arbitrarily livetimes as sockets
-> can keep the page frag alive if the application never reads them.
-> 
-> On the regular RX side you can also (AIUI) keep page frags randomly pinned
-> as long as you don't read them.
-> 
-> (note that all of these allocations are bounded by each protocol's memory
-> limits)
-> 
-> 
-> In any case, I remember an off-list discussion with mhocko regarding a
-> downstream bug, where I suggested adding a counter for this, and he said
-> networking is somewhat sensitive to extra accounting on the fast paths.
-> Added netdev in case they have comments.
+On Mon, Oct 12, 2026, netdev-bot+sinfo@kernel.org wrote:
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>  - How the issue was discovered ...
 
-That makes sense.
+Found by manual code inspection assisted by an LLM (Claude Code, Claude
+Opus) while reviewing the networking changes that set window_clamp on
+unconnected sockets, then confirmed before posting with the packetdrill
+tests in patch 2/2 (SO_RCVBUF before connect with a route window metric,
+TCP_WINDOW_CLAMP vs a later SO_RCVBUF, and the TCP_FASTOPEN_CONNECT
+SYN_SENT case) plus a veth/netns reproducer. The patches carry an
+"Assisted-by: LLM" tag for that reason.
 
->> Certainly no page flag.
->>
->> A page type might be the right choice. I don't think Willy planned for that [1],
->> IIUC, the bump allocator was something different, but another page type
->> shouldn't hurt at this point.
-> 
-> A page type might not work, these pages _may_ need to be mappable. I know
-> that was an issue for page_pool (Yet Another Networking Page Allocator) + TCP
-> zero-copy RX using mmap.
+Thanks,
+Shashank
 
-I'll have to trust on networking experts, I was reading:
-
-	 (requires that page_frag pages are never
-     mapped into userspace; true for the current RX paths).
-
-> 
-> Of course, if you have a page frag under PAGE_SIZE or misaligned then you can't map that.
-
-It would be best if we could disallow that entirely :)
-
-(of if required, map them through a PFNMAP or similar that does not care about
-page metadata ... but the interactions with GUP are tricky)
-
--- 
-Cheers,
-
-David
+On Mon, Oct 12, 2026 at 7:00=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
+:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+>
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
