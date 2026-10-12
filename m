@@ -1,104 +1,98 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1078376A0A
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 13:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469DC374A0B;
+	Mon, 12 Oct 2026 13:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791810803; cv=none; b=nQZoTj0H/11V0Jdv4Xzmdw3BVcqJIAlb205/33hu5OhddPh2RIPfsr8sT5P47PgXXKfZrVIx0pGtrDWjumGapbAOtf5wOlP1S+n+Z7XDXb1Yj3dMQUhI6296iNlMT7o8hKDRfKwJDQYHQZbBileX29uo8vyQ3xO7urtJpj+WkPQ=
+	t=1791811107; cv=none; b=ekas9nq0/10ngVssNf9RHkFaFhbUsPr6NKk6cA65UgliXkmx/drBVJsPzJveiAJD3/XnsqmifHOaCCT5kr9uIMElKi+glnO+2uRCYpgKSA5Y9q8xLtcYy3sdKCHrRYsjGgEQ5mJf4KlpYNiuFb4Fv0UPb6QDjjESQ3gRKDIs7Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791810803; c=relaxed/simple;
-	bh=16Vdr3njBpayvPvHY+v2H8p658ISH4Sv+E1Rh3pF3zI=;
+	s=arc-20240116; t=1791811107; c=relaxed/simple;
+	bh=AzjuoH0vknrDz4e3haaF13WLjGpDY0yTb/N/9QPV9qc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BnZMQw8aHUC9UoAPGlKJSlQWSZSg3WU/BHiDm4ZoLAJzqiwrGlrog5ptZ3kdHdrOkdubrLvH1Q5XHKQuFYJrWxEDFNAdPyixbs4ZeVc5idI0LWaDewvIpkf43UE1WYK9bhGXfyK5DSu2IKhzlX4awmfE93CV/t76FoK863sQWPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P3v2cHvq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fH63h63Z; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=nLdLtWATuEYrchUgBg84JzpYDbpH15G+VZJoV+UHmLLIjSDyqJG20cFz/SBPmdEVnqe4Vej9Q7ahQmNzfL2GbE6YNGHhwBC27iHDJ6+ygHIgpgn0K6L5iePckB/4cQGlsIiozAk8MmLBBR3g+83EJD5+J5PgrRiKB0Y4J8d1qxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5FRHr7lv; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P3v2cHvq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fH63h63Z"
-Date: Mon, 12 Oct 2026 15:13:17 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791810798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8IMT8lAi0GIIK1m4j6o5TAjkT3sLD2BkttvOXdoak+s=;
-	b=P3v2cHvqg5VFyVl4FgVyTwLT6jbIW+O7v2KTHGF0tHVoRU6MOniNv78+3CrN7ka1EL6N3M
-	ek1NdBfH+RFYFLzfm4LSmZ9SM0zXiVeY1QbkJzws1RJpigBblzr5w8BojcDX5LJax7L9VE
-	oH2rkwRgw3r4Hi07yXT278I7e08htp8AouVKKDmurUik4cad3zdZGMKErLmGmWSZJOC3Ps
-	dKTG767tw2ak5GAAhKProfKDuIvCYlWWHsAEi4+vpJREvcwu08nbTAflWNR8LgzFaapPwx
-	Y0/clLB8yxLdm8R53RoqOTZFeYAF21JPjtmbBSRCIe3zEbqGJTDRtxIWHMZXlA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791810798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8IMT8lAi0GIIK1m4j6o5TAjkT3sLD2BkttvOXdoak+s=;
-	b=fH63h63ZS/B+RxF+ORw2iOj6J5BPNfSVPqkk8p06+qid0tQE7f8dcH272tktl14eREp2sF
-	5UcC7LGCbuO/1tBg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, j-rameshbabu@ti.com, andrew+netdev@lunn.ch,
-	c-vankar@ti.com, danishanwar@ti.com, d-qiu@ti.com,
-	davem@davemloft.net, edumazet@google.com, fmaurer@redhat.com,
-	kuba@kernel.org, neelima@ti.com, pabeni@redhat.com, praneeth@ti.com,
-	pratheesh@ti.com, richardcochran@gmail.com, horms@kernel.org,
-	vigneshr@ti.com, willemdebruijn.kernel@gmail.com
-Subject: Re: [PATCH net-next v8 1/8] hsr: Add header_ops::parse_protocol
-Message-ID: <20261012131317.UjrdcJ0I@linutronix.de>
-References: <20261002-hsr_ptp-v8-1-60dabc07e554@linutronix.de>
- <179129707240.434549.8562830732842344341@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5FRHr7lv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=s6P2PLaoKfqE5tTicRYyiqRKnLpbtn3os9hoyNl9VUA=; b=5F
+	RHr7lvu58c3UpyMIhbyKOyYeeBVwV76JqvoZoDUmUuBgavwobHJPrDwqAehoDLGN22jCKOiP3a6uB
+	YJOs/TfCX9nJxJQcPCOM56h6q1qFAOnwFygem++CsJJUVEGb9abtVvsVFQhSV0+igy9ieNZEC3rpI
+	Opm4O7Jf4vnbUtA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xGFuu-00AKP8-2g; Mon, 12 Oct 2026 15:18:12 +0200
+Date: Mon, 12 Oct 2026 15:18:12 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: James Clark <jjc@jclark.com>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Doug Berger <opendmb@gmail.com>,
+	=?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Miroslav Lichvar <mlichvar@redhat.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 0/5] net: mdio: add timestamped MDIO writes for
+ PHY gettimex64
+Message-ID: <23454c46-95cf-4e46-9621-149bf9350199@lunn.ch>
+References: <20261009143506.2507607-1-jjc@jclark.com>
+ <804e7c63-e762-4040-9d60-35d21df75531@lunn.ch>
+ <db3a0f73c1883645f51294ca46cffe05@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <179129707240.434549.8562830732842344341@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <db3a0f73c1883645f51294ca46cffe05@tipi-net.de>
 
-On 2026-10-06 14:31:12 [+0000], netdev-bot+sashiko@kernel.org wrote:
-> [Severity: Low]
-> This isn't a bug, but could the commit message also say why this is
-> needed?
+On Sun, Oct 11, 2026 at 08:07:13PM +0200, Nicolai Buchwitz wrote:
+> Hi Andrew
 > 
-> The description is correct. In net/packet/af_packet.c,
-> packet_parse_headers() does:
+> On 11.10.2026 15:50, Andrew Lunn wrote:
+> > > For example, using PTP_SYS_OFFSET_EXTENDED on the Raspberry Pi CM5 to
+> > > synchronize the system clock from the BCM54210PE PHY PHC leads to the
+> > > system clock being 32 µs ahead of the PHC. On the CM4, it is about 7
+> > > µs.
+> > > (The difference is because the MDIO clock frequency is higher on the
+> > > CM4: 10 MHz as opposed to 2.08 MHz on the CM5.)
+> > 
+> > IEEE 802.3 says the clock should be 2.5Mhz. Does the CM4 use a
+> > clock-frequency DT property to enable this faster clock?
+> > 
+> > 	Andrew
 > 
->     if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
->         sock->type == SOCK_RAW)
->         skb->protocol = dev_parse_header_protocol(skb);
+> The Pi 400 is the only BCM2711 board with clock-frequency in DT
+> (1950000, from a downstream "Limit MDIO clock speed" commit with no
+> further explanation). There the driver's assumed 250 MHz reference
+> gives divider 63, which with the real 200 MHz (see my comments on
+> patch 5) is about 1.56 MHz.
 > 
->     skb_probe_transport_header(skb);
-> 
-> As far as I can tell, the reason for the change is the later patch in
-> this series, "hsr: Add a magic header for sending PTP packets". That
-> patch adds this check in hsr_dev_xmit():
-> 
->     if (skb->protocol == htons(ETH_P_1588)) {
-> 
-> A SOCK_RAW sender bound to protocol 0 or ETH_P_ALL only passes that
-> check because of this callback. Should the message mention this
-> dependency?
+> Pi 4 and CM4 (the one with the PTP PHY) have no clock-frequency, so
+> the driver keeps the firmware's divider 9, and 200 MHz / 20 is the
+> 10 MHz James mentions.
 
-Yes. It is missing for the HSR case so I added it in order to make the
-mentioned check work.
+For CM4, i think the PHY is on the board? Does the MDIO bus get
+exported via a connector? If it is a closed system, then running the
+bus faster by default is O.K, since it is impossible to connect a
+device which is only standards compliant. But if the bus does get
+connected to the carrier board, it would be better to stick to 2.5MHz.
 
-> Users of the hsr device will also see some changes. They now get the
-> real ethertype instead of 0 in these places:
-> 
->   - skb_probe_transport_header()
->   - the VLAN network header adjustment in packet_parse_headers()
->   - tc/clsact protocol matching on the hsr device
->   - taps on the hsr device
-> 
-> There is also no Fixes: tag. Could the message say whether this is a
-> standalone fix or a prerequisite for the PTP work, so backporters can
-> decide whether they need it?
-
-I'm not aware of anything broken so it is just a prerequisite for this
-series. Therefore no Fixes tag.
-
-Sebastian
+	  Andrew
