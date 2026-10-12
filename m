@@ -1,97 +1,159 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-79.mta1.migadu.com [95.215.58.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BEF03A0B31;
-	Mon, 12 Oct 2026 07:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708204457CA
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 07:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.79
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791791674; cv=none; b=OpxUZzH2tyRnic/3WKPi80agaZlq9tctEeHP9idDt2PwKnFfKl5bBSIfkSmL8bT0DkxeWS5VUzTRe/yiMSOeO2u/R+/V+zgtLJATecMGZiZBsf85y9zVd2TZCvzZuQ0unW+Ud9C8J56AROH+F0mPxW1cBoJ9cnigQd+S5z14wPY=
+	t=1791791678; cv=none; b=kPt8C9RG3aOzmOtgRDl4gLR77xjV9kp62s5hKyxXD4kga+aeTkQdS/l6kPmwh4uHY/LnOs+BIvklVZXF/XVIdh+Z/s2UxP5Rs8b9uX31nKL+ts56BPtA85npJBV5JvhPIKy2Jl+i/tjPY90QW7r7w85qMulH0kzoMWJJL9Qvg08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791791674; c=relaxed/simple;
-	bh=iOFjYct+NA/rBCnLOOO0w4AHLEjLlBpqJJ6RJmSPcPE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UobwRWtOU+tzCV96AGPbXYmkK9YTv9I7dzd+/7yXFCwIZk9T0rBWCHvz6QOJOvXqqbQ7i5REzjqEG5B+TvcJ9TlSUzNumYqNh2ClWWHmo7Nm9/xSxJaspxqOJocHNq3p+2vVc/G7osi2hip6QUK+qNKSp7i6XR91xvzUytfU1o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=r99Q2mnT; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1791791678; c=relaxed/simple;
+	bh=BklsQMO+SsIIuSPsxoYOjE73hpbf2LQWVC3wm/IEZVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fSoJt90Zg7ZTVcZI+fKs+nCYym38NDYdfBHhtw05NiWivkGQAYW0KZZ/sbojTaTh/jJpz7zN9HTWVltOChCGhtxI0UODmrmcchdUVCOIWTu2MWnGiugXzo9BkbvgGmjqlKfo8pM4t0x9YLcGbxHL3yLoaVBjnnbbdvS6atg75I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uaZJpPPs; arc=none smtp.client-ip=95.215.58.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="r99Q2mnT"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id B1DFE20523;
-	Mon, 12 Oct 2026 09:54:22 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id nVQcTqQDLl-S; Mon, 12 Oct 2026 09:54:22 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 33EAF20185;
-	Mon, 12 Oct 2026 09:54:22 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 33EAF20185
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1791791662;
-	bh=Gbthn3cQMvB39iXiyDycUbw8EvcDj5qysY1Z6LXGzp8=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=r99Q2mnTuhOt4NX66E5krF7jLIYQdyeVsuMg9DAnZEpowe6G4qhlHzxgfWtjh+gW8
-	 pnNH+8aZDhphXp17kqczkdK4YSibTGBHXSjKszSDbfSho44XxQJwm08biPTwzrw7sQ
-	 B5AqsmaTQY8yIT8xU5GcxoMa5OPjRhC8mW3I1S/WUTYe8N39ooomXqKryLWqTWRa1C
-	 bAhPra9iI7KQM3jjXFAYYO14aAEyoZs2ZWajP+gtjNj8WLEm+dDhAP+Q6Hl2+zKeBs
-	 TiFxiHTCJhCfdm2HBQRINzg6UJ7YlRNhxSNqSIQR0niP5Cd0pXri+QkC4QEr3np4q6
-	 g/ZUNaVKmuUPQ==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 12 Oct
- 2026 09:54:21 +0200
-Received: (nullmailer pid 2341654 invoked by uid 1000);
-	Mon, 12 Oct 2026 07:54:20 -0000
-Date: Mon, 12 Oct 2026 09:54:20 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Qihang <q.h.hack.winter@gmail.com>
-CC: <netdev@vger.kernel.org>, David Ahern <dsahern@kernel.org>, Ido Schimmel
-	<idosch@nvidia.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net 1/2] vti: fix tunnel device use-after-free across
- async crypto resumption
-Message-ID: <asySLDyakgLAKVdf@secunet.com>
-References: <20260930090813.73901-1-q.h.hack.winter@gmail.com>
- <20260930090813.73901-2-q.h.hack.winter@gmail.com>
- <179110850671.434549.2584497019282941556@kernel.org>
- <1791424156.460.8ed76b88c7@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uaZJpPPs"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=BklsQMO+SsIIuSPsxoYOjE73hpbf2LQWVC3wm/IEZVs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791791674; v=1; x=1792396474;
+ b=uaZJpPPskEIsb2/scWJvm1zH3qDEU8IZQduwCR0zNH7CxUtrNBLnyw/6Wik6PvQkD7ZtOlHy
+ ulFSpx9lUePNPnzHiw8ZyMVENiIQfAP/gOeRUBEi2E67lZj74mEjqI/ZnGCm/EMOx3U3zwn1yKq
+ yunHw/cgyQgbPQz2/RJ6wHJo=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 77d487c906af96b3;
+	Mon, 12 Oct 2026 07:54:34 +0000
+X-Mizu-Trace-ID: 77d487c906af96b3
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 12 Oct 2026 15:54:18 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Ahmed Abdelsalam <ahabdels@cisco.com>,
+	Stefano Salsano <stefano.salsano@uniroma2.it>
+Subject: Re: [PATCH net-next 4/5] selftests: seg6: add tests for PSP together
+ with NEXT-C-SID
+Message-ID: <asySKloMDEQmTLpc@fedora>
+References: <20261011192310.55-1-andrea.mayer@uniroma2.it>
+ <20261011192310.55-5-andrea.mayer@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1791424156.460.8ed76b88c7@gmail.com>
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+In-Reply-To: <20261011192310.55-5-andrea.mayer@uniroma2.it>
 
-On Thu, Oct 08, 2026 at 01:49:16AM +0000, Qihang wrote:
-> All real, and vti6 has the same problems.
+Hi Andrea,
+On Sun, Oct 11, 2026 at 09:23:09PM +0200, Andrea Mayer wrote:
+> Extend srv6_end_flavors_test.sh with tests for the SRv6 End behavior
+> with both the NEXT-C-SID and PSP flavors.
 > 
-> The dev_hold()/dev_put() idea assumed the callback runs exactly once
-> per skb, which xfrm_input() doesn't guarantee. IPTFS frees the outer
-> skb on its own without any callback.
+> The tests use two SRv6 Policies with C-SID containers, where every
+> router after the ingress one applies End with the NEXT-C-SID and PSP
+> flavors. To check PSP, set net.ipv6.conf.all.seg6_enabled to 0 on the
+> hosts in setup_hs(). The hosts then drop any packet that still carries
+> an SRH, and a ping to an address on the loopback of a host succeeds
+> only if the router connected to that host has removed the SRH. The tests
+> fail when PSP is not applied together with NEXT-C-SID.
+> 
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>  .../selftests/net/srv6_end_flavors_test.sh    | 229 +++++++++++++++++-
+>  1 file changed, 226 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/srv6_end_flavors_test.sh b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> index 30a939392eea..baa1b09a1aab 100755
+> --- a/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> +++ b/tools/testing/selftests/net/srv6_end_flavors_test.sh
+> @@ -439,6 +549,7 @@ setup_rt_local_sids()
+>  	local devname
+>  	local nsname
+>  	local neigh
+> +	local csid
+>  
+>  	nsname="$(get_rtname "${rt}")"
+>  
+> @@ -452,6 +563,14 @@ setup_rt_local_sids()
+>  			add "${LOCATOR_SERVICE}:${neigh}::/32" \
+>  			table "${LOCALSID_TABLE_ID}" \
+>  			via "${net_prefix}::${neigh}" dev "${devname}"
+> +
+> +		# set underlay network routes to reach the C-SID containers
+> +		# that start with a C-SID of the neighbor, for any Function.
+> +		csid="$(build_csid "${neigh}" 00)"
+> +		ip -netns "${nsname}" -6 route \
+> +			add "${LCBLOCK_ADDR}:${csid}::/${LCBLOCK_NODE_BLEN}" \
+> +			table "${LOCALSID_TABLE_ID}" \
+> +			via "${net_prefix}::${neigh}" dev "${devname}"
+>  	done
+>  
+>  	# Local End behavior (note that "dev" is a dummy interface chosen for
+> @@ -461,6 +580,17 @@ setup_rt_local_sids()
+>  		table "${LOCALSID_TABLE_ID}" \
+>  		encap seg6local action End dev "${DUMMY_DEVNAME}"
+>  
+> +	# Local End behavior with the NEXT-C-SID and PSP flavors, bound to the
+> +	# C-SID of the router (e.g. fcbb:0:04a1::/48 on rt-4). The /48 prefix
+> +	# covers every C-SID container whose first C-SID is this one, whatever
+> +	# the Argument that follows.
+> +	csid="$(build_csid "${rt}" "${END_CSID_PSP_FUNC}")"
+> +	ip -netns "${nsname}" -6 route \
+> +		add "${LCBLOCK_ADDR}:${csid}::/${LCBLOCK_NODEFUNC_BLEN}" \
+> +		table "${LOCALSID_TABLE_ID}" \
+> +		encap seg6local action End flavors next-csid,psp \
+> +		lblen "${LCBLOCK_BLEN}" nflen "${LCNODEFUNC_BLEN}" \
+> +		dev "${DUMMY_DEVNAME}"
 
-This is a IPTFS bug. If IPTFS frees the skb, it has to make sure
-to run the whole destruction path including all the callbacks.
+This is a End + PSP specific encapsulation. If there is a new version patch,
+can we move this block
 
-> The early drop when the SA is no
-> longer valid happens while family is still AF_UNSPEC, so xfrm_rcv_cb()
-> can't find the afinfo and never calls us.
+> @@ -494,6 +634,7 @@ __setup_rt_policy()
+>  	local in_nsname
+>  	local rt_nsname
+>  	local policy=''
+> +	local container
+>  	local function
+>  	local fullsid
+>  	local op_type
+> @@ -520,6 +661,15 @@ __setup_rt_policy()
+>  			behavior_cfg="End flavors psp"
+>  			;;
+>  
+> +		"next-csid,psp")
+> +			# the behavior is already set up on every router by
+> +			# setup_rt_local_sids.
+> +			container="$(build_csid_container "${node}" \
+> +				"${END_CSID_PSP_FUNC}")"
+> +			policy="${policy}${container},"
+> +			continue
+> +			;;
+> +
 
-Assigning family before the early drop should fix this.
+to here? So we can align with the other SRv6 Endpoint behavior?
+Because later in the End.X PSP support we also need to cleanup and
+re-setup with END.X.
 
-> And on the success path I'd
-> drop the last reference before gro_cells_receive() is done with
-> skb->dev.
+If this version is applied (which is also good), I can do the modification
+in my patch set.
 
-I think we should unconditionally refcount skb->dev in the
-xfrm input path to fix that for now.
+Others looks good to me.
 
+Tested-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+
+Thanks
+Hangbin
