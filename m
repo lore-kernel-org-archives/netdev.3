@@ -1,157 +1,273 @@
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522573451A7;
-	Mon, 12 Oct 2026 00:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+Received: from zg8tmtyylji0my4xnjeumjiw.icoremail.net (zg8tmtyylji0my4xnjeumjiw.icoremail.net [162.243.161.220])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167492AD36
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 01:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.161.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791766781; cv=none; b=cttGzCxGa4VxjIRHw0VHol6nkHWjui6tH9IHV1FYFEMXa49FUB28l+kmOiHzZ5tyfXScfh0jhdckYnkAEGAaYaKNN/zB3T/LF8sWh+mK9/h/DhEfZCh02JfX8N0G83vmUjNJYxrSHTqilwMizriyIb6+ig3XUV+X7UwJ/6xWYMA=
+	t=1791767266; cv=none; b=jcFT42NsjjNlOGWGebij7AfX60oN1blPQ5szl+cmupYE0+Q4dijrfQwRgRsNz70crV8anRpwrWgi+17vOtMRx0L5Jr/X8uAk/t7xP0BUbNyRSS36qmFglmdlNdxDSmMxdvGM1Jhx4xan9xABSsQadzI2nPbtYhsMFFW9fji1X+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791766781; c=relaxed/simple;
-	bh=YSyZHAB6Vtxc17lVBX2ybA+plNkuA8JrLtQTp8bDBgE=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=se+6sIvOBNuYX0OLm1QbOVQURdicIw0J1mYRpDaLU/aslI+bHMNV3lPRdgk+0PkJfSxM+wp8IOmxVjR/bPvZZ3BqB2n3PrZUfxxKZp5tSgjwIlhzG4FACCbFxKUTBbPdBhN1OH/8i35xt7LSFeOA6qm8oZfA9caDLHxXx2kz7n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=XBUq+SEh; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=c6KDWHV+; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="XBUq+SEh";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="c6KDWHV+"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth-2019-1.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69C0x4p6020545;
-	Mon, 12 Oct 2026 02:59:09 +0200
-Received: from lubuntu-18.04 (host-79-32-222-240.retail.telecomitalia.it [79.32.222.240])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id 16DEB12289F;
-	Mon, 12 Oct 2026 02:59:01 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1791766741; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HhHmgfXv1JVxKVN/OgXAPIowjeub0F9/DIzebdwQqM0=;
-	b=XBUq+SEhqYcghbD7qdyo0maRVL7BbGREUMT/gdyTYMHv4U7TV4yTc03NrQMEfChU5g2oUh
-	a6aeON6CkqLEhQDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1791766741; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HhHmgfXv1JVxKVN/OgXAPIowjeub0F9/DIzebdwQqM0=;
-	b=c6KDWHV+exO5JQp+6M+3mEhExto4Uv2V9y5cMK1u8p9WkcUwf8J5PdEREJqMxKhwnHxFQU
-	Wg553JMvACVFkDzwlXj8TvW5NDmdWWDlIt6UFfzxPl0QbZc8HAux9ZVKAY7x77GZQuZe7E
-	1lP0bwfXXiNINAyD0tlPBkWyDOyJ1BuWk2KY+3PaU3OTRbc66CY4IxEJCeQ7erPE7lHUWd
-	68/HfDJbAFUZqK/aA361YgJjLSsXJaaPKNG2p2hPcWNJPpKW7UkLOFbKQcYDNOPqDv1BFd
-	3RugaG6ENhsHWWGMj8VFdE1+dP8wNToBg+vEHpDPWVRbF4+cUeKp8tZPlBLfrg==
-Date: Mon, 12 Oct 2026 02:59:00 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>,
-        Shuah Khan <shuah@kernel.org>, Eric Dumazet
- <edumazet@kernel.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, Hangbin Liu
- <liuhangbin@kylinos.cn>,
-        stefano.salsano@uniroma2.it, Andrea Mayer
- <andrea.mayer@uniroma2.it>,
-        andrea@common-net.org
-Subject: Re: [PATCH net-next v2 2/5] seg6: add RFC8986 flavor support for
- End.X
-Message-Id: <20261012025900.c2321bfa92c5863d21efdba3@uniroma2.it>
-In-Reply-To: <20261009-srv6_flavors_endx-v2-2-56ac7f838f41@kylinos.cn>
-References: <20261009-srv6_flavors_endx-v2-0-56ac7f838f41@kylinos.cn>
-	<20261009-srv6_flavors_endx-v2-2-56ac7f838f41@kylinos.cn>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1791767266; c=relaxed/simple;
+	bh=ju5xrs8Z0YxAp95h4sVSMEQZgroTsDMTQOYN6n/5chY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ljNDHgO5gQ10oiexUe8XpWwFR8tUzUMb8qXjm2F+avjBCBu9ysPuL9tSa1v6ehWVrpGsGmio4Oe7WVG282kLCfUnaVd6BSvRHuzrkjrmD2cb8GyxznaFnDVUeGtoxd2HPixs5RCBuFwIWRsks7WgnpLB/7IDE/D5mE6oUzPYf2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn; spf=pass smtp.mailfrom=lzu.edu.cn; arc=none smtp.client-ip=162.243.161.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lzu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lzu.edu.cn
+Received: from enjou-Legion-Y7000P-2019 (unknown [219.141.235.82])
+	by app1 (Coremail) with SMTP id ygmowACXs73IMsxqh4xaAg--.62157S3;
+	Mon, 12 Oct 2026 09:07:22 +0800 (CST)
+From: Ren Wei <n05ec@lzu.edu.cn>
+To: netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	horms@kernel.org,
+	vladbu@mellanox.com,
+	sbrivio@redhat.com,
+	bird@lzu.edu.cn,
+	kanolyc@gmail.com,
+	z1652074432@gmail.com,
+	n05ec@lzu.edu.cn
+Subject: [PATCH net v3 1/1] net/sched: cls_flower: avoid stale mask references after delete
+Date: Mon, 12 Oct 2026 09:07:19 +0800
+Message-ID: <20261012010720.2248662-2-n05ec@lzu.edu.cn>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261012010720.2248662-1-n05ec@lzu.edu.cn>
+References: <20261012010720.2248662-1-n05ec@lzu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:ygmowACXs73IMsxqh4xaAg--.62157S3
+X-Coremail-Antispam: 1UD129KBjvJXoW3Gr4fJFWUJr48Cr13XF1fZwb_yoWxJw4UpF
+	ZxG3y5tr4kGF4UWanYyw4UZ3ZIywn2ya98CF1fK34kJr15ta1fKFy7tayI9rWrCryxu3W5
+	GF4UK398ua1DAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+	IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW0oVCq3wA2z4x0Y4vEx4A2
+	jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52
+	x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWU
+	GwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVWUtVW8ZwCY02Avz4vE14v_KwCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6c
+	x26r4rMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbl_M3UUUUU==
+X-CM-SenderInfo: zqqvvuo6o23hxhgxhubq/1tbiAQsSCWrK6DcK2QAAs9
 
-On Fri, 09 Oct 2026 17:58:38 +0800
-Hangbin Liu <hangbin.liu@linux.dev> wrote:
+From: Yuhang Zheng <z1652074432@gmail.com>
 
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> Previously End.X only supported NEXT-C-SID, with a plain fallback to
-> input_action_end_x_core(). Add PSP End.X processing by reusing
-> end_flv8986_core().
-> 
-> Add SEG6_LOCAL_FLV8986_SUPP_OPS to SEG6_LOCAL_END_X_FLV_SUPP_OPS so
-> End.X advertises PSP flavor support.
-> 
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> ---
-> 
-> For Sashiko:
-> 
-> With the SEG6_LOCAL_END_X_FLV_SUPP_OPS mask widened, parse_nla_flavors()
-> now accept the combination next-csid plus psp for an End.X instance. And
-> the current code is unable to handle this combination. The End instance
-> also has this issue. Andrea is preparing a fix for this bug.
+Flower releases a mask reference when a filter is removed from the
+classifier. The filter object can remain alive while dump, walk, or
+hardware reoffload paths hold a reference to it. Those paths can then
+dereference f->mask after the mask has already been released.
 
-Hi Hangbin,
+Keep the mask reference until the filter reference count reaches zero.
+Release the mask synchronously from the final __fl_put() while the caller
+still holds the tcf_proto reference, and leave the existing RCU work to
+free the mask. This keeps the mask available to every reader that still
+holds the filter.
 
-thanks for v2, and for your work.
+The filter is still removed from the classifier indexes immediately.
+Therefore, a deleted filter can temporarily retain an otherwise empty
+mask; fl_delete() uses the handle IDR, rather than the mask list, to
+determine whether the classifier has become empty.
 
-The End fix is now posted, to net-next and not to net as I wrote on
-v1, since the issues it fixes have been there since PSP was added:
+Failed mask assignment can leave fnew->mask as an error or borrowed
+pointer without an owned mask reference. Clear it before the common
+failure path so the final put cannot release an unowned reference.
 
-  https://lore.kernel.org/netdev/20261011192310.55-1-andrea.mayer@uniroma2.it/
+This fix does not add fields, snapshots, or per-filter memory.
 
-> ---
->  net/ipv6/seg6_local.c | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
->
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 4fcfcd48cfae..521a9b0c0929 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -121,7 +121,8 @@ struct bpf_lwt_prog {
->  
->  #define SEG6_LOCAL_END_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
->  					 SEG6_LOCAL_FLV8986_SUPP_OPS)
-> -#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	SEG6_F_LOCAL_FLV_NEXT_CSID
-> +#define SEG6_LOCAL_END_X_FLV_SUPP_OPS	(SEG6_F_LOCAL_FLV_NEXT_CSID | \
-> +					 SEG6_LOCAL_FLV8986_SUPP_OPS)
->  
->  struct seg6_flavors_info {
->  	/* Flavor operations */
-> [snip]
-> @@ -923,12 +924,20 @@ static int input_action_end_x(struct sk_buff *skb, struct seg6_local_lwt *slwt)
->  {
->  	const struct seg6_flavors_info *finfo = &slwt->flv_info;
->  	__u32 fops = finfo->flv_ops;
-> +	int ret;
-> +
-> +	if (!fops)
-> +		return input_action_end_x_core(skb, slwt);
->  
->  	/* check for the presence of NEXT-C-SID since it applies first */
->  	if (seg6_next_csid_enabled(fops))
->  		return end_x_next_csid_core(skb, slwt);
+Fixes: 92149190067d ("net: sched: flower: set unlocked flag for flower proto ops")
+Cc: stable@vger.kernel.org
+Reported-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yucheng Lu <kanolyc@gmail.com>
+Signed-off-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+---
+ net/sched/cls_flower.c | 50 +++++++++++++++++++++++-------------------
+ 1 file changed, 28 insertions(+), 22 deletions(-)
 
-Here End.X could do what End does in the fix: call
-seg6_use_next_csid() instead of seg6_next_csid_enabled(), so that a
-packet with a zero Argument is processed as End.X with PSP.
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 1cefea571efd..92a7f2d6efc0 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -518,15 +518,22 @@ static void fl_hw_update_stats(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 	tcf_exts_hw_stats_update(&f->exts, &cls_flower.stats, cls_flower.use_act_stats);
+ }
+ 
+-static void __fl_put(struct cls_fl_filter *f)
++static bool __fl_put(struct tcf_proto *tp, struct cls_fl_filter *f)
+ {
++	bool last = false;
++
+ 	if (!refcount_dec_and_test(&f->refcnt))
+-		return;
++		return false;
++
++	if (f->mask)
++		last = fl_mask_put(fl_head_dereference(tp), f->mask);
+ 
+ 	if (tcf_exts_get_net(&f->exts))
+ 		tcf_queue_work(&f->rwork, fl_destroy_filter_work);
+ 	else
+ 		__fl_destroy_filter(f);
++
++	return last;
+ }
+ 
+ static struct cls_fl_filter *__fl_get(struct cls_fl_head *head, u32 handle)
+@@ -572,11 +579,10 @@ static int __fl_delete(struct tcf_proto *tp, struct cls_fl_filter *f,
+ 	list_del_rcu(&f->list);
+ 	spin_unlock(&tp->lock);
+ 
+-	*last = fl_mask_put(head, f->mask);
+ 	if (!tc_skip_hw(f->flags))
+ 		fl_hw_destroy_filter(tp, f, rtnl_held, extack);
+ 	tcf_unbind_filter(tp, &f->res);
+-	__fl_put(f);
++	*last = __fl_put(tp, f);
+ 
+ 	return 0;
+ }
+@@ -617,7 +623,7 @@ static void fl_put(struct tcf_proto *tp, void *arg)
+ {
+ 	struct cls_fl_filter *f = arg;
+ 
+-	__fl_put(f);
++	__fl_put(tp, f);
+ }
+ 
+ static void *fl_get(struct tcf_proto *tp, u32 handle)
+@@ -2488,12 +2494,14 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 	}
+ 
+ 	err = fl_check_assign_mask(head, fnew, fold, mask);
+-	if (err)
++	if (err) {
++		fnew->mask = NULL;
+ 		goto unbind_filter;
++	}
+ 
+ 	err = fl_ht_insert_unique(fnew, fold, &in_ht);
+ 	if (err)
+-		goto errout_mask;
++		goto unbind_filter;
+ 
+ 	if (!tc_skip_hw(fnew->flags)) {
+ 		err = fl_hw_replace_filter(tp, fnew, rtnl_held, extack);
+@@ -2547,7 +2555,6 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 
+ 		spin_unlock(&tp->lock);
+ 
+-		fl_mask_put(head, fold->mask);
+ 		if (!tc_skip_hw(fold->flags))
+ 			fl_hw_destroy_filter(tp, fold, rtnl_held, NULL);
+ 		tcf_unbind_filter(tp, &fold->res);
+@@ -2555,7 +2562,7 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 		 * after this.
+ 		 */
+ 		refcount_dec(&fold->refcnt);
+-		__fl_put(fold);
++		__fl_put(tp, fold);
+ 	} else {
+ 		idr_replace(&head->handle_idr, fnew, fnew->handle);
+ 
+@@ -2580,9 +2587,6 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 	if (in_ht)
+ 		rhashtable_remove_fast(&fnew->mask->ht, &fnew->ht_node,
+ 				       fnew->mask->filter_ht_params);
+-errout_mask:
+-	fl_mask_put(head, fnew->mask);
+-
+ unbind_filter:
+ 	if (bound_to_filter) {
+ 		if (flags & TCA_ACT_FLAGS_NO_RTNL)
+@@ -2598,14 +2602,14 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+ 		idr_remove(&head->handle_idr, fnew->handle);
+ 		spin_unlock(&tp->lock);
+ 	}
+-	__fl_put(fnew);
++	__fl_put(tp, fnew);
+ errout_tb:
+ 	kfree(tb);
+ errout_mask_alloc:
+ 	tcf_queue_work(&mask->rwork, fl_uninit_mask_free_work);
+ errout_fold:
+ 	if (fold)
+-		__fl_put(fold);
++		__fl_put(tp, fold);
+ 	return err;
+ }
+ 
+@@ -2618,8 +2622,10 @@ static int fl_delete(struct tcf_proto *tp, void *arg, bool *last,
+ 	int err = 0;
+ 
+ 	err = __fl_delete(tp, f, &last_on_mask, rtnl_held, extack);
+-	*last = list_empty(&head->masks);
+-	__fl_put(f);
++	spin_lock(&tp->lock);
++	*last = idr_is_empty(&head->handle_idr);
++	spin_unlock(&tp->lock);
++	__fl_put(tp, f);
+ 
+ 	return err;
+ }
+@@ -2641,12 +2647,12 @@ static void fl_walk(struct tcf_proto *tp, struct tcf_walker *arg,
+ 		rcu_read_unlock();
+ 
+ 		if (arg->fn(tp, f, arg) < 0) {
+-			__fl_put(f);
++			__fl_put(tp, f);
+ 			arg->stop = 1;
+ 			rcu_read_lock();
+ 			break;
+ 		}
+-		__fl_put(f);
++		__fl_put(tp, f);
+ 		arg->count++;
+ 		rcu_read_lock();
+ 	}
+@@ -2697,7 +2703,7 @@ static int fl_reoffload(struct tcf_proto *tp, bool add, flow_setup_cb_t *cb,
+ 		cls_flower.rule =
+ 			flow_rule_alloc(tcf_exts_num_actions(&f->exts));
+ 		if (!cls_flower.rule) {
+-			__fl_put(f);
++			__fl_put(tp, f);
+ 			return -ENOMEM;
+ 		}
+ 
+@@ -2715,7 +2721,7 @@ static int fl_reoffload(struct tcf_proto *tp, bool add, flow_setup_cb_t *cb,
+ 		if (err) {
+ 			kfree(cls_flower.rule);
+ 			if (tc_skip_sw(f->flags)) {
+-				__fl_put(f);
++				__fl_put(tp, f);
+ 				return err;
+ 			}
+ 			goto next_flow;
+@@ -2731,11 +2737,11 @@ static int fl_reoffload(struct tcf_proto *tp, bool add, flow_setup_cb_t *cb,
+ 		kfree(cls_flower.rule);
+ 
+ 		if (err) {
+-			__fl_put(f);
++			__fl_put(tp, f);
+ 			return err;
+ 		}
+ next_flow:
+-		__fl_put(f);
++		__fl_put(tp, f);
+ 	}
+ 
+ 	return 0;
+-- 
+2.52.0
 
-Does it work for you to rebase this series on top of the End fix,
-once it is merged, and make that change in this patch? Then End.X
-handles the combination from the beginning.
-
-The selftests of the two series conflict in srv6_end_flavors_test.sh,
-and they set up the test environment differently. If you want a hand
-with that part, I am glad to help.
-
-Side note: I received only part of this series. Could you please also
-Cc andrea@common-net.org, in this thread and on the next versions?
-
-Ciao,
-Andrea
