@@ -1,97 +1,235 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D84B47D925;
-	Mon, 12 Oct 2026 17:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DEA42AF86
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 17:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791824744; cv=none; b=eJBUF2Hx+G7byuxEHsgmBw73ibfbeyb60UPWD60TSxOFheh3srRyBRvfL8UvylXhgobz4Kcn4CAzqreFHrLIUysDxNcI8hPBjz8TMjkgzbjrkK+dfplNUiQBolZYuf3vPJ3cDQXjpED1oZeaVAZ3iqI17EudMJKLVzFqoWJTZgc=
+	t=1791824815; cv=none; b=rQnf6B7WUFKWmHlCC7iTm1I/71kK2jvmAhvtzxqIR+xpaEKlvVmypofdKAox54SwOLcZAUy4vRjkwFlv9S5IpgKWHM0uJsfwiUBTOiPS0DIuTRleex1GLdOKacIHf9QX0Z23OtUHLb57FusCzIMNk/HaYOg7LwexvgGF2Ke+x/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791824744; c=relaxed/simple;
-	bh=hmrAdf0Hqw4AKaMYSOUeplJ8qOW0QPS07WQDpVPD+hk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T7RrjgdDXTXRCIpGXV2cDxFP28cJKx2qUU0KCFOuae/R7ZfdyBBzji8M1GQEUSK16a4gLWY/qyZbi4cBt2UQle9dKmbdyCsZ9d2SjJgueayXYlMhp5IcUWW75CzsgB6rBO8vmmlxWJWNyvTzT77yXBh0OiYUm5bOaNJkoHzOHQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=U9x6Ld9V; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1791824815; c=relaxed/simple;
+	bh=EPixIYeaDTJUzgTZXc83KThsa5b/N5bbS7SL6I8CDGo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FKR6E8D9o27bITmLvKlYhwhwSpG5tSWdnScdPEANWz0FOod51/HgHBlt1FHw9jNebUBXGPWEQ261MqDzjL1bbfgKfSP6WSmvg1U4ZqwrIUChM6aph6VV315aMvH/KyFbptsvcKt2OWgMm71SWG4Ixp1rxSRn7fqqP+KroX0KpdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=everpuredata.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=ZVB9pv6T; arc=none smtp.client-ip=209.85.214.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=everpuredata.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="U9x6Ld9V"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 028A5108D00;
-	Mon, 12 Oct 2026 19:05:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1791824736;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=h8LtgT+boBUMJ9cMgJ+wgTM+dqaUNvYOgZpFyqlIaKU=;
-	b=U9x6Ld9VO9juvp3ytHOmteI9nDKOJ+Vl877BTxQ6RmznWzzEkAcTncT4POhcOCYXWxTSgq
-	P6BAHB2cQ+3toPaCyGX5Oaya3VHN7aQ/JYpaVEjD7d0VWjdiBf52SGIFXMkvEOd9tcVRuR
-	6Z1C76wgMldJWR69Ty7lx+G2aLKk028vatmsEBd8/Cj/ySowHdOjlD5pQuq4Yd/wRV1BVX
-	d93rjIuuoNBM/AJvArNhcmQmi1OXHFh807Mbo9laJcKMVNqM2Z5/kYuoq1KpxxDx9ys1Aq
-	bi4YDbrP5wMgpoFoI+wmMfvUGaaB8NWoTWFGg306G4692PjxoqStVzUwb5Dn4w==
-Message-ID: <c4c6953e-c831-4b1f-8600-67c226384876@nabladev.com>
-Date: Mon, 12 Oct 2026 19:05:33 +0200
+	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="ZVB9pv6T"
+Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2e8d2574fd9so7985705ad.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:06:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=everpuredata.com; s=google; t=1791824813; x=1792429613; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/IgjKzde4XgZsr2/+7wKteu5cKKJitZwVLtvCdMyAM8=;
+        b=ZVB9pv6TtL96WOhg8GFvYG0We++INA6sqtp0vrhDbcrJqoGUCddS/IyfSBcRa2st67
+         E/v9NyB+ucP3DLLePDkTNeC01m/D5/Pq4hz+v+mu+xeeynxN9uvKkCIkUd5xYqizCe9H
+         ii4ScO9qZZl/4W4AN5lolK9wOSaPq+IpFyyXp/MgxciHnlza6fLo/JmQQxZ51aEZloUt
+         a4Dd2rb5f2reyKBgf9FZRp5BrKkaU5NRD9QP9DmLL14I/EVhC6sFqUjeCa9FV4jMaOyB
+         WOu1JvYQaH0CgSVlLCFB5n7/yt3v199pQCAI0cCbLw/NX43jzfqk4sO1/2VqTmStFTWM
+         wQPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791824813; x=1792429613;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/IgjKzde4XgZsr2/+7wKteu5cKKJitZwVLtvCdMyAM8=;
+        b=ZoAOG7GMPddpL6aqExIpxz3ARQUM9zK2QmOAHDQs/z+3/uR++bY7y5JWUeUBxUTmuf
+         QIYt8cydmfIg28OrsIQdv/HtL9k0L/aaI9zH7WklS+fAm8G0Fi58zQF7TiDB6V/PrNe/
+         K6I4i0Aqj1lBfZmIbhDIne5FoK4GBx6dmJgPciuVpuSWvSpQWys4IsfTkf8GuPlmO4Mh
+         VdVLBI7jy7lbNZ2ytafmIaHugKB45JRibiGrdlO10QiXcWKscOeGY+9zWhfPIAFiffJC
+         n/40bAfADrTlUX518h+kxKtFBJD0auWV8ukX3By3K7zjMxJcyDz1va2LiJiGV8BCfyVY
+         i/qQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz9wNzuecvnSjVtqTmYQml19dJcb1Qy8U/H/RETp0PiPcggCJ9ncbFNDsdOnjzn6Fiih8iuWHY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJmBqMjIISyFuNqDxHsssnQ470krHcISgBvLcFbkM3ehSo4ORjd
+	t17fL4zP+SrP/GNJRSQndP9UMTgb91AbmwzBxVM3XIbb0DxwzwNNw+DmnSyPwb3W38rp+lgXs5G
+	SpRC2hGHSJJ7cX5RqZHx4e/ozZMODNJd3LujZ
+X-Gm-Gg: AYBFou1wEKp3rJ8zym0rcweCiO9MHYVh1E10fNDukGR9udAQJQZAMHvwe7KDz6jZrR0
+	XH7zH59DU82R7JsjufsE5xwYI/wx2nWsfQz1p5FKfMWRbdqZg15SSaZ1wP4symsuh+eQwdyudeA
+	tn48IHJBYVg5jSU04F5Y5Olj64i/cw48j/l0tz08acTZL7sttIfjA52xoJkLWxDbPPRla4OmFd4
+	yJQcSwcwU0RSOd4ArUfLju5UUlY9ePF+UVrq4qVxNJ9tcJi0SBazxXWaBrbW9Il5mbc6C7rpPeM
+	ptbJm8A/GlqEd7EBbHzDofYzAaCOcdvx0lOfy67Kyr+PUu0jUtBqflovYZYSMcM3NPMnFjAijFg
+	JMuMSTjxHEDufViOjNmwpgiF89Sj8I/RgJoAYE2s=
+X-Received: by 2002:a17:903:1b6d:b0:2db:39da:90f2 with SMTP id d9443c01a7336-2e84280aed6mr90652355ad.8.1791824812656;
+        Mon, 12 Oct 2026 10:06:52 -0700 (PDT)
+Received: from c14-smtp-2023.dev.purestorage.com ([208.88.158.129])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2e841f6aa74sm4097515ad.10.2026.10.12.10.06.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 10:06:52 -0700 (PDT)
+X-Relaying-Domain: everpuredata.com
+Received: from irdv-tmenninger.dev.purestorage.com (irdv-tmenninger.dev.purestorage.com [10.32.149.15])
+	by c14-smtp-2023.dev.purestorage.com (Postfix) with ESMTPS id 841C43404CA;
+	Mon, 12 Oct 2026 10:06:49 -0700 (PDT)
+From: Tim Menninger <tmenninger@everpuredata.com>
+To: linux-nfs@vger.kernel.org
+Cc: Chuck Lever <cel@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yongjian Mu <ymu@everpuredata.com>,
+	Jon Curley <jcurley@everpuredata.com>,
+	Eric Badger <ebadger@everpuredata.com>,
+	Shiva Lingappa <slingappa@everpuredata.com>
+Subject: [PATCH v2] xprtrdma: trim head iovec when the payload arrives via a Write chunk
+Date: Mon, 12 Oct 2026 17:06:19 +0000
+Message-Id: <20261012170619.674785-1-tmenninger@everpuredata.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <e62ff502-be18-454e-8a64-80b366d477f4@app.fastmail.com>
+References: <e62ff502-be18-454e-8a64-80b366d477f4@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-To: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20260924180607.60932-1-marex@nabladev.com>
- <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
- <AS4PR04MB933887CA9C646F0359D8E61A888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <b4addd8f-43ba-417e-85ad-a78391c8f2fb@nabladev.com>
- <d8e72848-1611-4d6e-b3e8-17013bce7948@nabladev.com>
- <AS4PR04MB9338F6AFA7DF06339C54DD1288932@AS4PR04MB9338.eurprd04.prod.outlook.com>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <AS4PR04MB9338F6AFA7DF06339C54DD1288932@AS4PR04MB9338.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-On 10/8/26 4:34 AM, Wei Fang wrote:
->>>> Clark helped measure the MDC rate on the 95 EVK board this morning,
->>>> and the result was 644KHz, which is consistent with the theoretical
->>>> value. The scope's accuracy or other factors may be causing you to
->>>> observe a rate of 558kHz.
->>>
->>> That 644 kHz and 558 kHz differs too much to be an equipment
->>> miscalibration / misuse.
->>
->> For the sake of completeness, the MX95 B0 I have on my desk now prints this in
->> SM:
->>
->>   >$ clock.r
->> ...
->> 097: busnetcmix           =  on,  133333333Hz
->> 098: enet                 =  on,  666666666Hz
->> 099: enetphytest200m      =  on,   24000000Hz
->> 100: enetphytest500m      =  on,   24000000Hz
->> 101: enetphytest667m      =  on,   24000000Hz
->> 102: enetref              =  on,  250000000Hz
->> 103: enettimer1           =  on,   24000000Hz
->>
->> And the cycle time of MDC is 1.8ms , which is some 550 kHz .
-> 
-> The enet clock is the source of NETC system clock, and there is a 1/2
-> divisor inside the NETCMIX, so the NETC system clock is 333 MHz.
-> So the MDC clock should be 644 KHz, the frequency measured by
-> Clark in the attachment is indeed 644kHz.
-Is there maybe any other clock source that might feed the MDC clock on 
-MX95 B0, that could explain the 558 kHz I observe ?
+From: Yongjian Mu <ymu@everpuredata.com>
 
-I apologize for my late reply, I am currently catching up on email.
+The upper layer sets rq_rcv_buf.head[0].iov_len from its estimate of the
+reply header size. For RPCSEC_GSS that estimate includes
+auth->au_ralign, which gss_create_new() initializes to GSS_VERF_SLACK >>
+2 (25 XDR words, or 100 bytes) and which is corrected to the real
+verifier size only after the first reply on that rpc_auth has been
+unwrapped. In this case, the krb5 MIC verifier is 36 bytes, so every
+request encoded before the first reply completes has a head that is 64
+bytes too long.
 
-Thank you for your help !
+On TCP this is harmless: xdr_realign_pages() moves the excess head
+bytes, which are genuine reply data, into the page list. With
+RPC-over-RDMA and a Write chunk (sec=krb5, i.e. RPC_GSS_SVC_NONE, where
+DDP is allowed), the payload has already been placed directly into the
+page list, and the receive buffer holds only the inline part of the
+reply. rpcrdma_inline_fixup() clamps its local copy of the head length
+to the inline length but leaves head.iov_len untouched, so
+xdr_realign_pages() still sees iov_len > cur and shifts whatever lies
+past the inline reply in the receive buffer into the front of the
+directly-placed payload:
+
+  rpc_xdr_recvfrom:  head=[...,196] page=524288 tail=[...,64]
+  rpc_xdr_alignment: nfsv4 READ offset=132 copied=64
+
+The first 64 bytes returned by each such READ are incorrect (zeroed, or
+shifted right by 64 bytes depending on the kernel's xdr_shrink_bufhead()
+implementation). This is readily hit with pNFS flexfiles over RDMA and
+sec=krb5: the per-DS rpc_clnt gets a fresh rpc_auth whose first RPC is a
+large READ. Reads following the first completed reply return the
+expected data.
+
+Commit cb0ae1fbb2f5 ("xprtrdma: Do not update {head, tail}.iov_len in
+rpcrdma_inline_fixup()") removed the head-length correction while fixing
+the handling of pure-inline krb5p replies.
+
+When a Write chunk conveyed the payload, trim head.iov_len (in both
+rq_rcv_buf and rq_private_buf, which call_decode() expects to match) to
+the inline length actually received so that the XDR layer does not
+realign the page list. These READ replies have no trailing inline
+fields, and the payload is already in the page list, so the upper
+layer's head estimate can be safely reduced. Reduce buflen by the same
+amount to avoid treating unused head capacity as additional tail
+capacity. Pure inline replies and Reply chunk replies are unchanged.
+
+Tested on Linux 6.8.0 and 7.3-rc4 with NFSv4.1 pNFS flexfiles over
+RPC/RDMA and sec=krb5.
+
+Fixes: cb0ae1fbb2f5 ("xprtrdma: Do not update {head, tail}.iov_len in rpcrdma_inline_fixup()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yongjian Mu <ymu@everpuredata.com>
+Reviewed-by: Chuck Lever <cel@kernel.org>
+Signed-off-by: Tim Menninger <tmenninger@everpuredata.com>
+---
+v2:
+- Clarify why adjusting receive-buffer lengths is safe for Write chunks.
+- Add testing note.
+- Add Chuck's Reviewed-by.
+
+Outstanding question from Chuck on v1:
+> Anna/Trond, does the NFS client or XDR code rely on the reply-side kvec
+> lengths staying as set during send preparation, or might there be an
+> in-tree reader of head[0].iov_len on the post-receive path that I missed?
+
+v1: https://lore.kernel.org/r/20261009181554.2280374-1-tmenninger@everpuredata.com/
+
+ net/sunrpc/xprtrdma/rpc_rdma.c | 27 +++++++++++++++++++++++----
+ 1 file changed, 23 insertions(+), 4 deletions(-)
+
+diff --git a/net/sunrpc/xprtrdma/rpc_rdma.c b/net/sunrpc/xprtrdma/rpc_rdma.c
+index 1285f04cdac14..7e5713367291e 100644
+--- a/net/sunrpc/xprtrdma/rpc_rdma.c
++++ b/net/sunrpc/xprtrdma/rpc_rdma.c
+@@ -984,12 +984,16 @@ void rpcrdma_reset_cwnd(struct rpcrdma_xprt *r_xprt)
+  * @rqst: controlling RPC request
+  * @srcp: points to RPC message payload in receive buffer
+  * @copy_len: remaining length of receive buffer content
+- * @pad: Write chunk pad bytes needed (zero for pure inline)
++ * @writelist: bytes conveyed by the Write chunk (zero for pure inline)
+  *
+  * The upper layer has set the maximum number of bytes it can
+  * receive in each component of rq_rcv_buf. These values are set in
+  * the head.iov_len, page_len, tail.iov_len, and buflen fields.
+  *
++ * For READ replies with a Write chunk, the payload is already in
++ * the page list. An overestimated head length and buflen can be
++ * reduced without moving reply data.
++ *
+  * Unlike the TCP equivalent (xdr_partial_copy_from_skb), in
+  * many cases this function simply updates iov_base pointers in
+  * rq_rcv_buf to point directly to the received reply data, to
+@@ -998,13 +1002,16 @@ void rpcrdma_reset_cwnd(struct rpcrdma_xprt *r_xprt)
+  * Returns the count of bytes which had to be memcopied.
+  */
+ static unsigned long
+-rpcrdma_inline_fixup(struct rpc_rqst *rqst, char *srcp, int copy_len, int pad)
++rpcrdma_inline_fixup(struct rpc_rqst *rqst, char *srcp, int copy_len,
++		     u32 writelist)
+ {
+ 	unsigned long fixup_copy_count;
+ 	int i, npages, curlen;
+ 	char *destp;
+ 	struct page **ppages;
+ 	int page_base;
++	int pad = writelist & 3;
++	unsigned int delta;
+ 
+ 	/* The head iovec is redirected to the RPC reply message
+ 	 * in the receive buffer, to avoid a memcopy.
+@@ -1016,8 +1023,20 @@ rpcrdma_inline_fixup(struct rpc_rqst *rqst, char *srcp, int copy_len, int pad)
+ 	 * head.iov_len bytes are copied into the page list.
+ 	 */
+ 	curlen = rqst->rq_rcv_buf.head[0].iov_len;
+-	if (curlen > copy_len)
++	if (curlen > copy_len) {
++		/* These READ replies have no inline fields after the payload.
++		 * Trim the head without moving the directly-placed data.
++		 */
++		if (writelist) {
++			delta = curlen - copy_len;
++
++			rqst->rq_rcv_buf.head[0].iov_len = copy_len;
++			rqst->rq_private_buf.head[0].iov_len = copy_len;
++			rqst->rq_rcv_buf.buflen -= delta;
++			rqst->rq_private_buf.buflen -= delta;
++		}
+ 		curlen = copy_len;
++	}
+ 	srcp += curlen;
+ 	copy_len -= curlen;
+ 
+@@ -1245,7 +1264,7 @@ rpcrdma_decode_msg(struct rpcrdma_xprt *r_xprt, struct rpcrdma_rep *rep,
+ 	base = (char *)xdr_inline_decode(xdr, 0);
+ 	rpclen = xdr_stream_remaining(xdr);
+ 	r_xprt->rx_stats.fixup_copy_count +=
+-		rpcrdma_inline_fixup(rqst, base, rpclen, writelist & 3);
++		rpcrdma_inline_fixup(rqst, base, rpclen, writelist);
+ 
+ 	r_xprt->rx_stats.total_rdma_reply += writelist;
+ 	return rpclen + xdr_align_size(writelist);
+-- 
+2.34.1
+
