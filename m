@@ -1,76 +1,76 @@
-Received: from mail-pg1-f225.google.com (mail-pg1-f225.google.com [209.85.215.225])
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33644F4024
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:09:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978704E2F35
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 22:09:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791842961; cv=none; b=KwMluCD2/b5KsPeN//maYEL70EEEwUKJuafvN82xjHxwW7xU+4zzwu676lb105loGwIDC46ozBZexfqmjR08daN8+MakR0p2LLTuv0Cm+EZAU6x5VVP+VUI6uQ9ak5DQy/FqA959pukveqHhNXofLGK5e9VzshLJEjx4lPfRxP0=
+	t=1791842962; cv=none; b=A98tUPvFxGTLl8y3bLgCpZ/w2s7HK6j5yVGgBQ5F5T093ku+G/mknXkCwRoE8vUnbfrOh2wF+nZb7wgibqzHkvt1zWnqCr9pLMcLDSAnCL8KNWQMo17dZ1ZxcEzb6eFSELMouetVR4ZPKLJUzmP0JH8NtyuG5u/dEc+xrPMgMSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791842961; c=relaxed/simple;
-	bh=Bmrg7/mUDODlm738twaPySKJLWFokdmaysF6E27VH5s=;
+	s=arc-20240116; t=1791842962; c=relaxed/simple;
+	bh=Kfc56ZmCkSKumOSkkcqSxmrW+QNo1Q9i2ocXsBW7HDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxXQv4rhf1j3HJuxIgfdtN6yExvB3WfcQFI61/2lqsOKYXKlEojI72/OV5tBvay/QgtZdpeMXBACKEM2KL0Jo7TTpysLmZ4topoQXL5sD1OWkP6RXfsWxjNOwnVdvdWiP8nRSgWwMuGg/aHk99j3CPj0jQgFHsfFYTvoEq9g55Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GapLTD9y; arc=none smtp.client-ip=209.85.215.225
+	 MIME-Version; b=Y82q49+p/EUZ1NvgdTXe1W/DVi9tCe7XhSF0CclIxuve263IWYUHpgSf50rei4coBBMpSUqOVd/7QDeuInVy12nXBnDiZRJW3f6Zz2UqV9/yEBXewExJfyc5Ej3apvGmbCYmBQ5d7HEQhUCnc1DeG3gzVmn7muZScUrvJTGNsOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UB2NUKiW; arc=none smtp.client-ip=209.85.216.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GapLTD9y"
-Received: by mail-pg1-f225.google.com with SMTP id 41be03b00d2f7-cc4ca696de6so1202400a12.2
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:09:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UB2NUKiW"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso922881a91.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:09:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791842959; x=1792447759;
+        d=1e100.net; s=20260707; t=1791842960; x=1792447760;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=l1k7SuWBXiEifsFWLKnVqGRtSzJCfCOW7iac83Km+o4=;
-        b=kDEARuWeP+fwzRhECQq8VzxSf2PsVTRT+J41GJKcUO38lRMMHOavglONE/Xmrzw2nq
-         JRszpTvemg7pxalMtUnZIcpyOxrzIvDbWyS6ehzzHb4uixdxzfsaVlfU6LqKgRgoJun9
-         O4tZlbU1DQrrvbcwobkHgExgpPqw26Tj43wT8xkd4kVz90AiCR3pRoV3WZWUFgQZjX1k
-         TJq+UHgrH2DBH6wIv+Mf4jEWmqjYoCAHfPo/BYYNVjHYspFoqeb58+SfAxFP8YvB+HHL
-         mw9tuI88awzgs+6ETT9jozYXomf9BY+1YlJDm4wpuX5wwzvDOuSgv6HwcP0qagNNAMZU
-         UQdw==
-X-Gm-Message-State: AFq9FYL3OZImGwfgaAC3Po4KRNOgaMrKGerhKIaZ0DAV5EFwIRWUHHyK
-	djA6mllVJ6brEs5I9v2HMKGKWc4niqx9Bmm0PvPasdYzHHxKMQyeysNM1I98lI0QA1Zsk67qdj4
-	fALrpSgD2e0FN4B3eVG2TIzHB7GHVEDsKjqX/sjknt4l5kj2+w0LLFKxOYUlptcwk16tYTUisio
-	p5bZZvHjh7cKBobJsFrQ5bvsGH5tCLyyXlfIdj1AM50Yybz0HoEZFo1T3NlVmefrvf23eXWnxoN
-	cPs0LfOILQ=
-X-Gm-Gg: AYBFou0f0aMxW3T3PQh8lyQNinl6cFgT/zVgbgPVB5A12KUi08W+LuoryRrma0+az2+
-	1MFcndtn9oc+2Wla+9yNvO5LQ4v1VMYhMcYrCKF6zBOkOKWDmkNNEEPHyKn+b+IulWHV3/e5Bnx
-	ga8+0CF7v5gDBaVBIafLLvlvfAIz8U6w04usEcuyQdJKEEvdtR6rO/Kk48JFoSxIx+rdr/Lf57G
-	1y22JE4eOUrF3AwdJw4x7mShv13uhpWGePrumXK0wD7PjJpuAEsPZ8GwmpMk4AK+Z7y5ONgL35R
-	HT/VBOXTeyXCnrhBGm9oX5YImLNnqIXonodVDxjg9j+7ls57tP6JEdSg/hfq8GXqlRGe7zIs3yC
-	0MHRh8QQSXIWew0npuzOQ7CAGD59tPnsI7B7AVTjt8WmToGsxI35/eUhuWYncD3fdm1WHzMHgoO
-	i9WiEHXJk4xd9TD+gxpqUg8IMXkDuJrSgwRV0gow==
-X-Received: by 2002:a17:903:22d2:b0:2e2:c283:354f with SMTP id d9443c01a7336-2e842abfe53mr94822895ad.28.1791842958181;
-        Mon, 12 Oct 2026 15:09:18 -0700 (PDT)
+        bh=S0P5EtcIqUJqPVSRrta8C4IebyvW9flStiKiv/cxaoA=;
+        b=qqQHSsY2EwZ1fLIj2XQlbP54sRwa/5T3BF4AxfD9VSVPu2Zu9fTEIdPFXCpjmyR0/y
+         yapfWCrZZRilVTtt/vsbRkqMFm7V4W5+A+SksQmL5Fa+YDK+CKz7nGqXW1ME4XyLq5HI
+         dXE3000aYnVtjQhBsSGJRf3mjSlaEIPYCVl4eESr10D1mRQCpGYB2h+liozErrPKNUid
+         ygtrf7nzPsXHiaBgT5QeSNihzjEoPYM2LsNOf37AI6AjFoXmUaXslES4vmL7317Ymb0m
+         +KWzzmCUMK5mCItCKwIPU7sTXjqlXaDAfMDRM8HMwfhjmj3xyJcz3H4unYlPPZM5GGIj
+         R/Ow==
+X-Gm-Message-State: AFq9FYLyRJHbraf2NqesjXuhUzVURMmTRKi8k3KYV132EtGNF03pmhV8
+	xuWijAoyP0q37s6hKCdy9LGu5o1mHiZaRgf3WZPIaQ6yEiYZphPivfkYchXo1znxmH7oQCsS21h
+	TGpj0EBvEEWdw6nXfRFmnsl+xrKa5d0bHkZN1a9u7jth+0X6wj/ZKEUnU5pRzMNqoN8pYZXNsQ6
+	m7Q8jRwgeFzB/ZJudQA0G2oUHf7+LZ22kVfPvcgX/IP0egduHsz11ZVKsbfP6otBc5WuFT7a94p
+	q2KryijfSU=
+X-Gm-Gg: AYBFou0nWuP/wZCVuY81xBXACB59wOiAmZjW01qADxD2XSG/vsYHiXl9EDm8fgtrhEn
+	dnlNSs1FI7b+vKEuOcvcw34yVroIRUWXrwvYafMCWLJM8LIbcK4cAYPzTXVQ2iO1XQhLnneRjMy
+	aCP9WNyECGH9KzaVMWQkBnT1/x3AzNOGYDYGw/l3E1HQGruOakrahncaVij0IZMS9hMiszIcDdY
+	j/3ZnLx3RBR3vExkLyWHaAhWST4fwLtXM2wFA7GNekNqo0m7QZKskg3HQYnckJj7P7SImKqYf76
+	zp4haoaFnJFcWUVmIBAl7TI4jTuxKYPpagThlIKX3JDnXuVGMrPIijkcNyOn7ySFaYon3HwNa1O
+	wgsdpJ2yaAs5U9XscxZ2AQ7Yb30XoKxzaDX5UI7ipJNlm3G4f8beYPrAqu9CIo8k5Ra0NHh4Alb
+	31EQ0yU31CO6Lr2/O9uGnm7v5NKBrjmWrMbnwHmA==
+X-Received: by 2002:a17:90b:2d0b:b0:3a7:e11c:4e6e with SMTP id 98e67ed59e1d1-3ab3a97a71dmr9003099a91.59.1791842959758;
+        Mon, 12 Oct 2026 15:09:19 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2e841f8ce8fsm4487405ad.30.2026.10.12.15.09.16
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ab36def334sm6648208a91.5.2026.10.12.15.09.19
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Oct 2026 15:09:18 -0700 (PDT)
+        Mon, 12 Oct 2026 15:09:19 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso5656373eec.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:09:16 -0700 (PDT)
+Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-1383723dfddso1765879c88.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 15:09:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791842955; x=1792447755; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1791842958; x=1792447758; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=l1k7SuWBXiEifsFWLKnVqGRtSzJCfCOW7iac83Km+o4=;
-        b=GapLTD9yc5BPGaE0LQvVWP8DBV0+hia2ZJ2RqwBeqlCIkELyyccgXHgH6xwGOBAtJf
-         Ty2dUl4bCcfJIrJK3eliHVfz+ZD2c0XWSAEoC1HGFcsFmCx8x5YQF8bCvsSU8908qroK
-         N7GSfCT5MkSpmrPpnUAHkvYstmyUrH+plwKa4=
-X-Received: by 2002:a05:7023:90b:b0:143:26f5:c618 with SMTP id a92af1059eb24-16a60625da6mr18110229c88.33.1791842954930;
-        Mon, 12 Oct 2026 15:09:14 -0700 (PDT)
-X-Received: by 2002:a05:7023:90b:b0:143:26f5:c618 with SMTP id a92af1059eb24-16a60625da6mr18110200c88.33.1791842954216;
-        Mon, 12 Oct 2026 15:09:14 -0700 (PDT)
+        bh=S0P5EtcIqUJqPVSRrta8C4IebyvW9flStiKiv/cxaoA=;
+        b=UB2NUKiWhVWiJf1AJD3cGWRGWCJFwm9Ce6Uw3VvVRpKC+HUNEgJVmcgRjJ+vAinzuJ
+         IkdWPdCWCmt1mT+2abpbv+uvwa/cOQaoDI2UWKCR43XDpbpRd+B8V3KrcbRFWVJzMQtk
+         LA1igoK3udfkj7E2J4fZXfx3fo+GASHKrN57A=
+X-Received: by 2002:a05:701b:21cd:b0:14c:c947:6afb with SMTP id a92af1059eb24-16a5faa7fc7mr13699525c88.15.1791842957295;
+        Mon, 12 Oct 2026 15:09:17 -0700 (PDT)
+X-Received: by 2002:a05:701b:21cd:b0:14c:c947:6afb with SMTP id a92af1059eb24-16a5faa7fc7mr13699496c88.15.1791842956485;
+        Mon, 12 Oct 2026 15:09:16 -0700 (PDT)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1746482c978sm12483206c88.13.2026.10.12.15.09.12
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1746482c978sm12483206c88.13.2026.10.12.15.09.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 15:09:13 -0700 (PDT)
+        Mon, 12 Oct 2026 15:09:15 -0700 (PDT)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -80,9 +80,9 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
 	andrew.gospodarek@broadcom.com
-Subject: [PATCH net-next v3 6/7] bnxt_en: Remove support for the old NITRO A0 chip
-Date: Mon, 12 Oct 2026 15:08:26 -0700
-Message-ID: <20261012220827.340998-7-michael.chan@broadcom.com>
+Subject: [PATCH net-next v3 7/7] bnxt_en: Fix ring accounting and validation when rings are constrained
+Date: Mon, 12 Oct 2026 15:08:27 -0700
+Message-ID: <20261012220827.340998-8-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261012220827.340998-1-michael.chan@broadcom.com>
 References: <20261012220827.340998-1-michael.chan@broadcom.com>
@@ -95,437 +95,421 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Nitro A0 was a very old pre-production chip that requires significant
-workarounds.  For example, it requires an extra (hidden) RX ring and CP
-ring to work, adding a lot of complexity.  The workaround code is very
-buggy and breaks in many cases, including ethtool ring changes
-initiated by the user.
+When __bnxt_reserve_rings() reserves fewer TX rings than requested,
+and an XDP program is attached, the driver used to blindly subtract
+bp->tx_nr_rings_xdp from bp->tx_nr_rings, potentially causing an integer
+underflow.
 
-Remove all Nitro A0 workaround code completely.  Print an error and
-abort if the chip is detected.  This will simplify the next patch that
-fixes ring accounting bugs.
+This patch mainly fixes the existing bnxt_adj_tx_rings() and
+bnxt_rings_ok():
 
+1. bnxt_adj_tx_rings() is now renamed bnxt_adj_rings() to reflect that
+all rings (tx, rx, cp) may adjust if needed.  It will now correctly
+scale down TX rings for XDP and TCs evenly.  Because XDP requires
+a 1:1 TX/RX ring mapping in combined channel mode, it will now clamp
+the RX rings to match.  CP rings will also be reduced if necessary.
+Any leftover rings after integer division are intentionally left unused.
+
+2. bnxt_rings_ok() is now updated to robustly check for the absolute
+minimum viable ring configuration.  We now call bnxt_rings_ok() to
+make sure we have the bare minimum before calling the new
+bnxt_adj_rings().  This now guarantees that bnxt_adj_rings() will
+never underflow or truncate any rings to 0.
+
+With these 2 main changes, we can now centralize bnxt_adj_rings() in
+__bnxt_reserve_rings() and bnxt_init_int_mode() and delete other
+adjustments and checks in other functions.  Note that in
+__bnxt_reserve_rings(), we only need to call bnxt_adj_rings() if
+irq_re_init is true which means that bp->bnapi has not been allocated.
+In this context, we may be asking for more rings than FW can grant
+and we need to call bnxt_adj_rings() for possible adjustments.  We
+need to be careful when aborting __bnxt_reserve_rings() and
+bnxt_init_int_mode() to restore the possibly truncated rings if
+necessary so that the driver state is consistent.
+
+We now remove the error path at the end of bnxt_reserve_rings() to abort
+and reset the TCs if the rings cannot satisfy the TC requirements.  The
+user will have to reduce the TCs and retry.
+
+There are other related changes to reset the RSS table if needed and
+to recalculate the IRQs required if the rings have shrunk.  Note that
+the latter can only be done if the NAPIs have not been allocated yet.
+
+As noted in the cover letter, we have similar existing issues regarding
+RSS tables for non-default RSS contexts and user defined n-tuple
+filters when RX rings shrink due to FW or MSI-X constraints.  The fixes
+for these are deferred to a separate patchset.
+
+These existing issues were detected by Sashiko when reviewing the
+new kTLS patchset (patch #3 of 15):
+
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260810051358.1244418-7-michael.chan@broadcom.com
+
+Fixes: 1ee581c24dfd ("bnxt_en: Adjust TX rings if reservation is less than requested")
+Fixes: 674f50a5b026 ("bnxt_en: Implement new method to reserve rings.")
 Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 185 ++----------------
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |  11 +-
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  12 +-
- 3 files changed, 19 insertions(+), 189 deletions(-)
+v3:
+No longer have to deal with dropped NITRO A0
+Fix the dynamic IRQ code path in bnxt_reserve_rings().
+Use the proper __bnxt_num_tx_to_cp() in bnxt_rings_ok().
+
+v2:
+Reduce RX and CP rings if needed when TX rings are reduced to keep it
+consistent.
+Handle NITRO_A0 special RX requirements to keep it consistent.
+Fix all unwind issues in these code paths.
+
+https://lore.kernel.org/netdev/20260928041712.3467803-7-michael.chan@broadcom.com/
+
+v1:
+https://lore.kernel.org/netdev/20260831024342.2161156-2-michael.chan@broadcom.com/
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 185 +++++++++++++++-------
+ 1 file changed, 130 insertions(+), 55 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 2ada2bb8fd57..ed3f67dea030 100644
+index ed3f67dea030..cbf7aef1d5b8 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3209,82 +3209,6 @@ static int bnxt_poll_work(struct bnxt *bp, struct bnxt_cp_ring_info *cpr,
- 	return rx_pkts;
+@@ -8050,6 +8050,8 @@ static bool bnxt_need_reserve_rings(struct bnxt *bp)
+ 	return false;
  }
  
--static int bnxt_poll_nitroa0(struct napi_struct *napi, int budget)
--{
--	struct bnxt_napi *bnapi = container_of(napi, struct bnxt_napi, napi);
--	struct bnxt *bp = bnapi->bp;
--	struct bnxt_cp_ring_info *cpr = &bnapi->cp_ring;
--	struct bnxt_rx_ring_info *rxr = bnapi->rx_ring;
--	struct tx_cmp *txcmp;
--	struct rx_cmp_ext *rxcmp1;
--	u32 cp_cons, tmp_raw_cons;
--	u32 raw_cons = cpr->cp_raw_cons;
--	bool flush_xdp = false;
--	u32 rx_pkts = 0;
--	u8 event = 0;
--
--	while (1) {
--		int rc;
--
--		cp_cons = RING_CMP(raw_cons);
--		txcmp = &cpr->cp_desc_ring[CP_RING(cp_cons)][CP_IDX(cp_cons)];
--
--		if (!TX_CMP_VALID(txcmp, raw_cons))
--			break;
--
--		/* The valid test of the entry must be done first before
--		 * reading any further.
--		 */
--		dma_rmb();
--		if ((TX_CMP_TYPE(txcmp) & 0x30) == 0x10) {
--			tmp_raw_cons = NEXT_RAW_CMP(raw_cons);
--			cp_cons = RING_CMP(tmp_raw_cons);
--			rxcmp1 = (struct rx_cmp_ext *)
--			  &cpr->cp_desc_ring[CP_RING(cp_cons)][CP_IDX(cp_cons)];
--
--			if (!RX_CMP_VALID(rxcmp1, tmp_raw_cons))
--				break;
--
--			/* force an error to recycle the buffer */
--			rxcmp1->rx_cmp_cfa_code_errors_v2 |=
--				cpu_to_le32(RX_CMPL_ERRORS_CRC_ERROR);
--
--			rc = bnxt_rx_pkt(bp, cpr, &raw_cons, &event);
--			if (likely(rc == -EIO) && budget)
--				rx_pkts++;
--			else if (rc == -EBUSY)	/* partial completion */
--				break;
--			if (event & BNXT_REDIRECT_EVENT)
--				flush_xdp = true;
--		} else if (unlikely(TX_CMP_TYPE(txcmp) ==
--				    CMPL_BASE_TYPE_HWRM_DONE)) {
--			bnxt_hwrm_handler(bp, txcmp);
--		} else {
--			netdev_err(bp->dev,
--				   "Invalid completion received on special ring\n");
--		}
--		raw_cons = NEXT_RAW_CMP(raw_cons);
--
--		if (rx_pkts == budget)
--			break;
--	}
--
--	cpr->cp_raw_cons = raw_cons;
--	BNXT_DB_CQ(&cpr->cp_db, cpr->cp_raw_cons);
--	bnxt_db_write(bp, &rxr->rx_db, rxr->rx_prod);
--
--	if (event & BNXT_AGG_EVENT)
--		bnxt_db_write(bp, &rxr->rx_agg_db, rxr->rx_agg_prod);
--	if (flush_xdp)
--		xdp_do_flush();
--
--	if (!bnxt_has_work(bp, cpr) && rx_pkts < budget) {
--		napi_complete_done(napi, rx_pkts);
--		BNXT_DB_CQ_ARM(&cpr->cp_db, cpr->cp_raw_cons);
--	}
--	return rx_pkts;
--}
--
- static int bnxt_poll(struct napi_struct *napi, int budget)
++static int __bnxt_num_tx_to_cp(struct bnxt *bp, int tx, int tx_sets, int tx_xdp);
++
+ static void bnxt_copy_reserved_rings(struct bnxt *bp, struct bnxt_hw_rings *hwr)
  {
- 	struct bnxt_napi *bnapi = container_of(napi, struct bnxt_napi, napi);
-@@ -4791,9 +4715,6 @@ static int bnxt_alloc_vnics(struct bnxt *bp)
- 	}
- #endif
+ 	struct bnxt_hw_resc *hw_resc = &bp->hw_resc;
+@@ -8069,8 +8071,25 @@ static void bnxt_copy_reserved_rings(struct bnxt *bp, struct bnxt_hw_rings *hwr)
  
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--		num_vnics++;
+ static bool bnxt_rings_ok(struct bnxt *bp, struct bnxt_hw_rings *hwr)
+ {
+-	return hwr->tx && hwr->rx && hwr->cp && hwr->grp && hwr->vnic &&
+-	       hwr->stat && (hwr->cp_p5 || !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS));
++	int tcs = bp->num_tc ? bp->num_tc : 1;
++	int min_tx_xdp = 0;
++	int min_tx = tcs;
++	int min_rx = 1;
++	int min_cp = 1;
++	int tx_cp;
++
++	if (bp->tx_nr_rings_xdp) {
++		min_tx++;
++		min_tx_xdp = 1;
++	}
++
++	if (!(bp->flags & BNXT_FLAG_SHARED_RINGS)) {
++		tx_cp = __bnxt_num_tx_to_cp(bp, min_tx, tcs, min_tx_xdp);
++		min_cp = tx_cp + min_rx;
++	}
++	return hwr->tx >= min_tx && hwr->rx >= min_rx && hwr->cp >= min_cp &&
++	       hwr->grp && hwr->vnic && hwr->stat &&
++	       (hwr->cp_p5 || !(bp->flags & BNXT_FLAG_CHIP_P5_PLUS));
+ }
+ 
+ /* Check to see if we need to reset the user configured RSS table
+@@ -8088,10 +8107,13 @@ static void bnxt_check_rss_tbl_lost(struct bnxt *bp, int old_rx, int new_rx)
+ }
+ 
+ static int bnxt_get_avail_msix(struct bnxt *bp, int num);
++static void bnxt_adj_rings(struct bnxt *bp);
+ 
+ static int __bnxt_reserve_rings(struct bnxt *bp)
+ {
+ 	struct bnxt_en_dev *edev = bp->edev[BNXT_AUXDEV_RDMA];
++	int req_rx_rings = bp->rx_nr_rings;
++	int req_tx_rings = bp->tx_nr_rings;
+ 	struct bnxt_hw_rings hwr = {0};
+ 	int rx_rings, old_rx_rings, rc;
+ 	int cp = bp->cp_nr_rings;
+@@ -8159,49 +8181,68 @@ static int __bnxt_reserve_rings(struct bnxt *bp)
+ 		hwr.stat -= bnxt_get_ulp_stat_ctxs(bp);
+ 	hwr.cp = min_t(int, hwr.cp, hwr.stat);
+ 	rc = bnxt_trim_rings(bp, &rx_rings, &hwr.tx, hwr.cp, sh);
++	if (rc)
++		goto reserve_rings_exit;
++
++	if (bp->bnapi && (rx_rings < bp->rx_nr_rings ||
++			  hwr.tx < bp->tx_nr_rings)) {
++		netdev_err(bp->dev, "Unexpected ring shrinkage %d/%d RX/TX to %d/%d\n",
++			   bp->rx_nr_rings, bp->tx_nr_rings, rx_rings, hwr.tx);
++		rc = -ENOSPC;
++		goto reserve_rings_exit;
++	}
+ 	if (bp->flags & BNXT_FLAG_AGG_RINGS)
+ 		hwr.rx = rx_rings << 1;
+ 	tx_cp = bnxt_num_tx_to_cp(bp, hwr.tx);
+ 	hwr.cp = sh ? max_t(int, tx_cp, rx_rings) : tx_cp + rx_rings;
+-	if (hwr.tx != bp->tx_nr_rings) {
+-		netdev_warn(bp->dev,
+-			    "Able to reserve only %d out of %d requested TX rings\n",
+-			    hwr.tx, bp->tx_nr_rings);
++
++	if (!bnxt_rings_ok(bp, &hwr)) {
++		rc = -ENOMEM;
++		goto reserve_rings_exit;
+ 	}
++
+ 	bp->tx_nr_rings = hwr.tx;
++	bp->rx_nr_rings = rx_rings;
++	bp->cp_nr_rings = hwr.cp;
++
++	if (!bp->bnapi)
++		bnxt_adj_rings(bp);
+ 
++	if (req_tx_rings != bp->tx_nr_rings) {
++		netdev_warn(bp->dev,
++			    "Able to reserve only %d out of %d requested TX rings\n",
++			    bp->tx_nr_rings, req_tx_rings);
++	}
+ 	/* If we cannot reserve all the RX rings, reset the RSS map only
+ 	 * if absolutely necessary
+ 	 */
+-	if (rx_rings != bp->rx_nr_rings) {
++	if (req_rx_rings != bp->rx_nr_rings) {
+ 		netdev_warn(bp->dev, "Able to reserve only %d out of %d requested RX rings\n",
+-			    rx_rings, bp->rx_nr_rings);
+-		bnxt_check_rss_tbl_lost(bp, bp->rx_nr_rings, rx_rings);
++			    bp->rx_nr_rings, req_rx_rings);
++		bnxt_check_rss_tbl_lost(bp, req_rx_rings, bp->rx_nr_rings);
+ 	}
+-	bp->rx_nr_rings = rx_rings;
+-	bp->cp_nr_rings = hwr.cp;
+ 
+ 	/* Fall back if we cannot reserve enough HW RSS contexts */
+ 	if ((bp->rss_cap & BNXT_RSS_CAP_LARGE_RSS_CTX) &&
+ 	    hwr.rss_ctx < bnxt_get_total_rss_ctxs(bp, &hwr))
+ 		bp->rss_cap &= ~BNXT_RSS_CAP_LARGE_RSS_CTX;
+ 
+-	if (!bnxt_rings_ok(bp, &hwr))
+-		return -ENOMEM;
 -
- 	bp->vnic_info = kzalloc_objs(struct bnxt_vnic_info, num_vnics);
- 	if (!bp->vnic_info)
- 		return -ENOMEM;
-@@ -6327,11 +6248,8 @@ int bnxt_hwrm_l2_filter_alloc(struct bnxt *bp, struct bnxt_l2_filter *fltr)
+-	if (old_rx_rings != bp->hw_resc.resv_rx_rings &&
++	if ((old_rx_rings != bp->hw_resc.resv_rx_rings ||
++	     req_rx_rings != bp->rx_nr_rings) &&
+ 	    !netif_is_rxfh_configured(bp->dev))
+ 		bnxt_set_dflt_rss_indir_tbl(bp, NULL);
+ 
++reserve_rings_exit:
+ 	if (!bnxt_ulp_registered(edev) && BNXT_NEW_RM(bp)) {
+ 		int resv_msix, resv_ctx, ulp_ctxs;
+ 		struct bnxt_hw_resc *hw_resc;
+ 
+ 		hw_resc = &bp->hw_resc;
+-		resv_msix = hw_resc->resv_irqs - bp->cp_nr_rings;
++		resv_msix = max_t(int, hw_resc->resv_irqs - bp->cp_nr_rings, 0);
+ 		ulp_msix = min_t(int, resv_msix, ulp_msix);
+ 		bnxt_set_ulp_msix_num(bp, ulp_msix);
+-		resv_ctx = hw_resc->resv_stat_ctxs  - bp->cp_nr_rings;
++		resv_ctx = max_t(int, hw_resc->resv_stat_ctxs - bp->cp_nr_rings,
++				 0);
+ 		ulp_ctxs = min(resv_ctx, bnxt_get_ulp_stat_ctxs(bp));
+ 		bnxt_set_ulp_stat_ctxs(bp, ulp_ctxs);
+ 	}
+@@ -11495,7 +11536,9 @@ static int bnxt_get_num_msix(struct bnxt *bp)
+ 
+ static int bnxt_init_int_mode(struct bnxt *bp)
+ {
+-	int i, total_vecs, max, rc, min = 1, ulp_msix, tx_cp, tbl_size;
++	int i, total_vecs, max, rc, min = 1, ulp_msix, tbl_size, req_rx_rings;
++	int min_tx, req_tx_rings, req_cp_rings, req_tx_per_tc, req_tx_xdp;
++	int tcs = bp->num_tc ? bp->num_tc : 1;
+ 
+ 	total_vecs = bnxt_get_num_msix(bp);
+ 	max = bnxt_get_max_func_irqs(bp);
+@@ -11530,19 +11573,50 @@ static int bnxt_init_int_mode(struct bnxt *bp)
+ 		bp->irq_tbl[i].vector = pci_irq_vector(bp->pdev, i);
+ 
+ 	bp->total_irqs = total_vecs;
++	req_tx_rings = bp->tx_nr_rings;
++	req_tx_per_tc = bp->tx_nr_rings_per_tc;
++	req_tx_xdp = bp->tx_nr_rings_xdp;
++	req_rx_rings = bp->rx_nr_rings;
++	req_cp_rings = bp->cp_nr_rings;
++
+ 	/* Trim rings based upon num of vectors allocated */
+ 	rc = bnxt_trim_rings(bp, &bp->rx_nr_rings, &bp->tx_nr_rings,
+ 			     total_vecs - ulp_msix, min == 1);
+ 	if (rc)
+ 		goto msix_setup_exit;
+ 
+-	tx_cp = bnxt_num_tx_to_cp(bp, bp->tx_nr_rings);
+-	bp->cp_nr_rings = (min == 1) ?
+-			  max_t(int, tx_cp, bp->rx_nr_rings) :
+-			  tx_cp + bp->rx_nr_rings;
++	min_tx = bp->tx_nr_rings_xdp ? tcs + 1 : tcs;
++	if (bp->tx_nr_rings < min_tx) {
++		netdev_err(bp->dev, "Not enough MSI-X to satisfy min. TX rings\n");
++		rc = -ENOMEM;
++		goto msix_setup_exit_restore;
++	}
++
++	bnxt_adj_rings(bp);
++
++	if (bp->bnapi && (req_tx_rings != bp->tx_nr_rings ||
++			  req_rx_rings != bp->rx_nr_rings)) {
++		netdev_err(bp->dev, "Cannot shrink rings once NAPI is allocated\n");
++		rc = -ENOSPC;
++		goto msix_setup_exit_restore;
++	}
+ 
++	if (req_rx_rings != bp->rx_nr_rings) {
++		netdev_warn(bp->dev, "RX rings reduced from %d to %d\n",
++			    req_rx_rings, bp->rx_nr_rings);
++		bnxt_check_rss_tbl_lost(bp, req_rx_rings, bp->rx_nr_rings);
++		if (!netif_is_rxfh_configured(bp->dev))
++			bnxt_set_dflt_rss_indir_tbl(bp, NULL);
++	}
+ 	return 0;
+ 
++msix_setup_exit_restore:
++	bp->tx_nr_rings = req_tx_rings;
++	bp->tx_nr_rings_per_tc = req_tx_per_tc;
++	bp->tx_nr_rings_xdp = req_tx_xdp;
++	bp->rx_nr_rings = req_rx_rings;
++	bp->cp_nr_rings = req_cp_rings;
++
+ msix_setup_exit:
+ 	netdev_err(bp->dev, "bnxt_init_int_mode err: %x\n", rc);
+ 	kfree(bp->irq_tbl);
+@@ -11579,8 +11653,6 @@ static int bnxt_irqs_required(struct bnxt *bp)
+ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+ {
+ 	bool irq_cleared = false;
+-	bool irq_change = false;
+-	int tcs = bp->num_tc;
+ 	int irqs_required;
+ 	int rc;
+ 
+@@ -11590,7 +11662,6 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+ 	irqs_required = bnxt_irqs_required(bp);
+ 
+ 	if (irq_re_init && BNXT_NEW_RM(bp) && irqs_required != bp->total_irqs) {
+-		irq_change = true;
+ 		if (!pci_msix_can_alloc_dyn(bp->pdev) || !bp->irq_tbl) {
+ 			bnxt_ulp_irq_stop(bp);
+ 			bnxt_clear_int_mode(bp);
+@@ -11602,25 +11673,23 @@ int bnxt_reserve_rings(struct bnxt *bp, bool irq_re_init)
+ 		if (!rc)
+ 			rc = bnxt_init_int_mode(bp);
+ 		bnxt_ulp_irq_restart(bp, rc);
+-	} else if (irq_change && !rc) {
+-		if (bnxt_change_msix(bp, irqs_required) != irqs_required)
+-			rc = -ENOSPC;
++	} else if (irq_re_init && BNXT_NEW_RM(bp) && !rc) {
++		/* __bnxt_reserve_rings() may have shrunk the rings */
++		irqs_required = bnxt_irqs_required(bp);
++		if (irqs_required != bp->total_irqs) {
++			/* Don't bother reducing static IRQs to avoid disrupting
++			 * RoCE.
++			 */
++			if (pci_msix_can_alloc_dyn(bp->pdev) &&
++			    bnxt_change_msix(bp, irqs_required) !=
++			    irqs_required)
++				rc = -ENOSPC;
++		}
+ 	}
+ 	if (rc) {
+ 		netdev_err(bp->dev, "ring reservation/IRQ init failure rc: %d\n", rc);
  		return rc;
- 
- 	req->target_id = cpu_to_le16(target_id);
--	req->flags = cpu_to_le32(CFA_L2_FILTER_ALLOC_REQ_FLAGS_PATH_RX);
--
--	if (!BNXT_CHIP_TYPE_NITRO_A0(bp))
--		req->flags |=
--			cpu_to_le32(CFA_L2_FILTER_ALLOC_REQ_FLAGS_OUTERMOST);
-+	req->flags = cpu_to_le32(CFA_L2_FILTER_ALLOC_REQ_FLAGS_PATH_RX |
-+				 CFA_L2_FILTER_ALLOC_REQ_FLAGS_OUTERMOST);
- 	req->dst_id = cpu_to_le16(fltr->base.fw_vnic_id);
- 	req->enables =
- 		cpu_to_le32(CFA_L2_FILTER_ALLOC_REQ_ENABLES_L2_ADDR |
-@@ -6688,10 +6606,7 @@ void bnxt_set_dflt_rss_indir_tbl(struct bnxt *bp,
- 	if (!bp->rx_nr_rings)
- 		return;
- 
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--		max_rings = bp->rx_nr_rings - 1;
--	else
--		max_rings = bp->rx_nr_rings;
-+	max_rings = bp->rx_nr_rings;
- 
- 	max_entries = bnxt_get_rxfh_indir_size(bp->dev);
- 	if (rss_ctx)
-@@ -6731,8 +6646,6 @@ int bnxt_get_nr_rss_ctxs(struct bnxt *bp, int rx_rings)
- 		return bnxt_calc_nr_ring_pages(rx_rings - 1,
- 					       BNXT_RSS_TABLE_ENTRIES_P5);
  	}
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--		return 2;
- 	return 1;
- }
- 
-@@ -6757,8 +6670,6 @@ static void bnxt_fill_hw_rss_tbl(struct bnxt *bp, struct bnxt_vnic_info *vnic)
- 		vnic->default_rx_ring = min_j;
- 	else if (vnic->flags & BNXT_VNIC_RFS_FLAG)
- 		vnic->default_rx_ring = vnic->vnic_id - 1;
--	else if ((vnic->vnic_id == 1) && BNXT_CHIP_TYPE_NITRO_A0(bp))
--		vnic->default_rx_ring = bp->rx_nr_rings - 1;
- 	else
- 		vnic->default_rx_ring = 0;
- }
-@@ -7013,13 +6924,7 @@ int bnxt_hwrm_vnic_cfg(struct bnxt *bp, struct bnxt_vnic_info *vnic)
- 		req->rss_rule = cpu_to_le16(0xffff);
- 	}
- 
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp) &&
--	    (vnic->fw_rss_cos_lb_ctx[0] != INVALID_HW_RING_ID)) {
--		req->cos_rule = cpu_to_le16(vnic->fw_rss_cos_lb_ctx[1]);
--		req->enables |= cpu_to_le32(VNIC_CFG_REQ_ENABLES_COS_RULE);
--	} else {
--		req->cos_rule = cpu_to_le16(0xffff);
+-	if (tcs && (bp->tx_nr_rings_per_tc * tcs !=
+-		    bp->tx_nr_rings - bp->tx_nr_rings_xdp)) {
+-		netdev_err(bp->dev, "tx ring reservation failure\n");
+-		netdev_reset_tc(bp->dev);
+-		bp->num_tc = 0;
+-		if (bp->tx_nr_rings_xdp)
+-			bp->tx_nr_rings_per_tc = bp->tx_nr_rings_xdp;
+-		else
+-			bp->tx_nr_rings_per_tc = bp->tx_nr_rings;
+-		return -ENOMEM;
 -	}
-+	req->cos_rule = cpu_to_le16(0xffff);
+ 	return 0;
+ }
  
- 	ring = vnic->default_rx_ring;
- 	grp_idx = bp->rx_ring[ring].bnapi->index;
-@@ -8617,9 +8522,6 @@ static void bnxt_hwrm_stat_ctx_free(struct bnxt *bp)
- 	if (!bp->bnapi)
- 		return;
+@@ -13118,13 +13187,29 @@ static void bnxt_set_xdp_tx_rings(struct bnxt *bp)
+ 	bp->tx_nr_rings += bp->tx_nr_rings_xdp;
+ }
  
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--		return;
--
- 	if (hwrm_req_init(bp, req, HWRM_STAT_CTX_FREE))
- 		return;
- 	if (BNXT_FW_MAJ(bp) <= 20) {
-@@ -8656,9 +8558,6 @@ static int bnxt_hwrm_stat_ctx_alloc(struct bnxt *bp)
- 	struct hwrm_stat_ctx_alloc_input *req;
- 	int rc, i;
+-static void bnxt_adj_tx_rings(struct bnxt *bp)
++static void bnxt_adj_rings(struct bnxt *bp)
+ {
+-	/* Make adjustments if reserved TX rings are less than requested */
+-	bp->tx_nr_rings -= bp->tx_nr_rings_xdp;
+-	bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
+-	if (bp->tx_nr_rings_xdp)
+-		bnxt_set_xdp_tx_rings(bp);
++	int tcs = bp->num_tc ? bp->num_tc : 1;
++	int rx = bp->rx_nr_rings;
++
++	/* Make adjustments to rings based on TC/XDP/shared rings policies */
++	if (bp->tx_nr_rings_xdp) {
++		tcs++;
++		bp->tx_nr_rings_per_tc = bp->tx_nr_rings / tcs;
++		bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
++	} else {
++		bp->tx_nr_rings_per_tc = bnxt_tx_nr_rings_per_tc(bp);
++	}
++
++	if (bp->flags & BNXT_FLAG_SHARED_RINGS) {
++		bp->tx_nr_rings_per_tc = min(bp->tx_nr_rings_per_tc, rx);
++		bp->rx_nr_rings = bp->tx_nr_rings_per_tc;
++		if (bp->tx_nr_rings_xdp)
++			bp->tx_nr_rings_xdp = bp->tx_nr_rings_per_tc;
++	}
++
++	bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tcs;
++	bnxt_set_cp_rings(bp, bp->flags & BNXT_FLAG_SHARED_RINGS);
+ }
  
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--		return 0;
--
- 	rc = hwrm_req_init(bp, req, HWRM_STAT_CTX_ALLOC);
+ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+@@ -13144,7 +13229,6 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
  	if (rc)
  		return rc;
-@@ -10489,9 +10388,6 @@ static int bnxt_hwrm_ver_get(struct bnxt *bp)
  
- 	bp->chip_num = le16_to_cpu(resp->chip_num);
- 	bp->chip_rev = resp->chip_rev;
--	if (bp->chip_num == CHIP_NUM_58700 && !resp->chip_rev &&
--	    !resp->chip_metal)
--		bp->flags |= BNXT_FLAG_CHIP_NITRO_A0;
- 
- 	dev_caps_cfg = le32_to_cpu(resp->dev_caps_cfg);
- 	if ((dev_caps_cfg & VER_GET_RESP_DEV_CAPS_CFG_SHORT_CMD_SUPPORTED) &&
-@@ -10906,16 +10802,6 @@ static int __bnxt_setup_vnic(struct bnxt *bp, struct bnxt_vnic_info *vnic)
- 	}
- 	bp->rsscos_nr_ctxs++;
- 
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
--		rc = bnxt_hwrm_vnic_ctx_alloc(bp, vnic, 1);
--		if (rc) {
--			netdev_err(bp->dev, "hwrm vnic %d cos ctx alloc failure rc: %x\n",
--				   vnic->vnic_id, rc);
--			goto vnic_setup_err;
--		}
--		bp->rsscos_nr_ctxs++;
--	}
--
- skip_rss_ctx:
- 	bnxt_fill_hw_rss_tbl(bp, vnic);
- 	/* configure default vnic, ring grp */
-@@ -11216,30 +11102,6 @@ static bool bnxt_promisc_ok(struct bnxt *bp)
- 	return true;
- }
- 
--static int bnxt_setup_nitroa0_vnic(struct bnxt *bp)
--{
--	struct bnxt_vnic_info *vnic = &bp->vnic_info[1];
--	unsigned int rc = 0;
--
--	rc = bnxt_hwrm_vnic_alloc(bp, vnic, bp->rx_nr_rings - 1, 1);
--	if (rc) {
--		netdev_err(bp->dev, "Cannot allocate special vnic for NS2 A0: %x\n",
--			   rc);
--		return rc;
--	}
--
--	/* Setup the proper default RX ring */
--	bnxt_fill_hw_rss_tbl(bp, vnic);
--
--	rc = bnxt_hwrm_vnic_cfg(bp, vnic);
--	if (rc) {
--		netdev_err(bp->dev, "Cannot allocate special vnic for NS2 A0: %x\n",
--			   rc);
--		return rc;
--	}
--	return rc;
--}
--
- static int bnxt_cfg_rx_mode(struct bnxt *, struct netdev_hw_addr_list *, bool);
- static bool bnxt_mc_list_updated(struct bnxt *, u32 *,
- 				 const struct netdev_hw_addr_list *);
-@@ -11248,7 +11110,6 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
- {
- 	struct bnxt_vnic_info *vnic = &bp->vnic_info[BNXT_VNIC_DEFAULT];
- 	int rc = 0;
--	unsigned int rx_nr_rings = bp->rx_nr_rings;
- 
- 	if (irq_re_init) {
- 		rc = bnxt_hwrm_stat_ctx_alloc(bp);
-@@ -11271,11 +11132,8 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
- 		goto err_out;
- 	}
- 
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--		rx_nr_rings--;
--
- 	/* default vnic 0 */
--	rc = bnxt_hwrm_vnic_alloc(bp, vnic, 0, rx_nr_rings);
-+	rc = bnxt_hwrm_vnic_alloc(bp, vnic, 0, bp->rx_nr_rings);
+-	bnxt_adj_tx_rings(bp);
+ 	rc = bnxt_alloc_mem(bp, irq_re_init);
  	if (rc) {
- 		netdev_err(bp->dev, "hwrm vnic alloc failure rc: %x\n", rc);
- 		goto err_out;
-@@ -11350,13 +11208,6 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
- 		netdev_warn(bp->dev, "HWRM set coalescing failure rc: %x\n",
- 				rc);
+ 		netdev_err(bp->dev, "bnxt_alloc_mem err: %x\n", rc);
+@@ -16806,7 +16890,6 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+ 	if (rc && rc != -ENODEV)
+ 		netdev_warn(bp->dev, "Unable to reserve tx rings\n");
  
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
--		rc = bnxt_setup_nitroa0_vnic(bp);
--		if (rc)
--			netdev_err(bp->dev, "Special vnic setup failure for NS2 A0 rc: %x\n",
--				   rc);
--	}
--
- 	if (BNXT_VF(bp)) {
- 		bnxt_hwrm_func_qcfg(bp);
- 		netdev_update_features(bp->dev);
-@@ -12108,26 +11959,19 @@ static void bnxt_del_napi(struct bnxt *bp)
- static void bnxt_init_napi(struct bnxt *bp)
- {
- 	int (*poll_fn)(struct napi_struct *, int) = bnxt_poll;
--	unsigned int cp_nr_rings = bp->cp_nr_rings;
- 	struct bnxt_napi *bnapi;
- 	int i;
+-	bnxt_adj_tx_rings(bp);
+ 	if (sh)
+ 		bnxt_adj_dflt_rings(bp, true);
  
- 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS)
- 		poll_fn = bnxt_poll_p5;
--	else if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--		cp_nr_rings--;
- 
- 	set_bit(BNXT_STATE_NAPI_DISABLED, &bp->state);
- 
--	for (i = 0; i < cp_nr_rings; i++) {
-+	for (i = 0; i < bp->cp_nr_rings; i++) {
- 		bnapi = bp->bnapi[i];
- 		netif_napi_add_config_locked(bp->dev, &bnapi->napi, poll_fn,
- 					     bnapi->index);
- 	}
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
--		bnapi = bp->bnapi[cp_nr_rings];
--		netif_napi_add_locked(bp->dev, &bnapi->napi, bnxt_poll_nitroa0);
--	}
- }
- 
- static void bnxt_disable_napi(struct bnxt *bp)
-@@ -14001,7 +13845,7 @@ static bool bnxt_rfs_supported(struct bnxt *bp)
- 	/* 212 firmware is broken for aRFS */
- 	if (BNXT_FW_MAJ(bp) == 212)
- 		return false;
--	if (BNXT_PF(bp) && !BNXT_CHIP_TYPE_NITRO_A0(bp))
-+	if (BNXT_PF(bp))
- 		return true;
- 	if (bp->rss_cap & BNXT_RSS_CAP_NEW_RSS_CAP)
- 		return true;
-@@ -16824,10 +16668,6 @@ static void _bnxt_get_max_rings(struct bnxt *bp, int *max_rx, int *max_tx,
- 	if (!(bp->flags & BNXT_FLAG_CHIP_P5_PLUS))
- 		*max_cp = min_t(int, *max_cp, max_irq);
- 	max_ring_grps = hw_resc->max_hw_ring_grps;
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp) && BNXT_PF(bp)) {
--		*max_cp -= 1;
--		*max_rx -= 2;
--	}
- 	if (bp->flags & BNXT_FLAG_AGG_RINGS)
- 		*max_rx >>= 1;
- 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
-@@ -16977,10 +16817,6 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+@@ -16815,7 +16898,6 @@ static int bnxt_set_dflt_rings(struct bnxt *bp, bool sh)
+ 		rc = __bnxt_reserve_rings(bp);
+ 		if (rc && rc != -ENODEV)
  			netdev_warn(bp->dev, "2nd rings reservation failed.\n");
- 		bnxt_adj_tx_rings(bp);
+-		bnxt_adj_tx_rings(bp);
  	}
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp)) {
--		bp->rx_nr_rings++;
--		bp->cp_nr_rings++;
--	}
  	if (rc) {
  		bp->tx_nr_rings = 0;
- 		bp->rx_nr_rings = 0;
-@@ -17251,6 +17087,13 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -16845,8 +16927,6 @@ static int bnxt_init_dflt_ring_mode(struct bnxt *bp)
+ 	if (rc)
+ 		goto init_dflt_ring_err;
+ 
+-	bnxt_adj_tx_rings(bp);
+-
+ 	bnxt_set_dflt_rfs(bp);
+ 
+ init_dflt_ring_err:
+@@ -17240,11 +17320,6 @@ static int bnxt_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
  	if (rc)
  		goto init_err_pci_clean;
  
-+	if (bp->chip_num == CHIP_NUM_58700 && !bp->chip_rev &&
-+	    !bp->ver_resp.chip_metal) {
-+		dev_err(&pdev->dev, "58700 A0 unsupported, aborting\n");
-+		rc = -ENODEV;
-+		goto init_err_pci_clean;
-+	}
-+
- 	if (BNXT_PF(bp))
- 		bnxt_vpd_read_info(bp);
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 75428a585577..51a269d06c49 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2295,7 +2295,6 @@ struct bnxt {
- 	#define BNXT_FLAG_DSN_VALID	0x200000
- 	#define BNXT_FLAG_DOUBLE_DB	0x400000
- 	#define BNXT_FLAG_UDP_GSO_CAP	0x800000
--	#define BNXT_FLAG_CHIP_NITRO_A0	0x1000000
- 	#define BNXT_FLAG_DIM		0x2000000
- 	#define BNXT_FLAG_ROCE_MIRROR_CAP	0x4000000
- 	#define BNXT_FLAG_TX_COAL_CMPL	0x8000000
-@@ -2323,10 +2322,8 @@ struct bnxt {
- #define BNXT_PHY_CFG_ABLE(bp)	((BNXT_SINGLE_PF(bp) ||			\
- 				  BNXT_SH_PORT_CFG_OK(bp)) &&		\
- 				 (bp)->link_info.phy_state == BNXT_PHY_STATE_ENABLED)
--#define BNXT_CHIP_TYPE_NITRO_A0(bp) ((bp)->flags & BNXT_FLAG_CHIP_NITRO_A0)
- #define BNXT_RX_PAGE_MODE(bp)	((bp)->flags & BNXT_FLAG_RX_PAGE_MODE)
--#define BNXT_SUPPORTS_TPA(bp)	(!BNXT_CHIP_TYPE_NITRO_A0(bp) &&	\
--				 (!((bp)->flags & BNXT_FLAG_CHIP_P5_PLUS) ||\
-+#define BNXT_SUPPORTS_TPA(bp)	((!((bp)->flags & BNXT_FLAG_CHIP_P5_PLUS) ||\
- 				  (bp)->max_tpa_v2) && !is_kdump_kernel())
- #define BNXT_RX_JUMBO_MODE(bp)	((bp)->flags & BNXT_FLAG_JUMBO)
- 
-@@ -2347,13 +2344,11 @@ struct bnxt {
- 	(BNXT_CHIP_NUM_57X1X((bp)->chip_num) ||	\
- 	 BNXT_CHIP_NUM_5745X((bp)->chip_num) ||	\
- 	 BNXT_CHIP_NUM_588XX((bp)->chip_num) ||	\
--	 (BNXT_CHIP_NUM_58700((bp)->chip_num) &&	\
--	  !BNXT_CHIP_TYPE_NITRO_A0(bp)))
-+	 BNXT_CHIP_NUM_58700((bp)->chip_num))
- 
- /* Chip class phase 3.x */
- #define BNXT_CHIP_P3(bp)			\
--	(BNXT_CHIP_NUM_57X0X((bp)->chip_num) ||	\
--	 BNXT_CHIP_TYPE_NITRO_A0(bp))
-+	(BNXT_CHIP_NUM_57X0X((bp)->chip_num))
- 
- #define BNXT_CHIP_P4_PLUS(bp)			\
- 	(BNXT_CHIP_P4(bp) || BNXT_CHIP_P5_PLUS(bp))
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 5c9e770960e6..62f894021fd1 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -949,13 +949,9 @@ static void bnxt_get_channels(struct net_device *dev,
- 	channel->max_other = 0;
- 	if (bp->flags & BNXT_FLAG_SHARED_RINGS) {
- 		channel->combined_count = bp->rx_nr_rings;
--		if (BNXT_CHIP_TYPE_NITRO_A0(bp))
--			channel->combined_count--;
- 	} else {
--		if (!BNXT_CHIP_TYPE_NITRO_A0(bp)) {
--			channel->rx_count = bp->rx_nr_rings;
--			channel->tx_count = bp->tx_nr_rings_per_tc;
--		}
-+		channel->rx_count = bp->rx_nr_rings;
-+		channel->tx_count = bp->tx_nr_rings_per_tc;
- 	}
- }
- 
-@@ -980,10 +976,6 @@ static int bnxt_set_channels(struct net_device *dev,
- 	    (channel->rx_count || channel->tx_count))
- 		return -EINVAL;
- 
--	if (BNXT_CHIP_TYPE_NITRO_A0(bp) && (channel->rx_count ||
--					    channel->tx_count))
--		return -EINVAL;
+-	/* No TC has been set yet and rings may have been trimmed due to
+-	 * limited MSIX, so we re-initialize the TX rings per TC.
+-	 */
+-	bp->tx_nr_rings_per_tc = bp->tx_nr_rings;
 -
- 	if (channel->combined_count)
- 		sh = true;
- 
+ 	if (BNXT_PF(bp)) {
+ 		if (!bnxt_pf_wq) {
+ 			bnxt_pf_wq =
 -- 
 2.51.0
 
