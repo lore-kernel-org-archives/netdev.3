@@ -1,56 +1,56 @@
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B694C10C9
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 17:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E001B4C2271
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 17:43:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791826990; cv=none; b=dv1w+Ka4bWAfzrigMD99OEUmqg9y1ekoj0tVwXo3P8uVLF3l2uRMtcahmNQKYwiE26SZhQ8Kp/Fdlq63LcLmce6cPO2BYrIiDSO3o4UI5hw0xmpXWt865m3ey9yiStcjhjGfr4pHwhzVZUzGu3q+LI9cdlEjjmxdt4sorC6piUE=
+	t=1791826991; cv=none; b=koWeNsE1KRIgVtiSeT2JEqXh/477ureWre+BwmLzB40UXFPRUsYwOXXBg6TjpBK+1MqN2TG5UvsKaCyVwjHI+CKQ9diid7DyBktXqiSyG71lQ47PFiHYJvpjWmmz3mCDky8oty42cC2vZ3Ft3vND/QV91jF2xsD9XUVDOUfz6aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791826990; c=relaxed/simple;
-	bh=Da0VCA0Hd0UDO1DnBOgHstWFqfsmePafdWoveEb6DnE=;
+	s=arc-20240116; t=1791826991; c=relaxed/simple;
+	bh=j1TaTyk/OTL5zdMp08SYdA2Dlge6Yv09Zs+4VMdCb4A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=csQSvYbPYovptOXWDgDQowl5lSMKCYmzW8lBBYtEVkM2ZMlunDTfdO0dnai7seaqceRRFvLbpBad5UGpRGKOAxlnAKrVxWeL4F1ZbQcn22CrK3Y/fHnzInu+9K7gq7wIrVrPctwjm/zOkpXn+lKe6I2VwZDV8a8kCVKsADqOmUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X7ZGSLEg; arc=none smtp.client-ip=74.125.82.197
+	 To:Cc:Content-Type; b=QpcYqm3HPrMo8Atyo2EEPzsA2M4+85ydoeZ6h7AU+kQpbcTxHkAkB3/PPnF2ASmor/0r+058VTARbwfJ5MRCirle3IInjXDA+IhhdauXBNT7vn/i7uDF2zLYt3Fm4uYveW7VdvYsvHaN4ZX3Mms4HjUzCGaREuyl/5IT1JCS648=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=giA0fnnI; arc=none smtp.client-ip=74.125.82.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X7ZGSLEg"
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-3592749a017so1771702eec.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:43:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="giA0fnnI"
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-30c0d568830so4651137eec.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:43:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791826986; x=1792431786; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791826988; x=1792431788; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NwwQIOa+g7/HmS+16lDvRmgC1LT1yuG3uoFlQB2p99Q=;
-        b=X7ZGSLEgJ7CK6cJ49/FJ7p/UWodn/qwpjGr3HyaNZUoNkunPL1COCkGF4SYsBobHl+
-         OiDAigsPrNp0VZMt6rfHVq7tKWVd9N/SJvrA42ERlrWHCEGeQRqcfUa3dh8xxhvka5/W
-         9hnstM9uvDceFVApV1gzLo07Z0MxV6WeeoZbm8fi/IbBRtrqRCfImIaU5AXcnRRljmou
-         OATRf8tMJYYJKJeobn08XhRVBvP+iyrW9kmDkkVj+l0u69gy0qhivM11bJhVYd1C+6p+
-         QzclFNltSqGN+154o483w+ewArHGpiqXfy9/BeZJXs45AP/syPIKDqrXzaANmqCTLTbD
-         Q2xg==
+        bh=CnXvDkHRygIjqcgALHUWN066KUbjGPQJV9Mzd8woTCg=;
+        b=giA0fnnIREhBMCOyncwFKlJOTtwEC9sFXMd35Ms7dIt9IrXK/6xOGLd3tMjpDQBH6t
+         2XVy7MRtlbG5QhallJV2lk7zeeCHh1+Dy41Ya0vNyzFWfIX8T9r9Cltz+jLi/sCL+Kta
+         HLesRwloDU5VGIPPURHbMfQoEtKrPkrZrMcjeTrl1FH1lfdUhW3OaUjbFEEeIu8fXJF0
+         LISkWY96h8ouDnDBYruG0cofgf5sEnco3RAndMtMCPBzlbUut0bYt2qMVdJvxPNdsONA
+         2zmxFIIG9BjpKNZiNSFqHZ9s+UvisoCCcjce+fv9COVdzcmZf4WxnmkCsbQ9t7pWaRJ3
+         0bDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791826986; x=1792431786;
+        d=1e100.net; s=20260707; t=1791826988; x=1792431788;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=NwwQIOa+g7/HmS+16lDvRmgC1LT1yuG3uoFlQB2p99Q=;
-        b=FpBgb3c2fQz4kr3aPu5E+3TAxpH/Xri/p9UoHAEmjiv1U2csgWX5+dkDwa4OoJJVEu
-         fhAEnGxyPXv6WGeGoDZS0EZhIVBDJiXBnnEOt9u7ITW5IsjveyjSE+jm0+LDNgQmm8gq
-         a9Q3EOPMwxgIvnxrX7GTfHz/CpXQu2Cq6k073EA8wfsVVR/HH9xD8FD0OnZWdaz2wXck
-         jHKdZgZ3d7wv3s4g3EuuiuL0V8RTOFsgncpQbM2UvXBok4bW3LPKEJZH99qjtVmR/Lru
-         h0ot5gk4R2MIcITbGJaKAA3ltYLKUJN+EuKKv/MqZhsBQND0RZt7ELJe4HK4a2cpMeVO
-         PoeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzvLoZcs5SGEZBtHgiaGS9P4op17J5Bqw6tEdsu7n+7RYDGVOXK8Rb9X58EDTBNhtrksjdK3vk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIXlrQ6Xe0E/Jl0B+0mCcDrdAcdFRIK4NGmTEpYkzPf6l+p8S7B
-	zZt43hp4AaGqIJYNEurDNGO7Zgi5O3JF0Oc47stOwABo9PKoou+nmaAaA5+pfZKFu8PFxFmutFi
-	5pUAXFKE2pTXrOZd0bOeZACzgTw==
-X-Received: from dybmt5.prod.google.com ([2002:a05:7300:d585:b0:351:4806:4ae4])
+        bh=CnXvDkHRygIjqcgALHUWN066KUbjGPQJV9Mzd8woTCg=;
+        b=N0OfdgIvdY3sG/ciAufWVK5lW5CKcxnnRIXPpGaXgfnxVNB0xtALEXCBiGwbPcG3fH
+         Q3+5Cszr7gx7s6z7A8qzoDHdZPErieDUadUeFQtqYt9QZurzDrR28Aa+nwogNzWVjYyJ
+         nYuVfRnuaiDnl9t15gKhXssAhIcdwENW7Zy/Dnyrzqv1qZBCl5XBVw+Avl9Cb8IWgOfg
+         P2SS+IDHoCXgi1zYT+bSFCdSkXIEEzKHPdI4C/4NZw7OCDRWvJVm/jwxIborq7w+GiaK
+         jFGS1Tfe5v0z7BKK/kbLn73joyJR38Wh0Zejg4qYyXJ9az1Rqezrh1T4Sk3ckHUIZKVk
+         41lg==
+X-Forwarded-Encrypted: i=1; AKwUvBwHXP/Q5mXxS+R8m2XFU/tkmFfEO8EeNOrn+5Ni15PMcV8dUma8KbTry5OFN/AjBreK0HOOzL0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIaLfIGlZs1BHw/Kkj7/Fk2UlzUU1hKB5C4umJWQ8fV5JoJdV0k
+	pDXIgDZslkegsm8dgShO1QGZcgAcCSkkd1kt7grF1bpsl4oEDYtwa8aALV8ZvpVk7XnmsL4+Cst
+	jfiTSrFyxyya7pgOctiKx//lCAg==
+X-Received: from dlbtu4.prod.google.com ([2002:a05:7022:3c04:b0:157:8b19:354f])
  (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7301:2321:b0:343:5f5f:eef0 with SMTP id 5a478bee46e88-3536c5d383dmr13848178eec.21.1791826984621;
- Mon, 12 Oct 2026 10:43:04 -0700 (PDT)
-Date: Mon, 12 Oct 2026 17:42:57 +0000
+ 2002:a05:701b:4508:10b0:154:fa0b:6df1 with SMTP id a92af1059eb24-16a5e49d6c9mr12641181c88.37.1791826987357;
+ Mon, 12 Oct 2026 10:43:07 -0700 (PDT)
+Date: Mon, 12 Oct 2026 17:42:59 +0000
 In-Reply-To: <20261012174300.2338784-1-almasrymina@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261012174300.2338784-1-almasrymina@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261012174300.2338784-2-almasrymina@google.com>
-Subject: [PATCH net v2 1/4] net: devmem: unmap dma_buf synchronously on queue uninstall
+Message-ID: <20261012174300.2338784-4-almasrymina@google.com>
+Subject: [PATCH net v2 3/4] netdevsim: support devmem RX and TX bindings
 From: Mina Almasry <almasrymina@google.com>
 To: Jakub Kicinski <kuba@kernel.org>, David Wei <dw@davidwei.uk>, 
 	Pavel Begunkov <asml.silence@gmail.com>, Mina Almasry <almasrymina@google.com>, 
@@ -77,286 +77,98 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>
 	Kaifeng Wang <kaifengw@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When a bound net_device is unregistered while userspace still holds a
-netlink or TCP socket reference on a devmem binding,
-mp_dmabuf_devmem_uninstall() clears binding->dev to NULL so
-netdev_nl_sock_priv_destroy() will not touch the unregistered
-net_device, but leaves the dma_buf attachment mapped until
-__net_devmem_dmabuf_binding_free() runs later on socket close.
+Set a 64-bit DMA mask on nsim_bus_dev, enable NETMEM_TX_DMA on the
+netdevsim net_device, and configure page_pool instances with
+PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV | PP_FLAG_ALLOW_UNREADABLE_NETMEM
+and queue_idx so devmem bind-rx and bind-tx netlink operations can be
+tested against netdevsim in software selftests.
 
-Because dma_buf_attach() does not take a reference on dma_dev, device
-removal frees dma_dev while the attachment is still mapped. Closing the
-netlink socket afterwards triggers a slab use-after-free in
-dma_unmap_sg_attrs():
-
-  BUG: KASAN: slab-use-after-free in dma_unmap_sg_attrs+0x76/0x2b0
-  Read of size 8 at addr ffff88810fae64b0 by task kworker/3:1/53
-  Workqueue: events __net_devmem_dmabuf_binding_free
-  Call Trace:
-   dma_unmap_sg_attrs+0x76/0x2b0
-   unmap_udmabuf+0x8e/0x100
-   dma_buf_unmap_attachment+0x145/0x330
-   dma_buf_unmap_attachment_unlocked+0x96/0x130
-   __net_devmem_dmabuf_binding_free+0x156/0x2e0
-  Freed by task 9:
-   kfree+0x1b8/0x550
-   nsim_bus_dev_release+0xe/0x60
-   device_release+0xcf/0x250
-
-Add net_devmem_dmabuf_binding_unmap() serialized under binding->lock
-and null out binding->sgt and binding->attachment after unmapping so
-unmapping is idempotent across queue uninstall and deferred binding
-destruction. Call it synchronously when the last bound RX queue is
-uninstalled in mp_dmabuf_devmem_uninstall(), except when a leased
-queue is unleased: the physical device is still registered and, if
-restarting its queue failed, may still be using the binding.
-
-The same use-after-free happens when the netlink socket is closed
-before the device is removed but RX tokens or the pending release work
-keep the binding alive. Such bindings are no longer installed on any
-queue and were already erased from net_devmem_dmabuf_bindings. Keep
-bindings in net_devmem_dmabuf_bindings until they are freed, hide
-unbound ones from TX lookups with an xarray mark, and on
-NETDEV_UNREGISTER clear binding->dev of unbound RX bindings for the
-device and unmap them, unless the device is a virtual device leasing
-queues, for the same reason as above. net_devmem_lock serializes that
-walk with the final free.
-
-Fixes: f8350a4358fc ("net: page_pool: add a mp hook to unregister_netdevice*")
-Fixes: 0afc44d8cdf6 ("net: devmem: fix kernel panic when netlink socket close after module unload")
-Cc: Taehee Yoo <ap420073@gmail.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
 Cc: Tariq Toukan <tariqt@nvidia.com>
 Cc: Kaifeng Wang <kaifengw@google.com>
 Signed-off-by: Mina Almasry <almasrymina@google.com>
 ---
-v2:
-- Don't unmap when a leased queue is unleased (Sashiko).
-- Unmap unbound RX bindings on NETDEV_UNREGISTER; keep bindings in
-  net_devmem_dmabuf_bindings until freed, hidden from TX lookups by
-  NET_DEVMEM_BINDING_LIVE (Sashiko).
-- Update the binding->lock and binding->ref comments (Sashiko).
----
- net/core/devmem.c      | 89 +++++++++++++++++++++++++++++++++++-------
- net/core/devmem.h      | 10 ++++-
- net/core/netdev-genl.c |  1 +
- 3 files changed, 83 insertions(+), 17 deletions(-)
+ drivers/net/netdevsim/bus.c    |  1 +
+ drivers/net/netdevsim/netdev.c | 21 +++++++++++++++------
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index f4d60654ce7fd..02d607cc87217 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -20,6 +20,7 @@
- #include <net/tcp.h>
- #include <trace/events/page_pool.h>
+diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
+index 5c55c308487b4..f87f5e037b6fb 100644
+--- a/drivers/net/netdevsim/bus.c
++++ b/drivers/net/netdevsim/bus.c
+@@ -462,6 +462,7 @@ nsim_bus_dev_new(unsigned int id, unsigned int port_count, unsigned int num_queu
+ 	nsim_bus_dev->port_count = port_count;
+ 	nsim_bus_dev->num_queues = num_queues;
+ 	nsim_bus_dev->initial_net = current->nsproxy->net_ns;
++	dma_coerce_mask_and_coherent(&nsim_bus_dev->dev, DMA_BIT_MASK(64));
+ 	/* Disallow using nsim_bus_dev */
+ 	smp_store_release(&nsim_bus_dev->init, false);
  
-+#include "dev.h"
- #include "devmem.h"
- #include "mp_dmabuf_devmem.h"
- #include "page_pool_priv.h"
-@@ -27,6 +28,8 @@
- /* Device memory support */
- 
- static DEFINE_XARRAY_FLAGS(net_devmem_dmabuf_bindings, XA_FLAGS_ALLOC1);
-+#define NET_DEVMEM_BINDING_LIVE XA_MARK_1
-+static DEFINE_MUTEX(net_devmem_lock);
- 
- static const struct memory_provider_ops dmabuf_devmem_ops;
- 
-@@ -58,6 +61,21 @@ static void net_devmem_dmabuf_binding_release(struct percpu_ref *ref)
- 	schedule_work(&binding->unbind_w);
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index b4a99f3ceac60..4415dc01c610b 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -414,16 +414,22 @@ static int nsim_poll(struct napi_struct *napi, int budget)
+ 	return done;
  }
  
-+static void
-+net_devmem_dmabuf_binding_unmap(struct net_devmem_dmabuf_binding *binding)
-+{
-+	lockdep_assert_held(&binding->lock);
-+
-+	if (!binding->sgt)
-+		return;
-+
-+	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
-+					  binding->direction);
-+	dma_buf_detach(binding->dmabuf, binding->attachment);
-+	binding->sgt = NULL;
-+	binding->attachment = NULL;
-+}
-+
- void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
+-static int nsim_create_page_pool(struct page_pool **p, struct napi_struct *napi)
++static int nsim_create_page_pool(struct net_device *dev, struct page_pool **p,
++				 struct napi_struct *napi, int idx)
  {
- 	struct net_devmem_dmabuf_binding *binding = container_of(wq, typeof(*binding), unbind_w);
-@@ -74,9 +92,13 @@ void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
- 		  size, avail))
- 		gen_pool_destroy(binding->chunk_pool);
++	struct netdevsim *ns = netdev_priv(dev);
+ 	struct page_pool_params params = {
+ 		.order = 0,
+ 		.pool_size = NSIM_RING_SIZE,
++		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV |
++			 PP_FLAG_ALLOW_UNREADABLE_NETMEM,
++		.max_len = PAGE_SIZE,
+ 		.nid = NUMA_NO_NODE,
+-		.dev = &napi->dev->dev,
++		.dev = &ns->nsim_bus_dev->dev,
+ 		.napi = napi,
+ 		.dma_dir = DMA_BIDIRECTIONAL,
+-		.netdev = napi->dev,
++		.netdev = dev,
++		.queue_idx = idx,
+ 	};
+ 	struct page_pool *pool;
  
--	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
--					  binding->direction);
--	dma_buf_detach(binding->dmabuf, binding->attachment);
-+	mutex_lock(&net_devmem_lock);
-+	mutex_lock(&binding->lock);
-+	net_devmem_dmabuf_binding_unmap(binding);
-+	mutex_unlock(&binding->lock);
-+	xa_erase(&net_devmem_dmabuf_bindings, binding->id);
-+	mutex_unlock(&net_devmem_lock);
-+
- 	dma_buf_put(binding->dmabuf);
- 	xa_destroy(&binding->bound_rxqs);
- 	percpu_ref_exit(&binding->ref);
-@@ -129,10 +151,11 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
- 	unsigned long xa_idx;
- 	unsigned int rxq_idx;
+@@ -450,7 +456,7 @@ static int nsim_init_napi(struct netdevsim *ns)
+ 	for (i = 0; i < dev->num_rx_queues; i++) {
+ 		rq = ns->rq[i];
  
--	xa_erase(&net_devmem_dmabuf_bindings, binding->id);
-+	xa_clear_mark(&net_devmem_dmabuf_bindings, binding->id,
-+		      NET_DEVMEM_BINDING_LIVE);
- 
- 	/* Ensure no tx net_devmem_lookup_dmabuf() are in flight after the
--	 * erase.
-+	 * mark is cleared.
- 	 */
- 	synchronize_net();
- 
-@@ -153,6 +176,35 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
- 	percpu_ref_kill(&binding->ref);
- }
- 
-+static void
-+net_devmem_dev_unregister_rx(struct net_devmem_dmabuf_binding *binding,
-+			     unsigned long xa_idx, struct net_device *dev)
-+{
-+	if (xa_get_mark(&net_devmem_dmabuf_bindings, xa_idx,
-+			NET_DEVMEM_BINDING_LIVE) ||
-+	    READ_ONCE(binding->dev) != dev)
-+		return;
-+
-+	mutex_lock(&binding->lock);
-+	WRITE_ONCE(binding->dev, NULL);
-+	if (!netif_is_queue_leasee(dev))
-+		net_devmem_dmabuf_binding_unmap(binding);
-+	mutex_unlock(&binding->lock);
-+}
-+
-+void net_devmem_dev_unregister(struct net_device *dev)
-+{
-+	struct net_devmem_dmabuf_binding *binding;
-+	unsigned long xa_idx;
-+
-+	mutex_lock(&net_devmem_lock);
-+	xa_for_each(&net_devmem_dmabuf_bindings, xa_idx, binding) {
-+		if (binding->direction == DMA_FROM_DEVICE)
-+			net_devmem_dev_unregister_rx(binding, xa_idx, dev);
-+	}
-+	mutex_unlock(&net_devmem_lock);
-+}
-+
- int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
- 				    struct net_devmem_dmabuf_binding *binding,
- 				    struct netlink_ext_ack *extack)
-@@ -331,6 +383,8 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 			      GFP_KERNEL);
- 	if (err < 0)
- 		goto err_free_chunks;
-+	xa_set_mark(&net_devmem_dmabuf_bindings, binding->id,
-+		    NET_DEVMEM_BINDING_LIVE);
- 
- 	list_add(&binding->list, &priv->bindings);
- 
-@@ -359,9 +413,11 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id)
- {
- 	struct net_devmem_dmabuf_binding *binding;
-+	unsigned long xa_idx = id;
- 
- 	rcu_read_lock();
--	binding = xa_load(&net_devmem_dmabuf_bindings, id);
-+	binding = xa_find(&net_devmem_dmabuf_bindings, &xa_idx, id,
-+			  NET_DEVMEM_BINDING_LIVE);
- 	if (binding) {
- 		if (!net_devmem_dmabuf_binding_get(binding))
- 			binding = NULL;
-@@ -529,16 +585,19 @@ static void mp_dmabuf_devmem_uninstall(void *mp_priv,
- 	unsigned long xa_idx;
- 
- 	xa_for_each(&binding->bound_rxqs, xa_idx, bound_rxq) {
--		if (bound_rxq == rxq) {
--			xa_erase(&binding->bound_rxqs, xa_idx);
--			if (xa_empty(&binding->bound_rxqs)) {
--				mutex_lock(&binding->lock);
--				ASSERT_EXCLUSIVE_WRITER(binding->dev);
--				WRITE_ONCE(binding->dev, NULL);
--				mutex_unlock(&binding->lock);
--			}
--			break;
-+		if (bound_rxq != rxq)
-+			continue;
-+
-+		xa_erase(&binding->bound_rxqs, xa_idx);
-+		if (xa_empty(&binding->bound_rxqs)) {
-+			mutex_lock(&binding->lock);
-+			ASSERT_EXCLUSIVE_WRITER(binding->dev);
-+			WRITE_ONCE(binding->dev, NULL);
-+			if (!rxq->lease)
-+				net_devmem_dmabuf_binding_unmap(binding);
-+			mutex_unlock(&binding->lock);
- 		}
-+		break;
+-		err = nsim_create_page_pool(&rq->page_pool, &rq->napi);
++		err = nsim_create_page_pool(dev, &rq->page_pool, &rq->napi, i);
+ 		if (err)
+ 			goto err_pp_destroy;
  	}
- }
+@@ -762,14 +768,16 @@ nsim_queue_mem_alloc(struct net_device *dev,
+ 	if (ns->rq_reset_mode == 1) {
+ 		if (!netif_running(ns->netdev))
+ 			return -ENETDOWN;
+-		return nsim_create_page_pool(&qmem->pp, &ns->rq[idx]->napi);
++		return nsim_create_page_pool(dev, &qmem->pp,
++					     &ns->rq[idx]->napi, idx);
+ 	}
  
-diff --git a/net/core/devmem.h b/net/core/devmem.h
-index 4a293a7d1149c..5c47c8c3c7d2d 100644
---- a/net/core/devmem.h
-+++ b/net/core/devmem.h
-@@ -27,7 +27,7 @@ struct net_devmem_dmabuf_binding {
- 	 */
- 	void *vdev;
- 	struct gen_pool *chunk_pool;
--	/* Protect dev */
-+	/* Protect dev, attachment and sgt */
- 	struct mutex lock;
+ 	qmem->rq = nsim_queue_alloc();
+ 	if (!qmem->rq)
+ 		return -ENOMEM;
  
- 	/* The user holds a ref (via the netlink API) for as long as they want
-@@ -38,7 +38,8 @@ struct net_devmem_dmabuf_binding {
- 	 *
- 	 * The binding undos itself and unmaps the underlying dmabuf once all
- 	 * those refs are dropped and the binding is no longer desired or in
--	 * use.
-+	 * use. The dmabuf may be unmapped earlier, when the device it is
-+	 * mapped for is unregistered.
- 	 *
- 	 * net_devmem_get_net_iov() on dmabuf net_iovs will increment this
- 	 * reference, making sure that the binding remains alive until all the
-@@ -100,6 +101,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 		       struct netlink_ext_ack *extack);
- struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id);
- void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding);
-+void net_devmem_dev_unregister(struct net_device *dev);
- int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
- 				    struct net_devmem_dmabuf_binding *binding,
- 				    struct netlink_ext_ack *extack);
-@@ -196,6 +198,10 @@ net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding)
- {
- }
+-	err = nsim_create_page_pool(&qmem->rq->page_pool, &qmem->rq->napi);
++	err = nsim_create_page_pool(dev, &qmem->rq->page_pool, &qmem->rq->napi,
++				    idx);
+ 	if (err)
+ 		goto err_free;
  
-+static inline void net_devmem_dev_unregister(struct net_device *dev)
-+{
-+}
-+
- static inline int
- net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
- 				struct net_devmem_dmabuf_binding *binding,
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 33b9f4eb9565a..5bfcd513fb0e8 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -1487,6 +1487,7 @@ static int netdev_genl_netdevice_event(struct notifier_block *nb,
- 		netdev_unlock_full_to_ops(netdev);
- 		break;
- 	case NETDEV_UNREGISTER:
-+		net_devmem_dev_unregister(netdev);
- 		netdev_lock(netdev);
- 		netdev_genl_dev_notify(netdev, NETDEV_CMD_DEV_DEL_NTF);
- 		netdev_unlock(netdev);
+@@ -1051,6 +1059,7 @@ static int nsim_init_netdevsim(struct netdevsim *ns)
+ 	ns->netdev->netdev_ops = &nsim_netdev_ops;
+ 	ns->netdev->stat_ops = &nsim_stat_ops;
+ 	ns->netdev->queue_mgmt_ops = &nsim_queue_mgmt_ops;
++	ns->netdev->netmem_tx = NETMEM_TX_DMA;
+ 	netdev_lockdep_set_classes(ns->netdev);
+ 
+ 	err = nsim_udp_tunnels_info_create(ns->nsim_dev, ns->netdev);
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
