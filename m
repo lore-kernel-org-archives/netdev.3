@@ -1,209 +1,152 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5763416869
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 17:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791824918; cv=none; b=P2Kebb5eD1jb1uGTVroURZdSO7OZ5jSOU/vaP8DQ8XtzGmx5zhd/vCtCi+sHZfBXyRNdnpgVqdrXShQr6/D1hyi+BfvEQhy2+zcAEisd22ZlQO914SQuj+pozjx4zauCKXg+gYw4c6pcDRlq/glW4erPA83g1WTVFYbCjwAl9mM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791824918; c=relaxed/simple;
-	bh=a/B5rxo/3r+hkMrNUWeADP7iZNnahorsfgK9Gmw7bo0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AgoiuLffLiJ+5Q2fcI0Z/wjwiKBE6K1wADqgyfe6ewYQVFmoCMug4wfEkEnN2aDt9np78c1bqflVijZYHRPoVWp035V0SMj/MSt/9AcX5jQn+HnwlifAqlAcFJgZLXVLVV6wwq6EFHRm15Xe9uLHvKVSVDu3Cw/YtkMyOQXed2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=BAS7vN5o; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E32F4BA1CD
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 17:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791824983; cv=pass; b=EPjVSRw8yvL9EAGdedQCJLwtz4u7rWhoIfUl9UDYWw1X4CIUIaI4kDaQtn+5HrzzW2/XmcEkv0HP70pkXWnznX/J40jszMdp4C0LwGWOznmOU1ZRxFlyLBmKk/Pfsg/7zBAPwRavVHkKFRZGvrHPyNjFG+itBRZmhqml5gTzIRI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791824983; c=relaxed/simple;
+	bh=Bga2Ltu6EQmf2urfEVGxn2C4c5NgRYsmXRD+/o7K+hY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AuOpagL0K1F1IFq8cbQ9sX6S3kZWYd/sTWCiXBwkyQ/I5Ff6XNicH9SBjMEzgkoSCM6fypWAdSr5LAv5c4V4GXF1hr/7jSAOY+1LBs9tI6qKkfpWOwv4+89eqfHsf666jUWIn2bxYl9aU6x3UQtaPnchst0KtfpxN96vpj/6mpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nY8EzBOL; arc=pass smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="BAS7vN5o"
-Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69CFiDBn1180313;
-	Mon, 12 Oct 2026 10:08:25 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=6N+nshClg
-	Z5dPYfne/jtci9oCeck8zNjKcZoHF4wMfw=; b=BAS7vN5oaBszW1CUc6gAKcpCA
-	rjNPxZkUayCSyo+addKU3QdaqX6/jdBZlgyRXd3dEsSDi0NmLzHfKT42Af/s568R
-	xR28bw8xwHZKQLFQXKesTq6OcDSXU3/mz+mklvqLEg8FK0UGuR69Gq1uFVEVGZgQ
-	cORGpagh6dxaxx8mxhtDZhSg+ezx+hVw9TAkK4y7JGJ/QSPHiwte+5e8TmogYOcI
-	M5cFDiVKJ0iKiFqkd4+Zjg3D659BIrx7Exy6roE2n17zpt5y4L3n6NK9qHW4gxQr
-	8Vp+sXRCub2+XxsQ5yZacMkcRKsBCfS5yoGfbn4G+fPlnbiQt650F385jobpA==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h860hhnm1-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 12 Oct 2026 10:08:25 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1c::11) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Mon, 12 Oct
- 2026 17:08:23 +0000
-From: Erfan Sharafzadeh <erfansh@meta.com>
-To: <netdev@vger.kernel.org>
-CC: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <horms@kernel.org>, <almasrymina@google.com>,
-        <kaiyuanz@google.com>, <willemb@google.com>, <asml.silence@gmail.com>,
-        <sdf@fomichev.me>, <bobbyeshleman@meta.com>
-Subject: [PATCH net] net: devmem: allow peer-to-peer dma-buf attach for bindings
-Date: Mon, 12 Oct 2026 10:07:54 -0700
-Message-ID: <20261012170754.669462-1-erfansh@meta.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nY8EzBOL"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5bcdab9a82bso2348769e87.3
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 10:09:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791824980; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RqbYAKUKuGk7Vhw2xejXnRRot56rKGWCkCTV5aXxi0qSLTOPMIXeb1dOd0whSM/yfB
+         haZPZOt+IpWDEHYyIK4zkUTGC04FS5+cJOVw/VWvs1dqY8KcTq9Oa8OIf9zg03CRIVX8
+         S5Br54wVQnThem5WUOiOfnFc9LQVE3HGvGGXZQFjSVFh8hagO/k3xBhu5P/nKIkS/8Yt
+         i48iTit9CNbvwqJnjlkUaN7Pd+Z+/zNViS3H+M//yCNprxKueCy1oCHAj/yqnIeBhrkC
+         XL8zJ7dD6EU6ZnTkt3P+450hhjzLP9rvViHq536KK77YM5QHE4dLHPkJeaGduhXlbOO3
+         Oilw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=bkMm8aYcQbQqrMaSHF8neixFnN+L4NxB8QjkehNUjNw=;
+        fh=GgdGMhx8/kCCp4yHpSu/013WbXucVu9nNv2DF6m1zdo=;
+        b=kzZ1mFzzXtG/xavu03QtVaYusaKWktyLwZTX4c1MslCWY2uSPPeylNtINbHX9iYncf
+         Hb8pl9qKIXWpSk6P4TvcY1vHtCkMMKS2Tm6kaLuBoTXubw1QLAQvf3WUSJRZTbjWHXWF
+         u3EPSyfJ2+PoU9Z5HuNIWsCyyzhs5+f1PLKKFqzAaIl1yP27s+iRzjON0Slcy0elZOgk
+         O3BiKHUgfJl9kB3FeIQtDT3do225lQVP9Fnhan+YLl7RCob+AKr/UiQNMQ1Vw8q6XUFo
+         1+wmwWsYwTa6TAE9xuQ//9NzUiReCuUyqIV+brn/FZ3H2QFoMC6w2X34z91hxBDCr+9I
+         OMlw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791824980; x=1792429780; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bkMm8aYcQbQqrMaSHF8neixFnN+L4NxB8QjkehNUjNw=;
+        b=nY8EzBOLiT2hFb3F2o0gTLMcdEGMswsbSLc8dqXExKjIwl1HAdvcCH/KXxOEItWA0E
+         BPltOy9TOf2nJxDiK3ad0hupZiYggxdUbpau+NyUIwJQNMNUiIm/BPOqYBD2rqG8sISf
+         pkcTpdy0u9iA4H+N32ncIXUsVDTH88lnzQvZQxnQ2QC56fCtvwVh06rjIkNR103qRu00
+         6iy1nlsSAi46O0WZOqRTqkhVc4IsladJxUgC+6BHPFHip1IKw+jSFL1ooM6BgDGUYAiM
+         gk2bxxxuvIKKguobt48mpzIcYbQHvPCWayk0gqSyD0DKRDZUUtea19x+eSR6EJHFFL7H
+         HJVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791824980; x=1792429780;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bkMm8aYcQbQqrMaSHF8neixFnN+L4NxB8QjkehNUjNw=;
+        b=14qczJi50YLFYoJrnNpL6REnq5h4PLllQxjiMVrWV/duzrJm8wNa1y+BuXrE4Z51cB
+         jlw2af7cVbn1MnaQgQNuzPp5Ix/2dik71uVm1ehW30QfKBzpgUtPDCVBV4k4GbTe9AU3
+         YH9hZ1P+c/k8v9jHf1sYvU85wchi9gZO7puk+9sZkw9A8ZIj1hMj+4bBomjMU/FY0JdQ
+         rH+0RN30w9lgJQqdJd5XS37QVi47dzQ3398/Io8nDMsohN3lnaXlU8FCGCHMHfJYPZF8
+         1StsxeEGvT1i9WuptrRXv4qs2rfNeJQGc2t4VnIHKT09col7BMUlAVqE2VvgfVZngP0S
+         aHyA==
+X-Gm-Message-State: AFq9FYIFUJjUtVfgkC+wpZHIusTxapFTjDWHIlEJwlJCxVAhzh854CCv
+	KgKAXMDOGnDtAsVw6ebWvyhOwAnenDmN2psGOVrb0sb550YkfVYSkhS+m8leed6ibT6oxsjE10K
+	4BTFwMKgQ8j/Q6BcA7DxjEKl9O6HCvR4=
+X-Gm-Gg: AYBFou3VqMxqx3RI5Bv37zU4oKz1dWOun0Zu/rq6HldwHl8i8ycvvidSQ4JNKHu+Fgp
+	GCaCktUHeLgJ/qK6Z0lYexIdHw5r2dE8PzCHygzFKQIyz/NlCYExMz74kWcEco/b2fFmVpvXg+w
+	kHNVKeEFdRsJqQOF2heyDKN91agLET1yMiE04eZtXNUkm9bV4X6cSuc0YvkfWj06Qy0PMQKdJN+
+	wwx2dRSofOIVJ9QqTreUAzLSS2bCDx6J2cYpDTtLGQdlWgxD80ryJCFvGno6uIzX1S2rSEhc9VJ
+	wmMKa+sgUD7dCyQFLQNM+e43WDIGS2/EmSHeEJ+6njrPYN1PlgCDzYyCmTB/0d3nDPBG2iXQFxF
+	qd2gFGOXb/Up+
+X-Received: by 2002:a05:6512:12cf:b0:5bc:d0fd:8c13 with SMTP id
+ 2adb3069b0e04-5bcde6c99b0mr3418795e87.30.1791824979769; Mon, 12 Oct 2026
+ 10:09:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEyMDA2OCBTYWx0ZWRfX0i+IeYzbXQMZ
- oNKMtU5RfLmJ2j5/FWLGDjJ5cg/aju++2IdRGRaoMMHmszLlmBudjk0SkhaU3CHWjSJlmHs1GN1
- r3uhKOJCvj7TfZdLBJS+BE73dUx0yzs=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEyMDA2OCBTYWx0ZWRfXw3broH9/9EYf
- qxPg/+NF55+/BoTo1vp6s+vHoFo053wldz1WDha8InkvVzc9sJMHQm3TItep00BoK6OUfWR9mgG
- cMenX97nulmZPqymMQ0A+PQ06ovSExUf/ByEn4r5h6FVRyU4k8Q1PKvHgCKRU5OvAPSLa3XK0TI
- Wr9wdj7AVfrH9AAdfzIDPjyWM9aund44Wngx8+fv+jmTfGyPmJYL2b24sqSs6OfGUMew2bniWuj
- 4d8Nsw/jVMP18xGUADq9L330+H1M73ItNXoZ19++DgtLhyBWCkpVPg90RX7vm2NRL8WGjwo4A33
- OrlYRfEEMPVjuKHqBodsMZkFjoq0VzBgJvXsiMRCZGcLWk9uS8pscfxfTX9s84EhEHnoao0Q4LR
- uNuCAsdpMyXPdfy9pu3mPTi7tYBfO6xuwbqk9XtNObJvy29n10E+6MIkXbIcDxKmYrFbXFdO0rC
- 1/+4rAYbncpuVN5HuqA==
-X-Authority-Analysis: v=2.4 cv=cJx1IVeN c=1 sm=1 tr=0 ts=6acd1409 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8 a=FoXqbPtTdAXYarXlNX8A:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: --Y9LjwhZj_vvJZ9wpbuqvB2dCQqnr5-
-X-Proofpoint-GUID: --Y9LjwhZj_vvJZ9wpbuqvB2dCQqnr5-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-12_05,2026-10-09_01,2025-10-01_01
+References: <CAPZ+gd9d1P+xDSrxxZkGJr32zjubP=KfQegeGkWykKGvEH0=oA@mail.gmail.com>
+ <CAPZ+gd8TPNnvEDOv_H=fdvy2ysG63uBD0MvmEMjhkMa8i-y1NA@mail.gmail.com> <as0DO7n5SCr2j3Z2@lore-desk>
+In-Reply-To: <as0DO7n5SCr2j3Z2@lore-desk>
+From: =?UTF-8?B?6ZmI6ICA5piO?= <cc201008@gmail.com>
+Date: Tue, 13 Oct 2026 01:09:26 +0800
+X-Gm-Features: AclHuK-WJbTgomKmmJ6zTCF_Y4ETa2czq3ja0lgp2okGkARO_yROQyVwwAMJAx8
+Message-ID: <CAPZ+gd_1JsNyhQbEAWiE1stom+T_jgvt4F2=tb68YoSvPCnFag@mail.gmail.com>
+Subject: Re: [PATCH net] net: airoha: Keep UPDMEM egress MAC in sync for
+ offloaded IPv6 flows
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: netdev@vger.kernel.org, horms@kernel.org, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-net_devmem_bind_dmabuf() uses dma_buf_attach(), a static attachment:
+Ooo,  the new patch should be a dedicated leaf lock inside
+airoha_ppe_init_upd_mem().
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -416,6 +416,19 @@
+   dsa_port);
 
-- peer2peer is false, so exporters must keep the buffer reachable
-  without P2P. amdgpu migrates a VRAM buffer to GTT (system memory)
-  for that, so device memory bindings silently land in host memory.
-- the core pins the buffer on map (dma_buf_pin_on_map()), so it never
-  moves while bound.
+  smac_id = port->id;
++ /*
++ * Routed IPv6 entries resolve the egress source MAC
++ * through the UPDMEM table indexed by smac_id. The
++ * egress netdev can legally carry a different address
++ * than the GDM port itself: on PON setups the
++ * authentication MAC lives on the pon device while
++ * each service VLAN routes with its own address. Keep
++ * the table entry in sync with the source address this
++ * flow is actually going to use.
++ */
++ if (type >= PPE_PKT_TYPE_IPV6_ROUTE_3T)
++ airoha_ppe_init_upd_mem(dev,
++ data->eth.h_source);
+  }
+  }
 
-Switch to dma_buf_dynamic_attach() with allow_peer2peer set, so the
-exporter can keep the buffer in device memory. Dynamic attachments are
-not pinned on map, and devmem cannot handle the buffer moving, so:
+@@ -1529,10 +1542,21 @@
 
-- pin it explicitly with dma_buf_pin() before mapping, which keeps it
-  non-movable for the lifetime of the binding, as before;
-- wait for the exporter's kernel fences after mapping, which the core
-  only does for static attachments.
-
-This matches the pinned RDMA umem path. Exporters that cannot do P2P
-to the device fall back as before. RX and TX bindings both go through
-this function.
-
-Fixes: 170aafe35cb9 ("netdev: support binding dma-buf to netdevice")
-Signed-off-by: Erfan Sharafzadeh <erfansh@meta.com>
----
- net/core/devmem.c | 47 +++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 37 insertions(+), 10 deletions(-)
-
-diff --git a/net/core/devmem.c b/net/core/devmem.c
-index f4d60654ce7f..3721a47426fa 100644
---- a/net/core/devmem.c
-+++ b/net/core/devmem.c
-@@ -8,6 +8,7 @@
-  */
- 
- #include <linux/dma-buf.h>
-+#include <linux/dma-resv.h>
- #include <linux/genalloc.h>
- #include <linux/mm.h>
- #include <linux/netdevice.h>
-@@ -49,6 +50,10 @@ static dma_addr_t net_devmem_get_dma_addr(const struct net_iov *niov)
- 	       ((dma_addr_t)net_iov_idx(niov) << owner->binding->niov_shift);
- }
- 
-+static const struct dma_buf_attach_ops net_devmem_dmabuf_attach_ops = {
-+	.allow_peer2peer = true,
-+};
-+
- static void net_devmem_dmabuf_binding_release(struct percpu_ref *ref)
+ void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev, const u8 *addr)
  {
- 	struct net_devmem_dmabuf_binding *binding =
-@@ -74,8 +79,11 @@ void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
- 		  size, avail))
- 		gen_pool_destroy(binding->chunk_pool);
- 
--	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
--					  binding->direction);
-+	dma_resv_lock(binding->dmabuf->resv, NULL);
-+	dma_buf_unmap_attachment(binding->attachment, binding->sgt,
-+				 binding->direction);
-+	dma_buf_unpin(binding->attachment);
-+	dma_resv_unlock(binding->dmabuf->resv);
- 	dma_buf_detach(binding->dmabuf, binding->attachment);
- 	dma_buf_put(binding->dmabuf);
- 	xa_destroy(&binding->bound_rxqs);
-@@ -200,7 +208,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 	struct dma_buf *dmabuf;
- 	unsigned int sg_idx, i;
- 	unsigned long virtual;
--	int err;
-+	long err;
- 
- 	if (!dma_dev) {
- 		NL_SET_ERR_MSG(extack, "Device doesn't support DMA");
-@@ -234,19 +242,35 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- 	binding->dmabuf = dmabuf;
- 	binding->direction = direction;
- 
--	binding->attachment = dma_buf_attach(binding->dmabuf, dma_dev);
-+	binding->attachment =
-+		dma_buf_dynamic_attach(binding->dmabuf, dma_dev,
-+				       &net_devmem_dmabuf_attach_ops, binding);
- 	if (IS_ERR(binding->attachment)) {
- 		err = PTR_ERR(binding->attachment);
- 		NL_SET_ERR_MSG(extack, "Failed to bind dmabuf to device");
- 		goto err_exit_ref;
- 	}
- 
--	binding->sgt = dma_buf_map_attachment_unlocked(binding->attachment,
--						       direction);
-+	dma_resv_lock(dmabuf->resv, NULL);
-+	err = dma_buf_pin(binding->attachment);
-+	if (err) {
-+		NL_SET_ERR_MSG(extack, "Failed to pin dmabuf");
-+		goto err_unlock;
-+	}
++ static DEFINE_MUTEX(updmem_lock);
 +
-+	binding->sgt = dma_buf_map_attachment(binding->attachment, direction);
- 	if (IS_ERR(binding->sgt)) {
- 		err = PTR_ERR(binding->sgt);
- 		NL_SET_ERR_MSG(extack, "Failed to map dmabuf attachment");
--		goto err_detach;
-+		goto err_unpin;
-+	}
-+	dma_resv_unlock(dmabuf->resv);
-+
-+	err = dma_resv_wait_timeout(dmabuf->resv, DMA_RESV_USAGE_KERNEL, false,
-+				    MAX_SCHEDULE_TIMEOUT);
-+	if (err < 0) {
-+		NL_SET_ERR_MSG(extack, "Failed to wait for dmabuf fences");
-+		goto err_unmap;
- 	}
- 
- 	if (direction == DMA_TO_DEVICE) {
-@@ -343,9 +367,12 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
- err_tx_vec:
- 	kvfree(binding->tx_vec);
- err_unmap:
--	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
--					  direction);
--err_detach:
-+	dma_resv_lock(dmabuf->resv, NULL);
-+	dma_buf_unmap_attachment(binding->attachment, binding->sgt, direction);
-+err_unpin:
-+	dma_buf_unpin(binding->attachment);
-+err_unlock:
-+	dma_resv_unlock(dmabuf->resv);
- 	dma_buf_detach(dmabuf, binding->attachment);
- err_exit_ref:
- 	percpu_ref_exit(&binding->ref);
--- 
-2.53.0-Meta
+  struct airoha_gdm_port *port = dev->port;
+  struct airoha_eth *eth = dev->eth;
+  u32 val;
 
++ /*
++ * Routed IPv6 entries resolve the egress source MAC through the
++ * UPDMEM table indexed by smac_id; the ndo_open/ndo_set_mac_address
++ * writers hold flow_offload_mutex (QoS paths re-lock via
++ * airoha_set_macaddr()), so this lock also serializes the leaf
++ * against them.
++ */
++ mutex_lock(&updmem_lock);
++
+  val = (addr[2] << 24) | (addr[3] << 16) | (addr[4] << 8) | addr[5];
+  airoha_fe_wr(eth, REG_UPDMEM_DATA(0), val);
+  airoha_fe_wr(eth, REG_UPDMEM_CTRL(0),
+@@ -1545,6 +1569,8 @@
+      FIELD_PREP(PPE_UPDMEM_ADDR_MASK, port->id) |
+      FIELD_PREP(PPE_UPDMEM_OFFSET_MASK, 1) |
+      PPE_UPDMEM_WR_MASK | PPE_UPDMEM_REQ_MASK);
++
++ mutex_unlock(&updmem_lock);
+ }
+
+ struct airoha_ppe_dev *airoha_ppe_get_dev(struct device *dev)
