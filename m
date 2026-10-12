@@ -1,79 +1,79 @@
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058F94EDCDA
-	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 21:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0484EE869
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 21:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791841706; cv=none; b=szvilAMuHAlsMaLLWSX1uCF5YgtNEZEYSLZ9PYcM8dPPyojwPZipRMALARJ3WOlcLjRD8cSj60g9ocd1bA3i/GAiaZrFxHfL/we9mdHKoirw3YfrBSVRMRMXJyqZhLPJ8h5p63IW+YlrwnNW6Uh4AiG9ENU+2JS/k2DzZSQhSz8=
+	t=1791841809; cv=none; b=SC5IRp+Kc1vEYeYZG3OF4D8vGBMelShZG9z5ox89aBrHDsQ+bv56PJCOB1zxWryWdtuIsq/n8JawrKJoNmb9Y0REjrXnIHX6UTlYjwyvicZAxA56GKwjga5gK/5HjekSj/8GrL/XO5p9+OArKPwuVW5XxUVprlQmorKVj986CLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791841706; c=relaxed/simple;
-	bh=aEfYHXPTmnEYYiYAPpFXHF3bUIqJKSeyUSykg9wsj4Q=;
+	s=arc-20240116; t=1791841809; c=relaxed/simple;
+	bh=nbPhqW+eWC6Cce9PnKbS6LgbwFkV8/9/Y4NY2DrQSY0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZcKfngCu/40rUVoQh/vIgYE8iMOmt/vvzWJTiuHM0mR3bguTNbMq7lasnNdupRcLKkgqYkreQFDg7XMEjQVLEiIAhI4Kd8BU7A8GmGzQK3Y9KoUEZ+SWRChjUO/uMBh377FiaKSkc206kJ/BC/B1iGw5UqDIWB6g1uecQCqV5w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UWIEoocq; arc=none smtp.client-ip=209.85.216.97
+	 In-Reply-To:Content-Type; b=BTVOZzw9xGkfUE5yyxdXzFU71n1Y/QyggUdDJWzIw21Nc7kIQTNptaoV/wQna8iG2P8Zd1Hi8juGWfhmzJ5mMa/1UEkqkUCArU1tDj0mEvPPtr13ykni4TF4aTEDH2fRk+ymqA0xQiqcr+hUmkgmXmGDcONqcPrgqMtDFzZIk68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gLRgG5Jf; arc=none smtp.client-ip=209.85.216.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UWIEoocq"
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-3ac397836fbso181397a91.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:48:22 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gLRgG5Jf"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-3ab868eb9cfso930486a91.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:50:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791841702; x=1792446502;
+        d=1e100.net; s=20260707; t=1791841804; x=1792446604;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=EPhs/xN5AxpRlyQU1w9jzIS5vduQg7Q2ac9dkdsHI94=;
-        b=Tp6liKoUEWgU5My+U79tTNm0C+q9kZISYVdUBfY/U5rawlHrg3BDBBthXRKzk/vzAY
-         bgVU4lbnCHpr0O2E+foy9np2X9+xI6IuaB7HghkDw9aG897AJYo+SlrAVsd7TCbtXtKi
-         WI1g4QmFdOg0+a8kE9XzaSF7wN+EXBwlUigvDCEM14GCx9V6H9AR+gvAmRsWK2KjUowE
-         H92aHzd30fIXm4S3k+qjsyWMkHr7cYMNl9CM0Wi3W3t+diCV6vsyYLTBcKk1cOTxRFlg
-         1g5iC/KldRtb7UlmHT8rqv+VXS62JZ6oeZqnn57smX+y+irUWxmQYKQF8mNGRx50upkN
-         PiGw==
-X-Gm-Message-State: AFq9FYJoqsW17Ol7VKUabd2iR1diefZ/ie9k/JKybXnhCpCAsoYLJ1wv
-	I66XPjw5rMTkApMFdVpViKWW2GeMc7oHLM03YOVQ3hN+A80/xkkRed/N7S9Xe3mM3GOAScgM91U
-	sqCtQGqN3YHOPkRvfmvo1AAqWISKWhr71cPnxpxHAxJyp8Z59qxSVfUhg+Y2kwoUo+EeFfjIt6h
-	Z0ArtbbijyXHRuZFd5NlZVSOVnUwvqsMlEI3IEd73zTlCs3aluzIouxI5qX6N+SAobsjnbwYM6e
-	8xltkPCtkLlLF0R
-X-Gm-Gg: AYBFou3yIRO6F4ZU5kFfIt8NpGYwrN0Zp5UlSrnV4qjxgzLPrqWwzgjxZo28FwPkQok
-	xSd2l/ZOMVvBr+TO91RReNAKxsG/fCpWorLnuVNPTUa1ofRFk/IDOxctuWk/h2Gz/x6/5InDr33
-	MVrGANU5+Slp66al44I4KQ+3Gox6I4/BsmQnmyyzPuFjpFKU3qLHeNKIUlsDL723SB/Rw7x1htk
-	QTfqju40Edk4ymRSbHlbpC8AqKzZ/vyEjvsucSPBtYDgMdce9oauu6+L+c58quVt3G9YjppmtVl
-	8rFS8mHliI1NpNPgnSq5W5v/EuNbDX1ym9f7gzFJvpN0XY5bN4MtXNRHcEDQlZvPmdHAuuzah5K
-	q9pbm++276fcXf7gkwVLFeta+Uy9BBZj3wCBf8yHGetik8oP01LefwaN7xoRPRPOvu9ElhTEAr5
-	0I7hOu2h//B1wGRqZ/p9Eynv+VMJ+sjnmaPUBWAHhqP/8=
-X-Received: by 2002:a17:90b:4fcb:b0:3a6:dc2f:f07f with SMTP id 98e67ed59e1d1-3ab3a609f14mr8798464a91.10.1791841701559;
-        Mon, 12 Oct 2026 14:48:21 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3abe588fa88sm2492044a91.7.2026.10.12.14.48.21
+        bh=//4tECdi8BFJKV6WG98OoZqesXX7E4bq+4mUAnkqPdA=;
+        b=T4OCD2tYESBEHyrq7lskRfxgeZIIu3hI9RBxPQ6CsHn5XmKeKZF1rJT5WttmwI35iS
+         3UQNocv1S3bqC34qrvRi1zjfcL9hWZUhpWj0+roTJp+Q/wlOohLHPtg2EVpVmEyA4OJd
+         GYlFMm6GzDhEw8Q5MzQCdD4W+/A1yS7apAjm+TBfgVnoa3jlIP22QvbaX7myuqe3iqUA
+         bkEO5eNk/UkVzkRPDMMhbfj+PjH6I9W7Wg3JMZnpsf2vayV7W0HBZ89ySPmpteOA0SP0
+         zxSABuKieMrtcFkh+pO+hyTO0R1UNanEBkizvYluboxgNDBTWknPXVBN28oM1Bg+gz3p
+         UeyA==
+X-Gm-Message-State: AFq9FYK5GTZm/ql/1+Kjn770rxboE19ClOhaAOWjZi7B/bYOzVw57SU4
+	q9YXWgcSNvpSvdjgH5xMisFr6lW74MfAHCRKsKIZWuvGPxkd5MVwcFKTZpkyOXjIMg9LNWjfffk
+	k9L0yiV+czAhvqdAURPOApMAgoO1IljJnttOixtbjOSLiyBtlUQvwTSWQk31oGYO/qgmdf1V0x9
+	f/uwmL+lw9CG033qc7USNptW5s/4b1/9s4F16hCfAn+W13bahsyY6j6MUtPxrPPzMsksQUihiGq
+	vLqv6njCTq/xiyD
+X-Gm-Gg: AYBFou02WlPl0xytn3U4x5kcBBmY+9qg3OFdMozcgRK4enipEhtnYoRSCW/pMABNq+E
+	CJmbKLsAq1I5MrYfM+M5aEQtQ+zotga/GP+qzX6694jNy1OpVluUlhinVx4ERdaEOd0ZxjGZg8D
+	OO+jeBew8ciwjYVvMyRMmta5p0elX89UUdA+5qLT827uMTPph8iKgdGN4Z5RscWxjGRxsPc2CPI
+	CPdhJ6mxbaZX+fnBIQyL8mF+xRLUF3xwCmtVgJ1EMmUMhYU8uJPKANWq59Uy/oOQ5KUfwK/BCbQ
+	YlduPnGglK95x19nU0C2iS2ocsyF4dCfteR+LkuQ5ZIB2YylLlpyK273qCN/2QsMDq8YImKCVYm
+	1MxIlmqmIvv/fhEg/Kwt2aC50m459O+J2yqVRO72cZWb7M69PYjqJAogjJqn0lqdXaKyDF3zgqq
+	kavlTGk2DC1N41etCArR4Wh611Ys6329uGza50yWxMiEE=
+X-Received: by 2002:a17:90b:3b90:b0:3ac:17c:6e7c with SMTP id 98e67ed59e1d1-3ac017c7089mr2924673a91.37.1791841803701;
+        Mon, 12 Oct 2026 14:50:03 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ab39617e13sm2490855a91.4.2026.10.12.14.50.03
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Oct 2026 14:48:21 -0700 (PDT)
+        Mon, 12 Oct 2026 14:50:03 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-3580c07911eso6124909eec.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:48:20 -0700 (PDT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-34ef0362d95so3421800eec.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 14:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791841700; x=1792446500; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1791841802; x=1792446602; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EPhs/xN5AxpRlyQU1w9jzIS5vduQg7Q2ac9dkdsHI94=;
-        b=UWIEoocqiVLyE77Rwxbi08SSHsHlyVrWQSlPGtqhQI0WwEN17iHKqfD526idhLiKRM
-         TfTo9/bb/TAUpvgHHjypmxCN+ir8pROfXXF2jEcEey9+9MdpcO8FZ+AdVswrhifomgU+
-         AzaOAWSVVXAfpJ6BJFTFZ+/VSEwnScHsdjuEk=
-X-Received: by 2002:a05:7301:77cc:b0:357:e9:dcea with SMTP id 5a478bee46e88-35700e9df2fmr12153450eec.15.1791841699606;
-        Mon, 12 Oct 2026 14:48:19 -0700 (PDT)
-X-Received: by 2002:a05:7301:77cc:b0:357:e9:dcea with SMTP id 5a478bee46e88-35700e9df2fmr12153315eec.15.1791841696960;
-        Mon, 12 Oct 2026 14:48:16 -0700 (PDT)
+        bh=//4tECdi8BFJKV6WG98OoZqesXX7E4bq+4mUAnkqPdA=;
+        b=gLRgG5JfABefTspfRGXUszzuVV8b8u1Y5y6uNo5pMLNE2tifMlT9rEqcG2J33E07wL
+         keM99okg8eTxGIiipU/nyUPL2mClZ0V2a49oW2VEdRX2DdZLbKh+t2ByU0jadevBNCdS
+         APbqvMtOrx7d3QqG+V1bjf1n+7vWGMz1uSwk8=
+X-Received: by 2002:a05:7022:1605:b0:151:94a6:6f5f with SMTP id a92af1059eb24-16a5fc917b4mr17679598c88.10.1791841801565;
+        Mon, 12 Oct 2026 14:50:01 -0700 (PDT)
+X-Received: by 2002:a05:7022:1605:b0:151:94a6:6f5f with SMTP id a92af1059eb24-16a5fc917b4mr17679544c88.10.1791841800836;
+        Mon, 12 Oct 2026 14:50:00 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca1b53dsm34266609eec.6.2026.10.12.14.48.15
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a620bdafsm42915443c88.23.2026.10.12.14.49.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Oct 2026 14:48:16 -0700 (PDT)
-Message-ID: <93ce0204-419b-460a-a0dc-b7f124bf32be@broadcom.com>
-Date: Mon, 12 Oct 2026 14:48:14 -0700
+        Mon, 12 Oct 2026 14:50:00 -0700 (PDT)
+Message-ID: <9767d40a-7926-42a5-8acd-67183a68f8d1@broadcom.com>
+Date: Mon, 12 Oct 2026 14:49:58 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 6/8] net: bcmgenet: pad transmit frames out of
- the packet ready window
+Subject: Re: [PATCH net-next v4 8/8] net: bcmgenet: reassemble jumbo frames
+ from status block fragments
 To: Nicolai Buchwitz <nb@tipi-net.de>, Doug Berger <opendmb@gmail.com>,
  Broadcom internal kernel review list
  <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
@@ -95,7 +95,7 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>,
  Florian Fainelli <f.fainelli@gmail.com>
 References: <20261012-nb-genet-mtu-nn-v2-v4-0-2e2e3bfaf8cc@tipi-net.de>
- <20261012-nb-genet-mtu-nn-v2-v4-6-2e2e3bfaf8cc@tipi-net.de>
+ <20261012-nb-genet-mtu-nn-v2-v4-8-2e2e3bfaf8cc@tipi-net.de>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -130,44 +130,35 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <20261012-nb-genet-mtu-nn-v2-v4-6-2e2e3bfaf8cc@tipi-net.de>
+In-Reply-To: <20261012-nb-genet-mtu-nn-v2-v4-8-2e2e3bfaf8cc@tipi-net.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 On 10/12/26 02:00, Nicolai Buchwitz wrote:
-> A frame that ends a few bytes past the transmit packet ready threshold
-> stops the transmitter as soon as a shorter frame follows. Tx DMA then
-> refuses to halt, so every later bcmgenet_init_dma() fails and the interface
-> cannot be opened again. IP fragmentation generates that pattern on every
-> datagram, full frames and a short tail.
+> The hardware does not truncate a frame longer than the packet ready
+> threshold. It splits the frame across descriptors and writes a status block
+> at the start of each one. The first fragment then arrives with SOP and no
+> EOP and is dropped as fragmented. This caps the MTU.
 > 
-> The window starts one byte past the threshold and widens with it. On a v5
-> it ends 28, 32 and 46 bytes past thresholds of 2560, 3584 and 3840. Link
-> speed makes no difference. Pad frames landing in it to 64 bytes past the
-> threshold, rounded up from the widest window seen. The threshold goes by
-> skb->len, it does not count the 64 byte status block the driver prepends
-> later, measured at 0x80 and 0xf0.
+> Strip the status blocks and reassemble the fragments. Only the last block
+> holds the checksum of the whole frame. Broadcom confirmed from the RTL that
+> every GENET revision splits long frames this way, not just the v5 this was
+> tested on.
 > 
-> Padding must not push a frame past what the peer accepts. Linux does not
-> bound how many VLAN tags a frame carries, so measure against the longest
-> frame the MAC has to accept rather than a tag count. For the MTUs where
-> such a frame would land in the window, lower the threshold instead. All
-> other MTUs keep the register maximum, and at or below ETH_DATA_LEN the
-> reset value stays, so an unchanged MTU keeps the threshold it always had.
-> Nothing reaches either path until a later patch raises dev->max_mtu.
+> On transmit the MAC only checksums a frame it holds in full, so anything
+> longer than the threshold falls back to software. At jumbo sizes the larger
+> frame saves more per packet overhead than the checksum costs.
 > 
-> The MAC inserts a checksum only into a frame it holds in full. A frame
-> longer than the threshold gets its checksum computed in software.
-> ether_setup() leaves IFF_TX_SKB_SHARING set, so unshare before either path
-> writes to the frame.
+> UMAC_MAX_FRAME_LEN is 14 bit and counts the FCS. That puts the maximum MTU
+> at 16347.
 > 
-> The padding is appended to the frame, so a protocol that locates data from
-> the end of it, such as a DSA tail tag or a PRP trailer, sees the zeros
-> instead. Nothing below an MTU of 3809 is affected, since no frame reaches
-> the window there. Above it the alternatives are dropping the frame or
-> leaving the transmitter stalled.
+> The TX descriptor length field is wider than DMA_BUFLENGTH_MASK suggests,
+> that mask only extracts the length from the RX status word. A frame of
+> 16361 bytes, the largest that MTU allows, came back byte exact 200 times
+> over UMAC loopback.
 > 
+> Suggested-by: Justin Chen <justin.chen@broadcom.com>
 > Tested-by: Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
 > Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 
