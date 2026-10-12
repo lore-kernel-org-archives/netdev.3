@@ -1,149 +1,218 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012038.outbound.protection.outlook.com [52.101.48.38])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EA0248F64;
-	Mon, 12 Oct 2026 10:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791801476; cv=fail; b=FpR4xYkq6KDp7drjzzCGzEhcMZJD6MrTPyoOUaiyY/934AtSrwPAUWQVbouw7KV+wJD0T66LLwJ5aGL7W7ED+IVQbmjFxGCt2dptGekQfo15XDZbN0ymny6UTspAgRmgr9igANmngGfBOY/FTUCQZnPM7IoZ9F1vAhEaUWItxLA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791801476; c=relaxed/simple;
-	bh=LSX2js8E/dN+qiAxFPi1ROhezKQRCIzsvL7nkav6aaM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Pba/gSk+XrQAHQsVA6xMukbTILxlZcFe84OBocsU04ikgIb77BX1PdpRKIBViFILr3Fenm8/DiHb0X994/4irZfGX09TsezNkyT0LlEpcFxS2ZpBfQRqaw+IlZMIXWSijEznOt1VxbnMK/X2oqwh+abJxRTn1t/MxT/aA669LYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Izo2ujes; arc=fail smtp.client-ip=52.101.48.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75426348C7C;
+	Mon, 12 Oct 2026 10:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791801621; cv=none; b=FhzSMHJUD8gvUyKhp3l2oJMSyl2EbWxiRpAYL9hlsCAlXaXOkSFxziobqaA5Z6e45uIz8nVvip0CZpZFm233uXooYWeqItKdjlwo1xu/Pf862eTe6dMTIYZuTx8ovbPuSRWCB0KU+TLXgyUqLJs4uzfJb5jsORTpW9yKyfoYRc4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791801621; c=relaxed/simple;
+	bh=ziE8lAg3olNuSPnNtCsX4WIsjvjUwg80ecfSocDyoD8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=itRz1wMsGIkqPA6fv/UfOsi2kaC7ocYXEspqy57FcIjtJhR6If/wXds59bZjgbDKcxm5SDRHJdm//CbrIiz2q31JTRXEXdvVfZQaomJMNqEHg6BKFdwvP1xZ1CPMf9P+MbcV5mT/2831xoI6M8WBSabXol0F6aKW8W6lahNH14E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/Nktul3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Izo2ujes"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x6sov3FRVEKLjZohA/6S896OBi35klaARunakHzF28j2c8KAe1MMRwY3vkYRIJsi8dckitL44sRpbwjUIoegC9M5AxlUNtngyeCPtB+eQuJQ5efGdo1yKy/dQMmWvVQ7YFbzS8EoGF9DjQIqGDm/iYAQLDIyNW9z8dUfytZV+Y5CS1ClLUCfjZATbrz/eAMjDdRimnP53bDXzv1DiSRHZk8xyVjzyePhGePIJzOLvF9BV7rp3Ag3+X31VuYey4S9OiTTCUsGvpneg7wAEQs3j4rA7nLULa9JrrCuZig1Ui0PS1EMPahJI9q40BUTu336rMAQEe/xPftHaEb57feoog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M1muJFVwVq6Zo/jjPhDXVyUJDSNgtRV6bNRhjpR5Iqw=;
- b=B/6CZEugtdwBOPxF6Y+HN0BdT0unzy37sCoGX2SHG7eBE2UXcWaV1kaXrt1+GY2ndaA9Mu9NBhYlVdF0/HNghFfNgpzpfrOz++9v4jSX4wJOOjLz+LtUNiQVZQ1+M5hNNcJKiNrW9rcTvyS2QCZdwrhvcs2HzaY8HExlO1OIrhZKrBrgGzTaaXJrnaRhqRR5JV2pHO/XAC8kQwi5GRzIkoRHhXuriI1toICxXTgEbIWGOtHrokZAKyswAYgCzHHCl5pr0V9PZMXusuW2a7yEE4H68dCJ/6fZqlAuYZVcEKfkmAsNuxRO/86aVP4vpERpadyo2qU0qRnEc/s6HMKkAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M1muJFVwVq6Zo/jjPhDXVyUJDSNgtRV6bNRhjpR5Iqw=;
- b=Izo2ujesi2A1W2YR1coIpATs58/XvrvcurafrtO64nGq5c42bJaoZbxMrDsIHe4qBY97FM1JzfOayqOQ/pZC6zZqWqAJVCv3PghuOU7bmuuAZxe++sZuQvQXvvv6LbScFqcjDjEV/QnpoQwJoTARf1e7fbVkxTERVcCc3kl4R66wcz8UdSDSpbHYitXpHZ1yLlsnzOiCBey2VtQ9v85H2ZkBpWRS44C7dFezXBnr/UbBoIKTytbU9aHhIgT2kLPjdW/kgu5eniKV3N6zSvXS5yP4kWQucJ/6T23hcIghy0BjPepj5kZLC0Yay/p3lV1KI88lMIV9shpb934JQQuUXg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by DM4PR12MB6375.namprd12.prod.outlook.com (2603:10b6:8:a2::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.21; Mon, 12 Oct
- 2026 10:37:51 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.015; Mon, 12 Oct 2026
- 10:37:51 +0000
-Date: Mon, 12 Oct 2026 13:37:42 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Yun Zhou <yun.zhou@windriver.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v5] net: erspan: set lltx to avoid sch_direct_xmit
- deadlock
-Message-ID: <20261012103742.GA673951@shredder>
-References: <20261008093824.119453-1-yun.zhou@windriver.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261008093824.119453-1-yun.zhou@windriver.com>
-X-ClientProxiedBy: TL2P290CA0011.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::14) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/Nktul3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1801F0089D;
+	Mon, 12 Oct 2026 10:40:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791801620;
+	bh=DiBrVZcOQoLTxCiDd+wbtrX+JX6LPS58GRReWsBaeBQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=H/Nktul3XbOANsYijkOC5ePkVrHQOC0uRPlV60y7LN0u+Xh+3+eBecM+T7ooGJ1b6
+	 a8NhBRTlEUhmr3bk1SFhnmlK72FjGruPjpBdm3mSVRVapw9cPhyENRdU+2vBPKaB/m
+	 y8x/bImRbpfZXotM1UE+UKvNjfXsTvfelgfG+LR7FM2DE68un39OSqYZrRnNYs9M9u
+	 uB+JCdEq7svUO4LqtsZXumg5CX2fY+ov1zTG5Ic8num1yD5GxRVYdeAJM7W8K8z+0S
+	 VNdu+cFfFOlPTXtoYx6mIY2FflWS64tNiezBXrrmjtfctabCAtrT5Zhy5ORREc6Bkb
+	 PmyaUdwAzDQow==
+Subject:
+ Re: [PATCH] udp: let rx-udp-gro-forwarding aggregate under encapsulation
+From: netdev-bot+sashiko@kernel.org
+To: eva.kurchatova@virtuozzo.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com, alobakin@pm.me,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Date: Mon, 12 Oct 2026 10:40:19 +0000
+Message-ID: <179180161935.434549.5518274080541032248@kernel.org>
+In-Reply-To: <20261008163817.2983484-1-eva.kurchatova@virtuozzo.com>
+References: <20261008163817.2983484-1-eva.kurchatova@virtuozzo.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DM4PR12MB6375:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e1f138f-b73d-4fb9-0c2e-08df284cddc4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|10067099003|22082099003|18002099003|3023799007|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	1aAsnJfkJktdCl4Cd5id4oKDU9jiZCjAsqX9n/egtP00V/XwSOCCvCt8WlM2bGLJ2oSregVVfUNAU8k8mYd34tImm5um6w+haHAlXX+aB7Omsp/beTTvBiYmYuA03zdUzk+CopNVIk7a2yu3XE1Glr1Y1Yg4M58GpSHYGD/kljOwfDcXCMKBMS52PECCmPz/wJff6ae9jNNXsGk7bBYXL5BQFpc1WCsfpRNokLaqK+DBH70L3JXoQgZEPX1LF/okCeJTLYgk/t44TpfMjP9v5SnqTtv6pB118nLlxC9reMzwZtqoIlzygO5zQJ2sXaYyuavhxrpmcVO/VbJKYgwe3v7K7AyIIngNiRyJwn+T1znpS43L93gW2h7knDElQ3ZC8XNS4chiHBvO6DHdlJXQG8cxJYrz+hyZceVsrGS8knJdb2+Cb0hKR214and0IpfzYr/yb/PKxurGCaBxIamGum6IcVqcKNwkL0aXzyJAHk+OIQQdMVYt4OBehUpY00m32G5Ic3qeH+e777Kaq6PWvpU4sKWcdDYgbyT0I4jLcS4kt91vPxed1x8j9+DXbpl5Dy+G2u8ZDxKs3Es2H6Xh1OONFN4E3OD9SFecWdkoQ2vJF9q3H9elpt/Qjrgg8Yn6M61JSsE0cb1pKklC1HESQEmqy5rCdV0crs+If2MQY9g=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(10067099003)(22082099003)(18002099003)(3023799007)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?nm7dsua/OvJ29NwH+MgC4iq3/l3Sg2I1gneFPJNRF9aMtdhm7WEm44fYq2K3?=
- =?us-ascii?Q?1kVx8GN0SEF8ODbg30MmoLXpeu1LjPHZmTvwmq2shAaYS55zqiwsrLxf3jfB?=
- =?us-ascii?Q?0hog1OUDk8YHZuHmnE7bcrO9fbwlv8M+XCI/vOUSd2wavvLkzYgKa0GmttE5?=
- =?us-ascii?Q?4ZbDUtOAqPD4SC9ZmM1+LebBg8rManpNAb0m9kTCJqCStFngWhVb52yI9/ay?=
- =?us-ascii?Q?XnRQBO1xjgmPRkmOZa7TDQfD4IFB/u14iAJMzbqCv1mE8vxBkHiNxJHTP687?=
- =?us-ascii?Q?9IZUB54TayVM8AxROXCPJhln32HdzEN7eg6PSGzM2iInzh69kqCtN/I6wyIP?=
- =?us-ascii?Q?F5OWzKW+kMCe9cef8zAKKv78ojLxVGyzFlYAOiAD8METg2XFWoa19sdm1D3x?=
- =?us-ascii?Q?kO8CL36uMbs1JUjuXAyxXtzcKRNtaYnuNJGVaCp2Gb04TQk/UaY9z5dq00t3?=
- =?us-ascii?Q?3Km3fchdEkaMXPI18gDizHJf24mz199p2m8yEKq8jb3fg1QGiXN4uiYR2GwK?=
- =?us-ascii?Q?ccmTt83K8sQ2isDK/8BU4Cj/CEgNPcXdk1aAmxVUoRlT5YnvcV1X2B6fMdfl?=
- =?us-ascii?Q?DYqmV8cmPIOZ98AOL4ef6nY5CuD4lJlZpYrZRb5C+AgNU/8YXLU480nk3Zr8?=
- =?us-ascii?Q?kBfBWpb7rZsjebms7nY3Knj6xgGDALlxFyeool5c88LSrhJpeT834UyPduFb?=
- =?us-ascii?Q?Ovq8FDiX9uE88Fd1eZyPsU5lT0IUOuMh091WnD3x13qfhaVA9f7zj1g0jBty?=
- =?us-ascii?Q?zngrJuiaLSNm/6CBp6hldufJONG/OsvphN5dZFdarkgGGf+pHOud0mtH+sne?=
- =?us-ascii?Q?1dAxkjpaRvHkP7IquFrqN1xCfIquU++nrSgnYIXwmZ6t89vy0354/XT9n9Za?=
- =?us-ascii?Q?ve9DWlQZESOcrzYo3IZN4al6gKN9woTsXAbL8GJcFy5sT9W05gFtMdAjLRZm?=
- =?us-ascii?Q?+xi1Nb1dFu/TrY3ySjr8WH7WRc/QytxJemBJkEbgBBeufhtaAWh9vNinpG26?=
- =?us-ascii?Q?w5dSNwD/N4uUFCmMzA8a+fi/9V5COakyZ+7mqDg+iYg4vup1O3bQTMYhiFjC?=
- =?us-ascii?Q?MyX70j9OQNjtXw1bqe0xJOAEP6eehS+OytI6Rw5FzKbVSjGaM8uNm/2tHICw?=
- =?us-ascii?Q?KglJ2KVRi77RLQwgB7Pj5pi0BL1UwL4TIWln/r6scJ37W8pNTYpq9dzHrR5v?=
- =?us-ascii?Q?S7SLlOaK39o+N2R5t63peBnuUC5o+yt8LNvgAq/ni7xNe9wZsA4LN6k4xXbA?=
- =?us-ascii?Q?esYvgaO5RHulvhS/NKGDq5D4mpWJc0xc4QleJEOeSv3TPyAvH22hcS/ynnrR?=
- =?us-ascii?Q?qFyQDVjp+pmHU+1qKFD0CXsJU0b+Gz2Lvn8IP0T3CaS0Seeb47RMTy1tm8Z+?=
- =?us-ascii?Q?TgLhYWz7ypgiLYf28ohP7FKC3gNrXUGMh1FZ4CeGdfquP/RniudaHSZroBvL?=
- =?us-ascii?Q?KQopCQzNx9A8CO1yy/kOZ7kb2V/WxwIcH1Ic7AuGB2/ySVX4+Jg5Lcjv8oj4?=
- =?us-ascii?Q?j7qUEiR7oKysrvnqcud2oaOoLpu4E2hNmSBJjWPUA3PVXe1clk7NsaQr+voI?=
- =?us-ascii?Q?E0WN4aKL5L6+HpeghOUqyV3Byte1EoPfcag7pMPNmfWpVGltd2Wl/phBbxB4?=
- =?us-ascii?Q?FEKSGIDBGEAvds04Qxa3Mng1I+4Hjkhdd5uo+Lp/x1DfRroRElackt5eDuv2?=
- =?us-ascii?Q?FfbwjSIpkoPZT8e/MWa3QeHmmj4srorrVLkpdly3Odp619Eu?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e1f138f-b73d-4fb9-0c2e-08df284cddc4
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2026 10:37:51.4587
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bmLWmRnnSVdC5U50vsV94S00J5ho6/rn1eUSLA9NW2lwHGKB0/qmTnajRkBAe0atiHJUIrCx4arPSykkaYiQTg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6375
 
-On Thu, Oct 08, 2026 at 05:38:24PM +0800, Yun Zhou wrote:
-> The ERSPAN xmit path re-enters the network stack, causing nested
-> acquisition of _xmit_lock on the underlay device while already holding
-> the ERSPAN device's _xmit_lock, creating an ABBA deadlock. This happens
-> for both IPv4 ERSPAN (erspan_xmit() -> ip_tunnel_xmit()) and IPv6 ERSPAN
-> (ip6erspan_tunnel_xmit() -> ip6_tnl_xmit()):
-> 
->   sch_direct_xmit [lock erspan] -> erspan_xmit -> ip_tunnel_xmit ->
->   ip_output -> __dev_queue_xmit -> sch_direct_xmit [lock underlay]
-> 
->   sch_direct_xmit [lock erspan] -> ip6erspan_tunnel_xmit -> ip6_tnl_xmit ->
->   ip6_output -> __dev_queue_xmit -> sch_direct_xmit [lock underlay]
-> 
-> Set dev->lltx = true so HARD_TX_LOCK() skips the spinlock for ERSPAN.
-> This is safe as the ERSPAN xmit path has no shared mutable state: o_seqno
-> is atomic, TX stats are per-CPU u64_stats, dst_cache is per-CPU, and
-> o_flags is no longer modified in the xmit path since commit 9958e69b9893
-> ("gre: fix ERSPAN o_flags race/corruption in xmit and fill_info").
-> GRETAP, the sibling device with identical xmit structure, already sets
-> lltx.
-> 
-> Reported-by: syzbot+9bda1b9fbb7fbdf9b62b@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=9bda1b9fbb7fbdf9b62b
-> Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
-> Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
+
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The commit message says "a tunnel socket keeps its own receive
+  path" and that the new behaviour is "what every host without a tunnel…
+- [Medium] The patch treats as a kernel regression a behaviour the in-
+  tree selftests already document and work around.
+- [Low] tools/testing/selftests/net/udpgro_fwd.sh still explains its DNAT
+  setup with the socket-lookup restriction this patch removes.
+
+--
+
+udp: let rx-udp-gro-forwarding aggregate under encapsulation
+
+This patch removes the !sk requirement from the NETIF_F_GRO_UDP_FWD check
+in udp_gro_receive(). With it, plain UDP L4 aggregation happens whenever
+the device has rx-udp-gro-forwarding enabled, even if the GRO lookup
+found a receiving socket. The motivation is a veth.sh kselftest that
+fails on hosts where udp_encap_needed_key is enabled.
+
+> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+> index cf07c3c6611a2..d4e0e6bb9959f 100644
+> --- a/net/ipv4/udp_offload.c
+> +++ b/net/ipv4/udp_offload.c
+> @@ -804,7 +804,7 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
+>  		if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
+>  			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
+>  
+> -		if ((!sk && (skb->dev->features & NETIF_F_GRO_UDP_FWD)) ||
+> +		if ((skb->dev->features & NETIF_F_GRO_UDP_FWD) ||
+>  		    (sk && udp_test_bit(GRO_ENABLED, sk)) || NAPI_GRO_CB(skb)->is_flist)
+>  			return call_gro_receive(udp_gro_receive_segment, head, skb);
+
+[Severity: Medium]
+Is the commit message accurate for UDP tunnel sockets that set encap_rcv
+but not gro_receive? It says:
+
+  "That is what every host without a tunnel has done all along: a local
+  socket without UDP_GRO gets the packets resegmented on delivery, and a
+  tunnel socket keeps its own receive path."
+
+Wireguard, L2TP, GTP, AMT, bareudp, rxrpc, SCTP-over-UDP, TIPC, ovpn,
+pfcp, rxe, and ESP-in-UDP without UDP_GRO all go through
+setup_udp_tunnel_sock()->udp_tunnel_encap_enable(). That turns on
+udp_encap_needed_key. On any host with one of these sockets, the GRO
+lookup always runs and finds the socket.
+
+For such a socket, udp_gro_receive() takes the
+"!sk || !udp_sk(sk)->gro_receive" branch. Before this patch, the !sk term
+kept plain L4 aggregation away from the socket when GRO_ENABLED and
+fraglist were not set. After this patch, its traffic is aggregated as
+SKB_GSO_UDP_L4 whenever the ingress device has rx-udp-gro-forwarding on.
+
+These packets only get resegmented because of the last-resort check in
+udp_unexpected_gso(), which udp_queue_rcv_skb() calls:
+
+include/linux/udp.h:udp_unexpected_gso() {
+    ...
+	/* GSO packets lacking the SKB_GSO_UDP_TUNNEL/_CSUM bits might still
+	 * land in a tunnel as the socket check in udp_gro_receive cannot be
+	 * foolproof.
+	 */
+	if (udp_encap_needed() &&
+	    READ_ONCE(udp_sk(sk)->encap_rcv) &&
+	    !(skb_shinfo(skb)->gso_type &
+	      (SKB_GSO_UDP_TUNNEL | SKB_GSO_UDP_TUNNEL_CSUM)))
+    ...
+}
+
+This doesn't appear to cause corruption. However, every wireguard, L2TP,
+GTP, etc. packet that arrives on an rx-udp-gro-forwarding device is now
+aggregated and then resegmented. Hosts without a tunnel never did this,
+because these sockets are exactly what enable the key.
+
+The fraglist path already relied on udp_unexpected_gso() for found
+tunnel sockets. Plain L4 aggregation through the FWD feature is new here.
+
+The comment at the top of this block in udp_gro_receive() still says:
+
+	/* We can do L4 aggregation only if the packet can't land in a tunnel
+	 * otherwise we could corrupt the inner stream. Detecting such packets
+	 * cannot be foolproof and the aggregation might still happen in some
+	 * cases. Such packets should be caught in udp_unexpected_gso later.
+	 */
+
+The code now aggregates on purpose when the found socket is a tunnel
+socket. Should this comment and the commit message be updated to match?
+
+[Severity: Medium]
+Does this change the meaning of rx-udp-gro-forwarding? Commit 36707061d6ba
+allowed plain UDP GRO "if we are on forwarding path", and the !sk test was
+how that path was detected. The feature bit is still documented that way:
+
+include/linux/netdev_features.h:
+	NETIF_F_GRO_UDP_FWD_BIT,	/* Allow UDP GRO for forwarding */
+
+After this patch, the feature means "always aggregate plain UDP on this
+device". That includes traffic that ends at a local socket without
+UDP_GRO, which udp_queue_rcv_skb() then resegments.
+
+The skip that this patch removes was already known, and the tree works
+around it. tools/testing/selftests/net/udpgro_fwd.sh says:
+
+	# UDP GRO fwd skips aggregation when find an udp socket with the GRO option
+	# if there is an UDP tunnel in the running system, such lookup happen
+	# take place.
+	# use NAT to circumvent GRO FWD check
+
+The failing veth.sh check sends through chk_gro() to a local receiver
+that runs without -G:
+
+	ip netns exec $BASE$DST ./udpgso_bench_rx -C 1000 -R 10 &
+
+That is local delivery, not forwarding. Its result depends on whether
+udp_encap_needed_key happens to be set on the host.
+
+Would it be better to make veth.sh robust instead, for example with the
+DNAT approach udpgro_fwd.sh already uses? The Fixes: tag will carry this
+change in feature semantics into stable.
+
+If the kernel change is intended, could the commit message describe the
+semantic change, and could the feature bit comment be updated?
+
+The commit message also says:
+
+  "the receiving socket is looked up only once a tunnel socket exists"
+
+Isn't the trigger wider than that? udp_lib_setsockopt() also calls
+udp_tunnel_encap_enable() when UDP_GRO is set on any socket:
+
+net/ipv4/udp.c:udp_lib_setsockopt() {
+    ...
+	case UDP_GRO:
+		sockopt_lock_sock(sk);
+		/* when enabling GRO, accept the related GSO packet type */
+		if (valbool)
+			udp_tunnel_encap_enable(sk);
+    ...
+}
+
+[Severity: Low]
+The udpgro_fwd.sh comments quoted above explain the DNAT setup with the
+!sk restriction that this patch removes. The same explanation appears
+again before create_vxlan_pair:
+
+	# use NAT to circumvent GRO FWD check
+
+Should these comments be updated?
+
+The DNAT setup also forces sk == NULL during the GRO lookup. As a result,
+the "GRO fwd" and "GRO fwd over UDP tunnel" tests behave the same with
+and without this patch.
+
+Does any test reliably cover the changed path, where a socket is found
+while the encap key is enabled and rx-udp-gro-forwarding is on? veth.sh
+only reaches it when udp_encap_needed_key happens to be enabled on the
+host. Nothing seems to cover FWD aggregation followed by resegmentation
+for tunnel sockets that set only encap_rcv.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008163817.2983484-1-eva.kurchatova%40virtuozzo.com
