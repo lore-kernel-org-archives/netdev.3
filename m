@@ -1,186 +1,255 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B714DAFAA;
-	Mon, 12 Oct 2026 18:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B157379C4A
+	for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 18:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791830714; cv=none; b=qZEB49t9Irh6u1cgM8v0JKwKuC22kzN6H8XBtLQQH2+NmoK9rmUQeFIf9Kg8Fg4xsVRaeNPeHnDzXN2q5dqTL153x9uAf+HjLasBm2f8P1YcmaOdNa1xL9Bg+/0Zv4Jd9TY1ZDNiqdXVuhlKqVFs4R/HArL/VYWlm9Y2sjfuryc=
+	t=1791830730; cv=none; b=quNcBegRJKdoiEFyjdM7wk2V/+9djenrqo1Eh8nLsscCzs1ULgBx8es7wbVOJO4wyqc/M/k9MZ6/ta3fOxfJ4z+m27natgV7DCyUhqvKH1+RaKMBHYqhLJyjN87oW7SUIBkQD/O3Xkq3iqFwv6o4PnoN/FbNQaLSBJgesiOWY+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791830714; c=relaxed/simple;
-	bh=moux0RdaQOg9oAn2omKHKdRwyFUKoL7usBjJzvOq3aI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=giqC91BnoRCgEMskejbQd9qFkO6pc00x9d+c6UdcvQ+Ho36ib+o3apRzDBpRA0DlI/kE0IyOZ7nOJqe5WPXpmclhRLNw1A0jU8LCgNgPNXUaeudo7757Erxe9X7Agatih2aGZMwn9VW2YIMBEmg6rtMOxgZexninWKp4p1OaylE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ofJTV+zA; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1791830730; c=relaxed/simple;
+	bh=N1LGJkJtjVzU3rHCAxeqBNLbazMNV4NVoNp2dnUvU14=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PT+AcYK/kc1jVvO+sJoWYzu5R6ozy/6ngoZqCmSxbzdjd4lNWwAydox259VR5LngeYN3C5LdhKYklCXfRwQI5aUoAFedTjkRoWWB8m5NiQMntYijcCBaOC1oAJZ04Fv/1G0QtCx5yxhq57fWCaijWy9cYj0i/iVqzttLorEKOMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FaOFBV7E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ofJTV+zA"
-Received: by linux.microsoft.com (Postfix, from userid 1216)
-	id 3D07120B7166; Mon, 12 Oct 2026 11:45:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3D07120B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1791830710;
-	bh=aV/lGjTgFzjmi1GzusTJEogclUVFMsaWVMcBG2jRLsM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ofJTV+zAcILUHPvuxvsigZInR4BrwsNh2/ETsurQRBgkE83ooKEkswKTFlyT/g1hw
-	 lVxCFSIpfyq+LQ9B+DbJlakrftSOx/AUpY95xryMhhXntr0T8pZQ8eRzMa/rMOpZjr
-	 5Rassvh93Lw5h9P+EgbeeQ2DHY1P1nTsqIuZa5/U=
-Date: Mon, 12 Oct 2026 14:45:10 -0400
-From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, ernis@linux.microsoft.com,
-	gargaditya@linux.microsoft.com, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: mana: add BQL support
-Message-ID: <as0qticPN9LPaaNU@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20261008152302.3192778-1-hamzamahfooz@linux.microsoft.com>
- <179182066558.434549.8621824405062801385@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FaOFBV7E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D478D1F0089B;
+	Mon, 12 Oct 2026 18:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791830728;
+	bh=zpPYd+H4INT9bGEFLZpq/s+51wnsQ7lmdsFOSDgvJpo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=FaOFBV7EokcKkD9rmSBN/BRs7xfC1GRONvcgEtF7sr2Rh72s4vOtYVk/LpWo0yzjS
+	 z4uvVlmnFreHIL9M4b21tYK/3+X5a2uN5cJOcG0o+KozmZqbug2UkXZz5PH47YjVbl
+	 EdmXhDuc4loMWCKRql85nvt8aR99Rbr7gmtxAM8lzZDxQF5G3jlFNLnNsOdX86Wku1
+	 X6m/EWYcigOc21YTNfzKCQpvDJURjdgXAdw92GTruLHL/oiU9QW1WIYRqhiixGjE+W
+	 Jd6GEdq165Hm2aNqx6ISRh5HPDF41mD59OvGd16mat2Fi55N4as7AIJTTTVekeBh9m
+	 8KsPWqXq+bENg==
+Subject: Re: [PATCH net-next v4 01/15] net: ethernet: cortina: Keep shared
+ free queue parent-owned
+From: netdev-bot+sashiko@kernel.org
+To: linusw@kernel.org
+Cc: ulli.kroll@googlemail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, mirq-linux@rere.qmqm.pl,
+ mhun512@gmail.com, edumazet@kernel.org, netdev@vger.kernel.org
+Date: Mon, 12 Oct 2026 18:45:27 +0000
+Message-ID: <179183072736.434549.11981012377638415771@kernel.org>
+In-Reply-To: <20261011-gemini-ethernet-fixes-3-v4-1-4b1631b08f5d@kernel.org>
+References: <20261011-gemini-ethernet-fixes-3-v4-1-4b1631b08f5d@kernel.org>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179182066558.434549.8621824405062801385@kernel.org>
 
-On Mon, Oct 12, 2026 at 03:57:45PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] If TX completions are lost, XDP traffic can keep a BQL-stopped
->   MANA queue from ever being recovered by the TX watchdog.
-> 
-> --
-> 
-> net: mana: add BQL support
-> 
-> This patch adds byte queue limit accounting to MANA. Queued bytes are
-> reported in mana_start_xmit() and completed bytes in mana_poll_tx_cq().
-> XDP_TX and XDP_REDIRECT sends are counted through the same path, and the
-> BQL state is reset in mana_destroy_txq() after NAPI is disabled.
-> 
-> > diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > index 2ba48a1c4b15e..67048fe64d63e 100644
-> > --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > @@ -543,6 +543,11 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
-> >  	err = NETDEV_TX_OK;
-> >  	atomic_inc(&txq->pending_sends);
-> >  
-> > +	/* Account the skb in BQL before the doorbell lets the hardware
-> > +	 * complete it.
-> > +	 */
-> > +	netdev_tx_sent_queue(net_txq, len);
-> > +
-> 
-> [Severity: Medium]
-> Can XDP traffic stop the TX watchdog from ever recovering a queue that
-> BQL has stopped? The commit message says:
-> 
->   The TX watchdog covers the queues stopped by BQL, and its handler resets
->   the queues along with their BQL state.
-> 
-> XDP_TX and XDP_REDIRECT (mana_xdp_xmit()->mana_xdp_xmit_fm()) both reach
-> mana_start_xmit() through mana_xdp_tx(). That function does not check
-> whether the queue is stopped:
-> 
-> drivers/net/ethernet/microsoft/mana/mana_bpf.c:mana_xdp_tx() {
->     ...
-> 	__netif_tx_lock(ndevtxq, smp_processor_id());
-> 
-> 	rc = mana_start_xmit(skb, ndev);
->     ...
-> }
-> 
-> With this patch, each of those sends now calls netdev_tx_sent_queue().
-> If the queue is over its limit, netdev_tx_sent_queue() always refreshes
-> trans_start, even when __QUEUE_STATE_STACK_XOFF is already set:
-> 
-> include/linux/netdevice.h:netdev_tx_sent_queue() {
->     ...
-> 	/* Paired with READ_ONCE() from dev_watchdog() */
-> 	WRITE_ONCE(dev_queue->trans_start, jiffies);
->     ...
-> 	set_bit(__QUEUE_STATE_STACK_XOFF, &dev_queue->state);
->     ...
-> }
-> 
-> dev_watchdog() only fires when trans_start is older than watchdog_timeo.
-> MANA sets watchdog_timeo to 15 * HZ. One XDP packet every 15 seconds on
-> that queue seems to be enough to stop mana_tx_timeout() from ever
-> running.
-> 
-> In that state, what clears STACK_XOFF? mana_poll_tx_cq() matches CQEs to
-> SKBs in FIFO order with skb_dequeue(). If completions are lost, the lost
-> bytes become a permanent debt D in num_queued - num_completed.
-> netdev_tx_completed_queue() only clears STACK_XOFF when dql_avail() >= 0,
-> so the limit would have to reach D.
-> 
-> In dql_completed(), the limit only grows here:
-> 
-> 	if ((ovlimit && !inprogress) ||
-> 	    (dql->prev_ovlimit && all_prev_completed)) {
-> 
-> The first condition can't be true while inprogress >= D. The second
-> needs one poll to complete at least the bytes that were in flight at the
-> previous poll. A low-rate XDP flow with one completion per poll won't
-> meet that.
-> 
-> For example, take equal R-byte packets, a learned limit of R, and two
-> lost completions (D = 2R). The limit never grows, and the decrease
-> branch can shrink it further.
-> 
-> netif_tx_wake_queue() only clears DRV_XOFF. The only
-> netdev_tx_reset_queue() call is in mana_destroy_txq().
-> 
-> Would stack traffic on that queue then stay blocked indefinitely while
-> XDP traffic keeps flowing?
-> 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Ack, I'll spin up a v2 to address this.
+Low priority / nit picks for your consideration:
 
-> Hardware faults are not the only source of lost completions. The early
-> returns in mana_poll_tx_cq() exit after some SKBs have already been
-> dequeued and freed, but before netdev_tx_completed_queue() runs:
-> 
+- [Low] The commit message gets the old teardown order backwards for the
+  common path.
 
-The early returns are all WARN_ON_ONCE() paths (for completions that
-shouldn't happen). mana_gd_poll_cq() has already consumed the rest of
-the batch (by the time we hit one of those paths), so the SKBs can't be
-matched back to completions anymore. Completing the SKBs already dequeued
-wouldn't avoid that, so I think it makes more sense to leave those paths
-as they are and rely on the watchdog reset to recover the queue.
+Pre-existing issues:
+- [High] The RX coalescing hrtimer can be re-armed after gmac_stop()
+  cancels it, and nothing cancels it again.
+- [High] Discarded because a later patch in the series fixes it.
+- [High] Discarded because a later patch in the series fixes it.
+- [High] Discarded because a later patch in the series fixes it.
 
-pw-bot: cr
+--
 
-> drivers/net/ethernet/microsoft/mana/mana_en.c:mana_poll_tx_cq() {
->     ...
-> 		if (WARN_ON_ONCE(txq->gdma_txq_id != completions[i].wq_num))
-> 			return;
-> 
-> 		skb = skb_dequeue(&txq->pending_skbs);
-> 		if (WARN_ON_ONCE(!skb))
-> 			return;
->     ...
-> }
-> 
-> Before this patch, a few leaked WQEs did not block stack traffic on the
-> queue as long as the SQ was not full.
-> 
-> [ ... ]
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008152302.3192778-1-hamzamahfooz%40linux.microsoft.com
+net: ethernet: cortina: Keep shared free queue parent-owned
+
+This commit moves teardown of the shared software free queue out of the
+per-port removal path and into the parent's remove. That teardown now runs
+after both port devices are depopulated and the free queue interrupt is
+masked. It also adds a NULL guard to geth_cleanup_freeq(), suppresses bind
+attributes on the port driver, and unregisters each netdev before
+disconnecting its PHY.
+
+Closes: https://lore.kernel.org/netdev/20260917192835.58126-1-mhun512@gmail.com/
+
+> The software free queue is shared by both Ethernet ports, but each
+> child removal tears it down. The parent removal then tears it down once
+> more. This can destroy the queue while the sibling port is active and
+> can free it repeatedly.
+
+[Severity: Low]
+Is the old teardown order described correctly here? The parent driver is
+unregistered first in gemini_ethernet_module_exit():
+
+    platform_driver_unregister(&gemini_ethernet_driver);
+    platform_driver_unregister(&gemini_ethernet_port_driver);
+
+The children were created with devm_of_platform_populate(), and devres
+actions run only after .remove() returns. On module unload or parent unbind,
+the old gemini_ethernet_remove() therefore called geth_cleanup_freeq()
+first. Both child netdevs were still registered at that point and could
+still be doing DMA. Each child's gemini_port_remove() then called it again,
+so the queue was freed three times.
+
+The old cleanup also looks like it oopses when no interface was ever opened.
+gemini_ethernet_init() sets freeq_order = 1, so
+pages = (1 << 1) >> (12 - 11) = 1. geth_cleanup_freeq() then dereferences
+geth->freeq_ring[0] while freeq_ring is NULL. The message mentions this
+only as "Guard cleanup for paths where no queue was allocated".
+
+Could the message describe these two cases, for the benefit of stable
+backporters?
+
+> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+> index 2fe7fd0202d26..bf7652b04f1ba 100644
+> --- a/drivers/net/ethernet/cortina/gemini.c
+> +++ b/drivers/net/ethernet/cortina/gemini.c
+> @@ -1004,6 +1004,9 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
+>  	unsigned int pages = len >> fpp_order;
+>  	unsigned int pn;
+>  
+> +	if (!geth->freeq_ring)
+> +		return;
+> +
+>  	writew(readw(geth->base + GLOBAL_SWFQ_RWPTR_REG),
+>  	       geth->base + GLOBAL_SWFQ_RWPTR_REG + 2);
+>  	writel(0, geth->base + GLOBAL_SW_FREEQ_BASE_SIZE_REG);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does the put_page() loop
+later in geth_cleanup_freeq() also drop references owned by RX skbs that
+are still in flight?
+
+    gpage = &geth->freeq_pages[pn];
+    while (page_ref_count(gpage->page) > 0)
+        put_page(gpage->page);
+
+Pages passed up the stack with skb_fill_page_desc() hold their own
+references. This loop can free pages that socket-queued skbs still use, and
+it can underflow the page refcount. A CAP_NET_ADMIN user can reach it by
+taking the interface down and then resizing the ring or reopening.
+
+A later patch in the series, "net: ethernet: cortina: Preserve in-flight
+free queue pages", appears to fix this. It replaces the loop with
+geth_freeq_release_pages(), which drops only gpage->fragments plus the
+driver's base reference.
+
+[Severity: High]
+This is also a pre-existing issue, but can a failed geth_setup_freeq()
+inside geth_resize_freeq() leave the next open running without a queue?
+
+geth_resize_freeq() commits the new order before the setup that can fail.
+It also re-enables SWFQ_EMPTY whatever ret is:
+
+    geth->freeq_order = new_order;
+    ret = geth_setup_freeq(geth);
+    ...
+    en |= SWFQ_EMPTY_INT_BIT;
+    writel(en, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
+
+After a failure, freeq_pages still points at the array that
+geth_cleanup_freeq() freed. On the next open, this shortcut returns 0:
+
+    if (geth->freeq_order == new_order)
+        return 0;
+
+gmac_open() then carries on, and geth_fill_freeq() indexes the freed array:
+
+    gpage = &geth->freeq_pages[pn];
+
+This appears to be fixed later in the series by "net: ethernet: cortina:
+Drain free queue IRQ before resize" and "net: ethernet: cortina: Rebuild
+free queue metadata for RX ring changes". Those patches do the following:
+
+  - NULL out freeq_pages, freeq_ring and the bitmaps on cleanup and on
+    setup errors
+  - take the fast path only when freeq_ring is non-NULL
+  - re-enable the IRQ source only on success
+  - propagate a resize failure from open
+
+[ ... ]
+
+> @@ -2387,11 +2390,10 @@ static irqreturn_t gemini_port_irq(int irq, void *data)
+>  static void gemini_port_remove(struct gemini_ethernet_port *port)
+>  {
+>  	if (port->netdev) {
+> -		phy_disconnect(port->netdev->phydev);
+>  		unregister_netdev(port->netdev);
+> +		phy_disconnect(port->netdev->phydev);
+>  	}
+>  	clk_disable_unprepare(port->pclk);
+> -	geth_cleanup_freeq(port->geth);
+>  }
+
+[Severity: High]
+This isn't a bug introduced by this patch, but unregister_netdev() here
+ends up in gmac_stop(). Can the RX coalescing hrtimer still be pending
+when gmac_stop() returns?
+
+gmac_stop() cancels the timer first. It masks the port IRQs and frees the
+IRQ only later:
+
+    hrtimer_cancel(&port->rx_coalesce_timer);
+    netif_tx_stop_all_queues(netdev);
+    gmac_disable_tx_rx(netdev);
+    gmac_stop_dma(port);
+    napi_disable(&port->napi);
+    ...
+    gmac_enable_irq(netdev, 0);
+    ...
+    free_irq(netdev->irq, netdev);
+
+In that window, a NAPI poll that is already running can finish and
+re-enable the RX IRQ through gmac_napi_poll()->gmac_enable_rx_irq(). When
+rx_coalesce_nsecs is non-zero, gmac_irq() then re-arms the timer:
+
+    hrtimer_start(&port->rx_coalesce_timer, ktime,
+                  HRTIMER_MODE_REL);
+
+Nothing cancels the timer again after free_irq().
+
+If the interface is reopened, gmac_open() calls hrtimer_setup() on a timer
+that may still be queued. If the device is removed instead, freeing the
+netdev also frees the port that embeds the timer. When the timer fires,
+gmac_coalesce_delay_expired() calls napi_schedule(&port->napi) on freed
+memory.
+
+Triggering this needs a non-zero rx-usecs set with ethtool -C and RX
+traffic arriving during ifdown. Would a final hrtimer_cancel() after
+free_irq() close the window?
+
+[Severity: High]
+This is a pre-existing issue as well, but gemini_port_remove() still does
+not clear geth->port0 or geth->port1. Can geth_resize_freeq() then
+dereference a stale or NULL sibling pointer?
+
+    if (netdev->dev_id == 0)
+        other_netdev = geth->port1->netdev;
+    else
+        other_netdev = geth->port0->netdev;
+
+gemini_ethernet_port_probe() also publishes the pointer before steps that
+can still fail, and no error path clears it:
+
+    if (!id)
+        geth->port0 = port;
+    else
+        geth->port1 = port;
+
+This looks reachable under RTNL from gmac_open() or the set_ringparam path,
+either during depopulate or after a failed probe. The suppress_bind_attrs
+change in this patch narrows the exposure.
+
+A later patch in the series, "net: ethernet: cortina: Keep PHY-less port
+bound for shared IRQ", appears to fix this. It adds
+gemini_port_publish()/gemini_port_clear(), and geth_resize_freeq() returns
+-ENODEV unless both ports are present and geth->initialized is set.
+
+[ ... ]
+
+-- 
+Sashiko AI review Â· https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261011-gemini-ethernet-fixes-3-v4-0-4b1631b08f5d%40kernel.org
