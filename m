@@ -1,115 +1,138 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F483E410D
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1CE3E2AD8;
+	Tue, 13 Oct 2026 09:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791883153; cv=none; b=nlKiR4Lz5ScQmGzrGdTXJFFdgzIERlLpI0AMT1XpGCIkHQycQW9tr0TB/AXsXWUoEyGOq+bDlKJf6HYx04Y0aamcwo8VQP+KYvt2chySJoQOvgej84r7mthyi1QYqUfjifkyqPiCw72IHAAjdrdM+3puLzjGyh6hPD9QnMDnq6Y=
+	t=1791883159; cv=none; b=uw8gDkbgs94syoVDVLnSrbTp4NAu1373yJ58zMvtVQe/GLq+ywZE3AW59gFHYBydaB83EjCtZgfCLVSgqVzqyxOpGixQ7l3N6LYeIkXQKprQ49usSWTe4eEAvKspNJxMz9RzllgJmSWVRTMArePwnHmXqKpF+MtKTYJXwISFn8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791883153; c=relaxed/simple;
-	bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pj91GYLdNzFQnrdrZu36pV7AcQOiPuikqG8kmaKfm7+Kw8NAqttZG5NCpBj1T1gcgoGr0wLl9oEU22oDajpMABiErY/EHs+8BMEqnmdx6DEp6MEvFM/jvo+bTVliMePntxch1nV8QyHbSzcR3/tZseTFjypkXczsjbVrOqCYERc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ov0VuveL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lLtyGA2q; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791883159; c=relaxed/simple;
+	bh=ZiEo/LyxIg3ieQ/yURSFdVujpqUp3YNqG+fhUaDlAlk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PO5Wz2EU2HZpQC39B5yhD1efbCsL0jPZJ0UUySjQ+07vv7dbU9kQ0Tmz7AQbjN5d9Ms6HCchA5SIvv8mxOW/3SiKg7R/mJwoWX8Yv6t0M29DIlYiDWZ58dCbaCcCuJRN2XTWZXU0tHvK5jh5XEqp5Wswf/zb2COddgeE0c6nuUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fK/jreiK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ov0VuveL";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lLtyGA2q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791883150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
-	b=Ov0VuveLeObjOwaRB2qWt+D6F5dKBKjkhAlBPOHenH9CoDyOPb1sCNogT+qLPcnB5Rp/P+
-	OgxByoDspTZ5ajLesyi6blBjkU3eoS79i4OKgiVMlcjcfIQn/LrngPdTWHcsIuhsBaF6KD
-	hn5/n8PGOIRnxqdvhe1L2kbF8fEfGp8=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-624-CRnj3MRPMiKVPCp88IBQxA-1; Tue, 13 Oct 2026 09:19:07 +0000
-X-MC-Unique: CRnj3MRPMiKVPCp88IBQxA-1
-X-Mimecast-MFC-AGG-ID: CRnj3MRPMiKVPCp88IBQxA_1791883146
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a009f82bedso22061785e9.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:19:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791883146; x=1792487946; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
-        b=lLtyGA2qfs1FtYCSfcwC6xDHa7fRYIYKmkjAQdzIdRx4KQwBGW0ewSyWLoF37tq0m1
-         FRszzSMj9Q3vTc3cWpVCjEKPgWfvtFcZMPMS7edla2ZbzHZfgQBtBivvY7PO4cd7cRr5
-         9QFHx3WYsoGPvKMAKeKhOOZpq3b9R4Gyty0ta/32T6cPKN1WpTiMZnXldjUdXUf4WebX
-         px0UYBX1NwGsCt23gSu444LRzKa3+sYab2Q+zxqYsYzdJimKGidUBD7HjaAa2wMqCxig
-         /8UMQQ94FPeLFFWf/12EIQ9JwNi7lcJrARSU7P+lvaGlmZBrO5cETSsj+ZRrLqx0af5k
-         g2Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791883146; x=1792487946;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9ifxJXmHIdOpbrwVmaxz9CH5L1s1R8aDY8bfmqlUzMI=;
-        b=0XRczBCy8usFtpLU/N1kXmaG+/H1CGzoTkFqTiDzwkJ8ADt3EuW0+Y2JoB8TvD10Gz
-         CKWftVT/dAOI+fXnBE1JJTDV7zfvyHx2A+9/Ep2/QOs/+c3vgYc+4V0BkA+ZXEJ+XWxP
-         ZE/eE/u4rg2A2yJwNFrV8TioRElhcjDzZffRFsyLmZxlgabyaoWgKIK7RY0XLsCzKLMZ
-         1pDr9s2j6kS8zlFE5Qx2McmHCbH5CcS+JNRQm4OXJLd2+AQJvk+8QBG8/gwyJFE3bO87
-         kjd0GkGvLMvWg/YXhuv4hx5UAxQM80mbEt6YPLcfAzz5zFUi4aoZKTyBaHSsjKsLSYOS
-         xE7A==
-X-Gm-Message-State: AFq9FYJIHzl36tnfhISZNQFqzKQ9iTE9XQA8XsJbWK8K+++j4Cso6UPg
-	azpTGmq2fD4Ftk25KIhNogvAm7PGGhzj09Iux4ov1g2oafUAEPPfbRPznYxaYTKunvClFi4wtbU
-	NNNW0Yef1RSo7jQFB9YwsfkKUjsp5g0teNOLeYa3MWZPeif7Q51nDq06MXw==
-X-Gm-Gg: AYBFou3642IxSoc6uSORGZl6u0OC4x+FPq/jnqSccHBpAceBqPdwEOp3RhA58gJ7Dvm
-	aRrgO+aZuCMOoNhbpTCeAhfg2gzomt0jRmyvHuc4hlahfeU4Y5ck1tLu53KbT++dUorZMwTO9xu
-	uBeNSBRkcvmQGhqtfIzUf3SVSsLdK6RYPl9UCoP5bBwTMSzfKEgNmBl0Rd9HAefMzVH5ChK6ELS
-	bdusNvDiqVe/KqQD83n8D8GdGQx7BrF2AiwGkdO0QTLbA8vdxE3ZUTOnIBeFP4NRrdPiXki8mXu
-	bWdG510YcQsgYqL3Rbw1feDD6xiRb4SPDdDSWf75Df/fsnT/sSEqm5aDMIiNgAAxVcGqCDh4Lr5
-	UpA16Cg==
-X-Received: by 2002:a05:600c:4e8a:b0:4a1:78dd:dd28 with SMTP id 5b1f17b1804b1-4a18e4d2b31mr237237685e9.27.1791883146091;
-        Tue, 13 Oct 2026 02:19:06 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e8a:b0:4a1:78dd:dd28 with SMTP id 5b1f17b1804b1-4a18e4d2b31mr237237135e9.27.1791883145585;
-        Tue, 13 Oct 2026 02:19:05 -0700 (PDT)
-Received: from sgarzare-redhat ([193.207.127.148])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bea0f1csm508318675e9.9.2026.10.13.02.19.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 02:19:04 -0700 (PDT)
-Date: Tue, 13 Oct 2026 11:18:59 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@meta.com>
-Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev, 
-	kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	linux-kernel@vger.kernel.org, Bobby Eshleman <bobbyeshleman@gmail.com>
-Subject: Re: [PATCH net] MAINTAINERS: add Bobby Eshleman as vsock reviewer
-Message-ID: <as32zxVBpgdtMUOU@sgarzare-redhat>
-References: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fK/jreiK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541361F00893;
+	Tue, 13 Oct 2026 09:19:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791883158;
+	bh=0N4zGrHaxNZRb9Fu+dO3kSzaMrwBFwNNBPMCaUoq704=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fK/jreiKt+lkQMV02PMzTmJTxqFvNNIf+Xn0PUQY+Vi3g/Hb7vQIYUuygnq7eT8WD
+	 cLaRIu967Lt9qrFFXW4o/A0RqlviSyh58RBAUmMzZf6UWHhtF2wzeP5jEiEWnbKt6k
+	 kgkmGbjyNniBDrjt+zJ5zJVDMWfkbA+3vNBwUmfRGSiRQpfdNJI8yWpl30qGaMlPyi
+	 vPn/NxQERUEYaixoXe0iOwJ8XPpP2X4fBhXE9IZ9CNb2RA+/xkCe7YIOtlizAptQAC
+	 gvyoUlHU8QSXBx+LtRJGX4qyIHRXAMpF7O/LeItUdftmELlo0sS36CyHY4uKN3l+Zd
+	 H9JEr9+yQGJaA==
+Subject: Re: [PATCH net-next v4 3/8] net: bcmgenet: allow a continuation
+ descriptor without the alignment pad
+From: netdev-bot+sashiko@kernel.org
+To: nb@tipi-net.de
+Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
+ pierremarinleclercq88@gmail.com, f.fainelli@gmail.com
+Date: Tue, 13 Oct 2026 09:19:16 +0000
+Message-ID: <179188315684.434549.13806745531353419743@kernel.org>
+In-Reply-To: <20261012-nb-genet-mtu-nn-v2-v4-3-2e2e3bfaf8cc@tipi-net.de>
+References: <20261012-nb-genet-mtu-nn-v2-v4-3-2e2e3bfaf8cc@tipi-net.de>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
 
-On Mon, Oct 12, 2026 at 12:58:08PM -0700, Bobby Eshleman wrote:
->I've been reviewing vsock via lore+lei for a while now.
->
->Finally adding myself as a formal reviewer, since vsock will continue
->being stuck with me for the foreseeable future.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Thank you so much for agreeing to help when we met at LPC xD
+Low priority / nit picks for your consideration:
 
->
->Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->---
-> MAINTAINERS | 2 ++
-> 1 file changed, 2 insertions(+)
+- [Low] Commit message accuracy / dead code at this point in the series
+  (baseline verdict: discard, resolved later in the series).
 
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+--
 
+net: bcmgenet: allow a continuation descriptor without the alignment pad
+
+This changes the RX length check in bcmgenet_desc_rx() so that only a
+descriptor with DMA_SOP has to cover the 2 byte alignment pad. A
+continuation descriptor now only has to cover the 64 byte status block.
+The commit message says this prepares for a larger MTU.
+
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index 86c8f8f8fe151..9f9c3fde87250 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+
+[ ... ]
+
+> @@ -2372,8 +2374,12 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+>  			  __func__, p_index, ring->c_index,
+>  			  ring->read_ptr, dma_length_status);
+>  
+> +		/* Only the first descriptor carries the alignment pad */
+> +		min_len = dma_flag & DMA_SOP ? GENET_RSB_PAD
+> +					     : sizeof(struct status_64);
+> +
+>  		/* Reject lengths that would underflow the SKB build path. */
+> -		if (unlikely(len > RX_BUF_LENGTH || len < GENET_RSB_PAD)) {
+> +		if (unlikely(len > RX_BUF_LENGTH || len < min_len)) {
+>  			netif_err(priv, rx_status, dev,
+>  				  "invalid packet length %d\n", len);
+>  			BCMGENET_STATS64_INC(stats, length_errors);
+
+[Severity: Low]
+At this commit, does the relaxed bound change which frames are accepted?
+Right after the length check, bcmgenet_desc_rx() still has this
+unchanged check:
+
+    if (unlikely(!(dma_flag & DMA_EOP) || !(dma_flag & DMA_SOP))) {
+        netif_err(priv, rx_status, dev,
+                  "dropping fragmented packet!\n");
+        BCMGENET_STATS64_INC(stats, fragmented_errors);
+        ...
+        goto next;
+    }
+
+At this point in the series the driver has no frag_head or
+bcmgenet_add_frag() reassembly. So every descriptor without DMA_SOP is
+still dropped, whatever the MTU.
+
+The only visible change is in the accounting. A non-SOP descriptor with
+len 64 or 65 now increments fragmented_errors and logs "dropping
+fragmented packet!". Before this patch it incremented length_errors and
+logged "invalid packet length".
+
+The commit message says:
+
+  "The MTU cannot produce a frame past the threshold yet, so nothing
+  hits this today. It is preparation for the larger MTU."
+
+Would it be more accurate to say this depends on the reassembly patch
+rather than on the MTU change? A larger MTU alone would still hit the
+fragmented check above.
+
+The new bound also accepts len == 64 for a continuation, which is a
+descriptor with no payload. The commit message only argues for the
+single byte (len == 65) case.
+
+Both points are handled later in the series. "net: bcmgenet: reassemble
+jumbo frames from status block fragments" adds the reassembly path and
+rewrites this logic. The non-SOP minimum becomes
+sizeof(struct status_64) + 1, and a SOP descriptor without EOP gets
+min_len += ETH_HLEN.
+
+Would it make sense to fold this change into that patch, or to reword
+the commit message so the dependency is clear?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-nb-genet-mtu-nn-v2-v4-0-2e2e3bfaf8cc%40tipi-net.de
