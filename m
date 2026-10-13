@@ -1,165 +1,323 @@
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+Received: from mail-ot1-f97.google.com (mail-ot1-f97.google.com [209.85.210.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5AA558212
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791924347; cv=pass; b=GHnpcR7p0Udnm0goihRjAJfgq6CLFlxfL4r3BGCrbl6X/rXrXsXPidONY4DfGFoyM4nuV92s2cUZimNxavB2POL/kyLktT+AqWxGTldUffEnZxODjUmei8cayemJzvtcTCatibMVTqydg4H3zmlaBD6ot8vJD1kn11EKdv0TdVE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9098A542EC7
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:45:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.97
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791924347; cv=none; b=QCYYjOATi2WwVWjFHRo/xIIJThdvuykQHguF7eOd1IIuMjZAHO7Lvo8ski07MZlrV/xnxff+hOYtNkdskqq0ERh74uWsogIZoBI2Fugr5ov+3gf9oyt8GjsTCQXQflD/Mc/jnqc+YbUyhUv2XVwJuN9dYL82B2LuZX8RBsb9GQQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791924347; c=relaxed/simple;
-	bh=LOQJGUd0tb6sLwP1Tz4JHSrE5KDQUrXVw/iMmut2Skg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OxVXxKecZ357fRsBq6Y0FDl6vY93divDoYhD+hCRreIT0JXS0ValHwUNaeUnitaa8r1gt0AnF1KaCbQqv7PXbfoav4Oa2bagUVep6EjMEKBEDh0IyHPQCJ1VApM48e/We36Vle8MbE6Pwqa9Gla3CxmMvvEOfvStHexHvTc5kFs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NB/B90oS; arc=pass smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=vUpcsez7CgnIpw4YbzcmYEoAjaaVFIIoSzz7dzlZask=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=JQ4AmmwDeN6wW68t9sFA9I3wghrNvPGMKxWHhhv5f5NbQM5OjbD0Cs1KnSLtNVaZob0COENEAgtsrbSsG1sMBvilZgb0k2YV+hcq/iQDmEXgvXx/UNURyCxZoeg2gYLazjowESiMnZSdeM1/6him2+rHNgr1cDFI9mHo32BGjDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dAdlRnSI; arc=none smtp.client-ip=209.85.210.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NB/B90oS"
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-679334baa1fso2820711d50.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:45:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791924344; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MFY56Mmgh88ptpzPORDNo5uIxMSvm3echrbnpdPAh2E2tgc8GVMumvTyqb3BLSeBjy
-         9KSRMFvrO4VE3lyBDk1ob7fQI7D3MUIzDyglMZRBLO5NdEG9jMSmbFcMZACD0qj+ZqKB
-         jWRZhE3VB3y5fsCIlbp+H6YxzUNGYyd2TzCWwuzFwt/fZAJXOeVCBE0QnQ8SQTbn25m5
-         cJ/esr41kjoimVzNVYpL6MK7c0w390gaayF97AYtew6etSTOnpuNYnQ+HL/lT4g+DDSi
-         2/sceKPenlD2p/hjrmYWPAC8sR9s2tuL1N94X/m2cEviyT1zePFMqZkPzLP1z43h27Of
-         zrcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fWuW5Tulp1PkJxc5NJ3dJaM8+S2XORNyQfLC7kk9yRk=;
-        fh=colA8yOnuajcg1cESNtbTEeoE+VZr9LC/FaBExpmjJI=;
-        b=KSxH09PO2srKizrTSBGtOG4K7qAGxE4jdIRqO5pp5C+tUIEaDlHAwgLei5X+YANtcr
-         AqeAV9p3lB7WyfGBTuaOoN4V9833PMJFRaHzkKVa80vp9BTicchQ0feDkMTVGyOGmFiY
-         Rk30y8AWjNUjBi43bOWF8Cl1ijaah8qnAsQXvwhpMroQVwurog1fXc9AMR7aha5KRSlh
-         fPF+4gKOTVYabbAw5gk+qPDx5DqdUq6F8A81ONGh+24hT7AeVFxbZAnCxhnxl0f0IIia
-         hsq9Oz6+hWBbFX/Nr0dDDICrkLb2sBTpboBy2Bs8tsZQwP56H+9mY6U7jPlW/ZOoAPRR
-         YlgQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791924344; x=1792529144; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fWuW5Tulp1PkJxc5NJ3dJaM8+S2XORNyQfLC7kk9yRk=;
-        b=NB/B90oSlA3coXq6rsIfpju1Wy/mGE4vhSI6eACgG5NAXnH3cbMb70Y9IbriHYnNpq
-         b2iixFyxyAlQ5kczmgQjPqX3khfTqqX98OfKnWOkjDBxoh1fQ+qjdtzJ8hUsTZy8ZD36
-         q4Dt14CnVjIGrKXAkM1224n2Ra4uF/3vNWSPOOcOObXVP9kiwKR1hzOSUOlDtOHCXEho
-         T4v1S3rnsKsXpQFK5uVY7Q8kqH8yTpDIUknTaBF43iMMHJ1GNCg/OS9lZWCJqbRtblyN
-         AvY1Vl8pqbAzNYsebvLZkMnx1TLjgqNc2IgEQAfJuUPpZgm045rEMjgd16+YwyviDEXR
-         mwFQ==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dAdlRnSI"
+Received: by mail-ot1-f97.google.com with SMTP id 46e09a7af769-823b938464fso185905a34.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:45:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791924344; x=1792529144;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1791924343; x=1792529143;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fWuW5Tulp1PkJxc5NJ3dJaM8+S2XORNyQfLC7kk9yRk=;
-        b=r6EKWvYfXabIepdqzvfTXWXdgq7RPOPXQNESFOK9Su4Efam4tCIRidzhP87amCX0Ta
-         wCJMB/HiJdMBdumoak4lJVYCz/FqwGr0FD++OBKlArIf+be3D3rJe2HGDI6cab4Ri7zv
-         A7dj9M+E5fT0ZaJQtUy8/qxGIfIhm5KijJtNwUjufuh+TNW7BqDpNPdJpqybOhy9wd8h
-         n7ntkXhM/dr3Mb3+SakKgGHWWwUpQsaMviI2pr43jeowcP/xtVKnxKifrGjYPWKf3xu5
-         WDp5LEx8+WeipPdj+20eUynomP51Ql42XOqzUoRtyjZpExRfeugOBichwacW7AMGg0uP
-         rypA==
-X-Forwarded-Encrypted: i=1; AKwUvBx5imz3dgJLAusMZZxNttGzBxGnMF+lZCi9rjWqjYyJPOGZIEIrlVIsiPiJlfpvbDnMpZ7M9FM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIOUi5kNiuTKInBDTK1vr6PB1CiRr06TXVtKEhAD+izVaHH4mrt
-	xKnkB6awVTdIEI3xzlcddid0Plpm+Mz3cWwGX3Ft7A74RlUJE9WyZcSs8m/J6nfy4v9+sEdCv5O
-	dnYJGWS3QBh9lWOkGWexKwqEj/QzkxG46Mg==
-X-Gm-Gg: AYBFou2smVVBihmgIhmvIBv9MnNzNgiwWIPymuSWTDlapdyA4yvgBQ++WcjHU0YChFo
-	OFQyMYRU2UsTz1lpDZ4//jqXQ7fhKa6+axB8BmGHMXsnsS/3Ja9czXADW8hAft1T0/AO5pE+vH5
-	bHqTMF+n/FK5pOj3c1csys0/4/MMUOiZTQDCxMGzqWjWj8xVzKGIbM7yup7GTm8mk4OSutwIkQD
-	9M3dwVoohSwu2Rgir/V83tdCMq+9eZdGDluAcYxwv6w2drKUAZsWlh7TLJ65BmjMAR/4rrHeGZG
-	OKzG2eGUlmfcBz/cIrGEFrzdlQh1J6L0q3FwYWkAs7BE7RPmSGuYmO6b97QAWdlW17R0gikmaWn
-	YH7jWdLPqavFdwoo2mZtYaI6H6wrHCGVimirBuMdl
-X-Received: by 2002:a05:690e:4391:b0:675:3d40:3c34 with SMTP id
- 956f58d0204a3-679362b7b92mr2567508d50.68.1791924344382; Tue, 13 Oct 2026
- 13:45:44 -0700 (PDT)
+        bh=Mjx/TM1iArDbn30rqgVOcHhn4GsE6BcqrxggBQfCUl4=;
+        b=Bp5xN2vgFeOthd2MrCoFSzFzKeoy1lH1+Y/KT48q+MN8J8rQ0KgM6yXMJ4HY3KKXIX
+         IiaouV5TJ/vVBs7wAVBjgsz9BfPRy9ZLgZ41Z63eUYf+xzvHLz6Rj1NO0sa30FIiza+S
+         3XqbrtlFpHguQLA7J0ez+mOR6jOMWWml+Z2ZAWnxsWu4z6F54HcSx+/Sa+4cw+9vrqBV
+         RSGL+CVUVASxcBHfIJaCStqQp7sEQeSt2fV/IUh0n+M6aTa/vSWk/cmgFRdwdfbpLl70
+         WPHHqKJDsrl3opYdA3Bi2ra3BDK1QHwFHL6A37dv3xOYqRgU0wSsy7Ckb7LVo9eReD0E
+         p1ow==
+X-Gm-Message-State: AFq9FYL6aBJY8dlRgLr1/bk8co9Z2Ig1Z6Xrf1gUM2H7xXXdqTlDMFJh
+	ndkS5b+GXQxnbU0F/JRZMNvM5OINomrBoAMSLxr04LjvmKDoit6Yghod9wvoIU8MuPKgh62ilwo
+	dRhhZlFY8MlBP13axkqaaL+gw5mpzfUgjbYnc4/ala1xUwNEmEQHHtQRMAjJjZvR+t3iqosUOcu
+	n3kj2RgqdFkgutlsmqBk29ibcsSfjsltGEg9VYMQSmkbSamgH7AlY+es7koCGjIjsQgurteM2xf
+	lmugz/6J8VrVyH5
+X-Gm-Gg: AYBFou27yykUveW0OVSgpVBZCOKaXLbOEMkfpO4plLrfWFuE6THlE405frTtujC5Sdb
+	AmrGiR7gIuTt0soqPlitgsVqG3hRcOLYU3FS9ofHWkUbMxYT4yxjg3hqragD3FSj5WRj6Z4hk+a
+	bB+J5CYDYeUgaIbmTBKD6Eqw6jmsh59ZGNUBhy40BI1sNkVr58hg4XlG3VLgcRIOGrhtSLEoB0y
+	RibhlL0ayvpfkufnD29y+Yv3hU36PJICA9BtwPw43G9ztdVpmg7kXW8JcBaTmy7tRpJn3oE5rwp
+	1g7M/nW/UsOyyVpCMbU4XXxCT0ORGrU5h+1ScTAH5KLAnL8KxeLmXYSjdkaikB9iXwbnA3pV2u4
+	rHnjGHk7/W9IE/SblBp50GqfkFHy6QfuPF0I+JTQnqABUUYEMZGeGwu0uy1VSVR75t6T0o8ECNm
+	yldKdk7jn4AJJ6vjpBfhc18l4Uh5QatnT/rISOa1hadgM=
+X-Received: by 2002:a05:6830:b12:b0:82a:8e81:f619 with SMTP id 46e09a7af769-83094a8b5b6mr13813054a34.8.1791924343141;
+        Tue, 13 Oct 2026 13:45:43 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 46e09a7af769-8303aa03e2fsm133771a34.15.2026.10.13.13.45.42
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 13 Oct 2026 13:45:43 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5338cfe567eso72162021cf.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:45:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1791924342; x=1792529142; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Mjx/TM1iArDbn30rqgVOcHhn4GsE6BcqrxggBQfCUl4=;
+        b=dAdlRnSIIeEdxo0s4fRVwwJqkWmEez+ti4E5lfu8EmjYHZQWHZ88PB/jOT/PhSJcy8
+         gvAikqFm95R1N3LwulwTCQmN+ffmMlMBWV8Q8NFcaiwTrZB4YmfmcSlavOx6FxQ+cQSS
+         HMB+lO9cJhE726uMr/NYENzZHD1GFxSY+29GY=
+X-Received: by 2002:a05:622a:481b:b0:535:864:82cf with SMTP id d75a77b69052e-5359f46d548mr217193431cf.10.1791924341794;
+        Tue, 13 Oct 2026 13:45:41 -0700 (PDT)
+X-Received: by 2002:a05:622a:481b:b0:535:864:82cf with SMTP id d75a77b69052e-5359f46d548mr217193031cf.10.1791924341240;
+        Tue, 13 Oct 2026 13:45:41 -0700 (PDT)
+Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-535f4eee7bcsm15879231cf.30.2026.10.13.13.45.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 13:45:40 -0700 (PDT)
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Zak Kemble <zakkemble@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	linux-kernel@vger.kernel.org (open list),
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net v3 RESEND 6/6] net: bcmasp: fix network filter lookup and wake filter pair allocation
+Date: Tue, 13 Oct 2026 13:44:39 -0700
+Message-Id: <20261013204439.3494046-7-florian.fainelli@broadcom.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261013204439.3494046-1-florian.fainelli@broadcom.com>
+References: <20261013204439.3494046-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1791887415.git.mst@redhat.com> <e12c6a45aae251d1642af55d8d3121e554993a66.1791887415.git.mst@redhat.com>
- <20261013070549-mutt-send-email-mst@kernel.org> <CAF=yD-KdTn2rHyp_j8ORr9F5hpm=TzaPRan5+gvLiYBd9HP-sg@mail.gmail.com>
- <20261013143335-mutt-send-email-mst@kernel.org> <CAF=yD-Lz92nGVFab1Dq8M9VusDsKf-ioda8KrZoyh28x3Xtg4Q@mail.gmail.com>
- <20261013163706-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261013163706-mutt-send-email-mst@kernel.org>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Tue, 13 Oct 2026 14:45:07 -0600
-X-Gm-Features: AclHuK_JpsMMVGA2qpRX99GQPNBQTbwUfDE4ZxrsneX5jMqoFaA9d7dnLCSivEw
-Message-ID: <CAF=yD-JKeej85t+sCc_5K0b122uw_LiKWwX1fRL2V-QLrGA8QA@mail.gmail.com>
-Subject: Re: [PATCH net-next 3/4] net: resolve uncommon partial checksums at ingress
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, Max Krasnyansky <maxk@qualcomm.com>, 
-	Rusty Russell <rusty@rustcorp.com.au>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On Tue, Oct 13, 2026 at 2:38=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> On Tue, Oct 13, 2026 at 02:32:26PM -0600, Willem de Bruijn wrote:
-> > > > > > +
-> > > > > > +     if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_t=
-ype, inner_nh,
-> > > > > > +                                            inner_proto))
-> > > > > > +             return 0;
-> > > > > > +
-> > > > > > +     if (skb_is_gso(skb))
-> > > > > > +             return -EINVAL;
-> > > >
-> > > > This is a risk the commit message will have to call out.
-> > >
-> > > I tried with this:
-> > >
-> > >         > > > We can't easily "complete the checksum" for GSO we don'=
-t recognize - GSO
-> > >         > > > assumes knowledge of the protocol. We could segment ign=
-oring the
-> > >         > > > checksum then do whatever csum_start and csum_offset sa=
-y, but that
-> > >         > > > seems like an overkill for something that should happen=
-.
-> > >
-> > > I guess I can add a more detailed explanation about what the risk is?
-> >
-> > Let's just explicitly mention the consequence: non-standard GSO
-> > packets that previous would be sent may now fail.
-> >
-> > >
-> > > > I don't see a simple way around it. We discussed segmenting here to=
-o,
-> > > > but that requires intrusive changes to all callers too.
-> > > > Alternatively,
-> > > >
-> > > > 1. call segmentation, but only to see it remove the SKB_GSO_DODGY a=
-nd
-> > > > thus verify that the TSO/USO packet is valid. Still drop otherwise.
-> > > > This also does not add overhead, because it would be called later
-> > > > anyway.
-> > > >
-> > > > 2. a failsafe off-by-default sysctl + static_branch that skips the
-> > > > drop when set. Messy, but so is the situation we're dealing with.
-> > >
-> > > Tack this on top or do you feel it's needed straight away.
-> >
-> > Not urgent. Can even wait until a report appears. But worth taking a
-> > look sooner if either of us gets around to it.
->
-> Maybe if people intend all this for stable, I'll feel safer with this in
-> there.
->
-> Just to make sure, the branch would just short-circuit all checks, yes?
+In bcmasp_netfilt_get_init(), when looking up an existing filter (!init)
+for a specified location, if the filter at loc was not claimed, the
+previous loop continued searching higher indices and could return an
+arbitrary unrelated filter belonging to the port. This caused flow get or
+delete operations on an empty rule location to return or delete an
+unintended filter.
 
-Ah option 2, the failsafe? At least any new failures (GSO) that could
-cause regression reports. Operating entirely as before this series
-sounds fine too.
+Fix this by checking only the requested location on lookup and rejecting
+RX_CLS_LOC_ANY when !init. In addition, harden wake filter allocation
+and release by ensuring wake filter pair searches stay on even boundaries
+where both entries are free, checking that loc + 1 is free for positioned
+wake filters, and validating parity and bounds on release.
+
+Fixes: c5d511c49587 ("net: bcmasp: Add support for wake on net filters")
+Assisted-by: LLM
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 121 +++++++++++---------
+ 1 file changed, 70 insertions(+), 51 deletions(-)
+
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+index 972474893a6b..f41a79529f10 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+@@ -511,6 +511,13 @@ static int bcmasp_netfilt_wr_to_hw(struct bcmasp_priv *priv,
+ 	return 0;
+ }
+ 
++static bool bcmasp_netfilt_is_companion(struct bcmasp_priv *priv, int i)
++{
++	return i > 0 && (i % 2) &&
++	       priv->net_filters[i].wake_filter &&
++	       priv->net_filters[i - 1].wake_filter;
++}
++
+ void bcmasp_netfilt_suspend(struct bcmasp_intf *intf)
+ {
+ 	struct bcmasp_priv *priv = intf->parent;
+@@ -524,9 +531,7 @@ void bcmasp_netfilt_suspend(struct bcmasp_intf *intf)
+ 		    priv->net_filters[i].port != intf->port)
+ 			continue;
+ 
+-		if (i > 0 && (i % 2) &&
+-		    priv->net_filters[i].wake_filter &&
+-		    priv->net_filters[i - 1].wake_filter)
++		if (bcmasp_netfilt_is_companion(priv, i))
+ 			continue;
+ 
+ 		ret = bcmasp_netfilt_wr_to_hw(priv, &priv->net_filters[i]);
+@@ -556,9 +561,7 @@ int bcmasp_netfilt_get_all_active(struct bcmasp_intf *intf, u32 *rule_locs,
+ 		    priv->net_filters[i].port != intf->port)
+ 			continue;
+ 
+-		if (i > 0 && (i % 2) &&
+-		    priv->net_filters[i].wake_filter &&
+-		    priv->net_filters[i - 1].wake_filter)
++		if (bcmasp_netfilt_is_companion(priv, i))
+ 			continue;
+ 
+ 		if (j == *rule_cnt)
+@@ -583,9 +586,7 @@ int bcmasp_netfilt_get_active(struct bcmasp_intf *intf)
+ 			continue;
+ 
+ 		/* Skip over a wake filter pair */
+-		if (i > 0 && (i % 2) &&
+-		    priv->net_filters[i].wake_filter &&
+-		    priv->net_filters[i - 1].wake_filter)
++		if (bcmasp_netfilt_is_companion(priv, i))
+ 			continue;
+ 
+ 		cnt++;
+@@ -607,6 +608,9 @@ bool bcmasp_netfilt_check_dup(struct bcmasp_intf *intf,
+ 		    priv->net_filters[i].port != intf->port)
+ 			continue;
+ 
++		if (bcmasp_netfilt_is_companion(priv, i))
++			continue;
++
+ 		cur = &priv->net_filters[i].fs;
+ 
+ 		if (cur->flow_type != fs->flow_type ||
+@@ -659,7 +663,7 @@ bool bcmasp_netfilt_check_dup(struct bcmasp_intf *intf,
+ }
+ 
+ /* If no network filter found, return open filter.
+- * If no more open filters return NULL
++ * If no more open filters return error.
+  */
+ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
+ 						  u32 loc, bool wake_filter,
+@@ -669,45 +673,55 @@ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
+ 	struct bcmasp_priv *priv = intf->parent;
+ 	int i, open_index = -1;
+ 
+-	/* Check whether we exceed the filter table capacity */
++	if (!init) {
++		if (loc == RX_CLS_LOC_ANY || loc >= priv->num_net_filters)
++			return ERR_PTR(-EINVAL);
++
++		if (priv->net_filters[loc].claimed &&
++		    priv->net_filters[loc].port == intf->port &&
++		    !bcmasp_netfilt_is_companion(priv, loc))
++			return &priv->net_filters[loc];
++
++		return ERR_PTR(-ENOENT);
++	}
++
+ 	if (loc != RX_CLS_LOC_ANY && loc >= priv->num_net_filters)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	/* If the filter location is busy (already claimed) and we are initializing
+ 	 * the filter (insertion), return a busy error code.
+ 	 */
+-	if (loc != RX_CLS_LOC_ANY && init && priv->net_filters[loc].claimed)
+-		return ERR_PTR(-EBUSY);
+-
+-	/* We need two filters for wake-up, so we cannot use an odd filter */
+-	if (wake_filter && loc != RX_CLS_LOC_ANY && (loc % 2))
+-		return ERR_PTR(-EINVAL);
+-
+-	/* Initialize the loop index based on the desired location or from 0 */
+-	i = loc == RX_CLS_LOC_ANY ? 0 : loc;
+-
+-	for ( ; i < priv->num_net_filters; i++) {
+-		/* Found matching network filter */
+-		if (!init &&
+-		    priv->net_filters[i].claimed &&
+-		    priv->net_filters[i].hw_index == i &&
+-		    priv->net_filters[i].port == intf->port)
+-			return &priv->net_filters[i];
+-
+-		/* If we don't need a new filter or new filter already found */
+-		if (!init || open_index >= 0)
+-			continue;
+-
+-		/* Wake filter conslidates two filters to cover more bytes
+-		 * Wake filter is open if...
+-		 * 1. It is an even filter
+-		 * 2. The current and next filter is not claimed
+-		 */
+-		if (wake_filter && !(i % 2) && !priv->net_filters[i].claimed &&
+-		    !priv->net_filters[i + 1].claimed)
+-			open_index = i;
+-		else if (!priv->net_filters[i].claimed)
+-			open_index = i;
++	if (loc != RX_CLS_LOC_ANY) {
++		if (priv->net_filters[loc].claimed)
++			return ERR_PTR(-EBUSY);
++
++		/* We need two filters for wake-up, so we cannot use an odd filter */
++		if (wake_filter) {
++			if ((loc % 2) || loc + 1 >= priv->num_net_filters)
++				return ERR_PTR(-EINVAL);
++			if (priv->net_filters[loc + 1].claimed)
++				return ERR_PTR(-EBUSY);
++		}
++		open_index = loc;
++	} else {
++		for (i = 0; i < priv->num_net_filters; i++) {
++			/* Wake filter consolidates two filters to cover more bytes.
++			 * Wake filter is open if:
++			 * 1. It is an even filter
++			 * 2. The current and next filter is not claimed
++			 */
++			if (wake_filter) {
++				if (!(i % 2) && (i + 1 < priv->num_net_filters) &&
++				    !priv->net_filters[i].claimed &&
++				    !priv->net_filters[i + 1].claimed) {
++					open_index = i;
++					break;
++				}
++			} else if (!priv->net_filters[i].claimed) {
++				open_index = i;
++				break;
++			}
++		}
+ 	}
+ 
+ 	if (open_index >= 0) {
+@@ -716,16 +730,20 @@ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
+ 		nfilter->port = intf->port;
+ 		nfilter->ch = intf->channel + priv->tx_chan_offset;
+ 		nfilter->hw_index = open_index;
+-	}
+ 
+-	if (wake_filter && open_index >= 0) {
+-		/* Claim next filter */
+-		priv->net_filters[open_index + 1].claimed = true;
+-		priv->net_filters[open_index + 1].wake_filter = true;
+-		nfilter->wake_filter = true;
++		if (wake_filter) {
++			/* Claim next filter */
++			priv->net_filters[open_index + 1].claimed = true;
++			priv->net_filters[open_index + 1].wake_filter = true;
++			priv->net_filters[open_index + 1].hw_index = open_index + 1;
++			priv->net_filters[open_index + 1].port = intf->port;
++			priv->net_filters[open_index + 1].ch = intf->channel +
++							       priv->tx_chan_offset;
++			nfilter->wake_filter = true;
++		}
+ 	}
+ 
+-	return nfilter ? nfilter : ERR_PTR(-EINVAL);
++	return nfilter ? nfilter : ERR_PTR(-ENOSPC);
+ }
+ 
+ void bcmasp_netfilt_release(struct bcmasp_intf *intf,
+@@ -733,7 +751,8 @@ void bcmasp_netfilt_release(struct bcmasp_intf *intf,
+ {
+ 	struct bcmasp_priv *priv = intf->parent;
+ 
+-	if (nfilt->wake_filter) {
++	if (nfilt->wake_filter && !(nfilt->hw_index % 2) &&
++	    nfilt->hw_index + 1 < priv->num_net_filters) {
+ 		memset(&priv->net_filters[nfilt->hw_index + 1], 0,
+ 		       sizeof(struct bcmasp_net_filter));
+ 	}
+-- 
+2.34.1
+
