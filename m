@@ -1,123 +1,212 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A563CA483
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDD34D8DB8;
+	Tue, 13 Oct 2026 10:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791888801; cv=none; b=rhF+Thkwhddy97A7ZG/8Sa/1Iux7ukBxAhTdM8Mb/GlPcrJd6Q3ClXkZruU18sZJypcDJ5fbRaMQJJbL9d8tBLRwTY1zaL0y4Lh1dnIJY481QdsFVKB6ZkDa+7j1OdIrKBlR05zua2Dg8Z+QV447kDIJyVilK8Z55QRXTjPLKoA=
+	t=1791888875; cv=none; b=nGEdPClajEaQQc5cBeR5H2JYnpzXu1otMcg/dB/adB79lzpxezduQkWm3B0Ug54tnQ2CJwC5w6r7ihkZFN5v/+F+SvAsQzNAiQZ6cnIy8v5tHQcu2EC8LdxM3T2cA847pse7TQsTIdjUXUK84j8uRv85HPXSmcam7/ML0ZrTaOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791888801; c=relaxed/simple;
-	bh=OeqZFh2AYWYR7ltZDBpLKceGFxH4LNQaJv7496x0jRI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmGoz40i9MU9+rMPdwuLqztuP3vX1SC7lAa9/bBU9QYZLUIKNn4/g1gN3rEG88xQXWCZdx8K3GmNaHgkYSqd9snX39pN5qNIRLhJnVSTpLRrO5/WXx/Cwh68dJp6oZrx1m/JKq3OaDbd9pGhAKYxPChdi2Yz+bWqRyG9jiAtG88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LIrt/bvi; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791888875; c=relaxed/simple;
+	bh=ptn2HPoSj13nIsTf8UUFzq+NgWhMvbEtaIopCk8T8J4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YPn0qRB7cOSgcKOeMR8UpiGEULPXpVt9DDt/uPuYF25Y4qDAKvUzlRvuoSgEB6Wv5Pw5naKKRkEsN1UD5vermUttgHrSYPTvMAfelZWhaKqh1Wx2JbWTtObep/1aUb0zV+/DCWGJ2lnCKfIHoHTaW3VHynvtTgV/EXMssSgZsNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1kYgaAg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LIrt/bvi"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48c4be28b82so2734918f8f.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:53:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791888798; x=1792493598; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=weAsaaLz8bOtBYNYCdIRoGplN8xEUwEYdEIJVgSddI8=;
-        b=LIrt/bviJxfsvKM6143rYC+2KkjxJ8T9A+LufpnasZYVShIj/U+suM+7r8v8TFekwG
-         P6ADJd8PK93PKdUBDHaYgBrBeqipIlR2aD/E7Hf6xc1X2b96aJE86EZr1OG9k+hcGf+M
-         cMn+zq5/Or7okg66GhzkWsCvATRFrEivWxe+lD8TCTamnGf+OZZgoOznmtDbTgqCI4zc
-         WUT72SPO30beijLx42R5yFax2OlTUQ/dRoVTZBPnixTKO/QGfzpbRkC8oGNWUvD7Dzr/
-         2c42XKvaOZxUMZuAliL17/rGunUwJGeb9oiPXHhZwFcCG/wuVzmCnePRr85lnGD0QNSL
-         G1/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791888798; x=1792493598;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=weAsaaLz8bOtBYNYCdIRoGplN8xEUwEYdEIJVgSddI8=;
-        b=sijVL+2ud7bjleats01jZNKuH3j2P+I9rRTLSJHDU9aKLmv1lYgc23bxkyxvr9xJtw
-         9lKeoKVzyfxk1njvEu08/JFiRNAaTQ1Tymt5T5TJFP8ig+nR9UdjeYAiQltqD78hE1UT
-         vLwzOc1Q7SxOPuTIgugKksJyXq8H4InwRHZrWHRCskebCCZrbtWFEipB/Qq80uJWm91Z
-         7XfrLxwQh+A6GubdMaYrJPG/4zrSVVOYCntFAVGEx6hqVI+s2WrdvipGXrSR0DRM+At0
-         3913REo5D3tAcVgHwDFir0BLs0yvJWNQ6gadziffY5L8ecafJqHkPiu7a1wzseiAALBY
-         RIGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw7CRJn8inECp6HCJM92CuzGo5916WVQLIb0ZPsVGynA3hRL9L+Ie4RKF9R1XdDS10S/irQF14=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIqaCHkjUCneRCtcIFkEPwHqx81oDm9ua8z71WizPnOgtAtQSxi
-	bkMj/H35vuCZk67Ri+1uQg0Ql5v8VhURJ3e1usiRpuXbq37Cwwqbgt1z
-X-Gm-Gg: AYBFou2XXo88PlDr0/kvviv+DBzdQ1X1MXIjZeY03U03mgpy7N8tb8Ee2i1y54C8pUC
-	GoVDsZuWCLBcb03iWlo2deYUj71pah4HaHCuTzNmEBXNALTCDEohwN3d878+l93ygKEpCz7KIvn
-	PhDITZT+zfjvdx0mtGS2yVZMbZ8Bc/EMBEq6NfrrQm7K0rU3Z4n0Tm/sTLFyQxprMlHdSCw5jyL
-	rKWjv7cms53U+1Xe3ZbqIOuIa7DcTRlqYumxfyKIjI6ALCqOpmOsi5Txb4Kxq1PJd6rr3Rw3hd+
-	NFxCzpquFJEb/qKdoLIGYF8CK0zcx+q327DSgBdJMRP4G2ayN54iTtT5wbmw6yFCCcsnhk7g/GE
-	IYVDqZlqW3t78ykuulon4sUnVVuJxCuWo9idxWLsCIly5wEYdWei5OJmNz5XmbiIumF9EhoTOEY
-	6TzH+0X4Uoc0bImoCVUXXcLjHxFFtyYO0KlU7WB+zfPSAUvWopbVx7MqkMxKmG4Awtk8sxdQ+zj
-	HI69J3cJqR2SYb5dXq/LI1SQ8LRSXPjgIFG9kI9tecA/w==
-X-Received: by 2002:a05:600c:138a:b0:4a1:7bd4:d07d with SMTP id 5b1f17b1804b1-4a18e4c85fdmr257515105e9.34.1791888798168;
-        Tue, 13 Oct 2026 03:53:18 -0700 (PDT)
-Received: from andreayoga.wind3.hub ([31.189.109.133])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18be96549sm507133205e9.6.2026.10.13.03.53.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 03:53:17 -0700 (PDT)
-From: Andrea Parri <parri.andrea@gmail.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Andrea Parri <parri.andrea@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] rtnetlink: comment the RCU and SRCU waits in unregister paths
-Date: Tue, 13 Oct 2026 12:52:58 +0200
-Message-ID: <20261013105301.9037-1-parri.andrea@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAAVpQUAd4QzUDK1wZYpuHJbMSg+PwAGCcaTzayR40DTNkXdwQA@mail.gmail.com>
-References: <20261008124423.11543-1-parri.andrea@gmail.com> <CAAVpQUAd4QzUDK1wZYpuHJbMSg+PwAGCcaTzayR40DTNkXdwQA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1kYgaAg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEDF1F00899;
+	Tue, 13 Oct 2026 10:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791888873;
+	bh=xFMEj1cnRPQeYv12SK/a3UGK7lh2zV52Je/Sq5SGy/0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=d1kYgaAgRb52bF+yK1n5b3RoclPkPNrkWQUqQjBZYvsD9kSQgaAeoS6nUxlEsEhwC
+	 A+TJbYjJgr2aYN4d4y8Qwm7qVSeYbIGdbWUxLzKgIGQwzAixriQQsp0d23rN96oZb3
+	 R0a/F1j3NDaUAc5/KMoym5jAoiDmuzfC5wTSlcCprXq1eVIBzGXi4ymGNt80iH9nMM
+	 7/E2hlvRl04iG9GyTFjwI7D1RIHjMl7ycGY69OKMrmaWkS14o7pzUhx1tPpE7GuEO8
+	 zmQxQH0ClNDcUbCbu8HzWeRzLlXDkX9z2gpzNbW6B2+c4tytCL3pTQk1M9yJp+5Vxr
+	 AQ48SqUsfwwZA==
+Date: Tue, 13 Oct 2026 12:54:17 +0200
+From: Alejandro Colomar <alx+linux-hardening@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	gregkh@linuxfoundation.org, linux-serial@vger.kernel.org, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Joel Stanley <joel@jms.id.au>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen <ryan_chen@aspeedtech.com>, 
+	Billy Tsai <billy_tsai@aspeedtech.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <ray.jui@broadcom.com>, 
+	Scott Branden <scott.branden@broadcom.com>, Al Cooper <alcooperx@gmail.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Chaitanya Vadrevu <chaitanya.vadrevu@emerson.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-parisc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 6/6] serial: 8250: make port operations work on struct
+ uart_8250_port
+Message-ID: <as4NlWQ0JUC5WgIg@debian>
+References: <cover.1791873876.git.jirislaby@kernel.org>
+ <c59fa203f325e0fe7601ea0fbc0d222c8b37f9eb.1791873876.git.jirislaby@kernel.org>
+ <as3etnbZatn4sbfx@ashevche-desk.local>
+ <c6b08f53-b5ee-44c8-93d1-54fdf5994ed2@kernel.org>
+ <as31PsESOgLUhMB6@ashevche-desk.local>
+ <b404f3d7-1b2d-418a-8634-72c61ce33f8b@kernel.org>
+ <as4BML-VUC9xUgOf@ashevche-desk.local>
+ <cc5463cf-1e31-4a5f-9341-22769a7b0af5@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="chf2qusy2een43rb"
+Content-Disposition: inline
+In-Reply-To: <cc5463cf-1e31-4a5f-9341-22769a7b0af5@kernel.org>
 
-On Mon, Oct 12, 2026 at 06:48:22PM -0700, Kuniyuki Iwashima wrote:
-> > +       /* Wait for rtnl_get_link() callers under RCU that may still
-> > +        * dereference tab.
-> > +        */
-> >         synchronize_net();
+
+--chf2qusy2een43rb
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx+linux-hardening@kernel.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	gregkh@linuxfoundation.org, linux-serial@vger.kernel.org, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Joel Stanley <joel@jms.id.au>, 
+	Andrew Jeffery <andrew@codeconstruct.com.au>, Ryan Chen <ryan_chen@aspeedtech.com>, 
+	Billy Tsai <billy_tsai@aspeedtech.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <ray.jui@broadcom.com>, 
+	Scott Branden <scott.branden@broadcom.com>, Al Cooper <alcooperx@gmail.com>, 
+	Paul Cercueil <paul@crapouillou.net>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Chaitanya Vadrevu <chaitanya.vadrevu@emerson.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Kees Cook <kees@kernel.org>, 
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-parisc@vger.kernel.org, linux-tegra@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2 6/6] serial: 8250: make port operations work on struct
+ uart_8250_port
+Message-ID: <as4NlWQ0JUC5WgIg@debian>
+References: <cover.1791873876.git.jirislaby@kernel.org>
+ <c59fa203f325e0fe7601ea0fbc0d222c8b37f9eb.1791873876.git.jirislaby@kernel.org>
+ <as3etnbZatn4sbfx@ashevche-desk.local>
+ <c6b08f53-b5ee-44c8-93d1-54fdf5994ed2@kernel.org>
+ <as31PsESOgLUhMB6@ashevche-desk.local>
+ <b404f3d7-1b2d-418a-8634-72c61ce33f8b@kernel.org>
+ <as4BML-VUC9xUgOf@ashevche-desk.local>
+ <cc5463cf-1e31-4a5f-9341-22769a7b0af5@kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <cc5463cf-1e31-4a5f-9341-22769a7b0af5@kernel.org>
+
+Hi Jiri,
+
+> Date: 2026-10-13 12:15:35+0200
+> From: Jiri Slaby <jirislaby@kernel.org>
 >
-> More specifically, this only applies to callers before try_module_get().
+> On 13. 10. 26, 12:00, Andy Shevchenko wrote:
+> > > > > First, it is used in the kernel quite a few times already
+> > > > > [1]. Second, while it is sort of c++ism (and I like to use modern=
+ c++), it
+> > > > > makes the life of the variable a lot more obvious.
+> > > > >=20
+> > > > > [1] eg. see output of: rg -U -C 5 '}\n+\s+struct .*\*.*=3D' drive=
+rs/
+> > > >=20
+> > > > (you made me to install something I haven't heard about, it's bette=
+r to use
+> > > >    `git grep` though)
+> > >=20
+> > > rg is order of magnitude faster (searches in parallel). More importan=
+tly in
+> > > this case, supports multiline matches. (And respects .git ignores.)
+> >=20
+> > Isn't `git grep` fast enough due to looking into index and not into the=
+ files?
+> > `rg` may not look at the Git index, right? So I may not to use an arbit=
+rary
+> > hash without checking it out first.
+>=20
+> Of course rg is not git grep.
+>=20
+> > > > Note excluded __free() if I get regexp correctly
+> > > >=20
+> > > > $ rg -U -l '}\n+\s+struct .*\*[^)]*=3D' drivers/ | less
+> > > > drivers/ufs/host/ufs-qcom.c
+> > > ...
+> > > > drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+> > > >=20
+> > > > So, less than dozen of drivers doing wrong is not an argument, try =
+something
+> > > > better. But thanks, I will check and address this in some of the ab=
+ove.
+> > >=20
+> > > Well, it's only an example of a declaration after a previous opening =
+brace
+> > > "{" -- this one turned out to be easy to search for. There is a lot o=
+f more,
+> > > of course. kernel/ included.
+> >=20
+> > Please, provide a better search line, I will look at that. For now it's=
+ just
+> > a hypothetical assumption, I am afraid.
+>=20
+> I am not much into writing a semi-parser at this point :D. This'd be a ta=
+sk
+> eg. for clang's ASTMatcher.
 
-Right, the later lookup in rtnetlink_rcv_msg() runs under RTNL.  I'll
-name rtnetlink_rcv_msg() and try_module_get() in v2.
+You may check grepc(1) --provided in man-pages.git--, which does have
+some code for searching different kinds of code.  You may need to tweak
+some regex produced by the backend grepc_c(1), but it should be
+possible.
 
 
-> > +       /* Wait for rtnl_link_ops_get() callers to call rtnl_link_ops_put(). */
-> >         synchronize_srcu(&ops->srcu);
->
-> I think we don't need comment for srcu as the relation is
-> clear via the argument.
+Cheers,
+Alex
 
-Agreed, I'll drop both srcu comments.
+>=20
+> thanks,
+> --=20
+> js
+> suse labs
+>=20
 
+--=20
+<https://www.alejandro-colomar.es>
 
-> > +       /* Wait for RCU walkers of rtnl_af_ops, including rtnl_af_lookup()
-> > +        * readers that found ops but have not yet taken ops->srcu.
-> > +        */
->
-> this can be simply /* see rtnl_link_unregister() */ instead of duplicating
-> comments.
+--chf2qusy2een43rb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The two waits cover different readers, though.  Besides
-rtnl_af_lookup(), the synchronize_rcu() in rtnl_af_unregister() also
-waits for the RCU walkers of rtnl_af_ops that invoke callbacks without
-ops->srcu: rtnl_link_get_af_size(), rtnl_fill_link_af() and the
-IFLA_STATS_AF_SPEC paths.  link_ops has no analogous RCU-only list
-walkers, so a pointer there would miss them.  I'd prefer to keep a
-local comment, reworded in v2 to mention those walkers.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-  Andrea
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmrODdkACgkQ64mZXMKQ
+wqnsDA/+PoSRMrpPgQYZ1YngQ85h3wrKX56Mpt0JThWxcWVMcDod7LTn6C9sgMhA
+Wo1S5+HyNOIPVdYqTmZgRx+vE+IGp0f8Wx/JlYmH4yjAaGjssW2gfe7xb7mYXc03
+MWZXbFWxrICpzgjc+yokDM0JEgDKxh/B1MqAZjghXJjG4lN3v6Sgm2Efft6zj9TB
+2H+k1+cBwpe6ubcTTlRvKtWPAzC2XwriuVGFh+73xLlb2gqJgiWJVCH3rOCb8hx2
+SkNIlnC5gb/7hBhNfMsjBY4oJnPy8iL7XnsbQkV2a+rEW4aAqY8RNInIe/FhMeHV
+bEPRyLyoLNAcwwp7pdQly/4z59E6ZzxsCsroRh0rnPD771n7HEZcFYTlZ5E+tV9+
+YsnZyJ7E1ILMJEjiTZw1e0pU2ggebT/UZoHjKmarda/9n4WVp0PGH9f5nMp4v4rW
+Eg0DGoTcW6Bx/wUTYKYXdNR1zI6fysEMpdaq0smU6OHTZRh8zGR99HY7YXbwEc26
+6zWxAT7BHiIK5WTdNXmmSn8IZp+DBU607Y7twXzn3K8UxEFFvPJtRbCItLUd2eOD
+b/W7hsy+m7qEirdcflQn22V++r9savPpaF0c5+Uq/hZRwm3yrPhY5Q6DdWqLitJR
+SPLZuBKFjV63DBYf30LFWP4537QSkXu/eOY+Y9g/PopcTCBwlbU=
+=m8NY
+-----END PGP SIGNATURE-----
+
+--chf2qusy2een43rb--
