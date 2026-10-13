@@ -1,77 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8D0484230;
-	Tue, 13 Oct 2026 18:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139F152F297
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 18:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791914733; cv=none; b=Le3AE5nK1vXnqM29elPv2ZbfrZXJilxuFZgc221d6zZgH7wqVJ//6RhA4RzRhuIdlchudYLmiD4q/8Reqy5fsIb8NmUyFIbKNd51v6y7RIaULTJwsGPK9/jPgC6MAHfTbzZShU+dRriW75QmTwA90m0oKkfH38OjcPJ6M+gEoco=
+	t=1791914925; cv=none; b=RIEev6Te7BZs2flVS6es/qnXqZuWGLkuUQEhb7ETqgR36MnI3ccVoATnUVsMsTof68BbGHTkW6lJg0SILxPa9JCJ+0oJXMJgbbl/cV1b4E+eRduGlfPnKSY0Hwc2pk2lEombM8Zc8fOzZzP/VZXcLLgSceY3OAgrIcmojFSZWIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791914733; c=relaxed/simple;
-	bh=T80pmibn7aSi6N9hDzJvCBDoLXDCN4HDH9fhrQVJ60g=;
+	s=arc-20240116; t=1791914925; c=relaxed/simple;
+	bh=KZ7Ikw84/BJY3cQYIRg78sbHTdWFC0jbvTc+oRhuWZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=V4v2UH2KNsg2AHFpCJ8LyxSMlRpBdwGSn4JJ+U3oUH2wFKQBfdLkpikDjbH9iD7Q7TEfREEukLnWy2fgV+wfsJ1XeTB9+FPUIXQ7Ul5DRu6fcspkMG67GqrZTM7POhjitLlJtaNcS3C6mqTmWMERtuXQT6Q+C/R+jDgrahkiw14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aWMm9bLA; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=rdyeHXoGF3y0K+HNvc/JiVHJYoaigDzNSMnHqyJLZdYaVi4GEzR0fxKqpgBESrJA6xbldbelA+r47YtXhjIOjKViNfZFruy3GjxvfvEvP5mJwIPi/e324pvliJjOCeKc2tRO5kKy1kDM6QEFQsYYePV5fVcEvEOW8lvMZDBm8CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=OU6DO7O/; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aWMm9bLA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC241F000FF;
-	Tue, 13 Oct 2026 18:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791914732;
-	bh=ZCAoLYZlSrLohEk+mBrzJi43HvKosm2TxiN/tMhp9/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aWMm9bLAInsLYZgw0CLg3bTYbbM5NQCTOGg/PJYbyMKZLePA7BorrKEbtrS3AuuzG
-	 bnYF0+IXimmufMeHJzOhN29hH0mayXKokTXCc2YCse2781Qw0k3mORWFOPR6Q1IH0F
-	 9gw/r/toExmmN7ndsbjVnrdVFB1FkTY3TMLrUPq9Nt7ec9iZUf+CxbvLJ+qWyO4S0V
-	 Q/bXeW2lVYNLSSmVEao6Zi2vEYLKkjPwkm3tMqvoEjCtCuq7h6vWLG8SGqKoGkezNK
-	 mD6He5Dk6LRk242PzAbroKy8HaAsb8ROtoVDOyWI/dREldWGvFZxff6fmr9ydGPdbC
-	 9sPLGU1gIFGfQ==
-From: netdev-bot+sinfo@kernel.org
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, Trond Myklebust <trondmy@kernel.org>,
- Anna Schumaker <anna@kernel.org>, Chuck Lever <cel@kernel.org>,
- Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
- Tom Talpey <tom@talpey.com>, Mina Almasry <almasrymina@google.com>,
- Kaiyuan Zhang <kaiyuanz@google.com>, Willem de Bruijn <willemb@google.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits() report
- unreadable frags
-Date: Tue, 13 Oct 2026 18:05:30 +0000
-Message-ID: <179191473048.99822.411131589969126386@kernel.org>
-In-Reply-To: 
- <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
-References: 
- <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="OU6DO7O/"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33c2520ad38so7538669eec.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:08:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blockcast.net; s=google; t=1791914922; x=1792519722; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KZ7Ikw84/BJY3cQYIRg78sbHTdWFC0jbvTc+oRhuWZw=;
+        b=OU6DO7O/n47QDkP/6ToBGE9uBdfSFxh1qTMQgIUPczVjSDP72WNsLKPTuX9LYtkikB
+         p18y3yTeeAryzeZSji5vOM/KmQ/9TFPmlD8P4nG8VJkfNhRikQNkrVyfRvYFYS1O3ZW0
+         qTBXkbv3VLzQwTKq8YHdGeKuMCronoX7eqx/GHVEkdtI+CLGTIX5EVCdxo7WLydY1h0d
+         QSkmReGcz421PylsasTyX0ESpjzTch4P196B0f61KolydsobT3OZtTOD9cZg+l8PiDfn
+         AND4uFS8X6nHYhBKenRPKx5FJiX6zrwSddead/FlKPPvYfsC7cxqeKDGg2NQ9EXDpX61
+         NyhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791914922; x=1792519722;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KZ7Ikw84/BJY3cQYIRg78sbHTdWFC0jbvTc+oRhuWZw=;
+        b=DIXJwvnrMnxSRcFGQIrE+Y6yW/0ETYcWJ2x1xXBbtXlR9mpTof5zx09DXmP7/9SEgL
+         uS6dJRBtQs6xg93pmaAyXJWLdl35tOOqOYp++hXTvgSRrKNxWSIlBrZRcJTfJRLIxTtS
+         hEKUurVFhdOLjh+emzb47DlAdJwkM0F4G4878HELHB1slDLyLQenilnM2t9lj8H3ahcH
+         Kp/jLBg9K/rKI9C0abi0NgR1CZXjHUPxBXVTi1gFfe0E9BD5YBMwREeyQlftegNBDvgT
+         eatw1l+ZMBMiZtHGTvjblgoJ3/6WseH0CHYp2L/UKy3AgDdmR2Kndd08+B2zNFtARQ/1
+         ccSQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwoUtAw9BycsYiU2qFizY/vXhowuN7N8B/cGIu8+QjvaM1Je2B3pwZ9pjRwXSOj4w4cAYprr+E=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLj4Mw5c0izqWqrrDewvY86xGeFZIippJH3dHpbHSgEV3I3u8bO
+	B4pp+NP4/Nl8vEvZ8WRvXtUX9mlnNK864JseQGdWzaW8zlLQ4IDj9dnRuGGsn3Q3M2VVwlrSPhf
+	k8ks9Ok8rTUtQ
+X-Gm-Gg: AYBFou3MwHFuma5XWPaMVGFllYjd238Wt97hkBD+78If2j5NHk3gpkUfOfd5wtvhdOm
+	XV93C1l0PfcxJSQHJ+c+9+sVu/3Gtd/+8HCz+RJXhyZyc1qiOuJl4SwXJpIlBpIX4q5JQc5lGr3
+	PwgzE0EBe+bqov8AcnZa+esVYYS+2nM1fyznR81WcwMD0LkBz7ArHJfobiWWOn82U8QFAA9mF56
+	f5PuW5Rw0A2zaT17C3Sc/ootL2SfIYkXo7Tpja1/9F/F+Cq0cadtH/MuAA6DNn4Aiw1hV1Dv7eS
+	GnYbmJMQOnAnpiEw7Ad6wOY93TPHMp5lvu4m4etdQT/wYkygpQ8QDWkvbpaMoaYSq6VJzuDkvJB
+	59HlY+JNIRtS/w0iQFfXyCMDItHegZRcvj+M4/M4Q742d+uWN+w6B3BrLL3eeckwQXoCQ47+3hO
+	OMIhGLTYl+VvDIPfERvYtUMcKPTRVbCCJaQ/BRIcQ5nFeQqiaVZIt9kZ5hZIEh/kpyHcuPAD+28
+	pQPxhkA9JEa8kacWS+DhL7TZuybpMW36W1vNwjbXDbSDsHPkWod+0s/9w8qPK+C
+X-Received: by 2002:a05:7300:c01b:20b0:354:b5d7:5a8f with SMTP id 5a478bee46e88-354b5e69defmr19403315eec.30.1791914921826;
+        Tue, 13 Oct 2026 11:08:41 -0700 (PDT)
+Received: from devbox.ts.blockcast.net ([69.25.95.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2fd33sm43649502eec.28.2026.10.13.11.08.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 11:08:41 -0700 (PDT)
+From: Omar Ramadan <omar@blockcast.net>
+To: netdev-bot+sashiko@kernel.org
+Cc: Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v3 0/6] amt: relay tunnel lifetime, validation and request-path hardening
+Date: Tue, 13 Oct 2026 18:08:36 +0000
+Message-ID: <20261013180837.1282896-1-omar@blockcast.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261012125943.558629-1-omar@blockcast.net>
+References: <20261012125943.558629-1-omar@blockcast.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi!
+Thanks for the review. These comments are against the v3 series; v4 has
+addressed the three issues introduced or exposed at those bisect points.
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+The Update path now takes tunnel->lock and checks READ_ONCE(tunnel->dead)
+before either the IGMP or MLD report handler. Both tunnel freers set dead
+before clearing groups, so an Update that acquires the lock after teardown
+starts cannot add a group or arm its group_timer. An Update that acquires the
+lock first is covered by the same lock ordering: teardown waits for the
+handler before clearing the group list.
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+amt_dev_stop() no longer uses list_splice_init(). It marks all tunnels dead,
+then removes one tunnel at a time with list_del_rcu() while holding amt->lock,
+and performs cancel_delayed_work_sync(), group clearing, and kfree_rcu()
+outside the lock. Every lockless reader therefore keeps the real list head as
+its terminator, and the post-stop get_or_create() path also rejects creation
+when !netif_running(amt->dev).
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+The Request-only lifetime issue is removed by v4's final patch. Requests are
+stateless and do not allocate tunnel entries; tunnel state is created only
+after a Membership Update authenticates. last_seen therefore describes a
+valid Update again, and the global and per-source limits cannot be consumed
+by unauthenticated Requests.
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+The pre-existing race involving a group_timer callback that is already
+running while amt_clear_groups() calls cancel_delayed_work() remains outside
+this series. It needs a separate lifetime fix for the callback and its gnode;
+we will follow up on that independently rather than widen this stable fix
+series.
+
+pw-bot: cr
