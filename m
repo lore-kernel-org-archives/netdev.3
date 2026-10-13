@@ -1,142 +1,190 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B0A51990B
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 14:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791902519; cv=pass; b=Ln+hex+tbTszDRs8q8ZFN3F1qdE0dYMGl3z6adIWzTaNk2gYxBtY3Q7gsjOlAJkdIZmmf5F3sfvpPqms8ZIWN5aswFBY21Tfdxil4YeDAYUTBrH/9pzZzVacfRtSt5ReeiK05Zkrxbd0QlludeWW9bpWEOp/aX6hEjsXB9jTsDg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791902519; c=relaxed/simple;
-	bh=qUs7w5ACRHy3GOBHYVZOyK+3nLYWhsG5Y+p+Px/cmc4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RcF58O3FfdrHIJsKT0LOHiIMix1UhAvIpirvH3s6RBPw6WSRxvRIzy1b9T6Z47kPEef0h6D6yDsB/ZOkwv/PicRxXN6LE9IHeiPqQNtrTNN45L/5BE4Divj+J70XlwzLyBRhUxFheK/VxIF6UQOcHq11uORaH+1+mYBF6fFY4BU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=psPeLslh; arc=pass smtp.client-ip=74.125.224.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="psPeLslh"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6768ced47aeso2764454d50.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:41:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791902517; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dXsGxCMhRYX1eYJ+yY6hI/h6K9HH2nT4pqiLu3Uhn/akZ12i6BTu/UHYQvvNJ8adr5
-         zFaPFyXZm99OPD++wp64okVuXGtUA2b0FaNL7cUvbWvARNfEGRUCBwTVkiiiHkM+BgVk
-         AmIMhLR/GzgAd56Q+01MiIUxHBfZactZEqbodWJk8UBLj1AIuKiE4PXM8ir7tHQQM/Ve
-         slzSgY8TxfqUBNp06rEVuF1SDLImOHHMS/cMPI0y9lXIlALFB9fmaKCuvMfy1Y4zAq4L
-         EW5ZZXdAH1XBmdXQvURvnrLSM9HWj+3gxYHQ7ZONoSeOZ79dF11ULMPiZPHOqrVjXW9i
-         3Vvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=msz/OHbY6gDBK50SJeL3egmDDr6qQneSQ9CQTdw74V4=;
-        fh=8FukAs8jluyYxtg0j1Wu+oqJkrTts9AsY4f+Q23eNQw=;
-        b=W+KMec81nzQx4eOA6zZn4MeCxpY9zaQJbgZkAhe1bLDcsaj1U5fg5PNF3CUlDQieUe
-         CxFQSfpN9CVwWENeEHWP6hzOe3tkN3j4fjHpF5lCqI4HFl/l4gIf0AibzjmQdObUDb9l
-         GfbpcRh6bq2IZ+67+mnpEc0cHV7bVQeyuei9OgFjG6YW7hudr8NCQQFvdVE9AYIGbAJW
-         7OJWfIF4kk0u3qtZy/1o/muU0zFnqpRmATXTFLT8Yn21W/CIATbG6MkF8elSPQSAyJsM
-         EU/o1epvZ5pZpOtncMMay7vKVW04omcNWX2xy7KXKjKqzGux5v00z1Va+ad8bHuAhmZy
-         OJgw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791902517; x=1792507317; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=msz/OHbY6gDBK50SJeL3egmDDr6qQneSQ9CQTdw74V4=;
-        b=psPeLslhw9nAfZZ0VGEkOXHwf+HPF//kKiC1Ym/+hztuQzbiD8jBo2tSJkW9IgWG0K
-         /2c0bQS0XjIgA3HAhDo12sPidMsXv5873pIrEWY+s/dv3gX9Na464akCNPOjYlzTWrKT
-         UZNVyIRII6rHOjDy8Ak++NPQN0TlUrKLnHjzpO3Kne35towMqAMP+saDXsLEaCorEnjI
-         yIrNlXwbheNTTWUP1Xn+o2+sKaTwDH+b9PACUQ31omdj3QEycOV++7bpjq8EkCWSY9ww
-         QFMS7pwr1CAbPOhTLK5C0I8Bo3LhgS2E9BYDNzbFL6jThnRVipMFoxq/KG1nEhcN9CaB
-         EXTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791902517; x=1792507317;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=msz/OHbY6gDBK50SJeL3egmDDr6qQneSQ9CQTdw74V4=;
-        b=qAkvLaBrT2uIiupIstI0NIsLwZMGbc7f1sLVYN3OIQkaSh58STSsxxn1MNNCVukBcf
-         ZGDRpmYFikHpvOupnFsL5a8u70G2dblHc2KHZVd6Wvo/DobwXk8HlNl+mRx4We0YqZcc
-         c8FBaBvjejibuMyRMh+b/oU1S4NeAszFNYt/7x1quIEzflNiNyNEusa6qvFyQ+72QjfB
-         PRIYcbkm1aD3VD/rCqseSvCPM/MRxy1VvNGWzsydGXXOaBJwpc1OSnO+Lul4mLVvVbhJ
-         HH0slELP004FWt+ZAToKoGaIyO+8oatzd/DeH3nDo5sX8hm6wxGmRMFT3O3DkQcK3tQd
-         vUNQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxJPTfppBWFK9+9XDlzfL0L5gKcNEWWeSYgHETHYgyndJTSLm5SA22TfJK5HbU9Qh0FPK4mTBM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIQCd4efbCjeTUll5D24jv9wz6lTWNzb9fYrjxPvbgwFFFReL6t
-	AWUrvCeiieGF4hR9yeugCpeOujIgvM1ZQWs4UbMW7gtSjnNlcWYQFFEOzRZiMHnwzaSQ526nGwi
-	OpUQKvRauNQyHkyJkBGVKoC9bSTInuz8=
-X-Gm-Gg: AYBFou07Z6Feo+Wi+GA4IoNlN6E40BriK+GKpwXTUNgDy5rWTQzaxIGEyiMVvj9/qO1
-	OGcSy02md5PaNpHf1L/0vOoDzNVm+89osIc7B2uAGgjQjPe0aQk+UZGt4hMpIvAd6UQXPmMaB/6
-	tMAEF6d6Bju8RqmrKaGzzJQxnKcvgZi4pqJ23q7QYpX3VKWeX+JcjP6nDFtP6BHrp3d10s3wQym
-	8XkFTrpFpKfQdptB2vNQ+SjGjxszATe6w47M5Nkv/uYfVd8d1snepYYpzWxqq/AEuHztR8tKNty
-	NOIE01Qpenb/MLhK7EzT7wgFnjnS5e0sbYLactUmQirpmy/IqWER0MJXKYZ34zfbbSwVa+NG7zn
-	agHBwJvKkrNZLr2OHOZBL43lSQNN+FiBZgdffzWcM0uCGVeGMOHV6fnrGEwoKjwV75WVmRV63Mg
-	==
-X-Received: by 2002:a05:690e:4419:b0:676:9115:60e9 with SMTP id
- 956f58d0204a3-6793628f4demr2875284d50.90.1791902517059; Tue, 13 Oct 2026
- 07:41:57 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C62403E8E;
+	Tue, 13 Oct 2026 14:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791902862; cv=none; b=QwFcgXvK/LKXMjx+UN/VM3z53l0wg8SisX2tUmEUck1qhXyIS6dWqWu4b+g5qBngmoRdRLg+pENSLCrnf2ukcsvS71kDWDN855GUTliFnVSekCp29GjaSKvvRp18SA3dgiO/HbAqiRnYH7nQO991uLyebr2dC7i+IEf35W7/nXI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791902862; c=relaxed/simple;
+	bh=ZnqqAzLOrG9VwtFeqy7PMDqZBMbdLqT3yKpuGrjW1vY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g6H2yaPPXC6K06/v7h/2VEC3Hd8vRgo8Z2Q06PMdi0Q18jKsKUk12afaRpPEwWzjA8GdlRuaAoHBzHcyCf/QYfRGiEtt595dAO07x9MpStWXq+UlHrPeAvJBzGQt24GJk262a+hFLW7X/CyjMSPQZX9BQQuTiCHbi0U7j1r5l3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 023391A0231;
+	Tue, 13 Oct 2026 16:47:39 +0200 (CEST)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id DF3581A022D;
+	Tue, 13 Oct 2026 16:47:38 +0200 (CEST)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 616FA202DA;
+	Tue, 13 Oct 2026 16:47:38 +0200 (CEST)
+Date: Tue, 13 Oct 2026 16:47:38 +0200
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Coia Prant <coiaprant@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 04/12] net: pcs: add NXP SerDes XPCS shared core
+Message-ID: <as5EioEfZqMZhyJg@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-4-9d68868c1e89@oss.nxp.com>
+ <6aabb56e-406f-4d13-9fd8-54822202039f@bootlin.com>
+ <assmUIvWMuZsp8OO@lsv051416.swis.nl-cdc01.nxp.com>
+ <CALj3r0gQkUARS1e+2CGB3JsrGJ2XrzuoChfz0cWYRpK4kq1Uxg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1791887415.git.mst@redhat.com>
-In-Reply-To: <cover.1791887415.git.mst@redhat.com>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Tue, 13 Oct 2026 08:41:19 -0600
-X-Gm-Features: AclHuK9vgLAAAJnijj2jNDp9uWMhQi6KN7iUpclgw57vpslbmAypj_7mfirQUWM
-Message-ID: <CAF=yD-JhTbmYmHUkkruPcyvSWv0QhVeGWC=K=ZvvpMdkzA-jig@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/4] more virtio-net csum hardening
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, Max Krasnyansky <maxk@qualcomm.com>, 
-	Paulos Yibelo <habte.yibelo@gmail.com>, Chris Arges <carges@cloudflare.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CALj3r0gQkUARS1e+2CGB3JsrGJ2XrzuoChfz0cWYRpK4kq1Uxg@mail.gmail.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Tue, Oct 13, 2026 at 4:58=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com>=
- wrote:
->
-> Allowing untrusted hardware to specify csum start/offset for
-> CHECKSUM_PARTIAL was not a good idea, because, if it edits the packet
-> outside the actual checksum, and depending on the setup, the networking
-> stack could be looking at the packet both before and after the edit, and
-> seeing different results.
->
-> Previously, commit 6785011f8b16 ("ipv4: validate checksum_start before
-> completing checksum") validated all known instances where this
-> causes the most grief, but the real fix is to make sure
-> that either only actual checksum fields are ever edited,
-> or the checksum is completed before the net stack looks at it,
-> so it is always consistent.
+On Tue, Oct 13, 2026 at 03:47:58AM +0800, Coia Prant wrote:
+> Hi Jan,
+> 
+> Thanks for the pointers. A few thoughts.
+> 
+> > Yes. The S32G accessor is the same DW indirect scheme pcs-xpcs-plat
+> > implements (page into the viewport at 0xff, then the low address byte
+> > at a 4-byte stride), so there is no reason for S32G to carry its own
+> > copy of the XPCS code. The next version drops the shared core, exposes
+> > each XPCS instance as a mii_bus from the SerDes PHY driver and creates
+> > the PCS with xpcs_create_pcs_mdiodev(), much like the RK3568 glue.
+> > Details in my reply to Andrew.
+> >
+> > The part that does not fit pcs-xpcs-plat as-is is ownership, not
+> > access: the XPCS windows sit inside the SerDes subsystem register
+> > space, and their bring-up is ordered against the PCIe lane and the
+> > other XPCS instance, so the bus is registered by the SerDes PHY driver
+> > rather than by a standalone snps,dw-xpcs device. The accessor itself
+> > is a few lines; if Alex's pcs-xpcs-regmap is merged first I will use
+> > it rather than open-code another bus.
+> 
+> On the transport split: I think the cleanest path is to split the MMIO
+> accessor out into its own module, say pcs-xpcs-mmio, exporting the
+> read/write helpers. Then pcs-xpcs-plat can call into those exported
 
-+1 on the general approach of performing the checksum offload at
-input, unless the input can easily be validated to be one of a few
-common protocols. That greatly reduces the risk vs my previous attempt
-at trying to drop.
+Fine with me. The S32G accessor is a few lines, so I will move it onto
+pcs-xpcs-regmap if that lands first, or onto a shared mmio helper if
+you post one. Until then it stays open-coded in the glue.
 
-Since we do not know the full extent of grief, I think this too should
-go to net and stable. That would mean initially a single patch that
-touches as few files as possible. The helper function in
-include/linux/ip.h and conversion of existing open coded parsers to
-use that can follow up later in net-next.
+> symbols instead of open-coding the page/stride scheme, and S32G can do
+> the same for its indirect window. That way nobody carries a private
+> copy of the accessor. If that turns out to be too invasive for plat,
+> keeping a separate pcs-xpcs-plat copy is workable too, but I'd rather
+> avoid it.
+> 
+> If Alex's pcs-xpcs-regmap lands first, that's the natural place for
+> the S32G accessor; pcs-xpcs-mmio would only be needed if the regmap
+> approach doesn't fit.
+> 
+> > S32G needs the same kind of thing: skip the generic soft reset, and no
+> > EEE registers. I will start with the existing PMA-ID mechanism, since
+> > that is what TXGBE and FBNIC use today, and switch to a callback if one
+> > is agreed in the Rockchip thread. I'll Cc you on those patches.
+> 
+> On the shared-core duplication: rather than copying the whole XPCS
+> core, I'd look at how the existing users express their quirks.
+> 
+> Wangxun has a genuinely different PMA ID, so it can branch on the
+> ID before the reset path and keep the generic core untouched.
+> 
+> The older NXP devices do the opposite: they fake the PCS ID at the MDIO
+> layer so the core sees a magic value it then interprets. That leaves
+> the magic in the core and a fake ID in the glue, and it doesn't scale
+> to a third user.
+> 
+> For S32G, I'd prefer one of these two approaches:
+> 
+> - A flag in struct dw_xpcs, e.g. DW_XPCS_NO_RESET, that the glue sets
+>   and the core checks before the soft reset and EEE paths. Works when
+>   the quirk applies to a whole instance regardless of the PMA ID.
+> - A platform callback, e.g. plat->pma_config(), where the glue can
+>   return early to skip the parts it doesn't need. More flexible, but
+>   also more surface area; I'd only go there if flags aren't enough.
+> 
+> Either is better than another fake ID, because the quirk stays visible
+> at the point where it matters instead of being hidden behind a made-up
+> value in the transport layer.
+> 
 
+Agreed on the principle. The problem is that pcs_pre_config and the
+PMA hook are reached only through the ID-keyed compat table, and S32G
+needs a pma_config (link timer, lane on MPLLA). Without a platform
+callback the ID is the only way in.
 
-> This basically does this: checksum at ingress, except in a narrow list
-> of specified known good cases.
->
-> Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
->
-> Michael S. Tsirkin (4):
->   net: add ip4_parse()
->   net: use ip4_parse() in receive validation
->   net: resolve uncommon partial checksums at ingress
->   net: account for ingress-resolved virtio net hdr state
+What I have for v4 is an ID-keyed entry with the two quirks as
+explicit flags in struct dw_xpcs_desc (no soft reset, no EEE), so at
+least the table says what the entry does.
+
+> One question: how does S32G relate to the earlier NXP devices already
+> in pcs-xpcs.c? Same IP, same PCS ID, same quirks, or something else?
+> If they're the same family, it would be good to clean all of them up
+> in one go rather than adding a third mechanism on top of the old
+> fake-ID one.
+> 
+
+Same DW XPCS IP, different integration. SJA1105/1110 are switches with
+the XPCS behind their internal MDIO; S32G is an SoC with the XPCS in an
+MMIO window inside the SerDes, sharing the PMA with a PCIe lane. The
+PMA sequences differ, and so do the quirks. The ID is synthetic in all
+three cases. On S32G the XPCS reports the generic DW ID 0x7996ced0
+and the PMA/PCS/AN MMDs read as zero (checked on an RDB3), so there is
+no hardware ID to key S32G behaviour on.
+
+> Separately, I have a plan to propose platform callbacks for the XPCS core
+> at some point, regardless of whether S32G ends up needing them. The
+> core currently has no way for a platform glue or PMA to limit or override
+> parts of the generic behaviour, and I think that gap needs closing.
+> The exact shape can be discussed once RK3568 lands. Happy to Cc you on
+> the related thread when that happens.
+> 
+
+Yes, please Cc me on the callback thread.
+
+BR.
+/Jan
