@@ -1,152 +1,285 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31EB2F7F12;
-	Tue, 13 Oct 2026 07:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B903ACF0B
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791878077; cv=none; b=DCHbp6Hru42q4Ejqq0wGfklMmuFLGhmfGn0Tytds+P3gt1gig3h1haSE+Gt3+DDKu8pDf38L2yZE/TsSYvkkb3MrwLGIbFb6MOIha7/xlvEAwlYSBhJVBTY1ffUkS/ofdDmcl3hurZrOW6TIieIhArOklbUeCdn8Xrj3Q88rpwQ=
+	t=1791878174; cv=none; b=PcynJNrIfisWZXM7F6U8yS7xI/5llGtT8CmfVBEOplIYZUaDgr+fiTYFIG19JUliipv0cAyUWuxYgMXuTMDDHe8Cdr7z45/+euiomo5zJZ2Ws9ZpeCDLYeMrPb26IeJQg3sedkobYGZZJnu4w9Z0zl1E7X2DqjL9KHPL/63HOCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791878077; c=relaxed/simple;
-	bh=HZBlcHp/BWFoEMR6Fp47RlBLZKIgW549n1fkDUHGAXU=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a9xzbichoGEY/rDPbYklkweCX79vhBWFiGiRdJewm+TN46LmsNOpBnYWccyUEWopGtqByVz5L/jqI5mHa8nTSh5boiA0xDALkrnKkQ5PmUKfQwGVF72SKg3u0TVFz0zpDp9lI4ODNV7frCKCd7hf4LtJR6+f6QgcEoP2Kh36jTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=nxpvrRaN; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1791878174; c=relaxed/simple;
+	bh=MZHRxP8Hr8PDgpPoUtBeq2/VkbH3kDom19l78BFSIDs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=owNPxCS3mqIWxPwcyHmOoNQIW4Fkpj32fb1Cm48mGDiufh3Cz55YfpASpRE0fj0IP8C03NvkeSRbPrI7DppABfiF1H0ytZWBh2mafk4D5ndbX/cgUhmyxXnyoECI7j8QDURd+02yrW6u6pVz1l+bSFKgL8vYqKvvQvi3jIj/dOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YeS85jCe; arc=none smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="nxpvrRaN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1791878075; x=1823414075;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HZBlcHp/BWFoEMR6Fp47RlBLZKIgW549n1fkDUHGAXU=;
-  b=nxpvrRaNY5jdQrLt/WH0W23hsetVYmwCerFQrqIBCDz8RSkrUGQ1uI1P
-   YyTvJXrUmo7mwOCNVw3hSPMRZYdrgh/ToJ4YYRH9IwAJsZqlCgVThjjDa
-   161p48+9HPB+sv9wCvh/gvVZE9BQz0PtLkGn+TomE3s8P+u2T9eISDUgn
-   wDLQt3Ei7u0WMb0MG31bDXkWHfT9+GJ/0kcAqst6EVdD14YGIOxda9ceB
-   /SrfCcrNJbJ2FCVPH0UI0IVhelS1CM87Du7R8SfeC73bnIX/hGGOrw6yz
-   ApGCaL+ohM9WjPa1Mic/ZOCaXW4VCWzW9yiECqvsFfhYXVgn6B+HQ9CSF
-   Q==;
-X-CSE-ConnectionGUID: h3CEN31aTviRUZfHx3weuQ==
-X-CSE-MsgGUID: R/KshpZzRGqazUOD0C6WAQ==
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="75296097"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 00:54:34 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Tue, 13 Oct 2026 00:54:34 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 13 Oct 2026 00:54:31 -0700
-Date: Tue, 13 Oct 2026 09:54:30 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-CC: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer
-	<hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Stanislav
- Fomichev <sdf@fomichev.me>, Ong Boon Leong <boon.leong.ong@intel.com>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<bpf@vger.kernel.org>
-Subject: Re: [PATCH net-next 1/2] net: stmmac: fix XDP TX DMA address for
- compound RX pages
-Message-ID: <20261013075430.cptcdk3ra6ordhd5@DEN-DL-M70577.microsemi.net>
-References: <20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1@oss.qualcomm.com>
- <20261012-stmmac-xdp-tx-pre-fixes-v1-1-05fd0c90f7e1@oss.qualcomm.com>
- <20261012194317.o642ym7ddsmny25x@DEN-DL-M70577.microsemi.net>
- <as1HVdDa4yN4yp11@lore-desk>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YeS85jCe"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-35ca5244753so40555eec.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 00:56:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791878171; x=1792482971; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=PKr9Fx+KFI5Ax2iGLx+RxplSdarPhpdP5e4xzwI6Vs0=;
+        b=YeS85jCeRsiNkhmpDRySIFeCm88m5N+7H/KtwWZ9St2mH9KtFD5NM7dnAJRIh5IUte
+         GDrQZsC2/wD+6xF2Hlws50B+g18zNZwRucTJktvOdKD2hOYofi6DJjkMjKJgoJ9t0Kma
+         onFpTuGPKAAW9fT3Q8/2+OngOaew7aoK4p53EftW14pV2wl86+cTybGtvQX6EQMz81VR
+         DfFnJ7DQ8anmEBd+/1uG2V/hYBicUiF2GyVxsXTsDYJfW+MyQ9JmtbZmR9ZlTXbutD61
+         jkecqft/1pQXPeOjnMnQHqN0qMaNa4AIHzuyjgodNzIB7esCYYUKrqEEHkvxF9wjjmA+
+         idYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791878171; x=1792482971;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=PKr9Fx+KFI5Ax2iGLx+RxplSdarPhpdP5e4xzwI6Vs0=;
+        b=0u6hPMrnQ3m39qX++10bissNsLL3BwndU7CmSsMn4pWUQWC0rmTSZ06Ts7793xNZwh
+         uJU81t/4arCzE1jX66XmowkV8lGDYrSZpvowSB/kumIixT/Isg8zrQTQx/qceBhl/tAg
+         Nxd963liPKrp3e887Lhr/niJmPca9UqTGhfNPyOB9lV9m3LRgCrEHVqpNvrOQHQhPi+9
+         /em0UFZi34OoPi5+4X+Tw7BvUc/4m5tHzTuFq5l6NJ3Ef3ySBEFDEg92JZ7IzyTnN9IR
+         XcSxmh3BILm2DPmhzvRxVmsOwR99pYOa1yfpcumKYRX6zpTy+Hv93F15ARNZ194ylL+7
+         im5A==
+X-Forwarded-Encrypted: i=1; AKwUvBwNLTriJ5BMTCPPX9Et1MsQ8vYqCPNSmPyjH7OmDCmV45jIiIleOtAa9BD78h/2GAALlO8HpQg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI+M2y166g/b8dUtuoKZue0M0dQveHZ6lt3maZFELDzf81chYvk
+	FTTvlclNpeQp90OFSx5QWxYvkw8vgSqf+2CwPLx6G1uKRpxWxjDx++L0
+X-Gm-Gg: AYBFou3HDVTAFNQhQTJJQJqZSVE7rUuLsiqsyBboP7xPB8mzDMVoO3hwSRQBF0vlxH7
+	PFrGBNNajWOPX5h5xL/Da0R562Tjbfek6vPOxyjCqefoJPqKkJNPzFMMW1badP74Wb0fSp94Ph4
+	UYm7+ZxyRTZa6QyNS+3Ey15Wcv4SF5Ad0Utd4x0U190CE7ImRCUXKWTS++VieRlZwyfzrP0o27f
+	cjmEcu+v6WG7BMHmW04nrJP7JI8oPr2uIe0ijKYHJOyDGhqb0On/8F//E1YHYzu4Yrp8saB4/xI
+	jy0+vtVh4g0hxkZtTUkvhENrMnIkbfkzmeCjFTIT757ebcdFwYfNXyfJDrEQbVlYb/DqFT8l4eL
+	/4k6ExOboRhQfPZBDUiK7Jp7G8EwukrxQ4C/QdLSOqldju0hKfDG6JmVhg5Xkebl5ApyKTNAxTj
+	KzvcY8HNaNoO04M8+IJu+mTFIdlcuKsoaKKpWAgz1wN//U+EJSyjbmIVPojr5hFhaE+GEEcaRjp
+	H2PY6O6Js5F8b8fc7F0DgFaX9SK/nLQcp4o1qn/8AEwsehptc7GKIho2d3073fp
+X-Received: by 2002:a05:7300:d18a:b0:340:f698:fd56 with SMTP id 5a478bee46e88-3537e04365dmr25523882eec.2.1791878171246;
+        Tue, 13 Oct 2026 00:56:11 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2fd33sm40060908eec.28.2026.10.13.00.56.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 00:56:10 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: kuniyu@google.com,
+	horms@kernel.org,
+	fmancera@suse.de,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>
+Subject: [PATCH net v5] net: pin protocol module before inet socket allocation
+Date: Tue, 13 Oct 2026 15:56:04 +0800
+Message-ID: <20261013075604.868273-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <as1HVdDa4yN4yp11@lore-desk>
+Content-Transfer-Encoding: 8bit
 
-Hi Lorenzo,
+inet_create() and inet6_create() look up the protocol under RCU, then drop
+RCU before using the resulting proto. A concurrent module unload can
+unregister the protosw, wait for the RCU readers, and destroy the proto's
+slab before sk_alloc() uses it. sk_alloc() may sleep, so the RCU read-side
+critical section cannot simply be extended across the allocation.
 
-> > Hi Lorenzo,
-> 
-> Hi Daniel,
-> 
-> > 
-> > > When RX buffers are compound pages (order > 0), only the head page
-> > > carries the DMA address programmed by the page pool
-> > > (page_pool_get_dma_addr()). stmmac_xdp_xmit_xdpf() computed the head
-> > > buffer's bus address from the page that happens to contain the data:
-> > > 
-> > > 	page = frag ? skb_frag_page(frag)
-> > > 		    : virt_to_page(xdpf->data);
-> > > 	dma_addr = page_pool_get_dma_addr(page);
-> > > 	...
-> > > 
-> > > RX pages become compound as soon as dma_buf_sz needs more than one page
-> > > (pp_params.order = order_base_2(num_pages) > 0), which happens from an
-> > > MTU around 3000 bytes once dma_buf_sz reaches 4096. If an XDP program
-> > > moves the data forward with bpf_xdp_adjust_head() by more than about a
-> > > page, xdpf->data points into a tail page whose struct page has no DMA
-> > > address: page_pool_get_dma_addr() then returns a bogus bus address, and
-> > > dma_sync_single_for_device() together with the TX descriptor transmit
-> > > from the wrong location.
-> > 
-> > Looks to me like mtu > ETH_DATA_LAN is rejected when setting a prog, and also
-> > on mtu change when a prog is attached. So can this even happen today?
-> 
-> yes, these issues are real but at the moment we can't trigger them since we
-> have the MTU limitation in stmmac_change_mtu()/stmmac_xdp_set_prog().
-> These are preliminary fixes in order to remove this limitation.
-> There is a leftover issue we still need to fix about jumbo frames in
-> stmmac_xdp_xmit_xdpf().
+An LLM-based source scan identified this issue. It was reproduced with
+l2tp_ip by racing socket(AF_INET, SOCK_DGRAM, IPPROTO_L2TP) against module
+unload in a KASAN-enabled QEMU guest. The reproduction used a temporary
+50 ms delay between reading prot->slab and calling kmem_cache_alloc().
+proto_unregister() destroyed the cache before the allocation used it:
 
-Thanks for clarifying.
+  Oops: general protection fault, probably for non-canonical address
+        0xffff1108974182a0
+  KASAN: maybe wild-memory-access in range
+         [0xfff8a844ba0c1500-0xfff8a844ba0c1507]
+  RIP: kmem_cache_alloc_noprof+0x63/0x370
+  Call Trace:
+   sk_prot_alloc+0x74/0x2c0
+   sk_alloc+0x2b/0x6c0
+   inet_create+0x2cd/0xd40
+   __sock_create+0x1c3/0x430
+   __sys_socket+0x116/0x1d0
 
-> 
-> Regards,
-> Lorenzo
-> 
-> > 
-> > > 
-> > > Use virt_to_head_page() to read the DMA base of the buffer and keep the
-> > > offset relative to the head page (sizeof(*xdpf) + xdpf->headroom), which
-> > > is correct no matter which page the data ends up in.
-> > 
-> > I think the fix looks correct.
-> > 
-> > > 
-> > > Fixes: be8b38a722e6 ("net: stmmac: Add support for XDP_TX action")
-> > > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> > > ---
-> > >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > index b8b4de4c5b1a..ca61ab449e32 100644
-> > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > @@ -5301,7 +5301,7 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
-> > >  			struct page *page;
-> > >  
-> > >  			page = frag ? skb_frag_page(frag)
-> > > -				    : virt_to_page(xdpf->data);
-> > > +				    : virt_to_head_page(xdpf->data);
-> > >  			dma_addr = page_pool_get_dma_addr(page);
-> > >  			if (frag)
-> > >  				dma_addr += skb_frag_off(frag);
-> > > 
-> > > -- 
-> > > 2.56.0
-> > > 
-> > 
-> > /Daniel
+Cache the proto and its owner under RCU and acquire a temporary module
+reference before dropping RCU. This prevents normal module unload while
+the proto is in use. sk_prot_alloc() takes the socket's own reference;
+drop the temporary reference on every exit after allocation. Use the
+cached proto for the IPv6 backlog callback as well.
 
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+A failed module initialization can unwind published protocols despite
+module references. Reject userspace socket creation while the owner is
+MODULE_STATE_COMING, before dropping RCU. Exempt kernel sockets from this
+state check: SCTP creates its kernel control socket from pernet init
+before module initialization completes. These sockets pass kern=true,
+which avoids pinning the network namespace they belong to. Both kernel
+and userspace sockets still acquire the temporary module reference with
+try_module_get().
+
+Fixes: a79af59efd20 ("[NET]: Fix module reference counts for loadable protocol modules")
+Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: stable@vger.kernel.org
+Assisted-by: GPT-6-Astra
+Assisted-by: OpenAI Codex
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+Changes in v5:
+- Reject MODULE_STATE_COMING only for userspace sockets (!kern), as
+  suggested by Kuniyuki. Preserve SCTP kernel control socket creation
+  during module initialization and keep the temporary module reference
+  for both kernel and userspace sockets.
+- Document how the bug was discovered and the test-only delay used in
+  the original KASAN reproduction, as requested by the discovery bot
+  and Jakub. Retain the original fault addresses.
+- Keep the cached owner, balanced temporary reference and cached IPv6
+  backlog callback from v4.
+- Rebase onto net/main at 8e2fbe0e75d3.
+
+Validation:
+- W=1 build with modular SCTP and compilation of both changed objects
+  with CONFIG_MODULES=n.
+- SCTP module loading and 20 socket/netns cycles per boot on baseline
+  and v5, with IPv6 enabled and disabled; module references returned
+  to their initial count after namespace cleanup.
+
+v4: https://lore.kernel.org/r/20261002173844.3537111-1-nicoyip.dev@gmail.com/
+Review: https://lore.kernel.org/r/20261012200752.3771786-1-kuniyu@google.com/
+v3: https://lore.kernel.org/r/20260904111514.584264-1-nicoyip.dev@gmail.com/
+v3 review: https://lore.kernel.org/r/178887699602.219967.13594894510710999619@kernel.org/
+v2: https://lore.kernel.org/r/20260825172349.232794-1-nicoyip.dev@gmail.com/
+v1: https://lore.kernel.org/r/20260823171311.3857087-1-nicoyip.dev@gmail.com/
+
+ net/ipv4/af_inet.c  | 15 ++++++++++++---
+ net/ipv6/af_inet6.c | 17 +++++++++++++----
+ 2 files changed, 25 insertions(+), 7 deletions(-)
+
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 14ce01092fda6..5c02022c6c182 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -263,6 +263,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ 	struct inet_protosw *answer;
+ 	struct inet_sock *inet;
+ 	struct proto *answer_prot;
++	struct module *answer_owner;
+ 	unsigned char answer_flags;
+ 	int try_loading_module = 0;
+ 	int err;
+@@ -322,9 +323,15 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ 	    !ns_capable(net->user_ns, CAP_NET_RAW))
+ 		goto out_rcu_unlock;
+ 
+-	sock->ops = answer->ops;
+ 	answer_prot = answer->prot;
++	answer_owner = answer_prot->owner;
+ 	answer_flags = answer->flags;
++	if ((!kern && answer_owner && module_is_coming(answer_owner)) ||
++	    !try_module_get(answer_owner)) {
++		err = -EPROTONOSUPPORT;
++		goto out_rcu_unlock;
++	}
++	sock->ops = answer->ops;
+ 	rcu_read_unlock();
+ 
+ 	WARN_ON(!answer_prot->slab);
+@@ -332,7 +339,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ 	err = -ENOMEM;
+ 	sk = sk_alloc(net, PF_INET, GFP_KERNEL, answer_prot, kern);
+ 	if (!sk)
+-		goto out;
++		goto out_module_put;
+ 
+ 	err = 0;
+ 	if (INET_PROTOSW_REUSE & answer_flags)
+@@ -398,6 +405,8 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ 		if (err)
+ 			goto out_sk_release;
+ 	}
++out_module_put:
++	module_put(answer_owner);
+ out:
+ 	return err;
+ out_rcu_unlock:
+@@ -406,7 +415,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ out_sk_release:
+ 	sk_common_release(sk);
+ 	sock->sk = NULL;
+-	goto out;
++	goto out_module_put;
+ }
+ 
+ 
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index 282912a119999..99e57fd643322 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -110,6 +110,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	struct sock *sk;
+ 	struct inet_protosw *answer;
+ 	struct proto *answer_prot;
++	struct module *answer_owner;
+ 	unsigned char answer_flags;
+ 	int try_loading_module = 0;
+ 	int err;
+@@ -167,9 +168,15 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	    !ns_capable(net->user_ns, CAP_NET_RAW))
+ 		goto out_rcu_unlock;
+ 
+-	sock->ops = answer->ops;
+ 	answer_prot = answer->prot;
++	answer_owner = answer_prot->owner;
+ 	answer_flags = answer->flags;
++	if ((!kern && answer_owner && module_is_coming(answer_owner)) ||
++	    !try_module_get(answer_owner)) {
++		err = -EPROTONOSUPPORT;
++		goto out_rcu_unlock;
++	}
++	sock->ops = answer->ops;
+ 	rcu_read_unlock();
+ 
+ 	WARN_ON(!answer_prot->slab);
+@@ -177,7 +184,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	err = -ENOBUFS;
+ 	sk = sk_alloc(net, PF_INET6, GFP_KERNEL, answer_prot, kern);
+ 	if (!sk)
+-		goto out;
++		goto out_module_put;
+ 
+ 	sock_init_data(sock, sk);
+ 
+@@ -201,7 +208,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	sk->sk_family		= PF_INET6;
+ 	sk->sk_protocol		= protocol;
+ 
+-	sk->sk_backlog_rcv	= answer->prot->backlog_rcv;
++	sk->sk_backlog_rcv	= answer_prot->backlog_rcv;
+ 
+ 	inet_sk(sk)->pinet6 = np = inet6_sk_generic(sk);
+ 	np->hop_limit	= -1;
+@@ -251,6 +258,8 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 		if (err)
+ 			goto out_sk_release;
+ 	}
++out_module_put:
++	module_put(answer_owner);
+ out:
+ 	return err;
+ out_rcu_unlock:
+@@ -259,7 +268,7 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ out_sk_release:
+ 	sk_common_release(sk);
+ 	sock->sk = NULL;
+-	goto out;
++	goto out_module_put;
+ }
+ 
+ int __inet6_bind(struct sock *sk, struct sockaddr_unsized *uaddr, int addr_len,
+
+base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
+-- 
+2.43.0
+
