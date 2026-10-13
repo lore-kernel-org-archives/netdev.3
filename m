@@ -1,61 +1,61 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D821151C057
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 16:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F7D51B179
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 16:30:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791909013; cv=none; b=WYUFoa+DNH5wzQ/wv3YI7D25L/MgLSmfGjP9wVQrEJWuwBgGnkt8j793S1hUcluy48156nVCaQnDV0+/yjUY9ebSO/CI+KGKCfPQFsoADjlplrbLc3T8KprbhNwz7xGPCyxEVvWNdik9bECXqpWEgjcJousTs8pfNKl61ACTJUU=
+	t=1791909028; cv=none; b=SwLh9oA/TC2VGfqTjb+wVUmpX9fggbveeaZ4HUwrnuYEH58uxRPcq60ZcdgoV9zQ9UVSWkPma/3dqD9Yzy/+auKEMdxgrCatX9UB5fCq2h/SS5OAb77iVY57zAfp+ld2br2tVX7WjFAkWxAN+5FNhY8RZ++NCS1pstgCSxXf2ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791909013; c=relaxed/simple;
-	bh=+HGJ91G3vE8I+hjbAj7JZo7VbwjxkPRsRJSUwJ2/ZT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D3aT0W+cnhblsmaMFkIa7ZbsUVmNdvhlfEzYqI8mLqAeI++YwppRaWqsqdXJal1YD73O2C03ugWQdklhDc2iIvE+Wfd7BqcEIyUy3jKozqhXvbGiHgJDgksRlBe1CLVt3nVDir+1z4rS0e49xtcp6j0Mqe/U3P7G/B/B5BcLLqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q4WnDvVY; arc=none smtp.client-ip=209.85.216.45
+	s=arc-20240116; t=1791909028; c=relaxed/simple;
+	bh=9m7NtTHET6m83f9Mk11W5vw2NZvap3fwY2zve4r26nk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IXAnU3y+NMgYjnsn/hgjt7XRC34Y68r8qWjz8Mz0slNQXUufgaIBOFvouWPdhH9bGHnGBx+CUnItk7h65cRCRaqVx0tYP1BpsvS4o7DN5JR8N9n62pS0NEvF8I074RFvBxA1Eaxb/f6S4r0gZWSS6/ak7CCkpU/Agp4sz6sV6yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WHg9HfOn; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q4WnDvVY"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3a47d4fb7feso181219a91.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:30:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WHg9HfOn"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc785ed8aacso154402a12.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:30:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791909011; x=1792513811; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791909026; x=1792513826; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=T42dDgF1G2T5CFLnp1NKvSC8C3hiWB9MunCO19ie1Ug=;
-        b=q4WnDvVY9KFvleeUiwYCCnDKHr0HfGtB5+souZNmraxCa8/O/JXWVXY2DRetFRmxyv
-         kXgDTp5pMq2yglZLJspYA6FObraIuVGSv3Zb6+qomYZrkTZ95lStW+ohZOSW/9LoYkMk
-         0LDqmAl1Orw3kriRlCmBTvC0VGQcwwG/8AXOfUVVWpu7N9BsjUuSBNlInAJKMbpJQklK
-         BddxUQnvz2e0ky42lEHzNQ6AlhDDAFH7LfStAkl5Fgon36ARuAmrVAMdHvkPyIrCQmtH
-         YxC163qCa2qJIlDAzMQnFZIYbLKwEcz5u2s2ONP/AxoAvhLGMdSQW35fjdmRNReWCLFH
-         2cwQ==
+        bh=PlQnD3vqPXRC6bXv4DWDPrp7sKdyCguQyIZC8BvmMCk=;
+        b=WHg9HfOn3eqKIqfAk3JNTb3PTNGZRcurqkXrHdM32W4fyHpgK/l1YW5DSIW8h8udFC
+         LBpIg9uo4UmpEAXCiWx0pa6hkuSu0vGVX0rJXVbusFYPPO3a93/lWwOtQYV55UhRrDdf
+         IlqkGk+2046Ch2MnIRbaudJk3DuDpGHTE9YH2Xcd6TInhaOZpnrgsQZK28bT5IG3Tk6r
+         RnjWgSbFZF6H/3h/c9W5fnXRuusJJtNvKbJyZJU73ltDepT8tGT6vEsMqtK+J3FWuT+f
+         ftGchntIdS4lijiI4YRCvVrE8YRRpbcZ5E5zlBHK1O26VWRQ16MqDSmL2HurmWMiQHZ3
+         Gy/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791909011; x=1792513811;
+        d=1e100.net; s=20260707; t=1791909026; x=1792513826;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=T42dDgF1G2T5CFLnp1NKvSC8C3hiWB9MunCO19ie1Ug=;
-        b=fJXZBmOwWfkPduDp0viJo2GIyMytZBxouJ/BKHoOa5xVPUcxbzN5INgqo6jQoWnR8p
-         x1lU+3WXeAspbvc5YvmbQcpQyRV4i7P40V8J53heqvuK4IyzCP8r662BC7Xoo5dEiH31
-         /mDnshEwYyi40FXFhvoMDXz8PodGvYT1zla5EVEeJd4uaz1FxWf+8qPWnsN2AUi0z9ES
-         MR+QuuYcdnf1fDlp7yUq35PJQ3NttYRjkZQwxGJlnLFBprDABSngnGrx+E/uUsDZzzwr
-         kPR7PimEyTnAYgi6/RDwB6oVdaw8cPgmeiDD16Xnq3YwTvZfU8Tq/RiuDFtcEWd9Blwx
-         gENQ==
-X-Gm-Message-State: AFq9FYLwgLuMMHI97XI84jKT40H6gie/dh9B2ocNT52YLFw6Bsuska7I
-	Ha19CK2x73DJKAODA7wfPfkhksP7vbjXC3JAA+Xlo6B8jalX2z3ZQYVP/hSpwg==
-X-Gm-Gg: AYBFou3LmD8aB8fsot7eo2B3cSvZl4HAnQHQ+8M0aubI99mfiStRnZ2qcBZiz0gHNXc
-	SaSDdWX8yWV/WkGJhQA9wjF+kNj1fmg2vj/7vpAgR/F+hhuPZOdTMY2DUW6hh29FaPTZ7VmuI6p
-	3u6ssY7IS9mz5Dhni9TLt1D5aS6/XDCoaajFnJ9sI2X5aZQi+n+K0uak+puSLcUf8f27IaKuUPm
-	bjCQ20L0Gq8vU8R7Os6BHqKOZddmcecUG9NSHqnSqq9pk8DIIxK/EIsIxkQcoIV4n85irchDThq
-	+T9EuWBtpM+5/lDYyHNJSx8yFg0paqxj0+dWKFuRSL8od6VdOTO5r9/hr68/35UHYVSHY7AdeYz
-	XTepfb8PqXyVoDTTCO5A28QXCuXohkNXjunn5dE4uhuvZbS5Oq7XzSDGg6+Bl0uXHK2/KFykV/V
-	aCKABgRKBUXekVF0zTS2MTz524k7M0EuKHDf83QfLJxsUw5K6Xa+lfk9tKOXLWY+T+a3b8xcffJ
-	5ozJhq8WkrmTRrIA6eyAYMom3HAEime+QCqB7GoDNGrTl44Fx7sgnEbRSahLRTD0dbf
-X-Received: by 2002:a17:90a:d49:b0:3ab:be66:ddc5 with SMTP id 98e67ed59e1d1-3abbe66df3bmr7123391a91.6.1791909008669;
-        Tue, 13 Oct 2026 09:30:08 -0700 (PDT)
+        bh=PlQnD3vqPXRC6bXv4DWDPrp7sKdyCguQyIZC8BvmMCk=;
+        b=trNMnS7Sa0DMWt8vRTGxh0QS3QZ6mWmQSPay5Z/q2XRJXA0ToX6lvTIR4X5OWwz+2a
+         15Qj5mqP1MLQq4A+N7vQSqV4IRqnfxIYbNcMHY1EQrI1mFzaBxVUqwGCULfDli3mpNmi
+         oxRD1wsTMb1oYB6UJyY1FHiXzD8AGuhqSOIOqGZ0dOZ4k5Hkce7Kvg0QwwF110gSEoGU
+         Uk7HVijvpCPyTjoFdsnTO/pvMxotySsYQ4SamArEuSkDWxFqjKSJx6yTGj3yEHIeOikQ
+         xUSZ9MzwIMuh/HxFTljlyQPsx04zWiCr0yEi7RsgyWjXvdL+hiDC3iZdo+UZrONk7Jae
+         itZQ==
+X-Gm-Message-State: AFq9FYKGV1aIksynKdzlTJbE3J1bNY7a0cQbjP4OIqq5boNqFnEOBadR
+	Zfwfq46zwFGulqDLqWTnfC6BWj3Swx3NVGTI8j+WitRjqbjj1RrEhzw+ebcJhQ==
+X-Gm-Gg: AYBFou0CA8ATDaFQ0CsENb5Y5IiiGzmmZU+UA240zoCwe0k7LwFYne1xGYYU4CakeAd
+	rDnwgbY7GVeX9tC6HtneKp2eL9QyAcsjBdoF++zwdgXTSS0Q5T8pyHA1gVHgWnaoi35VaIBi98p
+	P87TO1N9bP1pdZubi/TTQ/6pvaPgGzhrenLHS6mqQwKIPbiMLnDK6QPbi29F/KOfy9K0j5B8wkg
+	L8EfcdvisuPoak2sAXR6zbZLpunSiBcAy8dl1zmfC+PkX19Nl6pAXLXv/fCJ8ywnADIp5G/cGgB
+	fbegKqQA9v76LWaOSTn7cg95OHDyQvspfifg7bvafHGnQgT+WYMHHeYH9aq1Naez1nQsbQG2xwb
+	kwYe57np9xfAvpB7L2/uzYCmOZjSr8TVlFuNkkyUNlle0W8REZ6P4UauEGSxHjKIBT9bKcV0Tny
+	kvoVw9YnVxnqz9nDMBAY+OoFfGBBHOn0aYS//eF22FhgLATTLE5AbDZbSC3TpGoJH0AoDI1ZFbU
+	CkyHrOGy6OXyLvnBlko+KmwfxKfMBi+8nHx2iw/pDo0RNK3rWWtrb+cpXXrBjEK1KcJ
+X-Received: by 2002:a05:6a20:430e:b0:3de:7dd4:e32a with SMTP id adf61e73a8af0-3e16bdae01emr16584442637.2.1791909024978;
+        Tue, 13 Oct 2026 09:30:24 -0700 (PDT)
 Received: from localhost.localdomain ([119.127.198.225])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd3d9e26ddfsm5672992a12.17.2026.10.13.09.29.55
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd3d9e0816csm6462483a12.7.2026.10.13.09.30.18
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 13 Oct 2026 09:30:07 -0700 (PDT)
+        Tue, 13 Oct 2026 09:30:24 -0700 (PDT)
 From: Qihang <q.h.hack.winter@gmail.com>
 To: netdev@vger.kernel.org
 Cc: jhs@mojatatu.com,
@@ -65,12 +65,12 @@ Cc: jhs@mojatatu.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	pablo@netfilter.org,
+	elic@nvidia.com,
 	stable@vger.kernel.org,
 	Qihang <q.h.hack.winter@gmail.com>
-Subject: [PATCH net] net/sched: cls_api: unlink indr cb on a failed bind
-Date: Wed, 14 Oct 2026 00:29:49 +0800
-Message-ID: <20261013162949.25622-1-q.h.hack.winter@gmail.com>
+Subject: [PATCH] net/sched: cls_api: skip indr register on failed bind
+Date: Wed, 14 Oct 2026 00:30:14 +0800
+Message-ID: <20261013163014.25722-1-q.h.hack.winter@gmail.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,70 +80,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Binding a device without ndo_setup_tc() to a shared block goes through the
-indirect path, and when that bind fails tcf_block_bind()'s error path
-frees the driver callback while it is still linked on the global
-flow_block_indr_list.  The next flow_indr_dev_unregister() of that driver
-walks the freed node:
+Binding a device without ndo_setup_tc() to a shared block that already
+offloads records the block on flow_indir_dev_list and then fails.  Nothing
+removes that record, so once the block is destroyed the next
+flow_indr_dev_register() splices a list into freed memory:
 
+  tcf_block_offload_cmd()
+    -> flow_indr_dev_setup_offload()
+       -> indir_dev_add()   [ record: data = block,
+                                cb_list = &block->flow_block.cb_list ]
+    -> return -EOPNOTSUPP
+  tcf_block_offload_bind()
+    -> tcf_block_offload_in_use(block) is true    [ offloadcnt > 0 ]
+    -> return -EOPNOTSUPP
   tcf_block_get_ext()
-    -> tcf_block_offload_cmd()
-       -> flow_indr_dev_setup_offload()  [ allocates block_cb and links it
-                                            on flow_block_indr_list ]
-       -> tcf_block_setup() -> tcf_block_bind()
-          -> err_unroll: list_del(&block_cb->driver_list);
-                         flow_block_cb_free(block_cb);   [ kfree() ]
     -> err_block_offload_bind            [ no tcf_block_offload_unbind() ]
 
-The only unlink is flow_indr_block_cb_remove(), which a driver calls while
-handling FLOW_BLOCK_UNBIND, and a failed bind never delivers that command,
-so nothing removes the node before the callback is freed.
+Only a FLOW_BLOCK_UNBIND calls indir_dev_remove(), and the failed bind
+never issues one.  The next flow_indr_dev_register() replays the record
+through existing_qdiscs_register(), where list_splice() writes the new
+linkage into the freed block's cb_list; the callback that the replay
+allocates keeps indr.data pointing at the freed block, so a later driver
+unregister reaches tc_block_indr_cleanup() on it as well.
 
-commit da94a7781fc3 ("net/sched: cls_api: remove block_cb from driver_list
-before freeing") fixed this loop for driver_list; indr.list is the link
-that change still misses.
+The fix was built and the reproducer re-run clean on it.
 
-Fix by unlinking the callback before it is freed, and by initialising
-indr.list in flow_block_cb_alloc(), so an unlinked callback carries an
-empty list instead of an all-NULL one.  That is what makes the
-list_empty() test exact for the direct and the indirect path alike.
+Fix by returning -EOPNOTSUPP before flow_indr_dev_setup_offload() when the
+command is FLOW_BLOCK_BIND and the block is already offloading, which is
+the condition tcf_block_offload_bind() rejects the bind with, so that no
+record is created.  Keep the check limited to the bind: on unbind this
+branch is the only caller of indir_dev_remove(), and it runs while
+offloadcnt is still non-zero.
 
-Fixes: 1fac52da5942c ("net: flow_offload: consolidate indirect flow_block infrastructure")
+Fixes: 74fc4f828769c ("net: Fix offloading indirect devices dependency on qdisc order creation")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
 ---
- net/core/flow_offload.c | 2 ++
- net/sched/cls_api.c     | 3 +++
- 2 files changed, 5 insertions(+)
+ net/sched/cls_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/core/flow_offload.c b/net/core/flow_offload.c
-index 5071d7fe6ce2..64451129a230 100644
---- a/net/core/flow_offload.c
-+++ b/net/core/flow_offload.c
-@@ -266,6 +266,8 @@ struct flow_block_cb *flow_block_cb_alloc(flow_setup_cb_t *cb,
- 	if (!block_cb)
- 		return ERR_PTR(-ENOMEM);
- 
-+	INIT_LIST_HEAD(&block_cb->indr.list);
-+
- 	block_cb->cb = cb;
- 	block_cb->cb_ident = cb_ident;
- 	block_cb->cb_priv = cb_priv;
 diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index a9f54988561f..ffbb8353251b 100644
+index a9f54988561f..7acfe71853a7 100644
 --- a/net/sched/cls_api.c
 +++ b/net/sched/cls_api.c
-@@ -1665,6 +1665,9 @@ static int tcf_block_bind(struct tcf_block *block,
- err_unroll:
- 	list_for_each_entry_safe(block_cb, next, &bo->cb_list, list) {
- 		list_del(&block_cb->driver_list);
-+		/* linked only for an indirect bind */
-+		if (!list_empty(&block_cb->indr.list))
-+			list_del_init(&block_cb->indr.list);
- 		if (i-- > 0) {
- 			list_del(&block_cb->list);
- 			tcf_block_playback_offloads(block, block_cb->cb,
+@@ -860,6 +860,10 @@ static int tcf_block_offload_cmd(struct tcf_block *block,
+ 		return tcf_block_setup(block, &bo);
+ 	}
+ 
++	/* a bind that cannot succeed must not leave a record behind */
++	if (command == FLOW_BLOCK_BIND && tcf_block_offload_in_use(block))
++		return -EOPNOTSUPP;
++
+ 	flow_indr_dev_setup_offload(dev, sch, TC_SETUP_BLOCK, block, &bo,
+ 				    tc_block_indr_cleanup);
+ 	tcf_block_setup(block, &bo);
 -- 
 2.54.0 (Apple Git-157)
 
