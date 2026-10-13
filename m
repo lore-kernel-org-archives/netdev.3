@@ -1,155 +1,251 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B4F4E56CB;
-	Tue, 13 Oct 2026 10:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889127; cv=pass; b=UdFm2pwxOfwueQWKJ0i+pY8y+VzWgBYJVzxdUR1GI31tNw8ov9hIqaJqtBY6CLKJfCCcltqCBnzwq58FQnFSD7HLxRy9ikZyPsfoJmEOm8TvWKqbXWy3nCBgcZSKa4zMini2ilnQco9c19RauGwCVS1ZN//6b2Q7emj+U69MJ/0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889127; c=relaxed/simple;
-	bh=oLhSYzOwujkBqrh0f9DoDHEmGMsT5+OaO+AH+QqxHZ8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3084E3247
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791889133; cv=none; b=ZiMTwDSyep+NbdxTnIQ4AKdpXhgEf1+yVzfwzg7WJg9kp49c8I1BRk3FcupmjU2/A/lC/cxXiVXgIxw2cLgpLTtMs3Q3XVTc2ju4kF/01ffsIGvytht4F/wYKR1Ga+bnuDbz3P1Ik4JoND/+HM5EI3/2XwFMMYQlEetxHqzwSBY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791889133; c=relaxed/simple;
+	bh=yPvbXQJO4g4fSdUPeHvPpxAec2+KPnTBizqvTfKMhnQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O4s6S5v82F0ma7K4QHwTvwTwWX3qPgDHORUTvKpPeyZv4fhNy5ZHLUDGPW4xIE/XFkvaCDe4ox+VA32tITDHKiTdmAeywPnh9QTVNqnsfJlqWKmlB5caJRb3LDwDXijKe+0CJQBsHn9l99FxmdPG+i9Jp8zvhr19cMGeg6TJJMo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=Ft9dEqdS; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=TN6IV7gSuz/nG4fD5pEzoK2fz6rYUnLuNwSmqmXd0NUPiYz9uAHTXSEM1i5uBXneul5nI5jAD87V026X8GjiUikCUtZfYGYNwHdqQrYwHC1+6qyOjhXaFgj5Mxr6UOC7DiSGr2ulypa6B4wgccadcRz9qpMdDngEq9RtGDdxuOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ecBbNItI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=CU5OgDn6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="Ft9dEqdS"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D89D5200582;
-	Tue, 13 Oct 2026 12:58:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791889118;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ecBbNItI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="CU5OgDn6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791889120;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ibx4Wuf/nDfg8JytDfccS5wn8x8YmTr1cZIy71hpWvY=;
-	b=Ft9dEqdSqJcAUHVzPIc2Eix4ACSvnxYrBByJWx/dmOdIVRCmu/EeYRQP2CINQ7tuAtTN+/
-	Zys067Vs7HBtwPQyJNyvNv5Lh3hyUWpXmcILku2mXqsz46MNws2gfJI1O586Urlfo58qcU
-	9VyHc37+7jpex2p0wrt3C/wQGOE0+MD7inDL+q46sOhf40AiTKpiR7EAsDBK0ZvAinfgJO
-	9jmDQWCWriqusDxw0q/KDv7YeAYMFEvNGVYeaRpZtEXTe2CNP+BD4FSrTlmXR4ex56m0jM
-	tkb9dNyrp9togtfNL9QlKlskYUkqlbO2ZC264rzgmFZIV/gTvoxAX1sc9PT9dA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791889118; a=rsa-sha256;
-	cv=none;
-	b=H6lGdFXLC8FRo8ALFR+JY+10yIo5YK/+Ss/C/5Ge0Z7lmrzl0BemHysBpEXjjul0JMaCc3
-	Z/+L6EbsYtN9aakUCGvzNn7csRXqyyQmi9vsDWidakbgfQ2jPLFI5bJHKIHZ5fsouuL9Bi
-	Uz44QfRUT9PsyLJ6E0FRuvhDFXdh84ESkpZ9ti7Ev2wwZ6r3+G8lE0SB386d8cKhoZFaJU
-	0Zllheq8FeQVD8dMfKrZkkcJUs9fXBL+77v8pii+b7cRycZND4E/1/dPjhYDJutal28nic
-	GidRYbn9ynscfXEylHWlXhTdl5MzjPBItgQcpb0Hzrw47nPHLFSWdf0mllwGQA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791889118;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ibx4Wuf/nDfg8JytDfccS5wn8x8YmTr1cZIy71hpWvY=;
-	b=COiVH5dzxNsq4sj3ao+H39OF5fYjChNz/VJalg6MCyepxFLn+CCrFd2APcgYSxdwDl158h
-	3Ydjmn8PeKtThSxC1pOTzEp5JeWk4MA0fyMVE2xqX/DAduXGMv+Snd22wWXQKNTmxGMoij
-	295cJh1BqBtYuiP7cE26uELPkPrxCkw0cNDqiCmg+9SN6eELvKvjTGZgXVrGkfI0HjsPSp
-	OZD7EUe97EMR77WC6Hynn2RwG99GJBXSHN49JEGEAwwZCqC1MChtevdwuW4NGEvg1GzfhO
-	j/xP3UStSs9sAwhWExXm+v8Q0FmXqXKjvRNA5/QoslsFv/2qZOTSHoap4bHiGw==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xGaDO-005g8E-2X;
-	Tue, 13 Oct 2026 12:58:38 +0200
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 6C2E45C2F46;
-	Tue, 13 Oct 2026 10:58:38 +0000 (UTC)
-Date: Tue, 13 Oct 2026 12:58:37 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Cunhao Lu <1579567540@qq.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	kernel@pengutronix.de, Heiko Stuebner <heiko@sntech.de>, 
-	linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] can: rockchip_canfd: stop bus-off restart before
- closing the device
-Message-ID: <20261013-hissing-saiga-of-endeavor-ef5e03-mkl@pengutronix.de>
-References: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
+	bh=Dq0crgc7vKDC3fZNlazsaBKXkICbHKAerCxw9oAOLWE=;
+	b=ecBbNItIItz9JBR1j4qa23jPxt+gkl0m6iM+bX7JgBG4qFFXKxyaf5OxQ3oEUOlueOdCzI
+	+cOtWe/Okzlnww+kxPxfhBzFD0C9m9UCb1h3c36rDOzM34lHePP59LK8wBsTnPpaNz27ey
+	0FEHaQDqM/8VT44qJ9JPmiOdEhVrvT4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-284-2dGunUfGO4yvdRED__9Jrw-1; Tue, 13 Oct 2026 10:58:39 +0000
+X-MC-Unique: 2dGunUfGO4yvdRED__9Jrw-1
+X-Mimecast-MFC-AGG-ID: 2dGunUfGO4yvdRED__9Jrw_1791889118
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4994d67d0e3so18735035e9.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791889118; x=1792493918; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Dq0crgc7vKDC3fZNlazsaBKXkICbHKAerCxw9oAOLWE=;
+        b=CU5OgDn6UnSIT0gDENA8E2efPUKSpP0DP+KWzP0TQrvkdKrvfc8gonbFrHgdnCVaZl
+         BWuTlT1CrW2fxMEZumYAAb19C07twxXBHDgHsRDHoe5q1NA1cUtoUGoqnYM/ZCGRIUHR
+         F2C7Fy3/H7ybSavaemPIBXF8VfEPDSgYRcSpKEMcW6r23T7VM4wmzyyr/dPMslazveTi
+         vhTb+ceGgsVCZxub6+RSMixL8kvlOvECi4K/0aAaNGSPsZwsSZdNDMwWOsP4X2l28hWA
+         RGMVVmS/HOEU3AhDDc480/kRrr0qM0/CiGtUJmlkTDKPdeUXqMGz2qA1H48wE7zzykLm
+         jQhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791889118; x=1792493918;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Dq0crgc7vKDC3fZNlazsaBKXkICbHKAerCxw9oAOLWE=;
+        b=er+CBuMVZz4/appGeeld3bWAOuZdAM8WsLmTDsE6hTHEPFKnSySTSLE2sr065tGTxG
+         nKWRJkbMPamFb/MmckvXdhMn7auXnab+UFhRYhkumimuv4yBYiUUe8G7mXMToRvA/I5y
+         iQasu8c/trYUSU0AOmWWPfDiC8RZT9Kj9h8KI14D/fjqbbPH6Qr5U0iKODMSW8A80u5N
+         +//0LP/xiXn1989RyJwpuQDZb3yMX1XS2dGDbvpkRBoy7BFF+6XEbvtKwKiBpsrY+9E7
+         LXC7uOD/a53sBc/v9QTrUh9Kk3v8kMQOhiWcdO4PPInsqzHiRSkba2UyuIP7We1pXgwC
+         YWMQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxAA7fap9qEtRjxHpzlUvRGm8vPnju22hkUC4fu8K9yHhlS5YhXTMhgJjiD3X1H9nRLi5d89GQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIRPHQXVjwpqSEnj95i/OKv9GMcNIgJ7lmfuD08UoTuOgVg4yWE
+	dYg0WZ5lRjBSGG27YAIFH3DcVYmXMSFf4F8xveLkLtsfWg3oD4+k9KWUsIUiBSrrp8tHGK8uJFJ
+	l3yx4vLtOEeetxZqWsT73swvWYdr56PPMlIv8RWbJMR0Duep3d45HdHUgRg==
+X-Gm-Gg: AYBFou2FqPkNfJpKmeXblm9rdhSvK6Yb/VPUH3M+zOYQmSsAyP82LRHl+0vqZKzc4P2
+	6ciGI/m9WVbXOFsFIeNFxOiPgp9GQlPKMcZSP+8zaAnhEdIuRK/dhcaHQ48d1LKbqtl7ZyS1xhM
+	V/5H3XdtZYKnp/lvLEj/Za0nQ4Onsu2d54eIYSF8QInjXN4PHSKxfrboBvKetTFjG0D6w0+1xGN
+	nxjLtebZJJucaKJKVdwxvzusJUR8r34F4ueaNbe+bT4343FTGaTWQLVpKmFRTBjAD9pF4/4zkM+
+	Q682MRU7uyW3b4j/jYjlVhDIfFPxAaoxFJY4OFOvl9Txtu2kYW2H8HDXHRulWrE8r6iH7Q==
+X-Received: by 2002:a05:600c:4e41:b0:49f:c1a1:5222 with SMTP id 5b1f17b1804b1-4a18e4d80bdmr231408525e9.33.1791889117995;
+        Tue, 13 Oct 2026 03:58:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e41:b0:49f:c1a1:5222 with SMTP id 5b1f17b1804b1-4a18e4d80bdmr231407945e9.33.1791889117450;
+        Tue, 13 Oct 2026 03:58:37 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaac3esm4507970f8f.11.2026.10.13.03.58.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 03:58:35 -0700 (PDT)
+Date: Tue, 13 Oct 2026 06:58:32 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Max Krasnyansky <maxk@qualcomm.com>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, bridge@lists.linux.dev
+Subject: [PATCH net-next 2/4] net: use ip4_parse() in receive validation
+Message-ID: <05eb0a83a9975e8e042caeeb4fca5fad30e02fb4.1791887415.git.mst@redhat.com>
+References: <cover.1791887415.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="25w3tbmyskksrjyb"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
+In-Reply-To: <cover.1791887415.git.mst@redhat.com>
+X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
+X-Mutt-Fcc: =sent
 
+Convert the sites that pull and do version and ihl checks on the ipv4
+header and validate the packet transport offset to use ip4_parse.
 
---25w3tbmyskksrjyb
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net] can: rockchip_canfd: stop bus-off restart before
- closing the device
-MIME-Version: 1.0
+Sites that validate a read-only copy instead of pulling - the nft
+and nft_inner header_pointer validators, ip_check_defrag()'s
+skb_copy_bits, the flow dissector - stay open-coded for now.
 
-On 13.10.2026 11:22:37, Cunhao Lu wrote:
-> The close path cancels restart_work after freeing the IRQ and stopping
-> hardware. A queued bus-off restart can therefore enable the controller
-> and interrupts after teardown. It can also restart timestamp work before
-> runtime suspend.
->
-> Serialize restart with the close transition using a mutex. Mark the
-> device closing and mask its interrupts before synchronizing the IRQ.
-> Release the mutex before cancelling restart_work, so a queued restart
-> can observe the closing state without deadlocking.
->
-> Exclude the IRQ handler while reinitializing the hardware on restart.
-> Do not disable the shared IRQ line while waiting for work to finish.
->
-> Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD=
- controller")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Cunhao Lu <1579567540@qq.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Assisted-by: LLM
+---
+ net/bridge/br_netfilter_hooks.c     | 15 +++++----------
+ net/ipv4/ip_input.c                 | 13 +++++--------
+ net/ipv4/netfilter/nf_reject_ipv4.c | 13 +++++--------
+ 3 files changed, 15 insertions(+), 26 deletions(-)
 
-AFAICS this is a systematic problem and should IMHO not worked around in
-one driver only.
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 0a394e5f43916..e89da0e415426 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -206,18 +206,13 @@ static inline void nf_bridge_pull_encap_header_rcsum(struct sk_buff *skb)
+ static int br_validate_ipv4(struct net *net, struct sk_buff *skb)
+ {
+ 	const struct iphdr *iph;
+-	u32 len;
++	u32 len, thoff;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
++	iph = ip4_parse(skb, 0, &thoff);
++	if (!iph)
+ 		goto inhdr_error;
+ 
+-	iph = ip_hdr(skb);
+-
+-	/* Basic sanity checks */
+-	if (iph->ihl < 5 || iph->version != 4)
+-		goto inhdr_error;
+-
+-	if (!pskb_may_pull(skb, iph->ihl*4))
++	if (!pskb_may_pull(skb, thoff))
+ 		goto inhdr_error;
+ 
+ 	iph = ip_hdr(skb);
+@@ -228,7 +223,7 @@ static int br_validate_ipv4(struct net *net, struct sk_buff *skb)
+ 	if (skb->len < len) {
+ 		__IP_INC_STATS(net, IPSTATS_MIB_INTRUNCATEDPKTS);
+ 		goto drop;
+-	} else if (len < (iph->ihl*4))
++	} else if (len < thoff)
+ 		goto inhdr_error;
+ 
+ 	if (pskb_trim_rcsum(skb, len)) {
+diff --git a/net/ipv4/ip_input.c b/net/ipv4/ip_input.c
+index 9860178752b8c..5adf01763e857 100644
+--- a/net/ipv4/ip_input.c
++++ b/net/ipv4/ip_input.c
+@@ -500,7 +500,7 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+ {
+ 	const struct iphdr *iph;
+ 	int drop_reason;
+-	u32 len;
++	u32 len, thoff;
+ 
+ 	/* When the interface is in promisc. mode, drop all the crap
+ 	 * that it receives, do not try to analyse it.
+@@ -520,10 +520,6 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+ 	}
+ 
+ 	drop_reason = SKB_DROP_REASON_NOT_SPECIFIED;
+-	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
+-		goto inhdr_error;
+-
+-	iph = ip_hdr(skb);
+ 
+ 	/*
+ 	 *	RFC1122: 3.2.1.2 MUST silently discard any IP frame that fails the checksum.
+@@ -536,7 +532,8 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+ 	 *	4.	Doesn't have a bogus length
+ 	 */
+ 
+-	if (iph->ihl < 5 || iph->version != 4)
++	iph = ip4_parse(skb, 0, &thoff);
++	if (!iph)
+ 		goto inhdr_error;
+ 
+ 	BUILD_BUG_ON(IPSTATS_MIB_ECT1PKTS != IPSTATS_MIB_NOECTPKTS + INET_ECN_ECT_1);
+@@ -546,7 +543,7 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+ 		       IPSTATS_MIB_NOECTPKTS + (iph->tos & INET_ECN_MASK),
+ 		       max_t(unsigned short, 1, skb_shinfo(skb)->gso_segs));
+ 
+-	if (!pskb_may_pull(skb, iph->ihl*4))
++	if (!pskb_may_pull(skb, thoff))
+ 		goto inhdr_error;
+ 
+ 	iph = ip_hdr(skb);
+@@ -559,7 +556,7 @@ static struct sk_buff *ip_rcv_core(struct sk_buff *skb, struct net *net)
+ 		drop_reason = SKB_DROP_REASON_PKT_TOO_SMALL;
+ 		__IP_INC_STATS(net, IPSTATS_MIB_INTRUNCATEDPKTS);
+ 		goto drop;
+-	} else if (len < (iph->ihl*4))
++	} else if (len < thoff)
+ 		goto inhdr_error;
+ 
+ 	/* Our transport medium may have padded the buffer out. Now we know it
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index 59ec465a9df98..42d639854ddf1 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -25,22 +25,19 @@ nf_reject_ip_tcphdr_get(struct sk_buff *oldskb,
+ static int nf_reject_iphdr_validate(struct sk_buff *skb)
+ {
+ 	struct iphdr *iph;
+-	u32 len;
++	u32 len, thoff;
+ 
+-	if (!pskb_may_pull(skb, sizeof(struct iphdr)))
+-		return 0;
+-
+-	iph = ip_hdr(skb);
+-	if (iph->ihl < 5 || iph->version != 4)
++	iph = ip4_parse(skb, 0, &thoff);
++	if (!iph)
+ 		return 0;
+ 
+ 	len = ntohs(iph->tot_len);
+ 	if (skb->len < len)
+ 		return 0;
+-	else if (len < (iph->ihl*4))
++	else if (len < thoff)
+ 		return 0;
+ 
+-	if (!pskb_may_pull(skb, iph->ihl*4))
++	if (!pskb_may_pull(skb, thoff))
+ 		return 0;
+ 
+ 	return 1;
+-- 
+MST
 
-netif_running() tests __LINK_STATE_START, which is removed in
-__dev_close_many() prior to calling the driver's ndo_stop().
-
-Can we make use of netif_running() prior to calling do_set_mode(dev,
-CAN_MODE_START)? from can_restart()?
-
-can_bus_off() should not schedule_delayed_work() if !netif_running().
-
-We still have to call cancel_delayed_work_sync(&priv->can.restart_work)
-=66rom each driver, though.
-
-What do you think?
-
-Marc
-
---
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---25w3tbmyskksrjyb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCas4O2wAKCRDMOmT6rpmt
-0q+pAPwIF8wpYL7J1/gk9g6RXhUr5SARSzzpYTyGVX3yt2JlIQEAxgkwnBhMJin5
-BgazUeZQAgL09GXx7TEVzKpH1RZCUw0=
-=mEzK
------END PGP SIGNATURE-----
-
---25w3tbmyskksrjyb--
