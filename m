@@ -1,289 +1,206 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECB24EE84D
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E962BFC85
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791892176; cv=none; b=pPBJrOUIheHn1YqUcecslfb38zmqX8gqFCD7Cx06oucM+d+El0V0F38+rFzxaHi47dVmCblVP9uaELyCw0j9zfNR5i9xrbQR9yyX6aMS4K0L9KzLatJxnkPeS3MblrJYD/3lO93zEYAUdNd0KaM82fKs2kXdHRYqEH4oGajgtZ8=
+	t=1791892229; cv=none; b=ImIFzFBcHfPpV/Nnl+aNdsEUpG8EU0lIyjkiLjhBHu8aTb2Q3TEOLCBqzdUxHB9DMkes2g/lHH4euDN6r3kRjNMKtb70r5fBCHIl4Co3WboFUEmDQ9nI0R1KBAFEIi8bq+1//wUTj1RjCk85PPUJGQXYFaC+/hZfCw8ZUwOgtbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791892176; c=relaxed/simple;
-	bh=uPem++P5ND2UdG5Rfp/39oIo1piUSvZOSUqNOqUrr6I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oUqHxleduz0Blhm7tOmnfHdLcE1TAFhvfNAQsaMnWxqCDuEw2L45eywisw7GGGqQrBPFn9f+XpmrmoAJv9cA6onj0BetxU5WtUjJsb6lJpp9lsWTkFM2YKES5ShaCeFc4RT1xAaYyfVrksuYF6q67V4IDGSt25KTzsBtaZ04e1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=P5e642az; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=b2LCLKsO; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1791892229; c=relaxed/simple;
+	bh=DBTemxiWoOnRAFX2Pwljdb0lwH8+iBX756GwZjJBks4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YOVQ0WDp8uJRl/3YQEhGVQVaPDWKCzy6S/rHY89udSc/gWVeLCjDDJ/zOI4erZBl4NGdMd1oy1NC0BcfwS6LUVCcm3oNBsXAiAuNdWO+j+TyHGn9Cv0t6i1YJXgnx3YKipqn1eHYoarZe6UUb1LPMr2SFnknnYxbSrk5YCSLHJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLW77vEV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="P5e642az";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="b2LCLKsO"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DBTufQ949398
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:49:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	BzlXRUn6u2bY0KUvJNLoRH9T0Jg5xwYBbgQJM3XPKPg=; b=P5e642azLWVj3iu+
-	iN+i8gF8R1uBaMGN8uFWFOa4m46cKuRBLzV/ZmzD6VQNGadMLEY2VlGtYVPeTrbT
-	Zd9epKhfcnHDA+xF5dAscAkqNO34USt3cAaeNt87PYFpXXDPmlzQULZGpxLCBCn7
-	J13LPjtwi5eTQxXise18XcxRjjtz+weAMN4myDN+io4++8khkk9Mp8cUoFph3kMR
-	7CcOjuhLyuOPrDa0lsRzElMlcbXP8Dx3p7YXhOK8/wVd8ztZ9DarKtEmEnWFpmMo
-	e65c0GcURel6JZU3dcV1EB/CUj0gZa7GOaZFN55ZVkZlX1/OlNcpBZc0NWGlF04T
-	T2RrrA==
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h9f629d6x-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:49:33 +0000 (GMT)
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-88c768886a6so1876078b3a.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 04:49:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791892173; x=1792496973; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BzlXRUn6u2bY0KUvJNLoRH9T0Jg5xwYBbgQJM3XPKPg=;
-        b=b2LCLKsOIaQmJU/WSHI9bK2AJWoYmQOwaS8FSNXBDguTMyLnSBpWbnFGwm/gWbR0dY
-         LXZELn8AkjlpDW2YasZ3byMuoG1Ssd47GblbypbOVpTJOFJ2q4lvAqbpWvTfjjHrx42f
-         H3jRbwMFvdc9zbp9zMFlyWVBKdN8Bt2TuMOyDf/WYe+e4YlsMgTUoY8pqm/Hbt10r7Qm
-         pcqVwRztGDVMaSL2rhkAO72yIRD3YNM4fQj0BTuPgRM7fueAFZcfNZqDoC2o1JVia2Oy
-         wEEDBiYK+BQYw373dloEM0yIeO9Vutr41r/gFMrlgsFZ9rMkLLTGaqjEBmB8dtRTr6/V
-         /D3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791892173; x=1792496973;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BzlXRUn6u2bY0KUvJNLoRH9T0Jg5xwYBbgQJM3XPKPg=;
-        b=FpEYIcEu7J6DswjSlTmI7MdVoy3P6NxHN22Sn/Y+lB1nG1k2MzCTva7n6Ffw/9sbrB
-         6BZVlr1M0OKyqWft7RVKfA9X2B2AXRKaCeJHfyzlc03IYUQxU7CGk5TZPnsLqU1BgQ0I
-         5joROVgYbAMDU6lWhGi44aTXxushHIUbnVZwvL+iu6gfNktYJ5YjloPdfj4UYDpkwo3X
-         sFIAPplNko+NjX6qL2JQyck/+HBJEWTLF0P0uzoJlEztB5OmRTqgaIJSInJVqWeGUM0Z
-         ZXkxkJkrKfzc9iQI+vNeQBq6gChLnl1DaV8tHKi2gUJaATzkFdd6cH7Xb/8maq0PgJMm
-         cwkg==
-X-Forwarded-Encrypted: i=1; AKwUvBxldoAOMw1P8ge3pYJvBGWqD5dtXJowE9cyWPdAO2l5Wpnb3Q+n1gKjTtxhMCYKFy6F1GBwLe4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ2W95ttjG7k+kCWALAWVg4S/WkZvhPulM5CMkTQjOz0EX3AI4N
-	GgmRVyQV0f2PhgwgmlocbQsR57bE+oJKEmH9zFX/46Nvl9mapmmS5kv8z/tj/0P2GahPkxJfGxN
-	l+TUtQYQQqFvvMCkUkfNjvlJ2yC1BJ5HhhXH4KlcPW84vQsrHeCn9cViahtk=
-X-Gm-Gg: AYBFou29YR84BtY3dGvXVpfi77MVdcc51AVqbayT4peqIkWbEQ21p3CDaLb6D6XwQQE
-	L3aYXUYevNDfihS06vJhc3KvvCxQ5gggnD/3RQPr7wgOAU6j+M6b7m34cOO58/u53LEI47urT6/
-	ZIuRdCRRIDdJjJb5w00Eg4a9Wh6E6JywmcN/MUqd9SntQ2M1A+57fIA9nsewo6kK6DaMihhvGvk
-	TGNQ+fsD/WBNmM0816SSFDBI5H0xnuhAatLKFl7ZXAdqlm5BHvdNbUhvh+xpEj0MAlUu/GrlDuV
-	9WMy9XRY+Dbf2MKANASP95Wy2TgK51d7KaIy+2G0feraoge+i33wCnLE4AYUojw3UhTnNsuO42I
-	exRg+HhCnzRyGyc6HEMSCnfWzKflJ
-X-Received: by 2002:a05:6a00:7615:b0:897:dda6:ad35 with SMTP id d2e1a72fcca58-897dda6b684mr8132097b3a.41.1791892172947;
-        Tue, 13 Oct 2026 04:49:32 -0700 (PDT)
-X-Received: by 2002:a05:6a00:7615:b0:897:dda6:ad35 with SMTP id d2e1a72fcca58-897dda6b684mr8132066b3a.41.1791892172464;
-        Tue, 13 Oct 2026 04:49:32 -0700 (PDT)
-Received: from [10.217.216.70] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c3106de6sm4969602b3a.14.2026.10.13.04.49.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 04:49:32 -0700 (PDT)
-Message-ID: <7f6839fb-59b0-4f6d-a3f8-7579f6d40857@oss.qualcomm.com>
-Date: Tue, 13 Oct 2026 17:19:15 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLW77vEV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F1F1F00898;
+	Tue, 13 Oct 2026 11:50:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791892227;
+	bh=e0eDUJaFQo0ItmAwPnAwfvEdf3XKnnNmLxf3oyMhGJ8=;
+	h=From:To:Cc:Subject:Date;
+	b=YLW77vEV/tklwU9oa5LAhlT2sZQGI6xlli+R1UMccIDBoAEXz5sdTOmgaKh6epO3u
+	 e4UubPFoA1FY6SCAMHkb6uMl0kwZgAxEHRYfcTMTFibgyjRGQ80YwEOEPrIAVy8TMl
+	 njGFO0EcZPpEHx8wHyWClFl0NNGHdBz5KP+iq3/Ks9dQJ0gvSALs7bXgZPrNNmTfVb
+	 lXB26pt/b3tC/KiKbtlzE49lGMtpRz0I6rlK6KStmJ+Jx6estkFkN56mUQYcu20E9d
+	 1EpuCy41Yr+xazPFLolb74MoEH7tXZxH4CCuXC4gkxyas0YK7QvSQYcckdA7SVKmRR
+	 UiNvUNE9A1lSQ==
+From: Eric Dumazet <edumazet@kernel.org>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	Eric Dumazet <edumazet@kernel.org>,
+	=?UTF-8?q?Jan=20=C4=8Cerm=C3=A1k?= <sairon@sairon.cz>,
+	Stefan Agner <stefan@agner.ch>,
+	hitchin999 <hitchin999@users.noreply.github.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net v4] vlan: restore HW VLAN tag insertion with reorder_hdr off
+Date: Tue, 13 Oct 2026 13:50:22 +0200
+Message-ID: <20261013115022.1043024-1-edumazet@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] dt-bindings: ptp: Document the TSCSS on Qualcomm
- Lemans and Monaco SoCs
-To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
-        Taniya Das <taniya.das@oss.qualcomm.com>,
-        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260727-tscss-v1-0-beed14e72510@oss.qualcomm.com>
- <20260727-tscss-v1-1-beed14e72510@oss.qualcomm.com>
- <02792987-7ad8-4a6b-81ad-559c63174bb0@kernel.org>
- <640acacb-1704-4ee6-aa34-d6be3b30b44b@oss.qualcomm.com>
- <f5aa313d-0e23-41fa-b59b-9388839b2525@kernel.org>
-Content-Language: en-US
-From: Imran Shaik <imran.shaik@oss.qualcomm.com>
-In-Reply-To: <f5aa313d-0e23-41fa-b59b-9388839b2525@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=FOKOVOos c=1 sm=1 tr=0 ts=6ace1acd cx=c_pps
- a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=L7LEkksTssx7nc12Xf0A:9 a=QEXdDO2ut3YA:10 a=zc0IvFSfCIW2DFIPzwfm:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA0NiBTYWx0ZWRfX797Vj2TpSaVr
- a/6STBaFFvhnM/wUB/LCAdR+Ai8PluXAPpHgMiWnzILhVE37gQ/YSJKDDGawp22M6YBVAVK5ie4
- RnA1HpbJ19ITkrqynNINcRaR2mQrOA4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA0NiBTYWx0ZWRfX7NJ8T57/CRbp
- YSCfKhNr6XnfS/A1VkczO5DLQuhYJGRzLiLz63zdeKZWjb6ardDLl7g7refMDaRorgS0dKv9SYB
- LfLswVFwcL73MqZ/HlG8kdVWSpPQjOsd7MappehhRnSUW1Z/3xBnY4/s5aPbiFf0HAZNqwkHlkN
- 6RsneC3Msa4odi/VlTih5aqgsoUUn2ocaqyChNU8P5aqn+nGGEe/nF923E1v8ynB2PR+aWK+cCR
- D54nPG2u0tIarkDxJiHsgnB+FFH0DmtDLtrRXERocnMZN5pPULxSUaPYjCJ2f8n6/b+QuY1C9Y8
- zVRk561WPdr2Qf6aUrJXgH+dZha7iRpjLGfPv+/0SnK1opEQIBvhupCmG9fpE4ksuZy1FUw7rob
- 1udcvTKzIl27n7kZ04MsWNTByHYniJwYm6u6D39G1W6/TIoX0Ht5Bq/S/T8qjs4A30ErF1VxBcU
- f/iqVlTAg7yDKNyKSMA==
-X-Proofpoint-GUID: YroEzoYYeyZdcE1q5m0L2vI9UY7jvAhA
-X-Proofpoint-ORIG-GUID: YroEzoYYeyZdcE1q5m0L2vI9UY7jvAhA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610130046
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+Commit 447cbe95ebb9 ("vlan: fix skb_under_panic and races when toggling
+HW VLAN offload") replaced vlan_passthru_header_ops with vlan_header_ops
+unconditionally to avoid lockless data races when modifying
+hard_header_len dynamically under RTNL.
 
+Prior to that commit, vlan devices on top of a real device capable of
+HW VLAN TX offload used vlan_passthru_header_ops, which never inserted
+the 802.1Q header in the frame.
 
-On 01-09-2026 12:10 pm, Krzysztof Kozlowski wrote:
-> On 01/09/2026 08:31, Imran Shaik wrote:
->>>
->>>> +  clocks:
->>>> +    minItems: 2
->>>> +    items:
->>>> +      - description: TSC AHB configuration clock.
->>>> +      - description: TSC global counter clock.
->>>> +      - description: TSC ETU clock.
->>>> +
->>>> +  clock-names:
->>>> +    minItems: 2
->>>
->>> Why is this flexible?
->>>
->>
->> Actually, the TSC block can standalone work without the ETU support as
->> well. This ETU clock is require only when we add the ETU slice sub
->> nodes. Hence, keeping the minItems to 2, excluding the ETU clock.
-> 
-> Hardware either has them or not. Whether they are necessary to
-> prepared/enabled is independent thing and job for the driver.
-> 
+Now, with reorder_hdr=off (as done by Home Assistant OS / NetworkManager
+when flags are omitted over D-Bus), vlan_dev_hard_header() always pushes
+an in-band 802.1Q header, and vlan_dev_hard_start_xmit() hands the frame
+to the real device as is, even if the real device supports HW VLAN TX
+offload.
 
-Sure, will drop that flexible logic.
+This is a regression for r8169 users (Realtek RTL8168h), who report
+transmit queue timeouts (NETDEV WATCHDOG): this NIC stalls when asked
+to offload checksum and/or TSO for frames carrying an in-band tag.
+Users of r8152 based USB adapters were affected as well.
 
-> 
->>
->>>> +    items:
->>>> +      - const: ahb
->>>> +      - const: cntr
->>>> +      - const: etu
->>>> +
->>>> +  interrupts:
->>>> +    description: Summary interrupt raised based on external event for any of the ETU slices.
->>>
->>> Please follow Linux coding style.
->>>
->>
->> Sure, will update.
->>
->>>> +    maxItems: 1
->>>> +
->>>> +  interrupt-names:
->>>> +    items:
->>>> +      - const: etu_summary
->>>> +
->>>> +  assigned-clocks: true
->>>> +  assigned-clock-rates: true
->>>
->>> Drop. From where did you take it?
->>>
->>
->> Actually, we need these properties to be present in the DTS to take care
->> of the clock rate requirements.
->>
->> Please suggest on how to handle such requirements.
-> 
-> Why does this binding has to be different than ALL other bindings in the
-> kernel? I am not talking about DTS now.
-> 
+Reverting the blamed commit, disabling TX checksum offload (which
+also disables TSO), or setting reorder_hdr=on were all reported to
+work around the issue.
 
-Sure, will check and drop.
+Keep vlan_dev_hard_header() as is: the in-band header keeps the frame
+layout seen at the vlan device egress (taps, tc, netfilter) unchanged,
+and is relied upon by stacked vlans (Q-in-Q) and by AF_PACKET SOCK_DGRAM
+users sending ETH_P_8021Q frames.
 
->>
->>>> +
->>>> +  "#address-cells":
->>>> +    const: 2
->>>> +
->>>> +  "#size-cells":
->>>> +    const: 2
->>>> +
->>>> +  ranges: true
->>>> +
->>>> +patternProperties:
->>>> +  "^etu-slice@[0-9a-f]+$":
->>>> +    type: object
->>>> +    description: ETU slice configuration
->>>> +    properties:
->>>> +      reg:
->>>> +        maxItems: 1
->>>> +
->>>> +      pinctrl-0: true
->>>> +
->>>> +      pinctrl-names:
->>>> +        items:
->>>> +          - const: default
->>>
->>> Heh? Which code do you copy?
->>>
->>
->> Each ETU slice has its own external event pin config, so kept pinctrl-0
->> and pinctrl-names on the slice subnode. Please suggest if you prefer
->> otherwise.
-> 
-> No, from where did you get this code? Why are you sending bindings which
-> are different then all other bindings?
-> 
+Instead, when vlan_dev_hard_start_xmit() gets a frame carrying an
+in-band tag with our protocol and the real device can insert tags,
+move that tag to skb->vlan_tci with __skb_vlan_pop(), so that the real
+device inserts it. Frames sent on the wire are unchanged, except that
+frames shorter than 64 bytes with their tag now get up to 4 bytes of
+extra padding, as with reorder_hdr=on and before 447cbe95ebb9.
 
-I was referring to the example in [1] when adding the pinctrl properties
-under the etu-slice sub node.
+skb_reset_mac_header() is needed first, because not all ndo_start_xmit()
+callers set the mac header (e.g. AF_XDP copy mode, which uses
+__dev_direct_xmit()).
 
-[1] - 
-Documentation/devicetree/bindings/media/samsung,exynos4212-fimc-is.yaml
+vlan_set_encap_proto() may read the two bytes after the vlan header,
+so frames whose linear part is shorter than VLAN_ETH_HLEN + 2 are sent
+unchanged, as before. This also makes sure h_vlan_proto, read earlier
+in the function, was in the linear part. Shared skbs (e.g. from
+pktgen) are also sent unchanged, since popping the tag modifies the
+skb, as are skbs already carrying a hwaccel tag (e.g. from generic XDP
+redirect), whose tag must not be overwritten, skbs carrying XDP
+metadata, which the pop would have to move, and CHECKSUM_PARTIAL skbs
+whose csum_start lies within the first VLAN_ETH_HLEN bytes (only
+possible with bogus offsets, e.g. from AF_XDP tx metadata), which the
+pop would leave before skb->data.
+If popping the header fails (memory allocation failure), the frame is
+dropped and counted in tx_dropped, rather than handing the real device
+a frame with an in-band tag.
 
-On checking further, I found that our etu-slice sub node deviates from
-that example, since we don't have a compatible string for the sub node.
+tx_bytes is now sampled before the pop, so the vlan device statistics
+do not change.
 
-Please let me know if we should move the pinctrl properties under the
-tscss node with per-slice names, or instead keep them under the
-etu-slice sub node and add a compatible there.
+This also applies to frames provided by the sender with our tag
+(AF_PACKET SOCK_RAW, or frames redirected from another reorder_hdr=off
+vlan): the real device now inserts their tag too.
 
-> 
->>
->>>> +
->>>> +      qcom,etu-event-sel:
->>>> +        description: Event selection value for this slice.
->>>> +        $ref: /schemas/types.yaml#/definitions/uint32
->>>> +
->>>> +      qcom,etu-slice:
->>>> +        description: ETU slice identifier.
->>>
->>> You do not get identifiers. Please read writing bindings.
->>>
->>
->> In general, any ETU slice can function with any ETU event sel, and this
->> might not be 1-1 always. Also, these ETU slices can be configured by the
->> vendors based on the requirements of the GPIOs on the board. Hence, this
->> etu-slice identifier will provide the flexibility to configure
->> accordingly.
-> 
-> 'reg' defines which ETU slice is this, no?
-> 
+Fixes: 447cbe95ebb9 ("vlan: fix skb_under_panic and races when toggling HW VLAN offload")
+Reported-by: Jan Čermák <sairon@sairon.cz>
+Closes: https://lore.kernel.org/netdev/CAPa5EdCj3v17tB-SF2JNecq5Q8s1Pranr-XzAFWNpNTBPgPG7w@mail.gmail.com/
+Reported-by: Stefan Agner <stefan@agner.ch>
+Reported-by: hitchin999 <hitchin999@users.noreply.github.com>
+Closes: https://github.com/home-assistant/operating-system/issues/5019
+Tested-by: Jan Čermák <sairon@sairon.cz>
+Assisted-by: LLM
+Signed-off-by: Eric Dumazet <edumazet@kernel.org>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+---
+v4: Use dev_kfree_skb_any() in the drop path, ndo_start_xmit() can run
+    with IRQs disabled from netpoll (sashiko).
+    Leave alone skbs already carrying a hwaccel tag, skbs carrying XDP
+    metadata, skbs whose linear part is too short (this removes the
+    pskb_may_pull()), and CHECKSUM_PARTIAL skbs with csum_start inside
+    the popped header (sashiko).
+    Mention r8152, add Jan's Tested-by (v3 on v6.18.54, r8152 adapter).
+v3: https://lore.kernel.org/netdev/20261010145106.773639-1-edumazet@kernel.org/
+    Different approach. v1 and v2 removed the in-band header built by
+    vlan_dev_hard_header(), which changed reorder_hdr=off behavior beyond
+    the regression (sashiko). Keep it, and move it to skb->vlan_tci in
+    vlan_dev_hard_start_xmit() when the real device can insert it.
+    Tested with a veth based selftest (tx-vlan-hw-insert on/off,
+    reorder_hdr on/off, Q-in-Q, AF_PACKET SOCK_RAW and SOCK_DGRAM),
+    to be sent separately.
+    r8169 can still be given in-band tagged frames with checksum or TSO
+    offload requested by other paths (e.g. ethtool -K <dev> txvlan off).
+    A driver hardening fix for rtl8169_features_check() will follow.
+v2: https://lore.kernel.org/netdev/20261008123812.554729-1-edumazet@kernel.org/
+v1: https://lore.kernel.org/netdev/20261007073027.459868-1-edumazet@kernel.org/
 
-Yes, will drop qcom,etu-slice property.
+ net/8021q/vlan_dev.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-> 
-> Best regards,
-> Krzysztof
+diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
+index c949c6a829456c2f75d6c514b35a85ff64c493d8..2d775b4c84ce6176431e1264ec6991765bff4443 100644
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -110,6 +110,8 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
+ 	unsigned int len;
+ 	int ret;
+ 
++	len = skb->len;
++
+ 	/* Handle non-VLAN frames if they are sent to us, for example by DHCP.
+ 	 *
+ 	 * NOTE: THIS ASSUMES DIX ETHERNET, SPECIFICALLY NOT SUPPORTING
+@@ -121,10 +123,39 @@ static netdev_tx_t vlan_dev_hard_start_xmit(struct sk_buff *skb,
+ 		vlan_tci = vlan->vlan_id;
+ 		vlan_tci |= vlan_dev_get_egress_qos_mask(dev, skb->priority);
+ 		__vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
++	} else if (skb_headlen(skb) >= VLAN_ETH_HLEN + sizeof(__be16) &&
++		   !skb_shared(skb) && !skb_vlan_tag_present(skb) &&
++		   !skb_metadata_len(skb) &&
++		   (skb->ip_summed != CHECKSUM_PARTIAL ||
++		    skb_checksum_start_offset(skb) >= VLAN_ETH_HLEN) &&
++		   vlan_hw_offload_capable(READ_ONCE(vlan->real_dev->features),
++					   vlan->vlan_proto)) {
++		u16 vlan_tci;
++
++		/* The frame carries its outer tag in-band, either inserted
++		 * by vlan_dev_hard_header() or provided by the sender.
++		 * Let the real device insert it: some NICs can not offload
++		 * checksum or TSO for frames carrying an in-band tag.
++		 * Not all ndo_start_xmit() callers set the mac header.
++		 * vlan_set_encap_proto() may read two bytes after the vlan
++		 * header, so frames with a shorter linear part are sent
++		 * unchanged, as are shared skbs (e.g. from pktgen), skbs
++		 * already carrying a hwaccel tag (e.g. from generic XDP
++		 * redirect), skbs carrying XDP metadata, and CHECKSUM_PARTIAL
++		 * skbs whose checksum starts within the header to be popped.
++		 * On allocation failure, drop the frame rather than handing
++		 * it to the real device with an in-band tag.
++		 */
++		skb_reset_mac_header(skb);
++		if (unlikely(__skb_vlan_pop(skb, &vlan_tci))) {
++			dev_kfree_skb_any(skb);
++			this_cpu_inc(vlan->vlan_pcpu_stats->tx_dropped);
++			return NETDEV_TX_OK;
++		}
++		__vlan_hwaccel_put_tag(skb, vlan->vlan_proto, vlan_tci);
+ 	}
+ 
+ 	skb->dev = vlan->real_dev;
+-	len = skb->len;
+ 	if (unlikely(netpoll_tx_running(dev)))
+ 		return vlan_netpoll_send_skb(vlan, skb);
+ 
 
+base-commit: 37f12441f557468a56c1e27790413aa78c82afa2
+-- 
+2.43.0
