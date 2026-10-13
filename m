@@ -1,253 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD135172E9;
-	Tue, 13 Oct 2026 20:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774DE53D9EA
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791923887; cv=none; b=FsevxVsrIJrDsybTEA8Iv/I/TGFGl39x8u2Ncxj2Yu+MZsiteSkwjzf99eXOdDpBzjL0nw+BveDt6htv7pemIUNO7gEOROluWOzKytG+HzCoZJxvZit/r34RMaFuC9jGfWKwmy9S7dW+gZqIQ/q35BNla4SAc5HgI1S7tD3+aF4=
+	t=1791923911; cv=none; b=Fhs0uEawmfm6vbWqWjcIiQW1+SiVZaauKUhyW2YuMCi353EfP67f+lRxMpHF8iVudYS0TW4yrkLLNmAOSFpGN4eLS/SHx4bx3SK/ewFkh4WU7Hi5axOuWQNJ/25/l7ApxfIV6iZFOzJo6hJXq1O7om50UUlU7oH9hUwnBkQ/VMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791923887; c=relaxed/simple;
-	bh=187hDUtdFS4EHgN7OE03HwzqllHVYYNXEcU3Ewt4VkM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lwJGTB0gaMmEBUcrWV8ca7K+BDXjxatfocnV/4KSR8VYAq1LjcGNwMdSsykwaxIcetGTloLxmSMOcfhB9y45IV6XgTwung4HxC9TxAdLXXxX0KdlDBeac5axmrqmvl7CNPwwQ5KzVAYvbcK/IlBnRaaZNWjFueShBlzMbyCd6xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEI+hMxA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791923911; c=relaxed/simple;
+	bh=31zs8sR/R/SmtXARin9KLj4k0/40iZWjwag/VVg2T3o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ij9GBKR/j7POXW/ponqvAMszoeOMnzeSqECh1wde4b5MCP2TtVlreM7RPLWZsjgobHjYqXrr4Tzt+aYoUZ4BkfIWG89qdOh/l2KsXgOYHnXfWRHIMyX1RblaA7dXw4n+slmiAPN14WV8Ujfe6nOqarmgZqsjJgrWKFVF+Ki3+KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LqcytlGg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AHrVaRK3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEI+hMxA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA2E1F000FF;
-	Tue, 13 Oct 2026 20:38:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791923884;
-	bh=Zbk+3wO+wBQbRvc0Gk1CKBJPfi2gLOEKuwAx50SQHdc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oEI+hMxAvPRd+k9lP1g+RhlHxkdfPA6KgruHo8zZuhw/2uuT7pXylt7Wn7GzIaIJL
-	 dmF+R7vzwIOFbOIOrn3nBRmxS8pDY623dR2/RR1+v3UIPyhr4FqaFGIWK9WF9B/R92
-	 PpI40vQXcT4Aix0amOEHbhTQP1YcRjieVNO21u4N9i7UhRARQcL7p2nqjUfEC20VMV
-	 a8jt9AeG8Kb2LGP0M6Eniv7BmXEAiLacnw5tHJ+dqQ2DNEuDwwhFQuJHobi+bBovZ6
-	 HTdudNnb/BUax3e8Pd4yP3fm5YKLqPzFXJbZ0sG+lTuj9Sfh8U2P0HvDQbA2UH9TCk
-	 CuLKS2fWdgbfg==
-Subject: Re: [PATCH net-next v2] net: mana: add BQL support
-From: netdev-bot+sashiko@kernel.org
-To: hamzamahfooz@linux.microsoft.com
-Cc: netdev@vger.kernel.org, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ernis@linux.microsoft.com, gargaditya@linux.microsoft.com,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 13 Oct 2026 20:38:03 +0000
-Message-ID: <179192388340.434549.533077235115770364@kernel.org>
-In-Reply-To: <20261012193325.4071665-1-hamzamahfooz@linux.microsoft.com>
-References: <20261012193325.4071665-1-hamzamahfooz@linux.microsoft.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LqcytlGg";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AHrVaRK3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791923909;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1QlmvDXTmRUU9nYKkcaNrdZ6s9iHMpAA+451lF8KTl8=;
+	b=LqcytlGgNmVZUdYVQWLdafcFApilMu3fsJDeGZ+wPaNRTl+e+anhMI4maDnKn692vS2oDz
+	IThuOGJt9UTpsK2WvlbWQK/h3m5dC46RBKfY17sNpo7KzR2/bdvLjmcpDkArCHTj62gjxk
+	tqUfwf8JOws+1jP7vWJQxt7JxZo/fCQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-qP4OleUrOMKDZ1j3l76JDA-1; Tue, 13 Oct 2026 20:38:28 +0000
+X-MC-Unique: qP4OleUrOMKDZ1j3l76JDA-1
+X-Mimecast-MFC-AGG-ID: qP4OleUrOMKDZ1j3l76JDA_1791923907
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49cdc4080ddso26094495e9.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:38:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791923907; x=1792528707; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1QlmvDXTmRUU9nYKkcaNrdZ6s9iHMpAA+451lF8KTl8=;
+        b=AHrVaRK3+24yZGmukKCTaVSJBZl2Xp3EVz1T0J9MXR0rLlJ3VGDZMrw0LensKtgJo2
+         XPVf6PoWMBdGYPTOgvIf3pr3Zvw3XN3Ep8z4WlMU88+Bw43KG1wJZAgNpMWXJQgNqJ3k
+         kkd8kAsi2+iA0MxOz0X+VuxR1S06mMqDPy6/4jZJPWYSlwtBcZ27cJ1q1iH/GFnV0w+F
+         cGxl+by5cjZEXUQwCjXXE3Wt7gKOmWmxPPVfCJuc8GOQ2zHunDQeIBUZvkNtcI+n6h4o
+         thB8VFzqahpia8U7A+f9EgtwAOSnO37cWrHEetXCCQM1LyvnvdPXwQzCoHgWzU/QU2nE
+         FAcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791923907; x=1792528707;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1QlmvDXTmRUU9nYKkcaNrdZ6s9iHMpAA+451lF8KTl8=;
+        b=d7jz38XInSJ8dmWKvQlTIhNxL/g2tmKucq/v7pX85m6o+qvFWfnmMGfG/2DoL+34vX
+         xOErvZ0xXyANQESDaPeZl1pk5DHzp0AYzxcI51AdxNA33x2oGyNImN781k3JIDdaKixg
+         uiY1kVglaYTgaw6iq7AtKpBMBB4xQuci7NxhPFeV8n3flSmgWfjSwjDokxVWYW0oabsb
+         yPSijhrc86LMPhG4dvX2eTrD3SivczHjfDD1eka4+9S3QD3Gz5cZ7wx2MtIOme8zd7Wo
+         td/5RF1NCiOC4m/W7hk6GqWEkW/2MNJpzr3jazbEmCI8MclVpNcP/puPu1JUk8wQaX0L
+         Fiqg==
+X-Forwarded-Encrypted: i=1; AKwUvBxspAqrZ3IBM26t6HPWQ2mKyqcc1u0DcludNtevHFo0a+MWPNiKS7EHxrn6QC85/bE6yjzauqg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKPNAgG6U1H+wytREMItcKtl31WZpPW+EPR1TBhCIh7h6/5uME/
+	jjJqc/3w2IbA+PusicovRAv+5T0TtrBrrB+dscWkfMhimFNM1i4spEHwIqQKd/CZsUqZsNjy5Hz
+	Q2diXowSnrnFiIM4hjpMXX5zNeq877wP96t6qlU5cXd1254uSIvassY+Phw==
+X-Gm-Gg: AYBFou305HXgbr1z2yGO5cTHfNe4ZK16vWx9sAzvJ+EX9GQu8oRNKMOTsQY1VLzGUs/
+	4/E6keomzSE9kkBKvIZtL4YsCG+X0IfMLSLe3hSZRYmhtlwinoKJeEUDthYXQNAfjhlB5hjik7M
+	dnlTIqJrXwHVnuw1J3l+1bI6tpFecfLHsNLX/h/FEU3qWgUuPBBkHXNVfT5Kp4v7ZnZXotl3hE1
+	kgbYyHAWNAUCLIUpQ9Nv/5FMiq4Xu+iunrwyjXw/VHzAtRwEDokbXSXeMdUewb6egiDFKgET7UK
+	krnsVD/5snmJ758ezkns9NOMZrzug1m3IGPK6xTj2dQCjKMo6sXY2bZklBAUcjsNY6DuiA==
+X-Received: by 2002:a05:600c:58d3:b0:4a1:9388:7f40 with SMTP id 5b1f17b1804b1-4a193888295mr163023985e9.4.1791923906936;
+        Tue, 13 Oct 2026 13:38:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:58d3:b0:4a1:9388:7f40 with SMTP id 5b1f17b1804b1-4a193888295mr163023725e9.4.1791923906449;
+        Tue, 13 Oct 2026 13:38:26 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab4edfsm7923045f8f.26.2026.10.13.13.38.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 13:38:24 -0700 (PDT)
+Date: Tue, 13 Oct 2026 16:38:21 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Max Krasnyansky <maxk@qualcomm.com>,
+	Rusty Russell <rusty@rustcorp.com.au>
+Subject: Re: [PATCH net-next 3/4] net: resolve uncommon partial checksums at
+ ingress
+Message-ID: <20261013163706-mutt-send-email-mst@kernel.org>
+References: <cover.1791887415.git.mst@redhat.com>
+ <e12c6a45aae251d1642af55d8d3121e554993a66.1791887415.git.mst@redhat.com>
+ <20261013070549-mutt-send-email-mst@kernel.org>
+ <CAF=yD-KdTn2rHyp_j8ORr9F5hpm=TzaPRan5+gvLiYBd9HP-sg@mail.gmail.com>
+ <20261013143335-mutt-send-email-mst@kernel.org>
+ <CAF=yD-Lz92nGVFab1Dq8M9VusDsKf-ioda8KrZoyh28x3Xtg4Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAF=yD-Lz92nGVFab1Dq8M9VusDsKf-ioda8KrZoyh28x3Xtg4Q@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider.
+On Tue, Oct 13, 2026 at 02:32:26PM -0600, Willem de Bruijn wrote:
+> > > > > +
+> > > > > +     if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type, inner_nh,
+> > > > > +                                            inner_proto))
+> > > > > +             return 0;
+> > > > > +
+> > > > > +     if (skb_is_gso(skb))
+> > > > > +             return -EINVAL;
+> > >
+> > > This is a risk the commit message will have to call out.
+> >
+> > I tried with this:
+> >
+> >         > > > We can't easily "complete the checksum" for GSO we don't recognize - GSO
+> >         > > > assumes knowledge of the protocol. We could segment ignoring the
+> >         > > > checksum then do whatever csum_start and csum_offset say, but that
+> >         > > > seems like an overkill for something that should happen.
+> >
+> > I guess I can add a more detailed explanation about what the risk is?
+> 
+> Let's just explicitly mention the consequence: non-standard GSO
+> packets that previous would be sent may now fail.
+> 
+> >
+> > > I don't see a simple way around it. We discussed segmenting here too,
+> > > but that requires intrusive changes to all callers too.
+> > > Alternatively,
+> > >
+> > > 1. call segmentation, but only to see it remove the SKB_GSO_DODGY and
+> > > thus verify that the TSO/USO packet is valid. Still drop otherwise.
+> > > This also does not add overhead, because it would be called later
+> > > anyway.
+> > >
+> > > 2. a failsafe off-by-default sysctl + static_branch that skips the
+> > > drop when set. Messy, but so is the situation we're dealing with.
+> >
+> > Tack this on top or do you feel it's needed straight away.
+> 
+> Not urgent. Can even wait until a report appears. But worth taking a
+> look sooner if either of us gets around to it.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
+Maybe if people intend all this for stable, I'll feel safer with this in
+there.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] mana: false positive TX watchdog timeout on XDP due to bypassed
-  trans_start
-- [Medium] The v2 change says it keeps XDP traffic from holding off the
-  TX watchdog on a queue stopped by BQL, but XDP traffic can still do so…
-- [Low] The bytes-only BQL branch in mana_start_xmit() is meant for XDP
-  sends on an already-stopped queue, but it also catches the stack…
-- [Low] mana_poll_tx_cq() has WARN_ON_ONCE() early returns inside its
-  completion loop: !completions[i].is_sq (line 1984), a bad client_type…
-
---
-
-net: mana: add BQL support
-
-This adds byte queue limits support to the mana driver. Bytes are reported
-as queued in mana_start_xmit() and as completed in mana_poll_tx_cq(). On
-an already stopped queue only the bytes are counted, and the BQL state is
-reset in mana_destroy_txq() after NAPI is disabled.
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 489558176a5de..7f081c2d16d03 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -543,6 +543,16 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
->  	err = NETDEV_TX_OK;
->  	atomic_inc(&txq->pending_sends);
->  
-> +	/* Account the skb in BQL before the doorbell lets the hardware
-> +	 * complete it. The XDP paths send even when the queue is stopped,
-> +	 * only count the bytes then, since stopping the queue again would
-> +	 * refresh its trans_start and keep the TX watchdog from firing.
-> +	 */
-
-[Severity: Medium]
-Does this fully stop XDP traffic from holding off the TX watchdog?
-
-A few lines earlier in mana_start_xmit(), the driver stops the queue
-whenever the SQ is low. It doesn't check whether the queue is already
-stopped, and it runs before the post error is checked:
-
-	err = mana_gd_post_work_request(gdma_sq, &pkg.wqe_req,
-					(struct gdma_posted_wqe_info *)skb->cb);
-	if (!mana_can_tx(gdma_sq)) {
-		netif_tx_stop_queue(net_txq);
-		apc->eth_stats.stop_queue++;
-	}
-
-netif_tx_stop_queue() always does:
-
-	WRITE_ONCE(dev_queue->trans_start, jiffies);
-
-Say TX completions stop arriving. BQL sets STACK_XOFF, but XDP_TX and
-XDP_REDIRECT frames keep reaching mana_start_xmit() through mana_xdp_tx().
-mana_move_wq_tail() never runs, so XDP fills the SQ.
-
-After that, each XDP attempt either takes the last slot or fails with
--ENOSPC in mana_gd_post_work_request(), since monitor_avl_buf is set. Both
-cases go through netif_tx_stop_queue() and refresh trans_start, so
-dev_watchdog() never sees:
-
-	time_after(jiffies, trans_start + dev->watchdog_timeo)
-
-Then mana_tx_timeout() never schedules the reset that clears the BQL
-state. Stack traffic on that queue stays stopped as long as XDP frames
-keep arriving.
-
-The pre-patch driver had the same DRV_XOFF refresh when completions were
-lost entirely. Still, the commit message says "The TX watchdog covers the
-queues stopped by BQL", and the v2 note says "so that XDP traffic doesn't
-keep the TX watchdog from firing on a queue stopped by BQL".
-
-Does that only hold until the SQ fills? Should the stop and its
-trans_start refresh also be skipped when the queue is already stopped or
-the post failed?
-
-> +	if (netif_xmit_stopped(net_txq))
-> +		__netdev_tx_sent_queue(net_txq, len, true);
-> +	else
-> +		netdev_tx_sent_queue(net_txq, len);
-
-[Severity: High]
-Can this branch make dev_watchdog() fire on a queue whose completions
-are still arriving normally?
-
-XDP_TX and XDP_REDIRECT frames reach mana_start_xmit() without looking
-at STACK_XOFF. Under sustained XDP load they can keep the dql in-flight
-count above its limit.
-
-Once a stack packet crosses the limit, netdev_tx_sent_queue() writes
-trans_start and sets __QUEUE_STATE_STACK_XOFF. From then on
-netif_xmit_stopped() is true, so every XDP frame takes this branch and
-only calls dql_queued(). trans_start is never refreshed.
-
-The netdev_tx_completed_queue() call in mana_poll_tx_cq() does not
-clear STACK_XOFF either. While XDP keeps refilling the queue,
-dql_avail() stays negative after each completion batch.
-
-If the SQ is large enough, for example after a larger ring is set with
-ethtool -G, mana_can_tx() never goes false. Then netif_tx_stop_queue()
-is never called, and nothing else touches trans_start.
-
-The hardware is fine and completions keep coming. Still, after
-watchdog_timeo, dev_watchdog() sees a stopped queue with a stale
-trans_start and calls mana_tx_timeout(). The queue reset tears down and
-recreates the port. As long as the XDP load continues, the same thing
-happens again on the next timeout.
-
-This is the other side of the trade-off made in v2. Refreshing
-trans_start on every XDP send hides a real stall. Never refreshing it
-turns a queue that is only kept over the BQL limit by XDP into a false
-timeout. Stack traffic on that queue is also held off by STACK_XOFF the
-whole time, so the reset is only the visible symptom.
-
-Should XDP frames be kept out of the BQL accounting on both the sent
-and completed side, for example by marking them when they are posted
-and skipping their bytes in mana_poll_tx_cq()? Or is there another way
-to tell a queue that BQL keeps stopped because of XDP from one whose
-completions were lost?
-
-[Severity: Low]
-Is this branch only reached by XDP sends on a queue that was already
-stopped?
-
-Take a stack packet whose post leaves the SQ low. The
-netif_tx_stop_queue() earlier in the same mana_start_xmit() call has just
-set DRV_XOFF. QUEUE_STATE_ANY_XOFF includes DRV_XOFF, so
-netif_xmit_stopped() returns true here.
-
-That packet then goes through __netdev_tx_sent_queue(net_txq, len, true),
-which only calls dql_queued(). It skips the over-limit check in
-netdev_tx_sent_queue() that sets __QUEUE_STATE_STACK_XOFF.
-
-If that packet pushed BQL over its limit, STACK_XOFF is never set. On the
-next completion, netdev_tx_completed_queue() returns early because
-dql_avail() < 0. The DRV_XOFF wake path in mana_poll_tx_cq() then restarts
-the queue while BQL is still over its limit.
-
-So each time the SQ fills, one extra stack packet gets past the BQL limit,
-even though the comment above describes this branch as XDP-only. Could the
-stopped state be checked before the driver's own netif_tx_stop_queue()
-call?
-
-> +
->  	mana_gd_wq_ring_doorbell(gd->gdma_context, gdma_sq);
->  
->  	/* skb may be freed after mana_gd_post_work_request. Do not use it. */
-> @@ -2038,10 +2048,12 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
->  	gdma_wq = txq->gdma_sq;
->  	avail_space = mana_gd_wq_avail_space(gdma_wq);
->  
-> +	net_txq = txq->net_txq;
-> +	netdev_tx_completed_queue(net_txq, pkt_transmitted, tx_bytes);
-
-[Severity: Low]
-Can BQL's in-flight byte count leak when mana_poll_tx_cq() returns early?
-The completion loop has several WARN_ON_ONCE() early returns:
-
-		if (WARN_ON_ONCE(!completions[i].is_sq))
-			return;
-		...
-		if (WARN_ON_ONCE(txq->gdma_txq_id != completions[i].wq_num))
-			return;
-
-		skb = skb_dequeue(&txq->pending_skbs);
-		if (WARN_ON_ONCE(!skb))
-			return;
-
-There is also the client_type check inside the loop and the
-wqe_unit_cnt == 0 check after it.
-
-When one of these fires at iteration k, the earlier iterations have
-already added their lengths to tx_bytes and freed their SKBs with
-napi_consume_skb(). This netdev_tx_completed_queue() call is skipped.
-
-Those bytes then count as in flight in the dql until
-netdev_tx_reset_queue() runs in mana_destroy_txq(). That shrinks the
-usable BQL budget and can set STACK_XOFF while the SQ still has room,
-leaving recovery to the watchdog and a port reset.
-
-Before this patch, these early returns already skipped mana_move_wq_tail()
-and the pending_sends decrement, but the dql imbalance is new. Would
-calling netdev_tx_completed_queue() for the SKBs already freed, for
-example from a common exit label, keep BQL balanced?
-
-> +
->  	/* Ensure tail updated before checking q stop */
->  	smp_mb();
->  
-
-[ ... ]
+Just to make sure, the branch would just short-circuit all checks, yes?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012193325.4071665-1-hamzamahfooz%40linux.microsoft.com
+MST
+
