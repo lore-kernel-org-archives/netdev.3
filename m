@@ -1,198 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0EC3F485E;
-	Tue, 13 Oct 2026 10:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7432E2840
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791887137; cv=none; b=GWIt1LGGDFBaR2m8e+iL9mc1VQ6fAUdfdlR7rpGoKKQDlIksfOyKtSIgM9ZrJ/AM2hQKkDn5QsnSBqtwSBM6T0h/Eoq7VKpjcVJ61Ryb7cXOETnPwUIMjsYUqIP9Qyr1DVLW04P2Xh+XiRXvOMFlaPD9FYUD83OM1n069ni5p2A=
+	t=1791887163; cv=none; b=VHp0RBCfIlUQtmGcSOqjASe4upFr3euH+8ApFUNz5a8SeY97xnZsWWv/ZhDyUvQS7zoKw/duvZOK0xpE0JBK8QaiepGrozPJZ5hjOlr4B6aren/C9eS54ecRX1jwWbKQCOlV6a6Nf9YUme8Btb0N1tzBJrYZA53eMiWHRLHRsNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791887137; c=relaxed/simple;
-	bh=9IS4tJhckiGJ8BxKmoljWf8k9/WOYJOox6WgbjWD2Xk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZXnxlffDn6mYsz1xZ2ea7TBqdcpgRkaIZ7NomQEmTazq8ueM7vEefGbbz4TReJnCWX4hASL0DUGFZ9ehQavjfpTOvYzqypYXBNllGQNmE34Upb18f9ekfne6+myarySt9oVSuIPasP/hy7wvpDTpDf6Fr4cYGm8CwwYqqei1/aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUjz5sLn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791887163; c=relaxed/simple;
+	bh=PhWspvxUuZLK/No+wIlELtNHkbzGGTAu7GurynbRvAo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZMVIR4xmRQIqohmBF/skRZyGvGfFtcIga8ZNvsur5VCECrUdJKM3sdMHzHa9Zq3E29nkJJ9lj1hzrJrFPxj5UC/lwtneRI7zXQJ9a2UllWdYdM14Ori/6yXBN5zGkbRjQNeee7djjqTrc9B1VODu5gQAuE19hF1Mj7EchP2TFGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cilTQx4q; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IgFZmnlQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUjz5sLn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B51D1F000FF;
-	Tue, 13 Oct 2026 10:25:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791887135;
-	bh=Ju32O3/kwQg+IOA3Ruu5zdEPslNO4TgTcZRe2EAX9lE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mUjz5sLnccksSGKBLPgxEkeZYXgzH7QPz4P9xXMFrWfdqW4JNaOpao8HX94BzdmYp
-	 VKgqf78Ae99BrbQ4hxnwt/pgoA6rYsB6BCXSJdbqotq0T+fLTUrDcG2badD1IDjNAA
-	 85qSsvP2dfF++0HYCTs+2qDA10DB8cKP6X3xcmmONzHOs6J7suc8O3iK2auSsLXizn
-	 rfb9dwkg8hBF2M/KVxyC4U1b4YXn/t0iG8Sw3E85nYpIDoqO1kBRZW2vMgpXQNy3+Q
-	 3VAXoeZFB/24Js7rCFjjjXQIjRDyQv/Fsi8NF+6wL0BuaX9CF3rIAzqlhkgHlktE1f
-	 hOnSdndVpPaLw==
-Subject: Re: [PATCH net v2 1/2] net/mlx5: HWS, fix reformat pool creation race
-From: netdev-bot+sashiko@kernel.org
-To: acassen@corp.free.fr
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, moshe@nvidia.com, kliteyn@nvidia.com,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Date: Tue, 13 Oct 2026 10:25:34 +0000
-Message-ID: <179188713478.434549.9962943324361402162@kernel.org>
-In-Reply-To: <20261012100555.1317878-2-acassen@corp.free.fr>
-References: <20261012100555.1317878-2-acassen@corp.free.fr>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cilTQx4q";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IgFZmnlQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791887161;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=stdrh9aF0iw9A+RkWltj8UJ89an/ArnFlZdr2jPOwoU=;
+	b=cilTQx4qtpoVuJZszoU6WnqklSFFYHnji3PXjH523Cw/zlKugEBrXiIfHNqMcet8Fps8Ul
+	F+NE0LR6o+EU4CYeoqBi1jFvjWafqvtcqBiL+34LAdrHFcitqIBfXtGJ9cwNJh2D4UWEj2
+	omdtvJZFRy7xQeAebSOwng/WKNIC3z4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-toI38SFaO3yWgw7sHmqa7Q-1; Tue, 13 Oct 2026 10:26:00 +0000
+X-MC-Unique: toI38SFaO3yWgw7sHmqa7Q-1
+X-Mimecast-MFC-AGG-ID: toI38SFaO3yWgw7sHmqa7Q_1791887159
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c50ed05abso2571105f8f.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:25:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791887159; x=1792491959; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=stdrh9aF0iw9A+RkWltj8UJ89an/ArnFlZdr2jPOwoU=;
+        b=IgFZmnlQKP5OyTeeo9RWnJO+GgaBZRKIh3xjgAHoBktNutpzwFmZloBm59Ee80f1WS
+         5kGbdehe6JwyOkHKmegRwQ223OqeIpIj6oJqcgSe8wOFYtHpYifefxAcJrojq2Feb5qF
+         7UGFwn9qtE7vIbhPDosgw6/A4lm1nOX/Li6QKti7TsFWCSgZw1u9OTFF9MEPliNWftmy
+         ryKH7sdNpcV8Sk3Ed0vhEwYFQZ5fRhUo4FgonChYdpXhFvy2HCSNXnYtDTcQaEkiJ0pB
+         fK/lvf1E8g2TnbXIfxIlV57XdMMKQ8zdtRANSUytypKZ0b7szIGiIHskoOWF3Hj1ePj4
+         Ce8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791887159; x=1792491959;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=stdrh9aF0iw9A+RkWltj8UJ89an/ArnFlZdr2jPOwoU=;
+        b=IXVcYLCUXiz+hlI3MipmfsqRY4InTgwEJoLUV18D9vkrvxl7vXzNYn7bxmf261Fkb0
+         3QB1xlhOLSyITfPuah+bjrRDK4Mvozve5jogL8E6NU3LhRbrsndcYsCzYSJj5wvknkU2
+         2OQhxa8p79j1vP0SxWuwmLeMu7m6jeVtGfEiLAK8U1hZat7cr6KQGk1SEwh8uDG32fv3
+         kSUQ2QOXywht901jB4LWscRaW3PBKcOwZDOifgJj+NKGFW5rWCT9j1WcUSvpA7XmFyKr
+         Oal2VvsekW1vSMB4RUL1AW/d1SLn2OOY3t9AQyJdXmsf2OJruuOBL275bZlbt2d4+7kl
+         gGIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxkNOBPwfLBWQ7FewOK9Fd8PkOo5X+ZMm8t1PibPFiF6rsO9sR7YjIWL4nO2vT/mw6DFmyWoZ4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLn9xBFTnjzEw1YBe+f3ySdi4HCi6diGmWl+WWNI5A+2bXrveOx
+	yNPfuzb4YyzJV4yPZw3R54IHBzRGinvxDKjGGkabUVUg3QsZbWsEGtyqJq6e0uN8NfR+7QiaWAO
+	ymgj12B+6oJD9StVupluo6uSKdIHXPtOigLzgRo/tzkVn2Qu4mt2ZONXcRw==
+X-Gm-Gg: AYBFou2gzxdqbSqr2vUb61j2TOKkQw/lvCxmvmxVeNZcjQnxRBhH+Y0/D26zWjwWy1f
+	4xJMaGAQp5s1KM0PYJNw0A8wC4QsfLbf17aI9Vh87kMdJ668Hxff590Aix07RDZ8iF0BsdlCWJN
+	NWeAtlr9BkyPL2AdLFw50kXFIeVeYwkoY3uj7an/OQPOpc/eTmXIqIXaVi9ZRq0HrlqQUCwyD1f
+	DX7Tixnw+Y+y+10D1H1thDsGoPKGwB8n7j0pTr9NUnNCVSnIStXImOAqrPZwWllD1rYonBXWo9p
+	1x1SgsgF7XnTGADKMXtE7yJOnhWFoo1PAVFBvNQV0euGLVtqYVUJuwPOIWD2ZXDB//y/KSnTA5j
+	LelttSEx579sjd/1rEyEpu7PFYkAlNDsBVvONe/p/szYM6QT6SYVgDDM8MdXqxd5D9WAh/er0sw
+	==
+X-Received: by 2002:a05:6000:2913:b0:487:834:9307 with SMTP id ffacd0b85a97d-48dbacf06d8mr24662185f8f.50.1791887158568;
+        Tue, 13 Oct 2026 03:25:58 -0700 (PDT)
+X-Received: by 2002:a05:6000:2913:b0:487:834:9307 with SMTP id ffacd0b85a97d-48dbacf06d8mr24662145f8f.50.1791887158105;
+        Tue, 13 Oct 2026 03:25:58 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab5af7sm4525045f8f.31.2026.10.13.03.25.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 03:25:57 -0700 (PDT)
+Message-ID: <43857d08-c4f4-44ce-a0b3-0e7fcc56bf90@redhat.com>
+Date: Tue, 13 Oct 2026 12:25:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/3] Report netns cookie in FIB lookup
+ tracepoints
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@kernel.org,
+ dsahern@kernel.org, horms@kernel.org, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com, daniel@iogearbox.net,
+ petrm@nvidia.com, ferenc@fejes.dev
+References: <20261008133158.1438907-1-idosch@nvidia.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261008133158.1438907-1-idosch@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 10/8/26 15:31, Ido Schimmel wrote:
+> The fib:fib_table_lookup and fib6:fib6_table_lookup tracepoints do not
+> report the network namespace in which the lookup was performed, so
+> lookups performed in different namespaces cannot be told apart. The
+> recorded PID does not help either, as lookups in the receive path are
+> performed in softIRQ context.
+> 
+> This is a problem, for example, for netns-aware tracers [1] and
+> multi-ASIC systems where each ASIC and its ports reside in a separate
+> network namespace.
+> 
+> This patchset reports the network namespace cookie in both tracepoints,
+> as commit 27cb3de7f43a ("net: add net cookie for net device trace
+> events") did for the net device tracepoints. This allows filtering
+> lookups performed in a specific network namespace, for example:
+> 
+>   # perf record -a -e fib:fib_table_lookup --filter 'net_cookie == 12'
+> 
+> The cookie of a given network namespace can be retrieved using "ip netns
+> cookie" [2].
+> 
+> Patch #1 reports the cookie in the IPv6 tracepoint, which is already
+> passed the network namespace.
+> 
+> Patch #2 passes the network namespace to fib_table_lookup() and from
+> there to the IPv4 tracepoint.
+> 
+> Patch #3 reports the cookie in the IPv4 tracepoint.
+Not intended to block the above (could be eventually a follow-up), but
+I'm wondering if you have considered adding a `net` (or net_cookie) field
+to the fib_table struct instead of passing the net as an additional argument
+to the lookup functions - AFAICS the latter are also called in critical
+path and the additional arg could be unneeded (very small) overhead.
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+/P
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The commit message says the race is reachable because 'RDMA
-  flow actions on the FDB don't' serialize reformat allocations.
-
-Pre-existing issues:
-- [High] mlx5_cmd_hws_packet_reformat_dealloc() releases
-  MLX5_REFORMAT_TYPE_L2_TO_L3_TUNNEL reformats into the wrong pool.
-
---
-
-net/mlx5: HWS, fix reformat pool creation race
-
-This patch replaces xa_insert() in mlx5_fs_get_pr_encap_pool() with
-xa_cmpxchg(). When two callers create the first reformat pool of a given
-size at the same time, the loser now frees its pool and returns the
-existing one instead of failing with -EBUSY.
-
-> TC serializes these
-> allocations under encap_tbl_lock while RDMA flow actions on the FDB
-> don't.
-
-[Severity: Medium]
-Can the RDMA trigger described here actually be reached? In
-drivers/infiniband/hw/mlx5/fs.c, the
-MLX5_IB_METHOD_FLOW_ACTION_CREATE_PACKET_REFORMAT handler calls
-mlx5_ib_flow_action_packet_reformat_valid() first, and that returns false
-for FDB tables:
-
-    if (!mlx5_ib_flow_action_packet_reformat_valid(mdev, dv_prt, ft_type))
-        return -EOPNOTSUPP;
-
-The encap types are only accepted for MLX5_IB_UAPI_FLOW_TABLE_TYPE_NIC_TX,
-which mlx5_ib_ft_type_to_namespace() maps to MLX5_FLOW_NAMESPACE_EGRESS.
-
-HWS cmds are only installed on the FDB root, because
-mlx5_flow_root_namespace_set_mode() rejects anything other than FS_FT_FDB.
-So RDMA requests never seem to reach mlx5_cmd_hws_packet_reformat_alloc().
-
-The race does look reachable through TC. mlx5e_encap_put() drops
-encap_tbl_lock before it calls mlx5e_encap_dealloc():
-
-    mutex_unlock(&esw->offloads.encap_tbl_lock);
-
-    mlx5e_encap_dealloc(priv, e);
-
-On that path, the L2_TO_L3_TUNNEL case in
-mlx5_cmd_hws_packet_reformat_dealloc() can create an el2tol2tnl pool (see
-below). That can happen at the same time as a TC allocation made under
-encap_tbl_lock.
-
-Could the commit message name the path that actually reaches
-mlx5_fs_get_pr_encap_pool() without serialization?
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
-> index 5a172c572a68f..66edb42268cbd 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c
-
-[ ... ]
-
-> @@ -1242,13 +1242,14 @@ mlx5_fs_get_pr_encap_pool(struct mlx5_core_dev *dev, struct xarray *pr_pools,
->  	err = mlx5_fs_hws_pr_pool_init(pr_pool, dev, size, reformat_type);
->  	if (err)
->  		goto free_pr_pool;
-> -	err = xa_insert(pr_pools, index, pr_pool, GFP_KERNEL);
-> -	if (err)
-> -		goto cleanup_pr_pool;
-> -	return pr_pool;
-> +	old = xa_cmpxchg(pr_pools, index, NULL, pr_pool, GFP_KERNEL);
-> +	if (!old)
-> +		return pr_pool;
->  
-> -cleanup_pr_pool:
->  	mlx5_fs_hws_pr_pool_cleanup(pr_pool);
-> +	kfree(pr_pool);
-> +	return xa_is_err(old) ? ERR_PTR(xa_err(old)) : old;
-> +
->  free_pr_pool:
->  	kfree(pr_pool);
->  	return ERR_PTR(err);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but one of the other callers of
-mlx5_fs_get_pr_encap_pool() looks up the wrong pool for
-MLX5_REFORMAT_TYPE_L2_TO_L3_TUNNEL:
-
-drivers/net/ethernet/mellanox/mlx5/core/steering/hws/fs_hws.c:mlx5_cmd_hws_packet_reformat_dealloc() {
-    ...
-	case MLX5_REFORMAT_TYPE_L2_TO_L3_TUNNEL:
-		pr_pool = mlx5_fs_get_pr_encap_pool(dev, &hws_pool->el2tol2tnl_pools,
-						    MLX5HWS_ACTION_TYP_REFORMAT_L2_TO_TNL_L2,
-						    pr_data->data_size);
-		break;
-    ...
-}
-
-The alloc side in mlx5_cmd_hws_packet_reformat_alloc() uses
-el2tol3tnl_pools and MLX5HWS_ACTION_TYP_REFORMAT_L2_TO_TNL_L3. Should the
-dealloc case use them too?
-
-The lookup is get-or-create, so the free path can allocate a new L2 pool.
-If that allocation fails, "Failed release packet-reformat" is logged and
-the function returns early. Does that leak pr_data->data and the pool
-index?
-
-mlx5_fs_hws_pr_pool_release_pr()->mlx5_fs_pool_release_index() then takes
-the L2 pool's pool_lock and updates the L2 pool's counters. On a fresh
-pool, used_units goes negative, and the owning L3 pool's used_units is
-never decremented.
-
-When the last entry of the bulk is released, this runs against the L2
-pool:
-
-	if (bulk_free_amount == bulk->bulk_len) {
-		list_del(&bulk->pool_list);
-		if (fs_pool->available_units > fs_pool->threshold)
-			mlx5_fs_pool_free_bulk(fs_pool, bulk);
-		else
-			list_add(&bulk->pool_list, &fs_pool->unused);
-	}
-
-The bulk is still linked on the L3 pool's partially_used list, and the L3
-pool_lock is not held here.
-
-mlx5e_encap_put() calls the dealloc after it drops encap_tbl_lock. Could a
-concurrent L3 acquire, holding only the L3 pool_lock, race with this
-list_del() and mlx5_fs_pool_free_bulk()? That could corrupt the list or
-cause a use-after-free of the bulk and its hws_action.
-
-If the bulk goes onto the L2 pool's unused list instead, could later
-L2_TO_L2_TUNNEL encaps be given an L3 tunnel hws_action? The hardware
-would then apply the wrong reformat.
-
-This can be reached with an MPLSoUDP encap on a switchdev eswitch that uses
-HMFS FDB steering. The code comes from aecd9d1020e3, the same commit named
-in this patch's Fixes: tag.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012100555.1317878-1-acassen%40corp.free.fr
