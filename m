@@ -1,146 +1,247 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D3D3822B4;
-	Tue, 13 Oct 2026 08:05:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7403B0AC6;
+	Tue, 13 Oct 2026 08:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791878720; cv=none; b=C3JpmjkL2SGxfCvQ+9NX4uZcdRsAP20l+08w/mdsjS5oKO3MjHILKVefXmvBpsP9nYlFvdJne9OTVA0sSkUUCUVjGm+H8KKQ/ibIIQankjFUJ1slqbHzo0HtP1iRZBwFr5D2ZI0E/19MJd/UqiTqR+RsW8+LUpaqBAdJzUtc2I8=
+	t=1791878764; cv=none; b=OsxJdXgEU9d/nUrRBK/2ydQIi4zA1SvhAAr+sbTntBItqW4GgMe6rONAXc80iD4xzWE/m3Cg/6EhfKXkA0VWE1St0+8dfaSLZiUMyPurkdwv5lO65Tz5Qj1uk1DdpqsWcynpTK/dlbXGqFNjZpXehjc51+GB17y1TN7YQ47Ed8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791878720; c=relaxed/simple;
-	bh=joNvyENe9xeZ777E6zBFc0KzN8ZGZ8enwnURym1z9Hk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=u/gv8OW+RRrfxeykiFGMF/H54wW8crN64UVG8eURGSK4kIE/Qpo3MugJ0ucFdP4mVPw4eWmOP4VpVw9QBu6NZOExE69Qu9O2aTS4NpetXv4sP9iTdoC9LT3OeuAvN9a0OCS9TPgTSz5sTfbcxFPpHtVKpLHPS+V5vi6cEgfto/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RQ8mVNZ4; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1791878764; c=relaxed/simple;
+	bh=mpdYh+tMfrQ1XRC2lz2dt4s7u4bQYe2NihMnCI79/zQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jzZ/jSdfx0r50TlwkwTaBG+8ZHw2wJPYhI37TNkISDGBoHZdFmDafO43yA6gAyKI9n5LnpieM4WPNQHfj2PZZLVuGfvdMiEFjp1K8BrLQvul6dppi9aKn0JOEz0ZiyrNO+8+uphcYzt3Oa7U9wFPLZL4BFqEV4t40bjvJ33z50s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=RaNb7UyT; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RQ8mVNZ4"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69D84c2sA361824, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1791878679; bh=n9dFj47xMLdOEJNEmjJraLFd8FemMFSBfxTHXKF84p4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=RQ8mVNZ49HQA7YIR/dKfjRlpjIrkQz1dguTXW5xGCUeaf9yMByOwJAaUyDhkOXB/e
-	 dV9ffTxJCh4LLq0A7YDAhUQfAo0AUWCZSvvgulWV0wj7Hg15iG3pWinp5rN+H355uD
-	 uJQ0SsfvQkIfuJ8p7nbupwXuOvStpIM5Ckng42xxMNctdkcfnvXEf2vTeU5RFjW7Lg
-	 bhAqd9TXKL2pD2LyQKlmtetNkwF7xng5jrkQU3fdHbmiDAppMLNJ/orJHsIyoHi2cB
-	 ecB4BDsJQ+xb9tOyfzbZ2lehd9sDuiXCLN6Md7MB1Y3grnwlInUx4LsGb1V2Zxec8+
-	 t0kyJp57SNEmA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69D84c2sA361824
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 13 Oct 2026 16:04:39 +0800
-Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 13 Oct 2026 16:04:06 +0800
-Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
- RTKEXHMBS03.realtek.com.tw ([fe80::f36f:a844:4916:93f2%9]) with mapi id
- 15.02.2562.049; Tue, 13 Oct 2026 16:04:06 +0800
-From: Hayes Wang <hayeswang@realtek.com>
-To: Andrew Lunn <andrew@lunn.ch>, Linmao Li <lilinmao@kylinos.cn>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Chih Kai Hsu
-	<hsu.chih.kai@realtek.com>, nic_swsd <nic_swsd@realtek.com>, Birger Koblitz
-	<mail@birger-koblitz.de>, Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH net v2] r8152: Use BMSR to detect the link state
-Thread-Topic: [PATCH net v2] r8152: Use BMSR to detect the link state
-Thread-Index: AQHdVLexra3FlE5swkqMdmzmTHCGJ7bwLnWg///8UICABCHSAIAAVXKAgAaA7TA=
-Date: Tue, 13 Oct 2026 08:04:06 +0000
-Message-ID: <16d9caec96e8449d88ac456e8512f08b@realtek.com>
-References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
- <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
- <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
- <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
- <591ca604-b296-4469-94b5-957d9ba45ae4@lunn.ch>
-In-Reply-To: <591ca604-b296-4469-94b5-957d9ba45ae4@lunn.ch>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="RaNb7UyT"
+Received: from weh-cvm-dev-vm.y50bckvjo0hefgfnzfztsfttff.phxx.internal.cloudapp.net (unknown [20.169.55.37])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 2721D20B7166;
+	Tue, 13 Oct 2026 01:05:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2721D20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1791878759;
+	bh=ABqutO+AIeQsI2eTyNx05Yl1UwlANTFRncjxekxzhqQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RaNb7UyTxchYv1OhVPxXmAhxGAqyML5QjHeigtEP34Cxlbgj/m1Dc5n2drAT496VP
+	 yqwiX2JP9Y7yxjMekREEPjqyjZEPy1z/rDAgm14vQ3OIXZBr6Bl8uFfWCDDgxVv6ia
+	 lflxrlH3s9JCmx5kwspMcWmVDBp4kD/0dhQK8fyQ=
+From: Wei Hu <weh@linux.microsoft.com>
+To: longli@kernel.org,
+	kotaranov@microsoft.com,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	jgg@ziepe.ca,
+	leon@kernel.org,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	shradhagupta@linux.microsoft.com,
+	horms@kernel.org,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	gargaditya@linux.microsoft.com,
+	kees+treewide@kernel.org,
+	kees@kernel.org,
+	mawasthi@linux.microsoft.com,
+	weh@microsoft.com,
+	edumazet@kernel.org
+Subject: [PATCH net-next v7 0/4] net: mana: concurrent HWC requests and dynamic queue depth
+Date: Tue, 13 Oct 2026 08:05:48 +0000
+Message-ID: <cover.1791561995.git.weh@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Andrew Lunn <andrew@lunn.ch>
-> Sent: Friday, October 9, 2026 8:22 PM
-> To: Linmao Li <lilinmao@kylinos.cn>
-> Cc: Hayes Wang <hayeswang@realtek.com>; Andrew Lunn
-> <andrew+netdev@lunn.ch>; David S . Miller <davem@davemloft.net>; Eric
-> Dumazet <edumazet@kernel.org>; Jakub Kicinski <kuba@kernel.org>; Paolo
-> Abeni <pabeni@redhat.com>; Chih Kai Hsu <hsu.chih.kai@realtek.com>;
-> nic_swsd <nic_swsd@realtek.com>; Birger Koblitz <mail@birger-koblitz.de>;
-> Xiangqian Zhang <zhangxiangqian@kylinos.cn>; linux-usb@vger.kernel.org;
-> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; stable@vger.kernel.=
-org
-> Subject: Re: [PATCH net v2] r8152: Use BMSR to detect the link state
->=20
->=20
-> External mail : This email originated from outside the organization. Do n=
-ot
-> reply, click links, or open attachments unless you recognize the sender a=
-nd
-> know the content is safe.
->=20
->=20
->=20
-> > Hi Hayes, Andrew,
-> >
-> > Thanks. Since the newer ICs notify only when the link status changes,
-> > the driver cannot rely on another link up notification after the link
-> > has settled, so v2 can leave the carrier off when the first read
-> > returns the latched link down.
-> >
-> > Before sending v3, which approach would you prefer? Both fixed the
-> > problem in my tests on an RTL8153B with v7.3-rc6:
-> >
-> > a) Keep carrier detection on PLA_PHYSTATUS and read BMSR once before
-> >    carrier on, only to clear the latch. This is the option I asked
-> >    about on v1.
-> >
-> > b) Detect carrier from BMSR and read it again when the first read
-> >    returns link down, as genphy_update_link() does in interrupt mode.
-> >
-> > Neither depends on another notification. Neither reports a short link
-> > drop that recovers before the link work runs: with a) a later speed
-> > query still sees the latched link down, with b) the latch is cleared.
-> >
-> > Hayes, for b): is BMSR_LSTATUS reliable as the carrier source on all
-> > chips supported by r8152?
->=20
-> Ideally we want a list of devices which correctly do notification on ever=
-y
-> change of link state, and which are broken.
+This series picks up Long Li's v5 MANA Hardware Channel (HWC) work,
+addresses its review findings, and retains its four-patch feature lineage.
+Safety changes required by concurrency and repeated HWC reinitialization
+are folded into the patch which owns each behavior rather than posted as a
+separate fixes series.
 
-I think all of our ICs have the same situation.
+I have taken over follow-up upstreaming from Long. Long remains the author
+of every patch, his existing sign-off is preserved, and I added mine for
+the changes and submission custody.
 
-> For those that work, read the BMSR once and report the down, and then lat=
-er
-> on the second event, report the up.
->=20
-> For those devices which are broken, double read the BMSR.  The danger is,
-> somebody who quickly unplugs and replugs the cable is not going to get th=
-e
-> down notification. The dhcp client will not restart, so the old IP addres=
-s will be
-> used, for the next hour to day, and the network is broken.
+Patch 1 prepares HWC ownership for safe reinitialization. It serializes
+complete shared-memory transactions, tracks possible PF ownership,
+retains mappings after an unacknowledged destroy, fences the HWC EQ before
+releasing CQ state, and safely publishes and withdraws the HWC CQ table.
 
-Could this actually happen?=20
-I think it would take several seconds for the link to go down and then come=
- back up.
-Wouldn't this issue occur only if the link transitions from up to down and =
-back up before the driver processes the link-down event?
+Patch 2 gives each slot independent completion state, withdraws caller
+storage before sender return, handles the response-versus-timeout race,
+and prevents depth-one slot reuse after a genuine timeout.
+
+Patch 3 adds concurrent requests with bounded admission, serialized SQ
+posting, separate sender/response ownership, stale-response quarantine,
+coherent timeout updates, private setup publication, and sender draining.
+
+Patch 4 rebuilds the depth-one bootstrap queues at validated depths from 2
+through 128. It validates both reports, message limits and doorbells,
+keeps the untouched bootstrap channel for depth one or reports above 128,
+and restores fresh bootstrap queues after a failed rebuild only when
+teardown was acknowledged.
+
+Generic Ethernet/RDMA CQ callback refcounting and generic service-work
+versus device-lifecycle serialization are independent pre-existing work
+and are intentionally excluded. Malformed-RX handling, duplicate-success
+correlation, and broad device-controlled allocation/timeout policy caps
+also remain separate follow-ups.
+
+This series is independent of the separately posted queue-set v6 series.
+That series addresses the pre-existing generic Ethernet CQ reclamation
+gap discussed in the HWC v6 review. The CQ-publication hunks overlap;
+whichever series lands second will need reconciliation preserving both
+table-publication and individual-CQ lifetime guarantees.
+https://lore.kernel.org/all/cover.1790795005.git.weh@linux.microsoft.com/
+
+Changes in v7 (v6 -> v7):
+ - Rebase onto net-next d8674294aefef02266c4d47ad10131f1bffbe534,
+   following Simon Horman's request after the v6 CI application failure.
+ - Preserve the upstream GDMA core/PCI transport split and CDX support.
+   Initialize the HWC lifetime lock on both transport probe paths and
+   perform PCI recovery's timeout cancellation through a GDMA core helper
+   which protects the published HWC pointer across the module boundary.
+ - Retain the four-patch lineage and the v6 ownership, request, timeout,
+   publication, depth-validation and fallback policies.
+
+Rebase request:
+https://lore.kernel.org/all/20261009151906.GF83879@horms.kernel.org/
+
+Changes in v6 (v5 -> v6):
+ - Keep the four-patch v5 structure while folding review-required HWC
+   ownership, teardown, timeout, publication and fallback safety into
+   their owning feature patches.
+ - Serialize complete ESTABLISH_HWC and DESTROY_HWC shared-memory
+   transactions. Record possible PF ownership before MMIO submission and
+   clear it only after DESTROY_HWC is acknowledged.
+ - Retain PF-visible queues after an indeterminate destroy. Fence the
+   dedicated HWC EQ and withdraw its CQ from dispatch without freeing the
+   mappings, then retry teardown before assigning fresh queues.
+ - Destroy the HWC EQ before CQ and completion state. Release-publish the
+   CQ table and wait for IRQ-side RCU readers before freeing it, without
+   adding per-completion refcount operations.
+ - Withdraw the caller's response buffer before return and quarantine a
+   timed-out slot until its late response arrives or teardown cancels it.
+ - Return -EBUSY for healthy slot pressure and reserve -ETIMEDOUT for an
+   admitted request which receives no response.
+ - Publish slots under the inflight lock, protect response state with the
+   per-slot lock, and retain sender/response references until both sides
+   finish.
+ - Synchronize hwc_timeout updates and publish the HWC only after queues,
+   admission state, caller contexts and the direct EQ test are ready.
+ - Replace the goto-heavy request and channel-creation flows called out in
+   review with focused admission, submission, wait, build, validation,
+   rebuild and fallback helpers.
+ - Treat reported depth as a maximum: rebuild exactly for 2 through 128,
+   retain untouched bootstrap queues for 1 or above 128, and require the
+   rebuilt report to repeat the selected depth.
+ - Enforce directional request/response maxima against both the report
+   and allocated buffers. Rebuild only for exact 4096-byte reports while
+   permitting bootstrap operation for other nonzero maxima.
+ - Validate BAR page geometry and every stored doorbell. Invalidate the
+   old HWC doorbell before re-establishment and suppress MMIO while the
+   invalid sentinel is present, without adding full validation to each
+   data-path doorbell ring.
+ - Remove the proposed capability bit because driver-version
+   advertisement occurs after HWC establishment and cannot negotiate
+   creation-time behavior.
+ - Preserve current net-next behavior which always uses the
+   hardware-reported dest_vrq_id and dest_vrcq_id.
+
+Changes in v5 (v4 -> v5):
+ - Shortened comments and documented the existing error paths in patches
+   1 and 2.
+ - Rejected apparent success from a response accepted before request
+   submission.
+ - Guarded CQ unpublication when establishment failed before cq_table
+   allocation.
+ - Required successful retry teardown before creating fresh bootstrap
+   queues after an initial destroy failure.
+
+Changes in v4 (return to net-next after the v3 split):
+ - Reworked the feature series into four standalone patches for handover,
+   per-slot completion state, concurrency and dynamic depth.
+ - Added bounded admission, guarded sender accounting, timeout quarantine,
+   queue-depth bounds, message-buffer sizing and rebuild validation.
+ - Reset routing IDs for each establish and rejected a missing doorbell.
+
+Changes in v3 (v2 -> net v3, historical fixes-only posting):
+ - Split the combined series after maintainer feedback, posting fixes to
+   net and deferring concurrency and dynamic depth.
+ - Added response-buffer withdrawal and stale-response handling.
+ - Removed pcie_flr() teardown fallback and retained resources after an
+   unacknowledged destroy.
+
+Changes in v2 (v1 -> v2):
+ - Bounds-checked the SGE pointer derived from inline OOB size.
+ - Protected active-sender accounting and drained senders during
+   teardown and failure exits.
+ - Rebased on net-next e354f7d60f14.
+
+v1:
+ - Combined CQ-table lifetime, queue sizing, RX validation, teardown,
+   concurrent-request and dynamic-depth work in seven patches.
+
+Validation:
+ - Exact application and strict checkpatch for all four patches.
+ - Baseline and every intermediate commit built with GCC/Clang W=1,
+   including GDMA core, PCI, CDX COMPILE_TEST and RDMA target objects.
+ - Full baseline/release kernel and module builds on the new base.
+ - Sparse: no new diagnostics relative to baseline. Smatch remains
+   limited by identical baseline frontend and array-bound diagnostics;
+   it is not counted as a clean pass.
+ - Fresh baseline/release runs on two Azure MANA VMs: concurrent PD/MR
+   and native RNIC PD/CQ/MR resource controls, channel/MTU changes,
+   three PCI remove/rescan cycles per VM, and three samples each of
+   forward/reverse TCP and 64-byte UDP. No new kernel warning or
+   functional failure in these runs; safe kernels/configurations restored.
+ - These runs do not establish negotiated multi-request depth, connected
+   RDMA data-plane operation, CDX hardware support or fresh firmware-fault,
+   fallback, sanitizer/lockdep coverage. Prior v6 fault evidence is not
+   presented as fresh v7 execution.
+
+v6:
+https://lore.kernel.org/all/cover.1790665894.git.weh@linux.microsoft.com/
+v5:
+https://lore.kernel.org/all/20260908035201.402424-1-longli@microsoft.com/
+v4:
+https://lore.kernel.org/all/20260901200018.3194525-1-longli@microsoft.com/
+v3:
+https://lore.kernel.org/all/20260803234355.636038-1-longli@microsoft.com/
+v2:
+https://lore.kernel.org/all/20260721234339.1476932-1-longli@microsoft.com/
+v1:
+https://lore.kernel.org/all/20260715032942.3945317-1-longli@microsoft.com/
+
+Long Li (4):
+  net: mana: prepare HWC ownership for safe reinitialization
+  net: mana: give each HWC message slot its own completion state
+  net: mana: support concurrent HWC requests
+  net: mana: add dynamic HWC queue depth with reinit path
+
+ .../net/ethernet/microsoft/mana/gdma_cdx.c    |   1 +
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 140 ++-
+ .../net/ethernet/microsoft/mana/gdma_pci.c    |  11 +-
+ .../net/ethernet/microsoft/mana/hw_channel.c  | 928 +++++++++++++++---
+ .../net/ethernet/microsoft/mana/shm_channel.c |  58 +-
+ include/net/mana/gdma.h                       |  16 +
+ include/net/mana/hw_channel.h                 |  56 +-
+ include/net/mana/shm_channel.h                |  10 +-
+ 8 files changed, 1019 insertions(+), 201 deletions(-)
 
 
-Best Regards,
-Hayes
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+-- 
+2.43.0
 
