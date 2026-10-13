@@ -1,82 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A279C4BB81D
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 23:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63B84E324D;
+	Tue, 13 Oct 2026 23:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791934094; cv=none; b=tjGAh6H2WV9ysOBPp2ZICM6W+R5Kv/+A6DrPouz0wTE3Tq1pXvv9IcmGoI5cDYW2gSpAhCFrm1gAa13uWNMvPmMXnHmQ5hq9VaIFdmi1Cgh3BK9Beeag8ducRFmqi+vjvh6RSI8zkelQMLPkNasmJj3KcOUNCE593u6Zs/fqQQ8=
+	t=1791934598; cv=none; b=IFQg+htOOoSHIhUKIFIomYfPlgJqY74DGRoJYVsbskyLXQjk/5g3BVwKTa1SDauojOmsiXwD75WadQit8YI+V/TVJwWhAOaiDTGuaGxP7o67Pq9ZJ3cfpWnTyA9KLdPcm2+0kzk63mUMtcTwpEGyPvcGrZ5MN/gvxBqVDWCSJmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791934094; c=relaxed/simple;
-	bh=jfICjUN4uGEgxT4SIC11mAwKtjbwwaD5aD305KLzTmY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SWvI0qGH60mVEoudHcK3Pcx3pEg5vqujVKka2xXAa1b232pAfukMIiY4oGJRY+eiVdnf3RnU7SrQen2Fm/9MxeMUt6ft9EL0aTgldJs5A+jKKSs2sUGOsRXBsAn29lNTcE6+PoWP+Gy0BFG98aDzP0eC9nxuOBlPOpTQLs3LK68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfdIPTVi; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791934598; c=relaxed/simple;
+	bh=Ce8cicOS5z0ItaLXPL2Ql3h4uEoRx2vQ9NtI7XkE31o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lPOu+0o3YUD31DCxDbR92ZgfZn7lfc7PNf1G+lldNgo3LJF8qIrE24zuPPP7LsEtoXHp3tw6hlcCnPI3HWOGa7Wak+Fs511R8xvHMN8kEacU9odvduhfqS/nrmoKEfMmCqm952mkKpLrjJHjyXaphOwooOmh9e4UKcS6QqlY3uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=u2gFDmny; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfdIPTVi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E7B1F0089B
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 23:28:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791934093;
-	bh=jfICjUN4uGEgxT4SIC11mAwKtjbwwaD5aD305KLzTmY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=BfdIPTViqrUvoKgyDOjZ4GSRMmT0vP/qzCOD3dk44TENBobYWugmO75x8KpvaKXFR
-	 uZHwiOmTwA6oHXtcIDpOglH1XPRDx7i6vLwcwKZQdAlbgFynqbh7kkhJCQDW0S2yj7
-	 Gn36ASQ1MT1Jxx/UjSao9nGiRGJK+HJlqSwZ9bLTq/s+1Rm0/Msw+vUU1xsK488r1b
-	 WSyO97dsQQB7phOHs0cbWkhL0OXtospujIT+lQ1uvPaLoWhRhmauU7Xq1dJdAu8IPt
-	 tr+Mwgqq2BQ+wqCsFRbmimP6tdAAUwP2+Jk3vEQj583C/lv9dnmQbiqE43rRQDqYos
-	 /6orbnrnOBs8A==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3a20f06cce6so48566471fa.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 16:28:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw23EZ/KfjBASkOpyuHoG9TvPvuNESBt2uz2Jmn6xvvgz9rED00O9zPh/AClUWHlPZxFGKzphc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJMSyGU887btbnsi5vsS7ljwTrk6MrcmV04/ETSWFi4RaBlS/uy
-	ykXBIT92LJ7ZE6u07J2e+BTeHoO0qBhK+RUWqj30lMSwgSbI5TvzQ9fdrH0Sr5ctvavj/j8X8gG
-	tikPLSAaozU9ZgQpZE1ET2bm6PodE6iI=
-X-Received: by 2002:a2e:be88:0:b0:3a6:62bb:906e with SMTP id
- 38308e7fff4ca-3a9c2b34d90mr33801471fa.20.1791934092040; Tue, 13 Oct 2026
- 16:28:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="u2gFDmny"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1791934580;
+	bh=grwBgkgno9BkL6eOhMPmakqn4LngPKm6vtO8+CsatwE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=u2gFDmnyn7DkPrCsCVJ5N/faghNyP8s7EPZ8Xor8e/11rLH7aXxrL26zzvWpp7ssC
+	 x2ifLD5M7KZkal4u/iaRYFvgPsbve/eC8rIKd1Dns1PztmByWoRSIODnqee8Qz54Sk
+	 QdLQ5HHtkOy01Z+Wt4I5sa6A/Oyds+EsJHyScCJwBjaR+7Rk0IJ51O74HrzHIZxoK4
+	 ONgtyi6KdZ3bifRNLVqcME8cwhr3F9lNkOeJ4QWbDWYlB+fkZFe4xKd9wYjLVfNmLS
+	 cegs8WHPf6TWv8SupnFPxr2NZsWKEynb6BA31ybmW0lkP8kv0Pawg44L453gP1VM9q
+	 Liei/VGeKn+RQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 4617A60055;
+	Wed, 14 Oct 2026 01:36:20 +0200 (CEST)
+Date: Wed, 14 Oct 2026 01:36:17 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Guo Zihao <guozh23@xiaopeng.com>
+Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH nf-next v3 1/2] netfilter: ebtables: ebt_802_3: check the
+ LLC fields before reading them
+Message-ID: <as7AcSGT8U2kbdH3@chamomile>
+References: <20261012072449.3240201-1-guozh23@xiaopeng.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <b45a3350-44a3-45ad-89cc-452c25edbd7d.ref@yahoo.com>
- <aa5fa12c-e43e-4e5e-9f77-c6eaf477abc4@yahoo.com> <56fb70c5-9e8c-4d7f-af47-46ed3c860694@yahoo.com>
-In-Reply-To: <56fb70c5-9e8c-4d7f-af47-46ed3c860694@yahoo.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 14 Oct 2026 01:27:59 +0200
-X-Gmail-Original-Message-ID: <CAD++jLkwAr7QuJnrvZHao3Y=f4QDtxQQ1e1FMtbRicyhqyNwdg@mail.gmail.com>
-X-Gm-Features: AclHuK8YuIE-kWbk3_VVqYiyOABl7Epu0vDyuoAROAUzyJrvRto2P0FIbcDiEDk
-Message-ID: <CAD++jLkwAr7QuJnrvZHao3Y=f4QDtxQQ1e1FMtbRicyhqyNwdg@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 2/9] net: dsa: realtek: rtl8365mb: add chip
- family infrastructure
-To: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, linux@armlinux.org.uk, 
-	luizluca@gmail.com, maxime.chevallier@bootlin.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261012072449.3240201-1-guozh23@xiaopeng.com>
 
-On Tue, Oct 13, 2026 at 10:39=E2=80=AFAM Mieczyslaw Nalewaj <namiltd@yahoo.=
-com> wrote:
+On Mon, Oct 12, 2026 at 03:24:48PM +0800, Guo Zihao wrote:
+> ebt_802_3_mt() takes the frame pointer from skb_mac_header() and reads
+> the LLC fields through it without making sure those bytes are there.
+> Nothing between the receive path and this match pulls the LLC header,
+> so a frame that carries nothing past the 14-byte Ethernet header is
+> read past the linear area.
 
-> Add enum rtl8365mb_family and a family member to struct
-> rtl8365mb_chip_info, together with rtl8365mb_get_family() declared in a
-> new rtl8365mb.h so that the VLAN code can use it too. Tag all existing
-> chips as RTL8365MB_FAMILY_C.
->
-> RTL8365MB_FAMILY_D is defined here but no chip uses it yet; it is needed
-> by the following patches, which add family D handling for chips whose
-> register layout differs from the existing ones.
->
-> No functional change.
->
-> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+See:
 
-Makes sense.
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+ 003f21868b2b ("llc: move the type 2 sockets out of tree")
 
-Yours,
-Linus Walleij
+We can handle this patch in nf-next as low priority.
+
+> The match also reads more of the LLC header than rules look at. A
+> SAP-only rule uses dsap/ssap; a rule without any SAP or TYPE constraint
+> matches 802.3 frames without touching the LLC header at all, just as it
+> did before this patch.
+> 
+> Require only the bytes each rule actually examines, and go through
+> skb_header_pointer() with the mac header offset so short frames fail
+> the match instead of being read past the linear area. A frame shorter
+> than the fields the rule looks at simply does not match that rule;
+> users who want such frames dropped can match 802.3 alone.
+> 
+> The match itself is not restricted to 802.3 frames: the ebtables
+> userspace tool pairs it with "-p Length", but the kernel does not
+> enforce that pairing and nft_compat does not run ebt_basic_match(),
+> so a SAP or TYPE rule can still see Ethernet II payload bytes,
+> bounds checks aside, same as before.
+> 
+> v2:
+>  - rework to skb_header_pointer() with a per-rule length instead of
+>    hotdrop, whose semantics differ between ebtables legacy and nftables
+>  - read only dsap/ssap for SAP-only rules
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reviewed-by: Liu Chao <liuc63@xiaopeng.com>
+> Signed-off-by: Guo Zihao <guozh23@xiaopeng.com>
+> ---
+>  net/bridge/netfilter/ebt_802_3.c | 35 +++++++++++++++++++++++---------
+>  1 file changed, 25 insertions(+), 10 deletions(-)
+> 
+> diff --git a/net/bridge/netfilter/ebt_802_3.c b/net/bridge/netfilter/ebt_802_3.c
+> index 68c2519bd..fc49f7c7b 100644
+> --- a/net/bridge/netfilter/ebt_802_3.c
+> +++ b/net/bridge/netfilter/ebt_802_3.c
+> @@ -9,32 +9,47 @@
+>   *
+>   */
+>  #include <linux/module.h>
+> +#include <linux/stddef.h>
+>  #include <linux/netfilter/x_tables.h>
+>  #include <linux/netfilter_bridge/ebtables.h>
+>  #include <linux/skbuff.h>
+>  #include <uapi/linux/netfilter_bridge/ebt_802_3.h>
+>  
+> -static struct ebt_802_3_hdr *ebt_802_3_hdr(const struct sk_buff *skb)
+> -{
+> -	return (struct ebt_802_3_hdr *)skb_mac_header(skb);
+> -}
+> -
+>  static bool
+>  ebt_802_3_mt(const struct sk_buff *skb, struct xt_action_param *par)
+>  {
+>  	const struct ebt_802_3_info *info = par->matchinfo;
+> -	const struct ebt_802_3_hdr *hdr = ebt_802_3_hdr(skb);
+> -	__be16 type = hdr->llc.ui.ctrl & IS_UI ? hdr->llc.ui.type : hdr->llc.ni.type;
+> +	struct ebt_802_3_hdr _frame;
+> +	const struct ebt_802_3_hdr *frame;
+> +	unsigned int hlen;
+> +	__be16 type;
+> +
+> +
+> +	if (!(info->bitmask & (EBT_802_3_SAP | EBT_802_3_TYPE)))
+> +		return true;
+> +
+> +
+> +	hlen = sizeof(_frame);
+> +	if (!(info->bitmask & EBT_802_3_TYPE))
+> +		hlen = offsetof(struct ebt_802_3_hdr, llc.ui.ctrl);
+> +
+> +
+> +	frame = skb_header_pointer(skb, skb_mac_offset(skb), hlen, &_frame);
+> +	if (!frame)
+> +		return false;
+>  
+>  	if (info->bitmask & EBT_802_3_SAP) {
+> -		if (NF_INVF(info, EBT_802_3_SAP, info->sap != hdr->llc.ui.ssap))
+> +		if (NF_INVF(info, EBT_802_3_SAP, info->sap != frame->llc.ui.ssap))
+>  			return false;
+> -		if (NF_INVF(info, EBT_802_3_SAP, info->sap != hdr->llc.ui.dsap))
+> +		if (NF_INVF(info, EBT_802_3_SAP, info->sap != frame->llc.ui.dsap))
+>  			return false;
+>  	}
+>  
+>  	if (info->bitmask & EBT_802_3_TYPE) {
+> -		if (!(hdr->llc.ui.dsap == CHECK_TYPE && hdr->llc.ui.ssap == CHECK_TYPE))
+> +		type = frame->llc.ui.ctrl & IS_UI ? frame->llc.ui.type :
+> +						    frame->llc.ni.type;
+> +		if (!(frame->llc.ui.dsap == CHECK_TYPE &&
+> +		      frame->llc.ui.ssap == CHECK_TYPE))
+>  			return false;
+>  		if (NF_INVF(info, EBT_802_3_TYPE, info->type != type))
+>  			return false;
+> -- 
+> 2.50.1
+> 
