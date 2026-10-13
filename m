@@ -1,84 +1,80 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFC74718CB
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:57:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309EB314D18
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:57:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791860259; cv=none; b=c36C/7mRfRaYqNAr8iP3SYu1HQgIlk4iPR51tuPC+UZqOfGsq8Mwb35FySFgNupdAKL6efWWcUN+8xz+EOpIKmmQjvklpU8e7SETNNiGTQSMUHPeDLH05UvZfs7zP7Y6tFeFeolAk5+vYEDm3VjO2AFnkHZjngPD+FYvAcMiOq4=
+	t=1791860276; cv=none; b=H1gmqZ0d4Q41wmXTJqt4ijfsQwP+zGKVWvTWCSB+2PktAGm+Zl8L9jxROrX3+nGSTHQokVPVPeu6qTU9Jq/7xCKDsHb4rxog8/cePv+dRoqIHZfSmo6AOPTC7FzFHOr1LlZQKaBAB7AwIQGv3x+jR5M3CAKE8v3+js4JgDuqFJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791860259; c=relaxed/simple;
-	bh=rU6/NcSV6wlLvUaIiIjQl2cds/mD4DK5bYnjCOtOQ+8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rZk5OXFnNzQaUXmMAxFsRMILYbdaZM56SU79PytKNkYH+1O3q8TleoQLrm0R2mt8JziosJ73do5uQQ7cofUT0c8/+0ptK2lfLme/Kkkc9VY5Gy5jmywJIUBwAkfc3UmAeL1nhWxkm0KAf7qTrznfY6MfupbjtDtkJzb//2b4fNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=luB6FJbd; arc=none smtp.client-ip=74.125.82.174
+	s=arc-20240116; t=1791860276; c=relaxed/simple;
+	bh=jFs2ejwyQRoiUFaaaOWLo95jLgIUJD5pi3UvSHe6KKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DT238XN1y5axZTdXEQPCMyOfirNobCaF2P/EwPNaRvpcyEtz4Ct2dXUch+dDnvSLu+26ow08S3T50A24o2MNjUWQOug2u8rpYDoAlAf8GxOP6YkN9t+NCUBOVvvvroamRw54S7oDYbu1/2BaEpKWOFYy2PqG0lQm7uyt1LvpRhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security; spf=pass smtp.mailfrom=octane.security; dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b=mwTWtItM; arc=none smtp.client-ip=74.125.82.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=octane.security
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=octane.security
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="luB6FJbd"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-33fb4680717so4808369eec.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 19:57:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=octane.security header.i=@octane.security header.b="mwTWtItM"
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-154e9d2d979so1641689c88.1
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 19:57:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=octane.security; s=google; t=1791860257; x=1792465057; darn=vger.kernel.org;
+        d=octane.security; s=google; t=1791860273; x=1792465073; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/RJ4GyWHSPpIYsWpDseMdmR+JugHfXlVBzuKwLssRqI=;
-        b=luB6FJbdZbr0o8Ab9fQY8Y4FpIEsDSMMzELrrJHKPDaZliUIg82gKyWEIIFVb2R8PK
-         BhpTDsBywetxDI4QmijSV6xBB36JHbJXhhRc8LnnmtAsq4wwD6VX+cdPooxgIVe2XJR2
-         Llg06DD8cYUN+o1zH0TsQA9hf/oaGQwAM+nnBM/L9PIWOzALSDnkEB6mjkDzMXeU00Qf
-         op3BjGkfsfqxkGfnzXxUf28Bjf2kckOPBFzJFG7Qae7Um0N0VN7NpDxVVZTNoKeNtBfg
-         OlIlYBR8OcuecgVfeuxMetz08CUIvUVZsWnFkrMEzgxFXXlVQiqwEgtA8KvWJpmt1O+t
-         rX7w==
+        bh=VKlzSdYOmHmxNkajBIoZRP6k3zgKUV8Nk9LgZQpvxD8=;
+        b=mwTWtItMZIEma8k/cXQ+xJgo+gDTwDliVSFTrpNvTylLLvaFVMNSmCktD4DDyzDC8l
+         s9uwMbC2x4D/DsmGvGFukPJbiAjC7Oix+AZPylJ1ujKvsDTmcBofAwFbGg6u1P8aOqVD
+         SjwYIZbJO1b3Th7wK9H/p9eqpzDgE7rPcJ3LPWXR62hRJqnayIWZR3wP2dEnTCAvEe0+
+         5Vrtu7RZIJ9u5+MbLBMCcVoGJTUVLS6EWVV3aR5qZaS1cMbTXpFMzfkD4u5cLbVL5stZ
+         +Mgz/f7qoyTl2coTqgdrALmvHCwxjqBvyvW9sZawyUtuoAI25oP0E4Kj8L9ZX9c+eiYU
+         8nuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791860257; x=1792465057;
+        d=1e100.net; s=20260707; t=1791860273; x=1792465073;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/RJ4GyWHSPpIYsWpDseMdmR+JugHfXlVBzuKwLssRqI=;
-        b=qUqOEJZZSIJPRbuxPFzUPvzWk4eLeSlmnxwBOW7JILkpY+bAqd11KeDOfekUgqILVd
-         i4noXUmxGs8pqXUtYcE6CxjIbRQnASiAU4+flbgcVlD93bJvjrrLxDP/Spq7QbYmXpiM
-         nR3L9lMus6E88om+PGoPepBsSGxS6V6IC5FXcWscK0RcQz3zFFurIT/XUarPQxEhbzT8
-         nGXd4GzxwRSIa6Lm91tOtKdo60URgcB/JndjLdiA+5ZUVY7Mz8QDovYneyS1tifpiO6N
-         uRS+oDmcRyPgcBGSR0SK8syH76wmLlDUVPdhjnhgNS6T5stU4iqH9JGT2n7fTo68xoMI
-         V86g==
-X-Gm-Message-State: AFq9FYK0nQW1pDmDv9h5r7bHExjHeg3NGHkQgod+Z7Mxffj3ZLtk6kT+
-	eWSWHr+rJ4HN9YJkrkKwdtRj5RBEmTxde0iRJMifaYpuoX0/FN64k9aEYHLB48mZapl2DErzP7w
-	AzIBg
-X-Gm-Gg: AYBFou3Reg8HAkJhk19ym1DTCQ+RsfalCo0Ee6PDK0DAMoOs5y2cJ6BM4j2pEL59v03
-	BG9zK21wsZ8d36v1x+OgtmBieIvEq95Zb3T1cMaQlJX4r0KWHcu9NUIeIPg/a4s89KM4JY9H6f+
-	h79rik/zVg7k+HBVecXdsZANIjSHebtqG6f/gonxYbj0yx6eWhoMl3NdhtB26ZxGIS0UhQq0MnW
-	Z00EzopPLPyW2P+4SXZa1IYNAGIviXgV+ytI5ZFuo3kyNc8eYbkamzbp7KOAP92uMmCUSeJL9D8
-	qIY0z0fErW3doN2cuAZpOVNYK7yRACByisBfxFOEnpezXRiKYzbNdjCxSnY+xTSYriBy09tdTqj
-	Jb1U5fM2PfF2PRwJCEAGFrMUcqmZXCokRZlo6psorfXRCbB9qr4eHDia9yLPBAfUubUKIAld1NO
-	/l3BkqN2QUMiKQeJtT/mZInz6n27PlMeeqcgLihVlEA6Fgk2Eq6z7NTeNp08BF4wr/XCxTBdZJA
-	RBKJhLCiGoO+vr0PaW8syqyrzQD+S7cIHlFYTCgUhtNndBwVpnxJOpedLnu2TgsCO8Ecr+eSiGR
-	K8W8/uKeBqTdew==
-X-Received: by 2002:a05:701b:240d:b0:144:eb46:c3f with SMTP id a92af1059eb24-16a572659bamr17782878c88.2.1791860257094;
-        Mon, 12 Oct 2026 19:57:37 -0700 (PDT)
+        bh=VKlzSdYOmHmxNkajBIoZRP6k3zgKUV8Nk9LgZQpvxD8=;
+        b=cQyMwsbPcGyMnV0CQEDlq403Rd8pr+amo3y1f6HTAewC77pS97gV52PRgL8BQgNTux
+         xmd9Fgu8Kw7VAAzCOlblpZPLWxm4W+WCnnTwMnZsdLY6uvfJ1iV0ujOG+DLnoPcluCOy
+         dSQdBPE+f7gHq+ingWP0VJ1lxGRzP2UHWkRqYn78f/nIYhFhLT3Y7h1i8dkrPWR9/G5I
+         NBxvx/7d02+p+mCqtMa3VljO7IyTXfcbpUBVPOAgN+n2cNOmva3fZnX6wiFmzhzhyn18
+         Vp9LY9jqgdsRHqVg/bCrEaEnCCFQcNJEsJCJFPqPRDQJkSHv908zyKz/QaZprPyEEqD0
+         LxFw==
+X-Gm-Message-State: AFq9FYIfj8pqyamKFRwWaJ3EJ2glvwJT1/tAenHo/FSNZXn6uLMsbPES
+	c5lLq0lYDUq72rB6GrmZtq5zcxt3fQNgbP63LUprCd49emwimn6fMT8FM+rjT/KEjIDoCiMws72
+	NQxJW
+X-Gm-Gg: AYBFou2eWG8ctM7LMp28H49B0eIAJLoggzq2kHhvG9JF0yRSh21hK4CtIe08tVkIt5q
+	OcuIZEjYFlPUeJtZfT+ftH6ATJ6fsQSqvGj5sBJg4DptFCoMoFRulul/GEtVKzfE9D7dVVLM1tK
+	5p/kpUbXeD7diTLXO3/rwaXTOgF3+4ieFbFcCh8zl9htn11/tlijn3zLEfiecMci/nNH2zGZqgw
+	hi1RBTkdwq9md/yW6lQVLxZTwsa3Cf8gj4obVn/x0/4ETytdg9QCihFYbfvAv+i+uO171gn9uGA
+	uk58e1sn1UphDM99UXOPphvNOyLWWFkJ41uVYsBxzSbZdTbykKH3XqSqTyndbWEkFFWM3ODX5K0
+	yLkDbHff6jBusRlvwR9NAxIM9uJORJbxUFmKN/AIqaN+7xsT9/9rPNaWy5p0RrRXlXjuP83CWcX
+	PwBGKX+0IJDhlwJU8hu8DMMjqseRjIw1pl9D2tbxZGNVOyBkCqk+yAeHKKjCRGVBrbCGxD2g8FY
+	buYpIFJNoT4rInS7hPv7cZqVe7HlX4lcgq5BQlwMdfZpG/7nAAvgSyajx8O0ItXFJiCQEesSPfF
+	lgdu/7dyxTwKgg==
+X-Received: by 2002:a05:701b:42d3:20b0:156:d588:c881 with SMTP id a92af1059eb24-16a0adc14acmr15455735c88.2.1791860273055;
+        Mon, 12 Oct 2026 19:57:53 -0700 (PDT)
 Received: from localhost.localdomain ([103.207.175.177])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a6021e49sm34465316c88.20.2026.10.12.19.57.31
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a1becefdsm34223721c88.7.2026.10.12.19.57.48
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 12 Oct 2026 19:57:36 -0700 (PDT)
+        Mon, 12 Oct 2026 19:57:52 -0700 (PDT)
 From: Shubham Antil <shubham@octane.security>
 To: netdev@vger.kernel.org
-Cc: achender@kernel.org,
+Cc: david@ixit.cz,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	andy.grover@oracle.com,
-	linux-rdma@vger.kernel.org,
-	rds-devel@oss.oracle.com,
+	cuissard@marvell.com,
+	sameo@linux.intel.com,
+	oe-linux-nfc@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	gio@octane.security,
-	Shubham Antil <shubham@octane.security>,
-	sungbyeongchan <tjdqudcks0424@naver.com>,
-	Robert van Eijk <robert@octane.security>,
-	Paolo Gentry <paolo@octane.security>,
-	stable@vger.kernel.org
-Subject: [PATCH net v4] RDS/IB: validate receive fragment completions
-Date: Tue, 13 Oct 2026 08:27:29 +0530
-Message-ID: <20261013025729.40815-1-shubham@octane.security>
+	Shubham Antil <shubham@octane.security>
+Subject: [PATCH net v5 0/2] nfc: nci: uart: quiesce write_work during teardown
+Date: Tue, 13 Oct 2026 08:27:44 +0530
+Message-ID: <20261013025746.41292-1-shubham@octane.security>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -88,86 +84,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rds_ib_process_recv() accounts every receive fragment as contributing
-min(i_recv_data_rem, RDS_FRAG_SIZE) bytes, regardless of the completion
-length. When a completion is shorter than the header-declared amount,
-receive accounting can advance beyond the payload supplied by the
-completion.
+This series fixes the NCI UART write-worker teardown ordering without
+blocking the controller reset which nci_unregister_device() may transmit
+during teardown.  It also fixes the Marvell UART state-publication race
+reproduced while exercising that path.
 
-Only an IB_WC_RECV completion has the buffer layout expected by this
-receive path. Other successful completion opcodes must not be interpreted
-as ordinary receive completions.
+Patch 1 publishes the Marvell UART back-pointers before NCI device
+registration can expose the device, rolls them back on registration
+failure, and establishes the controller's initial halt state before
+registration.
 
-Reject successful completions with any other opcode before processing
-their length. For ordinary receive completions, require enough payload
-to cover the amount accounted to the fragment before linking its page
-into the incoming message.
+Patch 2 serializes producers with the write worker's final state handoff.
+The generic close invokes the transport close first, allowing the
+unregister CORE_RESET transmit attempt, then blocks new work and cancels
+the worker before freeing the skbs.  Marvell performs that barrier after
+NCI unregister but before it releases private state.  The failed-open path
+uses the same barrier, and the transport module is held while its open
+callback runs.
 
-This is compatible with the current transmit paths. MSG_ZEROCOPY is
-restricted to RDS/TCP, while RDS/IB copied and page-vector messages use
-full-sized non-final scatterlist entries.
+The tty write-wakeup description has been corrected: a wakeup may queue
+or run immediately before close; it does not run inside the close callback.
+The same spinlock now protects producer scheduling and the worker's final
+SENDING/WAKEUP transition, closing the reported lost-wakeup window.
 
-Found during an LLM-assisted source audit and validated under KMSAN with
-a malformed short receive completion.
+Both ordering issues were found during an LLM-assisted source audit and
+reproduced using a pty-backed NCI UART under KASAN.  With these patches, a
+61-cycle regression run and a 56,690-cycle registration/hangup stress run
+completed without sanitizer reports.
 
-Reported-by: sungbyeongchan <tjdqudcks0424@naver.com>
-Closes: https://lore.kernel.org/netdev/20261006205204.1322102-1-tjdqudcks0424@naver.com/
-Reported-by: Giovanni Vignone <gio@octane.security>
-Link: https://lore.kernel.org/netdev/8a6ee1d5336ae65b8ffdc8c40a1135657207e204.camel@kernel.org/
-Reported-by: Robert van Eijk <robert@octane.security>
-Link: https://lore.kernel.org/netdev/8a6ee1d5336ae65b8ffdc8c40a1135657207e204.camel@kernel.org/
-Reported-by: Paolo Gentry <paolo@octane.security>
-Link: https://lore.kernel.org/netdev/8a6ee1d5336ae65b8ffdc8c40a1135657207e204.camel@kernel.org/
-Fixes: 1e23b3ee0e94 ("RDS/IB: Receive datagrams via IB")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM (OpenAI Codex, gpt-5.6-sol)
-Signed-off-by: Shubham Antil <shubham@octane.security>
+Other concurrency concerns raised during review are outside the scope of
+this teardown series and will be handled separately.
+
 ---
-Changes in v4:
-- Reject malformed short fragments instead of normalizing their length.
-- Reject successful non-IB_WC_RECV completions before trusting byte_len.
-- Explain why MSG_ZEROCOPY cannot reach the RDS/IB transmit path.
-- Add the source-audit and KMSAN discovery details.
-- Remove the author's self-Reported-by while retaining linked reporters.
-- Leave maximum h_len validation to a separate investigation.
 
-v3: https://lore.kernel.org/netdev/20261008124940.13371-1-shubham@octane.security/
-v2: https://lore.kernel.org/netdev/20261007062135.49946-1-shubham@octane.security/
+Changes in v5:
+- Preserve the unregister-time CORE_RESET transmit attempt by closing the
+  transport before starting the generic worker barrier.
+- Quiesce the Marvell worker after NCI unregister and before private-state
+  release.
+- Serialize the worker's final state handoff to prevent a lost wakeup.
+- Correct the tty write-wakeup race description and close-contract comment.
+- Take the module reference before ops.open() and drain work on open
+  failure.
+- Publish and roll back Marvell UART state through transport callbacks.
+- Add the LLM-assisted audit and KASAN discovery details.
+- Keep unrelated concurrency follow-ups outside this series.
 
- net/rds/ib_recv.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+v4: https://lore.kernel.org/netdev/20261006115532.72100-1-shubham@octane.security/
+v3: https://lore.kernel.org/netdev/20261002055620.18339-1-shubham@octane.security/
 
-diff --git a/net/rds/ib_recv.c b/net/rds/ib_recv.c
-index bd6cb3ffaa..aa50b85b0f 100644
---- a/net/rds/ib_recv.c
-+++ b/net/rds/ib_recv.c
-@@ -949,6 +949,12 @@ static void rds_ib_process_recv(struct rds_connection *conn,
- 		}
- 	}
- 
-+	if (data_len < min_t(u32, ic->i_recv_data_rem, RDS_FRAG_SIZE)) {
-+		rds_ib_conn_error(conn,
-+				  "fragment shorter than header-declared length; forcing reconnect\n");
-+		goto done;
-+	}
-+
- 	list_add_tail(&recv->r_frag->f_item, &ibinc->ii_frags);
- 	recv->r_frag = NULL;
- 
-@@ -1004,7 +1010,12 @@ void rds_ib_recv_cqe_handler(struct rds_ib_connection *ic,
- 	 * event is processed.
- 	 */
- 	if (wc->status == IB_WC_SUCCESS) {
--		rds_ib_process_recv(conn, recv, wc->byte_len, state);
-+		if (wc->opcode != IB_WC_RECV)
-+			rds_ib_conn_error(conn,
-+					  "recv completion had unexpected opcode %u, disconnecting and reconnecting\n",
-+					  wc->opcode);
-+		else
-+			rds_ib_process_recv(conn, recv, wc->byte_len, state);
- 	} else {
- 		/* We expect errors as the qp is drained during shutdown */
- 		if (rds_conn_up(conn) || rds_conn_connecting(conn))
+Shubham Antil (2):
+  nfc: nfcmrvl: publish UART state before registration
+  nfc: nci: uart: quiesce write_work during teardown
+
+ drivers/nfc/nfcmrvl/main.c    | 18 +++++--
+ drivers/nfc/nfcmrvl/nfcmrvl.h |  3 ++
+ drivers/nfc/nfcmrvl/uart.c    | 32 +++++++++++--
+ include/net/nfc/nci_core.h    |  3 ++
+ net/nfc/nci/uart.c            | 90 ++++++++++++++++++++++++++++-------
+ 5 files changed, 120 insertions(+), 26 deletions(-)
+
 
 base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
 -- 
