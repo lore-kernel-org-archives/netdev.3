@@ -1,56 +1,56 @@
 Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8D45540AA
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6CF5540A2
 	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925106; cv=none; b=rq0B+LCbv6OqDtbexvgn0GvFrck9qswDwMQhdiNx+zT9IGcsRuGDKBo6GsxWbS6h4P3QGEsz5Mcq4AlFOuBPT8WBITpgDPXaA0YVt0XE9uQh8euqPr661MbHz5sg678I3YY2z79kRRLnxQTB3/QqqZFrsh9eLAKnmlNC03Grd1k=
+	t=1791925106; cv=none; b=CtqtRP84UZ+m11Yz+EuS2O1bPGMUjWI8UCV8AtR2QSc0dZcAt+0nT9EpZbMp4x6hKNmI1joYWw2W4MZwahtJ3+8ftuaaQm9O6Qur4h0nU7hbEkXNoO/1s0bo2BtB0MdfV1EaC5aMUX1wqmrdmjI6ABmdgKueM6MyfiEw+4ctWCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791925106; c=relaxed/simple;
-	bh=RSul1KyVt2A5AS1gK2QuRhRnlau9f0Dmc+h63H9JR1c=;
+	bh=lWRqV8x5Cg8ZZwS///8STniw0n2PyvlMRvAbapqw/60=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JZVDQXuN01BMiKPCQ9iDqHBc+tzMcWhPE0/GXLbp6fZ3jjDbemNlFfKa9T+zWQqXBLGQc9Pk/BciMCpZd/FAb6yREa3TMprvURcy22HkzWQNlWrwAgqX3HzZPAZaF2UNzWHP1cSV+XtGLN6fTJS8al+7nHLxCaeb6vNBsN/BlRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pxequgFg; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=oUGCQzbbE2IscTXZ5sR48cQvP9nJkipgoRjr+yzbr9DmSzHCkR4mxd7uViLNFUcl+/9YOaNx4SYjEw7ayRo6LkauOB5kf7zqoJUisapJzxHPod8LcilWgopT8We8ypGzFLVr2Am9N90iYJ8nLq31OCKtpSgXISNW6JYuZsemkw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VDEUSW4j; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pxequgFg"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cd5fd34fee0so164414a12.3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VDEUSW4j"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc795ad1f5aso3194897a12.2
         for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1791925104; x=1792529904; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=THas/x/xxuv16ei+XdPr5thqMykdchtFQAjMqvfflU8=;
-        b=pxequgFgREKbrIlueMRuS/DFg7DLygI3NUZHPhf0as0HOkFN0pLGnD7tmT6Spk9Lgq
-         K+g/2FuV1JGsj2vOu/dnuPOX3y5lkAUrEKhZSiQmlsficL6ky2e2Sq6nwSNpLOqhRpw0
-         BphhdUZWZjgzenUXTYtjuALQdKuCQTN0XIt2hKnX6ikT9dFPDSt2R+aspZJj6MFhTTTa
-         lyZ5g5z9Zm7NWssz/M+p+DGlua8i85IYt1bTxBvXi5JYb808zGpKaY16AbAAcL8f0bjG
-         nk9MXxZ1dgpgJEVWGMOE2ouAWy2FEpYx0tCKKUK7IJ9WEUontVZ7y0vaFRGAHv4Bd7SJ
-         RLDw==
+        bh=dqKiqkfmYAEix4q01+y7kSJwyugblM+mE6iJZWjc7Nc=;
+        b=VDEUSW4jZSsjYLRM8yF4TA5VTLu2eymguh0yCs1LAMvEHLhs91TibE4BEUKqIb+gNt
+         rt5Jfu0q8P0izCH2rJqZzns6XwSK1+QfWSOm1wQlBjkPMnvBZ/SK/6AiPWT+zWlZ3a2/
+         Y93mNefxZdSVZ0tji80rD3nuMPGElrbWfoN1D6KxDj9BYnrUeFSbczlFn/8yDB2IQVcZ
+         LXyQy2tWPmWDpa9PAne3xSTIqcAOtBX7731evGtD1hzdSSiLdO9HpuSRoh5I8LJ/+64e
+         8dT5TvZMw85T39pmQBgqwYnXzZtGX2/X13Iia8L73WFp6GC+3nSESb5hExYmfo/kjtD3
+         GTxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1791925104; x=1792529904;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=THas/x/xxuv16ei+XdPr5thqMykdchtFQAjMqvfflU8=;
-        b=Xbej4rKmNyqZkBi59uyvy8ScTBRX643j51QcBDvazWsXlQ3zweK+ByjpwZOc+/Ugup
-         47lGs9+8XKe9j6f9Mo7lDSzmYYSERIcHgADdEfDCOk07KJiKLsBo5OmwdR3lgotvaoJu
-         CwEEZ+81u1aejiVO6Z6EsbdiFlyn/D2CEEdcjHD7/AQX4jbuAEa6kuCCYz7dfbjSyDTT
-         PAaeSnFSD7HFPL8WcGIGm4Pp15XpFwvbVUIpzYNn0pP+lnm5dWSCsok9Bh7k6yyTefKT
-         l/t0uW6IwLK8lKGScDNDQNECNq/R30ngaE0rPcO8bur70Slxkg0y8lS9XoyM2XrzXR2D
-         W2cQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzRPOOu+MgECjS25/XP3L6hIWjy0aPHFihqBcrUS1YLsfZN7mGTWvxYXoRdhVljXe+2iqqZNhM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLQ14cacpgCvBArfUo4/OzyUDWqsQ7SZR8+qve2bBsh7Is8MRQK
-	C3OwSvbkkGoA2a54o5mmRRcWHId9F8TV/003yBJDK2oEE3MAiLOXqJ3Zk9dwHGgPOHi8l4sAlm1
-	p1VJp2w==
-X-Received: from pfeu14-n1.prod.google.com ([2002:a05:6a00:c0ce:10b0:892:71f1:bcd7])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7303:b0:3d1:39e9:b267
- with SMTP id adf61e73a8af0-3e16bb738famr12310336637.3.1791925104181; Tue, 13
- Oct 2026 13:58:24 -0700 (PDT)
-Date: Tue, 13 Oct 2026 20:57:30 +0000
+        bh=dqKiqkfmYAEix4q01+y7kSJwyugblM+mE6iJZWjc7Nc=;
+        b=QYcbq5XW9Ok8XcliNJlYAugDjprkxY/7W1PHsdIBhge6AiEXOBo801Au2bt/jBxOPG
+         72VielNHb60XuEylaQX4P2nNER+6chmrj/dPXhPA/pgLagYNl5XMjfrlAeQG9hik5qGi
+         fB3DQd297OjOr9UhnwshHIzqPgqZo7dhfplYpQXubrg9XwQaXm8BinbIMCJxe+jZQ1uP
+         IDpZAJk1QGZsB1wQVAv8CuIE2OlSajfYYpVQEl0/QT6foGZV7QJrxtYuC7/ifxY1lL2G
+         /XCu8OuLzLqxbxBIT4kFHHG9uN6U6pFxwZAGwZQdbgsBGAbvsldFICpbGhvcNb1mVjZd
+         xUHQ==
+X-Forwarded-Encrypted: i=1; AKwUvByucPMimIAhsFTmYCJqte/71aVVZCdUU9hdhTILwh8SDm6/s2qlprRGHZAawiTeGOiE0+8xv+8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJAVv9Z47jY9ZzUtu4AegkQFWXpUh/X382CDPtnAV2BoqkuuPg7
+	4+YJ39tFCJ8UpM3rETRxCDC8FeyTAcumni8yazS9UNv44q8bIYxgO8MkmiD4Vq8Tht9zgku3Xk6
+	G+YBkiQ==
+X-Received: from pgjz1.prod.google.com ([2002:a63:e541:0:b0:cc6:d405:8595])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e86:b0:3e1:a0c7:4009
+ with SMTP id adf61e73a8af0-3e1a0c749a7mr6543696637.48.1791925103394; Tue, 13
+ Oct 2026 13:58:23 -0700 (PDT)
+Date: Tue, 13 Oct 2026 20:57:29 +0000
 In-Reply-To: <20261013205816.1642597-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,96 +60,94 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261013205816.1642597-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261013205816.1642597-4-kuniyu@google.com>
-Subject: [PATCH v2 net-next 3/5] neighbour: Schedule neigh_managed_work only
- when needed.
+Message-ID: <20261013205816.1642597-3-kuniyu@google.com>
+Subject: [PATCH v2 net-next 2/5] selftests: netfilter: Set gc_thresh[123] for
+ gw netns in nft_nat_zones.sh.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
 	Ido Schimmel <idosch@nvidia.com>
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>
 Content-Type: text/plain; charset="UTF-8"
 
-neigh_table is now per-netns.
+Since commit cda2962b6e2b ("neighbour: Namespacify neigh_tables."),
+net.ipv[46].neigh.default.gc_thresh[123] are per-netns attributes.
 
-tbl->managed_work is scheduled when netns is created and runs
-periodically even though the netns does not have any NTF_MANAGED
-entries.
+Let's update nft_nat_zones.sh.
 
-Let's delay scheduling the work for the first NTF_MANAGED entry
-and stop rescheduling if tbl->managed_list is empty.
+Note that the number of neighbour entries does not even reach the
+default gc_thresh1 (128) with the default maxclients=100, and the
+raised thresholds are only needed for gw netns when maxclients is
+manually increased (e.g., 2000 as mentioned in the comment).
 
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/core/neighbour.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>
+---
+ .../selftests/net/netfilter/nft_nat_zones.sh  | 34 +++++--------------
+ 1 file changed, 8 insertions(+), 26 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 90335895b415..6b0569aa5d64 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -184,6 +184,15 @@ static void neigh_update_gc_list(struct neighbour *n)
- 	}
- }
+diff --git a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
+index 9f200f80253a..d935c967dd13 100755
+--- a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
++++ b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
+@@ -31,25 +31,6 @@ ret=0
+ #   NAT Gateway is supposed to do port reallocation for each of the
+ #   connections.
  
-+static void neigh_add_managed_list(struct neighbour *n)
-+{
-+	list_add_tail(&n->managed_list, &n->tbl->managed_list);
-+
-+	if (list_is_singular(&n->tbl->managed_list))
-+		queue_delayed_work(system_power_efficient_wq,
-+				   &n->tbl->managed_work, 0);
-+}
-+
- static void neigh_update_managed_list(struct neighbour *n)
- {
- 	bool on_managed_list, add_to_managed;
-@@ -194,7 +203,7 @@ static void neigh_update_managed_list(struct neighbour *n)
- 	if (!add_to_managed && on_managed_list)
- 		list_del_init(&n->managed_list);
- 	else if (add_to_managed && !on_managed_list)
--		list_add_tail(&n->managed_list, &n->tbl->managed_list);
-+		neigh_add_managed_list(n);
- }
+-v4gc1=$(sysctl -n net.ipv4.neigh.default.gc_thresh1 2>/dev/null)
+-v4gc2=$(sysctl -n net.ipv4.neigh.default.gc_thresh2 2>/dev/null)
+-v4gc3=$(sysctl -n net.ipv4.neigh.default.gc_thresh3 2>/dev/null)
+-v6gc1=$(sysctl -n net.ipv6.neigh.default.gc_thresh1 2>/dev/null)
+-v6gc2=$(sysctl -n net.ipv6.neigh.default.gc_thresh2 2>/dev/null)
+-v6gc3=$(sysctl -n net.ipv6.neigh.default.gc_thresh3 2>/dev/null)
+-
+-cleanup()
+-{
+-	cleanup_all_ns
+-
+-	sysctl -q net.ipv4.neigh.default.gc_thresh1="$v4gc1" 2>/dev/null
+-	sysctl -q net.ipv4.neigh.default.gc_thresh2="$v4gc2" 2>/dev/null
+-	sysctl -q net.ipv4.neigh.default.gc_thresh3="$v4gc3" 2>/dev/null
+-	sysctl -q net.ipv6.neigh.default.gc_thresh1="$v6gc1" 2>/dev/null
+-	sysctl -q net.ipv6.neigh.default.gc_thresh2="$v6gc2" 2>/dev/null
+-	sysctl -q net.ipv6.neigh.default.gc_thresh3="$v6gc3" 2>/dev/null
+-}
+-
+ checktool "nft --version" echo "run test without nft tool"
+ checktool "conntrack -V" "run test without conntrack tool"
  
- static void neigh_update_flags(struct neighbour *neigh, u32 flags, int *notify,
-@@ -708,7 +717,7 @@ ___neigh_create(struct neigh_table *tbl, const void *pkey,
- 	if (!exempt_from_gc)
- 		list_add_tail(&n->gc_list, &n->tbl->gc_list);
- 	if (n->flags & NTF_MANAGED)
--		list_add_tail(&n->managed_list, &n->tbl->managed_list);
-+		neigh_add_managed_list(n);
- 	if (want_ref)
- 		neigh_hold(n);
- 	hlist_add_head_rcu(&n->hash, &nht->hash_heads[hash_val]);
-@@ -1670,10 +1679,14 @@ static void neigh_managed_work(struct work_struct *work)
- 	struct neighbour *neigh;
+@@ -59,18 +40,19 @@ fi
  
- 	spin_lock_bh(&tbl->lock);
-+
- 	list_for_each_entry(neigh, &tbl->managed_list, managed_list)
- 		neigh_event_send_probe(neigh, NULL, false);
--	queue_delayed_work(system_power_efficient_wq, &tbl->managed_work,
--			   NEIGH_VAR(&tbl->parms, INTERVAL_PROBE_TIME_MS));
-+
-+	if (!list_empty(&tbl->managed_list))
-+		queue_delayed_work(system_power_efficient_wq, &tbl->managed_work,
-+				   NEIGH_VAR(&tbl->parms, INTERVAL_PROBE_TIME_MS));
-+
- 	spin_unlock_bh(&tbl->lock);
- }
+ setup_ns gw srv
  
-@@ -1873,7 +1886,6 @@ static int neigh_table_init(struct net *net, struct neigh_table *tbl)
+-trap cleanup EXIT
++trap cleanup_all_ns EXIT
  
- 	INIT_LIST_HEAD(&tbl->managed_list);
- 	INIT_DEFERRABLE_WORK(&tbl->managed_work, neigh_managed_work);
--	queue_delayed_work(system_power_efficient_wq, &tbl->managed_work, 0);
+ ip link add veth0 netns "$gw" type veth peer name eth0 netns "$srv"
+ ip -net "$gw" link set veth0 up
+ ip -net "$srv" link set eth0 up
  
- 	return 0;
+-sysctl -q net.ipv6.neigh.default.gc_thresh1=512  2>/dev/null
+-sysctl -q net.ipv6.neigh.default.gc_thresh2=1024 2>/dev/null
+-sysctl -q net.ipv6.neigh.default.gc_thresh3=4096 2>/dev/null
+-sysctl -q net.ipv4.neigh.default.gc_thresh1=512  2>/dev/null
+-sysctl -q net.ipv4.neigh.default.gc_thresh2=1024 2>/dev/null
+-sysctl -q net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
++ip netns exec "$gw" sysctl -q \
++   net.ipv6.neigh.default.gc_thresh1=512 \
++   net.ipv6.neigh.default.gc_thresh2=1024 \
++   net.ipv6.neigh.default.gc_thresh3=4096 \
++   net.ipv4.neigh.default.gc_thresh1=512 \
++   net.ipv4.neigh.default.gc_thresh2=1024 \
++   net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
  
+ for i in $(seq 1 "$maxclients");do
+   setup_ns "cl$i"
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
