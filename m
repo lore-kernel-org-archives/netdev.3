@@ -1,281 +1,289 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from oak.phenome.org (oak.phenome.org [193.110.157.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07ECE481AB5;
-	Tue, 13 Oct 2026 05:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9FC48641C;
+	Tue, 13 Oct 2026 06:00:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791870678; cv=none; b=B+466d81w2aLPOnBBuPVTkZPadOvddzGpk5LL2M+ZbO38D6tSbqgtn3kgBEzNl7fJMRGDqTzwwqN14YJCQrBCpiEL0tD54NCtRgEnFmeCWdHxrmpOT0QtXWilEVKRwR7tlPO+l7zuegAf1fEjyGzqKKma+JKY3H7Ual8whD1yhs=
+	t=1791871220; cv=none; b=tSxRbp7DSftrRD9U453H+qZCU1pM7+rb6sxqfQRkFtcmIkZ04PweSRanExUMk6Lxprgs+QqGx1R1LY/u8a7jR9bE8eMeL7qqrJjbip5Xx6JYZL+sqOLcF4YGmuS+Ggin9MCZtpq2I6S6EnLUdaEv8X1MzJIJUJCCRldnouKYjr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791870678; c=relaxed/simple;
-	bh=DfHS0Mvw3NZ4FanjKRzs8iS27y2fh0d217AbMwBiMaU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dSfnSfYIgX72EmXmIxm9PjvSKp1RUy0taP7Tw5npJmxm9C/+/lyIEdeRZnmNrvs3i+289xPtPoBj5/URB0c430VlwvCEsNSZ/LXb8ly/fXA1gkinexQW5yijKCc+4RSbrpv7+7nS4eR+i00X6+Uh74sxFyj5k11tZ1YVDQ2Z2nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJowRFzd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791871220; c=relaxed/simple;
+	bh=yVcXeYqVlL1dF3ynvXQd+XxFGCNMSlk4b47CA2WQYB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfP6wAfgUgyXNLROuygeDJiMx2EaCBvuQxMTlvlNdP43BCzV2NdzzYNsAFCv2/+AU5jpabBErAQk1CmlcoE6rgH1iPJXmhrCl9/mGw4/0XPIo5tuNYyjkw52ZoMjBjTE3coJnuQeeOzBEAuawiC/3lK0uTdRfoDntOQ2oJSv+1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=ecPoNpUN; arc=none smtp.client-ip=193.110.157.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJowRFzd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D031F000FF;
-	Tue, 13 Oct 2026 05:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791870676;
-	bh=TZOTfwKK/9csisAzSTOEpuQHBSLm5lYYx5WFKdj0fP8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DJowRFzdUtFGojE0GWF9gs5XZtoOhsS3lMkop6MJ47Bjfr9pNq3TSbom5aO/ihzuF
-	 NFBKmIOx3KgY5melRzz1shSegcux6E61JkhZe1gM6K1Jbt9N1Uo66XSnozllfKksgk
-	 zH651Oynwm6wR5KzaHRAbYKmFz/RJzi8fcSvfG5X1AT9EBT0q905tOumjr2se+sySY
-	 4TFkuXXIK/fNLKP6gQn+pAu8lhwRVCFSdWVf/wzcQxEBIv9iwQCh2/9nT3Xho8NG6T
-	 7drSUCqx9MwoRYXyLZslN13XJSAAvPcc79bvPBE8ceDJkMkr8kI7uPtj4xvsVoay69
-	 MyZV5miI8LzGQ==
-Subject: Re: [PATCH net-next v4 9/9] ibmveth: check headers in the RX large
- send and checksum helpers
-From: netdev-bot+sashiko@kernel.org
-To: mmc@linux.ibm.com
-Cc: netdev@vger.kernel.org, nnac123@linux.ibm.com, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
- ritesh.list@gmail.com, sshegde@linux.ibm.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, horms@kernel.org,
- davemarq@linux.ibm.com, bjking1@linux.ibm.com, brking@linux.vnet.ibm.com,
- tlfalcon@linux.vnet.ibm.com, jmaxwell37@gmail.com, zdai@us.ibm.com,
- marcelo.leitner@gmail.com, ksiva@linux.vnet.ibm.com
-Date: Tue, 13 Oct 2026 05:51:15 +0000
-Message-ID: <179187067525.434549.7404862779574164491@kernel.org>
-In-Reply-To: <20261012050518.88858-10-mmc@linux.ibm.com>
-References: <20261012050518.88858-10-mmc@linux.ibm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="ecPoNpUN"
+Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
+ reason="pass (just generated, assumed good)" header.d=phenome.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
+	in-reply-to:content-transfer-encoding:content-disposition
+	:content-type:content-type:mime-version:references:message-id
+	:subject:subject:from:from:date:date:received; s=oak1; t=
+	1791871205; x=1792735206; bh=yVcXeYqVlL1dF3ynvXQd+XxFGCNMSlk4b47
+	CA2WQYB4=; b=ecPoNpUNXbRLv4KFGPfhEC2FCLPDNTiVQqdjDSGU9+2Mn0nP2vz
+	XUkz8lKcK7/+XqooQn6joJfT7+ell14kVvYJ0I4m7oul9oUpyNmqyhGez5Q7bFzU
+	9/3H3uPKsSyBagBAOuOsGF3x8EGj03v8FTzFwCXvibFo+d4WXgg2o7zVwhv83bqQ
+	mLEibJTrscMHL0SMClX78JKjD2IidqyoeZblCqSQOHJemrsifB+w/SjRWqWsQkGE
+	CXTElxrqmEYCGD8mNmwtq7PK4bwrrPvdvxDjQdGDW3N1k5itzc4OoVWZx756SeNt
+	GjnEOlQ6/ilrXLN/6dk9FtSS/s26z1637Xw==
+X-Virus-Scanned: amavisd at oak.phenome.org
+Received: by oak.phenome.org (Postfix);
+	Tue, 13 Oct 2026 08:00:02 +0200 (CEST)
+Date: Tue, 13 Oct 2026 08:00:01 +0200
+From: Antony Antony <antony@phenome.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: antony.antony@secunet.com, chopps@labn.net,
+	steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH ipsec v5] xfrm: iptfs: fix pp_ref_count underflow when
+ sharing page_pool frags
+Message-ID: <as0sujmhR7dpE-ar@ayla.phenome.org>
+References: <xfrm-iptfs-pp_ref_count-underflow-v5-1-c25508ec9160@secunet.com>
+ <179171627713.434549.11629734394381610294@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <179171627713.434549.11629734394381610294@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+On Sun, Oct 11, 2026 at 10:57:57AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0 (1)
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The commit message says the iptfs_skb_add_frags() hunk is
+>   cosmetic: "Its destination skb never has pp_recycle set today, so…
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 1
+It could be better written. If I have to send another one I woul re-write it.
+Otherwise patch works. If there are no other issues it could be applied.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but it sits in the
+>   function the patch edits.
+> - [Low] iptfs_frag_ref() (net/xfrm/xfrm_iptfs.c:453-466) decides whether
+>   a frag is page_pool owned differently from the release path.
+> 
+> --
+> 
+> xfrm: iptfs: fix pp_ref_count underflow when sharing page_pool frags
+> 
+> This adds iptfs_frag_ref(). When the destination skb has pp_recycle set
+> and the frag's head page is page_pool owned, it takes a page_pool
+> reference. Otherwise it takes a plain page reference. The helper is used
+> in iptfs_consume_frags() to fix a pp_ref_count underflow on the TX
+> aggregation path, and in iptfs_skb_add_frags() for consistency.
+> 
+> > diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> > index 6920940a35b49..86688c0c3db96 100644
+> > --- a/net/xfrm/xfrm_iptfs.c
+> > +++ b/net/xfrm/xfrm_iptfs.c
+> 
+> [ ... ]
+> 
+> > @@ -449,6 +450,21 @@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
+> >  	return true;
+> >  }
+> >  
+> > +static void iptfs_frag_ref(skb_frag_t *frag, bool recycle)
+> > +{
+> > +	netmem_ref netmem = skb_frag_netmem(frag);
+> > +	struct page *head;
+> > +
+> > +	if (recycle && !netmem_is_net_iov(netmem)) {
+> 
+> [Severity: Low]
+> 
+> This is a pre-existing issue, but the net_iov handling here doesn't
+> match the release side.
+> 
+> For a pp_recycle destination, every net_iov frag falls through to
+> __skb_frag_ref() -> get_netmem(), which never touches pp_ref_count.
+> The release path in napi_pp_put_page() does this:
+> 
+> 	netmem = netmem_compound_head(netmem);
+> 
+> 	if (unlikely(!netmem_is_pp(netmem)))
+> 		return false;
+> 
+> netmem_is_pp() returns true for page_pool backed net_iov. If such a frag
+> is shared through iptfs_skb_add_frags(), the release would drop a
+> pp_ref_count that was never taken.
+> 
+> This doesn't look reachable today:
+> 
+>   - Software ESP can't pass an unreadable skb on to IPTFS input. When
+>     skb_copy_bits() fails, esp_remove_trailer() calls BUG().
+>   - mlx5 is the only unreadable-netmem driver with IPsec offload, and
+>     mlx5e_xfrm_add_state() rejects modes other than transport and
+>     tunnel.
+>   - On TX, iptfs_frag_ref() is only called on the head page.
+> 
+> The net_iov behaviour is also the same as before the patch. The commit
+> message already says "The netmem/devmem path is not addressed and
+> probably needs a fix in net/core".
+> 
+> Could this be handled together with that net/core change?
 
-- [High] ibmveth_rx_mss_helper() (drivers/net/ethernet/ibm/ibmveth.c) now
-  sets gso_segs = DIV_ROUND_UP(ip_len - hdr_len, gso_size).
-- [Low] The kernel-doc of ibmveth_rx_mss_helper_test() says the helper
-  takes "gso_segs from the IP length" and refuses "Frames whose headers…
+Yes, I'd rather fix net_iov together with a likely net/core change seperate commit;
+not addressed here, as the commit message says
 
-Pre-existing issues:
-- [Medium] ibmveth_rx_csum_helper()
-  (drivers/net/ethernet/ibm/ibmveth.c:1530) seeds the TCP pseudo-header…
+> 
+> > +		head = compound_head(netmem_to_page(netmem));
+> > +		if (page_pool_page_is_pp(head)) {
+> > +			page_pool_ref_page(head);
+> > +			return;
+> > +		}
+> > +	}
+> > +	__skb_frag_ref(frag);
+> > +}
+> > +
+> 
+> [ ... ]
+> 
+> > @@ -486,7 +502,7 @@ static int iptfs_skb_add_frags(struct sk_buff *skb,
+> >  			tofrag->len -= offset;
+> >  			offset = 0;
+> >  		}
+> > -		__skb_frag_ref(tofrag);
+> > +		iptfs_frag_ref(tofrag, skb->pp_recycle);
+> 
+> [Severity: Medium]
+> 
+> The commit message says this about the hunk:
+> 
+>   Its destination skb never has pp_recycle set today, so behaviour
+>   there does not change.
+> 
+> Is that accurate for the RX reassembly path?
 
---
+No, it isn't accurate for RX reassembly; see below.
 
-ibmveth: check headers in the RX large send and checksum helpers
+> 
+> In __input_process_payload(), the "Reuse the received skb" branch keeps
+> the skb the driver delivered (skb_pull(skb, data)). That skb keeps its
+> pp_recycle bit. If the inner packet is incomplete, it becomes the
+> reassembly destination:
+> 
+> 		if (skb->len < iplen) {
+> 			/* Start reassembly */
+> 			spin_lock(&xtfs->drop_lock);
+> 
+> 			xtfs->ra_newskb = skb;
+> 
+> On the next ESP packet, iptfs_reassem_cont() uses it as newskb. The
+> sharing gate there only requires pp_recycle to match:
+> 
+> 	if (!skb_has_frag_list(skb) && !skb_has_frag_list(newskb) &&
+> 	    (skb->head_frag || skb->len == skb->data_len) &&
+> 	    skb->pp_recycle == newskb->pp_recycle) {
+> 	...
+> 		iptfs_skb_add_frags(newskb, fragwalk, data, copylen);
+> 
+> On a page_pool NIC, both skbs have pp_recycle set. Before this patch,
+> the shared frags got a plain reference from __skb_frag_ref(), but they
+> were later released through napi_pp_put_page(), which decrements
+> pp_ref_count.
+> 
+> Doesn't that make this hunk a fix for the same underflow on the RX
+> reassembly path, not just a consistency change? Could the commit message
+> say that both the TX aggregation and RX reassembly sharing paths were
+> affected, since that matters for stable backports? 
 
-This adds bounds checks on the IP and TCP headers in
-ibmveth_rx_mss_helper() and ibmveth_rx_csum_helper(). The checks include a
-minimum IPv4 ihl and TCP doff, and IPv4 TCP fragments are refused. The large
-send helper now computes gso_segs from the IP length and clamps gso_size,
-and KUnit cases are added for both helpers.
+Yes, you're right. The commit message could be better worded. The
+iptfs_skb_add_frags() hunk also fixes RX reassembly, since the reused
+driver skb keeps pp_recycle. I'll update the commit message in the next
+version. I think the code is clear it fix RX side. If I send another 
+vesion I would re-word it.
 
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-> index 85e176d0ed321..1c2ac88c28ca3 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.c
-> +++ b/drivers/net/ethernet/ibm/ibmveth.c
 
-[ ... ]
+> 
+> >  		shinfo->nr_frags++;
+> >  		shinfo->flags |= SKBFL_SHARED_FRAG;
+> >  
+> > @@ -2171,7 +2187,8 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
+> >  		new_truesize = SKB_TRUESIZE(skb_end_offset(from));
+> >  	} else {
+> >  		iptfs_skb_head_to_frag(from, &toi->frags[toi->nr_frags]);
+> > -		skb_frag_ref(to, toi->nr_frags++);
+> > +		iptfs_frag_ref(&toi->frags[toi->nr_frags], to->pp_recycle);
+> > +		toi->nr_frags++;
+> >  		new_truesize = SKB_DATA_ALIGN(sizeof(struct sk_buff));
+> >  	}
+> >  
+> 
+> [Severity: High]
+> 
+> This isn't a bug introduced by this patch, but since
+> iptfs_consume_frags() is being changed: can it corrupt a cloned source
+> skb?
+> 
+> In iptfs_output_queued(), only the destination is checked for clone or
+> shared state:
+> 
+> 		if (shi->frag_list || skb_cloned(skb) || skb_shared(skb))
+> 			share_ok = false;
+> 
+> The per-source test never checks skb_cloned(skb2) or skb_shared(skb2):
+> 
+> 			if (share_ok &&
+> 			    (shi2->frag_list ||
+> 			     (!skb2->head_frag && skb_headlen(skb)) ||
+> 			     skb->pp_recycle != skb2->pp_recycle ||
+> 			     skb_zcopy(skb2) ||
+> 			     (shi->nr_frags + shi2->nr_frags + 1 > MAX_SKB_FRAGS)))
+> 				share_ok = false;
+> 
+> iptfs_consume_frags() then memcpy()s fromi->frags into the aggregate
+> without taking frag references, and does:
+> 
+> 	fromi->nr_frags = 0;
+> 
+> If skb2 is a clone, that skb_shared_info is shared with its sibling. The
+> sibling is left with data_len > 0, nr_frags == 0 and no frag_list, and
+> the aggregate becomes the only owner of the page references. For
+> comparison, skb_try_coalesce() only moves frags when !skb_cloned(from),
+> and takes references otherwise.
+> 
+> Cloned skbs could reach this point with nothing uncloning them before
+> dst_output() -> iptfs_output_collect():
+> 
+>   - netem duplicate on an xfrm interface (netem_enqueue() uses
+>     skb_clone())
+>   - a non-mmap AF_PACKET listener on the xfrmi device
+>     (dev_queue_xmit_nit())
+>   - tc mirred from xfrmi
+> 
+> In each case the skb can be a forwarded non-GSO, non-linear, head_frag
+> RX skb.
+> 
+> With netem duplicate, the second clone is later accounted with
+> skb->data_len += skb2->len (or sent as a first skb) after its frags are
+> gone. The ESP output path can then hit BUG_ON(len) in __skb_to_sgvec().
+> An AF_PACKET reader could get -EFAULT. A concurrent reader, or DMA on a
+> mirrored device, could access pages after the aggregate frees them.
+> 
+> This dates back to b96ba312e21c and needs CAP_NET_ADMIN configuration.
+> Should the share_ok test also reject skb_cloned(skb2) or
+> skb_shared(skb2)?
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/xfrm-iptfs-pp_ref_count-underflow-v5-1-c25508ec9160%40secunet.com
+> 
 
-> @@ -1406,28 +1410,41 @@ static void ibmveth_rx_mss_helper(struct sk_buff *skb, u16 mss, int lrg_pkt)
->  	if (skb->protocol == htons(ETH_P_IP)) {
->  		struct iphdr *iph = (struct iphdr *)skb->data;
->  
-> +		if (skb_headlen(skb) < sizeof(*iph) || iph->ihl < 5)
-> +			return false;
->  		if (iph->protocol == IPPROTO_TCP) {
-> +			/* only a whole datagram has a TCP header to segment */
-> +			if (ip_is_fragment(iph))
-> +				return false;
->  			offset = iph->ihl * 4;
-> -			skb_shinfo(skb)->gso_type = SKB_GSO_TCPV4;
-> +			ip_len = ntohs(iph->tot_len);
-> +			gso_type = SKB_GSO_TCPV4;
-
-[ ... ]
-
->  	tcph = (struct tcphdr *)(skb->data + offset);
-> +	if (skb_headlen(skb) < offset + sizeof(*tcph) || tcph->doff < 5 ||
-> +	    ip_len > skb_headlen(skb) || ip_len <= offset + tcph->doff * 4)
-> +		return false;
-> +	skb_shinfo(skb)->gso_type = gso_type;
->  	if (lrg_pkt) {
->  		skb_shinfo(skb)->gso_size = mss;
->  	} else if (offset) {
-> @@ -1436,11 +1453,18 @@ static void ibmveth_rx_mss_helper(struct sk_buff *skb, u16 mss, int lrg_pkt)
->  	}
->  
->  	if (skb_shinfo(skb)->gso_size) {
-> +		/* chosen by the sending partition: at least the floor
-> +		 * virtio_net_hdr_to_skb() uses, and never GSO_BY_FRAGS
-> +		 */
-> +		skb_shinfo(skb)->gso_size =
-> +			clamp_t(u16, skb_shinfo(skb)->gso_size,
-> +				TCP_MIN_GSO_SIZE, GSO_BY_FRAGS - 1);
->  		hdr_len = offset + tcph->doff * 4;
->  		skb_shinfo(skb)->gso_segs =
-> -				DIV_ROUND_UP(skb->len - hdr_len,
-> +				DIV_ROUND_UP(ip_len - hdr_len,
->  					     skb_shinfo(skb)->gso_size);
->  	}
-
-[Severity: High]
-
-Can gso_segs here undercount the number of segments that actually get
-produced?
-
-The only check of ip_len against the frame is ip_len > skb_headlen(skb).
-That means a frame much longer than its IP length is accepted, and nothing
-trims the skb to ip_len before napi_gro_receive().
-
-The commit message says the skb is not marked SKB_GSO_DODGY because
-gso_segs is computed here. That holds once ip_rcv_core() trims the skb to
-tot_len, on local delivery or routing. On the Trunk VEA forwarding paths
-(a bridge without br_netfilter, or OVS without conntrack), the skb is not
-trimmed.
-
-For example, a sending partition could:
-
-  - set iph->check = 0xffff
-  - put an MSS of 8 in tcph->check
-  - set tot_len = 100
-  - send a frame of about 9000 bytes
-
-The new checks pass (100 <= headlen, 100 > 40), so gso_segs becomes 8.
-tcp_gso_segment() or hardware TSO works on skb->len instead, which gives
-about 1120 segments.
-
-On egress, gso_features_check() compares the trusted gso_segs against the
-device limit:
-
-net/core/dev.c:gso_features_check() {
-    ...
-	if (gso_segs > READ_ONCE(dev->gso_max_segs))
-		return features & ~NETIF_F_GSO_MASK;
-    ...
-}
-
-Also, qdisc_pkt_len_segs_init() only recomputes gso_segs from skb->len for
-SKB_GSO_DODGY skbs.
-
-Would this let a TSO skb past the egress NIC's gso_max_segs? Would it also
-make the qdisc and BQL accounting too low?
-
-Before this patch, gso_segs was derived from skb->len, which matches what
-gets segmented. Any of these would avoid the mismatch:
-
-  - trim the skb to ip_len, for example with pskb_trim_rcsum()
-  - refuse large sends where skb_headlen(skb) != ip_len
-  - compute gso_segs from skb->len
-
-[ ... ]
-
-> @@ -1493,6 +1523,8 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
->  	if (iph_proto == IPPROTO_TCP) {
->  		struct tcphdr *tcph = (struct tcphdr *)(skb->data + iphlen);
->  
-> +		if (skb_headlen(skb) < iphlen + sizeof(*tcph))
-> +			goto bad_hdr;
->  		if (tcph->check == 0x0000) {
->  			/* Recompute TCP pseudo header checksum  */
->  			tcphdrlen = skb->len - iphlen;
-
-[Severity: Medium]
-
-This isn't a bug introduced by this patch, but should the pseudo-header
-length in ibmveth_rx_csum_helper() come from the IP header rather than
-skb->len?
-
-The frame can have bytes past the end of the IP datagram, either Ethernet
-padding or trailing bytes that ibmveth_rx_mss_helper() still accepts when
-ip_len < skb_headlen(skb). If tcph->check is also 0, the seed is computed
-over the wrong length, and skb_partial_csum_set() then marks the skb
-CHECKSUM_PARTIAL.
-
-ip_rcv_core() and ip6_rcv_core() later trim the skb with pskb_trim_rcsum().
-For CHECKSUM_PARTIAL, that only checks where the checksum field is:
-
-net/core/skbuff.c:pskb_trim_rcsum_slow() {
-    ...
-	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
-		int hdlen = (len > skb_headlen(skb)) ? skb_headlen(skb) : len;
-		int offset = skb_checksum_start_offset(skb) + skb->csum_offset;
-
-		if (offset + sizeof(__sum16) > hdlen)
-			return -EINVAL;
-	}
-    ...
-}
-
-The seed is left as it was.
-
-Could a forwarded packet then go out with a TCP checksum over the trimmed
-data but a pseudo-header for the untrimmed length? The final receiver
-would drop it.
-
-This patch moved the large send helper to the IP length. Would
-tot_len - ihl * 4, or the IPv6 payload_len, make sense here too?
-
-[ ... ]
-
-> @@ -2508,10 +2549,214 @@ static void ibmveth_rxq_harvest_buffer_test(struct kunit *test)
-
-[ ... ]
-
-> +	} else {
-> +		struct iphdr *iph = (struct iphdr *)skb->data;
-> +
-> +		skb->protocol = htons(ETH_P_IP);
-> +		iph->version = 4;
-> +		iph->ihl = 5;
-> +		iph->protocol = IPPROTO_TCP;
-> +		iph->tot_len = htons(len);
-> +	}
-
-[ ... ]
-
-> +/**
-> + * ibmveth_rx_mss_helper_test - unit test for ibmveth_rx_mss_helper
-> + * @test: pointer to kunit structure
-> + *
-> + * Large send frames get gso_size from the descriptor or the TCP checksum
-> + * field, clamped, and gso_segs from the IP length. Frames whose headers
-> + * do not fit, with no TCP payload within the IP length, or that are
-> + * IPv4 fragments, are refused and left without GSO.
-> + *
-> + * Return: void
-> + */
-
-[Severity: Low]
-
-This isn't a bug, but do any of the cases in ibmveth_rx_mss_helper_test()
-test "gso_segs from the IP length" or the "headers do not fit" refusal?
-
-ibmveth_test_tcp_skb() always sets tot_len (or 40 + payload_len) equal to
-skb->len. So in every accepted case, DIV_ROUND_UP(ip_len - hdr_len, ...)
-gives the same result as the old DIV_ROUND_UP(skb->len - hdr_len, ...).
-The only case with ip_len < skb->len is the padding case, and it is refused
-before gso_segs is computed.
-
-No mss helper case builds an skb shorter than sizeof(struct iphdr),
-sizeof(struct ipv6hdr), or offset + sizeof(struct tcphdr). So if gso_segs
-went back to skb->len, or those skb_headlen() checks were dropped from
-ibmveth_rx_mss_helper(), every expectation would still pass.
-
-Could cases be added for a tot_len smaller than the frame and for truncated
-headers? Otherwise, could the kernel-doc be narrowed to what is tested?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012050518.88858-1-mmc%40linux.ibm.com
