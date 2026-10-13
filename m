@@ -1,236 +1,135 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mta0.migadu.com (out-224.mta0.migadu.com [91.218.175.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854544B7144
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 06:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A06A391E52
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 06:33:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791873128; cv=none; b=Rk2pI3scafalKHsqTQTfFOgqFunA0r0Qh9EtP7aTa5J3RgGgR0cLi7gzZier4OJInm+Iqg2j3RrIvtg2878SgrA96tBbm6mp3ar4eeTSzylWTal/U0kjmC6n2opeXxpo0NsWqN3K1vKKPnVmq6WR72Plr+fLwMYyP10Jcu7hqCs=
+	t=1791873192; cv=none; b=M6o7Sx9xbt49cV6+afV7jL5M3attllGnZTPKKHqyC68Iz41MV+7fsQR3fJhUUUjTqK9x651IRPOMDaG0L+297ixn02QhYXSHZMkEkkGupemLqPkEFpiOp2YNH9HFEMlko/nGVwYOxWOe/QhIdQM+I4oCz/QxfV8WFwdImfqTioY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791873128; c=relaxed/simple;
-	bh=L/dNElf7d0/8j9/vCtolWRLlDfu3My0EYUi4Jj3CkKE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MDbCLQZG197aaXKCp2jok6iDUEEt3RIRyEP4h7jvzTb/PQOYQrvpPsNJegk/vt7VTOXc52Jiuc4CToEiywOjxP8YmmGvj5lNwdwEVCJrDiB0w9HZsveACUfJDUVkTNqELXvRTGoD7SXZCA2l1FDpcHYbRpJfttfWhz18lFNxW/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NtQImIUa; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791873192; c=relaxed/simple;
+	bh=XVxuLMoX0zIlKVesEWn7dtGmWeyxZzUJ3pLhkZjDcOE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ND9G4Q7jP4TGiBVAY207yO3jxH3XxVH0Vd1q/Zk36If8igYf25FnKAP6gStTQi0FlKglIeAWYLVwuI78HbZuyAXFwNEtnmPUhbaS3iHafJNJvRqrL1ff3/7IiEtcWYnTXZMaW5JJp8sLsy4eNTiMZjcZKJtB02cFLZF1g5YVUK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GoxhJyIc; arc=none smtp.client-ip=91.218.175.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NtQImIUa"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3a4b9732d5aso1891945a91.3
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 23:32:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791873127; x=1792477927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Cf0DekLkQo44hkrueV4aqPPbi+U5QUyqtXFTYMPqfJc=;
-        b=NtQImIUadkL7R5J6uBoER/mkCBKr8zgy56stmMHz4a+pLlH45CUL86btZdkzWCvuw0
-         vcvYROfj8lGSBY3ZlAMc/iCzL9tJrZv5f4u0ByKqImKSk5/+6JwHEKR/EIAs+eVBwmt4
-         5ZnkGzSIIzW7eJVUeRjswVdJUGnSV8vDa8rOh2ace7piA2VFE+Qc8NDLevesKnrkunDo
-         sdsVE1ChMp2LNe9UDDodJavqZLQ1N/1SwFp2QTNlI07PUJ0sDPJs6Z/vWv1bZ+1Emxlc
-         wmyQbnSVv671tyvwMPs2kkWd4Pjz4BW8TDywqYKC9ldV0rX8Nt1JIr7vZr2kjUm8Cl/1
-         mM0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791873127; x=1792477927;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Cf0DekLkQo44hkrueV4aqPPbi+U5QUyqtXFTYMPqfJc=;
-        b=CoI7UYoR8MWgy1ITavUnAW0FpV7+5X83B+xtXpSW/yP8/lpAXEzjV1yj1ZnGx1u0Wl
-         CRSgeda7bYi9rvxULuWbgOyuSBFSk4U7Jk3f3PSAt5rRg9SpiLVA6g5M4LX/SV2jpRnP
-         Z2GDh+slV1tfMuVcjsie6zbMG+WJQSlhC52X3Xgj70Z9h90W6/R4imMSkwVROl+ouUty
-         Ixs7DfwfMGQIEk/JpW476xRRCLX7R7ZrHmJakccmBzuWhE2cYs26BisQPl5N6TYTu4cl
-         DgFlWZiGd/JfTESdrkGcM1tzdxIiNbVgCvSdrM0JIfcQQXBBpzlrcQxJlJXCgGFz/3H0
-         Xoig==
-X-Forwarded-Encrypted: i=1; AKwUvBxXVnQruaE92RNy4sGXqJd89g01MKbrV5Z7U6zJQEIdlRcYjHUMETJvrK2g2hCprNRFn8Tw+z4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIsTvsWpvjvvL3YYQrL+o6m4LKHMRx43N8PhpYnLE/uzoNWIsNh
-	GE005jydPssQWNKNMzOCEW6kpwLEIACYa8GgWB5Vv10NDXj4t3de7Pbl
-X-Gm-Gg: AYBFou2AH1scIt0bZYGfpmc/5RKgKgvPF1J/zCNjIp77o3xCsawZwJo0GWKOa4cClSG
-	peyTKwS8feYcPYaA2EduBaYm/TqOsHgrFwbK3YsKqHby3a7TBIERXb2skxNMM6q1qKmBbUV+cjX
-	sf5eePmiQ80ByrRpNpDESMvKMJ16kFcTU14OGBjosL2RpMlmGjXvGTwH1O643dTZKGldca91tRz
-	M/IBTl5n5tsVD59t7wS/Xm7pE+1NqJCVn/kSXEaKB5Xjr4HMp4+BoHIu3KEULOwzHt74HXtG/7z
-	X3H0HHAmlPKGBbK0Qo/H1uKiDKubXGerquivB/zE7loCvqXEqTqoiZHeGa2hWH9BHhpg6wjuPmE
-	gBysRJBQCZbD5/UbqVgzeseDijA52MKHFgfoxA43tD7SnYM7I7QyGNJc0nYojzR4mEu3pgb45Gj
-	1Kww5D/8bU9URAYdCAKToltQruEf7VRMrTHQ2G7k8lNAvW0HO5FQYNXZcTDHPUgZuGpav+mSs=
-X-Received: by 2002:a17:90b:224c:b0:39e:6c68:c77a with SMTP id 98e67ed59e1d1-3ab3ac58a7bmr11413151a91.48.1791873126483;
-        Mon, 12 Oct 2026 23:32:06 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab3781d581sm20018349a91.1.2026.10.12.23.32.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 23:32:06 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GoxhJyIc"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=XVxuLMoX0zIlKVesEWn7dtGmWeyxZzUJ3pLhkZjDcOE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791873188; v=1; x=1792477988;
+ b=GoxhJyIcotEKQ9RWaPmSdbB3lqGpXJbwL0+v+BwbB7wgwUVPH3VLU38xl7HdUY/gIyq9UJ7h
+ UlB6waZw/U0cuZY040LSROktRUgbA+xhj0KJzkYBTWXSu8jvElV2jHCy8A2FsLg5PHEL837N5+l
+ kIB8EkuiXINfmO5F+5IGb4fs=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id f9062f3d95f0ed0b;
+	Tue, 13 Oct 2026 06:33:08 +0000
+X-Mizu-Trace-ID: f9062f3d95f0ed0b
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 13 Oct 2026 14:32:50 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Prasenjit Mukherjee <pmukherj@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 4/4] vsock/virtio: defer RX readable notifications until batch unlock
-Date: Tue, 13 Oct 2026 14:31:12 +0800
-Message-Id: <20261013063112.168321-5-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261013063112.168321-1-physicalmtea@gmail.com>
-References: <20261013063112.168321-1-physicalmtea@gmail.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+	netdev@vger.kernel.org, Davide Caratti <dcaratti@redhat.com>
+Subject: Re: [PATCH net] selftests: net: fix race condition in icmp.sh
+ causing CKI sporadic failures
+Message-ID: <as3Qko-Sl60tJZ4S@fedora>
+References: <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
 
-An RX batch can make a socket readable while the worker still owns its
-socket lock. Waking a reader at that point can make it immediately wait
-for the same lock.
+On Mon, Oct 12, 2026 at 06:23:32PM +0530, Prasenjit Mukherjee wrote:
+> CKI reports sporadic failures in icmp.sh, Davide suggests this might be
+> caused by a race condition where tcpdump starts capturing after the last of
+> expected ICMP unreachable packets have been sent.
+> Fix this replacing tcpdump with a tc flower filter that
+> matches ICMP Destination Unreachable (type 3, code 0),
+> and match on act_gact counters instead.
+> This will remove any race condition to appear.
+> 
+> Fixes: 7e9838b7915e2 ("selftests/net: Add icmp.sh for testing ICMP dummy address responses")
+> CC: Toke Høiland-Jørgensen <toke@redhat.com>
+> Suggested-by: Davide Caratti <dcaratti@redhat.com>
+> Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+> Reported-by: CKI Project <cki-project@redhat.com>
+> Closes: https://datawarehouse.cki-project.org/issue/3658
+> Signed-off-by: Prasenjit Mukherjee <pmukherj@redhat.com>
+> ---
+>  tools/testing/selftests/net/icmp.sh | 32 ++++++++++++++---------------
+>  1 file changed, 16 insertions(+), 16 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/net/icmp.sh b/tools/testing/selftests/net/icmp.sh
+> index 824cb0e35eff..0714e8b34d12 100755
+> --- a/tools/testing/selftests/net/icmp.sh
+> +++ b/tools/testing/selftests/net/icmp.sh
+> @@ -27,11 +27,8 @@ PINGADDR=172.16.1.1
+>  RT2=172.16.0.0/24
+>  H2_IP6=2001:db8:1::2
+>  
+> -TMPFILE=$(mktemp)
+> -
+>  cleanup()
+>  {
+> -    rm -f "$TMPFILE"
+>      cleanup_ns $NS1 $NS2
+>  }
+>  
+> @@ -52,21 +49,24 @@ ip -netns $NS2 route add $RT2 via inet6 $H1_IP6
+>  
+>  # Make sure ns2 will respond with ICMP unreachable
+>  ip netns exec $NS2 sysctl -qw net.ipv4.icmp_ratelimit=0 net.ipv4.ip_forward=1
+> +# Install tc flower filter to count ICMP unreachable from 192.0.0.8
+> +ip netns exec $NS1 tc qdisc add dev veth0 clsact
+> +ip netns exec $NS1 tc filter add dev veth0 ingress \
+> +	protocol ip pref 1 handle 1 flower \
+> +	src_ip 192.0.0.8 ip_proto icmp type 3 code 0 \
+> +	action pass
+>  
+> -# Run the test - a ping runs in the background, and we capture ICMP responses
+> -# with tcpdump; -c 1 means it should exit on the first ping, but add a timeout
+> -# in case something goes wrong
+> -ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null &
+> -ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>/dev/null
+> +# Send ping to trigger ICMP unreachable from ns2
+> +ip netns exec $NS1 ping -c 1 $PINGADDR >/dev/null 2>&1
+>  
+> -# Parse response and check for dummy address
+> -# tcpdump output looks like:
+> -# IP 192.0.0.8 > 172.16.0.1: ICMP net 172.16.1.1 unreachable, length 92
+> -RESP_IP=$(awk '{print $2}' < $TMPFILE)
+> -if [[ "$RESP_IP" != "192.0.0.8" ]]; then
+> -    echo "FAIL - got ICMP response from $RESP_IP, should be 192.0.0.8"
+> -    exit 1
+> -else
+> +# Verify ICMP unreachable was received from dummy address 192.0.0.8 per RFC7600
+> +COUNT=$(ip netns exec $NS1 tc -j -s filter show dev veth0 ingress \
+> +	| jq '.[1].options.actions[].stats.packets')
+> +
+> +if [[ "$COUNT" -eq 1 ]]; then
+>      echo "OK"
+>      exit 0
+> +else
+> +    echo "FAIL - expected 1 ICMP unreachable from 192.0.0.8, got $COUNT"
+> +    exit 1
+>  fi
+> -- 
+> 2.55.0
+> 
 
-For the callback installed by sock_init_data(), record when the existing
-low-watermark condition is met and issue one notification after the batch
-releases the lock. Save the initial sock_def_readable() callback when the
-AF_VSOCK socket is created because virtio_transport_common can be built as
-a module and cannot refer to that unexported symbol directly.
-
-Require the original protocol and both saved callbacks for batching.
-Sockets with callbacks installed by sockmap or another user retain their
-existing per-packet behavior.
-
-A psock is published before sockmap replaces the callbacks and is excluded
-by the batch admission checks. If an attach races an active native batch,
-only a packet admitted before that publication can complete on the native
-path; the next packet ends the batch. No queued skb handoff is needed.
-
-Keep the socket reference until the deferred callback completes. Control
-packets, state transitions, transport changes and non-batched sockets keep
-their existing behavior.
-
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- include/linux/virtio_vsock.h            |  1 +
- include/net/af_vsock.h                  |  3 ++-
- net/vmw_vsock/af_vsock.c                |  1 +
- net/vmw_vsock/virtio_transport_common.c | 22 +++++++++++++++++++---
- 4 files changed, 23 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index bf077ee0ded88..f1396ca3ad9b5 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -288,6 +288,7 @@ struct virtio_transport_rx_batch {
- 	unsigned int pkts;
- 	size_t bytes;
- 	bool write_space_pending;
-+	bool data_ready_pending;
- };
- 
- void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 9d8ae62209eda..a799f08556376 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -63,7 +63,8 @@ struct vsock_sock {
- 	u32 peer_shutdown;
- 	bool sent_request;
- 	bool ignore_connecting_rst;
--	/* Initial callback, used to identify replacements. */
-+	/* Initial callbacks, used to identify replacements. */
-+	void (*default_data_ready)(struct sock *sk);
- 	void (*default_write_space)(struct sock *sk);
- 
- 	/* Protected by lock_sock(sk) */
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index fe7f49da6c4bc..f40659ec29df0 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
- 		sk->sk_type = type;
- 
- 	vsk = vsock_sk(sk);
-+	vsk->default_data_ready = sk->sk_data_ready;
- 	vsk->default_write_space = sk->sk_write_space;
- 	vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
- 	vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index d6ebfde880db6..84822d6bfb958 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1588,7 +1588,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 
- static int
- virtio_transport_recv_connected(struct sock *sk,
--				struct sk_buff *skb)
-+				struct sk_buff *skb,
-+				bool *data_ready_pending)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1607,7 +1608,13 @@ virtio_transport_recv_connected(struct sock *sk,
- 			vsock_remove_sock(vsk);
- 			break;
- 		}
--		vsock_data_ready(sk);
-+		if (!data_ready_pending) {
-+			vsock_data_ready(sk);
-+		} else if (!*data_ready_pending &&
-+			   (vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
-+			    sock_flag(sk, SOCK_DONE))) {
-+			*data_ready_pending = true;
-+		}
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
- 		virtio_transport_send_credit_update(vsk);
-@@ -1820,6 +1827,7 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
- 	return sk->sk_state == TCP_ESTABLISHED &&
- 	       sk->sk_type == SOCK_STREAM &&
- 	       READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
-+	       READ_ONCE(sk->sk_data_ready) == vsk->default_data_ready &&
- 	       READ_ONCE(sk->sk_write_space) == vsk->default_write_space &&
- 	       !sock_flag(sk, SOCK_DONE) &&
- 	       vsk->transport == &t->transport &&
-@@ -1879,7 +1887,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 		kfree_skb(skb);
- 		break;
- 	case TCP_ESTABLISHED:
--		virtio_transport_recv_connected(sk, skb);
-+		virtio_transport_recv_connected(sk, skb,
-+						batch ?
-+						&batch->data_ready_pending : NULL);
- 		break;
- 	case TCP_CLOSING:
- 		virtio_transport_recv_disconnecting(sk, skb);
-@@ -1961,12 +1971,14 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
- void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
- {
- 	bool write_space_pending = batch->write_space_pending;
-+	bool data_ready_pending = batch->data_ready_pending;
- 	struct sock *sk = batch->sk;
- 
- 	batch->sk = NULL;
- 	batch->pkts = 0;
- 	batch->bytes = 0;
- 	batch->write_space_pending = false;
-+	batch->data_ready_pending = false;
- 
- 	if (!sk)
- 		return;
-@@ -1975,6 +1987,10 @@ void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
- 		vsock_sk(sk)->default_write_space(sk);
- 
- 	release_sock(sk);
-+
-+	if (data_ready_pending)
-+		vsock_sk(sk)->default_data_ready(sk);
-+
- 	sock_put(sk);
- }
- EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
--- 
-2.53.0
-
+Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
