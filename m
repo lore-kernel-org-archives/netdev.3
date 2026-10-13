@@ -1,183 +1,137 @@
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011043.outbound.protection.outlook.com [40.93.194.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9AC1A7264;
-	Tue, 13 Oct 2026 13:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791897073; cv=none; b=DNj0lzLEatERfP0OMNCi8KM4EmHjlUxqMvJ2zP8oanghUbkXfY/giWPMzUMMAf/4sjx/lQtfL+UgI+jfvR6chW7fXADNq3qsnzE86O17RaEK24RsJhKNGlWyasxyBiIl7K+bsAGMGP/A3IUoIlatsQohWU9ML7ZrRm8fsmShZx4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791897073; c=relaxed/simple;
-	bh=Fp34FYfTQc+YTGKGK6lC+tQUOsD84gcR8WE1MZCV/Mw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r+0d7wHS4ephoLATA2ulmTQ4fSkKetpYBA8SVVJUboLqCC2vm8Y5yx2FsZr6a/mv4eVaoufXoLDwpkMifZlmiia+dUJHkAZDa1sJGiAm7QL/X8XjX1EEG/sPpdsAP3UbZLCYJWJLbBAJprdC19WQLv6OOObMW9rbJLLBLrneA3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=lf+pnWGm; arc=none smtp.client-ip=37.230.196.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4CB472061;
+	Tue, 13 Oct 2026 13:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791897190; cv=fail; b=FaRvBmWhNW5rtOnC6dkcrC6OcLoDpnND9/vqhrGIXekdtbCwQbYZ+UgiOVOwRFCVZPswwqsoUwyBBeVemWRYKIu9+y+IF2QVyLE+/h/7NjpHr8IVU9t8kUVfTg3eT8o6oht2zagrc31Sx2Dsbi5nPn2liiKWRcaMikiVyITrIdE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791897190; c=relaxed/simple;
+	bh=80bmWMDFxeDTSsisrh5PA9lyiMfNWC78WXOl8o+JqR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jPU8I/ykaSD3xno+nPx5iSBCIeGy+c3cXybHNFXyhz5omCXk2WU7C1Zp49UCeph8GXLxK7sy7Tg3rx6cihWc15qlEgbaUuYrpg+0+zO5fCexejcqviNzlv95Ej7v02/r/Ww1C0SVNn6UZAr2VTjw5W3oLwNYWwPFpLdeWEm37cQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Nz07J13x reason="signature verification failed"; arc=fail smtp.client-ip=40.93.194.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="lf+pnWGm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1791897064;
-	bh=Fp34FYfTQc+YTGKGK6lC+tQUOsD84gcR8WE1MZCV/Mw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=lf+pnWGmlEynW4sOeWDlcSnQWC01WGZgxN8e3CIF+168MqmblIN1yD7cnfCMRHbEb
-	 WWfbLIQvuSY1jtaaDeWIHfNyE+IyQzVJ8kL5yx2vve+ZQ10+fU1fM1vLU07uetzKcb
-	 hScSuztXKesZ/EM99dfuLa2iIhOoZ/khPc25+/JazboE5E//nIFKJEyNLc4aer8/nF
-	 uN9sL8g5UFo8GT8qg8cH7jXoDpiu5y/PaOa6yPC/PmeFAe/88l5kiWUdFW3PJ7T50b
-	 RCh/hk91k/zfVrKTLyalZWsYOhPNCg70jUqgRWw7Gho48MpcqnfjoHpZfyHsF5gtMh
-	 RMzjg3GiTjZxg==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id BFFE625222;
-	Tue, 13 Oct 2026 16:11:04 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Tue, 13 Oct 2026 16:11:03 +0300 (MSK)
-Received: from DESKTOP-D46TNHI (unknown [10.198.63.202])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4j3vnM0xN9z19Bw;
-	Tue, 13 Oct 2026 16:09:43 +0300 (MSK)
-From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Vega <vega@nebusec.ai>
-Subject: [PATCH 5.10] net/sched: sch_htb: limit htb_classify inner-class filter hops
-Date: Tue, 13 Oct 2026 16:09:00 +0300
-Message-ID: <20261013130903.1223-1-mdmitrichenko@astralinux.ru>
-X-Mailer: git-send-email 2.54.0.windows.1
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Nz07J13x"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NT+dDJQdBp/oxntypMcqrABw+kGxPBsV7XTRuAgQuk+XWheXPzIwl8lus9k+kwb3VUp+N4CRW3LbpieTk/q1sdkNRIivkFzs4j1JEw4EP+Cey8orrUzhcPmT66XUPtwUj1UGH23vNLNqyQFfwippeK/4IWZDikslY2DNbFyTa/ly+olHehvtgVUeH0qspbnwABTWf9vLHCKbg6dcnG6TfMgdgXsGd10iFy/O+QnZcs+4bUJTMbzDeTtcB4/694TJjEObUIEEJN22/9dFlnQ1ZyHE6ERDm4+lyCGzPN92hBq5XQULG60FHoYPG1IV7JPw1dgxiqOLszsoU0e1li2z5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kgXLXIIWk/fnKblgtHMMHjtqU0SauEiOB1W/14GBz7k=;
+ b=X16f+x2joBLncPxjJ/NJ5aMwTRnYOt1Vv4ncjbqvYCIqBLZVJFVjn7HWZ4JX0fuPcHshXykfR0ZCrUbHkIObEBX203N51HqewMe1xJnPD5q5P1sdppR1k4C0qbJlGthZMcMPs7M981gE2c+o9/oNYTfh8wpPt95tKN2581fGc9le5xbnScjm8jxkynY6Osiv/R+JODhcZqGEW8E4qnWggU/eRZb/yJx4wl3pjJbtpHuN4Kvm94ctnRHeww4uXxE0dUgFZ7QmWbLOBryiq1g2ShWjrF9Ggkue9CZsGGdMWOIIEtCJHQ08PnTWiFcMA+meOBWNEX9hkD881AP/8Nigiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kgXLXIIWk/fnKblgtHMMHjtqU0SauEiOB1W/14GBz7k=;
+ b=Nz07J13xDyxRIxKMXVv0U3XGWZFveIzWt2gKJpoVU0oydW69L4ca4SGyk8+63j92qu4bdbJYHoi5RrJTHyFi8ywIAwB1o7trB1UXZpexOQIaqLa45PZksg27DKtOcbhgBMZ+vw5aRRFLLu1z0FnGMR628idrv7kgClnmuzmIa75okNzNr32R+nziNw46Dc+BVe6proZrz5liMhsTXra2x8dWhC2upRs3XyxQJen5PJP8xEgrm0V6MkJVuBM4Pvn3jOOjH0yAjaaXtk8clgTbuYOTUGQKh5l+wTNFMVaAJ052ZIlpqVfddvbYSGmShpxhLLAoaiqUstcignKsgkGFoQ==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DM4PR12MB6664.namprd12.prod.outlook.com (2603:10b6:8:bb::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 13:12:59 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.015; Tue, 13 Oct 2026
+ 13:12:59 +0000
+Date: Tue, 13 Oct 2026 16:12:50 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: =?iso-8859-1?Q?Asbj=F8rn_Sloth_T=F8nnesen?= <ast@fiberby.net>
+Cc: Anirudh Virdi <avirdi@redhat.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+	pabeni@redhat.com, kees@kernel.org, horms@kernel.org,
+	linux-kernel@vger.kernel.org, Vadim Pasternak <vadimp@nvidia.com>,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net] net: qede: initialize extack in
+ qede_flow_spec_to_rule()
+Message-ID: <20261013131250.GA1038950@shredder>
+References: <20261013105451.201211-1-avirdi@redhat.com>
+ <9189f66d-7ce5-4f79-a55b-f73776c7c0bc@fiberby.net>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9189f66d-7ce5-4f79-a55b-f73776c7c0bc@fiberby.net>
+X-ClientProxiedBy: FR4P281CA0289.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e7::18) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/13 12:30:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 127 0.3.127 0884f7b061fa529b810563f359267cd65d2ec05c, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;patch.msgid.link:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 206634 [Oct 13 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.27
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/13 04:56:00 #28679670
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/10/13 12:30:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DM4PR12MB6664:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5def238-5c59-43a4-17a3-08df292bb431
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|23010399003|56012099006|11063799006|4143699003|261009223027099003|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	CjOVvWR0/QfmL1AZDUcs7B06BFoZwuVqyEw0bPn6Yz8fKoRdB+JckoZYUp3WpVu6mp6jIURwe+Jw9vwHcasHl0NshBS7VQIwwdOUw0eeqmaQ/AqifB0UIY0b4XsKSw7+j82AogqkAbBkGFyXsek8QW0kdoNYuKxHxcX4KBdfRqJm6O1V98M3CWYvkP8sia5s0Z1rHjOrz1nclOG8xHTFqQ1AjVe0qDZWY/u4Voc4Z0F+IX9bVefND6TTOS2PwRFtveFwi5oAdK9F3dzNgYD7zdNyXZErVaHZz0XlimGy9raxS+ArdoZRf5l6Jj2L8RVpM33gX/RhKK/TusXXztTtHGPRxdi2/rwV3tkxE9jg8EIHvbSNRf3KMxwyyYD/5m6pFvd2m6Lorq2ynPyILxrnT7SofsYDUcyOfy0LJqKYRWnONoVgeq1neQJyp/SN12CUkaS0CDuzv4qk7vCFOQqastXjO9/Nnxod1ZAey0tspXw10/MkXzBYNiYUA+zAapWo24uddmDCFlifBpXrlpYRk+jGAt64DboMaCpPQeocB01Ha6D3qtSQrScrZJPh/UCVK7Ywryoj77AkdIiFy7SmmMrrpDMaU1669kGG98W8m4oyrfu2Wu1DR4e6WH9Pns1Yy8REvrraL5yPbwvORmY1dK0tmEusADR4o8Jea0X2jus=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(23010399003)(56012099006)(11063799006)(4143699003)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?t0N+ODJuUbWVc9bc4vSlje5YoMwxu6HRGxkVrpw1ALel2K6YzqhlQDt1BG?=
+ =?iso-8859-1?Q?q3gKnF0+PzpKd4zGEjQFdSZydqYMl9J3h0fw5IKcd/byA/iExmvMvalu/i?=
+ =?iso-8859-1?Q?CLZZdi5qmMqDivf4svoJzWjvbTCj+gzS43/Q962ZX2+dBCBW6LZcHaNJ+l?=
+ =?iso-8859-1?Q?nd4rcwWOjSjr4QuMS6bEs0aJJpJ0DGS3LSRrPQ1ofPIGnZ4EGpK89o1+xj?=
+ =?iso-8859-1?Q?8ACnAmVykrbjlNo13J0S+NE3EixXw29EhqDo2o6EzDu+eKIDX+JmtIALmY?=
+ =?iso-8859-1?Q?giwJxeJFidzLRH0OYFf3Uo77ekrV4IKl5qX5IMjads66UG9xMKd/Jrb+1A?=
+ =?iso-8859-1?Q?8d/+DAqI3fAQY40dxPdRj1LTWuXX0lV6npIkuYufSCpfg5U5b/fxzYhgtH?=
+ =?iso-8859-1?Q?/GDecTfw6u/8kLv918goDL74UIMwIh0d0uuee/QqQ8mTUsJw5FYbV51IyV?=
+ =?iso-8859-1?Q?8jurvvyvgBIH+cwkN2DPw2Y2jl62PImIXm7O26KuV3B2eILXDjc1dsrpAL?=
+ =?iso-8859-1?Q?ZUi0g3zDx+XFOB3UnnCRI/B8aOhJWFRVmVN6wnJ0Py5mfT96EJ5cRy92Mt?=
+ =?iso-8859-1?Q?/8GS3d44eEEyUI7rNuXMXq7Cv2P3m9liehH8dGzMkxKbKTxdl/eTgw0VxM?=
+ =?iso-8859-1?Q?kjMSJYd6ImLxN0FSD0//k8j/gg7BhI2i17tExvm+JM1LuhZ77fjn11kpG/?=
+ =?iso-8859-1?Q?tHuvO7gF1xTs87Zs5xH3pCaamFB/WXDNFQad+unG68QfE1AqP3KxUiSibr?=
+ =?iso-8859-1?Q?r86n52TaWPJISIkFanG5fJOKARninLpormvKzziVWYcU8HoEDrdhvdi/Mn?=
+ =?iso-8859-1?Q?AycoyxY7KXQ/y9TqKQemWBDK/SErXCoP5FZNU6XOgr6JXpzhuz+Q2gmi8u?=
+ =?iso-8859-1?Q?Z42FJ8KWt8+S2vqoNaKhpx2Snek5oQ3Gh6hMmcwyElE3JS/m4ciBQwWXtk?=
+ =?iso-8859-1?Q?PpB/p3106c91LG0CN03Jd90T+/ClVZ+0WsksJaeHSge4alDGTvif1XnK4A?=
+ =?iso-8859-1?Q?XV1T81bKA8WgavuqMCQ/UBhREeXortqrfdRvrGSenlFlMsrE/C2Tmxdo3G?=
+ =?iso-8859-1?Q?QSPSjfTPPatl8Hun+djc+mRfbeCsckdrqVM3QeeU0hnRioWZzyfskwEZtQ?=
+ =?iso-8859-1?Q?DCsC6xrBurHoKTiD6yEtGpWWHdjBk8NPUEvAFZ/CwtKW7W1LA9RCM4CGVM?=
+ =?iso-8859-1?Q?kuhZ3sv1U48V9X6d5BEXIfg+hVWFFR5hXLS8a+lebVdZs8hH52StLMVWUW?=
+ =?iso-8859-1?Q?maOB/sTgflaDePslWIaInoZYKn1dLVI76Pvb3I9bDPdujQsvpA7Wmxxu/K?=
+ =?iso-8859-1?Q?vlEl9Hdbqlz5n0EGEdohrwzuXSL94iS7nXMpQ+3RjkRVWqVIMzzmU8QU2/?=
+ =?iso-8859-1?Q?+Di74co+UhGFzVuG5JmP9+BJrLwkVvUS84RCV5pKDYyFU3JxCUqxcLKAY1?=
+ =?iso-8859-1?Q?5BcKpKswuzccSdG4sVclEYV1wEufTqs2MNxNgjnjL+1ZKuc/7cj9cxe+gP?=
+ =?iso-8859-1?Q?LaeR/ZCl4PtVF76Mdh5Jbrooq/4pGeGklbxkvVS/jV1n01ehi3/eOJQ5JM?=
+ =?iso-8859-1?Q?s38kF8yjgypAx18X/1/XlluT7sRTVxmwLkAm9vvKDyh7HwvzD1VbHjd4yX?=
+ =?iso-8859-1?Q?Vqq6gD8Zu5qCs6tNp+YDOvwla4hC2ZuIPBkpFLC7glTPiftcU+ZL3mQo0j?=
+ =?iso-8859-1?Q?r5De/B2qGUhUsyV4vykn2v/DJzmCRS8FO5khAMx/ppJ0bQXdSTrhQW70qd?=
+ =?iso-8859-1?Q?53NgMuyFK2X/tbvEguAkpKqr0Lus/aRmP9XKf+4ZxNC60E?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5def238-5c59-43a4-17a3-08df292bb431
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 13:12:59.4522
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aiXeUfpQhfrKK3eNGJd33OhNWM7VENXN5YMDzK5fKPGUSbFut8XAXNPuxBbIPabP/LnZZy4U6bGGZNTYi2K7TQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6664
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+On Tue, Oct 13, 2026 at 12:50:50PM +0000, Asbjørn Sloth Tønnesen wrote:
+> CC Vadim and Ido:
+> As stated in the blamed commit message, my implementation was based on
+> mlxsw_env_linecard_modules_power_mode_apply() by commit 06a0fc43bb10
+> ("mlxsw: core_env: Add interfaces for line card initialization and
+> de-initialization"), so likely that also needs to be fixed. I don't
+> have the hardware to prove/test that it can be triggered.
 
-commit 729c4896ab829169f95915d65edd530325910b37 upstream.
-
-htb_classify() follows each filter-selected inner class by switching
-to cl->filter_list, but never bounds the number of hops. A filter on
-an inner class can point back to itself or to another inner class that
-points back, creating an infinite loop in the packet classification
-path with the qdisc lock held and BH disabled â€” a soft lockup / panic
-from a single packet.
-
-Bound the traversal with a hop counter and drop the packet with a
-rate-limited warning once the bound is exceeded. The counter is
-incremented at the point the inner filter chain is picked up, after the
-TC_ACT_* switch has consumed the classifier verdict, so a terminal
-TC_ACT_QUEUED/STOLEN/TRAP on the last permitted chain still sets *qerr
-to __NET_XMIT_STOLEN and the packet is not charged as a drop by this
-qdisc or its parent.
-
-The bound is TC_HTB_MAXDEPTH, taken from HTB's own parameters rather than
-from the qdisc hierarchy depth limit. Class levels run from 0 to
-TC_HTB_MAXDEPTH - 1, so a traversal that strictly descends in level can
-take at most TC_HTB_MAXDEPTH hops. That descent is what a sane
-configuration does, but it is assumed here rather than enforced:
-htb_find() resolves a classid against every class in the qdisc, so a
-filter may equally select a sibling or an ancestor. The normal
-root -> inner -> leaf path takes a single hop, so the bound does not
-affect legitimate classification.
-
-htb_classify() can now return NULL irrespective of CONFIG_NET_CLS_ACT,
-whereas previously every NULL return sat inside that ifdef. The NULL
-handler in htb_enqueue() therefore cannot stay conditional either, so
-drop the ifdef around it. This matches hfsc_enqueue(), which has always
-handled a NULL class unconditionally. Without it, a kernel built
-without actions would dereference a NULL class instead of dropping.
-
-Conditions to recreate the bug:
-- CONFIG_NET_SCHED, CONFIG_NET_SCH_HTB, CONFIG_NET_CLS_U32,
-  CONFIG_LOCKUP_DETECTOR.
-- Create an HTB qdisc on a device (e.g. lo), add an inner class
-  1:1 with a leaf child 1:10, install a root u32 filter selecting
-  1:1, and an inner-class u32 filter on 1:1 also selecting 1:1.
-- Send one packet (ping). On the unfixed kernel the classify loop
-  spins with the qdisc lock held; with softlockup_panic=1 it panics.
-- Reachable from unprivileged user via unshare -Urn (CAP_NET_ADMIN).
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Vega <vega@nebusec.ai>
-Co-developed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260826143339.271935-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
----
-Backport fix for CVE-2026-90053
- net/sched/sch_htb.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index 75ca5e5def3f..c6cdbbb8c898 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -213,6 +213,7 @@ static struct htb_class *htb_classify(struct sk_buff *skb, struct Qdisc *sch,
- 	struct htb_class *cl;
- 	struct tcf_result res;
- 	struct tcf_proto *tcf;
-+	unsigned int hops = 0;
- 	int result;
- 
- 	/* allow to select class by setting skb->priority to valid classid;
-@@ -255,6 +256,10 @@ static struct htb_class *htb_classify(struct sk_buff *skb, struct Qdisc *sch,
- 		if (!cl->level)
- 			return cl;	/* we hit leaf; return it */
- 
-+		if (++hops > TC_HTB_MAXDEPTH) {
-+			pr_warn_ratelimited("htb: classify loop detected, dropping packet\n");
-+			return NULL;
-+		}
- 		/* we have got inner class; apply inner filter chain */
- 		tcf = rcu_dereference_bh(cl->filter_list);
- 	}
-@@ -596,13 +601,11 @@ static int htb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		} else {
- 			return qdisc_drop(skb, sch, to_free);
- 		}
--#ifdef CONFIG_NET_CLS_ACT
- 	} else if (!cl) {
- 		if (ret & __NET_XMIT_BYPASS)
- 			qdisc_qstats_drop(sch);
- 		__qdisc_drop(skb, to_free);
- 		return ret;
--#endif
- 	} else if ((ret = qdisc_enqueue(skb, cl->leaf.q,
- 					to_free)) != NET_XMIT_SUCCESS) {
- 		if (net_xmit_drop_count(ret)) {
--- 
-2.43.0
-
+Unlike qede_flow_spec_to_rule(),
+mlxsw_env_linecard_modules_power_mode_apply() only prints extack on
+error and mlxsw_env_set_module_power_mode_apply() sets the extack on all
+the error paths.
