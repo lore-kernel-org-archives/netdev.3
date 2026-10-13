@@ -1,68 +1,66 @@
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92EE531605
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 18:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C179551DDEB
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 18:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791915865; cv=none; b=DWnL7BR5q2S9HDE8Kt3Binqx7XuXT479JasAKgggUqjPxgkFtDmpvCpjWUe+7qWW3n3reDpdhDoi15o/K+mhonl23h6poKUGIR9E5UFKWnvBcneQ6QjLV2n+V5PFFadMKFlSfeEsUUdg0ZmXSYSwhyxRPSHYPSPlYZQTzzUN+L0=
+	t=1791915935; cv=none; b=Lhooh5UTvonal9FkoGED/9kcm2W/FGeDmz42D9fplgZTOaIBu6ccZPkKHoY9idyGunWTACo2pfnOqtp4DsoiSkyje5ifHtZQQUVLEuZHhGeETNhymd+JyfThWYGxPD+fP4aXIKdIgxeOZ9wHh2fYz8GjRXwRBS1IQNAoJ1D6AAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791915865; c=relaxed/simple;
-	bh=7if6Umjv6zt+eB/TyjHQ2M8+DtW8+u3VSI2lHM1qgmg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=T80FsUa+b/VSoIqvfzKeiEiKsS+JZll+Ds2CZiOjasloIgLL6cX3QubaEYRRw0pUi2H97l7OZ2hfar9G+KNuayp8MJ+UKinSI2bVESTmdO+1Fj4QwFjVelVVQ5HG/9jo5fPEHklDBnbtDk7QmpQXOVUxv93Xs0v/lsHEmNstS24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XqJNxkBs; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791915935; c=relaxed/simple;
+	bh=AlG/JZ6VJ7vRBe6rEuyNKsPV58OQf13xQXX8THhv3as=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ii0/VVYKhW3/0hk/PlZv5Wqr+UXU0DCH9mQYyfU+BUJ5vCvxS1RczyMWvBs98cEWqCvixWITihnHiynIsmp7eE4GEalEDDqjrBL0vJndEi8eDE6G5StbD2Lt5o5CKMvSPbdF0QKMUK4oRu2p4biKuoxihOo51/cFL6WBOg1SGII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=XfKxXSOV; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XqJNxkBs"
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6f5a0893610so165233eaf.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:24:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="XfKxXSOV"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-53505bc6524so2331401cf.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:25:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791915862; x=1792520662; darn=vger.kernel.org;
+        d=toxicpanda.com; s=google; t=1791915933; x=1792520733; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:content-type
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=CrakmgXMtdoVnoNgswFtoyyOjaZ8kjF18Znv/ag/z9w=;
-        b=XqJNxkBsJHmlkDK7nYs+PNCHCQJa23Y7cWpCHDeNvhK7Es7tLulS6PKfJB02UK7Bxg
-         nIbnXoO2DYtt7D6NT5r000Fu8/dAVduYFnVNLN4s8sLGY/r8EjpHrDYxenEHrC4zC+i5
-         UE04Trw2u4fBsa9XtSSVgRpw6mMzWPYC+de3xee7m180tNvJOXzhtQvr7RhUJmjcX7hn
-         QAMAbtV/GpyepXnGNPqiTCUtdNT+iTMAB1L1VPckO7Tu9apF/hSW9WZFq8fQUwvQ+/8E
-         +1v5G5ZO+N6zZpOV2EOCRdUam5Q0zcbOR6ns5xnsigKTakc8a/82Eb6Wre2taNNNMv3G
-         GRIw==
+        bh=KFCW1M7qXicNkXoNFz0UEyrqo2R7uteq2KxnBN5zNno=;
+        b=XfKxXSOVc7prQSLwXIwVuBllKsr2o2KQVK+/5VGkjEGQUESSOJm7ulPM0O1qUImVtg
+         pBDtueQJqRTmJaCCmF/k/7j99w8fqNMWKvB1wY2WjCRX/bgD1kEADEc8sPQ83szyru7v
+         6bleLCzgm70RqzOKVRy3L3ROa9YALXiVr/O+/g/gmK1UgAue2d3rjnVcmVwg3ry5m4L9
+         AsLHg/uELfVFqYNORwI4LY3Ri0q/+lEAmxARzKhjpeXLQjdA0L4+87ZCbh5xvLUgpcN5
+         xrigD953YYYvAP4jx0ylU1Hc6vhuoJmcqnAA2MnLx1qLldw6l/aA2LjDJPhq1n0l/TQq
+         qpfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791915862; x=1792520662;
+        d=1e100.net; s=20260707; t=1791915933; x=1792520733;
         h=cc:to:message-id:content-transfer-encoding:content-type
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=CrakmgXMtdoVnoNgswFtoyyOjaZ8kjF18Znv/ag/z9w=;
-        b=XsOqrJbtY2HkJGu/9+MrC59ocqriXdo/POHNsl9E905ns6nvlBGWvMB30teK2StAdD
-         Hi/INZC3y7i3C46bZSlzUFGBIgEylECKIgJnDSU6kJdqSDFGZ/LEuUx9VSonmM+iET97
-         9V3ZjNJyYSoRym9XIGTwqegNszavL9czl4pAhJ2h+F4jo1+LlBe/iV66IQ31cQmVS+0Q
-         A5woZCUclEp79hfCbEP+nlF0bSsjr/E76vHFXup2AaIRJ1+pwNx80d8uI20a0RKjroIN
-         wJgeW4FhqzlPMlo80ERPVdldKHpbRqZbBNhZjPP0BUtGDiKKYSRj/Ys+HTg1i+RJfTmf
-         Ljvg==
-X-Gm-Message-State: AFq9FYIKEYTJedU0erK+vawjhVvm++jMTqwNX6JcAXOGN6N6ueNLzHN/
-	/0RBvwuMy+yw7o7eI2VDE0D4jbCV0MY8mxmhfiY/BJAmeIhAajlgTTGm
-X-Gm-Gg: AYBFou3000tJSf7RpqP4llmTbToVfRqJ3eLnBttKHc/IPim3S4fKTfE/NuyhdPhgiF0
-	Ww0DajbmKZL5hFcVIZNSX0MdWHTUDTt0OSvTI1SJUKQhIWqwq9tJ56qnMxwsNsoYPavsb3i6cWS
-	We54Y2v/VKRObeY8YB9cAcRbQ4N4KbaRlG3I5Lpz8osSU9+Nw290xUomTCzPkWxC1YL2EjTPghC
-	WGwBFf+UfIi/hiyRTt8vLzZzwq4l7xL91W/DCOV8LBPo12uQiXuXfnoYKlZZk9uPSIAU/boxVK3
-	q8mrMfeBrc1myblpw75wIp91xMSGcPvEEXO9e5JttTsJT88LcW9onXeuBnTo+kQiQ3Lq3Ei69+z
-	pgk9k45xKXAx1ZHApw373rsrp9q4lRgu5dvcIFkr2dFNQczF2ZHa8/P8jPbqE/MOxrJN3xzimEY
-	vb6onkLej2v6rUsgbp0gyRBxWWwlK0cyk1QqohZM32B3XPhF00RZhutm/mx7zls5mPP8qnwUDdC
-	fePwQUX6PEKSpMtee/4ktD3/88FfE/RKG3E0P1uUgqhXvzdq2AB7LzjS6ipWngnQTgt34PBqvv0
-	PkJa0xa/V4me0dDmMVOi2Q0lcFjdvKcOc8DkVMLTWgCdhkeJz3DeSJVdszM05cZ3Jok3DvPYFBh
-	LLW+PW/E/Sf9vU0hkaeBGSQ==
-X-Received: by 2002:a05:6820:4c13:b0:6d7:4142:8b8c with SMTP id 006d021491bc7-6ef0fa9d818mr9965327eaf.64.1791915861931;
-        Tue, 13 Oct 2026 11:24:21 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6eef6e22b46sm12627103eaf.0.2026.10.13.11.24.20
+        bh=KFCW1M7qXicNkXoNFz0UEyrqo2R7uteq2KxnBN5zNno=;
+        b=gWkVBRt6pvElfT1q8Cp7/qagszTRquw2LsR+A1eeqsI0mNjBOVW64xk3Au2zXV17Gp
+         p9WTSmquuz8uvL5cHLZv6yZckAwlAStI+HF8vxoacAvXmVrjkLC+6XCWUEdbvU8NnNQH
+         9AEsQtmlg7J8n+h2bI0v2t/3bSVXONxdRX9KzBLnF1g50lNYOW9eT0sp9NSvWmpj76tL
+         tujErv0bGixkTFgFBxJzCCl44vgHDWmC2zBwaik8L1jviiDWyqjS9qXVmG9h5DLEFfNZ
+         C3pCJlesiz2fHDya5TjTv3jd9TGtPXmgvqYtaGBvR4qVi4TA4Hxz4mjxhdzODB6Ma8BB
+         3iUA==
+X-Gm-Message-State: AFq9FYJVmfzVt5/bXEDqdO1a7OQJFEKSFtOtJO+zyBBut51cNAhNjIEj
+	cQETMpAZ0sRH3Yvr3sgTym2DBk+FtLJsTSy4LDNqi9jh2lx8e/O6NkENKAyN0MWuTHY=
+X-Gm-Gg: AYBFou2G13hTb8nCefUlOmpG+nHANAqvfGejh/N0SnNy/EX82aLLQEXfO9CiSsOJIai
+	6dyH+8m2UvYTxWXQaGDCeK6Gbnb+AE9PAKuFZDUYiWOn2rFHYH63UInEh58nTo1L7JzhyXyE77m
+	XzY8Xv2I/bfI4JticM2YxXmQE43hQvfFTqfIFLUtANLB+pjyYHNzdhTIrqlHi4AzX9raDUSeMTt
+	ZSdfY6BiAdtucOfLiOnjx5jc3de/GjOchG3W7px0lOAMKL1JZywxCnJZdSPsSQcAtY9rQu9VGgI
+	z/i5BSURYJx4AoQ6jeGe7rZPQBvVy1dAIESa22a+NlBZTnatg07kDRRndrmVAx0r0zH53URO9kG
+	Y0/2v4CT2qjJnrLuQsPvGhwUuDG/SmRDm4hXNtBWneEJSv2/Q4F1L64Bv6T/C4BR5I2BeaMJyY/
+	jZH4w+R01xPS2c/xC+6cg8S7YAMA+ogyL4DrPP11KunEFZ/2CHepdAj5wZnBYs7DduF2PvqzaFD
+	kwHh6p0/zmVIpc=
+X-Received: by 2002:a05:622a:4e04:b0:535:a5f7:d59b with SMTP id d75a77b69052e-535a5f7de55mr186236721cf.42.1791915932663;
+        Tue, 13 Oct 2026 11:25:32 -0700 (PDT)
+Received: from toxicpanda.com ([153.61.196.251])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b76eea2sm107276361cf.18.2026.10.13.11.25.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 11:24:21 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Tue, 13 Oct 2026 12:24:19 -0600
-Subject: [PATCH net v3] xsk: freeze deferred pool teardown without blocking
- unregister
+        Tue, 13 Oct 2026 11:25:32 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Tue, 13 Oct 2026 18:25:06 +0000
+Subject: [PATCH net] net: axienet: don't advance the TX ring head before
+ the descriptor is ready
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,232 +68,94 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261013-xsk-suspend-teardown-v3-1-2d6be7602947@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NQQ7CIBAF0Ks0rMVMh1rBlfcwLhCmLVFpAxVrm
- t5d0oVxo8s/P/P+zCIFR5EdipkFSi663ucgNgUznfYtcWdzZghYgxLAp3jl8REH8paPpIPtn54
- rwEbJCqRRguXXIVDjppU9MU8jO+dj5+LYh9c6lcq1+q+mkpdc10YbaUDAhY7tXbvb1vT3FUz4Q
- UqA3Q8EM4JW7hFlUwlU38iyLG/bi9SeAgEAAA==
-X-Change-ID: 20260930-xsk-suspend-teardown-902f98408c93
-To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: bpf@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- linux-kernel@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261013-b4-axienet-dmaengine-ring-head-v1-1-7add24e74477@toxicpanda.com>
+X-B4-Tracking: v=1; b=H4sIAIF3zmoC/32NSw7CMAxEr1J5jdUvH3EVxMJOTGsEpkoKqlT17
+ iRlz3KeZuYtECWoRDgXCwT5aNSXpVDvCnADWS+oPmVoquZQV3WL3CHNKiYT+ieJ9WqCQa3HQci
+ jc55P0pLj4x7SyRjkpvMmuEAawfUH45vv4qZ8nWtMUZADmRsyeowld+UG/8hgXb//dwa/wAAAA
+ A==
+X-Change-ID: 20261013-b4-axienet-dmaengine-ring-head-ccdb8e3acb75
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Michal Simek <michal.simek@amd.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Josef Bacik <josef@toxicpanda.com>
 X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openssh-sha256; t=1791915929; l=2932;
+ i=josef@toxicpanda.com; h=from:subject:message-id;
+ bh=AlG/JZ6VJ7vRBe6rEuyNKsPV58OQf13xQXX8THhv3as=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
+ JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QBomUl/RFNb7o7hd3lkq0GvyegzlXY0C4reO22XN+8hGLGwHC9ittbqyynjfwdMXd/zfN9u1sJL
+ GMd7gDVRTMgE=
+X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
+ fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
 
-Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
-not frozen during system sleep, so that callback can run after a
-device has suspended and gated its clocks. Use system_freezable_wq
-so running destruction finishes before device suspend and new work
-waits until process thaw.
+axienet_start_xmit_dmaengine() bumps lp->tx_ring_head before
+skb_to_sgvec(), dma_map_sg() and device_prep_slave_sg(), and none of
+their error paths undo it.  The skb is freed and nothing is submitted,
+but the slot stays claimed.  axienet_dma_tx_cb() walks tx_ring_tail
+once per completion, so the next completion lands on the abandoned slot
+and dereferences whatever skb pointer is left there: NULL if the slot
+was never used or was already completed, or a stale skb that gets
+consumed a second time.  Every completion after that is accounted
+against the wrong slot.
 
-Keep assigned pools visible to NETDEV_UNREGISTER independently of
-the socket list. A released socket has already left that list, but
-its final pool put can queue destruction after workqueues freeze.
-A resume-time unregister would then wait for a device reference
-whose release cannot run until the resume completes.
+dma_map_sg() and device_prep_slave_sg() can fail at runtime, and so can
+skb_to_sgvec() on a malformed skb.  Only advance tx_ring_head once
+those have succeeded.  The completion callback can't run before
+dmaengine_submit(), so claiming the slot just before that is fine.
 
-Track assigned pools per netdev with netdev operations locking and detach
-remaining pools after the notifier socket walk, including copy-mode pools.
-This also covers leased queues without scanning pools from unrelated
-devices or network namespaces. Remove the entry on assignment failure and
-normal teardown. The deferred worker still owns the pool and later observes
-the cleared device pointer, avoiding a second driver detach or put.
+dmaengine_submit() itself can also fail on xilinx_dma after a channel
+error, and its return isn't checked either.  That's a separate problem
+and isn't changed here.
 
-The lifetime problem was identified by code inspection of the deferred
-release and system-sleep paths.
+This was found by the Sashiko AI review of the skbuff BUG_ON() series.
 
-Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
+Link: https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com/
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
-Changes in v3:
-- Protect the per-netdev pool list with netdev operations locking, as
-  requested by Stanislav Fomichev and Björn Töpel.
-- Assert operations locking for copy-mode assignment too, and share a
-  locked detach helper so unregister holds the lock across the pool walk.
-- Rebase onto current net.
-- Link to v2: https://patch.msgid.link/20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com
+Compile-tested only, I don't have the hardware.  The bug is in the error
+paths, which are easy to see from the diff: every goto after the old
+increment returns without submitting anything.
 
-Changes in v2:
-- Track assigned pools per netdev instead of scanning a global pool list.
-- Keep deferred releases visible across queue changes and queue leases.
-- Rebase onto current net.
-- Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
+Thanks,
+Josef
 ---
- include/linux/netdevice.h   |  5 +++++
- include/net/xsk_buff_pool.h |  3 +++
- net/xdp/xsk.c               |  5 +++++
- net/xdp/xsk_buff_pool.c     | 46 ++++++++++++++++++++++++++++++++++++++-------
- 4 files changed, 52 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 3cff2174dc03..ac257221c7c5 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2545,6 +2545,11 @@ struct net_device {
- 	/* protected by rtnl_lock */
- 	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 09443623a3e2..a5800409e45a 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -929,7 +929,6 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+ 	if (!skbuf_dma)
+ 		goto xmit_error_drop_skb;
  
-+#ifdef CONFIG_XDP_SOCKETS
-+	/** @xsk_pools: assigned AF_XDP pools, ops protected */
-+	struct hlist_head	xsk_pools;
-+#endif
-+
- 	u8 dev_addr_shadow[MAX_ADDR_LEN];
- 	netdevice_tracker	linkwatch_dev_tracker;
- 	netdevice_tracker	watchdog_dev_tracker;
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index a7df573784fd..02e89350faf9 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -48,6 +48,8 @@ struct xsk_buff_pool {
- 	struct device *dev;
- 	struct net_device *netdev;
- 	struct list_head xsk_tx_list;
-+	/* Assigned pools, including deferred releases; ops protected. */
-+	struct hlist_node dev_node;
- 	/* Protects modifications to the xsk_tx_list */
- 	spinlock_t xsk_tx_list_lock;
- 	refcount_t users;
-@@ -119,6 +121,7 @@ bool xp_put_pool(struct xsk_buff_pool *pool);
- void xp_clear_dev(struct xsk_buff_pool *pool);
- void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
- void xp_del_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
-+void xp_clear_dev_all(struct net_device *dev);
- 
- /* AF_XDP, and XDP core. */
- void xp_free(struct xdp_buff_xsk *xskb);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 33475b180ea6..781ba46eb152 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -2145,6 +2145,11 @@ static int xsk_notifier(struct notifier_block *this,
- 			mutex_unlock(&xs->mutex);
- 		}
- 		mutex_unlock(&net->xdp.lock);
-+		/*
-+		 * A released socket is no longer on xdp.list. Its pool can still
-+		 * hold a device reference on the frozen release workqueue.
-+		 */
-+		xp_clear_dev_all(dev);
- 		break;
- 	}
- 	return NOTIFY_DONE;
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 9d2d94f1fb75..5b9dcafd6882 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -173,6 +173,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	int err = 0;
- 
- 	ASSERT_RTNL();
-+	netdev_assert_locked_ops_compat(netdev);
- 
- 	force_zc = flags & XDP_ZEROCOPY;
- 	force_copy = flags & XDP_COPY;
-@@ -204,6 +205,11 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	pool->cached_need_wakeup = XDP_WAKEUP_TX;
- 
- 	dev_hold(netdev);
-+	/*
-+	 * Socket removal precedes the final pool put. Keep the pool visible to
-+	 * NETDEV_UNREGISTER even while release work is waiting for process thaw.
+-	lp->tx_ring_head++;
+ 	sg_init_table(skbuf_dma->sgl, sg_len);
+ 	ret = skb_to_sgvec(skb, skbuf_dma->sgl, 0, skb->len);
+ 	if (ret < 0)
+@@ -965,6 +964,10 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
+ 	skbuf_dma->sg_len = sg_len;
+ 	dma_tx_desc->callback_param = lp;
+ 	dma_tx_desc->callback_result = axienet_dma_tx_cb;
++	/* Claim the ring slot only after the steps above that can fail.  The
++	 * completion callback can't run before dmaengine_submit().
 +	 */
-+	hlist_add_head(&pool->dev_node, &netdev->xsk_pools);
- 
- 	if (force_copy)
- 		/* For copy-mode, we are done. */
-@@ -244,7 +250,6 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	bpf.xsk.pool = pool;
- 	bpf.xsk.queue_id = queue_id;
- 
--	netdev_assert_locked_ops_compat(netdev);
- 	err = netdev->netdev_ops->ndo_bpf(netdev, &bpf);
- 	if (err)
- 		goto err_unreg_pool;
-@@ -265,6 +270,8 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 		err = 0; /* fallback to copy mode */
- 	if (err) {
- 		xsk_clear_pool_at_qid(netdev, queue_id);
-+		hlist_del(&pool->dev_node);
-+		pool->netdev = NULL;
- 		dev_put(netdev);
- 	}
- 	return err;
-@@ -287,19 +294,40 @@ int xp_assign_dev_shared(struct xsk_buff_pool *pool, struct xdp_sock *umem_xs,
- 	return xp_assign_dev(pool, dev, queue_id, flags);
- }
- 
-+static void __xp_clear_dev(struct xsk_buff_pool *pool)
-+{
-+	struct net_device *netdev = pool->netdev;
-+
-+	netdev_assert_locked_ops_compat(netdev);
-+	xp_disable_drv_zc(pool);
-+	xsk_clear_pool_at_qid(netdev, pool->queue_id);
-+	hlist_del(&pool->dev_node);
-+	pool->netdev = NULL;
-+	dev_put(netdev);
-+}
-+
- void xp_clear_dev(struct xsk_buff_pool *pool)
- {
- 	struct net_device *netdev = pool->netdev;
- 
--	if (!pool->netdev)
-+	if (!netdev)
- 		return;
- 
- 	netdev_lock_ops(netdev);
--	xp_disable_drv_zc(pool);
--	xsk_clear_pool_at_qid(pool->netdev, pool->queue_id);
--	pool->netdev = NULL;
-+	__xp_clear_dev(pool);
- 	netdev_unlock_ops(netdev);
--	dev_put(netdev);
-+}
-+
-+void xp_clear_dev_all(struct net_device *dev)
-+{
-+	struct xsk_buff_pool *pool;
-+	struct hlist_node *next;
-+
-+	netdev_lock_ops(dev);
-+	netdev_assert_locked_ops_compat(dev);
-+	hlist_for_each_entry_safe(pool, next, &dev->xsk_pools, dev_node)
-+		__xp_clear_dev(pool);
-+	netdev_unlock_ops(dev);
- }
- 
- static void xp_release_deferred(struct work_struct *work)
-@@ -337,7 +365,11 @@ bool xp_put_pool(struct xsk_buff_pool *pool)
- 
- 	if (refcount_dec_and_test(&pool->users)) {
- 		INIT_WORK(&pool->work, xp_release_deferred);
--		schedule_work(&pool->work);
-+		/*
-+		 * Teardown calls ndo_bpf(), which may need powered hardware.
-+		 * RTNL alone does not exclude the device's system PM callbacks.
-+		 */
-+		queue_work(system_freezable_wq, &pool->work);
- 		return true;
- 	}
- 
++	lp->tx_ring_head++;
+ 	txq = skb_get_tx_queue(lp->ndev, skb);
+ 	netdev_tx_sent_queue(txq, skb->len);
+ 	netif_txq_maybe_stop(txq, CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
 
 ---
-base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
-change-id: 20260930-xsk-suspend-teardown-902f98408c93
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
+base-commit: 8bf659bd54e1f00e34cf5244b1d289c506fa47c0
+change-id: 20261013-b4-axienet-dmaengine-ring-head-ccdb8e3acb75
 
