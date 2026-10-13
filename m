@@ -1,334 +1,301 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE2C5326AF;
-	Tue, 13 Oct 2026 18:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92EE531605
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 18:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791915272; cv=none; b=lXq2CJixFtZ7Cm943o3q4XO6WzgzhmAygc0oO+HROc6BEoiSnwmatZVhcOwCslGVK4qFEPgRWGG4s7NTffc36MNBuq9rLGEL4WN2gR7O22UASi0bpSCJV7w9ppEHZN+RCiGmvRr9W7vy7joUAjenzBKWrs+6YEqRZY00WyGoAAY=
+	t=1791915865; cv=none; b=DWnL7BR5q2S9HDE8Kt3Binqx7XuXT479JasAKgggUqjPxgkFtDmpvCpjWUe+7qWW3n3reDpdhDoi15o/K+mhonl23h6poKUGIR9E5UFKWnvBcneQ6QjLV2n+V5PFFadMKFlSfeEsUUdg0ZmXSYSwhyxRPSHYPSPlYZQTzzUN+L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791915272; c=relaxed/simple;
-	bh=uaVbwcyglv5XFoWZKIquuyHarwUzk/GAm/G9o2HhluA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G7+9kfUDM2mmxlZlzxee0/wuo5HsBcY1UFMCKMtyNV/xVr9oey4ufQVEfxF4w79EfIpnGn3Rf6DUMfYipJuCRZuQOjIdM94kgJoMsLqQVLL6rcjFRZ3nn7rwKWwqWY5kmG7qWOjY9w42GhKkvD6yKpqXrt9Rou1LExGNyQNUScY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSJqNOwy; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791915865; c=relaxed/simple;
+	bh=7if6Umjv6zt+eB/TyjHQ2M8+DtW8+u3VSI2lHM1qgmg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=T80FsUa+b/VSoIqvfzKeiEiKsS+JZll+Ds2CZiOjasloIgLL6cX3QubaEYRRw0pUi2H97l7OZ2hfar9G+KNuayp8MJ+UKinSI2bVESTmdO+1Fj4QwFjVelVVQ5HG/9jo5fPEHklDBnbtDk7QmpQXOVUxv93Xs0v/lsHEmNstS24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XqJNxkBs; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSJqNOwy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708231F00893;
-	Tue, 13 Oct 2026 18:14:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791915270;
-	bh=LNVLi5zmlfp86OAwSzYMPd0Re5zD+rl60i3RO7+XpcQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HSJqNOwyNhIEKIAKsEVFrPeFsCFiftEWzfq//EyRCnogXt8e9jBVHXNWPEgILsAXY
-	 i9rUufdT3Cp0Sep8FdDNKzVpA/xhP/EsINdk+1GU41OrWf+45BJM6uXjdoo/0jbwa0
-	 xuog5f9ifjfOEWSk11dT+AaLa1mXtW2FWyQT6qSXYoPBJIkFee7T3x2MuvsnAP+RUn
-	 0Zg5r1odyJt4TY7q6+GlXoEci8zTFvUcalYv9qzlv8RI54ZuHS46Y9RtM7povsXBlg
-	 V3asBf2XEGIj9XO5b0HJx/C960mQUeikvkrINAaw8TeKqyMYyFrNHtnasXDy56nEsM
-	 ESZpr9wTBy1sg==
-Subject: Re: [PATCH net v2 4/4] selftests: net: add devmem RX and TX netdev
- unregister tests
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: kuba@kernel.org, dw@davidwei.uk, asml.silence@gmail.com,
- ap420073@gmail.com, sdf@fomichev.me, pabeni@redhat.com, kaiyuanz@google.com,
- bobbyeshleman@meta.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, horms@kernel.org, shuah@kernel.org,
- sumit.semwal@linaro.org, christian.koenig@amd.com, razor@blackwall.org,
- daniel@iogearbox.net, tariqt@nvidia.com, kaifengw@google.com
-Date: Tue, 13 Oct 2026 18:14:29 +0000
-Message-ID: <179191526900.434549.14504153399122952528@kernel.org>
-In-Reply-To: <20261012174300.2338784-5-almasrymina@google.com>
-References: <20261012174300.2338784-5-almasrymina@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XqJNxkBs"
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-6f5a0893610so165233eaf.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:24:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791915862; x=1792520662; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=CrakmgXMtdoVnoNgswFtoyyOjaZ8kjF18Znv/ag/z9w=;
+        b=XqJNxkBsJHmlkDK7nYs+PNCHCQJa23Y7cWpCHDeNvhK7Es7tLulS6PKfJB02UK7Bxg
+         nIbnXoO2DYtt7D6NT5r000Fu8/dAVduYFnVNLN4s8sLGY/r8EjpHrDYxenEHrC4zC+i5
+         UE04Trw2u4fBsa9XtSSVgRpw6mMzWPYC+de3xee7m180tNvJOXzhtQvr7RhUJmjcX7hn
+         QAMAbtV/GpyepXnGNPqiTCUtdNT+iTMAB1L1VPckO7Tu9apF/hSW9WZFq8fQUwvQ+/8E
+         +1v5G5ZO+N6zZpOV2EOCRdUam5Q0zcbOR6ns5xnsigKTakc8a/82Eb6Wre2taNNNMv3G
+         GRIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791915862; x=1792520662;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=CrakmgXMtdoVnoNgswFtoyyOjaZ8kjF18Znv/ag/z9w=;
+        b=XsOqrJbtY2HkJGu/9+MrC59ocqriXdo/POHNsl9E905ns6nvlBGWvMB30teK2StAdD
+         Hi/INZC3y7i3C46bZSlzUFGBIgEylECKIgJnDSU6kJdqSDFGZ/LEuUx9VSonmM+iET97
+         9V3ZjNJyYSoRym9XIGTwqegNszavL9czl4pAhJ2h+F4jo1+LlBe/iV66IQ31cQmVS+0Q
+         A5woZCUclEp79hfCbEP+nlF0bSsjr/E76vHFXup2AaIRJ1+pwNx80d8uI20a0RKjroIN
+         wJgeW4FhqzlPMlo80ERPVdldKHpbRqZbBNhZjPP0BUtGDiKKYSRj/Ys+HTg1i+RJfTmf
+         Ljvg==
+X-Gm-Message-State: AFq9FYIKEYTJedU0erK+vawjhVvm++jMTqwNX6JcAXOGN6N6ueNLzHN/
+	/0RBvwuMy+yw7o7eI2VDE0D4jbCV0MY8mxmhfiY/BJAmeIhAajlgTTGm
+X-Gm-Gg: AYBFou3000tJSf7RpqP4llmTbToVfRqJ3eLnBttKHc/IPim3S4fKTfE/NuyhdPhgiF0
+	Ww0DajbmKZL5hFcVIZNSX0MdWHTUDTt0OSvTI1SJUKQhIWqwq9tJ56qnMxwsNsoYPavsb3i6cWS
+	We54Y2v/VKRObeY8YB9cAcRbQ4N4KbaRlG3I5Lpz8osSU9+Nw290xUomTCzPkWxC1YL2EjTPghC
+	WGwBFf+UfIi/hiyRTt8vLzZzwq4l7xL91W/DCOV8LBPo12uQiXuXfnoYKlZZk9uPSIAU/boxVK3
+	q8mrMfeBrc1myblpw75wIp91xMSGcPvEEXO9e5JttTsJT88LcW9onXeuBnTo+kQiQ3Lq3Ei69+z
+	pgk9k45xKXAx1ZHApw373rsrp9q4lRgu5dvcIFkr2dFNQczF2ZHa8/P8jPbqE/MOxrJN3xzimEY
+	vb6onkLej2v6rUsgbp0gyRBxWWwlK0cyk1QqohZM32B3XPhF00RZhutm/mx7zls5mPP8qnwUDdC
+	fePwQUX6PEKSpMtee/4ktD3/88FfE/RKG3E0P1uUgqhXvzdq2AB7LzjS6ipWngnQTgt34PBqvv0
+	PkJa0xa/V4me0dDmMVOi2Q0lcFjdvKcOc8DkVMLTWgCdhkeJz3DeSJVdszM05cZ3Jok3DvPYFBh
+	LLW+PW/E/Sf9vU0hkaeBGSQ==
+X-Received: by 2002:a05:6820:4c13:b0:6d7:4142:8b8c with SMTP id 006d021491bc7-6ef0fa9d818mr9965327eaf.64.1791915861931;
+        Tue, 13 Oct 2026 11:24:21 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6eef6e22b46sm12627103eaf.0.2026.10.13.11.24.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 11:24:21 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 13 Oct 2026 12:24:19 -0600
+Subject: [PATCH net v3] xsk: freeze deferred pool teardown without blocking
+ unregister
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20261013-xsk-suspend-teardown-v3-1-2d6be7602947@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NQQ7CIBAF0Ks0rMVMh1rBlfcwLhCmLVFpAxVrm
+ t5d0oVxo8s/P/P+zCIFR5EdipkFSi663ucgNgUznfYtcWdzZghYgxLAp3jl8REH8paPpIPtn54
+ rwEbJCqRRguXXIVDjppU9MU8jO+dj5+LYh9c6lcq1+q+mkpdc10YbaUDAhY7tXbvb1vT3FUz4Q
+ UqA3Q8EM4JW7hFlUwlU38iyLG/bi9SeAgEAAA==
+X-Change-ID: 20260930-xsk-suspend-teardown-902f98408c93
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Magnus Karlsson <magnus.karlsson@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: bpf@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
+ linux-kernel@vger.kernel.org, James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-Thank you for your contribution! Sashiko AI review found 7 potential
-issue(s) to consider.
+Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
+not frozen during system sleep, so that callback can run after a
+device has suspended and gated its clocks. Use system_freezable_wq
+so running destruction finishes before device suspend and new work
+waits until process thaw.
 
-Critical: 0 · High: 0 · Medium: 6 · Low: 1
+Keep assigned pools visible to NETDEV_UNREGISTER independently of
+the socket list. A released socket has already left that list, but
+its final pool put can queue destruction after workqueues freeze.
+A resume-time unregister would then wait for a device reference
+whose release cannot run until the resume completes.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Track assigned pools per netdev with netdev operations locking and detach
+remaining pools after the notifier socket walk, including copy-mode pools.
+This also covers leased queues without scanning pools from unrelated
+devices or network namespaces. Remove the entry on assignment failure and
+normal teardown. The deferred worker still owns the pool and later observes
+the cleared device pointer, avoiding a second driver detach or put.
 
-- [Medium] `del nf_priv` in devmem_bind_rx_unregister_check() and
-  devmem_bind_tx_unregister_check()…
-- [Medium] _dmabuf_attached_devs() (nl_netdev.py:390-408) collects the
-  'Attached Devices:' entries for every dma-buf in…
-- [Medium] The new tests in tools/testing/selftests/net/nl_netdev.py need
-  /dev/udmabuf (CONFIG_UDMABUF) and CONFIG_NET_DEVMEM.
-- [Medium] devmem_bind_rx_unregister_check() and
-  devmem_bind_tx_unregister_check() create the netdevsim device…
-- [Medium] The detach check is what these tests mainly claim to verify
-  (RX docstring: 'Verify RX devmem bindings detach dma_buf synchronously…
-- [Medium] _create_udmabuf() (nl_netdev.py:384) issues
-  `fcntl.ioctl(devfd, 0x40187542, req)`, which hardcodes the asm-generic…
-- [Low] _create_udmabuf() (nl_netdev.py:379-387) opens `memfd` (line 379)
-  and `devfd` (line 382) without try/finally.
+The lifetime problem was identified by code inspection of the deferred
+release and system-sleep paths.
 
---
+Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v3:
+- Protect the per-netdev pool list with netdev operations locking, as
+  requested by Stanislav Fomichev and Björn Töpel.
+- Assert operations locking for copy-mode assignment too, and share a
+  locked detach helper so unregister holds the lock across the pool walk.
+- Rebase onto current net.
+- Link to v2: https://patch.msgid.link/20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com
 
-selftests: net: add devmem RX and TX netdev unregister tests
+Changes in v2:
+- Track assigned pools per netdev instead of scanning a global pool list.
+- Keep deferred releases visible across queue changes and queue leases.
+- Rebase onto current net.
+- Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
+---
+ include/linux/netdevice.h   |  5 +++++
+ include/net/xsk_buff_pool.h |  3 +++
+ net/xdp/xsk.c               |  5 +++++
+ net/xdp/xsk_buff_pool.c     | 46 ++++++++++++++++++++++++++++++++++++++-------
+ 4 files changed, 52 insertions(+), 7 deletions(-)
 
-This adds devmem_bind_rx_unregister_check() and
-devmem_bind_tx_unregister_check() to nl_netdev.py. Each test binds a
-udmabuf to a netdevsim device over the netdev netlink family, then
-removes the device. It checks debugfs dma_buf/bufinfo to confirm the
-attachment is gone.
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 3cff2174dc03..ac257221c7c5 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2545,6 +2545,11 @@ struct net_device {
+ 	/* protected by rtnl_lock */
+ 	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
+ 
++#ifdef CONFIG_XDP_SOCKETS
++	/** @xsk_pools: assigned AF_XDP pools, ops protected */
++	struct hlist_head	xsk_pools;
++#endif
++
+ 	u8 dev_addr_shadow[MAX_ADDR_LEN];
+ 	netdevice_tracker	linkwatch_dev_tracker;
+ 	netdevice_tracker	watchdog_dev_tracker;
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index a7df573784fd..02e89350faf9 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -48,6 +48,8 @@ struct xsk_buff_pool {
+ 	struct device *dev;
+ 	struct net_device *netdev;
+ 	struct list_head xsk_tx_list;
++	/* Assigned pools, including deferred releases; ops protected. */
++	struct hlist_node dev_node;
+ 	/* Protects modifications to the xsk_tx_list */
+ 	spinlock_t xsk_tx_list_lock;
+ 	refcount_t users;
+@@ -119,6 +121,7 @@ bool xp_put_pool(struct xsk_buff_pool *pool);
+ void xp_clear_dev(struct xsk_buff_pool *pool);
+ void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
+ void xp_del_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
++void xp_clear_dev_all(struct net_device *dev);
+ 
+ /* AF_XDP, and XDP core. */
+ void xp_free(struct xdp_buff_xsk *xskb);
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 33475b180ea6..781ba46eb152 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -2145,6 +2145,11 @@ static int xsk_notifier(struct notifier_block *this,
+ 			mutex_unlock(&xs->mutex);
+ 		}
+ 		mutex_unlock(&net->xdp.lock);
++		/*
++		 * A released socket is no longer on xdp.list. Its pool can still
++		 * hold a device reference on the frozen release workqueue.
++		 */
++		xp_clear_dev_all(dev);
+ 		break;
+ 	}
+ 	return NOTIFY_DONE;
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 9d2d94f1fb75..5b9dcafd6882 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -173,6 +173,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	int err = 0;
+ 
+ 	ASSERT_RTNL();
++	netdev_assert_locked_ops_compat(netdev);
+ 
+ 	force_zc = flags & XDP_ZEROCOPY;
+ 	force_copy = flags & XDP_COPY;
+@@ -204,6 +205,11 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	pool->cached_need_wakeup = XDP_WAKEUP_TX;
+ 
+ 	dev_hold(netdev);
++	/*
++	 * Socket removal precedes the final pool put. Keep the pool visible to
++	 * NETDEV_UNREGISTER even while release work is waiting for process thaw.
++	 */
++	hlist_add_head(&pool->dev_node, &netdev->xsk_pools);
+ 
+ 	if (force_copy)
+ 		/* For copy-mode, we are done. */
+@@ -244,7 +250,6 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	bpf.xsk.pool = pool;
+ 	bpf.xsk.queue_id = queue_id;
+ 
+-	netdev_assert_locked_ops_compat(netdev);
+ 	err = netdev->netdev_ops->ndo_bpf(netdev, &bpf);
+ 	if (err)
+ 		goto err_unreg_pool;
+@@ -265,6 +270,8 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		err = 0; /* fallback to copy mode */
+ 	if (err) {
+ 		xsk_clear_pool_at_qid(netdev, queue_id);
++		hlist_del(&pool->dev_node);
++		pool->netdev = NULL;
+ 		dev_put(netdev);
+ 	}
+ 	return err;
+@@ -287,19 +294,40 @@ int xp_assign_dev_shared(struct xsk_buff_pool *pool, struct xdp_sock *umem_xs,
+ 	return xp_assign_dev(pool, dev, queue_id, flags);
+ }
+ 
++static void __xp_clear_dev(struct xsk_buff_pool *pool)
++{
++	struct net_device *netdev = pool->netdev;
++
++	netdev_assert_locked_ops_compat(netdev);
++	xp_disable_drv_zc(pool);
++	xsk_clear_pool_at_qid(netdev, pool->queue_id);
++	hlist_del(&pool->dev_node);
++	pool->netdev = NULL;
++	dev_put(netdev);
++}
++
+ void xp_clear_dev(struct xsk_buff_pool *pool)
+ {
+ 	struct net_device *netdev = pool->netdev;
+ 
+-	if (!pool->netdev)
++	if (!netdev)
+ 		return;
+ 
+ 	netdev_lock_ops(netdev);
+-	xp_disable_drv_zc(pool);
+-	xsk_clear_pool_at_qid(pool->netdev, pool->queue_id);
+-	pool->netdev = NULL;
++	__xp_clear_dev(pool);
+ 	netdev_unlock_ops(netdev);
+-	dev_put(netdev);
++}
++
++void xp_clear_dev_all(struct net_device *dev)
++{
++	struct xsk_buff_pool *pool;
++	struct hlist_node *next;
++
++	netdev_lock_ops(dev);
++	netdev_assert_locked_ops_compat(dev);
++	hlist_for_each_entry_safe(pool, next, &dev->xsk_pools, dev_node)
++		__xp_clear_dev(pool);
++	netdev_unlock_ops(dev);
+ }
+ 
+ static void xp_release_deferred(struct work_struct *work)
+@@ -337,7 +365,11 @@ bool xp_put_pool(struct xsk_buff_pool *pool)
+ 
+ 	if (refcount_dec_and_test(&pool->users)) {
+ 		INIT_WORK(&pool->work, xp_release_deferred);
+-		schedule_work(&pool->work);
++		/*
++		 * Teardown calls ndo_bpf(), which may need powered hardware.
++		 * RTNL alone does not exclude the device's system PM callbacks.
++		 */
++		queue_work(system_freezable_wq, &pool->work);
+ 		return true;
+ 	}
+ 
 
-> diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
-> index ceb44c8e1fec5..bad230ee9dcd2 100755
-> --- a/tools/testing/selftests/net/nl_netdev.py
-> +++ b/tools/testing/selftests/net/nl_netdev.py
+---
+base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
+change-id: 20260930-xsk-suspend-teardown-902f98408c93
 
-[ ... ]
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
-> @@ -366,6 +370,102 @@ def page_pool_stats_ifindex_check(nf) -> None:
->      ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.info.id')
->  
->  
-> +def _create_udmabuf(num_pages=64) -> int:
-> +    """Create a sealed memfd-backed udmabuf fd for devmem tests."""
-> +    if not os.path.exists("/dev/udmabuf"):
-> +        raise KsftSkipEx("/dev/udmabuf is not available")
-
-[Severity: Medium]
-Will these tests ever run with the config fragment for this directory?
-
-tools/testing/selftests/net/config has CONFIG_NETDEVSIM=m. It has none of
-CONFIG_UDMABUF, CONFIG_DMA_SHARED_BUFFER, CONFIG_NET_DEVMEM or
-CONFIG_DEBUG_FS. NET_DEVMEM depends on DMA_SHARED_BUFFER:
-
-net/Kconfig:
-config NET_DEVMEM
-	def_bool y
-	select GENERIC_ALLOCATOR
-	depends on DMA_SHARED_BUFFER
-
-The existing devmem tests use tools/testing/selftests/drivers/net/hw/config.
-That file sets CONFIG_NET_DEVMEM=y and CONFIG_UDMABUF=y.
-
-On a kernel built from net/config, the skip above fires every time. The
-regression coverage for "net: devmem: unmap dma_buf synchronously on queue
-uninstall" and "net: devmem: detach TX bindings on NETDEV_UNREGISTER"
-would then never run in CI for this directory.
-
-Should CONFIG_UDMABUF=y, CONFIG_DMA_SHARED_BUFFER=y and CONFIG_DEBUG_FS=y
-be added to tools/testing/selftests/net/config?
-
-> +
-> +    size = num_pages * mmap.PAGESIZE
-> +    memfd = os.memfd_create("devmem-ksft", os.MFD_ALLOW_SEALING)
-> +    os.ftruncate(memfd, size)
-> +    fcntl.fcntl(memfd, 1033, 0x0002)  # F_ADD_SEALS, F_SEAL_SHRINK
-> +    devfd = os.open("/dev/udmabuf", os.O_RDWR)
-> +    req = bytearray(struct.pack("IIQQ", memfd, 0, 0, size))
-> +    dmabuf_fd = fcntl.ioctl(devfd, 0x40187542, req)  # UDMABUF_CREATE
-
-[Severity: Medium]
-Is 0x40187542 correct on every architecture? The UAPI defines:
-
-include/uapi/linux/udmabuf.h:
-#define UDMABUF_CREATE       _IOW('u', 0x42, struct udmabuf_create)
-
-and the _IOW() encoding depends on the architecture. On powerpc,
-_IOC_WRITE is 4U and _IOC_SIZEBITS is 13, so the command works out to
-0x80187542. mips, sparc and alpha use the same layout.
-
-On those architectures, udmabuf_ioctl() falls through to its default case
-and returns -ENOTTY:
-
-drivers/dma-buf/udmabuf.c:udmabuf_ioctl() {
-	switch (ioctl) {
-	case UDMABUF_CREATE:
-	...
-	default:
-		ret = -ENOTTY;
-}
-
-Python then raises OSError, and both tests report FAIL instead of SKIP
-before any binding happens. Could the command value be computed from the
-architecture's ioctl encoding instead?
-
-> +    os.close(devfd)
-> +    os.close(memfd)
-
-[Severity: Low]
-Does this leak memfd and devfd when something fails partway through? If
-os.ftruncate(), the F_ADD_SEALS fcntl, os.open("/dev/udmabuf") or the
-UDMABUF_CREATE ioctl raises, these two os.close() calls are skipped. The
-descriptors, and the memfd pages, then stay open for the rest of the ksft
-process. Would a try/finally around these steps help?
-
-> +    return dmabuf_fd
-> +
-> +
-> +def _dmabuf_attached_devs():
-> +    """Return attached device names from debugfs dma_buf/bufinfo if available."""
-> +    path = "/sys/kernel/debug/dma_buf/bufinfo"
-> +    if not os.path.exists(path):
-> +        return None
-
-[Severity: Medium]
-When bufinfo is missing, can these tests pass without checking anything?
-
-The detach check is the main thing the RX docstring says this test
-verifies. If CONFIG_DEBUG_FS is off, debugfs is not mounted, or the file
-is not readable, this returns None. The callers' "if attached is not None:"
-guards then skip both assertions, and the test reports PASS.
-
-In that setup, the test would still pass if net_devmem_dev_unregister()
-stopped calling net_devmem_dmabuf_binding_unmap(), which is where
-dma_buf_detach() happens. net/config does not enable CONFIG_DEBUG_FS
-either.
-
-Should this raise KsftSkipEx instead of returning None?
-
-> +    with open(path, "r", encoding="utf-8") as f:
-> +        text = f.read()
-> +    attached = []
-> +    in_attached = False
-> +    for line in text.splitlines():
-> +        if line.strip() == "Attached Devices:":
-> +            in_attached = True
-> +            continue
-> +        if in_attached:
-> +            if line.startswith("\t") and line.strip():
-> +                attached.append(line.strip())
-> +            else:
-> +                in_attached = False
-> +    return attached
-
-[Severity: Medium]
-Does this count attachments from every dma-buf on the system, not just the
-udmabuf the test created?
-
-dma_buf_debug_show() walks the global dmabuf_list. For each buffer it
-prints a header and an "Attached Devices:" block:
-
-drivers/dma-buf/dma-buf.c:dma_buf_debug_show() {
-	...
-		list_for_each_entry(attach_obj, &buf_obj->attachments, node) {
-			seq_printf(s, "\t%s\n", dev_name(attach_obj->dev));
-	...
-}
-
-This loop adds every buffer's entries to one list. The before-bind
-ksft_ge(len(attached), 1) check can then pass because of some other
-buffer, even if the devmem bind never attached.
-
-The after-remove ksft_eq(len(attached), 0) check would also fail on any
-machine where another dma-buf has an attachment, even if the devmem
-binding detached correctly. Examples include GPU or DRM prime, V4L2, a
-parallel test, or a binding left behind by an earlier test.
-
-Could the parser filter on the test buffer's inode, for example by
-matching the ino column against os.fstat(dmabuf_fd).st_ino?
-
-> +
-> +
-> +def devmem_bind_rx_unregister_check(_nf) -> None:
-> +    """Verify RX devmem bindings detach dma_buf synchronously on netdev unregister."""
-> +    dmabuf_fd = _create_udmabuf()
-> +    nf_priv = NetdevFamily()
-> +    ef = EthtoolFamily()
-> +    nsimdev = NetdevSimDev(queue_count=2)
-> +    nsim = nsimdev.nsims[0]
-> +
-> +    ip(f"link set dev {nsim.ifname} up")
-> +    ef.rings_set({"header": {"dev-index": nsim.ifindex},
-> +                  "tcp-data-split": "enabled"})
-> +    nf_priv.bind_rx({
-> +        "ifindex": nsim.ifindex,
-> +        "fd": dmabuf_fd,
-> +        "queues": [{"id": 1, "type": "rx"}],
-> +    })
-
-[Severity: Medium]
-What happens to the netdevsim device if ip(), ef.rings_set() or
-nf_priv.bind_rx() raises here?
-
-nsimdev is created without "with" or defer(nsimdev.remove). ksft_run()
-only flushes registered defers, so nothing removes the device. That leaves
-it registered in the kernel even after the test process exits:
-
-tools/testing/selftests/net/lib/py/nsim.py:NetdevSimDev.remove() {
-        if not self.removed:
-            self.ctrl_write("del_device", "%u" % (self.addr, ))
-            self.removed = True
-}
-
-dmabuf_fd and the netlink socket also leak for the rest of the run.
-
-Also, an NlError with EOPNOTSUPP from bind_rx() or bind_tx() is not turned
-into KsftSkipEx. Kernels that have the devmem fixes but not "netdevsim:
-support devmem RX and TX bindings" would then report FAIL rather than
-SKIP.
-
-defer is already imported in this file, and the other netdevsim tests use
-"with NetdevSimDev(...)". The same pattern is in
-devmem_bind_tx_unregister_check() around bind_tx().
-
-> +
-> +    attached = _dmabuf_attached_devs()
-> +    if attached is not None:
-> +        ksft_ge(len(attached), 1)
-> +
-> +    nsimdev.remove()
-> +
-> +    attached = _dmabuf_attached_devs()
-> +    if attached is not None:
-> +        ksft_eq(len(attached), 0)
-> +
-> +    del nf_priv
-
-[Severity: Medium]
-Does "del nf_priv" actually close the netlink socket that owns the
-binding? YnlFamily.__init__() stores partials of bound methods on the
-instance:
-
-tools/net/ynl/pyynl/lib/ynl.py:YnlFamily.__init__() {
-            bound_f = functools.partial(self._op, op_name)
-            setattr(self, op.ident_name, bound_f)
-}
-
-Each partial refers back to self, which makes a reference cycle. Deleting
-the local name drops only one reference. YnlFamily has no __del__, so
-self.sock stays open until the cyclic GC happens to run or the process
-exits.
-
-The commit message says the tests verify that unregister:
-
-    "cleanly closes the netlink socket without use-after-free or page
-    faults."
-
-As written, the genl release -> netdev_nl_sock_priv_destroy() path after
-unregister never runs inside the test. That is the path fixed by "net:
-devmem: detach TX bindings on NETDEV_UNREGISTER". A regression there would
-show up later, or not be linked to this test at all, and the test would
-still report PASS.
-
-YnlFamily already has close() and __enter__/__exit__. Would nf_priv.close()
-or "with NetdevFamily() as nf_priv:" work here? The same applies to
-"del nf_priv" in devmem_bind_tx_unregister_check().
-
-> +    os.close(dmabuf_fd)
-> +
-> +
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012174300.2338784-1-almasrymina%40google.com
