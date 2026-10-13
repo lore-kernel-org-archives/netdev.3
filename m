@@ -1,65 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68547388E72;
-	Tue, 13 Oct 2026 16:35:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42FE51B19B;
+	Tue, 13 Oct 2026 16:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791909348; cv=none; b=DADbxj0rprqETLd4rCc1N4ZRuul6zkaTGi7gGI55Liko8V0/FyNkIFjyzJgCqHCV3Bp6H6G6FNjgalwnVclyBl3ziipLJG2siDxzR42urY9r0s+sYxH8tVP4o/afftGamq8a/lhOrTVWk80HcvIJEgRFA5QxNglmBYT/Ry1UGyY=
+	t=1791909564; cv=none; b=lFah7q19xBTvqAb0s/r9TNj+Aw/GK1SMb3ddHuVF8AoTpO0u64/x81l1/23BAh76VY252F/PnP9XWNf/RdZFBFizyU/iju3tFrLU2YNJmhcliL87jErGvn/sF7PjQ7tVsaCOJ4t+zrsRuqWgervjctpOjJ+7Vverd8aZ944dSjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791909348; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G0emwUFhUyhV4mUgP4/SezZmFLKcdcckmGKvlpl48qIOUzQRArA7Rz8r5TgnqdYvd2IHDP21VKO00a0gQoXt1uah3KPkfC3asdJNb5GlnDbDMge20GHmynwhL982JGtJ9dwi2mFTOm6X/0vih4JPKdtrHsRC1mo79tybsWhqoRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yzy7EZuQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791909564; c=relaxed/simple;
+	bh=maN9WdDQNyJW7hwIAQoj0chqRIgr2kVisoCOCJBKBW8=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CnJNh2uVccQgEWYvX27WEqDdBC0tkegVNlr0CttwfMNPPlAQzEiqew+pyt/tUlK7ZSTFNPZ+6g05yZw5d3c8att19dtTi5T0rdibOF2QUllVWnNoLex33zwW8jugRdg5k/fOYcV/B710cGl1H0OAOPHqcv0QyCkapkzCiHt6Ae8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=OmfsvGvg; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yzy7EZuQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783FA1F000FF;
-	Tue, 13 Oct 2026 16:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791909347;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Yzy7EZuQBhKG92gICaBA+mFCaMDI6k1oND61iEkFUIjtT3El0jv9zcHwGFFSacLis
-	 XUuzbiwOa46vYW6CymqS/FE3hzWUfQoxT1WTPd9Y4xxbX7An3S8ocgOtmb6+x4ICiT
-	 rOcTO5PitB7Gli08/SDdmzx+2Ho2+r4FM1zz5G1sUBBEaB/QosZFE4IvEeEcoRfujA
-	 WOsXDTujVIoLMPnWJegpP2dGCDMOtK9rpU/OnMNEP5fN7t2uSkhwnovsH/gcJRm5ZV
-	 JyGI5k4X4wrTysfmxcSs0xtfiDsO6CSLKbQfesimvYL/uSOq7qdrTUVraRgzdBg3+L
-	 tZ69CB32cuNmg==
-From: netdev-bot+sinfo@kernel.org
-To: Qihang <q.h.hack.winter@gmail.com>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, elic@nvidia.com, stable@vger.kernel.org
-Subject: Re: [PATCH] net/sched: cls_api: skip indr register on failed bind
-Date: Tue, 13 Oct 2026 16:35:46 +0000
-Message-ID: <179190934605.99822.9665976540343357527@kernel.org>
-In-Reply-To: <20261013163014.25722-1-q.h.hack.winter@gmail.com>
-References: <20261013163014.25722-1-q.h.hack.winter@gmail.com>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="OmfsvGvg"
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DG29vC4133169;
+	Tue, 13 Oct 2026 09:39:17 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps82601-s2048-2026-q3; bh=NrtxiVYJba0
+	YrHlHuBie68yLp0FWH7fr0REcb0AeLL0=; b=OmfsvGvgRWiHR3oh2Z+9auPT9tf
+	T2SDIRdrvf3wKhwmcNVS9Us8NY/wkNFFf0L1I2P/asgwTOGJZFwrYqWmeLh54ebI
+	PZLRPS7GJBqOzF8vMJ4FNfMkGrt9nTqGGlUWxfJ2qxkNcJMQklhcpHyKiisiemj9
+	SnNg/vNNs4lx6mkJhGy2/lzChIA2yr512RMCTPmCXA1s6IwYeR2pojwjR5mpC0gc
+	WWXawypLN3pTyRyMJX/viJf9+cxZAMc4Gc1IylI4ZatDcrxErrksFMDIPSrpYCVd
+	8HYY2oLGM1wP+pTRFS82TgHTxpsFcCWKTRhJNn6vLYF4EMUW3N08jM8Y2Qw==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h9kmd2jbq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 13 Oct 2026 09:39:16 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Tue, 13 Oct
+ 2026 16:39:03 +0000
+Date: Tue, 13 Oct 2026 09:39:01 -0700
+From: Bobby Eshleman <bobbyeshleman@meta.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
+        <kvm@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet
+	<edumazet@kernel.org>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        Jakub
+ Kicinski <kuba@kernel.org>,
+        Stefan Hajnoczi <stefanha@redhat.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] MAINTAINERS: add Bobby Eshleman as vsock reviewer
+Message-ID: <as5epSRVAJ+C+Ltf@devvm29614.prn0.facebook.com>
+References: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
+ <20261013061724-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261013061724-mutt-send-email-mst@kernel.org>
+X-Authority-Analysis: v=2.4 cv=I+jw19gg c=1 sm=1 tr=0 ts=6ace5eb4 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=kj9zAlcOel0A:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22 a=VabnemYjAAAA:8
+ a=20KFwNOVAAAA:8 a=iCU-dymRbZCnDCLPvtkA:9 a=CjuIK1q_8ugA:10
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: Ry9W6e7FNUEVt4HigOCkmYJ59Mcw50Qz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA2NiBTYWx0ZWRfX3Jnxr/rWd6Ml
+ Cg2A+ki3B7vnZC3KfWVoItChi0Ss/o2bSv+cRg+eLR4u4pEl0g3w3Jb0IDWkqHmavt+yrA3Vbhq
+ BA17q0u1jg2GXj4oScrt0WgFYmkQbtWD2mgBVFu5w8MkJO3Yq6tqMEDQ+mCFUZc9UY9bu1QVIF6
+ sPwjHuI7pk/MIrAHflVX3PY4lC8U2o+IdtDB4y2IjiJbm4vIyEyYWmeuayV3RZnCW5FE2puosuz
+ eBzc+nLPNquqNgn0cuMrCrT9EB4ejd/rR2JaG5Afanmj84ybMjzjfnUqLU9VfBfZaD2PVRdIQXg
+ Q+9RvKmEucIoWoH/dMX0hbGxmooCyAxbbbeOWt36sLKNeFlNjzBCXC8l32lqePJrGG3Bcw9x2u0
+ wmWGpeGhE56hWUbu0le54sewXQqhSnMP5gXO96RD/MCpxG9Of8uoEmXl1KP4PYP9fDO9fr7+SVk
+ IqXmvoOW0JkBtLXOkJw==
+X-Proofpoint-GUID: Ry9W6e7FNUEVt4HigOCkmYJ59Mcw50Qz
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA2NiBTYWx0ZWRfX/dt7EVAZv4DG
+ g+618KvUKZLynBqaf0nJa+i4Vzq/F/xn1xuszigWNKizVoVPOwLS3xYbXyIfIbPOsgRC44+bdiJ
+ 2MCwlL2rxNiPzMUI57KjcUD1PLOPGVY=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
 
-Hi!
+On Tue, Oct 13, 2026 at 06:17:43AM -0400, Michael S. Tsirkin wrote:
+> On Mon, Oct 12, 2026 at 12:58:08PM -0700, Bobby Eshleman wrote:
+> > I've been reviewing vsock via lore+lei for a while now.
+> > 
+> > Finally adding myself as a formal reviewer, since vsock will continue
+> > being stuck with me for the foreseeable future.
+> > 
+> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> 
+> 
+> Bobby's doing a stellar work.
+> 
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+Thanks Michael!
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
-
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
-
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+Best,
+Bobby
