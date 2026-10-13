@@ -1,349 +1,219 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E1D521886;
-	Tue, 13 Oct 2026 21:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A8A551991
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 21:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925257; cv=none; b=i37wDC6GWRIoEvOOhXuEwXoQ861tcu2iTo3dctMK+q1XnabYt7NyHUK9/Nu+c/ymbwE7U24VzYQnWQZSZRtT5kayrJJCsGlC6eVbsnpxddZSHgnpSdeUoFpMPlU2vLT3gPXBrG/am6qUWlZ4mtOro/xwG0FBUbd7h0VLWwAEPaQ=
+	t=1791925837; cv=none; b=rr8kcNjBuntsoupNY9XG+rWYDMWE1o+BBW3Z+ccBb9To7CfUXnRH+JyC4nkUWMOnk+HUoXc3WzJg6dIV9PEoMjEoD0xYl+UUPKW0klul/Xdlk11lSEEzcYMLTvIsA/3PXgRwnsylzw7OeHh2AtoyFtzKpnaa6sgmIAZzisivpzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791925257; c=relaxed/simple;
-	bh=HNaf6polcQg4LpZTj2X35aUHl5wTcpAvM5lcMpTIBoE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SlJr1Ml42TtZd2MVAsFx1jA1YX4UpdHCoK/52L7bYqgszC+j09LztJpQ4AEFw6bxX2c9s6gXrlpIVTdc4uwLkZPco1vwMINdSjj2g/kbo/UTJbpm+RK8GDm3rziS8ujPr/EIPT/+dZsFcfUWywGU8/QZJrVas56txhSPgo6Ucu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=acseTAkj; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1791925837; c=relaxed/simple;
+	bh=w3LyJVcLGysNtFfsB2TYfXuX/N9oTmEPymDVCNFvtrI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G52jvUbHcqmxjH0cvXIWJhXqSAawvJnZNxuVaEG2Zv4EE8vXn1j8lNt/LBWus/wpnpgFrqB+AG9Bm/4AZzCWKPMvyWLP0xGYO9CQp0tFpL1nSKf1Ct2l2t8WUXsLlz2jgdkiELFyOUhZgRsYSPGzTpbczgNxyHdl0oFluPw7fpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=L2H9qUSi; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="acseTAkj"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DDMohY150262;
-	Tue, 13 Oct 2026 21:00:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=UvD7rj
-	rds7zjnm1JpksHU8I8lbLsavW0heWduxRH7Ko=; b=acseTAkjx6xhpMmHTB+5SJ
-	sScPKLZiyFUVKw5+0Yj/uDfkhr/prXZWY8aDKxK4u+6YXIAw3tlq9ZR5pdUATaYM
-	PBBv3oz6O5vU68s3i/Qs+F8SQ2AGM3hLcM7tJtDGIK1O5bXB6Xi/fevfmF+TdPzu
-	QA4H33cAKjdFgHHWdA/fUKTO6NMBUrzZPWOemtyNia0/DzhpG3GjGWtF4NIuhO8V
-	eE7QR5NBq16fvAbBkCgbewrt/rnlckZNQUZk6JdBp+FJRA3YpDdatqZJlvTBvijD
-	A1XvXBzm3nYmUAvBILflhfrKZPeIis+davIvhGgGecqnnP0Bliohd17AJmCx4gqw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dwhgxku-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 13 Oct 2026 21:00:39 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69DIAPr62667524;
-	Tue, 13 Oct 2026 21:00:38 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h802vvf1w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Oct 2026 21:00:38 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69DL0aQa21758598
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Oct 2026 21:00:36 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E03858057;
-	Tue, 13 Oct 2026 21:00:36 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B23685805D;
-	Tue, 13 Oct 2026 21:00:33 +0000 (GMT)
-Received: from [9.67.58.174] (unknown [9.67.58.174])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 13 Oct 2026 21:00:33 +0000 (GMT)
-Message-ID: <2363fbc6-7ad2-4dd1-8ebc-822c16471b25@linux.ibm.com>
-Date: Tue, 13 Oct 2026 14:00:33 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="L2H9qUSi"
+Received: from pps.filterd (m0528005.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DKWQWb699767;
+	Tue, 13 Oct 2026 14:10:17 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pps82601-s2048-2026-q3; bh=NRl4xIAYX
+	WDn6TqLD0VLSF/LkVa4LN4zXVDDrr8oTno=; b=L2H9qUSi9mg+AFX+vpm37cE+Y
+	iDQZYQPC6Q/MqD90RLYvztJ4eBNX6gpSMEKqtTfNpzm+f94ARKtaCZxq4INQILls
+	ZE6prZQ16rVGKHJnbgYMvlqj6FLVNcGRL9LedMYs/tyT+OLX3nZ6c43oqNTLqlCn
+	RFl8ZIEebEyUfhLHGou/swEPOEYydwXuM4COqzeeoAD8rx6gn02wgcQGJDbAxwOj
+	SKngrThGXFQBOwNSl5T4s+vG34bydlMUck5hKpP2SGnLHXUQSKsCrrFtlGFyJnas
+	qS2n+YiwY6f7wOhDRUrjNwWMd615VbXClWmGXce2r7Ew0OxSZ35T5QEWTy6ww==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h86xj6eps-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 13 Oct 2026 14:10:16 -0700 (PDT)
+Received: from localhost (2620:10d:c085:108::4) by mail.thefacebook.com
+ (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Tue, 13 Oct
+ 2026 21:10:15 +0000
+From: Erfan Sharafzadeh <erfansh@meta.com>
+To: <netdev@vger.kernel.org>
+CC: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <horms@kernel.org>, <almasrymina@google.com>,
+        <kaiyuanz@google.com>, <willemb@google.com>, <asml.silence@gmail.com>,
+        <sdf@fomichev.me>, <bobbyeshleman@meta.com>
+Subject: [PATCH net-next v2] net: devmem: allow peer-to-peer dma-buf attach for bindings
+Date: Tue, 13 Oct 2026 14:09:54 -0700
+Message-ID: <20261013210954.2170175-1-erfansh@meta.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 9/9] ibmveth: check headers in the RX large
- send and checksum helpers
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, nnac123@linux.ibm.com, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
-        ritesh.list@gmail.com, sshegde@linux.ibm.com, andrew+netdev@lunn.ch,
-        davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-        pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org, horms@kernel.org, davemarq@linux.ibm.com,
-        bjking1@linux.ibm.com, brking@linux.vnet.ibm.com,
-        tlfalcon@linux.vnet.ibm.com, jmaxwell37@gmail.com, zdai@us.ibm.com,
-        marcelo.leitner@gmail.com, ksiva@linux.vnet.ibm.com
-References: <20261012050518.88858-10-mmc@linux.ibm.com>
- <179187067525.434549.7404862779574164491@kernel.org>
-Content-Language: en-US
-From: mingming cao <mmc@linux.ibm.com>
-In-Reply-To: <179187067525.434549.7404862779574164491@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA4MiBTYWx0ZWRfX2182pZXj4SrC
- vFqQwuTydyujwIApahfHKUBRT4vI7a9KjPOy1xu+EFsJNDyS8F/Mm7CjpSArbecJbqTvptUdr5O
- WDtg1Nrd3YtrtHRSj/eJ7MlbMrMzkHM=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA4MiBTYWx0ZWRfX+FC1YFlzT7c8
- kOJo4ZqfL5rbv+C3JBcBZJhayPuULeZT8vmc5CoKH22I4fzIvNONZMuXjCZ/r0lTY9WHiTydoVu
- 42DWJUC9i6YVwFofjn2FzIcTbwmYAsJ/z+knXXZIC0rAkKDHN37vep9dz5iVMdTQ3Kr33KvdIYf
- J+SP6bf9Obni1EehnYA3WTRn1RJO8WxXzLOU5DFLWnpD4IU66k8uI9imIXjWnuPzQe1YZnGK3wy
- YucCm5bK1HgRTKadVKRaC9oqQ5yRTfL4P4UEi10YoK075OCOdHGjQsC403/omTiBWYFx2ZYWTbb
- zioxTpjzQBrCxfwoSSSl7SQ12mqeDEv+f1my4CAAuqzl2/CJGDjt4/u4IJiWpJ0IMWo0V5JGCms
- ADzAk7fuSUv0x1gNxDNcDA2JkCgh8mX8Dxl1fHSHiAChH1wCgKrobCfQR/yrUJjjMMdTwJeBp9z
- ElAm5ihOB18BfUnKdFQ==
-X-Proofpoint-GUID: R8_Aug9lxRwXYKbLj67yDHze4xxCIvpb
-X-Authority-Analysis: v=2.4 cv=RoFQvymK c=1 sm=1 tr=0 ts=6ace9bf7 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=HYs3yLHdxXCyPMkvej0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: tuf4ByZ8ZZ3dT_W0MiccTrgCa04WHV9O
+Content-Type: text/plain
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA4NCBTYWx0ZWRfXxoi9a497rDB1
+ 0wxgCU8BDAplrcwlo6V6gkx5wWFZHU31sUMFr4eiMyt6xzNwqcm8TVTMM4wzX6fvRBTsP16f1sb
+ bhrDVYrb8oVT9BLaLGODZ/32J0W5Iqs=
+X-Proofpoint-GUID: PC_Dt95gPK6Dutv_1_Ml6Jfqf_Gw-DIX
+X-Authority-Analysis: v=2.4 cv=eeGo7LEH c=1 sm=1 tr=0 ts=6ace9e38 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=jCddH8ec0KUNCymVuxII:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=63e_jcLooa-Z38S73TgA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: PC_Dt95gPK6Dutv_1_Ml6Jfqf_Gw-DIX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA4NCBTYWx0ZWRfXyZKV31pWbtTx
+ Dy1XmmiNVfEE4ofX9znp24IEChj+Lq33jHJ35KepQPWNLXMuZmv1eI9O+3aHIKFbvgrQpbh2tT1
+ 0IZv7Q7WFMXwvSqL6HI1FnHMZPms5XSHDJA8q0xvcf+JqMCUjqeR2biA60hjdpaDIcsHSyGu26I
+ Yi3WRRRMnSuP6XsAD9iXfk39LtYEvh33sJoEq9dNDrRtT9Lldh18SuKW2IAjsmvKS8Rj0JpQ6py
+ v4JiNv0N5FR7GOmA4PaqEsa3Ox3N5NU2g7sMWITGo9aVSiSEB78R+5Xuz/4a9VaoKIDCDcR30wk
+ U5zI+3DvKyw71syBP8Kz3i6/OZtt1iOFqVy+3pwtRCYDWC8yun5jK+slf8zz2E2VDm5iTtKMOA5
+ 8BlNbR+EKp01FPfIvGEDcriuq5ChC1hinaX1mxgQhxCaASgKwKu2ckuoGRE+49/UfMLXjCR9HYK
+ j4L8OtVvPg49JybYFdg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 bulkscore=0
- impostorscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
- definitions=main-2610130082
 
+net_devmem_bind_dmabuf() uses dma_buf_attach(), a static attachment
+with peer2peer false. Exporters must then keep the buffer reachable
+without P2P; amdgpu does so by placing it in GTT (system memory), so a
+device memory binding silently ends up in host memory.
 
-On 10/12/26 10:51 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 1 · Medium: 0 (1) · Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [High] ibmveth_rx_mss_helper() (drivers/net/ethernet/ibm/ibmveth.c) now
->    sets gso_segs = DIV_ROUND_UP(ip_len - hdr_len, gso_size).
-> - [Low] The kernel-doc of ibmveth_rx_mss_helper_test() says the helper
->    takes "gso_segs from the IP length" and refuses "Frames whose headers…
->
-> Pre-existing issues:
-> - [Medium] ibmveth_rx_csum_helper()
->    (drivers/net/ethernet/ibm/ibmveth.c:1530) seeds the TCP pseudo-header…
->
-> --
->
-> ibmveth: check headers in the RX large send and checksum helpers
->
-> This adds bounds checks on the IP and TCP headers in
-> ibmveth_rx_mss_helper() and ibmveth_rx_csum_helper(). The checks include a
-> minimum IPv4 ihl and TCP doff, and IPv4 TCP fragments are refused. The large
-> send helper now computes gso_segs from the IP length and clamps gso_size,
-> and KUnit cases are added for both helpers.
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index 85e176d0ed321..1c2ac88c28ca3 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
-> [ ... ]
->
->> @@ -1406,28 +1410,41 @@ static void ibmveth_rx_mss_helper(struct sk_buff *skb, u16 mss, int lrg_pkt)
->>   	if (skb->protocol == htons(ETH_P_IP)) {
->>   		struct iphdr *iph = (struct iphdr *)skb->data;
->>   
->> +		if (skb_headlen(skb) < sizeof(*iph) || iph->ihl < 5)
->> +			return false;
->>   		if (iph->protocol == IPPROTO_TCP) {
->> +			/* only a whole datagram has a TCP header to segment */
->> +			if (ip_is_fragment(iph))
->> +				return false;
->>   			offset = iph->ihl * 4;
->> -			skb_shinfo(skb)->gso_type = SKB_GSO_TCPV4;
->> +			ip_len = ntohs(iph->tot_len);
->> +			gso_type = SKB_GSO_TCPV4;
-> [ ... ]
->
->>   	tcph = (struct tcphdr *)(skb->data + offset);
->> +	if (skb_headlen(skb) < offset + sizeof(*tcph) || tcph->doff < 5 ||
->> +	    ip_len > skb_headlen(skb) || ip_len <= offset + tcph->doff * 4)
->> +		return false;
->> +	skb_shinfo(skb)->gso_type = gso_type;
->>   	if (lrg_pkt) {
->>   		skb_shinfo(skb)->gso_size = mss;
->>   	} else if (offset) {
->> @@ -1436,11 +1453,18 @@ static void ibmveth_rx_mss_helper(struct sk_buff *skb, u16 mss, int lrg_pkt)
->>   	}
->>   
->>   	if (skb_shinfo(skb)->gso_size) {
->> +		/* chosen by the sending partition: at least the floor
->> +		 * virtio_net_hdr_to_skb() uses, and never GSO_BY_FRAGS
->> +		 */
->> +		skb_shinfo(skb)->gso_size =
->> +			clamp_t(u16, skb_shinfo(skb)->gso_size,
->> +				TCP_MIN_GSO_SIZE, GSO_BY_FRAGS - 1);
->>   		hdr_len = offset + tcph->doff * 4;
->>   		skb_shinfo(skb)->gso_segs =
->> -				DIV_ROUND_UP(skb->len - hdr_len,
->> +				DIV_ROUND_UP(ip_len - hdr_len,
->>   					     skb_shinfo(skb)->gso_size);
->>   	}
-> [Severity: High]
->
-> Can gso_segs here undercount the number of segments that actually get
-> produced?
+Use dma_buf_dynamic_attach() with allow_peer2peer set, so an exporter
+that can do P2P to the device keeps the buffer in device memory.
+Dynamic attachments are not pinned on map, and devmem cannot handle the
+buffer moving, so:
 
-|Thanks for catching this. Agreed. |
+- pin it with dma_buf_pin() before mapping, which keeps it in place for
+  the lifetime of the binding, as before;
+- wait for the exporter's kernel fences after mapping, interruptibly,
+  as the core does for static attachments.
 
-> The only check of ip_len against the frame is ip_len > skb_headlen(skb).
-> That means a frame much longer than its IP length is accepted, and nothing
-> trims the skb to ip_len before napi_gro_receive().
->
-> The commit message says the skb is not marked SKB_GSO_DODGY because
-> gso_segs is computed here. That holds once ip_rcv_core() trims the skb to
-> tot_len, on local delivery or routing. On the Trunk VEA forwarding paths
-> (a bridge without br_netfilter, or OVS without conntrack), the skb is not
-> trimmed.
->
-> For example, a sending partition could:
->
->    - set iph->check = 0xffff
->    - put an MSS of 8 in tcph->check
->    - set tot_len = 100
->    - send a frame of about 9000 bytes
->
-> The new checks pass (100 <= headlen, 100 > 40), so gso_segs becomes 8.
-> tcp_gso_segment() or hardware TSO works on skb->len instead, which gives
-> about 1120 segments.
->
-> On egress, gso_features_check() compares the trusted gso_segs against the
-> device limit:
->
-> net/core/dev.c:gso_features_check() {
->      ...
-> 	if (gso_segs > READ_ONCE(dev->gso_max_segs))
-> 		return features & ~NETIF_F_GSO_MASK;
->      ...
-> }
->
-> Also, qdisc_pkt_len_segs_init() only recomputes gso_segs from skb->len for
-> SKB_GSO_DODGY skbs.
->
-> Would this let a TSO skb past the egress NIC's gso_max_segs? Would it also
-> make the qdisc and BQL accounting too low?
->
-> Before this patch, gso_segs was derived from skb->len, which matches what
-> gets segmented. Any of these would avoid the mismatch:
->
->    - trim the skb to ip_len, for example with pskb_trim_rcsum()
->    - refuse large sends where skb_headlen(skb) != ip_len
->    - compute gso_segs from skb->len
->
-> [ ... ]
->
->> @@ -1493,6 +1523,8 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
->>   	if (iph_proto == IPPROTO_TCP) {
->>   		struct tcphdr *tcph = (struct tcphdr *)(skb->data + iphlen);
->>   
->> +		if (skb_headlen(skb) < iphlen + sizeof(*tcph))
->> +			goto bad_hdr;
->>   		if (tcph->check == 0x0000) {
->>   			/* Recompute TCP pseudo header checksum  */
->>   			tcphdrlen = skb->len - iphlen;
-> [Severity: Medium]
->
-> This isn't a bug introduced by this patch, but should the pseudo-header
-> length in ibmveth_rx_csum_helper() come from the IP header rather than
-> skb->len?
->
-> The frame can have bytes past the end of the IP datagram, either Ethernet
-> padding or trailing bytes that ibmveth_rx_mss_helper() still accepts when
-> ip_len < skb_headlen(skb). If tcph->check is also 0, the seed is computed
-> over the wrong length, and skb_partial_csum_set() then marks the skb
-> CHECKSUM_PARTIAL.
->
-> ip_rcv_core() and ip6_rcv_core() later trim the skb with pskb_trim_rcsum().
-> For CHECKSUM_PARTIAL, that only checks where the checksum field is:
->
-> net/core/skbuff.c:pskb_trim_rcsum_slow() {
->      ...
-> 	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
-> 		int hdlen = (len > skb_headlen(skb)) ? skb_headlen(skb) : len;
-> 		int offset = skb_checksum_start_offset(skb) + skb->csum_offset;
->
-> 		if (offset + sizeof(__sum16) > hdlen)
-> 			return -EINVAL;
-> 	}
->      ...
-> }
->
-> The seed is left as it was.
->
-> Could a forwarded packet then go out with a TCP checksum over the trimmed
-> data but a pseudo-header for the untrimmed length? The final receiver
-> would drop it.
->
-> This patch moved the large send helper to the IP length. Would
-> tot_len - ihl * 4, or the IPv6 payload_len, make sense here too?
->
-> [ ... ]
+This follows the pinned RDMA umem path, including its limits: the
+binding cannot be revoked by the exporter, and once a P2P binding has
+pinned a buffer in device memory, a later attachment to the same buffer
+that cannot do P2P may fail to pin it. Exporters that cannot do P2P to
+the device place the buffer as before. RX and TX bindings both go
+through this function.
 
-|Yes, that makes sense. Since that behavior predates this series (from 
-commit 66aa0678efc2), I'd prefer not to expand Patch 9 further and will 
-handle that as a separate follow-up. |
+Signed-off-by: Erfan Sharafzadeh <erfansh@meta.com>
+---
+v2:
+- Target net-next and drop the Fixes: tag. This adds P2P placement
+  rather than fixing incorrect behaviour, and it relies on recent
+  dma-buf core changes, so it should not go to stable.
+- Wait for the exporter's fences interruptibly, as the core does.
+- Describe the revocation and mixed-attachment limits in the commit
+  message.
 
+v1: https://lore.kernel.org/netdev/20261012170754.669462-1-erfansh@meta.com/
 
+ net/core/devmem.c | 47 +++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 37 insertions(+), 10 deletions(-)
 
->> @@ -2508,10 +2549,214 @@ static void ibmveth_rxq_harvest_buffer_test(struct kunit *test)
-> [ ... ]
->
->> +	} else {
->> +		struct iphdr *iph = (struct iphdr *)skb->data;
->> +
->> +		skb->protocol = htons(ETH_P_IP);
->> +		iph->version = 4;
->> +		iph->ihl = 5;
->> +		iph->protocol = IPPROTO_TCP;
->> +		iph->tot_len = htons(len);
->> +	}
-> [ ... ]
->
->> +/**
->> + * ibmveth_rx_mss_helper_test - unit test for ibmveth_rx_mss_helper
->> + * @test: pointer to kunit structure
->> + *
->> + * Large send frames get gso_size from the descriptor or the TCP checksum
->> + * field, clamped, and gso_segs from the IP length. Frames whose headers
->> + * do not fit, with no TCP payload within the IP length, or that are
->> + * IPv4 fragments, are refused and left without GSO.
->> + *
->> + * Return: void
->> + */
-> [Severity: Low]
->
-> This isn't a bug, but do any of the cases in ibmveth_rx_mss_helper_test()
-> test "gso_segs from the IP length" or the "headers do not fit" refusal?
->
-> ibmveth_test_tcp_skb() always sets tot_len (or 40 + payload_len) equal to
-> skb->len. So in every accepted case, DIV_ROUND_UP(ip_len - hdr_len, ...)
-> gives the same result as the old DIV_ROUND_UP(skb->len - hdr_len, ...).
-> The only case with ip_len < skb->len is the padding case, and it is refused
-> before gso_segs is computed.
->
-> No mss helper case builds an skb shorter than sizeof(struct iphdr),
-> sizeof(struct ipv6hdr), or offset + sizeof(struct tcphdr). So if gso_segs
-> went back to skb->len, or those skb_headlen() checks were dropped from
-> ibmveth_rx_mss_helper(), every expectation would still pass.
->
-> Could cases be added for a tot_len smaller than the frame and for truncated
-> headers? Otherwise, could the kernel-doc be narrowed to what is tested?
-
-
-|We added the tot_len < frame length KUnit test case in v5. Truncated 
-headers are already safely caught by the strict IP length / payload 
-checks. v5 is posted here: 
-https://lore.kernel.org/netdev/20261013182926.30417-1-mmc@linux.ibm.com/ 
-Thanks, Mingming pw-bot: cr|
-
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index 95d714d46c6f..fd1b72744564 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -8,6 +8,7 @@
+  */
+ 
+ #include <linux/dma-buf.h>
++#include <linux/dma-resv.h>
+ #include <linux/mm.h>
+ #include <linux/netdevice.h>
+ #include <linux/types.h>
+@@ -50,6 +51,10 @@ static void net_iov_free_push(struct net_iov_area *area,
+ 	freelist[(*free_count)++] = net_iov_idx(niov);
+ }
+ 
++static const struct dma_buf_attach_ops net_devmem_dmabuf_attach_ops = {
++	.allow_peer2peer = true,
++};
++
+ static void net_devmem_dmabuf_binding_release(struct percpu_ref *ref)
+ {
+ 	struct net_devmem_dmabuf_binding *binding =
+@@ -69,8 +74,11 @@ void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
+ 		     binding->area.num_niovs, binding->free_count);
+ 
+ 	kvfree(binding->area.niovs);
+-	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
+-					  binding->direction);
++	dma_resv_lock(binding->dmabuf->resv, NULL);
++	dma_buf_unmap_attachment(binding->attachment, binding->sgt,
++				 binding->direction);
++	dma_buf_unpin(binding->attachment);
++	dma_resv_unlock(binding->dmabuf->resv);
+ 	dma_buf_detach(binding->dmabuf, binding->attachment);
+ 	dma_buf_put(binding->dmabuf);
+ 	xa_destroy(&binding->bound_rxqs);
+@@ -190,7 +198,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 	unsigned int sg_idx;
+ 	size_t niov_idx;
+ 	size_t i;
+-	int err;
++	long err;
+ 
+ 	if (!dma_dev) {
+ 		NL_SET_ERR_MSG(extack, "Device doesn't support DMA");
+@@ -226,19 +234,35 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 	binding->dmabuf = dmabuf;
+ 	binding->direction = direction;
+ 
+-	binding->attachment = dma_buf_attach(binding->dmabuf, dma_dev);
++	binding->attachment =
++		dma_buf_dynamic_attach(binding->dmabuf, dma_dev,
++				       &net_devmem_dmabuf_attach_ops, binding);
+ 	if (IS_ERR(binding->attachment)) {
+ 		err = PTR_ERR(binding->attachment);
+ 		NL_SET_ERR_MSG(extack, "Failed to bind dmabuf to device");
+ 		goto err_exit_ref;
+ 	}
+ 
+-	binding->sgt = dma_buf_map_attachment_unlocked(binding->attachment,
+-						       direction);
++	dma_resv_lock(dmabuf->resv, NULL);
++	err = dma_buf_pin(binding->attachment);
++	if (err) {
++		NL_SET_ERR_MSG(extack, "Failed to pin dmabuf");
++		goto err_unlock;
++	}
++
++	binding->sgt = dma_buf_map_attachment(binding->attachment, direction);
+ 	if (IS_ERR(binding->sgt)) {
+ 		err = PTR_ERR(binding->sgt);
+ 		NL_SET_ERR_MSG(extack, "Failed to map dmabuf attachment");
+-		goto err_detach;
++		goto err_unpin;
++	}
++	dma_resv_unlock(dmabuf->resv);
++
++	err = dma_resv_wait_timeout(dmabuf->resv, DMA_RESV_USAGE_KERNEL, true,
++				    MAX_SCHEDULE_TIMEOUT);
++	if (err < 0) {
++		NL_SET_ERR_MSG(extack, "Failed to wait for dmabuf fences");
++		goto err_unmap;
+ 	}
+ 
+ 	if (!IS_ALIGNED(dmabuf->size, niov_size)) {
+@@ -332,9 +356,12 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
+ 	kvfree(binding->freelist);
+ 	kvfree(binding->tx_vec);
+ err_unmap:
+-	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
+-					  direction);
+-err_detach:
++	dma_resv_lock(dmabuf->resv, NULL);
++	dma_buf_unmap_attachment(binding->attachment, binding->sgt, direction);
++err_unpin:
++	dma_buf_unpin(binding->attachment);
++err_unlock:
++	dma_resv_unlock(dmabuf->resv);
+ 	dma_buf_detach(dmabuf, binding->attachment);
+ err_exit_ref:
+ 	percpu_ref_exit(&binding->ref);
+-- 
+2.53.0-Meta
 
