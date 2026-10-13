@@ -1,202 +1,199 @@
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29C454939B
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791924874; cv=none; b=e4Zd3cm6DBGR9qTOYPBqn/+NNe3fCFv4mHwN+5F5A4vLsL5XPvpxA/0PyrG9mTo1lHfw4bFyane6eATAYXYGAgspPXLJS9k37/3hvLFWyWevZ9zZX7yFDbV0O1Vws0/lYXCeVIu5mHLVyc/md4iS0XxdW3jqVOLue9pg1C3VQeU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791924874; c=relaxed/simple;
-	bh=Jcv91dvn9z2wVjfYdXVBn/Pe0mEV7prkLqGANvQn5K0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IUSyfYShcFf+h4xWhR/aNxZ3y49rdv9AJzXKsXxwKdjWs05HuUdH1RvfCO46Vrh5VKkZFpB8qOCobLyp2bjs4PauiiZP0CDWmmvLyPScbeBa12Xle7gFiRZDSyCK/yDxTOQscURMLKJSAYO7TBtDJECWatL6yHnaPx4ugrnn7SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai; spf=pass smtp.mailfrom=nuro.ai; dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b=Dp5NSdsx; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0B05452A0
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:55:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791924904; cv=pass; b=ZKugScuZLO73cLe6d3Ju2bXCwEmhs9DAjIA5GHmCt7Dwt7SBpCvTuO0OiFgEsa1h1alm9vUgC4Kv2Ph5Y0HUcL9UOxsWgItgvnszs6ULEONNT9fGhADgoWixJOTFxsxuNsNHN6CxPYt0Qd7FO9aer9R8PsX08rYhx9q3TBcPTX4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791924904; c=relaxed/simple;
+	bh=JZCuofIpeJapFWVfdF+8VkTikMT6xa5Y9R7i90xDuFY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gNLLvff/UueKZr+TyhCLklnG2Wa9V7TsTHQ//WAgrzLlnMaWvif1wAcipIpJ+sHjLBfjxqM7hapJL/SJprn9KjRH9PD0DRhR0J9aQA2PlAY2TZgcK+Iku8V0qNMtv2GyxESkUNA+385nZ6WcDMcU3aNrcAenO9q13FEZSZizvww=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y0dQtwNN; arc=pass smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b="Dp5NSdsx"
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso1981869eec.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:54:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y0dQtwNN"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8aea7b7ca0cso23643107b3.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:55:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791924902; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XUgf3G6WVPDDUXCVKrXKJPO83B06VHVTm67g1XpLaIvyZDXijxa4KBDnMgoOvrx9yp
+         qNpr+iF6CtFRG1FYc9qv5I9WgnKCDHAUoiEAs3n5jrqqrM2APZj/E5nnryoIKlPTA/7j
+         98JHCMj5QLkfD8HtWn5kysE/wvKbVOYUlbSfNYMi7TpnvM/caCobW5htqrrKy4WNqWeM
+         r9sbRdIW8Q5GnQsy4S1+TTSoW7hVycKi3uOHCeLL0weBE/fnpZCuPin1JTOTVFCjvPS+
+         NLtVae0NEpxx3HwsZvJ4sqpOBarbkQgu0VgTLS/hjDP8Y21EJAKLpuERM/vS+Ovg1dZ/
+         cVPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tDPPTDqcsXaSDPkJD9YhM9lPuiQdYmryZ8CiiWyAbR8=;
+        fh=HxPzct++7aXUiynYwWtsVWc9Y4DMFpPNY/t6KxXE/TA=;
+        b=dAB6mFtSetHpAKAdyJruFLhTd3cJbiQwENJDTIHpM0oWKTvXoLAnU3lfAi825QZi10
+         AweiOxx2d1KGO+r8imSm+lE36/aV/4ZvKYmF0jdvSmBQ+Xp9SH/NkXclrEg8rB9kHYy2
+         zKJ/EVaPYWt90inAihIX6bTbV6YG8K6CxxqXBPOkVGxAL4/MUxWzqw8PuQJjP81GhX1q
+         atfCjB5hLrUJMx8N/p7qVEXqmsrA6FPVdnBBuHGt6ShjYQIsMuAULT+VtxOV1phpsxEZ
+         IQXkto4BxLyw+B30aFT6tnTFX4dPxjHtAWA15R2vOZUAdykk2kUO18dmBczOp1PFZzxC
+         phyg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nuro.ai; s=google; t=1791924870; x=1792529670; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mw9CyD0IeLmmZlhl0elWzXiE8Rnh26O9y+sTBiJSyuk=;
-        b=Dp5NSdsxbOWGOs+TaoyqfEpZxFuJueSGqE26k4QXSvFty6SpY72NgO1JjUNzxNPOI/
-         w7yLb/fL2lziTRjk/MOm+qtxEIjDLvih+JXtDHotI/C/JDkSl228G7g89eLyawBKFmnv
-         cR+z+RlXhZ25UW1nc+AcN6O1sDZjEFaIrl4acfAZQWu1vVL50ZISWyHwkqkGoTq+pXy6
-         eJ/IVLwSqd4ox7edLnHSaVmCyHWd6TUpnM0kXvIOtPpEyzA5zgKIypIrbYtC1xsyFx2h
-         dizufU2hxa/WkZ6lbk92CTyUOiDzczAGQkXiTm+jg3urmCNW3wRGW3Y7e8DIDpWZAbrD
-         tRAw==
+        d=gmail.com; s=20251104; t=1791924902; x=1792529702; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tDPPTDqcsXaSDPkJD9YhM9lPuiQdYmryZ8CiiWyAbR8=;
+        b=Y0dQtwNN6O98HKv1eGoR5z6xWXORtvpa6ez/LYvcvP0vuvSsPPUDiNKdYjntOM6BJC
+         NGrn7kNWFi8LPZbJLE+x+PpSFzp0p7GB5O8bBdd90cEB1qBj1NQNaStw6pKqm3gM5oqr
+         xE1Nh/Ql6G2CRcxOZspdghddoP3xd6LaRYN6jbsjnopPtCQ+3Vkt0TLyx/qmfHn2dlt8
+         De0q7WIxQhFiYh8x6SMFTmPDFH6bdHqf9+UD4TVyWSEYwxUBFadArqu55YhSaC1I/QVw
+         kI+F63k9PDcoYv/sFEcYM81vhT3tJeXWNBM5AvIYhEsxUm5WizJE8KfjnT5Z77DvZ8IZ
+         Ui9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791924870; x=1792529670;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mw9CyD0IeLmmZlhl0elWzXiE8Rnh26O9y+sTBiJSyuk=;
-        b=nn5s8OlD7otXLvvsy5k0hTl8MYX1W5XZCYPYKUo+4nfFed3KCp+BioFsuvHcvi4CK2
-         uZEV/YkomL2BLMzyGLZQVLCVGtp8ILY9JIaJ9OplclFWeHnpN8m4+kB9mMPJ3CSRaSQn
-         3jmk8+WxCEZ7JVJxZ7Qh6AhoMSflytALgg5sJjz/8x4faCTr5R4wfY9AiTkpW7vvsv9r
-         mE2jugghLfd8KE9z1nvnZzQYBjhvqDMcPKw83S5ynBVq+XmKPCq22VKLc7mj40QA19Xz
-         MN5BA2dEqL885BDeG2zllN/j3IUcY9yASW4OF3DF6YIIa0xA6ezLrLCUwScvZXdKO2Fx
-         DOBQ==
-X-Gm-Message-State: AFq9FYII9tUuSMJnXtTokptKl0TJRgrezL6yG2NNq7HF4X58vl75NIVg
-	dQdJBsNs6WWFylh+qnYAkJFyhCMbS+K+qTEm+bUV9hNaiuDt7Zd2IALVe6WGNuFG1g+cAh4ULFl
-	wghDHW3nTnPbcmuq2ixL4HhCFZLoPhb1Sphcdq1WHj82X+S9pKFtOL/p27uMcC4fe49HQsj2xKS
-	o6/7SZIWRq9crxeOnbKz7emoe8sOsGXjxFfFH2eA==
-X-Gm-Gg: AYBFou2RDOMLUPcVr5i+ec1bM2owGhPQ4NAR+sSG35UrG4H8cVO+P39hZVv8myOC1Qu
-	BzaibIjTc42d8SOOjXDB8nZ8koIEhjylseIMggXhcwrtyN9mGc4GFDj46jQXiWidPB9R90oHmJg
-	b0IZsK0OrRhpX8PHR+REFThHVdIa54FsurwXQlKIE7Z2CvCABJtv4h9+W7RxjP/I0tqwgushPwx
-	OADK9x1SvBR8C5r1JuXj6djJCZa8lcfqDQ2NFn+rRvuyYBG0fuK75Crt8OYtZaLsSEYF64EjvIA
-	P3HNclYlmb5ll0XXg7egbJue8tIMYxWm+qs9nWqrVQcT8goWWA2s74GB83UBbpIjNDACGEYEjlS
-	LknmRq7l1MY1px9/nLpI7lSDAb0YdF+SogtlUaL0xijLQgbnl8XZT6jF6GA0593Xe0B3J6IWho2
-	rqJ55YB0037tC/ML8ChW7qfAzMxzyT+lxVbB5FKpTXqF29tFreRk39D5NKox0tkNu7TxcsvXboT
-	jWs5zl+uZg=
-X-Received: by 2002:a05:7022:2381:b0:144:fb31:a597 with SMTP id a92af1059eb24-16a645d3a02mr25557379c88.47.1791924870065;
-        Tue, 13 Oct 2026 13:54:30 -0700 (PDT)
-Received: from jkain-desktop.corp.nuro.team ([64.124.43.154])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a1dd57d0sm41277613c88.8.2026.10.13.13.54.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 13:54:28 -0700 (PDT)
-From: Joseph Kain <jkain@nuro.ai>
-To: netdev@vger.kernel.org
-Cc: edumazet@kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Joseph Kain <jkain@nuro.ai>
-Subject: [PATCH net v3] net: do not let defer_count outlive an empty defer_list
-Date: Tue, 13 Oct 2026 13:54:16 -0700
-Message-ID: <20261013205416.3417296-1-jkain@nuro.ai>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1791924902; x=1792529702;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tDPPTDqcsXaSDPkJD9YhM9lPuiQdYmryZ8CiiWyAbR8=;
+        b=iVwdmeBHCvEg0iso4tEiE2u1E50b+eVkDwFpAUrWBEppm6hoc40jcqLu3UM0D342DW
+         w7Li7Y1k4rjAYxx1Wlcww+/rDed77rsm4vWS2XsCkIUoeFTjR/kUTwgKDm+zoaBkFX73
+         6LDRKKoZa8qfJDYBVws8VpnKJX3AIOozb6+qgZ/8X+8Qn/LTxNV65zw8GPUuhUhYBXwh
+         yhIBSCTayD/bMo180vVWnKrEWiBVib8OvdRu56d9DXXw/6LW6Lh0sH4ABC0UVvb5MV8t
+         m8IMYz6ttonbF60+E9LN8BaFmrqp1Opl+fKqQAf7kSDLsDcCQYeZgJsGDjWJhRWyASTw
+         Le7g==
+X-Forwarded-Encrypted: i=1; AKwUvBzYVPFfqW6OI25tZFv7EIbtIA1HTfEnbRjdfH0Hrz0HHRZuUc8o2eJCh+wBAA9MU3GtlGiBLsc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKu+ElzTkntfnuFBwNVpMdvO1LQVtRa0ukUvdG/ZED1NdZwwr2u
+	KwEKmdnbEATYNL09iq+ZpiYZfxBpZniL2AkcOpB3x/XmTnU1Hx0uj+4vg+zHxEeT5eUNOpWUym3
+	S21sCro1OCF2YRU4cihNq/fdZLtFvDoE=
+X-Gm-Gg: AYBFou2nP8zAQ6r96lEiy/EWfbNvv8s33LhCKYhKIPhL80NFkaXHO9Nu3ePABdsruon
+	pCOnMg4+4TlnA3nd9d7TRixRGZHOf5Lb+1+cgtvEIDPx3Cf+YlAnbAIURZROLneYhsHi/MeFoN7
+	GwOvsFtvrYZfHCQquG1pBHfsRLQfYBZ9JcO+/BeumQsTIwBh8D+x8dj7lpeU0FBVEkHUa5AjPKo
+	sE1AUJ5Xc+uOWzAIdIqKCUgmtuX7KVqivWFepAeM/9CiIIDXQyfPIf6uFK0RSiBoLYsBpoQPJSx
+	81TQKsjGM2pwZfV40brmECBB4kqmkcSaJz3m7pR+gdB0upmM4sy/XoEH94Z5N3qCekvMd2myXE+
+	BBrwvqBb0bT5ZouH4q5xUzg1KSQ1buqEjf20KwVLC
+X-Received: by 2002:a05:690e:bc5:b0:677:d79c:f6b7 with SMTP id
+ 956f58d0204a3-67935f17bf1mr3978437d50.6.1791924901762; Tue, 13 Oct 2026
+ 13:55:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1791887415.git.mst@redhat.com> <CAF=yD-JhTbmYmHUkkruPcyvSWv0QhVeGWC=K=ZvvpMdkzA-jig@mail.gmail.com>
+ <20261013143716-mutt-send-email-mst@kernel.org> <CAF=yD-LLNm1K5r37-y2thyvLJN58ruffUUHy-6BUh1CGVmep0Q@mail.gmail.com>
+ <20261013163109-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20261013163109-mutt-send-email-mst@kernel.org>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Tue, 13 Oct 2026 14:54:24 -0600
+X-Gm-Features: AclHuK8U1HzJlOl1AX2NjtB_mdQuaMcoNZfkwLnR19agOuqNwgvKv4h_E94K76U
+Message-ID: <CAF=yD-LtGVWrGzs2shhfxzDdwfid=1=TYBcOVQ8Nt10gAHpjWQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/4] more virtio-net csum hardening
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	virtualization@lists.linux.dev, Max Krasnyansky <maxk@qualcomm.com>, 
+	Paulos Yibelo <habte.yibelo@gmail.com>, Chris Arges <carges@cloudflare.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-__skb_defer_free_flush() can leave defer_count at or above skb_defer_max
-with an empty defer_list. That state is absorbing: every producer then
-takes the nodefer path without queueing, so the list never refills.
-Deferred freeing stays off for that (cpu, node) until reboot, and
-cross-CPU frees fall back to the page allocator, which is the contention
-deferral exists to avoid.
+On Tue, Oct 13, 2026 at 2:36=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+>
+> On Tue, Oct 13, 2026 at 02:29:53PM -0600, Willem de Bruijn wrote:
+> > On Tue, Oct 13, 2026 at 12:41=E2=80=AFPM Michael S. Tsirkin <mst@redhat=
+.com> wrote:
+> > >
+> > > On Tue, Oct 13, 2026 at 08:41:19AM -0600, Willem de Bruijn wrote:
+> > > > On Tue, Oct 13, 2026 at 4:58=E2=80=AFAM Michael S. Tsirkin <mst@red=
+hat.com> wrote:
+> > > > >
+> > > > > Allowing untrusted hardware to specify csum start/offset for
+> > > > > CHECKSUM_PARTIAL was not a good idea, because, if it edits the pa=
+cket
+> > > > > outside the actual checksum, and depending on the setup, the netw=
+orking
+> > > > > stack could be looking at the packet both before and after the ed=
+it, and
+> > > > > seeing different results.
+> > > > >
+> > > > > Previously, commit 6785011f8b16 ("ipv4: validate checksum_start b=
+efore
+> > > > > completing checksum") validated all known instances where this
+> > > > > causes the most grief, but the real fix is to make sure
+> > > > > that either only actual checksum fields are ever edited,
+> > > > > or the checksum is completed before the net stack looks at it,
+> > > > > so it is always consistent.
+> > > >
+> > > > +1 on the general approach of performing the checksum offload at
+> > > > input, unless the input can easily be validated to be one of a few
+> > > > common protocols. That greatly reduces the risk vs my previous atte=
+mpt
+> > > > at trying to drop.
+> > > >
+> > > > Since we do not know the full extent of grief, I think this too sho=
+uld
+> > > > go to net and stable.
+> > >
+> > > I think it needs a bit more testing to be frank, I do not see it
+> > > wait months out of the tree. So if this lands in next before the
+> > > merge window, we are good I think. If we miss that I will target net.
+> > >
+> > >
+> > > > That would mean initially a single patch that
+> > > > touches as few files as possible. The helper function in
+> > > > include/linux/ip.h and conversion of existing open coded parsers to
+> > > > use that can follow up later in net-next.
+> > >
+> > > I don't see the value to be frank.
+> > > What moving code between files accomplishes, I donnu.
+> > > Squashing things surely makes review harder?
+> > > Does your backporting system really struggle with trivial
+> > > dependencies like this?
+> > >
+> > > I can drop patch 2 and will if I am targeting net.
+> >
+> > Good. This is not about "my" backporting, but upstream stable.
+> > Refactor patches do not belong there.
+> >
+> > Since patch 3 might have to be backported in the future if a serious
+> > abuse surfaces, even if you now land it in net-next, it is better to
+> > not depend on other patches.
+>
+> Right. While this is targeting next, I will reorder it last in series so
+> it's obvious for people it can be dropped.
+>
+> Thanks a lot for the review!
 
-skb_attempt_defer_free() increments before testing the limit and does not
-undo the increment when it rejects, so a rejected free leaves the counter
-raised with nothing queued.
+Of course. Thanks for the fixes!
 
-Nothing brings it back down. The reject path returns before
-kick_defer_list_purge(), so once the counter is stuck no producer
-schedules a flush on the owner CPU. A CPU that never raises NET_RX itself
--- an application CPU doing TX while NIC IRQs are pinned elsewhere and
-RPS is off -- then never runs the flush at all, so clearing the counter
-inside the flush cannot help it either. proc_do_skb_defer_max() neither
-resets the counters nor schedules a flush when the limit changes.
+I would open-code ip4_parse directly in "net: resolve uncommon partial
+checksums at ingress". It's not a lot of code. Then that patch stands
+on its own.
 
-It is reachable with no race at all:
+And then optionally squash patches 1 and 2 and place them at the end
+of this series as one dedup patch, or send that separately later.
+Personally I would drop that entirely and leave the existing code as
+is. But either way.
 
-  sysctl -w net.core.skb_defer_max=1    # frees increment, then reject
-  sysctl -w net.core.skb_defer_max=128  # does not recover
-
-skb_defer_max has .extra1 = SYSCTL_ZERO and no .extra2, so 1 is settable.
-From v7.1 on, 0 is safe because proc_do_skb_defer_max() flips
-skb_defer_disable_key and the producer returns before incrementing. On
-6.18 through 7.0, which carry the llist conversion but not commit
-08dc30de1a40 ("net: add skb_defer_disable_key static key"), setting 0 and
-restoring the previous value strands the counter the same way -- and 0 is
-the documented way to turn the feature off.
-
-Undo the increment when the limit test rejects. The counter then only
-accounts for skbs that are actually queued, so it cannot outlive them,
-and the absorbing state is unreachable without depending on a flush ever
-running on the owner CPU.
-
-While here, drain before clearing in the flush. A producer that queues
-between the clear and the drain currently has its skb drained but its
-increment kept, which over-counts and costs deferral until the next
-flush. Draining first matches the ordering __dev_xmit_skb() already uses
-for the qdisc defer_list.
-
-Found by manual code inspection, LLM-assisted, while backporting the
-llist conversion to 6.1 after hitting the sd->defer_lock contention it
-removes. The latch itself was not hit in production; it was reproduced by
-lowering net.core.skb_defer_max.
-
-Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Joseph Kain <jkain@nuro.ai>
----
-v3:
- - Undo the increment on the reject path. This is now the actual fix:
-   the reject path returns before kick_defer_list_purge(), so a CPU that
-   never raises NET_RX itself never runs the flush, and clearing the
-   counter inside the flush cannot reach it (netdev-bot sashiko).
- - Dropped the empty-list clear from v2. With the increment undone the
-   counter cannot outlive the skbs it counts, so the clear could no
-   longer fire usefully and sat on the common path of the flush.
- - Added the comment on the deliberate clear/drain race, mirroring the
-   one in __dev_xmit_skb() (netdev-bot sashiko).
- - Reworded accordingly: the reorder is now an accuracy improvement that
-   avoids a transient over-count, not the thing preventing the latch.
- - Moved the discovery provenance into the commit message (netdev-bot
-   sinfo).
-
-Built for x86_64 and arm64, with and without CONFIG_PREEMPT_RT. On
-v7.3-rc6 with skb_defer_max=1 and a cross-CPU TCP load, defer_count
-reached 1918118 unpatched and did not recover when the default was
-restored; with this patch it stayed at 0.
-
-v2: https://lore.kernel.org/all/20261008220256.1844072-1-jkain@nuro.ai/
-v1: https://lore.kernel.org/all/20261007180056.1394868-1-jkain@nuro.ai/
- net/core/dev.c    | 5 ++++-
- net/core/skbuff.c | 7 ++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 18dc88990510..60d86bc21632 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6940,8 +6940,11 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
- 
- 	if (llist_empty(&sdn->defer_list))
- 		return;
--	atomic_long_set(&sdn->defer_count, 0);
- 	free_list = llist_del_all(&sdn->defer_list);
-+	/* Racy on purpose, as in __dev_xmit_skb(): a producer landing between
-+	 * the del_all and this store stays queued but uncounted.
-+	 */
-+	atomic_long_set(&sdn->defer_count, 0);
- 
- 	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
- 		prefetch(next);
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 4aea06d5167d..6e0872569ccf 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -7388,8 +7388,13 @@ nodefer:	kfree_skb_napi_cache(skb);
- 	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
- 	defer_count = atomic_long_inc_return(&sdn->defer_count);
- 
--	if (defer_count >= defer_max)
-+	if (defer_count >= defer_max) {
-+		/* Undo, or the count outlives the skbs it was counting: the
-+		 * reject path never reaches kick_defer_list_purge() below.
-+		 */
-+		atomic_long_dec(&sdn->defer_count);
- 		goto nodefer;
-+	}
- 
- 	llist_add(&skb->ll_node, &sdn->defer_list);
- 
--- 
-2.55.0
-
+>
+> > > >
+> > > > > This basically does this: checksum at ingress, except in a narrow=
+ list
+> > > > > of specified known good cases.
+> > > > >
+> > > > > Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
+> > > > >
+> > > > > Michael S. Tsirkin (4):
+> > > > >   net: add ip4_parse()
+> > > > >   net: use ip4_parse() in receive validation
+> > > > >   net: resolve uncommon partial checksums at ingress
+> > > > >   net: account for ingress-resolved virtio net hdr state
+> > >
+>
