@@ -1,153 +1,155 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011003.outbound.protection.outlook.com [52.101.57.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC84D33B6F8
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9E21C695
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791875795; cv=fail; b=l0fbi4yNRPRUPfYO/bZhDW1mvshfQbRuNhHxso6YkZxSS8nU9NBmkDt2dXsmKXd9pP8pbcCeUmjGlWMUzTwMZTOmd9G+hmLput8U/gevGMXDRNKFcTHq7kFtoumrfWRASLnBXt9NhxbgQITcN+zlY7zieArLp1FRTZj87IfUdQQ=
+	t=1791876248; cv=pass; b=dk++h7nRYllt3QHrayHRjgYsuFN4GDWDA49GpCGkTsxxoMoJt3Rq6raNqvhAscRjbWFoYwRwb/lMrRLac9MpDQl76RSivTwuyw4oaVfB6s4EaSD18/mQq9lDFVCDRUbp1gsC8LhG5u1mtCD/2ADI5B5vLEZHAVmvJ3B4A79vBjs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791875795; c=relaxed/simple;
-	bh=I0nW2nyzjQhWflUbLjKgVhwalI2xjrc9XqaJkXChMK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jHrN9uO8LDOMGSiqBaQw+3eDoDhZPv1DooaAek1DFE+1IRL3R1f+knVMiL8lMQpfBw0ioHU8J76JrOYoRoPUiCbBwWYq3T+0Q3bzSM7JXUmMqpoyK4M895dC93UFuE7WzCfE5C3uTJAtSD8PReQJHQVOefLN8G4czNknKSlUfQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=W9n2uZRp; arc=fail smtp.client-ip=52.101.57.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1791876248; c=relaxed/simple;
+	bh=8c8qzrIDua9rdsslWbYNQac15oquSC2GLafIVv4uncA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZTJzhXMnl61Ac673gW8y9untxp9wFCIm9qCvxeAWj8N7a0emk+47NG8O9lcgAvvUJp7M6n+gVpCLf1ksV4wG5z9x3LCEXGMUcRQCpB+lZ1lG4omfKlmIb6FniwSsqwx0RjAl5eeDY4e2cRfLiLCl88AFTsT5q6U+tqD80LJS+po=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M7JPM+47; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="W9n2uZRp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IQeEJRZhyFra+RIiyYsVLiiyUL1dNDdnC9nL5v6fXZ1qHlZi4frUfin+FEqYxsKAHnCCngyopnSBbdk3mBqz4xGljRHZPRoeV/BEalzAl/7lpx4xcx4kPrA/MJEPOTva5yW8KNLgN+OUxBq+qXghkGtDrGyOIMH/4eEsZmxO9Dg8gydDGfot7eOIx/1skm2ACHHQAsi11B8pqJWq7zyNikMTYKXxLUawrqvpDjEaxWFTITL7T1tWiSnaOms596/XawHXL83Zv73ISAJXzpD7Mp7zklCHiDVCc76QNDCbUFlJjFAZc5KIQgZBgxFq5mGdtpM51i+nakptCSrj47nf0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LOoU0zTKrBYP0F3kVGBtDRRsoHX+/hgycNz53eijaG4=;
- b=KImk+cOeRjlgevDlexQUsK1y1k6HG0+jDY6dUX9NNvK5Z6RbiceomEOKRQ28TfOfPCSsHZndxWD6zyWyIsiQuJz+52DSaZBwNkbB/Hf3HLBZ6s/z0y+48CweOFF7NhXXjbEmt0WWCKmkAd6VgNEAYY2fEqMcqNfnyGP4DdgFeTge2K8VXdcJ8VwrfJZHs4Q1k0SgNOyR4J34wUcJtagntw0ka91MhHdFwDzIPURG1NO76XWHEEBP0Gzb6xWOJyly+wQarck9CP1oAfXzB7Blt41QraDzMfFXv9lUVCVN/hKAZDb5JcFNh/PX/naSHErqG2/3t6/OPCunHGDb/g6XEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LOoU0zTKrBYP0F3kVGBtDRRsoHX+/hgycNz53eijaG4=;
- b=W9n2uZRpyjUtDf5TVV7lw2jjw/MQOgAdIrPnhh7qzC2pbJvFBLoprPhKUDnLNb+ZDZF8AqZf3iO4qqVDnmsH00tj7ARArbYkRW4HvEkhiWov5B7fE+ePbu3+E67GnyM6zeFZuCpnGozxdCqwnZRo6ETUO/5i4A6cZBBJuvHENPf3M87IxhSrAv+GjTzt8Jk3MBI8lYdWz4E9+UvvGOZ6PftSj1nFCVvYdb1XqTBQiPcvexWgHzMpFtjhubhjasrhzqrAgD0VfuA6+o6G+U1couqNjJnVVMUyXmjflaQeHCk/R1AOsuFp52DHfyjeZ0Tn4lqoeqf8+yFAqUaKLpfbjA==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by DS7PR12MB6264.namprd12.prod.outlook.com (2603:10b6:8:94::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 07:16:29 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.015; Tue, 13 Oct 2026
- 07:16:29 +0000
-Date: Tue, 13 Oct 2026 10:16:19 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v1 net-next 4/4] neighbour: Floor INTERVAL_PROBE_TIME_MS
- at 1000.
-Message-ID: <20261013071619.GB852441@shredder>
-References: <20261012194530.3751034-1-kuniyu@google.com>
- <20261012194530.3751034-5-kuniyu@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012194530.3751034-5-kuniyu@google.com>
-X-ClientProxiedBy: TL2P290CA0026.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::13) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M7JPM+47"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6ae14eecc64so3469221a12.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 00:24:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791876245; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lLCBir3ivF6uxn1CYmMzFolUuuH11/bQB2biso9KMFcK18ofXAn3PcW28HU1Iz2l+o
+         41voNvF2nsX4cs6JLhY2E9XxAwJZVLdjBagj77PKSqZWfzbQVb4PUTmFQ1pQRjsrbUAz
+         uhOO6qLThnAOGymFI6qI2GKtoxucvpAo1nLo1OgdV34+/gZE2bzHKZ23xEucGI1Tdnfn
+         WxCMPns8D5angsjqWkZXNMBRa/R2WENFLkuXR4be/s8/MS94T27ahnWtrfn8hBWmuHP1
+         jHq2UcMt9x/TpC6m/YSBRkbzlK28s93FeiCVADpRryzdL57//cvthOv6PGuZPR3WRwo8
+         eOgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O1lANuLy0aZ+Adig45dLI6SKNG46/rOFHE6t5T71VGg=;
+        fh=bgzUZUwUG7uz65+IhV9GI6JQvGYD8Rd1dsdnlxlECeo=;
+        b=fNDIGWGVNTTBQq9MCNBMJtFJh6zLOYwXEOzSMKXnEf/Iz+v/D7RLmVo/7XDVvtcUtB
+         rF2VBcc0cKsXAOYNvkmnzE6fSgW5Ge+FeTn2iLon1NLjDvCQBMYE3uP14q/AFUDTJRPx
+         QzH3TnViWnkyzSCstivwVF/n4Yp4EyeKrSUDQiml6pvirTdoaOeC7DPzLwCNrWud5KyI
+         DYMc7mernsjTwKxppnj6Z0PHcw4KQE1ZCNJ+ueYZEsBeLmElyugPQ0UYzXQCF/YOTJPA
+         +XmsC1C5+Sp+q0VrNRoONF+t5wbQNkCxv1sbOXJtOHUhmDWwS2bMXq2+zbQV25J8O14P
+         eQbg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791876245; x=1792481045; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=O1lANuLy0aZ+Adig45dLI6SKNG46/rOFHE6t5T71VGg=;
+        b=M7JPM+47XTRG/E+/UBMp8PDuVH3f5s6o5qTK4MU811Os+L4tldKVFeg+SdgPRC+OX6
+         H2MdiidwqmvibTeGM+Pi6CzBIr1my2Qs0ynTdX8sEq4MxO0NU4Fpj442CjecCHQbQxsc
+         AskChIMqvigbDBwfu4Exbc7O/1EMKR9ab4HoQ/sVvbK+UtB/IQRJiwE/W3e+/Fye6RBe
+         96438cJIR/7eIvkHjykozQJm54A1ip4WTRRP3ApQPxydoqafLGgJJgwxcuLhVftmNLNF
+         g/q60JnnwYcG5aXWNdb6aUklG7OtjZJUMZRM0ckZ94JctbI+rP+DrfM7gSURvrV1zS89
+         P6EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791876245; x=1792481045;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O1lANuLy0aZ+Adig45dLI6SKNG46/rOFHE6t5T71VGg=;
+        b=1mQTDWdOMqDzP8gbUEXBzvBF5pzT5daUGyh+mywSRCYuQB0qp5f1unjW46Wif5/eZa
+         vp2NFne+SxLIjFM9FQ7ww6mTrWfKJBtynmgSYSUQlbAfQ7gSjEjLAKMzdeHSGP5OZp2k
+         LSpitdjOTPMM1CvYl9QVqMtpSirN6vGOtcPLXg3eSA6Mwk/X42rjxxLD5LVYy+AuUUlX
+         AYsZE2AYgsXN3Pc0KS4sTaGrMkYFti/TGGQb9awX8a6TG7OMzYBIGJfzUSLlPgaE5Pbl
+         h/DSWU0JVrBM0W9Gtmi0VlHsDPV2R20gl7das8cUZH6+uqDiOFB4BrrO4lHR4Z34ncOt
+         DpqA==
+X-Forwarded-Encrypted: i=1; AKwUvBzblQBNedwx0Oh8/AyL01QxhwBHQ2NkQabwM9nEgDqpwCNuhKufAxkFfePZtcgYHab3PT5UrUE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKBRrfJLqS0CZecsJrRbtJeumHzK1PxvCVG7beRWvL2X6WAj1cU
+	01rXrAQH/hKryM3OW1cU1ZsKiGBqiLdwsVrbWAUa4wnG/8AWg0o4vGkDNVTXEDoUnP/PRI+JAVj
+	+D00dQvrGM7ZeRhAUGCo4KxG0Yz7F5hmvKCfX42ac
+X-Gm-Gg: AYBFou0KRFMHBAEigG9AtbUGcCE1S0ff+Usz0RDsvip7d4wvqjwPW+wjpHc1JIgNPe2
+	hX8m06cgV8I6bqmef7GoKcTUCCKSm0toQZ3p9pf1Z6+h3qjh9WtXZCDQtnnN0hF/fF+jIqukpeL
+	p1rbKDUNRVoLdacuzTiDeFmMADyHpr0YWfR+9Kb+issrrSthW0B074TBUFSbB9yXMm+h6NEBLVw
+	pYIEpknXDxUpoHxCM7bRtcWB14QrNpz/Y9+e4jHuL0c7El9D2nHHthobIzgXqNs3tbjjhhkr7M3
+	swTTiE3Sm+xWuV6dNDFvBvKP1y4fdEBBmK4EWcYTAaqtUecBs5d4036A+8/6Qq9A+SHPrjFlQRE
+	qT6uqvN9Lx/VYG3yzlHU+vPNII8UHVotCwXdLh85QOo8Rmv0nHCm4cj2h9W1+vSA/9MjcObqafr
+	E6QLLyRSUdp9rApxYWbu2WfWFy
+X-Received: by 2002:a05:6402:44c1:b0:6b1:cd52:5798 with SMTP id
+ 4fb4d7f45d1cf-6b1cd5261f0mr2213672a12.42.1791876244521; Tue, 13 Oct 2026
+ 00:24:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS7PR12MB6264:EE_
-X-MS-Office365-Filtering-Correlation-Id: c876f95a-5d9c-40dd-8386-08df28f9e69d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|366016|376014|22082099003|10067099003|18002099003|11063799006|4143699003|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	XwXYkJ+BrJQVk/FLYhd2nBhoRIAgTSOsPtjKO8HWyOrS5sQXrhxCqGnxLoevxFEoqOXf6XoUEX1wld+7Ql8vjo5upQMS+pzGRWeRwwHQZ7WM2u7zHciy35GWkcJfvdZrBZoi/ohtrlf+2hzrbWQQNk/4hMRS4NYSVMrpIsS58viHILetzlXpEs8d7+9+zv5MmSVVq/DNpfDkwyTBq6PPH5e1VVPDDaVkcVEv1LspGNWAITZhmqWnr8ZXJHQ/+3DxYzm+DQXCLsnu2PIWn2v53aaoUhyABYTMFgUmaQYSadVi21t3B5jBXq3E0xtS5E/EqloM3roY4oj7sxh1G5zvETQCfHT1VaRu8feXwMToh6olyUzA64A+UgmWwdxBQUyjp962gYoq63Xp3EP6aOoZsMmMBum+xRKvj43UH9Rr5t7YekBnAQnML+XrLhSKwfkrfKYJjNXLiXG+IrSgP5n4mJvPe4XLJNQTFz8J65d47gWvDreUqcl1GCOlBLeHsPa9lSZmoOiWFRCb3O2fya8dQ1XPUD1Plvw9ZT+xxkbU/J1vT/a7rPH1X3JLaLpe7kFimuKbclruB+G08MfVim4HpkyaDLOGHG4zksDNE1ZIhiSShHb187LaCgoSoRaFxN4v8+Lc5KbVvMn8EZfmyIrLObUUZRPUT8gfogpz6axnVs0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(22082099003)(10067099003)(18002099003)(11063799006)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?IY1nLuCiVGLXsN9QeQ0/8bpWPohVVgoQcwVMAlHTVw5d+lkP7XPkoGetfpPY?=
- =?us-ascii?Q?hR6L+RPuYTjKRfk171n/bEdk0gk6nQz7zSrCPkTurju8a7RTdm7PVqtmbTUv?=
- =?us-ascii?Q?aipnGLYHWfuzsKuImorAjf/KDDJ088WH8Ik9fYyNNu2sfV3Jwnqe1HYq3DyV?=
- =?us-ascii?Q?bLsuym6H8wcZIm1zhqto8EtDUFxp133KzE+OrKZ9fm6iuiWzo/rEKq5sRJkD?=
- =?us-ascii?Q?Lr9An0humswKCHvqPQe98kx8j7ozHPRUuj3r7zd626V0TPmE0eSFFtEVtNEN?=
- =?us-ascii?Q?/iOinmJzrmslyqdtbSqKPdv+Vu6D43OwlfY0jcXxOW47PC8Nmi03rYBpMd29?=
- =?us-ascii?Q?9BGW4xcRpTgEmCuFMZHnnOj/8igqqg3XWTT7pL5OjaFLNBrzKTwJiQ0oHxqi?=
- =?us-ascii?Q?uXu5d3iNejyDvitI7Aga6P21DN0rUhn2NSWTSfm/iW0FN0zutY5/bqC0xEDf?=
- =?us-ascii?Q?QRocwgBJ1aLd889IIp++2zBKP7d6qNgnAMMSN0N9KrCYnmFgN22wwiPUJNxo?=
- =?us-ascii?Q?hGiBdiswkCZPxPKgFVwmhFk2doZzn79wZ45TT0NKloqXs72A6AleIApesRdf?=
- =?us-ascii?Q?6pbIgi3HV2jK5TVpkKAtsTCoUGZ6lIr3QF3qhOgL5+7FUPpEv36AU9OeONRF?=
- =?us-ascii?Q?0eVXfh4khGastWSnJDMd8hDOaO5zEyaosi2Eq4UlRUe7VuAggbS+nifvW0zG?=
- =?us-ascii?Q?8GL687Oyrgl0q6vHGBH/ug6aGCvv5tAlcuEmIfd9Z4Q8tslaSfNU9+S8ZXut?=
- =?us-ascii?Q?fVfo3msYCJUqiGaQ/4ET9fiVCg2faULqA5mcx0kCCCyBKMsvTn3uzvGPY2CC?=
- =?us-ascii?Q?/t8pQQIMFsJwDcZcBOX7wdwsPZYK1yEE3tOWXeyUYiFKcONKQpTgPL4TOax8?=
- =?us-ascii?Q?BukOxlmvNTflZzoipznk+DC3I+2woY+yLuRO6jR3aDPx4ORZGmYYIMB5BbsG?=
- =?us-ascii?Q?x2TRCn0qeKA6GCz6tvh5TOWMw1ile9gKZ0ItIppHzIG4PZfPGrp0i1ZxUa14?=
- =?us-ascii?Q?1BFHlS24+Nx2Fe64mHyd7pXoVlg3+dDtAxnGPFXODnErEG6hpDOLK2kz2AxM?=
- =?us-ascii?Q?xHwHqZ2YSmpqCnH9bCN0770Ij1otfugn6v6tdUoD4Py7yNi0p531bLc5HrlG?=
- =?us-ascii?Q?s75PPKLQoOoh6p4YvYbDI20cgvpgDofweaojobzpFAA0oTFX3QkePBkc4Opk?=
- =?us-ascii?Q?8LgX8SXZ2JPRioj+btTQL2rgqJ+9+37RrPKmWhFJtkUDYskkDfSppl+zzZgD?=
- =?us-ascii?Q?9+lW2S6NRc86F7u5zHOYrxlFl700brhnoo0RDU34FbZ5XEQhRfsVFiHQ4agf?=
- =?us-ascii?Q?skRMOAi/xGQuo8NT4Ls4mUTAfIsNMujfAUQjq3yldkbogTc8bleHW2idmEW+?=
- =?us-ascii?Q?dKSUNvtukLmlqk2nDuRB+a8H8qSM54iZsQInB/rfhVqwlXja9Kxhn9vwwTAr?=
- =?us-ascii?Q?0j2GbBXaXvxrtP0zy9pplN+s9wHH5r03EJnj6pQFpL13SCKuggWAgMxhrCY+?=
- =?us-ascii?Q?DsGqfWJqj+M4Q0LuZx5+pVVG7tSadgS9wRyk0rWi1hglWK6QE52AED9nAI/e?=
- =?us-ascii?Q?U8Hq0a9noMfgJcOcwrmSxvgZwT//7yRzMrCaV+5pG4s0qXHzD1HQqu7ypMVj?=
- =?us-ascii?Q?h/gjP24x6Wc1/0+k3BU7+L0o6zzYNmeN87ObN2fwHHxNwWn4rGLnF/Z15DB5?=
- =?us-ascii?Q?xOs2sejLyYL0K3dN2trTOB2QjLArSTErjDqd1Vh7ginL4A/S?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c876f95a-5d9c-40dd-8386-08df28f9e69d
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 07:16:29.2533
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BSqB87sYkOCiyNcF7MHW2b7ixiRkFgAz8agxEfHcnXWcL24Kqy+aYzXCMwFXDo/s7aRvAJTPyD6UpBiLkreN9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6264
+References: <20261012194530.3751034-1-kuniyu@google.com> <20261013070033.GA852441@shredder>
+In-Reply-To: <20261013070033.GA852441@shredder>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 13 Oct 2026 00:23:50 -0700
+X-Gm-Features: AclHuK97Rz7Zmcv93I77QGLFVSeOX2xWsdIVO3dEkhdUYusB74ALweemIgKIblw
+Message-ID: <CAAVpQUA+0E=YXk7bG5hQhYnYhsW6QA4owJy4Z9o8VcFQmX21AQ@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 0/4] neighbour: Misc follow-ups on per-netns
+ neigh_table series.
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 12, 2026 at 07:44:59PM +0000, Kuniyuki Iwashima wrote:
-> Previously, the lower bound of INTERVAL_PROBE_TIME_MS was capped
-> at 1s by commit ed6cd6a17896 ("net, neigh: Set lower cap for
-> neigh_managed_work rearming").
+On Tue, Oct 13, 2026 at 12:00=E2=80=AFAM Ido Schimmel <idosch@nvidia.com> w=
+rote:
+>
+> On Mon, Oct 12, 2026 at 07:44:55PM +0000, Kuniyuki Iwashima wrote:
+> > Patch 1 updates the switchdev doc, s/arp_tbl/arp_table(net)/.
+> >
+> > Patch 2 updates a selftest for per-netns sysctl knobs, though this
+> > is not an actual issue since the test does not hit gc_thresh by
+> > default.
+> >
+> > Patches 3 & 4 are based on a suggestion by Ido Schimmel to make
+> > neigh_managed_work CPU-friendly:
+> >
+> >   https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
+>
+> Thanks for the follow-up, but I think you missed my first point...
 
-Nit: INTERVAL_PROBE_TIME_MS didn't exist in ed6cd6a17896. It was only
-introduced later, in 211da42eaa45.
+Oops, sorry I seem to have been sidetracked by 6d79b223ec44 series...
 
-> 
-> Later, commit 211da42eaa45 ("net, neigh: introduce
-> interval_probe_time_ms for periodic probe") changed the limit
-> to 1ms.
-> 
-> The limit actually did not work but was fixed with
-> netlink_range_validation by commit 6d79b223ec44 ("neighbour:
-> Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.").
-> 
-> neigh_table is now per-netns, and a user could hog CPU by setting
-> INTERVAL_PROBE_TIME_MS to a small value.
-> 
-> Let's floor the value at 1 second.
+> My
+> comment was about the GC work that doesn't have a floor at all. An
+> unprivileged user can set the base reachable time to 0 and
+> neigh_periodic_work() will hog the CPU.
 
-The bot will most likely complain that this changes existing behavior,
-but:
+I'll add the max(HZ, ...) change in patch 5.
 
-1. The original floor was 1 second.
+---
+pw-bot: cr
 
-2. It is unlikely that anyone but syzbot is setting it below 1 second.
 
-I would explain this in the commit message to suppress such comments.
+
+>
+> >
+> > Given it's rc7, I'll defer RTNL removal to the next cycle.
+> >
+> >
+> > Kuniyuki Iwashima (4):
+> >   Documentation: networking: switchdev: Replace arp_tbl with
+> >     arp_table(net).
+> >   selftests: netfilter: Set gc_thresh[123] for gw netns in
+> >     nft_nat_zones.sh.
+> >   neighbour: Schedule neigh_managed_work only when needed.
+> >   neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
+> >
+> >  Documentation/netlink/specs/rt-neigh.yaml     |  2 +-
+> >  Documentation/networking/ip-sysctl.rst        |  2 +-
+> >  Documentation/networking/switchdev.rst        | 11 +++---
+> >  net/core/neighbour.c                          | 26 ++++++++++----
+> >  .../selftests/net/netfilter/nft_nat_zones.sh  | 34 +++++--------------
+> >  5 files changed, 35 insertions(+), 40 deletions(-)
+> >
+> > --
+> > 2.56.0.385.gd3acb90ef8-goog
+> >
