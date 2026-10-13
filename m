@@ -1,494 +1,459 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F76E513560
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E507E477E2E
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791912355; cv=none; b=XeBQ9MsoMJcq28oEshd+9/lDWjiMxhQw4Cg4/IjiQB+rH66u2AaUKPwCaq/OkHKRlbI4dsTLefABMm4xPb/ag/LxRu+IpWc/YySPTxPlO9/i3JkqHZhg7pQ32U8wjeaUIAR+B/3hktdhDXLUh6RorpB553mjYi7iUgoI3ri6sOE=
+	t=1791912705; cv=none; b=TSUi605Fdbs53PV9C2SCpCVeOhw1qGm/XeG7ntUwkl0G2HhuFaSPCnGhsxqrxLTRXaNr5tV+eG15fB8m17Zu5arszh3UMV8Oaz4v//u6JtpdiSmI6JAS0h3bSc0Z2iQ5+i49JxeiOq97eA4ClLPdeQazSxAhy5KB9RgXVrpnWsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791912355; c=relaxed/simple;
-	bh=s+fXpmuJ/vR1S508g7X6EHcJL4Lqmg2LGB6usD9s5ig=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GXUANW0tux9RkQY2smQzyUZDQHu+BmoI4HFm1oZqBvePsqL3MLFKKAjkdXaAM3xhcQ0sjpZ/dGfSqT4b4MjAdKEqXBIAAiJvdoemKTfSMjMIj2iggzzqODFyHAvOWQcIiC9pjFsmcvWMf80weStY7/9MEg+Bn0ppP8DUQPMn75s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hcLIJUyJ; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1791912705; c=relaxed/simple;
+	bh=WW+mxK7QRr9SqsEeExR34hyW6tG9sPE4TygU7AQm+DM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kXbVxAjSdLio851QtXsIj3iLQ0i3TeA2R5bwm+D9kwWCd82oQxJx1H3vpwOZEAvexvCGg8lcDJmbf5BCUuvxDT6EiHIzmAx/igRlmi1ivcx0OExcWt7poI/PWLUSboB7Ud2D2rEsEWRv3k52DFwdDifWwOufKLm6xBPpa8ag904=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMHe7pCH; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hcLIJUyJ"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cca35cf9f77so1893322a12.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:25:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMHe7pCH"
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-822ddb835fbso2388459a34.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791912353; x=1792517153; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p7Pmk7sJXdCJQkGjjkYMRztp3px8oePLmYqlBoE2xEg=;
-        b=hcLIJUyJxuX6kVm5pe05gO3KXz2e+Lc6bCuzc5Q6vAQ4Jwh6WUAmnUUYSw/nXznmIw
-         61zrKuRWqRz3xg5Y5azUBVBYlCrQE6tDCflVfRzetqZWL7uv1Mr1T073oV0JwZ9snJpL
-         DcH6MVjxJmC3ijnDNoIYSDbQMW98RQuZypBl5+XACWk2idILtmr6LFY4MUsWOyfI7BTk
-         SVfHhRxaTBgyCEpiCClOfipBdRms+dO05V0fxZbS+9stB8z4Yr6p7yvC7MiAwGZ3Uppt
-         rtgdmofQuBVQ7fEXylrjU8KLsn1swM9U6eCfKhosbFcCQhvSyDO3pbjKPsRJjW+paTEU
-         YDLA==
+        d=gmail.com; s=20251104; t=1791912702; x=1792517502; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ACnJdCVrmaptqY4owXK+MVicpU/I/9HqnPn8Ae728wU=;
+        b=GMHe7pCHE93KCaIn9Zm4/7SQX+MlL+wylqzo8wYafsmveGPjuMpyl/kfUUXTvr7lKz
+         /2u1XzyGD+OzmQCRk2Ph9+qPnZ3BRrYFBB76gOUhgG57pfcpFBNc0EaYOMS41vSFDdQF
+         zvzSF5o60eFmhKmMAKbmkGzkZfOFoP71eU9co/9IKu0JBhMaOwnrMcfGRPYN8QBrSmuo
+         3U02/nxzPPNEgX/H7JDgM5cTrODmNizlFKBD/17P8R952P9zcZG6sVgLqo5nPB/Y3ZR2
+         zOFJeODJULBfsjMZMhLFYk1qJtPXEQXx49com7/9x8DIv8CZEE+vjdBhmZuDYl7j6TS/
+         sfLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791912353; x=1792517153;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=p7Pmk7sJXdCJQkGjjkYMRztp3px8oePLmYqlBoE2xEg=;
-        b=iSeCi2YGQBETAL2kBB635Giw3aQ3Gl2AEyoFKOSOZo7hNnPlEIygxR/GnEZBbXCnnv
-         Una8ca2xhWyMrja7svGnMyX9XGBDZ/Ize8RAKba2Ol8MzMJGQzdVwZXRLnwSON26Xogr
-         BNIFEnS0QRSt6xFiXePh7XsOiVxcBuDA3yBbsbDRffkjKRlMPPhCGKJTxTziKVHhckF0
-         8BQ32/7vZJjfxDhoQtNYd8s6teLtxjAj/SdtPAEx2uwkOKPIQnGosSNhVYK4/ivr6WAG
-         3t4f7KafV8iTfPaAjnApZaIf9b16gDaXa52C7JYV1WG9/bKDvHQq9nbOeyFvw1BViCcl
-         j8qw==
-X-Forwarded-Encrypted: i=1; AKwUvBzNUQzzDAyuJ5v8CRBK1RaCfo1jYuQfO0aAOYGWvaPpv7j2Cz3+pEr9lpWVNLm6GIYTLh5//dU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLHBuE7LFmbTjdr7Ah+w56B55K0OeR50CaZfMt1vz/AtR6DuBUL
-	pxunznEEPePcPcqgRQBzb7TdNTawcaa6kFCE3zBYa2Y/c38qVjGepVUJXbVdxbXLCveK1pl6eI0
-	NVlIaYQ==
-X-Received: from pglr27.prod.google.com ([2002:a63:515b:0:b0:cc7:a4ca:364])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:348a:b0:3dd:a195:dd57
- with SMTP id adf61e73a8af0-3e16bfc3315mr10521325637.57.1791912353243; Tue, 13
- Oct 2026 10:25:53 -0700 (PDT)
-Date: Tue, 13 Oct 2026 17:25:38 +0000
-In-Reply-To: <Dvrf8IhF3j09acNeO4Muc57tY7i1vJz5ckdk@vineyardtechnologies.org>
+        d=1e100.net; s=20260707; t=1791912702; x=1792517502;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ACnJdCVrmaptqY4owXK+MVicpU/I/9HqnPn8Ae728wU=;
+        b=DirtwZ9pH4HEZ6gY1dQ+3tGpJAlmRdO/Tu005As6tOwPgCKn9l8kuqNM+eCa8JqtFX
+         xDmf41IB7RRSQKBvXSv4z/D65kVRWQE9KyLtsEFk3KYtsQ+JYJeT3MZqQ3SB8BQNAedd
+         BsfvAL00JhjSpW5I2hxjck/NV6wGUD/WZh+26D5vun7FFOAwCTHb8sUnijMavXWgXPnY
+         Tv5LICFGVJRD56acLpqI4+qh+sQxKTovM3TTwFjQJd1wcqEZNfRdgQsQ9ZHi/hqrHdAN
+         jkQij3PIr17KDS98WWtTscnx6nkZOiPKnfMFhnQlMe6HcpH5Lrv/iCXZ02TnFsNnrUEn
+         P68g==
+X-Forwarded-Encrypted: i=1; AKwUvBxCyKnL6xX7jE+fXXijIHwAZuQD7PN4KlHCoA1ojVrRaRHr39GTjEwHyjWfCbqNEq9uQAYDKtk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLXvAeVM1ab+PChCs1JWNCoiCcA033x/DF0I1a9pdke0PtI4pcE
+	qr8y4GyT7B9yEA4LeUfs5Ob5rdTg1fhLnUGMq7U11OXX2uNqbB8DyKAn
+X-Gm-Gg: AYBFou1OfLLcIx8iEaX6usOysICdpZclaZbb6LPu4K/vJCUaLBAasErAj3MZKxQClRV
+	qChAT2FMn+EfoyZe4jUDJMIEyM+fH7wCUkvkSdjkdSvXwpf3BCVszCfuEe4ygeNXEd3fOkaEB/w
+	TrhRWkjIWtFzkbQvZswImdyeES3oNGkNQ7LrenlZ1RaASZDIuO6Nuf2EKZhhIDhd/Yl5OvvzXGw
+	oL0Mz6OgzZ8IYnb8LDk23UtOIi7MPlqEmM59Q1fwPaY6MrW08oSY6Zj21Rp1C3pJKnLDJo/f1+l
+	nF0U2Zvl2I2JjG0YDj/tGQQLsaC3U5O/I0hmeamW2pGBSlDjUbPtv93jrn8+C5C/FRH3lMfPYmz
+	C4X1bcAtFnmFIpMrVB80z44IDsFw+e39vwgtGtVg3x2MYG0wZ5TbzDhzBgHfzKc/XY0XjZTSTbM
+	MogQh3FVMYebpezqzTsO3JeCfYeRmjjlSkEQaaWsOfvYl7oDM/adNbODAp4jdwGvF0hDQ=
+X-Received: by 2002:a05:6830:2107:b0:81f:6e05:c1aa with SMTP id 46e09a7af769-83096fa8197mr13233766a34.18.1791912701506;
+        Tue, 13 Oct 2026 10:31:41 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:a::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-83039a3e024sm12520057a34.16.2026.10.13.10.31.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 10:31:40 -0700 (PDT)
+Date: Tue, 13 Oct 2026 10:31:39 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jia Jia <physicalmtea@gmail.com>
+Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org,
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com,
+	jasowangio@gmail.com, eperezma@redhat.com,
+	xuanzhuo@linux.alibaba.com, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/5] vsock/virtio: amortize RX socket locking
+ for stream packets
+Message-ID: <as5q+7N+wnmi/nOu@devvm29614.prn0.facebook.com>
+References: <20261010142247.99223-1-physicalmtea@gmail.com>
+ <20261010142247.99223-3-physicalmtea@gmail.com>
+ <as1b8+vIy8K8J5cN@devvm29614.prn0.facebook.com>
+ <CAJwVaM+Mht=DiODUJHzokkpGMjcBW9caHh6+Em1+-J-C-_25Yw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <Dvrf8IhF3j09acNeO4Muc57tY7i1vJz5ckdk@vineyardtechnologies.org>
-X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261013172552.1370014-1-kuniyu@google.com>
-Subject: Re: [BUG] af_unix: SOCK_SEQPACKET recv() returns 0 while a message is
- still queued
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: andrew.rogers@vineyardtechnologies.org
-Cc: davem@davemloft.net, edumazet@kernel.org, horms@kernel.org, 
-	kuba@kernel.org, kuniyu@google.com, netdev@vger.kernel.org, pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJwVaM+Mht=DiODUJHzokkpGMjcBW9caHh6+Em1+-J-C-_25Yw@mail.gmail.com>
 
-From: Andrew Rogers <andrew.rogers@vineyardtechnologies.org>
-Date: Tue, 13 Oct 2026 14:35:26 +0000
-> Hi,
+On Tue, Oct 13, 2026 at 11:28:53AM +0800, Jia Jia wrote:
+> >
+> > On Sat, Oct 10, 2026 at 10:22:44PM +0800, Jia Jia wrote:
+> > > The virtio-vsock RX worker currently acquires and releases the socket lock
+> > > for every received packet. Keep the lock held while processing a bounded
+> > > run of packets that belongs to the same socket.
+> > >
+> > > Only ordinary RW packets for an established STREAM socket whose transport
+> > > and protocol remain unchanged are eligible. Control packets, SEQPACKET
+> > > traffic, state or transport changes, malformed packets, and sockets whose
+> > > protocol has been replaced end the active batch and retain their existing
+> > > handling.
+> > >
+> > > Serialize the initial eligibility check with sk_callback_lock because
+> > > sockmap removal restores the protocol without taking the socket lock.
+> > >
+> > > Limit each batch to 64 packets or 64KB of payload, bounding the work under
+> > > one socket lock. Keep the lookup reference until the batch finishes.
+> > >
+> > > Keep a batch only while another skb metadata charge fits in the receive
+> > > buffer. Share this predicate with virtio_transport_inc_rx_pkt(). When an
+> > > enqueued skb consumes the final metadata slot, finish the batch and release
+> > > the socket lock before processing another packet, restoring the reader's
+> > > scheduling opportunity from the per-packet path.
+> > >
+> > > The virtqueue callback remains a queue_work() callback. Batching runs only
+> > > in the process-context RX worker.
+> > >
+> > > Introduce virtio_transport_rx_batch_finish() to tear down the batch and
+> > > release the socket lock and lookup reference.
+> > >
+> > > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> > > ---
+> > >  include/linux/virtio_vsock.h            |  11 ++
+> > >  net/vmw_vsock/virtio_transport.c        |  29 ++++-
+> > >  net/vmw_vsock/virtio_transport_common.c | 147 +++++++++++++++++++++++-
+> > >  3 files changed, 183 insertions(+), 4 deletions(-)
+> > >
+> > > diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+> > > index f91704731057..26dde6909c4e 100644
+> > > --- a/include/linux/virtio_vsock.h
+> > > +++ b/include/linux/virtio_vsock.h
+> > > @@ -282,6 +282,17 @@ void virtio_transport_destruct(struct vsock_sock *vsk);
+> > >
+> > >  void virtio_transport_recv_pkt(struct virtio_transport *t,
+> > >                              struct sk_buff *skb, struct net *net);
+> > > +
+> > > +struct virtio_transport_rx_batch {
+> > > +     struct sock *sk;
+> > > +     unsigned int pkts;
+> > > +     size_t bytes;
+> > > +};
+> > > +
+> > > +void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+> > > +                                  struct sk_buff *skb, struct net *net,
+> > > +                                  struct virtio_transport_rx_batch *batch);
+> > > +void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch);
+> > >  void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *skb);
+> > >  u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
+> > >  void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
+> > > diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+> > > index 4f9aa9c4c3aa..ef076732158d 100644
+> > > --- a/net/vmw_vsock/virtio_transport.c
+> > > +++ b/net/vmw_vsock/virtio_transport.c
+> > > @@ -629,8 +629,16 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
+> > >       return seqpacket_allow;
+> > >  }
+> > >
+> > > +/*
+> > > + * Keep a bounded run of packets for one socket under a single socket lock.
+> > > + * Limit packet count and payload size to bound the work done while locked.
+> > > + */
+> > > +#define VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS   64
+> > > +#define VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES  (64 * 1024)
+> >
+> > Why both? Seems like MAX_PKTS would sufficiently bound the lock hold
+> > time.
+> >
+> > > +
+> > >  static void virtio_transport_rx_work(struct work_struct *work)
+> > >  {
+> > > +     struct virtio_transport_rx_batch batch = {};
+> > >       struct virtio_vsock *vsock =
+> > >               container_of(work, struct virtio_vsock, rx_work);
+> > >       struct virtqueue *vq;
+> > > @@ -666,6 +674,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> > >                       /* Drop short/long packets */
+> > >                       if (unlikely(len < sizeof(*hdr) ||
+> > >                                    len > virtio_vsock_skb_len(skb))) {
+> > > +                             virtio_transport_rx_batch_finish(&batch);
+> > >                               kfree_skb(skb);
+> > >                               continue;
+> > >                       }
+> > > @@ -673,6 +682,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> > >                       hdr = virtio_vsock_hdr(skb);
+> > >                       payload_len = le32_to_cpu(hdr->len);
+> > >                       if (unlikely(payload_len > len - sizeof(*hdr))) {
+> > > +                             virtio_transport_rx_batch_finish(&batch);
+> > >                               kfree_skb(skb);
+> > >                               continue;
+> > >                       }
+> > > @@ -680,16 +690,33 @@ static void virtio_transport_rx_work(struct work_struct *work)
+> > >                       if (payload_len)
+> > >                               virtio_vsock_skb_put(skb, payload_len);
+> > >
+> > > +                     if (batch.sk &&
+> > > +                         payload_len > VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES -
+> > > +                                       batch.bytes) {
+> > > +                             virtio_transport_rx_batch_finish(&batch);
+> > > +                     }
+> > > +
+> > >                       virtio_transport_deliver_tap_pkt(skb);
+> > >
+> > >                       /* Force virtio-transport into global mode since it
+> > >                        * does not yet support local-mode namespacing.
+> > >                        */
+> > > -                     virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
+> > > +                     virtio_transport_recv_pkt_batch(&virtio_transport, skb, NULL,
+> > > +                                                     &batch);
+> > > +
+> > > +                     if (batch.sk) {
+> > > +                             batch.pkts++;
+> > > +                             batch.bytes += payload_len;
+> > > +                             if (batch.pkts >= VIRTIO_TRANSPORT_RX_BATCH_MAX_PKTS ||
+> > > +                                 batch.bytes >= VIRTIO_TRANSPORT_RX_BATCH_MAX_BYTES) {
+> > > +                                     virtio_transport_rx_batch_finish(&batch);
+> >
+> > I'm not fundamentally opposed to the batch struct, but I wonder if its
+> > needed?
 > 
-> A blocking recv() on an AF_UNIX SOCK_SEQPACKET socket can return 0 (EOF)
-> while a message the peer sent before closing is still in the receive
-> queue. The message is then lost: it is freed with
-> SKB_DROP_REASON_SOCKET_CLOSE when the receiver closes its socket, along
-> with any file descriptors it carried in SCM_RIGHTS.
+> With the byte limit retained, the batch still needs to carry the
+> socket and both counters across calls. A batch may also be finished
+> inside the receive helper, so
+> keeping that state together avoids having the worker maintain a
+> separate counter that can get out of sync. The later notification
+> patches add their pending state to the
+> same object as well, so I would prefer to keep the batch struct.
 > 
-> Where it shows up
-> -----------------
+> > If we can get rid of BATCH_MAX_BYTES, then we only need to do
+> > pkts++ in a local var, and can pass an &sk ptr-ptr to
+> > virtio_transport_recv_pkt_batch()?
+> >
 > 
-> Chrome's Linux sandbox brokers open() for its GPU process. For each
-> request the client creates a SOCK_SEQPACKET socketpair, passes one end
-> to the broker process and blocks in recvmsg() on the other; the broker
-> replies with sendmsg(), passing the opened fd, and closes its end. With
-> the NVIDIA driver, which opens /dev/nvidiactl about 11 times per frame,
-> a WebGPU page makes around 8,000 of these round trips a second, and
-> within minutes one recvmsg() returns 0 although the broker's sendmsg()
-> succeeded. The open() fails and the GPU process loses its device or
-> crashes. A trace of one failure, with t the moment Chrome's broker
-> client gives up:
+> My thinking was that the two limits bound different things. The
+> 64-packet limit bounds per-packet work for small packets, while the
+> 64K limit bounds how much data can
+> be queued while the reader cannot acquire the socket lock. A single
+> packet can carry up to 64K, so a packet-only limit could let one batch
+> cover as much as 4M. Since
+> the receive buffer can be enlarged, I do not think the default 256K
+> buffer is a substitute for the byte limit. I would prefer to keep
+> both.
 > 
->   t-42.8us  broker  openat("/dev/nvidiactl") = 57
->   t-40.6us  broker  sendmsg(reply socket, 8 bytes + SCM_RIGHTS fd 57) = 8
->   t-38.7us  broker  close(reply socket)        -> unix_release_sock()
->   t-11.7us  gpu     recvmsg(other end) = 0
->   t-4us     gpu     close(other end): kfree_skb reason=SOCKET_CLOSE
->                     in unix_release_sock(), the unread reply
-> 
-> Reproducer
-> ----------
-> 
-> seqpacket-eof.c is below. Each pair of threads repeats: the receiver
-> makes a socketpair, hands one end to the sender and blocks in recv();
-> the sender send()s 8 bytes and close()s. When recv() returns 0, the
-> receiver retries with MSG_DONTWAIT and counts a loss if the message is
-> there. An optional SCHED_FIFO thread on each receiver's CPU wakes from a
-> timer about every 20us and spins for 3us, which preempts the receiver
-> at arbitrary points and makes the race much more frequent. Without it
-> the machine's own interrupts are enough, just rarely.
-> 
-> Results on Ubuntu 7.0.0-38-generic (7.0.14), x86_64, 8 CPUs,
-> PREEMPT_DYNAMIC (lazy), HZ=1000, 2 pairs, otherwise idle desktop:
-> 
->   SOCK_SEQPACKET, SCHED_FIFO interrupter (root)   30 s   7.7M rounds  61 lost
->   SOCK_SEQPACKET, interrupter as SCHED_OTHER     120 s  36.6M rounds   4 lost
->   SOCK_SEQPACKET, no interrupter, unprivileged   120 s  38.9M rounds   3 lost
->   SOCK_STREAM,    SCHED_FIFO interrupter (root)   30 s   7.6M rounds   0 lost
-> 
-> No kprobes or other tracing were attached during these runs.
-> 
-> Analysis
-> --------
-> 
-> unix_seqpacket_recvmsg() goes through __unix_dgram_recvmsg(), which
-> waits in __skb_wait_for_more_packets(). That function tests the queue
-> and the shutdown state with two separate, unlocked reads:
-> 
-> 	if (READ_ONCE(queue->prev) != skb)
-> 		goto out;
-> 
-> 	/* Socket shut down? */
-> 	if (sk->sk_shutdown & RCV_SHUTDOWN)
-> 		goto out_noerr;
-> 
-> On the other side, unix_dgram_sendmsg() queues the skb under
-> unix_state_lock(other), and the close() that follows sets the peer's
-> sk_shutdown in unix_release_sock(), also under unix_state_lock(). If the
-> receiver reads queue->prev before the skb is queued and sk_shutdown
-> after the close, it returns 0 with the skb in its queue. That needs the
-> receiver to be held up between the two reads for about as long as the
-> sender takes from queueing to close, around a microsecond here, which
-> an interrupt or a preemption provides. To confirm the window, a kprobe
-> on the sk_shutdown test (__skb_wait_for_more_packets+0xcc in this
-> build) that busy-waits 3us made 6.8M of 6.9M rounds lose the message.
-> 
-> SOCK_STREAM is not affected: unix_stream_read_generic() and
-> unix_stream_data_wait() look at the queue and at RCV_SHUTDOWN under
-> unix_state_lock(), the lock the sender queues under.
-> 
-> The code in question is unchanged in v7.3-rc7. I have only tested the
-> Ubuntu 7.0 kernel above.
-> 
-> A fix could re-check the receive queue under unix_state_lock() before
-> __unix_dgram_recvmsg() reports EOF on a SEQPACKET socket, or have
-> __skb_wait_for_more_packets() look at the queue again after it sees
-> RCV_SHUTDOWN.
 
-I remember this was reported before.
+Fair enough, makes sense. Probably good to ensure a timely release of
+credits this way too, which won't happen until the batcher releases.
 
-This behaviour predates the git era and I don't think this
-is worth backporting, so I'll post this to net-next after
-a few more testing and cleanup.
+Best,
+Bobby
 
-Thanks
-
----8<---
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index a1f8042508a8..47cca66241b4 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2483,6 +2483,84 @@ static void unix_copy_addr(struct msghdr *msg, struct sock *sk)
- 	}
- }
- 
-+static int receiver_wake_function(wait_queue_entry_t *wait, unsigned int mode, int sync,
-+				  void *key)
-+{
-+	/*
-+	 * Avoid a wakeup if event not interesting for us
-+	 */
-+	if (key && !(key_to_poll(key) & (EPOLLIN | EPOLLERR)))
-+		return 0;
-+	return autoremove_wake_function(wait, mode, sync, key);
-+}
-+
-+static int unix_datagram_data_wait(struct sock *sk, struct sk_buff_head *queue,
-+				   int *err, long *timeo_p,
-+				   const struct sk_buff *skb)
-+{
-+	DEFINE_WAIT_FUNC(wait, receiver_wake_function);
-+	int error = 0;
-+
-+	prepare_to_wait_exclusive(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
-+
-+	if (READ_ONCE(queue->prev) != skb)
-+		goto out;
-+
-+	if (!READ_ONCE(sk->sk_err) &&
-+	    !(READ_ONCE(sk->sk_shutdown) & RCV_SHUTDOWN) &&
-+	    !(sk->sk_type == SOCK_SEQPACKET && sk->sk_state == TCP_CLOSE) &&
-+	    !signal_pending(current)) {
-+		*timeo_p = schedule_timeout(*timeo_p);
-+		goto out;
-+	}
-+
-+	unix_state_lock(sk);
-+
-+	if (READ_ONCE(queue->prev) != skb)
-+		goto out_unlock;
-+
-+	/* Socket errors? */
-+	error = sock_error(sk);
-+	if (error) {
-+		*err = error;
-+		goto out_unlock;
-+	}
-+
-+	/* Socket shut down? */
-+	if (unlikely(sk->sk_shutdown & RCV_SHUTDOWN)) {
-+		*err = 0;
-+		error = 1;
-+		goto out_unlock;
-+	}
-+
-+	/* Sequenced packets can come disconnected.
-+	 * If so we report the problem
-+	 */
-+	if (sk->sk_type == SOCK_SEQPACKET &&
-+	    !(sk->sk_state == TCP_ESTABLISHED || sk->sk_state == TCP_LISTEN)) {
-+		*err = error = -ENOTCONN;
-+		goto out_unlock;
-+	}
-+
-+	/* handle signals */
-+	if (signal_pending(current)) {
-+		*err = error = sock_intr_errno(*timeo_p);
-+		goto out_unlock;
-+	}
-+
-+	unix_state_unlock(sk);
-+
-+	/* someone stole sock_error(). */
-+	error = 0;
-+	*timeo_p = schedule_timeout(*timeo_p);
-+out:
-+	finish_wait(sk_sleep(sk), &wait);
-+	return error;
-+out_unlock:
-+	unix_state_unlock(sk);
-+	goto out;
-+}
-+
- int __unix_dgram_recvmsg(struct sock *sk, struct msghdr *msg, size_t size,
- 			 int flags)
- {
-@@ -2517,8 +2595,8 @@ int __unix_dgram_recvmsg(struct sock *sk, struct msghdr *msg, size_t size,
- 		if (err != -EAGAIN)
- 			break;
- 	} while (timeo &&
--		 !__skb_wait_for_more_packets(sk, &sk->sk_receive_queue,
--					      &err, &timeo, last));
-+		 !unix_datagram_data_wait(sk, &sk->sk_receive_queue,
-+					  &err, &timeo, last));
- 
- 	if (!skb) { /* implies iolock unlocked */
- 		/* Signal EOF on disconnected non-blocking SEQPACKET socket. */
----8<---
-
-
-
-> 
-> Thanks,
-> Andrew Rogers
-> 
-> ----------------------------- seqpacket-eof.c -----------------------------
-> // SPDX-License-Identifier: GPL-2.0
-> // AF_UNIX SOCK_SEQPACKET: a blocking recv() can return 0 (EOF) while a
-> // message the peer sent before closing is still in the receive queue.
-> //
-> // Each pair of threads repeats: the receiver makes a socketpair, hands one
-> // end to the sender and blocks in recv() on the other; the sender send()s
-> // an 8-byte message and close()s its end. If recv() returns 0, the receiver
-> // retries with MSG_DONTWAIT; getting the message then shows EOF was
-> // reported while it was queued.
-> //
-> // The loss needs the receiver to be held up for about a microsecond inside
-> // __skb_wait_for_more_packets(), after it has seen the queue unchanged and
-> // before it tests sk_shutdown. Interrupts and preemption do that. An
-> // optional SCHED_FIFO thread on each receiver's CPU wakes from a timer
-> // about every PERIOD us and spins for SPIN us, preempting the receiver
-> // wherever it is, which makes the race much more frequent. Without root it
-> // runs as an ordinary thread; the race still happens, rarely.
-> //
-> //   cc -O2 -Wall -pthread -o seqpacket-eof seqpacket-eof.c
-> //   sudo ./seqpacket-eof [pairs [seconds [period_us spin_us [stream]]]]
-> //
-> // Defaults: 2 pairs, 30 s, period 20 us, spin 3 us. "0 0" disables the
-> // interrupter; "stream" uses SOCK_STREAM instead, for comparison. Needs two
-> // CPUs per pair. Exits 2 if any message was lost.
-> #define _GNU_SOURCE
-> #include <pthread.h>
-> #include <sched.h>
-> #include <stdatomic.h>
-> #include <stdint.h>
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <sys/socket.h>
-> #include <time.h>
-> #include <unistd.h>
-> 
-> struct pair {
->     int recv_cpu, send_cpu;
->     _Atomic int handoff;    // the sender's socket fd, or -1
->     _Atomic int stop;
->     unsigned long rounds, eof_with_data, eof_empty;
-> };
-> 
-> static int period_us = 20, spin_us = 3;
-> static int sock_type = SOCK_SEQPACKET;
-> static _Atomic int stop_all;
-> 
-> static void die(const char *what)
-> {
->     perror(what);
->     exit(1);
-> }
-> 
-> static void pin(int cpu)
-> {
->     cpu_set_t set;
-> 
->     CPU_ZERO(&set);
->     CPU_SET(cpu, &set);
->     pthread_setaffinity_np(pthread_self(), sizeof(set), &set);
-> }
-> 
-> static uint64_t now_ns(void)
-> {
->     struct timespec ts;
-> 
->     clock_gettime(CLOCK_MONOTONIC, &ts);
->     return (uint64_t)ts.tv_sec * 1000000000u + ts.tv_nsec;
-> }
-> 
-> static void *sender(void *arg)
-> {
->     struct pair *p = arg;
->     const char msg[8] = "reply!!";
-> 
->     pin(p->send_cpu);
->     while (!atomic_load(&p->stop)) {
->         int fd = atomic_exchange(&p->handoff, -1);
-> 
->         if (fd < 0)
->             continue;
->         if (send(fd, msg, sizeof(msg), 0) != sizeof(msg))
->             die("send");
->         close(fd);
->     }
->     return NULL;
-> }
-> 
-> static void *receiver(void *arg)
-> {
->     struct pair *p = arg;
->     char buf[64];
->     int sv[2];
-> 
->     pin(p->recv_cpu);
->     while (!atomic_load(&p->stop)) {
->         ssize_t n;
-> 
->         if (socketpair(AF_UNIX, sock_type, 0, sv) < 0)
->             die("socketpair");
->         atomic_store(&p->handoff, sv[1]);
->         n = recv(sv[0], buf, sizeof(buf), 0);
->         if (n == 0) {
->             if (recv(sv[0], buf, sizeof(buf), MSG_DONTWAIT) > 0)
->                 p->eof_with_data++;
->             else
->                 p->eof_empty++;
->         } else if (n < 0) {
->             die("recv");
->         }
->         close(sv[0]);
->         p->rounds++;
->     }
->     return NULL;
-> }
-> 
-> static void *interrupter(void *arg)
-> {
->     int cpu = (int)(intptr_t)arg;
->     unsigned int seed = (unsigned int)cpu * 2654435761u;
->     long period_ns = (long)period_us * 1000;
-> 
->     pin(cpu);
->     while (!atomic_load(&stop_all)) {
->         // Jitter the period so the wakeups land at every point of the
->         // receiver's path.
->         struct timespec ts = {
->             0, period_ns / 2 + rand_r(&seed) % (period_ns + 1)
->         };
->         uint64_t until;
-> 
->         clock_nanosleep(CLOCK_MONOTONIC, 0, &ts, NULL);
->         until = now_ns() + (uint64_t)spin_us * 1000;
->         while (now_ns() < until)
->             ;
->     }
->     return NULL;
-> }
-> 
-> static int start_interrupter(int cpu)
-> {
->     struct sched_param sp = { .sched_priority = 1 };
->     void *arg = (void *)(intptr_t)cpu;
->     pthread_attr_t attr;
->     pthread_t t;
-> 
->     pthread_attr_init(&attr);
->     pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
->     pthread_attr_setschedpolicy(&attr, SCHED_FIFO);
->     pthread_attr_setschedparam(&attr, &sp);
->     if (pthread_create(&t, &attr, interrupter, arg) == 0)
->         return 1;
->     pthread_create(&t, NULL, interrupter, arg);
->     return 0;
-> }
-> 
-> int main(int argc, char **argv)
-> {
->     int pairs = argc > 1 ? atoi(argv[1]) : 2;
->     int seconds = argc > 2 ? atoi(argv[2]) : 30;
->     int ncpu = (int)sysconf(_SC_NPROCESSORS_ONLN);
->     unsigned long rounds = 0, bad = 0, empty = 0;
->     struct pair *ps;
->     int rt = 0;
-> 
->     if (argc > 4) {
->         period_us = atoi(argv[3]);
->         spin_us = atoi(argv[4]);
->     }
->     if (argc > 5 && strcmp(argv[5], "stream") == 0)
->         sock_type = SOCK_STREAM;
->     if (pairs * 2 > ncpu) {
->         fprintf(stderr, "need two CPUs per pair (%d online)\n", ncpu);
->         return 1;
->     }
-> 
->     ps = calloc(pairs, sizeof(*ps));
->     for (int i = 0; i < pairs; i++) {
->         pthread_t t;
-> 
->         ps[i].recv_cpu = 2 * i;
->         ps[i].send_cpu = 2 * i + 1;
->         atomic_store(&ps[i].handoff, -1);
->         pthread_create(&t, NULL, sender, &ps[i]);
->         pthread_create(&t, NULL, receiver, &ps[i]);
->         if (period_us > 0)
->             rt = start_interrupter(ps[i].recv_cpu);
->     }
-> 
->     printf("type=%s pairs=%d seconds=%d period=%dus spin=%dus "
->            "interrupter=%s\n",
->            sock_type == SOCK_STREAM ? "SOCK_STREAM" : "SOCK_SEQPACKET",
->            pairs, seconds, period_us, spin_us,
->            period_us <= 0 ? "none" :
->            rt ? "SCHED_FIFO" : "SCHED_OTHER (SCHED_FIFO not permitted)");
->     fflush(stdout);
-> 
->     for (int s = 1; s <= seconds; s++) {
->         sleep(1);
->         rounds = bad = empty = 0;
->         for (int i = 0; i < pairs; i++) {
->             rounds += ps[i].rounds;
->             bad += ps[i].eof_with_data;
->             empty += ps[i].eof_empty;
->         }
->         if (s % 5 == 0 || s == seconds) {
->             printf("t=%ds rounds=%lu eof_with_message_queued=%lu "
->                    "eof_empty=%lu\n", s, rounds, bad, empty);
->             fflush(stdout);
->         }
->     }
->     atomic_store(&stop_all, 1);
->     return bad ? 2 : 0;
-> }
-> 
+> >
+> > > +                             }
+> > > +                     }
+> > >               }
+> > >       } while (!virtqueue_enable_cb(vq));
+> > >
+> > >  out:
+> > > +     virtio_transport_rx_batch_finish(&batch);
+> > >       if (vsock->rx_buf_nr < vsock->rx_buf_max_nr / 2)
+> > >               virtio_vsock_rx_fill(vsock);
+> > >  out_nofill:
+> > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> > > index e3e75e59896f..a73e37b3fa62 100644
+> > > --- a/net/vmw_vsock/virtio_transport_common.c
+> > > +++ b/net/vmw_vsock/virtio_transport_common.c
+> > > @@ -576,10 +576,16 @@ virtio_transport_collapse_rx_queue(struct virtio_vsock_sock *vvs,
+> > >       skb_queue_splice(&new_queue, &vvs->rx_queue);
+> > >  }
+> > >
+> > > +static bool
+> > > +virtio_transport_rx_skb_has_headroom(struct virtio_vsock_sock *vvs)
+> > > +{
+> > > +     return (u64)(skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0) <=
+> > > +             vvs->buf_alloc;
+> > > +}
+> > > +
+> > >  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+> > >                                       u32 len)
+> > >  {
+> > > -     u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> > >
+> > >       /* Allow at most buf_alloc * 2 total budget (payload + overhead),
+> > >        * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
+> > > @@ -588,7 +594,7 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+> > >        * queue growth.
+> > >        */
+> > >       if ((u64)vvs->buf_used + len > vvs->buf_alloc ||
+> > > -         skb_overhead > vvs->buf_alloc)
+> > > +         !virtio_transport_rx_skb_has_headroom(vvs))
+> > >               return false;
+> > >
+> > >       vvs->rx_bytes += len;
+> > > @@ -1834,10 +1840,28 @@ struct virtio_transport_rx_pkt_ctx {
+> > >       struct net *net;
+> > >       const struct sockaddr_vm *src;
+> > >       const struct sockaddr_vm *dst;
+> > > +     bool *batchable;
+> > >  };
+> > >
+> > > +static bool
+> > > +virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
+> > > +                                 struct sock *sk)
+> > > +{
+> > > +     struct vsock_sock *vsk = vsock_sk(sk);
+> > > +     struct virtio_vsock_sock *vvs = vsk->trans;
+> > > +
+> > > +     return sk->sk_state == TCP_ESTABLISHED &&
+> > > +            sk->sk_type == SOCK_STREAM &&
+> > > +            READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
+> > > +            !sock_flag(sk, SOCK_DONE) &&
+> > > +            vsk->transport == &t->transport &&
+> > > +            vvs && virtio_transport_rx_skb_has_headroom(vvs);
+> > > +}
+> > > +
+> > >  /*
+> > > - * The caller holds sk's socket lock and must free skb if this returns true.
+> > > + * The caller holds sk's socket lock.  Set @batchable if the socket can remain
+> > > + * locked for another ordinary STREAM/RW packet.  Return true if the caller
+> > > + * must free @skb.
+> > >   */
+> > >  static bool
+> > >  virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> > > @@ -1850,6 +1874,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> > >       struct net *net = ctx->net;
+> > >       bool space_available;
+> > >
+> > > +     if (ctx->batchable)
+> > > +             *ctx->batchable = false;
+> > > +
+> > >       /* Check after acquiring the socket lock. Listener sockets accept packets
+> > >        * from any source and are not assigned to a transport.
+> > >        */
+> > > @@ -1891,6 +1918,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> > >               break;
+> > >       }
+> > >
+> > > +     if (ctx->batchable)
+> > > +             *ctx->batchable = virtio_transport_recv_pkt_batchable(t, sk);
+> > > +
+> > >       return false;
+> > >  }
+> > >
+> > > @@ -1941,6 +1971,117 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
+> > >
+> > > +/*
+> > > + * Finish the RX batch.
+> > > + * For a non-empty batch, the caller must hold the socket lock acquired with
+> > > + * lock_sock(). This function releases the lock and the batch's lookup
+> > > + * reference.
+> > > + * An empty batch is a no-op.
+> > > + */
+> > > +void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
+> > > +{
+> > > +     struct sock *sk = batch->sk;
+> > > +
+> > > +     batch->sk = NULL;
+> > > +     batch->pkts = 0;
+> > > +     batch->bytes = 0;
+> > > +
+> > > +     if (!sk)
+> > > +             return;
+> > > +
+> > > +     release_sock(sk);
+> > > +     sock_put(sk);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
+> > > +
+> > > +void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
+> > > +                                  struct sk_buff *skb, struct net *net,
+> > > +                                  struct virtio_transport_rx_batch *batch)
+> > > +{
+> > > +     struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> > > +     struct virtio_transport_rx_pkt_ctx ctx;
+> > > +     struct sockaddr_vm src, dst;
+> > > +     bool batchable, start_batch;
+> > > +     struct sock *sk;
+> > > +     bool free_pkt;
+> > > +
+> > > +     /* Only STREAM/RW packets can share a socket lock. */
+> > > +     if (le16_to_cpu(hdr->type) != VIRTIO_VSOCK_TYPE_STREAM ||
+> > > +         le16_to_cpu(hdr->op) != VIRTIO_VSOCK_OP_RW) {
+> > > +             virtio_transport_rx_batch_finish(batch);
+> > > +             virtio_transport_recv_pkt(t, skb, net);
+> > > +             return;
+> > > +     }
+> > > +
+> > > +     virtio_transport_recv_pkt_init_addrs(skb, &src, &dst);
+> > > +     virtio_transport_trace_recv_pkt(skb, &src, &dst);
+> > > +
+> > > +     sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
+> > > +     if (!sk) {
+> > > +             virtio_transport_rx_batch_finish(batch);
+> > > +             (void)virtio_transport_reset_no_sock(t, skb, net);
+> > > +             kfree_skb(skb);
+> > > +             return;
+> > > +     }
+> > > +
+> > > +     if (!skb_set_owner_sk_safe(skb, sk)) {
+> > > +             WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+> > > +             virtio_transport_rx_batch_finish(batch);
+> > > +             kfree_skb(skb);
+> > > +             return;
+> > > +     }
+> > > +
+> > > +     if (batch->sk && batch->sk != sk) {
+> > > +             /* Never acquire a second socket lock. */
+> > > +             virtio_transport_rx_batch_finish(batch);
+> > > +     }
+> > > +
+> > > +     if (batch->sk == sk) {
+> > > +             /* Keep the batch reference; drop this packet's lookup reference. */
+> > > +             sock_put(sk);
+> > > +             ctx = (struct virtio_transport_rx_pkt_ctx) {
+> > > +                     .net = net,
+> > > +                     .src = &src,
+> > > +                     .dst = &dst,
+> > > +                     .batchable = &batchable,
+> > > +             };
+> > > +             free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
+> > > +             if (!batchable)
+> > > +                     virtio_transport_rx_batch_finish(batch);
+> > > +             if (free_pkt)
+> > > +                     kfree_skb(skb);
+> > > +             return;
+> > > +     }
+> > > +
+> > > +     lock_sock(sk);
+> > > +     /*
+> > > +      * Sockmap removal restores the native protocol under sk_callback_lock.
+> > > +      * Serialize this initial eligibility check with that update.
+> > > +      */
+> > > +     read_lock_bh(&sk->sk_callback_lock);
+> > > +     start_batch = virtio_transport_recv_pkt_batchable(t, sk);
+> > > +     read_unlock_bh(&sk->sk_callback_lock);
+> > > +
+> > > +     ctx = (struct virtio_transport_rx_pkt_ctx) {
+> > > +             .net = net,
+> > > +             .src = &src,
+> > > +             .dst = &dst,
+> > > +             .batchable = start_batch ? &batchable : NULL,
+> > > +     };
+> > > +     free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
+> > > +     if (start_batch && batchable) {
+> > > +             /* Keep the lookup reference until the batch is released. */
+> > > +             batch->sk = sk;
+> > > +             return;
+> > > +     }
+> > > +
+> > > +     release_sock(sk);
+> > > +     sock_put(sk);
+> > > +     if (free_pkt)
+> > > +             kfree_skb(skb);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt_batch);
+> > > +
+> > >  /* Remove skbs found in a queue that have a vsk that matches.
+> > >   *
+> > >   * Each skb is freed.
+> > > --
+> > > 2.34.1
