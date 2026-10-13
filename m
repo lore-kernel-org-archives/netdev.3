@@ -1,142 +1,156 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EA4542EE3
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791923586; cv=pass; b=ua3gb2XT7pDzm/enCCjtcUCMjiduMDC2G2Sz1xMHZ2ozvYbd4k9k+qzJqZACb58LuNBh15lSYU8GEZtgZE6jw2jthCirlDu9gUk4rmGeQyqoNB2fG58PxnrpGrYmoer6r2FrqfzmCtQsKZORYdiw13BF6h9olH+H034RT3W9cX4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791923586; c=relaxed/simple;
-	bh=guoFD20zEk9cIM8OGpiI6ZacaO2x+w0vW/appO61b84=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CjJarnz14oQhiqc3L04oPtFBlSO9qWN8+0uuHGfrxpTFmyLx3I3k5JjjfvCGdbcSzXpfYdwU5pb+0GtwpvZUFYd8Czt6xcltk9VaGsRssNqikcKTix+acwezrsGfciFRsKt/7tCbYkVciYg7JrBiH6KfIynFp8RVOgBYHRkzBJE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sCfdEhry; arc=pass smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84CF545D8C
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791923748; cv=none; b=BiZ1Ud0iZb+o0Sw7HtbuiCUCRSELVE9v4RIL121gnbs5n32tHciWIJZ5EXJ8SlY6NXZ2E7kglSiMUQdbgV071QJmbkGix00oCapQrcFvt8Eg39bGLGX1npyYTzTBlwOZcC6n7EMgo1QtIQzZDDuoLFfKCaka9kOAmL8JbQ95YGs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791923748; c=relaxed/simple;
+	bh=jJkLoXcaXsj0xctC7jtURA2sKakwQ6b+J+tP2c2X3WE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FwfJjHfF2txDJIvU6YiarWKBdwgAtge1UETSm5aD39MWTEY5YcQoODoZ7ZLgYDHE05RHrnu4fZ9nZyu+uUX2iujYMEYVv2POP2cRC05b7fP6wauLb0AdP8yCsfKhYA0gf0/eR2VveKXaAzfmJBUmN11v9U4xOt7/8yeJrPwGkZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UraZaH7G; arc=none smtp.client-ip=209.85.160.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sCfdEhry"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6740e7ae219so2689878d50.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:33:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791923584; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HzjlTSzp5Q9puJZh52f/BqgoWIIGqyQjJIavXdKixWtDM/w9Xh6mqZvTjrpk8aJE/F
-         KTKfMHwOGtvbXHPVSwtI83V3BCUBUe+sZJahvzoTXGA5lZM6/z1bRxfKnc6quKNLV/2p
-         oj1DkH1XGVaoSU9AJuIjectCxsTsvIbn49sHxFdO34M9eVf7kqdNVsWHofLWsMBPS/cM
-         PRD6+1NbIsfQaql9N2J3lq/7mgXWTMg7pY3mU42LT6E8FwafVfdDuxg7ZOoT/9kLb1nZ
-         PDEsX2QT1RRK6WU5e4a4zYAUQkn3/wtbRowOTRlsBFqJ5S4FCl3pmZxuMgK/I+L+Bdah
-         rAvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=fjZWNfknzV1F6JAInAE8o3x3W3fwqE841SsbudO4cc8=;
-        fh=SsbNRHZaRTXR1wZjX7uY8V/hyCciNjaUsQlb9Wd7Zec=;
-        b=hoYooxp/3/DKZGK+MN5PWxB8kuuBUaUwSHr0ENM/Aqaz8yPwLYj0mv9402eKfHuDMq
-         xRMEAawZZpmrXik0/gUuD0yCe4tNCkhy7k+yfXnvHrDGTlCi2EJjRD0ciSOv3JuwzM5I
-         WGdNfOQz37BquA1temKrKWDLqyJyuBbM2b+iL73im/pS6omzTADzy0o/17rBIYj2C30o
-         +m0h9g+zJg9XfGQ6Bnh9Z5N70ATwNugZKc8W5UfOGffPcBX6l4IqZT+MaZ37y8OQ0nqA
-         zoUYMxZNnhRPSSfOXM3QkJcVV8/sqmHkYs6Q1HIvNdkdfTZ/xgUvPQx5K4cn++XpUmnz
-         epjA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UraZaH7G"
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-47b47de8b4cso2069468fac.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:35:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791923584; x=1792528384; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fjZWNfknzV1F6JAInAE8o3x3W3fwqE841SsbudO4cc8=;
-        b=sCfdEhry7kUMkf8k5wxJjj4TkkJhUY/4aIduFykUdOoGmj4tu4TgmXXNR+WMyjctS5
-         L5RvSWMrLfxAsVZjSGmXYcsf6j75eJfGq9BqeCKu3zfPidhRVTDLris++A2DhOU6fG3/
-         CB5nRdY7foqKxUgrpZPW2teKWAi+WKTr1jmX2xr7OZ0XsvAZ4PoSBshWmbt+LwDxrMiw
-         ys0UTFde17SkQz3X2M/dJ75W/OwxotQQheBI0iEto77knza4pU4ZpztmpFN7P+C9vlsY
-         bhlPuGevilXOBGjNxAGxP34RX7wDviazB9wEwCvZNycFIu98M+B/EJi5+tSX/f1gQFiy
-         pOGQ==
+        d=gmail.com; s=20251104; t=1791923746; x=1792528546; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=mdu7JDYg4pNMYKBbp9bk7b11wP54fdQOVT/LCjvbPgg=;
+        b=UraZaH7G7mUXCiylaGKrN1v0WsILintqSbkEmssGsFhBcv4KJ5sWmvEOKPRyOavbK/
+         PJOvEmmHfDEtyGbe+lPKSbYZ4MkKk1bxkZBjzpL2muXIhDO1TfX5w/PtUf4bpJBYFoba
+         A//NoiEq9KxCXonmai6tRFR7bP3tclnc7saMj/N+nrx+mu9nwb5KRAunh6pYQvH905Gb
+         vcwK0yC/dZ6Pbuxb2w+It0FH3rj4lXUqd3LgfPQ/Kh9Kz2LocwL8DgxTWkEYUAUZRWC9
+         tUVwns0wI62GnYbwB+HyAEBhYf7nz5KrVbXutJRuKg7RfOtvipraSFc8hdcooxZr1Qse
+         MoOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791923584; x=1792528384;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fjZWNfknzV1F6JAInAE8o3x3W3fwqE841SsbudO4cc8=;
-        b=RBrRoH0hWx0nkgm6uoG3GSyzdq2GqVyZJ45tNDwmhC/SOwmHQnf2N81y1tgGETDss+
-         nr1/ZASb2pvnK9GdCrVu64cYRWvlDCoAdEZRWWk9EP31HpYHSP+H74WNLe95qRF3TcU+
-         Lcr7/VOnGmz4wVnTIhhXXqIJSHrAb4FPDGlK9OWUWf6PoLKiITCManeycJsbPVxqEzsZ
-         zcYkaJHjQ5+MJX7/0z7iSPKa9lkeEdqoMLg30EF4k+FlB0hf/EmbZVHQn683i6GtxJ7g
-         CE1vDmXWDc0lbA89MAXvEHzKnYd/QSKJ/8W9jm+3spO6WfQdOQfNu0vsNrbn027Ee9KW
-         MFDA==
-X-Forwarded-Encrypted: i=1; AKwUvBwVUpHfGz+l32hyJz1oa+uQGb4RcyWLGYWNLH0qfD9n+/0Dzx+3KZpxSAfCLnuT35V5eTyADpU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI3+AFEMecckrVpEMi7yDRFH8oZ1306Fk1Ogwo3qmz9QPTDlEQo
-	AiNvSbp40WdrtK0wH3yJCivsz/y1K1Q2s4uDo5J+z3/y2iZFvKz38FW9F3KXV4T6DIt/IhsTCe5
-	PkYU7XtBD1YorlcbC9YHvEP7xHw82quE=
-X-Gm-Gg: AYBFou2M3NB3ytCjZiDy+T+3DQuKg7mxXkCfDr2u7y1CtNe2ibPl+CwPUkzXyhGda/M
-	bRTsgivg4OSSWyhRh/Xk5RfVGBQx7rOsKbb5Fk6uKUrbw5xVbCtHUmdzN3QFUt+Eq/DI/HdLLyF
-	IxGIfgdK/AnYSqnm8FZy/TNy8SB2ToXv98ChvtPKpAfgIpwlOqci2a2w+Di3XLROpmqcYi40BAa
-	3V2ezkh16Gz1Gw6c+81XXNYt7lPbDq+YGz3VKtrEMR2JE7PrGZQu6bEBK3cvhBsuBmXn8h96fiD
-	DsuH5hOeroBpbk/RPo/BTS5rAehqEAVTujY3AqE/IW48erpDoyKRxS5kAQ5At31TrniOaGvGRoW
-	vbyZV2VWXNycPtDrjyQWZw915a28rJOdbzuW5yGpe
-X-Received: by 2002:a05:690e:168b:b0:675:b778:a423 with SMTP id
- 956f58d0204a3-679362bf517mr4886393d50.142.1791923584078; Tue, 13 Oct 2026
- 13:33:04 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791923746; x=1792528546;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=mdu7JDYg4pNMYKBbp9bk7b11wP54fdQOVT/LCjvbPgg=;
+        b=1Tx+O6olOfnI8c1dL6kHFcpxJE1/MNe/h8XCVjxjVPrCcwUWyY+uUxFmkXYtf9sAeM
+         Z/TzJBIqqG+f3qa+XE5ZCpR3hMUC/2BtUrkaM5gyRvc7hdJA6QUvnZqYvb910Xpb7tHX
+         5hTceVZXY38pXriG5qLUCbiMwSNhmFDJh0BtC9X/imym0GIcugwve+9dVEtHYwEbA03e
+         LuPIGhn1XIYpyFtrAncnXvgJj4XSTx3eBYcOil9jg75+H/PPX+UXQM1Wdtjgi/SnczeQ
+         G3uZm/90O1YishkOOfK72okGW6X78L0ZZbkxWufEKFDQoWwhIiu+IxdECEnognEoP8Pt
+         Ox4A==
+X-Gm-Message-State: AFq9FYIiYaLBZz0bzwe61lhJU4ouRz+aB1/C84vtWSrMEHgGC7gk/Yc6
+	hL4TtcD1fL+qgCjmbipe4tI/rg5Tswf2ENu+T/HvV6b5ljCAZBUcU8LAtu9qxOpX
+X-Gm-Gg: AYBFou196qrsxoAInJXvmxlNOZSNoThopWRZYAUeqZ8XvNMJFBQ54DloGj5eh5A/xNy
+	wqf+v4v827mt+MpvOmpy8fet75hHkMVUwS6e9xjcvdSL3mgqT70yNeaiNso7N6ptKPe1K/zt/xs
+	XrVx7+cz1v4g6KspoASf9sao+E/uSBnEgkIZupeyBJSlXZwP1QkQA2rMY+n9yHDGvGltCxjQBUP
+	uMU/Bw397lEc3RsyxFcybu8upTfgaqDAnGYqaFfsecfSAycjOKfaeTQEpJZJQJB6W4f1Z92M1E0
+	NOuyrYfLQ3aAZY21rL8tNUnArXydFeUvgGAwkthWVdSvEWQL6jB/n/B1EN13E5uXBKpQ8Ls32dh
+	bstlT/6Du9wpVbhRlzBjIioJYAvYlF0jQt8u8zYT5BfkuDqTmrjgtQEuVtz+E2q59BRkSYea1Lz
+	bG9GFPo5qXPfC6szqmFMw6BrCzLaxintovWSVju6CZtvo/Vvy90zkcH6nTdHSI3fgSkASCz2wdR
+	PowRVa8sYNvS5Yf5kojCAH+5B5UJLv1iw6rnhB2L1lxPMFCciA6Hv206meFq+KJ/AQB45vLHcj5
+	kEa5M3/kQyWNUnusHO5ZxspZV7Mxts/poIisa69zN8TPvqkVavN3SXnQgjSZ9QipUL+hKAL736o
+	ttoD7O2bX872X5ZRWsgZW
+X-Received: by 2002:a05:6871:54b:b0:48f:e25e:e203 with SMTP id 586e51a60fabf-4a2a89f4067mr11899379fac.52.1791923745657;
+        Tue, 13 Oct 2026 13:35:45 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a6df871f44sm596045fac.1.2026.10.13.13.35.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 13:35:45 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 13 Oct 2026 14:35:42 -0600
+Subject: [PATCH net] net: stmmac: avoid duplicate XSK TX completions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1791887415.git.mst@redhat.com> <e12c6a45aae251d1642af55d8d3121e554993a66.1791887415.git.mst@redhat.com>
- <20261013070549-mutt-send-email-mst@kernel.org> <CAF=yD-KdTn2rHyp_j8ORr9F5hpm=TzaPRan5+gvLiYBd9HP-sg@mail.gmail.com>
- <20261013143335-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20261013143335-mutt-send-email-mst@kernel.org>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Tue, 13 Oct 2026 14:32:26 -0600
-X-Gm-Features: AclHuK_AY3efVdSO1MP2W2AAhlxVTMjkmeXG8cBqCPBuysQoPjuKaPNm0xvEtb8
-Message-ID: <CAF=yD-Lz92nGVFab1Dq8M9VusDsKf-ioda8KrZoyh28x3Xtg4Q@mail.gmail.com>
-Subject: Re: [PATCH net-next 3/4] net: resolve uncommon partial checksums at ingress
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, Max Krasnyansky <maxk@qualcomm.com>, 
-	Rusty Russell <rusty@rustcorp.com.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261013-submit-stmmac-xsk-tx-completion-v1-v1-1-f21b9d098e62@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWN0QrCMAxFf2Xk2UA7YU5/RXzoaqZR240mjsLYv
+ xv18Ry4564gVJgETs0KhRYWnrKB3zUQ7yHfCPlqDK1rO++cR3kPiRVFUwoRqzxRK8YpzS9S2+L
+ ise8PnRvDcfBuDxaaC41cfydnyKRw+UtLPSjqNw/b9gFVMlp9iwAAAA==
+X-Change-ID: 20261001-submit-stmmac-xsk-tx-completion-v1-88760fa9b103
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Ong Boon Leong <boon.leong.ong@intel.com>
+Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Magnus Karlsson <magnus.karlsson@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, bpf@vger.kernel.org, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-> > > > +
-> > > > +     if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type, inner_nh,
-> > > > +                                            inner_proto))
-> > > > +             return 0;
-> > > > +
-> > > > +     if (skb_is_gso(skb))
-> > > > +             return -EINVAL;
-> >
-> > This is a risk the commit message will have to call out.
->
-> I tried with this:
->
->         > > > We can't easily "complete the checksum" for GSO we don't recognize - GSO
->         > > > assumes knowledge of the protocol. We could segment ignoring the
->         > > > checksum then do whatever csum_start and csum_offset say, but that
->         > > > seems like an overkill for something that should happen.
->
-> I guess I can add a more detailed explanation about what the risk is?
+stmmac_tx_clean() reports completed AF_XDP TX descriptors through
+xsk_tx_completed(), but leaves their buffer type as STMMAC_TXBUF_T_XSK_TX.
+The slots retain that type until they are reused for another buffer type.
 
-Let's just explicitly mention the consequence: non-standard GSO
-packets that previous would be sent may now fail.
+On interface close or XDP teardown, dma_free_tx_skbufs() walks the entire
+TX ring, not just the dirty_tx..cur_tx range. stmmac_free_tx_buffer()
+counts the stale XSK_TX slots again, causing xsk_tx_completed() to advance
+the completion-ring producer for buffers that have already been returned.
+This publishes completion entries without matching outstanding TX
+reservations and corrupts completion accounting for a socket which stays
+bound across the teardown.
 
->
-> > I don't see a simple way around it. We discussed segmenting here too,
-> > but that requires intrusive changes to all callers too.
-> > Alternatively,
-> >
-> > 1. call segmentation, but only to see it remove the SKB_GSO_DODGY and
-> > thus verify that the TSO/USO packet is valid. Still drop otherwise.
-> > This also does not add overhead, because it would be called later
-> > anyway.
-> >
-> > 2. a failsafe off-by-default sysctl + static_branch that skips the
-> > drop when set. Messy, but so is the situation we're dealing with.
->
-> Tack this on top or do you feel it's needed straight away.
+Reset the XSK buffer type after counting the completion in both
+stmmac_tx_clean() and stmmac_free_tx_buffer(). XSK TX slots have a NULL
+skb pointer and no per-slot DMA mapping, so the SKB type represents an
+empty slot. Pending XSK descriptors keep their type until they are
+completed or released, and a released slot can no longer be counted
+again by a later cleanup.
 
-Not urgent. Can even wait until a report appears. But worth taking a
-look sooner if either of us gets around to it.
+Fixes: 132c32ee5bc0 ("net: stmmac: Add TX via XDP zero-copy socket")
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Assisted-by: Codex:gpt-6-astra
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b837e8e27a35..1527e03711cc 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1742,8 +1742,10 @@ static void stmmac_free_tx_buffer(struct stmmac_priv *priv,
+ 		tx_q->xdpf[i] = NULL;
+ 	}
+ 
+-	if (tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_XSK_TX)
++	if (tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_XSK_TX) {
+ 		tx_q->xsk_frames_done++;
++		tx_q->tx_skbuff_dma[i].buf_type = STMMAC_TXBUF_T_SKB;
++	}
+ 
+ 	if (tx_q->tx_skbuff[i] &&
+ 	    tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_SKB) {
+@@ -2926,8 +2928,11 @@ static int stmmac_tx_clean(struct stmmac_priv *priv, int budget, u32 queue,
+ 			tx_q->xdpf[entry] = NULL;
+ 		}
+ 
+-		if (tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XSK_TX)
++		if (tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_XSK_TX) {
+ 			tx_q->xsk_frames_done++;
++			/* Teardown must not count this slot again. */
++			tx_q->tx_skbuff_dma[entry].buf_type = STMMAC_TXBUF_T_SKB;
++		}
+ 
+ 		if (tx_q->tx_skbuff_dma[entry].buf_type == STMMAC_TXBUF_T_SKB) {
+ 			if (likely(skb)) {
+
+---
+base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
+change-id: 20261001-submit-stmmac-xsk-tx-completion-v1-88760fa9b103
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
