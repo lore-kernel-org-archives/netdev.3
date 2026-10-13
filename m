@@ -1,56 +1,56 @@
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1811521886
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0789559CB2
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925107; cv=none; b=EMYvp09hp5PCewaDovVylNOB52yXeqx3kQLNEajTiHYTSvpXxmiAIGzgP0cZkmOIPO5TNbq4AW6mvfQ89ZgP+r+EMDkZ1TUN1kOyWV6sujd5iWqKGdVOfto5jKJtTVkeyAIFSgO6KGiOCxbZ2+ZGE3WBYcW+Tn/JGMdby2HlWsg=
+	t=1791925108; cv=none; b=CPzbZ0b1yIRKDGkMNmw1k4B0wn1Hzh/m4M33uWOw3pt+rYrz5NfJEWDqrMLkEf/ySskVIVpJB82hH0FF9MUJBKIXdroeryOSTIxczaG4BX9XbqSeuIJH9aiToU0W1gf5e06BIEGFrmcLTtCmH29hlnIxx9/qiVUSxtn1PFDJSI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791925107; c=relaxed/simple;
-	bh=mzjkFrHMjPSaH9K4XUyL4+zfDdT2nFqa6L/+SofktWk=;
+	s=arc-20240116; t=1791925108; c=relaxed/simple;
+	bh=U5pTt0N13l4vVaGW+/Zu3DeKRDmTj5pIh2r61aQFqKg=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=X0BLyalgcgycJCtLlBRPTKiSnyWm9T7vJeBzinainPgch95HxHHaEQ3q7GaINXgZVEi31rQsqhWpNsLXB+Qa6ntG6b7vcABKrb+gtjZcKoAi5NrhcfAeop4ROFe34bXh1h9/4Wf4Oi34AOb3+OnrTiv7vbb3eKwz38PKEuX8iU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R6T45uUR; arc=none smtp.client-ip=209.85.215.197
+	 To:Cc:Content-Type; b=DctNLfxq/wtyYsAQWq/MZdU1FzimdfViJP7ZckSWLp38AzV0zE0O8ndJCUhvC64bWeXBtHTWxZI3OhozECiiyxt1UOrKWhQfixIaMVMzELMwH/mSHzvVM0xaSU1Y+IdYMXLkrjGY+tgYrsSQ1wONtkTyWJcWJBTUQK1YXU5pxls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kXYbMwcz; arc=none smtp.client-ip=209.85.216.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R6T45uUR"
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc435388657so3879918a12.3
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kXYbMwcz"
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-3ab2cb8d5dbso4153771a91.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791925105; x=1792529905; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791925106; x=1792529906; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=9LAvZtS8Ld4N8dcodE0MzB2CFlloDV8eZtDQEhdaME8=;
-        b=R6T45uURWQEnID3InpC39zehEYx3yqGEjFQmxpKTZhQeDpdntxbD0an2oz/JpaxQFV
-         FFtBf/FkarKZNgCXxI2vJEH2tunte2LZh949Min3iCkeIX68GzlKS3FJdgzyTaClg+It
-         KE1H4/U0XHqlkTpdnJLavi4c/q9u3AOWfKpg9doeFiY4thnw12OxEu1HYdaRD5OSBRs6
-         5Mmo2KIHZ0hyyn5Jms9VljUYBw2ESWMyCPs7QvNojcHtJgqlywJH0DUuoXBPxHAC2ebF
-         Rgvd+4NYpVptNr8cwd/K8w9QyCQc07FEuuF08O/an69RRfhb85QXI9OlFuoDqw8mLEZo
-         S4dA==
+        bh=f+EeDAIv0aEfQrlKgoNr6zWr/sWrIpRpKyLa0c8+Ybg=;
+        b=kXYbMwczquEoCrfmViJe2wWwhU73nWyXUXnKGLFMr9yRIJuakaGoSYHXF0VVZ6ZX3f
+         vSj82cf63DZT9REh61wLgyZYhn1aY/OCkPfUILHcb7o+LgxE+XZnBWU0HZJLHiMnV1fq
+         1W0LliYa9y2zhDfEidkqN/ejQUKeQrFAv9CMNflJmJwmLkw1IwmwDwQUr0SugmioLwza
+         yqyar71hn1yTsKPXzhhiNRsT0+FEGJQ8AMLCbMoG3cPQPdgqLE0Yfo144FgyH4xbmh7Z
+         A4yzCRB7nVA85ouvA4meumM+XGkvDJboh8YnHmqwondz1gt1sMCAqZV8BoHS/Z3NGCNS
+         LoaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791925105; x=1792529905;
+        d=1e100.net; s=20260707; t=1791925106; x=1792529906;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9LAvZtS8Ld4N8dcodE0MzB2CFlloDV8eZtDQEhdaME8=;
-        b=Wn7+CtzqfxUGFaeApdinO2lfSQ1mjnhEtYSmAPWGpVTHzFIncb6nhiFDnAhb6ACv5c
-         aUwrwEV6cKqyooIb4KLaf+vmrQEt1kDSq/Hn6REaB6qo7nJ62O7EcZfmk0tdazCV+AcW
-         mF22cOp2JEtEQnFBa9yjwRelNp7I31s/p/BmWZUpIehuCBjB82oK4liM06Y7jI3/bZ8n
-         MDC/70qYnEHO3HCkY/s23z3/rpopzMR8hIfghmJr8VVTOuNd4Yf+WKjenwF0/zHvMo5v
-         6A0rko3WbFyOvpak49kkRglQbaV7BQHcXWrcUI6jytBbVPsHnN0Vt3Imt9uL5LqSFCfl
-         41CQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzJYUzdZXtPzlxj4bm8Ata/9vZLvbf2Qmq6rqjfrhtYpqF5TNqXK+cFStLDYof7ArWpr79+jeY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIExxw/aR3M/7K8wyPYcJrR9NEepNCdChHiNJPA9jdwHDStuO0e
-	oLZemoN2wxSEGHEjeQY24VmudBCTLI1nEKB3gFnkVvP9qD/erCJUkVgxNaElND5334lvqMc/mFn
-	g01Fp2w==
-X-Received: from pffi17-n2.prod.google.com ([2002:a05:6a00:c291:20b0:88f:2ad7:b21c])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:7081:b0:898:b925:f467
- with SMTP id d2e1a72fcca58-898b925f78bmr6927030b3a.6.1791925104929; Tue, 13
- Oct 2026 13:58:24 -0700 (PDT)
-Date: Tue, 13 Oct 2026 20:57:31 +0000
+        bh=f+EeDAIv0aEfQrlKgoNr6zWr/sWrIpRpKyLa0c8+Ybg=;
+        b=YEEzjRfNW+u7bf7d9SG5I5Jisathn3LmoLFHXpp9VMJ/lx4pnvWoRuOiigMnaj8ZIY
+         1o48T/JtZl56e3rdSDBuVq6f3h2m62pvOasdTU/H6goR+bn4lMFzmEnEDaYEn9YPfW/F
+         sAccnCEAZubmcjuVZoj+c9ilG9zmFYlXA3Ge2nC3is5AZxHXocRz0BafCmK2iGQ3cbgP
+         aii/A5yjTY3AOabgfgsdHXGpDRGoXktfK3ExxwqNKERnyjqBU/YF5lZOpqse7hD8VbcJ
+         i+LRwh1CT21iJUSMLpQbxPwwWbFhpsskyHYbHaoMO8AOjeOH/OvX20NH/4dlvJxXF+rS
+         SBmA==
+X-Forwarded-Encrypted: i=1; AKwUvBxef9Yu9hT9/d0OJs1PCX9ObmrkA3zm79uIEOCqSvt9n8xrYLddclhEktm5PMCFs9apephQFAo=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKHNxTuGbsL0OGHs5lEnmsL2x91lihBhI2mLtuJxBbXL8VPkHH5
+	lh/VOkMnUf/HHfNiq4F70toSOdKRvpFxgpvKUcW4M29NKQpnI6/rFdIFpB8EuZXOsZqhhWTdIT7
+	AeXIMhg==
+X-Received: from pgcy1.prod.google.com ([2002:a63:7d01:0:b0:ccb:62e:3f01])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1e49:b0:3ab:e588:c29a
+ with SMTP id 98e67ed59e1d1-3abe588faf0mr6337672a91.6.1791925105719; Tue, 13
+ Oct 2026 13:58:25 -0700 (PDT)
+Date: Tue, 13 Oct 2026 20:57:32 +0000
 In-Reply-To: <20261013205816.1642597-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261013205816.1642597-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261013205816.1642597-5-kuniyu@google.com>
-Subject: [PATCH v2 net-next 4/5] neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
+Message-ID: <20261013205816.1642597-6-kuniyu@google.com>
+Subject: [PATCH v2 net-next 5/5] neighbour: Floor neigh_periodic_work()
+ interval at 1s.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
@@ -70,92 +71,43 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Previously, neigh_managed_work() was not rescheduled within
-1s since commit ed6cd6a17896 ("net, neigh: Set lower cap for
-neigh_managed_work rearming").
-
-Later, commit 211da42eaa45 ("net, neigh: introduce
-interval_probe_time_ms for periodic probe") added
-INTERVAL_PROBE_TIME_MS and changed the limit to 1ms.
-
-The limit actually did not work but was fixed with
-netlink_range_validation by commit 6d79b223ec44 ("neighbour:
-Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.").
+neigh_periodic_work() reschedules tbl->gc_work with a delay of
+BASE_REACHABLE_TIME >> 1.
 
 neigh_table is now per-netns, and a user could hog CPU by setting
-INTERVAL_PROBE_TIME_MS to a small value.
+BASE_REACHABLE_TIME to a small value.
 
-Let's floor the value at 1 second.
+Unlike INTERVAL_PROBE_TIME_MS, BASE_REACHABLE_TIME is also used to
+compute reachable_time for NUD_REACHABLE entries.
 
-This is a user-visible change, but given we had the 1s floor before
-and the default is 5s, it is unlikely that anyone but syzbot is
-setting it below 1s and affected by this change.
+Let's floor only the GC interval at 1 second.
 
 Suggested-by: Ido Schimmel <idosch@nvidia.com>
 Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-v2:
-  * Update commit message (rephrase 1st and add last sentence)
-  * Add and use NTBL_PARM_MS_MIN
----
- Documentation/netlink/specs/rt-neigh.yaml | 2 +-
- Documentation/networking/ip-sysctl.rst    | 2 +-
- net/core/neighbour.c                      | 5 +++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ net/core/neighbour.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/netlink/specs/rt-neigh.yaml b/Documentation/netlink/specs/rt-neigh.yaml
-index c8e55c98d564..7929e667cc7a 100644
---- a/Documentation/netlink/specs/rt-neigh.yaml
-+++ b/Documentation/netlink/specs/rt-neigh.yaml
-@@ -342,7 +342,7 @@ attribute-sets:
-         name: interval-probe-time-ms
-         type: u64
-         checks:
--          min: 1
-+          min: 1000
-           max: 86400000
- 
- operations:
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 685c84cf543d..b00bd77363d7 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -248,7 +248,7 @@ neigh/default/unres_qlen - INTEGER
- 
- neigh/default/interval_probe_time_ms - INTEGER
- 	The probe interval for neighbor entries with NTF_MANAGED flag,
--	the min value is 1, and the max value is 86400000 (1 day).
-+	the min value is 1000 (1s), and the max value is 86400000 (1 day).
- 
- 	Default: 5000
- 
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 6b0569aa5d64..aa3da886eaab 100644
+index aa3da886eaab..d6e9c7c59a89 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -2435,10 +2435,11 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
- 	[NDTA_PARMS]		= { .type = NLA_NESTED },
- };
+@@ -1042,12 +1042,12 @@ static void neigh_periodic_work(struct work_struct *work)
+ 						lockdep_is_held(&tbl->lock));
+ 	}
+ out:
+-	/* Cycle through all hash buckets every BASE_REACHABLE_TIME/2 ticks.
++	/* Cycle through all hash buckets every max(HZ, BASE_REACHABLE_TIME/2) ticks.
+ 	 * ARP entry timeouts range from 1/2 BASE_REACHABLE_TIME to 3/2
+ 	 * BASE_REACHABLE_TIME.
+ 	 */
+ 	queue_delayed_work(system_power_efficient_wq, &tbl->gc_work,
+-			      NEIGH_VAR(&tbl->parms, BASE_REACHABLE_TIME) >> 1);
++			   max(HZ, NEIGH_VAR(&tbl->parms, BASE_REACHABLE_TIME) >> 1));
+ 	spin_unlock_bh(&tbl->lock);
+ }
  
-+#define NTBL_PARM_MS_MIN	MSEC_PER_SEC
- #define NTBL_PARM_MS_MAX	(24 * 60 * 60 * MSEC_PER_SEC)
- 
- static const struct netlink_range_validation nl_ntbl_parm_ms_range = {
--	.min = 1,
-+	.min = NTBL_PARM_MS_MIN,
- 	.max = NTBL_PARM_MS_MAX,
- };
- 
-@@ -3701,7 +3702,7 @@ static int neigh_proc_dointvec_ms_jiffies_positive(const struct ctl_table *ctl,
- 	struct ctl_table tmp = *ctl;
- 	int ret, min, max;
- 
--	min = msecs_to_jiffies(1);
-+	min = msecs_to_jiffies(NTBL_PARM_MS_MIN);
- 	max = msecs_to_jiffies(NTBL_PARM_MS_MAX);
- 
- 	tmp.extra1 = &min;
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
