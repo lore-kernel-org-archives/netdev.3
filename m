@@ -1,133 +1,115 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9FD5172D9
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C3F521211
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791898481; cv=none; b=CvP7TCvbmKQAFk2nWpjvGFmNVvMTIf9nUf7dhMtbZ5U384PFE3Jebj7Ebi1+gWzI9ebPWHUpGmSMUXTCJxN1w/qC8WgKsqQw/gbMmQfFmd50ey1+uFlx1gO0FXzFdWFbmQ9/5nOS3Qe+SZ3UfgnoUZke0vktV4whQdsWdmf3IJk=
+	t=1791898528; cv=none; b=La+LstziyJoMbEPeb3UKG6wgWkRZdWGqmpB3mPf5VXYSkYgjNFx3W47AtTTudYkbKpPX/LhjyAoRK9uCsxNXyuMv4sn0TwEgdJADqECDeWg4+aegZyEaB4ieOGE41q9JYRtFJVS1VaBQFJhdEN4TT3+N/sLqPTIfrNZrUmGRjUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791898481; c=relaxed/simple;
-	bh=FqXfdBvSOpLrYH2GCauC78C/T54bfdJv+dI5rp/M1FY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ahgzrpDtdscLYMrB30jvuA34YxhWB7eLq9Me9zcKwasCZeSnRYEqqzFZyfgrAnzEbA3xjhOb0HFARm+O6kK9rLeU13d/mQ2AhC41wFm/sw70YTpHCmTHXHRV5H3N57awr8eGpNtBqFASdB/3TUFugfsnfnaSJZS1+p/XUwWBkJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q7CwYOy4; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=thV+IwQE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791898528; c=relaxed/simple;
+	bh=N6fefP2t7dBu0CANERrHDTr8v/TO1zFwnIvBIv/5Z7w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rA5f0uPexLxGEZZhky35mPHuS/2DKbqjnVxTw1COqdd1jLaejYJXadtnUd3Zubg6afwNlkVvUT4NFVZ7rtFiRVUq/Z5ilOAtAt+HEO9zIzDpNxk3Dd1YjaHO+ZvANpL21cuVGxOvmff8MzrLZa1bFzKRU5FQJNxpPraov3ZyWOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W4wObMgz; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q7CwYOy4";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="thV+IwQE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791898479;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TMxllgf8Oy65ELVJn05IHyidVK+eMAVjjDY5aKGoxCI=;
-	b=Q7CwYOy4WQ6OS0dwZtfluMTM0eQkWJZfl9QVuj771+DLHdwtfIaQszbci66432jX+fonHz
-	PU902xmFrjnGKhoK5k1tryM3MukWlg3uUbWTayRGQlYxSvNLHjrF1OFoL5VY/PygcKHafF
-	FpjhmIKOZghs08FDhB25ocWYyYd7KSo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-167-1g4VmVgSOdC-pJqF7HdR4A-1; Tue, 13 Oct 2026 13:34:37 +0000
-X-MC-Unique: 1g4VmVgSOdC-pJqF7HdR4A-1
-X-Mimecast-MFC-AGG-ID: 1g4VmVgSOdC-pJqF7HdR4A_1791898476
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48aef5cfe43so1796451f8f.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 06:34:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W4wObMgz"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a17ce1dc00so6702285e9.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 06:35:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791898476; x=1792503276; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TMxllgf8Oy65ELVJn05IHyidVK+eMAVjjDY5aKGoxCI=;
-        b=thV+IwQEPOj/ya6bWr2y/1p2BvdhwdNs2dK8ubY3MojxdHy0Bb5pfy4VyTC1/tzKfz
-         8ZJYP9IcxckSNeEzHkD1OFe7Dbb25wDEulVep8BVmSktAHFuh+62od6+hzizmH/1J7lN
-         X87RlDKsnGhEtZ9wCW7jBStr6poCbzLw/n0suTz2yVdfshqmqi8KfQexHiIfN1Yxmmv9
-         ed0pJAjq+8Gguvs9uLxOq4Qvl20PcNWsHyRgriUk1xCMzp8kbdoUn/hRfzvaJ0S7oD3t
-         0iekgmseEOuyPm4C9ZRC+ge9u6uU9gLsZTxcSH+CZ5wtq4dWI06mNgIO/YXSN5m0E1s6
-         sXSg==
+        d=gmail.com; s=20251104; t=1791898525; x=1792503325; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e4Fg/kGMgH93krXP0h6BlEw/WJdjeUSmyLtEuqzGKl0=;
+        b=W4wObMgz1WJQADxnzLFgsSASC3G4WuM1CDKZAUWK40KjlVz3YocZfVF2Abtg+N+HR2
+         o9w1McOdw36L7eUKRxsLlY6EYt3AxedxnzHF6qL+Q1g/SBj186iufamMVY6dHV/m2L+v
+         VusAxHeQqzAWP/ER1FrSchu1cKzL1NOJxByDqwcgHxl/dYugrsJ97ETKsp83po6q6oh2
+         8rDDiO9gfsre1QmdORxlg0Md71IZ6BGQaigCJpPuvVSgC08ZCLd4YRQ3lCX7qOY/qDCh
+         3Pk4xpW1l2sx2wfZLPhNVoeL+ZcZ7hdC1dPuhKYGgcK6OUYjz9wG4Sb0iO0cHvslLr6G
+         M5Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791898476; x=1792503276;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1791898525; x=1792503325;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=TMxllgf8Oy65ELVJn05IHyidVK+eMAVjjDY5aKGoxCI=;
-        b=b7QGm8mRACESElRfRKIur3GszIKocYWBaNEKh4sG4EvznxuvFJZEEYx7bG1ds51T2+
-         LSAUJu8jp1yrbmoAPHcE5lFGfx7XpXIILllk1sZ0cKdYfgg6rOJNiAubJxq91TuZB5+o
-         1AUCBuMP4et3qieGL4bd9WKspxmkDsbFbh/ubWwSYSHIa1kv3gDgBkTx9P3vP8bDCsVH
-         Zv5pUNM9TyooBbDRNM+WAWl6ElQGWlXkJCV3i9NgWPGZ5G2JMvc69J2OULV2I6dtrSuG
-         rCZ2z3g5BrzvL80BC17acH+L1d0J/epvcnbx+5isG1DL94ekAb67zDKXHRULhd3Q/n0w
-         TJ/w==
-X-Forwarded-Encrypted: i=1; AKwUvBwnQdg25vHIicmGO8KsvEgYpYN4NXnLI/NOP4BFZ8BISvi24j2NXkLvgyh4RphhUrrj+rM1XOA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJlgNgn1YTBaz9VuYgpnewLn0r0/6/oPAOa/pw30NA3LOjZxr8a
-	VOBEheoLJqOvsbkWUDcKhMpkcOH+wjGvlMH9Pn5CV3zG3h6OUFSJzHnrszcq4ezBrHu2zXVGFB7
-	x1h/5B+1yv6uLJsh/ZGpQA+gx63eJZ3Kmxhl2K3fqY7g/IjMD1MiRV3jbCw==
-X-Gm-Gg: AYBFou0FZxMIZRZcnWdZlGoaJ/kpu86yT+SJngDNPqT2AbyW+0D49RjVFPthGFveF8I
-	dWzvqGWLRGHPOXqbWMMHPaGsYveQbUH1LhomI9Cqp5FjHvtFunucTvfKuWKOi7L3FHXtoCCeq9q
-	QCJcgelI2puMMLYUC4j4siRIck2Mz4krMKFFy2mf1QxtP55ROCbfiSg7EsMco6SCL2jOcVHwD0X
-	TlL3Lh1ByZaGwXG0SFCy8cQJtigpukCX4SgfoqDbTnC5DQjx+dEts5HmHkY6tLbjlBER0rTn1BM
-	71Cm/OSfQMPTZyrLOwPt4sp8tXnHyzo28d8ykWTuEiGExMKh147gAclsFO+nz3UmcB/bEPyetTb
-	F2y6l0CoVlFAA6z94tsngeZikgqZNyxzQZf8VoKHpcR/56/xnjVjPOg3re3Tt2rGhqP/ojLgH8Q
-	==
-X-Received: by 2002:a5d:5f50:0:b0:48b:50e:5dc6 with SMTP id ffacd0b85a97d-48dbacda8edmr26953862f8f.34.1791898476122;
-        Tue, 13 Oct 2026 06:34:36 -0700 (PDT)
-X-Received: by 2002:a5d:5f50:0:b0:48b:50e:5dc6 with SMTP id ffacd0b85a97d-48dbacda8edmr26953809f8f.34.1791898475731;
-        Tue, 13 Oct 2026 06:34:35 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab506bsm5756128f8f.27.2026.10.13.06.34.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 06:34:35 -0700 (PDT)
-Message-ID: <619ddfe4-3d85-4636-a508-3ff461f2a09b@redhat.com>
-Date: Tue, 13 Oct 2026 15:34:33 +0200
+        bh=e4Fg/kGMgH93krXP0h6BlEw/WJdjeUSmyLtEuqzGKl0=;
+        b=bPoT6LU9s/jINKOQq72LO7ifHGEupbqTAV5oiiMH12DxDjRYV2y9Y0GK8MDctxoo88
+         PwOTg1Z/44Dkj/9Epu2euH6LopNEPyresduCcFHaz0H9nn42Nc8nPkTOBdNVByNci2MW
+         wkAaPmmbIeCWHm5OrfQXnM3kArVGOV8MTcdSp6/zhFYJn3Q83HgQ0cH+9zH5LvudH06g
+         FtK98z87PPmBhq2PJmduXqcKq3dR32jP/gVbY6T97x3zAWaEB0unzkhUVrNkA5w48MuF
+         xiL5wbUDcxaS1PsuWThNBuT6nrOWwNuFoBtMzGtocAmDWxFpDdaribW/fQL+e5Ubzs4X
+         DTpg==
+X-Forwarded-Encrypted: i=1; AKwUvBzmLeABLe0t2Bni8m+vbqNrKqVpujkyMtGOn0KMzP15YYop0apnu+Q0bVuDnwBwYe6ao79wK+k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLyMxEJP2w7YYa0G1pusjOwHVKC6r4i41NUfNh80ABsEo/kPK1p
+	Ltuw8w+lDdwzlBiZZtFGEZr99u5kgykSh9lmprDBNq0iikSEHQ7whYQY
+X-Gm-Gg: AYBFou0PDcPw+V2kwUwruEXlw9msiXTizADc6rNuWGPQJRS3j7LQdjs2YFUmx3iociP
+	mNfIQDrvcSrm22fNJbmJUjGOTz1pyjpSSM2Jujd/kFQEgnIfaTIleeU1IsYhSJI9R0PLoOyxFlq
+	UHqvUBcKcJeRFcFsU/XkF/3BxCs41fRIgHJFz4C+xqgZ6Jv75KQL3vkM/GKWg0IHWMzkGuBIgFD
+	6wLwwst2NIAyXI/KGnmSIh9hnSwcMOrxX6QigDXmZ8dOJ6Gg0b4JRwhy442N1EGBtHZLl+3UcTm
+	2iI3rJKFLTfygHcoX2ZbS0CpNMlfMmh0lr/NdboTWSsVmpdZdJqGzR3daY0MP2u854bPmYdBoRq
+	aUSriLh3kRYkB3th44Gl0Sd5SNZUY1Uw8dwerIcWjc0b4sujIFPG6ZhjujoDhIgUlost/fIjj4r
+	qr0hm+nxlTInOzNDOA7Rcvejg284uEmjoChrwDY1IrDbfpr6TSTSIS5w8AptYW992KsYuoG65Wn
+	bWhjcF1JFDFWV6k9wCnUq2gONJ9Ku9czz/SilqXnDdm6wrs1ImdE/Robk9QMx7LV+s2ftwdVyZf
+	LQ==
+X-Received: by 2002:a05:600c:6285:b0:4a1:715d:1913 with SMTP id 5b1f17b1804b1-4a18e4760demr247111765e9.1.1791898525052;
+        Tue, 13 Oct 2026 06:35:25 -0700 (PDT)
+Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-149.paris.inria.fr. [128.93.83.149])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a18c85009csm284480325e9.2.2026.10.13.06.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 06:35:24 -0700 (PDT)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	stable@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] net: korina: fix dma_unmap_single() length in korina_rx()
+Date: Tue, 13 Oct 2026 15:23:11 +0200
+Message-ID: <20261013132319.22253-2-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v5 6/6] net: net_test: add tests for TCP
- re-segmentation
-To: Wang Zhan <wang.zhan@smartx.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- horms@kernel.org, keyong.sun@smartx.com,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Jason Wang <jasowangio@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, dev@openvswitch.org,
- Daniel Borkmann <daniel@iogearbox.net>, Neal Cardwell
- <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Alice Mikityanska <alice@isovalent.com>,
- David Laight <david.laight.linux@gmail.com>
-References: <20261008100651.2534957-1-wang.zhan@smartx.com>
- <20261008100651.2534957-7-wang.zhan@smartx.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261008100651.2534957-7-wang.zhan@smartx.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/8/26 12:06, Wang Zhan wrote:
-> The GSO engine can now be asked to group several MSS segments into one
-> output skb, which is what re-segmentation needs.  Add KUnit coverage for
-> the max_segs parameter.
-> 
-> The parameterized GSO test gains a max_segs input and four cases: a limit
-> of two MSS applied to a 3003 byte and to a 5003 byte payload, a tail which
-> holds one MSS and is therefore not a GSO skb, and a max_segs of one MSS
-> which must leave the output unchanged.  It drives skb_segment() directly,
-> because the synthetic protocol it uses has no gso_segment callback.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
-Sashiko noted this may require a small follow-up:
+dma_map_single() is called with size KORINA_RBSIZE and
+dma_unmap_single() is called with size pkt_len which might be smaller.
+Therefore, parts of the buffer may stay mapped after dma_unmap_single()
+is called, which leaks a resource and might leave exposed mapped memory
+that might be eventually freed.
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261008100651.2534957-1-wang.zhan@smartx.com
+Change dma_unmap_single() length to KORINA_RBSIZE.
 
-but that is indeed better handled as a follow-up, if needed.
+Fixes: 0fc96939a97f ("net: korina: Use DMA API")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+---
+ drivers/net/ethernet/korina.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-/P
+diff --git a/drivers/net/ethernet/korina.c b/drivers/net/ethernet/korina.c
+index 891a94d89f4b..fac3d3d3e5d7 100644
+--- a/drivers/net/ethernet/korina.c
++++ b/drivers/net/ethernet/korina.c
+@@ -649,7 +649,7 @@ static int korina_rx(struct net_device *dev, int limit)
+ 
+ 		pkt_len = RCVPKT_LENGTH(devcs);
+ 		dma_unmap_single(lp->dmadev, lp->rx_skb_dma[lp->rx_next_done],
+-				 pkt_len, DMA_FROM_DEVICE);
++				 KORINA_RBSIZE, DMA_FROM_DEVICE);
+ 
+ 		/* Do not count the CRC */
+ 		skb_put(skb, pkt_len - 4);
+-- 
+2.43.0
 
