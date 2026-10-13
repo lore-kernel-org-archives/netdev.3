@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F6A522EFF;
-	Tue, 13 Oct 2026 17:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC1151DE00;
+	Tue, 13 Oct 2026 17:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791912232; cv=none; b=iWyZfsEnrnJDBpIzLYxQ7Q8DHuwkCPF+Yem24Uznv5ZjE7443sTAcXuWmQgpEkoQBzqYWSkgdmacqQ/+Vq3HuS2/rdowsKF7VeZw0xYqklQ0rwgs4k9Or04IGUFtE29A4kSbzy4vXb97k+ZAWlfM3dfYwOvxcedZQiXxaS8W2MI=
+	t=1791912233; cv=none; b=h4F4t1eQSCg3CqSJkKOQhumpasR6p1NBgCfM0gLQbfWOEe+vgG2JRUKDn4ASsEAEWNuEZp1IMy8G6/srphPgRtKtn6HsLJFqvjrATxL+ObA5m8cGYPoMshpaqPTyenVI9Z1q/1T1UV9qCb7oP7Uq+q6nxN0inoLtsz3Bu/2pjuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791912232; c=relaxed/simple;
-	bh=ZBX/bwUQFb1q4SA1VSX33XP71BD0E0yj2dLx/8R5oEQ=;
+	s=arc-20240116; t=1791912233; c=relaxed/simple;
+	bh=tj1iKHUd6B/c5xb9oFoejxiP9MyuK2swCeVtkx9GHME=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rokekTlDfBAUZ3wR9DC3Jo08VrJ+cCrcUZkHRyaiKcExhAmjzInHlTy6QIN3qW00w/ZSKbs0wM9bN2I6ocQrRpvWCv4zyL0ORJZD/FbaIxUMTEezZWts2iTAgv5KuYfuppiEHwg9gJVY0p9RoGyG/czbRRwbJX1oD6oo7JRxiGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6aOdfG2; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ZWCbpjQIRX2WoEjSO7Hw3ZOnb5oHA0rmIKvyYWp01aU+4KRUQvJ0gRmZG09YuCBVPChpuZcmoJcTlWiM2b7cwZcUHFmHyt8NGju3Zhu61tOmXkFK2fu9V7v/QVxzq2iON6dMSeet9YkkIvZQZCYITbkwfjt9myAAWOWtweKIO3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=frsojOz9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6aOdfG2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CBD1F000FF;
-	Tue, 13 Oct 2026 17:23:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="frsojOz9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A49A1F00893;
+	Tue, 13 Oct 2026 17:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791912230;
-	bh=drDOPzr2nRrD+iaQx9Uo11Ocys6Yy8DVgXwY17hRO3I=;
+	s=k20260515; t=1791912232;
+	bh=5jBQVVQu87yDTmql24gbGwBkBE1SHG0V0o4YJ33B3sI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=F6aOdfG2ziFr8sxJeYMG7+w9ggBsCBjroVmVBb6D6oEJGb9jR+JaibAZhQU/bv6VK
-	 /2WwA5Q4mdNcDU+RpKUKwfOUEurNLzciel1GqBamsht1V3SzvbcAV46YmdOCALyUXI
-	 14UpIYNEm5WXc00SnQXeHtITNaYmFrh+JCX4ZJs0aPQB10a/vzGUWZMhuc4XJ7nA61
-	 ePv9TzZSFFElaVYRXrWoNAXT27t14ipYfnjCHG/evUJPZ8LAFJtZa6LAl3MB2SnGK0
-	 lDrvIdjAxuCnrEn+vHyjMIpYDzMT0MzXJg2yKMu6OXTgMnfDIOk1hrn5lohkx8f43S
-	 G/DJSKpSCF43g==
-Subject: Re: [PATCH net-next v9 1/2] net: wwan: core: propagate modem control
- signals to port drivers
+	b=frsojOz9bMWm6YFcOezxubB2GzO2ttPSyaL+nYbX0eUnoSvx/Rf8MSbdZlsd2DELi
+	 SW1rgmiFSzXqDnr0jdrr6kkSV8zZsPpeJWH+Kjr3MdkJ22Ec9xDqx3JNAmAhRFY0v7
+	 Y/g2omSs0jDLbggJVWldx4Ui+zlvnHwSoznpIddsDUoaSPMGliutxBfi+eZQnbj2xg
+	 s8qC0m7P25vd0+A4CkndTte2tuJ+iu/8npKP0K2XamyNoQfxkl6gzKL7orSh2Eqo0r
+	 wh8abIFr0itdbBysm/zK9nU7yD3bM30O0CJ36zU2u88BKSr9AGed7Vxep+3MvZlR+l
+	 BD39OOrHN2v3g==
+Subject: Re: [PATCH net-next v9 2/2] net: wwan: mhi_wwan_ctrl: drive DTR/RTS
+ via the IP_CTRL channel
 From: netdev-bot+sashiko@kernel.org
 To: peter.hunt@opengear.com
 Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com, dnlplm@gmail.com,
@@ -35,10 +35,10 @@ Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com, dnlplm@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Tue, 13 Oct 2026 17:23:49 +0000
-Message-ID: <179191222962.434549.5982381221454218948@kernel.org>
-In-Reply-To: <20261012172219.3668624-2-peter.hunt@opengear.com>
-References: <20261012172219.3668624-2-peter.hunt@opengear.com>
+Date: Tue, 13 Oct 2026 17:23:50 +0000
+Message-ID: <179191223098.434549.11899173102479904971@kernel.org>
+In-Reply-To: <20261012172219.3668624-3-peter.hunt@opengear.com>
+References: <20261012172219.3668624-3-peter.hunt@opengear.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,10 +49,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -60,251 +60,171 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [Medium] `wwan_port_fops_at_ioctl()` now does `ACQUIRE(mutex_intr,
-  lock)(&port->ops_lock)` before its `switch`, so every ioctl on an…
-- [Medium] `wwan_port_fops_at_ioctl()` now holds `port->ops_lock` for the
-  whole function, via a function-scope ACQUIRE guard, across every user-…
-- [Low] Not a valid finding (baseline decision: false).
-- [Low] The comments say the wwan open/close DTR handling works 'as a TTY
-  does', but the code ignores the baud field of the termios state it…
-- [Low] The new `->dtr_rts` kernel-doc in include/linux/wwan.h says the
-  op is 'Called on first open, on last close if HUPCL is set, on port…
+- [Medium] When a DTR/RTS message fails to send, nothing retries it, and
+  the wwan core's change-only filter stops userspace from re-sending it.
+- [Low] (Baseline verification: the main trigger is disproven; only a
+  root-only sysfs corner case remains.) The concern says an AT port can…
 
 --
 
-net: wwan: core: propagate modem control signals to port drivers
+net: wwan: mhi_wwan_ctrl: drive DTR/RTS via the IP_CTRL channel
 
-This adds an optional ->dtr_rts() operation to struct wwan_port_ops. The
-wwan core calls it on first open, on last close when HUPCL is set, on
-removal of an open port, and when TIOCMSET/TIOCMBIS/TIOCMBIC change DTR or
-RTS on an AT port. The separate data_lock is removed, and the AT/QCDM
-termios and TIOCM state is now protected by ops_lock, which the ioctl
-handler takes interruptibly.
+This patch makes mhi_wwan_ctrl also bind the IP_CTRL MHI channel and uses
+it to send the host DTR/RTS state to the modem, so SDX55/SDX65 modems
+deliver URCs on the AT ports. A per-controller registry maps each AT port
+to the IP_CTRL device of its own modem, and a new ->dtr_rts op sends the
+line state, while a recycled DL sink buffer keeps the IP_CTRL DL ring
+live.
 
-> diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
-> index ffbcf11e4e681..27ae6583d3e08 100644
-> --- a/drivers/net/wwan/wwan_core.c
-> +++ b/drivers/net/wwan/wwan_core.c
+> diff --git a/drivers/net/wwan/mhi_wwan_ctrl.c b/drivers/net/wwan/mhi_wwan_ctrl.c
+> index a31d8540fbb85..1cbbfcb3b920a 100644
+> --- a/drivers/net/wwan/mhi_wwan_ctrl.c
+> +++ b/drivers/net/wwan/mhi_wwan_ctrl.c
 
 [ ... ]
 
-> @@ -653,7 +654,10 @@ struct wwan_port *wwan_create_port(struct device *parent,
->  	mutex_init(&port->ops_lock);
->  	skb_queue_head_init(&port->rxq);
->  	init_waitqueue_head(&port->waitqueue);
-> -	mutex_init(&port->data_lock);
-> +
-> +	/* AT ports hang up on last close by default, as a TTY does */
-> +	if (type == WWAN_PORT_AT)
-> +		port->at_data.termios.c_cflag = HUPCL;
->  
->  	port->dev.parent = &wwandev->dev;
->  	port->dev.type = &wwan_port_dev_type;
-> @@ -679,12 +683,44 @@ struct wwan_port *wwan_create_port(struct device *parent,
->  }
->  EXPORT_SYMBOL_GPL(wwan_create_port);
->  
-> +/* Raise DTR/RTS on first open of an AT port, as a TTY does. Called with
-> + * ops_lock held.
-> + */
-> +static void wwan_port_raise_dtr_rts(struct wwan_port *port)
-> +{
-> +	lockdep_assert_held(&port->ops_lock);
-> +
-> +	if (port->type != WWAN_PORT_AT || !port->ops->dtr_rts)
-> +		return;
-> +
-> +	port->at_data.mdmbits |= TIOCM_DTR | TIOCM_RTS;
-> +	port->ops->dtr_rts(port, port->at_data.mdmbits);
-> +}
-
-[Severity: Low]
-The comments here and in wwan_create_port() say this behaves as a TTY
-does. Is the baud field of the termios taken into account anywhere?
-
-wwan_create_port() sets c_cflag to just HUPCL, so TCGETS reports B0 to
-userspace. Even so, wwan_port_raise_dtr_rts() asserts DTR/RTS on every
-first open. On a TTY, the lines are only raised when the baud rate is
-non-zero:
-
-drivers/tty/tty_port.c:tty_port_block_til_ready() {
-    ...
-		if (C_BAUD(tty))
-			tty_port_raise_dtr_rts(port);
-    ...
-}
-
-The TTY default is also tty_std_termios (B38400 | CS8 | CREAD | HUPCL),
-not bare HUPCL.
-
-In the same way, a TCSETS with B0 only stores the termios here and never
-calls ->dtr_rts(). A TTY would drop DTR in that case. Examples are
-stty -F /dev/wwan0at0 0, or the POSIX hang-up of cfsetospeed(B0) followed
-by tcsetattr().
-
-Separately, the kernel-doc says "Called on first open", but the call only
-happens when ->start() succeeds.
-
-Should the comments make a weaker claim? Alternatively, could the default
-termios use a non-zero baud rate so that TCGETS matches what the driver
-was told?
-
-> +
-> +/* Drop DTR/RTS on an AT port. Called with ops_lock held. On last close
-> + * the lines are only dropped if HUPCL is set, as for a TTY, on port
-> + * removal they are always dropped.
-> + */
-> +static void wwan_port_drop_dtr_rts(struct wwan_port *port, bool hupcl_only)
-> +{
-> +	lockdep_assert_held(&port->ops_lock);
-> +
-> +	if (port->type != WWAN_PORT_AT || !port->ops->dtr_rts)
-> +		return;
-> +	if (hupcl_only && !(port->at_data.termios.c_cflag & HUPCL))
-> +		return;
-> +
-> +	port->at_data.mdmbits &= ~(TIOCM_DTR | TIOCM_RTS);
-> +	port->ops->dtr_rts(port, port->at_data.mdmbits);
-> +}
-> +
->  void wwan_remove_port(struct wwan_port *port)
->  {
->  	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
->  
->  	mutex_lock(&port->ops_lock);
->  	if (port->start_count) {
-> +		wwan_port_drop_dtr_rts(port, false);
->  		port->ops->stop(port);
->  		port->start_count = 0;
+> @@ -103,6 +134,61 @@ static void mhi_wwan_ctrl_refill_work(struct work_struct *work)
 >  	}
-
-[Severity: Low]
-The comment above says "on port removal they are always dropped". The
-->dtr_rts kernel-doc in include/linux/wwan.h also lists "on port removal"
-without any condition. Is that accurate, given that the drop sits inside
-the if (port->start_count) block?
-
-The commit message describes clearing HUPCL as the way to keep DTR
-asserted across close. If userspace does that and then closes the port,
-wwan_port_op_stop() returns early in wwan_port_drop_dtr_rts(). A later
-wwan_remove_port() then sees start_count == 0, so the driver never gets a
-->dtr_rts() call on removal.
-
-The behaviour itself matches a TTY. Could the comment and the kernel-doc
-say that the lines are only dropped when a port is removed while still
-open?
+>  }
+>  
+> +/* Signal the modem's DTR/RTS lines over its own controller's IP_CTRL channel */
+> +static int mhi_wwan_ctrl_send_dtr(struct mhi_wwan_dev *mhiwwan, unsigned int mdmbits)
+> +{
 
 [ ... ]
 
-> @@ -979,9 +1020,15 @@ static __poll_t wwan_port_fops_poll(struct file *filp, poll_table *wait)
->  static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
->  				    unsigned long arg)
->  {
-> -	int ret = 0;
-> +	int ret;
->  
-> -	mutex_lock(&port->data_lock);
-> +	/* ops_lock serialises the termios/TIOCM state with port ops and
-> +	 * removal. A blocking write holds it too, so wait interruptibly.
-> +	 */
-> +	ACQUIRE(mutex_intr, lock)(&port->ops_lock);
-> +	ret = ACQUIRE_ERR(mutex_intr, &lock);
-> +	if (ret)
-> +		return ret;
+> +	if (!ctrl_dev) {
+> +		dev_dbg(&mhiwwan->mhi_dev->dev,
+> +			"IP_CTRL not enumerated; DTR/RTS not signalled to modem\n");
+> +		return 0;
+> +	}
+> +
+> +	dtr_msg = kzalloc_obj(*dtr_msg);
+> +	if (!dtr_msg)
+> +		return -ENOMEM;
+
+[ ... ]
+
+> +	ret = mhi_queue_buf(ctrl_dev, DMA_TO_DEVICE, dtr_msg, sizeof(*dtr_msg),
+> +			    MHI_EOT);
+> +	if (ret) {
+> +		dev_dbg(&mhiwwan->mhi_dev->dev,
+> +			"failed to queue DTR/RTS signal: %d\n", ret);
+> +		kfree(dtr_msg);
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static void mhi_wwan_ctrl_dtr_rts(struct wwan_port *port, unsigned int mdmbits)
+> +{
+> +	mhi_wwan_ctrl_send_dtr(wwan_port_get_drvdata(port), mdmbits);
+> +}
 
 [Severity: Medium]
-The lock is now taken before the switch, so every ioctl on an AT/QCDM
-port waits on ops_lock. That includes TCGETS, TCFLSH,
-TIOCEXCL/TIOCNXCL/TIOCGEXCL, and commands that end up in the default
--ENOIOCTLCMD case.
+What happens to the modem's line state when this send fails?
 
-FIONREAD is one of those, because wwan_port_fops_ioctl() tries the AT
-handler first:
+mhi_wwan_ctrl_send_dtr() can fail with -ENOMEM from kzalloc_obj(). It can
+also fail from mhi_queue_buf() with -EAGAIN (UL ring full), -EIO (MHI
+error state), -ENODEV, or a map_single error. In each case the message is
+freed, and mhi_wwan_ctrl_dtr_rts() ignores the return value.
 
-drivers/net/wwan/wwan_core.c:wwan_port_fops_ioctl() {
+Nothing retries the send. The DL sink path in this same patch does retry
+-ENOMEM.
+
+The wwan core has already stored the new value in port->at_data.mdmbits
+before it calls ->dtr_rts:
+
+drivers/net/wwan/wwan_core.c:wwan_port_raise_dtr_rts() {
     ...
-		res = wwan_port_fops_at_ioctl(port, cmd, arg);
-		if (res != -ENOIOCTLCMD)
-			return res;
-	}
+	port->at_data.mdmbits |= TIOCM_DTR | TIOCM_RTS;
+	port->ops->dtr_rts(port, port->at_data.mdmbits);
+}
 
-	switch (cmd) {
-	case TIOCINQ: {	/* aka SIOCINQ aka FIONREAD */
+The TIOCMSET/TIOCMBIC/TIOCMBIS handler only calls the driver when the
+bits change:
+
+drivers/net/wwan/wwan_core.c:wwan_port_fops_at_ioctl() {
+    ...
+		/* Only signal the driver when DTR or RTS actually changes */
+		if (port->type == WWAN_PORT_AT && port->ops &&
+		    port->ops->dtr_rts &&
+		    (old ^ port->at_data.mdmbits) & (TIOCM_DTR | TIOCM_RTS))
+			port->ops->dtr_rts(port, port->at_data.mdmbits);
     ...
 }
 
-wwan_port_op_tx() holds ops_lock across ->tx_blocking(). For
-rpmsg_wwan_ctrl that is a blocking rpmsg_send(). Suppose thread A is in a
-blocking write():
+So after a lost DTR raise, TIOCMGET reports DTR as asserted, but the modem
+still sees it de-asserted and keeps withholding +CREG/+DMI. A repeated
+TIOCMBIS(TIOCM_DTR), or a TIOCMSET with the same bits, never reaches the
+driver.
 
-wwan_port_fops_write()
-  wwan_port_op_tx()
-    mutex_lock(&port->ops_lock)
-    port->ops->tx_blocking()
-      rpmsg_send()
+Only clearing and then setting DTR, or a full last-close/first-open cycle,
+brings the modem back in step. A long-lived opener such as ModemManager
+rarely does either.
 
-Thread B's ioctl(FIONREAD) or tcgetattr() now waits behind it. A signal
-during that wait makes mutex_lock_interruptible() return -EINTR. That
-value is not -ENOIOCTLCMD, so it goes straight back to userspace, and
-SA_RESTART won't restart the call.
+This also seems to conflict with the commit message:
 
-Before this patch these paths only took data_lock, which the write path
-never held.
+    the next ioctl or open/close cycle will resynchronise the modem
+    state.
 
-Could ops_lock be taken only for the commands that touch the
-termios/TIOCM state or call ->dtr_rts()?
+That only holds for an ioctl that actually changes DTR or RTS. The
+companion wwan core commit also says that the TIOCM state and the line
+state sent to the driver cannot get out of step.
+
+Could a failed send be retried from a work item, as the DL refill is? Or
+could the driver track the last state the modem accepted, so that a later
+ioctl can resend it?
+
+[ ... ]
+
+> +	mutex_lock(&mhi_wwan_dtr_lock);
+> +	list_add(&dtr->node, &mhi_wwan_dtr_list);
+> +	mutex_unlock(&mhi_wwan_dtr_lock);
+> +
+> +	return 0;
 
 [ ... ]
 
-> @@ -1024,18 +1082,24 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
->  	case TIOCMSET:
->  	case TIOCMBIC:
->  	case TIOCMBIS: {
-> -		int mdmbits;
-> +		int mdmbits, old = port->at_data.mdmbits;
->  
->  		if (copy_from_user(&mdmbits, (int __user *)arg, sizeof(int))) {
+> +static void mhi_wwan_dtr_remove(struct mhi_device *mhi_dev)
+> +{
+> +	struct mhi_wwan_dtr *dtr = dev_get_drvdata(&mhi_dev->dev);
+> +
+> +	mutex_lock(&mhi_wwan_dtr_lock);
+> +	list_del(&dtr->node);
+> +	mutex_unlock(&mhi_wwan_dtr_lock);
+> +
+> +	/* Stop the refill work, and stop a late DL callback re-arming it, before
+> +	 * the channel is torn down so no requeue can race with the teardown
+> +	 */
+> +	disable_delayed_work_sync(&dtr->rx_refill);
+> +	mhi_unprepare_from_transfer(mhi_dev);
 
-[Severity: Medium]
-The ACQUIRE guard holds ops_lock for the whole function, so several user
-memory accesses now run with ops_lock held:
+[Severity: Low]
+This is a narrow corner case, but can the IP_CTRL device and the open AT
+ports get out of step across a sysfs unbind and rebind of mhi_wwan_dtr?
 
-  - this copy_from_user()
-  - the copy_to_user() calls for TCGETS/TCGETS2
-  - the copy_from_user() calls for TCSETS*/TCSETS2*
-  - the put_user() for TIOCMGET
+The normal boot and hot-plug order is fine. mhi_create_devices() probes
+channels synchronously in channel-number order, so IP_CTRL (18/19) binds
+before DUN (32/33). mhi_wwan_ctrl_init() also registers
+mhi_wwan_dtr_driver first.
 
-Can userspace hold ops_lock indefinitely this way?
+Suppose root unbinds mhi_wwan_dtr while a DUN port is open. Then
+mhi_wwan_dtr_remove() tears down the channel without first sending DTR/RTS
+low. The drop on last close finds no ctrl_dev in mhi_wwan_ctrl_send_dtr()
+and returns 0 without sending anything.
 
-Suppose arg points into memory whose page fault never completes, for
-example an mmap of a file on a FUSE mount whose daemon never answers. The
-thread then sleeps in the fault handler with ops_lock held. The
-interruptible acquisition doesn't help once the lock is owned.
+On a later rebind, mhi_wwan_dtr_probe() adds the registry entry but does
+not replay the stored mdmbits of AT ports that are already open. The core
+filters ioctls that do not change the bits, so TIOCMBIS(TIOCM_DTR) cannot
+recover this either.
 
-wwan_remove_port(), wwan_port_op_start(), wwan_port_op_stop(),
-wwan_port_op_tx() and wwan_port_fops_poll() all take ops_lock with plain
-mutex_lock(). Device removal, for example via mhi_wwan_ctrl_remove() or a
-cdc-wdm disconnect, would then hang in D state:
+The ordering assumption above also does not hold when the async_probe
+module parameter is used.
 
-ioctl(fd, TIOCMSET, ptr_into_fuse_mapping)
-  wwan_port_fops_at_ioctl()
-    ACQUIRE(mutex_intr, lock)(&port->ops_lock)
-    copy_from_user()   <- waits on FUSE
-
-wwan_remove_port()
-  mutex_lock(&port->ops_lock)   <- blocks
-
-Any other process that opens, closes or polls the port would block in the
-same way.
-
-Before this patch the ioctl user copies ran under the ioctl-private
-data_lock. wwan_port_fops_write() copies user data before calling
-wwan_port_op_tx(), so nothing touched user memory under ops_lock.
-
-Would it work to copy the argument in before taking the lock, and copy
-results out after dropping it, as the TTY core does?
-
-[ ... ]
+During mhi_destroy_devices(), IP_CTRL is also removed before DUN, so the
+final drop does nothing. The modem is being reset or powered off at that
+point anyway.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012172219.3668624-1-peter.hunt%40opengear.com
