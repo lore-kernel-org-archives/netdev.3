@@ -1,227 +1,222 @@
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADB75226A0
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA5B5226AD;
+	Tue, 13 Oct 2026 17:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791911811; cv=none; b=fn2Mtf7ig9ShZTCSj6qMFR9tLrd+7QEb0FtpG3o1FqoaoDz4AybkGMCJTA4gopjulbQl2IVcSwCqpBo6DgQIeLS53V6/3NeN5U/egxlnW3KGxU02hs5awCgh5qz7dY3D5T2v2PI1aTYi6dU/A/rfrjfNxLqYB5j+CzEtL6YHNd8=
+	t=1791912045; cv=none; b=HvkdGEh3FDh7ijHOm18YzTRQ3SCDoxQsWOcIFlp1/KJ7G5iXjcqKuv35KQb2k8lnSG9yrmjO9g8X1RMf+jLawNb63hq2u2RVBD9BRYnf1B4ca2t4+pEnIAbUcJmR8jD4NEmmTx1sWvtgIrqMIbR2mo7kHY7k3CE37vrg9vLPWbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791911811; c=relaxed/simple;
-	bh=E0y7u+KR3xF/a4fcPKHidebxgCLhqgP2K/Rv6TPbOiQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f/bES9zquS0MugC+ApnYIXl1FLxvnCNDcpOBRRbupx/A2eY1+5KumjukV8L6MP6xqBTDNKiWaS3IK/eWVifUamg9/B0ZKVcUEpZphgGAoHXLohpXfJ797vqrXhdEzbGklO3/TCM83nCYA4r/+RsNtB1G3gz0eiBNC4Mc17kVzKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OngxHnvA; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791912045; c=relaxed/simple;
+	bh=56KZuexrur2wf1KKukC2zaOvizAamSePIvQM5l/hWzk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kT9Cv3AFHgamj/WuroWa6+CQD6GmxcWyKHl13kw6tW3Ypand2XCT5Z1u/48b0lKTAEydG5XEcMfb/KFZjRp+Di+oPjZJnHHEO1ZqdQ53wSVexviNepZBqyCoB6JjR/62GV1msg6Fh0JdnWRzpoDQJ0l2rB2L/ykQvB/Qx2JbZVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XdJN36cm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OngxHnvA"
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-4f59ea27bd0so1014360b6e.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:16:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791911808; x=1792516608; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Rh8zSXbKHc5uCKze2IT1wznFx+pVYTz0bfvRk4C07S4=;
-        b=OngxHnvAA6saR3OBCtEOXWu6BOGRi+0KC/UsGTlv/UJBcnpyFztf00L4tqRe19juF4
-         0NP69aClxJpJWCL6ILli8w+pOqUiUsmk6Q1tSLrbqqHwoxzxu+W9WLegjMmVhm08gXSp
-         7L2iGOIG5qv7GQKjisQZ6xKVY5roN47WTEPrxIXGOf2uelKvAk6dTwEjYgU/prxMy5QQ
-         mDLMTDyB8d1b5a/rDhd3zoWH73f5jtTvQq10X9TXE5zdy8ayYQMDxEB41YgyZlQkDzDu
-         IhI2wBzMYATeYlmeviHi/U5CFKW85GFyhZp5HuLynuitHhWxhOogmdr2izp2Aae8SPT1
-         VrPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791911808; x=1792516608;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Rh8zSXbKHc5uCKze2IT1wznFx+pVYTz0bfvRk4C07S4=;
-        b=kR/TSJqL1vT+prmd350aN/POjLDbR6Cwb9o/p0j0+swO8VgHJceS3JWWbvWd5wVJPN
-         +WLfwN1ZYvk74Pr160XnOsyvVFBAOmsdD2s2iApbEOLrkIz6qeP29TD5R42mNeuppqyW
-         nlzipbGOKx16cam9X6x4yJBUYmufm6em6ZDgIxILo7QXnDbvK++DkN3L2kB8HNhsgFgX
-         y0ShrAaL+LUXw9z5Tu9vya4OBzI5Ag/FH7TBQAkRqF6PF8TTdR7yKzBxSGhQbdf2ZaJ6
-         9Q+u8ardJp8Z6bY3I3MC+J6sJ8OfDRDpN6WZXHrc8h9nhI+MHMVDj0Ve9anjOJOZEHiu
-         tu9Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwSbrMbgUpa4yshPAqlFqJTcovkaimyNRUBtWkFezHKMKHRMGN6Bejqro9hTm+yUxhMEK1IzMA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIV7n19vbuxHPs62LYjXc+y78PCXaPDvAv2RAZDz+c5bc6jBvFH
-	uiEj8a8vvLHjNC+8jnOdcC8R62oxeryikZwYnYt+QeGA5I0fAnCQcUiL
-X-Gm-Gg: AYBFou1MmMl8uqCjNSQaWqILMR4nlKwp64w9oDn4490R5X//UUnGH4DmrdQGTQRHPxd
-	KOb7Me05PV+i4pbEAcsaLXo2E5fbSA+mtzRcIqHccxy8W7R7aalz8eCD1oAtCA6fmh0o86y5sWX
-	WbCNgWuDVK/WW7vyPlZF0JfMv26KVV/SQCm7h0Yc1t6halmf8AYc4z+osHMuuVZJ97Wl+LCi+pC
-	hVhByi19oG5katWa47edV+NTui02RLWD3hoWtEPwIMiyz49WJdwK6bMGoLjWNMUGX+lqknFuI3E
-	uS7NVLDN36NezN+eq00w1F7+L2T0nQnsHLX8EIuFjPicP8eYcXmCrd3wdDwixaEciBnmlwH/O/N
-	Vucg8zGo1QS5qf6FDWVU9uvh5Dcud2NUx45vA1oeD7u8iOQALphxJejmarqclf1N9jV3quzlqsK
-	nvpP5//E4msZJ7VqNZoo67N7+ZwgZO6gSmUIRwRV55EnwT/4EOeOlLHX6rPD2DYTrKPBU=
-X-Received: by 2002:a05:6808:13c3:b0:4d6:93e2:5bc4 with SMTP id 5614622812f47-50c59f38b43mr14625456b6e.64.1791911808288;
-        Tue, 13 Oct 2026 10:16:48 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:41::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-50c1c0248fbsm15142233b6e.15.2026.10.13.10.16.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 10:16:46 -0700 (PDT)
-Date: Tue, 13 Oct 2026 10:16:44 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jia Jia <physicalmtea@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org,
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com,
-	jasowangio@gmail.com, eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/5] vsock/virtio: split socket lookup from
- locked RX processing
-Message-ID: <as5nfI0qfqD64dc1@devvm29614.prn0.facebook.com>
-References: <20261010142247.99223-1-physicalmtea@gmail.com>
- <20261010142247.99223-2-physicalmtea@gmail.com>
- <as1ZCkbya2jn72ip@devvm29614.prn0.facebook.com>
- <CAJwVaMJL4FFYLq523VY014oa4u7RWD0WUY0+seP1xh3GY5peiQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XdJN36cm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B941F000FF;
+	Tue, 13 Oct 2026 17:20:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791912043;
+	bh=/NLp/3Gui+rX7wckVkCCuev5Q9irjB0DJFH6N9SJGVs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=XdJN36cmOrF1asbMAAoaZuq12LEG8hEqVIMCiryMTCA3ArocCf94ltB0YdrB1zpNU
+	 c2MIUDSa8JptFQOeiRhLDWOjSRGSuQS4skBLk+t95KqFfeOmbIfHTD1OVNyuDF5Jqb
+	 RsMNcNDuLon394DyoOUxNTQaJiJ+G2KKXyFQSXtwRjbby29Lw19btfx3PwvPB2JpjC
+	 3sv1f6HPDMw2pUGcA2B2Wqtpkbqav3B5oCgxZoH5WYQloUfxU2oqOrv5erg4cX8YwS
+	 sJ8TFHH3u53KB2s89iKbKoG1ywNUGsjAz8y/J1rPSGp9AbIcRnzLzcMfg+gRrqHSUP
+	 R4nJsLbWvYVKw==
+Subject: Re: [PATCH net-next v2 1/2] netconsole: avoid printing partially
+ updated target attributes
+From: netdev-bot+sashiko@kernel.org
+To: gustavold@gmail.com
+Cc: leitao@debian.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 13 Oct 2026 17:20:42 +0000
+Message-ID: <179191204261.434549.8984165771561140450@kernel.org>
+In-Reply-To: <20261012-netcons-fixes-next-v2-1-ac8ec4c62edb@gmail.com>
+References: <20261012-netcons-fixes-next-v2-1-ac8ec4c62edb@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJwVaMJL4FFYLq523VY014oa4u7RWD0WUY0+seP1xh3GY5peiQ@mail.gmail.com>
 
-On Tue, Oct 13, 2026 at 11:26:38AM +0800, Jia Jia wrote:
-> >
-> > On Sat, Oct 10, 2026 at 10:22:43PM +0800, Jia Jia wrote:
-> > > Split virtio_transport_recv_pkt() so socket lookup is separate from the
-> > > receive state machine that runs under the socket lock.
-> > >
-> > > Keep virtio_transport_recv_pkt() on its existing per-packet locking path.
-> > > Pass the source and destination addresses used for lookup to the locked
-> > > receive path so they are decoded only once.
-> > >
-> > > Pass the network namespace and decoded address tuple through a packet
-> > > context to the locked receive path.
-> > >
-> > > Preserve source validation and failure handling. Keep the lookup reference
-> > > separate from the skb owner reference so the locked receive path can manage
-> > > the two lifetimes independently.
-> > >
-> > > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> > > ---
-> > >  net/vmw_vsock/virtio_transport_common.c | 139 ++++++++++++++++--------
-> > >  1 file changed, 96 insertions(+), 43 deletions(-)
-> > >
-> >
-> > [...]
-> >
-> > > +/*
-> > > + * The caller holds sk's socket lock and must free skb if this returns true.
-> > > + */
-> > > +static bool
-> > > +virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-> > > +                              struct sk_buff *skb, struct sock *sk,
-> > > +                              const struct virtio_transport_rx_pkt_ctx *ctx)
-> > > +{
-> > > +     const struct sockaddr_vm *src = ctx->src;
-> > > +     const struct sockaddr_vm *dst = ctx->dst;
-> > > +     struct vsock_sock *vsk = vsock_sk(sk);
-> > > +     struct net *net = ctx->net;
-> > > +     bool space_available;
-> > >
-> > > -     /* Check if sk has been closed or assigned to another transport before
-> > > -      * lock_sock (note: listener sockets are not assigned to any transport)
-> > > +     /* Check after acquiring the socket lock. Listener sockets accept packets
-> > > +      * from any source and are not assigned to a transport.
-> > >        */
-> > >       if (sock_flag(sk, SOCK_DONE) ||
-> > >           (sk->sk_state != TCP_LISTEN &&
-> > > -          !vsock_check_source(vsk, &t->transport, &src))) {
-> > > +          !vsock_check_source(vsk, &t->transport, src))) {
-> > >               (void)virtio_transport_reset_no_sock(t, skb, net);
-> > > -             release_sock(sk);
-> > > -             sock_put(sk);
-> > > -             goto free_pkt;
-> > > +             return true;
-> > >       }
-> > >
-> > >       space_available = virtio_transport_space_update(sk, skb);
-> > >
-> > >       /* Update CID in case it has changed after a transport reset event */
-> > >       if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
-> > > -             vsk->local_addr.svm_cid = dst.svm_cid;
-> > > +             vsk->local_addr.svm_cid = dst->svm_cid;
-> > >
-> > >       if (space_available)
-> > >               sk->sk_write_space(sk);
-> > > @@ -1875,12 +1891,49 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
-> > >               break;
-> > >       }
-> > >
-> > > +     return false;
-> > > +}
-> > > +
-> > > +/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
-> > > + * lock.
-> > > + */
-> > > +void virtio_transport_recv_pkt(struct virtio_transport *t,
-> > > +                            struct sk_buff *skb, struct net *net)
-> > > +{
-> > > +     struct virtio_transport_rx_pkt_ctx ctx;
-> > > +     struct sockaddr_vm src, dst;
-> > > +     struct sock *sk;
-> > > +     bool free_pkt;
-> > > +
-> > > +     virtio_transport_recv_pkt_init_addrs(skb, &src, &dst);
-> > > +     virtio_transport_trace_recv_pkt(skb, &src, &dst);
-> > > +
-> > > +     sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
-> > > +     if (!sk) {
-> > > +             (void)virtio_transport_reset_no_sock(t, skb, net);
-> > > +             goto free_pkt;
-> > > +     }
-> > > +
-> > > +     if (!skb_set_owner_sk_safe(skb, sk)) {
-> > > +             WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-> > > +             goto free_pkt;
-> > > +     }
-> > > +
-> > > +     lock_sock(sk);
-> > > +     ctx = (struct virtio_transport_rx_pkt_ctx) {
-> > > +             .net = net,
-> > > +             .src = &src,
-> > > +             .dst = &dst,
-> > > +     };
-> > > +     free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
-> >
-> > At this point the socket lookup succeeded with src/dst/net, why not just
-> > pass sk which already has all of them?
-> >
-> 
-> If I understand this correctly, a successful lookup is not enough to
-> recover all of this from sk. The lookup may fall back from the
-> connected table to the bound
-> table, so the packet source must still be validated under the socket
-> lock; otherwise that check would become ineffective. The packet
-> destination is also needed after
-> a transport reset, and the RX namespace used for a reset reply is not
-> necessarily sock_net(sk) in global mode. I’ll remove the context
-> struct and pass src, dst, and
-> net directly.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-True that the lookup may fallback to the bound table, but this begs the
-question, why bother with the bound table here? If a socket hasn't
-landed in the connected table yet, then OP_RW is -EINVAL and we respond
-with RST anyway... so I'd guess we shouldn't even be trying to batch for
-those sockets.
+Critical: 0 · High: 2 · Medium: 0 · Low: 1
 
-For connected sockets, the sk has the destination (vsk->remote_addr)
-needed by the reset. And yes, sock_net(sk) does not necessarily equal
-the net ptr used for a reset reply in global mode, but we don't really
-expect that for global mode in vsock, we only expect that
-vsock_net_check_mode() rules are followed. In this case where
-!net_eq(n0, n1), the RST reply will be routed correctly across
-namespaces following global mode rules.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-I could certainly be missing something and happy to be pointed to an
-instance of sk being insufficient here. In general, I think its nice to
-avoid new data structures if possible.
+- [High] In drivers/net/netconsole.c, local_mac_show() still takes no
+  lock.
+- [High] dev_name_show() still races with netconsole_netdev_event()
+  writing np.dev_name, even though the commit message says this race is…
+- [Low] The commit fixes a user-visible race: configfs *_show() callbacks
+  can return torn values while a store or the netdev notifier updates…
 
-Best,
-Bobby
+--
+
+netconsole: avoid printing partially updated target attributes
+
+This patch makes the netconsole configfs *_show() callbacks take
+dynamic_netconsole_mutex, so they no longer return values that a
+concurrent store has only partly updated. dev_name_show() also takes
+target_list_lock to serialize against the NETDEV_CHANGENAME update in
+netconsole_netdev_event().
+
+> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-netcons-fixes-v1-0-bb5ffe5e698a%40gmail.com
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+
+[Severity: Low]
+Should this have a Fixes: tag?
+
+The unlocked readers in dev_name_show(), remote_mac_show() and
+local_mac_show() date back to commit 0bcc1816188e ("[NET] netconsole:
+Support dynamic reconfiguration using configfs").
+
+The family/address tearing in local_ip_show() and remote_ip_show() comes
+from the more recent inet_addr/family rework (commits 46b3f9e7e761,
+56ddc8d48e75 and f6e96d72f64a).
+
+> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> index 267254f046de9..953a1da071862 100644
+> --- a/drivers/net/netconsole.c
+> +++ b/drivers/net/netconsole.c
+> @@ -859,7 +859,20 @@ static ssize_t release_show(struct config_item *item, char *buf)
+>  
+>  static ssize_t dev_name_show(struct config_item *item, char *buf)
+>  {
+> -	return sysfs_emit(buf, "%s\n", to_target(item)->np.dev_name);
+> +	struct netconsole_target *nt = to_target(item);
+> +	unsigned long flags;
+> +	int ret;
+> +
+> +	dynamic_netconsole_mutex_lock();
+> +	/* Hold target_list_lock to prevent racing against
+> +	 * netconsole_netdev_event() changing np.dev_name.
+> +	 */
+> +	spin_lock_irqsave(&target_list_lock, flags);
+> +	ret = sysfs_emit(buf, "%s\n", nt->np.dev_name);
+> +	spin_unlock_irqrestore(&target_list_lock, flags);
+
+[Severity: High]
+Does target_list_lock cover every place where netconsole_netdev_event()
+changes np.dev_name?
+
+It covers the NETDEV_CHANGENAME strscpy(). For NETDEV_UNREGISTER,
+NETDEV_RELEASE and NETDEV_JOIN, though, the notifier drops
+target_list_lock before it cleans up the target:
+
+netconsole_netdev_event()
+    spin_unlock_irqrestore(&target_list_lock, flags);
+    mutex_unlock(&target_cleanup_list_lock);
+    ...
+    netconsole_process_cleanups_core()
+        mutex_lock(&target_cleanup_list_lock);
+        netcons_release_dev(nt)
+            do_netpoll_cleanup(&nt->np);
+            if (bound_by_mac(nt))
+                memset(&nt->np.dev_name, 0, IFNAMSIZ);
+        spin_lock_irqsave(&target_list_lock, flags);
+        list_move(&nt->list, &target_list);
+
+The memset in netcons_release_dev() runs with only RTNL and
+target_cleanup_list_lock held. Neither dynamic_netconsole_mutex nor
+target_list_lock is held, so the new dev_name_show() has no lock in
+common with this writer.
+
+MAC-bound targets do show up in configfs. A netconsole= cmdline target
+bound by MAC is exposed through populate_configfs_item(), and
+netpoll_setup() fills np.dev_name from ndev->name.
+
+For such a target, can the sysfs_emit() here still copy a partly zeroed
+name?
+
+Two options that look possible: take target_cleanup_list_lock in
+dev_name_show(), following the dynamic_netconsole_mutex ->
+target_cleanup_list_lock -> target_list_lock order that
+drop_netconsole_target() already uses. Or do the memset in
+netcons_release_dev() under target_list_lock.
+
+> +	dynamic_netconsole_mutex_unlock();
+> +
+> +	return ret;
+>  }
+>  
+
+[ ... ]
+
+> @@ -906,7 +933,14 @@ static ssize_t local_mac_show(struct config_item *item, char *buf)
+>  
+>  static ssize_t remote_mac_show(struct config_item *item, char *buf)
+>  {
+> -	return sysfs_emit(buf, "%pM\n", to_target(item)->remote_mac);
+> +	struct netconsole_target *nt = to_target(item);
+> +	int ret;
+> +
+> +	dynamic_netconsole_mutex_lock();
+> +	ret = sysfs_emit(buf, "%pM\n", nt->remote_mac);
+> +	dynamic_netconsole_mutex_unlock();
+> +
+> +	return ret;
+>  }
+
+[Severity: High]
+This patch leaves local_mac_show(), just above this hunk, without any
+locking:
+
+static ssize_t local_mac_show(struct config_item *item, char *buf)
+{
+	struct net_device *dev = to_target(item)->np.dev;
+	static const u8 bcast[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+
+	return sysfs_emit(buf, "%pM\n", dev ? dev->dev_addr : bcast);
+}
+
+It loads np.dev with no lock, no RCU read section and no netdev
+reference, then dereferences dev->dev_addr.
+
+enabled_store() sets and clears np.dev through netcons_netpoll_setup()
+and netconsole_process_cleanups(). process_resume_target() sets and
+clears it too. Both run under dynamic_netconsole_mutex.
+
+The notifier also clears np.dev, without that mutex:
+
+netconsole_netdev_event()
+    netconsole_process_cleanups_core()
+        netcons_release_dev()
+            do_netpoll_cleanup()
+                netdev_put(np->dev, &np->dev_tracker);
+                np->dev = NULL;
+
+If netconsole holds the last reference on a device that is being
+unregistered, netdev_run_todo() can free the net_device after this put.
+
+Can a reader that already loaded dev then read dev->dev_addr from freed
+memory?
+
+The unlocked read dates back to the original configfs support in commit
+0bcc1816188e. This patch is meant to make the *_show() callbacks safe
+against concurrent writers, though. Should local_mac_show() be handled
+here as well?
+
+Taking dynamic_netconsole_mutex alone would cover enabled_store() and
+process_resume_target(), but not the notifier path. Would the device
+need to be pinned some other way? RTNL, RCU, or a netdev reference
+taken under a lock the notifier also holds are possible options.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-netcons-fixes-next-v2-0-ac8ec4c62edb%40gmail.com
