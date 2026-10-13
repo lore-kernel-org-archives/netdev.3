@@ -1,400 +1,274 @@
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A47248C414
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791912727; cv=pass; b=FMo+V7zkxRWSUrmrtRRlhV9LAjaud2RlxUZfODzImEFQF4h7obNGYYCgtIVtU/1lpofjoYueV0Jpqroxil4QULzlFR6GR6vraZH37L777WaX1ChfrrQAc80zCdP9GRJfZd66DPbmPxzq93anNZMO1oD3jaIlag4Zl5PFiPDNGFg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791912727; c=relaxed/simple;
-	bh=3bJf7rB5mzrk5Vnkzr7cMS80P6CdxrJMNGaNVEb1BEs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rCeHl8ei9MSgnP5TVFc80K5doKpfHFJewq8pEyRehs+AsNj/jL8BSeODTEt4PuA3rMuKmQHQwQ/Kxdm7opHhceDTyO+psflC/MWhI4x45yRCz284xZHXuiz/5jp2BRjltzRrJ41YnRNJB+0qjfr3BeD5yc7WnrhalDaoxKBTUqg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdHMFn6E; arc=pass smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3DF476CF1;
+	Tue, 13 Oct 2026 17:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791912799; cv=none; b=HBVMZpfpOCmTNkKCC9FXM3UEPJaf3elZjJthL2BBnan5f7U+sOCynHli53wjYdAKvKIZgNsKmyEL5tKne0gviAa3icUYn69XspFyFwuGCHM9ypSEWpDHQQCcEKYomiEbBPL3df7ZItM2cgcdVG/yOfAm4wUOU0nmKr0Bf1iOzT4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791912799; c=relaxed/simple;
+	bh=uSopyzT5gw9alo2WFk3BLl62zeM5ESWwLUUXgdOCXTo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HYu1kbYNnQeZMbqQRti4lENiiyuKKkASFoz9uyl2LytVCQAzysh29ocWcbwcCqbE1Kd94ANJi4S48MClKN5X/D+Oo1BRgOW7m5qRcwav1YgoKpuj68RhEMnPyTADgurxTH/gHZxDS9k9gjESITvQDCHmmloANrrWmdmhQ7wHQL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mvd5oJeS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdHMFn6E"
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-4b190cdc9feso2003671b6e.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:32:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791912723; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lywKaXeRayBluEb6mU+moKQ7HpUqqoIkMA0283H275PQfGXBjo1WHDM7YNB3BnECKF
-         ZXEN15fkWLtpXHKUFFjXMOuaqtjQaWjnhD1CQVgjzDxrvVUIpUHvYt4VmRs6lk1mzOun
-         tVeRMK9aArIX93P6aATFZ9Bq9dAynA1ODhJTa3TrDecMPbrwNQp+81z1IoevyEGI8wnN
-         XJLmkBuwIVgP7ZrnLDBH8dts6ThKiw4kvyzNImesAVklUTnf1rzla92Ny5GF5F/SKFQo
-         iBaVgU/2/XpX6y7zqYcyCtMzX0Kb2PJw2fvaEaTGbH4RxlQ9/+IpeRhJmAWA9yGx3JDT
-         b9aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+YqJp4O+59gQY9J3r/yMVPYfKYHH1g4JMnIPubeUpbg=;
-        fh=Q3hopzfXSV3ON/sx6HnOiIs23SoDzed/qLXVnxtsSMo=;
-        b=mICxwHYKMvM+6t19+e9tqPrVnMhodk7PAqgZvTB7aAvhIic0kR6a7V1ch7DzLMaV5v
-         g6FOa7i26nVUMfgqNdlhJqeXJlxKau9WhajpVSygebFHBfNsLjAqCJxjaM54xNXXxM9n
-         QGwIgX8QFgB6yZO5z/FdB8uagaFnKZEvE7j278o2SzBZyzRmlIyHmCZZSy/aEMkekNoY
-         58Y9yyEHiig8UVv1nfv6dxHxSeDbkqZdSYibly1W2lmUin8hj+3M0DWGC3F8drChzMGa
-         OMlzx9GRCDjJIvefQfb8HHb47VkI7ta6dPPAfJ8jtheSkZZZtlRHbqyUHlz9nJxZaQpN
-         B1kA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791912723; x=1792517523; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+YqJp4O+59gQY9J3r/yMVPYfKYHH1g4JMnIPubeUpbg=;
-        b=EdHMFn6E0qm5D0y3oZMTyZddmr0jMrRhUuousUedTBlHxV8TqIDWJyCanzOUW46RLU
-         uKYgR6nB1HsFvI7C8C9ibHv5RCCM4JOaU0hjzhB7mzsAbuw4CywYjI2oSg4yKawhDbxK
-         cWlYdL1AE4OHL8V4waWgmIBfqS35FqrXNDgMOwfSOc7kkOhIXMbjZ2ZZa5fCAnjo8v/N
-         q2kPstMMzPhNt0/OFm/KT9WRHcF/rlIJfbaEZrNlZln73igMKr65KDDyxxYN8KPKWFdw
-         JvSXDF4/geWZM6xfybtDUAPvSpjWfQVZ84up5wDYamWyaiCyD78xBXP0C0nuqebTrV4A
-         1L6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791912723; x=1792517523;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+YqJp4O+59gQY9J3r/yMVPYfKYHH1g4JMnIPubeUpbg=;
-        b=Z+y0MQUqm2qkyuE368JLiga8rgEQKzcLX0FkXHFozGfdrT+KrwTpNXu15Bog8+gHCI
-         ZSnYq6P6u4n26ZqsRaBy/QBfai5tuGnfgRzG9dSKmLnL+cGSU6/VZNINQhfJi1eGKssz
-         5l4zGHmongJVxXhgKc6rXazeLc7WP/KYh+pezjCwjWXQGldqKevxPs+hWXiioXnx18ZR
-         ld/thSSjLetEiaWH+tVFIuj+mHgIwP2jn+lqvU2D6qbVEp3vcA9BuFsaD34KflKXR/VK
-         gijKNVOZ7dRgvYrDxYS4JJ57TrAKA0v9H/SanO/WetXZXrTFsaIBlexRzfo4js3JGi49
-         1TcA==
-X-Forwarded-Encrypted: i=1; AKwUvBznTZcexrfLZ0IhhjFxmC6nvbt+2G828KoRHZquz+JY938U/j+IvLp6E0nf6seY9krOwIABHPE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ5AvivJaBGx44+kghzFnJKnpeBY8STU1lDWJuc9K5B4dFx+zAw
-	0nOLV3oldYySfwx2kGatYGmkwfNuenZzyoQ+cvq7B1Nkrc5SgwHn3biTfPrwRG5I6kdXH6I6+DK
-	ZLZsxSf30IP422Bj0zDjtnQMJKhZtxiY=
-X-Gm-Gg: AYBFou0Hy52E6/fqYsUcFUU9GYUS8ebGg2/fipHiukbD7Fn4u3vD7UL71u/2lrYZsL2
-	SRRHsJlKuM9Fwm7S782pIJD1MsPaXBsYYROOVEEAO7LUjdFrEBzsUkGKXLbIMmLqCZ/pPKp5ipu
-	rWndkVnPyILfz2HsjjJW1PcxvWa6DZzxQ+k3468BjHneP84IEPc4g2beslNYsl6okYjbkVIEh19
-	oNqA2506jx7EbrUDIfhzMA68iQBZyZ5m7mkLqmoBRTlkvdOOAS3/lmIAlirWG3TaUdCxk8pJups
-	At6v4st1peYSe6z1PyII7VH0tKwx17hDqTLAv64RjbVZQ6ZebCkPF7l0
-X-Received: by 2002:a05:6808:c3ee:b0:4e8:92e5:db5b with SMTP id
- 5614622812f47-50c5b4648camr15525292b6e.54.1791912723215; Tue, 13 Oct 2026
- 10:32:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mvd5oJeS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFA81F000FF;
+	Tue, 13 Oct 2026 17:33:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791912798;
+	bh=EHvNM9ipJklrkpLTY6Oc29cm4UHyMczj/tdT+1/AJpY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Mvd5oJeSm6zY2LpzUnsxYwtjaWkPPRyPrTiFJ1qmVC6zbnobpkokLFaeaCgD3rF/S
+	 rRBzKcyVB5JwAMb1kYF8znUsgMzZ2wyO7znqRTDMEsz2an8Hj9FvM94mGZqcn0Rx8r
+	 CK9URNHP8VBAkEHIncreZ/1Z7lVQshO6aQBKyqvroZy5CrBEI1tqVncnlFAsYmoneA
+	 179A2v1I037RitWcYF0MIKwTryx9sdnev9hP2LhwuRlfKaP8wXY2lyftVSYlXf9LIM
+	 OOZzjUefhB3Qrd5dE+goz8NIvJseqtRQ0lI3Tsot7UsEovKlsWarGqYftggdM1ZoBf
+	 q4VbVLWK7K58A==
+Subject: Re: [PATCH net-next v6 2/4] net: stmmac: drop split frames on AF_XDP
+ zero-copy RX
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, Jose.Abreu@synopsys.com, boon.leong.ong@intel.com,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ bpf@vger.kernel.org
+Date: Tue, 13 Oct 2026 17:33:16 +0000
+Message-ID: <179191279658.434549.18208801431852161087@kernel.org>
+In-Reply-To: <20261012-stmmac-rx-mb-v6-2-2225050915c1@oss.qualcomm.com>
+References: <20261012-stmmac-rx-mb-v6-2-2225050915c1@oss.qualcomm.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012125943.558629-2-omar@blockcast.net> <179190010922.434549.7719203541619227350@kernel.org>
-In-Reply-To: <179190010922.434549.7719203541619227350@kernel.org>
-From: Taehee Yoo <ap420073@gmail.com>
-Date: Wed, 14 Oct 2026 02:31:51 +0900
-X-Gm-Features: AclHuK8nmvo0sDZrNVF5UU3WsSdwlcxhN5MAdz88n-m1O0twpTrHbBedjUxJICc
-Message-ID: <CAMArcTUgPVLO=A--VnMz77UAeTDhXmKVARrSD7ib0HG9WQ_zdQ@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/6] amt: fix use-after-free when a Membership
- Update re-arms a freed tunnel
-To: netdev-bot+sashiko@kernel.org
-Cc: omar@blockcast.net, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 11:01=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wr=
-ote:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 2 (1) =C2=B7 Medium: 0 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] The fix stops a concurrent Membership Update from re-arming
->   gc_wq, but that Update can still arm other delayed work that points at=
-=E2=80=A6
-> - [High] amt_dev_stop() replaced the RCU-safe list_del_rcu() loop with
->   list_splice_init(&amt->tunnel_list, &doomed), which moves the RCU-=E2=
-=80=A6
-> - [Low] At this commit, a tunnel that only ever received a Request lives
->   three times as long (3*GMI instead of GMI), and the commit message=E2=
-=80=A6
->
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but tunnel
->   teardown does not wait for a group_timer callback that is already=E2=80=
-=A6
->
-> --
->
-> amt: fix use-after-free when a Membership Update re-arms a freed tunnel
->
-> amt_update_handler() no longer re-arms tunnel->gc_wq. It now stamps a new
-> tunnel->last_seen field, and amt_tunnel_expire() either re-arms itself or
-> frees the tunnel under amt->lock. The patch also adds a tunnel->dead flag=
-,
-> and amt_dev_stop() now marks tunnels dead and splices the tunnel list out
-> under amt->lock before freeing them.
->
-> > diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-> > index b53f8ec556615..b284fa7b7307e 100644
-> > --- a/drivers/net/amt.c
-> > +++ b/drivers/net/amt.c
->
-> [ ... ]
->
-> > @@ -2494,9 +2515,12 @@ static bool amt_update_handler(struct amt_dev *a=
-mt, struct sk_buff *skb)
-> >               if (tunnel->ip4 =3D=3D saddr) {
-> >                       if ((nonce =3D=3D tunnel->nonce &&
-> >                            response_mac =3D=3D tunnel->mac)) {
-> > -                             mod_delayed_work(amt_wq, &tunnel->gc_wq,
-> > -                                              msecs_to_jiffies(amt_gmi=
-(amt))
-> > -                                                               * 3);
-> > +                             /* Refresh liveness only.  gc_wq is re-ar=
-med by
-> > +                              * amt_tunnel_expire() itself from last_s=
-een, never
-> > +                              * from here, so this cannot re-queue the=
- work of a
-> > +                              * tunnel that is being freed.
-> > +                              */
-> > +                             WRITE_ONCE(tunnel->last_seen, jiffies);
-> >                               goto report;
->
-> [Severity: High]
-> The Update path no longer re-arms gc_wq. Can it still arm other delayed
-> work that points at a tunnel being freed?
->
-> amt_update_handler() still holds only rcu_read_lock(), and it never check=
-s
-> the new tunnel->dead flag. After the goto report it does this:
->
-> drivers/net/amt.c:amt_update_handler() {
->     ...
->                 spin_lock_bh(&tunnel->lock);
->                 amt_igmp_report_handler(amt, skb, tunnel);
->                 spin_unlock_bh(&tunnel->lock);
->     ...
-> }
->
-> The MLD branch does the same.
->
-> Suppose amt_tunnel_expire() reads last_seen before this WRITE_ONCE() is
-> visible. It then goes ahead with the teardown:
->
-> CPU1 (amt_tunnel_expire)            CPU2 (amt_update_handler)
->                                     finds tunnel in RCU walk
-> deadline =3D READ_ONCE(last_seen)...
-> tunnel->dead =3D true;
-> list_del_rcu(&tunnel->list);
-> amt_clear_groups(tunnel);
-> kfree_rcu(tunnel, rcu);
->                                     WRITE_ONCE(tunnel->last_seen, jiffies=
-);
->                                     spin_lock_bh(&tunnel->lock);
->                                     amt_igmp_report_handler()
->                                       amt_igmpv2_report_handler()
->                                         amt_add_group()
->                                           gnode->tunnel_list =3D tunnel;
->                                           hlist_add_head_rcu(...)
->                                         mod_delayed_work(group_timer)
->                                         dev_hold(amt->dev)
->
-> Nothing deletes that gnode afterwards. Would the gnode, its sources and
-> the netdev reference all leak?
->
-> The tunnel is freed once the grace period ends. When group_timer fires,
-> amt_group_work() loads gnode->tunnel_list and calls
-> spin_lock_bh(&tunnel->lock) on the freed tunnel. amt_del_group() also
-> writes gnode->tunnel_list->nr_groups.
->
-> The commit message describes this same class of bug: an Update holding a
-> cached tunnel pointer arms delayed work that outlives the tunnel.
->
-> amt_dev_stop() seems to have the same window. An Update that found the
-> tunnel before the list_splice_init() can add groups after
-> amt_clear_groups() has run. This path looks unchanged through the end of
-> the series.
->
-> Could amt_update_handler() check tunnel->dead under tunnel->lock and bail
-> out before calling the report handlers? Both freers set dead before
-> amt_clear_groups() takes tunnel->lock, so that check should close the
-> window.
->
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-I agree with Sashiko's suggestion.
+Critical: 0 · High: 1 · Medium: 0 · Low: 2 (1)
 
-Please make tunnel->dead protected by tunnel->lock as well, and
-have amt_update_handler() check it under tunnel->lock before calling
-the report handlers.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> [ ... ]
->
-> > @@ -2732,6 +2756,7 @@ static bool amt_request_handler(struct amt_dev *a=
-mt, struct sk_buff *skb)
-> >       for (i =3D 0; i < amt->hash_buckets; i++)
-> >               INIT_HLIST_HEAD(&tunnel->groups[i]);
-> >
-> > +     tunnel->last_seen =3D jiffies;
-> >       INIT_DELAYED_WORK(&tunnel->gc_wq, amt_tunnel_expire);
-> >
-> >       list_add_tail_rcu(&tunnel->list, &amt->tunnel_list);
->
-> [Severity: Low]
-> Does this extend the lifetime of a Request-only tunnel from GMI to 3*GMI?
->
-> amt_request_handler() still arms the first expiry at one GMI:
->
->         mod_delayed_work(amt_wq, &tunnel->gc_wq,
->                          msecs_to_jiffies(amt_gmi(amt)));
->
-> When that work fires, amt_tunnel_expire() computes:
->
->         deadline =3D READ_ONCE(tunnel->last_seen) +
->                    msecs_to_jiffies(amt_gmi(amt)) * 3;
->
-> The deadline has not passed yet, so it re-arms for roughly another 2*GMI.
-> Before this patch, a tunnel that only received a Request was freed after
-> GMI. Unauthenticated Requests can now hold max_tunnels slots three times
-> longer, and the commit message does not mention the change.
->
-> The new comment in struct amt_tunnel_list also describes last_seen as the
-> "Last time a valid Membership Update refreshed this tunnel". At this
-> commit the Request path writes it as well.
->
-> A later commit in the series, "amt: do not create tunnel state for
-> unauthenticated Requests", seems to fix this. That commit stops the
-> Request path from allocating tunnels, which also makes the struct comment
-> accurate.
->
-> [ ... ]
->
-> > @@ -3053,6 +3078,7 @@ static int amt_dev_stop(struct net_device *dev)
-> >       struct amt_tunnel_list *tunnel, *tmp;
-> >       struct sk_buff *skb;
-> >       struct sock *sk;
-> > +     LIST_HEAD(doomed);
-> >       int i;
-> >
-> >       disable_delayed_work_sync(&amt->req_wq);
-> > @@ -3079,9 +3105,19 @@ static int amt_dev_stop(struct net_device *dev)
-> >       amt->req_cnt =3D 0;
-> >       WRITE_ONCE(amt->remote_ip, 0);
-> >
-> > -     list_for_each_entry_safe(tunnel, tmp, &amt->tunnel_list, list) {
-> > -             list_del_rcu(&tunnel->list);
-> > -             amt->nr_tunnels--;
->
-> [ ... ]
->
-> > +     spin_lock_bh(&amt->lock);
-> > +     list_for_each_entry(tunnel, &amt->tunnel_list, list)
-> > +             tunnel->dead =3D true;
-> > +     list_splice_init(&amt->tunnel_list, &doomed);
-> > +     amt->nr_tunnels =3D 0;
-> > +     spin_unlock_bh(&amt->lock);
->
-> [Severity: High]
-> Is list_splice_init() safe here while RX readers may still be walking
-> amt->tunnel_list with list_for_each_entry_rcu()?
->
-> The old loop used list_del_rcu(). After this splice, the last tunnel's
-> ->next points at the on-stack doomed head. amt->tunnel_list is
-> reinitialised to empty, with no grace period in between.
->
-> The only grace period in amt_dev_stop() is the synchronize_net() before
-> udp_tunnel_sock_release(). udp_tunnel_sock_release() clears sk_user_data
-> with rcu_assign_sk_user_data(sk, NULL), then shuts down and releases the
-> socket without waiting for readers.
->
-> So an amt_rcv() call that already loaded amt from sk_user_data could
-> still be inside amt_request_handler() or amt_update_handler():
+- [High] The fix is incomplete on cores that use normal or enhanced RX
+  descriptors (dwmac100 and dwmac1000/GMAC 3.x).
+- [Low] On GMAC4/XGMAC, stmmac_rx_zc() now counts a multi-descriptor
+  frame with a hardware error in rx_dropped instead of rx_errors.
+- [Low] The commit message presents the patched code as the existing
+  buggy code.
 
-I think this is correct.
-amt_dev_stop() needs to wait for in-flight amt_rcv() calls to finish
-before tearing down the tunnel list.
+Pre-existing issues:
+- [Low] Each RX NAPI poll, in stmmac_rx_zc() (stmmac_main.c:5789-5790)
+  and stmmac_rx() (6091-6092), merges its local counts into the device-…
 
+--
+
+net: stmmac: drop split frames on AF_XDP zero-copy RX
+
+This patch changes stmmac_rx_zc() so that, in AF_XDP zero-copy mode, a
+frame spanning more than one RX descriptor sets error on its first
+descriptor. The remaining descriptors, including the last one, are then
+freed instead of being processed as a new frame. It also moves the buffer
+free into the common error block and adjusts the rx_dropped and count
+accounting.
+
+> stmmac_rx_zc() assumes a 1:1 mapping between a received frame and an
+> XSK pool buffer and drops any frame that spans more than one RX
+> descriptor:
 >
->         list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
->                 if (tunnel->ip4 =3D=3D saddr) {
+>         /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
+>         if (likely(status & rx_not_ls)) {
+>                 xsk_buff_free(buf->xdp);
+>                 buf->xdp = NULL;
+>                 rx_dropped++;
+>                 error = 1;
+>                 dirty++;
+>                 goto read_again;
+>         }
 >
-> A reader that has already passed the last tunnel would never reach the
-> terminator, &amt->tunnel_list. Would it then treat &doomed as a struct
-> amt_tunnel_list and read ip4 from stack memory past the list_head? It
-> would then follow doomed.next back to the first tunnel and loop in softir=
-q
-> under rcu_read_lock().
->
-> That would stall RCU, which also holds up the pending kfree_rcu() calls.
-> Once amt_dev_stop() returns and its stack frame is reused, the reader
-> follows garbage pointers. If the stack bytes happen to match saddr, the
-> send: path in amt_request_handler() writes tunnel->nonce through the bogu=
-s
-> pointer.
->
-> There is a second problem. A reader that reaches the allocation in
-> amt_request_handler() after the splice (amt_tunnel_get_or_create() later
-> in the series) can list_add_tail_rcu() a new tunnel onto the emptied
-> amt->tunnel_list. Nothing in this stop path frees that tunnel.
->
-> Would list_splice_init_rcu(), which waits for a grace period, or keeping
-> list_del_rcu() work better here? This code also looks unchanged at the en=
-d
-> of the series.
->
-> > +
-> > +     list_for_each_entry_safe(tunnel, tmp, &doomed, list) {
-> >               cancel_delayed_work_sync(&tunnel->gc_wq);
-> >               amt_clear_groups(tunnel);
-> >               kfree_rcu(tunnel, rcu);
->
-> [Severity: High]
-> This is a pre-existing issue, not one introduced by this patch. Does this
-> teardown wait for a gnode->group_timer callback that is already running?
->
-> amt_clear_groups() calls amt_del_group() for each group under
-> tunnel->lock. amt_del_group() only does a non-synchronous cancel:
->
-> drivers/net/amt.c:amt_del_group() {
->         if (cancel_delayed_work(&gnode->group_timer))
->                 dev_put(amt->dev);
->         hlist_del_rcu(&gnode->node);
->         gnode->tunnel_list->nr_groups--;
->         ...
->         kfree_rcu(gnode, rcu);
-> }
->
-> If amt_group_work() is already running, cancel_delayed_work() returns
-> false. amt_group_work() loads the tunnel pointer outside any RCU read
-> section:
->
->         struct amt_tunnel_list *tunnel =3D gnode->tunnel_list;
->         ...
->         spin_lock_bh(&tunnel->lock);
->
-> If the callback is preempted before spin_lock_bh(), could the grace perio=
-d
-> finish so that it takes tunnel->lock inside a freed tunnel?
->
-> If the memory has not been freed yet, the callback takes tunnel->lock onc=
-e
-> amt_clear_groups() drops it. For an EXCLUDE mode group the source lists
-> are empty by then, so delete_group stays true and amt_del_group() runs a
-> second time.
->
-> Would that call hlist_del_rcu() again on a node whose pprev is already
-> LIST_POISON2? It would also decrement nr_groups twice and call
-> kfree_rcu(gnode) twice.
->
-> amt_tunnel_expire() has the same issue, since it also calls
-> amt_clear_groups() before kfree_rcu(tunnel). Only gc_wq is cancelled
-> synchronously here; the per-group work is never waited for.
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261012125943.558629-1-omar%40blockcast.net
+> The non-last descriptors are freed and dropped, but the frame is not
+> marked as errored.
+
+[Severity: Low]
+Is this snippet the post-patch version rather than the existing code? It
+contains rx_dropped++ and error = 1 and has no count++. Those are the
+exact lines this patch adds and removes. The pre-patch branch was:
+
+        if (likely(status & rx_not_ls)) {
+                xsk_buff_free(buf->xdp);
+                buf->xdp = NULL;
+                dirty++;
+                count++;
+                goto read_again;
+        }
+
+The next sentence says the frame is not marked as errored. That
+contradicts the error = 1 in the quoted snippet.
+
+Could the snippet be replaced with the original code?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index f66b796f7725b..426bb68c9bbce 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -5701,18 +5701,21 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+>  		if (priv->extend_desc)
+>  			stmmac_rx_extended_status(priv, &priv->xstats,
+>  						  rx_q->dma_erx + entry);
+> -		if (unlikely(status == discard_frame)) {
+> -			xsk_buff_free(buf->xdp);
+> -			buf->xdp = NULL;
+> -			dirty++;
+> +
+> +		if (unlikely(status == discard_frame) && !error) {
+>  			error = 1;
+>  			if (!priv->hwts_rx_en)
+>  				rx_errors++;
+>  		}
+
+[Severity: Low]
+On GMAC4/XGMAC, does this change how split frames with a hardware error
+are counted?
+
+The first descriptor of a multi-descriptor frame returns rx_not_ls from
+dwmac4_wrback_get_rx_status(). It takes the 1:1 path further down, which
+now does rx_dropped++ and error = 1.
+
+The last descriptor may then return discard_frame because ES is set (CRC,
+overflow, watchdog, giant). In that case the && !error guard here is
+false, so rx_errors++ is skipped.
+
+Before the patch, the 1:1 path did not set error. The last descriptor's
+discard_frame incremented rx_errors, and rx_dropped was not touched.
+
+The per-cause xstats counters are still incremented. However, ip -s link
+now reports the frame as dropped rather than errored. Is that intended?
+The commit message only says the frame is counted once in rx_dropped.
+
+>  
+> -		if (unlikely(error && (status & rx_not_ls)))
+> -			goto read_again;
+>  		if (unlikely(error)) {
+> +			xsk_buff_free(buf->xdp);
+> +			buf->xdp = NULL;
+> +			dirty++;
+> +
+> +			if (status & rx_not_ls)
+> +				goto read_again;
+> +
+>  			count++;
+>  			continue;
+>  		}
+
+[Severity: High]
+Does this fix also cover cores that use normal or enhanced RX descriptors
+(dwmac100 and dwmac1000)? The continuation logic here relies on non-last
+descriptors reporting rx_not_ls. Only dwmac4_wrback_get_rx_status() and
+the dwxgmac2 callback do that.
+
+enh_desc_get_rx_status() and ndesc_get_rx_status() report a non-last
+descriptor like this:
+
+drivers/net/ethernet/stmicro/stmmac/enh_desc.c:enh_desc_get_rx_status() {
+    ...
+	if (unlikely(!(rdes0 & RDES0_LAST_DESCRIPTOR))) {
+		x->rx_length++;
+		return discard_frame;
+	}
+    ...
+}
+
+With that encoding, a frame split across two descriptors goes through
+stmmac_rx_zc() like this:
+
+first descriptor:
+    in_progress = status & rx_not_ls;          /* 0 */
+    status == discard_frame && !error  ->  error = 1
+    error block frees buf->xdp, dirty++
+    (status & rx_not_ls) is 0  ->  count++; continue;
+
+next loop iteration:
+    if (!in_progress) { error = 0; len = 0; }
+
+last descriptor:
+    good status, so it skips the error block and the 1:1 rx_not_ls check
+
+The tail is then processed as a complete new frame. With len == 0,
+stmmac_rx_buf1_len() returns:
+
+	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen - len);
+
+That value is dma_buf_sz, but the DMA only wrote the tail remainder into
+that XSK buffer. The tail starts mid-payload and goes to the XDP program,
+to XDP_TX, or to stmmac_dispatch_skb_zc() on XDP_PASS.
+
+Isn't that the same symptom the commit message says this patch removes?
+
+This path looks reachable:
+
+- __stmmac_dvr_probe() advertises NETDEV_XDP_ACT_XSK_ZEROCOPY for every
+  core.
+- stmmac_xdp_enable_pool() only checks the queue indices and the frame
+  size. It does not check the core or the descriptor format.
+- dwmac1000 and dwmac100 have no .set_bfsize op. The buffer size
+  programmed by stmmac_clear_rx_descriptors() is therefore dma_buf_sz,
+  which is 1536 at MTU 1500.
+
+dwmac1000_core_init() only enables the larger frame modes above
+MTU 1500:
+
+	if (mtu > 1500)
+		value |= GMAC_CONTROL_2K;
+	if (mtu > 2000)
+		value |= GMAC_CONTROL_JE;
+
+XDP limits the MTU to 1500, so neither bit is set. It appears an on-link
+peer could still send a frame between 1536 bytes and the 2048-byte
+watchdog limit, and the hardware would split it across two descriptors.
+
+Would it work better to track continuation from the hardware LD/FD bits?
+Other options are to have the enh/norm callbacks report rx_not_ls for
+non-last descriptors, or to refuse XSK zero-copy on these descriptor
+formats.
+
+> @@ -5721,8 +5724,9 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
+>  		if (likely(status & rx_not_ls)) {
+>  			xsk_buff_free(buf->xdp);
+>  			buf->xdp = NULL;
+> +			rx_dropped++;
+> +			error = 1;
+>  			dirty++;
+> -			count++;
+>  			goto read_again;
+>  		}
+
+[Severity: Low]
+This is a pre-existing issue and was not introduced by this patch. The
+new rx_dropped++ feeds into this accumulator at the end of
+stmmac_rx_zc():
+
+	priv->xstats.rx_dropped += rx_dropped;
+	priv->xstats.rx_errors += rx_errors;
+
+stmmac_rx() does the same thing. Each channel has its own NAPI instance.
+RX queues polling on different CPUs can therefore do these non-atomic
+read-modify-writes on the device-wide unsigned long fields at the same
+time. stmmac_get_stats64() also reads them without any synchronization.
+
+Can increments to rx_dropped and rx_errors be lost when two queues finish
+their polls at the same time?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-stmmac-rx-mb-v6-0-2225050915c1%40oss.qualcomm.com
