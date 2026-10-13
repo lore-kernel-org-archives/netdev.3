@@ -1,161 +1,207 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA05D395AE4;
-	Tue, 13 Oct 2026 09:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880FD3D5C32
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791882572; cv=none; b=ubGue2RrpHng5NlaGyGFKmG6z1x7znFNClKy4xVvcoKx5tMW76sqctPc0YZuE/S2oObGN4imE83LaJwzYl5kAWjnxZ2hh8jMNaP7r6ONhgGMAg/lE6+Cqzy09PWEiBOXvgEx0+L6CgyQjq4afRCo/8LPAxJwp+qGxojTAO8LyMk=
+	t=1791882672; cv=none; b=euxK4KUhBpUxaCGQRSSkOEo/EEIaVfTFTl4BUSZIKKHHTBS7WtJYmpv/i8RmhNgzIpdfEl50hhew4A44ZF328/jzK6Af9iZNfLAU7hm40Yt+Vb3F50yLjt55LFTngmKRZz+Uhx7T9GtARnCtfe1MX13RrFsPGpX+KDnS93c/2V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791882572; c=relaxed/simple;
-	bh=IQ/UNuFHURdJ5ziTLh4qZrD8MOsGX3B11CY5vdjd4ZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FU1G4ecdDUbUi/WDiLX1eZMGnCLIREscso5TsSBEUPMpKHlgS6SEqZNz1lY5kFsk3Fk+q6A4KSTM/YtxyHFUmvQRwA+/fPcLXlhTqZBQaK0S8Q9pu72LB+5jskUPhHfXcSA8i5RH3hCpXISk8vsEIizUrcTvwlhEJhYDiTMJ8hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hwG7vtZ6; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1791882672; c=relaxed/simple;
+	bh=vE/ssJjKOjx/tkp4IFJnQPyODlHvtSzviZkW70EJfqE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FPBFWjE2qZgBaKJx+2ldKFGH1D66Xb6Bfji80LxiBc1lbApOcmXbISNTZjmF8PF9ReskOwhgQpliSWY2BZ1dlBkQ1vL1HPtla0N86ugcxHtbAcvwjwUfX8Jk4LqNvr+U1skPlYI67BQOyLj2y7MfWDtAv8FeGV+c4Jvd4VKCxoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZsJiMY9e; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ge312uUz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hwG7vtZ6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791882571; x=1823418571;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IQ/UNuFHURdJ5ziTLh4qZrD8MOsGX3B11CY5vdjd4ZM=;
-  b=hwG7vtZ6YBR7AfXPt3DffO1F6MMLYFDQchc4k9T2NfR2dDokx/8E9Mej
-   ZHpA6HCI6U+FsX+rNWpqN8HVMBYL1IJJqtIqtKP9RWXrWgzp8N/CNJ7E9
-   OFgovNi5Z3U6KINz9JdhtblHU8BlUk3mfkw4VloBFmDxf359h+iSaYlCS
-   ORL36WNZT0nN37qSpJxxP8O+L8qk79jC5wCopYVdKxnVhxhlKMxL+pnCa
-   IN77ybNQBHPPrveoNRrnyfbd4IroAJaDMTg2Jlt55g2RTvuioon8OHA4A
-   2EkAqVjd4dYmS3RjmGnYuFlFZ//dcUZYt5BXm6wq7pW8gcYXw3E1LDRJe
-   w==;
-X-CSE-ConnectionGUID: fPqzkKJTSviPLrXKqzkBKg==
-X-CSE-MsgGUID: AaWK8NZNSZy+UpjoFEwQnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="595188"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="595188"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:09:30 -0700
-X-CSE-ConnectionGUID: BgXYAbCpQMSPY4ai3EmgtQ==
-X-CSE-MsgGUID: Z+SacHifQmOu6wFBhA0rHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1196513"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.48])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 02:09:20 -0700
-Date: Tue, 13 Oct 2026 12:09:18 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: gregkh@linuxfoundation.org, linux-serial@vger.kernel.org,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ryan Chen <ryan_chen@aspeedtech.com>,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Ray Jui <ray.jui@broadcom.com>,
-	Scott Branden <scott.branden@broadcom.com>,
-	Al Cooper <alcooperx@gmail.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chaitanya Vadrevu <chaitanya.vadrevu@emerson.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>, Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org, linux-rpi-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	linux-parisc@vger.kernel.org, linux-tegra@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] serial: 8250: make port operations work on struct
- uart_8250_port
-Message-ID: <as31PsESOgLUhMB6@ashevche-desk.local>
-References: <cover.1791873876.git.jirislaby@kernel.org>
- <c59fa203f325e0fe7601ea0fbc0d222c8b37f9eb.1791873876.git.jirislaby@kernel.org>
- <as3etnbZatn4sbfx@ashevche-desk.local>
- <c6b08f53-b5ee-44c8-93d1-54fdf5994ed2@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZsJiMY9e";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ge312uUz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791882669;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1JU9tnBcMkdVR8l7gnZ/QWr9koE1ti0o+ukqfCAcEac=;
+	b=ZsJiMY9eDRnZvmX3sl8BCDhV7GVF2RNNYcpk2DAVZpeQndbHmNfDdb0Lu3mzo+cy3bdTg0
+	DMIklb19IKvtPjqnkglTFhSWVK4a/7oot8MlbKsdR35x6Lk7hPNnOT5oJvEkZ6x+jYDq/8
+	XF88q/v4rPDWDcoGCUH2/MWhyPL7gpI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-WDpcR_s6OPm9jVISgsOXfA-1; Tue, 13 Oct 2026 09:11:08 +0000
+X-MC-Unique: WDpcR_s6OPm9jVISgsOXfA-1
+X-Mimecast-MFC-AGG-ID: WDpcR_s6OPm9jVISgsOXfA_1791882667
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48c54e690c5so1939558f8f.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:11:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791882667; x=1792487467; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1JU9tnBcMkdVR8l7gnZ/QWr9koE1ti0o+ukqfCAcEac=;
+        b=ge312uUzZyV3ujzjhABULHgPPK17RXyvY4f8f1gmE+cAsTxtUl76HnKBbFylAZLsx5
+         d2UkvkJ7AeMPdZkcQ1rzWmI4tkWnx4xoDHjFUF4uILHlwb3b9MJlratdF6SJee+rWdc6
+         55jBLrc7elwpczBxAQ0p0j3BqXCJrnU1C+zpZMxdgZecY7WQJV+iP1aGNTjDPZsczvCH
+         mD7QaaJetjV/J/xIA16ExPHcRBPfyG8Ew//YPafWq2IL8K6tan0wCQ4EA5AlSWjSzred
+         bpKh/0S5nmZovdoA7Th4Z3muRZoV4weVrakwO8x2PuY8tx/aNdipScDaDdYKVBUlLIBV
+         73qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791882667; x=1792487467;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1JU9tnBcMkdVR8l7gnZ/QWr9koE1ti0o+ukqfCAcEac=;
+        b=vicqDW4KbODhBm0GES7vAnGbsJcQtU+H7DNdr+zfCdGhHYReWBgvxbIXHMBw+3w/cN
+         GPku9ugEVUKqHoAUA7byw6tOyjNQD8PNJAl1ydgw01a3SkLydkiLweguJhbDUg9eKowc
+         Jn5sunVVz4ThcLmHciCDzf8n0166O/sWI/PUm33jDTbO+qR+xhph6FM6hNZa/gsoyH30
+         DnExKh3iRh2kDetvFbRYEjbeEJtnNCSJx2xmM+GJbQr4P352CybuC6OxxHvJ9AomnWUI
+         PX/99NYi6fX58LzX6diq3zJ6agPqpiWIMEKksyyUI/qPxEjVYx7zj9E53jKH5PsDVHAT
+         h6Aw==
+X-Forwarded-Encrypted: i=1; AKwUvBy6k94/J9vmiTSlk4sjW0f74r4Z89aVuTjaKP7rxDcl68pnKjGGfndeuCPyLwMDwe7r8XgMV0I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLkr2mzb0QG++C1vM+hN7fXGpZL2wuEu1V2u2lNr8BIMwbk6Zuj
+	mTCP3zC/tjc2RL6Rd0oQYrcwDHgHCpJdSgqQ4ffKYIrr78OMmfq5pGZKUlYQrzCZIf5HosCV32g
+	X9OKYAGh/bKtsIlalsGu2Fsx0OEultZLgEC7GHBGJVeBPyRnWahT+9qW7R5gsNHKnZw==
+X-Gm-Gg: AYBFou1yZnpCdtW/XbVL+FM9D8EoiLn972WjGmmm2K2Wrr91ID9D5Bfk1MIi57LVCZa
+	c71nkM8lc+s0X3M1WYnyjDSnyXbK2XjXtX6hJaErlw1XKZ84IrpRh+TkXufvrqGraXpIIw8/7VS
+	ZZCDO0nys7nJosFsdpKHC0ReqPE0PPtoYtsPLRsoYF83ldxJPiP1U81UcMFUvNZV/p88gpmtKmR
+	/6YT0Gj7AJfwjVEhHMlP8JoUOEfH79RQ8nmbrnrK/HlXCeD/lRo/crbZCFETF05AkMa4r/CTcei
+	qrbB3f9iLkN0uAz4KCf4YBPtgZqTQ8Ffv9JWjKTS+mCqIZj7wo26GhDm1mrDZVaeXEMiTTnzXVG
+	GOS3WtFPFdNQKYW13wRtkhGNg0ZnUuE4hHsuMBmbEPeXqeR/6EW7//fWkzP5KwRbtgVaTu7/I/g
+	==
+X-Received: by 2002:a05:6000:4312:b0:487:27f6:a4e4 with SMTP id ffacd0b85a97d-48dbad489d1mr22038164f8f.52.1791882666662;
+        Tue, 13 Oct 2026 02:11:06 -0700 (PDT)
+X-Received: by 2002:a05:6000:4312:b0:487:27f6:a4e4 with SMTP id ffacd0b85a97d-48dbad489d1mr22038100f8f.52.1791882666124;
+        Tue, 13 Oct 2026 02:11:06 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0967acasm3324636f8f.2.2026.10.13.02.11.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 02:11:05 -0700 (PDT)
+Message-ID: <b1fae6df-5e69-4e53-9f35-9bfc47c9a500@redhat.com>
+Date: Tue, 13 Oct 2026 11:11:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c6b08f53-b5ee-44c8-93d1-54fdf5994ed2@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v6] usbnet: fix smp_processor_id() use in preemptible
+ context
+To: Alan Stern <stern@rowland.harvard.edu>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jakub Kicinski <kuba@kernel.org>, =?UTF-8?Q?=C3=96mer_Mete_Kaya?=
+ <omermetekaya0@gmail.com>, oneukum@suse.com, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ david.laight.linux@gmail.com,
+ syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
+References: <20261004215937.302247-1-omermetekaya0@gmail.com>
+ <20261007200049.079aeb75@kernel.org>
+ <7c4a2f1c-f16d-479b-a11f-cef962d5e2c7@rowland.harvard.edu>
+ <20261008094338.301a75fa@kernel.org>
+ <06a81ea1-b17d-40bd-82d9-922de946b86f@rowland.harvard.edu>
+ <2026100910-petition-embattled-94cb@gregkh>
+ <20261012194902.aEq58Q6b@linutronix.de>
+ <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
+ <20261012212527.5sFqlGYu@linutronix.de>
+ <41af30de-4725-4913-9ad8-54d1dea2d4b8@rowland.harvard.edu>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <41af30de-4725-4913-9ad8-54d1dea2d4b8@rowland.harvard.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 13, 2026 at 09:53:26AM +0200, Jiri Slaby wrote:
-> On 13. 10. 26, 9:33, Andy Shevchenko wrote:
-> > On Tue, Oct 13, 2026 at 08:48:51AM +0200, Jiri Slaby (SUSE) wrote:
-
-...
-
-> > > -	rc = serial8250_register_8250_port(&port);
-> > > -	if (rc < 0)
-> > > +	struct uart_8250_port *uport = serial8250_register_8250_port(&port);
-> > > +	if (IS_ERR(uport)) {
-> > > +		rc = PTR_ERR(uport);
-> > >   		goto err_sysfs_remove;
-> > > +	}
+On 10/13/26 04:09, Alan Stern wrote:
+> On Mon, Oct 12, 2026 at 11:25:27PM +0200, Sebastian Andrzej Siewior wrote:
+>> On 2026-10-12 16:26:28 [-0400], Alan Stern wrote:
+>>> On Mon, Oct 12, 2026 at 09:49:02PM +0200, Sebastian Andrzej Siewior wrote:
+>>>> On 2026-10-09 13:31:17 [+0200], Greg Kroah-Hartman wrote:
+>>>>>> As far as I am aware, there aren't really any guarantees on the
+>>>>>> context of a USB URB-completion callback.  The kerneldoc for struct urb
+>>>>>> in include/linux/usb.h says "The completion callback is made
+>>>>>> in_interrupt()", but that is most definitely out of date.
+>>>>>
+>>>>> I don't think so, I think some platforms still have those callbacks in
+>>>>> irq context, unless we changed to threaded irq handlers everywhere?  I
+>>>>> could have missed that, but we should still write the callbacks to
+>>>>> assume that and then we should be fine even if we aren't in irq context,
+>>>>> right?
+>>>>
+>>>> The HCD invokes the completion callback usually in IRQ context. I think
+>>>> the VHCI is an exception here.
+>>>> For the forced-threaded mode we disable BH before the IRQ handler is
+>>>> invoked. I think even dummy_hcd invokes them from the timer if my memory
+>>>> is right.
+>>>>
+>>>>>> Drivers shouldn't rely on any particular context guarantees.  Not even
+>>>>>> whether local irqs are enabled/disabled.
+>>>>>
+>>>>> Agreed.
+>>>>
+>>>> I would suggest to make VHCI invoke the completion callback with BH
+>>>> disabled. usbnet's tx_complete() does also defer_bh() which schedules a
+>>>> BH worker via queue_work(). While this works without disabling BH it
+>>>> leads to waking ksoftirqd and an additional context switch which we
+>>>> could avoid by dealing with it directly.
+>>>
+>>> Today you fix VHCI, tomorrow some other virtual HCD will cause problems.
+>>
+>> We don't have other virtual HCDs, do we?
 > 
-> > Also do not define
-> > variables in the middle of the code (it's only allowed for auto cleanup
-> > variables and for-loop iterators).
+> Well, we've got dummy-hcd.  And just recently there was an RFC post with
+> a virtio USB HCD implementation.  It wouldn't be surprising to encounter
+> other ones.
 > 
-> Why, actually?
-
-Because it's the style. Linus also told it many times (I am tired to repeat
-this, I leave it to you to find his words on lore.kernel.org).
-
-> First, it is used in the kernel quite a few times already
-> [1]. Second, while it is sort of c++ism (and I like to use modern c++), it
-> makes the life of the variable a lot more obvious.
+> Also, don't forget, URBs can complete in several different ways.
+> There's normal completion, explicit unlinking, unlinking because the
+> device was unplugged, unlinking because the device or HC is going into
+> suspend, and so on.  And there's a difference between URBs sent to
+> root hubs as opposed to devices actually on the bus.  Not to mention
+> that in some cases completions may occur synchronously with submission
+> or unlinking, even though they usually are asynchronous.
 > 
-> [1] eg. see output of: rg -U -C 5 '}\n+\s+struct .*\*.*=' drivers/
+>> The other driver is drivers/net/mctp/mctp-usb.c.
+>> mctp_usb_out_complete() -> … -> mctp_usblib_tx_stats_update() does
+>> get_cpu_ptr() for stats. But mctp_usb_in_complete() has
+>> mctp_usblib_rx_complete() -> mctp_usblib_rx_stats_single_drop() and
+>> mctp_usblib_rx() which do just this_cpu_ptr(). Plus the queue wakes &
+>> netif_rx() which wake ksoftirqd.
+>>
+>> That makes two drivers from a quick grep. But I guess it is just
+>> networking for the per-CPU stats.
+>>
+>>> Should we document any requirements that all HCDs will have to follow
+>>> and that all completion handlers can rely on?
+>>
+>> It used to complete in IRQ context. Then you added the possibility to
+>> complete BH for those HCDs marked as such (except for the RH). I think
+>> it was always reasonable to assume that it is either IRQ-context
+>> (force-threaded or not for !HCD_BH) or BH (for HCD_BH). It makes hardly
+>> a difference, BH is always off and networking uses to rely on it.
+>> So yes, documenting would make sense.
+>>
+>> Do you want to document it yourself and have me do the VHCI bits?
+> 
+> At the moment, the only thing I think we can actually guarantee is that
+> completion handlers will be called with local interrupts disabled.  No
+> commitments about process context vs. interrupt context vs. BH context
+> or anything else.
+> 
+> Of course, in special cases you might know more about how a particular
+> HCD works.  But except for platform-specific settings, it's hard to be
+> certain that your driver will always be used with that one particular
+> HCD.
+> 
+> If this is okay with you, I can write a documentation patch.
+Please help me wrapping this up. I read the above as a more generic
+patch is under discussion, am I correct?
 
-(you made me to install something I haven't heard about, it's better to use
- `git grep` though)
+Thanks,
 
-Note excluded __free() if I get regexp correctly
-
-$ rg -U -l '}\n+\s+struct .*\*[^)]*=' drivers/ | less
-drivers/ufs/host/ufs-qcom.c
-drivers/dma/xilinx/xilinx_dma.c
-drivers/dma/idxd/init.c
-drivers/media/platform/raspberrypi/rp1-cfe/csi2.c
-drivers/gpib/agilent_82357a/agilent_82357a.c
-drivers/gpib/ni_usb/ni_usb_gpib.c
-drivers/tty/serial/samsung_tty.c
-drivers/s390/scsi/zfcp_scsi.c
-drivers/gpio/gpiolib-shared.c
-drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_dmub.c
-drivers/gpu/drm/msm/disp/dpu1/dpu_kms.c
-drivers/gpu/drm/msm/msm_gem_vma.c
-drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
-drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-
-So, less than dozen of drivers doing wrong is not an argument, try something
-better. But thanks, I will check and address this in some of the above.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Paolo
 
