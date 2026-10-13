@@ -1,254 +1,197 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic305-20.consmr.mail.ne1.yahoo.com (sonic305-20.consmr.mail.ne1.yahoo.com [66.163.185.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6893A4F50
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:32:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD713B14B7
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791880328; cv=none; b=dJPTZljFp7ZMuJj5legWm92dqIKZCEIs0cbO+GuSBk19dJ84ehRhr6LLIY1IgvmQIkFVI8oMPbvKC86M/pILkU/GquT+zLVhNg5KJkuzGPcskjS8lyQBo4IMyIIz0cotThRn6HUJzFPjlRctWTiWuAI4ka6q3ChBQH1WUlm5H+U=
+	t=1791880422; cv=none; b=cjQFOdogDQIb4qt+r4jESWxnJGcB+AYIorkwfxNSv3GkfB6ZyY1SAS7+oQvY07z23rGbSI43CiWqIORtJFFrCUjqBrPmo69Ra1yloRzibNMCU0NAl4+pn9OGgF4qMClihZ+ZXLfRbvfmzMpa/52D82Ktm5V3Zzv5Gj6lCRqYQC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791880328; c=relaxed/simple;
-	bh=4zMpqhZ55rJCQzknkvOqC1dZoM+uAeq64ZXJDJRKCSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mrMvOGYewCNlXxb+QICK1RaHTUEN5Lz1lTThyl71/5Z1oSr01I0QxQWd+Kav2i3LDlifqLQPCfuZVFrQUr3pABB8ORac9IrtPph6ZAajkJs+t7lpxA++nfYcRvITtx4fzSUSQDoHx6wOL1MWt/r2rQfKYDWY4XOVBGAMZXEwmI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=RhqBEOSN; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=bu2owK6P; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1791880422; c=relaxed/simple;
+	bh=LNVUGoX2TtbQ2b1becXONvjKYa53L7alF8Q6jqQxnbY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
+	 In-Reply-To:Content-Type; b=PUtYia9RdZ888EkxCR7nyYpMcWFpDAsGu8Mxju6+K8h47Hnod0frK+3DL3HbGRquuEQD1CENuAbl9Uune8fKS9qevyQO0L/C0/WkNJdlPTEA6lSKsHRE7iC8bXsahLs5y0ToAozWRX5BxqH9bRFyfK7VBHJ3E/YNG4JQmiViToY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=o0FbzmpF; arc=none smtp.client-ip=66.163.185.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="RhqBEOSN";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="bu2owK6P"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69D20r7h302932
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:32:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=CgEoCHdTeicYs8dHNwUpBuKb
-	XP9XPOOmwmEWGVwyiIs=; b=RhqBEOSNGGNNo03Tp7noRTWEiLZ3ZuTC5vgd55vq
-	iT45tRxi2JVn8DP1pebcN0MU9e5enClYO99FTYCbn1MDebinMcxVK8JTL3QS8Bn9
-	qK/BCTH54jcsy2gT5cx7kCfcZy+r55XOK8UZut6ilIzWQ5fuKzutPMWE27SLCf+3
-	frfr6mH9sTcEnvsIyjTOXXQJ6EkqXamW1HEgzUrZ6M5WCYxvUqR6YSuIE+/mpQte
-	E0ZesVP2OITDNPNmGeIuQUfP0rt8uJLyGldHOecZdxxyQc08crBQBiZekaef1Obx
-	YYViMymHYyE3t9xo6bHC35fwSzXldjZbqe/Sh7ayPxwX6g==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h98sq9v7b-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:32:06 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93a1de6d5c3so630549785a.3
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 01:32:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791880326; x=1792485126; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CgEoCHdTeicYs8dHNwUpBuKbXP9XPOOmwmEWGVwyiIs=;
-        b=bu2owK6Pw4zzLZsKexEbDgaAaohYcj7rQYt5QkNeENFsWQ2PraRNOfPjV6ZRH7Xu/r
-         zQBY9yMZVJDT1Vzcyj15fyI6bRdiq19ESxgMwjOJWYEFe14gYEJhcuIYtlPK9U9CFPjD
-         CmUNQvcYwpgOyFcHMfRk/RqPOkmL6VXEwUBCg9VwJKBrgarkNBWQbprMN4uIcTQqINso
-         HLfHvTK/ejSfOrK7K14U4ab6h5PoMAbtxaRz2ZsgECO+jI0kdaZ1fNpoPbnPo4imQW1y
-         zWUlcPlTp3x3/SEo11O9Ahc1WRySqguuFnGQBOLVwJDVY+ahhx1NZ7nikGIwMKX/Fh+O
-         46TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791880326; x=1792485126;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CgEoCHdTeicYs8dHNwUpBuKbXP9XPOOmwmEWGVwyiIs=;
-        b=IhM+VJoxQ2hwbzTuwi003BumO62wP/4s8ySBKxrx1hP8WEdWxPrFRtLvf9v0fGs4JC
-         NvlVgc0Y4S8gpvhArnVDwaThDJ1dvxTXQ9gehBqpbhsh4wqh2L7AYz3LMbQ8BXz94BAz
-         warQMNkzA4LuAkkU2EY9DvvirfvOgsluc8vMx0JeW839jTVLQlUxR9P4tClXuuNAWa5D
-         lzWwN09KXfvOwFQam3iJJ4cyeAU+i2yKQY6w6X5OYhOH/XH+e1q2V+JqTH4G+M1X/mad
-         O0NYiUdRWV9mLdOHLzQj3eQtGIkTWCwmj8fUw3w3XzaO71kIBexXVXNKw7NTtbsVPYgs
-         6oFg==
-X-Forwarded-Encrypted: i=1; AKwUvBxvMNQDZ0O4pLiao/wW5JbwOUjTRiqo7WKR82rULEi7xSXkJ2ZoQAc/Dd8JXBJARL82uFuSN6o=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLSpqDLX0lMoJ8E32h2bBvUn0NG03b8pjD614vIXaWNRaOh6wB4
-	0dZ37UAXDJxMY+z0yT4cln217mFapJORRoigKhKgCy3aGQFB4Z33i8TudKXB7yyt4wjAxI1Zf0g
-	sHl6N68I53YcFd6qb2s/XaiRWNcwhw60CSmb4eaPQe5IQPyiCD6IJasUXTfo=
-X-Gm-Gg: AYBFou2iSVxcy5VftcwAQ5Fj8ehlVYOGkPRczqvcQQ9XNIxCTtx75n9m2GkMwQ5iFRJ
-	FaMD0B5DzU4r6O0YPK2iB1lq8KMe7Dxm9IrP9sSsn/GlKarP3nVDOcCDLqdYbEYGsuyIKerMs6b
-	HX0mpjq1Idw7sEcbweRln85uc8APuq8bgxdCR4xF+0CyXwDDdjqPbNhD7eoZXQgoivas9Pwj5gu
-	88sdC5Sp0hfRGVZnfwz1QOZ5H8t9dlbeiOxKPoOgLs77Q+gswVNkgvWLLH9jq69AJ4IuMQUfQAO
-	h4GFokCbqEj8AjZyq5pTH9pQqk4BFf3FKNvUwtyafQSr/fJGRrXTDBt1+0+l5xok0v3wffPDmuf
-	/+luqM/+NlNA0VQ==
-X-Received: by 2002:a05:620a:3720:b0:93e:5eaf:dd87 with SMTP id af79cd13be357-93ebd2a05fbmr1975435185a.62.1791880325497;
-        Tue, 13 Oct 2026 01:32:05 -0700 (PDT)
-X-Received: by 2002:a05:620a:3720:b0:93e:5eaf:dd87 with SMTP id af79cd13be357-93ebd2a05fbmr1975431485a.62.1791880324843;
-        Tue, 13 Oct 2026 01:32:04 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a19f249692sm280651825e9.3.2026.10.13.01.32.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 01:32:03 -0700 (PDT)
-Date: Tue, 13 Oct 2026 10:32:03 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v6 3/4] net: stmmac: drop multi-buffer frames in
- XDP mode
-Message-ID: <as3sg4tbl93_yEiL@lore-desk>
-References: <20261012-stmmac-rx-mb-v6-0-2225050915c1@oss.qualcomm.com>
- <20261012-stmmac-rx-mb-v6-3-2225050915c1@oss.qualcomm.com>
- <b11af7d5d430dcddcc681484b50ae7e2@tipi-net.de>
- <as3pB16af0_QhNyB@lore-desk>
- <3a483a6fbd86f50a02435932fe4a7ea3@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="o0FbzmpF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791880414; bh=fSxAcjabgPykV0rUYep0vWoTF3X5tvhCz6tqDQ+xtXE=; h=Date:From:Subject:To:References:In-Reply-To:From:Subject:Reply-To; b=o0FbzmpFr8jLzn9TxXINPHIGvP+I+H0LphcG4XqVZKDOz9xKHdEkL/ElMsehmcttRCUjzJ5gBT9JT5wB3MDyiagJFPEuDjDWKLJfKc8VJQg90tq2X8gkBYByUYbv9A7p9odRlfw+n3yPLOC30anKABSPpP9BffEiY6txhc4UiHwDl5ZunvUQgpLUmdtNvec2aH7alsgi3zGZpAR3Fw3UVFlQycMJO17QfnxpI/jZtLRWkJeaEUcpwf/XR3BzfkcJMZclcGND+YbarzT4CjtETIhskMX4oadqiLKsvXr8XWEri34ey+nFkjvFjc4gmk72yFIb9hmjQnwul0WquuDVkA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1791880414; bh=CM/QKG4oU47QqEJjDrd7iem9TeFiOTbxWl671eVi6Jd=; h=X-Sonic-MF:Date:From:Subject:To:From:Subject; b=ME+vT4vBa44pQMO4KxIsXDhBaQ65kPSmSXQhEhkNWDueiIDF6O8UFGZu5wBgR0JDxoyEiRabYp33WRuuBy1Qe12nT/aYROg9ybM4gjIGu9w0GYnkQrXcFrm3hfh1/aN1B68e5A4KpKUo06eAiGxYFrN2MxcYLeKeDiaxyP5hk0jt4Dlkw70VRlNoDPOI2WjAgENbG3mfrFN3NHQIM6vVvGATbMNB3MSGaVOoxgnoD0xrhIcEXZleE0qD0zdt5heEMuRgC6jByDgkmFsJsDijPNA4wY+PJbMoVUiO2EK6xavALEpgQVpENvdjtv/uoiYtwFua87oROvBJTs9kY4wJRA==
+X-YMail-OSG: NJQmNkgVM1mX7ZLwTEUC_HVV7LwOiXctXOATeF75L5cAqkxSHkyE9bOmM076Z.f
+ BlAJF47Jc01J3SuWjrsxIZ.P3qod15v96enSVwW5qB71YRri1g0ni7E5tzlDRggxvWUOlnnis7.b
+ jQyVmYAu46OZSdJwJcGfXaTaeRQ7_yiWuBws_vg.M.ZWL_Q2GnWvMKEYXYEx.dh_ppu0eA42YeYp
+ utA78gW_VHOwNvtMfk2JP7R7ylCvpFtjfgVZvIIzxzOvOnT6HMvwgMrLEorCHkStBSoFwheCEmr3
+ 3PeacKL0.3Gg4i0WPmgpWtVdxeAef1AT4mX7HJAM3BuD1.Ah2o8673Ngpm4w5vfl792BgmpuBCSC
+ cGu96bntPgC2y3KUPLmsIFbChiGvo.Gd4avvxfiJoRHco.sEH2PXuO5l69vqtb1gCrq44ZZGnDBT
+ jZVQazTu.rtpxuvzB910wusLBi9J5LQAVTN.Ntv3c0H0hEhO_QV.566WZ4xZFqjKmbo4120Mr6WG
+ yJsv4iuIhI9V2Ak4WEzvJFdxwy.wKoj1MRZ1ucwz1BZRDU4sQAQn3_LuMCG0EayMgw2GPA2.zYKQ
+ xyVL5AdEfwLx5H2YNEVxvLgE12i8v62dKVhZocqwcNAUfk.VhwFtupeuicHPgOa0wIFgka3_T6KF
+ LUG640XdwaQpkzY5P5.LRNwQypm2HqyL12RK3BYw75d06OnQFoHEADv8YurU8u1Ljdpk01WT56Ta
+ A2vYRRaBwzEX85XJl7rrz.bizAYK5yS7neZFLq1tbj7aZ2w4rCUlZ82CeaAvsDY2U7kwvps9sNDu
+ _MsBfzNPEFLDjPc3jfkDmnK3t53aidvNBEmrkvxRPQA2SQmcM29W4LjWy_7PyNRsSqCJ9dOK5fdo
+ iYV5AngTY.83Vi1tXiBq6QMI2YU7UnsVU2LsqmFJNGW7.sSJN21P9J.b7w7vgfa0C3txsmb7tfZP
+ Mg3OnlERn7aedbIhQgfQ4abI3oHDqKjF7oUCqAP2GSRk0JRqDaxBGbkrQ8YRYRfo0rQm2MFGSV2l
+ wm0YhZqVeVgqaBMRqazAB54jHzfBUTiXXnbsQiSY7mK..vA_2bQec_YqWaM8_gqXmIoWV1W1dfR.
+ iLfj79t9nm0uRYhi5XQ9b7uCnXNuTUJnXbF_8ehSYJH2Nm.31dk0pfAK8P6lwr3SJVVcOcThg_QK
+ hh83HF330Ag86ioZiQoEvmM.XNrJXt_kXb.ouDSXfNIVpl9hfQ2x_0iCP0I4dvMfo583LEQdbs3x
+ yWx9RChOorm_T6RB9LwM_MrnHb7j2.WbDDf3.wP1npmmjUbVR6DiX6_6wr_gMiWImxn.s0xQJ4ZH
+ 9SQ3Zori_xkRqIQXRGFGk5p2kRoBWU8wlzN3OdTPPP9X1BNHGUZyWqURXDom53KD4X4JafS9LEKT
+ Ayg5LnU7UcHEoXBxfpXPuKvJ1CoJ85XTOepMHHmvl1CH8K55bmLHvefaxMlpvH9t3tru.n9iB5nJ
+ gCrQS7p82vGoXmGc_WDMVlGRfePE2j6kXuf4i4U2D41sInk0vgV2E.DdtqV2H_TnJB4x0DTSaCjm
+ m5lhXnqOfBCIbcD4JjpOVIpWPTNNAy_r6Jf3gTbJslMmO2w4ZuBH.N4SzepnkTjwDZK5.kHF9NML
+ lDPla.vjR9.F58P7ONmB9.thCX1GrSRzKgxIOVxlkWkWc0hSGYNsndlGz.ybHXA9XmA9SRif4u6a
+ vkXnYu0vCbs5aVUGHxMlQ2Y6l4YHH6Qv0s62Z8LCtE6DO_AFZD9aHKQnRGSVCP3aVKfVjGmX0a6E
+ 0R8kRlSHc2eejsmablYbl2p3il7LMpIpmRjN5SvubCVuxSZHg7Ebp_NDN05HNTSP13eRgUrdS8fE
+ RDfP_Rk.QEuxK7ZVz_BOInmkov.qDcEbfoDXWVxY_MkdZLZQN5SPEW2pw8A2AjMuMZ06B_7RRyKU
+ ggnit6QsJqDjOwCaZrEzx7g7jPQ8oUgEiMPy5DTa2ulUVHjhrtIkxDM87a7vMomzuksk4QU0SEH8
+ 8k12FkSjKy68egVo77ABQkehWNuxrFVIZKoEisxvceyNyGy6oG_S3T0CXFKbsQ8LnD3604E9huA_
+ xpVOlJ_s8IRMuiskP1ZR.Q2WDEGZRegMp5UpRl7dReiVfeKCOC5Vunw0b6mhDqZQWtzH_ftQyI7g
+ VC6FMohsEXf4w_81iZ8b9O27lQR7kEC0Fg.hrTcvsgrrE0pmL9oDTueClI2DsshEy5vxiFx0EwqQ
+ Ylv1evpZPCeYuYmfcQFMZvI76.LLXN8WdOcjLtuEqmfC1eyzkFVEczyjzYruK.1rHFK_FujK4Zpj
+ 56XeGNbcD5qKVp5U-
+X-Sonic-MF: <namiltd@yahoo.com>
+X-Sonic-ID: b02017d3-a1b3-4bad-81cd-9fe3bc0d65e4
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.ne1.yahoo.com with HTTP; Tue, 13 Oct 2026 08:33:34 +0000
+Received: by hermes--production-ir2-5dd9bf4598-xpdvn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ddb5766b5ec1a95793060e378163700d;
+          Tue, 13 Oct 2026 08:23:15 +0000 (UTC)
+Message-ID: <aa5fa12c-e43e-4e5e-9f77-c6eaf477abc4@yahoo.com>
+Date: Tue, 13 Oct 2026 10:23:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3qwKvKFoaOiXYisH"
-Content-Disposition: inline
-In-Reply-To: <3a483a6fbd86f50a02435932fe4a7ea3@tipi-net.de>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDAzMyBTYWx0ZWRfXytMgDdN5blkL
- 1g3w0IlVUfD5Bo2fS9EmBSq8+o/dSobQFcWz13fI65JlDP+jEyN1dbO4LnE+DdoqM3jHOvXKUgM
- pcmmyVb9dIiyxI7XaBZBM8eWR2FsvKWdG3FpOiwwdbkyeHbBH7G1krTmVIqatoJAs7lDcB5Wblf
- QixYrP7a5BHOugYIDchyNiXZDI2kdqY/r6lUcsb9KrndGi54LCocyno9yZBwV8eCHAzKq7upzgU
- ZHM9+svVTC/LxVSTCl/f6QgY5Hix76MvkMsy3q1qZnS2D0wR6NSAoM289Ms0XAqrfAaVH9VtpIA
- MAtcqkPFWK5RlpLQY7l0K8Fk9huRinfs3ocMOoGhKKF2GvJxAcKfAXVe3XiylVw6YZ/4Ar3NXQB
- TBBUATH95AeB45Z7+gYKb0lwJHpXZx2ikbkCGxuMnWwS4n7pmE/ObgGDfL/zrbyhQwb3bOueiFt
- 1g2zSTIoXKK8Kh4n8bg==
-X-Authority-Analysis: v=2.4 cv=JN+uIMKb c=1 sm=1 tr=0 ts=6acdec86 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=VeR9IiojQdXVVGmY0-kA:9
- a=CjuIK1q_8ugA:10 a=hNWK7rNVVTdq26VXPtYA:9 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDAzMyBTYWx0ZWRfX9lfHOysMk3b1
- MijplaTLowuC+c2d9nUXDs8RFa1n5vqlmVZeUyURNYQVgWrKFe883XR7aQ4G+qILSd+QGQHeZsu
- 7J/lFRS+wpmqdyl8wMIMJlxbdl3/JRw=
-X-Proofpoint-ORIG-GUID: gVy9JYB23mYEsOF2i0LkyTOv0glO17Ik
-X-Proofpoint-GUID: gVy9JYB23mYEsOF2i0LkyTOv0glO17Ik
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0 suspectscore=0
- phishscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610130033
+User-Agent: Mozilla Thunderbird
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Subject: [PATCH net-next v5 0/9] net: dsa: realtek: rtl8365mb: add support for
+ RTL8367S-VB
+To: linusw@kernel.org, andrew@lunn.ch, olteanv@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@armlinux.org.uk, luizluca@gmail.com, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <b45a3350-44a3-45ad-89cc-452c25edbd7d.ref@yahoo.com>
+Content-Language: pl
+In-Reply-To: <b45a3350-44a3-45ad-89cc-452c25edbd7d.ref@yahoo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26668 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
---3qwKvKFoaOiXYisH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series adds support for the RTL8367S-VB (chip ID 0x6642) to the
+rtl8365mb driver. The chip belongs to a new "family D" that differs from
+the existing family C in its VLAN table layout, speed/RGMII configuration
+and SerDes (SDS13) handling.
 
-On Oct 13, Nicolai Buchwitz wrote:
-> Hi Lorenzo
->=20
-> On 13.10.2026 10:17, Lorenzo Bianconi wrote:
-> > On Oct 12, Nicolai Buchwitz wrote:
->=20
-> > [...]
->=20
-> > > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > > b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > > index 426bb68c9bbc..8c08d44fdbd3 100644
-> > > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > > @@ -5893,18 +5893,24 @@ static int stmmac_rx(struct stmmac_priv *pr=
-iv,
-> > > > int limit, u32 queue)
-> > > >
-> > > >  		if (priv->extend_desc)
-> > > >  			stmmac_rx_extended_status(priv, &priv->xstats, rx_q->dma_erx +
-> > > > entry);
-> > > > -		if (unlikely(status =3D=3D discard_frame)) {
-> > > > -			page_pool_put_page(rx_q->page_pool, buf->page, 0, true);
-> > > > -			buf->page =3D NULL;
-> > > > +
-> > > > +		if (unlikely(!error && status =3D=3D discard_frame)) {
-> > > >  			error =3D 1;
-> > > >  			if (!priv->hwts_rx_en)
-> > > >  				rx_errors++;
-> > > >  		}
-> > > >
-> > > > -		if (unlikely(error && (status & rx_not_ls)))
-> > > > -			goto read_again;
-> > > > +		/* We do not support SG in XDP mode */
-> > > > +		if (unlikely(!error && (status & rx_not_ls) &&
-> > > > +			     stmmac_xdp_is_enabled(priv))) {
-> > > > +			rx_dropped++;
-> > > > +			error =3D 1;
-> > > > +		}
-> > >=20
-> > > AFAIU GMAC4 and XGMAC always use the second buffer of a descriptor. If
-> > > so, at MTU 1500 a frame of up to 3072 bytes can fit in one descriptor,
-> > > and this check would not catch it?
-> > >=20
-> > > The XDP program would then only see the first buffer. With XDP_TX the
-> > > frame is cut and sent too short. With XDP_PASS the second buffer is
-> > > added
-> > > after the program already decided.
-> > >=20
-> > > Patch 4 fixes this. But if this patch should work on its own, should
-> > > it
-> > > also drop the frame when buf2_len is not zero? Or am I missing
-> > > something?
-> >=20
-> > Hi Nicolai,
-> >=20
-> > IIUC your comment we are missing the case where we have a single
-> > descriptor
-> > (rx_not_ls is not set in status) but the packet is splitted over buf1
-> > and buf2,
-> > right? Something like:
-> >=20
-> > 	...
-> > 	buf2_len =3D stmmac_rx_buf2_len(priv, p, status, len);
-> > 	len +=3D buf2_len;
-> >=20
-> > 	if (unlikely(stmmac_xdp_is_enabled(priv) && buf2_len)) {
-> > 		rx_dropped++;
-> > 		dev_kfree_skb(skb);
-> > 		goto next;
-> > 	}
-> > 	...
-> >=20
-> > Is my understanding correct?
->=20
-> Yes, exactly.
->=20
-> I think skb is always NULL there in XDP mode, so the dev_kfree_skb()
-> can go. Both pages stay in the slot and stmmac_rx_refill() reuses them,
-> so nothing leaks.
->=20
-> Maybe extend the "We do not support SG in XDP mode" comment to cover
-> this case too.
+Patch 1 documents the chip in the devicetree binding.
+Patch 2 adds the chip family infrastructure (no functional change).
+Patches 3-4 add port speed and RGMII mode configuration for family D.
+Patches 5-6 add VLAN 4k table access and raw-VID PVID handling.
+Patches 7-8 add SDS13 PCS support and re-latching of the SerDes.
+Patch 9 adds the RTL8367S-VB chip table entry. It comes last, so that
+no intermediate commit exposes a family D chip with incomplete
+handling and the series stays bisectable.
 
-ack, thx for the review. I will fix it in v7.
+Family C's functional behaviour is unchanged. The only change in a
+shared path is a mutex serializing SerDes register access, added in
+patch 8. The port count is capped at 8 for family D only (patch 9).
 
-Regards,
-Lorenzo
+Tested on a TP-Link Archer AX55 v1 (RTL8367S-VB, CPU port over HSGMII
+to an IPQ5018) with bridge VLAN filtering and per-port PVIDs. SGMII has
+also been seen working, but I no longer have the exact link partner and
+speed it was tested with, so treat it as lightly tested. RGMII mode has
+not yet been tested.
 
->=20
-> > [...]
->=20
-> Thanks,
-> Nicolai
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+---
+v5:
+  - 1/9: fix the subject
+  - 4/9: refuse RGMII on EXT1 with -EBUSY when it is owned by MAC4,
+    before touching any EXT1 register
+  - 5/9: drop the unverified rationale for forcing SVLAN_CHK_IVL_SVL, say
+    that the vendor API leaves it at 0, and note that the family D paths
+    are not reachable until the last patch
+  - 6/9: init prev_accepted_frame to avoid a maybe-uninitialized warning
+  - 7/9: comment the write of the whole RX disable field, as in the vendor
+    sequence; fix two comments that still credit pcs_link_up() on family D
+  - 8/9: cancel the re-latch work from a reboot notifier instead of
+    checking the driver data; fix the RESTORE_TRIES comment and do not
+    sleep after the last failed restore attempt
+  - 9/9: fix the description of the external interface indices. The v4
+    changelog said that only HSGMII is exposed; that was wrong, SGMII is
+    still exposed
 
---3qwKvKFoaOiXYisH
-Content-Type: application/pgp-signature; name=signature.asc
+v4: https://lore.kernel.org/netdev/38872e6f-1264-4a93-9f81-8212173e909d@yahoo.com/
+  - 1/9: reword the commit message (support is added by the series)
+  - 3/9: document the per-port force enable register
+  - 5/9: document both forced IVL bits, update stale comments
+  - 6/9: clear the family D PVID registers at setup
+  - 7/9: do not override the forced SGMII speed in pcs_get_state(),
+    update stale comments, note that the patch is preparatory
+  - 8/9: remember a failed restore and retry it first; stop the work
+    after shutdown (driver data cleared)
+  - 9/9: expose HSGMII only on the SerDes port, update the SerDes
+    interface comment
 
------BEGIN PGP SIGNATURE-----
+v3: https://lore.kernel.org/netdev/e84d76ee-03df-49b0-8c9a-b289dfae8728@yahoo.com/
+  - add a dt-bindings patch (1/9): RTL8367S-VB listed under
+    realtek,rtl8365mb
+  - add chip family infrastructure as its own patch (2/9), no
+    functional change
+  - squash the family D PVID getter and the PVID set/clear patches
+    into one (6/9), so the read and write paths use the same register
+    layout at every point of the series
+  - add the RTL8367S-VB chip table entry last (9/9), after the family
+    D speed, RGMII, VLAN and PCS support, so no intermediate commit
+    can reach the chip with incomplete handling (reported by the
+    automated review)
+  - 6/9: fix the commit message (port p's write lands in port p >> 1)
+    and update the stale kernel-doc and file comments
+  - 8/9: start the re-latch work only for 2500base-x, cancel it from
+    .pcs_disable, from pcs_config() and via a devres action; retry the
+    SDS_MISC restore and come back soon if it fails; rewrite the
+    commit message to match the code (reported by the automated
+    review)
+  - 9/9: document family D in the file header comment and in the
+    learn limit comment (limit confirmed against the Realtek vendor
+    API)
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCas3sgwAKCRA6cBh0uS2t
-rEjBAP9gErlRqvxFcDyFsfPFSFOkj0MTST4iWeXLN6NZgNjN7wD8DWWqfrjLXqPl
-Dp1q1qQAQUSjZYRFz2ogR2tzHG0Eeg4=
-=mHzj
------END PGP SIGNATURE-----
+v2: https://lore.kernel.org/netdev/28382f3f-03c1-4606-9b11-86f118abeafe@yahoo.com/
+  - 2/8: mask r_speed to the width of the FORCE_SPEED field before passing
+    it to FIELD_PREP(), so that the family D 2500M value (5) cannot trip
+    the compile-time range check; bit 2 still goes to FORCE_SPEED2
+    (reported by the automated review).
+  - 4/8: the commit message now explains why EXT_TXC_DLY[5:3] is cleared
+    for RGMII on EXT1: the vendor RGMII setup does it, and the init jam
+    table leaves the field at 2, which would add an extra TX delay on top
+    of tx-internal-delay-ps. Add a comment describing the EXT_TXC_DLY
+    layout (Andrew Lunn's review).
+  - 8/8: document the new struct rtl8365mb members in the kernel-doc
+    comment (sds_lock, sds_relatch, sds_relatch_count,
+    sds_misc_target_val), which fixes the kernel-doc warnings.
+  - 1/8, 3/8, 5/8, 6/8, 7/8: no changes.
 
---3qwKvKFoaOiXYisH--
+v1: https://lore.kernel.org/netdev/84fc7483-b22d-45ea-a3b8-3285dc357265@yahoo.com/
+
+Mieczyslaw Nalewaj (9):
+  dt-bindings: net: dsa: realtek: add RTL8367S-VB
+  net: dsa: realtek: rtl8365mb: add chip family infrastructure
+  net: dsa: realtek: rtl8365mb: set speed for family D
+  net: dsa: realtek: rtl8365mb: set RGMII mode for family D
+  net: dsa: realtek: rtl8365mb: set and get vlan 4k for family D
+  net: dsa: realtek: rtl8365mb: use raw VID for PVID on family D
+  net: dsa: realtek: rtl8365mb: add family D SDS13 PCS support
+  net: dsa: realtek: rtl8365mb: re-latch the family D SerDes
+  net: dsa: realtek: rtl8365mb: add support for RTL8367S-VB
+
+ .../devicetree/bindings/net/dsa/realtek.yaml  |   2 +-
+ drivers/net/dsa/realtek/rtl8365mb.h           |  14 +
+ drivers/net/dsa/realtek/rtl8365mb_main.c      | 741 ++++++++++++++++--
+ drivers/net/dsa/realtek/rtl8365mb_vlan.c      | 380 +++++++--
+ drivers/net/dsa/realtek/rtl8365mb_vlan.h      |   1 +
+ 5 files changed, 998 insertions(+), 140 deletions(-)
+ create mode 100644 drivers/net/dsa/realtek/rtl8365mb.h
+
+-- 
+2.53.0
+
