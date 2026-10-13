@@ -1,131 +1,265 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2718D3BE155
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBCA1A238F
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791880877; cv=none; b=fxKjTKBzyaV7LDlx93fTT0+/HTiHvWMs1E8+NBNaeZPqmtrsTpIVfI1HGkvs13lPzdRYxrI2PkYU3AiuPko+q7ziKa5B9T+oh9q998bsBIAuB1RNFDoCqLaZDvA2JZAZHXtK9ti2uKBMWOkKh5IpJeBDk/uSCxDa4dwBYQPf6iI=
+	t=1791880884; cv=none; b=I5Rhmv2v6C8NHKe+MOMoF5SmTMkK6e5kQVxv2aBexppRPkAu0w57zQ7V5otDEyO2mHoH6Z0KKEFFXO9/s1aos43P5j4r4wmBxy1pdNEbh10xmgWGbVBEZE4gonqSEKX6E5GJu4QtXwx4P/W/FzyENl484Nkglq/4d4R2tBtMOFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791880877; c=relaxed/simple;
-	bh=HdV2lf1RSnZt4JJg5NsL/gxvZ4pNyy8xfT7j/N4E6uQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nQHKai6pOovjNA2nJMfUMc0+qm65i2/a1Y9RHkIbxCl6ZR2MvoItkM5gB+/0HmrsZqRRJS//6BNvXOf3B1iGNLz7FYM6i1qZRMAbgBI8kH/vjMB73RAvo2oQZLPAInOAn8v/yklvgQ67BQGOGMjA7igKqgc/pdqt2Yihx8BXNCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DRIF1qvz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791880884; c=relaxed/simple;
+	bh=v2DasoO2yAXxzc9ATTk7hF2Uow7L0fdKI6GDbCv4FMc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Chqa1Fc2bzWJ2IRt54EECSPKqga0LLQKn/O7ImVTuI0F16jh/FvHV3CFdMmSOCiy7byFGPguKcSGizAOW9nATfJ/cVu8sVT4hlr5n9KeujodTZWTp03sZIGiSuN4g1R4sKUdzFJdth605eSU+8N9eASSlVFhgcSp79YMolvxNZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hmc/3TQw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DRIF1qvz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368731F000FF;
-	Tue, 13 Oct 2026 08:41:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hmc/3TQw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D581F000FF;
+	Tue, 13 Oct 2026 08:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791880874;
-	bh=dauLebWjc4cMcvBim0l5yF31Aaj2J57N980UuMWrHyw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DRIF1qvzzLcHosNq2Sp5+M+MVe11MVnFPPNgcLKE2mc79D+GWs+9zOqU3QGCWO9Sz
-	 7Gv9DOpD1QH7eY4VQPqHNDtVGDeEfBfDC6xEmNHGcS1j8YTm0ZvwwsWm4KvjtpHMzh
-	 7hPg/py15cAAE9tojsEhSA3xPStZsRRdUmo4K28FtJ30TZC7dL3Nk6Pr7SxwGJ9fiq
-	 CON/Qew9vRN1ndrRqmupXCtxyT4id1fM4KJRg0FX8tHoqxsdehFdMnjxe1jV0hXc8x
-	 y7p01S8e0289UZfPTuav1wxk0Deo/5s9jxc3lYAzQuOsrFsUkKgxVxHZja+of9YoZk
-	 mkPfnU56Jb7Cg==
-Date: Tue, 13 Oct 2026 10:41:11 +0200
-From: Antoine Tenart <atenart@kernel.org>
-To: Prasenjit Mukherjee <pmukherj@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	David Ahern <dsahern@kernel.org>, Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, 
-	netdev@vger.kernel.org, Davide Caratti <dcaratti@redhat.com>
-Subject: Re: [PATCH net] selftests: net: fix race condition in icmp.sh
- causing CKI sporadic failures
-Message-ID: <as3uX-HDEKesn4xT@kwain>
-References: <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
+	s=k20260515; t=1791880882;
+	bh=+vkNYEAdUk8Z1MuKxaiXSstM/OCFpRh0ql2+mbQMQ3Y=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Hmc/3TQwZCo1UnFLazAFHHRHQI6FfKM0sYQhBcUiHoyzFv6EsZYtvXkfEqPYJVOmZ
+	 S/Gf6ChUGvZX08jLaXDpy0ErMK35+JqAzXUKfuoGPf6xUGPv70Gh40srwp/LVLUsHK
+	 n3GngcVso64etOtR5UwspeM2RvdKqZ8uudIwVWmwnjINmsv0UtkeyVmKWaYR0MjzF0
+	 EgJbK2ls1DZeMmaYa1+IEMd2UGjjjsAuY1KfDO1NYV14VFTG3PX6+lfkORaCFqq7Sc
+	 R/dakIhnx84qETw27PcBQQ1ZiCw2v+VWrlHb0SbN2lbJFdMlMEf/ofzTikq8w8xdvw
+	 i/LLUa/BToFmA==
+Subject:
+ Re: [PATCH net] ipv6: take tb6_lock across the fib6 dump sernum snapshot
+From: netdev-bot+sashiko@kernel.org
+To: juny24602@gmail.com
+Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kaber@trash.net, netdev@vger.kernel.org, junvyyang@tencent.com,
+ stable@kernel.org, corvus@tencent.com
+Date: Tue, 13 Oct 2026 08:41:21 +0000
+Message-ID: <179188088139.434549.10492707337424928971@kernel.org>
+In-Reply-To: <20261012083843.60510-1-juny24602@gmail.com>
+References: <20261012083843.60510-1-juny24602@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
 
-On Mon, Oct 12, 2026 at 06:23:32PM +0530, Prasenjit Mukherjee wrote:
-> CKI reports sporadic failures in icmp.sh, Davide suggests this might be
-> caused by a race condition where tcpdump starts capturing after the last of
-> expected ICMP unreachable packets have been sent.
-> Fix this replacing tcpdump with a tc flower filter that
-> matches ICMP Destination Unreachable (type 3, code 0),
-> and match on act_gact counters instead.
-> This will remove any race condition to appear.
-> 
-> Fixes: 7e9838b7915e2 ("selftests/net: Add icmp.sh for testing ICMP dummy address responses")
-> CC: Toke H�iland-J�rgensen <toke@redhat.com>
-> Suggested-by: Davide Caratti <dcaratti@redhat.com>
-> Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-> Reported-by: CKI Project <cki-project@redhat.com>
-> Closes: https://datawarehouse.cki-project.org/issue/3658
-> Signed-off-by: Prasenjit Mukherjee <pmukherj@redhat.com>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Critical: 0 · High: 1 · Medium: 1 (2) · Low: 1
 
-> ---
->  tools/testing/selftests/net/icmp.sh | 32 ++++++++++++++---------------
->  1 file changed, 16 insertions(+), 16 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/icmp.sh b/tools/testing/selftests/net/icmp.sh
-> index 824cb0e35eff..0714e8b34d12 100755
-> --- a/tools/testing/selftests/net/icmp.sh
-> +++ b/tools/testing/selftests/net/icmp.sh
-> @@ -27,11 +27,8 @@ PINGADDR=172.16.1.1
->  RT2=172.16.0.0/24
->  H2_IP6=2001:db8:1::2
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [High] The patch makes the fn_sernum snapshot and compare in
+  fib6_dump_table() atomic under tb6_lock.
+- [Medium] The patch does not take a reference on the route parked in
+  w->leaf while the dump is suspended.
+- [Low] The commit message says the use-after-free happens at both ends
+  of the sernum check: "…or passes the compare and only then takes the…
+
+Pre-existing issues:
+- [Medium] This was already broken before the patch.
+- [Medium] This was already broken before the patch.
+
+--
+
+ipv6: take tb6_lock across the fib6 dump sernum snapshot
+
+This patch takes tb6_lock once at the top of fib6_dump_table(). The
+fn_sernum snapshot after the first walk, the compare on continuation and
+the walker call now all run in one critical section. The aim is to stop a
+concurrent NLM_F_REPLACE from freeing the route parked in w->leaf without
+the dump noticing.
+
+> That check is done outside tb6_lock at both ends: the snapshot after the
+> first walk is taken after spin_unlock_bh(), and on continuation the
+> compare runs before spin_lock_bh(). A writer that slips in between, e.g.
+> RTM_NEWROUTE with NLM_F_REPLACE on the route the walker is parked on,
+> frees the route via fib6_info_release() (the replace path has no
+> FOR_WALKERS fixup, unlike fib6_del_route()) and bumps fn_sernum, yet the
+> dump records the new serial next to the stale w->leaf, or passes the
+> compare and only then takes the lock. Either way the restart is skipped
+> and fib6_walk_continue() hands the freed route to rt6_fill_node():
+
+[Severity: Low]
+Is the continuation half of this description accurate?
+
+The first-walk half matches the old code. cb->args[5] was read after
+spin_unlock_bh(), so a replace in that window stores the new serial next
+to the stale w->leaf.
+
+On the continuation side, inet6_dump_fib() holds rcu_read_lock() for the
+whole fib6_dump_table() call, and fib6_info_release() frees through RCU.
+A route replaced between a passing compare and spin_lock_bh() cannot be
+freed before that call returns.
+
+The else branch also writes cb->args[5] only when it restarts:
+
+	int sernum = READ_ONCE(w->root->fn_sernum);
+	if (cb->args[5] != sernum) {
+		/* Begin at the root if the tree changed */
+		cb->args[5] = sernum;
+		...
+	} else
+		w->skip = 0;
+
+If the walk parks again, args[5] still holds the old serial. The next
+recvmsg() then sees the mismatch and restarts.
+
+So that window can show a stale route once, but it does not seem able to
+hand a freed route to rt6_fill_node(). Could the changelog say that the
+use-after-free comes from the post-unlock snapshot in the
+cb->args[4] == 0 branch, and that the compare moved only for consistency?
+Stable backporters will probably rely on this when they look at older
+trees.
+
+> diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+> index 9ff761962b45c..70482381165fe 100644
+> --- a/net/ipv6/ip6_fib.c
+> +++ b/net/ipv6/ip6_fib.c
+> @@ -592,14 +592,13 @@ static int fib6_dump_table(struct fib6_table *table, struct sk_buff *skb,
+>  	w = (void *)cb->args[2];
+>  	w->root = &table->tb6_root;
 >  
-> -TMPFILE=$(mktemp)
-> -
->  cleanup()
->  {
-> -    rm -f "$TMPFILE"
->      cleanup_ns $NS1 $NS2
->  }
+> +	spin_lock_bh(&table->tb6_lock);
+>  	if (cb->args[4] == 0) {
+>  		w->count = 0;
+>  		w->skip = 0;
+>  		w->skip_in_node = 0;
 >  
-> @@ -52,21 +49,24 @@ ip -netns $NS2 route add $RT2 via inet6 $H1_IP6
+> -		spin_lock_bh(&table->tb6_lock);
+>  		res = fib6_walk(net, w);
+> -		spin_unlock_bh(&table->tb6_lock);
+>  		if (res > 0) {
+>  			cb->args[4] = 1;
+>  			cb->args[5] = READ_ONCE(w->root->fn_sernum);
+
+[Severity: High]
+The snapshot is now taken under tb6_lock, but the unreferenced w->leaf is
+still guarded only by an equality compare on the root fn_sernum. Can the
+root fn_sernum go back to the value saved here?
+
+In net/ipv6/route.c, ip6_link_failure() writes a fixed constant while
+holding only rcu_read_lock(), not tb6_lock:
+
+	fn = rcu_dereference(from->fib6_node);
+	if (fn && (rt->rt6i_flags & RTF_DEFAULT))
+		WRITE_ONCE(fn->fn_sernum, -1);
+
+A ::/0 route lives in table->tb6_root, and that is w->root here. That
+allows this sequence:
+
+  ip6_link_failure()                  /* root fn_sernum = -1 */
+  dump parks                          /* args[5] = -1, w->leaf = R */
+  RTM_NEWROUTE|NLM_F_REPLACE on R
+    fib6_add()
+      fib6_purge_rt()
+      fib6_info_release()             /* frees R via RCU, no fixup */
+      __fib6_update_sernum_upto_root()  /* root fn_sernum = S */
+  ip6_link_failure()                  /* root fn_sernum = -1 again */
+  recvmsg()
+    fib6_dump_table()                 /* -1 == -1, no restart */
+      fib6_walk_continue()
+        fib6_dump_node()
+          rt6_dump_route()
+            rt6_fill_node()           /* reads freed R */
+
+That looks like the same KASAN use-after-free shown in the changelog. The
+fixup in fib6_del_route() does not help here, because it only matches a
+route that is still live:
+
+	if (w->state == FWS_C && w->leaf == rt) {
+
+The changelog calls the sernum check "the only thing standing between the
+walker and a freed route". Would it be more robust to pin w->leaf while
+the dump is suspended, or to add a walker fixup to the replace/purge path
+in fib6_add(), instead of relying on fn_sernum equality?
+
+[Severity: Medium]
+A related question about the same compare: can wraparound of the serial
+also defeat it?
+
+fib6_new_sernum() wraps on purpose:
+
+	new = old < INT_MAX ? old + 1 : 1;
+
+and __fib6_update_sernum_upto_root() writes the shared per-netns value
+into every node up to the root:
+
+	WRITE_ONCE(fn->fn_sernum, sernum);
+
+Suppose a dump parks with args[5] = S and w->leaf = R. R is then replaced
+with NLM_F_REPLACE, which frees it through RCU without a walker fixup.
+Roughly 2^31 more operations that consume a serial in the same netns then
+bring the root back to S. On the next recvmsg() the compare passes under
+tb6_lock and w->skip is set to 0. fib6_walk_continue() then passes the
+freed R to rt6_dump_route() and rt6_fill_node().
+
+CAP_NET_ADMIN in a netns owned by a user namespace is enough to drive the
+counter, but the number of operations makes this expensive. Pinning
+w->leaf across the suspension, or a walker fixup in the replace path,
+would cover this case too.
+
+[ ... ]
+
+> @@ -616,14 +615,13 @@ static int fib6_dump_table(struct fib6_table *table, struct sk_buff *skb,
+>  		} else
+>  			w->skip = 0;
 >  
->  # Make sure ns2 will respond with ICMP unreachable
->  ip netns exec $NS2 sysctl -qw net.ipv4.icmp_ratelimit=0 net.ipv4.ip_forward=1
-> +# Install tc flower filter to count ICMP unreachable from 192.0.0.8
-> +ip netns exec $NS1 tc qdisc add dev veth0 clsact
-> +ip netns exec $NS1 tc filter add dev veth0 ingress \
-> +	protocol ip pref 1 handle 1 flower \
-> +	src_ip 192.0.0.8 ip_proto icmp type 3 code 0 \
-> +	action pass
->  
-> -# Run the test - a ping runs in the background, and we capture ICMP responses
-> -# with tcpdump; -c 1 means it should exit on the first ping, but add a timeout
-> -# in case something goes wrong
-> -ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null &
-> -ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>/dev/null
-> +# Send ping to trigger ICMP unreachable from ns2
-> +ip netns exec $NS1 ping -c 1 $PINGADDR >/dev/null 2>&1
->  
-> -# Parse response and check for dummy address
-> -# tcpdump output looks like:
-> -# IP 192.0.0.8 > 172.16.0.1: ICMP net 172.16.1.1 unreachable, length 92
-> -RESP_IP=$(awk '{print $2}' < $TMPFILE)
-> -if [[ "$RESP_IP" != "192.0.0.8" ]]; then
-> -    echo "FAIL - got ICMP response from $RESP_IP, should be 192.0.0.8"
-> -    exit 1
-> -else
-> +# Verify ICMP unreachable was received from dummy address 192.0.0.8 per RFC7600
-> +COUNT=$(ip netns exec $NS1 tc -j -s filter show dev veth0 ingress \
-> +	| jq '.[1].options.actions[].stats.packets')
-> +
-> +if [[ "$COUNT" -eq 1 ]]; then
->      echo "OK"
->      exit 0
-> +else
-> +    echo "FAIL - expected 1 ICMP unreachable from 192.0.0.8, got $COUNT"
-> +    exit 1
->  fi
-> -- 
-> 2.55.0
-> 
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the restart branch just
+above this resyncs by position:
+
+	if (cb->args[5] != sernum) {
+		/* Begin at the root if the tree changed */
+		cb->args[5] = sernum;
+		w->state = FWS_INIT;
+		w->node = w->root;
+		w->skip = w->count;
+		w->skip_in_node = 0;
+	}
+
+Can this skip or repeat routes when the tree changes between recvmsg()
+calls?
+
+Say an RTINFO node before the cursor is emptied, which a plain fib6_del()
+does without bumping the root fn_sernum. A route is then added after the
+cursor, and __fib6_update_sernum_upto_root() does bump it. The restart
+then skips one node too many, and the unsent routes of the partly dumped
+node are lost. An add before the cursor sends some nodes twice.
+
+Nothing in the IPv6 FIB dump path sets cb->seq, calls
+nl_dump_check_consistent() or sets NLM_F_DUMP_INTR. inet6_dump_addr() in
+net/ipv6/addrconf.c does. As a result, user space can get incomplete or
+duplicated RTM_GETROUTE output with no consistency signal.
+
+[Severity: Medium]
+This is also a pre-existing issue and was not introduced by this patch.
+Is w->skip_in_node still valid when this non-restart branch is taken?
+
+When a dump is suspended partway through a route's exceptions,
+fib6_dump_node() records:
+
+	w->skip_in_node += res;
+
+If that route is then deleted, the walker fixup in fib6_del_route() moves
+w->leaf to rt->fib6_next, or sets FWS_U, but does not touch
+w->skip_in_node. A plain fib6_del() does not change the root fn_sernum,
+so this branch is taken.
+
+rt6_dump_route() then applies the old skip count to a different route.
+That route and some of its exceptions are left out of the dump, and
+NLM_F_DUMP_INTR is not set.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012083843.60510-1-juny24602%40gmail.com
