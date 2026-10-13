@@ -1,318 +1,124 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625FE475356
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4D843304D
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791887960; cv=none; b=KB/l7rkkWz1pO76UOMHKLEkx4+JgUznzPL+GQDX5821bnW+AsqAzftKuMgYG32UATORcgsQn6/8HR3rZmLWp5vhAX7gfa7+3iTlnxfrDDMAjgXhj6H1G22NGTPypvJPaxVIxZqoPiD+CY6DfewQWzq+rxuWSdasedbhIKUDBLVk=
+	t=1791887982; cv=none; b=nZWzO7WVieTaECLuzZjvhc5FDVcAA4KKNQPGZl4z8bp0RW4amRcUafW30/DG9W8Q3zaN1xqz+T9xm9qDJiIokA85mDcaUOUDlaIYSGLqENXy3R2BRqwKZ2ozN1/wCF1kMtJqrNfNJjCy8EAUyRBqmBGdrtmkdv/8PLKQ77mnvco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791887960; c=relaxed/simple;
-	bh=kxEUmV+ihpDFc8QHCmkg0V33mIxMiSVPhPK4vTg71HU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBmNJXAa9d24Z7DwQvkMne6aEMuVSIG33lzQq9rtaQMoY3xjDSBThfwR7wkVFJVCiruTY8hICnwXYxBn/hQIxc4Y0giObYtIKG1k5hdfehD5mE6/ytBLtl+3aU0bw6qGnLwS3+p3Gl5VIQqgcCpyo9r/p1aLyO8w1QOobJzwKPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=KVOpGcuT; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1791887982; c=relaxed/simple;
+	bh=Yh5EoZ8L8sCNFwRaMZG6NLakXRXnXBmJAd8ORRiLTdE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t2AVCfpnXb6MD8Bf/z0cxt42gAiAFywkj63jlgAhwSObD4YNSC1x5Ke70yIq1ZQ9/r9XRoEfLJcM2NEGmjW95vRHbw6QF/UhkFNuj1bdblIyoRTXehda+2PBnNDF4Hhvt0RROKkESVHdeWWTqh+N6q2fN/FEwaOcNfVm60Vegl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nc80WKid; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JZ8uc8Rx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="KVOpGcuT"
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c34bff61551so307235666b.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:39:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nc80WKid";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JZ8uc8Rx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791887980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Stt8E8LEXRbDbMmCU9sSGK8Uotc3Frs9Dr0f6bzYxJg=;
+	b=Nc80WKidpOn0KZPEoxLbyOJyTpj7Q1VEhJAas7QIRSSLDCeTgdfz/uvE2zAwRRlRzL2N64
+	3pja+vk24lkAQ+F9IzvynfhDmJDShnWwK3y9FKTI7YCgzm1KtzypOR/COeAZalnuDtJJ60
+	pRTC4zidNM5WoPnr/fHgSn+7rZv/1Hs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-279-CLExPT6DNGOkbkjisckz1w-1; Tue, 13 Oct 2026 10:39:32 +0000
+X-MC-Unique: CLExPT6DNGOkbkjisckz1w-1
+X-Mimecast-MFC-AGG-ID: CLExPT6DNGOkbkjisckz1w_1791887972
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a1813fea7dso44166915e9.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:39:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1791887956; x=1792492756; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YfY/iHYXv3QwhJKAf6/gyW5d9fzrVKGW9h721jZH2IQ=;
-        b=KVOpGcuTCsnBbKPrJZPfYCr2GuIMZ2lZebWZKMPKnoqcCWAR/MpPaD+3qcy1W1uS4L
-         xy3in4Xk2z5I2rQkizmPVYnohGuxylq9NKPdPblh4j1g770TqNnNrCIpV9tnrPae1iNx
-         VV5uRpodhzlOWfFZo7YZAi8Di3VaKYIoo85RJfZ3WR0iLxjIOMiPyGjUgvH6egZEDJXE
-         NsfdXUGuUBnt6s0Q1/0vmxVkMOoBEKGHOxczJxtli+4LGJehZUiRTi1iicJtb6+AYL+O
-         5RodsmeFyGMyEUTD2qFvw7eaRY9twWUv1AvRa1BuVbHjrpcpZdRILJZRWMfmNCnWb8wn
-         Fd9w==
+        d=redhat.com; s=google; t=1791887972; x=1792492772; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Stt8E8LEXRbDbMmCU9sSGK8Uotc3Frs9Dr0f6bzYxJg=;
+        b=JZ8uc8RxmfE/3MAoa7etih6Z1NoMhNSQeHNY8oamZgyMHfX/xVz4R0rxSKjW1AfbLf
+         Dn71UjnqxRbfomwuyCg26YlIszmzSxF8jbKVIpjUmIvj8MzBgLIyicGoupMPwWJVIbdK
+         Kd1v1wXglylX4FgTrEgPUAkNriIYfEyI/9ePw4q2HMmFuiJhcwYe4C84kHt244wpxPHC
+         OE+9sRVi2h01NCHcbFcmW8IO2cu10XOIrIJDYqjdRe5Gc0BXHHr5BZTu2tdsWqiE4V1R
+         vdufGsvY2BxBXXwoOCCREr1t/e6gGcV8wL6kjlGdPUJLBZgdq50vwn2llfxbizvBv/Cz
+         hx/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791887956; x=1792492756;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YfY/iHYXv3QwhJKAf6/gyW5d9fzrVKGW9h721jZH2IQ=;
-        b=zjSr0uTEfY3MCgZUvaJPDf5G60NJNMN9iuaiyAY2CLsgu3yb/Do/IlevDhQS4WO4K1
-         ul9CjHAil1nR6q6Ym/6RUf3nezoT/tp7fQ8x4sRqkt/BTYrk9sL99zwDT+ra2XOTUWlD
-         jJKK29BIWg+za6jA2mF4KmJsPmcPFLKph6dyjGHQoXTf0UB5n3KmYAYzhSRbVLHZXvSP
-         dYQNc4wEnKWSzWvLtuKoGBsEW7bpriWySidas19xcdgGJ8fWPLaHX6aknFPRow9tlg7F
-         ue33q9ota9e+flAQ74Upg0qgAWXUMy68oHYjyvZQNjdQXvcYKQLLX6K6evq8HIRXFAA5
-         iHVg==
-X-Gm-Message-State: AFq9FYKHnuzePiVRw6zLl2lfn3KnarwWAW3DJLwV6pX6IwLGMZltZe7O
-	WY0sPHCz8fbCEA2t4TTMCo1jUexbQz/PPfrfXMc77lRFfBKS3a7L9UKcI2ehRcbH8iQZN/onTj9
-	y1mRQAdg21w==
-X-Gm-Gg: AYBFou2RdEU8QwgcQrPlrH98nRm33ny23gisKdiNE/qbSozgF4T47nJmEqqiPmbRU6X
-	KeQXIH151v9Qr0d5zNtArU4yMfsyQhgvtewYYxKX4r0K9jHgM6QPKddtuU6ZRO6mo2zIxZt/sY+
-	p2YpJfPlUAy3jWwg2p75QNEyMyZnOFVT4fmyP0oqHWKnrLkYHylPXPnLQhX/QiFVqPPzn9lhIjC
-	gEpRFyOz10NPXgE1CCqeOUu9G+dLjZvwDRDG9WX776Y4TRsbebTv4vJ60UhEadSNNcQA7quhCKU
-	tvoLJa5qwnhxYgpLPRT5zhRI06AZf0XjTQXq8M7qTCJRU7IuIrCHEfJ/HNUvMQ+pmPv3bZon+Og
-	JdApKP17wLLCfS9KOm26aOQJi129G7rRwpVH5qTKJkVeXYhcoyst30+/n0Ue3JvEBsc8blSIlx0
-	ZlO8h+9KeqduW8fw1kZOISEoSkPtPKyImfvu1p0BNXBaKD2rs3GOaRmdg+0DGVbD/9tKrMLzEo8
-	mCkzCzFSsJMC0UUUW3JLEhv6Q==
-X-Received: by 2002:a17:907:7211:b0:c2d:c7c9:906b with SMTP id a640c23a62f3a-c31aa083268mr1171982666b.28.1791887956529;
-        Tue, 13 Oct 2026 03:39:16 -0700 (PDT)
-Received: from 8951987238ab.arnhem.chello.nl ([104.28.187.84])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9ac62a7sm552462166b.63.2026.10.13.03.39.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 03:39:15 -0700 (PDT)
-From: Willem Ferguson <wferguson@cloudflare.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ncardwell@google.com,
-	bpf@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	linux-doc@vger.kernel.org,
-	corbet@lwn.net,
-	linux-kselftest@vger.kernel.org,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com
-Subject: [RFC PATCH net-next 4/4] selftests/bpf: add tcp_ts_id test
-Date: Tue, 13 Oct 2026 10:39:06 +0000
-Message-ID: <20261013103906.2660384-5-wferguson@cloudflare.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261013103906.2660384-1-wferguson@cloudflare.com>
-References: <20261013103906.2660384-1-wferguson@cloudflare.com>
+        d=1e100.net; s=20260707; t=1791887972; x=1792492772;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Stt8E8LEXRbDbMmCU9sSGK8Uotc3Frs9Dr0f6bzYxJg=;
+        b=cIs3gthO6pGTyxjFmVYhT+wm1xm7+cy9Omj2RBzRoqm+UrP8bidz4gmGqR2W3MhVws
+         u4JjTX20HFkaZr27r6yNPIIcn1HyN0jbpjGuT77IA2IHCmuRKIYI4kgrr319ldpMCdqE
+         aUa7V2OENGgHc6D7JW9omYInC7sJOGB/mSuSVaStlebJaK3y1BNGrr+xQG7s8i5t+Gel
+         kpRj5UUCaLJNCroiDOFYb/0S0LywoH0GXuVuBG7CE4zK3S7i+3qCdLWyrqZWCeuE6+aR
+         DsS6BR49QbQ2aI1yKZK4PtifrbUBk77dne3JqMFiv2nC4n5O6Yvf8whkPrtXIAUg3PqQ
+         nL3g==
+X-Forwarded-Encrypted: i=1; AKwUvByMYWCR4DOlNGw7C1X837HDYIzzWxa9YoWmYMTL/Zup3XmgcUIN1hM3QaAjVXNkUq2axiJiYQA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLBCzeAQWj4uVMm9QvVcUr6XxWucmoS2JtUJlmampiyquXLbp4c
+	+AV6Va4BWNN4jXrSU2g+2Sd0sohjbewQkv3CWrprv02q6l46F1fwa798rMN5DBS+DqSp8/Jvciw
+	Kih2o04fDCcabagDHNn7mPd6xen+EuXrKzbPgZCAa5oE8LLfIM+2eSaarKg==
+X-Gm-Gg: AYBFou1nYhQRjcpnFM/icS3HJUFYcUr2SZFNExYCmknwBDaJxTx3oU/8hgKKrabDshz
+	Zx3qEllfmmpy2CBu+XrrfJZM7j4BPdt/Fb/r3M4QvFvIVWlVBB6uoM1xSSC144b6KGUDGaRe91U
+	RW9uWrLKae4bbyobIUuxSNnNZqUykXK0U6lC+XQ8n+u7hI102vR6E9KGhuAeZADrPwXJn34sTHv
+	Nnq4dsO+ogDracIskE/k4PcK8QAyN8a8r2Tcse7UR6SFVkT7y/zck34cwwHxgaFya8n36i6x+UK
+	qO+1F6yoUJ27Lgy5YFL02ZWxJXsBqbcwvgL8sfXhoKhOCgcDVVkFW/QgBx89H8oRyCJycoMdIFo
+	dbYT5/obXVJoqm+UIH8tiITM/9JSZlmzmS4Lbpjt+uFhHNSbsamUBAOK31eJnoob6/oCxSEY5KQ
+	==
+X-Received: by 2002:a05:600c:8105:b0:4a1:775b:5eb2 with SMTP id 5b1f17b1804b1-4a18e48362emr231673395e9.13.1791887971565;
+        Tue, 13 Oct 2026 03:39:31 -0700 (PDT)
+X-Received: by 2002:a05:600c:8105:b0:4a1:775b:5eb2 with SMTP id 5b1f17b1804b1-4a18e48362emr231673005e9.13.1791887971189;
+        Tue, 13 Oct 2026 03:39:31 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0967affsm3971206f8f.1.2026.10.13.03.39.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 03:39:30 -0700 (PDT)
+Message-ID: <d19cbf9f-a5af-4fe5-9c20-eac1365afb92@redhat.com>
+Date: Tue, 13 Oct 2026 12:39:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/2] net/mlx5: HWS, fix reformat release and meter
+ offset
+To: Alexandre Cassen <acassen@corp.free.fr>,
+ Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Moshe Shemesh <moshe@nvidia.com>,
+ Yevgeny Kliteynik <kliteyn@nvidia.com>, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org
+References: <20261007143830.1733583-1-acassen@corp.free.fr>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261007143830.1733583-1-acassen@corp.free.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Exercise BPF_SOCK_OPS_TCP_TS_ID_CB end to end over IPv6 loopback.
+On 10/7/26 16:38, Alexandre Cassen wrote:
+> This series fixes two issues in fs_hws found while offloading one tc
+> rule with its own encap and meter:
+> 
+> - Releases L2 to L3 tunnel reformats to the pool they come from.
+> - Makes a rule select its flow meter within the whole ASO bulk.
+The actual impact is not clear to me, but given both looks broken
+from the beginning and Linus pressure for smaller RCs, I'm tempted
+to move this to net-next.
 
-A cgroup sock_ops program sets BPF_SOCK_OPS_TCP_TS_ID_CB_FLAG on the
-listener and answers the callback. With tcp_timestamps=1 and
-tcp_ts_id_bits=4 the test checks that:
+If you disagree please scream it loud soon!
 
- - the callback runs exactly once, on the SYN, with args[1] equal to
-   the configured width;
- - the accepted socket reports the identifier and width through
-   TCP_TS_ID;
- - the connecting socket reports no identifier, as only passive opens
-   are covered;
- - a reply that does not fit in the width ("decline" subtest) leaves the
-   accepted socket without an identifier.
+Thanks,
 
-The test skips when tcp_ts_id_bits does not exist and restores both
-sysctls afterwards. It defines TCP_TS_ID locally when the libc headers
-do not have it yet.
-
-Signed-off-by: Willem Ferguson <wferguson@cloudflare.com>
----
- .../selftests/bpf/prog_tests/tcp_ts_id.c      | 150 ++++++++++++++++++
- .../selftests/bpf/progs/test_tcp_ts_id_kern.c |  32 ++++
- 2 files changed, 182 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/tcp_ts_id.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_tcp_ts_id_kern.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_ts_id.c b/tools/testing/selftests/bpf/prog_tests/tcp_ts_id.c
-new file mode 100644
-index 000000000000..25c1f6d8dd43
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/tcp_ts_id.c
-@@ -0,0 +1,150 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <errno.h>
-+
-+#include <test_progs.h>
-+#include <network_helpers.h>
-+
-+#include "test_tcp_ts_id_kern.skel.h"
-+
-+#define LO_ADDR6		"::1"
-+#define CG_NAME			"/tcp-ts-id-test"
-+
-+#ifndef TCP_TS_ID
-+#define TCP_TS_ID		47
-+#define TCP_TS_ID_BITS_SHIFT	8
-+#endif
-+
-+#define TS_ID_BITS_SYSCTL	"/proc/sys/net/ipv4/tcp_ts_id_bits"
-+#define TIMESTAMPS_SYSCTL	"/proc/sys/net/ipv4/tcp_timestamps"
-+#define EXPECTED_TS_ID		7
-+#define EXPECTED_TS_ID_BITS	4
-+#define EXPECTED_TS_ID_BITS_STR	"4"
-+
-+static char saved_ts_id_bits[16];
-+static char saved_timestamps[16];
-+
-+static int save_sysctl(const char *path, char *buf)
-+{
-+	int err = 0;
-+	FILE *f;
-+
-+	f = fopen(path, "r");
-+	if (!f)
-+		return -errno;
-+
-+	if (fscanf(f, "%15s", buf) != 1)
-+		err = -EINVAL;
-+	fclose(f);
-+
-+	return err;
-+}
-+
-+static void restore_sysctl(const char *path, const char *buf)
-+{
-+	if (buf[0])
-+		write_sysctl(path, buf);
-+}
-+
-+static void run_ts_id_test(int cg_fd, bool decline)
-+{
-+	int listen_fd = -1, cli_fd = -1, accept_fd = -1;
-+	struct test_tcp_ts_id_kern *skel;
-+	socklen_t optlen;
-+	int ts_id;
-+
-+	skel = test_tcp_ts_id_kern__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		return;
-+
-+	skel->bss->ts_id_reply = EXPECTED_TS_ID;
-+	skel->bss->ts_id_decline = decline;
-+
-+	skel->links.tcp_ts_id_sockops =
-+		bpf_program__attach_cgroup(skel->progs.tcp_ts_id_sockops,
-+					   cg_fd);
-+	if (!ASSERT_OK_PTR(skel->links.tcp_ts_id_sockops, "attach_cgroup"))
-+		goto out;
-+
-+	/* The listener has to be created after the attach to get LISTEN_CB. */
-+	listen_fd = start_server(AF_INET6, SOCK_STREAM, LO_ADDR6, 0, 0);
-+	if (!ASSERT_NEQ(listen_fd, -1, "start_server"))
-+		goto out;
-+
-+	cli_fd = connect_to_fd(listen_fd, 0);
-+	if (!ASSERT_NEQ(cli_fd, -1, "connect_to_fd"))
-+		goto out;
-+
-+	accept_fd = accept(listen_fd, NULL, NULL);
-+	if (!ASSERT_NEQ(accept_fd, -1, "accept"))
-+		goto out;
-+
-+	ASSERT_EQ(skel->bss->ts_id_cb_count, 1, "cb_count");
-+	ASSERT_EQ(skel->bss->ts_id_cb_syn, 1, "cb_on_syn");
-+	ASSERT_EQ(skel->bss->ts_id_cb_bits, EXPECTED_TS_ID_BITS, "cb_bits");
-+
-+	/* The identifier must reach the child socket created by the SYN. */
-+	optlen = sizeof(ts_id);
-+	if (ASSERT_OK(getsockopt(accept_fd, IPPROTO_TCP, TCP_TS_ID, &ts_id,
-+				 &optlen), "getsockopt(accept_fd, TCP_TS_ID)"))
-+		ASSERT_EQ(ts_id, decline ? 0 :
-+			  (EXPECTED_TS_ID_BITS << TCP_TS_ID_BITS_SHIFT) |
-+			  EXPECTED_TS_ID, "server_ts_id");
-+
-+	/* Identifiers are passive-open only, so the opener must have none. */
-+	optlen = sizeof(ts_id);
-+	if (ASSERT_OK(getsockopt(cli_fd, IPPROTO_TCP, TCP_TS_ID, &ts_id,
-+				 &optlen), "getsockopt(cli_fd, TCP_TS_ID)"))
-+		ASSERT_EQ(ts_id, 0, "client_ts_id");
-+out:
-+	if (accept_fd != -1)
-+		close(accept_fd);
-+	if (cli_fd != -1)
-+		close(cli_fd);
-+	if (listen_fd != -1)
-+		close(listen_fd);
-+	test_tcp_ts_id_kern__destroy(skel);
-+}
-+
-+void test_tcp_ts_id(void)
-+{
-+	int cg_fd = -1;
-+	int err;
-+
-+	err = save_sysctl(TS_ID_BITS_SYSCTL, saved_ts_id_bits);
-+	if (err == -ENOENT) {
-+		test__skip();
-+		return;
-+	}
-+	if (!ASSERT_OK(err, "read " TS_ID_BITS_SYSCTL))
-+		return;
-+
-+	if (!ASSERT_OK(save_sysctl(TIMESTAMPS_SYSCTL, saved_timestamps),
-+		       "read " TIMESTAMPS_SYSCTL))
-+		goto out;
-+
-+	/* The callback only runs when timestamps are negotiated. */
-+	if (!ASSERT_OK(write_sysctl(TIMESTAMPS_SYSCTL, "1"),
-+		       "write " TIMESTAMPS_SYSCTL))
-+		goto out;
-+
-+	/* Identifiers are disabled by default, so the test has to opt in. */
-+	if (!ASSERT_OK(write_sysctl(TS_ID_BITS_SYSCTL, EXPECTED_TS_ID_BITS_STR),
-+		       "write " TS_ID_BITS_SYSCTL))
-+		goto out;
-+
-+	cg_fd = test__join_cgroup(CG_NAME);
-+	if (!ASSERT_GE(cg_fd, 0, "test__join_cgroup(" CG_NAME ")"))
-+		goto out;
-+
-+	if (test__start_subtest("assign"))
-+		run_ts_id_test(cg_fd, false);
-+
-+	/* Only one sockops program may be attached to the cgroup at a time. */
-+	if (test__start_subtest("decline"))
-+		run_ts_id_test(cg_fd, true);
-+out:
-+	if (cg_fd != -1)
-+		close(cg_fd);
-+	restore_sysctl(TIMESTAMPS_SYSCTL, saved_timestamps);
-+	restore_sysctl(TS_ID_BITS_SYSCTL, saved_ts_id_bits);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_tcp_ts_id_kern.c b/tools/testing/selftests/bpf/progs/test_tcp_ts_id_kern.c
-new file mode 100644
-index 000000000000..07e4e56c4fb1
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_tcp_ts_id_kern.c
-@@ -0,0 +1,32 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/bpf.h>
-+#include <bpf/bpf_helpers.h>
-+
-+__u32 ts_id_cb_count;
-+__u32 ts_id_cb_syn;
-+__u32 ts_id_cb_bits;
-+__u32 ts_id_reply;
-+__u32 ts_id_decline;	/* set by userspace to exercise the decline path */
-+
-+SEC("sockops")
-+int tcp_ts_id_sockops(struct bpf_sock_ops *skops)
-+{
-+	if (skops->op == BPF_SOCK_OPS_TCP_LISTEN_CB) {
-+		bpf_sock_ops_cb_flags_set(skops,
-+					  BPF_SOCK_OPS_TCP_TS_ID_CB_FLAG);
-+		return 1;
-+	}
-+
-+	if (skops->op != BPF_SOCK_OPS_TCP_TS_ID_CB)
-+		return 1;
-+
-+	ts_id_cb_count++;
-+	ts_id_cb_syn = !!(skops->skb_tcp_flags & (1U << 1));
-+	ts_id_cb_bits = skops->args[1];
-+	/* -1 does not fit in Arg2 bits, so the kernel assigns no ID. */
-+	skops->reply = ts_id_decline ? -1 : ts_id_reply;
-+
-+	return 1;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.47.3
+Paolo
 
