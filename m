@@ -1,270 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010016.outbound.protection.outlook.com [52.101.46.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CC83DB64B;
-	Tue, 13 Oct 2026 07:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791874824; cv=none; b=LdiGURFzTt7jGsOt7dnQY4AnnPE0G/7VTvmQYzZLZ2tzQUlQIjl0b4/vfTlRI4MeobgRPMfPeWWm/7M08DzFg1WKNI2JLnx6ronW8D9+J0tLWO05E37cC2wg/5YhGulMC/38bNywGbA0cBIF0ospQH3X0mTJKYoJ3L5tSf7SJ1U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791874824; c=relaxed/simple;
-	bh=WQNkE8bnxdVoHwqoouuYPQm2kWDIeTFB/Qsc/jPAAS8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ec6F2rmMW3WatcqdZvRe/TF7WYaRiMOygIlq8ocRduEpZnLdPfwzsgY6ty/2TGpyY5BV5oc0qAc1qbpzlF4PqEYQ9DNYAYZTXgRUqU/q3eJquN2Nuvwl6gFp4q2b7qE/b+hC/QHs5E1r1iqfotdSnI4cIBi+QLrkFyRaUcOK5Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U6fVGy4G; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4BD23C51D
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791874848; cv=fail; b=kxoN1fAA3kzccbtDnmdo+4IcZiu3zhb4GrX8wlYLKrbeDKI7ztOh2aGgqJhn+qAl6T5FZeX98kxOUimHR4R9EBYd41ZaRdYmGh8h9rIpxg6aIsGf2V7F2/D8dFDJ/iYt9fCnIkmblaggmWnorQA6L4nlyEX2CvMzx0pCym//v14=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791874848; c=relaxed/simple;
+	bh=M+cjQttdnamklcWyc+9h8pt+Bjyaxsx+vm5F7ONRwtw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=sy/YJt/F75RNZI6s6OyNEUy2s4bf5TiwJGxCzpraV/x5z6elVnmelhuK/MwlmZyH2oyTMieFQXPktmmIIls+8cNfjHC0e3PWGe+qbmWHV2gx4VE4NwSYachLWekopmtjam/K/UYwTQPHGB7d6vnv7Ml8uvbZWVMBBczPk3z4kQI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Nb/DwC3X; arc=fail smtp.client-ip=52.101.46.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U6fVGy4G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C541F00893;
-	Tue, 13 Oct 2026 07:00:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791874821;
-	bh=oitl4HmmFit32PrnFscNWpDFV9x3qChp/x9HvOJUmCo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=U6fVGy4Gacb6DApxTRJH8EnyshDsgwHI/iTGQxF+ghGQRrmb8u0JwkEuh+Gham2CX
-	 yHpJCzUabBk4qZB7xLkkurVFcSJFp7ZkrtYCxFWPZ1qBOvciZ0KYon/Cf/xppNIAk8
-	 VPwXrcTOYNGsOBimHVFdvxLwwljBbxkXqmwnO4WTmtOKe9h6qUKNEYVYkEj87XSaTs
-	 hCbIDXYhYINpE7L0+pU+HAQuEehSY+fBhlkT64QDj8sgFetFCWEqTcAcvZw6Lcm0pH
-	 PjSkx7g5CmVbsJLkpTwqqL/6QaVtfPTTgeVqNr6JiMbpQIR/gGqj/Ni1MYkl4hpWvP
-	 IJ38wSk05Uenw==
-Subject: Re: [PATCH net-next v11] net: reduce ARFS flow updates by checking
- LLC affinity
-From: netdev-bot+sashiko@kernel.org
-To: nashuiliang@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, sdf.kernel@gmail.com,
- liuhangbin@gmail.com, skhawaja@google.com, ncardwell@google.com,
- roman.gushchin@linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 13 Oct 2026 07:00:20 +0000
-Message-ID: <179187482010.434549.10175777615206996282@kernel.org>
-In-Reply-To: <20261012060152.2930-1-nashuiliang@gmail.com>
-References: <20261012060152.2930-1-nashuiliang@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Nb/DwC3X"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tbTta394+Cc6Pb6DiZNiPZKsFhQ4duSAPkBWA2P2ebF03s/vYDCSqn9OGrcHCVxsrBOIWdyCEyGnfLeUvH6h1isYvBRfqBSK3zPydwQ1BLhAQD4tbgEREB5mRfXJL2N3cVhSukM7ELXCgUy3Bxx/B1SgWc6Wdj+jnDeT4SOs2jFrT0iiIFt4BkFz4eSTN5ha0cIB55gPAeLCwiwp0mhzrgT1Ri5dirmWl+wFP09U1GpQQSweXXVZqJexkdkGEZb6zmRrHtt2PIlvoiRPPiYmZsIXEc0r6yZUzbcrpJLngZZ6hf61x2RB3tb0Q15nOrP/lIk4Tvfsn2JidUeO6TTvMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PXgXBk2KnX1QOoRxSiiDLEfDxs/eXbF1GF01hjiTNdc=;
+ b=K5S5ItE+xUuzjtbimmtfkSSQET5cOcfNJ/OX11kt2NxgSMht8tYg6hVVX1QkGUlYyH9AoERptDtCXOeqjDAvs6L81BanE3nMrXhwpDIOOdIvDnrDVirYJksFmpxhuA5l985owyDqQ+91nqeA6lthkvbEB6l36xVw425GXeJ6j4ymrCkuPcwk8EE7ME4m0K3IMgrhQNI3OEF94yaZnHWN9YmK3M/AEpt8u6CoppKfPu5YAyfqdyNEXiDEx2FViqSdOMlRB+2rL8l26nqx8Wy+Qs+hXMKx4wvOiCJ5AbjJrG7kBfdUO7/BYOeszzfrOQTZFEjrmdXiLYHLEoemOEY74w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PXgXBk2KnX1QOoRxSiiDLEfDxs/eXbF1GF01hjiTNdc=;
+ b=Nb/DwC3XWi8aC5GxTe15IO574nyPiJQzGIWNqnn82G446w91L9kGhYcvjk2N0i7BtxuhWQq0vX7tHtih8trfIT3fOz5FStMyqRYvaHMm2isiurEUN5YdPu3OwUjp3AhuWYQR/MURMhquEvXcDgXetdL8BkWXdOCN0iRDtYxNJb2wakkSsUyRxu+WApCJzhD4uqTJe6Bh7LGnzAi4bg18f6VXodjwMbwz0NWXfpZa3RmlerSYs6KMJd/CLk2+wsT1+xpIpsYrm3SbB5myfcOW3A0wmH0W0uV0nGXeiocYn/EM5OzzSnTuUxH2e3Nh6IZ9dbFlXXggYHwdGhaUUk8eww==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DM4PR12MB6397.namprd12.prod.outlook.com (2603:10b6:8:b4::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 07:00:43 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.015; Tue, 13 Oct 2026
+ 07:00:43 +0000
+Date: Tue, 13 Oct 2026 10:00:33 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH v1 net-next 0/4] neighbour: Misc follow-ups on per-netns
+ neigh_table series.
+Message-ID: <20261013070033.GA852441@shredder>
+References: <20261012194530.3751034-1-kuniyu@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012194530.3751034-1-kuniyu@google.com>
+X-ClientProxiedBy: TL0P290CA0011.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:5::13) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DM4PR12MB6397:EE_
+X-MS-Office365-Filtering-Correlation-Id: 392d6bc6-5804-4716-dc96-08df28f7b2b5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|261009223027099003|10067099003|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	rHeqdS8l+VzeAy6kjJCoue1v9Zm+6EjGGthaUO7rpxh/2KMxG2OQ+qLsCaz+qaPesj54Pc5iHJGhw/wHS3BrRQOhCi9Y13qXqsvVME13waDFx3kLJcs9REV2OSJwa/xqaI+SDzfnKdsjExvEEsQCCeCKeVg4cuI1rY+4cZUXnD+nfYq05Jo4rEj3lkWVXaoirch/NoIzlo9GeSjsjvHo7VP+T00FFRWbb5/lFr3w4JCWSjJkQ+2LaJ6ZfMChKumwgEQk6guEFLv//rGPcAzuEbc+iHTlo9jIG8L59kgqRnhRD2nmtZQyDsxTBbeXm3AOfC7FquKUzIMN1/06iALdU2FALJ2Z/ebN+SPtgEtYRiAQj0q7rhG4dCRp7OKJfM5bL2TCMioETPN/E+bF7YPkqZF8/VBg7Md1RrqLqIP32P8uqW8oC8iYUYAQOoW8DVq6r/njyY/u7YPT9nVbfevdE7ao+/KqfwzAhmw9nyMVwYuQ57ehchg9eSnoQQmJntupv96UnFUJTZFIBhmjbN3wGvZdsxdftIB8ahDhFOGJg1sg9X4mH6f1jNDGp+ulHoviQhJwEQHsHwoiiDoyQ1nOfhAo+irtkUeqRxE51FjJK+QXSFd7LgtYKgcZOu48jBx03hq89L4wFbUFm4FFZBkQyRNsBXWvDTVEvqq4Kn+H0LE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(261009223027099003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Mq2pMWDmX5IeJfbDNayT5AfjHb4iX1/QvHRoZtt6+LJitKsmH71V6JJhwcNK?=
+ =?us-ascii?Q?fJTANvxanaoyOzTZsgxPYwyQMYOLuqvywbK87DBNK68wPD8qdLkh1zft3W69?=
+ =?us-ascii?Q?b/M94VWMYIS3VIZtHt3soUJgyjg+2rMnykRBfWG8KLfzsvafzbj8d4asKCqt?=
+ =?us-ascii?Q?6+MCTtSOw43d18CBNTpjXViWtXbqaFvZhfhWDpt0G4XbZEuEnColAFr4U8t6?=
+ =?us-ascii?Q?v3H/JE+UmL6X/xVpxA0mm8UAtsACH51K7FgWJcI/S3iF2nHLp5Yt/0qsawdA?=
+ =?us-ascii?Q?/fIej7aWXaLZbJlNM23wGgvcFA8JV5qenSftKCrMAtwnh2SUZbzdEfcHoLpi?=
+ =?us-ascii?Q?CQULPptJwcULE1EiX693s3+e+f+VFoOaKYprZNzFz3yryh39fDeH+CF9ZZdh?=
+ =?us-ascii?Q?tfrgFJvWNq9KPpYSubFjVhzhcNEbd2LaGLVRklOUX1hLHkP8KULd+UIG/H2m?=
+ =?us-ascii?Q?OkuhD42i5z/2Jkez9Rn8iyUkI+aqKFFCFZZsYUiyulZVzUlviS+3ptlcPAwQ?=
+ =?us-ascii?Q?NC51F4j0C1CbGTV8nn+8BnGWpifzUbwdu27ZYMxjL2ScrmlN+cpVOr+d4lbB?=
+ =?us-ascii?Q?XRtMroH1eeGAhmMliNccfXEz6BoKmKxqX80g6HHpGjVEqQ95EJyMirBrp3/a?=
+ =?us-ascii?Q?43CRKvoBJ3DZ04O3BNrldzfqNefLimXG0k6QnLiQS22bX7wwlyoR8MS/ypA0?=
+ =?us-ascii?Q?1TEB2ptLJIj1VRRrHusjLE9zNPeo2LUTI+vInTPiCUl4VXY2h8wJIHwh32dc?=
+ =?us-ascii?Q?734abqkajKVSXNHsV0IUs937zLpM9uKKMuWwhWluoBvJtWUnno7O8GEyrod4?=
+ =?us-ascii?Q?sVFBu8pnoQIezlVavzAxXJLUdCLluA4nZLW4ykU7HXFIWAYYcVplSF4AAJmI?=
+ =?us-ascii?Q?wOpRb011nc873vzVCpQXXgremmjay7KOoWEQxEW8jqBkjr2uZ3t2bnge6ISx?=
+ =?us-ascii?Q?YYF38NPhlCV8G/qWiYaRV7gJ0BHRCTDcB9DXH4CWPUY/vtieIvmO1rTcnUil?=
+ =?us-ascii?Q?/jF8wtQgqapEssaWQtNtruoPHwzed7lh/RH5hbT7OgH1iQqkJu4MKF6osaop?=
+ =?us-ascii?Q?6v1EVRVoayFMo3K0rEhI1UXzcyskQOgFcJsnochTGcQRfxtYXnjwWLKYJyRL?=
+ =?us-ascii?Q?bbRljWP00ooxxWz859c9nZ94WSYw4MlfFaB7DRC248Z6s5LMoHGlQy/Rhzu7?=
+ =?us-ascii?Q?NmlwDPGfmbUG162onTjrgTLGBOBuOMcsYP2k/DBfReLJrSmyR2blHeA/qXqB?=
+ =?us-ascii?Q?c+W/21t81rZamcWZigJVlX3TQI9cxBL11NKQZrvhq5R6r9kMl3UF8OTsXQYX?=
+ =?us-ascii?Q?Jev0VhkJ1LXsZfQUZ9GhKXI0EtLti9DYjfGk9rJ3puFEJCLvwc67YM5Flv6c?=
+ =?us-ascii?Q?DkJ2BtK/twJG2mPRPC5zAB1VrCmIldF5oeKJmBESmClfCa/U+SOLr0/joqaW?=
+ =?us-ascii?Q?PaZ29NMmYC55rr3Z1W7zU6nMBhC/OQkm+CUOe1K7UOYmBT67ut2Tv4epoGYr?=
+ =?us-ascii?Q?ztBhyxgUfKkNA4QuFfGe+hTvOY/AcSF+oNlh3edY6d2znQkln/gCd5XRyCCn?=
+ =?us-ascii?Q?VjqhXIAGDRBV3VppVsMoQIdY6KxBi0bu3LcayOdji8jdSHLGM/6PYi4xt2ed?=
+ =?us-ascii?Q?j4ukHWi90B0uGKPYHzIz94gx+X36kQsDeFNnPpaGMxYJhr/jJjAgqsQPFohq?=
+ =?us-ascii?Q?Y9hXXSK91+fcLRlUu91D9l1KK0LxwcACNZBU6wJpKY+MQwe2?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 392d6bc6-5804-4716-dc96-08df28f7b2b5
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 07:00:43.1616
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: gYFXKgIqSjjl/8kn+/5vibbEJUjg9lkDIw/RejEOlveSxAjrh/QBQZ6q5khjSeFANH3Ex+V9KAojxQhmHIAIjA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6397
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
+On Mon, Oct 12, 2026 at 07:44:55PM +0000, Kuniyuki Iwashima wrote:
+> Patch 1 updates the switchdev doc, s/arp_tbl/arp_table(net)/.
+> 
+> Patch 2 updates a selftest for per-netns sysctl knobs, though this
+> is not an actual issue since the test does not hit gc_thresh by
+> default.
+> 
+> Patches 3 & 4 are based on a suggestion by Ido Schimmel to make
+> neigh_managed_work CPU-friendly:
+> 
+>   https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 4
+Thanks for the follow-up, but I think you missed my first point... My
+comment was about the GC work that doesn't have a floor at all. An
+unprivileged user can set the base reachable time to 0 and
+neigh_periodic_work() will hog the CPU.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The new LLC skip in set_rps_cpu() (net/core/dev.c:5196-5199)
-  assumes that `old_cpu` shows where the NIC currently delivers the flow.
-- [Low] The new user-visible sysctl net.core.arfs_llc_affinity
-  (net/core/sysctl_net_core.c:563-569) has no documentation.
-- [Low] The config guards for the sysctl and its only user do not match.
-- [Low] The commit message says the results "demonstrate that filtering
-  updates by LLC affinity significantly reduces driver lock contention…
-- [Low] In this tree, cpus_share_cache() (kernel/sched/core.c:4008-4014)
-  returns `per_cpu(sd_llc_id, a) == per_cpu(sd_llc_id, b)`.
-
---
-
-net: reduce ARFS flow updates by checking LLC affinity
-
-This commit adds an opt-in sysctl, net.core.arfs_llc_affinity. When it is
-set, set_rps_cpu() skips the ARFS hardware steering update
-(ndo_rx_flow_steer) if the flow's previous RFS CPU and the new one share
-an LLC. The rflow->cpu bookkeeping is still updated, so software RFS keeps
-steering packets to the CPU the application runs on.
-
-> These results demonstrate that filtering updates by LLC affinity
-> significantly reduces driver lock contention and improves overall
-> CPU efficiency under heavy network load.
-
-[Severity: Low]
-
-Does the data above support this claim? The only number given is the
-mlx5e_rx_flow_steer() call rate, which drops from about 200k/s to about
-10/s. There are no throughput, latency, CPU utilisation or lock
-contention numbers.
-
-The commit message also leaves out the trade-off. When the hardware
-update is skipped, the flow stays on its old queue. get_rps_cpu() then
-hands every packet to next_cpu with a remote enqueue_to_backlog() plus an
-RPS IPI. After a completed ARFS steer, the packet would instead be
-handled on the queue's own IRQ CPU.
-
-The phrase "subsequent packets take the fast path in get_rps_cpu()
-(tcpu == next_cpu)" could be read as local processing. The packets are
-still moved to a remote CPU.
-
-The opening paragraph names rps_record_sock_flow() as the motivation.
-Since v10, though, the patch only changes set_rps_cpu() and get_rps_cpu().
-Could that paragraph be reworded to match?
-
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index a6951ea08961e..434ad5499906d 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-
-[ ... ]
-
-> @@ -5179,6 +5180,24 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
->  		if (!skb_rx_queue_recorded(skb) || !dev->rx_cpu_rmap ||
->  		    !(dev->features & NETIF_F_NTUPLE))
->  			goto out;
-> +
-> +		/*
-> +		 * ARFS LLC Affinity Feature:
-> +		 * Reduce ARFS flow updates by checking LLC affinity.
-> +		 *
-> +		 * Frequent flow table updates can trigger constant hardware steering
-> +		 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-> +		 * contention on driver internal locks (like mlx5's arfs_lock).
-> +		 *
-> +		 * Skip the expensive hardware steering update if the flow's previous
-> +		 * target CPU and the new one share the last level cache: cache locality
-> +		 * for the application is preserved either way.
-> +		 */
-> +		if (static_branch_unlikely(&arfs_llc_affinity) &&
-> +		    old_cpu < nr_cpu_ids && cpu_online(old_cpu) &&
-> +			cpus_share_cache(old_cpu, next_cpu))
-> +			goto out;
-
-[Severity: Medium]
-
-Is old_cpu a reliable sign of where the NIC currently delivers this flow?
-
-get_rps_cpu() passes in tcpu = rflow->cpu. That value is read from the
-hashed slot in the flow table of the queue the packet arrived on. It only
-records the last software RFS target for that slot, and it may have no
-hardware filter behind it. For example:
-
-- ndo_rx_flow_steer() returned rc < 0, but set_rps_cpu() still did
-  WRITE_ONCE(rflow->cpu, next_cpu) on the arrival queue's slot.
-  mlx5e_rx_flow_steer() can return -EPROTONOSUPPORT, -ENOMEM, or -EPERM
-  while MLX5E_ARFS_STATE_ENABLED is clear.
-
-- The tmp_rflow collision check or the !q_tag_ptr check took goto out.
-
-- The slot still holds a CPU left by an earlier flow that hashed to the
-  same rfs_slot(). store_rps_dev_flow_table_cnt() sets RPS_NO_CPU only
-  when the table is allocated.
-
-- The driver flushed or re-created its filters.
-
-In each of these cases, if old_cpu and next_cpu share an LLC, the new
-check skips ndo_rx_flow_steer() and then reaches:
-
-	WRITE_ONCE(rflow->cpu, next_cpu);
-
-On later packets tcpu == next_cpu, so get_rps_cpu() never calls
-set_rps_cpu() again. Hardware steering is not retried while the
-application stays within that LLC. A new flow that lands on a stale slot
-in the same LLC would never get an ARFS filter at all.
-
-Before this patch, every CPU change triggered a new steering attempt, so
-a failed or missing filter recovered on its own.
-
-Without a filter, the flow stays on its RSS queue, which may be serviced
-in another LLC or NUMA node. Every packet is then handed over by software
-RFS. cpu_rmap_update() ranks queues by sibling, package and NUMA node,
-not by LLC. Nothing guarantees an LLC relationship between the receiving
-queue and old_cpu. Doesn't that contradict "cache locality for the
-application is preserved either way"?
-
-Could the skip be limited to the case where this flow has a live
-hardware filter, for example rflow->filter != RPS_NO_FILTER &&
-rflow->hash == hash? Another option would be to compare next_cpu with
-the CPU that actually services the receiving queue, rather than with
-rflow->cpu.
-
-[Severity: Low]
-
-Can cpus_share_cache() return true here for CPUs in different LLCs? In
-this tree it is:
-
-kernel/sched/core.c:cpus_share_cache() {
-	if (this_cpu == that_cpu)
-		return true;
-
-	return per_cpu(sd_llc_id, this_cpu) == per_cpu(sd_llc_id, that_cpu);
-}
-
-sd_llc_id defaults to -1. It is assigned only in build_sched_domains()
-and reset to -1 by __sched_domains_free_llc_id().
-
-sched_cpu_deactivate() calls sched_domains_free_llc_id(cpu) while the CPU
-is still in cpu_online_mask. CPUs outside any sched domain, such as
-isolcpus=domain CPUs, keep -1 permanently.
-
-The new check guards old_cpu only with cpu_online(), and next_cpu only
-with nr_cpu_ids. If both CPUs carry the -1 sentinel, they compare as
-sharing an LLC and ndo_rx_flow_steer() is skipped. That could happen when
-an application migrates between two isolated CPUs in different LLCs, or
-during a hotplug window.
-
-The sentinel handling belongs to the scheduler, but should this new
-networking user guard against it?
-
-> +
->  		rxq_index = cpu_rmap_lookup_index(dev->rx_cpu_rmap, next_cpu);
->  		if (rxq_index == skb_get_rx_queue(skb))
->  			goto out;
-
-[ ... ]
-
-> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-> index 473c162736d69..9ce0bbe454c83 100644
-> --- a/net/core/sysctl_net_core.c
-> +++ b/net/core/sysctl_net_core.c
-> @@ -560,6 +560,13 @@ static struct ctl_table net_core_table[] = {
->  		.mode		= 0644,
->  		.proc_handler	= rps_sock_flow_sysctl
->  	},
-> +	{
-> +		.procname	= "arfs_llc_affinity",
-> +		.data		= &arfs_llc_affinity.key,
-> +		.maxlen		= sizeof(arfs_llc_affinity.key),
-> +		.mode		= 0644,
-> +		.proc_handler	= proc_do_static_key
-> +	},
->  #endif
-
-[Severity: Low]
-
-Should this entry, and the arfs_llc_affinity definition in
-net/core/dev.c, be under CONFIG_RFS_ACCEL instead of CONFIG_RPS?
-
-The only reader, static_branch_unlikely(&arfs_llc_affinity) in
-set_rps_cpu(), sits inside #ifdef CONFIG_RFS_ACCEL. RFS_ACCEL can be
-turned off on its own ("depends on RPS" in net/Kconfig).
-
-On CONFIG_RPS=y, CONFIG_RFS_ACCEL=n kernels,
-/proc/sys/net/core/arfs_llc_affinity is still registered and accepts
-writes that flip the key, but nothing changes.
-
-[Severity: Low]
-
-This isn't a bug, but net.core.arfs_llc_affinity isn't documented in
-Documentation/admin-guide/sysctl/net.rst. That file covers other
-net.core knobs, such as rps_default_mask and high_order_alloc_disable.
-
-The Accelerated RFS section of Documentation/networking/scaling.rst also
-still says:
-
-  The network stack automatically calls this function every time a flow
-  entry in rps_dev_flow_table is updated.
-
-With the knob enabled, set_rps_cpu() now updates rflow->cpu and
-rflow->last_qtail without calling ndo_rx_flow_steer() whenever the two
-CPUs share an LLC.
-
-Could the documentation describe the new knob, its default (0) and
-accepted values, and this exception in scaling.rst?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012060152.2930-1-nashuiliang%40gmail.com
+> 
+> Given it's rc7, I'll defer RTNL removal to the next cycle.
+> 
+> 
+> Kuniyuki Iwashima (4):
+>   Documentation: networking: switchdev: Replace arp_tbl with
+>     arp_table(net).
+>   selftests: netfilter: Set gc_thresh[123] for gw netns in
+>     nft_nat_zones.sh.
+>   neighbour: Schedule neigh_managed_work only when needed.
+>   neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
+> 
+>  Documentation/netlink/specs/rt-neigh.yaml     |  2 +-
+>  Documentation/networking/ip-sysctl.rst        |  2 +-
+>  Documentation/networking/switchdev.rst        | 11 +++---
+>  net/core/neighbour.c                          | 26 ++++++++++----
+>  .../selftests/net/netfilter/nft_nat_zones.sh  | 34 +++++--------------
+>  5 files changed, 35 insertions(+), 40 deletions(-)
+> 
+> -- 
+> 2.56.0.385.gd3acb90ef8-goog
+> 
