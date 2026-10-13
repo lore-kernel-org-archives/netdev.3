@@ -1,141 +1,129 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248C237B413
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 19:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791920800; cv=pass; b=hVQXqVW0THmLtQBR2+iAVEu/AwexX23DjaBYcH+JySP9jjfAoAJb2myITRF0e1WE4OkCNhtyAFbSK6XTDm7TbhHiDW17E3mqboX+NnmlMOmeh405+2BQ6UCgWHzAAf9Kk732TPeMDYIRFx1KlMeOHIWLjxSxEo+NEq8pmmaJGhI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791920800; c=relaxed/simple;
-	bh=FXG86Vc5Z3HtOtD7Ma7mNf0CfsAgAIGs82fO1RvGgYA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EGXvRJ6GCAInYgm5ah9+W73FoOn7F1iW/ZvetUv4PIqe8jh/JvsKUYYPIWIrXnxiL2HUVBJj9vTNxC2HFxR+C8IBL22FcFNHH/+wYI0Uxxs7Ew2HsrJd4GwLI+bdz46qTQ0pvXxlyH6iuH2jvB/x2//7XSD1oH3pCofq+y8mECY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ncq/l4Xs; arc=pass smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B6B5293F5;
+	Tue, 13 Oct 2026 19:49:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791920966; cv=none; b=JqqGzckvKW69+lDzutroHnAyXT+KV9PWMdQzcdCdcGBcKcZ/Mi63xHSJ2oaBl50xic/6iiKmibcXFnOBHSIgpXtovTczV0MnykWdnoXitk+DZBRcViRmtYvRl84KTdcv2dxBissPddIQ9X7Ow3i8H0kzjaDGy7peIs8L5HKA0vk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791920966; c=relaxed/simple;
+	bh=Es6cdmM6hV23YJSWwen0pAr0a1+Qz1UUN7NsfZVb5U4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fmkR/6qvq4AGnPwrLqkgGKd8J+32kNftu+5AJAzw7C2JWAbY+Wg5PG95BAHKgvd/9ov30f5ReKSKrNxdx/qw6d1YjOwTR6HUp3o39yuS8aLgKOus9lX6c09AV4PzKGfY6sTXtBrQ5PE7UpRY4A1635BlMBxGrxG2eB4cR7asx/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=FXpe+cvh; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ncq/l4Xs"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b203527bceso401618a12.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 12:46:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791920797; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XWuoTauE0Jgh5MgaRVLPWAbg2M1ATENKISDXxMSYlEuHFHRGh4LSLQpjuqT0U7QK34
-         HGso+jjDl+GFBQcO/HXdq8nyZ/eR1SCBwo+IsNojDvX+MlQr15H4copioc9c940djirZ
-         k08J+7NdKyK8sXMdNIAe8hqChvnhHzyvEhaluJIKnL7SJE/3k6nG3XbtvVuRd2fX06yx
-         teQJJnsQjMoEA8w0xDFEOzq2dt+WXmWSpXfba2YaILElyF4cQbSHkgZuzHF8HjvenJ7J
-         HoDR8SXB0NkH+cnvFyX8Vq4O+FiYUTyViH7+9EZN5BzfCXxZfKGx5oSFdCNwyRriJo4T
-         3BQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CVKDBAWO9v4x/qHowfYZV6oyH69UJO9Z+8aTiczsXHQ=;
-        fh=zT239D3uluY0S4SaxSt6v9qsARJBm0AH8ZIzY6AOLC8=;
-        b=WYLnFwx8Q4R7pul2gQD1tL9u96XYtXNLVTttyHeQvQde2w2M2CRJm6kE/dksYysBR6
-         S6gHybyYg9G+hby5ZidQh8uA6GyC7xbj/6gYO5r/NqQ4XMRGLy98u8WKgmtN3vI6ojM5
-         Ah/G3j8MJ/sYS9b8kAV8gcb3E4wYq28lKWz7yl5kQLSABTNQfXYtYh31f/1Ktas5l2qD
-         x7jiYKla7Beoji56zk+CTaPVmh0gChWfgIeF7lpTUYmMa0NaiQUpTrVRNahApXdyXC2h
-         egX7gLlSiscd4HKWNQD8cgOZSokmIvym2dXwCJeeHngQCznXqAvNShpiBK6N/+ZikGEK
-         2T6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791920797; x=1792525597; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CVKDBAWO9v4x/qHowfYZV6oyH69UJO9Z+8aTiczsXHQ=;
-        b=Ncq/l4Xsx61d6s5Zq7UQjrcZuzv3YTonNTtufS15woh21syVCmTo5TdTkm2roADliI
-         hQ48nB3OWtGpFmcU+nxqgG+WyO7eUSx3LFdaPWvTF7y41v7LKE4RULxPNFTvu2YN71tr
-         MkxZWrUkAEIq6z9ZaF/8ig1H9ztjhbtsDCXUYbwwhiQlUypNJETpk59b9RxWsf8Ngl5F
-         0oc0e4ARG69Vl33znWek5v64n0Xbnm6IU8Na8KwoB7VHcG3FYdDFNDs+xdNzTcuxUF2j
-         flyKkJd5NBquYAVeRUgLMOGWP8bpRZKyOmzrQxABTqdRFJBoO8I/RJAgtkRPNt2KxNba
-         6xng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791920797; x=1792525597;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CVKDBAWO9v4x/qHowfYZV6oyH69UJO9Z+8aTiczsXHQ=;
-        b=RT8SmoU4rp+eUKt7m6yvdsTMsZ3CqAAFi6TUj/CljmB8NiE7u309YcD70aH0fuA5jL
-         elvxfiEroFs2FPa8nRU7Kj96upfMlBXulGPg7SHx9HbC56Ug5a8AAcU/2hPgjZ5dKWSM
-         78+5af0n/OLQdqB2tgFjJsDbNXN+ITkfj0HLqTmVSHzeQVXJCUMEwMW2N8ve67gEyqw/
-         RTQJHceF29gwUts6UXM9ZhDUt4rpLF8mx7BhSzV/zuaXH5ip+Wr5u0F2Aj2MyFkcY9gE
-         5lLPAfT0QXd2IxY1/U31olpaF93BAY3nhjoWjm5A56vw7UWelebW4lhM97h7pwFBnP0G
-         SepQ==
-X-Gm-Message-State: AFq9FYJQWPY7nSrL7Y5X9ifTKaE2YOGUmtg31Aib9icxXEPV4IEr0dwD
-	58v3mi5b1zp0SaSuY28KcrS+TYj/D4rsUl2zmGOQFsHTlEXnrKfDTURMrbVvWcwRhZHUBa9wT6+
-	UqtCTOKAxpwt71IMJoFSNwWuQWAVxMgw=
-X-Gm-Gg: AYBFou2Z45wCzh7Iq3Im3Rn2rXP1ltwFn1qPWxl2FFtJLY8Ot4lR67fkbtqfGru+nBf
-	M46sJL1Vll8gXhVQZh8eJfhMHKUbkipxZJ0HcFqrEnVYBIIddoUONDHxDj0rtCpXeYs3r8rvmgr
-	4Quow+4YQLPGHTCXiEhjwCBPxOIxC1HXVAxdis3D3xXzcFAeY7Z0RTwCjj2Qie2ZktuDeCKj/Lm
-	sOJuZ5F8v83ED/edExt8eewEoPyPlwAaB7AAu5v2NzNiW5CxKd3viIyA2TzR83FH/ZXYNgBdxsH
-	t5yuCs5/XzI/cx9VBuZ9hmqMfe+RQ4XyzqIvSmHzAU4z+wP4HFVZHFDgpYKW3atBeUguEChv+pe
-	EYJ8/i1T/M12Tt2YnpFrbthNt/ZXU/68oWXsQBwunzftRV88IvFhyD3d3W8tQ5RvohkNS/Zkfry
-	vBZxU/RVoDnvgX3LkYhateTFmz11wUjhQJXjpSbzNSobDc
-X-Received: by 2002:a05:6402:1e8c:b0:6b1:e474:e0e0 with SMTP id
- 4fb4d7f45d1cf-6b1e474eb16mr2804797a12.9.1791920797110; Tue, 13 Oct 2026
- 12:46:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="FXpe+cvh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791920971; x=1823456971;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Es6cdmM6hV23YJSWwen0pAr0a1+Qz1UUN7NsfZVb5U4=;
+  b=FXpe+cvhniEC57RQjZp45wh/z60r5B0sPBqyyI6hbxrMnCm+wCz54X58
+   qgfpbj7j9Mv8G48TVEXKXwwN2jaJF6sQB1qe0+db2IsYWiAb/fPVqdyK/
+   1bPoastGWlb9XId+21lZ/2dwrEBcmaOrdX9AZUk2XHenX9XRWu4nm3LwJ
+   m3KoahesoGAwSTinBa8ZEEsvsftYKdVmGVu0uh8jHqEg/OrammfR4Zq3Y
+   VWb4/u3tq2/Gv5tSyaekDBG9M+6uAhzRXS7YVJXAcwsKuwcUWCBMzeIv3
+   Wpuy6yStKKlUyIL3Ak5Au1k143ERV/JuD1LkXYbv1wObZSzB1t+pQsgnf
+   g==;
+X-CSE-ConnectionGUID: UVmiyirnQrKGsgzYHdQOyg==
+X-CSE-MsgGUID: y7DqraEARLiqHc4saHKz4g==
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="64984376"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 12:49:30 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Tue, 13 Oct 2026 12:49:23 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Tue, 13 Oct 2026 12:49:21 -0700
+Date: Tue, 13 Oct 2026 21:49:20 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Anirudh Virdi <avirdi@redhat.com>
+CC: <netdev@vger.kernel.org>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@kernel.org>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<kees@kernel.org>, <horms@kernel.org>, <ast@fiberby.net>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: qede: initialize extack in
+ qede_flow_spec_to_rule()
+Message-ID: <20261013194920.unq2yye3qnntl5yr@DEN-DL-M70577>
+References: <20261013105451.201211-1-avirdi@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261005-submit-phylink-suspended-stop-v1-v2-1-8b8e5d53dfc2@gmail.com>
- <224296ea-f196-44f3-91d6-1461846c55a5@lunn.ch>
-In-Reply-To: <224296ea-f196-44f3-91d6-1461846c55a5@lunn.ch>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Tue, 13 Oct 2026 13:46:24 -0600
-X-Gm-Features: AclHuK_-ExkCTDuO98uNJR7veehspk26g_HVMQrxEAv1f54ELeztHi6cVQvhtyw
-Message-ID: <CADvTj4qgcXE6azsNx-Wg5afatezLeuctGR607qO1WhZSmuqzBg@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: phylink: allow stopping a suspended instance
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261013105451.201211-1-avirdi@redhat.com>
 
-On Mon, Oct 12, 2026 at 7:22=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> On Mon, Oct 05, 2026 at 01:09:05PM -0600, James Hilliard wrote:
-> > After a failed MAC resume, a driver must be able to stop phylink withou=
-t
-> > resuming it and reconfiguring the failed MAC. This is needed when recov=
-ery
-> > leaves the interface administratively up but detached until a subsequen=
-t
-> > down/up: ndo_stop() must finish the suspended phylink lifetime even tho=
-ugh
-> > the MAC could not be restored. The missing transition was identified by
-> > code inspection of the stmmac recovery paths.
->
-> I don't particularly like this. It feels like a workaround for a
-> broken MAC. It would be better to fix the MAC so that resume does not
-> fail.
+> qede_flow_spec_to_rule() declares a netlink_ext_ack on the stack
+> without initializing it. qede_parse_flow_attr() and
+> qede_flow_spec_validate() only set extack._msg on error paths via
+> NL_SET_ERR_MSG_MOD(), so on a successful parse the err_out block
+> reads an uninitialized pointer. If that garbage happens to be
+> non-NULL, DP_NOTICE("%s", extack._msg) dereferences it inside
+> vsnprintf, causing a page fault and kernel panic.
+> 
+> This manifests when configuring ethtool ntuple flow rules (ethtool -U
+> flow-type tcp4/udp4) on kernels built with CONFIG_INIT_STACK_NONE=y.
+> With CONFIG_INIT_STACK_ALL_ZERO=y the bug is masked because the
+> compiler zero-initializes extack, making _msg NULL.
+> 
+> Reproduced on RHEL 9.8 (kernel-5.14.0-687.47.1.el9_8) and mainline
+> (v7.3-rc6) with the following reproducer:
+> 
+>   IFACE=ens2f0
+>   ip link set $IFACE up
+>   ethtool -K $IFACE ntuple on
+>   for i in $(seq 1 100); do
+>     ethtool -U $IFACE flow-type udp4 src-ip 192.168.2.$i action -1
+>   done
+> 
+> The loop panics reliably after 10-15 iterations with:
+> 
+>   BUG: unable to handle page fault
+>   RIP: string+0x49/0xd0
+>   Call Trace:
+>    vsnprintf
+>    qede_flow_spec_to_rule+0x2b6/0x4b0 [qede]
+>    qede_add_cls_rule
+>    ethtool_set_rxnfc
+> 
+> Zero-initialize extack so _msg is NULL unless explicitly set by an
+> error path.
+> 
+> Fixes: eb705d734525 ("net: qede: use faked extack in qede_flow_spec_to_rule()")
+> Signed-off-by: Anirudh Virdi <avirdi@redhat.com>
+> ---
+>  drivers/net/ethernet/qlogic/qede/qede_filter.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/qlogic/qede/qede_filter.c b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+> index ab8b818588e2..e63422c945f9 100644
+> --- a/drivers/net/ethernet/qlogic/qede/qede_filter.c
+> +++ b/drivers/net/ethernet/qlogic/qede/qede_filter.c
+> @@ -1992,7 +1992,7 @@ static int qede_flow_spec_to_rule(struct qede_dev *edev,
+>  {
+>  	struct ethtool_rx_flow_spec_input input = {};
+>  	struct ethtool_rx_flow_rule *flow;
+> -	struct netlink_ext_ack extack;
+> +	struct netlink_ext_ack extack = {};
 
-Fixing an identified cause of resume failure belongs in the MAC
-driver. The intended purpose here is narrower: allow orderly shutdown
-after the driver has returned an error, rather than recover the MAC
-through phylink.
+nit: the fix breaks RXT.
 
-stmmac_resume() already returns before phylink_resume() when hardware
-setup fails. The associated stmmac recovery work keeps the interface
-administratively up but detached, allowing an ordinary down/up to
-recover it.
+>  	__be16 proto;
+>  	int err;
+>  
+> -- 
+> 2.55.0
+> 
 
-That leaves a subsequent ndo_stop() needing to finish the suspended
-phylink lifetime. Calling phylink_resume() just to make shutdown
-possible would reapply MAC configuration and restart link resolution
-before the driver has successfully restored the MAC. That is the
-transition this prerequisite was intended to address.
-
-> As far as i know, this it theoretical, only triggered by fault
-> injection. If we find a real error situation where the MAC cannot be
-> resumed, then i will consider it. But until then, i prefer to reject
-> this patch.
->
->      Andrew
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
