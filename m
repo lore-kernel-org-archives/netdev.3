@@ -1,149 +1,138 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C51B50129F;
-	Tue, 13 Oct 2026 14:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBFB40F73A
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 14:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791902251; cv=none; b=NjMrzsouwy2wZKnqq+d5WlGniUxYNKg/9FhxG++YXUXJs8Gm46W+DcMcbzhYMa2lnrdi+6Ui1KPC1haP72j0oD8wWb2I1RnmqXwYeJPLbWBKEBSN8Buk/G+IFHtMMrlODvSdhcr1xEfy8tkOYcChozH4+cZSTubqABGUwC9Nw58=
+	t=1791902391; cv=none; b=nVguPmi/KbJh+hHlar+7M0bTmIkuUHsZwcYTvpivEunHTNQ3bi0nnjQgdrfu3C9DM/qQ4lxSX1pJO+KdcJRjK18m0Ttim6uttLb+MDMPfQoxzOk5VAVvpgdw3ZbvOlROCflg0EqscS7bsocHnhnJ27qjv8/cjoIwqEp7BqrTNjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791902251; c=relaxed/simple;
-	bh=5jKPCpzP3ydgQqLnqgc6m8dhumkZpBBD4O7fxHqz170=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c+2yvPjwrrOJGDeOy5+7E6AcAqQEfDOPojfllLvOGxnYXgZYhSZSy1UPXFMWYtAtK2JqP1ul6JisMb9QbNDrfqG80rkbIAaWeb87GgK6oFlJFWd0fRN/ZPr3ugXSDKwAVWmn/Ke0AOtv9JGwBXKV3lcVMjFZ8vL45bKq6KVUQCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id EC50A1A01A5;
-	Tue, 13 Oct 2026 16:37:21 +0200 (CEST)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id C89A01A00E9;
-	Tue, 13 Oct 2026 16:37:21 +0200 (CEST)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 516EE202DA;
-	Tue, 13 Oct 2026 16:37:21 +0200 (CEST)
-Date: Tue, 13 Oct 2026 16:37:21 +0200
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Frank Li <Frank.li@oss.nxp.com>
-Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
-	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
-	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Chester Lin <chester62515@gmail.com>,
-	Matthias Brugger <mbrugger@suse.com>,
-	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-	imx@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [PATCH RFC v3 03/12] dt-bindings: PCI: nxp,s32g-pcie: Fix SerDes
- PHY phandle in example
-Message-ID: <as5CIYxKJTra4hqM@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
- <20260919-s32g_serdes-v3-3-9d68868c1e89@oss.nxp.com>
- <as0qORxP0Roh9ktO@SMW015318>
+	s=arc-20240116; t=1791902391; c=relaxed/simple;
+	bh=x4JXlDlGmqWY5EW+2edkOtzPjV1b+03YQOwDIz+jHdo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ATesPAa4VG0KbgP/uZ0XCnKo+yrBzolOFiwuoex0BBYBoJgulgjZ7En+otWc9/QdfqvPHj68ADNac0A2eS+TbXa/VRC1QZLW1fcsCsOYZyUAIWyPvIr44xOX0jAcUXdz5zBBokLp//npZE7QzdH70UHxJNJVF0t5H0/nijOn/KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkG4PJbN; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkG4PJbN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006FB1F000FF;
+	Tue, 13 Oct 2026 14:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791902389;
+	bh=jdOmbyKW1BXVliYEEyAVtWpOSyYPCb1tNiqls9Wke5M=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=bkG4PJbNHB1fX6XQ8GE7WIqmgK3R3d9abb3nMS/pYz2iev3QCpkTQQz11ROGPGIy1
+	 eLMgaeb6S4Hufub/HwtpeFLngpsHqrh6oVvfjuZ/Pe/PKBBo6NAktC+VIJFHsnSYRD
+	 1vWauesjES7DJ3Mt+95mf3f08uv/ScBnHzuAvsXXmhFs2kUVvAB2gCLEKVIpqTbFFT
+	 5N2baHIhxweaRB7nBetbOucB5ZYydEx+IdPkgHydntYa3Ns+6/E6EX1K2+xD+nGGtl
+	 uacBqjW/3nAdOgUv2UAR2s/IdwNGxAWsMqgwo9B0usK4AiOj48/Jfjxvuu9FTVFUgF
+	 zKoOAiN2ixaBw==
+Subject:
+ Re: [PATCH net-next 4/6] selftests: ovpn: enable TCP_NODELAY on TCP sockets
+From: netdev-bot+sashiko@kernel.org
+To: antonio@openvpn.net
+Cc: netdev@vger.kernel.org, sd@queasysnail.net, ralf@mandelbit.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com
+Date: Tue, 13 Oct 2026 14:39:48 +0000
+Message-ID: <179190238850.434549.6180086091448145830@kernel.org>
+In-Reply-To: <20261012133809.2477063-5-antonio@openvpn.net>
+References: <20261012133809.2477063-5-antonio@openvpn.net>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <as0qORxP0Roh9ktO@SMW015318>
-X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Mon, Oct 12, 2026 at 01:43:05PM -0500, Frank Li wrote:
-> On Sat, Sep 19, 2026 at 08:54:31AM +0200, Jan Petrous via B4 Relay wrote:
-> > [You don't often get email from devnull+jan.petrous.oss.nxp.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> >
-> > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-> >
-> > The example references the SerDes PHY as
-> >
-> >   phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
-> >
-> > i.e. the SerDes node itself with three PHY cells. That does not match
-> > the SerDes binding: the per-lane child node is the generic PHY
-> > provider and carries '#phy-cells = <0>', while the SerDes node itself
-> > has no '#phy-cells' at all.
-> >
-> > Point the example at the PCIe lane child instead, which is also what
-> > the S32G3 board device trees use. The dt-bindings/phy/phy.h include is
-> > dropped along with the now-unused PHY_TYPE_PCIE constant.
-> >
-> > The schema itself is unchanged; 'phys: maxItems: 1' already describes
-> > the corrected form.
-> >
-> > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
-> > ---
-> >  Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-> > index 66a050028278..29323e50bd8b 100644
-> > --- a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-> > +++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
-> > @@ -82,7 +82,6 @@ unevaluatedProperties: false
-> >  examples:
-> >    - |
-> >      #include <dt-bindings/interrupt-controller/arm-gic.h>
-> > -    #include <dt-bindings/phy/phy.h>
-> >
-> >      bus {
-> >          #address-cells = <2>;
-> > @@ -124,7 +123,7 @@ examples:
-> >                  ranges;
-> >
-> >                  device_type = "pci";
-> > -                phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
-> > +                phys = <&serdes0_pcie0>;
-> 
-> I don't think it fix somethings. The "serdes0" just a label, point to
-> provider, which is not neccsary that "#phy-cells" is 0.
-> 
-> Examples just show need how many phys and don't care about phy provider's
-> arguments
-> 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-The example validates either way, agreed. The three cells are the
-'#phy-cells = <3>' of the downstream nxp,s32cc-serdes binding, which
-was never posted upstream; patch 1 is the only SerDes binding for S32G
-and has no three-cell provider. I would rather have the example match
-it.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-The form depends on the outcome of your patch 1 comment, so I will
-keep this patch in sync with that. If you prefer the phys line
-untouched, I can drop it and keep only the ranges fix v4 adds here.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-BR.
-/Jan
+- [Medium] After this patch, no TCP selftest checks the TX peer-ID that
+  goes out on the wire.
+
+--
+
+selftests: ovpn: enable TCP_NODELAY on TCP sockets
+
+This commit makes ovpn-cli set TCP_NODELAY on its TCP sockets by default.
+Setting OVPN_TCP_NODELAY=0 turns it off, and the new test-tcp-nagle.sh
+uses that to keep running the TCP suite with Nagle enabled. It also limits
+the tcpdump-based peer ID check in ovpn_run_basic_traffic() to UDP.
+
+> diff --git a/tools/testing/selftests/net/ovpn/test.sh b/tools/testing/selftests/net/ovpn/test.sh
+> index 392109d5e14e2..e2e6ffdd29bb0 100755
+> --- a/tools/testing/selftests/net/ovpn/test.sh
+> +++ b/tools/testing/selftests/net/ovpn/test.sh
+> @@ -137,35 +137,33 @@ ovpn_run_basic_traffic() {
+>  	local tcpdump_timeout="1.5s"
+>  
+>  	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
+
+[ ... ]
+
+>  		if [ "${OVPN_PROTO}" == "UDP" ]; then
+
+[ ... ]
+
+> @@ -173,8 +171,10 @@ ovpn_run_basic_traffic() {
+>  			ip netns exec ovpn_peer0 \
+>  			ping -qfc 100 -s 3000 -w 3 5.5.5.$((p + 1))
+>  
+> -		wait "${tcpdump_pid1}" || return 1
+> -		wait "${tcpdump_pid2}" || return 1
+> +		if [ "${OVPN_PROTO}" == "UDP" ]; then
+> +			wait "${tcpdump_pid1}" || return 1
+> +			wait "${tcpdump_pid2}" || return 1
+> +		fi
+>  	done
+>  }
+
+[Severity: Medium]
+This patch removes the TCP branch of ovpn_build_capture_filter() and makes
+these waits UDP-only. After that, does any TCP selftest still check the
+peer-id that goes out on the wire?
+
+The capture was added by commit 367f4b163a8c ("selftests: ovpn: check
+asymmetric peer-id"). Its purpose was to check the peer-id in the data
+packet headers for every connection, TCP included.
+
+On the kernel side, the TCP receive path never reads the peer-id from the
+packet. It takes the peer that is bound to the socket:
+
+drivers/net/ovpn/tcp.c:ovpn_tcp_rcv() {
+    ...
+	ovpn_recv(peer, skb);
+    ...
+}
+
+So if a TCP peer had the wrong tx_id here, traffic would still flow:
+
+drivers/net/ovpn/crypto_aead.c:ovpn_aead_encrypt() {
+    ...
+	op = ovpn_opcode_compose(OVPN_DATA_V2, ks->key_id, peer->tx_id);
+    ...
+}
+
+The JSON expectations in the selftest directory don't compare tx-id
+either. With this change, test-tcp.sh, test-symmetric-id-tcp.sh and the new
+test-tcp-nagle.sh would all pass with an incorrect TCP tx_id.
+
+The later patch in the series ("selftests: ovpn: wait for the TCP server
+key setup before traffic") does not bring the TCP check back.
+
+Could these TCP variants keep some form of peer-id check that does not
+depend on TCP segment boundaries?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012133809.2477063-1-antonio%40openvpn.net
