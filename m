@@ -1,255 +1,310 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1019F52269C
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791912132; cv=pass; b=V1U6VuJoInzqPzmyZcJORqdkfEabO14H3d0o3ULXrrSnAJPKLs97GbQPIfBPSquuGb39Phw0LjEpd4bJ7FywdBdRJY4HkWumRN4lD674rILcO09jnnixWkaLLpgHR3EFd2jdnqQsT1sUFSs2MBOsP0wnnXBReOlrlt8N9YUynOA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791912132; c=relaxed/simple;
-	bh=0one9BrYQ92iDUbZfSy+l/V6GYjLLQaS2B7Uvdssqj0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cSydzbBI9am4tmg0Wj5CT2mD6OnRQ73ra4+a/LSqLB/cDit4WHbnL9/IUsHkIEpidi+Ph5JjTvbZWPSyXjuflIzzqBhylWEMlrKgOHcdrPOgULbOoRHwCG5sNiR1z+ztQ9wfmTf9/HH4wpoTfr1Lx99Sms+VpcoGfwxHj0x9QqQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C8OgkatM; arc=pass smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F6A522EFF;
+	Tue, 13 Oct 2026 17:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791912232; cv=none; b=iWyZfsEnrnJDBpIzLYxQ7Q8DHuwkCPF+Yem24Uznv5ZjE7443sTAcXuWmQgpEkoQBzqYWSkgdmacqQ/+Vq3HuS2/rdowsKF7VeZw0xYqklQ0rwgs4k9Or04IGUFtE29A4kSbzy4vXb97k+ZAWlfM3dfYwOvxcedZQiXxaS8W2MI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791912232; c=relaxed/simple;
+	bh=ZBX/bwUQFb1q4SA1VSX33XP71BD0E0yj2dLx/8R5oEQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rokekTlDfBAUZ3wR9DC3Jo08VrJ+cCrcUZkHRyaiKcExhAmjzInHlTy6QIN3qW00w/ZSKbs0wM9bN2I6ocQrRpvWCv4zyL0ORJZD/FbaIxUMTEezZWts2iTAgv5KuYfuppiEHwg9gJVY0p9RoGyG/czbRRwbJX1oD6oo7JRxiGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6aOdfG2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C8OgkatM"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5bcb4f23ddeso2688065e87.3
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:22:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791912129; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MlxTbVoPo7+Yp0q9Cicn/pYhYQNMW5G4ndDQ5RRX7ezKpLvHt6c8YNBrumNXav63g/
-         kt9hOBfIVCv7cT9opmpuSp4l18rD4A6Ckbc72Oja/9z8oULRmbReZWygn1+BawFk2RJq
-         rMukr9vitPgxLLHbBPgC1COKvRnU91Qbws1Z1VpyWFI5hQo5d198bK+q9alIpld5xRdW
-         tvrud3aAqS99tpTKcq2ChwviN7L3K1UhDgKn8FT2TlyKdj0K9OhyZq8YoOwd7n3PUkuC
-         TqL1kaVank0oV1H+6pDOknT7Hh2S95oCk0hVORbVcnRLpB2vG8bQ3RQXnXebqVPpsULQ
-         Uqjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Vry0FomY0o+fIiPN+IOFBgx6eDMuiQwPG8U2m/ko8V4=;
-        fh=GgdGMhx8/kCCp4yHpSu/013WbXucVu9nNv2DF6m1zdo=;
-        b=szwnIGnO859TQgsCCSsTunujuC+lIqTD+5sr8sZDibEj91hkWyFyqBeddLn07kTtIu
-         1o/czRfKnZzlLAVIS2Z34I2u7P4clkw/mre8CD9/P8OAzK0O6eZNMfzTk/3oB/vy2WJ3
-         q3H7VnGBowSaKK/PHAMmTAPXWaBuVxJPHlsHcAv8nBSSZpLHq058uApvaIYy2GkcAj0E
-         4o8hW2BZjyv67WIB/L5Ylu+N5orm5Mpr6dG6AgxzF1EN+TYnwVrw1jILvysDPy1oa6CM
-         sUBR/JwuXlC9VTLI5IiTCrPtDWXxxSNXgNMmxUNKBM8VPjHkDrupmojx21rakztk1h/E
-         NhRw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791912129; x=1792516929; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Vry0FomY0o+fIiPN+IOFBgx6eDMuiQwPG8U2m/ko8V4=;
-        b=C8OgkatMce90RTS6MSdxWnhcsji9kNVAWPxUB3fmR30fqdTb7Qpfbt4LNR9yLT83LC
-         21p0/C0epC0fBBqV2a6BF9A3PKMxJ/eBFndqIGImew29/uuwn2zh4Mr1AJbXguasd7OX
-         xfcN0iBpKvWPNcFWKdotRlpBUVg6MANxCOPnWXKJNRIu1IRD5LVDWnEy8u9TB4HzuprN
-         Mwmz0aWTtmtTaDJxgQz/ULB7UJXsSZbNcXkA7Of3J+B1llHrpHMX7DhbrD0kp+kigfBt
-         /P129qZIApbYMbbxhGQ7jBKroTeQwDZf4Fmn11I+lBOAllam7n7nByCAz9uktKgq1UVc
-         W8tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791912129; x=1792516929;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vry0FomY0o+fIiPN+IOFBgx6eDMuiQwPG8U2m/ko8V4=;
-        b=pufIFU2ZIu+eXvvST8cCSpskImWEXiu1XQsJRuDsuN0YhSigk5iC1oXFg37yyM9kT5
-         qpMeEtci96vENK/sFAiWXhFhX7KCwC9g3S4lYZRv0kejjlhxjw9LBYkbucA6TGAE5bkX
-         93leqYlbn/9jmST2dcu+78uhfrR6X2pnWdcFilRSHlhR0PamQOHI0SUH/LJH6gDeZHoe
-         hXmDjFHSlf7CvWjc8ZKleJ9LN7pEipDzgXnYPBhrMd/D5OrI/5cLRLZTBBwroTYxd1AG
-         Wk0Bk4scPC4Rl/n6f539qfYbeLH5wdW8lXVw2o+FgMqtloR5rWC/CYWvVvlOalFngQsp
-         LZzg==
-X-Gm-Message-State: AFq9FYISuXbAHgohjm9NApXsOX6zYJsJXUFFSmScLE/eIlUXSe+SxcEH
-	GpVRADAu6wI1lWgteBoplXshyGiXqjIqntBRPYDMLgF0oslZHZ4s82hSwRO0pHh6bWc/IMS9XjG
-	1lWn6j6n2p20ZoQLL9IfoYoy/5ZOyrcg=
-X-Gm-Gg: AYBFou0uYMsJX3v/KOv4tOMTcQuPqUrnrK4xU+y/sTQ2S4+ByGkx1CbcRbJ5aVd0Xmk
-	KHl5O9Qa4oG/TZMgstZLrlt5/Q8uNznGk/0l08Ku3AKBngCT0QbhNi9GczQUu9JgUXIi6d4m4Xf
-	U8V1E0xsHKa/ww6+JmDpBeIIOaM/RjmKc7yeUbyvvwF9J84XtHv5bQnLeBr7+6vBec7sPP2HmQM
-	2TFg1EAKBsICpzwBWEgasUPd+Xr5Xg1y0L6ja4Q2hfSplNCqubsfCpjRfLvuQhAtuIC5AroBMPZ
-	xI8DFxZTeGE24ckdXwgTB3npzAEDZC6eANxkRFnuqT3WytMsuOgDqB0=
-X-Received: by 2002:a05:6512:6c3:b0:5b8:f955:29e7 with SMTP id
- 2adb3069b0e04-5bcde361b06mr5358978e87.6.1791912128673; Tue, 13 Oct 2026
- 10:22:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6aOdfG2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CBD1F000FF;
+	Tue, 13 Oct 2026 17:23:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791912230;
+	bh=drDOPzr2nRrD+iaQx9Uo11Ocys6Yy8DVgXwY17hRO3I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=F6aOdfG2ziFr8sxJeYMG7+w9ggBsCBjroVmVBb6D6oEJGb9jR+JaibAZhQU/bv6VK
+	 /2WwA5Q4mdNcDU+RpKUKwfOUEurNLzciel1GqBamsht1V3SzvbcAV46YmdOCALyUXI
+	 14UpIYNEm5WXc00SnQXeHtITNaYmFrh+JCX4ZJs0aPQB10a/vzGUWZMhuc4XJ7nA61
+	 ePv9TzZSFFElaVYRXrWoNAXT27t14ipYfnjCHG/evUJPZ8LAFJtZa6LAl3MB2SnGK0
+	 lDrvIdjAxuCnrEn+vHyjMIpYDzMT0MzXJg2yKMu6OXTgMnfDIOk1hrn5lohkx8f43S
+	 G/DJSKpSCF43g==
+Subject: Re: [PATCH net-next v9 1/2] net: wwan: core: propagate modem control
+ signals to port drivers
+From: netdev-bot+sashiko@kernel.org
+To: peter.hunt@opengear.com
+Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com, dnlplm@gmail.com,
+ johannes@sipsolutions.net, mani@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Tue, 13 Oct 2026 17:23:49 +0000
+Message-ID: <179191222962.434549.5982381221454218948@kernel.org>
+In-Reply-To: <20261012172219.3668624-2-peter.hunt@opengear.com>
+References: <20261012172219.3668624-2-peter.hunt@opengear.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPZ+gd9d1P+xDSrxxZkGJr32zjubP=KfQegeGkWykKGvEH0=oA@mail.gmail.com>
- <CAPZ+gd8TPNnvEDOv_H=fdvy2ysG63uBD0MvmEMjhkMa8i-y1NA@mail.gmail.com>
- <as0DO7n5SCr2j3Z2@lore-desk> <CAPZ+gd_1JsNyhQbEAWiE1stom+T_jgvt4F2=tb68YoSvPCnFag@mail.gmail.com>
- <as3faB96PFSnC-qP@lore-desk> <CAPZ+gd_S4zMffbFTUbV989XxYtgxuJ3ijEBObehAXP_N20Akww@mail.gmail.com>
- <as5UUQuCjLTXvQ5Q@lore-desk>
-In-Reply-To: <as5UUQuCjLTXvQ5Q@lore-desk>
-From: =?UTF-8?B?6ZmI6ICA5piO?= <cc201008@gmail.com>
-Date: Wed, 14 Oct 2026 01:21:56 +0800
-X-Gm-Features: AclHuK_g-Sdjjejv96ItYunQgs7YZaH9slg-qPbOvXsBv4lveQ-6_oB1RIvpKRc
-Message-ID: <CAPZ+gd_S=Wm2DOw+j14HNtsBDQvSgBkWHmBzPqqe3fi3UK4d4w@mail.gmail.com>
-Subject: Re: [PATCH net] net: airoha: Keep UPDMEM egress MAC in sync for
- offloaded IPv6 flows
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netdev@vger.kernel.org, horms@kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Yes, your analysis is correct: with the patch, the flow offloaded at t1
-reprograms the shared UPDMEM entry, so the flow egressing port0 starts
-using port1's L2 address. Our setup happens to carry a single IPv6
-identity per GDM port (the other services are IPv4), which is why the
-patch holds there -- it is a stopgap for that topology, as noted.
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider.
 
-On the second question: in the default DSA configuration user ports
-inherit the conduit address, so the conduit MAC as source is
-indistinguishable from the user port's own. It diverges once user ports
-carry their own addresses (nvmem-assigned or user-configured): the
-egress frame then differs from what the software path would emit, and
-upstream bridges learn the conduit MAC behind a user port. Whether that
-is a bug or a corner case is your call; per-netdev slots would cover
-either way.
+Critical: 0 · High: 0 · Medium: 2 · Low: 3
 
-Lorenzo Bianconi <lorenzo@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=8813=
-=E6=97=A5=E5=91=A8=E4=BA=8C 23:54=E5=86=99=E9=81=93=EF=BC=9A
->
-> > The issue is reproducible in the upstream codebase, without any of the
-> > out-of-tree PON code -- the PON setup is just where I first hit it.
-> >
-> > Reproduction with mainline code only (airoha eth + the mt7530 MMIO DSA
-> > driver; the "airoha,en7581-switch" binding and driver are mainline,
-> > the DT node just needs to be added to a board file):
-> >
-> > - AN7581 board, switch node with its CPU port on GDM1. Use a DSA user
-> >   port as a routed WAN interface with its own MAC address.
-> >
-> > airoha_get_dsa_port() replaces the egress netdev with the conduit, so
-> > routed IPv6 FOE entries carry smac_id =3D conduit port id, and the PPE
-> > resolves the egress source MAC through UPDMEM[conduit]. That slot is
-> > only programmed by airoha_set_macaddr(), which never runs when a DSA
-> > slave address changes, so offloaded IPv6 frames leave the port with
-> > the conduit's MAC instead of the user port's. IPv4 is unaffected,
-> > since HNAPT entries store the MACs inline. The same shape appears on a
-> > GDM port with two "airoha,eth-port" children carrying different MAC
-> > LSBs, which the recent multi-SerDES series allows by design
-> > (REG_FE_MAC_LMIN/LMAX); for that variant the exposure starts with the
-> > series introducing multiple net_devices per GDM port.
-> >
-> > The posted patch only reprograms the shared per-port slot at offload
-> > time, so a later address change on any netdev of that port re-breaks
-> > offloaded IPv6 flows. It is a temporary patch for this setup; the
-> > final solution is up to the maintainers.
->
-> I do not think the case you described is fixed with your patch. Let's con=
-sider
-> the following case:
->
-> - time t0: you offload a flow rule for traffic egressing dsa port0
-> - time t1: you offload a flow rule for traffic egressing dsa port1
->
-> Since the index written in REG_UPDMEM_CTRL() subfield is still the condui=
-t port
-> ID, you are egressing traffic from port0 with L2 address of port1. Am I r=
-ight,
-> or am I missing something?
-> Moreover, is it a bug if we use the conduit port L2 address as source mac
-> address for IPv6 traffic?
->
-> Regards,
-> Lorenzo
->
-> >
-> > A proper fix would probably give each netdev its own UPDMEM entry: the
-> > table is indexed by a 4-bit address (16 entries) while the FOE
-> > smac_id field is 5-bit with 0xf reserved for "keep original MAC", so
-> > there is room beyond the port ids. Slots could be programmed from
-> > airoha_set_macaddr() (always under RTNL, as you noted) plus a
-> > netdevice notifier for DSA slaves, and foe_entry_prepare() would only
-> > reference the slot -- removing both the race and the extra locking the
-> > current approach needs.
-> >
-> > Lorenzo Bianconi <lorenzo@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=88=
-13=E6=97=A5=E5=91=A8=E4=BA=8C 15:36=E5=86=99=E9=81=93=EF=BC=9A
-> > >
-> > > > Ooo,  the new patch should be a dedicated leaf lock inside
-> > > > airoha_ppe_init_upd_mem().
-> > > > --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> > > > +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> > > > @@ -416,6 +416,19 @@
-> > > >    dsa_port);
-> > > >
-> > > >   smac_id =3D port->id;
-> > > > + /*
-> > > > + * Routed IPv6 entries resolve the egress source MAC
-> > > > + * through the UPDMEM table indexed by smac_id. The
-> > > > + * egress netdev can legally carry a different address
-> > > > + * than the GDM port itself: on PON setups the
-> > > > + * authentication MAC lives on the pon device while
-> > > > + * each service VLAN routes with its own address. Keep
-> > > > + * the table entry in sync with the source address this
-> > > > + * flow is actually going to use.
-> > >
-> > > Is the issue occurring just with PON or are you able to trigger the i=
-ssue
-> > even
-> > > in the upstream codebase? I guess you should not post a fix for some =
-code
-> > that
-> > > is not upstream yet. Moreover, in the PON setup, I guess the approach=
- is
-> > still
-> > > broken if the user change the device mac address.
-> > >
-> > > > + */
-> > > > + if (type >=3D PPE_PKT_TYPE_IPV6_ROUTE_3T)
-> > > > + airoha_ppe_init_upd_mem(dev,
-> > > > + data->eth.h_source);
-> > > >   }
-> > > >   }
-> > > >
-> > > > @@ -1529,10 +1542,21 @@
-> > > >
-> > > >  void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev, const u8
-> > *addr)
-> > > >  {
-> > > > + static DEFINE_MUTEX(updmem_lock);
-> > > > +
-> > > >   struct airoha_gdm_port *port =3D dev->port;
-> > > >   struct airoha_eth *eth =3D dev->eth;
-> > > >   u32 val;
-> > > >
-> > > > + /*
-> > > > + * Routed IPv6 entries resolve the egress source MAC through the
-> > > > + * UPDMEM table indexed by smac_id; the ndo_open/ndo_set_mac_addre=
-ss
-> > > > + * writers hold flow_offload_mutex (QoS paths re-lock via
-> > > > + * airoha_set_macaddr()), so this lock also serializes the leaf
-> > > > + * against them.
-> > > > + */
-> > > > + mutex_lock(&updmem_lock);
-> > >
-> > > This is only required adding the above configuration since in the cur=
-rent
-> > > codebase airoha_ppe_init_upd_mem() is always running holding RTNL.
-> > >
-> > > Regards,
-> > > Lorenzo
-> > >
-> > > > +
-> > > >   val =3D (addr[2] << 24) | (addr[3] << 16) | (addr[4] << 8) | addr=
-[5];
-> > > >   airoha_fe_wr(eth, REG_UPDMEM_DATA(0), val);
-> > > >   airoha_fe_wr(eth, REG_UPDMEM_CTRL(0),
-> > > > @@ -1545,6 +1569,8 @@
-> > > >       FIELD_PREP(PPE_UPDMEM_ADDR_MASK, port->id) |
-> > > >       FIELD_PREP(PPE_UPDMEM_OFFSET_MASK, 1) |
-> > > >       PPE_UPDMEM_WR_MASK | PPE_UPDMEM_REQ_MASK);
-> > > > +
-> > > > + mutex_unlock(&updmem_lock);
-> > > >  }
-> > > >
-> > > >  struct airoha_ppe_dev *airoha_ppe_get_dev(struct device *dev)
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] `wwan_port_fops_at_ioctl()` now does `ACQUIRE(mutex_intr,
+  lock)(&port->ops_lock)` before its `switch`, so every ioctl on an…
+- [Medium] `wwan_port_fops_at_ioctl()` now holds `port->ops_lock` for the
+  whole function, via a function-scope ACQUIRE guard, across every user-…
+- [Low] Not a valid finding (baseline decision: false).
+- [Low] The comments say the wwan open/close DTR handling works 'as a TTY
+  does', but the code ignores the baud field of the termios state it…
+- [Low] The new `->dtr_rts` kernel-doc in include/linux/wwan.h says the
+  op is 'Called on first open, on last close if HUPCL is set, on port…
+
+--
+
+net: wwan: core: propagate modem control signals to port drivers
+
+This adds an optional ->dtr_rts() operation to struct wwan_port_ops. The
+wwan core calls it on first open, on last close when HUPCL is set, on
+removal of an open port, and when TIOCMSET/TIOCMBIS/TIOCMBIC change DTR or
+RTS on an AT port. The separate data_lock is removed, and the AT/QCDM
+termios and TIOCM state is now protected by ops_lock, which the ioctl
+handler takes interruptibly.
+
+> diff --git a/drivers/net/wwan/wwan_core.c b/drivers/net/wwan/wwan_core.c
+> index ffbcf11e4e681..27ae6583d3e08 100644
+> --- a/drivers/net/wwan/wwan_core.c
+> +++ b/drivers/net/wwan/wwan_core.c
+
+[ ... ]
+
+> @@ -653,7 +654,10 @@ struct wwan_port *wwan_create_port(struct device *parent,
+>  	mutex_init(&port->ops_lock);
+>  	skb_queue_head_init(&port->rxq);
+>  	init_waitqueue_head(&port->waitqueue);
+> -	mutex_init(&port->data_lock);
+> +
+> +	/* AT ports hang up on last close by default, as a TTY does */
+> +	if (type == WWAN_PORT_AT)
+> +		port->at_data.termios.c_cflag = HUPCL;
+>  
+>  	port->dev.parent = &wwandev->dev;
+>  	port->dev.type = &wwan_port_dev_type;
+> @@ -679,12 +683,44 @@ struct wwan_port *wwan_create_port(struct device *parent,
+>  }
+>  EXPORT_SYMBOL_GPL(wwan_create_port);
+>  
+> +/* Raise DTR/RTS on first open of an AT port, as a TTY does. Called with
+> + * ops_lock held.
+> + */
+> +static void wwan_port_raise_dtr_rts(struct wwan_port *port)
+> +{
+> +	lockdep_assert_held(&port->ops_lock);
+> +
+> +	if (port->type != WWAN_PORT_AT || !port->ops->dtr_rts)
+> +		return;
+> +
+> +	port->at_data.mdmbits |= TIOCM_DTR | TIOCM_RTS;
+> +	port->ops->dtr_rts(port, port->at_data.mdmbits);
+> +}
+
+[Severity: Low]
+The comments here and in wwan_create_port() say this behaves as a TTY
+does. Is the baud field of the termios taken into account anywhere?
+
+wwan_create_port() sets c_cflag to just HUPCL, so TCGETS reports B0 to
+userspace. Even so, wwan_port_raise_dtr_rts() asserts DTR/RTS on every
+first open. On a TTY, the lines are only raised when the baud rate is
+non-zero:
+
+drivers/tty/tty_port.c:tty_port_block_til_ready() {
+    ...
+		if (C_BAUD(tty))
+			tty_port_raise_dtr_rts(port);
+    ...
+}
+
+The TTY default is also tty_std_termios (B38400 | CS8 | CREAD | HUPCL),
+not bare HUPCL.
+
+In the same way, a TCSETS with B0 only stores the termios here and never
+calls ->dtr_rts(). A TTY would drop DTR in that case. Examples are
+stty -F /dev/wwan0at0 0, or the POSIX hang-up of cfsetospeed(B0) followed
+by tcsetattr().
+
+Separately, the kernel-doc says "Called on first open", but the call only
+happens when ->start() succeeds.
+
+Should the comments make a weaker claim? Alternatively, could the default
+termios use a non-zero baud rate so that TCGETS matches what the driver
+was told?
+
+> +
+> +/* Drop DTR/RTS on an AT port. Called with ops_lock held. On last close
+> + * the lines are only dropped if HUPCL is set, as for a TTY, on port
+> + * removal they are always dropped.
+> + */
+> +static void wwan_port_drop_dtr_rts(struct wwan_port *port, bool hupcl_only)
+> +{
+> +	lockdep_assert_held(&port->ops_lock);
+> +
+> +	if (port->type != WWAN_PORT_AT || !port->ops->dtr_rts)
+> +		return;
+> +	if (hupcl_only && !(port->at_data.termios.c_cflag & HUPCL))
+> +		return;
+> +
+> +	port->at_data.mdmbits &= ~(TIOCM_DTR | TIOCM_RTS);
+> +	port->ops->dtr_rts(port, port->at_data.mdmbits);
+> +}
+> +
+>  void wwan_remove_port(struct wwan_port *port)
+>  {
+>  	struct wwan_device *wwandev = to_wwan_dev(port->dev.parent);
+>  
+>  	mutex_lock(&port->ops_lock);
+>  	if (port->start_count) {
+> +		wwan_port_drop_dtr_rts(port, false);
+>  		port->ops->stop(port);
+>  		port->start_count = 0;
+>  	}
+
+[Severity: Low]
+The comment above says "on port removal they are always dropped". The
+->dtr_rts kernel-doc in include/linux/wwan.h also lists "on port removal"
+without any condition. Is that accurate, given that the drop sits inside
+the if (port->start_count) block?
+
+The commit message describes clearing HUPCL as the way to keep DTR
+asserted across close. If userspace does that and then closes the port,
+wwan_port_op_stop() returns early in wwan_port_drop_dtr_rts(). A later
+wwan_remove_port() then sees start_count == 0, so the driver never gets a
+->dtr_rts() call on removal.
+
+The behaviour itself matches a TTY. Could the comment and the kernel-doc
+say that the lines are only dropped when a port is removed while still
+open?
+
+[ ... ]
+
+> @@ -979,9 +1020,15 @@ static __poll_t wwan_port_fops_poll(struct file *filp, poll_table *wait)
+>  static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
+>  				    unsigned long arg)
+>  {
+> -	int ret = 0;
+> +	int ret;
+>  
+> -	mutex_lock(&port->data_lock);
+> +	/* ops_lock serialises the termios/TIOCM state with port ops and
+> +	 * removal. A blocking write holds it too, so wait interruptibly.
+> +	 */
+> +	ACQUIRE(mutex_intr, lock)(&port->ops_lock);
+> +	ret = ACQUIRE_ERR(mutex_intr, &lock);
+> +	if (ret)
+> +		return ret;
+
+[Severity: Medium]
+The lock is now taken before the switch, so every ioctl on an AT/QCDM
+port waits on ops_lock. That includes TCGETS, TCFLSH,
+TIOCEXCL/TIOCNXCL/TIOCGEXCL, and commands that end up in the default
+-ENOIOCTLCMD case.
+
+FIONREAD is one of those, because wwan_port_fops_ioctl() tries the AT
+handler first:
+
+drivers/net/wwan/wwan_core.c:wwan_port_fops_ioctl() {
+    ...
+		res = wwan_port_fops_at_ioctl(port, cmd, arg);
+		if (res != -ENOIOCTLCMD)
+			return res;
+	}
+
+	switch (cmd) {
+	case TIOCINQ: {	/* aka SIOCINQ aka FIONREAD */
+    ...
+}
+
+wwan_port_op_tx() holds ops_lock across ->tx_blocking(). For
+rpmsg_wwan_ctrl that is a blocking rpmsg_send(). Suppose thread A is in a
+blocking write():
+
+wwan_port_fops_write()
+  wwan_port_op_tx()
+    mutex_lock(&port->ops_lock)
+    port->ops->tx_blocking()
+      rpmsg_send()
+
+Thread B's ioctl(FIONREAD) or tcgetattr() now waits behind it. A signal
+during that wait makes mutex_lock_interruptible() return -EINTR. That
+value is not -ENOIOCTLCMD, so it goes straight back to userspace, and
+SA_RESTART won't restart the call.
+
+Before this patch these paths only took data_lock, which the write path
+never held.
+
+Could ops_lock be taken only for the commands that touch the
+termios/TIOCM state or call ->dtr_rts()?
+
+[ ... ]
+
+> @@ -1024,18 +1082,24 @@ static long wwan_port_fops_at_ioctl(struct wwan_port *port, unsigned int cmd,
+>  	case TIOCMSET:
+>  	case TIOCMBIC:
+>  	case TIOCMBIS: {
+> -		int mdmbits;
+> +		int mdmbits, old = port->at_data.mdmbits;
+>  
+>  		if (copy_from_user(&mdmbits, (int __user *)arg, sizeof(int))) {
+
+[Severity: Medium]
+The ACQUIRE guard holds ops_lock for the whole function, so several user
+memory accesses now run with ops_lock held:
+
+  - this copy_from_user()
+  - the copy_to_user() calls for TCGETS/TCGETS2
+  - the copy_from_user() calls for TCSETS*/TCSETS2*
+  - the put_user() for TIOCMGET
+
+Can userspace hold ops_lock indefinitely this way?
+
+Suppose arg points into memory whose page fault never completes, for
+example an mmap of a file on a FUSE mount whose daemon never answers. The
+thread then sleeps in the fault handler with ops_lock held. The
+interruptible acquisition doesn't help once the lock is owned.
+
+wwan_remove_port(), wwan_port_op_start(), wwan_port_op_stop(),
+wwan_port_op_tx() and wwan_port_fops_poll() all take ops_lock with plain
+mutex_lock(). Device removal, for example via mhi_wwan_ctrl_remove() or a
+cdc-wdm disconnect, would then hang in D state:
+
+ioctl(fd, TIOCMSET, ptr_into_fuse_mapping)
+  wwan_port_fops_at_ioctl()
+    ACQUIRE(mutex_intr, lock)(&port->ops_lock)
+    copy_from_user()   <- waits on FUSE
+
+wwan_remove_port()
+  mutex_lock(&port->ops_lock)   <- blocks
+
+Any other process that opens, closes or polls the port would block in the
+same way.
+
+Before this patch the ioctl user copies ran under the ioctl-private
+data_lock. wwan_port_fops_write() copies user data before calling
+wwan_port_op_tx(), so nothing touched user memory under ops_lock.
+
+Would it work to copy the argument in before taking the lock, and copy
+results out after dropping it, as the TTY core does?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012172219.3668624-1-peter.hunt%40opengear.com
