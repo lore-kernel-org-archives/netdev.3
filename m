@@ -1,120 +1,133 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0FE3F4125
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6598246781
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885106; cv=none; b=HCXXlDf2FIZQLACGSJS36EYeghe4O2TgDx1zgTT6zsB8O6yIAAAhmrBTIazz5RzZkfGi+L6d4lPNhJrP+gla6TREAbPOoME+z9OOj6mC5PknllHzXqbTgjDg4u+cL9Pcn45e7r0vHdvTRxK1yt0zGxOqFf3sIp5gXsFbhbFis3E=
+	t=1791885432; cv=none; b=N0+En4i765Dbw4DJg4cgVz7TrjTkdrBWPRPbYoS8BBi/6pAUlY+nOAV64Ho0myXQUL+BdnKdZOd54d/6zIJnygqTfP3aXad3gl91RRP2T4pQW+du9NaE71KEEM3m4q8mbha2ZWu6pZd5Iu7z2EHcLhbSqmk8vNWhzhlj8N/iWP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791885106; c=relaxed/simple;
-	bh=u2pFwzNMAxD0Oo1isB+38Lg6jL+zokAa+aYI4Z2T+gA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pWij+FPybS0uXbtPJHFKiec4XRS1kQsa04uAGeMF4boekJD/+AQ4EAp1fd10Qiephgk9q2jNmos/NB+agF8QAXX0ufv8NZ/Z79qro+a4CXkn4mhxONoiRyJBtNgXZWBniyXAp9hkZ+02TYoHyXh87yk7lYkEyQVmGtZPfcdsDBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=eKs+gJw7; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1791885432; c=relaxed/simple;
+	bh=IUBu7wYhG92bCszbpUIow36ogJPjX28c1u6Ji400pEo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TYe4tXxF/rOLyBRhb1HECFRcwcqSPaG1hP/o5FWJwI0tQt7vp9TgTwO1m9yyKqTCC4UM1GDBCrktVLma8iqfD0g28XWzP0ijr4++1Gy4BK1njeST41t5sJ2ctv2BAKimapcrSFbf0+eTlBQFffmbc/D4ShqaCCJrIk7Buqofm1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aZHkfNEF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=easdXY9V; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="eKs+gJw7"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso35551025e9.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:51:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aZHkfNEF";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="easdXY9V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791885430;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lqSjm367VUjfmKlJjO867N9e+hOQdSiN0ZNGwVg2kIo=;
+	b=aZHkfNEFP8BHS+De1dIOUjX092BRrLNFX7FBS+dSuQd6e/bGKAOocChLAmuRx/Xqc/wPtV
+	FDLywvAw1esjhWDkEhUpICIQfbFORBxwbEiv7nw1waKQ0MP+F4Kd/KqKQl2ZaSBDm/z9r9
+	kGrlUO0AnBu4h2WA47jE+PtI315yh+I=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-pWAPyyHCPvyHTjp6EFQdxA-1; Tue, 13 Oct 2026 09:57:09 +0000
+X-MC-Unique: pWAPyyHCPvyHTjp6EFQdxA-1
+X-Mimecast-MFC-AGG-ID: pWAPyyHCPvyHTjp6EFQdxA_1791885428
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-48b0679906dso1645103f8f.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:57:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1791885103; x=1792489903; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fB0uk4ljewcdj9xikOsJ5AGGEnsL0TpvKZ1I7QdEXRs=;
-        b=eKs+gJw7VW1GeB6DnjpOMr7bd6VCFHuH6L/5Jv4Q0UBMbbuKnCUpe18tTA55/r3wfU
-         LluiHValxpemh9EsOzAW+QafHcORb23BzGdxwZQJC8Rjud8S07QQlTvGdfDIYexGdnpc
-         mtbjiDH8v+6D7eYSUARD1QrhT2Gaz7djNB6SzWynfs1Eoo6TyA1YNDuD4wjq/wHnR4Aw
-         aiwYmYKPG8Sh3nZIcoSU742E8R7f8yfp1B8itc7JQhtcWMr5l3+ecoZlFsPwtYD+731x
-         zLN1SjbfT+aOlqyzSHQEzAOq4TUZoMq6U653m8wv71EJwpuuPcZkjS+rIU9ZPValUZ/y
-         nLMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791885103; x=1792489903;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1791885428; x=1792490228; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fB0uk4ljewcdj9xikOsJ5AGGEnsL0TpvKZ1I7QdEXRs=;
-        b=buNJ2G51OG9R388nN0PE+rwBBO384n4kO+XFwOESFp0DDnqLsXigg32awmGyJl6svz
-         1IiptrvMkAQjBXP726ih5/UxCF6Mj41C7oG9Zwth87XvffiZ8692YnfjxCIgjEuJ3oy1
-         orbtvDMBvCNR6gLRaR7ut5qMbH9ky7W4NkBl06H4cuWk1Ec9TY56iooIwjpyahOiqJD4
-         QZfwpMfJMstLrrAg+4DAKSfDLc1GySE7nGBlRaCdJjg4qTnPJSk480fvj0FaLqzFvXtU
-         3i5wD9EuEj4F+Ei73AceWk/Mhe27ymfBByAICrVUeboi2V2wfTuluMQSQq4o4mNsMaxs
-         TjVw==
-X-Forwarded-Encrypted: i=1; AKwUvBwsOZD5d4JutAifHwBUIKJKd9ulgKV4xZConaUcuR2JHIUiKbRh4B9mfkXcTeZiK35XJhGbJow=@vger.kernel.org
-X-Gm-Message-State: AFq9FYICmhqV6F2csP9U7juN3gNTdhJG03iospOF8Mx+cgsb7Ai62hJt
-	AlNQzA4FLn0gxA/F/h5PoWPdUL1EbC2vx9YQIbPc/pkA8SyBtYg0FdJtJj21ulOS0NA=
-X-Gm-Gg: AYBFou2mkrb9lMgx2MV06yMYXUlx/ixhbf60unxOWFAbu4VL/GUy2za+IhB+4W618PL
-	RXSqC2HHNpIyjUj0WTz4ta/gyRuuvsmwxR9keAwo70tUVV+XnyRrSZaQHBRazw9koi+NDw/lBKp
-	r9n10bJjvjzahOUXDZWMO+RiObJW9cTbmLncpf4E+x74UXKQb76cddPYXhZ8LelDfLT4kgraCYJ
-	S4L3yynhPxW39BuHpm9QINQQYuLnKS8gAOxZHpeMgo6AfL/2Yhc5ETZtXqrWqlOGWL/lM3LIdnj
-	t7S9Uky51UhuciG9y/s8MSJ/7lgvnGGbp7EXAXATm+R/RqnZCkVrVgs0JhKATZtvzV2dkBsTE8E
-	kzsi3ORgQKRfWBjGw15aiCIsVJfNY2rouO9B3vs+lzyDlS50kJaBbvAy8zSixdhOMSVwxvRItfL
-	x8LuWGiyBdqUxKEkQw/7FFy/Y1dD2ZXlEBO/eCFBOXGZ9S8TpkYtMON0VciDEB7ftlSxjDKmNv6
-	yYW/BBWdP1Yx+jikcTtGUzUaGLkoM1kxkrHIAb5LY53rC+hpq4dM0M8dzGYwsQpkz/t2fcR7ThV
-	n/ziYVitnc3iU+nxUS0UjeN0+xYc1oRtsMJCt9Cnn5CH5IPY3Zcl5H8NVdM=
-X-Received: by 2002:a05:600c:8b78:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-4a18e4837f2mr222616855e9.5.1791885102854;
-        Tue, 13 Oct 2026 02:51:42 -0700 (PDT)
-Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18d12fe04sm217361885e9.4.2026.10.13.02.51.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 02:51:42 -0700 (PDT)
-Date: Tue, 13 Oct 2026 10:51:40 +0100
-From: Daniel Thompson <daniel@riscstar.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Davide Caratti <dcaratti@redhat.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next] net: stmmac: fix mqprio and cbs combination
-Message-ID: <as3_LNUGanrChZ8Q@aspen.lan>
-References: <20261012-stmmac-mqprio-cbs-combo-v1-1-831e323eb4ef@oss.qualcomm.com>
+        bh=lqSjm367VUjfmKlJjO867N9e+hOQdSiN0ZNGwVg2kIo=;
+        b=easdXY9Vt3q0NptP/4L0L4rl5tyjZreuaSGbUE5FuquEuQtMgQVm32pu0DDyvZXrNI
+         FPPJ5QHTpdTkolNhf+fPexd9LTY2pHpwPoOt+mW20HnwdcvB7YTcjT5JIOb2jVPsr6PV
+         baVzM6fe/gE+wkt4SZILnkKhouxAZXdcDFxbWKQ7pPRxQM1PPhlcvcZuEo50k9MyiSqo
+         iffImXuydVmK5ojRakkQrCNFgbjRWwEE3JSXg/2IGkPmVJ0v74ZaiQvIQY0dGEIKC+aQ
+         qaSs8v2Cj1p8Mw7IFYhoOBGyAbGLQ7zm/RXTWOIyeCYbhvNiOP7NLi2A5vZGlgL8HGa0
+         KCRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791885428; x=1792490228;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lqSjm367VUjfmKlJjO867N9e+hOQdSiN0ZNGwVg2kIo=;
+        b=13rIlT0CrnucMUFyAzCJrbZQSv1yNSX3vsz1uZOqsJdaefLCv1h0RFNI6RC404S+F4
+         JiQb2uZf1MK8y492Kd+7N9rxA+tPl8fnz9ugecp03qKLZUf8Oqbg6/oez8Kx+5+Ez26y
+         Vyf9si6jSVgEJODH5705IAa9EFzatkIcpjY57NICFxnqObNLIp4JMATgowlI3GLRsM6Z
+         xwptJaI8r8GxPuiKQ2zW7szvjKJAyisxCfXtYca4mtQmxoleVlxdgkN+Ba3P0CKzBRKc
+         n3mw1+gyMB3gS3VXgEs2n6lzs1btv5MjCqWUCquvQLaIYX0aFN6KiIz4Ejui8OJN/RdA
+         Lepg==
+X-Gm-Message-State: AFq9FYJdeweetTiaWoh9d9gkqKeVizNKqoDZIHy8LD9PrQEHRn05VbK6
+	6duN+h1czeorjJDCgXJdWULw5o0PP9KU5uwhhH6cw9/Jg0cSa0ujyM6VQlyxXroVx/ePAsJtYQa
+	rzXFM28CxE14AdYkyLUbgFL6aQHyp+Y5d1ej2XfGr+r17XBRMyZmRyL+nQQ==
+X-Gm-Gg: AYBFou3e3ERkZHjkveozJ+VRypzYGPPJOSb2ShOp0L+Ln+9seBUMv/snQKGrlLSoXIJ
+	qrruAqVrMvKjcMSMkwb6PT7osMiU32e7XB4JAjzDmos3t9GhvKrHD/6IeZz1cJM7zdAqEEBjvaw
+	+J6q5vrvH4XGHQPNlPgEGnFEk3j56c80fNpN4is+mZhKbA4oQFoIYtzSOjbItQq9kfXYCEerWQU
+	tQlZXaz8Wu4KP1zdu7drLSW4xs8dhnHM7GaZS2CEQGkOLEuizs66hUQ/1eBTudArOS8QMxJjoKX
+	AnDrlXvth6+XRsD67KtlehD3nkY21Cb9P1/8lJtPfMhVfaptR887NmfOWf6mv9gR3mxg5x4YoGW
+	UZpULomePHdzsQAI4UUWxGJW7NDCAXGtaU9f5T17KYfpODgAQTO2LMcNUUwl3iQC1T+BH7PVh7w
+	==
+X-Received: by 2002:a05:6000:46d3:b0:487:40d:af3a with SMTP id ffacd0b85a97d-48dba781a73mr13828297f8f.2.1791885428180;
+        Tue, 13 Oct 2026 02:57:08 -0700 (PDT)
+X-Received: by 2002:a05:6000:46d3:b0:487:40d:af3a with SMTP id ffacd0b85a97d-48dba781a73mr13828256f8f.2.1791885427776;
+        Tue, 13 Oct 2026 02:57:07 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc50e0sm5431099f8f.49.2026.10.13.02.57.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 02:57:07 -0700 (PDT)
+Message-ID: <23649f43-f015-4754-be50-94e2bfe40c4d@redhat.com>
+Date: Tue, 13 Oct 2026 11:57:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012-stmmac-mqprio-cbs-combo-v1-1-831e323eb4ef@oss.qualcomm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] bnge: skip dev_addr when building the VNIC unicast
+ list
+To: Vikas Gupta <vikas.gupta@broadcom.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, andrew+netdev@lunn.ch, horms@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
+ vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
+ dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
+References: <20261006141928.1432927-1-vikas.gupta@broadcom.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261006141928.1432927-1-vikas.gupta@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 12, 2026 at 11:14:06PM +0200, Lorenzo Bianconi wrote:
-> The channel-mode mqprio offload and the CBS offload can currently not be
-> enabled at the same time. tc_mqprio_validate_chan_mode() refuses the
-> mqprio offload as soon as any TX queue is configured in AVB mode, and
-> tc_setup_cbs() refuses to enable CBS while the strict-priority scheduler
-> is active. As a result the combination is rejected whichever order the
-> two are configured in.
->
-> The strict-priority scheduler selected by the channel-mode mqprio
-> offload and the per-queue CBS shaper are independent MTL settings and do
-> not conflict, so drop the checks and let the combination be offloaded.
-> The following configuration, which was previously refused, now works:
->
->   $ tc qdisc replace dev eth0 handle 100 parent root mqprio num_tc 4 \
->         map  0  0  0  0  0  1  2  3  0  0  0  0  0  0  0  0 \
->         queues 1@0 1@1 1@2 1@3 mode channel hw 1
->   $ tc qdisc replace dev eth0 parent 100:2 handle 102: cbs \
->         idleslope 800000 sendslope -1700000 hicredit 494 locredit -1049 offload 0
->   $ tc qdisc replace dev eth0 parent 100:3 handle 103: cbs \
->         idleslope 400000 sendslope -2100000 hicredit 247 locredit -1296 offload 1
->   $ tc qdisc replace dev eth0 parent 100:4 handle 104: cbs \
->         idleslope 200000 sendslope -2300000 hicredit 124 locredit -1419 offload 1
->
-> Fixes: 47891d501e34 ("net: stmmac: add tc mqprio hw queue priority offload")
-> Tested-by: Daniel Thompson <daniel@riscstar.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+On 10/6/26 16:19, Vikas Gupta wrote:
+> The default VNIC programs the device's MAC as L2 filter 0 in
+> bnge_init_chip() via bnge_hwrm_set_vnic_filter(bn, 0, 0, dev_addr).
+> bnge_cfg_rx_mode() then walks dev->uc and programs each unicast
+> address as a further L2 filter, without excluding dev_addr.
+> 
+> Skip dev_addr when building uc_list, since it is already installed as
+> filter 0. As dev_addr now takes neither a uc_list slot nor an
+> l2_filters[] slot, count only the non-dev_addr entries for the
+> uc_list overflow check too, otherwise an input such as
+> {dev_addr, A, B, C} would needlessly fall back to promiscuous mode
+> even though A, B and C fit in exact-match filters.
+> bnge_uc_list_updated() applies the same skip and count so the
+> change detection stays consistent and does not loop.
+> 
+> This issue was caught by Sashiko (nipa).
+> 
+> Tested on Thor Ultra device.
+> 
+> Fixes: 9afad4a17174 ("bng_en: Configure default VNIC")
+> Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+> Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+FTR, redirecting this to net-next, due to Linus guidance for smaller
+RCs and the above giving AFAICS some perf improvement in corner-cases
+over the original code dating back to its introduction.
 
-Also FWIW:
-Reviewed-by: Daniel Thompson <daniel@riscstar.com>
+/P
 
-
-Daniel.
