@@ -1,253 +1,92 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7113B4E9F
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130E0331200
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791877600; cv=none; b=NLDQoFP28ugIEqpgLivVA6AtakzA3chqMe3/sWiHagZmDI9gbJ6XJJ65Wb1/U1Uv3xtws4z+1KPAaRqFhnFLuAe1VBvFoFr9BwuRejkfNDAa3ItrTUqdhs2/WnNtobBQxFo/FLEwPtRQkRt2tzfHpA33stiLUvxPb+1cQ66qK74=
+	t=1791877734; cv=none; b=LtscDl1JPEIFkv1vYc2yo0IygpiGH9heUwjAeP+iklpo7HNq3J2txVf/1AvDHhn4SBUFJVTxc5HAijBJz/FXsD8KJBcvmBSf/Rpbpl6fzL79S2uMlOrHEGddBaL64FQbyIV+DXH1+jgVrYqVB77JlKj1sDAwhgZarebgB4vCn+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791877600; c=relaxed/simple;
-	bh=VWvTh8pRBfLzZYq0/B57gvJ3i39LdOuPQQ8A+wOFzac=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCSwIgWyrctsLCqfQpI2OHsHGnUZYpkbDsYFDlM2NDXnsz/RNFkpUNEY14BOVkAOs0ncV4Zip05vs9Ha/T/6gkR4lP8j1j+OiDby7C7F5A59msfstfJnpa6UurgM9MAEuUsJyIGACZwyvfNAe6gnysEayGe60Hbnqp6HXHoed+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W38+HgTd; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791877734; c=relaxed/simple;
+	bh=xEkqoGMJ1M71vGumt/SaVUYSGY/3+WxtSEEgWA2GSmI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q1LMq7UcO2j5c7NjIP1cgRu3WY31l5IGKBdHBp48PNPFk109NXPi9CsYs/UcLv3Z+lRBrf6E1WFnInbCFeNAGjb7O2nO0jzs0cRu27qr/3aTCrF/gv0jOE+HrUGnAAJa+1XM68gErH28R6aN1vEQoPufZVGxmuRuFqZTkPQ0Z+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=zz/0A9+o; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W38+HgTd"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-89a837bf00eso179592b3a.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 00:46:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791877598; x=1792482398; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tRK5JR2R0osIMZXxAjTIpL9VbaaBLYol5dzz9oAakrI=;
-        b=W38+HgTdfDU7DwugeC7/Vt0uMe8HpvB8Cn95u+3GOmC+Qa4mwwHaRax+2hQshOio6G
-         OcUvF4ac+kmguHej3MsaOhHTp/e4CG1NABSGb+lT0fKtG9loNDgEtTrwC29vSv79dNIW
-         A7+fKn60CmaoYXgvSzSfR3y5iSbbNlYnVix0CvjWZ9H9pMbA3lzkHqs4lhqNDGB9Ud4I
-         lS22+3VkuycE3hNBUVJLMGIrJuvldWWaRkmrXmFTyPMJYa0uE7YxBEXh7oVRt46EazBe
-         cwIHz7vtWSPPKSL4VFtX5qDt7TQl8IFMYizeVpOk9t/FG01avO6dYaFKIp9Gq7L78gFD
-         heQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791877598; x=1792482398;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tRK5JR2R0osIMZXxAjTIpL9VbaaBLYol5dzz9oAakrI=;
-        b=lYfKg1stiTCNnDtybN8FFXY3FL2k8EmQ6B1MddoS6CYeGV0VMmzKGhRHM22suVd5/8
-         mE8jUgh+f2uW0hVjvIX9HADeN5wBV0Jqkr/6TB22lM/JThi8gBRKh6Dau+4M+5ATK22a
-         pl4Ri264bSWTaKmYvJJQAaa6e+WxWQPLTNTrING56a5BNYuWpPZdtQrAVd1/kEfia9uY
-         OJ7h3WtAeiT/5Hnx8dfgtBe5Fyp2XZMaUtcV8uuc94Vfss6417lMURnNOy24ja4mb9gU
-         G5Jn6F6aZ01+/BLTjMNVhjCoNr8LqpvHn8l0rCER1l8gRB71stAQF8IDHwCcHYh6CNv5
-         FOjQ==
-X-Gm-Message-State: AFq9FYKYlKPlR4BStV1YSV37zURw4qlTWbbalhrJL9blXB4H/thWsGzY
-	FcVrlnPyiQkxS3JuLpN9j15EuGVDkmf50L++hWw/ZiY+8fklSI5LF7QqrCBjfg==
-X-Gm-Gg: AYBFou08X0thiihiSddKI6hSC129XXuVnNp8Rd7qguYt7HSZ4LUPmYUjPGrLjNKK7cP
-	4lfzZNvnQ4/N+qn5lxQnTw2wYivrvi9L/g9gDQAOsFeYq8ZN69Sw4eH5VHO9v4diEEktkuH6h5F
-	J/8FW3Rd0pzJFcITfDaW1CKzDmHd+ADlYMJYBelkIXyIw8bcXOYzcm+b7rmIGJaLQJQaefMbpl6
-	d3fcBzKCpOgDkztjJVpZ4YqRg0FyDCl+pPmgp4adsaHOrtR06/gnx0HEvedmdZOZ7ksd/l0XAgb
-	/kq9PYs1HwwnT17TV63Mx7OHHO8DuWRII6uvbd6q56A73S6u/x3+tmsarJcSqT3lH/92q9kRzYJ
-	4cvyGEjed/mMLdFzFfQFO84Y+r9h5ZCSATU1LU/tHYFWCe4oswaFeBpEtRHaXmh6YT7EJs0X+av
-	NUZYUr3AjKDLmVTjf41Ym5WwIBhR1fnjrQhXlHkwYDJ8abdKe243NDD0353qfk+SOj62Qff3CDg
-	mpa0DY4bPyhxfC6aNfmCw1vDofpLUWyMRGfpnydXyFiaJNQMvYs8sBKW04W3g==
-X-Received: by 2002:a05:6a00:4906:b0:89c:9569:93cf with SMTP id d2e1a72fcca58-89c9578e022mr1635155b3a.1.1791877598420;
-        Tue, 13 Oct 2026 00:46:38 -0700 (PDT)
-Received: from localhost.localdomain ([139.159.170.69])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89805c75343sm4459011b3a.38.2026.10.13.00.46.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 13 Oct 2026 00:46:38 -0700 (PDT)
-From: Qihang <q.h.hack.winter@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Steffen Klassert <steffen.klassert@secunet.com>,
-	Christian Hopps <chopps@labn.net>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2 3/3] xfrm: transfer the skb->dev reference to the input path
-Date: Tue, 13 Oct 2026 15:46:10 +0800
-Message-ID: <20261013074610.17808-4-q.h.hack.winter@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261013074610.17808-1-q.h.hack.winter@gmail.com>
-References: <20261013074610.17808-1-q.h.hack.winter@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="zz/0A9+o"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 415A94E4120A;
+	Tue, 13 Oct 2026 07:48:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 132F160362;
+	Tue, 13 Oct 2026 07:48:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AD44811D7012D;
+	Tue, 13 Oct 2026 09:48:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791877727; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=J9Kb+jCZDseePdcQUKuFbPGPzmxEj/uofpen6TU2Bfo=;
+	b=zz/0A9+ooNtaYDsE/E19+ovTaPyxHH8N5p0a+PkmLplMS0NO11kPhh7Qb2bRRS9cPtmIlb
+	/KzAOLJO6SqoXRN81aSjDC2EKZ0+faYZzjj761TJjfTjisbQrcLki/LuETQ9gqrU8yzAdw
+	XkizO5I68sAvYkIabp4WNzTT7L55WUy0HEwiS8grcIL5A/S3s6rJ1ke2CbDWHyzEuexHQM
+	GjfxLo36yt9IX2xouXE9tD+OajTz31nv7ejgEZSuXr3Dgo9J4AbmVpMQwiKXPk4cQ9zg1h
+	gzlgePej/bzGGfaEjsF5a4PXxNd0sBbPz1fAk7TLsEQHeFBK8W1xfXO2rNrUqw==
+Message-ID: <670f3506-efe4-4d73-a71d-7140547f1cfe@bootlin.com>
+Date: Tue, 13 Oct 2026 09:48:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: Don't allow disabling napi kthread mode while
+ napi instances are disabled
+To: Paolo Abeni <pabeni@redhat.com>, netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, horms@kernel.org, linux@armlinux.org.uk,
+ kuniyu@google.com, sdf.kernel@gmail.com, thomas.petazzoni@bootlin.com,
+ alexis.lothore@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261006141119.85562-1-maxime.chevallier@bootlin.com>
+ <179142548474.434549.4875313383372623036@kernel.org>
+ <35a238ae-0e06-49a9-8539-9139aeca1a30@bootlin.com>
+ <24dbe3af-8706-4369-8308-d3ad558fea71@redhat.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <24dbe3af-8706-4369-8308-d3ad558fea71@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
-control buffer without taking a reference.  With async crypto the
-receive callback runs from the crypto completion, after a possible
-device teardown, and dereferences the freed tunnel device:
+Hi Paolo,
 
-    BUG: KASAN: slab-use-after-free in vti_rcv_cb
+On 10/12/26 18:31, Paolo Abeni wrote:
+> On 10/8/26 12:19, Maxime Chevallier wrote:
+>> On 10/8/26 04:11, netdev-bot+sashiko@kernel.org wrote:
+>>> Would it be better to handle disabled NAPIs in the stop path itself,
+>>> napi_stop_kthread() or napi_set_threaded(), rather than only guarding the
+>>> explicit disable branch?
+>>
+>> Hmmm maybe yes
+> My personal take is that the complexity of addressing the issue for good at
+> the core level sounds like a good argument to fix this at the device level,
+> one device at the time, as needed.
 
-Taking a reference while the pointer is cached and dropping it in the
-callback does not fix that: on the success path the callback drops what
-may be the last reference before xfrm_input() hands the skb to
-gro_cells_receive(), and taking a new reference on skb->dev at that
-point is already too late, the device may have been freed in between:
+Fixing that in drivers isn't enough however. The visible problem of hanging while
+disabling threaded mode if the interface is down would be addressed, but not the
+corner cases such as "disabling threaded mode while changing the MTU" for example.
 
-    BUG: KASAN: slab-use-after-free in xfrm_input
+And this is a lot harder to test :(
 
-Make the reference travel with the skb instead: the receive callbacks
-install the device in skb->dev and leave their reference with it, and
-xfrm_input() releases it once the packet has been delivered.  vti,
-vti6 and xfrmi -- the only callbacks that replace skb->dev -- take the
-reference when installing the device and drop it on their error paths.
+> 
+> Otherwise I'll probably got for the suggested path above.
 
-Tested on arm64 with KASAN and an async AEAD: no use-after-free on
-either completion path, and RTM_DELLINK on a VTI device with pending
-async crypto now waits for the completion.
+My brain is becoming a bit more operational now that the conference flu I caught
+last week is healing, I'll spin another round see if I can get that addressed.
 
-Fixes: df3893c176e9 ("vti: Update the ipv4 side to use it's own receive hook.")
-Fixes: fa9ad96d4905 ("vti6: Update the ipv6 side to use its own receive hook.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
----
- net/ipv4/ip_vti.c              |  6 ++++++
- net/ipv6/ip6_vti.c             |  7 +++++++
- net/xfrm/xfrm_input.c          | 13 +++++++++++++
- net/xfrm/xfrm_interface_core.c |  9 ++++++++-
- 4 files changed, 34 insertions(+), 1 deletion(-)
+Maxime
 
-diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
-index 3b80929994a0..1964482064c1 100644
---- a/net/ipv4/ip_vti.c
-+++ b/net/ipv4/ip_vti.c
-@@ -63,6 +63,8 @@ static int vti_input(struct sk_buff *skb, int nexthdr, __be32 spi,
- 
- 		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = tunnel;
- 
-+		dev_hold(tunnel->dev);
-+
- 		if (update_skb_dev)
- 			skb->dev = tunnel->dev;
- 
-@@ -109,10 +111,14 @@ static int vti_rcv_cb(struct sk_buff *skb, int err)
- 
- 	dev = tunnel->dev;
- 
-+	/* Drop the reference taken in vti_input(); on success it is
-+	 * transferred with skb->dev and released by xfrm_input().
-+	 */
- 	if (err) {
- 		DEV_STATS_INC(dev, rx_errors);
- 		DEV_STATS_INC(dev, rx_dropped);
- 
-+		dev_put(dev);
- 		return 0;
- 	}
- 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index ab94b3a4ba9c..a47acae4756c 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -322,6 +322,9 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
- 		rcu_read_unlock();
- 
- 		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-+
-+		dev_hold(t->dev);
-+
- 		XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
- 		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
- 		return xfrm_input(skb, nexthdr, spi, encap_type);
-@@ -355,10 +358,14 @@ static int vti6_rcv_cb(struct sk_buff *skb, int err)
- 
- 	dev = t->dev;
- 
-+	/* Drop the reference taken in vti6_input_proto(); on success it is
-+	 * transferred with skb->dev and released by xfrm_input().
-+	 */
- 	if (err) {
- 		DEV_STATS_INC(dev, rx_errors);
- 		DEV_STATS_INC(dev, rx_dropped);
- 
-+		dev_put(dev);
- 		return 0;
- 	}
- 
-diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-index f293d5e124d4..bdd493f9d877 100644
---- a/net/xfrm/xfrm_input.c
-+++ b/net/xfrm/xfrm_input.c
-@@ -487,6 +487,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 	const struct xfrm_state_afinfo *afinfo;
- 	struct net *net = dev_net(skb->dev);
- 	struct net_device *dev = skb->dev;
-+	struct net_device *tdev;
- 	int err;
- 	__be32 seq;
- 	__be32 seq_hi;
-@@ -767,7 +768,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			skb_dst_drop(skb);
- 		if (async)
- 			dev_put(dev);
-+		/* Release the reference a receive callback left with
-+		 * skb->dev, after the packet has been delivered.
-+		 */
-+		tdev = skb->dev != dev ? skb->dev : NULL;
- 		gro_cells_receive(&gro_cells, skb);
-+		if (tdev)
-+			dev_put(tdev);
- 		rcu_read_unlock();
- 		return 0;
- 	} else {
-@@ -775,6 +782,10 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 		if (xo)
- 			xfrm_gro = xo->flags & XFRM_GRO;
- 
-+		/* Release the reference a receive callback left with
-+		 * skb->dev, after the packet has been delivered.
-+		 */
-+		tdev = skb->dev != dev ? skb->dev : NULL;
- 		err = -EAFNOSUPPORT;
- 		afinfo = xfrm_state_afinfo_get_rcu(family);
- 		if (likely(afinfo))
-@@ -788,6 +799,8 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
- 			gro_cells_receive(&gro_cells, skb);
- 		}
- 
-+		if (tdev)
-+			dev_put(tdev);
- 		if (async)
- 			dev_put(dev);
- 		rcu_read_unlock();
-diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-index 688306bf62c5..f4859be7ed18 100644
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -375,11 +375,18 @@ static int xfrmi_rcv_cb(struct sk_buff *skb, int err)
- 
- 	link = skb->dev->ifindex;
- 	dev = xi->dev;
--	skb->dev = dev;
-+	if (skb->dev != dev) {
-+		/* Reference travels with skb->dev; released by xfrm_input()
-+		 * after delivery.  Guard makes a re-invocation a no-op.
-+		 */
-+		dev_hold(dev);
-+		skb->dev = dev;
-+	}
- 
- 	if (err) {
- 		DEV_STATS_INC(dev, rx_errors);
- 		DEV_STATS_INC(dev, rx_dropped);
-+		dev_put(dev);
- 
- 		return 0;
- 	}
--- 
-2.54.0 (Apple Git-157)
 
