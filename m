@@ -1,150 +1,214 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2011F502D55;
-	Tue, 13 Oct 2026 16:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8445515970;
+	Tue, 13 Oct 2026 16:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791908568; cv=none; b=F8aswQQ3DTipp9Z71Ne/7YH9mNVAmjIfqP1tKReFu1/44LZOutPfy7naifNECcASQ18rwvJYWh17SDfznXqatPDCDrnB30mjsT8wTivtUm9H1W/JRxS3F6lDm/jOuJOSymLOwK2gkqWi9uu+etqOV7xcp5KaHcCbN15LVgfy/Hw=
+	t=1791908661; cv=none; b=UAMyniA/uWiZrKGIRuTIVdsu6o69O0ceXIW4qDTu2tnBG0Oz2N+OnmbflvKHyPa4fqMQXyf772dT33VOgT843mHfCF8bqL2Ho1HadCNQ5pOppXD4Cuh6swA4lHwgO1TkYIZTrb8j0fF0m6oKGA4c51wpC2PvKn5yx0UdyCTquz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791908568; c=relaxed/simple;
-	bh=zRJxuOVYQTNcPnPYqTgvUfVbxqZCkxhjzqBFG3X+/3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=klulxQG2DmaGB6lXuZlZ2eopPR1sNxW2CNLYe9Jgfk0fsiaGJMo73U3rgES0kNUDD8xc4NDAfDcVsVL6PWaetR1AbI1bx1h+XurVFEAbqIEUZk7j7gOUaalFwBphOvG/N457351gC+A7q1cb1tgSP+TdgSmQeEPtoxi2F8gjoG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VqiS6SNv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791908661; c=relaxed/simple;
+	bh=/mEx8vdFcfI3hLMAtaYNjZl+5y7yaZRJJk6u/Lg1E6A=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BeCm0caVRXfNY2AXCDOO4pYJEWBkI3xLGf8ENIM2FIp/aEGQaPTKMAk7npLHwmoIyx33NfqDTgDcGA+i1v/Nnjm24eQfqwngniyqGjJao/p3puUpYj9cudGjrja2CFEeDtJq2/CnofNEN1ZYe/49sSKeIRjrncDpiGzI5DCMjj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jtZ4ut8F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VqiS6SNv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D241F000FF;
-	Tue, 13 Oct 2026 16:22:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jtZ4ut8F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CFC1F000FF;
+	Tue, 13 Oct 2026 16:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791908566;
-	bh=RruG4ycM1RDlyZhr3aFgF7U9rGlonUOm6YZBye8aWoI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VqiS6SNvYr81gHOz6sWd2drWdeahWpXx+WTjJV0a29MnSmc5QfS18A11p4u9/cXYG
-	 LwDngovM0JtfEmzBtUOPyrQkTi2ljMEnbDi8MWrjaAdpbdEUgIt64XI/FAzoj4LqRP
-	 OM8BErFC2nmF/IuLTUNNC6vkQIw8ugK2adjIVy8i7sBPWb9q3ZoDIa2j7rlVpuywDa
-	 9OEIUh7J7avXvu94kI4jT3N1IujK8d5X/Kf2lqmsyW2RDNKxWvBY0V0r+/8BwiOzm2
-	 b+kanaTWOrAHFT6Ap8x07uLp965j6i6+hHT4CTceliJRGMp1HwzMOfupEq7iD6Wqwn
-	 vP8lIQiNficaw==
-Date: Tue, 13 Oct 2026 17:22:41 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"ratbert@faraday-tech.com" <ratbert@faraday-tech.com>,
-	"edumazet@kernel.org" <edumazet@kernel.org>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: =?utf-8?B?5Zue6KaGOiBbUEFUQ0ggbmV0LW5l?= =?utf-8?Q?xt?= v2 1/6]
- dt-bindings: net: ftgmac100: Add AST2700 compatible
-Message-ID: <20261013-subwoofer-zestfully-fe98c6158ba9@spud>
-References: <20261006-support_ast2700-v2-1-36de51fb8066@aspeedtech.com>
- <179161911824.434549.4075299707625994950@kernel.org>
- <20261012-aide-wimp-4edf96aaca1d@spud>
- <SEYPR06MB51346A6CB5D7D7FC6D3FC4DD9D9E2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+	s=k20260515; t=1791908660;
+	bh=awofmRGa51mWfxvkSwx2u56skeAV3P8MmfNnS2lWxu0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jtZ4ut8FeIVqhdA0zFO0OZB2I/jyr+koVsoBc+speykIcENvqEJXENgarRat7TpZt
+	 U53jry6971Ptn4euEfIGMOhVnpMt2O7TD3p04w4qeKGHwbOteugDTG2PR3k7iDXVUx
+	 STeWzjjGNk2v/V6PVKM/7VHzuQlvZcw5EqGvEuKb2ugqRsoNTgrLZqQwMj2m5IpRLK
+	 nosztYQQrB4SDltmGmCMYGtn+VEeQkfHFXWCwTiYBBM8mu1aAAV58fjEeW1zqsHZ6C
+	 xoXztTAfmC4kbXg3UaEW2OFqO9ioaaX82/XIXJ0EN+wE7y4fjPO9dJGiYT/+EVpW0J
+	 TIJn286JGWDJA==
+Subject:
+ Re: [PATCH net v2] tipc: fix broadcast sender hang on last acker departure
+From: netdev-bot+sashiko@kernel.org
+To: bsdhenrymartin@gmail.com
+Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, davem@davemloft.net,
+ kuba@kernel.org, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ying.xue@windriver.com, netdev@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Tue, 13 Oct 2026 16:24:19 +0000
+Message-ID: <179190865919.434549.2450236888091417368@kernel.org>
+In-Reply-To: <20261012153357.1863316-1-bsdhenrymartin@gmail.com>
+References: <20261012153357.1863316-1-bsdhenrymartin@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="04Khn4zl3vmOXjoL"
-Content-Disposition: inline
-In-Reply-To: <SEYPR06MB51346A6CB5D7D7FC6D3FC4DD9D9E2@SEYPR06MB5134.apcprd06.prod.outlook.com>
 
---04Khn4zl3vmOXjoL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-On Tue, Oct 13, 2026 at 05:23:21AM +0000, Jacky Chou wrote:
-> Hi Conor,
->=20
-> Thank you for your reply.
->=20
-> > > dt-bindings: net: ftgmac100: Add AST2700 compatible
-> > >
-> > > This adds aspeed,ast2700-mac to the FTGMAC100 compatible list, which
-> > > requires the faraday,ftgmac100 fallback. It also updates the RMII RCLK
-> > > clock description to include AST2700, and allows the resets property
-> > > for
-> > > AST2700 in the same way as for AST2600.
-> > >
-> > > > diff --git
-> > > > a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
-> > > > b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
-> > > > index d14410018bcf6..bee9570a6f63f 100644
-> > > > --- a/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
-> > > > +++ b/Documentation/devicetree/bindings/net/faraday,ftgmac100.yaml
-> > > > @@ -18,6 +18,7 @@ properties:
-> > > >                - aspeed,ast2400-mac
-> > > >                - aspeed,ast2500-mac
-> > > >                - aspeed,ast2600-mac
-> > > > +              - aspeed,ast2700-mac
-> > > >            - const: faraday,ftgmac100
-> > >
-> > > [Severity: Low]
-> > > With this patch, "aspeed,ast2700-mac", "faraday,ftgmac100" becomes a
-> > > valid compatible pair. However, at this commit, ftgmac100_of_match[]
-> > > in drivers/net/ethernet/faraday/ftgmac100.c has no aspeed,ast2700-mac
-> > entry.
-> > > Such a node could only bind through the generic faraday,ftgmac100
-> > > entry (FTGMAC100_FARADAY).
-> > >
-> > > On that path, ftgmac100_probe() would do the following:
-> > >
-> > >   - program the ring-end bits at BIT(15) instead of the Aspeed BIT(30)
-> > >   - leave is_aspeed false, so ftgmac100_setup_clk() never claims
-> > >     MACCLK/RCLK
-> > >   - register the embedded MDIO bus through ftgmac100_setup_mdio()
-> > >   - never set a DMA mask wider than 32 bits
-> > >
-> > > Would an AST2700 node work correctly if it fell back to the Faraday
-> > > match?
-> >=20
-> > Sounds like no, can the submitter please clarify if the fallback is val=
-id?
-> >=20
->=20
-> Agreed. I think the 'aspeed,ast2700-mac' should not be based on the 'fara=
-day,ftgmac100'.
-> Maybe the dt-bindings put ast2700-mac as a const like:
-> ```
-> ...
-> properties:
->   compatible:
->     oneOf:
->       - const: faraday,ftgmac100
->       - const: aspeed,ast2700-mac             // as a const
->       - items:
->           - enum:
->               - aspeed,ast2400-mac
->               - aspeed,ast2500-mac
->               - aspeed,ast2600-mac
->           - const: faraday,ftgmac100
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Looks good. I am curious whether the existing fallbacks used with other
-aspeed devices are also inaccurate? Could be worth looking into?
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
---04Khn4zl3vmOXjoL
-Content-Type: application/pgp-signature; name=signature.asc
+- [Medium] The patch adds m->bc_pending so that only members counted for
+  the current replicast can reduce grp->bc_ackers, but it checks the…
+- [Low] The commit message gives the wrong reason why blocked writers
+  stay asleep, and it overstates when the blocking sendmsg() hang…
 
------BEGIN PGP SIGNATURE-----
+--
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCas5a0QAKCRB4tDGHoIJi
-0o+LAP9JUwd35G4Tddq1MXi0RiDXQvzTdxhiFYm4I4c91blSHwD+N66kE3iFrYOh
-sDgkxcrp8cn1htDbzr1Dve3Jh1FYqA0=
-=nq6T
------END PGP SIGNATURE-----
+tipc: fix broadcast sender hang on last acker departure
 
---04Khn4zl3vmOXjoL--
+This patch restores *grp->open when the last member that owes a replicast
+ack is deleted. It also calls sk->sk_write_space() from tipc_sk_filter_rcv()
+when the group becomes writable again. A new per-member bc_pending flag
+limits the bc_ackers decrement in the delete path to members that were
+counted for the current replicast.
+
+> TIPC group broadcast senders are blocked while a replicast still has
+> outstanding member acks: poll(EPOLLOUT) only fires when
+> tsk->group_is_open, and writers keep re-sleeping on every unrelated
+> data-ready wakeup because tipc_group_bc_cong() keeps seeing
+> *grp->open == false (the default sk_sndtimeo is MAX_SCHEDULE_TIMEOUT,
+> so there is no bounded send timeout either).
+
+[Severity: Low]
+Is this description of the mechanism accurate? tipc_group_bc_cong() only
+writes *grp->open and never reads it:
+
+net/tipc/group.c:tipc_group_bc_cong() {
+	if (grp->bc_ackers) {
+		*grp->open = false;
+		return true;
+	}
+	if (list_empty(&grp->small_win))
+		return false;
+	...
+}
+
+Its return value depends only on grp->bc_ackers and the head of
+grp->small_win.
+
+> When the last outstanding acker departs before acking,
+> tipc_group_delete_member() decrements grp->bc_ackers but never
+> restores *grp->open, and the blocked senders are never woken.
+
+The old delete path already brought bc_ackers to 0 when the last owing
+member left. That member has bc_acked == S-1 and bc_snd_nxt == S+1, so the
+less() test matches.
+
+tipc_wait_for_cond() waits with woken_wake_function, which ignores the poll
+key, and tipc_data_ready() wakes every sleeper on sk_wq.
+
+So with group member events enabled, the sk_data_ready() after the leave
+event is delivered already woke the writer in tipc_send_group_bcast().
+tipc_group_bc_cong() then returned false and sendmsg() went on, returning
+EHOSTUNREACH if the group was now empty.
+
+The poll(EPOLLOUT) hang does look real in every case, because tipc_poll()
+only sets EPOLLOUT when tsk->group_is_open is true.
+
+The blocking sendmsg() hang seems to happen only when nothing wakes the
+writer after the deletion. One example is group member events being
+disabled. In that case TIPC_GRP_MEMBER_EVT is freed with deliver = false
+and sk_data_ready() is never called.
+
+The code change itself looks correct. Since this is tagged for stable,
+could the changelog describe the actual wakeup path and say when the
+sendmsg() hang occurs?
+
+> diff --git a/net/tipc/group.c b/net/tipc/group.c
+> index 74f6d3dac0784..e9c77f12c9819 100644
+> --- a/net/tipc/group.c
+> +++ b/net/tipc/group.c
+
+[ ... ]
+
+> @@ -340,9 +341,12 @@ static void tipc_group_delete_member(struct tipc_group *grp,
+>  	rb_erase(&m->tree_node, &grp->members);
+>  	grp->member_cnt--;
+>  
+> -	/* Check if we were waiting for replicast ack from this member */
+> -	if (grp->bc_ackers && less(m->bc_acked, grp->bc_snd_nxt - 1))
+> -		grp->bc_ackers--;
+> +	/* If this member owed an ack for the current replicast and it
+> +	 * was the last one, restore the open state so blocked broadcast
+> +	 * senders can proceed.
+> +	 */
+> +	if (grp->bc_ackers && m->bc_pending && !--grp->bc_ackers)
+> +		*grp->open = true;
+>  
+>  	list_del_init(&m->list);
+>  	list_del_init(&m->small_win);
+> @@ -406,6 +410,8 @@ void tipc_group_update_bc_members(struct tipc_group *grp, int len, bool ack)
+>  			m->bc_acked = prev;
+>  			ackers++;
+>  		}
+> +		if (ack)
+> +			m->bc_pending = tipc_group_is_receiver(m);
+>  	}
+>  
+>  	/* Mark number of acknowledges to expect, if any */
+> @@ -803,6 +809,7 @@ void tipc_group_proto_rcv(struct tipc_group *grp, bool *usr_wakeup,
+>  		if (acked != grp->bc_snd_nxt || m->bc_acked == acked)
+>  			return;
+>  		m->bc_acked = acked;
+> +		m->bc_pending = false;
+>  		if (--grp->bc_ackers)
+>  			return;
+>  		list_del_init(&m->small_win);
+
+[Severity: Medium]
+Should the GRP_ACK_MSG handler also check m->bc_pending before it
+decrements grp->bc_ackers?
+
+The new test in tipc_group_delete_member() assumes bc_ackers equals the
+number of members with bc_pending set.
+
+This handler still decrements bc_ackers for any member that passes the
+acked == grp->bc_snd_nxt and m->bc_acked != acked checks.
+
+Two kinds of member can pass those checks without having been counted:
+
+- Members that were MBR_JOINING or MBR_LEAVING when
+  tipc_group_update_bc_members() ran keep a stale bc_acked and get
+  bc_pending = false.
+- Members created after the replicast have bc_pending = false and
+  bc_acked = bc_snd_nxt - 1 from tipc_group_create_member().
+
+For both, a GRP_ACK_MSG carrying acked == bc_snd_nxt passes every check
+here.
+
+For example, with bc_ackers == 2 for counted members A and B:
+
+  ack from uncounted member X     bc_ackers 2 -> 1
+  B acks, or B is deleted         bc_ackers 1 -> 0, *grp->open = true
+
+A still has bc_pending == true and has never acked.
+
+Isn't this the case the commit message gives as the reason for adding
+bc_pending, where a non-counted member "could silently void a
+still-outstanding ack from a real acker"?
+
+A cluster peer can trigger this. It sends GRP_JOIN_MSG, which makes
+tipc_group_proto_rcv() create an MBR_JOINING member for any port. It then
+sends GRP_ACK_MSG with acked == bc_snd_nxt. I could not find a benign
+protocol sequence that ends up here.
+
+Would something like this close the gap?
+
+	if (acked != grp->bc_snd_nxt || !m->bc_pending)
+		return;
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012153357.1863316-1-bsdhenrymartin%40gmail.com
