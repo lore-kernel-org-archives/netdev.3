@@ -1,160 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93913322749
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5693CB2D4
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791899169; cv=none; b=M9dFT9x8Syqq54D/Vw4hR690yjDQz5RjoPxQpts8Q1EiTNjPnkRMxbyn9PtC7vwgGpwR4cyBKhJpHiT0oy/0mhE5g083EmA5VBWDlpHq8vInvxy+0g0SZY4CD3eqiXXk9OtM4ipabslwNMZCZBXHxp0xSjpzHud2RfYOU6bANeE=
+	t=1791899283; cv=none; b=bp+YmIEtJVkVcPZBbOB2QMpqa/wsELKAn6VD96LWkFZLBrPjNkjFb2yQcC2i4qWaJpk+kOKFOerYCrHTv96nio4EyqtbSHadP3id2csa1hijYjiIGh37OTF+E2bHNd/Tjn4dnyMTmmIs6+/BwLZcwH6Ip0JnoMlab4YJCr3ABek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791899169; c=relaxed/simple;
-	bh=c4JfTret0XN6YtnbfrHwRCA2mT2SkuVR2EL/smmE9vo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tIyZbyZYmeo7H2cjBqIRMGL0gDoQZvCSgk4w1K7grHG+Of/HDjw2scD26Qe77EW34FdYb49E2YecCaOMyAEPysA6zd4k0DrnrPVRs8hZ8rQKVRv23P+UAO16RLZPvGgb4dultNvFiT9d+d/wr1Iz9KNwFU+YHhsKRTzX/Klk9EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORxcUQvG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791899283; c=relaxed/simple;
+	bh=REg5Mntcb+tsmQNtdHglZYMVn8Nwol6pChdRnAFVNkA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ep1WrYh4qUmlIv/qFH+1w3KHxXOyqxZE5JhqJI/5Mb/pBrCB/t6aZVGrhKciujyvL9YQHhp1L+EoW6zi10nMJOK8frNDocP/Arw74zdzIVoRXIXCv4yh+RmFyqL5Zi9cEgigF2iNSywSqxRXEpNeS+ro4UI5U7lE/GFhjWDRpiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QGSXWaZE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KreR4oPM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORxcUQvG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDB101F000FF;
-	Tue, 13 Oct 2026 13:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791899168;
-	bh=orLzR8+l8zVuwsg5ArMOncGw9xSXLxUtPnq05PDF2KU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ORxcUQvGgGPJmtvScchvbAvGti5oeAHifTavr4QS7Ka0IoOdJITNAfufjKYmwt4B1
-	 IWgq7pNpUvuZWMRegot3UO09lRB3tTvO7zwWERKxXdJMq1AFqirBRnA7uM8fXdmMX7
-	 KtkU17zRgzRkAoiR4SBlqTpGZGtUfXsduGxTu2nrZ7E/MdxBDL7Ht4gWqq2Dp2Ui8/
-	 hVpgnIueflCdPLoBDEq6qwsIlUvCE5DRkexHLYId9Ej6luwTPjPRZJLyL4iD0RD/fJ
-	 2VPhsGQ7OGXD5nvlsETOtctvaV7ZbI+E4HKPVxbKioJDBlN1f7t8J+nVu/mHDM0XJV
-	 Yu8aJDewWsLDQ==
-Subject: Re: [PATCH net] selftests: net: fix race condition in icmp.sh causing
- CKI sporadic failures
-From: netdev-bot+sashiko@kernel.org
-To: pmukherj@redhat.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dsahern@kernel.org,
- toke@redhat.com, netdev@vger.kernel.org, dcaratti@redhat.com
-Date: Tue, 13 Oct 2026 13:46:07 +0000
-Message-ID: <179189916742.434549.3086628054499882669@kernel.org>
-In-Reply-To:
- <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
-References:
- <b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj@redhat.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QGSXWaZE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KreR4oPM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791899281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YgGQEF0Pnm38fJNWvw8gvjA222tZmizMgG6WO+7xu+8=;
+	b=QGSXWaZE9X9VrDkPqWtT9FSOG6OIBx/FuFc/LvSTr1rV7SflkcukbS/OECe4ZMxwCkChqD
+	p4zSB5bi8HSY+cq5FkDAtfEskw2xFLkTkQAgSqxOf82SmnJtk6f/7uHZXxwYm6E9hCezHq
+	XWrVbjXEc2Zd3ktLPutrfbfJyNFUFhg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-61-Ole27nEnPnuVFtu1ALDQaw-1; Tue, 13 Oct 2026 13:48:00 +0000
+X-MC-Unique: Ole27nEnPnuVFtu1ALDQaw-1
+X-Mimecast-MFC-AGG-ID: Ole27nEnPnuVFtu1ALDQaw_1791899279
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48c46582442so1969525f8f.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 06:47:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791899279; x=1792504079; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YgGQEF0Pnm38fJNWvw8gvjA222tZmizMgG6WO+7xu+8=;
+        b=KreR4oPMlzeA0zSZnRmCu3+uNiACc7J02qXHHcbrVfGaA0nN4/L2X+KtpS6T8de04f
+         BjIckzJrTgDP1J8JUCueZWKvjyiGHBJmVLmGSmqNM2l+hajdR9TNl9/tZLvoM1iAEp1W
+         EF7N7G44nH7c0aQXyVPurYyVkNt2ylKQWfe2JY9GG/zR/kC/XVPOjTU4aNIs/3+BZUTW
+         JXn0M1aorNcTo5RvKE2VUdp2TzeROyaEJWXP0SjqEt2S0XKLq+BjSOVRZqrHlueUHdAF
+         oOcihgJupZ65XRipFYuMyyZRe+U14RydMdak3vKdn4w2ursn6703M756EeJqAnH7d4y5
+         32sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791899279; x=1792504079;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YgGQEF0Pnm38fJNWvw8gvjA222tZmizMgG6WO+7xu+8=;
+        b=QyW/qybe7ReW7df5ktTToN/g2rmp3WK+TptXJGKpdOTdiDOUzQYJcarh9FjcfaVdhm
+         U5+XmrsxngbVJSTXZWM+3eYziCWe0sWZwpurqfvkuR63XpPgMOGklyO/5bFfiRpyBzhB
+         e83Rm+nox3W5QsuaThcgg3jvdSXfR1jMlWiOufYv7u3sM9WwTCQegyUaAQXov5f2bRpy
+         c4J51wUTfNRRc34WdPBEgLtf2KeSLmBgan7rklRBuBzqK4LplsXJetM/BtK4OFPTgaRk
+         rLJyQuwQequ1LTS83OXM7h+ph+WLz1H4NnT5f8RDld0SBdzeBHmKj9ByrkVB3pBo80Hs
+         /2GA==
+X-Forwarded-Encrypted: i=1; AKwUvBx4UxDkJ7Qe75LOPg8Yk80sAbSTNOj0H/zulnBPKqgQ/xwwkDYPk1MCLzlcdUiswYdbeQio6cU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIPHCyJYZrkPjsJoroa2RTqtBQ2POJ/7DOHGpWoRkV0ag5CaJrI
+	znH8HczkuEGTtpfPwGJp47xW+1wgUm7Y3uX+9JbRsxxO6xMPy+elml8HRxFHKYCTzOInURurm6I
+	98X/PvbYO4CTTXetNjo/a8y59NzKkw3pIH/XKDqXUfXrRP67cZ0UZ+XDn7g==
+X-Gm-Gg: AYBFou0Fo7/F5raRph8Z/055w09VJNGx5KoxA6+hG/xP7Xj7NxIlQw6dlaAlI+3Luzs
+	zovcRz8ypGNEMVHGPEAZfbF1nahXtYHhEGam8rG5M5wkbgQZDbWIS/gO7NGFGk2A2K/7iJstlRo
+	LF2jdG8WIUad1Q0/mEazwbcI2uAQ9DzRlGUP5qEsTsq/o9kYL67+InyvxLo1zgAOUsh2S8Tc6ne
+	oEqacHKx5Zs7Aff10G0cUPbFtEvdEXgqjEm3HYa2y3tesUtHdyVsrfzg77VjSH5PVNk1/zcZUVv
+	mOLQEyQILGl818WtEDnoeHGYjuHYswIW79RtAh8OGwpf/aQiygEmSr0TlHdEKVu0YM0k8IEI0wH
+	KbWyZD6F1YRc0kuEH6Ph8eWqVA2hwQq3Dd44AO7lC50r1ANL1HHXoXma/cCimZkau7pRZYlBl8g
+	==
+X-Received: by 2002:a05:600c:3b8b:b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4a18e4a7cfcmr308259075e9.26.1791899278734;
+        Tue, 13 Oct 2026 06:47:58 -0700 (PDT)
+X-Received: by 2002:a05:600c:3b8b:b0:4a1:811c:8078 with SMTP id 5b1f17b1804b1-4a18e4a7cfcmr308258425e9.26.1791899278275;
+        Tue, 13 Oct 2026 06:47:58 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc85b1sm4979371f8f.54.2026.10.13.06.47.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 06:47:57 -0700 (PDT)
+Message-ID: <8c40f576-08d5-4b42-b125-abda8da2a335@redhat.com>
+Date: Tue, 13 Oct 2026 15:47:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: alacritech: fix dma_free_coherent() in error
+ path
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org, Lino Sanfilippo <LinoSanfilippo@gmx.de>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20261006140912.50828-2-fourier.thomas@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261006140912.50828-2-fourier.thomas@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On 10/6/26 16:09, Thomas Fourier wrote:
+> In slic_init_stat_queue(), a series of coherent buffers is allocated
+> with the length size. The size is then stored in stq->mem_size for
+> normal deallocation. However, in the error path, stq->mem_size is also
+> used but is not initialized. This error may leave the freed buffers
+> mapped, leaking a resource and allowing the device to access freed
+> memory.
+> 
+> Change the length in error path to size.
+> 
+> Fixes: 60c140df15db ("net: ethernet: slicoss: add slicoss gigabit ethernet driver")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+FTR, bad things in NIC error path for old drivers is the exact
+prototype of things we are actively redirecting to net-next at
+this point of the cycle. Also stripping the stable tag.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+/P
 
-- [Medium] In tools/testing/selftests/net/icmp.sh, the pass/fail result
-  now depends on `jq` and on `tc` with clsact, flower and gact support,…
-
---
-
-selftests: net: fix race condition in icmp.sh causing CKI sporadic failures
-
-The patch replaces the background ping and tcpdump capture in icmp.sh
-with a tc flower filter on veth0 ingress in ns1. The filter matches ICMP
-Destination Unreachable packets from 192.0.0.8. The test then reads the
-act_gact packet counter with tc -j and jq to decide the verdict.
-
-Closes: https://datawarehouse.cki-project.org/issue/3658
-
-> diff --git a/tools/testing/selftests/net/icmp.sh b/tools/testing/selftests/net/icmp.sh
-> index 824cb0e35eff6..0714e8b34d120 100755
-> --- a/tools/testing/selftests/net/icmp.sh
-> +++ b/tools/testing/selftests/net/icmp.sh
-
-[ ... ]
-
-> @@ -52,21 +49,24 @@ ip -netns $NS2 route add $RT2 via inet6 $H1_IP6
->  
->  # Make sure ns2 will respond with ICMP unreachable
->  ip netns exec $NS2 sysctl -qw net.ipv4.icmp_ratelimit=0 net.ipv4.ip_forward=1
-> +# Install tc flower filter to count ICMP unreachable from 192.0.0.8
-> +ip netns exec $NS1 tc qdisc add dev veth0 clsact
-> +ip netns exec $NS1 tc filter add dev veth0 ingress \
-> +	protocol ip pref 1 handle 1 flower \
-> +	src_ip 192.0.0.8 ip_proto icmp type 3 code 0 \
-> +	action pass
->  
-> -# Run the test - a ping runs in the background, and we capture ICMP responses
-> -# with tcpdump; -c 1 means it should exit on the first ping, but add a timeout
-> -# in case something goes wrong
-> -ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null &
-> -ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>/dev/null
-> +# Send ping to trigger ICMP unreachable from ns2
-> +ip netns exec $NS1 ping -c 1 $PINGADDR >/dev/null 2>&1
->  
-> -# Parse response and check for dummy address
-> -# tcpdump output looks like:
-> -# IP 192.0.0.8 > 172.16.0.1: ICMP net 172.16.1.1 unreachable, length 92
-> -RESP_IP=$(awk '{print $2}' < $TMPFILE)
-> -if [[ "$RESP_IP" != "192.0.0.8" ]]; then
-> -    echo "FAIL - got ICMP response from $RESP_IP, should be 192.0.0.8"
-> -    exit 1
-> -else
-> +# Verify ICMP unreachable was received from dummy address 192.0.0.8 per RFC7600
-> +COUNT=$(ip netns exec $NS1 tc -j -s filter show dev veth0 ingress \
-> +	| jq '.[1].options.actions[].stats.packets')
-> +
-> +if [[ "$COUNT" -eq 1 ]]; then
-
-[Severity: Medium]
-With this change the verdict depends on jq. Should the test skip rather
-than fail when jq is not installed?
-
-If jq is missing, COUNT is empty. The script then prints:
-
-  FAIL - expected 1 ICMP unreachable from 192.0.0.8, got
-
-and exits 1 instead of exiting with ksft_skip.
-
-icmp.sh already sources lib.sh, which provides this helper:
-
-tools/testing/selftests/net/lib.sh:require_command() {
-	local cmd=$1; shift
-
-	if ! check_command "$cmd"; then
-		exit $EXIT_STATUS
-	fi
-}
-
-Several other net selftests already call require_command jq. Would it make
-sense to add require_command jq (and possibly require_command tc) near the
-top of icmp.sh?
-
-Before this patch the test needed only iproute2, ping and tcpdump. On CI
-hosts without jq, this could turn the sporadic failure into a failure on
-every run.
-
-The return codes of the tc qdisc add ... clsact and tc filter add ... flower
-commands above are also ignored, and the script does not use set -e. If
-either command fails, the test still runs the ping and then reports a test
-FAIL instead of a setup error or a skip. Should those commands be checked?
-
-The commit message also does not mention the new jq dependency.
-
->      echo "OK"
->      exit 0
-> +else
-> +    echo "FAIL - expected 1 ICMP unreachable from 192.0.0.8, got $COUNT"
-> +    exit 1
->  fi
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/b15ee681a330f9b05a9076a3852c186017f59d83.1791804421.git.pmukherj%40redhat.com
