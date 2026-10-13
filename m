@@ -1,82 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3CB3806B4;
-	Tue, 13 Oct 2026 09:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0FE3F4125
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885006; cv=none; b=eg1ONyShHTXfkGJ+lKg9KSlSbzl7WAv2eZYUCLs1aFz0L0hXqHm++37PZ70oxzTp/jYMbHGuEpqW3/9UF34FvXKql4zQaJ9adqkXHLRRS6LoWNrVoxvchXstEs8SyP4kZYnsVyigTeyKlry4+k7D2zio5nUVbS1Yqj+CQ2tMsns=
+	t=1791885106; cv=none; b=HCXXlDf2FIZQLACGSJS36EYeghe4O2TgDx1zgTT6zsB8O6yIAAAhmrBTIazz5RzZkfGi+L6d4lPNhJrP+gla6TREAbPOoME+z9OOj6mC5PknllHzXqbTgjDg4u+cL9Pcn45e7r0vHdvTRxK1yt0zGxOqFf3sIp5gXsFbhbFis3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791885006; c=relaxed/simple;
-	bh=NXAtj3ghpHjf8aaVPjmzBSzFIT23PVn57KUgoGolgiA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SQqZlbCrjuzrTdKct4esMbH44r5bcXxIhUtKJGLW0N2FqHnQZ9OrVB3CemdyCRQ8lWsp3HMcFNru47V7MqDZ0sO54vuxbmSX0hebbnrWv+NNAWVrj4it9lrFthYZSkMSj2RZWOtgK4Ft3nmjH7RSMU7Z9cZd+E4geO8gqxB2ZrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGK9UFV0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791885106; c=relaxed/simple;
+	bh=u2pFwzNMAxD0Oo1isB+38Lg6jL+zokAa+aYI4Z2T+gA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pWij+FPybS0uXbtPJHFKiec4XRS1kQsa04uAGeMF4boekJD/+AQ4EAp1fd10Qiephgk9q2jNmos/NB+agF8QAXX0ufv8NZ/Z79qro+a4CXkn4mhxONoiRyJBtNgXZWBniyXAp9hkZ+02TYoHyXh87yk7lYkEyQVmGtZPfcdsDBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=eKs+gJw7; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGK9UFV0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7581F000FF;
-	Tue, 13 Oct 2026 09:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791885005;
-	bh=ztPUa1U92ZM+yjVuQhmEia3J8WOM/4O6AHdcgl55hu4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=IGK9UFV0ZQP26jgCMggWX3LSTpsg7r5SM1LtItiCVWVV3CajnyNb0JvzrPAWYS58I
-	 1TUpoGBmK4HqH5TLO8OoRgmEOjs0YOMyEnfeOZw0O8+NGr083JWzS+UUF7h/puhYEr
-	 fiTHck5jU3KzN8Qfr79gE00yMzrFB1x5Fn9BN1OKO92sOA6PxnaUHQeGw1DaPE8hNw
-	 8pJwBtzZQbjzf0S1Bb840aORmQP8hQedBHx2tUC++LhKSb409yF+el8W6MMevFxpvE
-	 BO8PtzqrekORZPWGQuHuNUTbvwZGgE6rLe6hkwGlbZBO+ObfrGmVcYTjwr2eml8kEz
-	 AbIvrUkz7mESQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7740F392665B;
-	Tue, 13 Oct 2026 09:50:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="eKs+gJw7"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso35551025e9.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:51:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1791885103; x=1792489903; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fB0uk4ljewcdj9xikOsJ5AGGEnsL0TpvKZ1I7QdEXRs=;
+        b=eKs+gJw7VW1GeB6DnjpOMr7bd6VCFHuH6L/5Jv4Q0UBMbbuKnCUpe18tTA55/r3wfU
+         LluiHValxpemh9EsOzAW+QafHcORb23BzGdxwZQJC8Rjud8S07QQlTvGdfDIYexGdnpc
+         mtbjiDH8v+6D7eYSUARD1QrhT2Gaz7djNB6SzWynfs1Eoo6TyA1YNDuD4wjq/wHnR4Aw
+         aiwYmYKPG8Sh3nZIcoSU742E8R7f8yfp1B8itc7JQhtcWMr5l3+ecoZlFsPwtYD+731x
+         zLN1SjbfT+aOlqyzSHQEzAOq4TUZoMq6U653m8wv71EJwpuuPcZkjS+rIU9ZPValUZ/y
+         nLMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791885103; x=1792489903;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fB0uk4ljewcdj9xikOsJ5AGGEnsL0TpvKZ1I7QdEXRs=;
+        b=buNJ2G51OG9R388nN0PE+rwBBO384n4kO+XFwOESFp0DDnqLsXigg32awmGyJl6svz
+         1IiptrvMkAQjBXP726ih5/UxCF6Mj41C7oG9Zwth87XvffiZ8692YnfjxCIgjEuJ3oy1
+         orbtvDMBvCNR6gLRaR7ut5qMbH9ky7W4NkBl06H4cuWk1Ec9TY56iooIwjpyahOiqJD4
+         QZfwpMfJMstLrrAg+4DAKSfDLc1GySE7nGBlRaCdJjg4qTnPJSk480fvj0FaLqzFvXtU
+         3i5wD9EuEj4F+Ei73AceWk/Mhe27ymfBByAICrVUeboi2V2wfTuluMQSQq4o4mNsMaxs
+         TjVw==
+X-Forwarded-Encrypted: i=1; AKwUvBwsOZD5d4JutAifHwBUIKJKd9ulgKV4xZConaUcuR2JHIUiKbRh4B9mfkXcTeZiK35XJhGbJow=@vger.kernel.org
+X-Gm-Message-State: AFq9FYICmhqV6F2csP9U7juN3gNTdhJG03iospOF8Mx+cgsb7Ai62hJt
+	AlNQzA4FLn0gxA/F/h5PoWPdUL1EbC2vx9YQIbPc/pkA8SyBtYg0FdJtJj21ulOS0NA=
+X-Gm-Gg: AYBFou2mkrb9lMgx2MV06yMYXUlx/ixhbf60unxOWFAbu4VL/GUy2za+IhB+4W618PL
+	RXSqC2HHNpIyjUj0WTz4ta/gyRuuvsmwxR9keAwo70tUVV+XnyRrSZaQHBRazw9koi+NDw/lBKp
+	r9n10bJjvjzahOUXDZWMO+RiObJW9cTbmLncpf4E+x74UXKQb76cddPYXhZ8LelDfLT4kgraCYJ
+	S4L3yynhPxW39BuHpm9QINQQYuLnKS8gAOxZHpeMgo6AfL/2Yhc5ETZtXqrWqlOGWL/lM3LIdnj
+	t7S9Uky51UhuciG9y/s8MSJ/7lgvnGGbp7EXAXATm+R/RqnZCkVrVgs0JhKATZtvzV2dkBsTE8E
+	kzsi3ORgQKRfWBjGw15aiCIsVJfNY2rouO9B3vs+lzyDlS50kJaBbvAy8zSixdhOMSVwxvRItfL
+	x8LuWGiyBdqUxKEkQw/7FFy/Y1dD2ZXlEBO/eCFBOXGZ9S8TpkYtMON0VciDEB7ftlSxjDKmNv6
+	yYW/BBWdP1Yx+jikcTtGUzUaGLkoM1kxkrHIAb5LY53rC+hpq4dM0M8dzGYwsQpkz/t2fcR7ThV
+	n/ziYVitnc3iU+nxUS0UjeN0+xYc1oRtsMJCt9Cnn5CH5IPY3Zcl5H8NVdM=
+X-Received: by 2002:a05:600c:8b78:b0:49e:65f2:db64 with SMTP id 5b1f17b1804b1-4a18e4837f2mr222616855e9.5.1791885102854;
+        Tue, 13 Oct 2026 02:51:42 -0700 (PDT)
+Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18d12fe04sm217361885e9.4.2026.10.13.02.51.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 02:51:42 -0700 (PDT)
+Date: Tue, 13 Oct 2026 10:51:40 +0100
+From: Daniel Thompson <daniel@riscstar.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Davide Caratti <dcaratti@redhat.com>, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next] net: stmmac: fix mqprio and cbs combination
+Message-ID: <as3_LNUGanrChZ8Q@aspen.lan>
+References: <20261012-stmmac-mqprio-cbs-combo-v1-1-831e323eb4ef@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] netlink: reset skb headers before unicast and
- multicast
- filtering
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179188500427.177823.5830234053974309894.git-patchwork-notify@kernel.org>
-Date: Tue, 13 Oct 2026 09:50:04 +0000
-References: <20261006224232.50724-1-kylebot@openai.com>
-In-Reply-To: <20261006224232.50724-1-kylebot@openai.com>
-To: Kyle Zeng <kylebot@openai.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- outbounddisclosures@openai.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012-stmmac-mqprio-cbs-combo-v1-1-831e323eb4ef@oss.qualcomm.com>
 
-Hello:
+On Mon, Oct 12, 2026 at 11:14:06PM +0200, Lorenzo Bianconi wrote:
+> The channel-mode mqprio offload and the CBS offload can currently not be
+> enabled at the same time. tc_mqprio_validate_chan_mode() refuses the
+> mqprio offload as soon as any TX queue is configured in AVB mode, and
+> tc_setup_cbs() refuses to enable CBS while the strict-priority scheduler
+> is active. As a result the combination is rejected whichever order the
+> two are configured in.
+>
+> The strict-priority scheduler selected by the channel-mode mqprio
+> offload and the per-queue CBS shaper are independent MTL settings and do
+> not conflict, so drop the checks and let the combination be offloaded.
+> The following configuration, which was previously refused, now works:
+>
+>   $ tc qdisc replace dev eth0 handle 100 parent root mqprio num_tc 4 \
+>         map  0  0  0  0  0  1  2  3  0  0  0  0  0  0  0  0 \
+>         queues 1@0 1@1 1@2 1@3 mode channel hw 1
+>   $ tc qdisc replace dev eth0 parent 100:2 handle 102: cbs \
+>         idleslope 800000 sendslope -1700000 hicredit 494 locredit -1049 offload 0
+>   $ tc qdisc replace dev eth0 parent 100:3 handle 103: cbs \
+>         idleslope 400000 sendslope -2100000 hicredit 247 locredit -1296 offload 1
+>   $ tc qdisc replace dev eth0 parent 100:4 handle 104: cbs \
+>         idleslope 200000 sendslope -2300000 hicredit 124 locredit -1419 offload 1
+>
+> Fixes: 47891d501e34 ("net: stmmac: add tc mqprio hw queue priority offload")
+> Tested-by: Daniel Thompson <daniel@riscstar.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue,  6 Oct 2026 15:42:32 -0700 you wrote:
-> Socket filters can use SKF_NET_OFF and SKF_LL_OFF to read relative to
-> an skb's network and MAC headers. Netlink producers may reserve
-> headroom without resetting those headers, allowing a receiving socket's
-> filter to read data before the initialized message.
-> 
-> For example, IWPM HELLO replies are allocated with dev_alloc_skb(),
-> which reserves NET_SKB_PAD bytes. An unprivileged NETLINK_RDMA user can
-> attach a classic socket filter and disclose this headroom through the
-> length of the delivered reply. The resets in netlink_dump() do not help
-> because IWPM sends a separately allocated skb through netlink_unicast().
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] netlink: reset skb headers before unicast and multicast filtering
-    https://git.kernel.org/netdev/net/c/8bf659bd54e1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Also FWIW:
+Reviewed-by: Daniel Thompson <daniel@riscstar.com>
 
 
+Daniel.
