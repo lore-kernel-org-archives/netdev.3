@@ -1,36 +1,36 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912D53CFF6B;
-	Tue, 13 Oct 2026 14:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9293D9020;
+	Tue, 13 Oct 2026 14:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791901246; cv=none; b=O6D6hZSFxf06qes5APah9TJv/jybce+AkRsXZD0aLEnKb4wKutBKbIRWrEJ5cjOGuGsw/iQQLk3hZOpocMrK2akoKOspSr11lDSvaHXCgnqadPJS++CJSAfcQl7ZYzpYrcLLek19xBDKLkpiXyfpwexP8JUZ7/314Juf67SRt5M=
+	t=1791901246; cv=none; b=iwQ107DrzmAoAdxXIKRqyCz0YGxdZZFcHDl8h2yn5DgJHZ4D3N4TzbaaTWWX44KjVqhjJt98sJSfzQPMevPznjQHHwm1nNdOnQE1NF8/Uw90t+NyqKCiP9dQCc0pAHe42JTs6dpe9WcLQhEos9F8OLoryLKbvCkr9qkiOkq1kR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791901246; c=relaxed/simple;
-	bh=KDNOpNGEsDgp8S88DeK09f44eUS+jdcZc2PWbbryZAQ=;
+	bh=8xyGTVEkmxmfRvSSjdAU86YxykwJeMrd5wfBHVBPG3g=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=A0P0GtpCpZvt75bX+uFisjrqLf5V+k7lp4cyDH4RT4zMa44nFh4J7iTiqKsWA3L79DC++NlJfVVDGQZjzcDIYyNTQPj/t/nRgcjFGoLXPuKkovHF51bUeLq4tsV3ySzW+CJlAdCyypTb44yjDNwuaUETQ0N3DUHA55LW3j6YfJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=djzU24g7; arc=none smtp.client-ip=194.13.80.246
+	 In-Reply-To:To:Cc; b=eAeypnDVBSbTXUp7nvQ4nvuitAjMxZXXTiH0GnomzhocP9W46u4vyJCRfMmWZfA2cht3UD43UHzN92koRjgYS0xk7hy8mITMMYedHZF5xNHRkFpSssC7PaOvS0J8fQyVbzPm1jpZcRiZYPGp+sgnQEMUMm5UVK8D7L/svgOzyFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=b2pZer76; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="djzU24g7"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EFD21A1567;
-	Tue, 13 Oct 2026 16:20:41 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="b2pZer76"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B1D0FA1570;
+	Tue, 13 Oct 2026 16:20:42 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791901242; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1791901243; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=PxBdSTcMrBe8nl6CUtm6uEOQcFrOxwZI3FsUFKaSqRc=;
-	b=djzU24g7KvX/BJXi9LoSrw1XH6RHHIMn0u9SBw3aFVDeQkds2DFx/jI8QtRgcsIbJ/SaTk
-	+3xH5O4em0yGdB5EyX7j8C5+79UYHLjWcI96SeABLXX7qoBCAEvWuM0F7qclvTVrszgLL0
-	oYKYpaZnfat+TS/NhDS2BrIOXvhSLavsr/ssmQZ0o5osqw3IJombxP+5StUKZ3X/Bbk6/x
-	dfQDV+zpt2b6zXTbFKDTvfGPPKnYtasMmc+S5I3JtBdvjNZ0tTCS6hxoJg5vat47C85/bO
-	KMKHSccu0gY4kt1XtmDQpxRex8ag56RXWYQwQ4rIculsimUSVRcd2N/xA+BUCQ==
+	bh=dpFChvbEesnvDXRSkyeZBgJNwteHzQwyPWv2P28uGdA=;
+	b=b2pZer76FcfwNSQJQ8F3wpm9s1477NG9mYQhBm2dfeXeVU6R6fSgFBdPwY3Zb5XscLQuAq
+	XUNoIsOZV3dO0RDclUYMy7eTiHVUGGS+Edj3js5Db3XTR1mY9PsX4A0N5Fx0RHzInay7US
+	4s0Eqt1ef8rzIYRWvlrAW0+hUx76J8e3dflGxAG5onec6sdN6iBE6dHrIJVsuIG0a3og9W
+	1gQYrPtxZ3NCrFUPEi1Vxjv/wucURSWc6RvZW9ssxztHSA8weIRWOQR1X7WtWRifoaU5Gg
+	QTXWS9G7hvyRH8fJ/jrTUQAwGO7TpseY8fC4AI0YkLda7B3UwNvjwIdvAjVtpw==
 From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Tue, 13 Oct 2026 16:20:30 +0200
-Subject: [PATCH net-next v5 1/8] net: bcmgenet: ring the doorbell when the
- last frame of a batch is dropped
+Date: Tue, 13 Oct 2026 16:20:31 +0200
+Subject: [PATCH net-next v5 2/8] net: bcmgenet: let the caller decide
+ whether to start the PHY
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -39,7 +39,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-nb-genet-mtu-nn-v2-v5-1-076b6fc240be@tipi-net.de>
+Message-Id: <20261013-nb-genet-mtu-nn-v2-v5-2-076b6fc240be@tipi-net.de>
 References: <20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de>
 In-Reply-To: <20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de>
 To: Doug Berger <opendmb@gmail.com>, 
@@ -56,87 +56,60 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 X-Mailer: b4 0.16.0
 X-Last-TLS-Session-Version: TLSv1.3
 
-bcmgenet_xmit() only writes the producer index at the end of a batch. The
-error exits return before that write. If the dropped frame was the last of
-an xmit_more batch, the frames queued before it stay in the ring until the
-next transmit. The queue is still running, so the watchdog does not fire.
+bcmgenet_netif_stop() already takes stop_phy, bcmgenet_netif_start() does
+not. The MTU change in a later patch leaves the PHY running while the
+datapath goes down and comes back, and phy_start() expects a stopped PHY.
 
-Found by a sashiko review, not by a bug report. The existing exits only
-trigger on an allocation or DMA mapping failure, and the padding in a later
-patch adds three more.
+Add the same parameter to the start side.
 
-Write the producer index on those exits too.
+No functional change.
 
-Fixes: ddd0ca5d60b3 ("net: bcmgenet: add support for xmit_more")
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 4c9db2f9fc25..06ec8c211dd7 100644
+index 06ec8c211dd7..86c8f8f8fe15 100644
 --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -2119,6 +2119,15 @@ static void bcmgenet_hide_tsb(struct sk_buff *skb)
- 	__skb_pull(skb, sizeof(struct status_64));
+@@ -3355,7 +3355,7 @@ static void bcmgenet_get_hw_addr(struct bcmgenet_priv *priv,
+ 	put_unaligned_be16(addr_tmp, &addr[4]);
  }
  
-+static void bcmgenet_tx_kick(struct bcmgenet_priv *priv,
-+			     struct bcmgenet_tx_ring *ring,
-+			     struct netdev_queue *txq)
-+{
-+	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
-+		bcmgenet_tdma_ring_writel(priv, ring->index,
-+					  ring->prod_index, TDMA_PROD_INDEX);
-+}
-+
- static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+-static void bcmgenet_netif_start(struct net_device *dev)
++static void bcmgenet_netif_start(struct net_device *dev, bool start_phy)
  {
  	struct bcmgenet_priv *priv = netdev_priv(dev);
-@@ -2155,10 +2164,8 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
  
- 	/* add the Transmit Status Block */
- 	skb = bcmgenet_add_tsb(dev, skb, ring);
--	if (!skb) {
--		ret = NETDEV_TX_OK;
--		goto out;
--	}
-+	if (!skb)
-+		goto drop;
+@@ -3372,7 +3372,8 @@ static void bcmgenet_netif_start(struct net_device *dev)
+ 	/* Monitor link interrupts now */
+ 	bcmgenet_link_intr_enable(priv);
  
- 	for (i = 0; i <= nr_frags; i++) {
- 		tx_cb_ptr = bcmgenet_get_txcb(priv, ring);
-@@ -2183,7 +2190,6 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 		if (ret) {
- 			priv->mib.tx_dma_failed++;
- 			netif_err(priv, tx_err, dev, "Tx DMA map failed\n");
--			ret = NETDEV_TX_OK;
- 			goto out_unmap_frags;
- 		}
- 		dma_unmap_addr_set(tx_cb_ptr, dma_addr, mapping);
-@@ -2225,10 +2231,7 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (ring->free_bds <= (MAX_SKB_FRAGS + 1))
- 		netif_tx_stop_queue(txq);
- 
--	if (!netdev_xmit_more() || netif_xmit_stopped(txq))
--		/* Packets are ready, update producer index */
--		bcmgenet_tdma_ring_writel(priv, ring->index,
--					  ring->prod_index, TDMA_PROD_INDEX);
-+	bcmgenet_tx_kick(priv, ring, txq);
- out:
- 	spin_unlock(&ring->lock);
- 
-@@ -2245,6 +2248,10 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 
- 	dev_kfree_skb(skb);
-+drop:
-+	/* The dropped frame may have been the last one of the batch */
-+	bcmgenet_tx_kick(priv, ring, txq);
-+	ret = NETDEV_TX_OK;
- 	goto out;
+-	phy_start(dev->phydev);
++	if (start_phy)
++		phy_start(dev->phydev);
  }
+ 
+ static int bcmgenet_open(struct net_device *dev)
+@@ -3435,7 +3436,7 @@ static int bcmgenet_open(struct net_device *dev)
+ 
+ 	bcmgenet_phy_pause_set(dev, priv->rx_pause, priv->tx_pause);
+ 
+-	bcmgenet_netif_start(dev);
++	bcmgenet_netif_start(dev, true);
+ 
+ 	netif_tx_start_all_queues(dev);
+ 
+@@ -4319,7 +4320,7 @@ static int bcmgenet_resume(struct device *d)
+ 	if (!device_may_wakeup(d))
+ 		phy_resume(dev->phydev);
+ 
+-	bcmgenet_netif_start(dev);
++	bcmgenet_netif_start(dev, true);
+ 
+ 	netif_device_attach(dev);
  
 
 -- 
