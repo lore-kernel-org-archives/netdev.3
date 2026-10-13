@@ -1,124 +1,173 @@
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.sorah.jp (aapne1a.mx.sorah.jp [3.112.186.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F30B4FD789
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B8B1A7264;
+	Tue, 13 Oct 2026 13:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.112.186.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791896435; cv=none; b=I954W5YJAyih0SNM58OWARRfva+326VEtUo6dMa17VvYSLPETL6MQ0CIr/1PLceyQqeVNs+aEtxjGxbn58yGSDCZDskJYcItcYbHeAjeY6Lx8BJFF5rkjLDucN++zG88393YF8aAbn0KXhBhc7sDQahWRBNjOhqWBAon9s54XVs=
+	t=1791896583; cv=none; b=Qa4tW/l0Rj0xwONe2DUZS+8JYg5ZfmXi7Gq9fYOdYjPJAB36SFOZkmqh/hdC/ZJFYIkKLShmwjZ03m5RVCB/a8bpmM6zd2J29AgwZoiuHj00VGsK68wlr9DBbfzls83e5j843v0SiVO1kMJpOCkR7hMr9dMiV5REY9ti7auDszA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791896435; c=relaxed/simple;
-	bh=7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=UO9wnrevp0VjPRwAUT+6Fbs7OLZCIxrIaR5t9p4DrXbxu7BKHlTPQwsvtGH7QOXbiMBNKPfREaRmoxlvXfqyB4pMtt9KnKXg/d6ityI0ro59uVpyoPlQ0uOPmi9puyO7ilUcbXtRyhOi/9w1P+WbwQg/0ZJoEPRorqI6bpZpwaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sorah.jp; spf=pass smtp.mailfrom=sorah.jp; dkim=pass (2048-bit key) header.d=sorah.jp header.i=@sorah.jp header.b=YikTtiTO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ir0qH2Z5; arc=none smtp.client-ip=103.168.172.149
+	s=arc-20240116; t=1791896583; c=relaxed/simple;
+	bh=QMSPg6QmrXJ7vGJN/pvcE6kfmJaeP7jSA5r70Z1e57U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XUCd/GvMhDd25vuVwVjr6fA7iFBl1Xum+Kf/tylt6aK0wfudXaG0X9YixWDZ2IxFonCZb7MMP6BNsHmmZWFAQGz3MKgLhzdjB2LLvrP63jgZVP94RSPFWRGR+0foimbgilChquo5s5MweRq3kfZn03QZ/phORC7of7ZyGoELb2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sorah.jp; spf=pass smtp.mailfrom=sorah.jp; dkim=pass (2048-bit key) header.d=sorah.jp header.i=@sorah.jp header.b=PTxWDPU9; arc=none smtp.client-ip=3.112.186.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sorah.jp
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sorah.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sorah.jp header.i=@sorah.jp header.b="YikTtiTO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ir0qH2Z5"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8DFE6EC0529
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:00:33 -0400 (EDT)
-Received: from phl-imap-06 ([10.202.2.83])
-  by phl-compute-03.internal (MEProxy); Tue, 13 Oct 2026 09:00:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sorah.jp; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1791896433;
-	 x=1791982833; bh=7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=; b=
-	YikTtiTOlomhwPlifj+n7hB+iPybhdqYGV4LXi7wOnnNE/7zTuQ00/ZysHlQX1jV
-	IGmriYqmKCY/XCUZJC+/EUdOEJVB9bC6AphUGmZ4JyqrgtswLQ8hjHy3x04skZoj
-	jdhDicurMouZ5QuFz+VnGUjgu1HSMSQa7e7yRtnqeC3GfcbrFQTIfiwwBq2veu42
-	OpS9PPd0rmiXAPQ6hwFWOumMZz7PXEgn1qJuIk0uuCKOvJ2XAdrFQ9AbE7EWHl97
-	Zqc31Fm1A9fwgIsp2nJeanvs/JkR2ZYIYlR9O7SzekfZiJtjSt8UqCT99gzdV/Xu
-	Hqe4edgBtwNbS6RUKWz/gg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791896433; x=
-	1791982833; bh=7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=; b=I
-	r0qH2Z5ezbbIDDbIU1axYfsaJc6eIDcL+ySSfyTypWKWMGxRJ3q5nDOoT9kqKTHO
-	AATVBTu6btx0F8jvwXWo06AP/wqm0mC7vVZnJQ58RgLq9+Du0+xkiNuk+yPMUnjo
-	S8rWD4/uPy3+IYjyuuPWOKzB+acrhWUy1er1bW/fpgxxC/rQKNtnCNjaPgSsXvlv
-	7vqfzBQCneQUB2sJUxtPUixQwg3CYavkP8N19XsOUy48xqz4VBXFny+Qjyf4Ztpv
-	qZkW6WJZli5Yn19eJhIEOv0T4y1ENVcGRjGBu2AVI8bbmz2n7P+DNJ6JJ7aEL1b5
-	H3ujtaXKDS9nrSi7BKsiw==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=sign d=sorah.jp a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1791896433; d=sorah.jp;
-	mf=PGhlckBzb3JhaC5qcD4=; rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
-	s=fm3:rsa-sha256:SL6zygJ29yXcWSnEUk2oJlPwHSFPXznCj0cg+Yr0uxMfybo
-	w0csGXkeKbk/PPKY1c6yKdcTSx5fTG9NCZ6XOvaWYTJp/Gpm3q+/+N81iFOGFq3A
-	ETYPylCucpdlR75eknC7h6kRT2A02mA5wc9GzKsOzKZGPx87UOMpKYpz1LWgTFaG
-	4Z9HVYio0+oqPbNcIM1dCttZH/ImRpSrQTZTDPNbVtZcCdUDFqGVhHAravHM5V8f
-	dq/Qu/nnSVZQ0c7wVaHxA5JRhTqIhQM34LZTil7rMevV8xE+1peuISUyLAL081nJ
-	zc1ye2EkX9SWARcPyeFWBs9F7wXWjKgEZisRjZg==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
-	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
-	action=mi-m=1; hc=12;
-	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
-	from,in-reply-to,message-id,mime-version,references,subject,to;
-Message-Instance: m=1; h=sha256:LdqfKRARqjrBC/drbbphWpVwD4eI14jOal3Emb3AOHY=:7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=;
-X-ME-Sender: <xms:cSvOapay0GSvqIL8FQqkytNCi__41XQLStcQd6fVsaHHhnoGno22fQ>
-    <xme:cSvOarOhJf-kEIA9Lrx03Uwgsfuk4kN-VLFlkBY-jv7RD56aheK27R842YSgLBJd1
-    axTqm3dkQEnmUCdIkR1RrJSFcPkEMpzH1ZuGufb-TEu4468f1mDkUuT>
-X-ME-Proxy-Cause: dmFkZTGSCXnbkU/HlcSBjM1SuyLFeN+/tBDJ1iapM8v6UdkCCaXm15kd62CM8Mv59B6wXZ
-    7PxwBMqQKZ7Srme/q3YRzlx1hpBxJuOUV89JNyG+u2Gvz5yprMQR4B5bowBC+hg6qTuBfi
-    cyga2MWJxmfLOEk5V0KBCFCMxoRySmqzC0/mY8G4rDUJxTnIXdMIn3b+JtuEafIsPIfWhf
-    lsAl/k/6CaF0fqgY62gbVuyTh5DUi7xTIBHH26+nOt38LxEq4EDeZlJIiIifXuYmSiONsJ
-    EzPlQSO/YvIKMmqLUtzIYB0sQIg09nh3FcjdcJ6yCwpxXEMDWg3OBTRPYA4kznWRzpP8dP
-    iexvKDWWgC1YjgYfk5ruXkg6hjmua6FRrW+i+g/y+Tqdz/AXyUf9PD1fGjLB8sul7cuhqY
-    J3+RSRYBlL8RZnqY7cLGSnyDVzd+maxtTV35U8oZ0Xk/xZz8oXdILdY3gG7bU9Ft267Khd
-    VoLfP3B9KLC3VAV2cWQt02WSEYUD9ufsDAg8DCbv1rZwsT9fhwl0P5lXpsf7yGLI8/aqLq
-    kg0lR6lQKYtV3lff7hLhK2LqIFRq0aMG2d6dtthNbhuhP1Rmup7e+J02jWfEq7VsIZdU6w
-    r0RhIt13fLzPwt6XZIcR1IadPgADAjm/+n6LHV1koD4fEkMlHa1A9dt4ZlXw
-X-ME-Proxy: <xmx:cSvOai8yVLyT6O4_LPZLNeKxpsUotgVaceCgqPk9eXf0LemZfIjCGA>
-    <xmx:cSvOaulqKNFfZrjv7hnGTUrY8MhfKJcm53QRrAVrCOhdtYTq3fs3OQ>
-    <xmx:cSvOalD22cplVjEy99e7UhMc5HAtjf8gTT8P1bZo1JRbAMmrRGkpbg>
-    <xmx:cSvOavUqC2EA1wpIN3G1p1MrVVXzZI37g1A5jQ4dRGz8tLp5TY6bvA>
-    <xmx:cSvOahPAuMKsPkzSjw9Fujs9TIMhpmv02I-Uny-3intVikE5xhJqUiIx>
-Feedback-ID: i0449494e:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id EB861240009B; Tue, 13 Oct 2026 09:00:32 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=sorah.jp header.i=@sorah.jp header.b="PTxWDPU9"
+Received: from mafuyu (home.igw.nkmiusercontent.com [192.50.220.178])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx.sorah.jp (Postfix) with ESMTPSA id 4F8E160116;
+	Tue, 13 Oct 2026 13:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sorah.jp;
+	s=nkmi1707srhjp; t=1791896580;
+	bh=QMSPg6QmrXJ7vGJN/pvcE6kfmJaeP7jSA5r70Z1e57U=;
+	h=From:To:Cc:Subject:Date;
+	b=PTxWDPU9knOXyuJUhTL0h3YJQvbiDBFb9LTzbteVSN/O4s0opI+ywuoEotb26AeB5
+	 XojzIR2Fc3Iw9Zm2AxDoJg+A1+hRSghg/UzQobC0Msseaz05akWz0G/n7vcs93zpmt
+	 mlohwtOBCmQnsnh7HSNjs2gbqmv5rfUF8CzOhe+Bpq/+g/bNa0K0hNqBZg1MlA/Ry+
+	 TkZUp06y26doNLqZdhTeRByhYNK7TvCV6tDrv4jivYMS7S7pzOIUkHG490FLhIr0pu
+	 N2o6j82FfaF1d8BAnDQWl7Mddb1Aqr/ZPIrjHHJfdSwAuhivME/7GsIFrtl6dUjwPp
+	 VEz0de3CP6IWQ==
+From: Sorah Fukumori <her@sorah.jp>
+To: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	willemb@google.com,
+	lixiaoyan@google.com,
+	linux-kernel@vger.kernel.org,
+	Sorah Fukumori <her@sorah.jp>
+Subject: [PATCH net v2] net: gro: don't chain linear parts larger than gso_size into frag_list
+Date: Tue, 13 Oct 2026 22:02:48 +0900
+Message-ID: <20261013130250.3643916-1-her@sorah.jp>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AoXn1KR5sOKB
-Date: Tue, 13 Oct 2026 22:00:12 +0900
-From: "Sorah Fukumori" <her@sorah.jp>
-To: "Eric Dumazet" <edumazet@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, willemb@google.com,
- lixiaoyan@google.com, linux-kernel@vger.kernel.org
-Message-Id: <20f75d91-97fd-479d-b3f1-66eaaf493261@app.fastmail.com>
-In-Reply-To: 
- <CAL4WiirpDVzho606z1gt5=1=MFykgTC2CbqdAkxnngSvBYq_Qg@mail.gmail.com>
-References: <20261013102453.3272620-1-her@sorah.jp>
- <CAL4WiirpDVzho606z1gt5=1=MFykgTC2CbqdAkxnngSvBYq_Qg@mail.gmail.com>
-Subject: Re: [PATCH] net: gro: don't chain linear parts larger than gso_size into
- frag_list
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+skb_gro_receive() chains an skb into the frag_list of the held packet
+when its payload cannot be attached as page frags: when its head is
+not a page fragment and still holds payload, or when its head and
+frags would overflow the frags[] array of the last packet. Since commit
+5eddb24901ee ("gro: add support of (hw)gro packets to gro stack"), that
+skb may itself be a GSO packet whose linear part holds several
+gso_size segments. skb_segment() cannot split the linear part of a
+frag_list member across segments, so segmenting the aggregate in
+software, e.g. when forwarding it to a device without NETIF_F_FRAGLIST,
+hits
 
-On Tue, 13 Oct 2026, at 8:03 PM, Eric Dumazet wrote:
-> It seems an XDP program with frags support in generic mode could
-> get there: skb_pp_cow_data() builds a head_frag skb with up to
-> about one page of linear data, the rest in page frags, and
-> skb_copy_header() keeps the GSO metadata. Two such 64KB packets
-> can not share a single frags[] array.
->
-> Have you tried this variant with your reproducer ?
+  BUG_ON(skb_headlen(list_skb) > len);
 
-Thanks, I haven't. I tried to reproduce that variant under various gro_max_size/RPS configuration, but I couldn't repro on my qemu+veth based script.
+Fully linear GSO packets come from generic XDP. When the program does
+not support frags, netif_skb_check_for_xdp() linearizes any nonlinear
+skb with pskb_expand_head() and skb_linearize() and keeps its GSO
+metadata. GRO on the device runs before generic XDP, so each aggregate
+passed by the program carries all of its payload in a kmalloc'ed head.
+A tunnel that decapsulates these packets and runs GRO again through
+gro_cells then builds the bad frag_list. This was first seen on a
+router that forwards TCP received over VXLAN, with a non-frags XDP
+program attached in SKB mode to the underlying bond because one slave
+lacks native XDP:
 
-Will send out v2 with updated commit message soon, and sorry about missing `net` prefix in the subject, it will be included in v2.
+  kernel BUG at net/core/skbuff.c:4917!
+  RIP: 0010:skb_segment+0xbb6/0xf40
+  Call Trace:
+   tcp_gso_segment
+   ipv6_gso_segment
+   skb_mac_gso_segment
+   __skb_gso_segment
+   validate_xmit_skb
+   __dev_queue_xmit
+   ip6_output
+   ip6_sublist_rcv_finish
+   ipv6_list_rcv
+   netif_receive_skb_list_internal
+   gro_complete
+   dev_gro_receive
+   gro_receive_skb
+   gro_cell_poll
+   __napi_poll
+   net_rx_action
+
+It reproduces with three network namespaces: TCP sent over VXLAN on an
+IPv6 veth link to a router namespace that has an XDP_PASS program
+without frags support attached to the underlay veth in generic mode
+and GRO enabled on its VXLAN device, and forwards to a veth with
+tx-scatter-gather-fraglist disabled.
+
+A program with frags support in generic mode gives similar packets.
+skb_pp_cow_data() rebuilds the skb with up to about a page of linear
+data in a page_pool head_frag and keeps the GSO metadata, so once
+frags[] is full the next such packet is chained through frag_list
+with more than gso_size bytes in its head as well.
+
+Refuse the merge when the linear part to be chained exceeds the held
+packet's gso_size. tcp_gro_receive() then flushes the held packet and
+the skb starts a new GRO packet as its head, whose linear length
+skb_segment() handles.
+
+Fixes: 5eddb24901ee ("gro: add support of (hw)gro packets to gro stack")
+Cc: stable@vger.kernel.org
+Assisted-by: claude-opus-5-5
+Signed-off-by: Sorah Fukumori <her@sorah.jp>
+---
+
+Notes:
+    v2:
+      - Mention the head_frag path that reaches merge: once frags[] is
+        full, e.g. after a frags-capable generic XDP program (Eric Dumazet)
+    v1: https://lore.kernel.org/netdev/20261013102453.3272620-1-her@sorah.jp/
+    
+    Testing, on net b7ad72414c67 in qemu/KVM (x86_64_defconfig plus
+    VETH/VXLAN/BPF_SYSCALL built in), using the reproducer described above
+    with iperf3 -P 4 for 20s:
+      - without this patch: BUG in skb_segment() within ~3s in 4/4 runs
+      - with this patch: 8/8 runs completed without a splat
+    The same reproducer also hits the BUG on Ubuntu 7.0.0-38-generic and
+    on v7.3-rc3. W=1 build of net/core/gro.o under allmodconfig adds no
+    warnings. Full allyesconfig/allmodconfig builds and the net selftests
+    were not run, and no selftest is included.
+    
+    The frags variant did not crash an unpatched kernel in the same
+    reproducer with an xdp.frags XDP_PASS program, also with RPS on the
+    underlay, gro_max_size 196608 or sender gso_max_size 8000-20000: GRO
+    batches there are too short to fill frags[]. A kprobe on
+    skb_gro_receive() shows the 64K page_pool skbs carrying about 3.4K of
+    payload in the head, and the non-frags variant returning -E2BIG from
+    the new check about 4000 times per 20s run.
+    
+    The crash analysis, reproducer and fix were developed with an AI
+    coding assistant (Claude); I reviewed the change and the analysis.
+
+ net/core/gro.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/core/gro.c b/net/core/gro.c
+index 29b4d02bf519..ff828a3dce3c 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -187,6 +187,10 @@ int skb_gro_receive(struct sk_buff *p, struct sk_buff *skb)
+ 	}
+ 
+ merge:
++	/* skb_segment() cannot split the linear part of a frag_list member. */
++	if (unlikely(headlen > offset + skb_shinfo(p)->gso_size))
++		return -E2BIG;
++
+ 	/* sk ownership - if any - completely transferred to the aggregated packet */
+ 	skb->destructor = NULL;
+ 	skb->sk = NULL;
+
+base-commit: b7ad72414c673ce1fa1f463e807cd4f34f8be9bf
+-- 
+2.55.0
+
