@@ -1,368 +1,425 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B482E558202
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 22:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184CE53D9E2;
+	Tue, 13 Oct 2026 22:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.154.184
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791931159; cv=fail; b=no6H+I9DcahklVtx9yEJNt0oZpYFHUSJOLZmWdvf6t/sviaEenhxz5aVcuYW4UlDQ8Ajy/rooyvVwTCEa//jssyQa0yVpJhAlSMplB0dqsNGHRsD3YfVJxsb0lv1wmnq5t6//F8fdiMoY0EK+f2rkcGjRaH6IzKHwQzfyOyCuzk=
+	t=1791931300; cv=fail; b=HTMzLQbXmWTP/1VY0QUwYhpcNTz9MxHpL5BqsEiehSqQSFGwyIXGFnCGeoIGTQmL9VhRK9i9Jk7hEM6nzYrXYkuxtUsgXEyxRprAl7QpLRXFez/sLahGeC4n6phJ3KH5f4NOn2FusfEIgj8M54bcqfCfssY4m+9upcLsLEv5Zuk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791931159; c=relaxed/simple;
-	bh=WyCLLk6HVX7trDiVH0+BhTUfkIq8TxUjFqiADG+zRrs=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=JFWqWHpSKeMYO1il70oeKB5hIksXl0nhmZmBtwvKeukY3QlxCL2fRfHdh+AOANvfEZUlYweqlaN4vEjp6DfWEHXhfa8gRdJMDXKVLj8kFbUG/EoMftKii/9MJf4+h53wFJEcnK3ch/OsVGNVk11kH1JuByay+9VMA6cZWgHq128=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=equhZ7mm; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1791931300; c=relaxed/simple;
+	bh=2ILYh+qRUfm7EJhqXmlc6ahoMY9BtTsi7YckV/i0/Jc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FLyby472ErRiDRsxPQBw4l3AiyYRiCt08RgGt/YU0CikahKT+ct4h9/OTgqmzr5PMd1V1IFcNuaAPOYgF65aDX19XxPRtS4llGG8fsKmHceZFhPfNepbD5+M+BXV7evrHW9lmm+DRqcq+IMNzOGs87CK73Aeb0FOSZxsqg7qQkM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=hj2Uj0Pi; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=ktdcUm+j; arc=fail smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="equhZ7mm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1791931157; x=1823467157;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=WyCLLk6HVX7trDiVH0+BhTUfkIq8TxUjFqiADG+zRrs=;
-  b=equhZ7mm0EpiHlkEjfvn+TlcDpj1Ck5TQcTgKQpR44dxZT5ieScqe4Xd
-   qpdzYI9RWulM858Pv1OyEWaXVUsRokbTu0j1IiHhx3awibBZtFtF76RsC
-   4AfHwiwTK4dneIEDZFs5NQNzB6Ax0E+uY5zfyJK9jYwybrbAjyThIUg95
-   QjgOVezoL5rluIUrjY8psLVpJvEpOvGO/fP73jZT/3yaDMOyvG9PRaVTo
-   AfqV7FOR/hdQvMKFUu4IzOaZthf6+0reIZcTA5yAeuX1ykwPaRqrT4NrE
-   P3t9VD8WDK2LbT28ccL65WAIzE2e4J/0xP6qWGQcolHvfngvtuMfwnJl8
-   w==;
-X-CSE-ConnectionGUID: sOqjQ72nReaXJgfitY8QxA==
-X-CSE-MsgGUID: bsOVAiHcQh+fTeb9NyZxNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="678785"
-X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="678785"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 15:39:15 -0700
-X-CSE-ConnectionGUID: maqpR32zSgCNSRbSxGDMow==
-X-CSE-MsgGUID: 0/hAkvdvT8yZTlhv9PJXFw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="1200560"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 15:39:14 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 13 Oct 2026 15:39:14 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Tue, 13 Oct 2026 15:39:14 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.18) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 13 Oct 2026 15:39:13 -0700
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="hj2Uj0Pi";
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="ktdcUm+j"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
+ h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
+ s=mail; bh=xVVWuVA9JF6rNZyQ5xBu0PBo5UeOvGT8lBWPvYxhe3Y=;
+ b=hj2Uj0Pi07CS1uQwuXSYOwn74BLMaB50OrtPZbc4ye6iP65Ji2148QH2NhdaFbR9UV5Gqp2TnnMdX7yOQO0fkM5xHpEI9i518kA7kFkHtPSSajS2KOSmBP8adGPOQF/ZaX2asI37GDeyWZWuonVGEosZ+F/CYtvJaakprtnDGF1EeJDoXZ0KMUmYI/ilIRBtTDWNz2KLdxuCnh88VEU/ahYHJdBwlchAqiXQXaNqdBY6w2QAJlbj3D9aYbCtQmZgIEtAf3tWGAz3+2w35s33oBkKrvrDjaJecIa62nMWa3Pgo0i0R2Pmf3nP+8Z0st1xhutygwTVZdUE2obNSoCSTA==
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11021141.outbound.protection.outlook.com [52.101.52.141])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id EA185800079;
+	Tue, 13 Oct 2026 22:41:34 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=khNk+b8wd5wFC6hIxE5UI/MrhIKaTTSJEWCB9sqd8bWRWk9jc7o7/62P3z8wUa7yJ5idDs8rCfogEYFsJuL0A0/amHSaSU78TjuwenlGBqgHjYBaw4piY5oeUk1GmlfdZwMpDOFEInCjmqq2f+4tW9mTZdZsOCuaiWUwfa3F1v26JJZVC3etQUv4RJrkrLKgcfa6s65TtBeWKaON/NS/UOBZyX6/WTUiHfQCLDjTeLIQcQlNUcde1Lmmk7cEFTZiejkhJGE4BJQeT9kI1EPwHUFzmTM3riLG3oc0YIMnM6KjguKkppnfxNDJfiW9SvL77cLigKroQ7j3S6ZF4WoiLA==
+ b=Q4X7gcQ6GAFBFdMujsGNeS/eCa0zw82PjxpYwje1Zv0KNkNscmHHdO+PmrqpdDtcpijVban8AwldNdpI5YyFob8UryjItM8WIsGMzJN2E8oL73WzTG9uULbhjj97JA8yBXdRe0VPcI8NWs63EaEaSh7cW/zIQsMTpiV2ZlTpd20KPuIl450U6uDkNnLrwdXazj8MwaSyZgKFpB64eNpSpLpbkyp/FmDqjDsKas2N2V3VmzzmKmSj2tgYj6CPLCWj6bN2T06SR32VlRPnjSYzQGXdk4iRGq7lJrwGS97QQAj2wWUs2coYqjzHmLylu7pNBbNea2vPZyThijevhCRKTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m2KGz2Osc0JzXYsLfTS5OU0acqGpG/M6+0Yhv6gCrM8=;
- b=msVIZK1nbYG4TFgauJsxhyWRT3pRTzKt2UcqR2MHKJNavUlNM4HqsOklLwoCoHuadySxADJOy32wtyCgE7ADoU+/VAPrk714h3F4KqCm1kcBBSh3Kk5sVqODM22d+XZ++1WuAp4/43J8jKp8wdi6mRMRok3fIA/ofnDHeoctgdOjV1k2twwxqAgshI6WhUKoMdQszooYgzSU4pgYIbVz3d46AmYqYyFjZ1wmtu608JOPbN7oJn3GqsTFf+r4/58XUAbe0Jk72sQKNvXEifQvL6W0ibCxdOfkToYFnLyuHVbIcr+ZNcn5I/kvg2w2VIkdkg+TmA3kEBIi63WHa93QCA==
+ bh=xVVWuVA9JF6rNZyQ5xBu0PBo5UeOvGT8lBWPvYxhe3Y=;
+ b=Ffq0kTio3SqFIaZvF7HcsVrwpRxCGO+rZHU6aypYdzM9vBhy7368h6n1BE5PL1PM0mZofK5Ui2sKvGW/X7htCaVrsCr2eUF/Dz2FGuwET3mbF92OuQh6/5CkxGjspb97JTZzsw0u6tuh9BRChi+UcERN23JCsEdguz0XG8i3cBcfBPdjt44axcdcv0SKrCzb4BIg5UGac7+q2v5ReBBSMYcWnN7un7Sl8Gz/lCJpwFPEfB7qtDSJKyd3Ex3XYGC9gSmPUVl207JGIp0GCxM/mOLT1oCPM4c2Ge1+H70/nT8T9JlXbtAZgXIJGRXq27whQsuoR5o7oNH423PuhqhxMQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1SPRMB0007.namprd11.prod.outlook.com (2603:10b6:303:274::12)
- by CH3PR11MB601806.namprd11.prod.outlook.com (2603:10b6:610:365::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Tue, 13 Oct
- 2026 22:39:05 +0000
-Received: from CO1SPRMB0007.namprd11.prod.outlook.com
- ([fe80::22c:e511:e167:77da]) by CO1SPRMB0007.namprd11.prod.outlook.com
- ([fe80::22c:e511:e167:77da%3]) with mapi id 15.21.0472.016; Tue, 13 Oct 2026
- 22:39:05 +0000
-Message-ID: <bbca7a97-bf8d-4039-aee8-4bb95f102340@intel.com>
-Date: Tue, 13 Oct 2026 15:39:00 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 11/15] ice: wait for in-flight Tx timestamps before
- flushing the tracker
-To: <netdev-bot+sashiko@kernel.org>, <anthony.l.nguyen@intel.com>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<edumazet@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
-	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
-	<grzegorz.nitka@intel.com>, <sergey.temerkhanov@intel.com>,
-	<arkadiusz.kubalewski@intel.com>, <poros@redhat.com>,
-	<richardcochran@gmail.com>, <horms@kernel.org>, <pmenzel@molgen.mpg.de>,
-	<aleksandr.loktionov@intel.com>, <alexander.nowlin@intel.com>
-References: <20261008215614.1987250-12-anthony.l.nguyen@intel.com>
- <179184693018.434549.11776352686949111433@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
+ smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
+ dkim=pass header.d=sitime.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xVVWuVA9JF6rNZyQ5xBu0PBo5UeOvGT8lBWPvYxhe3Y=;
+ b=ktdcUm+j9fMaP0nBzuSuyk0mATG7dF5/rx/5h9wRVLzgX9bXKvGEZxlPZ4QO7+xgsPA30WS/1ndOiQRor5ce9bjkl4mIkQg/gz/50ArUVNpTs06gEbE9vhWbHFrZsG8d1ghl+ev/B5/W0qfpsjIozePfg9wri9mvPUMZh7lK4XADoU1i4n8YpRQK1PH502WQKYLh1N9Mq2WyjZR7GwhkJZYRjep7BBIVsEdW1GZ3+/v7FAzvs8ktajcykt7YV7AgATNtN30KOqFRV6Rq4i+eVFmhr51eNx8G8Lx5o4RJKX63pg+JYwko/aqfz72GB6dnc0Fo9wUMPAi1Tlhh2GPznA==
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ (2603:10b6:408:3bf::16) by LV2PR20MB995388.namprd20.prod.outlook.com
+ (2603:10b6:408:36d::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 22:41:33 +0000
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01%4]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
+ 22:41:33 +0000
+From: Ali Rouhi <arouhi@sitime.com>
+To: Jiri Pirko <jiri@resnulli.us>
+CC: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Arkadiusz Kubalewski
+	<arkadiusz.kubalewski@intel.com>, Ivan Vecera <ivecera@redhat.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Lad Prabhakar
+	<prabhakar.mahadev-lad.rj@bp.renesas.com>, Carolina Jubran
+	<cjubran@nvidia.com>, Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next v13 02/12] dt-bindings: dpll: add SiTime SiT95316
+ clock generator
+Thread-Topic: [PATCH net-next v13 02/12] dt-bindings: dpll: add SiTime
+ SiT95316 clock generator
+Thread-Index: AQHdW2P/9ZE6kK9KDUy1mF8AMssy6w==
+Date: Tue, 13 Oct 2026 22:41:33 +0000
+Message-ID: <20261013224131.27149-3-arouhi@sitime.com>
+References: <20261013224131.27149-1-arouhi@sitime.com>
+In-Reply-To: <20261013224131.27149-1-arouhi@sitime.com>
+Accept-Language: en-US
 Content-Language: en-US
-In-Reply-To: <179184693018.434549.11776352686949111433@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4P223CA0005.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:303:80::10) To CO1SPRMB0007.namprd11.prod.outlook.com
- (2603:10b6:303:274::12)
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sitime.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|LV2PR20MB995388:EE_
+x-ms-office365-filtering-correlation-id: e00fa076-3f0d-4861-ecd6-08df297b21ce
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|38070700021|5023799004|56012099006|261009223027099003|261009223327099003|261009220027099003|261009221227099003|261009221727099003|10067099003|22082099003|18002099003|6133799003|3023799007;
+x-microsoft-antispam-message-info:
+ T1O1la0cPhvDnANINpY0V7k4m9t+y7uQJlrU8NWT2ZFExNfeoxmuQjcvJ3cny2WsiI7uzA2xQ2sttAxPOdcH8cS36bpGzR8VetgRuPEar9+NBW+YPnQsWXE/707d9Q0x0PlOxhLn3Mgt+9t11hJc2VAmGRgUdbEyn+5wsXL3eqx9Sx2SLFIDESaCmOHLEYIIds2m6xlwKJKcetQelw2t+VMaW5k068KoztNGdTGYBadadcxqBpg7xhr9W3SIDYSHYcIyvqOC6/Inoi/gEB0xrlePG9Uh4ME9HmMwRpcqXafNGW+zQuMvkzVZSaUVhwEkHUsZC3RS588SyxhOHRj10MtFTs6vAZxECAg3eq2xiJJC9swP+oEKwmclqhqPw1nzxEvDIS8VuECl5sWd8/FoCPn7skGN54s2QVzKW9zyaZjr56P89vYQDWrBD8z0HqRMZT2rzSktWauM6yu47nMKz3I8wvk5Pyc/hYAAHQ2fdyQKGi9Epl+/ykSlOix6xlq+g0HPZYVEfyuyRAGrts2LRn6HHzI9EsnZS1ba5LFUAMyVNEiNRxJZKbDtTEcyeOnVXUx87QKUmqmUvIjsYY0kZdt+q/AO3ABfx3TTN4Op8KfZFF3CgDozEwWEGLgX9aYNIWsYCsPNmeG/LH/LhVXV1X07vrHTwK9UyxVwDZXFMq4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(38070700021)(5023799004)(56012099006)(261009223027099003)(261009223327099003)(261009220027099003)(261009221227099003)(261009221727099003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?M4G880d4wqkA099plpHZelg2tdDQpjf4JqJcbuA2h3LUWBDM4pulyornup?=
+ =?iso-8859-1?Q?xH5Xb9gNAkDlpm6qnNp10CbpNTcn7FOSAziKCDd9KPyeP2NBsfWbWbSYt2?=
+ =?iso-8859-1?Q?Mq7wGvfRCVclxI84azCj/uSMOzYRzKIRupt1A2N2ikezYA8FEkG/+HyczL?=
+ =?iso-8859-1?Q?n0V3LteWNpz0xgGAyJGk285hFuvAYzvlO+lD/NWhNjzuvFNIps79RNoK+n?=
+ =?iso-8859-1?Q?FuMWCYtP5q06zwGLfJrvf2Esr9oLrQAvDZ463QIENkepHthrtH8BP+nSTt?=
+ =?iso-8859-1?Q?x4pYA/6RqrbzWkb7ZeNuHPqwg9uYvBbqhFRRNKEaU1ejIGRn7yxqoCp1S9?=
+ =?iso-8859-1?Q?2hRo6BWnbb1RXuTD4GnIYkb+GoW5dq5K2KEb9PTVvwK+cWtz8iSFQHyXSK?=
+ =?iso-8859-1?Q?uIyDaDZz/uQOg0ru09ZAp6E1OQ/2KnYJlRZ5pD9oUrSsagHU49teSl5hSI?=
+ =?iso-8859-1?Q?pUQ6SvvuvOKykkrOHYsrrnOzn2/msJLHHkfSuVSPOOGlMC3k39nDps8AHi?=
+ =?iso-8859-1?Q?L+tWb5EtWAyT4cMn2nCDW7UhAIOE9xI2UU5CsJ7o8OQ6VKCLRqUBqIgQMi?=
+ =?iso-8859-1?Q?EmVLWqGx43nwQgQQgCTZt9VU4HxsFUG2vz2OglLUnn5H1242CQ2ZUboNzi?=
+ =?iso-8859-1?Q?Q5bkjgLMCsMt08GuB3pmRB8DIldDQoks69EHsSvcfOSUF4dyb3rjiP6b8X?=
+ =?iso-8859-1?Q?9WzXdXYl4Xa2oecf/7djETtF1EqZi8045nyZMMZ7hWgLodHe0HkLgwiudW?=
+ =?iso-8859-1?Q?cf4O0vnd5LHxk6RcTvRYsuZdv+mqS+gPQa3t4bwT+YcJt1L9OYOunvUI/O?=
+ =?iso-8859-1?Q?aM8pc4GXDRdPpV8y+IYBvcjTZ1kMA42nD6y8qamSTY+GetlbndMlsI75fZ?=
+ =?iso-8859-1?Q?2zEsxWg3tS5nOcMeRhI5Z1zIINlOODCOF+f8sTg9AI16q3Q3Avnah8ABty?=
+ =?iso-8859-1?Q?mKpdNyVULXD4ouZ/CkfgyiJ/FFwMJUAK5lhyfHSCkoRDWw3YD/E4DNtLZZ?=
+ =?iso-8859-1?Q?Lyk+0Q/4BqYZsOJwWSOvcrNme2D+/iSMpw2ne6GvHYeU/ztZ+XIv8npJUG?=
+ =?iso-8859-1?Q?+x18T03U9BiZW+7L2D+Gq5iSVaf/ZjR8WpIAyk9VNB++dGgMMv7TzWyb9B?=
+ =?iso-8859-1?Q?0QAEJSHqpToEbzUeQJm80Tb72oA61mj3LQUdZRB+V7yWPgUsHSzWmv4U4S?=
+ =?iso-8859-1?Q?wo4MA983oJR3pjfyMzhB4QW9yvBnvjrie4y71Lcs5iBBcgehAr/FcdhECH?=
+ =?iso-8859-1?Q?NYzvtvo/VXTKSh2iO3WrUNBB2WJglPZUpT8lI4RiYmr0OYWs3xg8oBwqEl?=
+ =?iso-8859-1?Q?cEs7aMc+A6qUe5erUBUf0rbhox1q5vfHuk9/s0qFfjQXBI/krtE4a+SRcH?=
+ =?iso-8859-1?Q?Ektn1XbvgA+/A0jFTaPLKl/JMr7oqTm6Sid/Bh73GMpvBdNHLV7JcclVTC?=
+ =?iso-8859-1?Q?Njk8Bi4JOY3DvT6CCWq76yoPlTHGwc35yk3RKJ15GprANIvvLnBEqWtlbf?=
+ =?iso-8859-1?Q?Ar5zaYBeBw3pXlYxDNW09dsRRddCD2s88bHBFAioWXmx/zCD/BbCqPhQJD?=
+ =?iso-8859-1?Q?qADJdylQ6JxMdiaROTL16V6baqiTolLIZyENveDIk6g0l+n+AfyRVp0Cwe?=
+ =?iso-8859-1?Q?7gkkCZ/Azq3AXsYsPiftFAVAOXG+jmXnuivwdJaqhaCTKxaXgArtuqXkqK?=
+ =?iso-8859-1?Q?S6L8YzuUydxyBXf4dZYVLG7u8f3Pa/6vPANc0gnvDFUL4C0/XWa/fuvofT?=
+ =?iso-8859-1?Q?pYUk+vTFgt1V1A9JQOwMgb9gyKIIZnGmh2ny7X6YkL1lYy?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1SPRMB0007:EE_|CH3PR11MB601806:EE_
-X-MS-Office365-Filtering-Correlation-Id: eef45a13-55bd-4982-cdca-08df297ac978
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|56012099006|5023799004|11063799006|4143699003|261009223027099003|22082099003|10067099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info: tMXReikDtLxYb/zrKWmkS6scJmZIXz2Vb1pyLLaGaQXqG/8RGoBz1W3bcTOZWVlxnjjwCtqHDkI7urNchxlZ4hJRrPQxIdUpqNX9McpK14XZ9WwL1s7pz8HkSfwqELPQLrdYHym/5f7FnQTo6KeZggbyqJVU8RlHNcOW+7KB2V8ovMIJ2EPNjWM2rJRyK7cAL0xv8NcjeJsH9ANV99iFb4o9qA9/aUx8OZEZbpKKNt9/DLDpi4qUajO8MJMPDjZRE4AYcGMC/XCgPXyLQ7OJuXVcZZ5w7ogCBB9B/48Wa3ftbbLifBL+g2It3FRGmEyZKX73xaTtuCo2Cp7slJ/CpUirSBR/i38/SMg8XIjrKvW2V0gJnT6+By9WgLVBowyVvkSNi24cNSGAkPqxmu+eEmzm5giZElOjlDJRt7rIq6NcYNVl1HwMMdfxnyAd8WO1LoXWvcftQG/BPVmsg6RapMlhHkJf7NgvH4DRdDczHcy8Pen+OpVVzOX1S23mI+ZeqPA2uj3KrsHYSGNT1DMWR+1RiDLQ9epGzFwvTS6c5jZkqXd5CBYYVuhFfNHk2McZ+Cz6A5PgQD/hDETbX+MYyRuYt8FysWGEkoWEX854IeKshS3ZiKLwfVCEIVHnZOSMqGX7djSAjznbo7CoffO4dubE2zrK48Jj9uDe0vg1U+w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1SPRMB0007.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(56012099006)(5023799004)(11063799006)(4143699003)(261009223027099003)(22082099003)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Tkw1RU5SZklDZDArZ1k4SllsOFh1MDZ3bExLcE5iZXJqSS92eUpjR2NaYlMz?=
- =?utf-8?B?bTZyMFpraWowaFZCbFJaa01mekhsNTNOWVR4cVZEOUZqbm1taldkZXJaQ1dm?=
- =?utf-8?B?amJHZjE2enNMTmsremI4V2RhSWlqYVpXaHV2T3A5RUJsakZLOCs4NGtOZDdu?=
- =?utf-8?B?OTVqOTFSWnBsbUkrU2Z2aSs0WkxqZ09Gd0czcEhSaHZZMHUvVFVrOTJzMXhs?=
- =?utf-8?B?OUh4a1hyWit2d2h4aFR1T01rV3hmdWdvNjJTOHkvVWtCVVpGK3oySTh0azYv?=
- =?utf-8?B?enBIcWhrb2JLQlV5UGhMeVJMTHdTdVplalczaC9HMHFWcmpmOHBjTDA2ZFFz?=
- =?utf-8?B?V0VZWW5ia2s0djNUbTVIMkdxMmJZc0tYNXpjZGFjbm5oWXNjWW5BTEtuNlNT?=
- =?utf-8?B?NVN4TGV1YWI4US8zSHkzQWpYTWpRYmtUdmhKbERpYkUrOFMzYTM0eXhQdS9q?=
- =?utf-8?B?aCtGSm9LQkwzQnRTaDZSc2VNL3J0TVRSTWxSVnJiS0xObmc2RUVablRzYlUz?=
- =?utf-8?B?eDlPWG8xSlppU3dwa081bmJEYkZWUU9rTnpBbnhDUWVzcWtPRVM3M0VWUGha?=
- =?utf-8?B?L3BwcU1vY2hDM0ZFaC9qeGZESW5JWWZoeHhaU00ycTNwRjk3Z2VCSXJkQUZZ?=
- =?utf-8?B?QWZUTU5wdlFDcWhoc3RhWk5oSUYrRzBKY0JjR3F4UDJBalo0VklZTndQSlMw?=
- =?utf-8?B?V010MFdWYVNBai9ONDZocVpqMnRsb0o5VEw2MFQwUGlPMXpMcTkyU0NaWndU?=
- =?utf-8?B?VEFQejQ2QnZlR0MyUGQ2ZjVVWlN0c0o1UGdNbVZXWUcrVWIzdVRTY2R0TjhZ?=
- =?utf-8?B?TVU3a0RqczFPeWlZa3dWbEN4dTdyUVFsdWJwU2dpYWZNRVByT0JrYm4wbnNH?=
- =?utf-8?B?ejE2Rmx2U042RGE0TEwzYlFLeEhSY29KSzJveE9jeDVIVE80aEtqeE5aRWNS?=
- =?utf-8?B?SkNiUmVNL2l4Y1FwdFovSURTeDVmSVFJRmhXRG52U3hZQS9iOGMzaXZma24y?=
- =?utf-8?B?N0QxZVBtSWZMM2t0WllhMFlvL1NtYjIyVzg3djlxZkJOY0w1bG1VaE9tcmFJ?=
- =?utf-8?B?bDFhNzM4SjQvcmRGaE9HQ2VicC9wdW9YbEU3WnlMVGI0eGJDNy9EVlA1TTMv?=
- =?utf-8?B?YnFxRzdXZnBlQlpkSktaeTJHVm5XYStQTVNQMzVmbnVuelJmaWdudTdBY01L?=
- =?utf-8?B?UTRqS1BKOFZPbGFmTndvMExBMVczYVJ1VklKZThBeUZuL295b1hnUjZJRXVo?=
- =?utf-8?B?M21xOG4zNFRhWGRJOWw5d3VYNmhmZ0o1aUxxZ1hQVVN3VkppU1lWc0Uvbkh4?=
- =?utf-8?B?VXVWZGkyOWs2ZWw1bWZBTXFNdzBRdWJSZmN1bS9oSUVIek5PbkUyVlRDYzZv?=
- =?utf-8?B?NFlzcEFRNjVVd28xZG5mMU0wODB4cG1nVlZ4VTcyZGJFVHJMdXI1eUdQYloz?=
- =?utf-8?B?MEU5YjJHd1RJZXdEUkpFME5ibDMyRE8wSG5pR0JyamJ3WXhJWTI0eFp2eS9E?=
- =?utf-8?B?ejMzRW5EVUtuQkI4bHdwOHlJNlVSN0c0SmZTK0ljZHk0SEgvdXVjRXUybEVQ?=
- =?utf-8?B?RWQ2MlFURGIxVDh3YTZTdlVvMnVwdjBVNFFUd3QxMEpvYVdlZVNBL2k4QlZn?=
- =?utf-8?B?N3BiQ0wyb2JObE9hK0wrU1FHWlh3ZmZYM1A3TG1XVFBuWmNLNEI1T3Y2Rzlx?=
- =?utf-8?B?aVRJTjZCYnVvMkhidWxPYVcrdWdBWDlRY3pRNW1VMzV1WUxoQXlSL2F3TkEw?=
- =?utf-8?B?d2VyZUxxcGVNUS8rS2dUVm5GUzB4dVRRYWxsT1BCR2hlWHRvNWNabEhLRjUr?=
- =?utf-8?B?NHBMVGJNRG5UcnJQWDNhdjIwamlJbUhXM1ppQlFwVy9QcnJYUHh6d2E2allK?=
- =?utf-8?B?bU4vUytxVnlwRXZ6ZmwzQnBDUzR1V0JMSTVKa25TS1B1ZmlkZGhDUGVmblJT?=
- =?utf-8?B?dHpSMVJhQlFIUTVBWlRFbC9mVVh5aHpVK25FRDMzT0NMa3RtR0FmdTJ2RFF1?=
- =?utf-8?B?WTd3cEVlZXZ4QzVtTVJPLzQ1ZnpjVkI4NFlTSXpsYXlMeFZwVTJSZjNhY09M?=
- =?utf-8?B?NCsvdTNVM3Fyb3oxNDN4dmpzaXFQcElHcFh5M0IwM0k1aW9PR2RycVZPeFZB?=
- =?utf-8?B?ZTFpU0NjRmRKcm5FUUt3anBNQmZ3OG5UZiszREZRSUpPbjBYcmxSOGVKeUdV?=
- =?utf-8?B?ckdpZmMvbU5Ud3dCRXNRa3d2TXhKbThxemlHWmVMMHVtYlZ6anJLZU43cXJX?=
- =?utf-8?B?VytjN0pSVTN5RXVoWkt1SktPSmlhbUtiWlI1Nkp1R0hMZkRra3AzTlVGTkFH?=
- =?utf-8?B?VG15aHM2TWgyM3ExZ3dLZlZMck1IOWNGcEFQa3N5Y0dNUHBkNUQ5SEVrNURw?=
- =?utf-8?Q?x2BN/PXc7kg7hDAc=3D?=
-X-Exchange-RoutingPolicyChecked: V/L8HuDuLvJm/P0BUDr2G/gsFpJUUhCLZgKcdFtFgp4S9YoMhqe8tV7qU8xmU90/Gxj5M0Ua370X0UVuzMxfHOs/qHTSBAkBPiXC4JUSxK6Y6AD3LNgtO53jTVFpRYvFMfToYhYk+Rk3prd/A+om6ORi3KD+7xrlSqiygck32Z2+yoD0F475rjzmOVqYyIHRrzKYKOjahat7jA/P+G0yLF6JudeIa33a/GcY5HhWaHEFX65kqWVr9MhQj3Lcr+s8dajtvGQLQ7576tffNHq6rdbaMOkR76g6t5lq2eukBSNELac7ekTP7Q9QACPH2cnFX0Yfi2YnGfSwtxReyQ0XfQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: eef45a13-55bd-4982-cdca-08df297ac978
-X-MS-Exchange-CrossTenant-AuthSource: CO1SPRMB0007.namprd11.prod.outlook.com
+X-Exchange-RoutingPolicyChecked:
+	1tDuUM81/ME2bY7YzHqJYTFIlH0C3TQHvVHTS4LF1anrabJDuu7Y5gH6XvzC6ILlhZrj1oli9q37kQ+g2/KK4+DpV1doRrbcSfOd/uuJEMRAEaF883aVrz5IsqR3hXno8J+v1p2ZAF/4rpr6s2NUvg39uwUkixeH9rvuEmIJQfXth8b48+X8eckKJt+PirDy6h9SL0+QFa3nsroTboRAv2Kjc08AW2qKk74IEdwPN6KAn7RqWa6V2bPqzQS5FGcMpCw3qJ00+cuy1X/3T9j05jlyri0AEuB+CyMyUVYv289BdF4BoOYt8VpUUFR5PR5QNG8NEcR5qnb66Mf+nFke6g==
+X-OriginatorOrg: sitime.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 22:39:05.3977
+X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e00fa076-3f0d-4861-ecd6-08df297b21ce
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2026 22:41:33.4404
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yIvtGYWHKRsaracTFrQDIpPvl2NwRr0SCE05wMdhGPCsGpr9hG9klyypTpuW5lkQMVB/BYqZFCNTznBXCughnAraCL+3qgzvjQBKtGOOfAw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB601806
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 8pgKxwY+AGfZjP8dDdpPbDRMq6AHumNULZvse5ITsLShftJVD+W7BtS0B6ZLHOojeZ9OGEPUoQ+MLmmdaBVZ8g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR20MB995388
+X-MDID: 1791931295-GG-YQWGEXQ7x
+X-PPE-STACK: {"stack":"us1"}
+X-MDID-O:
+ us1;at1;1791931295;GG-YQWGEXQ7x;<arouhi@sitime.com>;ba04557de9d2da8490f5f1e6de07b967
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-On 10/12/2026 4:15 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] On E830 the flush still leaves hardware-ready entries
->   unacknowledged, so the drain does nothing for a device the commit…
-> - [Low] ice_ptp_rebuild_owner() calls ice_ptp_flush_all_tx_tracker(),
->   which now runs ice_ptp_wait_for_tracker_drain() on every port of the…
-> 
-> Pre-existing issues:
-> - [Low] At this commit, ice_ptp_process_tx_tstamp() sets drop_ts =
->   !link_up (line 592).
-> 
-> --
-> 
-> ice: wait for in-flight Tx timestamps before flushing the tracker
-> 
-> This patch adds a poll to ice_ptp_flush_tx_tracker(). For up to 10 ms per
-> port, it waits for the PHY to publish ready bits for all in-use Tx
-> timestamp slots, and only then flushes the tracker. E810 has no ready
-> bitmap, so it skips the wait.
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> index 818e2e265a7e5..5220de274819a 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> @@ -744,6 +744,68 @@ ice_ptp_alloc_tx_tracker(struct ice_ptp_tx *tx)
-> 
-> [ ... ]
-> 
->> +static void
->> +ice_ptp_wait_for_tracker_drain(struct ice_pf *pf, struct ice_ptp_tx *tx)
->> +{
->> +	bool drained;
->> +	int err;
->> +
->> +	if (!tx->has_ready_bitmap)
->> +		return;
-> 
-> [Severity: Medium]
-> Does the drain actually help on E830? E830 has has_ready_bitmap set, so it
-> enters this wait. The commit message also lists it among the devices that
-> benefit:
-> 
->   "Only later devices (E822, E825, E830) have the bitmap ... Thus, skip
->   the wait for E810"
-> 
-> However, ice_clear_phy_tstamp() in ice_ptp_hw.c has no E830 case:
-> 
-> ice_clear_phy_tstamp() {
-> 	switch (hw->mac_type) {
-> 	case ICE_MAC_E810:
-> 		return ice_clear_phy_tstamp_e810(hw, block, idx);
-> 	case ICE_MAC_GENERIC:
-> 		return ice_clear_phy_tstamp_e82x(hw, block, idx);
-> 	case ICE_MAC_GENERIC_3K_E825:
-> 		return ice_clear_ptp_tstamp_eth56g(hw, block, idx);
-> 	default:
-> 		return -EOPNOTSUPP;
-> 	}
-> }
-> 
-> ice_ptp_flush_tx_tracker() ignores that return value, then clears in_use
-> and frees the skb anyway:
-> 
-> 	if (!hw->reset_ongoing && (tstamp_ready & BIT_ULL(phy_idx)))
-> 		ice_clear_phy_tstamp(hw, tx->block, phy_idx);
-> 
-> ice_ptp_reset_ts_memory(), ice_ptp_port_phy_stop() and
-> ice_ptp_port_phy_restart() also do nothing for E830.
-> 
-> So on E830, wouldn't an entry that becomes ready during the wait stay set
-> in E830_PRTMAC_TS_TX_MEM_VALID with no owner? That is the orphaned ready
-> bit state this patch is trying to prevent.
-
-Will need to check what if anything the E830 hardware can do. Maybe it
-should just do the same as the other paths by reading the timestamp.
-
-> 
-> On the rebuild path the tracker stays initialized. For E830,
-> ice_ptp_ts_irq() re-arms PFINT_OICR whenever ice_ptp_tx_tstamps_pending()
-> sees a hardware ready bit.
-> 
-> Could such an orphan keep re-triggering the interrupt, or be picked up as
-> a stale timestamp by a later request that reuses the index?
-> 
-> The actual effect depends on two hardware details: whether E830 valid bits
-> clear only when the timestamp is read, and whether CORER resets the PRTMAC
-> timestamp memory. The E830 case is still missing from
-> ice_clear_phy_tstamp() at the end of the series.
-> 
->> +
->> +	err = read_poll_timeout(ice_ptp_is_tracker_drained,
->> +				drained, drained, 500, 10 * USEC_PER_MSEC, false,
->> +				pf, tx);
-> 
-> [Severity: Low]
-> Will this poll always run until its full 10 ms timeout on the post-reset
-> rebuild path?
-> 
-> This call chain reaches the poll for every port on the adapter, one port
-> after another:
-> 
-> ice_rebuild()->ice_ptp_rebuild()->ice_ptp_rebuild_owner()->
-> ice_ptp_flush_all_tx_tracker()->ice_ptp_flush_tx_tracker()
-> 
-> ice_reset_subtask() clears reset_ongoing before the rebuild:
-> 
-> 		} else {
-> 			/* done with reset. start rebuild */
-> 			pf->hw.reset_ongoing = false;
-> 			ice_rebuild(pf, reset_type);
-> 
-> So the reset_ongoing early return in ice_ptp_is_tracker_drained() does not
-> skip the poll.
-> 
-> A CORER/GLOBR/EMPR reset drops the Tx rings. A request whose packet was
-> dropped that way will never get a ready bit, so
-> ice_ptp_is_tracker_drained() keeps returning false. That costs about 20
-> rounds of SBQ ready-bitmap reads per port. On an 8-port adapter it adds
-> roughly 80 ms to reset recovery.
-> 
-> A Tx hang is a common reason for the reset, and it is also the case most
-> likely to leave such entries behind.
-> 
-> The wait also seems unnecessary there. Right after the flush,
-> ice_ptp_rebuild_owner() does:
-> 
-> 	ice_ptp_flush_all_tx_tracker(pf);
-> 
-> 	/* Enable quad interrupts */
-> 	err = ice_ptp_cfg_phy_interrupt(pf, true, 1);
-> 
-> ice_ptp_cfg_phy_interrupt() calls ice_ptp_reset_ts_memory(), which resets
-> the E82x timestamp memory. On E825 ports with link up,
-> ice_ptp_restart_all_phy() then does a PHY soft reset.
-> 
-> Would it make sense to wait only on the release path? That is where new
-> requests are blocked and captures can still be in flight.
-> 
-
-If we call ice_ptp_flush_all_tx_tracker() in other places we may or may
-not want to wait. For the cases which soft reset I am not sure the wait
-is necessary, since the soft reset will fix any orphaned cases. I think
-moving this to only happen in the case where we're not about to soft
-reset the PHY (i.e. teardown). Or we could just drop the patch entirely
-since I think the soft reset path may fix any issues this is intending
-to prevent.
-
-I'll do one of those two things in v3.
-
->> +	if (err) {
->> +		dev_dbg(ice_pf_to_dev(pf), "Timed out waiting for in-flight Tx timestamps on block %u\n",
->> +			tx->block);
->> +	}
->> +}
->> +
-> 
-> [ ... ]
-> 
->> @@ -760,6 +822,8 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
->>  	int err;
->>  	u8 idx;
->>  
->> +	ice_ptp_wait_for_tracker_drain(pf, tx);
->> +
-> 
-> [Severity: Low]
-> This is a pre-existing issue and was not introduced by this patch. The new
-> drain only covers ice_ptp_flush_tx_tracker(). At this commit,
-> ice_ptp_process_tx_tstamp() can still create the same orphan when the link
-> goes down:
-> 
-> 	bool drop_ts = !link_up;
-> 	...
-> 			if (drop_ts)
-> 				goto skip_ts_read;
-> 
-> When a slot is not ready yet, this path clears in_use and frees the skb
-> without touching the PHY entry. If the capture finishes later, its ready
-> bit has no owner. That is the case the commit message describes.
-> 
-> The next patch in the series, "ice: keep Tx timestamp slots tracked until
-> completion or timeout", removes the link-down drop. After that patch, only
-> the 2 second timeout frees a slot that is not ready. That timeout is
-> intentional and is documented both in the ice_ptp_process_tx_tstamp()
-> kernel-doc and in that patch's commit message. So by the end of the series
-> this no longer applies.
-> 
-
+Add a binding for the SiTime SiT9531x family of clock generators: an=0A=
+I2C-controlled device with four independent PLLs, up to eight input=0A=
+clocks and up to twelve outputs, described as a DPLL provider.=0A=
+=0A=
+The XO is given either as a clock or, for firmware that describes the=0A=
+oscillator as a property rather than as a clock provider, such as ACPI,=0A=
+as clock-frequency.=0A=
+=0A=
+The supplies are described by their pin names: the core and input rails,=0A=
+the GPIO rail the SiT95317 has, and one per output-driver pin -- VDDO0 to=
+=0A=
+VDDO7 on the SiT95317, VDDO0_1, VDDO2 to VDDO9 and VDDO10_11 on the=0A=
+SiT95316.  The driver does not enable them, since the boards so far=0A=
+power the part permanently; describing them gives a board with=0A=
+switchable rails a way to say so.=0A=
+=0A=
+Signed-off-by: Ali Rouhi <arouhi@sitime.com>=0A=
+---=0A=
+ .../bindings/dpll/sitime,sit95316.yaml        | 213 ++++++++++++++++++=0A=
+ MAINTAINERS                                   |   6 +=0A=
+ 2 files changed, 219 insertions(+)=0A=
+ create mode 100644 Documentation/devicetree/bindings/dpll/sitime,sit95316.=
+yaml=0A=
+=0A=
+diff --git a/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml b/=
+Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml=0A=
+new file mode 100644=0A=
+index 000000000000..200b9f709a57=0A=
+--- /dev/null=0A=
++++ b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml=0A=
+@@ -0,0 +1,213 @@=0A=
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)=0A=
++%YAML 1.2=0A=
++---=0A=
++$id: http://devicetree.org/schemas/dpll/sitime,sit95316.yaml#=0A=
++$schema: http://devicetree.org/meta-schemas/core.yaml#=0A=
++=0A=
++title: SiTime SiT95316/SiT95317 DPLL Clock Generator=0A=
++=0A=
++maintainers:=0A=
++  - Ali Rouhi <arouhi@sitime.com>=0A=
++=0A=
++description: |=0A=
++  SiTime SiT95316 and SiT95317 are I2C-controlled programmable clock=0A=
++  generators with integrated DPLL for synchronization applications.  Both=
+=0A=
++  variants contain four PLLs with automatic/manual reference selection,=0A=
++  DCO frequency adjustment, and phase offset measurement via an on-chip=0A=
++  TDC (Time-to-Digital Converter).=0A=
++=0A=
++  Both parts have 4 differential input pairs whose lanes can also be=0A=
++  driven independently as single-ended references, so 8 inputs are=0A=
++  individually selectable.  SiT95317 drives 8 outputs, SiT95316=0A=
++  drives 12.=0A=
++=0A=
++  Pin numbering.  An input pin's reg is its lane: 2k is INkP and 2k + 1=0A=
++  is INkN, 0 to 7.  A pair the loaded configuration runs differential is=
+=0A=
++  one input, described at 2k.  An output pin's reg is its physical output=
+=0A=
++  OUTn, 0 to 11; the SiT95317 bonds out OUT0, OUT3, OUT4, OUT5, OUT7, OUT8=
+,=0A=
++  OUT9 and OUT11.=0A=
++=0A=
++properties:=0A=
++  compatible:=0A=
++    enum:=0A=
++      - sitime,sit95316=0A=
++      - sitime,sit95317=0A=
++=0A=
++  reg:=0A=
++    maxItems: 1=0A=
++=0A=
++  clocks:=0A=
++    maxItems: 1=0A=
++=0A=
++  clock-names:=0A=
++    items:=0A=
++      - const: xtal=0A=
++=0A=
++  clock-frequency:=0A=
++    description:=0A=
++      XO rate in Hz feeding XIN/XO_CLK, for firmware that describes the=0A=
++      oscillator as a property rather than as a clock provider, such as=0A=
++      ACPI.  Use either this or "clocks", not both.=0A=
++=0A=
++  reset-gpios:=0A=
++    maxItems: 1=0A=
++    description:=0A=
++      GPIO connected to the chip's active-low reset pin (RESETB).=0A=
++=0A=
++  interrupts:=0A=
++    maxItems: 1=0A=
++    description:=0A=
++      Interrupt from the chip's active-low INTRB output.  Asserted when=0A=
++      the device detects a status change such as lock acquisition or loss.=
+=0A=
++=0A=
++  dpll-types:=0A=
++    maxItems: 4=0A=
++=0A=
++  vdd-supply:=0A=
++    description: Core supply of the PLLs, 1.8 V (the VDD pins).=0A=
++=0A=
++  vddin-supply:=0A=
++    description:=0A=
++      Supply of the input receivers and dividers, 3.3 V (VDDIN).=0A=
++=0A=
++  vdds-supply:=0A=
++    description:=0A=
++      Supply of the two GPIO pins that have their own rail (VDDS).  The=0A=
++      SiT95316 has no such pin.=0A=
++=0A=
++  input-pins:=0A=
++    type: object=0A=
++    patternProperties:=0A=
++      "^pin@[0-9a-f]+$":=0A=
++        type: object=0A=
++        properties:=0A=
++          reg:=0A=
++            maximum: 7=0A=
++=0A=
++          supported-frequencies-hz:=0A=
++            description:=0A=
++              The rate wired to the input, in Hz, as a single entry.  An=
+=0A=
++              input runs at the rate the board feeds it and has no=0A=
++              frequency to select, so that entry is what the pin reports=
+=0A=
++              as its frequency.=0A=
++=0A=
++patternProperties:=0A=
++  "^vddo([0-9]|1[01]|0_1|10_11)-supply$":=0A=
++    description: |=0A=
++      Supply of an output driver, named after its VDDO pin.  The SiT95317=
+=0A=
++      has one per output, VDDO0 to VDDO7, numbered as that part's=0A=
++      datasheet numbers its outputs; in the pin numbering of this binding=
+=0A=
++      those are outputs 0, 3, 4, 5, 7, 8, 9 and 11, in that order.  The=0A=
++      SiT95316 has VDDO0_1, VDDO2 to VDDO9 and VDDO10_11, the two shared=
+=0A=
++      pins each powering the pair of outputs they are named after.=0A=
++=0A=
++required:=0A=
++  - compatible=0A=
++  - reg=0A=
++=0A=
++dependencies:=0A=
++  clocks: [ clock-names ]=0A=
++=0A=
++oneOf:=0A=
++  - required:=0A=
++      - clocks=0A=
++  - required:=0A=
++      - clock-frequency=0A=
++=0A=
++allOf:=0A=
++  - $ref: /schemas/dpll/dpll-device.yaml#=0A=
++  - if:=0A=
++      properties:=0A=
++        compatible:=0A=
++          const: sitime,sit95317=0A=
++    then:=0A=
++      properties:=0A=
++        output-pins:=0A=
++          patternProperties:=0A=
++            "^pin@[0-9a-f]+$":=0A=
++              properties:=0A=
++                reg:=0A=
++                  enum: [0, 3, 4, 5, 7, 8, 9, 11]=0A=
++      patternProperties:=0A=
++        "^vddo(8|9|1[01]|0_1|10_11)-supply$": false=0A=
++    else:=0A=
++      properties:=0A=
++        vdds-supply: false=0A=
++        output-pins:=0A=
++          patternProperties:=0A=
++            "^pin@[0-9a-f]+$":=0A=
++              properties:=0A=
++                reg:=0A=
++                  maximum: 11=0A=
++      patternProperties:=0A=
++        "^vddo(1[01]|[01])-supply$": false=0A=
++=0A=
++unevaluatedProperties: false=0A=
++=0A=
++examples:=0A=
++  - |=0A=
++    #include <dt-bindings/gpio/gpio.h>=0A=
++    #include <dt-bindings/interrupt-controller/irq.h>=0A=
++=0A=
++    i2c {=0A=
++        #address-cells =3D <1>;=0A=
++        #size-cells =3D <0>;=0A=
++=0A=
++        dpll@68 {=0A=
++            compatible =3D "sitime,sit95316";=0A=
++            reg =3D <0x68>;=0A=
++            clocks =3D <&xo2>;=0A=
++            clock-names =3D "xtal";=0A=
++            reset-gpios =3D <&gpio 78 GPIO_ACTIVE_LOW>;=0A=
++            interrupts =3D <12 IRQ_TYPE_LEVEL_LOW>;=0A=
++            vdd-supply =3D <&reg_1v8>;=0A=
++            vddin-supply =3D <&reg_3v3>;=0A=
++            vddo0_1-supply =3D <&reg_3v3>;=0A=
++            vddo10_11-supply =3D <&reg_1v8>;=0A=
++            dpll-types =3D "eec", "eec", "eec", "eec";=0A=
++=0A=
++            input-pins {=0A=
++                #address-cells =3D <1>;=0A=
++                #size-cells =3D <0>;=0A=
++=0A=
++                /* IN0P and IN0N: pair 0 runs single-ended */=0A=
++                pin@0 {=0A=
++                    reg =3D <0>;=0A=
++                    label =3D "clkin0";=0A=
++                    connection-type =3D "ext";=0A=
++                    supported-frequencies-hz =3D /bits/ 64 <10000000>;=0A=
++                };=0A=
++=0A=
++                pin@1 {=0A=
++                    reg =3D <1>;=0A=
++                    label =3D "clkin1";=0A=
++                    connection-type =3D "synce";=0A=
++                    supported-frequencies-hz =3D /bits/ 64 <156250000>;=0A=
++                };=0A=
++            };=0A=
++=0A=
++            output-pins {=0A=
++                #address-cells =3D <1>;=0A=
++                #size-cells =3D <0>;=0A=
++=0A=
++                pin@0 {=0A=
++                    reg =3D <0>;=0A=
++                    label =3D "clkout0";=0A=
++                    supported-frequencies-hz =3D /bits/ 64 <156250000>;=0A=
++                };=0A=
++=0A=
++                pin@1 {=0A=
++                    reg =3D <1>;=0A=
++                    label =3D "clkout1";=0A=
++                    supported-frequencies-hz =3D /bits/ 64 <25000000>;=0A=
++                };=0A=
++=0A=
++                pin@a {=0A=
++                    reg =3D <10>;=0A=
++                    label =3D "clkout10";=0A=
++                    supported-frequencies-hz =3D /bits/ 64 <10000000>;=0A=
++                };=0A=
++            };=0A=
++        };=0A=
++    };=0A=
++...=0A=
+diff --git a/MAINTAINERS b/MAINTAINERS=0A=
+index 72ca3aab2106..858fe1c4332c 100644=0A=
+--- a/MAINTAINERS=0A=
++++ b/MAINTAINERS=0A=
+@@ -25182,6 +25182,12 @@ S:	Maintained=0A=
+ W:	http://www.winischhofer.at/linuxsisusbvga.shtml=0A=
+ F:	drivers/usb/misc/sisusbvga/=0A=
+ =0A=
++SITIME SIT9531X DPLL DRIVER=0A=
++M:	Ali Rouhi <arouhi@sitime.com>=0A=
++L:	netdev@vger.kernel.org=0A=
++S:	Maintained=0A=
++F:	Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml=0A=
++=0A=
+ SL28 CPLD MFD DRIVER=0A=
+ M:	Michael Walle <mwalle@kernel.org>=0A=
+ S:	Maintained=0A=
+-- =0A=
+2.39.2 (Apple Git-143)=0A=
+=0A=
