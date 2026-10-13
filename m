@@ -1,107 +1,100 @@
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0F03D565A
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791887235; cv=pass; b=TrTyPlP29YBtICEMstEWqhBXRdyO9AJj7kHKuRDvKO/FHGiq+kYWM0wBEMdMcksdFx2PGoVKeRsiqVh6qVtDfcT+Aq1M4sFxZKbTJ+OUMB2DXgrviKkv/efl92XVWajWqO+vB01fKiL24CxzSdfSpRXI85xoedyNXEGmwTvN0e8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791887235; c=relaxed/simple;
-	bh=EvYg/nZFolqpHH6bGHm5NPD/0IrXIoVtlIW4jSDafKQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DbzKj3qrPcq21+2Uszij3MXJVKjlXQ+qpj0Cyu8a83wT1L23baOMmusk1XtxUMU9LofWFOcuNMKQOYuwjwwD5KS6Zq1/WLCj6YX19xfSo6a3xFvmLpbSXkMyAd8MCQ9dgsszFTXe6CXXupH75lul7Sp1G/prP7lD3R40FIouaOU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SfIxWMiJ; arc=pass smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246374E36C8;
+	Tue, 13 Oct 2026 10:31:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791887464; cv=none; b=rYRYMbShR7WFgGZeEdCS08382cUmw0OzwEljlyDV4Flwz/j2mUCRIlhaYnPexeUQQRUvrsELITP1Ub+xVQDhIqq40pRkCGLTLN2bGIxX6FustWIVyL5fWxGW77Ls0POLp4tiNMfUDeLRU1CuNXqBU7Wt3fKLXuN8/gzPAnEE6zk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791887464; c=relaxed/simple;
+	bh=ph/I59TWPz3ZRmhDZlqj4Tr3vQPtkuQGStXlC1cwwvE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Uiop362LqRZXVWDCJXMvmegzVSruGxlE5iDYFCGE2OMZKtWRTtmExUTiYTjTQXLcY9yqVu5iJrPO/3YeyOWpHJ6O9adhIlcKRHD2hAxi3Qa3N54JNlejn1pfIzismAtxekvOAPmXbwNrZpBQwgk+1vqYR2FRAKqOQyMomkrkLXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=HxzVHtmf; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SfIxWMiJ"
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-6deb848ddd7so1809795eaf.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:27:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791887233; cv=none;
-        d=google.com; s=arc-20260327;
-        b=D4C3lmkoFDpUcSEaLlLWT8A7C3/8JQ8oKWSzDDtWPUaLIKURHicYHR7fQPwSXdtr2W
-         S3SStiXEIRRqHgUz5tNfhv0kDTZxBXrOsjMEf5OR0DoBLQlEHN23c14FAvhuu45FuTFx
-         bHuq0WFTuwyFHQKc+PoISRt/SCVBfrcfg+9QgFZDJmqRhNVFaPsq2y1da76I2iDowUlq
-         pP9qiYHFKFA25X1t7kkA+qnIkbltLjpUAFFvNfpafuGIVriui56fwmPpR3V81rQo9/Mw
-         zMbE2hMGoX6J6DUKJcK9VX4R8hK9u+1ZFTd9WGP0nCvKEjqo2zUGObLYGVqFrhxmKSDq
-         Xp9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=EvYg/nZFolqpHH6bGHm5NPD/0IrXIoVtlIW4jSDafKQ=;
-        fh=rvRL9wb5QH0sCG4wohn5BvcwarqA9Y3ukITxlTtLUVU=;
-        b=Rn18Ngwjn58k3li8j2bQ5dFLogvNyT1bh4N24sKDL+645eItJebYNZChplKEs9LJko
-         CxdO9WoALnyyOXKepVuwAbj6HVOF0ljRq9/kkjnjYuXYuVghlPFgNIL9DkXxYSHaNka2
-         rIIzQfSt+q9aJK5TAZTbfuz3OtKqMwipPSS/NPD9Bn7ekfvl5WRuypQXSbxzR1KlppTs
-         rrcCRFL8qxe817dedBs3aL43EqOAdRON5N285kAjQLL14pcIFenpT90HJr0VwQI0dJQO
-         /HOeGwYPOdxgZZL4ygy4Y/W8PJ1ywoacxTB7ZpAcciVdM2MhacJmt0dVBpzUfpduUb2g
-         veMQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791887233; x=1792492033; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EvYg/nZFolqpHH6bGHm5NPD/0IrXIoVtlIW4jSDafKQ=;
-        b=SfIxWMiJkqp6kmt48++eyAfDJaR9KlsXFMETo/S8Bsf2Ds/L3W/HTgT/kiAy245Hrm
-         Md/pEww+uTrpeCm1Bnm3b08NwMILnVUQr0WO6ZQSXv9b9BJsmL/V3+2iRnV/4Zd0s4gT
-         0nSfvvqsoY3Nb2TYBJ0Y8hJfB1w9KfgDNYN+nKGokqVG7cFluCYDrtsliIB1sS6Eo+dg
-         jfch+Rcgah4YwfQ1aufIrdBANrw5bQIaMJr4w2VKlOsviHtIsjicIpmdR2fLTTxF2Olc
-         zCQiW7Mz0fDgcVqTD1ChhKgKwwQbfWO/bPHrK+4Gjh0TI2J4kVGY8rODwXbKJ37KcLoD
-         scRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791887233; x=1792492033;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=EvYg/nZFolqpHH6bGHm5NPD/0IrXIoVtlIW4jSDafKQ=;
-        b=UvDZqvTYEBLkGChr59PCe6B+MXX7c7SB4SCtjMEi/6bGa8EZySIkg1ZiZhn98A8Hv+
-         fhYICkJwe6PjP1JQdu4/I/WG9k5bcB2t2mlu+k07SP+r7Y0BeDYWBl/OTaszN7DBnC4G
-         CQ9CM9ihjF1ZfYjaT820gStaVQQDqM2H6O1g5FfTrlSwMGh2pzwn/9rhAkXhZDuTF4yo
-         O7UwioEbQQm84UmaFFoex1w/SV/NxerjRdtK7RvyvhQ3NfqnJy3b1CoQ3mEYHVrFHDdp
-         z94WZAmgC4o4HtY0lkT1wZr81G+EK8r4UZ19oYGr5KSg9ndGyPcS9jz9qFj7qYx1L1/Q
-         /m7A==
-X-Forwarded-Encrypted: i=1; AKwUvBxtXto5X+c9pT9iybCUOVOsrrUr8gGYftdjrNb2lOwuH/Q/zDqTYW4H44LwMYdCmShCdojgGq8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIfMziS43bXUamyh9q+Si4PRz+2t1wYx10kvPjha0/3NwLMeKEh
-	sT95NgprU+v6JdMpd82WohJNcUpRjLsc6/nuD+mhrBE8/oyuXrJCidLqoqKMspRciyg1z5FeVU+
-	7stDChDAX1Fms0Xx2R5UaClfbIS7jB+A=
-X-Gm-Gg: AYBFou2hsI2pPc4pnuxxvoC32l2GA/z2v+lXtBuHTHv/4gNS6Gf17zGd7oWkOfmiANe
-	InmLevjLBOy5YRuLLSfo/ocLQk18IBn3ps9NeSHEVPV6yPkOuGzI8NzPoqBJ5LdNRCXsELl4Z9k
-	agoGaj8/Ob+R0UGm3QNf+5BtLZziC8P4eDoBLYuBodPoY2ZCZML3ULpdgcOZnWob+UdlpcuBmid
-	273tYfSv2qceQMb6dCfogBkUPGOaxS11Hnt2E1LHnxJUrp8ifFRh8dz4JtJdn3/4vtyFdHo27Ey
-	8aU9pOh6TpVHY7wMGjBfq8Q+joU4jNYbrFn47aNvvApH6WlgCx0sbYG/hzCGDdd0SSZM7btZz4Y
-	mqq9AeAig6ko=
-X-Received: by 2002:a05:6820:4b0d:b0:6ba:3635:800f with SMTP id
- 006d021491bc7-6ef12202b9emr8317434eaf.69.1791887232748; Tue, 13 Oct 2026
- 03:27:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="HxzVHtmf"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69DAUWWU0454001, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1791887432; bh=ph/I59TWPz3ZRmhDZlqj4Tr3vQPtkuQGStXlC1cwwvE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=HxzVHtmfIxm7z7UlMp2FyJ0NbRG7e5y/rc1RLEQJIYq2s0FYiD1JLh9Kvu9sZaPkD
+	 7F5h+X36kOyTocntTlUXqNzoZ1XdjAabE5wUuc6vnetY1gnCepESZ6KEoazIHjTly8
+	 sDpGM3nFOqv7uihiRMi79WGslhNmkssDO7oeDj4JMQYd5TpfqPJL59VW23GbjjMhU1
+	 zMspjukbN/BRUFhY/X2bxpkTDDpdwj3SEvC6blcl59TbEomHoBxy8sIGgQGtX6JdMT
+	 tvmNcHwmlpAA9ZACKipVX1v9/azBOiy+GWBnUQEe5+tjnquUv+zAL7IyJi4+0fBEE/
+	 BtCtimGajxzDw==
+Received: from mail.realtek.com (rtkexhmbs03.realtek.com.tw[10.21.1.53])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69DAUWWU0454001
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 13 Oct 2026 18:30:32 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS03.realtek.com.tw (10.21.1.53) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 13 Oct 2026 18:30:32 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::f36f:a844:4916:93f2%9]) with mapi id
+ 15.02.2562.049; Tue, 13 Oct 2026 18:30:32 +0800
+From: Hayes Wang <hayeswang@realtek.com>
+To: Linmao Li <lilinmao@kylinos.cn>, Andrew Lunn <andrew@lunn.ch>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Chih Kai Hsu
+	<hsu.chih.kai@realtek.com>, nic_swsd <nic_swsd@realtek.com>, Birger Koblitz
+	<mail@birger-koblitz.de>, Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH net v2] r8152: Use BMSR to detect the link state
+Thread-Topic: [PATCH net v2] r8152: Use BMSR to detect the link state
+Thread-Index: AQHdVLexra3FlE5swkqMdmzmTHCGJ7bwLnWg///8UICABCHSAIAAVXKAgAWlrQCAAPX7AA==
+Date: Tue, 13 Oct 2026 10:30:32 +0000
+Message-ID: <0573f6c64cac4bdd83388cb1bd76583a@realtek.com>
+References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
+ <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
+ <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
+ <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
+ <591ca604-b296-4469-94b5-957d9ba45ae4@lunn.ch>
+ <c32ac5e1-ecbe-4857-b36f-cd0cb1f54f90@kylinos.cn>
+In-Reply-To: <c32ac5e1-ecbe-4857-b36f-cd0cb1f54f90@kylinos.cn>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012011707.3378-5-sigefriedhyy@gmail.com> <179185710223.434549.6133926948819737320@kernel.org>
-In-Reply-To: <179185710223.434549.6133926948819737320@kernel.org>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Tue, 13 Oct 2026 19:27:01 +0900
-X-Gm-Features: AclHuK8JAnqsEY2qHAL_CL6PzjdPWfJwCgFSVzJgmZ53WVtZSl4NqYxxzMIIVrs
-Message-ID: <CA+7S2vK5iSraGLz2BP_akbYMHAtjV1FKE6KNx46wZNmuy1TCew@mail.gmail.com>
-Subject: Re: [PATCH net-next v11 4/6] net: add AF_PACKET multicast dumps
-To: netdev-bot+sashiko@kernel.org
-Cc: ajay.kathat@microchip.com, aleksandr.loktionov@intel.com, 
-	andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev, davem@davemloft.net, 
-	dsahern@kernel.org, donald.hunter@gmail.com, edumazet@google.com, 
-	idosch@nvidia.com, jacob.e.keller@intel.com, kuba@kernel.org, 
-	johannes@sipsolutions.net, kees@kernel.org, kory.maincent@bootlin.com, 
-	kuniyu@google.com, nicolas.dichtel@6wind.com, nickgarlis@gmail.com, 
-	pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, 
-	sdf.kernel@gmail.com, vadim.fedorenko@linux.dev, willemb@google.com, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-> - [Medium] dev_mc_dump() is registered with RTNL_FLAG_DUMP_UNLOCKED.
-
-This was raised on v9 too, already replied in a previous thread.
+TGlubWFvIExpIDxsaWxpbm1hb0BreWxpbm9zLmNuPg0KPiBTZW50OiBUdWVzZGF5LCBPY3RvYmVy
+IDEzLCAyMDI2IDEwOjM2IEFNDQpbLi4uXQ0KPiBIaSBBbmRyZXcsDQo+IA0KPiBUaGFua3MuIElu
+IHRlc3RzIG9uIG15IFJUTDgxNTNCLCBkb3duIGFuZCB1cCBub3RpZmljYXRpb25zIHdlcmUgYWJv
+dXQNCj4gMy4xIHMgYXBhcnQgYWZ0ZXIgYSBxdWljayBjYWJsZSByZXBsdWcsIGFuZCBhYm91dCAz
+LjQgcyBhcGFydCBhZnRlciBldGh0b29sIC1yLiBBDQo+IGRvdWJsZSByZWFkIHNob3VsZCBzdGls
+bCByZXBvcnQgZG93biBpZiB0aGUgbGluayB3b3JrIHJ1bnMgZHVyaW5nIHRoYXQgaW50ZXJ2YWws
+DQo+IGJ1dCBJIGhhdmUgbm90IHZlcmlmaWVkIHRoaXMgZGlyZWN0bHkuDQo+IFRoZXNlIHJlc3Vs
+dHMgZG8gbm90IGNvdmVyIHNob3J0ZXIgbGluayBpbnRlcnJ1cHRpb25zIG9yIG90aGVyIGNoaXBz
+Lg0KPiANCj4gU2luY2UgdGhpcyBmaXhlcyBhIHJlZ3Jlc3Npb24gZm9yIG5ldCBhbmQgc3RhYmxl
+LCB3b3VsZCB5b3UgYWNjZXB0IGEpIHRoZXJlLA0KPiBrZWVwaW5nIFBMQV9QSFlTVEFUVVMgYW5k
+IHJlYWRpbmcgQk1TUiBvbmNlIGJlZm9yZSBhbiBvZmYtdG8tb24gY2Fycmllcg0KPiB0cmFuc2l0
+aW9uLCBhbmQgbW92aW5nIGNhcnJpZXIgZGV0ZWN0aW9uIHRvIEJNU1Igd2l0aCBwZXItY2hpcCBo
+YW5kbGluZyBhcyBhDQo+IGZvbGxvdy11cCBmb3IgbmV0LW5leHQsIG9uY2UgdGhlIGNoaXAgYmVo
+YXZpb3VyIGlzIGtub3duPw0KPiANCj4gSGF5ZXMsIHRvIGJ1aWxkIHRoYXQgbGlzdDogd2hpY2gg
+SUNzIG5vdGlmeSBvbmx5IG9uIGxpbmsgY2hhbmdlcz8gQW5kIG9uIGFueSBvZg0KPiB0aGVtLCBk
+b2VzIHJlYWRpbmcgQk1TUiwgd2hpY2ggY2xlYXJzIHRoZSBsYXRjaGVkIGxpbmsgZG93biwgdHJp
+Z2dlciBhbm90aGVyDQo+IG5vdGlmaWNhdGlvbj8gVGhlIHNpbmdsZSByZWFkIGRlcGVuZHMgb24g
+dGhhdC4gQmlyZ2VyIHRlc3RlZCB2MiBvbiBhbiBSVEw4MTU3DQo+IGFuZCBhbiBSVEw4MTUzQSB3
+aXRob3V0IHByb2JsZW1zLCBzbyBpdCB3b3VsZCBhbHNvIGhlbHAgdG8ga25vdyBob3cgdGhlDQo+
+IFJUTDgxNTcgbm90aWZpZXMuDQoNClNvbWUgdXNlcnMgaGF2ZSBjb21wbGFpbmVkIGFib3V0IHRo
+ZSBwZXJpb2RpYyBub3RpZmljYXRpb25zLCBzbyB3ZSBwbGFuIHRvIG1vZGlmeSB0aGUgZHJpdmVy
+IGFjY29yZGluZ2x5Lg0KUlRMODE1NiBhbmQgbGF0ZXIgY2hpcHMgd2lsbCBub3RpZnkgdGhlIGRy
+aXZlciBvbmx5IHdoZW4gdGhlIGxpbmsgc3RhdGUgY2hhbmdlcy4gDQpUaGUgV2luZG93cyBkcml2
+ZXIgYWxyZWFkeSB1c2VzIHRoaXMgYmVoYXZpb3IuDQpJbiBhZGRpdGlvbiwgSSBkb27igJl0IGJl
+bGlldmUgdGhhdCBjbGVhcmluZyB0aGUgbGF0Y2hlZCBsaW5rLWRvd24gc3RhdHVzIHdpbGwgdHJp
+Z2dlciBhbm90aGVyIG5vdGlmaWNhdGlvbi4NCg0KDQpCZXN0IFJlZ2FyZHMsDQpIYXllcw0KDQo=
