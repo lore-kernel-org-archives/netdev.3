@@ -1,44 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2FD389104
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 07:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5C33839B4;
+	Tue, 13 Oct 2026 07:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791877100; cv=none; b=aXZDnyWwc1L3ck2AfRGTxGF26ZfLWE+1DB5dyO3O7vOJgvssRi1DBbOjMo+ySgg1h26gQ6OgMCknSbpUEpQ9ttWscHtK6h0UxWxgv6o6CSiFQ1MoP9z57dhulaYdlJqKAk9la9d0qgOKWOqwXkLp3vskk4dyO3l/I45+fcjN9cg=
+	t=1791877106; cv=none; b=fTIZ3TnT9q8q0IHeX2nBwzaVqlMjW2LHMP9m1A8eCKn2SruOwfk+utPz/nGBOF/KJY5molC9OMxMk0gOCpF8V60QlaFsqJ9I/aigR4f4BnmKCb5V1080mgt1lMG3FJgfK92d/Wa38gZf0JjAFrwI1KFy127uDaGJWf0Abqv8Vgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791877100; c=relaxed/simple;
-	bh=ruyKG4VHR2v0OChl1IeIVyGUXcSRWNzumPPNvj+moTc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nKQ/dUx9L4eS1ZGLnPR8W4G+ymJ2rLIf3yUZN55Hx7IGF1z8Ip8r5KSA/4vCb6rQnjJ6soH/DBGgTS6SyFusw605Y5bqHQSbtZfEV+kLvmALdArDG33ptEEmWgX5+irB0vNvWBigJBho89PhK+p2QIvi9ci2V3RHAKeVWOBh3eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AKKLYhhT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791877106; c=relaxed/simple;
+	bh=3f3y2n0ApDaFEjDl2acfQmborKmaArBGLspM5vPlDbQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uR449sMAny7hRqT/2LZ9cmTRuVP7OA+4F0l8KmY5Sb/t0znB7Nj5BF3LydOGOYmN91zbOw+zYSECHtwmEAjW9LW63A37OKr5cn6GVkKOSRX+wxxEBo/koPR6l3ipWV2bxUBBmtH8G8VSpxoVv0A9FufC6rF7FVls94AKjbpAfHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jEvILi9x; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AKKLYhhT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FBC71F00898;
-	Tue, 13 Oct 2026 07:38:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791877099;
-	bh=n3nmHFaTma5B/vTzHvzj0M7bv57NF5xz+ZcepdNNJl4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AKKLYhhT5Pon0evytIafLVAKxmiHfwKz3SS796KOlIMB0dCxrMu0uU4NvVSeTeuXG
-	 EBabGOA/ZUYMrWjQvR+OkOlPEVtyV9NC0wBhSoVf5b32ig45E7pxLp3r6N4z+Ym1eI
-	 fD3VECFeIXMh7ULOVkHeTs2QJajWmKsPduZibW9YyW7JiY8pfauKOBJXwwLBUgJFiN
-	 6f99VcgmWNkME+c/0Hjw5Z/Y+VDzybNxWtENeiIH/2eAEWQtQKopgMXhw4QiynwCFc
-	 UMn9AV4RZ7DT//8jWtBgjzpG8mVglP0XtsjV5u10tq4ODxtyTt4Mu2F8LIWPltj+Nz
-	 dQRPXPKDxwHTA==
-Subject: Re: [PATCH net-next v2 2/2] netlink: specs: add ovs datapath and
- vport set operations
-From: netdev-bot+sashiko@kernel.org
-To: houminxi@gmail.com
-Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org
-Date: Tue, 13 Oct 2026 07:38:18 +0000
-Message-ID: <179187709857.434549.12932199387917585407@kernel.org>
-In-Reply-To: <20261012065552.2426415-3-houminxi@gmail.com>
-References: <20261012065552.2426415-3-houminxi@gmail.com>
-X-sashiko-severity: Medium
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jEvILi9x"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69D7bf8Z3324134, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1791877062; bh=3f3y2n0ApDaFEjDl2acfQmborKmaArBGLspM5vPlDbQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=jEvILi9x7mXvn26VNS1Qcfmu77xobcVBqXqaHRP94bEzNtpVVlyRYvl+li9wJLUjd
+	 /9xO1EVJ6lQ8vbdGS0Oufpvk45Ok5OVeE4Y8Kzi0jFnsm7KlsmZ7m0CTKqJdsuwrzw
+	 O/MzmbUZT9XTmskkGc/IGm1KgrbbBdsHhAqZfgwDjCuoPGHN37NVt10oLutvm39J09
+	 p/XSo0ReoKfXskEzXNQFxcvuw9WrTg0FK+JKAQWU8YNZd/BYngOPtZZDTCtVtUk2Vy
+	 T1z1N5Av2qYOEzQ2WRoYDXAk/Tb14w1MYW/tFE/Vf/HhDHq7hQb3wcvJkKBq7+haHb
+	 2RKPm/6FpRNfw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69D7bf8Z3324134
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 13 Oct 2026 15:37:42 +0800
+Received: from RTKEXHMBS03.realtek.com.tw (10.21.1.53) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 13 Oct 2026 15:37:42 +0800
+Received: from RTKEXHMBS03.realtek.com.tw ([::1]) by
+ RTKEXHMBS03.realtek.com.tw ([fe80::f36f:a844:4916:93f2%9]) with mapi id
+ 15.02.2562.049; Tue, 13 Oct 2026 15:37:42 +0800
+From: Hayes Wang <hayeswang@realtek.com>
+To: Linmao Li <lilinmao@kylinos.cn>, Andrew Lunn <andrew@lunn.ch>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Chih Kai Hsu
+	<hsu.chih.kai@realtek.com>, nic_swsd <nic_swsd@realtek.com>, Birger Koblitz
+	<mail@birger-koblitz.de>, Xiangqian Zhang <zhangxiangqian@kylinos.cn>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH net v2] r8152: Use BMSR to detect the link state
+Thread-Topic: [PATCH net v2] r8152: Use BMSR to detect the link state
+Thread-Index: AQHdVLexra3FlE5swkqMdmzmTHCGJ7bwLnWg///8UICABCHSAIAGzjdg
+Date: Tue, 13 Oct 2026 07:37:42 +0000
+Message-ID: <ea950637b76b4f43b3031a040d1e5fec@realtek.com>
+References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
+ <fd3bff0e63304681b9e5f35f2f57e50e@realtek.com>
+ <7a8d21bd-3484-4120-abd6-f7290f919b7d@lunn.ch>
+ <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
+In-Reply-To: <2bd3886a-da6e-4703-bd7a-9baa32bfd2f4@kylinos.cn>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,170 +70,28 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider.
-
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The new `set` operation in
-  Documentation/netlink/specs/ovs_vport.yaml lists only [name, type,…
-- [Low] The new ovs_vport `set` operation lists `options` as a request
-  attribute, but ovs_vport_cmd_set() always fails with -EOPNOTSUPP when…
-- [Low] The datapath `set` doc in
-  Documentation/netlink/specs/ovs_datapath.yaml warns that a missing…
-
---
-
-netlink: specs: add ovs datapath and vport set operations
-
-This commit adds the missing set operations to the ovs_datapath and
-ovs_vport netlink specs. It also marks the new, del and set operations of
-both families with the uns-admin-perm flag.
-
-> diff --git a/Documentation/netlink/specs/ovs_datapath.yaml b/Documentation/netlink/specs/ovs_datapath.yaml
-> index f7b3671991e6c..9c33d6a2f05db 100644
-> --- a/Documentation/netlink/specs/ovs_datapath.yaml
-> +++ b/Documentation/netlink/specs/ovs_datapath.yaml
-
-[ ... ]
-
-> @@ -149,10 +150,27 @@ operations:
->        doc: Delete existing OVS data path
->        value: 2
->        attribute-set: datapath
-> +      flags: [uns-admin-perm]
->        do:
->          request:
->            attributes:
->              - name
-> +    -
-> +      name: set
-> +      doc: |
-> +        Modify an existing OVS data path. The kernel treats a missing
-> +        user-features attribute as zero and clears the previously set
-> +        features.
-> +      value: 4
-> +      attribute-set: datapath
-> +      flags: [uns-admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - name
-> +            - user-features
-> +            - masks-cache-size
-> +            - per-cpu-pids
-
-[Severity: Low]
-Should the doc also say that per-cpu-pids depends on user-features in the
-same request?
-
-In ovs_dp_change(), the new features are stored first, and the pids are
-only applied when the per-CPU dispatch bit is set:
-
-net/openvswitch/datapath.c:ovs_dp_change() {
-    ...
-	dp->user_features = user_features;
-
-	if (dp->user_features & OVS_DP_F_DISPATCH_UPCALL_PER_CPU &&
-	    a[OVS_DP_ATTR_PER_CPU_PIDS]) {
-		/* Upcall Netlink Port IDs have been updated */
-		err = ovs_dp_set_upcall_portids(dp,
-						a[OVS_DP_ATTR_PER_CPU_PIDS]);
-    ...
-}
-
-Consider a client that sends only name and per-cpu-pids to refresh the
-per-CPU upcall pids. Per-CPU dispatch gets turned off, the pids are
-ignored, and the request still returns success.
-
-Could the doc state that per-cpu-pids only takes effect when
-dispatch-upcall-per-cpu is set in user-features in the same request?
-
-> diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
-> index fa975f8821b6c..63a0a41a11997 100644
-> --- a/Documentation/netlink/specs/ovs_vport.yaml
-> +++ b/Documentation/netlink/specs/ovs_vport.yaml
-
-[ ... ]
-
-> @@ -165,6 +167,19 @@ operations:
->              - netnsid
->              - upcall-stats
->        dump: *vport-get-op
-> +    -
-> +      name: set
-> +      doc: Modify an existing OVS vport
-> +      value: 4
-> +      attribute-set: vport
-> +      flags: [uns-admin-perm]
-> +      do:
-> +        request:
-> +          attributes:
-> +            - name
-
-[Severity: Medium]
-Should port-no be in this request list as well?
-
-ovs_vport_cmd_set() finds the vport with lookup_vport(). That function
-accepts either a name, or a port number together with dp_ifindex from the
-fixed header:
-
-net/openvswitch/datapath.c:lookup_vport() {
-    ...
-	} else if (a[OVS_VPORT_ATTR_PORT_NO]) {
-		u32 port_no = nla_get_u32(a[OVS_VPORT_ATTR_PORT_NO]);
-		...
-		dp = get_dp(net, ovs_header->dp_ifindex);
-		...
-	} else
-		return ERR_PTR(-EINVAL);
-}
-
-The del operation in this spec goes through the same lookup_vport() and
-lists port-no. Without port-no here, the generated YNL request struct for
-set has no port_no member.
-
-That means YNL clients can only select the vport by name for set, even
-though the kernel also supports lookup by datapath ifindex plus port
-number.
-
-> +            - type
-> +            - options
-
-[Severity: Low]
-Is options meant to be listed here? ovs_vport_cmd_set() rejects it every
-time it is present:
-
-net/openvswitch/datapath.c:ovs_vport_cmd_set() {
-    ...
-	if (a[OVS_VPORT_ATTR_OPTIONS]) {
-		/* There are no vport types that support legacy options. */
-		err = -EOPNOTSUPP;
-		goto exit_unlock_free;
-	}
-    ...
-}
-
-vport_policy also marks OVS_VPORT_ATTR_OPTIONS as unused.
-
-Type can't really be modified either. It is only accepted when it matches
-vport->ops->type, and any other value returns -EINVAL.
-
-The commit message says "the kernel rejects a type change and rejects
-options", but the spec's doc ("Modify an existing OVS vport") says neither.
-Could options be dropped from the list, and the doc say that type has to
-match the existing vport type?
-
-> +            - upcall-pid
->  
->  mcast-groups:
->    list:
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012065552.2426415-1-houminxi%40gmail.com
+TGlubWFvIExpIDxsaWxpbm1hb0BreWxpbm9zLmNuPg0KPiBTZW50OiBGcmlkYXksIE9jdG9iZXIg
+OSwgMjAyNiAzOjE2IFBNDQpbLi4uXQ0KPiBIaSBIYXllcywgQW5kcmV3LA0KPiANCj4gVGhhbmtz
+LiBTaW5jZSB0aGUgbmV3ZXIgSUNzIG5vdGlmeSBvbmx5IHdoZW4gdGhlIGxpbmsgc3RhdHVzIGNo
+YW5nZXMsIHRoZSBkcml2ZXINCj4gY2Fubm90IHJlbHkgb24gYW5vdGhlciBsaW5rIHVwIG5vdGlm
+aWNhdGlvbiBhZnRlciB0aGUgbGluayBoYXMgc2V0dGxlZCwgc28gdjIgY2FuDQo+IGxlYXZlIHRo
+ZSBjYXJyaWVyIG9mZiB3aGVuIHRoZSBmaXJzdCByZWFkIHJldHVybnMgdGhlIGxhdGNoZWQgbGlu
+ayBkb3duLg0KPiANCj4gQmVmb3JlIHNlbmRpbmcgdjMsIHdoaWNoIGFwcHJvYWNoIHdvdWxkIHlv
+dSBwcmVmZXI/IEJvdGggZml4ZWQgdGhlIHByb2JsZW0NCj4gaW4gbXkgdGVzdHMgb24gYW4gUlRM
+ODE1M0Igd2l0aCB2Ny4zLXJjNjoNCj4gDQo+IGEpIEtlZXAgY2FycmllciBkZXRlY3Rpb24gb24g
+UExBX1BIWVNUQVRVUyBhbmQgcmVhZCBCTVNSIG9uY2UgYmVmb3JlDQo+ICAgICBjYXJyaWVyIG9u
+LCBvbmx5IHRvIGNsZWFyIHRoZSBsYXRjaC4gVGhpcyBpcyB0aGUgb3B0aW9uIEkgYXNrZWQNCj4g
+ICAgIGFib3V0IG9uIHYxLg0KDQpJIHByZWZlciBvcHRpb24gYSkuIFVzaW5nIFBMQV9QSFlTVEFU
+VVMgZm9yIGNhcnJpZXIgZGV0ZWN0aW9uIGlzIHRoZSBhcHByb2FjaA0KcmVjb21tZW5kZWQgYnkg
+b3VyIGhhcmR3YXJlIGVuZ2luZWVycywgYW5kIHdlIGhhdmUgdGVzdGVkIGFuZCB2ZXJpZmllZCBp
+dC4NCg0KPiBiKSBEZXRlY3QgY2FycmllciBmcm9tIEJNU1IgYW5kIHJlYWQgaXQgYWdhaW4gd2hl
+biB0aGUgZmlyc3QgcmVhZA0KPiAgICAgcmV0dXJucyBsaW5rIGRvd24sIGFzIGdlbnBoeV91cGRh
+dGVfbGluaygpIGRvZXMgaW4gaW50ZXJydXB0IG1vZGUuDQo+IA0KPiBOZWl0aGVyIGRlcGVuZHMg
+b24gYW5vdGhlciBub3RpZmljYXRpb24uIE5laXRoZXIgcmVwb3J0cyBhIHNob3J0IGxpbmsgZHJv
+cCB0aGF0DQo+IHJlY292ZXJzIGJlZm9yZSB0aGUgbGluayB3b3JrIHJ1bnM6IHdpdGggYSkgYSBs
+YXRlciBzcGVlZCBxdWVyeSBzdGlsbCBzZWVzIHRoZQ0KPiBsYXRjaGVkIGxpbmsgZG93biwgd2l0
+aCBiKSB0aGUgbGF0Y2ggaXMgY2xlYXJlZC4NCj4gDQo+IEhheWVzLCBmb3IgYik6IGlzIEJNU1Jf
+TFNUQVRVUyByZWxpYWJsZSBhcyB0aGUgY2FycmllciBzb3VyY2Ugb24gYWxsIGNoaXBzDQo+IHN1
+cHBvcnRlZCBieSByODE1Mj8NCg0KSeKAmW0gbm90IGZhbWlsaWFyIHdpdGggdGhpcyBwYXJ0LCBz
+byBJIG5lZWQgdG8gY29uZmlybSBpdCB3aXRoIG91ciBQSFkgZW5naW5lZXJzLg0KDQpCZXN0IFJl
+Z2FyZHMsDQpIYXllcw0KDQo=
