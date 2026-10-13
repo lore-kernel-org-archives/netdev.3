@@ -1,649 +1,647 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8611952BE3C
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A855326A0
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791914068; cv=none; b=FBlDjqhU8B3Vp1tnb44XGFxh+uC5geW5OqjugVvYzH4T59D4p7B9fbmJ8wV3VpfenXFPlYthyKuHKHbvRoo1W4/th32k0T7pM7TsY9xHp1Hs42x5VG3TmXFOFa8UQmrFucia/YbiZTjYJEIpDX36HO/c8rcJoV3h/j7d+YhZszE=
+	t=1791914069; cv=none; b=pt0UYT97PPUZnd1G0Ki4QLEzp27d7pcPDy38BRQet+87ccfP/7Mu9q71PayIUtWlYjB7ZfTo4Ck+d6euPPj0Tlxq+vzjUGCgxLJ4sNnXQryh2IVfSDhQqh/YJ4H3H5MtCeFL+K4yowAqDdBNPU1RT85Y1ZA/diz4wByQfyHJvgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791914068; c=relaxed/simple;
-	bh=V04HKkppP4otIUiZZjwJr+SY7gh+0MABS3xv2JJGm94=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=VQQxapnKej7jwPJbCfWN0ihfqdfKHkhH1ECY2wVeKb/L/vkn2zoW6X8UP8C+Rq59Q5l0MEO3H4ry37u18g6brLgNUOuIoEKyKGpA5NfJHRceKDjCwIV1aAskOtZObf5DpY2pwkOV+xTpQ09M3FDvJKBnC9TmlHUPGHTmtepQBgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hqlmMxbx; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791914069; c=relaxed/simple;
+	bh=RdWwQnlUWEUqnI4l+4rKhFpbSf6bq7OlVlIUzpPlsL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TERgk5ooYGvf5AAto7Oq1n5lvM+ZoKVjmNFG8HySnbJ+SmUz/zsN/+MGXUmj0vfjZsYZQ2yG1kkcQ2Cv1ON6icT248zF6labIOp/pKbyR7duSet6VmT+W8louuZN+TNt+BGCo6ATRHjfI6CyQcBQIb+y7zLnukmUBuR+oR9kD+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=yrJxBE7M; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hqlmMxbx"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F22E91A1201
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:22 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C5C146075C
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:22 +0000 (UTC)
-Received: by mail.galae.net (Postcow, from userid 0)
-	id 205F011D718BA; Tue, 13 Oct 2026 19:50:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791914062; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=guaRvjHarTeM+wByn0FDVtfSuw3w5G/k8EvSJ1DM3JQ=;
-	b=hqlmMxbxcWJcib7I28HbYJGNu/f1x5hdBzYw1fQr3io7cY+5y0Tfx04LOw7SgytXaEt7Cf
-	NIErlPSTZZ2EmuHxUBAknOKij8Ai/M2oRwuAEj+b22Z5FjiT+d+3Y16TCdPU18J8E0b1lj
-	wmOHMf/7yz8GeEfpO923wFFQbWWAmA33DWCIj4It8iAcH0e5kPDcOn32AFYT1EA+39TeC6
-	x3lKdSNU9bCS43L+wH5uVowBHFhcx7bYS0M5UHlkrpjOQwmULbQHrvwibWsdeE865vitbB
-	bc2vzYq5HTcDTCniS5iNjKO+hO42PW3pQu56gZwoaDNXPvoiFkcHI0xIqOJJUA==
-Authentication-Results: mail.galae.net;
-	none
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="yrJxBE7M"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30b6dad2382so7531354eec.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:54:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blockcast.net; s=google; t=1791914065; x=1792518865; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jDWiDcZvqIc6oN8dqeE/x4ONYZ9SE9YCPWWgwLd8q0E=;
+        b=yrJxBE7MvB2LaOMbkFL/EeKvEJiXTT/48qd57WzS0fe1CcH5ACSq6g9oTO0e2Q/aXz
+         bbdX4VZstwdTbSUZek6YY2XUtX/8DlU33NqrNgajZ+hw4alE7i2yOEv/0SBeeCu2eVfi
+         Rlxlprrhy1lJ+wx7N9Hm3gKVHcbk6qi+T/21/73EbmO4MhNGOLw0oSse8/BF31d/z8Gl
+         eVxWBo2iOxWA/ZtTr6O5L6H8VlCVAhwYCwJRNhNkWZQU+lh3I7kssUA7oGEpFjQ46eVe
+         1uhLPjg4/oz0xzPprLQ6sWU3x6Hch2lcHvL+0Fn5E1omlfhGo/sFdjWxRK2K0BPaqNmT
+         c83w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791914065; x=1792518865;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jDWiDcZvqIc6oN8dqeE/x4ONYZ9SE9YCPWWgwLd8q0E=;
+        b=FJocDrXjuX9bgwtS6IVxY1l2BaJ6h9RiG58wmCnaadnWHwjUkjhxrlzIy1MrAJ8CWu
+         Ymq8ATe7+u5Ywu4Q1h6Vw46APl9UvVId11JtKLxpJJDPASqR8myOltlnvEhtmnzP/vXK
+         GcbzPPjZsawJAytuRyThemU/zr7AOWcc0QCEyI2piZg5GsH/QGH6rXW0PVWzrBVk7lmn
+         jtoTT4CD3HrKCw1FkmEU6Pd2I394KBSmc93JtP1SWsz5Au9ztBp4haVx5DJIolAQd/Iq
+         +DYZ1LqrKadN7kQVWdBCq4sJhzTxrXmWGNS//+Lv/vHD1/1PfgBSw12JKEMlHg58U/al
+         MPfQ==
+X-Gm-Message-State: AFq9FYIHL9MZpDWj6qjg65mIukvM5ibryrZsjVf5YHqBkeb/LHy0YAmT
+	CPOCNNstG43eI/mlYJjkptQFMf2Wdtcc1dVxjriDa2VGsi5Mv6aTztdNyji/TH1nmys=
+X-Gm-Gg: AYBFou1VATmzQB1ybff0Ll2SlH+qxpSbE6ATYkVFQT4Rn7cV7ueeb0vJjFySo0u1JFF
+	PKtFynN+REJP3DR+0ix5bCjct0dnz+Xlgj1DdmFtVt/aWK++xtk2ss04vWJd8uVU++zuQxRkMk+
+	hZ4A+0hCXsZJb5xnGAoCOVLwI2ArZTWJUwOP31dCSwsaWFQEuijePjPoqVSWInS3CnWUfxjtqAM
+	tw/WMAVuZ/oDNk7wqZjA33cN8mTfkFvpdJrLUvECNdWJm4o3Tm/hnp8ew6skmqGXrXdOi5tyZQf
+	FvPSdLgKEJZEJis+tYDiQTU+wFah9D2rlW3IZ3cWU74G0T6qeQKSDr/Gp97JIOQAVPRmIzjLm2Q
+	EOB3qs3jNPlnioXwlA5g5tomGefOHSAlEnM61EE3KGB0JnBMSYJZFDWdyQ/02og/ZCHyqfPgDyp
+	2th46sHfvn8iovMfHH7ew4GRRePpSmEJddr2ecIAdJOU38DORKRcxzEhLyJPnWdo5hychi4LrT5
+	zbQGYc+BHku18hR7MPEIgKRj+iDrZC72oaBgFfoSCFkAxDXHZo02l2QAVz8A2f4
+X-Received: by 2002:a05:7301:e10c:b0:35c:3941:c7bd with SMTP id 5a478bee46e88-35c3941d34bmr4438434eec.19.1791914064861;
+        Tue, 13 Oct 2026 10:54:24 -0700 (PDT)
+Received: from devbox.ts.blockcast.net ([69.25.95.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cab27d5sm50183362eec.17.2026.10.13.10.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 10:54:23 -0700 (PDT)
+From: Omar Ramadan <omar@blockcast.net>
+To: Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net v4 5/5] amt: harden relay tunnel lifetime and request admission
+Date: Tue, 13 Oct 2026 17:54:07 +0000
+Message-ID: <20261013175407.947606-6-omar@blockcast.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261013175407.947606-1-omar@blockcast.net>
+References: <20261013175407.947606-1-omar@blockcast.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 11 Oct 2026 11:23:54 +0200
-Message-Id: <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com>
-Cc: "Russell King" <linux@armlinux.org.uk>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Broadcom internal kernel review list"
- <bcm-kernel-feedback-list@broadcom.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Miroslav Lichvar" <mlichvar@redhat.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Maxime
- Chevallier" <maxime.chevallier@bootlin.com>
-To: "James Clark" <jjc@jclark.com>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "Heiner Kallweit" <hkallweit1@gmail.com>, "Richard Cochran"
- <richardcochran@gmail.com>, "Florian Fainelli"
- <florian.fainelli@broadcom.com>, "Doug Berger" <opendmb@gmail.com>,
- "Nicolai Buchwitz" <nb@tipi-net.de>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next 4/5] net: macb: implement timestamped MDIO
- writes
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261009143506.2507607-1-jjc@jclark.com>
- <20261009143506.2507607-5-jjc@jclark.com>
-In-Reply-To: <20261009143506.2507607-5-jjc@jclark.com>
-X-TUID: VaWZt3fdrtgw
-X-Last-TLS-Session-Version: None
-X-Rspamd-Queue-Id: 205F011D718BA
-X-Spamd-Result: default: False [-2.60 / 30.00];
-	BAYES_HAM(-5.50)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	DATE_IN_PAST(1.00)[56];
-	MV_CASE(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	MAILCOW_DOMAIN_HEADER_FROM(0.00)[bootlin.com];
-	BCC(0.00)[];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_RCPT(0.00)[netdev];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	RCVD_COUNT_ZERO(0.00)[0];
-	FREEMAIL_TO(0.00)[jclark.com,davemloft.net,kernel.org,redhat.com,lunn.ch,gmail.com,broadcom.com,tipi-net.de];
-	TO_DN_SOME(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	URIBL_BLOCKED(0.00)[lunn.ch:email,broadcom.com:email,microchip.com:email,localhost:rdns,localhost:helo,bootlin.com:email,bootlin.com:mid,bootlin.com:url,tipi-net.de:email,armlinux.org.uk:email,davemloft.net:email,jclark.com:email];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_SIGNED(0.00)[bootlin.com:s=dkim]
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hello James,
+Relay Membership Requests are unauthenticated UDP packets. Creating tunnel
+state from a Request lets spoofed sources consume relay slots and lets a
+spoofed Request overwrite the nonce and MAC of an established endpoint.
 
-On Fri Oct 9, 2026 at 4:35 PM CEST, James Clark wrote:
-> Implement write_sts to provide system timestamp bounds for completion
-> of an MDIO write. This enables tighter system timestamp bounds in PHY
-> implementations of gettimex64.
->
-> Take system timestamps around the command register write, then add
-> the time from the command write until the MDC edge that clocks the
-> last data bit, calculated from the peripheral clock rate and the
-> configured MDC divider.
->
-> On RP1 that edge comes 63.5 MDC periods after the command write. This
-> was measured on a Raspberry Pi CM5 with its BCM54210PE PHY. The PHY's
-> PHC was read with PTP_SYS_OFFSET_EXTENDED while the MDC divisor was
-> switched between 48 and 128 through /dev/mem. Any error in the number
-> of periods would make the PHC offset jump at each switch. After
-> compensating for drift, the jump with 63.5 periods was under 2 ns.
-> The MDC divider does not appear to run freely: the spread of the PHC
-> offsets did not change with the divisor.
->
-> Signed-off-by: James Clark <jjc@jclark.com>
-> Assisted-by: LLM
-> ---
-> The 63.5-period delay has been measured only on RP1, but the code
-> assumes it holds for all MACB and GEM variants. I am not sure whether
-> that is a reasonable assumption; if not, write_sts could be enabled
-> only for RP1.
+Keep Requests stateless: derive the Query MAC from the source address,
+source port, nonce, and current key, then authenticate the Membership Update
+before decapsulating it or creating tunnel state. Key tunnel state by the
+(address, port) endpoint. Initialise every key before enabling receive.
 
-I'm invoking my colleague @Maxime to get his opinion. What impacts the
-MDIO write_c22 duration and how likely is it that this duration varies
-(1) on the same MAC+PHY combo, (2) with a different PHY or (3) with a
-different MACB revision?
+Keep four generations of the relay key. The current key and three previous
+keys provide a 180-240 second validation window, whose lower bound exceeds
+the advertised QQIC request interval, so a gateway can renew its MAC across
+key rotations.
 
-Thanks!
+When a new endpoint would exceed either the global tunnel limit or the
+per-source limit, withhold the Membership Query and silently drop the
+Request. This avoids reflecting ICMP to an unauthenticated source and lets
+the gateway rediscover. Requests from an existing endpoint still receive a
+Query and can renew their MAC.
 
-Sashiko makes an interesting point with PCLK that might change over
-time, giving an example (which I've not checked) where it would be
-derived from the CPU clk which might change with cpufreq.
+A Membership Update may find a tunnel under RCU after expiry has marked it
+dead. Recheck tunnel->dead while holding tunnel->lock before adding report
+groups, so no group timer is armed after teardown has cleared the groups.
+Check netif_running(amt->dev) under amt->lock before allocating a tunnel,
+so an Update racing device stop cannot publish state that stop will miss.
 
-I'm wondering if we could do better than a hardcoded delay? For example
-we could busy-wait for NSR.IDLE inside the prets/postts region, but
-that implies at least 25=C2=B5s with IRQs disabled. Or we could do a few
-measurements at init to sample our platform delay?
+Fixes: cbc21dc1cfe9 ("amt: add data plane of amt interface")
+Assisted-by: LLM
+Signed-off-by: Omar Ramadan <omar@blockcast.net>
+---
+ drivers/net/amt.c | 316 +++++++++++++++++++++++++++++++++-------------
+ include/net/amt.h |  16 ++-
+ 2 files changed, 241 insertions(+), 91 deletions(-)
 
-It doesn't solve the PCLK changing issue, but it solves the hardcoded
-63.5 value.
-
-If you share more details on your testing setup it would help for us to
-reproduce on other hardware to gather more data points.
-
->  drivers/net/ethernet/cadence/macb.h      |  1 +
->  drivers/net/ethernet/cadence/macb_main.c | 95 ++++++++++++++++++++++--
->  2 files changed, 88 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/c=
-adence/macb.h
-> index 1cb2778fe49..3670731690f 100644
-> --- a/drivers/net/ethernet/cadence/macb.h
-> +++ b/drivers/net/ethernet/cadence/macb.h
-> @@ -1334,6 +1334,7 @@ struct macb {
->  	struct macb_or_gem_ops	macbgem_ops;
-> =20
->  	struct mii_bus		*mii_bus;
-> +	unsigned long		mdio_sts_rate;
->  	struct phylink		*phylink;
->  	struct phylink_config	phylink_config;
->  	struct phylink_pcs	phylink_usx_pcs;
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index c4223ca848d..cec6e5a48e9 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -384,11 +384,47 @@ static int macb_mdio_read_c45(struct mii_bus *bus, =
-int mii_id, int devad,
->  	return status;
->  }
-> =20
-> -static int macb_mdio_write_c22(struct mii_bus *bus, int mii_id, int regn=
-um,
-> -			       u16 value)
-> +static u64 macb_mdio_sts_delay(struct macb *bp)
-> +{
-> +	static const u16 gem_divisors[] =3D {
-> +		[GEM_CLK_DIV8] =3D 8,
-> +		[GEM_CLK_DIV16] =3D 16,
-> +		[GEM_CLK_DIV32] =3D 32,
-> +		[GEM_CLK_DIV48] =3D 48,
-> +		[GEM_CLK_DIV64] =3D 64,
-> +		[GEM_CLK_DIV96] =3D 96,
-> +		[GEM_CLK_DIV128] =3D 128,
-> +		[GEM_CLK_DIV224] =3D 224,
-> +	};
-> +	static const u16 macb_divisors[] =3D {
-> +		[MACB_CLK_DIV8] =3D 8,
-> +		[MACB_CLK_DIV16] =3D 16,
-> +		[MACB_CLK_DIV32] =3D 32,
-> +		[MACB_CLK_DIV64] =3D 64,
-> +	};
-
-Do I sound crazy if I say we could use a single array for both?
-Both GEM_CLK_DIV* and MACB_CLK_DIV* are enums and are ordered in the
-same way. First four GEM_* are the same ones as MACB_* and it will
-never change.
-
-> +	unsigned long rate =3D READ_ONCE(bp->mdio_sts_rate);
-> +	u32 config =3D macb_readl(bp, NCFGR);
-> +	u32 divisor;
-> +
-> +	if (macb_is_gem(bp))
-> +		divisor =3D gem_divisors[GEM_BFEXT(CLK, config)];
-> +	else
-> +		divisor =3D macb_divisors[MACB_BFEXT(CLK, config)];
-
-I'm a bit surprised to see you reading NCFGR.CLK and derive the current
-divisor from that. The divisor is set by us in macb_mdc_clk_div(), with
-only input being the PCLK rate.
-
-> +
-> +	/* On RP1 the MDC edge that clocks the last bit of a clause 22
-> +	 * write comes 63.5 periods after the command write.
-> +	 */
-> +	return div64_ul(127ULL * divisor * NSEC_PER_SEC, 2 * rate);
-> +}
-> +
-> +static int macb_mdio_write_c22_sts(struct mii_bus *bus, int mii_id, int =
-regnum,
-> +				   u16 value, struct ptp_system_timestamp *sts)
->  {
->  	struct macb *bp =3D bus->priv;
-> +	unsigned long flags;
-> +	u64 delay_ns;
->  	int status;
-> +	u32 cmd;
-> =20
->  	status =3D pm_runtime_resume_and_get(&bp->pdev->dev);
->  	if (status < 0)
-> @@ -398,12 +434,32 @@ static int macb_mdio_write_c22(struct mii_bus *bus,=
- int mii_id, int regnum,
->  	if (status < 0)
->  		goto mdio_write_exit;
-> =20
-> -	macb_writel(bp, MAN, (MACB_BF(SOF, MACB_MAN_C22_SOF)
-> -			      | MACB_BF(RW, MACB_MAN_C22_WRITE)
-> -			      | MACB_BF(PHYA, mii_id)
-> -			      | MACB_BF(REGA, regnum)
-> -			      | MACB_BF(CODE, MACB_MAN_C22_CODE)
-> -			      | MACB_BF(DATA, value)));
-> +	cmd =3D MACB_BF(SOF, MACB_MAN_C22_SOF)
-> +	      | MACB_BF(RW, MACB_MAN_C22_WRITE)
-> +	      | MACB_BF(PHYA, mii_id)
-> +	      | MACB_BF(REGA, regnum)
-> +	      | MACB_BF(CODE, MACB_MAN_C22_CODE)
-> +	      | MACB_BF(DATA, value);
-> +
-> +	if (sts) {
-> +		delay_ns =3D macb_mdio_sts_delay(bp);
-> +		local_irq_save(flags);
-> +		ptp_read_system_prets(sts);
-> +		/* macb_writel() is relaxed; order it after the timestamp. */
-> +		mb();
-> +	}
-> +	macb_writel(bp, MAN, cmd);
-> +	if (sts) {
-> +		/* Flush the posted write before taking the upper bound. */
-> +		macb_readl(bp, NSR);
-
-An unconditional readl for flushing the posted write won't do it.
-MACB is over PCI only on very few platforms. I guess the straightforward
-solution is a POSTED_WRITES flag that is then read from here.
-
-For example broadcom/tg3 does it with their FLUSH_POSTED_WRITES flag.
-Not sure they are a good example though.
-
-> +		/* Order the read-back before the system timestamp. */
-> +		rmb();
-
-Why rmb() and not mb()?
-
-> +		ptp_read_system_postts(sts);
-> +		local_irq_restore(flags);
-> +
-> +		ptp_adjust_system_prets(sts, delay_ns);
-> +		ptp_adjust_system_postts(sts, delay_ns);
-> +	}
-> =20
->  	status =3D macb_mdio_wait_for_idle(bp);
->  	if (status < 0)
-> @@ -415,6 +471,12 @@ static int macb_mdio_write_c22(struct mii_bus *bus, =
-int mii_id, int regnum,
->  	return status;
->  }
-> =20
-> +static int macb_mdio_write_c22(struct mii_bus *bus, int mii_id, int regn=
-um,
-> +			       u16 value)
-> +{
-> +	return macb_mdio_write_c22_sts(bus, mii_id, regnum, value, NULL);
-> +}
-> +
->  static int macb_mdio_write_c45(struct mii_bus *bus, int mii_id,
->  			       int devad, int regnum,
->  			       u16 value)
-> @@ -1141,6 +1203,13 @@ static int macb_mdiobus_register(struct macb *bp, =
-struct device_node *mdio_np)
->  	return mdiobus_register(bp->mii_bus);
->  }
-> =20
-> +static bool macb_mdio_init_sts(struct macb *bp)
-> +{
-> +	bp->mdio_sts_rate =3D clk_get_rate(bp->pclk);
-> +
-> +	return bp->mdio_sts_rate !=3D 0;
-> +}
-> +
->  static int macb_mii_init(struct macb *bp)
->  {
->  	struct device_node *mdio_np, *np =3D bp->pdev->dev.of_node;
-> @@ -1166,6 +1235,8 @@ static int macb_mii_init(struct macb *bp)
->  	bp->mii_bus->name =3D "MACB_mii_bus";
->  	bp->mii_bus->read =3D &macb_mdio_read_c22;
->  	bp->mii_bus->write =3D &macb_mdio_write_c22;
-> +	if (macb_mdio_init_sts(bp))
-> +		bp->mii_bus->write_sts =3D &macb_mdio_write_c22_sts;
->  	bp->mii_bus->read_c45 =3D &macb_mdio_read_c45;
->  	bp->mii_bus->write_c45 =3D &macb_mdio_write_c45;
->  	snprintf(bp->mii_bus->id, MII_BUS_ID_SIZE, "%s-%x",
-> @@ -3095,12 +3166,20 @@ static void macb_configure_dma(struct macb *bp)
-> =20
->  static void macb_init_hw(struct macb *bp)
->  {
-> +	unsigned long rate;
->  	u32 config;
-> =20
->  	macb_reset_hw(bp);
->  	macb_set_hwaddr(bp);
-> =20
->  	config =3D macb_mdc_clk_div(bp);
-> +	/* Record the pclk rate the MDC divider is chosen from, for
-> +	 * write_sts, which can't call clk_get_rate() under the MDIO bus
-> +	 * lock.
-> +	 */
-> +	rate =3D clk_get_rate(bp->pclk);
-> +	if (rate)
-> +		WRITE_ONCE(bp->mdio_sts_rate, rate);
-
-Can you clarify here and in the commit message why clk_get_rate() is
-unacceptable under the MDIO bus lock?
-
-Seeing your comment, my guess is an ABBA deadlock risk between
-clk_prepare_lock and mii_bus->mdio_lock but please write it out.
-
-This rate caching introduces the bug Sashiko describes of what happens
-if PCLK rate changes over time, which sounds valid to me. If we could
-avoid it it would be much better. Otherwise the full fix would
-introduce clk notifiers and that sounds like a lot of work.
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
-text:
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 11 Oct 2026 11:23:54 +0200
-Message-Id: <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com>
-Cc: "Russell King" <linux@armlinux.org.uk>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Broadcom internal kernel review list"
- <bcm-kernel-feedback-list@broadcom.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Miroslav Lichvar" <mlichvar@redhat.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Maxime
- Chevallier" <maxime.chevallier@bootlin.com>
-To: "James Clark" <jjc@jclark.com>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "Heiner Kallweit" <hkallweit1@gmail.com>, "Richard Cochran"
- <richardcochran@gmail.com>, "Florian Fainelli"
- <florian.fainelli@broadcom.com>, "Doug Berger" <opendmb@gmail.com>,
- "Nicolai Buchwitz" <nb@tipi-net.de>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next 4/5] net: macb: implement timestamped MDIO
- writes
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261009143506.2507607-1-jjc@jclark.com>
- <20261009143506.2507607-5-jjc@jclark.com>
-In-Reply-To: <20261009143506.2507607-5-jjc@jclark.com>
-X-TUID: i0xKV7JAEaON
-
-Hello James,
-
-On Fri Oct 9, 2026 at 4:35 PM CEST, James Clark wrote:
-> Implement write_sts to provide system timestamp bounds for completion
-> of an MDIO write. This enables tighter system timestamp bounds in PHY
-> implementations of gettimex64.
->
-> Take system timestamps around the command register write, then add
-> the time from the command write until the MDC edge that clocks the
-> last data bit, calculated from the peripheral clock rate and the
-> configured MDC divider.
->
-> On RP1 that edge comes 63.5 MDC periods after the command write. This
-> was measured on a Raspberry Pi CM5 with its BCM54210PE PHY. The PHY's
-> PHC was read with PTP_SYS_OFFSET_EXTENDED while the MDC divisor was
-> switched between 48 and 128 through /dev/mem. Any error in the number
-> of periods would make the PHC offset jump at each switch. After
-> compensating for drift, the jump with 63.5 periods was under 2 ns.
-> The MDC divider does not appear to run freely: the spread of the PHC
-> offsets did not change with the divisor.
->
-> Signed-off-by: James Clark <jjc@jclark.com>
-> Assisted-by: LLM
-> ---
-> The 63.5-period delay has been measured only on RP1, but the code
-> assumes it holds for all MACB and GEM variants. I am not sure whether
-> that is a reasonable assumption; if not, write_sts could be enabled
-> only for RP1.
-
-I'm invoking my colleague @Maxime to get his opinion. What impacts the
-MDIO write_c22 duration and how likely is it that this duration varies
-(1) on the same MAC+PHY combo, (2) with a different PHY or (3) with a
-different MACB revision?
-
-Thanks!
-
-Sashiko makes an interesting point with PCLK that might change over
-time, giving an example (which I've not checked) where it would be
-derived from the CPU clk which might change with cpufreq.
-
-I'm wondering if we could do better than a hardcoded delay? For example
-we could busy-wait for NSR.IDLE inside the prets/postts region, but
-that implies at least 25=C2=B5s with IRQs disabled. Or we could do a few
-measurements at init to sample our platform delay?
-
-It doesn't solve the PCLK changing issue, but it solves the hardcoded
-63.5 value.
-
-If you share more details on your testing setup it would help for us to
-reproduce on other hardware to gather more data points.
-
->  drivers/net/ethernet/cadence/macb.h      |  1 +
->  drivers/net/ethernet/cadence/macb_main.c | 95 ++++++++++++++++++++++--
->  2 files changed, 88 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/c=
-adence/macb.h
-> index 1cb2778fe49..3670731690f 100644
-> --- a/drivers/net/ethernet/cadence/macb.h
-> +++ b/drivers/net/ethernet/cadence/macb.h
-> @@ -1334,6 +1334,7 @@ struct macb {
->  	struct macb_or_gem_ops	macbgem_ops;
-> =20
->  	struct mii_bus		*mii_bus;
-> +	unsigned long		mdio_sts_rate;
->  	struct phylink		*phylink;
->  	struct phylink_config	phylink_config;
->  	struct phylink_pcs	phylink_usx_pcs;
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index c4223ca848d..cec6e5a48e9 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -384,11 +384,47 @@ static int macb_mdio_read_c45(struct mii_bus *bus, =
-int mii_id, int devad,
->  	return status;
->  }
-> =20
-> -static int macb_mdio_write_c22(struct mii_bus *bus, int mii_id, int regn=
-um,
-> -			       u16 value)
-> +static u64 macb_mdio_sts_delay(struct macb *bp)
-> +{
-> +	static const u16 gem_divisors[] =3D {
-> +		[GEM_CLK_DIV8] =3D 8,
-> +		[GEM_CLK_DIV16] =3D 16,
-> +		[GEM_CLK_DIV32] =3D 32,
-> +		[GEM_CLK_DIV48] =3D 48,
-> +		[GEM_CLK_DIV64] =3D 64,
-> +		[GEM_CLK_DIV96] =3D 96,
-> +		[GEM_CLK_DIV128] =3D 128,
-> +		[GEM_CLK_DIV224] =3D 224,
-> +	};
-> +	static const u16 macb_divisors[] =3D {
-> +		[MACB_CLK_DIV8] =3D 8,
-> +		[MACB_CLK_DIV16] =3D 16,
-> +		[MACB_CLK_DIV32] =3D 32,
-> +		[MACB_CLK_DIV64] =3D 64,
-> +	};
-
-Do I sound crazy if I say we could use a single array for both?
-Both GEM_CLK_DIV* and MACB_CLK_DIV* are enums and are ordered in the
-same way. First four GEM_* are the same ones as MACB_* and it will
-never change.
-
-> +	unsigned long rate =3D READ_ONCE(bp->mdio_sts_rate);
-> +	u32 config =3D macb_readl(bp, NCFGR);
-> +	u32 divisor;
-> +
-> +	if (macb_is_gem(bp))
-> +		divisor =3D gem_divisors[GEM_BFEXT(CLK, config)];
-> +	else
-> +		divisor =3D macb_divisors[MACB_BFEXT(CLK, config)];
-
-I'm a bit surprised to see you reading NCFGR.CLK and derive the current
-divisor from that. The divisor is set by us in macb_mdc_clk_div(), with
-only input being the PCLK rate.
-
-> +
-> +	/* On RP1 the MDC edge that clocks the last bit of a clause 22
-> +	 * write comes 63.5 periods after the command write.
-> +	 */
-> +	return div64_ul(127ULL * divisor * NSEC_PER_SEC, 2 * rate);
-> +}
-> +
-> +static int macb_mdio_write_c22_sts(struct mii_bus *bus, int mii_id, int =
-regnum,
-> +				   u16 value, struct ptp_system_timestamp *sts)
->  {
->  	struct macb *bp =3D bus->priv;
-> +	unsigned long flags;
-> +	u64 delay_ns;
->  	int status;
-> +	u32 cmd;
-> =20
->  	status =3D pm_runtime_resume_and_get(&bp->pdev->dev);
->  	if (status < 0)
-> @@ -398,12 +434,32 @@ static int macb_mdio_write_c22(struct mii_bus *bus,=
- int mii_id, int regnum,
->  	if (status < 0)
->  		goto mdio_write_exit;
-> =20
-> -	macb_writel(bp, MAN, (MACB_BF(SOF, MACB_MAN_C22_SOF)
-> -			      | MACB_BF(RW, MACB_MAN_C22_WRITE)
-> -			      | MACB_BF(PHYA, mii_id)
-> -			      | MACB_BF(REGA, regnum)
-> -			      | MACB_BF(CODE, MACB_MAN_C22_CODE)
-> -			      | MACB_BF(DATA, value)));
-> +	cmd =3D MACB_BF(SOF, MACB_MAN_C22_SOF)
-> +	      | MACB_BF(RW, MACB_MAN_C22_WRITE)
-> +	      | MACB_BF(PHYA, mii_id)
-> +	      | MACB_BF(REGA, regnum)
-> +	      | MACB_BF(CODE, MACB_MAN_C22_CODE)
-> +	      | MACB_BF(DATA, value);
-> +
-> +	if (sts) {
-> +		delay_ns =3D macb_mdio_sts_delay(bp);
-> +		local_irq_save(flags);
-> +		ptp_read_system_prets(sts);
-> +		/* macb_writel() is relaxed; order it after the timestamp. */
-> +		mb();
-> +	}
-> +	macb_writel(bp, MAN, cmd);
-> +	if (sts) {
-> +		/* Flush the posted write before taking the upper bound. */
-> +		macb_readl(bp, NSR);
-
-An unconditional readl for flushing the posted write won't do it.
-MACB is over PCI only on very few platforms. I guess the straightforward
-solution is a POSTED_WRITES flag that is then read from here.
-
-For example broadcom/tg3 does it with their FLUSH_POSTED_WRITES flag.
-Not sure they are a good example though.
-
-> +		/* Order the read-back before the system timestamp. */
-> +		rmb();
-
-Why rmb() and not mb()?
-
-> +		ptp_read_system_postts(sts);
-> +		local_irq_restore(flags);
-> +
-> +		ptp_adjust_system_prets(sts, delay_ns);
-> +		ptp_adjust_system_postts(sts, delay_ns);
-> +	}
-> =20
->  	status =3D macb_mdio_wait_for_idle(bp);
->  	if (status < 0)
-> @@ -415,6 +471,12 @@ static int macb_mdio_write_c22(struct mii_bus *bus, =
-int mii_id, int regnum,
->  	return status;
->  }
-> =20
-> +static int macb_mdio_write_c22(struct mii_bus *bus, int mii_id, int regn=
-um,
-> +			       u16 value)
-> +{
-> +	return macb_mdio_write_c22_sts(bus, mii_id, regnum, value, NULL);
-> +}
-> +
->  static int macb_mdio_write_c45(struct mii_bus *bus, int mii_id,
->  			       int devad, int regnum,
->  			       u16 value)
-> @@ -1141,6 +1203,13 @@ static int macb_mdiobus_register(struct macb *bp, =
-struct device_node *mdio_np)
->  	return mdiobus_register(bp->mii_bus);
->  }
-> =20
-> +static bool macb_mdio_init_sts(struct macb *bp)
-> +{
-> +	bp->mdio_sts_rate =3D clk_get_rate(bp->pclk);
-> +
-> +	return bp->mdio_sts_rate !=3D 0;
-> +}
-> +
->  static int macb_mii_init(struct macb *bp)
->  {
->  	struct device_node *mdio_np, *np =3D bp->pdev->dev.of_node;
-> @@ -1166,6 +1235,8 @@ static int macb_mii_init(struct macb *bp)
->  	bp->mii_bus->name =3D "MACB_mii_bus";
->  	bp->mii_bus->read =3D &macb_mdio_read_c22;
->  	bp->mii_bus->write =3D &macb_mdio_write_c22;
-> +	if (macb_mdio_init_sts(bp))
-> +		bp->mii_bus->write_sts =3D &macb_mdio_write_c22_sts;
->  	bp->mii_bus->read_c45 =3D &macb_mdio_read_c45;
->  	bp->mii_bus->write_c45 =3D &macb_mdio_write_c45;
->  	snprintf(bp->mii_bus->id, MII_BUS_ID_SIZE, "%s-%x",
-> @@ -3095,12 +3166,20 @@ static void macb_configure_dma(struct macb *bp)
-> =20
->  static void macb_init_hw(struct macb *bp)
->  {
-> +	unsigned long rate;
->  	u32 config;
-> =20
->  	macb_reset_hw(bp);
->  	macb_set_hwaddr(bp);
-> =20
->  	config =3D macb_mdc_clk_div(bp);
-> +	/* Record the pclk rate the MDC divider is chosen from, for
-> +	 * write_sts, which can't call clk_get_rate() under the MDIO bus
-> +	 * lock.
-> +	 */
-> +	rate =3D clk_get_rate(bp->pclk);
-> +	if (rate)
-> +		WRITE_ONCE(bp->mdio_sts_rate, rate);
-
-Can you clarify here and in the commit message why clk_get_rate() is
-unacceptable under the MDIO bus lock?
-
-Seeing your comment, my guess is an ABBA deadlock risk between
-clk_prepare_lock and mii_bus->mdio_lock but please write it out.
-
-This rate caching introduces the bug Sashiko describes of what happens
-if PCLK rate changes over time, which sounds valid to me. If we could
-avoid it it would be much better. Otherwise the full fix would
-introduce clk notifiers and that sounds like a lot of work.
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 884f27f..0124f1b 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -784,11 +784,16 @@ out:
+ 
+ static bool amt_send_membership_query(struct amt_dev *amt,
+ 				      struct sk_buff *skb,
+-				      struct amt_tunnel_list *tunnel,
++				      __be32 daddr, __be16 dport,
++				      __be32 nonce, u64 mac,
+ 				      bool v6);
+ 
+-static void amt_send_igmp_gq(struct amt_dev *amt,
+-			     struct amt_tunnel_list *tunnel)
++/* The destination is passed by value rather than as a tunnel: the requesting
++ * source is not authenticated yet and no tunnel state exists for it - see
++ * amt_request_handler().
++ */
++static void amt_send_igmp_gq(struct amt_dev *amt, __be32 daddr, __be16 dport,
++			     __be32 nonce, u64 mac)
+ {
+ 	struct sk_buff *skb;
+ 
+@@ -797,7 +802,8 @@ static void amt_send_igmp_gq(struct amt_dev *amt,
+ 		return;
+ 
+ 	skb_pull(skb, sizeof(struct ethhdr));
+-	if (amt_send_membership_query(amt, skb, tunnel, false)) {
++	if (amt_send_membership_query(amt, skb, daddr, dport, nonce, mac,
++				      false)) {
+ 		amt->dev->stats.tx_dropped++;
+ 		kfree_skb(skb);
+ 	}
+@@ -876,7 +882,8 @@ static struct sk_buff *amt_build_mld_gq(struct amt_dev *amt)
+ 	return skb;
+ }
+ 
+-static void amt_send_mld_gq(struct amt_dev *amt, struct amt_tunnel_list *tunnel)
++static void amt_send_mld_gq(struct amt_dev *amt, __be32 daddr, __be16 dport,
++			    __be32 nonce, u64 mac)
+ {
+ 	struct sk_buff *skb;
+ 
+@@ -885,13 +892,15 @@ static void amt_send_mld_gq(struct amt_dev *amt, struct amt_tunnel_list *tunnel)
+ 		return;
+ 
+ 	skb_pull(skb, sizeof(struct ethhdr));
+-	if (amt_send_membership_query(amt, skb, tunnel, true)) {
++	if (amt_send_membership_query(amt, skb, daddr, dport, nonce, mac,
++				      true)) {
+ 		amt->dev->stats.tx_dropped++;
+ 		kfree_skb(skb);
+ 	}
+ }
+ #else
+-static void amt_send_mld_gq(struct amt_dev *amt, struct amt_tunnel_list *tunnel)
++static void amt_send_mld_gq(struct amt_dev *amt, __be32 daddr, __be16 dport,
++			    __be32 nonce, u64 mac)
+ {
+ }
+ #endif
+@@ -925,7 +934,14 @@ static void amt_secret_work(struct work_struct *work)
+ 					   secret_wq);
+ 
+ 	spin_lock_bh(&amt->lock);
+-	get_random_bytes(&amt->key, sizeof(siphash_key_t));
++	/* Keep three previous generations for a 180-240s MAC lifetime.
++	 * Its 180s floor exceeds the advertised QQIC (amt->qi, 125s),
++	 * allowing the gateway to renew its MAC with a periodic Request.
++	 */
++	amt->key[3] = amt->key[2];
++	amt->key[2] = amt->key[1];
++	amt->key[1] = amt->key[0];
++	get_random_bytes(&amt->key[0], sizeof(siphash_key_t));
+ 	spin_unlock_bh(&amt->lock);
+ 	mod_delayed_work(amt_wq, &amt->secret_wq,
+ 			 msecs_to_jiffies(AMT_SECRET_TIMEOUT));
+@@ -1115,9 +1131,16 @@ static void amt_send_multicast_data(struct amt_dev *amt,
+ 			    0);
+ }
+ 
++/* Send a Membership Query to a source that has not been authenticated yet.
++ *
++ * No per-source state exists at this point and none is created: the nonce and
++ * the keyed MAC are carried in the Query and recomputed from the Membership
++ * Update when it comes back, so everything this needs is passed by value.
++ */
+ static bool amt_send_membership_query(struct amt_dev *amt,
+ 				      struct sk_buff *skb,
+-				      struct amt_tunnel_list *tunnel,
++				      __be32 daddr, __be16 dport,
++				      __be32 nonce, u64 mac,
+ 				      bool v6)
+ {
+ 	struct amt_header_membership_query *amtmq;
+@@ -1138,13 +1161,13 @@ static bool amt_send_membership_query(struct amt_dev *amt,
+ 	skb_reset_inner_headers(skb);
+ 	memset(&fl4, 0, sizeof(struct flowi4));
+ 	fl4.flowi4_oif         = amt->stream_dev->ifindex;
+-	fl4.daddr              = tunnel->ip4;
++	fl4.daddr              = daddr;
+ 	fl4.saddr              = amt->local_ip;
+ 	fl4.flowi4_dscp        = inet_dsfield_to_dscp(AMT_TOS);
+ 	fl4.flowi4_proto       = IPPROTO_UDP;
+ 	rt = ip_route_output_key(amt->net, &fl4);
+ 	if (IS_ERR(rt)) {
+-		netdev_dbg(amt->dev, "no route to %pI4\n", &tunnel->ip4);
++		netdev_dbg(amt->dev, "no route to %pI4\n", &daddr);
+ 		return true;
+ 	}
+ 
+@@ -1154,8 +1177,8 @@ static bool amt_send_membership_query(struct amt_dev *amt,
+ 	amtmq->reserved = 0;
+ 	amtmq->l	= 0;
+ 	amtmq->g	= 0;
+-	amtmq->nonce	= tunnel->nonce;
+-	amtmq->response_mac = tunnel->mac;
++	amtmq->nonce	= nonce;
++	amtmq->response_mac = mac;
+ 
+ 	if (!v6)
+ 		skb_set_inner_protocol(skb, htons(ETH_P_IP));
+@@ -1168,11 +1191,10 @@ static bool amt_send_membership_query(struct amt_dev *amt,
+ 			    ip4_dst_hoplimit(&rt->dst),
+ 			    0,
+ 			    amt->relay_port,
+-			    tunnel->source_port,
++			    dport,
+ 			    false,
+ 			    false,
+ 			    0);
+-	amt_update_relay_status(tunnel, AMT_STATUS_SENT_QUERY, true);
+ 	return false;
+ }
+ 
+@@ -2491,16 +2513,107 @@ static bool amt_membership_query_handler(struct amt_dev *amt,
+ 	return false;
+ }
+ 
++/* The tunnel of the gateway endpoint @saddr:@sport, or NULL. */
++static struct amt_tunnel_list *amt_tunnel_lookup(struct amt_dev *amt,
++						 __be32 saddr, __be16 sport)
++{
++	struct amt_tunnel_list *tunnel;
++
++	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list)
++		if (tunnel->ip4 == saddr && tunnel->source_port == sport)
++			return tunnel;
++	return NULL;
++}
++
++/* Look up the tunnel for a source whose Membership Update has already been
++ * authenticated, creating it on first contact.
++ *
++ * This is now the only place tunnel state is allocated, so amt->max_tunnels
++ * bounds the number of *verified* gateways rather than the number of
++ * unverified Requests anyone can send.  A fixed per-source cap additionally
++ * stops one verified endpoint from monopolising the table; a single gateway
++ * needs at most one tunnel per family (RFC 7450 s4.2.2).
++ */
++static struct amt_tunnel_list *amt_tunnel_get_or_create(struct amt_dev *amt,
++							__be32 saddr,
++							__be16 sport)
++{
++	struct amt_tunnel_list *tunnel;
++	int per_src = 0;
++	int i;
++
++	tunnel = amt_tunnel_lookup(amt, saddr, sport);
++	if (tunnel)
++		return tunnel;
++
++	spin_lock_bh(&amt->lock);
++
++	/* Re-check under the lock in case a concurrent Update won the race, and
++	 * count how many tunnels this source already holds on the same walk.
++	 */
++	list_for_each_entry(tunnel, &amt->tunnel_list, list) {
++		if (tunnel->ip4 != saddr)
++			continue;
++		if (tunnel->source_port == sport) {
++			spin_unlock_bh(&amt->lock);
++			return tunnel;
++		}
++		per_src++;
++	}
++
++	if (amt->nr_tunnels >= amt->max_tunnels ||
++	    per_src >= AMT_MAX_TUNNELS_PER_SRC) {
++		spin_unlock_bh(&amt->lock);
++		return NULL;
++	}
++
++	if (!netif_running(amt->dev)) {
++		spin_unlock_bh(&amt->lock);
++		return NULL;
++	}
++
++	tunnel = kzalloc(sizeof(*tunnel) +
++			 (sizeof(struct hlist_head) * amt->hash_buckets),
++			 GFP_ATOMIC);
++	if (!tunnel) {
++		spin_unlock_bh(&amt->lock);
++		return NULL;
++	}
++
++	tunnel->source_port = sport;
++	tunnel->ip4 = saddr;
++	tunnel->amt = amt;
++	spin_lock_init(&tunnel->lock);
++	for (i = 0; i < amt->hash_buckets; i++)
++		INIT_HLIST_HEAD(&tunnel->groups[i]);
++
++	tunnel->last_seen = jiffies;
++	INIT_DELAYED_WORK(&tunnel->gc_wq, amt_tunnel_expire);
++	__amt_update_relay_status(tunnel, AMT_STATUS_RECEIVED_UPDATE, false);
++
++	/* Publish only once the entry is fully initialised. */
++	list_add_tail_rcu(&tunnel->list, &amt->tunnel_list);
++	amt->nr_tunnels++;
++	mod_delayed_work(amt_wq, &tunnel->gc_wq,
++			 msecs_to_jiffies(amt_gmi(amt)) * 3);
++	spin_unlock_bh(&amt->lock);
++
++	return tunnel;
++}
++
+ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
+ {
+ 	struct amt_header_membership_update *amtmu;
+ 	struct amt_tunnel_list *tunnel;
+ 	struct ethhdr *eth;
+ 	struct iphdr *iph;
+-	int len, hdr_size;
++	siphash_key_t key[4];
++	int len, hdr_size, i;
+ 	u64 response_mac;
++	bool verified = false;
+ 	__be32 saddr;
+ 	__be32 nonce;
++	__be16 sport;
+ 
+ 	saddr = ip_hdr(skb)->saddr;
+ 
+@@ -2514,34 +2627,58 @@ static bool amt_update_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 
+ 	nonce = amtmu->nonce;
+ 	response_mac = amtmu->response_mac;
++	/* Snapshot the tunnel endpoint port before the encap is stripped. */
++	sport = udp_hdr(skb)->source;
+ 
+-	if (iptunnel_pull_header(skb, hdr_size, skb->protocol, false))
+-		return true;
++	/* Recompute the MAC handed out in the Membership Query.  Four live
++	 * secrets cover 180-240s, exceeding the advertised QQIC (amt->qi,
++	 * 125s), so a periodic Request can renew the MAC before it expires.
++	 * Authenticate before decapsulation or allocating tunnel state.
++	 */
++	spin_lock_bh(&amt->lock);
++	for (i = 0; i < ARRAY_SIZE(key); i++)
++		key[i] = amt->key[i];
++	spin_unlock_bh(&amt->lock);
+ 
+-	skb_reset_network_header(skb);
++	for (i = 0; i < ARRAY_SIZE(key); i++) {
++		u64 mac = siphash_3u32((__force u32)saddr,
++				       (__force u32)sport,
++				       (__force u32)nonce,
++				       &key[i]) >> 16;
+ 
+-	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list) {
+-		if (tunnel->ip4 == saddr) {
+-			if ((nonce == tunnel->nonce &&
+-			     response_mac == tunnel->mac)) {
+-				/* Refresh liveness only.  gc_wq is
+-				 * re-armed by amt_tunnel_expire() itself
+-				 * from last_seen, never from here, so this
+-				 * cannot re-queue the work of a tunnel
+-				 * that is being freed.
+-				 */
+-				WRITE_ONCE(tunnel->last_seen, jiffies);
+-				goto report;
+-			} else {
+-				netdev_dbg(amt->dev, "Invalid MAC\n");
+-				return true;
+-			}
++		if (response_mac == mac) {
++			verified = true;
++			break;
+ 		}
+ 	}
+ 
+-	return true;
++	if (!verified) {
++		netdev_dbg(amt->dev, "Invalid MAC\n");
++		return true;
++	}
++
++	tunnel = amt_tunnel_get_or_create(amt, saddr, sport);
++	if (!tunnel) {
++		/* Out of tunnel slots.  Unlike the Request path this reply only
++		 * ever goes to a source that proved it received our Query,
++		 * so it
++		 * cannot be used to reflect at a spoofed third party.
++		 */
++		icmp_ndo_send(skb, ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, 0);
++		return true;
++	}
++
++	/* Refresh liveness only.  gc_wq is re-armed by amt_tunnel_expire()
++	 * itself from last_seen, never from here, so this cannot re-queue the
++	 * work of a tunnel that is being freed.
++	 */
++	WRITE_ONCE(tunnel->last_seen, jiffies);
++
++	if (iptunnel_pull_header(skb, hdr_size, skb->protocol, false))
++		return true;
++
++	skb_reset_network_header(skb);
+ 
+-report:
+ 	if (!pskb_may_pull(skb, sizeof(*iph)))
+ 		return true;
+ 
+@@ -2556,6 +2693,10 @@ report:
+ 		}
+ 
+ 		spin_lock_bh(&tunnel->lock);
++		if (READ_ONCE(tunnel->dead)) {
++			spin_unlock_bh(&tunnel->lock);
++			return true;
++		}
+ 		amt_igmp_report_handler(amt, skb, tunnel);
+ 		spin_unlock_bh(&tunnel->lock);
+ 
+@@ -2576,6 +2717,10 @@ report:
+ 		}
+ 
+ 		spin_lock_bh(&tunnel->lock);
++		if (READ_ONCE(tunnel->dead)) {
++			spin_unlock_bh(&tunnel->lock);
++			return true;
++		}
+ 		amt_mld_report_handler(amt, skb, tunnel);
+ 		spin_unlock_bh(&tunnel->lock);
+ 
+@@ -2718,15 +2863,29 @@ static bool amt_discovery_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 	return false;
+ }
+ 
++/* Handle an AMT Relay Membership Request.
++ *
++ * The source of a Request is unauthenticated: it is a bare UDP datagram with a
++ * trivially spoofable source address.  Allocating tunnel state here let an
++ * attacker fill the table from spoofed addresses, and let one spoofed packet
++ * overwrite the nonce/MAC of an established tunnel and cut that gateway off.
++ *
++ * Nothing needs to be remembered at this point.  Every input to the keyed MAC
++ * is carried in the packet or is device state, so the MAC is generated here,
++ * echoed back by the gateway in its Membership Update, and recomputed and
++ * verified there - see amt_update_handler().  Tunnel state is created only once
++ * that verification succeeds.
++ */
+ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+ {
+ 	struct amt_header_request *amtrh;
+ 	struct amt_tunnel_list *tunnel;
+-	unsigned long long key;
+ 	struct udphdr *udph;
+ 	struct iphdr *iph;
++	siphash_key_t key;
++	bool full, have = false;
++	int per_src = 0;
+ 	u64 mac;
+-	int i;
+ 
+ 	if (!pskb_may_pull(skb, sizeof(*udph) + sizeof(*amtrh)))
+ 		return true;
+@@ -2738,60 +2897,40 @@ static bool amt_request_handler(struct amt_dev *amt, struct sk_buff *skb)
+ 	if (amtrh->reserved1 || amtrh->reserved2 || amtrh->version)
+ 		return true;
+ 
+-	list_for_each_entry_rcu(tunnel, &amt->tunnel_list, list)
+-		if (tunnel->ip4 == iph->saddr)
+-			goto send;
+-
+-	spin_lock_bh(&amt->lock);
+-	if (amt->nr_tunnels >= amt->max_tunnels) {
+-		spin_unlock_bh(&amt->lock);
+-		icmp_ndo_send(skb, ICMP_DEST_UNREACH, ICMP_HOST_UNREACH, 0);
++	if (!netif_running(amt->dev) || !netif_running(amt->stream_dev))
+ 		return true;
+-	}
+ 
+-	tunnel = kzalloc(sizeof(*tunnel) +
+-			 (sizeof(struct hlist_head) * amt->hash_buckets),
+-			 GFP_ATOMIC);
+-	if (!tunnel) {
+-		spin_unlock_bh(&amt->lock);
+-		return true;
++	/* Snapshot the secret and tunnel limits on the same locked walk. */
++	spin_lock_bh(&amt->lock);
++	key = amt->key[0];
++	full = amt->nr_tunnels >= amt->max_tunnels;
++	list_for_each_entry(tunnel, &amt->tunnel_list, list) {
++		if (tunnel->ip4 != iph->saddr)
++			continue;
++		per_src++;
++		if (tunnel->source_port == udph->source)
++			have = true;
+ 	}
+-
+-	tunnel->source_port = udph->source;
+-	tunnel->ip4 = iph->saddr;
+-
+-	memcpy(&key, &tunnel->key, sizeof(unsigned long long));
+-	tunnel->amt = amt;
+-	spin_lock_init(&tunnel->lock);
+-	for (i = 0; i < amt->hash_buckets; i++)
+-		INIT_HLIST_HEAD(&tunnel->groups[i]);
+-
+-	tunnel->last_seen = jiffies;
+-	INIT_DELAYED_WORK(&tunnel->gc_wq, amt_tunnel_expire);
+-
+-	list_add_tail_rcu(&tunnel->list, &amt->tunnel_list);
+-	tunnel->key = amt->key;
+-	__amt_update_relay_status(tunnel, AMT_STATUS_RECEIVED_REQUEST, true);
+-	amt->nr_tunnels++;
+-	mod_delayed_work(amt_wq, &tunnel->gc_wq,
+-			 msecs_to_jiffies(amt_gmi(amt)));
+ 	spin_unlock_bh(&amt->lock);
+ 
+-send:
+-	tunnel->nonce = amtrh->nonce;
+-	mac = siphash_3u32((__force u32)tunnel->ip4,
+-			   (__force u32)tunnel->source_port,
+-			   (__force u32)tunnel->nonce,
+-			   &tunnel->key);
+-	tunnel->mac = mac >> 16;
+-
+-	if (!netif_running(amt->dev) || !netif_running(amt->stream_dev))
++	/* Withhold the Query when a new endpoint cannot get a tunnel, so the
++	 * gateway rediscovers.  Existing endpoints must still renew their MAC.
++	 * Drop silently: an unauthenticated Request must not reflect ICMP.
++	 */
++	if (!have && (full || per_src >= AMT_MAX_TUNNELS_PER_SRC))
+ 		return true;
+ 
++	mac = siphash_3u32((__force u32)iph->saddr,
++			   (__force u32)udph->source,
++			   (__force u32)amtrh->nonce,
++			   &key) >> 16;
++
+ 	if (!amtrh->p)
+-		amt_send_igmp_gq(amt, tunnel);
++		amt_send_igmp_gq(amt, iph->saddr, udph->source, amtrh->nonce,
++				 mac);
+ 	else
+-		amt_send_mld_gq(amt, tunnel);
++		amt_send_mld_gq(amt, iph->saddr, udph->source, amtrh->nonce,
++				mac);
+ 
+ 	return false;
+ }
+@@ -3059,6 +3198,14 @@ static int amt_dev_open(struct net_device *dev)
+ 	enable_delayed_work(&amt->discovery_wq);
+ 	enable_delayed_work(&amt->req_wq);
+ 
++	/* Seed the keys before amt_socket_create() enables the encap receive
++	 * path, so a Request or Update that arrives immediately is never
++	 * verified against an all-zero (predictable) secret.
++	 */
++	spin_lock_bh(&amt->lock);
++	get_random_bytes(&amt->key, sizeof(amt->key));
++	spin_unlock_bh(&amt->lock);
++
+ 	err = amt_socket_create(amt);
+ 	if (err) {
+ 		disable_delayed_work(&amt->req_wq);
+@@ -3069,7 +3216,6 @@ static int amt_dev_open(struct net_device *dev)
+ 	amt->req_cnt = 0;
+ 	WRITE_ONCE(amt->remote_ip, 0);
+ 	amt->nonce = 0;
+-	get_random_bytes(&amt->key, sizeof(siphash_key_t));
+ 
+ 	amt->status = AMT_STATUS_INIT;
+ 	if (amt->mode == AMT_MODE_GATEWAY) {
+diff --git a/include/net/amt.h b/include/net/amt.h
+index 0520121..63bb647 100644
+--- a/include/net/amt.h
++++ b/include/net/amt.h
+@@ -253,10 +253,6 @@ struct amt_tunnel_list {
+ 	bool			dead;
+ 	__be16			source_port;
+ 	__be32			ip4;
+-	__be32			nonce;
+-	siphash_key_t		key;
+-	u64			mac:48,
+-				reserved:16;
+ 	struct rcu_head		rcu;
+ 	struct hlist_head	groups[];
+ };
+@@ -336,8 +332,10 @@ struct amt_dev {
+ 	struct work_struct	event_wq;
+ 	/* AMT status */
+ 	enum amt_status		status;
+-	/* Generated key */
+-	siphash_key_t		key;
++	/* Current key and three previous generations keep MACs valid for
++	 * 180-240s, beyond the advertised QQIC (see amt_secret_work()).
++	 */
++	siphash_key_t		key[4];
+ 	struct sock	  __rcu *sk;
+ 	u32			max_groups;
+ 	u32			max_sources;
+@@ -394,6 +392,12 @@ struct amt_dev {
+ #define AMT_SECRET_TIMEOUT	60000
+ #define IANA_AMT_UDP_PORT	2268
+ #define AMT_MAX_TUNNELS         128
++/* Per-source tunnel cap.  A single gateway needs at most one tunnel per
++ * family; this stops one verified source endpoint from monopolising the
++ * AMT_MAX_TUNNELS-slot table.  Deployments that legitimately need more behind
++ * one address (e.g. CGNAT) use the configurable net-next per-source bound.
++ */
++#define AMT_MAX_TUNNELS_PER_SRC 16
+ #define AMT_MAX_REQS		128
+ #define AMT_GW_HLEN (sizeof(struct iphdr) + \
+ 		     sizeof(struct udphdr) + \
