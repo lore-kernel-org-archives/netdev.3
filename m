@@ -1,93 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D8B4FC8F7
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE6B511E7B;
+	Tue, 13 Oct 2026 13:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791898808; cv=none; b=kSAlwy5OS1Wsq/QeSly52P9XDzNKn1m5COvYHb1nwtRGuw08DEfX6QsFHBWNPBQO9ogkVrdowqHhQ24e7XgB5PO00jzl939TK1kNkXXQNFQxbhfJ935gySIy8J7YXmne5Z8slL37vMyXKOrO4vnRUPWD2DPzXTD1r9zJCenIPsE=
+	t=1791898812; cv=none; b=P9pnaqlSJ5W+YiKi9lP3wvMQxPKzmfVrs74Oo25Gd0WCM6UldN0IuKtSrocXST5g58w93yocqzAKusba+FzYulG4Sk997TmhC++9jK0XNdortgopTWXm+M+Bb+m8/GIeP3zfd2P70od1zuiVJXPNfTq6woDLk69xeATu2nEWkkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791898808; c=relaxed/simple;
-	bh=f4cQw0l+ySXHVRDxG1wqzrpGoMRNHxEINYfwfjnMXrc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OB2wvQxGvEIgbVKON0Csk0mTXcwyAuwUpDsfWbPvqe7OusHFgoGGlnKxpf/zyh7HVnDZczNW9FwwZzCGceddJL17xssbKCkqp7lHexz+JFfJVXigAsLzRkV2pAuBR2FWonaGTgOnRqmvttomQ9bMlBPPpmUc6Vu6NvW2LMCWaAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=adlpAdQK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791898812; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pNwviLUVIeUCnTy9pSmQ+fo/IEuiN53pSpFlRQkP2b7RXhI5rWd3TJXCGQfIvVcT8FIgSfcN9Csxur0+tlbx5+p+Px94pqrrsx2I+SboFvoiG06jocIJJlhJXVpg6G5qFw6dgD27OKMHqNM4QXWY+25+U0PkUNLaQQHlnPGdQZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MCqGx9UD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="adlpAdQK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091731F00893;
-	Tue, 13 Oct 2026 13:40:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MCqGx9UD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719A51F00898;
+	Tue, 13 Oct 2026 13:40:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791898807;
-	bh=G/xivSEwTQfyoDl/deKvmHZaSjZWOZYh7L1d+tvbPZY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=adlpAdQKxQEQNmbgkjsbFUwnmvMhPdsMu7zsdU3FY398wA+UqEHIZVhHt3CtmbmOi
-	 RwPpbQH47tSTgNe5Ar+DYcAmT8eWviWlj62+3yPm+CuDXu5tbwp0Qk+pOpvek3PnuA
-	 hYXD07vWP8IITju2u4q179Ogla61dew34tP1c3KsOiVXYv23r1eSuPX+jjFegyAkQ5
-	 FJrvqaDNPYa2MQ+aV0v5I/0fOXQtwLt++yNDxUpOPaEWHiA4uIoSyZmWkyBSdoHqQN
-	 23JRwCiacKp6d+9mgD1ZUuxIPx5ihnVXN8IgdN+Z+RKzEVl+UEYM+GLHWm4W45DwTu
-	 lxcMdK5PzqIAA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F196739D237A;
-	Tue, 13 Oct 2026 13:40:06 +0000 (UTC)
+	s=k20260515; t=1791898811;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=MCqGx9UD9NHZ8GC6Bbw7B71cpl1VU8UyokYAOriwEb90sr3M4PoMaRAz8tRax9vyN
+	 bAwXjDmzXXpLUXk7ErgKXdfATQ3bHL2JnHpTqvECLEmk+AKNl0CpPF+unkDyikvHHu
+	 dlwQc70kBpx4HCE+L2/jAK4vCWD8A9Xevrh2SLLxgvDa4WsOtwb2G+RZxpoo3zykSW
+	 1Q4mrhjOUWrdJ2jYqJ8mj6AgHtIh/WqHWeThv3pOoxpArEKZwPCMUjBFc4MsxFhdI5
+	 7wl60MdU5RHkSQRcDHgQC7gTkpjITtAT4J5swbCVOiXVcdpW4EDFSLB/i0OQhfLxxd
+	 jGLTxVDD37dwA==
+From: netdev-bot+sinfo@kernel.org
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: stable@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH net] net: korina: fix dma_unmap_single() length in korina_rx()
+Date: Tue, 13 Oct 2026 13:40:09 +0000
+Message-ID: <179189880997.2527009.13708464565955754813@kernel.org>
+In-Reply-To: <20261013132319.22253-2-fourier.thomas@gmail.com>
+References: <20261013132319.22253-2-fourier.thomas@gmail.com>
+Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5 0/6] net: re-segment oversized TCP GSO skbs
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179189880587.311420.10716275190356671758.git-patchwork-notify@kernel.org>
-Date: Tue, 13 Oct 2026 13:40:05 +0000
-References: <20261008100651.2534957-1-wang.zhan@smartx.com>
-In-Reply-To: <20261008100651.2534957-1-wang.zhan@smartx.com>
-To: Wang Zhan <wang.zhan@smartx.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com,
- willemdebruijn.kernel@gmail.com, jasowangio@gmail.com, andrew+netdev@lunn.ch,
- aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
- dev@openvswitch.org, daniel@iogearbox.net, ncardwell@google.com,
- kuniyu@google.com, alice@isovalent.com, david.laight.linux@gmail.com
 
-Hello:
+Hi!
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-On Thu,  8 Oct 2026 18:06:45 +0800 you wrote:
-> BIG TCP is negotiated per netdevice, so BIG TCP and non-BIG TCP ports can
-> coexist in one path.  When an skb exceeds the GSO limits of the port it is
-> sent to, it loses its GSO feature mask and is segmented into individual MSS
-> sized packets, which that port then sends without TSO.
-> 
-> This series cuts such a TCP GSO skb into GSO skbs which fit the device
-> limits instead, so the rest of the path keeps using TSO.  On a
-> veth -> bridge -> TAP -> guest virtio-net path, with BIG TCP enabled on the
-> veth endpoints and left off in the guest, a single iperf3 TCP flow, six
-> alternating runs per state (-t 15 -O 5, fixed CPU affinity and port tuple):
-> 
-> [...]
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Here is the summary with links:
-  - [net-next,v5,1/6] net: core: use the packet's L3 protocol for the GSO size limit
-    https://git.kernel.org/netdev/net-next/c/cc9dcb0e7a42
-  - [net-next,v5,2/6] net: core: factor out the GSO device limit check
-    https://git.kernel.org/netdev/net-next/c/0bba48256b0a
-  - [net-next,v5,3/6] net: gso: support re-segmentation of TCP GSO skbs
-    https://git.kernel.org/netdev/net-next/c/c4076626ba52
-  - [net-next,v5,4/6] net: gso: clear the GSO state of the last output segment
-    https://git.kernel.org/netdev/net-next/c/335a0378a755
-  - [net-next,v5,5/6] net: core: re-segment oversized TCP GSO skbs
-    https://git.kernel.org/netdev/net-next/c/32bfd220cd6f
-  - [net-next,v5,6/6] net: net_test: add tests for TCP re-segmentation
-    https://git.kernel.org/netdev/net-next/c/a374c5bb41d1
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
