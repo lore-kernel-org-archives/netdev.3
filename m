@@ -1,318 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB6252CCEC
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 18:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E279C23E33D;
+	Tue, 13 Oct 2026 18:13:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791915167; cv=none; b=aLgwjSYal1m0ZwOkezD/32zZZBmdAmyjs2Lzf177kYzXdmhGlsXO0kHH8wbJFnHmt8ETA/UggMh3OgsnIvuV8R6FkwYJvwvn65lra/dHAc0FmWdlXVf5t1IIqVhwUlgbe0pSu4a+bEx6OVDtkR/s4Q7gLQ9Ed2CzdC/jff68RgE=
+	t=1791915186; cv=none; b=H1Clxm+b2pLK5Bc9g9BK+bmc9aEshgm2AEmz6N12zlM8ytm50S2Vs5gDs2oX4XVqbdQX7aflayRHv05T/qUlEFBriP40x1yy1hxhPViA06rKn01hFlwRrG+Hz3uFWgjJGYLeAWHevcUcDYMMdQxGuKRMSfCS7+/ECIirD9Br4KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791915167; c=relaxed/simple;
-	bh=ZjyoARQmcORLroCUnlpUkjgyfjMdotlcWnJqGJAWQcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WtoWd8Ileu4SpbA7LuBu7tVd9Nn8xstofjwNKQCsrujSOSNoWrzre/qengKxe3rWDvcaep8kSBhP96E+mPL/vf6t7cKgaRfALl0x0Nvs8X1xdkshEHCI6Y4hQeyrCFOnMwX0IDoC9U8I5GoOHWYoqMY51srURXuXg9pRGTPJCp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Vohszuij; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ENc0xYyy; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791915186; c=relaxed/simple;
+	bh=NP2uEWY33oLWyrCIUabsjyvryyGbSatYCLEI5X1zaGA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OCD22qJiPgjXMkWLX2uhpssFUQhfXaIfOkLna0QxWAdN3NwABUpiXDKgNUoDuq618G2fkFcamG8yDz8e5xtmx6c8c8Enje/Rqc5b2AJBHoTIdRGa7aeODjYcUjq8mJGjtaORy5fUp4vD9KexxCbvvxpbpL98Km2oTWxFiDECu/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fPqw5Hzr; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Vohszuij";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ENc0xYyy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791915164;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tbzwRKVUEatrjVKlGEIq9cbf69CvktqCMQGFrwSPEpI=;
-	b=VohszuijMdH4NiaVxxIlC/b3Xb4Kdr14gwMPzadQSeGh12Up3t8OsJHAC6kbK0S7NbuPXd
-	hC+6HdcBku6C0sXIz9pjEN8g9oK+vnXI5E83JvNOakTDgHG9CjFlRxaM7T8p7HyEx0qh5V
-	62tpg7MHtKI0HTPiwpF7chPAJJeBXOw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-jcf9KFnIO_aokcf_32eqXw-1; Tue, 13 Oct 2026 18:12:43 +0000
-X-MC-Unique: jcf9KFnIO_aokcf_32eqXw-1
-X-Mimecast-MFC-AGG-ID: jcf9KFnIO_aokcf_32eqXw_1791915162
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4a16db51147so22014295e9.3
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:12:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791915162; x=1792519962; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tbzwRKVUEatrjVKlGEIq9cbf69CvktqCMQGFrwSPEpI=;
-        b=ENc0xYyyvArW67NooGA5W1dZ87cYFxN1UlA5lz19PCeIY7ilINGryI+K9JvYSsAS3x
-         wdPuS3af1XzaL0ysanUo3c43q0aMsuKq7WYszxlx00LxhuNkQ0WuZUrGS/I5r4c1EcKS
-         A7KJh8UmIDwxXmmVEXZRHNy8GgADzV9wil4PqXDyZn1jdoMp1HaMbU3tP96tDCS7cOzD
-         2TKrPndMa4+ofJGgdGEGB2pLeLEmzKFq+eGSCZ1UPsR6M2wRFkH1PPW0vpdLGGQUgmSW
-         OaeFuv/JANMNznOnbdOSJ9fjbiQ/rEzTR83c/4iPmUnZx3OKtHckv2ttJQLfU1paG40i
-         Mhpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791915162; x=1792519962;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=tbzwRKVUEatrjVKlGEIq9cbf69CvktqCMQGFrwSPEpI=;
-        b=ghMok4bMH6ajo8r8D/1YtDqWPErJNAZn5AphWBM9b0aZAvtc+lMn05G8ocA+QCY5Hj
-         QfMIMSoiXNPkLNjUyGzjzkXFf+UWSxNLiSRd/rDOFzWyFWelnG7VsCcIrVCe0qk/HYCq
-         bwEr2aKOxCRbqesm7Q9w1NaaOyglMWHKRpPI9ZdLCfsONbDzV9LXZECr1EPDfwjgr2TJ
-         u9EnZv58JChk4crF+vwaHwyg5yjfuoM9Kh1Cs5WzY41ql74mVn76EKrXLFT4NqzU21HA
-         149N9wiBFrkLehTzTyIN8xo+b7op82EMNhZmJeEZ+EMROfnrh0G4DnjHBL5hJtCONVDh
-         nbsw==
-X-Forwarded-Encrypted: i=1; AKwUvBxlgBgvjABU8rakpfcJW4GuY08W+zepTd2qvbh2LGmFLsZCo2Zf75yWR39eI0LcXd1HcmcZr/M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLfkytFdDmnMTwhcPLUN0EzhIesVh1f84FCEpM4WWuzIvBWhHlo
-	EB42LtzzrAib6KjhxXDqXdSS8X+03M3hJCsqHoGv4NIGNRt0/QxRV4Xy6NrZ1zZXzGDQGKqjn7M
-	dJhEhVjk1hRNR/0gKefVDIqH0ymY6io185Oqm3bFwzVt3RfdHpg/oMAwE0w==
-X-Gm-Gg: AYBFou2XB01Op4/66EKFBtfKarEjQgwd+Z7FzS/ob0QxCx/tDCIMRrTBUjn2/+GR8IC
-	qBjyvBhliQdU1StS7vuz3mKMeHwJAL0+lm65nmb5kk//qtyvOn3p9L+/zWR2pyuUmKPtC+9o1Rw
-	2anPyhs1QnwBWli7xXDpCBBD8xpdXc/DzXxjQUOLvyw2OFoVgfTW2AxOtbrwnWv+6jbfRJcCTic
-	cIRaGFCdRawWhLTUqMX7wCs5hkCxdkeRTPMDEtIlxyk7hXJemzskqU9CdBBMAwGHrns/cbAaLjz
-	F2gW2944QqKcAO72U1vhXKsKh4o6UyPd5pdaDrjqDpRSkP1CIZYBFtKOysZcuhIWceP+jg==
-X-Received: by 2002:a05:600c:4ecc:b0:49c:fa21:e749 with SMTP id 5b1f17b1804b1-4a18e4d55f2mr301269205e9.31.1791915161644;
-        Tue, 13 Oct 2026 11:12:41 -0700 (PDT)
-X-Received: by 2002:a05:600c:4ecc:b0:49c:fa21:e749 with SMTP id 5b1f17b1804b1-4a18e4d55f2mr301268495e9.31.1791915161115;
-        Tue, 13 Oct 2026 11:12:41 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de2e2ef2fsm5001706f8f.59.2026.10.13.11.12.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 11:12:40 -0700 (PDT)
-Date: Tue, 13 Oct 2026 14:12:37 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next 4/4] net: account for ingress-resolved virtio
- net hdr state
-Message-ID: <20261013141050-mutt-send-email-mst@kernel.org>
-References: <cover.1791887415.git.mst@redhat.com>
- <d82518764906d3b552fd3ade65b96ac741197d4e.1791887415.git.mst@redhat.com>
- <87ld81a40i.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fPqw5Hzr"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DE24gD1775095;
+	Tue, 13 Oct 2026 18:12:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=miYnpo
+	80qlkbiHUnF9/PxK0NC5uxRfKy1IE22BcWU0o=; b=fPqw5HzryssOr33ROMQErx
+	HbgO64o9tniLUrc8J6FF6SpE7/B6WfVQC+PSS7SkfwPDs1O7ftJWpHdnRz1e3BDc
+	bJmnXl9xlheNPpzSA4/loL2PmeC6XOzyU4AXAOV/0PtvWfJXarVcdFB392lyDAyx
+	5jB1gd0F+mD1y42uiQQcXpQv/Dc2/LaprAAkOx38HcER7WUhUrIjszz7UvE5Md3G
+	G7/QZd5fHfCS9OjJ7QDNWzPa5tAl9mtIWnDZV7iZqdXzOVCyB21Xx0pKlgxwbtYT
+	2LUOf88SCuG5qb2dJnFv0hq993kZ7cV+oAysxueZucBxms9UBUzT+I0C1NJ2YDyg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4h7dwhynkw-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 13 Oct 2026 18:12:18 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 69DFYxpI2667561;
+	Tue, 13 Oct 2026 18:12:18 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4h802vumbv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Oct 2026 18:12:18 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 69DICGln24183394
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Oct 2026 18:12:17 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C7A175805A;
+	Tue, 13 Oct 2026 18:12:16 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5B7925805C;
+	Tue, 13 Oct 2026 18:12:10 +0000 (GMT)
+Received: from [9.39.28.43] (unknown [9.39.28.43])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 13 Oct 2026 18:12:10 +0000 (GMT)
+Message-ID: <2b0bba52-3a7a-4def-89e3-223ab2dcaf9b@linux.ibm.com>
+Date: Tue, 13 Oct 2026 23:42:08 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v10] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: netdev-bot+sinfo@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+        dust.li@linux.alibaba.com, sidraya@linux.ibm.com,
+        hidayath@linux.ibm.com, pasic@linux.ibm.com, horms@kernel.org,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20261013141510.2621698-1-mjambigi@linux.ibm.com>
+ <179190120255.2527009.1699844827628717041@kernel.org>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <179190120255.2527009.1699844827628717041@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87ld81a40i.fsf@all.your.base.are.belong.to.us>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA3MCBTYWx0ZWRfX9lAhL03EBGan
+ nv0qi1YnJB2kv3VdoDD3Mgju6Sfv1GZKEQe4YRSEwF/rNNGupojh52FdVc/Fk8bHFsfEDQNywhF
+ Q5pLpTVCug1RYX6gYffsYETGGF0jrpukC1xyAVFe4j65IwI1DBp5Mi2ssxKnWIyTmgCO9fRcQxz
+ QPvT3m4YeCGo36/eT5C0wEgjApNgx4vbFaem85iexNNhYNKiibwKVa6e4lob7sd/QvsybSbMTCk
+ 0Y4AqDl+QiRevBgabgyGGh0cWwoixxyj90HuWp06UjlQXm9MBaJft1g8ZoN7ndSSxy3dgNvPiSh
+ F2fmC5WuduxKMBOCVv9BNyW9OI3n7X2iT3tKCfWwEcFnH81+zHqBGl8r4HSRw6Am2yHziLTG4Bs
+ 5GXfKBvay0Q9pU1D4wO/Ir+Nza1ta4WZ/kMo1mCu4IpBpTlb3/EXCmGrjPBgzvUkoZJKeqh+7K5
+ qzX+8bw2Uq0CjJyjU2Q==
+X-Proofpoint-GUID: 4oHyMwCOGILTFXwkOMnFuXX8X4lVIxqb
+X-Proofpoint-ORIG-GUID: 7w1L4tiieBePXkWrUdr6MH5KTiEfD5KR
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA3MCBTYWx0ZWRfX1rKqZKIdxVjn
+ YilsYgMPtqxPIeW56ZIQi4HTdSFBoZoiRs97eN9C6cHsz//49R2EyhjxnLRLpj7uHnT1CtA2Mv9
+ DLcB1Y1KkDUI9Y8tcR6y19VbFMt27c4=
+X-Authority-Analysis: v=2.4 cv=btHZl0ai c=1 sm=1 tr=0 ts=6ace7483 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=8WImSUdLa4LpenjYlHkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 phishscore=0 impostorscore=0 adultscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1015 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610130070
 
-On Tue, Oct 13, 2026 at 07:45:17PM +0200, Björn Töpel wrote:
-> "Michael S. Tsirkin" <mst@redhat.com> writes:
+
+
+On 13/10/26 7:50 pm, netdev-bot+sinfo@kernel.org wrote:
+> Hi!
 > 
-> > Ingress resolution of uncommon virtio net hdr checksum metadata
-> > (software checksum completion at ingress) adds performance overhead but
-> > is currently invisible: no counter tracks it, so a hypothetical workload
-> > relying on uncommon metadata cannot be distinguished from none at all,
-> > and packets quietly pay the host-CPU checksum overhead instead of offload.
-> >
-> > Have virtio_net_hdr_to_skb() return 1 when it completes an uncommon
-> > checksum in software, and flip every converter call site to test for
-> > negative errno.  Have tun count these events per device as
-> > rx_csum_sw and expose the counter via ethtool -S.
-> >
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > Assisted-by: LLM
-> > Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-> >
-> > ---
-> >  drivers/net/tap.c          |  4 ++--
-> >  drivers/net/tun.c          | 44 ++++++++++++++++++++++++++++++++++++--
-> >  drivers/net/virtio_net.c   |  2 +-
-> >  include/linux/virtio_net.h | 12 +++++++++--
-> >  net/packet/af_packet.c     |  4 ++--
-> >  5 files changed, 57 insertions(+), 9 deletions(-)
-> >
-> > diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-> > index ff67d99deb39e..73e8833944463 100644
-> > --- a/drivers/net/tap.c
-> > +++ b/drivers/net/tap.c
-> > @@ -649,7 +649,7 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
-> >  
-> >  	if (vnet_hdr_len) {
-> >  		err = tun_vnet_hdr_to_skb(q->flags, skb, &vnet_hdr);
-> > -		if (err) {
-> > +		if (err < 0) {
-> >  			rcu_read_unlock();
-> >  			drop_reason = SKB_DROP_REASON_DEV_HDR;
-> >  			goto err_kfree;
-> > @@ -1084,7 +1084,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
-> >  
-> >  	if (vnet_hdr_len) {
-> >  		err = tun_vnet_hdr_to_skb(q->flags, skb, gso);
-> > -		if (err) {
-> > +		if (err < 0) {
-> >  			rcu_read_unlock();
-> >  			goto err_kfree;
-> >  		}
-> > diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-> > index 242899f7fd071..138ca8987dfc6 100644
-> > --- a/drivers/net/tun.c
-> > +++ b/drivers/net/tun.c
-> > @@ -210,6 +210,7 @@ struct tun_struct {
-> >  	u32 flow_count;
-> >  	u32 rx_batched;
-> >  	atomic_long_t rx_frame_errors;
-> > +	atomic_long_t rx_csum_sw;
-> >  	struct bpf_prog __rcu *xdp_prog;
-> >  	struct tun_prog __rcu *steering_prog;
-> >  	struct tun_prog __rcu *filter_prog;
-> > @@ -1935,11 +1936,19 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
-> >  		break;
-> >  	}
-> >  
-> > -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr)) {
-> > +	err = tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, &hdr);
-> > +	if (err < 0) {
-> >  		atomic_long_inc(&tun->rx_frame_errors);
-> >  		err = -EINVAL;
-> >  		goto free_skb;
-> >  	}
-> > +	if (err > 0)
-> > +		atomic_long_inc(&tun->rx_csum_sw);
-> > +	/* The status is consumed: keep err clear so later exit paths
-> > +	 * (XDP drop via unlock_frags) do not return it to write() as
-> > +	 * a short count.
-> > +	 */
-> > +	err = 0;
-> >  
-> >  	if ((tun->flags & TUN_TYPE_MASK) == IFF_TAP)
-> >  		skb->protocol = eth_type_trans(skb, tun->dev);
-> > @@ -2605,12 +2614,15 @@ static int tun_xdp_one(struct tun_struct *tun,
-> >  	tnl_hdr = (struct virtio_net_hdr_v1_hash_tunnel *)gso;
-> >  	skb->dev = tun->dev;
-> >  	skb_set_network_header(skb, ETH_HLEN);
-> > -	if (tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr)) {
-> > +	ret = tun_vnet_hdr_tnl_to_skb(tun->flags, features, skb, tnl_hdr);
-> > +	if (ret < 0) {
-> >  		atomic_long_inc(&tun->rx_frame_errors);
-> >  		kfree_skb(skb);
-> >  		ret = -EINVAL;
-> >  		goto out;
-> >  	}
-> > +	if (ret > 0)
-> > +		atomic_long_inc(&tun->rx_csum_sw);
-> >  
-> >  	skb->protocol = eth_type_trans(skb, tun->dev);
-> >  	skb_reset_network_header(skb);
-> > @@ -3739,7 +3751,35 @@ static void tun_get_channels(struct net_device *dev,
-> >  	channels->max_combined = tun->flags & IFF_MULTI_QUEUE ? MAX_TAP_QUEUES : 1;
-> >  }
-> >  
-> > +#define TUN_STATS_LEN	1
-> > +static const char tun_ethtool_strings[TUN_STATS_LEN][ETH_GSTRING_LEN] = {
-> > +	"rx_csum_sw",
-> > +};
-> > +
-> > +static int tun_get_sset_count(struct net_device *dev, int sset)
-> > +{
-> > +	return sset == ETH_SS_STATS ? TUN_STATS_LEN : -EOPNOTSUPP;
-> > +}
-> > +
-> > +static void tun_get_strings(struct net_device *dev, u32 stringset, u8 *data)
-> > +{
-> > +	if (stringset == ETH_SS_STATS)
-> > +		memcpy(data, tun_ethtool_strings,
-> > +		       sizeof(tun_ethtool_strings));
-> > +}
-> > +
-> > +static void tun_get_ethtool_stats(struct net_device *dev,
-> > +				  struct ethtool_stats *stats, u64 *data)
-> > +{
-> > +	struct tun_struct *tun = netdev_priv(dev);
-> > +
-> > +	data[0] = atomic_long_read(&tun->rx_csum_sw);
-> > +}
-> > +
-> >  static const struct ethtool_ops tun_ethtool_ops = {
-> > +	.get_sset_count		= tun_get_sset_count,
-> > +	.get_strings		= tun_get_strings,
-> > +	.get_ethtool_stats	= tun_get_ethtool_stats,
-> >  	.supported_coalesce_params = ETHTOOL_COALESCE_RX_MAX_FRAMES,
-> >  	.get_drvinfo	= tun_get_drvinfo,
-> >  	.get_msglevel	= tun_get_msglevel,
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index daab43ac92ce4..2e6fd81df9c41 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -2519,7 +2519,7 @@ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *
-> >  	skb_set_network_header(skb, ETH_HLEN);
-> >  	if (virtio_net_hdr_tnl_to_skb(skb, &hdr->tnl_hdr, vi->rx_tnl,
-> >  				      vi->rx_tnl_csum,
-> > -				      virtio_is_little_endian(vi->vdev))) {
-> > +				      virtio_is_little_endian(vi->vdev)) < 0) {
-> >  		net_warn_ratelimited("%s: bad gso: type: %x, size: %u, flags %x tunnel %d tnl csum %d\n",
-> >  				     dev->name, hdr->hdr.gso_type,
-> >  				     hdr->hdr.gso_size, hdr->hdr.flags,
-> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> > index b181183118b3a..d8447db58ac83 100644
-> > --- a/include/linux/virtio_net.h
-> > +++ b/include/linux/virtio_net.h
-> > @@ -14,6 +14,14 @@
-> >  #include <uapi/linux/tcp.h>
-> >  #include <uapi/linux/virtio_net.h>
-> >  
-> > +/*
-> > + * virtio_net_hdr_to_skb() and virtio_net_hdr_tnl_to_skb() return 0 on
-> > + * success and a negative errno on failure.  On success they may also
-> > + * return 1, indicating that an uncommon checksum was completed in
-> > + * software at ingress rather than deferred to the egress path;
-> > + * drivers can use this to account for such packets.
-> > + */
-> > +
-> >  static inline bool virtio_net_hdr_match_proto(__be16 protocol, __u8 gso_type)
-> >  {
-> >  	switch (gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
-> > @@ -292,7 +300,7 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
-> >  
-> >  		err = skb_checksum_help(skb);
-> >  		skb->transport_header = old_transport;
-> > -		return err;
-> > +		return err ?: 1;
-> >  	}
-> >  
-> >  	return 0;
-> > @@ -441,7 +449,7 @@ virtio_net_hdr_tnl_to_skb(struct sk_buff *skb,
-> >  	/* Let the basic parsing deal with plain GSO features. */
-> >  	ret = __virtio_net_hdr_to_skb(skb, hdr, true,
-> >  				      hdr->gso_type & ~gso_tunnel_type, false);
-> > -	if (ret)
-> > +	if (ret < 0)
-> >  		return ret;
-> >  
-> >  	/* In case of USO, the inner protocol is still unknown and
-> > diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> > index 52ae3d875e971..e6aec9ecfa994 100644
-> > --- a/net/packet/af_packet.c
-> > +++ b/net/packet/af_packet.c
-> > @@ -2913,7 +2913,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
-> >  		}
-> >  
-> >  		if (has_vnet_hdr) {
-> > -			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
-> > +			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le()) < 0) {
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
 > 
-> nit: I don't know if we care, but this sort of breaks bisectability.
-> Previous patch does return ret ?: 1, but it's this patch that does the
-> if-statement fixup. (Same for tun/tap... ^^^)
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
+
+The issue was found by manual code inspection while reviewing the diag
+dump path in net/smc/smc_diag.c.
+
 > 
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
 
-Oh ugh. You are right, I kept rebasing to tweak things and moved it
-by chance. I'll fix it up in v2.
-
-
-> Björn
+The races are theoretical â€” none of the three windows were triggered in
+practice. The smc_conn_kill() / smcd_buf_detach() race requires an
+active smcss poll to coincide with an SMC-D lgr termination on the
+dmb_nocopy path; the smc_close_active_abort() and
+smc_close_passive_work() races require a concurrent diag dump during the
+narrow teardown window between sk_state = SMC_CLOSED and
+smc_conn_free(). No stack trace or error message is available since the
+bugs were not hit in a running system.
 
