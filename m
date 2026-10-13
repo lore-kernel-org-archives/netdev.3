@@ -1,145 +1,137 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ED838F649
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDA93A543A;
+	Tue, 13 Oct 2026 08:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791881734; cv=none; b=LHrszUBi+BhSVAt1nASel0Z8MQ6fQEq6H/Pjn6i1E88lARNjajPrRCaThb0GLPg6J5ay5CQWQRYJ/wP+G8bBsKDwrMS6VkwhPk6um06PqfZkwZqAszRnLHqeN45sBnMe43VX0b1CNg+w0ffzllML7DuHmJLzxgRdQcBzWbW8Yug=
+	t=1791881863; cv=none; b=t26mTCKiZKf/NdUQmCbiOU8GkMd9hMn4oTr3TjKDM88tOK7hDSdPXF3SOC3xQefWDvLQ5JpTHpQno33QHuH7B/lLWIVGtG3+ihAmVBfK/muKZVkE0CPKPlNGjDJCkdgjhM73Gt36yr5wAqDnddiwoOYtxngEp9fMkobqzr1cGvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791881734; c=relaxed/simple;
-	bh=m5iWzXQqbfeEnNBlQbatpfjqbyuy2gsKGGFKLi3YkFo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CPcQo0hSiJ6vJQxN6S53U2AYKdakoZ++UCBZ/si5QWv/esQIqSdWVAtAXnJQrDqDisxERtceYVWvxGWiDOC2Sf8Mosaj9NycOMjzgVtt93nJt/CtwL9pdC00a/BWoKNxqTeRpXjd0B4LhydpovaoThewjg44VWoaU6KESm7rJVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HVaHLYcJ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qTEKtpBd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1791881863; c=relaxed/simple;
+	bh=CJEEIqpACuIRcRLiZUMuBW41XuRJdTBazEuzD89d7Lc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i3yORchj+jOkwiwOASB0h1JH8Uvxr3vjnBCQqnBeBHBxGfq0pocdaTnbXwnyU8jSdxTpG6UsyYO8OlnHqGyZ6eeYKmS7U2LibJaMMXB/cQ+0HgJVHYiTUGSducbGUzxH7PzzL2JOZwJKpTKpn2zNYk0cRdETobKr/Q4y4FHfsR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yOv9XWPP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4m6K7bij; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HVaHLYcJ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qTEKtpBd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791881731;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yOv9XWPP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4m6K7bij"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1791881852;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=78mBmvtnY+q8jLXR2LeoMzPiBVGdVepDrU/0B9LThLg=;
-	b=HVaHLYcJXnc9XJGmk/kMhtrJBjUTGO2Rbm0TuEN0WEOg3HefWPK7zM9YqR8dkR19oDU9n6
-	QaGyCs8b7E+8Q5T160OAxs1liJi3YLss4cfRASvpVJX24Ps5ucojF+NjjADlXj7OPKxacA
-	ua8aJUAxKa7NbEMwmwpz6ntwBV4laRo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-459--yTbfnqVPhaSdLBLJcOTvw-1; Tue, 13 Oct 2026 08:55:30 +0000
-X-MC-Unique: -yTbfnqVPhaSdLBLJcOTvw-1
-X-Mimecast-MFC-AGG-ID: -yTbfnqVPhaSdLBLJcOTvw_1791881729
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49febef74e3so36291345e9.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 01:55:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791881729; x=1792486529; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=78mBmvtnY+q8jLXR2LeoMzPiBVGdVepDrU/0B9LThLg=;
-        b=qTEKtpBdnirlWqXiVsWXczbUleoUmPbFFqPRF5D2nfzqf85QlZDc/649GXpvkmE9kw
-         ZNv7dXoGsFRwpxvav25jtpCx1LgQk9OZZfud+jbg3nFciEmULtm+ukdMVX0jHT0xolh+
-         BTVZDzld5BNk3O8ryVHHbMy0LwFaHsXv1lOxinnkNKeMTBgbfUwVSG6oz3F0FnW40qs3
-         1tBcuUq3SI74m8EnQDy1Jc7hwoF+JHWeOdE2sy7kWpwnocV16R/9TUAqpX2Rv5N9bUnO
-         8a20zlCAZewC4EyQta6GZnqVtI/vo9b9UCiibD2ZkhbZbBWeF5GnkvMCuNsfqU+7dnbq
-         2uaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791881729; x=1792486529;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=78mBmvtnY+q8jLXR2LeoMzPiBVGdVepDrU/0B9LThLg=;
-        b=axwPC1y2x7nA2P332Ju229t7bD90ftNd/lVoSt3RXVXIYs1oTApbUPFQui0zF8tmfi
-         uXGSOh9Iki+gTIKLnvYi3oHJmGwpoQorFFcD+c4rgDYjPTme/ZEm0N7/4mAA/S6dBFIL
-         I7No6RHh+jMuWWJSRV/wJEiCRRlv5m7i3bBbY+d6c+eYC+wSMRdTBUrp+iSaHh/kPMx1
-         2dIgy5KzNGgISnESw02g82ar/Q3ZzJ5O184TTj9CTzJRNpktV0qa/G3COvj2MV/1TeZX
-         IFlk7E5YYGQ/4ABTPoulGB3JDm53e72I/lqw4zDvEIqWBiEoeJLs/LFN8nAR2tb4a37S
-         DXpw==
-X-Forwarded-Encrypted: i=1; AKwUvBxPJ/hXBU03lONU9Qrd3dZ7H2GHfUsX8eH4Y6pYw2TwTkMhSJPg97qhqd01rpZg+8AbshwZ8BU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI1TOdEq1CmlaIx3KRyRsPJiIWPTcpFwM11LxdEc62UC2fiBUKM
-	L/L5LPebqmzwUmeqI5egp5G9JYCfUwxC56QVySjnWuUh9PADzDd77i+QSCtb9ZipWIet8oEKAai
-	fM867L12ytxRywZZvsoR/ru8vN0bRfVTcNAkbdON/GCKc76CKtXPe/vuHbA==
-X-Gm-Gg: AYBFou2LfvRnAoixK8+qxm/gFiR1BR8yNzKbpSYmFFy5b1zRii0eexLIdo4aZWrw4DM
-	weATrtbDdl23MzpBuyxb7P92TubwLMmIXHA4lYmtB/j6F9EGYV7x5Xo8H4vBfnGftczd9lKuuI1
-	haa7Wca3P+JrBBBbg7/MCV9cGJxgx52i4/3M/GELKpklso/qwt7hlNl5ab2KodZ7ZdCAuJmrIYn
-	UNCbQOPIfl8sSonN3D0yyTe3fxvXgkETLoj3ZBmv7QwZ7gQGP3FU7KIkyj8nHip9ucsKKP0LvlV
-	Ij9ZjCmQtzHM/PhIKB0hcGbqAaA/Pajb4xfJhLCA8MCDQj6MQzu7dPOANnTRkjKvW8fHTI/b5mK
-	o597CESEpJgElz40M+Gc6AtRnAP7M1wjaqCN3jE4JHA8B7f1kkX4K8jsGRqVEznsPukwwwAGNfQ
-	==
-X-Received: by 2002:a05:600c:1d0a:b0:4a1:7f96:9b42 with SMTP id 5b1f17b1804b1-4a18e4a94f3mr217181805e9.15.1791881729380;
-        Tue, 13 Oct 2026 01:55:29 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d0a:b0:4a1:7f96:9b42 with SMTP id 5b1f17b1804b1-4a18e4a94f3mr217181095e9.15.1791881728540;
-        Tue, 13 Oct 2026 01:55:28 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf214a1sm398685695e9.7.2026.10.13.01.55.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 01:55:28 -0700 (PDT)
-Message-ID: <6317234b-1158-412b-85ff-7fa6210b7930@redhat.com>
-Date: Tue, 13 Oct 2026 10:55:26 +0200
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ioo3zz6ybzUQhsoHYp3TI/YOLZkzSDQ0WAna1QgIXKU=;
+	b=yOv9XWPPfyfNEad/sBQUOkieqwuv/v2cNnZ36xgjUUxIGQj07g+fi4iojnjdrlvIoPvGKB
+	dwfDWjR4qeDyEVK1wJn3ky8cE4OSH2AOkz7G2tweNOgTHZgPvzIlrkVyE56dQPYQrLes6c
+	ph33yeLko8FpEJU4S3p/cAaQ6iiJai9NXfIx3y6lVGF7/8l0RDeqNsnwsx72THqVqkHWil
+	1irgWPgxbNrko80l6M0Cbkbi5wi70TFyZ07/Z3IOcvRXQpue4RhbIFr/KTVpT9GP7/HJyF
+	rKo9lqYYpHC+H2LFkQQTD0hPtYFfBMg926i8wF7ge/So6vf43UCWCCfuxClwzA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1791881852;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ioo3zz6ybzUQhsoHYp3TI/YOLZkzSDQ0WAna1QgIXKU=;
+	b=4m6K7bijpU4XpEGYiiNh8qIj3FJGH5a+jfA3mcrs0o5sBwxGND6vU/E++zvhQuIw2c06rs
+	7ZNa/Z7VRvT2RFAg==
+Subject: [PATCH net v3 0/2] net: stmmac: Fix XSK crashes on stm32mp2
+Date: Tue, 13 Oct 2026 10:57:20 +0200
+Message-Id: <20261013-stmmac_xsk_crashes-v3-0-50fca7790af2@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] ptp: vclock: preserve time across failed
- physical clock samples
-To: James Hilliard <james.hilliard1@gmail.com>, netdev@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, Richard Cochran
- <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Yangbo Lu <yangbo.lu@nxp.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, linux-kernel@vger.kernel.org
-References: <20261005-ptp-vclock-sampling-v2-0-8ed12d4d10af@gmail.com>
- <20261005-ptp-vclock-sampling-v2-2-8ed12d4d10af@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20261005-ptp-vclock-sampling-v2-2-8ed12d4d10af@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHDyzWoC/22NQQ6CMBBFr0K6tqYtpURX3sMYUsogVSmmUwiGc
+ HcLGheGzSR/8v97E0HwFpAck4l4GCzazsWQ7hJiGu2uQG0VMxFMKHbgkmJoW22KEe+F8RobQMq
+ ZzvNacanLjMTh00NtxxV6Jg4CuXye2Jc3MGHBLbXGYuj8a1UPfC1/LdmWZeCUUeAyy9La1PGeH
+ tb1wXfOjvsKVskgfhjO2DZGRIxURjFTaiUF/8fM8/wGvWtemRYBAAA=
+X-Change-ID: 20260914-stmmac_xsk_crashes-10a77f614ab5
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, 
+ Song Yoong Siang <yoong.siang.song@intel.com>, 
+ Mohd Faizal Abdul Rahim <faizal.abdul.rahim@intel.com>, 
+ Ong Boon Leong <boon.leong.ong@intel.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org, 
+ Kurt Kanzenbach <kurt@linutronix.de>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1592; i=kurt@linutronix.de;
+ h=from:subject:message-id; bh=CJEEIqpACuIRcRLiZUMuBW41XuRJdTBazEuzD89d7Lc=;
+ b=owEBbQKS/ZANAwAKAcGT0fKqRnOCAcsmYgBqzfJ7gqh+ZYzD/9byvCaoITq4zivwjF0GJNMMD
+ nDPnDGo/b6JAjMEAAEKAB0WIQS8ub+yyMN909/bWZLBk9HyqkZzggUCas3yewAKCRDBk9HyqkZz
+ govQEACu8VTwfsodIPlWueZ9EX6bnvrRJluq5JkUXvHjxXzNyApvrLgLAkfxhj3zx+j3U4SfO4x
+ x/kekOOt05JwoMPkd6WAlCRvXBfC4uxgSECj+KP3g2aBoY2UL4OaSeyOXszH10f5cv79TM1mHsA
+ TflXaTGs02FU79gMAcVEM8o7Z4boR0os0r38l41nuoqEZlAS7bMWzeJ1IEUtX60FZQU5HCBTSEj
+ 20e3Eax5jd6eA81PvkB1LmDF3I09g5eK6z76g2IKWt8v8JwcML8cHMVOD2zIktvrbgAI7ELvzBB
+ 5gcwHUuyQJa++IMWyC6QRfhXqLTdL93BxkAYGU4L144c6x9+5klwceomm0EcvRaQ4DRW4PYZToZ
+ 9LpD8F3iXwjTKP78f/52hgpjDE33PEElxvL702MZrcsxETxuBesZHhNYRL9XYa5tbLHqgDl3YKt
+ DvjGlIs8HRac3iZtywMiLS5SSx7X1qM5AaE+FceQRUnaoe5yInm+opiiyAvgqLJd96Baj+/jUgz
+ YzoaFugzP3Bu0lnuWPkEfRd+db26u8F2EoG3oSqYto9HvFlWIy0Y1KY2fUGiTGfKcynnbteEtsS
+ VVPG9NZ04Me3v/ePUlIOcHKBlaD8wVSG/+IW5q39EZgOHIb7bra5waClnW04OLiHzosAwNiy7NR
+ quarUVcQXVuAVyg==
+X-Developer-Key: i=kurt@linutronix.de; a=openpgp;
+ fpr=BCB9BFB2C8C37DD3DFDB5992C193D1F2AA467382
 
-On 10/5/26 20:45, James Hilliard wrote:
-> The cyclecounter read callback cannot report errors. Passing an
-> unsuccessful PHC read through it consumes an invalid sample, and a zero
-> sample followed by the real counter can add an extra 32-bit wrap to
-> virtual time. This was identified by code inspection of reset-time PHC
-> access and the virtual clock callers.
-> 
-> Read the parent clock before updating or initializing the virtual
-> counter, propagate failures from clock operations, and leave its state
-> unchanged on failure. Initialize it before publishing a new virtual
-> clock.
-> 
-> Simply skipping failed reads is insufficient: the next successful read
-> can arrive after the 32-bit counter has wrapped, while timestamp
-> conversion has an even shorter half-wrap window. Use the full physical
-> nanosecond sample with a wide frequency-adjustment multiply and retain
-> fractional nanoseconds. This also allows delayed packet timestamps to be
-> converted without truncating their distance from the last sample.
-> Serialize extended and cross-timestamp sampling with adjustments and
-> advance the anchor on each successful clock read.
-> 
-> The initial sample can also fail partway through a sysfs request to create
-> multiple virtual clocks. Unregister any clocks created by that request
-> and clear their index entries, preserving the previously installed clocks
-> and count. Otherwise the failed request leaves registered children that
-> are not included in n_vclocks. This cleanup also handles existing
-> allocation and registration failure paths.
-> 
-> Fixes: 5d43f951b1ac ("ptp: add ptp virtual clock driver framework")
-> Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Hi,
 
-This addresses multiple issues, should instead be split accordingly.
+while looking at the TBS thingy [1], I've noticed kernel crashes. That
+happens when opening or closing an AF_XDP/ZC socket while parallel Tx
+traffic is going on.
 
-Also sashiko remarks hints at possible regression wrt the new wrap schema.
+So far, I see two issues:
 
-/P
+ - Patch #1: stmmac_xdp_release() seems to have the teardown order wrong
+ - Patch #2: stmmac_xdp_(en|dis)able_pool() does not stop the Tx queue
+   at all
+
+The kernel crashes can be reproduced instantly on the stm32mp2 like this:
+
+ - Run iperf3
+ - Run application which opens an AF_XDP/ZC socket
+
+[1] - https://lore.kernel.org/all/20260812-stm32mp2_txtime-v1-1-f9e2462cc85d@linutronix.de/
+
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+---
+Changes in v3:
+- Remove txq_trans_cond_update() (Maciej)
+- Add queue stop check for XDP TX etc. (Nicolai)
+- Add tags (Nicolai and Maxime)
+- Link to v2: https://patch.msgid.link/20261005-stmmac_xsk_crashes-v2-0-46c60cba6421@linutronix.de
+
+Changes in v2:
+- Remove RFC. No comments.
+- Link to v1: https://patch.msgid.link/20260915-stmmac_xsk_crashes-v1-0-e14553fcf553@linutronix.de
+
+---
+Kurt Kanzenbach (2):
+      net: stmmac: Disable NAPI before stopping Tx queues in stmmac_xdp_release()
+      net: stmmac: Stop Tx queue when (en|dis)abling XSK pools
+
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 10 +++++++---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c  | 13 +++++++++++++
+ 2 files changed, 20 insertions(+), 3 deletions(-)
+---
+base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
+change-id: 20260914-stmmac_xsk_crashes-10a77f614ab5
+
+Best regards,
+--  
+Kurt Kanzenbach <kurt@linutronix.de>
 
