@@ -1,140 +1,405 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013029.outbound.protection.outlook.com [52.101.72.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0369341754
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791882271; cv=fail; b=rjxlIlC/hiNMmbGb1iWnuuaJ24eXFXWlDEE+2tYSqy3iy/eF7LnVwvC/dBHL0Opl18iEPPg0BA4YSQh0Zh3hCz96gpv9X7qWN/Wlsamcw7taAQ4icimJWPec5u/wllcekf/sLG9VPqlrs3ryeheQLxYgYGhwmFIw5crWpithGaY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791882271; c=relaxed/simple;
-	bh=uaat0oHyXeYpcY/ofp+LRkuHAFl6Ydojwpkldw1Rouc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nTBXTmCz3PS/YhiGsH9yptpKyYVC4mz/yJS5BD+SpapC2d4n+l7Vpbx2ceOH5JTG9WuIwywZ73XbSOzmouqbW35V9wy9ztLyWBcYQi+IZ9ZyGAC1KNiWpL1Lv3gfWCjvx46XetCsJSJ4BIEZD2bPxR0XNU5+VD8pBE6gOMJaElI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=mTV50jWS; arc=fail smtp.client-ip=52.101.72.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7423B6C18
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791882309; cv=none; b=idL+5ebI+qmUkek8A12TJRjESNRzBW5stkSu/sCHqaKk/HXxtxdR5xfI9xsrsrjrXuiltvPktFXaFBCHAPliZw/jttgW5wOPPSIFPJMJA3JNwlyDKRusV16ZbsZSEKySRm0tuwBtbnpsR67b9+u7JM1GDZiEnd7yykscocP9SG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791882309; c=relaxed/simple;
+	bh=zrZtvSjYbhB8n6LuAJQLZtLvnsLb+OhtNasHz8G2Dds=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMFKWZLh740uAfdkix5pGowNYuGw9eb7jpU5ekKQ7gQqII6N+uHyN8qqdh4IVWpnlMRo2XHmYpMBHfN+1a/apvpP1uZZ/kx4YbGE5IsIXY7JHwr+vfuT9H8iWxEgifsfJDYlewa3un48UK1dA3EdlFHBwzcqWm3vG8dbCk4zuM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P4bZRmcy; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="mTV50jWS"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gHAsZw7kCfgx/nJfsnMvweGpBl6eHVRq4nH0eXePsqT4PU57DzMILwJ4WV87HoICtGWmWwDngeYbuvxRT7k2rjtLgAmuYx/s2/nbItNu/kP6xFhO59HRGYXMr34xoAOgA5UpY2qxmdo81mZi8Ht61BAJJO/hJ4OLZxydqa9w9B2Ueo0cmkiUxKSustMHbfihvLVlEKoRuJrPqSI3oK479G1IOp/e8sVvyHYvYQVTb1H+MCkf8S70mEmjpnHtFC+q7n8IjLCuPlUslDwjeOqWVwuDIKfcx6vuDCbwa+WgVwa5KVkbU63hJxglksGihHgYWFErH0RP+vpwTOrBV1Q98A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uaat0oHyXeYpcY/ofp+LRkuHAFl6Ydojwpkldw1Rouc=;
- b=ZmT4dtO1BtMtKS4nK2GPyMuosMtdvsMMStEcQ9SNdjCV/uY0Ym3PPmLuzgGp8T5BN5ETJJQzqVFdZUn84GbMJKSXFoHZj/PZ1M7M2mnwsChNIoz8ysFnkaeNmcgcmoY47vqCgUL6q/q7Lq00FI9s4+ez7l8HH7/+pcxpzuWF9TXbtddFVwzWhdrLYRtgxn7CnLcMq78p+i6KzxtFzqAuKnjFXDO62LQ1V3xkxeC3EqBmHYNrS6l+af3/n2XCypOyWW6hRrRLByssdZ7AVZ6EdK04bUz+uRGbrQv5HOLnnoXazrAdmrNAN0QfIHmFDnDsIP3xKJe2ZLWJcY0uFxMnXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uaat0oHyXeYpcY/ofp+LRkuHAFl6Ydojwpkldw1Rouc=;
- b=mTV50jWS6s4M40yZNJl+CpB7SZRQbsG8vHgXAAM4H1dVM87DgSVKVk/Dbj9u+WO7+qXBw7RqKmErUZSpffRkGIn3+uBscRi15eiy6Itz/wql38ZijsJudzK5goRw+sMDwdPI+ovK3FL0JN6c1FtZdd7Tl7ti0hg0GphGkuYmXqGsLTeu8c7TtoZgjN/5zgehWGapP22iVWVMT6R+T6Uhs/rrR0Ma4VwwkW5WQFhdvTHQU/mMxYZdT+9vxNg4hSxQq8nMSIDLlgJAXTCLX9MZqHw5u5i3ej0n4yjATZ0cKY5dQ2vpTyWMO8YhEuwS73EPVEBkWmwRtMR+/W1RpNl2Qw==
-Received: from AM7P189MB1137.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:17e::23)
- by GV1P189MB2645.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:1a3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 09:04:22 +0000
-Received: from AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
- ([fe80::86f0:8ce1:a437:b2d5]) by AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
- ([fe80::86f0:8ce1:a437:b2d5%4]) with mapi id 15.21.0522.011; Tue, 13 Oct 2026
- 09:04:18 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: Joas Antonio dos Santos <joasantonio108@gmail.com>
-CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"tipc-discussion@lists.sourceforge.net"
-	<tipc-discussion@lists.sourceforge.net>, Jon Maloy <jmaloy@redhat.com>
-Subject: Re: [PATCH net] tipc: raise the minimum bearer MTU to fit tunnel and
- crypto overhead
-Thread-Topic: [PATCH net] tipc: raise the minimum bearer MTU to fit tunnel and
- crypto overhead
-Thread-Index: AQHdV+0taEaIrQWkG0iveC+sgNCicLb5zrfwgACH7QCAANwEZQ==
-Date: Tue, 13 Oct 2026 09:04:18 +0000
-Message-ID:
- <AM7P189MB113737F860568AAF3775CE05C69E2@AM7P189MB1137.EURP189.PROD.OUTLOOK.COM>
-References: <179155039490.29136.3966310214361645960@gmail.com>
- <AM7P189MB11375A32648F33B53BA95A4AC69F2@AM7P189MB1137.EURP189.PROD.OUTLOOK.COM>
- <179183476436.33769.3426656354326870760@gmail.com>
-In-Reply-To: <179183476436.33769.3426656354326870760@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM7P189MB1137:EE_|GV1P189MB2645:EE_
-x-ms-office365-filtering-correlation-id: 2aee4848-e866-4341-4314-08df2908f687
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|10070799003|18002099003|22082099003|10067099003|38070700021|11063799006|4143699003|261009223027099003|56012099006;
-x-microsoft-antispam-message-info:
- fhI9SMZ3FFHrZZsJqatg9xYw4ae04gdbx+1gfVSlFrpdX7a9sNOmk3dp4Qdbvy+siKaecmDtjllQq1gURCBtmIYKrgg5iXzBhPlRXeiNE5LtmoHtQh5mit3a1SPNfqiAIMpYdVd5OMAEBvOmAXsBWQ0bCd4z2YI4nH40xjuvv27kXQ9i8vmOdsZbQSt3ZcoKTw1pWVfGBh6blvW3u1UcVvKUnNMsuPmuO9bFkQYH3FVhja+gZKPcgEdkh2EM/LcjAcRG6SJ3nBE90FBZbS8Y3l2bVk7dhWlaO6MXI+13hSlsYg+33DI9+dNg1Oqt/RfJ5NWAz3kE+3RnRCiR8VYrDmHDkC1+2Fg+yZLstvs6ef3jXOuJdbEy+TXndeQ7Jkm5FeYei/hDM5im7bwipOWVfgXWWShvwDitMv5CDJduL1of+xL4jqSP2Y1ZVV1n2xZTnkkSW37xhehv9sQ+NWXrsn/ET/X8C/dcEje/bSUwyhYVac7uEjngL9ilsHqVs+pWNnmQUd6KHOiVq6dKQrxCNCx7M5RQrl9/0Ezt/iJvl6x+afEKwjXeu17/4JK/cvovcyimQJZAC6zeXRIyGMefU97aUSUozmFkRlAJQfQ/KbWKmAIceS4Vkff3QJRbAN2YXu+E6J/0eCBdvKWVV3KTTYaoUuxoUkUIbaR28S1cllusKMZfIlGHtJ22mgMWodJUq93KsKZ/l6C3zQSJsGG43mTl6ohR+0aoiDCbcwRBH4E=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM7P189MB1137.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(10070799003)(18002099003)(22082099003)(10067099003)(38070700021)(11063799006)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?pI4jLtOX28UP5v/DfIvfmJmHHp5pPrXPkdF0P6xqdFbmmPp2qafvjzCrBF?=
- =?iso-8859-1?Q?BL02oeEQ9xBX7jrRRxaI4fvZ3zuNs4R9W+5S6STfkjdJebr0k6y8+3ebi7?=
- =?iso-8859-1?Q?ZPZAk7j/XZu55M6fJkbsPHEtFKRUkAO7jNT31quIMk/QGi/bYiP+CQYmFD?=
- =?iso-8859-1?Q?jMykVxEcxdUp8kF+5SDiL2F+Kz6+6FOxu+FQ38yPAtLZ1jSmO7G3MAMZGQ?=
- =?iso-8859-1?Q?FqnJNfsho9oPhV/WCUEb37hExjBEPbOho12N5NX3g5H6ym4V84SEd6MyY2?=
- =?iso-8859-1?Q?LimVycfHzNeOCqq8rxEwrh+lQvj5Cryy20r7HdZH2ycLDdJJMtLjHD+Dr6?=
- =?iso-8859-1?Q?vrsCAws6EcyfCQju+19Ink3CtHhStNTpvsnlpLWIW3IUckrljtEz+Hvblq?=
- =?iso-8859-1?Q?v92uk45dRfCRnLonOdL/PN513R5scPh+6hQNObQEjh4S4WY+8UHSAJiLW4?=
- =?iso-8859-1?Q?1t2BE3u1x5R3kk4xmojJCJTthvLnclesHESt9/C6F7MhcSm1sto/49KRRM?=
- =?iso-8859-1?Q?Gl7kX1pmQTN1Rvp/jNPYim21tyFpx4QL10UxQ4tRFLAWYt8XkWO6TPjRhH?=
- =?iso-8859-1?Q?9x3zSrW33egWQ3MC+RTfuUwJ7ssTtbELSobAbIOOmM92zSPqpO+gIwI+9X?=
- =?iso-8859-1?Q?AxwJB6UiGA84jU+sdAz4P5LmYzYOXNBXsgCO94Yt34Kojw5eVk49V52kDf?=
- =?iso-8859-1?Q?ZsZdtRDc99O63ykTrTk7tLPW2By/2vIuudIHwoQaUrki2LVNO5Q0Lx7025?=
- =?iso-8859-1?Q?WPpoPZuETCNvMCssiZYcv+ARo3Hmq9efHNteWi/hWPkCgMsyKTseHbx0w+?=
- =?iso-8859-1?Q?VykJ5Y6mIWuIUWCNc1/+v8EyYVIzUTIruoGjVFUbBvi82z6tw3Bw74RcZk?=
- =?iso-8859-1?Q?5R/hT5t2sDJrX++zYXve7N9S8Jcc5qsFsuVvA20iL6yrIrvlaQPelFK3zs?=
- =?iso-8859-1?Q?r6H6iQZa8whYHO8XhwRtSzfYrSx+i1NZ/C3BF3udTzkj9NbaRAttoX0twg?=
- =?iso-8859-1?Q?kR7AYntimmwAUfqDY1sYsz0p5OUwwsL1WzvTAdHfmp66KKCb52SD0kBn2L?=
- =?iso-8859-1?Q?noSNtGCibRd+P+SEXl+r7rRsHFA0KCXGxwRJuDcs/N0UnH3KvRmU/6zEWl?=
- =?iso-8859-1?Q?NYYW7IZuQlSTqoOAK3yLRO03d84nuVNwcDY1w8EFcqLpFyDWEZ8AYYAwIp?=
- =?iso-8859-1?Q?Kr7DkcpiEYKenpBUMheqv/5bFklKi8UDTuWf5gNVecpiVzNXvvcNtDaC63?=
- =?iso-8859-1?Q?G5oiuNL2SRJuxQO+W+1tVFGJtFv4mdPHEJeFeSdN3CWipCi+lPaL2t08d/?=
- =?iso-8859-1?Q?lzByDz9eeu+gDlux/iyNxB7PA5bj0/WXdGqLiSjcvvupxhU+gqAk654msO?=
- =?iso-8859-1?Q?+KBEd3wpUFPmERqpDOXH89AB/MQkWd3i8nmplgB7BrfxGnFc3saapI6c+c?=
- =?iso-8859-1?Q?8ZPnJkzLrgW8HNUCbgvdjEMWraMJF9ICcAnYLdMMvT47I5nul6NCi3dkIZ?=
- =?iso-8859-1?Q?kCgZp4JXJ3oT8qiCVcQqcSXWg1DI9NHz174FooOfjb5G0vE8P44sG9kxNi?=
- =?iso-8859-1?Q?sczViWHttsSJ9/5BN8jShFdzzkC0mOK4DT4jn1KnpY30vinBjHhp2NiYAj?=
- =?iso-8859-1?Q?BW9a9p41P2fzYeIUw6vStLl+GAO7JCBeMx4r7r5vvjZ82CVtiZQfdSjnet?=
- =?iso-8859-1?Q?1pQQcnHp8Mq3//0iwmcl8zacLFKtEKlNFkPfvpcNagS635m0RQfHFHAQT0?=
- =?iso-8859-1?Q?KLCF+aJ/8vC/JPSgV7myhpSJtwzvBqswQSe+PG+KRjnuxIOZBkPoC6+Hs0?=
- =?iso-8859-1?Q?vN9xnB+LU6zRZElAAJXhx5T8YtUrTcJwD7y8zkzpODrmAphqUh+NcbE9yf?=
- =?iso-8859-1?Q?Xh?=
-x-ms-exchange-antispam-messagedata-1: WqsraXjJsWSzCA==
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P4bZRmcy"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8884761745cso327461b3a.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:05:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791882307; x=1792487107; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HcqY9R2YTOxIE+yhKySAd0E4+Lidx60M519S7MZ1pW0=;
+        b=P4bZRmcyDS12MRJygdM6MIV1Y6IMA8jp7G9nojuwoAjdJi3SkyKbB2FJPpoqvQGmI0
+         p/vMCSn/n8uvb1+q4nOB6qk1nYpKirLeVO4IepsVuUhIr578CmpihYFB0YdyPhVc6jeb
+         PZRIo4cxWb49b0VH1TK5As9fP8QGJC5tjsBJzDbaEcEB07sTevsBYi84TFHCBoLm+GZ7
+         uQ82KI8H9jBHtHqXwxy1tF3g5BwJmjImTCQBZkCyuPKNIqQpKRbzPDnoJiUOIP6fafjV
+         dm8IebrVdSLyxioyeKJHdsMOqt5WKqnVf/JhQB+1QvJLOXoJ24JMVPliE49tVu7vuhSv
+         DwBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791882307; x=1792487107;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HcqY9R2YTOxIE+yhKySAd0E4+Lidx60M519S7MZ1pW0=;
+        b=ATuh+/GurB4wnyZz4vdQD/GHlcZ7BWMWOS3H3zPC5EzlrPAjj5/khWozlrPN0IYmyZ
+         UQnmZKmdtcj+A60DonzIJ8xre/gtdTmIVSsSwyEudav2ZZODNpep2JUzRXSQMSOCgBVP
+         KLsZzIEFWcv6k+zoYDt/9CtlQQVk4n1sFIXzO1glu96ok7X41r/tEp+r1X1/O8bgwXI5
+         CD/GtzyRvM3+ObeluId2FXTyMjkoPmXwrBjAg+0PeiuX8hQUGLe+2nIWK/mStqjlV8dh
+         3a7wuusfZcW8y5QyfeP1pUjyU39WKl8cWedn+Pzbb8RSL5yp1hfwvCueVZrJAuCic1AS
+         W3ZA==
+X-Forwarded-Encrypted: i=1; AKwUvBwJHaX3Mh+8ddENFDPiO6Mf3ND9XIGXvWIGFtgOR/bn6bpG55hgcb+nDhcopRzm/57sP3o8z8I=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKJ95nA4cKQv+35f5BxhDIMWI1eI7H8gR8rm/vW3foFPb/PfojB
+	YmAg/lSRUqIrUNaZ4nZ6p8gkL0L1LgGIcUEWllpGqz4Q/42yMyGcA5Xj
+X-Gm-Gg: AYBFou3iNfI2knSgFoDo+1i5IeO+l4fV0A/+6KKFVqTC6AUCNN0tEv700BUt24xU/c4
+	qWZCs0PZ2lvRykJZqE5P6w+GG0KnKNSSER5wi7dI3rA3Dyn+NjghrwyxUmyh4i+eh17Y/gD5gw9
+	RllJjw2nQ2QuPZYENLucj3RevG8XZl6uVlODT6zzmauhLIGYkFDVICskkcXwshFshfPcc1LxSYy
+	YzA3XPheJvDDoxy2HgDKLFCbnITgFWeXgUgjJRxil4muzLrLCMs2WuQQXol2unHh5RrgSlckcl8
+	8/5UDMyDSxl4S9X7e+jah1netK+4qQGIG2RPdjjLfd8QwAdMgbid/xqSbIcZQCVH783R8keOHJE
+	SVBWakMTMtP0FQY8V0NP1LZ4+nfqq19OyKmOA+lAsgA+80kdnGYk3RBmTuljJYQ5SHoGhut17S4
+	gJogWlLM8W0Bv7+T9tXfNl+TOTeiewuXn9kOBWsclgCxdUBt3ROy4G+QuU8I8fYNhjSVJjP0dEl
+	5LkezIu90PWgn+59knONjmYV/1M9eM/pg6S2gJ+ISymej60VGiZTNeRIFoS/E6a
+X-Received: by 2002:a17:903:244d:b0:2d8:f4d4:7044 with SMTP id d9443c01a7336-2e8429aa861mr157495525ad.3.1791882306646;
+        Tue, 13 Oct 2026 02:05:06 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca1b53dsm38790462eec.6.2026.10.13.02.05.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 02:05:05 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: James Chapman <jchapman@katalix.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] l2tp: snapshot sequencing state when building transmit headers
+Date: Tue, 13 Oct 2026 17:05:00 +0800
+Message-ID: <20261013090500.1180376-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM7P189MB1137.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2aee4848-e866-4341-4314-08df2908f687
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2026 09:04:18.1835
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZKLqhOHyYzGKnzS8aif7TL8YJVdyV2ejVDcQJTlBnMbYp+yGREZe4+spTfBxrBM82/LpHk6JWZwQGBsqvq051EGH2oOb/X8CXZL9G0RKSkk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P189MB2645
+Content-Transfer-Encoding: 8bit
 
-> Would you like me to send a v2 based on your approach (with your=0A=
-> Co-developed-by/Signed-off-by), or do you prefer to post it yourself=0A=
-> with a Reported-by/Tested-by from me?=0A=
-=0A=
-Please send v2 with this tag: Suggested-by: Tung Nguyen <tung.quang.nguyen@=
-est.tech>=0A=
+Updates to send_seq from netlink, PPP setsockopt and receive-side
+negotiation race with packet transmission. The header length is updated
+separately, while transmit reads both fields repeatedly without
+synchronization.
+
+For example, transmit can push a ten-byte L2TPv2 header, then a concurrent
+writer clears send_seq before the header builder reads it. The builder
+writes only six bytes, leaving four bytes of uninitialized skb headroom
+in the outgoing packet. The reverse mismatch overwrites the beginning of
+the payload. A later hdr_len read can also make the UDP length disagree
+with the skb length.
+
+KCSAN reported:
+
+  BUG: KCSAN: data-race in l2tp_session_set_header_len / l2tp_xmit_skb
+
+  write to 0xffff888100d0944a of 2 bytes by task 116 on cpu 1:
+   l2tp_session_set_header_len+0x81/0xc0
+   l2tp_nl_cmd_session_modify+0x122/0x2c0
+   genl_family_rcv_msg_doit+0x170/0x1d0
+
+  read to 0xffff888100d0944a of 2 bytes by task 115 on cpu 0:
+   l2tp_xmit_skb+0x9c/0xc80
+   pppol2tp_sendmsg+0x21c/0x2a0
+   __sys_sendto+0x28c/0x2a0
+
+The bug can lead to leak kernel base address for KASLR bypass, the
+corresponding reproducer can be provided per request.
+
+Initialize hdr_len to the maximum header size and leave it unchanged
+when sequencing is toggled. Snapshot send_seq once per packet and use
+that snapshot for the actual header length and header construction,
+including the sequence flag. Use the same length for headroom, the header
+push and the UDP length. PPP callers can safely reserve the maximum size;
+L2TPv3 header sizes do not depend on sequencing.
+
+Make send_seq a separate bool so READ_ONCE() and WRITE_ONCE() can be used
+without sharing a bitfield storage unit with other configuration flags.
+Preserve the netlink attribute's existing low-bit truncation.
+
+Fixes: 3557baabf280 ("[L2TP]: PPP over L2TP driver core")
+Cc: stable@vger.kernel.org
+Assisted-by: GPT-6 Astra
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+ net/l2tp/l2tp_core.c    | 51 +++++++++++++++++++----------------------
+ net/l2tp/l2tp_core.h    |  6 ++---
+ net/l2tp/l2tp_debugfs.c |  4 ++--
+ net/l2tp/l2tp_netlink.c | 11 ++++-----
+ net/l2tp/l2tp_ppp.c     |  8 +++----
+ 5 files changed, 35 insertions(+), 45 deletions(-)
+
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 4712cc41881a3..7e042a3e648ce 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -915,11 +915,9 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ 		 * check if we sre sending sequence numbers and if not,
+ 		 * configure it so.
+ 		 */
+-		if (!session->lns_mode && !session->send_seq) {
++		if (!session->lns_mode && !READ_ONCE(session->send_seq)) {
+ 			trace_session_seqnum_lns_enable(session);
+-			session->send_seq = 1;
+-			l2tp_session_set_header_len(session, tunnel->version,
+-						    tunnel->encap);
++			WRITE_ONCE(session->send_seq, true);
+ 		}
+ 	} else {
+ 		/* No sequence numbers.
+@@ -937,12 +935,10 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ 		 * If we're the LNS and we're sending sequence numbers, the
+ 		 * LAC is broken. Discard the frame.
+ 		 */
+-		if (!session->lns_mode && session->send_seq) {
++		if (!session->lns_mode && READ_ONCE(session->send_seq)) {
+ 			trace_session_seqnum_lns_disable(session);
+-			session->send_seq = 0;
+-			l2tp_session_set_header_len(session, tunnel->version,
+-						    tunnel->encap);
+-		} else if (session->send_seq) {
++			WRITE_ONCE(session->send_seq, false);
++		} else if (READ_ONCE(session->send_seq)) {
+ 			pr_debug_ratelimited("%s: recv data has no seq numbers when required. Discarding.\n",
+ 					     session->name);
+ 			atomic_long_inc(&session->stats.rx_seq_discards);
+@@ -1138,7 +1134,8 @@ static void l2tp_udp_encap_err_recv(struct sock *sk, struct sk_buff *skb, int er
+ 
+ /* Build an L2TP header for the session into the buffer provided.
+  */
+-static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf)
++static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf,
++				    bool send_seq)
+ {
+ 	struct l2tp_tunnel *tunnel = session->tunnel;
+ 	__be16 *bufp = buf;
+@@ -1147,14 +1144,14 @@ static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf)
+ 	u32 tunnel_id = tunnel->peer_tunnel_id;
+ 	u32 session_id = session->peer_session_id;
+ 
+-	if (session->send_seq)
++	if (send_seq)
+ 		flags |= L2TP_HDRFLAG_S;
+ 
+ 	/* Setup L2TP header. */
+ 	*bufp++ = htons(flags);
+ 	*bufp++ = htons(tunnel_id);
+ 	*bufp++ = htons(session_id);
+-	if (session->send_seq) {
++	if (send_seq) {
+ 		*bufp++ = htons(session->ns);
+ 		*bufp++ = 0;
+ 		session->ns++;
+@@ -1165,7 +1162,8 @@ static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf)
+ 	return bufp - optr;
+ }
+ 
+-static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf)
++static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf,
++				    bool send_seq)
+ {
+ 	struct l2tp_tunnel *tunnel = session->tunnel;
+ 	char *bufp = buf;
+@@ -1191,7 +1189,7 @@ static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf)
+ 	if (session->l2specific_type == L2TP_L2SPECTYPE_DEFAULT) {
+ 		u32 l2h = 0;
+ 
+-		if (session->send_seq) {
++		if (send_seq) {
+ 			l2h = 0x40000000 | session->ns;
+ 			session->ns++;
+ 			session->ns &= 0xffffff;
+@@ -1225,19 +1223,24 @@ static int l2tp_xmit_queue(struct l2tp_tunnel *tunnel, struct sk_buff *skb, stru
+ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, unsigned int *len)
+ {
+ 	struct l2tp_tunnel *tunnel = session->tunnel;
++	bool send_seq = READ_ONCE(session->send_seq);
+ 	unsigned int data_len = skb->len;
+ 	struct sock *sk = tunnel->sock;
++	u16 hdr_len = session->hdr_len;
+ 	int headroom, uhlen, udp_len;
+ 	int ret = NET_XMIT_SUCCESS;
+ 	struct inet_sock *inet;
+ 	struct udphdr *uh;
+ 
++	if (tunnel->version == L2TP_HDR_VER_2 && !send_seq)
++		hdr_len -= 4;
++
+ 	/* Check that there's enough headroom in the skb to insert IP,
+ 	 * UDP and L2TP headers. If not enough, expand it to
+ 	 * make room. Adjust truesize.
+ 	 */
+ 	uhlen = (tunnel->encap == L2TP_ENCAPTYPE_UDP) ? sizeof(*uh) : 0;
+-	headroom = NET_SKB_PAD + sizeof(struct iphdr) + uhlen + session->hdr_len;
++	headroom = NET_SKB_PAD + sizeof(struct iphdr) + uhlen + hdr_len;
+ 	if (skb_cow_head(skb, headroom)) {
+ 		kfree_skb(skb);
+ 		return NET_XMIT_DROP;
+@@ -1245,9 +1248,9 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 
+ 	/* Setup L2TP header */
+ 	if (tunnel->version == L2TP_HDR_VER_2)
+-		l2tp_build_l2tpv2_header(session, __skb_push(skb, session->hdr_len));
++		l2tp_build_l2tpv2_header(session, __skb_push(skb, hdr_len), send_seq);
+ 	else
+-		l2tp_build_l2tpv3_header(session, __skb_push(skb, session->hdr_len));
++		l2tp_build_l2tpv3_header(session, __skb_push(skb, hdr_len), send_seq);
+ 
+ 	/* Reset control buffer */
+ 	memset(skb->cb, 0, sizeof(skb->cb));
+@@ -1290,7 +1293,7 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 		uh = udp_hdr(skb);
+ 		uh->source = inet->inet_sport;
+ 		uh->dest = inet->inet_dport;
+-		udp_len = uhlen + session->hdr_len + data_len;
++		udp_len = uhlen + hdr_len + data_len;
+ 		if (udp_len > U16_MAX) {
+ 			kfree_skb(skb);
+ 			ret = NET_XMIT_DROP;
+@@ -1759,16 +1762,11 @@ static void l2tp_session_del_work(struct work_struct *work)
+ 	l2tp_session_put(session);
+ }
+ 
+-/* We come here whenever a session's send_seq, cookie_len or
+- * l2specific_type parameters are set.
+- */
+-void l2tp_session_set_header_len(struct l2tp_session *session, int version,
+-				 enum l2tp_encap_type encap)
++static void l2tp_session_set_header_len(struct l2tp_session *session, int version,
++					enum l2tp_encap_type encap)
+ {
+ 	if (version == L2TP_HDR_VER_2) {
+-		session->hdr_len = 6;
+-		if (session->send_seq)
+-			session->hdr_len += 4;
++		session->hdr_len = 10;
+ 	} else {
+ 		session->hdr_len = 4 + session->cookie_len;
+ 		session->hdr_len += l2tp_get_l2specific_len(session);
+@@ -1776,7 +1774,6 @@ void l2tp_session_set_header_len(struct l2tp_session *session, int version,
+ 			session->hdr_len += 4;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(l2tp_session_set_header_len);
+ 
+ struct l2tp_session *l2tp_session_create(int priv_size, struct l2tp_tunnel *tunnel, u32 session_id,
+ 					 u32 peer_session_id, struct l2tp_session_cfg *cfg)
+diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
+index ffd8ced3a51ff..25ae4c25d3eff 100644
+--- a/net/l2tp/l2tp_core.h
++++ b/net/l2tp/l2tp_core.h
+@@ -76,7 +76,7 @@ struct l2tp_session {
+ 	u8			peer_cookie[8];
+ 	int			peer_cookie_len;
+ 	u16			l2specific_type;
+-	u16			hdr_len;
++	u16			hdr_len;	/* maximum L2TP header length */
+ 	u32			nr;		/* session NR state (receive) */
+ 	u32			ns;		/* session NR state (send) */
+ 	struct sk_buff_head	reorder_q;	/* receive reorder queue */
+@@ -94,8 +94,8 @@ struct l2tp_session {
+ 
+ 	char			name[L2TP_SESSION_NAME_MAX]; /* for logging */
+ 	char			ifname[IFNAMSIZ];
++	bool			send_seq;	/* send packets with sequence numbers? */
+ 	unsigned int		recv_seq:1;	/* expect receive packets with sequence numbers? */
+-	unsigned int		send_seq:1;	/* send packets with sequence numbers? */
+ 	unsigned int		lns_mode:1;	/* behave as LNS?
+ 						 * LAC enables sequence numbers under LNS control.
+ 						 */
+@@ -257,8 +257,6 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb);
+ 
+ /* Transmit path helpers for sending packets over the tunnel socket. */
+-void l2tp_session_set_header_len(struct l2tp_session *session, int version,
+-				 enum l2tp_encap_type encap);
+ int l2tp_xmit_skb(struct l2tp_session *session, struct sk_buff *skb);
+ 
+ /* Pseudowire management.
+diff --git a/net/l2tp/l2tp_debugfs.c b/net/l2tp/l2tp_debugfs.c
+index c12d5e1ee550c..58d1d6a7768ef 100644
+--- a/net/l2tp/l2tp_debugfs.c
++++ b/net/l2tp/l2tp_debugfs.c
+@@ -182,12 +182,12 @@ static void l2tp_dfs_seq_session_show(struct seq_file *m, void *v)
+ 		   session->pwtype == L2TP_PWTYPE_ETH ? "ETH" :
+ 		   session->pwtype == L2TP_PWTYPE_PPP ? "PPP" :
+ 		   "");
+-	if (session->send_seq || session->recv_seq)
++	if (READ_ONCE(session->send_seq) || session->recv_seq)
+ 		seq_printf(m, "   nr %u, ns %u\n", session->nr, session->ns);
+ 	seq_printf(m, "   refcnt %d\n", refcount_read(&session->ref_count));
+ 	seq_printf(m, "   config 0/0/%c/%c/-/%s %08x %u\n",
+ 		   session->recv_seq ? 'R' : '-',
+-		   session->send_seq ? 'S' : '-',
++		   READ_ONCE(session->send_seq) ? 'S' : '-',
+ 		   session->lns_mode ? "LNS" : "LAC",
+ 		   0,
+ 		   jiffies_to_msecs(session->reorder_timeout));
+diff --git a/net/l2tp/l2tp_netlink.c b/net/l2tp/l2tp_netlink.c
+index 38aac59d052c4..89ef04c78787d 100644
+--- a/net/l2tp/l2tp_netlink.c
++++ b/net/l2tp/l2tp_netlink.c
+@@ -700,12 +700,9 @@ static int l2tp_nl_cmd_session_modify(struct sk_buff *skb, struct genl_info *inf
+ 	if (info->attrs[L2TP_ATTR_RECV_SEQ])
+ 		session->recv_seq = nla_get_u8(info->attrs[L2TP_ATTR_RECV_SEQ]);
+ 
+-	if (info->attrs[L2TP_ATTR_SEND_SEQ]) {
+-		struct l2tp_tunnel *tunnel = session->tunnel;
+-
+-		session->send_seq = nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]);
+-		l2tp_session_set_header_len(session, tunnel->version, tunnel->encap);
+-	}
++	if (info->attrs[L2TP_ATTR_SEND_SEQ])
++		WRITE_ONCE(session->send_seq,
++			   nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]) & 1);
+ 
+ 	if (info->attrs[L2TP_ATTR_LNS_MODE])
+ 		session->lns_mode = nla_get_u8(info->attrs[L2TP_ATTR_LNS_MODE]);
+@@ -748,7 +745,7 @@ static int l2tp_nl_session_send(struct sk_buff *skb, u32 portid, u32 seq, int fl
+ 	    (session->peer_cookie_len &&
+ 	     nla_put(skb, L2TP_ATTR_PEER_COOKIE, session->peer_cookie_len, session->peer_cookie)) ||
+ 	    nla_put_u8(skb, L2TP_ATTR_RECV_SEQ, session->recv_seq) ||
+-	    nla_put_u8(skb, L2TP_ATTR_SEND_SEQ, session->send_seq) ||
++	    nla_put_u8(skb, L2TP_ATTR_SEND_SEQ, READ_ONCE(session->send_seq)) ||
+ 	    nla_put_u8(skb, L2TP_ATTR_LNS_MODE, session->lns_mode) ||
+ 	    (l2tp_tunnel_uses_xfrm(tunnel) &&
+ 	     nla_put_u8(skb, L2TP_ATTR_USING_IPSEC, 1)) ||
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index ef8fdfaf051d4..4f311d473a646 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -1195,9 +1195,7 @@ static int pppol2tp_session_setsockopt(struct sock *sk,
+ 			err = -EINVAL;
+ 			break;
+ 		}
+-		session->send_seq = !!val;
+-		l2tp_session_set_header_len(session, session->tunnel->version,
+-					    session->tunnel->encap);
++		WRITE_ONCE(session->send_seq, !!val);
+ 		break;
+ 
+ 	case PPPOL2TP_SO_LNSMODE:
+@@ -1307,7 +1305,7 @@ static int pppol2tp_session_getsockopt(struct sock *sk,
+ 		break;
+ 
+ 	case PPPOL2TP_SO_SENDSEQ:
+-		*val = session->send_seq;
++		*val = READ_ONCE(session->send_seq);
+ 		break;
+ 
+ 	case PPPOL2TP_SO_LNSMODE:
+@@ -1546,7 +1544,7 @@ static void pppol2tp_seq_session_show(struct seq_file *m, void *v)
+ 		   state, user_data_ok);
+ 	seq_printf(m, "   0/0/%c/%c/%s %08x %u\n",
+ 		   session->recv_seq ? 'R' : '-',
+-		   session->send_seq ? 'S' : '-',
++		   READ_ONCE(session->send_seq) ? 'S' : '-',
+ 		   session->lns_mode ? "LNS" : "LAC",
+ 		   0,
+ 		   jiffies_to_msecs(session->reorder_timeout));
+-- 
+2.43.0
+
