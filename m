@@ -1,265 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FB94E3257;
-	Tue, 13 Oct 2026 10:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7E94E1C75
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889087; cv=none; b=BAPLgwCoRtAuGxbvzuZdhyi9fMqbuUEIRh3TvOyu1RqW9zQN2bT0ZRMjRb0/gZWOhCBkQrj5ZKzXTmpsBq3/z1IhWFnqwjd3rvgWM43LqRMw+Pzu06CZHNss1cWAmC3t/g9o5faRlFOneHU/b8RgetYytWlDtU0pJ/oQ9xZNvR8=
+	t=1791889121; cv=none; b=PGELEqMM0f2tsaS5LhlUpRpM6GRzTlOiLrdixt2Eq72LCFUXDK3Q/2oofCx3uTCRa+nsoIzWUb7pEpBOPGDiWkvSi7+nBv3xLDXhGLMqkUJ2t7fCmiKolwJWopDh11Hv02tGEt8k/erX+57Xf+1hTnlCj9qY+7NXxKHQsZNrRn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889087; c=relaxed/simple;
-	bh=7eanEjJdrMECPM7v8HhfuSDHAfuKythZ9q9LJ+TfcJw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ahs44OTKAlSmyVUzyFpdUKHZ4lpka9hloC+nY5miWmX/VwQ5WLnu4MJJWfS6Hs/bvbCuUWWnpbMFDv9JbN1tSK5KcefHFn05PCQoUgPnIjgTFWE/h2yWG2MNPGHnU6uXrO+4RLoDocezuxRf/HF26NW+SEXPQigBbSOfDIcQKCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtuHFFRO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791889121; c=relaxed/simple;
+	bh=TaE9Ly6M6reX40WUzo4n5oZ5FLX4vQyvLdUI7s12ZkU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=HGB9y/MfRs9Rq7kgeB6ybxek5FUMYYLUgiai+uWXvRjn6FPiStUAQFx2gWSyesBE9kAPaMngoqG1sgDmUe3XETr9TZBOlNksHWn+rMfCQCJsMEPfOw5bhBgmhCx9NW9puGkJ0SslitH+02IS4hq9shQEczEhZuWuof7T26zJ1yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PHjlXyf6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LQEHY4sT; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtuHFFRO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824E61F0089B;
-	Tue, 13 Oct 2026 10:57:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791889077;
-	bh=QvPQmojfQvdSuKzFwSonxR1bfeKW0jigc5qUQGEDGRc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dtuHFFROKKBVT90olJh3vQshzbvhEZIMKZJInp1SlLIZqBvMSYRGKp0k9GdEp+zR8
-	 hqcia1+sB6J5fdOHUAMFr2WPYpSEDdHCTeLnCUdKJMNETK0izv1r96nZiwlKSpzglY
-	 ScEbsQB5o6XcwiRVHqM+gBy5jLG4lIQ1PWSgrDFfEGjPMQpzCOdkbPFxB3Mpo2Chrs
-	 MkvAqZaozczI8C1+/MFQ3BGdDnoaNecHCfQL1jL8MT1Daupb1XJRqGiwXh4peHKfvI
-	 kLuNyeBn5vGN9taXByqxtg8SldmBQz1aow47h+ONF3DCje0QE9qocxALY3Lr3izKmK
-	 Rx+z7+uPo0WIg==
-Subject: Re: [PATCH v5 net-next 9/9] net: dsa: netc: add PTP one-step
- timestamping support
-From: netdev-bot+sashiko@kernel.org
-To: wei.fang@oss.nxp.com
-Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- richardcochran@gmail.com, linusw@kernel.org, wei.fang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Date: Tue, 13 Oct 2026 10:57:56 +0000
-Message-ID: <179188907611.434549.18346411156046070175@kernel.org>
-In-Reply-To: <20261012095924.1129312-10-wei.fang@oss.nxp.com>
-References: <20261012095924.1129312-10-wei.fang@oss.nxp.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PHjlXyf6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LQEHY4sT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791889113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=YIXLaYbJVEJiIPKxdajUtKwRlZKZGxRdqRquRKPiCJk=;
+	b=PHjlXyf6CDXfmkyArGvW6ZhzKtTlNaykgpCKM+gv6bF+GN44Yl2b6Ehng0NWYgZtEz+tIU
+	8XNRiPOTPgltdSPs3EKG3gpi3CpMQqN1WUgtkMsdvqmHS3cU5Ti5us95n8ZYRLrELFssAE
+	Q0OVwyLHF5Nxds/E8hurh5bcjqGbV5g=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-474-wZHuca4DNS2xZ5r_2nX6kg-1; Tue, 13 Oct 2026 10:58:30 +0000
+X-MC-Unique: wZHuca4DNS2xZ5r_2nX6kg-1
+X-Mimecast-MFC-AGG-ID: wZHuca4DNS2xZ5r_2nX6kg_1791889109
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-487038bc9b8so2236494f8f.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791889109; x=1792493909; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=YIXLaYbJVEJiIPKxdajUtKwRlZKZGxRdqRquRKPiCJk=;
+        b=LQEHY4sT0JuwfdjUu9rcTh82YrbRuj9uL6CzJc94xsU+ho6HuaUK9iyDliyBgd18H7
+         cIVpEzw86B8PWPhJYpvZplULgTOQIksk+Ghw42uZMHb/I6cuHeri25d/YyECbHaI3Ql5
+         wp0BTX/PeyvhljmePufuwfDoO5pX2bILxWlX2Zd8d9Alz6FZmlYFIoV8iMV0UEau/0LT
+         78iEhHqCA2j7jAV3gXztjsvbxgrdp/rY8jikt2fH1Z1qEMBRkWc/gwe4aIvVQoLfK0/v
+         KYMlQM/7GoQ688Go7qWoWyRfpcrOYnNlSckTy6sUeMPjTfoXazxeHh4BdLxKIoJZZwwn
+         WbdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791889109; x=1792493909;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YIXLaYbJVEJiIPKxdajUtKwRlZKZGxRdqRquRKPiCJk=;
+        b=pYYRWXP7sHeLhbPSyyMlYdtwtLeMcu89ndhEyWqwXmmnv8YxL6RrPOeZtFIpCkwS4E
+         TPj8roEMp+v8nptSkFCYrzDffbUorQvFitHdRyG6928hju4g174pMoLz5YHNmGbst3kB
+         pdEZPH6ackEHWq91WJEq6gNaS5PQEHPhnRyE2nm++cWlGtBexF+CQbUvCk2OwLrcEoKr
+         KTHrIMF2RJcpKOgNFNH5fGNY1LCTrclqLZBCF8BiRi24Rr2JoHAJjI2VHIcsM28sX1G7
+         M4rB6InhOFK/5cHmKwIdHhCOpIStT/w8xJ1nW577OjKQMRCoGC4F+UlNp+zlmOidPxaz
+         86ww==
+X-Forwarded-Encrypted: i=1; AKwUvBzUmMtTlM/NljjM8VVMLg8H/aKSRDiqm1OSpzqKN3fiB1+CKQxSALhhhGqtbKuk+gMkND2VUVE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ32qJdcnluDtc0WU1RrcDcEnv35VNs61ceA0RmNZ+oq215Cn/o
+	oZ4+NznZbfxz6KXL+u2MqWnx2b+sqCIht7Eyhp0v/VUOjDVOS7APO+UVWFGJisJGFkRG0DCTPp+
+	x5/o3bkmicUCnYCV+hogi8IVPUbmAlCe6b6isHKAuHGzHHMejYelMeRRqZg==
+X-Gm-Gg: AYBFou2BrfYkCPV9d4rX17KWDkzUJSRSNvIur2kZI/6lFwJBHjt272Y2ngwdfTHmsIY
+	Hhz+tvLSG0m56836qTBsx1depc4098svVNmZYp82kwjrVzZGY5vfnIqOOzFzlt6bAb4RNlB5RVo
+	X2O2qcqjJhjjRav6e66pLrsjwCXNOUkf0SwMjzGStZtD3qgP7WdPQLN+neINaBAV9tQJDnBz5EH
+	SJUvQmjFzc4V9qy1IeFx0EPotQutpNOwvzKAYSwMqrE3+cBhubXR1Lg/rn2f7SUwv/jCIVF/ufc
+	1Tr1eucPBMecnySYjkPW0TrFc7pKJvfcCRVaCNpM0yQ7oE5AHOhLTlS002NELH1BYnU5vA==
+X-Received: by 2002:a05:600c:3541:b0:4a0:2488:71cc with SMTP id 5b1f17b1804b1-4a18e4e9ee8mr222632585e9.32.1791889109040;
+        Tue, 13 Oct 2026 03:58:29 -0700 (PDT)
+X-Received: by 2002:a05:600c:3541:b0:4a0:2488:71cc with SMTP id 5b1f17b1804b1-4a18e4e9ee8mr222632035e9.32.1791889108394;
+        Tue, 13 Oct 2026 03:58:28 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc6b82sm4518508f8f.51.2026.10.13.03.58.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 03:58:27 -0700 (PDT)
+Date: Tue, 13 Oct 2026 06:58:25 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Max Krasnyansky <maxk@qualcomm.com>
+Subject: [PATCH net-next 0/4] more virtio-net csum hardening
+Message-ID: <cover.1791887415.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
+X-Mutt-Fcc: =sent
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Allowing untrusted hardware to specify csum start/offset for
+CHECKSUM_PARTIAL was not a good idea, because, if it edits the packet
+outside the actual checksum, and depending on the setup, the networking
+stack could be looking at the packet both before and after the edit, and
+seeing different results.
 
-Low priority / nit picks for your consideration:
+Previously, commit 6785011f8b16 ("ipv4: validate checksum_start before
+completing checksum") validated all known instances where this
+causes the most grief, but the real fix is to make sure
+that either only actual checksum fields are ever edited,
+or the checksum is completed before the net stack looks at it,
+so it is always consistent.
 
-- [Low] The commit message does not describe the valid-window recovery
-  that the code implements.
-- [Low] The new one-step code reads the global jiffies_64 directly in two
-  places.
-- [Low] In netc_port_onestep_sync_enqueue(), the queue-full check
-  (skb_queue_len(&np->onestep_queue) >= NETC_ONESTEP_QTH) jumps to…
-- [Low] netc_port_enable_onestep() sets np->onestep_state =
-  NETC_ONESTEP_IDLE without checking the current state.
+This basically does this: checksum at ingress, except in a narrow list
+of specified known good cases.
 
---
+Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
 
-net: dsa: netc: add PTP one-step timestamping support
+Michael S. Tsirkin (4):
+  net: add ip4_parse()
+  net: use ip4_parse() in receive validation
+  net: resolve uncommon partial checksums at ingress
+  net: account for ingress-resolved virtio net hdr state
 
-This adds one-step Sync offload for NETC switch ports and advertises
-HWTSTAMP_TX_ONESTEP_SYNC. The per-port PM_SINGLE_STEP register is shared,
-so the tagger hands each one-step Sync to the switch driver. The driver
-queues them and sends them one at a time from a work item using a To_Port
-subtype 3 tag. Lost responses are recovered through tstamp_timeout_work
-and a 2^30 ns validity window.
-
-> Since
-> the tag timestamp is only 30 bits wide and the hardware accounts for a
-> single wrap at most, also schedule the work when the PTP time has
-> advanced beyond NETC_ONESTEP_VALID_WINDOW since the in-flight frame was
-> queued, as its correction field can no longer be computed correctly.
-
-[Severity: Low]
-This paragraph doesn't seem to match what netc_onestep_timeout() does. I
-see three differences.
-
-First, the check never reads the PTP clock. It compares jiffies_64 with
-np->onestep_tx_time + 1 + nsecs_to_jiffies64(NETC_ONESTEP_VALID_WINDOW).
-The code comment says this is on purpose, because the PHC may be stepped
-backwards.
-
-Second, np->onestep_tx_time is set in netc_port_onestep_work() just before
-the frame is programmed and passed to onestep_sync_xmit(). It is not set
-when the frame is put on onestep_queue.
-
-Third, netc_onestep_timeout() is only called from
-netc_port_onestep_sync_enqueue(). That means this check only resumes the
-drain when a new Sync is enqueued. If no new Sync arrives, queued frames
-wait for the 5 second tstamp_timeout_work.
-
-Could the commit message be reworded to describe this?
-
-> diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_ptp.c
-> index 756c69a02064e..c3875bce80bc1 100644
-> --- a/drivers/net/dsa/netc/netc_ptp.c
-> +++ b/drivers/net/dsa/netc/netc_ptp.c
-
-[ ... ]
-
-> @@ -68,12 +96,286 @@ static int netc_get_ts_req_id(struct netc_port *np)
->  	return ts_req_id;
->  }
->  
-
-[ ... ]
-
-> +void netc_port_disable_onestep(struct netc_port *np)
-> +{
-> +	struct sk_buff_head free_list;
-> +
-> +	if (!dsa_port_is_user(np->dp))
-> +		return;
-> +
-> +	__skb_queue_head_init(&free_list);
-> +
-> +	spin_lock_bh(&np->onestep_lock);
-> +	skb_queue_splice_init(&np->onestep_queue, &free_list);
-> +	np->onestep_state = NETC_ONESTEP_PORT_INACTIVE;
-> +	spin_unlock_bh(&np->onestep_lock);
-> +
-> +	cancel_work_sync(&np->onestep_work);
-> +	netc_tx_dropped_add(np->dp->user, skb_queue_len(&free_list));
-> +	__skb_queue_purge(&free_list);
-> +}
-> +
-> +void netc_port_enable_onestep(struct netc_port *np)
-> +{
-> +	if (!dsa_port_is_user(np->dp))
-> +		return;
-> +
-> +	spin_lock_bh(&np->onestep_lock);
-> +	np->onestep_state = NETC_ONESTEP_IDLE;
-> +	spin_unlock_bh(&np->onestep_lock);
-> +}
-
-[Severity: Low]
-Is it safe to set NETC_ONESTEP_IDLE here without checking the current
-state? netc_port_enable_onestep() is called from both netc_port_enable()
-and netc_mac_link_up(). The single-outstanding-frame rule for
-PM_SINGLE_STEP depends on NETC_ONESTEP_IN_FLIGHT, and this write
-discards it.
-
-Take a link flap:
-
-netc_mac_link_down()
-  netc_port_disable_onestep()
-    onestep_state = NETC_ONESTEP_PORT_INACTIVE
-    cancel_work_sync(&np->onestep_work)
-  netc_port_mac_tx_graceful_stop()
-
-cancel_work_sync() only waits for the worker. A subtype 3 frame already
-passed to dsa_enqueue_skb()->dev_queue_xmit() may still be in the conduit
-qdisc, the ENETC TX ring or the switch port egress queue. The graceful
-stop only drains the MAC TX FIFO.
-
-netc_mac_link_up()
-  netc_port_enable_onestep()
-    onestep_state = NETC_ONESTEP_IDLE
-
-The next Sync then reprograms PM_SINGLE_STEP while the older frame may
-still be pending. Could the older frame go out with the new frame's
-offset and checksum-update settings? Could it also get a wrong
-correctionField if it waited longer than 2^30 ns?
-
-A Sync sent between .port_enable and the first mac_link_up looks mostly
-blocked, because phylink keeps carrier off until mac_link_up.
-
-[ ... ]
-
-> +	NETC_SKB_CB(skb)->tstamp = tstamp;
-> +	NETC_SKB_CB(skb)->ts_req_id = ts_req_id;
-> +	NETC_SKB_CB(skb)->ptp_flag = NETC_PTP_FLAG_ONESTEP;
-> +	NETC_SKB_CB(dummy_skb)->ts_req_id = ts_req_id;
-> +	NETC_SKB_CB(dummy_skb)->ptp_tx_time = jiffies_64;
-> +	NETC_SKB_CB(dummy_skb)->ptp_flag = NETC_PTP_FLAG_ONESTEP;
-> +	np->onestep_tx_time = NETC_SKB_CB(dummy_skb)->ptp_tx_time;
-
-[Severity: Low]
-Should this be get_jiffies_64() instead of a direct read of jiffies_64?
-include/linux/jiffies.h says:
-
-  The 64-bit value is not atomic on 32-bit systems - you MUST NOT read it
-  without sampling the sequence number in jiffies_lock.
-  get_jiffies_64() will do this for you as appropriate.
-
-netc_port_prepare_twostep() fills the same ptp_tx_time field, for entries
-on the same tstamp_queue, with get_jiffies_64().
-
-On 32-bit builds (possible through COMPILE_TEST), a torn read could make
-netc_port_tstamp_timeout_work() reclaim this token's ts_req_id early or
-very late. The time_after64(jiffies_64, expire_time) check in
-netc_onestep_timeout() below has the same problem. It could report the
-in-flight frame as expired at the wrong time.
-
-[ ... ]
-
-> +static bool netc_onestep_timeout(struct netc_port *np)
-> +{
-> +	u64 expire_time;
-> +
-> +	/* Use monotonic jiffies_64, as the PHC may be stepped backwards.
-> +	 * Add one tick since the ns-to-jiffies conversion rounds down, so
-> +	 * the software window is never shorter than the hardware window.
-> +	 */
-> +	expire_time = np->onestep_tx_time + 1 +
-> +		      nsecs_to_jiffies64(NETC_ONESTEP_VALID_WINDOW);
-> +	if (np->onestep_state == NETC_ONESTEP_IN_FLIGHT &&
-> +	    time_after64(jiffies_64, expire_time))
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
-> +void netc_port_onestep_sync_enqueue(struct dsa_switch *ds, int port,
-> +				    struct sk_buff *skb)
-> +{
-> +	struct netc_port *np = NETC_PORT(ds, port);
-> +
-> +	spin_lock_bh(&np->onestep_lock);
-> +	if (unlikely(np->onestep_state == NETC_ONESTEP_PORT_INACTIVE))
-> +		goto free_skb;
-> +
-> +	if (unlikely(skb_queue_len(&np->onestep_queue) >= NETC_ONESTEP_QTH))
-> +		goto free_skb;
-> +
-> +	__skb_queue_tail(&np->onestep_queue, skb);
-> +	if (likely(np->onestep_state == NETC_ONESTEP_IDLE) ||
-> +	    netc_onestep_timeout(np)) {
-
-[Severity: Low]
-Can the queue-full check keep the drain stalled after
-NETC_ONESTEP_VALID_WINDOW has passed?
-
-If the response for the in-flight frame is lost, onestep_state stays
-NETC_ONESTEP_IN_FLIGHT. Suppose onestep_queue reaches 512 entries before
-the window (about 1.07s) expires. From then on, every enqueue takes the
-goto free_skb path and never calls netc_onestep_timeout().
-
-The only recovery left is netc_port_tstamp_timeout_work() expiring the
-token after NETC_TSTAMP_TIMEOUT (5 seconds). Every Sync that arrives
-before then is dropped.
-
-Would it be better to evaluate netc_onestep_timeout() before rejecting a
-frame because the queue is full?
-
-> +		np->onestep_state = NETC_ONESTEP_SCHEDULED;
-> +		schedule_work(&np->onestep_work);
-> +	}
-
-[ ... ]
+ drivers/net/tap.c                   |   4 +-
+ drivers/net/tun.c                   |  44 +++++++-
+ drivers/net/virtio_net.c            |   2 +-
+ include/linux/ip.h                  |  24 +++++
+ include/linux/virtio_net.h          | 161 ++++++++++++++++++++++++----
+ net/bridge/br_netfilter_hooks.c     |  15 +--
+ net/ipv4/ip_input.c                 |  13 +--
+ net/ipv4/netfilter/nf_reject_ipv4.c |  13 +--
+ net/packet/af_packet.c              |   4 +-
+ 9 files changed, 228 insertions(+), 52 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012095924.1129312-1-wei.fang%40oss.nxp.com
+MST
+
