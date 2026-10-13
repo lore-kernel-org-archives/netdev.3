@@ -1,94 +1,183 @@
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.48])
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9573C502D4A;
-	Tue, 13 Oct 2026 13:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9AC1A7264;
+	Tue, 13 Oct 2026 13:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791896796; cv=none; b=Ct1U/h9ALcS+3sRiaw50cZWD5uMWe8g61b5UG+91gLonsmuBii1xg1gx5T1wd7SUJZ5Q8mCMinjGzObxUv+U9en0pP8ugrDLO+7FBXTv0oIH3vS9pnE63oAxjj+BSC+NM36JV+Gt0bYVRBftzPxQ918XEgLYx1WhQD2l0FsE2A8=
+	t=1791897073; cv=none; b=DNj0lzLEatERfP0OMNCi8KM4EmHjlUxqMvJ2zP8oanghUbkXfY/giWPMzUMMAf/4sjx/lQtfL+UgI+jfvR6chW7fXADNq3qsnzE86O17RaEK24RsJhKNGlWyasxyBiIl7K+bsAGMGP/A3IUoIlatsQohWU9ML7ZrRm8fsmShZx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791896796; c=relaxed/simple;
-	bh=YA58kepF5/oFO2hgjwCX+vvSGiubieaYMrE8JCbPGRE=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=RACLa3+JO7E7pSaVEEdeGYe7wNOCVi72YtQsF+cNYfAOcPwe3YYRPGRdfmLkloCgoveltte+l+E6TYnrgMyEeWAtZGFfpOpMb7xI2MUlA++6ZjImHRdarqOIvDk+iAdkYTSvzyOcsA2e7YYlm5VH1+NXQxG6m7aPG/SGHm9jS44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=j7IsN8VB; arc=none smtp.client-ip=43.163.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1791897073; c=relaxed/simple;
+	bh=Fp34FYfTQc+YTGKGK6lC+tQUOsD84gcR8WE1MZCV/Mw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r+0d7wHS4ephoLATA2ulmTQ4fSkKetpYBA8SVVJUboLqCC2vm8Y5yx2FsZr6a/mv4eVaoufXoLDwpkMifZlmiia+dUJHkAZDa1sJGiAm7QL/X8XjX1EEG/sPpdsAP3UbZLCYJWJLbBAJprdC19WQLv6OOObMW9rbJLLBLrneA3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=lf+pnWGm; arc=none smtp.client-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="j7IsN8VB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1791896783; bh=YA58kepF5/oFO2hgjwCX+vvSGiubieaYMrE8JCbPGRE=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=j7IsN8VBWg65+eB3yIn/pY/Cp7UuHAS1ElrRYG3zZ7ZDXhi4M7thr2ZTlxwosL0Rx
-	 fPD04FsKz1HocQJoipo0t6fXxf7LfpjkHyJSjBmW5xK3+MJ2cvCHSei91HaqsooCo9
-	 Dl7wl9Kkd0V4VH9581K0y75223OkCnoIsP+AzcaQ=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-XMAILINFO: OTkXlZHit/HDB8lz4bZyda8RXw5N5T4WHY6SL+WkAwI1CMWbvphDjR94zYpnKl
-	 w9w2c0/v1h6QRIPtC/NIc30bOguGfgMYpH+00L7Qsis+xUpA8Nv+/wuo62ZbSP3XKzEG8uYQVh5DV
-	 yok+v9e6ywQ9rWYWeEKwQnhLd2FBs/4ZCSw5Jjf7OCHKIj8cfHpYPJFjwldV6hlDsa84AHGsZpm/a
-	 WrQ7bMmfodY02zY0+KHnCfF7q2t+jk3kL0ltDxzU6lqeGHMu1RXJW5QqRACnN3w2UltfYuFlgV4OX
-	 N8h/k/ddOQsVYO+J02HXIY95WzCaQub8DB/9KemcUbV7hEjCmlqQ7EVNMdajoct92kC+sJM7kNamx
-	 1aE7mDpyf177tcaFixVmtjLQ29Lii7uS3GCMZkNYqSW1L6LBmWXdb6IHRR5MyxStYo38Hm49qFqcm
-	 AWAODyxYB/E8n0hAkvlmjShx23PmPggxbzVDcP524fSzoD0CPyLU9+RGVCXoh2k+ANhWnoiluu8/S
-	 vgLMF+Kq1kYqdXLdh49+8TnNStwsGtuhEd/iPWQw9Ny7SXxql05T0uPQzac983mEHKD/d3GQeiomp
-	 JMl0Cxxk5NTdiOziSbcq6K0OCEjMjOypdYY3K1AWjJcXQAIzHL2Nl5Wsk0YYJv7eeCmPB3oZo+DVl
-	 0Vn1E6BVcR/Jd/j5Cc/l7kUEiupH4YunRfFHliQq5jXRuNoZPmvuwqfW16wqTIlrxRsccA75k49SI
-	 V2N+NyLy1wpCp3zBNXlsEaa+dDrsKnkZuxPQut0knJM31hCQvTZVX5583eXF2RLgPNrAqB0Qv9H9u
-	 i5gcgt2CETH8w7OErtDpFPFTeJOhIN5CWcryAde4jIEKFCwo7eXX5avKAmuFdtSyZXjwd23l0rgBq
-	 KwitEBIvRHOhzLvIubCJbpLJ1Oh1hDSmmBSOg6DMCW3xuyAuu1PfIZXKX+p8TBOlIVLnI6z/uWiZA
-	 BLGQa5RMF/4qBGUIZJHF3vKGbSnP1CHfUqO6p6hbMxeFyp3djE6SyG23n6H7IIkcbXqpgp/n2zGyX
-	 CSm8Y2+bLzij19n+LvRGR5GrnLK3U7I6blTB81jpzuBJxkyg=
-From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
-To: "=?utf-8?B?TWFyYyBLbGVpbmUtQnVkZGU=?=" <mkl@pengutronix.de>
-Cc: "=?utf-8?B?VmluY2VudCBNYWlsaG9s?=" <mailhol@kernel.org>, "=?utf-8?B?U2ViYXN0aWFuIEFuZHJ6ZWogU2lld2lvcg==?=" <bigeasy@linutronix.de>, "=?utf-8?B?Q2xhcmsgV2lsbGlhbXM=?=" <clrkwllms@kernel.org>, "=?utf-8?B?U3RldmVuIFJvc3RlZHQ=?=" <rostedt@goodmis.org>, "=?utf-8?B?bGludXgtY2Fu?=" <linux-can@vger.kernel.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?a2VybmVs?=" <kernel@pengutronix.de>, "=?utf-8?B?SGVpa28gU3R1ZWJuZXI=?=" <heiko@sntech.de>, "=?utf-8?B?bGludXgtcm9ja2NoaXA=?=" <linux-rockchip@lists.infradead.org>, "=?utf-8?B?bGludXgtYXJtLWtlcm5lbA==?=" <linux-arm-kernel@lists.infradead.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
-Subject: Re: [PATCH net] can: rockchip_canfd: stop bus-off restart before closing the device
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="lf+pnWGm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1791897064;
+	bh=Fp34FYfTQc+YTGKGK6lC+tQUOsD84gcR8WE1MZCV/Mw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lf+pnWGmlEynW4sOeWDlcSnQWC01WGZgxN8e3CIF+168MqmblIN1yD7cnfCMRHbEb
+	 WWfbLIQvuSY1jtaaDeWIHfNyE+IyQzVJ8kL5yx2vve+ZQ10+fU1fM1vLU07uetzKcb
+	 hScSuztXKesZ/EM99dfuLa2iIhOoZ/khPc25+/JazboE5E//nIFKJEyNLc4aer8/nF
+	 uN9sL8g5UFo8GT8qg8cH7jXoDpiu5y/PaOa6yPC/PmeFAe/88l5kiWUdFW3PJ7T50b
+	 RCh/hk91k/zfVrKTLyalZWsYOhPNCg70jUqgRWw7Gho48MpcqnfjoHpZfyHsF5gtMh
+	 RMzjg3GiTjZxg==
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id BFFE625222;
+	Tue, 13 Oct 2026 16:11:04 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Tue, 13 Oct 2026 16:11:03 +0300 (MSK)
+Received: from DESKTOP-D46TNHI (unknown [10.198.63.202])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4j3vnM0xN9z19Bw;
+	Tue, 13 Oct 2026 16:09:43 +0300 (MSK)
+From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
+	Sasha Levin <sashal@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Vega <vega@nebusec.ai>
+Subject: [PATCH 5.10] net/sched: sch_htb: limit htb_classify inner-class filter hops
+Date: Tue, 13 Oct 2026 16:09:00 +0300
+Message-ID: <20261013130903.1223-1-mdmitrichenko@astralinux.ru>
+X-Mailer: git-send-email 2.54.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Tue, 13 Oct 2026 21:06:21 +0800
-X-Priority: 3
-Message-ID: <tencent_F9D491A400474428BFE7262F1A1799A88407@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
-	<20261013-hissing-saiga-of-endeavor-ef5e03-mkl@pengutronix.de>
-In-Reply-To: <20261013-hissing-saiga-of-endeavor-ef5e03-mkl@pengutronix.de>
-X-QQ-mid: xmsezb41-0t1791896781t2k02as9b
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/13 12:30:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 127 0.3.127 0884f7b061fa529b810563f359267cd65d2ec05c, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, astralinux.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2;patch.msgid.link:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 206634 [Oct 13 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.27
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/13 04:56:00 #28679670
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/10/13 12:30:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-SGkgTWFyYywKCj4gQUZBSUNTIHRoaXMgaXMgYSBzeXN0ZW1hdGljIHByb2JsZW0gYW5kIHNo
-b3VsZCBJTUhPIG5vdCB3b3JrZWQgYXJvdW5kIGluCj4gb25lIGRyaXZlciBvbmx5LgoKQWdy
-ZWVkLiBJIGluaXRpYWxseSBvbmx5IG5vdGljZWQgdGhlIHByb2JsZW0gaW4gdGhlIFJvY2tj
-aGlwIENBTi1GRApkcml2ZXIgYW5kIGRpZCBub3QgY29uc2lkZXIgdGhlIGNvbW1vbiBDQU4g
-Y29kZS4KCj4gbmV0aWZfcnVubmluZygpIHRlc3RzIF9fTElOS19TVEFURV9TVEFSVCwgd2hp
-Y2ggaXMgcmVtb3ZlZCBpbgo+IF9fZGV2X2Nsb3NlX21hbnkoKSBwcmlvciB0byBjYWxsaW5n
-IHRoZSBkcml2ZXIncyBuZG9fc3RvcCgpLgo+Cj4gQ2FuIHdlIG1ha2UgdXNlIG9mIG5ldGlm
-X3J1bm5pbmcoKSBwcmlvciB0byBjYWxsaW5nIGRvX3NldF9tb2RlKGRldiwKPiBDQU5fTU9E
-RV9TVEFSVCk/IGZyb20gY2FuX3Jlc3RhcnQoKT8KCklmIHlvdSBoYXZlIG5vIG9iamVjdGlv
-bnMsIEkgdGhpbmsgaXQgd291bGQgYmUgYmV0dGVyIHRvIHB1dCB0aGUKbmV0aWZfcnVubmlu
-ZygpIGNoZWNrIGFmdGVyIHRoZSBleGlzdGluZyAhcHJpdi0+ZG9fc2V0X21vZGUgY2hlY2sg
-YW5kCmJlZm9yZSBuZXRpZl9jYXJyaWVyX29rKCk6CgogICAgICAgIGlmICghcHJpdi0+ZG9f
-c2V0X21vZGUpCiAgICAgICAgICAgICAgICByZXR1cm4gLUVPUE5PVFNVUFA7CgogICAgICAg
-IGlmICghbmV0aWZfcnVubmluZyhkZXYpKQogICAgICAgICAgICAgICAgcmV0dXJuIC1FTkVU
-RE9XTjsKClRoaXMgd291bGQgcHJlc2VydmUgdGhlIGV4aXN0aW5nIGVycm9yIHByZWNlZGVu
-Y2UgZm9yIGRldmljZXMgdGhhdCBkbwpub3Qgc3VwcG9ydCByZXN0YXJ0LgoKPiBjYW5fYnVz
-X29mZigpIHNob3VsZCBub3Qgc2NoZWR1bGVfZGVsYXllZF93b3JrKCkgaWYgIW5ldGlmX3J1
-bm5pbmcoKS4KCkFncmVlZC4gQWx0aG91Z2ggdGhpcyB3b3VsZCBjaGFuZ2UgdGhlIGJlaGF2
-aW9yIG9mIHNvbWUgZHJpdmVycywgSSB0aGluawppdCBzaG91bGQgaGVscCBpbXByb3ZlIHN0
-YWJpbGl0eS4KCj4gV2Ugc3RpbGwgaGF2ZSB0byBjYWxsIGNhbmNlbF9kZWxheWVkX3dvcmtf
-c3luYygmcHJpdi0+Y2FuLnJlc3RhcnRfd29yaykKPiBmcm9tIGVhY2ggZHJpdmVyLCB0aG91
-Z2guCgpJIGNhbiBtYWtlIGNoYW5nZXMgdG8gdGhlIG90aGVyIGRyaXZlcnMuIEhvd2V2ZXIs
-IEkgZG8gbm90IGhhdmUgdGhlCmNvcnJlc3BvbmRpbmcgaGFyZHdhcmUgYW5kIHdvdWxkIG5v
-dCBiZSBhYmxlIHRvIHRlc3QgdGhlIGNoYW5nZXMgb24KcmVhbCBkZXZpY2VzLCBzbyBJIGFt
-IGNvbmNlcm5lZCBhYm91dCB0aGUgcmlzay4gSSB3b3VsZCBsaWtlIHRvIGNvbmZpcm06CmRv
-IEkgbmVlZCB0byBhdWRpdCBhbmQgZml4IHRoZSByZXN0YXJ0IGJlaGF2aW9yIG9mIGV2ZXJ5
-IENBTiBkZXZpY2UKZHJpdmVyPwoKPiBXaGF0IGRvIHlvdSB0aGluaz8KCkkgd2lsbCBhZGRy
-ZXNzIHRoZXNlIGNvbW1lbnRzIGluIHYyLiBUaGFua3MgZm9yIHlvdXIgcmV2aWV3LgoKUmVn
-YXJkcywKQ3VuaGFvIEx1Cg==
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+
+commit 729c4896ab829169f95915d65edd530325910b37 upstream.
+
+htb_classify() follows each filter-selected inner class by switching
+to cl->filter_list, but never bounds the number of hops. A filter on
+an inner class can point back to itself or to another inner class that
+points back, creating an infinite loop in the packet classification
+path with the qdisc lock held and BH disabled — a soft lockup / panic
+from a single packet.
+
+Bound the traversal with a hop counter and drop the packet with a
+rate-limited warning once the bound is exceeded. The counter is
+incremented at the point the inner filter chain is picked up, after the
+TC_ACT_* switch has consumed the classifier verdict, so a terminal
+TC_ACT_QUEUED/STOLEN/TRAP on the last permitted chain still sets *qerr
+to __NET_XMIT_STOLEN and the packet is not charged as a drop by this
+qdisc or its parent.
+
+The bound is TC_HTB_MAXDEPTH, taken from HTB's own parameters rather than
+from the qdisc hierarchy depth limit. Class levels run from 0 to
+TC_HTB_MAXDEPTH - 1, so a traversal that strictly descends in level can
+take at most TC_HTB_MAXDEPTH hops. That descent is what a sane
+configuration does, but it is assumed here rather than enforced:
+htb_find() resolves a classid against every class in the qdisc, so a
+filter may equally select a sibling or an ancestor. The normal
+root -> inner -> leaf path takes a single hop, so the bound does not
+affect legitimate classification.
+
+htb_classify() can now return NULL irrespective of CONFIG_NET_CLS_ACT,
+whereas previously every NULL return sat inside that ifdef. The NULL
+handler in htb_enqueue() therefore cannot stay conditional either, so
+drop the ifdef around it. This matches hfsc_enqueue(), which has always
+handled a NULL class unconditionally. Without it, a kernel built
+without actions would dereference a NULL class instead of dropping.
+
+Conditions to recreate the bug:
+- CONFIG_NET_SCHED, CONFIG_NET_SCH_HTB, CONFIG_NET_CLS_U32,
+  CONFIG_LOCKUP_DETECTOR.
+- Create an HTB qdisc on a device (e.g. lo), add an inner class
+  1:1 with a leaf child 1:10, install a root u32 filter selecting
+  1:1, and an inner-class u32 filter on 1:1 also selecting 1:1.
+- Send one packet (ping). On the unfixed kernel the classify loop
+  spins with the qdisc lock held; with softlockup_panic=1 it panics.
+- Reachable from unprivileged user via unshare -Urn (CAP_NET_ADMIN).
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Vega <vega@nebusec.ai>
+Co-developed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260826143339.271935-1-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+---
+Backport fix for CVE-2026-90053
+ net/sched/sch_htb.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index 75ca5e5def3f..c6cdbbb8c898 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -213,6 +213,7 @@ static struct htb_class *htb_classify(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct htb_class *cl;
+ 	struct tcf_result res;
+ 	struct tcf_proto *tcf;
++	unsigned int hops = 0;
+ 	int result;
+ 
+ 	/* allow to select class by setting skb->priority to valid classid;
+@@ -255,6 +256,10 @@ static struct htb_class *htb_classify(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (!cl->level)
+ 			return cl;	/* we hit leaf; return it */
+ 
++		if (++hops > TC_HTB_MAXDEPTH) {
++			pr_warn_ratelimited("htb: classify loop detected, dropping packet\n");
++			return NULL;
++		}
+ 		/* we have got inner class; apply inner filter chain */
+ 		tcf = rcu_dereference_bh(cl->filter_list);
+ 	}
+@@ -596,13 +601,11 @@ static int htb_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		} else {
+ 			return qdisc_drop(skb, sch, to_free);
+ 		}
+-#ifdef CONFIG_NET_CLS_ACT
+ 	} else if (!cl) {
+ 		if (ret & __NET_XMIT_BYPASS)
+ 			qdisc_qstats_drop(sch);
+ 		__qdisc_drop(skb, to_free);
+ 		return ret;
+-#endif
+ 	} else if ((ret = qdisc_enqueue(skb, cl->leaf.q,
+ 					to_free)) != NET_XMIT_SUCCESS) {
+ 		if (net_xmit_drop_count(ret)) {
+-- 
+2.43.0
 
