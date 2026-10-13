@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B303BE64B;
-	Tue, 13 Oct 2026 09:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18F33E6DE7;
+	Tue, 13 Oct 2026 09:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885434; cv=none; b=nvllWiZY7xAO2UaU7qSmk3TrAxP8G/EaA3wY1t3JaUUC7A93fvEkluoPFL5tRI1U0evmwMIRG4u4TUKXT45WiRC57lZGxj/+EXqLUb2mUeDoRIYuVspNp2Q6NyCALRH3b8a1Z7Rp0pMv3uB+hk0MC/6MN6A/ss4A2ojwl1bE2bg=
+	t=1791885436; cv=none; b=oNinB4LXC0IuuRFSZoo2QokV9l/Y80rljjPHYC2owiuvX6e2qDyKtuJ2VPy4iBJFhQv4gvaSRKIxqw90IOHKDMQkTaBZXLG2jkaOKghPoLfmWhkZGaCybIBsNozNGy6vEQ6A+UM54nVcxov+xs10XYp42fwfmhVRrdIi0GIQqMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791885434; c=relaxed/simple;
-	bh=qwCGy5Z9BFrhVBc+d3vLO5Mx2UIoIQyDOl2+KXToEHA=;
+	s=arc-20240116; t=1791885436; c=relaxed/simple;
+	bh=6TYElkl1vMwUo8ragwlZEazBoe8TG/eKKLf7zn241E8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qZmk6CcGELdkCqDimOd5hEPKclGHdnteded8/Ub3pK/aISpjoQ8Ayzrf1zpnSsLgdCKoumh4AgCIN+WNNhBB2nEDwemQ8bhvg+bH0g1+fizJTVYM86BG41821ER4qYSPyY9qAVAJGBscpmd914YX6f7nMcKJt/f9/ieaDnL0vOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FA/Fe3OE; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=oelB5N4FVixD3XAR0gcPLFaoBbtHrTLzuVCFSEzE1aSs9hqgRGPFQHO4dfXhw0yotdl/G0p5bM9roQysTP+38LfCVdX5tzHU3ALESr/j/97hMkakmoJf3UjJnqbyIChBOXqQE0vk46qZ07TYmrfQY+G4tayLGkdT8Gnx6NLovAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SUkGAmqp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FA/Fe3OE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2051F00899;
-	Tue, 13 Oct 2026 09:57:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SUkGAmqp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00971F000FF;
+	Tue, 13 Oct 2026 09:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791885433;
-	bh=03p4hmNLxQvCPfXlSb5X3901p/Ku/HYOiCjySAo7lFk=;
+	s=k20260515; t=1791885434;
+	bh=T7aNwfsLUa94zkJPIVd3zM4XapiCDmPKjk2jNb3L81I=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FA/Fe3OEFqQ4KQGhakl+hPQ+0PTD/3D5lkMklkMffs5rVcE4njw7ScZYQCQ5dSKip
-	 WEcLaVHD8m/6qW7RZ8RLtVS4atV5b1WuLzlCfrYq7Ij1Q0alRa2pSKgFZ1Yab/r+sd
-	 /TUIEaqIX0QoWX2fHSvb4XvlO290er2ibtcIBWR7hDBe5rsLV01zzfZfNo7eLlhbiy
-	 ++EQxKE8qzelfl7ujuxhSyvSvxUizR+QtctD5cszTTb7AwOVYd6K69xeS9PbzECJ+x
-	 h/RtQ7y8Z9LnMWG6juvmE4aW64oxD5Z+q4++H2WZn4t/boCxK3a42w6vBICFz5tQEl
-	 /0QvjKI++1Sjg==
-Subject: Re: [PATCH net-next v4 2/6] net: ti: icssg-stats: Move long delayed
+	b=SUkGAmqp3aoA8ktn4n8Gsbp9VbnU1Fh8xO9f58NT3iKDAVnY8R/kV7KMU0j/opvcL
+	 q7lC5Zn45JjGiOaTOdl4deAzc1fX3EuPws9qc6/ZRK3iyLvmBCYzScddaNnpTA7jPs
+	 kohMfpp57vQ5xafz57XGHosdIWc4o5f06naKxWfvg70V431UfnRTFk2GAuUdhMnU0X
+	 PhXJKMe049iY+yXDIDPBymcwdxddiPzXgdk+vR4xzAAjNrltaTXXYgLsu6Tsqxss+l
+	 JAybER+rseRcQZRlH9hha8cssVmI6OfGmWEK1tClK7f7vMCQ0yFHgYZ+ObzNxpYnDK
+	 +hzQkWyZagSug==
+Subject: Re: [PATCH net-next v4 3/6] net: ti: icssg-prueth: Move long delayed
  work on system_dfl_long_wq
 From: netdev-bot+sashiko@kernel.org
 To: marco.crivellari@suse.com
@@ -35,11 +35,11 @@ Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, tj@kernel.org,
  mhocko@suse.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  enelsonmoore@gmail.com, linux-usb@vger.kernel.org
-Date: Tue, 13 Oct 2026 09:57:11 +0000
-Message-ID: <179188543192.434549.4257004266357227847@kernel.org>
-In-Reply-To: <20261012095452.135828-3-marco.crivellari@suse.com>
-References: <20261012095452.135828-3-marco.crivellari@suse.com>
-X-sashiko-severity: Medium
+Date: Tue, 13 Oct 2026 09:57:13 +0000
+Message-ID: <179188543334.434549.2591392619037446016@kernel.org>
+In-Reply-To: <20261012095452.135828-4-marco.crivellari@suse.com>
+References: <20261012095452.135828-4-marco.crivellari@suse.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,86 +49,91 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] The conversion is incomplete, so one delayed_work is queued on
-  two different workqueues.
+- [Low] The stats_work conversion is only half done because the SR1
+  driver variant was missed.
+- [Low] The commit message is boilerplate copied from the delayed-work
+  conversions and does not describe this diff.
 
 --
 
-net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq
+net: ti: icssg-prueth: Move long delayed work on system_dfl_long_wq
 
-This commit changes the self-requeue in icssg_stats_work_handler() from
-the per-cpu system_long_wq to the unbound system_dfl_long_wq. The goal is
-to let the periodic stats work benefit from scheduler task placement.
+This patch changes the first queueing of emac->stats_work in
+emac_ndo_open() from the per-CPU system_long_wq to the unbound
+system_dfl_long_wq. The goal is to let the scheduler place the work.
 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_stats.c b/drivers/net/ethernet/ti/icssg/icssg_stats.c
-> index 7159baa0155cf..7d6d6692d8192 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_stats.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_stats.c
-> @@ -69,7 +69,7 @@ void icssg_stats_work_handler(struct work_struct *work)
->  						stats_work.work);
->  	emac_update_hardware_stats(emac);
->  
-> -	queue_delayed_work(system_long_wq, &emac->stats_work,
-> +	queue_delayed_work(system_dfl_long_wq, &emac->stats_work,
->  			   msecs_to_jiffies((STATS_TIME_LIMIT_1G_MS * 1000) / emac->speed));
->  }
+> Currently the code enqueue work items using {queue|mod}_delayed_work(),
+> using system_long_wq. This workqueue should be used when long works are
+> expected and it is a per-cpu workqueue.
+>
+> The function(s) end up calling __queue_delayed_work(), which set a global
+> timer that could fire anywhere, enqueuing the work where the timer fired.
 
-[Severity: Medium]
-Is this conversion complete?
+[Severity: Low]
+Does this description match the diff?
 
-Both ICSSG drivers use icssg_stats_work_handler() for the same
-emac->stats_work. Both prueth_netdev_init() functions, in icssg_prueth.c
-and icssg_prueth_sr1.c, do this:
+The only line changed is in emac_ndo_open() in icssg_prueth.c, and it
+uses queue_work(), not {queue|mod}_delayed_work():
+
+    queue_work(system_dfl_long_wq, &emac->stats_work.work);
+
+queue_work() is queue_work_on(WORK_CPU_UNBOUND, wq, work). It queues the
+embedded work_struct right away. It arms no timer and does not go through
+__queue_delayed_work().
+
+The delayed re-arm that the message describes lives in
+icssg_stats_work_handler() in icssg_stats.c. The companion patch
+"net: ti: icssg-stats: Move long delayed work on system_dfl_long_wq"
+converts that one.
+
+Could the message describe the immediate first kick of stats_work instead,
+and mention the companion patch?
+
+> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> index 591be5c8056b4..0fba22c1046e9 100644
+> --- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> +++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+> @@ -1100,7 +1100,7 @@ static int emac_ndo_open(struct net_device *ndev)
+>
+>  	prueth->emacs_initialized++;
+>
+> -	queue_work(system_long_wq, &emac->stats_work.work);
+> +	queue_work(system_dfl_long_wq, &emac->stats_work.work);
+
+[Severity: Low]
+Should the SR1 variant of this driver get the same change?
+
+emac_ndo_open() in drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c still
+does this:
+
+    queue_work(system_long_wq, &emac->stats_work.work);
+
+Both drivers set up stats_work with the same shared handler:
 
     INIT_DELAYED_WORK(&emac->stats_work, icssg_stats_work_handler);
 
-However, the first run is still queued on the per-cpu workqueue from
-the ndo_open path:
+After the companion icssg-stats patch, icssg_stats_work_handler() re-arms
+itself on the unbound workqueue:
 
-drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c:emac_ndo_open() {
-    ...
-	queue_work(system_long_wq, &emac->stats_work.work);
-    ...
-}
+    queue_delayed_work(system_dfl_long_wq, &emac->stats_work,
+                       msecs_to_jiffies((STATS_TIME_LIMIT_1G_MS * 1000) / emac->speed));
 
-The follow-up patch "net: ti: icssg-prueth: Move long delayed work on
-system_dfl_long_wq" converts the matching call in icssg_prueth.c. No
-patch in the series seems to change icssg_prueth_sr1.c.
+So on SR1 hardware, the first run after ndo_open goes to the per-CPU
+system_long_wq. Every later run goes to system_dfl_long_wq.
 
-On SR1.0 hardware, the first stats run after each open would still go to
-a per-cpu worker. Every later run would go to system_dfl_long_wq.
+The commit message reasoning ("the workqueue work doesn't rely on per-cpu
+variables") applies to the SR1 call site too. Nothing else in the series
+seems to convert it.
 
-Could mixing the two workqueues also bypass the non-reentrancy check in
-__queue_work()?
-
-kernel/workqueue.c:__queue_work() {
-    ...
-		if (worker && worker->current_pwq->wq == wq) {
-    ...
-}
-
-The instance running on system_long_wq re-arms onto system_dfl_long_wq,
-so this check fails. If the timer expires before the first worker
-returns, a second instance could start at the same time on another
-worker.
-
-Today this looks harmless. The handler does nothing after
-queue_delayed_work(), and emac_update_hardware_stats() takes
-prueth->stats_lock.
-
-Should emac_ndo_open() in icssg_prueth_sr1.c also switch to
-system_dfl_long_wq, so stats_work is only ever queued on one workqueue?
+>
+>  	return 0;
+>
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012095452.135828-1-marco.crivellari%40suse.com
