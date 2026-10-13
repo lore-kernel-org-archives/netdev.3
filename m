@@ -1,67 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5437B41737C;
-	Tue, 13 Oct 2026 02:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE0447ACF4;
+	Tue, 13 Oct 2026 02:38:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791859105; cv=none; b=uTn1JombyeJ5jXACjO2FauliFdx7pylQbDfomC7Yln0OZyZjf7wX4SEENjHazopE+1FZuGBeX97vTInM1v4AgZGy3LbRpO4FIVt5yEHPpQqugcwOASYIFV5Ur3XtmcADJOaljQz+UpVrNFcB1as+PpqKWItxr5hCoEww5Aj2fzU=
+	t=1791859116; cv=none; b=pDnst835cX4REQrJy6GlJ81K7McOHHn6Vr/LYmDdoZ5KODbzYPywZqt2d3/b+oPZWgcF8Doi6KcOY/dMxH1+Kt+MVcSNRmKwSNDQL2RrYLsDkTbXve3opNu911l5ZT2ukbWtc2Fx3yNowcLqq3eckF3qyAud+wyh3qk6vs8yjhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791859105; c=relaxed/simple;
-	bh=cb90eOADoGhbAVgel/6yM3BDhXRgOkhxGZRhcq45nII=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DS50+dOvmcaMFGe1VAZY1m3iXEyomncwOnMLiu6WY2GEOc7Il8uaktTdgllyT+v2mDoKnhyTrF4E9Q/75GG7sJfyE8wMQePyFoPp7Ms8g3jvv0ZFhh34GFk58ZDfVapN93RZxXBykjr4XJ0fIr9JRgxP7nIu6HJWWa/uLXMdcn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=FpSOO72L; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="FpSOO72L"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GVOTkKxiXvQcSqwXe8f/f0/6P566vHomflhTXgn/0jk=; b=FpSOO72LYSoxRbQzLF9rHHEGo1
-	OOlIdQcvLlQJZXb4YNLRKxkrAFVKJSlXBl2trEvfb6dIExp4FUSI79DQH3UI9NRYA9Doz6/L/Rsep
-	A11Ku9OYhnQ4q79y68IAC453YfEIdNIxwO5DvFpl1FZmPTI5xw8u3O7mzwFjVBCr2x9c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xGSP8-00ARKU-Vg; Tue, 13 Oct 2026 04:38:14 +0200
-Date: Tue, 13 Oct 2026 04:38:14 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Konstantin Meshkov <skyline@mail.ru>
-Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: phy: marvell: add LED support for
- 88E1116R PHY
-Message-ID: <dbccc0f3-b79e-4feb-9e10-f7218dc09305@lunn.ch>
-References: <179165733751.2921261.13784246298385245617@mail.ru>
+	s=arc-20240116; t=1791859116; c=relaxed/simple;
+	bh=I3coorphk9JkdHrAoSg2U+w+wpGHjRGOgo1vR8YJqP8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QMYDPhXHov6ISJJmn7g/GmiSpiaZzzZvqkiAArE7je6MeTG/axjBYOwMD81IaJrU8dkGIhTNN13wYqlug9qSTU+G9uYIdqgaTeAWZdZq0UVxig1RmGadTIzQsie5urraUUvMnrqT73pU3V29rCsesrSKzzWzMvRP79p/7xLHmvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 2ac00dbcc6af11f19a56ed5b684f684d-20261013
+X-CID-CACHE: Type:Local,Time:202610131036+08,HitQuantity:1
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:e9b0ed25-595d-416b-b600-acb5362e38f8,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:f6862183627acf49100bff84daa64240,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|865|898|915,TC:nil,Content:0|15|52
+	|99,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:
+	0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2ac00dbcc6af11f19a56ed5b684f684d-20261013
+X-User: lilinmao@kylinos.cn
+Received: from [192.168.1.101] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <lilinmao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 112571573; Tue, 13 Oct 2026 10:38:26 +0800
+Message-ID: <e7ba57f2-092e-4801-9659-7e7533f031c4@kylinos.cn>
+Date: Tue, 13 Oct 2026 10:38:22 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179165733751.2921261.13784246298385245617@mail.ru>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] r8152: Use BMSR to detect the link state
+To: Birger Koblitz <mail@birger-koblitz.de>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Chih Kai Hsu <hsu.chih.kai@realtek.com>, nic_swsd@realtek.com,
+ Xiangqian Zhang <zhangxiangqian@kylinos.cn>, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261005105249.1281648-1-lilinmao@kylinos.cn>
+ <ee122a12-eae8-40a6-bad9-086228ae76f2@birger-koblitz.de>
+ <b56624e0-d1e4-4b52-9d3d-de923c471a58@kylinos.cn>
+ <6030ce9b-1e93-4d11-b9f3-6101fec2229e@birger-koblitz.de>
+From: Linmao Li <lilinmao@kylinos.cn>
+In-Reply-To: <6030ce9b-1e93-4d11-b9f3-6101fec2229e@birger-koblitz.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Oct 10, 2026 at 09:35:37PM +0300, Konstantin Meshkov wrote:
-> The Marvell 88E1116R PHY (used on the D-Link DNS-325) exposes its LEDs
-> through the same page 3 register 0x10 LED control layout as the 88E1318S.
-> Wire up the existing 88E1318S LED handlers in the 88E1116R driver entry
-> so the PHY LEDs can be described in the device tree and driven through
-> the LED trigger API with hardware offload.
-> 
-> Tested on a D-Link DNS-325 (88E1116R): both PHY LEDs are registered and
-> hardware-offloaded.
-> 
-> Signed-off-by: Konstantin Meshkov <skyline@mail.ru>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+在 2026/10/13 0:13, Birger Koblitz 写道:
+> Hi Linmao,
+>
+> On 09/10/2026 9:18 am, Linmao Li wrote:
+>
+>> Hi Birger,
+>>
+>> Thanks for testing. Only the first BMSR read after link up returns the
+>> latched value, so ethtool shows the problem only if nothing else reads
+>> the PHY first. On my systems NetworkManager reads it right after
+>> carrier up, so a later ethtool reports 1000Mb/s while NetworkManager
+>> keeps the unknown speed it read.
+>>
+>> With an RTL8153B on v7.3-rc6, stopping NetworkManager was enough for
+>> ethtool alone to show it after 3 of 3 USB rebinds:
+>>
+>>    # systemctl stop NetworkManager
+>>    # (rebind the device, bring the interface up, wait for carrier)
+>>    # ethtool <iface> | grep Speed
+>>            Speed: Unknown!
+>>    # ethtool <iface> | grep Speed
+>>            Speed: 1000Mb/s
+>>
+>> I got the same result with cable replugs on a 6.6-based kernel. The
+>> latch does not time out: the first ethtool still reported Unknown 3 s
+>> after carrier up. On the 6.6-based system, the network service of a
+>> Chromium-based browser also read the PHY first, so other tools may
+>> need to be stopped too. I have not checked your setup and have not
+>> tested an RTL8153A.
+>
+> Thanks for the explanation. I re-did the test and confirm that the fix 
+> works. I tested on:
+>
+> RTL8157 (5GBit device, 2.5GBit link)
+> driver: r8152
+> version: 7.1.8+deb13-amd64
+> firmware-version: rtl8157-1 v1 2026/01/01
+>
+> RTL8153A (1GBit device, 1GBit link)
+> driver: r8152
+> version: 7.1.8+deb13-amd64
+> firmware-version: rtl8153a-4 v2 02/07/20
+>
+> both worked flawlessly. I tested
+> - plug/unplug during normal operation
+> - link-changes by peer in normal operation
+> - plug or unplug during suspend, then resume
+>
+> Tested-by: Birger Koblitz <mail@birger-koblitz.de>
+>
+> Birger
+Hi Birger,
 
-    Andrew
+Thanks a lot for testing both devices. Just to be sure, was it the v2
+patch as posted, without other changes? The RTL8157 result is
+interesting given Hayes's comment about the newer ICs.
+
+The next version will probably change the approach, so I will only
+keep your Tested-by if the code stays the same, and would be glad if
+you could test it again.
+
+Thanks,
+Linmao
