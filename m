@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693373BA239
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19D9466B58;
+	Tue, 13 Oct 2026 10:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791888008; cv=none; b=k84dJFxIa1IdHXvRO3cOTng16kqr0GW8oTh7nWkrWoR1n7prxgoKLZM4BxGebZOHws9Xecj2k3Cz73BD7D1Sy07E+mIZhyB6+SYotaMDLxBt8RibBztMpSvRgL+ECFbLuk6aA+MvHGvjxyeubUIYaGgbYu7kZBtSUGULBjWXqeE=
+	t=1791888009; cv=none; b=EK61+vMNq0XUXw5IFLBoEFUIFGgeN6+kt2lZi4fwPHgkMCYA/3clUe5NUH5Kizo+1z4S4wp3KYGtQVDC7N1yWx2qA5OjTvkvKk8lNtEaH3qMcSBjBYmsaF9s/U5toWwPVMiB5lDflCzssltZWuDQOdWTM7p7PPeihsPTNBd1xMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791888008; c=relaxed/simple;
-	bh=DLvHcBTi4+mMxvRW3t9CT3LZDZbqztzv4gzxVNa6JgY=;
+	s=arc-20240116; t=1791888009; c=relaxed/simple;
+	bh=WzHCFnySFrfKQa7NS+utckC/w1iB2N5efjGQYSLmkA8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Mm26zGIbkQpjLkLQuITDIfKW2SVf4D25zPe0ahNgU+aTZg3Eo/luIgUtACB0+E13m6iVoYD0Lq6R7xjl7eNCM/t3zH3zK6g3PKleU9Mmiozl4z5fOskdAMn5RQrOTIKStcmoE8R+B27wy4Ci/ZOhCmab9FGAsFD+qUyVDNBLIhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kun5SHEu; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=jgRlgArkqW+ER/+YuBvCwmxRbwRkrjyop/bsogdq62DetVp6rgGRCLMUrl6k0gfva+mizw6f2GKuAqw3LTyRxvMy3pNSRpoeSp3qU8PXx+cZVpAkdyycuvovDMGocZ3f5X+x5eYA34lnExVs23k1A9mDxh6+k/E7plgCVys2mo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NxRlpsBq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kun5SHEu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0941B1F000FF;
-	Tue, 13 Oct 2026 10:40:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NxRlpsBq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813001F000FF;
+	Tue, 13 Oct 2026 10:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791888007;
-	bh=H6s5PoQH63cXrqCg6FQPLS+VDIFhuJE/OUjMFp7p70I=;
+	s=k20260515; t=1791888008;
+	bh=pYV1zDiUo6CWbigwZQNtwFsu5NziXAqj/fk4Tq8niJo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=kun5SHEuUi7gAwjTdEUSZJM0fHvYE1M3Q66wqOmSIAovKgruBKVk9bxW8ADlt14wf
-	 e1/a8aC9cbbwIsW/ClGSnK9VGTnusS9hH3shRTCzv3jCxXgR5y1rnM1ypX0lTIIMKR
-	 Nat8UXxDh3+GwWXAtMn/L4LMiz7GUN8Arz9aZmJ3LUltwcK7EZTftRB2qNYfv5t4wO
-	 j1BmWABfmGUoIBCaNBGwjvTvZe9V/G/EP0pZV4GLqdCclXNra/+Oztibjs+ECscqXK
-	 kA9Nab1ST/PNCQgbMjWTj1XwaSF8q9wAuAtwV5zkPOywoQ90QkqHIP2faAshH9EFjd
-	 ffawnU5LzBUYw==
+	b=NxRlpsBqxcB+MW0Mf3C8DTI539d+JD0JLWMlnebE7+4KS+AzazOvnp7jb701TC7gr
+	 VRKaUDO3WtGFxaXsqm997/Ow/5A8yzerWs2SjpMRlXSXCBAqi48s/MeYdaAOTW5GBB
+	 mlqrvcr2L4K/DXpA/bojXTp5zmQPjHGMusL+/rMAGjVh0wj0x69/A9eOOs/BSVT9ks
+	 XhhXBk3sAoY0kEVuO9hcTncJ5/2sWtUC18fB3XvD49M/MZXO+qNfHZGSP5oMlzTkle
+	 js4ZFyCzje+tjjYwZ5cJbB2Yka85ImPNZMASK0VsHU1O15Xq1gT3A9I9R0zlep3hJj
+	 l1g5B+4bhqfjg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F144A3927046;
-	Tue, 13 Oct 2026 10:40:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 774563927046;
+	Tue, 13 Oct 2026 10:40:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/3] Report netns cookie in FIB lookup
- tracepoints
+Subject: Re: [PATCH net-next v2] net: ag71xx: Use default NAPI weight
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179188800577.210833.13706895255027341041.git-patchwork-notify@kernel.org>
-Date: Tue, 13 Oct 2026 10:40:05 +0000
-References: <20261008133158.1438907-1-idosch@nvidia.com>
-In-Reply-To: <20261008133158.1438907-1-idosch@nvidia.com>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, edumazet@kernel.org, dsahern@kernel.org, horms@kernel.org,
- rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- daniel@iogearbox.net, petrm@nvidia.com, ferenc@fejes.dev
+ <179188800703.210833.12341187585821147473.git-patchwork-notify@kernel.org>
+Date: Tue, 13 Oct 2026 10:40:07 +0000
+References: <20261007173628.657527-1-rosenp@gmail.com>
+In-Reply-To: <20261007173628.657527-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, chris.snook@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Thu,  8 Oct 2026 16:31:55 +0300 you wrote:
-> The fib:fib_table_lookup and fib6:fib6_table_lookup tracepoints do not
-> report the network namespace in which the lookup was performed, so
-> lookups performed in different namespaces cannot be told apart. The
-> recorded PID does not help either, as lookups in the receive path are
-> performed in softIRQ context.
+On Wed,  7 Oct 2026 10:36:28 -0700 you wrote:
+> Drop the custom NAPI weight and let netif_napi_add() use the core
+> default.
 > 
-> This is a problem, for example, for netns-aware tracers [1] and
-> multi-ASIC systems where each ASIC and its ports reside in a separate
-> network namespace.
+> The old comment claimed larger weights wasted cycles and cache, but
+> recent RX and TX path changes altered those tradeoffs. Keep the driver
+> on the standard default unless measurements show a device-specific value
+> is needed.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2,1/3] ipv6: Report netns cookie in fib6_table_lookup tracepoint
-    https://git.kernel.org/netdev/net-next/c/ffe378c06c10
-  - [net-next,v2,2/3] ipv4: Pass netns to fib_table_lookup()
-    https://git.kernel.org/netdev/net-next/c/c436a624f89e
-  - [net-next,v2,3/3] ipv4: Report netns cookie in fib_table_lookup tracepoint
-    https://git.kernel.org/netdev/net-next/c/a780f51d5bc8
+  - [net-next,v2] net: ag71xx: Use default NAPI weight
+    https://git.kernel.org/netdev/net-next/c/0063f777b58d
 
 You are awesome, thank you!
 -- 
