@@ -1,79 +1,80 @@
-Received: from mail-pg1-f226.google.com (mail-pg1-f226.google.com [209.85.215.226])
+Received: from mail-pf1-f228.google.com (mail-pf1-f228.google.com [209.85.210.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494655540A1
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11EEF55198F
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:45:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791924339; cv=none; b=SUPHSOijpD6X97aILhP5E+mz6xzZnbWaZ1HImw8N3Jq0Q7aiR9aDLRVfEHxxMfz8XIHBQMNxhEDYHTc04+1ZLOo50Xz/Ac11f1idnB7iH2iCEhoQVW+igLiNN0IVCATY9/N6VEJQ5Z2pDFUsgOCzN+VyuK8Cax2YHZ1k/TmV2Qk=
+	t=1791924342; cv=none; b=Wp5HHhFnI43SxNxZpgzXR0eMOr6+toSHgwJhm6OTCg39HAJ2G0faHPwiCOAhiNgsRzsr5UhEvS1a7zzzIoQS13uTYQ9t8axDStNAwE/Y0s7p9GpufYmo0y2IGyrdj+GdrWizcAIZkO26uWxoh3I3enRDD5ScoJTgXLQuMjdD0Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791924339; c=relaxed/simple;
-	bh=FmD6FNbWp9/w6PoDkjvhKUx+Pyh3k1MJEzE3JeITIz8=;
+	s=arc-20240116; t=1791924342; c=relaxed/simple;
+	bh=cMwBAastac/SwLSfCXNFutcItb00suFmuq/i2VUWIL0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t7Oqr3nhcn+aeJqq9Kal1V6z14ajwmF5U9kGMJtqzm8PvzwX8UMuOi3gxs0XqW0tJf06q4FmPQsR278KUMxy4YGuyTcnTnzH1JGa0/d2ZClbqUSTqP7fxcCLzEceZoOVLF4pOpta6xPlEwnX8XtKa0QOiK3gyLiBmUBuHHp8X3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Pz2wW5W0; arc=none smtp.client-ip=209.85.215.226
+	 MIME-Version; b=uofCPUVZkJXhQPbVCq7r89zvVNt0lM14qjk8+6Fkg/gsHKrGIVEPzpTccZsif6HWyJ6ga7mxbP7TaeC7GdGf9nArLKNHGIliyFxCskE1SkDOGgJDBm82J6qy2aGG4dvcORnT4hHPNaB3A2dFw1Iud9AQ18VSAJ4XUrczm01aGhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=C1/u7xcD; arc=none smtp.client-ip=209.85.210.228
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Pz2wW5W0"
-Received: by mail-pg1-f226.google.com with SMTP id 41be03b00d2f7-cd6028ff33fso1211232a12.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:45:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="C1/u7xcD"
+Received: by mail-pf1-f228.google.com with SMTP id d2e1a72fcca58-88cfa501c5cso1284565b3a.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:45:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791924336; x=1792529136;
+        d=1e100.net; s=20260707; t=1791924338; x=1792529138;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LQY9v+3ERouGCwmAz/IXWdzwQGXdtnY8j3MIGUYv9ls=;
-        b=RYhEiIDMQg4yMsNMrBerwu/9fy+6tTjJgz+IToDSR3ZmOdP6r/xQq/JXDQTbKHoHYW
-         3kqd/f3RLd6Wrc7T3bd/13bXt47J86zArSwOBdg6EVMVut6ey4H5KHHlBMAqNIlXXiDc
-         6R9oEyBfPMcBg89+h0+dzxraMSSGlHZbv6rQPYU39D3wVBIshCuDOxQTSdzPKCPnN4wJ
-         oZ+HbOigzcznrgzIX0ZEU9WTnvpSLzGYP3NQGaytu2UXtLV0Z/zvquCD4i/mj64Jsl6O
-         fBZW+fUz31DA02Iua95mS7oDO0bbfXxKgePnDyfrWZNzV5Qkc9wwjmMeKCt/dHLCXHz2
-         t7cQ==
-X-Gm-Message-State: AFq9FYJHosJ7TGs9iBJ8s8KwpLG7XQGLmFmdWQs8l/R3uetjXpmZXgSS
-	CRLIq1/DVANow9ch9W8og3RjBtkxezMvZN8f1V9URhXBIpuN0FDyxFb2DVPAtX0yW132FeCzRaw
-	+dXI5b80TvpxmCpZkca1j1dG0uRvl041jEKSfhDfBbFskEbM5qqlbmwFtUbquP4cygwZRX8SQkO
-	qUMi8WrZCsX1sGW6svAY2f/RY2OP8h3VFUBZtBxfeOCMNl36Q3orXmzo6ZaaITBNSqA7qlSdjbJ
-	taviwH3DPUvmgXE
-X-Gm-Gg: AYBFou3t/LCjangJm7odUSkTjW1kiBK5cTQ1Hmep2zxbNlsensh84xyooRPRcSQoTMV
-	HOgKG2TVZKRBPm4wMba/CD6awVp9JuYspuqGjV1x4NrGa480Re/ocoEFmj6ontdacZvsi0M07fD
-	WzyeBdKgv+4DJ0s1WP1r2UrTCNauPkBSjLdE6Z+Y6UlYi9UM6NftB2zEfx7Btu4iUrAdSmY+wah
-	tQoFv53H3maSl7Nj5T03tSNK0v37MP2udq5ujdeLk2L1g9mdJ27RWxUSjkYGR2TubwS2UOkfR2p
-	6OScnq4U4r9LHqiIMneCm8tg8S0YYuWbwUvvUEtnJSCD90lNWaaFOXd6AjtcmHjH/dzeqB15RNL
-	5CIQARrVyF40ZVQpKuw8DPjXQCZl8L1EUJxwGEfZbQ+Lv4Njk5iR/JrL39U1ypyq5fqLyajQ4gb
-	UepMWuc/BOsjldgi4wXWBi3ukv8su9svEq3VLfWjVhStI=
-X-Received: by 2002:a17:90b:2e8c:b0:3ab:1e1c:837b with SMTP id 98e67ed59e1d1-3ab3a9183b3mr11896979a91.63.1791924335317;
-        Tue, 13 Oct 2026 13:45:35 -0700 (PDT)
+        bh=o401XOuolgRzvhquCe9eAwBmzW/eK7Qzlg72iAjj6OE=;
+        b=yGZn8/T0kEfUMeG/mHHEvuMZBcxFCjk36Itw5XJde9KxpQmWLjojnOi1AIXiuyn8Ll
+         7NEVwxOEoJu/nsSydmxy+u2381a4BUKqGaa555sgbB1/Yl6rTKTQxlz282epB2o7YXPE
+         EY62rphR7bKIaHlDry9V3r/HQNdpUrST8B4XbNWudg1qtkQX53CubxEKnyFtvFpv4/+o
+         OMFb6Hmdqd4zj01E9SfKPrqPYa/k93rgnMZaseHYbWp1V7GhpZWl8y25uKfx2lge1WLb
+         ubyGXVQVqKRgvgi6fFGAvvlMCN1R2/lOK/xwZw5Wew+Lcw5VKZWILyEUyk+SQEVFd524
+         c2+Q==
+X-Gm-Message-State: AFq9FYI81JrCeru2V8fXb+UFhH/aJr4QzKwtr/PN5kyx9+h9vwmQXbQt
+	LqcAe8XBNOF0HBGMz6P5JnRpq9swEkvwNk9w3D5lnWAnmtqtYWxDapWBB19TJeTtdNOxPNvE7K7
+	zf4f7/uK8G0a3iMcTyfe3pHnXwdtQ5hUifLfxvoOvwCv3C6Q+a1/WRc631IXm/H7RltnPzTaFbo
+	LPEpHwVbp4ngIa3DaAASaowHh20dkYdAM825bbNtH35k0mzVc/38MJqdedkpH4jH/o7ZXG29gJN
+	rHB9kz81CdIhU8X
+X-Gm-Gg: AYBFou1vN2kH0HAgV7rMWwHdF1exAyiUkrQXzCwFBe/VwsAeVe/Sey5A2lhIkX93s3I
+	bYzAZxTBTdicwzkUzSxl4hLv1SNUyHbiyiFDGR06xkiFCmbfpgI+EucilYwIZEg0VwiKOYRNCqO
+	CXnz3F/0NUsrXlM2hj5QUnPPLSqHfgvqNFEzTHqFkzHGNpwPqC1eEskPShk2b5zK5IFO30MxlfE
+	J2i6eUwT5kzqk4nXvzCxVXCqqx4mQNauBCuTWtCnbHSuTQrn+hAE5OEVtDw3xGJj+minEGO3izC
+	zNySGdkgbKbGshHu88D7bKhvkmLoVq4KVGNax3RPNoiZ+/f5kheqvDMCxKxTW0Sryn9+Lgz1tUv
+	oCoddjf1uvyRLlOpMAst0+DFVUuV6GImcDIMJhCBx/sPv3I3A/fNLOqhWPs3N8IjWoGY89KwLVw
+	iZGdGaajlikxP4SejQ/rVu2YvkU/3J/Km6wwxa9Raj4Rk=
+X-Received: by 2002:a05:6a00:3e12:b0:886:77eb:38fb with SMTP id d2e1a72fcca58-897c6e1b5f0mr11848227b3a.25.1791924338173;
+        Tue, 13 Oct 2026 13:45:38 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ac67a627d8sm40648a91.4.2026.10.13.13.45.34
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-89d7e4fa8b2sm33875b3a.0.2026.10.13.13.45.37
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 13 Oct 2026 13:45:35 -0700 (PDT)
+        Tue, 13 Oct 2026 13:45:38 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-535851217d9so75959931cf.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:45:34 -0700 (PDT)
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-5338ff2cf14so63518491cf.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:45:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1791924334; x=1792529134; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1791924337; x=1792529137; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LQY9v+3ERouGCwmAz/IXWdzwQGXdtnY8j3MIGUYv9ls=;
-        b=Pz2wW5W0gkrcJgTSW2cuKJsfJazPuhpRP/80BRi6Z07p6CqEnYjVqpn777E1PREnR9
-         HDotZmN1CkSyADfa0cSr7Qd/ebqSs+KnTEh/c9DidgIm+BAiUnI5dmvrGajS6DfGyrAC
-         R7ZrMwL+w9YVzarc7bi3/1qQOxBn50LzSEPPs=
-X-Received: by 2002:a05:622a:1350:b0:533:8900:4eb2 with SMTP id d75a77b69052e-5359fe119e6mr228861671cf.58.1791924333629;
-        Tue, 13 Oct 2026 13:45:33 -0700 (PDT)
-X-Received: by 2002:a05:622a:1350:b0:533:8900:4eb2 with SMTP id d75a77b69052e-5359fe119e6mr228860941cf.58.1791924332878;
-        Tue, 13 Oct 2026 13:45:32 -0700 (PDT)
+        bh=o401XOuolgRzvhquCe9eAwBmzW/eK7Qzlg72iAjj6OE=;
+        b=C1/u7xcD4n9uyfVINVa31DnBXW2ahdIzLgMYhxh2YKT633kw03pMPxU1T2AWXkWOHo
+         UExTFur5croN5fMs9jn8UuRmKm1TLRhd0daIzSeYyCyy1oKSKZatw7pUj22/RTGJyJhN
+         QaF5X8wZopmyTnKkNlJenoNLaLkySNYtGEoJs=
+X-Received: by 2002:ac8:5f8e:0:b0:51c:fc4:a144 with SMTP id d75a77b69052e-5359f46d56bmr233646411cf.4.1791924336760;
+        Tue, 13 Oct 2026 13:45:36 -0700 (PDT)
+X-Received: by 2002:ac8:5f8e:0:b0:51c:fc4:a144 with SMTP id d75a77b69052e-5359f46d56bmr233645831cf.4.1791924336165;
+        Tue, 13 Oct 2026 13:45:36 -0700 (PDT)
 Received: from stbirv-lnx-1.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-535f4eee7bcsm15879231cf.30.2026.10.13.13.45.30
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-535f4eee7bcsm15879231cf.30.2026.10.13.13.45.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 13:45:32 -0700 (PDT)
+        Tue, 13 Oct 2026 13:45:35 -0700 (PDT)
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 To: netdev@vger.kernel.org
 Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
 	Justin Chen <justin.chen@broadcom.com>,
 	Doug Berger <opendmb@gmail.com>,
 	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
@@ -85,11 +86,10 @@ Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
 	Zak Kemble <zakkemble@gmail.com>,
 	Simon Horman <horms@kernel.org>,
 	Ryo Takakura <ryotkkr98@gmail.com>,
-	linux-kernel@vger.kernel.org (open list),
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net v3 RESEND 3/6] net: bcmasp: validate minimum RX packet size in bcmasp_rx_poll()
-Date: Tue, 13 Oct 2026 13:44:36 -0700
-Message-Id: <20261013204439.3494046-4-florian.fainelli@broadcom.com>
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v3 RESEND 4/6] net: bcmasp: fix OF node reference leak for phy_dn
+Date: Tue, 13 Oct 2026 13:44:37 -0700
+Message-Id: <20261013204439.3494046-5-florian.fainelli@broadcom.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261013204439.3494046-1-florian.fainelli@broadcom.com>
 References: <20261013204439.3494046-1-florian.fainelli@broadcom.com>
@@ -102,45 +102,54 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-In bcmasp_rx_poll(), the driver removes a 2-byte alignment pad and
-optionally strips the ETH_FCS_LEN CRC from received packets before
-passing them to eth_type_trans().
+In bcmasp_interface_create(), intf->phy_dn is obtained via
+of_parse_phandle() or assigned ndev_dn. of_parse_phandle() returns a
+node reference with its refcount incremented, but of_node_put() was
+never called on intf->phy_dn in bcmasp_interface_destroy() or the
+error unwind path in bcmasp_interface_create().
 
-If the hardware reports a descriptor size smaller than the sum of the
-2-byte pad, the Ethernet header (ETH_HLEN), and optional CRC
-(ETH_FCS_LEN), subtracting the pad and CRC lengths underflows u32 len.
-This adds ~4 GiB to rx_bytes statistics, while the undersized frame
-reaches eth_type_trans(), which reads past skb->len into stale buffer
-data.
-
-Check that desc->size is at least (2 + ETH_HLEN + (crc_fwd ? ETH_FCS_LEN
-: 0)) before proceeding to process the descriptor.
+Acquire a reference on ndev_dn for the fixed-link case as well so that
+intf->phy_dn consistently holds a reference, and release it with
+of_node_put() on teardown and error.
 
 Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
 Assisted-by: LLM
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Reviewed-by: Justin Chen <justin.chen@broadcom.com>
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index 9ad5a982542f..d679c796c8c2 100644
+index d679c796c8c2..693e8cdfe960 100644
 --- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
 +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -523,6 +523,12 @@ static int bcmasp_rx_poll(struct napi_struct *napi, int budget)
- 					DMA_FROM_DEVICE);
+@@ -1298,7 +1298,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ 				 ndev_dn->name);
+ 			goto err_free_netdev;
+ 		}
+-		intf->phy_dn = ndev_dn;
++		intf->phy_dn = of_node_get(ndev_dn);
+ 	}
  
- 		len = desc->size;
-+		if (unlikely(len < 2 + ETH_HLEN + (intf->crc_fwd ? ETH_FCS_LEN : 0))) {
-+			u64_stats_update_begin(&stats->syncp);
-+			u64_stats_inc(&stats->rx_dropped);
-+			u64_stats_update_end(&stats->syncp);
-+			goto next;
-+		}
+ 	/* Map resource */
+@@ -1338,6 +1338,7 @@ struct bcmasp_intf *bcmasp_interface_create(struct bcmasp_priv *priv,
+ err_deregister_fixed_link:
+ 	if (of_phy_is_fixed_link(ndev_dn))
+ 		of_phy_deregister_fixed_link(ndev_dn);
++	of_node_put(intf->phy_dn);
+ err_free_netdev:
+ 	free_netdev(ndev);
+ err:
+@@ -1350,6 +1351,7 @@ void bcmasp_interface_destroy(struct bcmasp_intf *intf)
+ 		unregister_netdev(intf->ndev);
+ 	if (of_phy_is_fixed_link(intf->ndev_dn))
+ 		of_phy_deregister_fixed_link(intf->ndev_dn);
++	of_node_put(intf->phy_dn);
+ 	free_netdev(intf->ndev);
+ }
  
- 		/* Allocate a page pool page as the SKB data area so the
- 		 * kernel can recycle it efficiently after the packet is
 -- 
 2.34.1
 
