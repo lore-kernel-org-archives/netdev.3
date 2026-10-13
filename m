@@ -1,151 +1,202 @@
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A19854145F
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791924758; cv=pass; b=ohWbtSNwOkq1Sxp3v5HBtGMMWqIauQ2EXGovN3yio2/HyzBd1r9vxxaCos7LsEuBJo+v2/cVxHVGOtKkwvIjzRUhDQ4M8aT2NsuSpFhE/O9hmdBF5s7IfGSXxjmhP7d6/8mldOtQ27jct4st8MxGfU7ainDnSBvQqZu7qPUVgZs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791924758; c=relaxed/simple;
-	bh=/vVh4JekJSXHTPyscsLCDkMqYS00gf29hChLgo3TST4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JiZKZMPT9vQUKkLZApMzAM0v6D345/oKiJPqLaaFZQXD9MiZtNUivt+yQGiIETxlJb7pg6yBXzZaYNTAmMBJ9GdXpBjDJMS9Y0jPVtx5z8kxmoTSsJ5PmAXCOsFyAZS7pFuF/l6DkkYiz10qYtxlgqvp66gZ9rKVViPVaP+TWaM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q2wOCwT+; arc=pass smtp.client-ip=209.85.217.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29C454939B
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791924874; cv=none; b=e4Zd3cm6DBGR9qTOYPBqn/+NNe3fCFv4mHwN+5F5A4vLsL5XPvpxA/0PyrG9mTo1lHfw4bFyane6eATAYXYGAgspPXLJS9k37/3hvLFWyWevZ9zZX7yFDbV0O1Vws0/lYXCeVIu5mHLVyc/md4iS0XxdW3jqVOLue9pg1C3VQeU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791924874; c=relaxed/simple;
+	bh=Jcv91dvn9z2wVjfYdXVBn/Pe0mEV7prkLqGANvQn5K0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IUSyfYShcFf+h4xWhR/aNxZ3y49rdv9AJzXKsXxwKdjWs05HuUdH1RvfCO46Vrh5VKkZFpB8qOCobLyp2bjs4PauiiZP0CDWmmvLyPScbeBa12Xle7gFiRZDSyCK/yDxTOQscURMLKJSAYO7TBtDJECWatL6yHnaPx4ugrnn7SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai; spf=pass smtp.mailfrom=nuro.ai; dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b=Dp5NSdsx; arc=none smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nuro.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nuro.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q2wOCwT+"
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7c33cc572e6so2444508137.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:52:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791924755; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g0tpC4hPU+RpGL5DGIuB4GDiRmEhrxw0P5+O6u1Kp3BKL6TLIS39LntojiWKLH4/nJ
-         dtYBGdLSU9QtK9aJYv1FP3q42NX0hwQan74UfS7mK+mNdD6aGmLydmAl3TheRq4oWQSd
-         WZ8VRyTDTdfZBcS6UnSOHhfsDBxkWuPvAcsyTDe755zDC9mIWBEN2/qsfG7Uaq2J+6ia
-         BOyi4bF2UsU0rJpN8AtF9eWC4BqDZ2KqOq/f19emxQQTYcW4JRZ26p4RbYoWHKm9G115
-         XBCsMW9180D6AQx6OysgOuA2plq3sH9g20ihGJoMcQ2zu6/8j+iNv8LXOax6HYErhkZw
-         gZhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=rkhVrgc9OmPuX9zRiI9eMYevNzdxLtYphs0y5uGuLPs=;
-        fh=nmV8RPvv1SDnb6bZrKTgUYR3VWuHcVx5vadCxbZfWHk=;
-        b=F6igd0FxgwbpxjZvXaIegbRX8jfZ/1ujX4z3xfgH+3yKPm+V9Ak3mEhjtHj1WPn4iR
-         jhXJYe5z8DeXH3B4z6Ok0rKZ6C2fIIYOkuUcIt/MXvKx0mFrzMbn8iEDrbyvFHpnUHAO
-         5lhGLgYz9V91MLDvP3TTaYt4Xku7uOwaFHf5IFYsFJ91S5ZG0c4A4zgiWTnbxOjqqykT
-         LDlGx+UW60HvOsZOAWoKON3R24zBPS3p2j97PIjwf07B6hJaWzXesNn33j6TYEhZxvMQ
-         Q/hzRWvQDJ1nQIxplkrIo23LJG/1zAqu8otZJlJxJt5Mjcco4hb7dE2KfZtHS2CGRFk0
-         uPsw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=nuro.ai header.i=@nuro.ai header.b="Dp5NSdsx"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-35cd4e8bdbdso1981869eec.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:54:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791924755; x=1792529555; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rkhVrgc9OmPuX9zRiI9eMYevNzdxLtYphs0y5uGuLPs=;
-        b=q2wOCwT+ztWfw9vBVnTNVbs79q5S5GB/c6SjAvezCMkrFTmEhD9SK7XFDX2jaI49Xr
-         93ZMp2DP/vhqHSHcI9RWzDh42pl5FL2C+p3VBNzvC9nTMZ+JhujbAwGANk8vK9uHM0Du
-         m7fJyAVlzFJoyfzZAQfQVoZl8i5o6J+tjULOtLqi15hLc1DpjwomKKtzDpmtzfvsyWUz
-         yWzmAh0S19qVANRVnf9dEkTHWwC7JeStlMp6juSitFiiNw9UhXwwBp+jOwFoO6n9O0SQ
-         8lYz6HV2I5IibYp73NCFh28+L+NAwg99/1BJ2nCJhQxQjP7LK5Y1hEvERZN1Dg+Bzv53
-         2Ozg==
+        d=nuro.ai; s=google; t=1791924870; x=1792529670; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mw9CyD0IeLmmZlhl0elWzXiE8Rnh26O9y+sTBiJSyuk=;
+        b=Dp5NSdsxbOWGOs+TaoyqfEpZxFuJueSGqE26k4QXSvFty6SpY72NgO1JjUNzxNPOI/
+         w7yLb/fL2lziTRjk/MOm+qtxEIjDLvih+JXtDHotI/C/JDkSl228G7g89eLyawBKFmnv
+         cR+z+RlXhZ25UW1nc+AcN6O1sDZjEFaIrl4acfAZQWu1vVL50ZISWyHwkqkGoTq+pXy6
+         eJ/IVLwSqd4ox7edLnHSaVmCyHWd6TUpnM0kXvIOtPpEyzA5zgKIypIrbYtC1xsyFx2h
+         dizufU2hxa/WkZ6lbk92CTyUOiDzczAGQkXiTm+jg3urmCNW3wRGW3Y7e8DIDpWZAbrD
+         tRAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791924755; x=1792529555;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rkhVrgc9OmPuX9zRiI9eMYevNzdxLtYphs0y5uGuLPs=;
-        b=PWO5WALW1yn+W71Z6VH+P1Unlj4wJ3gxG09tYqSITtDL6PHTJfLiACWMk7RXCRrNyf
-         dccwWcn6ijJCSnr22E18ksrCA3nH0JDW9ItBQIdxSD8fR34onLFsJWcPbbYHK9BKXvxK
-         TAqXny0iiVPFwNSo1Tbo/cRPvu7RzdUtK1MWkf7TqN1EokGPCK/luIczYhRFlRW8+87J
-         ofA3+LANZVd/E2P8EuuxMejIcgDg1rU26ojEkN46jQf75pFCK7FrfR7+qVt0K4ogLEmi
-         aZdh6IrpPr1jjO/5Ks+4TmwTvod04KOOWCaPb3Rekf6CK2vVlsJ30xqhdoB+ZLBUjT+/
-         Ip0A==
-X-Forwarded-Encrypted: i=1; AKwUvBwnkgRzRC0J+QqcUBeYcHFjepEVXmBuI5tOeFfCgZ558qmh1p4h5Nn0EY3XXeN8LLy6udAFytU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKugHTyuX071FUXtXoAPQKoIcYx8UT93eHaime3rTcwE6T72syv
-	K576IWssd300Mxj+kNzoGRk1sifzDjqkWAp86SPN3TQuQWydViQ1mM9E7VHUS9A8XWqHFGkT2NA
-	jqs3SjFWgmsvF3IWrOgqrTmNQQKEp6So=
-X-Gm-Gg: AYBFou12gn3y52GMjr/DbGXyPt5bvhP5HBZhYlAD94RrdBuy/3ndTTnh+oxeV55tzJi
-	dk9ACi7hDdHRNYin048Xest6mIWdVzrGl3PsWj4bhNYTgcTWXPbGN9StOWdkEBq1BGwdxpmH0Pj
-	e/8N+qUl2vva1Uc06XIxOLn2ISjGF5uTCaO4tyXazQrp4HINyMlhfaKvWnGL5gUo5nzaDu6/F0A
-	pJVUTcBYPaA/LO146eOGmVrZI290tRmh32n6vQa1At8Gi5ViEWOH7nFszzdw7OOQ6cDaIw3RHhZ
-	qbo5h3J4Zg3TtcohaUrdAVBPgmWltNwZJt8kNDR/FgQuS2AXaW4TwJVCjIu6PKIr6SH7xdmgkPR
-	0x+EBF2wef21nNditk86qEyjc393CA/kFagwCww2TvdHaul63tlIW0Z1MbKz4rCM9yxrRrx6JPd
-	A0eUYwQFw+RswV+GKuLRJ0J/dqTzR8BPxlRu0YdgWpg1zK
-X-Received: by 2002:a05:6102:b11:b0:7b5:8fd9:27e9 with SMTP id
- ada2fe7eead31-7cb42386482mr3026014137.2.1791924755421; Tue, 13 Oct 2026
- 13:52:35 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791924870; x=1792529670;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mw9CyD0IeLmmZlhl0elWzXiE8Rnh26O9y+sTBiJSyuk=;
+        b=nn5s8OlD7otXLvvsy5k0hTl8MYX1W5XZCYPYKUo+4nfFed3KCp+BioFsuvHcvi4CK2
+         uZEV/YkomL2BLMzyGLZQVLCVGtp8ILY9JIaJ9OplclFWeHnpN8m4+kB9mMPJ3CSRaSQn
+         3jmk8+WxCEZ7JVJxZ7Qh6AhoMSflytALgg5sJjz/8x4faCTr5R4wfY9AiTkpW7vvsv9r
+         mE2jugghLfd8KE9z1nvnZzQYBjhvqDMcPKw83S5ynBVq+XmKPCq22VKLc7mj40QA19Xz
+         MN5BA2dEqL885BDeG2zllN/j3IUcY9yASW4OF3DF6YIIa0xA6ezLrLCUwScvZXdKO2Fx
+         DOBQ==
+X-Gm-Message-State: AFq9FYII9tUuSMJnXtTokptKl0TJRgrezL6yG2NNq7HF4X58vl75NIVg
+	dQdJBsNs6WWFylh+qnYAkJFyhCMbS+K+qTEm+bUV9hNaiuDt7Zd2IALVe6WGNuFG1g+cAh4ULFl
+	wghDHW3nTnPbcmuq2ixL4HhCFZLoPhb1Sphcdq1WHj82X+S9pKFtOL/p27uMcC4fe49HQsj2xKS
+	o6/7SZIWRq9crxeOnbKz7emoe8sOsGXjxFfFH2eA==
+X-Gm-Gg: AYBFou2RDOMLUPcVr5i+ec1bM2owGhPQ4NAR+sSG35UrG4H8cVO+P39hZVv8myOC1Qu
+	BzaibIjTc42d8SOOjXDB8nZ8koIEhjylseIMggXhcwrtyN9mGc4GFDj46jQXiWidPB9R90oHmJg
+	b0IZsK0OrRhpX8PHR+REFThHVdIa54FsurwXQlKIE7Z2CvCABJtv4h9+W7RxjP/I0tqwgushPwx
+	OADK9x1SvBR8C5r1JuXj6djJCZa8lcfqDQ2NFn+rRvuyYBG0fuK75Crt8OYtZaLsSEYF64EjvIA
+	P3HNclYlmb5ll0XXg7egbJue8tIMYxWm+qs9nWqrVQcT8goWWA2s74GB83UBbpIjNDACGEYEjlS
+	LknmRq7l1MY1px9/nLpI7lSDAb0YdF+SogtlUaL0xijLQgbnl8XZT6jF6GA0593Xe0B3J6IWho2
+	rqJ55YB0037tC/ML8ChW7qfAzMxzyT+lxVbB5FKpTXqF29tFreRk39D5NKox0tkNu7TxcsvXboT
+	jWs5zl+uZg=
+X-Received: by 2002:a05:7022:2381:b0:144:fb31:a597 with SMTP id a92af1059eb24-16a645d3a02mr25557379c88.47.1791924870065;
+        Tue, 13 Oct 2026 13:54:30 -0700 (PDT)
+Received: from jkain-desktop.corp.nuro.team ([64.124.43.154])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a1dd57d0sm41277613c88.8.2026.10.13.13.54.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 13:54:28 -0700 (PDT)
+From: Joseph Kain <jkain@nuro.ai>
+To: netdev@vger.kernel.org
+Cc: edumazet@kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Joseph Kain <jkain@nuro.ai>
+Subject: [PATCH net v3] net: do not let defer_count outlive an empty defer_list
+Date: Tue, 13 Oct 2026 13:54:16 -0700
+Message-ID: <20261013205416.3417296-1-jkain@nuro.ai>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261013-submit-stmmac-xsk-tx-completion-v1-v1-1-f21b9d098e62@gmail.com>
- <179192400014.160550.9046457038671470723@kernel.org>
-In-Reply-To: <179192400014.160550.9046457038671470723@kernel.org>
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Tue, 13 Oct 2026 14:52:22 -0600
-X-Gm-Features: AclHuK-F24utQ7hdbiPLO7cynxwSmEL20qXjDzlC2RlDwy8M8X2Q-IY3WKxAQbk
-Message-ID: <CADvTj4oKGOQ9rgqbqVxxyx=LzzzEwf4xpJas_r9omeU1yS3y_g@mail.gmail.com>
-Subject: Re: [PATCH net] net: stmmac: avoid duplicate XSK TX completions
-To: netdev-bot+sinfo@kernel.org
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Magnus Karlsson <magnus.karlsson@intel.com>, 
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 13, 2026 at 2:40=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
+__skb_defer_free_flush() can leave defer_count at or above skb_defer_max
+with an empty defer_list. That state is absorbing: every producer then
+takes the nodefer path without queueing, so the list never refills.
+Deferred freeing stays off for that (cpu, node) until reboot, and
+cross-CPU frees fall back to the page allocator, which is the contention
+deferral exists to avoid.
 
-This was flagged during Sashiko review of the larger stmmac recovery
-series, then confirmed by inspecting the existing TX completion and
-teardown paths. The bug exists independently of that series.
+skb_attempt_defer_free() increments before testing the limit and does not
+undo the increment when it rejects, so a rejected free leaves the counter
+raised with nothing queued.
 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+Nothing brings it back down. The reject path returns before
+kick_defer_list_purge(), so once the counter is stuck no producer
+schedules a flush on the owner CPU. A CPU that never raises NET_RX itself
+-- an application CPU doing TX while NIC IRQs are pinned elsewhere and
+RPS is off -- then never runs the flush at all, so clearing the counter
+inside the flush cannot help it either. proc_do_skb_defer_max() neither
+resets the counters nor schedules a flush when the limit changes.
 
-The duplicate accounting was reproduced in a local KUnit test under
-QEMU using the actual driver cleanup functions and AF_XDP completion
-queue code. With three completed XSK descriptors, teardown published
-another three completions on the unpatched code. With the fix, the
-total remained three.
+It is reachable with no race at all:
 
-The practical trigger is bringing the interface down after AF_XDP
-zero-copy transmission while leaving the socket bound. No allocation
-failure or hardware fault is required.
+  sysctl -w net.core.skb_defer_max=1    # frees increment, then reject
+  sysctl -w net.core.skb_defer_max=128  # does not recover
 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
+skb_defer_max has .extra1 = SYSCTL_ZERO and no .extra2, so 1 is settable.
+From v7.1 on, 0 is safe because proc_do_skb_defer_max() flips
+skb_defer_disable_key and the producer returns before incrementing. On
+6.18 through 7.0, which carry the llist conversion but not commit
+08dc30de1a40 ("net: add skb_defer_disable_key static key"), setting 0 and
+restoring the previous value strands the counter the same way -- and 0 is
+the documented way to turn the feature off.
 
-This change has not been tested on physical stmmac hardware. Validation
-used the software regression tests above and ARM64/i386 compile checks.
+Undo the increment when the limit test rejects. The counter then only
+accounts for skbs that are actually queued, so it cannot outlive them,
+and the absorbing state is unreachable without depending on a flush ever
+running on the owner CPU.
 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+While here, drain before clearing in the flush. A producer that queues
+between the clear and the drain currently has its skb drained but its
+increment kept, which over-counts and costs deferral until the next
+flush. Draining first matches the ordering __dev_xmit_skb() already uses
+for the qdisc defer_list.
+
+Found by manual code inspection, LLM-assisted, while backporting the
+llist conversion to 6.1 after hitting the sd->defer_lock contention it
+removes. The latch itself was not hit in production; it was reproduced by
+lowering net.core.skb_defer_max.
+
+Fixes: 844c9db7f7f5 ("net: use llist for sd->defer_list")
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Joseph Kain <jkain@nuro.ai>
+---
+v3:
+ - Undo the increment on the reject path. This is now the actual fix:
+   the reject path returns before kick_defer_list_purge(), so a CPU that
+   never raises NET_RX itself never runs the flush, and clearing the
+   counter inside the flush cannot reach it (netdev-bot sashiko).
+ - Dropped the empty-list clear from v2. With the increment undone the
+   counter cannot outlive the skbs it counts, so the clear could no
+   longer fire usefully and sat on the common path of the flush.
+ - Added the comment on the deliberate clear/drain race, mirroring the
+   one in __dev_xmit_skb() (netdev-bot sashiko).
+ - Reworded accordingly: the reorder is now an accuracy improvement that
+   avoids a transient over-count, not the thing preventing the latch.
+ - Moved the discovery provenance into the commit message (netdev-bot
+   sinfo).
+
+Built for x86_64 and arm64, with and without CONFIG_PREEMPT_RT. On
+v7.3-rc6 with skb_defer_max=1 and a cross-CPU TCP load, defer_count
+reached 1918118 unpatched and did not recover when the default was
+restored; with this patch it stayed at 0.
+
+v2: https://lore.kernel.org/all/20261008220256.1844072-1-jkain@nuro.ai/
+v1: https://lore.kernel.org/all/20261007180056.1394868-1-jkain@nuro.ai/
+ net/core/dev.c    | 5 ++++-
+ net/core/skbuff.c | 7 ++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 18dc88990510..60d86bc21632 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -6940,8 +6940,11 @@ static void __skb_defer_free_flush(struct skb_defer_node *sdn, int budget)
+ 
+ 	if (llist_empty(&sdn->defer_list))
+ 		return;
+-	atomic_long_set(&sdn->defer_count, 0);
+ 	free_list = llist_del_all(&sdn->defer_list);
++	/* Racy on purpose, as in __dev_xmit_skb(): a producer landing between
++	 * the del_all and this store stays queued but uncounted.
++	 */
++	atomic_long_set(&sdn->defer_count, 0);
+ 
+ 	llist_for_each_entry_safe(skb, next, free_list, ll_node) {
+ 		prefetch(next);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 4aea06d5167d..6e0872569ccf 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -7388,8 +7388,13 @@ nodefer:	kfree_skb_napi_cache(skb);
+ 	defer_max = READ_ONCE(net_hotdata.sysctl_skb_defer_max);
+ 	defer_count = atomic_long_inc_return(&sdn->defer_count);
+ 
+-	if (defer_count >= defer_max)
++	if (defer_count >= defer_max) {
++		/* Undo, or the count outlives the skbs it was counting: the
++		 * reject path never reaches kick_defer_list_purge() below.
++		 */
++		atomic_long_dec(&sdn->defer_count);
+ 		goto nodefer;
++	}
+ 
+ 	llist_add(&skb->ll_node, &sdn->defer_list);
+ 
+-- 
+2.55.0
+
