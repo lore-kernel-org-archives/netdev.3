@@ -1,64 +1,68 @@
 Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46357522EE6
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59C3522EEC
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925103; cv=none; b=Lyq1nxRyinPAGP+P+YtMmrbdSPjPY5bP2kOkKwpA4I/C7fwSMnTj159dAR9bFPBKadsJsGOPSSqonU5KrD73sJVAQTRsDQWvHfgkMobiSqHnhawIxwGIBQ0TADcCVspRbZEKmw0fgJk0n0sq6QpBbCa+SmUUfMKIY8+ADWQHiCw=
+	t=1791925105; cv=none; b=hMA8nojNNSFY1KyejhbtMkwxzqueH+BdiyCmidGfpmYmhCnGvrGdXS5et5sczez3w18A6yke2f9cE1y2eAl2maH6OTrD994j8vWlSEds0XTaTlz1T4CEjOLHxyIcExGsWBwKFuFWyX4gZ8bYbfAddE83v9xIy2hR26f3z6Ik4W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791925103; c=relaxed/simple;
-	bh=petAd7XzmNHM0grZlhV/eVZCQ7bvLvwwwq6TkiVtTYY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hB44wI1MPnD/szMM2JPWI+idZaSCzGKUDAEliEaXWTcJyOyIpRkPUe7C3zW3nOH+VExmxlb3oZz5+fexFUAx1/G8K6yUTmRuEadtIg7psKOG+/rBcwry3ylmrLh+giYcMr6asXcTI9HtpXpYkdZDokgOFy++GqBdWD4DO3snSHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e2kqCtwV; arc=none smtp.client-ip=209.85.214.198
+	s=arc-20240116; t=1791925105; c=relaxed/simple;
+	bh=hEkbRnhnj0O1IetiVsWx2lR3sh8uGbO245n2d8Cng0Y=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DoN5mp2XCEQTJ0OBfe8242G4X3hB8E7FnL01JmXtNvWbnlwabaIIWNKACrtqbf1UJjgkYns7rjumh8AKa7VUzjkUYvRpkYQZdp1H7sWVdf8Q89jjExRaONzgSEAEZUwSU5z0jKfEka72mYRE81956RMNs+oSMu+nkMA2DzQOzHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wSj5MF3K; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e2kqCtwV"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2df8d1e91c9so68994285ad.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wSj5MF3K"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e8ba4757baso2999045ad.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791925101; x=1792529901; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EZm2/haaPoBuSqzrjPK+EqzAcf5RxBSPc7+1bZSaQdc=;
-        b=e2kqCtwVhaNw5J4JZj4eAQvYlCFl+GYG8QVCmq1y8xvP7mIkdoosfsr843vvJziMm8
-         UnKDV+kWzSrFeSTOi5EvCJqkFS5wJa5BwJp9lc2P0B0iGrdeCbNYLg8JXMhRWRVIK1lm
-         T5M0dA9cOjq6jO5j+FYLVNLpE9H6XwuHZnzvYev39N2IoPC1nqJpFRZYn++/YeYR1bfC
-         27ujPQ5KgI5iC0db78VM1RGr8hQe5EShrRUu/5XgCza1XYmgGadyR9fnD+P/nytXyyLA
-         ZXkND1siSDKB8zDwMBgJGu7zlda1Y/MjhOetIKgYlMYOPWv/t45zS20TgHv+YmodttOo
-         mViw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791925101; x=1792529901;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1791925103; x=1792529903; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=EZm2/haaPoBuSqzrjPK+EqzAcf5RxBSPc7+1bZSaQdc=;
-        b=geOYYGHI4zN0LA0vl1lRNaLuZwhTN0IZf3RwF7sEc4ahELY3K8aXZp9MN/yz5hCePX
-         RKPdwllXJde+da6AZC80j2lZZxWXmy36LsSqUVfwmCz9uvxeq6gvMkesgFnAgdH86oEu
-         r0iZ28C8qQLEtxPwEBXg0tYYN80248wJgNvJB/CUXcCVlNjfxYJ4SAlG63okawGAIOmN
-         JV9zLVGCO9ovOnvRiUm+lFRVxB1+qpXIY23MGJGCR/O2nAzef3lgOWKF+sO7wsfVtJO1
-         8a4BfxGfOnq8cwoS7QREXgJRcMdqvX/UkJbDQ7zfcwiCzPwQNTSERjyd4OvB4jM0MzKZ
-         Gopw==
-X-Forwarded-Encrypted: i=1; AKwUvBxE9yE+7+tqVAT3XqM4lCo6ftl9RGDhruZlqCwaoWJ/+hSmXmlvoRgnSvdtDp10dJ3QduTCgkA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIxOEcZWL9uU3Og12ZzcTCw+76d21LyT4CfoaSsL/TKEnZvpvRT
-	7T8qqSaGnLXHUoEc/Yb8ZkdO20OWhuFQ23ZAgkX5DHw95m80l321Zr5r2IJzOvVKQ2rGs1LgtLx
-	nvDtNZQ==
-X-Received: from plnz6.prod.google.com ([2002:a17:902:8346:b0:2df:8ab5:8354])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:15c8:b0:2e2:dc6c:a6d6
- with SMTP id d9443c01a7336-2e842aa60cbmr111973015ad.16.1791925099862; Tue, 13
- Oct 2026 13:58:19 -0700 (PDT)
-Date: Tue, 13 Oct 2026 20:57:27 +0000
+        bh=Bw4NbX4ZjlalLn/wLQV3GOOzOHCRxS308mecsbW9qTA=;
+        b=wSj5MF3KHHHScuTli6dowuahMihRuKVv8byjdA9Q+KvgPMJsl7zlsTmtyfX9QzX7HB
+         WadwuPSoctVg7BzcoRkaI4Yof9relYYcgr/6Ny8x3qfhkVGUERSC4j35c7Az1Rhvgk5o
+         4D6aEp9+yHgsHTVAO8sjZq0NTJBMRm8d2sZTrrc4z3khAR306j7h+f+cr2xOscahcRp6
+         BX2NxIXI55DBMaHOyKndz1fnsFjnotqSU5eQ5jXmkg3cPzLPHk+v6j1Zboac0/J5TpR+
+         nR7jAo9MPYdfa0NFDnMSqXigvq9zxQ1o9cgaB+eeSPV9WO5NXVcC18ImduNUZtaxp2F1
+         BnwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791925103; x=1792529903;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Bw4NbX4ZjlalLn/wLQV3GOOzOHCRxS308mecsbW9qTA=;
+        b=TCxxp2EMV1+1URU2GguOW8aBfkTVktTZUOuafZoadgotV/HunLMIwmLYPVg7tYp4DI
+         F1t3JpxfshD7Nlyru5gtqZRjXbIv9t7ePKyPBVoY1XoKeTpDYQ9D1AKZmKl+znwKU/ae
+         sWNC07Y0914j9ToiWoMIIMecdrd1asrU1t6eaYxsSBoZbGgxQ8EKtpQfFBAn30PT+Iak
+         ptLWxjxprjjEQbf7Njp3O6njRmzaXCVjnglpTK2x1kUFd6qTRSA+ABJvWc5CBwXQ7yQP
+         in2w30LANUTpiU1pEwULeGkpFct4RkSuffTOGeMEqTisrPgLlfvQUhom5mT1XptrF4T1
+         w1YA==
+X-Forwarded-Encrypted: i=1; AKwUvBz6ju+EpVlssIdXpVgHvozOsTEXxSd0P4bhzWGcO4io28jeVzsYtS+q0Vud1iP+xKHfZdPVf4w=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIfuhpSbjXEgP21XjcQZt+HKPv9r6qvQVpDZs/EVL8k8xsaClzr
+	A6Hzndh6HiqZuWKrTNaWrhVHY1lxT53DVrx0x/QwGKSsus/W645bE82+p5YQ0egUm+HhdY4Irpd
+	YwImoYQ==
+X-Received: from plri4.prod.google.com ([2002:a17:903:32c4:b0:2e4:94af:d714])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1ac7:b0:2df:9057:8bf4
+ with SMTP id d9443c01a7336-2e842ceddafmr121872275ad.43.1791925102150; Tue, 13
+ Oct 2026 13:58:22 -0700 (PDT)
+Date: Tue, 13 Oct 2026 20:57:28 +0000
+In-Reply-To: <20261013205816.1642597-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20261013205816.1642597-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261013205816.1642597-1-kuniyu@google.com>
-Subject: [PATCH v2 net-next 0/5] neighbour: Misc follow-ups on per-netns
- neigh_table series.
+Message-ID: <20261013205816.1642597-2-kuniyu@google.com>
+Subject: [PATCH v2 net-next 1/5] Documentation: networking: switchdev: Replace
+ arp_tbl with arp_table(net).
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
@@ -67,46 +71,41 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Patch 1 updates the switchdev doc, s/arp_tbl/arp_table(net)/.
+Since commit cda2962b6e2b ("neighbour: Namespacify neigh_tables."),
+arp_tbl is a template for the per-netns table.
 
-Patch 2 updates a selftest for per-netns sysctl knobs, though this
-is not an actual issue since the test does not hit gc_thresh by
-default.
+Let's apply s/arp_tbl/arp_table(net)/ to switchdev.rst.
 
-Patches 3 ~ 5 are based on a suggestion by Ido Schimmel to make
-neigh_periodic_work() and neigh_managed_work() CPU-friendly:
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ Documentation/networking/switchdev.rst | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-  https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
-
-Given it's rc7, I'll defer RTNL removal to the next cycle.
-
-
-Changes:
-  v2:
-    * Add patch 5 for neigh_periodic_work()
-    * Patch 4:
-      * Update commit message (rephrase 1st and add last sentence)
-      * Add and use NTBL_PARM_MS_MIN
-
-  v1: https://lore.kernel.org/netdev/20261012194530.3751034-1-kuniyu@google.com/
-
-
-Kuniyuki Iwashima (5):
-  Documentation: networking: switchdev: Replace arp_tbl with
-    arp_table(net).
-  selftests: netfilter: Set gc_thresh[123] for gw netns in
-    nft_nat_zones.sh.
-  neighbour: Schedule neigh_managed_work only when needed.
-  neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
-  neighbour: Floor neigh_periodic_work() interval at 1s.
-
- Documentation/netlink/specs/rt-neigh.yaml     |  2 +-
- Documentation/networking/ip-sysctl.rst        |  2 +-
- Documentation/networking/switchdev.rst        | 11 +++---
- net/core/neighbour.c                          | 31 ++++++++++++-----
- .../selftests/net/netfilter/nft_nat_zones.sh  | 34 +++++--------------
- 5 files changed, 38 insertions(+), 42 deletions(-)
-
+diff --git a/Documentation/networking/switchdev.rst b/Documentation/networking/switchdev.rst
+index 2966b7122f05..8e8ab6632ffe 100644
+--- a/Documentation/networking/switchdev.rst
++++ b/Documentation/networking/switchdev.rst
+@@ -401,14 +401,15 @@ The FIB entry's nexthop list contains the nexthop tuple (gateway, dev), but for
+ the switch device to forward the packet with the correct dst mac address, the
+ nexthop gateways must be resolved to the neighbor's mac address.  Neighbor mac
+ address discovery comes via the ARP (or ND) process and is available via the
+-arp_tbl neighbor table.  To resolve the routes nexthop gateways, the driver
+-should trigger the kernel's neighbor resolution process.  See the rocker
++arp_table(net) neighbor table.  To resolve the routes nexthop gateways, the
++driver should trigger the kernel's neighbor resolution process.  See the rocker
+ driver's rocker_port_ipv4_resolve() for an example.
+ 
+-The driver can monitor for updates to arp_tbl using the netevent notifier
++The driver can monitor for updates to arp_table(net) using the netevent notifier
+ NETEVENT_NEIGH_UPDATE.  The device can be programmed with resolved nexthops
+-for the routes as arp_tbl updates.  The driver implements ndo_neigh_destroy
+-to know when arp_tbl neighbor entries are purged from the port.
++for the routes as arp_table(net) updates.  The driver implements
++ndo_neigh_destroy to know when arp_table(net) neighbor entries are purged from
++the port.
+ 
+ Device driver expected behavior
+ -------------------------------
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
