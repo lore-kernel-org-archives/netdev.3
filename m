@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1FE4C7546;
-	Tue, 13 Oct 2026 10:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0B24CC273;
+	Tue, 13 Oct 2026 10:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791888608; cv=none; b=aTCDy6AJ/v+AvsknIlrKLcC6VF/Y6kDo91mKZcFAM6YMRoXGhYQSitbensQdirFTWZw5w9hTQ5vHSJjI/apj2JsyoyLiSsO4ZSJ1lMXsC9ZWU4n6if8iI6sfn7DUECuJVyud94bjsBtJoqY6JNJh5PO5tgZK1AzoDsk+R343Cls=
+	t=1791888609; cv=none; b=GahUw1OybXOuSJYHwOKPq0qT7z5WOXZgT16unU/kbZpfa2cAOTMJXXNmlv++ign0RTyD7hML5Jc29/3c/42pFVpsggnpGrx431AmV54gML3dnrlBbZRXPTbQVT5dVcBZavo2csCFmepV6zcS5mpBcwuxq//lIa+7ZbvL7yvfPRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791888608; c=relaxed/simple;
-	bh=6hZz0OPVgMsuxa1z0hscHgaebQpqhpYvtL1jg1ZfBDI=;
+	s=arc-20240116; t=1791888609; c=relaxed/simple;
+	bh=KRvmlbXYcaDDLPtfFW06t+P2HRoZ5Kt1ADflIMwmIxI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=uEAGUeQvnRYL7wqt/Nhexy7/U87oPv/WnVjQUEBqvOgaa0hAGNvFGKXPwDE+a0iDe79nCDaBK/1obn6yvwc8cC18xLYFAncqo3wzWynSe/FWzkaYJawjBIpS1/EO5xyQko8cacNRye/nTBhgTLMBsiK8uYllYT8WvGOZU+92AqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GrLVXiie; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=gHXK8iafiGa4LcR89IhswZ6w/zuFIPZEJGOcTh7yyCgK+9c1It89M8ePGDsiDffd2kegiCAIiiwFXfNCkiF1DbCjwNzD1BP/n1Tgq/jMWz3D5ilzGxSwrQD4cRtE1P0gcYRg24F4kbIOWAz2/CWzFsyHwGao3XbrL09GaeeHMzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAZhp3n2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GrLVXiie"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9271F000FF;
-	Tue, 13 Oct 2026 10:50:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAZhp3n2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075671F00893;
+	Tue, 13 Oct 2026 10:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791888605;
-	bh=6SwFEmyIpAzrHWXTE0rdlKL/TxZFvAc2qUOB5pJIvnQ=;
+	s=k20260515; t=1791888607;
+	bh=j8cG4X3JD8xO++Vb0UNPGgCZkobpdnrRDC3GPoRELMQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GrLVXiieMyfmV+feKF2MD7V0Gafa8n8B8KKSifehgt5a7WxXPxYrqXl7w+5L+bwGK
-	 G2ssU/mWUtmW59RrLtROKCnFbBSE89wX8E16/1naWkcP+R2XjfmZX4oNtPuDrwBKzq
-	 Y5TcKlBS0FVhGSGWSvd0HUAW0z7DzR9PFOgzsTd9elX6A4dNIK08GieTOgxt5edMCB
-	 7kEEbIN5yWLUdFggnHj8qZ/gzsivbegXO3uWYROc90PeRx6+3aZ1yIvowvvOFRjRfQ
-	 N85A9ReBbzbG3fu69YrIfaCrR3LlH8XPgJUsDStRRRxxFXGXAgHjEAH7Bxx2UqlDLc
-	 1KEqE3QdyfN9w==
+	b=YAZhp3n2b0eRbaPZATe33H2nk0QzO9FcBht4+Ko2UW2YbD6e8l0pdNXPHCJvaRntb
+	 sHoh5yFyDRlF5JKkIWvG+Fr4T4Oe3yfJxWAawthPms7FxqqCz3GOFQ1pW0GYBiFWgD
+	 ykocynRzqnrISu8zbmm6AT/XW90dSTjizNsJHIoxceJELiOrrlu4j+2EivNSPUK0KC
+	 ovEXxwmKkqkokXzIKvFlGoWHuDrUF9APY1hJeSbsroIz7X2ryHPEGpHX+6YiPrNRug
+	 ATIIHCHwQOh24Zoi6E2TmPePg5PPx6bcInrcryfSA4fhVoSmN4CTvApaaj+AnjEuSg
+	 uB7Q64jyBqREQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 77491392704F;
-	Tue, 13 Oct 2026 10:50:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F13F7392704F;
+	Tue, 13 Oct 2026 10:50:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] sfc: fix stale kernel-doc member names in
- net_driver.h
+Subject: Re: [PATCH net-next] net: natsemi: xtsonic: make probe function
+ static
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <179188860427.217011.7064100465923147742.git-patchwork-notify@kernel.org>
-Date: Tue, 13 Oct 2026 10:50:04 +0000
-References: <20261007175338.28683-1-kapoorarnav43@gmail.com>
-In-Reply-To: <20261007175338.28683-1-kapoorarnav43@gmail.com>
-To: Arnav Kapoor <kapoorarnav43@gmail.com>
-Cc: ecree.xilinx@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-net-drivers@amd.com,
- linux-kernel@vger.kernel.org
+ <179188860551.217011.9324241103805138564.git-patchwork-notify@kernel.org>
+Date: Tue, 13 Oct 2026 10:50:05 +0000
+References: <20261008183013.3223131-1-rdunlap@infradead.org>
+In-Reply-To: <20261008183013.3223131-1-rdunlap@infradead.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: netdev@vger.kernel.org, patches@lists.linux.dev,
+ tsbogend@alpha.franken.de, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Wed,  7 Oct 2026 23:23:34 +0530 you wrote:
-> Several kernel-doc comments in net_driver.h describe struct members that
-> have since been renamed or removed, and the EFX_MAX_FRAME_LEN() comment
-> is separated from the macro by the EFX_FRAME_PAD define. kernel-doc
-> reports:
+On Thu,  8 Oct 2026 11:30:13 -0700 you wrote:
+> Avoid a build warning by making the probe function static:
 > 
->   Excess struct member 'state' description in 'efx_channel'
->   Excess struct member 'state_lock' description in 'efx_channel'
->   Excess struct member 'indir_table' description in 'efx_rss_context'
->   Excess struct member 'irq_rx_mod_step_us' description in 'efx_nic'
->   Excess struct member 'tx_queue' description in 'efx_nic'
->   Excess struct member 'rx_queue' description in 'efx_nic'
->   Excess struct member 'extra_channel_types' description in 'efx_nic'
->   expecting prototype for EFX_MAX_FRAME_LEN(). Prototype was for
->   EFX_FRAME_PAD() instead
+> drivers/net/ethernet/natsemi/xtsonic.c:200:5: warning: no previous prototype for 'xtsonic_probe' [-Wmissing-prototypes]
+>   200 | int xtsonic_probe(struct platform_device *pdev)
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v2] sfc: fix stale kernel-doc member names in net_driver.h
-    https://git.kernel.org/netdev/net-next/c/32a8010d2c30
+  - [net-next] net: natsemi: xtsonic: make probe function static
+    https://git.kernel.org/netdev/net-next/c/26a8396802ea
 
 You are awesome, thank you!
 -- 
