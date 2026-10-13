@@ -1,267 +1,69 @@
-Received: from out198-2.us.a.mail.aliyun.com (out198-2.us.a.mail.aliyun.com [47.90.198.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85E239BFED;
-	Tue, 13 Oct 2026 01:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8025363C53;
+	Tue, 13 Oct 2026 01:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791853912; cv=none; b=AKSXZ62Aa3gJVe+ReH520Zfx1Spyc0fHKxQ9jviZM2DwSD96y6oWvd80Uiz5uoovHUrOqPGJDx6tNknj2T0CRYKLzCx9R6RHu4cqE5sJ630hC+cV61561ZSsRW/t5zWRQEikuYpJpLLhkA7aj0Sxt2YJv3KDBMxjI4652VKmZuY=
+	t=1791854121; cv=none; b=jFRNLEZ3y2liyNSgorXh0UdwRu24J78gSS8Q0bJIPbQ2BCkNQHk92xdiKJ/XWiUMBbPK+7IurKviTLzMg9NuHi7NyzvD7tj+Z0X57znWeN5y5nXqmLS1sVP56hFJ912aXLJVY7Ex755u92D9SWA+1LdCwqXiwfhaFx1OX9vyQ5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791853912; c=relaxed/simple;
-	bh=nZziVeaGtlJ0chm+Rf0wBq8MI+keUipCA9M0Qh8Z+CQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Aq8nCKjaYB1aLYTC0hVnAqQiLjKBvscfgYAavK6iC2wkUeaMWn0l4pFI+km9w2FbB8GJNMbvBzYYIDL8UZK2L8G2HoRPinag6KehpASRKJIti9qDEOs8hXMzC4FaEFXRigzWR5YprMR6czBRpeYyKUeofHmNgBRvHSoMjRTJ19U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07436316|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0208765-0.00028719-0.978836;FP=13177460201897074192|1|1|9|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jatt1Iu_1791853890;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jatt1Iu_1791853890 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 13 Oct 2026 09:11:30 +0800
-From: Kyle Switch <kyle.switch@motor-comm.com>
-To: andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mmyangfl@gmail.com,
-	horms@kernel.org,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com,
-	wei.zhang@gl-inet.com,
-	sijia.huang@gl-inet.com
-Subject: [PATCH net-next v14 4/5] net: dsa: tag_yt922x: add support for Motorcomm YT922x tags
-Date: Tue, 13 Oct 2026 09:11:21 +0800
-Message-Id: <20261013011122.1889766-5-kyle.switch@motor-comm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261013011122.1889766-1-kyle.switch@motor-comm.com>
-References: <20261013011122.1889766-1-kyle.switch@motor-comm.com>
+	s=arc-20240116; t=1791854121; c=relaxed/simple;
+	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aJjjUn/l3mU57qIgF9TvpvRo8mVoY2LKcgAlTPDlWrnTtEl92+h668TTg9a8oqRb8l0fLPu+uN9UcWm/9u1+QotecucA/AAWiZm6M86ztxv4ke5ZEbCDu8VoGz23A8V7IoOAdYkgW/m99lgbk4YHjNG6O8jIv0uJyK2WazXQm4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPFYbJOo; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPFYbJOo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10E81F0089B;
+	Tue, 13 Oct 2026 01:15:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791854120;
+	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NPFYbJOo+N/pyhUfJOjVCp0P1q4q1Dc8eoOB88zAggOtYW3Qx8GwO7Nsn60RTTQNQ
+	 PFOl/ti4qfYLllfHXiAdMWTORs0NvvKewlOBOMGfzGtB/9RKrrDsuuxftYp1QryoxI
+	 dg6Iw+ID2WtTLBGQBYJacHHOKF6QZdccmhC6Qs0+ciNgWtiOgaCP1MqNEle0mo8zzR
+	 MvPUevGIE4O6A/kSE+9L/NL9rgj762KGWJ+mv9itMs2aVJGuP7qlM4z7VXGv8Fkbr0
+	 v7ByqQZnqsUoSD9V/JLlJd7nXrbdBaNVinIzsZSSB/HiZ73Nc5OZetzbs5GKQ/UUzt
+	 xHBIg0XR1z1xQ==
+From: netdev-bot+sinfo@kernel.org
+To: Paul Moses <p@1g4.org>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com,
+ maciej.fijalkowski@intel.com, avigailx.dahan@intel.com,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH net v2] igc: only strip RX timestamp header from first buffer
+Date: Tue, 13 Oct 2026 01:15:19 +0000
+Message-ID: <179185411924.2527009.3756808928521081401@kernel.org>
+In-Reply-To: <20261013010854.4068874-1-p@1g4.org>
+References: <20261013010854.4068874-1-p@1g4.org>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add DSA tag support for Motorcomm YT922x switches.  YT922x uses the
-same ETH_P_YT921X EtherType and the same 8-byte tag length as YT921x,
-but the tag layout differs, so a separate tag driver is needed instead
-of extending tag_yt921x.c.
+Hi!
 
-The new driver documents both the to-CPU and from-CPU tag layouts.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Update the co-maintainer for the Motorcomm DSA driver.
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
----
- MAINTAINERS          |   2 +
- include/net/dsa.h    |   2 +
- net/dsa/Kconfig      |   6 +++
- net/dsa/Makefile     |   1 +
- net/dsa/tag_yt922x.c | 122 +++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 133 insertions(+)
- create mode 100644 net/dsa/tag_yt922x.c
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 509b35b5a0e7..434cd217011b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18434,11 +18434,13 @@ F:	drivers/net/phy/motorcomm.c
- 
- MOTORCOMM YT921X ETHERNET SWITCH DRIVER
- M:	David Yang <mmyangfl@gmail.com>
-+M:	Kyle Switch <kyle.switch@motor-comm.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
- F:	Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml
- F:	drivers/net/dsa/motorcomm/
- F:	net/dsa/tag_yt921x.c
-+F:	net/dsa/tag_yt922x.c
- 
- MOXA SMARTIO/INDUSTIO/INTELLIO SERIAL CARD
- M:	Jiri Slaby <jirislaby@kernel.org>
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 5d12191b6f6f..5a173fe2bb87 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -62,6 +62,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_KSZ8463_VALUE		34
- #define DSA_TAG_PROTO_MT7628_VALUE		35
- #define DSA_TAG_PROTO_KS8995_VALUE		36
-+#define DSA_TAG_PROTO_YT922X_VALUE		37
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
-@@ -101,6 +102,7 @@ enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
- 	DSA_TAG_PROTO_MT7628		= DSA_TAG_PROTO_MT7628_VALUE,
- 	DSA_TAG_PROTO_KS8995		= DSA_TAG_PROTO_KS8995_VALUE,
-+	DSA_TAG_PROTO_YT922X		= DSA_TAG_PROTO_YT922X_VALUE,
- };
- 
- struct dsa_switch;
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index 4f44bf3ede23..06d8d6526054 100644
---- a/net/dsa/Kconfig
-+++ b/net/dsa/Kconfig
-@@ -233,4 +233,10 @@ config NET_DSA_TAG_YT921X
- 	  Say Y or M if you want to enable support for tagging frames for
- 	  Motorcomm YT921x switches.
- 
-+config NET_DSA_TAG_YT922X
-+	tristate "Tag driver for Motorcomm YT922x switches"
-+	help
-+	  Say Y or M if you want to enable support for tagging frames for
-+	  Motorcomm YT922x switches.
-+
- endif
-diff --git a/net/dsa/Makefile b/net/dsa/Makefile
-index 1f9cc30e9988..0ef6dfce3b92 100644
---- a/net/dsa/Makefile
-+++ b/net/dsa/Makefile
-@@ -45,6 +45,7 @@ obj-$(CONFIG_NET_DSA_TAG_TRAILER) += tag_trailer.o
- obj-$(CONFIG_NET_DSA_TAG_VSC73XX_8021Q) += tag_vsc73xx_8021q.o
- obj-$(CONFIG_NET_DSA_TAG_XRS700X) += tag_xrs700x.o
- obj-$(CONFIG_NET_DSA_TAG_YT921X) += tag_yt921x.o
-+obj-$(CONFIG_NET_DSA_TAG_YT922X) += tag_yt922x.o
- 
- # for tracing framework to find trace.h
- CFLAGS_trace.o := -I$(src)
-diff --git a/net/dsa/tag_yt922x.c b/net/dsa/tag_yt922x.c
-new file mode 100644
-index 000000000000..b6146a9af98b
---- /dev/null
-+++ b/net/dsa/tag_yt922x.c
-@@ -0,0 +1,122 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Motorcomm YT922x Switch Extended CPU Port Tagging
-+ *
-+ * Copyright (c) 2026 Kyle switch <kyle.switch@motor-comm.com>
-+ *
-+ */
-+
-+#include <linux/etherdevice.h>
-+
-+#include "tag.h"
-+
-+#define YT922X_TAG_LEN 8
-+
-+/*
-+ * To define the from cpu tag format 8 bytes.
-+ *
-+ * To-CPU (RX) tag format, 8 bytes:
-+ *
-+ *   tag[0]: TPID (default: 0x9988)
-+ *   tag[1]: VID lookup
-+ *   tag[2]: bit 5:2  - RX source port
-+ *
-+ * From-CPU (TX) tag format, 8 bytes:
-+ *
-+ *   tag[0]: TPID (default: 0x9988)
-+ *   tag[1]: bit 8:0 - Dst port mask
-+ *   tag[2]: bit 15  - Dst port 0
-+ *
-+ */
-+#define YT922X_TAG_NAME		"yt922x"
-+#define YT922X_TAG_PORTMASK_0	BIT(15)
-+#define YT922X_TAG_PORTMASK_M	GENMASK(8, 0)
-+#define  YT922X_TAG_PORTS(x)		FIELD_PREP(YT922X_TAG_PORTMASK_M, (x))
-+#define YT922X_TAG_FORCE_DST	BIT(9)
-+#define YT922X_TAG_PRIO_M	GENMASK(12, 10)
-+#define YT922X_TAG_PRIO_EN	BIT(13)
-+#define  YT922X_TAG_PRIO(x)	(FIELD_PREP(YT922X_TAG_PRIO_M, (x)) | YT922X_TAG_PRIO_EN)
-+#define YT922X_TAG_RX_PORT_M	GENMASK(5, 2)
-+
-+static struct sk_buff *
-+yt922x_tag_xmit(struct sk_buff *skb, struct net_device *netdev)
-+{
-+	unsigned long ports;
-+	__be16 *tag;
-+	u16 ctrl;
-+
-+	skb_push(skb, YT922X_TAG_LEN);
-+	dsa_alloc_etype_header(skb, YT922X_TAG_LEN);
-+	tag = dsa_etype_header_pos_tx(skb);
-+
-+	tag[0] = htons(ETH_P_YT921X);
-+	ports = dsa_xmit_port_mask(skb, netdev);
-+	/*To fill in the case where the port index is not 0 */
-+	ctrl = YT922X_TAG_PRIO(skb->priority) | YT922X_TAG_FORCE_DST |
-+	       YT922X_TAG_PORTS(ports >> 1);
-+	tag[1] = htons(ctrl);
-+	if (ports & BIT(0)) {
-+		/* To fill in the case where the port index is 0 */
-+		ctrl = YT922X_TAG_PORTMASK_0;
-+		tag[2] = htons(ctrl);
-+	} else {
-+		tag[2] = 0;
-+	}
-+	tag[3] = 0;
-+
-+	return skb;
-+}
-+
-+static struct sk_buff *
-+yt922x_tag_rcv(struct sk_buff *skb, struct net_device *netdev)
-+{
-+	unsigned int port;
-+	__be16 *tag;
-+	u16 rx;
-+
-+	if (unlikely(!pskb_may_pull(skb, YT922X_TAG_LEN))) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	tag = dsa_etype_header_pos_rx(skb);
-+
-+	if (unlikely(tag[0] != htons(ETH_P_YT921X))) {
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Unexpected EtherType 0x%04x\n",
-+				     ntohs(tag[0]));
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	/* Locate which port this is coming from */
-+	rx = ntohs(tag[2]);
-+	port = FIELD_GET(YT922X_TAG_RX_PORT_M, rx);
-+	skb->dev = dsa_conduit_find_user(netdev, 0, port);
-+	if (unlikely(!skb->dev)) {
-+		dev_warn_ratelimited(&netdev->dev,
-+				     "Couldn't decode source port %u\n", port);
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	/* Remove tag and update checksum */
-+	skb_pull_rcsum(skb, YT922X_TAG_LEN);
-+	dsa_strip_etype_header(skb, YT922X_TAG_LEN);
-+
-+	return skb;
-+}
-+
-+static const struct dsa_device_ops yt922x_netdev_ops = {
-+	.name = YT922X_TAG_NAME,
-+	.proto = DSA_TAG_PROTO_YT922X,
-+	.xmit = yt922x_tag_xmit,
-+	.rcv = yt922x_tag_rcv,
-+	.needed_headroom = YT922X_TAG_LEN,
-+};
-+
-+MODULE_DESCRIPTION("DSA tag driver for Motorcomm YT922x switches");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_YT922X, YT922X_TAG_NAME);
-+
-+module_dsa_tag_driver(yt922x_netdev_ops);
--- 
-2.25.1
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
