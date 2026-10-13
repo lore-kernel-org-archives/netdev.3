@@ -1,178 +1,127 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC0F44BCBE
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F1345A285
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791857371; cv=none; b=fe1wwYuKy3BAm0tjg+RzKE8n+E/bPf1Cil6SW6g+iX8VlQ8HNLbB6ZRwotDK3N1dzES50MJicvu81lNf83Qd/qlPrUCUeXovfCaVXGFJMPO+niM1zSqRgSzZvAI4xWdQBMnCQlcQV5lYN5LQZPDr11Kvel105v35SBYQW90DLbU=
+	t=1791857496; cv=none; b=iBbdpz3powuOjonCgoaGr3+p+GqimOw/0yv/0Ct6Bfct6U6gWq7a9lzaAyWR9SzfErN1upPJ7wzY0mHRNS5Xc/3TYwrrig1WePGu6r8M8voi3PawI2NByiOtenbVo/8JKLY1K/Iz6r7NmsxC0M9g/A9z04evA+LrHWsgdK5s4nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791857371; c=relaxed/simple;
-	bh=IRWt4VDPiyUkbB43dYlWSBojmDaohCHTINhsRG/H+EE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qB4Zx/3UUh/FCt/DZJ3G9ojOvb26tIVYGhbr45VeETj+MSyo3F3DdBhoB29gRWV9yPCw0/5uH38wAIl+OwhjZAtuyMK/UqD25HQIxnTpVavxH+rJnEGsRmuVVFU+gPRW+0RbjszOUU27iSLCEXixH5OFmXGPt6USHg37oXSwHKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=mftG+3yO; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="mftG+3yO"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-917a9f42283so29475836d6.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 19:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1791857369; x=1792462169; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RsCbY8Ip5NFwQBaKeE02VHsTQ9AsJiBilAhhemXl7vU=;
-        b=mftG+3yO8z6fMtTp9JbqbRIbK3TuYZP6LL970+gZKBMk5Bx/iAp04UlMxS8MukubMC
-         WLDOhiudoLqIBHMuL0rlpqKlne41xzmxsVcSDl0ShnJyC++sIOeXFdZAWhbShkCsuqR0
-         SNDPvP9oXnKSNPwsVJcqLUabS3HTAMfBHcZGqqXlfbZKYD0UPAg3YBlpQ+2kJuuW8296
-         lrIfPtYP1ddCFd3lDNa90gOr5FLluOpH8nb8DIESNKAq+k4nvjgJHVto5LihF0GPP2yr
-         2mgTxoZO0m2DKieNRoc+YCDj/OlW6Iypgan0Kh49kKqt6Fu2Ojz+M7WecB7YghSBzWa7
-         OOiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791857369; x=1792462169;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=RsCbY8Ip5NFwQBaKeE02VHsTQ9AsJiBilAhhemXl7vU=;
-        b=doFGHIEWPfHwEu5anZ2OsY+D5cyRmGcwKAOrf+kw4dnRtmBiUCcAoG/Lb9YVWec+bb
-         uPaeILYiuyV9/wODl+eIvxYmk/dHoSYJyLB2Inp4ppNvbbGoEI41EaV0/XSOZHIe7RBS
-         q2sj5BtyHBTykEnU7lUcTMr3rCmSHTTghFHM7IafkrCGx96+6XtzY7JMBXOYGyVTzcpp
-         fzNazd6CX+yLUrcAdh6cz1bVs5OkurulDj1zcxCmmviFeqJEbQ8FmqqWtdIRLkHJ8l/t
-         0qh+Kh+9vP+DVxRMC87Kl+rrToOS8YsTdXqcfIea8Ji1yoxdLOlDa5VZzYNCfivu0zcY
-         EPyg==
-X-Forwarded-Encrypted: i=1; AKwUvBxawIjwT5pHuOay16/j52Rxg+vJro94libuxgybPwnFaGt6KYXxGA1C4gXGVYjH6q3Logzs7c4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJGuPDoU5UhQrbtZDGxdhjzKC+EDgCcWE6ZhMVbR8pXX2LczIjv
-	AX3GARp8dWbsMCaVpkf6qYMcbqJGTcetavGs2nBo69IVXKyb08Iho6whIUScT9NlVA==
-X-Gm-Gg: AYBFou0EhrtgKo56q9JfV31zrVQiyy9ttImIXPLR47hnF7Klk1N+4Gktzj6NFu9+q98
-	kikjADEA7Bn1+js+2dQ1vrxyRwxf0iqOSSJi5y0hJg48/SxvJMk5jRv5jS2gyDu8BJb1PlO+FBL
-	m7DkEuXIzM4eZ1EJc9PT9L2jxr5Gebb1Inhmhq9jytAudK1FWDZaomfJXTYMqVBJbvu6nUNzTxT
-	9orHaAsxmB4MnmaPbIAhvITydD0rp+kWibDMPNIpx7Ej/zWod1Kb7+/vHfR7ycAk/0bmlUC9yY4
-	0JS3AJP9jgvYZy9p+xzZ0E6VOlX5LO8yI4T4WIl84kQQNQBV0+seF3T5mmx4iLQFRQ/9v3erSMw
-	KWOoP/tN2Pp9Vj+CMi1i6pV4EQoxPQHe0RDUe+qowNINIxqIG7Qlgmx2/AY2iGQcnxSIgktm7qQ
-	5Hwz9IbGPLSoLsMM+x8u5G12NaxRq8g88A7kcM/VT+Zjwun6i/xMhcT/aisCBTrFVu6lOKViU=
-X-Received: by 2002:a05:620a:6e86:10b0:93e:c12c:4412 with SMTP id af79cd13be357-93ec12c49fdmr1181926485a.78.1791857369089;
-        Mon, 12 Oct 2026 19:09:29 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::4791])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef50295a7sm131650285a.23.2026.10.12.19.09.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 19:09:28 -0700 (PDT)
-Date: Mon, 12 Oct 2026 22:09:25 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1791857496; c=relaxed/simple;
+	bh=gUlrsMubBm3X2xZKFhE4uSA9b5egju14yLs1mP2cqSM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UN62QPMvDbn7UOnNrgOzfMMMzNaUYrbE8bNgJXOSZuK7p2zZlAXPRM43F2+/wzUlSe2ueyEgIEi3EUocM29ckDxhnX3lhAbfJOwTXePpH9GsEaCc2PX0OOvQVM/PxEMjC4QPQpgbApfwgeyXX7t9J8RedB7UWVvPvL+/4IJk0EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.22.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz17t1791857196tcc855cac
+X-QQ-Originating-IP: gTPmI6/a8B5u0lYK4G90NcmAYizitgODzuMx3pPDLqw=
+Received: from lap-jiawenwu.trustnetic.com ( [115.198.217.6])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 13 Oct 2026 10:06:33 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 9359113613443592598
+EX-QQ-RecipientCnt: 17
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	=?iso-8859-1?Q?=D6mer?= Mete Kaya <omermetekaya0@gmail.com>,
-	oneukum@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	david.laight.linux@gmail.com,
-	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v6] usbnet: fix smp_processor_id() use in preemptible
- context
-Message-ID: <41af30de-4725-4913-9ad8-54d1dea2d4b8@rowland.harvard.edu>
-References: <20261004215937.302247-1-omermetekaya0@gmail.com>
- <20261007200049.079aeb75@kernel.org>
- <7c4a2f1c-f16d-479b-a11f-cef962d5e2c7@rowland.harvard.edu>
- <20261008094338.301a75fa@kernel.org>
- <06a81ea1-b17d-40bd-82d9-922de946b86f@rowland.harvard.edu>
- <2026100910-petition-embattled-94cb@gregkh>
- <20261012194902.aEq58Q6b@linutronix.de>
- <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
- <20261012212527.5sFqlGYu@linutronix.de>
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net v3 0/3] net: wangxun: keep MAC enabled for NCSI devices
+Date: Tue, 13 Oct 2026 10:06:22 +0800
+Message-Id: <20261013020626.5548-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261012212527.5sFqlGYu@linutronix.de>
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: OAK53qkEnM1W1vMfZxAZOO+wSCJJ06SlHi+pw1Rsb73ajbDGfuieG7El
+	a1AhOIqVsof93XN4UG0ZqfySQreI0LZ2nWxOPWB8NHST5KCUhesDl4glpxOQU+PoMpB/Shp
+	k2+BivmmQ7OLjefOOE6N+fw/vk8U/GHmtaqCQC/9t5qdIfPBF9StoinH0M4rQ4fF6c7wa+P
+	hhxtISP28yaHnBGDmR6j3ibhlQJKBqCvQcfvoDQHOks4KvBGNGcdwxc4J2K1Ux2EGXU7Zxi
+	EckBpUCBDY6MDWvyYPTOxHlpKX5fQh/1zElTtUe9uUf5VWHoxdoWEog2PFnzsc8FygbhR+A
+	kw4myBpCYczIuTL5ZgF6iQ5qow3zA/aezGJzYykvgxDm4tOH737Ic7u+vMNORarQ8RSH+up
+	iUVLIb2UpWjivoPb1QeqvCoHIQpyVEs2olmg7UpeddCvg4KnZ+VK6SBbDrPOuXXNpss1W63
+	xhEljSUEBC3kdFtV4Hatvc6orWXI5+kr6ff/SU0yPsm4xBmQVhpxxONAlFlo/WhVKqb9ss/
+	tTsMQwfse5v83ToLr5/kXseJDH8dpmTWFgZ3BBLUiHBGNHWh1UDw8RXgZ7+/YGd2BwpJKDG
+	DHwmcg5cLCBOkx2XRBwyK713LXspAWH0tuqz9q/LhNVxXmemN/Rqc2EyUgSedsTHuyeBuvA
+	21JOMWum2HfhdXk5q/qELkjoAjzh97MuYOT1KFqBEI3B2EyF/KyJbAItuDjDjjDyqLFDMab
+	nBMXL4omplLb6m3wtsbIAiRkjcW3MD9xBqznns+WSzQJzHuMhGfrvAedYHEsZ96QOYkYo2k
+	E9XoneDo6e7mHT3SUrnEV0mFvCCKkuFZ1PqrnxXdDcpX7khwTDNdCYU8GLjv5IS5LBhcBFK
+	XgLUb3ROk/4eafMIzMQJzc9dWlD1gHJ5gWChC2bwxtnMD4/h2hL+T3zuF8p/qg5uWpCaa5K
+	8pizo9oRbREbA1oH3Ov/PEguQKMVHL6v8MoFf86XhNVqd4w0Os/3s6z7rVcoju6tviouwkf
+	GUjYB/tfvfPPBPLxEEs3E1Gl2+Psk2PDCfNw4oHqO8GQPNG/g1qpiLqVmEsEjpLDgnRgn+V
+	V6oydTetIWMBXs80OI1AJ1Hn2HBd/E4CLgJMlljHG+zAW+2QGeyAQFwNj3i3Wqv7Q==
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 
-On Mon, Oct 12, 2026 at 11:25:27PM +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-10-12 16:26:28 [-0400], Alan Stern wrote:
-> > On Mon, Oct 12, 2026 at 09:49:02PM +0200, Sebastian Andrzej Siewior wrote:
-> > > On 2026-10-09 13:31:17 [+0200], Greg Kroah-Hartman wrote:
-> > > > > As far as I am aware, there aren't really any guarantees on the 
-> > > > > context of a USB URB-completion callback.  The kerneldoc for struct urb 
-> > > > > in include/linux/usb.h says "The completion callback is made 
-> > > > > in_interrupt()", but that is most definitely out of date.
-> > > > 
-> > > > I don't think so, I think some platforms still have those callbacks in
-> > > > irq context, unless we changed to threaded irq handlers everywhere?  I
-> > > > could have missed that, but we should still write the callbacks to
-> > > > assume that and then we should be fine even if we aren't in irq context,
-> > > > right?
-> > > 
-> > > The HCD invokes the completion callback usually in IRQ context. I think
-> > > the VHCI is an exception here.
-> > > For the forced-threaded mode we disable BH before the IRQ handler is
-> > > invoked. I think even dummy_hcd invokes them from the timer if my memory
-> > > is right.
-> > > 
-> > > > > Drivers shouldn't rely on any particular context guarantees.  Not even 
-> > > > > whether local irqs are enabled/disabled.
-> > > > 
-> > > > Agreed.
-> > > 
-> > > I would suggest to make VHCI invoke the completion callback with BH
-> > > disabled. usbnet's tx_complete() does also defer_bh() which schedules a
-> > > BH worker via queue_work(). While this works without disabling BH it
-> > > leads to waking ksoftirqd and an additional context switch which we
-> > > could avoid by dealing with it directly.
-> > 
-> > Today you fix VHCI, tomorrow some other virtual HCD will cause problems.
-> 
-> We don't have other virtual HCDs, do we?
+Wangxun NICs that support NCSI share the port with a BMC, which needs
+the MAC and the optical transmitter to keep working when the host
+interface is down. Currently the drivers turn them off in several
+places, so management traffic is lost whenever the host interface is
+closed or the link goes down.
 
-Well, we've got dummy-hcd.  And just recently there was an RFC post with 
-a virtio USB HCD implementation.  It wouldn't be surprising to encounter 
-other ones.
+Patch 1 makes wx->ncsi_enabled the single condition for keeping the
+MAC enabled. On NGBE it also covers OCP cards, which support NCSI but
+do not set the NCSI bit in the subsystem ID. Before this change they
+had the MAC receiver turned off in wx_disable_rx(). txgbe now sets
+ncsi_enabled from the subsystem ID, so there is no functional change
+for txgbe in this patch.
 
-Also, don't forget, URBs can complete in several different ways.  
-There's normal completion, explicit unlinking, unlinking because the 
-device was unplugged, unlinking because the device or HC is going into 
-suspend, and so on.  And there's a difference between URBs sent to 
-root hubs as opposed to devices actually on the bus.  Not to mention 
-that in some cases completions may occur synchronously with submission 
-or unlinking, even though they usually are asynchronous.
+Patch 2 keeps MAC Tx enabled on SP devices in mac_link_down() and
+re-enables it in mac_finish(). It also keeps the SFP TX_DISABLE line
+deasserted while the interface is down. The SFP core asserts
+TX_DISABLE whenever phylink_stop() stops the upstream. As a minimal fix,
+the override is done in the txgbe GPIO controller and only applies while
+the interface is down.
 
-> The other driver is drivers/net/mctp/mctp-usb.c.
-> mctp_usb_out_complete() -> … -> mctp_usblib_tx_stats_update() does
-> get_cpu_ptr() for stats. But mctp_usb_in_complete() has 
-> mctp_usblib_rx_complete() -> mctp_usblib_rx_stats_single_drop() and
-> mctp_usblib_rx() which do just this_cpu_ptr(). Plus the queue wakes &
-> netif_rx() which wake ksoftirqd.
-> 
-> That makes two drivers from a quick grep. But I guess it is just
-> networking for the per-CPU stats.
-> 
-> > Should we document any requirements that all HCDs will have to follow 
-> > and that all completion handlers can rely on?
-> 
-> It used to complete in IRQ context. Then you added the possibility to
-> complete BH for those HCDs marked as such (except for the RH). I think
-> it was always reasonable to assume that it is either IRQ-context
-> (force-threaded or not for !HCD_BH) or BH (for HCD_BH). It makes hardly
-> a difference, BH is always off and networking uses to rely on it.
-> So yes, documenting would make sense.
-> 
-> Do you want to document it yourself and have me do the VHCI bits?
+Patch 3 does the same for AML devices: MAC Tx and Rx stay enabled in
+mac_link_down(), and txgbe_down() no longer disables the TX laser on
+NCSI devices.
 
-At the moment, the only thing I think we can actually guarantee is that 
-completion handlers will be called with local interrupts disabled.  No 
-commitments about process context vs. interrupt context vs. BH context 
-or anything else.
+---
+Changes Log:
 
-Of course, in special cases you might know more about how a particular 
-HCD works.  But except for platform-specific settings, it's hard to be 
-certain that your driver will always be used with that one particular 
-HCD.
+v3:
+- Use wx->ncsi_enabled instead of the open-coded OCP check.
+- Re-enable MAC Tx in mac_finish() for NCSI devices.
+- Keep the TX laser enabled while the interface is down.
 
-If this is okay with you, I can write a documentation patch.
+v2: https://lore.kernel.org/all/20260924020149.30800-1-jiawenwu@trustnetic.com
+- Remove WoL related changes.
 
-Alan Stern
+v1: https://lore.kernel.org/all/7DBD5726DAA21342+20260920085114.1062503-1-jiawenwu@trustnetic.com
+---
+
+Jiawen Wu (3):
+  net: wangxun: keep NGBE OCP cards MAC enabled
+  net: txgbe: keep MAC enabled for SP devices that support NCSI
+  net: txgbe: keep MAC enabled for AML devices that support NCSI
+
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c      |  2 +-
+ drivers/net/ethernet/wangxun/txgbe/txgbe_aml.c  |  6 ++++--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 10 +++++++---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c  | 12 +++++++++++-
+ 4 files changed, 23 insertions(+), 7 deletions(-)
+
+-- 
+2.51.0
+
