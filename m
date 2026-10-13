@@ -1,98 +1,119 @@
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9333A391E52;
-	Tue, 13 Oct 2026 06:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3883E49D6
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 06:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791873657; cv=none; b=bWXBI8yWR4BnUocE8IuOnpOJXXitxWINOIyma3IBzZ3D7uh17nB8QWoH3I6oj3QIpPcs5f1fURYV4ePBLhmApBT0jgjV7ra4MJQpoe0CrrWClURz9vRLqUY4ZedK4v4F1nPIdfG21tBXHq+Zk4vdnBQ504kvakL+qhr05dUVT04=
+	t=1791873676; cv=none; b=uvPSYedk0EfyEYROIqkRq006j3j75NbOskzzJ0vwfXX3Y3MADiHlj9Z6wnyimsr4gxVimT4pw0CM5FQfpt7O/8FnSc5h5E3CKENPhfj67t80jNquCNBly6OqFXm7U4r550aO28pQ/uIO9f7vXpcLEb2Xu79JwFlBdm50sKFNnXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791873657; c=relaxed/simple;
-	bh=pufvseFPv7SRb1Qgh0FRdHx2ORcY7iConWw/5V0rGEY=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=XLhJhk8WiE89LOl0HwQWoFEv1zCwjDXC8RglQef/wS9KHRtPFuBU834DYeDr7Looxl6Cfx+lXK8qqOFht7gsoaCvqr/tRkDed0UNBa/P7dAI+FYnrv3uBbRc1u0PVgXvNoqlKtTSnD5iiIdw+XMHe2RvNNqWxRrANt9MSJZQ9UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=uc9ZXIZ0; arc=none smtp.client-ip=162.62.57.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1791873676; c=relaxed/simple;
+	bh=JrEBysAb0i0OHiOuq+4l+PJ+fk1PxrWYK4Z51mcUo44=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pj2rNFQ4Qpx6xi7YaxhgOAXK32U9UmAeetvUxk5+8O4sE5S5WydnwNyXqLv3NzrKNm8ikWRVkvS0tr7FY+mRU6ARKwNRB4Rk6SiNkXeoDmVCLqGl7vOXrQ1abhNvJjUU4+ijQNlAi7OEB1MqxGG+vYNDtfFuMqnNstA37rbpKIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=smlFqACm; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="uc9ZXIZ0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1791873642; bh=pufvseFPv7SRb1Qgh0FRdHx2ORcY7iConWw/5V0rGEY=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=uc9ZXIZ0gik1vOaBzzuJ6zglNeyGIKs4w7cJmAPrX5ZRABB2M3sjeeSEUmmU+TeeT
-	 LGAKhqevI4EaFdp6i0JAHOHoYq8tccqsMEnV+1zwVPMupr30pZogQXq3qkn41rQNni
-	 5pBovX5biPj51SS6UprHXtUYwZzmpVwD9Ytk7HNM=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-XMAILINFO: Nyxko0BhXiLd41+Tw1uOs1BrxflslPSuTweuL7/54vmiFn65mefZgLh3iJk0vk
-	 4PgO9c7OYsrvouL0DCf7NvL0FnAY1OugU9nc6oG1RSyVaQQYnCbDrjfRHwkNaMNwbIitX/KFUy0+b
-	 vQZQEvC9TWG8cgMZqG6mo1KO3ImT+3q0JS4SIu6dhSE8H/PLXFFCNrCXjwDh38Rxir59UvwkHy/Ob
-	 1iFyXxvqEqq3s9i0cflrbzPIhUCm5/QYeulrMjW/hyDYVYVlu4QuiWvY+LAtvKF2oB97KiVh7HdBu
-	 vZYjICUlz+tec5u7Wm8oE0zBT5+4dEiJnfFN8fdDoL8Kp+6zqKWsr5OWBvayO3zRuKbnilymr0X9+
-	 xbpw5PFHXVm5skbrwRF9he+Tmdl3o3hzPs0LJQD+FA6+P5FJADNnnWYxmwRowiKsOyHgPW2Ftj2zQ
-	 o2RN9WT5ojU/sGWyI7M3WJ0kzOI0mEcq9Drcm9U7TQRNcoqKasP0kQtcs5XPmNpdwK1WAUsarwi9W
-	 zsnQRsoUfEJsZTqM0AanWJ9bPGROJoMmLEkQLL7cTYMtuJXJABZRpo7PwhIY4wh53oVvCpq0lQUrC
-	 vbPeLrlSwarpLSTg96Kc56cvPLOceAxLOnodo5MUbFoi1VlVs1rf0ghnBA9ibEYUo/ylziOwcEzE7
-	 3yEFl0D2/JFbyCIVTbbb0BeeK6yl0J/bnAlYgPQ5S+VrFOdaKNlFHyVtPvOvx1/5oUoUxZOyJ7gOW
-	 8JyAqmHv5yGQsfj929TBRyq5YTiq1FOVLRenMVOR0HopbLAevLLJ0vc/GDghICuUdy8gHOn+kLSGz
-	 qeCoFzd3q3j4yxVeE3qZmNeAt54uBU7OwwCIHw4Y6WLptPnCyQnXSJlTx3ALHwRjz+AGAUBd0Yylt
-	 vubGXg02JvAnJQ+b8ICAbaYgerS26pq3G2qBq5sPW9ENd2UgJPiMk6DP3gzw1M71fuKt7O9y1EmSC
-	 qGnRHrpLMCXRzGOrlHhkVmPu9BcJt2SZGhJI0X1d/bxPOW5CYLMJ52pk7E4qhYn/GxWpW4w48fn3L
-	 TWWUM34sJbtpv70o1MwxLQp1aZ4NEAQy8ffHfQhGRThZ+kMlq/n0+RP8YyRwW//3XNWNTNXyt1WHe
-	 1qQwGqRGK3v0nA==
-From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
-To: "=?utf-8?B?bmV0ZGV2LWJvdCtzaW5mbw==?=" <netdev-bot+sinfo@kernel.org>
-Cc: "=?utf-8?B?TWFyYyBLbGVpbmUtQnVkZGU=?=" <mkl@pengutronix.de>, "=?utf-8?B?VmluY2VudCBNYWlsaG9s?=" <mailhol@kernel.org>, "=?utf-8?B?U2ViYXN0aWFuIEFuZHJ6ZWogU2lld2lvcg==?=" <bigeasy@linutronix.de>, "=?utf-8?B?Q2xhcmsgV2lsbGlhbXM=?=" <clrkwllms@kernel.org>, "=?utf-8?B?U3RldmVuIFJvc3RlZHQ=?=" <rostedt@goodmis.org>, "=?utf-8?B?bGludXgtY2Fu?=" <linux-can@vger.kernel.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?a2VybmVs?=" <kernel@pengutronix.de>, "=?utf-8?B?SGVpa28gU3R1ZWJuZXI=?=" <heiko@sntech.de>, "=?utf-8?B?bGludXgtcm9ja2NoaXA=?=" <linux-rockchip@lists.infradead.org>, "=?utf-8?B?bGludXgtYXJtLWtlcm5lbA==?=" <linux-arm-kernel@lists.infradead.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
-Subject: Re: [PATCH net] can: rockchip_canfd: stop bus-off restart before closing the device
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="smlFqACm"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 902F21A118C;
+	Tue, 13 Oct 2026 06:41:10 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5A7A760362;
+	Tue, 13 Oct 2026 06:41:10 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B862E11D70211;
+	Tue, 13 Oct 2026 08:40:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791873668; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=dgzb88563AUvmfiEGWD4/1lRIHtLmN+6Sq0JZi0U+ao=;
+	b=smlFqACmUC32ziTlXtPFhT7Iq7SJNTYS8GP5PpM4GcEUgM1oVL2WEBjlmU8Z2xVGgoOcEB
+	+d1j3PjlB+uiIecpdjtJK4UVtBrFyWHUSNfNlp6IBhSoYOQQa/S/RSnBCbxG+cZRKh9zhR
+	SIqfYo7JRXTJhbZmRbWhesKIYIrFl8QRGbm+2IXMq4g7xPhNuzqymlMU2/Zkts39SSy3JT
+	f9eBsWOhOKmfl4o+gFACtPQkJF2sK+qDX/iiYbjHtGILJMfZjkUtvCnnPy+BBG+JtZeZAo
+	AW7h1OGWs30BDrGSUe5/7rA9pYqz5aLUW8U4O4IItYyc2BGbwqR/zuNhphwwWw==
+Message-ID: <093d3499-d848-4f68-abc6-f2a3ceda3521@bootlin.com>
+Date: Tue, 13 Oct 2026 08:40:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Tue, 13 Oct 2026 14:39:15 +0800
-X-Priority: 3
-Message-ID: <tencent_1385D030CB2025348D8C05842272FB01350A@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
-	<179186216396.2527009.17545175870858054500@kernel.org>
-In-Reply-To: <179186216396.2527009.17545175870858054500@kernel.org>
-X-QQ-mid: xmsezb41-0t1791873555t7ffge0n2
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: stmmac: xgmac: do not treat TBU as a TX event
+To: Pengfei Zhang <zhangfeionline@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: Jose Abreu <joabreu@synopsys.com>, EricChan <chenchuangyu@xiaomi.com>,
+ Simon Horman <horms@kernel.org>, zhangpengfei16@xiaomi.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261013024747.2688984-1-zhangfeionline@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20261013024747.2688984-1-zhangfeionline@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-SGksCgo+ICAtIEhvdyB0aGUgaXNzdWUgd2FzIGRpc2NvdmVyZWQsIGUuZy4gaGl0IGluIHBy
-b2R1Y3Rpb24sIGhpdCBkdXJpbmcKPiAgICBkZXZlbG9wbWVudCwgc3l6Ym90IHJlcG9ydCwg
-bWFudWFsIGNvZGUgaW5zcGVjdGlvbiwgTExNIG9yIHN0YXRpYwo+ICAgIGFuYWx5c2lzIHRv
-b2wgc2Nhbi4KClRoYW5rcyBmb3IgcG9pbnRpbmcgdGhpcyBvdXQuIFRoaXMgd29yayBzdGFy
-dGVkIHdpdGggYSByZWFsIGZhaWx1cmUgb24gYQpwcm9kdWN0aW9uIHJvYm90LCByYXRoZXIg
-dGhhbiBhIGdlbmVyYWwgc2NhbiBmb3IgcG90ZW50aWFsIGRyaXZlciBidWdzLgoKVGhlIHBy
-b2R1Y3Rpb24gc3lzdGVtIHVzZWQgYSBMdWJhbkNhdC01SU8gd2l0aCBhbiBSSzM1ODgsIHJ1
-bm5pbmcgYQo2LjE4LjU1LWN1cnJlbnQtcm9ja2NoaXA2NCBQUkVFTVBUX1JUIGtlcm5lbCB3
-aXRoIGxvY2FsIENBTiBwYXRjaGVzLiBJdHMKMSBNYml0L3MgQ0FOIGJ1cyBjb25uZWN0ZWQg
-Zm91ciBDQU5vcGVuIG1vdG9ycyBvcGVyYXRpbmcgYXQgMTAwIEh6IGFuZApmb3VyIHNlbnNv
-cnMgb3BlcmF0aW5nIGF0IDIwIEh6LgoKPiAgLSBXaGV0aGVyIHRoZSBpc3N1ZSB3YXMgYWN0
-dWFsbHkgdHJpZ2dlcmVkLCBvciBpcyBvbmx5IHRoZW9yZXRpY2FsCj4gICAgKGUuZy4gZm91
-bmQgYnkgY29kZSBpbnNwZWN0aW9uKS4gSWYgaXQgd2FzIHRyaWdnZXJlZCBwbGVhc2UgaW5j
-bHVkZQo+ICAgIHRoZSBzeW1wdG9tcywgbGlrZSB0aGUgc3RhY2sgdHJhY2Ugb3IgZXJyb3Ig
-bWVzc2FnZXMuCgpUaGUgb2JzZXJ2ZWQgZmFpbHVyZSB3YXMgYSBwZXJzaXN0ZW50IFRYIHN0
-YWxsOiBSWCBjb250aW51ZWQsIGJ1dCB0aGUgVFgKcXVldWUgcmVtYWluZWQgc3RvcHBlZCBh
-bmQgc3Vic2VxdWVudCBzZW5kcyByZXR1cm5lZCBFTk9CVUZTLiBUaGUKaW50ZXJmYWNlIHN0
-aWxsIHJlcG9ydGVkIEVSUk9SLUFDVElWRSwgYW5kIHRoZSBoYXJkd2FyZSBpbmRpY2F0ZWQg
-bmVpdGhlcgphIGJ1cy1vZmYgY29uZGl0aW9uIG5vciBhIHBlbmRpbmcgVFggcmVxdWVzdC4K
-Ckkgd2lsbCBzdWJtaXQgdHdvIHBhdGNoZXMgZm9yIHRoaXMgaXNzdWU7IHRoaXMgaXMgdGhl
-IGZpcnN0IG9uZS4KClRoaXMgcGF0Y2ggaXMgbm90IGEgZGlyZWN0IGZpeCBmb3IgdGhhdCBm
-YWlsdXJlLiBJdCBmaXhlcyBhIHJhY2UKdGhhdCB3YXMgYWxyZWFkeSBwcmVzZW50IGluIHRo
-ZSBkcml2ZXIgYW5kIHRoYXQgSSBmb3VuZCBkdXJpbmcKZmF1bHQtaW5qZWN0aW9uIHRlc3Rp
-bmcgb2YgdGhlIGVjaG8tbG9zcyBmaXg6IGNsb3NlX2NhbmRldigpIGNhbmNlbHMKcmVzdGFy
-dF93b3JrIG9ubHkgYWZ0ZXIgdGhlIElSUSBoYXMgYmVlbiBmcmVlZCBhbmQgdGhlIGNvbnRy
-b2xsZXIgaGFzCmJlZW4gc3RvcHBlZCwgc28gYSBxdWV1ZWQgYnVzLW9mZiByZXN0YXJ0IGNh
-biByZS1lbmFibGUgdGhlIGNvbnRyb2xsZXIKYW5kIGl0cyBpbnRlcnJ1cHRzIGFmdGVyIElS
-USB0ZWFyZG93biwgYW5kIGNhbiByZXF1ZXVlIHRpbWVzdGFtcCB3b3JrCnRoYXQgbWF5IGxh
-dGVyIGFjY2VzcyByZWdpc3RlcnMgYWZ0ZXIgcnVudGltZSBzdXNwZW5kIGhhcyBkaXNhYmxl
-ZCB0aGUKY2xvY2tzLiBUaGUgc2Vjb25kIHBhdGNoIGJ1aWxkcyBvbiB0aGlzIHNlcmlhbGl6
-YXRpb24gYW5kIGFkZHJlc3NlcyB0aGUKZWNoby1sb3NzIHN0YWxsIGl0c2VsZi4KClJlZ2Fy
-ZHMsCkN1bmhhbyBMdQo=
+Hi,
+
+On 10/13/26 04:47, Pengfei Zhang wrote:
+> Commit 8d07a7930434 ("net: stmmac: xgmac: Do not enable TBU interrupt")
+> removed TBUE from the default DMA interrupt mask, but did not remove the
+> TBU check from dwxgmac2_dma_interrupt().
+> 
+> TBU is set whenever a TX channel runs out of descriptors. Since TBUE is
+> not enabled and only enabled bits are cleared, the TBU status bit is
+> never cleared. As a result, TBU stays set on every idle TX channel,
+> regardless of whether there is any TX traffic.
+> 
+> With a shared interrupt, stmmac_dma_interrupt() checks all channels,
+> so every interrupt from any source schedules TX NAPI on every idle TX
+> channel.
+> 
+> Only use TI to trigger TX processing.
+> 
+> Fixes: 8d07a7930434 ("net: stmmac: xgmac: Do not enable TBU interrupt")
+> Signed-off-by: Pengfei Zhang <zhangfeionline@gmail.com>
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+> ---
+> Tested on a board with 8 RX/TX DMA channels behind one shared
+> interrupt. A peer sends 10k UDP packets/s to the board and the board
+> sends nothing back, so there should be almost no TX work. Every idle
+> channel reads DMA_CH_STATUS 0x4 (TBU only).
+> 
+> Per second, averaged over 10 s:
+> 
+>                        before    after
+>   hw interrupts          9071     8580
+>   tx_normal_irq_n       72572        1
+>   tx_clean             ~73000        9
+> 
+> - hw interrupts: the shared interrupt line, from /proc/interrupts.
+>   Unchanged, the RX watchdog sets the rate.
+> - tx_normal_irq_n (ethtool -S): how often dwxgmac2_dma_interrupt()
+>   returned handle_tx. Before the fix every interrupt reports it for
+>   all 8 channels.
+> - tx_clean (ethtool -S): stmmac_tx_clean() runs, i.e. TX NAPI polls.
+>   Each spurious handle_tx schedules one. What is left after the fix
+>   is real TX and the TX coalesce timer. The "before" value is from a
+>   separate run with the same setup.
+> 
+> No packet loss before or after.
+
+If you need to respin, that information should be in the commit log
+directly.
+
+Thanks,
+
+Maxime
+
 
