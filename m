@@ -1,133 +1,130 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy2-f7.google.com (mail-dy2-f7.google.com [74.125.229.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A12D52CCEB
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00E252ED33
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791914049; cv=none; b=NpnWyE8GC+bH3jHTqX8pGath4l1ZEUJTRExfkJHrtj7anQYPilnzqQpw2STYnu+iqzhwDWUHxdgFrD78YpEqXbv12zK87UfqrVGjxbYB5/y7ZKEaqGJ7qDX9sovMnO/m+XIsEleaEh2XaIq0tVBm0A9zd0WFBSZ4PGxdZfWjr9g=
+	t=1791914054; cv=none; b=f9jl51Ac/oG4Z1U+/ePNhfeJfH4K5uq/MIhRhiOM0aQ/jbXKOs/ZRLi3V5+HQ+hSmYV9VHmlgfj2wxHq2wDR9RuBxcxGBZpXHvvHCOBSFTfCPqVQaKqBt+zPdSZuvG8HDHkMZjYMT/dfrqqxASuhPBaxnIb4mvgtSmy4Min9XpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791914049; c=relaxed/simple;
-	bh=Y2/Ewf5IkZDC5G7ubw4tGMSTAq4i4xDhgRpZcpWtjVo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KI4h0YaiBV5s+DGmyKFgAv9aVTW5I4Nb2OrtvIRl9jsQ1mHnnGS7jWlj27w3VTUy0Bvmg/vf1FDG74+9kdFjaxF1SL+sZGS0JISwA0FhNFbGG5QMCF63o0INUbDyNPMz0jkjqL/JGaEM6dz2lOrm84EJLjIWnvGZlipPxs7efhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WfMcpWzX; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1791914054; c=relaxed/simple;
+	bh=11qX/LtmkdxDOuJwBBNtWeyelgjadfvSuXYmsDuhOeg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sw2IJjwuPzDRUpCZzGxRQmiiAXW/4PPwqbSxfxHdZI4EDEDUXnq2OmC4FnRJGaWdO3i+asAVb4LCaMiB+i5CBNqu8KyaM9X31kmHpwXPdt+I3ekIu92oNoGGIZJNRkrR3FU2uAMLqCmuvKKGKnXrbqpct8jhZ5Ho8kNa/NWaTc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=LrqWlCuy; arc=none smtp.client-ip=74.125.229.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WfMcpWzX"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0892E1A1201
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:07 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D06FE60362
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:06 +0000 (UTC)
-Received: by mail.galae.net (Postcow, from userid 0)
-	id 594FC11D717F3; Tue, 13 Oct 2026 19:51:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1791914046; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=NX/RScijLlgmk9jFAka1C5iMtn80JrFrW2GWXIg3HGQ=;
-	b=WfMcpWzXh2E3aFY/AIJ1i8PBKGmcdhv5ZroG1MMlzV29H5uAt2lD+Ie9PhkzBCC+ZpjttO
-	2TBkUJvZ5LJsqvvsupP6+3MI0vxurVPrCbw8FzoeXrHxv1eGIDNwsAUedUwX5ckZ+Rm/gw
-	aD0JAojOPEl263hgFq+SIuZp/bwRacARAsOkOKB6j3d1i3Yo8WxRYio1l4cZJAL268JCUj
-	xuTu0Luqnc+fo0LP/CAEm0dOxNWYOs8iXAiX6IissxSktsNx90bOUiQJnP18NGHzEDOTo4
-	xxnfZJCumOhmSl2FEi3VpIZXmu0fjskmFKAZrmaZkRVT9uvSrvo2MvOWH1Rekw==
-Authentication-Results: mail.galae.net;
-	none
-Message-ID: <cdf6cbfd-1892-45dd-aa44-754a3412500a@bootlin.com>
-Date: Thu, 8 Oct 2026 10:30:02 +0200
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="LrqWlCuy"
+Received: by mail-dy2-f7.google.com with SMTP id 5a478bee46e88-33e6be52a80so532371eec.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:54:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blockcast.net; s=google; t=1791914052; x=1792518852; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=503NV8Ori3Oqk5W4l1eayXs2I+E5HpZ3zmnZJUojrh8=;
+        b=LrqWlCuyEIAzwg3q/go0QjIgqC9pGSBB4108wme5Oougpqg8gcxkZQyan54eEfAq4B
+         4sfvIZCpX6MnhDWhr3OQRqyzi/mtDqAmI39FcYPzGu3vFabJKcWyaWP/s3FB6B7TSdoU
+         0RWLluCsA9kSEMwN3maSccpzw8ECi8g6jpNsZ43O5bAWsVmIuF66elMsUcWWzTE5Ts6T
+         Ffdx0cWscYognzL1tnGMNBjh4nOOmKZ8N5roLv+GrEnRO2l1gOHfPw7R4njzrQeMHgCc
+         CgwhNXXpBmO2+gNWOoxuf2RIbvNX0Be8zf+9m05dUE5eP3bMKvoopyXZiCGjZk0F6TsK
+         TjpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791914052; x=1792518852;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=503NV8Ori3Oqk5W4l1eayXs2I+E5HpZ3zmnZJUojrh8=;
+        b=tVeWVbcvxX31abMKwwOoUtVvwkbenRpx4NUCVB2mFDpxNs1ASq1kumt9mw/Axn75dq
+         TaqYCUD9eI9fAzgAVfqKXCxEpt92acquJHZLFWUXre6hhoC8cPEaZJTLsodrQ9rr1OL0
+         EaK/of4E5TyChj4NU/eVaORkcPXGrtWFxG2moepo80Owdwx9ZrOPRQnXcil7kF6czcuF
+         w4n+Iw1RaP2xb6l65YK6vgnDmIU9TlPELnV43OR+VjXo82QBwyYFs3zWtkeiN+3I79yW
+         RfahUTs9PdKuwqKNOxz8UbkQ+xi/Lb25u+Kop85xgGGcdfZGfu6vuB/hxP1DXxMwQ9Fz
+         uJog==
+X-Gm-Message-State: AFq9FYJywHW1fG17Ocv3tHM7kPBjz0S7EKHp8aKmgNVRm6fv/1v3DiOq
+	Dt8v4Jo+IimoHGua0mPIp5ZZoV6JJCxWGTMklm3rH8LgP8O3BoMxUjXCVLCuxGGTlpA=
+X-Gm-Gg: AYBFou2fxbTtRrgvIuOqtWhq0Nk5hJIr5egrhjCM9SRdV75Rk5r9lP8vQKT18cOC2WC
+	bUR/b3Ch32VSv64RwqJ1SXd+m3c1kz9OTnRhamrsSjq0LR3MezGk3rl91UgEbMxSe+X6/Lx+NAT
+	A+iUoSuTjRDClbI/oTphXnn9wn2G7xcQ85jQ5Wicqj/fGDYAIq/nYeQQOLXYxlWjuB6G9SH9jHc
+	QpLfxns9XiOqw55ceWEVkH++6sO5q5TYsHeK80Ja8ZjYKL7OcISII4fm8OBFwLg/OTXepGxwbzG
+	iIsJRxq9hnIxlO2Ty2bJsAXLe2VC0HsURM6YhdfpJP324N1iTyn+SF7LKw807ELCn86J3dtX7e9
+	i5Fxp7N7kiD0OV9IPpIBSnLKmorzzLVwHlRClnWomKTW3TMPTDzSg7wc3mM5VQFOpx9fqWApDzA
+	Bqpk91V/FfCGTdcEmNDybix1RsxND9hi4KWVGtubV7O+Krx4w86fkZbMRxGhkECEtdRe7S00WmE
+	c9YIDf81W9GDuFNeuuaeiybQM9eKsGs1P6vkR+/WKhU9QxNWfkUjrUXwu4/9w3AnA==
+X-Received: by 2002:a05:693c:821a:b0:357:ee3a:267a with SMTP id 5a478bee46e88-357ee3a2dd9mr15841199eec.2.1791914051774;
+        Tue, 13 Oct 2026 10:54:11 -0700 (PDT)
+Received: from devbox.ts.blockcast.net ([69.25.95.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cab27d5sm50183362eec.17.2026.10.13.10.54.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 10:54:11 -0700 (PDT)
+From: Omar Ramadan <omar@blockcast.net>
+To: Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net v4 0/5] amt: relay tunnel lifetime, validation and request-path hardening
+Date: Tue, 13 Oct 2026 17:54:02 +0000
+Message-ID: <20261013175407.947606-1-omar@blockcast.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 02/10] net: hisilicon: hip04_eth: Move setting of
- netops to fix crash
-To: David Yang <mmyangfl@gmail.com>, netdev@vger.kernel.org
-Cc: Jian Shen <shenjian15@huawei.com>, Jijie Shao <shaojijie@huawei.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jacob Keller <jacob.e.keller@intel.com>, Nicolai Buchwitz <nb@tipi-net.de>,
- Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org
-References: <20261008022656.3592191-1-mmyangfl@gmail.com>
- <20261008022656.3592191-3-mmyangfl@gmail.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261008022656.3592191-3-mmyangfl@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: None
-X-Rspamd-Queue-Id: 594FC11D717F3
-X-Spamd-Result: default: False [2.37 / 30.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	DATE_IN_PAST(1.00)[129];
-	MIME_GOOD(-0.10)[text/plain];
-	BAYES_HAM(-0.03)[51.22%];
-	DKIM_SIGNED(0.00)[bootlin.com:s=dkim];
-	RCVD_COUNT_ZERO(0.00)[0];
-	ARC_NA(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	BCC(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	MAILCOW_DOMAIN_HEADER_FROM(0.00)[bootlin.com];
-	URIBL_BLOCKED(0.00)[localhost:rdns,localhost:helo,bootlin.com:mid,bootlin.com:email];
-	TO_DN_SOME(0.00)[]
+Content-Transfer-Encoding: 8bit
 
+Five fixes to the AMT relay data and control paths, found while adding an
+IPv6 outer transport (that feature follows for net-next, rebased on this).
+All are independent of the IPv6 work and belong in net with stable in mind.
 
+1/5 closes the gc_wq re-arm use-after-free and makes device-stop teardown
+safe for lockless RCU readers. 2/5 rejects gateway Query/Data from 0.0.0.0
+before a relay is learned. 3/5 requires exactly four bytes for the IPv4
+input attributes, avoiding silent truncation of larger payloads. 4/5 makes
+pre-Query report drops visible and stops counting forwarded reports as
+drops. 5/5 keys relay tunnels on the (address, port) endpoint, authenticates
+Updates before allocating tunnel state, and closes the report-group and
+post-stop creation races found in review of v3.
 
-On 10/8/26 04:26, David Yang wrote:
-> hip04_mac_probe() calls of_phy_connect() before ndev->netdev_ops is
-> assigned. phy_attach_direct() -> phy_link_topo_add_phy() reads
-> dev->netdev_ops through netdev_need_ops_lock() since the commit in
-> question, so probing crashes with a NULL pointer dereference when
-> CONFIG_NET_SHAPER is enabled.
-> 
-> Assign netdev_ops before the PHY attach, as was done for emac in commit
-> 7c9f391ec89c ("net: emac: move setting of netops to fix crash").
-> 
-> Fixes: ded86da4bbb7 ("net: ethtool: relax ethnl_req_get_phydev() locking assertion")
-> Signed-off-by: David Yang <mmyangfl@gmail.com>
+Each patch carries a Fixes: tag. The exact tip builds warning-free with
+GCC and Clang, W=1, with IPv6 enabled and disabled. A KASAN + lockdep +
+PROVE_RCU kernel passes amt.sh 6/6 with no splats. The full-table control
+(max_tunnels=1) gives the same result as v3.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+v4:
+- 1/5: unlink tunnels in place with list_del_rcu() and defer their free
+  with kfree_rcu(); do not splice onto a stack head visible to RCU readers.
+- 3/5: replace the IPv6-length special case with NLA_POLICY_EXACT_LEN for
+  LOCAL_IP and DISCOVERY_IP. REMOTE_IP is output-only and is unchanged.
+- 4/5: return directly after a successful Membership Update, use
+  DEV_STATS_INC() for tx counters, and clarify the debug message.
+- 5/5: fold v3's endpoint-keying patch into the authenticated-allocation
+  patch, so no intermediate commit allocates unauthenticated port-keyed
+  tunnels; retain four secret generations (180s floor > 125s QQIC);
+  withhold Queries at both tunnel limits and silently drop refused
+  Requests; re-check dead under the tunnel lock before report handling;
+  reject creation after device stop.
+- Rewrap the comments reported by NIPA at 80 columns.
 
-Thanks,
+v3: https://lore.kernel.org/netdev/20261012125943.558629-1-omar@blockcast.net/
+v2: https://lore.kernel.org/netdev/20261009201455.1904698-1-omar@blockcast.net/
+v1: https://lore.kernel.org/netdev/20261008003606.3666617-1-omar@blockcast.net/
 
-Maxime
+Omar Ramadan (5):
+  amt: fix use-after-free when a Membership Update re-arms a freed
+    tunnel
+  amt: reject a gateway Query or Data from 0.0.0.0 before a relay is
+    learned
+  amt: require an exact IPv4-sized IFLA_AMT_{LOCAL,DISCOVERY}_IP
+  amt: make pre-query report drops visible
+  amt: harden relay tunnel lifetime and request admission
 
-> ---
->  drivers/net/ethernet/hisilicon/hip04_eth.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
-> index fc2c47dcfaab..d0409de5c553 100644
-> --- a/drivers/net/ethernet/hisilicon/hip04_eth.c
-> +++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
-> @@ -976,6 +976,8 @@ static int hip04_mac_probe(struct platform_device *pdev)
->  		goto init_fail;
->  	}
->  
-> +	ndev->netdev_ops = &hip04_netdev_ops;
-> +
->  	priv->phy_node = of_parse_phandle(node, "phy-handle", 0);
->  	if (priv->phy_node) {
->  		priv->phy = of_phy_connect(ndev, priv->phy_node,
-> @@ -989,7 +991,6 @@ static int hip04_mac_probe(struct platform_device *pdev)
->  
->  	INIT_WORK(&priv->tx_timeout_task, hip04_tx_timeout_task);
->  
-> -	ndev->netdev_ops = &hip04_netdev_ops;
->  	ndev->ethtool_ops = &hip04_ethtool_ops;
->  	ndev->watchdog_timeo = TX_TIMEOUT;
->  	ndev->priv_flags |= IFF_UNICAST_FLT;
+ drivers/net/amt.c | 389 +++++++++++++++++++++++++++++++++++-----------
+ include/net/amt.h |  27 +++-
+ 2 files changed, 317 insertions(+), 99 deletions(-)
 
