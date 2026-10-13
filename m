@@ -1,33 +1,36 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6703A0E80;
-	Tue, 13 Oct 2026 10:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mta1.migadu.com (out-118.mta1.migadu.com [95.215.58.118])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934C83AFCE6
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791888138; cv=none; b=ufEfuDjQf+wAjJHG04I+f4sRl+6R4uJF5Ih7BlHlRdjbcwDRDJ7/CkrwnEJCgda8n3NmT6baAzGHCiwrtUTnvTCmFd6kymOKVrcVWyp/qFneVfFDACBtA68v81eIYeU3lZOr5YFjH8uwfBLSP1NR/Igmlied2n4yggIIE7YBt9Q=
+	t=1791888200; cv=none; b=ISSWVXMICDT4zUWPtIdfqn7vWLiTjAzHVTUn+ulUfUM/Yw/NkoF7zeWiry3fFvavcJ8/msXNbL4gbWLzOqUJjtYDcIQ7Yj9kr3VJ686XtBqywPR+OGAqwnCWifMXH/Rn5PemasNX/+biL/V/wq7+1P1IFpE4sIUqB3lTnk80RuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791888138; c=relaxed/simple;
-	bh=W9IOmZd6NCBQxQe8yp/0nFe31/tEy/JGEmdFhfz3Zx0=;
+	s=arc-20240116; t=1791888200; c=relaxed/simple;
+	bh=ByWSXE/7WPxPiNDq+DRGyvhy49vCl/cF9okG2hZGg/w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yhq9SLTs0K8baeyNt/RVdBgLyeGe8YFeHSrsnbJXGXqokSudPU0s12TXAFaHUUGuVbhrdPTzkuMygjksv3ugjfeyvcOEw0iXOQ4s6Q5aHbQTpV3UXyaJpadH0TqOjiYSQt10XFRMTRCPQJRhhxWN+RfghnkndrpOKHjTQ9RLnBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=p4vMjRtm; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 In-Reply-To:Content-Type; b=Eo257sgGPFjJsAWpNknrBA2pqySlabiLDe+gqZJ8kcDdZAYJIf8/ddZIjncuEFPuLM77Y8CQ9zIfUjWvIqmanPF59E8NhkMgg4eFkoskS3oJwU8sRpjiYF2SMn00Nxmowm7D/ILDCwmxltSZdeqEdZ+BR4Je6SQlvapeAnbltx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Kf6r3GJs; arc=none smtp.client-ip=95.215.58.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="p4vMjRtm"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 53FBA169C;
-	Tue, 13 Oct 2026 03:42:13 -0700 (PDT)
-Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C226D3F7B4;
-	Tue, 13 Oct 2026 03:42:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1791888136; bh=W9IOmZd6NCBQxQe8yp/0nFe31/tEy/JGEmdFhfz3Zx0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=p4vMjRtm+hGJY8UPjqMDOtxJKflXmrP2vqY/17xouBvpxZsfR430vOeHQp+g4HZHp
-	 i7cTDvCFclitDTgkIqF0/Rs5AUZgo0y+FddOHuWp92YB0Xjt5EVyzFCvtHFSv8ObTr
-	 iK08tMyzkAMpaUd65pUDChJk7GDyTxVjCmLAWF0c=
-Message-ID: <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
-Date: Tue, 13 Oct 2026 11:42:09 +0100
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Kf6r3GJs"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ByWSXE/7WPxPiNDq+DRGyvhy49vCl/cF9okG2hZGg/w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791888196; v=1; x=1792492996;
+ b=Kf6r3GJs5jBx4fJr0BPFL3eF88FyyQi1jChmXGlaEyNgPwMwFh5kycydk3a42uCgBKkSMiY9
+ /o6R8ccl7NK/Kbyv+o3c4V6LgcxMPeS8J1ev3wL5HOu4BONbINFzh8nF7J9n0X2r8VvKl2BhpWo
+ X77og7vExEk9JPIt4Zcm9eK4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 8e08e36eb5f4ac01;
+	Tue, 13 Oct 2026 10:43:16 +0000
+X-Mizu-Trace-ID: 8e08e36eb5f4ac01
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <5c500376-0573-446d-81cf-70bc38ae4aea@linux.dev>
+Date: Tue, 13 Oct 2026 11:43:11 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,78 +38,220 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Luigi Rizzo <lrizzo@google.com>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
- <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
- Harshitha Ramamurthy <hramamurthy@google.com>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Alexander Lobakin <aleksander.lobakin@intel.com>,
- Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
- netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
- <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
- <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+Subject: Re: [PATCH net-next v2] net: stmmac: ptp: switch to gettimex64()
+ interface
+To: James Clark <jjc@jclark.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ Miroslav Lichvar <mlichvar@redhat.com>, Nicolai Buchwitz <nb@tipi-net.de>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261008103809.1848255-1-jjc@jclark.com>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20261008103809.1848255-1-jjc@jclark.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 12/10/2026 8:43 pm, David Hildenbrand (Arm) wrote:
-> On 10/12/26 16:45, Luigi Rizzo wrote:
->> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
->> <david@kernel.org> wrote:
->>>
->>> On 10/3/26 23:22, Luigi Rizzo wrote:
->>>> Here is a subsystem called DMA_PMD on which I would like feedback on
->>>> architecture, possible enhancements, or kernel components that could be
->>>> reused to avoid duplication.
->>>
->>> Here is a feedback to a subsystem called DMA_PMD ;)
->>>
->>> Why is basing this on PMDs (and embedding it in the name) the right approach?
->>>
->>> On architctures with large PMDs (512 MiB on arm64 with 64k), would we really
->>> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that might
->>> possibly also have TLB benefits (cont-pte)?
->>
->> I had to call it something... an earlier prototype used the name IOMMU_2M,
->> but I didn't want to suggest that the design was limited to 2M (it is not).
->>
->> Aside from the name, the _current_ prototype restricts to 2M allocations,
->> exactly because too large units are expensive and wasteful.
->>
->> In the code, decoupling the allocation size from the PMD size is trivial.
+On 08/10/2026 11:38, James Clark wrote:
+> The stmmac PTP support currently implements the gettime64 callback to
+> retrieve the hardware clock time. Update the implementation to provide
+> the gettimex64 callback instead, adding support for the
+> PTP_SYS_OFFSET_EXTENDED ioctl.
 > 
-> Yeah, we should do that.
+> The system clock readings are taken around the read of the nanoseconds
+> register in get_systime(), so get_systime() gains a ptp_system_timestamp
+> argument.
 > 
-> We should probably just find a way to describe that this is a POOL that focuses
-> on physical contiguity in some configured granularity.
-And since it's intended for DMA we could call it dma_pool and oh look it 
-already exists...
+> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+> Assisted-by: LLM
+> Signed-off-by: James Clark <jjc@jclark.com>
+> ---
+> Changes in v2:
+> - Read PTP_STNSR with readl() and drop the two rmb() calls
+>    (Nicolai Buchwitz, Maxime Chevallier)
+> - Fix the kernel-doc of stmmac_get_timex() and an over-long line
+>    in stmmac_adjust_time() (netdev CI)
+> - Link to v1: https://lore.kernel.org/netdev/20261006103610.98277-1-jjc@jclark.com/
+> 
+> Tested on a Radxa ZERO 3E (RK3566, DWMAC 4/5) running net-next.
+> Width of the interval between the two system clock readings
+> bracketing each PHC read (2000 calls of 25 samples each):
+> 
+>                                           min      median
+> Before patch (PTP_SYS_OFFSET):           875 ns   1167 ns
+> After patch (PTP_SYS_OFFSET_EXTENDED):   291 ns    583 ns
+> 
+> On this board the 24 MHz arch timer counter advances in steps of 7
+> (~292 ns), so all intervals are multiples of that.
+> 
+>   drivers/net/ethernet/stmicro/stmmac/hwif.h    |  5 ++++-
+>   .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c |  7 +++++--
+>   .../net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 21 ++++++++++---------
+>   .../stmicro/stmmac/stmmac_selftests.c         |  4 ++--
+>   .../net/ethernet/stmicro/stmmac/stmmac_tc.c   |  3 ++-
+>   5 files changed, 24 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> index a8a5c8fdd5e..6efbfe50102 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> +++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+> @@ -493,6 +493,8 @@ struct stmmac_ops {
+>   #define stmmac_fpe_map_preemption_class(__priv, __args...) \
+>   	stmmac_do_callback(__priv, mac, fpe_map_preemption_class, __args)
+>   
+> +struct ptp_system_timestamp;
+> +
+>   /* PTP and HW Timer helpers */
+>   struct stmmac_hwtimestamp {
+>   	void (*config_hw_tstamping) (void __iomem *ioaddr, u32 data);
+> @@ -502,7 +504,8 @@ struct stmmac_hwtimestamp {
+>   	int (*config_addend) (void __iomem *ioaddr, u32 addend);
+>   	int (*adjust_systime) (void __iomem *ioaddr, u32 sec, u32 nsec,
+>   			       int add_sub, int gmac4);
+> -	void (*get_systime) (void __iomem *ioaddr, u64 *systime);
+> +	void (*get_systime)(void __iomem *ioaddr, u64 *systime,
+> +			    struct ptp_system_timestamp *sts);
+>   	void (*get_ptptime)(void __iomem *ioaddr, u64 *ptp_time);
+>   	void (*timestamp_interrupt)(struct stmmac_priv *priv);
+>   	void (*hwtstamp_correct_latency)(struct stmmac_priv *priv);
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+> index b9a985fa772..870c740b4a5 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+> @@ -183,7 +183,8 @@ static int adjust_systime(void __iomem *ioaddr, u32 sec, u32 nsec,
+>   					 10, 100000);
+>   }
+>   
+> -static void get_systime(void __iomem *ioaddr, u64 *systime)
+> +static void get_systime(void __iomem *ioaddr, u64 *systime,
+> +			struct ptp_system_timestamp *sts)
+>   {
+>   	u64 ns, sec0, sec1;
+>   
+> @@ -191,8 +192,10 @@ static void get_systime(void __iomem *ioaddr, u64 *systime)
+>   	sec1 = readl_relaxed(ioaddr + PTP_STSR);
+>   	do {
+>   		sec0 = sec1;
+> +		ptp_read_system_prets(sts);
+>   		/* Get the TSSS value */
+> -		ns = readl_relaxed(ioaddr + PTP_STNSR);
+> +		ns = readl(ioaddr + PTP_STNSR);
+> +		ptp_read_system_postts(sts);
+>   		/* Get the TSS value */
+>   		sec1 = readl_relaxed(ioaddr + PTP_STSR);
+>   	} while (sec0 != sec1);
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> index 3bfcc9760dc..e54a3c88782 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+> @@ -89,7 +89,8 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
+>   		u64 cycle_time;
+>   
+>   		mutex_lock(&priv->est_lock);
+> -		priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
+> +		priv->ptp_clock_ops.gettimex64(&priv->ptp_clock_ops,
+> +					       &current_time, NULL);
+>   		current_time_ns = timespec64_to_ktime(current_time);
+>   		time.tv_nsec = priv->est->btr_reserve[0];
+>   		time.tv_sec = priv->est->btr_reserve[1];
+> @@ -114,15 +115,15 @@ static int stmmac_adjust_time(struct ptp_clock_info *ptp, s64 delta)
+>   }
+>   
+>   /**
+> - * stmmac_get_time
+> - *
+> + * stmmac_get_timex - read the PTP clock, with system timestamps if requested
+>    * @ptp: pointer to ptp_clock_info structure
+>    * @ts: pointer to hold time/result
+> + * @sts: pointer to hold system timestamps around the read, or NULL
+>    *
+> - * Description: this function will read the current time from the
+> - * hardware clock and store it in @ts.
+> + * Return: 0
+>    */
+> -static int stmmac_get_time(struct ptp_clock_info *ptp, struct timespec64 *ts)
+> +static int stmmac_get_timex(struct ptp_clock_info *ptp, struct timespec64 *ts,
+> +			    struct ptp_system_timestamp *sts)
+>   {
+>   	struct stmmac_priv *priv =
+>   	    container_of(ptp, struct stmmac_priv, ptp_clock_ops);
+> @@ -130,7 +131,7 @@ static int stmmac_get_time(struct ptp_clock_info *ptp, struct timespec64 *ts)
+>   	u64 ns = 0;
+>   
+>   	read_lock_irqsave(&priv->ptp_lock, flags);
+> -	stmmac_get_systime(priv, priv->ptpaddr, &ns);
+> +	stmmac_get_systime(priv, priv->ptpaddr, &ns, sts);
+>   	read_unlock_irqrestore(&priv->ptp_lock, flags);
+>   
+>   	*ts = ns_to_timespec64(ns);
+> @@ -200,7 +201,7 @@ static int stmmac_enable(struct ptp_clock_info *ptp,
+>   
+>   		target_ns = cfg->start.tv_nsec + ((u64)cfg->start.tv_sec * NSEC_PER_SEC);
+>   
+> -		stmmac_get_systime(priv, priv->ptpaddr, &ns);
+> +		stmmac_get_systime(priv, priv->ptpaddr, &ns, NULL);
+>   		if (ns > TIME64_MAX - PTP_SAFE_TIME_OFFSET_NS)
+>   			return -EINVAL;
+>   
+> @@ -304,7 +305,7 @@ const struct ptp_clock_info stmmac_ptp_clock_ops = {
+>   	.pps = 0,
+>   	.adjfine = stmmac_adjust_freq,
+>   	.adjtime = stmmac_adjust_time,
+> -	.gettime64 = stmmac_get_time,
+> +	.gettimex64 = stmmac_get_timex,
+>   	.settime64 = stmmac_set_time,
+>   	.enable = stmmac_enable,
+>   };
+> @@ -321,7 +322,7 @@ const struct ptp_clock_info dwmac1000_ptp_clock_ops = {
+>   	.pps = 0,
+>   	.adjfine = stmmac_adjust_freq,
+>   	.adjtime = stmmac_adjust_time,
+> -	.gettime64 = stmmac_get_time,
+> +	.gettimex64 = stmmac_get_timex,
+>   	.settime64 = stmmac_set_time,
+>   	.enable = dwmac1000_ptp_enable,
+>   };
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> index 6097f312fce..2ae4f0e760c 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> @@ -1778,7 +1778,7 @@ static int stmmac_test_tbs(struct stmmac_priv *priv)
+>   		return ret;
+>   
+>   	read_lock_irqsave(&priv->ptp_lock, flags);
+> -	stmmac_get_systime(priv, priv->ptpaddr, &curr_time);
+> +	stmmac_get_systime(priv, priv->ptpaddr, &curr_time, NULL);
+>   	read_unlock_irqrestore(&priv->ptp_lock, flags);
+>   
+>   	if (!curr_time) {
+> @@ -1800,7 +1800,7 @@ static int stmmac_test_tbs(struct stmmac_priv *priv)
+>   
+>   	/* Check if expected time has elapsed */
+>   	read_lock_irqsave(&priv->ptp_lock, flags);
+> -	stmmac_get_systime(priv, priv->ptpaddr, &curr_time);
+> +	stmmac_get_systime(priv, priv->ptpaddr, &curr_time, NULL);
+>   	read_unlock_irqrestore(&priv->ptp_lock, flags);
+>   
+>   	if ((curr_time - start_time) < STMMAC_TBS_LT_OFFSET)
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> index 42a00446e9b..57ebeb2c19c 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> @@ -1070,7 +1070,8 @@ static int tc_taprio_configure(struct stmmac_priv *priv,
+>   
+>   	mutex_lock(&priv->est_lock);
+>   	/* Adjust for real system time */
+> -	priv->ptp_clock_ops.gettime64(&priv->ptp_clock_ops, &current_time);
+> +	priv->ptp_clock_ops.gettimex64(&priv->ptp_clock_ops, &current_time,
+> +				       NULL);
+>   	current_time_ns = timespec64_to_ktime(current_time);
+>   	time = stmmac_calc_tas_basetime(qopt->base_time, current_time_ns,
+>   					qopt->cycle_time);
 
-Sure the current implementation is capped at PAGE_SIZE for allocation 
-(and thus mapping too), but I don't see why that couldn't just be made 
-more flexible.
-
-Thanks,
-Robin.
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
