@@ -1,29 +1,29 @@
 Received: from mail2.kuutio.org (mail2.kuutio.org [91.107.195.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC790538D6B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC845539771;
 	Tue, 13 Oct 2026 18:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.107.195.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791917815; cv=none; b=RTdIvddSaghtuvplXNfXQcn2K9htvqztPd510E00bxiL4HowyBHHfOd9gwXb51YxdYBYf/L2XS7RxzJCKYdULixfbZz7LmABnNxM+gKn0kuZWL0ppJG/pztFXvkFQBTcTtmUOuqTc6HAh4hbYruOUFw/7L26hhmNqXDJnKqCCXU=
+	t=1791917815; cv=none; b=W7EhXf37Ktu9zJ3Av6cFbL5Swd5PMkOIfV2bLvcfPBj2BQpPkk5e7UZoeCuqn9GLzTw8w45eYoxm+vz9TyCFU6Pg1jNlPoa+y0unoHvy0s6PkwCImAtYjnoCyw/zirlgKXARZ450ymoFBA6vW3+7pPyjWeK7yklmUzKk/vIlz9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791917815; c=relaxed/simple;
-	bh=AUD8AXSJjw7u4Kb6OwQ06qvNcPYnDqJAs0Vw5RcXecI=;
+	bh=3Z5wkhQuIMxIlRf3AAcqX8yHNgmJO0wIvtgXyDkrwKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLR+RronfkkJFdPbp3m+zWTAeumfZkjVrmiNCh6gDiDQzEp3etkdYa9Is3PvYH6mLUTRwD4hGuTPOjH+7kmv78M0BrWXuzYBxKwxUe3N6rlUrsLrTzPyGJ5ZSl3KcniJbhyebzFBmI9uEw5IbpH7Fs8gmBDWQRx9eB1+7pQMOx8=
+	 MIME-Version; b=pvzwGmGkUXNSgR7x7BzBK0l6UWMd/IX7p3zwmut+N/ms2o8tbUUca7B0aqb9zszDlsjlzljo+pLTxMWRDNKyiZnrZuR4xzgkQhlE3ZQrDIjvbUmvpSV7dvopZxl0YvotkZDSuI3dvPFosQFZaRPYhMEW8Xh+CHtcCUGR3P+XKds=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lemmela.net; spf=pass smtp.mailfrom=lemmela.net; arc=none smtp.client-ip=91.107.195.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lemmela.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lemmela.net
 Received: from localhost (mail2.kuutio.org [127.0.0.1])
-	by mail2.kuutio.org (Postfix) with ESMTP id 265912067B;
-	Tue, 13 Oct 2026 18:56:44 +0000 (UTC)
+	by mail2.kuutio.org (Postfix) with ESMTP id CFA581FD41;
+	Tue, 13 Oct 2026 18:56:43 +0000 (UTC)
 X-Virus-Scanned: amavis at kuutio.org
 Received: from mail2.kuutio.org ([127.0.0.1])
  by localhost (mail2.kuutio.org [127.0.0.1]) (amavis, port 10024) with LMTP
- id bS8njainDC7u; Tue, 13 Oct 2026 18:56:42 +0000 (UTC)
+ id eNxlaPmmxRHB; Tue, 13 Oct 2026 18:56:43 +0000 (UTC)
 Received: from muovi.kuutio.org (nbqchc6j3dhrbnnpubi-1.v6.elisa-laajakaista.fi [IPv6:2001:99a:adc:6a00::8be])
-	by mail2.kuutio.org (Postfix) with ESMTPSA id 272BA2040A;
-	Tue, 13 Oct 2026 18:56:41 +0000 (UTC)
+	by mail2.kuutio.org (Postfix) with ESMTPSA id 3EA48206A5;
+	Tue, 13 Oct 2026 18:56:42 +0000 (UTC)
 From: Oskari Lemmela <oskari@lemmela.net>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
@@ -50,11 +50,11 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Manuel Stocker <mensi@mensi.ch>,
-	Oskari Lemmela <oskari@lemmela.net>,
-	dam.dejean@gmail.com
-Subject: [PATCH net-next v3 1/2] dt-bindings: net: realtek: add RTL8224 package binding
-Date: Tue, 13 Oct 2026 21:56:34 +0300
-Message-ID: <20261013185635.1412452-2-oskari@lemmela.net>
+	dam.dejean@gmail.com,
+	Oskari Lemmela <oskari@lemmela.net>
+Subject: [PATCH net-next v3 2/2] net: phy: realtek: support unaligned RTL8224 PHY packages
+Date: Tue, 13 Oct 2026 21:56:35 +0300
+Message-ID: <20261013185635.1412452-3-oskari@lemmela.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261013185635.1412452-1-oskari@lemmela.net>
 References: <20261013185635.1412452-1-oskari@lemmela.net>
@@ -66,360 +66,136 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-RTL8224 packages contain four PHYs at consecutive MDIO addresses and
-share configuration registers. Unaligned packages need an explicit base
-address to select the correct package registers and per-port MDI fields.
+From: Manuel Stocker <mensi@mensi.ch>
 
-Introduce realtek,rtl8224-package so the package example selects a
-dedicated schema while child PHYs retain their Clause 45 discovery
-compatible. Validate package and child properties, document that
-unaligned layouts require a package node, and preserve support for
-existing aligned descriptions without package nodes.
+The RTL8224 driver groups its four ports by rounding each PHY address
+down to a multiple of four and uses the low two address bits as the
+port index. This assumes that the first port's MDIO address is aligned
+to a multiple of four.
 
+The Hasivo S1100WP-8GT-2S+ uses two RTL8224 packages at MDIO addresses
+1-4 and 5-8. Extend the driver to support such configurations by using
+the base address from an ethernet-phy-package node when present and
+calculating each port's offset relative to that address.
+
+Use the package-relative port index to select the MDI pair order and
+polarity fields. Reject PHY addresses outside the four-port package
+and propagate explicit package errors rather than falling back to
+another base address.
+
+Share base-address parsing between probe and MDI configuration, and
+calculate the port offset when configuring MDI rather than caching it
+in an additional per-PHY private allocation.
+
+Join both DT-described and legacy packages with devm_phy_package_join(),
+as only the base address is needed, not a shared package node. This
+avoids mixing OF and non-OF joins, which can unbalance package-node
+references when members select the same base address.
+
+Keep the existing aligned-address assumption when no package node
+is present.
+
+Signed-off-by: Manuel Stocker <mensi@mensi.ch>
+[Oskari: rebased on net-next and reworked package handling]
 Signed-off-by: Oskari Lemmela <oskari@lemmela.net>
 ---
- .../bindings/net/realtek,rtl8224-package.yaml | 332 ++++++++++++++++++
- 1 file changed, 332 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/realtek,rtl8224-package.yaml
+ drivers/net/phy/realtek/realtek_main.c | 56 +++++++++++++++++++++-----
+ 1 file changed, 47 insertions(+), 9 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/realtek,rtl8224-package.yaml b/Documentation/devicetree/bindings/net/realtek,rtl8224-package.yaml
-new file mode 100644
-index 000000000000..8e6500958ed1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/realtek,rtl8224-package.yaml
-@@ -0,0 +1,332 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/realtek,rtl8224-package.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index e14960192e79..cc5ebedd0e8f 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -2720,10 +2720,35 @@ static int rtl8224_package_modify_mmd(struct phy_device *phydev, int devad,
+ 	return ret;
+ }
+ 
+-static int rtl8224_mdi_config_order(struct phy_device *phydev)
++static int rtl8224_get_base_addr(struct phy_device *phydev, u32 *base_addr)
++{
++	struct device *dev = &phydev->mdio.dev;
++	struct device_node *np;
++	int ret;
 +
-+title: Realtek RTL8224 Ethernet PHY package
++	*base_addr = phydev->mdio.addr & ~3;
++	np = of_get_parent(dev->of_node);
++	if (of_node_name_eq(np, "ethernet-phy-package")) {
++		ret = of_property_read_u32(np, "reg", base_addr);
++		of_node_put(np);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Missing or invalid PHY package reg\n");
 +
-+maintainers:
-+  - Andrew Lunn <andrew@lunn.ch>
-+  - Florian Fainelli <f.fainelli@gmail.com>
-+  - Heiner Kallweit <hkallweit1@gmail.com>
++		if (phydev->mdio.addr < *base_addr ||
++		    phydev->mdio.addr - *base_addr >= 4)
++			return dev_err_probe(dev, -EINVAL,
++					     "PHY address outside RTL8224 package\n");
++	} else {
++		of_node_put(np);
++	}
 +
-+description:
-+  The RTL8224 is a four-port 2.5Gbps Ethernet PHY. Its PHYs occupy four
-+  consecutive MDIO addresses and share package-wide configuration registers.
++	return 0;
++}
 +
-+  A package node is required when the first PHY's MDIO address is not a
-+  multiple of four. Existing aligned layouts without a package node remain
-+  supported.
++static int rtl8224_mdi_config_order(struct phy_device *phydev, u8 port_offset)
+ {
+ 	struct device_node *np = phydev->mdio.dev.of_node;
+-	u8 port_offset = phydev->mdio.addr & 3;
+ 	u32 order = 0;
+ 	int ret;
+ 
+@@ -2745,10 +2770,10 @@ static int rtl8224_mdi_config_order(struct phy_device *phydev)
+ 					  order ? BIT(port_offset) : 0);
+ }
+ 
+-static int rtl8224_mdi_config_polarity(struct phy_device *phydev)
++static int rtl8224_mdi_config_polarity(struct phy_device *phydev, u8 port_offset)
+ {
+ 	struct device_node *np = phydev->mdio.dev.of_node;
+-	u8 offset = (phydev->mdio.addr & 3) * 4;
++	u8 offset = port_offset * 4;
+ 	u32 polarity = 0;
+ 	int ret;
+ 
+@@ -2772,20 +2797,33 @@ static int rtl8224_mdi_config_polarity(struct phy_device *phydev)
+ 
+ static int rtl8224_config_init(struct phy_device *phydev)
+ {
++	u32 base_addr;
++	u8 port_offset;
+ 	int ret;
+ 
+-	ret = rtl8224_mdi_config_order(phydev);
++	ret = rtl8224_get_base_addr(phydev, &base_addr);
+ 	if (ret)
+ 		return ret;
+ 
+-	return rtl8224_mdi_config_polarity(phydev);
++	port_offset = phydev->mdio.addr - base_addr;
++	ret = rtl8224_mdi_config_order(phydev, port_offset);
++	if (ret)
++		return ret;
 +
-+  The package reg must identify the first physical PHY's MDIO address,
-+  even if that PHY has no child node. Each child PHY reg is its absolute
-+  MDIO address, not an offset from the package base. Unused PHY ports may
-+  be omitted. The base address must not exceed 28, so that all four PHY
-+  addresses fit within the MDIO address space.
++	return rtl8224_mdi_config_polarity(phydev, port_offset);
+ }
+ 
+ static int rtl8224_probe(struct phy_device *phydev)
+ {
+-	/* Chip exposes 4 ports, join all of them in the same package */
+-	return devm_phy_package_join(&phydev->mdio.dev, phydev,
+-				     phydev->mdio.addr & ~3, 0);
++	struct device *dev = &phydev->mdio.dev;
++	u32 base_addr;
++	int ret;
 +
-+  The enet-phy-pair-order and enet-phy-pair-polarity properties belong
-+  to the individual PHY nodes and describe each port's MDI wiring.
++	ret = rtl8224_get_base_addr(phydev, &base_addr);
++	if (ret)
++		return ret;
 +
-+$ref: ethernet-phy-package.yaml#
-+
-+properties:
-+  compatible:
-+    const: realtek,rtl8224-package
-+
-+  reg:
-+    maximum: 28
-+
-+patternProperties:
-+  "^ethernet-phy@[a-f0-9]+$":
-+    $ref: ethernet-phy.yaml#
-+
-+    properties:
-+      compatible:
-+        const: ethernet-phy-ieee802.3-c45
-+
-+      leds: false
-+
-+    required:
-+      - compatible
-+
-+    unevaluatedProperties: false
-+
-+required:
-+  - compatible
-+
-+# Enumerate the ranges because child addresses depend on the package base.
-+allOf:
-+  - if:
-+      properties:
-+        reg: { const: 0 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 0, maximum: 3 }
-+  - if:
-+      properties:
-+        reg: { const: 1 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 1, maximum: 4 }
-+  - if:
-+      properties:
-+        reg: { const: 2 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 2, maximum: 5 }
-+  - if:
-+      properties:
-+        reg: { const: 3 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 3, maximum: 6 }
-+  - if:
-+      properties:
-+        reg: { const: 4 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 4, maximum: 7 }
-+  - if:
-+      properties:
-+        reg: { const: 5 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 5, maximum: 8 }
-+  - if:
-+      properties:
-+        reg: { const: 6 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 6, maximum: 9 }
-+  - if:
-+      properties:
-+        reg: { const: 7 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 7, maximum: 10 }
-+  - if:
-+      properties:
-+        reg: { const: 8 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 8, maximum: 11 }
-+  - if:
-+      properties:
-+        reg: { const: 9 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 9, maximum: 12 }
-+  - if:
-+      properties:
-+        reg: { const: 10 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 10, maximum: 13 }
-+  - if:
-+      properties:
-+        reg: { const: 11 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 11, maximum: 14 }
-+  - if:
-+      properties:
-+        reg: { const: 12 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 12, maximum: 15 }
-+  - if:
-+      properties:
-+        reg: { const: 13 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 13, maximum: 16 }
-+  - if:
-+      properties:
-+        reg: { const: 14 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 14, maximum: 17 }
-+  - if:
-+      properties:
-+        reg: { const: 15 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 15, maximum: 18 }
-+  - if:
-+      properties:
-+        reg: { const: 16 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 16, maximum: 19 }
-+  - if:
-+      properties:
-+        reg: { const: 17 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 17, maximum: 20 }
-+  - if:
-+      properties:
-+        reg: { const: 18 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 18, maximum: 21 }
-+  - if:
-+      properties:
-+        reg: { const: 19 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 19, maximum: 22 }
-+  - if:
-+      properties:
-+        reg: { const: 20 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 20, maximum: 23 }
-+  - if:
-+      properties:
-+        reg: { const: 21 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 21, maximum: 24 }
-+  - if:
-+      properties:
-+        reg: { const: 22 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 22, maximum: 25 }
-+  - if:
-+      properties:
-+        reg: { const: 23 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 23, maximum: 26 }
-+  - if:
-+      properties:
-+        reg: { const: 24 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 24, maximum: 27 }
-+  - if:
-+      properties:
-+        reg: { const: 25 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 25, maximum: 28 }
-+  - if:
-+      properties:
-+        reg: { const: 26 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 26, maximum: 29 }
-+  - if:
-+      properties:
-+        reg: { const: 27 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 27, maximum: 30 }
-+  - if:
-+      properties:
-+        reg: { const: 28 }
-+    then:
-+      patternProperties:
-+        "^ethernet-phy@[a-f0-9]+$":
-+          properties:
-+            reg: { minimum: 28, maximum: 31 }
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet-phy-package@1 {
-+            compatible = "realtek,rtl8224-package";
-+            reg = <1>;
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            ethernet-phy@1 {
-+                compatible = "ethernet-phy-ieee802.3-c45";
-+                reg = <1>;
-+                enet-phy-pair-order = <0>;
-+            };
-+
-+            ethernet-phy@2 {
-+                compatible = "ethernet-phy-ieee802.3-c45";
-+                reg = <2>;
-+                enet-phy-pair-order = <0>;
-+            };
-+
-+            ethernet-phy@3 {
-+                compatible = "ethernet-phy-ieee802.3-c45";
-+                reg = <3>;
-+                enet-phy-pair-order = <1>;
-+            };
-+
-+            ethernet-phy@4 {
-+                compatible = "ethernet-phy-ieee802.3-c45";
-+                reg = <4>;
-+                enet-phy-pair-order = <1>;
-+                enet-phy-pair-polarity = <0x1>;
-+            };
-+        };
-+    };
++	return devm_phy_package_join(dev, phydev, base_addr, 0);
+ }
+ 
+ static bool rtlgen_supports_2_5gbps(struct phy_device *phydev)
 -- 
 2.55.0
 
