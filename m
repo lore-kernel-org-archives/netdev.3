@@ -1,401 +1,148 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6083A8755
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4D33EA977
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791886588; cv=none; b=KRAylAZ9UIdu8IA/b/Yi9VeMz2iD//G29bgTtp5i+fG59nhNmfb38xd3Rw9vACijHQ8Cm+YhwMgVJy1FOoL2a/SJVZC0hi245SwdrQpFAQYFMynCNuLhfl/7ak+f95L6v11MBEYXyNAzl/v36KTudfIIuAutgdZYAuozxjFipto=
+	t=1791886673; cv=none; b=tiym7tRxR7v+QwnwauwPbt3Zm5IQCtPKnBTfLUJYZaxdBCFqJXLCNRiyS15kbmNNBTlwkRLZBS1rPvGyxzwcWRlgzwZpM7vvYlG4axZEsTNJSncqULT8DIHsGCoePWuDOEpQ+pEmmOaQTKWC6OMoaS3GGPAbTvzxo2wiPE5CBlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791886588; c=relaxed/simple;
-	bh=zsUrxvV5GV7v1A9KzKUaB0c3kKIBr9xlFLCsjCccsEE=;
+	s=arc-20240116; t=1791886673; c=relaxed/simple;
+	bh=mIerHSoA0UPEkltbp9WWAtUXDdAGlSICZDdSK7TN0Gg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t2vXc+AcAenVF+sz1bACiaVJGVZ3Y2TcHDpltl/2/B8qYRZof1/tuE3sJlU1RrqKkj37CawvPNU/fraacwGJA8rh2NZSw/mSz3zzM9ac0KI2U9oq4CjOVQ+yYdjiyf09dc8KXP89RQv+6wBHQmoNDE8128mvi0327fHxI+zNlq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=P3NniW9J; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HrNMtwaH; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=g+6FJeefGIzU0r218RT1527ZrIap+/r/BAHtXUc5SBY1qnePH3ukrd2tWAON8NNyjHi4F8n5YYL9hT3kxdza0hogLtd+vVfAHaxOZdC/V2bZ2uKBVgssV7gEs4ApffchiaXNKT2Omw38EWRP9aD9ZxYnw+d2QyCvLkHghIfD2Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hoQeNOv6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GU8qH6o4; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="P3NniW9J";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="HrNMtwaH"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69D9XnXT3475951
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:16:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=0joQw94XiM/OPOK+JDq2n0qS
-	Tv4A0S4JrAUcnweeYvA=; b=P3NniW9JLpsxlSeGSlDQqw14cuf1x1w5VWBDx7IM
-	1RlASUks3lx34QJE3AL/94Nhd6ZrJCyOlpAvjqgCPRvu4wyVAKYIvvfTOlo5Bvos
-	v/DgUlPe7dZX+yexPUNO0re42XTL4vGM4HgUmLAAFRFbmKQ2e2G/k7LxSONZsV1I
-	o0v2WzPJ9/5tdO4trDhtEn4gF4v15Pw5PmHccgKACYnLg/eKNoM1ZAToFtaqk4nX
-	kOjBXkkp9X9ADOGi2/lW5cNORpEaSLS9WwGtQrZfctGl0wnKNeswEkavY9pDAVwz
-	4u0hVvDoYpFmmgxzAMSOZpzrTDVaX8xI2dY4BVStc+A5Eg==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h9d7j9fx4-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:16:24 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93caa0ce0cdso306575885a.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:16:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hoQeNOv6";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GU8qH6o4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791886670;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQm+7FhyHN6+IiGzitNgRTZSKN6UAw4IPMrNRyYA++I=;
+	b=hoQeNOv6aULh/9QEeCfQ0ehKbAoFVJs09vHbUFncSxR9fiKdv6NBATz+x4KTyG5oJmW1Rc
+	6O/1oujaHjsFiid2YAFPdu+lENtlsVosIfaMPTNSyKkPZsdHpo1JunbAYbe+IIaLZmnTu2
+	pGP4LfVABcBKLX7Lc+DZPHq93PaMBXA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-343-f0f2Rc01PimWOP_GOoZC3w-1; Tue, 13 Oct 2026 10:17:49 +0000
+X-MC-Unique: f0f2Rc01PimWOP_GOoZC3w-1
+X-Mimecast-MFC-AGG-ID: f0f2Rc01PimWOP_GOoZC3w_1791886668
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48b00febba3so2261996f8f.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:17:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791886584; x=1792491384; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1791886668; x=1792491468; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=0joQw94XiM/OPOK+JDq2n0qSTv4A0S4JrAUcnweeYvA=;
-        b=HrNMtwaHpqMxB+MdorSxzQikOfDgp/+ForUlmFkOnc6gbuKOlsne4CGRo5bI5/GumT
-         QyLhdsJjtcN4BysLd3FhTddefgrtnMxBdBOAQggvt3npv2jkOq3XEp2bnvbUn9bSbMHv
-         JHV4jl+FMLJ4wNfp0EegCKKjkv/Gm4JgNO8EEzbshp6dTQzJwiQytuBe/pE4JhaJTtUX
-         QYB76udTtx0MVrmDwqXlN8+1Xl53diylNbW+Bm9OuJDJ2umUlXelhMiyPHHwjeeUPDnU
-         pqraiprTUnjYA/y3+QpfY4+dBULPwLjRVE462qpLMs49HgdqI0DmhLvMzcVGT8QnFIjM
-         GYIg==
+        bh=TQm+7FhyHN6+IiGzitNgRTZSKN6UAw4IPMrNRyYA++I=;
+        b=GU8qH6o4wR2Oz0Y2zwKYOhV51o3IevFPSmp5nuWzvuy9Kdpf3gqsscKuGMbH+btojk
+         90A4SLFmJape0AqbvsR+Vdc/2kJ/BgcpkRapopph8nkrXUYtYiTf2sOIkVv1C10G0AMY
+         c9U6r1fYLJnw0scbhjPHgDFaFK8YU4hUue5iUzlhKEkEX3fKnYNMF6pUJb3VdkheYKDF
+         dQ81GlD58TKEGpUnrprDiTHM4g5ykbmqRzzkJ+yuTSNdiEPf8QukudCLHEkDZ+yahPqT
+         v3YD0ieqkG+3eAjLhCraHgjF1G+NV9awX4eE0cQlYGnAzZEw+MS2Eo+wdcbigTxgjD/V
+         e0pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791886584; x=1792491384;
+        d=1e100.net; s=20260707; t=1791886668; x=1792491468;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0joQw94XiM/OPOK+JDq2n0qSTv4A0S4JrAUcnweeYvA=;
-        b=klLpRZHgDoj1NwJLWSAKXVTPw0Lff7yURbdlvkpqI+g1vApTU/GxUkHQIDxLP+9cn7
-         kPLcmn/swul3mTn8Zo76knmkJqqi5C2jQ+XfhkoLMqzXFd7XdyVlPj1w7hoAIubLLGZY
-         nV2qIqHwDeVbx4m2YLC2xD9V7XWhb1Ae7aF7XWF1yOOq5Pu/ztdaW6klU9RvxLpOB8Zw
-         oM2iNoK3M1uuNVYSx2f7EeFPDiIpru4EcUzgCWlYtk2H3kA8kvQOS1cmg8C1Ue5lfTO5
-         Gf75TaGfnH9WeqCS7g5TE2RgpBVH1FlOIZeZFFhk1AySd5SFR/h2vLfHHCHStCBDDrrp
-         YW8A==
-X-Forwarded-Encrypted: i=1; AKwUvBxFF96Oig6F/gym5U0BjmAS9AmHN+yhQjAEAuIL0LRO/BgGr+JPAW+QiS0t+9Wbpo4idXULyA4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKUi7brZHVJdKg0ELjGNQuVDoTs78U6/tPxd4od/64G6qKTnkVb
-	Bzxe/6NwbXnT4nlL5q1x2pQEIx9SImOKIvApqG6RzoEUDN6g36b2XiLMjJ+EZmByLdqrTl0SX57
-	q2L7LrqjpNaygGzDpinacc2vR6RFD273j9uBTmkFN2k+54Uw/hz9dcV7Rl9g=
-X-Gm-Gg: AYBFou2jIWJKDbe8jJx2YqZUlgKiPRWnosL6neLXLcO7Zh9s0NMcAZ01BOyieFys6bB
-	OH+7UHRKlHpBOEehCTevgRTgZr0y35a293WxG+ZbD3ur7AoPe6k42VN1bKm9a88t4lVI5W4S4X/
-	SGhJA11M0SMuqVpcAA5iPv1JcwX4AxOk1LYfdmqyGf3gy9H1v+Z7l0xImLuQPYeY7ZwipcgEsdD
-	T7Ww3OgnKfWyKHROORpQSJ3odHL4TXkFS8C407qiMTYS2lHVz8SRnJCniYIkt024V4ka7UDiPlL
-	guEDJSrivt++h3Ng+LqW5IlnjmMGkCFb0Sp24kKQe9Am3583tqf8TrWCOyVlYqk8RxnyqL0mM4A
-	l8Tlex0YHH/iPKQ==
-X-Received: by 2002:a05:620a:6186:b0:939:2d77:d6a8 with SMTP id af79cd13be357-93ebd248378mr1946434685a.34.1791886583416;
-        Tue, 13 Oct 2026 03:16:23 -0700 (PDT)
-X-Received: by 2002:a05:620a:6186:b0:939:2d77:d6a8 with SMTP id af79cd13be357-93ebd248378mr1946429585a.34.1791886582699;
-        Tue, 13 Oct 2026 03:16:22 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc51c1sm4259497f8f.46.2026.10.13.03.16.21
+        bh=TQm+7FhyHN6+IiGzitNgRTZSKN6UAw4IPMrNRyYA++I=;
+        b=grALTroHism7+ZG7tHuCFPkVb/pdzs51zjNOszyd+8jFJoRRQIhCjrtSHCmJyN36Gs
+         M4bbf1DeNoUXg/G3sS+xguQBN1mpmMSddJWLUkupVJ5BoJaZtYj3qWKRWXm6kOe+XUTl
+         S45OLHZRJPqgEpKjS+8DfMUa5jV5X7fX9dVr2V+ODdouLWM14trXzAD5aBWlAACPf8Rf
+         ePdRcZsASYv71fKpZHeGxeVdlSyKvL/j3pONOFrS1yBpmZB3zyVh3MqkjgimKL55WA27
+         kettW9dbx9tzMi8D+oN8OJEfqWRWKkBJ6ViV/qWsznb68IdJecHS1VbvBqKR9whhpTKZ
+         FftA==
+X-Gm-Message-State: AFq9FYJR5cMChj1WCkoFgtOEwo0/iOW2mG+JFPjUy5yIBxAemCK0y5nb
+	poxK/9R50h2bsOJ+mXle7v8J2ac2xRxc8DN4b5iTKisaexwxUMwSyiJkogxMcUZ4P5XseunzjPT
+	VyaZu789zVqk5aWfIwnQxNJKAwWasnc+RwIQVprV6/iZTxDKjicwaXz1J4w==
+X-Gm-Gg: AYBFou0aIDHz3qHboNRCyBaqtL0u8/zSCqjh8Jd63jyzYGCMZ2qjtGu7TIK+U+Ipnbm
+	tLCblERjdDzfRyVvgwUWEznz+mgtzhxdOp+nAEhAqwhQzObgXPWKHX9ZbhL0NRtXIbONVNejHZi
+	7bOLcybGkCeHmSogDEKk8QbEOORvBa+FhYxwXX7J4SUkTmNTWMAEab2q7UDrFy2V8OGD9fg/yk6
+	cCzEAI2t+H7YoR4NxzltwidyXoTlIUWbRtl2K4la745SHmLqHnJA235hoPuyeHf6ycXTFmqSVG4
+	p7MAzNUBszFpiCJ86Kyk2/BQVt2AKCz7ocH09ccHBFoai6EoTNDXj4oDaB5CCRTg0BL32A==
+X-Received: by 2002:a05:6000:470f:b0:48b:74b:4ce1 with SMTP id ffacd0b85a97d-48dbad00328mr20458003f8f.32.1791886667590;
+        Tue, 13 Oct 2026 03:17:47 -0700 (PDT)
+X-Received: by 2002:a05:6000:470f:b0:48b:74b:4ce1 with SMTP id ffacd0b85a97d-48dbad00328mr20457934f8f.32.1791886667017;
+        Tue, 13 Oct 2026 03:17:47 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc5e0asm4276759f8f.50.2026.10.13.03.17.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 03:16:21 -0700 (PDT)
-Date: Tue, 13 Oct 2026 12:16:20 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v6 4/4] net: stmmac: rework stmmac_rx to support
- XDP rx multi-buff
-Message-ID: <as4E9Oxr03YYE0lU@lore-desk>
-References: <20261012-stmmac-rx-mb-v6-0-2225050915c1@oss.qualcomm.com>
- <20261012-stmmac-rx-mb-v6-4-2225050915c1@oss.qualcomm.com>
- <9bf19616bc6fd8680e65272f45d14239@tipi-net.de>
- <as315RcZF2RcJGLW@lore-desk>
+        Tue, 13 Oct 2026 03:17:46 -0700 (PDT)
+Date: Tue, 13 Oct 2026 06:17:43 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@meta.com>
+Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>, linux-kernel@vger.kernel.org,
+	Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: Re: [PATCH net] MAINTAINERS: add Bobby Eshleman as vsock reviewer
+Message-ID: <20261013061724-mutt-send-email-mst@kernel.org>
+References: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Mu66gn9kz4J4GejD"
-Content-Disposition: inline
-In-Reply-To: <as315RcZF2RcJGLW@lore-desk>
-X-Proofpoint-GUID: HObOXhZl1tQiwxbKu5c04P6p2WNSe_b4
-X-Proofpoint-ORIG-GUID: HObOXhZl1tQiwxbKu5c04P6p2WNSe_b4
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA0MCBTYWx0ZWRfXy+p/5p3X6JAF
- wlusLlNP10pK/IbCuaK0RnJNx3UJXzlIPHnCafM1g2Ikvw4qPBEh+89GnYRajaUUlpV7UDN9qcL
- T263vIwd9TkrCWy+ELorpU7NzSwAn0I=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA0MCBTYWx0ZWRfX5TvJHy6ewxlF
- AKVzqMzdm9Ii8YEFe1LMCKdgu7La+3Ud4ZNqHu2QlmOOfdn+orCFTbIuCdp0Gu0dYhms54pEhaN
- dUk+M0EL3coVBRaUHIuhlVStqJkR19DB1hWsNAg6624v4QDyhNCJbpnEk//7RTxmtZP2M4NFvqY
- CxoBi3Z667RLYs+X1ihh8aEhFbc5N2iRFjIPVmRsMQnrdYtt9teMwlu6fZO7CVkyCj1HslCis+D
- eFfGSHBWowC+kaIflWdrxX/yCNc8zZ0YN7lPsnt4rtoBYfRdj55bEtWYKQwRkfmETX8gvwckuKK
- t1D+1+WR/7PF7FEF7TPfu4KNI+HhSMi4+2c48/GPxeAebTz9Q/fy9Dxh5NP4UM5VmaMk0+ZJJDE
- e1rqj5Tf1j/M+La7QnrkrhPPesL8U4tn+XZBkqEJiRgD4G5UsfU3y6lDXvQML7A1E8at6gwRG+J
- 7qDX2wJaRu2kcNXU8xw==
-X-Authority-Analysis: v=2.4 cv=PMGaavqC c=1 sm=1 tr=0 ts=6ace04f8 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=EUspDBNiAAAA:8
- a=v17Ietvw4lErNa0x46sA:9 a=CjuIK1q_8ugA:10 a=3mV5Pt-Fye_HxHZc_IkA:9
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 spamscore=0 phishscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
- definitions=main-2610130040
-
---Mu66gn9kz4J4GejD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20261012-add-maintainers-v1-1-ef0488f460db@meta.com>
 
-On Oct 13, Lorenzo Bianconi wrote:
-> > Hi Lorenzo
-> >=20
-> > On 12.10.2026 18:44, Lorenzo Bianconi wrote:
-> > > Build the xdp_buff by accumulating all the descriptors that make up a
-> > > frame, so the XDP program runs on the full (possibly fragmented) pack=
-et
-> > > instead of just the first buffer. When the frame is not consumed by t=
-he
-> > > program, assemble the skb from the head buffer and the collected
-> > > fragments via napi_build_skb()/xdp_update_skb_frags_info().
-> > >=20
-> > > Note that XDP still rejects an MTU larger than ETH_DATA_LEN
-> > > (stmmac_xdp_set_prog(), stmmac_change_mtu()) and disables SPH, so an
-> > > ordinary frame fits in a single buffer. This path is therefore exerci=
-sed
-> > > by frames that do span several descriptors (for example jumbo frames =
-the
-> > > MAC admits through its jumbo-enable bit) and is groundwork for extend=
-ing
-> > > XDP to jumbo/SPH; it does not enable XDP jumbo support by itself.
-> > >=20
-> > > For those multi-descriptor frames the old code was buggy as well: it =
-ran
-> > > the XDP program once per descriptor buffer, so for a multi-descriptor
-> > > frame the program was also invoked on continuation buffers holding
-> > > mid-frame payload. It also subtracted ETH_FCS_LEN from the first buff=
-er
-> > > even when it was not the last descriptor (its second buffer empty),
-> > > dropping four bytes from the middle of the frame while marking the FCS
-> > > as
-> > > already stripped and skipping the final pskb_trim(). Accumulating the
-> > > whole frame before running XDP fixes both.
-> >=20
-> > With patch 3/4 applied, these frames are already dropped in XDP mode,
-> > so this paragraph no longer matches the code this patch changes?
->=20
-> ack, I will remove it in v7.
->=20
-> >=20
-> > >=20
-> > > To do so, store the in-progress xdp_buff in rx_q->state instead of the
-> > > partially built skb, so the accumulated head and fragments survive a
-> > > NAPI poll boundary (mid-frame dma_own or dirty_rx break). The state is
-> > > saved only while a frame is in progress and cleared once it completes,
-> > > leaving it untouched when the poll does not process anything (e.g.
-> > > netpoll invoked with a zero budget).
-> > >=20
-> > > In addition:
-> > > - advertise NETDEV_XDP_ACT_RX_SG, since the RX path can now deliver
-> > >   non-linear buffers to XDP;
-> > > - drop multi-buffer frames when the attached program was not loaded w=
-ith
-> > >   BPF_F_XDP_HAS_FRAGS, since a single-buffer program must not be hand=
-ed
-> > > a
-> > >   non-linear xdp_buff;
-> > > - build the skb head with napi_build_skb() passing xdp->frame_sz, so
-> > >   skb_shinfo() lands on the same shared_info the fragments were
-> > >   accumulated into;
-> > > - carry the XDP metadata written with bpf_xdp_adjust_meta() into the =
-skb
-> > >   via skb_metadata_set(), so it is no longer dropped and TC/BPF progr=
-ams
-> > >   can read it through data_meta;
-> > > - attach fragments with xdp_buff_add_frag(), which initializes all the
-> > >   shared_info fields and takes care of the pfmemalloc bit;
-> > > - release the buffers collected in the xdp_buff when a frame is dropp=
-ed
-> > >   on RX errors; the previous code relied on dev_kfree_skb() recycling
-> > > the
-> > >   skb frags, which no longer applies now that the head and fragments
-> > > live
-> > >   in an xdp_buff rather than a partially built skb;
-> > > - drop the whole frame when it would exceed MAX_SKB_FRAGS, where the
-> > >   previous skb_add_rx_frag() calls were unbounded;
-> > > - strip the Ethernet FCS from the accumulated xdp_buff with a
-> > >   driver-local tail shrink (stmmac_xdp_shrink_tail()) for both linear
-> > >   and fragmented frames, instead of trimming the skb or the first
-> > >   descriptor length.
-> > >=20
-> > > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> > > ---
-> >=20
-> > > [...]
-> >=20
-> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > > b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> >=20
-> > > [...]
-> >=20
-> > > +static void
-> > > +stmmac_xdp_put_buff(struct stmmac_rx_queue *rx_q, struct xdp_buff *x=
-dp,
-> > > +		    int sync_len, bool allow_direct)
-> >=20
-> > This looks like xdp_return_buff(), apart from the sync length of the
-> > first buffer. Could the NAPI paths (XDP_CONSUMED and error_free_frag)
-> > use xdp_return_buff() instead? The teardown paths need allow_direct =3D
-> > false, so they would still need something local.
->=20
-> Theoretically I agree, but, since we still need stmmac_xdp_put_buff()
-> for the teardown path, I guess we can keep it since it is even an
-> optimized version with respect to xdp_return_buff(). What do yo think?
->=20
-> >=20
-> > > +{
-> > > +	struct skb_shared_info *sinfo =3D xdp_get_shared_info_from_buff(xdp=
-);
-> > > +	int i;
-> > > +
-> > > +	if (likely(!xdp_buff_has_frags(xdp)))
-> > > +		goto out;
-> > > +
-> > > +	for (i =3D 0; i < sinfo->nr_frags; i++)
-> > > +		page_pool_put_full_page(rx_q->page_pool,
-> > > +					skb_frag_page(&sinfo->frags[i]),
-> > > +					allow_direct);
-> > > +out:
-> > > +	page_pool_put_page(rx_q->page_pool, virt_to_head_page(xdp->data),
-> > > +			   sync_len, allow_direct);
-> > > +}
-> > > +
-> > > +static struct sk_buff *stmmac_build_skb(struct xdp_buff *xdp)
-> > > +{
-> >=20
-> > This is very close to xdp_build_skb_from_buff(). Have you checked if th=
-is
-> > might
-> > be a fit?
->=20
-> yes, but we can't use xdp_build_skb_from_buff() since it runs eth_type_tr=
-ans()
-> modifying the skb->data pointer (in this way we will corrupt stmmac_rx_vl=
-an()).
-> Agree?
->=20
-> >=20
-> > > +	struct skb_shared_info *sinfo =3D xdp_get_shared_info_from_buff(xdp=
-);
-> > > +	u32 metasize =3D xdp->data - xdp->data_meta;
-> > > +	struct sk_buff *skb;
-> > > +	u8 num_frags =3D 0;
-> > > +
-> > > +	if (unlikely(xdp_buff_has_frags(xdp)))
-> > > +		num_frags =3D sinfo->nr_frags;
-> > > +
-> > > +	skb =3D napi_build_skb(xdp->data_hard_start, xdp->frame_sz);
-> > > +	if (!skb)
-> > > +		return NULL;
-> > > +
-> > > +	skb_mark_for_recycle(skb);
-> > > +	skb_reserve(skb, xdp->data - xdp->data_hard_start);
-> > > +	skb_put(skb, xdp->data_end - xdp->data);
-> > > +	if (metasize)
-> > > +		skb_metadata_set(skb, metasize);
-> > > +
-> > > +	if (unlikely(xdp_buff_has_frags(xdp)))
-> > > +		xdp_update_skb_frags_info(skb, num_frags, sinfo->xdp_frags_size,
-> > > +					  num_frags * xdp->frame_sz,
-> > > +					  xdp_buff_get_skb_flags(xdp));
-> > > +	return skb;
-> > > +}
-> >=20
-> > > [...]
-> >=20
-> > > +static int stmmac_xdp_shrink_tail(struct stmmac_rx_queue *rx_q,
-> > > +				  struct xdp_buff *xdp, int offset)
-> >=20
-> > This is only used to drop the FCS. On the last descriptor we already
-> > know the frame length, so could the 4 bytes be taken off buf1_len /
-> > buf2_len before the buffers are added? Then only the rare case where
-> > the last buffer has fewer than 4 bytes would need to trim the previous
-> > frag, and this helper could go away.
->=20
-> uhm, right. I guess we could do something like (and drop
-> stmmac_xdp_shrink_tail()):
->=20
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/=
-net/ethernet/stmicro/stmmac/stmmac_main.c
-> index e80793bd6553..5cb8a6883f44 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -6027,6 +6027,19 @@ static int stmmac_rx(struct stmmac_priv *priv, int=
- limit, u32 queue)
->  		buf2_len =3D stmmac_rx_buf2_len(priv, p, status, len);
->  		len +=3D buf2_len;
-> =20
-> +		if (!(status & rx_not_ls)) {
-> +			/* ACS is disabled; strip manually. */
-> +			if (buf2_len > ETH_FCS_LEN) {
-> +				buf2_len -=3D ETH_FCS_LEN;
-> +			} else if (!buf2_len) {
-> +				buf1_len -=3D ETH_FCS_LEN;
-> +			} else {
-> +				buf1_len -=3D (ETH_FCS_LEN - buf2_len);
-> +				buf1_len =3D 0;
+On Mon, Oct 12, 2026 at 12:58:08PM -0700, Bobby Eshleman wrote:
+> I've been reviewing vsock via lore+lei for a while now.
+> 
+> Finally adding myself as a formal reviewer, since vsock will continue
+> being stuck with me for the foreseeable future.
+> 
+> Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
 
-Here there is an obvious typo (buf2_len and not buf1_len) but thinking again
-at the suggested approach I think there is corner case we can't really cove=
-r,
-the FCS can be theoretically split over different DMA descriptor, so we need
-to reconstruct the full xdp buffer first and then remove it. In other words,
-I do not think we can get rid of stmmac_xdp_shrink_tail(). What do you thin=
-k?
 
-Regards,
-Lorenzo
+Bobby's doing a stellar work.
 
-> +			}
-> +			len -=3D ETH_FCS_LEN;
-> +		}
-> +
->  		if (!frames) {
->  			dma_sync_single_for_cpu(priv->device, buf->addr,
->  						buf1_len, dma_dir);
-> @@ -6064,8 +6077,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int =
-limit, u32 queue)
->  		if (likely(status & rx_not_ls))
->  			goto read_again;
-> =20
-> -		/* ACS is disabled; strip manually. */
-> -		len -=3D ETH_FCS_LEN;
->  		if (stmmac_xdp_shrink_tail(rx_q, &ctx.xdp, ETH_FCS_LEN)) {
->  			if (!error)
->  				rx_dropped++;
->=20
-> What do you think?
->=20
-> Regards,
-> Lorenzo
->=20
-> >=20
-> > > [...]
-> >=20
-> > Thanks,
-> > Nicolai
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
 
 
---Mu66gn9kz4J4GejD
-Content-Type: application/pgp-signature; name=signature.asc
+> ---
+>  MAINTAINERS | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f53047aa8d3c..cc1341f6e15c 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -28840,6 +28840,7 @@ F:	virt/lib/
+>  VIRTIO AND VHOST VSOCK DRIVER
+>  M:	Stefan Hajnoczi <stefanha@redhat.com>
+>  M:	Stefano Garzarella <sgarzare@redhat.com>
+> +R:	Bobby Eshleman <bobbyeshleman@meta.com>
+>  L:	kvm@vger.kernel.org
+>  L:	virtualization@lists.linux.dev
+>  L:	netdev@vger.kernel.org
+> @@ -29145,6 +29146,7 @@ F:	drivers/media/test-drivers/vivid/*
+>  
+>  VM SOCKETS (AF_VSOCK)
+>  M:	Stefano Garzarella <sgarzare@redhat.com>
+> +R:	Bobby Eshleman <bobbyeshleman@meta.com>
+>  L:	virtualization@lists.linux.dev
+>  L:	netdev@vger.kernel.org
+>  S:	Maintained
+> 
+> ---
+> base-commit: 8e2fbe0e75d38690d551456658194c632933cb57
+> change-id: 20261012-add-maintainers-bc6e8a6fa68b
+> 
+> Best regards,
+> -- 
+> Bobby Eshleman <bobbyeshleman@meta.com>
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCas4E9AAKCRA6cBh0uS2t
-rJPeAQDerp6+n4L3MJ2rwrKWH0/G7ww+Ee+WCf0ZI8frA7mKzwEAoHyOURfMe53f
-TpZha7A/0DVjAtC9yaAN0a+AT+qJ0Ak=
-=VvWK
------END PGP SIGNATURE-----
-
---Mu66gn9kz4J4GejD--
