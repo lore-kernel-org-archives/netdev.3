@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59C3522EEC
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8D45540AA
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925105; cv=none; b=hMA8nojNNSFY1KyejhbtMkwxzqueH+BdiyCmidGfpmYmhCnGvrGdXS5et5sczez3w18A6yke2f9cE1y2eAl2maH6OTrD994j8vWlSEds0XTaTlz1T4CEjOLHxyIcExGsWBwKFuFWyX4gZ8bYbfAddE83v9xIy2hR26f3z6Ik4W0=
+	t=1791925106; cv=none; b=rq0B+LCbv6OqDtbexvgn0GvFrck9qswDwMQhdiNx+zT9IGcsRuGDKBo6GsxWbS6h4P3QGEsz5Mcq4AlFOuBPT8WBITpgDPXaA0YVt0XE9uQh8euqPr661MbHz5sg678I3YY2z79kRRLnxQTB3/QqqZFrsh9eLAKnmlNC03Grd1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791925105; c=relaxed/simple;
-	bh=hEkbRnhnj0O1IetiVsWx2lR3sh8uGbO245n2d8Cng0Y=;
+	s=arc-20240116; t=1791925106; c=relaxed/simple;
+	bh=RSul1KyVt2A5AS1gK2QuRhRnlau9f0Dmc+h63H9JR1c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DoN5mp2XCEQTJ0OBfe8242G4X3hB8E7FnL01JmXtNvWbnlwabaIIWNKACrtqbf1UJjgkYns7rjumh8AKa7VUzjkUYvRpkYQZdp1H7sWVdf8Q89jjExRaONzgSEAEZUwSU5z0jKfEka72mYRE81956RMNs+oSMu+nkMA2DzQOzHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wSj5MF3K; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=JZVDQXuN01BMiKPCQ9iDqHBc+tzMcWhPE0/GXLbp6fZ3jjDbemNlFfKa9T+zWQqXBLGQc9Pk/BciMCpZd/FAb6yREa3TMprvURcy22HkzWQNlWrwAgqX3HzZPAZaF2UNzWHP1cSV+XtGLN6fTJS8al+7nHLxCaeb6vNBsN/BlRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pxequgFg; arc=none smtp.client-ip=209.85.215.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wSj5MF3K"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e8ba4757baso2999045ad.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pxequgFg"
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cd5fd34fee0so164414a12.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791925103; x=1792529903; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791925104; x=1792529904; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Bw4NbX4ZjlalLn/wLQV3GOOzOHCRxS308mecsbW9qTA=;
-        b=wSj5MF3KHHHScuTli6dowuahMihRuKVv8byjdA9Q+KvgPMJsl7zlsTmtyfX9QzX7HB
-         WadwuPSoctVg7BzcoRkaI4Yof9relYYcgr/6Ny8x3qfhkVGUERSC4j35c7Az1Rhvgk5o
-         4D6aEp9+yHgsHTVAO8sjZq0NTJBMRm8d2sZTrrc4z3khAR306j7h+f+cr2xOscahcRp6
-         BX2NxIXI55DBMaHOyKndz1fnsFjnotqSU5eQ5jXmkg3cPzLPHk+v6j1Zboac0/J5TpR+
-         nR7jAo9MPYdfa0NFDnMSqXigvq9zxQ1o9cgaB+eeSPV9WO5NXVcC18ImduNUZtaxp2F1
-         BnwA==
+        bh=THas/x/xxuv16ei+XdPr5thqMykdchtFQAjMqvfflU8=;
+        b=pxequgFgREKbrIlueMRuS/DFg7DLygI3NUZHPhf0as0HOkFN0pLGnD7tmT6Spk9Lgq
+         K+g/2FuV1JGsj2vOu/dnuPOX3y5lkAUrEKhZSiQmlsficL6ky2e2Sq6nwSNpLOqhRpw0
+         BphhdUZWZjgzenUXTYtjuALQdKuCQTN0XIt2hKnX6ikT9dFPDSt2R+aspZJj6MFhTTTa
+         lyZ5g5z9Zm7NWssz/M+p+DGlua8i85IYt1bTxBvXi5JYb808zGpKaY16AbAAcL8f0bjG
+         nk9MXxZ1dgpgJEVWGMOE2ouAWy2FEpYx0tCKKUK7IJ9WEUontVZ7y0vaFRGAHv4Bd7SJ
+         RLDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791925103; x=1792529903;
+        d=1e100.net; s=20260707; t=1791925104; x=1792529904;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Bw4NbX4ZjlalLn/wLQV3GOOzOHCRxS308mecsbW9qTA=;
-        b=TCxxp2EMV1+1URU2GguOW8aBfkTVktTZUOuafZoadgotV/HunLMIwmLYPVg7tYp4DI
-         F1t3JpxfshD7Nlyru5gtqZRjXbIv9t7ePKyPBVoY1XoKeTpDYQ9D1AKZmKl+znwKU/ae
-         sWNC07Y0914j9ToiWoMIIMecdrd1asrU1t6eaYxsSBoZbGgxQ8EKtpQfFBAn30PT+Iak
-         ptLWxjxprjjEQbf7Njp3O6njRmzaXCVjnglpTK2x1kUFd6qTRSA+ABJvWc5CBwXQ7yQP
-         in2w30LANUTpiU1pEwULeGkpFct4RkSuffTOGeMEqTisrPgLlfvQUhom5mT1XptrF4T1
-         w1YA==
-X-Forwarded-Encrypted: i=1; AKwUvBz6ju+EpVlssIdXpVgHvozOsTEXxSd0P4bhzWGcO4io28jeVzsYtS+q0Vud1iP+xKHfZdPVf4w=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIfuhpSbjXEgP21XjcQZt+HKPv9r6qvQVpDZs/EVL8k8xsaClzr
-	A6Hzndh6HiqZuWKrTNaWrhVHY1lxT53DVrx0x/QwGKSsus/W645bE82+p5YQ0egUm+HhdY4Irpd
-	YwImoYQ==
-X-Received: from plri4.prod.google.com ([2002:a17:903:32c4:b0:2e4:94af:d714])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1ac7:b0:2df:9057:8bf4
- with SMTP id d9443c01a7336-2e842ceddafmr121872275ad.43.1791925102150; Tue, 13
- Oct 2026 13:58:22 -0700 (PDT)
-Date: Tue, 13 Oct 2026 20:57:28 +0000
+        bh=THas/x/xxuv16ei+XdPr5thqMykdchtFQAjMqvfflU8=;
+        b=Xbej4rKmNyqZkBi59uyvy8ScTBRX643j51QcBDvazWsXlQ3zweK+ByjpwZOc+/Ugup
+         47lGs9+8XKe9j6f9Mo7lDSzmYYSERIcHgADdEfDCOk07KJiKLsBo5OmwdR3lgotvaoJu
+         CwEEZ+81u1aejiVO6Z6EsbdiFlyn/D2CEEdcjHD7/AQX4jbuAEa6kuCCYz7dfbjSyDTT
+         PAaeSnFSD7HFPL8WcGIGm4Pp15XpFwvbVUIpzYNn0pP+lnm5dWSCsok9Bh7k6yyTefKT
+         l/t0uW6IwLK8lKGScDNDQNECNq/R30ngaE0rPcO8bur70Slxkg0y8lS9XoyM2XrzXR2D
+         W2cQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzRPOOu+MgECjS25/XP3L6hIWjy0aPHFihqBcrUS1YLsfZN7mGTWvxYXoRdhVljXe+2iqqZNhM=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLQ14cacpgCvBArfUo4/OzyUDWqsQ7SZR8+qve2bBsh7Is8MRQK
+	C3OwSvbkkGoA2a54o5mmRRcWHId9F8TV/003yBJDK2oEE3MAiLOXqJ3Zk9dwHGgPOHi8l4sAlm1
+	p1VJp2w==
+X-Received: from pfeu14-n1.prod.google.com ([2002:a05:6a00:c0ce:10b0:892:71f1:bcd7])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7303:b0:3d1:39e9:b267
+ with SMTP id adf61e73a8af0-3e16bb738famr12310336637.3.1791925104181; Tue, 13
+ Oct 2026 13:58:24 -0700 (PDT)
+Date: Tue, 13 Oct 2026 20:57:30 +0000
 In-Reply-To: <20261013205816.1642597-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261013205816.1642597-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261013205816.1642597-2-kuniyu@google.com>
-Subject: [PATCH v2 net-next 1/5] Documentation: networking: switchdev: Replace
- arp_tbl with arp_table(net).
+Message-ID: <20261013205816.1642597-4-kuniyu@google.com>
+Subject: [PATCH v2 net-next 3/5] neighbour: Schedule neigh_managed_work only
+ when needed.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
@@ -71,41 +71,85 @@ Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Since commit cda2962b6e2b ("neighbour: Namespacify neigh_tables."),
-arp_tbl is a template for the per-netns table.
+neigh_table is now per-netns.
 
-Let's apply s/arp_tbl/arp_table(net)/ to switchdev.rst.
+tbl->managed_work is scheduled when netns is created and runs
+periodically even though the netns does not have any NTF_MANAGED
+entries.
 
+Let's delay scheduling the work for the first NTF_MANAGED entry
+and stop rescheduling if tbl->managed_list is empty.
+
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- Documentation/networking/switchdev.rst | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/core/neighbour.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/networking/switchdev.rst b/Documentation/networking/switchdev.rst
-index 2966b7122f05..8e8ab6632ffe 100644
---- a/Documentation/networking/switchdev.rst
-+++ b/Documentation/networking/switchdev.rst
-@@ -401,14 +401,15 @@ The FIB entry's nexthop list contains the nexthop tuple (gateway, dev), but for
- the switch device to forward the packet with the correct dst mac address, the
- nexthop gateways must be resolved to the neighbor's mac address.  Neighbor mac
- address discovery comes via the ARP (or ND) process and is available via the
--arp_tbl neighbor table.  To resolve the routes nexthop gateways, the driver
--should trigger the kernel's neighbor resolution process.  See the rocker
-+arp_table(net) neighbor table.  To resolve the routes nexthop gateways, the
-+driver should trigger the kernel's neighbor resolution process.  See the rocker
- driver's rocker_port_ipv4_resolve() for an example.
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 90335895b415..6b0569aa5d64 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -184,6 +184,15 @@ static void neigh_update_gc_list(struct neighbour *n)
+ 	}
+ }
  
--The driver can monitor for updates to arp_tbl using the netevent notifier
-+The driver can monitor for updates to arp_table(net) using the netevent notifier
- NETEVENT_NEIGH_UPDATE.  The device can be programmed with resolved nexthops
--for the routes as arp_tbl updates.  The driver implements ndo_neigh_destroy
--to know when arp_tbl neighbor entries are purged from the port.
-+for the routes as arp_table(net) updates.  The driver implements
-+ndo_neigh_destroy to know when arp_table(net) neighbor entries are purged from
-+the port.
++static void neigh_add_managed_list(struct neighbour *n)
++{
++	list_add_tail(&n->managed_list, &n->tbl->managed_list);
++
++	if (list_is_singular(&n->tbl->managed_list))
++		queue_delayed_work(system_power_efficient_wq,
++				   &n->tbl->managed_work, 0);
++}
++
+ static void neigh_update_managed_list(struct neighbour *n)
+ {
+ 	bool on_managed_list, add_to_managed;
+@@ -194,7 +203,7 @@ static void neigh_update_managed_list(struct neighbour *n)
+ 	if (!add_to_managed && on_managed_list)
+ 		list_del_init(&n->managed_list);
+ 	else if (add_to_managed && !on_managed_list)
+-		list_add_tail(&n->managed_list, &n->tbl->managed_list);
++		neigh_add_managed_list(n);
+ }
  
- Device driver expected behavior
- -------------------------------
+ static void neigh_update_flags(struct neighbour *neigh, u32 flags, int *notify,
+@@ -708,7 +717,7 @@ ___neigh_create(struct neigh_table *tbl, const void *pkey,
+ 	if (!exempt_from_gc)
+ 		list_add_tail(&n->gc_list, &n->tbl->gc_list);
+ 	if (n->flags & NTF_MANAGED)
+-		list_add_tail(&n->managed_list, &n->tbl->managed_list);
++		neigh_add_managed_list(n);
+ 	if (want_ref)
+ 		neigh_hold(n);
+ 	hlist_add_head_rcu(&n->hash, &nht->hash_heads[hash_val]);
+@@ -1670,10 +1679,14 @@ static void neigh_managed_work(struct work_struct *work)
+ 	struct neighbour *neigh;
+ 
+ 	spin_lock_bh(&tbl->lock);
++
+ 	list_for_each_entry(neigh, &tbl->managed_list, managed_list)
+ 		neigh_event_send_probe(neigh, NULL, false);
+-	queue_delayed_work(system_power_efficient_wq, &tbl->managed_work,
+-			   NEIGH_VAR(&tbl->parms, INTERVAL_PROBE_TIME_MS));
++
++	if (!list_empty(&tbl->managed_list))
++		queue_delayed_work(system_power_efficient_wq, &tbl->managed_work,
++				   NEIGH_VAR(&tbl->parms, INTERVAL_PROBE_TIME_MS));
++
+ 	spin_unlock_bh(&tbl->lock);
+ }
+ 
+@@ -1873,7 +1886,6 @@ static int neigh_table_init(struct net *net, struct neigh_table *tbl)
+ 
+ 	INIT_LIST_HEAD(&tbl->managed_list);
+ 	INIT_DEFERRABLE_WORK(&tbl->managed_work, neigh_managed_work);
+-	queue_delayed_work(system_power_efficient_wq, &tbl->managed_work, 0);
+ 
+ 	return 0;
+ 
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
