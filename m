@@ -1,331 +1,166 @@
-Received: from mail-dy1-f181.google.com (mail-dy1-f181.google.com [74.125.82.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6688C476CDC
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C4B47208B;
+	Tue, 13 Oct 2026 03:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791861026; cv=none; b=YzSTqpz7yhHqrgsmAr5kncBfQBowG/4hYVcElUCaP/Fkj3kcpIe3HpUY6r8eCUG0tpLTJO6jUqh45NXWHMfYdQq2tVPneaM0xu/oyvKm7zEadtSxx+flLuBFMnqrmboFm+PZ6eq90CqGIdkaxaEJlLsIAp+MLmioV9Ncdzp3Eik=
+	t=1791861086; cv=none; b=NBKzBRXO5wtw9/sfD/eXfVh5l56+U6ac7YvpM/oQIRnV+CC6uMsRM4EptUctLUG3Fc8B9GP2+DK9vm4gJ3pVfQTxXjUWA3wFqqRrc0czAaMuWTuJsXjncBiYghmX+r4eOYEospyCWmrboQGyZY01x9Gunygd5dzGhAw3MPng5Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791861026; c=relaxed/simple;
-	bh=0rqdEyuiUWOOglgmXaDDoeSWvH8BZVTK7rnSQbtcBv4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bnEuUCT3GjVqyJgp3ytZkS2ufnyfbmWaWr9ocY6sGCWKgzn50RC4wNZ2sNcIe5rzOQ7uRT81RUA6nO3PVJZsGoi3v7B8vkUtBCuWh2/EgBkOvacHnS9lJCuoGpwqd5kkyhrobqNioWakAPiqSNEXuM17by3t/nzpmUQrgcefDyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mQhdt/a0; arc=none smtp.client-ip=74.125.82.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQhdt/a0"
-Received: by mail-dy1-f181.google.com with SMTP id 5a478bee46e88-3282db206d3so4716172eec.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:10:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791861023; x=1792465823; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ls/ZWRpi1PqaQYa4j6aJ0mZmNI9lWVaRH537lEtJ83k=;
-        b=mQhdt/a0ph1tjlrFzMQcOSceN2a+NA9jvOWBd73fElyh5QzD2WPYSvAjNyW5EMKgOr
-         LZDLJFwMZEuiWyaTQTbi3f3rjAuJeGnUGZTEnZbGhW5XgTiZ/SZ74A3nM5WJeGRaW1EQ
-         B+dFXfZHiWtqrXAHdxAYLSfn/fGrl2Ek48Sk42MeVg70/bcEcoh8j54knJ9+Sv4vLv3E
-         x19Ks1TSK9v/UpSMbU2Qti7UWOrLsl/DOgiIx78lWJfGSpVIPZl5wXJzSaUN9QAWKEXU
-         NK24eQEwZtz/KBtdQvGoq0vjExpbrn+gLV1CdmhJut+RiIdbt4fe7EsHordtoXz/JxBB
-         MVDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791861023; x=1792465823;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ls/ZWRpi1PqaQYa4j6aJ0mZmNI9lWVaRH537lEtJ83k=;
-        b=eWPAv9wHdUvTa9rOKra7CQj8sRT/tajwq5kHnihs88aQAIACAqsiA6SxAV0X80Kl6k
-         DF0tSK9QzQhWsTBTQmw5rIFdZFUsJeGjLn1Lu2fXUQ48r38w4WlUQCplgIV3vqFJYujU
-         E+vQ1CM1aJ1RtpvApJkmv7CXr0L8zPsmfePrIYXQZ5Boo2Xfze2L2OZHifGvciqQxjwn
-         Z/YRyh/4LiNsj76EPNQguoWsGmDibq64E+DOsWXincsNx849n8hPucFH6hAZVSGsU1l2
-         TUk3riF2XPs4AKm1iJAaR3H6yxmuouIHPbZi+8w5+0FCOYHcw7DGWKyKx0Lc0uL/pXUC
-         VB6g==
-X-Forwarded-Encrypted: i=1; AKwUvByv0HjA6aSKS0z4wGhD/sxuZYO9myyWD0dMq9rC0eLwRlP3RaG2eB/UL1QIz0FWbHUe9o+cyew=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLqoI/iWDuEdVepsK8I8cIHczl0G5/vqorSmLtPE5pZ9t5Isp5z
-	T5x2DZCfrPcfYs2Jr9Q5PgzFI9wJnVjo9mKtbzKF4QewFmq3uKdaGOF1
-X-Gm-Gg: AYBFou2SlZd4FmLvk5C4YVBsqByObcMUKCWihW9Hu3lf/y1PkI6oHIkJZUCyHpuL9h8
-	gl5k6AhALPUtNDmreMZp55F1TcKP58B5xikPxX1PU7tvvnhpPdOTNImRp86CsrCJMmsX2uFFl0B
-	EAXFZvMGzYJUaPpvkkeByBWR0iOIC3EXuWKadDsE4wyHPUyd6Uc7lf82WCMSmIwqNCLPdjkxNc9
-	xi248ShQPyKRu7JpZy83tay2kxUBNN5F/FyHUuQwQ62yO/56/07zeueUVtkNv1PsyXS9JS9O5fr
-	0jCeflO5q9/lDJDEJQXfgP9CDl53Ln1VXwvgmlxC5hvtA+HrhrlQqWTBZIy8Eqe7BicBYVM/1wA
-	NcNyZg8uzv2lrl6lUGB0PzbLi1zuLPMJiQA96r3gEFhVGvE/XHprBvnJ/+fCIVgwxweNLZvfrE/
-	ytRwm2y9lqZ/iB3cKn+NHMoGrYoFkG7Qb0DqFF50rKTx/MgQ2e9rFFzzU4eisAM0zhTIFkmWcv5
-	bxcn53AgTAsoCU78I4SSBXcdch16mSo8MnwU+zKe1cuZJqAy/6LU0A4mNMliZgNwq3cbi9FJ2nQ
-	u3LUkeCtFdNI1zalgBTm7DEh9YPrtxebZXWhW6+KT8s=
-X-Received: by 2002:a05:693c:414b:20b0:33e:a0c3:4163 with SMTP id 5a478bee46e88-3537e00907amr17264701eec.24.1791861022893;
-        Mon, 12 Oct 2026 20:10:22 -0700 (PDT)
-Received: from ramen-dev-security-2.asia-south1-c.c.ramen-dev-345017.internal (90.156.200.35.bc.googleusercontent.com. [35.200.156.90])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb1e02asm41129053eec.27.2026.10.12.20.10.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 20:10:22 -0700 (PDT)
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Harald Welte <laforge@gnumonks.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Shuah Khan <shuah@kernel.org>,
-	osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Anil Kaushik <anilkaushikwireless@gmail.com>
-Subject: [PATCH net-next v6 3/3] selftests: net: add a test for the gtp netlink family
-Date: Tue, 13 Oct 2026 03:10:00 +0000
-Message-Id: <20261013031000.528393-4-anilkaushikwireless@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261013031000.528393-1-anilkaushikwireless@gmail.com>
-References: <20261013031000.528393-1-anilkaushikwireless@gmail.com>
+	s=arc-20240116; t=1791861086; c=relaxed/simple;
+	bh=ARWsg5OJqiVDTR7iycF3Ayu4dgvlopAwbx13OiMNFUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=P9i2b3D1aqPEjn7qKA4UCshm/dA+t16QWm+7zWC3SgKqwF/H5a7XkV2UZ5YLIMyjx9nVQ0mKq/OBcjV21kR9f4ny5ItNR9T+7mhNh4zFVLu5AQxJasACc3ZVRLfakbdrtNDPQgthQgRZsX7MBS5tVyjd6/Z6QdEEpCRD8DiKzOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4j3fDm5WyXzRhQs;
+	Tue, 13 Oct 2026 10:59:04 +0800 (CST)
+Received: from kwepemf100018.china.huawei.com (unknown [7.202.181.17])
+	by mail.maildlp.com (Postfix) with ESMTPS id 69E5B40561;
+	Tue, 13 Oct 2026 11:11:18 +0800 (CST)
+Received: from [10.67.120.168] (10.67.120.168) by
+ kwepemf100018.china.huawei.com (7.202.181.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Tue, 13 Oct 2026 11:11:17 +0800
+Message-ID: <47c82da8-99cd-ec81-f264-d270fef057ee@hisilicon.com>
+Date: Tue, 13 Oct 2026 11:11:17 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 03/15] yunsilicon: add the command queue
+Content-Language: en-US
+To: Xin Tian <tianx@yunsilicon.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+CC: <weihg@yunsilicon.com>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>
+References: <20261012114352.2471317-1-tianx@yunsilicon.com>
+ <20261012114356.2471317-4-tianx@yunsilicon.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
+In-Reply-To: <20261012114356.2471317-4-tianx@yunsilicon.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemf100018.china.huawei.com (7.202.181.17)
 
-Exercise the gtp generic netlink family through its ynl spec: create a
-gtp device, add a PDP context with newpdp, check getpdp dumps it on that
-device with the expected TEIDs and addresses, and that delpdp by TEI
-removes it. Two more cases check that two contexts are dumped and one
-can be deleted by its MS address, and that deleting an unknown context
-fails with ENOENT, both by TEI and by MS address.
 
-ynl resolves the family ids once per process, with a CTRL_CMD_GETFAMILY
-dump which does not autoload modules, so the gtp device is created
-before the family handle: that loads gtp.ko through its rtnl link alias.
-The test is skipped when the kernel or iproute2 lack GTP support; any
-other failure to create the device fails it.
 
-Add a GtpFamily ynl wrapper and register the test.
+On 2026/10/12 19:43, Xin Tian wrote:
+> Add the command queue that is shared by the ethernet and RDMA functions:
+> the request/response rings, the command work handling and the device
+> initialisation sequence that queries the HCA capabilities, the GUID and
+> the message opcode table.
+> 
+> Signed-off-by: Xin Tian <tianx@yunsilicon.com>
+> ---
+>  .../net/ethernet/yunsilicon/xsc/pci/Makefile  |    2 +-
+>  .../net/ethernet/yunsilicon/xsc/pci/cmdq.c    | 1247 +++++++++++++++++
+>  drivers/net/ethernet/yunsilicon/xsc/pci/hw.c  |  310 ++++
+>  drivers/net/ethernet/yunsilicon/xsc/pci/hw.h  |   18 +
+>  .../net/ethernet/yunsilicon/xsc/pci/main.c    |   55 +
+>  5 files changed, 1631 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
+>  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.c
+>  create mode 100644 drivers/net/ethernet/yunsilicon/xsc/pci/hw.h
+> 
+> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+> index 81b65232e..656cdffa1 100644
+> --- a/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/Makefile
+> @@ -6,4 +6,4 @@ ccflags-y += -I$(srctree)/drivers/net/ethernet/yunsilicon/xsc
+>  
+>  obj-$(CONFIG_YUNSILICON_XSC_PCI) += xsc_pci.o
+>  
+> -xsc_pci-y := main.o hal/andes_impl.o
+> +xsc_pci-y := main.o cmdq.o hw.o hal/andes_impl.o
+> diff --git a/drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c b/drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
+> new file mode 100644
+> index 000000000..48832b26d
+> --- /dev/null
+> +++ b/drivers/net/ethernet/yunsilicon/xsc/pci/cmdq.c
+> @@ -0,0 +1,1247 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (c) 2021-2026, Shanghai Yunsilicon Technology Co., Ltd.
+> + * All rights reserved.
+> + * Copyright (c) 2013-2016, Mellanox Technologies. All rights reserved.
 
-Signed-off-by: Anil Kaushik <anilkaushikwireless@gmail.com>
----
- MAINTAINERS                                   |   1 +
- tools/testing/selftests/net/Makefile          |   1 +
- tools/testing/selftests/net/config            |   1 +
- tools/testing/selftests/net/gtp.py            | 123 ++++++++++++++++++
- .../testing/selftests/net/lib/py/__init__.py  |   5 +-
- tools/testing/selftests/net/lib/py/ynl.py     |   8 +-
- 6 files changed, 136 insertions(+), 3 deletions(-)
- create mode 100755 tools/testing/selftests/net/gtp.py
+Why Mellanox?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a6e43995ea58..8ac817a78bb0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11423,6 +11423,7 @@ S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pablo/gtp.git
- F:	Documentation/netlink/specs/gtp.yaml
- F:	drivers/net/gtp.c
-+F:	tools/testing/selftests/net/gtp.py
- 
- GUID PARTITION TABLE (GPT)
- M:	Davidlohr Bueso <dave@stgolabs.net>
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index d4ca82fec0b4..6b54e04a6430 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -46,6 +46,7 @@ TEST_PROGS := \
- 	fq_band_pktlimit.sh \
- 	gre_gso.sh \
- 	gre_ipv6_lladdr.sh \
-+	gtp.py \
- 	icmp.sh \
- 	icmp_redirect.sh \
- 	io_uring_zerocopy_tx.sh \
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 737e7e6327b3..c4534e15fb7a 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -15,6 +15,7 @@ CONFIG_DEBUG_INFO_BTF=y
- CONFIG_DEBUG_INFO_BTF_MODULES=n
- CONFIG_DUMMY=y
- CONFIG_GENEVE=m
-+CONFIG_GTP=m
- CONFIG_IFB=y
- CONFIG_INET_DIAG=y
- CONFIG_INET_ESP=y
-diff --git a/tools/testing/selftests/net/gtp.py b/tools/testing/selftests/net/gtp.py
-new file mode 100755
-index 000000000000..d793ca7b70d2
---- /dev/null
-+++ b/tools/testing/selftests/net/gtp.py
-@@ -0,0 +1,123 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+"""Tests for the gtp netlink family."""
-+
-+import errno
-+
-+from lib.py import ksft_run, ksft_exit
-+from lib.py import ksft_eq, ksft_in, ksft_not_in, ksft_raises
-+from lib.py import KsftSkipEx
-+from lib.py import NetNS, NetNSEnter
-+from lib.py import GtpFamily, NlError
-+from lib.py import CmdExitFailure
-+from lib.py import ip, defer
-+
-+_NO_GTP_ERRORS = ("Unknown device type", "Operation not supported",
-+                  "Garbage instead of arguments")
-+
-+
-+def _setup(ns):
-+    """Return a gtp family handle, and the ifindex of a new gtp device.
-+
-+    Create the device first: that loads gtp.ko through its rtnl link
-+    alias. ynl resolves the family ids once per process, with a
-+    CTRL_CMD_GETFAMILY dump which does not autoload modules, so the
-+    family must be registered before the first family handle is created.
-+    """
-+    try:
-+        ip("link add gtp0 type gtp role ggsn", ns=str(ns))
-+    except CmdExitFailure as e:
-+        # gtp.ko not available, or iproute2 without gtp support: any other
-+        # failure to create the device is a real error.
-+        if not any(msg in e.cmd.stderr for msg in _NO_GTP_ERRORS):
-+            raise
-+        raise KsftSkipEx("no gtp support (CONFIG_GTP, iproute2)") from e
-+    defer(ip, "link del gtp0", ns=str(ns))
-+    ip("link set gtp0 up", ns=str(ns))
-+    link = ip("-d link show gtp0", ns=str(ns), json=True)[0]["ifindex"]
-+
-+    with NetNSEnter(str(ns)):
-+        gtp = GtpFamily()
-+    defer(gtp.close)
-+
-+    return gtp, link
-+
-+
-+def _contexts(gtp, link):
-+    return [c for c in gtp.getpdp({}, dump=True) if c.get("link") == link]
-+
-+
-+def _iteis(contexts):
-+    return [c.get("i-tei") for c in contexts]
-+
-+
-+def add_del_pdp(ns) -> None:
-+    """Add a PDP context, query it, then delete it by TEI.
-+
-+    The dump must return the context with the link, TEIDs and addresses
-+    it was created with, and it must be gone after the delete. The delete
-+    only identifies the context by its TEI, to use the GTPv1 TEI lookup.
-+    """
-+    gtp, link = _setup(ns)
-+
-+    gtp.newpdp({"link": link, "version": 1,
-+                "i-tei": 0x100, "o-tei": 0x200,
-+                "ms-address": "10.0.0.1", "peer-address": "192.0.2.1"})
-+
-+    pdp = [c for c in _contexts(gtp, link) if c.get("i-tei") == 0x100]
-+    ksft_eq(len(pdp), 1)
-+    ksft_eq(pdp[0]["o-tei"], 0x200)
-+    ksft_eq(pdp[0]["ms-address"], "10.0.0.1")
-+    ksft_eq(pdp[0]["peer-address"], "192.0.2.1")
-+
-+    gtp.delpdp({"link": link, "version": 1, "i-tei": 0x100})
-+    ksft_not_in(0x100, _iteis(_contexts(gtp, link)))
-+
-+
-+def add_two_pdp(ns) -> None:
-+    """Add two PDP contexts, check both are dumped, delete one by address.
-+
-+    The delete identifies the context by its MS address, and must leave
-+    the other context in place.
-+    """
-+    gtp, link = _setup(ns)
-+
-+    for i_tei, o_tei, ms in ((0x111, 0x211, "10.0.1.1"),
-+                             (0x112, 0x212, "10.0.1.2")):
-+        gtp.newpdp({"link": link, "version": 1,
-+                    "i-tei": i_tei, "o-tei": o_tei,
-+                    "ms-address": ms, "peer-address": "192.0.2.5"})
-+
-+    iteis = _iteis(_contexts(gtp, link))
-+    ksft_in(0x111, iteis)
-+    ksft_in(0x112, iteis)
-+
-+    gtp.delpdp({"link": link, "version": 1, "ms-address": "10.0.1.1"})
-+    iteis = _iteis(_contexts(gtp, link))
-+    ksft_not_in(0x111, iteis)
-+    ksft_in(0x112, iteis)
-+
-+
-+def del_unknown_pdp(ns) -> None:
-+    """Deleting a context that was never added must fail with ENOENT.
-+
-+    Both lookups are checked: by TEI, and by MS address.
-+    """
-+    gtp, link = _setup(ns)
-+
-+    for attrs in ({"i-tei": 0x999}, {"ms-address": "10.9.9.9"}):
-+        with ksft_raises(NlError) as cm:
-+            gtp.delpdp({"link": link, "version": 1, **attrs})
-+        ksft_eq(cm.exception.error, errno.ENOENT)
-+
-+
-+def main() -> None:
-+    """Run the PDP context tests in a temporary netns."""
-+    with NetNS() as ns:
-+        ksft_run([add_del_pdp, add_two_pdp, del_unknown_pdp], args=(ns,))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
-diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-index 71df5880b356..e269a260d58e 100644
---- a/tools/testing/selftests/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/net/lib/py/__init__.py
-@@ -18,7 +18,7 @@ from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
- from .bpf import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
- from .ynl import NlError, NlctrlFamily, YnlFamily, \
-     EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily, RtnlRouteFamily
--from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily, Netlink
-+from .ynl import NetshaperFamily, DevlinkFamily, GtpFamily, PSPFamily, Netlink
- 
- __all__ = ["KSRC",
-            "KsftFailEx", "KsftSkipEx", "KsftXfailEx", "ksft_pr", "ksft_eq",
-@@ -32,6 +32,7 @@ __all__ = ["KSRC",
-            "wait_port_listen", "ctl_file_write", "wait_file", "tool", "tc",
-            "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
-            "NetdevSim", "NetdevSimDev",
--           "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-+           "NetshaperFamily", "DevlinkFamily", "GtpFamily", "PSPFamily",
-+           "NlError",
-            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
-            "NlctrlFamily", "RtnlAddrFamily", "RtnlRouteFamily", "Netlink"]
-diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
-index 08deff756f29..7edb74971023 100644
---- a/tools/testing/selftests/net/lib/py/ynl.py
-+++ b/tools/testing/selftests/net/lib/py/ynl.py
-@@ -31,7 +31,7 @@ __all__ = [
-     "NlError", "NlPolicy", "Netlink", "YnlFamily", "SPEC_PATH",
-     "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily", "RtnlRouteFamily",
-     "NetdevFamily", "NetshaperFamily", "NlctrlFamily", "DevlinkFamily",
--    "PSPFamily",
-+    "GtpFamily", "PSPFamily",
- ]
- 
- #
-@@ -85,3 +85,9 @@ class PSPFamily(YnlFamily):
-     def __init__(self, recv_size=0):
-         super().__init__((SPEC_PATH / Path('psp.yaml')).as_posix(),
-                          schema='', recv_size=recv_size)
-+
-+
-+class GtpFamily(YnlFamily):
-+    def __init__(self, recv_size=0):
-+        super().__init__((SPEC_PATH / Path('gtp.yaml')).as_posix(),
-+                         schema='', recv_size=recv_size)
--- 
-2.25.1
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/errno.h>
+> +#include <linux/pci.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/slab.h>
+> +#include <linux/delay.h>
+> +#include <linux/random.h>
+> +#include <linux/kthread.h>
+> +#include <linux/io-mapping.h>
+> +
+> +#include "common/xsc_cmd_api.h"
+> +#include "common/xsc_cmd.h"
+> +#include "common/xsc_core.h"
+> +#include "hal/xsc_hal.h"
+> +
+> +enum {
+> +	CMD_IF_REV = 3,
+> +};
+> +
+> +enum {
+> +	NUM_LONG_LISTS	  = 2,
+> +	NUM_MED_LISTS	  = 64,
+> +	LONG_LIST_SIZE	  = (2ULL * 1024 * 1024 * 1024 / PAGE_SIZE) * 8 + 16 +
+> +				XSC_CMD_DATA_BLOCK_SIZE,
+> +	MED_LIST_SIZE	  = 16 + XSC_CMD_DATA_BLOCK_SIZE,
+> +};
+> +
+> +enum {
+> +	XSC_CMD_DELIVERY_STAT_OK			= 0x0,
+> +	XSC_CMD_DELIVERY_STAT_SIGNAT_ERR		= 0x1,
+> +	XSC_CMD_DELIVERY_STAT_TOK_ERR			= 0x2,
+> +	XSC_CMD_DELIVERY_STAT_BAD_BLK_NUM_ERR		= 0x3,
+> +	XSC_CMD_DELIVERY_STAT_OUT_PTR_ALIGN_ERR		= 0x4,
+> +	XSC_CMD_DELIVERY_STAT_IN_PTR_ALIGN_ERR		= 0x5,
+> +	XSC_CMD_DELIVERY_STAT_FW_ERR			= 0x6,
+> +	XSC_CMD_DELIVERY_STAT_IN_LENGTH_ERR		= 0x7,
+> +	XSC_CMD_DELIVERY_STAT_OUT_LENGTH_ERR		= 0x8,
+> +	XSC_CMD_DELIVERY_STAT_RES_FLD_NOT_CLR_ERR	= 0x9,
+> +	XSC_CMD_DELIVERY_STAT_CMD_DESCR_ERR		= 0x10,
+> +};
+> +
+> +static struct xsc_cmd_work_ent *xsc_alloc_cmd(struct xsc_cmd *cmd,
+> +					      struct xsc_cmd_msg *in,
+> +					      struct xsc_rsp_msg *out)
+> +{
+> +	struct xsc_cmd_work_ent *ent;
+> +
+> +	ent = kzalloc_obj(*ent, GFP_KERNEL);
+> +	if (!ent)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	ent->in		= in;
+> +	ent->out	= out;
+> +	ent->cmd	= cmd;
+> +
+> +	return ent;
+> +}
+> +
+> +static void xsc_free_cmd(struct xsc_cmd_work_ent *ent)
+> +{
+> +	kfree(ent);
 
+One line function is unnecessary.
+
+Junxian
+
+> +}
