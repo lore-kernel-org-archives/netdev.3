@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBFB40F73A
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 14:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3FC501F5F
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791902391; cv=none; b=nVguPmi/KbJh+hHlar+7M0bTmIkuUHsZwcYTvpivEunHTNQ3bi0nnjQgdrfu3C9DM/qQ4lxSX1pJO+KdcJRjK18m0Ttim6uttLb+MDMPfQoxzOk5VAVvpgdw3ZbvOlROCflg0EqscS7bsocHnhnJ27qjv8/cjoIwqEp7BqrTNjQ=
+	t=1791902392; cv=none; b=u5X7enZzXTNeewsKNswxQOjm+6Zy5Zaj+ggq7hlWsN0JuhU+eZV1VdmkivhHRcGqyXdH6lEdzf84Gv6pBniVKjT9ymaqjGgfgD+2KeZtUT1Oi6f5bwQv6Td67UGu5PgOMKDPQ5XOcyzuuapZLDyIZB9x+ERZ7k286VoZaMAuxnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791902391; c=relaxed/simple;
-	bh=x4JXlDlGmqWY5EW+2edkOtzPjV1b+03YQOwDIz+jHdo=;
+	s=arc-20240116; t=1791902392; c=relaxed/simple;
+	bh=CldsFQ+st2kt9P1OA5Jp0hoDoosAjRLuXzqgI9NX5Cg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ATesPAa4VG0KbgP/uZ0XCnKo+yrBzolOFiwuoex0BBYBoJgulgjZ7En+otWc9/QdfqvPHj68ADNac0A2eS+TbXa/VRC1QZLW1fcsCsOYZyUAIWyPvIr44xOX0jAcUXdz5zBBokLp//npZE7QzdH70UHxJNJVF0t5H0/nijOn/KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bkG4PJbN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=YQ76YkWH4+yAk5Q25z2BgwOoD0WdtLKTSKlp5S6uWjHwLW+EIOLGTTtkGBWQsyf53Ns6d50TMx4BzByTm0QAEZrKNYSFq5pYF6kO49hadCE+G51iK6GMX0Ufwc1/7JZsVYgy0ofo/e3J2tX4VaTeNABNSXs/13bwXPzjDKLZkHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXvNIsOx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bkG4PJbN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006FB1F000FF;
-	Tue, 13 Oct 2026 14:39:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXvNIsOx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1997B1F00899;
+	Tue, 13 Oct 2026 14:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791902389;
-	bh=jdOmbyKW1BXVliYEEyAVtWpOSyYPCb1tNiqls9Wke5M=;
+	s=k20260515; t=1791902390;
+	bh=oIsH+XufLhVd+p65ClCVL80FofoGGNi5D9mOqceGMnc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bkG4PJbNHB1fX6XQ8GE7WIqmgK3R3d9abb3nMS/pYz2iev3QCpkTQQz11ROGPGIy1
-	 eLMgaeb6S4Hufub/HwtpeFLngpsHqrh6oVvfjuZ/Pe/PKBBo6NAktC+VIJFHsnSYRD
-	 1vWauesjES7DJ3Mt+95mf3f08uv/ScBnHzuAvsXXmhFs2kUVvAB2gCLEKVIpqTbFFT
-	 5N2baHIhxweaRB7nBetbOucB5ZYydEx+IdPkgHydntYa3Ns+6/E6EX1K2+xD+nGGtl
-	 uacBqjW/3nAdOgUv2UAR2s/IdwNGxAWsMqgwo9B0usK4AiOj48/Jfjxvuu9FTVFUgF
-	 zKoOAiN2ixaBw==
-Subject:
- Re: [PATCH net-next 4/6] selftests: ovpn: enable TCP_NODELAY on TCP sockets
+	b=aXvNIsOxjUkVpje48f/EOqcfzM8LzqcDzr3F2zagTIQBxG/m3d+BHt6T/SFMapGyR
+	 z/4Fn9a6YdkgUp2WWnZOkApcSU/wFBPWggtvCLiFExYe1U3ra3WDn0eID7o2sriYs4
+	 v35luAiCHpVEVXLrwWKppWqbK8FM++3K9koGjuO4lGJ+grBwlazkDMI2G0Q5I/aX81
+	 1SvKiHvnrjR0Xzltafg6wJT5AQusgjsFxrMTn/4UYlVJQrN6840/urfww0+l2XcxlN
+	 IzdGtw+tDdJQd2hnXATolZLSczQs3BUTk4oqZ3xLiyg9rBafrJRx0n1YWaToq36mL2
+	 Y+bm+2PHlEwFw==
+Subject: Re: [PATCH net-next 5/6] selftests: ovpn: wait for the TCP server key
+ setup before traffic
 From: netdev-bot+sashiko@kernel.org
 To: antonio@openvpn.net
 Cc: netdev@vger.kernel.org, sd@queasysnail.net, ralf@mandelbit.com,
  kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
  davem@davemloft.net, edumazet@google.com
-Date: Tue, 13 Oct 2026 14:39:48 +0000
-Message-ID: <179190238850.434549.6180086091448145830@kernel.org>
-In-Reply-To: <20261012133809.2477063-5-antonio@openvpn.net>
-References: <20261012133809.2477063-5-antonio@openvpn.net>
-X-sashiko-severity: Medium
+Date: Tue, 13 Oct 2026 14:39:49 +0000
+Message-ID: <179190238965.434549.14700774313324207816@kernel.org>
+In-Reply-To: <20261012133809.2477063-6-antonio@openvpn.net>
+References: <20261012133809.2477063-6-antonio@openvpn.net>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,92 +47,161 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] After this patch, no TCP selftest checks the TX peer-ID that
-  goes out on the wire.
+- [Low] The commit fixes a real ordering race but has no Fixes: tag.
+- [Low] In TCP mode, ovpn_add_peer() creates a temporary file with
+  `OVPN_TCP_KEYS_LOG=$(mktemp)` and redirects the background subshell…
+- [Low] ovpn_wait_tcp_keys() decides whether the background subshell is
+  still running with `while kill -0 "${OVPN_TCP_KEYS_PID}"`.
 
 --
 
-selftests: ovpn: enable TCP_NODELAY on TCP sockets
+selftests: ovpn: wait for the TCP server key setup before traffic
 
-This commit makes ovpn-cli set TCP_NODELAY on its TCP sockets by default.
-Setting OVPN_TCP_NODELAY=0 turns it off, and the new test-tcp-nagle.sh
-uses that to keep running the TCP suite with Nagle enabled. It also limits
-the tcpdump-based peer ID check in ovpn_run_basic_traffic() to UDP.
+This patch saves the PID of the background TCP server subshell that
+ovpn_add_peer() starts. That subshell runs listen and then new_key for
+every peer, and its output now goes to a temporary log file. A new
+ovpn_wait_tcp_keys() polls the subshell with a 30s bound, dumps the log
+on failure, and is called from test.sh and test-close-socket.sh once all
+peers are registered.
 
-> diff --git a/tools/testing/selftests/net/ovpn/test.sh b/tools/testing/selftests/net/ovpn/test.sh
-> index 392109d5e14e2..e2e6ffdd29bb0 100755
-> --- a/tools/testing/selftests/net/ovpn/test.sh
-> +++ b/tools/testing/selftests/net/ovpn/test.sh
-> @@ -137,35 +137,33 @@ ovpn_run_basic_traffic() {
->  	local tcpdump_timeout="1.5s"
->  
->  	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
-
-[ ... ]
-
->  		if [ "${OVPN_PROTO}" == "UDP" ]; then
+> The sleep 5 that follows does not cover it: it elapses while "listen" is
+> still waiting for connections, and the peers only connect in the
+> subsequent ovpn_add_peer() iterations, so the key loop starts well after
+> that sleep has expired. Until now the test happened to work because of
+> the unrelated delays that ran in between.
 
 [ ... ]
 
-> @@ -173,8 +171,10 @@ ovpn_run_basic_traffic() {
->  			ip netns exec ovpn_peer0 \
->  			ping -qfc 100 -s 3000 -w 3 5.5.5.$((p + 1))
->  
-> -		wait "${tcpdump_pid1}" || return 1
-> -		wait "${tcpdump_pid2}" || return 1
-> +		if [ "${OVPN_PROTO}" == "UDP" ]; then
-> +			wait "${tcpdump_pid1}" || return 1
-> +			wait "${tcpdump_pid2}" || return 1
+> Signed-off-by: Antonio Quartulli <antonio@openvpn.net>
+
+[Severity: Low]
+This fixes a race in the test, but there is no Fixes: tag. Should one be
+added?
+
+The background listen/new_key subshell followed by sleep 5 in
+ovpn_add_peer() comes from:
+
+959bc330a439 ("testing/selftests: add test tool and scripts for ovpn module")
+
+Commit 7c29665a3a3c later rewrote the listen and new_key lines but kept
+the same structure.
+
+Documentation/process/maintainer-netdev.rst says "for fixes the Fixes:
+tag is required, regardless of the tree". The exception there for tests
+only covers tests that come with a code fix.
+
+Also, the previous patch in this series ("selftests: ovpn: enable
+TCP_NODELAY on TCP sockets") removed the two tcpdump captures and the
+sleep 0.3 before the first TCP ping. That may be one of the "unrelated
+delays" mentioned above.
+
+> diff --git a/tools/testing/selftests/net/ovpn/common.sh b/tools/testing/selftests/net/ovpn/common.sh
+> index 2f7851b823436..da732c64ffea6 100644
+> --- a/tools/testing/selftests/net/ovpn/common.sh
+> +++ b/tools/testing/selftests/net/ovpn/common.sh
+> @@ -256,14 +256,19 @@ ovpn_add_peer() {
+>  		fi
+>  	else
+>  		if [ ${1} -eq 0 ]; then
+> +			OVPN_TCP_KEYS_LOG=$(mktemp)
+>  			(ip netns exec "${server_ns}" ${OVPN_CLI} listen tun0 \
+>  				1 ${M_ID} ${OVPN_TCP_PEERS_FILE} && {
+> +				rc=0
+>  				for p in $(seq 1 ${OVPN_NUM_PEERS}); do
+>  					ip netns exec "${server_ns}" \
+>  						${OVPN_CLI} new_key tun0 ${p} \
+> -						1 0 ${OVPN_ALG} 0 data64.key
+> +						1 0 ${OVPN_ALG} 0 data64.key \
+> +						|| rc=1
+>  				done
+> -			}) &
+> +				exit ${rc}
+> +			}) >"${OVPN_TCP_KEYS_LOG}" 2>&1 &
+> +			OVPN_TCP_KEYS_PID=$!
+>  			sleep 5
+>  		else
+>  			peer_ns="ovpn_peer${1}"
+
+[ ... ]
+
+> +ovpn_wait_tcp_keys() {
+> +	local deadline rc
+> +
+> +	[ -n "${OVPN_TCP_KEYS_PID:-}" ] || return 0
+> +
+> +	deadline=$((SECONDS + OVPN_TCP_KEYS_TIMEOUT))
+> +	while kill -0 "${OVPN_TCP_KEYS_PID}" 2>/dev/null; do
+> +		if [ "${SECONDS}" -ge "${deadline}" ]; then
+> +			printf '%s\n' \
+> +				"server-side key setup still running after ${OVPN_TCP_KEYS_TIMEOUT}s"
+> +			kill "${OVPN_TCP_KEYS_PID}" 2>/dev/null
+
+[Severity: Low]
+Can kill -0 and kill here end up hitting an unrelated process?
+
+Both use the raw number saved by OVPN_TCP_KEYS_PID=$! in ovpn_add_peer().
+Bash reaps background children itself, both from its SIGCHLD handling
+and while it waits for the foreground sleep 0.2. It keeps the exit status
+so the later wait still works.
+
+Once the child is reaped, its PID is free in the kernel and can be given
+to another task. If that happens before the next kill -0:
+
+  - the loop treats the unrelated process as the key setup job and spins
+    until the 30s deadline
+  - kill then sends SIGTERM to that process
+  - setup is reported as failed even though the keys were installed
+
+alloc_pid() hands out PIDs cyclically, so this needs a PID wraparound
+within one poll interval. That makes it very unlikely in practice, but
+the check is not tied to the job's lifetime.
+
+Could the liveness check and the kill be tied to the background job
+itself rather than to the numeric PID?
+
+> +			wait "${OVPN_TCP_KEYS_PID}" 2>/dev/null
+> +			ovpn_dump_tcp_keys_log
+> +			return 1
+
+[Severity: Low]
+Does this timeout path leak the OVPN_TCP_KEYS_LOG file that mktemp
+creates in ovpn_add_peer()?
+
+The only removal is the rm -f "${OVPN_TCP_KEYS_LOG}" further down. It
+only runs when the subshell exits on its own, and this return 1 skips it.
+
+The file is also left behind if a later ovpn_add_peer() call fails before
+ovpn_wait_tcp_keys() is reached, for example when connect fails. Under
+set -eE that path goes through the EXIT trap to ovpn_cleanup(), which
+never touches OVPN_TCP_KEYS_LOG:
+
+ovpn_cleanup() {
+	local peer
+
+	# some ovpn-cli processes sleep in background so they need manual poking
+	killall "$(basename "${OVPN_CLI}")" 2>/dev/null || true
+
+	for peer in "${!OVPN_LISTENER_PIDS[@]}"; do
+		ovpn_stop_listener "${peer}" 2>/dev/null
+	done
+	...
+}
+
+The existing OVPN_TMP_JSONS temp files are already removed from
+ovpn_cleanup() through ovpn_stop_listener(). Should OVPN_TCP_KEYS_LOG be
+removed from ovpn_cleanup() too?
+
 > +		fi
->  	done
->  }
+> +		sleep 0.2
+> +	done
 
-[Severity: Medium]
-This patch removes the TCP branch of ovpn_build_capture_filter() and makes
-these waits UDP-only. After that, does any TCP selftest still check the
-peer-id that goes out on the wire?
-
-The capture was added by commit 367f4b163a8c ("selftests: ovpn: check
-asymmetric peer-id"). Its purpose was to check the peer-id in the data
-packet headers for every connection, TCP included.
-
-On the kernel side, the TCP receive path never reads the peer-id from the
-packet. It takes the peer that is bound to the socket:
-
-drivers/net/ovpn/tcp.c:ovpn_tcp_rcv() {
-    ...
-	ovpn_recv(peer, skb);
-    ...
-}
-
-So if a TCP peer had the wrong tx_id here, traffic would still flow:
-
-drivers/net/ovpn/crypto_aead.c:ovpn_aead_encrypt() {
-    ...
-	op = ovpn_opcode_compose(OVPN_DATA_V2, ks->key_id, peer->tx_id);
-    ...
-}
-
-The JSON expectations in the selftest directory don't compare tx-id
-either. With this change, test-tcp.sh, test-symmetric-id-tcp.sh and the new
-test-tcp-nagle.sh would all pass with an incorrect TCP tx_id.
-
-The later patch in the series ("selftests: ovpn: wait for the TCP server
-key setup before traffic") does not bring the TCP check back.
-
-Could these TCP variants keep some form of peer-id check that does not
-depend on TCP segment boundaries?
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012133809.2477063-1-antonio%40openvpn.net
