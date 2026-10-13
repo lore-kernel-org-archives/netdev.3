@@ -1,248 +1,370 @@
-Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30543C07A;
-	Tue, 13 Oct 2026 03:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.153
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791861858; cv=none; b=iFo+2phHkGn98R5H/yM+fTH/77LqEPwmegBhDgNYoDGqCKCAWE7kjyJLxxZutATMWjxWniNM/dWn2lXFHWLV86oRpJ/wUXzRmMyyOnb6KrmTOgVQuFyNhk5bsTTwXIlU/YP9cIlEOnSgtJvKMNmxQ6Jwr6PQDTxR6HX2vvzhrdc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791861858; c=relaxed/simple;
-	bh=jE5FBck0iwVfKsvvwnPJh+4Fn2qOZpSmZ/uBxGgOK3w=;
-	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=b5AxHje8THzAhPgSt5Vfy57aWm6vNc/RMstbSGAtccmA8cDh8j3fRjxR8ky+4vDxR3I3Rkbinl47TESJy6+Fv6HIcfxsqPnlBED7wC9lsa0ZBl2Qx/oAXJSWNMpS5iF8VE6ZXlwy4RPsEvyrWwGqFp3i0KUNA7bXdBTtaLd+OLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ckXNWsAQ; arc=none smtp.client-ip=203.205.221.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC45238E135
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791861922; cv=pass; b=SNzH4NhwLYkITxvKeV0lt/NwZDdcIEvulyn3DrsS+b16NtFehoWSSiyg/ktxckGm6SQqOQSwGBoYDM+C75SSf+JHbq532rrQ817PJrD7l1fcrhrxQxcN0NxVWOj1bncTh9ZgAUlQSKMfDUXezcx1GMeIKwRMyXCJj5Xa0Bairdg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791861922; c=relaxed/simple;
+	bh=0b7OaC4HUufUZhIweIEW73CTwJE8jbl1XyGAQdeamgk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qoNQaAduRKuLL83Vfx6RtmVY2POLDFsmOu5jJ0i0dwBXdwOo4K0Gt0Y3gDDczGi2X2Njr+IhLIYJJ1O+z7XYkoTzQX0IZaqL6+pb9IYsMeZSp6wMEwysKx7VFHHxVHuhzS7OsjLlMJmsntQjQz/InVYKBzOjuix523HV5+keJnY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jM/MMwV+; arc=pass smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ckXNWsAQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1791861852; bh=n5aSjpi38d97JoTIKAE9ofjyp7sKD4gBZolpt7WmoUk=;
-	h=From:Date:Subject:To:Cc;
-	b=ckXNWsAQFnZJGmmwry5r/3S6EMV3MfSylxwl7ff+BoBX+Go8owP0KEYXhxD+HzcRA
-	 L+fDJrLfgpNDOw0eTy0iy/A+WIrY9aHVi1ncTEZk8RjEr4rkqrXE9pCeDUeUTlT8Eb
-	 HHUIR/smYzm7U+kUmQy6pyXKMh5cFkj8JvwC1cdw=
-Received: from ubuntu2204.localdomain ([2409:8d20:7f:35d:9e54:40ff:fe02:3f0f])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 5AA184C4; Tue, 13 Oct 2026 11:22:42 +0800
-X-QQ-mid: xmsmtpt1791861762takf3foip
-Message-ID: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
-X-QQ-XMAILINFO: MlsYLnHA0UVjWnp7hi0CZSt7AYwx3Dlpux5tMi53y2dxpTPQTxCoE7WziwLp/l
-	 V9WsvrSu2jmFlr2nf/vrfvlmSOWV40/V1Rrx4/INqVH3CQOiTfzHUlJFxh+p7i6/iisSafKzXi8r
-	 6y2LdHMQDvMPS9hN0ujcgVZolio/nkv2HcpQPc7fJpKR7Tq6V506QsoNdj5NXv5gU3TiCMDxjpuE
-	 q74ONYXjm5qLjYrfKFAFLtnMKtVIRoeH5UtApQnoRO2Ky6prnDsU75kTJySU8eZK66IQKfzk7JfG
-	 Yl5Gru/A61Sw6ni8SyHEK8tKDOu7gOenphyWJjvJgyFPlOZYByFsUk603I2yTDetxjlMWE5DlXHO
-	 6XtfClD30Sm9PtN2So7rGf2rjIozhQdXQha9SaawaX8aie91AC+JXKN5afEmRh0IAyfcaUSQqnc9
-	 vEHXCrK6uECPcYNrZADd3gJsbtlHORLRJeSz8Ry+sKIhp9btZ/M/8U8i38YfJYAd1tkns9JeYlFX
-	 3jwmJB9A/+n2dP6Pww/UlniRdD89B2aLgOAI2jaCpRTYAMGW+xS339GHm8lX1rjMKykLi7jLvK6G
-	 RXfWe6NObbXnqhjO5E3G+4IBo2mTJXvxL8PDar9BcmItjd/9v5iaDAIBMjNLvDgB615LPDEDKFOZ
-	 Ts/2Nk8qd9fLs+5saJwqT//VQf8SGQpqfjv+TEreL93dcXAqgFExbu/aMNsYzg2aF1llwfaHo37W
-	 onqV+q8e8W38IlFxgjCxyBB9Miw+DJIc2AmRyyTdQZalfC75HFt9IM1l3dbUYgUHmKZXk2DrumLD
-	 HyeO5aHQqwjKZxhFqnya7NfyGhue6XhdPzWqlXGXhuue9XbDjBJ03L9Tp4gG6FNAeHkgKPNaKcog
-	 kEn2G/EW/KsyDqmgzR+JkWtpY+tdwbSgy1ip+6PHbMKv6BIW9xYkt/C4Uq3YP97z6aSvmLqgqK9z
-	 /88uB08Oly/aPF1ezaC483aolF6iJ4sofO4xaMU36Nhsz1O9NaiLMipOCYepT/d10L8KttsnHfmo
-	 nhVSd9mB4H+S+EDdwAeDH8zW8J5NnoaTPS9OVpMwS90dhlqWR2fPfIYnfDQcCST6pTko38zpOt/6
-	 8qP0WA5jDceBDRcpLPApCT9WK8MHDUE5xRfSdV1uBoOwTG3utYLmSCSs5iBHHp1dUwgwBoONW/Kh
-	 nHDEY=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: Cunhao Lu <1579567540@qq.com>
-Date: Tue, 13 Oct 2026 11:22:37 +0800
-Subject: [PATCH net] can: rockchip_canfd: stop bus-off restart before
- closing the device
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jM/MMwV+"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e5c8f53a9so209709685a.3
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:25:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791861920; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RZuWN4NIzDWj/nVpwG1EWk4PXCKbWi9gMLe/r+zg5vPkuxG8bgWfRfg+BfPq1iY7mH
+         TdFsxF6nr/cJk8mi5QadJmU8/65gHOuLzcnaLPgtCEFT+EnIeT+GXbgIDQACqzLyXw6I
+         w90Hdj4iiKhgve/x9WspvNOxoWTH657IhJo6p1oVwkXZm2hc5m3iSG1j0C7TEZMz/Lv1
+         jrJQDom1xzLUIKM7Jb9ZFlql4o9dhWOWO/qdvJvdUim/lGh5TVGxLZVTs0vPiYFbMxm1
+         vUtMccFdnAfyeMYd1x/NyBxOod5k6y4URKHFA8dbdHIdNWdnFblkkTYlPyDphMvXnCW8
+         96+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=8btU5rJ+Pel0WPP/jtsdEEDxh2u3x4YA62OOuosbpv4=;
+        fh=V3ckCPKIyjzgSEDPgckiGo9z82oLJJcqKnyi2ktdV9M=;
+        b=slUC6bh+vziv6NyoxATx+FWqD6ONifDzv32QftnKDmTL35BvCZyYXw9Oniw1sYxRgh
+         PlIdKHtT40QbA6MPDRP2APnx7c6qAuhKuRbn7Xm0P7BZDSXrXMtyRuWrNXSv+8mnRNvC
+         nkB8ywag6umkruaSv/ycWwLM0UEM1z6dRV/h7bICmlJTe/VB/q+D5hgb8JFwEsgzu8h3
+         L7zNaZ6r4en1i7Nb7OtyhqB9Rs3TnfOoeQ1gTsDA3K56GEt3SdtCLixP9sqMVTcIxfWx
+         iftAoP50kopCoTZkUCFHOGfk3lCtU52DX3HAHXmZLN3voYlEdawze9Z17t1MaqrzDGL9
+         cVxQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791861920; x=1792466720; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8btU5rJ+Pel0WPP/jtsdEEDxh2u3x4YA62OOuosbpv4=;
+        b=jM/MMwV+spQdqLF4vVT1GKlzN7FtZ//7yship3FuXnn54P8A/8P7vr9MIsUglGAD2y
+         pYTS2NZhZJsEQ2AnkMGK7gz5jtsYT7iy4cCtuc8yvjovpeCu+ftRYMgPpybgipk+G7eq
+         ucZ5xgLF6wtocjvfwyHPjOcor9k9y5gKb4CkXkN4zlsf1mPSmEZNeqCLktGNaDUTmuff
+         fy479+R8dLkcNw5QmA3t7eiWPugrSi2uneh1RDXeoBwji1OzO26AyK8mA8oUckiRnr8B
+         Raw8qZqxyup1mJiYOzzwHvtYkXjOT74KtTkHNlRm9G86jpc6D+B0D59u201SmzW9kGfF
+         S9jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791861920; x=1792466720;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8btU5rJ+Pel0WPP/jtsdEEDxh2u3x4YA62OOuosbpv4=;
+        b=VH1qZaLTzxY49kBEb7XFhmuNTCrPDV0WmHCcabf65Gait+LU9dSy6jv+Z+MkIgezPa
+         bvvwbNG7TZYy9qg3rPQbR6zx4o6iq5YTAACbADx1p504rKgydEsAPPU9YhhJus8cIDVp
+         H0AjJ+Zks3WV7aCuT7naVePGCixcZpFKgYeTbc1S/W49t+71yE/TrxkyJlPF8gAT4s18
+         7CZc6n5zOG16PAm+VqFNVoIomFS8ERubNES3qK3uZMkcfn2QHHXMCFM1QKdMUWKOzQAf
+         FJMbU9DUMRw9Fk5KRRplUFKSB/ogFeZDa/V4XvN8xEp75SQ7hQQSVCce1H6FpwD+8Z0z
+         KmkQ==
+X-Forwarded-Encrypted: i=1; AKwUvByR+nvutr5CL1cZV8PG7Z+P04O7BpcVhSqHvzHg4yJoCLfyEvQy8Dyt5TYwaAaL4EOz4ozfOZc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJtyyGNT8G7giNpI9C7PMya4F9mnz6bA13CuBpYWK5SbnnCf4lZ
+	AH77muVhWAQmUgSNMHrehwUZWsdV7JihmcjYTnSu/ztDED9wFGYY3s0q1GeY0OtoILkPh2M0vXG
+	O04JmMxh2p4eKqPSo+C2SsAQIZ3F73Ec=
+X-Gm-Gg: AYBFou2Kc0OpcTo+QWZTE/Qp+U8JAQV8eeXP+sHc2Q1993ZM52HaJGkzzYu1sZvRJdz
+	TXVrpN2zX+47bL90M5NmbWEmthTheM7/xFZELDirh99wqqRZ86qoqmluCiGrIa6sKFcX1JJR1Jd
+	+XVD38ysQZE57Wtuzr9YtcOvcUfm7serGtUYvGuPhqL9/SdMX/EOETKbsaEsmOwRxptuwvp6YSb
+	4AJZwfgBxqu6YazlEZSvpaN707uKZUaSz74GcEkguuuMFIatd2lt+K4dTMXSok9TR42fj6wf4p+
+	YJLiynzBUFIkn44m2nsUhOZyHs2THJwtoh1gXSprp4TcjOIzZdrEGJjYzrjxjRVMWA==
+X-Received: by 2002:a05:620a:1981:b0:93c:c7ee:8087 with SMTP id
+ af79cd13be357-93ebd262586mr2063648385a.41.1791861918719; Mon, 12 Oct 2026
+ 20:25:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-OQ-MSGID: <20261013-rockchip-canfd-restart-close-v1-1-72cac4f932cf@qq.com>
-X-B4-Tracking: v=1; b=H4sIAPyjzWoC/yXMwQrCMAyA4VcZORtYpxP0VcRDm6YuKu1IOhHG3
- t2qx/8/fCsYq7DBuVtB+SUmJbdwuw5o8vnGKLE1DP1wdL3boxZ60CQzks8porJVrxXpWYyRQ+T
- xNB6SCwkaMSsnef/4C2SucP1PW8KdqX5h2LYPhSdx8oUAAAA=
-X-Change-ID: 20261013-rockchip-canfd-restart-close-ebde5954f1bf
-To: Marc Kleine-Budde <mkl@pengutronix.de>, 
- Vincent Mailhol <mailhol@kernel.org>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org, 
- kernel@pengutronix.de, Heiko Stuebner <heiko@sntech.de>, 
- linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Cunhao Lu <1579567540@qq.com>
-X-Mailer: b4 0.15.2
+References: <20261010142247.99223-1-physicalmtea@gmail.com>
+ <20261010142247.99223-2-physicalmtea@gmail.com> <as1SWsJw2dSrPYcL@devvm29614.prn0.facebook.com>
+In-Reply-To: <as1SWsJw2dSrPYcL@devvm29614.prn0.facebook.com>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Tue, 13 Oct 2026 11:24:42 +0800
+X-Gm-Features: AclHuK8ArxSs8AN-w9MzUrVu9R026x9r6uOWM8JmPA66VFn2x0Xfdd31Fer7qUg
+Message-ID: <CAJwVaMJsQs61+sCun6oJ7bW-Ob76AjdHVxLd+T1EVHvOR5e7Xw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/5] vsock/virtio: split socket lookup from
+ locked RX processing
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org, 
+	virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com, 
+	jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com, 
+	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The close path cancels restart_work after freeing the IRQ and stopping
-hardware. A queued bus-off restart can therefore enable the controller
-and interrupts after teardown. It can also restart timestamp work before
-runtime suspend.
+>
+> On Sat, Oct 10, 2026 at 10:22:43PM +0800, Jia Jia wrote:
+> > Split virtio_transport_recv_pkt() so socket lookup is separate from the
+> > receive state machine that runs under the socket lock.
+> >
+> > Keep virtio_transport_recv_pkt() on its existing per-packet locking path.
+> > Pass the source and destination addresses used for lookup to the locked
+> > receive path so they are decoded only once.
+> >
+> > Pass the network namespace and decoded address tuple through a packet
+> > context to the locked receive path.
+> >
+> > Preserve source validation and failure handling. Keep the lookup reference
+> > separate from the skb owner reference so the locked receive path can manage
+> > the two lifetimes independently.
+> >
+> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> > ---
+> >  net/vmw_vsock/virtio_transport_common.c | 139 ++++++++++++++++--------
+> >  1 file changed, 96 insertions(+), 43 deletions(-)
+> >
+> > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> > index f225f53..e3e75e5 100644
+> > --- a/net/vmw_vsock/virtio_transport_common.c
+> > +++ b/net/vmw_vsock/virtio_transport_common.c
+> > @@ -1774,81 +1774,97 @@ static bool virtio_transport_valid_type(u16 type)
+> >              (type == VIRTIO_VSOCK_TYPE_SEQPACKET);
+> >  }
+> >
+> > -/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+> > - * lock.
+> > - */
+> > -void virtio_transport_recv_pkt(struct virtio_transport *t,
+> > -                            struct sk_buff *skb, struct net *net)
+> > +static void
+> > +virtio_transport_recv_pkt_init_addrs(struct sk_buff *skb,
+> > +                                  struct sockaddr_vm *src,
+> > +                                  struct sockaddr_vm *dst)
+>
+> I'd prefer these calls stay inline, there is nothing complex enough here
+> to justify abstracting IMHO.
+>
+> Could we move things around so that we don't have the arbitrary move of
+> virtio_transport_recv_pkt()? It tends to create noise and makes it
+> harder to focus on the more important parts of the patch.
+>
 
-Serialize restart with the close transition using a mutex. Mark the
-device closing and mask its interrupts before synchronizing the IRQ.
-Release the mutex before cancelling restart_work, so a queued restart
-can observe the closing state without deadlocking.
+Sure, I'll update this in the next version.
 
-Exclude the IRQ handler while reinitializing the hardware on restart.
-Do not disable the shared IRQ line while waiting for work to finish.
+> >  {
+> >       struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> > -     struct sockaddr_vm src, dst;
+> > -     struct vsock_sock *vsk;
+> > -     struct sock *sk;
+> > -     bool space_available;
+> >
+> > -     vsock_addr_init(&src, le64_to_cpu(hdr->src_cid),
+> > +     vsock_addr_init(src, le64_to_cpu(hdr->src_cid),
+> >                       le32_to_cpu(hdr->src_port));
+> > -     vsock_addr_init(&dst, le64_to_cpu(hdr->dst_cid),
+> > +     vsock_addr_init(dst, le64_to_cpu(hdr->dst_cid),
+> >                       le32_to_cpu(hdr->dst_port));
+> > +}
+> > +
+> > +static void
+> > +virtio_transport_trace_recv_pkt(struct sk_buff *skb,
+> > +                             const struct sockaddr_vm *src,
+> > +                             const struct sockaddr_vm *dst)
+> > +{
+> > +     struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> >
+> > -     trace_virtio_transport_recv_pkt(src.svm_cid, src.svm_port,
+> > -                                     dst.svm_cid, dst.svm_port,
+> > +     trace_virtio_transport_recv_pkt(src->svm_cid, src->svm_port,
+> > +                                     dst->svm_cid, dst->svm_port,
+> >                                       le32_to_cpu(hdr->len),
+> >                                       le16_to_cpu(hdr->type),
+> >                                       le16_to_cpu(hdr->op),
+> >                                       le32_to_cpu(hdr->flags),
+> >                                       le32_to_cpu(hdr->buf_alloc),
+> >                                       le32_to_cpu(hdr->fwd_cnt));
+> > +}
+>
+> Any chance we can get rid of this wrapper and just call
+> trace_virtio_transport_recv_pkt() directly? Even from multiple call
+> sites I don't think this is a big simplification win.
+>
 
-Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cunhao Lu <1579567540@qq.com>
----
-When automatic bus-off recovery is enabled, bringing the interface down
-can race with a pending or running restart. The driver currently relies
-on close_candev() to cancel restart_work, but calls it only after freeing
-the IRQ, disabling RX offload and stopping the controller. A restart in
-that interval can re-enable the controller and its interrupts after IRQ
-teardown, and requeue timestamp work after it has been stopped. That work
-can subsequently access registers after runtime suspend disables the
-controller clocks.
+Sure, I'll update this in the next version.
 
-Serialize the restart callback and the close transition with a mutex and
-a closing flag. The close path marks the device as closing and masks its
-interrupts, then synchronizes the IRQ before cancelling restart_work.
-This drains any handler that could still schedule a restart. Cancellation
-runs outside the mutex so that a restart waiting for the lock can observe
-the closing flag and exit. IRQ teardown, RX offload shutdown and the final
-hardware stop follow only after restart work has finished. The shared IRQ
-line is disabled only around hardware reinitialization in the restart
-callback, not while cancelling work in the close path.
+> >
+> > -     if (!virtio_transport_valid_type(le16_to_cpu(hdr->type))) {
+> > -             (void)virtio_transport_reset_no_sock(t, skb, net);
+> > -             goto free_pkt;
+> > -     }
+> > +static struct sock *
+> > +virtio_transport_recv_pkt_find_socket(struct sk_buff *skb,
+> > +                                   struct sockaddr_vm *src,
+> > +                                   struct sockaddr_vm *dst,
+> > +                                   struct net *net)
+> > +{
+> > +     struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
+> > +     struct sock *sk;
+> >
+> > -     /* The socket must be in connected or bound table
+> > -      * otherwise send reset back
+> > -      */
+> > -     sk = vsock_find_connected_socket_net(&src, &dst, net);
+> > -     if (!sk) {
+> > -             sk = vsock_find_bound_socket_net(&dst, net);
+> > -             if (!sk) {
+> > -                     (void)virtio_transport_reset_no_sock(t, skb, net);
+> > -                     goto free_pkt;
+> > -             }
+> > -     }
+> > +     if (!virtio_transport_valid_type(le16_to_cpu(hdr->type)))
+> > +             return NULL;
+> > +
+> > +     sk = vsock_find_connected_socket_net(src, dst, net);
+> > +     if (!sk)
+> > +             sk = vsock_find_bound_socket_net(dst, net);
+> > +     if (!sk)
+> > +             return NULL;
+> >
+> >       if (virtio_transport_get_type(sk) != le16_to_cpu(hdr->type)) {
+> > -             (void)virtio_transport_reset_no_sock(t, skb, net);
+> >               sock_put(sk);
+> > -             goto free_pkt;
+> > +             return NULL;
+> >       }
+> >
+> > -     if (!skb_set_owner_sk_safe(skb, sk)) {
+> > -             WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+> > -             goto free_pkt;
+> > -     }
+> > +     return sk;
+> > +}
+>
+> Similarly here, the unrelated functions blending makes for a harder
+> read. Maybe worth moving things around or trying a different diff
+> algorithm?
+>
 
-The standalone fix was tested on a LubanCat-5IO running a PREEMPT_RT
-kernel. The 1 Mbit/s CAN bus was connected to four CANopen motors
-operating at 100 Hz and four sensors operating at 20 Hz.
-A bitrate mismatch forced bus-off, with automatic restart set to 100 ms;
-25 iterations brought the interface down at delays spanning immediate
-close through 130 ms after bus-off. Every iteration reached bus-off and
-scheduled recovery, with no crashes or kernel traces observed. Automatic
-recovery was also checked with the interface left up, including a 1 s
-restart delay. The reported build completed without warnings.
----
- drivers/net/can/rockchip/rockchip_canfd-core.c | 40 +++++++++++++++++++-------
- drivers/net/can/rockchip/rockchip_canfd.h      |  5 ++++
- 2 files changed, 35 insertions(+), 10 deletions(-)
+Sure, I'll update this in the next version
 
-diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
-index 37c1c22c40c9..e38ddd143a3a 100644
---- a/drivers/net/can/rockchip/rockchip_canfd-core.c
-+++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
-@@ -244,6 +244,8 @@ static void rkcanfd_chip_interrupts_enable(const struct rkcanfd_priv *priv)
- static void rkcanfd_chip_interrupts_disable(const struct rkcanfd_priv *priv)
- {
- 	rkcanfd_write(priv, RKCANFD_REG_INT_MASK, RKCANFD_REG_INT_ALL);
-+	/* Flush the mask before synchronizing a shared IRQ. */
-+	rkcanfd_read(priv, RKCANFD_REG_INT_MASK);
- }
- 
- static void rkcanfd_chip_fifo_setup(struct rkcanfd_priv *priv)
-@@ -353,19 +355,27 @@ static int rkcanfd_set_mode(struct net_device *ndev,
- 			    enum can_mode mode)
- {
- 	struct rkcanfd_priv *priv = netdev_priv(ndev);
-+	int err = 0;
- 
--	switch (mode) {
--	case CAN_MODE_START:
--		rkcanfd_chip_start(priv);
--		rkcanfd_chip_interrupts_enable(priv);
--		netif_wake_queue(ndev);
--		break;
--
--	default:
-+	if (mode != CAN_MODE_START)
- 		return -EOPNOTSUPP;
-+
-+	mutex_lock(&priv->state_lock);
-+	if (READ_ONCE(priv->closing)) {
-+		err = -ENETDOWN;
-+		goto out_unlock;
- 	}
- 
--	return 0;
-+	disable_irq(ndev->irq);
-+	rkcanfd_chip_start(priv);
-+	rkcanfd_chip_interrupts_enable(priv);
-+	enable_irq(ndev->irq);
-+	netif_wake_queue(ndev);
-+
-+out_unlock:
-+	mutex_unlock(&priv->state_lock);
-+
-+	return err;
- }
- 
- static struct sk_buff *
-@@ -666,6 +676,9 @@ static irqreturn_t rkcanfd_irq(int irq, void *dev_id)
- 	struct rkcanfd_priv *priv = dev_id;
- 	u32 reg_int_unmasked, reg_int;
- 
-+	if (READ_ONCE(priv->closing))
-+		return IRQ_NONE;
-+
- 	reg_int_unmasked = rkcanfd_read(priv, RKCANFD_REG_INT);
- 	reg_int = reg_int_unmasked & ~priv->reg_int_mask_default;
- 
-@@ -736,6 +749,7 @@ static int rkcanfd_open(struct net_device *ndev)
- 	rkcanfd_chip_start(priv);
- 	can_rx_offload_enable(&priv->offload);
- 
-+	WRITE_ONCE(priv->closing, false);
- 	err = request_irq(ndev->irq, rkcanfd_irq, IRQF_SHARED, ndev->name, priv);
- 	if (err)
- 		goto out_rkcanfd_chip_stop;
-@@ -758,9 +772,14 @@ static int rkcanfd_stop(struct net_device *ndev)
- {
- 	struct rkcanfd_priv *priv = netdev_priv(ndev);
- 
-+	mutex_lock(&priv->state_lock);
-+	WRITE_ONCE(priv->closing, true);
-+	rkcanfd_chip_interrupts_disable(priv);
-+	mutex_unlock(&priv->state_lock);
-+	synchronize_irq(ndev->irq);
-+	cancel_delayed_work_sync(&priv->can.restart_work);
- 	netif_stop_queue(ndev);
- 
--	rkcanfd_chip_interrupts_disable(priv);
- 	free_irq(ndev->irq, priv);
- 	can_rx_offload_disable(&priv->offload);
- 	rkcanfd_chip_stop_sync(priv, CAN_STATE_STOPPED);
-@@ -921,6 +940,7 @@ static int rkcanfd_probe(struct platform_device *pdev)
- 	priv->can.do_set_mode = rkcanfd_set_mode;
- 	priv->can.do_get_berr_counter = rkcanfd_get_berr_counter;
- 	priv->ndev = ndev;
-+	mutex_init(&priv->state_lock);
- 
- 	match = device_get_match_data(&pdev->dev);
- 	if (match) {
-diff --git a/drivers/net/can/rockchip/rockchip_canfd.h b/drivers/net/can/rockchip/rockchip_canfd.h
-index 95bea9bfd8a2..c81233142a74 100644
---- a/drivers/net/can/rockchip/rockchip_canfd.h
-+++ b/drivers/net/can/rockchip/rockchip_canfd.h
-@@ -12,6 +12,7 @@
- #include <linux/can/rx-offload.h>
- #include <linux/clk.h>
- #include <linux/io.h>
-+#include <linux/mutex.h>
- #include <linux/netdevice.h>
- #include <linux/reset.h>
- #include <linux/skbuff.h>
-@@ -478,6 +479,10 @@ struct rkcanfd_priv {
- 	unsigned int tx_head;
- 	unsigned int tx_tail;
- 
-+	bool closing;
-+	/* Serializes restart with the close transition. */
-+	struct mutex state_lock;
-+
- 	u32 reg_mode_default;
- 	u32 reg_int_mask_default;
- 	struct rkcanfd_devtype_data devtype_data;
+> nit: maybe we could just call this virtio_transport_find_socket()? AFAIK
+> the tx side doesn't need a socket lookup since we already have the
+> socket there, so we can omit the disambiguation if it lends a nicer
+> name.
+>
 
----
-base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
-change-id: 20261013-rockchip-canfd-restart-close-ebde5954f1bf
+Sure, I'll update this in the next version
 
-Best regards,
---  
-Cunhao Lu <1579567540@qq.com>
+> >
+> > -     vsk = vsock_sk(sk);
+> > +struct virtio_transport_rx_pkt_ctx {
+> > +     struct net *net;
+> > +     const struct sockaddr_vm *src;
+> > +     const struct sockaddr_vm *dst;
+> > +};
+>
+> Let's just pass these directly too...
+>
 
+Sure, I'll update this in the next version.
+
+> >
+> > -     lock_sock(sk);
+> > +/*
+> > + * The caller holds sk's socket lock and must free skb if this returns true.
+> > + */
+> > +static bool
+> > +virtio_transport_recv_pkt_locked(struct virtio_transport *t,
+> > +                              struct sk_buff *skb, struct sock *sk,
+> > +                              const struct virtio_transport_rx_pkt_ctx *ctx)
+> > +{
+> > +     const struct sockaddr_vm *src = ctx->src;
+> > +     const struct sockaddr_vm *dst = ctx->dst;
+> > +     struct vsock_sock *vsk = vsock_sk(sk);
+> > +     struct net *net = ctx->net;
+> > +     bool space_available;
+> >
+> > -     /* Check if sk has been closed or assigned to another transport before
+> > -      * lock_sock (note: listener sockets are not assigned to any transport)
+> > +     /* Check after acquiring the socket lock. Listener sockets accept packets
+> > +      * from any source and are not assigned to a transport.
+>
+> We can probably remove the first sentence since the function-level
+> comment already declares we are holding the socket lock.
+>
+
+Sure, I'll update this in the next version.
+
+> Best,
+> Bobby
+>
+> >        */
+> >       if (sock_flag(sk, SOCK_DONE) ||
+> >           (sk->sk_state != TCP_LISTEN &&
+> > -          !vsock_check_source(vsk, &t->transport, &src))) {
+> > +          !vsock_check_source(vsk, &t->transport, src))) {
+> >               (void)virtio_transport_reset_no_sock(t, skb, net);
+> > -             release_sock(sk);
+> > -             sock_put(sk);
+> > -             goto free_pkt;
+> > +             return true;
+> >       }
+> >
+> >       space_available = virtio_transport_space_update(sk, skb);
+> >
+> >       /* Update CID in case it has changed after a transport reset event */
+> >       if (vsk->local_addr.svm_cid != VMADDR_CID_ANY)
+> > -             vsk->local_addr.svm_cid = dst.svm_cid;
+> > +             vsk->local_addr.svm_cid = dst->svm_cid;
+> >
+> >       if (space_available)
+> >               sk->sk_write_space(sk);
+> > @@ -1875,12 +1891,49 @@ void virtio_transport_recv_pkt(struct virtio_transport *t,
+> >               break;
+> >       }
+> >
+> > +     return false;
+> > +}
+> > +
+> > +/* We are under the virtio-vsock's vsock->rx_lock or vhost-vsock's vq->mutex
+> > + * lock.
+> > + */
+> > +void virtio_transport_recv_pkt(struct virtio_transport *t,
+> > +                            struct sk_buff *skb, struct net *net)
+> > +{
+> > +     struct virtio_transport_rx_pkt_ctx ctx;
+> > +     struct sockaddr_vm src, dst;
+> > +     struct sock *sk;
+> > +     bool free_pkt;
+> > +
+> > +     virtio_transport_recv_pkt_init_addrs(skb, &src, &dst);
+> > +     virtio_transport_trace_recv_pkt(skb, &src, &dst);
+> > +
+> > +     sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
+> > +     if (!sk) {
+> > +             (void)virtio_transport_reset_no_sock(t, skb, net);
+> > +             goto free_pkt;
+> > +     }
+> > +
+> > +     if (!skb_set_owner_sk_safe(skb, sk)) {
+> > +             WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
+> > +             goto free_pkt;
+> > +     }
+> > +
+> > +     lock_sock(sk);
+> > +     ctx = (struct virtio_transport_rx_pkt_ctx) {
+> > +             .net = net,
+> > +             .src = &src,
+> > +             .dst = &dst,
+> > +     }
+> > +     free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
+> >       release_sock(sk);
+> >
+> >       /* Release refcnt obtained when we fetched this socket out of the
+> >        * bound or connected list.
+> >        */
+> >       sock_put(sk);
+> > +     if (free_pkt)
+> > +             kfree_skb(skb);
+> >       return;
+> >
+> >  free_pkt:
+> > --
+> > 2.34.1
+> >
