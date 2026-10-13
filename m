@@ -1,72 +1,87 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.167])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAE723AB87
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.167
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791883336; cv=pass; b=tVI722uUm3wqghd8B2Jyaynvhf+lnFT83kTxS+D48BdsfAWFziVnTiGTJy55lTWamEXRaVRqSHAtRSSyhRVvyQB67dA+r+UB+jH2oG33vExM7xnMIN5uwpAPV6sQ0z4qpyKADgXFI+22dK6GedITIsmYpqFNmTU6OopjaS1btOM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791883336; c=relaxed/simple;
-	bh=wC750oiUHZAaqH0orFuVMNoPZ9RHOAY6kRL304Fr5Wo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEDF3B059F
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791883529; cv=none; b=GT2VRPY7wmczKws1d6EMhICkpDdQ9kZEoQdYqX3ldyFTY4mMfpFJOGEdib7gsgCnTkONRUwFDb1PnTO75tb33wRpM3/lQXTlF7W50Bgyhe2eXr3maFphCCLYTqDgahAUYb+c1D53wXSk3/BEU4hYTotJW8SmG00YgqZaJe+C5f8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791883529; c=relaxed/simple;
+	bh=E+38fAMqkeo2SkoQ8n7hSTpLs3Ek1Bw2C++QIWUrUAI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s6togQiGKukQlXbhxZ1DdEgqDKGj4bNpL4YNERDAWT4cyNDZRSjOb7UiLplT3Kbmu9OkHec1Ojm0fZcIsALrEqBLeSusnXAG5sGcDru4uh1/B5VyImQs52/GpvluRFMdM/Jo3S54Cxwok6fV6p4YqgjmoK81kd/TP9HJU8e8kFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=hjNX3erm; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=1jVK4ehQ; arc=pass smtp.client-ip=81.169.146.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	 In-Reply-To:Content-Type; b=gKr7e+Se/4kevxOM0BKClB0zjcpyZsWNwZzv66qj7MbmOlgu4usD8nP/EV5P/75TQnndxDz7PFVDBKcup3WlL/NuHwEtY157lLMIUWC4UQZ9dxQ8Bpmg+P63etM0xmcNxi5dj6FaroR+Z9E4RaSPyYGMk1Sin+8ryOgp+/G4fmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U2/yiLGL; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MshJrHtX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="hjNX3erm";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="1jVK4ehQ"
-ARC-Seal: i=1; a=rsa-sha256; t=1791883309; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=CuPrAE1aujrrKTTqGnVE44NFRe1DP44CCmHgOvI6NIMkVTAnIB56rp80AxcEw7qQ+C
-    e1kPniQWBsFrA48XW5Mjo/9GNDILmuwb0ArUjnlrhUjmiKsj3kmHoJOxBEKuQm5OPDkk
-    V/q9238AUnYpQAk1+Znvo4uMGNznfIGa/WVIk5NEjv6puGLRAV36TjCidALU28r/JkNo
-    lSCGtDTadph0c3ByseMmF2APz8+wTFHKCsZsvkPaBHK/EYzhHKQrZMmqOp75MPpQ5R5C
-    +/GcuIjky7EL5oWjRW1Z872dmn5chL4Y3OKvOKMVZeNhTlOFtsKV1By82vdiXlGKAkDH
-    3i5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1791883309;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=tOA1Xza/VKOE/F6G3qq1NQn6FEvAoR2TRmvvKSQZ5NQ=;
-    b=QXzGvrl+GvwsInkv5ak1PWW1bUB1iyhyNbi7gQ17fSRlUCmQpb+KoEcGpsRzoXg6X1
-    UevZZW6O5RumtwL8hPmQhPoZMpL6IG7x+fKLO7ZeoVDeYP61bJCHQ91GrXMM7eciWVsH
-    7WweWJ3zSBNhfleU2GLdIj5vwVK6jPfOUMZZPqO4evRqkOty1e9v0QK5sbbGZz3a7ZA5
-    83/XVaXp4B6zfM58MWVEIAUdWMkHja0hmQbExOMsqZS/8RTwGSYmkApiFcMJw8cy3SdT
-    Ty2Yx2YApltEYFf7drQOwJN3vwENqBZVBDObGzk1KEAsc70i4CKvIH0gETmCQR3gjAo4
-    Uvng==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1791883309;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=tOA1Xza/VKOE/F6G3qq1NQn6FEvAoR2TRmvvKSQZ5NQ=;
-    b=hjNX3erm+p/jDDEzg3YXLRaWqqIBTNVE2rCQ5Hyvh09mkt1CGo0yHWLP8WObKv2s0u
-    eb6mYaqJjivwz8RlsJcpTn+YpwLNWpdwGFrlE+MZFYq979fLthJjfIXQk6IOy1A3Mc9L
-    VfgMRPeFLpXpJDTb/gow73vJKla3bTziJtPZMNXbe6NSNKEISBLncBYtjbYnrwRIbkLg
-    xVK8gN3KsSIteGPYAArgEh5C13D5iPV73ou3WQwVUhVnHahYnGZpX8yqqgJ05xxxDXaR
-    m27zSpVJLx3P8TTn4XvL/Ru6rOTLUafLlaU5unEd0WuxJ346I6igkmzjnWu3F03Z4ARy
-    PKhQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1791883309;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=tOA1Xza/VKOE/F6G3qq1NQn6FEvAoR2TRmvvKSQZ5NQ=;
-    b=1jVK4ehQiGp+1XQFYkw6lfALmfMQ0ktl3cbrb82brwzQmZX4IPufWS8l/bDXIdfs1N
-    mniNjg3TUbkM9SNvlZDQ==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a29D9Ln58V
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 13 Oct 2026 11:21:49 +0200 (CEST)
-Message-ID: <47e7242b-ab71-4a42-924d-08f91dd35194@hartkopp.net>
-Date: Tue, 13 Oct 2026 11:21:43 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U2/yiLGL";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MshJrHtX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791883526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xtho2iqqZNwqkJufhHeVK/o5V+FrSAKuRVkK+5Y2SlQ=;
+	b=U2/yiLGLTbzzw3qoF+DOJl+b6KKgNcS9Mi9Onpy1iuAM24d1GoEa1zw3nx7opw16kwOiAX
+	7/fRv+T6sByF838MkLz7uhKt565gpsaURgVnXT4XIDnWmlb07VG9N4EzoGUQsvWGJ+r/sC
+	jdr+Wc1VGjpzWcLoCfXwdVoFK0OnlF4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-77-uBqWhU1mP2-4pMqS2VosDw-1; Tue, 13 Oct 2026 09:25:25 +0000
+X-MC-Unique: uBqWhU1mP2-4pMqS2VosDw-1
+X-Mimecast-MFC-AGG-ID: uBqWhU1mP2-4pMqS2VosDw_1791883524
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a009f82bedso22105325e9.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1791883524; x=1792488324; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xtho2iqqZNwqkJufhHeVK/o5V+FrSAKuRVkK+5Y2SlQ=;
+        b=MshJrHtXqoX9PgBMpa0wBU+kKOQAcEz0HzoHHcOsCDm0KHBBP6TUBbf31DyJt6Wkf8
+         fn0/q3HBqz2JAPjf5CqyQIa69N39CejwwQk4PE7yPfBSudt1V7gQV3DnuFITBLwxt3ls
+         pZSiCvl/v8AVhc9jtqAJqYvvUg4gxHrCHCRGoKeJcw3smhejBJXaG5QqnzWaHRkvsmn1
+         JpcUEPpqPaS7HMDe01nBd5oIkMG8BVLmEQpg0yvvr/81JbCVYE+vZCQIgQxJ+RZC8YS6
+         RPURQ2AdqAXJV83En2YeAPBzwyS2NNoSbL6T8R2z1JDRjv6B1ck8nZ0Vio0r+ovQBa0r
+         CMMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791883524; x=1792488324;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xtho2iqqZNwqkJufhHeVK/o5V+FrSAKuRVkK+5Y2SlQ=;
+        b=mjMGnCI58r56rSCR368qwSi+Kz53hzepPvj4VVDSN0zur4aWX9JB6csiX97jy28UdY
+         LUxl+Rn7CfcCP6Y0jz0aZS6jStoSLSaar+l2vtoTdbWjrI2f5ExG48xZD2rFZGACHU/R
+         XFNyDcs+GPhQKXH8ZWkmdOPzjkEjEslNyyFbzyuE8xORVd9hiO1PbetTLJaNXjeOfrD/
+         KEeQHv4q2huAC2B0smPgPssR4BQi4WbqpUonOJBbOrRFZKU49B1ZoMuB+uaEl2ULgaxi
+         cEDHQiLbaQoyEYPWQHttdWKCewAytRZGDGFsnFr8LKxRmwWQHTktE14QXqZYEMj0VzL6
+         Kn2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwdOVekdfksBT9JMW32fb5bZfvkH9ZHdJMBG3uQBpsk2TML0JB/6VLEvx8oKNjE4gW8qQkFRMY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKpN7pNe6NqJdMwY0E9JIsk/QRzP4Ks3QHdxve79rUJT/q3MEE8
+	qKKYXFNYHAtPlg21JLtO966375wWUhlOoQA1ihbIuzyJ+6f9JUcgzjR3FAgQjMpFPpTs3p8B6Mo
+	ew3ODEWvVyLpBWPPwRNXD1XSXhEP+XQ3vkMoBmDAQkdrkpLfNwZUQeU+AGHunPq7H+A==
+X-Gm-Gg: AYBFou0+7qMRE5xC82XeGWTfgODT1KOIV1JtMveBq7ZdzaQoC1GgqJkeHriMJAhe8q9
+	ws4fY+XC4ETZXAOPM1xxU+MkrcdYqapfngNPZXwpCprW6hV3TpDHclXgWthZQW7aw9nl5QInKm0
+	gVmBWBKM2zK0nTlmXTK69KzdVNwADMqs1J3o2ldwgu2Xh9+veY4Uw7NVg5SCXTNImn1Fi+J2I61
+	ihX2VU//f6fCekbpM52gbGA4YQWNmpTySOjnVU4Wzl0KTwi/kLLX7tWGt+QfzNV42FZj6LgeX0l
+	KbkqaiogMRiGNjXX9iJ68BkS2q6fzuzwOwKcWvu7gG6C6hZKLljbCIqhS5/TqDpsH+cel37d+2e
+	DZSzSr8s0ct+FpLZJH+bwEmNUdzVDYXz2yQwp2QBoz1Kgsy9yXV2dHxeNdllSg2FSeQaeIJmfWw
+	==
+X-Received: by 2002:a05:600c:6990:b0:4a1:80d8:aed5 with SMTP id 5b1f17b1804b1-4a18e49c43bmr234651035e9.6.1791883523966;
+        Tue, 13 Oct 2026 02:25:23 -0700 (PDT)
+X-Received: by 2002:a05:600c:6990:b0:4a1:80d8:aed5 with SMTP id 5b1f17b1804b1-4a18e49c43bmr234650575e9.6.1791883523538;
+        Tue, 13 Oct 2026 02:25:23 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a195002123sm359024505e9.1.2026.10.13.02.25.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Oct 2026 02:25:23 -0700 (PDT)
+Message-ID: <48d2ed02-c5b6-428f-b290-bb6bd92fe299@redhat.com>
+Date: Tue, 13 Oct 2026 11:25:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,61 +89,72 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] team: reject CAN and IEEE 802.15.4 devices in
- team_port_add
-To: netdev-bot+sinfo@kernel.org
-Cc: Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jiale Yao <yaojiale02@163.com>
-References: <20261013083523.4728-1-socketcan@hartkopp.net>
- <179188078132.2527009.11908657524993056251@kernel.org>
+Subject: Re: [GIT PULL] bluetooth 2026-10-12
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>, davem@davemloft.net,
+ kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
+References: <20261012210758.275556-1-luiz.dentz@gmail.com>
 Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <179188078132.2527009.11908657524993056251@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261012210758.275556-1-luiz.dentz@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-The issue was found by code inspection (LLM-assisted, see the
-Assisted-by tag), following the syzbot report against the bonding
-driver (syzbot+8ed98cbd0161632bce95), which was fixed by commit
-8ba68464e478 ("bonding: refuse to enslave CAN devices").
-
-team_setup_by_port() copies port_dev->type into the team device in
-the same way, so a team master with a vxcan port ends up as an
-ARPHRD_CAN device without can_ml_priv, and runs into the same
-NULL pointer dereference (e.g. via isotp_release() ->
-can_rx_unregister()).
-
-The same class of problem (non-CAN netdevs claiming ARPHRD_CAN
-without CAN ml_priv) was already hit by syzbot in the CAN core and
-mitigated there, see 8aa59e355949 ("can: af_can: fix NULL pointer
-dereference in can_rx_register()") and 0acc442309a0 ("can: af_can:
-fix NULL pointer dereference in can_rcv_filter",
-syzbot+2d7f58292cb5b29eb5ad), both with bonding/tun.
-
-The IEEE 802.15.4 types were added by analogy during review.
-
-Best regards,
-Oliver
-
-On 13.10.26 10:39, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
+On 10/12/26 23:07, Luiz Augusto von Dentz wrote:
+> The following changes since commit e32d80293a0e1a160d5e5101daa8c82148c07510:
 > 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
+>    Bluetooth: ISO: Serialize concurrent connect calls (2026-10-05 13:10:47 -0400)
 > 
->   - How the issue was discovered, e.g. hit in production, hit during
->     development, syzbot report, manual code inspection, LLM or static
->     analysis tool scan.
+> are available in the Git repository at:
 > 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
+>    git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-10-12
 > 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+> for you to fetch changes up to 23ad91f6a21a830b67f5eee790caa0053bd6537d:
+> 
+>    Bluetooth: MSFT: Serialize handle map cleanup with event processing (2026-10-12 16:27:16 -0400)
+> 
+> ----------------------------------------------------------------
+> bluetooth pull request for net:
+> 
+> Core:
+> 
+>   - hci_core: Keep RCU protection through LTK filtering
+>   - hci_sync: Serialize devcoredump reset during device open
+>   - hci_sync: Protect IRK identity reads with RCU
+>   - hci_sync: fix mesh adv timeout units
+>   - hci_debugfs: Pin module for debugfs file operations
+>   - L2CAP: Hold the listener while notifying child teardown
+>   - ISO: Hold the listener during disconnect notification
+>   - MGMT: Reject quality report requests during unregister
+>   - MGMT: Fix advertising instances with Global Advertising
+>   - MGMT: Fix pending state of instances added without HCI traffic
+>   - MGMT: Fix leaking instance on Add Extended Advertising Parameters
+>   - MGMT: Allow connection rate request as peripheral
+>   - selftest: Pin module for selftest debugfs file operations
+>   - 6lowpan: Pin module for 6lowpan_control debugfs file
+>   - 6LoWPAN: Use RCU-safe device list removal
+>   - 6lowpan: Drain RCU readers on registration failure
+>   - msft: Lock failed probe cleanup against feature readers
+>   - MSFT: Serialize handle map cleanup with event processing
+>   - Add missing newline to bt_dev_{err,warn}_ratelimited()
+>   - Fix tracking of instances sharing handle 0x00
+> 
+> Drivers:
+> 
+>   - btintel: Zero version data before parsing TLVs
+>   - btmtk: fix skb double free on ISO padding failure
+>   - hci_vhci: Pin module for debugfs file operations
+
+Ouch, that quite a significant PR! Linus is pushing towards
+smaller RCs: he is not going to be happy. I must admit I
+would be slightly concerned by the size this late in the
+cycle even without additional pressure.
+
+Do you think anything of the above could be moved to next?
+Things broken since the beginning and/or required root access
+could be good candidates.
+
+Thanks!
+
+Paolo
 
