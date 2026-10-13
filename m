@@ -1,86 +1,112 @@
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A35F3998B4;
-	Tue, 13 Oct 2026 10:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6703A0E80;
+	Tue, 13 Oct 2026 10:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791888100; cv=none; b=S4bEGNvv4/QwQiOUNme2i29mKfZkDYctJRgA3qoV3uPhIt9lTiicxMyJUmRHGRnEXCZJxLdHX3FKzYgEnfvXMmi8G0NZyxyKB1U2DXqd+B9HDUoJSMNWrli1Ty+53YMtMM1FASaOF1BAXTGWS21GtUgVWBQFWU3B5VA6icXV22A=
+	t=1791888138; cv=none; b=ufEfuDjQf+wAjJHG04I+f4sRl+6R4uJF5Ih7BlHlRdjbcwDRDJ7/CkrwnEJCgda8n3NmT6baAzGHCiwrtUTnvTCmFd6kymOKVrcVWyp/qFneVfFDACBtA68v81eIYeU3lZOr5YFjH8uwfBLSP1NR/Igmlied2n4yggIIE7YBt9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791888100; c=relaxed/simple;
-	bh=71BsLK8ebqaTOxFvbmGZxoh9rmrlmOI7KUumGHN2rw0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KpWvg2BsjilkzHCtrOOWzpCpuZPhz2g24zk/2nwczkfQ/iaFAzsoChzSBEX3CEuh60YDlpkCJwXaiMtTOzYlu7sBHt7PAUjRGBbfm0mt8ySzZ6cay8ZIa+fcCPwU0ZZA6suC6CyFJWkSbWDkXboq9/Zvgh95LivM6gduMucwmcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=dfIjaEGB; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+	s=arc-20240116; t=1791888138; c=relaxed/simple;
+	bh=W9IOmZd6NCBQxQe8yp/0nFe31/tEy/JGEmdFhfz3Zx0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yhq9SLTs0K8baeyNt/RVdBgLyeGe8YFeHSrsnbJXGXqokSudPU0s12TXAFaHUUGuVbhrdPTzkuMygjksv3ugjfeyvcOEw0iXOQ4s6Q5aHbQTpV3UXyaJpadH0TqOjiYSQt10XFRMTRCPQJRhhxWN+RfghnkndrpOKHjTQ9RLnBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=p4vMjRtm; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="dfIjaEGB"
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1791887548;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VmW1Mk++o+vHDf7lQbc0Lnrv6OPA0Ilhu/jNTKAd+LM=;
-	b=dfIjaEGB82c84y/QUnSCpqY5ZMDIrzJGv2zO4BXk+Dzjk2yNGvKWTCSH5lZoLoSJuGI0Go
-	z3T5RRfwwC7UmdxihwZZY5LUNts2wySbSi43WJVF9sAT+uCL0HJ1YBC7pIWzK2P0hT1VIK
-	p0QQeDDmaB2LQY1OfVMMYDU2McaGkfo=
-To: Sean Anderson <seanga2@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: sunhme: fix infinite loop in unmap_partial_tx_skb()
-Date: Tue, 13 Oct 2026 13:32:26 +0300
-Message-ID: <20261013103228.37430-1-arefev@swemel.ru>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="p4vMjRtm"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 53FBA169C;
+	Tue, 13 Oct 2026 03:42:13 -0700 (PDT)
+Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C226D3F7B4;
+	Tue, 13 Oct 2026 03:42:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1791888136; bh=W9IOmZd6NCBQxQe8yp/0nFe31/tEy/JGEmdFhfz3Zx0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=p4vMjRtm+hGJY8UPjqMDOtxJKflXmrP2vqY/17xouBvpxZsfR430vOeHQp+g4HZHp
+	 i7cTDvCFclitDTgkIqF0/Rs5AUZgo0y+FddOHuWp92YB0Xjt5EVyzFCvtHFSv8ObTr
+	 iK08tMyzkAMpaUd65pUDChJk7GDyTxVjCmLAWF0c=
+Message-ID: <4fda41ed-741b-4c5f-ae83-e3ea5a447441@arm.com>
+Date: Tue, 13 Oct 2026 11:42:09 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Luigi Rizzo <lrizzo@google.com>
+Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich
+ <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Joshua Washington <joshwash@google.com>,
+ Harshitha Ramamurthy <hramamurthy@google.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+ netdev@vger.kernel.org, linux-mm@kvack.org, driver-core@lists.linux.dev,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20261003212241.3432303-1-lrizzo@google.com>
+ <0cc1cac1-a500-489b-9c1b-b49598b5550b@kernel.org>
+ <CAMOZA0JaiKsRgDdjHkL_N+MshhcyLSv+cT9SzEbNsC_sumHvOw@mail.gmail.com>
+ <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <b31efcd5-149c-4edf-81a2-1744d363c390@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-unmap_partial_tx_skb() walks the TX ring entries between
-first_entry and entry to release the DMA mappings of the
-fragments that were mapped successfully before a mapping error,
-but it never advances first_entry inside the loop. Whenever the
-failed fragment is not the first one, entry is ahead of
-first_entry and the loop condition first_entry != entry never
-becomes false, so the function spins forever.
+On 12/10/2026 8:43 pm, David Hildenbrand (Arm) wrote:
+> On 10/12/26 16:45, Luigi Rizzo wrote:
+>> On Mon, Oct 12, 2026 at 3:51 PM David Hildenbrand (Arm)
+>> <david@kernel.org> wrote:
+>>>
+>>> On 10/3/26 23:22, Luigi Rizzo wrote:
+>>>> Here is a subsystem called DMA_PMD on which I would like feedback on
+>>>> architecture, possible enhancements, or kernel components that could be
+>>>> reused to avoid duplication.
+>>>
+>>> Here is a feedback to a subsystem called DMA_PMD ;)
+>>>
+>>> Why is basing this on PMDs (and embedding it in the name) the right approach?
+>>>
+>>> On architctures with large PMDs (512 MiB on arm64 with 64k), would we really
+>>> want to use 512 MiB pages, or rather something smaller (e.g., 2 MiB) that might
+>>> possibly also have TLB benefits (cont-pte)?
+>>
+>> I had to call it something... an earlier prototype used the name IOMMU_2M,
+>> but I didn't want to suggest that the design was limited to 2M (it is not).
+>>
+>> Aside from the name, the _current_ prototype restricts to 2M allocations,
+>> exactly because too large units are expensive and wasteful.
+>>
+>> In the code, decoupling the allocation size from the PMD size is trivial.
+> 
+> Yeah, we should do that.
+> 
+> We should probably just find a way to describe that this is a POOL that focuses
+> on physical contiguity in some configured granularity.
+And since it's intended for DMA we could call it dma_pool and oh look it 
+already exists...
 
-The function is called from happy_meal_start_xmit() with
-hp->happy_lock held and interrupts disabled, so the infinite
-loop leads to a hard lockup.
+Sure the current implementation is capped at PAGE_SIZE for allocation 
+(and thus mapping too), but I don't see why that couldn't just be made 
+more flexible.
 
-Advance first_entry with NEXT_TX() at the end of the loop body.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: ec1f1276022e ("sunhme: Add DMA mapping error checks.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
- drivers/net/ethernet/sun/sunhme.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/ethernet/sun/sunhme.c b/drivers/net/ethernet/sun/sunhme.c
-index a70f704eb9f3..544eb43af125 100644
---- a/drivers/net/ethernet/sun/sunhme.c
-+++ b/drivers/net/ethernet/sun/sunhme.c
-@@ -1965,6 +1965,7 @@ static void unmap_partial_tx_skb(struct happy_meal *hp, u32 first_mapping,
- 		len = hme_read_desc32(hp, &this->tx_flags);
- 		len &= TXFLAG_SIZE;
- 		dma_unmap_page(hp->dma_dev, addr, len, DMA_TO_DEVICE);
-+		first_entry = NEXT_TX(first_entry);
- 	}
- }
- 
--- 
-2.43.0
-
+Thanks,
+Robin.
