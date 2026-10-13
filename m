@@ -1,208 +1,368 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72CE56260F;
-	Tue, 13 Oct 2026 22:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.154.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B482E558202
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 22:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791931019; cv=fail; b=CDNHCTUYN9rcZI6VMF0Ji6c8DO/n0tsOCth6WNwqFtp3BFB8nR2WMiLSAkh54352TJRe2uvMKj+LxDysMon+CXEXp554sPaWQuTF+qpB7kOU8AlwEsErfzqU55OvCvNE0e+wPfHggQMi103HH4FnSMtcfBIaqG7gsXsKEXU7p50=
+	t=1791931159; cv=fail; b=no6H+I9DcahklVtx9yEJNt0oZpYFHUSJOLZmWdvf6t/sviaEenhxz5aVcuYW4UlDQ8Ajy/rooyvVwTCEa//jssyQa0yVpJhAlSMplB0dqsNGHRsD3YfVJxsb0lv1wmnq5t6//F8fdiMoY0EK+f2rkcGjRaH6IzKHwQzfyOyCuzk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791931019; c=relaxed/simple;
-	bh=c6fVrgEDZd9hlICqaMI9Cyu2S/inCIsBMJUjPX1Coug=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dKTYNQ+33X7uFpAqIApLYv38kdAnTVgw4vDppeGqH+qpuoLI/aKB5CICLJaC/n8SThSUSnvFvpR5TRVTAVHrXAtO7vJVaTi/X1VdKNBX/Q6imCVQ85k4zOUAarIVGw5/p9ui4f5VbW7ZZb7gsW4dTErjHNg9kIJR6tlmaOhYbMQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=GTDpfe/S; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=jRiuFyQh; arc=fail smtp.client-ip=67.231.154.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sitime.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
+	s=arc-20240116; t=1791931159; c=relaxed/simple;
+	bh=WyCLLk6HVX7trDiVH0+BhTUfkIq8TxUjFqiADG+zRrs=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=JFWqWHpSKeMYO1il70oeKB5hIksXl0nhmZmBtwvKeukY3QlxCL2fRfHdh+AOANvfEZUlYweqlaN4vEjp6DfWEHXhfa8gRdJMDXKVLj8kFbUG/EoMftKii/9MJf4+h53wFJEcnK3ch/OsVGNVk11kH1JuByay+9VMA6cZWgHq128=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=equhZ7mm; arc=fail smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="GTDpfe/S";
-	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="jRiuFyQh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
- h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
- s=mail; bh=O5DAEj2M2OCQprwgxxNavDmzdkaDbHfAaWsMBufyg/I=;
- b=GTDpfe/Sgic6DmucT3MNm43Fj08dpXtWAaMvAFFMpYU7/FgKcNkKZLAbArq+C70rAI6xGNK4QogOhEmg4huVchT0yhqhLQIPgp93i8UfprIJjegQJXbttxYE5RnR1YhasRw+Zk41WHWHcitxCs2+BHAcMXk/lFQfFW5gRL6hDnnID5LCQCie9NSWpAVmkkQ9ql8S9oUSoqRh7owQBEn8ivno+QNPLAnnsy/iiBpYxbNNQ1KwSi+NPZUTeYajUogYxnMqyAoMLM4Uopl+VPXxVq8xnX+LKqCm/GRgYeCurBk7LxAwUX587klDcmwdXQUoY+czg6FZAH/pedaJ7N/OCg==
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11020079.outbound.protection.outlook.com [52.101.56.79])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 8463998006F;
-	Tue, 13 Oct 2026 22:36:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="equhZ7mm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1791931157; x=1823467157;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=WyCLLk6HVX7trDiVH0+BhTUfkIq8TxUjFqiADG+zRrs=;
+  b=equhZ7mm0EpiHlkEjfvn+TlcDpj1Ck5TQcTgKQpR44dxZT5ieScqe4Xd
+   qpdzYI9RWulM858Pv1OyEWaXVUsRokbTu0j1IiHhx3awibBZtFtF76RsC
+   4AfHwiwTK4dneIEDZFs5NQNzB6Ax0E+uY5zfyJK9jYwybrbAjyThIUg95
+   QjgOVezoL5rluIUrjY8psLVpJvEpOvGO/fP73jZT/3yaDMOyvG9PRaVTo
+   AfqV7FOR/hdQvMKFUu4IzOaZthf6+0reIZcTA5yAeuX1ykwPaRqrT4NrE
+   P3t9VD8WDK2LbT28ccL65WAIzE2e4J/0xP6qWGQcolHvfngvtuMfwnJl8
+   w==;
+X-CSE-ConnectionGUID: sOqjQ72nReaXJgfitY8QxA==
+X-CSE-MsgGUID: bsOVAiHcQh+fTeb9NyZxNQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="678785"
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="678785"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 15:39:15 -0700
+X-CSE-ConnectionGUID: maqpR32zSgCNSRbSxGDMow==
+X-CSE-MsgGUID: 0/hAkvdvT8yZTlhv9PJXFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="1200560"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2026 15:39:14 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 13 Oct 2026 15:39:14 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Tue, 13 Oct 2026 15:39:14 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.18) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 13 Oct 2026 15:39:13 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ELb9GVnB81xTjvPCqQCulNFH8gyg6ciw7gg2sHfBQI6JUsqYErNZpv25lWsBJmliMBeGFLH1eg7QZDeoHYPjhH0fHZkzd2CETM37CdZA3NRcIX/wDj7mWBFc2MnweE3CPAbfnRh9YSI5YcFjze2afSW7elK0YUF1hi/VQjWYAGog2m109goidqME8lSI3N2gSreYC02O+9ZW7ubibJR/Pr9XyWnVeL8mwmPwvwv5yM1fhO7be8DLquPdK9sgkrb7sz0GdYu+yfobiXcV0gG8t6B/lAW1TwXMb9sApHTnPnP1RQKLolwRs9P3aW4th5/3d8Jui+3PkUS4zfAecdB/Tg==
+ b=khNk+b8wd5wFC6hIxE5UI/MrhIKaTTSJEWCB9sqd8bWRWk9jc7o7/62P3z8wUa7yJ5idDs8rCfogEYFsJuL0A0/amHSaSU78TjuwenlGBqgHjYBaw4piY5oeUk1GmlfdZwMpDOFEInCjmqq2f+4tW9mTZdZsOCuaiWUwfa3F1v26JJZVC3etQUv4RJrkrLKgcfa6s65TtBeWKaON/NS/UOBZyX6/WTUiHfQCLDjTeLIQcQlNUcde1Lmmk7cEFTZiejkhJGE4BJQeT9kI1EPwHUFzmTM3riLG3oc0YIMnM6KjguKkppnfxNDJfiW9SvL77cLigKroQ7j3S6ZF4WoiLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=O5DAEj2M2OCQprwgxxNavDmzdkaDbHfAaWsMBufyg/I=;
- b=gYOGnIeAiKi5vxtvQhmTVA5igwIWTe6gqNSSuwu/xR0IGkI2naprdqgKNtfly2pUImhR43YZxaqRcveu3RzVkarAJdEEUdDBGGob4dXItPLr0SYCznr0N32h/LQk1wnUhuvmwDVLv2HoDbsZus3LuGJci/BDAzF5d+PuPlhOHo2QA5DaNckK9lDce2DA2USaz/x3RTlDLQy2UIC5Wk4SL5WkQzTEl9QMdGxnlbH3sUXfbXnuiDc9OsGKe4Irfpo/O3xQPCFZFgKbfshmF9YPbW79bb4Pr0B6bfQp+GOmK4DA81uws9PIlmPKb1WJFhOOSWgZ5fN7CHmq7X+b2pK30Q==
+ bh=m2KGz2Osc0JzXYsLfTS5OU0acqGpG/M6+0Yhv6gCrM8=;
+ b=msVIZK1nbYG4TFgauJsxhyWRT3pRTzKt2UcqR2MHKJNavUlNM4HqsOklLwoCoHuadySxADJOy32wtyCgE7ADoU+/VAPrk714h3F4KqCm1kcBBSh3Kk5sVqODM22d+XZ++1WuAp4/43J8jKp8wdi6mRMRok3fIA/ofnDHeoctgdOjV1k2twwxqAgshI6WhUKoMdQszooYgzSU4pgYIbVz3d46AmYqYyFjZ1wmtu608JOPbN7oJn3GqsTFf+r4/58XUAbe0Jk72sQKNvXEifQvL6W0ibCxdOfkToYFnLyuHVbIcr+ZNcn5I/kvg2w2VIkdkg+TmA3kEBIi63WHa93QCA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
- dkim=pass header.d=sitime.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=O5DAEj2M2OCQprwgxxNavDmzdkaDbHfAaWsMBufyg/I=;
- b=jRiuFyQhs8qeqXPLJyE9igyJQdBsPlxnaf07Dmb3eCipEf7mioGAgHhzryRoUraqGfYU9fEmvD12sg/Tr2ntIXpHVQ3qN9j2FIRkjWc+G64pn0W+DCMydWX3xaRiqV/NAKm1NmVy60ft+SC3Lat7CXRw0n5AQotD0yYP1jInSYwlEVZLw8rc2LwYCuzcsqlFz2cOyGAE/RrrHumqDbDtCTxd9aiWUupTe4wSkl07ZIm33TyBDyLz3KvKwtxKpifMeQTbeBv6rh7RG/MxHXaSMEKEawyxMbetNyS8/5/T5PN9XDk/z0NPNuRRr7KruaaAi7SyB36OuaecwWkNzGowFw==
-Received: from LVWPR20MB994915.namprd20.prod.outlook.com
- (2603:10b6:408:3bf::16) by SA1PR20MB596672.namprd20.prod.outlook.com
- (2603:10b6:806:3be::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 22:36:43 +0000
-Received: from LVWPR20MB994915.namprd20.prod.outlook.com
- ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
- ([fe80::9551:3864:128b:8c01%4]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
- 22:36:43 +0000
-From: Ali Rouhi <arouhi@sitime.com>
-To: "ivecera@redhat.com" <ivecera@redhat.com>
-CC: Jiri Pirko <jiri@resnulli.us>, Vadim Fedorenko
-	<vadim.fedorenko@linux.dev>, Arkadiusz Kubalewski
-	<arkadiusz.kubalewski@intel.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Carolina Jubran
-	<cjubran@nvidia.com>, Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v12 08/12] dpll: sit9531x: add support to get and
- set frequency on pins
-Thread-Topic: [PATCH net-next v12 08/12] dpll: sit9531x: add support to get
- and set frequency on pins
-Thread-Index: AQHdWBx3uzXzPneuTU+peExtFWrEKrb7PlkAgADYDYA=
-Date: Tue, 13 Oct 2026 22:36:43 +0000
-Message-ID: <20261013223641.25560-2-arouhi@sitime.com>
-References: <20261009183151.78497-1-arouhi@sitime.com>
- <20261009183151.78497-9-arouhi@sitime.com>
- <0051c3dd-6abd-4ff1-a125-7cace9fac6fb@redhat.com>
-In-Reply-To: <0051c3dd-6abd-4ff1-a125-7cace9fac6fb@redhat.com>
-Accept-Language: en-US
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1SPRMB0007.namprd11.prod.outlook.com (2603:10b6:303:274::12)
+ by CH3PR11MB601806.namprd11.prod.outlook.com (2603:10b6:610:365::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Tue, 13 Oct
+ 2026 22:39:05 +0000
+Received: from CO1SPRMB0007.namprd11.prod.outlook.com
+ ([fe80::22c:e511:e167:77da]) by CO1SPRMB0007.namprd11.prod.outlook.com
+ ([fe80::22c:e511:e167:77da%3]) with mapi id 15.21.0472.016; Tue, 13 Oct 2026
+ 22:39:05 +0000
+Message-ID: <bbca7a97-bf8d-4039-aee8-4bb95f102340@intel.com>
+Date: Tue, 13 Oct 2026 15:39:00 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 11/15] ice: wait for in-flight Tx timestamps before
+ flushing the tracker
+To: <netdev-bot+sashiko@kernel.org>, <anthony.l.nguyen@intel.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<edumazet@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
+	<grzegorz.nitka@intel.com>, <sergey.temerkhanov@intel.com>,
+	<arkadiusz.kubalewski@intel.com>, <poros@redhat.com>,
+	<richardcochran@gmail.com>, <horms@kernel.org>, <pmenzel@molgen.mpg.de>,
+	<aleksandr.loktionov@intel.com>, <alexander.nowlin@intel.com>
+References: <20261008215614.1987250-12-anthony.l.nguyen@intel.com>
+ <179184693018.434549.11776352686949111433@kernel.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
 Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=sitime.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|SA1PR20MB596672:EE_
-x-ms-office365-filtering-correlation-id: ae589443-2ca5-467b-33c6-08df297a7517
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|4143699003|5023799004|38070700021|56012099006|18002099003|22082099003|6133799003|261009221727099003|261009220027099003|261009221227099003|261009223327099003|3023799007|261009223027099003|10067099003;
-x-microsoft-antispam-message-info:
- YK3S809HXWiAUiXjEnJPTDlcxuXvo5BoMdyc8KYZGcymWEzE6iFkDa/IrIZx+rvHQoW2Ui6eMO4dNPjUtdtRywtU5cIzfrQN8dFGeBvHSYthPDEqQGLK3opEZYayDKLH97GNP60MUIPKREV8wZkK7csGhXRnUCA8uHsnK+R/8mNa6+Y2/0mJYqNflVI2gFZ0RE1j5pyIbjyMkMMnzwCsddFk3SwEhNGDcHRV+4UtKYsxi4F7zdi3UkVN83K6hJCOlJ1bHniCczS+WRAr+SUnEf3z/rfknBsGMnuy5/u/IWPcZ5189oufQSGL2gSagcvBORYXmsjMSkd3mx8obODKbEwNBcNA+SKUxCfr2tIY+OboknpjqbFDE6Lu8cBF8Ac5zv9mawGdjO0wSMbzB7wqioYKa66YON7sF+pm1yk7XY9M+LXiE7CAOhvuv/AGVlLvbvaD/WqV7o01aw6FYAN7H4hj2Zx378bgTAn+whI3bpspMYleTg5tEn9ms1AKRrt/J+mTZa+wBG+Y0gRARdAJpoo6oTPxgYAgxsHK2vQybJTQujRDYSbgFbWbRvjHTQARUe1pqjU3oPl7t2ylYZmxRDVSEG2USpAVpAOeFU9NcEXBv1bOjoju6YrAoZy1aBkw4PL+htLuwh7PvJoFeFVu0NI9PTnEnoCWG61KOMqCZsy4KwgVpavPxtkILSzd6uzXnG2XG1sM4vXx6V5LAaly8aUBxIFgPbmYUSXTyusMlX8=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(4143699003)(5023799004)(38070700021)(56012099006)(18002099003)(22082099003)(6133799003)(261009221727099003)(261009220027099003)(261009221227099003)(261009223327099003)(3023799007)(261009223027099003)(10067099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?Gcrf7IA2MZ0x63Dgx8cTYGhKconitDx3HwBg2LOL00wX/Y/ZEFeJzpGBdd?=
- =?iso-8859-1?Q?WR/BgE0IF2PoiJOmh9TGGBfeCduXPgmBdLepBD4nPL5d8iwjnSmJRmwCtT?=
- =?iso-8859-1?Q?PSaGOD6b2B7qHSKfsyY9KkyNxsTbBS8ZgqXaPo5M6l0GPVZ0ky/sOQIUSA?=
- =?iso-8859-1?Q?YpggMHZzW4kxLfRDD9z4IyxM3UiwJNLQQJCegGj7Ki4wPdaie4GYFl15O3?=
- =?iso-8859-1?Q?NpzQEkFTe7Z9qJR8MF7rw7jUdA838ltY61NkLqI2rUDKrN/O1r6dBARhK8?=
- =?iso-8859-1?Q?bqiBwaZmm/UuVlRz50CANNcoVol2qNEH73UYKrd48C4f/JFwoKGN/FEfOH?=
- =?iso-8859-1?Q?lhfNZa6augUgri7R5jUiBdYR8uVWsE4OsKd+AlA9DmRMbXrvyPstmPMti1?=
- =?iso-8859-1?Q?S2vblQF9F/GXunlaNwGibARWk/Y1QgzQPdiu0IPLGaRz/BpNm6IesqFfk4?=
- =?iso-8859-1?Q?lbyt4Z9YNexzq6ma0C+sAzZeU47mwohSUuC7+/g26OctGeE3pW6ta7A6fT?=
- =?iso-8859-1?Q?RBf5J1pSa+tpJOqUzOITBfjK26hPET7FE96fbiqRsoUpNNI7TB3ZFux6aj?=
- =?iso-8859-1?Q?4BWoFnj1cG4HANxvYViTRKIVZHHRCaGgNsFJyu8Dn3bx28pO1d6RjQ7+Lk?=
- =?iso-8859-1?Q?A1pc1c0tcHMRZraqu71qQy/+2Pk1gEAbYg/g5P2hvtBUzkO6VCyszYAL0q?=
- =?iso-8859-1?Q?CCPQf2lGpA7NwF81x4MXRyIO4tgOBVyaYp6k5qKrUtbBx1Zk3awWxrArc8?=
- =?iso-8859-1?Q?NjOpDhymKx11b9tfT37cCchufWJPqVHA6LLweqhuzw80syuSOMhkmqbnqD?=
- =?iso-8859-1?Q?zJKxEv1H6VO7BcqsKdowDIKc26qUledlgHG1W8/JBpwGeC1rnx9uRGfygv?=
- =?iso-8859-1?Q?52UxNTaf2+IWTlN/xx7AczZ9IfmgrBTQM3LXx0tOvl0vf7s3xJU0WgZtP2?=
- =?iso-8859-1?Q?/LJAnAXyK0WGmxvsBY4iPKqiXNQxfEYp+rpB5qVwoWubUbCLDW/LHF/9C8?=
- =?iso-8859-1?Q?qI6M4GTSgzpiWG9wrMG4Sq1z4sLFSLDG5MOXgqGZb2dxB9nXAoygKRCqZr?=
- =?iso-8859-1?Q?olaVnBsfp1yd1xqjoO+r5pjW4/aO3OZKTnSEaqrFqpLG9TALFVtWD7kCak?=
- =?iso-8859-1?Q?tXhymJnYgDqc4UAzRIkSm9gU3NL48n47j3YEU6Lj/fNdL2CGySJkjyxEVl?=
- =?iso-8859-1?Q?zQ7IPfIS2aUKDyveisvl/PreIvEqT0lfby7Jiludp1BmmhbiLDtlbCIbnb?=
- =?iso-8859-1?Q?JVU7ya3psPOp3aq3ntBdhQHY0keN7JmliQu90dQESHtcnMoomQ6tSdp9hX?=
- =?iso-8859-1?Q?X7HCO2d2+Xb42zF+GY8FOcvVgXnwOjNkIM+1Kjf69ds0Q3qZzaSdr2djP+?=
- =?iso-8859-1?Q?L6JNuILSliF/khfrtT6hA6kawvcw6T9j8ev5dO1FG381pQFYq4ebYsXmx3?=
- =?iso-8859-1?Q?R+Qn8TG9KCF1zF0hXlRSCh0BozEH9ZR8wDfbYbnEqLCJNGWWe0wdDYtHXn?=
- =?iso-8859-1?Q?0SyTVd061pcDC5zG3ci6DUX+bocEHd1oBuJrgpaBVnK08pYwIwD+CNeja0?=
- =?iso-8859-1?Q?xBBTcrDk75kPLiiSjQTumB0ml80s4I0JGC3iP/ALYtYo95A5Uxb1FdZ4c/?=
- =?iso-8859-1?Q?2JF9cHblEUWJ+D+Dkm1wtVuQak2RhtImw9QUCfDZpxGNOzFYsbyeTESZ8f?=
- =?iso-8859-1?Q?LxRKY17tA7OVsfxSQym7IY1f5dvVPUGPuzdkd82jhgYTs8skFSL2on6AwP?=
- =?iso-8859-1?Q?0GvkyUUlx+2gS1UhAchp3ostj+FMZH5em+4i8nP7zkzLqH?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <179184693018.434549.11776352686949111433@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MW4P223CA0005.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:303:80::10) To CO1SPRMB0007.namprd11.prod.outlook.com
+ (2603:10b6:303:274::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	I2qDwFkofi6mPPhyIPF/r204KB3BLilMXvVYwKHNQr9MqWvANhga4Igb01Q4PScyECWpUR1HvT4uMp51Bp+zni7GnwUWLgYHqtRa4Y4o966UBl3c/Li1EO7qwmChYb9qUmSn/I2/d+VEZp9YziLI82CWIPLmV97nYSDbZuaeTVacxl5YzrfdezFW5ldpvfhY8LzSRIF2UX+qyoWgGyNio7mWXrWQJPevlZT34PTRTMP4cU0sfl1k0RkJzKWDSVxXvEpzALcFtZmVFXjERgpVLjXRHBSvXUsCPJTq1Zv6ZP8Pg4g0KXiQoZVCoF1QMhVnacc+CgFyyD4hgxpEeGv+PA==
-X-OriginatorOrg: sitime.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1SPRMB0007:EE_|CH3PR11MB601806:EE_
+X-MS-Office365-Filtering-Correlation-Id: eef45a13-55bd-4982-cdca-08df297ac978
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|56012099006|5023799004|11063799006|4143699003|261009223027099003|22082099003|10067099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: tMXReikDtLxYb/zrKWmkS6scJmZIXz2Vb1pyLLaGaQXqG/8RGoBz1W3bcTOZWVlxnjjwCtqHDkI7urNchxlZ4hJRrPQxIdUpqNX9McpK14XZ9WwL1s7pz8HkSfwqELPQLrdYHym/5f7FnQTo6KeZggbyqJVU8RlHNcOW+7KB2V8ovMIJ2EPNjWM2rJRyK7cAL0xv8NcjeJsH9ANV99iFb4o9qA9/aUx8OZEZbpKKNt9/DLDpi4qUajO8MJMPDjZRE4AYcGMC/XCgPXyLQ7OJuXVcZZ5w7ogCBB9B/48Wa3ftbbLifBL+g2It3FRGmEyZKX73xaTtuCo2Cp7slJ/CpUirSBR/i38/SMg8XIjrKvW2V0gJnT6+By9WgLVBowyVvkSNi24cNSGAkPqxmu+eEmzm5giZElOjlDJRt7rIq6NcYNVl1HwMMdfxnyAd8WO1LoXWvcftQG/BPVmsg6RapMlhHkJf7NgvH4DRdDczHcy8Pen+OpVVzOX1S23mI+ZeqPA2uj3KrsHYSGNT1DMWR+1RiDLQ9epGzFwvTS6c5jZkqXd5CBYYVuhFfNHk2McZ+Cz6A5PgQD/hDETbX+MYyRuYt8FysWGEkoWEX854IeKshS3ZiKLwfVCEIVHnZOSMqGX7djSAjznbo7CoffO4dubE2zrK48Jj9uDe0vg1U+w=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1SPRMB0007.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(56012099006)(5023799004)(11063799006)(4143699003)(261009223027099003)(22082099003)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Tkw1RU5SZklDZDArZ1k4SllsOFh1MDZ3bExLcE5iZXJqSS92eUpjR2NaYlMz?=
+ =?utf-8?B?bTZyMFpraWowaFZCbFJaa01mekhsNTNOWVR4cVZEOUZqbm1taldkZXJaQ1dm?=
+ =?utf-8?B?amJHZjE2enNMTmsremI4V2RhSWlqYVpXaHV2T3A5RUJsakZLOCs4NGtOZDdu?=
+ =?utf-8?B?OTVqOTFSWnBsbUkrU2Z2aSs0WkxqZ09Gd0czcEhSaHZZMHUvVFVrOTJzMXhs?=
+ =?utf-8?B?OUh4a1hyWit2d2h4aFR1T01rV3hmdWdvNjJTOHkvVWtCVVpGK3oySTh0azYv?=
+ =?utf-8?B?enBIcWhrb2JLQlV5UGhMeVJMTHdTdVplalczaC9HMHFWcmpmOHBjTDA2ZFFz?=
+ =?utf-8?B?V0VZWW5ia2s0djNUbTVIMkdxMmJZc0tYNXpjZGFjbm5oWXNjWW5BTEtuNlNT?=
+ =?utf-8?B?NVN4TGV1YWI4US8zSHkzQWpYTWpRYmtUdmhKbERpYkUrOFMzYTM0eXhQdS9q?=
+ =?utf-8?B?aCtGSm9LQkwzQnRTaDZSc2VNL3J0TVRSTWxSVnJiS0xObmc2RUVablRzYlUz?=
+ =?utf-8?B?eDlPWG8xSlppU3dwa081bmJEYkZWUU9rTnpBbnhDUWVzcWtPRVM3M0VWUGha?=
+ =?utf-8?B?L3BwcU1vY2hDM0ZFaC9qeGZESW5JWWZoeHhaU00ycTNwRjk3Z2VCSXJkQUZZ?=
+ =?utf-8?B?QWZUTU5wdlFDcWhoc3RhWk5oSUYrRzBKY0JjR3F4UDJBalo0VklZTndQSlMw?=
+ =?utf-8?B?V010MFdWYVNBai9ONDZocVpqMnRsb0o5VEw2MFQwUGlPMXpMcTkyU0NaWndU?=
+ =?utf-8?B?VEFQejQ2QnZlR0MyUGQ2ZjVVWlN0c0o1UGdNbVZXWUcrVWIzdVRTY2R0TjhZ?=
+ =?utf-8?B?TVU3a0RqczFPeWlZa3dWbEN4dTdyUVFsdWJwU2dpYWZNRVByT0JrYm4wbnNH?=
+ =?utf-8?B?ejE2Rmx2U042RGE0TEwzYlFLeEhSY29KSzJveE9jeDVIVE80aEtqeE5aRWNS?=
+ =?utf-8?B?SkNiUmVNL2l4Y1FwdFovSURTeDVmSVFJRmhXRG52U3hZQS9iOGMzaXZma24y?=
+ =?utf-8?B?N0QxZVBtSWZMM2t0WllhMFlvL1NtYjIyVzg3djlxZkJOY0w1bG1VaE9tcmFJ?=
+ =?utf-8?B?bDFhNzM4SjQvcmRGaE9HQ2VicC9wdW9YbEU3WnlMVGI0eGJDNy9EVlA1TTMv?=
+ =?utf-8?B?YnFxRzdXZnBlQlpkSktaeTJHVm5XYStQTVNQMzVmbnVuelJmaWdudTdBY01L?=
+ =?utf-8?B?UTRqS1BKOFZPbGFmTndvMExBMVczYVJ1VklKZThBeUZuL295b1hnUjZJRXVo?=
+ =?utf-8?B?M21xOG4zNFRhWGRJOWw5d3VYNmhmZ0o1aUxxZ1hQVVN3VkppU1lWc0Uvbkh4?=
+ =?utf-8?B?VXVWZGkyOWs2ZWw1bWZBTXFNdzBRdWJSZmN1bS9oSUVIek5PbkUyVlRDYzZv?=
+ =?utf-8?B?NFlzcEFRNjVVd28xZG5mMU0wODB4cG1nVlZ4VTcyZGJFVHJMdXI1eUdQYloz?=
+ =?utf-8?B?MEU5YjJHd1RJZXdEUkpFME5ibDMyRE8wSG5pR0JyamJ3WXhJWTI0eFp2eS9E?=
+ =?utf-8?B?ejMzRW5EVUtuQkI4bHdwOHlJNlVSN0c0SmZTK0ljZHk0SEgvdXVjRXUybEVQ?=
+ =?utf-8?B?RWQ2MlFURGIxVDh3YTZTdlVvMnVwdjBVNFFUd3QxMEpvYVdlZVNBL2k4QlZn?=
+ =?utf-8?B?N3BiQ0wyb2JObE9hK0wrU1FHWlh3ZmZYM1A3TG1XVFBuWmNLNEI1T3Y2Rzlx?=
+ =?utf-8?B?aVRJTjZCYnVvMkhidWxPYVcrdWdBWDlRY3pRNW1VMzV1WUxoQXlSL2F3TkEw?=
+ =?utf-8?B?d2VyZUxxcGVNUS8rS2dUVm5GUzB4dVRRYWxsT1BCR2hlWHRvNWNabEhLRjUr?=
+ =?utf-8?B?NHBMVGJNRG5UcnJQWDNhdjIwamlJbUhXM1ppQlFwVy9QcnJYUHh6d2E2allK?=
+ =?utf-8?B?bU4vUytxVnlwRXZ6ZmwzQnBDUzR1V0JMSTVKa25TS1B1ZmlkZGhDUGVmblJT?=
+ =?utf-8?B?dHpSMVJhQlFIUTVBWlRFbC9mVVh5aHpVK25FRDMzT0NMa3RtR0FmdTJ2RFF1?=
+ =?utf-8?B?WTd3cEVlZXZ4QzVtTVJPLzQ1ZnpjVkI4NFlTSXpsYXlMeFZwVTJSZjNhY09M?=
+ =?utf-8?B?NCsvdTNVM3Fyb3oxNDN4dmpzaXFQcElHcFh5M0IwM0k1aW9PR2RycVZPeFZB?=
+ =?utf-8?B?ZTFpU0NjRmRKcm5FUUt3anBNQmZ3OG5UZiszREZRSUpPbjBYcmxSOGVKeUdV?=
+ =?utf-8?B?ckdpZmMvbU5Ud3dCRXNRa3d2TXhKbThxemlHWmVMMHVtYlZ6anJLZU43cXJX?=
+ =?utf-8?B?VytjN0pSVTN5RXVoWkt1SktPSmlhbUtiWlI1Nkp1R0hMZkRra3AzTlVGTkFH?=
+ =?utf-8?B?VG15aHM2TWgyM3ExZ3dLZlZMck1IOWNGcEFQa3N5Y0dNUHBkNUQ5SEVrNURw?=
+ =?utf-8?Q?x2BN/PXc7kg7hDAc=3D?=
+X-Exchange-RoutingPolicyChecked: V/L8HuDuLvJm/P0BUDr2G/gsFpJUUhCLZgKcdFtFgp4S9YoMhqe8tV7qU8xmU90/Gxj5M0Ua370X0UVuzMxfHOs/qHTSBAkBPiXC4JUSxK6Y6AD3LNgtO53jTVFpRYvFMfToYhYk+Rk3prd/A+om6ORi3KD+7xrlSqiygck32Z2+yoD0F475rjzmOVqYyIHRrzKYKOjahat7jA/P+G0yLF6JudeIa33a/GcY5HhWaHEFX65kqWVr9MhQj3Lcr+s8dajtvGQLQ7576tffNHq6rdbaMOkR76g6t5lq2eukBSNELac7ekTP7Q9QACPH2cnFX0Yfi2YnGfSwtxReyQ0XfQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: eef45a13-55bd-4982-cdca-08df297ac978
+X-MS-Exchange-CrossTenant-AuthSource: CO1SPRMB0007.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae589443-2ca5-467b-33c6-08df297a7517
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2026 22:36:43.6127
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 22:39:05.3977
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9i0tJPxO/WPHbxitibkYQmnuKcn03oWCWqZLZTEmqjeWhvCYs9f+VkU9s4cUXFiUjLJgVDSeAX+F0oWL7WShZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR20MB596672
-X-MDID: 1791931009-k-UPO7yMgXS4
-X-PPE-STACK: {"stack":"us1"}
-X-MDID-O:
- us1;at1;1791931009;k-UPO7yMgXS4;<arouhi@sitime.com>;ba04557de9d2da8490f5f1e6de07b967
-X-PPE-TRUSTED: V=1;DIR=OUT;
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yIvtGYWHKRsaracTFrQDIpPvl2NwRr0SCE05wMdhGPCsGpr9hG9klyypTpuW5lkQMVB/BYqZFCNTznBXCughnAraCL+3qgzvjQBKtGOOfAw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB601806
+X-OriginatorOrg: intel.com
 
-On Tue, 13 Oct 2026, Ivan Vecera wrote:=0A=
-=0A=
-> > +       /*=0A=
-> > +        * An output's current rate is the one its divider produces, so=
- read=0A=
-> > +        * it rather than assume the first entry of a list of the rates=
- the=0A=
-> > +        * board supports is the one in force.  A rate taken from firmw=
-are=0A=
-> > +        * that the part is not running would be reported as current an=
-d,=0A=
-> > +        * worse, used as the output period the phase adjust quantizes=
-=0A=
-> > +        * against.  An output the configuration does not route has no =
-rate=0A=
-> > +        * to read, which is not an error.=0A=
-> > +        */=0A=
-> > +       if (dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT &&=0A=
-> > +           index < sitdev->info->num_outputs) {=0A=
-> > +               u64 hw_freq;=0A=
-> > +=0A=
-> > +               mutex_lock(&sitdev->multiop_lock);=0A=
-> > +               rc =3D sit9531x_output_freq_get(sitdev, index, &hw_freq=
-);=0A=
-> > +               mutex_unlock(&sitdev->multiop_lock);=0A=
-> > +               if (!rc)=0A=
-> > +                       curr_freq =3D hw_freq;=0A=
-> > +       }=0A=
-> > +=0A=
-> >   skip_fwnode_props:=0A=
->=0A=
-> This read-back sits before the skip_fwnode_props label, so an output with=
-=0A=
-> no firmware node, or with a node that has no supported-frequencies-hz.=0A=
->=0A=
-> For such an output curr_freq stays at the zero-initialized=0A=
-> sitdev->out[index].freq, so the current rate is neither cached nor listed=
-=0A=
-> ahead of the 1 Hz to 1 GHz fallback range.  Was the read-back meant to=0A=
-> cover outputs without a firmware frequency list as well?=0A=
-=0A=
-Yes, it was meant for every output. An output the board describes=0A=
-without a rate list, or does not describe at all, still runs at=0A=
-whatever its divider produces, and that is the rate to publish. Sitting=0A=
-before the label it was skipped for exactly those outputs.=0A=
-=0A=
-In v13 the read-back sits past the label, so each output publishes the=0A=
-rate its divider produces ahead of the fallback range. The two INTSYNC=0A=
-early returns move above it, since neither of those pins carries a=0A=
-frequency attribute and neither has a divider to read. The comment=0A=
-above the read-back says this rather than the old sentence about a=0A=
-routed output, which was describing the restriction rather than the=0A=
-intent.=0A=
-=0A=
-Thanks,=0A=
-Ali=0A=
+On 10/12/2026 4:15 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] On E830 the flush still leaves hardware-ready entries
+>   unacknowledged, so the drain does nothing for a device the commit…
+> - [Low] ice_ptp_rebuild_owner() calls ice_ptp_flush_all_tx_tracker(),
+>   which now runs ice_ptp_wait_for_tracker_drain() on every port of the…
+> 
+> Pre-existing issues:
+> - [Low] At this commit, ice_ptp_process_tx_tstamp() sets drop_ts =
+>   !link_up (line 592).
+> 
+> --
+> 
+> ice: wait for in-flight Tx timestamps before flushing the tracker
+> 
+> This patch adds a poll to ice_ptp_flush_tx_tracker(). For up to 10 ms per
+> port, it waits for the PHY to publish ready bits for all in-use Tx
+> timestamp slots, and only then flushes the tracker. E810 has no ready
+> bitmap, so it skips the wait.
+> 
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> index 818e2e265a7e5..5220de274819a 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> @@ -744,6 +744,68 @@ ice_ptp_alloc_tx_tracker(struct ice_ptp_tx *tx)
+> 
+> [ ... ]
+> 
+>> +static void
+>> +ice_ptp_wait_for_tracker_drain(struct ice_pf *pf, struct ice_ptp_tx *tx)
+>> +{
+>> +	bool drained;
+>> +	int err;
+>> +
+>> +	if (!tx->has_ready_bitmap)
+>> +		return;
+> 
+> [Severity: Medium]
+> Does the drain actually help on E830? E830 has has_ready_bitmap set, so it
+> enters this wait. The commit message also lists it among the devices that
+> benefit:
+> 
+>   "Only later devices (E822, E825, E830) have the bitmap ... Thus, skip
+>   the wait for E810"
+> 
+> However, ice_clear_phy_tstamp() in ice_ptp_hw.c has no E830 case:
+> 
+> ice_clear_phy_tstamp() {
+> 	switch (hw->mac_type) {
+> 	case ICE_MAC_E810:
+> 		return ice_clear_phy_tstamp_e810(hw, block, idx);
+> 	case ICE_MAC_GENERIC:
+> 		return ice_clear_phy_tstamp_e82x(hw, block, idx);
+> 	case ICE_MAC_GENERIC_3K_E825:
+> 		return ice_clear_ptp_tstamp_eth56g(hw, block, idx);
+> 	default:
+> 		return -EOPNOTSUPP;
+> 	}
+> }
+> 
+> ice_ptp_flush_tx_tracker() ignores that return value, then clears in_use
+> and frees the skb anyway:
+> 
+> 	if (!hw->reset_ongoing && (tstamp_ready & BIT_ULL(phy_idx)))
+> 		ice_clear_phy_tstamp(hw, tx->block, phy_idx);
+> 
+> ice_ptp_reset_ts_memory(), ice_ptp_port_phy_stop() and
+> ice_ptp_port_phy_restart() also do nothing for E830.
+> 
+> So on E830, wouldn't an entry that becomes ready during the wait stay set
+> in E830_PRTMAC_TS_TX_MEM_VALID with no owner? That is the orphaned ready
+> bit state this patch is trying to prevent.
+
+Will need to check what if anything the E830 hardware can do. Maybe it
+should just do the same as the other paths by reading the timestamp.
+
+> 
+> On the rebuild path the tracker stays initialized. For E830,
+> ice_ptp_ts_irq() re-arms PFINT_OICR whenever ice_ptp_tx_tstamps_pending()
+> sees a hardware ready bit.
+> 
+> Could such an orphan keep re-triggering the interrupt, or be picked up as
+> a stale timestamp by a later request that reuses the index?
+> 
+> The actual effect depends on two hardware details: whether E830 valid bits
+> clear only when the timestamp is read, and whether CORER resets the PRTMAC
+> timestamp memory. The E830 case is still missing from
+> ice_clear_phy_tstamp() at the end of the series.
+> 
+>> +
+>> +	err = read_poll_timeout(ice_ptp_is_tracker_drained,
+>> +				drained, drained, 500, 10 * USEC_PER_MSEC, false,
+>> +				pf, tx);
+> 
+> [Severity: Low]
+> Will this poll always run until its full 10 ms timeout on the post-reset
+> rebuild path?
+> 
+> This call chain reaches the poll for every port on the adapter, one port
+> after another:
+> 
+> ice_rebuild()->ice_ptp_rebuild()->ice_ptp_rebuild_owner()->
+> ice_ptp_flush_all_tx_tracker()->ice_ptp_flush_tx_tracker()
+> 
+> ice_reset_subtask() clears reset_ongoing before the rebuild:
+> 
+> 		} else {
+> 			/* done with reset. start rebuild */
+> 			pf->hw.reset_ongoing = false;
+> 			ice_rebuild(pf, reset_type);
+> 
+> So the reset_ongoing early return in ice_ptp_is_tracker_drained() does not
+> skip the poll.
+> 
+> A CORER/GLOBR/EMPR reset drops the Tx rings. A request whose packet was
+> dropped that way will never get a ready bit, so
+> ice_ptp_is_tracker_drained() keeps returning false. That costs about 20
+> rounds of SBQ ready-bitmap reads per port. On an 8-port adapter it adds
+> roughly 80 ms to reset recovery.
+> 
+> A Tx hang is a common reason for the reset, and it is also the case most
+> likely to leave such entries behind.
+> 
+> The wait also seems unnecessary there. Right after the flush,
+> ice_ptp_rebuild_owner() does:
+> 
+> 	ice_ptp_flush_all_tx_tracker(pf);
+> 
+> 	/* Enable quad interrupts */
+> 	err = ice_ptp_cfg_phy_interrupt(pf, true, 1);
+> 
+> ice_ptp_cfg_phy_interrupt() calls ice_ptp_reset_ts_memory(), which resets
+> the E82x timestamp memory. On E825 ports with link up,
+> ice_ptp_restart_all_phy() then does a PHY soft reset.
+> 
+> Would it make sense to wait only on the release path? That is where new
+> requests are blocked and captures can still be in flight.
+> 
+
+If we call ice_ptp_flush_all_tx_tracker() in other places we may or may
+not want to wait. For the cases which soft reset I am not sure the wait
+is necessary, since the soft reset will fix any orphaned cases. I think
+moving this to only happen in the case where we're not about to soft
+reset the PHY (i.e. teardown). Or we could just drop the patch entirely
+since I think the soft reset path may fix any issues this is intending
+to prevent.
+
+I'll do one of those two things in v3.
+
+>> +	if (err) {
+>> +		dev_dbg(ice_pf_to_dev(pf), "Timed out waiting for in-flight Tx timestamps on block %u\n",
+>> +			tx->block);
+>> +	}
+>> +}
+>> +
+> 
+> [ ... ]
+> 
+>> @@ -760,6 +822,8 @@ ice_ptp_flush_tx_tracker(struct ice_pf *pf, struct ice_ptp_tx *tx)
+>>  	int err;
+>>  	u8 idx;
+>>  
+>> +	ice_ptp_wait_for_tracker_drain(pf, tx);
+>> +
+> 
+> [Severity: Low]
+> This is a pre-existing issue and was not introduced by this patch. The new
+> drain only covers ice_ptp_flush_tx_tracker(). At this commit,
+> ice_ptp_process_tx_tstamp() can still create the same orphan when the link
+> goes down:
+> 
+> 	bool drop_ts = !link_up;
+> 	...
+> 			if (drop_ts)
+> 				goto skip_ts_read;
+> 
+> When a slot is not ready yet, this path clears in_use and frees the skb
+> without touching the PHY entry. If the capture finishes later, its ready
+> bit has no owner. That is the case the commit message describes.
+> 
+> The next patch in the series, "ice: keep Tx timestamp slots tracked until
+> completion or timeout", removes the link-down drop. After that patch, only
+> the 2 second timeout frees a slot that is not ready. That timeout is
+> intentional and is documented both in the ice_ptp_process_tx_tstamp()
+> kernel-doc and in that patch's commit message. So by the end of the series
+> this no longer applies.
+> 
+
