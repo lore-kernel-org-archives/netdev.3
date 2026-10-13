@@ -1,129 +1,141 @@
-Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFA753F69D
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 19:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.91
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791920795; cv=none; b=UDVArmA8xG75aJ8cxyn9r65L0OnmPIrr9gAKh1Rdd+10H4ITToTeMvRkTaVxfDcYR31yJwXqfiIzr4D43/r96WnDWZs0c+basS6wGotsWH5bLmD1D4Lolgem5B2S/o0gbBnPj+fdaVCs6avtLRioZqFsMzq04PFDFo8Wn6q4ZEU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791920795; c=relaxed/simple;
-	bh=rlFTSKfCewl11zJZaS7wBrxYbGFIZ9qTqFBP4vMrQt4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pCaEFkcfXyeIVMwRc33nhMRpxA8qHrt0Hs/AU37O77paJ1mmy/+GQNmfsmj+kGos9VOP+2H7cDByzWsFF6hh6jRbQqNakoXxJWxHq9096y9w2Gk2WC+qtVixe2WCEYIhmDVYh5Swu0PB46zstxr0+ep58ZbE6ptW7znXa5RocP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QY8MKAIL; arc=none smtp.client-ip=95.215.58.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248C237B413
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 19:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791920800; cv=pass; b=hVQXqVW0THmLtQBR2+iAVEu/AwexX23DjaBYcH+JySP9jjfAoAJb2myITRF0e1WE4OkCNhtyAFbSK6XTDm7TbhHiDW17E3mqboX+NnmlMOmeh405+2BQ6UCgWHzAAf9Kk732TPeMDYIRFx1KlMeOHIWLjxSxEo+NEq8pmmaJGhI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791920800; c=relaxed/simple;
+	bh=FXG86Vc5Z3HtOtD7Ma7mNf0CfsAgAIGs82fO1RvGgYA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EGXvRJ6GCAInYgm5ah9+W73FoOn7F1iW/ZvetUv4PIqe8jh/JvsKUYYPIWIrXnxiL2HUVBJj9vTNxC2HFxR+C8IBL22FcFNHH/+wYI0Uxxs7Ew2HsrJd4GwLI+bdz46qTQ0pvXxlyH6iuH2jvB/x2//7XSD1oH3pCofq+y8mECY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ncq/l4Xs; arc=pass smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QY8MKAIL"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=rlFTSKfCewl11zJZaS7wBrxYbGFIZ9qTqFBP4vMrQt4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791920789; v=1; x=1792525589;
- b=QY8MKAILpJ/Zr6OSAgAR8t+xk7T07BEn4dBOnklMijM75DBUHX5lGz2DTL/NXZADH/GLGjdD
- m0sNclbolcYNzakmYqB7y5exUA3jxnq3jwM0DV8A5LL8wLN4hHJP5mDeDtdQL+muiwvi1DfbRB6
- Tsyf4eKDKCSClHO/WKYQwDRM=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id ad2fe35b42f504b6;
-	Tue, 13 Oct 2026 19:46:28 +0000
-X-Mizu-Trace-ID: ad2fe35b42f504b6
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d03c6c1e-84e3-46df-b220-daf3a5c96327@linux.dev>
-Date: Tue, 13 Oct 2026 20:46:27 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ncq/l4Xs"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6b203527bceso401618a12.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 12:46:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791920797; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XWuoTauE0Jgh5MgaRVLPWAbg2M1ATENKISDXxMSYlEuHFHRGh4LSLQpjuqT0U7QK34
+         HGso+jjDl+GFBQcO/HXdq8nyZ/eR1SCBwo+IsNojDvX+MlQr15H4copioc9c940djirZ
+         k08J+7NdKyK8sXMdNIAe8hqChvnhHzyvEhaluJIKnL7SJE/3k6nG3XbtvVuRd2fX06yx
+         teQJJnsQjMoEA8w0xDFEOzq2dt+WXmWSpXfba2YaILElyF4cQbSHkgZuzHF8HjvenJ7J
+         HoDR8SXB0NkH+cnvFyX8Vq4O+FiYUTyViH7+9EZN5BzfCXxZfKGx5oSFdCNwyRriJo4T
+         3BQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CVKDBAWO9v4x/qHowfYZV6oyH69UJO9Z+8aTiczsXHQ=;
+        fh=zT239D3uluY0S4SaxSt6v9qsARJBm0AH8ZIzY6AOLC8=;
+        b=WYLnFwx8Q4R7pul2gQD1tL9u96XYtXNLVTttyHeQvQde2w2M2CRJm6kE/dksYysBR6
+         S6gHybyYg9G+hby5ZidQh8uA6GyC7xbj/6gYO5r/NqQ4XMRGLy98u8WKgmtN3vI6ojM5
+         Ah/G3j8MJ/sYS9b8kAV8gcb3E4wYq28lKWz7yl5kQLSABTNQfXYtYh31f/1Ktas5l2qD
+         x7jiYKla7Beoji56zk+CTaPVmh0gChWfgIeF7lpTUYmMa0NaiQUpTrVRNahApXdyXC2h
+         egX7gLlSiscd4HKWNQD8cgOZSokmIvym2dXwCJeeHngQCznXqAvNShpiBK6N/+ZikGEK
+         2T6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791920797; x=1792525597; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CVKDBAWO9v4x/qHowfYZV6oyH69UJO9Z+8aTiczsXHQ=;
+        b=Ncq/l4Xsx61d6s5Zq7UQjrcZuzv3YTonNTtufS15woh21syVCmTo5TdTkm2roADliI
+         hQ48nB3OWtGpFmcU+nxqgG+WyO7eUSx3LFdaPWvTF7y41v7LKE4RULxPNFTvu2YN71tr
+         MkxZWrUkAEIq6z9ZaF/8ig1H9ztjhbtsDCXUYbwwhiQlUypNJETpk59b9RxWsf8Ngl5F
+         0oc0e4ARG69Vl33znWek5v64n0Xbnm6IU8Na8KwoB7VHcG3FYdDFNDs+xdNzTcuxUF2j
+         flyKkJd5NBquYAVeRUgLMOGWP8bpRZKyOmzrQxABTqdRFJBoO8I/RJAgtkRPNt2KxNba
+         6xng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791920797; x=1792525597;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CVKDBAWO9v4x/qHowfYZV6oyH69UJO9Z+8aTiczsXHQ=;
+        b=RT8SmoU4rp+eUKt7m6yvdsTMsZ3CqAAFi6TUj/CljmB8NiE7u309YcD70aH0fuA5jL
+         elvxfiEroFs2FPa8nRU7Kj96upfMlBXulGPg7SHx9HbC56Ug5a8AAcU/2hPgjZ5dKWSM
+         78+5af0n/OLQdqB2tgFjJsDbNXN+ITkfj0HLqTmVSHzeQVXJCUMEwMW2N8ve67gEyqw/
+         RTQJHceF29gwUts6UXM9ZhDUt4rpLF8mx7BhSzV/zuaXH5ip+Wr5u0F2Aj2MyFkcY9gE
+         5lLPAfT0QXd2IxY1/U31olpaF93BAY3nhjoWjm5A56vw7UWelebW4lhM97h7pwFBnP0G
+         SepQ==
+X-Gm-Message-State: AFq9FYJQWPY7nSrL7Y5X9ifTKaE2YOGUmtg31Aib9icxXEPV4IEr0dwD
+	58v3mi5b1zp0SaSuY28KcrS+TYj/D4rsUl2zmGOQFsHTlEXnrKfDTURMrbVvWcwRhZHUBa9wT6+
+	UqtCTOKAxpwt71IMJoFSNwWuQWAVxMgw=
+X-Gm-Gg: AYBFou2Z45wCzh7Iq3Im3Rn2rXP1ltwFn1qPWxl2FFtJLY8Ot4lR67fkbtqfGru+nBf
+	M46sJL1Vll8gXhVQZh8eJfhMHKUbkipxZJ0HcFqrEnVYBIIddoUONDHxDj0rtCpXeYs3r8rvmgr
+	4Quow+4YQLPGHTCXiEhjwCBPxOIxC1HXVAxdis3D3xXzcFAeY7Z0RTwCjj2Qie2ZktuDeCKj/Lm
+	sOJuZ5F8v83ED/edExt8eewEoPyPlwAaB7AAu5v2NzNiW5CxKd3viIyA2TzR83FH/ZXYNgBdxsH
+	t5yuCs5/XzI/cx9VBuZ9hmqMfe+RQ4XyzqIvSmHzAU4z+wP4HFVZHFDgpYKW3atBeUguEChv+pe
+	EYJ8/i1T/M12Tt2YnpFrbthNt/ZXU/68oWXsQBwunzftRV88IvFhyD3d3W8tQ5RvohkNS/Zkfry
+	vBZxU/RVoDnvgX3LkYhateTFmz11wUjhQJXjpSbzNSobDc
+X-Received: by 2002:a05:6402:1e8c:b0:6b1:e474:e0e0 with SMTP id
+ 4fb4d7f45d1cf-6b1e474eb16mr2804797a12.9.1791920797110; Tue, 13 Oct 2026
+ 12:46:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/5] ptp: drain virtual clock sysfs operations
- before unregistering children
-To: James Hilliard <james.hilliard1@gmail.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Yangbo Lu <yangbo.lu@nxp.com>,
- Miroslav Lichvar <mlichvar@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, linux-kernel@vger.kernel.org
-References: <20261013-ptp-vclock-sampling-v3-0-d3ee4ea62fc6@gmail.com>
- <20261013-ptp-vclock-sampling-v3-1-d3ee4ea62fc6@gmail.com>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20261013-ptp-vclock-sampling-v3-1-d3ee4ea62fc6@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20261005-submit-phylink-suspended-stop-v1-v2-1-8b8e5d53dfc2@gmail.com>
+ <224296ea-f196-44f3-91d6-1461846c55a5@lunn.ch>
+In-Reply-To: <224296ea-f196-44f3-91d6-1461846c55a5@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 13 Oct 2026 13:46:24 -0600
+X-Gm-Features: AclHuK_-ExkCTDuO98uNJR7veehspk26g_HVMQrxEAv1f54ELeztHi6cVQvhtyw
+Message-ID: <CADvTj4qgcXE6azsNx-Wg5afatezLeuctGR607qO1WhZSmuqzBg@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: phylink: allow stopping a suspended instance
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13/10/2026 20:19, James Hilliard wrote:
-> Parent clock removal walks its virtual clocks before removing the
-> n_vclocks sysfs attribute. The mutex taken by ptp_vclock_in_use() is
-> released before that walk, so a concurrent sysfs deletion can pick the
-> same child and unregister and free its ptp_vclock a second time. A
-> reference held by the device iterator does not protect that separately
-> allocated virtual clock.
-> 
-> Remove n_vclocks before walking the children. Removing the attribute
-> prevents new stores and drains stores already running, without holding
-> n_vclocks_mux across a callback that needs that mutex. Skip virtual
-> clocks, which do not have this attribute.
-> 
-> This race was found by code inspection of virtual-clock registration
-> failure cleanup and parent removal.
-> 
-> Fixes: bfcbb76b0f59 ("ptp: unregister virtual clocks when unregistering physical clock.")
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> ---
->   drivers/ptp/ptp_clock.c   | 5 +++++
->   drivers/ptp/ptp_private.h | 1 +
->   drivers/ptp/ptp_sysfs.c   | 6 ++++++
->   3 files changed, 12 insertions(+)
-> 
-> diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-> index 4111342d64f0..47ffc773065a 100644
-> --- a/drivers/ptp/ptp_clock.c
-> +++ b/drivers/ptp/ptp_clock.c
-> @@ -508,6 +508,11 @@ static int unregister_vclock(struct device *dev, void *data)
->   
->   int ptp_clock_unregister(struct ptp_clock *ptp)
->   {
-> +	/*
-> +	 * Stop and drain virtual-clock creation and deletion before walking the
-> +	 * children. Do not hold n_vclocks_mux while waiting for sysfs callbacks.
-> +	 */
-> +	ptp_vclock_remove_sysfs(ptp);
->   	if (ptp_vclock_in_use(ptp)) {
->   		device_for_each_child(&ptp->dev, NULL, unregister_vclock);
->   	}
-> diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-> index db4039d642b4..ec8633126d6b 100644
-> --- a/drivers/ptp/ptp_private.h
-> +++ b/drivers/ptp/ptp_private.h
-> @@ -169,6 +169,7 @@ extern const struct attribute_group *ptp_groups[];
->   
->   int ptp_populate_pin_groups(struct ptp_clock *ptp);
->   void ptp_cleanup_pin_groups(struct ptp_clock *ptp);
-> +void ptp_vclock_remove_sysfs(struct ptp_clock *ptp);
->   
->   struct ptp_vclock *ptp_vclock_register(struct ptp_clock *pclock);
->   void ptp_vclock_unregister(struct ptp_vclock *vclock);
-> diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-> index dc398c6b7528..53388b123198 100644
-> --- a/drivers/ptp/ptp_sysfs.c
-> +++ b/drivers/ptp/ptp_sysfs.c
-> @@ -263,6 +263,12 @@ static ssize_t n_vclocks_store(struct device *dev,
->   }
->   static DEVICE_ATTR_RW(n_vclocks);
->   
-> +void ptp_vclock_remove_sysfs(struct ptp_clock *ptp)
-> +{
-> +	if (!ptp->is_virtual_clock)
-> +		device_remove_file(&ptp->dev, &dev_attr_n_vclocks);
-> +}
-> +
->   static ssize_t max_vclocks_show(struct device *dev,
->   				struct device_attribute *attr, char *page)
->   {
-> 
+On Mon, Oct 12, 2026 at 7:22=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Mon, Oct 05, 2026 at 01:09:05PM -0600, James Hilliard wrote:
+> > After a failed MAC resume, a driver must be able to stop phylink withou=
+t
+> > resuming it and reconfiguring the failed MAC. This is needed when recov=
+ery
+> > leaves the interface administratively up but detached until a subsequen=
+t
+> > down/up: ndo_stop() must finish the suspended phylink lifetime even tho=
+ugh
+> > the MAC could not be restored. The missing transition was identified by
+> > code inspection of the stmmac recovery paths.
+>
+> I don't particularly like this. It feels like a workaround for a
+> broken MAC. It would be better to fix the MAC so that resume does not
+> fail.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Fixing an identified cause of resume failure belongs in the MAC
+driver. The intended purpose here is narrower: allow orderly shutdown
+after the driver has returned an error, rather than recover the MAC
+through phylink.
+
+stmmac_resume() already returns before phylink_resume() when hardware
+setup fails. The associated stmmac recovery work keeps the interface
+administratively up but detached, allowing an ordinary down/up to
+recover it.
+
+That leaves a subsequent ndo_stop() needing to finish the suspended
+phylink lifetime. Calling phylink_resume() just to make shutdown
+possible would reapply MAC configuration and restart link resolution
+before the driver has successfully restored the MAC. That is the
+transition this prerequisite was intended to address.
+
+> As far as i know, this it theoretical, only triggered by fault
+> injection. If we find a real error situation where the MAC cannot be
+> resumed, then i will consider it. But until then, i prefer to reject
+> this patch.
+>
+>      Andrew
