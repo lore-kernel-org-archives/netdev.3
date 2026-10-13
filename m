@@ -1,185 +1,112 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35D73F39ED;
-	Tue, 13 Oct 2026 14:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791901643; cv=pass; b=VsHC5qYshIEZRu6DZcayQlCCkixgKrqtg6aRQu26qRdQIJnoREUv48u3AjVdsr49HQQDNYiEHVjKHsUMCvG6dJytRv7NGBO2PPDJbbj6GEhNtMfzo866WNfmjhiOENgC1i4DO0tCFix7ELZXtAGWhx9/JtYYAyj3WpOBdXuNi48=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791901643; c=relaxed/simple;
-	bh=H+/6flN6EIebDL8txC+8pIK+BNBctC4gEmFyLzzRBh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cQXmOdJGnAylZZE31W+1sGQotaTnjxIcZyhvaRS4RYIVshH6An0EpK2mxtNPc1VPheogY6rU2RS9fAAqLZ2zXyA2ge7P87MGR6gNO4HSiXhTxu+vnYUk1ru+b1puAKSXLB9G1+nlGB2uIr/U1vxIsJJPEtuhNwKxIBCCp9PrrvU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=gmAViN1S; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D152B503905;
+	Tue, 13 Oct 2026 14:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791901791; cv=none; b=TIV8N3DOLYim2iksce+rnLZM8l3kmzMregwIJG6wmPCMXZLhsp+3faQP2ISoe+UDdz6/zpoCu2CdKnjuGhCybw6hu5fjV+Y4B3xgHpbkgFYp2MkUOqa4kd0hmE4w53j6otO5PxrCjOyCIRqrOrCvkCL67bOQi7oLbFDTTYMG0Aw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791901791; c=relaxed/simple;
+	bh=q49IPWhrFyVtf6UAvhEZ8EpHVL83S5prLii4ks+8GeU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=A21FdWvrMa5R2KDBcs3ivcQf/7ced64Iep2T6mr+79V6a8uhJ3BEEXbDTzxSH3Xs6qjeJQfPnhHw861Lkp7lJVfUB3dhBQ6BgqrDAXcMcJC+XdUPta/22woMWw8jc0DZ3s7kFbwk3BXlueTpRuBpNPl6YmM0LcFaGv72tTqISow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h3szDzi9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="gmAViN1S"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 805422018C1;
-	Tue, 13 Oct 2026 16:27:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791901637;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ApdHT9jlstoFu3E8M4KUrdFK8TNXHrk50WUdd+Ue74E=;
-	b=gmAViN1StYgezRvrnW2kU8LQG8nMplvHkIg+MierkaxjevnZyfzwz2xBT3bQZ/Lx2On66e
-	CxZEqSRp7QUJczqg6DXtuwRFjWeUrdY9yxtUsaNcvLXqkBXvfekIH5AXc8P5+EoBIO/cCR
-	CLMiMhVkysMTlrD5KKWKWyxlB317sBBB69hXj/EfsbTvMeldaOAc/qFbkT+sB/7gIh1I1s
-	IrEgx+oQ8a03xHgo4L/dYoxwcSEGq1gxQ1OSl19BJ3FOAFfVFw6QbGscuqQ2siuorLz8tI
-	DOm9vTThYYK8qVtXI/CkZlMfYsvXF1GLy5frs94qdDe3W/zF6nT9VVTfFKRaTQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791901637; a=rsa-sha256;
-	cv=none;
-	b=BDXTtdWUkb9ZmZKI6YGH0IyAPrPSXhaar59i2sS6xaP2XB3PAz9yy/y+eEYlzp/3kKG3Lb
-	/GHldNmy/YDouinmqqgbO5+qvEwMf37IWsHG60/cvIGFunGXArKj+y0zmUtARQbf5oEw2g
-	aOX8ok8x+G7ujGhJnTOyBCggpNnMk8fZuruZ74RAwT0rl+mS5CB8OK3PeHgh7dW+Eh928z
-	QDB3FdSTFBff8M/pWw2CI8saJnAK0/4OPtea59luZ5UnNvsU3EqP6QU3ikOx82H+Ye2l1E
-	sHF29Jj1xEbX51X652LMo81vWn4NZfEw3OfSxPtV63h+lUrjRzGglIkeQGN8Ug==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1791901637;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ApdHT9jlstoFu3E8M4KUrdFK8TNXHrk50WUdd+Ue74E=;
-	b=f1QeBoW0Ze/ClU7CMtKhrNIi3ByiryX7MiewNu1+Sdzb+h3dJ9+7RT7HD1Z4Fu2PLkn8ND
-	T8zWl1BCf6IZCvaiIN1vAWqtvpmvHBhx89nvOv1w6SHBNd7UIKKb2Bxxqjut93IJE3w4Oz
-	n9uUASxmUnDTHoMIzEoYr9mdPTrVQH8/TrzqNoQx8Xdey7KU+DGe+618tczic++uLL8fQ2
-	SuevtlTvbvVPLKsjW0P1Lzd9qaj9jDf68eqI3sqVQvbe2kF/nUGF7dNE6j0pJ4zvjeebRg
-	kPr2tp8PUecAK1nDJF5VX2KeahtdWU018s7EAwvdyFDDF0t913j+l1uLgjAFUQ==
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1xGdTJ-005hqR-1L;
-	Tue, 13 Oct 2026 16:27:17 +0200
-Received: from pengutronix.de (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 191795C31D7;
-	Tue, 13 Oct 2026 14:27:17 +0000 (UTC)
-Date: Tue, 13 Oct 2026 16:27:16 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Cunhao Lu <1579567540@qq.com>
-Cc: Vincent Mailhol <mailhol@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-can <linux-can@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, kernel <kernel@pengutronix.de>, Heiko Stuebner <heiko@sntech.de>, 
-	linux-rockchip <linux-rockchip@lists.infradead.org>, linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>
-Subject: Re: [PATCH net] can: rockchip_canfd: stop bus-off restart before
- closing the device
-Message-ID: <20261013-tricky-piculet-of-ampleness-cada4c-mkl@pengutronix.de>
-References: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
- <20261013-hissing-saiga-of-endeavor-ef5e03-mkl@pengutronix.de>
- <tencent_F9D491A400474428BFE7262F1A1799A88407@qq.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h3szDzi9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE441F00898;
+	Tue, 13 Oct 2026 14:29:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791901789;
+	bh=5s7u5kQzv0gZLbHuIdyyncsESL4MBDIlymJWS97dG3w=;
+	h=From:Subject:Date:To:Cc;
+	b=h3szDzi94TPbQf4KQHB0WM1sO/H2H+RfMLxpwUfzVb09zeKF6OlT+ZvuSuzYja1C/
+	 0031mXn59wSZV41LQdE3nMTK8UPfRzE+pr6SvhfGRU+rVfwUZp002bsUx/yqFIDOaR
+	 7yi8K4RN7hUJ7amFM85uNqGFQGZ6DmTa9gQkm7QJ/m5wLcsjYnl9M3cnARRE56duhf
+	 LAZYhZDKkNrRh343R05QwvTz2qPgHpiNfdevPS4bCkt8+1GBWPFmy1GT3VFbwdJtBv
+	 eBCxDjkMUhbyVN0PfKnUh8wOe0AARBllpcpp9tyzfo1KoNR+OG0lv3X1orbnoBr516
+	 0F4bEMZw7UMNA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/4] mptcp: misc fixes for v7.3-rc8
+Date: Tue, 13 Oct 2026 16:29:18 +0200
+Message-Id: <20261013-net-mptcp-misc-fixes-7-3-rc8-v1-0-932c9b182fc7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="p2fdgwty2yztquzs"
-Content-Disposition: inline
-In-Reply-To: <tencent_F9D491A400474428BFE7262F1A1799A88407@qq.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCQAxFr1KyNjATqbVeRbpoY9QIHYfJKELp3
+ Rt1+T7/vQVMiorBqVmgyFtNn8kh7hrg+5hugnpxBgp0iCH0mKTinCtnnNUYr/oRww73WPiIbZz
+ GLlIfiQJ4Ihf5HbxwBjdh+I/2mh7C9RuGdd0A5xOZBoUAAAA=
+X-Change-ID: 20261009-net-mptcp-misc-fixes-7-3-rc8-51ba71291220
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ Quanye Yang <quanyeyang@proton.me>, stable@vger.kernel.org, 
+ Ruide Cao <caoruide123@gmail.com>, Kyle Zeng <kylebot@openai.com>, 
+ David Lee <david.lee@trailofbits.com>, Vega <vega@nebusec.ai>, 
+ Ren Wei <weir@nebusec.ai>, Neal Cardwell <ncardwell@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Martin KaFai Lau <kafai@fb.com>, 
+ Sashiko <sashiko-bot@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1636; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=q49IPWhrFyVtf6UAvhEZ8EpHVL83S5prLii4ks+8GeU=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLLOOYSlvfms190jPCdIJ2hp1LG1gQWmplVv8mod5zS1P
+ Ny9o+5DRykLgxgXg6yYIot0W2T+zOdVvCVefhYwc1iZQIYwcHEKwETqGRn+2b/+7s0x4bJn06Sl
+ 7yTtu+KkUtoflSe23sri/nzz4Fzme4wMt0QYeVYr3xVgjH+sOjFmFRPbAW7LKf/fzrvWGSrRU2b
+ LBgA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
+Here are some unrelated fixes:
 
---p2fdgwty2yztquzs
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net] can: rockchip_canfd: stop bus-off restart before
- closing the device
-MIME-Version: 1.0
+- Patch 1: fully reset the msk state on early connect failure. A fix for
+  v5.9.
 
-On 13.10.2026 21:06:21, Cunhao Lu wrote:
-> Hi Marc,
->
-> > AFAICS this is a systematic problem and should IMHO not worked around in
-> > one driver only.
->
-> Agreed. I initially only noticed the problem in the Rockchip CAN-FD
-> driver and did not consider the common CAN code.
+- Patch 2: avoid using the subflow status bitfield for a field that is
+  used under the msk context, not the subflow one like the other fields.
+  A fix for v5.12.
 
-Thanks to your analysis, it was easy to reach that conclusion. :)
+- Patches 3-4: avoid issues with the TCP request migration feature, when
+  used with MPTCP connections. A fix for v5.14.
 
-> > netif_running() tests __LINK_STATE_START, which is removed in
-> > __dev_close_many() prior to calling the driver's ndo_stop().
-> >
-> > Can we make use of netif_running() prior to calling do_set_mode(dev,
-> > CAN_MODE_START)? from can_restart()?
->
-> If you have no objections, I think it would be better to put the
-> netif_running() check after the existing !priv->do_set_mode check and
-> before netif_carrier_ok():
->
->         if (!priv->do_set_mode)
->                 return -EOPNOTSUPP;
->
->         if (!netif_running(dev))
->                 return -ENETDOWN;
->
-> This would preserve the existing error precedence for devices that do
-> not support restart.
+Notes: patches 1-2 are follow-ups from previous minor issues reported by
+Clashiko, and patches 3-4 have been posted to the netdev list before,
+see this link for the changelog:
 
-ACK
+  https://lore.kernel.org/cover.1788800732.git.caoruide123@gmail.com
 
-> > can_bus_off() should not schedule_delayed_work() if !netif_running().
->
-> Agreed. Although this would change the behavior of some drivers, I think
-> it should help improve stability.
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Paolo Abeni (1):
+      mptcp: fix subflow bitfield misuse
 
-ok
+Quanye Yang (1):
+      mptcp: reset msk state on early connect failure
 
-> > We still have to call cancel_delayed_work_sync(&priv->can.restart_work)
-> > from each driver, though.
+Ruide Cao (2):
+      mptcp: hold MP_JOIN msk ref when cloning reqsk
+      mptcp: fix MP_CAPABLE token migration when cloning reqsk
 
-Let's wrap that into a function and put this into linux/can/dev.h. It's
-name could be something like close_candev_cancel_restart_sync().
+ include/net/mptcp.h             |  9 ++++++
+ net/ipv4/inet_connection_sock.c |  4 +++
+ net/mptcp/protocol.c            | 40 ++++++++++++++++++++----
+ net/mptcp/protocol.h            | 10 ++++--
+ net/mptcp/subflow.c             | 41 +++++++++++++++++++++++--
+ net/mptcp/token.c               | 68 ++++++++++++++++++++++++++++++++++++-----
+ net/mptcp/token_test.c          |  4 +--
+ 7 files changed, 156 insertions(+), 20 deletions(-)
+---
+base-commit: 8bf659bd54e1f00e34cf5244b1d289c506fa47c0
+change-id: 20261009-net-mptcp-misc-fixes-7-3-rc8-51ba71291220
 
-> I can make changes to the other drivers. However, I do not have the
-> corresponding hardware and would not be able to test the changes on
-> real devices, so I am concerned about the risk. I would like to confirm:
-> do I need to audit and fix the restart behavior of every CAN device
-> driver?
+Best regards,
+--  
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-I think it's OK to fix the rockchip driver only.
-
-> > What do you think?
->
-> I will address these comments in v2. Thanks for your review.
-
-Please split the changes into several patches:
-- fix the existing infrastructure
-- add new close_candev_cancel_restart_sync() function
-- use this function in the rockchip driver
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---p2fdgwty2yztquzs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCas4/wQAKCRDMOmT6rpmt
-0sMkAP9SLysRPyc/bN1kfprQlX5GQAMSIsfWuKXrKvknT5XDYQD/fce1XVIeVE/g
-Wu3BWgWdmmI0Sq7/V4pT4SEDHKDXXQM=
-=J0Bg
------END PGP SIGNATURE-----
-
---p2fdgwty2yztquzs--
