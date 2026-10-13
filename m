@@ -1,56 +1,56 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6CF5540A2
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1811521886
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791925106; cv=none; b=CtqtRP84UZ+m11Yz+EuS2O1bPGMUjWI8UCV8AtR2QSc0dZcAt+0nT9EpZbMp4x6hKNmI1joYWw2W4MZwahtJ3+8ftuaaQm9O6Qur4h0nU7hbEkXNoO/1s0bo2BtB0MdfV1EaC5aMUX1wqmrdmjI6ABmdgKueM6MyfiEw+4ctWCA=
+	t=1791925107; cv=none; b=EMYvp09hp5PCewaDovVylNOB52yXeqx3kQLNEajTiHYTSvpXxmiAIGzgP0cZkmOIPO5TNbq4AW6mvfQ89ZgP+r+EMDkZ1TUN1kOyWV6sujd5iWqKGdVOfto5jKJtTVkeyAIFSgO6KGiOCxbZ2+ZGE3WBYcW+Tn/JGMdby2HlWsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791925106; c=relaxed/simple;
-	bh=lWRqV8x5Cg8ZZwS///8STniw0n2PyvlMRvAbapqw/60=;
+	s=arc-20240116; t=1791925107; c=relaxed/simple;
+	bh=mzjkFrHMjPSaH9K4XUyL4+zfDdT2nFqa6L/+SofktWk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oUGCQzbbE2IscTXZ5sR48cQvP9nJkipgoRjr+yzbr9DmSzHCkR4mxd7uViLNFUcl+/9YOaNx4SYjEw7ayRo6LkauOB5kf7zqoJUisapJzxHPod8LcilWgopT8We8ypGzFLVr2Am9N90iYJ8nLq31OCKtpSgXISNW6JYuZsemkw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VDEUSW4j; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=X0BLyalgcgycJCtLlBRPTKiSnyWm9T7vJeBzinainPgch95HxHHaEQ3q7GaINXgZVEi31rQsqhWpNsLXB+Qa6ntG6b7vcABKrb+gtjZcKoAi5NrhcfAeop4ROFe34bXh1h9/4Wf4Oi34AOb3+OnrTiv7vbb3eKwz38PKEuX8iU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R6T45uUR; arc=none smtp.client-ip=209.85.215.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VDEUSW4j"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc795ad1f5aso3194897a12.2
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R6T45uUR"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc435388657so3879918a12.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:58:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791925104; x=1792529904; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1791925105; x=1792529905; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=dqKiqkfmYAEix4q01+y7kSJwyugblM+mE6iJZWjc7Nc=;
-        b=VDEUSW4jZSsjYLRM8yF4TA5VTLu2eymguh0yCs1LAMvEHLhs91TibE4BEUKqIb+gNt
-         rt5Jfu0q8P0izCH2rJqZzns6XwSK1+QfWSOm1wQlBjkPMnvBZ/SK/6AiPWT+zWlZ3a2/
-         Y93mNefxZdSVZ0tji80rD3nuMPGElrbWfoN1D6KxDj9BYnrUeFSbczlFn/8yDB2IQVcZ
-         LXyQy2tWPmWDpa9PAne3xSTIqcAOtBX7731evGtD1hzdSSiLdO9HpuSRoh5I8LJ/+64e
-         8dT5TvZMw85T39pmQBgqwYnXzZtGX2/X13Iia8L73WFp6GC+3nSESb5hExYmfo/kjtD3
-         GTxA==
+        bh=9LAvZtS8Ld4N8dcodE0MzB2CFlloDV8eZtDQEhdaME8=;
+        b=R6T45uURWQEnID3InpC39zehEYx3yqGEjFQmxpKTZhQeDpdntxbD0an2oz/JpaxQFV
+         FFtBf/FkarKZNgCXxI2vJEH2tunte2LZh949Min3iCkeIX68GzlKS3FJdgzyTaClg+It
+         KE1H4/U0XHqlkTpdnJLavi4c/q9u3AOWfKpg9doeFiY4thnw12OxEu1HYdaRD5OSBRs6
+         5Mmo2KIHZ0hyyn5Jms9VljUYBw2ESWMyCPs7QvNojcHtJgqlywJH0DUuoXBPxHAC2ebF
+         Rgvd+4NYpVptNr8cwd/K8w9QyCQc07FEuuF08O/an69RRfhb85QXI9OlFuoDqw8mLEZo
+         S4dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791925104; x=1792529904;
+        d=1e100.net; s=20260707; t=1791925105; x=1792529905;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dqKiqkfmYAEix4q01+y7kSJwyugblM+mE6iJZWjc7Nc=;
-        b=QYcbq5XW9Ok8XcliNJlYAugDjprkxY/7W1PHsdIBhge6AiEXOBo801Au2bt/jBxOPG
-         72VielNHb60XuEylaQX4P2nNER+6chmrj/dPXhPA/pgLagYNl5XMjfrlAeQG9hik5qGi
-         fB3DQd297OjOr9UhnwshHIzqPgqZo7dhfplYpQXubrg9XwQaXm8BinbIMCJxe+jZQ1uP
-         IDpZAJk1QGZsB1wQVAv8CuIE2OlSajfYYpVQEl0/QT6foGZV7QJrxtYuC7/ifxY1lL2G
-         /XCu8OuLzLqxbxBIT4kFHHG9uN6U6pFxwZAGwZQdbgsBGAbvsldFICpbGhvcNb1mVjZd
-         xUHQ==
-X-Forwarded-Encrypted: i=1; AKwUvByucPMimIAhsFTmYCJqte/71aVVZCdUU9hdhTILwh8SDm6/s2qlprRGHZAawiTeGOiE0+8xv+8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJAVv9Z47jY9ZzUtu4AegkQFWXpUh/X382CDPtnAV2BoqkuuPg7
-	4+YJ39tFCJ8UpM3rETRxCDC8FeyTAcumni8yazS9UNv44q8bIYxgO8MkmiD4Vq8Tht9zgku3Xk6
-	G+YBkiQ==
-X-Received: from pgjz1.prod.google.com ([2002:a63:e541:0:b0:cc6:d405:8595])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:6e86:b0:3e1:a0c7:4009
- with SMTP id adf61e73a8af0-3e1a0c749a7mr6543696637.48.1791925103394; Tue, 13
- Oct 2026 13:58:23 -0700 (PDT)
-Date: Tue, 13 Oct 2026 20:57:29 +0000
+        bh=9LAvZtS8Ld4N8dcodE0MzB2CFlloDV8eZtDQEhdaME8=;
+        b=Wn7+CtzqfxUGFaeApdinO2lfSQ1mjnhEtYSmAPWGpVTHzFIncb6nhiFDnAhb6ACv5c
+         aUwrwEV6cKqyooIb4KLaf+vmrQEt1kDSq/Hn6REaB6qo7nJ62O7EcZfmk0tdazCV+AcW
+         mF22cOp2JEtEQnFBa9yjwRelNp7I31s/p/BmWZUpIehuCBjB82oK4liM06Y7jI3/bZ8n
+         MDC/70qYnEHO3HCkY/s23z3/rpopzMR8hIfghmJr8VVTOuNd4Yf+WKjenwF0/zHvMo5v
+         6A0rko3WbFyOvpak49kkRglQbaV7BQHcXWrcUI6jytBbVPsHnN0Vt3Imt9uL5LqSFCfl
+         41CQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzJYUzdZXtPzlxj4bm8Ata/9vZLvbf2Qmq6rqjfrhtYpqF5TNqXK+cFStLDYof7ArWpr79+jeY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIExxw/aR3M/7K8wyPYcJrR9NEepNCdChHiNJPA9jdwHDStuO0e
+	oLZemoN2wxSEGHEjeQY24VmudBCTLI1nEKB3gFnkVvP9qD/erCJUkVgxNaElND5334lvqMc/mFn
+	g01Fp2w==
+X-Received: from pffi17-n2.prod.google.com ([2002:a05:6a00:c291:20b0:88f:2ad7:b21c])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:7081:b0:898:b925:f467
+ with SMTP id d2e1a72fcca58-898b925f78bmr6927030b3a.6.1791925104929; Tue, 13
+ Oct 2026 13:58:24 -0700 (PDT)
+Date: Tue, 13 Oct 2026 20:57:31 +0000
 In-Reply-To: <20261013205816.1642597-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,94 +60,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20261013205816.1642597-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.56.0.385.gd3acb90ef8-goog
-Message-ID: <20261013205816.1642597-3-kuniyu@google.com>
-Subject: [PATCH v2 net-next 2/5] selftests: netfilter: Set gc_thresh[123] for
- gw netns in nft_nat_zones.sh.
+Message-ID: <20261013205816.1642597-5-kuniyu@google.com>
+Subject: [PATCH v2 net-next 4/5] neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
 	Ido Schimmel <idosch@nvidia.com>
 Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Since commit cda2962b6e2b ("neighbour: Namespacify neigh_tables."),
-net.ipv[46].neigh.default.gc_thresh[123] are per-netns attributes.
+Previously, neigh_managed_work() was not rescheduled within
+1s since commit ed6cd6a17896 ("net, neigh: Set lower cap for
+neigh_managed_work rearming").
 
-Let's update nft_nat_zones.sh.
+Later, commit 211da42eaa45 ("net, neigh: introduce
+interval_probe_time_ms for periodic probe") added
+INTERVAL_PROBE_TIME_MS and changed the limit to 1ms.
 
-Note that the number of neighbour entries does not even reach the
-default gc_thresh1 (128) with the default maxclients=100, and the
-raised thresholds are only needed for gw netns when maxclients is
-manually increased (e.g., 2000 as mentioned in the comment).
+The limit actually did not work but was fixed with
+netlink_range_validation by commit 6d79b223ec44 ("neighbour:
+Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.").
 
+neigh_table is now per-netns, and a user could hog CPU by setting
+INTERVAL_PROBE_TIME_MS to a small value.
+
+Let's floor the value at 1 second.
+
+This is a user-visible change, but given we had the 1s floor before
+and the default is 5s, it is unlikely that anyone but syzbot is
+setting it below 1s and affected by this change.
+
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Phil Sutter <phil@nwl.cc>
+v2:
+  * Update commit message (rephrase 1st and add last sentence)
+  * Add and use NTBL_PARM_MS_MIN
 ---
- .../selftests/net/netfilter/nft_nat_zones.sh  | 34 +++++--------------
- 1 file changed, 8 insertions(+), 26 deletions(-)
+ Documentation/netlink/specs/rt-neigh.yaml | 2 +-
+ Documentation/networking/ip-sysctl.rst    | 2 +-
+ net/core/neighbour.c                      | 5 +++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
-index 9f200f80253a..d935c967dd13 100755
---- a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
-+++ b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
-@@ -31,25 +31,6 @@ ret=0
- #   NAT Gateway is supposed to do port reallocation for each of the
- #   connections.
+diff --git a/Documentation/netlink/specs/rt-neigh.yaml b/Documentation/netlink/specs/rt-neigh.yaml
+index c8e55c98d564..7929e667cc7a 100644
+--- a/Documentation/netlink/specs/rt-neigh.yaml
++++ b/Documentation/netlink/specs/rt-neigh.yaml
+@@ -342,7 +342,7 @@ attribute-sets:
+         name: interval-probe-time-ms
+         type: u64
+         checks:
+-          min: 1
++          min: 1000
+           max: 86400000
  
--v4gc1=$(sysctl -n net.ipv4.neigh.default.gc_thresh1 2>/dev/null)
--v4gc2=$(sysctl -n net.ipv4.neigh.default.gc_thresh2 2>/dev/null)
--v4gc3=$(sysctl -n net.ipv4.neigh.default.gc_thresh3 2>/dev/null)
--v6gc1=$(sysctl -n net.ipv6.neigh.default.gc_thresh1 2>/dev/null)
--v6gc2=$(sysctl -n net.ipv6.neigh.default.gc_thresh2 2>/dev/null)
--v6gc3=$(sysctl -n net.ipv6.neigh.default.gc_thresh3 2>/dev/null)
--
--cleanup()
--{
--	cleanup_all_ns
--
--	sysctl -q net.ipv4.neigh.default.gc_thresh1="$v4gc1" 2>/dev/null
--	sysctl -q net.ipv4.neigh.default.gc_thresh2="$v4gc2" 2>/dev/null
--	sysctl -q net.ipv4.neigh.default.gc_thresh3="$v4gc3" 2>/dev/null
--	sysctl -q net.ipv6.neigh.default.gc_thresh1="$v6gc1" 2>/dev/null
--	sysctl -q net.ipv6.neigh.default.gc_thresh2="$v6gc2" 2>/dev/null
--	sysctl -q net.ipv6.neigh.default.gc_thresh3="$v6gc3" 2>/dev/null
--}
--
- checktool "nft --version" echo "run test without nft tool"
- checktool "conntrack -V" "run test without conntrack tool"
+ operations:
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index 685c84cf543d..b00bd77363d7 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -248,7 +248,7 @@ neigh/default/unres_qlen - INTEGER
  
-@@ -59,18 +40,19 @@ fi
+ neigh/default/interval_probe_time_ms - INTEGER
+ 	The probe interval for neighbor entries with NTF_MANAGED flag,
+-	the min value is 1, and the max value is 86400000 (1 day).
++	the min value is 1000 (1s), and the max value is 86400000 (1 day).
  
- setup_ns gw srv
+ 	Default: 5000
  
--trap cleanup EXIT
-+trap cleanup_all_ns EXIT
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 6b0569aa5d64..aa3da886eaab 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2435,10 +2435,11 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
+ 	[NDTA_PARMS]		= { .type = NLA_NESTED },
+ };
  
- ip link add veth0 netns "$gw" type veth peer name eth0 netns "$srv"
- ip -net "$gw" link set veth0 up
- ip -net "$srv" link set eth0 up
++#define NTBL_PARM_MS_MIN	MSEC_PER_SEC
+ #define NTBL_PARM_MS_MAX	(24 * 60 * 60 * MSEC_PER_SEC)
  
--sysctl -q net.ipv6.neigh.default.gc_thresh1=512  2>/dev/null
--sysctl -q net.ipv6.neigh.default.gc_thresh2=1024 2>/dev/null
--sysctl -q net.ipv6.neigh.default.gc_thresh3=4096 2>/dev/null
--sysctl -q net.ipv4.neigh.default.gc_thresh1=512  2>/dev/null
--sysctl -q net.ipv4.neigh.default.gc_thresh2=1024 2>/dev/null
--sysctl -q net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
-+ip netns exec "$gw" sysctl -q \
-+   net.ipv6.neigh.default.gc_thresh1=512 \
-+   net.ipv6.neigh.default.gc_thresh2=1024 \
-+   net.ipv6.neigh.default.gc_thresh3=4096 \
-+   net.ipv4.neigh.default.gc_thresh1=512 \
-+   net.ipv4.neigh.default.gc_thresh2=1024 \
-+   net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
+ static const struct netlink_range_validation nl_ntbl_parm_ms_range = {
+-	.min = 1,
++	.min = NTBL_PARM_MS_MIN,
+ 	.max = NTBL_PARM_MS_MAX,
+ };
  
- for i in $(seq 1 "$maxclients");do
-   setup_ns "cl$i"
+@@ -3701,7 +3702,7 @@ static int neigh_proc_dointvec_ms_jiffies_positive(const struct ctl_table *ctl,
+ 	struct ctl_table tmp = *ctl;
+ 	int ret, min, max;
+ 
+-	min = msecs_to_jiffies(1);
++	min = msecs_to_jiffies(NTBL_PARM_MS_MIN);
+ 	max = msecs_to_jiffies(NTBL_PARM_MS_MAX);
+ 
+ 	tmp.extra1 = &min;
 -- 
 2.56.0.385.gd3acb90ef8-goog
 
