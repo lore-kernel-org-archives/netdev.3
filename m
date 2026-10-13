@@ -1,170 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B18437187B;
-	Tue, 13 Oct 2026 08:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791880501; cv=none; b=cx76gX7INepW8lrURLDe9RAKGjpMKClcT7EmhT7ifFDtlr8de0IjGjBb65QZuhfUaKuCDgIO+4nIvliXfjp38noVEhjCXGhLrB3lvmWMe67myq/Rp6/e+fkW+O2zs+DtGS/qWHAonB+F5pcnbrqZnyRHYeIzon1B7i9nIw6mfeU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791880501; c=relaxed/simple;
-	bh=L0KEnA9wUaxKzAGhOm5OumPcQcwrEh3rOjNVOAg6FeU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oLbRdDoOzf7hkInffAUAB/qyEbnVv+H0IxntpvB+1xhbA2qCwDxHfjWU79ZnIoPL6ZAJdPosomNzLUFruZwgSIepc4XSirZjUrcaDUpcycZd7JJeToXD56TYWpvp/A1YNTM9PF6mMdmm/syVvXowoTWllb3D4vGKp4XJE8Z3ZXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gMWW3uFW; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A40B399377
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791880557; cv=pass; b=qIxboZUwYgHrJb0D12CCMvFizRSgdN6l1gN/ln3T4iULIPurh63hjqjh+u7ycYf4a345oYvF4rmhDv8XVEW9sqQwEeoGuS8it8CxtZL45HSEPi3FV0sryh95qZWOOUW+nPHKrZ2PSSjl1shQ6sBCNpQuueSjXktPCNcg0CxFeZc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791880557; c=relaxed/simple;
+	bh=tUq+faLvGd94ea7QFL9y6TQnc+MjdXnLkZzR59MA/MU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lF9E+cLeFRjIKyXRiRo8+G5fRXmkiGW9QHK1Y+nU1kOJI2vGcCPqIDbPV/ZE6qaTU1n2zLU84zEjSJhdq7a6GSn3+0o6C9un4Vwt1/bdNOL8X6xXsuMGm1CiXzo60pDt8FlcI+NVLxLJ5l2VzH9FVjFDzVCHBBVTwlcLHptHufo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=Cn5hCll0; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=3vbIJP0H; arc=pass smtp.client-ip=85.215.255.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gMWW3uFW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DAC1F00898;
-	Tue, 13 Oct 2026 08:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791880499;
-	bh=4pECVQoEhG1R3WDUdFD3/QePU912uEG/1AhCxV7n1PE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gMWW3uFWCF5xEuoQirVZ8lPXpcBiZN63VGjKFqyfbQHT/0mr62hh+NRs8USuKmzG4
-	 XqhceX0kblJbxb0uS/CYHxv2ojbno5VdQxuDxffiRWw7cUiViqqe7dvsou2RC0/UUb
-	 a2fRYvzgw88BMPsb5rKEVip21lsE9UQwaz6KZpZmxKbad/LDYWM2btCZdlTy1xVaKB
-	 8Q5AvXxp5SiZKthlKjz3fyxBjvaiwJ8JeZzGzdUaQq0r4hts42cBuFBLOMKcpgaEE6
-	 ag0q0P10OyzeKK26iZDMPbjyR0y8BCCBYPkcbuPWHe+UbrHJpGY14iUJ3bw4v+kS8A
-	 dxQYkJVDAn6tA==
-Subject: Re: [PATCH net-next v2 6/6] net: kunit: test netmem, page_pool, and
- skb frag refcounting
-From: netdev-bot+sashiko@kernel.org
-To: almasrymina@google.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org, ayush.sawal@chelsio.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, tariqt@nvidia.com, horms@kernel.org,
- steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- ncardwell@google.com, kuniyu@google.com, john.fastabend@gmail.com,
- sd@queasysnail.net, ebiggers@kernel.org, kees@kernel.org,
- aleksandr.loktionov@intel.com, u.kleine-koenig@baylibre.com,
- shaojijie@huawei.com, mgr@kernel.org, j.raczynski@samsung.com
-Date: Tue, 13 Oct 2026 08:34:58 +0000
-Message-ID: <179188049811.434549.5158913693996438568@kernel.org>
-In-Reply-To: <20261012082148.1698596-7-almasrymina@google.com>
-References: <20261012082148.1698596-7-almasrymina@google.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="Cn5hCll0";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="3vbIJP0H"
+ARC-Seal: i=1; a=rsa-sha256; t=1791880529; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=L//W8rBwhOv5SuR1oH0N3XDjqbiZbFymgmLran1Bzn7Shui3sOKirchs8UtMPE/wfV
+    xQFODdIbO2kMEBaUi/hYCn4yqF0RBuDNk0LP9/tTfh4LK/oZMJyohc7Iwiq2UMlEJfMA
+    icSqfWfZbK1Etn456+aZFfkfXU0b5wBdYjie1tSBolKpfxFfByF9NpRWz6k6ymzs6JkK
+    CzbSG/92WELYY3cHYbvTXsaZMRWXEOlHNAdrB3Qq5dKLY4sZ8q0ZXC+OMz2k82tAkYDA
+    shQ8CsMZ8FVUvX/EdZZ2a3fa6EnHWQS5PY+8lbEAlPHLNPcToqj/uGIj3nOsHm66ZDXV
+    N3XA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1791880529;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Ex1oU1Qb4IVkTpx/8k/Tlv3n+ya2mE8qBNQtFkTeZ/Q=;
+    b=Ygr1R8FzchXGkFiCxW3sLPcsFesIjAU6J9iWALiw/loiCvOXGK8BfgEK0pMaQEH+ic
+    j3fDxmv3Zs3AYaqcb0mkqEhuQ8p6k6w1RhLKrG8J97TkKEIYhJELZ4jauSG3mWYOa5Ce
+    LzTpy50cHjQvhOIhCP0rZcadt9rAytaYFrG4mmI9IKbNp4pqAN3vm3qgbUWxF0worCvS
+    e90KZ0ZQhn97En1+DvnFMElwdyDM37NLCPiONYW1J1ooI1kuP7pTCe49npwVKU4oDgWI
+    UoFHwRIdJp/pSQrCJjNX9MSDukLV9eHVNWupRd0Sh3rTg8lbAq0Wl5AK2KsVHRENXndy
+    QAfA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1791880529;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Ex1oU1Qb4IVkTpx/8k/Tlv3n+ya2mE8qBNQtFkTeZ/Q=;
+    b=Cn5hCll0e4qkeMndZDDvIAOkupL5LdihW7Iasy+713AzYHU+n7i80MOTPHya7JsmjQ
+    Lwd6yTVhZTNkUxK3ka75p8hVKxJS8DDj71uwxoK4edQL8CrAMKpaiEpRAgWJiPVp37cU
+    YWSqZOMZj3QaEMi6d7fNmuWtId+Ozh2O9vAsj1dleadzVorHZQqEqHi9tN73YW21w343
+    u487WkePZ/baBemF/Gm9TxoUycThmYhkoVYjLcPciC1Y5VuummN7ZftdeVKJz/N9R5wr
+    K/dePwohHhGp4gV7KDUiAgYWMb0oLFt3oiP4Pfo48KThrUDaGZTpjKB2PRsJgDESCYtF
+    +QNg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1791880529;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=Ex1oU1Qb4IVkTpx/8k/Tlv3n+ya2mE8qBNQtFkTeZ/Q=;
+    b=3vbIJP0HIHe8evnJpddNU9oMJMQ7DqVCuIIMO4+xZhL0XqhtjS8t7WVBR+Om4hh+KI
+    Q62QZM/2xt14MpYvAMBw==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from vivo.lan
+    by smtp.strato.de (RZmta 55.6.3 AUTH)
+    with ESMTPSA id Kfdf2a29D8ZS4gi
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Tue, 13 Oct 2026 10:35:28 +0200 (CEST)
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+To: Jiri Pirko <jiri@resnulli.us>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jiale Yao <yaojiale02@163.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH v3] team: reject CAN and IEEE 802.15.4 devices in team_port_add
+Date: Tue, 13 Oct 2026 10:35:23 +0200
+Message-ID: <20261013083523.4728-1-socketcan@hartkopp.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+From: Jiale Yao <yaojiale02@163.com>
 
-Low priority / nit picks for your consideration:
+Enslaving a CAN or IEEE 802.15.4 device (e.g. vxcan, wpan0) to a
+team master triggers a NULL pointer dereference because these
+device types use different Layer 2 architectures from Ethernet and
+the team driver never initializes their private mid-layer data
+structures.
 
-- [Low] None of the new test cases register KUnit cleanup actions.
+Reject ARPHRD_CAN, ARPHRD_IEEE802154, and ARPHRD_IEEE802154_MONITOR
+devices in team_port_add(), mirroring the existing CAN check already
+present in the bonding driver since commit 8ba68464e478 ("bonding:
+refuse to enslave CAN devices").
 
---
+Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5-c1c7e647ccca@hartkopp.net/
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Assisted-by: Claude:deepseek-v4-pro
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+---
+v3: [Hartkopp] fixed indention and compilation as reported by kernel test robot
+---
+ drivers/net/team/team_core.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-net: kunit: test netmem, page_pool, and skb frag refcounting
-
-This adds KUnit cases to net/core/net_test.c. They check that non-pp
-refcounts and page_pool pp_ref_count stay balanced across regular pages,
-page_pool pages, and net_iovs, through the various skb frag helpers. It
-also exports skb_shift() via EXPORT_SYMBOL_IF_KUNIT() so the test links
-when built as a module.
-
-> diff --git a/net/core/net_test.c b/net/core/net_test.c
-> index 9c3a590865d26..6f21e6baf7fb3 100644
-> --- a/net/core/net_test.c
-> +++ b/net/core/net_test.c
-> @@ -370,10 +370,1213 @@ static void ip_tunnel_flags_test_run(struct kunit *test)
-
-[ ... ]
-
-> +#ifdef CONFIG_INET
-> +static void netmem_ref_test_tcp_devmem_recv(struct kunit *test)
-> +{
-
-[ ... ]
-
-> +	KUNIT_ASSERT_EQ(test,
-> +			sock_create_kern(&init_net, AF_INET, SOCK_STREAM,
-> +					 IPPROTO_TCP, &sock),
-> +			0);
-> +	sock->sk->sk_state = TCP_ESTABLISHED;
-> +	inet_csk(sock->sk)->icsk_ack.rcv_mss = 64;
-> +	tcp_sk(sock->sk)->copied_seq = 0;
-> +
-> +	pool = page_pool_create(&pp_params);
-> +	if (IS_ERR(pool)) {
-> +		sock->sk->sk_state = TCP_CLOSE;
-> +		sock_release(sock);
-> +		KUNIT_ASSERT_FALSE(test, IS_ERR(pool));
-> +	}
-> +
-> +	ret = percpu_ref_init(&binding.ref, dummy_percpu_ref_release,
-> +			      PERCPU_REF_INIT_ATOMIC, GFP_KERNEL);
-> +	if (ret) {
-> +		page_pool_destroy(pool);
-> +		sock->sk->sk_state = TCP_CLOSE;
-> +		sock_release(sock);
-> +		KUNIT_ASSERT_EQ(test, ret, 0);
-> +	}
-
-[ ... ]
-
-> +	/* 1. Receive via tcp_recvmsg_dmabuf -> SO_DEVMEM_DONTNEED release */
-> +	skb = alloc_skb(0, GFP_KERNEL);
-> +	KUNIT_ASSERT_NOT_NULL(test, skb);
-> +	skb->pp_recycle = 1;
-> +	skb_add_rx_frag_netmem(skb, 0, niov_nm, 0, 64, PAGE_SIZE);
-> +	napi_pp_get_page(niov_nm);
-> +	TCP_SKB_CB(skb)->seq = 0;
-> +	TCP_SKB_CB(skb)->end_seq = 64;
-> +	skb_queue_tail(&sock->sk->sk_receive_queue, skb);
-> +
-> +	msg.msg_control = cmsg_buf;
-> +	msg.msg_controllen = sizeof(cmsg_buf);
-> +	ret = kernel_recvmsg(sock, &msg, &iov, 0, 64,
-> +			     MSG_SOCK_DEVMEM | MSG_DONTWAIT);
-> +	KUNIT_ASSERT_EQ(test, ret, 64);
-
-[Severity: Low]
-If this assert fails, is the kernel TCP socket leaked along with the pool
-and the percpu_ref data of the on-stack binding?
-
-The page_pool_create() and percpu_ref_init() failure paths above release
-everything by hand before asserting. The later asserts do not, which
-includes this one, the KUNIT_ASSERT_NOT_NULL(test, skb) checks, and the
-second KUNIT_ASSERT_EQ(test, ret, 64) after the second kernel_recvmsg().
-None of sock_release(), page_pool_destroy() or percpu_ref_exit() run on
-those paths.
-
-The leaked socket's sk_receive_queue or sk_user_frags can still refer to
-the on-stack niov. Nothing touches them afterwards, though, because the
-socket is never released.
-
-Other new cases follow the same pattern:
-
-  netmem_ref_test_page(): the alloc_skb() assert runs while the test
-  still owns the page from alloc_page().
-
-  netmem_ref_test_pp_page(): the page_pool_dev_alloc_pages() assert
-  skips page_pool_destroy().
-
-  netmem_ref_test_release_data(): the percpu_ref_init() assert runs
-  while the pp page still holds extra refs, so the pool and page leak.
-
-  netmem_ref_test_skb_segment(): the reg_page, percpu_ref_init() and
-  skb allocation asserts come after the pool and pp_page are set up,
-  with no cleanup.
-
-Could these use kunit_add_action_or_reset() or similar? Then teardown
-would still happen when an assert aborts the case.
-
-> +	KUNIT_EXPECT_EQ(test, atomic_long_read(&niov.desc.pp_ref_count), 3L);
-> +	KUNIT_EXPECT_EQ(test, atomic_long_read(&binding.ref.data->count),
-> +			base_iov_ref);
-
-[ ... ]
-
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+index ca75f08e3c59..5f1708c2a344 100644
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -1223,10 +1223,20 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		netdev_err(dev, "Device %s is loopback device. Loopback devices can't be added as a team port\n",
+ 			   portname);
+ 		return -EINVAL;
+ 	}
+ 
++	if (port_dev->type == ARPHRD_CAN ||
++	    port_dev->type == ARPHRD_IEEE802154 ||
++	    port_dev->type == ARPHRD_IEEE802154_MONITOR) {
++		NL_SET_ERR_MSG(extack,
++			       "CAN and IEEE 802.15.4 devices can't be added as a team port");
++		netdev_err(dev, "Device %s is CAN or IEEE 802.15.4. These device types can't be added as a team port\n",
++			   portname);
++		return -EINVAL;
++	}
++
+ 	if (netif_is_team_port(port_dev)) {
+ 		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
+ 		netdev_err(dev, "Device %s is already a port "
+ 				"of a team device\n", portname);
+ 		return -EBUSY;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012082148.1698596-1-almasrymina%40google.com
+2.53.0
+
