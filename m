@@ -1,161 +1,386 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C179551DDEB
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 18:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E40B52BE3A
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 18:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791915935; cv=none; b=Lhooh5UTvonal9FkoGED/9kcm2W/FGeDmz42D9fplgZTOaIBu6ccZPkKHoY9idyGunWTACo2pfnOqtp4DsoiSkyje5ifHtZQQUVLEuZHhGeETNhymd+JyfThWYGxPD+fP4aXIKdIgxeOZ9wHh2fYz8GjRXwRBS1IQNAoJ1D6AAM=
+	t=1791916053; cv=none; b=Q2I/nta+maLLZcwpBmcmGBDM/c58TQzKSbEDCFu0cYutsjcuHIJgkgDsJrXg6mSgEq/0476ZTv4K7q9CTwYdOLltm+2WJGOtfbO30aF3/xVvKXQC47Hd9hsFFfmTsS15SF01AK+d1sTrirqoci4GUDbbUjO6DqWD7JSezWpa0H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791915935; c=relaxed/simple;
-	bh=AlG/JZ6VJ7vRBe6rEuyNKsPV58OQf13xQXX8THhv3as=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Ii0/VVYKhW3/0hk/PlZv5Wqr+UXU0DCH9mQYyfU+BUJ5vCvxS1RczyMWvBs98cEWqCvixWITihnHiynIsmp7eE4GEalEDDqjrBL0vJndEi8eDE6G5StbD2Lt5o5CKMvSPbdF0QKMUK4oRu2p4biKuoxihOo51/cFL6WBOg1SGII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=XfKxXSOV; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	s=arc-20240116; t=1791916053; c=relaxed/simple;
+	bh=KgfLtkjemoJDRzRz79tgx72By9fLqPq7ZnG/aHJCE6U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZPeiqDmNYyn+ekdoBMOYaF548+7Qf2Wi8xjiAn4BfYee/uW5FPha2Ep3MQRdF8QvwT1IJU9l14Ry7+7wZZ3mCzCAxltb6E1Ti6txAHHCwBmpKzH4HUsm679pLcJn4LvxBjveDG2+c63C6XjxCw0BH3tIBXU5bjNg8fHGOOlYPuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mek/oxSs; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="XfKxXSOV"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-53505bc6524so2331401cf.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:25:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mek/oxSs"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso42962625e9.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:27:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1791915933; x=1792520733; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=KFCW1M7qXicNkXoNFz0UEyrqo2R7uteq2KxnBN5zNno=;
-        b=XfKxXSOVc7prQSLwXIwVuBllKsr2o2KQVK+/5VGkjEGQUESSOJm7ulPM0O1qUImVtg
-         pBDtueQJqRTmJaCCmF/k/7j99w8fqNMWKvB1wY2WjCRX/bgD1kEADEc8sPQ83szyru7v
-         6bleLCzgm70RqzOKVRy3L3ROa9YALXiVr/O+/g/gmK1UgAue2d3rjnVcmVwg3ry5m4L9
-         AsLHg/uELfVFqYNORwI4LY3Ri0q/+lEAmxARzKhjpeXLQjdA0L4+87ZCbh5xvLUgpcN5
-         xrigD953YYYvAP4jx0ylU1Hc6vhuoJmcqnAA2MnLx1qLldw6l/aA2LjDJPhq1n0l/TQq
-         qpfg==
+        d=gmail.com; s=20251104; t=1791916050; x=1792520850; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=El7V+Nu/0GblZkWD/bQdXseCG+PWhlkrTXZyM5KkrnQ=;
+        b=mek/oxSsIWYwYRqDFeEf+B9A+RrhbrRRcpFEzlFnbCwUWncDAhxZv48ftvitJ67BMS
+         Ti+bPX8oQixzpvGxDjtmWXE40knyISuJYoBEuIp9CM1H4pWL9kxZfvy8OX+C6hedABbf
+         1jBxbz+gA//vNltyMwOuvYfvq05Wavz2dDYriVy5xOxNwsrBDiDB/uO0HGMkDvv2gKXI
+         BYztNEHgSt38UB6wQmi1opP2tPvM/OiDj0yvJZdDcxPAMvgPksWi/BMbfoTKOCj85iAS
+         rR9zfXjtqAJttlc+BSnWF/3UIqritThaOf/CPLP2NiED6eN//xf/ScEtHs2eIr0mlq+H
+         S3+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791915933; x=1792520733;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=KFCW1M7qXicNkXoNFz0UEyrqo2R7uteq2KxnBN5zNno=;
-        b=gWkVBRt6pvElfT1q8Cp7/qagszTRquw2LsR+A1eeqsI0mNjBOVW64xk3Au2zXV17Gp
-         p9WTSmquuz8uvL5cHLZv6yZckAwlAStI+HF8vxoacAvXmVrjkLC+6XCWUEdbvU8NnNQH
-         9AEsQtmlg7J8n+h2bI0v2t/3bSVXONxdRX9KzBLnF1g50lNYOW9eT0sp9NSvWmpj76tL
-         tujErv0bGixkTFgFBxJzCCl44vgHDWmC2zBwaik8L1jviiDWyqjS9qXVmG9h5DLEFfNZ
-         C3pCJlesiz2fHDya5TjTv3jd9TGtPXmgvqYtaGBvR4qVi4TA4Hxz4mjxhdzODB6Ma8BB
-         3iUA==
-X-Gm-Message-State: AFq9FYJVmfzVt5/bXEDqdO1a7OQJFEKSFtOtJO+zyBBut51cNAhNjIEj
-	cQETMpAZ0sRH3Yvr3sgTym2DBk+FtLJsTSy4LDNqi9jh2lx8e/O6NkENKAyN0MWuTHY=
-X-Gm-Gg: AYBFou2G13hTb8nCefUlOmpG+nHANAqvfGejh/N0SnNy/EX82aLLQEXfO9CiSsOJIai
-	6dyH+8m2UvYTxWXQaGDCeK6Gbnb+AE9PAKuFZDUYiWOn2rFHYH63UInEh58nTo1L7JzhyXyE77m
-	XzY8Xv2I/bfI4JticM2YxXmQE43hQvfFTqfIFLUtANLB+pjyYHNzdhTIrqlHi4AzX9raDUSeMTt
-	ZSdfY6BiAdtucOfLiOnjx5jc3de/GjOchG3W7px0lOAMKL1JZywxCnJZdSPsSQcAtY9rQu9VGgI
-	z/i5BSURYJx4AoQ6jeGe7rZPQBvVy1dAIESa22a+NlBZTnatg07kDRRndrmVAx0r0zH53URO9kG
-	Y0/2v4CT2qjJnrLuQsPvGhwUuDG/SmRDm4hXNtBWneEJSv2/Q4F1L64Bv6T/C4BR5I2BeaMJyY/
-	jZH4w+R01xPS2c/xC+6cg8S7YAMA+ogyL4DrPP11KunEFZ/2CHepdAj5wZnBYs7DduF2PvqzaFD
-	kwHh6p0/zmVIpc=
-X-Received: by 2002:a05:622a:4e04:b0:535:a5f7:d59b with SMTP id d75a77b69052e-535a5f7de55mr186236721cf.42.1791915932663;
-        Tue, 13 Oct 2026 11:25:32 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.251])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b76eea2sm107276361cf.18.2026.10.13.11.25.31
+        d=1e100.net; s=20260707; t=1791916050; x=1792520850;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=El7V+Nu/0GblZkWD/bQdXseCG+PWhlkrTXZyM5KkrnQ=;
+        b=R/xE94dr3UGpyhBjYspt6Nyq9ft/v3rr7WiDvz8URvlAHMY8LV4vsLTS5rFqSbWjkx
+         nD4CTq93SVtpZ6Zn6s9YSa0DdymMiGV2C5u/fVJ1qMvlQMtvWl3dyX17NLXh5vCSpym3
+         Kn4uPzzDM9VNsHjan36DGlfoUwV0CwdYavFytkbsh17aNquOHD0vzGE4hAcSKhYP8urs
+         9D3ALl7bhZ9yAllXa8q4vPAVw5ooK7yVPviJ5u2OsVNNISjWwfKc/sw27A0y3MI7Atzw
+         J0Nmo9ucRgVTgDwTegGAwJohAurD1rG5V12X7M6t3Ub2/Br9Eah6KTz5iETJeQbIJnRH
+         lc6g==
+X-Forwarded-Encrypted: i=1; AKwUvBxNq/M6xsHPpvWzkNot0QZVgbwkVcW0U5tPh3xUqaK2fTmuo6bFqz0XKWnCciZBsgEIMu1fjQE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKre+SSDB8dRJ3RylrpxXoYD9EXnumblc7GasnSBrrJKOSxS52v
+	JkuEaKkA37MjE1N8cNacupwmPsHwuHN08byj+u+5lV0HsNKpR8th4VDb
+X-Gm-Gg: AYBFou0qBQxbADikUzvd0n0XoErpFkxSA/cpRfrWbfQ35dpipZOKOYUdjvJMpzFhrsW
+	D8VFZFfQFxbvQiQ6bQsiLGXP1x/njhPFDPTueze+uLOTosWz3MWYLQH/jLUVXPuSdAi7IHRtMY9
+	qCLz6d/kOc/r9Ac4PTskDCINMGvYru89xqAxjhJPRSnD/eZHNZlty63ywrLwwIoafdRTM3l4Zs6
+	pf8rYc6nzcTdOUwAxi/72Z+ybSGeaYtPEQ108pqS+ALCvhINuE/Cp8D9B1gWwVOsmNhnZapYVy4
+	p7FOM5FE/g8jqAQ8c1aVGAAxmLEjlTct0pIYQqrDWP1MLUjoRCggKpwWtXRQHLMxMdme6EW8ScB
+	rd8PQKrxcgR+cm6ZVa1JhPvV9cN/PgDTNkdsKdyhe1UhO+JJUe74rMzH0z1RyCKmlxY5d+wTRzG
+	1Og7GavDffySXYl4S79oW+ELvgNAyi4Oag0j+8B0kHtcgK1xWC89SUR/wJPoQPCAJtor14SEfje
+	ZFCti0OVvZQKcAc1wWtRImdaGOrmI7RsLKsuLjT4ztn8A==
+X-Received: by 2002:a05:600c:5254:b0:4a0:20b4:ba93 with SMTP id 5b1f17b1804b1-4a18e4aa11dmr275071405e9.16.1791916049899;
+        Tue, 13 Oct 2026 11:27:29 -0700 (PDT)
+Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a195002123sm395882095e9.1.2026.10.13.11.27.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 11:25:32 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Tue, 13 Oct 2026 18:25:06 +0000
-Subject: [PATCH net] net: axienet: don't advance the TX ring head before
- the descriptor is ready
+        Tue, 13 Oct 2026 11:27:29 -0700 (PDT)
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: bpf@vger.kernel.org
+Cc: andrii@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	eddyz87@gmail.com,
+	edumazet@google.com,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	liamwisehart@meta.com,
+	martin.lau@linux.dev,
+	pabeni@redhat.com,
+	song@kernel.org,
+	netdev@vger.kernel.org,
+	sdf.kernel@gmail.com,
+	ameryhung@gmail.com,
+	kuniyu@google.com,
+	memxor@gmail.com,
+	jiayuan.chen@linux.dev,
+	Mahe Tardy <mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next v2] bpf: allow ksock connect/send calls from wq
+Date: Tue, 13 Oct 2026 18:27:26 +0000
+Message-ID: <20261013182726.276372-1-mahe.tardy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-b4-axienet-dmaengine-ring-head-v1-1-7add24e74477@toxicpanda.com>
-X-B4-Tracking: v=1; b=H4sIAIF3zmoC/32NSw7CMAxEr1J5jdUvH3EVxMJOTGsEpkoKqlT17
- iRlz3KeZuYtECWoRDgXCwT5aNSXpVDvCnADWS+oPmVoquZQV3WL3CHNKiYT+ieJ9WqCQa3HQci
- jc55P0pLj4x7SyRjkpvMmuEAawfUH45vv4qZ8nWtMUZADmRsyeowld+UG/8hgXb//dwa/wAAAA
- A==
-X-Change-ID: 20261013-b4-axienet-dmaengine-ring-head-ccdb8e3acb75
-To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Michal Simek <michal.simek@amd.com>
-Cc: netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1791915929; l=2932;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=AlG/JZ6VJ7vRBe6rEuyNKsPV58OQf13xQXX8THhv3as=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QBomUl/RFNb7o7hd3lkq0GvyegzlXY0C4reO22XN+8hGLGwHC9ittbqyynjfwdMXd/zfN9u1sJL
- GMd7gDVRTMgE=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
+Content-Transfer-Encoding: 8bit
 
-axienet_start_xmit_dmaengine() bumps lp->tx_ring_head before
-skb_to_sgvec(), dma_map_sg() and device_prep_slave_sg(), and none of
-their error paths undo it.  The skb is freed and nothing is submitted,
-but the slot stays claimed.  axienet_dma_tx_cb() walks tx_ring_tail
-once per completion, so the next completion lands on the abandoned slot
-and dereferences whatever skb pointer is left there: NULL if the slot
-was never used or was already completed, or a stale skb that gets
-consumed a second time.  Every completion after that is accounted
-against the wrong slot.
+In the initial implementation in '7ae4eb14c5f9 ("bpf: Add ksock
+kfuncs")', it was decided to let the ksock kfuncs go through the LSM
+hooks instead of by-passing them, and thus to disallow the use of the
+kfuncs from asynchronous workqueues as the credentials would be
+different than the task context that triggered the kfuncs.
 
-dma_map_sg() and device_prep_slave_sg() can fail at runtime, and so can
-skb_to_sgvec() on a malformed skb.  Only advance tx_ring_head once
-those have succeeded.  The completion callback can't run before
-dmaengine_submit(), so claiming the slot just before that is fine.
+After some discussions, in particular at Plumbers 2026 at the
+presentation introducing this new ksock API[^1], it was agreed that
+by-passing the LSM from socket created by BPF programs should be okay
+and thus that the process context switch from kthread executing the
+workqueues wouldn't be an issue.
 
-dmaengine_submit() itself can also fail on xilinx_dma after a channel
-error, and its return isn't checked either.  That's a separate problem
-and isn't changed here.
+For now, the ksock kfuncs still trigger the LSM hooks but we relax the
+constraint on not using the workqueues as it will be useful for users
+triggering connect() or send() from non-sleepable programs (like
+tracing, support will be extended in future patches).
 
-This was found by the Sashiko AI review of the skbuff BUG_ON() series.
+Also adapt test_ksock_wq() added in 'c93cbdb13f99 ("selftests/bpf: Add
+ksock test for async callback guard")' to test that the connect() and
+send() kfuncs are now allowed and work when called from workqueues.
 
-Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-Link: https://lore.kernel.org/all/20261007-b4-skbuff-bug-on-v2-0-b9a5f732895b@toxicpanda.com/
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Note that bpf_ksock_create() still checks for workqueue context
+execution and makes sure the current->nsproxy is defined as we rely on
+the network namespace to be defined (could be NULL in the case do_exit()
+was called on the task before the wq was scheduled) and to be the one
+from the task that triggered the SYSCALL bpf prog.
+
+[^1]: https://lpc.events/event/20/contributions/2430/
+
+Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
 ---
-Compile-tested only, I don't have the hardware.  The bug is in the error
-paths, which are easy to see from the diff: every goto after the old
-increment returns without submitting anything.
+v1: https://lore.kernel.org/bpf/20261013163101.205638-1-mahe.tardy@gmail.com/
 
-Thanks,
-Josef
----
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/core/bpf_ksock.c                          | 27 +------
+ .../selftests/bpf/prog_tests/ksock_wq.c       | 29 +++++--
+ tools/testing/selftests/bpf/progs/ksock_wq.c  | 76 +++++++++++++++----
+ 3 files changed, 91 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 09443623a3e2..a5800409e45a 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -929,7 +929,6 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
- 	if (!skbuf_dma)
- 		goto xmit_error_drop_skb;
- 
--	lp->tx_ring_head++;
- 	sg_init_table(skbuf_dma->sgl, sg_len);
- 	ret = skb_to_sgvec(skb, skbuf_dma->sgl, 0, skb->len);
- 	if (ret < 0)
-@@ -965,6 +964,10 @@ axienet_start_xmit_dmaengine(struct sk_buff *skb, struct net_device *ndev)
- 	skbuf_dma->sg_len = sg_len;
- 	dma_tx_desc->callback_param = lp;
- 	dma_tx_desc->callback_result = axienet_dma_tx_cb;
-+	/* Claim the ring slot only after the steps above that can fail.  The
-+	 * completion callback can't run before dmaengine_submit().
-+	 */
-+	lp->tx_ring_head++;
- 	txq = skb_get_tx_queue(lp->ndev, skb);
- 	netdev_tx_sent_queue(txq, skb->len);
- 	netif_txq_maybe_stop(txq, CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
+diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
+index e9943aeeadd3..f74968397798 100644
+--- a/net/core/bpf_ksock.c
++++ b/net/core/bpf_ksock.c
+@@ -37,15 +37,6 @@ static void ksock_release_work_fn(struct work_struct *work)
+ 	kfree(ks);
+ }
 
----
-base-commit: 8bf659bd54e1f00e34cf5244b1d289c506fa47c0
-change-id: 20261013-b4-axienet-dmaengine-ring-head-ccdb8e3acb75
+-static bool bpf_ksock_has_user_task_context(void)
+-{
+-	/*
+-	 * Task work can run from do_exit() after exit_nsproxy_namespaces()
+-	 * cleared current->nsproxy, while current is still not a kthread.
+-	 */
+-	return !(current->flags & PF_KTHREAD) && current->nsproxy;
+-}
+-
+ __bpf_kfunc_start_defs();
+
+ /**
+@@ -59,7 +50,7 @@ __bpf_kfunc_start_defs();
+  * This function may sleep (sock_create), so it can only be used
+  * in sleepable BPF programs (SYSCALL).
+  * It cannot be called from a BPF workqueue callback because that callback
+- * does not retain the invoking task's namespace or security context.
++ * does not retain the invoking task's namespace.
+  *
+  * @opts:	Pointer to struct bpf_ksock_create_opts with socket parameters.
+  * @opts__sz:	Size of the opts struct.
+@@ -73,13 +64,9 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
+ 	struct bpf_ksock *ks;
+ 	int err;
+
+-	/*
+-	 * sock_create() derives the network namespace, credentials, and cgroup
+-	 * from current. Kernel threads, including BPF workqueue callbacks, do
+-	 * not carry the context of the task that invoked the BPF program.
+-	 */
+-	if (!bpf_ksock_has_user_task_context()) {
+-		err = -EOPNOTSUPP;
++	/* sock_create() derives the network namespace from current. */
++	if ((current->flags & PF_KTHREAD) || !current->nsproxy) {
++		err = -EPERM;
+ 		goto err_out;
+ 	}
+
+@@ -165,9 +152,6 @@ __bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *ks,
+ 	struct sockaddr_storage sa;
+ 	int addrlen;
+
+-	if (!bpf_ksock_has_user_task_context())
+-		return -EOPNOTSUPP;
+-
+ 	if (!addr || addr__sz != sizeof(*addr))
+ 		return -EINVAL;
+
+@@ -247,9 +231,6 @@ __bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *data,
+ 	};
+ 	int ret;
+
+-	if (!bpf_ksock_has_user_task_context())
+-		return -EOPNOTSUPP;
+-
+ 	ret = kernel_sendmsg(ks->sock, &msg, &iov, 1, data__sz);
+
+ 	return ret;
+diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+index d6dc20b8f95b..cb50f9a1be2e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
++++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+@@ -4,6 +4,7 @@
+ #include <unistd.h>
+
+ #include "test_progs.h"
++#include "network_helpers.h"
+ #include "ksock_wq.skel.h"
+
+ #define CALLBACK_WAIT_RETRIES 1000
+@@ -13,13 +14,22 @@ void test_ksock_wq(void)
+ {
+ 	LIBBPF_OPTS(bpf_test_run_opts, opts);
+ 	struct ksock_wq *skel;
++	char recv_data[sizeof(skel->data->send_data)];
+ 	u32 callback_done;
+-	int err, i;
++	int err, i, port, rfd;
+
+ 	skel = ksock_wq__open_and_load();
+ 	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
+ 		return;
+
++	rfd = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 1000);
++	if (!ASSERT_OK_FD(rfd, "receiver socket"))
++		goto out;
++	port = get_socket_local_port(rfd);
++	if (!ASSERT_GE(port, 0, "receiver port"))
++		goto out;
++	skel->bss->remote_port = port;
++
+ 	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.ksock_wq_start),
+ 				     &opts);
+ 	if (!ASSERT_OK(err, "run ksock_wq_start"))
+@@ -28,18 +38,27 @@ void test_ksock_wq(void)
+ 		goto out;
+
+ 	for (i = 0; i < CALLBACK_WAIT_RETRIES; i++) {
+-		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
++		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE) == 2)
+ 			break;
+ 		usleep(CALLBACK_WAIT_US);
+ 	}
+ 	callback_done = __atomic_load_n(&skel->bss->callback_done,
+ 					__ATOMIC_ACQUIRE);
+-	if (!ASSERT_EQ(callback_done, 1, "workqueue callback completed"))
++	if (!ASSERT_EQ(callback_done, 2, "workqueue callbacks completed"))
+ 		goto out;
+
+-	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
+-		  "workqueue create rejected");
++	ASSERT_EQ(skel->bss->create_ret, -EPERM, "workqueue create rejected");
++
++	if (!ASSERT_EQ(skel->bss->connect_send_ret, sizeof(recv_data),
++		       "workqueue send bytes"))
++		goto out;
++	err = recv(rfd, recv_data, sizeof(recv_data), 0);
++	if (ASSERT_EQ(err, sizeof(recv_data), "recv len"))
++		ASSERT_MEMEQ(recv_data, skel->data->send_data, sizeof(recv_data),
++			     "payload match");
+
+ out:
++	if (rfd >= 0)
++		close(rfd);
+ 	ksock_wq__destroy(skel);
+ }
+diff --git a/tools/testing/selftests/bpf/progs/ksock_wq.c b/tools/testing/selftests/bpf/progs/ksock_wq.c
+index 16a1873d132e..290736e219e1 100644
+--- a/tools/testing/selftests/bpf/progs/ksock_wq.c
++++ b/tools/testing/selftests/bpf/progs/ksock_wq.c
+@@ -2,6 +2,7 @@
+ /* Copyright (c) 2026 Isovalent */
+
+ #include "vmlinux.h"
++#include <bpf/bpf_endian.h>
+ #include <bpf/bpf_helpers.h>
+ #include "bpf_experimental.h"
+ #include "bpf_tracing_net.h"
+@@ -14,15 +15,19 @@ struct ksock_wq_value {
+
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_ARRAY);
+-	__uint(max_entries, 1);
++	__uint(max_entries, 2);
+ 	__type(key, u32);
+ 	__type(value, struct ksock_wq_value);
+ } work_map SEC(".maps");
+
+-int create_err;
++char send_data[] = "hello from bpf workqueue";
++
++__be16 remote_port;
++int connect_send_ret;
++int create_ret;
+ u32 callback_done;
+
+-static int ksock_wq_callback(void *map, int *key, void *value)
++static int ksock_wq_create(void *map, int *key, void *value)
+ {
+ 	struct bpf_ksock_create_opts opts = {
+ 		.family = AF_INET,
+@@ -35,7 +40,32 @@ static int ksock_wq_callback(void *map, int *key, void *value)
+ 	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
+ 	if (ks)
+ 		bpf_ksock_release(ks);
+-	create_err = err;
++	create_ret = err;
++	__sync_fetch_and_add(&callback_done, 1);
++	return 0;
++}
++
++static int ksock_wq_connect_send(void *map, int *key, void *value)
++{
++	union bpf_ksock_addr addr = {
++		.sin = {
++			.sin_family = AF_INET,
++			.sin_port = remote_port,
++			.sin_addr.s_addr = bpf_htonl(0x7f000001),
++		},
++	};
++	struct bpf_ksock *ks;
++	int err = -ENOENT;
++
++	ks = ksock_ctx_get();
++	if (!ks)
++		goto out;
++	err = bpf_ksock_connect(ks, &addr, sizeof(addr));
++	if (!err)
++		err = bpf_ksock_send(ks, send_data, sizeof(send_data));
++	bpf_ksock_release(ks);
++out:
++	connect_send_ret = err;
+ 	__sync_fetch_and_add(&callback_done, 1);
+ 	return 0;
+ }
+@@ -43,20 +73,40 @@ static int ksock_wq_callback(void *map, int *key, void *value)
+ SEC("syscall")
+ int ksock_wq_start(void *ctx)
+ {
++	struct bpf_ksock_create_opts opts = {
++		.family = AF_INET,
++		.type = SOCK_DGRAM,
++		.protocol = IPPROTO_UDP,
++	};
+ 	struct ksock_wq_value *value;
+-	u32 key = 0;
+-	int err;
++	struct bpf_ksock *ks;
++	u64 key = 0;
++	int err = 0;
+
+-	value = bpf_map_lookup_elem(&work_map, &key);
+-	if (!value)
+-		return -ENOENT;
+-	err = bpf_wq_init(&value->work, &work_map, 0);
+-	if (err)
++	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
++	if (!ks)
+ 		return err;
+-	err = bpf_wq_set_callback(&value->work, ksock_wq_callback, 0);
++	err = ksock_ctx_insert(ks);
+ 	if (err)
+ 		return err;
+-	return bpf_wq_start(&value->work, 0);
++	for (key = 0; key < 2; key++) {
++		value = bpf_map_lookup_elem(&work_map, &key);
++		if (!value)
++			return -ENOENT;
++		err = bpf_wq_init(&value->work, &work_map, 0);
++		if (err)
++			return err;
++		if (key)
++			err = bpf_wq_set_callback(&value->work, ksock_wq_create, 0);
++		else
++			err = bpf_wq_set_callback(&value->work, ksock_wq_connect_send, 0);
++		if (err)
++			return err;
++		err = bpf_wq_start(&value->work, 0);
++		if (err)
++			return err;
++	}
++	return 0;
+ }
+
+ char __license[] SEC("license") = "GPL";
+--
+2.43.0
 
