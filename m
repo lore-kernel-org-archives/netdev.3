@@ -1,245 +1,141 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2440134FF79
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:31:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791862293; cv=pass; b=GGaLtFe4OrwlM20LkJgLKWo8jZN5LQqvqfRAm2zYpIIpWRvZixTlBtxgFPBQ2UzGCkYBk87otCJp9ASfCsz6WBThZ+5CZKDnFDw4034YCXv3oM1zdjTzjt44ISeit8LDdSfjt2g4S7nnRjB8pmOQQjfrYrAT4lkdxAS0WXi9mKQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791862293; c=relaxed/simple;
-	bh=zCSEKIAPKVwVSGY4GyE3kxLa1knCjzTA3Y/jvMzWxiw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=opvbyFAj6V3sHNNrGbMXOi1wubfLnb3vssqg7gTSdObjiVd1lA4z2aGcdJ4YblD8Cf4BeEaw6JJS+yEttBlTWndAZV/sLGr5c8FMvos4po33cHReEgYTaWF5LmwCNTj6I7Luu0/K/pGDEk/g89XQaWQH8syjoDus1ZbjFJ6nzks=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CNRyFkqW; arc=pass smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA66377AB4
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791862335; cv=none; b=qZTL2nRKImZq7cq46+8K1yAQgCoq7PjlRILXSXQgFwQ93PEF8JeqPf33PbODPlQEiiKIOx92cE203ub4v+Z6ov8qCPG0Kum1Yv9AOlOpgeybvslNnMSFcKIrZa5EbbFRJmRWJEaKI2+wlxgwQrohYRIljjoIxRtF7CKx9qwaPN0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791862335; c=relaxed/simple;
+	bh=IyheIQPFaBDT7+LxjdCL9KtVVA6tqApMSlyfFxvP220=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NFwqSnb6iu74ioMd0M1qhHepZopPUPOY/TzgUSgIrGFSmRkec58eKjek2sLevqPIGLHvE1azKiSgHfBenlDiW3l+TLukWKe17mLla3BFNXW0Egj0J5isAupUObJPPbardUiCTS8ucTeuSDiZOLmoReMJAcJ+vpquSe0bTKItbMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eahw3a89; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CNRyFkqW"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93e55db58cfso256606285a.1
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:31:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791862288; cv=none;
-        d=google.com; s=arc-20260327;
-        b=htDS4n755vvdnlDutqiCeVzVLtrlnA5Bf7xgKCy7Lhgetoz3XGM1FBHJCWJP4aQc20
-         FVcj15k4wLqScF9MetBFNlDHrcjKAdFKZOLCVrdexukT4U/t08RrghWWGi7BY2o32buL
-         XhR72r/L/PUpT+wJSF8d2Gxbk+B0XKc3WrMKHgJc7yKInKqOtSeO4JBRhkGJJaSSwjW4
-         Jmye7L1nC6IUhi6R4jDbfwtXvvRpJKh3IGXz9szndN6HNqTavqzzc38wIK1W892tXZMP
-         3xuZdxQR+QXAcAToDxLF9sMHLkq4go9mLvYgYQjz3xtFCMO4c2WVyp6Vzf857m2YHGFd
-         1xLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=oKth/1jAUk8y73FB5cD2ux1SjiU3FjqeBdt11b7UR8k=;
-        fh=48dJKwi8r7QN6ytTI0FLyyVv0qc57e0ILwh/8/td3aw=;
-        b=NHkriqv1TrG5moS2SNu4A5NrNeeUZ5d4fm2A0Lmzahmm4fY6etC2g6eJruG25YOOp4
-         6oVTG5eN7N7rdL17YG1peX8yu1q+li99UPryFW8mXx0VIFVQ8hdvCD6UooWC1cAsVeFI
-         GkbOEuzxC9vGE7uFRTr1PxA87aBH9FQFQ2xSCgqAZBb7ROFp3lJczSyQf1te7s4yeSjb
-         /i0vNsMPO7pBomWCmW3Dbdg+hS4hB50Z3XJBYf2w47SL4KXYWMs5kzAyuUAffrZwmqBz
-         i9YTg/Neoijbl3Rk9guUa0EHXp7B9joDCnPMHXmEcSnvHjWG/XGxLYu+dUnpw7U7ryTC
-         VkcQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eahw3a89"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e5d0ee1951so15420015ad.0
+        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:32:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791862288; x=1792467088; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oKth/1jAUk8y73FB5cD2ux1SjiU3FjqeBdt11b7UR8k=;
-        b=CNRyFkqWvkphXy4611cQxfWd3tluQ2Ap+aZpYQtlP56Wvf2uIOZtIBNT32f9l64lCL
-         HdERnSWoEgkR/I2ykgmwW9MosDd36LVBYLu6FgpxJZ8CfziAMvs+159cn0FEnD3Wk8vs
-         owf5QJpZW1rBUtUGwT8vcnB3pYZ53gcu4humkw3zPvllA3/lNcsYd9DuB+3stYgwMh0x
-         WzsNiT7bE58HHyvxKNhB6gyxAw17LkLNfWXXnhSE0WUgxAQ5MbNsa9RRuytAk3T19QiY
-         g6OGGZcFuYXaRsFoYjuxyt3UAtI2t/HA/7ciI0OrbqE1t8NO/gP65CGhRi7fSe90KWxZ
-         f/LQ==
+        d=gmail.com; s=20251104; t=1791862334; x=1792467134; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K5tVRnzC7/u+9J2k/n3TM+qJYjKV4r4MGpsSjnXhUFQ=;
+        b=eahw3a89k4aL49c5ZY/wZVXJZ6YEsjiQn48Z9UYjGKrKfaNPxTjcqtZzklzwbIRyQ8
+         Bl7OMnsPy7p7tTzn3oqsbL1ww8xyfcN8+QZkr00BNTuGg5wlaoTGsK7sYi8RsUr/6oJI
+         KtwCp4NwzWkTgh7kV9WIrPd5yCZyCiyuN851UyrAhDRTuj4tljNtVO48F5qosAqYZipl
+         g/ElFhRteaC3xDQWVMDB+qzDfVbwZKbjfBvmCyCARoe4m2ODvDrC/Yq1CDcj7NAbp1+/
+         rT3dL/mcE8pXegUC5Nck3Ql05jIUR8tAuNNcR7iWl9sPh0aWRTbGxQboMRM2zO2E5htQ
+         h+qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791862288; x=1792467088;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=oKth/1jAUk8y73FB5cD2ux1SjiU3FjqeBdt11b7UR8k=;
-        b=TMxnYPllRoTUFfkXIZbPFZA8lc6q97YlfRE7l6p8AdeWaXW7CS0/gsalSnnCjOJBc8
-         Tb4hApAywcd86MPqudRN4l19V5EGSfRUnPfckG/PaGSLkt1JTOFlXWH8qKZfuFmXB3Xn
-         xZ75Gv3waIyWdpvVJC2adFnRkiisCs+kf44WPBWUJvHB9YTSqpiX25IV1o67Jr3noVeN
-         j4vhK94hlFV4E2a6AaP5GiPjfMZkegMvSPvUJmY+RXSUKl6mXuo4j2/U+40VFTLayTxD
-         DcXr6kz6CDt0OT7isBox1WKqLmqa8RADwbToc6CVmuTgMotAwRZ1wono0g+g0HnE3jgT
-         A2cw==
-X-Forwarded-Encrypted: i=1; AKwUvBynGPereINSi+9SS1cJiLEKUos7D4eDAFujc94b0r7dtV87YwdHIOrKjOMgjmVkAT2Yib13p4Y=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJY6SLRXhqiZdEJ2d9RtGfx5YBWHlhogk3YoOUu2u0r1LBoV+eM
-	JfIXo/UFBmz5w4ZrdfBxWfrq64r+zMaZmVW2kTA+uzYxmJdcL8HvWK9nHdne7OIKU5t3ZqxYDWj
-	tV9ZDAUp5Kol6aoDbVSjrfcKi3njdqus=
-X-Gm-Gg: AYBFou3WiTfO8FbVrUyz00W8s7fe1WafdBJrzuKD/+GkMQrkUm9tOmPNQIpiTNdydBL
-	3lt7Qgx6zqMx2L8yOEagY9CVeVl6nnX+MTmJBRwEtRLJy0ryqln2aq/RN82mSrLNDDsjts5RsVg
-	ryov7eHYfNcZlbK8PiCjJvhz+NaPetswzhT4un2Y+Cj5ENyg6QmN4ukrx2FT48PfvX0dYlA0VFq
-	sHEau689AyxVyTdZfoYxv5WnuV3NYYtB2YU//eMXS3kthsSRfSxxigs/+f0mSsuYl9yictNDp/9
-	qRZdBA928PajSwtbWoK1Lmh16Q86Nd/Gp5KzgIzhtqg8hUhjp5wkMjw=
-X-Received: by 2002:a05:620a:44c8:b0:939:1222:b9f1 with SMTP id
- af79cd13be357-93ebcd2b3d1mr1818738285a.0.1791862287366; Mon, 12 Oct 2026
- 20:31:27 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791862334; x=1792467134;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K5tVRnzC7/u+9J2k/n3TM+qJYjKV4r4MGpsSjnXhUFQ=;
+        b=EdmLAivLJztXB9cQOcd8qnT65w1fE3YSiib5MvQoGnVVUgWBovvgUX7QqPNuLx8bic
+         khfOVwq6/8gJk0WOSG5ZdoNbgqlUQuLoOLG2Xwp9rzGJB5TXUg0GkX0VfSkH3psWbzOL
+         I6qyxKAiaFPyrAJtxbEKKYkmT+JwyS7KMEOvxb7rvNIYngk/WiIZ2PZtbozbvlZKXWvN
+         K5ztF9ARaJZ4V++YABZgBFTcNH/Be1X/orEMY6JDHJwGUptyI7JzFGC7tvJKd4rpKqy3
+         FxT+Y07OM8ZmBVdCo+uA8WH9/PApaTXST3ZKkp6v/JQuZjQLQ8hApMpXteLJnM3tFmk+
+         Y8Jg==
+X-Forwarded-Encrypted: i=1; AKwUvBzfpcaPyzWID+cnRKg6gDtd4lgHFB9129TSw6rpSvv3xsPs948oOx6JInwCwLteqZxbPAz6LAI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLmdnVHLp2jEIOJsSwbsV1p/AIpsL7FciiGRLLBGE75dEA8g2Na
+	yNlYcX9ZJTotP3gQh+janNISU6zgi1jKwX8gVfUBlG6KBlVfcWnb0YGg
+X-Gm-Gg: AYBFou0otRfv8VO5KVaRCn7zanB58lYrE+d8GCc+nESoZb3S/OKB59orNcPuUkj6zUc
+	0sJ4FcgIomIw90PVE1iEXZyZ7FTWZDadch8TA5FDMVhkgioO6BlM6d36hOj9v9RaCf55BS9vx3e
+	IId1oSLW4mxPDiW3jbNcP466HtfXuXFgiyLbU0PIds6MvYzANBYXpeOh2Xhoac6gxphx5evtg2C
+	bnvMDjTUJXgw+Ri6qkPThC+dKDfi62nKNpHLAVs9Pb7SqgTbhUZSz4cUQ43EW9e+hWRofGwt+KJ
+	q5ljsLxugC2kE7dTs+2BEFBR5Ke3TTEWUvzXm2AxcJz8ZSyWA+ar+dtGfqVD8xJnquQN98YwC6G
+	sLaM7W1Qp+1B5tiRcWZeVB5IkqQsA2ibFvgkx507wn5K0Bqmm8RGe4sUyP5ff/POemgJXMb+g1k
+	r+0Wr5lhzi16IvnMamImiuBAItxpvY6a7TIYjFLwOUfvuQPV9fSOpUxBpsz0tN/07cJdDv3ubxH
+	NIto4H/
+X-Received: by 2002:a17:90b:3143:b0:3a6:e99b:bbdb with SMTP id 98e67ed59e1d1-3ab3ac718f2mr10568795a91.50.1791862333896;
+        Mon, 12 Oct 2026 20:32:13 -0700 (PDT)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ab36fdc75esm19541303a91.12.2026.10.12.20.32.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Oct 2026 20:32:13 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	maxime.chevallier@bootlin.com
+Cc: mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	richardcochran@gmail.com,
+	muhammad.nazim.amirul.nazle.asmade@altera.com,
+	rohan.g.thomas@altera.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v8 0/3] net: stmmac: dwxgmac2: timestamp interrupt support + Agilex5 fix
+Date: Tue, 13 Oct 2026 11:32:04 +0800
+Message-Id: <20261013033207.1684328-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261010142247.99223-1-physicalmtea@gmail.com>
- <20261010142247.99223-4-physicalmtea@gmail.com> <as1ciTHT2O40E/Uq@devvm29614.prn0.facebook.com>
-In-Reply-To: <as1ciTHT2O40E/Uq@devvm29614.prn0.facebook.com>
-From: Jia Jia <physicalmtea@gmail.com>
-Date: Tue, 13 Oct 2026 11:30:51 +0800
-X-Gm-Features: AclHuK82x5TMJTU3P4uV1cGGZ695rdTmYCG-meYcWlEm97kH4rrDUYXGHuCS2tM
-Message-ID: <CAJwVaMJxgjbEXk8LW+wYbmfPYA2anNcRtitB=G1=kNv-WXm4TQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/5] vsock/virtio: reuse same-flow socket
- lookup in RX batches
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: stefanha@redhat.com, sgarzare@redhat.com, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, mst@redhat.com, 
-	jasowangio@gmail.com, eperezma@redhat.com, xuanzhuo@linux.alibaba.com, 
-	davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
->
-> On Sat, Oct 10, 2026 at 10:22:45PM +0800, Jia Jia wrote:
-> > An RX lock batch still looks up the socket for every packet and takes a
-> > temporary lookup reference, even though the batch already holds a reference
-> > to the locked socket.
-> >
-> > Record the network namespace and packet address tuple when a batch starts.
-> > Reuse the batch socket for later STREAM/RW packets with the same tuple, and
-> > release the batch before looking up a different flow.
-> >
-> > The cached path still traces every packet, takes an skb owner reference,
-> > validates socket state, source and transport, updates credit, and runs the
-> > receive state machine. Only the socket table lookup and its temporary
-> > reference are skipped.
-> >
-> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
-> > ---
-> >  include/linux/virtio_vsock.h            |  3 ++
-> >  net/vmw_vsock/virtio_transport_common.c | 58 +++++++++++++++----------
-> >  2 files changed, 38 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-> > index 26dde6909c4e..d6528681e052 100644
-> > --- a/include/linux/virtio_vsock.h
-> > +++ b/include/linux/virtio_vsock.h
-> > @@ -287,6 +287,9 @@ struct virtio_transport_rx_batch {
-> >       struct sock *sk;
-> >       unsigned int pkts;
-> >       size_t bytes;
-> > +     struct net *net;
-> > +     struct sockaddr_vm src;
-> > +     struct sockaddr_vm dst;
-> >  };
-> >
-> >  void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-> > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> > index e67dfcaa279c..73e5c7dfe8b4 100644
-> > --- a/net/vmw_vsock/virtio_transport_common.c
-> > +++ b/net/vmw_vsock/virtio_transport_common.c
-> > @@ -1977,6 +1977,7 @@ void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
-> >       batch->sk = NULL;
-> >       batch->pkts = 0;
-> >       batch->bytes = 0;
-> > +     batch->net = NULL;
-> >
-> >       if (!sk)
-> >               return;
-> > @@ -2008,6 +2009,37 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-> >       virtio_transport_recv_pkt_init_addrs(skb, &src, &dst);
-> >       virtio_transport_trace_recv_pkt(skb, &src, &dst);
-> >
-> > +     if (batch->sk) {
-> > +             if (batch->net == net &&
-> > +                 vsock_addr_equals_addr(&batch->src, &src) &&
-> > +                 vsock_addr_equals_addr(&batch->dst, &dst) &&
-> > +                 virtio_transport_recv_pkt_batchable(t, batch->sk)) {
-> > +                     sk = batch->sk;
-> > +                     if (!skb_set_owner_sk_safe(skb, sk)) {
-> > +                             WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-> > +                             virtio_transport_rx_batch_finish(batch);
-> > +                             kfree_skb(skb);
-> > +                             return;
-> > +                     }
-> > +
-> > +                     ctx = (struct virtio_transport_rx_pkt_ctx) {
-> > +                             .net = net,
-> > +                             .src = &src,
-> > +                             .dst = &dst,
-> > +                             .batchable = &batchable,
-> > +                     };
-> > +                     free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
-> > +
-> > +                     if (!batchable)
-> > +                             virtio_transport_rx_batch_finish(batch);
-> > +                     if (free_pkt)
-> > +                             kfree_skb(skb);
-> > +                     return;
-> > +             }
-> > +
-> > +             virtio_transport_rx_batch_finish(batch);
-> > +     }
-> > +
-> >       sk = virtio_transport_recv_pkt_find_socket(skb, &src, &dst, net);
-> >       if (!sk) {
-> >               virtio_transport_rx_batch_finish(batch);
-> > @@ -2018,33 +2050,10 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-> >
-> >       if (!skb_set_owner_sk_safe(skb, sk)) {
-> >               WARN_ONCE(1, "receiving vsock socket has sk_refcnt == 0\n");
-> > -             virtio_transport_rx_batch_finish(batch);
-> >               kfree_skb(skb);
-> >               return;
-> >       }
-> >
-> > -     if (batch->sk && batch->sk != sk) {
-> > -             /* Never acquire a second socket lock. */
-> > -             virtio_transport_rx_batch_finish(batch);
-> > -     }
-> > -
-> > -     if (batch->sk == sk) {
-> > -             /* Keep the batch reference; drop this packet's lookup reference. */
-> > -             sock_put(sk);
-> > -             ctx = (struct virtio_transport_rx_pkt_ctx) {
-> > -                     .net = net,
-> > -                     .src = &src,
-> > -                     .dst = &dst,
-> > -                     .batchable = &batchable,
-> > -             };
-> > -             free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
-> > -             if (!batchable)
-> > -                     virtio_transport_rx_batch_finish(batch);
-> > -             if (free_pkt)
-> > -                     kfree_skb(skb);
-> > -             return;
-> > -     }
-> > -
->
-> Not sure I love adding code and then removing it in the same series.
-> Seems like these are asking to be squashed?
->
+This series adds auxiliary snapshot (EXTTS) interrupt support to
+DWXGMAC2/DWXLGMAC2, fixes a stale TSIS race on the Agilex5
+cross-timestamp path that the new handler would otherwise expose, and
+guards the shared aux snapshot handler against a zero channel mask.
 
-I'll fold patch 3 into patch 2 so batching is introduced with
-same-flow lookup reuse from the start.
+Patch 1 makes smtg_crosststamp() complete on the persistent ATSNS
+count instead of the transient TSIS bit, waits for the FIFO clear to
+complete, and holds aux_ts_lock across the whole trigger/poll/drain
+sequence so a concurrent EXTTS request cannot flush the snapshot FIFO
+mid-flight.
 
-> >       lock_sock(sk);
-> >       /*
-> >        * Sockmap removal restores the native protocol under sk_callback_lock.
-> > @@ -2063,6 +2072,9 @@ void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-> >       free_pkt = virtio_transport_recv_pkt_locked(t, skb, sk, &ctx);
-> >       if (start_batch && batchable) {
-> >               /* Keep the lookup reference until the batch is released. */
-> > +             batch->net = net;
-> > +             batch->src = src;
-> > +             batch->dst = dst;
->
-> Similar to my comment in the other patch, seems these are all in sk
-> already?
->
+Patch 2 guards the shared aux snapshot handler against a zero channel
+mask: ilog2() is applied to the mask without a zero check, and
+ilog2(0) yields an out-of-range event index that ptp_clock_event()
+feeds to test_bit() unchecked from hard IRQ context.
 
-For the batch cache, yes. I'll use the locked socket state for the
-same-flow check. The packet values still need to be passed to the
-locked receive path for source validation and reset handling.
+Patch 3 adds a dedicated DWXGMAC2 timestamp interrupt handler.  The
+XGMAC hwif entries used the generic ops, whose callback read the wrong
+register and whose enable mask omitted the timestamp interrupt, so the
+clock advertised the aux snapshot channels but no event was ever
+delivered.  XGMAC_TSIE is not enabled by default; it is armed on demand
+from the EXTTS enable/disable path through a new callback, and the
+handler only touches the FIFO while the interrupt is armed and while no
+cross-timestamp owns it.  The interrupt is disarmed on suspend and
+unregister and re-armed on resume.
 
-> Best,
-> Bobby
+v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
+v2: https://lore.kernel.org/netdev/20260810100221.9166-1-zxyan0222@gmail.com/
+v3: https://lore.kernel.org/netdev/20260818132722.1852876-1-zxyan0222@gmail.com/
+v4: https://lore.kernel.org/netdev/20260902131441.322167-1-zxyan0222@gmail.com/
+v5: https://lore.kernel.org/netdev/20260910081020.86227-1-zxyan0222@gmail.com/
+v6: https://lore.kernel.org/netdev/20260929073553.4136336-1-zxyan0222@gmail.com/
+v7: https://lore.kernel.org/netdev/20261004120526.2728564-1-zxyan0222@gmail.com/
+
+v8:
+- Gate the handler's FIFO drain on XGMAC_TSIE being armed; the handler
+  runs for every MAC interrupt and must not touch the FIFO while the
+  timestamp interrupt is disarmed.
+- Hold aux_ts_lock across the whole EXTTS enable, including the FIFO
+  clear poll, so the re-arm cannot interleave with a suspend.
+- Drain an in-flight handler with stmmac_sync_timestamp_irq() when the
+  FIFO is handed to the cross-timestamp and on the EXTTS disable path.
+- Roll a failed EXTTS enable back in hardware and software on the
+  FIFO-clear timeout, and drop the EXTTS state when the resume re-arm
+  cannot restore the channel.
+- Disarm XGMAC_TSIE on suspend and unregister; re-arm it on resume.
+- Initialise aux_ts_lock in probe and destroy it in remove, so it is
+  valid for the whole device lifetime.
+- Only clear the software state in the resume-failure teardown, since
+  the auxiliary snapshot register differs on DWMAC_CORE_MAC100/GMAC.
+
+-- 
+2.43.0
+
