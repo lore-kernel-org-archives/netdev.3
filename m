@@ -1,66 +1,144 @@
-Received: from oak.phenome.org (oak.phenome.org [193.110.157.52])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011008.outbound.protection.outlook.com [40.107.208.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9FC48641C;
-	Tue, 13 Oct 2026 06:00:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791871220; cv=none; b=tSxRbp7DSftrRD9U453H+qZCU1pM7+rb6sxqfQRkFtcmIkZ04PweSRanExUMk6Lxprgs+QqGx1R1LY/u8a7jR9bE8eMeL7qqrJjbip5Xx6JYZL+sqOLcF4YGmuS+Ggin9MCZtpq2I6S6EnLUdaEv8X1MzJIJUJCCRldnouKYjr8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791871220; c=relaxed/simple;
-	bh=yVcXeYqVlL1dF3ynvXQd+XxFGCNMSlk4b47CA2WQYB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XfP6wAfgUgyXNLROuygeDJiMx2EaCBvuQxMTlvlNdP43BCzV2NdzzYNsAFCv2/+AU5jpabBErAQk1CmlcoE6rgH1iPJXmhrCl9/mGw4/0XPIo5tuNYyjkw52ZoMjBjTE3coJnuQeeOzBEAuawiC/3lK0uTdRfoDntOQ2oJSv+1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=ecPoNpUN; arc=none smtp.client-ip=193.110.157.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60CD48F03F;
+	Tue, 13 Oct 2026 06:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791871467; cv=fail; b=VNb0vHQFjSr2B5TRSOqZaT4fT+jvJR54E/+PL2KUrdFtGWDRgpWsyfQqPDupjEZ8btOKnyZ9Izu95D7kQZpihQ/ksj0+RKqtcXSoX6FEjOWP8rPNfQqlNedSLnJd1bydlc++3F1b0kaHXmbO27hr9nOZquWEorPj9EUC0R3ZNIg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791871467; c=relaxed/simple;
+	bh=Zj3Lx34SFmPJXkyQzk0Hyqubv0DaakibaUMvY16WEww=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=eeJk3sn+F5AZ1tkY7AlzAAlwp455UPKkFa65QZJB3PObr6dyLg/j/m0hmzk9ef+2QnHgO9tPQUoBpCT8UWs/hZEdkplONVk5NYdELOq0SfV2S5T5fmYvhfyUgsQXmwJhBxN5SQMFh/kZbIaXsk/w8A5WWh1QSiRJNScTTFF04vc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=iMkxOpu4; arc=fail smtp.client-ip=40.107.208.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="ecPoNpUN"
-Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
- reason="pass (just generated, assumed good)" header.d=phenome.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
-	in-reply-to:content-transfer-encoding:content-disposition
-	:content-type:content-type:mime-version:references:message-id
-	:subject:subject:from:from:date:date:received; s=oak1; t=
-	1791871205; x=1792735206; bh=yVcXeYqVlL1dF3ynvXQd+XxFGCNMSlk4b47
-	CA2WQYB4=; b=ecPoNpUNXbRLv4KFGPfhEC2FCLPDNTiVQqdjDSGU9+2Mn0nP2vz
-	XUkz8lKcK7/+XqooQn6joJfT7+ell14kVvYJ0I4m7oul9oUpyNmqyhGez5Q7bFzU
-	9/3H3uPKsSyBagBAOuOsGF3x8EGj03v8FTzFwCXvibFo+d4WXgg2o7zVwhv83bqQ
-	mLEibJTrscMHL0SMClX78JKjD2IidqyoeZblCqSQOHJemrsifB+w/SjRWqWsQkGE
-	CXTElxrqmEYCGD8mNmwtq7PK4bwrrPvdvxDjQdGDW3N1k5itzc4OoVWZx756SeNt
-	GjnEOlQ6/ilrXLN/6dk9FtSS/s26z1637Xw==
-X-Virus-Scanned: amavisd at oak.phenome.org
-Received: by oak.phenome.org (Postfix);
-	Tue, 13 Oct 2026 08:00:02 +0200 (CEST)
-Date: Tue, 13 Oct 2026 08:00:01 +0200
-From: Antony Antony <antony@phenome.org>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="iMkxOpu4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nmzc1ZhBmy+sKZ19UEGY/8Kthoh9xd3UtnDpZMZDQBHzoA8x3AajTgy26RSv1n4TmQF8nTE02xVNEZBOIKoc52oboivtglHlatuPAU7TBS0+qJT68eU7FOiuLyv//0r1iVft7BbKLNG+thh/3Lzg0o/MhqPOBKHzGVtbeKSV3KVP5f9TaxOVWazgzzo1Y4o8T8a14ybEz43bazJ4lyjXc+RY/teaw6ZL9nwpsGGmCWnLReH8ie/4d0NKmQvO1BBoG8uHQY/Hp/qaBoM9DaFX4a+m+snzqq+Sjh8ZzfH7erVuvq62KUObi9nGow4TPqpQLyMcH5zDzTnNBTpifwvT5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=89Lh5xWWd8/BsPzN3WIOfc6+rC2H0Quu6iPV35kIXT8=;
+ b=AegRAE9N2UvrCKo/nvXby1zFmnh/w7vr2DX8dV0mvpNNrw6G15XaIc7YGzF1xDWtnTMk5GIkZwtAhGcb7cpNPntMsr3Kt3JGDMCYATi5IfHtydFm+XMTvA7eqcOao22EZ2GjnpeNFmqIYqNNyFm22ZwAjky7gjVZ/KgkZWjyMeg8vgGI8eLrtVqwxrmp/yykHUpVYhpEU8KoxOKV7dL7X4lw7Vs4RiUiNZbU3CQ+mnq9hWXnp1pmOLePcp1TJcHGJg5yl80T6zsiPmDhKc+mlp4KfD2gTiBd9IfJMiCF6NxrInrniVmppQY8oayWJ3/bzev/DEaROADIYbTUkVqHLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=89Lh5xWWd8/BsPzN3WIOfc6+rC2H0Quu6iPV35kIXT8=;
+ b=iMkxOpu4pYkmZIuYNTPhSqRAJmTUIy2NYi4+AyHRlae/UQMKbu0P52g6rqXgGBe2patAF49knEvqHpdDU6kVD2K1YASkdiJAM48VihLIj3SZDX5sA6xWH3t24lZSugPAUwpk1ZD3Zz8DUHoW2SUZIsCQfRldGPB0DFx1clICFxI=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB6798.namprd12.prod.outlook.com (2603:10b6:806:25a::22)
+ by DS0PR12MB6463.namprd12.prod.outlook.com (2603:10b6:8:c5::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 06:04:21 +0000
+Received: from SA1PR12MB6798.namprd12.prod.outlook.com
+ ([fe80::e317:e4a3:6ae9:8c54]) by SA1PR12MB6798.namprd12.prod.outlook.com
+ ([fe80::e317:e4a3:6ae9:8c54%5]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
+ 06:04:21 +0000
+Message-ID: <770cd345-98f1-4068-a706-c4e7e8b10ccd@amd.com>
+Date: Tue, 13 Oct 2026 11:34:06 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 2/6] dt-bindings: net: xlnx,xxv-ethernet: Add
+ Xilinx XXV 10G/25G Ethernet
 To: netdev-bot+sashiko@kernel.org
-Cc: antony.antony@secunet.com, chopps@labn.net,
-	steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH ipsec v5] xfrm: iptfs: fix pp_ref_count underflow when
- sharing page_pool frags
-Message-ID: <as0sujmhR7dpE-ar@ayla.phenome.org>
-References: <xfrm-iptfs-pp_ref_count-underflow-v5-1-c25508ec9160@secunet.com>
- <179171627713.434549.11629734394381610294@kernel.org>
+Cc: radhey.shyam.pandey@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, michal.simek@amd.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261006110550.1990213-3-suraj.gupta2@amd.com>
+ <179163334293.434549.14718764476813490489@kernel.org>
+Content-Language: en-US
+From: "Gupta, Suraj" <suraj.gupta2@amd.com>
+In-Reply-To: <179163334293.434549.14718764476813490489@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4P287CA0121.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:2b2::8) To SA1PR12MB6798.namprd12.prod.outlook.com
+ (2603:10b6:806:25a::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <179171627713.434549.11629734394381610294@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB6798:EE_|DS0PR12MB6463:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1cf08dd-a01b-4bc0-68b9-08df28efd2e6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|6133799003|10067099003|18002099003|22082099003|3023799007|11063799006|5023799004|4143699003|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	ngRN3gn+f294NTEoacAvCqIk1sKp75D6Sxngcid+E6xPTkGduc8imQNnsHAW9VgwR8lTmC/kekYuGvGX9wSkyWvnohVMdRpuHEjFYM0Htg/JGy8ASl93CsuvY/5xqq42BZ5q4RXGrqtOmo1cUWQxEsZ6PDTgmZVUpJSHMdS14OhmSyh/tjyIqEhCCK2cLF7FUD9EjjAjrxdwoS+jM4Spi8/2bwHFIwX7QYf2lGHnYSyTPJiKjBS+zq10VI4hutsJVnuXqgCA2S/JoHr1k5UyTPEqs+Y7LacKsBzOxslVba8fArYVbXL8rbp7l3tew5n7KiROsZtyGHR00ILOW86Rj3hXoS/ePwh2nbFnV5como32N/QmvcTHnh7lqeUavNPV1BHuh54qIkxrEeMYb6mMdqC6YUiKeAAu764+Brg2RI0/teGRiY6g1dAgu1kVha7vHauNMNEzQlLFNLdtjSUUo6Q9n+6h4EU1EJywbD/r5+O5RzRnFdC6yy4YFVegi3TdXrwWc70gcnUooCBWp1r/do9npGbn4/AJtPBPEcBTIL8OcaXRAKib2JBt2KfNtOmZxfx0O02QkdZsKPyyS1lX3VaqyDe3Zut3c3Bf/Y4FktpP+buvmIUAXVoapgRORmlvu+r0GeMX8WWBdbrMpwu7tZ45jrdktO0syFm+ueTYbxA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB6798.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(6133799003)(10067099003)(18002099003)(22082099003)(3023799007)(11063799006)(5023799004)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Tm1JOElzQ0pGWlNnNHVxSEwzcFVHQUljVmxOa2NQWHlJaFhHbDZ5aGI0T2hr?=
+ =?utf-8?B?dlc5Q1VoTUlVK1NmK2psMVNUSmtTUkZWOWVqWEhWYlRkSCtHYzcwOXUybEZG?=
+ =?utf-8?B?MWVITEo2VVBrakdPMjFVNHlYMVRDbkUxRG5pN3pPbm5vTG9rVXp4RmZUTytW?=
+ =?utf-8?B?NDZHb0FrLy9talFRbUM0RzI0ZFlMdDcyUGlxbHRkbGJTRFlreG41WTR3RDNN?=
+ =?utf-8?B?Q01URE1nK2laMkZOd1dRb25KT0g4bTZmeDNlR1ZiSXhMZXJxMjdjN1VoYW5V?=
+ =?utf-8?B?M3dENG5SZHQvU1ZOSnlGOXhHb0pacDArSFI2VE5MaW9raVljZ2Z0bEs0SCtM?=
+ =?utf-8?B?T2dTcTQ5ZGNvN2FLTnhnTWwyTXN5OFFMUzlGUlNweXNQUi9oMjBJUGM2Mk5I?=
+ =?utf-8?B?dXlvdGdLQ0trcWVzQUFPcFVtcGJXOWhjZHF0OXlNc0JZS1JndkN4d3ZFTTRB?=
+ =?utf-8?B?UlFpZ1hjMUZKVHh3TTNJL3IwR0ZQR083VWlSbFUyTG5JT1krZkhYYURtQnFm?=
+ =?utf-8?B?ME9tUjRWNjA5MEYvUjczVnMwRjA3ZUdCc0oxbXE1MlRuaVF1MUtsMFcrRGNp?=
+ =?utf-8?B?cVBOWFZQT1VTc3JWOS9rN3FqbHlvQTdFdkpZbVlIbFFwSnhLdDVWVDRyaG05?=
+ =?utf-8?B?VThUOTZWWGF2aDArcUsrQmR3NHpDWWhNQkNCWXVBMk91Q2QvNVhvNERXOTg3?=
+ =?utf-8?B?RVlmSVRwaStHSmJVKzlMYjdyQ0xnNmg4MWJDcWx3S3UvOGJzMWllaFVtNWoz?=
+ =?utf-8?B?Q3E0R2g1WFo3c1lFUkNhbE5mVmkrQ01wcTlMLzZQYXVRcCtQL0xsSEFIZUVW?=
+ =?utf-8?B?VHo4b3BNeG5XTFZxWjhXZUE2YVdjWi9laXpPSlVQZTRBUTlJZyt6eDF2Nlda?=
+ =?utf-8?B?WWFYbWtGNlUySWtjYk01a1VDR0RoS1lZejZaeG43ZlZYUnRHd2FxQnR0Vk02?=
+ =?utf-8?B?VzVrZ0YxYXd4MXZSSi9ZQnNBMGVNbFJNUkxhN3lFWlJESEl2VWpMaWJoSmJx?=
+ =?utf-8?B?WVlSSEdmdmRLb2NqdWRMR2ZoSDJvcjRSS0xjYWg0Y1pYdDJ5TUw3ZUFNR2h3?=
+ =?utf-8?B?Mm1jcGlzdTNtZFFEU084bkMveDRlWFg0Q1V0d2ZyY0RPeDA5NzNoYlQ0SXpT?=
+ =?utf-8?B?OTRDR09IK1JQUVdRQVBlYzhWUjVvaWlBMjJjaCtiakUvZkhTV3pwVC8wVDRj?=
+ =?utf-8?B?OTRvZWs4WURIam8rMjl0bjBiaE42MjJZeEdVK2lUczdTSGxld3V2anM5Qkxy?=
+ =?utf-8?B?UTJJL3FLbVRONmhIYjBoZS96NjJGRVVYQm5RZWFPVGMrekRYVWpZOXp2cUdq?=
+ =?utf-8?B?eFAvY1lIcDA3VkxNUjAycUhMWEJKMlVVVWI1dWhWdy9IRnErVTBwN3FuYXRH?=
+ =?utf-8?B?VnpEK05qOFJIQjBlSHZJSDBnYlZ0aFgzb0dYK0pKc1NzSXVKRFFraTFHN3Zv?=
+ =?utf-8?B?L0dVYmFjMlJIemZxd0hoRC84NVROeVBuYnBoa1JJaEtKSXZBckFLbjVZVUxB?=
+ =?utf-8?B?R3BNZFpVanEzYUZjTjdlVSswMWRIcEFxTDdlajZwaUNOTEdwb2YwVmJVUVk1?=
+ =?utf-8?B?QUhhTXozWW9tTE83Q0tWYlZ0cW9XRVR3d0Zkeld3S2RLdkdlTzFpMldQOTlS?=
+ =?utf-8?B?TGZXNDh5U0pBeWl4U3dncHpLQmNGQTdhZUpDTTUxWE0yaGQ4M0EzVnpJN0J2?=
+ =?utf-8?B?OG1md1dHaisxZU83Z29VSkxTOXFKL3pPcityREg0ZndiVllHVjlFaCtNMDBx?=
+ =?utf-8?B?b09GK2IxZkFZK0tlVWluV3JtaVNaVW1qMEc0RmNiaFcxWkllTWoxSHVKSHRz?=
+ =?utf-8?B?NGJIaXBhaS9ERVN4WkNESk9TZmVYRmZwZVdkTkF6NnpzZE12amJMRkhCajIz?=
+ =?utf-8?B?NGJYSDg3N21YV21LV1J6NkVhcGhEa3ZDWnEvbldpdlQ0T1JPSFMwelJvUUdE?=
+ =?utf-8?B?RG9wamo1dG4yeWFWdkxFRXdoVnorcVlZZWdCVDg3WTlLRzdvSXBwcVZVK1Zl?=
+ =?utf-8?B?L0ZTL2ZtNFZmOTM3S29QZll6RFg1SVVaK3ZwSHJqb2MrSy9oZEJlZ2dmQ1pM?=
+ =?utf-8?B?RGZLQXc5eU1ZSkJsSk1DeGVka1Jsell5VVB2RE83NnZORi9VOUtoSHNqUkl6?=
+ =?utf-8?B?aHZTWXhRa3M5aGdFckxtckVyMUpQV2RleUhqVmx3MXlJeFhLSEVxTEVFT1RQ?=
+ =?utf-8?B?cjUwZVFDTG1oa0h2cHBpbXFna2NMaXRtQWpkVGhwVWwzTUFyTzBPK0Q4OUkv?=
+ =?utf-8?B?YWVhWjkxNHQ4cmtBcFZwYVJRSFp3N2UwanY1Q2VqTlFNeVgwMXJ2MDJsdHVM?=
+ =?utf-8?B?QlZ1WmJUT1hlOEFQNW1BTDVKQUNVWW5TSUtPQmR4aDVLVG9JcHRRZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1cf08dd-a01b-4bc0-68b9-08df28efd2e6
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB6798.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 06:04:21.1746
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wJ0IG5tedOGdosrN5COTOEjgDMhXW3rXmcxqw9+n6fgO2aH9kiAuWsGom1zt7UlWkB1RsKj8JzTsva1CS0jVnw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6463
 
-On Sun, Oct 11, 2026 at 10:57:57AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
+
+
+On 10/10/2026 5:25 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
 > issue(s) to consider.
 > 
-> Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0 (1)
+> Critical: 0 · High: 1 · Medium: 1 · Low: 1
 > 
 > If you believe none of the issues are legitimate, please reply to each
 > issue of Medium severity or higher and explain why the AI is wrong.
@@ -68,222 +146,167 @@ On Sun, Oct 11, 2026 at 10:57:57AM +0000, netdev-bot+sashiko@kernel.org wrote:
 > know by including "pw-bot: cr" as a separate line at the end of your reply
 > (one such reply per series is enough).
 > 
-> - [Medium] The commit message says the iptfs_skb_add_frags() hunk is
->   cosmetic: "Its destination skb never has pp_recycle set today, so…
-
-It could be better written. If I have to send another one I woul re-write it.
-Otherwise patch works. If there are no other issues it could be applied.
-
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but it sits in the
->   function the patch edits.
-> - [Low] iptfs_frag_ref() (net/xfrm/xfrm_iptfs.c:453-466) decides whether
->   a frag is page_pool owned differently from the release path.
+> - [High] The XXV binding never says how link management works, so a node
+>    that passes the schema, including both examples in the binding, cannot…
+> - [Medium] The binding has no way to describe the XXV transceiver (GT)
+>    reference clock.
+> - [Low] The new XXV binding's `dma-names` schema only checks a per-item
+>    pattern (`^[tr]x_chan([0-9]|1[0-5])$`) and a count of 2 to 32.
 > 
 > --
 > 
-> xfrm: iptfs: fix pp_ref_count underflow when sharing page_pool frags
+> dt-bindings: net: xlnx,xxv-ethernet: Add Xilinx XXV 10G/25G Ethernet
 > 
-> This adds iptfs_frag_ref(). When the destination skb has pp_recycle set
-> and the frag's head page is page_pool owned, it takes a page_pool
-> reference. Otherwise it takes a plain page reference. The helper is used
-> in iptfs_consume_frags() to fix a pp_ref_count underflow on the TX
-> aggregation path, and in iptfs_skb_add_frags() for consistency.
+> This adds a new DT binding schema for the Xilinx XXV 10G/25G Ethernet IP.
+> The IP has an in-core PCS/PMA and uses an external AXI DMA or MCDMA. The
+> binding covers the 10gbase-r/25gbase-r phy-modes, the rx_core/drp/s_axi
+> clocks and the dmas/dma-names properties.
 > 
-> > diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> > index 6920940a35b49..86688c0c3db96 100644
-> > --- a/net/xfrm/xfrm_iptfs.c
-> > +++ b/net/xfrm/xfrm_iptfs.c
-> 
-> [ ... ]
-> 
-> > @@ -449,6 +450,21 @@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
-> >  	return true;
-> >  }
-> >  
-> > +static void iptfs_frag_ref(skb_frag_t *frag, bool recycle)
-> > +{
-> > +	netmem_ref netmem = skb_frag_netmem(frag);
-> > +	struct page *head;
-> > +
-> > +	if (recycle && !netmem_is_net_iov(netmem)) {
-> 
-> [Severity: Low]
-> 
-> This is a pre-existing issue, but the net_iov handling here doesn't
-> match the release side.
-> 
-> For a pp_recycle destination, every net_iov frag falls through to
-> __skb_frag_ref() -> get_netmem(), which never touches pp_ref_count.
-> The release path in napi_pp_put_page() does this:
-> 
-> 	netmem = netmem_compound_head(netmem);
-> 
-> 	if (unlikely(!netmem_is_pp(netmem)))
-> 		return false;
-> 
-> netmem_is_pp() returns true for page_pool backed net_iov. If such a frag
-> is shared through iptfs_skb_add_frags(), the release would drop a
-> pp_ref_count that was never taken.
-> 
-> This doesn't look reachable today:
-> 
->   - Software ESP can't pass an unreadable skb on to IPTFS input. When
->     skb_copy_bits() fails, esp_remove_trailer() calls BUG().
->   - mlx5 is the only unreadable-netmem driver with IPsec offload, and
->     mlx5e_xfrm_add_state() rejects modes other than transport and
->     tunnel.
->   - On TX, iptfs_frag_ref() is only called on the head page.
-> 
-> The net_iov behaviour is also the same as before the patch. The commit
-> message already says "The netmem/devmem path is not addressed and
-> probably needs a fix in net/core".
-> 
-> Could this be handled together with that net/core change?
-
-Yes, I'd rather fix net_iov together with a likely net/core change seperate commit;
-not addressed here, as the commit message says
-
-> 
-> > +		head = compound_head(netmem_to_page(netmem));
-> > +		if (page_pool_page_is_pp(head)) {
-> > +			page_pool_ref_page(head);
-> > +			return;
-> > +		}
-> > +	}
-> > +	__skb_frag_ref(frag);
-> > +}
-> > +
+>> diff --git a/Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml b/Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
+>> new file mode 100644
+>> index 0000000000000..cf31ab677a4bc
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/xlnx,xxv-ethernet.yaml
+>> @@ -0,0 +1,110 @@
 > 
 > [ ... ]
 > 
-> > @@ -486,7 +502,7 @@ static int iptfs_skb_add_frags(struct sk_buff *skb,
-> >  			tofrag->len -= offset;
-> >  			offset = 0;
-> >  		}
-> > -		__skb_frag_ref(tofrag);
-> > +		iptfs_frag_ref(tofrag, skb->pp_recycle);
-> 
-> [Severity: Medium]
-> 
-> The commit message says this about the hunk:
-> 
->   Its destination skb never has pp_recycle set today, so behaviour
->   there does not change.
-> 
-> Is that accurate for the RX reassembly path?
-
-No, it isn't accurate for RX reassembly; see below.
-
-> 
-> In __input_process_payload(), the "Reuse the received skb" branch keeps
-> the skb the driver delivered (skb_pull(skb, data)). That skb keeps its
-> pp_recycle bit. If the inner packet is incomplete, it becomes the
-> reassembly destination:
-> 
-> 		if (skb->len < iplen) {
-> 			/* Start reassembly */
-> 			spin_lock(&xtfs->drop_lock);
-> 
-> 			xtfs->ra_newskb = skb;
-> 
-> On the next ESP packet, iptfs_reassem_cont() uses it as newskb. The
-> sharing gate there only requires pp_recycle to match:
-> 
-> 	if (!skb_has_frag_list(skb) && !skb_has_frag_list(newskb) &&
-> 	    (skb->head_frag || skb->len == skb->data_len) &&
-> 	    skb->pp_recycle == newskb->pp_recycle) {
-> 	...
-> 		iptfs_skb_add_frags(newskb, fragwalk, data, copylen);
-> 
-> On a page_pool NIC, both skbs have pp_recycle set. Before this patch,
-> the shared frags got a plain reference from __skb_frag_ref(), but they
-> were later released through napi_pp_put_page(), which decrements
-> pp_ref_count.
-> 
-> Doesn't that make this hunk a fix for the same underflow on the RX
-> reassembly path, not just a consistency change? Could the commit message
-> say that both the TX aggregation and RX reassembly sharing paths were
-> affected, since that matters for stable backports? 
-
-Yes, you're right. The commit message could be better worded. The
-iptfs_skb_add_frags() hunk also fixes RX reassembly, since the reused
-driver skb keeps pp_recycle. I'll update the commit message in the next
-version. I think the code is clear it fix RX side. If I send another 
-vesion I would re-word it.
-
-
-> 
-> >  		shinfo->nr_frags++;
-> >  		shinfo->flags |= SKBFL_SHARED_FRAG;
-> >  
-> > @@ -2171,7 +2187,8 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
-> >  		new_truesize = SKB_TRUESIZE(skb_end_offset(from));
-> >  	} else {
-> >  		iptfs_skb_head_to_frag(from, &toi->frags[toi->nr_frags]);
-> > -		skb_frag_ref(to, toi->nr_frags++);
-> > +		iptfs_frag_ref(&toi->frags[toi->nr_frags], to->pp_recycle);
-> > +		toi->nr_frags++;
-> >  		new_truesize = SKB_DATA_ALIGN(sizeof(struct sk_buff));
-> >  	}
-> >  
+>> +description:
+>> +  The Xilinx XXV Ethernet Subsystem implements a 10G/25G Ethernet MAC with an
+>> +  in-core PCS/PMA driving a high-speed serial transceiver. It supports the
+>> +  10GBASE-R and 25GBASE-R line rates, with 25G operation following the 25G
+>> +  Ethernet Consortium specification. Because the PCS/PMA is integrated into
+>> +  the IP, the subsystem has no MDIO bus master and is not managed through an
+>> +  external MDIO PHY; link state is read from the MAC's own status registers.
 > 
 > [Severity: High]
+> The binding says there is no external MDIO PHY. It does not require or
+> show managed = "in-band-status" or a fixed-link node, though. Neither
+> example has phy-handle, fixed-link or managed.
 > 
-> This isn't a bug introduced by this patch, but since
-> iptfs_consume_frags() is being changed: can it corrupt a cloned source
-> skb?
+> The XXV support added later in this series sets only mac_capabilities and
+> supported_interfaces in axienet_xxv_phylink_set_capabilities(). It does
+> not set phylink_config.default_an_inband, so cfg_link_an_mode stays at
+> MLO_AN_PHY.
 > 
-> In iptfs_output_queued(), only the destination is checked for clone or
-> shared state:
+> On open this gives:
 > 
-> 		if (shi->frag_list || skb_cloned(skb) || skb_shared(skb))
-> 			share_ok = false;
+> axienet_open()
+>    phylink_fwnode_phy_connect(lp->phylink, dev_fwnode(lp->dev), 0)
+>      fwnode_get_phy_node() fails, since there is no phy-handle
+>      if (pl->cfg_link_an_mode == MLO_AN_PHY)
+>          return -ENODEV;
 > 
-> The per-source test never checks skb_cloned(skb2) or skb_shared(skb2):
+> A node that matches this binding, including either example, would then
+> fail ndo_open with "phylink_of_phy_connect() failed". Is that expected?
 > 
-> 			if (share_ok &&
-> 			    (shi2->frag_list ||
-> 			     (!skb2->head_frag && skb_headlen(skb)) ||
-> 			     skb->pp_recycle != skb2->pp_recycle ||
-> 			     skb_zcopy(skb2) ||
-> 			     (shi->nr_frags + shi2->nr_frags + 1 > MAX_SKB_FRAGS)))
-> 				share_ok = false;
+> Also, phylink_pcs_poll_start() only polls the internal PCS when
+> cfg_link_an_mode == MLO_AN_INBAND.
 > 
-> iptfs_consume_frags() then memcpy()s fromi->frags into the aggregate
-> without taking frag references, and does:
+> Should the binding require managed: const: in-band-status? The other
+> option is for the XXV phylink_set_caps to set default_an_inband = true.
+
+Correct. The XXV subsystem has an integrated PCS/PMA and no external 
+PHY, so link is managed in-band from the MAC status registers. The 
+driver should therefore default to in-band mode.
+
+> Either way, could the binding document the chosen mode?
 > 
-> 	fromi->nr_frags = 0;
+>> +  Any SFP module management (e.g. I2C) is handled by separate IP outside this
+>> +  binding. Its payload is moved by an external AXI DMA (or multichannel DMA)
+>> +  controller referenced through the "dmas" property.
 > 
-> If skb2 is a clone, that skb_shared_info is shared with its sibling. The
-> sibling is left with data_len > 0, nr_frags == 0 and no frag_list, and
-> the aggregate becomes the only owner of the page references. For
-> comparison, skb_try_coalesce() only moves frags when !skb_cloned(from),
-> and takes references otherwise.
+> [ ... ]
 > 
-> Cloned skbs could reach this point with nothing uncloning them before
-> dst_output() -> iptfs_output_collect():
+>> +  clocks:
+>> +    items:
+>> +      - description: RX AXI4-Stream clock.
+>> +      - description: GT DRP clock.
+>> +      - description: AXI4-Lite register clock.
+>> +
+>> +  clock-names:
+>> +    items:
+>> +      - const: rx_core
+>> +      - const: drp
+>> +      - const: s_axi
 > 
->   - netem duplicate on an xfrm interface (netem_enqueue() uses
->     skb_clone())
->   - a non-mmap AF_PACKET listener on the xfrmi device
->     (dev_queue_xmit_nit())
->   - tc mirred from xfrmi
+> [Severity: Medium]
+> How would a DT describe the transceiver (GT) reference clock here? The
+> description says the in-core PCS/PMA drives a high-speed serial
+> transceiver, and that transceiver has its own reference clock input.
 > 
-> In each case the skb can be a forwarded non-GSO, non-linear, head_frag
-> RX skb.
+> The clocks/clock-names list is fixed at three entries, and
+> unevaluatedProperties is false. A DT that also lists the GT refclk would
+> fail validation. xlnx,axi-ethernet.yaml already documents mgt_clk for its
+> optional internal PCS/PMA PHY.
 > 
-> With netem duplicate, the second clone is later accounted with
-> skb->data_len += skb2->len (or sent as a first skb) after its frags are
-> gone. The ESP output path can then hit BUG_ON(len) in __skb_to_sgvec().
-> An AF_PACKET reader could get -EFAULT. A concurrent reader, or DMA on a
-> mirrored device, could access pages after the aggregate frees them.
+> Later in the series, axienet_10g25g_clk_init() claims only s_axi, rx_core
+> and drp. axienet_xxv_poll_link_ready() then fails open when GT reset-done
+> times out:
 > 
-> This dates back to b96ba312e21c and needs CAP_NET_ADMIN configuration.
-> Should the share_ok test also reject skb_cloned(skb2) or
-> skb_shared(skb2)?
+>      netdev_err(ndev, "XXV MAC GT reset not complete! Cross-check the MAC ref clock configuration\n");
 > 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/xfrm-iptfs-pp_ref_count-underflow-v5-1-c25508ec9160%40secunet.com
+> On boards where a Linux-managed, gateable clock provider supplies the GT
+> refclk, nothing claims that clock. Unused clock cleanup could then gate
+> it. This depends on the board.
+> 
+> Could an optional trailing clock (minItems: 3) be added now?
+> writing-bindings.rst asks for complete bindings even when the driver does
+> not use every feature.
+> 
+Agreed. The three current clocks (rx_core -> rx_core_clk, drp -> dclk, 
+s_axi -> s_axi_aclk) are correct, but per PG210 the GT has a dedicated 
+differential reference clock (refclk_p0/refclk_n0 -> tx_serdes_refclk) 
+that the list cannot express today.
+I'll add an optional trailing clock, mirroring mgt_clk in 
+xlnx,axi-ethernet.yaml
+
+> [ ... ]
+> 
+>> +  dma-names:
+>> +    items:
+>> +      pattern: "^[tr]x_chan([0-9]|1[0-5])$"
+>> +    description:
+>> +      Should be "tx_chan0", "tx_chan1" ... "tx_chan15" for DMA Tx channel and
+>> +      "rx_chan0", "rx_chan1" ... "rx_chan15" for DMA Rx channel.
+>> +    minItems: 2
+>> +    maxItems: 32
+> 
+> [Severity: Low]
+> This checks the name pattern and the count. It does not require
+> "tx_chan0" and "rx_chan0", or even one TX and one RX entry. Both of these
+> pass dt_binding_check:
+> 
+>      dma-names = "tx_chan1", "rx_chan1";
+>      dma-names = "tx_chan0", "tx_chan1";
+> 
+> The driver requests fixed names, though:
+> 
+> axienet_probe()
+>      tx_chan = dma_request_chan(lp->dev, "tx_chan0");
+>      if (IS_ERR(tx_chan))
+>          return dev_err_probe(lp->dev, PTR_ERR(tx_chan), "No Ethernet DMA (TX) channel found\n");
+> 
+> axienet_init_dmaengine()
+>      lp->tx_chan = dma_request_chan(lp->dev, "tx_chan0");
+>      ...
+>      lp->rx_chan = dma_request_chan(lp->dev, "rx_chan0");
+> 
+> Since dmas is required, XXV always takes this path. Could contains
+> constraints for "tx_chan0" and "rx_chan0" be added? Another option is to
+> fix the leading entries with items/additionalItems.
+> 
+> The pattern came from xlnx,axi-ethernet.yaml, but this patch creates a
+> new binding with it.
+> 
+
+Agreed, the driver hard-requests "tx_chan0"/"rx_chan0". For v5 I'll add 
+contains constraints so at least one tx_chan0 and one rx_chan0 are 
+required, while still allowing the additional MCDMA channels.
+
+Thanks,
+Suraj
+
+> [ ... ]
 > 
 
