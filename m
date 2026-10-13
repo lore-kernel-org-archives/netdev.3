@@ -1,81 +1,172 @@
-Received: from rcs.proxad.net (rcs.proxad.net [212.27.60.169])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4123DDB00;
-	Tue, 13 Oct 2026 12:04:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.27.60.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4935B47AF65;
+	Tue, 13 Oct 2026 12:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791893094; cv=none; b=ELmP6PW8Ivt0tiqkN3yFK72f/DB0S4bjpME3HPyhWPY6Qwk6YFRI6aRhN6+w5/QsvT1GOot7D5zzKIEzUTyV0cnWv5xlPx2eo5ouGVwS04hNw709sypUkoxecvl9+nW9ZMREOzMhVqpfMJ5zMRm/1VrMF0BbJDX+1Ojy0Exq2BI=
+	t=1791893136; cv=none; b=UYrvnT9M1wO4mpZ8A8kpm8/JV9JwX/iP+ApDhHsb/RiQ6Sr3l2/aGZCZedunzk0HU00GuAaI2TLOq7uCwrWlt5LZHH6wqJflTlDINU+xUsfRvhWLzutRxnKoT6lKuIFrBXCpkPLstbPAXlIH9jSLQM+/Nm6MB6ZrQsIcoOdbe0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791893094; c=relaxed/simple;
-	bh=cO+fSJ0EIFyvTMEQTmUZIyuJVVUTh0TgRx989RdcJs0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bwutjab75778LtWp2ECRh2H5SiLBrZhHtMCo+Ki2ukdHWNyIPSBUkgp6L7CDepZf3a4CVBqMO8x99I+pdMJW3HOpxTON/ZjpKSXmrwH8s/sdLbk/3jxfm4v5pTC49WEfa6gn0rjFWjlUfJnia0f5fWzrxB3A7ogQxjbiDNW0E48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr; spf=pass smtp.mailfrom=corp.free.fr; dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.b=If05iqav; arc=none smtp.client-ip=212.27.60.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corp.free.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corp.free.fr
+	s=arc-20240116; t=1791893136; c=relaxed/simple;
+	bh=PQ4II6nhtBvPDJ+3q4JAD1E8iUcjUCLSom5R1zpySmQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=umhp9a2bbEP00NNw5cLxfzcnAQVYiK7w83Q47krWWyrXH72tFwby7tnR7rZYG0Plti01S5G/rX3NEjkh9mqdkbX+RbaZZU/dMmO2rJSUC3iyxVW3BptmrHsvr9quOkmA115xsYTi89BImbtX4uDnxqYjXwgr5Eo6Oe6VvdJEIws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=luYjmTN5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=corp.free.fr header.i=@corp.free.fr header.b="If05iqav"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corp.free.fr; s=rcs;
-	t=1791893089; bh=cO+fSJ0EIFyvTMEQTmUZIyuJVVUTh0TgRx989RdcJs0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=If05iqavEq7nfao+oBOzc1o5NBIr4GPq8c9Ox64YePM8/21THdAzZ/lkAmMGDsWMg
-	 9C5aNkqRyNZvaS93DsYs+CA7ihfx11vjy8kHCEXJUNTYUrv9NVwL6KpVZRdnHXEexN
-	 ySpKF8U0pyBx8sLpQn7rOTboPpE2W96wtxiAbtkv74zwNVWBdvFGH4HIZrY48hgE9f
-	 wZ/yBv8CguV4Ic96YtU59rf8u/qppYm8oCAmyM3PTX1vhfxXpUdT1v2obxTK4E4mAZ
-	 DEPMbzs6C6SkMeWoZxpHRDCYjX0c5xN5i+2duTBnIO7r8IBSt3Drblk+ApD4NnoBvf
-	 2lOe04dqwp0Ag==
-Received: from [0.0.0.0] (unknown [213.228.1.188])
-	by rcs.proxad.net (Postfix) with ESMTPSA id 9F96F44C2B54;
-	Tue, 13 Oct 2026 14:04:48 +0200 (CEST)
-Message-ID: <25a7141a-7c98-4678-8f17-374e920aad6b@corp.free.fr>
-Date: Tue, 13 Oct 2026 14:04:48 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="luYjmTN5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBED1F00893;
+	Tue, 13 Oct 2026 12:05:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791893135;
+	bh=qW5uF1ewgX9X0O+/dnLHI3k9D2+B1xbRg9LE/7VgIaU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=luYjmTN5XY6gBbuqKBAk4kN7gJ/zglLBqHXzan/9wV160NLvLGceS2E6KEXQ/erIP
+	 m9rIL5KlyZBiERi0E8z9pG7upNJYe9ENjowoy7XQppSKgWVQAxAKIzq3u+eG5WrEMB
+	 jUnVU3PKLATrCRtCMAgrJj2DYY7dXgn0p6V1FfG206CwkkwHUGvpxyiT9dwvn2N69s
+	 5DJOy2d076712HHsEFNEtej22sJRdcA6psd2CBJCHHUpqVAXZSghqgtdWkNz9DC/6J
+	 6ijXdNmYVjWmjGbHYpKx/8278eFHvWw1wRmOKupXazmBCokHynClYoKFx7h08OR3Sn
+	 yjEv6TyAUdXAw==
+Subject: Re: [PATCH net-next v2 1/4] eth: mpnic: count packets, bytes, and
+ drops per ring
+From: netdev-bot+sashiko@kernel.org
+To: daniel.zahka@gmail.com
+Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, pabeni@redhat.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, edumazet@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Date: Tue, 13 Oct 2026 12:05:33 +0000
+Message-ID: <179189313386.434549.472154311742280420@kernel.org>
+In-Reply-To: <20261012-mpnic-counters3-v2-1-8afba81c2d5a@gmail.com>
+References: <20261012-mpnic-counters3-v2-1-8afba81c2d5a@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 0/2] net/mlx5: HWS, fix reformat release and meter
- offset
-To: Paolo Abeni <pabeni@redhat.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
- Mark Bloch <mbloch@nvidia.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Moshe Shemesh <moshe@nvidia.com>,
- Yevgeny Kliteynik <kliteyn@nvidia.com>, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org
-References: <20261007143830.1733583-1-acassen@corp.free.fr>
- <d19cbf9f-a5af-4fe5-9c20-eac1365afb92@redhat.com>
-Content-Language: en-US
-From: Alexandre Cassen <acassen@corp.free.fr>
-In-Reply-To: <d19cbf9f-a5af-4fe5-9c20-eac1365afb92@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 10/13/26 12:39, Paolo Abeni wrote:
-> On 10/7/26 16:38, Alexandre Cassen wrote:
-> The actual impact is not clear to me
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Both bugs only affect HW steering mode (opt-in). I found them on a 
-ConnectX-7 while offloading multiple tc rules, each with its own encap 
-and meter.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Patch 1 is a leak. In an add/del loop of an L2 to L3 tunnel encap, every 
-iteration after the first leaks a bulk of 64K entries. That is about 2 
-MB of host memory and 4 MB of device memory.
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Patch 2 is more serious. Every tc police action past the second one runs 
-on the meter of another action, so its traffic gets the wrong rate... 
-(my use-case is mobile network where counters accuracy is truly important)
+- [Medium] In mpnic_clean_rcq()
+  (drivers/net/ethernet/meta/mpnic/mpnic_txrx.c), an Rx frame the driver…
 
-The fixes are tiny so I would prefer net. But net-next is fine with me 
-if you still prefer it. For our production systems we will run this 
-patchset.
+--
 
-Yevgeny, Moshe, you know better than I do how widely HW steering is 
-used. Feel free to amend.
+eth: mpnic: count packets, bytes, and drops per ring
 
--- Alexandre
+This commit adds packet, byte, drop and error counters to each Tx work,
+Tx completion and Rx completion ring in the mpnic driver. The counters are
+reported through ndo_get_stats64. An RCU-protected base snapshot holds the
+totals folded in from rings that have been torn down.
+
+> diff --git a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+> index 5495e9a9aa651..d5185e64f804c 100644
+> --- a/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+> +++ b/drivers/net/ethernet/meta/mpnic/mpnic_txrx.c
+
+[ ... ]
+
+> @@ -594,13 +612,20 @@ static int mpnic_clean_rcq(struct mpnic_napi_vector *nv,
+>  
+>  			if (likely(!(rcd &
+>  				     MPNIC_RCD_META_UNCORRECTABLE_ERR_MASK) &&
+> -				   !state->pkt.add_frag_failed))
+> +				   !state->pkt.add_frag_failed)) {
+> +				bytes += xdp_get_buff_len(&state->pkt.buff);
+>  				skb = xdp_build_skb_from_buff(&state->pkt.buff);
+> +			}
+>  
+> -			if (likely(skb))
+> +			if (likely(skb)) {
+>  				napi_gro_receive(&nv->napi, skb);
+> -			else
+> +			} else {
+>  				mpnic_put_pkt_buff(&state->pkt, true);
+> +				if (rcd & MPNIC_RCD_META_UNCORRECTABLE_ERR_MASK)
+> +					errors++;
+> +				else
+> +					dropped++;
+> +			}
+>  
+>  			state->pkt.buff.data_hard_start = NULL;
+>  			packets++;
+
+[Severity: Medium]
+Is rx_bytes undercounted for frames that are dropped because
+state->pkt.add_frag_failed is set?
+
+mpnic_add_rx_frag() sets add_frag_failed when xdp_buff_add_frag() fails.
+That happens once nr_frags reaches MAX_SKB_FRAGS and the fragment cannot
+be coalesced:
+
+mpnic_add_rx_frag() {
+    ...
+	if (!xdp_buff_add_frag(buff, page_to_netmem(page), pg_off, len,
+			       truesz)) {
+		state->payld.pagecnt_bias++;
+		state->pkt.add_frag_failed = true;
+	}
+}
+
+For such a frame the guarded branch above is skipped, so nothing is added
+to bytes. skb stays NULL and the uncorrectable error bit is clear, so
+dropped++ runs. packets++ runs unconditionally.
+
+The frame is then counted in rcq.packets through packets - errors, but it
+adds nothing to rcq.bytes:
+
+> @@ -619,6 +644,13 @@ static int mpnic_clean_rcq(struct mpnic_napi_vector *nv,
+>  
+>  	rcq->head = head;
+>  
+> +	u64_stats_update_begin(&rcq->stats.syncp);
+> +	u64_stats_add(&rcq->stats.rcq.packets, packets - errors);
+> +	u64_stats_add(&rcq->stats.rcq.bytes, bytes);
+> +	u64_stats_add(&rcq->stats.rcq.dropped, dropped);
+> +	u64_stats_add(&rcq->stats.rcq.errors, errors);
+> +	u64_stats_update_end(&rcq->stats.syncp);
+
+mpnic_get_stats64() and mpnic_stats_fold_rings() report these values as
+rx_packets and rx_bytes. The rtnl_link_stats64 kernel-doc says rx_packets
+includes packets dropped by the driver, and that rx_bytes corresponds to
+rx_packets.
+
+The v2 changelog says:
+
+  - count Rx frames dropped by the driver in rx_packets and rx_bytes
+
+That seems true only for the xdp_build_skb_from_buff() failure path.
+
+The same counters are used by mpnic_get_queue_stats_rx(), which is added
+later in this series in "eth: mpnic: report per-queue stats". The code
+looks the same at the end of the series, apart from the new alloc_failed
+counter.
+
+Moving the bytes += line out of the guarded branch might not be enough by
+itself. __xdp_buff_add_frag() returns before it adds the rejected
+fragment to xdp_frags_size:
+
+	} else if (unlikely(nr_frags == MAX_SKB_FRAGS)) {
+		return false;
+	} else {
+	...
+	sinfo->xdp_frags_size += size;
+
+Would it work to track the lengths reported by the descriptors separately
+here? If not, should the changelog be reworded?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-mpnic-counters3-v2-0-8afba81c2d5a%40gmail.com
