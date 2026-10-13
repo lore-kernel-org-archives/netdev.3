@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0200254528C
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E327E5452B3
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791921613; cv=none; b=KKT3YBzd/gOizZgqXZQtwdmFlA/c0zQAv4cQOgbziHheaWBqx8Jp+0T+TRSFMomVpZ4pWMLYC9BcvEC5M1tO87QceK6OiaC5dMbelVvAcxwVZzIFKCNQ3llpaUqkqSTMRwWuXf34QiqLk4ITx1c1+ayzJXTRtMzW6QyfzWcB2Hw=
+	t=1791921614; cv=none; b=JnfZnsOpAd5mJoRIE9UfUFEesdbsDx9bBDBfzXACd7KHhhvkO16MPwDeT4uNrWmpTmBQHVGNkwjuLXJPxfxN1/0pcOQqVVvURDuIzBju2bx/3y4eKlY7/u4bA9StncSpMXLwD3LnX7Hh8k9GMUonZczLgml64VMp443S48htosQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791921613; c=relaxed/simple;
-	bh=b45tsu+eioKXjGWESLNf0TWAtg+PwfGspwvZ/bxJWxc=;
+	s=arc-20240116; t=1791921614; c=relaxed/simple;
+	bh=vTXY0pcdwJg4eyn+oAbuTcP1m07idm9BgGFzHFT1QPg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OWTwS9408sDIkJddhD0pqA7qnmqWPICT4Vmaer49go+bHNdDHYzTvvQQiF7+5Gxnpo2teevcbYpN0LXlgugdVJnCWA8Mmr+xfLwdGZcemVCU8Wj3T804d3h3A1eJLOxeLVP5T1Gy7y1VUVqeRPgg0gelADVnoWc7kYbGGw/p8w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJH7hiOa; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=oYyPZuqXZLzgD+SRAaFW6x4gSnNGi1HmjWSZl9vzS28U/CuCC88KtGj4x6nNGKd0mjy/sEQZx9uf2PcV4FY3nc0AL22BCi6PlLb+s7cZNWReydHpL4mcz1CaQqtHvub9CjFDD3R6f/M2Av23pZaWjOI9OtrimT0YB4uhWKBcdGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STamcJ0V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJH7hiOa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8831F000FF;
-	Tue, 13 Oct 2026 20:00:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STamcJ0V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E6C1F00893;
+	Tue, 13 Oct 2026 20:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791921611;
-	bh=II7YZB1fMbxeuKfkzDZZ3r+IByv1oRdAaVPiFHHTxAU=;
+	s=k20260515; t=1791921612;
+	bh=Wtz2Fzy/qBVLqqCfPHzMCwUFxK9Upu6HGeCqZ6chISg=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DJH7hiOaodkUZIJkupc7sFCbEOU33bpWCoYa7F0gAlMUmdgNINeZUIUXxA6RX88YH
-	 0AFskFxumQZfELlNNbjBW3/zdYpRkOmaz8jxAmjRGhCVkXyE/nORjOnsJfmhSQjFRh
-	 cl0vAoEsm16Rwz0kF0SrRk/2zv5mgKlH0lO+OBUFEeMaitu1XaFi7vkrR75x8RUcZB
-	 CUmuIVQ8nDLeRS3F2oP02uZ6hJMcN4ZQF5HFfXgDxCX+4Dxt8HVz2hu/iMD3su+x9B
-	 te9xq5a1a3Ntp8AYffZ7hWdN7NgCXiyhwvtdZzQjjipUP8+c0byBDeiLUWuh4+516Q
-	 HBy7yi0JzALhw==
-Subject: Re: [PATCH v1 net-next 2/4] selftests: netfilter: Set gc_thresh[123]
- for gw netns in nft_nat_zones.sh.
+	b=STamcJ0V5xpY7vU6nW8tks4gZJ3RMiHWBeEWl/+4BMm7YQHeTrm/pzes3RK5ujvXQ
+	 Kj4KqN5/oZzMC59hPABY+vetqoFOlANffaj6ZJsrTWL2f7UVMpaJQuGnMH03nESzFU
+	 kNl4lP1JdIVWrKuEWqCl2zguhowzZEAf6Mn34RkNY1L/+m/lZnCGsp2vlhyBDKEETw
+	 AisWjHCo0sIlH9No512fQA50p1hKCKuzdRPpADAur3UHP10oObBtJH/ehGUF8EIrV4
+	 x4uEuVPatFCmTf9sqhEH0HTPiIp9U8yh4Eqn1A3qLzk2d0NfEWy6c+YezyERkxG3RO
+	 LfGuN7jfycCTg==
+Subject:
+ Re: [PATCH v1 net-next 4/4] neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
 From: netdev-bot+sashiko@kernel.org
 To: kuniyu@google.com
 Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
  pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
  kuni1840@gmail.com, netdev@vger.kernel.org
-Date: Tue, 13 Oct 2026 20:00:10 +0000
-Message-ID: <179192161050.434549.10197928132047024081@kernel.org>
-In-Reply-To: <20261012194530.3751034-3-kuniyu@google.com>
-References: <20261012194530.3751034-3-kuniyu@google.com>
-X-sashiko-severity: Low
+Date: Tue, 13 Oct 2026 20:00:11 +0000
+Message-ID: <179192161164.434549.2046952979938439215@kernel.org>
+In-Reply-To: <20261012194530.3751034-5-kuniyu@google.com>
+References: <20261012194530.3751034-5-kuniyu@google.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,93 +47,189 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 2
 
-- [Low] In tools/testing/selftests/net/netfilter/nft_nat_zones.sh, the
-  patch deletes the init_net writes of…
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
+
+- [Medium] The patch narrows the accepted uAPI range for
+  interval_probe_time_ms in every netns, including init_net.
+- [Low] The commit message describes a bug fix: a namespaced user can hog
+  CPU because neigh_table is now per-netns and the interval floor was 1…
+- [Low] The sysctl and netlink paths now accept different minimums for
+  the same parameter on kernels with HZ < 1000.
+
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but the patch
+  makes it easier to hit.
 
 --
 
-selftests: netfilter: Set gc_thresh[123] for gw netns in nft_nat_zones.sh.
+neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
 
-Commit cda2962b6e2b ("neighbour: Namespacify neigh_tables.") made the
-net.ipv[46].neigh.default.gc_thresh[123] sysctls per-netns. This patch
-removes the init_net writes and their save/restore in cleanup(), and sets
-the thresholds inside the gw netns instead.
+This patch raises the minimum of NDTPA_INTERVAL_PROBE_TIME_MS from 1 ms to
+1000 ms, both in the netlink range policy and in the sysctl handler. It
+also updates the YAML spec and ip-sysctl.rst to match. The reason given is
+that neigh_table is now per-netns, so a small interval could be used to
+hog the CPU.
 
-> diff --git a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
-> index 9f200f80253a7..d935c967dd13b 100755
-> --- a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
-> +++ b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
+Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
+
+> neigh_table is now per-netns, and a user could hog CPU by setting
+> INTERVAL_PROBE_TIME_MS to a small value.
+>
+> Let's floor the value at 1 second.
+>
+> Suggested-by: Ido Schimmel <idosch@nvidia.com>
+> Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+
+[Severity: Low]
+
+Should this have a Fixes: tag? The message describes a CPU hogging problem
+caused by the per-netns conversion, which looks like this commit:
+
+cda2962b6e2b ("neighbour: Namespacify neigh_tables.")
+
+That commit lets RTM_SETNEIGHTBL set the default table params
+(ifindex == 0) per netns.
+
+The message mentions 211da42eaa45 and 6d79b223ec44, but it never names
+cda2962b6e2b, and there is no trailer for tooling to pick up.
+
+cda2962b6e2b seems to be in net-next only, so stable is probably not
+affected.
 
 [ ... ]
 
-> @@ -59,18 +40,19 @@ fi
+> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> index 6b0569aa5d643..92e3c83c0fe50 100644
+> --- a/net/core/neighbour.c
+> +++ b/net/core/neighbour.c
+> @@ -2438,7 +2438,7 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
+>  #define NTBL_PARM_MS_MAX	(24 * 60 * 60 * MSEC_PER_SEC)
 >  
->  setup_ns gw srv
+>  static const struct netlink_range_validation nl_ntbl_parm_ms_range = {
+> -	.min = 1,
+> +	.min = 1000,
+>  	.max = NTBL_PARM_MS_MAX,
+>  };
+
+[Severity: Medium]
+
+Is the intent to reject these values rather than clamp them?
+
+With .min = 1000, the range policy now rejects NDTPA_INTERVAL_PROBE_TIME_MS
+values of 1..999 with -ERANGE. This applies in every netns, including
+init_net.
+
+In the same way, min = HZ in neigh_proc_dointvec_ms_jiffies_positive()
+makes proc_int_conv() return -EINVAL for sysctl writes below about one
+second.
+
+So commands like these used to work and now fail:
+
+  ip ntable change ... interval_probe_time_ms 500
+  sysctl -w net.ipv4.neigh.default.interval_probe_time_ms=500
+
+This removes the sub-second managed probing that 211da42eaa45 added. It
+does so even for CAP_NET_ADMIN in init_net.
+
+The commit message says "Let's floor the value at 1 second.", which reads
+like clamping. Could the message say that values which used to be accepted
+are now rejected?
+
+Another option would be to restore the rearm-time clamp from ed6cd6a17896.
+neigh_managed_work() currently uses the configured value directly:
+
+	if (!list_empty(&tbl->managed_list))
+		queue_delayed_work(system_power_efficient_wq, &tbl->managed_work,
+				   NEIGH_VAR(&tbl->parms, INTERVAL_PROBE_TIME_MS));
+
+> @@ -3701,7 +3701,7 @@ static int neigh_proc_dointvec_ms_jiffies_positive(const struct ctl_table *ctl,
+>  	struct ctl_table tmp = *ctl;
+>  	int ret, min, max;
 >  
-> -trap cleanup EXIT
-> +trap cleanup_all_ns EXIT
->  
->  ip link add veth0 netns "$gw" type veth peer name eth0 netns "$srv"
->  ip -net "$gw" link set veth0 up
->  ip -net "$srv" link set eth0 up
->  
-> -sysctl -q net.ipv6.neigh.default.gc_thresh1=512  2>/dev/null
-> -sysctl -q net.ipv6.neigh.default.gc_thresh2=1024 2>/dev/null
-> -sysctl -q net.ipv6.neigh.default.gc_thresh3=4096 2>/dev/null
-> -sysctl -q net.ipv4.neigh.default.gc_thresh1=512  2>/dev/null
-> -sysctl -q net.ipv4.neigh.default.gc_thresh2=1024 2>/dev/null
-> -sysctl -q net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
-> +ip netns exec "$gw" sysctl -q \
-> +   net.ipv6.neigh.default.gc_thresh1=512 \
-> +   net.ipv6.neigh.default.gc_thresh2=1024 \
-> +   net.ipv6.neigh.default.gc_thresh3=4096 \
-> +   net.ipv4.neigh.default.gc_thresh1=512 \
-> +   net.ipv4.neigh.default.gc_thresh2=1024 \
-> +   net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
+> -	min = msecs_to_jiffies(1);
+> +	min = HZ;
+>  	max = msecs_to_jiffies(NTBL_PARM_MS_MAX);
 
 [Severity: Low]
-Are the thresholds still raised on kernels that don't have commit
-cda2962b6e2b ("neighbour: Namespacify neigh_tables.")?
 
-Before that commit, arp_init() and ndisc_init() registered the sysctls
-with neigh_sysctl_register(NULL, &arp_tbl.parms, ...) and
-neigh_sysctl_register(NULL, &nd_tbl.parms, ...). So neigh/default only
-existed in init_net.
+On kernels with HZ < 1000, does the sysctl path enforce the same minimum
+as netlink?
 
-On those kernels the ip netns exec "$gw" sysctl call fails, and
-2>/dev/null hides the error.
+The range check runs after msecs_to_jiffies() has already rounded the user
+value up to jiffies:
 
-The init_net write is removed along with the save/restore in cleanup().
-That write used to raise gc_thresh3 to 4096 for the single shared table.
-Without it, the table stays at the default 128/512/1024.
+proc_dointvec_ms_jiffies_minmax()
+  -> do_proc_int_conv_ms_jiffies_minmax()
+    -> proc_int_conv()
 
-Documentation/dev-tools/kselftest.rst says mainline kselftests may be
-run on older stable kernels. The comment at the top of the script says:
+kernel/sysctl.c:proc_int_conv() {
+    ...
+		ret = user_to_kern(negp, u_ptr, &tmp_k);
+		if (ret)
+			return ret;
+		if ((tbl->extra1 && *(int *)tbl->extra1 > tmp_k) ||
+    ...
+}
 
-    # Don't increase too much, 2000 clients should work
-    # just fine but script can then take several minutes with
-    # KASAN/debug builds.
-    maxclients=100
+With HZ=100, a write of 991 becomes (991 + 9) / 10 = 100 jiffies. That
+equals HZ, so it is accepted. With HZ=250, any value from 997 ms up is
+accepted.
 
-With maxclients raised to 2000, the shared table would need more than
-2000 IPv4 entries. That is above gc_thresh3=1024, so neigh_alloc() would
-report "neighbor table overflow".
+RTM_SETNEIGHTBL rejects those same values with -ERANGE. Both ip-sysctl.rst
+and rt-neigh.yaml now give the minimum as 1000.
 
-Could that make the ping counter or socat checks fail on those kernels?
-The default maxclients=100 doesn't trigger this.
+Before this patch the two paths agreed: 1 jiffy for sysctl, 1 ms for
+netlink.
 
-Would it work to fall back to the init_net write, with the save/restore,
-when the per-netns write fails? Another option is to do both writes.
+Would a shared constant, for example msecs_to_jiffies(NTBL_PARM_MS_MIN),
+keep the two paths consistent?
 
->  
->  for i in $(seq 1 "$maxclients");do
->    setup_ns "cl$i"
+[Severity: Medium]
+
+This is a pre-existing issue and was not introduced by this patch, but the
+new floor makes it easier to hit.
+
+neigh_proc_dointvec_ms_jiffies_positive() calls neigh_proc_update() whether
+or not the write was accepted:
+
+	ret = proc_dointvec_ms_jiffies_minmax(&tmp, write, buffer, lenp, ppos);
+	neigh_proc_update(ctl, write);
+	return ret;
+
+neigh_proc_update() then marks the parameter as explicitly set on any
+write attempt:
+
+	if (!write)
+		return;
+
+	set_bit(index, p->data_state);
+
+For a per-device entry, neigh_copy_dflt_parms() then skips that device:
+
+		if (dst_p && !test_bit(index, dst_p->data_state))
+			dst_p->data[index] = p->data[index];
+
+So consider a rejected write such as this one:
+
+  echo 500 > /proc/sys/net/ipv4/neigh/eth0/interval_probe_time_ms
+
+It returns -EINVAL, but eth0 also stops following later changes to the
+default. Writes of 1 to 999 ms used to succeed, and now they end up on
+this path.
+
+Would it make sense to skip neigh_proc_update() when the handler returns
+an error? The other neigh_proc_* handlers make the same unconditional
+call.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012194530.3751034-1-kuniyu%40google.com
