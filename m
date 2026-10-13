@@ -1,253 +1,124 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049FE3438A1
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 12:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F30B4FD789
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791896309; cv=none; b=eGCjKvttFHxHbsHrQUHr78HIbd8TTZLQJAvkHh5ZrPu2oFay5RGDIOcdRB1vglbnocwJtw+IHffxpU9buahkRoTFAm2E53ynTvsyXBSA+Q7srCD+m0ZNPE7ivvvKgRnZlTBteR7eq7pCxlDdOarl3CHOIx6fju3mz9Cuq2xMlD0=
+	t=1791896435; cv=none; b=I954W5YJAyih0SNM58OWARRfva+326VEtUo6dMa17VvYSLPETL6MQ0CIr/1PLceyQqeVNs+aEtxjGxbn58yGSDCZDskJYcItcYbHeAjeY6Lx8BJFF5rkjLDucN++zG88393YF8aAbn0KXhBhc7sDQahWRBNjOhqWBAon9s54XVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791896309; c=relaxed/simple;
-	bh=nW6EhicHcaTdMrKJ+/qFrulCRQ+C3EnmQeetchv5glo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PJ21YaxAumBAlHkjkW17aH0qSZcTURdACxtossy81yTUG3jtqTFR89GDgoVjn7jY7P2e/Tt4RpAgy00u1Vmr/XM/tI9FSe4qdApQ4r7kVv5tpWZ6cXqlgYu9z+mJvHxNCCGmk67LgUJP7VnhJxiBOtGWmRYZDZMXGTZ4IXir3PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=erkos6L4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=XMdu9U4D; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1791896435; c=relaxed/simple;
+	bh=7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=UO9wnrevp0VjPRwAUT+6Fbs7OLZCIxrIaR5t9p4DrXbxu7BKHlTPQwsvtGH7QOXbiMBNKPfREaRmoxlvXfqyB4pMtt9KnKXg/d6ityI0ro59uVpyoPlQ0uOPmi9puyO7ilUcbXtRyhOi/9w1P+WbwQg/0ZJoEPRorqI6bpZpwaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sorah.jp; spf=pass smtp.mailfrom=sorah.jp; dkim=pass (2048-bit key) header.d=sorah.jp header.i=@sorah.jp header.b=YikTtiTO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ir0qH2Z5; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sorah.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sorah.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="erkos6L4";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="XMdu9U4D"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69D8PItT302832
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 12:58:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=mFzjd6YbC+KAMyI2VTUeJzof
-	NspedIzXsvMGwkc/7Fw=; b=erkos6L4U0XFJ/AouL3SYpm8ldk/5eETa7iYauNr
-	eEXlDhHtL5XUALokU7tceMWJ301gYwy9poDac/qJiEB1hcdveykU+yPibrSbR0Fm
-	h5OzxjAkvI2Ua4cvVj1kxQBI4mkgSEL2wVjSEfhlPYhrQE5TcmQ79u2D8euELGCw
-	lrOdC02dFhY+SZFB8K745Zt+FIGlTHHN3ZKCGGLYfe9aTvX7wYvEf/QSaTYZpbCG
-	3bbRF0ruP758Jb5I9/VHnTO5XjXY/aEPveNWpFnFoD1R0in6GxSGHHP3r795O0ob
-	INxCknuqzFnpZQE8esHoB8I9fRhPI6Uxxs9hApntbAM8og==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h98sqayq3-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 12:58:26 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93cc359d9easo499450185a.3
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 05:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1791896306; x=1792501106; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mFzjd6YbC+KAMyI2VTUeJzofNspedIzXsvMGwkc/7Fw=;
-        b=XMdu9U4D3r/f9WUC8hxei0vxpwtzb8PgyuzJxum35X1yqn6TTiEmt+MXb3x+1nkXUF
-         fcPfKm3sqcAd4HP4/AdI6SV26VPG2LwcI5Eqx+95xVAYjv5f1baocC529KEmpLW34WMA
-         o2YPVwc1GE2cJtk3lcBtm6HCRmSQn5vVk5CBGR56hBc34e2LsAexC9UIh73J8C/sDftq
-         sfmp/I/PY1Kf9ytkPC2660mpmQReY8IhSFWrIEz9zbUR8Xc7eLjbTYnHW4/pI+1/TcZp
-         Cj2NvsC7XE8dcPY9aan6ysx6ltzZyl6Bw4x3v8dEcIBs/IA7SicOz0WJyxwnsrDAAWt7
-         zu0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791896306; x=1792501106;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mFzjd6YbC+KAMyI2VTUeJzofNspedIzXsvMGwkc/7Fw=;
-        b=x7i7h1qVNBdl6uS+/jrokYhLpwxZ3Qt7F7jgDYUfNAP9xgq8GxgK/PqsckWnSjFowb
-         oN3sznp63qkM9GDlabhlnkkX6Qi987bqXM3OzthZGpAmWXG/WDC8JCwPN3aRDKjuUhLq
-         r/u/wYU0n3UCp3kLuzO9MdqwHd6lJznCgKm0tx5ztumBONYd8+8a/Ntz2dRCkoR36iXa
-         dosj/egoKpiCQOLtaSfQgxu6L6U68r2eIGc9CwVLowjFUuV06qrfwwgFDehuxYpaUf6x
-         OtUd2daeYU3S3dAsC7vxr3FhsWbaRMBlcRPRrvE6btSbHv07RinwrLF4s7BG8G8N0qPw
-         2CTQ==
-X-Gm-Message-State: AFq9FYIimN1h+v1u6HysUUs+G4FASTCpP6JPEtQ3LSsP8EWQeZjb7GqI
-	qcKHlyvNCWTzAD6Bwb/A0pZBXgy6VPVgJU62KahpvP6BaRB5dbRboZlSle75G26GRthmkO+3lEL
-	7dw1z3cUBiU+AyPm9wwcr2oMAh/kNaqPiDf9mP0iSQMkKQ/myT0z9TN9GHpg=
-X-Gm-Gg: AYBFou1VG9dU+Q9ujKEyxPCzyY7U2V0zzmKwfdkzVuQismoM4LJrirpxMmAh4pC2wZR
-	qCj4T5mErGzQhy9UO0OGJfyVKO2cM7tGBKMD3RP6XDL0qwgkSYOUm8zC7c98ZefHJyxEGL552jW
-	yXfg2z/SosvISBkqerqaztkPgV8/HjzvN05dzyh0D7pvfpc7vAy6Gc5dB79tylvZcxr21j5JzVn
-	8tTXsiRy+mrRGvrvcy5EW0yvohz4d9YY9HaMA6YixvpDaI5b7AieRm/dxyv8iCNNkl7ABkOW0iR
-	vArlKoQShmP48cog5kjFplK7uC43Z28U3KfLF1ehmC25bhKSiGncGSY74ne8kc1P7MXyuoNGjSD
-	kL/sZxW1U3ocRuA==
-X-Received: by 2002:a05:620a:231a:10b0:93e:c12c:9dd1 with SMTP id af79cd13be357-93ec12ca09fmr1279109985a.81.1791896305554;
-        Tue, 13 Oct 2026 05:58:25 -0700 (PDT)
-X-Received: by 2002:a05:620a:231a:10b0:93e:c12c:9dd1 with SMTP id af79cd13be357-93ec12ca09fmr1279098985a.81.1791896303489;
-        Tue, 13 Oct 2026 05:58:23 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ab5262sm5110268f8f.22.2026.10.13.05.58.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 05:58:22 -0700 (PDT)
-Date: Tue, 13 Oct 2026 14:58:21 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Toshiaki Makita <toshiaki.makita1@gmail.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] veth: clear rx queue hint in veth_xmit
-Message-ID: <as4q7ZgxevukdF6B@lore-desk>
-References: <20261009040412.14571-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=sorah.jp header.i=@sorah.jp header.b="YikTtiTO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ir0qH2Z5"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.phl.internal (Postfix) with ESMTP id 8DFE6EC0529
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:00:33 -0400 (EDT)
+Received: from phl-imap-06 ([10.202.2.83])
+  by phl-compute-03.internal (MEProxy); Tue, 13 Oct 2026 09:00:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sorah.jp; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1791896433;
+	 x=1791982833; bh=7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=; b=
+	YikTtiTOlomhwPlifj+n7hB+iPybhdqYGV4LXi7wOnnNE/7zTuQ00/ZysHlQX1jV
+	IGmriYqmKCY/XCUZJC+/EUdOEJVB9bC6AphUGmZ4JyqrgtswLQ8hjHy3x04skZoj
+	jdhDicurMouZ5QuFz+VnGUjgu1HSMSQa7e7yRtnqeC3GfcbrFQTIfiwwBq2veu42
+	OpS9PPd0rmiXAPQ6hwFWOumMZz7PXEgn1qJuIk0uuCKOvJ2XAdrFQ9AbE7EWHl97
+	Zqc31Fm1A9fwgIsp2nJeanvs/JkR2ZYIYlR9O7SzekfZiJtjSt8UqCT99gzdV/Xu
+	Hqe4edgBtwNbS6RUKWz/gg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791896433; x=
+	1791982833; bh=7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=; b=I
+	r0qH2Z5ezbbIDDbIU1axYfsaJc6eIDcL+ySSfyTypWKWMGxRJ3q5nDOoT9kqKTHO
+	AATVBTu6btx0F8jvwXWo06AP/wqm0mC7vVZnJQ58RgLq9+Du0+xkiNuk+yPMUnjo
+	S8rWD4/uPy3+IYjyuuPWOKzB+acrhWUy1er1bW/fpgxxC/rQKNtnCNjaPgSsXvlv
+	7vqfzBQCneQUB2sJUxtPUixQwg3CYavkP8N19XsOUy48xqz4VBXFny+Qjyf4Ztpv
+	qZkW6WJZli5Yn19eJhIEOv0T4y1ENVcGRjGBu2AVI8bbmz2n7P+DNJ6JJ7aEL1b5
+	H3ujtaXKDS9nrSi7BKsiw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=sorah.jp a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791896433; d=sorah.jp;
+	mf=PGhlckBzb3JhaC5qcD4=; rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm3:rsa-sha256:SL6zygJ29yXcWSnEUk2oJlPwHSFPXznCj0cg+Yr0uxMfybo
+	w0csGXkeKbk/PPKY1c6yKdcTSx5fTG9NCZ6XOvaWYTJp/Gpm3q+/+N81iFOGFq3A
+	ETYPylCucpdlR75eknC7h6kRT2A02mA5wc9GzKsOzKZGPx87UOMpKYpz1LWgTFaG
+	4Z9HVYio0+oqPbNcIM1dCttZH/ImRpSrQTZTDPNbVtZcCdUDFqGVhHAravHM5V8f
+	dq/Qu/nnSVZQ0c7wVaHxA5JRhTqIhQM34LZTil7rMevV8xE+1peuISUyLAL081nJ
+	zc1ye2EkX9SWARcPyeFWBs9F7wXWjKgEZisRjZg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:LdqfKRARqjrBC/drbbphWpVwD4eI14jOal3Emb3AOHY=:7im7GL/ZuwtN87J645EONyNtIwr363HuDNTFxRo4AJc=;
+X-ME-Sender: <xms:cSvOapay0GSvqIL8FQqkytNCi__41XQLStcQd6fVsaHHhnoGno22fQ>
+    <xme:cSvOarOhJf-kEIA9Lrx03Uwgsfuk4kN-VLFlkBY-jv7RD56aheK27R842YSgLBJd1
+    axTqm3dkQEnmUCdIkR1RrJSFcPkEMpzH1ZuGufb-TEu4468f1mDkUuT>
+X-ME-Proxy-Cause: dmFkZTGSCXnbkU/HlcSBjM1SuyLFeN+/tBDJ1iapM8v6UdkCCaXm15kd62CM8Mv59B6wXZ
+    7PxwBMqQKZ7Srme/q3YRzlx1hpBxJuOUV89JNyG+u2Gvz5yprMQR4B5bowBC+hg6qTuBfi
+    cyga2MWJxmfLOEk5V0KBCFCMxoRySmqzC0/mY8G4rDUJxTnIXdMIn3b+JtuEafIsPIfWhf
+    lsAl/k/6CaF0fqgY62gbVuyTh5DUi7xTIBHH26+nOt38LxEq4EDeZlJIiIifXuYmSiONsJ
+    EzPlQSO/YvIKMmqLUtzIYB0sQIg09nh3FcjdcJ6yCwpxXEMDWg3OBTRPYA4kznWRzpP8dP
+    iexvKDWWgC1YjgYfk5ruXkg6hjmua6FRrW+i+g/y+Tqdz/AXyUf9PD1fGjLB8sul7cuhqY
+    J3+RSRYBlL8RZnqY7cLGSnyDVzd+maxtTV35U8oZ0Xk/xZz8oXdILdY3gG7bU9Ft267Khd
+    VoLfP3B9KLC3VAV2cWQt02WSEYUD9ufsDAg8DCbv1rZwsT9fhwl0P5lXpsf7yGLI8/aqLq
+    kg0lR6lQKYtV3lff7hLhK2LqIFRq0aMG2d6dtthNbhuhP1Rmup7e+J02jWfEq7VsIZdU6w
+    r0RhIt13fLzPwt6XZIcR1IadPgADAjm/+n6LHV1koD4fEkMlHa1A9dt4ZlXw
+X-ME-Proxy: <xmx:cSvOai8yVLyT6O4_LPZLNeKxpsUotgVaceCgqPk9eXf0LemZfIjCGA>
+    <xmx:cSvOaulqKNFfZrjv7hnGTUrY8MhfKJcm53QRrAVrCOhdtYTq3fs3OQ>
+    <xmx:cSvOalD22cplVjEy99e7UhMc5HAtjf8gTT8P1bZo1JRbAMmrRGkpbg>
+    <xmx:cSvOavUqC2EA1wpIN3G1p1MrVVXzZI37g1A5jQ4dRGz8tLp5TY6bvA>
+    <xmx:cSvOahPAuMKsPkzSjw9Fujs9TIMhpmv02I-Uny-3intVikE5xhJqUiIx>
+Feedback-ID: i0449494e:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id EB861240009B; Tue, 13 Oct 2026 09:00:32 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ZYiwhR3rWNqnyspi"
-Content-Disposition: inline
-In-Reply-To: <20261009040412.14571-1-jiayuan.chen@linux.dev>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA1MSBTYWx0ZWRfXwCW4mdR2vQzZ
- iWRa0g4xoSL9Prrk6UaVVVdLM59xSPpmcHwqXbk1u1TAIkz6el7J6254CTCHOYqT/9cd/jEjZGe
- ezAAFK2/p7OrQkh7qWKI8PP3/w79IHyei//sW0bi+iJU3CN5j+Kf8E/yElZXK+/VBsobcBqD947
- jeW8kWqPer1t2LXdBMsz3jwOMtyeDmQM2wpUCQNFdGTFvm+lwJNmk5nhtNvak1gTNlDr3wff/6J
- mGuiCMzEoVYILQsaaHmKaRBDcsufDfISt0Xuez1BV2LNYN4UIUBFXlDcjQ4kyCz+8AuPfPwtNhR
- 69FV87q4ese4LR9mUpb3M8uzdk3LIc0gFEsf2OU29u7Ocad5RTuUmL1CW13QTLBFBpy0gTbb2dw
- uq8rTMelHf11v6Vp9FqCX5fByIsyd07ZMaSoohYAbncKy9ohYZIqsuBVTgbrfrnx8gygeNFOe1y
- tMN/4GMPIIfnnIEpCrQ==
-X-Authority-Analysis: v=2.4 cv=JN+uIMKb c=1 sm=1 tr=0 ts=6ace2af2 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=xpCzFD7d2F_Re3rwPKQA:9 a=CjuIK1q_8ugA:10
- a=FLm-uE9K4O1K4dAmY2kA:9 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA1MSBTYWx0ZWRfX31Ik+qeGAqKP
- cSLoOsHDwCu/mHGui+GwbuAmi9UvxHEV9nue4icfzqOTmHjKvtxXP2JI5A4Dv7THpuMW3vJX41+
- /IunXGKmrbl6DipLqCyvNJ3ivUcwm4Y=
-X-Proofpoint-ORIG-GUID: -sM516LLOfAdSIHsPmb4q5--yI8kq2zZ
-X-Proofpoint-GUID: -sM516LLOfAdSIHsPmb4q5--yI8kq2zZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 priorityscore=1501 adultscore=0 suspectscore=0
- phishscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610130051
+X-ThreadId: AoXn1KR5sOKB
+Date: Tue, 13 Oct 2026 22:00:12 +0900
+From: "Sorah Fukumori" <her@sorah.jp>
+To: "Eric Dumazet" <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, willemb@google.com,
+ lixiaoyan@google.com, linux-kernel@vger.kernel.org
+Message-Id: <20f75d91-97fd-479d-b3f1-66eaaf493261@app.fastmail.com>
+In-Reply-To: 
+ <CAL4WiirpDVzho606z1gt5=1=MFykgTC2CbqdAkxnngSvBYq_Qg@mail.gmail.com>
+References: <20261013102453.3272620-1-her@sorah.jp>
+ <CAL4WiirpDVzho606z1gt5=1=MFykgTC2CbqdAkxnngSvBYq_Qg@mail.gmail.com>
+Subject: Re: [PATCH] net: gro: don't chain linear parts larger than gso_size into
+ frag_list
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
---ZYiwhR3rWNqnyspi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-> With more tx queues on one end of a veth pair than rx queues on the
-> other, and RPS or generic XDP enabled on the receiving end, we get:
->=20
->     veth1 received packet on queue 2, but number of RX queues is 2
->     WARNING: net/core/dev.c:5212 at get_rps_cpu+0x560/0x1360
->     Call Trace:
->      <TASK>
->      netif_rx_internal+0x1af/0x4c0
->      __netif_rx+0x99/0x350
->      veth_xmit+0x713/0xca0
->      dev_hard_start_xmit+0x166/0x5f0
->      __dev_queue_xmit+0x1797/0x42d0
->      ip_finish_output2+0xa34/0x1f40
->      __ip_finish_output+0x510/0x7e0
->      ip_finish_output+0x2f/0x320
->      ip_output+0x17a/0x3f0
->      ip_send_skb+0x1bc/0x220
->      ......
->=20
-> Easy to hit with "ethtool -L veth0 tx 4", "ethtool -L veth1 rx 2",
-> rps_cpus set on veth1 and a few flows sent over the pair [1].
->=20
-> veth_xmit() uses skb->queue_mapping to pick the peer rq, but never
-> clears it before veth_forward_skb(), so the rx side still sees the tx
-> queue index. Everything on the rx side that goes through
-> skb_get_rx_queue(), like get_rps_cpu() and netif_get_rxqueue() for
-> generic XDP, takes it as a recorded rx queue and warns once it is out
-> of range.
->=20
-> Clear it before handing the skb to the peer:
->=20
-> - It is the tx queue index of this device, it says nothing about the
->   rx queue of the peer.
->=20
-> - The two sides don't even agree on the encoding. The tx side stores
->   the index as is, the rx side stores index + 1 so that 0 can mean
->   "not recorded". So tx queue k is read back as rx queue k - 1, and
->   tx queue 0 as "not recorded".
->=20
-> - Commit 710ad98c363a ("veth: Do not record rx queue hint in
->   veth_xmit") already decided that veth should not pass any queue
->   hint to the peer. There is no tx->rx queue mapping to preserve, so
->   nothing is lost by clearing it.
->=20
-> On NETDEV_TX_BUSY the skb goes back to the qdisc, which looks up the
-> txq from skb->queue_mapping to decide when to retry, so restore it
-> there, next to the existing __skb_push().
->=20
-> [1]: https://lore.kernel.org/netdev/156834bb-8e40-496e-9443-9d515fa18eab@=
-linux.dev/
->=20
-> Fixes: 710ad98c363a ("veth: Do not record rx queue hint in veth_xmit")
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+On Tue, 13 Oct 2026, at 8:03 PM, Eric Dumazet wrote:
+> It seems an XDP program with frags support in generic mode could
+> get there: skb_pp_cow_data() builds a head_frag skb with up to
+> about one page of linear data, the rest in page frags, and
+> skb_copy_header() keeps the GSO metadata. Two such 64KB packets
+> can not share a single frags[] array.
+>
+> Have you tried this variant with your reproducer ?
 
-Reviewed-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Thanks, I haven't. I tried to reproduce that variant under various gro_max_size/RPS configuration, but I couldn't repro on my qemu+veth based script.
 
-> ---
-> Target net-next since it is moderate.
-> Full reproducer, veth1 lives in netns ns1:
->=20
->   ip netns add ns1
->   ip link add veth0 type veth peer name veth1
->   ip link set veth1 netns ns1
->   ethtool -L veth0  tx 4
->   ip netns exec ns1 ethtool -L veth1 rx 2
->   ip netns exec ns1 sh -c  'echo f > /sys/class/net/veth1/queues/rx-0/rps=
-_cpus'
->   ip addr add 10.9.9.1/24 dev veth0
->   ip link set veth0 up
->   ip netns exec ns1 ip addr add 10.9.9.2/24 dev veth1
->   ip netns exec ns1 ip link set veth1 up
->   for i in $(seq 200); do echo hi > /dev/udp/10.9.9.2/9999; done
-> ---
->  drivers/net/veth.c | 5 +++++
->  1 file changed, 5 insertions(+)
->=20
-> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> index 71227d0389aa..7d181c5e387b 100644
-> --- a/drivers/net/veth.c
-> +++ b/drivers/net/veth.c
-> @@ -377,6 +377,9 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, str=
-uct net_device *dev)
-> =20
->  	skb_tx_timestamp(skb);
-> =20
-> +	/* tx queue index of this device, meaningless as rx queue of the peer */
-> +	skb_set_queue_mapping(skb, 0);
-> +
->  	ret =3D veth_forward_skb(rcv, skb, rq, use_napi);
->  	switch (ret) {
->  	case NET_RX_SUCCESS: /* same as NETDEV_TX_OK */
-> @@ -397,6 +400,8 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, str=
-uct net_device *dev)
->  		}
->  		/* Restore Eth hdr pulled by dev_forward_skb/eth_type_trans */
->  		__skb_push(skb, ETH_HLEN);
-> +		/* qdisc requeues the skb on the txq it points to */
-> +		skb_set_queue_mapping(skb, rxq);
->  		netif_tx_stop_queue(txq);
->  		/* Makes sure NAPI peer consumer runs. Consumer is responsible
->  		 * for starting txq again, until then ndo_start_xmit (this
-> --=20
-> 2.43.0
->=20
->=20
-
---ZYiwhR3rWNqnyspi
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCas4q7QAKCRA6cBh0uS2t
-rGZdAQDVS+tfGtzDsf6AQRIRMeVwXBBfUv79N/nDjTXjlDL75gD9HAYHbH399bfM
-iVEQrY4yQfzOShcoYiOvTPqavTs40wg=
-=kmE9
------END PGP SIGNATURE-----
-
---ZYiwhR3rWNqnyspi--
+Will send out v2 with updated commit message soon, and sorry about missing `net` prefix in the subject, it will be included in v2.
