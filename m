@@ -1,27 +1,27 @@
-Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF37043FD29
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B5440A09
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791857241; cv=none; b=NxGI7sxATYVj1jYlzDuWfYoBe9YBIYS/W6jJublzH3qeIibnrwO7WmP5tPYaw7+XwdcIt4V2k6vWNiaaQP8PtfFXX6Yu3p0+TcAwc8TCOLQhyeUX7kYxxnS+TgSmIcvuTKRJm1g1Mv7jHg0aEmKj6RoTQcTMvwok2O3LKbmYmj4=
+	t=1791857242; cv=none; b=dx4N9RyNWJxQaR7QYvzUYlP+mohzW6VghEN/OtjlPNLSOvlfRAvf764NOYte22YoIP6liYWzaiZnPJ9yq9K5nP2PUyZgbKTx+FSMwx/HA2GCmY2san+bJ5ktLt3JE2ZEvfDtRmLnNce/OnhO1eWQrEsobS9u4nHGVocG820CADY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791857241; c=relaxed/simple;
-	bh=ELzU1dKoV8pnmA7CXW+9KlhHGSfmM0SYXT4AflV5nYg=;
+	s=arc-20240116; t=1791857242; c=relaxed/simple;
+	bh=7RhcOh6j9a4iDxvmyKr9avnTpPJ9y3LaGCJHB8dz9jY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lShNsmqbcbRKyzyh/vEcNTS+X06UPV6YRETF63lpRa7jOClGT1bmPvJC5P91aEg8ttZhDFs3HAvO+pK6+YhENGkKZiU9xgKUuz2hZMVDzdChjVT4gDydw2h17BxZphkUsHJsTyiBy0tqo8rseakD/bGZ1c10XkUH35r7O5/UlXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.254.200.128
+	 MIME-Version; b=hGITmj3ILhPsDk/8pH4THGw4lCsOfkrbV/yRqvX6ltNg8pcRSnQVuM5JVByEbppzFaC9ZrIl9N024AjJ8eNWjqwFU+uON9F/jVqmoaXEx6m3ISJT1o91iX/Pvk7yw0ohd3ETkSEz42AlqWmeVAeplvAW9kM24AJD76G8WV0GW18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.194.254.142
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz17t1791857200t80fe583a
-X-QQ-Originating-IP: MvYt+vnpAkWP3dIuU1gT5LsMcisq26eVP3NFg/+GAec=
+X-QQ-mid: esmtpsz17t1791857208tc64b5b64
+X-QQ-Originating-IP: hKpsr8gLs0lJHnBoS5xcSXJMUFQNORpjBwWo0s4ULVA=
 Received: from lap-jiawenwu.trustnetic.com ( [115.198.217.6])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 13 Oct 2026 10:06:38 +0800 (CST)
+	id ; Tue, 13 Oct 2026 10:06:45 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5912921899777786184
+X-BIZMAIL-ID: 8525594059281678314
 EX-QQ-RecipientCnt: 17
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -41,9 +41,9 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
 	Simon Horman <horms@kernel.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH v3 1/3] net: libwx: keep NGBE OCP cards MAC enabled
-Date: Tue, 13 Oct 2026 10:06:23 +0800
-Message-Id: <20261013020626.5548-2-jiawenwu@trustnetic.com>
+Subject: [PATCH net v3 2/3] net: txgbe: keep MAC enabled for SP devices that support NCSI
+Date: Tue, 13 Oct 2026 10:06:25 +0800
+Message-Id: <20261013020626.5548-4-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20261013020626.5548-1-jiawenwu@trustnetic.com>
 References: <20261013020626.5548-1-jiawenwu@trustnetic.com>
@@ -56,58 +56,102 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: M33qaJCbPnlFbq8959XiWqNZVVq9KfmVyGfhT/zQ4z1W3Oewe+7hBBG5
-	PUsbPCUTAj5bN4Zxq4pS4jJYZX2VqEoSnFQhjeJxFaVOcS3eh6QG6/ucHDMshsh2Iew3qzv
-	L/qg6HDf84clVPWO1s0V2NEg662at+4XXaNCzYGKr0KM0AOu1xVvk1ogEDiu17nO5l8aaej
-	+0ZkBIkacJtrbT8uwWlv36gJK3EmB9YhBIUfdaDidf+t5La1lSoqFD4E0QtXyz1QhXTo+p1
-	RWy4gUQdqesbrLZdN192yObMfWDZeeZQtPEczKJZxXB5shUN+DV3dhLWpAOKRXm9kEiMoKr
-	taeIDuBCHJfqr3YiIuHCj/0/CgC2RqPWGDksFaCwpQH0rFXlKYSCCfhEpHoMLVmVz0QIZeL
-	X1v6CpXlaXGHyXWpj6xvGDzHqgW5wCHrm4Brj4vsIjvqdi36VQnt+f0QBh+/2XgnUL37bRP
-	6k6wGFflGbp6eGpOPqvoOD28XTHlW/zM6lMTo1kyF0zV+CzRuVg+skDXFJsHgg6WXdkpdsK
-	jaazQCMPKsZAAlB2CO+yh29vVVCoWG+6yLLGw1Fze48rryj5E2USUzMYY2xWNpnsddKE29B
-	e7gEs+lGdCeBJSkQjN9j1IXriduGl27olTiR68LeOK/zGRCEFgxtgEEcZk5avezhWj+c1Lw
-	XYDiU651TgTNrvHLD9PGsyagDPxpu65/tLuOCTfzRdPfiaGJw2X+2iASGwZgw7wc/2jioWp
-	bn55O9qIMxoALFYNr7Er0Fm2p90IL06DqgBXmXMotwf/3e8doPGBQXq2N1c5Um1XvbXx2Qd
-	56g4GOO7A6F9RBpoF5brNtDd2App7m9tEUP7v04Kv3oF1BcStMIPpn/88oVtZszmngSJQ44
-	EkP7TcMznGZLqUI2mDmcqwVa5NKiJ/O/NZFayHg1Xkw9vOHKaL+P9M46d69BfaWY8KBBiFp
-	gP1EllP06moWNHOm8O4VMTx1lhE0h14IqerGZqFW01JvaxbNPwqT4sphd4puR//i9DepWcU
-	Lgv/t1K+/xKtTg6/ZBgpUfS4DQbSqWR36aoOCd2wElut6Cbr8zndj/CofXCG/52Tgs0P+fe
-	A==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-XMAILINFO: NDgMZBR9sMmaHOOA450PVBH69KCw+edEUPP+KuXXCrklgi8R1L0gY8d1
+	vJ0WC79vkcYPBsIoF/liJFLcTaTzG61IDn0WGiworjooNHC10H1WUo59VfwIslm+SZaRap5
+	3dR12l/eUvVpA73UtXL/oktWrdGKLTLya+BeyoUjrFA4pzI17OJypKIW3rISopVpXHpLhzu
+	9uWHm9GfXhjpRGmpzUdEhXq8Aw6ZgC+lLdOcU0SHiCyFsnmG6nG+Do+iyduPV8YcDAPTuzY
+	/NMUfdvBCt/jhVSwUEedolRvtFS6TYLN36F11cPdUfFS5t6PHgiMJ0dLY7dI29tPg+H7jZP
+	MKc1bTWa5RTXCa2C6T/MoOL+KZ4xZcdr1jfzjfm0FJuHsU4NmY46UvqswS7fGdcWrbCFlNA
+	7eYzpbAOE4LsBFHOEcH04WBoqeYzWM4AcO2EOHzpPVI5R5RFTWqVw2I+d5RQmnxO9T419l3
+	N3a5yJdvQRDYr+q7G23tUlrZgM1BQFlM3wxeC2VO0xDndWSizCH5UgHOqejPongasJ23e9a
+	mwIoDGHDMkwv6zx3C7+eaULYdOvvQkMX3RfMACqrT9Ebw1a8D6XuJI+M63eZWjHAquHCBdm
+	xneVjha0sHUazW+f7ZK4Sw2OdDYyv5eyv+rDACVOBkDa+aAu7QYJjISEZs5XinuOib97CVw
+	vW6lHZeeimDQuBInxZPFwErsaVho9MmSMDUVL6TNfXWWcmYa1JYoJRTzslgHBIYKdDjqHY4
+	54iT3+teqE0gcp/pBDACcAJx2xSsp0mCFIZxaEbt0PNX/KjkdsFm2bL81yQhtmlIZmFfLUu
+	SchGh3iu+op9B3wIUMM049XvpLMDu3hOF7GQaMeecL91iKeD3PE1dML+TClmLAo7QX2wM/5
+	kgXmlg737gm6lI43zKe2TDgf0bjuNn3St5D0xRpxJq39MUGUaDciwg0PK4lJvm4NdAaKNE9
+	HhyT9q5wtSA5stI+IWn7CJ5+7VTJ6FrMP1OMI+Z/pzyDQPpXhUDJZnS2NGizgDW9KIf/kn5
+	T+afreYNtyzPTCBIzV+IWoklepr41IWxq4ixLdeQtYnXpUbz5lU5BIUqaoWHrRBVc7HRwhU
+	43AmjRdKPDJwAUebrHjQHAVmhH2hBP7gw==
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 X-QQ-RECHKSPAM: 0
 
-OCP mezzanine cards are NCSI capable by design, so the NCSI semantics do
-apply to them, and they need the MAC receiver to keep running for
-out-of-band management. The inline test does not cover the OCP card
-type, so on such a card that does not have the NCSI bit set the receiver
-was turned off on every path reaching wx_disable_rx(), and management
-traffic was dropped.
+SP devices using NCSI require the MAC transmitter and optical Tx to
+remain enabled when the host interface is down.
 
-'wx->ncsi_enabled' is the correct value for NGBE to determine whether
-MAC RX/TX should be kept enabled. But it is not assigned in TXGBE, so we
-use an explicit subsystem device ID mask in libwx now. We will merge
-TXGBE and NGBE into unified 'wx->ncsi_enabled' as soon as possible.
+Skip disabling MAC Tx in mac_link_down() for NCSI devices. Keep the
+data-path shutdown in mac_prepare() for PCS reconfiguration, and
+re-enable MAC Tx in mac_finish() without waiting for host link-up.
 
-Fixes: 02338c484ab6 ("net: ngbe: Initialize sw info and register netdev")
+txgbe_down() still performs a LAN reset through txgbe_reset_hw() after
+the MAC is left enabled. This does not clear MAC Tx on NCSI devices,
+because the NCSI firmware protects the MAC configuration from the LAN
+reset, so no further re-enable is needed on the down path.
+
+Keep TX_DISABLE deasserted while an NCSI host interface is down.
+Retain normal SFP GPIO handling while the interface is up, including
+transmit fault recovery.
+
+TX_DISABLE is driven by the SFP core, which asserts it at probe and
+whenever the upstream is stopped by phylink_stop(). Neither the SFP
+core nor phylink provides a way to keep the transmitter enabled while
+the interface is down.
+
+Therefore, handle this in the GPIO controller: requests to assert
+TX_DISABLE are ignored while WX_STATE_DOWN is set on an NCSI device.
+WX_STATE_DOWN is set before phylink_stop() in txgbe_down() and cleared
+before phylink_start() in txgbe_up_complete(), so requests made while
+the interface is up, including TX fault recovery, still reach the
+hardware.
+
+While the interface is down, the SFP core considers TX_DISABLE
+asserted although the line is driven low. This does not affect the
+SFP state machine, which stays in SFP_S_DOWN until the upstream is
+started again and then deasserts TX_DISABLE itself.
+
+Fixes: 08f08f9390e4 ("net: txgbe: Support phylink MAC layer")
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 113552586be7..76813b651fd8 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1314,7 +1314,8 @@ void wx_disable_rx(struct wx *wx)
- 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index dc9f243146580..589ad5d2f17b3 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -182,7 +182,8 @@ static void txgbe_mac_link_down(struct phylink_config *config,
+ {
+ 	struct wx *wx = phylink_to_wx(config);
  
- 		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP) ||
-+		      (wx->mac.type == wx_mac_em && (wx->subsystem_device_id & 0xFF) == 0x40))) {
- 			/* disable mac receiver */
- 			wr32m(wx, WX_MAC_RX_CFG,
- 			      WX_MAC_RX_CFG_RE, 0);
+-	wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
++	if (!wx->ncsi_enabled)
++		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+ 
+ 	wx->speed = SPEED_UNKNOWN;
+ 	if (test_bit(WX_STATE_PTP_RUNNING, wx->state))
+@@ -253,6 +254,10 @@ static int txgbe_mac_finish(struct phylink_config *config, unsigned int mode,
+ 	txgbe_enable_sec_tx_path(wx);
+ 	wr32m(wx, WX_MAC_RX_CFG, WX_MAC_RX_CFG_RE, WX_MAC_RX_CFG_RE);
+ 
++	/* NCSI requires MAC Tx to be enabled even if the host link stays down. */
++	if (wx->ncsi_enabled)
++		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, WX_MAC_TX_CFG_TE);
++
+ 	return 0;
+ }
+ 
+@@ -368,6 +373,11 @@ static int txgbe_gpio_direction_out(struct gpio_chip *chip, unsigned int offset,
+ 	unsigned long flags;
+ 	u32 set;
+ 
++	/* Keep the NCSI transmitter enabled while the host interface is down. */
++	if (wx->ncsi_enabled && BIT(offset) == TXGBE_GPIOBIT_1 &&
++	    test_bit(WX_STATE_DOWN, wx->state))
++		val = 0;
++
+ 	set = val ? BIT(offset) : 0;
+ 
+ 	raw_spin_lock_irqsave(&wx->gpio_lock, flags);
 -- 
 2.51.0
 
