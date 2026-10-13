@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6C44E0B79;
-	Tue, 13 Oct 2026 10:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867D94E2F20;
+	Tue, 13 Oct 2026 10:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889084; cv=none; b=U2pYgYNTm0Gt3dg1sf2kLoEoTpRsI6ciXBkNRE5sOp5V7d4SRSQ2Z1Jp5Nh5h3Omnxmu0SzU2puf2+nmlQiKuyJPknrg3bJh2VBzI6vTdTnUZQmRZc8Cnr5ZxU78ctSx5keqmy58cdwM7wcRim3mAEtl00yX7ahPrO1WLeZZNnQ=
+	t=1791889085; cv=none; b=NH5n88qcWwRFitpVM/ygQYAL6OQqIy4hV1JoX42SIc8I/WJzWdzle5OJTAdBCc0gRfoefaSNk+E5hloLETXsu4LUVFIQgS+gQBE/OpQltMRM1savdxRiA9RMYdVyuVvCMAqIK4TvV5VbNQ8Z7WAYZ3cCEEiok3bAkisw9tpjqEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889084; c=relaxed/simple;
-	bh=Z4KJuwgsZ39MB4mm98MJBYX75Wce9AeK6S8qxmXdcBc=;
+	s=arc-20240116; t=1791889085; c=relaxed/simple;
+	bh=wkpHImOZzFRsflNnJ0aQq0w0TNhUrpXScnM72DEmCvM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Xs1R/EJmoB8O1Xq42DAFpOr2COVwDdqTzwK0+v/FLNylwkXsD6iw4dM40K2l/VhGyYcv96qlMHTi1XneX+sy/C5PjJjD85SkwjeCzXS5qh2OIgvmxUNMmtaIibBP8y4z+eIZMuIFuk/4JRsvXgvFj5U/17eQoVpulJitOSQl0nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NDM2u2u6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=eAXmuR3eJTElOSsMkWeORI03yV8b6tN920Y323W6MWnUo54K3gT3oh9srNupTKQQt074l17HPiLPED8NzHBFnqR+D5r7cK1TGYMbY/iPhICyCuUF5TN6SGubRbtXU435fFOks4Lvj4O/+1ycmjbguklnN3rodLs9Bb5h5cIB4Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UuybJzBb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NDM2u2u6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B881F00898;
-	Tue, 13 Oct 2026 10:57:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UuybJzBb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0188B1F0089A;
+	Tue, 13 Oct 2026 10:57:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791889072;
-	bh=oXLSiEF0IbD5c5Y/dirPwQYZ27Ijc9UIrfKVhG9lics=;
+	s=k20260515; t=1791889075;
+	bh=VJhU1qBrBVbAOFYCePkgAk69lkNrGBLNq3G7BdVn93M=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NDM2u2u68Vrs4dIlY6eEnOWD5LQ43rY0JHUxZsTwFnxNcLaYqhfFN5XHx9Ki8LxJQ
-	 kFcXgTqwrZdtv1hjYXOGJZM6XNVwIKjDnQzIDrhdJ5R/lO+kxtJCMMjDqeSxnB3Kbc
-	 DuhCSi/YbU/GQfuzuMUdHTLV+7WZ3/dSfkrNTAGp7LFOGPnWsLnYQPYoq/sotFQwe/
-	 Q8oDsf5OCnbq4a1Je9L4cfBHRGIr8VoVT8147YrN71qmVijXTXH7YZoEXJCyed8ZEN
-	 wlGwfxN6DrpXOwgEZ4D8QsZI+f9+4AQYIHQwFeQlTn5BC0kcNi+o6rZhMRE6GRDUBG
-	 JlxgxcT5enpGQ==
-Subject: Re: [PATCH v5 net-next 4/9] net: dsa: netc: tie setup resources and
- reset to DSA setup/teardown
+	b=UuybJzBblO6oJ97g5jgv8dO8qHJdBItSYlXIXKMygJypJMdxjghhRRAg0JJMEPfYM
+	 CmSquNoHGjh+JVr/N8wTPyrPSNZlk1NXDP6jl+gmr0LlXKyyRSWNnp0mdKiVRXCIqN
+	 GvStM3z+l/gSzytgAu12kZSYG3numKLVU8ogvonQIk0pKTnr32SFxfG2CoSDAqH41P
+	 uFNrZre2Sy6HL3TluCBLqyuuNLzqcNu80pkgLgg/oY05q10W95Ok0T693b7OMZynNi
+	 3QzF7lCFZQDT34iunO2gBaxtaUUpBH5m0Qb9ZSqIw2CNW9tXUYo7iCshMeW6Gbs7g1
+	 UCeH7Pg1/bspw==
+Subject: Re: [PATCH v5 net-next 8/9] net: dsa: netc: add PTP two-step
+ timestamping support
 From: netdev-bot+sashiko@kernel.org
 To: wei.fang@oss.nxp.com
 Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com,
@@ -36,10 +36,10 @@ Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com,
  richardcochran@gmail.com, linusw@kernel.org, wei.fang@nxp.com,
  imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Date: Tue, 13 Oct 2026 10:57:51 +0000
-Message-ID: <179188907149.434549.9657555602480791517@kernel.org>
-In-Reply-To: <20261012095924.1129312-5-wei.fang@oss.nxp.com>
-References: <20261012095924.1129312-5-wei.fang@oss.nxp.com>
+Date: Tue, 13 Oct 2026 10:57:54 +0000
+Message-ID: <179188907456.434549.2930790264143047960@kernel.org>
+In-Reply-To: <20261012095924.1129312-9-wei.fang@oss.nxp.com>
+References: <20261012095924.1129312-9-wei.fang@oss.nxp.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,10 +50,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 1 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -61,186 +61,235 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] netc_setup() now calls pci_reset_function(A->pdev) whenever
-  A->in_probe is false.
-- [Medium] priv->in_probe is a plain bool.
-- [Medium] Moving the initial reset from before pcim_enable_device() into
-  netc_setup() means pci_set_master() (netc_switch_pci_init(), line…
+- [High] NULL pointer dereference on the netc_setup() error path, in
+  netc_free_all_ports() (drivers/net/dsa/netc/netc_main.c).
+- [Medium] The comment in netc_port_del_ptp_filter()
+  (drivers/net/dsa/netc/netc_ptp.c, line 139) says: 'No -ETIMEDOUT here:…
+- [Medium] netc_get_ts_info() (drivers/net/dsa/netc/netc_ptp.c) never
+  sets SOF_TIMESTAMPING_TX_SOFTWARE.
+- [Low] Switch timestamping stays armed after the NETC PTP timer is
+  unbound.
 
 --
 
-net: dsa: netc: tie setup resources and reset to DSA setup/teardown
+net: dsa: netc: add PTP two-step timestamping support
 
-This patch replaces the one-time pcie_flr() in probe with a
-netc_switch_reset() call at the start of netc_setup(). The reset uses
-pci_reset_function_locked() during probe and pci_reset_function()
-otherwise. It also converts the devm_ allocations on the setup path to
-explicit alloc/free, so their lifetime matches DSA setup and teardown.
+This adds two-step TX timestamping and RX timestamping to the NETC DSA
+switch driver. RX timestamping installs IPFT rules that trap PTP frames
+to the CPU with a To_Host tag that carries the timestamp. Two-step TX
+uses per-port request IDs, which a tagger callback matches against the
+hardware response frames.
 
 > diff --git a/drivers/net/dsa/netc/netc_main.c b/drivers/net/dsa/netc/netc_main.c
-> index 77077352c1a57..c639ae67c9b71 100644
+> index 1a7103fe1e343..cb262ae5ba796 100644
 > --- a/drivers/net/dsa/netc/netc_main.c
 > +++ b/drivers/net/dsa/netc/netc_main.c
 
 [ ... ]
 
-> +static int netc_switch_reset(struct netc_switch *priv)
-> +{
-> +	if (priv->in_probe)
-> +		return pci_reset_function_locked(priv->pdev);
+> @@ -277,6 +291,11 @@ static void netc_free_all_ports(struct netc_switch *priv)
+>  		if (!np)
+>  			continue;
+>  
+> +		if (np->dp && dsa_port_is_user(np->dp)) {
+> +			disable_delayed_work_sync(&np->tstamp_timeout_work);
+> +			netc_port_purge_tstamp_queue(np);
+> +		}
 > +
-> +	return pci_reset_function(priv->pdev);
->  }
 
 [Severity: High]
-Can the pci_reset_function() branch deadlock against unbind in the
-multi-switch case this patch is preparing for?
+Can this hit an uninitialized tstamp_queue on the netc_setup() error
+path?
 
-In a multi-switch tree, ds->ops->setup() runs under dsa2_mutex for every
-switch in the tree, including switches that are already bound:
+In netc_init_all_ports(), np->dp is set before
+netc_port_get_info_from_dt() and netc_port_create_mdio_bus() are called.
+Both can fail and jump to free_all_ports before netc_port_ptp_init()
+runs:
 
-dsa_register_switch(B)
-  mutex_lock(&dsa2_mutex)
-  dsa_switch_probe()
-    dsa_tree_setup()
-      ...
-        netc_setup(A)
-          netc_switch_reset(A)
-            pci_reset_function(A->pdev)
-              pci_dev_lock(A->pdev)    /* device_lock(A) */
+	dsa_switch_for_each_available_port(dp, priv->ds) {
+		np = priv->ports[dp->index];
+		np->dp = dp;
+		...
+		err = netc_port_get_info_from_dt(np, dp->dn, dev);
+		if (err)
+			goto free_all_ports;
 
-The remove path takes the same two locks in the opposite order, because
-the driver core already holds device_lock(A) when it calls the driver:
+One example is of_clk_get_by_name() returning -EPROBE_DEFER for the "ref"
+clock. Probe deferral is a normal event at boot.
 
-device_release_driver(A)           /* holds device_lock(A) */
-  netc_switch_remove()
-    dsa_unregister_switch()
-      mutex_lock(&dsa2_mutex)
+The port struct comes from kzalloc_obj(). That leaves tstamp_queue.next
+and .prev NULL and tstamp_lock zeroed, and tstamp_timeout_work was never
+initialized. The new check above is still true for that port, so we get:
 
-Shutdown has the same ordering through
-netc_switch_shutdown()->dsa_switch_shutdown().
+netc_free_all_ports()
+    disable_delayed_work_sync(&np->tstamp_timeout_work)  <- work->func is NULL
+    netc_port_purge_tstamp_queue()
+        spin_lock_bh(&np->tstamp_lock)                   <- never initialized
+        skb_queue_splice_init(&np->tstamp_queue, &free_list)
+            skb_queue_empty() returns false (next is NULL, not &list)
+            __skb_queue_splice()
+                first = list->next;          /* NULL */
+                WRITE_ONCE(first->prev, prev);
 
-If CPU0 is probing switch B while CPU1 is unbinding switch A, would both
-threads hang forever? Re-probing A while B is being unbound looks like
-the same inversion with the roles swapped.
+This looks like a NULL pointer write in __skb_queue_splice(), preceded by
+WARN splats.
 
-device->mutex uses lockdep_set_novalidate_class(), so lockdep would not
-report this.
+The later one-step timestamping patch in the series leaves both
+netc_free_all_ports() and the order in netc_init_all_ports() unchanged,
+so the problem remains at the end of the series.
 
-This code is still the same at the end of the series. Should this
-branch use a different approach, rather than resetting another switch
-under its device lock from inside .setup while dsa2_mutex is held?
+Could netc_port_ptp_init() be called before the steps that can fail? The
+other option is to record whether it ran and check that here.
 
->  static int netc_setup(struct dsa_switch *ds)
-> @@ -875,6 +957,10 @@ static int netc_setup(struct dsa_switch *ds)
->  	struct dsa_port *dp;
->  	int err;
+>  		netc_port_free_emdio_bus(np);
 >  
-> +	err = netc_switch_reset(priv);
-> +	if (err)
-> +		return err;
-> +
->  	err = netc_init_switch_id(priv);
->  	if (err)
->  		return err;
+>  		if (!IS_ERR_OR_NULL(np->ref_clk)) {
 
 [ ... ]
 
-> @@ -1045,7 +1136,6 @@ static int netc_switch_pci_init(struct pci_dev *pdev)
->  	void __iomem *base;
->  	int err;
->  
-> -	pcie_flr(pdev);
->  	err = pcim_enable_device(pdev);
->  	if (err)
->  		return dev_err_probe(dev, err, "Failed to enable device\n");
-
-[Severity: Medium]
-Now that pcie_flr() is gone from here, netc_switch_pci_init() calls
-pci_set_master() before the switch has been reset. The first reset now
-comes much later. It happens after netc_switch_get_ip_revision() and
-netc_switch_platform_probe(), once dsa_register_switch() reaches
-netc_setup().
-
-Is that ordering safe after a kexec? pci_device_shutdown() only clears
-bus mastering:
-
-	if (kexec_in_progress && (pci_dev->current_state <= PCI_D3hot))
-		pci_clear_master(pci_dev);
-
-netc_switch_shutdown()->dsa_switch_shutdown() does not call
-netc_teardown() or ntmp_free_cbdr(). Also, netc_xmit_ntmp_cmd() can
-return on a read_poll_timeout() expiry after it has already advanced the
-producer index.
-
-The switch could then keep enabled command BD rings with a pending
-command that points at the previous kernel's DMA addresses. If the
-hardware resumes fetching as soon as bus mastering is set again, could
-it access memory the new kernel has reused? With an IOMMU, would it
-cause faults instead?
-
-Also, if probe fails between pci_set_master() and netc_setup(), for
-example in netc_switch_platform_probe() or dsa_register_switch(), the
-device is never reset before devres disables it.
-
-Would it work to keep a probe-time reset in netc_switch_pci_init()
-before pci_set_master()?
+> diff --git a/drivers/net/dsa/netc/netc_ptp.c b/drivers/net/dsa/netc/netc_ptp.c
+> new file mode 100644
+> index 0000000000000..756c69a02064e
+> --- /dev/null
+> +++ b/drivers/net/dsa/netc/netc_ptp.c
 
 [ ... ]
 
-> @@ -2475,12 +2565,15 @@ static int netc_switch_probe(struct pci_dev *pdev,
->  	ds->ageing_time_max = U32_MAX;
->  	ds->priv = priv;
->  	priv->ds = ds;
-> +	priv->in_probe = true;
->  
->  	err = dsa_register_switch(ds);
->  	if (err)
->  		return dev_err_probe(dev, err,
->  				     "Failed to register DSA switch\n");
->  
-> +	priv->in_probe = false;
+> +int netc_get_ts_info(struct dsa_switch *ds, int port,
+> +		     struct kernel_ethtool_ts_info *info)
+> +{
+> +	struct netc_switch *priv = ds->priv;
 > +
->  	return 0;
->  }
+> +	info->phc_index = netc_get_phc_index(priv);
+> +	if (info->phc_index < 0)
+> +		return 0;
+> +
+> +	info->so_timestamping |= SOF_TIMESTAMPING_TX_HARDWARE |
+> +				 SOF_TIMESTAMPING_RX_HARDWARE |
+> +				 SOF_TIMESTAMPING_RAW_HARDWARE;
 
 [Severity: Medium]
-netc_switch_reset() reads priv->in_probe to decide whether the current
-thread holds A's device lock. The flag only records that A's probe is in
-progress somewhere, not that the current thread owns the lock.
+Should SOF_TIMESTAMPING_TX_SOFTWARE be set here? Neither the early
+return when there is no PHC nor the hardware branch sets it.
 
-dsa_register_switch() drops dsa2_mutex before it returns, and it returns
-0 when the tree is still incomplete. Consider this sequence:
+The frames go out through the ENETC conduit, and its xmit path calls
+skb_tx_timestamp(). __ethtool_get_ts_info() adds only
+SOF_TIMESTAMPING_RX_SOFTWARE | SOF_TIMESTAMPING_SOFTWARE. Both
+ocelot_get_ts_info() and enetc_get_ts_info() advertise TX_SOFTWARE, even
+when there is no PHC.
 
-CPU0 (probe of A)
-  priv->in_probe = true;
-  dsa_register_switch(A)
-    mutex_unlock(&dsa2_mutex);
-  <window>
-  priv->in_probe = false;
+Before this patch, dsa_user_get_ts_info() returned -EOPNOTSUPP for this
+switch. ETHTOOL_GET_TS_INFO now succeeds but leaves out TX_SOFTWARE.
+Applications that check capabilities first, such as ptp4l in software
+timestamping mode, could then refuse software TX timestamps on these
+ports.
 
-CPU1 (probe of B, async probe or deferred probe)
-  dsa_register_switch(B)
-    dsa_tree_setup()
-      netc_setup(A)
-        netc_switch_reset(A)    /* sees in_probe == true */
-          pci_reset_function_locked(A->pdev)
+> +
+> +	info->tx_types = BIT(HWTSTAMP_TX_OFF) | BIT(HWTSTAMP_TX_ON);
 
-In this case pci_reset_function_locked() runs on B's thread, which does
-not hold A's device lock. Wouldn't device_lock_assert() fire under
-lockdep?
+[ ... ]
 
-The FLR includes msleep(100) and a readiness poll. Could it still be
-running after A's probe returns and the driver core releases
-device_lock(A)? If so, it would not be serialized against other
-device-locked operations such as a sysfs reset.
+> +static int netc_port_del_ptp_filter(struct netc_port *np)
+> +{
+> +	struct netc_switch *priv = np->switch_priv;
+> +	int ret = 0;
+> +	int err;
+> +
+> +	for (int i = 0; i < NETC_PTP_MAX; i++) {
+> +		if (np->ptp_ipft_eid[i] == NTMP_NULL_ENTRY_ID)
+> +			continue;
+> +
+> +		/* No -ETIMEDOUT here: with the command BD ring enabled, the
+> +		 * hardware never times out on a command. Any remaining error
+> +		 * means the entry is still present in the table.
+> +		 */
+> +		err = ntmp_ipft_delete_entry(&priv->ntmp,
+> +					     np->ptp_ipft_eid[i]);
 
-The cross-CPU write and read of in_probe is also unsynchronized.
+[Severity: Medium]
+Is this comment accurate? netc_xmit_ntmp_cmd() in
+drivers/net/ethernet/freescale/enetc/ntmp.c posts the command to
+hardware first. It then polls for completion with a 1 ms software
+timeout:
 
-This code is still the same at the end of the series. Could the caller
-context decide whether the lock is held, for example through a parameter
-or by doing the probe-time reset directly in probe, instead of a shared
-per-device flag?
+	netc_write(cbdr->regs.pir, i);
+
+	err = read_poll_timeout(netc_read, val,
+				(val & NETC_CBDRCIR_INDEX) == i,
+				NETC_CBDR_DELAY_US, NETC_CBDR_TIMEOUT,
+				true, cbdr->regs.cir);
+	if (unlikely(err))
+		return err;
+
+	if (unlikely(val & NETC_CBDRCIR_SBE)) {
+		dev_err(cbdr->dev, "Command BD system bus error\n");
+		return -EIO;
+	}
+
+So -ETIMEDOUT and -EIO can both come back after the command has been
+submitted. The command is not withdrawn, so the hardware may still
+execute it later.
+
+If a delete completes late, ptp_ipft_eid[] keeps a stale ID. Every later
+netc_port_set_ptp_filter() tries to delete that ID first. If the hardware
+rejects the unknown ID, hwtstamp_set keeps failing, and hwtstamp_get
+reports a filter that is not installed.
+
+The add side has the same issue. If ntmp_ipft_add_entry() in
+netc_port_add_ipft_ptp_entry() times out and the add completes
+afterwards, a REDIRECT + TIMECAPE trap rule is installed. Its ID is never
+recorded, so no later disable or rollback can remove it.
+
+Doesn't this weaken the commit message's claim that deriving the active
+filter from the handles keeps software and hardware consistent?
+
+> +		if (likely(!err)) {
+> +			np->ptp_ipft_eid[i] = NTMP_NULL_ENTRY_ID;
+> +			continue;
+> +		}
+
+[ ... ]
+
+> +int netc_port_hwtstamp_set(struct dsa_switch *ds, int port,
+> +			   struct kernel_hwtstamp_config *config,
+> +			   struct netlink_ext_ack *extack)
+> +{
+> +	struct netc_port *np = NETC_PORT(ds, port);
+> +	struct netc_switch *priv = ds->priv;
+> +	int rx_filter, err;
+> +
+> +	if ((config->tx_type != HWTSTAMP_TX_OFF ||
+> +	     config->rx_filter != HWTSTAMP_FILTER_NONE) &&
+> +	    netc_get_phc_index(priv) < 0)
+> +		return -EOPNOTSUPP;
+
+[Severity: Low]
+What happens to switch timestamping when the PTP timer driver goes away?
+Timer availability is checked only here, at configuration time.
+netc_setup() takes only a pci_dev reference in priv->tmr_dev and creates
+no device link to the ptp_netc driver.
+
+If ptp_netc is unbound while timestamping is enabled,
+netc_timer_remove() unregisters the PHC and writes 0 to NETC_TMR_CTRL,
+which stops the counter. On the switch side:
+
+- the IPFT entries keep IPFT_TIMECAPE
+- ptp_tx_type stays HWTSTAMP_TX_ON
+- netc_port_rxtstamp() and netc_port_txtstamp_handler() keep passing
+  timestamps from the stopped counter to sockets
+
+Meanwhile get_ts_info reports phc_index = -1.
+
+Should there be a device link, or some other way to disable switch
+timestamping when the timer is removed?
+
+> +
+> +	switch (config->tx_type) {
+> +	case HWTSTAMP_TX_ON:
+> +	case HWTSTAMP_TX_OFF:
+> +		break;
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012095924.1129312-1-wei.fang%40oss.nxp.com
