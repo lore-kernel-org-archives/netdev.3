@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105FC48F022;
-	Tue, 13 Oct 2026 05:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99CB3C07A;
+	Tue, 13 Oct 2026 05:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791870300; cv=none; b=eIORZw4n+LAnwvhPrhtu7pY0RBl9vc2STu1zh7xFGV7NhQnnZxQsfSOcgQr4NyD+jwiNaL4toZb0YPNL2CXddnShTsH4cinG6VWd4mPT0wWSF+q1udGbsKZ6SSGF0uMXaCEr99hMQqMCWk2+MSQBWlHJ5KAwbTROECW3+75ERLU=
+	t=1791870674; cv=none; b=iM4iSR4NdgMUc9zx75YkNGFrc4xBbUejrHAK06ehAH0PMG5jOKRXoT8kzlC7wbIG1IEHyhrVQ3YZdZAvxUa28VfW1R6SE8QJH12FVBzBnScuivGRvdLKzxqv2EqyuDgNZ9Yg380KgAphsFAFwMINV/hcnTIS+bRPUACXoFmVRj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791870300; c=relaxed/simple;
-	bh=2gUcawCnp6FwIHyjtCutpnyuCvSTjVglyDNOEdgSQCI=;
+	s=arc-20240116; t=1791870674; c=relaxed/simple;
+	bh=x9ISsWJDYSdrJlQBgIFEfpnMVeoeolT5hfXXYfrtiKQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p7jbkoJpR6PgjXYE1G4GBTSe3gMIM+8Sxb+yZ0JPcAwVJS3rrV06+ithbUtMRss1opoY3nFoHT0eodWIbENoXmGsGGDlRu1GufwoxTQHjVaeWInTi7w7LTf7iC8U3MhM3KhLOOe50gGMjqtXkaEc496cSTYOcI6NJyW+QHl8Z5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2M4LReO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=kfKrfAI7orQ+jyrCj0gT2MAOxT5vCoMin8ofyUK7/jh4Ee+W/PrZmkczwm8RAzLGq40C7VrRQcm90gy7b8Wq5gh2IZHacWXJfQpVAy+U5KYPe9/cxJRTJ1STetlFHiIHc2kkXkLDqsUclcrYu+0C8ULBwqRqqlC+IlPhVxcWVwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TONUKNqN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2M4LReO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09431F000FF;
-	Tue, 13 Oct 2026 05:44:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TONUKNqN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E729C1F000FF;
+	Tue, 13 Oct 2026 05:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791870298;
-	bh=QkhKxBvIrBEXknfY7QBDd71iJ0rLIgjiEN2rQOIW9lc=;
+	s=k20260515; t=1791870673;
+	bh=pfXpZTSz9pQuEWqJtKTk77hfqQ1QdEAuKZTUwRLZlFI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=N2M4LReOz1YyDxpDkoScahpp5TFems4Rs6AM5jdKS0OKWh0x0mrhbO1npDlx9dIsl
-	 4rFBrS0ZNM7MTzu2aDiBUaswyJJ+DCY6358pAmTMjC24wuq17ROnEPFgs4sKcHLTgh
-	 yfWTUfeI623MRZwL+bAi5ZWna+5qwd+p+p0TPggDppnG3NoelSWiciZpIPlKhAl9Q3
-	 ekn6zS3wY69R7e+H+0IqLjo6g84x34c2eCIvEBT1WJ4YMnnXrhju2JQJ0AtcTt2W1U
-	 XVioqTKFsQNtDePLBJROVXvGsSbQ2EfZBGbdaOZGOui4vS2CBp5AoIKrkYDiFlE9cU
-	 sz4J1qFfui6RQ==
-Subject:
- Re: [PATCH net 2/2] bnge: cap RSS contexts and RX rings to the RSS table size
+	b=TONUKNqNJwXZaTc6VPaaPCN3Kw5wP8PItYXTZPa9g7ZQGgzITOiemw2TSAtZC8TqF
+	 RjJpupctEzS3S4WjtnTdsnTHRC63iaJX1uwpQsGAEwvoZuJYVTjtkXyuTH3QO/tNd6
+	 Bbcisms9KGOG/xtoqec8AhqSd/cJl+x2CdI5LSRwNiBL372dWrWB2DRhEwiZBs5yGE
+	 NvhBh25nktUXeoLfnUctH4O50wdLhixIKO5jbutoW/pNV+JnY3pTxpI96gb7yQRWF5
+	 KIMcT2tYp0FY5AHQF1qn5OXuThcvPpPXQc2F8YbLx2qvGa0fgD/lGbq/Q5rGKsX3uN
+	 xy5vJNorvgIFA==
+Subject: Re: [PATCH net-next v4 4/9] ibmveth: step past bad RX correlators
+ instead of spinning or oopsing
 From: netdev-bot+sashiko@kernel.org
-To: vikas.gupta@broadcom.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
- vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
- dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
-Date: Tue, 13 Oct 2026 05:44:57 +0000
-Message-ID: <179187029731.434549.16806543347969284166@kernel.org>
-In-Reply-To: <20261012054325.1782819-3-vikas.gupta@broadcom.com>
-References: <20261012054325.1782819-3-vikas.gupta@broadcom.com>
+To: mmc@linux.ibm.com
+Cc: netdev@vger.kernel.org, nnac123@linux.ibm.com, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
+ ritesh.list@gmail.com, sshegde@linux.ibm.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, horms@kernel.org,
+ davemarq@linux.ibm.com, bjking1@linux.ibm.com, brking@linux.vnet.ibm.com,
+ tlfalcon@linux.vnet.ibm.com, jmaxwell37@gmail.com, zdai@us.ibm.com,
+ marcelo.leitner@gmail.com, ksiva@linux.vnet.ibm.com
+Date: Tue, 13 Oct 2026 05:51:11 +0000
+Message-ID: <179187067143.434549.5132413235745240934@kernel.org>
+In-Reply-To: <20261012050518.88858-5-mmc@linux.ibm.com>
+References: <20261012050518.88858-5-mmc@linux.ibm.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,69 +58,79 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message says the overflow happens with "577 or more RX
-  rings".
-- [Low] The commit message says the pad computation "in
-  bnge_set_dflt_rss_indir_tbl() and bnge_modify_rss() underflows into a…
+- [Low] This patch adds a frame-bound check to ibmveth_poll()
+  (drivers/net/ethernet/ibm/ibmveth.c, line 1555).
 
 --
 
-bnge: cap RSS contexts and RX rings to the RSS table size
+ibmveth: step past bad RX correlators instead of spinning or oopsing
 
-This patch caps the value returned by bnge_cal_nr_rss_ctxs() at
-BNGE_RSS_TABLE_MAX_TBL. It also limits max_rx in _bnge_get_max_rings() to
-BNGE_MAX_RSS_TABLE_ENTRIES, so the RSS context count and the indirection
-table size fit the arrays, which hold 8 contexts and 512 entries.
+This patch changes ibmveth_poll() to advance the RX ring past a bad
+correlator, so it no longer spins on the same slot or dereferences the
+NULL skbuff array of an inactive pool. It also drops frames whose
+offset + length does not fit the pool buffer, or which are shorter than
+an Ethernet header. Correlator validation moves into one helper that
+logs a ratelimited netdev_err() and schedules a reset.
 
-> bnge_cal_nr_rss_ctxs() has no upper bound. The VNIC holds at most
-> BNGE_RSS_TABLE_MAX_TBL (8) RSS contexts, in fw_rss_cos_lb_ctx[] and in
-> a 512-entry indirection table and DMA buffer. With 577 or more RX rings
-> the function returns more than 8, so bnge_setup_vnic() writes past
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index cee0e9783b2ab..919b5831d875c 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
 
-[Severity: Low]
-Is 577 the right threshold here? Here is bnge_adjust_pow_two() in
-bnge_resc.h:
+[ ... ]
 
-    u32 blks = total_ent / ent_per_blk;
+> @@ -1469,31 +1510,60 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
 
-    if (!blks)
-        return 1;
+[ ... ]
 
-    return roundup_pow_of_two(blks + 1);
-
-With rx_rings = 512, bnge_cal_nr_rss_ctxs() passes 511, so blks = 7 and
-the result is 8 contexts.
-
-With rx_rings = 513 it passes 512, so blks = 8 and roundup_pow_of_two(9)
-returns 16 contexts.
-
-So the overflows described here seem to start at 513 RX rings. 577 is
-one of the values in the 513..1024 range that also give 16. The code
-change caps max_rx at 512, so it covers that whole range. Only the number
-in the message looks wrong.
-
-Could the message say 513 instead of 577?
-
-> vnic->fw_rss_cos_lb_ctx[], bnge_set_dflt_rss_indir_tbl() and
-> bnge_fill_hw_rss_tbl() write past the indirection table and its DMA
-> buffer, and the pad computation in bnge_set_dflt_rss_indir_tbl() and
-> bnge_modify_rss() underflows into a huge memset().
+> +			pool = correlator >> 32;
+> +			room = min_t(unsigned int, skb_tailroom(skb),
+> +				     adapter->rx_buff_pool[pool].buff_size);
+> +			off = offset;
+> +			len = length;
+> +			if (unlikely(len < ETH_HLEN || off >= room ||
+> +				     len > room - off)) {
+> +				if (net_ratelimit())
+> +					netdev_err(netdev,
+> +						   "bad RX frame offset %u length %u (buffer %u), dropping\n",
+> +						   off, len, room);
+> +				ibmveth_rxq_harvest_buffer(adapter, correlator,
+> +							   true);
+> +				netdev->stats.rx_dropped++;
+                                ^^^^
 
 [Severity: Low]
-Where is bnge_modify_rss() defined? I couldn't find a function by that
-name under drivers/net/ethernet/broadcom/. bnge also doesn't seem to have
-a set_rxfh or set_channels path where one would live.
+Should these frames be counted in rx_length_errors and rx_errors rather
+than rx_dropped?
 
-The only pad underflow site in bnge seems to be in
-bnge_set_dflt_rss_indir_tbl():
+The struct rtnl_link_stats64 documentation in
+include/uapi/linux/if_link.h describes rx_length_errors as:
 
-    pad = bd->rss_indir_tbl_entries - max_entries;
-    if (pad)
-        memset(&rss_indir_tbl[i], 0, pad * sizeof(*rss_indir_tbl));
+    @rx_length_errors: Number of packets dropped due to invalid length.
 
-Was this reference carried over from bnxt? Should the message list only
-the sites that exist in bnge, i.e. bnge_setup_vnic(),
-bnge_fill_hw_rss_tbl() and bnge_set_dflt_rss_indir_tbl()?
+and says rx_errors "must include events counted by @rx_length_errors".
+
+rx_dropped is documented for packets "received but not processed, e.g.
+due to lack of resources or unsupported protocol".
+
+With this branch in ibmveth_poll(), a runt frame (len < ETH_HLEN) or a
+frame whose offset/length overruns the pool buffer shows up in ip -s link
+and /proc/net/dev as a drop, not as a length error. Each frame is still
+counted once, just under a different counter.
+
+The driver doesn't update rx_length_errors or rx_errors anywhere else in
+the series either.
+
+Would something like this work instead?
+
+    netdev->stats.rx_length_errors++;
+    netdev->stats.rx_errors++;
+
+> +				frames_processed++;
+> +				continue;
+> +			}
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012054325.1782819-1-vikas.gupta%40broadcom.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012050518.88858-1-mmc%40linux.ibm.com
