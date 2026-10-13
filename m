@@ -1,95 +1,111 @@
-Received: from outbound.baidu.com (mx16.baidu.com [111.202.115.101])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 6480C2C21D0;
-	Wed, 14 Oct 2026 01:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.202.115.101
+Received: from cmccmta6.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA512F6918;
+	Wed, 14 Oct 2026 01:37:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.22.67.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791941807; cv=none; b=Ga7jQVvMdMaHRM6CPo5OFc71XH4AuZQbpIBv5/0dy4zkaIH9+NGQjQbHaEw1fJs7EU9KbRSCZnjVyRZxwSFuWS5UECbY03Oa0r2t4f75UzZy2MPGvfcHGiKZcXozHCeCSCeFSdQEB++9bUEl4IgirhhGuHZb+ZGWOeRVoVFijfQ=
+	t=1791941858; cv=none; b=kDF0ZdNpSGB6BIlHClXaBJe7GhRbYvQufSe9kFB2CFPL6dUI/xxwetJN7sOeIihxH0wD4VF92AB1VwlynKv026JwygF1aD/Rh5w/w2YKhWU+5mlyd+GLQuKOGEGvsH8R8dz6wgU085tl9HvCe42qaKZtmij5GM9bstxm7D6yz1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791941807; c=relaxed/simple;
-	bh=CrROQyki+DwHSh+jADVdBk8VglktdnxfLw6Mnlctbx4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DbRcRW50BTPH4HgY78ePq0E4vI98itLeyMLTqRpyMvGOtHL8/Yx3A7uACk4zrzjBs8131ibZxS+m5ZVeIiuKw1+D16zrd79kcQQGtZYzlzbAuHhbfNcZW117rH8uJ5AJVg3PHAo6ZCRmUtT+xkXK0DWj6Z+wOakxEUaiFHBP3x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=ODe3vqlo; arc=none smtp.client-ip=111.202.115.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+	s=arc-20240116; t=1791941858; c=relaxed/simple;
+	bh=Z9CtFutt3i5y9QcAljwbrTddCnkQNqW5WvaWJhg8yD8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FN4N1dACiaSGrWCZq8UoYkM3228c3ZsKFNS+GMO+xogAcD3f3IznINHCs96Daei+tssI7mYj8pXC+7FhSJBXgcgmq16v3t79Iz+torFULfgSDB/+bYM338VpkslcRYziHRF8nYuABXnLzEIBhGBbZ77d18021AMFEG34ogeszD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com; spf=pass smtp.mailfrom=cmss.chinamobile.com; dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b=KApWyCvu; arc=none smtp.client-ip=111.22.67.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmss.chinamobile.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmss.chinamobile.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="ODe3vqlo"
-X-MD-Sfrom: lirongqing@baidu.com
-X-MD-SrcIP: 172.31.50.47
-From: lirongqing <lirongqing@baidu.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH net] veth: decide peer queue count from the peer's own attributes
-Date: Wed, 14 Oct 2026 09:36:20 +0800
-Message-ID: <20261014013620.2497-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	dkim=pass (1024-bit key) header.d=cmss.chinamobile.com header.i=@cmss.chinamobile.com header.b="KApWyCvu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=cmss.chinamobile.com; s=default; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=KApWyCvutzsByHycrs9Lso5nUm+ttLKjiYtiwSf82Z0gDgwjsGUmclbbADzZYu282mPvt4gA3bOtX
+	 zr4hyRvG8ESvnhwHQmL9PqFkKKN3PZjsRPwx+fEhZw40PsZwAs3+bfii2LtgNraJ7zZrjwyADzdDHf
+	 EFkCA7+dCS2ixXuA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee56acedcd0163-e42f5;
+	Wed, 14 Oct 2026 09:37:20 +0800 (CST)
+X-RM-TRANSID:2ee56acedcd0163-e42f5
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from localhost.localdomain (unknown[223.108.79.99])
+	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee86acedcce873-3aa20;
+	Wed, 14 Oct 2026 09:37:20 +0800 (CST)
+X-RM-TRANSID:2ee86acedcce873-3aa20
+From: lvjunyu <lvjunyu@cmss.chinamobile.com>
+To: netdev@vger.kernel.org,
+	netdev-bot+sashiko@kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	netfilter-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	kuba@kernel.org,
+	lvjunyu <lvjunyu@cmss.chinamobile.com>
+Subject: Re: [PATCH v3] netfilter: nf_nat: Fix stale outer UDP checksum on VXLAN encapsulated packets
+Date: Tue, 13 Oct 2026 17:00:59 +0800
+Message-ID: <20261013090059.2590-1-lvjunyu@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261008054228.752274-1-lvjunyu@cmss.chinamobile.com>
+References: <20261008054228.752274-1-lvjunyu@cmss.chinamobile.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjhj-exc5.internal.baidu.com (172.31.3.15) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
-	s=selector1; t=1791941791;
-	bh=KwZ45N9B3ZKb9EyEDCOtRD18J/GFstUQfelRuV4fxSw=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
-	b=ODe3vqlogUr+Gk86zlggNBW+WmRCqce7RmepO/xtEuprcGkhxuxg2jRBzOE9oieYn
-	 bwNJ9cDh4OQACyE7ElUBvGaEg1yJ2D0MQGUSJykJ2TMyHrlwwLC7M8coXX3VuTyw72
-	 E6Fm835CqI3zF9JbaR4w9aPBTceAQ8gQuNnSozpeupE/CgKonaSsjRUbVVDj2UPyKj
-	 vvILF7ClPEwyUfl9NgfKPdcJz9/2rUpgZ/bU28h/fz3CQpqeNpQ7EvWD1IHgPmCw70
-	 KKbkxZ9KR2+HOItJ6ZDZXAwPolO5ahM9hvhWFTk/vyrQmJAfpxCnSSb58xQ4GLrgSV
-	 pWpOrWlbqarvQ==
+Content-Transfer-Encoding: 8bit
 
-From: Li RongQing <lirongqing@baidu.com>
+Thank you for the review.
 
-veth_newlink() creates the peer netdev from tbp, which points at the
-nested VETH_INFO_PEER attributes when they are supplied (peer_tb) and
-only aliases the primary device's tb otherwise. However the queue
-reduction is gated on the primary device's attributes:
+> [High] The fix covers only one caller, __udp_manip_pkt() in
+> net/netfilter/nf_nat_proto.c.
 
-	err = veth_init_queues(peer, tb);
+The scope is intentional.  The LCO state this patch fixes is specific
+to the UDP encapsulation path: udp_set_csum() writes a complete
+(folded, complemented) checksum into uh->check while leaving
+csum_start pointing at the inner transport header.  This split state
+arises only for locally generated VXLAN/Geneve outer headers that
+traverse the conntrack NAT OUTPUT path.
 
-veth_init_queues() checks !tb[IFLA_NUM_{TX,RX}_QUEUES], so for the peer
-it inspects the wrong attribute set whenever nested peer attributes are
-used:
+The flowtable software fast path (nf_flow_nat_ip_udp and friends) is
+not reached by these packets.  VXLAN outer headers are locally
+generated via vxlan_xmit() -> udp_set_csum() and enter the OUTPUT
+chain.  The flowtable hook (nf_flow_offload_ip_hook) is registered
+at NF_INET_FORWARD, which locally generated packets do not traverse.
+Even after the conntrack entry is established, subsequent outer
+packets still follow OUTPUT -> POSTROUTING -> __udp_manip_pkt(),
+because flowtable offload applies to forwarded flows, not locally
+generated ones.
 
- - If the user requests IFLA_NUM_TX/RX_QUEUES only for the peer, tb
-   carries no such attribute and veth_init_queues() still shrinks the
-   peer's real_num_{tx,rx}_queues back to 1, silently dropping the
-   user's explicit multi-queue request for the peer.
+For the sibling call sites:
 
- - If the user requests the counts only for the primary device, the
-   peer keeps nr_possible_cpus real queues instead of the legacy
-   default of 1.
+- tcp_manip_pkt() and icmpv6_manip_pkt(): the offload target is the
+  TCP/ICMPv6 header itself (csum_start + csum_offset == &hdr->check),
+  so the LCO condition does not arise.  The seed path is correct for
+  these protocols.
 
-Pass tbp so the peer's queue count is decided from the peer's own
-attributes. When no nested peer attributes are given tbp aliases tb, so
-the common case is unchanged.
+- Headers embedded in ICMP errors
+  (nf_nat_icmp_reply_translation): byte copies in the ICMP payload,
+  not live checksum-offloaded data; ip_summed is typically NONE or
+  COMPLETE.
 
-Fixes: 9d3684c24a52 ("veth: create by default nr_possible_cpus queues")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- drivers/net/veth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+- tcf_nat_act() and IPVS: these paths handle LCO-state encapsulated
+  UDP packets in theory, but the practical deployment scenario
+  (locally generated VXLAN + MASQUERADE --random-fully) is specific
+  to the conntrack NAT OUTPUT path.
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 643b97d..07b738d 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1919,7 +1919,7 @@ static int veth_newlink(struct net_device *dev,
- 	priv = netdev_priv(peer);
- 	rcu_assign_pointer(priv->peer, dev);
- 	netdev_hold(dev, &priv->peer_tracker, GFP_KERNEL);
--	err = veth_init_queues(peer, tb);
-+	err = veth_init_queues(peer, tbp);
- 	if (err)
- 		goto err_peer_queues;
- 
--- 
-2.9.4
+A helper-level fix in inet_proto_csum_replace4/16/_by_diff() would
+cover all ~45 call sites at once and is architecturally preferable.
+However, modifying core checksum helpers that are shared by TCP, UDP,
+ICMPv6, eBPF, OVS, GSO offload, and ILA requires a separate, more
+thorough analysis and test cycle.  This patch is scoped to the UDP
+path where the bug is observed and verified; the helper-level
+approach is planned as a follow-up.
+
+--
+lvjunyu
+
 
