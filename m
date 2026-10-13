@@ -1,92 +1,139 @@
-Received: from mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDA952F27D
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 19:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0200254528C
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791921178; cv=none; b=bVEL/pvh2LYJLLdLHCAYQXnerrdDaIXJ5To/ezLJFn8eBWgCiKpPNztor15f6uymRTdl2BhQ7M+o3VmbuERyE2C1jaavwp+SzW2/4xAqv4hc2E3bK66QNIJddOZGm4wc0n1vKLt9LO/fgrVq8iod8sp1J8RtmGsi6sc00EIxAxo=
+	t=1791921613; cv=none; b=KKT3YBzd/gOizZgqXZQtwdmFlA/c0zQAv4cQOgbziHheaWBqx8Jp+0T+TRSFMomVpZ4pWMLYC9BcvEC5M1tO87QceK6OiaC5dMbelVvAcxwVZzIFKCNQ3llpaUqkqSTMRwWuXf34QiqLk4ITx1c1+ayzJXTRtMzW6QyfzWcB2Hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791921178; c=relaxed/simple;
-	bh=5HGJb4w8FTtv64Jv0vfwAzYirRvRNpka0SUGJZ7ZDcc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A6QH0af+UIXYa8+CUSHWLDo+bKRmZ5fITMufjkgmS7ZzjuBwYTTTk0QPyja9OrSFbeBNr8qU2OxjcpgjSy80ucZgAWTlp1OpszHv7MTVmtYdqRRzHOjtZMG3e5Uvx4dr7AaDF4CKWjQq6sQSwghTZXnsLOBhilt97HsDANI8TM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZN5k5FA2; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1791921613; c=relaxed/simple;
+	bh=b45tsu+eioKXjGWESLNf0TWAtg+PwfGspwvZ/bxJWxc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OWTwS9408sDIkJddhD0pqA7qnmqWPICT4Vmaer49go+bHNdDHYzTvvQQiF7+5Gxnpo2teevcbYpN0LXlgugdVJnCWA8Mmr+xfLwdGZcemVCU8Wj3T804d3h3A1eJLOxeLVP5T1Gy7y1VUVqeRPgg0gelADVnoWc7kYbGGw/p8w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJH7hiOa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZN5k5FA2"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=5HGJb4w8FTtv64Jv0vfwAzYirRvRNpka0SUGJZ7ZDcc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1791921174; v=1; x=1792525974;
- b=ZN5k5FA2LHQh1GsPwsKgde5Gg6MpLd7ePNaP/Zp2k/CPw6SGcwg1xEEgozApg1GwtNNv4ofN
- 5fuvS1BL2oZGmxR2cfVDx2PWchy9WUrFy74MyeMwhu32GZrxhQrNnn8IZTqm301GyTYOhHpi1JP
- oT4LukUUi5GbSquRcaU1+QyU=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 16f521b10fb5bf82;
-	Tue, 13 Oct 2026 19:52:54 +0000
-X-Mizu-Trace-ID: 16f521b10fb5bf82
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <28b2c3ac-a128-4625-aab5-274ddcb7ccbf@linux.dev>
-Date: Tue, 13 Oct 2026 20:52:53 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJH7hiOa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8831F000FF;
+	Tue, 13 Oct 2026 20:00:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791921611;
+	bh=II7YZB1fMbxeuKfkzDZZ3r+IByv1oRdAaVPiFHHTxAU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DJH7hiOaodkUZIJkupc7sFCbEOU33bpWCoYa7F0gAlMUmdgNINeZUIUXxA6RX88YH
+	 0AFskFxumQZfELlNNbjBW3/zdYpRkOmaz8jxAmjRGhCVkXyE/nORjOnsJfmhSQjFRh
+	 cl0vAoEsm16Rwz0kF0SrRk/2zv5mgKlH0lO+OBUFEeMaitu1XaFi7vkrR75x8RUcZB
+	 CUmuIVQ8nDLeRS3F2oP02uZ6hJMcN4ZQF5HFfXgDxCX+4Dxt8HVz2hu/iMD3su+x9B
+	 te9xq5a1a3Ntp8AYffZ7hWdN7NgCXiyhwvtdZzQjjipUP8+c0byBDeiLUWuh4+516Q
+	 HBy7yi0JzALhw==
+Subject: Re: [PATCH v1 net-next 2/4] selftests: netfilter: Set gc_thresh[123]
+ for gw netns in nft_nat_zones.sh.
+From: netdev-bot+sashiko@kernel.org
+To: kuniyu@google.com
+Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
+ kuni1840@gmail.com, netdev@vger.kernel.org
+Date: Tue, 13 Oct 2026 20:00:10 +0000
+Message-ID: <179192161050.434549.10197928132047024081@kernel.org>
+In-Reply-To: <20261012194530.3751034-3-kuniyu@google.com>
+References: <20261012194530.3751034-3-kuniyu@google.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 5/5] ptp: vclock: preserve missing hardware
- timestamps
-To: James Hilliard <james.hilliard1@gmail.com>, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Yangbo Lu <yangbo.lu@nxp.com>,
- Miroslav Lichvar <mlichvar@redhat.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, linux-kernel@vger.kernel.org
-References: <20261013-ptp-vclock-sampling-v3-0-d3ee4ea62fc6@gmail.com>
- <20261013-ptp-vclock-sampling-v3-5-d3ee4ea62fc6@gmail.com>
-Content-Language: en-US
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20261013-ptp-vclock-sampling-v3-5-d3ee4ea62fc6@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 13/10/2026 20:19, James Hilliard wrote:
-> Socket timestamp delivery converts hardware timestamps to a bound
-> virtual clock before checking whether a hardware timestamp is present.
-> A zero timestamp means that the packet has no hardware timestamp, but
-> timecounter_cyc2time() can turn that zero into a nonzero virtual time.
-> The socket then reports a hardware timestamp which was never supplied.
-> 
-> Return zero without conversion when the input timestamp is absent.
-> This also covers skb_get_tx_timestamp(), which checks for an absent
-> timestamp after the same conversion.
-> 
-> This was identified during review of virtual clock sampling changes.
-> 
-> Fixes: d7c088265588 ("net: socket: support hardware timestamp conversion to PHC bound")
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-> ---
->   drivers/ptp/ptp_vclock.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/ptp/ptp_vclock.c b/drivers/ptp/ptp_vclock.c
-> index 6675466bc307..4a62047f0ce0 100644
-> --- a/drivers/ptp/ptp_vclock.c
-> +++ b/drivers/ptp/ptp_vclock.c
-> @@ -307,6 +307,8 @@ ktime_t ptp_convert_timestamp(const ktime_t *hwtstamp, int vclock_index)
->   	u64 ns;
->   
->   	ns = ktime_to_ns(*hwtstamp);
-> +	if (!ns)
-> +		return 0;
->   
->   	srcu_idx = srcu_read_lock(&vclock_srcu);
->   
-> 
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Low priority / nit picks for your consideration:
+
+- [Low] In tools/testing/selftests/net/netfilter/nft_nat_zones.sh, the
+  patch deletes the init_net writes of…
+
+--
+
+selftests: netfilter: Set gc_thresh[123] for gw netns in nft_nat_zones.sh.
+
+Commit cda2962b6e2b ("neighbour: Namespacify neigh_tables.") made the
+net.ipv[46].neigh.default.gc_thresh[123] sysctls per-netns. This patch
+removes the init_net writes and their save/restore in cleanup(), and sets
+the thresholds inside the gw netns instead.
+
+> diff --git a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
+> index 9f200f80253a7..d935c967dd13b 100755
+> --- a/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
+> +++ b/tools/testing/selftests/net/netfilter/nft_nat_zones.sh
+
+[ ... ]
+
+> @@ -59,18 +40,19 @@ fi
+>  
+>  setup_ns gw srv
+>  
+> -trap cleanup EXIT
+> +trap cleanup_all_ns EXIT
+>  
+>  ip link add veth0 netns "$gw" type veth peer name eth0 netns "$srv"
+>  ip -net "$gw" link set veth0 up
+>  ip -net "$srv" link set eth0 up
+>  
+> -sysctl -q net.ipv6.neigh.default.gc_thresh1=512  2>/dev/null
+> -sysctl -q net.ipv6.neigh.default.gc_thresh2=1024 2>/dev/null
+> -sysctl -q net.ipv6.neigh.default.gc_thresh3=4096 2>/dev/null
+> -sysctl -q net.ipv4.neigh.default.gc_thresh1=512  2>/dev/null
+> -sysctl -q net.ipv4.neigh.default.gc_thresh2=1024 2>/dev/null
+> -sysctl -q net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
+> +ip netns exec "$gw" sysctl -q \
+> +   net.ipv6.neigh.default.gc_thresh1=512 \
+> +   net.ipv6.neigh.default.gc_thresh2=1024 \
+> +   net.ipv6.neigh.default.gc_thresh3=4096 \
+> +   net.ipv4.neigh.default.gc_thresh1=512 \
+> +   net.ipv4.neigh.default.gc_thresh2=1024 \
+> +   net.ipv4.neigh.default.gc_thresh3=4096 2>/dev/null
+
+[Severity: Low]
+Are the thresholds still raised on kernels that don't have commit
+cda2962b6e2b ("neighbour: Namespacify neigh_tables.")?
+
+Before that commit, arp_init() and ndisc_init() registered the sysctls
+with neigh_sysctl_register(NULL, &arp_tbl.parms, ...) and
+neigh_sysctl_register(NULL, &nd_tbl.parms, ...). So neigh/default only
+existed in init_net.
+
+On those kernels the ip netns exec "$gw" sysctl call fails, and
+2>/dev/null hides the error.
+
+The init_net write is removed along with the save/restore in cleanup().
+That write used to raise gc_thresh3 to 4096 for the single shared table.
+Without it, the table stays at the default 128/512/1024.
+
+Documentation/dev-tools/kselftest.rst says mainline kselftests may be
+run on older stable kernels. The comment at the top of the script says:
+
+    # Don't increase too much, 2000 clients should work
+    # just fine but script can then take several minutes with
+    # KASAN/debug builds.
+    maxclients=100
+
+With maxclients raised to 2000, the shared table would need more than
+2000 IPv4 entries. That is above gc_thresh3=1024, so neigh_alloc() would
+report "neighbor table overflow".
+
+Could that make the ping counter or socat checks fail on those kernels?
+The default maxclients=100 doesn't trigger this.
+
+Would it work to fall back to the init_net write, with the save/restore,
+when the per-netns write fails? Another option is to do both writes.
+
+>  
+>  for i in $(seq 1 "$maxclients");do
+>    setup_ns "cl$i"
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012194530.3751034-1-kuniyu%40google.com
