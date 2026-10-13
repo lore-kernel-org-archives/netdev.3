@@ -1,173 +1,151 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D233448423D
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791924705; cv=none; b=ErsCHLJl+XY9uX8M7lCYU4QNrDlxQl1fn0UrOwqa846rNQy/F/IIIf0ntJIK6p4QlqeBscsBaE5GKWnRSlZzD8Ztq1ilhWjX/6zZPfbZLaRf9/N3LyY3EZmUhuAnSY9B8cUemeJcVxxqkdsHunB+ZsMBxxJ3EKa2ZRGEUz/Qyf0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791924705; c=relaxed/simple;
-	bh=PMk+BA1iV1gVZQS8hgs9PA8z+zdMSKtxYgSZ7oRIY/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hkhd3KSydynn5cJqzgDeq+jZ0WtjhQ/LP+JePqEzZleA3sF4OVe8LtESiFzDLztYAG5ZOf5Y8/Cgj8pA0S0ycNyMJ4q00Jtc8L7olvK6xfIYwMx1QNXK25fB9B6xT/1iSFLnnh2v8W1L5EAuqwIMvXxbFjJgWKgalscHfgw99vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fXvK3g1T; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=I6ssLcr6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A19854145F
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791924758; cv=pass; b=ohWbtSNwOkq1Sxp3v5HBtGMMWqIauQ2EXGovN3yio2/HyzBd1r9vxxaCos7LsEuBJo+v2/cVxHVGOtKkwvIjzRUhDQ4M8aT2NsuSpFhE/O9hmdBF5s7IfGSXxjmhP7d6/8mldOtQ27jct4st8MxGfU7ainDnSBvQqZu7qPUVgZs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791924758; c=relaxed/simple;
+	bh=/vVh4JekJSXHTPyscsLCDkMqYS00gf29hChLgo3TST4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JiZKZMPT9vQUKkLZApMzAM0v6D345/oKiJPqLaaFZQXD9MiZtNUivt+yQGiIETxlJb7pg6yBXzZaYNTAmMBJ9GdXpBjDJMS9Y0jPVtx5z8kxmoTSsJ5PmAXCOsFyAZS7pFuF/l6DkkYiz10qYtxlgqvp66gZ9rKVViPVaP+TWaM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q2wOCwT+; arc=pass smtp.client-ip=209.85.217.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fXvK3g1T";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="I6ssLcr6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1791924702;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7QcsbmPf6U5Ksxc1MQJeA/MDBAEnBcFQoG0wVwoAmHU=;
-	b=fXvK3g1TZz3dMKtpW+ftIoR2Xm+ac6SD9w3CrGW067WfXWNr4FsknU47ug4prSiJ/vq9oM
-	UB6KcVLv0SRRWHJ74nNXZaFpl6SyHXcTL7tnLe59R6fntTBeFwSbP2XtEX5zGHdn+sO4DR
-	Md/uOgA2QDLnIIO+bIzmhCOi6ECAknY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-179-984oBstVNg6pXDEODD4LxQ-1; Tue, 13 Oct 2026 20:51:41 +0000
-X-MC-Unique: 984oBstVNg6pXDEODD4LxQ-1
-X-Mimecast-MFC-AGG-ID: 984oBstVNg6pXDEODD4LxQ_1791924700
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48c4d7ba211so2072578f8f.3
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:51:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q2wOCwT+"
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-7c33cc572e6so2444508137.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:52:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791924755; cv=none;
+        d=google.com; s=arc-20260327;
+        b=g0tpC4hPU+RpGL5DGIuB4GDiRmEhrxw0P5+O6u1Kp3BKL6TLIS39LntojiWKLH4/nJ
+         dtYBGdLSU9QtK9aJYv1FP3q42NX0hwQan74UfS7mK+mNdD6aGmLydmAl3TheRq4oWQSd
+         WZ8VRyTDTdfZBcS6UnSOHhfsDBxkWuPvAcsyTDe755zDC9mIWBEN2/qsfG7Uaq2J+6ia
+         BOyi4bF2UsU0rJpN8AtF9eWC4BqDZ2KqOq/f19emxQQTYcW4JRZ26p4RbYoWHKm9G115
+         XBCsMW9180D6AQx6OysgOuA2plq3sH9g20ihGJoMcQ2zu6/8j+iNv8LXOax6HYErhkZw
+         gZhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rkhVrgc9OmPuX9zRiI9eMYevNzdxLtYphs0y5uGuLPs=;
+        fh=nmV8RPvv1SDnb6bZrKTgUYR3VWuHcVx5vadCxbZfWHk=;
+        b=F6igd0FxgwbpxjZvXaIegbRX8jfZ/1ujX4z3xfgH+3yKPm+V9Ak3mEhjtHj1WPn4iR
+         jhXJYe5z8DeXH3B4z6Ok0rKZ6C2fIIYOkuUcIt/MXvKx0mFrzMbn8iEDrbyvFHpnUHAO
+         5lhGLgYz9V91MLDvP3TTaYt4Xku7uOwaFHf5IFYsFJ91S5ZG0c4A4zgiWTnbxOjqqykT
+         LDlGx+UW60HvOsZOAWoKON3R24zBPS3p2j97PIjwf07B6hJaWzXesNn33j6TYEhZxvMQ
+         Q/hzRWvQDJ1nQIxplkrIo23LJG/1zAqu8otZJlJxJt5Mjcco4hb7dE2KfZtHS2CGRFk0
+         uPsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1791924700; x=1792529500; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7QcsbmPf6U5Ksxc1MQJeA/MDBAEnBcFQoG0wVwoAmHU=;
-        b=I6ssLcr68jcTyRY5y7i/fx3Pkqk+9jnqwMhh8yiy5JG0b3LYI9ng+L5FPjIObN2V3z
-         z+5+nCR/1UjZRhTjI5B7/428vLpxO10i/GGD9v0nLqfdvpSSwAPklmJDDAXxDFBw5W22
-         aVMcwSSGtT3EuenTRFyFnS1YED2gppqCoBX5HOwwNSIdB/zGOSLDCYQxp/qsV6KoMQSr
-         uZ+/rytbps2ZpghnYS91xe42MrpBlJnelaC7xWmX7sE21TSf9bOCoc06ajLsIfUFBO2I
-         lbI8GW/umOahfeuJD32UXP3wUhOv4upLIn7WtxnmzfroAZ75uJTlsXx5HYcR4DbZ/0wy
-         iYmw==
+        d=gmail.com; s=20251104; t=1791924755; x=1792529555; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rkhVrgc9OmPuX9zRiI9eMYevNzdxLtYphs0y5uGuLPs=;
+        b=q2wOCwT+ztWfw9vBVnTNVbs79q5S5GB/c6SjAvezCMkrFTmEhD9SK7XFDX2jaI49Xr
+         93ZMp2DP/vhqHSHcI9RWzDh42pl5FL2C+p3VBNzvC9nTMZ+JhujbAwGANk8vK9uHM0Du
+         m7fJyAVlzFJoyfzZAQfQVoZl8i5o6J+tjULOtLqi15hLc1DpjwomKKtzDpmtzfvsyWUz
+         yWzmAh0S19qVANRVnf9dEkTHWwC7JeStlMp6juSitFiiNw9UhXwwBp+jOwFoO6n9O0SQ
+         8lYz6HV2I5IibYp73NCFh28+L+NAwg99/1BJ2nCJhQxQjP7LK5Y1hEvERZN1Dg+Bzv53
+         2Ozg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791924700; x=1792529500;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=7QcsbmPf6U5Ksxc1MQJeA/MDBAEnBcFQoG0wVwoAmHU=;
-        b=nKxD9+uFLsKRYV2vPIN+1Uc+2IFeqQ95I+2th4sUM2QHaSu0Xwwz6E5gKsJrMbd9S+
-         ofIUYppDdiZGg6W9y7/tzTseJIOgeqKpS/WJFjbUolgrxJ/rOSjVTQHx2EXt9knd/y+h
-         IEyscyqAXOYajp8GfXCyOLPws3FG+WaSDlgn9iHLIJych8kKEl3G7rDhdqKYm3rjhVth
-         ZkFeL4DTH0375julST25kobwxH7eIgn46DbyugWvgvVathDRfUeJNTzpb2eJDhpxRWvG
-         /76md9UeDPNYMLQbURFaZ8vkkuTzTWxJHH9cp3FCzDIM73BYPp7QuKuSrUkqEJJKwvJH
-         GAdw==
-X-Forwarded-Encrypted: i=1; AKwUvBy+70FpS4XfLPdMhxCSR93h0g0JB7UrV0aMzY4M5415SKGQFQ0UAXJetMwQYmnfk9hEaNYrohg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKXo6tYdYNPWl1wfWJQQK/nRNH5pjz+dYvgERnMo/Mib2T0qs5G
-	jb2SuKGmSk2oqfhhKNp9rOJzVxt1Tez4sFHJItwUa8U7qG5jzYH6sqQwWI/av5OTI8Sroqc4Itf
-	0HYn8vIL2KsW5Dm4Ja+kHmBOgZoouzW9pUQB5/fHfGio7A3HjUHIB655adA==
-X-Gm-Gg: AYBFou3kNGVlrv5piy54DlC9ltD6auFadq55K+19GiwbR+6LR+X+EZ3vHuum51X2pSO
-	CWRq0vtsWrwNocKin+koCf47OVTKgz3bhzeuRGRn2cOICLT/aaR4aeWvtiqG3ZnHqEK7dEqSgEb
-	4mdN0PUwGKLnYOxlmtutL26sYSbaQ/R5RDOlebHjTbdZSqx8GCTyQUkP/k1RT8R/lmm4rWUzW9V
-	vY4fiSWK+S+Ajr5raNw09wWvYeu5HSpvpt8h0mxCurVaVT/i+k8+4nTQ8zFEiFLB8AacJodaP1m
-	HSTk5zg4esvMbcQrRb9wIGMyxcKdP8yA4hZSilHGG91GDiQIwSGaWA7lPVpo0SRnMBkr6w==
-X-Received: by 2002:a05:600c:4f14:b0:4a0:89:6727 with SMTP id 5b1f17b1804b1-4a18e4adc5cmr281152655e9.16.1791924699984;
-        Tue, 13 Oct 2026 13:51:39 -0700 (PDT)
-X-Received: by 2002:a05:600c:4f14:b0:4a0:89:6727 with SMTP id 5b1f17b1804b1-4a18e4adc5cmr281152325e9.16.1791924699503;
-        Tue, 13 Oct 2026 13:51:39 -0700 (PDT)
-Received: from redhat.com ([2a0d:6fc0:3fd7:5300:3d6b:52a4:a23f:9d0b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a190344032sm399689525e9.15.2026.10.13.13.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 13:51:38 -0700 (PDT)
-Date: Tue, 13 Oct 2026 16:51:35 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	Max Krasnyansky <maxk@qualcomm.com>,
-	Rusty Russell <rusty@rustcorp.com.au>
-Subject: Re: [PATCH net-next 3/4] net: resolve uncommon partial checksums at
- ingress
-Message-ID: <20261013165004-mutt-send-email-mst@kernel.org>
-References: <cover.1791887415.git.mst@redhat.com>
- <e12c6a45aae251d1642af55d8d3121e554993a66.1791887415.git.mst@redhat.com>
- <20261013070549-mutt-send-email-mst@kernel.org>
- <CAF=yD-KdTn2rHyp_j8ORr9F5hpm=TzaPRan5+gvLiYBd9HP-sg@mail.gmail.com>
- <20261013143335-mutt-send-email-mst@kernel.org>
- <CAF=yD-Lz92nGVFab1Dq8M9VusDsKf-ioda8KrZoyh28x3Xtg4Q@mail.gmail.com>
- <20261013163706-mutt-send-email-mst@kernel.org>
- <CAF=yD-JKeej85t+sCc_5K0b122uw_LiKWwX1fRL2V-QLrGA8QA@mail.gmail.com>
+        d=1e100.net; s=20260707; t=1791924755; x=1792529555;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rkhVrgc9OmPuX9zRiI9eMYevNzdxLtYphs0y5uGuLPs=;
+        b=PWO5WALW1yn+W71Z6VH+P1Unlj4wJ3gxG09tYqSITtDL6PHTJfLiACWMk7RXCRrNyf
+         dccwWcn6ijJCSnr22E18ksrCA3nH0JDW9ItBQIdxSD8fR34onLFsJWcPbbYHK9BKXvxK
+         TAqXny0iiVPFwNSo1Tbo/cRPvu7RzdUtK1MWkf7TqN1EokGPCK/luIczYhRFlRW8+87J
+         ofA3+LANZVd/E2P8EuuxMejIcgDg1rU26ojEkN46jQf75pFCK7FrfR7+qVt0K4ogLEmi
+         aZdh6IrpPr1jjO/5Ks+4TmwTvod04KOOWCaPb3Rekf6CK2vVlsJ30xqhdoB+ZLBUjT+/
+         Ip0A==
+X-Forwarded-Encrypted: i=1; AKwUvBwnkgRzRC0J+QqcUBeYcHFjepEVXmBuI5tOeFfCgZ558qmh1p4h5Nn0EY3XXeN8LLy6udAFytU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKugHTyuX071FUXtXoAPQKoIcYx8UT93eHaime3rTcwE6T72syv
+	K576IWssd300Mxj+kNzoGRk1sifzDjqkWAp86SPN3TQuQWydViQ1mM9E7VHUS9A8XWqHFGkT2NA
+	jqs3SjFWgmsvF3IWrOgqrTmNQQKEp6So=
+X-Gm-Gg: AYBFou12gn3y52GMjr/DbGXyPt5bvhP5HBZhYlAD94RrdBuy/3ndTTnh+oxeV55tzJi
+	dk9ACi7hDdHRNYin048Xest6mIWdVzrGl3PsWj4bhNYTgcTWXPbGN9StOWdkEBq1BGwdxpmH0Pj
+	e/8N+qUl2vva1Uc06XIxOLn2ISjGF5uTCaO4tyXazQrp4HINyMlhfaKvWnGL5gUo5nzaDu6/F0A
+	pJVUTcBYPaA/LO146eOGmVrZI290tRmh32n6vQa1At8Gi5ViEWOH7nFszzdw7OOQ6cDaIw3RHhZ
+	qbo5h3J4Zg3TtcohaUrdAVBPgmWltNwZJt8kNDR/FgQuS2AXaW4TwJVCjIu6PKIr6SH7xdmgkPR
+	0x+EBF2wef21nNditk86qEyjc393CA/kFagwCww2TvdHaul63tlIW0Z1MbKz4rCM9yxrRrx6JPd
+	A0eUYwQFw+RswV+GKuLRJ0J/dqTzR8BPxlRu0YdgWpg1zK
+X-Received: by 2002:a05:6102:b11:b0:7b5:8fd9:27e9 with SMTP id
+ ada2fe7eead31-7cb42386482mr3026014137.2.1791924755421; Tue, 13 Oct 2026
+ 13:52:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF=yD-JKeej85t+sCc_5K0b122uw_LiKWwX1fRL2V-QLrGA8QA@mail.gmail.com>
+References: <20261013-submit-stmmac-xsk-tx-completion-v1-v1-1-f21b9d098e62@gmail.com>
+ <179192400014.160550.9046457038671470723@kernel.org>
+In-Reply-To: <179192400014.160550.9046457038671470723@kernel.org>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 13 Oct 2026 14:52:22 -0600
+X-Gm-Features: AclHuK-F24utQ7hdbiPLO7cynxwSmEL20qXjDzlC2RlDwy8M8X2Q-IY3WKxAQbk
+Message-ID: <CADvTj4oKGOQ9rgqbqVxxyx=LzzzEwf4xpJas_r9omeU1yS3y_g@mail.gmail.com>
+Subject: Re: [PATCH net] net: stmmac: avoid duplicate XSK TX completions
+To: netdev-bot+sinfo@kernel.org
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 02:45:07PM -0600, Willem de Bruijn wrote:
-> On Tue, Oct 13, 2026 at 2:38 PM Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > On Tue, Oct 13, 2026 at 02:32:26PM -0600, Willem de Bruijn wrote:
-> > > > > > > +
-> > > > > > > +     if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type, inner_nh,
-> > > > > > > +                                            inner_proto))
-> > > > > > > +             return 0;
-> > > > > > > +
-> > > > > > > +     if (skb_is_gso(skb))
-> > > > > > > +             return -EINVAL;
-> > > > >
-> > > > > This is a risk the commit message will have to call out.
-> > > >
-> > > > I tried with this:
-> > > >
-> > > >         > > > We can't easily "complete the checksum" for GSO we don't recognize - GSO
-> > > >         > > > assumes knowledge of the protocol. We could segment ignoring the
-> > > >         > > > checksum then do whatever csum_start and csum_offset say, but that
-> > > >         > > > seems like an overkill for something that should happen.
-> > > >
-> > > > I guess I can add a more detailed explanation about what the risk is?
-> > >
-> > > Let's just explicitly mention the consequence: non-standard GSO
-> > > packets that previous would be sent may now fail.
-> > >
-> > > >
-> > > > > I don't see a simple way around it. We discussed segmenting here too,
-> > > > > but that requires intrusive changes to all callers too.
-> > > > > Alternatively,
-> > > > >
-> > > > > 1. call segmentation, but only to see it remove the SKB_GSO_DODGY and
-> > > > > thus verify that the TSO/USO packet is valid. Still drop otherwise.
-> > > > > This also does not add overhead, because it would be called later
-> > > > > anyway.
-> > > > >
-> > > > > 2. a failsafe off-by-default sysctl + static_branch that skips the
-> > > > > drop when set. Messy, but so is the situation we're dealing with.
-> > > >
-> > > > Tack this on top or do you feel it's needed straight away.
-> > >
-> > > Not urgent. Can even wait until a report appears. But worth taking a
-> > > look sooner if either of us gets around to it.
-> >
-> > Maybe if people intend all this for stable, I'll feel safer with this in
-> > there.
-> >
-> > Just to make sure, the branch would just short-circuit all checks, yes?
-> 
-> Ah option 2, the failsafe? At least any new failures (GSO) that could
-> cause regression reports. Operating entirely as before this series
-> sounds fine too.
+On Tue, Oct 13, 2026 at 2:40=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
+:
+>
+> Hi!
+>
+> This is an automated message. This series looks like a fix, but its
+> commit messages seem to be missing some information:
+>
+>  - How the issue was discovered, e.g. hit in production, hit during
+>    development, syzbot report, manual code inspection, LLM or static
+>    analysis tool scan.
 
-Right. I feel 1 is just as likely to cause regressions. At least 2 gives
-us exactly legacy behaviour back.
+This was flagged during Sashiko review of the larger stmmac recovery
+series, then confirmed by inspecting the existing TX completion and
+teardown paths. The bug exists independently of that series.
 
--- 
-MST
+>  - Whether the issue was actually triggered, or is only theoretical
+>    (e.g. found by code inspection). If it was triggered please include
+>    the symptoms, like the stack trace or error messages.
 
+The duplicate accounting was reproduced in a local KUnit test under
+QEMU using the actual driver cleanup functions and AF_XDP completion
+queue code. With three completed XSK descriptors, teardown published
+another three completions on the unpatched code. With the fix, the
+total remained three.
+
+The practical trigger is bringing the interface down after AF_XDP
+zero-copy transmission while leaving the socket bound. No allocation
+failure or hardware fault is required.
+
+>  - What hardware the change was tested on. For driver fixes please
+>    mention the device (and if relevant firmware version) used for
+>    testing, or say that the change was not tested on real hardware.
+
+This change has not been tested on physical stmmac hardware. Validation
+used the software regression tests above and ARM64/i386 compile checks.
+
+> Please do not repost the series just to address the above. Instead,
+> reply to this email with the missing information, so that reviewers
+> can take it into account. If the series needs another revision for
+> other reasons, please include the information in the commit messages
+> then.
+>
+> The evaluation is done by an LLM so it may be wrong, if you think
+> that is the case please reply and explain.
