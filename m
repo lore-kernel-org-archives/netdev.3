@@ -1,163 +1,248 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out203-205-221-153.mail.qq.com (out203-205-221-153.mail.qq.com [203.205.221.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6292E06EF
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 03:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791861341; cv=pass; b=AAmUkXcylpOt0BIB2t4uyUXksapI+m98Yj5g8WjdGLleIEkQJnOMGu6DUERlzD6c2w61eU821hlYyFr12COVhPAqysJjtwPchHhSBWOmmv+BZGh7UI7UTQ6z0cMu+Uwbw7dfHArt5fb50i2SiI1seAplYh46nRXGEAqzjRbT3/c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791861341; c=relaxed/simple;
-	bh=x4BbDl/A9we6rVBF2YiQ7ctBxlabzS/pyjjIs2noB+4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JAaohKIEoqWi1LCH8dRxRZff3WYpLQCLeBOuEkESH89S3qVZRzDch+OSmblAPp7EFHT5iDMSi9Y+gSwjdjkwyoBh1wYndRNwKojj13PjY8uVSiLzR6+fKvdwYo7IHy7As44644XminFRpVAscf0td7sUDCrS/+6gWqGipeCBDEg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YJJnMNga; arc=pass smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30543C07A;
+	Tue, 13 Oct 2026 03:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.153
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791861858; cv=none; b=iFo+2phHkGn98R5H/yM+fTH/77LqEPwmegBhDgNYoDGqCKCAWE7kjyJLxxZutATMWjxWniNM/dWn2lXFHWLV86oRpJ/wUXzRmMyyOnb6KrmTOgVQuFyNhk5bsTTwXIlU/YP9cIlEOnSgtJvKMNmxQ6Jwr6PQDTxR6HX2vvzhrdc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791861858; c=relaxed/simple;
+	bh=jE5FBck0iwVfKsvvwnPJh+4Fn2qOZpSmZ/uBxGgOK3w=;
+	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=b5AxHje8THzAhPgSt5Vfy57aWm6vNc/RMstbSGAtccmA8cDh8j3fRjxR8ky+4vDxR3I3Rkbinl47TESJy6+Fv6HIcfxsqPnlBED7wC9lsa0ZBl2Qx/oAXJSWNMpS5iF8VE6ZXlwy4RPsEvyrWwGqFp3i0KUNA7bXdBTtaLd+OLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ckXNWsAQ; arc=none smtp.client-ip=203.205.221.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YJJnMNga"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-3a9e87ba696so10126371fa.0
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 20:15:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791861338; cv=none;
-        d=google.com; s=arc-20260327;
-        b=SXHljeV4Tc7cT8MeL6nnDsvc8nupEsqym33PT3eE2GEPtF05n/2a0smuCyysVoqtng
-         9KbUMmwMJQvLzz6CKOJKmFbiHfQswVELcJ2Iz36KQuSrHshM2w/PJV7IvgD48X/mPOrl
-         ySgRHxame1MMy9flPBxadq1G5fXg1vZMx23g66EfJROV/hfgRa+6/EXqAEBNhRpX4MYd
-         mweq21Fnn5VBU2cJ/XR7TkmZvXYdurbD+MeFMbV219jhCArpLM0qlhmXYU1c2USU8Nxw
-         pq4QIizHlQ08pFOXHOBRunr1fUnZYNtf1tjmL/HLrr44r8ujgwroGspyd9zNNbOV1zsp
-         K53g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xIZjqcXlZ80U44kw42BFZZRn2DcXYrBGZLcIp8kFrj4=;
-        fh=OtRWofodZNiVArS2fRN0wYluiJPegYdXzIbFjxHok48=;
-        b=j9tjvQqQxmUQhliJFMc09YOXe8YkI466xm5onlGRg+sRvJpND0Y9sf0o3FfQSA1lui
-         wB0HkNtp0FQd/E0UVD5y+YM1tvU1Ecnxtj6OxauL3JydedymiemerUYOCyMwaPFejCJm
-         D2/xckZKg5q84QxuWb4yscsdlGBeOHBxIYNstzCmADDK+epARYcK3GZJ3cMCumt4lQ2t
-         L2C8ElQf2bl5Jkj8+TM4g288dE0j34h3ZN0Db7JG1ZGjqts5QQ8bjb+wkABhIC9VgOmK
-         922JDXjG/R7+fEAQQyMWvSrSjJcD+Mq3mSSvhUDS3Yp9ouuGgXmb8pFcgoCj85Gm8M6X
-         H3bQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791861338; x=1792466138; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xIZjqcXlZ80U44kw42BFZZRn2DcXYrBGZLcIp8kFrj4=;
-        b=YJJnMNgaqhLSXPG2YTWImu8Cpo0T/FCzmQYTsXuZ96eyUrD96bmwHLzOUxISq1WtM0
-         y6KMxCVnliozTLnmolrxJke3EPZmTifhlSTwAcnxaT4FIpiQ0/MAxe9RWhd8snrH1Pnb
-         PYPPcg7Aml8HxA+Lnc5dHcgLqPkrNM4smOy6cfqtGsAIi7Kcumxd3IMvO++MsrBNSH1n
-         f/flUGIGRCYneriv9Dzrh3nDzUDvRylZfW+AeyC/ZQH6VhA8D7DGCJftog1GxXDvBFmd
-         Tr/66ZiIXoYeQTJ6AWnPNhbdzID7ib0+6dL7rCdUizbZVk4aSfNt3PSufmlMNnq04HhK
-         k2fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791861338; x=1792466138;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xIZjqcXlZ80U44kw42BFZZRn2DcXYrBGZLcIp8kFrj4=;
-        b=kB3y5S0iVdTcYSyfsLlCob4mrVnop8bBxPA1TG5xLNHfVZjC2W1K/tZODejW8x9JUD
-         pslWBmYfhzjkimPut2Do6W3JUq9Yp4CE50rQJRX2waq/zlkKXrwEKvmLlLfcRzPnxCfy
-         thumod2n29gCfxPis1yXJix3fWeGf+KiFBGqzp/SRB/Zi0WpBg8HcZuUA8s3AcLUEpIG
-         y+l4bZPwg5DSBN6ylch5nIFBG39y/YOgcODHYMZIED3STE4qCss40+gnYKVjUWM6lt4z
-         w5q1SUdt85MR+Ed974auKzKEs34OPyTps08NTyHlC77I2eP921p44595EGXKKpSpv1HI
-         O4og==
-X-Forwarded-Encrypted: i=1; AKwUvBwgIitazN2ZwqNbBiGauTXXAknKO4wTarM5ouUz3dUgcJKw4V7FJPjmtTKJ5IFw7NC7y8WGlJI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJrYOXCTV+/2zNo6xZmW/qWDkXGI3IozvMRoF+bg1jAXA4qPD3G
-	29XDzA7ohLOAVyhzZMlQtq14MjJSGXtZYgjEFIb7pM7tdj7+fN4Nc2ktrj4yfyd8uO5ZtgEKoQf
-	fqOXa2G7CEPJgLo1D733Z4iX1k1D7GZU=
-X-Gm-Gg: AYBFou0M29K6Yop6UHTZfkiFpp/rha8EkyYU7SMVoZXdwZ6PB6ZM0PfgzwE0mx5r++6
-	DICjRXnMu5DtCxAyBH8DeC0olZ8f+TZLeqpnEpvMXyXKazPlzUjF+rLWtk7Z01IvYzqPPHPbEDh
-	mXZfXg82uiR8QdN4PuU9I1TeE9Ix8PragdeCpPR11/ABmrwkM3FU3FkK4UUCosZ+dHm7Zo1ykfu
-	lJIh3ccZTJUztA9owkmhsAz00gF5AP4QmUZADT04rgG8/JB+jhjsNFek1Hx53/hmFoNHIxjNxMZ
-	1CVHutVlgy9NWz3rbitQ1zpkE0t6YjcvAen0MzlfbxO0VoulK8REko4=
-X-Received: by 2002:a05:651c:144c:b0:3a9:707e:ad9c with SMTP id
- 38308e7fff4ca-3a9c5399cb7mr27283991fa.4.1791861337759; Mon, 12 Oct 2026
- 20:15:37 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ckXNWsAQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1791861852; bh=n5aSjpi38d97JoTIKAE9ofjyp7sKD4gBZolpt7WmoUk=;
+	h=From:Date:Subject:To:Cc;
+	b=ckXNWsAQFnZJGmmwry5r/3S6EMV3MfSylxwl7ff+BoBX+Go8owP0KEYXhxD+HzcRA
+	 L+fDJrLfgpNDOw0eTy0iy/A+WIrY9aHVi1ncTEZk8RjEr4rkqrXE9pCeDUeUTlT8Eb
+	 HHUIR/smYzm7U+kUmQy6pyXKMh5cFkj8JvwC1cdw=
+Received: from ubuntu2204.localdomain ([2409:8d20:7f:35d:9e54:40ff:fe02:3f0f])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 5AA184C4; Tue, 13 Oct 2026 11:22:42 +0800
+X-QQ-mid: xmsmtpt1791861762takf3foip
+Message-ID: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
+X-QQ-XMAILINFO: MlsYLnHA0UVjWnp7hi0CZSt7AYwx3Dlpux5tMi53y2dxpTPQTxCoE7WziwLp/l
+	 V9WsvrSu2jmFlr2nf/vrfvlmSOWV40/V1Rrx4/INqVH3CQOiTfzHUlJFxh+p7i6/iisSafKzXi8r
+	 6y2LdHMQDvMPS9hN0ujcgVZolio/nkv2HcpQPc7fJpKR7Tq6V506QsoNdj5NXv5gU3TiCMDxjpuE
+	 q74ONYXjm5qLjYrfKFAFLtnMKtVIRoeH5UtApQnoRO2Ky6prnDsU75kTJySU8eZK66IQKfzk7JfG
+	 Yl5Gru/A61Sw6ni8SyHEK8tKDOu7gOenphyWJjvJgyFPlOZYByFsUk603I2yTDetxjlMWE5DlXHO
+	 6XtfClD30Sm9PtN2So7rGf2rjIozhQdXQha9SaawaX8aie91AC+JXKN5afEmRh0IAyfcaUSQqnc9
+	 vEHXCrK6uECPcYNrZADd3gJsbtlHORLRJeSz8Ry+sKIhp9btZ/M/8U8i38YfJYAd1tkns9JeYlFX
+	 3jwmJB9A/+n2dP6Pww/UlniRdD89B2aLgOAI2jaCpRTYAMGW+xS339GHm8lX1rjMKykLi7jLvK6G
+	 RXfWe6NObbXnqhjO5E3G+4IBo2mTJXvxL8PDar9BcmItjd/9v5iaDAIBMjNLvDgB615LPDEDKFOZ
+	 Ts/2Nk8qd9fLs+5saJwqT//VQf8SGQpqfjv+TEreL93dcXAqgFExbu/aMNsYzg2aF1llwfaHo37W
+	 onqV+q8e8W38IlFxgjCxyBB9Miw+DJIc2AmRyyTdQZalfC75HFt9IM1l3dbUYgUHmKZXk2DrumLD
+	 HyeO5aHQqwjKZxhFqnya7NfyGhue6XhdPzWqlXGXhuue9XbDjBJ03L9Tp4gG6FNAeHkgKPNaKcog
+	 kEn2G/EW/KsyDqmgzR+JkWtpY+tdwbSgy1ip+6PHbMKv6BIW9xYkt/C4Uq3YP97z6aSvmLqgqK9z
+	 /88uB08Oly/aPF1ezaC483aolF6iJ4sofO4xaMU36Nhsz1O9NaiLMipOCYepT/d10L8KttsnHfmo
+	 nhVSd9mB4H+S+EDdwAeDH8zW8J5NnoaTPS9OVpMwS90dhlqWR2fPfIYnfDQcCST6pTko38zpOt/6
+	 8qP0WA5jDceBDRcpLPApCT9WK8MHDUE5xRfSdV1uBoOwTG3utYLmSCSs5iBHHp1dUwgwBoONW/Kh
+	 nHDEY=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+From: Cunhao Lu <1579567540@qq.com>
+Date: Tue, 13 Oct 2026 11:22:37 +0800
+Subject: [PATCH net] can: rockchip_canfd: stop bus-off restart before
+ closing the device
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261002134002.3529706-1-anilkaushikwireless@gmail.com> <asCZbsGo90ROQIS6@nataraja>
-In-Reply-To: <asCZbsGo90ROQIS6@nataraja>
-From: Anil Kaushik <anilkaushikwireless@gmail.com>
-Date: Tue, 13 Oct 2026 08:45:26 +0530
-X-Gm-Features: AclHuK8I_-nCKtduVXU6hQzfYu-S0VawR6OE0DOw_g-Y6WmRACVM-_rryrWj5PA
-Message-ID: <CAG0Mgm8tpnF1wTGc9GRU4QYz2GqkWqVN5zbTpNh=A6pQziU+cA@mail.gmail.com>
-Subject: Re: [RFC] gtp: add 5G PDU Session Container (QFI) support?
-To: Harald Welte <laforge@gnumonks.org>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Donald Hunter <donald.hunter@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	osmocom-net-gprs@lists.osmocom.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-OQ-MSGID: <20261013-rockchip-canfd-restart-close-v1-1-72cac4f932cf@qq.com>
+X-B4-Tracking: v=1; b=H4sIAPyjzWoC/yXMwQrCMAyA4VcZORtYpxP0VcRDm6YuKu1IOhHG3
+ t2qx/8/fCsYq7DBuVtB+SUmJbdwuw5o8vnGKLE1DP1wdL3boxZ60CQzks8porJVrxXpWYyRQ+T
+ xNB6SCwkaMSsnef/4C2SucP1PW8KdqX5h2LYPhSdx8oUAAAA=
+X-Change-ID: 20261013-rockchip-canfd-restart-close-ebde5954f1bf
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol@kernel.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org, 
+ kernel@pengutronix.de, Heiko Stuebner <heiko@sntech.de>, 
+ linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Cunhao Lu <1579567540@qq.com>
+X-Mailer: b4 0.15.2
 
-Hi Harald,
+The close path cancels restart_work after freeing the IRQ and stopping
+hardware. A queued bus-off restart can therefore enable the controller
+and interrupts after teardown. It can also restart timestamp work before
+runtime suspend.
 
- Just wondering if we are pursuing this further?
+Serialize restart with the close transition using a mutex. Mark the
+device closing and mask its interrupts before synchronizing the IRQ.
+Release the mutex before cancelling restart_work, so a queued restart
+can observe the closing state without deadlocking.
 
-Regards
-Anil
+Exclude the IRQ handler while reinitializing the hardware on restart.
+Do not disable the shared IRQ line while waiting for work to finish.
 
-On Sat, Oct 3, 2026 at 11:28=E2=80=AFAM Harald Welte <laforge@gnumonks.org>=
- wrote:
->
-> Hi Anil,
->
-> On Fri, Oct 02, 2026 at 01:40:02PM +0000, Anil Kaushik wrote:
-> > 1) Is this something you'd welcome in mainline gtp.c?  I'm aware a lot =
-of
-> >    5G user-plane work lives in out-of-tree datapaths (gtp5g, the eBPF
-> >    eUPF), so I don't want to add datapath complexity you'd rather not
-> >    carry here.
->
-> I think the big question is about the use case.  Do you yourself have a u=
-se case
-> for this? Which userspace programs (ideally open source ones) will be usi=
-ng your
-> proposed mechanism? For the existing GTPv0/v1 code we have a couple of di=
-fferent
-> FOSS applications (osmo-ggsn and ergw) as well as know of a number of pro=
-prietary
-> applications using it.
->
-> So I'm wondering if this proposed enhancement is "just for the sake of co=
-mpleteness",
-> or if you have any application (or will contribute patches to existing ap=
-plications) so
-> they will make use of this feature.
->
-> > 2) If yes: on RX, once the QFI has been parsed out of the PSC, what wou=
-ld
-> >    you like the driver to do with it?  The options I see are:
-> >      - stash it in skb->mark, so tc/nftables can classify uplink traffi=
-c
-> >        by QoS flow;
-> >      - attach it as skb metadata (tc_skb_ext / metadata_dst); or
-> >      - just validate it and otherwise ignore it.
-> >    The shape of the RX patch depends on this, so I'd rather ask than
-> >    guess.
->
-> I would say skb->mark would make sense to me.
->
-> Regards,
->         Harald
->
-> p.s.: Answers might be slow, I'm just about to go on a motorbike tour in =
-remote
-> mountainous areas with limited connectivity and/or time for e-mails
->
-> --
-> - Harald Welte <laforge@gnumonks.org>          https://laforge.gnumonks.o=
-rg/
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-> "Privacy in residential applications is a desirable marketing option."
->                                                   (ETSI EN 300 175-7 Ch. =
-A6)
+Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cunhao Lu <1579567540@qq.com>
+---
+When automatic bus-off recovery is enabled, bringing the interface down
+can race with a pending or running restart. The driver currently relies
+on close_candev() to cancel restart_work, but calls it only after freeing
+the IRQ, disabling RX offload and stopping the controller. A restart in
+that interval can re-enable the controller and its interrupts after IRQ
+teardown, and requeue timestamp work after it has been stopped. That work
+can subsequently access registers after runtime suspend disables the
+controller clocks.
+
+Serialize the restart callback and the close transition with a mutex and
+a closing flag. The close path marks the device as closing and masks its
+interrupts, then synchronizes the IRQ before cancelling restart_work.
+This drains any handler that could still schedule a restart. Cancellation
+runs outside the mutex so that a restart waiting for the lock can observe
+the closing flag and exit. IRQ teardown, RX offload shutdown and the final
+hardware stop follow only after restart work has finished. The shared IRQ
+line is disabled only around hardware reinitialization in the restart
+callback, not while cancelling work in the close path.
+
+The standalone fix was tested on a LubanCat-5IO running a PREEMPT_RT
+kernel. The 1 Mbit/s CAN bus was connected to four CANopen motors
+operating at 100 Hz and four sensors operating at 20 Hz.
+A bitrate mismatch forced bus-off, with automatic restart set to 100 ms;
+25 iterations brought the interface down at delays spanning immediate
+close through 130 ms after bus-off. Every iteration reached bus-off and
+scheduled recovery, with no crashes or kernel traces observed. Automatic
+recovery was also checked with the interface left up, including a 1 s
+restart delay. The reported build completed without warnings.
+---
+ drivers/net/can/rockchip/rockchip_canfd-core.c | 40 +++++++++++++++++++-------
+ drivers/net/can/rockchip/rockchip_canfd.h      |  5 ++++
+ 2 files changed, 35 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
+index 37c1c22c40c9..e38ddd143a3a 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd-core.c
++++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
+@@ -244,6 +244,8 @@ static void rkcanfd_chip_interrupts_enable(const struct rkcanfd_priv *priv)
+ static void rkcanfd_chip_interrupts_disable(const struct rkcanfd_priv *priv)
+ {
+ 	rkcanfd_write(priv, RKCANFD_REG_INT_MASK, RKCANFD_REG_INT_ALL);
++	/* Flush the mask before synchronizing a shared IRQ. */
++	rkcanfd_read(priv, RKCANFD_REG_INT_MASK);
+ }
+ 
+ static void rkcanfd_chip_fifo_setup(struct rkcanfd_priv *priv)
+@@ -353,19 +355,27 @@ static int rkcanfd_set_mode(struct net_device *ndev,
+ 			    enum can_mode mode)
+ {
+ 	struct rkcanfd_priv *priv = netdev_priv(ndev);
++	int err = 0;
+ 
+-	switch (mode) {
+-	case CAN_MODE_START:
+-		rkcanfd_chip_start(priv);
+-		rkcanfd_chip_interrupts_enable(priv);
+-		netif_wake_queue(ndev);
+-		break;
+-
+-	default:
++	if (mode != CAN_MODE_START)
+ 		return -EOPNOTSUPP;
++
++	mutex_lock(&priv->state_lock);
++	if (READ_ONCE(priv->closing)) {
++		err = -ENETDOWN;
++		goto out_unlock;
+ 	}
+ 
+-	return 0;
++	disable_irq(ndev->irq);
++	rkcanfd_chip_start(priv);
++	rkcanfd_chip_interrupts_enable(priv);
++	enable_irq(ndev->irq);
++	netif_wake_queue(ndev);
++
++out_unlock:
++	mutex_unlock(&priv->state_lock);
++
++	return err;
+ }
+ 
+ static struct sk_buff *
+@@ -666,6 +676,9 @@ static irqreturn_t rkcanfd_irq(int irq, void *dev_id)
+ 	struct rkcanfd_priv *priv = dev_id;
+ 	u32 reg_int_unmasked, reg_int;
+ 
++	if (READ_ONCE(priv->closing))
++		return IRQ_NONE;
++
+ 	reg_int_unmasked = rkcanfd_read(priv, RKCANFD_REG_INT);
+ 	reg_int = reg_int_unmasked & ~priv->reg_int_mask_default;
+ 
+@@ -736,6 +749,7 @@ static int rkcanfd_open(struct net_device *ndev)
+ 	rkcanfd_chip_start(priv);
+ 	can_rx_offload_enable(&priv->offload);
+ 
++	WRITE_ONCE(priv->closing, false);
+ 	err = request_irq(ndev->irq, rkcanfd_irq, IRQF_SHARED, ndev->name, priv);
+ 	if (err)
+ 		goto out_rkcanfd_chip_stop;
+@@ -758,9 +772,14 @@ static int rkcanfd_stop(struct net_device *ndev)
+ {
+ 	struct rkcanfd_priv *priv = netdev_priv(ndev);
+ 
++	mutex_lock(&priv->state_lock);
++	WRITE_ONCE(priv->closing, true);
++	rkcanfd_chip_interrupts_disable(priv);
++	mutex_unlock(&priv->state_lock);
++	synchronize_irq(ndev->irq);
++	cancel_delayed_work_sync(&priv->can.restart_work);
+ 	netif_stop_queue(ndev);
+ 
+-	rkcanfd_chip_interrupts_disable(priv);
+ 	free_irq(ndev->irq, priv);
+ 	can_rx_offload_disable(&priv->offload);
+ 	rkcanfd_chip_stop_sync(priv, CAN_STATE_STOPPED);
+@@ -921,6 +940,7 @@ static int rkcanfd_probe(struct platform_device *pdev)
+ 	priv->can.do_set_mode = rkcanfd_set_mode;
+ 	priv->can.do_get_berr_counter = rkcanfd_get_berr_counter;
+ 	priv->ndev = ndev;
++	mutex_init(&priv->state_lock);
+ 
+ 	match = device_get_match_data(&pdev->dev);
+ 	if (match) {
+diff --git a/drivers/net/can/rockchip/rockchip_canfd.h b/drivers/net/can/rockchip/rockchip_canfd.h
+index 95bea9bfd8a2..c81233142a74 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd.h
++++ b/drivers/net/can/rockchip/rockchip_canfd.h
+@@ -12,6 +12,7 @@
+ #include <linux/can/rx-offload.h>
+ #include <linux/clk.h>
+ #include <linux/io.h>
++#include <linux/mutex.h>
+ #include <linux/netdevice.h>
+ #include <linux/reset.h>
+ #include <linux/skbuff.h>
+@@ -478,6 +479,10 @@ struct rkcanfd_priv {
+ 	unsigned int tx_head;
+ 	unsigned int tx_tail;
+ 
++	bool closing;
++	/* Serializes restart with the close transition. */
++	struct mutex state_lock;
++
+ 	u32 reg_mode_default;
+ 	u32 reg_int_mask_default;
+ 	struct rkcanfd_devtype_data devtype_data;
+
+---
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+change-id: 20261013-rockchip-canfd-restart-close-ebde5954f1bf
+
+Best regards,
+--  
+Cunhao Lu <1579567540@qq.com>
+
