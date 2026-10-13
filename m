@@ -1,149 +1,177 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D076441443C
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F194543BDDD;
+	Tue, 13 Oct 2026 02:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791859686; cv=none; b=b/uc9VatJqEo5owduIzpNG1J9FcEyctusWZE8ReuuwfVHkPAWm1X5aPzn33tWv+lGdJfLlQJdysd33PLtSriyvyqPgeYHrhjZ+lOGakR1lJv1rhyc4RkSYhlumWeqjApREyRvBK26oFZxRbCQ9sdDUhZiLlM9Y4SNfnumy85ddI=
+	t=1791859739; cv=none; b=l9k8ZV5r2B6HvTtfIgamgeyMcZcFoi1Ti6JAqBHn7A4Y99ugnabNHZ6fJ97nEnlZ+tmLpwlEMUDU4sRN4PxQss0yD66Af1VHZKYb93Ac03vzKzde50hF7pfhRkMNnuZzXMRUZuvNB8I3JvxNb4YT2z5PYKPPHovmka3T5Utrq58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791859686; c=relaxed/simple;
-	bh=/nq9ULOagF8TNdNkpu6Q5sv3UadZrrvNv8JRzSgtxuk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o12kas5aVwHnYKuN+JL1XUCN9QWOLA1wSwYCHzmGormvcze1e1Up9l/7J2Ro6Ldx57rsKnzzPJS/kGyKYGuaGdCfZQs647Ce0Auc2PbLCtRPwqKLC1rZYYimxcegcwsAcONG6xWke0MMxmzwC4nwsHxI4jRqi3L4i1nzvrJm9EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sqIrQNZd; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791859739; c=relaxed/simple;
+	bh=YT7rhyZPn2QFWBPFePyF/e9vBCVAxt6ZXGK2xJFk6O0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MAlMTznSRGpV7Pbvd8yp2X7uUHTjrc4RGhyrFyBUUw6CO96xbj54dmbeUqPBr+btIpnWqO7uu9k2C98QmzMXUi2d9A1eElG62D/F5rRNGAemNR3ZnbDzf8snbwaXxzbqIkJY31AubwfUGC4fflDP18Yc9b2fc4lxmUp+KT6TNUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l14PO/Tw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sqIrQNZd"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-88bf90b7f07so666906b3a.3
-        for <netdev@vger.kernel.org>; Mon, 12 Oct 2026 19:48:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791859684; x=1792464484; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=S/CQGMpBuy/7FJjcfHtn4Lxv99je/uyA1AfUbEVnRss=;
-        b=sqIrQNZds3xFmRLXdaMHSF8btDZx3ZrJbYWNGitFywvjWYRvXhj7fW8FPXmqy47L7f
-         4R4E3o1EHAJYNhO87Te1XIHk0rl2E5tF6BRN0qzg8AJqc3tu+uME9O8ZNJigABnl7xYV
-         A8gZbvcvIR5/9Op0W9xGrxxScN6kaqDC/z4u2Dv2XrGVnkLddQRaNRPI05Ieg2GUZzpJ
-         vvyxwN0InN6oCEaubqC1Q9TOYRLy64sRiXi60aQHvwhqlzEIb3aNotiFg7VYLPneln/n
-         qxanFs7s95ViAtXuv9vSr/ilNLgo9LNZT58P4pPDyy9jK5nrxFT/+YnavuyJc7cMuC1N
-         69dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791859684; x=1792464484;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=S/CQGMpBuy/7FJjcfHtn4Lxv99je/uyA1AfUbEVnRss=;
-        b=ZMzc0OWq9LKR7lmAfVUlkUOwfy8rwSjvoNbG4N/GoTMK05Hy5mQ76IhnFcK5QbzcX4
-         4Wkwo+HSCw9vWWLoWq2pU2TT0UhOQ3ub4HSs33iWY++2XY+dMT1Ns08RTK7AunAUFFsS
-         uOahTVOliysmLoFNodR/PAX2b9CUuG1l7EEVK4q0AoGGHzukOwglowN7TEKy2BTRESnx
-         TMk1Gb6fMeGXgz4cI1FgSbUv13ei4iOzdHvHzpQNMwABsZ+rzR/VhNtCEE6+itvYiSmH
-         HJLf2tY33BDpA9URsX3iFiwBhiufa86cR9HRO0xkaQGkRxyOy31im3Nrz5EPgR7gM5QY
-         tj+Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzHIggU0tCdSrhVlxFTZv8SCQsHeXn1n7B8W00emd6c7Jh2GCfvAxb3g4AL7nV9/oUsUQiCq38=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIm9zTDt+ZFKAm4krDSKfJMJvTS6P9JHi51rIXNiYpi/PWuD+Xo
-	+y7DLUazyv4cOW93BHHfTX79GBWQpzrRr/M6OAS3g24t9EeP5laDeyX+
-X-Gm-Gg: AYBFou28ew8zH87pn51sF7skl1eR264iX/jwnUW8ZnuKMYWYi5kdYKggOxNDX6/1RIv
-	bV/PYR5S9CqIEbruKFxC8Zp4goRJyPNOCTOH2XlGsr0P55BEkjZC2Dn9nq9g3m5a0v50//eXCV1
-	EeB98gmlBH4ASVrCw4tZoVTywz2zLXWzmqmIg58QnmNKBKma6uV2Dhx/zgzLNyCszMW9pQid8Fm
-	d+d67vmNfWtpQhL1m9G5Pyd63tdU+yYFY7LYJ6FvNPKd7a42BG5mzY3rJ09xWlnp6ELpnhX5+UG
-	ZgO1mXlMJok0+xH0b2rMv+BUFFwdRE8s4YL5pZ+41pAez5v1HnscX60R4aU2asmx13i6N6zNPvb
-	MNAOqBcq/hNz0zNtrnKAK/k4fFSmvaxklNe1MDgcKIdTecCZmHwl0rG0gosf+I8bxnBtCyHMo0p
-	rvfMulSsXodbq15bR8FeJQWyBbp+NfQEIHX8jw6U1N4fTr5kAE+jUbKqmEMphjX2VMk7XNzOG3H
-	7uLeYqWlsU=
-X-Received: by 2002:a05:6a00:951a:b0:882:2b16:c314 with SMTP id d2e1a72fcca58-897c7cd1127mr9507515b3a.52.1791859684155;
-        Mon, 12 Oct 2026 19:48:04 -0700 (PDT)
-Received: from online.mioffice.cn ([2408:8607:1b00:8:5e2a:b6c:f432:a6f3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-896c42b4549sm4466018b3a.44.2026.10.12.19.47.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Oct 2026 19:48:03 -0700 (PDT)
-From: Pengfei Zhang <zhangfeionline@gmail.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Jose Abreu <joabreu@synopsys.com>,
-	EricChan <chenchuangyu@xiaomi.com>,
-	Simon Horman <horms@kernel.org>,
-	zhangpengfei16@xiaomi.com,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: stmmac: xgmac: do not treat TBU as a TX event
-Date: Tue, 13 Oct 2026 10:47:47 +0800
-Message-ID: <20261013024747.2688984-1-zhangfeionline@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l14PO/Tw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15B91F000FF;
+	Tue, 13 Oct 2026 02:48:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791859737;
+	bh=yjo+sSuB0PitU7qef/nAlZsau4lxf6ulbjPzEJAM21c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=l14PO/TwDhr2EjgZ99X+/FMRZheqX7gRVnCpF1hnKTy5HWq30xWY2yAZ6X+UaXspm
+	 PlCeCEsJmLRra4XLX8ToQKme7uu8udks44bVByr8NGiHmkXuhCBS9eyl1REV653hIT
+	 6DZckbYuc9w5je9PmWcfHXJ5sTmgitUvQdbGp9g902JXess7gYbWkMNRDB6vIVXIeQ
+	 DTO2RxeMGTRk/WNmbx2JWW0O3KPDiLi4URryt+Ls6g10OJr1+aT5PgedkhZV9X8/0W
+	 UVWDAf+lz2ddIgyh8arpkReWMY1kfEhEAfLd5h3/SlVhjk0kdMtoTCQGQ9e6AIbfgp
+	 9IuJpYnPFelCQ==
+Subject:
+ Re: [PATCH net-next v5 2/3] netlink: specs: add genetlink-legacy spec for GTP
+From: netdev-bot+sashiko@kernel.org
+To: anilkaushikwireless@gmail.com
+Cc: pablo@netfilter.org, laforge@gnumonks.org, donald.hunter@gmail.com,
+ kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, andrew+netdev@lunn.ch, shuah@kernel.org,
+ osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Date: Tue, 13 Oct 2026 02:48:56 +0000
+Message-ID: <179185973624.434549.6410423241897043806@kernel.org>
+In-Reply-To: <20261012024800.400616-3-anilkaushikwireless@gmail.com>
+References: <20261012024800.400616-3-anilkaushikwireless@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Commit 8d07a7930434 ("net: stmmac: xgmac: Do not enable TBU interrupt")
-removed TBUE from the default DMA interrupt mask, but did not remove the
-TBU check from dwxgmac2_dma_interrupt().
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-TBU is set whenever a TX channel runs out of descriptors. Since TBUE is
-not enabled and only enabled bits are cleared, the TBU status bit is
-never cleared. As a result, TBU stays set on every idle TX channel,
-regardless of whether there is any TX traffic.
+Low priority / nit picks for your consideration:
 
-With a shared interrupt, stmmac_dma_interrupt() checks all channels,
-so every interrupt from any source schedules TX NAPI on every idle TX
-channel.
+- [Low] include/uapi/linux/gtp.h defines `enum gtp_version { GTP_V0 = 0,
+  GTP_V1, }` for GTPA_VERSION values, and drivers/net/gtp.c compares…
+- [Low] The `family` attribute doc in
+  Documentation/netlink/specs/gtp.yaml (line 96) reads "Address family…
 
-Only use TI to trigger TX processing.
+--
 
-Fixes: 8d07a7930434 ("net: stmmac: xgmac: Do not enable TBU interrupt")
-Signed-off-by: Pengfei Zhang <zhangfeionline@gmail.com>
----
-Tested on a board with 8 RX/TX DMA channels behind one shared
-interrupt. A peer sends 10k UDP packets/s to the board and the board
-sends nothing back, so there should be almost no TX work. Every idle
-channel reads DMA_CH_STATUS 0x4 (TBU only).
+netlink: specs: add genetlink-legacy spec for GTP
 
-Per second, averaged over 10 s:
+This commit adds a genetlink-legacy YAML spec for the existing GTP
+generic netlink family. The spec covers the NEWPDP, DELPDP, GETPDP and
+ECHOREQ commands, the GTPA_* attribute set and the "gtp" multicast group.
+It also adds a CFLAGS_gtp entry to tools/net/ynl/Makefile.deps.
 
-                       before    after
-  hw interrupts          9071     8580
-  tx_normal_irq_n       72572        1
-  tx_clean             ~73000        9
+> diff --git a/Documentation/netlink/specs/gtp.yaml b/Documentation/netlink/specs/gtp.yaml
+> new file mode 100644
+> index 0000000000000..6a6b49ad2f067
+> --- /dev/null
+> +++ b/Documentation/netlink/specs/gtp.yaml
 
-- hw interrupts: the shared interrupt line, from /proc/interrupts.
-  Unchanged, the RX watchdog sets the rate.
-- tx_normal_irq_n (ethtool -S): how often dwxgmac2_dma_interrupt()
-  returned handle_tx. Before the fix every interrupt reports it for
-  all 8 channels.
-- tx_clean (ethtool -S): stmmac_tx_clean() runs, i.e. TX NAPI polls.
-  Each spurious handle_tx schedules one. What is left after the fix
-  is real TX and the TX coalesce timer. The "before" value is from a
-  separate run with the same setup.
+[ ... ]
 
-No packet loss before or after.
+> +attribute-sets:
+> +  -
+> +    name: gtp
+> +    name-prefix: gtpa-
+> +    attributes:
+> +      -
+> +        name: link
+> +        type: u32
+> +        doc: ifindex of the gtp netdevice the context is attached to.
+> +      -
+> +        name: version
+> +        type: u32
+> +        doc: GTP version of the context, 0 for GTPv0 or 1 for GTPv1-U.
 
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[Severity: Low]
+Should this attribute reference an enum? include/uapi/linux/gtp.h already
+defines the values for GTPA_VERSION:
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-index ff83858ebc..0a6e82a155 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
-@@ -346,7 +346,7 @@ static int dwxgmac2_dma_interrupt(struct stmmac_priv *priv,
- 		u64_stats_update_end(&stats->syncp);
- 		ret |= handle_rx;
- 	}
--	if (likely(intr_status & (XGMAC_TI | XGMAC_TBU))) {
-+	if (likely(intr_status & XGMAC_TI)) {
- 		u64_stats_update_begin(&stats->syncp);
- 		u64_stats_inc(&stats->tx_normal_irq_n[chan]);
- 		u64_stats_update_end(&stats->syncp);
+include/uapi/linux/gtp.h:
+enum gtp_version {
+	GTP_V0 = 0,
+	GTP_V1,
+};
+
+drivers/net/gtp.c compares against these values, for example in
+gtp_pdp_add() and gtp_genl_fill_info():
+
+	switch (pctx->gtp_version) {
+	case GTP_V0:
+	...
+	case GTP_V1:
+
+The spec has no definitions section, so the valid values only appear in
+the doc string. That means ynl clients see version as a raw integer and
+cannot encode or decode it by name.
+
+Other legacy specs reference their uapi enums like this, for example
+fou.yaml uses "enum: encap-type". Would a definitions entry for
+gtp-version plus an enum reference on this attribute work here?
+
+[ ... ]
+
+> +      -
+> +        name: family
+> +        type: u8
+> +        doc: Address family (AF_INET or AF_INET6) of the context addresses.
+
+[Severity: Low]
+Is this description accurate? In drivers/net/gtp.c, GTPA_FAMILY only
+selects the family of the mobile subscriber address, and it defaults to
+AF_INET when the attribute is absent.
+
+In gtp_pdp_add(), family only picks between GTPA_MS_ADDRESS and
+GTPA_MS_ADDR6. The peer address is checked against the socket family
+instead:
+
+drivers/net/gtp.c:gtp_pdp_add() {
+    ...
+	family = nla_get_u8_default(info->attrs[GTPA_FAMILY], AF_INET);
+    ...
+	if ((info->attrs[GTPA_PEER_ADDRESS] &&
+	     sk->sk_family == AF_INET6) ||
+	    (info->attrs[GTPA_PEER_ADDR6] &&
+	     sk->sk_family == AF_INET))
+		return ERR_PTR(-EAFNOSUPPORT);
+
+	switch (family) {
+	case AF_INET:
+		if (!info->attrs[GTPA_MS_ADDRESS] ||
+    ...
+}
+
+The reply side uses the same split. gtp_genl_fill_info() picks the MS
+attribute by pctx->af and the peer attribute by pctx->sk->sk_family:
+
+drivers/net/gtp.c:gtp_genl_fill_info() {
+    ...
+	    nla_put_u8(skb, GTPA_FAMILY, pctx->af))
+    ...
+	switch (pctx->af) {
+	case AF_INET:
+		if (nla_put_be32(skb, GTPA_MS_ADDRESS, pctx->ms.addr.s_addr))
+    ...
+	switch (pctx->sk->sk_family) {
+	case AF_INET:
+		if (nla_put_be32(skb, GTPA_PEER_ADDRESS, pctx->peer.addr.s_addr))
+    ...
+}
+
+As a result, a valid context with an IPv4 subscriber over IPv6 transport
+reports family=AF_INET together with peer-addr6. "of the context
+addresses" does not describe that case.
+
+Could the doc say that family applies to the ms-address / ms-addr6
+attribute only, and that it defaults to AF_INET when absent?
+
 -- 
-2.54.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012024800.400616-1-anilkaushikwireless%40gmail.com
