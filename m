@@ -1,123 +1,161 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021003BBFB2
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 21:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FAF52189A
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 21:25:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791926362; cv=none; b=jauGTcWbieKxBDvP3cgTZOdGqWx2Oz32oFi+/On91J5OyOkONijtnHGctnyhhWO6xgDb7B4ue+9burL80uL57c+rmiPOW46uyOGlITMP4Lijq2dK88MwH+Dxut3/ZuuJvpaN31dxpiSOQn+nAxxNqMbeHIETp9OwjmjlcTa7LTo=
+	t=1791926715; cv=none; b=WODX4sCPTX+MIEI5rGp4JmP7yX3+Cz72jOYYp6Qw5dsR/5Sv+rZRRyBydW5nulVOx7rZdFrfEPXR4cyLhxfTygdR2Ji1wJ5ELVrIQ7ijW61g5pdvTdXIruhPAwTtH5w04mr1Zm0SY4TAKLEcvHL0KbiaR34vwG4WPNBAKgCRzf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791926362; c=relaxed/simple;
-	bh=1uNx9pzFaHS+zXAmCIRRbgV1JINcqDr9GCYtkIvBKVc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XbihA+qfKIMhpQ1W1jhvrNr0+uFzqi156bJKWN/qGIh1H6X1UMfFkUFfte9UpjGuA9K/Skr/xNZelCyBvQes4Svr+pJkynARR3poc5WN70ULMq2fAcK6MhG07iYslFuJlOWF1dHllc4ByrKpVwpNLQ/X/fDuUXgvF7YzNwcLbek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=DrusZRC1; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1791926715; c=relaxed/simple;
+	bh=aH8eFs4okB74zTwi9QU6AWy5tkbVovGm8jg+grpS26o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eoQfEsqQ2P3WBiJgUez05CsLxB6zw0bNFOgKlIuWkY7g5Tt3kSP3iM9QXOt3Ba2vsamYi+Cu+JULOUSRsdooSnhEvaFCOORdNGEVk+oUiA+VPYe8MIwjaKiPP1dgaGBlKAlNAuNUXJB5YjBjiPnHnyvt/lJDOfs/yilSuILXI0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gCMX+K2G; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="DrusZRC1"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69DKWnZH1242603;
-	Tue, 13 Oct 2026 14:19:12 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=1uNx9pzFaHS+zXAmCIRRbgV1JINcqDr9GCYtk
-	IvBKVc=; b=DrusZRC1ckGm8kR+nCdOZRq8CflQer6XAIU9Pf5UzfIXohYIqslzb
-	qCdQjPb+syWdrdF+WbF9J98/uZ/HVZ/RaPUeahQJU3I5bouTaoFIW/mrPWaTEXAk
-	UNAZHAKkoGPaHki3ESKB2G0NPQk67/k3I3ChqZOJ2N8KUIabS6V7UM6QL4xZFNfd
-	XP8Ko4A3MxxjgBcpU9dJmR70tobNp7NuJBQ/ogqfVo35IcOS6qNLemIlObkF+dQ1
-	TSnYWMr6odwmE2b+SQ4C74QR4oCZsK1ajQUuXFUEXehv27XvS5lPN7pF2LLKIA7d
-	HmO4SoTNPHCyb3Z8ECgJ9gkC1PY6jxj8Q==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4h9spysrqs-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 13 Oct 2026 14:19:12 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::2d) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.49; Tue, 13 Oct
- 2026 21:19:11 +0000
-From: Erfan Sharafzadeh <erfansh@meta.com>
-To: <netdev@vger.kernel.org>
-CC: <davem@davemloft.net>, <edumazet@kernel.org>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <horms@kernel.org>, <almasrymina@google.com>,
-        <kaiyuanz@google.com>, <willemb@google.com>, <asml.silence@gmail.com>,
-        <sdf@fomichev.me>, <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net] net: devmem: allow peer-to-peer dma-buf attach for bindings
-Date: Tue, 13 Oct 2026 14:18:54 -0700
-Message-ID: <20261013211854.2297826-1-erfansh@meta.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261012170754.669462-1-erfansh@meta.com>
-References: <20261012170754.669462-1-erfansh@meta.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gCMX+K2G"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a16aaf2067so4112315e9.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 14:25:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791926710; x=1792531510; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9bFo6t7SK13AR5cV2462yCbw9SAQMOU3jnzNDJAtDAE=;
+        b=gCMX+K2Gi6pQ83GcMDnrnfouu+qRX9WSo8d6j75/qJ/WnigR4WoXdN7shkCMT6ImFG
+         DujGwT0jBS4ExxR5/6ML7hARxJxAY/yUxFT30Rkg0DZScH9rPOI/miNB7iaoRZYubKGN
+         DOsU4LtqplRgKNg1sXS3Uax0/uzxbG16DAodYUFE/VvMdohWyK2pVzSL8xosFVska1d/
+         AFadBmxneLg0Pr9hHM7/FJzDUSr7pAxPOM9m9+P0pj6/mVVYG4nYHUA+yoq571QwbBID
+         Q3tXHJ/5ell2cu7KtXH7UYLgNmsi8XIRL3JtiCbkPWwf6FOowYvHYUcpmhwBvctq8Thk
+         MnZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791926710; x=1792531510;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=9bFo6t7SK13AR5cV2462yCbw9SAQMOU3jnzNDJAtDAE=;
+        b=I3p7KZO76erDEV7NNRjrM7e0vsInjJYgCf9KDSbOaxBQqNrjHOJ+Wq5dvKDtvJITqn
+         pgiAETOJQ6GLlsQtQTq3VWBG8+1fF57QV4fztb6e/VYzYF7RIf+Pah51Jyt9AD+KtovC
+         Knp8cJvsPfHoIrqCsMSsUvgjhcif8HmDcuNWl5px1qga7Fwf9R4VM/ojEz5VKPVxp6lQ
+         QnCXS9e2deEG0MgyJ8uLdpySrPgfd7RQ4X+SHyVgJgYxsPtu/EF5VR2AyrQVGzSejj0y
+         YLnJ+SYHDIG9Lga7ml/r95boKrxMtOeOnE9RG1x1cHU+224KjwTvPMORkpuTN+kFLTHW
+         u23g==
+X-Forwarded-Encrypted: i=1; AKwUvBxjCjqcGYLfuzLA7CmSDLeC0n2lvSO+pFlidpRKTovobmkg09IIZUsVbbqw0yZXD315RfdwNNs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKGH3rigSeZocYtQ0il05p03aSBp9GVE3LE4pfV/CCk1tFsvIoT
+	S5fTqzmuPzIuYyI1IDX/YQ9nXOD7s/jv3l6aVCZSuIIxWdflMFx09slL
+X-Gm-Gg: AYBFou2OHW2Xo3MQQoOw8lxBSDD623XIWJpUWkHcN1wTTI+CaiqNlHDVYPlbxERMtKX
+	L58EU7xUq1G6DFFxDVfavRjebnKCQt3MldotVsrjCxK7biiQUfz337iqLZfeXmj6ptt+MkBeYLo
+	QMVyqZ8kFy04gFwM/3f/yhp1AMeRGY7Qspd6wfTHovxtZ/jEXK1Cj2egJlqK4gp5dejwvH0o4AL
+	8yZJlAymwckoF5n4cU9Q2a8g5UL9HyX/VtKMBz4cmt/rF1qHlAF3boP+gKdWibpcolc34WteYKH
+	mDgDkxls3XFXnYzy6YStxho4JeTjtQVcDJU7QGE1w+kU1qA/tnixLTfBqmQSCgT/keZFz9C3jFG
+	RMKQO76lX6im+qDCJ1WqlbHnMWEq/ckST33D17lqI46DlZ3Z+DxWsJjFHWA1k4Z9RwzQ1bZ4oR9
+	HUUR30YsWC+orlovqI5QenJGdZitPRpjFh3F7fSERv5JrSmOMM+nGJSmCpPD2tkuUldWGD5cRMg
+	IEWneiArDLt8zkkt9Zk
+X-Received: by 2002:a05:600c:4e47:b0:4a1:813f:2a65 with SMTP id 5b1f17b1804b1-4a18e4b1a6fmr241305015e9.15.1791926710418;
+        Tue, 13 Oct 2026 14:25:10 -0700 (PDT)
+Received: from foxbook (bez186.neoplus.adsl.tpnet.pl. [83.28.37.186])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a195002123sm409441305e9.1.2026.10.13.14.25.09
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Tue, 13 Oct 2026 14:25:10 -0700 (PDT)
+Date: Tue, 13 Oct 2026 23:25:06 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Dane Linssen <linssendane@gmail.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, Mathias Nyman
+ <mathias.nyman@intel.com>, Alan Stern <stern@rowland.harvard.edu>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, Hayes Wang
+ <hayeswang@realtek.com>, Chih Kai Hsu <hsu.chih.kai@realtek.com>
+Subject: Re: r8152: RX stops until rebind after -EPROTO on the bulk-in
+ endpoint
+Message-ID: <20261013232506.1b4dc340.michal.pecio@gmail.com>
+In-Reply-To: <CAM6_QD_z7eT+N6HieHyZhPmXqPxKqeSYKX8OK--M+rN2VAsO_Q@mail.gmail.com>
+References: <CAM6_QD_PoTdwdM7DvzzgHRs-G5EvQu-c5oNGve=GuKV4wFYAvQ@mail.gmail.com>
+	<CAM6_QD_xAyTFVvYKvCrrZmS+fV5DBBje9V=VdkDMMSpt2ussRg@mail.gmail.com>
+	<20260928120343.49e02c07.michal.pecio@gmail.com>
+	<CAM6_QD-CbYSsmic5LhpMi-aMXuC_VaniELBzaBeWO8SWm4UONA@mail.gmail.com>
+	<20261002104355.698eaf00.michal.pecio@gmail.com>
+	<CAM6_QD_z7eT+N6HieHyZhPmXqPxKqeSYKX8OK--M+rN2VAsO_Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDEzMDA4NCBTYWx0ZWRfX6IMfEooh2/Q/
- NRRWbO5dnnwCjdA6ygUmH1MwvJNLY3fbwpekqX2BaXBpRInSWpML2D08yGyptfa8k5jYzR69L+0
- RCrGwrAtGeQES6G//Qxop56HOWAxzY0=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDEzMDA4NCBTYWx0ZWRfXx072Aa0Vt5J7
- Zk50B6RWQLY5xIaQpuknQD0iGhZeNdQe4anBUGa9f4yYTslwDZrI3MPH9CcQcwUfz8rbfBqy/xK
- GMmpcBIybfrySsmkAum8kIMIW+iDyHVqIr4TV4OS8fzIjEeGTHK1BsmWm2tClp4GSO2Nd/BKOS7
- AcOLD4NC34BzH2/+lEI9FfMPq9LjIxuqhTG+80SVSck3ICLjS+xnzE4tc2Eo2rLq7zE3VQaA9qJ
- 9RUEbsPHbn2povVm5PGzvT9Vtmh+NGyDY37kBovEKVP9AoMb0/4HFqUdcsaXuApK7i4qVY1cuaB
- NKEhyH1QD8JjSAhIcbuPt9jOdyB5g50520FDrXWzObripzGG47YV98AWqUAjkYYUUIMpRfuOY7n
- m2luLl5dVAV14m2s1FHi8OjiTvkkTUf/Nifv42d6/yqZfZiqaRdGb7EaNFUyxZR8ezm0XriX3nw
- flak0sZzExX3ukbwaMA==
-X-Proofpoint-ORIG-GUID: ycrAQSYn_7RTgCO8qM_KFT_8OphMi_G6
-X-Proofpoint-GUID: ycrAQSYn_7RTgCO8qM_KFT_8OphMi_G6
-X-Authority-Analysis: v=2.4 cv=XYMcX455 c=1 sm=1 tr=0 ts=6acea050 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=wpfVPzegXHpEFt3DAXn9:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
- a=QVyZS0C2BbivBtcjcHQA:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Replying to the Sashiko AI review of this patch. Three of the five
-points are addressed in v2, which targets net-next:
-https://lore.kernel.org/netdev/20261013210954.2170175-1-erfansh@meta.com/
+[Adding Realtek people who contributed to r8152 before]
 
-1. Fixes: tag on an enhancement
+On Fri, 9 Oct 2026 14:23:57 +0200, Dane Linssen wrote:
+> > You could try it. We may consider increasing retries in mainline if
+> > this turns out to solve real world problems. Though so far, in the
+> > only reported case of 3 retries not working, 10 retries over a span
+> > of 100ms weren't helping either...  
+> 
+> Thanks, I'd like to try it. It needs some setup here first (signed
+> modules), so it may take a while before I can report back.
 
-Agreed. The static attach is correct under the dma-buf contract, and
-the patch relies on 575157b1b5fc and 609fc8766d68, so it must not go to
-stable. v2 drops the Fixes: tag and targets net-next.
+Looking at the log below I'm not sure if it will help. 15 ms is quite
+a long time and my gut feeling is that a temporary link disruption
+would be unlikely to last so long and not affect TX, unless TX is idle
+through all that time. Do you still have those usbmon logs, were other
+endpoints active in the 15 ms preceding the first -71 status?
 
-2. "fall back as before"
+Absence of errors at other times suggests that this is not a case of
+barely functional cable causing high rate of USB packet loss.
 
-Agreed, that was too broad. With an exporter that pins in a single
-placement, a later attachment that cannot do P2P can fail to pin a
-buffer that a P2P binding has already pinned in device memory, as with
-pinned RDMA umem. v2 states this limit in the commit message.
+The other possibility is that a HW bug gets the endpoint in some bogus
+state and only resetting the endpoint or whole device can fix it. Maybe
+resetting the RX endpoint would suffice, and the driver schedules some
+work on -EPROTO where usb_clear_halt() could be inserted.
 
-3. Uninterruptible fence wait
+Question remains, how to get the chip to abort the botched transfer
+and start a new transfer into a new URB cleanly? Is it enough to keep
+submitting URBs and eventually things will resynchronize? The driver
+seems to believe so, but does this really work? It will need to.
 
-Agreed. v2 waits interruptibly, as dma_buf_map_attachment() does for
-static attachments.
+> > Any results yet?  
+> 
+> Yes: three more stalls on the same host in 11 days (09-30, 10-04,
+> 10-06), all with virt_state 0x40, each recovered by the watchdog's
+> rebind in about 30 s. Dynamic debug was on for the last two. Both
+> start with a single burst, and in the 11 days there wasn't one
+> "Transfer error" on ep 2 outside the stalls. 10-04:
+> 
+>   22:36:09.251 Transfer error for slot 4 ep 2 on endpoint
+>   22:36:09.252 Soft-reset ep 2, slot 4
+>   22:36:09.255 Transfer error for slot 4 ep 2 on endpoint
+>   22:36:09.255 Soft-reset ep 2, slot 4
+>   22:36:09.258 Transfer error for slot 4 ep 2 on endpoint
+>   22:36:09.259 Soft-reset ep 2, slot 4
+>   22:36:09.262 Transfer error for slot 4 ep 2 on endpoint
+>   22:36:09.262 Soft-reset ep 2, slot 4
+>   22:36:09.265 Transfer error for slot 4 ep 2 on endpoint
+>   22:36:09.266 Hard-reset ep 2, slot 4
+> 
+> From there it's Transfer error + Hard-reset pairs at about 275/s
+> until the rebind 40 s later. 10-06 is the same: four soft retries
+> about 3.5 ms apart, the hard reset at +15 ms, then the same loop.
+> So here all the retries are spent within 15 ms.
 
-4. dma_buf_pin() on every bind of a userspace-supplied dma-buf
+After "hard reset" it's a 97% chance of endpoint sequence state being
+out of sync. On USB3, resubmitting without usb_clear_halt() is futile.
 
-Bindings were already pinned for their lifetime before this patch:
-dma_buf_map_attachment() pins static attachments through
-dma_buf_pin_on_map() and unpins them at unmap. The patch keeps the same
-lifetime and only lets the exporter choose device memory. The amount is
-bounded by what the user can allocate from the exporter in the first
-place, and it is the same model as pinned RDMA umem. Whether BIND_TX
-should require CAP_NET_ADMIN, as BIND_RX does, is a separate,
-pre-existing question.
+Notice how baf33d7a7564 ("r8152: avoid to resubmit rx immediately")
+only talks about disconnection and not recovering from these errors.
+I suspect no one has seen such recovery, at least on USB3. Easily
+recoverable errors don't reach drivers due to retries in HW and SW.
 
-5. P2P bus addresses and no revocation
-
-The binding is non-revocable, like ib_umem_dmabuf_attach_pinned_ops.
-Devmem has no way to tear down a live binding today, since page_pool
-and in-flight skbs hold references to it. Supporting revocable
-bindings would be a separate change; v2 notes the limit in the commit
-message.
-
-pw-bot: cr
+> usbmon, 2 s from each of the three stalls: every bulk-in (0x81)
+> completion is -71 (571, 553 and 551 of them), none succeed, and
+> bulk-out and the interrupt endpoint complete normally.
+> 
+> The other host with the same adapter logged no transfer errors at
+> all in the same 11 days.
+> 
+> Dane
