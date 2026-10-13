@@ -1,180 +1,178 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013058.outbound.protection.outlook.com [52.101.72.58])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC5052CCEB;
-	Tue, 13 Oct 2026 15:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.58
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791905169; cv=fail; b=B/dYt6gehBlvlgpj6rOv/emkdgYjAdpHXavdhGYp0aKAqBwIJ4kE4iIzmWFR4cAHKYWQZKXYFU3zZpiPLI6oz37Wc14ylfS+HZ3C0uu2WKEKHHQPmd086FNoV2EhBjqLTAw5EiRYXiW6nY2hg3wX/qSt1GYI6RKKitxRCCkKLrc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791905169; c=relaxed/simple;
-	bh=tMZ1ziYlTkwebljrQS3bmddi+kxVrEUPh0dw5ArQMiI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IIrAhTjkmX/EQc3rnEIb5rVL6DhD0PFL2k55PmVcMupo4UGAQOEsckWHXhhY4zpazVpms9H0rDpTu/qCbPUyABIfqp04patmEn8tVNVcoA7wt7yDMEMgBCezi4rhhn0v+DNOQNQ0mY7sDw6JMVkawcHmODRdILulLxk5gKYvktI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=fail (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Xw8AYGf7 reason="signature verification failed"; arc=fail smtp.client-ip=52.101.72.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B05187EC;
+	Tue, 13 Oct 2026 15:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791905230; cv=none; b=ZADp8LojqjDY0YyLpF+YF+p7nONlYEJKHyDjWzDoC4WwtohnTrpDQ1cGj6XD8/7XS4JssvVbEGDoeOpAtoKj2HdEC0b7FrGNY5FTeXJ551keZrsXmHEKY0xt7q2NYm8BWKS8rNT32RMqrcAEBOOXzkawpfPUa2icXc/sON81TNo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791905230; c=relaxed/simple;
+	bh=s7Y1dqjKLtmxBmzMonejLuLpnTjzcxNOBjBof17OT1o=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Lq0ApVhPx+4DDVDgp9v/0mV36k/C4acQn4kWZQi3sUQHUFUAAEWVi6cICULyqlxNnsR3cp+WosUQeTGp7ueIy40HUwW263GpdDDILt/INFw+qLBKOr/2nlZ4PajzpAdU4OT+p38FSz68lMDKAJo51RKyxWdAP0DnjHIF1IZuSFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BiEqHr34; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Xw8AYGf7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kDFnrvL9tSACgnyXHzNz3+huIeIrl3hprJmMeZKhB73sbpbZ0fkPnszFv1+95stxJ1cLC75MgbOWCrSaZ9W53/rCRdzNvorOEAfL0Ny8l4d0upnVID0rGu7P3FDhH+77k2fXnMr2oTwrpCs0VqkkYfJwllIsOZv1AzggpKe8fyUaNWUOyi7A0gW9SZZIOiKhEHxMMxrwvS/t8dRboo8FlHg7n/amo1nbSNBc845Je4bwYbQNlNLvizUoAcsBs2uzRPO6oJm9ABeAVmLdLUoWq0/4DOabUrgFR0HVvYlT0Jg7Q29FIzAdwC77ymmkXgubnEsr60Y1Gn7D/Iegoni5bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OLXNebj9SCo5lJuP5kj+GIkeswp+rCq77dYnrIAHQXg=;
- b=EqfeMzhrZEqjCaBzWDCBwN1spIaa7qVdxuq5Syb3uEklxS6Yk0jnO4ZQKSVT+0OHSxszRKtmLiPPQo8ydjgXDBOdTnOq7iy+AVoMRpDUEgwyS0sVEo3kEJYKRYRFhtTp0AQJ/mmSexNCA2nT4knNx/SvYe1MT+l8OeXTvUzN5d4Ca+0CmEjveFjo5QdbflYcvI4q82DLvBrBnnWccGNMZt7cbuMzNnp8o9D6DomquaDFA73qtjVkNpOFneotQJI+O40JjVY1fKvV5yMLQgsZH202Yz9JiWAHkxTOxbrraf6TowfcKFr5wVU5Tp4sUdXdx74mqWw/qiizk8VHA5oFXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OLXNebj9SCo5lJuP5kj+GIkeswp+rCq77dYnrIAHQXg=;
- b=Xw8AYGf7p16IvmdzWwVD6DwigJb+6I3Spbhsk9uPlQpKlXOzoTsotKEUQYTC5P6dWDVMMjpMw5g0Ngq5xe36+opp9aZgOFGMs+cr3qyude0/hj+/5AboC4AUuMiz3VknUmdxOer76PdCjylI/D41HgmO4XOIYVKt8Lau8nLASygseHktfT7mIY3Os+psrNDvwhxl4X0jDPJQ4g2VFa/qV8Xo8BMspc4NV+RxzV46ohJFup3PxSJbXa9BtzCre6WiTcqkXqSDLpySKN2R5DF4RzPKEB0EgDTUS7zLHIeoJqOF6HpxtyO2zUyvAURt5uGvlGVXrlMnX9763qhVt6HdBw==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by GVXPR04MB10204.eurprd04.prod.outlook.com (2603:10a6:150:1bf::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 15:26:04 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0522.011; Tue, 13 Oct 2026
- 15:26:03 +0000
-Date: Tue, 13 Oct 2026 18:25:59 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Marek Vasut <marex@nabladev.com>
-Cc: Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [net-next,PATCH v2] enetc: Increase eMDIO MDC rate to 2.5 MHz
-Message-ID: <20261013152559.cnh2i7i36hak6z3t@skbuf>
-References: <20260924180607.60932-1-marex@nabladev.com>
- <AS4PR04MB93382AF6B2AC7B5F421019BB888B2@AS4PR04MB9338.eurprd04.prod.outlook.com>
- <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BiEqHr34"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514D01F00893;
+	Tue, 13 Oct 2026 15:27:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791905229;
+	bh=z44din17cJmCqvPR4BN51vI9SOkOKyZHXSMY5xyKRno=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=BiEqHr34vzUNANK5ywY88Cv9IYK3TSrEQFfZ+Dax3G03sTcRh1nnqJeMrhfmSCGoW
+	 6jnEgGidMIOWuw3aLLs+gcQ9zMDXblCpjpqkbcJ8hT/qpWl5qZsXOiXkov3W8oEmtQ
+	 /lk3BF7XVDe/uDB6PpiS9+lHipTktgzVtIHHb0sxEkS3q8li7iZgfja7xkcEBKdMht
+	 f/iW4Qdg23IDINCbTmgPvAx/Aca8E2Nu2MVWEmJruQok+G4tRdqSd+y1D1svl48A78
+	 7bDS60Y/CbIHDV7okS58iqtD/AKYgl5SOu5/t3mtUdDoBz5dBOyEzOGMwFJ6EFyooN
+	 kIAH2eWhGbfUw==
+Subject: Re: [PATCH net-next 2/2] net: stmmac: disable TX checksum offload for
+ jumbo frames on bugged cores
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, boon.leong.ong@intel.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
+Date: Tue, 13 Oct 2026 15:27:07 +0000
+Message-ID: <179190522792.434549.2113659711683261245@kernel.org>
+In-Reply-To:
+ <20261012-stmmac-xdp-tx-pre-fixes-v1-2-05fd0c90f7e1@oss.qualcomm.com>
+References:
+ <20261012-stmmac-xdp-tx-pre-fixes-v1-2-05fd0c90f7e1@oss.qualcomm.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <af3d4fd1-9659-4d91-997f-6bb09ae06ba5@nabladev.com>
-X-ClientProxiedBy: WA2P291CA0020.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::9) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|GVXPR04MB10204:EE_
-X-MS-Office365-Filtering-Correlation-Id: e0602c8a-4d84-4a04-f4cd-08df293e4ac8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|23010399003|1800799024|10070799003|376014|366016|22082099003|18002099003|10067099003|4143699003|261009223027099003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	rSc1iskwXI85kxaF5ePFldnv2SSVxNtSb/sp5Lr7ocASHAVferSUU5aCcxq4mJax7sali0iFs8VuaX7LtS8FD+r5V6dTEYnRZnczETWw//qKm3RAkGdJd8pn18HsyctU5k99m2AjbMKGM1GcTDv6nWwLQi0mjVXCn+AwJmppdBQxPkQGAdDZULpCnGU6zpU91AWlrRm/5u5BbhhM0tubMQoYovsBpTf9hu9wBY4lOwQyXmkX4gkCeadrHZdJ07GvdCnh6IhDnc+pJkCoD/NJaZfN3cdZ01NVrzmaYkdu7c/ZVs1rOdl0ZTmpu7VpFNr9T/x/5XvbGHcTkTFAnwtUmNhfFTR91/7TE44ba9WPuvRZ0wphjxnJk679LmBr8xyzZcyH1UAPc7Klj+dob22Q8AMJl12i4gqXRMXwuBIEi1B/CCHa7e5uR3X9NBJmDwY2BdAtloAWk/8MOvCbR7VtuEQTCnTdu1ezjnJdcdtC5Rx7rwD2KimntDZh+koc/M+K0C2KUYFimP+35ngrF60adH3a2tiWlJPJ9FTRb5xPXUiRTwrMngUfjNbxE/zGgFtZZQ3+K9xTdxQvhSmbCWkqgH12b0cCD+YFb6JZl8+puJEbBuHbShVq7S60C2MyTXYZgS+2S/OOVj9VllH6P+MCBjW2jkoY+G7HFFTW0H7B+PI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(10070799003)(376014)(366016)(22082099003)(18002099003)(10067099003)(4143699003)(261009223027099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?SW++5+GQibX8/hTQCqrQ7+RihvzrIXtG1/+fTffVl6Y8eplLap066DptBA?=
- =?iso-8859-1?Q?UdkOFFXbAAUn6VZ6V7Xnh6FzVjjVizu3j8SxCyWjlB6cyetFbdk72VHO9k?=
- =?iso-8859-1?Q?/DFLWDQ7A2tM1R2Uj5d+7zKtteR1UHK4y/X5ce1RcwKOwV6XhfQJLv8MRJ?=
- =?iso-8859-1?Q?zCnaEQKZcbLP6p1TakZFGm8uEzZq9bqGIktDUDW8sjNGcWxJTGMT5jmzeM?=
- =?iso-8859-1?Q?scYQg6BRkjcid2H/CRrqRv7PS2HOYQ4s7IvPff1joO/cMf+FA66HoxG8ds?=
- =?iso-8859-1?Q?l6D8KU1oMf9+PN6m2SROny/s7sTy3sErVYhwL6UYwcZBr5GlOi2WUOOqRN?=
- =?iso-8859-1?Q?sNOq6uFxudTVjesOmKfJSbb6Gn3wlG2LMXvxGnQ7DcvV6Mi6ETi5QHzeEx?=
- =?iso-8859-1?Q?BaVPTyjodCfyIPfQ7qVMqMR7g33699VaS+YnJ25JVbc7eCKEEDwAxPDEg/?=
- =?iso-8859-1?Q?bPe9rYsifdaK/+SrD+xKb5Gll3Cj+oIvwB2lMsHnqVGkVk84R+S4ZWclNX?=
- =?iso-8859-1?Q?qpF93fkLpfXHQ9XAWnHtlAhCE58hnNrdNI2xYIh6jua+d8X1CJb7uKd+k8?=
- =?iso-8859-1?Q?AQqoSxpHKpMQ7dyDwrCI3ERN0tiIJNN0CoPVFyarnHk/y+5qjvC+f7xB+b?=
- =?iso-8859-1?Q?O42urTHCnJv4fmQA26g198OIVUlCXYGOehF1Bu1yqcq7lenKkrJzBK61hr?=
- =?iso-8859-1?Q?EQ81jFN95IsmDaxFR1F9BYdjhtoCm1nIr1EyryOPKAOpEW54aqaoqKnoVq?=
- =?iso-8859-1?Q?GvzxuYpH2oEJH94qsR751qRLVNyTFLeqIOpF5R5gOOgyX9487SJMFIMbkO?=
- =?iso-8859-1?Q?wXI2tPS+vHkCa21dv/6+1QXonAwDffB5t/oxORjpntzdq6r2D1L44N7Q1O?=
- =?iso-8859-1?Q?s2Fk2daYiio2t6RwMZPqgYHR0+cug9mAzaps3RL4cdj5rsli1nTrwzaBKp?=
- =?iso-8859-1?Q?s5R/tFtnKn5+v6CcsZv99+Mh71XlT57Chc52zuu3YdpX3PR+B8JX8eerzA?=
- =?iso-8859-1?Q?UT/5NbicuDDW7yZku12V3B/4oyMKDce5K8JG8pkcy/bd7+UNR7X7y7aifP?=
- =?iso-8859-1?Q?/Sq8jtn/Q9+ZIy6eTnI6Y14A4Hrl6BgZ9PqcNzK/0wER5TV/d/9z0LYP+l?=
- =?iso-8859-1?Q?NxGxH1V7VarG0D+nB9Lv3YYqv3Pi8ZYFaOqeMTlxQydrC+HAF26t7VwAIW?=
- =?iso-8859-1?Q?41Zgzl8/X7y75ZrEktALK5r0aWTqRlf2Gpvh5QPoi6f91LCLl55CKK4yCQ?=
- =?iso-8859-1?Q?r8RbIIGxcWbloiiE+KRlhkyUbsIunnN123AKLmqxebfibp+IYvbPddVTG0?=
- =?iso-8859-1?Q?pCsh1aCp+qTGjVX4KMSb77pGbQIUm0xj63i/Ygurpw/qiQQfuqr2GuLwQq?=
- =?iso-8859-1?Q?KaA83Yvf5rzbV+QHlY0uhKin+/Wb4RxWBrnrnbTlxShiRiYJyMsfYKd4M2?=
- =?iso-8859-1?Q?TqU/2TV5cXIXrtr8+90QiIakdQU4rKVh9OVK2FMbuMANGNYWND+aXgGCe7?=
- =?iso-8859-1?Q?gDOf7BafCOD70mu1M/DeDQNPs/tUnMw9IvuVCCuZug7F/PItfkihHQsuCP?=
- =?iso-8859-1?Q?w4/LjJYybjiYJ2L3V1U/88Mq4nNrM8Bj6MKmkRmkc1X5Ac1BvRa4vB/oXw?=
- =?iso-8859-1?Q?9VOCmLluNOPdTt5A41ehADnAXsnBdf5l+5Nwh34v+xlu8iaLoaVflJ4u2q?=
- =?iso-8859-1?Q?kAzN+6jpd7XNDG9Fi7VvUOmAfit0/b11mGeTPwFwtEaeiDjlY5teH14l8+?=
- =?iso-8859-1?Q?shT+HvbqCIWPTjIgw/1kY7xTdUD6gQV9WvIYaYeIaTOrNmzTrJvJDftmS0?=
- =?iso-8859-1?Q?AAqbOLzVSHO4yKHy+1fm6a1T7D2jvOSChLtxiMngjKv3XQO0JgrHq2rgGw?=
- =?iso-8859-1?Q?Dc?=
-X-MS-Exchange-AntiSpam-MessageData-1: qjQDc5wtr1T9Nt03DNZiZ0ohPAutBhqmX5M=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0602c8a-4d84-4a04-f4cd-08df293e4ac8
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 15:26:03.1424
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C8Uvc/6oKiBan0BsA3DpaxuNXKSSHKM1g69QnGqHsJQjAT/vmsxJf50pjFoHOnus+AC2s6PhduGJfnfnPEFSQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10204
 
-On Wed, Sep 30, 2026 at 06:19:04AM +0200, Marek Vasut wrote:
-> Are those clock which feed MDC clock available via clock framework on LS ?
-> If so, we could calculate the divider based on those clock.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Yes.
+Low priority / nit picks for your consideration:
 
-On LS1028A, the ENETC clock selection is made by a mux called HWA_CGA_M4_CLK_SEL
-(Hardware Accelerator Block Cluster Group A Mux 4 Clock Select).
+- [Low] The commit message's premise doesn't match the tree.
 
-You can describe that in ls1028a.dtsi like this (note that in the RM,
-the mux numbering is one-based, while in the device tree it is 0-based,
-so 3 is actually "MUX 4"):
+Pre-existing issues:
+- [Medium] This problem wasn't introduced by this patch, but
+  stmmac_xdp_xmit_xdpf() never looks at priv->plat->tx_coe when decidingâ€¦
 
- 			enetc_mdio_pf3: mdio@0,3 {
- 				compatible = "pci1957,ee01", "fsl,enetc-mdio";
- 				reg = <0x000300 0 0 0 0>;
-+				clocks = <&clockgen QORIQ_CLK_HWACCEL 3>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
- 			};
+--
 
-Upon clk_get_rate(), the qoriq clockgen driver will use the device tree
-definition to index the hwaccel[] array and find the ls1028a_hwa4 structure.
-This defines what values the HWA4CSR register can legally take, and what
-each means. It will read HWA4CSR[HWACLKSEL] as 0011 (meaning Cluster PLL2
-divide-by-3). Then to calculate this clock rate, it knows it must read
-CGA_PLL2 and to divide by PLL_DIV3 (1200 / 3 = 400 MHz).
+net: stmmac: disable TX checksum offload for jumbo frames on bugged cores
 
-Note the ENETC PTP device already has this property defined (which is
-OK, all ENETC devices share the same clock).
+This patch turns off TX checksum insertion in stmmac_xdp_xmit_xdpf() for
+frames longer than ETH_FRAME_LEN on bugged_jumbo cores. It is meant to
+match the stmmac_fix_features() workaround that the skb path already uses.
 
-Without a 'clocks' and/or 'clock-frequency' property, we have to figure
-out a default that works for everyone, or if that fails.
+> The XDP TX
+> path bypasses that workaround, so once XDP is allowed at MTU >
+> ETH_DATA_LEN, jumbo frames sent via XDP_TX or redirected into the
+> device would leave the interface with a full checksum insertion enabled
+> on those cores - exactly what the workaround is meant to avoid.
 
-For example, with 400 MHz enet_clk on LS1028A, the original
-MDIO_CFG_CLKDIV value of 258 used to produce an MDC frequency of
-400000000÷((258×2)+1)=773 KHz.
+[Severity: Low]
+Can this scenario happen in the current tree? XDP still can't be used with
+a jumbo MTU. stmmac_xdp_set_prog() refuses to attach a program when the MTU
+is above ETH_DATA_LEN:
 
-Your new MDIO_CFG_CLKDIV value of 66 produces 400000000÷((66)+1)=3 MHz,
-which is too high to be a default value. So from LS perspective, this
-patch needs to be reverted.
+drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c:stmmac_xdp_set_prog() {
+    ...
+	if (prog && dev->mtu > ETH_DATA_LEN) {
+		/* For now, the driver doesn't support XDP functionality with
+		 * jumbo frames so we return error.
+		 */
+		NL_SET_ERR_MSG_MOD(extack, "Jumbo frames not supported");
+		return -EOPNOTSUPP;
+	}
+    ...
+}
 
-Generally it is assumed that low MDIO clock frequencies are not a
-problem. Otherwise, drivers/net/mdio/mdio-bitbang.c could never work.
-It seems TJA1120 is the odd one for requiring a maximum MDC clock
-period of 1000 ns.
+stmmac_change_mtu() also refuses a jumbo MTU while XDP is enabled:
 
-Please use xgmac_mdio_set_mdc_freq() as model, since it exists to
-solve a very similar issue as you are trying to do.
+	if (stmmac_xdp_is_enabled(priv) && new_mtu > ETH_DATA_LEN) {
+		netdev_dbg(priv->dev, "Jumbo frames not supported for XDP\n");
+		return -EINVAL;
+	}
+
+The redirect case looks limited too. Devmap checks every frame with
+xdp_ok_fwd_dev(dev, xdp_get_frame_len(xdpf)), which caps the length at
+mtu + hard_header_len + VLAN_HLEN. At MTU 1500 that is 1518 bytes.
+Redirected frames therefore reach the new ETH_FRAME_LEN check only when
+they are 1515 to 1518 bytes long, which is VLAN-tagged normal-size
+traffic, not jumbo.
+
+The one path that seems to reach the new check today is XDP_TX after the
+program grows the frame. At MTU 1500, stmmac_rx() still sets frame_sz to
+at least PAGE_SIZE:
+
+	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+
+A program can therefore use bpf_xdp_adjust_tail() to grow a frame past
+1514 bytes and return XDP_TX. stmmac_xdp_xmit_xdpf() never checks that
+length against the MTU.
+
+Could the commit message describe the trigger that exists today, and say
+whether the bugged_jumbo erratum covers it? If this patch depends on a
+separate change that allows XDP at a jumbo MTU, could the message say so?
+The Fixes: tag reads as if the problem can be hit now.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index ca61ab449e32b..0e29c5d04714c 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -5276,6 +5276,14 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
+>  		return STMMAC_XDP_CONSUMED;
+>  	}
+>  
+> +	/* Disable TX checksum offload for jumbo frames on cores where
+> +	 * checksum insertion is broken for oversized frames, matching the
+> +	 * stmmac_fix_features() workaround used by the skb path.
+> +	 */
+> +	if (priv->plat->bugged_jumbo &&
+> +	    xdp_get_frame_len(xdpf) > ETH_FRAME_LEN)
+> +		csum = false;
+
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch. The
+comment says this matches stmmac_fix_features(), but that function also
+turns off TX checksum offload when tx_coe is unset:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_fix_features() {
+    ...
+	if (!priv->plat->tx_coe)
+		features &= ~NETIF_F_CSUM_MASK;
+    ...
+}
+
+In stmmac_xdp_xmit_xdpf(), csum comes only from the per-queue flag:
+
+	bool csum = !priv->plat->tx_queues_cfg[queue].coe_unsupported;
+
+stmmac_hw_init() clears tx_coe when threshold DMA mode is forced:
+
+		/* TXCOE doesn't work in thresh DMA mode */
+		if (priv->plat->force_thresh_dma_mode)
+			priv->plat->tx_coe = false;
+
+stmmac_dma_operation_mode() then runs TX in threshold mode
+(txmode = tc).
+
+On platforms with snps,force_thresh_dma_mode, do XDP_TX and ndo_xdp_xmit
+frames still request full checksum insertion through
+stmmac_prepare_tx_desc() in a DMA mode where the driver treats TX COE as
+broken? Should the XDP path also check priv->plat->tx_coe here?
+
+>  	while (true) {
+>  		skb_frag_t *frag = i ? &sinfo->frags[i - 1] : NULL;
+>  		int len = frag ? skb_frag_size(frag) : xdpf->len;
+
+-- 
+Sashiko AI review Â· https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261012-stmmac-xdp-tx-pre-fixes-v1-0-05fd0c90f7e1%40oss.qualcomm.com
