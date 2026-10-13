@@ -1,61 +1,61 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98403D093A
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B562F7EE6
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 08:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791881689; cv=none; b=P/byLwq2LoNd1xxBqwdJ+qokGasmi3Qazw4DK2hyvOv88sgpC7SJCxRJGXu2RIMNThTDRXjCLb8lv1wRnxASWOuNIUpgnO14zb0p4mxj2bzfDXV651YjJe9L72yUHoSXb2EtQTO5RSNH25DJ7kw4ghQjZUCojMPRgOR7/wNfCa8=
+	t=1791881691; cv=none; b=UDj4HS5z5+erO+G9lu7T0DVz+mwPQdvK1owG7rTmVWsMc7WhXm0di//nLlnXjG9XpkEF6vznuawvwoPYwA7GSALYACP8CcinFOIWI8hLAUeoDPi0iKulot1kZF1xxwEn5tH+jiQvB8tXhFSskVQadtJ22j5FBFqqpJXSqC3+Fss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791881689; c=relaxed/simple;
-	bh=ogpzvCe8tdvQ3HxSzTBJIBToLYEonrwZ1kRRrSy3dl8=;
+	s=arc-20240116; t=1791881691; c=relaxed/simple;
+	bh=BUQP99I6COQgxdNBY9SRuY5W6lqRFJ1ambxQaFQ6ylQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jkHce0OFW6/6hlBWPrSsyVQW0MpCRUc+MT2s7Mrh9iFJwXDrNFFeSc1t4UpGAjzwm4ySJFwByO6sCfXGmAsu6DTHfGM46+GVeJrhIs8R57qDAI+iEW8GPfRHIynF0mvXYKCcMROonvKZgbOHnaGYFQWWd2aEhz43kdC1lolAJtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=sfKLQLrY; arc=none smtp.client-ip=209.85.160.181
+	 MIME-Version; b=FG2OBZ/fACDhNHrRWGowjJ4XihWGMLPAGrSOlnYjdRcye7vMTUbF4nmZxiCxYjPExgHSAfAOMukhGANdBa/gf/qz0iYb5dsn5eNRLbsC4jxQ0SQrLCtZzjI4+22xnpz15cKGVNR3uu00EMZh2pHIPgOgFyMZSYHA+iyl4Ii6GMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=mFyE8+02; arc=none smtp.client-ip=209.85.160.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="sfKLQLrY"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-535d60d850cso14626941cf.0
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 01:54:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="mFyE8+02"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-535179e995bso35697681cf.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 01:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791881686; x=1792486486; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1791881688; x=1792486488; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PoYGMU9yvDO/DJ89LXFBA7t9dEnCI4azlkm4Ko70zug=;
-        b=sfKLQLrYirFoeRfbFfOwF1X31LnOeuMdIXyqkR98lX/FNoRXc9MB8jEqIogrAlv562
-         XsWqPwopKV5E78WI+xkKBUIy5SqafDABQ5CAA1Ps4vVpEcHLo2fnTTs5h/SNlOB8BIiV
-         8rvEVUx9/U6IGLxluRq/9jzmGvETYPuyNtlIo=
+        bh=fogdjvQjRRbSys6oW3hujB8iji53XchTMd8D+4uZ66A=;
+        b=mFyE8+02Vd/Fz3MYdYT/P5qUsqbcMHw4Bwc5sd0TRc15hKt8OCYkB5f+ldCv4z6q9l
+         tgvPhr6MKU1gzlPxg0LUtev0WmcI0oBcOo+P8sljhrMv54qFEgQXyZTYz6cVd3lDjlVJ
+         idmlhT8kB+u7xGCTMtfhACTaeVKFJtu6BTRKg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791881686; x=1792486486;
+        d=1e100.net; s=20260707; t=1791881688; x=1792486488;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PoYGMU9yvDO/DJ89LXFBA7t9dEnCI4azlkm4Ko70zug=;
-        b=Iq9FMoqk45h8McFQ3+v+V9NJcz8NlFvDHrDbzNT08vZ45rMjM67bx9aq9RIB5+1iJA
-         tLsL7dz4LYuyEE5OmV1VcCuYmc7TKZNalVvBdrCzQTtd7f8mmhgFQ/wKfiI/IOEvcc/Q
-         YbXH4GqOjZyow8SWld580SEzUSW+HYkQlR+Pjf5u9uGMlH+T724Q8T39VlNuMNPbZWJ/
-         0eSwICnq4rDn+HvHR/TMTNHIVSGPlsQPx3KTXwZWFJKqgY1pO5rLAwCamUNAJmnqDaxh
-         z46GxKkmFp3uSAseBiv4n34JoJHbYe95OGCiGhQwlZ52t0+hCqUTG5NBPdrXLsxQwjIL
-         lHwQ==
-X-Gm-Message-State: AFq9FYLReeP+TZIx1iYWgHPP3GJYNZqoGTNZMUx8Wkl2RjtkYq0lCv0c
-	I0XDfBNm8/Xj+QJLTrrjU23Uu5cRct72ZA8jsLK4uFid19DPa3zFbiDVngDlXkuOc2QNp2gLgaY
-	wz3Q=
-X-Gm-Gg: AYBFou15jDXqKa4zwWQtoJFPyQu5Q1A3ijn6/q71siYRcB1mjjOObFqDMpgOFs16qM5
-	s9lYHfKwumSkVxnzD5bhI8F9mpJbE5heK+tl84T/Ap4t2qWeaTjcR7V1AID0CBP7CkAwCMlhFp1
-	eqgcNeedg7UkvC/a4FkBYl/3iWaIdNLBYrYhlVwJVaemkszUJkryj+sthFvl5bsSV2qykSN/8ch
-	n0Kj0Pp/NLVPoJ+eSVhPEwvN57n4nybYiZ7GyLkmMcrttnBAavXazMaB25gy+XYXQH9hstzuuhA
-	wOPQyLle+tdkrFDCBnL+llwGCxU/lEtAnIMPCxKc9Af8Mna5XSTVh99xQtydv3vV7ykbuvXJGmw
-	Ac+ElZmPGsM32NZYu3bJVRrem9RuqXIgNjMmugjrE6Ajnc2UAmGvazYIq5IoAxYesku+q33xSv9
-	Ita1aQJBBT2WwhLhLEJv1s5HsDxkyCc/8g4Z3f8QiVhrejpxa4scNLQawFyS4B1WU2u1XVnreip
-	9lAWD+8//f8Tgm6J7qtYQfq368S5ZlrbYzMGZaTpmDo
-X-Received: by 2002:a05:622a:1a92:b0:535:17c4:62b3 with SMTP id d75a77b69052e-535a60e6400mr146827171cf.11.1791881686270;
-        Tue, 13 Oct 2026 01:54:46 -0700 (PDT)
+        bh=fogdjvQjRRbSys6oW3hujB8iji53XchTMd8D+4uZ66A=;
+        b=WdHPasuHN/82eiduu9vDfXMSgq1sV4DDVgPV4qJMNr7k0o84wsBD+pp1cj0ghNgmDF
+         sghcWOfQioehlDNixoA043S/HPHAqjeLbeuhAJg8wGw8LdO+VyKkAIpBSWButi7T7nAp
+         T5QSHWg+6xsdEZoqMvgrRAKzZxhlzsVjP5R5TZbhf/JVBASyL0W6NCTAkCs/aZSFCtMT
+         B5z7THyPDauxTt3B8qHzxBwlmvw3zlJC+P0R58sBp8xE8jacG5Miwf9Ho5mfMmIljD4f
+         2eOiGRtwLoU+Uguq77I4v6XOYiOBwlahFpSJGbIIIqSUGxRzltFh7e97jkK7aFb3Cdda
+         oMjg==
+X-Gm-Message-State: AFq9FYKt/9XIBbjA0fwvHpINpvih4MAWmRFOkfJ1LozNUbQh3zLyi0O2
+	WzxObSlQLqwmST5EztuVsyMZY+q5olUtU31zbePpLUkLyH7VRRK1UNCBnz60y5Lb4tzCmcgQZLn
+	0zpo=
+X-Gm-Gg: AYBFou0x1exgywUWglm5OUBO0R3lQfi1u86XI16yDZ6JX+NeXFoulMye2YVi+KW3gVv
+	AKaVP0eU2NP4nRMsT1MyBtZxkSUj4KWAAWMqeWPw7TkoiOanu6JqwugXvRAr6epPlSZw6pkjN+6
+	upuJqgP73z1DpmJR+EQvwIHRG4joKysyYoYHLICmXnaS+YFRbULXOajFHX1ql0ZPnXp/hYVI+V2
+	qh6kQkwKl/uU+iz161elNt0u8B6CcQ1cMV/0lq6lvNXp5sFdRNMTr3Bn34NW+aB94JSNK+F/OqS
+	CWIBwSc2HLWQPqgkYKNKgM0Wh43gjhwfk7byHPZ3nem9basypiKDcmA6ABQH5E5kUfU4QyfKmzH
+	VxTaIjMCAIHZ6d8lYfXr9hVlkhq9edvfMqt589oLIAnMcq+LzCLAbjaZh50jfyVZ8KJch9YxHeh
+	SJ/+/Nknk/44l55aLTvq93EIzaIhDhw430gtOURngCl5bhJ2iLZ8TotcEFLdu7hH8gCAAHYIsKG
+	NWqro2vU4k0hhEqTg7Xpsy+QvBmkCA1oODLuVJ2BYWz
+X-Received: by 2002:a05:622a:1e0a:b0:533:3228:74ad with SMTP id d75a77b69052e-5359fae5d3amr194005271cf.34.1791881687829;
+        Tue, 13 Oct 2026 01:54:47 -0700 (PDT)
 Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b731a6csm97763401cf.11.2026.10.13.01.54.43
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5359b731a6csm97763401cf.11.2026.10.13.01.54.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 01:54:45 -0700 (PDT)
+        Tue, 13 Oct 2026 01:54:47 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -66,14 +66,10 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Victor Nogueira <victor@mojatatu.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Paul Moses <p@1g4.org>,
-	Edward Adam Davis <eadavis@qq.com>,
-	Davide Caratti <dcaratti@redhat.com>
-Subject: [PATCH net-next v3 3/5] net/sched: act_gate: cap the number of scheduling entries
-Date: Tue, 13 Oct 2026 04:54:29 -0400
-Message-Id: <QDISC-H19Z.v3.r0.20261012193813-3@mojatatu.com>
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Subject: [PATCH net-next v3 4/5] net/sched: sch_taprio: cap the number of schedule entries
+Date: Tue, 13 Oct 2026 04:54:30 -0400
+Message-Id: <QDISC-H19Z.v3.r0.20261012193813-4@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <QDISC-H19Z.v3.r0.20261012193813@mojatatu.com>
 References: <QDISC-H19Z.v3.r0.20261012193813@mojatatu.com>
@@ -85,133 +81,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-parse_gate_list() accepts _any number_ of TCA_GATE_ONE_ENTRY elements.
-The only bound/cap is the enclosing nlattr u16 nla_len (~5460
-minimal 12-byte entries). Each entry is a separate GFP_ATOMIC
-allocation, and the dump of a large list grows one action's reply well
-past NLMSG_GOODSIZE.
+parse_sched_list() accepts _any number_ of TCA_TAPRIO_SCHED_ENTRY
+elements. The only bound is the enclosing nlattr u16 nla_len. A minimal
+accepted entry is 12 bytes (the entry nest plus
+TCA_TAPRIO_SCHED_ENTRY_INTERVAL), so that u16 admits roughly 5460
+entries - protocol-bounded amplification, not truly unbounded, but far
+past any hardware schedule.
 
-The bugs:
-1. A single gate can make tcf_dump_walker() silently truncate
-"tc actions ls" ("net/sched: act_api: report an oversized action dump
-instead of silently truncating it" makes such an action report -EMSGSIZE
-instead of dropping the rest of the list).
-2. Lack of capping pins memory for as long as the action lives: the
-largest representable minimal list is roughly 5460 entries, each a
-separate GFP_ATOMIC allocation, with a per-entry offload array on top in
-full offload. The held-reply RTM_GETACTION amplification demonstrated in
-the original posting of this series (Link below) is a generic netlink
-property this cap does not remove; the bound added here is the install-side
-pin.
-
-So we need to provide an upper bound cap of TCA_GATE_ONE_ENTRY elements.
+The bug:
+Each entry is a separate sched_entry allocation (368 bytes, rounded up
+to the kmalloc-512 bucket) and, in full offload, is also composed into a
+per-entry offload array, so the largest representable minimal list pins
+roughly 2.7 MiB for the lifetime of the schedule.
 
 Some context:
-The gate action offloads through FLOW_ACTION_GATE. The offload
-interface passes the priority, base time, cycle time, cycle-time
-extension, the complete entry count and an array holding each entry's
-gate state, interval, IPV and maximum-octet value. The in-tree SJA1105
-DSA driver forwards that complete list to sja1105_vl_gate() without any
-entry cap check, and composes every supplied entry into the hardware
-schedule table.
+The schedule list is not dumped the way the gate action list is: a
+taprio dump is bounded by the carrying skb (the 32K dump skb, and
+NLMSG_GOODSIZE for notify and unicast get), which keeps the plain
+nla_nest_end() closes from ever seeing a wrapped length. But the
+input-side amplification is the same class as the act_gate entry list,
+and the offload interface composes every supplied entry into the
+hardware schedule table without a capacity check.
 
-Act gate challenges:
-SJA1105 and SJA1110 are two device families in the one sja1105 driver.
-They expose different schedule-table capacities: SJA1105 provides up to
-1024 schedule entries and SJA1110 up to 4096. These are total table
-capacities shared with other schedules, so they are upper bounds, not a
-guaranteed per-action budget. Software gate actions with _a lot more_
-entries install and serialize today, so a low cap would reject working
-configurations and would look like a UAPI breakage; but an infinite size
-of entries is a bogus choice; a 65-entry configuration was verified
-during this work to install and dump well-formed.
-
-Netlink Challenges:
-Netlink attributes record their total size, including the four-byte
-header, in a 16-bit nla_len, so a nested attribute can describe at most
-65532 bytes. A minimal accepted input entry is 12 bytes, which puts the
-max we can fit at roughly 5460 entries; a dumped entry occupies 36 bytes,
-or 40 bytes when it carries the gate-open flag.
-1024 entries therefore serialize to 36868-40964 bytes, which fits
-inside one nested attribute, while a 4096-entry schedule would need
-roughly 144-160 KiB which _cannot fit_ at the moment due to the 16bit
-length.
-
-Note: This represents challenges primarily with netlink.
+The top of the accepted band cannot be read back: a schedule above
+roughly 900 entries does not fit the 32K dump skb, so "tc qdisc show"
+fails loudly with -EMSGSIZE for it (as the action-dump patch does). The
+pre-existing silent gaps - no change notification above about 100
+entries, and no unicast get reply - are tracked separately.
 
 The Cap:
-Cap the list at 1024 entries. This value is based on the existing
-SJA1105 schedule-table capacity and preserves the verified 65-entry
-configuration while providing a substantial headroom, and keeps the
-complete gate list inside the current 16-bit TLV format. It
-deliberately declines to expose SJA1110's 1025-4096 range through
-an interface that cannot serialize it, and deliberately rejects
-software-only schedules above 1024.
-
-Why 1024 despite the dump budget:
-1024 is a SJA1105 schedule-table capacity, not a dump-budget value. The
-kernel clamps a dump skb to SKB_WITH_OVERHEAD(32768), so only ~800-890
-entries of this list fit "tc actions ls"; the top of the admitted band
-therefore installs but is not listed. That is accepted deliberately:
-a unicast RTM_GETACTION reply is pre-sized from the action's advertised
-size (budgeted per entry since the parent fix), so "tc actions get"
-enumerates the whole band, and "net/sched: act_api: report an oversized
-action dump instead of silently truncating it" makes the list view fail
-loudly with -EMSGSIZE and an extack rather than silently truncating. A
-filter whose action list contains such a gate also stops "tc filter show"
-for that chain with -EMSGSIZE (loud), through tc_dump_tfilter()'s
-no-progress path.
+Cap the list at 1024 entries. This matches the SJA1105 schedule-table
+capacity (SJA1110 provides 4096) and the act_gate entry cap, and keeps
+the list inside the current 16-bit TLV format.
 
 This is an operational cap on a configuration the uAPI accepted before,
-so it is net-next hardening; if we made this a stable backport then
-it would start rejecting gate configurations that install today (even
-though those settings would be totally bogus).
+so it is net-next hardening; a stable backport would start rejecting
+taprio configurations that install today.
 
 Conditions to recreate the bug:
-CAP_NET_ADMIN with CONFIG_NET_ACT_GATE=y. Install a gate
-action with 1025 or more minimal TCA_GATE_ONE_ENTRY elements over a raw
-netlink RTM_NEWACTION request. The cap rejects the list with -E2BIG and
-an extack naming the limit; 1024 entries install and an indexed
-RTM_GETACTION returns a well-formed reply.
+CAP_NET_ADMIN with CONFIG_NET_SCH_TAPRIO=y. Install a taprio qdisc with
+more than 1024 minimal TCA_TAPRIO_SCHED_ENTRY elements over a raw
+netlink RTM_NEWQDISC request. The cap rejects the list with -E2BIG and
+an extack naming the limit; 1024 entries install.
 
-Link: https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
 Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/act_gate.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/sched/sch_taprio.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-index 14801c604bd9..711cf2443540 100644
---- a/net/sched/act_gate.c
-+++ b/net/sched/act_gate.c
-@@ -18,6 +18,13 @@
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 39ac5b97aa3a..8e7fb6d0fc00 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -49,6 +49,13 @@ static struct static_key_false taprio_have_working_mqprio;
+  */
+ #define TAPRIO_PICOS_PER_BYTE_MIN 17
  
- static struct tc_action_ops act_gate_ops;
- 
-+/* A nested attribute's u16 nla_len caps it at 65532 bytes. tcf_gate_dump()
-+ * emits each entry as 36 bytes (40 with the gate-open flag), so 4096 entries
-+ * would need ~144-160 KiB and cannot be represented. 1024 matches the
-+ * SJA1105 schedule-table capacity (SJA1110 provides 4096).
++/* Each entry is a separate 368-byte sched_entry and, in full offload, is
++ * also composed into a per-entry offload array. The u16 nla_len admits
++ * roughly 5460 minimal 12-byte entries, pinning ~2 MiB; 1024 matches the
++ * SJA1105 schedule-table capacity (SJA1110 provides 4096) and the act_gate cap.
 + */
-+#define GATE_ENTRIES_MAX	1024U
++#define TAPRIO_ENTRIES_MAX	1024U
 +
- static ktime_t gate_get_time(struct tcf_gate *gact)
- {
- 	ktime_t mono = ktime_get();
-@@ -277,6 +284,14 @@ static int parse_gate_list(struct nlattr *list_attr,
+ struct sched_entry {
+ 	/* Durations between this GCL entry and the GCL entry where the
+ 	 * respective traffic class gate closes
+@@ -1105,6 +1112,13 @@ static int parse_sched_list(struct taprio_sched *q, struct nlattr *list,
  			continue;
  		}
  
-+		if (i >= GATE_ENTRIES_MAX) {
++		if (i >= TAPRIO_ENTRIES_MAX) {
 +			NL_SET_ERR_MSG_FMT(extack,
 +					   "Too many schedule entries, at most %u are supported",
-+					   GATE_ENTRIES_MAX);
-+			err = -E2BIG;
-+			goto release_list;
++					   TAPRIO_ENTRIES_MAX);
++			return -E2BIG;
 +		}
 +
- 		entry = kzalloc_obj(*entry, GFP_ATOMIC);
+ 		entry = kzalloc_obj(*entry);
  		if (!entry) {
  			NL_SET_ERR_MSG(extack, "Not enough memory for entry");
 -- 
