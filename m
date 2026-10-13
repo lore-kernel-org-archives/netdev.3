@@ -1,405 +1,352 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7423B6C18
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB543CAE8D
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 09:05:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791882309; cv=none; b=idL+5ebI+qmUkek8A12TJRjESNRzBW5stkSu/sCHqaKk/HXxtxdR5xfI9xsrsrjrXuiltvPktFXaFBCHAPliZw/jttgW5wOPPSIFPJMJA3JNwlyDKRusV16ZbsZSEKySRm0tuwBtbnpsR67b9+u7JM1GDZiEnd7yykscocP9SG0=
+	t=1791882312; cv=none; b=ZRVHfrJqbod0oYaGLmHHwUMKPsly6jLZM6GzG2ZPW6ttagtYFH/xt6HToHMOWyufDCtxTEf6fKIqQgcejv8zCxLQJdzoakFDfRhpaQlbdbkt6IxtmflVZ1Y9Y9bEWRtSL9pfKE6L0lQze4mzC43epvpDQuUVh8MRvJ5RONiy9sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791882309; c=relaxed/simple;
-	bh=zrZtvSjYbhB8n6LuAJQLZtLvnsLb+OhtNasHz8G2Dds=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oMFKWZLh740uAfdkix5pGowNYuGw9eb7jpU5ekKQ7gQqII6N+uHyN8qqdh4IVWpnlMRo2XHmYpMBHfN+1a/apvpP1uZZ/kx4YbGE5IsIXY7JHwr+vfuT9H8iWxEgifsfJDYlewa3un48UK1dA3EdlFHBwzcqWm3vG8dbCk4zuM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P4bZRmcy; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791882312; c=relaxed/simple;
+	bh=FWphfVI7mjsyJQ8I6Mlj28S6c8u7xWbdAeuTFZuIGT4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p56z/Eygt8QlaZqeUG5Wol10itmJy3s/izdTYihRhltNOlQ4xG/PdtDjgJCZEPO2EDiduPbGFde5/RQejQkw4IKVTx4eZNZ+9Z8/Axfptlv0oIuUVClATCPhFqGhIEPnz4m3UCqWusCMkJJO6g/RQ9bgFt1csVom3/rJDnd3K1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=G6/Vclg6; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P4bZRmcy"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8884761745cso327461b3a.3
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 02:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791882307; x=1792487107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HcqY9R2YTOxIE+yhKySAd0E4+Lidx60M519S7MZ1pW0=;
-        b=P4bZRmcyDS12MRJygdM6MIV1Y6IMA8jp7G9nojuwoAjdJi3SkyKbB2FJPpoqvQGmI0
-         p/vMCSn/n8uvb1+q4nOB6qk1nYpKirLeVO4IepsVuUhIr578CmpihYFB0YdyPhVc6jeb
-         PZRIo4cxWb49b0VH1TK5As9fP8QGJC5tjsBJzDbaEcEB07sTevsBYi84TFHCBoLm+GZ7
-         uQ82KI8H9jBHtHqXwxy1tF3g5BwJmjImTCQBZkCyuPKNIqQpKRbzPDnoJiUOIP6fafjV
-         dm8IebrVdSLyxioyeKJHdsMOqt5WKqnVf/JhQB+1QvJLOXoJ24JMVPliE49tVu7vuhSv
-         DwBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791882307; x=1792487107;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HcqY9R2YTOxIE+yhKySAd0E4+Lidx60M519S7MZ1pW0=;
-        b=ATuh+/GurB4wnyZz4vdQD/GHlcZ7BWMWOS3H3zPC5EzlrPAjj5/khWozlrPN0IYmyZ
-         UQnmZKmdtcj+A60DonzIJ8xre/gtdTmIVSsSwyEudav2ZZODNpep2JUzRXSQMSOCgBVP
-         KLsZzIEFWcv6k+zoYDt/9CtlQQVk4n1sFIXzO1glu96ok7X41r/tEp+r1X1/O8bgwXI5
-         CD/GtzyRvM3+ObeluId2FXTyMjkoPmXwrBjAg+0PeiuX8hQUGLe+2nIWK/mStqjlV8dh
-         3a7wuusfZcW8y5QyfeP1pUjyU39WKl8cWedn+Pzbb8RSL5yp1hfwvCueVZrJAuCic1AS
-         W3ZA==
-X-Forwarded-Encrypted: i=1; AKwUvBwJHaX3Mh+8ddENFDPiO6Mf3ND9XIGXvWIGFtgOR/bn6bpG55hgcb+nDhcopRzm/57sP3o8z8I=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKJ95nA4cKQv+35f5BxhDIMWI1eI7H8gR8rm/vW3foFPb/PfojB
-	YmAg/lSRUqIrUNaZ4nZ6p8gkL0L1LgGIcUEWllpGqz4Q/42yMyGcA5Xj
-X-Gm-Gg: AYBFou3iNfI2knSgFoDo+1i5IeO+l4fV0A/+6KKFVqTC6AUCNN0tEv700BUt24xU/c4
-	qWZCs0PZ2lvRykJZqE5P6w+GG0KnKNSSER5wi7dI3rA3Dyn+NjghrwyxUmyh4i+eh17Y/gD5gw9
-	RllJjw2nQ2QuPZYENLucj3RevG8XZl6uVlODT6zzmauhLIGYkFDVICskkcXwshFshfPcc1LxSYy
-	YzA3XPheJvDDoxy2HgDKLFCbnITgFWeXgUgjJRxil4muzLrLCMs2WuQQXol2unHh5RrgSlckcl8
-	8/5UDMyDSxl4S9X7e+jah1netK+4qQGIG2RPdjjLfd8QwAdMgbid/xqSbIcZQCVH783R8keOHJE
-	SVBWakMTMtP0FQY8V0NP1LZ4+nfqq19OyKmOA+lAsgA+80kdnGYk3RBmTuljJYQ5SHoGhut17S4
-	gJogWlLM8W0Bv7+T9tXfNl+TOTeiewuXn9kOBWsclgCxdUBt3ROy4G+QuU8I8fYNhjSVJjP0dEl
-	5LkezIu90PWgn+59knONjmYV/1M9eM/pg6S2gJ+ISymej60VGiZTNeRIFoS/E6a
-X-Received: by 2002:a17:903:244d:b0:2d8:f4d4:7044 with SMTP id d9443c01a7336-2e8429aa861mr157495525ad.3.1791882306646;
-        Tue, 13 Oct 2026 02:05:06 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca1b53dsm38790462eec.6.2026.10.13.02.05.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 02:05:05 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: James Chapman <jchapman@katalix.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] l2tp: snapshot sequencing state when building transmit headers
-Date: Tue, 13 Oct 2026 17:05:00 +0800
-Message-ID: <20261013090500.1180376-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="G6/Vclg6"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2B0261A1145;
+	Tue, 13 Oct 2026 09:05:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E90FF60362;
+	Tue, 13 Oct 2026 09:05:07 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C846711D70DA6;
+	Tue, 13 Oct 2026 11:04:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791882306; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=R/XKbb75qHSPALWx5OZ4L1xUz8ST9rnW1ArtvCZ7Zgc=;
+	b=G6/Vclg6xIDatCguDn6jX3wDaaekxJf/HhTjZ9QyAye+xC7JC4G5Px3x+06I8pBEzSHBKL
+	qKIt1bux1Tzx1ZppNoDI/AxB9kALBi4vzuITa2ViZ4XfCgiqcSTZWVgyMR7A0a+BNx1+nl
+	mgrhtYXYoCCoT75Z6TUAUZXIzyDOM2lWcBXhKYC/sj7mT/zpxJNbSwKlDBB8CqLw/fGKqM
+	RTnDldZmglnQ604EpQPfXMmCbaBSfOloCQ2oF4q2Q1WomiGudm0M70DWbn+kk9L8LkRWQy
+	7YKazdzif5RJNWVq97P3YlO1Jd1DUW51gxDpzPdiyMey2m4i/Rvl1YhlLIRJ1w==
+Message-ID: <f06aba7f-0e5f-4c9e-b53a-b5b817b3e6c6@bootlin.com>
+Date: Tue, 13 Oct 2026 11:04:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/3] selftests: drv-net: Introduce a selftest
+ for ethtool flow control
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ linux@armlinux.org.uk, hkallweit1@gmail.com, corbet@lwn.net,
+ skhan@linuxfoundation.org, o.rempel@pengutronix.de, vladimir.oltean@nxp.com,
+ f.fainelli@gmail.com, thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260925182628.214667-2-maxime.chevallier@bootlin.com>
+ <179065239849.434549.14198730559380952270@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <179065239849.434549.14198730559380952270@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Updates to send_seq from netlink, PPP setsockopt and receive-side
-negotiation race with packet transmission. The header length is updated
-separately, while transmit reads both fields repeatedly without
-synchronization.
 
-For example, transmit can push a ten-byte L2TPv2 header, then a concurrent
-writer clears send_seq before the header builder reads it. The builder
-writes only six bytes, leaving four bytes of uninitialized skb headroom
-in the outgoing packet. The reverse mismatch overwrites the beginning of
-the payload. A later hdr_len read can also make the UDP length disagree
-with the skb length.
 
-KCSAN reported:
+On 9/29/26 05:26, netdev-bot+sashiko@kernel.org wrote:
 
-  BUG: KCSAN: data-race in l2tp_session_set_header_len / l2tp_xmit_skb
+>> +def get_local_pause_supported(cfg):
+>> +    """ Return the errcode and the local pause supported linkmodes """
+>> +
+>> +    ret, data = ethtool_ret(f"{cfg.ifname}")
+>> +    if ret != 0:
+>> +        raise KsftFailEx(f"ethtool {cfg.ifname} failed: {ret}")
+>> +
+>> +    return ret, _ethtool_pause_use_to_linkmodes(data["supported-pause-frame-use"])
+> 
+> [Severity: Low]
+> What happens here on a device without get_link_ksettings?
+> 
+> ethtool only prints "supported-pause-frame-use", "advertised-pause-frame-use",
+> "auto-negotiation" and "supports-auto-negotiation" when the link modes reply
+> succeeds. Plain "ethtool <dev>" still exits 0 when other replies, such as
+> link-detected, are present.
+> 
+> In that case this line raises an uncaught KeyError. ksft_run() reports that
+> as a failure with a traceback, not as a skip.
+> 
+> require_pause_supported_allof() calls this function before any capability
+> check. pause_setup() also indexes link["auto-negotiation"] and
+> link["supports-auto-negotiation"] directly, for both the local and the
+> remote interface.
+> 
+> Speed and duplex are already guarded with "in" checks. Could these keys be
+> guarded the same way?
 
-  write to 0xffff888100d0944a of 2 bytes by task 116 on cpu 1:
-   l2tp_session_set_header_len+0x81/0xc0
-   l2tp_nl_cmd_session_modify+0x122/0x2c0
-   genl_family_rcv_msg_doit+0x170/0x1d0
+There are a few of these drivers, will address.
 
-  read to 0xffff888100d0944a of 2 bytes by task 115 on cpu 0:
-   l2tp_xmit_skb+0x9c/0xc80
-   pppol2tp_sendmsg+0x21c/0x2a0
-   __sys_sendto+0x28c/0x2a0
+> 
+> [ ... ]
+> 
 
-The bug can lead to leak kernel base address for KASLR bypass, the
-corresponding reproducer can be provided per request.
+> 
+>> +def pause_setup(cfg):
+>> +    """ The starting conditions every test counts on, restored on exit:
+>> +        - both ports admin up
+>> +        - link autoneg on on both sides ifsupported
+>> +        - link actually up (carrier on)
+>> +    """
+>> +
+>> +    # Get init pause parameters
+>> +    ret, params = ethtool_ret(f"-a {cfg.ifname}")
+>> +    if ret == 0:
+>> +        defer(cmd, f"ethtool -A {cfg.ifname} rx {onoff(params['rx'])} "
+>> +                   f"tx {onoff(params['tx'])} "
+>> +                   f"autoneg {onoff(params['autonegotiate'])}")
+>> +
+>> +    # Get init link parameters
+>> +    link = ethtool(f"{cfg.ifname}", json=True)[0]
+>> +    if link["auto-negotiation"]:
+>> +        defer(cmd, f"ethtool -s {cfg.ifname} autoneg on")
+> 
+> [Severity: Medium]
+> The defer queue is LIFO (ksft_flush_defer() pops from the end), so at
+> teardown the link restore runs first. The pause restore follows right
+> after it, with no wait for autoneg to complete.
+> 
+> Can the pause restore be refused in that window? i40e ties pause autoneg
+> to the link autoneg state:
+That's a i40e driver issue :) The tests aren't build around the HW behaviour.
 
-Initialize hdr_len to the maximum header size and leave it unchanged
-when sequencing is toggled. Snapshot send_seq once per packet and use
-that snapshot for the actual header length and header construction,
-including the sequence flag. Use the same length for headroom, the header
-push and the UDP length. PPP callers can safely reserve the maximum size;
-L2TPv3 header sizes do not depend on sequencing.
+> 
+>> +    elif "speed" in link and "duplex" in link:
+>> +        defer(cmd, f"ethtool -s {cfg.ifname} autoneg off speed {link['speed']} "
+>> +                   f"duplex {link['duplex'].lower()}")
+>> +
+>> +    # Local interface admin up, link aneg on
+>> +    ip(f"link set {cfg.ifname} up")
+>> +    if link["supports-auto-negotiation"] and not link["auto-negotiation"]:
+>> +        ethtool(f"-s {cfg.ifname} autoneg on")
+> 
+> [Severity: Medium]
+> Is the original forced link configuration lost if autoneg is off but speed
+> or duplex is missing from the JSON?
+> 
+> In that case no defer is registered, but "ethtool -s <if> autoneg on" still
+> runs.
+> 
+> The patch already expects both keys can be missing. forced_link_settings()
+> falls back when duplex is missing. Speed is omitted when unknown, for
+> example while the port is admin down, and this function only brings the
+> port up after reading the settings.
+> 
+> The remote side below has the same if/elif with no fallback before
+> "ethtool -s <remote_ifname> autoneg on". That can leave a shared peer in
+> autoneg mode after the test exits.
 
-Make send_seq a separate bool so READ_ONCE() and WRITE_ONCE() can be used
-without sharing a bitfield storage unit with other configuration flags.
-Preserve the netlink attribute's existing low-bit truncation.
+Ok I'll add a restore step here
 
-Fixes: 3557baabf280 ("[L2TP]: PPP over L2TP driver core")
-Cc: stable@vger.kernel.org
-Assisted-by: GPT-6 Astra
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
- net/l2tp/l2tp_core.c    | 51 +++++++++++++++++++----------------------
- net/l2tp/l2tp_core.h    |  6 ++---
- net/l2tp/l2tp_debugfs.c |  4 ++--
- net/l2tp/l2tp_netlink.c | 11 ++++-----
- net/l2tp/l2tp_ppp.c     |  8 +++----
- 5 files changed, 35 insertions(+), 45 deletions(-)
+> 
+> [ ... ]
+> 
+>> +def pause_test_support(cfg, pauseparams):
+>> +    """ Verify that the supported linkmodes Pause and Asym_Pause match the
+>> +        ability to configure the rx and tx pauseparams.
+> 
+> [ ... ]
+> 
+>> +    The expectation is for drivers to refuse setting pauseparams that don't
+>> +    match the Pause and Asym_Pause bits in the supported linkmodes with a
+>> +    -EOPNOTSUPP return value. Unsupported pause params must be rejected.
+> 
+> [Severity: Low]
+> This isn't a bug, but expect_pauseparams_set() also accepts EINVAL for
+> unsupported combinations:
+> 
+>     ksft_in(ret, (errno.EOPNOTSUPP, errno.EINVAL), note)
+> 
+> phylink_ethtool_set_pauseparam() also returns -EINVAL for rx != tx when
+> Asym_Pause is not supported. Should the docstring mention EINVAL too?
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 4712cc41881a3..7e042a3e648ce 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -915,11 +915,9 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
- 		 * check if we sre sending sequence numbers and if not,
- 		 * configure it so.
- 		 */
--		if (!session->lns_mode && !session->send_seq) {
-+		if (!session->lns_mode && !READ_ONCE(session->send_seq)) {
- 			trace_session_seqnum_lns_enable(session);
--			session->send_seq = 1;
--			l2tp_session_set_header_len(session, tunnel->version,
--						    tunnel->encap);
-+			WRITE_ONCE(session->send_seq, true);
- 		}
- 	} else {
- 		/* No sequence numbers.
-@@ -937,12 +935,10 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
- 		 * If we're the LNS and we're sending sequence numbers, the
- 		 * LAC is broken. Discard the frame.
- 		 */
--		if (!session->lns_mode && session->send_seq) {
-+		if (!session->lns_mode && READ_ONCE(session->send_seq)) {
- 			trace_session_seqnum_lns_disable(session);
--			session->send_seq = 0;
--			l2tp_session_set_header_len(session, tunnel->version,
--						    tunnel->encap);
--		} else if (session->send_seq) {
-+			WRITE_ONCE(session->send_seq, false);
-+		} else if (READ_ONCE(session->send_seq)) {
- 			pr_debug_ratelimited("%s: recv data has no seq numbers when required. Discarding.\n",
- 					     session->name);
- 			atomic_long_inc(&session->stats.rx_seq_discards);
-@@ -1138,7 +1134,8 @@ static void l2tp_udp_encap_err_recv(struct sock *sk, struct sk_buff *skb, int er
- 
- /* Build an L2TP header for the session into the buffer provided.
-  */
--static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf)
-+static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf,
-+				    bool send_seq)
- {
- 	struct l2tp_tunnel *tunnel = session->tunnel;
- 	__be16 *bufp = buf;
-@@ -1147,14 +1144,14 @@ static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf)
- 	u32 tunnel_id = tunnel->peer_tunnel_id;
- 	u32 session_id = session->peer_session_id;
- 
--	if (session->send_seq)
-+	if (send_seq)
- 		flags |= L2TP_HDRFLAG_S;
- 
- 	/* Setup L2TP header. */
- 	*bufp++ = htons(flags);
- 	*bufp++ = htons(tunnel_id);
- 	*bufp++ = htons(session_id);
--	if (session->send_seq) {
-+	if (send_seq) {
- 		*bufp++ = htons(session->ns);
- 		*bufp++ = 0;
- 		session->ns++;
-@@ -1165,7 +1162,8 @@ static int l2tp_build_l2tpv2_header(struct l2tp_session *session, void *buf)
- 	return bufp - optr;
- }
- 
--static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf)
-+static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf,
-+				    bool send_seq)
- {
- 	struct l2tp_tunnel *tunnel = session->tunnel;
- 	char *bufp = buf;
-@@ -1191,7 +1189,7 @@ static int l2tp_build_l2tpv3_header(struct l2tp_session *session, void *buf)
- 	if (session->l2specific_type == L2TP_L2SPECTYPE_DEFAULT) {
- 		u32 l2h = 0;
- 
--		if (session->send_seq) {
-+		if (send_seq) {
- 			l2h = 0x40000000 | session->ns;
- 			session->ns++;
- 			session->ns &= 0xffffff;
-@@ -1225,19 +1223,24 @@ static int l2tp_xmit_queue(struct l2tp_tunnel *tunnel, struct sk_buff *skb, stru
- static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, unsigned int *len)
- {
- 	struct l2tp_tunnel *tunnel = session->tunnel;
-+	bool send_seq = READ_ONCE(session->send_seq);
- 	unsigned int data_len = skb->len;
- 	struct sock *sk = tunnel->sock;
-+	u16 hdr_len = session->hdr_len;
- 	int headroom, uhlen, udp_len;
- 	int ret = NET_XMIT_SUCCESS;
- 	struct inet_sock *inet;
- 	struct udphdr *uh;
- 
-+	if (tunnel->version == L2TP_HDR_VER_2 && !send_seq)
-+		hdr_len -= 4;
-+
- 	/* Check that there's enough headroom in the skb to insert IP,
- 	 * UDP and L2TP headers. If not enough, expand it to
- 	 * make room. Adjust truesize.
- 	 */
- 	uhlen = (tunnel->encap == L2TP_ENCAPTYPE_UDP) ? sizeof(*uh) : 0;
--	headroom = NET_SKB_PAD + sizeof(struct iphdr) + uhlen + session->hdr_len;
-+	headroom = NET_SKB_PAD + sizeof(struct iphdr) + uhlen + hdr_len;
- 	if (skb_cow_head(skb, headroom)) {
- 		kfree_skb(skb);
- 		return NET_XMIT_DROP;
-@@ -1245,9 +1248,9 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
- 
- 	/* Setup L2TP header */
- 	if (tunnel->version == L2TP_HDR_VER_2)
--		l2tp_build_l2tpv2_header(session, __skb_push(skb, session->hdr_len));
-+		l2tp_build_l2tpv2_header(session, __skb_push(skb, hdr_len), send_seq);
- 	else
--		l2tp_build_l2tpv3_header(session, __skb_push(skb, session->hdr_len));
-+		l2tp_build_l2tpv3_header(session, __skb_push(skb, hdr_len), send_seq);
- 
- 	/* Reset control buffer */
- 	memset(skb->cb, 0, sizeof(skb->cb));
-@@ -1290,7 +1293,7 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
- 		uh = udp_hdr(skb);
- 		uh->source = inet->inet_sport;
- 		uh->dest = inet->inet_dport;
--		udp_len = uhlen + session->hdr_len + data_len;
-+		udp_len = uhlen + hdr_len + data_len;
- 		if (udp_len > U16_MAX) {
- 			kfree_skb(skb);
- 			ret = NET_XMIT_DROP;
-@@ -1759,16 +1762,11 @@ static void l2tp_session_del_work(struct work_struct *work)
- 	l2tp_session_put(session);
- }
- 
--/* We come here whenever a session's send_seq, cookie_len or
-- * l2specific_type parameters are set.
-- */
--void l2tp_session_set_header_len(struct l2tp_session *session, int version,
--				 enum l2tp_encap_type encap)
-+static void l2tp_session_set_header_len(struct l2tp_session *session, int version,
-+					enum l2tp_encap_type encap)
- {
- 	if (version == L2TP_HDR_VER_2) {
--		session->hdr_len = 6;
--		if (session->send_seq)
--			session->hdr_len += 4;
-+		session->hdr_len = 10;
- 	} else {
- 		session->hdr_len = 4 + session->cookie_len;
- 		session->hdr_len += l2tp_get_l2specific_len(session);
-@@ -1776,7 +1774,6 @@ void l2tp_session_set_header_len(struct l2tp_session *session, int version,
- 			session->hdr_len += 4;
- 	}
- }
--EXPORT_SYMBOL_GPL(l2tp_session_set_header_len);
- 
- struct l2tp_session *l2tp_session_create(int priv_size, struct l2tp_tunnel *tunnel, u32 session_id,
- 					 u32 peer_session_id, struct l2tp_session_cfg *cfg)
-diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
-index ffd8ced3a51ff..25ae4c25d3eff 100644
---- a/net/l2tp/l2tp_core.h
-+++ b/net/l2tp/l2tp_core.h
-@@ -76,7 +76,7 @@ struct l2tp_session {
- 	u8			peer_cookie[8];
- 	int			peer_cookie_len;
- 	u16			l2specific_type;
--	u16			hdr_len;
-+	u16			hdr_len;	/* maximum L2TP header length */
- 	u32			nr;		/* session NR state (receive) */
- 	u32			ns;		/* session NR state (send) */
- 	struct sk_buff_head	reorder_q;	/* receive reorder queue */
-@@ -94,8 +94,8 @@ struct l2tp_session {
- 
- 	char			name[L2TP_SESSION_NAME_MAX]; /* for logging */
- 	char			ifname[IFNAMSIZ];
-+	bool			send_seq;	/* send packets with sequence numbers? */
- 	unsigned int		recv_seq:1;	/* expect receive packets with sequence numbers? */
--	unsigned int		send_seq:1;	/* send packets with sequence numbers? */
- 	unsigned int		lns_mode:1;	/* behave as LNS?
- 						 * LAC enables sequence numbers under LNS control.
- 						 */
-@@ -257,8 +257,6 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
- int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb);
- 
- /* Transmit path helpers for sending packets over the tunnel socket. */
--void l2tp_session_set_header_len(struct l2tp_session *session, int version,
--				 enum l2tp_encap_type encap);
- int l2tp_xmit_skb(struct l2tp_session *session, struct sk_buff *skb);
- 
- /* Pseudowire management.
-diff --git a/net/l2tp/l2tp_debugfs.c b/net/l2tp/l2tp_debugfs.c
-index c12d5e1ee550c..58d1d6a7768ef 100644
---- a/net/l2tp/l2tp_debugfs.c
-+++ b/net/l2tp/l2tp_debugfs.c
-@@ -182,12 +182,12 @@ static void l2tp_dfs_seq_session_show(struct seq_file *m, void *v)
- 		   session->pwtype == L2TP_PWTYPE_ETH ? "ETH" :
- 		   session->pwtype == L2TP_PWTYPE_PPP ? "PPP" :
- 		   "");
--	if (session->send_seq || session->recv_seq)
-+	if (READ_ONCE(session->send_seq) || session->recv_seq)
- 		seq_printf(m, "   nr %u, ns %u\n", session->nr, session->ns);
- 	seq_printf(m, "   refcnt %d\n", refcount_read(&session->ref_count));
- 	seq_printf(m, "   config 0/0/%c/%c/-/%s %08x %u\n",
- 		   session->recv_seq ? 'R' : '-',
--		   session->send_seq ? 'S' : '-',
-+		   READ_ONCE(session->send_seq) ? 'S' : '-',
- 		   session->lns_mode ? "LNS" : "LAC",
- 		   0,
- 		   jiffies_to_msecs(session->reorder_timeout));
-diff --git a/net/l2tp/l2tp_netlink.c b/net/l2tp/l2tp_netlink.c
-index 38aac59d052c4..89ef04c78787d 100644
---- a/net/l2tp/l2tp_netlink.c
-+++ b/net/l2tp/l2tp_netlink.c
-@@ -700,12 +700,9 @@ static int l2tp_nl_cmd_session_modify(struct sk_buff *skb, struct genl_info *inf
- 	if (info->attrs[L2TP_ATTR_RECV_SEQ])
- 		session->recv_seq = nla_get_u8(info->attrs[L2TP_ATTR_RECV_SEQ]);
- 
--	if (info->attrs[L2TP_ATTR_SEND_SEQ]) {
--		struct l2tp_tunnel *tunnel = session->tunnel;
--
--		session->send_seq = nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]);
--		l2tp_session_set_header_len(session, tunnel->version, tunnel->encap);
--	}
-+	if (info->attrs[L2TP_ATTR_SEND_SEQ])
-+		WRITE_ONCE(session->send_seq,
-+			   nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]) & 1);
- 
- 	if (info->attrs[L2TP_ATTR_LNS_MODE])
- 		session->lns_mode = nla_get_u8(info->attrs[L2TP_ATTR_LNS_MODE]);
-@@ -748,7 +745,7 @@ static int l2tp_nl_session_send(struct sk_buff *skb, u32 portid, u32 seq, int fl
- 	    (session->peer_cookie_len &&
- 	     nla_put(skb, L2TP_ATTR_PEER_COOKIE, session->peer_cookie_len, session->peer_cookie)) ||
- 	    nla_put_u8(skb, L2TP_ATTR_RECV_SEQ, session->recv_seq) ||
--	    nla_put_u8(skb, L2TP_ATTR_SEND_SEQ, session->send_seq) ||
-+	    nla_put_u8(skb, L2TP_ATTR_SEND_SEQ, READ_ONCE(session->send_seq)) ||
- 	    nla_put_u8(skb, L2TP_ATTR_LNS_MODE, session->lns_mode) ||
- 	    (l2tp_tunnel_uses_xfrm(tunnel) &&
- 	     nla_put_u8(skb, L2TP_ATTR_USING_IPSEC, 1)) ||
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index ef8fdfaf051d4..4f311d473a646 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1195,9 +1195,7 @@ static int pppol2tp_session_setsockopt(struct sock *sk,
- 			err = -EINVAL;
- 			break;
- 		}
--		session->send_seq = !!val;
--		l2tp_session_set_header_len(session, session->tunnel->version,
--					    session->tunnel->encap);
-+		WRITE_ONCE(session->send_seq, !!val);
- 		break;
- 
- 	case PPPOL2TP_SO_LNSMODE:
-@@ -1307,7 +1305,7 @@ static int pppol2tp_session_getsockopt(struct sock *sk,
- 		break;
- 
- 	case PPPOL2TP_SO_SENDSEQ:
--		*val = session->send_seq;
-+		*val = READ_ONCE(session->send_seq);
- 		break;
- 
- 	case PPPOL2TP_SO_LNSMODE:
-@@ -1546,7 +1544,7 @@ static void pppol2tp_seq_session_show(struct seq_file *m, void *v)
- 		   state, user_data_ok);
- 	seq_printf(m, "   0/0/%c/%c/%s %08x %u\n",
- 		   session->recv_seq ? 'R' : '-',
--		   session->send_seq ? 'S' : '-',
-+		   READ_ONCE(session->send_seq) ? 'S' : '-',
- 		   session->lns_mode ? "LNS" : "LAC",
- 		   0,
- 		   jiffies_to_msecs(session->reorder_timeout));
--- 
-2.43.0
+Docstrings are gonna be shrunk down as pylint says the file's too big... I'll
+update.
 
+> 
+> [ ... ]
+> 
+>> +    # We check that what we can configure in the pause params matches what we
+>> +    # support under various contditions : Link aneg on/off, pause aneg on/off
+>> +    ret, _ = ethtool_ret(f"-s {cfg.ifname} autoneg on", is_get = False)
+>> +    if ret != 0:
+>> +        ksft_pr("link autoneg on refused, not tested")
+>> +    else:
+> 
+> [ ... ]
+> 
+>> +    if not forced:
+>> +        ksft_pr("link speed unknown, the forced link is not tested")
+>> +        return
+>> +
+>> +    ret, _ = ethtool_ret(f"-s {cfg.ifname} autoneg off {forced}", is_get = False)
+>> +    if ret != 0:
+>> +        ksft_pr(f"link autoneg off {forced} refused, not tested")
+>> +        return
+> 
+> [Severity: Low]
+> Can a variant be reported as passed without running a single pause
+> parameter assertion?
+> 
+> If "ethtool -s <if> autoneg on" fails, the first group is skipped and only
+> logged with ksft_pr(). If forced is then empty, or the forced
+> "ethtool -s ... autoneg off" fails, the function returns normally.
+> 
+> ksft_run() sets KSFT_RESULT = True before each case and does not check
+> whether the case made any assertions. The case is counted as a pass rather
+> than a skip.
+> 
+> Should these paths raise KsftSkipEx when nothing was tested?
+
+OK
+
+> 
+>> +
+>> +    ret, _ = ethtool_ret(f"-A {cfg.ifname} rx {rx} tx {tx} autoneg off",
+>> +                         is_get = False)
+>> +    expect_pauseparams_set(ret, linkmodes, supported, "link autoneg off")
+>> +
+>> +    ret, _ = ethtool_ret(f"-A {cfg.ifname} rx {rx} tx {tx} autoneg on",
+>> +                         is_get = False)
+>> +    expect_pauseparams_set(ret, linkmodes, supported, "link autoneg off")
+> 
+> [Severity: Medium]
+> Does this require pause autoneg to be accepted on a forced link? That goes
+> against the uAPI documentation for struct ethtool_pauseparam in
+> include/uapi/linux/ethtool.h:
+> 
+>  * Drivers should reject a non-zero setting of @autoneg when
+>  * autoneogotiation is disabled (or not supported) for the link.
+> 
+> expect_pauseparams_set() decides success only from Pause/Asym_Pause. Those
+> bits describe the MAC's pause frame abilities.
+
+No, MAC + PHY.
+
+> They don't say whether pause
+> can be negotiated, or forced while link autoneg is running.
+> 
+> Several drivers fail at least one of the four link autoneg / pause autoneg
+> combinations:
+> 
+>   bnxt_set_pauseparam() returns -EINVAL for pause autoneg without
+>   BNXT_AUTONEG_SPEED, which is what the uAPI describes.
+> 
+>   mlx5e_ethtool_set_pauseparam() returns -EINVAL for any pause autoneg
+>   request.
+> 
+>   ixgbe_set_pauseparam() returns -EINVAL when
+>   !ixgbe_device_supports_autoneg_fc().
+> 
+>   i40e_set_pauseparam() returns -EOPNOTSUPP whenever pause->autoneg !=
+>   is_an. That already fails the link autoneg on / pause autoneg off step.
+
+That's why we write those tests
+
+> 
+> pause_advertising_test() has a related problem because it only skips on
+> EOPNOTSUPP. It treats an EINVAL refusal of pause autoneg from mlx5, bnxt or
+> ixgbe as applied. It then checks the advertisement against a configuration
+> the device never accepted.
+> 
+> [ ... ]
+> 
+>> +def pause_advertising_test(cfg, pauseparams):
+>> +    """Pause advertisement
+> 
+> [ ... ]
+> 
+>> +    The validation is made by looking at the advertised modes locally, as well
+>> +    as what the peer's 'lp_advertising' values report.
+>> +    """
+> 
+> [Severity: Low]
+> Is the lp_advertising part of this docstring accurate for this patch?
+> 
+> The body never queries the peer. It only reads the local
+> "advertised-pause-frame-use", which phy_ethtool_ksettings_get() copies from
+> the software phydev->advertising bitmap.
+> 
+> wait_for_aneg(cfg) also returns success if the link hasn't dropped within
+> 2 seconds:
+> 
+>         if not link_drop and time.monotonic() > restart_by:
+>             return wait_for_link(cfg)
+> 
+> Together, these mean a MAC that never restarts autoneg, or a PHY that
+> misprograms its advertisement register, would still pass.
+> 
+> A later commit in this series, "selftests: drv-net: pause: Validate the
+> pause autonegotiation with a partner", adds controllable_lp() and a
+> get_peer_pause_lp_advertising() check to pause_advertising_test(). That
+> closes the gap by the end of the series.
+> 
+> [ ... ]
+> 
+>> +    # It's OK to skip here, we're already validating the EOPNOTSUPP behaviour
+>> +    # the pause_test_support test.
+>> +    ret = set_local_pauseparams(cfg, rx, tx, True)
+>> +    if ret == errno.EOPNOTSUPP:
+>> +        raise KsftSkipEx(f"RX {rx} TX {tx} not supported")
+>> +
+>> +    # Wait for link parameters to re-negotiate and link to come back up. It must
+>> +    # come back up, otherwise that means changing pauseparams can bring the
+>> +    # link down.
+>> +    ret = wait_for_aneg(cfg)
+> 
+> [Severity: Medium]
+> What happens when set_local_pauseparams() fails with something other than
+> EOPNOTSUPP?
+> 
+> The docstrings of set_local_pauseparams() and get_local_pauseparams() say
+> "Raise an error if the return is not 0 or EOPNOTSUPP". Neither function
+> raises. Both just return the result of ethtool_ret(), which uses
+> cmd(..., fail=False).
+> 
+> Here, an EINVAL, an EBUSY, or ethtool's raw exit code 1 is silently dropped,
+> and ret is overwritten by wait_for_aneg(). The advertising checks then run
+> against whatever state was there before, because pause_setup() does not
+> put the pause params into a known state.
+
+Ok will address
+
+> 
+> require_pause_supported_allof() has already confirmed that the modes are
+> supported. So the result is either a false pass, or a failure with a
+> "must advertise" message that blames the PHY. For example,
+> mlx5e_ethtool_set_pauseparam() returns -EINVAL whenever pauseparam->autoneg
+> is set.
+> 
+> [ ... ]
+> 
+>> +def main():
+>> +    with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
+>> +        cfg.ethnl = EthtoolFamily()
+> 
+> [Severity: Low]
+> This isn't a bug, but cfg.ethnl doesn't seem to be used anywhere in
+> pause.py, since everything goes through the ethtool CLI. Can this
+> assignment and the EthtoolFamily import be dropped? As it stands, if the
+> ethtool genl family can't be resolved, the whole test aborts even though it
+> doesn't need that family.
+
+Ok
+
+Maxime
