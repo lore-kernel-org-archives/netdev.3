@@ -1,233 +1,189 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f99.google.com (mail-wm1-f99.google.com [209.85.128.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E537D544894
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18C04DE700
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791922682; cv=none; b=NQqgko855nMFgviAA8ylfcacSjznUGjm6UwQkUkLLpg4T30RxSNxoKHZ7zL65gRLFDDf/yvjM3Pm15vMbl99x73qDcEgOgUO3cBoDd4J/eYyMJuf9kTJ6Vgg4iK2ClB0Ub8TEG0x9Jc08ZVGea5RyuPGF9mHD2YnlcnMOhHZoy8=
+	t=1791923217; cv=none; b=upG7LGDjetAqoUwdlagWMPzz98SIxmm3+7BhVujYN2qKquMX8e/JvKhKPeHic52MgnYmkmIITJ5FxRXIcO55gCIqmheL5kOyrHnzEZMcnOl23V7j813vSlYpbOQ8GCyH3yaU8XabrC8BaDIa7Zp3IFFLyM/qOPIeD6LtLBmbaH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791922682; c=relaxed/simple;
-	bh=0zxX8nxTy+LtbVbky6fezopQAaCJzSA1iX50vK2mbQ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cIyhOuayBCwbiAvVWGXmtrP9ip+EnRy1Y4Bei1Voig1KqzokDZR3Y4gcAl9LsRqSoxrVq8f9Z37nbP6yxsNGxK//sKMM0xAYBmDBz6Gl5LAKGEQnnPZCy9xUcpJgmiOlFRbFAQml6d0nuneLHanEsdtOor9whkFccgin2dsCzQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=b2mIQNR3; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvpn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
+	s=arc-20240116; t=1791923217; c=relaxed/simple;
+	bh=V5uNWa0sZ09E+nF9ri+MYvrcP2KcScAZahLPgG6Ey4E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MoKvfJ46WNML5kSywknq6VKDz6TCEtGrCfEPukVccyaiJX2EBB8fTw6mznWM5upL3pfHHFerk3YCvXNkVVyB5cpmDbK0kdHdvMQb2wt8l72I72bJDUyhcg69fEkPQpf5KqDoFphxJ+MVhnK0V++7/OkuSXvRpzoISsoMQV//ZtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=PZwUPQKB; arc=none smtp.client-ip=209.85.128.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="b2mIQNR3"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a1880e1bf1so2741025e9.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:17:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="PZwUPQKB"
+Received: by mail-wm1-f99.google.com with SMTP id 5b1f17b1804b1-4a16aaf2067so3658605e9.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:26:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1791922678; x=1792527478; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:from:content-language:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=NXYLE3w9G/fWrKKrl+Rv+H1HKBurhTT1kSe5t3amnKA=;
-        b=b2mIQNR3S07Uy1dKvLXm+QeFVul9bWG/GvnnEgNYlxF0EFTim7ilAnetzIPIEwXEU4
-         SFTRxfItJiVvJgT0bQY6zj6RiXHXHTLkgO8KHQUestRhjJS0o3+I2fYVzKDKDPGkxZRb
-         D3/1Od4P2ga2gCXahKyOmAYMuSf6cEQ81sciArbuReDmayPnbGbKhoMCwUornMuB1q3Q
-         jzogZp8/Wb4L6X67KUYn8jXhJE1C7VJxLeIp1F+DzLAWaXHQ13iPja8PXkOjxRXXjCHP
-         7QJ8oigo8CpRgavIiin5LDPChWq22bMpmuzXHeeF8xCcKvF1qAo/tRg0wI16uzRzNQkY
-         f9qg==
+        d=purestorage.com; s=google2022; t=1791923212; x=1792528012; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=oIMuUjeZJwIQtyzOfZxTGCOya3S9aZceRW3NszHc4qQ=;
+        b=PZwUPQKB393v/iGIUj+d5HYnKHlXFI6DebwAZSRtX8UmJrvRyvwlG0h0tJ7OontGRQ
+         ODUQxQUpkXW0J2YaFUJ57+6a9jiAubCRlepwECtTnn+HdXz1K3MZqqoBRMNypeU+XZmW
+         1yi00F/CjEpBmI6NSWZXc/LW/CgJUqJVk5Niisas0Yvfd/HUGiYC/fdzeOWFnUjNQeGV
+         KHgURVondpf83KGgRUwZt3WKtazlX7dWmZtZx3SQm8z8zFzVWVnfBpXnmnz7lHrt6RVC
+         IMUNePFBafcANQ288PNbFA04XARLFV1VUErFC8ktY0fqB3DQss26nbVcUUR2mD13XsUU
+         wKUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791922678; x=1792527478;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :autocrypt:from:content-language:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=NXYLE3w9G/fWrKKrl+Rv+H1HKBurhTT1kSe5t3amnKA=;
-        b=sxqQZzYE5w3jVutaWj8MMOHs+iIaePimmWAKo/iqPB+HHXJXAiqYLu4tzR4ZnWAlih
-         D1wsyHJcqxQvDJvFS7PqUPzAyE7gjhEAzpOWFptWGoYT3hTOo5r+KmnAm+Q+EJQLwdk+
-         kmswOwbZzwsX6iZsDUWBpPhXl7vZmcAYRT39p5DMpmubd4yzVI+oRjP0QxsXVBX8NtWd
-         IMCK7TrFE+R1ur496GHNaCc2z/1Ke9ZySTNBJZRPMWUg4MRMSgn7Kx2jc5P4S19CJq1G
-         8qhh+6FA2wKSI/fkOmMKFQlzgL2JY8vui1eIwxnPLSVvBx2aIzqtMAVJM+L2twCrVqJu
-         gN9A==
-X-Gm-Message-State: AFq9FYLH9a+uMMPjQxDpzzR2ViyeIZ6KqN0H8Rg+3YOzdatO9Obyy2K/
-	Gm6lOQCGjSweUYSj2im3x0BtgcNpDNiCDLDLcaw1SrTIf8zE0mIdC6fhFQ9ZX8bULQ7LBZqRZQ3
-	ii8ApA3qFoNjmrvZBrwLxT+E/xnjxlPLlMik9SrPH5vA/WS01rqI=
-X-Gm-Gg: AYBFou3A7OMEf8tAfRh4LceBIAxJHpaQPkxbqCv22Bk35VNdSr4foqVjjmSlno/Eefd
-	1DvOx4fsZorFOeWx11S2NOz8YP1wZGW2NbO50R3ZBAQ3shscY18OxD9bv10KwKHPr4TB464Boh3
-	+X/TWfXZSlsFTeCCceHS1zQUQQRKByBwC+i6D6xvh+FMSRCEHHHwBwOXe7iOJp24sz2ofFFBC7I
-	PatZ5zjrYtuuA17ZitgSPG3q8D6zMD/WIRHNBXM/QoOCZmoBe7VqynHdvcddGgP64qUFYQhQlBo
-	1YNACbMoEa31JoowdTeWm+Xd6e0hkkhCqgi8gmsbLVeX6ThCEX93TKVBnqkh9OrUPiiVQ5DT0nc
-	idKcEZSFjJsiFo5SDMcFEgdXreEAaLW3Ex1Fi47QmGtoKFM64S1l/9uuE5qPqc36dCIfwCIEocJ
-	8L/hBJLUh6qvEOaPvJZetuYi1DRlGzFCg+MhowE2S+tKgt3iZem8I/3qmz4Ywe1mcD5vX1/6ZOx
-	uZE8FT2BTTAoWP+Xqjz2HYulT5SWTZD7RiR
-X-Received: by 2002:a05:600c:3f0f:b0:49c:ffab:551f with SMTP id 5b1f17b1804b1-4a18e4cd231mr274976125e9.22.1791922677775;
-        Tue, 13 Oct 2026 13:17:57 -0700 (PDT)
-Received: from ?IPV6:2001:67c:2fbc:1:b7f3:a9ab:4b66:f7c6? ([2001:67c:2fbc:1:b7f3:a9ab:4b66:f7c6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0bc51c1sm7101213f8f.46.2026.10.13.13.17.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Oct 2026 13:17:57 -0700 (PDT)
-Message-ID: <ab62a47a-0690-4cea-bf64-62bdbd1bd21f@openvpn.net>
-Date: Tue, 13 Oct 2026 22:17:55 +0200
+        d=1e100.net; s=20260707; t=1791923212; x=1792528012;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oIMuUjeZJwIQtyzOfZxTGCOya3S9aZceRW3NszHc4qQ=;
+        b=ymsiMu6ZHkCp9S3J3ZKT2BvicvbQTkCACPb7LqcvPUdvvKHM4TgYRfmWiYMPclgNkf
+         HWQnJgcjtI1asFNbdPuwvcNQXYS4c8Y9KwG9Y+2vJR4R2zQnOrjM8zDkGS/3TOGsBigt
+         8kBXBhW+OVb4tIrLsif+DKi0crfu7FlaBF16nPfTSsc9UWm9IM0dhmKy/arRySku0/n0
+         hm2j1PAQ3KCt7AdYwfaWAffhJJnIAInjais6slKQWTikkYiupmnlMklJzQAXxlugHj2n
+         OmYiSNwAoA0BOV9l7w7ZP9086Cu7K58GfAtqN4zjWIAv8wvTAtTyWXklHskrSzcajQ/Q
+         0msg==
+X-Gm-Message-State: AFq9FYLTJsxiWaNzvMQxnLoTOO2F+Q++VyAd8zV1DKvEpqet4lOJ+Av8
+	7LtOFoD3ijiMCYlrsaGpzwQsi7Lk9Zv3VN33HQ/YxPjc/TxraIgr97tjAY92P1T/E9kqe/gZ7WU
+	YOfUlio1fzOU3MvozON8koy1SxxOeHfx6tBqU
+X-Gm-Gg: AYBFou2BgP++34AwH/2f6RJcGw/i/bGfea1JhLPbTi3e+M3HJ/ORcXsaxZv18KEOc5n
+	ZrO0dyNQM2dgi0G3mVLv4UMR3+uq8pyKUszjDti2WkMg/zr34/dheeVVSgcR6AJ0OAT06aAOS//
+	h33VKa2FNfqOzvN5CAVFIBhcsxXAoViEzUh/Tf+1otPvvihzQgLe4STZFNsDHSKAEV86ny7ivKb
+	jLaf4H9wIbv16m+xkvFpP2gxig7XrSKxKDhl3J8S67rgqysusoxXk4T6k7BeqDc4rh+SShsUqby
+	b3Pxca/pNS4Ll7sA+6yzd7P0mcO8d+6B1KLzpLyVfSKpKx2JZKrwjdAURQ3Mvg+B+5BnzXlxh7l
+	IeedENhajOW5RAGiP7GBciWy44FjokP7tqiY=
+X-Received: by 2002:a05:600c:a01:b0:49f:ce72:e931 with SMTP id 5b1f17b1804b1-4a18e4fe3e1mr288287835e9.35.1791923212133;
+        Tue, 13 Oct 2026 13:26:52 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([208.88.159.129])
+        by smtp-relay.gmail.com with ESMTPS id 5b1f17b1804b1-4a18be904b1sm42263425e9.16.2026.10.13.13.26.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 13:26:52 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-rjethwani.dev.purestorage.com (dev-rjethwani.dev.purestorage.com [10.112.16.167])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id AB16B4017A;
+	Tue, 13 Oct 2026 14:26:50 -0600 (MDT)
+Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
+	id 9FCECDC0D0D; Tue, 13 Oct 2026 14:26:50 -0600 (MDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org,
+	Rishikesh Jethwani <rjethwani@purestorage.com>
+Subject: [PATCH] tls: keep TX and RX hardware offload on the same device
+Date: Tue, 13 Oct 2026 14:26:47 -0600
+Message-ID: <20261013202647.2206263-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 4/6] selftests: ovpn: enable TCP_NODELAY on TCP
- sockets
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, sd@queasysnail.net, ralf@mandelbit.com,
- kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com
-References: <20261012133809.2477063-5-antonio@openvpn.net>
- <179190238850.434549.6180086091448145830@kernel.org>
-Content-Language: en-US
-From: Antonio Quartulli <antonio@openvpn.net>
-Autocrypt: addr=antonio@openvpn.net; keydata=
- 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
- ifS0+hzvnPVD9wXa9kdjO+0H
-Organization: OpenVPN Inc.
-In-Reply-To: <179190238850.434549.6180086091448145830@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi,
+After TX is offloaded on device A, a route change, or a change in the
+usable-slave set of an 802.3ad or balance-xor (layer3+4) bond, can make
+RX setup program device B. tls_device_attach() sees the existing TLS
+destructor and keeps ctx->netdev pointing at A. The RX driver state on B
+is then untracked: tls_dev_resync() and tls_dev_del() are invoked on A
+for a context it never created, and neither socket close nor
+NETDEV_DOWN on B calls tls_dev_del() for B, so the driver context leaks.
+The reverse setup order has the same problem.
 
-On 13/10/2026 16:39, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] After this patch, no TCP selftest checks the TX peer-ID that
->    goes out on the wire.
-> 
-> --
-> 
-> selftests: ovpn: enable TCP_NODELAY on TCP sockets
-> 
-> This commit makes ovpn-cli set TCP_NODELAY on its TCP sockets by default.
-> Setting OVPN_TCP_NODELAY=0 turns it off, and the new test-tcp-nagle.sh
-> uses that to keep running the TCP suite with Nagle enabled. It also limits
-> the tcpdump-based peer ID check in ovpn_run_basic_traffic() to UDP.
-> 
->> diff --git a/tools/testing/selftests/net/ovpn/test.sh b/tools/testing/selftests/net/ovpn/test.sh
->> index 392109d5e14e2..e2e6ffdd29bb0 100755
->> --- a/tools/testing/selftests/net/ovpn/test.sh
->> +++ b/tools/testing/selftests/net/ovpn/test.sh
->> @@ -137,35 +137,33 @@ ovpn_run_basic_traffic() {
->>   	local tcpdump_timeout="1.5s"
->>   
->>   	for p in $(seq 1 ${OVPN_NUM_PEERS}); do
-> 
-> [ ... ]
-> 
->>   		if [ "${OVPN_PROTO}" == "UDP" ]; then
-> 
-> [ ... ]
-> 
->> @@ -173,8 +171,10 @@ ovpn_run_basic_traffic() {
->>   			ip netns exec ovpn_peer0 \
->>   			ping -qfc 100 -s 3000 -w 3 5.5.5.$((p + 1))
->>   
->> -		wait "${tcpdump_pid1}" || return 1
->> -		wait "${tcpdump_pid2}" || return 1
->> +		if [ "${OVPN_PROTO}" == "UDP" ]; then
->> +			wait "${tcpdump_pid1}" || return 1
->> +			wait "${tcpdump_pid2}" || return 1
->> +		fi
->>   	done
->>   }
-> 
-> [Severity: Medium]
-> This patch removes the TCP branch of ovpn_build_capture_filter() and makes
-> these waits UDP-only. After that, does any TCP selftest still check the
-> peer-id that goes out on the wire?
-> 
-> The capture was added by commit 367f4b163a8c ("selftests: ovpn: check
-> asymmetric peer-id"). Its purpose was to check the peer-id in the data
-> packet headers for every connection, TCP included.
-> 
-> On the kernel side, the TCP receive path never reads the peer-id from the
-> packet. It takes the peer that is bound to the socket:
-> 
-> drivers/net/ovpn/tcp.c:ovpn_tcp_rcv() {
->      ...
-> 	ovpn_recv(peer, skb);
->      ...
-> }
-> 
-> So if a TCP peer had the wrong tx_id here, traffic would still flow:
-> 
-> drivers/net/ovpn/crypto_aead.c:ovpn_aead_encrypt() {
->      ...
-> 	op = ovpn_opcode_compose(OVPN_DATA_V2, ks->key_id, peer->tx_id);
->      ...
-> }
-> 
-> The JSON expectations in the selftest directory don't compare tx-id
-> either. With this change, test-tcp.sh, test-symmetric-id-tcp.sh and the new
-> test-tcp-nagle.sh would all pass with an incorrect TCP tx_id.
-> 
-> The later patch in the series ("selftests: ovpn: wait for the TCP server
-> key setup before traffic") does not bring the TCP check back.
-> 
-> Could these TCP variants keep some form of peer-id check that does not
-> depend on TCP segment boundaries?
-> 
+Check the shared device binding under device_offload_lock before each
+tls_dev_add(). Permit the first attachment and a second direction on the
+same device. Reject a different device, including when the old binding
+was cleared by NETDEV_DOWN: the TLS destructor remains installed and
+tls_device_attach() cannot establish a new binding. Setup then falls
+back to software for the requested direction.
 
-Testing tx-peer-id with TCP_NODELAY enabled is extremely challenging 
-because we'd need to (almost) re-implement an OpenVPN TCP stream parser 
-in the selftest.
+The RX check precedes allocation and software setup. TX uses its existing
+resource unwind path without calling the driver. Document the shared
+binding and clarify that fallback is per direction.
 
-Since the rest of the selftests already ensures that packets are well 
-formed and that the ovpn TCP state machine works as expected, we decided 
-to simply give up on this specific on-wire test.
-We don't think to be losing coverage by doing so.
+Fixes: 4799ac81e52a ("tls: Add rx inline crypto offload")
+Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+---
+ Documentation/networking/tls-offload.rst | 16 ++++++++++------
+ net/tls/tls_device.c                     | 21 +++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 6 deletions(-)
 
-Hence this decision was deliberate.
-
-Regards,
-
-
-
+diff --git a/Documentation/networking/tls-offload.rst b/Documentation/networking/tls-offload.rst
+index e5802bcd4d22..cf0e599c06a1 100644
+--- a/Documentation/networking/tls-offload.rst
++++ b/Documentation/networking/tls-offload.rst
+@@ -71,12 +71,16 @@ During driver initialization device sets the ``NETIF_F_HW_TLS_RX`` and
+ pointer in the :c:member:`tlsdev_ops` member of the
+ :c:type:`struct net_device <net_device>`.
+ 
+-When TLS cryptographic connection state is installed on a ``ktls`` socket
+-(note that it is done twice, once for RX and once for TX direction,
+-and the two are completely independent), the kernel checks if the underlying
+-network device is offload-capable and attempts the offload. In case offload
+-fails the connection is handled entirely in software using the same mechanism
+-as if the offload was never tried.
++TLS cryptographic connection state is installed separately for RX and TX
++on a ``ktls`` socket. For each direction, the kernel checks if the underlying
++network device is offload-capable and attempts the offload. If offload fails,
++that direction is handled in software as if offload had never been tried.
++
++Both hardware directions share one device binding. Once one direction is
++offloaded, the other direction must use the same device. If a route change
++selects a different device, or ``NETDEV_DOWN`` has cleared the binding,
++hardware offload of the other direction is declined and it uses software
++instead.
+ 
+ Offload request is performed via the :c:member:`tls_dev_add` callback of
+ :c:type:`struct tlsdev_ops <tlsdev_ops>`:
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index f11d0528fc43..d954e17a327b 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -1022,6 +1022,17 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx)
+ 	return tls_device_reencrypt(sk, tls_ctx);
+ }
+ 
++/* Both directions share ctx->netdev. A second direction must use that
++ * device; after NETDEV_DOWN clears it, no new direction can be offloaded.
++ */
++static bool tls_device_can_attach(struct tls_context *ctx, struct sock *sk,
++				  struct net_device *netdev)
++{
++	return sk->sk_destruct != tls_device_sk_destruct ||
++	       rcu_dereference_protected(ctx->netdev,
++					 lockdep_is_held(&device_offload_lock)) == netdev;
++}
++
+ static void tls_device_attach(struct tls_context *ctx, struct sock *sk,
+ 			      struct net_device *netdev)
+ {
+@@ -1157,6 +1168,11 @@ int tls_set_device_offload(struct sock *sk)
+ 		goto release_lock;
+ 	}
+ 
++	if (!tls_device_can_attach(ctx, sk, netdev)) {
++		rc = -EOPNOTSUPP;
++		goto release_lock;
++	}
++
+ 	ctx->priv_ctx_tx = offload_ctx;
+ 	rc = netdev->tlsdev_ops->tls_dev_add(netdev, sk, TLS_OFFLOAD_CTX_DIR_TX,
+ 					     &ctx->crypto_send.info,
+@@ -1227,6 +1243,11 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx)
+ 		goto release_lock;
+ 	}
+ 
++	if (!tls_device_can_attach(ctx, sk, netdev)) {
++		rc = -EOPNOTSUPP;
++		goto release_lock;
++	}
++
+ 	context = kzalloc_obj(*context);
+ 	if (!context) {
+ 		rc = -ENOMEM;
 -- 
-Antonio Quartulli
-OpenVPN Inc.
+2.50.1
 
