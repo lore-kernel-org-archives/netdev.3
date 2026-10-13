@@ -1,365 +1,98 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F67740D590;
-	Tue, 13 Oct 2026 14:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E150C51814B;
+	Tue, 13 Oct 2026 14:26:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791901252; cv=none; b=UlG0JOA62SuG8YgEZPX7qkaucIyzP0Nih05urgyzovIOtqTg+Um3uPAw+cHT+oCbaI5yOl/LGMIyB/ptX53W55f37AW3Fv6fp+BM85cWsMrRN7zl5532TAY6GyIHmQqngFfQNWDQCkdHiCRIchcVLCHFt7zvOvzKjSCd10xLl6M=
+	t=1791901614; cv=none; b=t/BHeGtZ3aDOn2t87hyJ1D8FjIuQMEfuesZT3qK89MRC8+vpC8dSmocowgmMuvn13zZEe1wHNrmbtCKpDzqhA6Qudyo8HhRtQo9zTVDf+77isb5XScKiSX06wTiPI2g+f9B4TtUEpS6rxw1OFXt65EQz7OP4xm4JEFV77b5Z8hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791901252; c=relaxed/simple;
-	bh=0Xo7iAJkR4cxR2k6xN0TJCy4AUuvhXFD327FLW5a80g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nm44SHXWHpBlmlytbcj7sMMbEnw1m3unaez56wQ9RYlJgz8V0OJZFNgIKRgNbu/2yITBYVdV5T2X8KCJCwSiFbTBKd9mE49kFBk0YnBGcY1FXr7j0jeVu5+piDOZ9BaTtfapbHYv5SNwhTY9lwGfIQFyBLiV+vLn+MR524GXXA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=nnSA0PTP; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1791901614; c=relaxed/simple;
+	bh=XfZVuH37TjJbVLTM/jEvSNl35LQfRki5rmhJIud0Ta0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=W22b3GDrs2wJr2fAAyV3PK9zi0blscSclNyffSYbSfJicAuhCWkTWp52+uEc6mjMJ05de6VpVybUezhfFuHxex3Tw/hzP6OhSSLFYST9J60P62Doi30CStIMEr4MXO4An9rJ5l+AlCQhxXuSl9Hp/CCveWNIV0svv5iJYSDEeXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M84dz03/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="nnSA0PTP"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D3A77A158A;
-	Tue, 13 Oct 2026 16:20:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1791901248; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=VGy+kSZCkdfeUQwCmXGEg0Tb+HruE0OitRgAm4sVpjs=;
-	b=nnSA0PTPxXYgq+j5ugaDmSYce88JSH//FAqS6QaT55i2DDR8ag36QCKaoddAzJTA3o0Pmo
-	27ML5T/M6UkQPyCjZkkTpG0L5YuJFlGwaEM3Xmr0UyYQyEkWIi18p1+VOGrCAo09H+v96P
-	CpXy8h3nHMzRQP0BAG/GektsnLgL30MfdiY80Sg4Y0err4UvB/C3PKsSxNG1A2Y+1zkFAe
-	6EpuHe+bPkWxqEsTBVIfHpvWeiR7mcJquDhxTRsKmdAxCdIXdrS7PLJRHv8/KWubd997Pu
-	ZUGAzMFuQfqojdpnzVhK4wAsM0YAdqB7h0p4yWLTcc1w32FFvCd5t2e68Rwv7A==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-Date: Tue, 13 Oct 2026 16:20:37 +0200
-Subject: [PATCH net-next v5 8/8] net: bcmgenet: reassemble jumbo frames
- from status block fragments
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M84dz03/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CAC1F000FF;
+	Tue, 13 Oct 2026 14:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791901613;
+	bh=Vu9GFTSwpA+ThnhYFOK02kJtnNFAzU/CFrFuq53MJ60=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References;
+	b=M84dz03/ue983O1uOEriK2mgDcd8I0/vK6Wc4QCEqLcvOhVeUdQBHbaY2nuLf+iK/
+	 XxomRz5py81Ziy9sUEwpXdILr5KvWnvev6t8n7wyw6HkYDK5aoD9KRd8XOOKyvX3rj
+	 GQFYmV+CPCyD+120q7nulE5M9oTcSmjPo88uleWGa83Add7aiqXDFuoeLEX3yUaA9S
+	 V+djX8SDohHXmxu8z+AnJ5ZG5HwMWSwG5XpFun/GHc15TVd3t9wsuZzZ8nS7MEADwm
+	 HOxyxVw/pZ2GfT7d272Ud9GtVDy+bRNWC3M6hvF9U06Dh/vTYKKi+J8Vj14Yq62tZS
+	 EtCRK0fPHxjPg==
+Date: Tue, 13 Oct 2026 16:25:46 +0200 (CEST)
+From: Imre Kaloz <kaloz@kernel.org>
+To: Niklas Cassel <cassel@kernel.org>
+cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+    linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    Lee Jones <lee@kernel.org>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Jiri Slaby <jirislaby@kernel.org>, mfd@lists.linux.dev, 
+    linux-serial@vger.kernel.org, 
+    Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+    linux-rtc@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+    Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+    Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org, 
+    Pavel Machek <pavel@kernel.org>, linux-leds@vger.kernel.org, 
+    Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, 
+    Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v2 00/53] MIPS: SGI-IP27: add support for the IP35 (Bedrock
+ hub) machines
+In-Reply-To: <as4zsLZvV411ooEv@ryzen>
+Message-ID: <24d821f4-63ff-aa35-a36f-a72046fe59a7@kernel.org>
+References: <cover.1791890466.git.kaloz@kernel.org> <as4zsLZvV411ooEv@ryzen>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261013-nb-genet-mtu-nn-v2-v5-8-076b6fc240be@tipi-net.de>
-References: <20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de>
-In-Reply-To: <20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be@tipi-net.de>
-To: Doug Berger <opendmb@gmail.com>, 
- Florian Fainelli <florian.fainelli@broadcom.com>, 
- Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- Justin Chen <justin.chen@broadcom.com>, 
- Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>, 
- Nicolai Buchwitz <nb@tipi-net.de>, Florian Fainelli <f.fainelli@gmail.com>
-X-Mailer: b4 0.16.0
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/mixed; boundary="8323329-1641235930-1791901553=:27186"
 
-The hardware does not truncate a frame longer than the packet ready
-threshold. It splits the frame across descriptors and writes a status block
-at the start of each one. The first fragment then arrives with SOP and no
-EOP and is dropped as fragmented. This caps the MTU.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Strip the status blocks and reassemble the fragments. Only the last block
-holds the checksum of the whole frame. Broadcom confirmed from the RTL that
-every GENET revision splits long frames this way, not just the v5 this was
-tested on.
+--8323329-1641235930-1791901553=:27186
+Content-Type: text/plain; charset=ISO-8859-7; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-On transmit the MAC only checksums a frame it holds in full, so anything
-longer than the threshold falls back to software. At jumbo sizes the larger
-frame saves more per packet overhead than the checksum costs.
+Hello Niklas,
 
-UMAC_MAX_FRAME_LEN is 14 bit and counts the FCS. That puts the maximum MTU
-at 16347.
+On Tue, 13 Oct 2026, Niklas Cassel wrote:
 
-The TX descriptor length field is wider than DMA_BUFLENGTH_MASK suggests,
-that mask only extracts the length from the RX status word. A frame of
-16361 bytes, the largest that MTU allows, came back byte exact 200 times
-over UMAC loopback.
+> Hello Imre,
+>
+> This series is rather large.
+>
+> I would recommend you to submit a minimal patch series
+> to get the basic support for your new board, such that
+> it can boot with a ramdisk and serial console.
+>
+> Then in the next cycle, send separate series for ata,
+> net, leds, mfc, rtc, etc.
 
-Suggested-by: Justin Chen <justin.chen@broadcom.com>
-Tested-by: Pierre-Marin Leclercq <pierremarinleclercq88@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- drivers/net/ethernet/broadcom/genet/bcmgenet.c | 139 ++++++++++++++++++++-----
- drivers/net/ethernet/broadcom/genet/bcmgenet.h |   2 +
- 2 files changed, 116 insertions(+), 25 deletions(-)
+Hi Niklas,
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 9f28006957d4..323839adebba 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -84,11 +84,8 @@
- 				      ENET_THLD_MAX * ENET_THLD_UNIT, \
- 				      ENET_THLD_PAGE_LEN)
- 
--/* Largest MTU that fits one descriptor, with room for a VLAN tag so a VLAN
-- * interface can use the parent MTU.
-- */
--#define ENET_MAX_MTU		(ENET_THLD_MAX_LEN - GENET_RBUF_ALIGN - \
--				 ETH_HLEN - VLAN_HLEN)
-+/* UMAC_MAX_FRAME_LEN is 14 bits wide and counts the FCS */
-+#define ENET_MAX_JUMBO_MTU	(GENMASK(13, 0) - ENET_FRAME_OVERHEAD)
- 
- /* Tx/Rx DMA register offset, skip 256 descriptors */
- #define WORDS_PER_BD(p)		(p->hw_params->words_per_bd)
-@@ -2200,8 +2197,8 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
- 		}
- 	}
- 
--	/* The MAC only inserts a checksum into a frame it holds in full, and
--	 * silently drops a longer one, so fall back to software.
-+	/* The MAC holds a frame to insert its checksum, but only as much as
-+	 * its FIFO takes. Longer frames are dropped silently.
- 	 */
- 	if (unlikely(skb->len > priv->tx_thld_len) &&
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
-@@ -2351,6 +2348,54 @@ static int bcmgenet_rx_refill(struct bcmgenet_rx_ring *ring,
- 	return 0;
- }
- 
-+/* Drop the frame being collected. Its remaining descriptors carry no SOP,
-+ * so they are dropped quietly until the next one does.
-+ */
-+static void bcmgenet_discard_frags(struct bcmgenet_rx_ring *ring)
-+{
-+	ring->frag_drop = true;
-+
-+	if (!ring->frag_head)
-+		return;
-+
-+	dev_kfree_skb_any(ring->frag_head);
-+	ring->frag_head = NULL;
-+}
-+
-+/* A frame longer than the threshold arrives in several descriptors, each with
-+ * its own status block. Only the first one carries a header, so hand the page
-+ * of every later one to the frame already being collected. Returns the frame
-+ * once EOP is in, NULL while more descriptors are expected or once the frame
-+ * had to be dropped.
-+ */
-+static struct sk_buff *bcmgenet_add_frag(struct bcmgenet_rx_ring *ring,
-+					 struct page *page,
-+					 unsigned int offset,
-+					 unsigned int size,
-+					 unsigned int dma_flag,
-+					 unsigned int len)
-+{
-+	struct sk_buff *head = ring->frag_head;
-+
-+	if (unlikely(skb_shinfo(head)->nr_frags >= MAX_SKB_FRAGS)) {
-+		BCMGENET_STATS64_INC((&ring->stats64), fragmented_errors);
-+		bcmgenet_discard_frags(ring);
-+		page_pool_put_full_page(ring->page_pool, page, true);
-+		return NULL;
-+	}
-+
-+	skb_add_rx_frag(head, skb_shinfo(head)->nr_frags, page,
-+			offset + sizeof(struct status_64),
-+			len - sizeof(struct status_64), size);
-+
-+	if (!(dma_flag & DMA_EOP))
-+		return NULL;
-+
-+	ring->frag_head = NULL;
-+
-+	return head;
-+}
-+
- /* bcmgenet_desc_rx - descriptor based rx process.
-  * this could be called from bottom half, or from NAPI polling method.
-  */
-@@ -2368,6 +2413,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	unsigned int rxpktprocessed = 0, rxpkttoprocess;
- 	unsigned int bytes_processed = 0;
- 	unsigned int p_index, mask;
-+	unsigned int rxframes = 0;
- 	unsigned int discards;
- 
- 	/* Clear status before servicing to reduce spurious interrupts */
-@@ -2415,6 +2461,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 
- 		if (bcmgenet_rx_refill(ring, cb)) {
- 			BCMGENET_STATS64_INC(stats, dropped);
-+			bcmgenet_discard_frags(ring);
- 			goto next;
- 		}
- 
-@@ -2439,24 +2486,42 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 			  __func__, p_index, ring->c_index,
- 			  ring->read_ptr, dma_length_status);
- 
--		/* Only the first descriptor carries the alignment pad */
--		min_len = dma_flag & DMA_SOP ? GENET_RSB_PAD
--					     : sizeof(struct status_64);
-+		/* Only the first descriptor carries the alignment pad. A head
-+		 * with more to come must hold the Ethernet header, and a
-+		 * continuation must hold payload.
-+		 */
-+		if (dma_flag & DMA_SOP) {
-+			min_len = GENET_RSB_PAD;
-+			if (!(dma_flag & DMA_EOP))
-+				min_len += ETH_HLEN;
-+		} else {
-+			min_len = sizeof(struct status_64) + 1;
-+		}
- 
- 		/* Reject lengths that would underflow the SKB build path. */
- 		if (unlikely(len > priv->rx_buf_len || len < min_len)) {
- 			netif_err(priv, rx_status, dev,
- 				  "invalid packet length %d\n", len);
- 			BCMGENET_STATS64_INC(stats, length_errors);
-+			bcmgenet_discard_frags(ring);
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
- 		}
- 
--		if (unlikely(!(dma_flag & DMA_EOP) || !(dma_flag & DMA_SOP))) {
--			netif_err(priv, rx_status, dev,
--				  "dropping fragmented packet!\n");
--			BCMGENET_STATS64_INC(stats, fragmented_errors);
-+		/* A new SOP resynchronizes after an incomplete frame */
-+		if (dma_flag & DMA_SOP) {
-+			if (ring->frag_head) {
-+				BCMGENET_STATS64_INC(stats, fragmented_errors);
-+				bcmgenet_discard_frags(ring);
-+			}
-+			ring->frag_drop = false;
-+		} else if (unlikely(!ring->frag_head)) {
-+			/* Rest of a dropped frame, or no SOP seen yet */
-+			if (!ring->frag_drop) {
-+				BCMGENET_STATS64_INC(stats, fragmented_errors);
-+				ring->frag_drop = true;
-+			}
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
-@@ -2486,17 +2551,27 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 						DMA_RX_RXER)) == DMA_RX_RXER)
- 				u64_stats_inc(&stats->errors);
- 			u64_stats_update_end(&stats->syncp);
-+			bcmgenet_discard_frags(ring);
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
- 		} /* error packet */
- 
-+		if (!(dma_flag & DMA_SOP)) {
-+			skb = bcmgenet_add_frag(ring, rx_page, rx_offset,
-+						rx_size, dma_flag, len);
-+			if (!skb)
-+				goto next;
-+			goto deliver;
-+		}
-+
- 		/* Build SKB from the page - data starts at hard_start,
- 		 * frame begins after RSB(64) + pad(2) = 66 bytes.
- 		 */
- 		skb = napi_build_skb(hard_start, rx_size);
- 		if (unlikely(!skb)) {
- 			BCMGENET_STATS64_INC(stats, dropped);
-+			bcmgenet_discard_frags(ring);
- 			page_pool_put_full_page(ring->page_pool, rx_page,
- 						true);
- 			goto next;
-@@ -2508,17 +2583,26 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 		skb_reserve(skb, GENET_RSB_PAD);
- 		__skb_put(skb, len - GENET_RSB_PAD);
- 
--		if (priv->crc_fwd_en) {
--			skb_trim(skb, skb->len - ETH_FCS_LEN);
-+		if (unlikely(!(dma_flag & DMA_EOP))) {
-+			ring->frag_head = skb;
-+			goto next;
-+		}
-+
-+deliver:
-+		/* The FCS trim may release the page with the last status block */
-+		rx_csum = (__force __be16)(status->rx_csum & 0xffff);
-+
-+		if (priv->crc_fwd_en &&
-+		    unlikely(pskb_trim(skb, skb->len - ETH_FCS_LEN))) {
-+			BCMGENET_STATS64_INC(stats, dropped);
-+			dev_kfree_skb_any(skb);
-+			goto next;
- 		}
- 
- 		/* Set up checksum offload */
--		if (dev->features & NETIF_F_RXCSUM) {
--			rx_csum = (__force __be16)(status->rx_csum & 0xffff);
--			if (rx_csum) {
--				skb->csum = (__force __wsum)ntohs(rx_csum);
--				skb->ip_summed = CHECKSUM_COMPLETE;
--			}
-+		if ((dev->features & NETIF_F_RXCSUM) && rx_csum) {
-+			skb->csum = (__force __wsum)ntohs(rx_csum);
-+			skb->ip_summed = CHECKSUM_COMPLETE;
- 		}
- 
- 		len = skb->len;
-@@ -2526,6 +2610,7 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 
- 		/*Finish setting up the received SKB and send it to the kernel*/
- 		skb->protocol = eth_type_trans(skb, priv->dev);
-+		rxframes++;
- 
- 		u64_stats_update_begin(&stats->syncp);
- 		u64_stats_inc(&stats->packets);
-@@ -2552,7 +2637,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
- 	}
- 
- 	ring->dim.bytes = bytes_processed;
--	ring->dim.packets = rxpktprocessed;
-+	/* A long frame spans several descriptors but is one packet */
-+	ring->dim.packets = rxframes;
- 
- 	return rxpktprocessed;
- }
-@@ -2626,6 +2712,8 @@ static void bcmgenet_free_rx_buffers(struct bcmgenet_priv *priv)
- 			cb = ring->cbs + i;
- 			bcmgenet_free_rx_cb(cb, ring->page_pool);
- 		}
-+		/* a partial frame still holds pages of this pool */
-+		bcmgenet_discard_frags(ring);
- 	}
- }
- 
-@@ -2696,7 +2784,8 @@ static void bcmgenet_link_intr_enable(struct bcmgenet_priv *priv)
- }
- 
- /* Receive threshold in register units. Covers the alignment bytes and the
-- * frame, but not the status block, which the hardware adds on top.
-+ * frame up to the register maximum, but not the status block, which the
-+ * hardware adds on top. A longer frame arrives in several descriptors.
-  */
- static unsigned int bcmgenet_pkt_rdy_thld(unsigned int mtu)
- {
-@@ -4339,7 +4428,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 	/* v1 cannot program the thresholds, so it stays at the default MTU */
- 	priv->rx_buf_len = bcmgenet_rx_buf_len(dev->mtu);
- 	if (!GENET_IS_V1(priv))
--		dev->max_mtu = ENET_MAX_MTU;
-+		dev->max_mtu = ENET_MAX_JUMBO_MTU;
- 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
- 
- 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index c245931ca146..1cb857f4fda8 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -585,6 +585,8 @@ struct bcmgenet_rx_ring {
- 	unsigned int	cb_ptr;		/* Rx ring initial CB ptr */
- 	unsigned int	end_ptr;	/* Rx ring end CB ptr */
- 	unsigned int	old_discards;
-+	struct sk_buff	*frag_head;	/* frame being reassembled */
-+	bool		frag_drop;	/* discarding until the next SOP */
- 	struct bcmgenet_net_dim dim;
- 	u32		rx_max_coalesced_frames;
- 	u32		rx_coalesce_usecs;
+Thanks for having a look. I checked what the minimum is: 31 of the 53 
+patches (1, 6-24, 26-29, 31-36 and 39) boot a Tezro to a ramdisk with a 
+serial console. Two mfd/ioc3 patches have to be part of that, as they 
+provide the console UARTs (31 for IOC4 on the Tezro, 36 for the IOC3 on 
+the Fuel). The rest separates cleanly into follow-ups: the remaining 
+Bridge fixes (2-5), ioc3-eth (25, 38), rtc (30), the IO8 serial IRQs (37), 
+machine identification and the Odyssey widget (40-44), ata (45-47, 49), 
+the defconfig refresh (48) and the LEDs (50-53).
 
--- 
-2.53.0
+I¢ll wait for Thomas to say whether he prefers it split that way for v3.
 
+
+Thanks,
+Imre
+--8323329-1641235930-1791901553=:27186--
