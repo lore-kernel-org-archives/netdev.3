@@ -1,87 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A7747FAEA;
-	Tue, 13 Oct 2026 10:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6267B4DDB48;
+	Tue, 13 Oct 2026 10:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791885607; cv=none; b=Sat88dh+kAga1lxjjgwCt5a8j8GQ2I/srdARVVv9iFaq9Dp/jeL8lwbwzg+qDxGP2SXIIJE/Obs4/lTbR3RP4VA1hkNb6vryAQjDiWkSE7c9CH9t1mq3rN7LeQI349WFO+57PizsV6WvUSnDmb/bkmWiRMVIFGq8zVA80E95YCQ=
+	t=1791885611; cv=none; b=HSdf5/jGWgw9jyRI1geNQ+yV+xWalQLv4jxIJo1ULsavktpB1BVmzjkRKw2rDSyDwca0xdjn+/40aXr468hmzrM3UWjp22tBVCjhWeOKN6DRiCEPANNd6Qq+UwigVHsuMQWj+TQL39/iX1yiylSsDaxnbepnx4v2vZ4lMRD6mko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791885607; c=relaxed/simple;
-	bh=FTZIr2i0l4wxqJrUCquDAqHAGPvauxRfgMp8+C5lgFk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pYdEMmRl4lkh/Ggzd5kKr+Sn9ULSZyrSlvPelXJq+5q6rG00xaXp5F8TvsFNlPCojj8Yz6sFqwAyR7V5gOryMFYSQg8STh9L5Md1ldWlyyO6btDxdj9jppr6NNiP6kwfjpo/jQxLaWUGT0T9ZusUImHyVz1rIYY3ucSfnUAKbdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i15d7lKw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791885611; c=relaxed/simple;
+	bh=jRNeLEc4CkFn+42K5GGoJxjsljglo+VbUJsXlv25BsQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JWKIsLVBVjJ3FLvLyfUNU54BLIbqNJUnUYskjM/oeWIwfQGp8nwYv1KS47iXDHqpb7Xt7BrV6ZExxga1p9pLeakeOSVIuvzPfewkb4yAvMNytJ7Xvk3qWQGCLIlTilFQ1IsjF3FUfXrPF736r/N8C/brQRGvgA40YJMWe3CWeDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=z/Wkm3je; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i15d7lKw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488AC1F00893;
-	Tue, 13 Oct 2026 10:00:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791885606;
-	bh=uxadpyM7ySOMAzLP54+BYp9FbHnqdBACwT1SKz0Wfck=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=i15d7lKww0JPBmMKGWMEcQJL+CUKlUwLKxlru56zNRZTKyZo8iVw0GOvTHZU0ZI5E
-	 YZPFeNXtivnbxH1FY1gusioDBEQp/KoALWYgImpoxRGRBmfN8SzXin7pO1EM71aERd
-	 VyrVDzJ1Rh+I1afS8hTkAE5cgFeUTx+C5kYlPJgfNYkGcGlROTN2cxw7KVAPKlINhB
-	 Qex1rb8X6lvUBpJaqDyrlnMEGAo+cT9LUXzE1emSKotuCwck1JHCI8IU6xtbW96iMy
-	 PNPiwMp7ttzaCggMIM8WwCVmJfThfTlLDiGO91ofdFwq0mUYqbpmjjJGJ8ajo4I1Bq
-	 UQxi/DR58hs8g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A2A63926662;
-	Tue, 13 Oct 2026 10:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="z/Wkm3je"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791885608; x=1823421608;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jRNeLEc4CkFn+42K5GGoJxjsljglo+VbUJsXlv25BsQ=;
+  b=z/Wkm3jewuS8PTV9yHaQdGCZvjW3SzOAJ3iuM8ufpx0VZ0X2IXzh5QUw
+   d3WcZ6TgA8ZHj5rgjq7dU8XDTIN8zWUJfKjOhD521+hg4IrF1d3tZ3vgn
+   vC2RoFUjg6JjkgUTI7zt/JQ0sc0DtEVxCS/oq+/d8m4utl8Ls0sc+//bJ
+   Hklf0V2pZPv3aBN/2YBF0rzx4r0N7uIp7XFvMW2GHjVlWu9Ck9GnJj9wc
+   P19tCyC1sVdRhqdeWwRkKl4QvALkhVGchu61ZGM5FvC5qG8avoCatd9v0
+   wh8XzpcyRi3DWW5vRmsXwpyvyDY+LaCoZRZKHiOEoKcUJ35ATI+sEM1qG
+   w==;
+X-CSE-ConnectionGUID: vpaZhoqiTvOZpvi+qGlENQ==
+X-CSE-MsgGUID: EeHeYAIxRjKQvbUbgYF2XA==
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="232039876"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Oct 2026 03:00:07 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 13 Oct 2026 03:00:07 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 13 Oct 2026 03:00:05 -0700
+Date: Tue, 13 Oct 2026 12:00:05 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Rosen Penev <rosenp@gmail.com>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, open list
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next] net: ibm: emac: size RX buffers for the MTU
+Message-ID: <20261013100005.37so7rsuq7e4meol@DEN-DL-M70577.microsemi.net>
+References: <20261008035122.3182851-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] bnge: skip dev_addr when building the VNIC unicast
- list
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179188560476.183954.16230716721652068829.git-patchwork-notify@kernel.org>
-Date: Tue, 13 Oct 2026 10:00:04 +0000
-References: <20261006141928.1432927-1-vikas.gupta@broadcom.com>
-In-Reply-To: <20261006141928.1432927-1-vikas.gupta@broadcom.com>
-To: Vikas Gupta <vikas.gupta@broadcom.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- bhargava.marreddy@broadcom.com, rahul-rg.gupta@broadcom.com,
- vsrama-krishna.nemani@broadcom.com, rajashekar.hudumula@broadcom.com,
- dharmender.garg@broadcom.com, ajit.khaparde@broadcom.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261008035122.3182851-1-rosenp@gmail.com>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue,  6 Oct 2026 19:49:28 +0530 you wrote:
-> The default VNIC programs the device's MAC as L2 filter 0 in
-> bnge_init_chip() via bnge_hwrm_set_vnic_filter(bn, 0, 0, dev_addr).
-> bnge_cfg_rx_mode() then walks dev->uc and programs each unicast
-> address as a further L2 filter, without excluding dev_addr.
+> Any MTU above ETH_DATA_LEN selects the largest MAL buffer size of 4080
+> bytes. A DSA conduit always runs with a slightly larger MTU for the
+> switch tag (1502 for qca8k), so every received frame then uses an 8K
+> slab object and a 4K cache invalidate even though it is at most 1520
+> bytes long. Size the buffers for the MTU instead, capped at the MAL
+> maximum as before. Larger jumbo frames still span several descriptors.
 > 
-> Skip dev_addr when building uc_list, since it is already installed as
-> filter 0. As dev_addr now takes neither a uc_list slot nor an
-> l2_filters[] slot, count only the non-dev_addr entries for the
-> uc_list overflow check too, otherwise an input such as
-> {dev_addr, A, B, C} would needlessly fall back to promiscuous mode
-> even though A, B and C fit in exact-match filters.
-> bnge_uc_list_updated() applies the same skip and count so the
-> change detection stays consistent and does not loop.
+> emac_change_mtu() only resized the ring, which is also where the jumbo
+> mode and the APM821xx maximum jumbo size are programmed, when the RX skb
+> size changed. 1500 and 1502 now share a skb size, so also resize the
+> ring whenever the old or new MTU is a jumbo one. Otherwise jumbo mode
+> stays off and 1502 byte frames are dropped when the MTU is raised while
+> the interface is up.
 > 
-> [...]
+> Routing a single TCP stream through the qca8k switch of a Meraki MX60
+> (APM82181, iperf3 median of 3, A/B in the same boot):
+> 
+>           LAN->WAN   WAN->LAN  (Mbit/s)
+>   before  538        476
+>   after   564        498
+> 
 
-Here is the summary with links:
-  - [net] bnge: skip dev_addr when building the VNIC unicast list
-    https://git.kernel.org/netdev/net-next/c/0b3fc7fe6f3f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
