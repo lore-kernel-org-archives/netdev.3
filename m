@@ -1,338 +1,142 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB7652E076
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EA4542EE3
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 20:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791923475; cv=pass; b=NML++fH/s2x6FGIXKRByD2nz1J/6rjRXi62W4/bXi9F3Nthk0GGisFQAirwaozGGPAPWBla8vRXNXZjN9oXbRtAmrCukNIC6vjGlIcIXSxBrt9O+VWwwpjHaBA7Q9cgml+aQ/xg3uJMDYy4MwDOpZG37KgrSb7hP5cmyPuBNkIM=
+	t=1791923586; cv=pass; b=ua3gb2XT7pDzm/enCCjtcUCMjiduMDC2G2Sz1xMHZ2ozvYbd4k9k+qzJqZACb58LuNBh15lSYU8GEZtgZE6jw2jthCirlDu9gUk4rmGeQyqoNB2fG58PxnrpGrYmoer6r2FrqfzmCtQsKZORYdiw13BF6h9olH+H034RT3W9cX4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791923475; c=relaxed/simple;
-	bh=jQV8f6i1LrDMlYQzUwRfPWZE8XyJmhT8aZCyquv82Tc=;
+	s=arc-20240116; t=1791923586; c=relaxed/simple;
+	bh=guoFD20zEk9cIM8OGpiI6ZacaO2x+w0vW/appO61b84=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nm964MNNMEOPdcodV6gBN81b/KrGKPyeRK/tomyBg2E407OmBwBlKPpYCFrRhkuOO2u5uoJk6rUgzDgjbxaF44SkEi64Y1qXAdiznNeMqinevCoPm+XJQWuCSvbq3agxIR3GeYFNbZyb/XgbXWsuoirN1SKHQQx+WV+EcQpisDg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=R03wVuUW; arc=pass smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=CjJarnz14oQhiqc3L04oPtFBlSO9qWN8+0uuHGfrxpTFmyLx3I3k5JjjfvCGdbcSzXpfYdwU5pb+0GtwpvZUFYd8Czt6xcltk9VaGsRssNqikcKTix+acwezrsGfciFRsKt/7tCbYkVciYg7JrBiH6KfIynFp8RVOgBYHRkzBJE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sCfdEhry; arc=pass smtp.client-ip=74.125.224.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="R03wVuUW"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-154e9d2d979so147992c88.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:31:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791923473; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sCfdEhry"
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6740e7ae219so2689878d50.1
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:33:04 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791923584; cv=none;
         d=google.com; s=arc-20260327;
-        b=T8VVZCZxf4GmXNURfBUYehX3zT7XID6B8TPzeTIGrzJ4M+W80WcVFddrEgtEktyqVm
-         IeNPKh7XefMU72nqdbbihKnpw77hQs8Vj1ksohJJ3TZtZZuLTg6koCz0gOjpxn0i/ktg
-         BK7SeMTT3/yJJyrdIRVBQXt1qX5BFLN/N6Tgg0Ra3PVKza0tpZ0F3zK9Cf28YKoKT/Sy
-         N5OIbSIjOqg7z46pAF4lTXR0XQ9u35C7uwTjvkS2e2FrRzYpDPtiY7tHK2DGr1Qo1IoB
-         C1GSXWpqeAiWd8kmoezFOeHth2uIb4BFwJnd9bAAgfv6d6H0DZQW6TrO0zl0aGIoZl2c
-         wzZw==
+        b=HzjlTSzp5Q9puJZh52f/BqgoWIIGqyQjJIavXdKixWtDM/w9Xh6mqZvTjrpk8aJE/F
+         KTKfMHwOGtvbXHPVSwtI83V3BCUBUe+sZJahvzoTXGA5lZM6/z1bRxfKnc6quKNLV/2p
+         oj1DkH1XGVaoSU9AJuIjectCxsTsvIbn49sHxFdO34M9eVf7kqdNVsWHofLWsMBPS/cM
+         PRD6+1NbIsfQaql9N2J3lq/7mgXWTMg7pY3mU42LT6E8FwafVfdDuxg7ZOoT/9kLb1nZ
+         PDEsX2QT1RRK6WU5e4a4zYAUQkn3/wtbRowOTRlsBFqJ5S4FCl3pmZxuMgK/I+L+Bdah
+         rAvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=atvUm2yLlESoxli2CrXR09rac0lrN3Yfj/NESXu0zIc=;
-        fh=bFEVG3XKPUQz6UYkdeYMeM0reCwhKuL8P/202W8loFE=;
-        b=qITMM3iA4ezg5riKRaHlSwgtfBlE+x0ktOsxixG/mEFs3Qq4jCJUjOdhMcDCh0llGG
-         IKdJhtNnnsiTsVFXDECipTMroUfBu/goESdazQvzk071vvGTcyBBNvvPVjJRLRkRXiia
-         jgGtx0SqWkgl0gGKT3A/Jpo/Tvuhw+YBr+/2RoJAJ0bpz1pIpuObnXiNqdngvygfMPQu
-         +4b+7dFaeHWGmX+xusIlPYhGc8USE36y9ZBYS9wkZaX1dFSc+NaD5pR+waGWFsiuydJu
-         8ZMiSbRh3PrA0Er2QbJj2lxIctJdfTNXSdP5fJRK6buvXgCkPEWaMKNAgMpCuavhyElP
-         wHnw==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=fjZWNfknzV1F6JAInAE8o3x3W3fwqE841SsbudO4cc8=;
+        fh=SsbNRHZaRTXR1wZjX7uY8V/hyCciNjaUsQlb9Wd7Zec=;
+        b=hoYooxp/3/DKZGK+MN5PWxB8kuuBUaUwSHr0ENM/Aqaz8yPwLYj0mv9402eKfHuDMq
+         xRMEAawZZpmrXik0/gUuD0yCe4tNCkhy7k+yfXnvHrDGTlCi2EJjRD0ciSOv3JuwzM5I
+         WGdNfOQz37BquA1temKrKWDLqyJyuBbM2b+iL73im/pS6omzTADzy0o/17rBIYj2C30o
+         +m0h9g+zJg9XfGQ6Bnh9Z5N70ATwNugZKc8W5UfOGffPcBX6l4IqZT+MaZ37y8OQ0nqA
+         zoUYMxZNnhRPSSfOXM3QkJcVV8/sqmHkYs6Q1HIvNdkdfTZ/xgUvPQx5K4cn++XpUmnz
+         epjA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791923473; x=1792528273; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=atvUm2yLlESoxli2CrXR09rac0lrN3Yfj/NESXu0zIc=;
-        b=R03wVuUWPrkiaZicAA69OxapLyICPF4TFEJ5flS+8XLH45tytkygMENPlB1teY8AeP
-         6lN4oTPQlftR/+NiJcpCdCbYZwJL7zKWo7LRGe4yxt8RKKWAEpooC+4CzCMAlhtLRKXA
-         rJuxCpNW4CijLKmXFQMwIRgOqUf2wa7lexXwnTjazPUhjuOiG95g4geShfZZAJyvnu/n
-         8mJiahI2P+5948YaEilqs456XiO06yAtXp+7MRLH5HTELMr4/JQsCCg/sAHXkRkbrhmH
-         SPyGOzYOiutM7gLT1/Jx/WLJVTpPQULULIH5+akavlHIsotaWw9d/xEi6+QXdA+pxm03
-         UQUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791923473; x=1792528273;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1791923584; x=1792528384; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=atvUm2yLlESoxli2CrXR09rac0lrN3Yfj/NESXu0zIc=;
-        b=c7BqL6QuoB/sAnHRb1PNqOjBgNLvRcQUJKQ9jg4tqbFFEXIGGV9cuOcmYI5tgO9jE0
-         WxJ0VmsRJiVWYbVzeckDSAi/44EOLkEJh2HD/3CVBfKUQcELYFI1xHYL9s7k8QFlcfKI
-         HHjv2kTGKkWtFUe8yoqSyTmhAQLv0e2MdYuqEzzXG4bIDbO7MtcqZiWj4slzUXMUXACr
-         97Uz84C34ivUCjfHE8xZNvvupbF0Kojmlxor5QT5dODB8uFDAvboa3MvqEkdu+TfulTX
-         +vhMnkyQoXpN6sbvJicmGwOafLRxtHR9BerS3S+2/8VpfU+MiuOJ4c2Spubo9DZGXeeF
-         eaVA==
-X-Forwarded-Encrypted: i=1; AKwUvBz71iNfEgbgSDLZCFVo/SzbfeOkoikdii9xcLRL30RlQcRpTVUR/BlIUHD0ttk0ibsj3HPpWIk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLwdLTvwq1+2X/MtFtJSQ7vJrqp9piQgC5oiMtzm1ESeebE7Uj+
-	Aq1dovdhTfRotvubepGiA/U3tdrCcswQHbaD+6zG32wx+FPdIcqk8LVwl/7lJEqdM+qmjruvT+3
-	aI/O8Xnb5dzxyut73PuB37DnxfQm6vfyHj55cUS0q
-X-Gm-Gg: AYBFou2q4NLId/Y/zj/ONnL74VgfggC01sxbtiXBboU/Sd9hrniEpNNMFAnXXQ0uD8u
-	VytHL4nBrtFLbV4cxElHkV3YazNxQ/YslUmWHCUES0ItlbAsyDNXjr3xK8dQnZuhTTi9MUpKW0o
-	456VWDG1BZ2NwhBMZVsIC4zWAhm44GfgDgAozWwLdLSskp8N0kAVotlZFFWIJFAoH1aMeaqnPLB
-	Qc2ceKUNxgqjKDOdyM6fHlHS2j3E6us+D82O7Y6dPihvnJqj5bWABIJU8pe7F35jF3gNv8/5H/H
-	pj8GNC0j+NJFKzmcQdmdzz/PgeXuNR3F4b42s7S49rfmKEZ3cqdFU5g2wVIx6sc8s/r/mdRTCD1
-	40cFNv9mR80tqFq8Yh8hqzP0OO9yJ2IW4ZkJIsbkxwX1IsPUxm09oKB3j6sjqc8ydEmSus0398f
-	m6RCjebvCT+JlhZKBMA5Hpiw==
-X-Received: by 2002:a05:7022:b048:20b0:158:b944:b15 with SMTP id
- a92af1059eb24-16a5ec48b20mr19562390c88.22.1791923472284; Tue, 13 Oct 2026
- 13:31:12 -0700 (PDT)
+        bh=fjZWNfknzV1F6JAInAE8o3x3W3fwqE841SsbudO4cc8=;
+        b=sCfdEhry7kUMkf8k5wxJjj4TkkJhUY/4aIduFykUdOoGmj4tu4TgmXXNR+WMyjctS5
+         L5RvSWMrLfxAsVZjSGmXYcsf6j75eJfGq9BqeCKu3zfPidhRVTDLris++A2DhOU6fG3/
+         CB5nRdY7foqKxUgrpZPW2teKWAi+WKTr1jmX2xr7OZ0XsvAZ4PoSBshWmbt+LwDxrMiw
+         ys0UTFde17SkQz3X2M/dJ75W/OwxotQQheBI0iEto77knza4pU4ZpztmpFN7P+C9vlsY
+         bhlPuGevilXOBGjNxAGxP34RX7wDviazB9wEwCvZNycFIu98M+B/EJi5+tSX/f1gQFiy
+         pOGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791923584; x=1792528384;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=fjZWNfknzV1F6JAInAE8o3x3W3fwqE841SsbudO4cc8=;
+        b=RBrRoH0hWx0nkgm6uoG3GSyzdq2GqVyZJ45tNDwmhC/SOwmHQnf2N81y1tgGETDss+
+         nr1/ZASb2pvnK9GdCrVu64cYRWvlDCoAdEZRWWk9EP31HpYHSP+H74WNLe95qRF3TcU+
+         Lcr7/VOnGmz4wVnTIhhXXqIJSHrAb4FPDGlK9OWUWf6PoLKiITCManeycJsbPVxqEzsZ
+         zcYkaJHjQ5+MJX7/0z7iSPKa9lkeEdqoMLg30EF4k+FlB0hf/EmbZVHQn683i6GtxJ7g
+         CE1vDmXWDc0lbA89MAXvEHzKnYd/QSKJ/8W9jm+3spO6WfQdOQfNu0vsNrbn027Ee9KW
+         MFDA==
+X-Forwarded-Encrypted: i=1; AKwUvBwVUpHfGz+l32hyJz1oa+uQGb4RcyWLGYWNLH0qfD9n+/0Dzx+3KZpxSAfCLnuT35V5eTyADpU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI3+AFEMecckrVpEMi7yDRFH8oZ1306Fk1Ogwo3qmz9QPTDlEQo
+	AiNvSbp40WdrtK0wH3yJCivsz/y1K1Q2s4uDo5J+z3/y2iZFvKz38FW9F3KXV4T6DIt/IhsTCe5
+	PkYU7XtBD1YorlcbC9YHvEP7xHw82quE=
+X-Gm-Gg: AYBFou2M3NB3ytCjZiDy+T+3DQuKg7mxXkCfDr2u7y1CtNe2ibPl+CwPUkzXyhGda/M
+	bRTsgivg4OSSWyhRh/Xk5RfVGBQx7rOsKbb5Fk6uKUrbw5xVbCtHUmdzN3QFUt+Eq/DI/HdLLyF
+	IxGIfgdK/AnYSqnm8FZy/TNy8SB2ToXv98ChvtPKpAfgIpwlOqci2a2w+Di3XLROpmqcYi40BAa
+	3V2ezkh16Gz1Gw6c+81XXNYt7lPbDq+YGz3VKtrEMR2JE7PrGZQu6bEBK3cvhBsuBmXn8h96fiD
+	DsuH5hOeroBpbk/RPo/BTS5rAehqEAVTujY3AqE/IW48erpDoyKRxS5kAQ5At31TrniOaGvGRoW
+	vbyZV2VWXNycPtDrjyQWZw915a28rJOdbzuW5yGpe
+X-Received: by 2002:a05:690e:168b:b0:675:b778:a423 with SMTP id
+ 956f58d0204a3-679362bf517mr4886393d50.142.1791923584078; Tue, 13 Oct 2026
+ 13:33:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012194530.3751034-5-kuniyu@google.com> <179192161164.434549.2046952979938439215@kernel.org>
- <CAAVpQUAB9ndSQqBwz=QFhD69wa+57+m+QVN8GX7vm+1Ko-ncsA@mail.gmail.com>
-In-Reply-To: <CAAVpQUAB9ndSQqBwz=QFhD69wa+57+m+QVN8GX7vm+1Ko-ncsA@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Tue, 13 Oct 2026 13:30:59 -0700
-X-Gm-Features: AclHuK8YP_0JjTtRr3sgBb2RZ5l79Ibv0v9PH8o018AAJIhm0rU_MxurfvcMGKI
-Message-ID: <CAAVpQUCCW+4BGLGO1EdmgoigbPT1Ki1Eq-7e76jK_S9O9GWW=w@mail.gmail.com>
-Subject: Re: [PATCH v1 net-next 4/4] neighbour: Floor INTERVAL_PROBE_TIME_MS
- at 1000.
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, 
-	pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org, 
-	kuni1840@gmail.com, netdev@vger.kernel.org
+References: <cover.1791887415.git.mst@redhat.com> <e12c6a45aae251d1642af55d8d3121e554993a66.1791887415.git.mst@redhat.com>
+ <20261013070549-mutt-send-email-mst@kernel.org> <CAF=yD-KdTn2rHyp_j8ORr9F5hpm=TzaPRan5+gvLiYBd9HP-sg@mail.gmail.com>
+ <20261013143335-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20261013143335-mutt-send-email-mst@kernel.org>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Tue, 13 Oct 2026 14:32:26 -0600
+X-Gm-Features: AclHuK_AY3efVdSO1MP2W2AAhlxVTMjkmeXG8cBqCPBuysQoPjuKaPNm0xvEtb8
+Message-ID: <CAF=yD-Lz92nGVFab1Dq8M9VusDsKf-ioda8KrZoyh28x3Xtg4Q@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/4] net: resolve uncommon partial checksums at ingress
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Jason Wang <jasowangio@gmail.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	virtualization@lists.linux.dev, Max Krasnyansky <maxk@qualcomm.com>, 
+	Rusty Russell <rusty@rustcorp.com.au>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 13, 2026 at 1:29=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.co=
-m> wrote:
+> > > > +
+> > > > +     if (virtio_net_csum_partial_ok_at_offset(skb, gso_inner_type, inner_nh,
+> > > > +                                            inner_proto))
+> > > > +             return 0;
+> > > > +
+> > > > +     if (skb_is_gso(skb))
+> > > > +             return -EINVAL;
+> >
+> > This is a risk the commit message will have to call out.
 >
-> On Tue, Oct 13, 2026 at 1:00=E2=80=AFPM <netdev-bot+sashiko@kernel.org> w=
-rote:
-> >
-> > Thank you for your contribution! Sashiko AI review found 3 potential
-> > issue(s) to consider.
-> >
-> > Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (1) =C2=B7 Low: 2
-> >
-> > If you believe none of the issues are legitimate, please reply to each
-> > issue of Medium severity or higher and explain why the AI is wrong.
-> > If any of them are legitimate and you plan to respin, please let patchw=
-ork
-> > know by including "pw-bot: cr" as a separate line at the end of your re=
-ply
-> > (one such reply per series is enough).
-> >
-> > - [Medium] The patch narrows the accepted uAPI range for
-> >   interval_probe_time_ms in every netns, including init_net.
-> > - [Low] The commit message describes a bug fix: a namespaced user can h=
-og
-> >   CPU because neigh_table is now per-netns and the interval floor was 1=
-=E2=80=A6
-> > - [Low] The sysctl and netlink paths now accept different minimums for
-> >   the same parameter on kernels with HZ < 1000.
-> >
-> > Pre-existing issues:
-> > - [Medium] This problem wasn't introduced by this patch, but the patch
-> >   makes it easier to hit.
-> >
-> > --
-> >
-> > neighbour: Floor INTERVAL_PROBE_TIME_MS at 1000.
-> >
-> > This patch raises the minimum of NDTPA_INTERVAL_PROBE_TIME_MS from 1 ms=
- to
-> > 1000 ms, both in the netlink range policy and in the sysctl handler. It
-> > also updates the YAML spec and ip-sysctl.rst to match. The reason given=
- is
-> > that neigh_table is now per-netns, so a small interval could be used to
-> > hog the CPU.
-> >
-> > Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
-> >
-> > > neigh_table is now per-netns, and a user could hog CPU by setting
-> > > INTERVAL_PROBE_TIME_MS to a small value.
-> > >
-> > > Let's floor the value at 1 second.
-> > >
-> > > Suggested-by: Ido Schimmel <idosch@nvidia.com>
-> > > Link: https://lore.kernel.org/netdev/20260902143023.GA3966681@shredde=
-r/
-> > > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> >
-> > [Severity: Low]
-> >
-> > Should this have a Fixes: tag?
+> I tried with this:
 >
-> No, both the commit and this change targets to net-next of this cycle.
+>         > > > We can't easily "complete the checksum" for GSO we don't recognize - GSO
+>         > > > assumes knowledge of the protocol. We could segment ignoring the
+>         > > > checksum then do whatever csum_start and csum_offset say, but that
+>         > > > seems like an overkill for something that should happen.
 >
->
-> > The message describes a CPU hogging problem
-> > caused by the per-netns conversion, which looks like this commit:
-> >
-> > cda2962b6e2b ("neighbour: Namespacify neigh_tables.")
-> >
-> > That commit lets RTM_SETNEIGHTBL set the default table params
-> > (ifindex =3D=3D 0) per netns.
-> >
-> > The message mentions 211da42eaa45 and 6d79b223ec44, but it never names
-> > cda2962b6e2b, and there is no trailer for tooling to pick up.
-> >
-> > cda2962b6e2b seems to be in net-next only, so stable is probably not
-> > affected.
-> >
-> > [ ... ]
-> >
-> > > diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> > > index 6b0569aa5d643..92e3c83c0fe50 100644
-> > > --- a/net/core/neighbour.c
-> > > +++ b/net/core/neighbour.c
-> > > @@ -2438,7 +2438,7 @@ static const struct nla_policy nl_neightbl_poli=
-cy[NDTA_MAX+1] =3D {
-> > >  #define NTBL_PARM_MS_MAX     (24 * 60 * 60 * MSEC_PER_SEC)
-> > >
-> > >  static const struct netlink_range_validation nl_ntbl_parm_ms_range =
-=3D {
-> > > -     .min =3D 1,
-> > > +     .min =3D 1000,
-> > >       .max =3D NTBL_PARM_MS_MAX,
-> > >  };
-> >
-> > [Severity: Medium]
-> >
-> > Is the intent to reject these values rather than clamp them?
->
-> Yes.
->
-> >
-> > With .min =3D 1000, the range policy now rejects NDTPA_INTERVAL_PROBE_T=
-IME_MS
-> > values of 1..999 with -ERANGE. This applies in every netns, including
-> > init_net.
-> >
-> > In the same way, min =3D HZ in neigh_proc_dointvec_ms_jiffies_positive(=
-)
-> > makes proc_int_conv() return -EINVAL for sysctl writes below about one
-> > second.
-> >
-> > So commands like these used to work and now fail:
-> >
-> >   ip ntable change ... interval_probe_time_ms 500
-> >   sysctl -w net.ipv4.neigh.default.interval_probe_time_ms=3D500
-> >
-> > This removes the sub-second managed probing that 211da42eaa45 added. It
-> > does so even for CAP_NET_ADMIN in init_net.
-> >
-> > The commit message says "Let's floor the value at 1 second.", which rea=
-ds
-> > like clamping. Could the message say that values which used to be accep=
-ted
-> > are now rejected?
-> >
-> > Another option would be to restore the rearm-time clamp from ed6cd6a178=
-96.
-> > neigh_managed_work() currently uses the configured value directly:
-> >
-> >         if (!list_empty(&tbl->managed_list))
-> >                 queue_delayed_work(system_power_efficient_wq, &tbl->man=
-aged_work,
-> >                                    NEIGH_VAR(&tbl->parms, INTERVAL_PROB=
-E_TIME_MS));
-> >
-> > > @@ -3701,7 +3701,7 @@ static int neigh_proc_dointvec_ms_jiffies_posit=
-ive(const struct ctl_table *ctl,
-> > >       struct ctl_table tmp =3D *ctl;
-> > >       int ret, min, max;
-> > >
-> > > -     min =3D msecs_to_jiffies(1);
-> > > +     min =3D HZ;
-> > >       max =3D msecs_to_jiffies(NTBL_PARM_MS_MAX);
-> >
-> > [Severity: Low]
-> >
-> > On kernels with HZ < 1000, does the sysctl path enforce the same minimu=
-m
-> > as netlink?
-> >
-> > The range check runs after msecs_to_jiffies() has already rounded the u=
-ser
-> > value up to jiffies:
-> >
-> > proc_dointvec_ms_jiffies_minmax()
-> >   -> do_proc_int_conv_ms_jiffies_minmax()
-> >     -> proc_int_conv()
-> >
-> > kernel/sysctl.c:proc_int_conv() {
-> >     ...
-> >                 ret =3D user_to_kern(negp, u_ptr, &tmp_k);
-> >                 if (ret)
-> >                         return ret;
-> >                 if ((tbl->extra1 && *(int *)tbl->extra1 > tmp_k) ||
-> >     ...
-> > }
-> >
-> > With HZ=3D100, a write of 991 becomes (991 + 9) / 10 =3D 100 jiffies. T=
-hat
-> > equals HZ, so it is accepted. With HZ=3D250, any value from 997 ms up i=
-s
-> > accepted.
-> >
-> > RTM_SETNEIGHTBL rejects those same values with -ERANGE. Both ip-sysctl.=
-rst
-> > and rt-neigh.yaml now give the minimum as 1000.
-> >
-> > Before this patch the two paths agreed: 1 jiffy for sysctl, 1 ms for
-> > netlink.
-> >
-> > Would a shared constant, for example msecs_to_jiffies(NTBL_PARM_MS_MIN)=
-,
-> > keep the two paths consistent?
->
-> I'll use msecs_to_jiffies(HZ).
+> I guess I can add a more detailed explanation about what the risk is?
 
-of course s/HZ/1000/ :p
-
+Let's just explicitly mention the consequence: non-standard GSO
+packets that previous would be sent may now fail.
 
 >
+> > I don't see a simple way around it. We discussed segmenting here too,
+> > but that requires intrusive changes to all callers too.
+> > Alternatively,
+> >
+> > 1. call segmentation, but only to see it remove the SKB_GSO_DODGY and
+> > thus verify that the TSO/USO packet is valid. Still drop otherwise.
+> > This also does not add overhead, because it would be called later
+> > anyway.
+> >
+> > 2. a failsafe off-by-default sysctl + static_branch that skips the
+> > drop when set. Messy, but so is the situation we're dealing with.
 >
-> >
-> > [Severity: Medium]
-> >
-> > This is a pre-existing issue and was not introduced by this patch, but =
-the
-> > new floor makes it easier to hit.
-> >
-> > neigh_proc_dointvec_ms_jiffies_positive() calls neigh_proc_update() whe=
-ther
-> > or not the write was accepted:
-> >
-> >         ret =3D proc_dointvec_ms_jiffies_minmax(&tmp, write, buffer, le=
-np, ppos);
-> >         neigh_proc_update(ctl, write);
-> >         return ret;
-> >
-> > neigh_proc_update() then marks the parameter as explicitly set on any
-> > write attempt:
-> >
-> >         if (!write)
-> >                 return;
-> >
-> >         set_bit(index, p->data_state);
-> >
-> > For a per-device entry, neigh_copy_dflt_parms() then skips that device:
-> >
-> >                 if (dst_p && !test_bit(index, dst_p->data_state))
-> >                         dst_p->data[index] =3D p->data[index];
-> >
-> > So consider a rejected write such as this one:
-> >
-> >   echo 500 > /proc/sys/net/ipv4/neigh/eth0/interval_probe_time_ms
-> >
-> > It returns -EINVAL, but eth0 also stops following later changes to the
-> > default. Writes of 1 to 999 ms used to succeed, and now they end up on
-> > this path.
-> >
-> > Would it make sense to skip neigh_proc_update() when the handler return=
-s
-> > an error? The other neigh_proc_* handlers make the same unconditional
-> > call.
-> >
-> > --
-> > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
-chset/20261012194530.3751034-1-kuniyu%40google.com
+> Tack this on top or do you feel it's needed straight away.
+
+Not urgent. Can even wait until a report appears. But worth taking a
+look sooner if either of us gets around to it.
