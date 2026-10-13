@@ -1,75 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB454EB872
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 13:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A5B4FE2F1;
+	Tue, 13 Oct 2026 13:54:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791899552; cv=none; b=OC9xWXa5zZ6GAynhbE/t++nKIIjx7RskdeIPGavDSV0av+c6aEkBsuBz9IK170d+H8GcVFT31lqAyPT6boSBTm5UIue+OlP7RxsZNcqsSHukpzrApslHe7MeDpQM38GDBh3fQ1EBphllseI5iL+aQmYYSxPvgrUA0YEvwJ0xHak=
+	t=1791899687; cv=none; b=XfQQ66Z3xFeR0yAC8zsfOklJXxBY0Co0iiQdNPHfRKEFv30y74zaGDCaTaSHfbTSIb5n7rnmghV0u0jFJ25rHMbLtM1AK6FZl0oHY5igGGKHTofMxnQtd2ghxgqFHgsqPtfiEJHZAYbKwMIwIpoqkUEqzUh53wko9Equi6u6Zyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791899552; c=relaxed/simple;
-	bh=bM5ODnkTE4YRR8HbV8C5Z+Ku1Q9ttvkcICyvgA4chm4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gMSZp0JXtaXNeNAIDUOH8wDvuendDtutinI+7aMyheqx439UnU0W+iYT0ydkkkpgxuTzjgcl4yt8rdR77yQ+6xVpx6GRmGm/ug/ksHPS0i5o3A7MRdZvv9/jBuBS3umSoyuQBXl/H6sMCOkyWx+skEqj0u0am2q2QKvnZxofv1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJBGUOzz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791899687; c=relaxed/simple;
+	bh=3PtGvoeT9m7Y4DmAr46TMvrMB44lIaxu8GMYoaFQUlI=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=LzznRXlYYa0qbXZZTrr0Ly8u36fnfvUois3jE6vsAnJL4FhaziWhFAglaltbDMLBUQ3/E76TwIjLE7TaHg65O9mYFthsUEmga8SWWBsmhK6d3UQm5GeMVeb2R9okZt/jL8VOWrAKV7R2/P8ma4ic3ZGnS3PUMvwHARkGNYeoQNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=vkOnxMQc; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJBGUOzz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E1D1F00893;
-	Tue, 13 Oct 2026 13:52:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791899551;
-	bh=dC/LT/OLHmB+of2DVyrQgsx8eInGRvi9YzDMSDwDp38=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cJBGUOzzoMYELyBGkl0B1LBmipS66qSr5f7CAi+TtfJhUfg1k+UtJCqvB0qn5MHdu
-	 VouA4jijAht+ZkfImwLm4fXkBpJr+/7Fo+6bhFJfnKPY/8fD7vT+o++q2dadSAYkDT
-	 RUA24uYeqLdRbrHMQD0vM/x4NFBCNhi7oPeeW4DT78t2wYuMfkuUmxI+zXkox4Rqp9
-	 CPCldpm6XrSRfTWwd2cEGDBHGpspWd96BtvCxLfiEz6kVvhjG0mh8AfAo244QlD0+e
-	 EallY/M+5VfCn7tsNHdHChW5QOjYB/uuVkgG/YmS1pzqYgD257Nc6sHwnUu8nzmhY6
-	 iuIfi/Fo7tCuA==
-Message-ID: <76f16ff2-3102-44e9-b4e0-5818044bbc75@kernel.org>
-Date: Tue, 13 Oct 2026 07:52:29 -0600
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="vkOnxMQc"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DCEADA05A6;
+	Tue, 13 Oct 2026 15:54:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1791899683; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=ggmQ0VJqPDmKU8eTBEH1GzV2i54bDKySbMFuZrvZpi4=;
+	b=vkOnxMQck/dOnXagzX8Ga0MOiUAgYvpOFLSOrP+DkchS9G+w+MDytLH6U4cJWPCGV1AOXh
+	PAANUVjl101XGVbn1SJc/PlyNlFY55xrnmUJypRhX3FlCvWKIzAgMtgMz9q0cNGstfbYxK
+	6a6Cu8KG8gyIjhH9F3JSgLrsEsLoDTt3yfpqWwPUu0QDujBOlQU6whTP0RpKDtm2eZvaR/
+	CzMKLUT/FD9XFkRUDw+7qXK7s4a3ALqBXZHiHleINTlH4e0UtX2W6VQL3XGCHtRQA/EvwH
+	8+RpprrfsyjzNzFD37PNE34LtGocr1snERmsS+AqaRFsF6qhSFp7lMbUeY0ZOA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] ovpn: avoid caching stale IPv6 dst after FIB
- changes
-Content-Language: en-US
-To: Antonio Quartulli <antonio@openvpn.net>, Ralf Lici <ralf@mandelbit.com>
-Cc: netdev@vger.kernel.org, Sabrina Dubroca <sd@queasysnail.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-References: <0c6f073c-12c7-4843-846e-69c48c290107@kernel.org>
- <20260929150454.466148-1-ralf@mandelbit.com>
- <375bc468-fb28-4620-a5c8-0f7ba9e693d6@openvpn.net>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <375bc468-fb28-4620-a5c8-0f7ba9e693d6@openvpn.net>
-Content-Type: text/plain; charset=UTF-8
+Date: Tue, 13 Oct 2026 15:54:41 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Russell
+ King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Paolo Valerio <pvalerio@redhat.com>, Vladimir
+ Kondratiev <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
+ <gregory.clement@bootlin.com>, =?UTF-8?Q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ stable+noautosel@kernel.org, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH net-next v11 1/9] net: macb: close race between NAPI polls
+ & ndo_stop
+In-Reply-To: <20261013-macb-context-v11-1-b27785167566@bootlin.com>
+References: <20261013-macb-context-v11-0-b27785167566@bootlin.com>
+ <20261013-macb-context-v11-1-b27785167566@bootlin.com>
+Message-ID: <09659ad051e83174f82ecd74a4c9a49f@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 10/8/26 6:33 PM, Antonio Quartulli wrote:
-> You're right that a cached dst can go stale later and that reuse-time
-> validation handles that. This case is different, because it breaks
-> reuse-time validation.
-> 
-> dst_cache_set_ip6() samples the cookie itself:
-> 
->         dst_cache_per_cpu_dst_set(idst, dst,
->                                   rt6_get_cookie(dst_rt6_info(dst)));
-> 
-> rt6_get_cookie() only returns a route-tied value when rt->sernum is
-> non-zero, which happens in ip6_rt_pcpu_alloc() and only for nexthop
-> routes. Everything else reads the current node generation:
-> 
->         *cookie = READ_ONCE(fn->fn_sernum);
+Hi Théo
 
-Have you tried setting sernum for all dst_entry when they are created?
+On 13.10.2026 15:16, Théo Lebrun wrote:
+> In ndo_close, we call napi_disable() then free the ring buffers
+> queue->rx_ring|tx_ring. In the NAPI poll functions, after
+> napi_complete_done() we might enable interrupts and might re-check the
+> next ring buffer slot.
+> 
+> This is a use-after-free race on our ring buffers because 
+> napi_disable()
+> only waits for napi_complete_done() to return, it does not wait for
+> NAPI poll functions to finish.
+> 
+> The poll function sequence must stay as-is, see commit 0bf476fc3624
+> ("net: macb: Fix lost RX packet wakeup race in NAPI receive") which
+> explains why the sequence must be napi_complete_done() -> arm IRQs
+> -> re-check ring slot.
+> 
+> Fix by waiting for full end of NAPI poll functions using
+> synchronize_net() in our ndo_close implementation.
+> 
+> This bug has never been reproduced and was reported by Sashiko. The
+> chances of facing it in practice sound tiny: it needs a system without
+> any phylink attached, running PREEMPT_RT and with a kernel preemption
+> on the NAPI poll at the right instant.
+> 
+> We fix it here before introducing context swapping, which is another
+> place where the race could appear (and Sashiko complains on this
+> series).
+> 
+> Fixes: 138badbc21a0 ("net: macb: use NAPI for TX completion path")
+> Fixes: 1900e30d0ef7 ("net: macb: simplify/cleanup NAPI reschedule 
+> checking")
+> Cc: stable+noautosel@kernel.org  # too unlikely and never reported by 
+> users
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: 
+> https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261001-macb-context-v10-0-beb541bbb7df%40bootlin.com?part=7
+> Link: 
+> https://lore.kernel.org/all/179115680572.434549.1016291990685937691@kernel.org/
+> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+> ---
+>  drivers/net/ethernet/cadence/macb_main.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
+> b/drivers/net/ethernet/cadence/macb_main.c
+> index 020a47353d01..d414d00d93ce 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -2059,6 +2059,12 @@ static void macb_quiesce_start(struct macb *bp)
+>  		napi_disable(&queue->napi_tx);
+>  	}
+> 
+> +	/* NAPI instances still access Rx/Tx rings after their
+> +	 * napi_complete_done() calls! Callers to macb_quiesce_start()
+> +	 * free rings, so wait for all NAPI handlers to be done.
+> +	 */
+> +	synchronize_net();
+> +
+>  	/* Must be done after napi_tx is disabled: its completion re-arms
+>  	 * the LPI timer.
+>  	 */
 
-This deferred reading of fn_sernum seems to be the problem. fib entries
-have sernum set. dst_entries are created from the fib entries and should
-carry the sernum from the fib entry at that moment.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+Thanks,
+Nicolai
