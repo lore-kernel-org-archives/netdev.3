@@ -1,130 +1,145 @@
-Received: from mail-dy2-f7.google.com (mail-dy2-f7.google.com [74.125.229.7])
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00E252ED33
-	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C890051A135
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 17:54:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791914054; cv=none; b=f9jl51Ac/oG4Z1U+/ePNhfeJfH4K5uq/MIhRhiOM0aQ/jbXKOs/ZRLi3V5+HQ+hSmYV9VHmlgfj2wxHq2wDR9RuBxcxGBZpXHvvHCOBSFTfCPqVQaKqBt+zPdSZuvG8HDHkMZjYMT/dfrqqxASuhPBaxnIb4mvgtSmy4Min9XpE=
+	t=1791914058; cv=none; b=FYggUt4JsW040HfsBmUzCbPePsXaI5JBoyyCFc3atMSY0VMrrNSBCZk7uS/FHMGX0lu3p4deuwjxfB0iXDekt0UeSeemndrHcnoG0C42fQPlm8WZdLtQictZzYw9/Tt/aiwQnrhpPhjeRJU+biF6D+ZM9Q88/hCzRxJze13Zb6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791914054; c=relaxed/simple;
-	bh=11qX/LtmkdxDOuJwBBNtWeyelgjadfvSuXYmsDuhOeg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sw2IJjwuPzDRUpCZzGxRQmiiAXW/4PPwqbSxfxHdZI4EDEDUXnq2OmC4FnRJGaWdO3i+asAVb4LCaMiB+i5CBNqu8KyaM9X31kmHpwXPdt+I3ekIu92oNoGGIZJNRkrR3FU2uAMLqCmuvKKGKnXrbqpct8jhZ5Ho8kNa/NWaTc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=LrqWlCuy; arc=none smtp.client-ip=74.125.229.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
+	s=arc-20240116; t=1791914058; c=relaxed/simple;
+	bh=0E6bGmEo1GwhFi1se4trHegbmcoiealEmKFcFtFcwB4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hrYl7utTMJZ8xPpahPqSbZq+BlS3Wn7HHiWKMfremjMfJuVkRk9Y51KjZo0Lkml1iIapsM198mHMOFjLdhNzP3IpLraHzaLNYudfZw6l4RN1mqgoOTpxxoDU06g3SBLL+kA1nbmI5NYMbG7qlbXrFI6WN32OeDhpiuX9oM7WwI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nZJQpuVm; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="LrqWlCuy"
-Received: by mail-dy2-f7.google.com with SMTP id 5a478bee46e88-33e6be52a80so532371eec.1
-        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:54:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nZJQpuVm"
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6dcf573c429so2119874eaf.2
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 10:54:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1791914052; x=1792518852; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=503NV8Ori3Oqk5W4l1eayXs2I+E5HpZ3zmnZJUojrh8=;
-        b=LrqWlCuyEIAzwg3q/go0QjIgqC9pGSBB4108wme5Oougpqg8gcxkZQyan54eEfAq4B
-         4sfvIZCpX6MnhDWhr3OQRqyzi/mtDqAmI39FcYPzGu3vFabJKcWyaWP/s3FB6B7TSdoU
-         0RWLluCsA9kSEMwN3maSccpzw8ECi8g6jpNsZ43O5bAWsVmIuF66elMsUcWWzTE5Ts6T
-         Ffdx0cWscYognzL1tnGMNBjh4nOOmKZ8N5roLv+GrEnRO2l1gOHfPw7R4njzrQeMHgCc
-         CgwhNXXpBmO2+gNWOoxuf2RIbvNX0Be8zf+9m05dUE5eP3bMKvoopyXZiCGjZk0F6TsK
-         TjpQ==
+        d=gmail.com; s=20251104; t=1791914055; x=1792518855; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=AoNTFArShrIuErsfoUzGL9W/LuOVl703X8/dX7lKLJs=;
+        b=nZJQpuVmLIblfd0MZMstN6RSp/LPMXj+IlHWCEmIYjKpfbEmjNTwt+JhMSVccHpMqf
+         ab/qL4ATwbTkf+50Bv74dgSv/hoWNEgNrECasxaUCdnK+3Wqnn1Lwh08UAA543w2vIJU
+         sx3CF78z28e9zYs9QhC78OshFMUSEHY1CcCzbbbftYEN44yORFyC5NV7Z5o4aaSYTULF
+         51+a5wYhj50wPloxApLrQx1kLmE+OfvZG/bUtbBOETos/ACuQ3JPggSS+/b5SfFeg96l
+         H7OxrVASQ1tId14jy29K1t7/QAIOFYonye9RGXpBZuGtwERbrckckF1rh+wPlGB8vZMK
+         /mmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791914052; x=1792518852;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=503NV8Ori3Oqk5W4l1eayXs2I+E5HpZ3zmnZJUojrh8=;
-        b=tVeWVbcvxX31abMKwwOoUtVvwkbenRpx4NUCVB2mFDpxNs1ASq1kumt9mw/Axn75dq
-         TaqYCUD9eI9fAzgAVfqKXCxEpt92acquJHZLFWUXre6hhoC8cPEaZJTLsodrQ9rr1OL0
-         EaK/of4E5TyChj4NU/eVaORkcPXGrtWFxG2moepo80Owdwx9ZrOPRQnXcil7kF6czcuF
-         w4n+Iw1RaP2xb6l65YK6vgnDmIU9TlPELnV43OR+VjXo82QBwyYFs3zWtkeiN+3I79yW
-         RfahUTs9PdKuwqKNOxz8UbkQ+xi/Lb25u+Kop85xgGGcdfZGfu6vuB/hxP1DXxMwQ9Fz
-         uJog==
-X-Gm-Message-State: AFq9FYJywHW1fG17Ocv3tHM7kPBjz0S7EKHp8aKmgNVRm6fv/1v3DiOq
-	Dt8v4Jo+IimoHGua0mPIp5ZZoV6JJCxWGTMklm3rH8LgP8O3BoMxUjXCVLCuxGGTlpA=
-X-Gm-Gg: AYBFou2fxbTtRrgvIuOqtWhq0Nk5hJIr5egrhjCM9SRdV75Rk5r9lP8vQKT18cOC2WC
-	bUR/b3Ch32VSv64RwqJ1SXd+m3c1kz9OTnRhamrsSjq0LR3MezGk3rl91UgEbMxSe+X6/Lx+NAT
-	A+iUoSuTjRDClbI/oTphXnn9wn2G7xcQ85jQ5Wicqj/fGDYAIq/nYeQQOLXYxlWjuB6G9SH9jHc
-	QpLfxns9XiOqw55ceWEVkH++6sO5q5TYsHeK80Ja8ZjYKL7OcISII4fm8OBFwLg/OTXepGxwbzG
-	iIsJRxq9hnIxlO2Ty2bJsAXLe2VC0HsURM6YhdfpJP324N1iTyn+SF7LKw807ELCn86J3dtX7e9
-	i5Fxp7N7kiD0OV9IPpIBSnLKmorzzLVwHlRClnWomKTW3TMPTDzSg7wc3mM5VQFOpx9fqWApDzA
-	Bqpk91V/FfCGTdcEmNDybix1RsxND9hi4KWVGtubV7O+Krx4w86fkZbMRxGhkECEtdRe7S00WmE
-	c9YIDf81W9GDuFNeuuaeiybQM9eKsGs1P6vkR+/WKhU9QxNWfkUjrUXwu4/9w3AnA==
-X-Received: by 2002:a05:693c:821a:b0:357:ee3a:267a with SMTP id 5a478bee46e88-357ee3a2dd9mr15841199eec.2.1791914051774;
-        Tue, 13 Oct 2026 10:54:11 -0700 (PDT)
-Received: from devbox.ts.blockcast.net ([69.25.95.32])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cab27d5sm50183362eec.17.2026.10.13.10.54.10
+        d=1e100.net; s=20260707; t=1791914055; x=1792518855;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=AoNTFArShrIuErsfoUzGL9W/LuOVl703X8/dX7lKLJs=;
+        b=cU//odyLeSEe71PLxXnHdyFJDu9FyAiu1MIJl2QitDjHqPlWtblE7j0A5/jcRkO6Yf
+         9gizw1arZdnts5c/tiWykG6H7Ipynd4ciDz7ZTMUpVC/eDQw2Hj8NKixKJVDjjNRi8IC
+         QC2Kf6caAIDOO0b/f7U+5GX+4SyU8Vz983It7mTjr6g9X+w6I1kDexm1mD6HQ52nxS9a
+         WftDCSG2vBzLRrGsBOMjd2VIOoOLXFGNHx+BkAvoFPkEjoZYpxar6KK0lk5/zo48XGTQ
+         dP5F8PR3QIQbE1zYTfuTWESit63dg9Y9iCepGl4S9Q2W4Se3ny5TqP1PPYzb4gn5g0B8
+         FFNQ==
+X-Gm-Message-State: AFq9FYIjHQGy4k5V+Vl+DQsCGfBCRWp4XWvNyOmLvo7ODaCkOei7tb5E
+	D87FfYjrqIviIplMtEx5EFe+upFRYzd76ZrvGNUVECrqg39Gzt4UIzKe
+X-Gm-Gg: AYBFou1IgoFvlndRZ5XiU+aQfHJGJk1kJcEK4aTIVD4AkKSmeogJxB/FPyOPOzWtDie
+	LosltpI9JEPM3yd3Qs14LcH7kCTuaasRQpvZjELAjFLAOKZJfM8kL06k2Kl6qtQ27eL4wk0dzSq
+	8JZnEbTmnxhUAAaLmFj9cqoV6sKwsjVe6TJF69QoUToVXisokqamu0eOsVvncwiKgqQGUgzHNP8
+	dtR3vJz6Mqb8V/RsKbZyQTKlb50+8RsvQQsTJkkH45Qsmi4gzIMjE1K97wybPQyHX/ZkSqIcRfR
+	NqcacYvWUy8tU6KqjXy9lKwHtCVPVP1AgkWibMX141aliy9mZ9F8/y2Ft9p1+N34QPhIUOnaGby
+	hG0MJvuMU8xu9ej1LybUE19GiUtp7jtB0Ke102Wpu8F/z31mogGn4rdIQu14Pv2t8q6mVOzvYU6
+	s0TiSOHY9koKBjwXKsJhu4y2bHQbwZHhdAk3hHj54d8dAxCU4BjDVz5rrYWWaR9yh8kQQYxI753
+	i7dheilhKidtdEgvvF2t0Ya0r6dYZWdnRGuHEU1OF5VYsa32MqPqhEsvaH7a17fLxCqT2wmzYSr
+	eEq7IP1Rqi1KFmMRoLwA76OtVwdAKWg74IG3ktYC1H74VEItTo3X0nNH8n1vyOPCKlzE2DoXv1G
+	WlnHmn5NqWjJ8n689tkyJHf0mpb7MoQ3z
+X-Received: by 2002:a05:6820:a292:10b0:6f5:467a:aed2 with SMTP id 006d021491bc7-6f5467ab923mr3853137eaf.5.1791914055335;
+        Tue, 13 Oct 2026 10:54:15 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a6dfcabc34sm277356fac.15.2026.10.13.10.54.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Oct 2026 10:54:11 -0700 (PDT)
-From: Omar Ramadan <omar@blockcast.net>
-To: Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net v4 0/5] amt: relay tunnel lifetime, validation and request-path hardening
-Date: Tue, 13 Oct 2026 17:54:02 +0000
-Message-ID: <20261013175407.947606-1-omar@blockcast.net>
-X-Mailer: git-send-email 2.43.0
+        Tue, 13 Oct 2026 10:54:14 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 13 Oct 2026 11:54:13 -0600
+Subject: [PATCH net-next v2] net: stmmac: leave the datapath running for
+ normal-size MTU changes
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261013-stmmac-mtu-fastpath-v2-1-1e4ce8137689@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32OwW7DIBBEf8Xac6kWg2PIqf9R5bDgJUYqdgLES
+ hX534vcnnscPc2beUHhHLnAuXtB5i2WuC4t9G8d+JmWK4s4tQw99ie0CkWpKZEXqT5EoFJvVGd
+ xMkYqpkk5i9Cat8whPg/rJyxcxcLPCpdfkvn+aDP1DzsqLPyaUqznDgc3oLQOZXBWa+XQEmuel
+ KYgpRrIIBntzeGaY6lr/j6ub/KQ/ftyk0KKMI0qqNF4HOXHNVH8em/jcNn3/QcZJUMJDAEAAA=
+ =
+X-Change-ID: 20260930-stmmac-mtu-fastpath-68813ead3b90
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Christian Marangi <ansuelsmth@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Nicolai Buchwitz <nb@tipi-net.de>, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-Five fixes to the AMT relay data and control paths, found while adding an
-IPv6 outer transport (that feature follows for net-next, rebased on this).
-All are independent of the IPv6 work and belong in net with stable in mind.
+When both MTUs are at most ETH_DATA_LEN, the receive buffer size and MAC
+receive limit do not change. Update the MTU without restarting the
+datapath.
 
-1/5 closes the gc_wq re-arm use-after-free and makes device-stop teardown
-safe for lockless RCU readers. 2/5 rejects gateway Query/Data from 0.0.0.0
-before a relay is learned. 3/5 requires exactly four bytes for the IPv4
-input attributes, avoiding silent truncation of larger payloads. 4/5 makes
-pre-Query report drops visible and stops counting forwarded reports as
-drops. 5/5 keys relay tunnels on the (address, port) endpoint, authenticates
-Updates before allocating tunnel state, and closes the report-group and
-post-stop creation races found in review of v3.
+This also avoids rebinding a live AF_XDP pool to a temporary RXQ. XDP
+rejects jumbo MTUs, so all supported XDP MTU changes take this path.
+Jumbo transitions still use the existing reopen path.
 
-Each patch carries a Fixes: tag. The exact tip builds warning-free with
-GCC and Clang, W=1, with IPv6 enabled and disabled. A KASAN + lockdep +
-PROVE_RCU kernel passes amt.sh 6/6 with no splats. The full-table control
-(max_tunnels=1) gives the same result as v3.
+Found by source review while working on the stmmac MTU/resume recovery
+series. The fast path was tested on Allwinner H616 with sun8i EMAC1 and
+an AC300 PHY. The AF_XDP scenario was identified by inspection.
 
-v4:
-- 1/5: unlink tunnels in place with list_del_rcu() and defer their free
-  with kfree_rcu(); do not splice onto a stack head visible to RCU readers.
-- 3/5: replace the IPv6-length special case with NLA_POLICY_EXACT_LEN for
-  LOCAL_IP and DISCOVERY_IP. REMOTE_IP is output-only and is unchanged.
-- 4/5: return directly after a successful Membership Update, use
-  DEV_STATS_INC() for tx counters, and clarify the debug message.
-- 5/5: fold v3's endpoint-keying patch into the authenticated-allocation
-  patch, so no intermediate commit allocates unauthenticated port-keyed
-  tunnels; retain four secret generations (180s floor > 125s QQIC);
-  withhold Queries at both tunnel limits and silently drop refused
-  Requests; re-check dead under the tunnel lock before report handling;
-  reject creation after device stop.
-- Rewrap the comments reported by NIPA at 80 columns.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v2:
+- Target net-next and drop the Fixes tag as requested by Jakub Kicinski.
+- Clarify the standalone commit message and how the issue was found.
+- Add Nicolai Buchwitz's Reviewed-by.
+- No code changes.
+- Link to v1: https://patch.msgid.link/20260930-stmmac-mtu-fastpath-v1-1-fd73f378c071@gmail.com
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-v3: https://lore.kernel.org/netdev/20261012125943.558629-1-omar@blockcast.net/
-v2: https://lore.kernel.org/netdev/20261009201455.1904698-1-omar@blockcast.net/
-v1: https://lore.kernel.org/netdev/20261008003606.3666617-1-omar@blockcast.net/
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 56d89a696272..50eaee656cfb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -6257,7 +6257,12 @@ static int stmmac_change_mtu(struct net_device *dev, int new_mtu)
+ 	if ((txfifosz < new_mtu) || (new_mtu > BUF_SIZE_16KiB))
+ 		return -EINVAL;
+ 
+-	if (netif_running(dev)) {
++	/* Normal-size frames use the same buffers and MAC receive limits.
++	 * In particular, do not disturb a live AF_XDP pool: XDP does not
++	 * support jumbo frames, so it never needs the ring replacement below.
++	 */
++	if (netif_running(dev) &&
++	    (dev->mtu > ETH_DATA_LEN || mtu > ETH_DATA_LEN)) {
+ 		netdev_dbg(priv->dev, "restarting interface to change its MTU\n");
+ 		/* Try to allocate the new DMA conf with the new mtu */
+ 		dma_conf = stmmac_setup_dma_desc(priv, mtu);
 
-Omar Ramadan (5):
-  amt: fix use-after-free when a Membership Update re-arms a freed
-    tunnel
-  amt: reject a gateway Query or Data from 0.0.0.0 before a relay is
-    learned
-  amt: require an exact IPv4-sized IFLA_AMT_{LOCAL,DISCOVERY}_IP
-  amt: make pre-query report drops visible
-  amt: harden relay tunnel lifetime and request admission
+---
+base-commit: 05b5019b01fb9443b09ae4ed34af1135a80a84c8
+change-id: 20260930-stmmac-mtu-fastpath-68813ead3b90
 
- drivers/net/amt.c | 389 +++++++++++++++++++++++++++++++++++-----------
- include/net/amt.h |  27 +++-
- 2 files changed, 317 insertions(+), 99 deletions(-)
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
