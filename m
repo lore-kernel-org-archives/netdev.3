@@ -1,144 +1,220 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3120386571;
-	Tue, 13 Oct 2026 11:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791889613; cv=none; b=ZrZWKEoDwX4Q53RlE1/hfnti3hIiEL75k7AVoVtDK3Wut95Q7hlaPwnhrAG24MqTFErUh7xzmj5sKuxOAzoGH1T0gl7B684CFireUCCXTYfftkmz/t69fneTdonLKrP63XthvfTVILVhpeJ/FYfLx5hC5R4WKALDBmq80TylLA8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791889613; c=relaxed/simple;
-	bh=l4SgfMHJt6oss5CdVxmgnru2ej0ZB6Hx1PjV97qxQDQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M3iF88HgTLawHMKc8BobvZZ7fPp1YsElwPTsWvsWK1dfFCzFIWdlcm63j+4EEiCYwm5C4U2Y2HF8OCqr5a4lXRbBvlUzJV/X1UWxS7KBoRBydLyZ9IOzA/koL7Beik+i2Yreg0mbQcRNYRv5nayeG1FIDeZU5L2BlD7ajTKzFCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oBDJPa1j; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47474DDB32
+	for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 11:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791889789; cv=pass; b=K9nGvJBCBqn+VVqwBHnFbazmU7vHDW8FpINjbQiPo7HQTP3FbEdPCYTmdCZeXpjVDoUZpq82991BTTWXU75t9l5bahwpI8nQlkW66pQLAuDceV5LWejAqGUb/KiFysn83WpmdsHjKYY6l3mNEinWFukkzyuGQ+lWwBXJeJQaIKw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791889789; c=relaxed/simple;
+	bh=UcZVzRhoeIQP/WKE5W4aqOHyJbP2LuAlVU78KsWakoA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PqRjLl82fi8BBi1ZpLBzMrVMf+DTSk2uRw2U/LsGxohNnNFIX058rk1gHUVGEWSWbPFKyU7qdWCsJrv2/n6GY9VXCkqbTy54pi1E5+pFnRZuO/LiPdoTcAC8mZ2nLEiIaT3ZRmizzl2y9bkSlMPPMUVvgRlSjNN8iMgDmTq1Hkk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFxLqOIQ; arc=pass smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oBDJPa1j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879071F000FF;
-	Tue, 13 Oct 2026 11:06:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791889612;
-	bh=wcA9fhPG0oSyL4cbPGDpUO0KZiowx8q5haLFn7LRlFE=;
-	h=Date:Subject:List-Id:To:Cc:References:From:In-Reply-To;
-	b=oBDJPa1jPL+/onrK8fQoCOVBlihc25js/H2NtNLihmVVMb50mUlZULQGs1RlxN5l8
-	 aWJleQmwz27glDKiKrt5fxwfjwwoXdkM1bEi+mmT9pTi5ZefX7QCbTtZYGp63agN18
-	 TZEk2jPjou5oRheY0MFv3Kj8VbUhDfe5EEFbs6AJZLbfeeiw2Dv39ToH7RcsVVaCVV
-	 AxIG2tKbfrmrTUsda/6ruLRJ/sWX+Px5tAXQaINiZDanrGiJzAJBded5mO8+xs7wV1
-	 1m0PaQx9k+AQ84dnAVcU8hzhdJ0oEL61fsAC5d2lPUDKlr5h7csS5pMr7GkHMDRXua
-	 30omhPNpueOWA==
-Message-ID: <f808883b-464e-4de8-a0c1-f799fd3d755e@kernel.org>
-Date: Tue, 13 Oct 2026 13:06:41 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YFxLqOIQ"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c350e0563b6so29423266b.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 04:09:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791889786; cv=none;
+        d=google.com; s=arc-20260327;
+        b=L0GWJLN/n9N+uGBPSr2P5SOZaCZ3YxCO3qcNwFhREN1pFeyo57lr50QExTHIYUWFjf
+         wu/Yu/PsX45XpftdjmF13KyhxVKi0AKP1Yc6gJSAypGf5jY+qhoJ3a3uuCCuCloJd/UJ
+         nAy8kIa+u1RT6tZiAtHPbKJvX1cUWe+hfNRJruFKaeB/vDr8D23RkM/mZlqAQ9cKoWwu
+         Ll05RDHC+KvKLp0/4dgmgtJzY1NTvm9REDS6imwb9hOd75xw4D9riy5kVadM+kMNPJMG
+         e7HBtxqRwGzE8vxZfzmZl23GGw/Lcn9o8XS9FxEKxRTiirOi8ixWWdKKZURm+5wqubeb
+         DAuQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qUYEAbMlagK2BL2xVw0lZM8FgHGPeijkSqSYtKkyQKU=;
+        fh=3W44z9DH/Z2Jr3o9VHbBZMgY2nKt7Vxr2La1vGZ1x9w=;
+        b=Z4nK1QUmtIPTfgDsENmnHkNANKaPzbovHZFuDR5e7Hixi0yamcGYQ5seTn+Hcvvukb
+         9N3a/gfjLnLkyVyXBH9LBDQG9ya0qYtlPmn3NAEXeejeS09EpRneBvCuAtc0Jlpi0WkY
+         Wvl3m3RnmEz/6GJP8gtoeYQ39HlvKXYtAPL4yt1oi+MCCYbA5BSZHCsLxUYJff+EwOd0
+         K27qlEdOLIvc98EHG3nAY2dTI/Nf15TtQoK8UA4dpbwu6noNwf9bXB/AtkAAUghb/+Ol
+         z8s4L4KK6XZh4k2wgHTUWMCuCsahHMrxrcR/endJNnxLZzmgkEvHiRwpeQLrfopWXZDU
+         YH8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791889786; x=1792494586; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qUYEAbMlagK2BL2xVw0lZM8FgHGPeijkSqSYtKkyQKU=;
+        b=YFxLqOIQyKcsHKYZ7D6hmlPpzOvsMCiLeHRRZBnCZqcxW1mGEBWT1FTFIyb7gm6DWw
+         o1DgDtPzrOTTXOP0Rkp2eKOdbrAFZ6eh5pBd7fKblMm8B19g0uZDAYMnQNoHxe/rLcwI
+         OUSfQVlFzEbhbBb0i6T3XuWlNYW1LdgHUX38CMOaMu7gkZu5VdY7rHBJn7ESOZUPXoxA
+         zeHFSIhrX8WiGqFGq9HJT408hZ6+c5YoDsJu9prpzHymywBbx3o5okMKEtlQ3oB/obIO
+         /W+zUZoontGefPsIceMlYcO4qonuzB3V6qOoYQiBv4fzUqIUQio3CcHEsO9aPa8eupFK
+         rPqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791889786; x=1792494586;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qUYEAbMlagK2BL2xVw0lZM8FgHGPeijkSqSYtKkyQKU=;
+        b=I3OoCu56t+EcfUtr5e+6F5iQ49JQ0N+a9RvRIk5MzYI/6nH8kbe6S3PTgNnp+d/lNP
+         rCwbkeyQipC1QeXOyg4uazZJOGkjZhe2ITRejSS9HnVseQlMu7QIkng0qJNbOAFnvGmK
+         JbVUkrUMUgBV+F0J1HRlYaNgCgXaUq/1KXPP6APcUwo6KktS7u3+vYOjgsRERNR4J5C2
+         jVwlYknPnQgomgF+DkBA9ebE1d35NXZQ5hKZP4un4Is7RYZkVwXCGW5xQj000pabNfed
+         kvjrTxgiq1YK1YNO+qsKOW63BKXe2PlCtuYr/LT9z8gFKrQWoTXIQTHn8Inplv+sschB
+         c4EQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx4Y6cHRWCGpPJAyMhYZAn1AD919eOFl7kexiqzoZeDLREfqgP2QnXekxMO3S6UFuIiRC2sFXE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKrCFMYB7/9vx4BKLE/2nygr1gIZBEnjmLcAbK97ZX8YEexSGcb
+	LwA9sEfhx1yukZXFIrIREOWPIUUQZEzONImoPOrBupUAXUg920wjbq8SGW2qXo9mEnYbmqYR0Am
+	cgoNM9OHTWz78mBjlWr60LzgG2roRt3Y=
+X-Gm-Gg: AYBFou2o0fDvPaD7IrJGtcJsfC61lDSABaiiRbjrwAxtRqmcZtcheW3WCUrapEf07wt
+	PbiyOaMsffh9RPEgwvcBdCzasvgrpr9Kb5TKD+zYYY9/wVlwzSObcrEvV6Lby47HXO/HG7rh790
+	ey712EIz6GoqwbflhqlOomApNzTQUciacogX0OvaVye+wdjKzqWuOpndCA5Xb9lHRnEt7uDzgWu
+	fm0JDFfVSw0JdPoekZ+gWXLRvGvXYfIbMZmrQH4GZw6yyhl7oBp3+IcdPBrKswEfm2yA0jAmx1e
+	FxKMFn4ey8PAolz9/wGXqfWhZGURUgMZIxdd0docUhiinxiXjO+R9WIdWDct2/BfAWifbJhxz17
+	RMRHpZya4
+X-Received: by 2002:a17:907:7fab:b0:c29:5637:ed76 with SMTP id
+ a640c23a62f3a-c31a9d117ebmr1341139566b.2.1791889785658; Tue, 13 Oct 2026
+ 04:09:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/6] serial: 8250: make port operations work on struct
- uart_8250_port
-To: Alejandro Colomar <alx+linux-hardening@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- gregkh@linuxfoundation.org, linux-serial@vger.kernel.org,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Ryan Chen <ryan_chen@aspeedtech.com>, Billy Tsai
- <billy_tsai@aspeedtech.com>, Florian Fainelli
- <florian.fainelli@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <ray.jui@broadcom.com>,
- Scott Branden <scott.branden@broadcom.com>, Al Cooper <alcooperx@gmail.com>,
- Paul Cercueil <paul@crapouillou.net>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Chaitanya Vadrevu <chaitanya.vadrevu@emerson.com>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Helge Deller <deller@gmx.de>,
- Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Masami Hiramatsu <mhiramat@kernel.org>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig_=28The_Capable_Hub=29?=
- <u.kleine-koenig@baylibre.com>, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
- linux-rpi-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-parisc@vger.kernel.org,
- linux-tegra@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <cover.1791873876.git.jirislaby@kernel.org>
- <c59fa203f325e0fe7601ea0fbc0d222c8b37f9eb.1791873876.git.jirislaby@kernel.org>
- <as3etnbZatn4sbfx@ashevche-desk.local>
- <c6b08f53-b5ee-44c8-93d1-54fdf5994ed2@kernel.org>
- <as31PsESOgLUhMB6@ashevche-desk.local>
- <b404f3d7-1b2d-418a-8634-72c61ce33f8b@kernel.org> <as4JDXOIGvCbAnE_@debian>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
- rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
- rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
- i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
- wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
- ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
- cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
- 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
- w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
- YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
- IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
- BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
- eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
- 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
- XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
- l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
- UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
- gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
- oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
- o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
- Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
- wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
- t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
- YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
- DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
- f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
- 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
- 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
- /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
- 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
- 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
- 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
- wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
- 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
- jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
- wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
- wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
- W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
- f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
- DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
- S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <as4JDXOIGvCbAnE_@debian>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260904165544.1362052-1-nicoyip.dev@gmail.com> <20260906153354.GB323313@shredder>
+In-Reply-To: <20260906153354.GB323313@shredder>
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+Date: Tue, 13 Oct 2026 19:09:33 +0800
+X-Gm-Features: AclHuK9729ycb5UEiVzzWrhYB1-2Fn5qggRfxnH7xBdvI19vdn6NyzLlKfU2-Is
+Message-ID: <CAAo+4rW_P18KuihU+1DDyRrs8W-6TX52n=vBAWm=2uyfAK=V0Q@mail.gmail.com>
+Subject: Re: [PATCH net v4] ip_tunnel: reserve FOU/GUE headroom before encapsulation
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Xin Long <lucien.xin@gmail.com>, William Tu <u9012063@gmail.com>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 13. 10. 26, 12:51, Alejandro Colomar wrote:
-> 	alx@debian:~/src/linux/linux/master$ time rg -n ARRAY_SIZE | wc -l
-> 	58957
-> 
-> 	real	0m0.512s
-> 	user	0m0.490s
-> 	sys	0m0.974s
-> 
-> It's around 50% faster, which I wouldn't call orders of magnitude.
+Hi Ido,
 
-If you pipe rg's output somewhere, it no longer works in parallel.
+On Sun, Sep 6, 2026 at 11:34=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
+>
+> On Sat, Sep 05, 2026 at 12:55:44AM +0800, Chengfeng Ye wrote:
+> > ip_tunnel_encap() expects its callers to reserve headroom based on
+> > ip_encap_hlen(). ip_tunnel_xmit() currently pushes FOU and GUE headers
+> > before it grows the skb headroom.
+> >
+> > That becomes visible when ipgre_changelink() publishes UDP
+> > encapsulation before it updates the device headroom. The transmit path
+> > does not serialize with RTNL, so it can interleave as follows:
+> >
+> >   CPU 0 (ipgre_changelink)        CPU 1 (ipgre_xmit)
+> >   install GUE encapsulation
+> >                                   reserve the old needed_headroom
+> >   publish larger GRE flags
+> >   update tunnel->tun_hlen
+> >                                   push the larger GRE header
+> >                                   push the GUE and UDP headers
+> >   update dev->needed_headroom
+> >
+> > With REMCSUM, the new layout can push 16 bytes of GRE and 20 bytes of
+> > GUE/UDP headers into an skb with only 32 bytes of actual headroom. The
+> > final UDP push writes four bytes before skb->head.
+> >
+> > With the update window widened, the kernel reported:
+> >
+> >   skbuff: skb_under_panic: ... len:128 put:8 ... dev:gre0poc
+> >   kernel BUG at net/core/skbuff.c:214!
+> >   Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+> >   Call Trace:
+> >    skb_push
+> >    fou_build_udp
+> >    gue_build_header
+> >    ip_tunnel_xmit
+> >    __gre_xmit
+> >    ipgre_xmit
+> >
+> > Snapshot tunnel->encap, route and perform PMTU handling first, then
+> > reserve the final headroom before ip_tunnel_encap() builds the UDP
+> > tunnel headers. Because encapsulation is now delayed, pass the
+> > snapshotted encap length into tnl_update_pmtu() so the inner packet
+> > size stays skb->len + encap_hlen - tunnel_hlen.
+> >
+> > ip_md_tunnel_xmit() is left unchanged. It takes FOU/GUE parameters
+> > from the skb metadata dst, not from the device configuration, so it
+> > is not exposed to this race. tnl_update_pmtu() still runs after
+> > encapsulation there, so that path passes 0 for the extra length.
+> >
+> > The IPv6 analogue of this headroom reservation is still work in
+> > progress.
+>
+> Please wait for the IPv6 part to be accepted (some changes are needed
+> there and here as well) and then mention its sha1 in the commit message:
+> https://lore.kernel.org/netdev/2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1=
+788262122.git.petalzu987@gmail.com/
 
-Are we really about to discuss this?
+It seems that patch has not yet been accepted yet. Has there been an
+updated series that I should follow?
 
--- 
-js
-suse labs
+Should I continue waiting for that work, or would it make sense to
+prepare the IPv4 headroom fix separately while addressing your other
+comments?
+
+I also noticed a newer overlapping IPv4 patch:
+https://lore.kernel.org/r/20261010223601.1193655-1-theodorlarionov@gmail.co=
+m/
+
+Best regards,
+Chengfeng
+
+
+>
+> >
+> > Link: https://lore.kernel.org/netdev/b58876297f7d45de008f2e94b6ecab8b2e=
+d84d21.1786088695.git.petalzu987@gmail.com/
+> > Fixes: dd9d598c6657 ("ip_gre: add the support for i/o_flags update via =
+netlink")
+>
+> Looks like a more suitable Fixes tag:
+>
+> Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp e=
+ncapsulation")
+>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> > ---
+> > Changes in v4:
+> > - Not restructure ip_md_tunnel_xmit(); only pass 0 into the new
+> >   tnl_update_pmtu() argument.
+> > - Snapshot tunnel->encap with data_race() and reuse the copy for both
+> >   ip_encap_hlen() and ip_tunnel_encap().
+> > - Fix tnl_update_pmtu() inner packet size after delaying the encap
+> >   push: pkt_size =3D skb->len + encap_hlen - tunnel_hlen.
+> > - Keep reverse xmas tree for the new locals.
+> > - Note that the IPv6 FOU/GUE headroom fix is still WIP.
+> >
+> > Changes in v3:
+> > - Move the headroom reservation into ip_tunnel_xmit() instead of
+> >   growing the skb inside the FOU/GUE builders.
+> > - Use ip_encap_hlen() to reserve the final caller-side headroom before
+> >   ip_tunnel_encap().
+> > - Drop the IPv4 raw-pointer refreshes that were only needed when
+> >   skb_cow_head() could run inside the encapsulation builders.
+> >
+> > Link: https://lore.kernel.org/netdev/20260824111944.187200-1-nicoyip.de=
+v@gmail.com/ [v3]
+> > Link: https://lore.kernel.org/netdev/20260808005956.3761487-1-nicoyip.d=
+ev@gmail.com/ [v2]
+> > Link: https://lore.kernel.org/netdev/20260801060115.3538849-1-nicoyip.d=
+ev@gmail.com/ [v1]
+> > ---
+> >  net/ipv4/ip_tunnel.c | 24 ++++++++++++++++++------
+> >  1 file changed, 18 insertions(+), 6 deletions(-)
+>
+> ipip6_tunnel_xmit() also calls ip_tunnel_encap() and seems to have the
+> same problem as ip6_tnl_xmit().
