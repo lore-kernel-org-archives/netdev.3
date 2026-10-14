@@ -1,326 +1,226 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78E74E323D;
-	Wed, 14 Oct 2026 10:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791972005; cv=none; b=HmUsDut8FdMrrDo0QeQUOICul2ZgK44udEVL0d7Z8eo9DgW11oeBlxQUY84OJBFoqQw7WTtGcLIlmPoWbdBGhyv/ug15C8tt3jILCRBc3LO5YeUaBkXCRmYChoxshVphhHZD9Zsd1TlfdGZjVJI1siTiFWg9mBmut6OTYq1CM0o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791972005; c=relaxed/simple;
-	bh=k5iO9wvNr9q6UBwSYLG3p7VKauGZZ9xWZCkjcGBVkkA=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z58lfh+k6ie4aT0mHClxDYaoc/Wk1SvGaZOjZjRdblQ1DKkbPyncT6p5N7X22C8W8u4IZXsU2CdjbwMd1GrebM3dEfb8pttf5jaX5X8RLpLbIiSLCoyS2bCLfRN3UeJIPfMqGWnX5HfPA6ZXOVmXcfAEtQZXwoaN8ixkdgeNj48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=y7u+xHRk; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530014EA37B
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791972180; cv=pass; b=eqJ4/12t+nBKa11sds5lZf2UHOa7nnyDk8AuPJVhT+SohAWYUU+bkMEasyr06++BZQz5ojyNcDno+AGrkqU0betoBskIdwBSGXrCQgNz4dRBXP3fzXaOQ+s+FbZXRsLCjRMHW3mwL2bf595rH0HztYsiMaIY8co+1mUA8EsW5LQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791972180; c=relaxed/simple;
+	bh=4/XyayOHDRiLNGYPeeSA0Tk68l1jO5a9bJjfyvrkK7E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gbx4V+uiauK8aQ75qJSUEHoyyDmoDJCmBnBn34edV11/rlxwrZghCNcIaz30r+wPMCPn5CYR0sNREn/MH1rqSWbQImtV8/fs1VG94iqo2OGZtAYAMd6FKqkPUKfmslRpPlYohxn7sNvgkfirU14wBKjSBPZoldAHz2/sqqvOn9o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=cBc39ErF; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="y7u+xHRk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1791972003; x=1823508003;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=k5iO9wvNr9q6UBwSYLG3p7VKauGZZ9xWZCkjcGBVkkA=;
-  b=y7u+xHRkq65EgvcR3T2AzMdDE5DfBZ0bHuDj/P1GQLh4l7ufajJ3deeC
-   Dx0AtIYL1pcE4+Y7rqXWTOSLHcShKpseoawLqIYqZakt5NKApOlihBtSS
-   sbeeKGyl6zhdMbpjzxS2EvHWdS+rUwi5FfjRO4OfXRSrNy7ma4p7dcjnd
-   FtmM0GLlUudV08JaPYzWHspKii33lKenQIHoOMcBZHcbKBCeT6PXKXby0
-   cSyrUSzhdC386+FaXxpdFGmjqTi0BLIafSCejMI0nY8oH/rlvSPW4PCWf
-   6eoWflBmbZTJvR0J/qZIMiVPsfzUEIbdXpEMDU9LqGTQX0tInC7x3Xh++
-   Q==;
-X-CSE-ConnectionGUID: +AgjuoQ3Q1yhSnY9YAPcGA==
-X-CSE-MsgGUID: 46xyAabAR4S5eetuz+uEmg==
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="64075340"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Oct 2026 02:59:56 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 14 Oct 2026 02:59:56 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 14 Oct 2026 02:59:52 -0700
-Message-ID: <08cf1da4e15141060ceece86fa1c03ada384ba82.camel@microchip.com>
-Subject: Re: [PATCH net-next v14 1/9] net: dsa: add tag driver for LAN9645X
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <UNGLinuxDriver@microchip.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<horms@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <woojung.huh@microchip.com>, <linux@armlinux.org.uk>,
-	<Steen.Hegelund@microchip.com>, <daniel.machon@microchip.com>,
-	<geert+renesas@glider.be>, <magnus.damm@gmail.com>, <edumazet@kernel.org>,
-	<richardcochran@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-renesas-soc@vger.kernel.org>
-Date: Wed, 14 Oct 2026 11:59:52 +0200
-In-Reply-To: <179180427718.434549.18360749106735687436@kernel.org>
-References: <20261008-dsa_lan9645x_switch_driver_base-v14-1-3d2a72661213@microchip.com>
-	 <179180427718.434549.18360749106735687436@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="cBc39ErF"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-88834d30002so1872023b3a.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 03:02:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791972177; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZRgC8hEaU9zIiKrPMN7OLyltRoaI7ksXwkrKighH2hh4N6Ey1rOS96920O4ZnF4xmz
+         4xAEXTQGeOvbLK6h5kKrkBwUBzJRvnbUE56MOmbB0kQk+ahh9QGj/8ImN8oasXE8edC/
+         8Czygeq2P1EguI+C1PqskbF7i0tmos9QNTIldAlv9uMKGP62iCzAMOYLkxCDYcFoxMsg
+         /ZiL3wg1q3hOKoQhdO+ve+bzWF/67UpZKHeBJnbBXuJ/fmDX97NLhJN5cA3r5c7utGkM
+         nHuwN3Fs8w25FDrUvRPaVnK3kbBkyH1Q/3+D4g0oLRnhkRXlHwV4y76k1NP1dC3aXV5N
+         J78w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AE0HN+fFvA2udY0NoWO2S7SaNrvjPqbhVXYmeMDtfk8=;
+        fh=MPnvnwOm34hiEvEPfx7qF9zN9L7c9r2UxLMadf15Td4=;
+        b=Aip30zYjS4qAZgJ9hbg0hb4FC0CZeRCaD3xm39momoN3Qfl6GmMlW1261MQoEXQX//
+         fLapb/K9cT5cHB1eTEykjIcQO5vIciq0zDldCwRJdRTNBGXQxJ0cHCRdGFnyDr6K6v/+
+         m/6PMneLZQlS6Vf5opHAITIiYgw6byDv1cuNJs4L1pMVRfxqtEHnphbVn5ecronzwZSR
+         WkGDtbejRFZgX/zR8J9i9GmxS96CpB4SBd16BC31RONKxNVN3x5TeJSsiJE4cD/G9tL+
+         48ZBg4oVzAp3WZz3DxfrX9Pl3wP8YYZFHAdZPmQjk8JbAPZ0qrrn3WWcxY78Kf/q8hl6
+         1FLw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1791972177; x=1792576977; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AE0HN+fFvA2udY0NoWO2S7SaNrvjPqbhVXYmeMDtfk8=;
+        b=cBc39ErF9Fcr4i6RfkcOSjDiHOF2udUv8XURBcMFqtToituLa4bIcDcp7vXdL038l1
+         72jD0cYbfjtCADk1YjEz5upCkdzuzFr7oVbA5AMspzZj0p2l+hLjRzlupS5ySDCLjUHX
+         SCQ7ZpUyHGjhkZ0Xvhrufr/lAwX3NXe5s3d7k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791972177; x=1792576977;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AE0HN+fFvA2udY0NoWO2S7SaNrvjPqbhVXYmeMDtfk8=;
+        b=P0db8VIPacfjQMlLX+H15YwOH8hfacYdvH6REhdQn2NPDGi6VJt6mS60RDYvs2ccpA
+         XMI9CYxpKOv2STJw/5bsS84c1BegoOpB5obj1+49p8BPK1dw6BVxoD3ELlr52W02fMis
+         wYlteDCldI2N4Fkoq+obsHP+vxD9NE7Rg25n/rU2F2ETENTNiGzlFEEaEUNzux3IxiWd
+         54zVQKwi7SLhMQg+Hoj7XSVvL7zLrpNocAsVMp1BMVprieHjbRo7uC9dkDqoVqmn2m6j
+         YCOd8IpFRV1c6WYFuL0JA8hX3mffhywgI8uHkeiNfYsqjv7CjhKf9p/OWXkzUs1ra/g/
+         lcQw==
+X-Gm-Message-State: AFq9FYJz6mg9bdXGtJhZi5Y7V/YdyouQ0ioisnkOeuUz2wWr/C1QCztF
+	UOpKtBu7DQvrqGZXtM4UyoYSYTwYvjntpVdKGXKdqISDzXtNBKU7e35FnAJOmK8CPoZY7EApEgK
+	dfU4WW5QYe/puygLFKYNqr1W1hroUrloM/UjdXNNd
+X-Gm-Gg: AYBFou3OpQWis+c0VpIDcVMci+hyet0zdVe+G2y9Fr/OQutKaedbXNB/L/wEjEFiAGV
+	jITR5RlRaQh+ACL41aOZx8i9FqxIxqz0i4bbPtY8PrCRT265K3Gd16dLJ9BgyPvsgIP8P/IGY7T
+	HA4uqK4HuviPSr3FZtAUElZBWctpQEcOZcs/4MFrYoY4Nex2vMKYlLdL6YQNq0RJLsHF7W/6Ftx
+	6RJkYm9vV1IhRj13Y4oFlpdzyH3p4kQyZw4G7Fmc+4yad0Nhz0EMJ7OwZMvF/cfEU0aaKF2vxN+
+	iDKC4f58pckUhvHHM8leSohU8zTKsYohZmg6x3stkyFBGNU0OP6dYcAz55IGfDYr0BEEi9V7F2U
+	8tp7rSMt6LpYIn/iPqoi30p5YRklRT/3YuQ==
+X-Received: by 2002:a05:6300:6d93:20b0:3e1:73d6:6932 with SMTP id
+ adf61e73a8af0-3e173d67534mr7370477637.79.1791972177472; Wed, 14 Oct 2026
+ 03:02:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <QDISC-H19Z.v3.r0.20261012193813-5@mojatatu.com> <179196934366.434549.16677487229407143890@kernel.org>
+In-Reply-To: <179196934366.434549.16677487229407143890@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 14 Oct 2026 06:02:46 -0400
+X-Gm-Features: AclHuK8StpvJM4uG8WzP41Ya8StQaTFXp8VlAXPbuSDUD4TGpgKBY4uJQ8Dd7qc
+Message-ID: <CAM0EoMkiAH_qnPARiXx9en-r=x2=w2sxNO2TWSmyG_LKJKx2cA@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 5/5] net/sched: act_api: report an oversized
+ action dump instead of silently truncating it
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	victor@mojatatu.com, p@1g4.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-10-12 at 11:24 +0000, netdev-bot+sashiko@kernel.org wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->=20
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (1) =C2=B7 Low: 2
->=20
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->=20
-> - [Medium] In lan9645x_rcv() (net/dsa/tag_lan9645x.c:459), every tag
->   popped by the hardware is restored as an 802.1Q hwaccel tag with=E2=80=
-=A6
-> - [Low] The comment above skb_postpull_rcsum() in lan9645x_rcv()
->   (net/dsa/tag_lan9645x.c:416-421) says the bytes to subtract are "what=
+On Wed, Oct 14, 2026 at 5:15=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found more severe
+> issue(s) in other patches of this series. This mail is only an FYI, in ca=
+se
+> you want to address the nit picks below when you respin.
+>
+> Low priority / nit picks for your consideration:
+>
+> - [Low] The patch has no Fixes: tag for the old silent-truncation path in
+>   tcf_dump_walker() (`index--; nlmsg_trim; goto done; return n_i`).
+> - [Low] The new comment above `return n_i ?: err;` in tcf_dump_walker()
+>   (net/sched/act_api.c:625-630) does not match the code or af_netlink's=
 =E2=80=A6
-> - [Low] lan9645x_rcv() (net/dsa/tag_lan9645x.c:450) restores the popped
->   VLAN tag only when `dsa_port_is_vlan_filtering(dp) && ifh_gap_len`.
->=20
-> Pre-existing issues:
-> - [Medium] This problem wasn't introduced by this patch, but the new
->   tagger adds another lockless reader of it.
->=20
+>
+
+Since all feedback on patches 1-5 are nitpicks on commit log or
+comment I will not be making any changes unless something substantial
+shows up.
+
+cheers,
+jamal
 > --
->=20
-> net: dsa: add tag driver for LAN9645X
->=20
-> This adds a DSA tag driver for the Microchip LAN9645x switch when a front
-> port is used as the CPU (NPI) port. Extraction uses a long prefix plus a
-> 28 byte IFH, and injection uses only the IFH. VLAN tags popped by the
-> hardware are restored on receive as 802.1Q hwaccel tags, and on transmit
-> the VLAN tag is moved from the payload into the IFH.
->=20
-> > diff --git a/net/dsa/tag_lan9645x.c b/net/dsa/tag_lan9645x.c
-> > new file mode 100644
-> > index 0000000000000..00339daecfcbd
-> > --- /dev/null
-> > +++ b/net/dsa/tag_lan9645x.c
-> > @@ -0,0 +1,514 @@
->=20
+>
+> net/sched: act_api: report an oversized action dump instead of silently t=
+runcating it
+>
+> When an action does not fit even into an empty dump skb, tcf_dump_walker(=
+)
+> now returns -EMSGSIZE with an extack instead of 0. tc_dump_action() now
+> passes the walker's error up instead of returning skb->len. Before this
+> change, "tc actions ls" silently left out that action and every action
+> after it.
+>
+> Closes: https://lore.kernel.org/netdev/vPFrhbkwAui8zFPcGQTUDazQfsFDlr5GYu=
+aYQ5BxJcrDiT6x1EljEze4cYadHqbeUW2ivLdpa8eC_cXC6ceACswgb-lW47aSVkHvHjhn_X8=
+=3D@1g4.org/
+>
+> > That case is reachable inside the gate entry cap this series adds: a ga=
+te
+> > entry serializes to 36 bytes (40 with the gate-open flag) while a dump =
+skb
+> > is clamped to SKB_WITH_OVERHEAD(32768) by netlink_recvmsg()/netlink_dum=
+p(),
+> > so the top of the range the cap admits installs but cannot be dumped -
+> > and, before this change, fails silently.
+>
 > [ ... ]
->=20
-> > +static struct sk_buff *lan9645x_xmit(struct sk_buff *skb,
-> > +                                  struct net_device *ndev)
-> > +{
-> > +     struct dsa_port *dp =3D dsa_user_to_port(ndev);
-> > +     u32 vlan_tci, tag_type;
-> > +     u32 qos_class;
-> > +     void *ifh;
-> > +
-> > +     skb =3D lan9645x_xmit_get_vlan_info(skb, dsa_port_bridge_dev_get(=
-dp),
-> > +                                       &vlan_tci, &tag_type);
->=20
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but this adds one more lockles=
-s
-> reader of dp->bridge in the xmit path.
->=20
-> dsa_port_bridge_dev_get() does this with no READ_ONCE() and no lifetime
-> protection:
->=20
->         return dp->bridge ? dp->bridge->dev : NULL;
->=20
-> On bridge leave, dsa_port_bridge_leave()->dsa_port_bridge_destroy() clear=
-s
-> the pointer and frees the last reference right away:
->=20
->         dp->bridge =3D NULL;
->=20
->         if (!refcount_dec_and_test(&bridge->refcount))
->                 return;
->         ...
->         kfree(bridge);
->=20
-> There is no RCU grace period between the two. Can a transmit on the user
-> port that races with the bridge leave load the old dp->bridge and then re=
-ad
-> ->dev from a freed dsa_bridge?
->=20
-> The window is narrow. tag_ocelot.c, tag_sja1105.c and the
-> dsa_software_vlan_untag() helpers use the same pattern, so the root cause
-> is in the DSA core and not in this tagger.
->=20
-
-Dismissed, preexisting.
-
-This is the existing DSA core pattern, shared with tag_dsa, tag_ocelot,
-tag_sja1105, tag_vsc73xx_8021q and dsa_software_vlan_untag().
-dsa_port_bridge_destroy() frees the dsa_bridge without waiting for a
-grace period, so a tagger cannot fix this locally. The fix belongs in
-the DSA core.
-
-
-> [ ... ]
->=20
-> > +     /* Reset skb->data past the actual ethernet header. */
-> > +     skb_pull(skb, ETH_HLEN);
-> > +
-> > +     /* We must deliver the skb so skb->csum only covers the data beyo=
-nd the
-> > +      * real ethernet header. The fake ethernet header in the prefix i=
-s
-> > +      * not part of skb->csum already. We must subtract what remains o=
-f the
-> > +      * prefix, the ifh and the gap. The start is derived from the cur=
-rent
-> > +      * skb->data rather than saved on entry, because the pskb_may_pul=
-l()
-> > +      * calls above may have reallocated skb->head.
-> > +      */
-> > +     skb_postpull_rcsum(skb,
-> > +                        skb->data - LAN9645X_TOTAL_TAG_LEN - ifh_gap_l=
-en,
-> > +                        LAN9645X_TOTAL_TAG_LEN + ifh_gap_len);
->=20
+>
+> > This is a long-standing silent failure, not a regression, so it
+> > is net-next hardening.
+>
 > [Severity: Low]
-> This isn't a bug, but the comment doesn't list everything the call
-> subtracts.
->=20
-> The length is LAN9645X_TOTAL_TAG_LEN + ifh_gap_len, which is 44 + gap
-> bytes. That is 2 bytes of prefix remainder, plus 28 bytes of IFH, plus th=
+> Would a Fixes: tag for the old silent truncation path in tcf_dump_walker(=
+)
+> be useful here, even though this goes to net-next?
+>
+> The commit message ties the trigger to the gate entry cap in this series.
+> The same truncation can also be hit without the series. act_bpf_policy in
+> net/sched/act_bpf.c allows:
+>
+>         [TCA_ACT_BPF_OPS]       =3D { .type =3D NLA_BINARY,
+>                                     .len =3D sizeof(struct sock_filter) *=
+ BPF_MAXINSNS },
+>
+> That is 32768 bytes of ops, which is more than SKB_WITH_OVERHEAD(32768).
+> So a single classic bpf action can already be too large for the dump skb.
+>
+> Leaving out Fixes: may be on purpose, because the patch turns a silent
+> success into an error and is kept out of stable. If so, could the commit
+> message say that the problem is not limited to the gate series?
+>
+> > diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> > index fd7f60e0f62ba..33dba34364541 100644
+> > --- a/net/sched/act_api.c
+> > +++ b/net/sched/act_api.c
+>
+> [ ... ]
+>
+> > @@ -626,10 +621,21 @@ static int tcf_dump_walker(struct tcf_idrinfo *id=
+rinfo, struct sk_buff *skb,
+> >               if (act_flags & TCA_ACT_FLAG_LARGE_DUMP_ON)
+> >                       cb->args[1] =3D n_i;
+> >       }
+> > -     return n_i;
+> > +
+> > +     /* A positive count means the skb filled up before this action wa=
+s
+> > +      * complete, so netlink retries it in a fresh skb. An action that
+> > +      * does not fit even in an empty dump skb (nothing dumped) must b=
 e
-> gap, plus the 14 byte real Ethernet header.
->=20
-> The code looks right, because dsa_switch_rcv() does skb_push(ETH_HLEN) an=
-d
-> then eth_type_trans() without adjusting the checksum. Could the comment
-> also mention the real Ethernet header? Otherwise someone might later
-> shorten the length to match the comment.
->=20
-> [ ... ]
->=20
-> > +     dp =3D dsa_user_to_port(skb->dev);
-> > +
-> > +     if (dsa_port_is_vlan_filtering(dp) && ifh_gap_len) {
->=20
+> > +      * reported as -EMSGSIZE by netlink instead of ending the dump.
+> > +      */
+> > +     return n_i ?: err;
+>
 > [Severity: Low]
-> Can frames lose their VLAN tag while vlan_filtering is changing?
->=20
-> dsa_port_vlan_filtering() calls the driver op before it updates the
-> software flag:
->=20
->         err =3D ds->ops->port_vlan_filtering(ds, dp->index, vlan_filterin=
-g,
->                                            extack);
->         ...
->                 dp->vlan_filtering =3D vlan_filtering;
->=20
-> In this series, lan9645x_port_vlan_filtering() programs VLAN_POP_CNT righ=
-t
-> away through lan9645x_vlan_port_apply(). Frames that the hardware pops in
-> that window reach lan9645x_rcv() with ifh_gap_len !=3D 0 while
-> dsa_port_is_vlan_filtering(dp) is still false. They are delivered with no
-> tag.
->=20
-> The reverse transition has the same problem, including bridge leave via
-> lan9645x_vlan_set_hostmode(). Frames popped before the change but handled
-> after dp->vlan_filtering is cleared also lose their tag.
->=20
-> POP_CNT is 0 on non-filtering ports, so the gap is already 0 there. Would
-> checking only ifh_gap_len keep the CPU view consistent with what the
-> hardware did?
->=20
-> > +             /* The tag is restored as a C-tag, not as the TAG_TYPE th=
-e IFH
-> > +              * reports. The classifier recognizes both TPIDs as VLAN =
-tags,
-> > +              * so an S-tag has already been used for classification b=
-y the
-> > +              * time we get here. Restoring it as 802.1AD would make t=
-he
-> > +              * bridge push it back into the payload and reclassify th=
-e frame
-> > +              * to the port pvid, on a different VID than the one the
-> > +              * hardware forwarded it on.
-> > +              */
-> > +             __vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vlan_tci)=
-;
-> > +     }
->=20
-> [Severity: Medium]
-> Is the 802.1Q-only assumption enforced anywhere? The commit message says:
->=20
->   This assumes a bridge vlan_protocol of 802.1Q, which is the only
->   protocol the driver offloads.
->=20
-> The xmit side of this file does handle non-802.1Q bridges, in
-> lan9645x_xmit_get_vlan_info():
->=20
->         br_vlan_get_proto(br, &proto);
->         ...
->                 if (ntohs(hdr->h_vlan_proto) =3D=3D proto &&
->                     ntohs(hdr->h_vlan_TCI) & VLAN_VID_MASK) {
->         ...
->         *tag_type =3D (proto !=3D ETH_P_8021Q) ? LAN9645X_IFH_TAG_TYPE_S =
-:
->                                              LAN9645X_IFH_TAG_TYPE_C;
->=20
-> DSA doesn't handle SWITCHDEV_ATTR_ID_BRIDGE_VLAN_PROTOCOL.
-> __br_vlan_set_proto() sends that attribute with
-> SWITCHDEV_F_SKIP_EOPNOTSUPP, so setting "vlan_protocol 802.1ad" on the
-> bridge seems to succeed while the lan9645x ports stay offloaded. The swit=
-ch
-> driver in this series doesn't appear to check the bridge vlan_protocol
-> either.
->=20
-> On such a bridge, every tag restored here has an 0x8100 TPID, and
-> __allowed_ingress() in net/bridge/br_vlan.c then does:
->=20
->         if (skb->vlan_proto !=3D br->vlan_proto) {
->                 /* Protocol-mismatch, empty out vlan_tci for new tag */
->                 skb_push(skb, ETH_HLEN);
->                 skb =3D vlan_insert_tag_set_proto(skb, skb->vlan_proto,
->                                                 skb_vlan_tag_get(skb));
->=20
-> This pushes the tag back into the payload and classifies the frame to the
-> pvid. Wouldn't frames trapped or copied to the CPU then land on the pvid?
-> That is the same misclassification the C-tag normalization is meant to
-> avoid, only in the opposite configuration.
->=20
-> Should rcv follow the bridge vlan_protocol the way xmit does? Or should t=
-he
-> driver refuse 802.1ad bridges?
-
-The driver does not support 802.1ad bridges, and rcv is only one part
-of that. The hardware forwarding path does not follow the bridge
-vlan_protocol. The classifier treats both TPIDs as VLAN tags, and the
-egress TPID follows the ingress tag type. Restoring the tag with the
-bridge protocol in rcv would hide one symptom without making 802.1ad
-work. On xmit the protocol is taken from the bridge because the stack
-picks the TPID of the frames it sends.
-
-In v15 I will refuse VLAN filtering on a bridge whose vlan_protocol is
-not 802.1Q. That covers creating or joining a VLAN-aware 802.1ad bridge,
-but not a later protocol change, since DSA does not propagate
-SWITCHDEV_ATTR_ID_BRIDGE_VLAN_PROTOCOL.
-
-
->=20
+> Is this comment right for every path that reaches this return in
+> tcf_dump_walker()?
+>
+> A positive n_i also comes back when the idr walk finishes after dumping
+> every action. It also comes back when the loop stops here:
+>
+>                 if (!(act_flags & TCA_ACT_FLAG_LARGE_DUMP_ON) &&
+>                     n_i >=3D TCA_ACT_MAX_PRIO)
+>                         goto done;
+>
+> The skb did not fill up in either case. After a normal finish there is
+> also nothing left to retry.
+>
+> The second sentence says -EMSGSIZE is reported "instead of ending the
+> dump". In netlink_dump() in net/netlink/af_netlink.c, a negative return
+> with an empty skb fails this check:
+>
+>         if (nlk->dump_done_errno > 0 ||
+>             skb_tailroom(skb) < nlmsg_total_size(sizeof(nlk->dump_done_er=
+rno))) {
+>
+> It then goes on to netlink_dump_done(), which sends NLMSG_DONE with the
+> error and extack, and the dump ends. So the dump still ends, but now with
+> an error instead of silently.
+>
+> Could the comment be reworded to match the return contract that
+> tc_dump_action() now relies on?
+>
+> [ ... ]
+>
 > --
 > Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261008-dsa_lan9645x_switch_driver_base-v14-0-3d2a72661213%40microchip=
-.com
-
-pw-bot: cr
-
+set/QDISC-H19Z.v3.r0.20261012193813%40mojatatu.com
