@@ -1,130 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE6E41DDF0;
-	Wed, 14 Oct 2026 20:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5B52D7DD8;
+	Wed, 14 Oct 2026 21:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792011412; cv=none; b=u1EnURHPknJ4plp+6B3iwy2jCFK6iA1qYTMQHO6pEkkCjXxMPTgdl8DXZtyrrNrbNqle+6sXg/+cG9X4dsEu9PbOrIG/9hoL0yga5VzRuDx7prGc64iKRoXyt+oKTEmV0r1W1lpFMsDTZu3Jcgkk8NRYn5S6sI9GyAu0jq83lso=
+	t=1792011791; cv=none; b=k6T8irF+ZeVWO5RLIa/hELT6fzuC+zNyJRZDNy0VIIIcChSpJ4gccaZOhRvAth+ysT+oVXCXcU6Dt0OZshoAx4YFHRnC+omxrQSkRWt6kBty7fVXI8fCjSQiPWgieNFPhsSXYMP6hjgtNim0asu1PXHkz9IEqnZw1t8betJ9Ado=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792011412; c=relaxed/simple;
-	bh=6hqYPJ6/xAsJgWntVG80XsH3EXmRejAXLJ/fskhKgjg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XmTt/uUnXP/T/ElcCZOsKErm+8wgFyctHoJnxf5b9koqdtgicj3Wd/ACN2NPwYhV++D1HHZypAYiGMfVSuYeA849Ze+/Dq8C0vXdZ+NHgaE1dVusmxhbcXWUqXLfy5ZE+BCjCjBjVHoy35sg8jPeNQxFqaW96N02RPIrO5HYcNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LmJY9Oz5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792011791; c=relaxed/simple;
+	bh=SqjFtcMUiykXxYPVsn6NLogUDEnJnLN8ZRQiWX6Puok=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=KcwNDTAjWR6B/z2ckhSE4rDSLeOXdjSrEa2szqzCAO2N3j/rL/iZd7wmc9cyNBUmbkICX+CkyBWMlg7UZelgMwomtLBkZPAYvAVxO8aSxiD/3HXcoGpxCmeWyw9onpI8+UF2B7VB0WNMtJxyC4NWTuCl08Jtzuvgr8sRoXt1Eck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=yIkCqM8V; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LmJY9Oz5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7A71F000C5;
-	Wed, 14 Oct 2026 20:56:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792011411;
-	bh=oYmMLeNpHr3M9c+dYZAHyUCaqhInsdxFPD8shQdQogo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LmJY9Oz55ES4iMAozXDfVZ0E4Yq1MWHh5o0VGSVY7MxD6P7QVFtJwQn1x0ng1ZJPr
-	 Gv+okYHtdQEt2UseP9heBww39iurITYhiu7kl70ZLgaY7VlJqGjHMc0O7J3titBgef
-	 HSNTTZCTSlGRVeHNskfHr6mya6eS+51vhBXFBwCEDihQMfGf4nF+gc9oIRsGJENsYv
-	 EXRPdxOvV+WPxKp4HNCvcVlGh+6QlxuBah47aWj2lG6Zt28/e9TWtuIXfwry1uEt9P
-	 yRkhAPaBZ8+WXW8nZLbt+4Z9xao1ZnS+JULNNol3vCMZKp2k6c8M0yCo581VEozB6r
-	 sdXlftxFyfL5g==
-Subject: Re: [PATCH net-next 4/4] selftests: mptcp: convert iptables to
- nftables for mptcp_join.sh
-From: netdev-bot+sashiko@kernel.org
-To: matttbe@kernel.org
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- cpaasch@openai.com, netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org, liuhangbin@kylinos.cn, shuah@kernel.org,
- linux-kselftest@vger.kernel.org, bpf@vger.kernel.org
-Date: Wed, 14 Oct 2026 20:56:49 +0000
-Message-ID: <179201140983.434549.4591346402914779226@kernel.org>
-In-Reply-To:
- <20261013-net-next-mptcp-misc-feat-7-4-part2-v1-4-1181e5d2fda4@kernel.org>
-References:
- <20261013-net-next-mptcp-misc-feat-7-4-part2-v1-4-1181e5d2fda4@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="yIkCqM8V"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A5F15A158F;
+	Wed, 14 Oct 2026 23:02:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1792011778; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=SqjFtcMUiykXxYPVsn6NLogUDEnJnLN8ZRQiWX6Puok=;
+	b=yIkCqM8VXYULT4KSbksQvh0J7Tj15J46cr34YtosYI+MjN0Qk5769F9P5w48F1OB0hO8NY
+	pNbnddSbAdW7N+NXrJnwhCD1yKwuI+R8VW88csJuiShpMYw7uFaeel2BUQH4vPdQOhYD28
+	yvTpcN52JWnyPulsJ+WwN9zZAtkZ4w+5OowTW6E+7A/S8UYV7yxAvT4LXOAh/L6aB8Vzl4
+	lbDcYE+Hmrw2M7T2zY3ZPtju8277v6m3C2XptLTMAwxS7uQIctI1WXhjCDTxrY+RhrjIPU
+	yXH7MMdMrWrRib0sHpB8eTrNmO9wF+K5NQMpemE2L8DPo7STohPRaJl25S8bOA==
+Date: Wed, 14 Oct 2026 23:02:52 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <Jose.Abreu@synopsys.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, Dragos Tatulea <dtatulea@nvidia.com>,
+ Alexei Lazar <alazar@nvidia.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net-next_0/3=5D_net=3A_use_skb=5Fs?=
+ =?US-ASCII?Q?hare=5Fcheck=28=29_in_loopback_selftest_hooks?=
+User-Agent: Thunderbird for Android
+In-Reply-To: <20261014130618.4c50f817@kernel.org>
+References: <20261007-nb-net-selftest-shared-net-v1-0-458369bfa1ba@tipi-net.de> <20261014130618.4c50f817@kernel.org>
+Message-ID: <BBC0F4F4-AE37-423C-9BC8-4C288D316DA9@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Hi Jakub
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+On October 14, 2026 10:06:18 PM GMT+02:00, Jakub Kicinski <kuba@kernel=2Eo=
+rg> wrote:
+>On Wed, 07 Oct 2026 20:29:21 +0200 Nicolai Buchwitz wrote:
+>> The loopback selftest hooks can get a shared skb when another handler
+>> is bound to the device=2E Linearizing a non-linear frame then hits
+>> BUG_ON(skb_shared()) in pskb_expand_head()=2E
+>>=20
+>> Stumbled over this on RPi CM4 (bcmgenet, with jumbo series applied +
+>> WIP selftest patches) with a packet socket open at the same time as
+>> running ethtool -t=2E
+>>=20
+>> stmmac and mlx5 seem to have the same pattern, xgbe already handles
+>> shared skbs=2E Patches 2 and 3 are compile tested only=2E
+>>=20
+>> As the impact is pretty limited and doesn't seem to bother anyone in
+>> the wild, I've chosen net-next, but kept the Fixes tags=2E That matches
+>> what Paolo suggested during the LPC track=2E
+>
+>Wonder if we should follow up and rename skb_unshare to skb_unclone_full
+>or some such? The "share" in the name is quite confusing for people who
+>haven't been around for 10+ years=2E=2E
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+Makes sense=2E _unclone_full still sounds a bit clonky, but I can't think =
+of a better name right now=2E I will give it a thought and send a follow up=
+ :)
 
-- [Medium] mptcp_join.sh init() now calls `mptcp_lib_check_tools ip tc ss
-  nft` (mptcp_join.sh:192).
-
---
-
-selftests: mptcp: convert iptables to nftables for mptcp_join.sh
-
-This converts the iptables/ip6tables rules in mptcp_join.sh to nftables.
-The cBPF bytecode matches are replaced with native nft matching, and
-hard-coded offsets are used for RM_ADDR. The config file is updated to
-match, and the iptables/ip6tables tool check is removed from
-mptcp_lib.sh.
-
-> diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> index 18ce7136a2b0e..f4d8afaeda4f3 100755
-> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-
-[ ... ]
-
-> @@ -196,7 +189,7 @@ init() {
->  
->  	mptcp_lib_check_mptcp
->  	mptcp_lib_check_kallsyms
-> -	mptcp_lib_check_tools ip tc ss "${iptables}" "${ip6tables}"
-> +	mptcp_lib_check_tools ip tc ss nft
-
-[Severity: Medium]
-Will this skip the whole mptcp_join.sh suite when nft has no JSON
-support?
-
-The shared "nft" case in mptcp_lib_check_tools() in mptcp_lib.sh also
-requires JSON output:
-
-tools/testing/selftests/net/mptcp/mptcp_lib.sh:mptcp_lib_check_tools() {
-    ...
-		"nft")
-			if ! nft --version &> /dev/null || \
-			   ! nft -j list ruleset &> /dev/null; then
-				mptcp_lib_pr_skip "Could not run all tests without nft -j"
-				exit ${KSFT_SKIP}
-			fi
-			;;
-    ...
-}
-
-As far as I can tell, that JSON requirement is there for
-mptcp_sockopt.sh, which pipes "nft -j list table ... filter" into jq.
-
-mptcp_join.sh never uses JSON output. It only runs "nft -f -" from
-init_nftables(), plus "nft add rule", "nft insert rule" and "nft flush
-chain".
-
-If nft was built without JSON support, init() would exit with
-KSFT_SKIP. Every join, PM, endpoint and userspace subtest would then be
-skipped, including the many that do not use nft at all. The skip
-message would also point at "nft -j", which this script does not need.
-
-Before this patch, mptcp_join.sh only checked for iptables/ip6tables, so
-nft JSON support did not matter here.
-
-Would it make sense to check only for plain nft in mptcp_join.sh, for
-example with a separate non-JSON case in mptcp_lib_check_tools()?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013-net-next-mptcp-misc-feat-7-4-part2-v1-0-1181e5d2fda4%40kernel.org
+Regards,
+Nicolai
