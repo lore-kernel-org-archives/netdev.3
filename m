@@ -1,146 +1,231 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0002e601.pphosted.com (mx0b-0002e601.pphosted.com [148.163.154.28])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E065751D51F
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 13:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3869E52ED2B;
+	Wed, 14 Oct 2026 13:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.154.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791985159; cv=pass; b=DNuYpgTO4lTxFI7dMnC3eVSQJT2wETiMJEN+bvyVyP0LFC0b2RBafvr7KP2XUlBfacLjs0JJXZ3CKxI2BBIVPgIBc07sWDsdeizZ5YRFQtMN+9QInQ7LjAkYKw1m6WfoBMyREr6LAw+ZUlwtv3yLAB7PL6dRLJ992IzCD266DDA=
+	t=1791985191; cv=fail; b=PXZbTJTzf2Gt4i681AGkoTVzqdaH0oFu/zq0zWuUzFqa2nb0C+pZ7xghHlL8JJDCyteoJLQh3FriZApq4dt49KOkMRfCR3B2Ijn25DJhtlE6ZZexuvUmkTS+6RrEgvlST5XpQtlKizL79hISoiYEimXeWDhgtTjVgmGaTobTDyc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791985159; c=relaxed/simple;
-	bh=Do9GJSHJpFcW9ngUtQfrvC4whS6LlUvXOjfDqOxXyQk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YZzc9R6551Q5urIibaZZ2NbKtWWHY9cF2yZ7YlsETk3oFEP4ASnhbQ4pFgDb2JXEzgOx231B8VUQwRp+mgKmKTTDT5i8rTR7ofmBIfPC8NIO+Vp+4HpOY7qM948oRMzqCSlcGHKxhdPQLQTY4U2hXYpv5AnVMWv4EwsXFNUX9zc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=Okg5AC82; arc=pass smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	s=arc-20240116; t=1791985191; c=relaxed/simple;
+	bh=hUuJCnremze8Nj1BDqUvniDsz4o6bO8QBWCkQBXuWtk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SkjxkHXOBhKBlQTwwvgg0UIHNM1ElujEYGCQzU693+3BBSaJH54L6jCEbGJq2/mG2w9BjjwnIz7KwiinmtYr6dYvFvC8TamMvzaHYKstJUagLGsN3o80845qPbGLc0+ppcG8uC7WlGF868vaFLALrlZnAcwcRabZSiXcdojw/Us=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=We5ap+B7; dkim=pass (1024-bit key) header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.b=fqD0d+i7; arc=fail smtp.client-ip=148.163.154.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="Okg5AC82"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cd5e2d696e0so724246a12.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 06:39:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791985157; cv=none;
-        d=google.com; s=arc-20260327;
-        b=tDYqgBWe6NP9Mp4Y/0rDG0VuaHbLoc0Kuu0A1MaeQSZi1S8oPNB5PVxsvwnjqcrJkh
-         HjPWwIXgg1jJOQWZR+COLi2Ko6tA6ON+XOeqFCADUBw3ibI0VGDiyyxjxTEXFHvRla2F
-         fpEVhZBPU5lCGWUdeehkk3EG1h9aKrJ2qKJWI8JF0mlBIYkOL535UALtlawwHgiTbLGh
-         ACuc0STxfJJcCesIUH3qvH7SKf+STmKFeudjtPu4YuSFPt8uI54mJ6evoqa2MtzDXmNx
-         jo0Y4wneQn+y8cClOShIZh3zB1gquW4oGUDGwh8vK4SnjFnjMEcBrnfBTb1V1Z+r6muc
-         beFQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=U8jbQ8jR2CLMXltfdllAESeZcdCWDCj/wLLhk4ndzVs=;
-        fh=L/mW3demSFQjeGpAHaKGR00p0oVE6TEUUqBUvOHfDJc=;
-        b=EZQSgEtUfgk0vokYrItMgyUT7LlSZv7iVkhROC0Jl4Rw8kXoTaxwXe42MXuBD88p+O
-         7gTZix3egdTSnQPjtsY8/7GTfLqzpFjiNQSFO1kdw/Qit0nI22M/cCiEfpFpnh+Vq7rz
-         90r5ZE4cLqcPQZuhixtEhORzi+8KiOvHWZ+dAxw3vUbMOp40MI0cdR1Gz6sZS7Zc8PVS
-         TNylodC7Al1zilASnXu3J8fWa77zl7Jpba6Uap9Q0hyKT6J5G8oCQPzGtmOXoJSiRROa
-         eHk8Q8a2tDAvGduoNPSsl3ETM/2evosn0+g6W6/h5Qnm/l0qHKbOoxb2fqnUHJ1oTzFj
-         tN/Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="We5ap+B7";
+	dkim=pass (1024-bit key) header.d=ticloud.onmicrosoft.com header.i=@ticloud.onmicrosoft.com header.b="fqD0d+i7"
+Received: from pps.filterd (m0374955.ppops.net [127.0.0.1])
+	by mx0b-0002e601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69EB5n9G2293614;
+	Wed, 14 Oct 2026 08:39:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	proofpoint-05-2026; bh=9XtVUl64Wn9VuZSqVaCrH0E8Bzn9BWBMv4s/2XC2m
+	5U=; b=We5ap+B79HZ3knLCM5/x2a3Z2j2yOWBzA0b/r+4YpBklii/AfVdr5NZfy
+	ynXokD0U5irlAwjvZIcS1CiH7G+R1fJOKA9l+NrJ0Jk1pWHbzLa+7+2jytbs17Ke
+	Yl14HUPX4d3/TGB4Bb9sH3UJ20w3ovEYQBU6kh0D8bQxI++KhxvYO9w1lCjR7hPH
+	suSryEM+M/2WYy6mTSfRHwa26E90Rahxgd+UiW8FyL8XglGVrIHCS/wDj834u6iU
+	nB3OwNIAU7ZXOuIa9Nb7GWrP3GLI3W+HMpPo8BXq7Yg4W1ohhv4wmL+LkrCb1lyI
+	k0C6PHMTM4k5ipXUoXWw7o77tTkBQ==
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012000.outbound.protection.outlook.com [40.107.200.0])
+	by mx0b-0002e601.pphosted.com (PPS) with ESMTPS id 4h9ys53txp-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 14 Oct 2026 08:39:24 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ngWVH+ww7OLb4fQuByaKMl1ESeD1capA9i+biZ0PEvRha/A3vrLkpMnzhRvhkZ7Azym+uE+ZyRwdqOjmmQldShg55DbQZSxZOzAsO++NfD6lv8YYwe0LyoMOuFxBsAKgF+DHKBvcAi7TOObxatuh2X0eEyAiE8N8IFNvb3NzV7K32oyBowXipWKHV++1ekl40XillKQffB023qbbrhvxSagLpauWhx3KRQz7Q2qhFy9PdER0S5pAiE+KGnjiLCEx8iGBKqNdfzkPccK1gKEKSYKNi68LHbnAwjx64JsPatBw0vAnQEil5xFNT7tRhZz2ZRHEJ+oI9DH06ER8vm9QNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9XtVUl64Wn9VuZSqVaCrH0E8Bzn9BWBMv4s/2XC2m5U=;
+ b=KGsbdCdIZbUgGAmcyJReHUPRresGRwfvpZzFaVRQbx0gBDYOQQ9cSok1ObLjiaDtPG17jvstBK59f7yCwKhmlaVnuzfXe/C+eIenNKs/OhCah3mC7kjCm7z97lP0jznmXU9VNlmDg0Kad6S2CydUrQddy5S7srIM4jO7rIq39GHnvVy7cZFvdYrvJcZes8PgjmaKRoan3rZFtthlYvJ0XpqsnZ5WMpJWRKz88fnUwwE3gEVAaGlfPUU3FH4ELJdF872+3kR575xp6YukTHoYQRvAgl/WBQpVISFWILIBvGlh58nxx5XxaEnxOxHfCl7yRH387sxuBSE+3G1Ay7w7+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.21.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1791985157; x=1792589957; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=U8jbQ8jR2CLMXltfdllAESeZcdCWDCj/wLLhk4ndzVs=;
-        b=Okg5AC82e4NFZFA9coJWwxesOOIKLy7WqvIK8cn4z97zP34unYpGqaZIwtMVN/rbE3
-         WgmYdIJ4CVTw0LqPWNLsNT2ZtePV+0EMFvGpUK554+6V0/OKY8Sq3oLm/sPGr3Knwpcf
-         WnSFDvwLjO7COUd2u6QwkAABKpC510CKEf08c+42LomJJuUKBx7ZpXwCgy8gPbS3pDd4
-         YHNTumUyxNXOAzhG74DFAf82tWMXJhgKp7zjK/oQfS8c50XiO1y3I4Ln8WTAWFCjCrH8
-         YgDwjRU31NvsHT5Od6vglOYQBLnjkoSnzl8pqUTRtPx2PUSPKFiwIadEp6bIkL4fOxBy
-         kHsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791985157; x=1792589957;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=U8jbQ8jR2CLMXltfdllAESeZcdCWDCj/wLLhk4ndzVs=;
-        b=XmHjK0vUwo3Us4JWXYn7xPKPT9cqfOQI2rgSUEhX8cTNg7TWC8GFhjofQ5L01t7+6U
-         sTU/tRwLasKkVeo12LbhHB1CKv7M9zfjqJXpDQT6MYC9f7YEhSmSBZ/Ts5BcADoRyUVX
-         RrT4CvhOyBqr0hpdKYlpvgTI8jW013CHVApi//HympfhG9Q2SOXjZ2LRMVTy3a5i/SDQ
-         QPHT38V0BdaLzvHo0gQn7J52Vc9s45Rb4wHva+gk8/mn1xYNTvQhxI4vku2ZmF1rxum6
-         Dun9nT2Ao19bJf0fY/zinXPd6RV62i3S4iT2KDofJd1kjP7BCoIcYgC6R/jCQqmyQPAY
-         Hq7Q==
-X-Forwarded-Encrypted: i=1; AKwUvBx4fWh8JVnSoIJnoxO0N8ntmD4Po2OTXrW2wXkBPQKrAS9ETikvuEF4PzZ1WYi32U3GHO4H+Jc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJPjWQIUXbWXsr1l5bZ6+BgXBIxftLDxnnKg0mLG9ILw7Nj1H4E
-	I+3hNl5NqDaOWm6w2dZ4YEwX/9MbMaT6Gym9tU0qi5N5MPWKBhKrvAjiE0X/2qTiYmYvi5PBZgr
-	MbDcNNt9kofTevpUhAxz0IbDq1ArXNd+HNmr2sEiOfsFsnhc+SpQy1h2J
-X-Gm-Gg: AYBFou11vRWN6n/pIelDxcy0aT9wl3rrJ2NEqrwL8fScK1jjyu52l9sxEWIObMWE82F
-	qBEfnOQ2d5/JGxy/eTLueIZAuNQc0xkVaaF+3nwmzW2kV/KMEWgigZoy6PKrN8+NCG5HmpJNpQV
-	9ben50AHTNfqOVK8IQOBf5NkbZyarL2CfrSUXiM5gg1okf2GgndziL0UZo3sE9Gr9ekiO5QklQ4
-	147Rl8nR4m9i3awrbqPwNFb1r/qrg6HAVa+g4YcPsnEC4eDFDiL8prl1erGJwojHq43HJZYHjxl
-	1AfVGGrR5ZtKFwn77QdBnGma5S3JUptz0GB0kR/mpL6u+fL+re+1/IwV9ozX2coZFZsX83eVjTa
-	ckEBrw7m/nU4=
-X-Received: by 2002:a05:6a21:3a93:b0:3de:4662:16f3 with SMTP id
- adf61e73a8af0-3e16bed388emr12712043637.50.1791985154402; Wed, 14 Oct 2026
- 06:39:14 -0700 (PDT)
+ d=ticloud.onmicrosoft.com; s=selector1-ticloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9XtVUl64Wn9VuZSqVaCrH0E8Bzn9BWBMv4s/2XC2m5U=;
+ b=fqD0d+i7wL7mz+bpv4ydgj9F5xgZXv2GFceAAVY4r7YyWqaW3Ix4dvExpzqlqqola2drLga55bGSqBC/+1RySJAhge9v/teiWsD4lubBe0pAp7MVHlFe6WBHZYVPhx3A3SYTmjsKuhY7Uk0yn0CJtY0gFN9UKAAs8KwOqwRlfUU=
+Received: from BY3PR03CA0012.namprd03.prod.outlook.com (2603:10b6:a03:39a::17)
+ by DM6PR10MB4316.namprd10.prod.outlook.com (2603:10b6:5:21d::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.6; Wed, 14 Oct
+ 2026 13:39:21 +0000
+Received: from EA8PEPF00000007.namprd05.prod.outlook.com
+ (2603:10b6:a03:39a:cafe::a7) by BY3PR03CA0012.outlook.office365.com
+ (2603:10b6:a03:39a::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Wed, 14
+ Oct 2026 13:39:21 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 198.47.21.194) smtp.mailfrom=ti.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.21.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.21.194; helo=flwvzet200.ext.ti.com; pr=C
+Received: from flwvzet200.ext.ti.com (198.47.21.194) by
+ EA8PEPF00000007.mail.protection.outlook.com (10.167.249.230) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Wed, 14 Oct 2026 13:39:18 +0000
+Received: from DFLE206.ent.ti.com (10.64.6.64) by flwvzet200.ext.ti.com
+ (10.248.192.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 14 Oct
+ 2026 08:38:29 -0500
+Received: from DFLE207.ent.ti.com (10.64.6.65) by DFLE206.ent.ti.com
+ (10.64.6.64) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 14 Oct
+ 2026 08:38:28 -0500
+Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DFLE207.ent.ti.com
+ (10.64.6.65) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
+ Transport; Wed, 14 Oct 2026 08:38:28 -0500
+Received: from [10.249.141.252] ([10.249.141.252])
+	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 69EDcM5C1458485;
+	Wed, 14 Oct 2026 08:38:22 -0500
+Message-ID: <b4cab9a9-77bd-43eb-a0dc-cbe319847558@ti.com>
+Date: Wed, 14 Oct 2026 19:08:21 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <179138670045.80227.16292613517250896744@gmail.com> <CAL4WiirbJrQThGS4BUo=a=AV9ckJk2AyedO8AgJgozjHOwu5Vw@mail.gmail.com>
-In-Reply-To: <CAL4WiirbJrQThGS4BUo=a=AV9ckJk2AyedO8AgJgozjHOwu5Vw@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 14 Oct 2026 09:39:02 -0400
-X-Gm-Features: AclHuK8AkUpNImhF-LHJr3XzRnL-uuVSv_ZOVg-oORi05OKdAiHssAdOH-8pRvA
-Message-ID: <CAHC9VhT5w3K1MvmP=1Mxf6KKWZD5BbK14bVHJGYFN93080j5jg@mail.gmail.com>
-Subject: Re: [PATCH net] calipso: update payload_len when removing the CALIPSO option
-To: Eric Dumazet <edumazet@kernel.org>, Joas Antonio dos Santos <joasantonio108@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, 
-	Alice Mikityanska <alice.kernel@fastmail.im>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 0/2] net: ti: icssg-prueth: fix port config and
+ rx_mode drops
+To: <netdev-bot+sinfo@kernel.org>
+CC: <netdev@vger.kernel.org>, MD Danish Anwar <danishanwar@ti.com>,
+        "Roger
+ Quadros" <rogerq@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S .
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@kernel.org>,
+        "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+        Jacob Keller
+	<jacob.e.keller@intel.com>,
+        Meghana Malladi <m-malladi@ti.com>,
+        "Vadim
+ Fedorenko" <vadim.fedorenko@linux.dev>,
+        Kevin Hao <haokexin@gmail.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <j-rameshbabu@ti.com>,
+        <aaron.richard@ti.com>, <l-chinnannavar@ti.com>,
+        <m-santhoshkadavan@ti.com>, <k-tiwari1@ti.com>, <a-dev@ti.com>,
+        <pratheesh@ti.com>
+References: <20261014125948.230571-1-r-kumar12@ti.com>
+ <179198314724.320699.12261216986083339257@kernel.org>
+Content-Language: en-US
+From: "KUMAR, RISHI" <r-kumar12@ti.com>
+In-Reply-To: <179198314724.320699.12261216986083339257@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: EA8PEPF00000007:EE_|DM6PR10MB4316:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37f5f7cc-84d3-43c6-ebe9-08df29f88c3c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|1800799024|376014|7416014|10067099003|18002099003|22082099003|4143699003|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	IlvKShr8BuKMvHhJrl2GUCJd0NGu92heQt3Pqc7+S21IEz5sZj7Dku1OaMBODxJ6vIzyiKP8mtuxSzAtWbEkWOUQ3CziYXvVB0zIYjJa1cdLmKEksNHNABPzzapcD8myxGBait358ChitGZ5Z1/uA2Y/saPVzxs+vPHRS+8DsDeVfdolrKLT/Ufz3YlCxeepZoHcS6EwGBBB8Gws0Pbei8SP0OdLY7I+KkWZcHwbfe7jrfWq9Wy8xhIxwVmOm+pG2H7gIJPNyr7QZOChoJVRHtBoZlM0Po7188zdOCcXt6HMMTmLBjOtAqmwZhndBZL5dv7bc4ZmgpKv26ww2UcIgqKQVLoY7afP4+xcBf6T1NtA+Ceufs628HSEVH2KbAYNYfqLp412kJTsFdIVe3wjXJQGPMoZeZxctBvHCVCUUBiFcI8z3J8vJ8HA9zN1hHS2CQrQAFoHmcx0BOsT62+8EXoU2wws3LbX+a5jJ4zqY8fMItYVAsHVa5TGdLwpuDWako0dIgJNJb6AZg6UplS3bnvux4WOS35jwo6yO1xzoFmtgmH0trosLo+dLrstt/VRopxTh1NOWWPKlqR2Wpyu+xC+a+33+qLBWUqEkBFuOeUQur4OHgWk54wCKtXa0NEn7mCGliMxhhfJMeeK3xJotnDllIjKyoqFWhxlYaL5iQ3M2SvFM5OHTrtkqc/KJov1d4wnWGHmES77S97s0w2jcQ==
+X-Forefront-Antispam-Report:
+	CIP:198.47.21.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:flwvzet200.ext.ti.com;PTR:ErrorRetry;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(1800799024)(376014)(7416014)(10067099003)(18002099003)(22082099003)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	zXu3qNY9wbHqwOYh6SXkNkGlgpTgO9VD+DCxxZHR4XBDW/84k5ZjPFGnR4KaWXuwhWdyWPBGGkR/DR0p+x2/uVy+DuyG97eK8+AZjK1g36Qcj1WKX1lgd21aRvzd4ofz6u+d15wwDdHu7qKhgKuSFJM1FZX9P596kRZ/L0E/5A9DYukC6ZuAOcVZxS+HpUooOpkFIOb+rla3qywdGvo3IvTpJI5gt9DIuPYdMA+uNiCvtVN3T81ZjSy5Ip3MjvSF3abPJ7ACbuHpBKfKWIDpuzoUZtnt4cqljxCzorMBzPXA9m1aNrdDWwXxWopZozWM79XyVSU6CYKoi5pnCuVF0soefBJSJLtR3Mc/WhUkgOm+Oj3F/UhgWhOeqnzzeFLwtR5tyxOwRGbXX0AdIshNs+ME3NSjmTGjP2ZqiFs6CyLcz9EmX5etlWBJIcH25ofq
+X-Exchange-RoutingPolicyChecked:
+	HTKurOUIYqmiBc9J0m3YyEI6O4TjGku2+PmCEzm2iceM4HU3lb7Rk5W9MElpxU8wVUd7LDXpnN1JGMQAsfT3y+Dcw58dsi44yxz2qc4iXtXv11jVJJ2F2UwXr8R076tge/Di59sXS32wkGE5u44VuQZZojCfyW29ujqsuO3rhA0WJEqQgGzhitQqLDU7rvYjKz+sMJWUF5Pz8iB0yVIEBR1X+AOonpJfUyYPHkd0cOZrwXRRIc5E5nnY5vGAF3vZNOlz+mGn+NEi/OXuu3T7oO5km4XGUGF/RXR7FYjt89COkP1znG7nWBFX1fqLATdzoSt3qLFCArdHTCNRuUoRHw==
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 13:39:18.9508
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37f5f7cc-84d3-43c6-ebe9-08df29f88c3c
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.21.194];Helo=[flwvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	EA8PEPF00000007.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR10MB4316
+X-Authority-Analysis: v=2.4 cv=ANGCXYlm c=1 sm=1 tr=0 ts=6acf860c cx=c_pps
+ a=XjJJ5mbNlFGUOIV2PhjyRA==:117 a=iwqwCZQqcuTv3JOpYdM7/Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
+ a=AlMIdn_sM9wA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22
+ a=fPAWb5peG099m5CrUpKH:22 a=VwQbUJbxAAAA:8 a=XoKBYagMS9FrnzcXrycA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: bh6yp4qm7fxetn2erWkT-UX-pH_WoJ8z
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDA1NCBTYWx0ZWRfX1YOM3766zjGd
+ kd7VLNKwpuk+4gp98Gw+PEiCoOXR+8yqoX3NeLIwS/+l4z/7RpYRvEgff8EzTMWvP6SsfJMTN2s
+ CiKJ/OtqV8KfUEPbx5lMr2mHbQ7Q02M=
+X-Proofpoint-GUID: bh6yp4qm7fxetn2erWkT-UX-pH_WoJ8z
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDA1NCBTYWx0ZWRfX1Nz2KiI05V8n
+ iNkLVC1YQC8eUnWGghjyBEYFrjk8iMT4dlCVdnosxfUaEHvdzzPJICf70dQBhUogeMobIhS23SJ
+ rvzX5T/4t5Z3sPliws/5N15yVWTRIOT2UTGI3d1Thd2MKUS/BZDr29s2j56NzWslJoPYSVqUaxw
+ F10mwDsW+OyVdGaszF66x9UxB6CZROVLN50GdQGsmsoFiAWzLc9nN6g96FKLSPK82yKieOtciF/
+ tiiFtvOoqE2l9f9KfmdGtiEszkzDBvcZ75PMt9CTDrL56CAirrsVmlN31LgQAPBZwUXCro3Y7nG
+ vCcGtqBloq0YKSOAp7zO74Q5e5FNr2hRltWMqgo6iFN/nbeYGEjJn3JKwzOBTGGc6OzUcdFadHf
+ IR/wu4I8Wy0tlti94WzplOaEYvtjAUlUjmPtqUSK+5kS7U8hGvUNyvokBlgoCIGSo+zNaU2JGyl
+ 7TonsWiA8gHWnKC8cdg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 suspectscore=0 adultscore=0 phishscore=0
+ clxscore=1011 impostorscore=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610140054
 
-On Wed, Oct 7, 2026 at 4:45=E2=80=AFPM Eric Dumazet <edumazet@kernel.org> w=
-rote:
-> Le mer. 7 oct. 2026 =C3=A0 17:26, Joas Antonio dos Santos
-> <joasantonio108@gmail.com> a =C3=A9crit :
-> >
-> > calipso_skbuff_delattr() removes the CALIPSO option from the hop-by-hop
-> > extension header, or the whole extension header if CALIPSO is its only
-> > option, and pulls the skb by the removed length.  It never updates
-> > ipv6hdr->payload_len, so after a successful removal the header still
-> > claims the original length.
-> >
-> > calipso_skbuff_setattr() already adjusts payload_len by the length it
-> > adds; the delete path was missed.
-> >
-> > This is reached on the forward path when a packet carrying CALIPSO is
-> > sent to a destination mapped to an unlabeled NetLabel domain.  The
-> > forwarded packet then has a payload_len larger than its real payload
-> > by the removed length (8 to 264 bytes), and the receiver drops it as
-> > truncated.
-> >
-> > Adjust payload_len after the header is moved.
-> >
-> > Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff direct=
-ly.")
-> > Signed-off-by: Joas Antonio dos Santos <joasantonio108@gmail.com>
-> > Assisted-by: Claude:claude-opus-5-5
-> > ---
-> > Found by code review.  Compile-tested only (arm64, W=3D1); not runtime-=
-tested.
->
-> The analysis looks right to me, but this means removing the label on
-> the forward path has been broken since 2016 for every packet that is
-> not resegmented later (SYN, UDP, ICMPv6...).
+Hi All,
 
-I'm going to follow-up with a review on the v2 posting but I just
-wanted to add a quick comment that while basic CALIPSO labeling is
-tested via an automated test job, this particular code path is not
-part of the automated testing.  Improvements to the tests are always
-welcome.
+On 10/14/2026 6:35 PM, netdev-bot+sinfo@kernel.org wrote:
+>   - What hardware the change was tested on. For driver fixes please
+>     mention the device (and if relevant firmware version) used for
+>     testing, or say that the change was not tested on real hardware.
+> 
 
-https://github.com/SELinuxProject/selinux-testsuite
-https://github.com/SELinuxProject/selinux-testsuite/tree/main/tests/inet_so=
-cket
+Both patches were tested on real hardware.
 
---=20
-paul-moore.com
+Board:    AM64x EVM (AM6442)
+
+ICSSG:    REL.PRU-ICSS-ETHERNET-SWITCH_02.02.16.01 firmware
+
+Software: TI SDK 12.01.00.05.03 rt-am64xx-evm root filesystem, with
+             a kernel built from net/main plus these two patches
+
+Setup:    eth1 and eth2 bridged in br0 (switch offload)
+
+Patch 1 (fix missing port config on second interface open):
+Brought up br0 with eth1/eth2, then cycled the links (eth1 down,
+eth2 down, eth1 up, eth2 up, and the reverse order). Sent 30
+multicast frames to each port.
+
+Before: after the cycle, fid_c1 of the default VLAN was 0x3 (or 0x5
+for the reversed order), so only P0 and one slave port were members.
+Multicast forwarded in one direction only.
+After: each port is configured when it opens (fid_c1 = 0x7, P0 + P1
++ P2), and forwarding works in both directions after the cycle.
+
+Patch 2 (re-apply rx_mode state after firmware reboot):
+Brought up the offloaded switch interfaces and sent 30 multicast
+frames to each port in turn.
+
+Before: NRT_HOST_RX_PKT_COUNT did not increment for one port.
+After: it increments for both ports, and forwarding works in both
+directions.
+
+HSR regression: brought up hsr0, sent 30 HSR-tagged frames in both
+directions, cycled eth1/eth2 down and up, and sent again. Forwarding
+works in both directions and NRT_HOST_RX_PKT_COUNT increments both
+times.
+
+Logs are in the gist links in the commit messages.
+
+Thanks,
+Rishi Kumar
+ICSS India
+
