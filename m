@@ -1,67 +1,47 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6E4470438;
-	Wed, 14 Oct 2026 06:41:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972092F7F05;
+	Wed, 14 Oct 2026 06:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791960118; cv=none; b=CTwCTD+i+pBQVW46Y5hdr8MBIo8FbSoFpm70sU2VTmspijTeOhdKpy7zUTKrMnzZvMJcs+UfV4YBQ/Ob38437a7d2FCxtLk31zKRR16/bAPNa3d5whwa9x6GZCyGkLgELKQf5u6dRh5usB1XJaCN9gdhwkWh916bzvv/tndVLH8=
+	t=1791960178; cv=none; b=pVRzU7PeFLSNc6uuBzHPskiAWkfDTQ6KJ1eu0s4ikZf5ECT+78mMayW9s4ovfeDkPnJRJTKBA85tojMu0wvWL7yH6BM3lVR0sCmqjVpYzvhxePRXCMPAsrg8dhUbZE0L7SVScG7+nz38SKaZmokyXG5aYVJAwTir3h+d2xMAHqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791960118; c=relaxed/simple;
-	bh=o72n1cSWA/x66f0FI2qYr1BLdnEOvPwevayrmClAUPE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A74zKRL1Kbiv4sg/L5zRoqZbl4i780l9WExkx2s+Y/Nbh65w9o4YE2mbrYDsT/wEPNHwbKaourhH3ZcZP2d3wG+tGtR/N1+tH6sEMtLcJ0VqMZ9ZkmgcvLhXr1PPoSM4U1GEsp9iNHw511FtxAXMOoFwcH8AiN6ujxAN1hBZAWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Q6O9wOBr; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1791960178; c=relaxed/simple;
+	bh=hAlukcTVlemJDMH1tcMxKsSVPOBw47EG8GguA9EFPP4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bE4qq/OtGfZIHq0OFSVvDZme/cjK3+3wNzaV6CfMZg2xckg9W5OQcy1CoqLgh5IBbWHJ0sLBC9okH5o/3HkBA2ypJSW8uSI75Zbex/Sw7ZrsV4KZHDr2uaqUB0xx2Vwo7fpig2GRtqabsNvjdpFr5ekDeEDDg48QsBB88WquCMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=mWZxpNTI; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Q6O9wOBr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1791960117; x=1823496117;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=o72n1cSWA/x66f0FI2qYr1BLdnEOvPwevayrmClAUPE=;
-  b=Q6O9wOBrwkVt/1dkHVXc0XefnaZCWEEcf30KpqrCa/fiKyVZ9dAeMX4p
-   lvF1cY1AXI78qCp9jTjs/RTuK+0TVgjdOWA55nx3n8Fc5bbN1MEWLF2qx
-   IHKNq+tua9RwbJG/DjCVdjc7SH+ycp7g73t+UE40tdFbxOo9FlSEsAImy
-   7tjQiO7ulHqg8GULp22r3GLRkJySCOE9FI+cIpN3MlXYrFcAknuws1csO
-   /GhWvTDAYh2iegEggc1DACMM8esScCWIT78YpbWvyUspy99wx2EVnEI3Q
-   dFx+YQJfCGusNVzSEgBPfgp84NjOIs1TTBtAhfHalnuUrb8Gtt3SQYEcv
-   A==;
-X-CSE-ConnectionGUID: E6UD/4c/S+2Gk9hz6D3ZCQ==
-X-CSE-MsgGUID: 6+O+i4/pSjSq8LcJWDXNQQ==
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="232101734"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 13 Oct 2026 23:41:56 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 13 Oct 2026 23:41:55 -0700
-Received: from che-ll-i67131.microchip.com (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 13 Oct 2026 23:41:47 -0700
-From: Manikandan Muralidharan <manikandan.m@microchip.com>
-To: <pratyush@kernel.org>, <mwalle@kernel.org>,
-	<takahiro.kuwano@infineon.com>, <miquel.raynal@bootlin.com>,
-	<richard@nod.at>, <vigneshr@ti.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-	<conor+dt@kernel.org>, <srini@kernel.org>, <nicolas.ferre@microchip.com>,
-	<alexandre.belloni@bootlin.com>, <claudiu.beznea@tuxon.dev>,
-	<linux@armlinux.org.uk>, <richardcochran@gmail.com>, <linusw@kernel.org>,
-	<arnd@arndb.de>, <aaro.koskinen@iki.fi>, <gregkh@linuxfoundation.org>,
-	<mathieu.dubois-briand@bootlin.com>, <michael@walle.cc>,
-	<linux-mtd@lists.infradead.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<netdev@vger.kernel.org>
-CC: <manikandan.m@microchip.com>
-Subject: [PATCH v8 8/8] ARM: configs: sama5: enable Microchip/SST SFDP EUI NVMEM layout
-Date: Wed, 14 Oct 2026 12:10:12 +0530
-Message-ID: <dfe67f77151c9e2271477bd30a5262fbacea9a4c.1790847519.git.manikandan.m@microchip.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="mWZxpNTI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=iJ
+	IuX/aIEU0eARygIk3MkWkpVxNtFv/aphxvSLEZSeI=; b=mWZxpNTIMjUxoOfrFb
+	06nzVYU0qqVoDGRRPalAlCSTBKniqopcebub7wGx+XklXBo5XErfvZVg+rAyOZe5
+	MoRjOlvhJj2uATttgOupH9H71x8yC0l0JKHr+AZGOOS4hTnJDzP1TyFM4HW6lwOj
+	2uFIKMqKsij9uiwdjQgbbhP6I=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgC3U3g9JM9qUVT9EQ--.44584S2;
+	Wed, 14 Oct 2026 14:42:06 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: sgoutham@marvell.com,
+	gakula@marvell.com,
+	rkannoth@marvell.com,
+	sbhatta@marvell.com,
+	bbhushan2@marvell.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org
+Cc: pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH v1] octeontx2: Fix use-after-free of qos node in delete path
+Date: Wed, 14 Oct 2026 14:42:04 +0800
+Message-ID: <20261014064204.291688-1-18983559317@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1790847519.git.manikandan.m@microchip.com>
-References: <cover.1790847519.git.manikandan.m@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,30 +49,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-CM-TRANSID:QCgvCgC3U3g9JM9qUVT9EQ--.44584S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ZFyUAry3JFWkur1UtrWDArb_yoW8Gw17pa
+	1FyFy29FykJr4Skws7ta1rXr15Jan2q3y5K34Yvwsav39Yk3WfZryYkayrK34rKrWrG3W2
+	qFWUAan7CFn5Z3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U01v-UUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC3x+mimrPJD9TMQAA3w
 
-Enable CONFIG_NVMEM_LAYOUT_SST26VF_SFDP_EUI so the factory EUI-48 stored
-in the SST26VF QSPI flash SFDP can be used as a MAC address on boards
-such as the sama5d27_wlsom1.
+hash_del_rcu() only unlinks the node; a reader that already holds the
+bucket iterator still uses the node.  The immediate kfree() has no
+grace period, so a concurrent transmit on a socket whose skb priority
+carries the deleted classid reads node->classid / node->qid from freed
+memory (use-after-free in the softirq transmit path).
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+Fix this by calling synchronize_net() before the node is freed, as
+mlx5e does.
+
+Found during a static-analysis-assisted audit: candidate sites were
+surfaced by a Coccinelle rule, and the reader/writer paths were
+confirmed by LLM-assisted (GLM-5.3) code inspection.  The issue was
+not observed at runtime; it is identified by code inspection only.
+
+Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
+Signed-off-by: Binbin Deng <18983559317@163.com>
 ---
- arch/arm/configs/sama5_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/configs/sama5_defconfig b/arch/arm/configs/sama5_defconfig
-index 1eafad9139f1..f8cc94106c54 100644
---- a/arch/arm/configs/sama5_defconfig
-+++ b/arch/arm/configs/sama5_defconfig
-@@ -219,6 +219,7 @@ CONFIG_PWM=y
- CONFIG_PWM_ATMEL=y
- CONFIG_PWM_ATMEL_HLCDC_PWM=y
- CONFIG_PWM_ATMEL_TCB=y
-+CONFIG_NVMEM_LAYOUT_SST26VF_SFDP_EUI=y
- CONFIG_EXT4_FS=y
- CONFIG_FANOTIFY=y
- CONFIG_AUTOFS_FS=m
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+index f160b1618efa..2ede0b84e5f5 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+@@ -331,6 +331,8 @@ static void otx2_qos_sw_node_delete(struct otx2_nic *pfvf,
+ 		otx2_qos_update_tx_netdev_queues(pfvf);
+ 	}
+ 
++	synchronize_net();
++
+ 	list_del(&node->list);
+ 	kfree(node);
+ }
 -- 
 2.43.0
 
