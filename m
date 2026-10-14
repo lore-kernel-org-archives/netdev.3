@@ -1,148 +1,356 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B016411F90;
-	Wed, 14 Oct 2026 04:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B83279DCC
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 04:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791950634; cv=none; b=fL1sdj13KL+7e/ww1358h4OGfBglUpr+RQ5YoBkLUsF52CEKbtro+ae/CqBjSV+8ZHXsYroe9nJGQHRRCJQgd9hrUEHGCDfO5PpCtkh7Y2OObW1/q0F9dbaJrFzdMm00pzPpoT8CYM8zGKSfqEi8TR1ak8fbG6X92+3Imga9rEs=
+	t=1791951027; cv=none; b=ufg8KmLpJdxTnViJ9o6V1xJ/f1gHwo/Xq2FUKOV/gevXTZd8BpLosn7pd+cMBkMjkQK2XYsE8dRfa1EnKvjNBF1uhDWSL8b5fdkhT2M2p/fuOaH/Bs5/fnUxGvLNYWS+/GQTQwjWb/r1O8wZHvxiJ5MTgonsUiP4Rgtu70Hp88k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791950634; c=relaxed/simple;
-	bh=FcjLSPhR/pkggo8Ln8Ba+uAEi5Mr3VyEFw+YHTcPPIk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zar4CI7607KFJo12C9A8Tt4to4lqMXWosfVjER/9l8ACJcibpokMNfmlOm4XOPixHlTb9OP+bZ5bcCVK8UiiYBsFppbYmLX004kFe1601SLMZ7lpyQsQp7gmX/looJodDJQjLCnIK4Vn7QX0yBQzs6M8ZlBZpXNQM/OQCBojTxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TGOpXLmQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791951027; c=relaxed/simple;
+	bh=V4ngBpPUODuuWu2An2bhgPhwDi9OupCikjo5ZiTj6uY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=cRz7pDFz+3E3V9X1Khedb7CC8UceGEHHRmZj9IH0W2ZpaqusYQC1/TKYVg+AwRf4hY6M2Db0wvOwwR2H5BR3zXYMZf4feNjvEkvNkO4ZIdW2F+sCMp7Q1M/0AbjSeCr8r+dcYpRwXdt2PUizrBj0DRht+vPRMRhkaHZ+Yrpai3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=crh0/b6q; arc=none smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TGOpXLmQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FD81F000FF;
-	Wed, 14 Oct 2026 04:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791950632;
-	bh=wyiPssJl3JiX3owHqVugBEFvLmNp9oF1Gy5M6IM+UZU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TGOpXLmQ0KJgjdgQCb97HI1TcEiGlBZq5AqsdiPahJzXjpUcI0pwjDbl1QXpMfzKK
-	 An4GNN/aElsLRdjrh+xPHc3yFN2Uf1DOpjXC1VL2RrsXdeZvk7uOMEihzZGLEMh4NW
-	 Q1k2n6GPCtuXMsa9O8tEv78HJ+KcrLDsfHJYQlPPn06Eo6h/yQCN+kkUz1TxMajun2
-	 CWVc3B0W5AmZmIco5nwZSnxF9l4EXVwkwYBUA99TjEuvyFSIFPyu/M5azP2cCY3CZC
-	 FX7pdlF4V07i17drpC9Y0ntLw0GRJw7MaBnQ69tFrERJxgIYmIHKQpi9tKFkN7baiQ
-	 22h8ryhPzbZyg==
-Subject: Re: [PATCH net] kcm: defer receive parsing when the lower socket's
- read_sock may sleep
-From: netdev-bot+sashiko@kernel.org
-To: rjethwani@purestorage.com
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, leitao@debian.org, zirajs7@gmail.com,
- runyu.xiao@seu.edu.cn, jiayuan.chen@shopee.com, brauner@kernel.org,
- sagi@grimberg.me, hare@suse.de, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 14 Oct 2026 04:03:51 +0000
-Message-ID: <179195063165.434549.13463545924832836566@kernel.org>
-In-Reply-To: <20261013033920.2069285-1-rjethwani@purestorage.com>
-References: <20261013033920.2069285-1-rjethwani@purestorage.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="crh0/b6q"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-675617e81f9so3946725d50.3
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 21:10:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791951025; x=1792555825; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ljQtddetZrnHdZkhpewiA0nv8+K0Dn1c6TsFqcV3Ues=;
+        b=crh0/b6qeHxfbLpCS7mTQbEah3x1+AZmPE5EIHcMjrrHZ7tgdUI14W9aOugAZxzycw
+         ohqQ3RhOypRFYyX84th92UAoznpNg7eXE40Ff9viYmYCQ/xagSMX3LD3jTEB+6vK/Myo
+         savjdWLABbnm4y44VYj8ukZSOZo9+ifBtqgJYkvi7yots4Wg+W0VgbmOZ/rhEZnMCSoi
+         ueY2Cr+oR72Pf/GBgTrBytPqL5uZaHI7p5E6/+EtbWNWiMoxM++YQabo7TmP4LXtW9qO
+         0YIbr9wup7rLsRKaiu4dvE3LwsuErwwdqYXo1ktFjw+P72lhMbYAgKnJz+q52/jCPc0j
+         G3WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791951025; x=1792555825;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ljQtddetZrnHdZkhpewiA0nv8+K0Dn1c6TsFqcV3Ues=;
+        b=iE16TEgQcidQQdlyZM+IE0MjOYV16UYNJNx9oRutsCrXzbK7aRAUW1+GcJHWrfMnmW
+         Flk3F9fgvXCELesu4/5GBFzIgrXXv2oHd30qoAShEJKWfYiFKpKrfgxnWp6n2dex8MmM
+         RQh46P26+b757xmvX0Cqfx+pRQ22EuNvRCIelK3jEPV0Zqqr0FblutoNPQ9v5cB3fSz8
+         WlXbqwOArfVKZW+dkKvMw4DO4bbD+UgyY8QytHH/V0P+WFeBpc0IzvE6CIoCk4aAgfWW
+         xVs8si9bR5kOp8jNBGIOEka8VSM0K/leLpajnWokW1oG1P8fcOLYK4shc7LRd/JGIArB
+         twuQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwPJZOgcJ6azNLuIR4H5DYZwqibmPZMZnzvOnZjuvH7srreMnGNdplR6/2rcUFRhxFfWx/Mb/Q=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL94MxxqX9Z5Ly62OTLmrsirU838+3Ar1b8wve9YMKCyzwVMdXZ
+	GzVhm8wQi3ITlbnEtPLBg8GC4DOGu51K0xI+UTVhttXMmBi15cbuclbG
+X-Gm-Gg: AYBFou0TIYI6WywjtSmApUpzIyqVAnH7TQJ0wJLmXmbovbUQYVOptq1hgrpV5JGsOeI
+	q3zllRYLSTmdy5m70nCz4uGyjqh0CBsKZWNO6fYDt1yPv8NIkgtGDJCYJBvZJXoT7qM7qLdoK1p
+	h1DGNp6k187bnEcEj/3JAqHraSNhZeGIUWqye1h6Vx7KzNLP2PArr7GGHxseZvKwka7XsvGIySD
+	S7s+FGNXLkBgUn9reu1VMfA/ZGcxW1AAIncjnxmaUD871WxAc2AL9BL02dGiWDDvEPAU5zpd9ze
+	8MMsChnv4oLSys/9i/fhpOR2xf7waJQu2HnIWIRcHYADsins2lg2KXTRPtCjdSzth6NqKV/pJ1w
+	/8j4Db3SzeGY72VCjIcLnGx5GlCsnfdJY2vVMb7TD5n8FXKiPmnA2OOp1xiI6KVKUokjWsPeGnr
+	Rbgy6keVaP/cagvd9e0HUCGY3g/09b6bVpD1z6tPxygeJ4dWEN+6eN7mVDFmc/Q+4hDKGcqzbSK
+	0Kkn588ywayZDzUXoaku55uh4MWh9R+Ujwc+h4kMIDWluBUJM44RVEto7etp8daUgZYSfO5HVWV
+	LDmybEn7nmsbPOOACG2YmvrJzEctzEJbW9h3OQ==
+X-Received: by 2002:a05:690e:e8b:b0:675:4269:156b with SMTP id 956f58d0204a3-679369e3642mr4947534d50.59.1791951024885;
+        Tue, 13 Oct 2026 21:10:24 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67986a16470sm592229d50.4.2026.10.13.21.10.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 21:10:24 -0700 (PDT)
+Date: Wed, 14 Oct 2026 00:10:23 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev-bot+sashiko@kernel.org, 
+ shiming.cheng@mediatek.com
+Cc: davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ matthias.bgg@gmail.com, 
+ angelogioacchino.delregno@collabora.com, 
+ willemb@google.com, 
+ daniel.zahka@gmail.com, 
+ alice@isovalent.com, 
+ sd@queasysnail.net, 
+ eilaimemedsnaimel@gmail.com, 
+ imv4bel@gmail.com, 
+ nbd@nbd.name, 
+ dsahern@kernel.org, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, 
+ stable@vger.kernel.org, 
+ steffen.klassert@secunet.com
+Message-ID: <willemdebruijn.kernel.26605ed441a3a@gmail.com>
+In-Reply-To: <179161428655.434549.7066789783316941855@kernel.org>
+References: <20261009060319.6229-1-shiming.cheng@mediatek.com>
+ <179161428655.434549.7066789783316941855@kernel.org>
+Subject: Re: [PATCH] net: tcp: fix fraglist GRO flushing on alternating TCP
+ PSH flag
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+netdev-bot+sashiko@ wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+> =
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 1 =C2=B7 Low: 0
+> =
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchw=
+ork
+> know by including "pw-bot: cr" as a separate line at the end of your re=
+ply
+> (one such reply per series is enough).
+> =
 
-- [Medium] In net/kcm/kcmsock.c, psock_data_ready() now passes every
-  data_ready event on a non-tcp_read_sock lower socket (for example, a…
+> - [High] Forwarded TCP FIN/PSH can be dropped from the wire when a
+>   fraglist GRO skb falls back to tcp_gso_segment()/skb_segment().
+> - [High] FIN/PSH in a fraglist tail segment is invisible to netfilter,
+>   conntrack, flowtable, tc and BPF, which all read only the aggregate's=
+=E2=80=A6
+> - [Medium] The commit message calls the removed check 'redundant' and
+>   only discusses PSH.
+> =
 
---
+> --
+> =
 
-kcm: defer receive parsing when the lower socket's read_sock may sleep
+> net: tcp: fix fraglist GRO flushing on alternating TCP PSH flag
+> =
 
-This commit changes psock_data_ready() so that strp_data_ready() runs
-inline only when the lower socket's read_sock is tcp_read_sock(). Any
-other read_sock, such as kTLS's tls_sw_read_sock(), is now deferred to
-the strparser work via strp_check_rcv(). The goal is to avoid sleeping
-in softirq context.
+> This patch removes the unmasked TCP flag word comparison from the is_fl=
+ist
+> branch of tcp_gro_receive(). Segments whose PSH/FIN flags differ from t=
+he
+> held packet can then be appended to a fraglist GRO skb. The goal is to =
+stop
+> premature flushes when a sender alternates [ACK] and [PSH, ACK] segment=
+s
+> in forwarding and tethering setups.
+> =
 
-> diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-> index 71af69d442f21..381a8f0b792e3 100644
-> --- a/net/kcm/kcmsock.c
-> +++ b/net/kcm/kcmsock.c
+> > This redundant check causes premature flushing on any incoming PSH pa=
+cket,
+> > shattering aggregation and increasing softirq overhead.
+> =
 
-[ ... ]
+> [ ... ]
+> =
 
-> @@ -358,8 +359,19 @@ static void psock_data_ready(struct sock *sk)
->  	read_lock_bh(&sk->sk_callback_lock);
->  
->  	psock = (struct kcm_psock *)sk->sk_user_data;
-> -	if (likely(psock))
-> -		strp_data_ready(&psock->strp);
-> +	if (likely(psock)) {
-> +		struct socket *sock = sk->sk_socket;
-> +
-> +		/* strp_data_ready() calls sock->ops->read_sock() inline from
-> +		 * this softirq callback. A ULP's read_sock, such as kTLS's
-> +		 * tls_sw_read_sock(), may sleep, so hand anything other than
-> +		 * TCP's own to the parser work, which runs under lock_sock().
-> +		 */
-> +		if (likely(sock && sock->ops->read_sock == tcp_read_sock))
-> +			strp_data_ready(&psock->strp);
-> +		else
-> +			strp_check_rcv(&psock->strp);
+> > a single fraglist, and are safely flushed together upon encountering =
+the
+> > PSH flag at `out_check_final`, preserving the required TCP push seman=
+tics.
+> =
 
-[Severity: Medium]
-Will this serialize all KCM-over-kTLS receive processing on a single
-system-wide worker?
+> [Severity: Medium]
+> Is the removed check really redundant? Commit 8d95dc474f85 ("net: add c=
+ode
+> for TCP fraglist GRO") added it to the is_flist branch on purpose.
+>
+> The general path can mask FIN|PSH out of its first comparison only beca=
+use
+> it later ORs those flags into the held packet's header:
+> =
 
-strp_check_rcv() only does queue_work(strp_wq, &strp->work). strp_wq is
-created in strp_dev_init() as an ordered workqueue:
+>     tcp_flag_word(th2) |=3D flags & (TCP_FLAG_FIN | TCP_FLAG_PSH);
 
-net/strparser/strparser.c:strp_dev_init() {
-    ...
-	strp_wq = create_singlethread_workqueue("kstrp");
-    ...
-}
+Indeed. PSH bits are important information and are expected to close
+a context.
+ =
 
-So only one strparser work item can run at a time across the whole
-system. KCM psocks, the sockmap strparser in net/core/skmsg.c and
-espintcp in net/xfrm/espintcp.c all share this queue.
+> The is_flist branch jumps to out_check_final before it reaches that lin=
+e.
+> So the unmasked comparison was what kept every fraglist member's flags
+> identical to the head's.
+> =
 
-With this change, every data_ready event on a kTLS-backed psock ends up
-in this path:
+> The removal also relaxes FIN, not only PSH. Data-carrying FIN segments,=
 
-strp_work()
-  do_strp_work()
-    lock_sock()
-    strp_read_sock()
-      tls_sw_read_sock()
-        tls_rx_one_record()   /* sync AEAD decrypt or crypto_wait_req() */
-        tls_read_flush_backlog()
+> such as the last segment of a response, can now join a fraglist. The
+> commit message doesn't mention this.
+> =
 
-While one psock is decrypting or waiting there, do_strp_work() for every
-other strparser instance waits behind it on kstrp.
+> The claim that push semantics are preserved seems to hold only when the=
 
-Before this patch, the common case ran inline in softirq on the
-receiving CPU, so several sockets could be processed in parallel. kstrp
-was only used for the sock_owned_by_user() and -ENOMEM fallbacks.
+> skb goes through skb_segment_list(). Could the commit message describe =
+the
+> FIN change and the cases raised in the comments on the diff below?
+> =
 
-Could this add receive latency for unrelated KCM, sockmap and espintcp
-users? Each individual wait is bounded, but a local user who controls
-KCM+kTLS sockets could keep the shared worker busy. Would a per-psock or
-unbound workqueue for this deferred path be a better fit?
+> > diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+> > index e74d99ca9face..54b40ec95a080 100644
+> > --- a/net/ipv4/tcp_offload.c
+> > +++ b/net/ipv4/tcp_offload.c
+> > @@ -328,7 +328,6 @@ struct sk_buff *tcp_gro_receive(struct list_head =
+*head, struct sk_buff *skb,
+> >  	flush |=3D skb_cmp_decrypted(p, skb);
+> >  =
 
-> +	}
->  
->  	read_unlock_bh(&sk->sk_callback_lock);
->  }
+> >  	if (unlikely(NAPI_GRO_CB(p)->is_flist)) {
+> > -		flush |=3D (__force int)(flags ^ tcp_flag_word(th2));
+> =
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013033920.2069285-1-rjethwani%40purestorage.com
+> [Severity: High]
+> Can this drop a forwarded FIN or PSH from the wire?
+> =
+
+> Without this check, skb_gro_receive_list() links an in-sequence [PSH, A=
+CK]
+> or [FIN, ACK] data segment into the held skb's frag_list. The is_flist
+> branch then jumps to out_check_final. That skips the only place where
+> FIN/PSH reach the head header:
+> =
+
+>     tcp_flag_word(th2) |=3D flags & (TCP_FLAG_FIN | TCP_FLAG_PSH);
+> =
+
+> tcp4_gro_complete() and tcp6_gro_complete() return early for is_flist.
+> The head can't carry FIN/PSH itself, because out_check_final would have=
+
+> flushed it. So the head header has neither flag, while the last frag_li=
+st
+> member has them.
+> =
+
+> tcp4_gso_segment() uses __tcp4_gso_segment_list() only when the geometr=
+y
+> still matches and SKB_GSO_DODGY is clear:
+> =
+
+>     if ((skb_pagelen(skb) - th->doff * 4 =3D=3D skb_shinfo(skb)->gso_si=
+ze) &&
+>         !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
+>         return __tcp4_gso_segment_list(skb, features);
+> =
+
+> Otherwise it falls back to tcp_gso_segment()->skb_segment(). That path
+> copies head_skb's headers, TCP flags included, into every segment.
+> =
+
+> tcp_gso_segment() then clears fin/psh on every segment except the last:=
+
+> =
+
+>     while (skb->next) {
+>         th->fin =3D th->psh =3D 0;
+> =
+
+> The last segment keeps the head's flags, which never had FIN/PSH.
+> tcp6_gso_segment() has the same fallback.
+> =
+
+> These can trigger the fallback on forwarded traffic:
+> =
+
+>   bpf_skb_proto_4_to_6() and bpf_skb_proto_6_to_4(), reached through
+>   bpf_skb_change_proto() (for example CLAT/464xlat when tethering), set=
+
+>   SKB_GSO_DODGY on GSO skbs.
+> =
+
+>   bpf_skb_net_grow() and bpf_skb_net_shrink() set SKB_GSO_DODGY.
+>   bpf_skb_net_grow() can also linearize frag_list skbs when
+>   BPF_F_ADJ_ROOM_FIXED_GSO is not set.
+> =
+
+>   Any pull or linearize that changes the geometry has the same effect,
+>   for example skb_ensure_writable(skb, skb->len) in NAT mangling.
+> =
+
+> In those cases the receiver doesn't get the FIN until the sender
+> retransmits it, and PSH is silently cleared.
+> =
+
+> A fraglist skb redirected to a local TCP socket after GRO (DNAT/TPROXY)=
+ is
+> also parsed from the head header only. TCP has nothing like UDP's
+> local-delivery fraglist handling, so the FIN would be missed there too.=
+
+> =
+
+> ORing the tail's flags into th2 in the is_flist branch doesn't seem to =
+fix
+> this. skb_segment_list() emits the head skb with its own TCP header, so=
+ the
+> first segment would then carry a spurious FIN/PSH.
+> =
+
+> [Severity: High]
+> Does this also hide the tail's FIN/PSH from netfilter, conntrack,
+> flowtable, tc and BPF? All of these read only the aggregate's head head=
+er
+> before segmentation.
+> =
+
+> In conntrack, get_conntrack_index() only checks the head's tcph->fin, s=
+o
+> the FIN transition never fires. tcp_in_window() computes:
+> =
+
+>     end =3D segment_seq_plus_len(seq, skb->len, dataoff, tcph);
+> =
+
+> skb->len covers all of the fraglist payload. The +1 for FIN is missing,=
+
+> because tcph is the head header. The peer's ACK of the FIN then hits:
+> =
+
+>     if (!before(sack, receiver->td_end + 1))
+>         return nf_tcp_store_invalid(ct, sender, log, NFCT_TCP_INVALID,
+>                                     NF_TCP_LOG_ACK_OVER, receiver->td_e=
+nd + 1);
+> =
+
+> That ACK is classified invalid, and so are the peer's own FIN and the
+> final ACK. A typical "ct state invalid drop" rule would then drop the
+> teardown packets. Without such a rule, the entry stays ESTABLISHED inst=
+ead
+> of moving to FIN_WAIT/CLOSE_WAIT.
+> =
+
+> In the flowtable, nf_flow_state_check() reads fin/rst only from the hea=
+d
+> header, so NF_FLOW_CLOSING is never set for the offloaded flow.
+> =
+
+> tcp_mt() in xt_tcpudp and the nft tcp flags match also read only the he=
+ad
+> header, so a FORWARD rule that matches FIN or PSH won't fire.
+> skb_segment_list() copies only the MAC header from the head and keeps e=
+ach
+> member's own TCP header. The FIN/PSH therefore still goes out on the wi=
+re
+> and bypasses that policy.
+> =
+
+> Before this patch, the unmasked comparison guaranteed that the head hea=
+der
+> described every member of the fraglist.
+> =
+
+> [ ... ]
+> =
+
+> -- =
+
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
+chset/20261009060319.6229-1-shiming.cheng%40mediatek.com
+
+
