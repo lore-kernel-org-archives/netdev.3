@@ -1,140 +1,200 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5354E323D
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791971130; cv=pass; b=cGrzdQUkYZOeRwk8yFY3cAqb92ukDXUh6oF0yWXVFlUyKOjYvq55KaowkFWAenBQqbRXwcgm7qIDu/IUHVxuLLW47qi9pWSWtYYy5UNzqIlXpvVZJLwJesFQnQTYPmFiL0AnsILpiOtXROUtv0uC3Lo58Wq58nX88UPqJSfDY98=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791971130; c=relaxed/simple;
-	bh=gusoHEwTYtpIMo9jbvB0sb5YbKOtm4Z6P3NaNg27eS0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jprVZk41wUdHdtCQ0I4h0Kf+pTnMujc5WYqT4AAC524Ot7TNlrC6gsLBynFqsCV8N9BMOh/Q6SGxMg6bogZu68EuIrO4V3yeqE63Fkf1jtYTJg547m5CTunBw5aATNg/NWJpDpfIEOlMLmXj5b7vRQGBMdumvPyTATXQ8cdWeS8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=PK1r923x; arc=pass smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189EF4D1789
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791971739; cv=none; b=Q7P3esIb5GTNmF7fBDWKWmjkNeOp9Slt8i+w9DTFiDa7x48bGXb/duRObeU8Q9YZzrql7Yzj4WMP/5M2ECGdxIbIy4P1lCFt2R6JK8G2u302gaqVKZlv/crNSz8sIVCOm+dYa/bPYJ1fD7xofBnW+ShzsolqJKrI9Fyi6ea8jUI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791971739; c=relaxed/simple;
+	bh=SyE1EGc7dnPZYAGMHddDJRiSrj1ZiXZzQjSLg2ZgsX4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=X+HHtf/cXa58NyV/eln8I3auVpZxTXtMhv2DsqIZ5zw1aV4kZqLMYZoDHl+Nm1XOtx14rDIjM4pTcepx9KgdZ9MsWL3UZsYN5+bYUciQCQQWtRqSVMHodYl533BqQ5wYzzESQqvDVSmUvTs+nNMXR3bddGZDcIaWLPz79blOQW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=gbMtnxCT; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="PK1r923x"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6767d92cde6so3744227d50.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:45:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791971126; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jyJSIOPubo3mfirkXoq41exi4yRw1BxE4iiqJ3S0u8a0dx4X4jFqofpZHBFEyMo2Qq
-         lsNwHD/Gg0OONDLX8wkod1vLvdwvKWOM16SgczpGOhXpG1ikElIqS2knr2uxPaDq1pE0
-         8ogTBLSlKLCcD7AMexRb8XsVqdu1YIsksY2RK3BWVUE8NJY0KIeunlUwhegKGKHNqIjQ
-         8q8Rk1SM7EUfRO1eocwc7kZzdbDqwpo3UBLNib4gKFmLedXKVkygPGdX7tIQkjGc8nqR
-         E0cV8IIHBNfoWQGt1oZq/Fh+pF53xwAbiej7i2IaNn8xJ9GiZK/waDyfpCJugW0JsKOt
-         pjzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=gusoHEwTYtpIMo9jbvB0sb5YbKOtm4Z6P3NaNg27eS0=;
-        fh=b6j5q+BkFhQYBsiI0dyzmcmwztaD/L5nn68h8HDwXWE=;
-        b=VwLii+6Ix/Y4tGjL7hrj/rQ1Ik+Zo9v4PR/AfX427Av1KN/Pm0SR9Hs7GqFxN+8Q+y
-         NsuygTX7vbQMc+PxR6RCcWRRU46rkNaGTGV8SsPd2Hhojvda5+wQPudHlu28YrVNVyK+
-         xs09Qp0a9ZpMARxhT0sKtCg4O3GHpbq94anYcLw4c0c3zuZx/hI5LLG1H2LExhKBDt1s
-         jfIoJteMmXqOfjcJOFAzfLytOCyh+DRQymBRLwvM9yXkB9H8PJFvUJfevwqgVunqdhOo
-         YyYHLrYaR2GnWbga0pydyXmTB6OP0RwNzXMYTbnsb8f0uE42QP46ksCxBdmLUNItZxyq
-         nxjw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="gbMtnxCT"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93cc1ab5f6cso470848885a.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:55:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1791971126; x=1792575926; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=mojatatu.com; s=google; t=1791971737; x=1792576537; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=gusoHEwTYtpIMo9jbvB0sb5YbKOtm4Z6P3NaNg27eS0=;
-        b=PK1r923xhU7qDZUbZmXe0yFUiSBca3J8XHIHs9qS+//TYB4Fft+Qo2Ljqk3oG6sPvs
-         ExQCXNC1AHfaOK+vCwWLnwkjAKTf2UBbROgtrQXr86a/xPPl6cnW8uxv3/TF1HaeunIL
-         WDiDbbme6gyhDZGG95JeVXsSEylcaz4DknthCfgSWs5Ausu5ByUHgSsm7wIUQRywIF7U
-         6L6dKDQwf2C+Dc83KQaib+KmDPGD3y03epzqW/Cg6zX34bmKNG+1EutwDxzYAA5TyPdM
-         vvgnoK8SarlTBCqLg0ZTdzmtuFchV5igeEa4cykI2Ygktz2Ux2qUDOT2+uGnWf2ewKNE
-         z44g==
+        bh=ZRYZNseXUhnvz2KZdmuG4MOlfPEQusM15CemEJWkdiU=;
+        b=gbMtnxCToHHlJFzLgHjrhKa+tlfNS0H8+vKN0hQJ0Q40ZQYlDn1jw+shNpgfxfVgKV
+         y0nLDRr1FbVldvmaFKGAJfs3VxV4sqPlF2Er/CZGEh/EMMSL4c3bvxwcgs2oR+c568PX
+         +6MPFT9yPTbOV1ysffLOH4j8lBne2jKtyOzfk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791971126; x=1792575926;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=gusoHEwTYtpIMo9jbvB0sb5YbKOtm4Z6P3NaNg27eS0=;
-        b=Ts9VCt0ESn525117Ex6elZ2lbSyqTnKubSCM3i1suGv6r5yfcNcbbeeLePksEa447H
-         f/cFRbQj60eUKi9wFEm+3znNKkIlUHdg3WrJJ9qfCsF7Ia9C9PTrtXWgPpw3ulTOT5nn
-         HqPthFpIfUN5lSV3CibsDL4lwGGP8uvjM75pnDNC9nmZWbs1SATC4VVvztqvfBECHVhs
-         yBovjBCrIM/ZMQTpph/q4egOedsBtsUvNZ0Hw6Eh/aT++qrOfAH/DZkIu/6mpZRlegqF
-         UGaoUIH6twVsITQq46b1PWM13aqvPBzeKGNXrHU1FnUyJ4EN6Kh/nYxxcsM3RRUoKSzZ
-         SSTw==
-X-Forwarded-Encrypted: i=1; AKwUvBxPjLVJPEou1W9tJvWrsNRtvso0vdF49elnr826/NbXNYuhMgYarMjYRb8CIf2L/rTuEw6yWlw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLMmd46z6wgrcJvXmD09+VF6WXSlGb2amjTLr26wUEVfA9nqhbY
-	XHo5NTXVArNYZv99bCkQwvBhszMGiXEvww3q59pN0plGanV2Cy0cLGrXestV5GUyxmXeyeR8lvu
-	rLSJowA4QAbd8VusPcQ5vbQ4M89eltH5YS7/IKmIe
-X-Gm-Gg: AYBFou3G8Qw/m+ioZxKni3wnBml45HRwHcypaaXcvSfDpUe5XY1bwBIYbiSIQpxt9g0
-	CQO0zztBMsCOBjtC8SotL1TLU9d5CDMk4G0nLNBQU4SxQiXy2rMoD3dKeB09XWLgjWDMt+JsZJ8
-	Eyo8w1WLOpYpIp79qyg0oXKPjuaN0XxHe9wDfccoYhjWp2IRbln9ipvngQsTCgaPITKs+GP8X6D
-	Z/cfSr3WUyC9OOcXerxrGFm57UWV14at9yKzvwTh3cbvBJZnD4wG2WApT/RSjclMgocXsD12Jwl
-	cS2a9HeVHyYIR6PrfEMhRaU/0OhqRcI7c2gYZCJyAkm7e8FEEZFxCEU4Jiran4Y2oZIigP5rjVP
-	avMJyRZi85JpUg2YkBCjqRNWCRrxZMNhPkFtoPlLUoetyOHEMWCYTgHPUmmoHZVNMOBWmGjUX1m
-	IoHwWKC/5iHn1EH3RSIWfMflpEWuD9CqkZczejiDqoMHp45GyQDVT6+QkbggkT+LHQaeV3sH2xY
-	nZ4Qpib10hvn0mgKHQxGX1w3cxJzCgwukdGUg17x/AGSQGiZSSBNT/myMDnCcgLciYhgugGQnp4
-	KAgzbT67d4KJZg==
-X-Received: by 2002:a05:690c:c4e5:b0:8b0:9e22:2651 with SMTP id
- 00721157ae682-8b09e22273cmr36219317b3.7.1791971126209; Wed, 14 Oct 2026
- 02:45:26 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1791971737; x=1792576537;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZRYZNseXUhnvz2KZdmuG4MOlfPEQusM15CemEJWkdiU=;
+        b=I2blv3aQv6xe83g1UFJZRw45+2f6icev/x9YYUu7M0UIG4NjcN6LGw/lr1TcQppv3t
+         BN3w7P+ENJsgWqdtkHamUrsciKLqL9YAB4/QDdUcC0LPQ0W7jxsM62/g8Buggeuib0/Q
+         4tMvP2HpLBUj93BhXQCDuM1PHlsZTluvUVtvkHyMBry0+BHn9eXbXikFQsapDkuJsF+x
+         itMANsyCraZ279JCRYNLGZ862O3BUrf1wRzGkilrODESlURStOKRnGkh7DWl+uGNOQFY
+         XNgURO/YDYX55xAwXnIvHhfGhD9dS0RlIaCTC28JXldOB1D29BtbM24yewGhAHhKx+bp
+         qtUg==
+X-Gm-Message-State: AFq9FYIvNa4jfmGvZOlYCKcDAY35HRAMw95xcTVI8OF2LVUzNZxar5M+
+	wJfUulMIbMWM87lZpCAmT/xf0KPt/iI0l/yl7aW48+TMt7ytrO4Qk+7NPsdRWPM9bGPldu7EdQN
+	Xk0M=
+X-Gm-Gg: AYBFou1+004bRuf4NtgSaZ9wpeU1S5rmL2dP12E+YT2Lpmoq7jx/oAZjK2BmdA4qZ1F
+	FSx3j/l18Jw8dRMgcXg7bvxmaqUnbdBLGpDYThdY9A/odFUgfFfqDMeU4tf7qpBVgpn2rlcrqYu
+	sT5GiRZF+R2PHF4R5b5W7bHrhAkF2UNJfszrDN2O/0i0LWA+JQrRq7Pg13THzBIhey7Keki2IvU
+	H5Li/H4VoCxujNBelh4zrGyh09SeXpsqJliMyKKnRbSRF3+KhYFXBmXiLjQmJ4kvZNJ8legeruR
+	InDaDZ78mjYAacrrYqmq6rCUCwhJWaP3C3ucPVPnvjnFyvfXjkFlkPXFrsH9TXj11pOQo1KnhLc
+	NVQxdYc8QdOlD3lXtNpReV8TOduYxzB2XjkJsnagxGeoDpH2qCFkZcWQFXVzTCahW3P3FPb1iiQ
+	RJc9MfpwvehOeP7Eq1qYVIi1vX/2alKozIbg+GyvTF8ALEKO22gVyAVQue0b1UKsIg+9iwk14aX
+	WdU4MFGfmZTUW5ENX9OdNw2YEV14iuiG6c8BKHbPZ+/xi4oqEZmQE52hgvfcMLieq81yKjH
+X-Received: by 2002:a05:620a:710e:b0:93e:5e2c:8c12 with SMTP id af79cd13be357-93ebd2aae46mr2482764785a.60.1791971736775;
+        Wed, 14 Oct 2026 02:55:36 -0700 (PDT)
+Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef5055eb3sm453074985a.33.2026.10.14.02.55.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 02:55:35 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	cake@lists.bufferbloat.net,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net-next v6 0/4] net/sched: cap the accounted backlog before it can wrap
+Date: Wed, 14 Oct 2026 05:55:28 -0400
+Message-Id: <QDISC-BA27.v6.r0.20261014054826@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261004171636.3545085-1-julius@bairaktaris.de>
- <20261004171636.3545085-2-julius@bairaktaris.de> <b4aa46a5-dd8a-4520-8574-d008a3877f28@nvidia.com>
-In-Reply-To: <b4aa46a5-dd8a-4520-8574-d008a3877f28@nvidia.com>
-From: Julius Bairaktaris <julius@bairaktaris.de>
-Date: Wed, 14 Oct 2026 09:44:49 +0000
-X-Gm-Features: AclHuK_at13xJpgBNhwlZvLzlUVxJXDvkN0LGkLWSuS73Rn7U8oFN9DIXlg-t_w
-Message-ID: <CAC1t37K0tEMzxmRhLeHnH-TPx61pZmCHt0xxTJ5Wq2Wxvzv8Jw@mail.gmail.com>
-Subject: Re: [PATCH nf-next v3 1/3] net/mlx5e: Ignore FLOW_ACTION_PRIORITY on
- flowtable offload
-To: Jianbo Liu <jianbol@nvidia.com>
-Cc: pablo@netfilter.org, fw@strlen.de, phil@nwl.cc, 
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	netdev@vger.kernel.org, lorenzo@kernel.org, nbd@nbd.name, 
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, 
-	rdunlap@infradead.org, skhan@linuxfoundation.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, saeedm@nvidia.com, leon@kernel.org, 
-	tariqt@nvidia.com, mbloch@nvidia.com, linux-rdma@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 14, 2026 at 03:17:00AM +0200, Jianbo Liu wrote:
-> The handler is only in tc_acts_fdb[] and only accepts flowtable flows,
-> so NIC mode and tc flower rules are rejected as before. Looks good.
->
-> The comment says what the code does, but the consequence is worth a line
-> in the commit message. Because the action is ignored, the priority only
-> reaches packets still on the software fast path, where
-> nf_flow_offload_forward() sets skb->priority. Once the flow is offloaded
-> to the FDB, mlx5 forwards it without touching skb->priority, so the
-> offloaded packets do not carry it. Refusing the flow to honor the
-> priority would keep it in software, so ignoring the action and keeping
-> the offload is the better tradeoff, it is just not obvious from the code.
->
-> I checked this on ConnectX-7: with the series the priority-carrying
-> flows stay offloaded to the FDB like plain flows, and without patch 1/3
-> they fallback to software.
->
-> Nit: "prio" already means flow table priority in mlx5; skbedit_prio
-> would be clearer. Not a blocker.
->
-> Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+This series bounds the accounted backlog of the AQM qdiscs so that it
+cannot wrap mod 2^32.
 
-Hi Jianbo,
+v1 widened the counters to u64 and was rejected; from v2 on the fix drops
+at enqueue instead. The v5 posting was a single patch; at the reviewer's
+request it is split here into four:
 
-Thanks a lot for the review and for testing this on ConnectX-7!
+  1/4  classifier refactor: cake_tcf_classify() and fq_codel_classify()
+       return their result to the caller.
+  2/4  cake: use a dedicated split-GSO list iterator.
+  3/4  the fix: drop at enqueue once the stored backlog is within one
+       maximum-size packet of the wrap point, and clamp the stabless GSO
+       producer in qdisc_pkt_len_segs_init(). Covers fq_codel, cake,
+       codel, pie, fq_pie, dualpi2, RED, pfifo, plug and gred.
+  4/4  cake: split cake_hash() into side-effect-free key extraction (on
+       the unsegmented skb) and set-associative resolution (after
+       admission), and move the split-GSO path ahead of the resolution.
 
-I will send v4 with your suggestions this weekend.
+The commit logs and the in-code comments are rewritten for readability.
 
-Best,
-Julius
+The guard half is a net fix, but the CAKE hash split is new-code net-next
+material, so the series targets net-next with no Fixes: (the aggregate
+wrap predates every touched qdisc).
+
+Changes in v6:
+  - Rewrite as a four-patch series per Toke Høiland-Jørgensen's review of
+    v5: split the classifier refactor, the split-GSO iterator, the overflow
+    guard and the cake hash split into separate patches, and drop the
+    verbose commit prose and the in-code comments that read as
+    machine-written.
+  - Considered the Sashiko gemini v5 TC_ACT_CONSUMED report; not folded.
+    No in-tree producer can deliver TC_ACT_CONSUMED to a qdisc classify
+    switch, so the fall-through it describes is unreachable: act_ct returns
+    it only when bound to a clsact or ingress qdisc (11cb63b0d1a0), and
+    act_mirred returns it only for a redirect that does not clone, which
+    requires an ingress skb. cls_bpf and act_bpf map an unrecognized opcode
+    such as CONSUMED to TC_ACT_UNSPEC.
+
+v5 Considered Comments from Sashiko nipa and Simon:
+  - cake: the cake_tcf_classify() block comment had an embedded "/*"
+    ("else *flow/*host"), which trips a -Wcomment / W=1 build warning.
+    Simon Horman reported it on v4 and noted it likely suppressed the
+    Sashiko nipa review; reworded to drop the nested comment.
+  - cake: reword the same comment so it no longer says the function
+    returns true for "a matched no usable flow" result (Sashiko nipa v3
+    Low): cake_tcf_classify() returns true only for a terminal TC action;
+    a matched-but-unusable classid leaves the overrides at 0 and the
+    packet is hashed as before (fq_codel_classify() differs).
+  - commit log: soften the claim that the 1 MiB headroom always bounds a
+    single packet (Sashiko nipa v3 High).
+
+v4  fold the Sashiko nipa v3 review:
+  - cake: compute the flow/host hash keys from the packet as received
+    (before skb_gso_segment(), which can rewrite an encapsulated GSO
+    packet's headers to the inner ones), but defer the set-associative
+    resolution that writes q->tags[], the flow host indices, the way
+    counters and the host bulk-flow counts until after the split-GSO
+    segment-sum admission check, so a packet rejected by that check
+    commits no flow state.
+  - cake: in the split-GSO rejection, handle a fraglist GSO (whose
+    skb_segment_list() returns the original skb as the list head with an
+    extra reference, segs == skb) by dropping the caller's reference and
+    queueing the list once, instead of calling __qdisc_drop_all() and
+    qdisc_drop_reason() on the same skb, which self-linked *to_free.
+
+v3  fold the v2 review (Eric Dumazet) and Sashiko gemini v2:
+  - Test the stored backlog via qdisc_backlog_at_max() instead of
+    (u64)backlog + qdisc_pkt_len() > QDISC_MAX_BACKLOG: no double-count
+    of the reserved 1 MiB headroom, no per-enqueue 64-bit add.
+  - cake: run the external classifier first, honor its terminal TC
+    actions, then the ceiling check, then the hash and the shaper state;
+    the SPLIT_GSO segment sum is checked before any flow/host state is
+    committed and the list is deferred to to_free rather than freed
+    under the qdisc lock.
+  - fq_codel: run the external classifier (terminal actions honored)
+    first, then the ceiling check before fq_codel_hash(); document the
+    fq_codel_drop() NULL flow->head consequence.
+  - pfifo: same ceiling guard, since RED reads a (graftable) child's
+    backlog and SFB's default child is pfifo.
+
+v2 approach rewrite per list discussion of v1:
+  v1 approached the wrap by widening the per-flow backlog counters to
+  u64. Eric Dumazet rejected the framing ("Storing 4GB in a qdisc is
+  absolutely insane") and asked for a drop at enqueue once the backlog
+  approaches the wrap point. Sebastian Moeller noted tc-stab is the
+  generic overhead-accounting mechanism, so the fix must not penalize
+  normal stab use.
+  v2 replaces the u64 widening with an enqueue-side pre-check against
+  QDISC_MAX_BACKLOG and drops with QDISC_DROP_OVERLIMIT. No counter is
+  widened, so the 32-bit sch->qstats.backlog the AQM reads can no longer
+  wrap. Same-pattern siblings fixed in one patch: fq_codel, cake, codel,
+  pie, fq_pie, dualpi2, RED.
+
+Jamal Hadi Salim (4):
+  net/sched: cake, fq_codel: return the classifier result to the caller
+  net/sched: cake: use a dedicated split-GSO list iterator
+  net/sched: cap the accounted backlog before it can wrap
+  net/sched: cake: hash before segmenting and reject an overlong split
+
+ include/net/pkt_sched.h   |   1 -
+ include/net/sch_generic.h |  15 ++++
+ net/core/dev.c            |  15 +++-
+ net/sched/sch_cake.c      | 183 +++++++++++++++++++++++++++-----------
+ net/sched/sch_codel.c     |  16 ++--
+ net/sched/sch_dualpi2.c   |   1 +
+ net/sched/sch_fifo.c      |   6 ++
+ net/sched/sch_fq_codel.c  |  55 +++++++++---
+ net/sched/sch_fq_pie.c    |   3 +-
+ net/sched/sch_gred.c      |  10 +++
+ net/sched/sch_pie.c       |   3 +-
+ net/sched/sch_plug.c      |   9 +-
+ net/sched/sch_red.c       |  25 ++++--
+ 13 files changed, 262 insertions(+), 80 deletions(-)
+
+-- 
+2.43.0
+
