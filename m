@@ -1,29 +1,29 @@
 Received: from stargate.chelsio.com (unknown [12.32.117.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3BE4E781A
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203584A3D25
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791981696; cv=none; b=ACsoM/b+mImGxGywrC+JGkqD5Yvh38IS6LfmiOL0B/LpF0geRuEvUUGcDUbAgcCIjGegdgsBhL06W5KU1nmIAw6/e9LSKSBZFBuJlgmURkh4nEmjApTTkDPQ+Igoi3ftZgCH2kOElmMS5sptqI21wnIlOS2daD13FyR1d1dTXuk=
+	t=1791981702; cv=none; b=KpyRpigMTE9M7s0inb2LOYk4QVDeBon1e040vecAjkOSXU89IVxzADWvAbaQdnN99CAxLCFyyQjHvmzKCvreXlTU6VK0dOO1EgxchDLp/IQ12EypiQmFg5Bym4o8hZkKkVvrtSQDbkBLmCnTCM+4aECWhv3qFsZ8EICNPr7/WHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791981696; c=relaxed/simple;
-	bh=UUxLPU9OoBWtombwbNoDTb/mIekOQPyJvX9jruxlsS0=;
+	s=arc-20240116; t=1791981702; c=relaxed/simple;
+	bh=ZQg622t9pTNiM6/Zy6XnFJRknh/Y6mmW9QEro+Yfios=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qslmE6KqTg99WfxY6IqNWs1qTZDPrQWtQExm47u5bdp4h5eMC8tWWR4HNvxjweEE0J2jQ66d7mLgdqxmVpHCxnrrCJpjEYf1+eUt66NoLbfoaZhGlduLFl+6noxBphRxBLy9OLLWa73EaXHsafLJQ9jTZh3EFXi8+jENiud0PYk=
+	 MIME-Version; b=L8YRzu7pSdnM57YMKA1gRUpArGEc5Sn8TCb4hDgjsajfkG5G77bN6Sg1Lx6bAw3CNF4ICnEwo1sjoyFD1V9I3s2j0ENBnzxqkz0rIZjPDTGZehdGX5jiBJIjwGA+UK/xTlj/QNA8A1ewAcBrXGRK+Rgj+tGGhcl1QFh+pXl0De0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
 Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ3018414;
-	Wed, 14 Oct 2026 05:41:22 -0700
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ4018414;
+	Wed, 14 Oct 2026 05:41:24 -0700
 From: Potnuri Bharat Teja <bharat@chelsio.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
-Subject: [PATCH net-next v4 09/12] cxgb4: Add indirect register definitions for T7
-Date: Wed, 14 Oct 2026 18:12:54 -0400
-Message-Id: <20261014221257.436789-10-bharat@chelsio.com>
+Subject: [PATCH net-next v4 10/12] cxgb4: extend CUDBG support for T7 adapters
+Date: Wed, 14 Oct 2026 18:12:55 -0400
+Message-Id: <20261014221257.436789-11-bharat@chelsio.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20261014221257.436789-1-bharat@chelsio.com>
 References: <20261014221257.436789-1-bharat@chelsio.com>
@@ -35,1191 +35,2312 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add indirect register definition headers used by the CUDBG
-infrastructure.
+Update the CUDBG infrastructure to support T7-specific debug data
+collection.
 
-Introduce cudbg_indir_reg.h and cudbg_indir_reg_t7.h containing the
-indirect registers required for cudbg register collection.
+Add support for collecting CIM IBQ and OBQ debug entities from T7
+adapters, including the additional queues introduced by T7 and support
+for multicore.
 
-These headers will be used by subsequent patch that add indirect
-register handling support to cudbg.
+Also add T7 indirect register collection support using the new indirect
+register definitions, while preserving the existing register access
+mechanism for T5/T6.
+
+Debug tooling needs to read and write individual adapter registers and
+to read SGE contexts and queue descriptors without collecting a full
+cudbg dump. Add a private ioctl providing four commands
 
 Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
 ---
- .../ethernet/chelsio/cxgb4/cudbg_indir_reg.h  |   43 +
- .../chelsio/cxgb4/cudbg_indir_reg_t7.h        | 1113 +++++++++++++++++
- 2 files changed, 1156 insertions(+)
- create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
- create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
+ .../net/ethernet/chelsio/cxgb4/cudbg_entity.h |  114 +-
+ drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h |   56 +-
+ .../net/ethernet/chelsio/cxgb4/cudbg_lib.c    | 1088 ++++++++++++++---
+ .../net/ethernet/chelsio/cxgb4/cudbg_lib.h    |   60 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |    1 -
+ .../net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c  |   20 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   |  242 ++++
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c    |   20 -
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.h    |    1 +
+ 9 files changed, 1400 insertions(+), 202 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
-new file mode 100644
-index 000000000000..a33e003c78d5
---- /dev/null
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
-@@ -0,0 +1,43 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
-+ */
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h
+index d5218e74284c..8295b330a7b9 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h
+@@ -21,13 +21,58 @@ struct cudbg_mbox_log {
+ 	u32 lo[MBOX_LEN / 8];
+ };
+ 
+-struct cudbg_cim_qcfg {
+-	u8 chip;
+-	u16 base[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
+-	u16 size[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
+-	u16 thres[CIM_NUM_IBQ];
+-	u32 obq_wr[2 * CIM_NUM_OBQ_T5];
+-	u32 stat[4 * (CIM_NUM_IBQ + CIM_NUM_OBQ_T5)];
++#define CUDBG_CIM_IBQ_REV 1
 +
-+#ifndef __CUDBG_INDIR_REG_H__
-+#define __CUDBG_INDIR_REG_H__
-+
-+enum cudbg_indir_type {
-+	CUDBG_INDIR_TYPE_CIM_CTL,
-+	CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL,
-+	CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL,
-+	CUDBG_INDIR_TYPE_TP_MIB_INDEX,
-+	CUDBG_INDIR_TYPE_TP_PIO_ADDR,
-+	CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR,
-+	CUDBG_INDIR_TYPE_UP,
-+	CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG,
-+	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG,
-+	CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG,
-+	CUDBG_INDIR_TYPE_MAX, /* New members need to be added at end */
++struct cim_ibq_rev1 {
++	struct cudbg_ver_hdr ver_hdr;
++	u8 qid;
++	u8 coreid;
++	u32 data[]; /* Must be last */
 +};
 +
-+struct cudbg_indir_reg {
-+	u32 addr;
++#define CUDBG_CIM_OBQ_REV 1
++
++struct cim_obq_rev1 {
++	struct cudbg_ver_hdr ver_hdr;
++	u8 qid;
++	u8 coreid;
++	u32 data[]; /* Must be last */
 +};
 +
-+struct cudbg_indir_type_entry {
-+	struct cudbg_indir_reg *reg_arr;
++#define CUDBG_CIM_QCFG_REV 1
++
++enum cudbg_entity_cim_qcfg_qtype {
++	CUDBG_ENTITY_CIM_QCFG_QTYPE_IBQ = 0,
++	CUDBG_ENTITY_CIM_QCFG_QTYPE_OBQ,
++};
++
++struct cim_qcfg_rev1_data {
++	u8 qtype;
++	u8 qid;
++	u16 base;
++	u16 size;
++	u16 thres;
++	u32 obq_wr[2];
++	u32 stat[4];
++};
++
++struct cim_qcfg_rev1 {
++	struct cudbg_ver_hdr ver_hdr;
++	u8 num_cim_ibq;
++	u8 num_cim_obq;
++	u8 coreid;
++	struct cim_qcfg_rev1_data data[]; /* Must be last */
++};
++
++#define CUDBG_CIM_LA_REV 1
++
++struct cim_la_rev1 {
++	struct cudbg_ver_hdr ver_hdr;
++	u8 coreid;
++	u8 ncol;
++	u16 nrow;
++	u32 config;
++	u32 data[]; /* Must be last */
+ };
+ 
+ struct cudbg_rss_vf_conf {
+@@ -50,6 +95,25 @@ struct cudbg_hw_sched {
+ 	u32 map;
+ };
+ 
++#define CUDBG_TP_INDIR_REG_REV 1
++#define CUDBG_PM_INDIR_REG_REV 1
++#define CUDBG_MA_INDIR_REG_REV 1
++#define CUDBG_UP_CIM_INDIR_REG_REV 1
++#define CUDBG_HMA_INDIR_REG_REV 1
++
++struct cudbg_indir_reg_data {
++	u32 offset;
++	u32 data;
++};
++
++struct cudbg_indir_reg_entity {
++	struct cudbg_ver_hdr ver_hdr;
++	u32 indir_reg;
++	u32 indir_data;
 +	u32 nentries;
++	struct cudbg_indir_reg_data data[];
 +};
 +
-+#include "cudbg_indir_reg_t7.h"
+ #define SGE_QBASE_DATA_REG_NUM 4
+ 
+ struct sge_qbase_reg_field {
+@@ -91,8 +155,8 @@ static const char * const cudbg_region[] = {
+ 	"Tx payload:", "Rx payload:", "LE hash:", "iSCSI region:",
+ 	"TDDP region:", "TPT region:", "STAG region:", "RQ region:",
+ 	"RQUDP region:", "PBL region:", "TXPBL region:",
+-	"DBVFIFO region:", "ULPRX state:", "ULPTX state:",
+-	"On-chip queues:"
++	"RRQ region:", "DBVFIFO region:", "ULPRX state:",
++	"ULPTX state:", "On-chip queues:"
+ };
+ 
+ /* Memory region info relative to current memory (i.e. wrt 0). */
+@@ -187,20 +251,42 @@ struct cudbg_tid_info_region_rev1 {
+ 	struct cudbg_ver_hdr ver_hdr;
+ 	struct cudbg_tid_info_region tid;
+ 	u32 tid_start;
+-	u32 reserved[16];
++	u32 nhash;
++	u32 clip_base;
++	u32 nclip;
++	u32 route_base;
++	u32 nroute;
++	u32 reserved[11];
+ };
+ 
+ #define CUDBG_LOWMEM_MAX_CTXT_QIDS 256
+ #define CUDBG_MAX_FL_QIDS 1024
+ 
+-struct cudbg_ch_cntxt {
+-	u32 cntxt_type;
+-	u32 cntxt_id;
+-	u32 data[SGE_CTXT_SIZE / 4];
++#define CUDBG_SGE_CTXT_REV 1
 +
-+static inline struct cudbg_indir_type_entry *
-+cudbg_get_indir_reg_info(u32 chip_ver, enum cudbg_indir_type type)
++struct sge_ctxt_rev1_data {
++	u8 ctxt_type;
++	u8 size;
++	u32 ctxt_id;
++	u32 data[];
++};
++
++struct sge_ctxt_rev1 {
++	struct cudbg_ver_hdr ver_hdr;
++	u32 nentries;
++	u8 data[]; /* Must be last */
+ };
+ 
+ #define CUDBG_MAX_RPLC_SIZE 128
+ 
++struct cudbg_cntxt_field {
++	char *name;
++	u32 start_bit;
++	u32 end_bit;
++	u32 shift;
++	u32 islog2;
++};
++
+ struct cudbg_mps_tcam {
+ 	u64 mask;
+ 	u32 rplc[8];
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h
+index c84719e3ca08..85c4400bf419 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h
+@@ -17,6 +17,12 @@
+ #define CUDBG_MAJOR_VERSION 1
+ #define CUDBG_MINOR_VERSION 14
+ 
++#define CUDBG_MAX_PARAMS 16
++
++enum {
++	CUDBG_UP_COREID_PARAM = 13,
++};
++
+ enum cudbg_dbg_entity_type {
+ 	CUDBG_REG_DUMP = 1,
+ 	CUDBG_DEV_LOG = 2,
+@@ -26,8 +32,8 @@ enum cudbg_dbg_entity_type {
+ 	CUDBG_CIM_IBQ_TP0 = 6,
+ 	CUDBG_CIM_IBQ_TP1 = 7,
+ 	CUDBG_CIM_IBQ_ULP = 8,
+-	CUDBG_CIM_IBQ_SGE0 = 9,
+-	CUDBG_CIM_IBQ_SGE1 = 10,
++	CUDBG_CIM_IBQ_SGE = 9,
++	CUDBG_CIM_IBQ_PCIE = 10,
+ 	CUDBG_CIM_IBQ_NCSI = 11,
+ 	CUDBG_CIM_OBQ_ULP0 = 12,
+ 	CUDBG_CIM_OBQ_ULP1 = 13,
+@@ -71,11 +77,55 @@ enum cudbg_dbg_entity_type {
+ 	CUDBG_HMA = 68,
+ 	CUDBG_QDESC = 70,
+ 	CUDBG_FLASH = 71,
+-	CUDBG_MAX_ENTITY = 72,
++	CUDBG_CIM_IBQ_TP2  = 73,
++	CUDBG_CIM_IBQ_TP3  = 74,
++	CUDBG_CIM_IBQ_IPC1 = 75,
++	CUDBG_CIM_IBQ_IPC2 = 76,
++	CUDBG_CIM_IBQ_IPC3 = 77,
++	CUDBG_CIM_IBQ_IPC4 = 78,
++	CUDBG_CIM_IBQ_IPC5 = 79,
++	CUDBG_CIM_IBQ_IPC6 = 80,
++	CUDBG_CIM_IBQ_IPC7 = 81,
++	CUDBG_CIM_OBQ_IPC1 = 82,
++	CUDBG_CIM_OBQ_IPC2 = 83,
++	CUDBG_CIM_OBQ_IPC3 = 84,
++	CUDBG_CIM_OBQ_IPC4 = 85,
++	CUDBG_CIM_OBQ_IPC5 = 86,
++	CUDBG_CIM_OBQ_IPC6 = 87,
++	CUDBG_CIM_OBQ_IPC7 = 88,
++	CUDBG_MAX_ENTITY,
++};
++
++struct cudbg_param {
++	u16 param_type;
++	u16 reserved;
++	union {
++		struct {
++			u32 memtype; /* which memory (EDC0, EDC1, MC) */
++			u32 start; /* start of log in firmware memory */
++			u32 size; /* size of log */
++		} devlog_param;
++		struct {
++			struct mbox_cmd_log *log;
++			u16 mbox_cmds;
++		} mboxlog_param;
++		struct {
++			const char *caller_string;
++			u8 os_type;
++		} sw_state_param;
++		struct {
++			u32 itr;
++		} yield_param;
++		u64 time;
++		u8 tcb_bit_param;
++		void *adap;
++		u8 coreid;
++	} u;
+ };
+ 
+ struct cudbg_init {
+ 	struct adapter *adap; /* Pointer to adapter structure */
++	struct cudbg_param dbg_params[CUDBG_MAX_PARAMS];
+ 	void *outbuf; /* Output buffer */
+ 	u32 outbuf_size;  /* Output buffer size */
+ 	u8 compress_type; /* Type of compression to use */
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
+index 4bae323351f7..3331a27dedff 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
+@@ -15,6 +15,7 @@
+ #include "cudbg_lib.h"
+ #include "cudbg_zlib.h"
+ #include "cxgb4_tc_mqprio.h"
++#include "cudbg_indir_reg.h"
+ 
+ static const u32 t6_tp_pio_array[][IREG_NUM_ELEM] = {
+ 	{0x7e40, 0x7e44, 0x020, 28}, /* t6_tp_pio_regs_20_to_3b */
+@@ -193,12 +194,15 @@ u32 cudbg_get_entity_length(struct adapter *adap, u32 entity)
+ 		case CHELSIO_T6:
+ 			len = T5_REGMAP_SIZE;
+ 			break;
++		case CHELSIO_T7:
++			len = T7_REGMAP_SIZE;
++			break;
+ 		default:
+ 			break;
+ 		}
+ 		break;
+ 	case CUDBG_DEV_LOG:
+-		len = adap->params.devlogs.size;
++		len = adap->params.devlog[0].size;
+ 		break;
+ 	case CUDBG_CIM_LA:
+ 		if (is_t6(adap->params.chip)) {
+@@ -214,39 +218,63 @@ u32 cudbg_get_entity_length(struct adapter *adap, u32 entity)
+ 		len = 2 * CIM_MALA_SIZE * 5 * sizeof(u32);
+ 		break;
+ 	case CUDBG_CIM_QCFG:
+-		len = sizeof(struct cudbg_cim_qcfg);
++		len = sizeof(struct cim_qcfg_rev1);
+ 		break;
+ 	case CUDBG_CIM_IBQ_TP0:
+ 	case CUDBG_CIM_IBQ_TP1:
+ 	case CUDBG_CIM_IBQ_ULP:
+-	case CUDBG_CIM_IBQ_SGE0:
+-	case CUDBG_CIM_IBQ_SGE1:
++	case CUDBG_CIM_IBQ_SGE:
++	case CUDBG_CIM_IBQ_PCIE:
+ 	case CUDBG_CIM_IBQ_NCSI:
+ 		len = CIM_IBQ_SIZE * 4 * sizeof(u32);
+ 		break;
++	case CUDBG_CIM_IBQ_TP2:
++	case CUDBG_CIM_IBQ_TP3:
++	case CUDBG_CIM_IBQ_IPC1:
++	case CUDBG_CIM_IBQ_IPC2:
++	case CUDBG_CIM_IBQ_IPC3:
++	case CUDBG_CIM_IBQ_IPC4:
++	case CUDBG_CIM_IBQ_IPC5:
++	case CUDBG_CIM_IBQ_IPC6:
++	case CUDBG_CIM_IBQ_IPC7:
++		if (CHELSIO_CHIP_VERSION(adap->params.chip) < CHELSIO_T7)
++			break;			/* len stays 0 */
++		len = CIM_IBQ_SIZE * 4 * sizeof(u32);
++		break;
+ 	case CUDBG_CIM_OBQ_ULP0:
+-		len = cudbg_cim_obq_size(adap, 0);
++		len = cudbg_cim_obq_size(adap, 0, 0);
+ 		break;
+ 	case CUDBG_CIM_OBQ_ULP1:
+-		len = cudbg_cim_obq_size(adap, 1);
++		len = cudbg_cim_obq_size(adap, 1, 0);
+ 		break;
+ 	case CUDBG_CIM_OBQ_ULP2:
+-		len = cudbg_cim_obq_size(adap, 2);
++		len = cudbg_cim_obq_size(adap, 2, 0);
+ 		break;
+ 	case CUDBG_CIM_OBQ_ULP3:
+-		len = cudbg_cim_obq_size(adap, 3);
++		len = cudbg_cim_obq_size(adap, 3, 0);
+ 		break;
+ 	case CUDBG_CIM_OBQ_SGE:
+-		len = cudbg_cim_obq_size(adap, 4);
++		len = cudbg_cim_obq_size(adap, 4, 0);
+ 		break;
+ 	case CUDBG_CIM_OBQ_NCSI:
+-		len = cudbg_cim_obq_size(adap, 5);
++		len = cudbg_cim_obq_size(adap, 5, 0);
+ 		break;
+ 	case CUDBG_CIM_OBQ_RXQ0:
+-		len = cudbg_cim_obq_size(adap, 6);
++		len = cudbg_cim_obq_size(adap, 6, 0);
+ 		break;
+ 	case CUDBG_CIM_OBQ_RXQ1:
+-		len = cudbg_cim_obq_size(adap, 7);
++		len = cudbg_cim_obq_size(adap, 7, 0);
++		break;
++	case CUDBG_CIM_OBQ_IPC1:
++	case CUDBG_CIM_OBQ_IPC2:
++	case CUDBG_CIM_OBQ_IPC3:
++	case CUDBG_CIM_OBQ_IPC4:
++	case CUDBG_CIM_OBQ_IPC5:
++	case CUDBG_CIM_OBQ_IPC6:
++	case CUDBG_CIM_OBQ_IPC7:
++		if (CHELSIO_CHIP_VERSION(adap->params.chip) < CHELSIO_T7)
++			break;			/* len stays 0 */
++		len = 6 * CIM_OBQ_SIZE * 4 * sizeof(u32);
+ 		break;
+ 	case CUDBG_EDC0:
+ 		value = t4_read_reg(adap, MA_TARGET_MEM_ENABLE_A);
+@@ -350,7 +378,9 @@ u32 cudbg_get_entity_length(struct adapter *adap, u32 entity)
+ 		len = sizeof(u32) * CUDBG_NUM_PCIE_CONFIG_REGS;
+ 		break;
+ 	case CUDBG_DUMP_CONTEXT:
+-		len = cudbg_dump_context_size(adap);
++		len = cudbg_dump_context_size(adap, (CHELSIO_CHIP_VERSION(adap->params.chip) >=
++						    CHELSIO_T7) ? SGE_CTXT_SIZE_T7 :
++								  SGE_CTXT_SIZE);
+ 		break;
+ 	case CUDBG_MPS_TCAM:
+ 		len = sizeof(struct cudbg_mps_tcam) *
+@@ -537,10 +567,11 @@ static int cudbg_mem_desc_cmp(const void *a, const void *b)
+ int cudbg_fill_meminfo(struct adapter *padap,
+ 		       struct cudbg_meminfo *meminfo_buff)
+ {
++	u32 lo, hi, used, alloc, chip_ver;
+ 	struct cudbg_mem_desc *md;
+-	u32 lo, hi, used, alloc;
+ 	int n, i;
+ 
++	chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
+ 	memset(meminfo_buff->avail, 0,
+ 	       ARRAY_SIZE(meminfo_buff->avail) *
+ 	       sizeof(struct cudbg_mem_desc));
+@@ -578,50 +609,66 @@ int cudbg_fill_meminfo(struct adapter *padap,
+ 		i++;
+ 	}
+ 
+-	if (is_t5(padap->params.chip)) {
++	if (chip_ver >= CHELSIO_T7) {
++		/* MC0:*/
+ 		if (lo & EXT_MEM0_ENABLE_F) {
+ 			hi = t4_read_reg(padap, MA_EXT_MEMORY0_BAR_A);
+ 			meminfo_buff->avail[i].base =
+-				cudbg_mbytes_to_bytes(EXT_MEM_BASE_G(hi));
++				cudbg_mbytes_to_bytes(T7_EXT_MEM0_BASE_G(hi));
+ 			meminfo_buff->avail[i].limit =
+ 				meminfo_buff->avail[i].base +
+-				cudbg_mbytes_to_bytes(EXT_MEM_SIZE_G(hi));
++				cudbg_mbytes_to_bytes(T7_EXT_MEM0_SIZE_G(hi));
+ 			meminfo_buff->avail[i].idx = 3;
+ 			i++;
+ 		}
+-
++		/* MC1:*/
+ 		if (lo & EXT_MEM1_ENABLE_F) {
+ 			hi = t4_read_reg(padap, MA_EXT_MEMORY1_BAR_A);
+ 			meminfo_buff->avail[i].base =
+-				cudbg_mbytes_to_bytes(EXT_MEM1_BASE_G(hi));
++				cudbg_mbytes_to_bytes(T7_EXT_MEM1_BASE_G(hi));
+ 			meminfo_buff->avail[i].limit =
+ 				meminfo_buff->avail[i].base +
+-				cudbg_mbytes_to_bytes(EXT_MEM1_SIZE_G(hi));
++				cudbg_mbytes_to_bytes(T7_EXT_MEM1_SIZE_G(hi));
+ 			meminfo_buff->avail[i].idx = 4;
+ 			i++;
+ 		}
+-	} else {
+-		if (lo & EXT_MEM_ENABLE_F) {
+-			hi = t4_read_reg(padap, MA_EXT_MEMORY_BAR_A);
++		/* HMA:*/
++		if (lo & HMA_MUX_F) {
++			hi = t4_read_reg(padap, MA_HOST_MEMORY_BAR_A);
+ 			meminfo_buff->avail[i].base =
+-				cudbg_mbytes_to_bytes(EXT_MEM_BASE_G(hi));
++				cudbg_mbytes_to_bytes(HMATARGETBASE_G(hi));
+ 			meminfo_buff->avail[i].limit =
+ 				meminfo_buff->avail[i].base +
+-				cudbg_mbytes_to_bytes(EXT_MEM_SIZE_G(hi));
+-			meminfo_buff->avail[i].idx = 2;
++				cudbg_mbytes_to_bytes(T7_HMA_SIZE_G(hi));
++			meminfo_buff->avail[i].idx = 5;
+ 			i++;
+ 		}
+ 
+-		if (lo & HMA_MUX_F) {
+-			hi = t4_read_reg(padap, MA_EXT_MEMORY1_BAR_A);
++	} else {
++		/* MC0:*/
++		if (lo & EXT_MEM0_ENABLE_F) {
++			hi = t4_read_reg(padap, MA_EXT_MEMORY0_BAR_A);
+ 			meminfo_buff->avail[i].base =
+-				cudbg_mbytes_to_bytes(EXT_MEM1_BASE_G(hi));
++				cudbg_mbytes_to_bytes(EXT_MEM_BASE_G(hi));
+ 			meminfo_buff->avail[i].limit =
+ 				meminfo_buff->avail[i].base +
+-				cudbg_mbytes_to_bytes(EXT_MEM1_SIZE_G(hi));
+-			meminfo_buff->avail[i].idx = 5;
++				cudbg_mbytes_to_bytes(EXT_MEM0_SIZE_G(hi));
++			meminfo_buff->avail[i].idx = 2;
+ 			i++;
+ 		}
++		/* HMA: In t6 no mc1 so HMA shares mc1 address space */
++		if (chip_ver == CHELSIO_T6) {
++			if (lo & HMA_MUX_F) {
++				hi = t4_read_reg(padap, MA_EXT_MEMORY1_BAR_A);
++				meminfo_buff->avail[i].base =
++					cudbg_mbytes_to_bytes(EXT_MEM1_BASE_G(hi));
++				meminfo_buff->avail[i].limit =
++					meminfo_buff->avail[i].base +
++					cudbg_mbytes_to_bytes(EXT_MEM1_SIZE_G(hi));
++				meminfo_buff->avail[i].idx = 5;
++				i++;
++			}
++		}
+ 	}
+ 
+ 	if (!i) /* no memory available */
+@@ -820,10 +867,7 @@ int cudbg_collect_reg_dump(struct cudbg_init *pdbg_init,
+ 	u32 buf_size = 0;
+ 	int rc = 0;
+ 
+-	if (is_t4(padap->params.chip))
+-		buf_size = T4_REGMAP_SIZE;
+-	else if (is_t5(padap->params.chip) || is_t6(padap->params.chip))
+-		buf_size = T5_REGMAP_SIZE;
++	buf_size = t4_get_regs_len(padap);
+ 
+ 	rc = cudbg_get_buff(pdbg_init, dbg_buff, buf_size, &temp_buff);
+ 	if (rc)
+@@ -839,15 +883,20 @@ int cudbg_collect_fw_devlog(struct cudbg_init *pdbg_init,
+ 	struct adapter *padap = pdbg_init->adap;
+ 	struct cudbg_buffer temp_buff = { 0 };
+ 	struct devlog_params *dparams;
++	u8 coreid = 0;
+ 	int rc = 0;
+ 
++	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
++			CUDBG_UP_COREID_PARAM)
++		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
++
++	dparams = &padap->params.devlog[coreid];
+ 	rc = t4_init_devlog_params(padap);
+ 	if (rc < 0) {
+ 		cudbg_err->sys_err = rc;
+ 		return rc;
+ 	}
+ 
+-	dparams = &padap->params.devlogs;
+ 	rc = cudbg_get_buff(pdbg_init, dbg_buff, dparams->size, &temp_buff);
+ 	if (rc)
+ 		return rc;
+@@ -875,39 +924,52 @@ int cudbg_collect_cim_la(struct cudbg_init *pdbg_init,
+ 			 struct cudbg_error *cudbg_err)
+ {
+ 	struct adapter *padap = pdbg_init->adap;
++	struct cim_la_rev1 *cim_la_buff;
+ 	struct cudbg_buffer temp_buff = { 0 };
++	u8 ncol, coreid = 0;
+ 	int size, rc;
+ 	u32 cfg = 0;
++	u16 nrow;
+ 
+-	if (is_t6(padap->params.chip)) {
+-		size = padap->params.cim_la_size / 10 + 1;
+-		size *= 10 * sizeof(u32);
+-	} else {
+-		size = padap->params.cim_la_size / 8;
+-		size *= 8 * sizeof(u32);
+-	}
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T6)
++		ncol = 10;
++	else
++		ncol = 8;
++
++	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
++			CUDBG_UP_COREID_PARAM)
++		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
+ 
+-	size += sizeof(cfg);
++	nrow = padap->params.cim_la_size / ncol;
++	size = sizeof(*cim_la_buff) + padap->params.cim_la_size * sizeof(u32);
+ 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
+ 	if (rc)
+ 		return rc;
+ 
+-	rc = t4_cim_read(padap, UP_UP_DBG_LA_CFG_A, 1, &cfg);
++	cim_la_buff = (void *)temp_buff.data;
++	cim_la_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
++	cim_la_buff->ver_hdr.revision = CUDBG_CIM_LA_REV;
++	cim_la_buff->ver_hdr.size = sizeof(*cim_la_buff) -
++		sizeof(struct cudbg_ver_hdr);
++
++	rc = t4_cim_read_core(padap, 1, coreid, UP_UP_DBG_LA_CFG_A, 1, &cfg);
+ 	if (rc) {
+ 		cudbg_err->sys_err = rc;
+ 		cudbg_put_buff(pdbg_init, &temp_buff);
+ 		return rc;
+ 	}
+ 
+-	memcpy((char *)temp_buff.data, &cfg, sizeof(cfg));
+-	rc = t4_cim_read_la(padap,
+-			    (u32 *)((char *)temp_buff.data + sizeof(cfg)),
+-			    NULL);
++	rc = t4_cim_read_la_core(padap, coreid, cim_la_buff->data, NULL);
+ 	if (rc < 0) {
+ 		cudbg_err->sys_err = rc;
+ 		cudbg_put_buff(pdbg_init, &temp_buff);
+ 		return rc;
+ 	}
++
++	cim_la_buff->coreid = coreid;
++	cim_la_buff->config = cfg;
++	cim_la_buff->ncol = ncol;
++	cim_la_buff->nrow = nrow;
+ 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
+ }
+ 
+@@ -931,41 +993,160 @@ int cudbg_collect_cim_ma_la(struct cudbg_init *pdbg_init,
+ 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
+ }
+ 
++static void cudbg_cim_qcfg_copy(struct cim_qcfg_rev1_data *data, u8 num_cim_ibq,
++				u8 num_cim_obq, u16 *base, u16 *size,
++				u16 *thres, u32 *stat, u32 *obq_wr)
 +{
-+	if (chip_ver >= CHELSIO_T7)
-+		return &t7_indir_type_arr[type];
++	u8 i = 0;
 +
-+	return NULL;
++	while (i < num_cim_ibq) {
++		data->qtype = CUDBG_ENTITY_CIM_QCFG_QTYPE_IBQ;
++		data->qid = i;
++		data->base = *base;
++		data->size = *size;
++		data->thres = *thres;
++		memcpy(data->stat, stat, sizeof(data->stat));
++
++		stat += ARRAY_SIZE(data->stat);
++		thres++;
++		size++;
++		base++;
++		data++;
++		i++;
++	}
++
++	while (i < num_cim_ibq + num_cim_obq) {
++		data->qtype = CUDBG_ENTITY_CIM_QCFG_QTYPE_OBQ;
++		data->qid = i - num_cim_ibq;
++		data->base = *base;
++		data->size = *size;
++		memcpy(data->stat, stat, sizeof(data->stat));
++		memcpy(data->obq_wr, obq_wr, sizeof(data->obq_wr));
++
++		obq_wr += ARRAY_SIZE(data->obq_wr);
++		stat += ARRAY_SIZE(data->stat);
++		size++;
++		base++;
++		data++;
++		i++;
++	}
 +}
 +
-+#endif /* __CUDBG_INDIR_REG_H__ */
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
-new file mode 100644
-index 000000000000..a246009ffb8d
---- /dev/null
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
-@@ -0,0 +1,1113 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ *  Copyright (C) 2026 Chelsio Communications.  All rights reserved.
-+ */
++static int cudbg_collect_cim_qcfg_t5(struct cudbg_init *pdbg_init,
++				     struct cim_qcfg_rev1_data *data,
++				     u8 num_cim_ibq, u8 num_cim_obq)
++{
++	u32 stat[4 * (CIM_NUM_IBQ + CIM_NUM_OBQ_T5)];
++	struct adapter *padap = pdbg_init->adap;
++	u16 base[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
++	u16 size[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
++	u32 obq_wr[2 * CIM_NUM_OBQ_T5];
++	u16 thres[CIM_NUM_IBQ];
++	int ret;
 +
-+#ifndef __CUDBG_INDIR_REG_T7_H__
-+#define __CUDBG_INDIR_REG_T7_H__
++	ret = t4_cim_read(padap, UP_IBQ_0_SHADOW_RDADDR_A,
++			  4 * (num_cim_ibq + num_cim_obq), stat);
++	if (ret < 0)
++		return ret;
 +
-+static struct cudbg_indir_reg t7_cim_ctl[82] = {
-+	{ .addr = 0x2000 },
-+	{ .addr = 0x2040 },
-+	{ .addr = 0x2044 },
-+	{ .addr = 0x2050 },
-+	{ .addr = 0x2054 },
-+	{ .addr = 0x2060 },
-+	{ .addr = 0x2064 },
-+	{ .addr = 0x2068 },
-+	{ .addr = 0x206c },
-+	{ .addr = 0x2094 },
-+	{ .addr = 0x2098 },
-+	{ .addr = 0x209c },
-+	{ .addr = 0x20a0 },
-+	{ .addr = 0x20a4 },
-+	{ .addr = 0x20a8 },
-+	{ .addr = 0x20ac },
-+	{ .addr = 0x20b0 },
-+	{ .addr = 0x20b4 },
-+	{ .addr = 0x20b8 },
-+	{ .addr = 0x20bc },
-+	{ .addr = 0x20c0 },
-+	{ .addr = 0x20c4 },
-+	{ .addr = 0x20c8 },
-+	{ .addr = 0x20cc },
-+	{ .addr = 0x20d0 },
-+	{ .addr = 0x20e0 },
-+	{ .addr = 0x20e4 },
-+	{ .addr = 0x20e8 },
-+	{ .addr = 0x20ec },
-+	{ .addr = 0x20f0 },
-+	{ .addr = 0x20f4 },
-+	{ .addr = 0x20f8 },
-+	{ .addr = 0x20fc },
-+	{ .addr = 0x2500 },
-+	{ .addr = 0x2504 },
-+	{ .addr = 0x2508 },
-+	{ .addr = 0x250c },
-+	{ .addr = 0x2510 },
-+	{ .addr = 0x2514 },
-+	{ .addr = 0x2518 },
-+	{ .addr = 0x251c },
-+	{ .addr = 0x2520 },
-+	{ .addr = 0x2524 },
-+	{ .addr = 0x2528 },
-+	{ .addr = 0x252c },
-+	{ .addr = 0x2530 },
-+	{ .addr = 0x2534 },
-+	{ .addr = 0x2538 },
-+	{ .addr = 0x253c },
-+	{ .addr = 0x2540 },
-+	{ .addr = 0x2600 },
-+	{ .addr = 0x2604 },
-+	{ .addr = 0x2608 },
-+	{ .addr = 0x260c },
-+	{ .addr = 0x2610 },
-+	{ .addr = 0x2614 },
-+	{ .addr = 0x2618 },
-+	{ .addr = 0x261c },
-+	{ .addr = 0x2620 },
-+	{ .addr = 0x2624 },
-+	{ .addr = 0x2628 },
-+	{ .addr = 0x262c },
-+	{ .addr = 0x2630 },
-+	{ .addr = 0x2634 },
-+	{ .addr = 0x2638 },
-+	{ .addr = 0x263c },
-+	{ .addr = 0x2640 },
-+	{ .addr = 0x26fc },
-+	{ .addr = 0x2700 },
-+	{ .addr = 0x2704 },
-+	{ .addr = 0x2708 },
-+	{ .addr = 0x270c },
-+	{ .addr = 0x2710 },
-+	{ .addr = 0x2714 },
-+	{ .addr = 0x2718 },
-+	{ .addr = 0x271c },
-+	{ .addr = 0x2720 },
-+	{ .addr = 0x2724 },
-+	{ .addr = 0x2728 },
-+	{ .addr = 0x2780 },
-+	{ .addr = 0x2784 },
-+	{ .addr = 0x2788 },
++	ret = t4_cim_read(padap, UP_OBQ_0_SHADOW_REALADDR_A, 2 * num_cim_obq,
++			  obq_wr);
++	if (ret < 0)
++		return ret;
++
++	t4_read_cimq_cfg(padap, base, size, thres);
++
++	cudbg_cim_qcfg_copy(data, num_cim_ibq, num_cim_obq, base, size, thres,
++			    stat, obq_wr);
++	return 0;
++}
++
++static int cudbg_collect_cim_qcfg_t7(struct cudbg_init *pdbg_init, u8 coreid,
++				     struct cim_qcfg_rev1_data *data,
++				     u8 num_cim_ibq, u8 num_cim_obq)
++{
++	u32 stat[4 * (CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7)];
++	u16 base[CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7];
++	u16 size[CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7];
++	struct adapter *padap = pdbg_init->adap;
++	u32 obq_wr[2 * CIM_NUM_OBQ_T7];
++	u16 thres[CIM_NUM_IBQ_T7];
++	u32 addr;
++	int ret;
++	u8 i;
++
++	ret = t4_cim_read_core(padap, 1, coreid, T7_UP_IBQ_0_SHADOW_RDADDR_A,
++			       4 * num_cim_ibq, stat);
++	if (ret < 0)
++		return ret;
++
++	ret = t4_cim_read_core(padap, 1, coreid, T7_UP_OBQ_0_SHADOW_RDADDR_A,
++			       4 * num_cim_obq, &stat[4 * num_cim_ibq]);
++	if (ret < 0)
++		return ret;
++
++	addr = T7_UP_OBQ_0_SHADOW_REALADDR_A;
++	for (i = 0; i < num_cim_obq * 2; i++, addr += 8) {
++		ret = t4_cim_read_core(padap, 1, coreid, addr, 1, &obq_wr[i]);
++		if (ret < 0)
++			return ret;
++	}
++
++	t4_read_cimq_cfg_core(padap, coreid, base, size, thres);
++
++	cudbg_cim_qcfg_copy(data, num_cim_ibq, num_cim_obq, base, size, thres,
++			    stat, obq_wr);
++	return 0;
++}
++
+ int cudbg_collect_cim_qcfg(struct cudbg_init *pdbg_init,
+ 			   struct cudbg_buffer *dbg_buff,
+ 			   struct cudbg_error *cudbg_err)
+ {
++	struct cim_qcfg_rev1 *cim_qcfg_buff;
++	u8 num_cim_ibq, num_cim_obq, coreid = 0;
+ 	struct adapter *padap = pdbg_init->adap;
++	struct cim_qcfg_rev1_data *data;
+ 	struct cudbg_buffer temp_buff = { 0 };
+-	struct cudbg_cim_qcfg *cim_qcfg_data;
++	u32 size;
+ 	int rc;
+ 
+-	rc = cudbg_get_buff(pdbg_init, dbg_buff, sizeof(struct cudbg_cim_qcfg),
+-			    &temp_buff);
++	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
++			CUDBG_UP_COREID_PARAM)
++		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
++
++	num_cim_ibq = t4_cim_num_ibq(padap);
++	num_cim_obq = t4_cim_num_obq(padap);
++	size = sizeof(*cim_qcfg_buff) +
++		((num_cim_ibq + num_cim_obq) * sizeof(*data));
++
++	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
+ 	if (rc)
+ 		return rc;
+ 
+-	cim_qcfg_data = (struct cudbg_cim_qcfg *)temp_buff.data;
+-	cim_qcfg_data->chip = padap->params.chip;
+-	rc = t4_cim_read(padap, UP_IBQ_0_RDADDR_A,
+-			 ARRAY_SIZE(cim_qcfg_data->stat), cim_qcfg_data->stat);
+-	if (rc) {
+-		cudbg_err->sys_err = rc;
+-		cudbg_put_buff(pdbg_init, &temp_buff);
+-		return rc;
+-	}
++	cim_qcfg_buff = (void *)((u8 *)temp_buff.data + temp_buff.offset);
++	cim_qcfg_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
++	cim_qcfg_buff->ver_hdr.revision = CUDBG_CIM_QCFG_REV;
++	cim_qcfg_buff->ver_hdr.size = sizeof(*cim_qcfg_buff) -
++		sizeof(struct cudbg_ver_hdr);
++
++	cim_qcfg_buff->num_cim_ibq = num_cim_ibq;
++	cim_qcfg_buff->num_cim_obq = num_cim_obq;
++	cim_qcfg_buff->coreid = coreid;
++	data = cim_qcfg_buff->data;
+ 
+-	rc = t4_cim_read(padap, UP_OBQ_0_REALADDR_A,
+-			 ARRAY_SIZE(cim_qcfg_data->obq_wr),
+-			 cim_qcfg_data->obq_wr);
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
++		rc = cudbg_collect_cim_qcfg_t7(pdbg_init, coreid, data,
++					       num_cim_ibq, num_cim_obq);
++	else
++		rc = cudbg_collect_cim_qcfg_t5(pdbg_init, data, num_cim_ibq,
++					       num_cim_obq);
+ 	if (rc) {
+ 		cudbg_err->sys_err = rc;
+ 		cudbg_put_buff(pdbg_init, &temp_buff);
+ 		return rc;
+ 	}
+ 
+-	t4_read_cimq_cfg(padap, cim_qcfg_data->base, cim_qcfg_data->size,
+-			 cim_qcfg_data->thres);
+ 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
+ }
+ 
+@@ -973,20 +1154,38 @@ static int cudbg_read_cim_ibq(struct cudbg_init *pdbg_init,
+ 			      struct cudbg_buffer *dbg_buff,
+ 			      struct cudbg_error *cudbg_err, int qid)
+ {
++	struct cim_ibq_rev1 *cim_ibq_buff;
+ 	struct adapter *padap = pdbg_init->adap;
+ 	struct cudbg_buffer temp_buff = { 0 };
+ 	int no_of_read_words, rc = 0;
++	u8 coreid = 0;
+ 	u32 qsize;
+ 
++	if (qid >= t4_cim_num_ibq(padap))
++		return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
++			CUDBG_UP_COREID_PARAM)
++		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
++
+ 	/* collect CIM IBQ */
+ 	qsize = CIM_IBQ_SIZE * 4 * sizeof(u32);
+-	rc = cudbg_get_buff(pdbg_init, dbg_buff, qsize, &temp_buff);
++	rc = cudbg_get_buff(pdbg_init, dbg_buff, sizeof(*cim_ibq_buff) + qsize,
++			    &temp_buff);
+ 	if (rc)
+ 		return rc;
++	cim_ibq_buff = (void *)((u8 *)temp_buff.data + temp_buff.offset);
++	cim_ibq_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
++	cim_ibq_buff->ver_hdr.revision = CUDBG_CIM_IBQ_REV;
++	cim_ibq_buff->ver_hdr.size = sizeof(*cim_ibq_buff) -
++		sizeof(struct cudbg_ver_hdr);
++	cim_ibq_buff->qid = qid;
++	cim_ibq_buff->coreid = coreid;
+ 
+ 	/* t4_read_cim_ibq will return no. of read words or error */
+-	no_of_read_words = t4_read_cim_ibq(padap, qid,
+-					   (u32 *)temp_buff.data, qsize);
++	no_of_read_words = t4_read_cim_ibq_core(padap, coreid, qid,
++						cim_ibq_buff->data, qsize);
++
+ 	/* no_of_read_words is less than or equal to 0 means error */
+ 	if (no_of_read_words <= 0) {
+ 		if (!no_of_read_words)
+@@ -1014,24 +1213,63 @@ int cudbg_collect_cim_ibq_tp1(struct cudbg_init *pdbg_init,
+ 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 1);
+ }
+ 
++int cudbg_collect_cim_ibq_tp2(struct cudbg_init *pdbg_init,
++			      struct cudbg_buffer *dbg_buff,
++			      struct cudbg_error *cudbg_err)
++{
++	struct adapter *padap = pdbg_init->adap;
++
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) <= CHELSIO_T6)
++		return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 2);
++}
++
++int cudbg_collect_cim_ibq_tp3(struct cudbg_init *pdbg_init,
++			      struct cudbg_buffer *dbg_buff,
++			      struct cudbg_error *cudbg_err)
++{
++	struct adapter *padap = pdbg_init->adap;
++
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) <= CHELSIO_T6)
++		return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 3);
++}
++
+ int cudbg_collect_cim_ibq_ulp(struct cudbg_init *pdbg_init,
+ 			      struct cudbg_buffer *dbg_buff,
+ 			      struct cudbg_error *cudbg_err)
+ {
++	struct adapter *padap = pdbg_init->adap;
++
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
++		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 4);
++
+ 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 2);
+ }
+ 
+-int cudbg_collect_cim_ibq_sge0(struct cudbg_init *pdbg_init,
+-			       struct cudbg_buffer *dbg_buff,
+-			       struct cudbg_error *cudbg_err)
++int cudbg_collect_cim_ibq_sge(struct cudbg_init *pdbg_init,
++			      struct cudbg_buffer *dbg_buff,
++			      struct cudbg_error *cudbg_err)
+ {
++	struct adapter *padap = pdbg_init->adap;
++
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
++		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 5);
++
+ 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 3);
+ }
+ 
+-int cudbg_collect_cim_ibq_sge1(struct cudbg_init *pdbg_init,
++int cudbg_collect_cim_ibq_pcie(struct cudbg_init *pdbg_init,
+ 			       struct cudbg_buffer *dbg_buff,
+ 			       struct cudbg_error *cudbg_err)
+ {
++	struct adapter *padap = pdbg_init->adap;
++
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
++		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 6);
++
+ 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 4);
+ }
+ 
+@@ -1039,17 +1277,82 @@ int cudbg_collect_cim_ibq_ncsi(struct cudbg_init *pdbg_init,
+ 			       struct cudbg_buffer *dbg_buff,
+ 			       struct cudbg_error *cudbg_err)
+ {
++	struct adapter *padap = pdbg_init->adap;
++
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
++		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 7);
++
+ 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 5);
+ }
+ 
+-u32 cudbg_cim_obq_size(struct adapter *padap, int qid)
++int cudbg_collect_cim_ibq_ipc1(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 9);
++}
++
++int cudbg_collect_cim_ibq_ipc2(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
+ {
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 10);
++}
++
++int cudbg_collect_cim_ibq_ipc3(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 11);
++}
++
++int cudbg_collect_cim_ibq_ipc4(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 12);
++}
++
++int cudbg_collect_cim_ibq_ipc5(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 13);
++}
++
++int cudbg_collect_cim_ibq_ipc6(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 14);
++}
++
++int cudbg_collect_cim_ibq_ipc7(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 15);
++}
++
++u32 cudbg_cim_obq_size(struct adapter *padap, int qid, u8 coreid)
++{
++	unsigned int v, m;
+ 	u32 value;
+ 
+-	t4_write_reg(padap, CIM_QUEUE_CONFIG_REF_A, OBQSELECT_F |
+-		     QUENUMSELECT_V(qid));
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
++		v = T7_OBQSELECT_F | T7_QUENUMSELECT_V(qid) |
++		    CORESELECT_V(coreid);
++		/* value is in 512-byte units */
++		m = 128;
++	} else {
++		v = OBQSELECT_F | QUENUMSELECT_V(qid);
++		/* value is in 256-byte units */
++		m = 64;
++	}
++
++	t4_write_reg(padap, CIM_QUEUE_CONFIG_REF_A, v);
+ 	value = t4_read_reg(padap, CIM_QUEUE_CONFIG_CTRL_A);
+-	value = CIMQSIZE_G(value) * 64; /* size in number of words */
++	value = CIMQSIZE_G(value) * m; /* size in number of words */
+ 	return value * sizeof(u32);
+ }
+ 
+@@ -1057,20 +1360,38 @@ static int cudbg_read_cim_obq(struct cudbg_init *pdbg_init,
+ 			      struct cudbg_buffer *dbg_buff,
+ 			      struct cudbg_error *cudbg_err, int qid)
+ {
++	struct cim_obq_rev1 *cim_obq_buff;
+ 	struct adapter *padap = pdbg_init->adap;
+ 	struct cudbg_buffer temp_buff = { 0 };
+ 	int no_of_read_words, rc = 0;
++	u8 coreid = 0;
+ 	u32 qsize;
+ 
++	if (qid >= t4_cim_num_obq(padap))
++		return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
++			CUDBG_UP_COREID_PARAM)
++		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
++
+ 	/* collect CIM OBQ */
+-	qsize =  cudbg_cim_obq_size(padap, qid);
+-	rc = cudbg_get_buff(pdbg_init, dbg_buff, qsize, &temp_buff);
++	qsize = cudbg_cim_obq_size(padap, qid, coreid);
++	rc = cudbg_get_buff(pdbg_init, dbg_buff, sizeof(*cim_obq_buff) + qsize,
++			    &temp_buff);
+ 	if (rc)
+ 		return rc;
++	cim_obq_buff = (void *)((u8 *)temp_buff.data + temp_buff.offset);
++	cim_obq_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
++	cim_obq_buff->ver_hdr.revision = CUDBG_CIM_OBQ_REV;
++	cim_obq_buff->ver_hdr.size = sizeof(*cim_obq_buff) -
++		sizeof(struct cudbg_ver_hdr);
++	cim_obq_buff->qid = qid;
++	cim_obq_buff->coreid = coreid;
+ 
+ 	/* t4_read_cim_obq will return no. of read words or error */
+-	no_of_read_words = t4_read_cim_obq(padap, qid,
+-					   (u32 *)temp_buff.data, qsize);
++	no_of_read_words = t4_read_cim_obq_core(padap, coreid, qid,
++						cim_obq_buff->data, qsize);
++
+ 	/* no_of_read_words is less than or equal to 0 means error */
+ 	if (no_of_read_words <= 0) {
+ 		if (!no_of_read_words)
+@@ -1140,6 +1461,55 @@ int cudbg_collect_obq_sge_rx_q1(struct cudbg_init *pdbg_init,
+ 	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 7);
+ }
+ 
++int cudbg_collect_cim_obq_ipc1(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 9);
++}
++
++int cudbg_collect_cim_obq_ipc2(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 10);
++}
++
++int cudbg_collect_cim_obq_ipc3(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 11);
++}
++
++int cudbg_collect_cim_obq_ipc4(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 12);
++}
++
++int cudbg_collect_cim_obq_ipc5(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 13);
++}
++
++int cudbg_collect_cim_obq_ipc6(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 14);
++}
++
++int cudbg_collect_cim_obq_ipc7(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err)
++{
++	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 15);
++}
++
+ static int cudbg_meminfo_get_mem_index(struct adapter *padap,
+ 				       struct cudbg_meminfo *mem_info,
+ 				       u8 mem_type, u8 *idx)
+@@ -1286,9 +1656,9 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
+ {
+ 	u32 win_pf, memoffset, mem_aperture, mem_base;
+ 	struct adapter *adap = pdbg_init->adap;
+-	u32 pos, offset, resid;
++	u32 offset, resid;
++	u64 pos, *buf;
+ 	u32 *res_buf;
+-	u64 *buf;
+ 	int ret;
+ 
+ 	/* Argument sanity checks ...
+@@ -1316,7 +1686,7 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
+ 	/* Set up initial PCI-E Memory Window to cover the start of our
+ 	 * transfer.
+ 	 */
+-	t4_memory_update_win(adap, win, pos | win_pf);
++	t4_pcie_mem_access_offset_write(adap, pos, win, win_pf);
+ 
+ 	/* Transfer data from the adapter */
+ 	while (len > 0) {
+@@ -1331,7 +1701,7 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
+ 		if (offset == mem_aperture) {
+ 			pos += mem_aperture;
+ 			offset = 0;
+-			t4_memory_update_win(adap, win, pos | win_pf);
++			t4_pcie_mem_access_offset_write(adap, pos, win, win_pf);
+ 		}
+ 	}
+ 
+@@ -1349,7 +1719,7 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
+ 		if (offset == mem_aperture) {
+ 			pos += mem_aperture;
+ 			offset = 0;
+-			t4_memory_update_win(adap, win, pos | win_pf);
++			t4_pcie_mem_access_offset_write(adap, pos, win, win_pf);
+ 		}
+ 	}
+ 
+@@ -1653,6 +2023,33 @@ int cudbg_collect_hw_sched(struct cudbg_init *pdbg_init,
+ 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
+ }
+ 
++static void *cudbg_collect_indir_reg_init(struct cudbg_indir_reg_entity *e,
++					  u16 rev, u32 indir_reg,
++					  u32 indir_data, u32 nentries)
++{
++	struct cudbg_ver_hdr *ver_hdr = &e->ver_hdr;
++
++	ver_hdr->signature = CUDBG_ENTITY_SIGNATURE;
++	ver_hdr->revision = rev;
++	ver_hdr->size = sizeof(*e) - sizeof(*ver_hdr);
++
++	e->indir_reg = indir_reg;
++	e->indir_data = indir_data;
++	e->nentries = nentries;
++	return e;
++}
++
++static void *cudbg_collect_indir_reg_init_next(struct cudbg_indir_reg_entity *e,
++					       u16 rev, u32 indir_reg,
++					       u32 indir_data, u32 nentries)
++{
++	struct cudbg_indir_reg_entity *n;
++
++	n = (void *)((u8 *)e + (sizeof(*e) + sizeof(e->data[0]) * e->nentries));
++	return cudbg_collect_indir_reg_init(n, rev, indir_reg, indir_data,
++					    nentries);
++}
++
+ int cudbg_collect_tp_indirect(struct cudbg_init *pdbg_init,
+ 			      struct cudbg_buffer *dbg_buff,
+ 			      struct cudbg_error *cudbg_err)
+@@ -1663,6 +2060,77 @@ int cudbg_collect_tp_indirect(struct cudbg_init *pdbg_init,
+ 	int i, rc, n = 0;
+ 	u32 size;
+ 
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
++		/* T7 path - new indirect reg framework */
++		struct cudbg_indir_reg_entity *tp_tm_entity, *tp_pio_entity;
++		struct cudbg_indir_reg_entity *tp_mib_entity;
++		const struct cudbg_indir_type_entry *tp_tm_arr;
++		const struct cudbg_indir_type_entry *tp_pio_arr;
++		const struct cudbg_indir_type_entry *tp_mib_arr;
++		struct cudbg_indir_reg_data *reg_data;
++		u32 chip_ver;
++
++		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
++		tp_tm_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR);
++		tp_pio_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_TP_PIO_ADDR);
++		tp_mib_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_TP_MIB_INDEX);
++
++		if (!tp_tm_arr || !tp_pio_arr || !tp_mib_arr)
++			return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++		size = sizeof(*tp_tm_entity) + sizeof(*tp_pio_entity) +
++			sizeof(*tp_mib_entity) + sizeof(*reg_data) *
++			(tp_tm_arr->nentries + tp_pio_arr->nentries +
++			 tp_mib_arr->nentries);
++
++		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
++		if (rc)
++			return rc;
++
++		tp_tm_entity = cudbg_collect_indir_reg_init((void *)temp_buff.data,
++							    CUDBG_TP_INDIR_REG_REV,
++							    TP_TM_PIO_ADDR_A,
++							    TP_TM_PIO_DATA_A,
++							    tp_tm_arr->nentries);
++
++		tp_pio_entity = cudbg_collect_indir_reg_init_next(tp_tm_entity,
++								  CUDBG_TP_INDIR_REG_REV,
++								  TP_PIO_ADDR_A,
++								  TP_PIO_DATA_A,
++								  tp_pio_arr->nentries);
++
++		tp_mib_entity = cudbg_collect_indir_reg_init_next(tp_pio_entity,
++								  CUDBG_TP_INDIR_REG_REV,
++								  TP_MIB_INDEX_A,
++								  TP_MIB_DATA_A,
++								  tp_mib_arr->nentries);
++
++		reg_data = tp_tm_entity->data;
++		for (i = 0; i < tp_tm_entity->nentries; i++, reg_data++) {
++			reg_data->offset = tp_tm_arr->reg_arr[i].addr;
++			t4_tp_tm_pio_read(pdbg_init->adap, &reg_data->data, 1,
++					  reg_data->offset, true);
++		}
++
++		reg_data = tp_pio_entity->data;
++		for (i = 0; i < tp_pio_entity->nentries; i++, reg_data++) {
++			reg_data->offset = tp_pio_arr->reg_arr[i].addr;
++			t4_tp_pio_read(pdbg_init->adap, &reg_data->data, 1,
++				       reg_data->offset, true);
++		}
++
++		reg_data = tp_mib_entity->data;
++		for (i = 0; i < tp_mib_entity->nentries; i++, reg_data++) {
++			reg_data->offset = tp_mib_arr->reg_arr[i].addr;
++			t4_tp_mib_read(pdbg_init->adap, &reg_data->data, 1,
++				       reg_data->offset, true);
++		}
++
++		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
++				dbg_buff);
++	}
++
++	/* T5/T6 path */
+ 	if (is_t5(padap->params.chip))
+ 		n = sizeof(t5_tp_pio_array) +
+ 		    sizeof(t5_tp_tm_pio_array) +
+@@ -2061,6 +2529,36 @@ int cudbg_collect_pcie_indirect(struct cudbg_init *pdbg_init,
+ 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
+ }
+ 
++static void cudbg_collect_indir_reg(struct adapter *padap,
++				    struct cudbg_indir_reg_entity *e,
++				    const struct cudbg_indir_type_entry *arr,
++				    u16 rev, u32 indir_reg, u32 indir_data)
++{
++	struct cudbg_indir_reg_entity *entity;
++	struct cudbg_indir_reg_data *reg_data;
++	u32 i;
++
++	entity = cudbg_collect_indir_reg_init(e, rev, indir_reg, indir_data,
++					      arr->nentries);
++	reg_data = entity->data;
++	for (i = 0; i < entity->nentries; i++, reg_data++) {
++		reg_data->offset = arr->reg_arr[i].addr;
++		t4_read_indirect(padap, entity->indir_reg, entity->indir_data,
++				 &reg_data->data, 1, reg_data->offset);
++	}
++}
++
++static void cudbg_collect_indir_reg_next(struct adapter *padap,
++					 struct cudbg_indir_reg_entity *e,
++					 const struct cudbg_indir_type_entry *arr,
++					 u16 rev, u32 indir_reg, u32 indir_data)
++{
++	struct cudbg_indir_reg_entity *n;
++
++	n = (void *)((u8 *)e + (sizeof(*e) + sizeof(e->data[0]) * e->nentries));
++	cudbg_collect_indir_reg(padap, n, arr, rev, indir_reg, indir_data);
++}
++
+ int cudbg_collect_pm_indirect(struct cudbg_init *pdbg_init,
+ 			      struct cudbg_buffer *dbg_buff,
+ 			      struct cudbg_error *cudbg_err)
+@@ -2071,6 +2569,46 @@ int cudbg_collect_pm_indirect(struct cudbg_init *pdbg_init,
+ 	int i, rc, n;
+ 	u32 size;
+ 
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
++		/* T7 path - new indirect reg framework */
++		const struct cudbg_indir_type_entry *pm_rx_arr, *pm_tx_arr;
++		u32 chip_ver;
++
++		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
++		pm_rx_arr = cudbg_get_indir_reg_info(chip_ver,
++						     CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL);
++		pm_tx_arr = cudbg_get_indir_reg_info(chip_ver,
++						     CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL);
++
++		if (!pm_rx_arr || !pm_tx_arr)
++			return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++		size = sizeof(struct cudbg_indir_reg_entity) +
++			sizeof(struct cudbg_indir_reg_data) *
++			pm_rx_arr->nentries;
++		size += sizeof(struct cudbg_indir_reg_entity) +
++			sizeof(struct cudbg_indir_reg_data) *
++			pm_tx_arr->nentries;
++
++		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
++		if (rc)
++			return rc;
++
++		cudbg_collect_indir_reg(padap, (void *)temp_buff.data,
++					pm_rx_arr, CUDBG_PM_INDIR_REG_REV,
++					PM_RX_DBG_CTRL_A,
++					PM_RX_DBG_CTRL_A + 4);
++
++		cudbg_collect_indir_reg_next(padap, (void *)temp_buff.data,
++					     pm_tx_arr, CUDBG_PM_INDIR_REG_REV,
++					     PM_TX_DBG_CTRL_A,
++					     PM_TX_DBG_CTRL_A + 4);
++
++		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
++						    dbg_buff);
++	}
++
++	/* T5/T6 path */
+ 	n = sizeof(t5_pm_rx_array) / (IREG_NUM_ELEM * sizeof(u32));
+ 	size = sizeof(struct ireg_buf) * n * 2;
+ 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
+@@ -2153,16 +2691,18 @@ int cudbg_collect_tid(struct cudbg_init *pdbg_init,
+ 	 FW_PARAMS_PARAM_Y_V(0) | \
+ 	 FW_PARAMS_PARAM_Z_V(0))
+ 
+-	para[0] = FW_PARAM_PFVF_A(ETHOFLD_START);
+-	para[1] = FW_PARAM_PFVF_A(ETHOFLD_END);
+-	rc = t4_query_params(padap, padap->mbox, padap->pf, 0, 2, para, val);
+-	if (rc <  0) {
+-		cudbg_err->sys_err = rc;
+-		cudbg_put_buff(pdbg_init, &temp_buff);
+-		return rc;
++	if (padap->flags & CXGB4_FW_OK) {
++		para[0] = FW_PARAM_PFVF_A(ETHOFLD_START);
++		para[1] = FW_PARAM_PFVF_A(ETHOFLD_END);
++		rc = t4_query_params(padap, padap->mbox, padap->pf, 0, 2, para, val);
++		if (rc <  0) {
++			cudbg_err->sys_err = rc;
++			cudbg_put_buff(pdbg_init, &temp_buff);
++			return rc;
++		}
++		tid->uotid_base = val[0];
++		tid->nuotids = val[1] - val[0] + 1;
+ 	}
+-	tid->uotid_base = val[0];
+-	tid->nuotids = val[1] - val[0] + 1;
+ 
+ 	if (is_t5(padap->params.chip)) {
+ 		tid->sb = t4_read_reg(padap, LE_DB_SERVER_INDEX_A) / 4;
+@@ -2255,7 +2795,7 @@ static int cudbg_sge_ctxt_check_valid(u32 *buf, int type)
+ 	return buf[index] & (1U << bit);
+ }
+ 
+-static int cudbg_get_ctxt_region_info(struct adapter *padap,
++static int cudbg_get_ctxt_region_info(struct adapter *padap, u8 sge_ctxt_size,
+ 				      struct cudbg_region_info *ctx_info,
+ 				      u8 *mem_type)
+ {
+@@ -2303,7 +2843,7 @@ static int cudbg_get_ctxt_region_info(struct adapter *padap,
+ 	/* Get number of data freelist queues */
+ 	flq = HDRSTARTFLQ_G(value);
+ 	ctx_info[CTXT_FLM].exist = true;
+-	ctx_info[CTXT_FLM].end = (CUDBG_MAX_FL_QIDS >> flq) * SGE_CTXT_SIZE;
++	ctx_info[CTXT_FLM].end = (CUDBG_MAX_FL_QIDS >> flq) * sge_ctxt_size;
+ 
+ 	/* The number of CONM contexts are same as number of freelist
+ 	 * queues.
+@@ -2314,30 +2854,31 @@ static int cudbg_get_ctxt_region_info(struct adapter *padap,
+ 	return 0;
+ }
+ 
+-int cudbg_dump_context_size(struct adapter *padap)
++static u32 cudbg_sge_ctxt_entry_size(u8 sge_ctxt_size)
+ {
+-	struct cudbg_region_info region_info[CTXT_CNM + 1] = { {0} };
+-	u8 mem_type[CTXT_INGRESS + 1] = { 0 };
+-	u32 i, size = 0;
+-	int rc;
++	return sizeof(struct sge_ctxt_rev1_data) + sge_ctxt_size;
++}
+ 
+-	/* Get max valid qid for each type of queue */
+-	rc = cudbg_get_ctxt_region_info(padap, region_info, mem_type);
+-	if (rc)
+-		return rc;
++int cudbg_dump_context_size(struct adapter *padap, u8 sge_ctxt_size)
++{
++	struct cudbg_region_info region_info[CTXT_MAX] = { {0} };
++	u32 i, nr_entries = 0;
++	u32 entry_size;
+ 
+-	for (i = 0; i < CTXT_CNM; i++) {
++	for (i = 0; i < CTXT_MAX; i++) {
+ 		if (!region_info[i].exist) {
+ 			if (i == CTXT_EGRESS || i == CTXT_INGRESS)
+-				size += CUDBG_LOWMEM_MAX_CTXT_QIDS *
+-					SGE_CTXT_SIZE;
++				nr_entries += CUDBG_LOWMEM_MAX_CTXT_QIDS;
+ 			continue;
+ 		}
+ 
+-		size += (region_info[i].end - region_info[i].start + 1) /
+-			SGE_CTXT_SIZE;
++		nr_entries += (region_info[i].end -
++			       region_info[i].start + 1) /
++			       sge_ctxt_size;
+ 	}
+-	return size * sizeof(struct cudbg_ch_cntxt);
++
++	entry_size = cudbg_sge_ctxt_entry_size(sge_ctxt_size);
++	return nr_entries * entry_size;
+ }
+ 
+ static void cudbg_read_sge_ctxt(struct cudbg_init *pdbg_init, u32 cid,
+@@ -2359,32 +2900,48 @@ static void cudbg_read_sge_ctxt(struct cudbg_init *pdbg_init, u32 cid,
+ 		t4_sge_ctxt_rd_bd(padap, cid, ctype, data);
+ }
+ 
+-static void cudbg_get_sge_ctxt_fw(struct cudbg_init *pdbg_init, u32 max_qid,
+-				  u8 ctxt_type,
+-				  struct cudbg_ch_cntxt **out_buff)
++static u32 cudbg_get_sge_ctxt_fw(struct cudbg_init *pdbg_init, u8 sge_ctxt_size,
++				 u32 max_qid, u8 ctxt_type,
++				 struct sge_ctxt_rev1 *ctxt_buff,
++				 struct sge_ctxt_rev1_data **out_buff)
+ {
+-	struct cudbg_ch_cntxt *buff = *out_buff;
++	struct sge_ctxt_rev1_data *buff;
++	u8 *out = (u8 *)*out_buff;
++	u32 j, total_size = 0;
++	u32 entry_size;
+ 	int rc;
+-	u32 j;
++
++	entry_size = cudbg_sge_ctxt_entry_size(sge_ctxt_size);
+ 
+ 	for (j = 0; j < max_qid; j++) {
++		buff = (struct sge_ctxt_rev1_data *)out;
++
+ 		cudbg_read_sge_ctxt(pdbg_init, j, ctxt_type, buff->data);
+ 		rc = cudbg_sge_ctxt_check_valid(buff->data, ctxt_type);
+ 		if (!rc)
+ 			continue;
+ 
+-		buff->cntxt_type = ctxt_type;
+-		buff->cntxt_id = j;
+-		buff++;
++		buff->ctxt_type = ctxt_type;
++		buff->ctxt_id = j;
++		buff->size = sge_ctxt_size;
++		total_size += entry_size;
++		ctxt_buff->nentries++;
++		out += entry_size;
+ 		if (ctxt_type == CTXT_FLM) {
++			buff = (struct sge_ctxt_rev1_data *)out;
++
+ 			cudbg_read_sge_ctxt(pdbg_init, j, CTXT_CNM, buff->data);
+-			buff->cntxt_type = CTXT_CNM;
+-			buff->cntxt_id = j;
+-			buff++;
++			buff->ctxt_type = CTXT_CNM;
++			buff->ctxt_id = j;
++			buff->size = sge_ctxt_size;
++			total_size += entry_size;
++			ctxt_buff->nentries++;
++			out += entry_size;
+ 		}
+ 	}
+ 
+-	*out_buff = buff;
++	*out_buff = (struct sge_ctxt_rev1_data *)out;
++	return total_size;
+ }
+ 
+ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+@@ -2393,27 +2950,39 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+ {
+ 	struct cudbg_region_info region_info[CTXT_CNM + 1] = { {0} };
+ 	struct adapter *padap = pdbg_init->adap;
++	struct sge_ctxt_rev1 *ctxt_buff;
++	struct sge_ctxt_rev1_data *buff;
+ 	u32 j, size, max_ctx_size, max_ctx_qid;
+ 	u8 mem_type[CTXT_INGRESS + 1] = { 0 };
+ 	struct cudbg_buffer temp_buff = { 0 };
+-	struct cudbg_ch_cntxt *buff;
++	u8 i, k, sge_ctxt_size;
+ 	u8 *ctx_buf;
+-	u8 i, k;
+ 	int rc;
+ 
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
++		sge_ctxt_size = SGE_CTXT_SIZE_T7;
++	else
++		sge_ctxt_size = SGE_CTXT_SIZE;
++
+ 	/* Get max valid qid for each type of queue */
+-	rc = cudbg_get_ctxt_region_info(padap, region_info, mem_type);
++	rc = cudbg_get_ctxt_region_info(padap, sge_ctxt_size, region_info, mem_type);
+ 	if (rc)
+ 		return rc;
+ 
+-	rc = cudbg_dump_context_size(padap);
++	rc = cudbg_dump_context_size(padap, sge_ctxt_size);
+ 	if (rc <= 0)
+ 		return CUDBG_STATUS_ENTITY_NOT_FOUND;
+ 
+ 	size = rc;
+-	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
++	rc = cudbg_get_buff(pdbg_init, dbg_buff, size + sizeof(*ctxt_buff), &temp_buff);
+ 	if (rc)
+ 		return rc;
++	ctxt_buff = (void *)temp_buff.data;
++	ctxt_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
++	ctxt_buff->ver_hdr.revision = CUDBG_SGE_CTXT_REV;
++	ctxt_buff->ver_hdr.size = sizeof(*ctxt_buff) -
++		sizeof(struct cudbg_ver_hdr);
++	ctxt_buff->nentries = 0;
+ 
+ 	/* Get buffer with enough space to read the biggest context
+ 	 * region in memory.
+@@ -2429,7 +2998,7 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+ 		return -ENOMEM;
+ 	}
+ 
+-	buff = (struct cudbg_ch_cntxt *)temp_buff.data;
++	buff = (struct sge_ctxt_rev1_data *)ctxt_buff->data;
+ 
+ 	/* Collect EGRESS and INGRESS context data.
+ 	 * In case of failures, fallback to collecting via FW or
+@@ -2438,13 +3007,13 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+ 	for (i = CTXT_EGRESS; i <= CTXT_INGRESS; i++) {
+ 		if (!region_info[i].exist) {
+ 			max_ctx_qid = CUDBG_LOWMEM_MAX_CTXT_QIDS;
+-			cudbg_get_sge_ctxt_fw(pdbg_init, max_ctx_qid, i,
+-					      &buff);
++			cudbg_get_sge_ctxt_fw(pdbg_init, sge_ctxt_size, max_ctx_qid, i,
++					      ctxt_buff, &buff);
+ 			continue;
+ 		}
+ 
+ 		max_ctx_size = region_info[i].end - region_info[i].start + 1;
+-		max_ctx_qid = max_ctx_size / SGE_CTXT_SIZE;
++		max_ctx_qid = max_ctx_size / sge_ctxt_size;
+ 
+ 		/* If firmware is not attached/alive, use backdoor register
+ 		 * access to collect dump.
+@@ -2459,8 +3028,8 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+ 
+ 		if (rc || !is_fw_attached(pdbg_init)) {
+ 			max_ctx_qid = CUDBG_LOWMEM_MAX_CTXT_QIDS;
+-			cudbg_get_sge_ctxt_fw(pdbg_init, max_ctx_qid, i,
+-					      &buff);
++			cudbg_get_sge_ctxt_fw(pdbg_init, sge_ctxt_size, max_ctx_qid, i,
++					      ctxt_buff, &buff);
+ 			continue;
+ 		}
+ 
+@@ -2468,22 +3037,26 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+ 			__be64 *dst_off;
+ 			u64 *src_off;
+ 
+-			src_off = (u64 *)(ctx_buf + j * SGE_CTXT_SIZE);
++			src_off = (u64 *)(ctx_buf + j * sge_ctxt_size);
+ 			dst_off = (__be64 *)buff->data;
+ 
+ 			/* The data is stored in 64-bit cpu order.  Convert it
+ 			 * to big endian before parsing.
+ 			 */
+-			for (k = 0; k < SGE_CTXT_SIZE / sizeof(u64); k++)
++			for (k = 0; k < sge_ctxt_size / sizeof(u64); k++)
+ 				dst_off[k] = cpu_to_be64(src_off[k]);
+ 
+ 			rc = cudbg_sge_ctxt_check_valid(buff->data, i);
+ 			if (!rc)
+ 				continue;
+ 
+-			buff->cntxt_type = i;
+-			buff->cntxt_id = j;
+-			buff++;
++			buff->ctxt_type = i;
++			buff->ctxt_id = j;
++			buff->size = sge_ctxt_size;
++			ctxt_buff->nentries++;
++			buff = (struct sge_ctxt_rev1_data *)
++				((u8 *)buff +
++				 cudbg_sge_ctxt_entry_size(sge_ctxt_size));
+ 		}
+ 	}
+ 
+@@ -2492,11 +3065,11 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+ 	/* Collect FREELIST and CONGESTION MANAGER contexts */
+ 	max_ctx_size = region_info[CTXT_FLM].end -
+ 		       region_info[CTXT_FLM].start + 1;
+-	max_ctx_qid = max_ctx_size / SGE_CTXT_SIZE;
++	max_ctx_qid = max_ctx_size / sge_ctxt_size;
+ 	/* Since FLM and CONM are 1-to-1 mapped, the below function
+ 	 * will fetch both FLM and CONM contexts.
+ 	 */
+-	cudbg_get_sge_ctxt_fw(pdbg_init, max_ctx_qid, CTXT_FLM, &buff);
++	cudbg_get_sge_ctxt_fw(pdbg_init, sge_ctxt_size, max_ctx_qid, CTXT_FLM, ctxt_buff, &buff);
+ 
+ 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
+ }
+@@ -2544,7 +3117,72 @@ static int cudbg_collect_tcam_index(struct cudbg_init *pdbg_init,
+ 	u32 ctl, data2;
+ 	int rc = 0;
+ 
+-	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T6) {
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
++		/* CtlReqID   - 1: use Host Driver Requester ID
++		 * CtlCmdType - 0: Read, 1: Write
++		 * CtlXYBitSel- 0: Y bit, 1: X bit
++		 ####### for T6 ######
++		 * CtlTcamSel     -   26:25    Control bit. 0: TCAM0, 1: TCAM1.
++		 * CtlTcamIndex   -   24:17    Control bits. Index of TCAM location to be accessed.
++
++		 ####### for T7B ######
++		 * CtlTcamSel     -   27:26    Control bit. 0: TCAM0, 1: TCAM1, 2: TCAM2.
++		 * CtlTcamIndex   -   25:17    Control bits. Index of TCAM location to be accessed.
++		 */
++
++		/* Read tcamy */
++		ctl = (CTLREQID_V(1) | CTLCMDTYPE_V(0) | CTLXYBITSEL_V(0));
++		if (idx < 512)
++			ctl |= T7_1_CTLTCAMINDEX_V(idx) | T7_CTLTCAMSEL_V(0);
++		else if (idx < 1024)
++			ctl |= T7_1_CTLTCAMINDEX_V(idx - 512) |
++				T7_CTLTCAMSEL_V(1);
++		else /* idx 1024 to 1535 */
++			ctl |= T7_1_CTLTCAMINDEX_V(idx - 1024) |
++				T7_CTLTCAMSEL_V(2);
++
++		t4_write_reg(padap, MPS_CLS_TCAM_DATA2_CTL_A, ctl);
++		val = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA1_REQ_ID1_A);
++		tcamy = DMACH_G(val) << 32;
++		tcamy |= t4_read_reg(padap, MPS_CLS_TCAM0_RDATA0_REQ_ID1_A);
++		data2 = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA2_REQ_ID1_A);
++		tcam->lookup_type = DATALKPTYPE_G(data2);
++
++		/* 0 - Outer header, 1 - Inner header
++		 * [71:48] bit locations are overloaded for
++		 * outer vs. inner lookup types.
++		 */
++		if (tcam->lookup_type &&
++		    tcam->lookup_type != DATALKPTYPE_M) {
++			/* Inner header VNI */
++			tcam->vniy =
++				(((data2 & DATAVIDH2_F) | (DATAVIDH1_G(data2)))
++				 << 16) |
++				VIDL_G(val);
++			tcam->dip_hit = data2 & DATADIPHIT_F;
++		} else {
++			tcam->vlan_vld = data2 & DATAVIDH2_F;
++			tcam->ivlan = VIDL_G(val);
++		}
++
++		tcam->port_num = DATAPORTNUM_G(data2);
++
++		/* Read tcamx. Change the control param */
++		ctl |= CTLXYBITSEL_V(1);
++		t4_write_reg(padap, MPS_CLS_TCAM_DATA2_CTL_A, ctl);
++		val = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA1_REQ_ID1_A);
++		tcamx = DMACH_G(val) << 32;
++		tcamx |= t4_read_reg(padap, MPS_CLS_TCAM0_RDATA0_REQ_ID1_A);
++		data2 = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA2_REQ_ID1_A);
++		if (tcam->lookup_type &&
++		    tcam->lookup_type != DATALKPTYPE_M) {
++			/* Inner header VNI mask */
++			tcam->vnix =
++				(((data2 & DATAVIDH2_F) | (DATAVIDH1_G(data2)))
++				 << 16) |
++				VIDL_G(val);
++		}
++	} else if (CHELSIO_CHIP_VERSION(padap->params.chip) > CHELSIO_T5) {
+ 		/* CtlReqID   - 1: use Host Driver Requester ID
+ 		 * CtlCmdType - 0: Read, 1: Write
+ 		 * CtlTcamSel - 0: TCAM0, 1: TCAM1
+@@ -2602,13 +3240,24 @@ static int cudbg_collect_tcam_index(struct cudbg_init *pdbg_init,
+ 	if (tcamx & tcamy)
+ 		return rc;
+ 
+-	tcam->cls_lo = t4_read_reg(padap, MPS_CLS_SRAM_L(idx));
+-	tcam->cls_hi = t4_read_reg(padap, MPS_CLS_SRAM_H(idx));
++	/* t7b changes MPS_T5_CLS_SRAM_H_A to indirect register */
++	if (is_t7(padap->params.chip)) {
++		u32 tmp_ctl = 0;
+ 
+-	if (is_t5(padap->params.chip))
+-		tcam->repli = (tcam->cls_lo & REPLICATE_F);
+-	else if (is_t6(padap->params.chip))
++		tmp_ctl |= SRAMWRN_V(0) |
++			SRAMINDEX_V(idx & SRAMINDEX_M);
++		t4_write_reg(padap, MPS_T5_CLS_SRAM_H_A, tmp_ctl);
++		tcam->cls_lo = t4_read_reg(padap, MPS_T5_CLS_SRAM_L_A);
++		tcam->cls_hi = t4_read_reg(padap, MPS_T5_CLS_SRAM_H_A);
++	} else {
++		tcam->cls_lo = t4_read_reg(padap, MPS_CLS_SRAM_L(idx));
++		tcam->cls_hi = t4_read_reg(padap, MPS_CLS_SRAM_H(idx));
++	}
++
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) > CHELSIO_T5)
+ 		tcam->repli = (tcam->cls_lo & T6_REPLICATE_F);
++	else
++		tcam->repli = (tcam->cls_lo & REPLICATE_F);
+ 
+ 	if (tcam->repli) {
+ 		struct fw_ldst_cmd ldst_cmd;
+@@ -2966,20 +3615,62 @@ int cudbg_collect_ma_indirect(struct cudbg_init *pdbg_init,
+ {
+ 	struct adapter *padap = pdbg_init->adap;
+ 	struct cudbg_buffer temp_buff = { 0 };
+-	struct ireg_buf *ma_indr;
+-	int i, rc, n;
+-	u32 size, j;
++	int i, j, rc, n;
++	u32 size;
+ 
+ 	if (CHELSIO_CHIP_VERSION(padap->params.chip) < CHELSIO_T6)
+ 		return CUDBG_STATUS_ENTITY_NOT_FOUND;
+ 
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
++		/* T7 path - new indirect reg framework */
++		const struct cudbg_indir_type_entry *ma_arr, *ma_perf_arr;
++		u32 chip_ver;
++
++		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
++		ma_arr = cudbg_get_indir_reg_info(chip_ver,
++						  CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG);
++		ma_perf_arr = cudbg_get_indir_reg_info(chip_ver,
++						       CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG);
++
++		if (!ma_arr)
++			return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++		size = sizeof(struct cudbg_indir_reg_entity) +
++			sizeof(struct cudbg_indir_reg_data) * ma_arr->nentries;
++
++		if (ma_perf_arr)
++			size += sizeof(struct cudbg_indir_reg_entity) +
++				sizeof(struct cudbg_indir_reg_data) *
++				ma_perf_arr->nentries;
++
++		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
++		if (rc)
++			return rc;
++
++		cudbg_collect_indir_reg(padap, (void *)temp_buff.data,
++					ma_arr, CUDBG_MA_INDIR_REG_REV,
++					MA_LOCAL_DEBUG_CFG_A,
++					MA_LOCAL_DEBUG_CFG_A + 4);
++
++		if (ma_perf_arr)
++			cudbg_collect_indir_reg_next(padap, (void *)temp_buff.data, ma_perf_arr,
++						     CUDBG_MA_INDIR_REG_REV,
++						     MA_LOCAL_DEBUG_PERF_CFG_A,
++						     MA_LOCAL_DEBUG_PERF_CFG_A + 4);
++
++		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
++						    dbg_buff);
++	}
++
++	/* T6 path */
+ 	n = sizeof(t6_ma_ireg_array) / (IREG_NUM_ELEM * sizeof(u32));
+ 	size = sizeof(struct ireg_buf) * n * 2;
++
+ 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
+ 	if (rc)
+ 		return rc;
+ 
+-	ma_indr = (struct ireg_buf *)temp_buff.data;
++	struct ireg_buf *ma_indr = (struct ireg_buf *)temp_buff.data;
+ 	for (i = 0; i < n; i++) {
+ 		struct ireg_field *ma_fli = &ma_indr->tp_pio;
+ 		u32 *buff = ma_indr->outbuf;
+@@ -3094,9 +3785,67 @@ int cudbg_collect_up_cim_indirect(struct cudbg_init *pdbg_init,
+ 	else if (is_t6(padap->params.chip))
+ 		n = sizeof(t6_up_cim_reg_array) /
+ 		    ((IREG_NUM_ELEM + 1) * sizeof(u32));
+-	else
++	else if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
++		/* T7 path - new indirect reg framework */
++		const struct cudbg_indir_type_entry *cim_arr, *up_arr;
++		struct cudbg_indir_reg_entity *cim_entity, *up_entity;
++		struct cudbg_indir_reg_data *reg_data;
++		u8 coreid = 0, groupid = 0;
++		u32 chip_ver;
++
++		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
++		cim_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_CIM_CTL);
++		up_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_UP);
++
++		if (!cim_arr || !up_arr)
++			return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++		if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
++				CUDBG_UP_COREID_PARAM)
++			coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
++
++		size = sizeof(*cim_entity) + sizeof(*up_entity) +
++		       sizeof(*reg_data) * (cim_arr->nentries + up_arr->nentries);
++
++		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
++		if (rc)
++			return rc;
++
++		cim_entity = cudbg_collect_indir_reg_init((void *)temp_buff.data,
++							  CUDBG_UP_CIM_INDIR_REG_REV,
++							  CIM_HOST_ACC_CTRL_A,
++							  CIM_HOST_ACC_DATA_A,
++							  cim_arr->nentries);
++
++		up_entity = cudbg_collect_indir_reg_init_next(cim_entity,
++							      CUDBG_UP_CIM_INDIR_REG_REV,
++							      CIM_HOST_ACC_CTRL_A,
++							      CIM_HOST_ACC_DATA_A,
++							      up_arr->nentries);
++
++		reg_data = cim_entity->data;
++		for (i = 0; i < cim_entity->nentries; i++, reg_data++) {
++			reg_data->offset = cim_arr->reg_arr[i].addr;
++			t4_cim_read_core(padap, groupid, coreid,
++					 reg_data->offset, 1, &reg_data->data);
++		}
++
++		groupid = 1; /* T7 UP uses groupid 1 */
++
++		reg_data = up_entity->data;
++		for (i = 0; i < up_entity->nentries; i++, reg_data++) {
++			reg_data->offset = up_arr->reg_arr[i].addr;
++			t4_cim_read_core(padap, groupid, coreid,
++					 reg_data->offset, 1, &reg_data->data);
++		}
++
++		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
++						    dbg_buff);
++	} else {
+ 		return CUDBG_STATUS_NOT_IMPLEMENTED;
++	}
+ 
++	/* T5/T6 path */
+ 	size = sizeof(struct ireg_buf) * n;
+ 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
+ 	if (rc)
+@@ -3275,20 +4024,47 @@ int cudbg_collect_hma_indirect(struct cudbg_init *pdbg_init,
+ {
+ 	struct adapter *padap = pdbg_init->adap;
+ 	struct cudbg_buffer temp_buff = { 0 };
+-	struct ireg_buf *hma_indr;
+ 	int i, rc, n;
+ 	u32 size;
+ 
+ 	if (CHELSIO_CHIP_VERSION(padap->params.chip) < CHELSIO_T6)
+ 		return CUDBG_STATUS_ENTITY_NOT_FOUND;
+ 
++	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
++		/* T7 path - new indirect reg framework */
++		const struct cudbg_indir_type_entry *hma_arr;
++		u32 chip_ver;
++
++		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
++		hma_arr = cudbg_get_indir_reg_info(chip_ver,
++						   CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG);
++		if (!hma_arr)
++			return CUDBG_STATUS_ENTITY_NOT_FOUND;
++
++		size = sizeof(struct cudbg_indir_reg_entity) +
++		       sizeof(struct cudbg_indir_reg_data) * hma_arr->nentries;
++
++		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
++		if (rc)
++			return rc;
++
++		cudbg_collect_indir_reg(padap, (void *)temp_buff.data,
++					hma_arr, CUDBG_HMA_INDIR_REG_REV,
++					HMA_LOCAL_DEBUG_CFG_A,
++					HMA_LOCAL_DEBUG_CFG_A + 4);
++
++		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
++						    dbg_buff);
++	}
++
++	/* T6 path */
+ 	n = sizeof(t6_hma_ireg_array) / (IREG_NUM_ELEM * sizeof(u32));
+ 	size = sizeof(struct ireg_buf) * n;
+ 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
+ 	if (rc)
+ 		return rc;
+ 
+-	hma_indr = (struct ireg_buf *)temp_buff.data;
++	struct ireg_buf *hma_indr = (struct ireg_buf *)temp_buff.data;
+ 	for (i = 0; i < n; i++) {
+ 		struct ireg_field *hma_fli = &hma_indr->tp_pio;
+ 		u32 *buff = hma_indr->outbuf;
+@@ -3581,7 +4357,7 @@ int cudbg_collect_flash(struct cudbg_init *pdbg_init,
+ 	u32 addr, i;
+ 	int rc;
+ 
+-	addr = FLASH_EXP_ROM_START;
++	addr = FLASH_LOC_EXP_ROM;
+ 
+ 	for (i = 0; i < count; i += SF_PAGE_SIZE) {
+ 		n = min_t(u32, count - i, SF_PAGE_SIZE);
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h
+index d6d6cd298930..d92a445bf3b5 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h
+@@ -30,10 +30,10 @@ int cudbg_collect_cim_ibq_tp1(struct cudbg_init *pdbg_init,
+ int cudbg_collect_cim_ibq_ulp(struct cudbg_init *pdbg_init,
+ 			      struct cudbg_buffer *dbg_buff,
+ 			      struct cudbg_error *cudbg_err);
+-int cudbg_collect_cim_ibq_sge0(struct cudbg_init *pdbg_init,
+-			       struct cudbg_buffer *dbg_buff,
+-			       struct cudbg_error *cudbg_err);
+-int cudbg_collect_cim_ibq_sge1(struct cudbg_init *pdbg_init,
++int cudbg_collect_cim_ibq_sge(struct cudbg_init *pdbg_init,
++			      struct cudbg_buffer *dbg_buff,
++			      struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_pcie(struct cudbg_init *pdbg_init,
+ 			       struct cudbg_buffer *dbg_buff,
+ 			       struct cudbg_error *cudbg_err);
+ int cudbg_collect_cim_ibq_ncsi(struct cudbg_init *pdbg_init,
+@@ -165,13 +165,61 @@ int cudbg_collect_qdesc(struct cudbg_init *pdbg_init,
+ int cudbg_collect_flash(struct cudbg_init *pdbg_init,
+ 			struct cudbg_buffer *dbg_buff,
+ 			struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_tp2(struct cudbg_init *pdbg_init,
++			      struct cudbg_buffer *dbg_buff,
++			      struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_tp3(struct cudbg_init *pdbg_init,
++			      struct cudbg_buffer *dbg_buff,
++			      struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_ipc1(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_ipc2(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_ipc3(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_ipc4(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_ipc5(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_ipc6(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_ibq_ipc7(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_obq_ipc1(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_obq_ipc2(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_obq_ipc3(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_obq_ipc4(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_obq_ipc5(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_obq_ipc6(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
++int cudbg_collect_cim_obq_ipc7(struct cudbg_init *pdbg_init,
++			       struct cudbg_buffer *dbg_buff,
++			       struct cudbg_error *cudbg_err);
+ 
+ u32 cudbg_get_entity_length(struct adapter *adap, u32 entity);
+ struct cudbg_entity_hdr *cudbg_get_entity_hdr(void *outbuf, int i);
+ void cudbg_align_debug_buffer(struct cudbg_buffer *dbg_buff,
+ 			      struct cudbg_entity_hdr *entity_hdr);
+-u32 cudbg_cim_obq_size(struct adapter *padap, int qid);
+-int cudbg_dump_context_size(struct adapter *padap);
++u32 cudbg_cim_obq_size(struct adapter *padap, int qid, u8 coreid);
++int cudbg_dump_context_size(struct adapter *padap, u8 sge_ctxt_size);
+ 
+ int cudbg_fill_meminfo(struct adapter *padap,
+ 		       struct cudbg_meminfo *meminfo_buff);
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+index 8409e759f5ae..bf47aecc4bb3 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+@@ -1857,7 +1857,6 @@ void t4_setup_memwin(struct adapter *adap, u32 memwin_base, u32 window);
+ 
+ int t4_memory_rw_init(struct adapter *adap, int win, int mtype, u32 *mem_off,
+ 		      u32 *mem_base, u32 *mem_aperture);
+-void t4_memory_update_win(struct adapter *adap, int win, u32 addr);
+ void t4_memory_rw_residual(struct adapter *adap, u32 off, u32 addr, u8 *buf,
+ 			   int dir);
+ #define T4_MEMORY_WRITE	0
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c
+index dd66b244466d..f2b98f1b4d61 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c
+@@ -27,8 +27,8 @@ static const struct cxgb4_collect_entity cxgb4_collect_hw_dump[] = {
+ 	{ CUDBG_CIM_IBQ_TP0, cudbg_collect_cim_ibq_tp0 },
+ 	{ CUDBG_CIM_IBQ_TP1, cudbg_collect_cim_ibq_tp1 },
+ 	{ CUDBG_CIM_IBQ_ULP, cudbg_collect_cim_ibq_ulp },
+-	{ CUDBG_CIM_IBQ_SGE0, cudbg_collect_cim_ibq_sge0 },
+-	{ CUDBG_CIM_IBQ_SGE1, cudbg_collect_cim_ibq_sge1 },
++	{ CUDBG_CIM_IBQ_SGE, cudbg_collect_cim_ibq_sge },
++	{ CUDBG_CIM_IBQ_PCIE, cudbg_collect_cim_ibq_pcie },
+ 	{ CUDBG_CIM_IBQ_NCSI, cudbg_collect_cim_ibq_ncsi },
+ 	{ CUDBG_CIM_OBQ_ULP0, cudbg_collect_cim_obq_ulp0 },
+ 	{ CUDBG_CIM_OBQ_ULP1, cudbg_collect_cim_obq_ulp1 },
+@@ -64,6 +64,22 @@ static const struct cxgb4_collect_entity cxgb4_collect_hw_dump[] = {
+ 	{ CUDBG_UP_CIM_INDIRECT, cudbg_collect_up_cim_indirect },
+ 	{ CUDBG_PBT_TABLE, cudbg_collect_pbt_tables },
+ 	{ CUDBG_HMA_INDIRECT, cudbg_collect_hma_indirect },
++	{ CUDBG_CIM_IBQ_TP2, cudbg_collect_cim_ibq_tp2 },
++	{ CUDBG_CIM_IBQ_TP3, cudbg_collect_cim_ibq_tp3 },
++	{ CUDBG_CIM_IBQ_IPC1, cudbg_collect_cim_ibq_ipc1 },
++	{ CUDBG_CIM_IBQ_IPC2, cudbg_collect_cim_ibq_ipc2 },
++	{ CUDBG_CIM_IBQ_IPC3, cudbg_collect_cim_ibq_ipc3 },
++	{ CUDBG_CIM_IBQ_IPC4, cudbg_collect_cim_ibq_ipc4 },
++	{ CUDBG_CIM_IBQ_IPC5, cudbg_collect_cim_ibq_ipc5 },
++	{ CUDBG_CIM_IBQ_IPC6, cudbg_collect_cim_ibq_ipc6 },
++	{ CUDBG_CIM_IBQ_IPC7, cudbg_collect_cim_ibq_ipc7 },
++	{ CUDBG_CIM_OBQ_IPC1, cudbg_collect_cim_obq_ipc1 },
++	{ CUDBG_CIM_OBQ_IPC2, cudbg_collect_cim_obq_ipc2 },
++	{ CUDBG_CIM_OBQ_IPC3, cudbg_collect_cim_obq_ipc3 },
++	{ CUDBG_CIM_OBQ_IPC4, cudbg_collect_cim_obq_ipc4 },
++	{ CUDBG_CIM_OBQ_IPC5, cudbg_collect_cim_obq_ipc5 },
++	{ CUDBG_CIM_OBQ_IPC6, cudbg_collect_cim_obq_ipc6 },
++	{ CUDBG_CIM_OBQ_IPC7, cudbg_collect_cim_obq_ipc7 },
+ };
+ 
+ static const struct cxgb4_collect_entity cxgb4_collect_flash_dump[] = {
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index be4c8cbbad95..a3b1f9db5cbe 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -3097,6 +3097,247 @@ static int cxgb_hwtstamp_set(struct net_device *dev,
+ 	return 0;
+ }
+ 
++enum {
++	CUDBG_SETREG        = 1024,
++	CUDBG_GETREG        = 1025,
++	CUDBG_GET_SGE_CTXT  = 1059,
++	CUDBG_GET_SGE_DESC2 = 1060,
 +};
 +
-+static struct cudbg_indir_reg t7_hmat6_local_debug_cfg[32] = {
-+	{ .addr = 0xa000 },
-+	{ .addr = 0xa001 },
-+	{ .addr = 0xa002 },
-+	{ .addr = 0xa003 },
-+	{ .addr = 0xa004 },
-+	{ .addr = 0xa005 },
-+	{ .addr = 0xa006 },
-+	{ .addr = 0xa007 },
-+	{ .addr = 0xa008 },
-+	{ .addr = 0xa009 },
-+	{ .addr = 0xa00a },
-+	{ .addr = 0xa00b },
-+	{ .addr = 0xa00c },
-+	{ .addr = 0xa00d },
-+	{ .addr = 0xa00e },
-+	{ .addr = 0xa00f },
-+	{ .addr = 0xa010 },
-+	{ .addr = 0xa011 },
-+	{ .addr = 0xa012 },
-+	{ .addr = 0xa013 },
-+	{ .addr = 0xa014 },
-+	{ .addr = 0xa015 },
-+	{ .addr = 0xa016 },
-+	{ .addr = 0xa017 },
-+	{ .addr = 0xa018 },
-+	{ .addr = 0xa019 },
-+	{ .addr = 0xa01a },
-+	{ .addr = 0xa01b },
-+	{ .addr = 0xa01c },
-+	{ .addr = 0xa01d },
-+	{ .addr = 0xa01e },
-+	{ .addr = 0xa01f },
++enum {
++	CUDBG_CNTXT_TYPE_EGRESS  = 0,
++	CUDBG_CNTXT_TYPE_FL      = 1,
++	CUDBG_CNTXT_TYPE_RSP     = 2,
++	CUDBG_CNTXT_TYPE_CQ      = 3,
++	CUDBG_CNTXT_TYPE_CONG    = 4,
 +};
 +
-+static struct cudbg_indir_reg t7_ma_local_debug_cfg[238] = {
-+	{ .addr = 0xa000 },
-+	{ .addr = 0xa001 },
-+	{ .addr = 0xa002 },
-+	{ .addr = 0xa003 },
-+	{ .addr = 0xa004 },
-+	{ .addr = 0xa005 },
-+	{ .addr = 0xa006 },
-+	{ .addr = 0xa007 },
-+	{ .addr = 0xa008 },
-+	{ .addr = 0xa009 },
-+	{ .addr = 0xa00a },
-+	{ .addr = 0xa00b },
-+	{ .addr = 0xa00c },
-+	{ .addr = 0xa00d },
-+	{ .addr = 0xa00e },
-+	{ .addr = 0xa00f },
-+	{ .addr = 0xa010 },
-+	{ .addr = 0xa011 },
-+	{ .addr = 0xa012 },
-+	{ .addr = 0xa013 },
-+	{ .addr = 0xa014 },
-+	{ .addr = 0xa015 },
-+	{ .addr = 0xa016 },
-+	{ .addr = 0xa400 },
-+	{ .addr = 0xa401 },
-+	{ .addr = 0xa402 },
-+	{ .addr = 0xa403 },
-+	{ .addr = 0xa404 },
-+	{ .addr = 0xa405 },
-+	{ .addr = 0xa406 },
-+	{ .addr = 0xa407 },
-+	{ .addr = 0xa408 },
-+	{ .addr = 0xa409 },
-+	{ .addr = 0xa40a },
-+	{ .addr = 0xa40b },
-+	{ .addr = 0xa40c },
-+	{ .addr = 0xa40d },
-+	{ .addr = 0xa40e },
-+	{ .addr = 0xa40f },
-+	{ .addr = 0xa410 },
-+	{ .addr = 0xa412 },
-+	{ .addr = 0xa413 },
-+	{ .addr = 0xa414 },
-+	{ .addr = 0xa415 },
-+	{ .addr = 0xa416 },
-+	{ .addr = 0xa417 },
-+	{ .addr = 0xa418 },
-+	{ .addr = 0xa419 },
-+	{ .addr = 0xa41a },
-+	{ .addr = 0xa41b },
-+	{ .addr = 0xa41c },
-+	{ .addr = 0xa41d },
-+	{ .addr = 0xa41e },
-+	{ .addr = 0xa800 },
-+	{ .addr = 0xa801 },
-+	{ .addr = 0xa802 },
-+	{ .addr = 0xa803 },
-+	{ .addr = 0xa804 },
-+	{ .addr = 0xa805 },
-+	{ .addr = 0xa806 },
-+	{ .addr = 0xa807 },
-+	{ .addr = 0xa808 },
-+	{ .addr = 0xa809 },
-+	{ .addr = 0xa80a },
-+	{ .addr = 0xa80b },
-+	{ .addr = 0xa80c },
-+	{ .addr = 0xa80d },
-+	{ .addr = 0xa80e },
-+	{ .addr = 0xa80f },
-+	{ .addr = 0xa810 },
-+	{ .addr = 0xa811 },
-+	{ .addr = 0xa812 },
-+	{ .addr = 0xa813 },
-+	{ .addr = 0xac00 },
-+	{ .addr = 0xac01 },
-+	{ .addr = 0xac02 },
-+	{ .addr = 0xac03 },
-+	{ .addr = 0xac04 },
-+	{ .addr = 0xac05 },
-+	{ .addr = 0xac06 },
-+	{ .addr = 0xac07 },
-+	{ .addr = 0xac08 },
-+	{ .addr = 0xac09 },
-+	{ .addr = 0xac0a },
-+	{ .addr = 0xac0b },
-+	{ .addr = 0xac0c },
-+	{ .addr = 0xac0d },
-+	{ .addr = 0xac0e },
-+	{ .addr = 0xac0f },
-+	{ .addr = 0xac10 },
-+	{ .addr = 0xac11 },
-+	{ .addr = 0xac12 },
-+	{ .addr = 0xac13 },
-+	{ .addr = 0xac14 },
-+	{ .addr = 0xac15 },
-+	{ .addr = 0xac16 },
-+	{ .addr = 0xac17 },
-+	{ .addr = 0xac18 },
-+	{ .addr = 0xac19 },
-+	{ .addr = 0xb000 },
-+	{ .addr = 0xb001 },
-+	{ .addr = 0xb002 },
-+	{ .addr = 0xb003 },
-+	{ .addr = 0xb004 },
-+	{ .addr = 0xb005 },
-+	{ .addr = 0xb006 },
-+	{ .addr = 0xb007 },
-+	{ .addr = 0xb008 },
-+	{ .addr = 0xb009 },
-+	{ .addr = 0xb00a },
-+	{ .addr = 0xb00b },
-+	{ .addr = 0xb00c },
-+	{ .addr = 0xb00d },
-+	{ .addr = 0xb00e },
-+	{ .addr = 0xb00f },
-+	{ .addr = 0xb010 },
-+	{ .addr = 0xb011 },
-+	{ .addr = 0xb012 },
-+	{ .addr = 0xb013 },
-+	{ .addr = 0xb014 },
-+	{ .addr = 0xb015 },
-+	{ .addr = 0xb016 },
-+	{ .addr = 0xb017 },
-+	{ .addr = 0xb018 },
-+	{ .addr = 0xb019 },
-+	{ .addr = 0xb400 },
-+	{ .addr = 0xb401 },
-+	{ .addr = 0xb402 },
-+	{ .addr = 0xb403 },
-+	{ .addr = 0xb404 },
-+	{ .addr = 0xb405 },
-+	{ .addr = 0xb406 },
-+	{ .addr = 0xb407 },
-+	{ .addr = 0xb408 },
-+	{ .addr = 0xb409 },
-+	{ .addr = 0xb40a },
-+	{ .addr = 0xb40b },
-+	{ .addr = 0xb40c },
-+	{ .addr = 0xb40d },
-+	{ .addr = 0xb40e },
-+	{ .addr = 0xb40f },
-+	{ .addr = 0xb410 },
-+	{ .addr = 0xb411 },
-+	{ .addr = 0xb412 },
-+	{ .addr = 0xb413 },
-+	{ .addr = 0xb414 },
-+	{ .addr = 0xb415 },
-+	{ .addr = 0xb416 },
-+	{ .addr = 0xb417 },
-+	{ .addr = 0xb418 },
-+	{ .addr = 0xb419 },
-+	{ .addr = 0xe400 },
-+	{ .addr = 0xe420 },
-+	{ .addr = 0xe440 },
-+	{ .addr = 0xe460 },
-+	{ .addr = 0xe480 },
-+	{ .addr = 0xe4a0 },
-+	{ .addr = 0xe4c0 },
-+	{ .addr = 0xe4e0 },
-+	{ .addr = 0xe500 },
-+	{ .addr = 0xe520 },
-+	{ .addr = 0xe540 },
-+	{ .addr = 0xe560 },
-+	{ .addr = 0xe580 },
-+	{ .addr = 0xe5a0 },
-+	{ .addr = 0xe5c0 },
-+	{ .addr = 0xe5e0 },
-+	{ .addr = 0xe600 },
-+	{ .addr = 0xe640 },
-+	{ .addr = 0xe660 },
-+	{ .addr = 0xe680 },
-+	{ .addr = 0xe6a0 },
-+	{ .addr = 0xe6c0 },
-+	{ .addr = 0xe6e0 },
-+	{ .addr = 0xe700 },
-+	{ .addr = 0xe720 },
-+	{ .addr = 0xe740 },
-+	{ .addr = 0xe760 },
-+	{ .addr = 0xe780 },
-+	{ .addr = 0xe7a0 },
-+	{ .addr = 0xe7c0 },
-+	{ .addr = 0xe800 },
-+	{ .addr = 0xe820 },
-+	{ .addr = 0xe840 },
-+	{ .addr = 0xe860 },
-+	{ .addr = 0xe880 },
-+	{ .addr = 0xe8a0 },
-+	{ .addr = 0xe8c0 },
-+	{ .addr = 0xe8e0 },
-+	{ .addr = 0xe900 },
-+	{ .addr = 0xe920 },
-+	{ .addr = 0xe940 },
-+	{ .addr = 0xe960 },
-+	{ .addr = 0xe980 },
-+	{ .addr = 0xe9a0 },
-+	{ .addr = 0xe9c0 },
-+	{ .addr = 0xe9e0 },
-+	{ .addr = 0xec00 },
-+	{ .addr = 0xec20 },
-+	{ .addr = 0xec40 },
-+	{ .addr = 0xec60 },
-+	{ .addr = 0xec80 },
-+	{ .addr = 0xeca0 },
-+	{ .addr = 0xecc0 },
-+	{ .addr = 0xece0 },
-+	{ .addr = 0xed00 },
-+	{ .addr = 0xed20 },
-+	{ .addr = 0xed40 },
-+	{ .addr = 0xed60 },
-+	{ .addr = 0xed80 },
-+	{ .addr = 0xeda0 },
-+	{ .addr = 0xedc0 },
-+	{ .addr = 0xede0 },
-+	{ .addr = 0xee00 },
-+	{ .addr = 0xee20 },
-+	{ .addr = 0xee40 },
-+	{ .addr = 0xee60 },
-+	{ .addr = 0xee80 },
-+	{ .addr = 0xeea0 },
-+	{ .addr = 0xeec0 },
-+	{ .addr = 0xeee0 },
-+	{ .addr = 0xef00 },
-+	{ .addr = 0xef20 },
-+	{ .addr = 0xf000 },
-+	{ .addr = 0xf020 },
-+	{ .addr = 0xf040 },
-+	{ .addr = 0xf100 },
-+	{ .addr = 0xf101 },
-+	{ .addr = 0xf102 },
-+	{ .addr = 0xf103 },
-+	{ .addr = 0xf104 },
-+	{ .addr = 0xf105 },
-+	{ .addr = 0xf106 },
-+	{ .addr = 0xf107 },
-+	{ .addr = 0xf108 },
-+	{ .addr = 0xf120 },
-+	{ .addr = 0xf140 },
-+	{ .addr = 0xf160 },
++enum {
++	CUDBG_SGE_QTYPE_TX_ETH    = 1,
++	CUDBG_SGE_QTYPE_TX_OFLD   = 2,
++	CUDBG_SGE_QTYPE_TX_CTRL   = 3,
++	CUDBG_SGE_QTYPE_FL        = 4,
++	CUDBG_SGE_QTYPE_RSP       = 5,
++	CUDBG_SGE_QTYPE_TX_CRYPTO = 6,
 +};
 +
-+static struct cudbg_indir_reg t7_ma_local_debug_perf_cfg[4] = {
-+	{ .addr = 0xa000 },
-+	{ .addr = 0xa1e0 },
-+	{ .addr = 0xe000 },
-+	{ .addr = 0xe1e0 },
++struct cudbg_reg {
++	u32 cmd;
++	u32 addr;
++	u32 val;
 +};
 +
-+static struct cudbg_indir_reg t7_pm_rx_dbg_ctrl[57] = {
-+	{ .addr = 0x10013 },
-+	{ .addr = 0x10014 },
-+	{ .addr = 0x10015 },
-+	{ .addr = 0x10016 },
-+	{ .addr = 0x10019 },
-+	{ .addr = 0x1001a },
-+	{ .addr = 0x1001b },
-+	{ .addr = 0x1001c },
-+	{ .addr = 0x1001d },
-+	{ .addr = 0x10020 },
-+	{ .addr = 0x10021 },
-+	{ .addr = 0x10022 },
-+	{ .addr = 0x10023 },
-+	{ .addr = 0x10024 },
-+	{ .addr = 0x10025 },
-+	{ .addr = 0x10026 },
-+	{ .addr = 0x10027 },
-+	{ .addr = 0x10028 },
-+	{ .addr = 0x10029 },
-+	{ .addr = 0x1002a },
-+	{ .addr = 0x1002b },
-+	{ .addr = 0x1002c },
-+	{ .addr = 0x1002d },
-+	{ .addr = 0x1002e },
-+	{ .addr = 0x1002f },
-+	{ .addr = 0x10030 },
-+	{ .addr = 0x10031 },
-+	{ .addr = 0x10032 },
-+	{ .addr = 0x10033 },
-+	{ .addr = 0x10034 },
-+	{ .addr = 0x10035 },
-+	{ .addr = 0x10036 },
-+	{ .addr = 0x10037 },
-+	{ .addr = 0x10038 },
-+	{ .addr = 0x10039 },
-+	{ .addr = 0x1003a },
-+	{ .addr = 0x1003b },
-+	{ .addr = 0x1003c },
-+	{ .addr = 0x1003d },
-+	{ .addr = 0x1003e },
-+	{ .addr = 0x10049 },
-+	{ .addr = 0x10060 },
-+	{ .addr = 0x10061 },
-+	{ .addr = 0x10062 },
-+	{ .addr = 0x10063 },
-+	{ .addr = 0x10070 },
-+	{ .addr = 0x10071 },
-+	{ .addr = 0x10072 },
-+	{ .addr = 0x10073 },
-+	{ .addr = 0x10074 },
-+	{ .addr = 0x10075 },
-+	{ .addr = 0x10076 },
-+	{ .addr = 0x10077 },
-+	{ .addr = 0x10078 },
-+	{ .addr = 0x10080 },
-+	{ .addr = 0x10081 },
-+	{ .addr = 0x10082 },
++struct cudbg_mem_range {
++	u32 cmd;
++	u32 mem_id;
++	u32 addr;
++	u32 len;
++	u32 version;
++	u8  buf[];
 +};
 +
-+static struct cudbg_indir_reg t7_pm_tx_dbg_ctrl[38] = {
-+	{ .addr = 0x10000 },
-+	{ .addr = 0x10001 },
-+	{ .addr = 0x10002 },
-+	{ .addr = 0x10003 },
-+	{ .addr = 0x10004 },
-+	{ .addr = 0x10005 },
-+	{ .addr = 0x10006 },
-+	{ .addr = 0x10007 },
-+	{ .addr = 0x10008 },
-+	{ .addr = 0x10009 },
-+	{ .addr = 0x1000a },
-+	{ .addr = 0x1000b },
-+	{ .addr = 0x1000c },
-+	{ .addr = 0x1000d },
-+	{ .addr = 0x1000e },
-+	{ .addr = 0x1000f },
-+	{ .addr = 0x10010 },
-+	{ .addr = 0x10011 },
-+	{ .addr = 0x10012 },
-+	{ .addr = 0x10013 },
-+	{ .addr = 0x10014 },
-+	{ .addr = 0x10015 },
-+	{ .addr = 0x10016 },
-+	{ .addr = 0x10017 },
-+	{ .addr = 0x10018 },
-+	{ .addr = 0x10019 },
-+	{ .addr = 0x1001a },
-+	{ .addr = 0x1001b },
-+	{ .addr = 0x1001c },
-+	{ .addr = 0x1001d },
-+	{ .addr = 0x1001e },
-+	{ .addr = 0x1001f },
-+	{ .addr = 0x10020 },
-+	{ .addr = 0x10021 },
-+	{ .addr = 0x10022 },
-+	{ .addr = 0x10023 },
-+	{ .addr = 0x10024 },
-+	{ .addr = 0x10025 },
-+};
++static int cudbg_get_qdesc(struct adapter *adap, int qtype,
++			   unsigned int qid, unsigned int idx,
++			   unsigned char *data)
++{
++	struct sge *p = &adap->sge;
++	int i, len = sizeof(struct tx_desc);
 +
-+static struct cudbg_indir_reg t7_tp_mib_index[130] = {
-+	{ .addr = 0x0 },
-+	{ .addr = 0x1 },
-+	{ .addr = 0x2 },
-+	{ .addr = 0x3 },
-+	{ .addr = 0x4 },
-+	{ .addr = 0x5 },
-+	{ .addr = 0x6 },
-+	{ .addr = 0x7 },
-+	{ .addr = 0x8 },
-+	{ .addr = 0x9 },
-+	{ .addr = 0xa },
-+	{ .addr = 0xb },
-+	{ .addr = 0xc },
-+	{ .addr = 0x10 },
-+	{ .addr = 0x11 },
-+	{ .addr = 0x12 },
-+	{ .addr = 0x13 },
-+	{ .addr = 0x14 },
-+	{ .addr = 0x15 },
-+	{ .addr = 0x18 },
-+	{ .addr = 0x19 },
-+	{ .addr = 0x1a },
-+	{ .addr = 0x1b },
-+	{ .addr = 0x1c },
-+	{ .addr = 0x1d },
-+	{ .addr = 0x1e },
-+	{ .addr = 0x1f },
-+	{ .addr = 0x20 },
-+	{ .addr = 0x21 },
-+	{ .addr = 0x22 },
-+	{ .addr = 0x23 },
-+	{ .addr = 0x24 },
-+	{ .addr = 0x25 },
-+	{ .addr = 0x26 },
-+	{ .addr = 0x27 },
-+	{ .addr = 0x28 },
-+	{ .addr = 0x29 },
-+	{ .addr = 0x2a },
-+	{ .addr = 0x2b },
-+	{ .addr = 0x2c },
-+	{ .addr = 0x30 },
-+	{ .addr = 0x31 },
-+	{ .addr = 0x32 },
-+	{ .addr = 0x33 },
-+	{ .addr = 0x34 },
-+	{ .addr = 0x35 },
-+	{ .addr = 0x36 },
-+	{ .addr = 0x37 },
-+	{ .addr = 0x38 },
-+	{ .addr = 0x39 },
-+	{ .addr = 0x3a },
-+	{ .addr = 0x3b },
-+	{ .addr = 0x3c },
-+	{ .addr = 0x3d },
-+	{ .addr = 0x3e },
-+	{ .addr = 0x3f },
-+	{ .addr = 0x40 },
-+	{ .addr = 0x41 },
-+	{ .addr = 0x42 },
-+	{ .addr = 0x43 },
-+	{ .addr = 0x44 },
-+	{ .addr = 0x45 },
-+	{ .addr = 0x46 },
-+	{ .addr = 0x47 },
-+	{ .addr = 0x48 },
-+	{ .addr = 0x49 },
-+	{ .addr = 0x4a },
-+	{ .addr = 0x4b },
-+	{ .addr = 0x4c },
-+	{ .addr = 0x4d },
-+	{ .addr = 0x4e },
-+	{ .addr = 0x4f },
-+	{ .addr = 0x50 },
-+	{ .addr = 0x51 },
-+	{ .addr = 0x52 },
-+	{ .addr = 0x53 },
-+	{ .addr = 0x54 },
-+	{ .addr = 0x55 },
-+	{ .addr = 0x56 },
-+	{ .addr = 0x57 },
-+	{ .addr = 0x58 },
-+	{ .addr = 0x59 },
-+	{ .addr = 0x5a },
-+	{ .addr = 0x5b },
-+	{ .addr = 0x5c },
-+	{ .addr = 0x5d },
-+	{ .addr = 0x5e },
-+	{ .addr = 0x5f },
-+	{ .addr = 0x60 },
-+	{ .addr = 0x61 },
-+	{ .addr = 0x62 },
-+	{ .addr = 0x63 },
-+	{ .addr = 0x64 },
-+	{ .addr = 0x65 },
-+	{ .addr = 0x68 },
-+	{ .addr = 0x69 },
-+	{ .addr = 0x6a },
-+	{ .addr = 0x6b },
-+	{ .addr = 0x6c },
-+	{ .addr = 0x6d },
-+	{ .addr = 0x6e },
-+	{ .addr = 0x6f },
-+	{ .addr = 0x70 },
-+	{ .addr = 0x71 },
-+	{ .addr = 0x72 },
-+	{ .addr = 0x73 },
-+	{ .addr = 0x80 },
-+	{ .addr = 0x81 },
-+	{ .addr = 0x82 },
-+	{ .addr = 0x83 },
-+	{ .addr = 0x84 },
-+	{ .addr = 0x85 },
-+	{ .addr = 0x86 },
-+	{ .addr = 0x87 },
-+	{ .addr = 0x88 },
-+	{ .addr = 0x89 },
-+	{ .addr = 0x8a },
-+	{ .addr = 0x8b },
-+	{ .addr = 0x90 },
-+	{ .addr = 0x91 },
-+	{ .addr = 0x92 },
-+	{ .addr = 0x93 },
-+	{ .addr = 0x94 },
-+	{ .addr = 0x95 },
-+	{ .addr = 0x96 },
-+	{ .addr = 0x97 },
-+	{ .addr = 0x98 },
-+	{ .addr = 0x99 },
-+	{ .addr = 0x9a },
-+	{ .addr = 0x9b },
-+};
++	if (qtype == CUDBG_SGE_QTYPE_TX_ETH) {
++		const struct sge_eth_txq *q = p->ethtxq;
 +
-+static struct cudbg_indir_reg t7_tp_pio_addr[191] = {
-+	{ .addr = 0x1c },
-+	{ .addr = 0x1d },
-+	{ .addr = 0x1e },
-+	{ .addr = 0x1f },
-+	{ .addr = 0x20 },
-+	{ .addr = 0x21 },
-+	{ .addr = 0x22 },
-+	{ .addr = 0x23 },
-+	{ .addr = 0x24 },
-+	{ .addr = 0x25 },
-+	{ .addr = 0x26 },
-+	{ .addr = 0x27 },
-+	{ .addr = 0x28 },
-+	{ .addr = 0x29 },
-+	{ .addr = 0x2a },
-+	{ .addr = 0x2b },
-+	{ .addr = 0x2c },
-+	{ .addr = 0x2d },
-+	{ .addr = 0x2e },
-+	{ .addr = 0x2f },
-+	{ .addr = 0x30 },
-+	{ .addr = 0x31 },
-+	{ .addr = 0x32 },
-+	{ .addr = 0x33 },
-+	{ .addr = 0x34 },
-+	{ .addr = 0x35 },
-+	{ .addr = 0x36 },
-+	{ .addr = 0x37 },
-+	{ .addr = 0x38 },
-+	{ .addr = 0x39 },
-+	{ .addr = 0x3a },
-+	{ .addr = 0x3b },
-+	{ .addr = 0x40 },
-+	{ .addr = 0x41 },
-+	{ .addr = 0x42 },
-+	{ .addr = 0x43 },
-+	{ .addr = 0x44 },
-+	{ .addr = 0x45 },
-+	{ .addr = 0x46 },
-+	{ .addr = 0x47 },
-+	{ .addr = 0x48 },
-+	{ .addr = 0x49 },
-+	{ .addr = 0x50 },
-+	{ .addr = 0x51 },
-+	{ .addr = 0x52 },
-+	{ .addr = 0x53 },
-+	{ .addr = 0x54 },
-+	{ .addr = 0x55 },
-+	{ .addr = 0x56 },
-+	{ .addr = 0x57 },
-+	{ .addr = 0x58 },
-+	{ .addr = 0x59 },
-+	{ .addr = 0x60 },
-+	{ .addr = 0x61 },
-+	{ .addr = 0x62 },
-+	{ .addr = 0x63 },
-+	{ .addr = 0x64 },
-+	{ .addr = 0x65 },
-+	{ .addr = 0x66 },
-+	{ .addr = 0x67 },
-+	{ .addr = 0x68 },
-+	{ .addr = 0x69 },
-+	{ .addr = 0x6a },
-+	{ .addr = 0x6b },
-+	{ .addr = 0x6c },
-+	{ .addr = 0x6d },
-+	{ .addr = 0x6f },
-+	{ .addr = 0x70 },
-+	{ .addr = 0x71 },
-+	{ .addr = 0x72 },
-+	{ .addr = 0x73 },
-+	{ .addr = 0x74 },
-+	{ .addr = 0x75 },
-+	{ .addr = 0x80 },
-+	{ .addr = 0x81 },
-+	{ .addr = 0x82 },
-+	{ .addr = 0x83 },
-+	{ .addr = 0x84 },
-+	{ .addr = 0x85 },
-+	{ .addr = 0x86 },
-+	{ .addr = 0x87 },
-+	{ .addr = 0x88 },
-+	{ .addr = 0x89 },
-+	{ .addr = 0x8a },
-+	{ .addr = 0x8b },
-+	{ .addr = 0x8c },
-+	{ .addr = 0x8d },
-+	{ .addr = 0x8e },
-+	{ .addr = 0x8f },
-+	{ .addr = 0x90 },
-+	{ .addr = 0x91 },
-+	{ .addr = 0x92 },
-+	{ .addr = 0x93 },
-+	{ .addr = 0x94 },
-+	{ .addr = 0x95 },
-+	{ .addr = 0x96 },
-+	{ .addr = 0x97 },
-+	{ .addr = 0x98 },
-+	{ .addr = 0x99 },
-+	{ .addr = 0x130 },
-+	{ .addr = 0x131 },
-+	{ .addr = 0x132 },
-+	{ .addr = 0x133 },
-+	{ .addr = 0x134 },
-+	{ .addr = 0x135 },
-+	{ .addr = 0x136 },
-+	{ .addr = 0x137 },
-+	{ .addr = 0x138 },
-+	{ .addr = 0x139 },
-+	{ .addr = 0x13a },
-+	{ .addr = 0x13b },
-+	{ .addr = 0x13c },
-+	{ .addr = 0x13d },
-+	{ .addr = 0x13e },
-+	{ .addr = 0x13f },
-+	{ .addr = 0x140 },
-+	{ .addr = 0x141 },
-+	{ .addr = 0x145 },
-+	{ .addr = 0x146 },
-+	{ .addr = 0x147 },
-+	{ .addr = 0x148 },
-+	{ .addr = 0x149 },
-+	{ .addr = 0x14a },
-+	{ .addr = 0x14b },
-+	{ .addr = 0x14c },
-+	{ .addr = 0x14d },
-+	{ .addr = 0x14e },
-+	{ .addr = 0x14f },
-+	{ .addr = 0x150 },
-+	{ .addr = 0x151 },
-+	{ .addr = 0x152 },
-+	{ .addr = 0x153 },
-+	{ .addr = 0x154 },
-+	{ .addr = 0x155 },
-+	{ .addr = 0x156 },
-+	{ .addr = 0x157 },
-+	{ .addr = 0x158 },
-+	{ .addr = 0x159 },
-+	{ .addr = 0x15a },
-+	{ .addr = 0x15b },
-+	{ .addr = 0x160 },
-+	{ .addr = 0x161 },
-+	{ .addr = 0x162 },
-+	{ .addr = 0x164 },
-+	{ .addr = 0x165 },
-+	{ .addr = 0x166 },
-+	{ .addr = 0x168 },
-+	{ .addr = 0x169 },
-+	{ .addr = 0x230 },
-+	{ .addr = 0x231 },
-+	{ .addr = 0x232 },
-+	{ .addr = 0x233 },
-+	{ .addr = 0x234 },
-+	{ .addr = 0x235 },
-+	{ .addr = 0x236 },
-+	{ .addr = 0x237 },
-+	{ .addr = 0x238 },
-+	{ .addr = 0x239 },
-+	{ .addr = 0x23a },
-+	{ .addr = 0x23b },
-+	{ .addr = 0x23c },
-+	{ .addr = 0x23d },
-+	{ .addr = 0x23e },
-+	{ .addr = 0x23f },
-+	{ .addr = 0x240 },
-+	{ .addr = 0x241 },
-+	{ .addr = 0x242 },
-+	{ .addr = 0x243 },
-+	{ .addr = 0x244 },
-+	{ .addr = 0x245 },
-+	{ .addr = 0x246 },
-+	{ .addr = 0x247 },
-+	{ .addr = 0x248 },
-+	{ .addr = 0x24a },
-+	{ .addr = 0x24b },
-+	{ .addr = 0x24c },
-+	{ .addr = 0x24d },
-+	{ .addr = 0x24e },
-+	{ .addr = 0x24f },
-+	{ .addr = 0x250 },
-+	{ .addr = 0x251 },
-+	{ .addr = 0x252 },
-+	{ .addr = 0x253 },
-+	{ .addr = 0x254 },
-+	{ .addr = 0x255 },
-+	{ .addr = 0x256 },
-+	{ .addr = 0x257 },
-+	{ .addr = 0x258 },
-+	{ .addr = 0x259 },
-+	{ .addr = 0x260 },
-+	{ .addr = 0x8c0 },
-+};
++		for (i = 0; i < ARRAY_SIZE(p->ethtxq); i++, q++)
++			if (q->q.cntxt_id == qid && q->q.desc &&
++			    idx < q->q.size) {
++				memcpy(data, &q->q.desc[idx], len);
++				return len;
++			}
++	}
 +
-+static struct cudbg_indir_reg t7_tp_tm_pio_addr[14] = {
-+	{ .addr = 0x0 },
-+	{ .addr = 0x1 },
-+	{ .addr = 0x2 },
-+	{ .addr = 0x3 },
-+	{ .addr = 0x4 },
-+	{ .addr = 0x5 },
-+	{ .addr = 0x6 },
-+	{ .addr = 0x7 },
-+	{ .addr = 0x8 },
-+	{ .addr = 0x9 },
-+	{ .addr = 0xa },
-+	{ .addr = 0xb },
-+	{ .addr = 0xc },
-+	{ .addr = 0xd },
-+};
++	if (qtype == CUDBG_SGE_QTYPE_TX_CTRL) {
++		const struct sge_ctrl_txq *q = p->ctrlq;
 +
-+static struct cudbg_indir_reg t7_up[245] = {
-+	{ .addr = 0x0 },
-+	{ .addr = 0x4 },
-+	{ .addr = 0x8 },
-+	{ .addr = 0xc },
-+	{ .addr = 0x10 },
-+	{ .addr = 0x80 },
-+	{ .addr = 0x84 },
-+	{ .addr = 0x88 },
-+	{ .addr = 0x8c },
-+	{ .addr = 0x90 },
-+	{ .addr = 0xc0 },
-+	{ .addr = 0xc4 },
-+	{ .addr = 0xc8 },
-+	{ .addr = 0xcc },
-+	{ .addr = 0xd0 },
-+	{ .addr = 0xd4 },
-+	{ .addr = 0x100 },
-+	{ .addr = 0x104 },
-+	{ .addr = 0x108 },
-+	{ .addr = 0x10c },
-+	{ .addr = 0x110 },
-+	{ .addr = 0x114 },
-+	{ .addr = 0x118 },
-+	{ .addr = 0x11c },
-+	{ .addr = 0x120 },
-+	{ .addr = 0x130 },
-+	{ .addr = 0x140 },
-+	{ .addr = 0x144 },
-+	{ .addr = 0x14c },
-+	{ .addr = 0x200 },
-+	{ .addr = 0x204 },
-+	{ .addr = 0x208 },
-+	{ .addr = 0x20c },
-+	{ .addr = 0x210 },
-+	{ .addr = 0x214 },
-+	{ .addr = 0x218 },
-+	{ .addr = 0x21c },
-+	{ .addr = 0x220 },
-+	{ .addr = 0x224 },
-+	{ .addr = 0x228 },
-+	{ .addr = 0x22c },
-+	{ .addr = 0x230 },
-+	{ .addr = 0x234 },
-+	{ .addr = 0x238 },
-+	{ .addr = 0x23c },
-+	{ .addr = 0x240 },
-+	{ .addr = 0x244 },
-+	{ .addr = 0x250 },
-+	{ .addr = 0x254 },
-+	{ .addr = 0x260 },
-+	{ .addr = 0x264 },
-+	{ .addr = 0x270 },
-+	{ .addr = 0x274 },
-+	{ .addr = 0x400 },
-+	{ .addr = 0x404 },
-+	{ .addr = 0x408 },
-+	{ .addr = 0x40c },
-+	{ .addr = 0x410 },
-+	{ .addr = 0x414 },
-+	{ .addr = 0x418 },
-+	{ .addr = 0x41c },
-+	{ .addr = 0x420 },
-+	{ .addr = 0x424 },
-+	{ .addr = 0x428 },
-+	{ .addr = 0x42c },
-+	{ .addr = 0x430 },
-+	{ .addr = 0x434 },
-+	{ .addr = 0x438 },
-+	{ .addr = 0x43c },
-+	{ .addr = 0x440 },
-+	{ .addr = 0x444 },
-+	{ .addr = 0x448 },
-+	{ .addr = 0x44c },
-+	{ .addr = 0x450 },
-+	{ .addr = 0x454 },
-+	{ .addr = 0x458 },
-+	{ .addr = 0x45c },
-+	{ .addr = 0x460 },
-+	{ .addr = 0x464 },
-+	{ .addr = 0x468 },
-+	{ .addr = 0x46c },
-+	{ .addr = 0x470 },
-+	{ .addr = 0x474 },
-+	{ .addr = 0x478 },
-+	{ .addr = 0x47c },
-+	{ .addr = 0x480 },
-+	{ .addr = 0x484 },
-+	{ .addr = 0x488 },
-+	{ .addr = 0x48c },
-+	{ .addr = 0x490 },
-+	{ .addr = 0x494 },
-+	{ .addr = 0x498 },
-+	{ .addr = 0x49c },
-+	{ .addr = 0x4a0 },
-+	{ .addr = 0x4a4 },
-+	{ .addr = 0x4a8 },
-+	{ .addr = 0x4ac },
-+	{ .addr = 0x4b0 },
-+	{ .addr = 0x4b4 },
-+	{ .addr = 0x4b8 },
-+	{ .addr = 0x4bc },
-+	{ .addr = 0x4c0 },
-+	{ .addr = 0x4c4 },
-+	{ .addr = 0x4c8 },
-+	{ .addr = 0x4cc },
-+	{ .addr = 0x4d0 },
-+	{ .addr = 0x4d4 },
-+	{ .addr = 0x4d8 },
-+	{ .addr = 0x4dc },
-+	{ .addr = 0x4e0 },
-+	{ .addr = 0x4e4 },
-+	{ .addr = 0x4e8 },
-+	{ .addr = 0x4ec },
-+	{ .addr = 0x4f0 },
-+	{ .addr = 0x4f4 },
-+	{ .addr = 0x4f8 },
-+	{ .addr = 0x4fc },
-+	{ .addr = 0x500 },
-+	{ .addr = 0x504 },
-+	{ .addr = 0x510 },
-+	{ .addr = 0x514 },
-+	{ .addr = 0x520 },
-+	{ .addr = 0x524 },
-+	{ .addr = 0x530 },
-+	{ .addr = 0x534 },
-+	{ .addr = 0x540 },
-+	{ .addr = 0x544 },
-+	{ .addr = 0x550 },
-+	{ .addr = 0x554 },
-+	{ .addr = 0x560 },
-+	{ .addr = 0x564 },
-+	{ .addr = 0x570 },
-+	{ .addr = 0x574 },
-+	{ .addr = 0x580 },
-+	{ .addr = 0x584 },
-+	{ .addr = 0x590 },
-+	{ .addr = 0x594 },
-+	{ .addr = 0x5a0 },
-+	{ .addr = 0x5a4 },
-+	{ .addr = 0x5b0 },
-+	{ .addr = 0x5b4 },
-+	{ .addr = 0x5c0 },
-+	{ .addr = 0x5c4 },
-+	{ .addr = 0x5d0 },
-+	{ .addr = 0x5d4 },
-+	{ .addr = 0x5e0 },
-+	{ .addr = 0x5e4 },
-+	{ .addr = 0x5f0 },
-+	{ .addr = 0x5f4 },
-+	{ .addr = 0x600 },
-+	{ .addr = 0x604 },
-+	{ .addr = 0x608 },
-+	{ .addr = 0x60c },
-+	{ .addr = 0x610 },
-+	{ .addr = 0x614 },
-+	{ .addr = 0x618 },
-+	{ .addr = 0x61c },
-+	{ .addr = 0x620 },
-+	{ .addr = 0x624 },
-+	{ .addr = 0x628 },
-+	{ .addr = 0x62c },
-+	{ .addr = 0x630 },
-+	{ .addr = 0x634 },
-+	{ .addr = 0x638 },
-+	{ .addr = 0x63c },
-+	{ .addr = 0x640 },
-+	{ .addr = 0x644 },
-+	{ .addr = 0x648 },
-+	{ .addr = 0x64c },
-+	{ .addr = 0x650 },
-+	{ .addr = 0x654 },
-+	{ .addr = 0x658 },
-+	{ .addr = 0x65c },
-+	{ .addr = 0x660 },
-+	{ .addr = 0x664 },
-+	{ .addr = 0x668 },
-+	{ .addr = 0x66c },
-+	{ .addr = 0x670 },
-+	{ .addr = 0x674 },
-+	{ .addr = 0x678 },
-+	{ .addr = 0x67c },
-+	{ .addr = 0x680 },
-+	{ .addr = 0x684 },
-+	{ .addr = 0x688 },
-+	{ .addr = 0x68c },
-+	{ .addr = 0x690 },
-+	{ .addr = 0x694 },
-+	{ .addr = 0x698 },
-+	{ .addr = 0x69c },
-+	{ .addr = 0x6a0 },
-+	{ .addr = 0x6a4 },
-+	{ .addr = 0x6a8 },
-+	{ .addr = 0x6ac },
-+	{ .addr = 0x6b0 },
-+	{ .addr = 0x6b4 },
-+	{ .addr = 0x6b8 },
-+	{ .addr = 0x6bc },
-+	{ .addr = 0x6c0 },
-+	{ .addr = 0x6c4 },
-+	{ .addr = 0x6c8 },
-+	{ .addr = 0x6cc },
-+	{ .addr = 0x6d0 },
-+	{ .addr = 0x6d4 },
-+	{ .addr = 0x6d8 },
-+	{ .addr = 0x6dc },
-+	{ .addr = 0x6e0 },
-+	{ .addr = 0x6e4 },
-+	{ .addr = 0x6e8 },
-+	{ .addr = 0x6ec },
-+	{ .addr = 0x6f0 },
-+	{ .addr = 0x6f4 },
-+	{ .addr = 0x6f8 },
-+	{ .addr = 0x6fc },
-+	{ .addr = 0x700 },
-+	{ .addr = 0x704 },
-+	{ .addr = 0x710 },
-+	{ .addr = 0x714 },
-+	{ .addr = 0x720 },
-+	{ .addr = 0x724 },
-+	{ .addr = 0x730 },
-+	{ .addr = 0x734 },
-+	{ .addr = 0x740 },
-+	{ .addr = 0x744 },
-+	{ .addr = 0x750 },
-+	{ .addr = 0x754 },
-+	{ .addr = 0x760 },
-+	{ .addr = 0x764 },
-+	{ .addr = 0x770 },
-+	{ .addr = 0x774 },
-+	{ .addr = 0x780 },
-+	{ .addr = 0x784 },
-+	{ .addr = 0x790 },
-+	{ .addr = 0x794 },
-+	{ .addr = 0x7a0 },
-+	{ .addr = 0x7a4 },
-+	{ .addr = 0x7b0 },
-+	{ .addr = 0x7b4 },
-+	{ .addr = 0x7c0 },
-+	{ .addr = 0x7c4 },
-+	{ .addr = 0x7d0 },
-+	{ .addr = 0x7d4 },
-+	{ .addr = 0x7e0 },
-+	{ .addr = 0x7e4 },
-+	{ .addr = 0x7f0 },
-+	{ .addr = 0x7f4 },
-+};
++		for (i = 0; i < ARRAY_SIZE(p->ctrlq); i++, q++)
++			if (q->q.cntxt_id == qid && q->q.desc &&
++			    idx < q->q.size) {
++				memcpy(data, &q->q.desc[idx], len);
++				return len;
++			}
++	}
 +
-+static struct cudbg_indir_type_entry t7_indir_type_arr[CUDBG_INDIR_TYPE_MAX] = {
-+	[CUDBG_INDIR_TYPE_CIM_CTL] = {
-+		.reg_arr = t7_cim_ctl,
-+		.nentries = ARRAY_SIZE(t7_cim_ctl),
-+	},
-+	[CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG] = {
-+		.reg_arr = t7_hmat6_local_debug_cfg,
-+		.nentries = ARRAY_SIZE(t7_hmat6_local_debug_cfg),
-+	},
-+	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG] = {
-+		.reg_arr = t7_ma_local_debug_cfg,
-+		.nentries = ARRAY_SIZE(t7_ma_local_debug_cfg),
-+	},
-+	[CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG] = {
-+		.reg_arr = t7_ma_local_debug_perf_cfg,
-+		.nentries = ARRAY_SIZE(t7_ma_local_debug_perf_cfg),
-+	},
-+	[CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL] = {
-+		.reg_arr = t7_pm_rx_dbg_ctrl,
-+		.nentries = ARRAY_SIZE(t7_pm_rx_dbg_ctrl),
-+	},
-+	[CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL] = {
-+		.reg_arr = t7_pm_tx_dbg_ctrl,
-+		.nentries = ARRAY_SIZE(t7_pm_tx_dbg_ctrl),
-+	},
-+	[CUDBG_INDIR_TYPE_TP_MIB_INDEX] = {
-+		.reg_arr = t7_tp_mib_index,
-+		.nentries = ARRAY_SIZE(t7_tp_mib_index),
-+	},
-+	[CUDBG_INDIR_TYPE_TP_PIO_ADDR] = {
-+		.reg_arr = t7_tp_pio_addr,
-+		.nentries = ARRAY_SIZE(t7_tp_pio_addr),
-+	},
-+	[CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR] = {
-+		.reg_arr = t7_tp_tm_pio_addr,
-+		.nentries = ARRAY_SIZE(t7_tp_tm_pio_addr),
-+	},
-+	[CUDBG_INDIR_TYPE_UP] = {
-+		.reg_arr = t7_up,
-+		.nentries = ARRAY_SIZE(t7_up),
-+	},
-+};
++	if (qtype == CUDBG_SGE_QTYPE_TX_OFLD ||
++	    qtype == CUDBG_SGE_QTYPE_TX_CRYPTO) {
++		struct sge_uld_txq_info *utxq_info;
++		unsigned int uld_type;
++		int i;
 +
-+#endif /* __CUDBG_INDIR_REG_T7_H__ */
++		uld_type = (qtype == CUDBG_SGE_QTYPE_TX_OFLD) ?
++			    CXGB4_TX_OFLD : CXGB4_TX_CRYPTO;
++
++		utxq_info = adap->sge.uld_txq_info[uld_type];
++		if (!utxq_info)
++			return -EINVAL;
++
++		for (i = 0; i < utxq_info->ntxq; i++) {
++			const struct sge_uld_txq *q = &utxq_info->uldtxq[i];
++
++			if (q->q.cntxt_id == qid && q->q.desc &&
++			    idx < q->q.size) {
++				memcpy(data, &q->q.desc[idx], len);
++				return len;
++			}
++		}
++	}
++
++	if (qtype == CUDBG_SGE_QTYPE_FL) {
++		const struct sge_fl *q = NULL;
++
++		if (qid >= p->egr_start &&
++		    qid < p->egr_start + p->egr_sz)
++			q = p->egr_map[qid - p->egr_start];
++		if (q && idx < q->size) {
++			*(__be64 *)data = q->desc[idx];
++			return sizeof(u64);
++		}
++	}
++
++	if (qtype == CUDBG_SGE_QTYPE_RSP) {
++		const struct sge_rspq *q = NULL;
++
++		if (qid >= p->ingr_start &&
++		    qid < p->ingr_start + p->ingr_sz)
++			q = p->ingr_map[qid - p->ingr_start];
++		if (q && idx < q->size) {
++			len = q->iqe_len;
++			idx *= len / sizeof(u64);
++			memcpy(data, &q->desc[idx], len);
++			return len;
++		}
++	}
++
++	return -EINVAL;
++}
++
++static int cxgb_extension_ioctl(struct net_device *dev,
++				void __user *useraddr)
++{
++	struct adapter *adap = netdev2adap(dev);
++	u32 cmd;
++	int ret = 0;
++
++	if (!ns_capable(dev_net(dev)->user_ns, CAP_NET_ADMIN))
++		return -EPERM;
++
++	if (copy_from_user(&cmd, useraddr, sizeof(cmd)))
++		return -EFAULT;
++
++	switch (cmd) {
++	case CUDBG_GETREG: {
++		struct cudbg_reg edata;
++
++		if (copy_from_user(&edata, useraddr, sizeof(edata)))
++			return -EFAULT;
++		if ((edata.addr & 3) != 0 ||
++		    edata.addr >= t4_get_regs_len(adap))
++			return -EINVAL;
++		edata.val = t4_read_reg(adap, edata.addr);
++		if (copy_to_user(useraddr, &edata, sizeof(edata)))
++			return -EFAULT;
++		break;
++	}
++	case CUDBG_SETREG: {
++		struct cudbg_reg edata;
++
++		if (copy_from_user(&edata, useraddr, sizeof(edata)))
++			return -EFAULT;
++		if ((edata.addr & 3) != 0 ||
++		    edata.addr >= t4_get_regs_len(adap))
++			return -EINVAL;
++		t4_write_reg(adap, edata.addr, edata.val);
++		break;
++	}
++	case CUDBG_GET_SGE_CTXT: {
++		u32 buf[SGE_CTXT_SIZE_T7 / 4];
++		u8 size = SGE_CTXT_SIZE;
++		struct cudbg_mem_range t;
++		enum ctxt_type ctype;
++
++		if (copy_from_user(&t, useraddr, sizeof(t)))
++			return -EFAULT;
++		if (t.len < SGE_CTXT_SIZE || t.addr > CTXTQID_M)
++			return -EINVAL;
++		if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7) {
++			if (t.len < SGE_CTXT_SIZE_T7)
++				return -EINVAL;
++			size = SGE_CTXT_SIZE_T7;
++		}
++
++		switch (t.mem_id) {
++		case CUDBG_CNTXT_TYPE_EGRESS:
++			ctype = CTXT_EGRESS;
++			break;
++		case CUDBG_CNTXT_TYPE_FL:
++			ctype = CTXT_FLM;
++			break;
++		case CUDBG_CNTXT_TYPE_RSP:
++		case CUDBG_CNTXT_TYPE_CQ:
++			ctype = CTXT_INGRESS;
++			break;
++		case CUDBG_CNTXT_TYPE_CONG:
++			ctype = CTXT_CNM;
++			break;
++		default:
++			return -EINVAL;
++		}
++
++		if ((adap->flags & CXGB4_FW_OK) && !adap->use_bd)
++			ret = t4_sge_ctxt_rd(adap, adap->mbox,
++					     t.addr, ctype, buf);
++		else
++			ret = t4_sge_ctxt_rd_bd(adap, t.addr, ctype, buf);
++		if (ret)
++			return ret;
++
++		t.version = mk_adap_vers(adap);
++		if (copy_to_user(useraddr + sizeof(t), buf, size) ||
++		    copy_to_user(useraddr, &t, sizeof(t)))
++			return -EFAULT;
++		break;
++	}
++	case CUDBG_GET_SGE_DESC2: {
++		unsigned char buf[128];
++		struct cudbg_mem_range edesc;
++
++		if (copy_from_user(&edesc, useraddr, sizeof(edesc)))
++			return -EFAULT;
++		/* upper 8 bits of mem_id = queue type, lower 24 = qid */
++		ret = cudbg_get_qdesc(adap,
++				      edesc.mem_id >> 24,
++				      edesc.mem_id & 0xffffff,
++				      edesc.addr, buf);
++		if (ret < 0)
++			return ret;
++		if (edesc.len < ret)
++			return -EINVAL;
++		edesc.len = ret;
++		edesc.version = mk_adap_vers(adap);
++		if (copy_to_user(useraddr + sizeof(edesc), buf, edesc.len) ||
++		    copy_to_user(useraddr, &edesc, sizeof(edesc)))
++			return -EFAULT;
++		break;
++	}
++	default:
++		return -EOPNOTSUPP;
++	}
++	return 0;
++}
++
++static int cxgb_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
++			       void __user *data, int cmd)
++{
++	return cxgb_extension_ioctl(dev, data);
++}
++
+ static int cxgb_ioctl(struct net_device *dev, struct ifreq *req, int cmd)
+ {
+ 	unsigned int mbox;
+@@ -3866,6 +4107,7 @@ static const struct net_device_ops cxgb4_netdev_ops = {
+ 	.ndo_set_features     = cxgb_set_features,
+ 	.ndo_validate_addr    = eth_validate_addr,
+ 	.ndo_eth_ioctl        = cxgb_ioctl,
++	.ndo_siocdevprivate   = cxgb_siocdevprivate,
+ 	.ndo_change_mtu       = cxgb_change_mtu,
+ #ifdef CONFIG_NET_POLL_CONTROLLER
+ 	.ndo_poll_controller  = cxgb_netpoll,
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index 04550a362504..742d417d2e4f 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -580,26 +580,6 @@ int t4_memory_rw_init(struct adapter *adap, int win, int mtype, u32 *mem_off,
+ 	return 0;
+ }
+ 
+-/**
+- * t4_memory_update_win - Move memory window to specified address.
+- * @adap: the adapter
+- * @win: PCI-E Memory Window to use
+- * @addr: location to move.
+- *
+- * Move memory window to specified address.
+- */
+-void t4_memory_update_win(struct adapter *adap, int win, u32 addr)
+-{
+-	t4_write_reg(adap,
+-		     PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A, win),
+-		     addr);
+-	/* Read it back to ensure that changes propagate before we
+-	 * attempt to use the new value.
+-	 */
+-	t4_read_reg(adap,
+-		    PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A, win));
+-}
+-
+ /**
+  * t4_memory_rw_residual - Read/Write residual data.
+  * @adap: the adapter
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h
+index 13c56fedfc5c..6f45f68e4299 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h
+@@ -80,6 +80,7 @@ enum ctxt_type {
+ 	CTXT_INGRESS,
+ 	CTXT_FLM,
+ 	CTXT_CNM,
++	CTXT_MAX,
+ };
+ 
+ enum {
 -- 
 2.39.1
 
