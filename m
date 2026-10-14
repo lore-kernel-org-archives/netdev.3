@@ -1,315 +1,135 @@
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09501379989
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 21:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F897485CD8;
+	Wed, 14 Oct 2026 21:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792013135; cv=none; b=kKyt8YIt8Hr+5YOcJF6RtrTl3JMcL+iCUxkVTDZLRUCWXr0w+KhVI+tZDpsb8MBDvkr3bwr6bWux3YfnOK6Nki+crI5a/Iqaoqp10e7JX6g2J4v6b45lu3SyGcqsijoMpw643x2TiuzfIhf1gNhSqlgFPLQLCER2t+ggJKSlY9I=
+	t=1792013158; cv=none; b=HmnxN7Ovap6I/TpKmN/0ySC/xFeffv/KEW+7x80w0ZkgJfCFvzqUms9xRUIAkXk9S7/11D9UXShVjvRwO2uXuTkO6vvd4Qw+kzDaFBfdn8NRJBJwOIAMI3mz9wQVtt8U/tvtSTOZ0uXQT6jQvWGNXI1Tla6a+NJAYbSFOhCo2RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792013135; c=relaxed/simple;
-	bh=WLMBnn9EZmjBxmpowiiVk0GIxnQx72XAxGRRyfNI45Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u9QSs8+uSijYLEyQX5pNoZkVkM5LWu3SbutwrJ8LuDvJ7XhPPhZE+lH7CagtIcKiX2jH9yq6FhT6wXf0XaVrfhML6Hna85LhHIBPfADGSZ3ltbxq3gGRLoNTrAIv9gZVLOfAHT3jDvMgqr9D8YYUKwW/m4pxhS2itUHG79n18Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k2hzhPSL; arc=none smtp.client-ip=74.125.227.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792013158; c=relaxed/simple;
+	bh=Nvuk9EjMLe5/SNvSmLnt66/rQZrM0GPcXSYJQyOxEDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TEuuKDUPc6nxkDgEvIcmW0U6BMojHCaokM+126NRC6pTvUzCgHOMEulsjrQd6LqBPAsHYlNPprbNCZ/7lhGnC3YTq3EmfsNl5PhE7LkTJbGzmxMFABHp2efUl5Nx6mVVwBV7OF9DPOriUoYlrETRgUKvdRiqNycbbzdX1Pux0MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KSJ1YVXA; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k2hzhPSL"
-Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3ac845e7231so187826a91.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792013133; x=1792617933; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=G+Nt1WU9o0/6agOUrFEv9wiq3Bk8RTaplLrnvKQ3ikc=;
-        b=k2hzhPSLI5oHXk4prZrk4rOxffYCQMfxvxH5i8lyGuhL899hYZ0r5Jj11z3VpekgEe
-         C2UER27kLovqvWd10w35EOOvcpue7dm3hx6enS+VpjkIORPmdjTFZQrsiYrSv71s/ItN
-         jkwp2hbkSiyvCbzuFoBJZBiHUvzXyI3v8MBRrXmkd22YB/FO0HvZshgxzpPJe8CaC9v7
-         /kjEr+6E8FhPMci2crup63omfYZthy5yyFdilEG3luHiYH0xMdO+WwilU7MF/jrDg3Ac
-         mtMxhQipNwXZPcZjUq+zOPDeU4Sj0HULdH4mpIgNyB6S0O0FxlY2KvuD+nj52I5uCunh
-         pY6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792013133; x=1792617933;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G+Nt1WU9o0/6agOUrFEv9wiq3Bk8RTaplLrnvKQ3ikc=;
-        b=KF5/WR1KAqvp6qQhPVOJuiLurI/I2z5BkqtndrnE0wWRzC4uf/5xiOTkTvdri3xava
-         sMWfZUjCb5DWTy2z6HLIDxYmJb24Tt3tHhItN0sYjP0z0FEXvwqGNPZ6wfQDBt400i2A
-         AHjF56Mrlfmt+UPiAckWgaMPVyeIj7+wxxkjugVFG9b+Jrmpk3tJlWCET7wizTKvYh5W
-         77bfVMZctrneX63OLIfKwbUWC0peK1JlvldAWD9lTkgUNQkKKAdV8BKeTGHGNYhkWZhb
-         gjZcQWZseNiUNFiXElPAV1OwrsodhamxHJPrj4Fd9Mfjuw0TD3pXcnEFnhjUA/BLhy3T
-         SOIw==
-X-Gm-Message-State: AFq9FYLlrlvm/QaFsH76PLLQkqz2N/IiaQfVEdgU7MKPnc+MvtT7TvMq
-	S268K7vknufEs74VKGaKQjgKRamtyfPJYkd7vQn6seRFgeQQSWRDPrnM
-X-Gm-Gg: AYBFou2J2XEL/SyYtL7sAlD6gdAuusXB7wDpnZhO1MXC+DTzViaZAdTWvAbMU6h0ROP
-	qcYVI7U3ZtsUnywk2eeDQAMNGIUSeXc2igocYzS9S4sVZx7aQhWYU62et1OehN2p/7oQ2Ae/GRH
-	Y1ZhwY16hYaRAPDUTqmp6m+R1yWNGzhttjqMkd53qYpX3VYxIJGlL5t6AQs6V5cyKrIkysK4VHd
-	aSI0mD+2o+CSjdO2gZgLEKEcBgOtve3tVIkPKA76d69EQL7mcSlRQJQGIeZvGUd33MBDSfpYJjN
-	7ayMlvLmo+mhVIzU8VFwgLXMJ8U+pGs0y3HXgUWvJKZyhZCvEq1Rp4guKdzZcPRLiMXJYeh2Ydc
-	cXOc3TPcCKY36cjMOYMJKC9Bf2EHmHlWK4GjmrYQ+iPilOktD3bZUZKzTMSjnxhneMDUr7hO59x
-	DywAIOPfKbx7pc6/OpeBEdEB6GwDeZGr5aUFR/F0z/aAPbyCIe2GSR84kj/fMvYGvh
-X-Received: by 2002:a17:90b:3b90:b0:3ac:17c:6e7c with SMTP id 98e67ed59e1d1-3ac017c7089mr9474554a91.37.1792013133174;
-        Wed, 14 Oct 2026 14:25:33 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:73::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac943e821csm1019907a91.8.2026.10.14.14.25.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 14:25:32 -0700 (PDT)
-Date: Wed, 14 Oct 2026 14:25:21 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, Ayush Sawal <ayush.sawal@chelsio.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Eric Biggers <ebiggers@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Petr Machata <petrm@nvidia.com>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, Jakub Raczynski <j.raczynski@samsung.com>, 
-	Wang Zhan <wang.zhan@smartx.com>, Willem de Bruijn <willemb@google.com>
-Subject: Re: [PATCH net-next v3 3/6] net: skbuff: replace skb_page_unref()
- and __skb_frag_unref() with skb_netmem_unref()
-Message-ID: <as_yg4hCCfpkukZB@devvm7509.cco0.facebook.com>
-References: <20261014173945.373295-1-almasrymina@google.com>
- <20261014173945.373295-4-almasrymina@google.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KSJ1YVXA"
+Received: from vm-dev.d0aziqou4eyuzblxqhi51nu2sc.xx.internal.cloudapp.net (unknown [4.246.87.102])
+	by linux.microsoft.com (Postfix) with ESMTPSA id F307620B7166;
+	Wed, 14 Oct 2026 14:25:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F307620B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1792013153;
+	bh=OjykXisj4W9F6eAYp7KDPTuL1E2khyA+Exd/P94ZDhg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KSJ1YVXAIEEmw1Rhlw/qaqFIdfPaR2+vZLkTE+3f9c+5Gv1kIyW8uffPWiDiAxZCI
+	 h5/duSBZBGNhSGbcx3yusxPxThT+IABXrP8Y3ob7pqWtM2CVM/2ljCCv3HtD6C5xnb
+	 DcfayFv3FUSpyCX1rSK08kQVzUBnUgPdEhLfPHWQ=
+From: Tahera Fahimi <taherafahimi@linux.microsoft.com>
+To: stable@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	raminwo0202@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	apais@linux.microsoft.com
+Subject: [PATCH 6.1.y] xfrm: prevent policy_hthresh.work from racing with netns teardown
+Date: Wed, 14 Oct 2026 14:25:40 -0700
+Message-ID: <20261014212540.1437936-1-taherafahimi@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261014173945.373295-4-almasrymina@google.com>
+Content-Transfer-Encoding: 8bit
 
-On 10/14, Mina Almasry wrote:
-> Unreferencing a page_pool fragment with recycle=false decrements the
-> non-pp backing refcount instead of pp_ref_count, underflowing the page
-> refcount when the fragment was owned via page_pool (as on mlx4's RX
-> error path). Having both skb_page_unref() and __skb_frag_unref(frag,
-> recycle) made it easy for callers to pass hardcoded recycle=false on
-> SKB-owned fragments.
-> 
-> Replace skb_page_unref() and __skb_frag_unref() with
-> skb_netmem_unref(netmem, recycle), which dispatches to
-> napi_pp_put_page() when recycle is true and put_netmem() otherwise:
-> 
-> - Use skb_frag_unref(skb, ...) on SKB-owned fragments in mlx4, sky2,
->   tls_strp, and skb_shift() so unrefs always match skb->pp_recycle.
-> - Use put_netmem() directly in tls_device's destroy_record(), which
->   releases raw non-pp page references outside an SKB.
-> 
-> Found by code inspection and confirmed with the KUnit tests added later
-> in this series; not observed in production. The mlx4, sky2, and TLS
-> call-site changes are compile-tested only.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Mina Almasry <almasrymina@google.com>
-> ---
-> v2:
-> - Note how the issue was found and how the change was tested.
-> - Link to v1: https://lore.kernel.org/netdev/20261010083935.3274178-4-almasrymina@google.com/
-> ---
->  drivers/net/ethernet/marvell/sky2.c        |  2 +-
->  drivers/net/ethernet/mellanox/mlx4/en_rx.c |  2 +-
->  include/linux/skbuff_ref.h                 | 34 +++++++++++-----------
->  net/core/skbuff.c                          |  7 +++--
->  net/ipv4/esp4.c                            |  4 +--
->  net/ipv6/esp6.c                            |  4 +--
->  net/tls/tls_device.c                       |  2 +-
->  net/tls/tls_strp.c                         |  2 +-
->  8 files changed, 29 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/marvell/sky2.c b/drivers/net/ethernet/marvell/sky2.c
-> index 30facdece3e29..1d42a82db8f2b 100644
+An XFRM_MSG_NEWSPDINFO request can queue the per-net work item
+policy_hthresh.work onto the system workqueue. xfrm_hash_rebuild()
+retrieves the enclosing struct net from the work item, so the callback
+can dereference freed memory if it runs after net namespace teardown.
 
-[..]
+Mainline commit 29fe3a61bcdc ("xfrm: prevent policy_hthresh.work
+from racing with netns teardown") fixes this issue using
+disable_work_sync(). That API is not available in Linux 6.1, so the
+mainline change cannot be directly backported.
 
-> --- a/drivers/net/ethernet/marvell/sky2.c
-> +++ b/drivers/net/ethernet/marvell/sky2.c
-> @@ -2501,7 +2501,7 @@ static void skb_put_frags(struct sk_buff *skb, unsigned int hdr_space,
->  
->  		if (length == 0) {
->  			/* don't need this page */
-> -			__skb_frag_unref(frag, false);
-> +			skb_frag_unref(skb, i);
->  			--skb_shinfo(skb)->nr_frags;
->  		} else {
->  			size = min(length, (unsigned) PAGE_SIZE);
-> diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> index 96f97fa0f5489..fe18606c2ab55 100644
-> --- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> @@ -497,7 +497,7 @@ static int mlx4_en_complete_rx_desc(struct mlx4_en_priv *priv,
->  fail:
->  	while (nr > 0) {
->  		nr--;
-> -		__skb_frag_unref(skb_shinfo(skb)->frags + nr, false);
-> +		skb_frag_unref(skb, nr);
->  	}
->  	return 0;
->  }
+Provide the same guarantee with an XFRM-local work_disabled flag. Protect
+the flag and schedule_work() with the existing policy_hthresh seqlock so
+teardown can atomically stop new queueing attempts. Then use
+cancel_work_sync() to synchronize work that was queued before the flag was
+set. This ensures policy_hthresh.work cannot outlive its struct net.
 
-These do not support qops and don't advertise devmem tx, so they are not
-going to deal with netmems anytime soon, why touch these?
+Fixes: 880a6fab8f6b ("xfrm: configure policy hash table thresholds by netlink")
+Assisted-by: GitHub-Copilot:GPT-5.6 Sol
+Signed-off-by: Tahera Fahimi <taherafahimi@linux.microsoft.com>
+Reviewed-by: Allen Pais <apais@linux.microsoft.com>
+---
 
-> diff --git a/include/linux/skbuff_ref.h b/include/linux/skbuff_ref.h
-> index 0441c220fdbdf..04114c64dad99 100644
-> --- a/include/linux/skbuff_ref.h
-> +++ b/include/linux/skbuff_ref.h
-> @@ -36,7 +36,16 @@ static __always_inline void skb_frag_ref(struct sk_buff *skb, int f)
->  
->  bool napi_pp_put_page(netmem_ref netmem);
->  
-> -static __always_inline void skb_page_unref(netmem_ref netmem, bool recycle)
-> +/**
-> + * skb_netmem_unref - release a fragment reference on a netmem
-> + * @netmem: netmem to unreference
-> + * @recycle: whether page_pool recycling is enabled (e.g. skb->pp_recycle)
-> + *
-> + * Drops pp_ref_count via napi_pp_put_page() if @recycle is true and @netmem
-> + * belongs to a page_pool; otherwise drops a non-pp backing reference via
-> + * put_netmem(). Counterpart to skb_netmem_ref().
-> + */
-> +static __always_inline void skb_netmem_unref(netmem_ref netmem, bool recycle)
->  {
->  #ifdef CONFIG_PAGE_POOL
->  	if (recycle && napi_pp_put_page(netmem))
-> @@ -46,31 +55,22 @@ static __always_inline void skb_page_unref(netmem_ref netmem, bool recycle)
->  }
->  
->  /**
-> - * __skb_frag_unref - release a reference on a paged fragment.
-> - * @frag: the paged fragment
-> - * @recycle: recycle the page if allocated via page_pool
-> - *
-> - * Releases a reference on the paged fragment @frag
-> - * or recycles the page via the page_pool API.
-> - */
-> -static __always_inline void __skb_frag_unref(skb_frag_t *frag, bool recycle)
-> -{
-> -	skb_page_unref(skb_frag_netmem(frag), recycle);
-> -}
-> -
-> -/**
-> - * skb_frag_unref - release a reference on a paged fragment of an skb.
-> + * skb_frag_unref - release a reference on a paged fragment of an skb
->   * @skb: the buffer
->   * @f: the fragment offset
->   *
-> - * Releases a reference on the @f'th paged fragment of @skb.
-> + * Drops a reference on the @f'th fragment of @skb via skb_netmem_unref()
-> + * (pp_ref_count if skb->pp_recycle and page_pool-backed, else non-pp
-> + * backing refcount), skipping managed zerocopy fragments. Counterpart to
-> + * skb_frag_ref().
->   */
->  static __always_inline void skb_frag_unref(struct sk_buff *skb, int f)
->  {
->  	struct skb_shared_info *shinfo = skb_shinfo(skb);
->  
->  	if (!skb_zcopy_managed(skb))
-> -		__skb_frag_unref(&shinfo->frags[f], skb->pp_recycle);
-> +		skb_netmem_unref(skb_frag_netmem(&shinfo->frags[f]),
-> +				 skb->pp_recycle);
->  }
->  
->  #endif	/* _LINUX_SKBUFF_REF_H */
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 76a42c60508d9..980bbe9166393 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -1144,7 +1144,8 @@ static void skb_release_data(struct sk_buff *skb, enum skb_drop_reason reason)
->  	}
->  
->  	for (i = 0; i < shinfo->nr_frags; i++)
-> -		__skb_frag_unref(&shinfo->frags[i], skb->pp_recycle);
-> +		skb_netmem_unref(skb_frag_netmem(&shinfo->frags[i]),
-> +				 skb->pp_recycle);
->  
->  free_head:
->  	if (shinfo->frag_list)
-> @@ -1154,7 +1155,7 @@ static void skb_release_data(struct sk_buff *skb, enum skb_drop_reason reason)
->  exit:
->  	/* When we clone an SKB we copy the reycling bit. The pp_recycle
->  	 * bit is only set on the head though, so in order to avoid races
-> -	 * while trying to recycle fragments on __skb_frag_unref() we need
-> +	 * while trying to recycle fragments on skb_netmem_unref() we need
->  	 * to make one SKB responsible for triggering the recycle path.
->  	 * So disable the recycling bit if an SKB is cloned and we have
->  	 * additional references to the fragmented part of the SKB.
-> @@ -4412,7 +4413,7 @@ int skb_shift(struct sk_buff *tgt, struct sk_buff *skb, int shiftlen)
->  		fragto = &skb_shinfo(tgt)->frags[merge];
->  
->  		skb_frag_size_add(fragto, skb_frag_size(fragfrom));
-> -		__skb_frag_unref(fragfrom, skb->pp_recycle);
-> +		skb_frag_unref(skb, 0);
->  	}
+ include/net/netns/xfrm.h |  1 +
+ net/xfrm/xfrm_policy.c   | 19 ++++++++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-[..]
+diff --git a/include/net/netns/xfrm.h b/include/net/netns/xfrm.h
+index 423b52eca908d..99eb5c2ff888b 100644
+--- a/include/net/netns/xfrm.h
++++ b/include/net/netns/xfrm.h
+@@ -23,6 +23,7 @@ struct xfrm_policy_hash {
+ struct xfrm_policy_hthresh {
+ 	struct work_struct	work;
+ 	seqlock_t		lock;
++	bool			work_disabled;
+ 	u8			lbits4;
+ 	u8			rbits4;
+ 	u8			lbits6;
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 00d9693c13ae7..cc8f4d4b70875 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -1384,7 +1384,10 @@ static void xfrm_hash_rebuild(struct work_struct *work)
+ 
+ void xfrm_policy_hash_rebuild(struct net *net)
+ {
+-	schedule_work(&net->xfrm.policy_hthresh.work);
++	write_seqlock(&net->xfrm.policy_hthresh.lock);
++	if (!net->xfrm.policy_hthresh.work_disabled)
++		schedule_work(&net->xfrm.policy_hthresh.work);
++	write_sequnlock(&net->xfrm.policy_hthresh.lock);
+ }
+ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
+ 
+@@ -4181,6 +4184,7 @@ static int __net_init xfrm_policy_init(struct net *net)
+ 	net->xfrm.policy_hthresh.rbits6 = 128;
+ 
+ 	seqlock_init(&net->xfrm.policy_hthresh.lock);
++	net->xfrm.policy_hthresh.work_disabled = false;
+ 
+ 	INIT_LIST_HEAD(&net->xfrm.policy_all);
+ 	INIT_LIST_HEAD(&net->xfrm.inexact_bins);
+@@ -4206,6 +4210,19 @@ static void xfrm_policy_fini(struct net *net)
+ 	unsigned int sz;
+ 	int dir;
+ 
++	/* Prevent new policy hash rebuilds before draining the work item.
++	 *
++	 * The upstream fix uses disable_work_sync(), which is unavailable
++	 * in v6.6. Protecting work_disabled and schedule_work() with the
++	 * same seqlock closes the check-to-queue race, while the subsequent
++	 * cancel_work_sync() drains work that was queued or running before
++	 * teardown disabled it.
++	 */
++	write_seqlock(&net->xfrm.policy_hthresh.lock);
++	net->xfrm.policy_hthresh.work_disabled = true;
++	write_sequnlock(&net->xfrm.policy_hthresh.lock);
++	cancel_work_sync(&net->xfrm.policy_hthresh.work);
++
+ 	flush_work(&net->xfrm.policy_hash_work);
+ #ifdef CONFIG_XFRM_SUB_POLICY
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_SUB, false);
+-- 
+2.43.0
 
->  	/* Reposition in the original skb */
-> diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
-> index e76db5817e78e..ae701561d9f12 100644
-> --- a/net/ipv4/esp4.c
-> +++ b/net/ipv4/esp4.c
-> @@ -117,8 +117,8 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb,
->  		struct scatterlist *src = already_unref ? esp_req_sg(aead, req) : req->src;
->  
->  		for (sg = sg_next(src); sg; sg = sg_next(sg))
-> -			skb_page_unref(page_to_netmem(sg_page(sg)),
-> -				       skb->pp_recycle);
-> +			skb_netmem_unref(page_to_netmem(sg_page(sg)),
-> +					 skb->pp_recycle);
->  	}
->  }
->  
-> diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
-> index b1c9b36f76dc4..d654f0f442388 100644
-> --- a/net/ipv6/esp6.c
-> +++ b/net/ipv6/esp6.c
-> @@ -134,8 +134,8 @@ static void esp_ssg_unref(struct xfrm_state *x, void *tmp, struct sk_buff *skb,
->  		struct scatterlist *src = already_unref ? esp_req_sg(aead, req) : req->src;
->  
->  		for (sg = sg_next(src); sg; sg = sg_next(sg))
-> -			skb_page_unref(page_to_netmem(sg_page(sg)),
-> -				       skb->pp_recycle);
-> +			skb_netmem_unref(page_to_netmem(sg_page(sg)),
-> +					 skb->pp_recycle);
->  	}
->  }
->  
-> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-> index f11d0528fc431..b333a9a72cdae 100644
-> --- a/net/tls/tls_device.c
-> +++ b/net/tls/tls_device.c
-> @@ -143,7 +143,7 @@ static void destroy_record(struct tls_record_info *record)
->  	int i;
->  
->  	for (i = 0; i < record->num_frags; i++)
-> -		__skb_frag_unref(&record->frags[i], false);
-> +		put_netmem(skb_frag_netmem(&record->frags[i]));
->  	kfree(record);
->  }
->  
-> diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-> index 6cc222008d95c..53d3256d0114a 100644
-> --- a/net/tls/tls_strp.c
-> +++ b/net/tls/tls_strp.c
-> @@ -197,7 +197,7 @@ static void tls_strp_flush_anchor_copy(struct tls_strparser *strp)
->  	DEBUG_NET_WARN_ON_ONCE(atomic_read(&shinfo->dataref) != 1);
->  
->  	for (i = 0; i < shinfo->nr_frags; i++)
-> -		__skb_frag_unref(&shinfo->frags[i], false);
-> +		skb_frag_unref(strp->anchor, i);
->  	shinfo->nr_frags = 0;
->  	if (strp->copy_mode) {
->  		kfree_skb_list(shinfo->frag_list);
-
-Idk this part, seems harmless.. But are you sure we can even reach xfrm
-(supposedly that's how we get to esp4) with netmems?
