@@ -1,65 +1,65 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF7D5012B7
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 13:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D85C5187FE
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 13:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791983964; cv=none; b=W4c4FngCdxlx2nX0tvvMOlVVRhL9PNB8U2gxAfHDQzcNPwdsCQLcsDNS3KY77LlJgT3DWoFmm42tr5ZuJlQvpdo0xsnPYbonbVmO5aMwAqmoba3ljW/vGNcLT6tauwIHAaiDpFqSO4yuA8UzA3px0Rezbpjo9/ZyRPHasIT21Js=
+	t=1791983965; cv=none; b=TxmlKc1X500xjTcY+WlGHF0Sm36myY20CdLkEdE3TwhppsOw2BEs1qgR1lwgNYCTn94CIJZPKC26h5/LA4Koks93u0UyZNr9y7/0US0tR+gP0KFo0TPfpu6GdTpcdH7qkSHtYRGSJEPiB04jfBessxNwG2eZyVJGjNhToLwfT1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791983964; c=relaxed/simple;
-	bh=phckpz9l4hI/ogTzT+8tcTcfXBXrn669OobvAgO/ejE=;
+	s=arc-20240116; t=1791983965; c=relaxed/simple;
+	bh=VvNAKorIQHESg43TUCZCQYDSXp6aYyhAAYAoIK4CrYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TtdHePVb9SCGMrYrUoXiN6kUmOmGWGvpxgzBRsiXh3UkLpQDRh97DpV/sAO7+HcQqeruIlx/AITHSDr8kBeawTi8Dqto9kjxuXVHgYc6PRxTYxWnR0IAYbbvYAMvddCCMM2YXl/HOe0GZkceM7sor6T80jmuiNNUhAnq7haGK1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s3Ehh5tI; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=sL2OHAURbuXhAd70tSV9n999ldKSurzXgJPqU7gOJG3Tacb+lSKNboRiLx4n75Efc0lr0hwMceXDSnr8UA1cIPf9AGNaF73Sm2iDtPhz84sugHx4Bm+eY92jJmtyfbhSYj931vI9Y6VmYT5lEG/a9QJAgtNsDD9GaoTMKksKv7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M1u/W9JY; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s3Ehh5tI"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a16bc2278aso29488715e9.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 06:19:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1u/W9JY"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso53914055e9.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 06:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791983955; x=1792588755; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1791983959; x=1792588759; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dNtbaLLa7Rrlp7J60k6J6AUx78ugas5Q7Nay9oi9mko=;
-        b=s3Ehh5tIZyBm3R9IEqOyhqh3uKzeSXcjYVFPwO7iMYxDEKdwD/QoGn7eCzIN3Q0xKw
-         L56ySXSbmucLOzkZ4qkJiiREMbeo5fZYI3elHu+G4ecXeodL9ZNAYsyZ65l1pqL/Xj1+
-         r6kS2wAhizgKVQuWphHDoHUs5MXkixS4t4lPSGthfpxWTwdDSDZ4tL7boAb+ai2oAdgH
-         THNUCWEqIb19wqs9OUxNHVKUhM+lwSCUrTi/iogur2DhsGvdc/2WqiPV2rHW+89wSgYB
-         C5G4RRE90OO1+5MbSVRl6RLryjrqovVc3I87cAk7PTcjX4xE7cD3j7Gdd4cgbpPqgPv1
-         dphA==
+        bh=flOd5jRK0BBTxugSKV1iakG/mzV514WMwo9F+GGq2xE=;
+        b=M1u/W9JY9smBJ8cLLOTcNFUCsVZQF5HlktTdU9vOH0N1NPvv4siKUYGud60ekPM5au
+         VXpVN0fmxPj6CJzOmZ31ouBtzW1q15exmS+5i0bXrx6l2EeyCYs6LjnVKBYPyCBtZOCi
+         GENEUt30NF98R1hitmTn/FkqeMGYOYpejxKNXRC4v9ghYI9EE1MkFwc3tV/g5sGKz3gm
+         M9qGOU7uPDuycn+XRlkU0pzOz5Q0qT4JOmf3CXhLN7srdVK4N7GdTGDcqJBeS+LcY+rk
+         Y7MsWZWHNd3zrqLzSjaGHKLtBM7zJoR7jW5Uj6EFsRea9l6S49z8q3Fk30X029pa7Sq4
+         ec0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791983955; x=1792588755;
+        d=1e100.net; s=20260707; t=1791983959; x=1792588759;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dNtbaLLa7Rrlp7J60k6J6AUx78ugas5Q7Nay9oi9mko=;
-        b=tHYVb5VL/dPCMf5hJr3E1kXqiUMBV5UrjVg5EJ9yLrhkSRcWncPd/sHjJSzK5bfE1q
-         h0TfPrwNJKMJc/9XLglwxE1bgjubroRjdyZdugBkLgycP5l2Q9zmdFrWVSE0tGJhiCpr
-         PmnwprO4SkBrfa3S4MaKoTh59U0KoSEuaLLexQbE8R4p/4+f/5qyxreG5EfL/+aH0Axh
-         HRQ1KfcXMDTKOuc2FpZ+T+8tsYrsfhkavcpOzXYesa0F/JCMsY7BX43ymtlb8PLN5sw9
-         /jEvO6ZV6DCDEwplUTVPsxiPFKoY+sa3N1NDx/DSatxsIrrai98Ix1diwIPIUbBQhb4W
-         dRnA==
-X-Forwarded-Encrypted: i=1; AKwUvBy7rkQigRYj/pbLVnaldwGEJF3qQUaRFXbzGwX5Ug8PbpVLo0qmlBbkMFn7Qk1eP1I1H4GDr+A=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL43QsWkQych7kO7vNAy8wsyDi9HQOygqM7z1fWEJAkqXaWIWi7
-	PFft9u9vcGQOXutwYjGEZU0oL+qxqhhmpat/DPI+QDfZ7n06kCY3aqzC
-X-Gm-Gg: AYBFou3jUSW2Br2lufzygNbV9XiCOq3oNd7mDR27UTyaO6k2VQiB68IrAvj7u/fq/Ds
-	zbGJ0VYOLRrCjHB2Upd46kLp4ga3HjCBCcYO+eGY2749a++0XHk/9KU2wKq4GkNqA3TJAiOUAUn
-	oq4QdalYBfS91yUskgLZTpptRj9ZPK9Y2lI9mvVFobIKRkugO5iygeM4GslNyfddRNDODoLw2yJ
-	i3Wf/5YG5Q7WVfJsFg5RsT+M1yVZBx11mJCVY2s0neWknKDOdmZBwsyjFAhrjTQj0u2aKGQbkyn
-	1U5Ixo56ENUMzurbgF5PqhoMnw8pj1+qT8DhSbHWLdMieoq9rsPJIUv27eVIGZnbA8CRYaofyBs
-	mtpniLNc57b8tBE5YvU/Er0TgHF6ISAZpCdB5vcy8o5FbagoUpuRFngsWVbTUvun4f+Oa4vCRHl
-	fNDbmLSG3FjsWmI9t9HT/uEF5VwUXJq/Dy7uyREAvUwflHeF56yrLEtX3MOawkJnQje1D/escav
-	s3pg7SevwzOxHC1WPi+TgvrFFitVK7AfBNmynjloEjL9VhS2q9lJgdy6xWZtdae7288ae6SuIBv
-	HKkmu8tt8iQb+158jA==
-X-Received: by 2002:a05:600c:e555:10b0:4a1:96a5:366e with SMTP id 5b1f17b1804b1-4a196a53866mr164144585e9.7.1791983955422;
-        Wed, 14 Oct 2026 06:19:15 -0700 (PDT)
+        bh=flOd5jRK0BBTxugSKV1iakG/mzV514WMwo9F+GGq2xE=;
+        b=TMWLwGTGiMvGT5sy59MXdic5uDTAFPHPhEMita0QBi5YRsCEpOm1O1B58hQyI7ZWBj
+         N2C5YqlFJus7ph09FtWwE0N44a6CpG3N/DFcMzg+7mbvHOTadCyux6XweF01Jj0w2TT8
+         CF9fNgKLwa8EQSuqPDxVPORHNffd6caEiQ7KvSf8ABx/M5w5mNLfSXf35MhhRvkMsQTp
+         HS9/1ppfrb+FQQ26uPaecJA0oRiptyV8GN2dkuzFa/xg7VFgQt1wp1ACOCbbh5ExGYX1
+         InJ8GXigLroG0y/v6Y6pZia5MUOvRxtBQfVber0ejhjGYcZMLw8M8Z2vvzQ/EwdJ+xEy
+         odrQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzHhP432zioeUqjZP9FJaYGRScpqLIBVQZBzfmcXV51xUiRth648eKgf95Uyu5dUVVO5CSibRE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJNHs+VKB+41VQjB6c21SbWBrV3KFp9V6n42FouOMZf/erCKpO6
+	N6qjeXykuYfhtpn6Bm4ZpKVZZeBpXK6DQ93yCBp1h1Mp3qH9ssKo+z9E
+X-Gm-Gg: AYBFou182H/lc9UwY7XaiiNw1+Ji5opyqC+gvKkAln+MV/lWT45RHreyBBHj20dHtj/
+	wZ4j7cbZzENkKewPkdyb+iHX3zpDq+h/3+fG0j9DWMdpHlHMfNi1iD2QwcYDi2nUxqq5f17kp7n
+	+TdEG/jyqEqAT+mBV/Xs/3R4OG2GZxua1bWt1FySZaGKA6ejYI9olThQl5PNR4B9DAAi3Fv1NpZ
+	0i7cVIElbLMfSFtXIcltOOILB40yv5x85l9bmQurU7as3GmO/yu7pmzOskDfdTm9Sfl8gq4t9W/
+	eiHScycebTixbXrFNl05XI/QzpuL83dBe7afm7CklDF2NPbTFw/rjApcR5R0/mACA2twjJG6EKM
+	0tP4rUrjv479mUKWmwJq/RMaXr1jCPE5lovTxPcBtIl3ewCBVFqfG6j+mU8iI40B2ufLlooxSfg
+	XeK5Bjbt7FvQiba84C3GTs+vGpCe2pkK8ypxyNvUIZDE6ITKFF42xwTy59WmBHvpwqq1lEOGFKt
+	vuMyJ45bnCh1LzTX21vqEfw8yZHodkTkeNo3mPQzOOQvzh+A7qdGiuo+ZeXxffp13UvlEHnJ9CJ
+	fDrRWV/vqmjNF9ZjUBD5QghvFtlX
+X-Received: by 2002:a05:600c:3512:b0:49f:c5aa:9ef4 with SMTP id 5b1f17b1804b1-4a18e4913c3mr278007335e9.8.1791983958736;
+        Wed, 14 Oct 2026 06:19:18 -0700 (PDT)
 Received: from iku.example.org ([2a06:5906:61b:2d00:ea0c:b1b4:c6cc:a0af])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bcecbd0dsm1413825e9.8.2026.10.14.06.19.14
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bcecbd0dsm1413825e9.8.2026.10.14.06.19.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 06:19:15 -0700 (PDT)
+        Wed, 14 Oct 2026 06:19:18 -0700 (PDT)
 From: Prabhakar <prabhakar.csengg@gmail.com>
 X-Google-Original-From: Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To: Andrew Lunn <andrew@lunn.ch>,
@@ -85,9 +85,9 @@ Cc: linux-renesas-soc@vger.kernel.org,
 	Biju Das <biju.das.jz@bp.renesas.com>,
 	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH net-next v3 04/13] dt-bindings: net: dsa: renesas,rzn1-a5psw: Disallow ports beyond port@4
-Date: Wed, 14 Oct 2026 14:18:52 +0100
-Message-ID: <20261014131906.990077-5-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH net-next v3 07/13] net: dsa: rzn1-a5psw: Add support for optional timestamp clock
+Date: Wed, 14 Oct 2026 14:18:55 +0100
+Message-ID: <20261014131906.990077-8-prabhakar.mahadev-lad.rj@bp.renesas.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261014131906.990077-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
 References: <20261014131906.990077-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
@@ -101,45 +101,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Restrict the A5PSW ethernet-ports node to ports 0 through 4, matching the
-hardware configuration of four external ports and one CPU/management port.
+Add support for an optional "ts" (timestamp) clock to the RZN1 A5PSW
+driver. Some SoC variants provide a dedicated clock source for
+timestamping or time synchronization features within the Ethernet
+switch IP.
 
-Although the schema pattern limits port nodes to port@0 through port@4,
-additionalProperties: true allows other port nodes to pass validation.
-Set additionalProperties to false and explicitly allow #address-cells
-and #size-cells so that ports beyond port@4 are rejected.
+Request and enable this clock during probe if defined in the device tree.
+If the clock is not present, the driver continues to operate normally.
 
-Existing in-tree device trees describe only port@0 through port@4 and
-are unaffected by this change.
+This change prepares the driver for Renesas RZ/T2H and RZ/N2H SoCs, where
+the Ethernet switch includes a timestamp clock input.
 
 Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 ---
 v2->v3:
-- New patch
----
- .../devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml  | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+- No change
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-index fab6aa6237e9..c5e652c057a9 100644
---- a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
-@@ -61,7 +61,14 @@ properties:
+v1->v2:
+- No change
+---
+ drivers/net/dsa/rzn1_a5psw.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/net/dsa/rzn1_a5psw.c b/drivers/net/dsa/rzn1_a5psw.c
+index 9daa5d8245df..846216f22bc3 100644
+--- a/drivers/net/dsa/rzn1_a5psw.c
++++ b/drivers/net/dsa/rzn1_a5psw.c
+@@ -1212,6 +1212,7 @@ static int a5psw_probe(struct platform_device *pdev)
+ 	struct device_node *mdio;
+ 	struct dsa_switch *ds;
+ 	struct a5psw *a5psw;
++	struct clk *ts;
+ 	int ret;
  
-   ethernet-ports:
-     type: object
--    additionalProperties: true
-+    additionalProperties: false
+ 	a5psw = devm_kzalloc(dev, sizeof(*a5psw), GFP_KERNEL);
+@@ -1245,6 +1246,13 @@ static int a5psw_probe(struct platform_device *pdev)
+ 		goto free_pcs;
+ 	}
+ 
++	ts = devm_clk_get_optional_enabled(dev, "ts");
++	if (IS_ERR(ts)) {
++		ret = PTR_ERR(ts);
++		dev_err_probe(dev, ret, "failed get ts clock\n");
++		goto free_pcs;
++	}
 +
-+    properties:
-+      '#address-cells':
-+        const: 1
-+      '#size-cells':
-+        const: 0
-+
-     patternProperties:
-       "^(ethernet-)?port@[0-4]$":
-         type: object
+ 	reset = devm_reset_control_get_optional_exclusive_deasserted(dev, NULL);
+ 	if (IS_ERR(reset)) {
+ 		ret = PTR_ERR(reset);
 -- 
 2.55.0
 
