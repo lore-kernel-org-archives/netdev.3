@@ -1,185 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA444582E6;
-	Wed, 14 Oct 2026 14:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791988347; cv=none; b=asK54+fN1Y5YcEK3WaNf1Jv8/RBocM7N7x21f4vcGXWAyNqob8qHIwSFskwEOg0uvHGQsW6bRQZCEFtbiSarmLarSprrS/0Xj0q0DCz80xNHJ2aryLK/tMvemtzeqpBV5Hd3DiCUDdQ2RM/BdHkTjl5iEGCIVEHJ2u35467wrsQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791988347; c=relaxed/simple;
-	bh=rj4lErnJHXIRIvroMbe0dJX309uvoO0iMQDmNA553Vo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SGHu3HMe7zyP7+lXB1OgUkxyke9Pjix3+8tqEXRaYbNjTSSKtgJ5/eCLcuAmhakHxZeUkKQsG2tuHzNJGahskVIpkUNCEt8XUj+Gq72maAw7Aj1EjIWHMAN0i2G9E3IEyV/UHwGv7GrN16rHuHpz23SniwFk6gb9cMPkNnIFsW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/KWiWcc; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A9050B405
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791988445; cv=pass; b=sJtZuO1bxpfUAYqkdMtqpO1PelbvQ+8k3jgQnEB+Bjn32x1Qk5sDhFMHDg+maj73oOBzLQQ5e9x/ONO+GF7T2+F98FJIdjyfM4pRr47Sgewqz/kxABoUmRCvP6ll26DkZvikdKTP0opLE1ZNcZaMN6z5CbteFKUMOpRlZBBl0SQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791988445; c=relaxed/simple;
+	bh=XPCusZckG5tDFgGO54c98i30bonV2kv4WzXzdscstc4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cbt+Mg5HNMkdtAD4H9PZFpuQHbCAqDdtzJPwgswUk/5Bn16pDQ53bM9BcUYm+QB5CB7nDGcg6T59lhwC6uTdOzi4l7Mph8s1d7RzUZotAB+C90UVnDsJ+cPyNuhbp68nbXluaU76rh8Kjg1XmPGbH9P6+4h8loB+ZhiuDR/bOFM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=mLOgCIbJ; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=P4J5NRiC; arc=pass smtp.client-ip=85.215.255.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/KWiWcc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548321F000C4;
-	Wed, 14 Oct 2026 14:32:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791988346;
-	bh=nukyvaoE+wwPX/0XUeM7v+OP9T1JnMHkgJf8D7qR3AY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=e/KWiWcc+nZT7+U9WYB8P4t1HgHnH1KGLHE3y6BuWDP57l5zlNamthA77oB1zoFdu
-	 jXmru81ln6ZkgBoLfbtbzd0I0iQFwTpjxMxvfEGZQgVnh5/ddA3aSpWqGZRZ0SMkTp
-	 C3cj9dfLwhNG5U6pZJ4OsE/rOm01I/WV+36nr5hZOxvSXRl3ZPxjEijHZygdwDfeHb
-	 daBRBR/WLP0hPxowDvx1ZrJxI8+WFwQd0A7ZiaZpEiymnEF8KvPGyfb3ppNWaBpB1I
-	 nOqf8FcFJstJ2+7TWscERtNTSCcRDjcuWwMfCBn8Qw/W1bLPLT+5ui+1FSPiKFHTCa
-	 4zzhUYcFuFLCg==
-Subject: Re: [PATCH net 1/4] mptcp: reset msk state on early connect failure
-From: netdev-bot+sashiko@kernel.org
-To: matttbe@kernel.org
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- caoruide123@gmail.com, stable@vger.kernel.org, vega@nebusec.ai,
- sashiko-bot@kernel.org, weir@nebusec.ai, kuniyu@google.com,
- daniel@iogearbox.net, kafai@fb.com
-Date: Wed, 14 Oct 2026 14:32:24 +0000
-Message-ID: <179198834484.434549.4616694240552704738@kernel.org>
-In-Reply-To:
- <20261013-net-mptcp-misc-fixes-7-3-rc8-v1-1-932c9b182fc7@kernel.org>
-References:
- <20261013-net-mptcp-misc-fixes-7-3-rc8-v1-1-932c9b182fc7@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="mLOgCIbJ";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="P4J5NRiC"
+ARC-Seal: i=1; a=rsa-sha256; t=1791988403; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=CUAVPedGrxrgG4Ik4/NMRG0ywYEsI98LfEaJuJe4T550i5mwTqZk55U9tkk5mCcf0I
+    dXhj4TrkiXW3lifuLpWkSTLDk8V7IFi+tlm71ArgXd1nqEjeDdRTPXpGWLqeENPMx4lR
+    83V8vRR0JykMHEtLaT6btZAKfdsjzm3dqILvr8PR/UqJoOHg5L9ILs5PY6z+T6t9P2mf
+    7RcE73A5rLhMw56imHFokKuy9qhaRvOLuFfjGg9M94xm5VwutyxGPB6i5gt7v03MC/fL
+    4KQ6P915yxPswyJCBvLpeMdz5cOrCulRTS3tdO2VHrItv4mTt3TvbhMMOP1Jk0+RKZhW
+    hrfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1791988403;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=SennMH5OH96EpIVWq0T/bHqBK8OboTcQNxrKqdifmOM=;
+    b=bl9RHCfwKsVWJeozNb10SXGYTSTUHpvsghTcxgSBa132U71b2u6RX4LoTtQ3OY3lBm
+    aQyodQXFHnD839PKd7XwSbgUbk9Fpz8luK9eLKTu4oHk23Sxfs7JTFrY5l8N/TyYMpR4
+    xN1EyiUYuSpGoPBE5SOTak3rmOuy+1XmUAJYEWgheqjCm+gjxCJdRqbpPvmubOF0VC6z
+    YJfV8+6h95o74BdH/0v9TKsDfueH2cbXQJw3WiOZR/izX+VZrlldciY3c54A21wRndgZ
+    ZVSbQHWyFVtwhsXiIYXzMNE+tbjE4AD9EOxyw/i72TNzC7/WW5T6EY8h6dETxeoivJq7
+    TXYg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1791988403;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=SennMH5OH96EpIVWq0T/bHqBK8OboTcQNxrKqdifmOM=;
+    b=mLOgCIbJAMzfU63tJEwn7jgxxBF5aRjAvxgx53qvRHyEHDPpnFk2FEcjSf/MZaQPis
+    yYlfiwkGzWmn/8Dqwa3CaiF4apU5b4+eLd0islAU8vGlRObMP9sUyPFZfQ9LrWJbSay6
+    y/fdZr9ChfiPpW5j449oupxD7IuraT7wH4UD1IKim6tBmZDl1xfQfvbVFlEJQFxGNdBd
+    jA6i7wjaBHHHny05q5L31WNfTQBeNgsxenfQJNDzKq0D7pogeoo+ea0NAEjpwK+h+u33
+    nYwUvijtK4H6HelfQ+pex8ZTiedMDFpWC/uTqsrP5w4weZIzRg3OQ7C07rj++2sBaEue
+    L69g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1791988403;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=SennMH5OH96EpIVWq0T/bHqBK8OboTcQNxrKqdifmOM=;
+    b=P4J5NRiCN82SNYi5tUQnF8faKB01GQA8CetLI85Yd2lBp+0a7aTH5NHZI8cqXMcq57
+    v3zdseVd4KcisE+I2mDA==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
+Received: from vivo.lan
+    by smtp.strato.de (RZmta 55.6.3 AUTH)
+    with ESMTPSA id Kfdf2a29EEXMDdN
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 14 Oct 2026 16:33:22 +0200 (CEST)
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+To: Jiri Pirko <jiri@resnulli.us>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jiale Yao <yaojiale02@163.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH net v4] team: reject CAN, IEEE 802.15.4 and 6LoWPAN devices in team_port_add
+Date: Wed, 14 Oct 2026 16:33:09 +0200
+Message-ID: <20261014143309.284388-1-socketcan@hartkopp.net>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+From: Jiale Yao <yaojiale02@163.com>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+When the first port has a non-Ethernet type, team_setup_by_port()
+copies port_dev->type to the team device while netdev_priv() of the
+team device still holds a struct team. Several L2 stacks identify their
+devices by dev->type alone and then access type specific data that the
+team driver never sets up:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+- CAN protocols rely on the CAN mid-layer private data (ml_priv)
+- IEEE 802.15.4 code dereferences ieee802154_ptr and the mlme ops in
+  ml_priv
+- the 6LoWPAN netdev notifier writes through lowpan_dev(dev) on
+  NETDEV_DOWN and reads it on NETDEV_UP/NETDEV_CHANGE
 
-- [Medium] The new error path in mptcp_connect()
-  (net/mptcp/protocol.c:4224) calls…
+Enslaving such a device (e.g. vxcan, wpan0, lowpan0) therefore leads to
+NULL pointer dereferences or to writes into struct team.
 
+Reject ARPHRD_CAN, ARPHRD_IEEE802154, ARPHRD_IEEE802154_MONITOR and
+ARPHRD_6LOWPAN devices in team_port_add(). The bonding driver has
+rejected CAN devices since commit 8ba68464e478 ("bonding: refuse to
+enslave CAN devices").
+
+Link: https://lore.kernel.org/all/b58d98e0-8fe3-4e4e-b8a5-c1c7e647ccca@hartkopp.net/
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Assisted-by: Claude:deepseek-v4-pro
+Signed-off-by: Jiale Yao <yaojiale02@163.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+---
+v4: [Hartkopp] also reject ARPHRD_6LOWPAN as reported by Sashiko AI
+    review, reworded commit message (bonding only rejects CAN)
+v3: [Hartkopp] fixed indention and compilation as reported by kernel test robot
+---
+ drivers/net/team/team_core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
+--- a/drivers/net/team/team_core.c
++++ b/drivers/net/team/team_core.c
+@@ -1223,10 +1223,21 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
+ 		netdev_err(dev, "Device %s is loopback device. Loopback devices can't be added as a team port\n",
+ 			   portname);
+ 		return -EINVAL;
+ 	}
+
++	if (port_dev->type == ARPHRD_CAN ||
++	    port_dev->type == ARPHRD_IEEE802154 ||
++	    port_dev->type == ARPHRD_IEEE802154_MONITOR ||
++	    port_dev->type == ARPHRD_6LOWPAN) {
++		NL_SET_ERR_MSG(extack,
++			       "CAN, IEEE 802.15.4 and 6LoWPAN devices can't be added as a team port");
++		netdev_err(dev, "Device %s is CAN, IEEE 802.15.4 or 6LoWPAN. These device types can't be added as a team port\n",
++			   portname);
++		return -EINVAL;
++	}
++
+ 	if (netif_is_team_port(port_dev)) {
+ 		NL_SET_ERR_MSG(extack, "Device is already a port of a team device");
+ 		netdev_err(dev, "Device %s is already a port "
+ 				"of a team device\n", portname);
+ 		return -EBUSY;
 --
+2.53.0
 
-mptcp: reset msk state on early connect failure
-
-This commit changes the mptcp_connect() error path. It now clears the
-fallback state (MPTCP_FALLBACK_DONE, allow_subflows,
-allow_infinite_fallback) and resets the first subflow context. The goal
-is that a later connect() on the same fd can use MPTCP again after an
-early fallback followed by an immediate connect failure.
-
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/633
-
-> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-> index e89a69ab927c9..e6f73a5ee630a 100644
-> --- a/net/mptcp/protocol.c
-> +++ b/net/mptcp/protocol.c
-> @@ -4212,9 +4212,16 @@ static int mptcp_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
->  	 * subflow_finish_connect()
->  	 */
->  	if (unlikely(err)) {
-> -		/* avoid leaving a dangling token in an unconnected socket */
->  		mptcp_token_destroy(msk);
->  		mptcp_set_state(sk, TCP_CLOSE);
-> +
-> +		spin_lock_bh(&msk->fallback_lock);
-> +		msk->allow_subflows = true;
-> +		msk->allow_infinite_fallback = true;
-> +		clear_bit(MPTCP_FALLBACK_DONE, &msk->flags);
-> +		spin_unlock_bh(&msk->fallback_lock);
-> +
-> +		mptcp_subflow_ctx_reset(mptcp_subflow_ctx(ssk));
-
-[Severity: Medium]
-Is mptcp_subflow_ctx_reset() resetting more than this path needs? It
-clears the whole reset group and then sets local_id to -1:
-
-net/mptcp/protocol.h:mptcp_subflow_ctx_reset() {
-	memset(&subflow->reset, 0, sizeof(subflow->reset));
-	subflow->request_mptcp = 1;
-	WRITE_ONCE(subflow->local_id, -1);
-}
-
-This also wipes two values that are set only once, when msk->first is
-created:
-
-net/mptcp/protocol.c:__mptcp_socket_create() {
-    ...
-	subflow->subflow_id = msk->subflow_id++;
-
-	/* This is the first subflow, always with id 0 */
-	WRITE_ONCE(subflow->local_id, 0);
-    ...
-}
-
-A second connect() gets the same msk->first back from __mptcp_nmpc_sk(),
-so this setup does not run again. The reset also runs on every immediate
-failure (ENETUNREACH, EAFNOSUPPORT, BPF pre_connect, ...), not only after
-an early fallback.
-
-On the retry, local_id is -1, so the connect goes through:
-
-tcp_connect()
-  subflow_rebuild_header()
-    subflow_chk_local_id()
-      mptcp_pm_get_local_id()
-
-mptcp_pm_get_local_id() returns 0 only when the msk local address matches
-the subflow's address:
-
-	mptcp_local_address((struct sock_common *)msk, &msk_local);
-	mptcp_local_address((struct sock_common *)skc, &skc_local.addr);
-	if (mptcp_addresses_equal(&msk_local, &skc_local.addr, false))
-		return 0;
-
-mptcp_copy_inaddrs() runs only after a successful connect. For an unbound
-msk, the msk address is therefore still zero at this point.
-
-Wouldn't the kernel PM then give the MPC subflow a non-zero ID, either
-from a matching endpoint or by adding an IMPLICIT endpoint to the netns
-endp_list?
-
-If the endpoint table is full, mptcp_pm_nl_get_local_id() returns -ERANGE.
-tcp_connect() would then fail the retry with -EHOSTUNREACH, even though a
-valid route exists.
-
-A non-zero local_id on the initial subflow also seems to break endpoint
-removal. When that endpoint is deleted,
-mptcp_nl_remove_subflow_and_signal_addr() gets the ID from
-mptcp_endp_get_local_id(), which returns rm_id 0 for the MPC endpoint.
-mptcp_pm_rm_addr_or_subflow() then skips the initial subflow because
-id != rm_id, so the initial subflow is never closed.
-
-The reset also zeroes subflow_id, while msk->subflow_id has already
-advanced to 2. After a successful retry, mptcp_get_full_info() would
-report the first subflow with id 0:
-
-	sfinfo.id = subflow->subflow_id;
-
-But tools/testing/selftests/net/mptcp/mptcp_sockopt.c expects:
-
-	assert(sfinfo[0].id == 1);
-
-mptcp_disconnect() already behaves this way for subflow_id. The local_id
-part looks new, though: on the disconnect path, the msk still holds the
-addresses from the earlier successful connect.
-
-The commit message mentions only MPTCP_FALLBACK_DONE, allow_subflows and
-request_mptcp. Would it work to reset only request_mptcp here (plus the
-token and key fields if needed)? Another option would be to restore
-local_id to 0 and keep the original subflow_id for msk->first after
-mptcp_subflow_ctx_reset().
-
->  		return err;
->  	}
->
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013-net-mptcp-misc-fixes-7-3-rc8-v1-0-932c9b182fc7%40kernel.org
