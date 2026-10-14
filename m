@@ -1,44 +1,44 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5471A54B1C5
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0219952E07C
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791989054; cv=none; b=kOWVToHPn3vKf6XukBB0xKHdP6l8cAHFws6CgiEtUiuzVhmOcBVB1kmNvR93Nj5XpFwmBIwoeyvNNJRTLHcqHaHDm7U3OsyLbqFx8ADWGZEJ8ZPtJZsC+lNgvwIBgPE61pAHDWMGKFQXjNyq2BNg02RM0Y4REry6AzCNrtF8xMU=
+	t=1791989054; cv=none; b=DwAJ/4f7y3pEjGS/1To6hEcJxyW6c7ElQFE9VFxyipelZCXbf0jpa6Lo8TdA1zaYRr+373AuLS3TlZTi61ieVFjpj79op05rKVgHWAzs7UkD51NeGxBBM8t3a7/AVNgSXo0l9wytQ8b1kaFVgVJsrimJz8URdJkMkTYgtbkDwRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1791989054; c=relaxed/simple;
-	bh=ItHZWa8f9H6c4EcHSDVx7iABp/1/RYlL9cKJ1ujkKAM=;
+	bh=KzcN5rwx5RMJ+o9ZB9mV+GzxHnWPysPb8AoimoERr6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oil6mBnOlDuwF4SDTHXLV4p6cujaULodIhkdqFKXAaySf6IXFxr3TV8NZI6H0hFnXadFa/gFC5uzsnJ3PIJZc0DXWNq/yvi+MFdWSQmGIskDAYiaVMAE3CtlP1Y5N/ky6Wqq+VxrtatZ/VYwuUcM4dTxWYoS68OkzzcwbxrvgzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KHi8YSbd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pigbROkG; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version:Content-Type; b=HxS/lhuZWN6G8wi3fUoUYR4au1UMtZQLzGpI+zXMPK8yl7PF3ITgkWnEwl1ysN8VuSpmexYvHMjrtAno+/l2P8lwYX8kc5Y08oG/9ef7ZzM1D8Nddx+hETJwhr8qj+/3qoTBhULPGKIQ7jgFQvc2AbVIrpdx4/PR8BWn2L+Ros0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dfryfchX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Pth8dRSO; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KHi8YSbd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pigbROkG"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dfryfchX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Pth8dRSO"
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791989048;
+	s=2020; t=1791989046;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vsPJvjOHxsnXO3qbskSb575mE9fZ07WzDedy1v2sTnA=;
-	b=KHi8YSbdumTXgQk0sKRboABGZwEyV+bhybKdPt0HhFmLLT/kl2Bnjhx8xItNWQNdVtf0Co
-	Z4Ym2xb+O3UmzwqrsJcfl63x/xZ+te7XGqkvIDZNBM/Ai4XB84guyE6V7Ui44uCC4irE0P
-	pBawCa95BdF2DYJn3u4q7QTaPSQWni6SaveGK6Ows+vbzT9HR0uXlFtf18Bs4z+XIVAsRs
-	jQ6UAH+u+SPutQqu3dl/M54Q5iQ4G38tZ5C8/UF0hOxzbdsk0VlWLZb/giBvlUjE9gWQhm
-	tJ6Av/JHfRElSdDb7R8HYLdfGSiQP26p/f7KJkNQRYGLB6QTI5jp22VzoNoPlw==
+	bh=FRzmRg0wO+u+IJGf1NJ7IPR0CEjN6p4+2Mg8KTPK8iY=;
+	b=dfryfchXoBcBLdH+9CZVuYD07kOPHKcwRpSW2DLen3i8TzsQs2i+uCFGG/88enypKsW652
+	XE37cVeQ3TkZ2eLES2xKodNXwIN79LQhdPOK+HkLdwCvp++ne67jYxwZCGI1Kk5a5wn7d9
+	SwN1b7R2OtgLiiMw5E9xAEZ0NVkxmOytQfrrx8IuIlWTup13t3FN+/LgRjufsPzFh/3QZE
+	H6HuQxiVHiAlhPDIRdhzwH8597aN4i6hxQQCQRftcAGpDlANq7Ma5fpLRFs8BIlI7+Z1IF
+	7ymy+jfTgVxjBFSBpdm3SL06g9k3xhibEQ2BixHmJaLnTsiRvhYvajee6NuCdg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791989048;
+	s=2020e; t=1791989046;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vsPJvjOHxsnXO3qbskSb575mE9fZ07WzDedy1v2sTnA=;
-	b=pigbROkGYkiXScIjPa4sDthg4+my7I7Yu8Flx1n3fKk5+l+jijj1Xn+4peg5U6V514T6/9
-	zu1CBIkeZ5jSrIDA==
+	bh=FRzmRg0wO+u+IJGf1NJ7IPR0CEjN6p4+2Mg8KTPK8iY=;
+	b=Pth8dRSOZ2TvY9RSWQ17XQVP4iL8WWGRDEUI1hHWX4We0AYGc4NrBVsotF97ACSU8q8XtM
+	Nly/DWQBVpwDD7Ag==
 To: netdev@vger.kernel.org
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	"(JC), Jayachandran" <j-rameshbabu@ti.com>,
@@ -59,9 +59,9 @@ Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	Daniel Machon <daniel.machon@microchip.com>,
 	Eric Dumazet <edumazet@kernel.org>
-Subject: [PATCH net-next v9 4/8] hsr: Drop received PTP packets
-Date: Wed, 14 Oct 2026 16:43:58 +0200
-Message-ID: <20261014-hsr_ptp-v9-4-2d20a2a0f816@linutronix.de>
+Subject: [PATCH net-next v9 1/8] hsr: Add header_ops::parse_protocol
+Date: Wed, 14 Oct 2026 16:43:55 +0200
+Message-ID: <20261014-hsr_ptp-v9-1-2d20a2a0f816@linutronix.de>
 In-Reply-To: <20261014-hsr_ptp-v9-0-2d20a2a0f816@linutronix.de>
 References: <20261014-hsr_ptp-v9-0-2d20a2a0f816@linutronix.de>
 Precedence: bulk
@@ -73,100 +73,37 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Receiving PTP packets via the HSR interface does not make sense. The HSR
-stack will forward one copy to the user and ignore the duplicate from
-the other port. The PTP stack is however interested in both copies since
-they will have different content (due to different processing times
-within the HSR ring) and different timestamp information which is not
-forwarded at all.
+af_packet uses dev_parse_header_protocol() to assign skb::protocol.
+The hsr stack does not assign a callback so the field is assigned to 0.
 
-Forwarding a PTP packet by the HSR stack is undesired because the
-forwarding takes time, it is not accounted in the packet and this makes
-the outgoing PTP packet inaccurate and therefore useless.
+There is nothing known to be broken because this is missing. Having a
+callback assigned makes it possible to use the protocol field later in
+the series by packets which originate from the AF_PACKET interface.
 
-Drop all received PTP packets. For the PRP configuration it is the
-ether type, for HSR configuration it is the encapsulated protocol, that
-is checked. A PTP stack that is doing PTP over a HSR network needs to
-retrieve the PTP packet on the original slave interface where it was
-received.
-VLAN tagged packets are not considered. L3 packets (PTP over UDP) is not
-considered because it is not part of the HSR specification.
+The header used by the HSR stack corresponds to the ethernet header for
+the "first" part so the protocol member is at the same position.
+
+Use eth_header_parse_protocol() for the hsr_header_ops's parse_protocol
+callback.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- net/hsr/hsr_slave.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ net/hsr/hsr_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 5274ba6dd36e6..a5b47f016abd7 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -23,6 +23,7 @@ bool hsr_invalid_dan_ingress_frame(__be16 protocol)
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index d14de44e14b7a..6d96bc4a12446 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -247,6 +247,7 @@ static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, st=
+ruct net_device *dev)
+ static const struct header_ops hsr_header_ops =3D {
+ 	.create	 =3D eth_header,
+ 	.parse	 =3D eth_header_parse,
++	.parse_protocol =3D eth_header_parse_protocol,
+ };
 =20
- static rx_handler_result_t hsr_handle_frame(struct sk_buff **pskb)
- {
-+	struct hsr_ethhdr *hsr_ethhdr;
- 	struct sk_buff *skb =3D *pskb;
- 	struct hsr_port *port;
- 	struct hsr_priv *hsr;
-@@ -44,8 +45,7 @@ static rx_handler_result_t hsr_handle_frame(struct sk_buf=
-f **pskb)
-=20
- 	if (hsr_addr_is_self(port->hsr, eth_hdr(skb)->h_source)) {
- 		/* Directly kill frames sent by ourselves */
--		kfree_skb(skb);
--		goto finish_consume;
-+		goto finish_free_consume;
- 	}
-=20
- 	/* For HSR, only tagged frames are expected (unless the device offloads
-@@ -64,15 +64,28 @@ static rx_handler_result_t hsr_handle_frame(struct sk_b=
-uff **pskb)
- 	skb_reset_mac_header(skb);
- 	if ((!hsr->prot_version && protocol =3D=3D htons(ETH_P_PRP)) ||
- 	    protocol =3D=3D htons(ETH_P_HSR)) {
--		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN)) {
--			kfree_skb(skb);
--			goto finish_consume;
--		}
-+		if (!pskb_may_pull(skb, ETH_HLEN + HSR_HLEN))
-+			goto finish_free_consume;
-=20
- 		skb_set_network_header(skb, ETH_HLEN + HSR_HLEN);
- 	}
- 	skb_reset_mac_len(skb);
-=20
-+	/* PTP packets are not supposed to be forwarded via HSR as-is. The
-+	 * latency introduced by forwarding renders the time information
-+	 * useless. Userland needs to capture the packet on the original
-+	 * interface instead of hsr.
-+	 */
-+	if ((!hsr->prot_version && protocol =3D=3D htons(ETH_P_PRP)) ||
-+	    protocol =3D=3D htons(ETH_P_HSR)) {
-+		hsr_ethhdr =3D (struct hsr_ethhdr *)skb_mac_header(skb);
-+		if (hsr_ethhdr->hsr_tag.encap_proto =3D=3D htons(ETH_P_1588))
-+			goto finish_free_consume;
-+	} else {
-+		if (protocol =3D=3D htons(ETH_P_1588))
-+			goto finish_free_consume;
-+	}
-+
- 	/* Only the frames received over the interlink port will assign a
- 	 * sequence number and require synchronisation vs other sender.
- 	 */
-@@ -84,7 +97,10 @@ static rx_handler_result_t hsr_handle_frame(struct sk_bu=
-ff **pskb)
- 		hsr_forward_skb(skb, port, HSR_PT_NONE, false);
- 	}
-=20
--finish_consume:
-+	return RX_HANDLER_CONSUMED;
-+
-+finish_free_consume:
-+	kfree_skb(skb);
- 	return RX_HANDLER_CONSUMED;
-=20
- finish_pass:
+ static struct sk_buff *hsr_init_skb(struct hsr_port *master, int extra)
 
 --=20
 2.55.0
