@@ -1,241 +1,215 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1854C10FB
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792015518; cv=pass; b=iVmvBTNije0vVw7ep1AkSYWeI322BeDgFtnG/KUqoMDSOb4w6JkFRY61PQvoV9LOeCSORKGcDf2842eWiss28TxKKxAL1nSKTFl6Ic8+9WMN1qkS6fnbt/K/frd1QTMVMrxBnsQ3AOu4iyyiXBhWq1834B6XkVczsyNwRSXNpPo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792015518; c=relaxed/simple;
-	bh=QZdOOfmt8Jm5RLQIZramMvHmus/nQmnbFJOBNJAfNVQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d24m7PYLN1uFXl365LIZCFl0FlkzxYzQDKZf/aQemsKcsKLf92EHHB0Np4nxXHdvbZzbk+YipRxc/mV2z6CpFTNBMFsqULSfvtEgJj2jZoTCCsPY/OMudM0JeiDgucfqdUs5ZQxyBdf76IgBJQcG1vfJeBadjg2Qfce3KmwgCpU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OQtAfgFu; arc=pass smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F36B4ACC6C
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792016022; cv=none; b=AqyO4HY38JEo1EnGi0P9k82SEYLdxgY9g+MHzV9/KT65XeVpB3Frh1vvD7sJ6AOPrJ4S78x3kzefGPqYruU9ejJWWD9hw4HK6vT6zKKFk7JGEn/g7haPed+Q2qtE0XwS1ieLOWPr73QcgyQ1r3bPuG3AmNHSED5T7V9lSlPHcWk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792016022; c=relaxed/simple;
+	bh=rzk+SQ65GZTwGcyOzgZAzCF8pgwnzPi/zoRs0lmUHdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OGDAV8X8I7fxAnur57CQQcCh9QDseqpQIzaH7VwH0S89I1LiHw77C/RZTHMrsuuJFWOxMRelnwHzU9LVHPbmb5QH1KRxEPg/KkL7umuzA2A5FZDOXA/zN/vI0qKpR2xOucBE7si9vFoJzXoQVDZIc0AT86eRTS5q2nehtaFgkaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=ax4WjLUu; arc=none smtp.client-ip=74.125.82.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OQtAfgFu"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6b1b12de661so536a12.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:05:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792015514; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OrZKRsJc7u98RQgwfixsMqswEIITu7xqKpMe3IWhRMsUZfQdKQgFa4wtm7mvpQAZpb
-         2YH1MrXnrQjyx98woE5o0hizcuICMKITGPimbfa8hQ0xVE4ZwhJJ1rJazr90ekW8diAs
-         cyGid6bDrBaA22+dOd71C2/XqvUsWeJqSnhbs2NEOvKme4jGTdt0XRVhEA3rO9X/trG3
-         7tXSiZWt7FXQwPCd2QsqciCrqnE1C2iWS5k13XWw5aCb1fWUSv21xV3+HxRxML7nr1Wb
-         FWMUPc18IF9ry4QwPR4ssqWh196EAqdK5sbRPs9y94DLQXJTQzTl4dbe4c4Op14sYuXT
-         r6Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zqIxtdg7oikaNaEElNQna4r57IwoPY41P2qZQ85S8yE=;
-        fh=MUQj02zhaLzUY28NjQiN3WBJICkP7Ga50Ca2j6Vinls=;
-        b=f0HTddyWKIjYz/wU2KhHwRXEZMmrnfAarmtqberkZfzDJw/IbNpHnLGt+5iLE+015G
-         lX8FFJjpd1d/LLaGNkTEFueg092LDQ2XVo3RbykwfKqudmSP0wfUU30d9l0RZDJE3quA
-         p7DdCyjVWC3snAmG5TzY2L6nJOZDnlb9Y+WdsdnkIAITKny3ZuvVfnay5tfR8iEv4Wue
-         ocpTxsfgokyfnUBby94/w1cgJagIMRM4AdlRgYvX7V4SvSLC77qU0wXvBsWChpmS8L4Y
-         SMfCj/4UcmaoKcQ0VbYaCmZRVCgY8Y9EmSKFcYEdB2qe9fQKQirynkRSuHmUeRQo4PTM
-         VlAA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="ax4WjLUu"
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-35f1f76ea84so244512eec.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:13:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792015514; x=1792620314; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zqIxtdg7oikaNaEElNQna4r57IwoPY41P2qZQ85S8yE=;
-        b=OQtAfgFuI+aksZ26HjL7EshBs6MTo3digml8NK5k0ktcP2F2Z7bdmOveJXQwX3MS12
-         N7K8yKWa2lAdm9OgkkvtTc0qLTaKQTokxtRBQ+rV3wShdqK0Ym2o8N4XIBXcSLU2DVUh
-         seoUsXSR9IiRhL3VlsSLiC8yPL+sc9g1n5CsJF0U/oHbTadk80T/7Aq65Pv1nd7MOZHN
-         yCzioHbXOPo5/3v/5wfUDTV0f/nCArg4/WF7tDW+DAvdvx0tGknmCMJUSoI5YSPXMueF
-         smYcQJ+MaFMg9c0xxcuLVwNDsK7SdBXwEouF41mCLqD19hCjNvULw9+ymqY2BbRtZ53x
-         nCKQ==
+        d=blockcast.net; s=google; t=1792016018; x=1792620818; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eAygOaFc4LHF/Oyx+4laODk7Ja1BXhOoWbgmH1NHvto=;
+        b=ax4WjLUuwgObv4UrQcH2Vy2/yHWB8ISi4+QmEcCQwgqDuJNPMhwBDOucnvyVsU/61j
+         zW0mSn+wJcCVCVeFN1+KsidYAF3RV6WopIDTO8oXnsAjfN2LRe/4rL8YsWPOLqo4MaHX
+         dG2iVeT5wkTpvlDJ6f5C7moEyTRg2jibmlOukxKIQdcnJaUBxbbM/2EshNUowg81YLfF
+         a4S1y0HYzIVnYj8G1wo6TZRKq6UYmK2lNNI2is1LKLivg4HXp9FhIkwkkImFSBjlo//R
+         Key7MBg6I+8Qrsg/S220N3W/7dG0U5MFDNdJsPjp6mSyNhFfWgCCV5dS6UKiJ2yUwJfS
+         dzCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792015514; x=1792620314;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zqIxtdg7oikaNaEElNQna4r57IwoPY41P2qZQ85S8yE=;
-        b=omEF1m80M6B4x/ZNqCsAtkSG7ckvRKC840dBPArFKDJzzddDKYSXt2RQM06hZOYadL
-         6hgapCEp1IJqEFS/KQ/taDaPr11QK4ywUngCeMpsd2Biy+ppiGRgLg0feQHVDt8R5NZ9
-         1YNdcE2laj/lhqQF+cK+FeSqQVVaNYlvB9vYeJpO2DoKz/SD9TTvqJuPCtW0qBp+D5N4
-         tWAEwrR5vH108w4aGDrCtejsGo/+hiSCmvGjPt7qQgadWewlYCXNbTmLJgKZ9cF1oFdw
-         ZWuOcahksxL24XzXMMb2jgPW5et9V4IyP6NoSkKxnzDtArPY2kH8YpDxgNRaZbMvCKBN
-         6lrQ==
-X-Gm-Message-State: AFq9FYLCx+fyVGK4qWwbh4ps3Af0UzKx6MGYvG2FJLba5x7PlgEdELD3
-	V8vzNgzA76mWVf+lO+SoYuqg4Hwh9+FfUlsBO+yjIP8CjrgF/zQI2cz7s5LfAMnscKMDD2pWnKc
-	0AKOehHCFB8dxT0nklnSUzqF7cf7VKgN98ZWxDNih
-X-Gm-Gg: AYBFou22lpRaBYpIgdImgvv7KuhqwAh1j6ywL9h0MLmdoN5FXSOfQliOAxiwvekYSUI
-	JU6V1xK3B4cGhNpEcUZuDdK6aLLuUPXqWv4ZOfvYJMc/qTX/jdhl9fWOeucIpNwk8Qc9Qj7BRgf
-	g/xhNXOcT5n//GzBnyAxrHef5ZtfKncAB8nDtQPgZRSU4126szhPUmN4bBCDt6HkPmKlKT2KFeF
-	lsdVhrzXKeZgRARWGk+XciIaOL4kQPeZrii87lcq8Byko9M5MXrWKUokI11VY2hBczFOAyq5MBj
-	zt12VX+0a5mt4dRuf1jRkPB7dZA5XO7zdvTDe4uG3SnnOqYZGNzkZA==
-X-Received: by 2002:a05:6402:22dc:b0:6aa:128c:36ad with SMTP id
- 4fb4d7f45d1cf-6b20aae61dcmr66690a12.10.1792015513640; Wed, 14 Oct 2026
- 15:05:13 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792016018; x=1792620818;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eAygOaFc4LHF/Oyx+4laODk7Ja1BXhOoWbgmH1NHvto=;
+        b=TJKzIMIN8ftSAjLgQgfrQ2qZC44qhYyMfRpMVnXr25EUz5kUENoJXeREd4yteaBe9n
+         6RCeJuJpkq/MUJU33yVbLKhOckFDAjNg+bJjXFuxvH8C8ByCTlsNMlj7iXGiYfA1v/95
+         p9/xbImVjzaG9KR0zVy8PTA9pUougr8GdU8wkS3Bff8vT+krA7jhODVymsJqxGxMVKcQ
+         wKSQBbg2J+K5JGlH58JwPBY2bpla1lkWxodoRPpcU1hh6pt5XA3LpIeVcIfqP/wUBd0v
+         RwuctO77SZAncdRh06vvTPoQIUCvkizjJPu877eV2f77WuK1xDy+LgnXQzdpoKNVvF2T
+         fx3A==
+X-Gm-Message-State: AFq9FYIs3agLthCGKxeu9H4bmr4vM7hFBfTv8fCXzHouN2JCyIbazYJi
+	piIM2vTjJeyH1v61vqF4A48l4dDic/4v55S6oWqVLjgH30+pUvgWgvwTWmheNvRzBD0H52wAhWH
+	CMN+xHjcYcoEN
+X-Gm-Gg: AYBFou1SCNBc2C5+Wue0gdfF5dpAC7wQXIL7eUYPDGq33ctSrsThc6OolTjQvskllOC
+	Z5qEBxnIQxXqYH5npPuPpHfo0Ig6/xASX/z9KYkJZIPYdPY5uTFS2Xz4vnsuKNw4iMEsBuS4C08
+	V2Cyi2My/EPAT+qL7mhWP6Pfw12v9sdsPPWycQ4XhjZSoIlhPQ2U4Xz9gY6+irpNL/ieQZsTxjo
+	hOvxo83AVsQIzdG4YTlfISbATLWH/34eGQsQH2b93lOyL3oOFzCXr9MLJJ+/hA08ctRcrd1YL21
+	AwhkBQJ9rHRGeXdG41e4Y8mJJPNnEw6V9/beTBv1KJymGZC9vOKcIirzLCdrEhxm423e541Lyby
+	veK0TX4hBJ3DCkusln2wQ98495UTuC7+9oVkrPjVQk+8SCJAly06M5A/RMHZGtjeYvu5j4TiB0z
+	4YCxxzr5BMrHZyhxd5lFuetKDmV40iLN4iRT3jFflBK3a5WPHNx6sdi0DdPMHcdAiGjIyeV4jvD
+	WC+xRhj5xcJvKrHzOmkTxLHbnIEG15+KycztnG3X0BgWjlltwZGT0EySNmKPhk=
+X-Received: by 2002:a05:701b:4349:b0:15c:20b8:796e with SMTP id a92af1059eb24-16a5f112b00mr24410244c88.22.1792016018246;
+        Wed, 14 Oct 2026 15:13:38 -0700 (PDT)
+Received: from devbox.ts.blockcast.net ([69.25.95.32])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a1becefdsm50084912c88.7.2026.10.14.15.13.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 15:13:37 -0700 (PDT)
+From: Omar Ramadan <omar@blockcast.net>
+To: Taehee Yoo <ap420073@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH net-next] amt: make the per-tunnel group and source limits configurable
+Date: Wed, 14 Oct 2026 22:13:34 +0000
+Message-ID: <20261014221334.2443184-1-omar@blockcast.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261014173945.373295-1-almasrymina@google.com>
- <20261014173945.373295-4-almasrymina@google.com> <as_yg4hCCfpkukZB@devvm7509.cco0.facebook.com>
-In-Reply-To: <as_yg4hCCfpkukZB@devvm7509.cco0.facebook.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Wed, 14 Oct 2026 15:05:01 -0700
-X-Gm-Features: AclHuK-FIIYIfRHu7yhPBoI9CQSDVknHHqcppKY8ZRAq6RJPc2uOk0RIcUIsbQU
-Message-ID: <CAHS8izPDAjfRFCM2LrC7tzVQRkGCcn6zsghEvHJ9FJ1ET9odYg@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 3/6] net: skbuff: replace skb_page_unref() and
- __skb_frag_unref() with skb_netmem_unref()
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, 
-	Ayush Sawal <ayush.sawal@chelsio.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Eric Biggers <ebiggers@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Petr Machata <petrm@nvidia.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, 
-	Jakub Raczynski <j.raczynski@samsung.com>, Wang Zhan <wang.zhan@smartx.com>, 
-	Willem de Bruijn <willemb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Oct 14, 2026 at 2:25=E2=80=AFPM Stanislav Fomichev <sdf.kernel@gmai=
-l.com> wrote:
->
-> On 10/14, Mina Almasry wrote:
-> > Unreferencing a page_pool fragment with recycle=3Dfalse decrements the
-> > non-pp backing refcount instead of pp_ref_count, underflowing the page
-> > refcount when the fragment was owned via page_pool (as on mlx4's RX
-> > error path). Having both skb_page_unref() and __skb_frag_unref(frag,
-> > recycle) made it easy for callers to pass hardcoded recycle=3Dfalse on
-> > SKB-owned fragments.
-> >
-> > Replace skb_page_unref() and __skb_frag_unref() with
-> > skb_netmem_unref(netmem, recycle), which dispatches to
-> > napi_pp_put_page() when recycle is true and put_netmem() otherwise:
-> >
-> > - Use skb_frag_unref(skb, ...) on SKB-owned fragments in mlx4, sky2,
-> >   tls_strp, and skb_shift() so unrefs always match skb->pp_recycle.
-> > - Use put_netmem() directly in tls_device's destroy_record(), which
-> >   releases raw non-pp page references outside an SKB.
-> >
-> > Found by code inspection and confirmed with the KUnit tests added later
-> > in this series; not observed in production. The mlx4, sky2, and TLS
-> > call-site changes are compile-tested only.
-> >
-> > Assisted-by: LLM
-> > Signed-off-by: Mina Almasry <almasrymina@google.com>
-> > ---
-> > v2:
-> > - Note how the issue was found and how the change was tested.
-> > - Link to v1: https://lore.kernel.org/netdev/20261010083935.3274178-4-a=
-lmasrymina@google.com/
-> > ---
-> >  drivers/net/ethernet/marvell/sky2.c        |  2 +-
-> >  drivers/net/ethernet/mellanox/mlx4/en_rx.c |  2 +-
-> >  include/linux/skbuff_ref.h                 | 34 +++++++++++-----------
-> >  net/core/skbuff.c                          |  7 +++--
-> >  net/ipv4/esp4.c                            |  4 +--
-> >  net/ipv6/esp6.c                            |  4 +--
-> >  net/tls/tls_device.c                       |  2 +-
-> >  net/tls/tls_strp.c                         |  2 +-
-> >  8 files changed, 29 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/marvell/sky2.c b/drivers/net/ethernet=
-/marvell/sky2.c
-> > index 30facdece3e29..1d42a82db8f2b 100644
->
-> [..]
->
-> > --- a/drivers/net/ethernet/marvell/sky2.c
-> > +++ b/drivers/net/ethernet/marvell/sky2.c
-> > @@ -2501,7 +2501,7 @@ static void skb_put_frags(struct sk_buff *skb, un=
-signed int hdr_space,
-> >
-> >               if (length =3D=3D 0) {
-> >                       /* don't need this page */
-> > -                     __skb_frag_unref(frag, false);
-> > +                     skb_frag_unref(skb, i);
-> >                       --skb_shinfo(skb)->nr_frags;
-> >               } else {
-> >                       size =3D min(length, (unsigned) PAGE_SIZE);
-> > diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/e=
-thernet/mellanox/mlx4/en_rx.c
-> > index 96f97fa0f5489..fe18606c2ab55 100644
-> > --- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> > +++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> > @@ -497,7 +497,7 @@ static int mlx4_en_complete_rx_desc(struct mlx4_en_=
-priv *priv,
-> >  fail:
-> >       while (nr > 0) {
-> >               nr--;
-> > -             __skb_frag_unref(skb_shinfo(skb)->frags + nr, false);
-> > +             skb_frag_unref(skb, nr);
-> >       }
-> >       return 0;
-> >  }
->
-> These do not support qops and don't advertise devmem tx, so they are not
-> going to deal with netmems anytime soon, why touch these?
->
+A relay caps the state one gateway tunnel can hold at AMT_MAX_GROUP (32)
+group records and AMT_MAX_SOURCE (128) source records, counted across
+all of the tunnel's groups. Both are compile-time constants. An SSM
+receiver uses a source record for every (S,G) it joins, so a gateway that
+needs more than 32 groups or 128 channels through one tunnel has the
+excess joins dropped, and the relay operator cannot raise either limit.
 
-They're still using page-backed netmems that have 2 refcounts, and
-frag ref/unref needs to pick the right one. Before they were
-hardcoding false for the pp-recycle bit, so if a skb->pp_recycle=3D=3Dtrue
-here for any reason, this code would hit a ref imbalance. Now after
-this series both skb_frag_ref and skb_frag_unref do the right thing by
-checking skb->pp_recycle.
+Add IFLA_AMT_MAX_GROUPS and IFLA_AMT_MAX_SOURCES, read when the link is
+created, like IFLA_AMT_MAX_TUNNELS. Zero or an absent attribute keeps the
+current defaults. Gateways drive these allocations, so the policy caps
+them at 1024 groups and 4096 sources per tunnel, and strict_start_type
+has it validate them, and any attribute added after them, strictly.
+Report both limits in amt_fill_info().
 
-This has nothing to do with net-iovs or devmem.
+Assisted-by: LLM
+Signed-off-by: Omar Ramadan <omar@blockcast.net>
+---
+Notes:
+- At the policy ceilings, with 256 source buckets per group, one tunnel
+  can hold up to 1024 * 4 KiB group records (176 bytes plus 2 KiB of
+  buckets, a kmalloc-4k object) and 4096 * 192 bytes of source records,
+  about 4.75 MiB. At the defaults it is about 152 KiB.
+- The IPv6 outer transport series ("amt: add an IPv6 outer transport",
+  posted 2026-10-09) also appends attributes after IFLA_AMT_MAX_TUNNELS
+  and sets strict_start_type at its first one. Whichever is applied
+  second will be renumbered after the other and drop its own
+  strict_start_type line.
+- Tested on net-next 05b5019b01fb, x86_64 KVM guest, with the iproute2
+  companion patch, which follows once this is applied. The defaults read
+  back as 32 and 128, 1024 and 4096 round-trip in text and JSON output,
+  zero keeps the defaults, and 1025 or 4097 is rejected by the policy
+  without creating a device. An 8-byte IFLA_AMT_MAX_GROUPS is rejected
+  as an invalid attribute length, and the same request with 4 bytes
+  creates the link. tools/testing/selftests/net/amt.sh passes 6/6.
+  W=1 builds with IPV6=y and =n, sparse, and kernel-doc report nothing
+  new.
 
-[...]
-> > diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-> > index f11d0528fc431..b333a9a72cdae 100644
-> > --- a/net/tls/tls_device.c
-> > +++ b/net/tls/tls_device.c
-> > @@ -143,7 +143,7 @@ static void destroy_record(struct tls_record_info *=
-record)
-> >       int i;
-> >
-> >       for (i =3D 0; i < record->num_frags; i++)
-> > -             __skb_frag_unref(&record->frags[i], false);
-> > +             put_netmem(skb_frag_netmem(&record->frags[i]));
-> >       kfree(record);
-> >  }
-> >
-> > diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-> > index 6cc222008d95c..53d3256d0114a 100644
-> > --- a/net/tls/tls_strp.c
-> > +++ b/net/tls/tls_strp.c
-> > @@ -197,7 +197,7 @@ static void tls_strp_flush_anchor_copy(struct tls_s=
-trparser *strp)
-> >       DEBUG_NET_WARN_ON_ONCE(atomic_read(&shinfo->dataref) !=3D 1);
-> >
-> >       for (i =3D 0; i < shinfo->nr_frags; i++)
-> > -             __skb_frag_unref(&shinfo->frags[i], false);
-> > +             skb_frag_unref(strp->anchor, i);
-> >       shinfo->nr_frags =3D 0;
-> >       if (strp->copy_mode) {
-> >               kfree_skb_list(shinfo->frag_list);
->
-> Idk this part, seems harmless.. But are you sure we can even reach xfrm
-> (supposedly that's how we get to esp4) with netmems?
+ drivers/net/amt.c        | 15 +++++++++++++--
+ include/net/amt.h        |  5 +++++
+ include/uapi/linux/amt.h |  8 ++++++++
+ 3 files changed, 26 insertions(+), 2 deletions(-)
 
-Same, this is still using page-backed netmems, and hard-coding fales
-for the skb->pp_recycle bit. If anchor->pp_recycle=3D=3Dtrue ever here,
-this code would run into a ref imbalance and potentially crash. Now
-skb_frag_ref and skb_frag_unref are mirrors of each other and we don't
-have to prove beyond a doubt that dropping a non-pp ref is always the
-right thing to do here.
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 81d26ef82..30cff8de4 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -3162,6 +3162,7 @@ static void amt_link_setup(struct net_device *dev)
+ }
+ 
+ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
++	[IFLA_AMT_UNSPEC]	= { .strict_start_type = IFLA_AMT_MAX_GROUPS },
+ 	[IFLA_AMT_MODE]		= { .type = NLA_U32 },
+ 	[IFLA_AMT_RELAY_PORT]	= { .type = NLA_U16 },
+ 	[IFLA_AMT_GATEWAY_PORT]	= { .type = NLA_U16 },
+@@ -3170,6 +3171,8 @@ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
+ 	[IFLA_AMT_REMOTE_IP]	= { .len = sizeof_field(struct iphdr, daddr) },
+ 	[IFLA_AMT_DISCOVERY_IP]	= { .len = sizeof_field(struct iphdr, daddr) },
+ 	[IFLA_AMT_MAX_TUNNELS]	= { .type = NLA_U32 },
++	[IFLA_AMT_MAX_GROUPS]	= NLA_POLICY_MAX(NLA_U32, AMT_MAX_GROUP_LIMIT),
++	[IFLA_AMT_MAX_SOURCES]	= NLA_POLICY_MAX(NLA_U32, AMT_MAX_SOURCE_LIMIT),
+ };
+ 
+ static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
+@@ -3235,8 +3238,10 @@ static int amt_newlink(struct net_device *dev,
+ 		amt->max_tunnels = AMT_MAX_TUNNELS;
+ 
+ 	spin_lock_init(&amt->lock);
+-	amt->max_groups = AMT_MAX_GROUP;
+-	amt->max_sources = AMT_MAX_SOURCE;
++	amt->max_groups = nla_get_u32_default(data[IFLA_AMT_MAX_GROUPS], 0) ?:
++			  AMT_MAX_GROUP;
++	amt->max_sources = nla_get_u32_default(data[IFLA_AMT_MAX_SOURCES], 0) ?:
++			   AMT_MAX_SOURCE;
+ 	amt->hash_buckets = AMT_HSIZE;
+ 	amt->nr_tunnels = 0;
+ 	get_random_bytes(&amt->hash_seed, sizeof(amt->hash_seed));
+@@ -3352,6 +3357,8 @@ static size_t amt_get_size(const struct net_device *dev)
+ 	       nla_total_size(sizeof(__u16)) + /* IFLA_AMT_GATEWAY_PORT */
+ 	       nla_total_size(sizeof(__u32)) + /* IFLA_AMT_LINK */
+ 	       nla_total_size(sizeof(__u32)) + /* IFLA_MAX_TUNNELS */
++	       nla_total_size(sizeof(__u32)) + /* IFLA_AMT_MAX_GROUPS */
++	       nla_total_size(sizeof(__u32)) + /* IFLA_AMT_MAX_SOURCES */
+ 	       nla_total_size(sizeof(__be32)) + /* IFLA_AMT_DISCOVERY_IP */
+ 	       nla_total_size(sizeof(__be32)) + /* IFLA_AMT_REMOTE_IP */
+ 	       nla_total_size(sizeof(__be32)); /* IFLA_AMT_LOCAL_IP */
+@@ -3382,6 +3389,10 @@ static int amt_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 			goto nla_put_failure;
+ 	if (nla_put_u32(skb, IFLA_AMT_MAX_TUNNELS, amt->max_tunnels))
+ 		goto nla_put_failure;
++	if (nla_put_u32(skb, IFLA_AMT_MAX_GROUPS, amt->max_groups))
++		goto nla_put_failure;
++	if (nla_put_u32(skb, IFLA_AMT_MAX_SOURCES, amt->max_sources))
++		goto nla_put_failure;
+ 
+ 	rcu_read_unlock();
+ 	return 0;
+diff --git a/include/net/amt.h b/include/net/amt.h
+index 2846dde0c..18379ff7a 100644
+--- a/include/net/amt.h
++++ b/include/net/amt.h
+@@ -372,6 +372,11 @@ struct amt_dev {
+ #define AMT_GC_INTERVAL		(30 * 1000)
+ #define AMT_MAX_GROUP		32
+ #define AMT_MAX_SOURCE		128
++/* Upper bounds for IFLA_AMT_MAX_GROUPS and IFLA_AMT_MAX_SOURCES. Gateways
++ * drive these allocations, so keep one tunnel's worst case to a few MiB.
++ */
++#define AMT_MAX_GROUP_LIMIT	1024
++#define AMT_MAX_SOURCE_LIMIT	4096
+ #define AMT_HSIZE_SHIFT		8
+ #define AMT_HSIZE		(1 << AMT_HSIZE_SHIFT)
+ 
+diff --git a/include/uapi/linux/amt.h b/include/uapi/linux/amt.h
+index 2dccff417..a106d7a07 100644
+--- a/include/uapi/linux/amt.h
++++ b/include/uapi/linux/amt.h
+@@ -54,6 +54,14 @@ enum {
+ 	IFLA_AMT_DISCOVERY_IP,
+ 	/* This attribute specify number of maximum tunnel. */
+ 	IFLA_AMT_MAX_TUNNELS,
++	/* Maximum number of group records one tunnel may hold.
++	 * Zero or absent means the default of 32.
++	 */
++	IFLA_AMT_MAX_GROUPS,
++	/* Maximum number of source records one tunnel may hold, counted
++	 * across all of its groups. Zero or absent means the default of 128.
++	 */
++	IFLA_AMT_MAX_SOURCES,
+ 	__IFLA_AMT_MAX,
+ };
+ 
+-- 
+2.43.0
 
---=20
-Thanks,
-Mina
