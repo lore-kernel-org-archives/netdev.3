@@ -1,300 +1,132 @@
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871E34FB9B1
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:18:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA18255D875
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791994690; cv=none; b=WOiEFEDccXxMgOWnxpsfmRff144KXOVVgz1RN2dOpsASnADIpsWMFb6THim066eB728vfR3dt2dqJIN5PB/IRJxJufe993S3raa3tuBblIPSP16x78UseBZ+wPQJvEuLRmou8WZ1AMT/sjP9mniCJL9AsfT/qArXPj2qz//Ssc8=
+	t=1791995450; cv=none; b=OqCAaJI+C1OZl+EtyQXJL16+COATv8C0AGrieeG46kQlzoMSYzPIPZAtvzbYMXhL/2zKj6wBJtwzfJTeSlVsj2GgNVKr5J2ufbjxAFz+XJiePex/WisKbC5TzvohOjZAKI3sWK2gQo/cIrIWfiKs7Ozo4eF6TmfafHnaT6kR+nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791994690; c=relaxed/simple;
-	bh=7+ZuMQGm1WqmYa/SemsnkHIbC/OIMDMcJFeU+26oqOg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IhIWzbGVcVeEkNpalTXdGQAFw+mICJfmJzLnBKay7NfO0Hb+52YRzSWwVefD1F1/k2kiaqQPiXlQJZfcf8U4MGgSQys5jrXBvCmp72SjYiOaQwPurXa8Sr/rV+oK6+yBZX1IUv4zxj41ZtHyQ43s/uTBiPf5F+/bTMlMhtkLDuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZcYDU7FA; arc=none smtp.client-ip=74.125.82.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
+	s=arc-20240116; t=1791995450; c=relaxed/simple;
+	bh=BrjkRWhyANEzvU2G8fYFBH01XWMhW7Vpygjf58bbTgA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f+lQ/TdexS3qSGkklSt4KI8F0itQ68t1Vp8Gp6eoMSOedav1dwQLbrDdUPkg/FzepB4JUonKU5nT1FJdEzcxjwJlBcXwFyHtqfB1JWGcJZvyOU3KOYnY24i22eWQO8lFPEYPkiIxdtm9lQE1H55UYOYqvLMHn7dGvzrUjYBJ/w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I86KcNay; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZcYDU7FA"
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-35c3c370b17so4033461eec.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:18:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I86KcNay"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49d0da752ffso10485535e9.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:30:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1791994680; x=1792599480; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=wON/Y5KE9qpxqraW/pAdp0YZ1NlG3ckfd93a0Oe+XQc=;
-        b=ZcYDU7FA3vQ/qXSKedsmrcEfASZelK9CsRbRfBJQwefOdSk4q+Dn2BIx0mY/asQwtA
-         P1KNsziUhXWv2MxRoiQQcGw9ITe4fBYBkeXibjKfgLAWCfIQfrzKXopJLTUhyU6CxcXZ
-         3RCMdAsdAfzncmHXTMDHyPBgFvkF7TyBMeQm8EAWevLu6JkFnFeQ8dOxpQ6OTfOoLzaR
-         Asrhc0bc1ebIwO0251LOxCS1Rtx4j1HyX31pt99yyq99LwtjzFsWgCip0VFYtXYuSg8z
-         iRbW4gWZCcsqNIYjwPWGivrfC02kzCxJYWJOus6l0DAnX9ia/eLDR5A5Ke8Mic4g/d/j
-         d0cg==
+        d=gmail.com; s=20251104; t=1791995446; x=1792600246; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jlhZ2D8PVaX0+/HQ1rv8ogSvRZujgAeRl9LWjz1EazE=;
+        b=I86KcNayWRCZftozOOWWxK91poIAkB5vFmgIEJV7louwmGtzLv2/UGs6AaJ//tcT2+
+         nKCEe/p2aWiFkRTRK6r+W4ppgLnG2mv2LdkDIDnkt1zqUBxiYNtmJl9xzzz3jDkdF5eC
+         Esl5dunQWf1ZWJfrOkCG3U35nS7NtZ3IIif5JqK5yhn4/QBmJC6puAsbqJWnnJsOMu77
+         Q3Cmo66B4stsYqUmw+GSm6Alc6JjbB6g9Os9db56nlsTu1avF3A87TN5E6SU6ycjX9UY
+         rmvHw2YEDL+T4lvUX81U0Sd1sN6XsXpcIMmQWO1aDQq8EbyjcBXabohOqNS82/ZlMdzS
+         iHpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791994680; x=1792599480;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wON/Y5KE9qpxqraW/pAdp0YZ1NlG3ckfd93a0Oe+XQc=;
-        b=jGlVXiAjIiNIadG+OabBZnXO/ojBOtEdWJgQf1Pm8nTUMUbOOFMPhRLtcZ3nrV1psV
-         H0Z9kGsdRXHM7WGR1xFaoO3cHkQblDhuRWIDJvJn5gQldH/+09hTiq6rpqBjCKyBhF4b
-         aSDNW6WMIzi9wTtD91LIQztpP1V332wMjrrHL0houWC46Uz/P/zshJRpY2cKsKPTnHd/
-         8vAIFW8w8gT2jCu5u0HzOQYWe9LETbUbzYBnsKJbIAmixdMp7ModMxxioYuSmdKYubd9
-         KJmgEttouYD1r9AOJOWLYOCtweB00CcXxxuBUQ4EkRxaIJ+AkZ4Citcu0zofBvjiZ+rI
-         gU9Q==
-X-Forwarded-Encrypted: i=1; AKwUvByZ2zV0KY194z0usNikcEuJ/jI+ueUYp7PwbhL2Lkj8YGLOfEYzdKissOlwGFYjkUn0cAXRDkk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKEVHkjEXy2fMZeXTkukXWv9BFiOWNsGHCoWFSxp3TR5QtUvkUh
-	LDvD/naWiv+udcq4+G5gId41k0gxY0bjVzZ1LKZS/gl3VTPDWDpZHxK4jYyqdsP5Wj1GY5kPSZe
-	M66tOVW3gALwXRmTJq8DPWxpYrA==
-X-Received: from dybvq12.prod.google.com ([2002:a05:7301:77cc:b0:35d:636:2f60])
- (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7301:3d10:b0:34d:96cb:d75e with SMTP id 5a478bee46e88-3537e069fb9mr34072614eec.27.1791994679866;
- Wed, 14 Oct 2026 09:17:59 -0700 (PDT)
-Date: Wed, 14 Oct 2026 16:17:54 +0000
-In-Reply-To: <20261014161754.3782346-1-almasrymina@google.com>
+        d=1e100.net; s=20260707; t=1791995446; x=1792600246;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jlhZ2D8PVaX0+/HQ1rv8ogSvRZujgAeRl9LWjz1EazE=;
+        b=jV4tQOWqofS/tkR72KWPG3m7UqdUa3ie9VCTZevpq9BOvsooG4BJpSbN/9qIM9fHvO
+         s1Fe6kBgvu7iZpf2Pc9OzQjfMaBPuFVA8cP9Fy5xNDOrkzLXYpCCvlCBYFsVJTH23REg
+         0X8o82tqScHxJGFYVpyPv5hJwr8MbyU7Bvq5Pw2Kd51uDNwlec9boCxhZMf0E7R0Scdh
+         XC5q1DDGJrDOSvHFBSV880VmyDO+/Y8giWpV+WEwIIOJyp1RdpiqeLJxMloA+FMy7S23
+         C9pZHEyY3We4UvGlAXJZmTls0hyz9NAN7WHCJ0dmHOYXLRqLXepsEO06lW7mhOEMTm/B
+         qmiA==
+X-Forwarded-Encrypted: i=1; AKwUvBzL9U3X3N1mKGl8LUGx6ITDTWZGsmLGfnamOyqC/wRXoqEY+fVfCvvxQj8p75AK3Fj8mog+AEQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI8OaUscb3FgBcCHarHO6Yi+rAyHMiD5EvXM+ZcFzOn5EFQb4kY
+	w1EdcGiS0P6zgRKy22FCXi0QrRS4aNep4Ty8s84KYImZk+dAyM/hZ135
+X-Gm-Gg: AYBFou1RZjcdSoFzPugHkanfHAsoUFBPKev6q1JmsfHWKCN5+KnLuNOwsN7LWbNYKR0
+	hmGTMSP4Qm5sKXI1F1QTNssjLLig0Qgba7BIfc/BjxP7yoVZV+kmdsYltkrPQZL6gF+7vSFLpr+
+	ZMSO5z706Ifm1a87JlO+HT1GpLpKuwvBXE52VghQ+/U14q+PPUa/CsGaoXq/CJDzfF5+F5YzrLj
+	NrpVUuFmM4No0iQJlUnoHrJ6ZoStXtjTuOgJ/0DfiRJKAzobsBHFlS7uX0yuhl4hO97UaGzPPkQ
+	1eey4MDeELJIe4mCmu+wcVgSBmdVKbmOnljCO2FtuW6HOk97aLNf5/+WNvYVVMuDsCR2HSoMIAR
+	YyREIiSAsynOE2QFEuNx1AUdVHwwDKIoarxpMK1Nc+Zlwy7wb9yAZ1uXNYkcobcLZmLi2WPixeF
+	DtmzL6iKcsvQFTQvvd60jIaZUayC6csnvZT1UeVkqeClFliMqx3SwE5zUL4wbBvFr7G2CXNup8B
+	Q7ivdnD83IdX5R8v3LrMsKg4RIJlh0IdA0=
+X-Received: by 2002:a05:600c:a00c:b0:49f:fe90:de63 with SMTP id 5b1f17b1804b1-4a18e4e0a3emr341491645e9.28.1791995445684;
+        Wed, 14 Oct 2026 09:30:45 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0967affsm11644556f8f.1.2026.10.14.09.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 09:30:44 -0700 (PDT)
+Date: Wed, 14 Oct 2026 17:30:42 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>, Ido Schimmel
+ <idosch@nvidia.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker
+ <anna@kernel.org>, Chuck Lever <cel@kernel.org>, Jeff Layton
+ <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Olga Kornievskaia
+ <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey
+ <tom@talpey.com>, Mina Almasry <almasrymina@google.com>, Kaiyuan Zhang
+ <kaiyuanz@google.com>, Willem de Bruijn <willemb@google.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits()
+ report unreadable frags
+Message-ID: <20261014173042.0a74a25d@pumpkin>
+In-Reply-To: <179198668564919.2.10323410751655182155@toxicpanda.com>
+References: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
+	<20261014135154.05de968e@pumpkin>
+	<179198668564919.2.10323410751655182155@toxicpanda.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20261014161754.3782346-1-almasrymina@google.com>
-X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
-Message-ID: <20261014161754.3782346-5-almasrymina@google.com>
-Subject: [PATCH net v3 4/4] selftests: net: add devmem RX and TX netdev
- unregister tests
-From: Mina Almasry <almasrymina@google.com>
-To: Jakub Kicinski <kuba@kernel.org>, Mina Almasry <almasrymina@google.com>, 
-	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Taehee Yoo <ap420073@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, 
-	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Tariq Toukan <tariqt@nvidia.com>, 
-	Kaifeng Wang <kaifengw@google.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add devmem_bind_rx_unregister_check and devmem_bind_tx_unregister_check
-to nl_netdev.py to verify that unregistering a netdevsim device while a
-netlink socket holds an active RX or TX devmem binding synchronously
-detaches the dma_buf attachment and cleanly closes the netlink socket
-without use-after-free or page faults.
+On Wed, 14 Oct 2026 14:04:45 +0000
+Josef Bacik <josef@toxicpanda.com> wrote:
 
-Add the dma-buf, udmabuf and devmem options the tests need to
-tools/testing/selftests/net/config.
+> On Wed, Oct 14, 2026 at 01:51:54PM +0100, David Laight wrote:
+> > Can't you use that fact that the csum function should only return
+> > either 0 or ~0 and use the other value to indicate an error.
+> >
+> > ISTR this coming up before with the 'copy_to/from_user_and_csum' code.  
+> 
+> skb_copy_and_csum_bits() returns an unfolded __wsum starting from 0, so
+> 0 is a valid result today.  It would work if it started from ~0 the way
+> csum_and_copy_from_user() does, since that doesn't change the folded
+> result and the sum can never come out as 0.
 
-Cc: Tariq Toukan <tariqt@nvidia.com>
-Cc: Kaifeng Wang <kaifengw@google.com>
-Assisted-by: LLM
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
----
-v3:
-- Count attachments of the test's own dma-buf only, and skip instead of
-  passing when debugfs bufinfo is not readable (Sashiko).
-- Close the netlink socket after removing the device, clean up with
-  defer(), and skip on EOPNOTSUPP from bind-rx/bind-tx (Sashiko).
-- Replace the hardcoded UDMABUF_CREATE value with a helper that computes
-  it for the running architecture (Sashiko, Dragos), and close the memfd
-  and /dev/udmabuf fds on errors (Sashiko).
-- Add the needed options to tools/testing/selftests/net/config (Sashiko).
----
- tools/testing/selftests/net/config       |   4 +
- tools/testing/selftests/net/nl_netdev.py | 125 ++++++++++++++++++++++-
- 2 files changed, 126 insertions(+), 3 deletions(-)
+The result can only be 0 if either the length is zero or all the bytes
+are zero.
+You can probably prove that is never required.
+It is likely better to initialise the csum to either 0xffff or ~0.
 
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 737e7e6327b37..1e21f0055a2c0 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -11,6 +11,7 @@ CONFIG_CRYPTO_ARIA=y
- CONFIG_CRYPTO_CHACHA20POLY1305=m
- CONFIG_CRYPTO_SHA1=y
- CONFIG_CRYPTO_SM4_GENERIC=y
-+CONFIG_DEBUG_FS=y
- CONFIG_DEBUG_INFO_BTF=y
- CONFIG_DEBUG_INFO_BTF_MODULES=n
- CONFIG_DUMMY=y
-@@ -76,6 +77,7 @@ CONFIG_NET_CLS_BPF=m
- CONFIG_NET_CLS_FLOWER=m
- CONFIG_NET_CLS_MATCHALL=m
- CONFIG_NET_CLS_U32=m
-+CONFIG_NET_DEVMEM=y
- CONFIG_NETDEVSIM=m
- CONFIG_NET_DROP_MONITOR=m
- CONFIG_NETFILTER=y
-@@ -120,6 +122,7 @@ CONFIG_OPENVSWITCH=m
- CONFIG_PAGE_POOL_STATS=y
- CONFIG_PSAMPLE=m
- CONFIG_RPS=y
-+CONFIG_SYNC_FILE=y
- CONFIG_SYN_COOKIES=y
- CONFIG_SYSCTL=y
- CONFIG_SYSFS=y
-@@ -131,6 +134,7 @@ CONFIG_TEST_BPF=m
- CONFIG_TLS=m
- CONFIG_TRACEPOINTS=y
- CONFIG_TUN=y
-+CONFIG_UDMABUF=y
- CONFIG_USER_NS=y
- CONFIG_VETH=y
- CONFIG_VLAN_8021Q=y
-diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
-index ceb44c8e1fec5..988878b71358c 100755
---- a/tools/testing/selftests/net/nl_netdev.py
-+++ b/tools/testing/selftests/net/nl_netdev.py
-@@ -6,10 +6,14 @@ Tests for the netdev netlink family.
- """
- 
- import errno
-+import fcntl
-+import mmap
-+import os
-+import struct
- from os import system
--from lib.py import ksft_run, ksft_exit
-+from lib.py import ksft_run, ksft_exit, KsftFailEx, KsftSkipEx
- from lib.py import ksft_eq, ksft_ge, ksft_ne, ksft_raises, ksft_busy_wait
--from lib.py import NetdevFamily, NetdevSimDev, NlError, defer, ip
-+from lib.py import EthtoolFamily, NetdevFamily, NetdevSimDev, NlError, defer, ip
- 
- 
- def empty_check(nf) -> None:
-@@ -366,6 +370,119 @@ def page_pool_stats_ifindex_check(nf) -> None:
-     ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.info.id')
- 
- 
-+def _udmabuf_create_ioctl() -> int:
-+    """Return UDMABUF_CREATE, _IOW('u', 0x42, struct udmabuf_create)."""
-+    machine = os.uname().machine
-+    if machine.startswith(("alpha", "mips", "ppc", "powerpc", "sparc")):
-+        ioc_write = 4 << 29
-+    elif machine.startswith("parisc"):
-+        ioc_write = 2 << 30
-+    else:
-+        ioc_write = 1 << 30
-+    return ioc_write | 24 << 16 | ord("u") << 8 | 0x42
-+
-+
-+def _create_udmabuf(num_pages=64) -> int:
-+    """Create a sealed memfd-backed udmabuf fd for devmem tests."""
-+    if not os.path.exists("/dev/udmabuf"):
-+        raise KsftSkipEx("/dev/udmabuf is not available")
-+
-+    size = num_pages * mmap.PAGESIZE
-+    memfd = os.memfd_create("devmem-ksft", os.MFD_ALLOW_SEALING)
-+    try:
-+        os.ftruncate(memfd, size)
-+        fcntl.fcntl(memfd, fcntl.F_ADD_SEALS, fcntl.F_SEAL_SHRINK)
-+        devfd = os.open("/dev/udmabuf", os.O_RDWR)
-+        try:
-+            req = bytearray(struct.pack("IIQQ", memfd, 0, 0, size))
-+            return fcntl.ioctl(devfd, _udmabuf_create_ioctl(), req)
-+        finally:
-+            os.close(devfd)
-+    finally:
-+        os.close(memfd)
-+
-+
-+def _dmabuf_attach_count(dmabuf_fd) -> int:
-+    """Return the number of devices attached to dmabuf_fd, from debugfs."""
-+    path = "/sys/kernel/debug/dma_buf/bufinfo"
-+    try:
-+        with open(path, "r", encoding="utf-8") as f:
-+            lines = f.read().splitlines()
-+    except OSError as e:
-+        raise KsftSkipEx(f"{path} is not readable: {e}") from e
-+
-+    ino = os.fstat(dmabuf_fd).st_ino
-+    found = False
-+    for line in lines:
-+        fields = line.split("\t")
-+        if not found:
-+            found = (len(fields) == 7 and fields[5].isdigit() and
-+                     int(fields[5]) == ino)
-+        elif line.startswith("Total "):
-+            return int(line.split()[1])
-+    raise KsftFailEx(f"dma-buf {ino} not found in {path}")
-+
-+
-+def _devmem_bind(bind, attrs) -> None:
-+    """Run a devmem bind op, skip the test if the device can't do devmem."""
-+    try:
-+        bind(attrs)
-+    except NlError as e:
-+        if e.error == errno.EOPNOTSUPP:
-+            raise KsftSkipEx(f"devmem binding not supported: {e}") from e
-+        raise
-+
-+
-+def devmem_bind_rx_unregister_check(_nf) -> None:
-+    """Verify RX devmem bindings detach dma_buf synchronously on netdev unregister."""
-+    dmabuf_fd = _create_udmabuf()
-+    defer(os.close, dmabuf_fd)
-+    nf_priv = NetdevFamily()
-+    defer(nf_priv.close)
-+    nsimdev = NetdevSimDev(queue_count=2)
-+    defer(nsimdev.remove)
-+    nsim = nsimdev.nsims[0]
-+
-+    ip(f"link set dev {nsim.ifname} up")
-+    with EthtoolFamily() as ef:
-+        ef.rings_set({"header": {"dev-index": nsim.ifindex},
-+                      "tcp-data-split": "enabled"})
-+    _devmem_bind(nf_priv.bind_rx, {
-+        "ifindex": nsim.ifindex,
-+        "fd": dmabuf_fd,
-+        "queues": [{"id": 1, "type": "rx"}],
-+    })
-+    ksft_ge(_dmabuf_attach_count(dmabuf_fd), 1)
-+
-+    nsimdev.remove()
-+    ksft_eq(_dmabuf_attach_count(dmabuf_fd), 0)
-+
-+    nf_priv.close()
-+
-+
-+def devmem_bind_tx_unregister_check(_nf) -> None:
-+    """Verify TX devmem bindings detach cleanly on netdev unregister without UAF."""
-+    dmabuf_fd = _create_udmabuf()
-+    defer(os.close, dmabuf_fd)
-+    nf_priv = NetdevFamily()
-+    defer(nf_priv.close)
-+    nsimdev = NetdevSimDev(queue_count=2)
-+    defer(nsimdev.remove)
-+    nsim = nsimdev.nsims[0]
-+
-+    ip(f"link set dev {nsim.ifname} up")
-+    _devmem_bind(nf_priv.bind_tx, {
-+        "ifindex": nsim.ifindex,
-+        "fd": dmabuf_fd,
-+    })
-+    ksft_ge(_dmabuf_attach_count(dmabuf_fd), 1)
-+
-+    nsimdev.remove()
-+    ksft_eq(_dmabuf_attach_count(dmabuf_fd), 0)
-+
-+    nf_priv.close()
-+
-+
- def main() -> None:
-     """ Ksft boiler plate main """
-     nf = NetdevFamily()
-@@ -379,7 +496,9 @@ def main() -> None:
-               page_pool_check,
-               page_pool_dump_ifindex,
-               page_pool_ifindex_leak_check,
--              page_pool_stats_ifindex_check
-+              page_pool_stats_ifindex_check,
-+              devmem_bind_rx_unregister_check,
-+              devmem_bind_tx_unregister_check
-               ],
-              args=(nf, ))
-     ksft_exit()
--- 
-2.56.0.176.g3575e65682-goog
+IIRC both IPv4 and IPv6 complement the checksum before sending it.
+For IPv6 a zero is invalid (it means checksum not calculated for IPv4),
+I think the best was to achieve that is to initialise the csum to 1
+and then add 1 after inverting it.
+
+> But this is one of those "you have to know the behavior of the function
+> to use it properly." Explicit errors are always better, it removes
+> ambiguity and creates cleaner and less error prone code. I'm happy to
+> change it to start with ~0 as well to add the extra protection, but
+> explicit errors are always best. Thanks,
+
+Look at all the places ERR_PTR() gets used.
+An in-band error indication gives better code and is probably less buggy!
+
+David
+
+> 
+> Josef
 
