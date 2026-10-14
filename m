@@ -1,29 +1,29 @@
 Received: from stargate.chelsio.com (unknown [12.32.117.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7114DEC3B
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44622E7398
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791981691; cv=none; b=ochvuMxG/QKF/Q5hhkleiCnseBudtl6k+bnCNjuIoX1s0uWKC7Ip1Yu6ibyHTwKdk41Ysa2ZWC7qZpWO5ioVi/Y5EVIx3kssxdrOBzg10qArif1hHRnPpbA7xMBpQnGXpc1z6/x3O/4VY4RDDwZs9XfizGoGaSIzr5tOMFfhL6Q=
+	t=1791981692; cv=none; b=gFai4+T+tPYM0p9pYQsqWiZ1kt0/QVM1JQPlIIkfdoGh/Vky4DczQ4RbMEVAmkJZn6884VhEQAS/vsdeQL1QsW++9OKTtxvPAIkd1ZCvNk/6NOJM/kevk4rrDhUy/8mhb9mBRM6ii819Q7973MpHYv9fqg3+wL8jLU9RiE9Sr+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791981691; c=relaxed/simple;
-	bh=FfG6kVC5b4EjHqhfMHtCOsvZ4inXAJsGmiFOPyDjn00=;
+	s=arc-20240116; t=1791981692; c=relaxed/simple;
+	bh=hlALjO06MpPvs99gG8LfCKnrnmqAyn7WA1h4NfYKAYQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JovKAd/AIKPGvzQ/P8XpBKO99DAVzoTEKOlwFgt9jcAPhBYpZiCoYAgiX/2jn0O0sWYJRdNRX2eGlqeMX56Ow4eoQHFAy7M7SRsAjtO2Wr6qhRvbRaBHizFRZQSed/v37udCnXvSrrypdSAjaT0pUvKXcKv1ZhvPUMkG64W0b5Y=
+	 MIME-Version; b=jstkGsXoDI4wVL+lYXSqDm7C76xqG0wu5XFyXBXIlssS2OttAXTZET9sAvfxUBzPnzQfhDf+m9Zqk1Y+EBJy4MZZDH2MPIo76mXu0xqUiTbrw4a3/CzdN1PXWz+RINuqAYtZeshGHK9pVyTom+nV8JkY+y4Ql+/Wg97GyLJ+stE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
 Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ1018414;
-	Wed, 14 Oct 2026 05:41:16 -0700
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ2018414;
+	Wed, 14 Oct 2026 05:41:19 -0700
 From: Potnuri Bharat Teja <bharat@chelsio.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
-Subject: [PATCH net-next v4 07/12] cxgb4: extend ethtool support for T7 adapters
-Date: Wed, 14 Oct 2026 18:12:52 -0400
-Message-Id: <20261014221257.436789-8-bharat@chelsio.com>
+Subject: [PATCH net-next v4 08/12] cxgb4: Add T7 support to the filter infrastructure.
+Date: Wed, 14 Oct 2026 18:12:53 -0400
+Message-Id: <20261014221257.436789-9-bharat@chelsio.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20261014221257.436789-1-bharat@chelsio.com>
 References: <20261014221257.436789-1-bharat@chelsio.com>
@@ -35,605 +35,340 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update the ethtool implementation to support T7-specific port types,
-link modes, and adapter capabilities.
+T7 introduces a number of changes in filter-related register fields,
+firmware work request formats and CPL definitions. Update the filter
+code to use the appropriate T7-specific encodings while preserving
+existing behavior on earlier adapters.
 
-Add support for new T7 port configurations including SFP56, QSFP56,
-50G/100G/200G/400G backplane modes, and the associated ethtool link
-mode mappings. Update port statistics handling and module type
-reporting to account for the new hardware capabilities.
-
-Extend RSS configuration support by implementing RSS hash key retrieval
-and programming through ethtool. Also update module EEPROM handling for
-new optical module types and CMIS-based devices.
+The changes include:
+- Use T7 reply channel and queue number encodings in filter-related
+  CPL requests.
+- Add T7-specific filter capability validation using the new TP filter
+  field definitions.
+- Enable validation and programming of the SYN-only filter field,
+  which is supported on T7.
+- Adjust FW_FILTER_WR construction to match T7 semantics where the
+  RX channel is no longer programmed through the legacy field.
+- Add support for T7 active-open filter requests using the T7 CPL
+  layout and T7 filter tuple encoding.
+- Update filter resource handling to work correctly across T6 and T7
+  devices.
 
 Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
 ---
- .../ethernet/chelsio/cxgb4/cxgb4_ethtool.c    | 381 +++++++++++++-----
- 1 file changed, 278 insertions(+), 103 deletions(-)
+ .../net/ethernet/chelsio/cxgb4/cxgb4_filter.c | 214 ++++++++++++------
+ 1 file changed, 141 insertions(+), 73 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-index 0092bc16f887..605c0783d3d5 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-@@ -14,6 +14,8 @@
- #include "cxgb4_tc_flower.h"
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
+index 657d96b9e2f6..c9182c69cc7e 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
+@@ -66,9 +66,14 @@ static int set_tcb_field(struct adapter *adap, struct filter_entry *f,
  
- #define EEPROM_MAGIC 0x38E2F10C
-+#define RSS_HASH_KEY_SIZE 40
-+#define CMIS_PAGE_SELECT_REG 127
- 
- static u32 get_msglevel(struct net_device *dev)
+ 	req = (struct cpl_set_tcb_field *)__skb_put_zero(skb, sizeof(*req));
+ 	INIT_TP_WR_CPL(req, CPL_SET_TCB_FIELD, ftid);
+-	req->reply_ctrl = htons(REPLY_CHAN_V(0) |
+-				QUEUENO_V(adap->sge.fw_evtq.abs_id) |
+-				NO_REPLY_V(no_reply));
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7)
++		req->reply_ctrl = htons(T7_REPLY_CHAN_V(0) |
++					T7_QUEUENO_V(adap->sge.fw_evtq.abs_id) |
++					NO_REPLY_V(no_reply));
++	else
++		req->reply_ctrl = htons(REPLY_CHAN_V(0) |
++					QUEUENO_V(adap->sge.fw_evtq.abs_id) |
++					NO_REPLY_V(no_reply));
+ 	req->word_cookie = htons(TCB_WORD_V(word) | TCB_COOKIE_V(ftid));
+ 	req->mask = cpu_to_be64(mask);
+ 	req->val = cpu_to_be64(val);
+@@ -249,32 +254,53 @@ static int validate_filter(struct net_device *dev,
+ 			   struct ch_filter_specification *fs)
  {
-@@ -358,7 +360,7 @@ static void get_stats(struct net_device *dev, struct ethtool_stats *stats,
- 	int i;
- 	u64 *p0;
+ 	struct adapter *adapter = netdev2adap(dev);
+-	u32 fconf, iconf;
++	u32 fconf, iconf, chip_ver;
  
--	t4_get_port_stats_offset(adapter, pi->tx_chan,
-+	t4_get_port_stats_offset(adapter, pi->lport,
- 				 (struct port_stats *)data,
- 				 &pi->stats_base);
++	chip_ver = CHELSIO_CHIP_VERSION(adapter->params.chip);
+ 	/* Check for unconfigured fields being used. */
+ 	iconf = adapter->params.tp.ingress_config;
+ 	fconf = fs->hash ? adapter->params.tp.filter_mask :
+ 			   adapter->params.tp.vlan_pri_map;
  
-@@ -440,10 +442,13 @@ static int from_fw_port_mod_type(enum fw_port_type port_type,
- 		   port_type == FW_PORT_TYPE_CR4_QSFP ||
- 		   port_type == FW_PORT_TYPE_CR_QSFP ||
- 		   port_type == FW_PORT_TYPE_CR2_QSFP ||
--		   port_type == FW_PORT_TYPE_SFP28) {
-+		   port_type == FW_PORT_TYPE_SFP28 ||
-+		   port_type == FW_PORT_TYPE_SFP56 ||
-+		   port_type == FW_PORT_TYPE_QSFP56) {
- 		if (mod_type == FW_PORT_MOD_TYPE_LR ||
- 		    mod_type == FW_PORT_MOD_TYPE_SR ||
- 		    mod_type == FW_PORT_MOD_TYPE_ER ||
-+		    mod_type == FW_PORT_MOD_TYPE_DR ||
- 		    mod_type == FW_PORT_MOD_TYPE_LRM)
- 			return PORT_FIBRE;
- 		else if (mod_type == FW_PORT_MOD_TYPE_TWINAX_PASSIVE ||
-@@ -453,7 +458,11 @@ static int from_fw_port_mod_type(enum fw_port_type port_type,
- 			return PORT_OTHER;
- 	} else if (port_type == FW_PORT_TYPE_KR4_100G ||
- 		   port_type == FW_PORT_TYPE_KR_SFP28 ||
--		   port_type == FW_PORT_TYPE_KR_XLAUI) {
-+		   port_type == FW_PORT_TYPE_KR_XLAUI ||
-+		   port_type == FW_PORT_TYPE_KR_50G ||
-+		   port_type == FW_PORT_TYPE_KR2_100G ||
-+		   port_type == FW_PORT_TYPE_KR4_200G ||
-+		   port_type == FW_PORT_TYPE_KR8_400G) {
- 		return PORT_NONE;
- 	}
+-	if (unsupported(fconf, FCOE_F, fs->val.fcoe, fs->mask.fcoe) ||
+-	    unsupported(fconf, PORT_F, fs->val.iport, fs->mask.iport) ||
+-	    unsupported(fconf, TOS_F, fs->val.tos, fs->mask.tos) ||
+-	    unsupported(fconf, ETHERTYPE_F, fs->val.ethtype,
+-			fs->mask.ethtype) ||
+-	    unsupported(fconf, MACMATCH_F, fs->val.macidx, fs->mask.macidx) ||
+-	    unsupported(fconf, MPSHITTYPE_F, fs->val.matchtype,
+-			fs->mask.matchtype) ||
+-	    unsupported(fconf, FRAGMENTATION_F, fs->val.frag, fs->mask.frag) ||
+-	    unsupported(fconf, PROTOCOL_F, fs->val.proto, fs->mask.proto) ||
+-	    unsupported(fconf, VNIC_ID_F, fs->val.pfvf_vld,
+-			fs->mask.pfvf_vld) ||
+-	    unsupported(fconf, VNIC_ID_F, fs->val.ovlan_vld,
+-			fs->mask.ovlan_vld) ||
+-	    unsupported(fconf, VNIC_ID_F, fs->val.encap_vld,
+-			fs->mask.encap_vld) ||
+-	    unsupported(fconf, VLAN_F, fs->val.ivlan_vld, fs->mask.ivlan_vld))
+-		return -EOPNOTSUPP;
+-
++	if (chip_ver >= CHELSIO_T7) {
++		if (unsupported(fconf, T7_FCOE_F, fs->val.fcoe, fs->mask.fcoe) ||
++		    unsupported(fconf, T7_PORT_F, fs->val.iport, fs->mask.iport) ||
++		    unsupported(fconf, T7_TOS_F, fs->val.tos, fs->mask.tos) ||
++		    unsupported(fconf, T7_ETHERTYPE_F, fs->val.ethtype,
++				fs->mask.ethtype) ||
++		    unsupported(fconf, T7_MACMATCH_F, fs->val.macidx, fs->mask.macidx) ||
++		    unsupported(fconf, T7_MPSHITTYPE_F, fs->val.matchtype,
++				fs->mask.matchtype) ||
++		    unsupported(fconf, T7_FRAGMENTATION_F, fs->val.frag, fs->mask.frag) ||
++		    unsupported(fconf, T7_PROTOCOL_F, fs->val.proto, fs->mask.proto) ||
++		    unsupported(fconf, T7_VNIC_ID_F, fs->val.pfvf_vld,
++				fs->mask.pfvf_vld) ||
++		    unsupported(fconf, T7_VNIC_ID_F, fs->val.ovlan_vld,
++				fs->mask.ovlan_vld) ||
++		    unsupported(fconf, T7_VNIC_ID_F, fs->val.encap_vld,
++				fs->mask.encap_vld) ||
++		    unsupported(fconf, T7_VLAN_F, fs->val.ivlan_vld, fs->mask.ivlan_vld))
++			return -EOPNOTSUPP;
++	} else {
++		if (unsupported(fconf, FCOE_F, fs->val.fcoe, fs->mask.fcoe) ||
++		    unsupported(fconf, PORT_F, fs->val.iport, fs->mask.iport) ||
++		    unsupported(fconf, TOS_F, fs->val.tos, fs->mask.tos) ||
++		    unsupported(fconf, ETHERTYPE_F, fs->val.ethtype,
++				fs->mask.ethtype) ||
++		    unsupported(fconf, MACMATCH_F, fs->val.macidx, fs->mask.macidx) ||
++		    unsupported(fconf, MPSHITTYPE_F, fs->val.matchtype,
++				fs->mask.matchtype) ||
++		    unsupported(fconf, FRAGMENTATION_F, fs->val.frag, fs->mask.frag) ||
++		    unsupported(fconf, PROTOCOL_F, fs->val.proto, fs->mask.proto) ||
++		    unsupported(fconf, VNIC_ID_F, fs->val.pfvf_vld,
++				fs->mask.pfvf_vld) ||
++		    unsupported(fconf, VNIC_ID_F, fs->val.ovlan_vld,
++				fs->mask.ovlan_vld) ||
++		    unsupported(fconf, VNIC_ID_F, fs->val.encap_vld,
++				fs->mask.encap_vld) ||
++		    unsupported(fconf, VLAN_F, fs->val.ivlan_vld, fs->mask.ivlan_vld))
++			return -EOPNOTSUPP;
++	}
+ 	/* T4 inconveniently uses the same FT_VNIC_ID_W bits for both the Outer
+ 	 * VLAN Tag and PF/VF/VFvld fields based on VNIC_F being set
+ 	 * in TP_INGRESS_CONFIG.  Hense the somewhat crazy checks
+@@ -793,9 +819,12 @@ static int del_filter_wr(struct adapter *adapter, int fidx)
+ int set_filter_wr(struct adapter *adapter, int fidx)
+ {
+ 	struct fw_filter2_wr *fwr;
++	unsigned int chip_ver;
+ 	struct filter_entry *f;
+ 	struct sk_buff *skb;
  
-@@ -490,8 +499,100 @@ static unsigned int speed_to_fw_caps(int speed)
- 	return 0;
++	chip_ver = CHELSIO_CHIP_VERSION(adapter->params.chip);
++
+ 	if (fidx < adapter->tids.nhpftids)
+ 		f = &adapter->tids.hpftid_tab[fidx];
+ 	else
+@@ -883,8 +912,10 @@ int set_filter_wr(struct adapter *adapter, int fidx)
+ 	if (f->fs.newsmac)
+ 		fwr->smac_sel = f->smt->idx;
+ 	fwr->rx_chan_rx_rpl_iq =
+-		htons(FW_FILTER_WR_RX_CHAN_V(0) |
+-		      FW_FILTER_WR_RX_RPL_IQ_V(adapter->sge.fw_evtq.abs_id));
++		htons(FW_FILTER_WR_RX_RPL_IQ_V(adapter->sge.fw_evtq.abs_id));
++	if (chip_ver <= CHELSIO_T6)
++		fwr->rx_chan_rx_rpl_iq |=
++			htons(FW_FILTER_WR_RX_CHAN_V(cxgb4_port_e2cchan(f->dev)));
+ 	fwr->maci_to_matchtypem =
+ 		htonl(FW_FILTER_WR_MACI_V(f->fs.val.macidx) |
+ 		      FW_FILTER_WR_MACIM_V(f->fs.mask.macidx) |
+@@ -993,7 +1024,9 @@ void clear_filter(struct adapter *adap, struct filter_entry *f)
+ 		t4_free_encap_mac_filt(adap, pi->viid,
+ 				       f->fs.val.ovlan & 0x1ff, 0);
+ 
+-	if ((f->fs.hash || is_t6(adap->params.chip)) && f->fs.type)
++	if ((f->fs.hash ||
++	     (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T6)) &&
++	     f->fs.type)
+ 		cxgb4_clip_release(f->dev, (const u32 *)&f->fs.val.lip, 1);
+ 
+ 	/* The zeroing of the filter rule below clears the filter valid,
+@@ -1296,20 +1329,16 @@ static void mk_act_open_req6(struct filter_entry *f, struct sk_buff *skb,
+ 			     unsigned int qid_filterid, struct adapter *adap)
+ {
+ 	struct cpl_t6_act_open_req6 *t6req = NULL;
++	struct cpl_t7_act_open_req6 *t7req = NULL;
+ 	struct cpl_act_open_req6 *req = NULL;
++	u32 chip_ver;
++	__be32 opt2;
++	__be64 opt0;
+ 
+-	t6req = (struct cpl_t6_act_open_req6 *)__skb_put(skb, sizeof(*t6req));
+-	INIT_TP_WR(t6req, 0);
+-	req = (struct cpl_act_open_req6 *)t6req;
+-	OPCODE_TID(req) = htonl(MK_OPCODE_TID(CPL_ACT_OPEN_REQ6, qid_filterid));
+-	req->local_port = cpu_to_be16(f->fs.val.lport);
+-	req->peer_port = cpu_to_be16(f->fs.val.fport);
+-	req->local_ip_hi = *(__be64 *)(&f->fs.val.lip);
+-	req->local_ip_lo = *(((__be64 *)&f->fs.val.lip) + 1);
+-	req->peer_ip_hi = *(__be64 *)(&f->fs.val.fip);
+-	req->peer_ip_lo = *(((__be64 *)&f->fs.val.fip) + 1);
+-	req->opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
+-					f->fs.newvlan == VLAN_REWRITE) |
++	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
++
++	opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
++				   f->fs.newvlan == VLAN_REWRITE) |
+ 				DELACK_V(f->fs.hitcnts) |
+ 				L2T_IDX_V(f->l2t ? f->l2t->idx : 0) |
+ 				SMAC_SEL_V((cxgb4_port_viid(f->dev) &
+@@ -1319,52 +1348,90 @@ static void mk_act_open_req6(struct filter_entry *f, struct sk_buff *skb,
+ 				ULP_MODE_V(f->fs.nat_mode ?
+ 					   ULP_MODE_TCPDDP : ULP_MODE_NONE) |
+ 				TCAM_BYPASS_F | NON_OFFLOAD_F);
+-	t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs,
+-								      f->dev)));
+-	t6req->opt2 = htonl(RSS_QUEUE_VALID_F |
+-			    RSS_QUEUE_V(f->fs.iq) |
+-			    TX_QUEUE_V(f->fs.nat_mode) |
+-			    T5_OPT_2_VALID_F |
+-			    RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
+-			    PACE_V((f->fs.maskhash) |
++	opt2 = cpu_to_be32(RSS_QUEUE_VALID_F |
++			   RSS_QUEUE_V(f->fs.iq) |
++			   TX_QUEUE_V(f->fs.nat_mode) |
++			   T5_OPT_2_VALID_F |
++			   RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
++			   PACE_V((f->fs.maskhash) |
+ 				   ((f->fs.dirsteerhash) << 1)));
++
++	if (chip_ver >= CHELSIO_T7) {
++		t7req = (struct cpl_t7_act_open_req6 *)__skb_put(skb, sizeof(*t7req));
++		INIT_TP_WR(t7req, 0);
++		req = (struct cpl_act_open_req6 *)t7req;
++		t7req->opt0 = opt0;
++		t7req->opt2 = opt2;
++		t7req->params = cpu_to_be64(T7_FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
++	} else {
++		t6req = (struct cpl_t6_act_open_req6 *)__skb_put(skb, sizeof(*t6req));
++		INIT_TP_WR(t6req, 0);
++		req = (struct cpl_act_open_req6 *)t6req;
++		t6req->opt0 = opt0;
++		t6req->opt2 = opt2;
++		t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
++	}
++
++	OPCODE_TID(req) = htonl(MK_OPCODE_TID(CPL_ACT_OPEN_REQ6, qid_filterid));
++	req->local_port = cpu_to_be16(f->fs.val.lport);
++	req->peer_port = cpu_to_be16(f->fs.val.fport);
++	req->local_ip_hi = *(__be64 *)(&f->fs.val.lip);
++	req->local_ip_lo = *(((__be64 *)&f->fs.val.lip) + 1);
++	req->peer_ip_hi = *(__be64 *)(&f->fs.val.fip);
++	req->peer_ip_lo = *(((__be64 *)&f->fs.val.fip) + 1);
  }
  
-+enum link_medium {
-+	LINK_MEDIUM_NONE,
-+	LINK_MEDIUM_TP,		/* plain copper baseT               */
-+	LINK_MEDIUM_KR,		/* electrical backplane             */
-+	LINK_MEDIUM_CR,		/* copper direct-attach (TwinAx)    */
-+	LINK_MEDIUM_SR,
-+	LINK_MEDIUM_LR,		/* also covers ER FR                */
-+	LINK_MEDIUM_DR,
-+	LINK_MEDIUM_LRM,
-+};
-+
-+static bool fw_port_is_backplane(enum fw_port_type port_type)
-+{
-+	switch (port_type) {
-+	case FW_PORT_TYPE_KX:
-+	case FW_PORT_TYPE_KX4:
-+	case FW_PORT_TYPE_BP_AP:
-+	case FW_PORT_TYPE_BP4_AP:
-+	case FW_PORT_TYPE_BP40_BA:
-+	case FW_PORT_TYPE_KR:
-+	case FW_PORT_TYPE_KR_50G:
-+	case FW_PORT_TYPE_KR_SFP28:
-+	case FW_PORT_TYPE_KR_XLAUI:
-+	case FW_PORT_TYPE_KR2_100G:
-+	case FW_PORT_TYPE_KR4_100G:
-+	case FW_PORT_TYPE_KR4_200G:
-+	case FW_PORT_TYPE_KR8_400G:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool fw_port_is_electrical_tp(enum fw_port_type port_type)
-+{
-+	switch (port_type) {
-+	case FW_PORT_TYPE_BT_SGMII:
-+	case FW_PORT_TYPE_BT_XFI:
-+	case FW_PORT_TYPE_BT_XAUI:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+static bool fw_port_is_fixed_baset(enum fw_port_type port_type)
-+{
-+	switch (port_type) {
-+	case FW_PORT_TYPE_FIBER_XFI:
-+	case FW_PORT_TYPE_FIBER_XAUI:
-+		return true;
-+	default:
-+		return fw_port_is_electrical_tp(port_type);
-+	}
-+}
-+
-+static int fw_port_class_bit(enum fw_port_type port_type)
-+{
-+	if (fw_port_is_backplane(port_type))
-+		return ETHTOOL_LINK_MODE_Backplane_BIT;
-+	if (fw_port_is_electrical_tp(port_type))
-+		return ETHTOOL_LINK_MODE_TP_BIT;
-+	return ETHTOOL_LINK_MODE_FIBRE_BIT;
-+}
-+
-+static enum link_medium fw_port_medium(enum fw_port_type port_type,
-+				       enum fw_port_module_type mod_type)
-+{
-+	if (fw_port_is_backplane(port_type))
-+		return LINK_MEDIUM_KR;
-+	if (fw_port_is_fixed_baset(port_type))
-+		return LINK_MEDIUM_TP;
-+
-+	switch (mod_type) {
-+	case FW_PORT_MOD_TYPE_TWINAX_PASSIVE:
-+	case FW_PORT_MOD_TYPE_TWINAX_ACTIVE:
-+		return LINK_MEDIUM_CR;
-+	case FW_PORT_MOD_TYPE_SR:
-+		return LINK_MEDIUM_SR;
-+	case FW_PORT_MOD_TYPE_LR:
-+	case FW_PORT_MOD_TYPE_ER:
-+		return LINK_MEDIUM_LR;
-+	case FW_PORT_MOD_TYPE_DR:
-+		return LINK_MEDIUM_DR;
-+	case FW_PORT_MOD_TYPE_LRM:
-+		return LINK_MEDIUM_LRM;
-+	default:
-+		return LINK_MEDIUM_NONE;	/* no module / unreadable */
-+	}
-+}
-+
- /**
-  *	fw_caps_to_lmm - translate Firmware to ethtool Link Mode Mask
-+ *	@mod_type: Firmware Module Type
-  *	@port_type: Firmware Port Type
-  *	@fw_caps: Firmware Port Capabilities
-  *	@link_mode_mask: ethtool Link Mode Mask
-@@ -500,114 +601,93 @@ static unsigned int speed_to_fw_caps(int speed)
-  *	Link Mode Mask.
-  */
- static void fw_caps_to_lmm(enum fw_port_type port_type,
-+			   enum fw_port_module_type mod_type,
- 			   fw_port_cap32_t fw_caps,
- 			   unsigned long *link_mode_mask)
+ static void mk_act_open_req(struct filter_entry *f, struct sk_buff *skb,
+ 			    unsigned int qid_filterid, struct adapter *adap)
  {
--	#define SET_LMM(__lmm_name) \
--		do { \
--			__set_bit(ETHTOOL_LINK_MODE_ ## __lmm_name ## _BIT, \
--				  link_mode_mask); \
--		} while (0)
-+	enum link_medium medium = fw_port_medium(port_type, mod_type);
+ 	struct cpl_t6_act_open_req *t6req = NULL;
++	struct cpl_t7_act_open_req *t7req = NULL;
+ 	struct cpl_act_open_req *req = NULL;
++	u32 chip_ver;
++	__be32 opt2;
++	__be64 opt0;
++
++	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
++
++	opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
++				   f->fs.newvlan == VLAN_REWRITE) |
++			   DELACK_V(f->fs.hitcnts) |
++			   L2T_IDX_V(f->l2t ? f->l2t->idx : 0) |
++			   SMAC_SEL_V((cxgb4_port_viid(f->dev) &
++				       0x7F) << 1) |
++			   TX_CHAN_V(f->fs.eport) |
++			   NO_CONG_V(f->fs.rpttid) |
++			   ULP_MODE_V(f->fs.nat_mode ?
++				      ULP_MODE_TCPDDP : ULP_MODE_NONE) |
++			   TCAM_BYPASS_F | NON_OFFLOAD_F);
++	opt2 = cpu_to_be32(RSS_QUEUE_VALID_F |
++			   RSS_QUEUE_V(f->fs.iq) |
++			   TX_QUEUE_V(f->fs.nat_mode) |
++			   T5_OPT_2_VALID_F |
++			   RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
++			   PACE_V((f->fs.maskhash) |
++				  ((f->fs.dirsteerhash) << 1)));
++	if (chip_ver >= CHELSIO_T7) {
++		t7req = (struct cpl_t7_act_open_req *)__skb_put(skb, sizeof(*t7req));
++		INIT_TP_WR(t7req, 0);
++		req = (struct cpl_act_open_req *)t7req;
++		t7req->opt0 = opt0;
++		t7req->opt2 = opt2;
++		t7req->params = cpu_to_be64(T7_FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
++	} else {
++		t6req = (struct cpl_t6_act_open_req *)__skb_put(skb, sizeof(*t6req));
++		INIT_TP_WR(t6req, 0);
++		req = (struct cpl_act_open_req *)t6req;
++		t6req->opt0 = opt0;
++		t6req->opt2 = opt2;
++		t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs, f->dev)));
++	}
  
- 	#define FW_CAPS_TO_LMM(__fw_name, __lmm_name) \
- 		do { \
- 			if (fw_caps & FW_PORT_CAP32_ ## __fw_name) \
--				SET_LMM(__lmm_name); \
-+				__set_bit(ETHTOOL_LINK_MODE_ ## __lmm_name ## _BIT, \
-+					  link_mode_mask); \
- 		} while (0)
- 
--	switch (port_type) {
--	case FW_PORT_TYPE_BT_SGMII:
--	case FW_PORT_TYPE_BT_XFI:
--	case FW_PORT_TYPE_BT_XAUI:
--		SET_LMM(TP);
--		FW_CAPS_TO_LMM(SPEED_100M, 100baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
--		break;
+-	t6req = (struct cpl_t6_act_open_req *)__skb_put(skb, sizeof(*t6req));
+-	INIT_TP_WR(t6req, 0);
+-	req = (struct cpl_act_open_req *)t6req;
+ 	OPCODE_TID(req) = htonl(MK_OPCODE_TID(CPL_ACT_OPEN_REQ, qid_filterid));
+ 	req->local_port = cpu_to_be16(f->fs.val.lport);
+ 	req->peer_port = cpu_to_be16(f->fs.val.fport);
+ 	memcpy(&req->local_ip, f->fs.val.lip, 4);
+ 	memcpy(&req->peer_ip, f->fs.val.fip, 4);
+-	req->opt0 = cpu_to_be64(NAGLE_V(f->fs.newvlan == VLAN_REMOVE ||
+-					f->fs.newvlan == VLAN_REWRITE) |
+-				DELACK_V(f->fs.hitcnts) |
+-				L2T_IDX_V(f->l2t ? f->l2t->idx : 0) |
+-				SMAC_SEL_V((cxgb4_port_viid(f->dev) &
+-					    0x7F) << 1) |
+-				TX_CHAN_V(f->fs.eport) |
+-				NO_CONG_V(f->fs.rpttid) |
+-				ULP_MODE_V(f->fs.nat_mode ?
+-					   ULP_MODE_TCPDDP : ULP_MODE_NONE) |
+-				TCAM_BYPASS_F | NON_OFFLOAD_F);
 -
--	case FW_PORT_TYPE_KX4:
--	case FW_PORT_TYPE_KX:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKX4_Full);
--		break;
--
--	case FW_PORT_TYPE_KR:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		break;
--
--	case FW_PORT_TYPE_BP_AP:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		break;
-+	if (medium != LINK_MEDIUM_NONE)
-+		__set_bit(fw_port_class_bit(port_type), link_mode_mask);
- 
--	case FW_PORT_TYPE_BP4_AP:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKX4_Full);
-+	switch (medium) {
-+	case LINK_MEDIUM_TP:
-+		FW_CAPS_TO_LMM(SPEED_100M, 100baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseT_Full);
- 		break;
- 
--	case FW_PORT_TYPE_FIBER_XFI:
--	case FW_PORT_TYPE_FIBER_XAUI:
--	case FW_PORT_TYPE_SFP:
--	case FW_PORT_TYPE_QSFP_10G:
--	case FW_PORT_TYPE_QSA:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
-+	case LINK_MEDIUM_KR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseKX4_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseR_FEC);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseKR_Full);
-+		FW_CAPS_TO_LMM(SPEED_25G,  25000baseKR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseKR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseKR_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseKR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseKR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseKR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseKR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseKR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_BP40_BA:
--	case FW_PORT_TYPE_QSFP:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
--		break;
--
--	case FW_PORT_TYPE_CR_QSFP:
--	case FW_PORT_TYPE_SFP28:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_25G, 25000baseCR_Full);
-+	case LINK_MEDIUM_CR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseCR_Full);
-+		FW_CAPS_TO_LMM(SPEED_25G,  25000baseCR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseCR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseCR_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseCR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseCR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseCR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_KR_SFP28:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_25G, 25000baseKR_Full);
-+	case LINK_MEDIUM_SR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseSR_Full);
-+		FW_CAPS_TO_LMM(SPEED_25G,  25000baseSR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseSR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseSR_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseSR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseSR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseSR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseSR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseSR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_KR_XLAUI:
--		SET_LMM(Backplane);
--		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_40G, 40000baseKR4_Full);
-+	case LINK_MEDIUM_LR:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseLR_Full);
-+		FW_CAPS_TO_LMM(SPEED_40G,  40000baseLR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_50G,  50000baseLR_ER_FR_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseLR2_ER2_FR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseLR4_ER4_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseLR4_ER4_FR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseLR8_ER8_FR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_CR2_QSFP:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_50G, 50000baseSR2_Full);
-+	case LINK_MEDIUM_DR:
-+		FW_CAPS_TO_LMM(SPEED_100G, 100000baseDR2_Full);
-+		FW_CAPS_TO_LMM(SPEED_200G, 200000baseDR4_Full);
-+		FW_CAPS_TO_LMM(SPEED_400G, 400000baseDR8_Full);
- 		break;
- 
--	case FW_PORT_TYPE_KR4_100G:
--	case FW_PORT_TYPE_CR4_QSFP:
--		SET_LMM(FIBRE);
--		FW_CAPS_TO_LMM(SPEED_1G,  1000baseT_Full);
--		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
--		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
--		FW_CAPS_TO_LMM(SPEED_25G, 25000baseCR_Full);
--		FW_CAPS_TO_LMM(SPEED_50G, 50000baseCR2_Full);
--		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR4_Full);
-+	case LINK_MEDIUM_LRM:
-+		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
-+		FW_CAPS_TO_LMM(SPEED_10G,  10000baseLRM_Full);
- 		break;
- 
-+	case LINK_MEDIUM_NONE:
- 	default:
- 		break;
- 	}
-@@ -616,7 +696,7 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
- 		FW_CAPS_TO_LMM(FEC_RS, FEC_RS);
- 		FW_CAPS_TO_LMM(FEC_BASER_RS, FEC_BASER);
- 	} else {
--		SET_LMM(FEC_NONE);
-+		__set_bit(ETHTOOL_LINK_MODE_FEC_NONE_BIT, link_mode_mask);
- 	}
- 
- 	FW_CAPS_TO_LMM(ANEG, Autoneg);
-@@ -624,7 +704,6 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
- 	FW_CAPS_TO_LMM(802_3_ASM_DIR, Asym_Pause);
- 
- 	#undef FW_CAPS_TO_LMM
--	#undef SET_LMM
+-	t6req->params = cpu_to_be64(FILTER_TUPLE_V(hash_filter_ntuple(&f->fs,
+-								      f->dev)));
+-	t6req->opt2 = htonl(RSS_QUEUE_VALID_F |
+-			    RSS_QUEUE_V(f->fs.iq) |
+-			    TX_QUEUE_V(f->fs.nat_mode) |
+-			    T5_OPT_2_VALID_F |
+-			    RX_CHANNEL_V(cxgb4_port_e2cchan(f->dev)) |
+-			    PACE_V((f->fs.maskhash) |
+-				   ((f->fs.dirsteerhash) << 1)));
  }
  
- /**
-@@ -649,10 +728,46 @@ static unsigned int lmm_to_fw_caps(const unsigned long *link_mode_mask)
- 	LMM_TO_FW_CAPS(100baseT_Full, SPEED_100M);
- 	LMM_TO_FW_CAPS(1000baseT_Full, SPEED_1G);
- 	LMM_TO_FW_CAPS(10000baseT_Full, SPEED_10G);
--	LMM_TO_FW_CAPS(40000baseSR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(10000baseKX4_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseR_FEC, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseKR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseCR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseSR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseLR_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(10000baseLRM_Full, SPEED_10G);
-+	LMM_TO_FW_CAPS(25000baseKR_Full, SPEED_25G);
- 	LMM_TO_FW_CAPS(25000baseCR_Full, SPEED_25G);
-+	LMM_TO_FW_CAPS(25000baseSR_Full, SPEED_25G);
-+	LMM_TO_FW_CAPS(40000baseKR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(40000baseCR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(40000baseSR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(40000baseLR4_Full, SPEED_40G);
-+	LMM_TO_FW_CAPS(50000baseKR_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseKR2_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseCR_Full, SPEED_50G);
- 	LMM_TO_FW_CAPS(50000baseCR2_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseSR_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseSR2_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(50000baseLR_ER_FR_Full, SPEED_50G);
-+	LMM_TO_FW_CAPS(100000baseKR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseKR4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseCR2_Full, SPEED_100G);
- 	LMM_TO_FW_CAPS(100000baseCR4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseSR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseSR4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseLR2_ER2_FR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseLR4_ER4_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(100000baseDR2_Full, SPEED_100G);
-+	LMM_TO_FW_CAPS(200000baseKR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseCR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseSR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseLR4_ER4_FR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(200000baseDR4_Full, SPEED_200G);
-+	LMM_TO_FW_CAPS(400000baseKR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseCR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseSR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseLR8_ER8_FR8_Full, SPEED_400G);
-+	LMM_TO_FW_CAPS(400000baseDR8_Full, SPEED_400G);
+ static int cxgb4_set_hash_filter(struct net_device *dev,
+@@ -1663,7 +1730,7 @@ int __cxgb4_set_filter(struct net_device *dev, int ftid,
+ 	if (ret)
+ 		goto free_tid;
  
- 	#undef LMM_TO_FW_CAPS
+-	if (is_t6(adapter->params.chip) && fs->type &&
++	if (chip_ver >= CHELSIO_T6 && fs->type &&
+ 	    ipv6_addr_type((const struct in6_addr *)fs->val.lip) !=
+ 	    IPV6_ADDR_ANY) {
+ 		ret = cxgb4_clip_get(dev, (const u32 *)&fs->val.lip, 1);
+@@ -2140,12 +2207,13 @@ void filter_rpl(struct adapter *adap, const struct cpl_set_tcb_rpl *rpl)
  
-@@ -688,14 +803,14 @@ static int get_link_ksettings(struct net_device *dev,
- 		base->mdio_support = 0;
- 	}
- 
--	fw_caps_to_lmm(pi->port_type, pi->link_cfg.pcaps,
-+	fw_caps_to_lmm(pi->port_type, pi->mod_type, pi->link_cfg.pcaps,
- 		       link_ksettings->link_modes.supported);
--	fw_caps_to_lmm(pi->port_type,
-+	fw_caps_to_lmm(pi->port_type, pi->mod_type,
- 		       t4_link_acaps(pi->adapter,
- 				     pi->lport,
- 				     &pi->link_cfg),
- 		       link_ksettings->link_modes.advertising);
--	fw_caps_to_lmm(pi->port_type, pi->link_cfg.lpacaps,
-+	fw_caps_to_lmm(pi->port_type, pi->mod_type, pi->link_cfg.lpacaps,
- 		       link_ksettings->link_modes.lp_advertising);
- 
- 	base->speed = (netif_carrier_ok(dev)
-@@ -800,7 +915,7 @@ static inline unsigned int eth_to_cc_fec(unsigned int eth_fec)
+ void init_hash_filter(struct adapter *adap)
  {
- 	unsigned int cc_fec = 0;
+-	u32 reg;
++	u32 reg, chip_ver;
  
--	if (eth_fec & ETHTOOL_FEC_OFF)
-+	if (eth_fec == ETHTOOL_FEC_OFF)
- 		return cc_fec;
- 
- 	if (eth_fec & ETHTOOL_FEC_AUTO)
-@@ -1576,6 +1691,11 @@ static int get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *ts
- 	return 0;
- }
- 
-+static u32 get_rss_key_size(struct net_device *dev)
-+{
-+	return RSS_HASH_KEY_SIZE;
-+}
-+
- static u32 get_rss_table_size(struct net_device *dev)
- {
- 	const struct port_info *pi = netdev_priv(dev);
-@@ -1590,8 +1710,19 @@ static int get_rss_table(struct net_device *dev,
- 	unsigned int n = pi->rss_size;
- 
- 	rxfh->hfunc = ETH_RSS_HASH_TOP;
-+
-+	if (rxfh->key) {
-+		__be32 key[10];
-+
-+		t4_read_rss_key(pi->adapter, (u32 *)key, true);
-+		/* RSS hash keys are read in order TP_RSS_SECRET_KEY9..0 */
-+		for (int i = 0; i < 10; i++)
-+			((u32 *)rxfh->key)[i] = be32_to_cpu(key[9 - i]);
-+	}
-+
- 	if (!rxfh->indir)
- 		return 0;
-+
- 	while (n--)
- 		rxfh->indir[n] = pi->rss[n];
- 	return 0;
-@@ -1607,10 +1738,19 @@ static int set_rss_table(struct net_device *dev,
- 	/* We require at least one supported parameter to be changed and no
- 	 * change in any of the unsupported parameters
++	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
+ 	/* On T6, verify the necessary register configs and warn the user in
+ 	 * case of improper config
  	 */
--	if (rxfh->key ||
--	    (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
--	     rxfh->hfunc != ETH_RSS_HASH_TOP))
-+	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-+	    rxfh->hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
-+
-+	if (rxfh->key) {
-+		__be32 key[10];
-+
-+		/* RSS hash keys are written in order TP_RSS_SECRET_KEY9..0 */
-+		for (int i = 0; i < 10; i++)
-+			key[i] = cpu_to_be32(((u32 *)rxfh->key)[9 - i]);
-+		t4_write_rss_key(pi->adapter, (u32 *)key, -1, true);
-+	}
-+
- 	if (!rxfh->indir)
- 		return 0;
- 
-@@ -2022,12 +2162,13 @@ static int cxgb4_get_module_info(struct net_device *dev,
- 	case FW_PORT_TYPE_SFP:
- 	case FW_PORT_TYPE_QSA:
- 	case FW_PORT_TYPE_SFP28:
--		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+	case FW_PORT_TYPE_SFP56:
-+		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				I2C_DEV_ADDR_A0, SFF_8472_COMP_ADDR,
- 				SFF_8472_COMP_LEN, &sff8472_comp);
- 		if (ret)
- 			return ret;
--		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				I2C_DEV_ADDR_A0, SFP_DIAG_TYPE_ADDR,
- 				SFP_DIAG_TYPE_LEN, &sff_diag_type);
- 		if (ret)
-@@ -2046,11 +2187,12 @@ static int cxgb4_get_module_info(struct net_device *dev,
- 		break;
- 
- 	case FW_PORT_TYPE_QSFP:
-+	case FW_PORT_TYPE_QSFP56:
- 	case FW_PORT_TYPE_QSFP_10G:
- 	case FW_PORT_TYPE_CR_QSFP:
- 	case FW_PORT_TYPE_CR2_QSFP:
- 	case FW_PORT_TYPE_CR4_QSFP:
--		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				I2C_DEV_ADDR_A0, SFF_REV_ADDR,
- 				SFF_REV_LEN, &sff_rev);
- 		/* For QSFP type ports, revision value >= 3
-@@ -2083,14 +2225,14 @@ static int cxgb4_get_module_eeprom(struct net_device *dev,
- 
- 	memset(data, 0, eprom->len);
- 	if (offset + len <= I2C_PAGE_SIZE)
--		return t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		return t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				 I2C_DEV_ADDR_A0, offset, len, data);
- 
- 	/* offset + len spans 0xa0 and 0xa1 pages */
- 	if (offset <= I2C_PAGE_SIZE) {
- 		/* read 0xa0 page */
- 		len = I2C_PAGE_SIZE - offset;
--		ret =  t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
-+		ret =  t4_i2c_rd(adapter, adapter->mbox, pi->lport,
- 				 I2C_DEV_ADDR_A0, offset, len, data);
- 		if (ret)
- 			return ret;
-@@ -2101,10 +2243,41 @@ static int cxgb4_get_module_eeprom(struct net_device *dev,
- 		len = eprom->len - len;
- 	}
- 	/* Read additional optical diagnostics from page 0xa2 if supported */
--	return t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan, I2C_DEV_ADDR_A2,
-+	return t4_i2c_rd(adapter, adapter->mbox, pi->lport, I2C_DEV_ADDR_A2,
- 			 offset, len, &data[eprom->len - len]);
- }
- 
-+static int
-+cxgb4_get_module_eeprom_by_page(struct net_device *dev,
-+				const struct ethtool_module_eeprom *page_data,
-+				struct netlink_ext_ack *extack)
-+{
-+	struct port_info *pi = netdev_priv(dev);
-+	struct adapter *adapter = pi->adapter;
-+	int ret;
-+
-+	if (page_data->offset >= 128) {
-+		u8 page = page_data->page;
-+		/* Before reading EEPROM data first select the page in PageSelect register */
-+		ret = t4_i2c_wr(adapter, adapter->mbox, pi->lport,
-+				page_data->i2c_address << 1,
-+				CMIS_PAGE_SELECT_REG,        /* CMIS Page Select register */
-+				1,                           /* Page Select register length */
-+				&page);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
-+			page_data->i2c_address << 1, page_data->offset,
-+			page_data->length, page_data->data);
-+
-+	if (ret)
-+		return ret;
-+
-+	return page_data->length;
-+}
-+
- static u32 cxgb4_get_priv_flags(struct net_device *netdev)
- {
- 	struct port_info *pi = netdev_priv(netdev);
-@@ -2205,6 +2378,7 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
- 	.get_rxnfc         = get_rxnfc,
- 	.set_rxnfc         = set_rxnfc,
- 	.get_rx_ring_count = get_rx_ring_count,
-+	.get_rxfh_key_size = get_rss_key_size,
- 	.get_rxfh_indir_size = get_rss_table_size,
- 	.get_rxfh	   = get_rss_table,
- 	.set_rxfh	   = set_rss_table,
-@@ -2217,6 +2391,7 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
- 	.get_dump_data     = get_dump_data,
- 	.get_module_info   = cxgb4_get_module_info,
- 	.get_module_eeprom = cxgb4_get_module_eeprom,
-+	.get_module_eeprom_by_page  = cxgb4_get_module_eeprom_by_page,
- 	.get_priv_flags    = cxgb4_get_priv_flags,
- 	.set_priv_flags    = cxgb4_set_priv_flags,
- };
+-	if (is_t6(adap->params.chip)) {
++	if (chip_ver >= CHELSIO_T6) {
+ 		if (is_offload(adap)) {
+ 			if (!(t4_read_reg(adap, TP_GLOBAL_CONFIG_A)
+ 			   & ACTIVEFILTERCOUNTS_F)) {
 -- 
 2.39.1
 
