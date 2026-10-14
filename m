@@ -1,136 +1,163 @@
-Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF01236DA0A;
-	Wed, 14 Oct 2026 19:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792006907; cv=pass; b=bLufYkMVWWHMdc8sfkmTAhYZuBwcgAON25ggUWxoADuJ4CBygCMRCTab147Hl5FFtg/tXOcnf18MeJl5XjogV8zlTs+voWlPfIevL8+EocZSeHOr+PMRKp5BS8T0dwKK4eeu+4ZBwzzLo3cDG3eTnXZjv58QPqYC2d7zICjUkXk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792006907; c=relaxed/simple;
-	bh=3kiqDHXOFYarnpPmrSQ6KreQBzixYm9FgKqGaA3CXMM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T/BZxEqIQ0bVmIc1khQeKOf2XQ3tXtw/EgH0NeF6SKckmoR3+2d3OrxSeMdgntlH0eIL/mpbuRK4gkYdfFXdBDn73L2vYOb/pJALTVvBQUoXJoRbJMoBNzdeG7JsWUyz+kokycXJLn2CWWpIn1TBD9Sz+QzIiLRmhoV0L+dbCAI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=W0Ubx5QN; arc=pass smtp.client-ip=185.203.200.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2E6489FC9
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792007306; cv=none; b=aETfaGyl8zDKiLYnUjEGXOoFHndnDCwTjToNLekNbXCceQgJFBM2rFzbwxor/P77OsZ9xD4bsiGfQ3EHwZbUz80m4TQ2Ugh1Ywe5EE9PKWznGXpmEtbPYnBQeAGi+rAJMIMYse+RlRHsxnx/2wcAyY+f1PA7W0bbfvWEbDdUlPc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792007306; c=relaxed/simple;
+	bh=1TD8ZpH+/6jv338rRp4EboOBdgmpy9DftuYG/3dQ1EQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=noBxr6flf6nQi/vdsvXDOw7TiOpWYpqTNuM7CFArpkWf+H6/EvS9AOgymWJwjXc+GfYhKoGlx7iXCRP3XGFX7R4zJlXMNkMjzpYK+VUNvr+wduPr/IQpAQO6isDNBPkcnZooHf/dte7q1PWMk0qy+9Cekdi1GfpJZIepe0nCaDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=etAmlb3g; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="W0Ubx5QN"
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 66001201C8F;
-	Wed, 14 Oct 2026 21:41:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792006898;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hQBqU5bjyvst58Zc94ghtKF7c6DSrihGDVx2Uj/uHQw=;
-	b=W0Ubx5QNFt+5tNCfpIYQ52BsewhQo4t4p5+YiOgoQ+co54MM4YeESJ0TowRE3XAdb0BbKb
-	Ea+gfqMsh7BfSp1hC6DufcCnqQeL4x52wMw7D6JQDSqczErcQ6zLjvz/Z7XYC8ntZYg7eb
-	PuxUE2my2rCu/ApXpkg5EqaOv20xm5E5YDCjUHjhlsK9s1uC8WczPBXGK7djPpSurBlqJm
-	PU39laKcpb4rVjoVtp9duXoWyvVBYXLhIt1mY9WmgYEfrmTrwHv1OWMcO/6KXXrLlks5Mq
-	6cZS6vSPbjnE8PQws+iahHMx32vrMYaF9M+FLKmQRgXuCH7ceVTKJMXzKaO+jA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792006898; a=rsa-sha256;
-	cv=none;
-	b=RSebYfutT3dLYGHUDo1Gg3wUAcL+TqkcTZ2rOZu22f1s9fzVQyhX9kaSOtdpKpwklce/ZD
-	/1SAkHDagZTT/mXUwoaVJiQ/8E42OU+fIDRowPvU6dxkIJsFAkiMeUr32/UXYN+U1FUUef
-	KFFSIGfyfevQC82HNuLjJpqOvzx2DYsv8ukTsj8DH74F5cTX9/up9yUd5ZWJV7azuLgqw2
-	4pKyly6IaTXbrI0FdIO5F/Zb56Z9BlTbZgRpAufNfSM57QaLwdq4zyaQK6PKxM+0cncJTo
-	cCm129gQwdFNkUtreQB/c9Y95J2MVLjyl/VDX6a0/TK0iDvnH//l4/PdUzdh7A==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792006898;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hQBqU5bjyvst58Zc94ghtKF7c6DSrihGDVx2Uj/uHQw=;
-	b=Vw4ROAOTkz6DkXlDgA+XKY36lBANG1hfuNV2fM7GTzWKO6Cc/PpreS6FRDEkNZMry/oxL2
-	19d+6hq1gWgswDEid7oTuPciqQWh8Dwk/Kx5q60nmmwebkqhuQ7IdbOEsYklbFT6VmPZGx
-	lalY4inVvI2M/HI7Pui0LW0+q2vS3nIn/bODWfcsYuxVRwnM1VvgZgOGHTVWgXwPc4l2tu
-	OLpnzvKiTVLd+tMoB1Yrq4IC1qHxdP3AMcYse21ymRZ15tIWExtXhezQH2grFBTvsn0wA+
-	H0zADIOvNx7xsBQmLYFJP/7QygFhI0I2Sa3rW/LegcaT6yMk/3n5bO+yPRi4OA==
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xH4r4-005uMh-0w;
-	Wed, 14 Oct 2026 21:41:38 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1xH4r4-00000004lyy-0bAo;
-	Wed, 14 Oct 2026 21:41:38 +0200
-Date: Wed, 14 Oct 2026 21:41:38 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Carlo Szelinsky <github@szelinsky.de>
-Cc: Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="etAmlb3g"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8520161fdb9so537311b3a.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792007302; x=1792612102; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j1OEKiLFmZZA8uQuqTPnrH94Sp0/0PEPLNTXQpBXzI8=;
+        b=etAmlb3gElOknz8YWisLYv6Gx2htbJakBmr33uyYGsuzlNgfcC7kd4lkTWVHAi4LHv
+         cKya5B91F4bc2yTEXWBj2hexqmUTvLxlontr/JM9Dbh5R8igRLtsDCK+2TFRd+J76IgO
+         RLCZzmgCdaPqrRzfKPFGrHc3MZazFlbFp5Wb5gJI/SkK5nRhoUQrrpe/30At5AS4mn9q
+         qhJYyHetxntw3N3GzsqkBB9z64JTwsvvOR3SeGqaZYPGlO2/DeqrLUhZ7VVHg57+twL9
+         vllHfoCSW5NUDTSdZY2qk0pGKzyEao6kF9rmqLTHHM7ueTE3R4kTzYrPpMOp4M8Nhmm2
+         jYaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792007302; x=1792612102;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j1OEKiLFmZZA8uQuqTPnrH94Sp0/0PEPLNTXQpBXzI8=;
+        b=tKAcjkl0w8KNMjuFWjQfE7yOvWL+nvfhOoyddjRcW5LqT2fR2JEP4g0sj7H1/xJNR+
+         7/5p5VgGJgv0RFdy73DQ8MQMEbPZluaymvT+7ozx/tCVbilzkeErO5+7aD16ovXUppg3
+         hQvZj841I6IyRYcwhlgju7uUxOYm5uA62dQVmGALNZD+ouWnzx9yUqdXVKBjrUqW+tlC
+         Ja4ZGhuPjJ2pC+c+Sg6WqLYxx+XBKJGdLpLDr0M01tSvmuryPA7E6BHwBCNEBhqlphQr
+         PciK5C62qRlg9VqrAZUKmLGWkSR3IXQd3pV84SjbXkInvtfCO0OGxOZgVzAW04zPee2i
+         slwQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzCerjqjMZ9aFOeEo7L8F09VViitdZVE+OHH/Y0jiGZGDphci4ghtwaV9FCBHDSbI+o+vRR85g=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKi1pF4WtGeMDhajHMJpp6EPibnq+AIQWBYDpe0U4ca8ELQl2u5
+	Rq1kdrZwAE08DUlaZ1DwulDAZU8UBnF+5TGWAlxl6sjNc9r6ljdzskWA
+X-Gm-Gg: AYBFou11G7gj9GdWMIDx61F2chuYcPssC+r0lw8HM234x4em1ufJSP8eeTUKwRtYOQm
+	oBFtxq3T6FqBBXEFV/1bRdE0ULRqmUi/cgwxFcUQG8S0iGifEms1Lc/aU8gyOrIzUgoPYXKH3He
+	8MFb43TlBwWlzn7ExoBfhGRpLhpPRg1oWXL3Gwo8g/GsCxdh+AFFZLC9lR1uFhClHucbml48Fbq
+	W6s0iKRDbMCFEUTo+bXyNycwxKc2KztjRrhPLxrBX1lCn5kI9GN9FnYj1f5UZztyfwHTFxfjGFf
+	Zfbi5CEq660Yhydabrka9/geGRNbLBauj2UoxUo0qMII/5TxYCAuUo+oWnfv6kef0z1DAlBWEZ2
+	SeZX0M9gfQpsPW226l4GxtNnsWV9mJ7p196FE9CIWC90t570XCjfkWlJQnCbURsZOYKuEBDA2Je
+	rmCoiw/wjLf0At1FTPOnsdYrtrlAr9FrMkUubPsWmrPSrsJt0Zir4ypMdDxwZ6uaHDJWY3u0+k4
+	0UX0vefcj7w+frHxJYCjeQDWo4YhQSFbcg1sSsRJk4ojojKYbVpqK4e2xkjJDsnitO6TuCZkmoJ
+	9ns4UkGvHAgmOYAhKkKOATBnjWZEW60JIM8vkLlPTYlqcmfU
+X-Received: by 2002:a05:6a00:1806:b0:881:552b:15bf with SMTP id d2e1a72fcca58-897c6e1b2bdmr16161905b3a.19.1792007302159;
+        Wed, 14 Oct 2026 12:48:22 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89d8050d76csm1468779b3a.52.2026.10.14.12.48.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 12:48:21 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
 	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Corey Leavitt <corey@leavitt.info>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>, netdev-bot+sashiko@kernel.org,
-	sashiko-bot@kernel.org, devicetree@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 0/7] net: pse-pd: decouple controller lookup
- from MDIO probe
-Message-ID: <as_a8jrU9F45iCk4@pengutronix.de>
-References: <e70bea49-c18a-4d47-9cf5-fd7b8e7675cc@bootlin.com>
- <20261013090933.3552546-1-github@szelinsky.de>
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michael Stapelberg <michael@stapelberg.de>,
+	linux-kernel@vger.kernel.org (open list),
+	netdev@vger.kernel.org (open list:ETHERNET PHY LIBRARY)
+Subject: [PATCH v3] powerpc/lib: prefetch ahead in __csum_partial()
+Date: Wed, 14 Oct 2026 12:48:17 -0700
+Message-ID: <20261014194818.11640-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261013090933.3552546-1-github@szelinsky.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
 
-Hi Carlo,
+__csum_partial() walks the buffer linearly and reads each cache line
+exactly once. On cores without a hardware prefetcher, such as the 464FP
+in the APM82181, every new line is therefore a demand miss that stalls
+the loop. Packets received by non-coherent DMA are never in the cache,
+so this is the common case for GRO checksum validation: when routing
+TCP with GRO enabled on a Meraki MX60, __csum_partial() takes about 30%
+of all cycles and is the top entry in the profile.
 
-On Tue, Oct 13, 2026 at 11:09:33AM +0200, Carlo Szelinsky wrote:
-> On 10/13/26 10:39, Kory Maincent wrote:
-> > On 10/13/26 09:40, Paolo Abeni wrote:
-> >> @Carlo: you should always reply to the AI review, even to point out
-> >> previous discussion on the same point. And you should try to be more
-> >> concise (even in the cover latter, should a repost be needed).
-> >
-> > Indeed, the cover letter should be more concise. It's hard to read like 
-> > that.
-> 
-> Hi Köry, hi Paolo,
-> 
-> Thanks for the feedback. I will reply to the AI review points and make
-> the cover letter shorter.
-> 
-> I am already working on v9, because some of the AI findings are real.
-> So if you don't mind, you may want to wait for v9 before reviewing.
+Issue a dcbt MAX_COPY_PREFETCH cache lines ahead in the main loop,
+the same distance csum_partial_copy_generic() already uses. That is
+128 bytes on the 44x. dcbt is only a hint and never faults, so
+prefetching past the end of the buffer is harmless. Lines that are
+already cached, for example when checksumming data the CPU just wrote,
+are left untouched.
 
-If it is possible to split this patch set, please try. it will be easier
-to pass the review.
+Measured on a Meraki MX60 (APM82181 at 800 MHz), single TCP stream
+routed through a qca8k DSA switch, iperf3 median of 5. Only the dcbt
+was toggled at runtime, in the same boot:
 
-Thank you for your work!
+              LAN->WAN               WAN->LAN
+              Mbit/s  csum cycles    Mbit/s  csum cycles
+  before      495     30.5%          439     27.2%
+  after       599     15.3%          520     13.7%
 
+That is 58% less time spent in __csum_partial() per byte.
+
+The prefetch distance was chosen with an earlier, slower driver
+configuration (median of 3, Mbit/s):
+
+  distance    LAN->WAN   WAN->LAN
+  none        370        341
+  64 bytes    430        381
+  96 bytes    438        397
+  128 bytes   438        385
+  160 bytes   434        386
+  256 bytes   423        383
+
+Prefetching the first lines before entering the loop made no
+measurable difference and is not done.
+
+Assisted-by: LLM
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ v3: use MAX_COPY_PREFETCH
+ v2: reword commit message and retest numbers.
+ arch/powerpc/lib/checksum_32.S | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/lib/checksum_32.S b/arch/powerpc/lib/checksum_32.S
+index cd00b9bdd772..5bb872e9e68f 100644
+--- a/arch/powerpc/lib/checksum_32.S
++++ b/arch/powerpc/lib/checksum_32.S
+@@ -43,6 +43,7 @@ _GLOBAL(__csum_partial)
+ 	bdnz	2b
+ 21:	srwi.	r6,r4,4		/* # blocks of 4 words to do */
+ 	beq	3f
++	li	r9,MAX_COPY_PREFETCH*L1_CACHE_BYTES /* prefetch distance */
+ 	lwz	r0,4(r3)
+ 	mtctr	r6
+ 	lwz	r6,8(r3)
+@@ -52,7 +53,8 @@ _GLOBAL(__csum_partial)
+ 	lwzu	r8,16(r3)
+ 	adde	r5,r5,r7
+ 	bdz	23f
+-22:	lwz	r0,4(r3)
++22:	dcbt	r3,r9
++	lwz	r0,4(r3)
+ 	adde	r5,r5,r8
+ 	lwz	r6,8(r3)
+ 	adde	r5,r5,r0
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.56.0
+
