@@ -1,259 +1,159 @@
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C803147FAF5
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2553EEAC1
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792005469; cv=none; b=Wr9Y7I98WOsfUx6wZc5jdFAXbJ2ImCrAZPcGk7Ji1cOY5Yh7OWt0gjXNuSf9iUI5ub4eKIvVPlW78wp5G52aLGtYZrtARex6vJeiMTT3NaTQmhgzWdySnNmGWjF6Ms+i09+xqCH2bf6rtD2+xygTNSEuaLUBYa1FUZWsEDuOA3s=
+	t=1792005778; cv=none; b=BGFZBwGdv8uff8RLDdrE5MEw8VLZIPyBVWBR71UsjKwMtpE8uU4FpaRpmH4iFeShWoUE0Q1osdzTIOcj8NU+Tfj2ZCcCuikETChzaYuuyJOCURusvtdV2FAGPlKLp6s1Zayls39pFmYULGSEsjg8j2Q/5IvluG9QszzYyHATONg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792005469; c=relaxed/simple;
-	bh=8ch9zPHrRhoJf/XXXqGGMB796PWAdgWE+lKNbAT8TaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xr/UaSTrkznHZMTrCCwtD9CaopZ2pbj4ST7zKypiIazIMiR6GEGj1WIWKxZL6I+1sZz6BsHy3Klcmu0m7RDDZCKbav4dVZ9VOVJeqODrSAw6ZCTsbvJrAJ4zXyZ6s0u2fnrifRWtqbPaMiQb31+moK+UQdENC0kT6qQYmz1eNnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com; spf=pass smtp.mailfrom=trailofbits.com; dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b=EmRoe4N9; arc=none smtp.client-ip=74.125.82.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trailofbits.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trailofbits.com
+	s=arc-20240116; t=1792005778; c=relaxed/simple;
+	bh=k6hKy/iiYeC/tEylC9tyq/YIA9SjKP5IbxcHCVu/FJY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EADKWJQwYJl/xbAb2uCLvKor18Y7kTKLqlKeoBcfW6ZxXwmqEGa8gBbnXvWB8EZGZ7Vwvtg6Z5eonY2+XEPV3P7icw+9pbEGydj1xKAfzxe9Il3q7i9w7lkLcJsE/r4Ib3BHtR2vRA3SltRYDIXjHh2xquZ6+GLLxlEn+QB9fC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Z7hotjxh; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=trailofbits.com header.i=@trailofbits.com header.b="EmRoe4N9"
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-30b6dad2382so10377855eec.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:17:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="Z7hotjxh"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-53397554beaso7906431cf.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=trailofbits.com; s=google; t=1792005467; x=1792610267; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=cySd0bAdXDIqYUaxbcOqN6XcQ5s/toN0byY3dnGYBUg=;
-        b=EmRoe4N9jThwm9vfwHOSSEdj+JkwFYNZbhMHqYgMssxHgmsqtGrmFhdVXGPYtTQQo+
-         l86Cs5EMogZR1JYMH5mdrixdvSOApfVtzc55HQmQv5ydnehRkKuDaEMBLpRr0GqTynCo
-         36RUWRZ8lzFOTaoghRUfiK4NvA7zDW3UKwzbU9bLJ2PbCtDx9ZQrgIWkk/iUEztae+6R
-         ITEn589MyUn+qJhTTc0p/pXKzX6b5S1lHv820+glJ8LmNVFog/IcSzHYr1ZRwBuE7quj
-         euUu8WO+E61f9ci/QWyTQ2Jp7l5BtEZUZRis3CUvOI7fTkK5TPdkQ0MqDMZR7nR6SD8n
-         BgVQ==
+        d=rowland.harvard.edu; s=google; t=1792005775; x=1792610575; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MGLMFg8/OHrH6F2KqpVf23oCqRTqDJ+Uyk4rdMujuIo=;
+        b=Z7hotjxhBazBD4FeCixATp5dqFbxOh2t6H/zXUpcvgYayXw7gTPBAc+y22Pyf936r5
+         C54lUeOppLhraWJcVfzgWiPXeiGBg1Qv7FNwG9s3rl6UsegSAjxwzUvrvXd5Pk0/19JS
+         +tH+F6DBPbkcBVFOC5oLSTOslUxFOlq9y3gGkp7OG7FRr4J+tJ1ExbIMF/PqP2kmWOg1
+         pL/48tFt+6p18OReIxVJ0SLw3AxLqqBjd3eJH1NKs1qGFoGzcdvcX4Vt0idK0EOR9aL+
+         0F04DEJl8bAeVvpjzvrCrNXDZ3lDYPJKug69vh7fs7vwm1/j+orbd27uEttTOsY9CM62
+         Gs/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792005467; x=1792610267;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=cySd0bAdXDIqYUaxbcOqN6XcQ5s/toN0byY3dnGYBUg=;
-        b=IpG46hr8+3d8TAfiIqrfnTBxeS2BFRXOrDuTi9JQqP7VpOmwaiUj8jJ0r14sCNeAQo
-         uwX5KcsyuH1mlSb/Uqxon1MbKumlhvWaGyq1oL9piV9Aq3rdEtqfnKxTv8kK/sHKVVsl
-         jHCavXXoPwI/DDHqY9u/UHOn/3zXpdpr5R2Y/cDPGRw0WNKSsAIGN7YdjM1dtlH3BOIB
-         AArJRPF0yZARAGEzZH4VCQDz+TpVUOzKr81dJnwu4InyVD5x3e6ge/FgErGS20ITmtDo
-         Xqoatn99d+jELkBrT/nQ3hLY/wlnh771kDm2bc47+C5RMhZksHXZ28sC2mDsSgNX6Vrw
-         p6BA==
-X-Forwarded-Encrypted: i=1; AKwUvByCI7R5BIgfguieR4D/GZfti89unCnzx++33zEKw5fYEkwOcQjXw4ftlBeL7d510gySdKm5v5E=@vger.kernel.org
-X-Gm-Message-State: AFq9FYII8Sy0MtzzXsxbgT/zpTgOOV0zuXhR2u3tBzg5kZqpx0+nwT+D
-	scn6vNq5AwwYhxX3lf2tGLQ0+ie++y68+j4wZG6UvGefkFsnfL0V7yqZJAZuVe6Js2M=
-X-Gm-Gg: AYBFou2tMkAGl4tuyBUUs9CFqmg72/adRbxA2wmqNvoygfUWAkvTPsVANvFkSqQlv9H
-	jbQJz/xErd4QyAhQ64jXih3Rl7pBfs9jS+HkMtcXBD9cGhYk7xHachEZInVetFwZxA8rt+WwvEh
-	jLvTIpfc5KOgxLnSu/vvpH4By8aEI6/0E3PbedFy4Fkc6YpxxBID0eFzIAahBuYtcFZ3jKq/cZh
-	Q0JU9KKCaqFuDnfTztc1DySwiR47U2SNIUXaP+uL2uSTXuI2xkaGEPVe3Y+lg4ggbtL/DD31Kz5
-	I1ZlFjeikVde3gre1wfLZWCoT1Rkc8PpgPklEozXPHOQQ3kYml6JqBWV9EIb0i/bIGcdn/1YuPn
-	D9frWuZRzg91ftfM6RMxHW/jniCbZDaO5/50KUMsueaBI0xzl6fLGmL9eueDvUP/tHvHBT+o/Ph
-	c1suXJ4nhob1BKv8GD1cnMo5p8Q21chOka4OhUxyCi1cxUy72OoDIH9tb6yRFaOX7AlDGcKCJSQ
-	dqj+rt0GhAA8YDNKTZwXmWqi3Bjb2jmBf9F3Bv8iqoC9WW8C3Fgb81ttjHqd0axtiNmsgA=
-X-Received: by 2002:a05:701b:2810:b0:143:2701:9198 with SMTP id a92af1059eb24-16a610c9c0fmr21861153c88.36.1792005466629;
-        Wed, 14 Oct 2026 12:17:46 -0700 (PDT)
-Received: from localhost.localdomain ([2603:8001:5f01:8bab:39d1:d8de:aae7:23dd])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1746482c978sm28966433c88.13.2026.10.14.12.17.44
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 14 Oct 2026 12:17:45 -0700 (PDT)
-From: Artem Dinaburg <artem@trailofbits.com>
-To: stable@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	leon@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	mbloch@nvidia.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	saeedm@nvidia.com,
-	shayd@nvidia.com,
-	tariqt@nvidia.com
-Subject: [PATCH 6.6.y 2/2] net/mlx5e: Pass netdev to mlx5e_destroy_netdev instead of priv
-Date: Wed, 14 Oct 2026 15:17:37 -0400
-Message-ID: <20261014191738.24034-3-artem@trailofbits.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261014191738.24034-1-artem@trailofbits.com>
-References: <20261014191738.24034-1-artem@trailofbits.com>
+        d=1e100.net; s=20260707; t=1792005775; x=1792610575;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MGLMFg8/OHrH6F2KqpVf23oCqRTqDJ+Uyk4rdMujuIo=;
+        b=g2aOqqcp2KDTVm9MMdw5pYGATemMKkfU4HBQnGG4pAMIigc16tOmU1gYUAM3/x9pOO
+         VkfJ/IOp/m+o5AOUBh4ya5amRbMj4s5IJBdNqK1O/PP7d1X1k3WXOoRk9rfboyemp71l
+         OLNd6GSYI+S0Z90pwfTYzE5l6EDqd5lzjBFrlf64Ni3IVnVOSPu3sAlB/X6+REFor2n4
+         +phj2DO/Y1B177jn9Uiuv3V0io1HDgs/o76MSdHeSVLskQWjoXPlUnkM9oQwFLBMwhnd
+         wMPrg1M0zv2Q3CgqiM9R0nUjW/hy84Ppo/JIDvclSaf+9qS8HUA0EZEJXeoBes8+73o1
+         uaMA==
+X-Forwarded-Encrypted: i=1; AKwUvBwHXfpd3xgL7v8qVZA5O4bsiiBx+sAYv46g5euXtTJFv0yVbxBnZ28moVENLR7Y5crZaycZ5aw=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK4sTpu6pYE4ZN7HYY4P9esFioNzwHLG0AnP7xf1lbYa/zTLPZn
+	Nt8FVC4bQ/N83VI9/D54diEZkBwX2ccVldqJHQC4Zhqc6s+9eow+flH2VRJBdRwaOQ==
+X-Gm-Gg: AYBFou2isb58Jk/ZAYOAip2CXpQDXcc9ZxHSb6AaFQZ4KsGRviMQlYFg5xoVVzHSr62
+	VwNElx0Di+binlLEkXDYbBgP99v7ggAqvM7tKBUM/p2Aw+q/v7yR5QaHHoJMz+mY9X8ZNp48+NM
+	WHgR8XKTgtaaNJUyQsym2jV9MFTbz4J/gLkf5pp9NBmKzQ6TP1R1Z3nuyqnOYg6yNnZExQ7PDxc
+	Wadq4ESv3VPG04rnoHQ4TTGJ6PF5AUjN4VYcBsg/TM9bIIfkpPXQYiTr+BNGiAThpRear8pS1Zj
+	noz7WKifEX/c9a47Q1UMu3qexrt3OhXIXKp532qFigEina4pVsxNq8dZVojDpMjBAJPgZJO+R+3
+	DgcuS1nfOk0R2GJWXS1YaE+1yZaoE6HkE9j2cBOyjqIvSqP6o/tBCAlrhV0d0dILeB4XZyyYXr1
+	B5BfGe7KPDv5sPNmsIcHz36ZdmmflZfRRdAnvwTgfXV72QD8iJrFvU7vCI8JoOxh0n9n3jaf1C8
+	5tgxl5PPnP1i9NBaRe6tiIaJxu6vnLvBeXgFbrHOQ==
+X-Received: by 2002:ac8:5f0c:0:b0:533:3d83:c20c with SMTP id d75a77b69052e-5359fae8d7dmr290066141cf.23.1792005775330;
+        Wed, 14 Oct 2026 12:22:55 -0700 (PDT)
+Received: from rowland.harvard.edu ([2607:fb60:1011:2006:2008:aeb7:73d7:d8ff])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5361284b1e4sm4745731cf.31.2026.10.14.12.22.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 12:22:54 -0700 (PDT)
+Date: Wed, 14 Oct 2026 15:22:51 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?iso-8859-1?Q?=D6mer?= Mete Kaya <omermetekaya0@gmail.com>,
+	oneukum@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	david.laight.linux@gmail.com,
+	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
+Subject: Re: [PATCH net v6] usbnet: fix smp_processor_id() use in preemptible
+ context
+Message-ID: <89da3b1f-60e5-4f18-9592-3d6d7175c437@rowland.harvard.edu>
+References: <20261007200049.079aeb75@kernel.org>
+ <7c4a2f1c-f16d-479b-a11f-cef962d5e2c7@rowland.harvard.edu>
+ <20261008094338.301a75fa@kernel.org>
+ <06a81ea1-b17d-40bd-82d9-922de946b86f@rowland.harvard.edu>
+ <2026100910-petition-embattled-94cb@gregkh>
+ <20261012194902.aEq58Q6b@linutronix.de>
+ <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
+ <20261012212527.5sFqlGYu@linutronix.de>
+ <41af30de-4725-4913-9ad8-54d1dea2d4b8@rowland.harvard.edu>
+ <20261014191141.GxlJhR1e@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014191141.GxlJhR1e@linutronix.de>
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+On Wed, Oct 14, 2026 at 09:11:41PM +0200, Sebastian Andrzej Siewior wrote:
+> On 2026-10-12 22:09:25 [-0400], Alan Stern wrote:
+> > > > Today you fix VHCI, tomorrow some other virtual HCD will cause problems.
+> > > 
+> > > We don't have other virtual HCDs, do we?
+> > 
+> > Well, we've got dummy-hcd.  And just recently there was an RFC post with 
+> > a virtio USB HCD implementation.  It wouldn't be surprising to encounter 
+> > other ones.
+> 
+> dummy-hcd is timer driven (so BH). Without looking at virtio I would
+> expect it to be interrupt driven.
+> 
+> > Also, don't forget, URBs can complete in several different ways.  
+> > There's normal completion, explicit unlinking, unlinking because the 
+> > device was unplugged, unlinking because the device or HC is going into 
+> > suspend, and so on.  And there's a difference between URBs sent to 
+> > root hubs as opposed to devices actually on the bus.  Not to mention 
+> > that in some cases completions may occur synchronously with submission 
+> > or unlinking, even though they usually are asynchronous.
+> 
+> True.
+> 
+> > > Do you want to document it yourself and have me do the VHCI bits?
+> > 
+> > At the moment, the only thing I think we can actually guarantee is that 
+> > completion handlers will be called with local interrupts disabled.  No 
+> > commitments about process context vs. interrupt context vs. BH context 
+> > or anything else.
+> 
+> "local interrupts disabled" as is local_irq_disable()? If so, that is
+> not the case. If it completes in BH context (due to HCD_BH) then
+> interrupts remain enabled.
 
-[ Upstream commit 4ef8512e1427111f7ba92b4a847d181ff0aeec42 ]
+Yes, but we can call local_irq_disable() before invoking the completion 
+handler -- if we decide that would be a good thing to do.
 
-mlx5e_priv is an unstable structure that can be memset(0) if profile
-attaching fails.
+Otherwise I would say that we don't guarantee anything.
 
-Pass netdev to mlx5e_destroy_netdev() to guarantee it will work on a
-valid netdev.
+> > Of course, in special cases you might know more about how a particular 
+> > HCD works.  But except for platform-specific settings, it's hard to be 
+> > certain that your driver will always be used with that one particular 
+> > HCD.
+> > 
+> > If this is okay with you, I can write a documentation patch.
+> 
+> Sure. The kernel doc for usb_hcd_giveback_urb() says BH or caller's
+> context. I think you need to clarify that part and once we have tha, we
+> can proceed with the drivers.
 
-On mlx5e_remove: Check validity of priv->profile, before attempting
-to cleanup any resources that might be not there.
+What do you think?  Should local interrupts always be disabled, or 
+should we offer no guarantee?
 
-This fixes a kernel oops in mlx5e_remove when switchdev mode fails due
-to change profile failure.
+Completion handler routines will have to be conservative, so if we don't 
+guarantee anything then they will need to disable interrupts themselves 
+whenever they require it (for example, by using spin_lock_irqsave() 
+instead of spin_lock()).  The core could save them this extra effort, at 
+the cost of unnecessarily disabling interrupts sometimes.
 
-$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
-Error: mlx5_core: Failed setting eswitch to offloads.
-dmesg:
-workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
-mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
-mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: new profile init failed, -12
-workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
-mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
-mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
+USB isn't a tremendously fast bus, so the overhead probably doesn't 
+matter much.  Which tradeoff do you prefer?
 
-$ devlink dev reload pci/0000:00:03.0 ==> oops
-
-BUG: kernel NULL pointer dereference, address: 0000000000000370
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 15 UID: 0 PID: 520 Comm: devlink Not tainted 6.18.0-rc5+ #115 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-RIP: 0010:mlx5e_dcbnl_dscp_app+0x23/0x100
-RSP: 0018:ffffc9000083f8b8 EFLAGS: 00010286
-RAX: ffff8881126fc380 RBX: ffff8881015ac400 RCX: ffffffff826ffc45
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8881035109c0
-RBP: ffff8881035109c0 R08: ffff888101e3e838 R09: ffff888100264e10
-R10: ffffc9000083f898 R11: ffffc9000083f8a0 R12: ffff888101b921a0
-R13: ffff888101b921a0 R14: ffff8881015ac9a0 R15: ffff8881015ac400
-FS:  00007f789a3c8740(0000) GS:ffff88856aa59000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000370 CR3: 000000010b6c0001 CR4: 0000000000370ef0
-Call Trace:
- <TASK>
- mlx5e_remove+0x57/0x110
- device_release_driver_internal+0x19c/0x200
- bus_remove_device+0xc6/0x130
- device_del+0x160/0x3d0
- ? devl_param_driverinit_value_get+0x2d/0x90
- mlx5_detach_device+0x89/0xe0
- mlx5_unload_one_devl_locked+0x3a/0x70
- mlx5_devlink_reload_down+0xc8/0x220
- devlink_reload+0x7d/0x260
- devlink_nl_reload_doit+0x45b/0x5a0
- genl_family_rcv_msg_doit+0xe8/0x140
-
-Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Shay Drori <shayd@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260108212657.25090-4-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Assisted-by: LLM
-Signed-off-by: Artem Dinaburg <artem@trailofbits.com>
----
-Hi,
-
-Please consider this backport of the fix for CVE-2026-23035 to 6.6.y.
-
-The code changes are identical to upstream. Apply this series after the
-pending 6.6.y backport of 3d5918477f94 (net/mlx5e: Fix netif state
-handling), which fixes registration-failure cleanup.
-
-The complete fix is already present in 6.12.y, 6.18.y and 7.2.y.
-
-Build-tested only as part of a cumulative 6.6.y series on x86_64
-(allmodconfig, CONFIG_WERROR=y), changed objects only; no runtime testing.
-
-Thanks,
-Artem Dinaburg
-
- drivers/net/ethernet/mellanox/mlx5/core/en.h      |    2 +-
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c |   15 +++++++++------
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c  |    4 ++--
- 3 files changed, 12 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-index ee671e16f344cd160a65d2a84dc82d210af339da..0b10e86b508cab9091177dec46051e3e8593ed2a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -1202,7 +1202,7 @@ struct net_device *
- mlx5e_create_netdev(struct mlx5_core_dev *mdev, const struct mlx5e_profile *profile);
- int mlx5e_attach_netdev(struct mlx5e_priv *priv);
- void mlx5e_detach_netdev(struct mlx5e_priv *priv);
--void mlx5e_destroy_netdev(struct mlx5e_priv *priv);
-+void mlx5e_destroy_netdev(struct net_device *netdev);
- int mlx5e_netdev_change_profile(struct mlx5e_priv *priv,
- 				const struct mlx5e_profile *new_profile, void *new_ppriv);
- void mlx5e_netdev_attach_nic_profile(struct mlx5e_priv *priv);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index a296a73771c07fa00427ea072d9f9e26379ff8d7..191a152d62b6c1f67961e37dc4ee84cd4c26f1be 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5984,11 +5984,12 @@ void mlx5e_netdev_attach_nic_profile(struct mlx5e_priv *priv)
- 	mlx5e_netdev_change_profile(priv, &mlx5e_nic_profile, NULL);
- }
- 
--void mlx5e_destroy_netdev(struct mlx5e_priv *priv)
-+void mlx5e_destroy_netdev(struct net_device *netdev)
- {
--	struct net_device *netdev = priv->netdev;
-+	struct mlx5e_priv *priv = netdev_priv(netdev);
- 
--	mlx5e_priv_cleanup(priv);
-+	if (priv->profile)
-+		mlx5e_priv_cleanup(priv);
- 	free_netdev(netdev);
- }
- 
-@@ -6116,7 +6117,7 @@ err_resume:
- err_profile_cleanup:
- 	profile->cleanup(priv);
- err_destroy_netdev:
--	mlx5e_destroy_netdev(priv);
-+	mlx5e_destroy_netdev(netdev);
- err_devlink_port_unregister:
- 	mlx5e_devlink_port_unregister(mlx5e_dev);
- err_devlink_unregister:
-@@ -6134,13 +6135,15 @@ static void mlx5e_remove(struct auxiliary_device *adev)
- 	pm_message_t state = {};
- 
- 	mlx5_core_uplink_netdev_set(mdev, NULL);
--	mlx5e_dcbnl_delete_app(priv);
-+
-+	if (priv->profile)
-+		mlx5e_dcbnl_delete_app(priv);
- 	unregister_netdev(netdev);
- 	mlx5e_suspend(adev, state);
- 	/* Avoid cleanup if profile rollback failed. */
- 	if (priv->profile)
- 		priv->profile->cleanup(priv);
--	mlx5e_destroy_netdev(priv);
-+	mlx5e_destroy_netdev(netdev);
- 	mlx5e_devlink_port_unregister(mlx5e_dev);
- 	mlx5e_destroy_devlink(mlx5e_dev);
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 656a7b65f4c7bb906979a4fa9f018d5567a8dfd8..380898125224e05661ebae3540c890b4248a87af 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -1539,7 +1539,7 @@ err_cleanup_profile:
- 	priv->profile->cleanup(priv);
- 
- err_destroy_netdev:
--	mlx5e_destroy_netdev(netdev_priv(netdev));
-+	mlx5e_destroy_netdev(netdev);
- 	return err;
- }
- 
-@@ -1594,7 +1594,7 @@ mlx5e_vport_rep_unload(struct mlx5_eswitch_rep *rep)
- 	mlx5e_rep_vnic_reporter_destroy(priv);
- 	mlx5e_detach_netdev(priv);
- 	priv->profile->cleanup(priv);
--	mlx5e_destroy_netdev(priv);
-+	mlx5e_destroy_netdev(netdev);
- free_ppriv:
- 	kvfree(ppriv); /* mlx5e_rep_priv */
- }
+Alan Stern
