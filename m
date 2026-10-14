@@ -1,133 +1,136 @@
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A87B23E325
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF01236DA0A;
+	Wed, 14 Oct 2026 19:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792006790; cv=pass; b=J8GWQIUDLBbvIvNj8H6x4ETEIe1e2JDsK/fd+uRoQEMO1aIbBrUldc9lcLmCpBoYCPJr92h8wH5oShWykDqox7JvnTYrIIHB5H5jdsVeDNYlzfMTOngyMbQwfHMgdA/2N/APV9S379vDBDOdOrwPVMmV2+fIfW31EvGe0I8qVJo=
+	t=1792006907; cv=pass; b=bLufYkMVWWHMdc8sfkmTAhYZuBwcgAON25ggUWxoADuJ4CBygCMRCTab147Hl5FFtg/tXOcnf18MeJl5XjogV8zlTs+voWlPfIevL8+EocZSeHOr+PMRKp5BS8T0dwKK4eeu+4ZBwzzLo3cDG3eTnXZjv58QPqYC2d7zICjUkXk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792006790; c=relaxed/simple;
-	bh=eJFElgSXUJujuFS4iSbIYgdO8yAQihmg+DEkh014jp4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rvwF0UsKa428YD97WnBSLCl2yZjmeWS94cmIZobhDSQDg31TVN9xGm94XpIguZd4HkF2f/rxCYOyJt5pzbOQr6CsXzEHhIINscbgpqKHhVr1LDbSfmsB5Cl+3Qwi5AGIgR4Y5Ys2GqfI5uq3BbkOsEB3TpxZxDfWlvLG7zS4HHw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VVUzKd6K; arc=pass smtp.client-ip=74.125.224.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792006907; c=relaxed/simple;
+	bh=3kiqDHXOFYarnpPmrSQ6KreQBzixYm9FgKqGaA3CXMM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T/BZxEqIQ0bVmIc1khQeKOf2XQ3tXtw/EgH0NeF6SKckmoR3+2d3OrxSeMdgntlH0eIL/mpbuRK4gkYdfFXdBDn73L2vYOb/pJALTVvBQUoXJoRbJMoBNzdeG7JsWUyz+kokycXJLn2CWWpIn1TBD9Sz+QzIiLRmhoV0L+dbCAI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=W0Ubx5QN; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VVUzKd6K"
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-67699afea08so3738239d50.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:39:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792006788; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kKbcNLBgGEGN6y9DL6BottIci3zElePOyb6sFBzG7o9x2PFpsHqrojU2E+xhihNwum
-         W6sHEwHdPJqWcEuSEUHryVmEnxEW5xMxcFxx8F9VM5KwVSi2HVjdU+GnFeBPxmWsGtXD
-         Ufe8djul1K7+arpMEonJn+8K+qt6e28K+GImCxgirJF5XrY3G1do3KZiO3vR2vOYqIv+
-         ujEbwMdHPN1z6hItgvWPPEWqcfjJAUIKXiqQcAy9eqXkZn3bG7t5ZRXvtH2b+JdrU80o
-         kd5lsZEoxPOcJIHq29uN9M4TZi0W0kuFLHRZCZ2QMPqePc50eYhMJ/+7mVRU4ymFsnJr
-         QViQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2IO0j046R1JBih2lmjNwdbOGe71mIwkZVC39lh+ufic=;
-        fh=ihzOX9/cKy6D05lDTNzdl7qZU5Y3pEnKSy0BAtCDgcU=;
-        b=PTchtGDSRT/6hUFKT3g/MrN0ei5k/L5ZYxB0069VrGFr2onpaNSefrY1+kmqmQvw0F
-         f1w3i8uZ+tQFFJeBZF6YvXIk8SsEpsFhjh/a4f2AdMcmGY6snPqifweDOp747z1HCZ1x
-         Z0/Q+AIJBYQZSrE6STfh/q8No7vxAFTTT9g4hnu6Y/wbALf1I7Eg7ys1/N7L8GM6tUm+
-         850Yx8bQrlwNjZqJEQHbpZ3L6m1EjAa8nE2vCDU0XYaIl5croxPhFLZJUkqfz2VsdE5G
-         AhX73gOgWlxV6NchS+pxIDUbUhde4O7dDlwMXzLLkfkLeb8HVeg3Qia0dj9J58BCBk5q
-         mWig==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792006788; x=1792611588; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2IO0j046R1JBih2lmjNwdbOGe71mIwkZVC39lh+ufic=;
-        b=VVUzKd6KIr/CGShJv9Y+pAV1+MY+HVsIW0ehxPdGfpSnozQA1bQQCCTZfBlI3DooPO
-         RfSi9bke09gvoo3qjCA7IIZRpjD780POw2RJqqXDAVSsVOLFi7g/oVfpOuQyVysUSFtR
-         v6GSiG3d0Hub7SnF4KR5XLlj+ak0euwcF6Ohz9W3McrciIPizb+AzFr0scGS1anELlpp
-         U0MkQ7gk80RjNTGXI4zhWQJVtY1CWHMrUF/nyK5UUUuGjeTQbrs9rn7IsbvvKfAF1hmU
-         eAImI6sYWal8m2mbgVUxaj3rhZdn93N5xVgYHqW7H0bDZNJa0VL0ZxDe8vZSt2+L1lAa
-         4VKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792006788; x=1792611588;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2IO0j046R1JBih2lmjNwdbOGe71mIwkZVC39lh+ufic=;
-        b=PMh72UwokrF9MCgZyqrqvw+TqL0gexEUYOBJqA0N85+kG6O1mgyBwENd/9EFun4S5G
-         Obcrg0kwAYnCeZbtfJnWDpXfJCymlgaitgaboRc4wy/YpuwMSO9Tgee+q9aLi8T4ZQ/A
-         jDb9Rck6g58ihwqTf6/ugUbEDMGrl/fWj1mM/tfTyLOqHGnmab/11+BmqCTfUVcFzFu3
-         6FF5g44nbFfrcR/f17worFjDkHPseR7Tz0D+Y/yuZo9+V3o3L5s3KpH5gDyrIuS+KLIF
-         BZwcx6xGmUw4C7VokpmaLmVsi9SR73hC8z8KuTcW9lxrhVD9k8eRFf3r6UOaw/LiMCV7
-         A+vg==
-X-Forwarded-Encrypted: i=1; AKwUvByLxt+XBBb/zAjqntQKVTn4aqEyjKQchj2ERwwoeuqukm+aAfzHqkViEZQN9w7FSq01oKEcOXI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKrmwXBeBX5pkx9cmAGklSvrZvP6nLwTDUIWyYY0vmpQLe+bb3z
-	LspokKya+18JrHyEcSZ/bzXrH0idpVUXc3lwoQZZa6SUy6jkdeAUFElZfVm/6GfZf1mqRAHKiaN
-	EOCrraQ6PWJHhzu7EI3daw+OvJk8lvYJEJA==
-X-Gm-Gg: AYBFou2wi7IV7bFeBg7hzXjszO7vF0Phdc0e1C8SuyRC3ICVB0Oq5D/qItS5o+uR+c3
-	/8bCHTiAGxqI/i4PFcxghrm5Wfvgc2GnI53Gxdas6WV/b+t5GoZUgNl0D8Q2H+soLG0DTCvteUK
-	z4uUwTPcsnIQiysUwEoIBaRU4nwYDeid1aJkJoxQjSIexN6EIxqcqKYhpAJ7cFLmyCbAq2Ru406
-	lhcb8KUo6gR/dZtGQ94Jvc2rIFDU3dvk8OgvyvPSxyAlNsdp+OcgGS8I0xKRyzncQemCa5AIMpX
-	FxQXIcgfQTolV6nFMcwrF3nZHlUFS4hvpCvW8HAWP1iNGjwpuD3X1/6oes+luXURU0EsKxyt7j5
-	CKSN0q1OTud5MRuZWjp11H9iiq01JAXrldb3wAymVhg==
-X-Received: by 2002:a05:690e:1381:b0:679:9c43:8599 with SMTP id
- 956f58d0204a3-6799c4388aemr182026d50.8.1792006788093; Wed, 14 Oct 2026
- 12:39:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="W0Ubx5QN"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 66001201C8F;
+	Wed, 14 Oct 2026 21:41:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792006898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hQBqU5bjyvst58Zc94ghtKF7c6DSrihGDVx2Uj/uHQw=;
+	b=W0Ubx5QNFt+5tNCfpIYQ52BsewhQo4t4p5+YiOgoQ+co54MM4YeESJ0TowRE3XAdb0BbKb
+	Ea+gfqMsh7BfSp1hC6DufcCnqQeL4x52wMw7D6JQDSqczErcQ6zLjvz/Z7XYC8ntZYg7eb
+	PuxUE2my2rCu/ApXpkg5EqaOv20xm5E5YDCjUHjhlsK9s1uC8WczPBXGK7djPpSurBlqJm
+	PU39laKcpb4rVjoVtp9duXoWyvVBYXLhIt1mY9WmgYEfrmTrwHv1OWMcO/6KXXrLlks5Mq
+	6cZS6vSPbjnE8PQws+iahHMx32vrMYaF9M+FLKmQRgXuCH7ceVTKJMXzKaO+jA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792006898; a=rsa-sha256;
+	cv=none;
+	b=RSebYfutT3dLYGHUDo1Gg3wUAcL+TqkcTZ2rOZu22f1s9fzVQyhX9kaSOtdpKpwklce/ZD
+	/1SAkHDagZTT/mXUwoaVJiQ/8E42OU+fIDRowPvU6dxkIJsFAkiMeUr32/UXYN+U1FUUef
+	KFFSIGfyfevQC82HNuLjJpqOvzx2DYsv8ukTsj8DH74F5cTX9/up9yUd5ZWJV7azuLgqw2
+	4pKyly6IaTXbrI0FdIO5F/Zb56Z9BlTbZgRpAufNfSM57QaLwdq4zyaQK6PKxM+0cncJTo
+	cCm129gQwdFNkUtreQB/c9Y95J2MVLjyl/VDX6a0/TK0iDvnH//l4/PdUzdh7A==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=ore@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792006898;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hQBqU5bjyvst58Zc94ghtKF7c6DSrihGDVx2Uj/uHQw=;
+	b=Vw4ROAOTkz6DkXlDgA+XKY36lBANG1hfuNV2fM7GTzWKO6Cc/PpreS6FRDEkNZMry/oxL2
+	19d+6hq1gWgswDEid7oTuPciqQWh8Dwk/Kx5q60nmmwebkqhuQ7IdbOEsYklbFT6VmPZGx
+	lalY4inVvI2M/HI7Pui0LW0+q2vS3nIn/bODWfcsYuxVRwnM1VvgZgOGHTVWgXwPc4l2tu
+	OLpnzvKiTVLd+tMoB1Yrq4IC1qHxdP3AMcYse21ymRZ15tIWExtXhezQH2grFBTvsn0wA+
+	H0zADIOvNx7xsBQmLYFJP/7QygFhI0I2Sa3rW/LegcaT6yMk/3n5bO+yPRi4OA==
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xH4r4-005uMh-0w;
+	Wed, 14 Oct 2026 21:41:38 +0200
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1xH4r4-00000004lyy-0bAo;
+	Wed, 14 Oct 2026 21:41:38 +0200
+Date: Wed, 14 Oct 2026 21:41:38 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Carlo Szelinsky <github@szelinsky.de>
+Cc: Kory Maincent <kory.maincent@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Corey Leavitt <corey@leavitt.info>,
+	Jonas Jelonek <jelonek.jonas@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>, netdev-bot+sashiko@kernel.org,
+	sashiko-bot@kernel.org, devicetree@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v8 0/7] net: pse-pd: decouple controller lookup
+ from MDIO probe
+Message-ID: <as_a8jrU9F45iCk4@pengutronix.de>
+References: <e70bea49-c18a-4d47-9cf5-fd7b8e7675cc@bootlin.com>
+ <20261013090933.3552546-1-github@szelinsky.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6acf2628.2b8fbd69.39ddd4.b35fSMTPIN_ADDED_BROKEN@mx.google.com>
-In-Reply-To: <6acf2628.2b8fbd69.39ddd4.b35fSMTPIN_ADDED_BROKEN@mx.google.com>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Wed, 14 Oct 2026 13:39:09 -0600
-X-Gm-Features: AclHuK9O9xEtfZovC2yI34auhWFegKToVu2t4FvHh9BK_VNnwm2BJWgX248YCOQ
-Message-ID: <CAF=yD-+EF6OfMY9Fsvbm_wAHR8Do=EzgB_7aRRA=Zq8YzcjcjQ@mail.gmail.com>
-Subject: Re: [PATCH] net: tcp: fix fraglist GRO flushing on alternating TCP
- PSH flag
-To: =?UTF-8?B?U2hpbWluZyBDaGVuZyAo5oiQ6K+X5piOKQ==?= <Shiming.Cheng@mediatek.com>
-Cc: "davem@davemloft.net" <davem@davemloft.net>, Network Development <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261013090933.3552546-1-github@szelinsky.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 
-+ netdev@vger.kernel.org
+Hi Carlo,
 
-On Wed, Oct 14, 2026 at 12:50=E2=80=AFAM Shiming Cheng (=E6=88=90=E8=AF=97=
-=E6=98=8E)
-<Shiming.Cheng@mediatek.com> wrote:
->
-> Dear Willem
+On Tue, Oct 13, 2026 at 11:09:33AM +0200, Carlo Szelinsky wrote:
+> On 10/13/26 10:39, Kory Maincent wrote:
+> > On 10/13/26 09:40, Paolo Abeni wrote:
+> >> @Carlo: you should always reply to the AI review, even to point out
+> >> previous discussion on the same point. And you should try to be more
+> >> concise (even in the cover latter, should a repost be needed).
+> >
+> > Indeed, the cover letter should be more concise. It's hard to read like 
+> > that.
+> 
+> Hi Köry, hi Paolo,
+> 
+> Thanks for the feedback. I will reply to the AI review points and make
+> the cover letter shorter.
+> 
+> I am already working on v9, because some of the AI findings are real.
+> So if you don't mind, you may want to wait for v9 before reviewing.
 
-Do not send emails off-list.
+If it is possible to split this patch set, please try. it will be easier
+to pass the review.
 
-> The behavior differs depending on is_flist: when true, PUSH packets are
-> not merged, whereas when false, they are merged.
+Thank you for your work!
 
-That would be wrong. The rule is that in Linux software GRO, a large
-GSO aggregate may end with a segment that has the PSH flag set, but
-cannot aggregate subsequent segments.
-
-We have a testcase for this in tools/testing/selftests/drivers/net/gro_lib.=
-py:
-
-  - flags_psh: Packets with PSH flag don't coalesce
-
-FWIW I vibe coded a test flags_pshpsh that sends three segments {
-no-psh, psh, psh }. As expected, both pass.
-
-
-> When is_flist is false, the PUSH packets are merged into the first
-> packet, and the GRO first packets's flag is modified to PUSH. If
-> is_flist is true, besides merging into the first packet and modifying
-> its PUSH flag, would splitting the packets cause every single packet to
-> carry the PUSH flag? This seems unreasonable.
->
-> Would it be better not to merge PUSH packets?
-> Or is merging PUSH packets still acceptable, but we need a more
-> comprehensive solution to handle it ?
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
