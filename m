@@ -1,46 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB2D54528C;
-	Wed, 14 Oct 2026 14:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA444582E6;
+	Wed, 14 Oct 2026 14:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791987781; cv=none; b=MIlYVdK/ViOAIKUe51ZGEcSdf1GuLpMRRmF/chhfDIaonHngQUcfVJlOWu19wbt9EYkYTao/zJplSZkf8fbMW9iOXM4uNauCJnOAf262k0/ZX76qerDNdOwReuEUy7V3jG8QNTyabvB4hbe5LD6HqypjPOPSy8zYkNupl+tr46I=
+	t=1791988347; cv=none; b=asK54+fN1Y5YcEK3WaNf1Jv8/RBocM7N7x21f4vcGXWAyNqob8qHIwSFskwEOg0uvHGQsW6bRQZCEFtbiSarmLarSprrS/0Xj0q0DCz80xNHJ2aryLK/tMvemtzeqpBV5Hd3DiCUDdQ2RM/BdHkTjl5iEGCIVEHJ2u35467wrsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791987781; c=relaxed/simple;
-	bh=C1NGfgrv1E5ASxsQwAznI/T8oQm41TP2gZwE+h0mmig=;
+	s=arc-20240116; t=1791988347; c=relaxed/simple;
+	bh=rj4lErnJHXIRIvroMbe0dJX309uvoO0iMQDmNA553Vo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i3hB3jC9FvK/kfh3T1ujOBcxcBx/gQm9NhdRgsas1jDhzd357Hp2Yllu2m6OD4LoOcSmpTW1mjp4jXS3ulXZt1+uyG3fBC/tV6f4k09Lx5X1Kw2IBscpwLI/FJyycZZMPF0m/xPB7PaEWAGchVJsadp2z8HTjbVlrhiN+mz4avE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ee80/v85; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=SGHu3HMe7zyP7+lXB1OgUkxyke9Pjix3+8tqEXRaYbNjTSSKtgJ5/eCLcuAmhakHxZeUkKQsG2tuHzNJGahskVIpkUNCEt8XUj+Gq72maAw7Aj1EjIWHMAN0i2G9E3IEyV/UHwGv7GrN16rHuHpz23SniwFk6gb9cMPkNnIFsW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/KWiWcc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ee80/v85"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F001F000C4;
-	Wed, 14 Oct 2026 14:22:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/KWiWcc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548321F000C4;
+	Wed, 14 Oct 2026 14:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791987779;
-	bh=Uu0P8kyflDZVf/mBGOCfDqo7epBS82w1BcqWgsceJh8=;
+	s=k20260515; t=1791988346;
+	bh=nukyvaoE+wwPX/0XUeM7v+OP9T1JnMHkgJf8D7qR3AY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ee80/v85iVdOzFnlzkhUNS6zeauvYcctg1O8l8ATTt1LmuyRY/y2Jf14Hnj/KiFXG
-	 65D5y+2pGHsofCQT+51x3Wp02kjgL5B6YwJ5PIyXRTRi+d2bTrJFTei0Q1fxb3Yp9G
-	 kpePOWdzSYFJUFc1uVgLVVR4cimgOeOk05x3w7FyGJi5KZbMcjU3cmg2v527iKaYbq
-	 KTXeKX1oiAKbyn+E4f+W0/Qk4ZcS1UIwdv0KR1ucnxMJuCUdPwgq7afEjMXRQlwGrE
-	 semSmL0qweM6Cf3uWjL+L+Jrk12XZuwvGE4qJ7UavPHtOeIfMdX6MEfPtdGNKx4IZD
-	 ZcT6tsgv7nQGw==
-Subject: Re: [PATCH net-next v5 8/8] net: bcmgenet: reassemble jumbo frames
- from status block fragments
+	b=e/KWiWcc+nZT7+U9WYB8P4t1HgHnH1KGLHE3y6BuWDP57l5zlNamthA77oB1zoFdu
+	 jXmru81ln6ZkgBoLfbtbzd0I0iQFwTpjxMxvfEGZQgVnh5/ddA3aSpWqGZRZ0SMkTp
+	 C3cj9dfLwhNG5U6pZJ4OsE/rOm01I/WV+36nr5hZOxvSXRl3ZPxjEijHZygdwDfeHb
+	 daBRBR/WLP0hPxowDvx1ZrJxI8+WFwQd0A7ZiaZpEiymnEF8KvPGyfb3ppNWaBpB1I
+	 nOqf8FcFJstJ2+7TWscERtNTSCcRDjcuWwMfCBn8Qw/W1bLPLT+5ui+1FSPiKFHTCa
+	 4zzhUYcFuFLCg==
+Subject: Re: [PATCH net 1/4] mptcp: reset msk state on early connect failure
 From: netdev-bot+sashiko@kernel.org
-To: nb@tipi-net.de
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
- pierremarinleclercq88@gmail.com, f.fainelli@gmail.com
-Date: Wed, 14 Oct 2026 14:22:58 +0000
-Message-ID: <179198777861.434549.7442931129502036522@kernel.org>
-In-Reply-To: <20261013-nb-genet-mtu-nn-v2-v5-8-076b6fc240be@tipi-net.de>
-References: <20261013-nb-genet-mtu-nn-v2-v5-8-076b6fc240be@tipi-net.de>
-X-sashiko-severity: Low
+To: matttbe@kernel.org
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ caoruide123@gmail.com, stable@vger.kernel.org, vega@nebusec.ai,
+ sashiko-bot@kernel.org, weir@nebusec.ai, kuniyu@google.com,
+ daniel@iogearbox.net, kafai@fb.com
+Date: Wed, 14 Oct 2026 14:32:24 +0000
+Message-ID: <179198834484.434549.4616694240552704738@kernel.org>
+In-Reply-To:
+ <20261013-net-mptcp-misc-fixes-7-3-rc8-v1-1-932c9b182fc7@kernel.org>
+References:
+ <20261013-net-mptcp-misc-fixes-7-3-rc8-v1-1-932c9b182fc7@kernel.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,151 +51,135 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found more severe
-issue(s) in other patches of this series. This mail is only an FYI, in case
-you want to address the nit picks below when you respin.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider.
 
-Low priority / nit picks for your consideration:
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] This patch rewrote the comment above the TX checksum fallback in
-  bcmgenet_xmit() to say: "The MAC holds a frame to insert its checksum,…
-- [Low] This patch updated the comment on bcmgenet_pkt_rdy_thld() to say
-  the threshold covers the frame "up to the register maximum".
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but adaptive RX
-  coalescing gets per-poll counts where it expects cumulative counters.
+- [Medium] The new error path in mptcp_connect()
+  (net/mptcp/protocol.c:4224) calls…
 
 --
 
-net: bcmgenet: reassemble jumbo frames from status block fragments
+mptcp: reset msk state on early connect failure
 
-The hardware can split a frame across several RX descriptors and write a
-status block at the start of each one. With this commit,
-bcmgenet_desc_rx() strips those status blocks and joins the pieces into
-one skb. The commit also raises max_mtu to the limit of the 14-bit
-UMAC_MAX_FRAME_LEN, and TX frames longer than the threshold now fall back
-to a software checksum.
+This commit changes the mptcp_connect() error path. It now clears the
+fallback state (MPTCP_FALLBACK_DONE, allow_subflows,
+allow_infinite_fallback) and resets the first subflow context. The goal
+is that a later connect() on the same fd can use MPTCP again after an
+early fallback followed by an immediate connect failure.
 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 9f28006957d4d..323839adebbae 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/633
 
-[ ... ]
-
-> @@ -2200,8 +2197,8 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
->  		}
->  	}
->  
-> -	/* The MAC only inserts a checksum into a frame it holds in full, and
-> -	 * silently drops a longer one, so fall back to software.
-> +	/* The MAC holds a frame to insert its checksum, but only as much as
-> +	 * its FIFO takes. Longer frames are dropped silently.
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index e89a69ab927c9..e6f73a5ee630a 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -4212,9 +4212,16 @@ static int mptcp_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+>  	 * subflow_finish_connect()
 >  	 */
->  	if (unlikely(skb->len > priv->tx_thld_len) &&
->  	    skb->ip_summed == CHECKSUM_PARTIAL) {
-
-[Severity: Low]
-This isn't a bug, but does the new comment in bcmgenet_xmit() describe the
-limit the code checks?
-
-The condition under the comment compares skb->len with
-priv->tx_thld_len. That is the programmable packet ready threshold that
-bcmgenet_tx_pkt_rdy_thld() picks from the MTU, somewhere between
-ENET_THLD_DEFAULT and ENET_THLD_MAX units. It is not a fixed FIFO size.
-The commit message also says "anything longer than the threshold falls
-back to software".
-
-The new wording also drops "so fall back to software". The comment no
-longer says that these frames go through skb_checksum_help() rather than
-being dropped.
-
-Could the comment name the threshold and mention the software fallback?
-
-[ ... ]
-
-> @@ -2552,7 +2637,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
->  	}
->  
->  	ring->dim.bytes = bytes_processed;
-> -	ring->dim.packets = rxpktprocessed;
-> +	/* A long frame spans several descriptors but is one packet */
-> +	ring->dim.packets = rxframes;
->  
->  	return rxpktprocessed;
->  }
+>  	if (unlikely(err)) {
+> -		/* avoid leaving a dangling token in an unconnected socket */
+>  		mptcp_token_destroy(msk);
+>  		mptcp_set_state(sk, TCP_CLOSE);
+> +
+> +		spin_lock_bh(&msk->fallback_lock);
+> +		msk->allow_subflows = true;
+> +		msk->allow_infinite_fallback = true;
+> +		clear_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+> +		spin_unlock_bh(&msk->fallback_lock);
+> +
+> +		mptcp_subflow_ctx_reset(mptcp_subflow_ctx(ssk));
 
 [Severity: Medium]
-This is a pre-existing issue, not one introduced by this patch, but this
-hunk touches the DIM accounting. Should ring->dim.packets and
-ring->dim.bytes be cumulative counters?
+Is mptcp_subflow_ctx_reset() resetting more than this path needs? It
+clears the whole reset group and then sets local_id to -1:
 
-Each poll overwrites them with that poll's counts. bcmgenet_rx_poll() then
-passes them to DIM as a sample:
+net/mptcp/protocol.h:mptcp_subflow_ctx_reset() {
+	memset(&subflow->reset, 0, sizeof(subflow->reset));
+	subflow->request_mptcp = 1;
+	WRITE_ONCE(subflow->local_id, -1);
+}
 
-drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_rx_poll() {
+This also wipes two values that are set only once, when msk->first is
+created:
+
+net/mptcp/protocol.c:__mptcp_socket_create() {
     ...
-	if (ring->dim.use_dim) {
-		dim_update_sample(ring->dim.event_ctr, ring->dim.packets,
-				  ring->dim.bytes, &dim_sample);
-		net_dim(&ring->dim.dim, &dim_sample);
-	}
+	subflow->subflow_id = msk->subflow_id++;
+
+	/* This is the first subflow, always with id 0 */
+	WRITE_ONCE(subflow->local_id, 0);
     ...
 }
 
-dim_calc_stats() treats both values as counters that only go up and takes
-a wrap-aware difference:
+A second connect() gets the same msk->first back from __mptcp_nmpc_sk(),
+so this setup does not run again. The reset also runs on every immediate
+failure (ENETUNREACH, EAFNOSUPPORT, BPF pre_connect, ...), not only after
+an early fallback.
 
-lib/dim/dim.c:dim_calc_stats() {
-    ...
-	u32 npkts = BIT_GAP(BITS_PER_TYPE(u32), end->pkt_ctr, start->pkt_ctr);
-	u32 nbytes = BIT_GAP(BITS_PER_TYPE(u32), end->byte_ctr,
-			     start->byte_ctr);
-    ...
-}
+On the retry, local_id is -1, so the connect goes through:
 
-Two polls of the same size give a difference of zero, even under steady
-traffic. A smaller poll after a larger one wraps to about 4 billion.
+tcp_connect()
+  subflow_rebuild_header()
+    subflow_chk_local_id()
+      mptcp_pm_get_local_id()
 
-With adaptive-rx turned on through ethtool -C, would the ppms and bpms
-values that net_dim_stats_compare() uses to pick coalescing profiles be
-meaningless?
+mptcp_pm_get_local_id() returns 0 only when the msk local address matches
+the subflow's address:
 
-The baseline assigned rxpktprocessed per poll in the same way.
+	mptcp_local_address((struct sock_common *)msk, &msk_local);
+	mptcp_local_address((struct sock_common *)skc, &skc_local.addr);
+	if (mptcp_addresses_equal(&msk_local, &skc_local.addr, false))
+		return 0;
 
-[ ... ]
+mptcp_copy_inaddrs() runs only after a successful connect. For an unbound
+msk, the msk address is therefore still zero at this point.
 
-> @@ -2696,7 +2784,8 @@ static void bcmgenet_link_intr_enable(struct bcmgenet_priv *priv)
->  }
->  
->  /* Receive threshold in register units. Covers the alignment bytes and the
-> - * frame, but not the status block, which the hardware adds on top.
-> + * frame up to the register maximum, but not the status block, which the
-> + * hardware adds on top. A longer frame arrives in several descriptors.
->   */
->  static unsigned int bcmgenet_pkt_rdy_thld(unsigned int mtu)
->  {
+Wouldn't the kernel PM then give the MPC subflow a non-zero ID, either
+from a matching endpoint or by adding an IMPLICIT endpoint to the netns
+endp_list?
 
-[Severity: Low]
-This isn't a bug, but is "up to the register maximum" accurate for
-bcmgenet_pkt_rdy_thld()?
+If the endpoint table is full, mptcp_pm_nl_get_local_id() returns -ERANGE.
+tcp_connect() would then fail the retry with -EHOSTUNREACH, even though a
+valid route exists.
 
-The function clamps to ENET_THLD_MAX_LEN / ENET_THLD_UNIT, and
-ENET_THLD_MAX_LEN takes the smaller of the register limit and the page
-limit:
+A non-zero local_id on the initial subflow also seems to break endpoint
+removal. When that endpoint is deleted,
+mptcp_nl_remove_subflow_and_signal_addr() gets the ID from
+mptcp_endp_get_local_id(), which returns rm_id 0 for the MPC endpoint.
+mptcp_pm_rm_addr_or_subflow() then skips the initial subflow because
+id != rm_id, so the initial subflow is never closed.
 
-#define ENET_THLD_MAX_LEN	min_t(unsigned int, \
-				      ENET_THLD_MAX * ENET_THLD_UNIT, \
-				      ENET_THLD_PAGE_LEN)
+The reset also zeroes subflow_id, while msk->subflow_id has already
+advanced to 2. After a successful retry, mptcp_get_full_info() would
+report the first subflow with id 0:
 
-The comment above ENET_THLD_PAGE_LEN says "on 4K pages the page bounds
-the threshold before the register does". On 64-bit with 4K pages,
-ENET_THLD_PAGE_LEN works out to 3584, below the register limit of 3840.
-That value is also where jumbo frames get split across descriptors.
+	sfinfo.id = subflow->subflow_id;
 
-Could the comment refer to the page or ENET_THLD_MAX_LEN limit rather than
-the register maximum?
+But tools/testing/selftests/net/mptcp/mptcp_sockopt.c expects:
+
+	assert(sfinfo[0].id == 1);
+
+mptcp_disconnect() already behaves this way for subflow_id. The local_id
+part looks new, though: on the disconnect path, the msk still holds the
+addresses from the earlier successful connect.
+
+The commit message mentions only MPTCP_FALLBACK_DONE, allow_subflows and
+request_mptcp. Would it work to reset only request_mptcp here (plus the
+token and key fields if needed)? Another option would be to restore
+local_id to 0 and keep the original subflow_id for msk->first after
+mptcp_subflow_ctx_reset().
+
+>  		return err;
+>  	}
+>
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be%40tipi-net.de
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013-net-mptcp-misc-fixes-7-3-rc8-v1-0-932c9b182fc7%40kernel.org
