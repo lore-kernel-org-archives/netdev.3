@@ -1,392 +1,80 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9904A8FE3
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B024A8FE3
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791971878; cv=none; b=XZkIJ2ZElAkd3f/tyNA0c8pqK0AhLAZnAj4/Vnn0k2YhqB3r6QJ6XG5IujyDRfG9kNHeE277NZA32ZXLl3lInViL4/xRXzgg/0wA+mfxJMdQEtkWHs9LmXV34oyIuia0YPCNKfhCuTE4WvUBvSXmkapnE+XwaafoQJ3rz0ww6/Y=
+	t=1791971925; cv=none; b=dm2Umv2XLqFP9T7WK7oOQzSOPH0cWS68UefGhHMXdufLgoL7eNuutvhBgE54VvAMr1NWH7EIEMhOBq6I7kSogurTBFvI19hU5ja3kL+IrBUPKALG7cJs+hrqPR5c79O8rai5BxUnQf9IqIg23edCubGSh9EcgSRDU/wqCsqcYbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791971878; c=relaxed/simple;
-	bh=V8tm/yPwj2YfH8yitEElP9S7tiU4qwIG0oriSlLL44w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L21pjx9K5O6rGsyHjiQnl60ct2oqjwG8MZWTGxFNE4yknnZqeEALI3sTqiojeamu0sfKNSfqC101WFRsnATEOMZlq1zrDyCf7sXwTxXccj1r7/MS3jf+9KufddZEAAekobOIYbrBZhEVXyedl5XMnG3+oyyHW0deK5viHrEId8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ec2N/78S; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1791971925; c=relaxed/simple;
+	bh=Fe0pTB9v/NMFWEIVJRlbAaqpbgHkY6H3tbwL6WJVDE4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=m9+5mplbar+0lcC6uV6ewQcHIFXOIjDYPfUabULW2dcnZL+qWjsVLiI2KhGfrecX0DnLuoBVI7fRUbMqpTeJ1Zgl2h6c6yM279Bo9oQHXZWF8abVaVfzsMY9pl67m7AMCRWxDqNU8g0wnAX/ikSJzT1rt0Ozbfsm8Fal/yUJT/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DomwINdy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ec2N/78S"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c411d6615so2813712f8f.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:57:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791971874; x=1792576674; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ACPPyK0+gqe+ycEjjJs2TTLvtTPVz+VEJs6WV9i3hg0=;
-        b=ec2N/78Sq6U7DEjMXWnTBBla2qEiGNPeea/LE0/J5MMmwX6yBI/UbOfmNYtQFCbXhZ
-         tXkbIKiIwdp58u9CWhJn5XIRdAiwDnr9ZHxmt8oOWvfMZeN24jgAwC6WRss8CjDBcwXA
-         ji6NfV9pPt/EnswjJBqEs/KsoIJ7cbmJjTYjpy6nfzcAvvZQdo2Vcu7RW1AQQ1KK4Pd9
-         6SnT7Uh5SQKIP/f2b0HAFCL38l4rRYRWOpVJnnEK11AbSgtrC8gP6ie3aVPCkmJXcOTN
-         6nk+OsUjhkaSLL+hW1RNGWubuQEXK4MolxoO8OZOqvnyjkU0qqtd8eltQJmZ1Vgs23oY
-         g9Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791971874; x=1792576674;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ACPPyK0+gqe+ycEjjJs2TTLvtTPVz+VEJs6WV9i3hg0=;
-        b=Y9Dk/XPdAPOmG8dMJMZwpvVi6mVK0q/S64q0FkRX/0sPjReaEWubWgzftrxYsbw1Xn
-         /CtUcHuu+Pbx0Q47+74aViremIhZ1iDaqXO/nJOjNN+3Mt4Ko4ELxJ+NY987r+QM0TOz
-         EAAu7ztLu9yYiZB0vI4/k/3q/QZXSiCQRlQePlwod8/dTQ6S6DDfN3wCvi4fxcJSMf2e
-         z68aArzIqS4YVY6rYTnEBfocCHJ0ZwvetkjmJBGehI2A1HP9C13+dgwQFW0nBX5wutiR
-         mJbcV3NVsIEiKTZ7gsDQFaJx0XUZevTGLx6TSYnBNW7+VNktTsL8yXJyTQHcrjMCq4ZM
-         s9Zg==
-X-Forwarded-Encrypted: i=1; AKwUvBzf2m6uJyp2kwwd91ic5VkdlDHngh8NhQ6Ce3X5gSQz9PrxUVCA4FFfyC7bUoGeF0YkLCSiNHc=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ+QNyn9WS0Pg7gVyvg+QGVxxdIv/cLOgkDhbsP/MMP9oSB1Yn3
-	4DO6yqWLjoHaP9Jm77cCq7HcI9pbTjJSX8NFyHnrmWCvYpinOYTwoPCg
-X-Gm-Gg: AYBFou3k77CUcyfx9XgpYCsBOA7mE5iHianhx87KrsIVos/ZSzZ3rGqcO9/zLGDPgRi
-	nEBOCOnuq2Rcby/+mCp/90pIb30Q3ayqoF6ueUs3+zfaBs+TJEtwM9FJfEB9//Srpujq3DvBAw3
-	hd35YXFiNNgncWVZogc0JnLCkUAMusBckgXEAXPbOxCcPkRAAe8+PCTPJCmcQUwucOMBurWrHcH
-	bWC5aZgmA8j9zO6yAyAQotFBNzqcthixOvot5Vtz38O8p+XRjEj8/1hZzseaXCHz6mew6SK5ys7
-	NXetXiv9rUUJeuDPuNei0i0PXQCpR9ZBXbkD5MiF77DywfPOTTdoVwgnkgNK+uFttzzpIU76An8
-	P9pbJEqPl/y28Bpbn/U8fM7T+qj76KPdfo5JUykq+89Kk5rcdqCjIb04yfRpbKNAu/cPBoaE+rI
-	bCYLAB9Yo/o9BzGlRS6xB9OBHlgPknlQrC6YCdcfVRRNZygxfTj+Mf1VJjhwmhYh/eo6zdGkZQL
-	XGt8beXr9zS+1y4b2Nb6+x+jawlI72ykTsWAjc1Yzc2AiOh8YVYaPyg
-X-Received: by 2002:a05:6000:184e:b0:48b:174:eab1 with SMTP id ffacd0b85a97d-48dbaceb3f2mr26874342f8f.36.1791971874377;
-        Wed, 14 Oct 2026 02:57:54 -0700 (PDT)
-Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48de77b35b5sm4162746f8f.21.2026.10.14.02.57.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 02:57:53 -0700 (PDT)
-From: Mahe Tardy <mahe.tardy@gmail.com>
-To: bpf@vger.kernel.org
-Cc: andrii@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	eddyz87@gmail.com,
-	edumazet@google.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	liamwisehart@meta.com,
-	martin.lau@linux.dev,
-	pabeni@redhat.com,
-	song@kernel.org,
-	netdev@vger.kernel.org,
-	sdf.kernel@gmail.com,
-	ameryhung@gmail.com,
-	kuniyu@google.com,
-	memxor@gmail.com,
-	jiayuan.chen@linux.dev,
-	alan.maguire@oracle.com,
-	Mahe Tardy <mahe.tardy@gmail.com>
-Subject: [PATCH bpf-next v4] bpf: allow ksock connect/send calls from wq
-Date: Wed, 14 Oct 2026 09:57:43 +0000
-Message-ID: <20261014095743.35891-1-mahe.tardy@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DomwINdy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7845D1F000FF;
+	Wed, 14 Oct 2026 09:58:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791971924;
+	bh=5TjIajZe+VJN/YrB825hynL0UXMtHVnL909qBuZMkHo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=DomwINdyBQLytcOzRpIbRo+Hqkgqh8nj1cC6oAxPnvDVYlShBmyPAFO2YhM+93ZcO
+	 1x1XbuuhZlsz5iwGipyhsEBqkvXcLfxZhBHdri3cawdCrCHn9xJcsteIFvqar4Lk2Y
+	 KF/37l/y6C3arqkpJuUCN5k19qERRIqTYgHBPnUIsDee8MAVAxkmVEULA307MX2GNx
+	 2mtoGY4lsjky1kQ7lYh/yOkZC0ypc7wCEDQyRoRB9/hTW158S/YU80JoIMlGri8ggk
+	 xHIarhttumgfA16mRlp3LXZ92MVjv8U/gIgGjJs/e5SHdRuTdvCEY4x4/oezC2nSt2
+	 2Pvq/QMEI3GOQ==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@kernel.org, dsahern@kernel.org, horms@kernel.org, Ido Schimmel
+ <idosch@nvidia.com>
+Subject: Re: [PATCH net-next 0/2] ipv4: Remove netns argument from
+ fib_table_lookup()
+In-Reply-To: <20261014082612.1280756-1-idosch@nvidia.com>
+References: <20261014082612.1280756-1-idosch@nvidia.com>
+Date: Wed, 14 Oct 2026 11:58:40 +0200
+Message-ID: <87ecds8uy7.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-In the initial implementation in '7ae4eb14c5f9 ("bpf: Add ksock
-kfuncs")', it was decided to let the ksock kfuncs go through the LSM
-hooks instead of by-passing them, and thus to disallow the use of the
-kfuncs from asynchronous workqueues as the credentials would be
-different than the task context that triggered the kfuncs.
+Ido Schimmel <idosch@nvidia.com> writes:
 
-After some discussions, in particular at Plumbers 2026 at the
-presentation introducing this new ksock API[^1], it was agreed that
-by-passing the LSM from socket created by BPF programs should be okay
-and thus that the process context switch from kthread executing the
-workqueues wouldn't be an issue.
+> Commit c436a624f89e ("ipv4: Pass netns to fib_table_lookup()") added the
+> network namespace as an argument of fib_table_lookup() so that it could
+> be passed to the fib_table_lookup tracepoint. As noted by Paolo [1], the
+> function is called in the data path where the additional argument is
+> unnecessary overhead, as the namespace is only needed when the
+> tracepoint is enabled.
+>
+> This patchset stores the namespace in the FIB table instead and passes
+> it from there to the tracepoint, so that the namespace is only read when
+> the tracepoint is enabled. The tracepoint itself is unchanged.
+>
+> Patch #1 stores the namespace in the FIB table.
+>
+> Patch #2 passes the namespace from the FIB table to the tracepoint and
+> reverts the signature of fib_table_lookup() and its callers to what they
+> were before the above commit.
+>
+> No functional changes intended.
+>
+> [1] https://lore.kernel.org/netdev/43857d08-c4f4-44ce-a0b3-0e7fcc56bf90@r=
+edhat.com/
+>
+> Ido Schimmel (2):
+>   ipv4: Store netns in FIB table
+>   ipv4: Do not pass netns to fib_table_lookup()
 
-For now, the ksock kfuncs still trigger the LSM hooks but we relax the
-constraint on not using the workqueues as it will be useful for users
-triggering connect() or send() from non-sleepable programs (like
-tracing, support will be extended in future patches).
+For the series:
 
-Also adapt test_ksock_wq() added in 'c93cbdb13f99 ("selftests/bpf: Add
-ksock test for async callback guard")' to test that the connect() and
-send() kfuncs are now allowed and work when called from workqueues.
-
-Note that bpf_ksock_create() still checks for workqueue context
-execution and makes sure the current->nsproxy is defined as we rely on
-the network namespace to be defined (could be NULL in the case do_exit()
-was called on the task before the wq was scheduled) and to be the one
-from the task that triggered the SYSCALL bpf prog.
-
-[^1]: https://lpc.events/event/20/contributions/2430/
-
-Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
----
-I resent v2 as v3 instead of this fix by mistake, ignore v3.
-v3: https://lore.kernel.org/bpf/20261014091450.19107-1-mahe.tardy@gmail.com/
-
- net/core/bpf_ksock.c                          | 27 +------
- .../selftests/bpf/prog_tests/ksock_wq.c       | 29 +++++--
- tools/testing/selftests/bpf/progs/ksock_wq.c  | 77 +++++++++++++++----
- 3 files changed, 92 insertions(+), 41 deletions(-)
-
-diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
-index e9943aeeadd3..f74968397798 100644
---- a/net/core/bpf_ksock.c
-+++ b/net/core/bpf_ksock.c
-@@ -37,15 +37,6 @@ static void ksock_release_work_fn(struct work_struct *work)
- 	kfree(ks);
- }
-
--static bool bpf_ksock_has_user_task_context(void)
--{
--	/*
--	 * Task work can run from do_exit() after exit_nsproxy_namespaces()
--	 * cleared current->nsproxy, while current is still not a kthread.
--	 */
--	return !(current->flags & PF_KTHREAD) && current->nsproxy;
--}
--
- __bpf_kfunc_start_defs();
-
- /**
-@@ -59,7 +50,7 @@ __bpf_kfunc_start_defs();
-  * This function may sleep (sock_create), so it can only be used
-  * in sleepable BPF programs (SYSCALL).
-  * It cannot be called from a BPF workqueue callback because that callback
-- * does not retain the invoking task's namespace or security context.
-+ * does not retain the invoking task's namespace.
-  *
-  * @opts:	Pointer to struct bpf_ksock_create_opts with socket parameters.
-  * @opts__sz:	Size of the opts struct.
-@@ -73,13 +64,9 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
- 	struct bpf_ksock *ks;
- 	int err;
-
--	/*
--	 * sock_create() derives the network namespace, credentials, and cgroup
--	 * from current. Kernel threads, including BPF workqueue callbacks, do
--	 * not carry the context of the task that invoked the BPF program.
--	 */
--	if (!bpf_ksock_has_user_task_context()) {
--		err = -EOPNOTSUPP;
-+	/* sock_create() derives the network namespace from current. */
-+	if ((current->flags & PF_KTHREAD) || !current->nsproxy) {
-+		err = -EPERM;
- 		goto err_out;
- 	}
-
-@@ -165,9 +152,6 @@ __bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *ks,
- 	struct sockaddr_storage sa;
- 	int addrlen;
-
--	if (!bpf_ksock_has_user_task_context())
--		return -EOPNOTSUPP;
--
- 	if (!addr || addr__sz != sizeof(*addr))
- 		return -EINVAL;
-
-@@ -247,9 +231,6 @@ __bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *data,
- 	};
- 	int ret;
-
--	if (!bpf_ksock_has_user_task_context())
--		return -EOPNOTSUPP;
--
- 	ret = kernel_sendmsg(ks->sock, &msg, &iov, 1, data__sz);
-
- 	return ret;
-diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-index d6dc20b8f95b..cb50f9a1be2e 100644
---- a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
-@@ -4,6 +4,7 @@
- #include <unistd.h>
-
- #include "test_progs.h"
-+#include "network_helpers.h"
- #include "ksock_wq.skel.h"
-
- #define CALLBACK_WAIT_RETRIES 1000
-@@ -13,13 +14,22 @@ void test_ksock_wq(void)
- {
- 	LIBBPF_OPTS(bpf_test_run_opts, opts);
- 	struct ksock_wq *skel;
-+	char recv_data[sizeof(skel->data->send_data)];
- 	u32 callback_done;
--	int err, i;
-+	int err, i, port, rfd;
-
- 	skel = ksock_wq__open_and_load();
- 	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
- 		return;
-
-+	rfd = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 1000);
-+	if (!ASSERT_OK_FD(rfd, "receiver socket"))
-+		goto out;
-+	port = get_socket_local_port(rfd);
-+	if (!ASSERT_GE(port, 0, "receiver port"))
-+		goto out;
-+	skel->bss->remote_port = port;
-+
- 	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.ksock_wq_start),
- 				     &opts);
- 	if (!ASSERT_OK(err, "run ksock_wq_start"))
-@@ -28,18 +38,27 @@ void test_ksock_wq(void)
- 		goto out;
-
- 	for (i = 0; i < CALLBACK_WAIT_RETRIES; i++) {
--		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
-+		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE) == 2)
- 			break;
- 		usleep(CALLBACK_WAIT_US);
- 	}
- 	callback_done = __atomic_load_n(&skel->bss->callback_done,
- 					__ATOMIC_ACQUIRE);
--	if (!ASSERT_EQ(callback_done, 1, "workqueue callback completed"))
-+	if (!ASSERT_EQ(callback_done, 2, "workqueue callbacks completed"))
- 		goto out;
-
--	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
--		  "workqueue create rejected");
-+	ASSERT_EQ(skel->bss->create_ret, -EPERM, "workqueue create rejected");
-+
-+	if (!ASSERT_EQ(skel->bss->connect_send_ret, sizeof(recv_data),
-+		       "workqueue send bytes"))
-+		goto out;
-+	err = recv(rfd, recv_data, sizeof(recv_data), 0);
-+	if (ASSERT_EQ(err, sizeof(recv_data), "recv len"))
-+		ASSERT_MEMEQ(recv_data, skel->data->send_data, sizeof(recv_data),
-+			     "payload match");
-
- out:
-+	if (rfd >= 0)
-+		close(rfd);
- 	ksock_wq__destroy(skel);
- }
-diff --git a/tools/testing/selftests/bpf/progs/ksock_wq.c b/tools/testing/selftests/bpf/progs/ksock_wq.c
-index 16a1873d132e..6ec6103e2518 100644
---- a/tools/testing/selftests/bpf/progs/ksock_wq.c
-+++ b/tools/testing/selftests/bpf/progs/ksock_wq.c
-@@ -2,9 +2,11 @@
- /* Copyright (c) 2026 Isovalent */
-
- #include "vmlinux.h"
-+#include <bpf/bpf_endian.h>
- #include <bpf/bpf_helpers.h>
- #include "bpf_experimental.h"
- #include "bpf_tracing_net.h"
-+#include "bpf_misc.h"
- #include "errno.h"
- #include "ksock_common.h"
-
-@@ -14,15 +16,19 @@ struct ksock_wq_value {
-
- struct {
- 	__uint(type, BPF_MAP_TYPE_ARRAY);
--	__uint(max_entries, 1);
-+	__uint(max_entries, 2);
- 	__type(key, u32);
- 	__type(value, struct ksock_wq_value);
- } work_map SEC(".maps");
-
--int create_err;
-+char send_data[] = "hello from bpf workqueue";
-+
-+__be16 remote_port;
-+int connect_send_ret;
-+int create_ret;
- u32 callback_done;
-
--static int ksock_wq_callback(void *map, int *key, void *value)
-+static int ksock_wq_create(void *map, int *key, void *value)
- {
- 	struct bpf_ksock_create_opts opts = {
- 		.family = AF_INET,
-@@ -35,7 +41,32 @@ static int ksock_wq_callback(void *map, int *key, void *value)
- 	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
- 	if (ks)
- 		bpf_ksock_release(ks);
--	create_err = err;
-+	create_ret = err;
-+	__sync_fetch_and_add(&callback_done, 1);
-+	return 0;
-+}
-+
-+static int ksock_wq_connect_send(void *map, int *key, void *value)
-+{
-+	union bpf_ksock_addr addr = {
-+		.sin = {
-+			.sin_family = AF_INET,
-+			.sin_port = remote_port,
-+			.sin_addr.s_addr = bpf_htonl(0x7f000001),
-+		},
-+	};
-+	struct bpf_ksock *ks;
-+	int err = -ENOENT;
-+
-+	ks = ksock_ctx_get();
-+	if (!ks)
-+		goto out;
-+	err = bpf_ksock_connect(ks, &addr, sizeof(addr));
-+	if (!err)
-+		err = bpf_ksock_send(ks, send_data, sizeof(send_data));
-+	bpf_ksock_release(ks);
-+out:
-+	connect_send_ret = err;
- 	__sync_fetch_and_add(&callback_done, 1);
- 	return 0;
- }
-@@ -43,20 +74,40 @@ static int ksock_wq_callback(void *map, int *key, void *value)
- SEC("syscall")
- int ksock_wq_start(void *ctx)
- {
-+	struct bpf_ksock_create_opts opts = {
-+		.family = AF_INET,
-+		.type = SOCK_DGRAM,
-+		.protocol = IPPROTO_UDP,
-+	};
- 	struct ksock_wq_value *value;
--	u32 key = 0;
--	int err;
-+	u32 key __aligned(8) = 0;
-+	struct bpf_ksock *ks;
-+	int err = 0;
-
--	value = bpf_map_lookup_elem(&work_map, &key);
--	if (!value)
--		return -ENOENT;
--	err = bpf_wq_init(&value->work, &work_map, 0);
--	if (err)
-+	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
-+	if (!ks)
- 		return err;
--	err = bpf_wq_set_callback(&value->work, ksock_wq_callback, 0);
-+	err = ksock_ctx_insert(ks);
- 	if (err)
- 		return err;
--	return bpf_wq_start(&value->work, 0);
-+	for (key = 0; key < 2; key++) {
-+		value = bpf_map_lookup_elem(&work_map, &key);
-+		if (!value)
-+			return -ENOENT;
-+		err = bpf_wq_init(&value->work, &work_map, 0);
-+		if (err)
-+			return err;
-+		if (key)
-+			err = bpf_wq_set_callback(&value->work, ksock_wq_create, 0);
-+		else
-+			err = bpf_wq_set_callback(&value->work, ksock_wq_connect_send, 0);
-+		if (err)
-+			return err;
-+		err = bpf_wq_start(&value->work, 0);
-+		if (err)
-+			return err;
-+	}
-+	return 0;
- }
-
- char __license[] SEC("license") = "GPL";
---
-2.43.0
-
+Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
