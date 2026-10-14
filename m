@@ -1,91 +1,182 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95625262FD0
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB82496D34
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792017232; cv=none; b=a+fh251Qzdnv6/MD7Rbysy6lfBwgJGm5EoDApmIdBqRQha7Tts0GXGBwUIvyRjzOa0jhcDnAFhIexc7eB2poyx6ROptkyzi1OByd0CkK6232om3dbIMmJHWHWhD/cbZu9Uj5iE/T+1lmVshwpVAInsQledoqHZ8x90qxy96FFiY=
+	t=1792017597; cv=none; b=lUeGRJM85VKdbJFK0FjHufVbPjduI+5P3yF+byihHVvMUAweDTgDrWuqTUxCs/QIXG0n/8dr7B9FT2vPKc51cp4nHMumG6IFqaQVvRVNZq3agsOZ9zjy+NURBHah33WI30gzOMyvK60AZnekmaJrd+YvTSg8WkOXLEpYUyku0fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792017232; c=relaxed/simple;
-	bh=FLZ48c9+1s7tZ/mmPuqsNgafmCztujOo69MmQMPjPwg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R0nflcqnD/aKF9IhED3aeRAmFqnlmQT8RP9iiu76k2EfDL2jy85QDTmF3gFEawdSO7gHzDqm8aNHcsz5gPhrgSpFni7H5d91mnmNG1wTbB9MFBGjifl927QFsPLFfwyb/DrtT79kmQbdzg5RKJp+t/RKl7VnQfEEp065Y9hsvC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuRX2ENE; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1792017597; c=relaxed/simple;
+	bh=F0/PSnK0UYXRQwLpNd8hP6ZKOte9su8aiS8d81Stb/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M2LXPjF3CKJS/UJaOHNhdt+IM+CUkSgt+dCKsjuI0x4060hjhQL3unWwqT5J5E2flqbJHGWCmz5kpFj4qDL8MthxnxkMMTPHD4rh7XgDSct0z0hHq1SGtP4lwbCNzjRNVxkrZwSBmUEx2bTifQ+pH0AhAfLPrqz4sKP2SVURez4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkhdQU4B; arc=none smtp.client-ip=74.125.227.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuRX2ENE"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e7006bbf77so9512895ad.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:33:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkhdQU4B"
+Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2e823bf32e9so2034585ad.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:39:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792017231; x=1792622031; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FLZ48c9+1s7tZ/mmPuqsNgafmCztujOo69MmQMPjPwg=;
-        b=EuRX2ENE2AMf/VSodIpXkh2PJ/z89M3bnYMRGaQJ/pe8KIDG7GlhEAsmQWpvNDJbMF
-         B116NqZaqFdvmRNl2Ov9nKqRu6axNnKpyi/OZPFOvSvblyf6BFSfBrAYDfxWoWFN/SjZ
-         njZU/2MJqzBNOf5Hs2zP5LAhz5ETbhwtc6+sgdtQs2uV/pYPJlwqkJzChr6yEVV+xizn
-         7IjWyjmiC5tSTXCMmRlpsCmS23zmXx8t+DNvnwP2Kt5LxFX2//kl8Y6lQdQfEv8cUjCx
-         JITTaEt732MuZv+mw2slPgJYSDvCrd4Jn9xlQPqOJ+caFQlQDBsW/mOZH35GFRUe4t1z
-         1XtQ==
+        d=gmail.com; s=20251104; t=1792017596; x=1792622396; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8UyEnW2lOZvazx37QD4Yu1Cl+1Ebx+89Hh4Lc5xhOSk=;
+        b=NkhdQU4BSUgrd2KnOU1fSeIT0KDZl28mboXqjG1uBLY1r1/+3yH48RMQtFwfO3ccOu
+         kj3/AqdjT5QjGvsRjfIbBomr8UxWGwGz1NA6TTeyYwvaXZ5gKS4TIS6/Ww793+AEYSZ/
+         YFKQ6a5nHBfZJNJsbyHDOWm6xRkUkMQk4nS/mGqf/qvzS2oFKnEH9lHtzEqoOv5emqVb
+         5pOP98lBwbxUcRZqjr1Bsxw9xiCn4ce5nP0OCv2QQRrtXgu32aEiMV0jlCuYfG+YTddN
+         arVRRi1wBLb5/4CcJhyIs2pHBu5S8vGcxrigYhpr2IygHIo3B/Sw2AdrXIaAGFg27kbh
+         QYgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792017231; x=1792622031;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FLZ48c9+1s7tZ/mmPuqsNgafmCztujOo69MmQMPjPwg=;
-        b=dSPl/zhwM1jQtO+A8UaOG9wq1D9OtH73TZAJXPlhNVx93E1zfvhjgwoCuC5CKv4+7v
-         nhRphtd9slst5Q3d56CjmzfMnxBaLO/cMOiG5mIwC+9R5UmQKmoCYW0LVR+A998ykAMf
-         ngrBRcqoDfRYgmbG2BVIu5vkmgHtrpWPKDrgFSGOnbgtsitVphOKoNCcwZD9P/ntB/fo
-         vOVWajM1Q8QNhkmyBoEUMF5BFZWsPWP3h4Kidy0xZThA8MrX2o7Re00pks1N46xvc07K
-         CvdwqAfeOwS7DzPifv5vmA8QqiUVqSn4ZtKyhDrmEYcRiqlb9HsjKVRKMWiVJztRaU2O
-         f0lA==
-X-Gm-Message-State: AFq9FYKGu9Oxmn9HYg6Qga9YSsN3oFqyz0zfCh0Kh7I/6V9aKR3fMzoC
-	Qwq6jmV7f+MHYB/O4tAjJfIHWQTQLn7hwohrS8gET2yBUAs6h7w5BIOy
-X-Gm-Gg: AYBFou2f/CjVmNG41xpcQI6iSxSq5gPZNe23lXtW2eY0ArOR23DAiWlngWe+mqv3LD6
-	I5RGI8auqGuc9wf5+4ipYvv3cQWfhaZFWEg+wSzOt98Frol+yEhPFd+UGxBhPcziy7puNnqXSzF
-	JB+0rnOhcRT2I1V7TFugQCusbdk7slGTpunLYhj5KVQISoLuED67oJbYNulUIkmr/AjYXGpFtHF
-	yLRaqPtaTgMcci5n7fir0Ijm9dXKkkCUr5WsBdJUJxTIAhe2QfyLwEJa4Z27UtHYPRLrCkT/80b
-	QCv70okQx/sCF8WKvJD+8ksOJt+38BE1k7A1j/OOUoOPhIH5GwlMRs4+e9Kg5kFQcOKZing2a6U
-	VIC/c1G4VTpktb/XTxYLVJbOWM0OnG9H0/tndk5lDBWdhTWVsW9h4qX2yUsIHBqKdTcO1I/7zbo
-	cdvx+3g1vg7rDF0qACNkvKfO3JAsTABsmmjnToxT3FK54iajgR3irdJSlF79B3iemM2Or7R4B1r
-	rICTg0iJhYqbCpvYluR/97fAHkc/pFNGBO2TklySc2Zq9XWA0tzf9nRnPXDCPZds1E7n52NLtlc
-	8vbaVHiHsvSmyV9A9Nh6xfIXAEN483/eC+XsDsRsnRHVA+s=
-X-Received: by 2002:a17:902:e892:b0:2e8:21ee:f196 with SMTP id d9443c01a7336-2e842bcd165mr144577625ad.29.1792017230726;
-        Wed, 14 Oct 2026 15:33:50 -0700 (PDT)
-Received: from u9dbb0cac493f51.ant.amazon.com ([50.35.61.175])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422b8c4csm74514005ad.56.2026.10.14.15.33.50
+        d=1e100.net; s=20260707; t=1792017596; x=1792622396;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=8UyEnW2lOZvazx37QD4Yu1Cl+1Ebx+89Hh4Lc5xhOSk=;
+        b=tlxTyrUWInXoF0kDvI0VhiFrAoy2Pz4NnmsHGyhbSKvBEYzsktSlPrwavuE6fTVrrB
+         biARDg4jIrK6WdMkpptThuPPOEVufd2La7OQTVwoMk1UGcn4Ltrd8QI+U7DQbEjW44Yn
+         df0rMBmV2xXI5MXufOZDAMm8ru6nwfLO7iwsV6Nw7E/l+NQ7IrrFp8/fooI1X8TMRfPz
+         QXqqkHmuu5TnPgyi96ZmYhx2QMDzlyXPhDvArN5sJdAVEIqZkdnSJT1MmsoH/yC1FnVc
+         +r282cCxXbDB+dehR+m6OwGtO0LIE85mVh5GVChAtg3aIY50pFU8D8lKcqzWD7AiZG/A
+         oZRQ==
+X-Gm-Message-State: AFq9FYKeqNt85tcfdxrXgp025O1WtnnNd2kZ5LqjPoY6TkXa+s5nZfTg
+	XQq8gzI+xAGkeCkZrotKc5OHBo1AZvOjIsdHZWyuWwh8V4Vu5SN/QH1kGutNtWChgsY=
+X-Gm-Gg: AYBFou3NUDl9ycaa3j+rhiZA2ARSypoOPGtz5mVVH0OxJoffGg+RCHpokAgeZepbMfR
+	BtDJVzSFUVOWo8dJ2FiPhfU5u/V2giWMFg3l2Qj8Kw0vXHMiuxB2blAtc1NoS85o49euy4AYIIn
+	Vbr1dlXOZ0ta1dP0KciD1dXqK4ujkQxXAD4Y/bgj/HJ1F8QnxvCb41ngjfm1NoD6fr0OcU8vwC0
+	UiFyML5xTqZddQKb5+KqDbilFPi9023zt/BnFEBUwQGjnYtzIetyoxXmNpKMUdTpri5yVMRPqek
+	M0OK6yCcBpuJpt/uBjYNkQeRq4jzaeqrxnfnPE/SKEJMVTilDuspHInuCDA4puKVWrA9iGsOD6a
+	B+8I/CG8dnuNeyFqVRw2YY7h9r50kzClCr/D8WDXP5RsP8jJHTFRvdtb/ZgYZsoFiY7V2IQVslW
+	TMrpSP5bxL0KevK4D7JEi4ss9kRiBghjR+MqDxMHhz76KtoqzZphQDxBeC1zgSNdqT
+X-Received: by 2002:a17:903:1b0c:b0:2e9:3dd0:c8d with SMTP id d9443c01a7336-2e93dd01892mr28961315ad.14.1792017595732;
+        Wed, 14 Oct 2026 15:39:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:58::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8483c3dfcsm72333795ad.24.2026.10.14.15.39.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 15:33:50 -0700 (PDT)
-From: Carlos Fangmeier <carlos.fangmeier@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org,
-	Kurt Kanzenbach <kurt@linutronix.de>
-Subject: Re: [PATCH] net: stmmac: prevent kernel panic during XDP program and XSK pool transitions
-Date: Wed, 14 Oct 2026 15:26:28 -0700
-Message-Id: <20261014222628.3206770-1-carlos.fangmeier@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260605-main-v1-1-aed15b1cf1af@gmail.com>
-References: <20260605-main-v1-1-aed15b1cf1af@gmail.com>
+        Wed, 14 Oct 2026 15:39:55 -0700 (PDT)
+Date: Wed, 14 Oct 2026 15:39:47 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, Ayush Sawal <ayush.sawal@chelsio.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, John Fastabend <john.fastabend@gmail.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, Eric Biggers <ebiggers@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Petr Machata <petrm@nvidia.com>, 
+	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, Jakub Raczynski <j.raczynski@samsung.com>, 
+	Wang Zhan <wang.zhan@smartx.com>, Willem de Bruijn <willemb@google.com>
+Subject: Re: [PATCH net-next v3 3/6] net: skbuff: replace skb_page_unref()
+ and __skb_frag_unref() with skb_netmem_unref()
+Message-ID: <atAEVu_Hife2dWUz@devvm7509.cco0.facebook.com>
+References: <20261014173945.373295-1-almasrymina@google.com>
+ <20261014173945.373295-4-almasrymina@google.com>
+ <as_yg4hCCfpkukZB@devvm7509.cco0.facebook.com>
+ <CAHS8izPDAjfRFCM2LrC7tzVQRkGCcn6zsghEvHJ9FJ1ET9odYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izPDAjfRFCM2LrC7tzVQRkGCcn6zsghEvHJ9FJ1ET9odYg@mail.gmail.com>
 
-On Tue, Jun 10 2026, Jakub Kicinski wrote:
-> This still looks racy. Please look at other drivers
+On 10/14, Mina Almasry wrote:
+> On Wed, Oct 14, 2026 at 2:25 PM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
+> >
+> > On 10/14, Mina Almasry wrote:
+> > > Unreferencing a page_pool fragment with recycle=false decrements the
+> > > non-pp backing refcount instead of pp_ref_count, underflowing the page
+> > > refcount when the fragment was owned via page_pool (as on mlx4's RX
+> > > error path). Having both skb_page_unref() and __skb_frag_unref(frag,
+> > > recycle) made it easy for callers to pass hardcoded recycle=false on
+> > > SKB-owned fragments.
+> > >
+> > > Replace skb_page_unref() and __skb_frag_unref() with
+> > > skb_netmem_unref(netmem, recycle), which dispatches to
+> > > napi_pp_put_page() when recycle is true and put_netmem() otherwise:
+> > >
+> > > - Use skb_frag_unref(skb, ...) on SKB-owned fragments in mlx4, sky2,
+> > >   tls_strp, and skb_shift() so unrefs always match skb->pp_recycle.
+> > > - Use put_netmem() directly in tls_device's destroy_record(), which
+> > >   releases raw non-pp page references outside an SKB.
+> > >
+> > > Found by code inspection and confirmed with the KUnit tests added later
+> > > in this series; not observed in production. The mlx4, sky2, and TLS
+> > > call-site changes are compile-tested only.
+> > >
+> > > Assisted-by: LLM
+> > > Signed-off-by: Mina Almasry <almasrymina@google.com>
+> > > ---
+> > > v2:
+> > > - Note how the issue was found and how the change was tested.
+> > > - Link to v1: https://lore.kernel.org/netdev/20261010083935.3274178-4-almasrymina@google.com/
+> > > ---
+> > >  drivers/net/ethernet/marvell/sky2.c        |  2 +-
+> > >  drivers/net/ethernet/mellanox/mlx4/en_rx.c |  2 +-
+> > >  include/linux/skbuff_ref.h                 | 34 +++++++++++-----------
+> > >  net/core/skbuff.c                          |  7 +++--
+> > >  net/ipv4/esp4.c                            |  4 +--
+> > >  net/ipv6/esp6.c                            |  4 +--
+> > >  net/tls/tls_device.c                       |  2 +-
+> > >  net/tls/tls_strp.c                         |  2 +-
+> > >  8 files changed, 29 insertions(+), 28 deletions(-)
+> > >
+> > > diff --git a/drivers/net/ethernet/marvell/sky2.c b/drivers/net/ethernet/marvell/sky2.c
+> > > index 30facdece3e29..1d42a82db8f2b 100644
+> >
+> > [..]
+> >
+> > > --- a/drivers/net/ethernet/marvell/sky2.c
+> > > +++ b/drivers/net/ethernet/marvell/sky2.c
+> > > @@ -2501,7 +2501,7 @@ static void skb_put_frags(struct sk_buff *skb, unsigned int hdr_space,
+> > >
+> > >               if (length == 0) {
+> > >                       /* don't need this page */
+> > > -                     __skb_frag_unref(frag, false);
+> > > +                     skb_frag_unref(skb, i);
+> > >                       --skb_shinfo(skb)->nr_frags;
+> > >               } else {
+> > >                       size = min(length, (unsigned) PAGE_SIZE);
+> > > diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+> > > index 96f97fa0f5489..fe18606c2ab55 100644
+> > > --- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+> > > +++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
+> > > @@ -497,7 +497,7 @@ static int mlx4_en_complete_rx_desc(struct mlx4_en_priv *priv,
+> > >  fail:
+> > >       while (nr > 0) {
+> > >               nr--;
+> > > -             __skb_frag_unref(skb_shinfo(skb)->frags + nr, false);
+> > > +             skb_frag_unref(skb, nr);
+> > >       }
+> > >       return 0;
+> > >  }
+> >
+> > These do not support qops and don't advertise devmem tx, so they are not
+> > going to deal with netmems anytime soon, why touch these?
+> >
+> 
+> They're still using page-backed netmems that have 2 refcounts, and
+> frag ref/unref needs to pick the right one. Before they were
+> hardcoding false for the pp-recycle bit, so if a skb->pp_recycle==true
+> here for any reason, this code would hit a ref imbalance. Now after
+> this series both skb_frag_ref and skb_frag_unref do the right thing by
+> checking skb->pp_recycle.
+> 
+> This has nothing to do with net-iovs or devmem.
 
-You were right. The intel drivers (ixgbe/i40e) disable the queue pair
-as a unit around the pool swap rather than gating TX piecemeal, which
-is the pattern my patch was missing.
-
-Kurt Kanzenbach's series "net: stmmac: Fix XSK crashes on stm32mp2"
-[1] takes that approach for the XSK pool enable/disable path and is
-further along in review, so I'll drop this patch in favour of it.
-
-[1] https://lore.kernel.org/netdev/20261013-stmmac_xsk_crashes-v3-0-50fca7790af2@linutronix.de/
+Ack, I was a bit confused because I was assuming that these are not
+using pp at all, but looks like mlx4 does :-/ And I see you drop
+__skb_frag_unref so these have to be converted anyway...
+And I guess the same for __skb_frag_unref below.. Let me go through the
+rest of the patches and see if anything else catches my eye, thanks!
