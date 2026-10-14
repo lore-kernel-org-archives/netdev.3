@@ -1,111 +1,76 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA0C38F230;
-	Wed, 14 Oct 2026 20:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAC33EF643;
+	Wed, 14 Oct 2026 20:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792008178; cv=none; b=u77OXvgXYUUQNqSYJJv0DQRpAgNOhFGnSbI+90YHrtNgMYjBP4nBJRq1cpyB0rzxizj6bDbi+ucs/kBGtdDAaVQaO+dYae0nosYLMKxddosHij7NtCBHE9iM7OGdYnbHuAfupFjX+RV4N3HAl0Q877Jl4l3418qEwSqIFLE4H3I=
+	t=1792008381; cv=none; b=Ec4DRHL05ar3Uo3qavMdw3gEd+WqJX/s97g32GZDz5ylj8ZBc3zjXcnVey+SA4iAyeFPuB8tfZkFSIBbvMNuKc2cegFTo2dkQS1ZIUzbEcRsvPTOHJgemBXOD/tkLxBXnwnXgDvzEwU9bh2geNGKGp+0gk/uh1hiQF0ZoPHGKDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792008178; c=relaxed/simple;
-	bh=herUBcKN5sV6lWEohmV4av5FMJDC4ZqTgDybP/BD1Bc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E2h226q+2ZN/W1elhqeT3RiXYhZ0tH77abOFQk8++eWxv0UJ/wdsVUsJQY9Tmi2TtoQNzNFYqkLPSEJLHduICCMP1GlFkga427u1OFg2IZs21MHt4NnYDpaZEOjOsNdEWD12shxBbW+FlilMMRkzKtqsek6rAD8FIj3DVOEddX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=1p/SYUoi; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1792008381; c=relaxed/simple;
+	bh=STt+qlQ21qsLZEFC4WMmETmXxDWpEPitn6cC3OXRWKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JIboj/ImHD4OcIiKeSNfJyU/P8hGMBBJyHVhbBSSY4VNpqus93Ou7b00f2PzZDgxhhF/8Ba24HBHypSVmF0gS2zlKCp2CjlM+sSU97Jdjqq/mTyOvOea2cQvBNQQCefahCIEJW52ZEEiq1tkOGDsComLF2UcmwF5zy6ioxtYqIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UimVmlXi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="1p/SYUoi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1792008177; x=1823544177;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=herUBcKN5sV6lWEohmV4av5FMJDC4ZqTgDybP/BD1Bc=;
-  b=1p/SYUoiB3Z7uapZQ4ObkkBvM/hVumlZ6uCqEuuQk+VimPPWN7UqVSE9
-   zsCSjmiS/ah1AeD92R3WX3x1ykMjZLR/sr/JA56GuMSMqISZOh6ssEfN/
-   aXAuJnRMlJ1DLvvyeUO/qMzI3DQCpBLNH4S4Onwit81pbGBXprI9XKqfu
-   qU21rpggbcBGXFmC5NUQmRS30WnEzKyAeiMuR/vW5KTlQBL/fLT4rPehm
-   tT7v6bvl0Hdh9Cn/j/s+59lfSZ6CEn1xB+hCwmElvFTDXwYz08VjV+Zz6
-   otYK670JaxDSArDL1lJN6Kj8sbDOeFFKgL1E/CFOM9y04EvTqDXCqxLbf
-   Q==;
-X-CSE-ConnectionGUID: RLfPQW6IQ1eYbMesvt4Z2w==
-X-CSE-MsgGUID: KEuVrUxjROSB5VwviA3vjw==
-X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
-   d="scan'208";a="64109435"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 13:02:56 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Wed, 14 Oct 2026 13:02:56 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 14 Oct 2026 13:02:53 -0700
-Date: Wed, 14 Oct 2026 22:02:53 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: Thomas Fourier <fourier.thomas@gmail.com>
-CC: Iyappan Subramanian <iyappan@os.amperecomputing.com>, Keyur Chudgar
-	<keyur@os.amperecomputing.com>, Quan Nguyen <quan@os.amperecomputing.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, "open list:NETWORKING DRIVERS"
-	<netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next] drivers: net: xgene: Fix dma_unmap_single() size
-Message-ID: <20261014200253.boklssmfbnwairjy@DEN-DL-M70577.microsemi.net>
-References: <20261014084817.41805-2-fourier.thomas@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UimVmlXi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23E51F000C4;
+	Wed, 14 Oct 2026 20:06:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792008380;
+	bh=J74yMVdROHOSqDpQt8vzdEHyhc79HiSag/0ZDT/dVDY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UimVmlXi6yp/94y2kx8+9uB1XS4sKw3as8nM/huU5VvzIfpO6YQj+6B/3woC3x+bo
+	 Ia83E6ptRq9nK09Ko/BAX3FEKoa/QyxBRSogLPpNKX4yY8Iipqh/+raj6DPo//etlG
+	 nZlFs+4m7TVIRKP9ik9L32WGXvL/2eEPpx5Vsh1vRl5ONRXe7vuWNsVS2BvDA4L9JV
+	 xBYyx5X3Y8PBKWfhiJAvBwHNjNsElFDqKrGJnx1tvNrIzlEAFunLD5ackAoLgTholU
+	 8dFVU+1xGaRBSeyt+lV4BN1u2oUpiLZ4LnzQaopEz8AORu2Snv5R9sS/CWhwgIXomt
+	 CMX1cbJ/FGrHA==
+Date: Wed, 14 Oct 2026 13:06:18 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>, Maxime
+ Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
+ <Jose.Abreu@synopsys.com>, Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan
+ <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky
+ <leon@kernel.org>, Dragos Tatulea <dtatulea@nvidia.com>, Alexei Lazar
+ <alazar@nvidia.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net-next 0/3] net: use skb_share_check() in loopback
+ selftest hooks
+Message-ID: <20261014130618.4c50f817@kernel.org>
+In-Reply-To: <20261007-nb-net-selftest-shared-net-v1-0-458369bfa1ba@tipi-net.de>
+References: <20261007-nb-net-selftest-shared-net-v1-0-458369bfa1ba@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261014084817.41805-2-fourier.thomas@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Thomas,
-
-> In xgene_enet_refill_pagepool(), the skb->data is dma-mapped with length
-
-To me, it looks like the mapping happens in xgene_enet_refill_bufpool() and not
-xgene_enet_refill_pagepool().
-
-> len which is set to XGENE_ENET_STD_MTU which equals 1536. However, in
-> xgene_enet_delete_bufpool(), the same buffer is unmapped with length
-> XGENE_ENET_MAX_MTU which is 9600. This may erroneously unmap other
-> DMA buffers or cause other issues.
+On Wed, 07 Oct 2026 20:29:21 +0200 Nicolai Buchwitz wrote:
+> The loopback selftest hooks can get a shared skb when another handler
+> is bound to the device. Linearizing a non-linear frame then hits
+> BUG_ON(skb_shared()) in pskb_expand_head().
 > 
-> Change unmap length to XGENE_ENET_STD_MTU.
+> Stumbled over this on RPi CM4 (bcmgenet, with jumbo series applied +
+> WIP selftest patches) with a packet socket open at the same time as
+> running ethtool -t.
 > 
-> Fixes: 6e434627bce2 ("drivers: net: xgene: fix: Add dma_unmap_single")
-
-That commit mapped and unmapped with XGENE_ENET_MAX_MTU. At that point, there
-was no mismatch. I think the mismatch came with:
-
-Fixes: a9380b0f7be8 ("drivers: net: xgene: Add support for Jumbo frame")
-
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-> ---
->  drivers/net/ethernet/apm/xgene/xgene_enet_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> stmmac and mlx5 seem to have the same pattern, xgbe already handles
+> shared skbs. Patches 2 and 3 are compile tested only.
 > 
-> diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
-> index 507db46daf2b..2ddcbf27014e 100644
-> --- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
-> +++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
-> @@ -185,7 +185,7 @@ static void xgene_enet_delete_bufpool(struct xgene_enet_desc_ring *buf_pool)
->  
->  			raw_desc = &buf_pool->raw_desc16[i];
->  			dma_addr = GET_VAL(DATAADDR, le64_to_cpu(raw_desc->m1));
-> -			dma_unmap_single(dev, dma_addr, XGENE_ENET_MAX_MTU,
-> +			dma_unmap_single(dev, dma_addr, XGENE_ENET_STD_MTU,
->  					 DMA_FROM_DEVICE);
->  		}
->  	}
-> -- 
-> 2.53.0
-> 
+> As the impact is pretty limited and doesn't seem to bother anyone in
+> the wild, I've chosen net-next, but kept the Fixes tags. That matches
+> what Paolo suggested during the LPC track.
 
-/Daniel
+Wonder if we should follow up and rename skb_unshare to skb_unclone_full
+or some such? The "share" in the name is quite confusing for people who
+haven't been around for 10+ years..
