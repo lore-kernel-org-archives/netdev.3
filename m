@@ -1,159 +1,133 @@
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2553EEAC1
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792005778; cv=none; b=BGFZBwGdv8uff8RLDdrE5MEw8VLZIPyBVWBR71UsjKwMtpE8uU4FpaRpmH4iFeShWoUE0Q1osdzTIOcj8NU+Tfj2ZCcCuikETChzaYuuyJOCURusvtdV2FAGPlKLp6s1Zayls39pFmYULGSEsjg8j2Q/5IvluG9QszzYyHATONg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792005778; c=relaxed/simple;
-	bh=k6hKy/iiYeC/tEylC9tyq/YIA9SjKP5IbxcHCVu/FJY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EADKWJQwYJl/xbAb2uCLvKor18Y7kTKLqlKeoBcfW6ZxXwmqEGa8gBbnXvWB8EZGZ7Vwvtg6Z5eonY2+XEPV3P7icw+9pbEGydj1xKAfzxe9Il3q7i9w7lkLcJsE/r4Ib3BHtR2vRA3SltRYDIXjHh2xquZ6+GLLxlEn+QB9fC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=Z7hotjxh; arc=none smtp.client-ip=209.85.160.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A87B23E325
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792006790; cv=pass; b=J8GWQIUDLBbvIvNj8H6x4ETEIe1e2JDsK/fd+uRoQEMO1aIbBrUldc9lcLmCpBoYCPJr92h8wH5oShWykDqox7JvnTYrIIHB5H5jdsVeDNYlzfMTOngyMbQwfHMgdA/2N/APV9S379vDBDOdOrwPVMmV2+fIfW31EvGe0I8qVJo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792006790; c=relaxed/simple;
+	bh=eJFElgSXUJujuFS4iSbIYgdO8yAQihmg+DEkh014jp4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rvwF0UsKa428YD97WnBSLCl2yZjmeWS94cmIZobhDSQDg31TVN9xGm94XpIguZd4HkF2f/rxCYOyJt5pzbOQr6CsXzEHhIINscbgpqKHhVr1LDbSfmsB5Cl+3Qwi5AGIgR4Y5Ys2GqfI5uq3BbkOsEB3TpxZxDfWlvLG7zS4HHw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VVUzKd6K; arc=pass smtp.client-ip=74.125.224.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="Z7hotjxh"
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-53397554beaso7906431cf.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:22:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VVUzKd6K"
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-67699afea08so3738239d50.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:39:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792006788; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kKbcNLBgGEGN6y9DL6BottIci3zElePOyb6sFBzG7o9x2PFpsHqrojU2E+xhihNwum
+         W6sHEwHdPJqWcEuSEUHryVmEnxEW5xMxcFxx8F9VM5KwVSi2HVjdU+GnFeBPxmWsGtXD
+         Ufe8djul1K7+arpMEonJn+8K+qt6e28K+GImCxgirJF5XrY3G1do3KZiO3vR2vOYqIv+
+         ujEbwMdHPN1z6hItgvWPPEWqcfjJAUIKXiqQcAy9eqXkZn3bG7t5ZRXvtH2b+JdrU80o
+         kd5lsZEoxPOcJIHq29uN9M4TZi0W0kuFLHRZCZ2QMPqePc50eYhMJ/+7mVRU4ymFsnJr
+         QViQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2IO0j046R1JBih2lmjNwdbOGe71mIwkZVC39lh+ufic=;
+        fh=ihzOX9/cKy6D05lDTNzdl7qZU5Y3pEnKSy0BAtCDgcU=;
+        b=PTchtGDSRT/6hUFKT3g/MrN0ei5k/L5ZYxB0069VrGFr2onpaNSefrY1+kmqmQvw0F
+         f1w3i8uZ+tQFFJeBZF6YvXIk8SsEpsFhjh/a4f2AdMcmGY6snPqifweDOp747z1HCZ1x
+         Z0/Q+AIJBYQZSrE6STfh/q8No7vxAFTTT9g4hnu6Y/wbALf1I7Eg7ys1/N7L8GM6tUm+
+         850Yx8bQrlwNjZqJEQHbpZ3L6m1EjAa8nE2vCDU0XYaIl5croxPhFLZJUkqfz2VsdE5G
+         AhX73gOgWlxV6NchS+pxIDUbUhde4O7dDlwMXzLLkfkLeb8HVeg3Qia0dj9J58BCBk5q
+         mWig==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1792005775; x=1792610575; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1792006788; x=1792611588; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=MGLMFg8/OHrH6F2KqpVf23oCqRTqDJ+Uyk4rdMujuIo=;
-        b=Z7hotjxhBazBD4FeCixATp5dqFbxOh2t6H/zXUpcvgYayXw7gTPBAc+y22Pyf936r5
-         C54lUeOppLhraWJcVfzgWiPXeiGBg1Qv7FNwG9s3rl6UsegSAjxwzUvrvXd5Pk0/19JS
-         +tH+F6DBPbkcBVFOC5oLSTOslUxFOlq9y3gGkp7OG7FRr4J+tJ1ExbIMF/PqP2kmWOg1
-         pL/48tFt+6p18OReIxVJ0SLw3AxLqqBjd3eJH1NKs1qGFoGzcdvcX4Vt0idK0EOR9aL+
-         0F04DEJl8bAeVvpjzvrCrNXDZ3lDYPJKug69vh7fs7vwm1/j+orbd27uEttTOsY9CM62
-         Gs/w==
+        bh=2IO0j046R1JBih2lmjNwdbOGe71mIwkZVC39lh+ufic=;
+        b=VVUzKd6KIr/CGShJv9Y+pAV1+MY+HVsIW0ehxPdGfpSnozQA1bQQCCTZfBlI3DooPO
+         RfSi9bke09gvoo3qjCA7IIZRpjD780POw2RJqqXDAVSsVOLFi7g/oVfpOuQyVysUSFtR
+         v6GSiG3d0Hub7SnF4KR5XLlj+ak0euwcF6Ohz9W3McrciIPizb+AzFr0scGS1anELlpp
+         U0MkQ7gk80RjNTGXI4zhWQJVtY1CWHMrUF/nyK5UUUuGjeTQbrs9rn7IsbvvKfAF1hmU
+         eAImI6sYWal8m2mbgVUxaj3rhZdn93N5xVgYHqW7H0bDZNJa0VL0ZxDe8vZSt2+L1lAa
+         4VKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792005775; x=1792610575;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1792006788; x=1792611588;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=MGLMFg8/OHrH6F2KqpVf23oCqRTqDJ+Uyk4rdMujuIo=;
-        b=g2aOqqcp2KDTVm9MMdw5pYGATemMKkfU4HBQnGG4pAMIigc16tOmU1gYUAM3/x9pOO
-         VkfJ/IOp/m+o5AOUBh4ya5amRbMj4s5IJBdNqK1O/PP7d1X1k3WXOoRk9rfboyemp71l
-         OLNd6GSYI+S0Z90pwfTYzE5l6EDqd5lzjBFrlf64Ni3IVnVOSPu3sAlB/X6+REFor2n4
-         +phj2DO/Y1B177jn9Uiuv3V0io1HDgs/o76MSdHeSVLskQWjoXPlUnkM9oQwFLBMwhnd
-         wMPrg1M0zv2Q3CgqiM9R0nUjW/hy84Ppo/JIDvclSaf+9qS8HUA0EZEJXeoBes8+73o1
-         uaMA==
-X-Forwarded-Encrypted: i=1; AKwUvBwHXfpd3xgL7v8qVZA5O4bsiiBx+sAYv46g5euXtTJFv0yVbxBnZ28moVENLR7Y5crZaycZ5aw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK4sTpu6pYE4ZN7HYY4P9esFioNzwHLG0AnP7xf1lbYa/zTLPZn
-	Nt8FVC4bQ/N83VI9/D54diEZkBwX2ccVldqJHQC4Zhqc6s+9eow+flH2VRJBdRwaOQ==
-X-Gm-Gg: AYBFou2isb58Jk/ZAYOAip2CXpQDXcc9ZxHSb6AaFQZ4KsGRviMQlYFg5xoVVzHSr62
-	VwNElx0Di+binlLEkXDYbBgP99v7ggAqvM7tKBUM/p2Aw+q/v7yR5QaHHoJMz+mY9X8ZNp48+NM
-	WHgR8XKTgtaaNJUyQsym2jV9MFTbz4J/gLkf5pp9NBmKzQ6TP1R1Z3nuyqnOYg6yNnZExQ7PDxc
-	Wadq4ESv3VPG04rnoHQ4TTGJ6PF5AUjN4VYcBsg/TM9bIIfkpPXQYiTr+BNGiAThpRear8pS1Zj
-	noz7WKifEX/c9a47Q1UMu3qexrt3OhXIXKp532qFigEina4pVsxNq8dZVojDpMjBAJPgZJO+R+3
-	DgcuS1nfOk0R2GJWXS1YaE+1yZaoE6HkE9j2cBOyjqIvSqP6o/tBCAlrhV0d0dILeB4XZyyYXr1
-	B5BfGe7KPDv5sPNmsIcHz36ZdmmflZfRRdAnvwTgfXV72QD8iJrFvU7vCI8JoOxh0n9n3jaf1C8
-	5tgxl5PPnP1i9NBaRe6tiIaJxu6vnLvBeXgFbrHOQ==
-X-Received: by 2002:ac8:5f0c:0:b0:533:3d83:c20c with SMTP id d75a77b69052e-5359fae8d7dmr290066141cf.23.1792005775330;
-        Wed, 14 Oct 2026 12:22:55 -0700 (PDT)
-Received: from rowland.harvard.edu ([2607:fb60:1011:2006:2008:aeb7:73d7:d8ff])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5361284b1e4sm4745731cf.31.2026.10.14.12.22.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 12:22:54 -0700 (PDT)
-Date: Wed, 14 Oct 2026 15:22:51 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?iso-8859-1?Q?=D6mer?= Mete Kaya <omermetekaya0@gmail.com>,
-	oneukum@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	david.laight.linux@gmail.com,
-	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v6] usbnet: fix smp_processor_id() use in preemptible
- context
-Message-ID: <89da3b1f-60e5-4f18-9592-3d6d7175c437@rowland.harvard.edu>
-References: <20261007200049.079aeb75@kernel.org>
- <7c4a2f1c-f16d-479b-a11f-cef962d5e2c7@rowland.harvard.edu>
- <20261008094338.301a75fa@kernel.org>
- <06a81ea1-b17d-40bd-82d9-922de946b86f@rowland.harvard.edu>
- <2026100910-petition-embattled-94cb@gregkh>
- <20261012194902.aEq58Q6b@linutronix.de>
- <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
- <20261012212527.5sFqlGYu@linutronix.de>
- <41af30de-4725-4913-9ad8-54d1dea2d4b8@rowland.harvard.edu>
- <20261014191141.GxlJhR1e@linutronix.de>
+        bh=2IO0j046R1JBih2lmjNwdbOGe71mIwkZVC39lh+ufic=;
+        b=PMh72UwokrF9MCgZyqrqvw+TqL0gexEUYOBJqA0N85+kG6O1mgyBwENd/9EFun4S5G
+         Obcrg0kwAYnCeZbtfJnWDpXfJCymlgaitgaboRc4wy/YpuwMSO9Tgee+q9aLi8T4ZQ/A
+         jDb9Rck6g58ihwqTf6/ugUbEDMGrl/fWj1mM/tfTyLOqHGnmab/11+BmqCTfUVcFzFu3
+         6FF5g44nbFfrcR/f17worFjDkHPseR7Tz0D+Y/yuZo9+V3o3L5s3KpH5gDyrIuS+KLIF
+         BZwcx6xGmUw4C7VokpmaLmVsi9SR73hC8z8KuTcW9lxrhVD9k8eRFf3r6UOaw/LiMCV7
+         A+vg==
+X-Forwarded-Encrypted: i=1; AKwUvByLxt+XBBb/zAjqntQKVTn4aqEyjKQchj2ERwwoeuqukm+aAfzHqkViEZQN9w7FSq01oKEcOXI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKrmwXBeBX5pkx9cmAGklSvrZvP6nLwTDUIWyYY0vmpQLe+bb3z
+	LspokKya+18JrHyEcSZ/bzXrH0idpVUXc3lwoQZZa6SUy6jkdeAUFElZfVm/6GfZf1mqRAHKiaN
+	EOCrraQ6PWJHhzu7EI3daw+OvJk8lvYJEJA==
+X-Gm-Gg: AYBFou2wi7IV7bFeBg7hzXjszO7vF0Phdc0e1C8SuyRC3ICVB0Oq5D/qItS5o+uR+c3
+	/8bCHTiAGxqI/i4PFcxghrm5Wfvgc2GnI53Gxdas6WV/b+t5GoZUgNl0D8Q2H+soLG0DTCvteUK
+	z4uUwTPcsnIQiysUwEoIBaRU4nwYDeid1aJkJoxQjSIexN6EIxqcqKYhpAJ7cFLmyCbAq2Ru406
+	lhcb8KUo6gR/dZtGQ94Jvc2rIFDU3dvk8OgvyvPSxyAlNsdp+OcgGS8I0xKRyzncQemCa5AIMpX
+	FxQXIcgfQTolV6nFMcwrF3nZHlUFS4hvpCvW8HAWP1iNGjwpuD3X1/6oes+luXURU0EsKxyt7j5
+	CKSN0q1OTud5MRuZWjp11H9iiq01JAXrldb3wAymVhg==
+X-Received: by 2002:a05:690e:1381:b0:679:9c43:8599 with SMTP id
+ 956f58d0204a3-6799c4388aemr182026d50.8.1792006788093; Wed, 14 Oct 2026
+ 12:39:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014191141.GxlJhR1e@linutronix.de>
+References: <6acf2628.2b8fbd69.39ddd4.b35fSMTPIN_ADDED_BROKEN@mx.google.com>
+In-Reply-To: <6acf2628.2b8fbd69.39ddd4.b35fSMTPIN_ADDED_BROKEN@mx.google.com>
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date: Wed, 14 Oct 2026 13:39:09 -0600
+X-Gm-Features: AclHuK9O9xEtfZovC2yI34auhWFegKToVu2t4FvHh9BK_VNnwm2BJWgX248YCOQ
+Message-ID: <CAF=yD-+EF6OfMY9Fsvbm_wAHR8Do=EzgB_7aRRA=Zq8YzcjcjQ@mail.gmail.com>
+Subject: Re: [PATCH] net: tcp: fix fraglist GRO flushing on alternating TCP
+ PSH flag
+To: =?UTF-8?B?U2hpbWluZyBDaGVuZyAo5oiQ6K+X5piOKQ==?= <Shiming.Cheng@mediatek.com>
+Cc: "davem@davemloft.net" <davem@davemloft.net>, Network Development <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 09:11:41PM +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-10-12 22:09:25 [-0400], Alan Stern wrote:
-> > > > Today you fix VHCI, tomorrow some other virtual HCD will cause problems.
-> > > 
-> > > We don't have other virtual HCDs, do we?
-> > 
-> > Well, we've got dummy-hcd.  And just recently there was an RFC post with 
-> > a virtio USB HCD implementation.  It wouldn't be surprising to encounter 
-> > other ones.
-> 
-> dummy-hcd is timer driven (so BH). Without looking at virtio I would
-> expect it to be interrupt driven.
-> 
-> > Also, don't forget, URBs can complete in several different ways.  
-> > There's normal completion, explicit unlinking, unlinking because the 
-> > device was unplugged, unlinking because the device or HC is going into 
-> > suspend, and so on.  And there's a difference between URBs sent to 
-> > root hubs as opposed to devices actually on the bus.  Not to mention 
-> > that in some cases completions may occur synchronously with submission 
-> > or unlinking, even though they usually are asynchronous.
-> 
-> True.
-> 
-> > > Do you want to document it yourself and have me do the VHCI bits?
-> > 
-> > At the moment, the only thing I think we can actually guarantee is that 
-> > completion handlers will be called with local interrupts disabled.  No 
-> > commitments about process context vs. interrupt context vs. BH context 
-> > or anything else.
-> 
-> "local interrupts disabled" as is local_irq_disable()? If so, that is
-> not the case. If it completes in BH context (due to HCD_BH) then
-> interrupts remain enabled.
++ netdev@vger.kernel.org
 
-Yes, but we can call local_irq_disable() before invoking the completion 
-handler -- if we decide that would be a good thing to do.
+On Wed, Oct 14, 2026 at 12:50=E2=80=AFAM Shiming Cheng (=E6=88=90=E8=AF=97=
+=E6=98=8E)
+<Shiming.Cheng@mediatek.com> wrote:
+>
+> Dear Willem
 
-Otherwise I would say that we don't guarantee anything.
+Do not send emails off-list.
 
-> > Of course, in special cases you might know more about how a particular 
-> > HCD works.  But except for platform-specific settings, it's hard to be 
-> > certain that your driver will always be used with that one particular 
-> > HCD.
-> > 
-> > If this is okay with you, I can write a documentation patch.
-> 
-> Sure. The kernel doc for usb_hcd_giveback_urb() says BH or caller's
-> context. I think you need to clarify that part and once we have tha, we
-> can proceed with the drivers.
+> The behavior differs depending on is_flist: when true, PUSH packets are
+> not merged, whereas when false, they are merged.
 
-What do you think?  Should local interrupts always be disabled, or 
-should we offer no guarantee?
+That would be wrong. The rule is that in Linux software GRO, a large
+GSO aggregate may end with a segment that has the PSH flag set, but
+cannot aggregate subsequent segments.
 
-Completion handler routines will have to be conservative, so if we don't 
-guarantee anything then they will need to disable interrupts themselves 
-whenever they require it (for example, by using spin_lock_irqsave() 
-instead of spin_lock()).  The core could save them this extra effort, at 
-the cost of unnecessarily disabling interrupts sometimes.
+We have a testcase for this in tools/testing/selftests/drivers/net/gro_lib.=
+py:
 
-USB isn't a tremendously fast bus, so the overhead probably doesn't 
-matter much.  Which tradeoff do you prefer?
+  - flags_psh: Packets with PSH flag don't coalesce
 
-Alan Stern
+FWIW I vibe coded a test flags_pshpsh that sends three segments {
+no-psh, psh, psh }. As expected, both pass.
+
+
+> When is_flist is false, the PUSH packets are merged into the first
+> packet, and the GRO first packets's flag is modified to PUSH. If
+> is_flist is true, besides merging into the first packet and modifying
+> its PUSH flag, would splitting the packets cause every single packet to
+> carry the PUSH flag? This seems unreasonable.
+>
+> Would it be better not to merge PUSH packets?
+> Or is merging PUSH packets still acceptable, but we need a more
+> comprehensive solution to handle it ?
