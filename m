@@ -1,120 +1,181 @@
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7DC38655A
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:59:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72692D47F1
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792004352; cv=none; b=qlzSYiY9keuhgFtGJR/uDN8lelaObXGNHnXs0WhLFC5DCwOQ4ebJr/EyfQjJ3ALBsfnwQqpDSJM9r4eaHf6WXuLEqhES/WqlISp1G8IdhMmVaFho0N5O00JA6E17hgSSLiPp5vQNWoe0SD1Se+WA2h6t7bxw5VInKKBiCY498sg=
+	t=1792004462; cv=none; b=mKPcUTaPqRvEhbvPCzjFQJlPN3XycaUrFG0Ztp9ZpraOg/2kYACkWNHAoSoMv+OxhHvSg6c3lwQra6lwkamxUFuDp/dnw9HA1k7jI4aLblv5PdmolKMs39LqzJnY9eiGPffcFAD4AOhnjkBMWAOd1rmYWGxQhD80wEnzEoBMURQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792004352; c=relaxed/simple;
-	bh=Rk54IAaE6VVUUw2LLHOVHkQVqBe3J7+3RvRWEEH/U2c=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=gNY+fq2i1SQ2Zl3AChM7LZBtslcVt3dnax0De7+cnWfpe6rRXTl2udpT8DOmJy0J448eJ/CH/SeJR4Pdd5H8AUrdmlufWT5wIWNaOEbtA0I7AClLvRB6ZHHgpyZCdgMWBVu+5ObsP5b7rofyQIZK0S0aEAgfmZSJFNRvuNVCE3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACUdX9uh; arc=none smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792004462; c=relaxed/simple;
+	bh=IHNui2Edtj7RfSDakzU/n/5qDlIVockIk2fUBsZ73XY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qeivmTs67PlyiTsttvflrq8pqbrwmNyuIlGXkY/l16Qcg25xpKxjcR4IKQjruMmnb/GKjzy0riAGmZQT/TsOF1U7JROghrlN3IPgXtNPyze7zRLUpxovlLmWHC32RQ6yy1/zPeyxjzNLZjkUzuG+do51+99cjoQ8CIzvivrcjKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QWkjTE5a; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=a87L15lU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACUdX9uh"
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5e9405fbc33so1912437e0c.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:59:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QWkjTE5a";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="a87L15lU"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69EHR8V6841906
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:00:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	voN+/DnSvNdqF9FDu+3qMGQaGXIMjzAKCkLlGWfn+W8=; b=QWkjTE5apijBfBE6
+	nq2/otO/V/2ZLXOJPZ4IhjF77TvAVYeXfGJUTZijKqX1/2YBFj1G2Mwaeg4hRXaH
+	oyrwWf8p3v6pXFMhsvyj77wSgTE2O8VB+tyvWIC3ekuA3HUMbUlu7/u3P6hKd+3F
+	p7PXrJZc+LrUrH7gKmsP9L+8ZKTVmzSpwGBDBWZvY72qPo5b+6gcN/zQNCvVTLjc
+	jaCu7CDfvNPy6WBQpi6MoeLZmnERpP+02zz7TmorU5QZsket1NbHfmbPEQ3/wPB3
+	P4R1MgZVWBVuOsBEGzPLwEqvuQIVEVUBHlkO7IrlQoAbU+tLINl9aMQeiGAQ8E/9
+	hBRu1w==
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hae4wrc1b-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:00:50 +0000 (GMT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-143826c4a13so2710328c88.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:00:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792004350; x=1792609150; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LubmNDov+kRdJeSgDmNkTIoCyYOuN6AaFESo8XksX+A=;
-        b=ACUdX9uhrjCQKOJNqny++2sBR8t9Y6CrMAgUBfktaL/EF9F1nnfYH5IMEf/GDjjFGt
-         QA5VTDoOGMvg3vJybBlg56rMVFd5NkHgVijKVbD8i51daSkxfMwtLEjgQy0lpF5UBdmI
-         VMlVOXW8oEgddav0TP9GZT5Mr3ycKRToI9WhY7BOSbApSNCS10G+etk+v6HUFcau5Kqf
-         2nGjWFB/i6zxDoQGqUMD7BNaif120D1yDDUzvaV3PB40SglQZnkaMYWi6BTkEGxNSU6E
-         yIsb2stFBpB747PFuJRhoV3q60H20gP6xU1cMrAXEMbJ4vqMcX3+8UofL5iE4FiAiqtz
-         2uWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792004350; x=1792609150;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=oss.qualcomm.com; s=google; t=1792004449; x=1792609249; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LubmNDov+kRdJeSgDmNkTIoCyYOuN6AaFESo8XksX+A=;
-        b=oBQ6aFGKoyHA7uTOobwUSxcSpQFm1DWehFK7o49DUCWPKsgv1BQReu3xFnlyOVCHrZ
-         TToTLmrhINnltQRp8OQ/ALn+45e01wJLapDDxWTZks4na5cVEnthKi4pR2B99/UGqIaR
-         ldLuYMfbhsFzW+4tQwju782NqotUedlddzK8ygJcou8lzHr5ibwsmpyuJqJY4oFcCeVA
-         mJhaSbIId0lUeZsFUDi2SSZrFQd4Qf7vAF8NstUKeDfnK/UcqHTkLPdM7FIrP+eK5bS+
-         w7GyjDPF0oppvQYyaB1NvoQjRd59XgeEuKxG0c4lD+K4v1iOXJeJoQMaa9pjGWzS8wQQ
-         z0kA==
-X-Gm-Message-State: AFq9FYLPb/KsVGM0rjp4DhReg1H/3rAoMyzh382OP81xWPRfS5o7obVZ
-	zVDGw0zU0Zd7Y20YN45TWs/Lw8UD+0V8B47DPLHuou6aZN8Vvp+E9RZO
-X-Gm-Gg: AYBFou1qf8yCN+eBF2tfOLW27I0qVzusfnwC+bRHXSER3Iom5514+ElVf8GDi5JeI0L
-	Yv+Q+Ps+BdGppe3KFRGyONJAYHwYZVVLuf8N+UqHANVs8jjWErFTvwBOiCqj/Xc6OTfZiACMY3V
-	xNkpAD3vrQDqJfNOKSVqukLeH+vF7Dwnroxw+f5soNkUG3TiNTBC9BiAx4weVUYMi6WwWHYZOhG
-	3e4omYsB0+qqOYAqhNaZnaFbw55kq4uNuii6QUV7o9KNsFrTKI/0ecAmnpcc6wF/8NyBkpQLA1w
-	QAGARs3UR2/SQSocKcXKRwFFeKfw3VccvBuFnpApQ3j6A3mJ+EUNQaJRkhNlFzpmBIg7xLawPqP
-	cbpGHjNoWvh3/jl5wGGyjabsb0w4S2RdRSAuqV0cWuySi7LV4mFwqEsj0E4n5yBU8TRcG4t9jF0
-	JSeskwMLVc5V1uwFzBb4fRB5FKo6mERtANc2hcUn5ORyqxEZWLygkgcX6X0Otx+j9/6hvkGMS9r
-	167UqyPtrUiDqz0KIMSDssk2ixisP+kqrEJapPVj3UyrZXEP3IuzJc42pJzUX3IATFZxH0e4E1v
-	mBDvH623qNujk5xIvW5/8K/v98EwrUOx5ALdPg==
-X-Received: by 2002:a05:6122:4f9d:b0:5e1:c1c8:9ff9 with SMTP id 71dfb90a1353d-5e91f28cd89mr6035507e0c.2.1792004350298;
-        Wed, 14 Oct 2026 11:59:10 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5e91cc14668sm11985603e0c.16.2026.10.14.11.59.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 11:59:09 -0700 (PDT)
-Date: Wed, 14 Oct 2026 14:59:09 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Josef Bacik <josef@toxicpanda.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Kaiyuan Zhang <kaiyuanz@google.com>, 
- Mina Almasry <almasrymina@google.com>, 
- Willem de Bruijn <willemb@google.com>
-Cc: netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, 
- Josef Bacik <josef@toxicpanda.com>
-Message-ID: <willemdebruijn.kernel.1725d296e3ac6@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.140f4eac91ab3@gmail.com>
-References: <20261006-b4-skbuff-bug-on-v1-0-1b4434c5357c@toxicpanda.com>
- <willemdebruijn.kernel.140f4eac91ab3@gmail.com>
-Subject: Re: [PATCH net-next 0/9] net: skbuff: convert most BUG_ON()s to
- WARN_ON_ONCE() and an error
+        bh=voN+/DnSvNdqF9FDu+3qMGQaGXIMjzAKCkLlGWfn+W8=;
+        b=a87L15lUm+E/OFFERlOR/ZyRstHSfj/AHyGqlzeGplaxj26f0VKvpqVXA4pj8a/lrZ
+         G7xD2L/mkq12H02Q3JXfX2eBln2Wpz15p1HfM7AO5TPDfqG9v2SVjS3nUkK+8l1ZUlD+
+         Ct7/hdUiiAi8Uie0r7krPgWxQmfWNxr10iWmt1ILeVcymUDuaPr+c1f5WaQpQYSbQ3EE
+         dBGGLv4XxkWkB1A29LLcHb+rWFpMITpa60OfbFLHwp7lZdCzRawuME0Hk5WpuCKSUGEJ
+         jU4iHTMNAxTmPHrU1XWU6vSAyWGuKIRc180HAL4ik0CugtIAzqYwSgKR4ZeXQyU7Nrtq
+         dPwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792004449; x=1792609249;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=voN+/DnSvNdqF9FDu+3qMGQaGXIMjzAKCkLlGWfn+W8=;
+        b=IuKCwM9eu23FfuwPmBEJ5KKoIbrMkb4SDztxt3pucMP4yO6Y4nV5rt4ak1SBiIN2P3
+         zxP/tjlv30pEV4dEjwpaKEoYLlaLDXo8GWrAb3SllicAFLeEIpPYM4URJOKIYFQX7Of6
+         QcDbhSFR2S73oJBJMFSf/qesNA3ug8QUQYwoEXX16C91ks9rX3pSVv9gHnGGbFpcmSZp
+         ieDA+dU7qclFHDQAf8L0N0zQ8SedhfuHLFP7AhLY3vmKPqM3mPZYp0fYXW6S6FhGL+8I
+         SV9ilO6HyJKuq7w6Auki5u59GldMM9a8057nJ+q/OkbAS0MFcI82qrOmVIGX0faRzSpx
+         aDew==
+X-Forwarded-Encrypted: i=1; AKwUvByD/h5949/CB0oCTo46L2lxJgiiFLPQBZ+tGqNGl9t5VN9cTvBZE64g1YjwffihARghaJmuSeY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJzUeUw7Xxfw2b8CZNhKZlj4WwB+WalhvAwD4CY/PMnkrUtgG1q
+	bQonQEMN0nYJjvbeucKV4WWhogsTPIb4TsLFgQBzZjbbGwckDPKjptck0YOlHSv9UbGstltKAx/
+	bg+ydLrXi+ehMetxyNWji8voRhidQsNOg5bZzFILexX6cP3bHfVzhn6sj1qaxox93VB0=
+X-Gm-Gg: AYBFou3hZihzrSK7EgD3OuYRSOWPSYMxJPeEZxwv+3vHy29ag4MkZ5V4+JVShgK4uQB
+	zPizTqzkV6TYClzT6c84YJpy16hiGPwksnDpEGYn9Lx9SbsNR3qrrU1ArP+yJQ5+T2sxaZrWmvy
+	spiFm24V36eR3T5EtuyZU79q7GMRu+EshwIlgyCH62VysSgF6tT3AeqFvto8W9BBQ2PE2+o/ZFg
+	ZYYdU78Zvl6qIl6yKCWSO/C0yj0Kkbf6LQLZTkfnZ352nSN5AzIA7MkWphujf6poD19rf3hxT9X
+	ZyzMZfZq5C1NlmPJALJPU43abOflQ8OiMTJjxgS00KBLTITeJ7hEAs07hvKQjsVCYaKJrsCdndH
+	x4Pw6zVDIzEhJ2YY5O9ohyDKD8Tct4JAYlbEUgMnSycXb4C6hXdDbWs6tsEbwKxY=
+X-Received: by 2002:a05:7023:a47:10b0:14c:1f57:3e86 with SMTP id a92af1059eb24-16a5f5ddf6bmr21715183c88.47.1792004449097;
+        Wed, 14 Oct 2026 12:00:49 -0700 (PDT)
+X-Received: by 2002:a05:7023:a47:10b0:14c:1f57:3e86 with SMTP id a92af1059eb24-16a5f5ddf6bmr21715140c88.47.1792004448426;
+        Wed, 14 Oct 2026 12:00:48 -0700 (PDT)
+Received: from [10.71.40.138] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a31f6f5csm47683131c88.11.2026.10.14.12.00.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2026 12:00:47 -0700 (PDT)
+Message-ID: <ff4fac87-380d-410d-942a-a48edce70397@oss.qualcomm.com>
+Date: Wed, 14 Oct 2026 12:00:44 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] net: stmmac: dwxgmac2: enable L2 split header
+ support
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller"
+ <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Hongmei Xu <hongmei.xu@oss.qualcomm.com>,
+        Abhishek Chauhan <abhishek.chauhan@oss.qualcomm.com>,
+        Sarosh Hasan <sarosh.hasan@oss.qualcomm.com>
+References: <20261013192759.776537-1-sagar.cheluvegowda@oss.qualcomm.com>
+ <as9XUbOfJazEQ4y5@lore-desk>
+Content-Language: en-US
+From: Sagar Cheluvegowda <sagar.cheluvegowda@oss.qualcomm.com>
+In-Reply-To: <as9XUbOfJazEQ4y5@lore-desk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDA3NSBTYWx0ZWRfXy7A6dNtWYkos
+ PqgweuHqZZkNSrdkP4e+sydvcyuBfDLhgs1Dro84g5D2UA0qw8dCIJPyogbKJx19HeEq1eOn3gJ
+ 7PrSMxnzC4vu5B6ARe8tH8yp88mfm4E=
+X-Proofpoint-ORIG-GUID: AbPLlxw3yPovZA-0iCDKRTWPW1ubBdCH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDA3NSBTYWx0ZWRfX9JNo2rkuEVhA
+ 0WlhEiVD1McXJGSnovBFJY+Lekkat4pL2oVHOPvhhZ6y0FWzpEIKPykzxSsIGbcusmXRGoEcf2R
+ kqWfx3aEL4PJ3LFyHhN4KR44zQqvRa3C6clxbS4OUloOZ5BaVMvz+jFhP0mt3IwYIUrc0Te6iih
+ Zc6O+hpalZlD+d1bOlQUcDTCLg7v/NzyYzKLPxsApk4UX4NZM2DJiTnkWxGiqLVNVb5vQqNN5kZ
+ bmE/hZXw7NbmhThsnxEEnzberOcjDAsZBhr41XgI0z2J2JxmuQyGwPt9VnhZ/tgb201UfxoSOwn
+ +GBuPE9H0x4JRmPUFFtEd5dvdf431Nm2o3no4uH5bT5sNGnFclTeAjYeoeMnFDMSbOHuBU/PwkK
+ xO4oGqa4O936Zq/oAz49vatjvQXy33L0rJxgO3AVBfOsI2Ils/g5DdzzkwCBnpRM9Nr1oxLYQc1
+ QPgtrZtX3hucZsGj3vw==
+X-Authority-Analysis: v=2.4 cv=E8BYNqdl c=1 sm=1 tr=0 ts=6acfd162 cx=c_pps
+ a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=uAmjrx48wFnj9rB13rsA:9 a=QEXdDO2ut3YA:10 a=vBUdepa8ALXHeOFLBtFW:22
+X-Proofpoint-GUID: AbPLlxw3yPovZA-0iCDKRTWPW1ubBdCH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-14_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0
+ bulkscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610140075
 
-Willem de Bruijn wrote:
-> Josef Bacik wrote:
-> > I'm going through and reducing BUG_ON() usage in areas that have created
-> > the most problems for us.  89 commits in the tree quote "kernel BUG at
-> > net/core/skbuff.c", 31 of them since 2024, and some of those could be
-> > triggered from inside a user namespace.
-> > 
-> > The first patch is a fix: skb_copy_and_csum_bits() leaves stale bytes
-> > in a buffer headed for the wire when it hits unreadable frags.  The
-> > BUG_ON() conversion of the same function needs the same handling, so
-> > it's here rather than sent separately.
-> > 
-> > The rest of the series converts 17 of the 19 BUG_ON()s in skbuff.c.
-> > Each one becomes
-> > 
-> > 	if (WARN_ON_ONCE(cond))
-> > 		<error path>;
-> 
-> Good idea. I was thinking of doing exactly this sweep after addressing
-> one case recently in commit ee1972def665 ("net: downgrade BUG_ON
-> EIOCBQUEUED in sock_sendmsg_nosec")
-> 
-> Instead of WARN_ON_ONCE, which still triggers a panic on systems with
-> panic_on_warn, DEBUG_NET_WARN_ON_ONCE?
 
-Just to understand: do you plan to resubmit with this change?
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+>> index 6719ac6e395b..65ac5403ec58 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_descs.c
+>> @@ -292,8 +292,18 @@ static int dwxgmac2_get_rx_hash(struct dma_desc *p, u32 *hash,
+>>  
+>>  static void dwxgmac2_get_rx_header_len(struct dma_desc *p, unsigned int *len)
+>>  {
+>> -	if (le32_to_cpu(p->des3) & XGMAC_RDES3_L34T)
+>> +	u32 rdes3 = le32_to_cpu(p->des3);
+>> +
+>> +	/* when FD=1 and LD=0, HL is RDES2[9:0] */
+>> +	if (!(rdes3 & XGMAC_RDES3_LD)) {
+>> +		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+>> +		return;
+>> +	}
+>> +
+>> +	if (rdes3 & XGMAC_RDES3_L34T)
+> should we check FD=1 here? Since HL is not defined for the case {FD=0,LD=1},
+> right?
+>
+>>  		*len = le32_to_cpu(p->des2) & XGMAC_RDES2_HL;
+>> +	else if (rdes3 & XGMAC_RDES3_L2T)
+>> +		*len = (le32_to_cpu(p->des2) & XGMAC_RDES2_NONIPHL) >> 2;
+> same here.
+>
+> Regards,
+> Lorenzo
+>
+Hi Lorenzo,
+
+Thanks for the review. dwxgmac2_get_rx_header_len() is only called from stmmac_rx_buf1_len(),
+after the sph_active && len early return, so with split header enabled it only runs on the
+first descriptor (FD=1). I don't think an extra FD check is needed, but I can add one if you'd prefer.
+
+Regards,
+Sagar
+
