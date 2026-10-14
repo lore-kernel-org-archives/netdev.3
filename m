@@ -1,49 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450DC47A896;
-	Wed, 14 Oct 2026 09:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F63D49B1F3
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791969340; cv=none; b=mD4kF4KtaZPjOKPCAd12aebYuS0pluWoAzORwApxt9zQBv8ogo9ZTtzSXygslmvxqptTj+RhDMyF/fEEFvHtMuvRNUl7L8y0lgvhrCr+WezJrDa64dKUXKvboGWgJN+C9v424/ddMpPvnEotj6fqwfNUx9xxhjAAOJ/CbF8wFaQ=
+	t=1791969341; cv=none; b=dZ2mw96amjuol7dy0HvyU0ya8CaGCJxtJDrhM051hQvZlF8+fpRZRCtgtywF4QBoKpyMwLETIyUWT2bz2uvPm6vg06EyO4PPEQDja78H2MEYDO2fnTdvPQTH8Bb9wmnp1AXqQ+XrHM32zWeoFJK6WeN7rS83HKCOO3iPUT8c9RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791969340; c=relaxed/simple;
-	bh=5SFWupJQUwm7vmpu5yNucNcTjpmI6F4lKatU9h+Zprk=;
+	s=arc-20240116; t=1791969341; c=relaxed/simple;
+	bh=Vt4kWfTtwYhKzt8WY0Xm+e+zpniOnDVJFejFHuXAsCU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hYNY6wYiP4vDat72Kg/lqe9TqyfltbCDR1rW5BPisA/4zjGyxjSjSgptZEcaWXv3IlXtEz058aQgL2VQW8EAtKLWROFVKE6cs2Yw09XqRcUwxZ11kFLRu8EyRIlk/hWKR7/rJrP9kMKxx6SdIq/cJBbisuSjvtrd10BmgOC10ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEWv8tdO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=rBsFTQiBMkw4UVsenGs94/+ndcERR2ifTx332P0YjJfrWce9pZUPtHrK/tgDaB61WxS5GqA6c9WKUH5Y4WkHV4rNxrB48rJFP7YIf2XTBJRYeF4C9Dd980O/evocmx9GqQ4K2MMV97HTpVWf2lpy0UFQk6JdFY5ZoGpwUpxkPLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPzwLAEz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEWv8tdO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABDBC1F00893;
-	Wed, 14 Oct 2026 09:15:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPzwLAEz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606341F000FF;
+	Wed, 14 Oct 2026 09:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791969337;
-	bh=JyuFAiUkd5zggSLWAMVE2zHEyCybCuX2LJGoDrVWV9Y=;
+	s=k20260515; t=1791969339;
+	bh=1lMCixwvmT6QFNNcv7lquI18T7wsZfG550Pq/JmrKHI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EEWv8tdOWPtoWZM/JAZYsQhDfpy8dGVtGEvdRm2+mzT1Bs+vW4ZEIPuLRB3hNuuCU
-	 miU855XLC4H88bxzZxHUw+fNISFGuCMvXhmSf9KvD4RLNowsmRqi0FQSq1ayAaLf2s
-	 Kuz5o5w7YpuE1+lpAMVmM25rez0PHuJcH/1poSJt9KlFufqAsqtuJRMXzfkkaYnK1m
-	 YtcndRMD+gs2yscZOMryYZWbF6zXUafcGuWx8zBbSD+pi/2p97Hcn3tFLQnI3x6XvI
-	 xsW/1yNC8b1K1lHa0M5qV7XZnNk+nlENeH9ye7+4C2rBWokFO8qjs6hbyNNPuxAmuR
-	 WX+xvUjTgcfsA==
-Subject: Re: [PATCH net v3 2/2] net: stmmac: Stop Tx queue when (en|dis)abling
- XSK pools
+	b=kPzwLAEzKTJp+j72jpmQV5ZFtuwb5SnmkTwuAs6a7csNIVfOjhaWxBrNjWF0/wdd+
+	 0ce32QXcLfRUK8kQ/p+Qx75FMfA41jMMeCPZ91r/wmwHL+nx/0gBCyO8JNkIzXiW2i
+	 IEN60welYD3XzWHrdte6gbHJXEYkhJPxSKAinfuntV1kz8zb/c+gB6r28tggXQ2UCx
+	 4ug/ycBWg26buOcEqJpFl1uDB2iCgkGzn8AJW1k/ClZruLgDBaBwUoFyqPHW1U4h7T
+	 KpxIyGx6copzjU9qK2mWWaMTXqnnsdcKuTZ08x+8qvpUEXzgl0OnK9ZlprSpl4rvMq
+	 46vDCLPS4mk5w==
+Subject: Re: [PATCH net-next v3 1/5] net/sched: act_gate: reject oversized
+ dumps instead of wrapping them
 From: netdev-bot+sashiko@kernel.org
-To: kurt@linutronix.de
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, edumazet@kernel.org,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, yoong.siang.song@intel.com, faizal.abdul.rahim@intel.com,
- boon.leong.ong@intel.com, bigeasy@linutronix.de, maciej.fijalkowski@intel.com,
- nb@tipi-net.de, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org
-Date: Wed, 14 Oct 2026 09:15:36 +0000
-Message-ID: <179196933628.434549.6582168487616449135@kernel.org>
-In-Reply-To: <20261013-stmmac_xsk_crashes-v3-2-50fca7790af2@linutronix.de>
-References: <20261013-stmmac_xsk_crashes-v3-2-50fca7790af2@linutronix.de>
-X-sashiko-severity: High
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, p@1g4.org
+Date: Wed, 14 Oct 2026 09:15:38 +0000
+Message-ID: <179196933894.434549.7501304667128193160@kernel.org>
+In-Reply-To: <QDISC-H19Z.v3.r0.20261012193813-1@mojatatu.com>
+References: <QDISC-H19Z.v3.r0.20261012193813-1@mojatatu.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,10 +47,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 (1) · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -64,270 +58,214 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] Both stmmac_xdp_enable_pool() (stmmac_xdp.c:57-59) and
-  stmmac_xdp_disable_pool() (stmmac_xdp.c:99-102) now call…
-- [Medium] The patch's only guard is the __QUEUE_STATE_DRV_XOFF bit, set
-  by stmmac_xdp_stop_tx_queue().
-- [Medium] The stopped-queue check in stmmac_xdp_xmit_xdpf() does not
-  order the XDP sender against ring re-initialisation, for two reasons.
-- [Low] In stmmac_xdp_xmit() (ndo_xdp_xmit, stmmac_main.c:7013-7026),
-  when the queue is stopped for an XSK pool switch, the new check makes…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it sits on the
-  error path the patch touches.
+- [Medium] In this commit, when an RTM_NEWACTION notification is needed,
+  tcf_add_notify_msg() (net/sched/act_api.c) turns the new -EMSGSIZE…
+- [Medium] The commit message describes several failures as pre-existing
+  when they only appear once this patch adds nla_nest_end_safe().
+- [Low] tcf_del_notify() (net/sched/act_api.c) now treats every -EMSGSIZE
+  from tcf_del_notify_msg() as "Such a dump can never be serialized".
 
 --
 
-net: stmmac: Stop Tx queue when (en|dis)abling XSK pools
+net/sched: act_gate: reject oversized dumps instead of wrapping them
 
-This patch stops the Tx queue around the Tx ring teardown and
-re-allocation in stmmac_xdp_enable_pool() and stmmac_xdp_disable_pool().
-It wakes the queue again once the queue has been re-enabled. It also makes
-stmmac_xdp_xmit_xdpf() refuse frames while the Tx queue is stopped.
+This patch closes the action and classifier nests with nla_nest_end_safe(),
+so a dump larger than a u16 nest fails with -EMSGSIZE instead of writing a
+wrapped length. It also puts a bound on the tfilter_notify_prep() retry
+loop. On the filter and action delete paths, an -EMSGSIZE notification
+build failure now drops the notification and lets the delete go ahead.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 2aa5a26954731..0e8ab2bd8f3e8 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5216,6 +5216,10 @@ static int stmmac_xdp_xmit_xdpf(struct stmmac_priv *priv, int queue,
->  	dma_addr_t dma_addr;
->  	bool set_ic;
->  
-> +	/* Ring may be torn down for an XSK pool switch */
-> +	if (netif_tx_queue_stopped(netdev_get_tx_queue(priv->dev, queue)))
-> +		return STMMAC_XDP_CONSUMED;
-> +
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824153903.4143642-1-victor@mojatatu.com
+Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-H19Z.v2.20261007062551%40mojatatu.com
+Link: https://lore.kernel.org/netdev/QDISC-H19Z.v2.20261007062551@mojatatu.com/
+Link: https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
+Link: https://lore.kernel.org/netdev/179111893181.434549.13449660670267048994@kernel.org/
+
+> The oversized dump also reaches the filter notification path through
+> tcf_fill_node(), which reports the failure as -EMSGSIZE.
+> tfilter_notify_prep() treats that as socket-buffer exhaustion and
+> retries with an ever larger alloc_skb(); a dump that does not fit a u16
+> nest cannot be built at any skb size, so the loop only spins until the
+> allocation itself fails.
+
+[ ... ]
+
+> The same shape as two standalone gate actions is hit on the action path
+> by RTM_DELACTION with NLM_F_ECHO; before this change the fill fails and
+> the delete is refused, after it the actions are removed and only the
+> notification is dropped.
 
 [Severity: Medium]
+Does this describe the behaviour before the patch correctly? Before this
+patch, nla_nest_end() cannot fail:
 
-Does this check order the XDP sender against the ring re-initialisation?
-The producer index is loaded in the declaration block, before the new test
-runs:
+include/net/netlink.h:nla_nest_end() {
+    ...
+	DEBUG_NET_WARN_ON_ONCE(diff > U16_MAX);
+	start->nla_len = diff;
+	return skb->len;
+}
 
-    unsigned int entry = tx_q->cur_tx;
+Also, net/sched had no nla_nest_end_safe() callers before this patch.
 
-On the other side, stmmac_xdp_enable_pool() and stmmac_xdp_disable_pool()
-call stmmac_enable_tx_queue() and then netif_tx_wake_queue() without
-holding nq->_xmit_lock. The reset happens in
-stmmac_enable_tx_queue()->stmmac_reset_tx_queue(), which sets cur_tx = 0
-and dirty_tx = 0.
+Before the patch, tfilter_notify_prep() grows the skb until the dump fits.
+It then succeeds, and the TCA_OPTIONS length is wrapped. It does not spin
+until alloc_skb() fails.
 
-The XDP senders stmmac_xdp_xmit() and stmmac_xdp_xmit_back() hold
-__netif_tx_lock(), but that lock does not exclude the waker. Could this
-interleaving happen?
+On the action side, tcf_gate_get_fill_size() already budgets each entry.
+So tcf_del_notify_msg() gets a large enough skb, and tca_get_fill()
+succeeds with a wrapped TCA_ACT_TAB. The delete goes through rather than
+being refused.
 
-CPU A (XDP sender, tx lock held)   CPU B (pool switch)
-entry = tx_q->cur_tx; /* 57 */
-<delayed by hardirq or RT
- preemption>
-                                   stmmac_enable_tx_queue()
-                                     stmmac_reset_tx_queue()
-                                       tx_q->cur_tx = 0;
-                                   netif_tx_wake_queue()
-netif_tx_queue_stopped() == false
-stmmac_tx_avail() sees empty ring
-writes descriptor 57 and xdpf[57]
-tx_q->cur_tx = 58;
+The Context note has the same issue. It says "a filter whose dump cannot
+be represented in a u16 nest could be created but never removed" and "an
+action list whose TCA_ACT_TAB exceeds a u16 nest could not be deleted
+either". Both behaviours only appear once the new checked closes are in
+place.
 
-On weakly ordered CPUs, the plain cur_tx load can also be satisfied
-before the relaxed test_bit().
+The only defect that exists before the patch seems to be the wrapped
+(structurally corrupt) reply or notification, plus the DEBUG_NET warning.
+The retry bound and the delete path changes look like follow-ons that the
+new nla_nest_end_safe() calls require.
 
-Descriptor 0 has OWN = 0, so the DMA suspends there. stmmac_tx_clean()
-also stops at entry 57. Would the queue then stall until the watchdog
-resets the device?
+Could the commit message be reworded? As written, a backporter might
+conclude that current kernels refuse deletes or spin in
+tfilter_notify_prep().
 
-Could the cur_tx load be moved after the stopped check? The wake could
-also be done under __netif_tx_lock_bh(), the same way
-stmmac_xdp_stop_tx_queue() does the stop.
+> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> index 6e48b4bc2d75d..4b4b5d37d2206 100644
+> --- a/net/sched/act_api.c
+> +++ b/net/sched/act_api.c
+
+[ ... ]
+
+> @@ -1673,27 +1676,42 @@ static int tca_get_fill(struct sk_buff *skb, struct tc_action *actions[],
+
+[ ... ]
+
+> -	if (tcf_action_dump(skb, actions, bind, ref, false) < 0)
+> +	err = tcf_action_dump(skb, actions, bind, ref, false);
+> +	if (err < 0) {
+> +		/* Report any inner dump failure as -EMSGSIZE so
+> +		 * tcf_del_notify() drops the notification, not the delete.
+> +		 */
+> +		err = -EMSGSIZE;
+>  		goto out_nlmsg_trim;
+> +	}
+>  
+> -	nla_nest_end(skb, nest);
+> +	err = nla_nest_end_safe(skb, nest);
+> +	if (err < 0)
+> +		goto out_nlmsg_trim;
+
+[Severity: Medium]
+How does the RTM_NEWACTION path handle this new failure? tca_get_fill()
+can now fail once TCA_ACT_TAB exceeds U16_MAX. On the add side,
+tcf_add_notify_msg() still turns that into -EINVAL:
+
+net/sched/act_api.c:tcf_add_notify_msg() {
+    ...
+	if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, n->nlmsg_flags,
+			 RTM_NEWACTION, 0, 0, extack) <= 0) {
+		NL_SET_ERR_MSG(extack, "Failed to fill netlink attributes while adding TC action");
+		kfree_skb(skb);
+		return ERR_PTR(-EINVAL);
+	}
+    ...
+}
+
+tcf_add_notify() returns that error, and tcf_action_add() passes it to
+userspace:
+
+tc_ctl_action(RTM_NEWACTION)
+  tcf_action_add()
+    tcf_action_init()        <- actions already created or replaced
+    tcf_add_notify()
+      tcf_add_notify_msg()
+        tca_get_fill()
+          nla_nest_end_safe() -> -EMSGSIZE -> -EINVAL
+
+This happens when an RTNLGRP_TC listener exists or NLM_F_ECHO is set. The
+add then reports failure for a change that was already committed. A retry
+gets -EEXIST, and with NLM_F_REPLACE the old configuration is already gone.
+
+Before this patch the fill could not fail here and the add returned 0. The
+delete side is handled in this patch, but the add side is not.
+
+The later patch in this series, "net/sched: act_api: keep an add that
+created its actions from failing", resolves this. With it, tcf_action_add()
+ignores the tcf_add_notify() result, sets the extack "Action created; event
+notification could not be sent", and returns 0. Since this patch alone
+exposes the problem, would it make sense to fold that change in here or
+order it earlier?
+
+A smaller leftover remains at the end of the series. tcf_get_notify()
+(RTM_GETACTION) still maps any tca_get_fill() failure, now including the
+new -EMSGSIZE, to -EINVAL:
+
+net/sched/act_api.c:tcf_get_notify() {
+    ...
+	if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, 0, event,
+			 0, 1, NULL) <= 0) {
+		NL_SET_ERR_MSG(extack, "Failed to fill netlink attributes while adding TC action");
+		kfree_skb(skb);
+		return -EINVAL;
+	}
+    ...
+}
+
+The filter GET path returns -EMSGSIZE for the same condition, and the
+extack text still talks about adding a TC action.
+
+[ ... ]
+
+> @@ -2016,8 +2036,14 @@ static int tcf_del_notify(struct net *net, struct nlmsghdr *n,
+>  	} else {
+>  		skb = tcf_del_notify_msg(net, n, actions, portid, attr_size,
+>  					 extack);
+> -		if (IS_ERR(skb))
+> -			return PTR_ERR(skb);
+> +		if (IS_ERR(skb)) {
+> +			/* Such a dump can never be serialized: drop the
+> +			 * notification rather than refuse the delete.
+> +			 */
+> +			if (PTR_ERR(skb) != -EMSGSIZE)
+> +				return PTR_ERR(skb);
+> +			skb = NULL;
+> +		}
+>  	}
 
 [Severity: Low]
+Is the "can never be serialized" claim accurate for every -EMSGSIZE that
+reaches this branch? tcf_del_notify_msg() allocates a single skb of
+max(attr_size + warn, NLMSG_GOODSIZE) and calls tca_get_fill() once. Unlike
+tfilter_notify_prep(), it has no grow-and-retry loop.
 
-When this returns STMMAC_XDP_CONSUMED for the first frame,
-stmmac_xdp_xmit() breaks out of its loop with nxmit == 0, but it still
-runs the flush:
+tca_get_fill() also reports every tcf_action_dump() error as -EMSGSIZE.
+That includes transient failures, for example in tcf_pedit_dump():
 
-stmmac_xdp_xmit() {
+net/sched/act_pedit.c:tcf_pedit_dump() {
     ...
-	if (flags & XDP_XMIT_FLUSH) {
-		stmmac_flush_tx_descriptors(priv, queue);
-		stmmac_tx_timer_arm(priv, queue);
+	opt = kzalloc(s, GFP_ATOMIC);
+	if (unlikely(!opt)) {
+		rcu_read_unlock();
+		return -ENOBUFS;
 	}
     ...
 }
 
-stmmac_flush_tx_descriptors()->stmmac_set_queue_tx_tail_ptr() computes
-tx_q->dma_tx_phy + cur_tx * desc_size and writes the result to the
-channel's TX tail pointer register. stmmac_tx_timer_arm() reads
-tx_q->xsk_pool.
+That error becomes -1 in tcf_action_dump_1() and tcf_action_dump(), and
+tca_get_fill() then reports it as -EMSGSIZE. An ops->get_fill_size()
+underestimate, the bug class fixed by cfa165cbfbed, would also land here.
 
-At the same time, stmmac_disable_tx_queue() and stmmac_enable_tx_queue()
-can be running on another CPU without the tx lock. They assign a new
-dma_tx_phy, reset cur_tx, change xsk_pool and program the same registers.
+Before this patch these failures refused the delete with -EINVAL. Now the
+delete commits, and RTNLGRP_TC listeners such as tc monitor never see the
+RTM_DELACTION event. NLM_F_ECHO callers get no echo, and nothing signals
+the lost event.
 
-dma_tx_phy and cur_tx live in the persistent tx_q, so no freed memory is
-dereferenced. But can this tail write land after the enable path has
-already programmed the new ring?
-
-Should the flush only run when nxmit > 0, or when the queue is not
-stopped?
-
->  	if (stmmac_tx_avail(priv, queue) < STMMAC_TX_THRESH(priv))
->  		return STMMAC_XDP_CONSUMED;
->  
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
-> index d7e4db7224b0c..a75ab93aef531 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.c
-> @@ -6,6 +6,15 @@
->  #include "stmmac.h"
->  #include "stmmac_xdp.h"
->  
-> +static void stmmac_xdp_stop_tx_queue(struct stmmac_priv *priv, u16 queue)
-> +{
-> +	struct netdev_queue *nq = netdev_get_tx_queue(priv->dev, queue);
-> +
-> +	__netif_tx_lock_bh(nq);
-> +	netif_tx_stop_queue(nq);
-> +	__netif_tx_unlock_bh(nq);
-> +}
-
-[Severity: Medium]
-
-During the switch, the XOFF bit set here is the only thing keeping Tx
-away from the ring. Can stmmac_tx_err() clear it in the middle of the
-teardown?
-
-stmmac_tx_err() runs in hardirq context, called from
-stmmac_dma_interrupt() or stmmac_msi_intr_tx() when tx_hard_error is
-reported. It ends with:
-
-	stmmac_init_tx_chan(priv, priv->ioaddr, priv->plat->dma_cfg,
-			    tx_q->dma_tx_phy, chan);
-	stmmac_start_tx_dma(priv, chan);
-
-	priv->xstats.tx_errors++;
-	netif_tx_wake_queue(netdev_get_tx_queue(priv->dev, chan));
-
-It has no way of knowing that a pool switch is in progress. Before that,
-it also calls dma_free_tx_skbufs() and stmmac_clear_tx_descriptors() on
-the tx_q ring.
-
-Nothing seems to quiesce that path during the switch:
-
-- stmmac_disable_tx_queue() masks only the normal TX interrupt. There is
-  no synchronize_irq() before __free_dma_tx_desc_resources().
-- dwmac4_disable_dma_irq() clears only RIE/TIE, so abnormal interrupts
-  stay enabled.
-- stmmac_disable_rx_queue() stops RX DMA, which can raise RPS and
-  therefore AIS.
-- dwmac4_dma_interrupt() classifies TPS as tx_hard_error. TXSE is not in
-  DMA_CHAN_INTR_DEFAULT_MASK, so a TPS latched by an earlier
-  stmmac_stop_tx_dma() is never cleared.
-
-Suppose tx_hard_error is reported for this channel inside the window.
-Could stmmac_xmit() and stmmac_xdp_xmit_xdpf() then write into the freed
-ring, with TX DMA restarted on freed descriptor memory?
-
-Whether the hardware actually reports AIS together with a latched TPS in
-that window depends on DWMAC behaviour.
-
-[ ... ]
-
-> @@ -46,6 +56,7 @@ static int stmmac_xdp_enable_pool(struct stmmac_priv *priv,
->  		stmmac_enable_rx_queue(priv, queue);
->  		stmmac_enable_tx_queue(priv, queue);
->  		napi_enable(&ch->rxtx_napi);
-> +		netif_tx_wake_queue(netdev_get_tx_queue(priv->dev, queue));
-
-[Severity: High]
-
-Is it safe to wake the queue unconditionally here?
-stmmac_enable_tx_queue() returns void. When
-__alloc_dma_tx_desc_resources() fails, it only logs and returns:
-
-stmmac_enable_tx_queue() {
-	ret = __alloc_dma_tx_desc_resources(priv, &priv->dma_conf, queue);
-	if (ret) {
-		netdev_err(priv->dev, "Failed to alloc TX desc.\n");
-		return;
-	}
-    ...
-}
-
-That skips stmmac_reset_tx_queue(), so cur_tx and dirty_tx keep their
-old values and stmmac_tx_avail() still reports free space.
-
-The ring was already torn down by
-stmmac_disable_tx_queue()->__free_dma_tx_desc_resources(). That function
-frees dma_tx/dma_etx/dma_entx, tx_skbuff_dma and tx_skbuff, but sets none
-of these pointers to NULL. The resulting state depends on which allocation
-failed:
-
-- tx_skbuff_dma kzalloc fails: tx_skbuff_dma is NULL. tx_skbuff and
-  dma_tx still point at freed memory.
-- tx_skbuff kzalloc fails: tx_skbuff/xdpf is NULL. dma_tx still points
-  at freed memory.
-- dma_alloc_coherent() fails: it returns before dma_tx is reassigned, so
-  dma_tx and dma_tx_phy still refer to the freed ring.
-
-The wake clears __QUEUE_STATE_DRV_XOFF. After that, the new
-netif_tx_queue_stopped() check in stmmac_xdp_xmit_xdpf() passes, and the
-qdisc calls stmmac_xmit() again. Both paths write des0-des3 through the
-stale tx_q->dma_tx, and they also write tx_skbuff[entry] and
-tx_skbuff_dma[entry].
-
-Isn't this the same crash the commit is fixing, still reachable when the
-allocation fails? The netif_tx_wake_queue() added to
-stmmac_xdp_disable_pool() has the same problem.
-
-Could stmmac_enable_tx_queue() return an error, so that the queue can be
-left stopped (or the device reset) when it fails?
-
->  
->  		err = stmmac_xsk_wakeup(priv->dev, queue, XDP_WAKEUP_RX);
->  		if (err)
-
-[ ... ]
-
-> @@ -87,6 +99,7 @@ static int stmmac_xdp_disable_pool(struct stmmac_priv *priv, u16 queue)
->  		stmmac_enable_tx_queue(priv, queue);
->  		napi_enable(&ch->rx_napi);
->  		napi_enable(&ch->tx_napi);
-> +		netif_tx_wake_queue(netdev_get_tx_queue(priv->dev, queue));
-
-[Severity: High]
-
-This is a pre-existing issue and was not introduced by this patch, but it
-is on the same error path.
-
-If __alloc_dma_tx_desc_resources() partially fails during the pool
-switch, tx_q is left inconsistent. The function returns -ENOMEM without
-undoing its earlier allocations, and stmmac_enable_tx_queue() does no
-cleanup either.
-
-The next teardown can come from
-__stmmac_release() or stmmac_xdp_release() through
-free_dma_desc_resources()->free_dma_tx_desc_resources()->
-__free_dma_tx_desc_resources(). It can also come from the next pool
-switch's stmmac_disable_tx_queue(). What it does depends on which
-allocation failed:
-
-- tx_skbuff_dma kzalloc failed:
-  dma_free_tx_skbufs()->stmmac_free_tx_buffer() dereferences
-  tx_q->tx_skbuff_dma[i], which is NULL.
-- tx_skbuff kzalloc failed: stmmac_free_tx_buffer() dereferences
-  tx_q->xdpf[i], which is NULL.
-- dma_alloc_coherent() failed: __free_dma_tx_desc_resources() calls
-  dma_free_coherent() again on the stale dma_tx/dma_etx/dma_entx address
-  and dma_tx_phy.
-
-Can this cause a NULL pointer oops, or free the coherent descriptor memory
-twice?
-
->  	}
->  
->  	return 0;
+Should the comment be reworded, or should transient failures be kept apart
+from the size-overflow case? This code is unchanged at the end of the
+series.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013-stmmac_xsk_crashes-v3-0-50fca7790af2%40linutronix.de
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-H19Z.v3.r0.20261012193813%40mojatatu.com
