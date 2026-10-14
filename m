@@ -1,184 +1,191 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9506937B3FD;
-	Wed, 14 Oct 2026 05:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2C027FB1C
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 05:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791956669; cv=none; b=AxMWuD5XcwApJe+D7p9wMZMBkxN4aSGQM04+Wv0BQQbpgJsw15dmHyC3Gua/pPiqzMHyXTDvvLLJPW4RSnEmGkb8d+qGSE+cTGniqwXin7kqV3sCcUMcgCtFnFUhaQ8rtcSv3jseHuD2DXsevWg1T5L7h/BUBOMWAEuF4pkHL/U=
+	t=1791956781; cv=none; b=QBVnddjKVlAxAyM9sSRtKATrcaHzbDCvv7xIIFnYwDvQWC7yQn9rT/A/hlmTrEgm+qCNQgXfDpPOsuv1OR+Asekn4YjOeWDAm58uVLQJMSN8oe/tTwqmDPYPqLYQicCg+QauSZuoj6vpAecqEAE4z0JWgTv05qPYlOHh4ZaVhhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791956669; c=relaxed/simple;
-	bh=AOLN0C1lnGz3wq93VNwDotFT2hHNUCaYMDcnLHjRJyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hh4PkALZmNZ6kQGbrehETppExJFmPVqpstRh2uxZfPjQcAn2sGj7eaV5FKavoIKKbPC+b5v2Q277qhBFIeIdGivXa9PTQ8x8dbU1isb+t9hIF5lHg2TxqgyNJRLgfbIPde+Fssq7zyBP768PQ/vKE1SDQSTpGyf62l+2Y6UVuDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
-X-QQ-mid: zesmtpgz9t1791956570t469323e1
-X-QQ-Originating-IP: m9biVWujPvIHl2V6lW7er95XtOlN4lU2/Fzi4PB8lJE=
-Received: from localhost ( [203.174.112.180])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 14 Oct 2026 13:42:48 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 10976670358034929060
-EX-QQ-RecipientCnt: 11
-Date: Wed, 14 Oct 2026 13:42:48 +0800
-From: Yibo Dong <dong100@mucse.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, vadim.fedorenko@linux.dev,
-	u.kleine-koenig@baylibre.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yaojun@mucse.com
-Subject: Re: [PATCH net-next v16 2/5] net: rnpgbe: Add basic TX packet
- transmission support
-Message-ID: <60B3E0AFB70A94BD+20261014054248.GA138773@nic-Precision-5820-Tower>
-References: <70FB65125730E856+20261013023036.63653-1-dong100@mucse.com>
- <179194675382.434549.14371017120705089466@kernel.org>
+	s=arc-20240116; t=1791956781; c=relaxed/simple;
+	bh=DMNfYlMwDzFMT9MKWuc7BGVkd9GqxzgPKdtOv8N0d6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o3i69G9IBnqAGpMutMqkVndrAvCrqYJUAOFFBuOL8FJV4KO0BnXA7lA+AunFXXsMuFn0aU/6DZFOOs52lAZ0a9bLpaZ0f4OEKFROB0Y2reJfQwU3pziSnigrH2YG+FUKxhjyIloSYZlS2haW9YfztoriZNivPQqnXmY7aQCHLEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvXML6M+; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvXML6M+"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5ba357a1929so3458718e87.0
+        for <netdev@vger.kernel.org>; Tue, 13 Oct 2026 22:46:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791956778; x=1792561578; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=m+5T9X62m2XyH/11b9ZRGWiO9yNW0NlBwsa5IZJ3yF0=;
+        b=DvXML6M+HQtzDKlYSPeCA/lT1kcDCuWDtRRTnya9JH62cR70C9hMZa35P3pKhcQlD8
+         QMU0hWQpEJD0uIslHaRqf+rSew3orOYW0y3lbg6Qd3qKymBPwD8qlNI9LgrIPvorpFWG
+         mjopF7e+VHcOviRaP+KYheFssoV7lYcKRMLegkpT1vZ4yug7+XY4C3o/77PqbycirweM
+         Uu7mJQ8h/eFAVXPlX+7Cmw5cLd//0o5KjGJEKiDSKolnQInDDSneK/CAIGLcHlk1FQvW
+         gHAncDKywvKKzyDNkDqCIhfHtURF8LpWGWpT5TjmLeTLK05KtKFWMGzL/Ogf51FBy38+
+         Y7Fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791956778; x=1792561578;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=m+5T9X62m2XyH/11b9ZRGWiO9yNW0NlBwsa5IZJ3yF0=;
+        b=1cdcvCed1nWJ+TqVOHca5pVDifkBbWkM1y8oPRkc16J05mn/GqkO7KZ2bWK0dK0yCY
+         wGKzuLeg2m8YXiEH5Rdw3OB8Vl2XqmU+GHPxSPSpFEb7Fdny7HSze8Ho9Xhdse84EWOC
+         Fd0zboBf+eJb1MpPJdYZkG3UFk6SYXW7X5vcZkVD8FRTHCuwm+wFGnxHA1m5jajSmYgi
+         r8ku+hOalLsVv75+sVbP2qI2FpVrgTOXbkihFDXM/Yq0URWsbggdNiJRxIgf6c76SYq7
+         QNXdnKdHgtrkWVKojcqx8otj0Rc4+rAh+LADfum0grcFqQ16LJyLGf/KPj6x5Fxh6Gjn
+         7Mfw==
+X-Gm-Message-State: AFq9FYInRdKcDa0lmB1qe71Kmw7mL95+w7XAPHZoObd2WJCr9ibNhrvk
+	87RSsVP7MhpOLj/eyEvqqY6XKtAyVDwjEOazTsgiyMaKa7bOkFL2ZGY5oGCi/IC2GGg=
+X-Gm-Gg: AYBFou0ZXKK6xZ49HcLsA9G6sGRacz1LvRIYBFKd0WMWdex4HA6n7K+CDTf9/96KR1Q
+	XjthkW7b6+YwnVpXAYKY+3KLgdlotWV068MAVCMTvT87dmf6rugRcwJjV4vZ5KF+GObcAmLpRvQ
+	dd4pdgfHMUlKCkr0X0qzuFkRGfRRAyGwLkUXsb485rNBumKaid1Om9ZNwLYPdEnKZ/F18ruJU7O
+	LmzT11o3VEIJAOMnM1Rkcz6mnga8oBNvspgj3GiY+tcadJ+cAYbTZP5i3rDXv7yv0Qmk5Zk81ix
+	NXGNk4sGb2L63Uys8vKc5JBxUpugmo12rJPOmjKEI5X1NTJhvDbSZ62dQxoJj2KQr3+tnNsdyOy
+	WjXTAVv1dyXWUbhT3D+NfFmeE2R7dgUUACUyBbhbtIqG4Swu0vxe1SIXnEjmLSgzIAmcYqCBzci
+	pWusbi4KoMEVSgZv+A0C8euvH767+Zdbz3xhciDO2r2l2B4X9SCigKoHfWTvZxUXwjGFQqY4YQU
+	8ACjv1XbOfG/aHGGNNo6NsgxgzUawetzYTGUifE9ffnbdHJnGUK/DJdT6PS7Myq
+X-Received: by 2002:a05:6512:308c:b0:5bc:f0ab:1f3f with SMTP id 2adb3069b0e04-5bcf0ba663amr3547827e87.42.1791956777495;
+        Tue, 13 Oct 2026 22:46:17 -0700 (PDT)
+Received: from dau-home-pc.megasoftware.org ([95.139.131.22])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5be33d8fe69sm392928e87.57.2026.10.13.22.46.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Oct 2026 22:46:16 -0700 (PDT)
+From: Anton Danilov <littlesmilingcloud@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	linux-kernel@vger.kernel.org,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH net-next v3] tun: use pskb_may_pull_reason() and remove SKB_DROP_REASON_HDR_TRUNC
+Date: Wed, 14 Oct 2026 08:46:15 +0300
+Message-ID: <20261014054615.1656074-1-littlesmilingcloud@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <179194675382.434549.14371017120705089466@kernel.org>
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
-X-QQ-XMAILINFO: OQNQM5UP8StMB4ATRvE9kBJRtZx6/aloNyukL4c25ED+ChRc+u+j74sx
-	ugCl0+cvwqW7HFabrOxi4ZH8JPcv6xPCPtUKun0lyvVieICZv/8OGlxRbSWwNekxoe2Ov1D
-	YS043Lqis99fBQbac2No6o5oKBbLHSjq2+i0LTOBUOSPjFo62N4FUmcqm69ZWS52xVykxG6
-	xOkdLNdLeWLSutbpjz3bH69T5AxYrhHIDRdewErIXMHnpsFan1JymNHS4g1I75hPHsZfxwV
-	rDfibSlrGAefIbUYKqLSEwLn08anyOxbhQ8CUKqxgS0xaEhPMsQSJVzdV2CusLs/pBhWpWB
-	0THgBSCt2O8kzds8Fj65UhgmkXxO3BdK5DZxQBsVNXT7mvoAEQEpRyTAKMYdg5JOzL0ZDXo
-	vIVK09cqFfvfJAa2svcZA4iawv09uQGccvH1P8sK75hNJMdb4k0QnHG0BSiE+GRuf5zr42q
-	oMV0KsfwWs5T7QKTAkCEycIK3uN94mSNg7NmWicYpoYUdX4+YJrvJzYMjx9w7Ghg9xWtFce
-	++TUjmmeCCywnHuJDZ8Itn1OPK3yPx/JRta2KFfmDzVSH9WelzyPaClxMAtJgdHmOAjGVFj
-	DPMaK4vWZkJUjasUA58916mpccLlDO7TFea70Av/qwPejK+naJNaGcE0zhnksO13xOB5c2B
-	uyBTM+z/WBOFbAE5iJhe8iiGwLUth2IVe9GVCOLLS8yNCY5aCGK934ZHwF74R0o1NJ1srdB
-	37HiZ2d+vzJjmOUyqSjaHPE1f0vTsLo8MQO8V6uIkZ4e2dh0WkSZbHw2cPLs1Bx+vAtDXzx
-	toytJYRfkUHIrtJlq8fm3itW/KFVO3Uox5MgzchjD/2iTehUrF7jHySuQnmEK9eqfdXVqtT
-	4jZbv07Hkd/NSRbLXLoSfaDXDqrMRngfwSlShKmkrqf2iSZyIJpgGmSJKPwe5CZ8WpvgULj
-	3+fbN8ioSMCGYhuPxHPoreHQly5p77X8K39VFj9KFcmCgQDhEN5rHC4qtKlPI2YrttL3S4y
-	4p/2Gy3wAPju3mXiuKtyxdEZSQsvTxU550IydLLFI26INXRsfhxM0ND8JpjeU=
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
-X-QQ-RECHKSPAM: 0
 
-On Wed, Oct 14, 2026 at 02:59:13AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> [ ... ]
-> 
-> > @@ -556,12 +680,173 @@ static void rnpgbe_napi_disable_all(struct mucse *mucse)
-> >  		napi_disable(&mucse->q_vector[i]->napi);
-> >  }
-> >  
-> 
-> [ ... ]
-> 
-> > +static int rnpgbe_wait_tx_dma_idle(struct mucse *mucse)
-> > +{
-> > +	struct mucse_hw *hw = &mucse->hw;
-> > +	u32 dma_status;
-> > +	int err;
-> > +
-> > +	/* A timeout indicates a terminal AXI fault. Hardware stops all PCIe
-> > +	 * DMA requests in this state, including requests accepted before the
-> > +	 * fault. Teardown may therefore release mappings and descriptor memory.
-> > +	 * Recovery requires a chip-level reset.
-> > +	 */
-> > +	err = readl_poll_timeout(hw->hw_addr + RNPGBE_DMA_STATUS,
-> > +				 dma_status,
-> > +				 (dma_status & RNPGBE_DMA_TX_STATUS) ==
-> > +				 RNPGBE_DMA_TX_STATUS,
-> > +				 10, 100000);
-> > +	if (err) {
-> > +		set_bit(__MUCSE_AXI_FAULT, &mucse->state);
-> > +		dev_err(&mucse->pdev->dev,
-> > +			"TX DMA failed to quiesce, status %#x\n", dma_status);
-> > +	}
-> > +
-> > +	return err;
-> > +}
-> 
-> [ ... ]
-> 
-> > +	if (mucse->num_tx_queues &&
-> > +	    !test_bit(__MUCSE_AXI_FAULT, &mucse->state))
-> > +		err = rnpgbe_wait_tx_dma_idle(mucse);
-> > +
-> > +	dma_axi_ctl = mucse_hw_rd32(hw, RNPGBE_DMA_AXI_EN);
-> > +	dma_axi_ctl &= ~TX_AXI_RW_EN;
-> > +	mucse_hw_wr32(hw, RNPGBE_DMA_AXI_EN, dma_axi_ctl);
-> > +	/* Flush the posted write before continuing. */
-> > +	(void)mucse_hw_rd32(hw, RNPGBE_DMA_AXI_EN);
-> 
-> [ ... ]
-> 
-> > +void rnpgbe_clean_all_tx_rings(struct mucse *mucse)
-> > +{
-> > +	/* rnpgbe_stop_all_tx_rings() logs and latches any AXI fault. Hardware
-> > +	 * stops DMA requests in this state, so cleanup intentionally ignores
-> > +	 * an error and releases the mappings and descriptor memory.
-> > +	 */
-> > +	rnpgbe_stop_all_tx_rings(mucse);
-> > +
-> > +	for (int i = 0; i < mucse->num_tx_queues; i++)
-> > +		rnpgbe_clean_tx_ring(mucse->tx_ring[i]);
-> > +}
-> 
-> [Severity: Medium]
-> After rnpgbe_wait_tx_dma_idle() times out, what guarantees that the
-> device has actually stopped DMA?
-> 
-> On a timeout the driver only sets __MUCSE_AXI_FAULT and clears the
-> internal TX_AXI_RW_EN gate in rnpgbe_stop_all_tx_rings().
-> rnpgbe_clean_all_tx_rings() then ignores the error. It unmaps the TX
-> buffers, frees the skbs and memsets the descriptor ring.
-> 
-> After that, rnpgbe_close() or the err_free_tx path in rnpgbe_open()
-> continues with:
-> 
-> rnpgbe_free_all_tx_resources()
->   rnpgbe_free_tx_resources()
->     dma_free_coherent(tx_ring->dev, tx_ring->size, tx_ring->desc,
->                       tx_ring->dma);
-> 
-> The only reason this would be safe is the hardware claim in the comment
-> and the commit message, that the hardware "stops all PCIe DMA requests in
-> this state". Nothing on the host side enforces that:
-> 
-> - rnpgbe_probe() calls pci_set_master(), but the driver never calls
->   pci_clear_master() and never resets the function.
-> - TX_BASE_ADDR_HI/LO keep pointing at the freed ring. Once the bit is
->   set, rnpgbe_open() returns -EIO, so nothing reprograms them.
-> - Bus Master Enable is only cleared by pci_disable_device() in
->   rnpgbe_remove() or rnpgbe_dev_shutdown(), long after the memory was
->   freed.
-> 
-> The timeout also only means the done bits weren't seen within 100ms. A
-> slow drain looks the same as a real fault.
-> 
-> If the device does write DD status back late, or reads a buffer after
-> the unmap, wouldn't that land in freed and possibly reused memory?
-> 
-> Would it be safer to call pci_clear_master() (or reset the function) on
-> the fault path before releasing DMA memory, or to leak the ring and
-> buffers in this case instead of freeing them?
-> 
-> The later patch "net: rnpgbe: Add basic RX data path support" in this
-> series uses the same approach for RX.
-This is illegitimate.
-Once START=0 has taken effect, hardware does not initiate any new
-PCIe memory read or write requests, including for prefetched descriptors.
-The 100 ms wait only covers transactions already in flight.
-For this chip, failure to reach the done state within that window
-indicates a terminal AXI fault, not a recoverable slow drain. As
-documented in the code comments, this fault prevents further host-memory
-accesses, including from previously accepted requests, and requires a
-chip-level reset. Cleanup therefore relies on this hardware guarantee.
-The same to RX.
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/3B42BE25B3696EAE%2B20261013022920.63529-1-dong100%40mucse.com
-> 
+tun_get_user() is the only user of SKB_DROP_REASON_HDR_TRUNC. It sets
+it when pskb_may_pull() fails to pull the Ethernet header of a frame
+written to a TAP device.
+
+pskb_may_pull_reason() reports why the pull failed: PKT_TOO_SMALL if
+the packet is shorter than requested, NOMEM if pulling the data into
+the linear area fails. Use it for both header pulls in tun_get_user(),
+on TAP and on TUN devices, and remove the now unused
+SKB_DROP_REASON_HDR_TRUNC. The pull of the IP version byte on a TUN
+device with IFF_NO_PI was reported as NOT_SPECIFIED and now reports
+PKT_TOO_SMALL, for example when only the virtio-net header is written.
+
+After a successful pull drop_reason is SKB_NOT_DROPPED_YET. The later
+error paths without a reason of their own, the unknown IP version on
+TUN, the virtio-net header conversion and the path that finds the
+queue detached, relied on the SKB_DROP_REASON_NOT_SPECIFIED
+initializer. Fall back to SKB_DROP_REASON_NOT_SPECIFIED at the free_skb
+label, as vxlan_rcv() does, so that these paths, and any later one
+without a reason of its own, keep reporting it.
+
+The errors returned to user space do not change.
+
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/netdev/20260923145931.GA2859441@shredder/
+Assisted-by: LLM
+Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
+v3:
+- Rebased on net-next. Since commit 44378d02c5aa ("net: always dissect
+  GSO packets in __virtio_net_hdr_to_skb()"), the virtio-net header
+  conversion runs after the header pulls, so the commit message lists
+  it among the paths covered by the fallback. No code changes.
+- Collected tags.
+
+v2: https://lore.kernel.org/netdev/20261003132340.4175269-1-littlesmilingcloud@gmail.com/
+- Also convert the pull of the IP version byte on TUN devices (Willem).
+- Dropped the Reviewed-by tags, as the IFF_TUN conversion is new.
+
+v1: https://lore.kernel.org/netdev/20261001093925.3529772-1-littlesmilingcloud@gmail.com/
+
+ drivers/net/tun.c             | 8 +++++---
+ include/net/dropreason-core.h | 7 -------
+ 2 files changed, 5 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 8b82a7fe6ec7..d4152c9ba8df 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1903,7 +1903,8 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 		if (tun->flags & IFF_NO_PI) {
+ 			u8 ip_version;
+ 
+-			if (!pskb_may_pull(skb, 1)) {
++			drop_reason = pskb_may_pull_reason(skb, 1);
++			if (drop_reason) {
+ 				err = -EINVAL;
+ 				goto drop;
+ 			}
+@@ -1926,9 +1927,9 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 		skb->protocol = pi.proto;
+ 		break;
+ 	case IFF_TAP:
+-		if (!pskb_may_pull(skb, ETH_HLEN)) {
++		drop_reason = pskb_may_pull_reason(skb, ETH_HLEN);
++		if (drop_reason) {
+ 			err = -ENOMEM;
+-			drop_reason = SKB_DROP_REASON_HDR_TRUNC;
+ 			goto drop;
+ 		}
+ 		skb_set_network_header(skb, ETH_HLEN);
+@@ -2065,6 +2066,7 @@ static ssize_t tun_get_user(struct tun_struct *tun, struct tun_file *tfile,
+ 		dev_core_stats_rx_dropped_inc(tun->dev);
+ 
+ free_skb:
++	drop_reason = drop_reason ?: SKB_DROP_REASON_NOT_SPECIFIED;
+ 	if (!IS_ERR_OR_NULL(skb))
+ 		kfree_skb_reason(skb, drop_reason);
+ 
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index 664249924219..fa2fe8990557 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -82,7 +82,6 @@
+ 	FN(DEV_READY)			\
+ 	FN(FULL_RING)			\
+ 	FN(NOMEM)			\
+-	FN(HDR_TRUNC)			\
+ 	FN(TAP_FILTER)			\
+ 	FN(TAP_TXFILTER)		\
+ 	FN(ICMP_CSUM)			\
+@@ -427,12 +426,6 @@ enum skb_drop_reason {
+ 	SKB_DROP_REASON_FULL_RING,
+ 	/** @SKB_DROP_REASON_NOMEM: error due to OOM */
+ 	SKB_DROP_REASON_NOMEM,
+-	/**
+-	 * @SKB_DROP_REASON_HDR_TRUNC: failed to trunc/extract the header from
+-	 * networking data, e.g., failed to pull the protocol header from
+-	 * frags via pskb_may_pull()
+-	 */
+-	SKB_DROP_REASON_HDR_TRUNC,
+ 	/**
+ 	 * @SKB_DROP_REASON_TAP_FILTER: dropped by (ebpf) filter directly attached
+ 	 * to tun/tap, e.g., via TUNSETFILTEREBPF
+-- 
+2.47.3
+
