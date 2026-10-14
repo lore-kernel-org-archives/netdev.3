@@ -1,198 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DA04F4CE5;
-	Wed, 14 Oct 2026 11:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791976709; cv=none; b=E+tODpeCgk4NKRnv5As+6aarWfzA2VUAjUkwH/t29p4XtqSXVQjfn2ftOGTgNhm+F2Zmss9SGK15n5z9hHvLAszrvHMV6VnT3Y1jzWCzkcfJXnt3BiFfD8dzQKLvBoh4tWb1AOkBBeGh1k2crk2ihbbaTBAf3zIesAoJbXSCYXE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791976709; c=relaxed/simple;
-	bh=ewLYliVnd7ZSeqBWV78N1KQN4ewFXoJr8g+sAgKHTSc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ye3tuxaWCJ8Y3rdARoAIErtHo/MMXmJmuYYFManbSX72Esv99KFVUZ3puGohAzpIYia1kt/C0WdzCNvFVkr5lysZeBmSbzpmqhXJJis0YRIzhvQ0qhnPPieEQitZZdsFI9WHqs3GErSryodutcCdMnaiPXM5RTbNw7d+CKnYFpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qaks0+1v; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6EA4E323D
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791976847; cv=pass; b=sIR5p0n8Iu59E9eK9Ywo3OZ+79qPnm2RZe3iBY+B+a6VXeXnUk8Rf0fQsQii0FFxvwwW2c1gnESc1gKY49oibgFeffLm2ojXM+7iPtGYVPARzv+W/UzcyE+hZuYPkokZ3cAFmu0uvWt7JhP8Sx4q8FnHawOqZA6s7KbhHU+MIfc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791976847; c=relaxed/simple;
+	bh=Dm1smR04ZivAMkU8QgbMvCQPxO0lGpCaWtgIm5vurN0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Osb3UzNWgEDYs7BARuDVoBBYcuitlInIL4Z0t+JOMs8yHtGviU/UKZ/hMhInijGfLUCTA4cTIl8gsnHZS8O4vGDAD2ePeTGCLHvwS4LaIdQjg4gfXrYKyjEHobVOVogRn3n/AVvJPXm5jpnBTwAJeaEnaHzat096cFA+n40aCCE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iCp4paHr; arc=pass smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qaks0+1v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1236D1F000FF;
-	Wed, 14 Oct 2026 11:18:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791976707;
-	bh=x2RmlG7/DNYZUkvwHEdu2BFerSCe0Wm/zWi/nMGE3w8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Qaks0+1vUnFVnAJ6FriPFKUNetLcAC1DPv96J8mSSVYvGzGfnL/2OlwNNU5JDurnw
-	 mJ0LYwDvco1gVb6P4OYkM7lhuyhmIdvN+7hzlflYhhu3zG3t12lAd1WU8s5Ir0MdCL
-	 yiHursUipQ/K0e2d3Bn3CbqHGeM5aUn5/JLpgNAIAvkAGDctGjHMDfYpen6vFilY4M
-	 buVkjRo0BnuMBFz/I603xEyP8qfPHNximqzvF9ZKR5T13uQDpK/fXuAJ17Yr/vVogo
-	 8h7d6Aw8UnkL4PYto/AhYVw0PvvndnBG0r+nBmQ3bZxr28+QNU541e9h1l1imBZC5m
-	 NC7Eu8P7PNTyQ==
-Subject:
- Re: [PATCH net] net: sunhme: fix infinite loop in unmap_partial_tx_skb()
-From: netdev-bot+sashiko@kernel.org
-To: arefev@swemel.ru
-Cc: seanga2@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- lvc-project@linuxtesting.org, stable@vger.kernel.org
-Date: Wed, 14 Oct 2026 11:18:26 +0000
-Message-ID: <179197670661.434549.16333488251778765478@kernel.org>
-In-Reply-To: <20261013103228.37430-1-arefev@swemel.ru>
-References: <20261013103228.37430-1-arefev@swemel.ru>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iCp4paHr"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a0213948d3so24455635e9.2
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 04:20:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791976844; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BUNx/FTf8xrMaaE8BvnBpN7ru5Va0znGcWClFwv4VTcdBpnALH6EpqLapCpyfw6LVM
+         0eUoWEDzMTi/IE8n3Z7ZT/xFpGoa+zqlLO1eOvsU0C4MX9ZJkSWYVixj0AbO9BVi8o6M
+         DM/3JI3z2u30VwF5LEtItjPnm7zQMUOqXRCPA9r4KJ80lP/coHmIhBpBZ5nm7QG0G0r9
+         UURK1n5OAZqYpf6YXY51WPlRUNgGTm/OC3dWbMnjrJaWp1izh3IA//n/n1Z6HvPUQ+e4
+         jaBbSzRRHJZw13pl5UYjLiDi7NCSneJWWaYEW49kt9rFZCF55O9dCKWUE00MlVmCnBgr
+         jLug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bO5/h39EF/Oj8X3PFjOOqCZcmmbplUnPDUCoN8XUO3Q=;
+        fh=CDTilGWRTMwu8/iiMyxzHCFtDyz9Pz2UC8A8i6buNKY=;
+        b=Ukn8x1Wse/enZ4+3K/okKLDYqDv5Z17n2huLCVFYTxUn7Ix8KQcWZU3IEZd7vOFVU3
+         e2lcKc8UbnEbNEYrnpVEb4kFOIpv1w58pCSPrRAENa7R/g2piwKApAfzM4g/i9+gQoJ3
+         aFQuOsAMLwnityJa5nXlfAAKRLgXbSx51tZaNINT6MbehECz+NOOm3I8Smy92CcC5BAu
+         LLQPgGXTJW20gsiNptPdOpyFb7cjeTR7hUI3AdwRmiLl1n2TS+bSOjx2pUtSXUc/vCAr
+         ZX9QJ/RHNWHUnAKPCk6zhBSJMLNTsJvn3j1J6FCbWAiBckTAkuGjQCNfAruLUd7gGFzn
+         Nj6A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791976844; x=1792581644; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bO5/h39EF/Oj8X3PFjOOqCZcmmbplUnPDUCoN8XUO3Q=;
+        b=iCp4paHrczB97BfRM2s9Ejtsf1TkEplvFt/4up8zH8BGspsqNcbsc8Gs/mLEhTgYj1
+         sGm9CCM/komsQ9lr4+99Re+Ecjnzvps5UpmidI7SVbnMi3dATbEfhxdcftQg+UqM7Y+n
+         m+tZ+c49dRFnc7yGaR08maSAmdg3qlMfZmXGRL8El4Zqo4AynX5J6oOxh7Y0IjW0bPu2
+         62/B8Iaa5vOSBlTmTeGLZ/NJquY7xWH9OSIRywvO8skLVM4lrYrr+LDfZW153CABGMsj
+         nqado3o3DM4ldUL4D6VxAOSTzOSl2GCjXxKzXnuVYbSGyAr/SAPxJw7uXbBt7utwCSst
+         mhiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791976844; x=1792581644;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bO5/h39EF/Oj8X3PFjOOqCZcmmbplUnPDUCoN8XUO3Q=;
+        b=WxrAOqY1hhfolyuMgLBHrdDk6CQu1uZvuxo+p2hN1P4+tsy6D+uiauuJmkwh9XUXhy
+         p1+OUtxEJekXYJ0+fVbShhx7qJTJ9UmyYnYilCygX3/TUILiTYrZwY8zSBAcXpGb8T30
+         xnZ2f4kJFGSMLcn9i683+n3ilZFqrTzDOgkP2g7tdf0ZFobV8V3gJfwh8arRN8jn274I
+         csHTGhOFb5xfzrJLFg55LtkVY8a69bk3OMqdzl1l1+CUkrAf2CjHRjoM3wL8gefN7xib
+         BEYxJVUB9pbqve/5lnl+eTjoUf9vDUDd7CH+EmccLw4MTzsiCMELN1Ltt9X4ETiLAPRL
+         rfIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzVd5qPCed1HBGwJVeegcWfqTAKuM5vUlo+27a/lgtGr+cRgAr6wEeoTXpEooa5Htd9M1ts6OE=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKlsIO4I9JlZYAbRZTr2hLGbEAjHSVIFBxGVRXVkh0ZLEaxio9H
+	2mm/i90ls6CfeuIQVX/iTYBVxJebbNnyhwP/Xq+RHMa/MdpbQpg+ZDQqF/amasyjlCocbd3M/RL
+	Yx1iFvXK37HHKRjt00C2sLvMZiXXe8/Q=
+X-Gm-Gg: AYBFou3bcIwAaK8Xsok2JuFIl3U629PWuFOsnJOBHeo+U8XQBdYJnNY1/k2vStXDq6g
+	P3/LcHLbQB7d3eXMe6yKi5NRDbW8L6J6GYz76Bmj51Usg2zcILd0412NhHrmd9Y0Lkr/DCzGbjX
+	RyBqbRV4tQsWHW20LbAR/SunpcFQIfsd89e1dDW67GdqB22zdAy+Xw/mJEuPWQDZg8y5qXFTsto
+	tneQXFBBZNHFIENnpfQKhKApwjZolZpj2/xKd8JC/o7T/ceIIHsfvCKF7Rej1PKqp5bLakdEYNF
+	I5nMXhpplE9DUd7acggqOmRS+U/wZNx4cG5wvNwi6mccRqWVThGvNnWl+lvHDhUxCW6CwHFamVe
+	+owzw9GAYqjaODUG8YywA7FCDLHpvC8IqFeGSb40Qnf9Sq60qhdchYl6c3e6zmQtUnpylRlXkF3
+	vbxduMAarmDg==
+X-Received: by 2002:a05:600c:6384:b0:4a1:7741:ec43 with SMTP id
+ 5b1f17b1804b1-4a18e4b8966mr285168845e9.26.1791976844095; Wed, 14 Oct 2026
+ 04:20:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20261006-miic-validate-dtb-v3-v3-0-68617b3dca5c@reliablecontrols.com>
+ <20261006-miic-validate-dtb-v3-v3-2-68617b3dca5c@reliablecontrols.com>
+In-Reply-To: <20261006-miic-validate-dtb-v3-v3-2-68617b3dca5c@reliablecontrols.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Wed, 14 Oct 2026 12:20:17 +0100
+X-Gm-Features: AclHuK9lTkcKfev6iJ1zocn1hec2LLI_EBu29VRkVnV_MFGRgCWPxR3baUck-N0
+Message-ID: <CA+V-a8vZmCia0aRyx_KU+_3Wz4JJNOMG=-GC-QXcEL8RaE3-qg@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/2] net: pcs: rzn1-miic: Validate dtb
+ configuration values
+To: khendry@reliablecontrols.com
+Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] net: sunhme: MAC processes unmapped memory due to stale
-  TXFLAG_OWN
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch
-  makes it reachable.
-
---
-
-net: sunhme: fix infinite loop in unmap_partial_tx_skb()
-
-This commit fixes the loop in unmap_partial_tx_skb(), which never advanced
-first_entry. Before the fix, a DMA mapping failure on any fragment after
-the first one made happy_meal_start_xmit() spin forever with
-hp->happy_lock held. The fix adds NEXT_TX() at the end of the loop body.
-
-> diff --git a/drivers/net/ethernet/sun/sunhme.c b/drivers/net/ethernet/sun/sunhme.c
-> index a70f704eb9f3f..544eb43af1258 100644
-> --- a/drivers/net/ethernet/sun/sunhme.c
-> +++ b/drivers/net/ethernet/sun/sunhme.c
-> @@ -1965,6 +1965,7 @@ static void unmap_partial_tx_skb(struct happy_meal *hp, u32 first_mapping,
->  		len = hme_read_desc32(hp, &this->tx_flags);
->  		len &= TXFLAG_SIZE;
->  		dma_unmap_page(hp->dma_dev, addr, len, DMA_TO_DEVICE);
-> +		first_entry = NEXT_TX(first_entry);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but now that the error path
-no longer locks up, it becomes reachable. It came in with ec1f1276022e
-together with the missing NEXT_TX().
-
-Once the fragment mappings are undone here, are those descriptors still
-owned by the hardware?
-
-happy_meal_start_xmit() sets TXFLAG_OWN in tx_flags and writes each
-fragment descriptor with hme_write_txd() as soon as skb_frag_dma_map()
-succeeds. Only the head descriptor at first_entry is held back. If a
-later fragment fails to map, unmap_partial_tx_skb() calls
-dma_unmap_page() on the fragment entries that were already staged, but
-never rewrites them. Each one keeps TXFLAG_OWN, its length and a
-tx_addr that is no longer mapped.
-
-The out_dma_error path then leaves hp->tx_new at first_entry, sets
-hp->tx_skbs[hp->tx_new] to NULL and frees the skb with
-dev_kfree_skb_any(), which releases the fragment pages or swiotlb
-slots.
-
-If the next transmit is a linear skb such as a TCP ACK, it only writes
-first_entry with OWN|SOP|EOP and kicks the engine with ETX_TP_DMAWAKEUP.
-Could the MAC then move on to first_entry + 1, find OWN still set, and
-DMA from the unmapped bus address? Depending on the platform that would
-be an IOMMU fault, a TX DMA error and chip reset, or freed or reused
-memory sent onto the wire. The stale chain also has no SOP, and no EOP
-on its last descriptor.
-
-After that the chip's ring position would be ahead of hp->tx_new.
-Descriptors the driver later writes into those slots would sit behind
-the hardware, and happy_meal_tx() stops at the first entry that still
-has TXFLAG_OWN set. Would that stall TX completions until the ring
-wraps or the TX watchdog resets the chip?
-
-Should unmap_partial_tx_skb() also clear each descriptor after
-unmapping it, for example with hme_write_txd(hp, this, 0, 0)? That
-could also be a separate follow-up if you prefer to keep this fix
-minimal for stable.
-
-[Severity: High]
-
-This isn't a bug introduced by this patch, but the patch makes it reachable
-now that this error path returns instead of locking up. It came in with
-ec1f1276022e together with the loop bug.
-
-Once the fragment mappings are undone, are these descriptors still owned
-by the hardware?
-
-In happy_meal_start_xmit(), tx_flags always includes TXFLAG_OWN. Each
-fragment is written to the ring as soon as it is mapped, and only the head
-descriptor is held back:
-
-drivers/net/ethernet/sun/sunhme.c:happy_meal_start_xmit() {
-    ...
-	tx_flags = TXFLAG_OWN;
-    ...
-			this_txflags = tx_flags;
-			if (frag == skb_shinfo(skb)->nr_frags - 1)
-				this_txflags |= TXFLAG_EOP;
-			hme_write_txd(hp, &hp->happy_block->happy_meal_txd[entry],
-				      (this_txflags | (len & TXFLAG_SIZE)),
-				      mapping);
-    ...
-}
-
-If fragment k+1 (with k >= 1) fails skb_frag_dma_map(),
-unmap_partial_tx_skb() calls dma_unmap_page() on entries first_entry+1
-through first_entry+k. It never rewrites those descriptors, so each one
-keeps TXFLAG_OWN, its length and its now-unmapped tx_addr.
-
-The error path then leaves hp->tx_new at first_entry and frees the skb,
-which releases the fragment pages or swiotlb slots:
-
-out_dma_error:
-	hp->tx_skbs[hp->tx_new] = NULL;
-	spin_unlock_irq(&hp->happy_lock);
-
-	dev_kfree_skb_any(skb);
-
-Suppose the next transmit is a linear skb, such as a TCP ACK. It writes
-only first_entry with OWN|SOP|EOP and then kicks the DMA engine:
-
-	hme_write32(hp, hp->etxregs + ETX_PENDING, ETX_TP_DMAWAKEUP);
-
-Could the device then move on to first_entry+1, find OWN still set, and
-DMA from the unmapped bus address? Depending on the platform, that would
-mean an IOMMU fault, or freed or reused memory sent onto the wire. The
-stale descriptors also form a chain with no SOP, and no EOP on the last
-staged fragment.
-
-After that, the device's ring position would be ahead of the driver's.
-Descriptors the driver later writes into those slots would sit behind the
-device. happy_meal_tx() stops at the first one with OWN still set:
-
-		flags = hme_read_desc32(hp, &this->tx_flags);
-		if (flags & TXFLAG_OWN)
-			break;
-
-Would that stall TX completions until the ring wraps or the TX watchdog
-resets the chip?
-
-Should unmap_partial_tx_skb() also clear each descriptor after unmapping
-it, for example with hme_write_txd(hp, this, 0, 0)?
-
->  	}
->  }
+On Tue, Oct 6, 2026 at 5:48=E2=80=AFPM Kyle Hendry via B4 Relay
+<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
 >
+> From: Kyle Hendry <khendry@reliablecontrols.com>
+>
+> Bad configuration values from the dtb could result in out of bounds array
+> access. Verify parsed values are within range for the SoC and fail the
+> probe if invalid.
+>
+> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+> ---
+>  drivers/net/pcs/pcs-rzn1-miic.c | 29 +++++++++++++++++++++++++++--
+>  1 file changed, 27 insertions(+), 2 deletions(-)
+>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013103228.37430-1-arefev%40swemel.ru
+Cheers,
+Prabhakar
+
+> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-m=
+iic.c
+> index 31716241b58f..10622eb654d2 100644
+> --- a/drivers/net/pcs/pcs-rzn1-miic.c
+> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
+> @@ -693,16 +693,40 @@ static int miic_parse_dt(struct miic *miic, u32 *mo=
+de_cfg)
+>         memset(dt_val, MIIC_MODCTRL_CONF_NONE,
+>                sizeof(*dt_val) * miic->of_data->conf_conv_count);
+>
+> -       if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf)=
+ =3D=3D 0)
+> -               dt_val[0] =3D conf;
+> +       if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf)=
+ =3D=3D 0) {
+> +               if (conf >=3D miic->of_data->conf_to_string_count) {
+> +                       dev_err(miic->dev, "Port input configuration out =
+of range: %d\n",
+> +                               conf);
+> +                       ret =3D -EINVAL;
+> +                       goto err;
+> +               } else {
+> +                       dt_val[0] =3D conf;
+> +               }
+> +       }
+>
+>         for_each_available_child_of_node(np, conv) {
+>                 if (of_property_read_u32(conv, "reg", &port))
+>                         continue;
+>
+> +               if (port < miic->of_data->miic_port_start ||
+> +                   port > miic->of_data->miic_port_last) {
+> +                       dev_err(miic->dev, "Port number out of range: %d\=
+n", port);
+> +                       of_node_put(conv);
+> +                       ret =3D -EINVAL;
+> +                       goto err;
+> +               }
+> +
+>                 if (of_property_read_u32(conv, "renesas,miic-input", &con=
+f))
+>                         continue;
+>
+> +               if (conf >=3D miic->of_data->conf_to_string_count) {
+> +                       dev_err(miic->dev, "Port %d configuration out of =
+range: %d\n",
+> +                               port, conf);
+> +                       of_node_put(conv);
+> +                       ret =3D -EINVAL;
+> +                       goto err;
+> +               }
+> +
+>                 /* Adjust for 0 based index */
+>                 dt_val[port + !miic->of_data->miic_port_start] =3D conf;
+>
+> @@ -712,6 +736,7 @@ static int miic_parse_dt(struct miic *miic, u32 *mode=
+_cfg)
+>         }
+>
+>         ret =3D miic_match_dt_conf(miic, dt_val, mode_cfg);
+> +err:
+>         kfree(dt_val);
+>
+>         return ret;
+>
+> --
+> 2.43.0
+>
+>
+>
