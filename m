@@ -1,508 +1,1658 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2A54F052E
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E31E4F4743
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791982195; cv=pass; b=Br46bJJeJhDjBD9d/dHGhKmu98rQrof/UB43swQlyhN3ZXXEMqOq1c4/TlrHetzTt4WoG7wrFFpbuHDbtbnmgTSN4sOqRDFcI/K5ctjK0hOH1eVlvrBgDusYvmg+NpQsjOyutwz9lRjs2oGwBcYQ6C6lH8mrW1ezzdQYhIncQZo=
+	t=1791982207; cv=pass; b=DHjBEfYFgebIqI6QbjwiVMxDSxR6+xWmyGGFy4eamkk38fU1fU2osDVD5pjVc1qVJ5ErRu725zp9zkVyri3JJuleDtu+WRs4/8bw0H2tudbTvC9Gxy0gpOpJ9c0GWT+ejlzsQBCbCiuD5Z6mKzeaZc/qd916InKY3Bnwa6e50q8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791982195; c=relaxed/simple;
-	bh=IZ9udLZ8mKwkA9hOW2ysBBLxwdxCnM2/zSGJI/8e7aM=;
+	s=arc-20240116; t=1791982207; c=relaxed/simple;
+	bh=McdJPiIkzGuAOFSfawN974+2UBkvL4Z/RLIGlJxCckw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FYJcRbfAciXdLUrXg7NY4aUQ6ualO2WkkNU8eumiHhxKuyGqURkg9CBvBz5J2eoFi2dRvFHZFq86ivjW4c44ZH1vC8YkYk4uIxaOr4hF8jXsk8L8Vvgv96+pSFoiSSumPUuIVW4gG/tlDzvw6tYQGNDYL9GT4guCtDPfNHGLIpI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UMvGZzS9; arc=pass smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=HBA4k4jMtB+8QaDvkSeeHEekoY+AF6G2UPkIh6Tl7Vi8/GBipGWbxtTZ52xne0eJE9Q8UOaVuJVCSDgUeNY9pNGa0OKeh1fb5B8fV5MskVZFSRpqanZ9By6NqYd+EgFNE2chk2xpjCV6onDgg+9opbP0qR0bKcWdh+q76q7iZCc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JL6wU9PY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=a42ktOg3; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UMvGZzS9"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-918f75a68f0so66492186d6.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 05:49:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791982166; cv=none;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JL6wU9PY";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="a42ktOg3"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69E7QQqA2874030
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:49:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ejj/3/MKHPuytR14KINU811XD9JxnABMHMpqOAC16jI=; b=JL6wU9PYQcb7wrwX
+	ndTloR+WGpWpoSiLrrk3llVic4PlusmgUu/RYuqMB4CMQw4+1RqpO+GPWfYkOnXR
+	pRcVolEHmkarzdM6sL5PO3+2Q5KJXShizMkLt2FmyOXW1O63CkcvceBft9A6zI3X
+	aHMuXmHNy7pFIMuQoKy8YaQagPlIMq2wfad+oWf0GBXEjaXG5I+sXCAN2l1TgGjf
+	oAyqWjma4/x0Xz/BQMsOFuSJdQpJg5ykCsiySAercL3sJd/bN7ruFcSMGiKU52mM
+	zcZNK3l9EMaW8g6yLqt9mPwZrSiZ39tHsW1vAK9AiRoYvpYrU2F0+gMduNL5zuED
+	+Own/Q==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4h9yphjker-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:49:32 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93cc40759b2so895004785a.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 05:49:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791982172; cv=none;
         d=google.com; s=arc-20260327;
-        b=ZZW9mQDArIjXupTS9hl2+9l3Pr9qE6qh+dK/nn7LI+utCIzui+6PW2XOFsf3Zzcy7O
-         mB6EDx08ajBPPd+hUadUEtP+pFOPIABEGv4xa1UyUya4XUZ/V5KD5OHZMbcTCt9byBGs
-         B83EFmKTwly1NkVpbHQ46WJCg5xIPjcgTC/HX6mCGmR2OsIG1e/LiU8MKmXjaXvgACXH
-         /o21mVHrsmLcswvsvS+5mGVQUGFp5KsQ9oSDbGTS9QaZeBeT8GIkL/7+KMaYQvKptywU
-         Cenl1yyB6j8FOCZ8zHq2KVSrxP1MHi0lXIqHiTKWMBGjvmdUURLg0U1HTerhsR8semFJ
-         o3nQ==
+        b=MHQVQPkd0Bb8yx8QxD7mGJtq7aWbCsPwKtqvIYQipS8lWP9q++G2uXewFdGJtQTyEA
+         mEaNdYOvbAoiu3EkvbNvG6mM4icdcKb1NJTHixjot95SV8vSzr7UnKZChIY2viCsduLV
+         TZeQYUAECAhrcE1X99ZdI4KmAZP2hJoE45n9ZWw1YXxZjEdr69Y0xM2ZandK0BBFOg2y
+         WOqq0Jlh3nY9Tfrk07RpO0Dc1NfJKdoyFoRYkOunM3FDu2sh25Ks91fSsaLUw+gFQ7rp
+         YoSf5pfXUNgPywdZqEu1iqyVVmpg710Bj/g4xFdqq/PunI1HpFnspeR7Q9VRFunk4YGv
+         gNIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=tPbZXRRAUxUX9o7GeMQdJWsdAmSHTI7hSTaU+xQ7YBQ=;
-        fh=sUI4CSNB1PRlv5JmvbE29GQ8Oz7HYPa2IW5svVv0/JA=;
-        b=KnFk55w8Z6+FzMmJME3nfNncWGukV6KQ3rViFHkvgv6F6J1XC5hQ7OzAJ+wc0FIeQ5
-         XtQcUMm61qN4PQbxVCnxIauCcmMm9JgPk2kbdCTrisS1ozMdlLY3+JuuMNmy/Bzc+m6V
-         hiRV/QKa+5ABaa89Koais9snyFH5OQwmlOvoxYYaTeVQy9WOrGPmd3wczn8nPmi7hJhK
-         GXD8mJODJUS4jOB1efEvVno+7AmZeRrtqNuAYkNSlxO/fxtdxtK7Fmn45AmckXIv9DOl
-         TrqAoA/me8+0zezUlF2lFdPltcEMQ/mwLFM4tULmSdi6Xh5XB/wqtbysayw7Kd7gBjrj
-         rdLg==;
+        bh=ejj/3/MKHPuytR14KINU811XD9JxnABMHMpqOAC16jI=;
+        fh=PWP3JQDxOiZg5CISKe5F+jwBdx+mlmW6M4CoOyqcumI=;
+        b=lb/u7ETZYtvdara1aGGfaEzh+uDkVmdEDvxI6oe2El/JF2GPtnrr9/IxSfdW97gpsf
+         4V3ih6U4CtGLCDIGsKgZoUMqg8oGL61jhNXofqvfAjPWsNoJCQPJtinMnVefcMz0iifc
+         FRwO0FLR3QZcBAS4TSH5yVOvaqLBN5tXLaY/KisNtcFScB/bofU5K64SBV6hUQGI5b5R
+         yNJQpvf2I1X0CyFGqzZEVTnx/8mWAZx/d198QmCgp4L1olUNShsNz34Dxn09+zNfxRni
+         wMWBG1Wj+0FcSph692U6xz2JkKWXpGeRu3gVQABS50gNHdZIuPRSTFEWRk+cdrkddtrX
+         kaLg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791982166; x=1792586966; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1791982172; x=1792586972; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tPbZXRRAUxUX9o7GeMQdJWsdAmSHTI7hSTaU+xQ7YBQ=;
-        b=UMvGZzS9mkwo7NWflQjblzQ2DrO5lExg8pVK95w+lOZkVOa0atVv+P8qDxl6CfNVw5
-         mMmmz3pPXtWSS2O5HAvv+GgOt+iu0WbRNzELVr5rtpq7mPUeVmIYjvlt8gorv/27ma7m
-         UYk8qLKB9dy7eE4GqAEhml0ebhwxlTrflZqSJ+X5DcEXM1R3/Uquf+QgKtVk8ANt9M+E
-         AOA77FTC8asHQuv92MOgqsX63F1f79nYaZxMWp3Uovzf7f+/qavpm694HN+FqGaWyN7t
-         JzsQxSHPmyeOZJulpMSd0FW5ibBI9YmGjz0l19ZGbDB82/dWBTFtTMP7bHCq+mhyLbPY
-         1x+A==
+        bh=ejj/3/MKHPuytR14KINU811XD9JxnABMHMpqOAC16jI=;
+        b=a42ktOg3R0/7/0XGcTquzV4EHWgheZEmpNsmCFe1s3ngjsWbt1yuS0aiuuMn/bvTWk
+         dBhhgwswoywuWcea54E8DiH8GZ3J3xQfSJDk2pWB6ueYp4BfWfiPrzhfrHUCcpurcA2o
+         5HjBdy2ccSdMW/VmoPOAAh2p03QjKHqvIrFv4DLcuNBbekQ0TdrI9xPy0b/GZ2R/GHdE
+         xZhv3Ts+blqjbeBWU6Q9RiYqj+/JA2706Udd2pwFyQoa8D7bOn8unx6bvwcb8S7OLhSv
+         dPVvWjtOUxWmyMjzzQQkDVZhkIET80WVFAY349DJrtRkJlvSwrZLFMTZ0CKI7AXgVg47
+         8/IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791982166; x=1792586966;
+        d=1e100.net; s=20260707; t=1791982172; x=1792586972;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tPbZXRRAUxUX9o7GeMQdJWsdAmSHTI7hSTaU+xQ7YBQ=;
-        b=T9KtJzL9fJKOTumrwXXGNhlBCULEOwFVq6N2M9/YF0nwj9RXDtSpigGASRm5MUeez0
-         evx4lgfyQNoaqHOh7Y79Iao7TzBNKqCIF8g22/c4hH3d6GO1MN31NA1+G9jd/SKwj76+
-         F801v1YxFHCXoMYKDTDg1g6eDjqEDu1s8ixenoNY46vMFM5vyklILDKjkbqXsy+RNg1e
-         u4K3uGwuzA2rpHrLCFXFowAbhbJClUU0e5Ukiu8ArOyoUN5+gtfNkUtD9HrzBwSxvHfi
-         89x20G68G38ak1OBQ6HvvwisjhsQfSnOu6+29rhApemRxkVTewCKu/gHM1cKeLn5J5OB
-         NwkQ==
-X-Forwarded-Encrypted: i=1; AKwUvByuAWtRQxUW/vkY4xud8oN0WUom+PsPRVoZGByFci5jkqFwIsd8wEgAHfTcwgQ3gcCqKdRyF7U=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKAj9k1RkNBVJP1wLW2UDtELOTlZb+DCa8XzdTGVlhYirvdAtmt
-	6L9ty8xBTyFD3T99j4NY0Mi6sezyvrg4aX/erJPP/lfXbLai9xKETrdQtBUZS6TlZVDHEzk+2rX
-	qynDSScFgANtHASuzH5lTOCwed6ZRFm1GKyjPEqs=
-X-Gm-Gg: AYBFou3FSyx4EumpUabUET5Y/W59zPiaEKljkysMVm3Cr6/DptDTMaylAYRfT5wwD1m
-	GAVsVPHZRM4e2XEitIAxEtkKZWad9a7mHTWBC9Cn5mWGX/PgGwiC9fOT53uHbhB7kOkWLWtlCmw
-	0wUtZ2q6M5G9ZYTOhZRvJDDfGLwXfGnCMYGKEmwPQE3FzWH07elqSiO9NVsyOOpENCz/hr15Mdv
-	GzUsKzpmj1ULb5yq7GvRZLs67AoFIqu4/yD+MgeEn9gIyZrNirkN3IzkReUMPPs7BKTgzZqGhIM
-	9T93jUdiVZtz1QPTBdEQ/gAv3IKed2ZbkBC1g9cPVnNCpPjj1lprkgQ=
-X-Received: by 2002:a05:6214:410a:b0:91b:50f2:19 with SMTP id
- 6a1803df08f44-91b55500fafmr253190856d6.27.1791982165875; Wed, 14 Oct 2026
- 05:49:25 -0700 (PDT)
+        bh=ejj/3/MKHPuytR14KINU811XD9JxnABMHMpqOAC16jI=;
+        b=ynigchHznZe6fEYeUxEo/5mlwwyN3uQhscgEk1I+Z6cjylLKJPYywGogumWfWMs1Oi
+         7FK1C+Ni63F1iUxPPtryJ5+DVyMUINQsES9Xgd0kZyKuyB8ptoB19Vqzj8NJpPvstSzw
+         7dv73qNrvH4mPQrBXNjkCdYBK1+aphAOoGc34jncRTAaVYt5ADdponNp29F9YZ7NWMoi
+         00bmyPpyhf0kugHCpwiaM3h3GyXTwIsT7d84yTnt6lHqMy3uaozZzJu+wBHI119t95N2
+         mEu5/Kzk6c9yJ9hW1GncIFTMq2laJRjNgx7G9s400wFVj4EVw+6QxehGamsQKTB0PAux
+         /fdQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwp2a65hzpw92/mU1+D8+ug4qhuBeqSemz6hlz7HHWjzaN0av9zxMKb4VY2TfkMSMUOvIpGj/g=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKInJ3Z0rvAR5qeNnb2eqonQXOdOUDq0ZYX9AIUIsFMwsYiztr+
+	6d/KFM6NkjuG1PJjuNkja90THOTUH/EpSTbq5A8bBBVPaQ7zpBcObooucrf9TzC2oFdjJFLCT3c
+	1DlmWZJzyFABw9O7mFCShQUsHvKQdU8yUngNzocH26+Co6mJy48vC/FPt2WlyhxYmUnpdXUwSY8
+	s/qRJfbID1Zmw/Zoa/BVPuctq0K9sEziWOzA==
+X-Gm-Gg: AYBFou0NOLfTkOKcE9xIhIBtYTd8RpJnyNsoDTWfPNk3kHzT19A9X3/tOnByNUvnacf
+	D5h1RNDGc5bL4Lucl9DguNnlw5OWD6QqOZh/gK8mCW7U22YZ5LRBNMmKxlDLmbjK+WCw045vU/r
+	p5l7Zqew/WbK+UUzZ/JZC3wDydDRTtVVZ5il1a6h7Z2GK+HfhzA0qHSz9kSx+v28ijw8PTJFXzx
+	l2FcvC/DrE+TMBuC2SFK/p42sBdCwwVW/n2UsWAuuFAx0Ex1AsBAnhYKdegVsPRjhKleXPhKyq7
+X-Received: by 2002:a05:620a:17a3:b0:93c:89a0:bf82 with SMTP id af79cd13be357-93ebd209171mr2643098085a.43.1791982171355;
+        Wed, 14 Oct 2026 05:49:31 -0700 (PDT)
+X-Received: by 2002:a05:620a:17a3:b0:93c:89a0:bf82 with SMTP id
+ af79cd13be357-93ebd209171mr2643089785a.43.1791982170467; Wed, 14 Oct 2026
+ 05:49:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261013033207.1684328-4-zxyan0222@gmail.com> <179195062971.434549.3907170504821168391@kernel.org>
-In-Reply-To: <179195062971.434549.3907170504821168391@kernel.org>
-From: zhu xin <zxyan0222@gmail.com>
-Date: Wed, 14 Oct 2026 20:49:14 +0800
-X-Gm-Features: AclHuK8qhpcxlM73roMHGevYw3SXsYzC0julmGtC_jghy21jeFP5jd9UKD2s614
-Message-ID: <CAP7veTK6NQtrweDVXsYyiMuru_Svtir5XvY_ATM8a6GWO=cqKw@mail.gmail.com>
-Subject: Re: [PATCH net-next v8 3/3] net: stmmac: dwxgmac2: add XGMAC
- timestamp interrupt support
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, pabeni@redhat.com, maxime.chevallier@bootlin.com, 
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
-	richardcochran@gmail.com, muhammad.nazim.amirul.nazle.asmade@altera.com, 
-	rohan.g.thomas@altera.com, netdev@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20261014-t9xx_driver_v1-v10-0-4d0dde3613f5@compal.com> <20261014-t9xx_driver_v1-v10-1-4d0dde3613f5@compal.com>
+In-Reply-To: <20261014-t9xx_driver_v1-v10-1-4d0dde3613f5@compal.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Date: Wed, 14 Oct 2026 14:49:19 +0200
+X-Gm-Features: AclHuK_EgsVv7GgHwTE5mJjx0PtuBpJ8jtAzHpWCeVRNTChV95Nc_j3JoZuLj68
+Message-ID: <CAFEp6-0d86Mx1gardmN74WNFCerY00Pm1B=720tqOqKhz5EE1Q@mail.gmail.com>
+Subject: Re: [PATCH v10 1/6] net: wwan: t9xx: Add PCIe core
+To: jackbb_wu@compal.com
+Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Wen-Zhi Huang <wen-zhi.huang@mediatek.com>,
+        Shi-Wei Yeh <shi-wei.yeh@mediatek.com>,
+        Minano Tseng <Minano.tseng@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Robert Yu <robert_yu@compal.com>, Jeff Chang <Jeff_Chang@compal.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: BbJiAY02xWMaV6x7lawTTKRhi6goLlY4
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE0MDA1MCBTYWx0ZWRfX9d1PCJNuj7ue
+ JDl7KqmQaanM0r844v1ban5DXaaOIcIBunUU7Js2YiDcJMkWWXi9LI4N4VXL0rK1f/HDCosuN4V
+ Z3StrB6nzHY6sYbXAc5S/YulItuu6Gs=
+X-Proofpoint-ORIG-GUID: BbJiAY02xWMaV6x7lawTTKRhi6goLlY4
+X-Authority-Analysis: v=2.4 cv=Uv72pOwB c=1 sm=1 tr=0 ts=6acf7a5c cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8 a=3D83DlupAAAA:8 a=mpaa-ttXAAAA:8
+ a=9YU1N6DRZWN7fTm0wMYA:9 a=hjivQESL_tDCXQuU:21 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22 a=LLo2LcjZcqwTTUQ_I4Ao:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE0MDA1MCBTYWx0ZWRfX2gHwjcdiOVlk
+ zqRRj5e/sPQBPn9uub/5NFFv2ZLB+Y/BfLk/tC9ksWWUAkjdW7OBaVtw5CLprLTWEP+3fjTsler
+ fPEExNbTSn3yy1fQD1wI/RuVvxferg0WoQqe4/Rx6HuiRW0bE2d88vWdJJr4X2U4YMXE1tWzx+g
+ UgACBo5BX9TFKA1zFUlKRSFdp4etjGdQfoHYHq06Ve59m+Qo0PYP9I4O3+hIktwUh5G5tVv9lHa
+ dmxzxtBLI8cQgv2vBaGNXp6RxGMAgzVP4L4W+THajYF2cFGZvNbzObmv3Wz6ilA95plUOB4q0kS
+ T2QBiyXGf9Cg01vn8hu7J2HZRmg9AMdKZ9x/FtNBCs1hH9dtYRf8nQJZLr9GU60+hFV69lP3jtc
+ NZmQcJRCgjXlQ2D3qRi6jaLAyLASFGhkaczRCfYgUunxbqgtZrTMJcPe7vk1SF+bJwi1ScAJczQ
+ PsJwGqJfy2dt+TAvTiw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-10-13_01,2026-10-09_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
+ suspectscore=0 malwarescore=0 spamscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610080000
+ definitions=main-2610140050
 
-Hi,
+On Wed, Oct 14, 2026 at 4:52=E2=80=AFAM Jack Wu via B4 Relay
+<devnull+jackbb_wu.compal.com@kernel.org> wrote:
+>
+> From: Jack Wu <jackbb_wu@compal.com>
+>
+> Registers the T900 device driver with the kernel. Set up all
+> the fundamental configurations for the device: PCIe layer,
+> Modem Host Cross Core Interface (MHCCIF), modem common control
+> operations, build infrastructure and MAINTAINERS entry.
+> Besides the T900 itself (14c3:0900) the driver binds its
+> HP-branded variant, the HP RMM-G4 (03f0:01ca); both IDs are
+> exported via MODULE_DEVICE_TABLE for module autoloading.
+>
+> * PCIe layer code implements driver probe and removal, MSI-X
+>   interrupt initialization and de-initialization, and the way
+>   of resetting the device.
+> * MHCCIF provides the interrupt channels used for the boot
+>   handshake and for the host-to-device reset doorbell.
+> * Modem common control operations provide the basic read/write
+>   functions of the device's hardware registers,
+>   mask/unmask/get/clear functions of the device's interrupt
+>   registers and inquiry functions of the device's status.
+> * Add MAINTAINERS entry for the MediaTek T9XX 5G WWAN modem
+>   device driver.
+>
+> Removal resets the modem, because the next driver load has to
+> redo the device handshake and status sync and cannot do that
+> against firmware left running by the previous load.
+> mtk_pci_remove() evaluates MRST._RST on the device's own ACPI
+> node: that is a platform-level reset and does not depend on the
+> firmware's state.  Where the platform has no MRST._RST, removal
+> falls back to the MHCCIF DEV_EVT_H2D_DEVICE_RESET doorbell if
+> the link is still up.  The doorbell is a request to the
+> firmware, so it is best effort and cannot recover firmware that
+> has stopped responding - the case the reset exists for.  Probe
+> therefore does not require MRST._RST; without it the driver
+> still binds and only removal is degraded.
+>
+> Signed-off-by: Jack Wu <jackbb_wu@compal.com>
+> ---
+>  MAINTAINERS                              |   11 +
+>  drivers/net/wwan/Kconfig                 |   11 +
+>  drivers/net/wwan/Makefile                |    1 +
+>  drivers/net/wwan/t9xx/Makefile           |    9 +
+>  drivers/net/wwan/t9xx/mtk_dev.h          |   42 ++
+>  drivers/net/wwan/t9xx/pcie/mtk_pci.c     | 1042 ++++++++++++++++++++++++=
+++++++
+>  drivers/net/wwan/t9xx/pcie/mtk_pci.h     |  140 ++++
+>  drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h |   34 +
+>  8 files changed, 1290 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 461a3eed6129..8f13ef7440ce 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16494,6 +16494,17 @@ L:     netdev@vger.kernel.org
+>  S:     Supported
+>  F:     drivers/net/wwan/t7xx/
+>
+> +MEDIATEK T9XX 5G WWAN MODEM DRIVER
+> +M:     Jack Wu <jackbb_wu@compal.com>
+> +M:     Robert Yu <robert_yu@compal.com>
+> +M:     Jeff Chang <Jeff_Chang@compal.com>
+> +R:     Wen-Zhi Huang <wen-zhi.huang@mediatek.com>
+> +R:     Shi-Wei Yeh <shi-wei.yeh@mediatek.com>
+> +R:     Minano Tseng <Minano.tseng@mediatek.com>
+> +L:     netdev@vger.kernel.org
+> +S:     Supported
+> +F:     drivers/net/wwan/t9xx/
+> +
+>  MEDIATEK USB3 DRD IP DRIVER
+>  M:     Chunfeng Yun <chunfeng.yun@mediatek.com>
+>  L:     linux-usb@vger.kernel.org
+> diff --git a/drivers/net/wwan/Kconfig b/drivers/net/wwan/Kconfig
+> index 88df55d78d90..f510cc8ab4e4 100644
+> --- a/drivers/net/wwan/Kconfig
+> +++ b/drivers/net/wwan/Kconfig
+> @@ -121,6 +121,17 @@ config MTK_T7XX
+>
+>           If unsure, say N.
+>
+> +config MTK_T9XX
+> +       tristate "MediaTek PCIe 5G WWAN modem T9xx device"
+> +       depends on PCI_MSI && ACPI
+> +       help
+> +         Enables MediaTek PCIe based 5G WWAN modem (T9xx series) device.
+> +
+> +         To compile this driver as a module, choose M here: the module w=
+ill be
+> +         called mtk_t9xx.
+> +
+> +         If unsure, say N.
+> +
+>  endif # WWAN
+>
+>  endmenu
+> diff --git a/drivers/net/wwan/Makefile b/drivers/net/wwan/Makefile
+> index 3960c0ae2445..7361eef4c472 100644
+> --- a/drivers/net/wwan/Makefile
+> +++ b/drivers/net/wwan/Makefile
+> @@ -14,3 +14,4 @@ obj-$(CONFIG_QCOM_BAM_DMUX) +=3D qcom_bam_dmux.o
+>  obj-$(CONFIG_RPMSG_WWAN_CTRL) +=3D rpmsg_wwan_ctrl.o
+>  obj-$(CONFIG_IOSM) +=3D iosm/
+>  obj-$(CONFIG_MTK_T7XX) +=3D t7xx/
+> +obj-$(CONFIG_MTK_T9XX) +=3D t9xx/
+> diff --git a/drivers/net/wwan/t9xx/Makefile b/drivers/net/wwan/t9xx/Makef=
+ile
+> new file mode 100644
+> index 000000000000..bd6063c85c2b
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/Makefile
+> @@ -0,0 +1,9 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +
+> +ccflags-y +=3D -I$(src)/pcie
+> +ccflags-y +=3D -I$(src)
+> +
+> +obj-$(CONFIG_MTK_T9XX) +=3D mtk_t9xx.o
+> +
+> +mtk_t9xx-y :=3D \
+> +       pcie/mtk_pci.o
+> diff --git a/drivers/net/wwan/t9xx/mtk_dev.h b/drivers/net/wwan/t9xx/mtk_=
+dev.h
+> new file mode 100644
+> index 000000000000..329e5e6695df
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/mtk_dev.h
+> @@ -0,0 +1,42 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only
+> + *
+> + * Copyright (c) 2022, MediaTek Inc.
+> + */
+> +
+> +#ifndef __MTK_DEV_H__
+> +#define __MTK_DEV_H__
+> +
+> +#include <linux/dma-mapping.h>
+> +#include <linux/dmapool.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/sched.h>
+> +#include <linux/slab.h>
+> +#include <linux/spinlock.h>
 
-Thanks for the review.
+Looks like a lot of headers for such a small header file. Could you
+trim the unnecessary includes? For example, spinlock.h doesn't appear
+to be used.
 
-On Wed, Oct 14, 2026 at 12:03=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wr=
-ote:
->
-> Thank you for your contribution! Sashiko AI review found 5 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 5 =C2=B7 Low: 0
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [Medium] The commit message says dwxgmac2_timestamp_interrupt() cannot
->   race a FIFO flush because "PTP_ACR_ATSFC is only ever set while=E2=80=
-=A6
+> +
+> +#define MTK_DEV_STR_LEN 16
+> +
+> +enum mtk_user_id {
+> +       MTK_USER_CTRL,
+> +       MTK_USER_MAX
+> +};
+> +
+> +enum mtk_dev_evt_h2d {
+> +       DEV_EVT_H2D_DEVICE_RESET        =3D BIT(2),
+> +};
+> +
+> +enum mtk_dev_evt_d2h {
+> +       DEV_EVT_D2H_BOOT_FLOW_SYNC      =3D BIT(4),
+> +       DEV_EVT_D2H_ASYNC_HS_NOTIFY_SAP =3D BIT(5),
+> +       DEV_EVT_D2H_ASYNC_HS_NOTIFY_MD  =3D BIT(6),
+> +};
+> +
+> +/* mtk_md_dev defines the structure of MTK modem device */
+> +struct mtk_md_dev {
+> +       struct device *dev;
+> +       void *hw_priv;
+> +       u32 hw_ver;
+> +       char dev_str[MTK_DEV_STR_LEN];
+> +};
+> +
+> +#endif /* __MTK_DEV_H__ */
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.c b/drivers/net/wwan/t9xx=
+/pcie/mtk_pci.c
+> new file mode 100644
+> index 000000000000..a3bd1caf470b
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.c
+> @@ -0,0 +1,1042 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (c) 2022, MediaTek Inc.
+> + */
+> +
+> +#include <linux/acpi.h>
+> +#include <linux/aer.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +
+> +#include "mtk_dev.h"
+> +#include "mtk_pci.h"
+> +#include "mtk_pci_reg.h"
+> +
+> +#define MTK_MHCCIF_RC_BASE_ADDR                0x1000A000
+> +
+> +#define MTK_MHCCIF_RESET_DELAY_MS      2000
+> +
+> +static const int mtk_pci_irq_tbl[MTK_IRQ_SRC_MAX] =3D {
+> +       [MTK_IRQ_SRC_MHCCIF] =3D 28,
+> +       [MTK_IRQ_SRC_CLDMA0] =3D 27,
+> +       [MTK_IRQ_SRC_CLDMA1] =3D 26,
+> +};
+> +
+> +#define MTK_PCI_TRANSPARENT_ATR_SIZE   (0x3F)
+> +#define MTK_PCI_MINIMUM_ATR_SIZE       (0x1000)
+> +#define ATR_SIZE_LO32_MASK             GENMASK_ULL(31, 0)
+> +#define ATR_SIZE_HI32_MASK             GENMASK_ULL(63, 32)
+> +#define ATR_SIZE_BIAS_FROM_LO32                2
+> +#define ATR_ADDR_ALIGN_MASK            0xFFFFF000
+> +#define ATR_EN                         BIT(0)
+> +#define ATR_PARAM_OFFSET               16
+> +#define SET_HW_BITS(dest, chs, mhccif, dev)            \
+> +       ({                                              \
+> +               if ((chs) & (dev))                                      \
+> +                       (dest) |=3D FIELD_PREP(mhccif, 1);               =
+ \
+> +       })
 
-Valid and will be fixed in the respin.
+A static inline helper would be cleaner.
 
-> - [Medium] In stmmac_enable(PTP_CLK_REQ_EXTTS), the 'already enabled'
->   -EBUSY check is dead.
-
-Valid and will be fixed in the respin.
-
-> - [Medium] smtg_crosststamp() (dwmac-socfpga) tests
->   STMMAC_FLAG_EXT_SNAPSHOT_EN before mutex_lock(&priv->aux_ts_lock), and=
-=E2=80=A6
-
-Valid and will be fixed in the respin.
-
-> - [Medium] Two handler instances can drain the auxiliary timestamp FIFO
->   at the same time.
-
-we would like to keep this as-is, for three reasons.
-
-First, the hardware does not have two parallel lines for the
-timestamp events: per the DWC_xgmac databook the timestamp
-interrupt (TSIS) is only asserted on the common sbd_intr_o /
-mci_intr_o line, while the separate pmt_intr_o output exists for
-power-down mode, so the application clock can be stopped while
-the MAC stays wakeable; its clear even crosses clock domains.
-The concurrent-drain window therefore only arises from a
-platform integration choice: wiring pmt_intr_o to its own GIC
-line and describing it as "eth_wake_irq".
-
-Second, the in-tree XGMAC platforms make that choice nowhere:
-the dwxgmac users (Agilex5 etc.) list only "macirq" and the
-per-queue lines, so the driver's fallback in
-stmmac_platform.c assigns wol_irq =3D dev->irq, the second
-request_irq() is skipped, and the handler is registered exactly
-once.  The platforms that do wire a separate eth_wake_irq
-(imx8mp, renesas r9a09, stm32mp13 ...) are GMAC4/EQOS designs
-where the existing dwmac4 timestamp handler has the same
-exposure and has never been serialized; this is a pre-existing
-driver-wide property, not something this series introduces.
-
-Third, fixing it properly (a single serviced line or an
-in-handler lock for the timestamp path) affects every stmmac
-handler and would be a series of its own; we would rather not
-grow this one with it.
-
-> - [Medium] The commit message says TSIS is a read-to-clear bit that the
->   TX timestamp completion path clears.
-
-Correct and the consequence is a delay, not a lost event: reading
-XGMAC_TIMESTAMP_STATUS does not affect the ATSNS count or the
-FIFO contents, so the snapshots stay queued and are reported by
-the next handler entry on any MAC interrupt (in single-IRQ mode
-any DMA interrupt reaches it as well).  The handler deliberately
-does not gate on TSIS for exactly this reason: TSIS is an
-aggregate, read-to-clear bit that the TX timestamp completion
-path (which polls the same register for TXTSC from NAPI) clears
-before the handler can observe it.  A dwmac4-style TSIS gate
-would turn this delay into a silent event drop, which is why
-the commit message documents the trade-off.  The one-shot
-"delayed indefinitely" scenario needs a completely quiet MAC
-(no TX completion, no LPI, no PMT, no error interrupts) while an
-EXTTS edge arrives; and if more events keep arriving the FIFO
-level is reported by ATSNS, so nothing is overwritten silently.
-We consider the residual delay acceptable for a one-shot input
-relative to the alternative of dropping events.
-
->
-> --
->
-> net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
->
-> This adds a DWXGMAC2 timestamp interrupt handler that drains the
-> auxiliary snapshot FIFO and reports the entries as PTP_CLOCK_EXTTS
-> events. XGMAC_TSIE is armed on demand from the EXTTS enable path through
-> a new timestamp_interrupt_cfg() callback. The suspend/resume,
-> unregister and socfpga cross-timestamp paths are updated to coordinate
-> FIFO ownership under aux_ts_lock.
->
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/driv=
-ers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> > index ee79b74bf21b6..93c1092237fc6 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-> > @@ -311,6 +311,18 @@ static int smtg_crosststamp(ktime_t *device, struc=
-t system_counterval_t *system,
-> >               return -EBUSY;
-> >
-> >       mutex_lock(&priv->aux_ts_lock);
-> > +     /* Refuse to arm once the clock has been invalidated by
-> > +      * unregister.
-> > +      */
-> > +     if (!priv->ptp_clock) {
-> > +             mutex_unlock(&priv->aux_ts_lock);
-> > +             return -ENODEV;
-> > +     }
-> > +     priv->plat->flags |=3D STMMAC_FLAG_INT_SNAPSHOT_EN;
->
-> [Severity: Medium]
-> The STMMAC_FLAG_EXT_SNAPSHOT_EN test that guards smtg_crosststamp() still
-> runs before aux_ts_lock is taken. Under the lock, only ptp_clock is
-> rechecked:
->
->     if (priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN)
->         return -EBUSY;
->
->     mutex_lock(&priv->aux_ts_lock);
->
-> getcrosststamp doesn't take pincfg_mux. Can a concurrent
-> PTP_EXTTS_REQUEST run its whole locked section inside that window?
->
-> CPU1 (PTP_SYS_OFFSET_PRECISE)    CPU2 (PTP_EXTTS_REQUEST, on=3D1)
-> smtg_crosststamp()
->   EXT_SNAPSHOT_EN not set
->                                  stmmac_enable()
->                                    sets EXT_SNAPSHOT_EN
->                                    writes ATSEN(index) | ATSFC
->                                    arms XGMAC_TSIE
->   mutex_lock(&priv->aux_ts_lock)
->   acr_value &=3D ~PTP_ACR_MASK;
->   sets ATSEN(int_snapshot_num)
->   ...
->   flags &=3D ~STMMAC_FLAG_INT_SNAPSHOT_EN
->
-> Would that leave EXT_SNAPSHOT_EN set, TSIE armed and ext_snapshot_num
-> naming the user's channel, while PTP_ACR enables only the internal
-> snapshot channel?
->
-> If so, the user's EXTTS channel would produce no more events, and every
-> later smtg_crosststamp() would return -EBUSY. dwxgmac2_timestamp_interrup=
-t()
-> takes the reported index from the live PTP_ACR, so any events delivered
-> in that state would carry the internal channel index. On resume,
-> stmmac_rearm_timestamp_irq() would also program ext_snapshot_num, which
-> no longer matches the hardware state.
->
-> Could the EXT_SNAPSHOT_EN check move under aux_ts_lock, next to the new
-> ptp_clock check?
->
-> [ ... ]
->
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/driv=
-ers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> > index 1a88cbaed70ca..3b98cd82ec2d7 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
->
-> [ ... ]
->
-> > @@ -1154,6 +1160,59 @@ static int dwxgmac2_get_mac_tx_timestamp(struct =
-mac_device_info *hw, u64 *ts)
-> >       return 0;
-> >  }
-> >
-> > +void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
-> > +{
->
-> [ ... ]
->
-> > +     /* Reading XGMAC_TIMESTAMP_STATUS clears TSIS, so use the ATSNS
-> > +      * count to see the pending snapshots.
-> > +      */
-> > +     ts_status =3D readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
->
-> [Severity: Medium]
-> The commit message says TSIS is read-to-clear and that the TX timestamp
-> completion path clears it. On XGMAC that path runs for every TX
-> timestamp. dwxgmac2_get_tx_timestamp_status() always returns 0, so
-> stmmac_get_tx_hwtstamp() always falls back to
-> dwxgmac2_get_mac_tx_timestamp(), which polls the same register from
-> NAPI:
->
->     if (readl_poll_timeout_atomic(ioaddr + XGMAC_TIMESTAMP_STATUS,
->                                   value, value & XGMAC_TXTSC, 100, 10000)=
+> +
+> +struct mtk_mhccif_cb {
+> +       struct list_head entry;
+> +       int (*evt_cb)(u32 status, void *data);
+> +       void *data;
+> +       u32 chs;
+> +};
+> +
+> +/**
+> + * mtk_pci_setup_atr() - Configure a PCIe address translation rule
+> + * @mdev: MTK MD device
+> + * @cfg: ATR configuration parameters
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_setup_atr(struct mtk_md_dev *mdev, struct mtk_atr_cfg *cfg)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       u32 addr, val, size_h, size_l;
+> +       int atr_size, pos, offset;
+> +
+> +       if (cfg->transparent) {
+> +               /* No address conversion is performed */
+> +               atr_size =3D MTK_PCI_TRANSPARENT_ATR_SIZE;
+> +       } else {
+> +               if (cfg->size < MTK_PCI_MINIMUM_ATR_SIZE)
+> +                       cfg->size =3D MTK_PCI_MINIMUM_ATR_SIZE;
+> +
+> +               if (cfg->src_addr & (cfg->size - 1)) {
+> +                       dev_err(mdev->dev, "Invalid atr src addr is not a=
+ligned to size\n");
+> +                       return -EFAULT;
+> +               }
+> +
+> +               if (cfg->trsl_addr & (cfg->size - 1)) {
+> +                       dev_err(mdev->dev,
+> +                               "Invalid atr trsl addr is not aligned to =
+size, %llx, %llx\n",
+> +                               cfg->trsl_addr, cfg->size - 1);
+> +                       return -EFAULT;
+> +               }
+> +
+> +               size_l =3D FIELD_GET(ATR_SIZE_LO32_MASK, cfg->size);
+> +               size_h =3D FIELD_GET(ATR_SIZE_HI32_MASK, cfg->size);
+> +               pos =3D ffs(size_l);
+> +               if (pos) {
+> +                       atr_size =3D pos - ATR_SIZE_BIAS_FROM_LO32;
+> +               } else {
+> +                       pos =3D ffs(size_h);
+> +                       atr_size =3D pos + 32 - ATR_SIZE_BIAS_FROM_LO32;
+> +               }
+> +       }
+> +
+> +       /* Calculate table offset */
+> +       offset =3D ATR_PORT_OFFSET * cfg->port + ATR_TABLE_OFFSET * cfg->=
+table;
+> +
+> +       addr =3D REG_ATR_PCIE_WIN0_T0_SRC_ADDR_MSB + offset;
+> +       val =3D (u32)(cfg->src_addr >> 32);
+> +       mtk_pci_mac_write32(priv, addr, val);
+> +
+> +       addr =3D REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_MSB + offset;
+> +       val =3D (u32)(cfg->trsl_addr >> 32);
+> +       mtk_pci_mac_write32(priv, addr, val);
+> +
+> +       addr =3D REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_LSB + offset;
+> +       val =3D (u32)(cfg->trsl_addr & ATR_ADDR_ALIGN_MASK);
+> +       mtk_pci_mac_write32(priv, addr, val);
+> +
+> +       /* TRSL_PARAM */
+> +       addr =3D REG_ATR_PCIE_WIN0_T0_TRSL_PARAM + offset;
+> +       val =3D (cfg->trsl_param << ATR_PARAM_OFFSET) | cfg->trsl_id;
+> +       mtk_pci_mac_write32(priv, addr, val);
+> +
+> +       /* Enable ATR last, after translation target is fully programmed =
+*/
+> +       addr =3D REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB + offset;
+> +       val =3D (u32)(cfg->src_addr & ATR_ADDR_ALIGN_MASK) | (atr_size <<=
+ 1) | ATR_EN;
+> +       mtk_pci_mac_write32(priv, addr, val);
+> +
+> +       /* Ensure ATR is set */
+> +       mtk_pci_mac_read32(priv, addr);
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * mtk_pci_atr_disable() - Disable all PCIe address translation rules
+> + * @priv: MTK PCI private data
+> + */
+> +void mtk_pci_atr_disable(struct mtk_pci_priv *priv)
+> +{
+> +       int port, tbl, offset;
+> +       u32 val;
+> +
+> +       /* Disable all ATR table for all ports */
+> +       for (port =3D ATR_SRC_PCI_WIN0; port <=3D ATR_SRC_AXIS_3; port++)
+> +               for (tbl =3D 0; tbl < ATR_TABLE_NUM_PER_ATR; tbl++) {
+> +                       /* Calculate table offset */
+> +                       offset =3D ATR_PORT_OFFSET * port + ATR_TABLE_OFF=
+SET * tbl;
+> +                       val =3D mtk_pci_mac_read32(priv, REG_ATR_PCIE_WIN=
+0_T0_SRC_ADDR_LSB + offset);
+> +                       val =3D val & (~BIT(0));
+> +                       /* Disable table by SRC_ADDR_L */
+> +                       mtk_pci_mac_write32(priv, REG_ATR_PCIE_WIN0_T0_SR=
+C_ADDR_LSB + offset, val);
+> +               }
+> +}
+> +
+> +/**
+> + * mtk_pci_get_dev_state() - Read the device state from the modem
+> + * @mdev: MTK MD device
+> + *
+> + * Return: Device state value.
+> + */
+> +u32 mtk_pci_get_dev_state(struct mtk_md_dev *mdev)
+> +{
+> +       return mtk_pci_mac_read32(mdev->hw_priv, REG_PCIE_DEBUG_DUMMY_7);
+> +}
+> +
+> +/**
+> + * mtk_pci_ack_dev_state() - Acknowledge the device state to the modem
+> + * @mdev: MTK MD device
+> + * @state: State value to acknowledge
+> + */
+> +void mtk_pci_ack_dev_state(struct mtk_md_dev *mdev, u32 state)
+> +{
+> +       mtk_pci_mac_write32(mdev->hw_priv, REG_PCIE_DEBUG_DUMMY_7, state)=
+;
+> +}
+> +
+> +/**
+> + * mtk_pci_get_irq_id() - Map an IRQ source to its hardware IRQ ID
+> + * @mdev: MTK MD device
+> + * @irq_src: IRQ source enum
+> + *
+> + * Return: IRQ ID on success, -EINVAL on failure.
+> + */
+> +int mtk_pci_get_irq_id(struct mtk_md_dev *mdev, enum mtk_irq_src irq_src=
 )
->
-> Suppose that read lands after an auxiliary snapshot sets TSIS (with
-> TSIE armed) but before the CPU takes the MAC interrupt. Can a
-> level-triggered MAC IRQ then be deasserted, so the handler never runs
-> for that snapshot?
->
-> dwxgmac2_timestamp_interrupt() is the only consumer of the aux FIFO, and
-> its only caller is stmmac_common_interrupt(). Skipping the TSIS gate
-> only helps once the handler is already running.
->
-> Would the snapshot then stay in the FIFO until an unrelated MAC
-> interrupt arrives, or in single-IRQ mode the next DMA interrupt? In
-> multi-MSI mode only MAC interrupts reach this handler. For a one-shot
-> input the event could then be delayed indefinitely, or lost to FIFO
-> overflow.
->
-> > +
-> > +     if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN) || !priv->=
-ptp_clock)
-> > +             return;
-> > +
-> > +     pending_snapshots =3D FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_st=
-atus);
-> > +     if (!pending_snapshots)
-> > +             return;
-> > +
-> > +     acr_value =3D readl(priv->ptpaddr + PTP_ACR);
-> > +     /* Entries observed while the FIFO is being flushed are stale. */
-> > +     if (acr_value & PTP_ACR_ATSFC)
-> > +             return;
-> > +     channel =3D FIELD_GET(PTP_ACR_MASK, acr_value);
-> > +     if (!channel)
-> > +             return;
-> > +     channel =3D ilog2(channel);
-> > +
-> > +     for (i =3D 0; i < pending_snapshots; i++) {
-> > +             read_lock_irqsave(&priv->ptp_lock, flags);
-> > +             stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
-> > +             read_unlock_irqrestore(&priv->ptp_lock, flags);
->
-> [Severity: Medium]
-> Can two instances of this loop drain the FIFO at the same time?
-> stmmac_request_irq_single() registers stmmac_interrupt() on dev->irq and
-> also on a separate wake line:
->
->     if (priv->wol_irq > 0 && priv->wol_irq !=3D dev->irq) {
->         ret =3D request_irq(priv->wol_irq, stmmac_interrupt,
->                           IRQF_SHARED, dev->name, dev);
->
-> Both lines reach this handler through stmmac_common_interrupt(). The
-> handler deliberately doesn't gate on TSIS, so two CPUs servicing the two
-> lines could both read the same ATSNS=3DN and both loop N times.
->
-> read_lock_irqsave() on ptp_lock admits both readers at once. Also,
-> get_ptptime() consumes each entry with two separate reads:
->
->     ns =3D readl(ptpaddr + PTP_ATNR);
->     ns +=3D (u64)readl(ptpaddr + PTP_ATSR) * NSEC_PER_SEC;
->
-> Would that pop 2N entries for N snapshots? Could one reported EXTTS
-> timestamp combine the nanosecond and second halves of different entries?
->
-> > +
-> > +             event.type =3D PTP_CLOCK_EXTTS;
-> > +             event.index =3D channel;
-> > +             event.timestamp =3D ptp_time;
-> > +             ptp_clock_event(priv->ptp_clock, &event);
-> > +     }
-> > +}
->
-> [ ... ]
->
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers=
-/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> > index 3bfcc9760dce7..f41988f5927ad 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
->
-> [ ... ]
->
-> > @@ -239,22 +246,49 @@ static int stmmac_enable(struct ptp_clock_info *p=
-tp,
-> >                               return -EBUSY;
-> >                       }
-> >
-> > +                     if (rq->extts.index >=3D PTP_ACR_ATSEN_NUM) {
-> > +                             mutex_unlock(&priv->aux_ts_lock);
-> > +                             return -EINVAL;
-> > +                     }
-> > +
-> >                       priv->plat->flags |=3D STMMAC_FLAG_EXT_SNAPSHOT_E=
-N;
-> > +                     priv->plat->ext_snapshot_num =3D rq->extts.index;
-> >
-> >                       /* Enable External snapshot trigger */
-> >                       acr_value |=3D PTP_ACR_ATSEN(rq->extts.index);
-> >                       acr_value |=3D PTP_ACR_ATSFC;
-> >               } else {
-> >                       priv->plat->flags &=3D ~STMMAC_FLAG_EXT_SNAPSHOT_=
-EN;
-> > +                     priv->plat->ext_snapshot_num =3D -1;
-> >               }
->
-> [Severity: Medium]
-> The "already enabled" check just above this hunk can never fire, because
-> the mask is cleared before it is tested:
->
->     acr_value =3D readl(ptpaddr + PTP_ACR);
->     channel =3D ilog2(FIELD_GET(PTP_ACR_MASK, acr_value));
->     acr_value &=3D ~PTP_ACR_MASK;
->
->     if (on) {
->         if (FIELD_GET(PTP_ACR_MASK, acr_value)) {
->             ...
->             return -EBUSY;
->         }
->
-> Before calling ops->enable(), ptp_extts_request() only checks
-> req.extts.index >=3D ops->n_ext_ts. With the new single-slot
-> ext_snapshot_num, what happens for the sequence enable(A), enable(B),
-> disable(A)?
->
-> enable(B) would clear ATSEN(A), set ATSEN(B) and overwrite
-> ext_snapshot_num.
->
-> disable(A) doesn't look at rq->extts.index. It clears EXT_SNAPSHOT_EN,
-> sets ext_snapshot_num to -1, writes an empty ACR mask and disarms
-> XGMAC_TSIE. That stops channel B while userspace still thinks it is
-> enabled.
->
-> The dead check predates this patch. However, the new ext_snapshot_num
-> tracking, the resume rearm and the ATSFC/TSIE invariant in the commit
-> message all assume only one channel is ever active.
->
-> Should the busy test happen before the mask is cleared? And should the
-> disable path check that rq->extts.index matches ext_snapshot_num?
->
-> >               netdev_dbg(priv->dev, "Auxiliary Snapshot %d %s.\n",
-> >                          rq->extts.index, on ? "enabled" : "disabled");
-> >               writel(acr_value, ptpaddr + PTP_ACR);
-> > -             mutex_unlock(&priv->aux_ts_lock);
-> > -             /* wait for auxts fifo clear to finish */
-> > +             /* Keep the lock across the FIFO clear so the arm below
-> > +              * cannot interleave with a suspend.
-> > +              */
-> >               ret =3D readl_poll_timeout(ptpaddr + PTP_ACR, acr_value,
-> >                                        !(acr_value & PTP_ACR_ATSFC),
-> >                                        10, 10000);
->
-> [ ... ]
->
-> > +             /* Arm the timestamp interrupt only after the FIFO clear,
-> > +              * so the handler cannot see a snapshot that is about to =
-be
-> > +              * discarded.
-> > +              */
-> > +             stmmac_mac_timestamp_interrupt_cfg(priv, on && !ret);
-> > +             /* Drain an in-flight handler before the channel is freed=
+> +{
+> +       int irq_id =3D -EINVAL;
+> +
+> +       if (irq_src > MTK_IRQ_SRC_MIN && irq_src < MTK_IRQ_SRC_MAX) {
+> +               irq_id =3D mtk_pci_irq_tbl[irq_src];
+> +               if (irq_id < 0 || irq_id >=3D MTK_IRQ_CNT_MAX)
+> +                       irq_id =3D -EINVAL;
+> +       }
+> +
+> +       return irq_id;
+> +}
+> +
+> +/**
+> + * mtk_pci_get_virq_id() - Get the Linux virtual IRQ for a hardware IRQ =
+ID
+> + * @mdev: MTK MD device
+> + * @irq_id: Hardware IRQ ID
+> + *
+> + * Return: Virtual IRQ number on success, negative error code on failure=
+.
+> + */
+> +int mtk_pci_get_virq_id(struct mtk_md_dev *mdev, int irq_id)
+> +{
+> +       struct pci_dev *pdev =3D to_pci_dev(mdev->dev);
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +
+> +       if (irq_id < 0 || irq_id >=3D priv->irq_cnt)
+> +               return -EINVAL;
+> +
+> +       return pci_irq_vector(pdev, irq_id);
+> +}
+> +
+> +/**
+> + * mtk_pci_register_irq() - Register a callback for a hardware IRQ
+> + * @mdev: MTK MD device
+> + * @irq_id: Hardware IRQ ID
+> + * @irq_cb: Callback function
+> + * @data: Private data passed to callback
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_register_irq(struct mtk_md_dev *mdev, int irq_id,
+> +                        int (*irq_cb)(int irq_id, void *data), void *dat=
+a)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +
+> +       if ((irq_id < 0 || irq_id >=3D MTK_IRQ_CNT_MAX) || !irq_cb)
+> +               return -EINVAL;
+> +
+> +       spin_lock(&priv->irq_cb_lock);
+> +       if (priv->irq_cb_list[irq_id]) {
+> +               spin_unlock(&priv->irq_cb_lock);
+> +               dev_err(mdev->dev,
+> +                       "Unable to register irq, irq_id=3D%d, it's alread=
+y been register by %ps.\n",
+> +                       irq_id, priv->irq_cb_list[irq_id]);
+> +               return -EFAULT;
+> +       }
+> +       priv->irq_cb_data[irq_id] =3D data;
+> +       smp_wmb(); /* Ensure data is visible before callback */
+> +       WRITE_ONCE(priv->irq_cb_list[irq_id], irq_cb);
+> +       spin_unlock(&priv->irq_cb_lock);
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * mtk_pci_unregister_irq() - Unregister a hardware IRQ callback
+> + * @mdev: MTK MD device
+> + * @irq_id: Hardware IRQ ID
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_unregister_irq(struct mtk_md_dev *mdev, int irq_id)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       int virq_id;
+> +
+> +       if (irq_id < 0 || irq_id >=3D MTK_IRQ_CNT_MAX)
+> +               return -EINVAL;
+> +
+> +       if (!READ_ONCE(priv->irq_cb_list[irq_id])) {
+> +               dev_err(mdev->dev, "irq_id=3D%d has not been registered\n=
+", irq_id);
+> +               return -EFAULT;
+> +       }
+> +
+> +       /* mtk_pci_irq_handler() loads the callback and its data separate=
+ly, so
+> +        * the data may only be cleared once no handler can still hold a =
+live
+> +        * callback pointer.
+> +        */
+> +       mtk_pci_mask_irq(mdev, irq_id);
+> +
+> +       spin_lock(&priv->irq_cb_lock);
+> +       WRITE_ONCE(priv->irq_cb_list[irq_id], NULL);
+> +       spin_unlock(&priv->irq_cb_lock);
+> +
+> +       virq_id =3D mtk_pci_get_virq_id(mdev, irq_id);
+> +       if (virq_id >=3D 0)
+> +               synchronize_irq(virq_id);
+> +
+> +       priv->irq_cb_data[irq_id] =3D NULL;
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * mtk_pci_mask_irq() - Mask (disable) a hardware IRQ
+> + * @mdev: MTK MD device
+> + * @irq_id: Hardware IRQ ID
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_mask_irq(struct mtk_md_dev *mdev, int irq_id)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +
+> +       if (irq_id < 0 || irq_id >=3D MTK_IRQ_CNT_MAX) {
+> +               dev_err(mdev->dev, "Failed to mask irq: input irq_id=3D%d=
+\n", irq_id);
+> +               return -EINVAL;
+> +       }
+> +
+> +       mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, BIT(irq=
+_id));
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * mtk_pci_unmask_irq() - Unmask (enable) a hardware IRQ
+> + * @mdev: MTK MD device
+> + * @irq_id: Hardware IRQ ID
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_unmask_irq(struct mtk_md_dev *mdev, int irq_id)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +
+> +       if (irq_id < 0 || irq_id >=3D MTK_IRQ_CNT_MAX) {
+> +               dev_err(mdev->dev, "Failed to unmask irq: input irq_id=3D=
+%d\n", irq_id);
+> +               return -EINVAL;
+> +       }
+> +
+> +       mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_SET_GRP0_0, BIT(irq=
+_id));
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * mtk_pci_clear_irq() - Clear (acknowledge) a hardware IRQ
+> + * @mdev: MTK MD device
+> + * @irq_id: Hardware IRQ ID
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_clear_irq(struct mtk_md_dev *mdev, int irq_id)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +
+> +       if (irq_id < 0 || irq_id >=3D MTK_IRQ_CNT_MAX) {
+> +               dev_err(mdev->dev, "Failed to clear irq: input irq_id=3D%=
+d\n", irq_id);
+> +               return -EINVAL;
+> +       }
+> +
+> +       mtk_pci_mac_write32(priv, REG_MSIX_ISTATUS_HOST_GRP0_0, BIT(irq_i=
+d));
+> +
+> +       return 0;
+> +}
+> +
+> +static u32 mtk_pci_ext_d2h_evt_hw_bits(u32 chs)
+> +{
+> +       u32 hw_bits =3D 0;
+> +
+> +       SET_HW_BITS(hw_bits, chs, MHCCIF_EP2RC_EVT_BOOT_FLOW_SYNC,
+> +                   DEV_EVT_D2H_BOOT_FLOW_SYNC);
+> +       SET_HW_BITS(hw_bits, chs, MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_SAP,
+> +                   DEV_EVT_D2H_ASYNC_HS_NOTIFY_SAP);
+> +       SET_HW_BITS(hw_bits, chs, MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_MD,
+> +                   DEV_EVT_D2H_ASYNC_HS_NOTIFY_MD);
+> +
+> +       return hw_bits;
+> +}
+> +
+> +static u32 mtk_pci_ext_d2h_evt_chs(u32 hw_bits)
+> +{
+> +       u32 chs =3D 0;
+> +
+> +       if (!hw_bits)
+> +               return chs;
+> +
+> +       chs =3D FIELD_PREP(DEV_EVT_D2H_BOOT_FLOW_SYNC,
+> +                        FIELD_GET(MHCCIF_EP2RC_EVT_BOOT_FLOW_SYNC, hw_bi=
+ts)) |
+> +             FIELD_PREP(DEV_EVT_D2H_ASYNC_HS_NOTIFY_SAP,
+> +                        FIELD_GET(MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_SAP, =
+hw_bits)) |
+> +             FIELD_PREP(DEV_EVT_D2H_ASYNC_HS_NOTIFY_MD,
+> +                        FIELD_GET(MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_MD, h=
+w_bits));
+> +
+> +       return chs;
+> +}
+> +
+> +/**
+> + * mtk_pci_register_ext_evt() - Register a callback for MHCCIF device ev=
+ents
+> + * @mdev: MTK MD device
+> + * @chs: Bitmask of event channels to register
+> + * @evt_cb: Callback function
+> + * @data: Private data passed to callback
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_register_ext_evt(struct mtk_md_dev *mdev, u32 chs,
+> +                            int (*evt_cb)(u32 status, void *data), void =
+*data)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       struct mtk_mhccif_cb *cb;
+> +       int ret =3D 0;
+> +
+> +       if (!chs || !evt_cb)
+> +               return -EINVAL;
+> +
+> +       spin_lock_bh(&priv->mhccif_lock);
+> +       list_for_each_entry(cb, &priv->mhccif_cb_list, entry) {
+> +               if (cb->chs & chs) {
+> +                       ret =3D -EFAULT;
+> +                       dev_err(mdev->dev,
+> +                               "Unable to register evt, intersection: ch=
+s=3D0x%08x&0x%08x cb=3D%ps\n",
+> +                               chs, cb->chs, cb->evt_cb);
+> +                       goto err_spin_unlock;
+> +               }
+> +       }
+> +       cb =3D kzalloc(sizeof(*cb), GFP_ATOMIC);
+> +       if (!cb) {
+> +               ret =3D -ENOMEM;
+> +               goto err_spin_unlock;
+> +       }
+> +       cb->evt_cb =3D evt_cb;
+> +       cb->data =3D data;
+> +       cb->chs =3D chs;
+> +       list_add_tail(&cb->entry, &priv->mhccif_cb_list);
+> +err_spin_unlock:
+> +       spin_unlock_bh(&priv->mhccif_lock);
+> +
+> +       return ret;
+> +}
+> +
+> +/**
+> + * mtk_pci_unregister_ext_evt() - Unregister an MHCCIF device event call=
+back
+> + * @mdev: MTK MD device
+> + * @chs: Bitmask of event channels to unregister
+> + */
+> +void mtk_pci_unregister_ext_evt(struct mtk_md_dev *mdev, u32 chs)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       struct mtk_mhccif_cb *cb, *next;
+> +
+> +       if (!chs)
+> +               return;
+> +
+> +       spin_lock_bh(&priv->mhccif_lock);
+> +       list_for_each_entry_safe(cb, next, &priv->mhccif_cb_list, entry) =
+{
+> +               if (cb->chs =3D=3D chs) {
+> +                       list_del(&cb->entry);
+> +                       kfree(cb);
+> +                       goto out;
+> +               }
+> +       }
+> +       dev_warn(mdev->dev,
+> +                "Unable to unregister evt, no chs=3D0x%08x has been regi=
+stered.\n", chs);
+> +out:
+> +       spin_unlock_bh(&priv->mhccif_lock);
+> +}
+> +
+> +/**
+> + * mtk_pci_mask_ext_evt() - Mask (disable) MHCCIF device events
+> + * @mdev: MTK MD device
+> + * @chs: Bitmask of event channels to mask
+> + */
+> +void mtk_pci_mask_ext_evt(struct mtk_md_dev *mdev, u32 chs)
+> +{
+> +       u32 hw_bits =3D mtk_pci_ext_d2h_evt_hw_bits(chs);
+> +
+> +       mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
+> +                       MHCCIF_EP2RC_SW_INT_EAP_MASK_SET, hw_bits);
+> +}
+> +
+> +/**
+> + * mtk_pci_unmask_ext_evt() - Unmask (enable) MHCCIF device events
+> + * @mdev: MTK MD device
+> + * @chs: Bitmask of event channels to unmask
+> + */
+> +void mtk_pci_unmask_ext_evt(struct mtk_md_dev *mdev, u32 chs)
+> +{
+> +       u32 hw_bits =3D mtk_pci_ext_d2h_evt_hw_bits(chs);
+> +
+> +       mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
+> +                       MHCCIF_EP2RC_SW_INT_EAP_MASK_CLR, hw_bits);
+> +}
+> +
+> +static u32 mtk_pci_ext_h2d_evt_hw_bits(u32 chs)
+> +{
+> +       u32 hw_bits =3D 0;
+> +
+> +       SET_HW_BITS(hw_bits, chs, MHCCIF_RC2EP_EVT_DEVICE_RESET,
+> +                   DEV_EVT_H2D_DEVICE_RESET);
+> +       return hw_bits;
+> +}
+> +
+> +/**
+> + * mtk_pci_send_ext_evt() - Send an MHCCIF event to the modem
+> + * @mdev: MTK MD device
+> + * @ch: Event channel to trigger (must be a single bit)
+> + *
+> + * Return: 0 on success, negative error code on failure.
+> + */
+> +int mtk_pci_send_ext_evt(struct mtk_md_dev *mdev, u32 ch)
+> +{
+> +       u32 rc_base =3D MTK_MHCCIF_RC_BASE_ADDR;
+> +       u32 hw_bits;
+> +
+> +       /* Only allow one ch to be triggered at a time */
+> +       if (!is_power_of_2(ch)) {
+> +               dev_err(mdev->dev, "Unsupported ext evt ch=3D0x%08x\n", c=
+h);
+> +               return -EINVAL;
+> +       }
+> +
+> +       hw_bits =3D mtk_pci_ext_h2d_evt_hw_bits(ch);
+> +       if (!hw_bits) {
+> +               dev_err(mdev->dev, "Unmapped ext evt ch=3D0x%08x\n", ch);
+> +               return -EINVAL;
+> +       }
+> +
+> +       mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_BSY, hw_bits);
+> +       mtk_pci_write32(mdev, rc_base + MHCCIF_RC2EP_SW_TCHNUM, ffs(hw_bi=
+ts) - 1);
+> +       return 0;
+> +}
+> +
+> +static u32 mtk_pci_get_ext_evt_hw_status(struct mtk_md_dev *mdev)
+> +{
+> +       return mtk_pci_read32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
+> +                             MHCCIF_EP2RC_SW_INT_STS);
+> +}
+> +
+> +static void mtk_pci_ack_ext_evt_hw(struct mtk_md_dev *mdev, u32 hw_bits)
+> +{
+> +       mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
+> +                       MHCCIF_EP2RC_SW_INT_ACK, hw_bits);
+> +       /* Ensure the ack lands before level 1 is cleared */
+> +       mtk_pci_read32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
+> +                      MHCCIF_EP2RC_SW_INT_STS);
+> +}
+> +
+> +/**
+> + * mtk_pci_pldr() - Reset the modem via its ACPI MRST._RST method
+> + * @mdev: MTK MD device
+> + *
+> + * Return:
+> + * * 0       - Success, device was reset.
+> + * * -ENODEV - No ACPI, no handle or no MRST._RST method.  Device
+> + *             untouched.
+> + * * -EIO    - MRST._RST failed.  Device untouched, still running;
+> + *             a different reset may be attempted.
+> + */
+> +int mtk_pci_pldr(struct mtk_md_dev *mdev)
+> +{
+> +       acpi_status acpi_ret;
+> +       acpi_handle handle;
+> +
+> +       if (acpi_disabled) {
+> +               dev_dbg(mdev->dev, "Unsupported, acpi function isn't enab=
+le\n");
+> +               return -ENODEV;
+> +       }
+> +
+> +       handle =3D ACPI_HANDLE(mdev->dev);
+> +       if (!handle) {
+> +               dev_dbg(mdev->dev, "Unsupported, acpi handle isn't found\=
+n");
+> +               return -ENODEV;
+> +       }
+> +       if (!acpi_has_method(handle, "MRST._RST")) {
+> +               dev_dbg(mdev->dev, "Unsupported, pldr method isn't suppor=
+ted\n");
+> +               return -ENODEV;
+> +       }
+> +       acpi_ret =3D acpi_evaluate_object(handle, "MRST._RST", NULL, NULL=
+);
+> +       if (ACPI_FAILURE(acpi_ret)) {
+> +               dev_err(mdev->dev, "Failed to execute MRST._RST method: %=
+s\n",
+> +                       acpi_format_exception(acpi_ret));
+> +               return -EIO;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +/**
+> + * mtk_pci_link_check() - Check if the PCIe link to the modem is active
+> + * @mdev: MTK MD device
+> + *
+> + * Return: true if the device is present, false otherwise.
+> + */
+> +bool mtk_pci_link_check(struct mtk_md_dev *mdev)
+> +{
+> +       return pci_device_is_present(to_pci_dev(mdev->dev));
+> +}
+> +
+> +static void mtk_mhccif_isr_work(struct work_struct *work)
+> +{
+> +       struct mtk_pci_priv *priv =3D
+> +               container_of(work, struct mtk_pci_priv, mhccif_work);
+> +       struct mtk_md_dev *mdev =3D priv->irq_desc->mdev;
+> +       struct mtk_mhccif_cb *cb;
+> +       u32 stat, mask, chs;
+> +
+> +       stat =3D mtk_pci_get_ext_evt_hw_status(mdev);
+> +       mask =3D mtk_pci_read32(mdev, MTK_MHCCIF_RC_BASE_ADDR
+> +               + MHCCIF_EP2RC_SW_INT_EAP_MASK);
+> +       if (unlikely(stat =3D=3D U32_MAX && !(mtk_pci_link_check(mdev))))=
+ {
+> +               /* When link failed, we don't need to unmask/clear. */
+> +               dev_err(mdev->dev, "Failed to check link in MHCCIF handle=
+r.\n");
+> +               return;
+> +       }
+> +
+> +       stat &=3D ~mask;
+> +       /* Acknowledge level 2 before dispatch: an event that re-asserts
+> +        * while a callback runs must survive as a new status bit.
+> +        */
+> +       if (stat)
+> +               mtk_pci_ack_ext_evt_hw(mdev, stat);
+> +
+> +       chs =3D mtk_pci_ext_d2h_evt_chs(stat);
+> +       /* Callbacks must not sleep or modify mhccif_cb_list */
+> +       spin_lock_bh(&priv->mhccif_lock);
+> +       list_for_each_entry(cb, &priv->mhccif_cb_list, entry) {
+> +               if (cb->chs & chs)
+> +                       cb->evt_cb(cb->chs & chs, cb->data);
+> +       }
+> +       spin_unlock_bh(&priv->mhccif_lock);
+> +
+> +       mtk_pci_clear_irq(mdev, priv->mhccif_irq_id);
+> +       mtk_pci_unmask_irq(mdev, priv->mhccif_irq_id);
+> +}
+> +
+> +static const struct pci_device_id t9xx_pci_table[] =3D {
+> +       { PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0900),
+> +         MTK_PCI_CLASS, PCI_ANY_ID },
+> +       { PCI_DEVICE(0x03f0, 0x01ca),  /* HP RMM-G4 */
+> +         MTK_PCI_CLASS, PCI_ANY_ID },
+> +       {/* end: all zeroes */}
+> +};
+> +
+> +MODULE_DEVICE_TABLE(pci, t9xx_pci_table);
+> +
+> +static int mtk_pci_atr_init(struct mtk_md_dev *mdev)
+> +{
+> +       struct pci_dev *pdev =3D to_pci_dev(mdev->dev);
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       struct mtk_atr_cfg cfg;
+> +       int port, ret;
+> +
+> +       mtk_pci_atr_disable(priv);
+> +
+> +       /* Config ATR for RC to access device's register */
+> +       cfg.src_addr =3D pci_bus_address(pdev, MTK_BAR_2_3_IDX);
+> +       cfg.size =3D ATR_PCIE_REG_SIZE;
+> +       cfg.trsl_addr =3D ATR_PCIE_REG_TRSL_ADDR;
+> +       cfg.port =3D ATR_PCIE_REG_PORT;
+> +       cfg.table =3D ATR_PCIE_REG_TABLE_NUM;
+> +       cfg.trsl_id =3D ATR_PCIE_REG_TRSL_PORT;
+> +       cfg.trsl_param =3D 0x0;
+> +       cfg.transparent =3D 0x0;
+> +       ret =3D mtk_pci_setup_atr(mdev, &cfg);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* Config ATR for EP to access RC's memory */
+> +       for (port =3D ATR_SRC_AXIS_0; port <=3D ATR_SRC_AXIS_3; port++) {
+> +               cfg.src_addr =3D ATR_PCIE_DEV_DMA_SRC_ADDR;
+> +               cfg.size =3D ATR_PCIE_DEV_DMA_SIZE;
+> +               cfg.trsl_addr =3D ATR_PCIE_DEV_DMA_TRSL_ADDR;
+> +               cfg.port =3D port;
+> +               cfg.table =3D ATR_PCIE_DEV_DMA_TABLE_NUM;
+> +               cfg.trsl_id =3D ATR_DST_PCI_TRX;
+> +               cfg.trsl_param =3D 0x0;
+> +               /* Enable transparent translation */
+> +               cfg.transparent =3D ATR_PCIE_DEV_DMA_TRANSPARENT;
+> +               ret =3D mtk_pci_setup_atr(mdev, &cfg);
+> +               if (ret)
+> +                       return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int mtk_pci_bar_init(struct mtk_md_dev *mdev)
+> +{
+> +       struct pci_dev *pdev =3D to_pci_dev(mdev->dev);
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +
+> +       /* Fixed offsets used on these mappings (MSI-X registers up to
+> +        * 0x3103 on BAR0/1, the ATR-biased MHCCIF window on BAR2/3) are
+> +        * guaranteed by the only two devices this driver binds (0x0900,
+> +        * 0x01CA), whose BAR sizes are fixed by hardware; an undersized
+> +        * BAR here is impossible, so no pci_resource_len() checks.
+> +        */
+> +       priv->mac_reg_base =3D pcim_iomap_region(pdev, MTK_BAR_0_1_IDX,
+> +                                              mdev->dev_str);
+> +       if (IS_ERR(priv->mac_reg_base)) {
+> +               dev_err(mdev->dev, "Failed to map BAR0/1\n");
+> +               return PTR_ERR(priv->mac_reg_base);
+> +       }
+> +
+> +       priv->bar23_addr =3D pcim_iomap_region(pdev, MTK_BAR_2_3_IDX,
+> +                                            mdev->dev_str);
+> +       if (IS_ERR(priv->bar23_addr)) {
+> +               dev_err(mdev->dev, "Failed to map BAR2/3\n");
+> +               return PTR_ERR(priv->bar23_addr);
+> +       }
+> +
+> +       /* We use MD view base address "0" to observe registers */
+> +       priv->ext_reg_base =3D priv->bar23_addr - ATR_PCIE_REG_TRSL_ADDR;
+> +
+> +       return 0;
+> +}
+> +
+> +static int mtk_mhccif_irq_cb(int irq_id, void *data)
+> +{
+> +       struct mtk_md_dev *mdev =3D data;
+> +       struct mtk_pci_priv *priv;
+> +
+> +       priv =3D mdev->hw_priv;
+> +       queue_work(system_highpri_wq, &priv->mhccif_work);
+> +
+> +       return 0;
+> +}
+> +
+> +static int mtk_mhccif_init(struct mtk_md_dev *mdev)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       int ret;
+> +
+> +       INIT_LIST_HEAD(&priv->mhccif_cb_list);
+> +       spin_lock_init(&priv->mhccif_lock);
+> +       INIT_WORK(&priv->mhccif_work, mtk_mhccif_isr_work);
+> +
+> +       /* The write below goes through the BAR 2/3 ATR window, so this
+> +        * function must run after mtk_pci_atr_init().
+> +        * Mask every channel; consumers unmask the channels they need.
+> +        * Do NOT ack here: EP2RC status bits are latched one-shot
+> +        * notifications (e.g. BOOT_FLOW_SYNC raised before the driver
+> +        * loads) that the device never re-sends.  Masking blocks
+> +        * delivery but preserves the bit for delivery on unmask; an
+> +        * ack would erase it and the boot flow would hang silently.
+> +        */
+> +       mtk_pci_write32(mdev, MTK_MHCCIF_RC_BASE_ADDR +
+> +                       MHCCIF_EP2RC_SW_INT_EAP_MASK_SET, U32_MAX);
+> +
+> +       ret =3D mtk_pci_get_irq_id(mdev, MTK_IRQ_SRC_MHCCIF);
+> +       if (ret < 0) {
+> +               dev_err(mdev->dev, "Failed to get mhccif_irq_id. ret=3D%d=
+\n", ret);
+> +               return ret;
+> +       }
+> +       priv->mhccif_irq_id =3D ret;
+> +
+> +       ret =3D mtk_pci_register_irq(mdev, priv->mhccif_irq_id, mtk_mhcci=
+f_irq_cb, mdev);
+> +       if (ret) {
+> +               dev_err(mdev->dev, "Failed to register mhccif_irq callbac=
+k\n");
+> +               return ret;
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static void mtk_mhccif_exit(struct mtk_md_dev *mdev)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       struct mtk_mhccif_cb *cb, *tmp;
+> +
+> +       mtk_pci_unregister_irq(mdev, priv->mhccif_irq_id);
+> +       cancel_work_sync(&priv->mhccif_work);
+> +       /* The work unmasks the source on its way out, so leave it masked=
 . */
-> > +             if (!on)
-> > +                     stmmac_sync_timestamp_irq(priv);
-> > +             mutex_unlock(&priv->aux_ts_lock);
->
-> [Severity: Medium]
-> The commit message says:
->
->   "PTP_ACR_ATSFC is only ever set while XGMAC_TSIE is disabled, so this
->   both keeps it off the FIFO on unrelated interrupts and stops it racing
->   a FIFO flush."
->
-> Does that hold when a second PTP_CLK_REQ_EXTTS enable arrives while a
-> channel is already enabled? This can come from the ioctl or from the
-> extts_enable sysfs attribute.
->
-> Because of the dead -EBUSY check above, the request gets through. The
-> writel() above then sets ATSEN(new) | PTP_ACR_ATSFC while XGMAC_TSIE is
-> still armed from the first enable. TSIE is not disarmed and
-> stmmac_sync_timestamp_irq() is not called before the flush; the sync
-> only happens for !on.
->
-> dwxgmac2_timestamp_interrupt() runs on any MAC interrupt, or in
-> single-IRQ mode any DMA interrupt. It shares no lock with this path, and
-> it samples the FIFO level and the flush state at different times:
->
->     ts_status =3D readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
->     ...
->     acr_value =3D readl(priv->ptpaddr + PTP_ACR);
->     if (acr_value & PTP_ACR_ATSFC)
->         return;
->     ...
->     for (i =3D 0; i < pending_snapshots; i++) {
->         ...
->         stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
->
-> If that PTP_ACR read happens before the ATSFC write, or after the
-> self-clearing flush completes, ATSFC reads as 0.
->
-> Could the handler then pop N entries from a FIFO that is being flushed
-> or is already empty? It would report N stale or bogus PTP_CLOCK_EXTTS
-> events, tagged with either the old or the new channel index.
->
-> [ ... ]
+> +       mtk_pci_mask_irq(mdev, priv->mhccif_irq_id);
+> +
+> +       list_for_each_entry_safe(cb, tmp, &priv->mhccif_cb_list, entry) {
+> +               list_del(&cb->entry);
+> +               kfree(cb);
+> +       }
+> +}
+> +
+> +static irqreturn_t mtk_pci_irq_handler(struct mtk_md_dev *mdev, u32 irq_=
+state)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       int irq_id;
+> +
+> +       /* Check whether each set bit has a callback, if has, call it */
+> +       do {
+> +               int (*cb)(int irq_id, void *data);
+> +
+> +               irq_id =3D fls(irq_state) - 1;
+> +               irq_state &=3D ~BIT(irq_id);
+> +               cb =3D READ_ONCE(priv->irq_cb_list[irq_id]);
+> +               if (likely(cb)) {
+> +                       smp_rmb(); /* Ensure data is read after callback =
+*/
+> +                       cb(irq_id, priv->irq_cb_data[irq_id]);
+> +               } else {
+> +                       dev_err_ratelimited(mdev->dev,
+> +                                           "Unhandled irq_id=3D%d, no ca=
+llback for it.\n",
+> +                                           irq_id);
+> +                       mtk_pci_clear_irq(mdev, irq_id);
+> +               }
+> +       } while (irq_state);
+> +
+> +       return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t mtk_pci_irq_msix(int irq, void *data)
+> +{
+> +       struct mtk_pci_irq_desc *irq_desc =3D data;
+> +       struct mtk_md_dev *mdev =3D irq_desc->mdev;
+> +       struct mtk_pci_priv *priv;
+> +       u32 irq_state, irq_enable;
+> +
+> +       priv =3D mdev->hw_priv;
+> +       irq_state =3D mtk_pci_mac_read32(priv, REG_MSIX_ISTATUS_HOST_GRP0=
+_0);
+> +       irq_enable =3D mtk_pci_mac_read32(priv, REG_IMASK_HOST_MSIX_GRP0_=
+0);
+> +       irq_state &=3D irq_enable;
+> +
+> +       if (unlikely(irq_state =3D=3D U32_MAX && irq_enable =3D=3D U32_MA=
+X))
+> +               return IRQ_NONE; /* device gone */
+> +
+> +       irq_state &=3D irq_desc->msix_bits; /* scope to this vector */
+> +       if (unlikely(!irq_state))
+> +               return IRQ_NONE;
+> +
+> +       /* Mask the bit; the consumer unmasks it when it is done */
+> +       mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, irq_sta=
+te);
+> +
+> +       return mtk_pci_irq_handler(mdev, irq_state);
+> +}
+> +
+> +static int mtk_pci_request_irq_msix(struct mtk_md_dev *mdev)
+> +{
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       struct mtk_pci_irq_desc *irq_desc;
+> +       struct pci_dev *pdev;
+> +       int ret, i;
+> +
+> +       pdev =3D to_pci_dev(mdev->dev);
+> +       irq_desc =3D priv->irq_desc;
+> +
+> +       priv->irq_cnt =3D MTK_IRQ_CNT_MAX;
+> +
+> +       for (i =3D 0; i < MTK_IRQ_CNT_MAX; i++) {
+> +               irq_desc[i].mdev =3D mdev;
+> +               irq_desc[i].msix_bits =3D BIT(i);
+> +               snprintf(irq_desc[i].name, MTK_IRQ_NAME_LEN, "msix%d-%s",=
+ i, mdev->dev_str);
+> +               ret =3D pci_request_irq(pdev, i, mtk_pci_irq_msix, NULL,
+> +                                     &irq_desc[i], "%s", irq_desc[i].nam=
+e);
+> +               if (ret) {
+> +                       dev_err(mdev->dev, "Failed to request %s: ret=3D%=
+d\n",
+> +                               irq_desc[i].name, ret);
+> +                       for (i--; i >=3D 0; i--)
+> +                               pci_free_irq(pdev, i, &irq_desc[i]);
+> +                       priv->irq_cnt =3D 0;
+> +                       return ret;
+> +               }
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+> +static int mtk_pci_request_irq(struct mtk_md_dev *mdev)
+> +{
+> +       struct pci_dev *pdev =3D to_pci_dev(mdev->dev);
+> +       int ret;
+> +
+> +       ret =3D pci_alloc_irq_vectors(pdev, MTK_IRQ_CNT_MAX,
+> +                                   MTK_IRQ_CNT_MAX, PCI_IRQ_MSIX);
+> +       if (ret < 0) {
+> +               dev_err(mdev->dev,
+> +                       "Unable to alloc %d MSI-X vectors: ret=3D%d\n",
+> +                       MTK_IRQ_CNT_MAX, ret);
+> +               return ret;
+> +       }
+> +
+> +       ret =3D mtk_pci_request_irq_msix(mdev);
+> +       if (ret)
+> +               pci_free_irq_vectors(pdev);
+> +
+> +       return ret;
+> +}
+> +
+> +static void mtk_pci_free_irq(struct mtk_md_dev *mdev)
+> +{
+> +       struct pci_dev *pdev =3D to_pci_dev(mdev->dev);
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       int i;
+> +
+> +       for (i =3D 0; i < priv->irq_cnt; i++)
+> +               pci_free_irq(pdev, i, &priv->irq_desc[i]);
+> +
+> +       pci_free_irq_vectors(pdev);
+> +       priv->irq_cnt =3D 0;
+> +}
+> +
+> +static int mtk_pci_probe(struct pci_dev *pdev, const struct pci_device_i=
+d *id)
+> +{
+> +       struct device *dev =3D &pdev->dev;
+> +       struct mtk_pci_priv *priv;
+> +       struct mtk_md_dev *mdev;
+> +       int ret;
+> +
+> +       mdev =3D devm_kzalloc(dev, sizeof(*mdev), GFP_KERNEL);
+> +       if (!mdev) {
+> +               ret =3D -ENOMEM;
+> +               goto log_err;
+> +       }
+> +       mdev->dev =3D dev;
+> +
+> +       priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+> +       if (!priv) {
+> +               ret =3D -ENOMEM;
+> +               goto log_err;
+> +       }
+> +
+> +       pci_set_drvdata(pdev, mdev);
+> +       priv->mdev =3D mdev;
+> +       mdev->hw_ver  =3D pdev->device;
+> +       mdev->hw_priv =3D priv;
+> +       mdev->dev     =3D dev;
+> +       snprintf(mdev->dev_str, MTK_DEV_STR_LEN, "%02x%02x%d",
+> +                pdev->bus->number, PCI_SLOT(pdev->devfn), PCI_FUNC(pdev-=
+>devfn));
+> +       if (pdev->state_saved)
+> +               pci_restore_state(pdev);
+> +
+> +       ret =3D pci_enable_device(pdev);
+> +       if (ret) {
+> +               dev_err(mdev->dev, "Failed to enable pci device.\n");
+> +               goto log_err;
+> +       }
+> +
+> +       ret =3D dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+> +       if (ret) {
+> +               dev_err(mdev->dev, "Failed to set DMA Mask and Coherent. =
+(ret=3D%d)\n", ret);
+> +               goto disable_dev;
+> +       }
+> +
+> +       ret =3D mtk_pci_bar_init(mdev);
+> +       if (ret)
+> +               goto disable_dev;
+> +
+> +       ret =3D mtk_pci_atr_init(mdev);
+> +       if (ret)
+> +               goto disable_dev;
+> +
+> +       spin_lock_init(&priv->irq_cb_lock);
+> +
+> +       ret =3D mtk_mhccif_init(mdev);
+> +       if (ret)
+> +               goto disable_dev;
+> +
+> +       /* Mask every source before the handlers go in, so a source
+> +        * left enabled by firmware or a previous bind cannot fire
+> +        * into a half-initialised driver.
+> +        */
+> +       mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, U32_MAX=
+);
+> +
+> +       ret =3D mtk_pci_request_irq(mdev);
+> +       if (ret)
+> +               goto free_mhccif;
+> +
+> +       pci_set_master(pdev);
+> +       mtk_pci_unmask_irq(mdev, priv->mhccif_irq_id);
+> +
+> +       if (!mtk_pci_link_check(mdev)) {
+> +               ret =3D -ENOLINK;
+> +               goto clear_master;
+> +       }
+> +
+> +       ret =3D pci_save_state(pdev);
+> +       if (ret) {
+> +               dev_err(mdev->dev, "Failed to save PCI state: %d\n", ret)=
+;
+> +               goto clear_master;
+> +       }
+> +
+> +       priv->saved_state =3D pci_store_saved_state(pdev);
+> +       if (!priv->saved_state) {
+> +               ret =3D -ENOMEM;
+> +               goto clear_master;
+> +       }
+> +
+> +       return 0;
+> +
+> +clear_master:
+> +       pci_clear_master(pdev);
+> +       mtk_pci_free_irq(mdev);
+> +free_mhccif:
+> +       mtk_mhccif_exit(mdev);
+> +disable_dev:
+> +       pci_disable_device(pdev);
+> +log_err:
+> +       dev_err(dev, "Failed to probe device, ret=3D%d\n", ret);
+> +
+> +       return ret;
+> +}
+> +
+> +static void mtk_pci_remove(struct pci_dev *pdev)
+> +{
+> +       struct mtk_md_dev *mdev =3D pci_get_drvdata(pdev);
+> +       struct mtk_pci_priv *priv =3D mdev->hw_priv;
+> +       struct device *dev =3D &pdev->dev;
+> +       int ret;
+> +
+> +       /* Silence every source before tearing anything down. */
+> +       mtk_pci_mac_write32(priv, REG_IMASK_HOST_MSIX_CLR_GRP0_0, U32_MAX=
+);
+> +
+> +       /* Free the vectors first: once no handler can run, the unmask at=
+ the
+> +        * tail of mtk_mhccif_isr_work() cannot re-open the source behind
+> +        * mtk_mhccif_exit()'s back.
+> +        */
+> +       mtk_pci_free_irq(mdev);
+> +       mtk_mhccif_exit(mdev);
+> +       pci_clear_master(pdev);
+> +       pci_disable_device(pdev);
+> +
+> +       /* Reset last: the endpoint comes back at power-on defaults, so n=
+o MMIO
+> +        * and no MSI-X teardown may follow it.
+> +        */
+> +       ret =3D mtk_pci_pldr(mdev);
+> +       if (ret && mtk_pci_link_check(mdev)) {
+> +               dev_warn(dev, "PLDR failed (%d), trying MHCCIF reset\n", =
+ret);
+> +               if (mtk_pci_send_ext_evt(mdev, DEV_EVT_H2D_DEVICE_RESET))
+> +                       dev_err(dev, "MHCCIF reset failed\n");
+> +               /* Unlike MRST._RST the doorbell returns before the devic=
+e
+> +                * has reset, so let it settle before the restore below.
+> +                */
+> +               msleep(MTK_MHCCIF_RESET_DELAY_MS);
+> +       }
+> +
+> +       /* Without this a runtime-PM suspend after unbind would snapshot =
+the
+> +        * reset state over our copy, and whoever binds next finds BARs t=
+he
+> +        * device does not decode.
+> +        */
+> +       pci_load_and_free_saved_state(pdev, &priv->saved_state);
+> +       pci_restore_state(pdev);
+> +       /* The state was saved after pci_set_master(), so the restore jus=
+t
+> +        * re-enabled bus mastering on an unbound device - drop it again.
+> +        */
+> +       pci_clear_master(pdev);
+> +}
+> +
+> +static pci_ers_result_t mtk_pci_error_detected(struct pci_dev *pdev,
+> +                                              pci_channel_state_t state)
+> +{
+> +       struct mtk_md_dev *mdev =3D pci_get_drvdata(pdev);
+> +
+> +       dev_err(mdev->dev, "AER detected: pci_channel_state_t=3D%u\n", st=
+ate);
+> +
+> +       /* AER recovery not supported, disconnect the device */
+> +       return PCI_ERS_RESULT_DISCONNECT;
+> +}
+> +
+> +static const struct pci_error_handlers mtk_pci_err_handler =3D {
+> +       .error_detected =3D mtk_pci_error_detected,
+> +};
+> +
+> +static struct pci_driver mtk_pci_drv =3D {
+> +       .name =3D "mtk_pci_drv",
+> +       .id_table =3D t9xx_pci_table,
+> +       .probe =3D mtk_pci_probe,
+> +       .remove =3D mtk_pci_remove,
+> +       .err_handler =3D &mtk_pci_err_handler
+> +};
+> +
+> +module_pci_driver(mtk_pci_drv);
+> +
+> +MODULE_DESCRIPTION("MediaTek T9xx PCIe WWAN driver");
+> +MODULE_LICENSE("GPL");
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci.h b/drivers/net/wwan/t9xx=
+/pcie/mtk_pci.h
+> new file mode 100644
+> index 000000000000..80c1a40f98d5
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci.h
+> @@ -0,0 +1,140 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only
+> + *
+> + * Copyright (c) 2022, MediaTek Inc.
+> + */
+> +
+> +#ifndef __MTK_PCI_H__
+> +#define __MTK_PCI_H__
+> +
+> +#include <linux/pci.h>
+> +
+> +#include "../mtk_dev.h"
+> +
+> +enum mtk_irq_src {
+> +       MTK_IRQ_SRC_MIN,
+> +       MTK_IRQ_SRC_MHCCIF,
+> +       MTK_IRQ_SRC_CLDMA0,
+> +       MTK_IRQ_SRC_CLDMA1,
+> +       MTK_IRQ_SRC_MAX
+> +};
+> +
+> +enum mtk_atr_src_port {
+> +       ATR_SRC_PCI_WIN0 =3D 0,
+> +       ATR_SRC_PCI_WIN1,
+> +       ATR_SRC_AXIS_0,
+> +       ATR_SRC_AXIS_1,
+> +       ATR_SRC_AXIS_2,
+> +       ATR_SRC_AXIS_3,
+> +};
+> +
+> +enum mtk_atr_dst_port {
+> +       ATR_DST_PCI_TRX =3D 0,
+> +       ATR_DST_AXIM_0 =3D 4,
+> +};
+> +
+> +#define MTK_PCI_CLASS                 0x0D4000
+> +
+> +#define MTK_BAR_0_1_IDX                 0
+> +#define MTK_BAR_2_3_IDX                 2
+> +
+> +#define MTK_IRQ_CNT_MAX                                32
+> +#define MTK_IRQ_NAME_LEN                       32
+> +
+> +#define ATR_PORT_OFFSET                                0x100
+> +#define ATR_TABLE_OFFSET                       0x20
+> +#define ATR_TABLE_NUM_PER_ATR                  8
+> +#define ATR_PCIE_REG_TRSL_ADDR                 0x10000000
+> +#define ATR_PCIE_REG_SIZE                      0x00400000
+> +#define ATR_PCIE_REG_PORT                      ATR_SRC_PCI_WIN0
+> +#define ATR_PCIE_REG_TABLE_NUM                 1
+> +#define ATR_PCIE_REG_TRSL_PORT                 ATR_DST_AXIM_0
+> +#define ATR_PCIE_DEV_DMA_SRC_ADDR              0x00000000
+> +#define ATR_PCIE_DEV_DMA_TRANSPARENT           1
+> +#define ATR_PCIE_DEV_DMA_SIZE                  0
+> +#define ATR_PCIE_DEV_DMA_TABLE_NUM             0
+> +#define ATR_PCIE_DEV_DMA_TRSL_ADDR             0x00000000
+> +
+> +struct mtk_pci_irq_desc {
+> +       struct mtk_md_dev *mdev;
+> +       u32 msix_bits;
+> +       char name[MTK_IRQ_NAME_LEN];
+> +};
+> +
+> +struct mtk_pci_priv {
+> +       struct mtk_md_dev *mdev;
+> +       void __iomem *bar23_addr;
+> +       void __iomem *mac_reg_base;
+> +       void __iomem *ext_reg_base;
+> +       int irq_cnt;
+> +       /* irq_cb_lock: protects irq_cb_list[] and irq_cb_data[] */
+> +       spinlock_t irq_cb_lock;
+> +       void *irq_cb_data[MTK_IRQ_CNT_MAX];
+> +
+> +       int (*irq_cb_list[MTK_IRQ_CNT_MAX])(int irq_id, void *data);
+> +       struct mtk_pci_irq_desc irq_desc[MTK_IRQ_CNT_MAX];
+> +       struct list_head mhccif_cb_list;
+> +       /* mhccif_lock: lock to protect mhccif_cb_list */
+> +       spinlock_t mhccif_lock;
+> +       struct work_struct mhccif_work;
+> +       int mhccif_irq_id;
+> +       struct pci_saved_state *saved_state;
+> +};
+> +
+> +struct mtk_atr_cfg {
+> +       u64 src_addr;
+> +       u64 trsl_addr;
+> +       u64 size;
+> +       u32 port;      /* Port number */
+> +       u32 table;     /* Table number (8 tables for each port) */
+> +       u32 trsl_id;
+> +       u32 trsl_param;
+> +       u32 transparent;
+> +};
+> +
+> +/* BAR 0/1 MMIO access */
+> +static inline u32 mtk_pci_mac_read32(struct mtk_pci_priv *priv, u64 addr=
+)
+> +{
+> +       return ioread32(priv->mac_reg_base + addr);
+> +}
+> +
+> +static inline void mtk_pci_mac_write32(struct mtk_pci_priv *priv, u64 ad=
+dr, u32 val)
+> +{
+> +       iowrite32(val, priv->mac_reg_base + addr);
+> +}
+> +
+> +/* BAR 2/3 MMIO access */
+> +static inline u32 mtk_pci_read32(struct mtk_md_dev *mdev, u64 addr)
+> +{
+> +       return ioread32(((struct mtk_pci_priv *)mdev->hw_priv)->ext_reg_b=
+ase + addr);
+> +}
+> +
+> +static inline void mtk_pci_write32(struct mtk_md_dev *mdev, u64 addr, u3=
+2 val)
+> +{
+> +       iowrite32(val, ((struct mtk_pci_priv *)mdev->hw_priv)->ext_reg_ba=
+se + addr);
+> +}
+> +
+> +/* Device operations */
+> +u32 mtk_pci_get_dev_state(struct mtk_md_dev *mdev);
+> +void mtk_pci_ack_dev_state(struct mtk_md_dev *mdev, u32 state);
+> +/* IRQ Related operations */
+> +int mtk_pci_get_irq_id(struct mtk_md_dev *mdev, enum mtk_irq_src irq_src=
+);
+> +int mtk_pci_get_virq_id(struct mtk_md_dev *mdev, int irq_id);
+> +int mtk_pci_register_irq(struct mtk_md_dev *mdev, int irq_id,
+> +                        int (*irq_cb)(int irq_id, void *data), void *dat=
+a);
+> +int mtk_pci_unregister_irq(struct mtk_md_dev *mdev, int irq_id);
+> +int mtk_pci_mask_irq(struct mtk_md_dev *mdev, int irq_id);
+> +int mtk_pci_unmask_irq(struct mtk_md_dev *mdev, int irq_id);
+> +int mtk_pci_clear_irq(struct mtk_md_dev *mdev, int irq_id);
+> +/* External event related */
+> +int mtk_pci_register_ext_evt(struct mtk_md_dev *mdev, u32 chs,
+> +                            int (*evt_cb)(u32 status, void *data), void =
+*data);
+> +void mtk_pci_unregister_ext_evt(struct mtk_md_dev *mdev, u32 chs);
+> +void mtk_pci_mask_ext_evt(struct mtk_md_dev *mdev, u32 chs);
+> +void mtk_pci_unmask_ext_evt(struct mtk_md_dev *mdev, u32 chs);
+> +int mtk_pci_send_ext_evt(struct mtk_md_dev *mdev, u32 ch);
+> +int mtk_pci_pldr(struct mtk_md_dev *mdev);
+> +bool mtk_pci_link_check(struct mtk_md_dev *mdev);
+> +int mtk_pci_setup_atr(struct mtk_md_dev *mdev, struct mtk_atr_cfg *cfg);
+> +void mtk_pci_atr_disable(struct mtk_pci_priv *priv);
+> +
+> +#endif /* __MTK_PCI_H__ */
+> diff --git a/drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h b/drivers/net/wwan/=
+t9xx/pcie/mtk_pci_reg.h
+> new file mode 100644
+> index 000000000000..a97ad6630dcf
+> --- /dev/null
+> +++ b/drivers/net/wwan/t9xx/pcie/mtk_pci_reg.h
+> @@ -0,0 +1,34 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only
+> + *
+> + * Copyright (c) 2022, MediaTek Inc.
+> + */
+> +
+> +#ifndef __MTK_PCI_REG_H__
+> +#define __MTK_PCI_REG_H__
+> +
+> +#define REG_ATR_PCIE_WIN0_T0_SRC_ADDR_LSB      0x0600
+> +#define REG_ATR_PCIE_WIN0_T0_SRC_ADDR_MSB      0x0604
+> +#define REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_LSB     0x0608
+> +#define REG_ATR_PCIE_WIN0_T0_TRSL_ADDR_MSB     0x060C
+> +#define REG_ATR_PCIE_WIN0_T0_TRSL_PARAM                0x0610
+> +#define REG_PCIE_DEBUG_DUMMY_7                 0x0D1C
+> +#define REG_MSIX_ISTATUS_HOST_GRP0_0           0x0F00
+> +#define REG_IMASK_HOST_MSIX_SET_GRP0_0         0x3000
+> +#define REG_IMASK_HOST_MSIX_CLR_GRP0_0         0x3080
+> +#define REG_IMASK_HOST_MSIX_GRP0_0             0x3100
+> +
+> +/* mhccif registers */
+> +#define MHCCIF_RC2EP_SW_BSY                    0x4
+> +#define MHCCIF_RC2EP_SW_TCHNUM                 0xC
+> +#define MHCCIF_RC2EP_EVT_DEVICE_RESET          BIT(13)
+> +
+> +#define MHCCIF_EP2RC_SW_INT_STS                        0x10
+> +#define MHCCIF_EP2RC_SW_INT_ACK                        0x14
+> +#define MHCCIF_EP2RC_SW_INT_EAP_MASK           0x20
+> +#define MHCCIF_EP2RC_SW_INT_EAP_MASK_SET       0x30
+> +#define MHCCIF_EP2RC_SW_INT_EAP_MASK_CLR       0x40
+> +#define MHCCIF_EP2RC_EVT_BOOT_FLOW_SYNC                BIT(5)
+> +#define MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_SAP   BIT(15)
+> +#define MHCCIF_EP2RC_EVT_ASYNC_HS_NOTIFY_MD    BIT(16)
+> +
+> +#endif /* __MTK_PCI_REG_H__ */
 >
 > --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20261013033207.1684328-1-zxyan0222%40gmail.com
-
-pw-bot: cr
+> 2.34.1
+>
+>
