@@ -1,142 +1,187 @@
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010059.outbound.protection.outlook.com [52.101.85.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96294361951
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.85.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791989177; cv=fail; b=KFUSNK8+URC5DsQFDgE2/FSC98FkRgIZ6wjZQkoor0fZ8IzZMlt+3e0gi2ASv8BYS/N7H64BmoQkssiBPzWJiTLN9wFMQdDWXvVOrj6w3JeSD9sde5MGkqCTMta3Q5ZeyNIOPexYjDNuLSKyF/KQ646UE7YtmpmrwLkCB8SNiLE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791989177; c=relaxed/simple;
-	bh=leReLhp0LxLrxznjORnrxcfa7Hnmz1NInu6IENx5900=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=TXl8dGM6FnyxBItmIEPIiiIfFgC7h0R1X5kf5DEKd7ZpPQTt+APi1UwA5NK8cWxgZ/2gEgMaJbvbfMDthXOHwEX79D9pegBxdP9hNUc3zYoY+Q8RVaaMl61HAOmaauRmZeA0w0yBnRXnk7s42OM91d0HcttRUM64KnnaVeN9OUs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ok0+0iKB; arc=fail smtp.client-ip=52.101.85.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A4936A370
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791989340; cv=none; b=vCOp4fCWb0sVTmDWMUciW9UgkwLFT57pCP0Xw7RL63CtslKEig4roM2VeL1UbDkp+dztz3Zrxg24Ef3XWjZT/XIh248xXIdK2IeylricO8TquLKAIn9nvTqbIJcJ0QcU/MBvsSFlltE9xd1XyfiGtuh03FBvYfqqJuNwYvVZZoU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791989340; c=relaxed/simple;
+	bh=j9+aZgHEnds3ISh/9ClPqudGNuxATzy9WD9d0bNw14o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Aa+f4Aa26kcWkSP4AoqzR6hEPej4mOXWYuxucHaZ3n8I3ZEP4zuVP29WHlXB0lr+6HxpX+GwFbnkK+Bqi2M15RuO+tt8v+Oxvjspl8XvGE+nO5dFk0txzFo/dvNz7RU1Gjk9kPwXU4MK4+cPI5Wj16C8rJkA52lL9LLyxvg7VdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TahbXIvA; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ok0+0iKB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=buD/LRxJQbE248npeOuJKp/CbBWEOdn44Rex71C0E9jEsP9io/3eWAs5V1EVOgXSJGT3JDJFNYzwC4ibKrbGmFwUK6EOmVhvbAeBNbJlZee6X/p+XPub7vo3pvo2mUJjWL97KtNOD5aJGveps0a22usomXkioNWTnJSJHZQGGcqdlwPELXFF1KEyB4NdVvNeLiu6SA/q1sPu7aw3VoylFZRNOU8ai+wCB2KAMlPrT567TVv7ya7YAvppnKTkEiBvcgBgwilU1amUzzuxmADI8+C6ThF+wdNl6FnGARNnMfzHIvnu1QYN5LuJ70xBy2ljcCSCSxnEQN6xPIKV3KIFeg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K7UyR4fAatmHa+fXBVMVJCUrGz8bw21gal850oVk9QM=;
- b=TG1HRc47B5FEP2W3qik76xWOFuMQWTigW3cLBXLNrGuRKNy6S1BFMSiSHGcpi+RmSXt9+451TgBLTWoVJNEjLKHTiG1wksRd388dVo5Qu3UCw2LvK6JXs8eTk1twvyLbvkaqQ7HQvG0cioGHa7dk7v/I5LJetSUetd6fz5WQWHmLjNQCqgFLIzH7alyrOdMSbyhyWpAnDMeCPvNX+OMJBvIJ9On1CJXnATpp9AQH5vxz21qFnZoyqSLx4VlPQ+nfpPsJVfRe+AV/LfIARLvNazw7wuPX6BCoUjdTK9DkngG1mkdHd/Mhv7KlRb794ZmGyGjLa/CD3OfgtHsT+DQcGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K7UyR4fAatmHa+fXBVMVJCUrGz8bw21gal850oVk9QM=;
- b=Ok0+0iKB4aEHwEipsOa55g+skp4ZuIln7eTSt2dChSPB+MYWSs5Axp5TG6Lu2uzJ72WxXvBjG930PzP0ZSkOfTiV546MC2mi9tYVEhRm4a0EDr7v7hb8JgdLniUwcXgIq4G9lf6TxEYKGeuIv3hnhkVABW4/BQ0QyYkn7d3frFJAe/p3tdjvb+uowBfHSLR/38H7YdFzFwjCPHoI0U+sUSkPGoboJxURaio7MvwIOa98t1KAydc+tGg/4DX6syaeMP6i0NsOPkBsSBmRHiSke2KeeDsBeuxMtIbbAQfCKDJn2MWbD3z3rp3d/Hj6nhWPYHRhnec/fTdSidDrqvhiJg==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by PH7PR12MB5595.namprd12.prod.outlook.com (2603:10b6:510:135::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
- 2026 14:46:08 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.021; Wed, 14 Oct 2026
- 14:46:08 +0000
-Date: Wed, 14 Oct 2026 17:45:59 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: =?utf-8?B?6ams5LqR6b6Z?= <yunlong_ma@buaa.edu.cn>
-Cc: razor@blackwall.org, bridge@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [BUG] net: bridge: mcast: rejected report leaves an orphan MDB
- entry that can disable snooping
-Message-ID: <20261014144559.GA1445548@shredder>
-References: <2f5b61e2.1e71a.1a11fcb3809.Coremail.yunlong_ma@buaa.edu.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2f5b61e2.1e71a.1a11fcb3809.Coremail.yunlong_ma@buaa.edu.cn>
-X-ClientProxiedBy: TL2P290CA0027.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:3::11) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TahbXIvA"
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-48df160bb9cso20823f8f.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 07:48:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791989337; x=1792594137; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KIXMvV4RGxrQI2o+3q8hLAdGHWQv5V0aUAuVvLhThJE=;
+        b=TahbXIvAjZFCxZR/gFYJ9jaFOc1J9ViibFe2uye0wcYfEiz8nkbwwCuC0yU5Et8sJO
+         EmYev/bi1Jpm+hTWaxpf6mg2vx3UVmrPF5cY6haNFMLAcRxPhcbaHxqZsbXWi0ioImK6
+         JwiJRbD3YRR5mISEK6k8kadBlSuhk92GxeAIaUBwMR3z1+rwi739tsql19jQs3apLD4s
+         b0GckAYdO0LcUcWM+BpvXrAbb+3sddyl4vctKA5ELOd9rsbmhGza4pKjM9y8des4XYMZ
+         e8GXhE3DQrkCsbVzvNreSZeqg+/hU+Wg+OIRBb04lb4HW3eKhQvP1TLZnVGkJKqvaGfb
+         Ji3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791989337; x=1792594137;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KIXMvV4RGxrQI2o+3q8hLAdGHWQv5V0aUAuVvLhThJE=;
+        b=vLfTs/VSskNrsUGfg42Ao/aPTtLPWsvDJosfn1FtAkFb/FKHTN1Ox2k6yc3YMXvIXl
+         uUlszTWkXMfS9CZq5y2N5IVut4Ub5IvGtylrJMhXIMHu1frn2NhZlzzInpR7iFC6pcVC
+         Q3dPmyohBQw+HrP+bVEyV0tSmDLOGdtZv49SzB/N7R5LkuUs0vAmqBKU2/Ozfb9+j09S
+         L+dd4gIS9AC0HMSIZp54tcOTZzlpvk/BeNXAhnWKw+WJ6fXYvexc+PjJTZvh7FrbsBJp
+         cQt5eALZ8ZIvDc0UOx8FAIxmxfy9qefnKBsDekxibS0zwfmmQKSvO/J8/OBUEzgjWYAS
+         Uoig==
+X-Gm-Message-State: AFq9FYK7gdd4vGkyYVQK/re2GsV/0XIQuvv/e5RUmTMfprGjPMmw4dol
+	t8Esos46SGVOSZJF536+qyYj4SIqOSYweT4uc/QSzmA7FxFFtT4vlJrJ
+X-Gm-Gg: AYBFou13NBBaoCPnBnE98bwJzNIL8bWA+u7Yx9vP7u8DLtKvbFfTtoJynfrA5wydzFy
+	zpsXLz57WLIjIyEIcggC0l4R9xZUb7uvj/pueg/icW192wqaS22aLS3nPSppii0rp6XIGd2pmqF
+	8BZvUTZ0bhliwj226wgOFc25lm9+sGZUzqA4kjTVNNNTNN7g+R+57Mtv80bIJOMFeMEMjuZeH5q
+	FumHcwK8yQtHlqSK3ZPmfyn1Ur19MIIuBbqaUtpVeD5eXJgXeYTvs5hvv1ooiCMzMEFS3RpYimZ
+	Mg8x4Y79ati1FnVUy6aYz3D9Lz3aoTwjxK7mmY/eRdOdjucLZ5QC7969O5WKCHp+Ua/X8LI11q8
+	pZk5DyCheg71zjrWwNzrFg59Q6i9TX7DAyk9KjauaRLjJ5h3OvzsOdcVUUke6Vec/Ep0HyCzmvN
+	I0RAfQbqD9auwq98QqkV+2aeFXIauuldGzGUWsWyTCDiRC1N6BecC7fg4Q1ztOi2cRqckc5nRAh
+	xhA6p896VTed8xscGB9kcGUCU2WKOm7KRSW/LZgkUSBAtdAikNk+lKgAElIPfeO/SeZRHSMQYWx
+	B2F36JIIlC4H2TZtvgypWjFzjCT4s8DfSMqIZv/KlfgZgaG9PPzLKmymxAVfjbytH8A6Js1ULyO
+	iL6QT8UP7vCtXZ1Z7Xyeb
+X-Received: by 2002:a05:600c:6285:b0:4a1:715d:1913 with SMTP id 5b1f17b1804b1-4a18e4760demr324543655e9.1.1791989336820;
+        Wed, 14 Oct 2026 07:48:56 -0700 (PDT)
+Received: from ?IPV6:2a02:3100:5ad1:60fc:7c7a:4c9b:4d41:afaf? (dynamic-2a02-3100-5ad1-60fc-7c7a-4c9b-4d41-afaf.310.pool.telefonica.de. [2a02:3100:5ad1:60fc:7c7a:4c9b:4d41:afaf])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd068126sm4449255e9.11.2026.10.14.07.48.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2026 07:48:56 -0700 (PDT)
+Message-ID: <003d3e2a-3568-44f6-a9cc-3202de60da58@gmail.com>
+Date: Wed, 14 Oct 2026 16:48:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH7PR12MB5595:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12963516-ce58-4757-183b-08df2a01e1b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|56012099006|5023799004|11063799006|261009223027099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	IxGLdH6QMY5JxAyxnAo0QZSTj76YqZYOYdK4pabS6N1zlWRsho8IPlTQdU2WT/ZoEXAtoUcuMKRiI6SZd8SlOPn5PKq7kE6V4j4gkBnd0WdxzyKYEDrqCvPfcp/kucs8aD4qCTPZQWvtrp2UkoBc39J5Vlm1vrbqm1+0t38oEV9RSY2f0ofo7E3t32YgY91jMPw+gcOFk8yKDdG6raF+lP7mszVkPUbgsM4jojZs2fWDmF9tqqoUxKjUtQ62PmboaeiUnwYWd9cCO+V4wTK0Le4lGKmIMU6tX8sX90Ra6lQRLTLGQQ8k7H4j1v3GqfAqzZ6PWjNOmwbQsR4Gl81b/7xq90Itjqu4myKyVx8HWCYXguxLOLHHu9y7Dv0F7SyRcN6L6WHPgIAQGcEbd2xPD31nHGL00EjVDgyevOVJugq1NsbnozNMnE5Ub+eaWp22YR7bQ5vD8a9RoqdyxGkKRgUN52EtIVlypUHszjAbgfUBjWiU2hMzYdzG3LWbv6fZbjZnNUridxnGdnzEC51CVVoqcwd3sMbgOb85LMnfHraLGOCfCnFYW6SbjVie4OSIhaFXHE/iaMTYhsscmemv/bi9RMGdSN7CuZXIKsA4t7cw8Vqog6H+quJHN02rM5MesOaC1xXTRkl6s5d7gacTvYvhAWQIB6gFsJGVQjATx6c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(56012099006)(5023799004)(11063799006)(261009223027099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?b1NqNlFIemJZelc5U3A2cjZQeWdLd0hiRnlaRm9YZzhMMlNDcytPRFN2bDFB?=
- =?utf-8?B?bi9QK0xBMGJ6dUJvejdmSC92QTdMRzcvSGhzc0JWTGsrWjhxcXdGeXloTC9S?=
- =?utf-8?B?RDFWekpHMkpjd0hZY0xVRXZRZS92QXBuUE9ueWtzdys2RGtmZURTQml6R1hX?=
- =?utf-8?B?MFRORHF4YVlEejJZVWd4UC9za3U2S2VwcVBWd2I2TTZ0RE9FKzUwOXVZZ3kx?=
- =?utf-8?B?ZldWQ045cFRUbmZxS0xaYjM1bTBsTkltNzhXSjcva09yMjFPTVFqVXpjY09X?=
- =?utf-8?B?TThpTGVxaVFqdFQ4Zk1KSUtGakNpMDh4Mi9jRUh1bVd0S1RVc1hlZDQzZk4x?=
- =?utf-8?B?SkxmT3d0MTM5VDVGQ2N1NEJvUi9VT3hsTmV0TTd6RitGalNqNWVXWjhWZDNO?=
- =?utf-8?B?dHUvZ1hPeTkwQThqbU5TU1RPMENqc0lCbHdGQXRia3BBaXduQUNzOXgwVnpI?=
- =?utf-8?B?UmNUQi9YbUFMN0tTQjNDRmE0U1pRSlVBSzM5NkpmRVdVMkhUcE5CajgzNWRC?=
- =?utf-8?B?RUx0RzVFenh5bDJXbi9rQjhVS2toRncxeVpHb2tERlplT1h1SEJrRXF2bTdS?=
- =?utf-8?B?Z2h0RXZIWFFOSno0MXdCKzJ4Z2RGS2pjOEVIT0NURHl1OFE4SHRTaUhkWDVo?=
- =?utf-8?B?QW1WdllYWjVNVER4SzREY254MGVPNFZ0NlRrYVVLYmpseEdOYzRxcE1KRTg5?=
- =?utf-8?B?VS9JVW1NWHQrSzZpRGdFNEgyU0tYYUh1bDE0WHVsMVhZU1Q3QUMwZFZsYnJB?=
- =?utf-8?B?V2RZbDR0UnVaMkd0YzJpOWRvYW1xK0luUlZ5VXJrQkpQQnBQVzdZeXgrSGRN?=
- =?utf-8?B?akJtU2Vjdi9LOUlpSm8vT1luY0NVcWZFWlk5b1dvbUxTUk9VZDZWY1pITGly?=
- =?utf-8?B?Zmp4KzBFcDB2aDJvOE9VY2orMEVSeTh5ZVk3ZG5KSktDamVRN3lFWXJ0MjBs?=
- =?utf-8?B?eUJrSUY4ZU1HU1hyVTlRU2kwcEpxcWF2Q2NSMUcxaEhJZDYvN1lmQXNCY20r?=
- =?utf-8?B?bStZNFI1WjNvWXZLMkR6YmVnYVp4T212L2t1a3dVVTVES0tLNXIrTE9DTDdW?=
- =?utf-8?B?bFpJTnFrYjV4bk5ncVZ3OW5STmpPNDNENVRsdTFTVVdhVWgxa1BySlI2Rkls?=
- =?utf-8?B?QVlNNjAzZGpmVFNLYi8rRlVDRlFTbVgvSVlVVk55ZGNYZ3B3clMxMnhYRjda?=
- =?utf-8?B?UldlTUFYQStkR2RGazF6QzZ4UlRmZVhoUk1PZ09uOFMxT1VIRS9FRitHbjEx?=
- =?utf-8?B?VDJlMHJvd2VwUDhDUG45R0d2d01NaVJpbUxkL0dEenFVaEhHSXEwRXQ0YlY0?=
- =?utf-8?B?S2Y2dEJOZTBZMkd0R2ErWS9Va01DWk1SNHoyMi81THFEUUwvUXdrUWx4bjEy?=
- =?utf-8?B?cFVtRVAvOWNIY3BBZ0VDTFR3ZHdVYm9iK1VxeEw3S21QTFErcytZT2Noa1hQ?=
- =?utf-8?B?bWh6bnhoRTEwRnRnMUxxWHc5aDdhbldoMVJIenRvdUhVRkJnNzlWeG1XVXdh?=
- =?utf-8?B?eExoVTVORWZPNjcvR2Fpa2VMd3ZBQ0FLZHdLYXNJY0RSMjJrSzdnbGxQWlVy?=
- =?utf-8?B?TXQxMWtFblFuYmZlSEZ4bzd2T1JiYUdkOTA3NjhIcXptcWk2M2RMSzYxTllT?=
- =?utf-8?B?dityZENiTTF4bVRrYzFrbVpsN1FJWG9tZit1WnRWZkd3UUVibGlUajVSazFT?=
- =?utf-8?B?U1haYkpuR1hDRVJNSlJOcm5nOERRRUNySVNwZDk4TFRhWmExS1VhMGtuMFRK?=
- =?utf-8?B?dEFDeEROZC9XZUpNVkNsWWJWbVloUjduYU16bXExRFBpK3hWNzBPU2lzYTF6?=
- =?utf-8?B?TnYwZnhneWtJQVZVaDBOcHhQVEh2N1l6ajZmNStKeFhkaFd3Q2hLVFlmUDMw?=
- =?utf-8?B?Uk5ndjZ4SzBpY2FPK3AyVVRGczJzbDMwd3RVYlJiVlN0K2pSNHdoRlhXOVAx?=
- =?utf-8?B?T3p0MzllejVadXdQU3IramdkeXVic2EwbnovbWkwcFJxb2NmZmd1Y01BSVUv?=
- =?utf-8?B?MkVQOVJRWmwvdUVFRjY3T1dYTTNra01aNVh1UXd3Umg1SVB0ZFkzZTk0Kzc4?=
- =?utf-8?B?SkcxUThoZEFVMzd1YUVDZE1nRVY3dkhPR0MrbVZsYm13aUlhcENUWDlzdEUx?=
- =?utf-8?B?eTF2Qmo3Um92d0wxM2gybG5yWGVRdFMwYWp2RXZqYlZMWEVaeUl1MFN5ZUJp?=
- =?utf-8?B?NmwvblV1SXVvZ3VTN3dBZVFSVzB3RVFuZ0wreUIvL3FzZHowU2tTUkNmczRT?=
- =?utf-8?B?dGQ4Vkg0Ty9SY2VuNXU2ZWFyOUs0VmQzK1c0K3A0cUsxL0RtQWMxWi93S1hh?=
- =?utf-8?Q?v7G2NglgYM8438YZbo?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12963516-ce58-4757-183b-08df2a01e1b7
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 14:46:08.1442
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xSOQeroDUVgoADUhY4HZ5OHey0WLMzIlAMo/0S3mwvAVK3V/Z1RuyOE7KORILyiYySMAJMZPvkdYopljtUInqQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5595
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v7 2/4] net: hsr: preserve submission order without a
+ forwarding lock
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, liuhangbin@gmail.com,
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch, shuah@kernel.org,
+ kees@kernel.org, petr.wozniak@gmail.com, qingfang.deng@linux.dev,
+ fmaurer@redhat.com, luka.gejak@linux.dev, xiaoliang.yang_1@nxp.com,
+ skhawaja@google.com, stable@vger.kernel.org, sdf.kernel@gmail.com,
+ syzbot+fbf74291c3b7e753b481@syzkaller.appspotmail.com
+References: <20261009201324.17-1-xiexinet@gmail.com>
+ <20261009201324.17-3-xiexinet@gmail.com>
+ <20261014134718.YGcKmfB9@linutronix.de>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <20261014134718.YGcKmfB9@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 09, 2026 at 04:32:54PM +0800, 马云龙 wrote:
-> Hi Nikolay, Ido,
-> 
-> When __br_multicast_add_group() creates a new MDB entry and then fails
-> to create the port group, the new entry is left in the MDB hash table
-> with no ports, host_joined == false and mp->timer never armed. Nothing
-> ever removes it, but it still counts towards hash_max. With
-> mcast_max_groups set on a port, a host behind that port can create
-> these entries at will by sending IGMP/MLD reports for new groups, and
-> once the table reaches hash_max the bridge turns multicast snooping
-> off.
+> What are stacked HSR devices? Looking from the setup in the referenced
+> report this is a bridge device attached to a HSR ring.
+> An announce frame is sent and this goes to hsr_dev_xmit(). This does not
+> look like a normal setup. Is this something you use or is this something
+> the bot came up with?
+It is the setup from the syzbot report, not something we use. In that
+report the slave port of one HSR device is a bridge, and one bridge
+port is a second HSR device. The announce frame of the first device
+holds its seqnr_lock, goes through the bridge, and ends in
+hsr_dev_xmit() of the second device, which takes its own seqnr_lock.
+Lockdep sees the same lock class twice and reports it. With two
+devices this is not a real deadlock. It only becomes one when the
+transmit path comes back to the same device.
 
-Thanks for the report. I will send a fix.
+> This looks very complex and I am not a big fan of it. I would prefer to
+> break lock chain early assuming the setup is valid/ sane (see above).
+I understand. The queue exists only for the ordering you pointed out
+in v6: frame N must reach every lower device before frame N+1 gets its
+number, otherwise a receiver without the bitmap discard (aae9d6b616b5)
+drops N as stale. In our test an unpatched HSRv0 peer received 19128
+of 20000 frames with the narrowed lock, and all 20000 with the queue.
+
+> The ID by itself can be assigned with an atomic_inc() but then you don't
+> have the transmit ordering. So you introduce the workqueue for the
+> ordering which is ugh. I'm not sure how this works if you get
+> submissions from two CPUs given the lock is gone and the workqueue is
+> per-CPU.
+The FIFO and the owner flag are protected by fwd_lock. Only one
+context owns the consumer at a time: either the CPU that found it idle
+and processes its own frame, or the single work item of this HSR
+device. A frame submitted from another CPU meanwhile is appended to
+the FIFO and processed after the current frame, in that order. The
+work item is one work_struct per device, so the per-CPU workqueue
+cannot run it twice at the same time. But I agree it is a lot of code
+for this, and it also serializes all forwarding of one device, like the
+lock does today.
+
+So for v8 I see two simple options:
+(a) Keep seqnr_lock across the submission like today and only break
+    the re-entry: a frame that enters HSR transmit while this CPU is
+    already inside HSR forwarding is dropped and counted. Ordering is
+    kept, but all forwarding of one device stays serialized.
+(b) Narrow the lock to the counter update, as in v6 and in Hangbin's
+    patch [1]. Several CPUs can forward in parallel. A receiver without
+    the bitmap discard can drop a reordered frame, so the patch would
+    carry "Cc: <stable@vger.kernel.org> # aae9d6b616b5: ..." as Simon
+    suggested there, and the TX statistics move to per-CPU counters.
+
+I would prefer (b) because of the parallel forwarding, if the old
+receiver limitation is acceptable to you. Otherwise (a). 
+
+Hangbin, Simon, your view is welcome too.
+
+Patch 3 works with both: it segments before the lock, and each
+segment is numbered and submitted under the lock.
+
+[1] https://lore.kernel.org/netdev/20260805-hsr_deadlock-v1-1-d8a6f06fc5a8@kylinos.cn/
+
+-- 
+Xin
