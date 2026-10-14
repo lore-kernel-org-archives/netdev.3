@@ -1,134 +1,224 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CEA4B512D;
-	Wed, 14 Oct 2026 08:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21BA4A841D;
+	Wed, 14 Oct 2026 08:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791967762; cv=none; b=AszRzcncA4fN5YETxcis0849wLQKu4Q8IfUwCpyfYgEPkXdQ4g4J3VV7Tzqriw1IRTvrM7h4Z6l1vtqHR65q44ovnvoaORcGz87PF+YNNN8gvh/raDbL2xVgx0gKUyd9b7gdqSeNcj6wwm3ozVPbjS1UP6gEJn15UHHSqzWLbns=
+	t=1791967952; cv=none; b=qucIMRzQIbkjN8qfBFatCaIQEQx4WSj/2fDW6df+YK4gEg7PiLhu02uuETtzySDSBgLAarj0wnoryqyZRUUr3fa4wYNKBPl7EYBtgW1M7lPMVLZeWAwq+py4qoyzblWTfpiTUqViE+WC5k/wByt7mM/VsZeyu9lPCxWAkO5Z9Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791967762; c=relaxed/simple;
-	bh=di6/kM+4OGxTKyU/TWR57hK5xjPjpU5hkKpkkDx1goQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=VrDECaNDr1GIwKukb6Xnk9J9Jc16oAKsZSbCK2ZCmqXTbvnxkNDp8IkKBqJTmzHIopFRJzDQ8vpytVmcFZB7klzNNa9cqlUaqag/pgPXlw2L8t5wNuIWEd+STBNi7V4kud6bhHSySlbkRbAbntlOsv8Ipyx3tF0pr1qFgDgZ4cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ojcZkb56; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1791967952; c=relaxed/simple;
+	bh=uBgXEUhJEyTCvIva/iLkM0JNPDAeftjCSjsxPOdBnrY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TZnSDTArhyOE27l5y+vKJzDaAKKQ/A/LWhx9mPOAUyd7a8E/8DEtDrYqeR0TgeW4GW1T4qqJXYTEeBt4iom8yoyzmg29dCDqmDDj6CwmmLPfwY8cKcPkDQ+oWtKjwm6l7Wv/oYmURel4LoX7GWIPEwPEtMZ0pOORc4NQ9AmLjSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=I39l4qPT; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ojcZkb56"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:To:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=di6/kM+4OGxTKyU/TWR57hK5xjPjpU5hkKpkkDx1goQ=; b=o
-	jcZkb56yiehaUu5b+xIxn2bDjvz6O1F6hlP1IV9vifzs55el9eFZyZzam1AOI7at
-	HID5YM2PgOPPOS7Qh8jQeqf1yGwJ3GGtvNiLRGUP+4ZOe/MlS/RFOh39yNbK6rbt
-	kSsxJLjrMpS09ohf32G62fMVddHWcpI7bifIqegTCw=
-Date: Wed, 14 Oct 2026 16:47:55 +0800 (CST)
-From: taozj888  <taozj888@163.com>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: stable@vger.kernel.org, "Conor Dooley" <conor.dooley@microchip.com>,
-	"Andrew Lunn" <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>,
-	"Jakub Kicinski" <kuba@kernel.org>,
-	"Paolo Abeni" <pabeni@redhat.com>, "Jeff Garzik" <jeff@garzik.org>,
-	"Haavard Skinnemoen" <hskinnemoen@atmel.com>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
-	"open list" <linux-kernel@vger.kernel.org>
-Subject: Re:Re: [PATCH net v4] net: macb: rate limit netdev error info print
- in the data path
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.4-cmXT build
- 20260511(2e539873) Copyright (c) 2002-2026 www.mailtech.cn 163com
-In-Reply-To: <DLZH4LPJ36YW.1CP7RL0J77DHN@bootlin.com>
-References: <20261007053211.572073-1-taozj888@163.com>
- <DLYI3O7PFN94.V7VH3HSLKEMD@bootlin.com>
- <63731290.3f0c.1a1198fe993.Coremail.taozj888@163.com>
- <DLZH4LPJ36YW.1CP7RL0J77DHN@bootlin.com>
-X-NTES-SC: AL_Qu2SA/WduE4s4yCaZekfk0cUj+c7WcCwvPkm3YRec84EpBzA9Co+c1lTPFfL3/uCEC61oB6paD9Aztp+RblCDkhiAmacYM9xj+7tGkyLPw==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="I39l4qPT"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 1F8BFC63440;
+	Wed, 14 Oct 2026 08:53:18 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 3A2A560368;
+	Wed, 14 Oct 2026 08:52:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DAE79103286A7;
+	Wed, 14 Oct 2026 10:52:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1791967940; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=i48MIGwzBxi2do2WYXSYPbruC3HoFCZMxRU1UUDDuYs=;
+	b=I39l4qPTZiayixscQ25oSYYL3NpbdUqY5vfY8WjlnawudFpyJfGrP7Qd2xXs+oY+HTA5L9
+	HYG+p+V4eBlDcIkQ33/sT8qNfxC8TxPzOExPZE/a5dM+N52o+LuWWB8KjPTdbW+x9UMPeB
+	Qhecxah11hmwDPZRaT9PiF59W4bRSzao28f6nvWfzVCtSEvWNU49ziJdfT9UvzUTpIujSw
+	iU/fUi0oEKauswQ54YxEGuXjuFAKJNNr7aF6yW+3HO1ThHWX9cevyrzYYK6akFYkZC0gOW
+	PhIc3r6BCCYQxX/ItYeHQdHgIF9KDMPtMIGn2ZmhijQyiPsPDfQXidzI/a9xkA==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Manikandan Muralidharan <manikandan.m@microchip.com>
+Cc: <pratyush@kernel.org>,  <mwalle@kernel.org>,
+  <takahiro.kuwano@infineon.com>,  <richard@nod.at>,  <vigneshr@ti.com>,
+  <robh@kernel.org>,  <krzk+dt@kernel.org>,  <conor+dt@kernel.org>,
+  <srini@kernel.org>,  <nicolas.ferre@microchip.com>,
+  <alexandre.belloni@bootlin.com>,  <claudiu.beznea@tuxon.dev>,
+  <linux@armlinux.org.uk>,  <richardcochran@gmail.com>,
+  <linusw@kernel.org>,  <arnd@arndb.de>,  <aaro.koskinen@iki.fi>,
+  <gregkh@linuxfoundation.org>,  <mathieu.dubois-briand@bootlin.com>,
+  <michael@walle.cc>,  <linux-mtd@lists.infradead.org>,
+  <devicetree@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-arm-kernel@lists.infradead.org>,  <netdev@vger.kernel.org>
+Subject: Re: [PATCH v8 5/8] nvmem: layouts: add Microchip/SST SFDP EUI
+ layout driver
+In-Reply-To: <89aa4ac1eee01e3c425c12367f1e036354787ce8.1790847519.git.manikandan.m@microchip.com>
+	(Manikandan Muralidharan's message of "Wed, 14 Oct 2026 12:10:09
+	+0530")
+References: <cover.1790847519.git.manikandan.m@microchip.com>
+	<89aa4ac1eee01e3c425c12367f1e036354787ce8.1790847519.git.manikandan.m@microchip.com>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Wed, 14 Oct 2026 10:52:14 +0200
+Message-ID: <87fqy8zmtd.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <7b5db407.7d53.1a13998c295.Coremail.taozj888@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:fygvCgD3XwG7Qc9qM31YAA--.819W
-X-CM-SenderInfo: hwdr6yqyyyqiywtou0bp/xtbC+RsN1GrPQbt63gAA3A
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-CgpIaSBUaGVvOgoKClNvcnJ5IGZvciBoYXZpbmcgbWlzc2VkIGltcG9ydGFudCB0aGluZ3MuwqAK
-SSB3b3VsZCBsaWtlIHRvIGFwcGVuZCBzb21lIGV4cGxhbmF0aW9ucyBoZXJlLgpQbGVhc2Ugc2Vl
-IG15IGFuc3dlciBpbmxpbmUuCgoKVGhhbmtzLApaaWppbiBUYW8KCgpBdCAyMDI2LTEwLTE0IDAx
-OjU1OjAzLCAiVGjDqW8gTGVicnVuIiA8dGhlby5sZWJydW5AYm9vdGxpbi5jb20+IHdyb3RlOgo+
-SGVsbG8gWmlqaW4sCj4KPiAtIEknbGwgc3RvcCByZXBseWluZyBpbmxpbmUgYmVjYXVzZSB5b3Ug
-c2VlbSB0byBiZSBoYXZpbmcgaXNzdWVzIHdpdGgKPiAgIHlvdXIgbWFpbGVyLiBQbGVhc2UgZml4
-IGl0IHRvIGVhc2UgdGhlIGRpc2N1c3Npb24uCj4KPiAgIFNlZSBoZXJlIGhvdyB5b3VyIGVtYWls
-IGxvb2tzOgo+ICAgaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbmV0ZGV2LzYzNzMxMjkwLjNmMGMu
-MWExMTk4ZmU5OTMuQ29yZW1haWwudGFvemo4ODhAMTYzLmNvbS8KPgo+IC0gWW91ciBWNCBjb21t
-aXQgbWVzc2FnZSBzYXlzICJGaXhlczogODllNTc4NWZjOGE2IiBidXQgdGhhdCBpcyB3cm9uZwo+
-ICAgd2l0aCB0aGUgY3VycmVudCBwYXRjaCwgaXQgc2hvbGQgdXNlIDRkZjk1MTMxZWE4MC4gSSBk
-b24ndAo+ICAgdW5kZXJzdGFuZCB3aHkgeW91IGFyZSB0YWxraW5nIGFib3V0IHRoZSBjaGFuZ2Vs
-b2cgYXQgdGhlIHNhbWUgdGltZSwKPiAgIHRoaXMgaXMgdW5yZWxhdGVkLgo+CgoKWWVzLCBJIG1h
-ZGUgYSBtaXN0YWtlIGluIFY0IGNvbW1pdCBtZXNzYWdlIHdpdGggYW4gb3ZlcnNpZ2h0LCBpdCBz
-aG91bGQgdXNlIDRkZjk1MTMxZWE4MCwgc28KSSBqdXN0IHJldmlzZWQgaXQgdG8gNGRmOTUxMzFl
-YTgwIGluIHRoZSBWNSBwYXRjaCwgYW5kIEkgd2lsbCB1c2UgaXQgaW4gcG9zc2libGUgbGF0ZXIg
-cGF0Y2hlcy4KCgoKCj4gLSBZb3Ugc2tpcHBlZCBvdmVyIGV4cGxhaW5pbmcgd2h5IHlvdXIgZHJv
-cHBlZCB0aGUgc3RhcnRfeG1pdCBkaWZmLgo+Cj5JJ2xsIGhhdmUgdG8gc3RvcCByZXZpZXdpbmcg
-aWYgeW91IHNraXAgb3ZlciBwYXJ0cyBvZiB0aGUgbWVzc2FnZXMuCj5JIGdhdmUgeW91IGEgVExE
-UiBhbmQgeW91IHNraXBwZWQgb3ZlciB0aGUgZmlyc3QgYnVsbGV0cG9pbnQuCj4KCgpTb3JyeSwg
-SSBmb3Jnb3QgdG8gbWFrZSBhbiBleHBsYW5hdGlvbiBoZXJlLCBtYXliZSBkdWUgdG8gYW4gb21p
-c3Npb24uCk5vdyBJIHdvdWxkIGxpa2UgdG8gYW1lbmQgaXQ6CkFjdHVhbGx5IHdoZW4gSSBzdGFy
-dGVkIHRvIHJhdGUgbGltaXQgdGhlIGVycm9yIG1lc3NhZ2VzIGluIHRoZSBkYXRhIHBhdGgsIEkg
-c2F3wqAKdGhlIG5ldGRldl9lcnIgbWVzc2FnZSBwcmludCBpbiBib3RoIHRoZSBnZW1fcnhfcmVm
-aWxsIGFuZCBhdDkxZXRoZXJfc3RhcnRfeG1pdCwKYW5kIEkga25ldyB0aGV5IGFyZSBhbHNvIGlu
-IHRoZSBkYXRhIHBhdGguCkJ1dCBmb3IgdGhlIGZvbGxvd2luZyByZWFzb25zIEkganVzdCBvbWl0
-dGVkIGFkZGluZyByYXRlIGxpbWl0cyBmb3IgdGhlbToKMS4gRm9yIHRoZSBuZXRkZXZfZXJyIGlu
-IHRoZSBnZW1fcnhfcmVmaWxsLCB0aGVyZSBpcyBhICJ1bmxpa2VseSghc2tiKSIgdG8gY2hlY2sg
-aWYKdGhlIHNrYiBpcyBOVUxMIHdoaWNoIGlzIGEgcmFyZSBjYXNlLCAgc28gSSB0aGluayBpdCdz
-IG5vdCBzbyBuZWVkZWQgdG8gYWRkIGHCoApyYXRlIGxpbWl0IGhlcmU7CjIuIEZvciB0aGUgbmV0
-ZGV2X2VyciBpbiB0aGUgYXQ5MWV0aGVyX3N0YXJ0X3htaXQsIEkgdGhpbmsgaXQgYmVsb25ncyB0
-byBhbm90aGVyIHZlbmRvcgp3aGljaCBJIGFtIG5vdCBmYW1pbGlhciB3aXRoLCBhbmQgSSBkaWRu
-J3Qga25vdyBob3cgcG9wdWxhciBpdCB3YXMgdXNlZCwgZXZlbiBJIHdhcyBub3QgYXV0aG9yaXpl
-ZCB0b8KgCmNoYW5nZSBpdCB3aXRoIG15IHdpbGwgYWxzby4KCgpJZiB5b3UgdGhpbmsgaXQncyBi
-ZXR0ZXIgb3IgbmVlZGVkIHRvIGFkZCBhIHJhdGUgbGltaXQgZm9yIHRoZW0sIEkgd291bGQgbGlr
-ZSB0byBkbyBpdCBpbiBsYXRlciBwb3NzaWJsZQpwYXRjaGVzLsKgCldvdWxkIHlvdSBwbGVhc2Ug
-Z2l2ZSB5b3VyIG9waW5pb24gaGVyZT8KCgoKCj5UaGFua3MsCj4KPi0tCj5UaMOpbyBMZWJydW4s
-IEJvb3RsaW4KPkVtYmVkZGVkIExpbnV4IGFuZCBLZXJuZWwgZW5naW5lZXJpbmcKPmh0dHBzOi8v
-Ym9vdGxpbi5jb20KPgo+dGV4dDoKPk1pbWUtVmVyc2lvbjogMS4wCj5Db250ZW50LVRyYW5zZmVy
-LUVuY29kaW5nOiBxdW90ZWQtcHJpbnRhYmxlCj5Db250ZW50LVR5cGU6IHRleHQvcGxhaW47IGNo
-YXJzZXQ9VVRGLTgKPkRhdGU6IFRodSwgMDggT2N0IDIwMjYgMTQ6NTk6NTUgKzAyMDAKPk1lc3Nh
-Z2UtSWQ6IDxETFpINExQSjM2WVcuMUNQN1JMMEo3N0RITkBib290bGluLmNvbT4KPlN1YmplY3Q6
-IFJlOiBbUEFUQ0ggbmV0IHY0XSBuZXQ6IG1hY2I6IHJhdGUgbGltaXQgbmV0ZGV2IGVycm9yIGlu
-Zm8gcHJpbnQgaW4KPiB0aGUgZGF0YSBwYXRoCj5DYzogPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+
-LCAiQ29ub3IgRG9vbGV5IiA8Y29ub3IuZG9vbGV5QG1pY3JvY2hpcC5jb20+LAo+ICJBbmRyZXcg
-THVubiIgPGFuZHJldytuZXRkZXZAbHVubi5jaD4sICJEYXZpZCBTLiBNaWxsZXIiCj4gPGRhdmVt
-QGRhdmVtbG9mdC5uZXQ+LCAiRXJpYyBEdW1hemV0IiA8ZWR1bWF6ZXRAZ29vZ2xlLmNvbT4sICJK
-YWt1Ygo+IEtpY2luc2tpIiA8a3ViYUBrZXJuZWwub3JnPiwgIlBhb2xvIEFiZW5pIiA8cGFiZW5p
-QHJlZGhhdC5jb20+LCAiSmVmZgo+IEdhcnppayIgPGplZmZAZ2FyemlrLm9yZz4sICJIYWF2YXJk
-IFNraW5uZW1vZW4iIDxoc2tpbm5lbW9lbkBhdG1lbC5jb20+LAo+ICJvcGVuIGxpc3Q6TkVUV09S
-S0lORyBEUklWRVJTIiA8bmV0ZGV2QHZnZXIua2VybmVsLm9yZz4sICJvcGVuIGxpc3QiCj4gPGxp
-bnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc+Cj5UbzogInRhb3pqODg4IiA8dGFvemo4ODhAMTYz
-LmNvbT4KPkZyb206ID0/dXRmLTg/cT9UaMOpb19MZWJydW4/PSA8dGhlby5sZWJydW5AYm9vdGxp
-bi5jb20+Cj5YLU1haWxlcjogYWVyYyAwLjIyLjAtMC1nYzJmODZiN2FiZGUzCj5SZWZlcmVuY2Vz
-OiA8MjAyNjEwMDcwNTMyMTEuNTcyMDczLTEtdGFvemo4ODhAMTYzLmNvbT4KPiA8RExZSTNPN1BG
-Tjk0LlY3VkgzSFNMS0VNREBib290bGluLmNvbT4KPiA8NjM3MzEyOTAuM2YwYy4xYTExOThmZTk5
-My5Db3JlbWFpbC50YW96ajg4OEAxNjMuY29tPgo+SW4tUmVwbHktVG86IDw2MzczMTI5MC4zZjBj
-LjFhMTE5OGZlOTkzLkNvcmVtYWlsLnRhb3pqODg4QDE2My5jb20+Cj5YLVRVSUQ6IHRIa0NrT25k
-WGFRUQo+Cj5IZWxsbyBaaWppbiwKPgo+IC0gSSdsbCBzdG9wIHJlcGx5aW5nIGlubGluZSBiZWNh
-dXNlIHlvdSBzZWVtIHRvIGJlIGhhdmluZyBpc3N1ZXMgd2l0aAo+ICAgeW91ciBtYWlsZXIuIFBs
-ZWFzZSBmaXggaXQgdG8gZWFzZSB0aGUgZGlzY3Vzc2lvbi4KPgo+ICAgU2VlIGhlcmUgaG93IHlv
-dXIgZW1haWwgbG9va3M6Cj4gICBodHRwczovL2xvcmUua2VybmVsLm9yZy9uZXRkZXYvNjM3MzEy
-OTAuM2YwYy4xYTExOThmZTk5My5Db3JlbWFpbC50YW96ajg4OEAxNjMuY29tLwo+Cj4gLSBZb3Vy
-IFY0IGNvbW1pdCBtZXNzYWdlIHNheXMgIkZpeGVzOiA4OWU1Nzg1ZmM4YTYiIGJ1dCB0aGF0IGlz
-IHdyb25nCj4gICB3aXRoIHRoZSBjdXJyZW50IHBhdGNoLCBpdCBzaG9sZCB1c2UgNGRmOTUxMzFl
-YTgwLiBJIGRvbid0Cj4gICB1bmRlcnN0YW5kIHdoeSB5b3UgYXJlIHRhbGtpbmcgYWJvdXQgdGhl
-IGNoYW5nZWxvZyBhdCB0aGUgc2FtZSB0aW1lLAo+ICAgdGhpcyBpcyB1bnJlbGF0ZWQuCj4KPiAt
-IFlvdSBza2lwcGVkIG92ZXIgZXhwbGFpbmluZyB3aHkgeW91ciBkcm9wcGVkIHRoZSBzdGFydF94
-bWl0IGRpZmYuCj4KPkknbGwgaGF2ZSB0byBzdG9wIHJldmlld2luZyBpZiB5b3Ugc2tpcCBvdmVy
-IHBhcnRzIG9mIHRoZSBtZXNzYWdlcy4KPkkgZ2F2ZSB5b3UgYSBUTERSIGFuZCB5b3Ugc2tpcHBl
-ZCBvdmVyIHRoZSBmaXJzdCBidWxsZXRwb2ludC4KPgo+VGhhbmtzLAo+Cj4tLQo+VGjDqW8gTGVi
-cnVuLCBCb290bGluCj5FbWJlZGRlZCBMaW51eCBhbmQgS2VybmVsIGVuZ2luZWVyaW5nCj5odHRw
-czovL2Jvb3RsaW4uY29t
+Hi,
+
+On 14/10/2026 at 12:10:09 +0530, Manikandan Muralidharan <manikandan.m@micr=
+ochip.com> wrote:
+
+> Add an NVMEM layout that exposes the factory-programmed EUI-48 identifier
+> from the Microchip/SST vendor SFDP parameter table (e.g. SST26VF064BEUI)
+> as a "mac-address" cell, for use as a network MAC address. The vendor
+> table is located at runtime via the SFDP NVMEM device (no offset in DT),
+> and a read_post_process callback reverses the LSB-first bytes into
+> canonical MAC order. Binds to an "nvmem-layout" node with compatible
+> "microchip,sst26vf-sfdp-eui".
+>
+> Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+
+Mostly minor nits, see below.
+
+> --- a/drivers/nvmem/layouts/Makefile
+> +++ b/drivers/nvmem/layouts/Makefile
+> @@ -6,4 +6,5 @@
+>  obj-$(CONFIG_NVMEM_LAYOUTS) +=3D fixed-layout.o
+>  obj-$(CONFIG_NVMEM_LAYOUT_SL28_VPD) +=3D sl28vpd.o
+>  obj-$(CONFIG_NVMEM_LAYOUT_ONIE_TLV) +=3D onie-tlv.o
+> +obj-$(CONFIG_NVMEM_LAYOUT_SST26VF_SFDP_EUI) +=3D sst26vf-sfdp-eui.o
+>  obj-$(CONFIG_NVMEM_LAYOUT_U_BOOT_ENV) +=3D u-boot-env.o
+
+Not sure this is ordered alphabetically, so in general add it at the end.
+
+> +/* SFDP header and parameter header, as laid out on the flash. */
+> +struct sfdp_header {
+> +	u8 signature[4];
+> +	u8 minor;
+> +	u8 major;
+> +	u8 nph;
+> +	u8 unused;
+> +};
+> +
+> +struct sfdp_parameter_header {
+> +	u8 id_lsb;
+> +	u8 minor;
+> +	u8 major;
+> +	u8 length;
+> +	u8 parameter_table_pointer[3];
+> +	u8 id_msb;
+> +};
+> +
+> +#define SFDP_SIGNATURE			0x50444653U
+> +
+> +#define SFDP_PARAM_HEADER_ID(h)		(((h)->id_msb << 8) | (h)->id_lsb)
+> +#define SFDP_PARAM_HEADER_PTP(h)	get_unaligned_le24((h)->parameter_table=
+_pointer)
+> +
+> +/* Microchip (vendor) parameter table identifier: id_msb << 8 | id_lsb. =
+*/
+
+This is not relevant, we saw it just above         ^^^^^^^^^^^^^^^^^^^^^^^
+
+> +#define SFDP_MCHP_VENDOR_ID		0x01bf
+> +
+> +#define SFDP_MCHP_EUI48_MARKER_OFFSET	0x60
+> +#define SFDP_MCHP_EUI48_MARKER		0x30
+> +#define SFDP_MCHP_EUI48_OFFSET		0x61
+> +
+> +static int sfdp_eui_read_post_process(void *priv, const char *id, int in=
+dex,
+> +				      unsigned int offset, void *buf,
+> +				      size_t bytes)
+> +{
+> +	u8 *data =3D buf;
+> +	int i;
+> +
+I believe the if against the length is wrong and should be inverted and
+placed here:
+
+        if (bytes !=3D ETH_ALEN)
+                return -EINVAL;
+
+Since lenght does not change, prefer to bail out early.
+
+> +	/* SFDP stores the address least-significant octet first; reverse it. */
+> +	for (i =3D 0; i < bytes / 2; i++)
+> +		swap(data[i], data[bytes - 1 - i]);
+> +
+> +	if (bytes =3D=3D ETH_ALEN && !is_valid_ether_addr(buf))
+
+Is bytes !=3D ETH_ALEN a valid use case?
+
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +static int sfdp_eui_find_vendor_table(struct nvmem_device *nvmem, u32 *p=
+tp)
+> +{
+> +	struct sfdp_parameter_header ph;
+> +	struct sfdp_header hdr;
+> +	int nph, i, ret;
+> +
+> +	ret =3D nvmem_device_read(nvmem, 0, sizeof(hdr), &hdr);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (get_unaligned_le32(hdr.signature) !=3D SFDP_SIGNATURE)
+> +		return -EINVAL;
+> +
+> +	/* The number of parameter headers (NPH) field is zero-based. */
+> +	nph =3D hdr.nph;
+
+nph =3D hdr.nph + 1 ?
+
+> +
+> +	for (i =3D 0; i <=3D nph; i++) {
+
+and here the usual i < nph?
+
+> +		ret =3D nvmem_device_read(nvmem, sizeof(hdr) + i * sizeof(ph),
+> +					sizeof(ph), &ph);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		if (SFDP_PARAM_HEADER_ID(&ph) !=3D SFDP_MCHP_VENDOR_ID)
+> +			continue;
+> +
+> +		*ptp =3D SFDP_PARAM_HEADER_PTP(&ph);
+> +		return 0;
+> +	}
+> +
+> +	return -ENOENT;
+> +}
+
+...
+
+> +	info.name =3D "mac-address";
+> +	info.offset =3D base + SFDP_MCHP_EUI48_OFFSET;
+> +	info.bytes =3D ETH_ALEN;
+> +	info.np =3D of_get_child_by_name(layout_np, "mac-address");
+> +	info.read_post_process =3D sfdp_eui_read_post_process;
+> +
+> +	ret =3D nvmem_add_one_cell(nvmem, &info);
+> +	if (ret)
+> +		of_node_put(info.np);
+> +	else
+> +		dev_dbg(dev, "exposed EUI-48 at SFDP offset 0x%x\n", info.offset);
+
+This one is not really useful anymore.
+
+> +
+> +	of_node_put(layout_np);
+> +
+> +	return ret;
+> +}
+> +
+
+Thanks,
+Miqu=C3=A8l
