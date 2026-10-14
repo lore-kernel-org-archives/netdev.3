@@ -1,81 +1,74 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC594B1CF4
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95625262FD0
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:33:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792017069; cv=none; b=c90A4UxhblD+nVUunOkIt8kNYWeYvzdmVcmndK6fQ6KGPxTUlyFvKOTGpOXkUt27O+gGOCZC/C4SJES1UXSqkFCeXcVZcDBZfiS9oAvQIcqXC8IEfiD0I0dHAwMXv8FKHJGeyBvUAdhNPmk3UuzrZbBdMKTq/2OMobCmRp7zVQk=
+	t=1792017232; cv=none; b=a+fh251Qzdnv6/MD7Rbysy6lfBwgJGm5EoDApmIdBqRQha7Tts0GXGBwUIvyRjzOa0jhcDnAFhIexc7eB2poyx6ROptkyzi1OByd0CkK6232om3dbIMmJHWHWhD/cbZu9Uj5iE/T+1lmVshwpVAInsQledoqHZ8x90qxy96FFiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792017069; c=relaxed/simple;
-	bh=sSJveatLiiUTB+rY4VDmy+gYfQ8YEh2+U+AR066MOJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZRCt0lniKaq2roNePEZzo7lGgY95UmRx3rtHiUoyma/1KjQ3Wiu6ERT4i0Bjx2QA9Id2hRW3MgnCuBq6lkV91Gpjaa6G+8CEDzJ4WIntarKy544CzvaYb5920HbrIXp5SgXSVqlhYa4azT9Wm0xaNAW8G3YgwWZnaq6sf/I8ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=tAvJzk09; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	s=arc-20240116; t=1792017232; c=relaxed/simple;
+	bh=FLZ48c9+1s7tZ/mmPuqsNgafmCztujOo69MmQMPjPwg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=R0nflcqnD/aKF9IhED3aeRAmFqnlmQT8RP9iiu76k2EfDL2jy85QDTmF3gFEawdSO7gHzDqm8aNHcsz5gPhrgSpFni7H5d91mnmNG1wTbB9MFBGjifl927QFsPLFfwyb/DrtT79kmQbdzg5RKJp+t/RKl7VnQfEEp065Y9hsvC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuRX2ENE; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="tAvJzk09"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-917a20e9efeso65948516d6.2
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:31:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuRX2ENE"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e7006bbf77so9512895ad.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:33:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792017067; x=1792621867; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792017231; x=1792622031; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=yyBKDPeadDKb/W86kBsK0Ioq78FHCGF848RoDf1sgTc=;
-        b=tAvJzk09CXnCBEIwCYfgRoymDA+TDdJ+ig0ullLLgPlJiIYPZtfTVhyp0fS2c2HUVS
-         6C9iWBl/BNcTRA1cWsj9Mae8FoNOnDvdVPmYJTY1WtSXT1Qual6ewP97lChvHOpZR03g
-         3EAWXCQ4/2Wl7xac7FRIdpudDoJKmTxFgzTLtk0PV0VQDbAV9N07RAucJ2Jl08BjE5AZ
-         +puM6llodHYc3dtDz9XnzqHFIwQyKsT2J7TRe9ghD0CEED8zKuyr/Fhqk42Hv1qYZE9+
-         OHFiysH/tcJWC1EU0rg4xM33bm2gP9xSZb5958QOvMlnXmVWZtfRKAGX9o0U/iOUq50b
-         9JXw==
+        bh=FLZ48c9+1s7tZ/mmPuqsNgafmCztujOo69MmQMPjPwg=;
+        b=EuRX2ENE2AMf/VSodIpXkh2PJ/z89M3bnYMRGaQJ/pe8KIDG7GlhEAsmQWpvNDJbMF
+         B116NqZaqFdvmRNl2Ov9nKqRu6axNnKpyi/OZPFOvSvblyf6BFSfBrAYDfxWoWFN/SjZ
+         njZU/2MJqzBNOf5Hs2zP5LAhz5ETbhwtc6+sgdtQs2uV/pYPJlwqkJzChr6yEVV+xizn
+         7IjWyjmiC5tSTXCMmRlpsCmS23zmXx8t+DNvnwP2Kt5LxFX2//kl8Y6lQdQfEv8cUjCx
+         JITTaEt732MuZv+mw2slPgJYSDvCrd4Jn9xlQPqOJ+caFQlQDBsW/mOZH35GFRUe4t1z
+         1XtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792017067; x=1792621867;
+        d=1e100.net; s=20260707; t=1792017231; x=1792622031;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yyBKDPeadDKb/W86kBsK0Ioq78FHCGF848RoDf1sgTc=;
-        b=OkN4o7PZsnwS+gFAQLN2Xd7zRxQu7P2cgJeuS9dnD4Cl8D/R44bbixmicSD7Vth0Pi
-         A3vjbZ4cxeV8hWBJJWqHlYZlkJxwi3jS9fRIG37JEpjovlPAoucJJ819IvV+xDa2MVwJ
-         c9//Ijlf2X8E01fqDkSDC/HeAZlaNh6ntPzgC9OZwxwwMOgoVgLk4CXF1jFRycKieXRO
-         +BC9mDJtfpbT9WlfF79fiI5dOoE2+jzEdOAFKRVHPbk2zlS8wUWG7G9kKgJZrX5TNB/k
-         xmXiA76b7ZqoZ1wY1am90g/fFptosF4MuBtQHJ93NjIG54MCEAD9HLK/GFrpRcmcbJhK
-         EYYw==
-X-Forwarded-Encrypted: i=1; AKwUvByk95u0ZiOJ0B2yWoTQiv2qc46B4Gl4yYKbjBGEGGrnPRgCcxixFkDk+gMK0EVN8rayVUY7YIU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJcR1yWe5sDEoXL1nDOOC4ISSF/5AjzOpcyY2oW8KhAU25ACsJL
-	cmlRin4V3Xm+u+Ab8oYr9r91gP1rRIMoYqY03PKWhqkZOCStG5NgS1CX2tC0Yc87CFs=
-X-Gm-Gg: AYBFou2pxADELNj1NGjfLI8RgKKbPprk2QuW4QzX8qdPe4/w+WhE5bxsYz+S+W7l29Q
-	oFh57BwbGex4uiqh0M0tn6PXgOg+GcCHk59oGYLvEnjxVJka3Yznu8w2n0sYsBAO5eqyru/bSdO
-	GOhoWDdREmfCetCR52Wr2b3Mo+QuE1JUGJcmTq17I7W1ui6vA9Gpu55s7uTGC42eDBVrJKA0Ssh
-	vogztSFM9r4NkaQmUJjpCrgnZ9FQrK1eQKo/8kDm92gwWlyRn4PofEIID1MvV0TZShYuxeFOA5x
-	3WBxrMyYRX+iny+wPUhbzp6/0bM7z4UriIuDAYo42rLZ6DmHubGB8PgYe2HkaaURDyn5f8rjia6
-	pyAVvYh2evWrhzISdhYrr2D8j2WkeYhulSe9f3r0siH1CMOb8WXnFLPKbKS0PkJw3zYMzQG+zdF
-	faSjha9agujy59HsLOGgx6yt/1Jcyj5wfJGw2LcBx0PKsxshcejmd6zdEcnwreJaRhNWbKU4jcI
-	tg9xjfI4bFc6Q==
-X-Received: by 2002:a05:620a:2841:b0:93e:646c:9138 with SMTP id af79cd13be357-93ebd1bb36emr2728359285a.26.1792017067212;
-        Wed, 14 Oct 2026 15:31:07 -0700 (PDT)
-Received: from zippy.localdomain ([73.62.185.64])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b97bdfb89sm63708466d6.40.2026.10.14.15.31.06
+        bh=FLZ48c9+1s7tZ/mmPuqsNgafmCztujOo69MmQMPjPwg=;
+        b=dSPl/zhwM1jQtO+A8UaOG9wq1D9OtH73TZAJXPlhNVx93E1zfvhjgwoCuC5CKv4+7v
+         nhRphtd9slst5Q3d56CjmzfMnxBaLO/cMOiG5mIwC+9R5UmQKmoCYW0LVR+A998ykAMf
+         ngrBRcqoDfRYgmbG2BVIu5vkmgHtrpWPKDrgFSGOnbgtsitVphOKoNCcwZD9P/ntB/fo
+         vOVWajM1Q8QNhkmyBoEUMF5BFZWsPWP3h4Kidy0xZThA8MrX2o7Re00pks1N46xvc07K
+         CvdwqAfeOwS7DzPifv5vmA8QqiUVqSn4ZtKyhDrmEYcRiqlb9HsjKVRKMWiVJztRaU2O
+         f0lA==
+X-Gm-Message-State: AFq9FYKGu9Oxmn9HYg6Qga9YSsN3oFqyz0zfCh0Kh7I/6V9aKR3fMzoC
+	Qwq6jmV7f+MHYB/O4tAjJfIHWQTQLn7hwohrS8gET2yBUAs6h7w5BIOy
+X-Gm-Gg: AYBFou2f/CjVmNG41xpcQI6iSxSq5gPZNe23lXtW2eY0ArOR23DAiWlngWe+mqv3LD6
+	I5RGI8auqGuc9wf5+4ipYvv3cQWfhaZFWEg+wSzOt98Frol+yEhPFd+UGxBhPcziy7puNnqXSzF
+	JB+0rnOhcRT2I1V7TFugQCusbdk7slGTpunLYhj5KVQISoLuED67oJbYNulUIkmr/AjYXGpFtHF
+	yLRaqPtaTgMcci5n7fir0Ijm9dXKkkCUr5WsBdJUJxTIAhe2QfyLwEJa4Z27UtHYPRLrCkT/80b
+	QCv70okQx/sCF8WKvJD+8ksOJt+38BE1k7A1j/OOUoOPhIH5GwlMRs4+e9Kg5kFQcOKZing2a6U
+	VIC/c1G4VTpktb/XTxYLVJbOWM0OnG9H0/tndk5lDBWdhTWVsW9h4qX2yUsIHBqKdTcO1I/7zbo
+	cdvx+3g1vg7rDF0qACNkvKfO3JAsTABsmmjnToxT3FK54iajgR3irdJSlF79B3iemM2Or7R4B1r
+	rICTg0iJhYqbCpvYluR/97fAHkc/pFNGBO2TklySc2Zq9XWA0tzf9nRnPXDCPZds1E7n52NLtlc
+	8vbaVHiHsvSmyV9A9Nh6xfIXAEN483/eC+XsDsRsnRHVA+s=
+X-Received: by 2002:a17:902:e892:b0:2e8:21ee:f196 with SMTP id d9443c01a7336-2e842bcd165mr144577625ad.29.1792017230726;
+        Wed, 14 Oct 2026 15:33:50 -0700 (PDT)
+Received: from u9dbb0cac493f51.ant.amazon.com ([50.35.61.175])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8422b8c4csm74514005ad.56.2026.10.14.15.33.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 15:31:06 -0700 (PDT)
-From: Alex Elder <elder@riscstar.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: Daniel Thompson <daniel@riscstar.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/2] net: pcs: xpcs: select operating mode for 10G-baseR capable PCS
-Date: Wed, 14 Oct 2026 17:30:59 -0500
-Message-ID: <20261014223100.304486-3-elder@riscstar.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261014223100.304486-1-elder@riscstar.com>
-References: <20261014223100.304486-1-elder@riscstar.com>
+        Wed, 14 Oct 2026 15:33:50 -0700 (PDT)
+From: Carlos Fangmeier <carlos.fangmeier@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,
+	Kurt Kanzenbach <kurt@linutronix.de>
+Subject: Re: [PATCH] net: stmmac: prevent kernel panic during XDP program and XSK pool transitions
+Date: Wed, 14 Oct 2026 15:26:28 -0700
+Message-Id: <20261014222628.3206770-1-carlos.fangmeier@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260605-main-v1-1-aed15b1cf1af@gmail.com>
+References: <20260605-main-v1-1-aed15b1cf1af@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,91 +77,15 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Thompson <daniel@riscstar.com>
+On Tue, Jun 10 2026, Jakub Kicinski wrote:
+> This still looks racy. Please look at other drivers
 
-Currently the XPCS found on Toshiba TC9564 is unable to operate at
-2500base-X and slower with a PHY connected using SGMII/2500base-X
-(in our case a Qualcomm QCA8081).
+You were right. The intel drivers (ixgbe/i40e) disable the queue pair
+as a unit around the pool swap rather than gating TX piecemeal, which
+is the pattern my patch was missing.
 
-The problem arises because this XPCS supports 10Gbase-R. That means
-that the reset value of SR_XS_PCS_CTRL2:PCS_TYPE_SEL (0) is valid and
-this suppresses the modal switching based on bit 13 of SR_PMA_CTRL1
-or SR_XS_PCS_CTRL1.
+Kurt Kanzenbach's series "net: stmmac: Fix XSK crashes on stm32mp2"
+[1] takes that approach for the XSK pool enable/disable path and is
+further along in review, so I'll drop this patch in favour of it.
 
-A fix for this behaviour is implemented by txgbe_xpcs_switch_mode()
-as part of the quirks for WangXun devices.
-
-Rather than introduce another quirk for TC9564 let's attempt so solve
-this generically by setting SR_XS_PCS_CTRL2:PCS_TYPE_SEL to a reserved
-value when we detect the right combination of phy interface and XPCS
-feature support.
-
-The generic strategy adopted requires the default value of PCS_TYPE_SEL
-to be 0 on devices that support 10Gbase-R. Based on TC9564 documentation
-and the logic already implemented for WangXun I believe this is likely
-to be the case for currently supported XPCS devices. Sadly I don't have
-access to generic XPCS docs to confirm. However I think the benefits
-of avoiding a cargo culted quirk outweighs the risk of regression.
-
-Signed-off-by: Daniel Thompson <daniel@riscstar.com>
-Co-developed-by: Alex Elder <elder@riscstar.com>
-Signed-off-by: Alex Elder <elder@riscstar.com>
----
- drivers/net/pcs/pcs-xpcs.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
-
-diff --git a/drivers/net/pcs/pcs-xpcs.c b/drivers/net/pcs/pcs-xpcs.c
-index 49abf5ea6f5cc..5316cf9c31f19 100644
---- a/drivers/net/pcs/pcs-xpcs.c
-+++ b/drivers/net/pcs/pcs-xpcs.c
-@@ -705,10 +705,47 @@ static void xpcs_get_interfaces(struct dw_xpcs *xpcs, unsigned long *interfaces)
- static int xpcs_switch_interface_mode(struct dw_xpcs *xpcs,
- 				      phy_interface_t interface)
- {
-+	int mdio_stat2, ret;
-+
- 	/* Wangxun provides a full alternative implementation to handle quirks */
- 	if (xpcs->info.pma == WX_TXGBE_XPCS_PMA_10G_ID)
- 		return txgbe_xpcs_switch_mode(xpcs, interface);
- 
-+	mdio_stat2 = xpcs_read(xpcs, MDIO_MMD_PCS, MDIO_STAT2);
-+	if (mdio_stat2 < 0)
-+		return mdio_stat2;
-+
-+	/*
-+	 * If this XPCS supports 10Gbase-R then that will be the default
-+	 * operating mode. There are several interface modes where this default
-+	 * is unhelpful. Change the operating mode for interfaces were we know
-+	 * the default is wrong, and restore the default otherwise.
-+	 */
-+	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
-+		switch (interface) {
-+		case PHY_INTERFACE_MODE_SGMII:
-+		case PHY_INTERFACE_MODE_1000BASEX:
-+		case PHY_INTERFACE_MODE_2500BASEX:
-+			/*
-+			 * Why are we writing MDIO_PCS_CTRL2_TYPE + 1? We want
-+			 * the modal behaviour that comes when we pick a
-+			 * reserved value. XPCS allocates extra bits to this
-+			 * field and allocates values from 15 down so
-+			 * MDIO_PCS_CTRL2_TYPE + 1 is the value likely to be
-+			 * allocated last (and hopefully never).
-+			 */
-+			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
-+					 MDIO_PCS_CTRL2_TYPE + 1);
-+			break;
-+		default:
-+			ret = xpcs_write(xpcs, MDIO_MMD_PCS, MDIO_CTRL2,
-+					 MDIO_PCS_CTRL2_10GBR);
-+			break;
-+		}
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	xpcs->interface = interface;
- 
- 	return 0;
--- 
-2.53.0
-
+[1] https://lore.kernel.org/netdev/20261013-stmmac_xsk_crashes-v3-0-50fca7790af2@linutronix.de/
