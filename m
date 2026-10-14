@@ -1,315 +1,283 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EBC5625EA
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792002841; cv=none; b=b1SVNTYQy/nqEsykneWtLmQpxBSgCFv9prKQ9RMoA+YVUQmHdf6Dj55sSl+/h0QUo10D95oVlmfuDcql8pPRTO8WdCWE4cmFcxTyuojxLQMuH+59U6ucxqDviQKQNOpQr+JT7ENz6Sb8RkZ6Wy0k04JQnGGVe2yYHcB+sjUbVcU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792002841; c=relaxed/simple;
-	bh=/sDi7HIsx/bYASmJoVclnjRDXtNkZuaHYuJuvQyPZQM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WnC2G8XCJP21boFjLLkD0+k/7jFgO1W3dL8kDLZB+f+fBeWRNVHnKIkbEByAcmTgsQp4Sr3EO04wq6SfZj0qQQldywUngQ3NuG40f+oh3gUoHjLHpyvFvQeJxNnWDVp15xK4iufbKkDaK/0dViUZfAuwswqR41cpyzZ1avKolK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PeTdbXt4; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7972540801E
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792003189; cv=pass; b=pGhOYLpiEzcTDkOEfrOWoQJfjxrVwdNu/HSSvrNn8Tp6FIBGSDh9Y/Qauwr2LDjNP94sZ08mzDTP6i+ax/SsovEGX8EUz8TE/o8f3xnrmqyg+MVBHAsBjXpFegL61tz6eMQUWwyOdOVf0Givju8ZjDCmlt02jkODHmgFwCRzSVA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792003189; c=relaxed/simple;
+	bh=Hi3oLimrk06HY77N752dV/sqU29cIiskVgmmFoM1BrY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cms1+mZkSelgJH59ku36OKo/MTleb/sJ9srBvtuPp8GJUtw3OMiwqdjesAXwFvfEP+vi/UTBpZgNyk46QhSOPQT9aPkcWkf5k9eb6Zo9HygQvBHh+qhF7+hSd6QY9YnmfpWCyBtokNhF2fsuJ0XFrBf0YYMoHC4XfDJxqAJkg+I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LlGT/VHy; arc=pass smtp.client-ip=209.85.160.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PeTdbXt4"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-486f013db83so1192195fac.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:33:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LlGT/VHy"
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-459bd8ea98aso202420fac.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:39:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792003186; cv=none;
+        d=google.com; s=arc-20260327;
+        b=A2QbEn4JXCEASoZhfHgM4JEcrzzD1ALwtUZg4lg0ysYJics6y+IX4/zt5+qxVg2fOs
+         Px5CVlSTD626enOmYNI2pewbhZ/0RMKDoXIUrvPAtrWxB2j7EkkfGArF9znbgi9sxQR4
+         h6dxMDT69gLSebHpU2j9EUqy7TrFxj0OXmBOlouesaTJandVbfnoVCABRtitOpi/AhPQ
+         6b0brTiy+nPbfjg0lHbykGBuMxCW8CDHZUaLfBDeSLaBjmgtdNGJSmwvUMzEzzhSWSZ8
+         t1aCfrDwseJlXOHBZ/xcpMBR2e3z603vBm8Q/pjcUtG69VraW8SyVA5ocQQL41af5Y01
+         5Mmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nfJLxdiTo6vJhA+TJkzuS9wIdOWg1+Cfb8ilaZ5iWJU=;
+        fh=8YJ07cQTBLau2/4lS5UYzV5xQvU7Dtd3S1KGISy3ozc=;
+        b=gln3q4ttV9irLLmTfC+62t8QqGmyjb+uY7Rpo+6sL+U5SIh1+WX/+aD9PegODaPd92
+         nktrAwf2feQSvbE0sIIXCrIWiFngB44bv+z95njkj/TuEtNQYwFWf7fSeERlIQjb8GhZ
+         yXO/BGrH87QrBF6t6kQWFI47alA62R4FTIV05afR0nfyAVW/y8K0gSp4oJJBbv+kZpOX
+         LwyBMDKu37cqImgJWJ00o7hqB9TG75j83mJC9sCxqDsADeljeTqJdbuzhEEa8k8t9Y/f
+         YcoAfzgTpor0i1nrkm1YRT6qHzBzc6oM6/L1kcHqcW0XbOA4QTvMDhPEN+QPewTS4UyI
+         /F+g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792002837; x=1792607637; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8Z2E7pmsMMG7kkmYzB5uMqTLRrXawygd2jz4XpEAkRM=;
-        b=PeTdbXt4Kdp0lPPTVTEPWXc6A4IA44zQcKj++T9dbsBUwACEYCpBXTAdLEsIRDHsur
-         FCYouaIH0oXsHwgD5GnVgJis/8+btipTICwz0YdH90BPHFVnPX8PWDdt77XruFZEFH6K
-         8dZ5cTYvgnJ0ChAA2Q80l+DotAWej41P56QwIFiKDJsSln3IX5zVV6S5E2E9LsUgwdTU
-         YoU6PH36nzzghs5Ir4ksN/jzZk/E9Ep5Zb65tc0s7JcO66zX+kWpfH0TaQTRmeQhb9J8
-         zD+fhCON+hrUgGlK3V1bxwtmbLtbMDccQEdYulSgQCRefdQexwnlalTpk4tHlxQ7tXgs
-         mLHg==
+        d=gmail.com; s=20251104; t=1792003186; x=1792607986; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=nfJLxdiTo6vJhA+TJkzuS9wIdOWg1+Cfb8ilaZ5iWJU=;
+        b=LlGT/VHyAgrN/IdTQ6Ev9lBxxjVLPU7IvPw+3n8w/2oSZdb4C4GhiwCyYdc05MHGCW
+         DIGRLng1bIT0K8ka2XlxR1z46Ab/bu8D3U3/nuCUNIDNA95ZU7v+coVJye3gTrtA8AD9
+         Uv1G/uJm79zKmnNd0k+TGg471AH+FOZmqyOBlcAcOMzvU7crgj6Tnc3u5+AcPHBp9fTM
+         TylteBLo+YMZlD7WH0+71IMu8/mABZyGEYwCAKeccW2uD0Vn6seyXJ7YTZnDcQivMpkG
+         98BbtWtL1eFgGwe/hcSHdFOIZf1k211IhdoNQDpDKdHxO90/TK6Q5MP3YjSNwwEC1VMy
+         blLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792002837; x=1792607637;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=8Z2E7pmsMMG7kkmYzB5uMqTLRrXawygd2jz4XpEAkRM=;
-        b=AfdL5JnDOwJwuXdcEWmcea2b4SOJSnkjFG4qTuTDOyzF4TYQUFuA3etID1zGwBS/Ud
-         FsndQldrEGd9qadzv9kOfuT/Mt8cFFRbHeFCbKV1vf/uwDPl5MPxOiDge+B9pS8oPIMA
-         DYZsy/lQrdo19uQh8VjtI7rtj1IpN7Cyw3kK+NSIu5wZNgC4/DBWBX8f5qTAHbk5Rc+c
-         Q7ow2vjUluIwvwyoPOALmJm87qnuyzxo3eQX4THA+A12pHyA3/zQUCrjm7XwMy3u0vZt
-         bMV5eo3YFAwDMPzBadnTupl0OH+qoHNoFyhgoEqQCIM3NCpM4hr/Uwqc58J9i/h9Yvm7
-         J6uw==
-X-Gm-Message-State: AFq9FYIwvI3tRfPKXqD7HcXFwuENAf3Cl4wSYfpLaHCfOCCiQ5P5BqeP
-	CvzoZ8AbqgyeA/dIjOURN0yXxujaLHDGeUmTxoe6ZazmKs62h+GSmiAi
-X-Gm-Gg: AYBFou3qOkF+ysWjrplV3fFE5KevyuirGjXnjomcTZxBpLYTKpHWWpSnpIe+zyPPc2C
-	R0MQBVTiQKSh/g9MCvo+qcG1vY7pR3Y4Ga2MsY2Y6FMEtBYnjqPydwzcH0JocZ7Uov+DG/ITWid
-	QGz5EfJeJDvcOEZvmty0c43sAxeo9qK7kGNuTgakwIvptDaDMjfiawX11XQEZL3EQgEdR6l4Viw
-	W38jyNh31Ig0YnHtbN6OI0mlQ2P0hqrFzYLIdQAFF5hE1tqrTcpNVkFHJt291y2tKeAUKxPF5yn
-	L95OWyKu7ApQBP7WnZHKPvviRet5zO2BkKWtM6fuF+LQCFVQl3g9ax3cmXFBFqUvgFGiF26bYOG
-	M0I7LBPFDwO/YCL7ER8Cyn+3MFQ0/3qPv1wDWmIQ62okED8joSmPP7BisCHu/WsaJhfdX1jTmSA
-	xMH9FN/2TW1+fqNK3SgUMKcOHzHfITRaCYdHm902SLWoeLmxQ87DDkEd7gTZ/28+sTkVVx/o/g9
-	7QOriIytdGqQStwd2BCusLMoVMdOeZNWL80cYHFVH53khWrXD0MWlJgE1hj0X31i0EZzPXpi/8L
-	Bbxqm3yTWfL/Nf668fW14cFKzv7mwqCaaZhnTFe4mlrJW4yO5ocGh9WR2RTHhFnC4E8G87bAekt
-	AZgrro41T0pQ+ImDBOx4G
-X-Received: by 2002:a05:6871:2e81:b0:488:b68c:681a with SMTP id 586e51a60fabf-4a2a88cf33dmr13119867fac.38.1792002837397;
-        Wed, 14 Oct 2026 11:33:57 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a6dfbca439sm2609137fac.8.2026.10.14.11.33.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 11:33:55 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Wed, 14 Oct 2026 12:33:48 -0600
-Subject: [PATCH net v4] xsk: freeze deferred pool teardown without blocking
- unregister
+        d=1e100.net; s=20260707; t=1792003186; x=1792607986;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nfJLxdiTo6vJhA+TJkzuS9wIdOWg1+Cfb8ilaZ5iWJU=;
+        b=g0YHJtJdbTzo8/7H6bYhdRbIhZI/mZ8b0yqPPRbh+7I/Vomi5hsouT8VQiK74TAh3+
+         MzALiGz6YxUwtf/r1aj4BuquZV1L4fAGkxttEBZClY1Np5MBvNaXQ5Qne5gTwXNs1S52
+         t4KdT+yaKFCS5TUBCEp7k3rtqzYk/Bj6yRCpqMexz/y6o2cOs+qr9ArjjCtdvxHXCJF6
+         QnLOPImmEvNKNDEd6vRImk8h2meS3ExlFkWyg6VUTQT6oSPKskyMV89+i9Q2Qbky6Dh+
+         swvYqo8JLOULNd3ZRBDnDtyEur6RgiSHqDwTlw61L+tX06JpNKkq8ktBBkAohDqzT8cu
+         Xc9A==
+X-Forwarded-Encrypted: i=1; AKwUvBxf9xQZ6EzyKLn2DYLggsE6UzUWItLXBYGcRjN62Y/Bk6bsep5Erc6Q+LLliZPW27DPYJBJK1M=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK7MWuOcFENE37SGBZTmLPifZp2vF787GeQMZupPz/QiolSG50y
+	NTBiSN3x2Pv8/69Oc10cjMF7bb2Fw/KounZ2q45eFpDGQsMyc72LFM1+H/dFnBIFUDcMH9+BFG/
+	O2ORvS1q3OuOqHbBGyLwujFnw6x6pbgs=
+X-Gm-Gg: AYBFou0VecN4DsrTOiV7mrOwaaiQC4VFMG1TwiCsUuNnvSn8QrLmVItfAlMNNZBZ1gb
+	85lz9W2LLsKZMGgtkRcRDTnZHKUSekPKxULk18aUnfUFxaJROvg7SNFq+zoIm5N4p8Bh7N7A58g
+	hMvVoSM/Uq4qgydWACcE53momAzn4/IGuAGI0uE9PBO8twOyat6Pd0MCiMoNJcixkpsRNRF/eKL
+	6xAawYcY+rH0POV6OIDBQQI+U36wuPAnhNhp0mqMvyHWwWCY6kG3L72KEyswdzgMJ8hhShvirKY
+	RXQXix8eHfg2ocVkCrEC/BbMPjIgBjroahda55S7z4b05P18Tb0IckiLRUPOydJ691wB0Ss=
+X-Received: by 2002:a05:6808:50a8:b0:4e8:9e40:a0dc with SMTP id
+ 5614622812f47-50c41108624mr24831152b6e.1.1792003186157; Wed, 14 Oct 2026
+ 11:39:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20261014-xsk-suspend-teardown-v4-1-27795582e4a3@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NQQ7CIBAF0Ks0rMUMQ23BlfcwLpBOlWhpA7XWm
- N5dwsIYE13++Zn3nyxScBTZtniyQJOLrvcplKuC2bPxJ+KuSZkhYAVaAp/jhcdbHMg3fCQTmv7
- uuQZstSpBWS1Zeh0CtW7O7J55GtkhHc8ujn145KlJ5Oq/OgkuuKmsscqChCPtTp1x17XtuwxO+
- EYEwOYHggnBRtWIqi0l6m9EfiBC/kBkRqoj1RWgLutPZFmWF2BgPkxHAQAA
-X-Change-ID: 20260930-xsk-suspend-teardown-902f98408c93
-To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: bpf@vger.kernel.org, Eric Dumazet <edumazet@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- linux-kernel@vger.kernel.org, Jason Xing <kerneljasonxing@gmail.com>, 
- James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
+References: <20261012-netcons-fixes-next-v2-1-ac8ec4c62edb@gmail.com> <179191204261.434549.8984165771561140450@kernel.org>
+In-Reply-To: <179191204261.434549.8984165771561140450@kernel.org>
+From: Gustavo Luiz Duarte <gustavold@gmail.com>
+Date: Wed, 14 Oct 2026 19:39:35 +0100
+X-Gm-Features: AclHuK9H5B8TXm5v5mDMBoKGdofCkC_RwhygYwsXkWt2btKwSIv0kBCAj4jxGFY
+Message-ID: <CAGSyskXLys0G5MzhnRjGzLBFcsGfWUwJbBSxOezL+1UpPqc2NA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] netconsole: avoid printing partially
+ updated target attributes
+To: netdev-bot+sashiko@kernel.org
+Cc: leitao@debian.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
-not frozen during system sleep, so that callback can run after a
-device has suspended and gated its clocks. Use system_freezable_wq
-so running destruction finishes before device suspend and new work
-waits until process thaw.
+On Tue, Oct 13, 2026 at 6:20=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider.
+>
+> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 0 =C2=B7 Low: 1
+>
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwor=
+k
+> know by including "pw-bot: cr" as a separate line at the end of your repl=
+y
+> (one such reply per series is enough).
+>
+> - [High] In drivers/net/netconsole.c, local_mac_show() still takes no
+>   lock.
+> - [High] dev_name_show() still races with netconsole_netdev_event()
+>   writing np.dev_name, even though the commit message says this race is=
+=E2=80=A6
+> - [Low] The commit fixes a user-visible race: configfs *_show() callbacks
+>   can return torn values while a store or the netdev notifier updates=E2=
+=80=A6
+>
+> --
+>
+> netconsole: avoid printing partially updated target attributes
+>
+> This patch makes the netconsole configfs *_show() callbacks take
+> dynamic_netconsole_mutex, so they no longer return values that a
+> concurrent store has only partly updated. dev_name_show() also takes
+> target_list_lock to serialize against the NETDEV_CHANGENAME update in
+> netconsole_netdev_event().
+>
+> > Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-ne=
+tcons_ipv6-v3-7-bc0915e8c75f@gmail.com
+> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-ne=
+tcons-fixes-v1-0-bb5ffe5e698a%40gmail.com
+> > Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+>
+> [Severity: Low]
+> Should this have a Fixes: tag?
+>
+> The unlocked readers in dev_name_show(), remote_mac_show() and
+> local_mac_show() date back to commit 0bcc1816188e ("[NET] netconsole:
+> Support dynamic reconfiguration using configfs").
+>
+> The family/address tearing in local_ip_show() and remote_ip_show() comes
+> from the more recent inet_addr/family rework (commits 46b3f9e7e761,
+> 56ddc8d48e75 and f6e96d72f64a).
+>
+> > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> > index 267254f046de9..953a1da071862 100644
+> > --- a/drivers/net/netconsole.c
+> > +++ b/drivers/net/netconsole.c
+> > @@ -859,7 +859,20 @@ static ssize_t release_show(struct config_item *it=
+em, char *buf)
+> >
+> >  static ssize_t dev_name_show(struct config_item *item, char *buf)
+> >  {
+> > -     return sysfs_emit(buf, "%s\n", to_target(item)->np.dev_name);
+> > +     struct netconsole_target *nt =3D to_target(item);
+> > +     unsigned long flags;
+> > +     int ret;
+> > +
+> > +     dynamic_netconsole_mutex_lock();
+> > +     /* Hold target_list_lock to prevent racing against
+> > +      * netconsole_netdev_event() changing np.dev_name.
+> > +      */
+> > +     spin_lock_irqsave(&target_list_lock, flags);
+> > +     ret =3D sysfs_emit(buf, "%s\n", nt->np.dev_name);
+> > +     spin_unlock_irqrestore(&target_list_lock, flags);
+>
+> [Severity: High]
+> Does target_list_lock cover every place where netconsole_netdev_event()
+> changes np.dev_name?
+>
+> It covers the NETDEV_CHANGENAME strscpy(). For NETDEV_UNREGISTER,
+> NETDEV_RELEASE and NETDEV_JOIN, though, the notifier drops
+> target_list_lock before it cleans up the target:
+>
+> netconsole_netdev_event()
+>     spin_unlock_irqrestore(&target_list_lock, flags);
+>     mutex_unlock(&target_cleanup_list_lock);
+>     ...
+>     netconsole_process_cleanups_core()
+>         mutex_lock(&target_cleanup_list_lock);
+>         netcons_release_dev(nt)
+>             do_netpoll_cleanup(&nt->np);
+>             if (bound_by_mac(nt))
+>                 memset(&nt->np.dev_name, 0, IFNAMSIZ);
+>         spin_lock_irqsave(&target_list_lock, flags);
+>         list_move(&nt->list, &target_list);
+>
+> The memset in netcons_release_dev() runs with only RTNL and
+> target_cleanup_list_lock held. Neither dynamic_netconsole_mutex nor
+> target_list_lock is held, so the new dev_name_show() has no lock in
+> common with this writer.
+>
+> MAC-bound targets do show up in configfs. A netconsole=3D cmdline target
+> bound by MAC is exposed through populate_configfs_item(), and
+> netpoll_setup() fills np.dev_name from ndev->name.
+>
+> For such a target, can the sysfs_emit() here still copy a partly zeroed
+> name?
 
-Keep assigned pools visible to NETDEV_UNREGISTER independently of
-the socket list. A released socket has already left that list, but
-its final pool put can queue destruction after workqueues freeze.
-A resume-time unregister would then wait for a device reference
-whose release cannot run until the resume completes.
+This might happen, though quite unlikely and it has limited impact:
+printing a truncated device name.
+The fix would be taking target_list_lock around the memset in
+netcons_release_dev().
+I'm not convinced it is worth it, but happy to spin another revision
+if someone thinks otherwise.
 
-Track assigned pools per netdev with netdev operations locking and detach
-remaining pools after the notifier socket walk, including copy-mode pools.
-This also covers leased queues without scanning pools from unrelated
-devices or network namespaces. Remove the entry on assignment failure and
-normal teardown. The deferred worker still owns the pool and later observes
-the cleared device pointer, avoiding a second driver detach or put.
+>
+> Two options that look possible: take target_cleanup_list_lock in
+> dev_name_show(), following the dynamic_netconsole_mutex ->
+> target_cleanup_list_lock -> target_list_lock order that
+> drop_netconsole_target() already uses. Or do the memset in
+> netcons_release_dev() under target_list_lock.
+>
+> > +     dynamic_netconsole_mutex_unlock();
+> > +
+> > +     return ret;
+> >  }
+> >
+>
+> [ ... ]
+>
+> > @@ -906,7 +933,14 @@ static ssize_t local_mac_show(struct config_item *=
+item, char *buf)
+> >
+> >  static ssize_t remote_mac_show(struct config_item *item, char *buf)
+> >  {
+> > -     return sysfs_emit(buf, "%pM\n", to_target(item)->remote_mac);
+> > +     struct netconsole_target *nt =3D to_target(item);
+> > +     int ret;
+> > +
+> > +     dynamic_netconsole_mutex_lock();
+> > +     ret =3D sysfs_emit(buf, "%pM\n", nt->remote_mac);
+> > +     dynamic_netconsole_mutex_unlock();
+> > +
+> > +     return ret;
+> >  }
+>
+> [Severity: High]
+> This patch leaves local_mac_show(), just above this hunk, without any
+> locking:
+>
+> static ssize_t local_mac_show(struct config_item *item, char *buf)
+> {
+>         struct net_device *dev =3D to_target(item)->np.dev;
+>         static const u8 bcast[ETH_ALEN] =3D { 0xff, 0xff, 0xff, 0xff, 0xf=
+f, 0xff };
+>
+>         return sysfs_emit(buf, "%pM\n", dev ? dev->dev_addr : bcast);
+> }
+>
+> It loads np.dev with no lock, no RCU read section and no netdev
+> reference, then dereferences dev->dev_addr.
+>
+> enabled_store() sets and clears np.dev through netcons_netpoll_setup()
+> and netconsole_process_cleanups(). process_resume_target() sets and
+> clears it too. Both run under dynamic_netconsole_mutex.
+>
+> The notifier also clears np.dev, without that mutex:
+>
+> netconsole_netdev_event()
+>     netconsole_process_cleanups_core()
+>         netcons_release_dev()
+>             do_netpoll_cleanup()
+>                 netdev_put(np->dev, &np->dev_tracker);
+>                 np->dev =3D NULL;
+>
+> If netconsole holds the last reference on a device that is being
+> unregistered, netdev_run_todo() can free the net_device after this put.
+>
+> Can a reader that already loaded dev then read dev->dev_addr from freed
+> memory?
 
-The lifetime problem was identified by code inspection of the deferred
-release and system-sleep paths.
-
-Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
----
-Assisted-by: Codex:gpt-6-astra
-
-Changes in v4:
-- Drop the redundant ASSERT_RTNL() in xp_assign_dev() and the extra
-  operations-lock assertion in xp_clear_dev_all(), as requested by
-  Stanislav Fomichev.
-- Add the Reviewed-by tags from Björn Töpel and Jason Xing and the
-  Acked-by tag from Stanislav Fomichev.
-- Link to v3: https://patch.msgid.link/20261013-xsk-suspend-teardown-v3-1-2d6be7602947@gmail.com
-
-Changes in v3:
-- Protect the per-netdev pool list with netdev operations locking, as
-  requested by Stanislav Fomichev and Björn Töpel.
-- Assert operations locking for copy-mode assignment too, and share a
-  locked detach helper so unregister holds the lock across the pool walk.
-- Rebase onto current net.
-- Link to v2: https://patch.msgid.link/20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com
-
-Changes in v2:
-- Track assigned pools per netdev instead of scanning a global pool list.
-- Keep deferred releases visible across queue changes and queue leases.
-- Rebase onto current net.
-- Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
----
- include/linux/netdevice.h   |  5 +++++
- include/net/xsk_buff_pool.h |  3 +++
- net/xdp/xsk.c               |  5 +++++
- net/xdp/xsk_buff_pool.c     | 46 +++++++++++++++++++++++++++++++++++++--------
- 4 files changed, 51 insertions(+), 8 deletions(-)
-
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 3cff2174dc03..ac257221c7c5 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2545,6 +2545,11 @@ struct net_device {
- 	/* protected by rtnl_lock */
- 	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
- 
-+#ifdef CONFIG_XDP_SOCKETS
-+	/** @xsk_pools: assigned AF_XDP pools, ops protected */
-+	struct hlist_head	xsk_pools;
-+#endif
-+
- 	u8 dev_addr_shadow[MAX_ADDR_LEN];
- 	netdevice_tracker	linkwatch_dev_tracker;
- 	netdevice_tracker	watchdog_dev_tracker;
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index a7df573784fd..02e89350faf9 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -48,6 +48,8 @@ struct xsk_buff_pool {
- 	struct device *dev;
- 	struct net_device *netdev;
- 	struct list_head xsk_tx_list;
-+	/* Assigned pools, including deferred releases; ops protected. */
-+	struct hlist_node dev_node;
- 	/* Protects modifications to the xsk_tx_list */
- 	spinlock_t xsk_tx_list_lock;
- 	refcount_t users;
-@@ -119,6 +121,7 @@ bool xp_put_pool(struct xsk_buff_pool *pool);
- void xp_clear_dev(struct xsk_buff_pool *pool);
- void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
- void xp_del_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
-+void xp_clear_dev_all(struct net_device *dev);
- 
- /* AF_XDP, and XDP core. */
- void xp_free(struct xdp_buff_xsk *xskb);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 33475b180ea6..781ba46eb152 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -2145,6 +2145,11 @@ static int xsk_notifier(struct notifier_block *this,
- 			mutex_unlock(&xs->mutex);
- 		}
- 		mutex_unlock(&net->xdp.lock);
-+		/*
-+		 * A released socket is no longer on xdp.list. Its pool can still
-+		 * hold a device reference on the frozen release workqueue.
-+		 */
-+		xp_clear_dev_all(dev);
- 		break;
- 	}
- 	return NOTIFY_DONE;
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 9d2d94f1fb75..0ebd4d46f7ab 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -172,7 +172,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	u32 frame_size;
- 	int err = 0;
- 
--	ASSERT_RTNL();
-+	netdev_assert_locked_ops_compat(netdev);
- 
- 	force_zc = flags & XDP_ZEROCOPY;
- 	force_copy = flags & XDP_COPY;
-@@ -204,6 +204,11 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	pool->cached_need_wakeup = XDP_WAKEUP_TX;
- 
- 	dev_hold(netdev);
-+	/*
-+	 * Socket removal precedes the final pool put. Keep the pool visible to
-+	 * NETDEV_UNREGISTER even while release work is waiting for process thaw.
-+	 */
-+	hlist_add_head(&pool->dev_node, &netdev->xsk_pools);
- 
- 	if (force_copy)
- 		/* For copy-mode, we are done. */
-@@ -244,7 +249,6 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	bpf.xsk.pool = pool;
- 	bpf.xsk.queue_id = queue_id;
- 
--	netdev_assert_locked_ops_compat(netdev);
- 	err = netdev->netdev_ops->ndo_bpf(netdev, &bpf);
- 	if (err)
- 		goto err_unreg_pool;
-@@ -265,6 +269,8 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 		err = 0; /* fallback to copy mode */
- 	if (err) {
- 		xsk_clear_pool_at_qid(netdev, queue_id);
-+		hlist_del(&pool->dev_node);
-+		pool->netdev = NULL;
- 		dev_put(netdev);
- 	}
- 	return err;
-@@ -287,19 +293,39 @@ int xp_assign_dev_shared(struct xsk_buff_pool *pool, struct xdp_sock *umem_xs,
- 	return xp_assign_dev(pool, dev, queue_id, flags);
- }
- 
-+static void __xp_clear_dev(struct xsk_buff_pool *pool)
-+{
-+	struct net_device *netdev = pool->netdev;
-+
-+	netdev_assert_locked_ops_compat(netdev);
-+	xp_disable_drv_zc(pool);
-+	xsk_clear_pool_at_qid(netdev, pool->queue_id);
-+	hlist_del(&pool->dev_node);
-+	pool->netdev = NULL;
-+	dev_put(netdev);
-+}
-+
- void xp_clear_dev(struct xsk_buff_pool *pool)
- {
- 	struct net_device *netdev = pool->netdev;
- 
--	if (!pool->netdev)
-+	if (!netdev)
- 		return;
- 
- 	netdev_lock_ops(netdev);
--	xp_disable_drv_zc(pool);
--	xsk_clear_pool_at_qid(pool->netdev, pool->queue_id);
--	pool->netdev = NULL;
-+	__xp_clear_dev(pool);
- 	netdev_unlock_ops(netdev);
--	dev_put(netdev);
-+}
-+
-+void xp_clear_dev_all(struct net_device *dev)
-+{
-+	struct xsk_buff_pool *pool;
-+	struct hlist_node *next;
-+
-+	netdev_lock_ops(dev);
-+	hlist_for_each_entry_safe(pool, next, &dev->xsk_pools, dev_node)
-+		__xp_clear_dev(pool);
-+	netdev_unlock_ops(dev);
- }
- 
- static void xp_release_deferred(struct work_struct *work)
-@@ -337,7 +363,11 @@ bool xp_put_pool(struct xsk_buff_pool *pool)
- 
- 	if (refcount_dec_and_test(&pool->users)) {
- 		INIT_WORK(&pool->work, xp_release_deferred);
--		schedule_work(&pool->work);
-+		/*
-+		 * Teardown calls ndo_bpf(), which may need powered hardware.
-+		 * RTNL alone does not exclude the device's system PM callbacks.
-+		 */
-+		queue_work(system_freezable_wq, &pool->work);
- 		return true;
- 	}
- 
-
----
-base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
-change-id: 20260930-xsk-suspend-teardown-902f98408c93
-
-Best regards,
---  
-James Hilliard <james.hilliard1@gmail.com>
-
+This is being addressed in
+https://lore.kernel.org/all/20261012-netcons-fixes-v3-2-1aac85ed7665@gmail.=
+com/
