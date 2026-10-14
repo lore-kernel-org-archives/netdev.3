@@ -1,117 +1,167 @@
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-pz2-f7.google.com (mail-pz2-f7.google.com [74.125.228.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648ED54B1A7
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 17:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D5D3E5EF8
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792000383; cv=none; b=p27nynST3z+YkwqsOl3KTHOntwX/7baj1H+i+6RyF0EFtJz01m5brJtfX4CcCYAg2ZbbFchDl+JA91tZOMXjwRE0ypzqgn4uzkDd4HiWftJ0ipQxyK1BkXIpQktwX95sNCJg+fZ2IdZXPYGd4InOzxZ8EHRWcukvpSDFkAGpeNo=
+	t=1792001078; cv=none; b=qI4gJksMPqEYmkKlJrE57bOc9II2oSvCu3EAvjXI88duy9j7nFQsHmtu2Dzkv19D3DXMMOFoI6GfNI+7yGhNOWRgUzehofC3En7vrcGiE3yJfBPV7b2gclumMbns+SANGYJwS+Fur2NrKDR3dIiZQetrtnLXV1t8O97tm5Wuy3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792000383; c=relaxed/simple;
-	bh=+xRfdEstPEoB/0nLtXWtVVOiZOJPtIXTR+WV6k2Yt1g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oom4A+MxKTX/EoP81jrm3s4sQQ0EZdTJ3FqlOmRk0iTbZKteej5I6W2DIYrf+eleSb7fv7XmW0Kys+E9aC3nzYARIewEyObYHaS/AKU8j4OuTy+hFJljMd9HvaYea+XdmNVuDCby/iPMvfRC/6MTQi+nSp8W1ES6r671dhnVNLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=IHdhk+8T; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	s=arc-20240116; t=1792001078; c=relaxed/simple;
+	bh=byT7Oi0cLhQwYSkFtKGiGpgd82T4uT9+1PBWVi3fXck=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c+LtLGyJrSJ49rQeHc8E5C5MQDLqGffxpA40898ws0zkF6mueMx0r0c5VvQ6xV+M5ZVfZGrFLoJiWEVtYtx4y5vDh/i9G/6QSX/h+LHSmLCWKES2Yy+5E4jp4Rzu8DAKv1oshidY2YNcWDC/hT1PknueiEXFItSUzilP1muP664=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nnd/SA38; arc=none smtp.client-ip=74.125.228.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="IHdhk+8T"
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-91b8306b9f8so49920536d6.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:53:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nnd/SA38"
+Received: by mail-pz2-f7.google.com with SMTP id 41be03b00d2f7-cc53988d9f3so1752598a12.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:04:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1792000381; x=1792605181; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1792001076; x=1792605876; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=zsq92fxVdxK45zQgeZwO9L+7uNriDQM/IAKXxnDi/WI=;
-        b=IHdhk+8TbZ9+MHOja1L3hCQI5WRVs8ODzT+XBsVN9WxfTbjQjv6YviNSZuKqOunIGh
-         b8550FvIYq2uokyw0bE+b7UM2gbjiwN3Zu9N4Em4VUZVwIBOYsr7+NKj4ja5KJTd/aZW
-         gajfntqizqiRuWOw4AB56z7IlQg6IXBIHUplTjUu4NiGXuxmm4cOIpKmdHS0ZIJBqTYz
-         a0iYz22yw3JmaP2GXxtveI46YtDHYsK/VNZWDLd6Pz9VSj6rH8kCuS+aM8ywi4CeDs0C
-         Z1uqImcdTHDtAr/vLEqE64o0Y74XQlHATveWFoecArb+zLr9KVIezzhleSXxEff7iSf8
-         nwaQ==
+        bh=Wq8CsgNnCjhuDOhxvAaqmUytJ+XS+cCMriLGrdCHHLo=;
+        b=nnd/SA38bm89Ivzv0ASOgGzzkdq+hLveZgclJ3DEmPRvXo1Wg/D1YxOmPVL3wXVBVJ
+         egdZCD6DBy6RA95gnqJQP/JbeAwGIsEhqJJVUW/FaG4RAoOHBgIZmw8CgZ6Ga3dvPDB/
+         T/1FNGlC6N1EIXCIY9h9oCc94t9BADftyB0PJZTNkbpjIJCwjCFtSZWqW159VIUo3IkP
+         c2Yxr+UZohi7TaUpsFE9OgCktLRbk2m6i33/mFyyatpfc6MAVGLUn1xusutvGE6zBL3r
+         wtZhfo6B9eK0gx9AH8kJF1D7IQXvzxM+iEvnKgTAAQAShLXzSeyY7sH3VJ2hyGOUub61
+         PKRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792000381; x=1792605181;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1792001076; x=1792605876;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=zsq92fxVdxK45zQgeZwO9L+7uNriDQM/IAKXxnDi/WI=;
-        b=ChOJV3SYgVV4adaaT3VU90lqo2vvaqO/wpdhBcIC9mdkTYVhxp7QstWTy/GaNxJmWq
-         3aVud/XVGdEBOgJyLjNGK8jkF5SPGXI4imSIo9g/VXshANqimPh8Zd71bvQzHPf7LyYE
-         iv9FjZPmljn3mZMARWRByJ3+R7E/l7XDpoce6KlcvP6uooHuuetMEl/ML2ag5+6P7eKb
-         OgqWpP1PjlgZoPHDh77vEeJuLkQQHPHJTqBd7b6XofROb1Xvv2l2yms56Snnqd98PrTE
-         U1FbtuJ6KTJlwf0In8WMm9jIa1uQnwDKr90nG/ZSlTS4Bqei7Uxy/0cab5M4B3pbX3pc
-         Bufg==
-X-Forwarded-Encrypted: i=1; AKwUvBwlYfhl454ksIIJuplzpInNvuykMIG1TxDX4oXnvXsuf0dQsGOMm1Iaz9jVujw28BM6ksS1WSI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKV01jh+P0NQSYsKIv63lrHqtvWZs2NnZnuyiSaySvwls6G54sf
-	LSEh95lm7wSmdQCF1dHwPuWEVD8xTJ8omhLB14QgjwJNCuWRcqtcBCj5sABG0C+LCPo=
-X-Gm-Gg: AYBFou1RVXdNENXu1W+mo1LgRDoM15wUkmUYktMWbpWC2qt9z7CEeA2eea19FIiThXA
-	FkuAVCcGIqaXYqdK/Dx+i+sAiVvn614dpqula71CqYUpPf3CsCT82Yw1Vfki4YL1acGfAM6OvSc
-	Ci3HsAHfuQzldoqUKTlmuEEQLVEFRIX0CMWuZVVe/TJe9mFzDPl4zoz63+gydFsP6hP6WUxQmQb
-	O5zBj7mMI1exoibdFoYTaQ2q9FKlBHbp5o/XoftA2fQZQXW3C9DweJbT5DliVvlDMd/fLOzpGGH
-	4nDGWFPYAcFxOupOhFdsYtnA77CaLNjqaQ2JgwT9+moXHVa1EBHvjdI+UpVDVMar4b//zc2DOdB
-	Lk2R0a9ZGDvluCiabNL5sxVkbtH7ajd49d1nGZ8IKW4UaB1d6L148DzyJDABD+ophC9lvYsWZFb
-	j8DX3U11Y79OgwxGTgB5znaMPT3nx1X5nS8SFZrTvRpei4BtpRGJmv6ev3EuVZPPPVWROLFZgEN
-	81HMW9wCudujU1s
-X-Received: by 2002:a05:620a:17a0:b0:93e:c12c:f13b with SMTP id af79cd13be357-93ec12d085amr2683326985a.69.1792000381143;
-        Wed, 14 Oct 2026 10:53:01 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.254])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91b97b387e0sm58301296d6.12.2026.10.14.10.53.00
+        bh=Wq8CsgNnCjhuDOhxvAaqmUytJ+XS+cCMriLGrdCHHLo=;
+        b=DAag86piTZa4BfZPw0kMIw+9cr6boXDMo6EBbJoCqO1JSbKWopdCkG/aPX7nD+VR33
+         JxbSvsaiVKXHVlij7r+eSphtv6w8K8YwjaNyIRGygR70cgQBAXdRAT0Msf0b7vPKg1nF
+         oTxwBWIOtDPThOYc58n19QyW7GLzqglIqW2LemwqJnSZr2gjIWMUm1AA6f9P0Ps/8K40
+         gVOEbBj7f7IpW2j+YK/suogpMFDBxeQT3u0sdT7tMR4gp2w8v008ic8MiCoxaGz2l2W4
+         /Plwfu8naOdQHyobqMZ7xLRFPsWe+9scZvRfpwAHTZ9N4kPxpsU3dPnDfcfZ9twSS/X1
+         FL4g==
+X-Forwarded-Encrypted: i=1; AKwUvBxx3c9oHKP7R2/mIUjseANtgd944+UIKR9bxarMuQcINC63D9Wlj4AxQ6DIUhL05FCieLgNFFA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLykhMy5wtM3Y2wSl6nlTPlKs4831SCJ8Fdy9Bijdt5Hyp0uL2j
+	frQxI6FN2Ly43SSwJ0IJGQwg9SwiT6Uv+5xzDDXKm/PxSWr32Rg2inN7
+X-Gm-Gg: AYBFou3JBgQtPBef9a/tj1LosDTt9HWfLljk/M6RMRKatr4VqKdReUQ5PK+QpI7ht7R
+	HVQKxbcgQIh2Rp6Eji91LevWsF39ba6TI1LbWUVE9dZn6l4PRLplKBQkjVVJuqGZ5gztvxDNQun
+	hWBfW/L4a3qcaf+JcaR6qUobzTpKprA1hHgNHD+KtDg6kDT2XMDHpXp8GvKMoG10oJANa/1MPLu
+	RXEm7Jo5Rn6/mGVsnz1BQXCdpqr2b06KDHtU0/sN7WXHK6qUfV9XcBBE9HoCS8g40QOGsyaldtf
+	skjqok8AED9AsgcNBY2CAg6Ij/bRwuFIa755pbqu4uPFLUZC4zCcAC6R7RbCGEzFSBFnZG43j9S
+	B/8F60XxSynGF0klD6vGoahdewQonMgDECtks0scoQyam9KcIP2utaHBEana/zlU5jNz1v537+C
+	USyhn3IQDQ1wLYUUpPsebPLBGwnMT7+RV9DED6kiRieAzIBPBK/dItsh0k34FT0xa5
+X-Received: by 2002:a05:6a00:3385:b0:886:c8d1:632f with SMTP id d2e1a72fcca58-897c82b072amr13779945b3a.42.1792001076265;
+        Wed, 14 Oct 2026 11:04:36 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:56::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89d804e391dsm1439578b3a.39.2026.10.14.11.04.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 10:53:00 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Mina Almasry <almasrymina@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>,
- Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits() report
- unreadable frags
-Date: Wed, 14 Oct 2026 17:27:18 +0000
-Message-ID: <179199883858343.2.17884063473154560573@toxicpanda.com>
-In-Reply-To: <CAEzrpqd9Pna32K8i5Ug3tP+ZiRa7-0GmyX+sn=OwbZ_3osEAsQ@mail.gmail.com>
-References: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
- <20261014135154.05de968e@pumpkin>
- <179198668564919.2.10323410751655182155@toxicpanda.com>
- <20261014173042.0a74a25d@pumpkin>
- <CAEzrpqd9Pna32K8i5Ug3tP+ZiRa7-0GmyX+sn=OwbZ_3osEAsQ@mail.gmail.com>
+        Wed, 14 Oct 2026 11:04:35 -0700 (PDT)
+Date: Wed, 14 Oct 2026 11:04:24 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
+	Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Shuah Khan <shuah@kernel.org>, 
+	Eric Dumazet <edumazet@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, david.laight.linux@gmail.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 0/7] ipv4,ipv6: convert the getsockopt
+ switches to sockopt_t
+Message-ID: <as_EIAJpsA1nWKU4@devvm7509.cco0.facebook.com>
+References: <20261009-sockopt_expand_out_v2-v2-0-8ac08c469ecb@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261009-sockopt_expand_out_v2-v2-0-8ac08c469ecb@debian.org>
 
-On Wed, Oct 14, 2026 at 12:52 PM Josef Bacik <josef@toxicpanda.com> wrote:
-> ...ERR_PTR would be fine too? I'm arguing for explicit return values,
-> not "0 means failure". But I don't care enough to argue, I'm
-> respinning. Thanks,
+On 10/09, Breno Leitao wrote:
+> This series continues the migration to sockopt_t, as described in [1].
+> do_ip_getsockopt() and do_ipv6_getsockopt() are the last two switches
+> still taking a sockptr_t pair, and everything they forward to now takes
+> a sockopt_t, so convert them both.
+> 
+> Patch 1 settles what a negative optlen means on SOL_IPV6 before the
+> conversion makes it matter. do_ip_getsockopt() rejects it, but
+> do_ipv6_getsockopt() never has, and the int options answer it as 4.
+> Treat it as 4, as David Laight suggested, instead of failing callers
+> that rely on it.
+> 
+> Patch 2 fixes a latent bug in sockopt_expand_out() [2] itself: it caps
+> the expansion at INT_MAX, but iov_iter_revert() refuses to unroll past
+> the smaller MAX_RW_COUNT.
+> 
+> MCAST_MSFILTER has to move before the switches above it. It is the last
+> option with the quirk sockopt_expand_out() was added for [2]: optlen only
+> covers the fixed part, and the real reply size comes from the gf_numsrc
+> field inside it. Patches 3 and 4 convert it on both families, and store
+> the reply length only after the final copy succeeds, so a copy failure
+> can't report a changed optlen.
+> 
+> Patches 5 and 6 convert the switches themselves. Each wrapper keeps its
+> __user prototype and builds the sockopt_t, so the proto layer is
+> untouched. ipv6_getsockopt() cannot use sockopt_init_user(), which
+> rejects a negative optlen, so patch 6 moves the clamp of patch 1 up
+> there and builds the sockopt_t after it.
+> 
+> Patch 7 grows the selftest with an ip and an ipv6 fixture, pinning the
+> returned length, errno and reply bytes.
+> 
+> The temporary sockptr_t-to-sockopt_t glue can go away once the higher
+> level callers take sockopt_t too. For now, the series keeps the proto
+> callbacks unchanged and converts only the leaf helpers.
+> 
+> Link: https://lore.kernel.org/all/20260401-getsockopt-v2-0-611df6771aff@debian.org/ [1]
+> Link: https://lore.kernel.org/all/20260914-getsockopt_phase6-v2-0-e48befc9602e@debian.org/ [2]
+> 
+> To: David Ahern <dsahern@kernel.org>
+> To: Ido Schimmel <idosch@nvidia.com>
+> To: David S. Miller <davem@davemloft.net>
+> To: Eric Dumazet <edumazet@google.com>
+> To: Jakub Kicinski <kuba@kernel.org>
+> To: Paolo Abeni <pabeni@redhat.com>
+> To: Simon Horman <horms@kernel.org>
+> To: Alexei Starovoitov <ast@kernel.org>
+> To: Daniel Borkmann <daniel@iogearbox.net>
+> To: Andrii Nakryiko <andrii@kernel.org>
+> To: Eduard Zingerman <eddyz87@gmail.com>
+> To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+> To: Martin KaFai Lau <martin.lau@linux.dev>
+> To: Song Liu <song@kernel.org>
+> To: Yonghong Song <yonghong.song@linux.dev>
+> To: Jiri Olsa <jolsa@kernel.org>
+> To: Emil Tsalapatis <emil@etsalapatis.com>
+> To: Ihor Solodrai <ihor.solodrai@linux.dev>
+> To: John Fastabend <john.fastabend@gmail.com>
+> To: Stanislav Fomichev <sdf@fomichev.me>
+> To: Shuah Khan <shuah@kernel.org>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> Cc: bpf@vger.kernel.org
+> Cc: linux-kselftest@vger.kernel.org
+> To: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: david.laight.linux@gmail.com
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+> Changes in v2:
+> - Treat a negative optlen as 4 instead of rejecting it with
+>   -EINVAL as v1 did, per David Laight and Stanislav Fomichev. 
+> - Fix sashiko findings
+> - Link to v1: https://patch.msgid.link/20260925-sockopt_expand_out_v2-v1-0-c3ef2e3bb5c0@debian.org
 
-I respun it with the sum starting from ~0, and it changes what goes on
-the wire, so I was wrong above about ~0 not changing the folded result.
-
-csum_add(~0, 0) stays ~0, and csum_fold(~0) is 0x0000 where
-csum_fold(0) is 0xffff.  No other 32 bit value folds to 0xffff, so
-there's no non-zero value that can stand in for a zero sum.  ICMPv4
-folds the raw sum with no pseudo-header, so an echo request with id 0,
-seq 0 and an all-zero payload gets a reply with a checksum of 0x0000
-instead of 0xffff, and the sender drops it.  I checked that on
-loopback: the reply has 0xffff with v2 and 0x0000 with the ~0 seed.
-
-So 0 can't mean failure here without changing checksums, and v3 will
-keep the explicit error return from v2.
-
-Thanks,
-Josef
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
