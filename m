@@ -1,90 +1,151 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E085349B7;
-	Wed, 14 Oct 2026 16:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BD55218BB
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791994550; cv=none; b=bJGPXkPOn0Zj6tL+2f3EpUt/m6W+jfF1jy1meGUkbho5RNF6efUMuazmfk0bB0ajQC2NCD+QdSgUWgKR127xMPmgdyGRGxn7FkWGsNuYdftFPg+q45m3ijC94728RHW28tLpkWdKwFH7Nucf8OIH2nMLJNh6Dfnn3dS/z3nNKPE=
+	t=1791994683; cv=none; b=cftzhcG/7D75aWKXcO8h8Hf4bX7+UaDSVSmnGbrdiflT3vghyenL3MWKDhgl15XQoSlOS5e+NY0Msgdngd/jGQMEQEE0ZMMjKHXJOfMDSdWYEfPWt7fIXFW/Gmi3zdJb+SY5J+B+ZprK/x1h6nh2GrraZu5BsbvzEBhH2L72xS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791994550; c=relaxed/simple;
-	bh=MPLcZqa6fzuPy9x0waM6ogPIJTXb3ORNchEJ4xtsipg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iEPwm9Op1FoEqdFW7/z4dJlysh7VklLSBZpfWeu39USHisgUi1582pfcefURnS+IYMnmSmw7JN6QePUuRAzXBBsYB3KT9BcKUi7PtTJridhfVeHbkopNTu3fXge3oYo06ymuxYr2O631ubGODvm8feHX3lqPTLsMNJWMv8P8rSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mDYdiA0p; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791994683; c=relaxed/simple;
+	bh=J2MF0CGvDZI2j5xp2f4Y/WWR7jUQb6b1+xx9/N78hek=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=I8ikr9XzB6UQfJtLerHKX4nw1QgxoagABLxe5/50Tt7oPr/QFmj2pdFyqoWdUjLKBnsMvWs+9eYYQmtzODtlra8ozijTTKwD1A2HoRIqdEs7kiYeXhvKICi4GNuF0OVAsW1xVMnOiBlh5c0E8CqarJKqvOOCPNiudnp1w+7bXd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=shVCgafj; arc=none smtp.client-ip=74.125.82.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--almasrymina.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mDYdiA0p"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=dZEA6KooYNG6WjmS3cwTa+yQzouVNKItatf4v7iDCqw=; b=mDYdiA0ppURJUvN8sGS0tk4pM7
-	5Ii94YI15Z0hpjF7HL6eo42wiRxIpOuyQFUamW2veF97gO2lsea0l1Dp0C7KqUxH1NdstCEjrtRC/
-	4utpxfrD44QZnOTCnMs6p7puHEFVlvM4ki4UqVw7IJjJIPjt0tGPzNssK99XMKjllUL8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xH1dg-00AmDl-BK; Wed, 14 Oct 2026 18:15:36 +0200
-Date: Wed, 14 Oct 2026 18:15:36 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Michael Stapelberg <michael@stapelberg.de>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v5] net: phy: marvell: keep WOL_EIE across interrupt
- reconfiguration
-Message-ID: <6c488dc7-cfcb-4abe-8bbf-fc4e5359a6c7@lunn.ch>
-References: <20261014002534.149200-1-rosenp@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="shVCgafj"
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-155a75f91e1so705548c88.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:17:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1791994676; x=1792599476; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=BNYbIRDhdg/bji4iVF4z4GKSYuqq0SGaMYsIsVzbu+Y=;
+        b=shVCgafj6S7XxdeceaVQhwMGAdCYXxntKgyPwAzI+goiDOwO+xHN+i3yPCmFLoF/+b
+         0j3m4dWQPpJdUToFha/OJUg0wuNYaR0XReNsqaYBiZM412xsImvrfLhYPFIOhHOrbgJk
+         918Cgw5aBQbLwCzAoDYFmHVnLGiXOtyT0s/cPl9RohPNc8wh1HfcICC7MkCe60TDWZHI
+         SBpwvtWrHmF438drp/gn9qFJ98VyRkSS0rI73eKKMGWm9EnFQzuBnbH/LeKTaZec5HgQ
+         E4l+30cQQXwEB0RWNJP1D+nsTwKI5ovLQ8iZUESA1Q/IhuaBVktxst4s6LwWypfYkb3m
+         OxvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791994676; x=1792599476;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BNYbIRDhdg/bji4iVF4z4GKSYuqq0SGaMYsIsVzbu+Y=;
+        b=Tk0+YQk/Vumtu4SqEnZYVx7/9pC7spuyyZOtZ0NRPWlmYFRaW6u9911lIF8LFelxrn
+         J3hGRsaODG6gv1QEd9iexU0yvb0STVhTpm2g24JeEh26hMcuFrVzZxLW3iE0cORKuBQE
+         Cl/cF7MikKmyC38xmV3nnOQWt9j1gavAm+Gbl1Lnk0DUCI9myCN9e1UKY7wQZHGRkzze
+         twdsmiVdNAEaBp2EX+XkaHBwJLpVdyPeC8Z+86WvdbVW7P25YuTFO74s4Zad5h1iVDxi
+         X4OpXq6OjAsL7fOuxM2XFTTGiLJAREXyZNuoZ9zt6pgKinHTsm7pZJhv0BjuzI+IaMmT
+         Y0tQ==
+X-Forwarded-Encrypted: i=1; AKwUvBybZGTMYuYwGe7dEOaznZnfaxbPH4XSshnM6KKxWWhiJ8OzyBULznLURoWFxfxQgGS7n84FmqQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJFe7k2akkVSa2n5r1uuhlmZLx1UCLbkgauycDx9wRRCsHakZ+d
+	J4G04Z6JfM2JIrPJuacLz0+tP2NZMp1yQHnBF1MfsuXrZJW35ggyWx71HEkC3rkYYa+L6mNQnhE
+	6FMBTdSmsv0M/XdpUx/NX4ebxYA==
+X-Received: from dli6-n1.prod.google.com ([2002:a05:7022:286:10b0:15e:bc16:429a])
+ (user=almasrymina job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:c84:b0:146:5f73:d45b with SMTP id a92af1059eb24-16a54fab691mr20502668c88.3.1791994675581;
+ Wed, 14 Oct 2026 09:17:55 -0700 (PDT)
+Date: Wed, 14 Oct 2026 16:17:50 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014002534.149200-1-rosenp@gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
+Message-ID: <20261014161754.3782346-1-almasrymina@google.com>
+Subject: [PATCH net v3 0/4] net: devmem: fix RX and TX binding teardown on
+ device unregistration
+From: Mina Almasry <almasrymina@google.com>
+To: Jakub Kicinski <kuba@kernel.org>, Mina Almasry <almasrymina@google.com>, 
+	Pavel Begunkov <asml.silence@gmail.com>, David Wei <dw@davidwei.uk>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Taehee Yoo <ap420073@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Kaiyuan Zhang <kaiyuanz@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, 
+	"=?UTF-8?q?Christian=20K=C3=B6nig?=" <christian.koenig@amd.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Nikolay Aleksandrov <razor@blackwall.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	Kaifeng Wang <kaifengw@google.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Oct 13, 2026 at 05:25:34PM -0700, Rosen Penev wrote:
-> marvell_config_intr() rewrites the whole interrupt enable register, so
-> the config_intr call from phy_init_hw() on resume silently cleared
-> WOL_EIE on the 88E1318S and 88E1510: m88e1318_get_wol() still reported
-> WAKE_MAGIC, but a matched magic packet was no longer routed to INTn and
-> the board did not wake.
-> 
-> Bit 7 of that register is WOL_EIE only on these two PHYs; on others,
-> such as the 88E1111, it enables a FIFO error interrupt. So give the
-> 88E1318S and 88E1510 their own config_intr and handle_interrupt, and
-> leave the shared callbacks unchanged.
-> 
-> m88e1318_set_wol() now records whether WoL is enabled, and both it and
-> the new config_intr derive WOL_EIE from that state under the MDIO bus
-> lock. WOL_EIE stays set across config_intr while WoL is enabled, except
-> when the PHY has an interrupt line and interrupts are being disabled,
-> as in phy_free_interrupt(): INTn is then the PHY IRQ, and nothing would
-> read IEVENT after free_irq() to release it. The bit is set again once
-> interrupts are re-enabled. phy_probe() still clears a WOL_EIE left by a
-> previous boot, since WoL starts out disabled. The new handler also
-> claims WoL events, so they do not go unacknowledged when the PHY IRQ is
-> in use.
-> 
-> Helios4 (Armada 388, 88E1512), 7.2.9. With this patch WOL_EIE stays set
-> over 3 link down/up cycles, "wol d" clears it, and a magic packet on a
-> running board is a handled interrupt. Without it, WOL_EIE is lost on the
-> first down/up, survives "wol d", and the magic packet is an unhandled
-> interrupt.
-> 
-> Fixes: 3871c3876f80 ("mv643xx_eth with 88E1318S: support Wake on LAN")
-> Assisted-by: LLM
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> Tested-by: Igor Velkov <iav@iav.lv>
+Fix two device-unregistration lifecycle bugs in devmem TCP bindings and
+add netdevsim support plus selftests covering both RX and TX device
+unregistration:
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+1. net: devmem: unmap dma_buf synchronously on queue uninstall
+   Synchronously unmap and detach binding->attachment under binding->lock
+   when the last RX queue is uninstalled in mp_dmabuf_devmem_uninstall(),
+   and unmap RX bindings that were already unbound on NETDEV_UNREGISTER,
+   preventing slab-use-after-free in dma_unmap_sg_attrs() when the binding
+   is freed after dma_dev.
 
-    Andrew
+2. net: devmem: detach TX bindings on NETDEV_UNREGISTER
+   Extend net_devmem_dev_unregister() to fully detach and unmap TX
+   bindings when binding->dev unregisters, or clear binding->vdev alone
+   when only a virtual device unregisters while binding->dev lives.
+
+3. netdevsim: support devmem RX and TX bindings
+   Enable PP_FLAG_DMA_MAP | PP_FLAG_ALLOW_UNREADABLE_NETMEM, 64-bit DMA mask
+   on nsim_bus_dev, and NETMEM_TX_DMA on netdevsim so devmem RX/TX bindings
+   can be exercised in software selftests.
+
+4. selftests: net: add devmem RX and TX netdev unregister tests
+   Add devmem_bind_rx_unregister_check and devmem_bind_tx_unregister_check
+   to tools/testing/selftests/net/nl_netdev.py.
+
+Cc: Tariq Toukan <tariqt@nvidia.com>
+Cc: Kaifeng Wang <kaifengw@google.com>
+Cc: Dragos Tatulea <dtatulea@nvidia.com>
+
+---
+v3:
+- 1/4: Run the NETDEV_UNREGISTER walk under the netdev instance lock,
+  and skip it when the device only moves to another netns. (Sashiko)
+- 2/4: Detach all matching TX bindings, then synchronize_net() once
+  before unmapping them. (Sashiko)
+- 3/4: Only request page pool DMA mapping with CONFIG_HAS_DMA, refuse
+  pp_hold on memory provider pools, and drop unreadable skbs in the
+  software PSP checksum path. (Sashiko)
+- 4/4: Check only the test's dma-buf in debugfs, skip instead of passing
+  silently, clean up on errors, compute UDMABUF_CREATE per arch, and
+  add the needed config options. (Sashiko, Dragos)
+- Link to v2: https://lore.kernel.org/netdev/20261012174300.2338784-1-almasrymina@google.com/
+
+v2:
+- 1/4: Don't unmap when a leased queue is unleased. Keep bindings in
+  net_devmem_dmabuf_bindings until freed, hidden from TX lookups by an
+  xarray mark, and unmap unbound RX bindings on NETDEV_UNREGISTER. Update
+  the binding->lock and binding->ref comments. (Sashiko)
+- 2/4: Detach TX bindings from the same net_devmem_lock-protected walk,
+  which now also covers unbound TX bindings, and clear the LIVE mark
+  instead of erasing the ID. The walk no longer uses RCU or takes
+  binding references (Stanislav).
+- Link to v1: https://lore.kernel.org/netdev/20261010025532.839559-1-almasrymina@google.com/
+
+Mina Almasry (4):
+  net: devmem: unmap dma_buf synchronously on queue uninstall
+  net: devmem: detach TX bindings on NETDEV_UNREGISTER
+  netdevsim: support devmem RX and TX bindings
+  selftests: net: add devmem RX and TX netdev unregister tests
+
+ drivers/net/netdevsim/bus.c              |   1 +
+ drivers/net/netdevsim/netdev.c           |  27 ++++-
+ drivers/net/netdevsim/psp.c              |   5 +
+ net/core/devmem.c                        | 143 ++++++++++++++++++++---
+ net/core/devmem.h                        |  10 +-
+ net/core/netdev-genl.c                   |   1 +
+ tools/testing/selftests/net/config       |   4 +
+ tools/testing/selftests/net/nl_netdev.py | 125 +++++++++++++++++++-
+ 8 files changed, 290 insertions(+), 26 deletions(-)
+
+
+base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
+-- 
+2.56.0.176.g3575e65682-goog
+
