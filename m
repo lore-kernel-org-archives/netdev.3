@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB99352FE41;
-	Wed, 14 Oct 2026 14:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB2D54528C;
+	Wed, 14 Oct 2026 14:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791987779; cv=none; b=AP6JAN8bPrX0zUFM98Px2MZyr1iEdjR8H0+ieyTG8CgbAUxwfB+4vLcmDYIWmM+VR5rHU20XP4uIDgD050cBfzQan38TlZC4dfFEXiilnL06u5irIbo+kqEcU6rF03XCqJiPK9yjcGa9d7FuwlctlW5wWixNRm+KLYlWxU1PA78=
+	t=1791987781; cv=none; b=MIlYVdK/ViOAIKUe51ZGEcSdf1GuLpMRRmF/chhfDIaonHngQUcfVJlOWu19wbt9EYkYTao/zJplSZkf8fbMW9iOXM4uNauCJnOAf262k0/ZX76qerDNdOwReuEUy7V3jG8QNTyabvB4hbe5LD6HqypjPOPSy8zYkNupl+tr46I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791987779; c=relaxed/simple;
-	bh=G9DuwNGdgQmBS7rpZ5wCxz7aLuHLdoEg7BZzkdlkX3c=;
+	s=arc-20240116; t=1791987781; c=relaxed/simple;
+	bh=C1NGfgrv1E5ASxsQwAznI/T8oQm41TP2gZwE+h0mmig=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sjH8nF4USaKI5IRYe0Vgni14FuliKIkdhTVNLoUfqgvhPa9XJMKstSfjeZgwHHLMzljwWPpTvGLCuPzx0p4eNteGphijj+iTr5o7auvCSQOxxngRILTJHJSYrRsCOus7kdN93tbdjLZ2G2v839eXXwN4KoDMXZ5oKDVefDH00Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FjaP9bAn; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=i3hB3jC9FvK/kfh3T1ujOBcxcBx/gQm9NhdRgsas1jDhzd357Hp2Yllu2m6OD4LoOcSmpTW1mjp4jXS3ulXZt1+uyG3fBC/tV6f4k09Lx5X1Kw2IBscpwLI/FJyycZZMPF0m/xPB7PaEWAGchVJsadp2z8HTjbVlrhiN+mz4avE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ee80/v85; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FjaP9bAn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8661F000C5;
-	Wed, 14 Oct 2026 14:22:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ee80/v85"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F001F000C4;
+	Wed, 14 Oct 2026 14:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791987778;
-	bh=nqDhNaCaYN5Lbqat6gXP1hdZzlS+QRvAgAFIo+ofINY=;
+	s=k20260515; t=1791987779;
+	bh=Uu0P8kyflDZVf/mBGOCfDqo7epBS82w1BcqWgsceJh8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FjaP9bAnc0qtBn6N2czefnIpu4ezUFw6+Z6jei1oXbXSScbQYOXuGeyF4X+9rTla1
-	 aF+ng+JU1D1U8YC9ay0OYVdwVmde/XCyCTvCvC+cTwoFVnTzKBUMdXs+BvX+q1NQ2+
-	 IvoDSlU99quXfYeO7T1jOtTx8nSgvYELOvlHPRbM9p9TFvooKEbFH5NCNEjzZkAMfl
-	 odrAdL+9rQ0UzdoScPGMEwkhVWfJihJRocRQZKamWPzb4svrkQ+c3bW+u+3vTcmsBG
-	 OwqhmRKx+oyL2ssirkVzzwF2oOSBaQm6sqaxCfuGNgb0KDEHKX6wwfodEpCIwjQ11M
-	 u4yn+AwWqRC4A==
-Subject:
- Re: [PATCH net-next v5 7/8] net: bcmgenet: allow the MTU to be changed
+	b=ee80/v85iVdOzFnlzkhUNS6zeauvYcctg1O8l8ATTt1LmuyRY/y2Jf14Hnj/KiFXG
+	 65D5y+2pGHsofCQT+51x3Wp02kjgL5B6YwJ5PIyXRTRi+d2bTrJFTei0Q1fxb3Yp9G
+	 kpePOWdzSYFJUFc1uVgLVVR4cimgOeOk05x3w7FyGJi5KZbMcjU3cmg2v527iKaYbq
+	 KTXeKX1oiAKbyn+E4f+W0/Qk4ZcS1UIwdv0KR1ucnxMJuCUdPwgq7afEjMXRQlwGrE
+	 semSmL0qweM6Cf3uWjL+L+Jrk12XZuwvGE4qJ7UavPHtOeIfMdX6MEfPtdGNKx4IZD
+	 ZcT6tsgv7nQGw==
+Subject: Re: [PATCH net-next v5 8/8] net: bcmgenet: reassemble jumbo frames
+ from status block fragments
 From: netdev-bot+sashiko@kernel.org
 To: nb@tipi-net.de
 Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
@@ -36,11 +36,11 @@ Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  dave.stevenson@raspberrypi.com, justin.chen@broadcom.com,
  pierremarinleclercq88@gmail.com, f.fainelli@gmail.com
-Date: Wed, 14 Oct 2026 14:22:57 +0000
-Message-ID: <179198777717.434549.10480959692013383148@kernel.org>
-In-Reply-To: <20261013-nb-genet-mtu-nn-v2-v5-7-076b6fc240be@tipi-net.de>
-References: <20261013-nb-genet-mtu-nn-v2-v5-7-076b6fc240be@tipi-net.de>
-X-sashiko-severity: Medium
+Date: Wed, 14 Oct 2026 14:22:58 +0000
+Message-ID: <179198777861.434549.7442931129502036522@kernel.org>
+In-Reply-To: <20261013-nb-genet-mtu-nn-v2-v5-8-076b6fc240be@tipi-net.de>
+References: <20261013-nb-genet-mtu-nn-v2-v5-8-076b6fc240be@tipi-net.de>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,179 +50,151 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [Medium] On a running interface, bcmgenet_change_mtu() silently resets
-  the user's TX interrupt coalescing (ethtool -C tx-frames) to 1.
+- [Low] This patch rewrote the comment above the TX checksum fallback in
+  bcmgenet_xmit() to say: "The MAC holds a frame to insert its checksum,…
+- [Low] This patch updated the comment on bcmgenet_pkt_rdy_thld() to say
+  the threshold covers the frame "up to the register maximum".
 
 Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it is High
-  severity.
-- [Medium] This problem wasn't introduced by this patch.
+- [Medium] This problem wasn't introduced by this patch, but adaptive RX
+  coalescing gets per-poll counts where it expects cumulative counters.
 
 --
 
-net: bcmgenet: allow the MTU to be changed
+net: bcmgenet: reassemble jumbo frames from status block fragments
 
-This commit sets dev->max_mtu for GENET v2+ from the packet ready threshold
-and the page size. It also adds ndo_change_mtu, which resizes the buffers
-and rewrites the MTU registers in place while the PHY stays up. A new
-datapath_up flag tracks whether the rings exist, and a failed allocation
-retries at the old MTU and closes the interface if that also fails.
-
-Link: https://github.com/raspberrypi/linux/issues/5561
+The hardware can split a frame across several RX descriptors and write a
+status block at the start of each one. With this commit,
+bcmgenet_desc_rx() strips those status blocks and joins the pieces into
+one skb. The commit also raises max_mtu to the limit of the 14-bit
+UMAC_MAX_FRAME_LEN, and TX frames longer than the threshold now fall back
+to a software checksum.
 
 > diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index e00661b2414b9..9f28006957d4d 100644
+> index 9f28006957d4d..323839adebbae 100644
 > --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 > +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
 
 [ ... ]
 
-> @@ -3870,6 +3885,91 @@ static int bcmgenet_change_carrier(struct net_device *dev, bool new_carrier)
->  	return 0;
->  }
->  
-> +static int bcmgenet_change_mtu(struct net_device *dev, int new_mtu)
-> +{
-
-[ ... ]
-
-> +	/* Only the buffers and the MTU registers change, leave the PHY up.
-> +	 * Hold its lock meanwhile, a link event would otherwise take the MAC
-> +	 * out of reset and enable it mid rewrite.
-> +	 */
-> +	mutex_lock(&dev->phydev->lock);
-> +	bcmgenet_netif_stop(dev, false);
-
-[Severity: Medium]
-This is a pre-existing issue that this patch did not introduce, but this
-patch adds a new caller that reaches it.
-
-bcmgenet_netif_stop() drops the return value of bcmgenet_dma_teardown()
-and then frees the RX pages anyway:
-
-bcmgenet_netif_stop()
-    bcmgenet_dma_teardown(priv);   /* -ETIMEDOUT ignored */
-    ...
-    bcmgenet_fini_dma(priv)
-        bcmgenet_free_rx_buffers(priv);
-        bcmgenet_destroy_rx_page_pools(priv);
-
-Suppose bcmgenet_rdma_disable() times out because DMA_STATUS never
-acknowledges the disable. Could the RDMA engine then keep writing into
-pages that have already gone back to the page pool?
-
-The later bcmgenet_init_dma() failure and netif_close() in
-bcmgenet_change_mtu() would only notice the stuck DMA after the pages are
-already freed.
-
-bcmgenet_close() reaches the same path today. Nothing in the tree shows
-RDMA actually failing to halt, so this may only be theoretical.
-
-> +	priv->datapath_up = false;
-> +
-> +	WRITE_ONCE(dev->mtu, new_mtu);
-> +	priv->rx_buf_len = bcmgenet_rx_buf_len(new_mtu);
-> +	bcmgenet_set_mtu_regs(priv, new_mtu);
-> +
-> +	ret = bcmgenet_init_dma(priv, true);
-
-[Severity: Medium]
-Does this restart lose the user's TX interrupt coalescing setting?
-
-bcmgenet_set_coalesce() writes ec->tx_max_coalesced_frames straight into
-the DMA_MBUF_DONE_THRESH register of each TDMA ring and keeps no software
-copy. bcmgenet_get_coalesce() reads the value back from ring 0.
-
-This path rebuilds the TX rings with a hard-coded threshold:
-
-bcmgenet_init_dma()
-    bcmgenet_init_tx_queues()
-        bcmgenet_init_tx_ring()
-            bcmgenet_tdma_ring_writel(priv, index, 1, DMA_MBUF_DONE_THRESH);
-
-bcmgenet_init_rx_coalesce() reapplies the RX coalescing, but nothing
-restores the TX value.
-
-Take "ethtool -C ethX tx-frames N" followed by an MTU change across
-ETH_DATA_LEN, such as 1500 to 3000. Would ethtool -c then report
-tx-frames 1?
-
-> +	if (ret) {
-
-[ ... ]
-
-> @@ -4510,6 +4617,7 @@ static int bcmgenet_suspend(struct device *d)
->  	} else {
->  		/* Teardown the interface */
->  		bcmgenet_netif_stop(dev, true);
-> +		priv->datapath_up = false;
+> @@ -2200,8 +2197,8 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		}
 >  	}
 >  
->  	return 0;
+> -	/* The MAC only inserts a checksum into a frame it holds in full, and
+> -	 * silently drops a longer one, so fall back to software.
+> +	/* The MAC holds a frame to insert its checksum, but only as much as
+> +	 * its FIFO takes. Longer frames are dropped silently.
+>  	 */
+>  	if (unlikely(skb->len > priv->tx_thld_len) &&
+>  	    skb->ip_summed == CHECKSUM_PARTIAL) {
 
-[Severity: High]
-This isn't a bug introduced by this patch, but datapath_up now tracks
-exactly this state. Should bcmgenet_suspend() check it as well?
+[Severity: Low]
+This isn't a bug, but does the new comment in bcmgenet_xmit() describe the
+limit the code checks?
 
-Suppose bcmgenet_init_dma() fails in bcmgenet_resume(). The interface
-then stays netif_running() and detached:
+The condition under the comment compares skb->len with
+priv->tx_thld_len. That is the programmable packet ready threshold that
+bcmgenet_tx_pkt_rdy_thld() picks from the MTU, somewhere between
+ENET_THLD_DEFAULT and ENET_THLD_MAX units. It is not a fixed FIFO size.
+The commit message also says "anything longer than the threshold falls
+back to software".
 
-- the earlier bcmgenet_fini_dma() has already deleted the NAPIs
-- rx_cbs and tx_cbs are freed but not set to NULL
-- the clock is gated
+The new wording also drops "so fall back to software". The comment no
+longer says that these frames go through skb_checksum_help() rather than
+being dropped.
 
-bcmgenet_resume()
-	ret = bcmgenet_init_dma(priv, false);
-	if (ret) {
-		netdev_err(dev, "failed to initialize DMA\n");
-		goto out_clk_disable;
+Could the comment name the threshold and mention the software fallback?
+
+[ ... ]
+
+> @@ -2552,7 +2637,8 @@ static unsigned int bcmgenet_desc_rx(struct bcmgenet_rx_ring *ring,
+>  	}
+>  
+>  	ring->dim.bytes = bytes_processed;
+> -	ring->dim.packets = rxpktprocessed;
+> +	/* A long frame spans several descriptors but is one packet */
+> +	ring->dim.packets = rxframes;
+>  
+>  	return rxpktprocessed;
+>  }
+
+[Severity: Medium]
+This is a pre-existing issue, not one introduced by this patch, but this
+hunk touches the DIM accounting. Should ring->dim.packets and
+ring->dim.bytes be cumulative counters?
+
+Each poll overwrites them with that poll's counts. bcmgenet_rx_poll() then
+passes them to DIM as a sample:
+
+drivers/net/ethernet/broadcom/genet/bcmgenet.c:bcmgenet_rx_poll() {
+    ...
+	if (ring->dim.use_dim) {
+		dim_update_sample(ring->dim.event_ctr, ring->dim.packets,
+				  ring->dim.bytes, &dim_sample);
+		net_dim(&ring->dim.dim, &dim_sample);
 	}
-	...
-out_clk_disable:
-	if (priv->internal_phy)
-		bcmgenet_power_down(priv, GENET_POWER_PASSIVE);
-	clk_disable_unprepare(priv->clk);
+    ...
+}
 
-On the next system suspend, bcmgenet_suspend() checks only
-netif_running(dev). Both of its branches reach bcmgenet_disable_tx_napi():
-the WoL branch directly, the other branch through bcmgenet_netif_stop().
+dim_calc_stats() treats both values as counters that only go up and takes
+a wrap-aware difference:
 
-The TX NAPIs were deleted with SCHED and NPSVC still set. Would
-napi_disable_locked() then wait here forever?
+lib/dim/dim.c:dim_calc_stats() {
+    ...
+	u32 npkts = BIT_GAP(BITS_PER_TYPE(u32), end->pkt_ctr, start->pkt_ctr);
+	u32 nbytes = BIT_GAP(BITS_PER_TYPE(u32), end->byte_ctr,
+			     start->byte_ctr);
+    ...
+}
 
-	while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
-		usleep_range(20, 200);
-		val = READ_ONCE(n->state);
-	}
+Two polls of the same size give a difference of zero, even under steady
+traffic. A smaller poll after a larger one wraps to about 4 billion.
 
-If suspend ever got past that point, bcmgenet_tx_reclaim_all() would walk
-the freed tx_cbs. bcmgenet_fini_dma() would also kfree() rx_cbs and tx_cbs
-a second time, with the block unclocked.
+With adaptive-rx turned on through ethtool -C, would the ppms and bpms
+values that net_dim_stats_compare() uses to pick coalescing profiles be
+meaningless?
 
-bcmgenet_change_mtu() already handles this state ("A datapath left down by
-a failed resume has nothing to reprogram either"). bcmgenet_suspend() only
-gets the assignment, not an early return.
+The baseline assigned rxpktprocessed per poll in the same way.
 
-If the interface is closed after the failed resume, the new guard skips
-bcmgenet_netif_stop(). bcmgenet_close() still calls bcmgenet_power_down()
-and clk_disable_unprepare(priv->clk) unconditionally. The failed resume
-already balanced the clock, so does this underflow the clock's enable and
-prepare counts?
+[ ... ]
 
-Could bcmgenet_suspend() skip the teardown when !priv->datapath_up? Could
-the driver also track that the failed resume already gated the clock, so
-close and suspend_noirq do not disable it again?
+> @@ -2696,7 +2784,8 @@ static void bcmgenet_link_intr_enable(struct bcmgenet_priv *priv)
+>  }
+>  
+>  /* Receive threshold in register units. Covers the alignment bytes and the
+> - * frame, but not the status block, which the hardware adds on top.
+> + * frame up to the register maximum, but not the status block, which the
+> + * hardware adds on top. A longer frame arrives in several descriptors.
+>   */
+>  static unsigned int bcmgenet_pkt_rdy_thld(unsigned int mtu)
+>  {
+
+[Severity: Low]
+This isn't a bug, but is "up to the register maximum" accurate for
+bcmgenet_pkt_rdy_thld()?
+
+The function clamps to ENET_THLD_MAX_LEN / ENET_THLD_UNIT, and
+ENET_THLD_MAX_LEN takes the smaller of the register limit and the page
+limit:
+
+#define ENET_THLD_MAX_LEN	min_t(unsigned int, \
+				      ENET_THLD_MAX * ENET_THLD_UNIT, \
+				      ENET_THLD_PAGE_LEN)
+
+The comment above ENET_THLD_PAGE_LEN says "on 4K pages the page bounds
+the threshold before the register does". On 64-bit with 4K pages,
+ENET_THLD_PAGE_LEN works out to 3584, below the register limit of 3840.
+That value is also where jumbo frames get split across descriptors.
+
+Could the comment refer to the page or ENET_THLD_MAX_LEN limit rather than
+the register maximum?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013-nb-genet-mtu-nn-v2-v5-0-076b6fc240be%40tipi-net.de
