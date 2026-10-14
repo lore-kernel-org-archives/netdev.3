@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8195326939;
-	Wed, 14 Oct 2026 08:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A6D328B7B;
+	Wed, 14 Oct 2026 08:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791965951; cv=none; b=eDmfRwJVQ8MvFUF9RwHSN63JL1cTvFfLzj3x5TDm6jDUF0K3gR2wYCBOmlW6gcvzK6cujhNnEWmp3hltUOqIAfVZuwb5dyf4k2zWtbeHZNxA0pfZYU2Bwzs4TwfYTsDvGjI7HB2Yy7p+/8h8xjJcx9pWjBfusQSa26RZgoyLVA4=
+	t=1791965952; cv=none; b=ZyEL9Bvl3j0fDcIb63xWGbPIZjb9/XlYFITAcuf0wT3BDchcPYejU7/V50lwDvuI9Z+9K2Jdmf8mpywkxrTTmid4HRJw+02X+xGyXizHrtdWLzF9D2osNiC4njqwLXFXuJL+/2rMC7yC8DpoQt1c/4bkqGdO4MNqp2Qdj3JM2ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791965951; c=relaxed/simple;
-	bh=SjSJw6pCZOUJ2X1r7t82P0Ce4PxeltY7O18RlWItVf8=;
+	s=arc-20240116; t=1791965952; c=relaxed/simple;
+	bh=MOTXdEXKbLS6PTHDQsxFNQj1jdGYsDtIQ4OmMQvYfeo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=glfjn32wYwCSagw4e02JRHO/cWuof/eFG3r3+u9Dg7QsVdso1P0mMUD2AAss0O3BjTYf3peHv94f6qnhru7vYJdzHvPeooM61zjZsBmlISFsrXNR3fVKAMvPByAysl6/ChhzQ3YI/a8vR+OEKZQ4yTD47lp8BZJi7GTTExkdVnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zd6ey+Eu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=qCF/0JsOX1FqrHAS2BUly67MyjAahR6Ul+ERNA3aDgIbEWQYQW7Fd0bP1IvGe7U3Ie8zF8LBRPjHOyoNDfy8aLsGAWkCaALsJPpqMSnvznqxm+j2ufnJ0UpvZ34vK5F+pdnjw/7hFV7785LAFDRSjpB3XfjE3iHYErzR94qN0cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQi8pTZL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zd6ey+Eu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA201F00893;
-	Wed, 14 Oct 2026 08:19:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQi8pTZL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFB71F000FF;
+	Wed, 14 Oct 2026 08:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791965947;
-	bh=vZRN8NGEDolZMnq7JpZse7Ya9jmA+E9xdQtZneRt9VE=;
+	s=k20260515; t=1791965948;
+	bh=3KS4ev/rtlfIGYSsC3d7hX48ktuhT+vRtKtrFW4p6P8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Zd6ey+EuUCm9L1iMT2+ExQeNLBEczm5dU2aenYH0LgmivkV+z4LPFmDW3SpZ2NE5n
-	 4lirQDBlApEwswzXSIqCOvVJNWfnRYQr1bE1pYSirnmgI9ht0tgavMJBPTj0p5TewY
-	 ORCSILL3Flne3i+7G5iHjF4804L2gXRUDkul7hqh/2qs0F2XyJ5s2/t4EZIXVMjbd+
-	 0mIdO+KmJGs208QCeVmImJ4SZulppG/hanM0nyeJfM5Fr/bvMfe+mYv7MLPmq3VmRE
-	 9SC7z6zqIS6F40+ytgHqwfpVkLBWFnp1AMCaveImwLXvq4pS+vbGjdFgVDejLQ7gDF
-	 CY4a90nEQ7jMg==
-Subject: Re: [PATCH net v2 1/3] xfrm: set the address family before the early
- invalid-state drop
+	b=YQi8pTZLILL0/KdmeKQ9Ke/y0va2/4m5xjdSaE0hwpwPNO610tmzhCKSxjYQdmi0B
+	 /K4Ni4hTDKuwJpfhpg3qBAVDQ7tiL4ImSmUMwk7s9+O92/EHtd964MyV6BR0MXkMAu
+	 uR73QW54v4cnUZsANwy0AWTbhkJ8RfAdI4Od5IzUoM8nFysMlx8x3mEDdYJAezWU5G
+	 qIJQXW+Lu+HGf/cRQCLowy5ptkkMG0mgOgvTF1qyIURK63ahjlP2uT+giRqT/NGC1p
+	 LGd1cw4MqVBFMp+y2d8//IrPYVqoUe4Vh8KtVmovGX7JxfRu3H6vYQjK2/X/Z+ZNJ1
+	 P5AqFvRXVi7Ow==
+Subject: Re: [PATCH net v2 2/3] xfrm: iptfs: run the receive callbacks before
+ freeing the skb
 From: netdev-bot+sashiko@kernel.org
 To: q.h.hack.winter@gmail.com
 Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
  herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
  idosch@nvidia.com, linux-kernel@vger.kernel.org
-Date: Wed, 14 Oct 2026 08:19:05 +0000
-Message-ID: <179196594590.434549.16209535905677172012@kernel.org>
-In-Reply-To: <20261013074610.17808-2-q.h.hack.winter@gmail.com>
-References: <20261013074610.17808-2-q.h.hack.winter@gmail.com>
+Date: Wed, 14 Oct 2026 08:19:07 +0000
+Message-ID: <179196594727.434549.2968330822013273555@kernel.org>
+In-Reply-To: <20261013074610.17808-3-q.h.hack.winter@gmail.com>
+References: <20261013074610.17808-3-q.h.hack.winter@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,10 +48,10 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 2 · Medium: 1 · Low: 1
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -59,166 +59,237 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] This patch makes the early invalid-state drop in xfrm_input()
-  (net/xfrm/xfrm_input.c) dispatch the receive callbacks.
-- [Medium] The Fixes: tag points to 5f24f41e8ea6 ("xfrm: Remove
-  inner/outer modes from input path", v6.4), but that commit did not…
+- [High] This patch converts only some of the IPTFS paths that free the
+  outer ESP skb, so the bug its commit message describes is still…
+- [High] xfrm_input_drop() now runs the per-protocol receive callbacks on
+  outer IPTFS skbs that may have been parked in the reorder window.
+- [Medium] xfrm_input_drop() always calls xfrm_rcv_cb() with err = -1.
+- [Low] The commit message says the receive callbacks must run because
+  "whatever they cached in the skb control buffer is never cleaned up".
 
 --
 
-xfrm: set the address family before the early invalid-state drop
+xfrm: iptfs: run the receive callbacks before freeing the skb
 
-This patch moves the family = x->props.family assignment in xfrm_input()
-above the XFRM_STATE_VALID check. The early invalid-state drop then
-reaches xfrm_rcv_cb() with a real family, not AF_UNSPEC, so the
-per-protocol receive callbacks get called for these packets.
-
-> Fixes: 5f24f41e8ea6 ("xfrm: Remove inner/outer modes from input path")
-
-[Severity: Medium]
-Is this the right commit for the Fixes: tag?
-
-5f24f41e8ea6 only changed one line, from this:
-
-    family = x->outer_mode.family;
-
-to this:
-
-    family = x->props.family;
-
-That line was already after the invalid-state check.
-
-The ordering that leaves family as AF_UNSPEC on the early drop seems to
-come from 4ce3dbe397d7 ("xfrm: Fix xfrm_input() to verify state is valid
-when (encap_type < 0)"). That commit added the AF_UNSPEC initialization
-and put the "x->km.state != XFRM_STATE_VALID ... goto drop" block ahead
-of the family assignment.
-
-With the current tag, 6.1.y, 5.15.y and 5.10.y have the same early drop
-but would not pick up this fix automatically.
-
-A later patch in this series, "xfrm: transfer the skb->dev reference to
-the input path", is tagged for all stable branches. In that patch,
-vti_input() and vti6_input_proto() take dev_hold(tunnel->dev). It relies
-on the receive callback to drop that reference on every drop path,
-including this early one.
-
-In a stable branch that gets that patch but not this one, the early drop
-would skip vti_rcv_cb() and leak the tunnel device reference.
-unregister_netdevice would then wait forever.
-
-Should this be:
-
-    Fixes: 4ce3dbe397d7 ("xfrm: Fix xfrm_input() to verify state is valid when (encap_type < 0)")
-
-and also be marked as a prerequisite of the reference-transfer patch?
+This patch adds xfrm_input_drop(). It runs the protocol receive callback
+with err = -1 and then frees the skb. The patch uses it in three places
+where IPTFS frees the outer skb: __input_process_payload(),
+iptfs_input_ordered() and the reorder-window freelist in iptfs_input().
 
 > diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-> index 5ed87d51392a5..ddf8fd75fd207 100644
+> index ddf8fd75fd207..f293d5e124d47 100644
 > --- a/net/xfrm/xfrm_input.c
 > +++ b/net/xfrm/xfrm_input.c
-> @@ -487,6 +487,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
->  				      encap_type == UDP_ENCAP_ESPINUDP))) {
->  		x = xfrm_input_state(skb);
->  		xfrm_proto = x->type ? x->type->proto : nexthdr;
-> +		family = x->props.family;
+> @@ -120,6 +120,25 @@ static int xfrm_rcv_cb(struct sk_buff *skb, unsigned int family, u8 protocol,
+>  	return ret;
+>  }
 >  
->  		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
->  			if (x->km.state == XFRM_STATE_ACQ)
+> +/* Finish an skb that is freed outside of xfrm_input()'s own drop path, e.g.
+> + * from IPTFS.  The receive callbacks must still run before the skb goes away.
+> + */
+
+[Severity: Low]
+The commit message says the callbacks need to run because "whatever they
+cached in the skb control buffer is never cleaned up". Is that accurate at
+this commit?
+
+None of the cb_handlers release anything when err is nonzero.
+vti_rcv_cb(), vti6_rcv_cb() and xfrmi_rcv_cb() only bump rx_errors and
+rx_dropped. esp4_rcv_cb() and esp6_rcv_cb() just return 0:
+
+net/ipv4/ip_vti.c:vti_rcv_cb() {
+    ...
+	if (err) {
+		DEV_STATS_INC(dev, rx_errors);
+		DEV_STATS_INC(dev, rx_dropped);
+
+		return 0;
+	}
+    ...
+}
+
+A later patch in the series, "xfrm: transfer the skb->dev reference to the
+input path", adds dev_hold() in vti_input()/vti6_input_proto() and
+dev_put() in these err branches. Once that patch is applied, the
+description is accurate.
+
+This patch carries Fixes: and Cc: stable. If it were backported without
+that follow-up, its only effect would be on device drop accounting. Could
+the commit message mention the dependency, or be reworded?
+
+> +void xfrm_input_drop(struct sk_buff *skb)
+> +{
+> +	struct sec_path *sp = skb_sec_path(skb);
+> +	struct xfrm_state *x;
+> +
+> +	if (!sp || !sp->len) {
+> +		kfree_skb(skb);
+> +		return;
+> +	}
+> +
+> +	x = sp->xvec[sp->len - 1];
+> +	xfrm_rcv_cb(skb, x->props.family, x->type ? x->type->proto : 0, -1);
+
+[Severity: Medium]
+err is always -1 here, whatever the reason the skb is being freed.
+
+In __input_process_payload(), the else if (!first_skb) branch is reached
+after real errors. It is also reached after valid outer packets that were
+fully consumed without starting a new inner packet. One example is a
+pad-only payload:
+
+net/xfrm/xfrm_iptfs.c:__input_process_payload() {
+    ...
+		} else if (iph->version == 0x0) {
+			/* pad */
+			data = tail;
+			break;
+    ...
+}
+
+Two other valid cases also end with first_skb == NULL:
+
+- A continuation-only payload, such as the middle fragment of a large
+  inner packet. Here iptfs_reassem_cont() returns data + fraglen == tail.
+- A payload whose only new data is a runt saved by
+  iptfs_input_save_runt().
+
+For these valid packets, will vti_rcv_cb(), vti6_rcv_cb() and
+xfrmi_rcv_cb() take their err branch and bump rx_errors and rx_dropped on
+the vti/vti6/xfrm interface? Before this patch, these paths ran no
+callback.
+
+The later patch in the series still passes -1 here, so the counts would
+still be wrong at the end of the series.
+
+> +	kfree_skb(skb);
+> +}
+> +EXPORT_SYMBOL(xfrm_input_drop);
 
 [ ... ]
 
-> @@ -500,8 +501,6 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
->  			goto drop;
->  		}
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 6920940a35b49..4b3d04e531a51 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+> @@ -1211,7 +1211,7 @@ static bool __input_process_payload(struct xfrm_state *x, u32 data,
+>  		 * either be save in ra_newskb, trimmed and sent on as an skb or
+>  		 * placed in defer to be freed.
+>  		 */
+> -		kfree_skb(skb);
+> +		xfrm_input_drop(skb);
 
 [Severity: High]
-On async resume (encap_type == -1), can this new callback dispatch touch
-skb->dev after its device reference has been dropped?
+This converts the !first_skb branch. Does the branch next to it still free
+the outer skb without running the callbacks?
 
-On the first pass, xfrm_input() takes a reference before calling the
-type's input handler. That reference is the only thing keeping skb->dev
-alive while async crypto runs:
+	if (defer) {
+		consume_skb(defer);
+	} else if (!first_skb) {
 
-    dev_hold(dev);
+defer is the outer root skb whenever the first inner packet can't reuse
+it. That covers the skb_has_frag_list() case, the head_frag/fragwalk case
+and the allocate-new fallback.
 
-    nexthdr = x->type->input(x, skb);
-    if (nexthdr == -EINPROGRESS) {
+defer is also the reused outer skb when pskb_trim() fails:
 
-When crypto completes, xfrm_input_resume() calls
-xfrm_input(skb, nexthdr, 0, -1). The SA may have left
-XFRM_STATE_VALID while crypto was running, for example through hard
-expiry, XFRM_MSG_DELSA or a flush. In that case the early branch drops
-the reference:
+		if (pskb_trim(first_skb, first_iplen)) {
+			/* error trimming */
+			list_del(&first_skb->list);
+			defer = first_skb;
+		}
 
-    if (encap_type == -1)
-        dev_put(dev);
-    goto drop;
+In both cases the skb is freed by consume_skb(defer) and no callback
+runs. The inner skbs come from iptfs_alloc_skb(), which zeroes cb, so no
+callback ever sees the outer skb's cb.
 
-The drop label then calls the callback:
+Other outer-skb free paths also skip xfrm_rcv_cb():
 
-    drop:
-        if (async)
-            dev_put(dev);
-        xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+- When the reused outer skb becomes xtfs->ra_newskb (first_skb_partial),
+  it can be freed by iptfs_drop_timer() via kfree_skb_reason(skb,
+  SKB_DROP_REASON_FRAG_REASM_TIMEOUT).
+- It can also be freed by __iptfs_reassem_done() with free == true, via
+  iptfs_reassem_abort().
+- It can also be freed by iptfs_destroy_state().
+- iptfs_destroy_state() frees the outer skbs still in xtfs->w_saved[] with
+  plain kfree_skb().
 
-Before this patch, family was still AF_UNSPEC at this point. The afinfo
-lookup failed and nothing touched skb->dev after the dev_put().
+The commit message says IPTFS "frees it directly on several paths, so the
+receive callbacks ... never run". The new comment says "The receive
+callbacks must still run before the skb goes away."
 
-With family set, xfrm4_rcv_cb()/xfrm6_rcv_cb() now walk the handlers.
-vti_rcv_cb() returns 1 when there is no tunnel, so the walk reaches
-xfrmi_rcv_cb().
+The last patch in the series adds dev_hold(tunnel->dev) in
+vti_input()/vti6_input_proto(). It relies on vti_rcv_cb()/vti6_rcv_cb()
+calling dev_put() on the error path, and it doesn't touch xfrm_iptfs.c.
 
-The resumed skb has a secpath, so the "err && !secpath_exists(skb)"
-early return is not taken. If xfrmi_lookup() matches the SA's if_id,
-this runs:
+At the end of the series, would each outer skb freed on these paths leak
+a reference on the vti/vti6 net_device? Deleting the device or its netns
+would then hang in netdev_wait_allrefs().
+
+>  	}
+>  	return true;
+>  }
+> @@ -1298,7 +1298,7 @@ static void iptfs_input_ordered(struct xfrm_state *x, struct sk_buff *skb)
+>  	if (!consumed) {
+>  		skb = skbseq.root_skb;
+>  		skb_abort_seq_read(&skbseq);
+> -		kfree_skb(skb);
+> +		xfrm_input_drop(skb);
+
+[Severity: High]
+iptfs_input_ordered() also processes outer skbs that
+__reorder_future_fits() and __reorder_future_shifts() parked in the
+reorder window. They are drained later, either from another softirq or
+from the iptfs_drop_timer() soft hrtimer:
+
+iptfs_drop_timer()
+    iptfs_input_ordered()
+        __input_process_payload() / !consumed
+            xfrm_input_drop()
+                xfrm_rcv_cb()
+                    xfrmi_rcv_cb()
+
+Nothing holds a reference on skb->dev or on the cached
+XFRM_TUNNEL_SKB_CB()->tunnel while the skb is parked. With synchronous
+crypto, xfrm_input() calls dev_put(dev) right after x->type->input()
+returns -EINPROGRESS.
+
+xfrmi_rcv_cb() dereferences skb->dev before it checks err:
 
 net/xfrm/xfrm_interface_core.c:xfrmi_rcv_cb() {
     ...
 	link = skb->dev->ifindex;
+	dev = xi->dev;
+	skb->dev = dev;
+
+	if (err) {
     ...
 }
 
-At that point the last extra reference on that device has just been
-dropped.
+If the ingress netdev is unregistered while the skb sits in w_saved, can
+this read a freed net_device? IPTFS has no netdev notifier, and
+unregistering the device doesn't flush w_saved. Before this patch, these
+paths only called kfree_skb(), which doesn't dereference skb->dev.
 
-The rcu_read_lock() in xfrm_input_get_afinfo() does not seem to protect
-this. netdev_wait_allrefs_any() goes ahead as soon as the refcount drops
-to 1. netdev_release() then frees the device with kvfree() and does not
-wait for an RCU grace period:
+At this commit, vti_rcv_cb()/vti6_rcv_cb() also call DEV_STATS_INC()
+through tunnel->dev without holding a reference. If the vti device was
+deleted in the meantime, that would write to freed memory.
 
-net/core/net-sysfs.c:netdev_release() {
-    ...
-	/* no need to wait for rcu grace period:
-	 * device is dead and about to be freed.
-	 */
-	kfree(rcu_access_pointer(dev->ifalias));
-	kvfree(dev);
-}
+The later patch "xfrm: transfer the skb->dev reference to the input path"
+fixes the vti part with dev_hold() in vti_input()/vti6_input_proto(). The
+xfrmi_rcv_cb() case still looks open at the end of the series.
 
-The success path uses the safe order: callback under rcu_read_lock(),
-then dev_put(dev). The commit message says the early drop now dispatches
-the callback "like every other drop does". The drop label's order is
-put first, then callback, so this patch adds a new reachable path with
-that order.
+The success path, xfrm_input(skb, 0, 0, -2) -> dev_net(skb->dev), already
+has the same dangling skb->dev problem. That part is pre-existing, but
+this patch extends it to the drop paths.
 
-The later patch "xfrm: transfer the skb->dev reference to the input
-path" in this series fixes the vti/vti6 side of this. It adds
-dev_hold(tunnel->dev) in vti_input() and vti6_input_proto(). It leaves
-the early-branch dev_put() and the drop label's dev_put()-then-callback
-order unchanged, so the xfrmi_rcv_cb() read of skb->dev->ifindex is
-still reachable at the end of the series.
+The freelist in iptfs_input() only ever holds the current inskb, so that
+hunk isn't affected.
 
-Would it work to let the drop label own the reference in the early
-branch (for example, by setting async = 1 instead of calling dev_put()
-directly)? The drop label could then call xfrm_rcv_cb() before
-dev_put(dev).
+>  	}
+>  }
 
-> -		family = x->props.family;
-> -
->  		/* An encap_type of -2 indicates reconstructed inner packet */
->  		if (encap_type == -2)
->  			goto resume_decapped;
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013074610.17808-1-q.h.hack.winter%40gmail.com
