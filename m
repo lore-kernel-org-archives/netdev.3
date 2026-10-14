@@ -1,166 +1,232 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011055.outbound.protection.outlook.com [52.101.70.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498A3524B0D
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791986694; cv=none; b=KyXMJvER2WWp8+VNia7iTHQhCRHB+0ouRqk3fyDmZ9XTX0LqiQqaPcSkNqEp4zS/SFm/+bf3F2v7a3JeMDfHIm5uCsxk1UOqXaC6nZOONjpshJ86uM8E0aRflWnGSBqybcW1tdJ4g9sDAIZxGVaubJwBHW8u2B5HC1+zk6g0gq8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791986694; c=relaxed/simple;
-	bh=4IeqOwaK2rrpKgev9njqDsFhx5MrGIsfZe95yekEfiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YLI9QP/od8MJV/K6qMj8nQgiSzaMg0Jq08fyXPtJ7R3ztKHSVLSkglG7qDglIgq88xbpbqGZTZw1/8kk/BwIaumXxBheLvhmZcjHlFcFSuL03B+YtDmMvU35D68MyrHkWXMHRouSX1TLqfqSexjG+88K+EgRj/36M5mIB1VAu9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X29gUViD; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA00E30E0EE;
+	Wed, 14 Oct 2026 14:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791986838; cv=fail; b=aHfkcpuFKoyIuvWpGmjM7XSpFHB0Q1g7ePly+lVJroI0oPJAJPmwZctj/Q3K1pVuSs44o2aYL43IhC5Qsfuin46yvH/R8+DvsN03pqvrTRGSzGVnGJfwFgTGFQmmhI9wvUGbYq0lV+IAn+bDEzwZR+SX6kjXlCS3CTjDldzIV8s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791986838; c=relaxed/simple;
+	bh=7Dv4aFaUbSEoMVsAh7qRb1Xbp3WvyJOfmGaB2VRjsR4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=CXRVrZozl6BfuHQSwmyiUo6p8dYykJe/6VWPoE2BIdwMJGIbwiOeNwCfCiqjuGpwBXCs5AGlSFkkrZ1UINz4C4S033Y5wC00Y89jNUerqbC5PR3KACsPXe7ZSumBgjLOvw+p1n7Sgl3+2qN4E89EdQrucv27hnLbfspm3ViDlz4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=SWYvVQH4; arc=fail smtp.client-ip=52.101.70.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X29gUViD"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2a6d40404fso55925966b.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 07:04:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791986690; x=1792591490; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=py4RYEm0XcehXYKw0bZP2hy4hM7I93auwoYlpwG9CAc=;
-        b=X29gUViDBn7wdG19oE+fqgU7scpwATQKElEOoiRT+AOiUNx9YSoSFch84I85xjtjWw
-         wpd3ctg7+91f/d5TROMidQREk/YX7+j5uwjilqVgkYse9RR2NMr7M6w356R/rbQPXPOh
-         vsflS0fUFBrlawhWaZBg2Tz/5c9lZHwPfqUPLVBZMsfxkGARGcZEkOIPggfkCofoHDKw
-         X7ps3haYIL2V1z1yMrgXE+2bZT40ERwkPfIuHFEp6bdjAuDCKuvGEUIrm1nudNuj1wZg
-         cEzLAJdwmsRmoz+QV4P/FEEMkJ2vsrZYuxS4zeaqc13e4uIF0DY+lJoIxkD9ctz1eh70
-         y5AA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791986690; x=1792591490;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=py4RYEm0XcehXYKw0bZP2hy4hM7I93auwoYlpwG9CAc=;
-        b=YonA5/yBqi9uA8iXRaecXPqSXliMZniG8/vFdvAeOHv5XGeqgKMhN5YMv8Dtw43kwY
-         ftK5tmh5E4XFJv93ho+uToCZ1+9HvDWXGlVOpZQZkXooz3sq7yMKkqoazFzHvf7rm6wQ
-         JtUOtc6gtSE3NUsnRYX5VtA98JohFATwM3WwxjwA1Bsu/+JwWvUO7+pIG1al+F1BRnmT
-         2Y4VaAIWviSbNoS1pQ7xwdU+TZbQZuy7jag0QDjebcuhpImNdWjp94aTwwCXTABMxqEA
-         YKChYbEvBd1cs1gPALbZzFjI61mBk9LfFTw+DuYVrFG07gS4jerxfZnVuWw0wHqKc2HW
-         AcCA==
-X-Gm-Message-State: AFq9FYL7JF11E62r4DI7M0TYNqWOqVD+2VPgqsp8MlzLbRxTm7Jnm4ZA
-	qYr4D83CuSg+avZ9rz8jZ/80P8QXH9T1Bd4NbUHkN51WwlxmpnKrXUO+
-X-Gm-Gg: AYBFou25ymULx7lKqMSaky7Sl3XtatxqUyNHPrdpoC8dRQqiPq+XhZQUiJowWIKi119
-	0pYvUZXTVczyvLqlHvfZjTHrb8EZ6LVK4dHkfUMmuoFGf3wPP8cWTLyma32V2iHumAqOa5gOJp8
-	D4eAsR1WsiOBDyG4Ogxs3Olhw6ci8wEo9QbrECitwI8lol2yK4lahuhbODTmZNRi4o4+oeofCQA
-	pZ0xo5lV31XoIjvmKWqaAw2X6XOfTDmp1BY7DCytO555eQWyxk8YoZubw6aXOOLiiiuIhE6ObVH
-	y8sitCAD/qlF4l9krTCXCPJrNaPbOrojivElCv16MvIQ1ax77uVEueFvq6+PbtV0wiAJBJTSb8W
-	ECzJgRiFhda7QzW4cqpjZPuzIJdU+Mdwr1WIXDmI0LlTovqT/EwfBbuJI4gSizG8eBr7XeraOEP
-	GwaCGgqVjxMPpXtP7BV3Yki8EYCsh25s4slVqMng078EYVAT2KdPw/5RVce5wn6Z3gSpq7lZlLc
-	mzUKYql1I2/gG2lZua/jlz9L18/u2Qgp0WULK5WLsdg0vDlKztL+MJmrUZHLVfbRIGtINzfc9A7
-	ks9LcVmrNemva603lAkoWaZMaRHhLe2MNxgsOd2Wl1Srv+vVCmhuFVnOglPskMC2fLHtq1jCF9r
-	90FHK7ZuQwJajtEVu2zC9/UEX2fTvrWs=
-X-Received: by 2002:a17:907:ea8f:b0:c2e:8801:9139 with SMTP id a640c23a62f3a-c31a9a065f7mr1436482366b.1.1791986690166;
-        Wed, 14 Oct 2026 07:04:50 -0700 (PDT)
-Received: from ?IPV6:2a02:3100:5ad1:60fc:7c7a:4c9b:4d41:afaf? (dynamic-2a02-3100-5ad1-60fc-7c7a-4c9b-4d41-afaf.310.pool.telefonica.de. [2a02:3100:5ad1:60fc:7c7a:4c9b:4d41:afaf])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9a3bbe2sm707482866b.27.2026.10.14.07.04.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Oct 2026 07:04:48 -0700 (PDT)
-Message-ID: <ea399b99-3ce4-4180-b960-d3c8e3b2ed7b@gmail.com>
-Date: Wed, 14 Oct 2026 16:04:46 +0200
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="SWYvVQH4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jMSoqCjAe88K932Sl5LR6L3X1tlAReT+O+kfHcHXNHNMD3EHuN8EZ3qjSiujUyxMw2rg/DuSQG7BKLlHhHhvOxGbN64r1i46xOAOs74EXPE8z6PER9Ls3NBtdaWrV7K9PBImKS1EpJ1MaGqoob5tbgjH5N8V7WiCghuM8Idid3ugTw9Lbs8LUT2T6Nw+gHDsKKCIjbEKLYvZFIxPGTzJXbLR2fBvkSV/c1lJmSyXQhCE7IhdNEJ79iD4auokHiltmAXwn6bBJ6NJaPi+Nf3SAHQvj7BAErUw9bqW+qyYIGEefH4vBsAy/Q7OFsZjtOTm0b75ji/2yZXHu69VZ2cPNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0knYD4PTfnrDYj2BE5MqF8qj2rOuMIrCF+0vtLWdKFc=;
+ b=tll7ONcj+LpomYR2epRYoZFUHWC6OA6mR533k8sDO1txuCIyc5x6Z75zYgusUGufYFj878cNItiOuXGOwAQWeRUexUOmfcakiwgIBVXs46oc9VINvbTcOuNgO9+gXlqHvjRY8AlHff1HOZzNRiMI7an46XjkRMaQRtDI2IpMDVic3MSJk/WBrLCjs2buWeQqAKbb+bCF/ibreIrBRr01B3E/HNSradk+WtPhnEouILNAbabbh3WE27kTXijnnxO8x5kzSaxeopPWuHd/o0BN/bIBnuCEsWHeVsN6LNICYmusasnNvr8lepdAmXW8Pvb1YCzs/OVOgdCigEZFgPY90g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0knYD4PTfnrDYj2BE5MqF8qj2rOuMIrCF+0vtLWdKFc=;
+ b=SWYvVQH4eoAuAddExdneEobQ4a0EugisndrylpsKmmSc7lej7SCPAvJN5zTMgnTQIkjNKYYfcYk0tW4OLynWxh8sqk1XaHF0cI3lq/d0Vv9eXQOclmoLefqv7vPo0LKabPxGpHG+uh+kmrpcFPOJNyS2I+yOZIehHr9DvNkfXKRkydO35nxFGEUbuXDTHMXd6/7pSxzLoYErHfh1zqxOtl/0Q6ILFzSngHjFyflEV/EN9Kv0wb7nfmnawisOvoSWkj4KHMCNh7VqfFxd0pdbYULYZKZI+WwEI0birSPCvDiQVLUhX9Ug0bqzTOF0wAC7tvUoTzCavMEGszlZ8WYxDA==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
+ by DUZPR04MB9845.eurprd04.prod.outlook.com (2603:10a6:10:4d8::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Wed, 14 Oct
+ 2026 14:07:04 +0000
+Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
+ ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0522.012; Wed, 14 Oct 2026
+ 14:07:03 +0000
+Date: Wed, 14 Oct 2026 09:06:46 -0500
+From: Frank Li <Frank.li@oss.nxp.com>
+To: Jan Petrous <jan.petrous@oss.nxp.com>
+Cc: Ciprian Marian Costea <ciprianmarian.costea@oss.nxp.com>,
+	NXP S32 Linux Team <s32@nxp.com>, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bogdan Hamciuc <bogdan.hamciuc@nxp.com>,
+	Ionut Vicovan <ionut.vicovan@nxp.com>, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Chester Lin <chester62515@gmail.com>,
+	Matthias Brugger <mbrugger@suse.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-phy@lists.infradead.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	imx@lists.linux.dev, linux-pci@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH RFC v3 03/12] dt-bindings: PCI: nxp,s32g-pcie: Fix SerDes
+ PHY phandle in example
+Message-ID: <as-MdloKd-7oJsUU@SMW015318>
+References: <20260919-s32g_serdes-v3-0-9d68868c1e89@oss.nxp.com>
+ <20260919-s32g_serdes-v3-3-9d68868c1e89@oss.nxp.com>
+ <as0qORxP0Roh9ktO@SMW015318>
+ <as5CIYxKJTra4hqM@lsv051416.swis.nl-cdc01.nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <as5CIYxKJTra4hqM@lsv051416.swis.nl-cdc01.nxp.com>
+X-ClientProxiedBy: CY8PR11CA0028.namprd11.prod.outlook.com
+ (2603:10b6:930:4a::14) To GV2PR04MB11799.eurprd04.prod.outlook.com
+ (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v7 1/4] net: hsr: keep GRO disabled on HSR/PRP ports
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
- shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
- qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
- xiaoliang.yang_1@nxp.com, skhawaja@google.com, liuhangbin@gmail.com,
- stable@vger.kernel.org, sdf.kernel@gmail.com
-References: <20261009201324.17-1-xiexinet@gmail.com>
- <20261009201324.17-2-xiexinet@gmail.com>
- <20261014132001.BzOkgyrC@linutronix.de>
-Content-Language: en-GB
-From: Xin Xie <xiexinet@gmail.com>
-Autocrypt: addr=xiexinet@gmail.com; keydata=
- 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
- sNySbH3veZ/55EtlXA==
-In-Reply-To: <20261014132001.BzOkgyrC@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|DUZPR04MB9845:EE_
+X-MS-Office365-Filtering-Correlation-Id: fbf40c06-1bcb-4bd7-61d3-08df29fc6c4b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|23010399003|1800799024|376014|7416014|366016|6133799003|22082099003|10067099003|18002099003|3023799007|11063799006|4143699003|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	hD40Yb1gfcLxcIVRMcMSkYUq5QeHQJ6LbH8j3c9xDOsM/1a+OEMVbzAEnOJAiwH3ifkHuN4M7Ue9EF9D+m8iXlO+lylwEPkgcIRV7ZFM9hQIMcM37XL3PTsxT+kBpGHDk3Nb1AtjCwi3l2mwGo7lY0tEOZWCKB1/b5CTrjo0vDYLkt1+mYUP55y3DKX4rncF+OugjehtgdTFzpLV9pmVZN/h8l0GfvkeuEIG3rtdWq6NrNB+gjVHqCCPAEr/Sc9sxks/ZOd+XeDuHEeuuXiayx8LTDIdYjMc9lM9x1Mg9TLsWy1p/b01Gsm3flqdQvx8SEmQJY6PhpHd/52fir61Dfk11fbAeD/pEscZIyWQEzkULRysduH0+ufFhpcvF5lJAkalV+tk6lGN7B9k3cVYZ7vKZp3amjeoSCXVuP6GIV7zZBsDVIvQg74B4EvTpflwq4NP/1q+blp1yZAjr4XglSXW+OdAh/lNRPCgYegGij/m/f537KffLwgI5G+WG7VkSntMjeqdO0gPN8CWfeX+rGjfb34KpyGUpk7R1mDYaASxAfObrHHJ1NQc5DCjC1311lKtEFLDEVWpTFbXU+Vhs6uGxK2dCuKLgaTBiNf9XsSyE4rXrsmdpjvJ9ow2VmlMnuoyW2Otywu/cEVB/AsKT/hmxMkvi2qvA9fttrLvaWY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(23010399003)(1800799024)(376014)(7416014)(366016)(6133799003)(22082099003)(10067099003)(18002099003)(3023799007)(11063799006)(4143699003)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?E++54nhll/b8CZAKz7RwlzS6+E1LH9Y/VcnKAONgLO8iIzSJh5lcLpgCipzE?=
+ =?us-ascii?Q?fTg+nlHr/ecORHsGrBMSsmDssHkcHxCwI+eejc8pDodE1bjOrcX4GPW99Af4?=
+ =?us-ascii?Q?AsVdYifyBAXVFHNv38BN2Y01gGFiftuYabXNEETrmAkx/0y//mJZ7vyI13KT?=
+ =?us-ascii?Q?zIUgZsZQCIpAp4CHpWUrVQFaLpKS5HfpI7nS3e2qxq0DDwr4LgtufoDd7T51?=
+ =?us-ascii?Q?lpcLFWTR1eT0RSQsR9jUHG9+flq47hTkmvKLC1KQuzkqQCjE/L4Hno2zZvKb?=
+ =?us-ascii?Q?2SeDTD9PHUsBWAummin169UxUtmT8uDECn32/fi3YpjzKvtL6G7fih0r3Dcs?=
+ =?us-ascii?Q?orSnesiBky6HY6d94IOvesIpOpLrjhgNhTeOmq3MCb22zM5wWrylYdh65WYY?=
+ =?us-ascii?Q?haPgkWqTndxf/yfKECQpcVctRdRDl0JBIWg7xXBf3nTwTHgp+0roSFjoGHN3?=
+ =?us-ascii?Q?q+oi8k5w5QEP2bxj7zpiBVkhAuav8kQ8DJIJiBTV+0u1uFioWkKn9QOujKGu?=
+ =?us-ascii?Q?t04pHlp+iYjgXtA0MAuhczXs1YpqoE0UKyLdXo2ypJFsmH1FJ2QeoFErWJOM?=
+ =?us-ascii?Q?SGZOx1MnV8Lex/xkcjmH+I+cWmOjfhGt8zrVErcMMwreZlaxp65pWKUvFi+4?=
+ =?us-ascii?Q?O5hH1bnO4yA5GGAsnqAyFY9LdUyhVEYLuAJs9w/RncDMhp0afN6bT0+0hYar?=
+ =?us-ascii?Q?vMkvg4L2P+S9Go907tA9Y9tkkDyLGUAZ/w2gHrx8LPMe/AKBWCUFJRkSWc3d?=
+ =?us-ascii?Q?U0yU1KKqBRB8HL30I5A6g3SJ8TUfow12oxTNyLtGXXqQU1IfP9edaHFluHpB?=
+ =?us-ascii?Q?rTwfIUN6n7x4jKmi8qng1Wn36s2zKoP9D582MQoXzcX43mfnjRYacs2WS/L6?=
+ =?us-ascii?Q?qtbSFkYU22ELss0zTUuVqvNgP2kkPhJXi9QSHKlKlccpUz6a0uX8h5/8wYLd?=
+ =?us-ascii?Q?OrpnJW6/2vPyCzg5rhnuZMTi4sWleTT2NjVrvCl1ySEZ+m7XzMnT2sOGgTub?=
+ =?us-ascii?Q?d5SdAlNvaVm6uS+Op17XmqhhHhjOXUVvFRJIlz1WugtEGOEFwv1Hi5J4YQQW?=
+ =?us-ascii?Q?ycApmqM7FAcf5xxKOW+HvooZWLlzC8HTuqQxPrAbzxzSAw2c1QeTo3dV9eN2?=
+ =?us-ascii?Q?AMrzmsbkQpIRRI2/2cYTgtzS7Qf26latX3ejkAFiyojmwsXvx5yeiY/WTZZ2?=
+ =?us-ascii?Q?m3gHp1Em5Nia390oI+b6cWOp5Xdkwa277PHZwGxrMqGtd6610JB15WRlhaV7?=
+ =?us-ascii?Q?GlcYXJGEFil8mV0jZdQJgZ33HJbinWBdBZCxaPkBNtzK3IUy0n8uy8hY2s/k?=
+ =?us-ascii?Q?2Hp+aPQ0tBF00HljhH+79E4mpTCmuGd0LnkQ5o4TLxNb0d7zoJgUjLVaI6aV?=
+ =?us-ascii?Q?iqWsOUd/kol8rJ9uqOln6HBjt0O9a3RSNSVuCz8Pmdv9Wz7XtMWr3jxYaJYe?=
+ =?us-ascii?Q?+Kmi+5ASYyjCGYp+yqtV/CWUAWf6cIljco7lvUC+Xfy9Rm9U/Uzmo/L+jF3d?=
+ =?us-ascii?Q?coFhgbNg2KqB9qBrn6RwpQk3qmaWbiSx54N+RPoapE0A8a1onak7su3WExK0?=
+ =?us-ascii?Q?nXFi+dajv91FrT6fB6HakdgGXL2gReQ8oBFiKfbfzcbuCFtXiI3gJUM+mepG?=
+ =?us-ascii?Q?ox1bxmfMdPVlpCNg6qjjUz1T2RuDX5W6Jb4OVwXZnJXe4t17olHcPTwcN5Qx?=
+ =?us-ascii?Q?xu+hFNb9lIkcHRSBGK0jOjiu4NRTdhbDNw9H5hJVVAxTqYgoa0inkWO9z/St?=
+ =?us-ascii?Q?J8Sh9XznSPmrYvXYmJEg0cBaR6CPw1ZsVUFNB7G03OPbLyRxB1Xz?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fbf40c06-1bcb-4bd7-61d3-08df29fc6c4b
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 14:07:03.8337
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: onGrR+0cx0Dm0pJ4FQFXvM0/eJ0xts5dCx8X5xSOLxC93PUNEeFLVCiTFWcNmG9DaVDdKz0lI5n2cttofix6Soq400PqnnVPnY91hzfj1kVAnQ8TD53vaQBBj+ypat4H
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9845
 
-> This looks better than what I remember from the previous version. Are
-> the bot's complains legitime?
+On Tue, Oct 13, 2026 at 04:37:21PM +0200, Jan Petrous wrote:
+> On Mon, Oct 12, 2026 at 01:43:05PM -0500, Frank Li wrote:
+> > On Sat, Sep 19, 2026 at 08:54:31AM +0200, Jan Petrous via B4 Relay wrote:
+> > > [You don't often get email from devnull+jan.petrous.oss.nxp.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> > >
+> > > From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+> > >
+> > > The example references the SerDes PHY as
+> > >
+> > >   phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> > >
+> > > i.e. the SerDes node itself with three PHY cells. That does not match
+> > > the SerDes binding: the per-lane child node is the generic PHY
+> > > provider and carries '#phy-cells = <0>', while the SerDes node itself
+> > > has no '#phy-cells' at all.
+> > >
+> > > Point the example at the PCIe lane child instead, which is also what
+> > > the S32G3 board device trees use. The dt-bindings/phy/phy.h include is
+> > > dropped along with the now-unused PHY_TYPE_PCIE constant.
+> > >
+> > > The schema itself is unchanged; 'phys: maxItems: 1' already describes
+> > > the corrected form.
+> > >
+> > > Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+> > > ---
+> > >  Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml | 3 +--
+> > >  1 file changed, 1 insertion(+), 2 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > > index 66a050028278..29323e50bd8b 100644
+> > > --- a/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > > +++ b/Documentation/devicetree/bindings/pci/nxp,s32g-pcie.yaml
+> > > @@ -82,7 +82,6 @@ unevaluatedProperties: false
+> > >  examples:
+> > >    - |
+> > >      #include <dt-bindings/interrupt-controller/arm-gic.h>
+> > > -    #include <dt-bindings/phy/phy.h>
+> > >
+> > >      bus {
+> > >          #address-cells = <2>;
+> > > @@ -124,7 +123,7 @@ examples:
+> > >                  ranges;
+> > >
+> > >                  device_type = "pci";
+> > > -                phys = <&serdes0 PHY_TYPE_PCIE 0 0>;
+> > > +                phys = <&serdes0_pcie0>;
+> >
+> > I don't think it fix somethings. The "serdes0" just a label, point to
+> > provider, which is not neccsary that "#phy-cells" is 0.
+> >
+> > Examples just show need how many phys and don't care about phy provider's
+> > arguments
+> >
+>
+> The example validates either way, agreed. The three cells are the
+> '#phy-cells = <3>' of the downstream nxp,s32cc-serdes binding, which
+> was never posted upstream; patch 1 is the only SerDes binding for S32G
+> and has no three-cell provider. I would rather have the example match
+> it.
+>
+> The form depends on the outcome of your patch 1 comment, so I will
+> keep this patch in sync with that. If you prefer the phys line
+> untouched, I can drop it and keep only the ranges fix v4 adds here.
 
-Yes, the Critical one is real.
+This patch is not important. suggest drop it.
 
-veth creates and deletes its NAPI instances based on wanted_features
-(veth_gro_requested() in veth_open() and veth_close()). This patch only
-clears NETIF_F_GRO from the active features. So after the attach,
-wanted_features still says "GRO on" while the feature is off.
+Frank
 
-Two things can go wrong because of that:
-
-- The member is up with GRO on, then gets attached. veth_set_features()
-  deletes the NAPIs. Later the member is set down and veth_close()
-  deletes them a second time. napi_disable() then waits forever.
-
-- The member is down with GRO on, gets attached, is set up, and is then
-  detached while still up. veth_open() created the NAPIs, and the
-  detach creates them again. That ends in the BUG_ON() in napi_enable().
-
-The v7 selftests always attach and detach the member while it is up, so
-they did not see either case. I already replied to the bot with
-"pw-bot: cr", but by mistake under the patch 4 report.
-
-My plan for v8: keep the persistent filter, but at the same place also
-clear GRO from the member's wanted_features. This is what
-netdev_sync_lower_features() does for the UPPER_DISABLES bits. Then
-requested and active GRO always agree, and veth does not need a change.
-The downside: after the member is detached, GRO stays off, and the user
-has to enable it again. LRO behaves the same way today.
-
-If you or the other maintainers prefer that veth is fixed instead, so
-that it looks at the active feature, I can do that.
-
-The Low one is only a comment problem. For stacked members (bond,
-macvlan, ...) GRO runs on the lower device, so "software GRO must be
-off before frames can arrive" is only true for direct members. Patch 3
-segments any GSO input anyway. I will fix the comment.
-
--- 
-Xin
+>
+> BR.
+> /Jan
+>
