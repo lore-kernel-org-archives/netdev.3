@@ -1,164 +1,282 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A00C568FD9
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792001721; cv=pass; b=o/HqvzHG7W5kDcCKXDk/NMZHnGUrMG9KM9f4v7SaYi9YsUQWejbcmEaHR2u+ZJG0HYdslOHBjpA/t5QUMx8oEiUbW1ynY7NcFu3yvlFSNLiNRz3YKgiJkok3wU2oP4uKj4z0q/xMZXXj7OG4//HYTUX/xcjMHDUTbMpOdXsJ9kY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792001721; c=relaxed/simple;
-	bh=ZDeZDQJcijxdIEcisFFhzJK1uUV77Ej4r8MxO3z/x0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZaBmKT8Z469nXR+fPBmCK55D+Zx21+0zY4chbpGcGufGgFNC1VM1Cd3scnx6vzQtSRJUch3mK/eZjtxqezdDnhpGjG3+OtD3bZFw6mqjrlj7CblRnQIOXf8BCmLwLDvDo3mnHQRlRH0IHk4gjBSajeTUIYDSDH7lYE7I9YDphEY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eDZW5tE0; arc=pass smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC54A563FD3
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792001839; cv=none; b=i3S9/Gk97AYmZShTUVXk7KmmJ2ph8WD3e1bRpRIBfs3KCDokIeXFqVMJwdlhVW0yISUQ11LTLuTKKwvtidA6y4mue7222rtycQTi00Ytxypc6WdRyoNGPWSC0SSuiLamyhSjvRR9yDWD+Xssbtz1p/tOAO+wAVEusIXZ21Bx4nk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792001839; c=relaxed/simple;
+	bh=Xx5nULan4QVuRTXNI1NFJhRusfZEsi2PG5h47ehcyrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PTyZACafPHFBxqORCn78byoo9EpNi1y+5hPwPRSGrIrCKrVklt47sR9E0dfTGDeBPs2iOceUOjBzr6dlI5q5aEKJO7ZzlWBGNxlyduqxhpXUwrODFI2/RSYkSbWtlJS8TpKuZFcbyMyKE8U3tk4jejwDZVVcT21NiDPMo9j6TBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lIHMrnQs; arc=none smtp.client-ip=74.125.227.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eDZW5tE0"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so254035ad.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:15:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792001719; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Cb2mL/0vjQDvU1+LqGuS+S0JdTSSCcT9Ab7ait8T0nm2r+mqp1A2ycNAYFzO1i1qqc
-         z5Vcrya71Hbjfbggk2NLOELxRDHXf0mU16x1Q+4ZZEyzH8Cy41qHvdBDkxSn95F/bFcy
-         m9ywFHE/dq7KfhvZKdHMqvMrawiPAUVaBIyQFZNUEKe/qiZ3WqCie6r07FimqfWq4t2C
-         /7dwXVo5i7b0rnW9npF5eU+WCVlNOukCY6tqy3iyMP8HZr6E2zklJyiWKRZ84uaV2qwD
-         l+F07wdcR8QfqENPhPZSGwNJIzio1WjkTjmwI2fL0A/aRYKWVqL0vyb5ItQIfC65d53K
-         gUlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ukWxxq7IJoiKFikFQrOXvwgn9jZTFnVv2R6ijBLFQBc=;
-        fh=v1sIcOhu63CKfBaOqSq3V00J0mzy7A/woFWPniAyXE4=;
-        b=DHzHCM2jn1f9nXqotfx+7E22YG8AnslCjlmcPaTJxdI6XMsCcDGZQpXXJ1oZREVZ4j
-         uPnhAhD4VzqNjiBE5pKuOxBlg6hIls0+zZ2yi3W1/KB8LsFF9RMwu49S+QdazWtFR6WP
-         uKukQZWjmnHH19AllPRHNjq8VbeHPDK7AdDGArQOyW4TZ4zgo8fvwzP0G05eOOeTNasD
-         0s6kN9fV4p55DLchI7scYRStWbyhunWRIg60GSZ0OnLBaydnKuzsKsDGB6DkOO59k5zi
-         2QypniNyg4HvXlIdNZs6FKLQ6jBFYcsEUI889p6XJSO5INVL6d4QdGQdU529qaFSgPVF
-         OJgA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lIHMrnQs"
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-39569e136f9so1419287a91.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:17:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792001719; x=1792606519; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ukWxxq7IJoiKFikFQrOXvwgn9jZTFnVv2R6ijBLFQBc=;
-        b=eDZW5tE0H0i3voxRY8dGPIy9d5/DPnjrUI5jZBS4x0h8n/nD0pw0WobLo5KLT9L0qE
-         kdA5Ttczp2IexcEIdWTMpnakZrUXPVKi6J4s+PLvirAd+g8KLRld3hKUgoDCEukl5cz5
-         2gxF+Budk4PGlFpKYcMhL2RjacadtMLfdXRooXjlvfYTjVdQunaPVKxFFYLTihepN2zo
-         oj0NJjwa0roM/fjLYG376bEkDiYLM8x+zsA6pGzOHO0LPlwOwSMPpeaBcFhRNdSXq1Vr
-         tB8GEHdz6igWH8FCPOIP/ujQiHNB+uwW9MTPkTqzwj0+PIqUUXNA3uK8+NGyAkH2in6t
-         EjlA==
+        d=gmail.com; s=20251104; t=1792001837; x=1792606637; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=erxCAcUn8St8A0pOQS2bMzQYd9phLIBWFqz+yo8v1OE=;
+        b=lIHMrnQsbK+FhWNaShe8SH/kOxcq1KWMK+sXBRBmCUJBmLF8r1+TuRp3WcGXgsA9tN
+         BffsE1Uzy+dm+lmj1s9cCBSvmJUNZ9w+BMmb/pYqHk+s/EfONmPAB4em5OyoXfiHsRLJ
+         y2Ui+nj9y4dqkUfbO7jVyk19BIzFv/Kg7mgE48gdWrPn0qVxxuN5LiXTcM3gkmgCNaUp
+         98ptx6oruYvtQsrLo2YYj/ZXV6zF6BFj5H/dAsf9V2vrRdBNkao+6NF3vJS4pCZDxDIf
+         bN5RxSxAvDNjtSIKwOhWxAq4kFJRmbHYJRLBiTRE/Ror1+zPEw+a1bwHTRsvILrvNQPB
+         NRqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792001719; x=1792606519;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ukWxxq7IJoiKFikFQrOXvwgn9jZTFnVv2R6ijBLFQBc=;
-        b=XTs9sfAedCatTn/EFNTp+RG+Gvv81FWIFiJdx3yR1Lwjbdq8KVL6suWPwa+OLYkJWX
-         kbB9fRJ1K5w9jHfacr32MdnzgzoSpoLYayeox6bLimZRzOma7L4Bs9lIo4UGYRgaEDjp
-         3WjlvAjlXk4bpTWDLyxRG8UxtO57IhlUhHe23VcvvHXhNODbxsGNHkdiFaNzLfRiTm+/
-         vom2k5L3M76dW3RmW05qr+MeYoph0hNPUkBmtlNfWX00aZi7GMUo6ALeaRzMwT4jdwla
-         k2THGHQOkuEOSommU+q25bt/0j/m3gZQ82y+U2/Bvoj/uefta6Dt6RkCmvfsPWbrsOtj
-         vwPw==
-X-Forwarded-Encrypted: i=1; AKwUvBzzz+KLFj7NhFDUI+FOdLrk8i+52ghxHF17sPVO3tfZF7hfT7xUcvCSvfV/0Ak/6cdtOAcMkf8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLhEjgY17tiN5KpB3mbyOAkfSrDu/uiXjvAs5bL8m9S7tMTbl1I
-	smktLhrL0Cf22RG2tK4XLH09XHwRkDGcTpHVaK7A32bRIh4CBX4dN7DzpOTkMN4jNnLl1PbnE59
-	cl0oKeFQKZjPqhjEmkQw54J+D9lMao3Ua8VBp8TPm
-X-Gm-Gg: AYBFou1VyBkXfW8MOfRvp86ScijBnlYeszqC1mCX6w87SucWQoNs/nXh93oEmwmRmiu
-	8xtd3l0ixih55/hl2hl6Vr6DNMGkbGRquEyblAHCEXAmxSRU7+n31Hfd6OFt8AolmoGt2NydI2Z
-	iMyicXXv4uPwyG4S+M/jOZdfjoXYqYHyjuDvX+tJ0qqL7VqKtmNRmwy4AtKHVzX+GCvULYoGqXO
-	t8ObStiseNWa4uJXCxCiwpQLUV72imX/DQ2sT51vc7+RtVqq6i8R4MzN2bEDBQvBw3Knd+2oo4o
-	CFtvpaEhFh47PvSvXeNdlWkZclR1kdGRQ7DL5Z+JPorrjmf7/uDAB3rW
-X-Received: by 2002:a17:902:ec86:b0:2e6:1013:ad57 with SMTP id
- d9443c01a7336-2e939d090a3mr4279565ad.12.1792001718105; Wed, 14 Oct 2026
- 11:15:18 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792001837; x=1792606637;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=erxCAcUn8St8A0pOQS2bMzQYd9phLIBWFqz+yo8v1OE=;
+        b=y5a1I9I8EAZW6apVa3OPSB/MZL8khfq0Wx81KLpBCxpAn1c97XLBAuzM0gtrOl73rh
+         51mEEygDIg1fTlTwSNHFjeHCOpm1KbY49js6BwMciTg03dxBN49xV0XLcUkvObD11eZN
+         8QfTm05yGzxYRcvumYb1mP7hoVaQ60ZfajNSpC98G+vsUiBXb+I6EOiXhDSb1TRm5XOH
+         IEUDy26D/B1Aj5SuP0gNfadUIoD9afzhglKiC0vACJRGpLsdDGuQuTz2hTyHjccfbAp3
+         Y5kfarMZvnwrjMep+EEDeGoLEG3FO46LgKSRgHMj6QDBLPQfoc9bRXS6eYMcrNpsZksd
+         G79g==
+X-Gm-Message-State: AFq9FYJlc75BCAoxeoWFoJLvVWSpk7UoVpPmi4/ZWnwbrVtIJGW7cdpA
+	Xgj4n4jdtc48si0Vk28LXHRpUgzAyXpjJOewPAymrtVXD9smmON9IJtk
+X-Gm-Gg: AYBFou2QIfkmLzL1eIUPXo+b7SlWNvBdMKcqFHGbb6nrS28uh6UdV5yHxNKB3PviXGo
+	GyupzeShAtno79PrHxBDY5sOPkifT2Whnux+suQcXOMfxLEh3Vs+ZkEmUTHKuLn85G2K7rUmuRv
+	6AAT2Chs9Ft66YbbyUl5EBtCVSOSoAMCGmxK6S0I4+I71N7CeIeidYmgpUB3C+e3lUZrDRI1Z6M
+	Wf1EWhh/AjoMm/mU92xHSQQmNvqbDCBIYid+CbXjEBgzGtdv8Fwje8ytc6PnN76uCaL28WbSluH
+	ifdiK4/5nKViwIR/G8zH99MD6GaajF/uChRteVGaoLpSnNVtTLyHFlk8VCwz64IEOidcNSlV+Dg
+	HGAYxXJTIaeUFdLgTSCAnxlFzS8eC6YSVZyWslFh3zFWtSpOA1lRPYZ2CSaimHgZMdufVtQIqT8
+	MF4TJ262RtYw0qeqid+waBky0CydQsdMLowgnaNRwGXE1xcEhWYeaf7AydEVVE3iPQxg==
+X-Received: by 2002:a17:90a:1504:b0:3ab:9f88:8073 with SMTP id 98e67ed59e1d1-3ab9f888354mr6390202a91.65.1792001836925;
+        Wed, 14 Oct 2026 11:17:16 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:74::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac93040182sm461921a91.1.2026.10.14.11.17.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 11:17:16 -0700 (PDT)
+Date: Wed, 14 Oct 2026 11:17:02 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Magnus Karlsson <magnus.karlsson@intel.com>, 
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, bpf@vger.kernel.org, 
+	Eric Dumazet <edumazet@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] xsk: freeze deferred pool teardown without
+ blocking unregister
+Message-ID: <as_G2lHKl75BdAH6@devvm7509.cco0.facebook.com>
+References: <20261013-xsk-suspend-teardown-v3-1-2d6be7602947@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261003212241.3432303-1-lrizzo@google.com> <8584c31e-fd93-4f1a-9929-e71c5d9ccd0f@nvidia.com>
-In-Reply-To: <8584c31e-fd93-4f1a-9929-e71c5d9ccd0f@nvidia.com>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Wed, 14 Oct 2026 20:14:41 +0200
-X-Gm-Features: AclHuK9G3FSCwwu9o-cWYwZA7nUn_K71LEEmvdGinw_0nCstr-Fs63NFljz-hj0
-Message-ID: <CAMOZA0JiGhVmc0PXajBzha3cBY-sdc3pz8eLCCbt6=hmsEh65Q@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261013-xsk-suspend-teardown-v3-1-2d6be7602947@gmail.com>
 
-On Wed, Oct 14, 2026 at 7:28=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com=
-> wrote:
->
-> Hi Luigi,
->
-> On 03.10.26 23:22, Luigi Rizzo wrote:
-> > Here is a subsystem called DMA_PMD on which I would like feedback on
-...
->
-> Thanks for the RFC. Here are my notes (some points rephrase what was alre=
-ady
-> said):
->
-> - On CoCo VMs it seems that the only way to opt in the IOMMU optimization=
- is to
->   also opt in the copy avoidance which is not always desirable.
->
-> - Having the pool generic opens up more visibility from the untrusted hos=
-t
->   side. Having device based pools at least isolates one device's memory f=
-rom
->   the rest of the system.
->
-> - Also, device driver could help with provisioning just the right amount =
-of
->   memory that is needed. And per device control also means that probably
->   you don't need to map everything RW to the IOMMU.
+On 10/13, James Hilliard wrote:
+> Deferred pool destruction calls ndo_bpf() under RTNL. system_wq is
+> not frozen during system sleep, so that callback can run after a
+> device has suspended and gated its clocks. Use system_freezable_wq
+> so running destruction finishes before device suspend and new work
+> waits until process thaw.
+> 
+> Keep assigned pools visible to NETDEV_UNREGISTER independently of
+> the socket list. A released socket has already left that list, but
+> its final pool put can queue destruction after workqueues freeze.
+> A resume-time unregister would then wait for a device reference
+> whose release cannot run until the resume completes.
+> 
+> Track assigned pools per netdev with netdev operations locking and detach
+> remaining pools after the notifier socket walk, including copy-mode pools.
+> This also covers leased queues without scanning pools from unrelated
+> devices or network namespaces. Remove the entry on assignment failure and
+> normal teardown. The deferred worker still owns the pool and later observes
+> the cleared device pointer, avoiding a second driver detach or put.
+> 
+> The lifetime problem was identified by code inspection of the deferred
+> release and system-sleep paths.
+> 
+> Fixes: 1c1efc2af158 ("xsk: Create and free buffer pool independently from umem")
+> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+> ---
+> Changes in v3:
+> - Protect the per-netdev pool list with netdev operations locking, as
+>   requested by Stanislav Fomichev and Björn Töpel.
+> - Assert operations locking for copy-mode assignment too, and share a
+>   locked detach helper so unregister holds the lock across the pool walk.
+> - Rebase onto current net.
+> - Link to v2: https://patch.msgid.link/20261005-xsk-suspend-teardown-v2-1-2d87228f4329@gmail.com
+> 
+> Changes in v2:
+> - Track assigned pools per netdev instead of scanning a global pool list.
+> - Keep deferred releases visible across queue changes and queue leases.
+> - Rebase onto current net.
+> - Link to v1: https://patch.msgid.link/20260930-xsk-suspend-teardown-v1-1-a6cac8c030be@gmail.com
+> ---
+>  include/linux/netdevice.h   |  5 +++++
+>  include/net/xsk_buff_pool.h |  3 +++
+>  net/xdp/xsk.c               |  5 +++++
+>  net/xdp/xsk_buff_pool.c     | 46 ++++++++++++++++++++++++++++++++++++++-------
+>  4 files changed, 52 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index 3cff2174dc03..ac257221c7c5 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -2545,6 +2545,11 @@ struct net_device {
+>  	/* protected by rtnl_lock */
+>  	struct bpf_xdp_entity	xdp_state[__MAX_XDP_MODE];
+>  
+> +#ifdef CONFIG_XDP_SOCKETS
+> +	/** @xsk_pools: assigned AF_XDP pools, ops protected */
+> +	struct hlist_head	xsk_pools;
+> +#endif
+> +
+>  	u8 dev_addr_shadow[MAX_ADDR_LEN];
+>  	netdevice_tracker	linkwatch_dev_tracker;
+>  	netdevice_tracker	watchdog_dev_tracker;
+> diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+> index a7df573784fd..02e89350faf9 100644
+> --- a/include/net/xsk_buff_pool.h
+> +++ b/include/net/xsk_buff_pool.h
+> @@ -48,6 +48,8 @@ struct xsk_buff_pool {
+>  	struct device *dev;
+>  	struct net_device *netdev;
+>  	struct list_head xsk_tx_list;
+> +	/* Assigned pools, including deferred releases; ops protected. */
+> +	struct hlist_node dev_node;
+>  	/* Protects modifications to the xsk_tx_list */
+>  	spinlock_t xsk_tx_list_lock;
+>  	refcount_t users;
+> @@ -119,6 +121,7 @@ bool xp_put_pool(struct xsk_buff_pool *pool);
+>  void xp_clear_dev(struct xsk_buff_pool *pool);
+>  void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
+>  void xp_del_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs);
+> +void xp_clear_dev_all(struct net_device *dev);
+>  
+>  /* AF_XDP, and XDP core. */
+>  void xp_free(struct xdp_buff_xsk *xskb);
+> diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> index 33475b180ea6..781ba46eb152 100644
+> --- a/net/xdp/xsk.c
+> +++ b/net/xdp/xsk.c
+> @@ -2145,6 +2145,11 @@ static int xsk_notifier(struct notifier_block *this,
+>  			mutex_unlock(&xs->mutex);
+>  		}
+>  		mutex_unlock(&net->xdp.lock);
+> +		/*
+> +		 * A released socket is no longer on xdp.list. Its pool can still
+> +		 * hold a device reference on the frozen release workqueue.
+> +		 */
+> +		xp_clear_dev_all(dev);
+>  		break;
+>  	}
+>  	return NOTIFY_DONE;
+> diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+> index 9d2d94f1fb75..5b9dcafd6882 100644
+> --- a/net/xdp/xsk_buff_pool.c
+> +++ b/net/xdp/xsk_buff_pool.c
+> @@ -173,6 +173,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+>  	int err = 0;
+ 
 
-Yes on all three. I am looking into providing more knobs for different leve=
-ls
-of opt-in and isolation, so users may adjust them according to the
-threat models and performance goals.
+[..]
 
-I am not especially worried about provisioning because the system is
-already reasonably adaptive, and leveraging existing caches, the waste
-the waste due to allocating 2MB units can be kept relatively small.
+>  	ASSERT_RTNL();
+> +	netdev_assert_locked_ops_compat(netdev);
 
-As an example, the update I am working on has the following:
-- a lean per-cpu cache that can be attached on top of a dma_pmd_pool,
-  similar to the one used by the buddy allocator. The dma_pmd_pool will hol=
-d
-  the 2MB pages, and the caches can buffer smaller sets, reducing the waste=
-.
-  Useful on the tx side.
-- on the receive side, one dma_pmd_pool per device will feed all
-  pagepools for that device (typically one per queue).
-  The pagepool is already a pretty good cache that does not
-  access the allocator often, so once again the waste due to
-  partially used pages is minimized.
+nit: can now drop ASSERT_RTNL? netdev_assert_locked_ops_compat should be
+enough.
 
-cheers
-luigi
+>  
+>  	force_zc = flags & XDP_ZEROCOPY;
+>  	force_copy = flags & XDP_COPY;
+> @@ -204,6 +205,11 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+>  	pool->cached_need_wakeup = XDP_WAKEUP_TX;
+>  
+>  	dev_hold(netdev);
+> +	/*
+> +	 * Socket removal precedes the final pool put. Keep the pool visible to
+> +	 * NETDEV_UNREGISTER even while release work is waiting for process thaw.
+> +	 */
+> +	hlist_add_head(&pool->dev_node, &netdev->xsk_pools);
+>  
+>  	if (force_copy)
+>  		/* For copy-mode, we are done. */
+> @@ -244,7 +250,6 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+>  	bpf.xsk.pool = pool;
+>  	bpf.xsk.queue_id = queue_id;
+>  
+> -	netdev_assert_locked_ops_compat(netdev);
+>  	err = netdev->netdev_ops->ndo_bpf(netdev, &bpf);
+>  	if (err)
+>  		goto err_unreg_pool;
+> @@ -265,6 +270,8 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+>  		err = 0; /* fallback to copy mode */
+>  	if (err) {
+>  		xsk_clear_pool_at_qid(netdev, queue_id);
+> +		hlist_del(&pool->dev_node);
+> +		pool->netdev = NULL;
+>  		dev_put(netdev);
+>  	}
+>  	return err;
+> @@ -287,19 +294,40 @@ int xp_assign_dev_shared(struct xsk_buff_pool *pool, struct xdp_sock *umem_xs,
+>  	return xp_assign_dev(pool, dev, queue_id, flags);
+>  }
+>  
+> +static void __xp_clear_dev(struct xsk_buff_pool *pool)
+> +{
+> +	struct net_device *netdev = pool->netdev;
+> +
+> +	netdev_assert_locked_ops_compat(netdev);
+> +	xp_disable_drv_zc(pool);
+> +	xsk_clear_pool_at_qid(netdev, pool->queue_id);
+> +	hlist_del(&pool->dev_node);
+> +	pool->netdev = NULL;
+> +	dev_put(netdev);
+> +}
+> +
+>  void xp_clear_dev(struct xsk_buff_pool *pool)
+>  {
+>  	struct net_device *netdev = pool->netdev;
+>  
+> -	if (!pool->netdev)
+> +	if (!netdev)
+>  		return;
+>  
+>  	netdev_lock_ops(netdev);
+> -	xp_disable_drv_zc(pool);
+> -	xsk_clear_pool_at_qid(pool->netdev, pool->queue_id);
+> -	pool->netdev = NULL;
+> +	__xp_clear_dev(pool);
+>  	netdev_unlock_ops(netdev);
+> -	dev_put(netdev);
+> +}
+> +
+> +void xp_clear_dev_all(struct net_device *dev)
+> +{
+> +	struct xsk_buff_pool *pool;
+> +	struct hlist_node *next;
+> +
+
+[..]
+
+> +	netdev_lock_ops(dev);
+> +	netdev_assert_locked_ops_compat(dev);
+
+And here also no need for netdev_assert_locked_ops_compat right after
+netdev_lock_ops. You have one in __xp_clear_dev, that should be enough.
+With that:
+
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
