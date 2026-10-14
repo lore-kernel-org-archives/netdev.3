@@ -1,79 +1,80 @@
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.remote-ip=209.85.214.169
 ARC-Seal: i=1; d=subspace.kernel.org; s=arc20261015; a=rsa-sha256; cv=none;
-	t=1792639595;
-	b=14KtFhrmJF85ANMrOaRzBfmBpRqgkZZk1JJlOJobWqr1mno3oAdrbiW2JECeCK38wZPl
-	 vhAwOMfVNiv8sZTH0g3LCblF5gg+WJljAl+/GZN4qhvxHTK4Fw78a5sGYqgBjBgn/1oVW
-	 CUNOGDgDGSuXoKRugtWd4qb9Yx1VjFmKz8ptNNdu9piKkvp3bswUnIc6/aAzhZOV67KAb
-	 hrk94LdKoLM65H0Zqvddh21BAJrCl2BmbJgpxNgK4KVBTvL3Rz5264f+xi/xItvmxm6lD
-	 +STgHXYMDAEVZur4a2ooRSIBrOpxU9OuOt97EqmaflpBz4VJsbjFXDs4so8Oaxg9q6w==
+	t=1792639608;
+	b=vuxBPb+fpTGp3xZV1n4TAO/RRppd3ox4OV/01yboSYbi+6PgrRIrxHlihtGjyHVx17Kd
+	 q9vbLw8LHLVfjyCMCspw2FoneYotfqCe4dcQ4Ya2KYzPGuN7Lk0CMntEv4goAbRSBAKAo
+	 QAx8q+Mors1n5JzqsrgKRs5Xf47nW4+4iKIs+WHztRvODoYjz1HN4IOaPVVTgGUISILP3
+	 ASyZGUIYKroDcF5DytDz6sMl8JMeOhvlcEs0w9wsEMldCe9tmxsG8K8h6PFWru4BUY4gq
+	 noHyA6pspmCVf6DXaMwIeKngYHSXSO9AAHSJr4V7ZK/bRaz0IzcYXAa4R6lpF7+VWjQ==
 ARC-Message-Signature: i=1; d=subspace.kernel.org; s=arc20261015;
-	a=rsa-sha256; c=relaxed/relaxed; t=1792639595;
+	a=rsa-sha256; c=relaxed/relaxed; t=1792639608;
 	h=DMARC-Filter:Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:To:Cc:Message-ID:From:
-	 Date:Subject;
-	bh=lX4RNbICX972FW4OAVw5ym3fC/m53d8AENW5nEWlcJ8=;
-	b=qmUlJU5+m96MMt1zihPiLRhtJ5Zgb90xj2aB2aepbVFo0vF/53g1L0VrJEj2uhb/rXua
-	 AL7LxdILh/BZOxOg99H/RVcdLAVpjwrMNZYReJYNICSDgfzI0sBp2xJVnj4J3DhGmj+Df
-	 U6eCNWK9NQDYbVB7MLb0xc2mFn27Zg/Z0l1Ylv7oupFK/l4lxJ1YSd7bEj9SttZrJVr1V
-	 hIzD8vP34k0scWbY+OHlXGIXeDI9pgvKhQ/2fh/MMyVCJMS7X1Jc4vS49HAOw6vCPJoKQ
-	 kgn3auc6rLCMmwnmZp38uJ+p7gw5D7LPB51FKSm+XcMTpCrgcXhT6RQBmSRQ94zjecA==
+	 X-Gm-Message-State:X-Gm-Gg:X-Received:Received:To:Cc:Message-ID:
+	 In-Reply-To:References:From:Date:Subject;
+	bh=RTU0GqXO0v09/wvq3q/okf4+AOCgqZ21ovd0A51lLqA=;
+	b=dICJW1TB5XWVzZ0XjOuXy6MYDSXT0CYad/4zKBuOKi515csoqUQdj8Op5djU8LpSAecw
+	 NTtKT3jBFeRH93i8nEttHk1RSvdCwA/B6+6fYVRoG7yeSQ59eZlhB7IMqm/4XDBdgmJ0G
+	 gblbIY6ejr+EwIeotgEj7TpqsZ/5sC2fRATrpHsug4VcaLaW5owprzJqUVJ0ozuLOIiro
+	 oAMbSrzB+VSWKZ8dR5y/JGHt8FwrVUFSnRCYDyq53PEdYSbO57aQlqeSK7osyY08ab9dW
+	 p6u4C4+2bsa8rRnP4HG2rn2pJ6Uqw6YV0DOVzYUokqPQF1gPbkWlfEAZ46QEpqc9Zsg==
 ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; 
 	dmarc=pass header.from=gmail.com;
 	spf=pass smtp.mailfrom=gmail.com;
-	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QfvazkSJ;
-	arc=none smtp.remote-ip=209.85.216.42
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	dkim=pass header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rWuQvC8M;
+	arc=none smtp.remote-ip=209.85.214.169
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CD6606A31A
-	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:26:35 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 41CD6606A31A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2B2606A31B
+	for <netdev@vger.kernel.org>; Thu, 22 Oct 2026 03:26:47 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.4.2 smtp.subspace.kernel.org 9C2B2606A31B
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=QfvazkSJ
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3ad0c2e71ebso148675a91.2
-        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:26:35 -0700 (PDT)
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20251104 header.b=rWuQvC8M
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2e9400d26b5so1808475ad.3
+        for <netdev@vger.kernel.org>; Wed, 21 Oct 2026 20:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792639594; x=1793244394; darn=vger.kernel.org;
-        h=subject:date:from:message-id:cc:to:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lX4RNbICX972FW4OAVw5ym3fC/m53d8AENW5nEWlcJ8=;
-        b=QfvazkSJWXw0qOJEJoelwgWwZpsp80Hd8HYYTcaIALRewjq/tp932zyup5X90PiHiD
-         BxlZK8+qRBDnEzSwuArwEf8Z01K7McbTUOfpdKclRs8Z1vMmjStQSzMm6/qQhAow3RQi
-         B3Bgu8Ryw3B9VUz0gFqVHRfR9YX41IoY9qM+P9KXpn6zp+O+ylh4hdgLLRKKtYa/qlE9
-         JO3UqxP2jVD34CiOZmvERNs3VHy6MVrsi/asyDKcL5lKHInJyN0sf4owj0Pf4hGGCcwU
-         VUqUP3R6V6OpNaJbTCd7bzLdCiVP1blX3/mipvHQWzAO1C6p32OIV3hjtWKkWaml+HUz
-         W8Lg==
+        d=gmail.com; s=20251104; t=1792639607; x=1793244407; darn=vger.kernel.org;
+        h=subject:date:from:references:in-reply-to:message-id:cc:to:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=RTU0GqXO0v09/wvq3q/okf4+AOCgqZ21ovd0A51lLqA=;
+        b=rWuQvC8M3vbhWL0gwShgWn64eK6HHwV7WO4raPHOcTNpPtHBSzlm8HZ7eaHZIGpKg9
+         N+cv+LdHK0Are1PSv5VLBPTCuV4qTpg7k0NHKFj+3swK89uNg8KuCObV937eNoAh5dEa
+         725mp7Ow03ThF6dI3YCxyGflDwVXh0+DTQi2sil4v00m/lwpfaLyiZhyhq2VshS41yP1
+         laJE/1MMNkqRzqFgJ5FtL5X5dqjWzqUUACxjppjPjhZmTjoJdbESvHj09QkIbIUk5fTg
+         jwIINxeJkwZXsBFAKzWbFDWOQ/+OMwniorKciuU/vMPMoS866NswpFzTuErYmwyhapur
+         c4Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792639594; x=1793244394;
-        h=subject:date:from:message-id:cc:to:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lX4RNbICX972FW4OAVw5ym3fC/m53d8AENW5nEWlcJ8=;
-        b=RxuFmq08p97AHegDHGls3PBzxM5Tv6kwaTJWLoheWkOhNU9P89ugfnzHENiGIFpYnb
-         zgjscsqq3PoARmYVUDjze/wP/ez4R8EfVmEu2+z1cZo3UmtadkLsahLmV5aMNt8WUgC1
-         pAZOpvRc/QhNrDed2lTmqjuIxFxIO6krjVIkdSjaFsElk1DkCJBUPj/fzy6APnllRWrV
-         07VqWbe+rZUKvfLBKdG3T3U0tszX8HDhgujxycQ7oH+VaPWTUmXGiBb3FQ+wjb4v94WJ
-         jdIHXGUzzW21PCEYB5EitQuMMEeTJD7lBPDXjJN9Z1In7EpQLE5ex4HJ1E/FULWnDGqZ
-         yURQ==
-X-Gm-Message-State: AFq9FYIuxCF2rPn5PMUaGt9BgAtRXM9mwir9Ouq1Akd0rPmF3kX1tFgE
-	F/tTdGAOZrTE6LNx3Q6c0IceOd8yn9BTUNiQFhiP9gG52a4gS7nrzR2L
-X-Gm-Gg: AYBFou3ZfGRy/qNI3kJO/T7goR4V0EEMqPZsny4G8QbXxxea+DRPwTp75fEPGcPERBm
-	yKjH4vJUK1nqs49B19tMXaKklRVYDrau7Z7GN9Pocbyi9khwBXFHjUFuImheGwNoP6Ss2HY0PDQ
-	OlaU9q4x2o5M/A9PLeOtRXnbbftd/MTyfoHBIKw4864zCWHTfXTHJGt9BrtR7Di3DBxMJAndGNW
-	qOodncnMbCMwYP28bFjXTNkbJTjmpELLdJUIszcXVgHPDNfr6di9nHr0PsiTNiysbSkAaHyFJeA
-	lA3RSw6oDvzWQhE0h8xIIbIwLvWJiU1BCGt6s5jQSJZSlEFx2WqtH58V+HIomRVBg/w1NbIjI8v
-	hcezfF+C9PiYPuZkD5mRhmaDhzqa2vzQzVBCWta3xxvnTyAZz6+LRaRkbvd7JnC0ehpaD7zJYoT
-	pqN1zkYOyn1R12mo3HNPXoBzBDB17tbWBHEaNfbSwWZQX2Joks/f6lqp8M+53FPgPBOpHHkGaKG
-	sOFLpPuZZ6z9wCglN14yRMIbZ3+NjomDPqUmlJRLGWdapfPAYkMUtrY6tT5jXlWTdHHEk3wie/w
-	PwCRemMKMRYL+0f+BAKY7g8=
-X-Received: by 2002:a17:90a:fd8f:b0:3ad:a84b:df1e with SMTP id 98e67ed59e1d1-3ada84bdf58mr1132570a91.1.1792639594449;
-        Wed, 21 Oct 2026 20:26:34 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792639607; x=1793244407;
+        h=subject:date:from:references:in-reply-to:message-id:cc:to:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RTU0GqXO0v09/wvq3q/okf4+AOCgqZ21ovd0A51lLqA=;
+        b=vPstcyXap/qge2DXsEsKLS4GJlo/+T/5MvEOGBsraCD9kQ2dbJUATbTHv96yFdH746
+         eSPpdCN0hbqyjmuiDALSpvkHTPqoTYih3V7508c2HODLjpsF6BkT48A+PkByd+6Z8u91
+         kTd3LXgscmIz/5GbGrj9YrqLUuvHgzNmVEjor6Mvi7XELHvmIxDOgQds2uvqkv4d3MaT
+         TglGrodZUuPCbTooi+Myi0PpN7Ap0J7Ui1Py9btPN5mzyxjlaKZKSXGLZCpxRVSUwAkV
+         1wJvK2gY0kv7Agx6KMwm46wPFhtmywUiorbaD7Qg0VHpodO4IXDEsQd/xWO7rvCaegH8
+         18nQ==
+X-Gm-Message-State: AFq9FYKIdRN/xzkkUQI1WGApaIYtKn2eQfMq3+OB3ip92sfGrbhLiB/S
+	6WIOxxSMLPFLMnXr8rSV863lVGUrmH4o+/ibYnCsPPXYk9T8fbyvilFp
+X-Gm-Gg: AYBFou2eyalkb0ZRtrTxjTfgR6LAVo4CKrRJn7gwOQ7Svhk8QU9c3Txb3OvaSnoRNY/
+	S8nbfeCiWOJiPv2oKeaP7GmuOSViHmMrnnKurSKO8QUhEirM193xayDh3rXlMuz6o1UDfaCo4Xp
+	VEeimb0jqjVlWc1Sytr5Z7jDzTTH8oou4amAnfXHvp+edzNHAWntQEGOFbG4f3XxJvLWxd7fCID
+	N8JzJIxXEs0RTdrEJwGI8/tRvHOSnxuFRBT1HUKHhMyqzwN2EdYDfzcbfi7uh4w69BKr3qGjWo+
+	wfx4RMI016IFpx1f703gh7KO5MiChsiSZm86EdTH/Rfj5W//ofU4ef6WRhlDy/DBOehdy8ZhceV
+	lVe/2SKc1KN4nBEJxmNEtgCTpcwKzxVzigi5nqdhfGYcYgu5d10W0z+uLGomMd17gtEmbo6rB0g
+	b79vFOpJdddpN5ElGwcw2eLTWpA70eoaB3zKbYQYsdj0aqHzJAoE722pYwWp2CqfT9JpD+gSlBK
+	0vQR71mqMI1g2Vps+RCorggRuKgzrSRysYagd1bxOcQKM6CqJgB26gEEM0Ryt8IEA90A48IS+7+
+	+Rwp7vBluLsRCQLJPYKXJg==
+X-Received: by 2002:a17:90b:3a50:b0:3a8:1759:2217 with SMTP id 98e67ed59e1d1-3ad86dc96d7mr5811919a91.2.1792639606844;
+        Wed, 21 Oct 2026 20:26:46 -0700 (PDT)
 Received: from msg ([188.253.120.76])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada488550esm2116014a91.3.2026.10.21.20.26.29
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ada48bb6f1sm2001732a91.14.2026.10.21.20.26.40
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 21 Oct 2026 20:26:34 -0700 (PDT)
+        Wed, 21 Oct 2026 20:26:46 -0700 (PDT)
 To: netdev@vger.kernel.org
 Cc: steffen.klassert@secunet.com,
 	chopps@labn.net,
@@ -86,10 +87,13 @@ Cc: steffen.klassert@secunet.com,
 	dsahern@kernel.org,
 	idosch@nvidia.com,
 	linux-kernel@vger.kernel.org
-Message-ID: <20261022032129.16118-1-q.h.hack.winter@gmail.com>
+Message-ID: <20261022032129.16118-2-q.h.hack.winter@gmail.com>
+In-Reply-To: <20261022032129.16118-1-q.h.hack.winter@gmail.com>
+References: <20261022032129.16118-1-q.h.hack.winter@gmail.com>
 From: Qihang <q.h.hack.winter@gmail.com>
-Date: Mon, 19 Oct 2026 23:22:48 +0800
-Subject: [PATCH net v6 0/3] xfrm: fix vti tunnel device use-after-free across async crypto resumption
+Date: Wed, 14 Oct 2026 21:17:00 +0800
+Subject: [PATCH net v6 1/3] xfrm: run the receive callback before dropping the
+ skb->dev reference
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Post: <mailto:netdev@vger.kernel.org>
@@ -99,100 +103,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 List-Owner: <mailto:netdev+owner@vger.kernel.org>
 Precedence: list
 
-This replaces the earlier vti/vti6 series and the reference-transfer
-rework.
+The drop path in xfrm_input() releases the skb->dev reference that is
+held across an async resumption before it runs the receive callbacks.
+The callbacks may still dereference skb->dev, xfrmi_rcv_cb() reads
+skb->dev->ifindex, so they can race a concurrent teardown of the
+device.  Run the callbacks first and drop the reference afterwards,
+like the success path does.
 
-vti_input() and vti6_input_proto() cache the tunnel pointer in the skb
-control buffer without taking a reference. With async crypto, the
-receive callback runs from crypto completion and may run after the
-tunnel device has been torn down, causing a use-after-free when the
-callback dereferences the cached tunnel.
+The early drop for a state that is no longer valid releases the
+reference on its own; let the drop label handle that reference too.
 
-The input hook takes a reference on the tunnel device when caching the
-tunnel. A successful receive callback leaves the cached tunnel in place;
-xfrm_input() releases the reference on every exit, including after
-delivery and on drop paths. The error callback only updates the error
-counters, so the common drop path releases the tunnel reference after
-the skb has been freed. IPTFS, which can free or consume the outer skb
-itself, releases the reference through xfrm_input_drop() or
-xfrm_input_consume().
+Fixes: 1c428b038400 ("xfrm: hold dev ref until after transport_finish NF_HOOK")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
+---
+ net/xfrm/xfrm_input.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Patch 3 relies on the first two patches: the receive callback must run
-before the async skb->dev reference is dropped, and the address family
-must be available on the early invalid-state drop path.
-
-The issue was found by source audit of the VTI input path (LLM-assisted
-review): the tunnel pointer cached in the skb control buffer is
-dereferenced by the receive callback, which with async crypto can run
-after the device has been torn down, and nothing keeps the device alive
-across that window.  It was confirmed with a KASAN reproducer on arm64
-(async ESP; deleting the VTI device inside the crypto window gives
-"slab-use-after-free in vti_rcv_cb").
-
-Changes since v5:
-- cover letter only: record how the issue was found.
-
-Changes since v4:
-- IPTFS: when an inner packet fails validation, __input_process_payload()
-  can reach the drop path before the inner packets queued for delivery
-  are sent. Drop those queued packets as well so the outer skb's tunnel
-  device reference is not leaked (found by the Sashiko review of v4 3/3).
-
-Changes since v3:
-- the cached pointer is always a tunnel; the address family selects its
-  type, and a non-NULL tunnel slot denotes one held device reference
-- xfrm_input() takes the tunnel device out of the skb before
-  gro_cells_receive()/transport_finish(), which may consume the skb
-- the device reference is dropped only after the skb has been freed,
-  including on error paths
-- IPTFS passes the state's address family explicitly instead of
-  inferring it from the secpath; consumed skbs keep consume_skb()
-  semantics and drop paths keep their skb drop reason
-- drop the xfrmi changes: it re-looks up the interface and does not
-  participate in the reference transfer
-- merge the reference and IPTFS changes into one patch so the series
-  remains bisectable
-- the gro_cells NAPI window is pre-existing and is documented, not
-  changed
-
-Runtime testing (aarch64 QEMU; KASAN for UAF detection):
-- VTI async success and error: RTM_DELLINK completes without a KASAN
-  report; the unfixed tree reports slab-use-after-free in vti_rcv_cb.
-- Async resume with the SA deleted during the crypto window: the
-  reference is released and the device is removed; with patch 2
-  reverted, xfrm_input_take_tunnel_dev() warns and
-  unregister_netdevice() waits for vti0.
-- IPTFS outer-skb free: RTM_DELLINK completes; with the
-  !first_skb xfrm_input_drop() reverted to kfree_skb(), the reference
-  leaks and unregister_netdevice() waits for vti0.
-- IPTFS aggregated payload with a valid first inner packet followed by
-  an inner packet with an invalid IPv4 header length: RTM_DELLINK
-  completes; without the sublist drain, the tunnel device reference
-  leaks and unregister_netdevice() waits for vti0 (Usage count = 2).
-
-The IPTFS timer/reorder/state-teardown paths are covered by code audit,
-not by dedicated runtime triggers.
-
-Previous versions:
-  https://lore.kernel.org/netdev/20261019153247.89957-1-q.h.hack.winter@gmail.com/ (v5)
-  https://lore.kernel.org/netdev/20261018090638.55686-1-q.h.hack.winter@gmail.com/ (v4)
-  https://lore.kernel.org/netdev/20261013074610.17808-1-q.h.hack.winter@gmail.com/ (v2)
-  https://lore.kernel.org/netdev/20260930090813.73901-1-q.h.hack.winter@gmail.com/ (v1)
-
-
-Qihang (3):
-  xfrm: run the receive callback before dropping the skb->dev reference
-  xfrm: set the address family before the early invalid-state drop
-  xfrm: hold the tunnel device reference across the input path
-
- net/ipv4/ip_vti.c      |  3 ++
- net/ipv6/ip6_vti.c     |  2 ++
- net/ipv6/xfrm6_input.c |  3 ++
- net/xfrm/xfrm_inout.h  |  4 +++
- net/xfrm/xfrm_input.c  | 63 +++++++++++++++++++++++++++++++++++++++++-
- net/xfrm/xfrm_iptfs.c  | 42 ++++++++++++++++++----------
- 6 files changed, 105 insertions(+), 19 deletions(-)
-
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 5ed87d51392a..94de4f698c33 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -496,7 +496,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 					       LINUX_MIB_XFRMINSTATEINVALID);
+ 
+ 			if (encap_type == -1)
+-				dev_put(dev);
++				async = 1;
+ 			goto drop;
+ 		}
+ 
+@@ -779,9 +779,9 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ drop_unlock:
+ 	spin_unlock(&x->lock);
+ drop:
++	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+ 	if (async)
+ 		dev_put(dev);
+-	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+ 	kfree_skb(skb);
+ 	return 0;
+ }
 -- 
 2.54.0 (Apple Git-157)
 
