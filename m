@@ -1,143 +1,195 @@
-Received: from mail-pz2-f6.google.com (mail-pz2-f6.google.com [74.125.228.6])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17C8551982
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.6
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791995640; cv=none; b=IrQcgQGaolsfT8GTcK91FGRwzOJKQu5E6T8N3WErW17rtj9bh79MDguYgJbGpL6XQuJbgcd1rm7jI+EqRXiObsuSokcmSu1hZo2tJIcAbARe+U0D27lLk35ETeWnUpBwLYOtRAor5Wdgv03KwoLmq8pzLu750K4sFZFyM7dOXSs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791995640; c=relaxed/simple;
-	bh=03prvWYuPM9S8kmgrWoC3fCmFozkGleIo9XhNkVgCtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=od1ODIx2Z8pVyFApgiwLAFDmdx5sXeTluMBhoVlEUyF8JB+CfFp6EuG8cfq3QA/xeIFdZxp9KeBRyEDFkZnboEGMhVJiPQBHgqYo6i8g0/o1WY5OjjI7f8SFxy3HH1F9SqLSwQ69Y5zToU+U1fzGAvY3xMysVq36x6INOWs/KuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pd7irBGa; arc=none smtp.client-ip=74.125.228.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4969A560AA8
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:44:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791996247; cv=pass; b=M+PcJ2u6CxEpwCL89l/nKxjVxWF1xSOWHhY6zaS/mkqfmeCYDESqEXYTJdGdzNIc3OMxFtzvhLCkB4PiunEA6QGRzZ1OpUBKSCIMDC8x6kt/pXsWxrBJBiAsq1bNSoM763/ROIq15g4EBf+mRNbOc1WywYusyJP8e6soyojJKqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791996247; c=relaxed/simple;
+	bh=MMVXINMr7JZIMgeHG/AqGaqfPCjKzr4ZpfV8KNupDrs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q8hp9q1EjpqXCtkfWLC1+LeBOMu0Qzq350YcHNDdkAHKL1G7oPH2GHnbylzLxnT5PIrwB2W6rrBpSPoaB57wTDdl21ubQQZyvFBri9QAsW8wvvhgJXVX9sxwj0R6ubU9tU8mw4KH0rDV8tT1xZoPsiTuu44m7FjT1KBmOXWWSjM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITh5ZqJA; arc=pass smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pd7irBGa"
-Received: by mail-pz2-f6.google.com with SMTP id 41be03b00d2f7-cc790c60953so252207a12.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:33:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITh5ZqJA"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48b042c0759so3273423f8f.2
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:44:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791996242; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FtEZ0Zp/XxsPEdGIDYuykE44IExzSYH3iDRcj6DzFktThGYz5BnB09PFDJuAAmXfCE
+         ZXWa4Lngib0caXuEwbqBlulqOAEPck0Ey9PqHusnb5r3P6zW6w+bjKZ7/QyObKz5uYib
+         V1aikuxSDkPwbdSBRsvvEKYdGipr1CanmYmbM2iwM0R5a88Zq+4M/xOSanyVZpvaemc8
+         jsUHoP+zOIuUsH+Q1Ef8znnFkUR9SIxAr4sxL6r8JOuHwMPfbwt40kISLpVLXmq0Pf9T
+         mzDYNzSXtS0IKjJhF9upbtJ5EaRsHRvZxxjGmPhXen58jfKePzPqYjmD6KB93IfXl3Vo
+         //Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9q0DwdLIhqOGN7zNyyRQRC7CNxZQsLpoJL1VH7y7f/Y=;
+        fh=GepoLgv6F2zxv3TON2DqB1r3SZJ0HVPQonCY5A/x3qQ=;
+        b=cI732NsUJVSrAoIxe4Msdd/9LE4KgXe3Wd6ugeqOob7kcZwgbPO83HmqSK05iB47mA
+         sAN1HVw7o7cggECB13VrNX6zWfdH8kJkoM4ZyzBWakQ6Mp+LtLsZxow6nH9hIiZe4zJa
+         AWseklobUFLRhQLsCkMaMP604qKGoE+P+/QUl+shTzBIT6uKkb29F88xggyeVjT/i3I9
+         44h1Udrx8J016S/5xlPLIIUswEqde6WtskQTnCiej4pcYEqX3ShW87Yv/2feP548ZbzH
+         X8+U5D0VlDURZoAR42ziZbU/4R1cOrsgUA5k6wg6bgLlZUqsa4v55uOCOFNpLffyLXJz
+         Jt8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791995639; x=1792600439; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1791996242; x=1792601042; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Gzw9aMKz/xODwzz6jPerfVV+ZDaTeiwtt+GIjli64uI=;
-        b=Pd7irBGaIfGk47A4W8byWcdXxiyBIqvKEbA9YhOh3SRQ6mJyIKIRRLuIPMYQAvnKMs
-         TiiQbQe1X9LW8PMlgREmTed2G73VpjPu9b/hQC6M7174NlPobQQvYC7JbWww84NvkGVc
-         jaPpkkunMPeYYbs7LRpYE1NB3orJeiitk5w+ztYeo5vRK1StrQIIlrqN8LPbbwn/q7pl
-         LyTa9PdacwnhwmfVzvAYeCHjMCxA/kI1BexjubiZ4KYMJIByLay2i2hNOuiNpYiGNnZr
-         oredyfHyKPao1I1MMDdfl/UgbblGTGEjrFSK49edHqKhn/nAtTq070F5HAFN7V6SOwU9
-         2M8g==
+        bh=9q0DwdLIhqOGN7zNyyRQRC7CNxZQsLpoJL1VH7y7f/Y=;
+        b=ITh5ZqJAGwUOL+qfGJ5aTDDRPWjr/F2s5ihb2gm7iLg1wULunz/3uz8Tld7bXRQepF
+         LRwChIWZxumyb7DM/dsI/5+hm6Ks0TkoTKm70QllgZPgwsD3TNGriXksOxbwCWKd0Rs5
+         cVQk3vVlHCKQkaQRXhQJMgcV6wVOAE49kcKVxsEA/k4FJIx6RWAsfQAXgmWkRfRkwQWY
+         NSLMpbLWNbS5eS2B5m5NKZv+zb9XCIP4E+qpnxN0IVTbPSNy7h/XpID9J3dqlqMx3A0E
+         Q318TeIJISdhqZo8fqJOhM0QkuBViOyaT+RxQ2Pihf/QSPHxxqzAdbVaYSNceYD3TL/H
+         6hmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791995639; x=1792600439;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1791996242; x=1792601042;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Gzw9aMKz/xODwzz6jPerfVV+ZDaTeiwtt+GIjli64uI=;
-        b=auvlHfK1//JPnQUpxy9WkTdGSmpVsbcHcAx3CkUDnNMOFBQOTM/soZ0ZGHFn1sA8RR
-         Fnzfpv8wttIsk/RzQ75BAdVbqs6ZPa80HekzwXWpeplQp0LG7lWrK9gECPg5vyZtWAAK
-         7kxKi2EeuCYecwQnXkzf0wNUbPDFJJ2/otYzBvo4Jt/6BnN88M/UsPquB92wGVaZLf4+
-         Pu8C7jBMsU4/WcMB6vnXzlxBPPyAUIBeyX7fIqIQr+CvqrbmpB0/N2fSGpCrBCYy9i8a
-         S+3cpfiwuaTqBAQC8yy48uyFxl15t0c9NVKvOPGf3BJCdZJr02+VYP1JoUwqAN1OqQAo
-         czsQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxOr885sELI6Ic1kKpVWka3oqA6U69EPIlmC2nzK+WL0oJz6w3jnvzpDXwJuIXvu5TrUT2MkcM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJeTyeS46+wOp67B/Ma8sZvLhnf/kp56CuT34uj3DPe1rHWDw2s
-	GXiF7cHHD7Q6EEXjHWZtLaEI8YH44fCY6j2eWouqM5W6UuQp6EkAijRQ
-X-Gm-Gg: AYBFou2y8K74OJCauG05SRV9+CmNo/3GQ36MJAfIPiknpIvf6ZV9wKO2bIwiE4D6a1w
-	+e68A4qWVztFWWU+5L2W+NaYFo3FUGVXaiAIR2TN0P/k9p47lyG+4B1Oqi0929Vvoj4yJ/AvKD0
-	SRDwOBEWmBaXDyiyfK1YpDsJeVVgWCep52pu0l5wbD7HsmlPv2VVIPoJBUeGXgN64PqNlrmpkv5
-	xMnUIyYkloWpXu6DXAiCwJVMjpFX5rvKQ4aA1FZSZaPtQ3fj93Ds3VuRxEyvtle8+Nz3m0Xp2M5
-	3RTq+zXFWz8KlZR+CcJpZvtLjTYCeKe11jUDpPtviu9Gvn/qPnidKFeCbNtD2T6H5YPEVNMpd2W
-	JdWxYIs5uqZhc6964F3jTw3UoUSR4mPCa466uu+xHcP7KHWVconOAUKS6JxHGiWvyxuRLRtdlOh
-	hg2JYy3WuyxHvFpzWrwCKzitbam/dMnH9GKTvCS9UcO2kyh9G+yblvo1puliDz8SHr
-X-Received: by 2002:a05:6a00:8c4:b0:891:a63c:df97 with SMTP id d2e1a72fcca58-897c6443681mr15560946b3a.15.1791995639007;
-        Wed, 14 Oct 2026 09:33:59 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:59::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89d80511d47sm1291926b3a.54.2026.10.14.09.33.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 09:33:58 -0700 (PDT)
-Date: Wed, 14 Oct 2026 09:33:38 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, David Wei <dw@davidwei.uk>, 
-	Pavel Begunkov <asml.silence@gmail.com>, Taehee Yoo <ap420073@gmail.com>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Paolo Abeni <pabeni@redhat.com>, 
-	Kaiyuan Zhang <kaiyuanz@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-media@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
-	Nikolay Aleksandrov <razor@blackwall.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Tariq Toukan <tariqt@nvidia.com>, Kaifeng Wang <kaifengw@google.com>
-Subject: Re: [PATCH net v2 1/4] net: devmem: unmap dma_buf synchronously on
- queue uninstall
-Message-ID: <as-uBvRisS7HxLHJ@devvm7509.cco0.facebook.com>
-References: <20261012174300.2338784-1-almasrymina@google.com>
- <20261012174300.2338784-2-almasrymina@google.com>
+        bh=9q0DwdLIhqOGN7zNyyRQRC7CNxZQsLpoJL1VH7y7f/Y=;
+        b=SAmuKhX7dv4Nu3VGPcO8UvYTiirPthGp2mMs/Ix9Oyu1uDtisjUaohn309yo+FmS2F
+         PrLOIWGR3thi6WJ++qOLt3yK9qJ6pp/BdP7VHRoHBn3Lun3Zvbz1PqPlZM6NJ0dBtod6
+         XyMqHB9iimLZ12mlmt9vhOK3vvZ+84O+R7m6D4KWEeE1edQof/PrnujJEb//fNgnhjk/
+         lMOfyKZesGEWF9mhVlL99DsHjPyFnxmb8xz5Tp2IRZ4/VxdaillSZMpcGCfKEw02BdZJ
+         C8/1QMonNqPDopA8i6NI9cWS5PEqrIQsw4FhmGiLYmgKwEgsUu3jtDe9SHs6uGhvJnWS
+         Cp/Q==
+X-Forwarded-Encrypted: i=1; AKwUvByxuL9OWIWRn1XrGv42npbYNdXl7ADNMPzY8xOP+0AMILtQgewAYoawzcEuGN9uLniR/EHQGvU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKVJftKGHU8mdWkZe4YVkOzJ43BWH+9nr/ewjKC+NRH/MO4LRiz
+	VtK8j1SHHSabphKQHrbbRTgtdHqBJQe6mICnZaMlSFWZS9k9sjiGMPIGlU5dS1GesKzoEIALX+u
+	BhxFK6qSmszOBlbsewyIVwoI2gjp9q2w=
+X-Gm-Gg: AYBFou0cpeWGwCuInvvZ7eIoVnROBjYQqj7hyD9gJNwtat5MCeLFNcYaBEiK2awlDHT
+	xrnQKw7YRnEKqKJNOZqmydLpgC5AArmRTYrJkJHzKZtN9nduFxG+0zdBauMZQaFjfRGrW5N5OKU
+	9IHyZb4hbbv0Pihq6GLbZ7rGH8FQY4WoFa6CvDUheU8znCtbcm4BJarMFYAZZ7f1zMHAvg5Boqz
+	omKbmgB09I2ELW2fs+hfkPnoYL1nWPRd4132DhBYBgGPB9GWUCKoV9JVP5QPzbBa9iAGHS33mLh
+	vwhIWmtxomJuKVP09uLex4iIUEh2pPACnvaD59oWpx73e5MqxxpZrKh12R5uh7g/C9xUoFwp3Ju
+	xnYNcK/TZeqzHkPKnu4b+c+WjWcWPfBhP2rBD5o8O3Aq/peBeLgDVEgJMtRFUmX+bTTWEB+UIXQ
+	==
+X-Received: by 2002:a05:6000:987:b0:488:7787:469d with SMTP id
+ ffacd0b85a97d-48df14ed887mr2129597f8f.25.1791996242209; Wed, 14 Oct 2026
+ 09:44:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261012174300.2338784-2-almasrymina@google.com>
+References: <20261014-miic-validate-dtb-v3-v4-0-b7da71b3a106@reliablecontrols.com>
+ <20261014-miic-validate-dtb-v3-v4-2-b7da71b3a106@reliablecontrols.com>
+In-Reply-To: <20261014-miic-validate-dtb-v3-v4-2-b7da71b3a106@reliablecontrols.com>
+From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Date: Wed, 14 Oct 2026 17:43:34 +0100
+X-Gm-Features: AclHuK9L-1D3Yt6ZN3HGXxulOCvvWz_eF-6S1YFQfIBvUb-SHdPO_MInoJxTrNw
+Message-ID: <CA+V-a8v-YXma2NbeWP0Fhz+Fa5gmmq3oSPEZuKrDZhy6MHWcMw@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 2/2] net: pcs: rzn1-miic: Validate dtb
+ configuration values
+To: khendry@reliablecontrols.com
+Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Simon Horman <horms@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/12, Mina Almasry wrote:
-> When a bound net_device is unregistered while userspace still holds a
-> netlink or TCP socket reference on a devmem binding,
-> mp_dmabuf_devmem_uninstall() clears binding->dev to NULL so
-> netdev_nl_sock_priv_destroy() will not touch the unregistered
-> net_device, but leaves the dma_buf attachment mapped until
-> __net_devmem_dmabuf_binding_free() runs later on socket close.
-> 
-> Because dma_buf_attach() does not take a reference on dma_dev, device
-> removal frees dma_dev while the attachment is still mapped. Closing the
-> netlink socket afterwards triggers a slab use-after-free in
-> dma_unmap_sg_attrs():
-> 
->   BUG: KASAN: slab-use-after-free in dma_unmap_sg_attrs+0x76/0x2b0
->   Read of size 8 at addr ffff88810fae64b0 by task kworker/3:1/53
->   Workqueue: events __net_devmem_dmabuf_binding_free
->   Call Trace:
->    dma_unmap_sg_attrs+0x76/0x2b0
->    unmap_udmabuf+0x8e/0x100
->    dma_buf_unmap_attachment+0x145/0x330
->    dma_buf_unmap_attachment_unlocked+0x96/0x130
->    __net_devmem_dmabuf_binding_free+0x156/0x2e0
->   Freed by task 9:
->    kfree+0x1b8/0x550
->    nsim_bus_dev_release+0xe/0x60
->    device_release+0xcf/0x250
-> 
-> Add net_devmem_dmabuf_binding_unmap() serialized under binding->lock
-> and null out binding->sgt and binding->attachment after unmapping so
-> unmapping is idempotent across queue uninstall and deferred binding
-> destruction. Call it synchronously when the last bound RX queue is
-> uninstalled in mp_dmabuf_devmem_uninstall(), except when a leased
-> queue is unleased: the physical device is still registered and, if
-> restarting its queue failed, may still be using the binding.
-> 
-> The same use-after-free happens when the netlink socket is closed
-> before the device is removed but RX tokens or the pending release work
-> keep the binding alive. Such bindings are no longer installed on any
-> queue and were already erased from net_devmem_dmabuf_bindings. Keep
-> bindings in net_devmem_dmabuf_bindings until they are freed, hide
-> unbound ones from TX lookups with an xarray mark, and on
-> NETDEV_UNREGISTER clear binding->dev of unbound RX bindings for the
-> device and unmap them, unless the device is a virtual device leasing
+On Wed, Oct 14, 2026 at 4:37=E2=80=AFPM Kyle Hendry via B4 Relay
+<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
+>
+> From: Kyle Hendry <khendry@reliablecontrols.com>
+>
+> Bad configuration values from the dtb could result in out of bounds array
+> access. Verify parsed values are within range for the SoC and fail the
+> probe if invalid.
+>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+> ---
+>  drivers/net/pcs/pcs-rzn1-miic.c | 26 +++++++++++++++++++++++++-
+>  1 file changed, 25 insertions(+), 1 deletion(-)
+>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[..]
+Cheers,
+Prabhakar
 
-> queues, for the same reason as above. net_devmem_lock serializes that
-> walk with the final free.
-
-Can you explain net_devmem_lock a bit more? In
-net_devmem_dev_unregister, why can you not net_devmem_lookup_dmabuf and
-then rely on the binding->lock? The rest looks good, but the
-new lock seems a bit excessive?
+> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-m=
+iic.c
+> index 31716241b58f..f8bafce26bf1 100644
+> --- a/drivers/net/pcs/pcs-rzn1-miic.c
+> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
+> @@ -693,16 +693,39 @@ static int miic_parse_dt(struct miic *miic, u32 *mo=
+de_cfg)
+>         memset(dt_val, MIIC_MODCTRL_CONF_NONE,
+>                sizeof(*dt_val) * miic->of_data->conf_conv_count);
+>
+> -       if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf)=
+ =3D=3D 0)
+> +       if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf)=
+ =3D=3D 0) {
+> +               if (conf >=3D miic->of_data->conf_to_string_count) {
+> +                       dev_err(miic->dev, "Port input configuration out =
+of range: %d\n",
+> +                               conf);
+> +                       ret =3D -EINVAL;
+> +                       goto err;
+> +               }
+>                 dt_val[0] =3D conf;
+> +       }
+>
+>         for_each_available_child_of_node(np, conv) {
+>                 if (of_property_read_u32(conv, "reg", &port))
+>                         continue;
+>
+> +               if (port < miic->of_data->miic_port_start ||
+> +                   port > miic->of_data->miic_port_last) {
+> +                       dev_err(miic->dev, "Port number out of range: %d\=
+n", port);
+> +                       of_node_put(conv);
+> +                       ret =3D -EINVAL;
+> +                       goto err;
+> +               }
+> +
+>                 if (of_property_read_u32(conv, "renesas,miic-input", &con=
+f))
+>                         continue;
+>
+> +               if (conf >=3D miic->of_data->conf_to_string_count) {
+> +                       dev_err(miic->dev, "Port %d configuration out of =
+range: %d\n",
+> +                               port, conf);
+> +                       of_node_put(conv);
+> +                       ret =3D -EINVAL;
+> +                       goto err;
+> +               }
+> +
+>                 /* Adjust for 0 based index */
+>                 dt_val[port + !miic->of_data->miic_port_start] =3D conf;
+>
+> @@ -712,6 +735,7 @@ static int miic_parse_dt(struct miic *miic, u32 *mode=
+_cfg)
+>         }
+>
+>         ret =3D miic_match_dt_conf(miic, dt_val, mode_cfg);
+> +err:
+>         kfree(dt_val);
+>
+>         return ret;
+>
+> --
+> 2.43.0
+>
+>
+>
