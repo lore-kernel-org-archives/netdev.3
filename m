@@ -1,152 +1,114 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318691D9A66;
-	Wed, 14 Oct 2026 06:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEE42D23A6;
+	Wed, 14 Oct 2026 06:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791957883; cv=none; b=Bl7yfei1/EFmLw7/D5hALAMdlUsBH4N7Js+ccVHOV21qCFQbI5AOabEBXR9jBVPULLmzYxDbC0A1CObLbxs+fNCDs838mnWbflkj+e2NpJBI3sDgtbhQxyuNQpc8ZiLz8Gjb2g7wiOYkmZ0Sx2v2C6g3vm2mz6O+vO60mKk11h0=
+	t=1791958122; cv=none; b=FZcYrPhHh1xmEWiVLxbrh0zsy5E9riVc3N2PlqZYOtREPo9WgO8kNwNzPLtoqH3KDCKuZBFuJT0HJnTCif5TMQqIj7CAoaLIZkIeWhS6adOrf6gepP3PMK/nM2jYZsv+LXDAHQs6wVdWekeLjj/ZOeutZpx+mry1KicVPYDTOG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791957883; c=relaxed/simple;
-	bh=CWocyKd0KcfyoIDxuwCFFDOae8Flhfzy+TOJNvb4svo=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=GI61luKc4rTTxkJKKagOgibrXB44WkBq0biTqfQcONBhdGaoWVb0SsWga9WXoW0f/HFwbpSX2f5wlRsDme2MP7YC5kGQLol+rvIpnSD1YWsIH2DFckiWgqvh82NpusmyFi8dvgkPiOl9YYFgwO011iqUJXNPg8wajHBfDuSGeo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4j4LJF2xX9z8Xrrj;
-	Wed, 14 Oct 2026 14:04:29 +0800 (CST)
-Received: from njb2app05.zte.com.cn ([10.55.22.121])
-	by mse-fl2.zte.com.cn with SMTP id 69E63uil094341;
-	Wed, 14 Oct 2026 14:04:22 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njb2app05[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Wed, 14 Oct 2026 14:04:24 +0800 (CST)
-X-Zmail-TransId: 2afd6acf1b6816e-58a49
-X-Mailer: Zmail v1.0
-Message-ID: <202610141404241184u7jiwKOMwCRlD6_Dqpnu@zte.com.cn>
-In-Reply-To: <20261001130652.1038851-1-horms@kernel.org>
-References: 202609282024273579VUWteKdnnbvWlyjERLQ-@zte.com.cn,20261001130652.1038851-1-horms@kernel.org
-Date: Wed, 14 Oct 2026 14:04:24 +0800 (CST)
+	s=arc-20240116; t=1791958122; c=relaxed/simple;
+	bh=GRSZNsf+QHJX/h1fyRZ6q1w2Yh25nGjUFvhpmQKeDN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O6t8RnvvJNVmauepf+hf8Efznm8+QZBV/V1a42mFlOewRV75mA8JC+XrA44xOXvzEwY2ndTxsJiT+lBFpb5c1Q6mY+inrYc2pMq21HzfT6oE5EII5V1pedgAi1GZavHnLJutJQTcTvQRLSplTaNW80s0LKTavfHp0gXVyrYhOXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MYpQJnO3; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MYpQJnO3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=ic
+	myl/IGq96hz/NgoyoogxTowXyKer1gdJWsLVRkjwE=; b=MYpQJnO34Wcs1f7/Qf
+	v6m2zwYDBt05TzR6hxnLoN3+J5N8JhVkwefl6n8fmKUwUE/v2d4ubl+hQGkojDqA
+	XRtsqh68gNWKQAOEd1L0ddqrhNtyUcB2DBfzMcX46V8bQjd3W6ISVB1sQva14DYv
+	TNGbvVv1LTazd3VJhxg9NQrjA=
+Received: from colol4bi5.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3179FHM9q18NZEg--.64391S2;
+	Wed, 14 Oct 2026 14:08:06 +0800 (CST)
+From: Binbin Deng <18983559317@163.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Binbin Deng <18983559317@163.com>
+Subject: [PATCH net v1] net: sit: unlink PRL list before RCU free
+Date: Wed, 14 Oct 2026 14:08:03 +0800
+Message-ID: <20261014060803.286885-1-18983559317@163.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <horms@kernel.org>
-Cc: <horms@kernel.org>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <ran.ming@zte.com.cn>, <han.chengfei@zte.com.cn>,
-        <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBuZXQtbmV4dCB2NCAxLzNdIGRpbmdoYWk6IGFkZCBmaXJtd2FyZSB2ZXJzaW9uIGNoZWNrIGFuZCBSSVNDLVYgcmVhZGluZXNzIHBvbGxpbmc=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 69E63uil094341
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Wed, 14 Oct 2026 14:04:29 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6ACF1B6D.000/4j4LJF2xX9z8Xrrj
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3179FHM9q18NZEg--.64391S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Cw1kKFWDtF4rWr18Ww48WFg_yoW8Zw4Upr
+	WSg395tF4DJr18AF4ftF18Cr1xAFs3JF9rW3sa9rsYy3Zxuw40qa42kayqkFsxCFWrGF45
+	t3ZYqa45Ja1UG3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRhjjDUUUUU=
+X-CM-SenderInfo: jprymmytvvmjmrxbiqqrwthudrp/xtbC-AamimrPHEbt7gAA3q
 
-Hi Simon,
-thanks for the reviews.
+Deleting all PRL entries queues the old list for RCU freeing before
+t->prl is cleared. A reader that enters an RCU critical section after
+call_rcu() but before the pointer is cleared can still fetch the old
+list, and that critical section is not guaranteed to be covered by the
+grace period associated with the callback. RTNL does not prevent this
+race: RCU readers do not acquire it and the writer remains preemptible.
+It can lead to use-after-free.
 
-Replying to the AI review :
-> [Severity: High]
-> Does this code verify the BAR length before calculating offsets into BAR 0?
-> 
-> The driver computes fixed offsets into BAR 0 (ZXDH_FW_COMPAT_OFFSET at 0x5400,
-> and later ZXDH_RISCV_HB_OFFSET at 0x5300) without validating that the reported
-> BAR length is large enough.
-> 
-> If a malformed PCI device, emulated device, or corrupt PCI configuration space
-> presents a BAR smaller than 0x5400 plus the size of the structure, can this lead
-> to an out-of-bounds MMIO read and page fault during probe?
+BUG: KASAN: slab-use-after-free in ipip6_rcv+0x165b/0x1d60 [sit]
+Read of size 4 at addr ffff888003aac488 by task poc38/3102
+Allocated by task 3106:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ __kmalloc_cache_noprof+0x158/0x370
+ ipip6_tunnel_siocdevprivate+0x96b/0xde0 [sit]
+ dev_ifsioc+0x776/0x1530
+ dev_ioctl+0x6ca/0xdd0
+ sock_ioctl+0x42f/0x590
+__x64_sys_ioctl+0x134/0x1c0
+ do_syscall_64+0xf9/0x540
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-These offsets are part of the device interface, not something
-negotiated at runtime: BAR 0 is mapped in full at probe time
-(zxdh_pf_pci_init() ioremaps pci_resource_len(pdev, 0)), and
-ZXDH_FW_COMPAT_OFFSET / ZXDH_RISCV_HB_OFFSET are fixed regions
-of the hardware spec that our own firmware implements. A BAR
-too small for them can only come from a device misimplementing
-its own spec, which is not a condition this driver defends
-against.
+Freed by task 3100:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x43/0x70
+ kfree+0x121/0x380
+ prl_list_destroy_rcu+0x32/0x60 [sit]
+ rcu_core+0x50a/0x1740
+ handle_softirqs+0x18e/0x590
+ __irq_exit_rcu+0x60/0x130
+ sysvec_apic_timer_interrupt+0x36/0x80
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
 
-> [Severity: High]
-> Is there a performance regression here where this loop forces an unconditional
-> 20-second delay on legacy firmware?
-> 
-> If the driver probes legacy hardware that predates the compatibility region,
-> the region permanently contains the erased pattern (0xFF). Since legacy
-> firmware never writes to this region, zxdh_pf_fw_compat_ready() will not see
-> the fields lose their 0xFF values, meaning the loop waits for the entire
-> timeout before proceeding.
-> 
-> Could this delay severely degrade system boot or module load times?
+Fix by clearing the publication pointer before call_rcu().
 
-This wait is the legacy-firmware detection itself, not a
-regression: legacy firmware keeps the erased pattern in the
-region, which is indistinguishable from slow firmware until the
-timeout expires. The assumption is logged with dev_info(), and
-the 20 s stay well within the udev settle timeout.
+Fixes: ef9a9d1183b3 ("ipv6 sit: RCU conversion phase I")
+Signed-off-by: Binbin Deng <18983559317@163.com>
+---
+ net/ipv6/sit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> [Severity: Low]
-> Are we passing 1,000,000 microseconds to usleep_range() in this macro?
-> 
-> The readx_poll_timeout macro expands to use usleep_range() for its sleep
-> intervals. Passing USEC_PER_SEC exceeds the recommended 20ms maximum for
-> usleep_range(), exhausting hrtimers unnecessarily.
-> 
-> Would it be better to use a smaller polling interval (e.g., 20ms) or a macro
-> that utilizes msleep() to avoid this timer regression?
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 19b7fa8d1a2a..b850f06fd734 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -447,8 +447,8 @@ ipip6_tunnel_del_prl(struct ip_tunnel *t, struct ip_tunnel_prl *a)
+ 		x = rtnl_dereference(t->prl);
+ 		if (x) {
+ 			t->prl_count = 0;
++			RCU_INIT_POINTER(t->prl, NULL);
+ 			call_rcu(&x->rcu_head, prl_list_destroy_rcu);
+-			t->prl = NULL;
+ 		}
+ 	}
+ out:
+-- 
+2.43.0
 
-The quoted 20 ms cap comes from the removed timers-howto.rst;
-neither its replacement nor the current usleep_range() docs
-state such a limit. readx_poll_timeout() documents sleep_us as
-the maximum interval between reads and sleeps
-(sleep_us >> 2) + 1 .. sleep_us, so each iteration here sleeps
-250 ms..1 s — matching the seconds-scale nature of the wait.
-Same for the riscv_power_on wait below.
-
-> [Severity: Medium]
-> Could this logic incorrectly return success for a dead or physically removed
-> PCI device?
-> 
-> If a PCI device experiences a bus error or is disconnected, reading its MMIO
-> registers typically returns an all-ones value (0xFF). Here, an all-ones read
-> causes module_id to equal 255.
-> 
-> Since the driver treats this as legacy firmware, it skips the compatibility
-> check. Later, in zxdh_pf_wait_riscv_ready(), a health_version of 255 is also
-> allowed to skip synchronization, leading to a successful probe.
-> 
-> Does the driver need a check to distinguish between actual legacy firmware and
-> a broken PCIe link?
-
-It does not get that far. With the link down, configuration
-space reads also return 0xff, so the vendor-capability scan in
-zxdh_pf_modern_cfg_init() — which runs before
-zxdh_pf_fw_compat_check() — finds no common config and probe
-exits with -ENODEV ("missing capabilities, leaving for legacy
-driver"). If the device dies later in probe instead, the
-all-0xff reads are treated as legacy firmware as described, and
-the next real hardware interaction — pci_alloc_irq_vectors() in
-zxdh_pf_irq_table_init() — fails, unwinding through the normal
-error paths with the dev_info() above in the log. So probe does
-not succeed against a dead device.
-
-> [Severity: Low]
-> This is another instance of passing 1,000,000 microseconds to usleep_range()
-> via readx_poll_timeout. Should this use a smaller sleep interval or an
-> msleep()-backed polling macro?
-
-Answered above.
