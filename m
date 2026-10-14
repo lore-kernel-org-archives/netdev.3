@@ -1,170 +1,152 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D8347F3A1
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 07:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791961389; cv=pass; b=BC+ohLniiicj6LEr/cjaVjdPqZNvblCmwTzW9FyZOWEWWZHj/2IAKjz1MiHkWPqK76EDVWQltRV+W7q6o5FA/Pz4y7O1YHE/US7eq3+fdxY9HmVpCBa5K/WVRDAiuGsE57S5XdedX40vmx/Hfk+Papiijk+M2uhcHs2APb8Uwl4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791961389; c=relaxed/simple;
-	bh=Ud7d+jdUaru10b3HibIT+ZW62u2wMDg2Dfm9yphCSkg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VE3n1y+n/MdaRp1HRDv7V1OsdmETzlkUKHg95xd3ncPPD414wy5jGzYNkHsba2JcgwzaAbVfQ5KW0QaxOamKMmX4HbM9u7O9xWgspTcc0EeRpxhgGOYg0fi0SBhPxfHOqWj/F/NGTgXGjbwgrTSn+c8WJXuk59aGh75MXu3AQBI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gB9c+slr; arc=pass smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gB9c+slr"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2db80fcdf8bso21511625ad.2
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 00:03:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791961387; cv=none;
-        d=google.com; s=arc-20260327;
-        b=B3lTEG3kqkqOHxJbmPrlQ9ihqromISKuKSIBdjsQwgGQDt+udHtyt4sreMoKOE4ZlV
-         j5J/DgZ97O/MKtj+P1eJbFnzR/gimGifrwGpjD/fB84wCTrIMwTAsVf2LQPLVqkzUDFj
-         xSo2LsyB4KTjwzHI72fWC5Zv3itBQaZkRGD15xmmrgZsu/rIDAm54mMarGA4jSe1w1EH
-         JpkgPZevWVkz80+EpQx0WmmxUXBmDvy8AdBby6chu9RgP/p5VBU8zj1hg9dN+rf/Kaj5
-         vXmAMsON4qY28dh5izSJhVot3wWZnmNHjF3wgZiJuZFsB4bvtvZQlxYzc3kzpbG691if
-         OLkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0MwlNHKdSo4nXnWLlQ4Dp9Xnk4aopVocSeJ4O75TP8Y=;
-        fh=EQGt0Q1bX+XypxWv1xNv7C6+PdgUgmP4QyGaYNISsD4=;
-        b=R3akKatmr5OAj309mSr43HjEL+fBDeyhyY2i62i1BoT2+v7Ag1VyLtMS+uv8yOy840
-         bXmaASThAGeMTDRJJK6GHvjuhHR4vFT/BcTXTcmMMLxbcXpwqpp9xuFRjJDHwugbmdVL
-         ypsINietpk1Oy74O7f55KFhUfZ6O7/9Al2K6hEE1Zw97l3BZQx1g8kDQZTGf97a1L2fZ
-         qHbgDOahMLYgQAjDSo1UvwNVCrTRA5UatekO0EkvtaAtQ5QWfDSRn++FD09thrGlb5KG
-         cloFe0dOtTcx3zYCaVp81evnSacj9IT/3EAL0VxZAbHzCBRUhr3VIZN8v5iiKemuN1Fs
-         5odQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791961387; x=1792566187; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0MwlNHKdSo4nXnWLlQ4Dp9Xnk4aopVocSeJ4O75TP8Y=;
-        b=gB9c+slrhil/FtEFcs1bjGlNYtk1PVnXTWvhUaaJYolKcvS0FgMC8g5d1p4KqhX3ZQ
-         UKtbBp8UFJZV8ArUMYe3h3HJI8dH94v8/neTpUSIG4FXYWeqGp3JERJduphOcVO4fyOE
-         Ip/8BpZ+eFPXDS4DRXsrB2RiZTJ9BcAEnDGt/brx2AhdCgh+bDy19VtSrMUCNyTBS1hu
-         ry3UfqsfRR9F40QoyoZMmfmaKWvUZ8phHbfhpGYYwYiGQ2Q+bXH4fkNCWUPdZ5JDC8FB
-         BF+DsDshiPelc1D1Ed2GDkuTfzbadTg4KypTeDzChjun0ytC8PSHMqpzmY14bPGPZg0+
-         YMbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791961387; x=1792566187;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0MwlNHKdSo4nXnWLlQ4Dp9Xnk4aopVocSeJ4O75TP8Y=;
-        b=ikYR/ocSH5YtnbkwgmFzS+OPuz0L0QGcIIZvoZwvFrRqgt1zZSuribsy0Wji5diAJo
-         iox5SL/5XHNeOlO2K6mEMf7M01mz1ahP+4dBfWXWpIs1mjkdw0vqiYb14HAK4hGLNxzY
-         EHlWT6CtbjOEjqPKVVh03bzq0NnAWIMlXOpU3ntxcAjK46b2WXSdZsDLa3otgFvrZwjs
-         l6o17MXQvZ/5sk2OBKq95SiIx9rEuzE1BYiEOHw1+A2dO7sRo9OGLjV4IfZ9hYZSphlu
-         YPscI8EBfNB1n8v0ow9uR3fCUZzum3Laqp8jqIPxhg8EzudV2XMEoUSkhIhy4CDEmKVh
-         GTeA==
-X-Forwarded-Encrypted: i=1; AKwUvByxia5PqqerVVKVeXtWJMLkWB3gWttouTzJ+cdKq47AsreMmyOgkOZ/+tscFBvhjM0DeUENeaY=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJ0wUVj9m/0hEllhSyPemlJeH6tQGzIWRtThcCEuge6WVxTFHpS
-	NCTutD/Y6eOibrOf2UT83eIEA/3FSvie5/2rMSKU+yVblv1RvlP7MAxWZFR3wiCEFrznXlBljfL
-	a4Eq1aYChmiz51qetPuk+sy6GzOZuuxU=
-X-Gm-Gg: AYBFou2tEEP7/VLUeQOJ+sJLuFCyD3jM8lSPLnTmFbdrgs3V96hxeOKR+HJWZr+HEA+
-	4MjPwzC9UC1SMrDq/CjYziZPc++kRg892F7xyk874CyfvJ0j3utLmh3zd/diZeaHngFPPaDmeii
-	zBL3rDh3IOo8m6zsApOAAi/nZ8icp6Fa0ObnOOtbUamaBVyUJniTMxHkDWna12kU9uwAvMGYOQq
-	hBiRsQxbG3ru1erVatjUNlyP9NVfGBVcgg33NnpKKBTQIwLgdP+nfvNbqm4pcINcgJBIxJ059Ac
-	/4877DAWoaIiD5iTN1vc7RVgEmhUiRbzt4XTZr4THZMMeTmbZmF39An1/SEtQ9o9DkxQ0hhgrIo
-	Wl08dCax7h9nNbxra8UpCU6Olk8xBdP0mPBYCsZU6nqw2AbLvhuOu+1p/gWO4rOUDUWIEoLhmx5
-	EWWQ==
-X-Received: by 2002:a17:902:ef44:b0:2dd:c100:7cbb with SMTP id
- d9443c01a7336-2e842bc6930mr116984155ad.55.1791961386763; Wed, 14 Oct 2026
- 00:03:06 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D343D357D00;
+	Wed, 14 Oct 2026 07:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791961942; cv=none; b=PGQ5GCesd69UCA/gUrQwi5eENrkWnwChXsb0vmrkaNe1fVPZZDGUm1aF8k9Fe80bugWTB7suU3W9nBrJxCSz9JlB6fJeRxYD10EtrnvK5sx0xi5VqJGhqWyu0H6rRui6rM28mzd5ZKVC8DbWvNW5h4/hDHsgpDlkMeaAHpZqv+c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791961942; c=relaxed/simple;
+	bh=jHREZ6a9yEnGctn3wlCom9YOprD7A0LzeQFU4slR8R0=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=TBswHUNPBwPPyHP9xqGnt9AxoO50q4qZp5rPCrVaFfYvitH8l6HPpgvkpqyAAHx7WiqtxqQfr7RUuX14cQqP+FUuiXBhvvhGZ0PX1RFmJq8SZj5IJVQrFm4tZMdPRylI70YW3RxbcUkyWxaHVnhfTDyl08QkIIge7+WKvLEu1iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4j4MpL5XXTz4yjjc;
+	Wed, 14 Oct 2026 15:12:10 +0800 (CST)
+Received: from njy2app04.zte.com.cn ([10.40.12.64])
+	by mse-fl2.zte.com.cn with SMTP id 69E7BwKV099574;
+	Wed, 14 Oct 2026 15:11:58 +0800 (+08)
+	(envelope-from han.junyang@zte.com.cn)
+Received: from mapi (njy2app04[null])
+	by mapi (Zmail) with MAPI id mid204;
+	Wed, 14 Oct 2026 15:12:00 +0800 (CST)
+X-Zmail-TransId: 2afc6acf2b4094a-e6198
+X-Mailer: Zmail v1.0
+Message-ID: <20261014151200489685SCIlolykW0NGfL5EtQ@zte.com.cn>
+Date: Wed, 14 Oct 2026 15:12:00 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20261007104731.507647-1-phucduc.bui@gmail.com>
- <179154290727.434549.17639920596465691112@kernel.org> <0040948f-abdc-4967-ab76-02962e813dee@redhat.com>
-In-Reply-To: <0040948f-abdc-4967-ab76-02962e813dee@redhat.com>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Wed, 14 Oct 2026 14:02:55 +0700
-X-Gm-Features: AclHuK-0C-Rz8o3BhYBcI4Pmv1zXl7KQ4Jjg3YkRJFwwpTufB6vgECVvJcL4egw
-Message-ID: <CAABR9nEMcLxEAMCJmKGXzbbq50QGK4vHf30f5JpCc2ZVVvnGAA@mail.gmail.com>
-Subject: Re: [PATCH net-next] smsc911x: propagate reset GPIO errors
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev-bot+sashiko@kernel.org, steve.glendinning@shawell.net, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org, 
-	kuba@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+From: <han.junyang@zte.com.cn>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
+        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHY1IDAvM10gZGluZ2hhaTogZmlybXdhcmUgaGFuZHNoYWtlLCBNU0ktWCBwb29scyBhbmQgYXN5bmMgZXZlbnQgcXVldWVz?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 69E7BwKV099574
+X-TLS: YES
+X-ENVELOPE-SENDER: han.junyang@zte.com.cn
+X-SOURCE-IP: 10.5.228.133 unknown Wed, 14 Oct 2026 15:12:10 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6ACF2B4A.002/4j4MpL5XXTz4yjjc
 
-Hi Paolo,
+From: Junyang Han <han.junyang@zte.com.cn>
 
-Thanks for looking at this.
+This series continues the DingHai (ZXDH) PF driver bring-up: after PCI
+probing, it verifies the firmware version contract, waits for the
+RISC-V management core to become ready, sets up the MSI-X interrupt
+pools, and creates the async event queues through which the firmware
+will report events.
 
-> > - [Medium] net: smsc911x: clock reference leak when regulator_bulk_get()
-> >    fails
->
-> The above is IMHO worth addressing.
->
+Some notes on the IRQ design:
 
-Agreed, the leak is real: the regulator error is saved and returned
-after clk_get()
-has taken a reference, and smsc911x_drv_probe() skips
-smsc911x_free_resources()  on that path.
+The vector space is partitioned into per-purpose pools (async, RDMA,
+vq). Event queues share a vector through an atomic notifier chain
+attached to the IRQ, and the sharing degree is governed by pool
+thresholds. The IRQ table hangs off a void *priv in the shared core
+device: the PF, MPF and SF core devices each carry a different pool
+layout behind that pointer, so a type-specific struct in en_pf.c keeps
+the shared header free of PF-only details.
 
-Since probe fails whenever ret is set anyway, the "try to continue"
-comment is stale.
+Changes in v5:
+- Drop __packed from zxdh_fw_compat and zxdh_health_buffer: both
+  structs are naturally aligned with no padding.
 
-I plan to respin as a 2-patch series:
+Changes in v4:
+- Fold the irq and eq table create() steps into their init()
+  counterparts and route every probe error path through the same
+  destroy() functions remove() uses, so cleanup has a single
+  authority from the start (review feedback on v3).
+- Give the pool name a buffer bound of its own (16 bytes) instead of
+  sharing the 100-byte IRQ name buffer, so W=1 builds stay clean of
+  -Wformat-truncation (review feedback on v3).
+- Lower the compat region wait from 200 s to 20 s: the firmware
+  publishes the block within 10 s of boot, so twice that leaves
+  margin, and the wait now sits far below the 180 s udev event
+  window raised on the thread (review feedback on v3).
+- Wait for the compat block with a per-field readiness check instead
+  of only the first dword: the firmware fills the fields one by one,
+  and a dword-granular check can read a half-populated block (the
+  "single write" justification given in v3 was wrong).
+- Log the legacy-firmware assumption when the compat region wait
+  times out, making the intentionally ignored timeout visible.
 
-Patch 1:  returns early when regulator_bulk_get() fails, so no clock
-reference is held on any error return:
---------------------------------------------------------------------------------------
-ret = regulator_bulk_get(&pdev->dev,
-                                        ARRAY_SIZE(pdata->supplies),
-                                       pdata->supplies);
-- if (ret) {
-- /*
-- * Retry on deferrals, else just report the error
-- * and try to continue.
-- */
-- if (ret == -EPROBE_DEFER)
--         return ret;
-- netdev_err(ndev, "couldn't get regulators %d\n",
--                    ret);
-- }
-+ if (ret)
-+ return dev_err_probe(&pdev->dev, ret,
-+                                     "couldn't get regulators\n");
-...
-- return ret;
-+ return 0;
--------------------------------------------------------------------------------------------
+Changes in v3:
+- Unmap the modern config MMIO regions on the probe error paths added
+  in this series; they used to leak when the fw compat check or the
+  RISC-V readiness wait failed.
+- Skip the RISC-V readiness wait for firmware without the compat
+  region: the erased patch field read as 0xffff and defeated the skip.
+- Make fw_minor unsigned so firmware minor versions >= 128 are not
+  rejected through sign wrap.
+- Balance the per-CPU IRQ accounting on release, so pool teardown does
+  not trip its leftover WARN; set the IRQ affinity for real with
+  irq_set_affinity_and_hint() instead of only updating the hint; name
+  IRQs after their pool instead of a hardcoded prefix; assert that the
+  pool is empty at free instead of force-releasing leftovers.
+- Clear eq->irq when the async IRQ request fails, so teardown does not
+  treat the ERR_PTR as a live IRQ.
 
+Review findings not taken:
 
-Patch 2: is the reset GPIO change from v1, rebased on top of patch 1.
-The "if (!ret)" check is no longer needed since the regulators are
-always held at that point:
+- xa_alloc() with a NULL entry does not fail: __xa_alloc() turns a
+  NULL entry into the internal zero entry as a reservation
+  (lib/xarray.c), which is the reservation semantics the pool relies
+  on.
+- BAR 0 length checks against a truncated bar: the bar layout is part
+  of the board firmware contract and the driver does not defend
+  against a broken device, as settled during the review of the
+  earlier device bring-up series (Andrew Lunn).
 
---------------------------------------------------------------------------------------------
-pdata->reset_gpiod = devm_gpiod_get_optional(&pdev->dev,
+Changes in v2:
+- Convert both firmware readiness polls to readx_poll_timeout()
+  (Andrew Lunn).
+- Read the fw compat block field by field through ioread*() accessors
+  instead of an ioread32_rep() bulk copy, which misplaces the u8/u16
+  fields on big-endian; no __le annotations are needed since each
+  accessor converts from little-endian (Andrew Lunn).
+- Use kref for the IRQ reference count (Andrew Lunn).
 
-       "reset",
+Junyang Han (3):
+  dinghai: add firmware version check and RISC-V readiness polling
+  dinghai: add MSI-X interrupt pools
+  dinghai: add async event queue for firmware notifications
 
-       GPIOD_OUT_LOW);
-+ if (IS_ERR(pdata->reset_gpiod)) {
-+ regulator_bulk_free(ARRAY_SIZE(pdata->supplies),
-+                                  pdata->supplies);
-+ return dev_err_probe(&pdev->dev, PTR_ERR(pdata->reset_gpiod),
-+                                    "failed to get reset gpio\n");
-+ }
----------------------------------------------------------------------------------------------
+ drivers/net/ethernet/zte/dinghai/Makefile   |   2 +-
+ drivers/net/ethernet/zte/dinghai/en_pf.c    | 223 +++++++++++
+ drivers/net/ethernet/zte/dinghai/en_pf.h    |  56 +++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.c  | 137 +++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_eq.h  |  60 +++
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.c | 406 ++++++++++++++++++++
+ drivers/net/ethernet/zte/dinghai/zxdh_irq.h |  73 ++++
+ 7 files changed, 956 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.c
+ create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_irq.h
 
-Does this look OK to you?
-
-Also, as the review suggests, both patches fix existing bugs, so I'd
-like to add Fixes: tags and target net instead of net-next for v2.
-Would that be fine, or would you prefer to keep this in net-next?
-
-Best regards,
-Phuc
+-- 
+2.27.0
