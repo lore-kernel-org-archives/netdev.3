@@ -1,363 +1,253 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1713E47ACE4;
-	Wed, 14 Oct 2026 08:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B146D1DDC38;
+	Wed, 14 Oct 2026 08:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791965953; cv=none; b=KZ31/m3DG54imz2ymWnerR7zfc2wRybjRtg8STyDh7I1QYjcV8fkfAvEXnuLVOZDvmSUq+QFu0k84I5VrjDiXXtvr2pIQnI3J0zuTZIDEWqms1dFv3uSHZLGaLR8Z+uHTxg+XXZQYm5ECrqOA/l9LnZ6zuhxDNgdEVcCMW42b/8=
+	t=1791966000; cv=none; b=cjzKid++GNMoEMkEV4OeYTkHFDtvGrhVg2cEsc3fq4tDPCW5++YHdV3ILfJHCbex0HREmCLLk1EL+nox2XWdm/MmCX6sZ0WJuIprH2CCVnJoi7sY7+5FSuxkfQ8f+P2L3kGFeWkKYDB1k7+1yem+k58FNRXw2sFtA2VtaVbDw2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791965953; c=relaxed/simple;
-	bh=TnqSYIPvmXi7Jlqp1PlbuouXZFSASkf6zvgyxSZGehc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mi+e65v6BjsM16ri2sKND+/xvKn2I88th+n5VT2ZF1t19G6vnleZ/UsUFNpAal7Yl/Z2zcpW9DJO1AOMcNjd2ZGTQIMkfgcr50pjDZ80DXA+5fMu1vuxxZh1DslHeTEb7f3KFGrHodam6arzwMPETwbuqUGWRd+U4ONSMVfFEB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QZ7OTmlq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791966000; c=relaxed/simple;
+	bh=w+8UO17f7zxoFSaGyIjFegepd+gmgcFacc4IqLKZ0ww=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=m8fpt093+Rnx+Alq4ZIbAySe8EEdVkjTypwxMc6MTqlJ4sHb02P2D1IkwtrqOnTWS+DWzqHcMzZgj4oRSnL9RoqeMVIBk12Yzii1gboXtQXlYY4BuARbQuQ29I6Z0afZ1Oiqqfm+W2egs21Q8sd4JS99vgVjMZvYxxgPhA/0Crs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=jH5vzRfD; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QZ7OTmlq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF20E1F00898;
-	Wed, 14 Oct 2026 08:19:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791965949;
-	bh=iMG0H6o2i77Q4MwIy/12e+4FfGXUgFSDm193MMw0c28=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QZ7OTmlqb/NEfvCt5w2JQZuaCzkWsEmS0L1FfANlUKUrnmTaABEQgFbk3pZ/wEQmO
-	 JfExkIhYBn35z+m+VhO4iAh2aYUsccbhtuNdh4YYsS6SYn5XLo9AomMjotgHrjQcVh
-	 G/fM7qhl8+2oIk/C2/qZacvBiNM+Us5PyiT0HPrOnTpUoKXx5XLY6JJGDbf444lfgS
-	 oRScT1slWmKmTWHq0ik+UHJENtL0SllJ/21SuvqP3jXed3CNVPixUYPjxbHBbzaHxH
-	 ChSLtNjwhGPCR6Oe1r8YvJIsZqzi7GKIYCNTd0jTSWZSfL9tVZsYL1WjIe+GvEJJIA
-	 2PfLrPowtN6RA==
-Subject: Re: [PATCH net v2 3/3] xfrm: transfer the skb->dev reference to the
- input path
-From: netdev-bot+sashiko@kernel.org
-To: q.h.hack.winter@gmail.com
-Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, chopps@labn.net,
- herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, linux-kernel@vger.kernel.org
-Date: Wed, 14 Oct 2026 08:19:08 +0000
-Message-ID: <179196594850.434549.3376029552147276447@kernel.org>
-In-Reply-To: <20261013074610.17808-4-q.h.hack.winter@gmail.com>
-References: <20261013074610.17808-4-q.h.hack.winter@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="jH5vzRfD"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 69E8J8aK41418223, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1791965949; bh=/kTltZnASTZm4eXE6l9UlZUSA9eS6IDJWCwTghRLcDQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=jH5vzRfDprRtQ3VluonaH+cHRfcg8FSGiK/5U5LN1/clboaxgraOtdipDHDmgQAQ/
+	 okewGluB56aNdpM8XmIFXL/a/OxFJT+j9FnmMaH27bOOTKpC1pNgoP3jM+5jRz3F1L
+	 yonawRWWrElIb5Dr8Ob/Mty/F6vjqLUoj3oQM4RzN/e92sD2b+377Ffn/MoE/OqF+n
+	 CU6hpNq4luKnK+EZPIExUOX7I/Gh6MUb6WfbG/ynLQKf0q9hxznliO3MZe3BvYg+qH
+	 bpYoViYm8pDY1KhdKWsIEmDO+TUBG6JKn7E9eLi1W6zekrGs88RHB93Az/3z2ZKloy
+	 1pFzHMQwI/Gcw==
+Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 69E8J8aK41418223
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 14 Oct 2026 16:19:09 +0800
+Received: from RTKEXHMBS05.realtek.com.tw (10.21.1.55) by
+ RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Wed, 14 Oct 2026 16:19:07 +0800
+Received: from fc44.realtek.com.tw (172.22.241.7) by
+ RTKEXHMBS05.realtek.com.tw (10.21.1.55) with Microsoft SMTP Server id
+ 15.2.2562.49 via Frontend Transport; Wed, 14 Oct 2026 16:19:07 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: <davem@davemloft.net>, <kuba@kernel.org>
+CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
+	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
+	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>, <mail@birger-koblitz.de>
+Subject: [PATCH net-next v7 02/10] r8152: add new init writes for RTL8156/8156B/8157/8159
+Date: Wed, 14 Oct 2026 16:18:56 +0800
+Message-ID: <20261014081904.6491-3-nic_swsd@realtek.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261014081904.6491-1-nic_swsd@realtek.com>
+References: <20261014081904.6491-1-nic_swsd@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider.
-
-Critical: 0 · High: 4 · Medium: 2 · Low: 0
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] In xfrmi_rcv_cb() (net/xfrm/xfrm_interface_core.c),
-  dev_hold(dev) only runs when skb->dev != xi->dev (line 378-383), but…
-- [High] vti_input() (net/ipv4/ip_vti.c:66) and vti6_input_proto()
-  (net/ipv6/ip6_vti.c:326) always call dev_hold(tunnel->dev).
-- [High] The dev_hold() added in vti_input()/vti6_input_proto() is only
-  released if a receive callback later runs for the same skb.
-- [High] In the decaps and GRO paths, xfrm_input() calls dev_put(tdev)
-  right after gro_cells_receive() returns (net/xfrm/xfrm_input.c:775-777…
-- [Medium] In xfrmi_rcv_cb(), the err==0 call takes the reference
-  (dev_hold(xi->dev), skb->dev = xi->dev) and can still fail afterwards:…
-- [Medium] For a cross-namespace collect_md xfrm interface (xnet true,
-  xi->p.collect_md), xfrmi_rcv_cb() takes dev_hold(xi->dev) and calls…
-
---
-
-xfrm: transfer the skb->dev reference to the input path
-
-This patch has vti_input() and vti6_input_proto() take a reference on the
-tunnel device. xfrmi_rcv_cb() takes one when it installs the device in
-skb->dev. xfrm_input() then releases that reference after the skb has been
-handed to gro_cells_receive() or transport_finish(), and the callbacks
-drop it on their error paths.
-
-> diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
-> index 3b80929994a00..1964482064c16 100644
-> --- a/net/ipv4/ip_vti.c
-> +++ b/net/ipv4/ip_vti.c
-> @@ -63,6 +63,8 @@ static int vti_input(struct sk_buff *skb, int nexthdr, __be32 spi,
->  
->  		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip4 = tunnel;
->  
-> +		dev_hold(tunnel->dev);
-> +
->  		if (update_skb_dev)
->  			skb->dev = tunnel->dev;
->  
-
-[Severity: High]
-This hold is unconditional. On the success path, xfrm_input() only
-releases it if skb->dev changed during the call:
-
-net/xfrm/xfrm_input.c:xfrm_input() {
-    struct net_device *dev = skb->dev;
-    ...
-    tdev = skb->dev != dev ? skb->dev : NULL;
-    gro_cells_receive(&gro_cells, skb);
-    if (tdev)
-        dev_put(tdev);
-    ...
-}
-
-What happens if skb->dev already is tunnel->dev when xfrm_input() is
-entered? In that case the skb->dev = dev assignment in vti_rcv_cb()
-changes nothing and tdev stays NULL. The reference taken here would then
-leak for every packet that is delivered successfully.
-
-Nested ESP decapsulated twice by the same VTI looks like one way to get
-there. For a keyless inner packet, ip_tunnel_lookup() can return the same
-tunnel through a wildcard VTI (saddr=daddr=0), the ip_vti0 fallback, or
-matching inner endpoints, because the link is only a preference.
-vti6_tnl_lookup() matches only on addresses plus tnls_wc, so the IPv6 side
-looks the same.
-
-The update_skb_dev branch just below also sets skb->dev = tunnel->dev
-before xfrm_input() runs. No in-tree caller passes true today, but if one
-did, wouldn't every packet leak a reference?
-
-Would ip link del or netns teardown then hang in netdev_wait_allrefs_any()
-on this device?
-
-In this case the new comment in vti_rcv_cb(), "on success it is
-transferred with skb->dev and released by xfrm_input()", doesn't hold.
-xfrmi_rcv_cb() also only takes its reference when skb->dev changes, so
-vti/vti6 and xfrmi follow different rules for the same release check.
-
-[ ... ]
-
-> diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-> index ab94b3a4ba9c3..a47acae4756c2 100644
-> --- a/net/ipv6/ip6_vti.c
-> +++ b/net/ipv6/ip6_vti.c
-> @@ -322,6 +322,9 @@ static int vti6_input_proto(struct sk_buff *skb, int nexthdr, __be32 spi,
->  		rcu_read_unlock();
->  
->  		XFRM_TUNNEL_SKB_CB(skb)->tunnel.ip6 = t;
-> +
-> +		dev_hold(t->dev);
-> +
->  		XFRM_SPI_SKB_CB(skb)->family = AF_INET6;
->  		XFRM_SPI_SKB_CB(skb)->daddroff = offsetof(struct ipv6hdr, daddr);
->  		return xfrm_input(skb, nexthdr, spi, encap_type);
-
-[Severity: High]
-The reference taken here, and the one in vti_input(), is only dropped if a
-receive callback later runs for this same skb. Is that guaranteed when the
-SA is in IPTFS mode?
-
-iptfs_input() always returns -EINPROGRESS. xfrm_input() then returns
-without calling xfrm_rcv_cb() and without reaching the tdev release:
-
-	err = xfrm_inner_mode_input(x, skb);
-	if (err == -EINPROGRESS) {
-		if (async)
-			dev_put(dev);
-		return 0;
-
-IPTFS then frees the outer skb on several paths that skip the callbacks:
-
-net/xfrm/xfrm_iptfs.c:__input_process_payload() {
-    ...
-	if (defer) {
-		consume_skb(defer);
-    ...
-}
-
-If the original skb is reused for a partial inner packet, it becomes
-xtfs->ra_newskb. That skb is later freed in one of three places:
-
-  kfree_skb() in __iptfs_reassem_done()
-  kfree_skb_reason(skb, SKB_DROP_REASON_FRAG_REASM_TIMEOUT) in
-  iptfs_drop_timer()
-  kfree_skb() in iptfs_delete_state()
-
-iptfs_delete_state() also frees the reorder-window skbs in w_saved with
-kfree_skb().
-
-The inner skbs built by iptfs_alloc_skb() copy dev and the skb extensions
-but not cb. Their tunnel pointer is therefore NULL, and vti_rcv_cb() and
-vti6_rcv_cb() return 1 for them without dropping the outer skb's
-reference.
-
-Could each of these outer packets leak one reference on the VTI device? A
-reassembly timeout after ordinary packet loss looks like enough to trigger
-it. This still seems to be true with the preceding commit "xfrm: iptfs:
-run the receive callbacks before freeing the skb" applied.
-
-[ ... ]
-
-> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
-> index f293d5e124d47..bdd493f9d877a 100644
-> --- a/net/xfrm/xfrm_input.c
-> +++ b/net/xfrm/xfrm_input.c
-
-[ ... ]
-
-> @@ -767,7 +768,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
->  			skb_dst_drop(skb);
->  		if (async)
->  			dev_put(dev);
-> +		/* Release the reference a receive callback left with
-> +		 * skb->dev, after the packet has been delivered.
-> +		 */
-> +		tdev = skb->dev != dev ? skb->dev : NULL;
->  		gro_cells_receive(&gro_cells, skb);
-> +		if (tdev)
-> +			dev_put(tdev);
-
-[Severity: High]
-Has the packet actually been delivered at this point?
-gro_cells_receive() only queues the skb on the per-CPU xfrm gro_cells and
-calls napi_schedule(). The skb is processed later, in
-gro_cell_poll()->napi_gro_receive(), which dereferences skb->dev.
-
-Nothing purges the global xfrm gro_cells when a vti or xfrmi device is
-unregistered. netdev_run_todo() frees the device as soon as
-netdev_wait_allrefs_any() sees the refcount at 1.
-
-Suppose the gro_cell NAPI poll is deferred (to ksoftirqd, on PREEMPT_RT,
-or after a crypto completion in process context). Can a concurrent
-RTM_DELLINK then free the device before gro_cell_poll() touches skb->dev?
-The xfrm_gro branch below drops tdev the same way.
-
-xfrm_trans_queue_net() in this file holds skb->dev across deferred
-delivery:
-
-	if (skb->dev)
-		dev_hold(skb->dev);
-
-This window existed before the patch. However, the commit message says the
-reference is released "once the packet has been delivered" and that
-RTM_DELLINK "now waits for the completion". Neither seems to be true for
-this gro_cells path, which is the tunnel-mode path from the KASAN report in
-the commit message.
-
->  		rcu_read_unlock();
->  		return 0;
->  	} else {
-
-[ ... ]
-
-> diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-> index 688306bf62c5a..f4859be7ed189 100644
-> --- a/net/xfrm/xfrm_interface_core.c
-> +++ b/net/xfrm/xfrm_interface_core.c
-> @@ -375,11 +375,18 @@ static int xfrmi_rcv_cb(struct sk_buff *skb, int err)
->  
->  	link = skb->dev->ifindex;
->  	dev = xi->dev;
-> -	skb->dev = dev;
-> +	if (skb->dev != dev) {
-> +		/* Reference travels with skb->dev; released by xfrm_input()
-> +		 * after delivery.  Guard makes a re-invocation a no-op.
-> +		 */
-> +		dev_hold(dev);
-> +		skb->dev = dev;
-> +	}
-
-[Severity: High]
-The hold only happens when skb->dev != xi->dev, but the dev_put() added to
-the err branch below always runs. What happens with nested IPsec that
-terminates on the same xfrm interface?
-
-After the outer tunnel-mode SA is decapsulated, skb->dev is the xfrmi
-device. The inner ESP then comes back in through:
-
-xfrm4_rcv()->xfrmi4_rcv()->xfrmi_input()->xfrm_input()
-
-At that point skb->dev == xi->dev, and the secpath is still there because
-the non-xnet scrub does not reset it. xfrmi_lookup() can map the inner SA
-to the same xi, either through a matching if_id or through the
-collect_md_xfrmi fallback:
-
-	xi = rcu_dereference(xfrmn->collect_md_xfrmi);
-	if (xi && (xi->dev->flags & IFF_UP))
-		return xi;
-
-In that case this block takes no hold. Any drop after the inner SA has been
-added to the secpath (replay check, ICV failure, hard lifetime expiry and
-so on) goes through the drop label in xfrm_input():
-
-drop:
-	if (async)
-		dev_put(dev);
-	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
-	kfree_skb(skb);
-
-That reaches the dev_put() below with no matching hold. The same happens
-when the err == 0 call returns -EPERM, -EINVAL or -ENOMEM and the callback
-is called again with err == -1.
-
-Can this underflow the xfrmi refcount by one for every dropped packet? On
-unregister, netdev_wait_allrefs_any() could then return while real holders
-still exist. The "Guard makes a re-invocation a no-op" comment only seems
-true when the first call took the reference.
-
->  
->  	if (err) {
->  		DEV_STATS_INC(dev, rx_errors);
->  		DEV_STATS_INC(dev, rx_dropped);
-> +		dev_put(dev);
->  
->  		return 0;
->  	}
-
-[Severity: Medium]
-Suppose the err == 0 call takes the reference and then fails: -EINVAL for
-a NULL inner mode or -EPERM from xfrm_policy_check() in the xnet case, or
--ENOMEM from metadata_dst_alloc(). The release then depends on the
-err == -1 call from the drop label reaching this dev_put().
-
-That second call repeats xfrmi_lookup() after xfrm_input() has done
-rcu_read_unlock(), and no lock is held between the two calls:
-
-	xi = xfrmi_lookup(xs_net(x), x);
-	if (!xi)
-		return 1;
-
-If the interface is set down (IFF_UP cleared), or deleted through
-xfrmi_dev_uninit()->xfrmi_unlink(), inside that window, the lookup returns
-NULL and the dev_put() is skipped. If the lookup falls back to
-collect_md_xfrmi instead, a different device gets held and put.
-
-Since kfree_skb() does not release skb->dev, is the reference on the
-original device leaked in either case?
-
-[Severity: Medium]
-Can the -ENOMEM path also skip this dev_put() for a cross-netns
-collect_md interface? With xnet true, xfrmi_scrub_packet() runs after the
-hold and resets the secpath:
-
-	if (!xnet)
-		return;
-
-	ipvs_reset(skb);
-	secpath_reset(skb);
-
-Now suppose metadata_dst_alloc() fails:
-
-		md_dst = metadata_dst_alloc(0, METADATA_XFRM, GFP_ATOMIC);
-		if (!md_dst)
-			return -ENOMEM;
-
-The err == -1 call from xfrm_input() then returns early at the top of
-xfrmi_rcv_cb(), because the secpath is gone:
-
-	if (err && !secpath_exists(skb))
-		return 0;
-
-Would the xfrmi reference then never be released?
-
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+
+Bring the per-generation init functions in line with the vendor init
+sequence by adding writes the shared r8156_init() never performed.
+
+- Clear PREBOOT_OPTION and RMT_WAKE_EN in r8156_init() and
+  r8157_init().
+
+- Add r8156b_u2phy_backup() for RTL8156B (VER_12/13/15).
+
+- Clear AUTO_SPEEDUP in r8157_init().
+
+- Disable interrupt mitigation (0xcf04) in r8157_init().
+
+- Clear the Warm RST / Bus RST event flag (0xcd06 BIT(11)) in
+  r8157_init().
+
+- Clear the FW u1u2 patch option (0xb9a6 BIT(0)) and enable the u3phy
+  patch backup (0xb9a2) for RTL8159 (VER_17) only.
+
+- Clear RX_END_TRANSFER_EN (0xd406 BIT(11)) for RTL8157 (VER_16), too.
+  While it is set, incoming packets are buffered in the RX FIFO and
+  Bulk-in transfers are suspended. The bit is zero by default and
+  isn't used now. Clear it unconditionally for safety.
+
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+---
+ drivers/net/usb/r8152.c | 77 ++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 64 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 518a2b42c2200..43a3f09b7c29b 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -78,6 +78,7 @@
+ #define PLA_EEE_TXTWSYS_2P5G	0xe058
+ #define PLA_EEEP_CR		0xe080
+ #define PLA_MAC_PWR_CTRL	0xe0c0
++#define PLA_RMT_WAKE		0xe0c8
+ #define PLA_MAC_PWR_CTRL2	0xe0ca
+ #define PLA_MAC_PWR_CTRL3	0xe0cc
+ #define PLA_MAC_PWR_CTRL4	0xe0ce
+@@ -371,6 +372,9 @@
+ #define MCU_CLK_RATIO_MASK	0x0f0f0f0f
+ #define ALDPS_SPDWN_RATIO	0x0f87
+ 
++/* PLA_RMT_WAKE */
++#define RMT_WAKE_EN		BIT(0)
++
+ /* PLA_MAC_PWR_CTRL2 */
+ #define EEE_SPDWN_RATIO		0x8007
+ #define MAC_CLK_SPDWN_EN	BIT(15)
+@@ -417,6 +421,7 @@
+ 
+ /* PLA_INDICATE_FALG */
+ #define UPCOMING_RUNTIME_D3	BIT(0)
++#define PREBOOT_OPTION		BIT(1)
+ 
+ /* PLA_MACDBG_PRE and PLA_MACDBG_POST */
+ #define DEBUG_OE		BIT(0)
+@@ -542,6 +547,7 @@
+ #define RX_AGG_DISABLE		0x0010
+ #define RX_ZERO_EN		0x0080
+ #define RX_DESC_16B		0x0400
++#define RX_END_TRANSFER_EN	BIT(11)
+ 
+ /* USB_U2P3_CTRL */
+ #define U2P3_ENABLE		0x0001
+@@ -8305,6 +8311,15 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+ 	set_bit(PHY_RESET, &tp->flags);
+ }
+ 
++static void r8156b_u2phy_backup(struct r8152 *tp)
++{
++	ocp_write_word(tp, MCU_TYPE_USB, 0xd3ce, 0x181b);
++	ocp_write_dword(tp, MCU_TYPE_USB, 0xd3d0, 0x616ccd99);
++	ocp_write_dword(tp, MCU_TYPE_USB, 0xd3d4, 0x08fc8101);
++	ocp_write_dword(tp, MCU_TYPE_USB, 0xd3d8, 0x159b1100);
++	ocp_write_word(tp, MCU_TYPE_USB, 0xd3dc, 0x0a00);
++}
++
+ static void r8156_init(struct r8152 *tp)
+ {
+ 	u32 ocp_data;
+@@ -8370,11 +8385,25 @@ static void r8156_init(struct r8152 *tp)
+ 	/* U1/U2/L1 idle timer. 500 us */
+ 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
+ 
++	switch (tp->version) {
++	case RTL_VER_12:
++	case RTL_VER_13:
++	case RTL_VER_15:
++		r8156b_u2phy_backup(tp);
++		break;
++	default:
++		break;
++	}
++
+ 	r8153b_power_cut_en(tp, false);
+ 	r8156_ups_en(tp, false);
+ 	r8153_queue_wake(tp, false);
+ 	rtl_runtime_suspend_enable(tp, false);
+ 
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_INDICATE_FALG, PREBOOT_OPTION);
++
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_RMT_WAKE, RMT_WAKE_EN);
++
+ 	if (tp->udev->speed >= USB_SPEED_SUPER)
+ 		r8153b_u1u2en(tp, true);
+ 
+@@ -8494,6 +8523,10 @@ static void r8157_init(struct r8152 *tp)
+ 
+ 	r8157_u2p3en(tp, false);
+ 
++	/* Disable Interrupt Mitigation */
++	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xcf04,
++			  BIT(0) | BIT(1) | BIT(2) | BIT(7));
++
+ 	/* MSC timer = 0xfff * 8ms = 32760 ms */
+ 	ocp_write_word(tp, MCU_TYPE_USB, USB_MSC_TIMER, 0x0fff);
+ 
+@@ -8505,11 +8538,30 @@ static void r8157_init(struct r8152 *tp)
+ 	r8153_queue_wake(tp, false);
+ 	rtl_runtime_suspend_enable(tp, false);
+ 
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_INDICATE_FALG, PREBOOT_OPTION);
++
++	ocp_byte_clr_bits(tp, MCU_TYPE_PLA, PLA_RMT_WAKE, RMT_WAKE_EN);
++
++	/* Clear Warm RST / Bus RST event flag */
++	ocp_word_clr_bits(tp, MCU_TYPE_USB, 0xcd06, BIT(11));
++
++	switch (tp->version) {
++	case RTL_VER_17:
++		/* Disable FW u1u2 patch option */
++		ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xb9a6, BIT(0));
++		break;
++	default:
++		break;
++	}
++
+ 	if (tp->udev->speed >= USB_SPEED_SUPER)
+ 		r8153b_u1u2en(tp, true);
+ 
+ 	usb_enable_lpm(tp->udev);
+ 
++	/* Disable Auto Speed up */
++	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_FW_CTRL, AUTO_SPEEDUP);
++
+ 	r8156_mac_clk_spd(tp, true);
+ 
+ 	if (rtl8152_get_speed(tp) & LINK_STATUS)
+@@ -8521,19 +8573,9 @@ static void r8157_init(struct r8152 *tp)
+ 
+ 	set_bit(GREEN_ETHERNET, &tp->flags);
+ 
+-	/* RX aggregation / 16 bytes RX descriptor
+-	 * BIT(11) is specific to RTL8159, with unknown meaning
+-	 */
+-	switch (tp->version) {
+-	case RTL_VER_17:
+-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
+-				  RX_AGG_DISABLE | RX_DESC_16B | BIT(11));
+-		break;
+-	default:
+-		ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
+-				  RX_AGG_DISABLE | RX_DESC_16B);
+-		break;
+-	}
++	/* RX aggregation / 16 bytes RX descriptor / Bulk In End transfer */
++	ocp_word_clr_bits(tp, MCU_TYPE_USB, USB_USB_CTRL,
++			  RX_AGG_DISABLE | RX_DESC_16B | RX_END_TRANSFER_EN);
+ 
+ 	/* Disable Rx Zero Len */
+ 	rtl_bmu_clr_bits(tp, 0x2300, BIT(3));
+@@ -8541,6 +8583,15 @@ static void r8157_init(struct r8152 *tp)
+ 	/* TX descriptor Signature */
+ 	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd4ae, BIT(1));
+ 
++	switch (tp->version) {
++	case RTL_VER_17:
++		/* Enable u3phy patch backup */
++		ocp_write_word(tp, MCU_TYPE_USB, 0xb9a2, 0x0448);
++		break;
++	default:
++		break;
++	}
++
+ 	r8156_mdio_force_mode(tp);
+ 	rtl_tally_reset(tp);
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013074610.17808-1-q.h.hack.winter%40gmail.com
+2.34.1
+
