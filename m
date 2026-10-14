@@ -1,314 +1,178 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013025.outbound.protection.outlook.com [52.101.83.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27E432B102;
-	Wed, 14 Oct 2026 01:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791943174; cv=none; b=h1YnwV0rnzo2k9Xc9NuTTxBDEIbSHX1m+z6SC9bkz/VEWetqtwF5t+03mrXZ7/efl8hYQ4XOwAtDQKxS7f9xSBQVMs3l12SinNzhFzMpqesRMuDLHkbX3+q3swA6QfjCYoBbn+GQN+EkAzfqgFGOMSZRlqohCikChHcliXbR1yw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791943174; c=relaxed/simple;
-	bh=vbrzVzE3aNnrJoOCYB3Pwqg7ZGE3ZQBTgY30PTcEU24=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LyUFdliTjJLI9yrSuPiP6ZDKSN6GJlVWJn7pk/B5HrzV1ADOTmuvKIJlVUda7mvT+E9jEQCvluvYXG3wJHZ/E/EowvUcJdvJW4j7BEP68jbI7lTJD/nNtbz8Qsyr3RPiMxPBOSpFUaHCfJJmR7HGRxD2YEDnvIKBA6VRnGkSuDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+PdYQj6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC30B33998
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.25
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791944645; cv=fail; b=pzC8wl3Lt4DxBTM2MeBXE2qxEKdMEdUxyBKVgm/N46WVt3Bjfy5RTbWknIucfGk/rn+GHXe5pnOZ8YQI4rCyySKHJ6lhuNYGJTcYNTTEsLf9asohPj/tjpPOsGoYu0Kd5SXv1WzUZEFyMqpXqNw8vPhYtKXGLvre2ahkWsvyHKI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791944645; c=relaxed/simple;
+	bh=X/Oe87wkknB3HC4nxTueGQl7YByEpoeg5+viWSR1exs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Hhs5JrZBU+Ej54LiMYj7tjEkiGPgVANq6kXEuj40a7G53C06z2IeXwU6xzkjzCmJt1EzOtS9IRrfuuNT6kltK0Lk7+lQcM4f9hUzl31+urirp6nwoVyDQ8EWb6NUb3pi2p3JZOjDQaZ6I25TteElAVsapgLYbdxuYK9x85NmxUI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=TcNPXGkz; arc=fail smtp.client-ip=52.101.83.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+PdYQj6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D431F00893;
-	Wed, 14 Oct 2026 01:59:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791943169;
-	bh=zFDf30rfu02U2sIfyJdv1QUqsJIm0erb/Pbz58veJ/Y=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=B+PdYQj6z7j6zob8KOugkgoIur/JE13cBK0gsS8ZVXOmETC+AdSMYLLJwAv61Qx3g
-	 46a+nY+4bScarWF1XHiGLPAhbIe55ud/ids+diElCtu1KsyTzC3JH2zStfDbCzeK8r
-	 1kfzNjMexxX88h5xUV6jnQmTpHVpFH5R4lg50WxxjgyVGSUOBDexP7xpNbwIK/BUJi
-	 QT9qEaqJjBzfPnmHC282G4OsB+6jIMcXZW/usGfyo4AiNfGHIS2sHMIrGVd3tyAJX0
-	 ViF2xPWVXd9ofBGII59NKEof090wMaLVB7x6vvBHcDX1ACDHO4fbkngNClxwH7cL22
-	 YQActuvTRa/cw==
-Subject: Re: [PATCH net-next v14 5/5] net: dsa: motorcomm: Add support for
- Motorcomm YT922x
-From: netdev-bot+sashiko@kernel.org
-To: kyle.switch@motor-comm.com
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
- horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
- xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com,
- sijia.huang@gl-inet.com
-Date: Wed, 14 Oct 2026 01:59:28 +0000
-Message-ID: <179194316804.434549.2445810560010060057@kernel.org>
-In-Reply-To: <20261013011122.1889766-6-kyle.switch@motor-comm.com>
-References: <20261013011122.1889766-6-kyle.switch@motor-comm.com>
-X-sashiko-severity: High
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="TcNPXGkz"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=p9+DTSo4L80zzW2S5dkYbB60VlJ+eCTFS7vw1M6A7zHGZVpCax4Q77lxc2NZ90C5qOzdx+1nv0SXVvmHVop5UL7WWV6WXp1JhWFo1c6a7MRyiIVwYw5//awsOKzRvRanq3NjFGNkRCIy57Lhbef3grct+Ok4ulHIDFJ01GJqJcrFzBz8kxp6x+x8sgBQP/IPJg28jHXQslAP+lQKU7GyK9beZEMnmzDeRfepDHEZUEVMtbo/b8iOAQY0u+Q7gkmGebu4p2LjbjlVugvz5DkoIJNpCUWmn3AFznbT6wQ8KUFK55Rs8VoOiyiV7K4qDN1b59bzbveGcuc7NGPP7c5tFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X/Oe87wkknB3HC4nxTueGQl7YByEpoeg5+viWSR1exs=;
+ b=sKwZ4wgzM4y7voGVLzBAZF8XzfXQU3ML7flAhrpoSeT8Vm+kD+03UCwp5tH1TdfqoWyGtP/GI5R7TnmO9ikIwkrUm0jDyT6XhYi2Lgs6Xj6v4COH0falB+Ke8e/wQU1TBPxqqebrusGFRWwDAa/wy1xpqwFPd3gAxFE/F+cNZyfVyA+tVEDSbYcPh1ozrnKTr5kK9sAq5tHGrkXRH906dxoxsX8SQfv88D9kNnQO2AA70W98+MYrYu/Kv6arPSbH3sHGSlHYqpHv1jwvA74i0F/xOLRNVTq1aAoZ4+O6UVp44SCIvQewkMKuglvERhRHo3UAWUqb/avYvMJWzpnzuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X/Oe87wkknB3HC4nxTueGQl7YByEpoeg5+viWSR1exs=;
+ b=TcNPXGkzHUQansT5v+CR1TEpH69uazOEdzDzlIOhdI0SjO7L+zFH7bgRPGGuthxwBKybnorOCeh84c0OT/5zSX8qLBkpnSO5M5SVbhMGft+zXC4dMZdOPzCotAKj0WAXlqGtn64o2DuKtl3kJnoQHEso28KuIpvq8Nd6ii/LOC9TxnFHzu9cFBZP/B/eUbcWEvEQmltaou0FNlrZBjrKczusfK/xn+HM6eDFklcj0iDq0w3r5pY9Biyu/rACRkC9y8D/bcfQsZGS/2C/Ob9J6zcSyWgQ7YBpzl2bp4xtcUi4P3mThuV95snoW1kQ3ql/UEm+WQnO92s3dZujslw+7Q==
+Received: from DB9PR04MB9332.eurprd04.prod.outlook.com (2603:10a6:10:36c::6)
+ by DBBPR04MB8042.eurprd04.prod.outlook.com (2603:10a6:10:1e3::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Wed, 14 Oct
+ 2026 02:23:57 +0000
+Received: from DB9PR04MB9332.eurprd04.prod.outlook.com
+ ([fe80::75d8:3bd9:28df:cfdb]) by DB9PR04MB9332.eurprd04.prod.outlook.com
+ ([fe80::75d8:3bd9:28df:cfdb%2]) with mapi id 15.21.0496.021; Wed, 14 Oct 2026
+ 02:23:57 +0000
+From: "Wei Fang (OSS)" <wei.fang@oss.nxp.com>
+To: "sashiko-reviews@lists.linux.dev" <sashiko-reviews@lists.linux.dev>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "Frank.Li@kernel.org"
+	<Frank.Li@kernel.org>, Networking <netdev@vger.kernel.org>
+Subject: RE: [PATCH v5 net-next 4/9] net: dsa: netc: tie setup resources and
+ reset to DSA setup/teardown
+Thread-Topic: [PATCH v5 net-next 4/9] net: dsa: netc: tie setup resources and
+ reset to DSA setup/teardown
+Thread-Index: AQHdWi/K+bT0PSxuE0yauhMzx/ZLsbb7PtKAgAES6+A=
+Date: Wed, 14 Oct 2026 02:23:57 +0000
+Message-ID:
+ <DB9PR04MB933223C3DEB59DA8B1310F85889D2@DB9PR04MB9332.eurprd04.prod.outlook.com>
+References: <20261012095924.1129312-1-wei.fang@oss.nxp.com>
+ <20261012095924.1129312-5-wei.fang@oss.nxp.com>
+ <sashiko-outbox-169415@kernel.org>
+In-Reply-To: <sashiko-outbox-169415@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DB9PR04MB9332:EE_|DBBPR04MB8042:EE_
+x-ms-office365-filtering-correlation-id: 9e42ce0a-940c-4e4a-3e36-08df299a3396
+x-ms-exchange-sharedmailbox-routingagent-processed: True
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|23010399003|366016|376014|19092799006|1800799024|22082099003|18002099003|38070700021|261009223027099003|4143699003|10067099003|6133799003|56012099006|5023799004|10063799003|11063799006;
+x-microsoft-antispam-message-info:
+ gyPYTw4qLlS7YNlFf1B/Rvmskq3fZwxdLy8P6QRKHSpDKfK1hLo1kBGvUaGuXJgBLHNUtpSRCowug7t0vjC6k7e75ADxuQ1V1P8Lx5GYeF8eBsAwu+NiGT0lQRd74Ny/pnQWFCXB1F2T6JGIKWXCbYwHF28ycETrDdqixhbtAmspbcuiQZXKqBavvzLoximoOWXIb8bwLiS2Cd71ufKrTwVdW1MqaOc29RMrXqcRP0GsG8BCQ9sPY+AOntvUgkKhhuP2sG9wbPCGNaQrWBcmX2OPIJTHro0g2vAj7GnPWqmMk8aLfgRbFTvGHbPBJ8QGaCq1B25YZtrEftn/wYqftn6SxHLMEyIWy1YFejC6cEV9D4KtHF+tx5Ukpp86dEnyWzhA3gxHY2JurMV1cmpZGGGx29ddmwy8BLO7GwWYKsa/xZFVS3M0ijfkHKGeaMVV4nKc0YYmVVe6p3AL9MOK08VAISgUhrXeaHZ4FHz/lPMleZhin7qt7wnEGGLam5MHGkUEk0pxuyLx6v6rcwXdWVVzEKL8XY8TJwv79p9OBSMaYO+xAsOSaRfBE+Od8YxBpLJD7wptMSFUgITGttNO9nDj+g6Kgy47gsoLKwEUA54V2oyKQVUfbB9NFhG5ZFfZkHqVJ6YKPVWZa73BwQIjJbn5yiQA5cEVrLeziGUrWGmB4WZx9H0KocMwci7ZE3L1JS4BlS7Dm4sK34opF/fKgQnpEWwnAQlDDWYJIBj6dHs=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9332.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(19092799006)(1800799024)(22082099003)(18002099003)(38070700021)(261009223027099003)(4143699003)(10067099003)(6133799003)(56012099006)(5023799004)(10063799003)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?UE9UdWZXOHJ6UW1ldWZBeDVwTnRFMDVzK3pXcUpUWHR1eWczRFNrcUlzSHEx?=
+ =?utf-8?B?bnB4WDBBOWo0SDZnWFovbDVOVE9jWGgrTkczNTQ3Tkhha25Ob0Z6T2Z4M2Vq?=
+ =?utf-8?B?Qmp6MndRaHhyR3JWL1hDUnN6ekp4WlpVNGRHZWJLdmV5SmR2cGN5d2JXdFNw?=
+ =?utf-8?B?L3ROQXdVWVl2QTFOVG9QUnZmNnRsTGFNY3Z3Z2k5eEtqaTZzbWRndnlQSHVS?=
+ =?utf-8?B?d0QzK3o0TGtVckxSTWZIdjhMeno4cVpUZXh1aG1FQkNmcXlhSEhLYm82cUgz?=
+ =?utf-8?B?OWErVjFVVy9QSW9OOUt0emVuMDh1QnJqeWdBbnZ1Y0JXZ1ZuZC82NWZQVks4?=
+ =?utf-8?B?bmVPeTl2Uml2VE5rYTJid1dwSHp5TDZVWUZyM1I0cnNTUVRlbmdwaXdjWXRn?=
+ =?utf-8?B?QTFlUVlUdWllT0RLMnhwWDlqZlQwcHF6OUNQSTBSa0c5WlJhQ2lyQ21RaGts?=
+ =?utf-8?B?OFp3T0kxNDZ2NmdKOWxXbUdiRU9TVFUwdk5WUWhTS0lYOVFWbWY2WkxHWWI4?=
+ =?utf-8?B?RWliMXVleXFiZWdkZk53d283M3NZUFdxeFM3MHNydXJKQ3UrNXQvaGlHdlhK?=
+ =?utf-8?B?cFNyaEtQeEVMcE1FeDdmWU1tZENzNHd0a0E5VWFyb3R5dC9UOUN2QlUyb2R3?=
+ =?utf-8?B?Zk1HZ1dIdngvNGdwY3NXUzVsbW4xdS9IQ3E0dEhlQW5NVG1IUmhmeDdib3ZZ?=
+ =?utf-8?B?bTRhT3duQzlNdDN3a3dJTWZlTFY2NW04VUZXYVp6YVlURitzZC9sbXdRUENL?=
+ =?utf-8?B?MnJuVnI5ZDV6TTMxSjVRTVYyQ0ZMQTRXMjAxb2l3TXVkc3FYalcwNkJzWGJ5?=
+ =?utf-8?B?YVhTMXJEV2RneDNzclY4RHU1R1ZaYmhVMmFpTUM5dCtjRFdIcFZaRnZCQVBk?=
+ =?utf-8?B?R2orV0lRUE8ybkhpenl5NzZUbUY5YnJ5bFMzRlpLSzhBQWpYcUE1MURRQWFm?=
+ =?utf-8?B?THpFQW1sSWF2cVRTN2lzVnpZMjlWMDB4NVhpSFZ6ZmNLRm1RZlRFRmNtN29L?=
+ =?utf-8?B?K2dWQmhIVXhmSXphaHAyUHhJQWk5UGFKZE83ZlpFR1BMUHZ3eTBmTEt0VEpX?=
+ =?utf-8?B?Y29SQlRTUkRuMHh1STJ5TnVaNGZFNmhuM1dkNDZyanpXM05RdGdCRDArVXBv?=
+ =?utf-8?B?U2VRWVA2elMvcWdLNlY2dDFML01Zc1B5SjFMRkM4dHZCZ2NndnhoUTNGUzNx?=
+ =?utf-8?B?UzVNRzI2Z3hSZ2N6eVpsekRPNE1JR09rdzdGSnZyVm9FVVpsaWpPMURWZXR4?=
+ =?utf-8?B?cXdkS0ovTk5PMUxJNm9XLzRJR1dMbHI2eHRFWjh4MTFIeFl4MGJzc1hLeVk2?=
+ =?utf-8?B?SEdtUXdVY2kvYTJORXUwM2x2d1Z5M25RbURMYkl0M2RsK2RTK2ZzQ21xSDh6?=
+ =?utf-8?B?azQ2QkJJK2ZiTmdDMlliNEFYc3NLdnNORUFuU0tiS2MrOFhOUTRxRGQvcWRn?=
+ =?utf-8?B?bWt2OWx1bDQ0ekl4ak8vb3dvZW1ncjVRQWdWOUwyc2IvR2Zwa1NQQmVQOGhR?=
+ =?utf-8?B?d0FzdXRxanp4OUxYOXV5ZE4zUTNlNGhsbGFZS25uZzVsazNBM0FBcGZudUM1?=
+ =?utf-8?B?djRTam9qb1FkVFlaQUpuZzFUR0ZCSGRLdEdidUI3NzNnSWd2Q1dOTmdmVWNh?=
+ =?utf-8?B?Y3U2dStMN0svOEx2NzhaMS9lczBSSThTcXR1aHEvRUNoTjJrbEZKUXQ3eU1P?=
+ =?utf-8?B?RTlaTmVSeVNLcjJvcC8vTDJGMFBlbm5jb0ZFUTFiaEhjcjI2MCtPU2YrZTdq?=
+ =?utf-8?B?aVVqb3RnWEpJNjJqT0hJOCttczNZZ1JzVkFlNkpQSU45Qm43RzkzYUNoVU9E?=
+ =?utf-8?B?UXhOZ3lWeUlpS3RwKzNZNnBTNHB6bGcrNGUrc2JXSUlUeUtPenNTSFlaTTMy?=
+ =?utf-8?B?aHNuYXdPUk9kRTVGR2RrS2UxTDJSODJkZkZ5V2VGZmMydm5mdWJERHRKMjlP?=
+ =?utf-8?B?Z1NPRTlrSDhaNTZHMHZ2cms5aUpmdWR4T2liWkVpS3QrcncrOEZIWklDS2hr?=
+ =?utf-8?B?MDdla01UR1BFNDNCZGhNOElrYjZ5NXB6ekZSWTlXaUR0dU44aXN4M0llSzI1?=
+ =?utf-8?B?TFRSbUtZYjYyTmlpWEs0akVSdlFUenFaRkdHSmJVbWNsdHFhazRmMkV4WkM0?=
+ =?utf-8?B?UVVjVGZ6MjRrK3ZpZFJIeXJGakFPMk1LZkQxWWpHZU1MZmNLOVU3QkM1UGZS?=
+ =?utf-8?B?U21qaXBteVYxblN1aEtWYktLWUlUVk9mRVU2MHhucUh2TEY5b2VFSGN0bEU4?=
+ =?utf-8?B?V0FCbFIyUkdDZWxualkyNitHZFozaTlGOXpzazRaRzZwSE81UElaVXJsQjVt?=
+ =?utf-8?Q?Z6evokGATQBCKeU5kW?=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9332.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e42ce0a-940c-4e4a-3e36-08df299a3396
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Oct 2026 02:23:57.6849
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZW+GHTgw6bYroguQcGS5kagYDmkmx6Jp4lqH/EdSxomxv1CVRWUBJOiQna60fu1wNaUz6w+vckRRe2KZ669+lw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8042
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider.
-
-Critical: 0 · High: 1 · Medium: 3 · Low: 1
-
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] net: dsa: motorcomm: port control register clobbered in
-  yt922x_port_up due to missing read
-- [Medium] The new "YT9228" entry in yt921x_infos can never be selected.
-- [Medium] The patch adds { .compatible = "motorcomm,yt9224" } to
-  yt921x_of_match, but the only binding for this driver,…
-- [Medium] yt922x_pcs_config() accepts neg_mode, advertising and
-  permit_pause_to_mac but uses none of them.
-- [Low] yt922x_port_down() and yt922x_port_up() each run several separate
-  register transactions: the PORTn_CTRL MAC/link bits, then FORCE_OP,…
-
---
-
-net: dsa: motorcomm: Add support for Motorcomm YT922x
-
-This commit adds YT922x series support to the existing YT921x DSA driver.
-It adds a new series table entry, phylink MAC ops, a SerDes PCS
-implementation in pcs-922x.c and a "motorcomm,yt9224" compatible. The
-commit message says only the YT9224 variant is supported for now.
-
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index ba988e121d68e..f0488fac90976 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
-
-[ ... ]
-
-> @@ -76,6 +76,18 @@ static const struct yt921x_info yt921x_infos[] = {
->  		BIT(8) | BIT(9),
->  		BIT(8) | BIT(9),
->  	},
-> +	{
-> +		"YT9224", YT9224_MAJOR, 0, 0,
-> +		GENMASK_U16(7, 4),
-> +		0,
-> +		BIT(8) | BIT(0),
-> +	},
-> +	{
-> +		"YT9228", YT9224_MAJOR, 0, 0,
-> +		GENMASK_U16(7, 4),
-> +		0,
-> +		BIT(8) | GENMASK_U16(3, 0),
-> +	},
->  	{}
->  };
-
-[ ... ]
-
-> @@ -3631,6 +3648,14 @@ static int yt921x_chip_detect(struct yt921x_priv *priv)
->  		return -ENODEV;
->  	}
->  
-> +	if (!yt921x_needs_extmode_check(major)) {
-> +		dev_info(dev,
-> +			 "Motorcomm %s ethernet switch, chipid: 0x%x\n",
-> +			 info->name, chipid);
-> +		priv->info = info;
-> +		return 0;
-> +	}
-
-[Severity: Medium]
-Can the YT9228 entry in yt921x_infos[] ever be selected?
-
-Both new entries use YT9224_MAJOR with mode 0 and extmode 0. The lookup
-loop in yt921x_chip_detect() stops at the first entry whose major matches:
-
-	for (info = yt921x_infos; info->name; info++)
-		if (info->major == major)
-			break;
-
-For major 0x9004 that is always "YT9224". The new early return then uses
-that entry without checking mode or extmode, and the two entries have the
-same values for those anyway.
-
-The commit message says:
-
-    YT9228 is not supported yet.
-
-If a YT9228 reports this major, as the table says it does, wouldn't it
-bind instead of failing with -ENODEV? yt92xx_series_lookup() also sends
-every 0x9004 chip to the YT922x series, and the chip would be logged as
-"Motorcomm YT9224 ...".
-
-It would also get the YT9224 serdes_mask. In that case,
-yt922x_dsa_phylink_get_caps() and yt922x_pcs_setup() leave ports 1-3 with
-no supported interfaces and no PCS. phylink_create() would then fail for
-those ports, and DSA would quietly treat them as unused. Is that intended?
-
-[ ... ]
-
-> +static int
-> +yt922x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
-> +	       phy_interface_t interface, int speed, int duplex,
-> +	       bool tx_pause, bool rx_pause)
-> +{
-
-[ ... ]
-
-> +	res = yt921x_reg_write(priv, YT922X_PORTn_CTRL(port), ctrl);
-> +	if (res)
-> +		return res;
-> +
-> +	/* force op */
-> +	mask = YT922X_PORT_FORCE_OP;
-> +	res = yt921x_reg_set_bits(priv, YT922X_PORTn_CTRL(port), mask);
-> +	if (res)
-> +		return res;
-> +
-> +	/* enable en_phy */
-> +	res = yt921x_reg_set_bits(priv, YT922X_EN_PHY_VALUE, BIT(port));
-> +	if (res)
-> +		return res;
-> +	res = yt921x_reg_set_bits(priv, YT922X_EN_PHY_OVERWRITE, BIT(port));
-> +	if (res)
-> +		return res;
-> +
-> +	return 0;
-> +}
-
-[Severity: High]
-Is this meant to be a read-modify-write of YT922X_PORTn_CTRL?
-
-ctrl starts at 0. Only the speed, duplex, pause and MAC/CFG enable
-bits are ORed into it, so clearing YT922X_PORT_FC_AN and
-YT922X_PORT_LINK_AN afterwards does nothing. That clear only makes
-sense if ctrl was supposed to hold the current register contents
-first.
-
-As written, yt921x_reg_write() replaces the whole register on every
-link up. Any field not set here is forced to zero each time phylink
-calls yt922x_phylink_mac_link_up(). That includes
-YT922X_PORT_HALF_PAUSE and any reserved or vendor-default bits above
-YT922X_PORT_FORCE_OP. Is that safe on this hardware?
-
-If a full write is really intended, the dead clear could be dropped
-and the register layout documented. Otherwise, should this use
-yt921x_reg_update_bits() with a mask covering only the fields being
-programmed? That would mean speed, duplex, pause, the MAC/CFG enables
-and the AN bits, in the same way that yt922x_port_down() only touches
-the bits it cares about via yt921x_reg_clear_bits().
-
-[Severity: Low]
-This is minor, but what state is the port left in if the
-YT922X_EN_PHY_VALUE update fails after FORCE_OP has already applied the
-forced MAC link-up?
-
-The MAC would stay forced up while the PHY-enable override from the
-previous yt922x_port_down() stays forced low. yt922x_phylink_mac_link_up()
-only logs the error. yt922x_port_down() has the same structure, with no
-rollback of earlier steps.
-
-This copies the existing yt921x_port_up() and yt921x_port_down() pattern.
-It can only happen once SMI/MDIO access is already failing.
-
-[ ... ]
-
-> @@ -4220,6 +4655,7 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
->  
->  static const struct of_device_id yt921x_of_match[] = {
->  	{ .compatible = "motorcomm,yt9215" },
-> +	{ .compatible = "motorcomm,yt9224" },
->  	{}
->  };
-
-[Severity: Medium]
-Should this come with a binding update? The binding in
-Documentation/devicetree/bindings/net/dsa/motorcomm,yt921x.yaml still
-only has:
-
-  compatible:
-    const: motorcomm,yt9215
-
-With that binding, any DTS using "motorcomm,yt9224" would fail dt-schema
-validation, and checkpatch would report the compatible as undocumented.
-
-The binding text also covers YT921x port layouts only. Its mdio
-description says:
-
-      Internal MDIO bus for the internal GbE PHYs. PHY 0-7 are used for Port
-      0-7 respectively.
-
-The new info table gives YT9224 internal PHYs only on ports 4-7, and
-SerDes on ports 0 and 8.
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/motorcomm/pcs-922x.c b/drivers/net/dsa/motorcomm/pcs-922x.c
-> new file mode 100644
-> index 0000000000000..98d403d01ba3c
-> --- /dev/null
-> +++ b/drivers/net/dsa/motorcomm/pcs-922x.c
-
-[ ... ]
-
-> +static int yt922x_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-> +			     phy_interface_t interface,
-> +			     const unsigned long *advertising,
-> +			     bool permit_pause_to_mac)
-> +{
-
-[ ... ]
-
-> +	res = yt921x_intif_ext_read(priv, addr, YT922X_PORT_SDSn, &data);
-> +	if (res)
-> +		goto err;
-> +	data &= ~YT922X_SERDES_MODE_M;
-> +	data |= ctrl;
-> +	res = yt921x_intif_ext_write(priv, addr, YT922X_PORT_SDSn, data);
-> +	if (res)
-> +		goto err;
-> +	mutex_unlock(&priv->reg_lock);
-> +
-> +	return res;
-
-[Severity: Medium]
-yt922x_pcs_config() never uses neg_mode, advertising or
-permit_pause_to_mac. Apart from the 0xd write to ext reg 0x4be, it only
-rewrites the SerDes mode field. Is that enough to meet the pcs_config
-contract?
-
-The pcs_config kernel-doc in include/linux/phylink.h says in-band should
-be enabled in MLO_AN_INBAND and disabled otherwise. It also says the
-1000BASE-X advertisement should be programmed into the PCS. pcs-921x.c
-does this with phylink_mii_c22_pcs_encode_advertisement() and
-BMCR_ANENABLE handling.
-
-Here, in-band-enabled and in-band-disabled requests produce the same
-register writes. Depending on the reset default, won't one of them leave
-the hardware AN state wrong? For example, a fixed-link 2500BASE-X CPU port
-could be left with AN enabled, or an in-band SGMII PHY link with AN
-disabled.
-
-phylink_change_inband_advert() also relies on pcs_config() to apply
-advertisement and pause changes:
-
-	ret = phylink_pcs_config(pl->pcs, pl->pcs_neg_mode, &pl->link_config,
-				 !!(pl->link_config.pause & MLO_PAUSE_AN));
-	if (ret < 0)
-		return ret;
-
-	if (ret > 0)
-		phylink_pcs_an_restart(pl);
-
-Since this always returns 0 and never writes MII_ADVERTISE, wouldn't
-ethtool advertisement or pause changes be silently dropped?
-
-yt922x_pcs_get_state() also decodes BMSR/LPA as if in-band AN had been
-configured. yt922x_pcs_an_restart() sets BMCR_ANRESTART even though AN was
-never configured.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013011122.1889766-1-kyle.switch%40motor-comm.com
+PiA+ICtzdGF0aWMgaW50IG5ldGNfc3dpdGNoX3Jlc2V0KHN0cnVjdCBuZXRjX3N3aXRjaCAqcHJp
+dikNCj4gPiArew0KPiA+ICsJaWYgKHByaXYtPmluX3Byb2JlKQ0KPiA+ICsJCXJldHVybiBwY2lf
+cmVzZXRfZnVuY3Rpb25fbG9ja2VkKHByaXYtPnBkZXYpOw0KPiANCj4gW1NldmVyaXR5OiBIaWdo
+XQ0KPiBDYW4gYSBjb25jdXJyZW50IHRocmVhZCBleGVjdXRlIHRoaXMgcGF0aCB3aXRob3V0IGhv
+bGRpbmcgdGhlIFBDSSBkZXZpY2UNCj4gbG9jaz8NCj4gDQo+IEluIGEgbXVsdGktc3dpdGNoIERT
+QSB0cmVlLCBwcml2LT5pbl9wcm9iZSBpcyBzZXQgdG8gdHJ1ZSBkdXJpbmcNCj4gbmV0Y19zd2l0
+Y2hfcHJvYmUoKS4gVGhlIHRocmVhZCB0aGVuIGNhbGxzIGRzYV9yZWdpc3Rlcl9zd2l0Y2goKSwg
+d2hpY2gNCj4gaW50ZXJuYWxseSBhY3F1aXJlcyBhbmQgcmVsZWFzZXMgZHNhMl9tdXRleC4gSWYg
+dGhlIERTQSB0cmVlIGlzIGluY29tcGxldGUsDQo+IGl0IHJldHVybnMsIGFuZCB0aGUgdGhyZWFk
+IGNhbiBiZSBwcmVlbXB0ZWQgYmVmb3JlIGV4ZWN1dGluZw0KPiBwcml2LT5pbl9wcm9iZSA9IGZh
+bHNlLg0KPiANCj4gQ29uY3VycmVudGx5LCBhIHNlY29uZCB0aHJlYWQgY291bGQgcHJvYmUgdGhl
+IHNlY29uZCBzd2l0Y2gsIGNvbXBsZXRlIHRoZQ0KPiB0cmVlLCBhY3F1aXJlIGRzYTJfbXV0ZXgs
+IGFuZCBjYWxsIGRzYV90cmVlX3NldHVwX3N3aXRjaGVzKCkuIFRoaXMgaW52b2tlcw0KPiBuZXRj
+X3NldHVwKCkgZm9yIHRoZSBmaXJzdCBzd2l0Y2guIE9ic2VydmluZyBwcml2LT5pbl9wcm9iZSA9
+PSB0cnVlLCB0aGUNCj4gc2Vjb25kIHRocmVhZCB3b3VsZCBjYWxsIHBjaV9yZXNldF9mdW5jdGlv
+bl9sb2NrZWQoKSBvbiB0aGUgZmlyc3Qgc3dpdGNoJ3MNCj4gUENJIGRldmljZSwgZGVzcGl0ZSBu
+b3QgaG9sZGluZyBpdHMgZGV2aWNlIGxvY2suDQoNClllcywgdGhlcmUgaXMgYSBwb3RlbnRpYWwg
+aXNzdWUsIEkgd2lsbCBmaXggaXQNCj4gDQo+ID4gKw0KPiA+ICsJcmV0dXJuIHBjaV9yZXNldF9m
+dW5jdGlvbihwcml2LT5wZGV2KTsNCj4gDQo+IFtTZXZlcml0eTogSGlnaF0NCj4gRG9lcyB0aGlz
+IGludHJvZHVjZSBhbiBBQi1CQSBkZWFkbG9jayBiZXR3ZWVuIHRoZSBQQ0kgZGV2aWNlIGxvY2sg
+YW5kDQo+IGRzYTJfbXV0ZXg/DQo+IA0KPiBXaGVuIGEgbXVsdGktc3dpdGNoIERTQSB0cmVlIGlz
+IHNldCB1cCwgbmV0Y19zZXR1cCgpIGNhbiBiZSBjYWxsZWQgZm9yIGFuDQo+IGFscmVhZHktcHJv
+YmVkIHN3aXRjaC4gSW4gdGhpcyBjYXNlLCBwcml2LT5pbl9wcm9iZSBpcyBmYWxzZSwgYW5kDQo+
+IG5ldGNfc3dpdGNoX3Jlc2V0KCkgY2FsbHMgcGNpX3Jlc2V0X2Z1bmN0aW9uKCksIHdoaWNoIGFj
+cXVpcmVzIHRoZSBQQ0kNCj4gZGV2aWNlIGxvY2suIEhvd2V2ZXIsIG5ldGNfc2V0dXAoKSBpcyBp
+bnZva2VkIGJ5IHRoZSBEU0EgY29yZSB3aXRoIHRoZQ0KPiBnbG9iYWwgZHNhMl9tdXRleCBoZWxk
+Lg0KPiANCj4gQ29udmVyc2VseSwgd2hlbiBhIHN3aXRjaCBpcyB1bmJvdW5kIChlLmcuIHZpYSBz
+eXNmcyksIHRoZSBkcml2ZXIgY29yZSBmaXJzdA0KPiBhY3F1aXJlcyB0aGUgc3dpdGNoJ3MgZGV2
+aWNlIGxvY2sgYW5kIHRoZW4gY2FsbHMgdGhlIGRyaXZlcidzIHJlbW92ZQ0KPiBjYWxsYmFjay4g
+VGhlIG5ldGNfc3dpdGNoX3JlbW92ZSgpIGZ1bmN0aW9uIGNhbGxzIGRzYV91bnJlZ2lzdGVyX3N3
+aXRjaCgpLA0KPiB3aGljaCBhdHRlbXB0cyB0byBhY3F1aXJlIGRzYTJfbXV0ZXg6DQo+IA0KPiBu
+ZXQvZHNhL2RzYS5jOmRzYV91bnJlZ2lzdGVyX3N3aXRjaCgpIHsNCj4gICAgIC4uLg0KPiAgICAg
+bXV0ZXhfbG9jaygmZHNhMl9tdXRleCk7DQo+ICAgICBkc2Ffc3dpdGNoX3JlbW92ZShkcyk7DQo+
+ICAgICBtdXRleF91bmxvY2soJmRzYTJfbXV0ZXgpOw0KPiAgICAgLi4uDQo+IH0NCj4gDQo+IElm
+IFRocmVhZCAxIGlzIHVuYmluZGluZyBTd2l0Y2ggQSAoaG9sZGluZyB0aGUgZGV2aWNlIGxvY2sg
+Zm9yIEEgYW5kIHdhaXRpbmcNCj4gZm9yIGRzYTJfbXV0ZXgpIHdoaWxlIFRocmVhZCAyIGlzIHBy
+b2JpbmcgU3dpdGNoIEIgKGhvbGRpbmcgZHNhMl9tdXRleCBhbmQNCj4gY2FsbGluZyBwY2lfcmVz
+ZXRfZnVuY3Rpb24oQSkgaW5zaWRlIG5ldGNfc2V0dXAoQSkpLCB0aGUgc3lzdGVtIGNvdWxkDQo+
+IGRlYWRsb2NrLg0KPiANCg0KLS0NCnB3LWJvdDogY3INCg0K
