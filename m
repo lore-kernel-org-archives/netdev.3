@@ -1,105 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA953EC684;
-	Wed, 14 Oct 2026 18:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7DC38655A
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792004243; cv=none; b=ly5CgGj6YcwxnRBZJ0DlMFJ8sKiQlRvCx6Z435qt9PTok0VZN86gIB1OZwQzIOpYyTrF31RW43wlV7yisuxejVSkZirwLF1wqYtMsRMtLllpAqpn1S6aqmILz/BnnnFK3oyFQS7chhJBxOZb/XgxzZAzQoZNIhgQZFJdHjlawYk=
+	t=1792004352; cv=none; b=qlzSYiY9keuhgFtGJR/uDN8lelaObXGNHnXs0WhLFC5DCwOQ4ebJr/EyfQjJ3ALBsfnwQqpDSJM9r4eaHf6WXuLEqhES/WqlISp1G8IdhMmVaFho0N5O00JA6E17hgSSLiPp5vQNWoe0SD1Se+WA2h6t7bxw5VInKKBiCY498sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792004243; c=relaxed/simple;
-	bh=WmNcsA5G711yUOhv3vRumoM3sNXabGcZCFbLELV1ebE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mvYcDGVFE7UEru9vZvBy+piWNEOpjU8BPyTS0JNCpn2+2VhnEvylZMziLxb2nxtAG9NC07J4RHWLj1IkGGejJTwKnYrc8FUyYpwkKoV09NtMioNRRvifSSy8WLG4G1k58TRCxGNSb9D/0sq4HM297ahfkxTHulPTEguwpcrPf6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4F521D7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792004352; c=relaxed/simple;
+	bh=Rk54IAaE6VVUUw2LLHOVHkQVqBe3J7+3RvRWEEH/U2c=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=gNY+fq2i1SQ2Zl3AChM7LZBtslcVt3dnax0De7+cnWfpe6rRXTl2udpT8DOmJy0J448eJ/CH/SeJR4Pdd5H8AUrdmlufWT5wIWNaOEbtA0I7AClLvRB6ZHHgpyZCdgMWBVu+5ObsP5b7rofyQIZK0S0aEAgfmZSJFNRvuNVCE3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACUdX9uh; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4F521D7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314031F000C4;
-	Wed, 14 Oct 2026 18:57:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792004241;
-	bh=CvWOaTUlMXOEn3tnxgA4QdZqJ3etpFx5xwMvPC1gXq4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=G4F521D7LiiIZZCqQVxHOB/nZBiu4tBxIrJQIPczjUHE+9a4ljcAa5OTOC19AOt/M
-	 rGoKmaMxA+wiyvhsWOZZEmMlyGxP3Fht7DONoGYHa8rKGnJNPOBU7hqGwasqMppiDD
-	 lj4CXohfxWrglWa+txVDNBw+bPCOdgEhQTckY2zfH0ZHgR0L/WNgTXn5Zeh/5QgqxV
-	 NQTLBjMv2/0kf0itpRvtcPZcdOJMQYdLblZtfduOYIvb2NT7t0hKKaPc4AedK6EZLm
-	 sCYsf901oGif3DjXDGjJHt6feyuSnqKqJoGw1fNebhvxz0Rnprqy5WN4zEg1AFqjcX
-	 mLR9Es3GE/qkw==
-Date: Wed, 14 Oct 2026 19:57:16 +0100
-From: Simon Horman <horms@kernel.org>
-To: Sagi Maimon <maimon.sagi@gmail.com>
-Cc: netdev@vger.kernel.org, radhey.shyam.pandey@amd.com,
-	michal.simek@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	daniel@iogearbox.net, jacob.e.keller@intel.com, joe@dama.to,
-	suraj.gupta2@amd.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4] net: axienet: free outstanding TX buffers in
- axienet_dma_bd_release()
-Message-ID: <20261014185716.GD83879@horms.kernel.org>
-References: <20261004083759.1016519-1-maimon.sagi@gmail.com>
- <20261007034620.1360542-1-maimon.sagi@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACUdX9uh"
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5e9405fbc33so1912437e0c.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792004350; x=1792609150; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=LubmNDov+kRdJeSgDmNkTIoCyYOuN6AaFESo8XksX+A=;
+        b=ACUdX9uhrjCQKOJNqny++2sBR8t9Y6CrMAgUBfktaL/EF9F1nnfYH5IMEf/GDjjFGt
+         QA5VTDoOGMvg3vJybBlg56rMVFd5NkHgVijKVbD8i51daSkxfMwtLEjgQy0lpF5UBdmI
+         VMlVOXW8oEgddav0TP9GZT5Mr3ycKRToI9WhY7BOSbApSNCS10G+etk+v6HUFcau5Kqf
+         2nGjWFB/i6zxDoQGqUMD7BNaif120D1yDDUzvaV3PB40SglQZnkaMYWi6BTkEGxNSU6E
+         yIsb2stFBpB747PFuJRhoV3q60H20gP6xU1cMrAXEMbJ4vqMcX3+8UofL5iE4FiAiqtz
+         2uWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792004350; x=1792609150;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LubmNDov+kRdJeSgDmNkTIoCyYOuN6AaFESo8XksX+A=;
+        b=oBQ6aFGKoyHA7uTOobwUSxcSpQFm1DWehFK7o49DUCWPKsgv1BQReu3xFnlyOVCHrZ
+         TToTLmrhINnltQRp8OQ/ALn+45e01wJLapDDxWTZks4na5cVEnthKi4pR2B99/UGqIaR
+         ldLuYMfbhsFzW+4tQwju782NqotUedlddzK8ygJcou8lzHr5ibwsmpyuJqJY4oFcCeVA
+         mJhaSbIId0lUeZsFUDi2SSZrFQd4Qf7vAF8NstUKeDfnK/UcqHTkLPdM7FIrP+eK5bS+
+         w7GyjDPF0oppvQYyaB1NvoQjRd59XgeEuKxG0c4lD+K4v1iOXJeJoQMaa9pjGWzS8wQQ
+         z0kA==
+X-Gm-Message-State: AFq9FYLPb/KsVGM0rjp4DhReg1H/3rAoMyzh382OP81xWPRfS5o7obVZ
+	zVDGw0zU0Zd7Y20YN45TWs/Lw8UD+0V8B47DPLHuou6aZN8Vvp+E9RZO
+X-Gm-Gg: AYBFou1qf8yCN+eBF2tfOLW27I0qVzusfnwC+bRHXSER3Iom5514+ElVf8GDi5JeI0L
+	Yv+Q+Ps+BdGppe3KFRGyONJAYHwYZVVLuf8N+UqHANVs8jjWErFTvwBOiCqj/Xc6OTfZiACMY3V
+	xNkpAD3vrQDqJfNOKSVqukLeH+vF7Dwnroxw+f5soNkUG3TiNTBC9BiAx4weVUYMi6WwWHYZOhG
+	3e4omYsB0+qqOYAqhNaZnaFbw55kq4uNuii6QUV7o9KNsFrTKI/0ecAmnpcc6wF/8NyBkpQLA1w
+	QAGARs3UR2/SQSocKcXKRwFFeKfw3VccvBuFnpApQ3j6A3mJ+EUNQaJRkhNlFzpmBIg7xLawPqP
+	cbpGHjNoWvh3/jl5wGGyjabsb0w4S2RdRSAuqV0cWuySi7LV4mFwqEsj0E4n5yBU8TRcG4t9jF0
+	JSeskwMLVc5V1uwFzBb4fRB5FKo6mERtANc2hcUn5ORyqxEZWLygkgcX6X0Otx+j9/6hvkGMS9r
+	167UqyPtrUiDqz0KIMSDssk2ixisP+kqrEJapPVj3UyrZXEP3IuzJc42pJzUX3IATFZxH0e4E1v
+	mBDvH623qNujk5xIvW5/8K/v98EwrUOx5ALdPg==
+X-Received: by 2002:a05:6122:4f9d:b0:5e1:c1c8:9ff9 with SMTP id 71dfb90a1353d-5e91f28cd89mr6035507e0c.2.1792004350298;
+        Wed, 14 Oct 2026 11:59:10 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5e91cc14668sm11985603e0c.16.2026.10.14.11.59.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 11:59:09 -0700 (PDT)
+Date: Wed, 14 Oct 2026 14:59:09 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ Josef Bacik <josef@toxicpanda.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Kaiyuan Zhang <kaiyuanz@google.com>, 
+ Mina Almasry <almasrymina@google.com>, 
+ Willem de Bruijn <willemb@google.com>
+Cc: netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ bpf@vger.kernel.org, 
+ Josef Bacik <josef@toxicpanda.com>
+Message-ID: <willemdebruijn.kernel.1725d296e3ac6@gmail.com>
+In-Reply-To: <willemdebruijn.kernel.140f4eac91ab3@gmail.com>
+References: <20261006-b4-skbuff-bug-on-v1-0-1b4434c5357c@toxicpanda.com>
+ <willemdebruijn.kernel.140f4eac91ab3@gmail.com>
+Subject: Re: [PATCH net-next 0/9] net: skbuff: convert most BUG_ON()s to
+ WARN_ON_ONCE() and an error
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261007034620.1360542-1-maimon.sagi@gmail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 07, 2026 at 06:46:20AM +0300, Sagi Maimon wrote:
-> axienet_dma_bd_release() walks the RX ring to unmap and free every
-> receive buffer before releasing it, but frees the TX descriptor ring
-> with dma_free_coherent() alone.  Any descriptor that
-> axienet_free_tx_chain() had not yet reclaimed still holds its skb and
-> its streaming DMA mapping, and both are lost.
+Willem de Bruijn wrote:
+> Josef Bacik wrote:
+> > I'm going through and reducing BUG_ON() usage in areas that have created
+> > the most problems for us.  89 commits in the tree quote "kernel BUG at
+> > net/core/skbuff.c", 31 of them since 2024, and some of those could be
+> > triggered from inside a user namespace.
+> > 
+> > The first patch is a fix: skb_copy_and_csum_bits() leaves stale bytes
+> > in a buffer headed for the wire when it hits unreadable frags.  The
+> > BUG_ON() conversion of the same function needs the same handling, so
+> > it's here rather than sent separately.
+> > 
+> > The rest of the series converts 17 of the 19 BUG_ON()s in skbuff.c.
+> > Each one becomes
+> > 
+> > 	if (WARN_ON_ONCE(cond))
+> > 		<error path>;
 > 
-> axienet_stop() disables TX NAPI and stops the DMA engine before calling
-> it, so nothing reclaims those descriptors afterwards.  Bringing the
-> interface down while frames are in flight therefore leaks up to
-> lp->tx_bd_num skbs and mappings each time.
+> Good idea. I was thinking of doing exactly this sweep after addressing
+> one case recently in commit ee1972def665 ("net: downgrade BUG_ON
+> EIOCBQUEUED in sock_sendmsg_nosec")
 > 
-> axienet_dma_err_handler() already walks the TX ring this way before it
-> restarts the DMA engine: it unmaps every descriptor whose cntrl is still
-> set - axienet_free_tx_chain() clears it on reclaim - frees any skb still
-> attached, and clears the descriptor.  Move that loop into a helper,
-> axienet_free_tx_bufs(), and call it from axienet_dma_bd_release() too.
-> This relies on axienet_stop() having stopped the DMA engine first, as
-> the RX walk in the same function already does.  The helper frees the
-> skbs with dev_kfree_skb_any(), as drops: in the error handler, which
-> runs from a workqueue, that frees them directly rather than deferring
-> them to softirq as dev_kfree_skb_irq() did.
-> 
-> The walk must not run on a ring that is not there.  axienet_open() does
-> not check the result of the reset that runs axienet_dma_bd_init(), so
-> when that reset fails tx_bd_v is either still NULL or, after an earlier
-> close, points at the ring that close freed.  Clear tx_bd_v and rx_bd_v
-> once their rings are freed, and skip the walk when tx_bd_v is NULL.
-> That also ends the second dma_free_coherent() of a stale ring which the
-> same path already did.  On the axienet_dma_bd_init() error path the TX
-> ring has just been allocated zeroed, so the walk does nothing.
-> 
-> This was reported by the Sashiko AI review bot.
-> 
-> Tested on the AXI Ethernet MAC of an ADVA TimeCard X2 (PCIe card, with
-> the built-in AXI DMA): traffic passes, and after each of ten down/up
-> cycles and five module reloads, all made with traffic running and each
-> running axienet_dma_bd_release(), traffic resumes and nothing is logged.
-> The leak itself was not measured, and neither the failed-reset paths nor
-> axienet_dma_err_handler() were exercised.
-> 
-> Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-> Reviewed-by: Joe Damato <joe@dama.to>
-> Assisted-by: LLM sparse
-> Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+> Instead of WARN_ON_ONCE, which still triggers a panic on systems with
+> panic_on_warn, DEBUG_NET_WARN_ON_ONCE?
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-In future please post new patch revisions as new email threads,
-not as a reply to an earlier revision.
-
-Thanks!
-
+Just to understand: do you plan to resubmit with this change?
