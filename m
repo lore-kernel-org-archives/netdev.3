@@ -1,76 +1,83 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F36B4ACC6C
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF9C4A260F
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792016022; cv=none; b=AqyO4HY38JEo1EnGi0P9k82SEYLdxgY9g+MHzV9/KT65XeVpB3Frh1vvD7sJ6AOPrJ4S78x3kzefGPqYruU9ejJWWD9hw4HK6vT6zKKFk7JGEn/g7haPed+Q2qtE0XwS1ieLOWPr73QcgyQ1r3bPuG3AmNHSED5T7V9lSlPHcWk=
+	t=1792016552; cv=none; b=SjC9Tl9cqYP34Tn2cu8TpGYwQsSWEwjZsfkXvIJIeHCOnvtXNVId7kz0+xOtj0L3tAuxRmEbIqTdwBf+tSUQQfvHNLl0PxXFGroA35XNmZJlqZde9yovlAVzy6yxPO/aBwss1KnJdz4dsXG56Yg883qs17amZ4jtZ2qbmMIj7Rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792016022; c=relaxed/simple;
-	bh=rzk+SQ65GZTwGcyOzgZAzCF8pgwnzPi/zoRs0lmUHdE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OGDAV8X8I7fxAnur57CQQcCh9QDseqpQIzaH7VwH0S89I1LiHw77C/RZTHMrsuuJFWOxMRelnwHzU9LVHPbmb5QH1KRxEPg/KkL7umuzA2A5FZDOXA/zN/vI0qKpR2xOucBE7si9vFoJzXoQVDZIc0AT86eRTS5q2nehtaFgkaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=ax4WjLUu; arc=none smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
+	s=arc-20240116; t=1792016552; c=relaxed/simple;
+	bh=xFEmAAT49vOrGlbwyZJCJpFg7gwDK6WlTjnMnrxO8bw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sjYd0tb3Ps3Bg6JbLUH2AbjL1ASGNLxmpd145LPQ4tNSQ0t63Zl2XvHgt8f6hHy78cXMLw0PXYfwNEH7gYa1XG3eh3ShyYSFEJwpFQbkkuhKItAnA2E47x/zZunhI7dFI8G6tmGnLKLDtpYJ3oXdQAnkIamV6u4fLGXU3FrSwbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UUjUgw7r; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="ax4WjLUu"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-35f1f76ea84so244512eec.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:13:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UUjUgw7r"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso2156504eec.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:22:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1792016018; x=1792620818; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792016550; x=1792621350; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eAygOaFc4LHF/Oyx+4laODk7Ja1BXhOoWbgmH1NHvto=;
-        b=ax4WjLUuwgObv4UrQcH2Vy2/yHWB8ISi4+QmEcCQwgqDuJNPMhwBDOucnvyVsU/61j
-         zW0mSn+wJcCVCVeFN1+KsidYAF3RV6WopIDTO8oXnsAjfN2LRe/4rL8YsWPOLqo4MaHX
-         dG2iVeT5wkTpvlDJ6f5C7moEyTRg2jibmlOukxKIQdcnJaUBxbbM/2EshNUowg81YLfF
-         a4S1y0HYzIVnYj8G1wo6TZRKq6UYmK2lNNI2is1LKLivg4HXp9FhIkwkkImFSBjlo//R
-         Key7MBg6I+8Qrsg/S220N3W/7dG0U5MFDNdJsPjp6mSyNhFfWgCCV5dS6UKiJ2yUwJfS
-         dzCA==
+        bh=2b7f1ifOYnCy9LytpiVooR3kRz3vXe1JYmZB2bLzwcY=;
+        b=UUjUgw7rcVdbgL1OES4tTklOrZBQSJKt4SIH6hfwZ2AV9afaf1nG/XNywi6iVdrOLw
+         oTuMEaw+YfXcDoVoPAtX/D1iEr7BQ8I2JreFByfSpFj4mYZX4C/U2XzRvedNvZaGt9/j
+         OUcUEXo9xhXWM3c3l8cFbJ5YkmugLcJE47UM7ngENVXmB9AXrB7zltVZcz9tttA+awgj
+         3zejwZGyY8jIGh46LwQr9PgapKLf24nwqfifL+/43Plwkrg7E4rfi944gMTCc2GqP2f8
+         T5mifXZbdyP62krikIUEvoboEYGuyVdswrvqZ+ROL+JoHy1z1PhSSRy6e2/N08j4AfVe
+         u+Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792016018; x=1792620818;
+        d=1e100.net; s=20260707; t=1792016550; x=1792621350;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=eAygOaFc4LHF/Oyx+4laODk7Ja1BXhOoWbgmH1NHvto=;
-        b=TJKzIMIN8ftSAjLgQgfrQ2qZC44qhYyMfRpMVnXr25EUz5kUENoJXeREd4yteaBe9n
-         6RCeJuJpkq/MUJU33yVbLKhOckFDAjNg+bJjXFuxvH8C8ByCTlsNMlj7iXGiYfA1v/95
-         p9/xbImVjzaG9KR0zVy8PTA9pUougr8GdU8wkS3Bff8vT+krA7jhODVymsJqxGxMVKcQ
-         wKSQBbg2J+K5JGlH58JwPBY2bpla1lkWxodoRPpcU1hh6pt5XA3LpIeVcIfqP/wUBd0v
-         RwuctO77SZAncdRh06vvTPoQIUCvkizjJPu877eV2f77WuK1xDy+LgnXQzdpoKNVvF2T
-         fx3A==
-X-Gm-Message-State: AFq9FYIs3agLthCGKxeu9H4bmr4vM7hFBfTv8fCXzHouN2JCyIbazYJi
-	piIM2vTjJeyH1v61vqF4A48l4dDic/4v55S6oWqVLjgH30+pUvgWgvwTWmheNvRzBD0H52wAhWH
-	CMN+xHjcYcoEN
-X-Gm-Gg: AYBFou1SCNBc2C5+Wue0gdfF5dpAC7wQXIL7eUYPDGq33ctSrsThc6OolTjQvskllOC
-	Z5qEBxnIQxXqYH5npPuPpHfo0Ig6/xASX/z9KYkJZIPYdPY5uTFS2Xz4vnsuKNw4iMEsBuS4C08
-	V2Cyi2My/EPAT+qL7mhWP6Pfw12v9sdsPPWycQ4XhjZSoIlhPQ2U4Xz9gY6+irpNL/ieQZsTxjo
-	hOvxo83AVsQIzdG4YTlfISbATLWH/34eGQsQH2b93lOyL3oOFzCXr9MLJJ+/hA08ctRcrd1YL21
-	AwhkBQJ9rHRGeXdG41e4Y8mJJPNnEw6V9/beTBv1KJymGZC9vOKcIirzLCdrEhxm423e541Lyby
-	veK0TX4hBJ3DCkusln2wQ98495UTuC7+9oVkrPjVQk+8SCJAly06M5A/RMHZGtjeYvu5j4TiB0z
-	4YCxxzr5BMrHZyhxd5lFuetKDmV40iLN4iRT3jFflBK3a5WPHNx6sdi0DdPMHcdAiGjIyeV4jvD
-	WC+xRhj5xcJvKrHzOmkTxLHbnIEG15+KycztnG3X0BgWjlltwZGT0EySNmKPhk=
-X-Received: by 2002:a05:701b:4349:b0:15c:20b8:796e with SMTP id a92af1059eb24-16a5f112b00mr24410244c88.22.1792016018246;
-        Wed, 14 Oct 2026 15:13:38 -0700 (PDT)
-Received: from devbox.ts.blockcast.net ([69.25.95.32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-169a1becefdsm50084912c88.7.2026.10.14.15.13.36
+        bh=2b7f1ifOYnCy9LytpiVooR3kRz3vXe1JYmZB2bLzwcY=;
+        b=rjVBqLh7oDi3rUsWx5Jq1/byHWkl5aPvKYTnsdlmxRuThSiZWIXidCiNquIhD5Of3Y
+         xldbnyoQkdB0sxukY8BE8A8/4fZ8tHfo6A/qMOviHOokUnZgfMobwWFhc4qORCm8I6xJ
+         xQOpi5de6Qcfl2VDtKwT9YHydcYKJUVYsE9qG2iN+ZhpDGOAzfFNewomga+ise/KDjDD
+         MxONWxjQpu+jnUX5Fz4fBzA527Yzz8xZ7160HQ7m/e3/4q8Fuws/AJYI2kJPjFs5o8Ug
+         Y1Kj4nXj+93HUUJVFuPviE2DyLNBT7kIwy5eX0exDioLH0Pqy0JpiewmdrYqFAemJ20l
+         3SAA==
+X-Forwarded-Encrypted: i=1; AKwUvByEnttdZbvb+Qc7Nl8Ek2DrjOWMW1V7lA2fOODlpXnaNbgQn/xNrocB/EP2Wcz26LgZCbOdmR4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKZQMD54v8/kUSr0EAbDyiriGEmkLgI4G87ZnDc9gy+vo2KWmJy
+	2PsBQaSjk8n4fDc2XJUuYjkCNV7RpiYph21iF6slBKKxRrJLXWzY5NoH
+X-Gm-Gg: AYBFou1kdnVSSwmsF8xgXEBudq6cKfqHRjio5+zzXUezfo2MR86heOG5vv88zvC4nih
+	vLNzdqHGP4Qv2gbl3YYrt0BgZYeECFGYs1sY2K75OzR4jHatHszjSL29yOF5Lq0dmqc33tqT6kU
+	bApjPIdNMlLcv23hWo8yCSVcaf6CHj+xDvihzRagsFD3i7bnHyMEuZ/ScTlefFhg1ebl4Ly5aDD
+	ARuf1IOZ+q/N0AS6XkiX4/xaYevfkSqqZnKCyqRXqcp20GIsqwFOQgesRTz9NtoRgfqa/oLSaA9
+	z6tQd9MTrV3vuo11wndFW8whFRAJLn/htbuNq2zCF/6B5FglmRsgfuLfbCL+gxgoh5aSsmFHhLd
+	mGrTLo3bTRZ04HZi3eV/kraeRnNy4YKmGYeNwJjwSYJP5oWu9jSXqoyNcOEhlWpcejTm3X2PpRq
+	NtI/7ZsVqvyx439XJmIV+Qx4waUCnvlUEMS3iu6cQux5fu/gFR3hvv93T1+z7iWzHahcNj14cp+
+	fM5LowFEH/chBSYXw==
+X-Received: by 2002:a05:7301:3a84:b0:351:985:e729 with SMTP id 5a478bee46e88-3537e01e8b6mr25315973eec.12.1792016549619;
+        Wed, 14 Oct 2026 15:22:29 -0700 (PDT)
+Received: from localhost ([2620:10d:c090:500::5:7561])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537ca6d202sm54635124eec.13.2026.10.14.15.22.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 15:13:37 -0700 (PDT)
-From: Omar Ramadan <omar@blockcast.net>
-To: Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
+        Wed, 14 Oct 2026 15:22:29 -0700 (PDT)
+From: Zinc Lim <limzhineng2@gmail.com>
+To: alexanderduyck@fb.com,
+	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	pabeni@redhat.com,
+	linux@roeck-us.net,
+	horms@kernel.org,
+	hmohsin@meta.com,
+	mike.marciniszyn@gmail.com
+Cc: kernel-team@meta.com,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH net-next] amt: make the per-tunnel group and source limits configurable
-Date: Wed, 14 Oct 2026 22:13:34 +0000
-Message-ID: <20261014221334.2443184-1-omar@blockcast.net>
-X-Mailer: git-send-email 2.43.0
+	linux-hwmon@vger.kernel.org,
+	zinclim@meta.com,
+	limzhineng2@gmail.com
+Subject: [PATCH net-next v4 0/6] eth: fbnic: expand hwmon sensor support
+Date: Wed, 14 Oct 2026 15:22:18 -0700
+Message-ID: <20261014222225.2803660-1-limzhineng2@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,137 +86,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A relay caps the state one gateway tunnel can hold at AMT_MAX_GROUP (32)
-group records and AMT_MAX_SOURCE (128) source records, counted across
-all of the tunnel's groups. Both are compile-time constants. An SSM
-receiver uses a source record for every (S,G) it joins, so a gateway that
-needs more than 32 groups or 128 channels through one tunnel has the
-excess joins dropped, and the relay operator cannot raise either limit.
+The firmware capability response carries per-board sensor thresholds,
+and the firmware reports which range a sensor has entered whenever it
+crosses one of them. This series surfaces both to userspace:
 
-Add IFLA_AMT_MAX_GROUPS and IFLA_AMT_MAX_SOURCES, read when the link is
-created, like IFLA_AMT_MAX_TUNNELS. Zero or an absent attribute keeps the
-current defaults. Gateways drive these allocations, so the policy caps
-them at 1024 groups and 4096 sources per tunnel, and strict_start_type
-has it validate them, and any attribute added after them, strictly.
-Report both limits in amt_fill_info().
+ - Move the sensor read logic out of fbnic_mac, closer to its only
+   caller in the hwmon code, and drop the now-unused get_sensor op.
+ - Cache the temperature and voltage readings for the current jiffy so
+   a burst of attribute reads issues a single firmware round-trip.
+ - Parse and expose the temperature (min/max/crit) and voltage
+   (min/max) thresholds. Thresholds the firmware does not report are
+   not exposed.
+ - Parse the range firmware reports, both in the unsolicited threshold
+   event and in the sensor read response, and cache it per sensor.
+ - Expose temp1_alarm and in0_alarm from that cached range, and notify
+   on each crossing through hwmon_notify_event().
+ - Derive the range from the reading carried with the event, on old
+   firmware that predates range reporting.
 
-Assisted-by: LLM
-Signed-off-by: Omar Ramadan <omar@blockcast.net>
----
-Notes:
-- At the policy ceilings, with 256 source buckets per group, one tunnel
-  can hold up to 1024 * 4 KiB group records (176 bytes plus 2 KiB of
-  buckets, a kmalloc-4k object) and 4096 * 192 bytes of source records,
-  about 4.75 MiB. At the defaults it is about 152 KiB.
-- The IPv6 outer transport series ("amt: add an IPv6 outer transport",
-  posted 2026-10-09) also appends attributes after IFLA_AMT_MAX_TUNNELS
-  and sets strict_start_type at its first one. Whichever is applied
-  second will be renumbered after the other and drop its own
-  strict_start_type line.
-- Tested on net-next 05b5019b01fb, x86_64 KVM guest, with the iproute2
-  companion patch, which follows once this is applied. The defaults read
-  back as 32 and 128, 1024 and 4096 round-trip in text and JSON output,
-  zero keeps the defaults, and 1025 or 4097 is rejected by the policy
-  without creating a device. An 8-byte IFLA_AMT_MAX_GROUPS is rejected
-  as an invalid attribute length, and the same request with 4 bytes
-  creates the link. tools/testing/selftests/net/amt.sh passes 6/6.
-  W=1 builds with IPV6=y and =n, sparse, and kernel-doc report nothing
-  new.
+Changes from v3:
+ - Moved cache seeding to fbnic_mbx_init() in patch 2, so it also runs
+   on resume and AER recovery paths rather than only on probe.
+ - Dropped previous patch exposing all hwmon attributes unconditionally as
+   read-only. Thresholds the firmware does not report are now not visible
+   in sysfs.
+ - Collapsed the five per-threshold alarm attributes
+   (temp1_{min,max,crit}_alarm, in0_{min,max}_alarm) into one alarm per
+   sensor, temp1_alarm and in0_alarm. Firmware reports which range a
+   sensor is in rather than per-limit flags, so a single attribute
+   matches what the hardware reports.
+ - That alarm now comes from the reported range rather than from a
+   driver-side comparison of a live reading against the thresholds.
+ - Split the alarm work into two: patch 4 parses and caches the range,
+   from both the unsolicited event and the sensor read response, and
+   patch 5 exposes the attributes and notifies on each crossing. The
+   previous "firmware notifies hwmon on sensor threshold events" patch 6
+   is now folded into those.
+ - Added patch 6 for firmware that predates range reporting, which
+   flags only that a limit was exceeded.
 
- drivers/net/amt.c        | 15 +++++++++++++--
- include/net/amt.h        |  5 +++++
- include/uapi/linux/amt.h |  8 ++++++++
- 3 files changed, 26 insertions(+), 2 deletions(-)
+Changes from v2:
+ - Addressed Jakub's patch 3 feedback on jiffy comparison when
+   checking cache validity.
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 81d26ef82..30cff8de4 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -3162,6 +3162,7 @@ static void amt_link_setup(struct net_device *dev)
- }
- 
- static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
-+	[IFLA_AMT_UNSPEC]	= { .strict_start_type = IFLA_AMT_MAX_GROUPS },
- 	[IFLA_AMT_MODE]		= { .type = NLA_U32 },
- 	[IFLA_AMT_RELAY_PORT]	= { .type = NLA_U16 },
- 	[IFLA_AMT_GATEWAY_PORT]	= { .type = NLA_U16 },
-@@ -3170,6 +3171,8 @@ static const struct nla_policy amt_policy[IFLA_AMT_MAX + 1] = {
- 	[IFLA_AMT_REMOTE_IP]	= { .len = sizeof_field(struct iphdr, daddr) },
- 	[IFLA_AMT_DISCOVERY_IP]	= { .len = sizeof_field(struct iphdr, daddr) },
- 	[IFLA_AMT_MAX_TUNNELS]	= { .type = NLA_U32 },
-+	[IFLA_AMT_MAX_GROUPS]	= NLA_POLICY_MAX(NLA_U32, AMT_MAX_GROUP_LIMIT),
-+	[IFLA_AMT_MAX_SOURCES]	= NLA_POLICY_MAX(NLA_U32, AMT_MAX_SOURCE_LIMIT),
- };
- 
- static int amt_validate(struct nlattr *tb[], struct nlattr *data[],
-@@ -3235,8 +3238,10 @@ static int amt_newlink(struct net_device *dev,
- 		amt->max_tunnels = AMT_MAX_TUNNELS;
- 
- 	spin_lock_init(&amt->lock);
--	amt->max_groups = AMT_MAX_GROUP;
--	amt->max_sources = AMT_MAX_SOURCE;
-+	amt->max_groups = nla_get_u32_default(data[IFLA_AMT_MAX_GROUPS], 0) ?:
-+			  AMT_MAX_GROUP;
-+	amt->max_sources = nla_get_u32_default(data[IFLA_AMT_MAX_SOURCES], 0) ?:
-+			   AMT_MAX_SOURCE;
- 	amt->hash_buckets = AMT_HSIZE;
- 	amt->nr_tunnels = 0;
- 	get_random_bytes(&amt->hash_seed, sizeof(amt->hash_seed));
-@@ -3352,6 +3357,8 @@ static size_t amt_get_size(const struct net_device *dev)
- 	       nla_total_size(sizeof(__u16)) + /* IFLA_AMT_GATEWAY_PORT */
- 	       nla_total_size(sizeof(__u32)) + /* IFLA_AMT_LINK */
- 	       nla_total_size(sizeof(__u32)) + /* IFLA_MAX_TUNNELS */
-+	       nla_total_size(sizeof(__u32)) + /* IFLA_AMT_MAX_GROUPS */
-+	       nla_total_size(sizeof(__u32)) + /* IFLA_AMT_MAX_SOURCES */
- 	       nla_total_size(sizeof(__be32)) + /* IFLA_AMT_DISCOVERY_IP */
- 	       nla_total_size(sizeof(__be32)) + /* IFLA_AMT_REMOTE_IP */
- 	       nla_total_size(sizeof(__be32)); /* IFLA_AMT_LOCAL_IP */
-@@ -3382,6 +3389,10 @@ static int amt_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 			goto nla_put_failure;
- 	if (nla_put_u32(skb, IFLA_AMT_MAX_TUNNELS, amt->max_tunnels))
- 		goto nla_put_failure;
-+	if (nla_put_u32(skb, IFLA_AMT_MAX_GROUPS, amt->max_groups))
-+		goto nla_put_failure;
-+	if (nla_put_u32(skb, IFLA_AMT_MAX_SOURCES, amt->max_sources))
-+		goto nla_put_failure;
- 
- 	rcu_read_unlock();
- 	return 0;
-diff --git a/include/net/amt.h b/include/net/amt.h
-index 2846dde0c..18379ff7a 100644
---- a/include/net/amt.h
-+++ b/include/net/amt.h
-@@ -372,6 +372,11 @@ struct amt_dev {
- #define AMT_GC_INTERVAL		(30 * 1000)
- #define AMT_MAX_GROUP		32
- #define AMT_MAX_SOURCE		128
-+/* Upper bounds for IFLA_AMT_MAX_GROUPS and IFLA_AMT_MAX_SOURCES. Gateways
-+ * drive these allocations, so keep one tunnel's worst case to a few MiB.
-+ */
-+#define AMT_MAX_GROUP_LIMIT	1024
-+#define AMT_MAX_SOURCE_LIMIT	4096
- #define AMT_HSIZE_SHIFT		8
- #define AMT_HSIZE		(1 << AMT_HSIZE_SHIFT)
- 
-diff --git a/include/uapi/linux/amt.h b/include/uapi/linux/amt.h
-index 2dccff417..a106d7a07 100644
---- a/include/uapi/linux/amt.h
-+++ b/include/uapi/linux/amt.h
-@@ -54,6 +54,14 @@ enum {
- 	IFLA_AMT_DISCOVERY_IP,
- 	/* This attribute specify number of maximum tunnel. */
- 	IFLA_AMT_MAX_TUNNELS,
-+	/* Maximum number of group records one tunnel may hold.
-+	 * Zero or absent means the default of 32.
-+	 */
-+	IFLA_AMT_MAX_GROUPS,
-+	/* Maximum number of source records one tunnel may hold, counted
-+	 * across all of its groups. Zero or absent means the default of 128.
-+	 */
-+	IFLA_AMT_MAX_SOURCES,
- 	__IFLA_AMT_MAX,
- };
- 
--- 
-2.43.0
+Changes from v1:
+ - Addressed Jakub's patch 6 feedback on including a
+   if (!IS_REACHABLE(CONFIG_HWMON)) return; guard.
 
+Zinc Lim (6):
+  eth: fbnic: move sensor read logic out of fbnic_mac
+  eth: fbnic: cache hwmon sensor readings
+  eth: fbnic: report temperature and voltage thresholds via hwmon
+  eth: fbnic: parse the alarm range reported by firmware
+  eth: fbnic: report temperature and voltage alarms via hwmon
+  eth: fbnic: derive the alarm range on older firmware
+
+ drivers/net/ethernet/meta/fbnic/fbnic.h       |  11 +
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 140 +++++++-
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  44 +++
+ drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c | 332 ++++++++++++++++--
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c   |  55 ---
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |   2 -
+ 6 files changed, 500 insertions(+), 84 deletions(-)
+
+--
+2.53.0-Meta
