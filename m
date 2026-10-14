@@ -1,46 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47E01F3B85;
-	Wed, 14 Oct 2026 01:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC041F3B85;
+	Wed, 14 Oct 2026 01:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791943161; cv=none; b=PRdz8Glvd5HmRBQvhT2QiHTzL7ueEaCczPahiX41vHmmCgV2UN+U8QEpqCgb7Cu+tQ4FoiRTQzUMCTiY3yDoJtseINu3XKIbhlGDbPiInnZpxI7UmW7LWy4LJ/TT7IQNNM6/BWRUepDAjTQHOEkwDe96tIrTGBktW8GQhY7SDog=
+	t=1791943166; cv=none; b=lPFaqfB86jgUYPBikXh9CfHehhFA0H0ZDjX4I3AtY41J7pYZfQGnM+v+Tc5zsXxADOLJUZDk9baPgXxr2g6ePVNZTW0ha2fkUydjjVjoiOerRLor1+ZrCG5O+NMvH73kcyRaeKf81bqGXIOg6VvmAVloQyM4gelPyI8Dgl/LwNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791943161; c=relaxed/simple;
-	bh=yp44U3CTZ5DsK3GUM+LruQNdIDVedDrXoM0mpjSozXs=;
+	s=arc-20240116; t=1791943166; c=relaxed/simple;
+	bh=Y5GtmVET3+NFTCEWBkUJ+aEirpiJfUWuliFAJ2NKF1Y=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ezpA7Wuy/mfeITgTBgX/5FSUYtshENBixB3VHH9NRIJ4fPhMViMO+L9PngXF/S/fft8SVeUbWVyh58Ykk1vTGIKU8kxN6QdUb7VhgdiJF1Rlm2vfA5TJLI7lkdNq37QZBLhqe87Qcw19iuNOsx47N20m5BzSBsWZMmKevLxhDt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y6UcFYmd; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DYAiPfautsqBsWALJnlEFgFZsXQWDWNZl1u7aFTd6w7gc5R2XL7E2krKl1790zoCfqSumR2rnKOGvsTC++gGVgv4TuT7XIebocAOBLf6Td5FAYbyCgeUfEoP6e+JZf0Kp+0Od7/u/4xsi0Q9jY7yMwOFiWstl6C9IYe+3AZXEPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlcG4XQI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y6UcFYmd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722F21F000FF;
-	Wed, 14 Oct 2026 01:59:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlcG4XQI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B8B1F000FF;
+	Wed, 14 Oct 2026 01:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791943160;
-	bh=kawrkzhFyj9yV3XlykGBmt/LBNk1s9fbUDf5Qjez1pY=;
+	s=k20260515; t=1791943164;
+	bh=qULQnIWG9lrfi6WVnEGLXzy5s480bJZPB1bOfIfaN0E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Y6UcFYmdpqYwYSSRtNG+xfeScFwh/UDGZROvC8G28l/WPGdqjFiwXsxfDSg/arcoI
-	 hcUEYYKZydK8C6oTiPZXkto919qEYKD0r0ZJFFjc+zOXWUZm62qilB7NpzR6MyQ/sc
-	 TZ6njX0HhJDmZK3g2VkRxSAEzmSfWgOoXAP08hfCbw/jssJA6Q5PVyBBtG4jyl7fNo
-	 MXnAGGtWGmw/tcxVcxKhophhooiXfzqoEv95/cds52r90k7Py/fBl7sXIsHSacLW0Z
-	 3bxCBGqvW5ua3UuLXERYgbRT84FOTmetQed133DiXCz42ufgOM87FrdB7W+tlxBkqj
-	 J3zqljMP8C6XQ==
-Subject:
- Re: [PATCH net v2] igc: only strip RX timestamp header from first buffer
+	b=FlcG4XQI1o1jph/ftRhXymadLGhzg5CJOmmrOClu5bwHlixe9+evc66XPvHm5EVm3
+	 xFg9aSg3QFpqimyXXfKzPZRtPbsA6L1HNFFZOzVDVDQO323L7lheO053FZKZUW+e/6
+	 LvgyuI2Hx7eYYJ2nC/SNZvaqBmOdS2L9kNiM5BUvGbJfJrUPtwjuyJmICPeRqa4045
+	 lqNBLLgGMS2oD+lf67Vjf7nmkL8/opWJp3oaCIUcL2nA+bz1JLZdWkm7WSdrXjrZ3U
+	 gWAWNxXAAEBf49yJfzixyawZ5gm2l5MlWAXpRnep+EhdLuKugftIr8M4Bbn4XxYjE8
+	 vPXtv3/0Vf6Dg==
+Subject: Re: [PATCH net-next v14 1/5] net: dsa: motorcomm: initialize
+ dsa_switch based on chipid
 From: netdev-bot+sashiko@kernel.org
-To: p@1g4.org
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, aleksandr.loktionov@intel.com,
- maciej.fijalkowski@intel.com, avigailx.dahan@intel.com,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 14 Oct 2026 01:59:18 +0000
-Message-ID: <179194315897.434549.3743742848544230715@kernel.org>
-In-Reply-To: <20261013010854.4068874-1-p@1g4.org>
-References: <20261013010854.4068874-1-p@1g4.org>
-X-sashiko-severity: High
+To: kyle.switch@motor-comm.com
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, mmyangfl@gmail.com,
+ horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+ xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com,
+ sijia.huang@gl-inet.com
+Date: Wed, 14 Oct 2026 01:59:23 +0000
+Message-ID: <179194316326.434549.8782299311927798585@kernel.org>
+In-Reply-To: <20261013011122.1889766-2-kyle.switch@motor-comm.com>
+References: <20261013011122.1889766-2-kyle.switch@motor-comm.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,138 +50,250 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider.
+Thank you for your contribution! Sashiko AI review found more severe
+issue(s) in other patches of this series. This mail is only an FYI, in case
+you want to address the nit picks below when you respin.
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 0
+Low priority / nit picks for your consideration:
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
-
-- [High] The patch fixes the TSIP length underflow only in
-  igc_clean_rx_irq().
-- [High] In igc_clean_rx_irq(), the new condition `if (!skb &&
-  igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP))` uses `!skb` to mean…
+- [Low] In yt92xx_register_switch() (drivers/net/dsa/motorcomm/chip.c),
+  when yt921x_reg_read(priv, YT921X_CHIP_ID, &chipid) fails, the error…
+- [Low] The commit message presents the change as a pure refactor
+  ('Replace the hardcoded chip handling ... with a data-driven loopup').
+- [Low] yt92xx_series_lookup() is an open-coded if-chain (`major ==
+  YT9215_MAJOR || major == YT9218_MAJOR`), not a table lookup.
+- [Low] Naming and typing nits in the new series abstraction.
+- [Low] The commit message says it replaces 'the hardcoded chip handling
+  in yt92xx_register_switch()'.
+- [Low] At this commit, enum yt92xx_mode defines YT92XX_MODE_YT922X and
+  YT92XX_MODE_MAX, but yt92xx_series_table[] is unsized and has only the…
 
 --
 
-igc: only strip RX timestamp header from first buffer
+net: dsa: motorcomm: initialize dsa_switch based on chipid
 
-This patch changes igc_clean_rx_irq() so the 16-byte inline RX timestamp
-header is only stripped when no skb is in progress. Before, a continuation
-buffer shorter than 16 bytes could underflow the unsigned length and
-produce a skb fragment of almost 4 GiB.
+This patch moves the dsa_switch field setup out of yt921x_mdio_probe()
+and into a new helper, yt92xx_register_switch(). The helper reads
+YT921X_CHIP_ID at probe time, maps the major number to an entry in a
+new struct yt92xx_series table, and copies that entry's ops and limits
+into the dsa_switch.
 
-> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-> index 1fb5f3cbe93c5..41b293dc10c3a 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> @@ -2639,7 +2639,8 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
+> Replace the hardcoded chip handling in yt92xx_register_switch() with a
+> data-driven loopup based on the chip ID.
+
+[Severity: Low]
+This isn't a bug, but yt92xx_register_switch() doesn't exist before
+this patch. This patch adds it.
+
+The hardcoded assignments being replaced were in yt921x_mdio_probe().
+Should the message name yt921x_mdio_probe() instead?
+
+There's also a typo: "loopup" should be "lookup".
+
+> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
+> index 91cc5647f2b66..d4c20658216a6 100644
+> --- a/drivers/net/dsa/motorcomm/chip.c
+> +++ b/drivers/net/dsa/motorcomm/chip.c
+> @@ -4078,6 +4078,67 @@ static const struct dsa_switch_ops yt921x_dsa_switch_ops = {
+>  	.setup			= yt921x_dsa_setup,
+>  };
 >  
->  		pktbuf = page_address(rx_buffer->page) + rx_buffer->page_offset;
+> +static const struct yt92xx_series yt92xx_series_table[] = {
+> +	[YT92XX_MODE_YT921X] = {
+> +		.name = "YT921x",
+> +		.max_ports = YT921X_PORT_NUM,
+> +		.num_lag_ids = YT921X_LAG_NUM,
+> +		.ageing_time_min = 1 * 5000,
+> +		.ageing_time_max = U16_MAX * 5000,
+> +		.dscp_prio_mapping_is_global = true,
+> +		.assisted_learning_on_cpu_port = true,
+> +		.switch_ops = &yt921x_dsa_switch_ops,
+> +		.mac_ops = &yt921x_phylink_mac_ops
+> +	},
+> +};
+
+[Severity: Low]
+This isn't a bug, but yt92xx_series_table[] has no explicit size and
+only one entry, YT92XX_MODE_YT921X. enum yt92xx_mode already defines
+YT92XX_MODE_YT922X and YT92XX_MODE_MAX, so indexing the table with
+YT92XX_MODE_YT922X would read past the end.
+
+Nothing does that at this commit, because yt92xx_series_lookup() only
+returns index 0. The last patch in the series also adds the
+YT92XX_MODE_YT922X entry.
+
+Would sizing the table as [YT92XX_MODE_MAX] make this clearer?
+
+> +
+> +static const struct yt92xx_series *yt92xx_series_lookup(u32 major)
+> +{
+> +	if (major == YT9215_MAJOR || major == YT9218_MAJOR)
+> +		return &yt92xx_series_table[YT92XX_MODE_YT921X];
+> +	else
+> +		return NULL;
+> +}
+
+[Severity: Low]
+This isn't a bug, but this if-chain classifies the major separately
+from yt921x_infos[]. Those entries already carry .major, and
+yt921x_chip_detect() walks them after reading YT921X_CHIP_ID a second
+time:
+
+drivers/net/dsa/motorcomm/chip.c:yt921x_chip_detect() {
+    ...
+	for (info = yt921x_infos; info->name; info++)
+		if (info->major == major)
+			break;
+    ...
+}
+
+Every new chip variant has to be added in both places:
+
+- If only yt921x_infos[] is updated, probe rejects the chip with
+  -ENODEV.
+- If only this if-chain is updated, probe accepts the chip and setup
+  rejects it later.
+
+The last patch in the series, "net: dsa: motorcomm: Add support for
+Motorcomm YT922x", adds an "else if (major == YT9224_MAJOR)" here
+instead of linking the series to the info table.
+
+Could the series come from yt921x_infos[] instead, to match the
+"data-driven lookup" in the commit message?
+
+> +
+> +static int yt92xx_register_switch(struct dsa_switch *ds)
+> +{
+> +	struct yt921x_priv *priv = dsa_to_yt921x_priv(ds);
+> +	struct device *dev = yt921x_priv_to_device(priv);
+> +	const struct yt92xx_series *series;
+> +	u32 chipid;
+> +	u32 major;
+> +	int res;
+> +
+> +	mutex_lock(&priv->reg_lock);
+> +	res = yt921x_reg_read(priv, YT921X_CHIP_ID, &chipid);
+> +	mutex_unlock(&priv->reg_lock);
+> +	if (res) {
+> +		dev_err(dev, "Unexpected chipid 0x%x\n", chipid);
+> +		return res;
+> +	}
+> +
+> +	major = FIELD_GET(YT921X_CHIP_ID_MAJOR, chipid);
+> +	series = yt92xx_series_lookup(major);
+> +	if (!series) {
+> +		dev_err(dev, "Undefined series info for the corresponding major\n");
+> +		return -ENODEV;
+> +	}
+
+[Severity: Low]
+Is chipid initialized when the first dev_err() runs?
+yt921x_reg_mdio_read() only writes *valp after all four MDIO accesses
+succeed:
+
+drivers/net/dsa/motorcomm/chip.c:yt921x_reg_mdio_read() {
+    ...
+	res = __mdiobus_read(bus, addr, reg_data);
+	if (res < 0)
+		goto end;
+	val = (val << 16) | (u16)res;
+
+	*valp = val;
+	res = 0;
+
+end:
+    ...
+}
+
+On an MDIO error, the log would show a stale stack value and describe
+a bus failure as an unexpected chip ID.
+
+The !series branch, where chipid is valid, doesn't print the ID at
+all. Should the two messages be swapped, the way yt921x_chip_detect()
+handles it?
+
+The last patch in the series, "net: dsa: motorcomm: Add support for
+Motorcomm YT922x", fixes this. The read-failure branch becomes a plain
+return res, and the !series branch prints the chip ID. This
+intermediate commit could still be hit during a bisect, so could the
+fix be folded into this patch?
+
+[ ... ]
+
+> @@ -4146,15 +4208,10 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
 >  
-> -		if (igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
-> +		if (!skb &&
-> +		    igc_test_staterr(rx_desc, IGC_RXDADV_STAT_TSIP)) {
+>  	ds = &priv->ds;
+>  	ds->dev = dev;
+> -	ds->assisted_learning_on_cpu_port = true;
+> -	ds->dscp_prio_mapping_is_global = true;
+>  	ds->priv = priv;
+> -	ds->ops = &yt921x_dsa_switch_ops;
+> -	ds->ageing_time_min = 1 * 5000;
+> -	ds->ageing_time_max = U16_MAX * 5000;
+> -	ds->phylink_mac_ops = &yt921x_phylink_mac_ops;
+> -	ds->num_lag_ids = YT921X_LAG_NUM;
+> -	ds->num_ports = YT921X_PORT_NUM;
+> +	res = yt92xx_register_switch(ds);
+> +	if (res)
+> +		return res;
 
-[Severity: High]
-Is !skb a reliable first-buffer test when an XDP program is attached?
+[Severity: Low]
+The commit message describes this as a pure refactor. However,
+yt921x_mdio_probe() now takes priv->reg_lock and does an MDIO read of
+YT921X_CHIP_ID before dsa_register_switch().
 
-Suppose the XDP program returns a non-PASS verdict (CONSUMED, TX or
-REDIRECT) for the first, non-EOP buffer of a multi-descriptor frame. No skb
-gets built, and the loop moves on with skb still NULL:
+Before this patch, probe only filled in static dsa_switch fields. The
+first register access was yt921x_chip_detect(), reached via
+yt921x_dsa_setup()->yt921x_chip_reset().
 
-		/* fetch next buffer in frame if non-eop */
-		if (igc_is_non_eop(rx_ring, rx_desc))
-			continue;
+Now an MDIO error or an unknown major fails probe directly, rather
+than failing in the .setup callback. The chip ID is also read twice:
+once here and again in yt921x_chip_detect().
 
-On the next continuation descriptor, !skb is still true, so the TSIP branch
-subtracts IGC_TS_HDR_LEN again. If that continuation holds fewer than 16
-bytes, size wraps.
+Could the commit message mention this change in behaviour?
 
-The wrapped size then goes to xdp_prepare_buff(), and the continuation is
-run through XDP as a new frame with data_end before data. On XDP_PASS, both
-igc_build_skb() and igc_construct_skb() compute:
+> diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
+> index 25ff77054de30..85174a51b72d6 100644
+> --- a/drivers/net/dsa/motorcomm/chip.h
+> +++ b/drivers/net/dsa/motorcomm/chip.h
+> @@ -841,9 +841,28 @@ static inline u16 yt921x_info_ports_mask(const struct yt921x_info *info)
+>  	return info->internal_mask | info->xmii_mask | info->serdes_mask;
+>  }
+>  
+> +enum yt92xx_mode {
+> +	YT92XX_MODE_YT921X,
+> +	YT92XX_MODE_YT922X,
+> +	YT92XX_MODE_MAX,
+> +};
+> +
+> +struct yt92xx_series {
+> +	const char *name;
+> +	unsigned int max_ports;
+> +	unsigned int num_lag_ids;
+> +	unsigned int ageing_time_min;
+> +	unsigned int ageing_time_max;
+> +	u32 dscp_prio_mapping_is_global;
+> +	u32 assisted_learning_on_cpu_port;
+> +	const struct dsa_switch_ops *switch_ops;
+> +	const struct phylink_mac_ops *mac_ops;
+> +};
 
-	unsigned int size = xdp->data_end - xdp->data;
+[Severity: Low]
+This isn't a bug, but a few small things about the new series
+abstraction:
 
-That comes out to about 4 GiB:
+dscp_prio_mapping_is_global and assisted_learning_on_cpu_port are
+boolean flags that get copied into bool fields of struct dsa_switch.
+Should they be bool here as well?
 
-- igc_build_skb() passes it to __skb_put(). On PAGE_SIZE >= 8192,
-  igc_get_rx_frame_truesize() also wraps to a tiny truesize, so
-  napi_build_skb() would place skb_shared_info inside the packet data.
-- igc_construct_skb() turns it into a fragment of almost 4 GiB. That looks
-  like the same corrupted skb the commit message describes.
+The name field and YT92XX_MODE_MAX don't appear to be used anywhere,
+either at this commit or at the end of the series.
 
-Can this be reached from the wire? On PAGE_SIZE >= 8192, igc_set_rx_mode()
-never clamps RLPML:
-
-#if (PAGE_SIZE < 8192)
-	if (adapter->max_frame_size <= IGC_MAX_FRAME_BUILD_SKB)
-		rlpml = IGC_MAX_FRAME_BUILD_SKB;
-#endif
-	wr32(IGC_RLPML, rlpml);
-
-So the hardware still accepts jumbo frames even though XDP limits the MTU to
-1500, and with XDP the ring uses 3072-byte buffers. A remote frame that
-leaves 1 to 15 bytes in the second descriptor would hit this.
-
-Would it be safer to track start-of-frame explicitly, or to drop the rest of
-the frame's descriptors after a non-PASS verdict? Another option is to
-reject size < IGC_TS_HDR_LEN before the subtraction.
-
->  			ctx.rx_ts = pktbuf;
->  			pkt_offset = IGC_TS_HDR_LEN;
->  			size -= IGC_TS_HDR_LEN;
-
-[Severity: High]
-The same unchecked subtraction is still present in the AF_XDP zero-copy
-path. igc_clean_rx_irq_zc() strips the header from every descriptor with
-TSIP set. There is no first-buffer gate and no size check:
-
-		if (igc_test_staterr(desc, IGC_RXDADV_STAT_TSIP)) {
-			ctx->rx_ts = bi->xdp->data;
-
-			bi->xdp->data += IGC_TS_HDR_LEN;
-			...
-			size -= IGC_TS_HDR_LEN;
-		} else {
-			ctx->rx_ts = NULL;
-		}
-
-		bi->xdp->data_end = bi->xdp->data + size;
-
-Can zero-copy frames span descriptors at MTU 1500?
-igc_configure_rx_ring() programs the XSK frame size through
-IGC_SRRCTL_BSIZEPKT(), which is (x) / 1024. With 2048-byte chunks the frame
-size is 1792, so the hardware buffer becomes 1 KB.
-
-igc_xdp_enable_pool() only checks:
-
-	if (frame_size < ETH_FRAME_LEN + VLAN_HLEN * 2) {
-
-That accepts 1792 without allowing for the 1 KB rounding or the 16-byte
-inline timestamp, even though the comment there says frames should not
-span multiple buffers.
-
-On 4K pages RLPML is IGC_MAX_FRAME_BUILD_SKB. A received frame of about
-1009 to 1023 bytes, plus the timestamp header, would leave 1 to 15 bytes in
-a second descriptor.
-
-The reproduction in the commit message suggests TSIP is set on such
-continuation descriptors. If so, size wraps here and data_end ends up about
-4 GiB past the XSK chunk.
-
-Wouldn't that let the XDP program's packet bounds checks pass for offsets
-past the chunk? On XDP_REDIRECT, it would also report a bogus length to the
-XSK socket.
-
-Should igc_clean_rx_irq_zc() get a similar fix? Should
-igc_xdp_enable_pool() also account for the 1 KB SRRCTL granularity and the
-inline timestamp?
+yt92xx_register_switch() in chip.c doesn't register anything. It
+reads the chip ID and fills in dsa_switch fields, and the actual
+registration is the later dsa_register_switch() call in
+yt921x_mdio_probe(). Would a name such as yt92xx_init_switch() fit
+better?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013010854.4068874-1-p%401g4.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013011122.1889766-1-kyle.switch%40motor-comm.com
