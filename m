@@ -1,195 +1,245 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4969A560AA8
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791996247; cv=pass; b=M+PcJ2u6CxEpwCL89l/nKxjVxWF1xSOWHhY6zaS/mkqfmeCYDESqEXYTJdGdzNIc3OMxFtzvhLCkB4PiunEA6QGRzZ1OpUBKSCIMDC8x6kt/pXsWxrBJBiAsq1bNSoM763/ROIq15g4EBf+mRNbOc1WywYusyJP8e6soyojJKqs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791996247; c=relaxed/simple;
-	bh=MMVXINMr7JZIMgeHG/AqGaqfPCjKzr4ZpfV8KNupDrs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q8hp9q1EjpqXCtkfWLC1+LeBOMu0Qzq350YcHNDdkAHKL1G7oPH2GHnbylzLxnT5PIrwB2W6rrBpSPoaB57wTDdl21ubQQZyvFBri9QAsW8wvvhgJXVX9sxwj0R6ubU9tU8mw4KH0rDV8tT1xZoPsiTuu44m7FjT1KBmOXWWSjM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITh5ZqJA; arc=pass smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756195505C2;
+	Wed, 14 Oct 2026 16:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791996277; cv=none; b=LgDRldvvkDEWZxQQSbcRAL6ohw3fN83jV/KIIHDEL8JL62aw6NfqWkum0bEsPY/d/S72FQHwhC8A+4ICJqxIyhDOrDdgVRwr8WfnvsejHnjLuLxua+/Pgy7lkilhGeUAnDlkzm6az/3vHv9W69WcPHHkR/ega2/UcjpKkF7NJSg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791996277; c=relaxed/simple;
+	bh=8P7SJHcSYOw5JSY/nnJb9EuSGTBEOwXJIo2/lEXq9T8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PkNChtmCIWvn5xOiX5lW6u17P4AVHt/6jc0bRNJW4SuUg/3k+sj5FuP0ls/9t0t4xaKNcUDFa/vvgXhI608PdpDU1JvoQ3gxyd5xbC8QURDP9G2uIuyJHYNk4TwyjBwEq1cg5PA95Vyl2ifQnQTlsbVZ20cSnqK71606BwiiNgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ep315XNi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITh5ZqJA"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48b042c0759so3273423f8f.2
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:44:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791996242; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FtEZ0Zp/XxsPEdGIDYuykE44IExzSYH3iDRcj6DzFktThGYz5BnB09PFDJuAAmXfCE
-         ZXWa4Lngib0caXuEwbqBlulqOAEPck0Ey9PqHusnb5r3P6zW6w+bjKZ7/QyObKz5uYib
-         V1aikuxSDkPwbdSBRsvvEKYdGipr1CanmYmbM2iwM0R5a88Zq+4M/xOSanyVZpvaemc8
-         jsUHoP+zOIuUsH+Q1Ef8znnFkUR9SIxAr4sxL6r8JOuHwMPfbwt40kISLpVLXmq0Pf9T
-         mzDYNzSXtS0IKjJhF9upbtJ5EaRsHRvZxxjGmPhXen58jfKePzPqYjmD6KB93IfXl3Vo
-         //Ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9q0DwdLIhqOGN7zNyyRQRC7CNxZQsLpoJL1VH7y7f/Y=;
-        fh=GepoLgv6F2zxv3TON2DqB1r3SZJ0HVPQonCY5A/x3qQ=;
-        b=cI732NsUJVSrAoIxe4Msdd/9LE4KgXe3Wd6ugeqOob7kcZwgbPO83HmqSK05iB47mA
-         sAN1HVw7o7cggECB13VrNX6zWfdH8kJkoM4ZyzBWakQ6Mp+LtLsZxow6nH9hIiZe4zJa
-         AWseklobUFLRhQLsCkMaMP604qKGoE+P+/QUl+shTzBIT6uKkb29F88xggyeVjT/i3I9
-         44h1Udrx8J016S/5xlPLIIUswEqde6WtskQTnCiej4pcYEqX3ShW87Yv/2feP548ZbzH
-         X8+U5D0VlDURZoAR42ziZbU/4R1cOrsgUA5k6wg6bgLlZUqsa4v55uOCOFNpLffyLXJz
-         Jt8w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791996242; x=1792601042; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9q0DwdLIhqOGN7zNyyRQRC7CNxZQsLpoJL1VH7y7f/Y=;
-        b=ITh5ZqJAGwUOL+qfGJ5aTDDRPWjr/F2s5ihb2gm7iLg1wULunz/3uz8Tld7bXRQepF
-         LRwChIWZxumyb7DM/dsI/5+hm6Ks0TkoTKm70QllgZPgwsD3TNGriXksOxbwCWKd0Rs5
-         cVQk3vVlHCKQkaQRXhQJMgcV6wVOAE49kcKVxsEA/k4FJIx6RWAsfQAXgmWkRfRkwQWY
-         NSLMpbLWNbS5eS2B5m5NKZv+zb9XCIP4E+qpnxN0IVTbPSNy7h/XpID9J3dqlqMx3A0E
-         Q318TeIJISdhqZo8fqJOhM0QkuBViOyaT+RxQ2Pihf/QSPHxxqzAdbVaYSNceYD3TL/H
-         6hmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791996242; x=1792601042;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9q0DwdLIhqOGN7zNyyRQRC7CNxZQsLpoJL1VH7y7f/Y=;
-        b=SAmuKhX7dv4Nu3VGPcO8UvYTiirPthGp2mMs/Ix9Oyu1uDtisjUaohn309yo+FmS2F
-         PrLOIWGR3thi6WJ++qOLt3yK9qJ6pp/BdP7VHRoHBn3Lun3Zvbz1PqPlZM6NJ0dBtod6
-         XyMqHB9iimLZ12mlmt9vhOK3vvZ+84O+R7m6D4KWEeE1edQof/PrnujJEb//fNgnhjk/
-         lMOfyKZesGEWF9mhVlL99DsHjPyFnxmb8xz5Tp2IRZ4/VxdaillSZMpcGCfKEw02BdZJ
-         C8/1QMonNqPDopA8i6NI9cWS5PEqrIQsw4FhmGiLYmgKwEgsUu3jtDe9SHs6uGhvJnWS
-         Cp/Q==
-X-Forwarded-Encrypted: i=1; AKwUvByxuL9OWIWRn1XrGv42npbYNdXl7ADNMPzY8xOP+0AMILtQgewAYoawzcEuGN9uLniR/EHQGvU=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKVJftKGHU8mdWkZe4YVkOzJ43BWH+9nr/ewjKC+NRH/MO4LRiz
-	VtK8j1SHHSabphKQHrbbRTgtdHqBJQe6mICnZaMlSFWZS9k9sjiGMPIGlU5dS1GesKzoEIALX+u
-	BhxFK6qSmszOBlbsewyIVwoI2gjp9q2w=
-X-Gm-Gg: AYBFou0cpeWGwCuInvvZ7eIoVnROBjYQqj7hyD9gJNwtat5MCeLFNcYaBEiK2awlDHT
-	xrnQKw7YRnEKqKJNOZqmydLpgC5AArmRTYrJkJHzKZtN9nduFxG+0zdBauMZQaFjfRGrW5N5OKU
-	9IHyZb4hbbv0Pihq6GLbZ7rGH8FQY4WoFa6CvDUheU8znCtbcm4BJarMFYAZZ7f1zMHAvg5Boqz
-	omKbmgB09I2ELW2fs+hfkPnoYL1nWPRd4132DhBYBgGPB9GWUCKoV9JVP5QPzbBa9iAGHS33mLh
-	vwhIWmtxomJuKVP09uLex4iIUEh2pPACnvaD59oWpx73e5MqxxpZrKh12R5uh7g/C9xUoFwp3Ju
-	xnYNcK/TZeqzHkPKnu4b+c+WjWcWPfBhP2rBD5o8O3Aq/peBeLgDVEgJMtRFUmX+bTTWEB+UIXQ
-	==
-X-Received: by 2002:a05:6000:987:b0:488:7787:469d with SMTP id
- ffacd0b85a97d-48df14ed887mr2129597f8f.25.1791996242209; Wed, 14 Oct 2026
- 09:44:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ep315XNi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324A71F000CE;
+	Wed, 14 Oct 2026 16:44:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1791996276;
+	bh=GWhJq/1R6+HWndzsyOvpydL/Jcy4VCioKQ6402YATvY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ep315XNi4vdI4OVim8vklEJQHg/Fi4oOfQBEKbQCKCe+lXf0huWHf7Ygb9ZRz4Thh
+	 tBHs9FMTu19rVLyHPtglvef8lwC6w2XSylEvTAmWGYEKHF/cdeX3ST5RIJGDgYfSuE
+	 Svxza1o5FLg7mc2DsyL6+0i7zKMHktSnrGG+5Trx+LXxiax0vHMnrXurVghZQdjuMy
+	 7Eqsks0D0E0Qr6JIofgsGvhfdzLew86YTx9WTUIW5a7zBU/+yxQEQbrIsKjzAANL9E
+	 +cqUJwVlrddH3lsl98atJs9+6WsZW0WsM8UNh2qf5kDdbOSZR/jbOaq2zQrAu73Oko
+	 /eS7aNh/qWAkw==
+Date: Wed, 14 Oct 2026 17:44:31 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jacky Chou <jacky_chou@aspeedtech.com>
+Cc: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"ratbert@faraday-tech.com" <ratbert@faraday-tech.com>,
+	"edumazet@kernel.org" <edumazet@kernel.org>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: =?utf-8?B?5Zue6KaGOiDlm57opoY6IOWbng==?=
+ =?utf-8?B?6KaGOiBbUEFUQ0ggbmV0LW5leA==?= =?utf-8?Q?t?= v2 1/6] dt-bindings:
+ net: ftgmac100: Add AST2700 compatible
+Message-ID: <20261014-smog-runny-75f5f1370bd2@spud>
+References: <20261006-support_ast2700-v2-1-36de51fb8066@aspeedtech.com>
+ <179161911824.434549.4075299707625994950@kernel.org>
+ <20261012-aide-wimp-4edf96aaca1d@spud>
+ <SEYPR06MB51346A6CB5D7D7FC6D3FC4DD9D9E2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+ <20261013-subwoofer-zestfully-fe98c6158ba9@spud>
+ <SEYPR06MB513411BA847E7973291259959D9D2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+ <20261014-buffing-gilled-91576ce86eaa@spud>
+ <SEYPR06MB513426D89C46D45519406E219D9D2@SEYPR06MB5134.apcprd06.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261014-miic-validate-dtb-v3-v4-0-b7da71b3a106@reliablecontrols.com>
- <20261014-miic-validate-dtb-v3-v4-2-b7da71b3a106@reliablecontrols.com>
-In-Reply-To: <20261014-miic-validate-dtb-v3-v4-2-b7da71b3a106@reliablecontrols.com>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Wed, 14 Oct 2026 17:43:34 +0100
-X-Gm-Features: AclHuK9L-1D3Yt6ZN3HGXxulOCvvWz_eF-6S1YFQfIBvUb-SHdPO_MInoJxTrNw
-Message-ID: <CA+V-a8v-YXma2NbeWP0Fhz+Fa5gmmq3oSPEZuKrDZhy6MHWcMw@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 2/2] net: pcs: rzn1-miic: Validate dtb
- configuration values
-To: khendry@reliablecontrols.com
-Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Simon Horman <horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="AysUfoOGaDSmX+kK"
+Content-Disposition: inline
+In-Reply-To: <SEYPR06MB513426D89C46D45519406E219D9D2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+
+--AysUfoOGaDSmX+kK
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 4:37=E2=80=AFPM Kyle Hendry via B4 Relay
-<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
->
-> From: Kyle Hendry <khendry@reliablecontrols.com>
->
-> Bad configuration values from the dtb could result in out of bounds array
-> access. Verify parsed values are within range for the SoC and fail the
-> probe if invalid.
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
-> ---
->  drivers/net/pcs/pcs-rzn1-miic.c | 26 +++++++++++++++++++++++++-
->  1 file changed, 25 insertions(+), 1 deletion(-)
->
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+On Wed, Oct 14, 2026 at 10:24:47AM +0000, Jacky Chou wrote:
+> > > > > > > > @@ -18,6 +18,7 @@ properties:
+> > > > > > > >                - aspeed,ast2400-mac
+> > > > > > > >                - aspeed,ast2500-mac
+> > > > > > > >                - aspeed,ast2600-mac
+> > > > > > > > +              - aspeed,ast2700-mac
+> > > > > > > >            - const: faraday,ftgmac100
+> > > > > > >
+> > > > > > > [Severity: Low]
+> > > > > > > With this patch, "aspeed,ast2700-mac", "faraday,ftgmac100"
+> > > > > > > becomes a valid compatible pair. However, at this commit,
+> > > > > > > ftgmac100_of_match[] in
+> > > > > > > drivers/net/ethernet/faraday/ftgmac100.c
+> > > > > > > has no aspeed,ast2700-mac
+> > > > > > entry.
+> > > > > > > Such a node could only bind through the generic
+> > > > > > > faraday,ftgmac100 entry (FTGMAC100_FARADAY).
+> > > > > > >
+> > > > > > > On that path, ftgmac100_probe() would do the following:
+> > > > > > >
+> > > > > > >   - program the ring-end bits at BIT(15) instead of the Aspeed
+> > BIT(30)
+> > > > > > >   - leave is_aspeed false, so ftgmac100_setup_clk() never cla=
+ims
+> > > > > > >     MACCLK/RCLK
+> > > > > > >   - register the embedded MDIO bus through
+> > ftgmac100_setup_mdio()
+> > > > > > >   - never set a DMA mask wider than 32 bits
+> > > > > > >
+> > > > > > > Would an AST2700 node work correctly if it fell back to the
+> > > > > > > Faraday match?
+> > > > > >
+> > > > > > Sounds like no, can the submitter please clarify if the fallbac=
+k is valid?
+> > > > > >
+> > > > >
+> > > > > Agreed. I think the 'aspeed,ast2700-mac' should not be based on
+> > > > > the
+> > > > 'faraday,ftgmac100'.
+> > > > > Maybe the dt-bindings put ast2700-mac as a const like:
+> > > > > ```
+> > > > > ...
+> > > > > properties:
+> > > > >   compatible:
+> > > > >     oneOf:
+> > > > >       - const: faraday,ftgmac100
+> > > > >       - const: aspeed,ast2700-mac             // as a const
+> > > > >       - items:
+> > > > >           - enum:
+> > > > >               - aspeed,ast2400-mac
+> > > > >               - aspeed,ast2500-mac
+> > > > >               - aspeed,ast2600-mac
+> > > > >           - const: faraday,ftgmac100
+> > > >
+> > > > Looks good. I am curious whether the existing fallbacks used with
+> > > > other aspeed devices are also inaccurate? Could be worth looking in=
+to?
+> > >
+> > > Thanks for digging into this further.
+> > >
+> > > I went back to the current driver to confirm the exact bit
+> > > (drivers/net/ethernet/faraday/ftgmac100.c, ftgmac100_probe()):
+> > >
+> > > if (priv->mac_id =3D=3D FTGMAC100_AST2400 ||
+> > >     priv->mac_id =3D=3D FTGMAC100_AST2500 ||
+> > >     priv->mac_id =3D=3D FTGMAC100_AST2600 ||
+> > >     priv->mac_id =3D=3D FTGMAC100_AST2700) {
+> > >         priv->rxdes0_edorr_mask =3D BIT(30);
+> > >         priv->txdes0_edotr_mask =3D BIT(30);
+> > >         priv->is_aspeed =3D true;
+> > > } else {
+> > >         priv->rxdes0_edorr_mask =3D BIT(15);
+> > >         priv->txdes0_edotr_mask =3D BIT(15); }
+> > >
+> > > So it's actually BIT(30) for all Aspeed variants
+> > > (AST2400/2500/2600/2700), vs
+> > > BIT(15) for the plain Faraday IP =E2=80=94 not BIT(16). The conclusio=
+n still
+> > > holds either
+> > > way: none of the Aspeed compatibles can safely fall back to
+> > > faraday,ftgmac100 alone, since the driver would mark the wrong bit as
+> > > end-of-ring in rxdes0, and the MAC would walk past the end of the RX
+> > > descriptor ring instead of wrapping, exactly as you described.
+> > >
+> > > That said, I don't think we should extend the same fix to
+> > > AST2400/2500/2600 in this series. AST2700 is a brand-new compatible
+> > > with no existing devicetree using it, so making it a standalone const
+> > > (compatible =3D "aspeed,ast2700-mac" only) has zero migration cost.
+> > >
+> > > AST2400/2500/2600 are different: every upstream devicetree already
+> > > declares the pair, e.g. aspeed-g6.dtsi:
+> > >
+> > > compatible =3D "aspeed,ast2600-mac", "faraday,ftgmac100";
+> > >
+> > > If we turn aspeed,ast2600-mac (etc.) into a standalone const in the
+> > > oneOf, the schema would only accept a single-element compatible array,
+> > > which would break make dtbs_check for every existing AST2400/2500/2600
+> > > board devicetree. We'd also need to strip the faraday,ftgmac100
+> > > fallback from aspeed-g4.dtsi, aspeed-g5.dtsi, aspeed-g6.dtsi (and any=
+thing
+> > inheriting from them) =E2=80=94 a much bigger, unrelated change.
+> > >
+> > > It's also not fixing a live bug: ftgmac100_of_match[] only had the
+> > > generic
+> > > faraday,ftgmac100 entry until Feb 2026 (commit 03a2aba50b2c), when the
+> > > Aspeed-specific of_device_id rows for AST2400/2500/2600 were added as=
+ a
+> > refactor.
+> > > Before that, the driver always bound through the generic fallback
+> > > string and used
+> > > of_device_is_compatible() internally in probe() to pick the right
+> > > EDORR bit / clocks / MDIO. So there's never been a real kernel +
+> > > devicetree combination where an
+> > > AST2400/2500/2600 node bound through the generic entry and got the
+> > > wrong EDORR bit =E2=80=94 the pairing has been safe in practice.
+> > >
+> > > So I'd suggest leaving AST2400/2500/2600 as-is (paired with the
+> > > fallback, same as
+> > > today) and keeping the standalone-const treatment scoped to AST2700
+> > > only, since that's the one case where the binding and match table gen=
+uinely
+> > diverge right now.
+> >=20
+> > It's wrong, and there's no pain involved in fixing it (just have to sen=
+d patches),
+> > so I think it should be fixed. Breaking dtbs_check isn't an excuse to n=
+ot fix
+> > things, we "break" it all the time adding new devices etc.
+>=20
+> Fair enough =E2=80=94 you're right that "it breaks dtbs_check" isn't a re=
+ason not to fix it, and if the=20
+> EDORR bit mismatch is real for AST2400/2500/2600 too, it should be fixed =
+properly rather=20
+> than left as a known landmine.
+>=20
+> I'll prepare a follow-up series for this:
+>=20
+> - dt-bindings: net: ftgmac100: make aspeed,ast2400/2500/2600-mac standalo=
+ne consts
+>   (drop the faraday,ftgmac100 fallback requirement, same shape as the AST=
+2700 fix here)
+> - ARM: dts: aspeed: drop the faraday,ftgmac100 fallback compatible from
+>   aspeed-g4.dtsi / aspeed-g5.dtsi / aspeed-g6.dtsi
+>=20
+> I'd like to keep it as a separate series rather than folding it into this=
+ one, since the
+> dtsi changes go through the Aspeed/arm-soc tree rather than net-next, and=
+ I'd rather not
+> block this AST2700 series on cross-tree coordination. I'll send it as a f=
+ollow-up once
+> this series lands (or in parallel, if that's preferred) =E2=80=94 let me =
+know if you'd rather
+> see it done differently.
 
-Cheers,
-Prabhakar
+I'd fix the binding here, since you're gonna generate conflicts with
+yourself otherwise. The dts changes need to be sent separately anyway
+(or at least applied separately) since binding changes don't go via soc
+maintainers.
 
-> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-m=
-iic.c
-> index 31716241b58f..f8bafce26bf1 100644
-> --- a/drivers/net/pcs/pcs-rzn1-miic.c
-> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
-> @@ -693,16 +693,39 @@ static int miic_parse_dt(struct miic *miic, u32 *mo=
-de_cfg)
->         memset(dt_val, MIIC_MODCTRL_CONF_NONE,
->                sizeof(*dt_val) * miic->of_data->conf_conv_count);
->
-> -       if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf)=
- =3D=3D 0)
-> +       if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf)=
- =3D=3D 0) {
-> +               if (conf >=3D miic->of_data->conf_to_string_count) {
-> +                       dev_err(miic->dev, "Port input configuration out =
-of range: %d\n",
-> +                               conf);
-> +                       ret =3D -EINVAL;
-> +                       goto err;
-> +               }
->                 dt_val[0] =3D conf;
-> +       }
->
->         for_each_available_child_of_node(np, conv) {
->                 if (of_property_read_u32(conv, "reg", &port))
->                         continue;
->
-> +               if (port < miic->of_data->miic_port_start ||
-> +                   port > miic->of_data->miic_port_last) {
-> +                       dev_err(miic->dev, "Port number out of range: %d\=
-n", port);
-> +                       of_node_put(conv);
-> +                       ret =3D -EINVAL;
-> +                       goto err;
-> +               }
-> +
->                 if (of_property_read_u32(conv, "renesas,miic-input", &con=
-f))
->                         continue;
->
-> +               if (conf >=3D miic->of_data->conf_to_string_count) {
-> +                       dev_err(miic->dev, "Port %d configuration out of =
-range: %d\n",
-> +                               port, conf);
-> +                       of_node_put(conv);
-> +                       ret =3D -EINVAL;
-> +                       goto err;
-> +               }
-> +
->                 /* Adjust for 0 based index */
->                 dt_val[port + !miic->of_data->miic_port_start] =3D conf;
->
-> @@ -712,6 +735,7 @@ static int miic_parse_dt(struct miic *miic, u32 *mode=
-_cfg)
->         }
->
->         ret =3D miic_match_dt_conf(miic, dt_val, mode_cfg);
-> +err:
->         kfree(dt_val);
->
->         return ret;
->
-> --
-> 2.43.0
->
->
->
+--AysUfoOGaDSmX+kK
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCas+xbwAKCRB4tDGHoIJi
+0n4XAQC/vpFXlrqYYxFRyP5O1UZSrVT66Z0RtZrn4N9W8vXGXgEA6Rpzuk1DX4+p
+S3y8ajBPXBIEI2sRavXKPvQtOuZZfAE=
+=1oCZ
+-----END PGP SIGNATURE-----
+
+--AysUfoOGaDSmX+kK--
