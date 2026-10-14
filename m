@@ -1,65 +1,68 @@
 Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1E747ACC5
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 23:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D12A3F104A
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 23:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792022194; cv=none; b=lU2lq1Ogq+szx/F5blptK+ZD2m10u1f+hAoehOxy8+PSHfo5+aKK18jeLHQv/wnrvNE648CVh4ugL+zd4nk3MGR06ypqwzv6J2OgZFxOYQMmgKa+ZoZEgEqmp5hR1RzoTD2UFkHRHyZNcePryfZIG2o6rihV/hB6MfXZqfT4KGU=
+	t=1792022196; cv=none; b=JXLLLRd8+5QxYno7hU1lczyizduvVJCrr3PzQd/EjdHPfD9OhYlDidk/e4eGve3p9bZzfOsUU7x7jtuEcByewMaU9UPx9jkfnIc0ttNzMfEfYrd+IkffRHdPCBymFZ+erxypZkcYcY4pekFJQ57SFm7z9ucbchUy8Jk/cPwrocY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792022194; c=relaxed/simple;
-	bh=nLu9+jS/Cn6oFT3DAy2pgKLYerUk78AHPFMk+9gkrY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2HqA0GZbcPgN1GQOYUR8MloJSswPKKCUuo+q9Qfpj0skB8CzCnrtLEbjwmR68Y4qr5NT0NUNPOaJIiseXb6pugFREHkXYWIhLo91yHGzj3QBlXQ90mSH4af4rh4kVE9NO7fQ1TZrD03udzreJvhKxjXW7qEsSiZbAtOIRlUKn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=bJCCdWS3; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1792022196; c=relaxed/simple;
+	bh=30D0Qm8jnT+41OzZcm79oVVnN8SNIPkLTbEEPX6X5Xs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PSp9vcoj6LUlnq/muWzEPJs0vhZcQzPMsOMUy53q7b+DsSA8Z0OFBGCgqzfSKqJ+rhMPVVkWYl2/vjTINDMPLvQnNkrpThB2vRqjE517S2idgrbyfvnO5GOuOcRCqXhBL/YZBU/DjTfHZ6d+PmMWD2OVJ8D8RgZ9OYOhskgRd/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=GfST0w2W; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="bJCCdWS3"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c2e5e801487so712484566b.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:56:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="GfST0w2W"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c2e69aa07c3so240277866b.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:56:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1792022191; x=1792626991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ujWOXhajkBZtlCmsZmCoVumMM+X/QUn/djLaiVsONPE=;
-        b=bJCCdWS3SAPVptxJycLn5yScFOncCfpXu+inchndA6M1vZCtSnwKPoxvEnuEhrLLHr
-         F86HqEXS5wP1bKUC+C+MffUT9VA7+fLrXZDZibZz5Tf61HlVHt1Jh10Mx8WjykwBvVHx
-         PWXTNj4DHwTNfgz+9nx+32yGY4Q/BCQGmsC4zK0EWkIocoTkU+QppCGu41JHJqoEKDFo
-         ctpDdkJ8TO0L22nPejk4mF94+ND9ukR8xzhM9Qt6FTYQ2A+oNHIWmhwOUYx956uW3oS5
-         wmLPx36n6syhNVOIFA+khBnb0lRUS9tKMbfr9/33VgB4P8oopaeBmMyrSaNE6iMN1r/a
-         /FpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792022191; x=1792626991;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bairaktaris.de; s=google; t=1792022193; x=1792626993; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ujWOXhajkBZtlCmsZmCoVumMM+X/QUn/djLaiVsONPE=;
-        b=pxtomSsE3Xr963Hh8MVPYtH0IBzzVxwXTiQMAWf3zkSGx0G3gnZoGo+yR5Od/64tLu
-         G2t1NWu1t//XHg4MStL/xezKHj+SyboqDWFQGkD2FQ938/Ozxcm8dVNE7dWBE+QIih6M
-         fjEVvtB+Y4P6tmRPvq0SQKiCKbSyJ2b/jc87bF0r5zJiw4sjSSgHNPlFXsTB7Yx14GAs
-         DIJ0yn8idPxOlkBM/qsXcBSKrTAu/URflV8I5Knn9bbfowP4YVXxMY7+hnPrfbH3mEV/
-         vcF4x4lAr8fgYfLyxkch15JsLFEnfiCVh1vxsOFaUvjUFF7z0B/NsCEiB+Ywuh6CsMsC
-         ClsA==
-X-Forwarded-Encrypted: i=1; AKwUvBxX+80HJI2+wkCZnLC6VPZFHCxzUrghGtGhIqm5UI00RpUYqG5aT9bZOKGInInfXRimWHwt1XQ=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIkNpoXLjBOgtFNIPW5JosqaHA5+IsfiPKiAl+NXIKfFCutJ9HF
-	NPxXfVTL09IyGJR3v+NL3G1fFfd22jeThYglqNpBC8ZcWfb8BmjsJtzN6ICzh/tGjA==
-X-Gm-Gg: AYBFou3AUl+liYUyi6yPLiNA+EsW+noRU/d8udHXqD+lE+NqhdVql719RJQ+xrdZGVH
-	9Sciez62G+wLBlfXatH+roCmSofFwkNjAHo444BsUmWLyhssSRCTf/sww1bLmyjmJm1JrWoYKRQ
-	TSTqveUIaODgNIFxiHlPYjjb2cupOi4tUk7QOovSEHpMLVjokSNiz12Me4cW5XhL1h2vJpqF0w4
-	RACxr4fc4X25d+c45g66yLHW5GXtn8xOXxbBS1ayxJenUmGxA/I6van9offdHeElOJw3MroPmwe
-	qPXvb//xGgOnXSPe//p0GLN02VA9wY6ctyuiqkaAyF5tj4s5is86aFbZABoV/VdIMd6v4ujnLcG
-	fulNsCjpKSSIcFwUeLpQL5zlQJVtLTFjtY9HO6ETFLeX6ZwenBTf2q6bjakE249kzl0PHZjMsLW
-	D60o19vf/6IG+BTtjjZldSlTGGwx08POUypjCkkxG4SfO1VqnIR8AY44S37Wn94xZNls4nTxHEN
-	+9E7EAexqoZVHJCFCwj5A2Vla16iKmQCS7rckC1W3HppbvBEBqweneD+IegkYY7vzw36vlWdmu9
-	sDTx1aS839w4rdTTJ3XRxwUGBbuHp79KB6TeUx2S47HESa+bzDV+4DbSyyGzhp5D6zaoRerAIZ1
-	pudVBD54ZKMvpZdV9ykxpX8jpb4mrPhzKyVQFsh/Cpp+gLFZb9QrumCmw6goqdzIq7iz9+uvoGP
-	37prw9ILLq5pJmYvKvO9DvxpY=
-X-Received: by 2002:a17:907:3d52:b0:c26:1648:a076 with SMTP id a640c23a62f3a-c31aa0e93bdmr1626520966b.49.1792022191008;
-        Wed, 14 Oct 2026 16:56:31 -0700 (PDT)
+        bh=Q2Y2Lz9pIbNgeYo7CVu5aDkzJ2pQ4sXNINeSv3xCPBg=;
+        b=GfST0w2WYot5sC8leg9gHn5xueRwknnGq/xh3OsyjpsEeS36J8+3jNnyJdE/UmHTM1
+         bvM55k+Kemdjdz0KwrQc/CeLuo25Uu9Mgh/iOyT+eSGyBqD2WN6uW4WnTCnMSd5/NcpU
+         dXGj1CRWPf6L1IfXBSwARzNppA2gDq3bfDJyZZnCd6+7IQTXGTetJPRSH/KMJWHd5ye3
+         fF4GD2uf4CCmQtmQP9H4d92nsohk6rKKHXtENsJxQCfYYmdNXZs2tLQaKvA3RXP+SSEB
+         NYFE5Ys451Fy708hDL7nuwzIFDkNMLf1orrxjWR4O2j4lRwoDXQ0+amIj0yyQKJuflsa
+         ugag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792022193; x=1792626993;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Q2Y2Lz9pIbNgeYo7CVu5aDkzJ2pQ4sXNINeSv3xCPBg=;
+        b=1zM0uhISDW8PFmNKlr5blq3o/2YKOcqA6DSnupUjgnkMPmntXbnmgmjcrE3d7ZY7xB
+         qhSJAAaSZTm4W6mMtoShE7YP9sfeOp5L7CIaoJyrKZRf8JOEBQCaTCkOVSjU2jawL66Y
+         MO2a7MKnr2l7/prLYKH4MR+ekEkAj8RU4BRcxI3IrpBX6a6l3pE5Jor8fDbtVCrC8Cd2
+         Zy28uieESLXS5Wpv+duHVyyQI5hSF4mhANwGwbz2EZ2HWLfqG5jwfROMXsknlR2JGzAG
+         Qou6tlz4hJl4N06bMEd5nDUr+ZbTni2Wn7h3WsCGgudxMuOM3pUpY90ll5dTTfpHsHRA
+         NYkw==
+X-Forwarded-Encrypted: i=1; AKwUvBxxE0g2yYoObENgFEKT3CnU5wHDwIvA7dzpBS3gbi3LqVyKZm2uTROaOTNubPdbCkrfLXf2JH8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLB3WTliOrYNrwOD4gzn8MRgd/LOx+V9a+2CZfwZS61/uz4sSiK
+	4eeWP3JRayBHCIJhPWVOyoUmqP5pyuSml1MuYXrqfnOwA/4NIW5FaY9IE6QxU9Ux0GbT91zp5le
+	RGRENz4lC1Ls=
+X-Gm-Gg: AYBFou3yZ6VyftyfNbHEFO2TnLA5Q9hOm0xxiPoeb6ivHQdFWhInMUsMcoZghB5I6B1
+	q8hgmdQwIY7uP2TH1FCEHeDSzRm/2swP7S+tR4XhUoSezj/U4W6bXVl8bTlyJEjaqm8/jOiVLaw
+	o/8lA9BtNg53MuZ1MnJdPUQtAWRyx9fd2GrI3E530JIDtX+DqlqwtsZADTWm9wUU8MsznmlExkR
+	ggg4xSXEXaLY9h0+iL1j4NTumyjK6W7HCtXCAyuxdWLkGcOAZdKNaadjajpy4WDhuJ0CY8cd//Q
+	woWJ99RlD5PKox8SfLZSwkFvhvzvENslnixqtl+l/S6eSIoTHUb/hthAeV2y4RGb+VSVepO/Zf6
+	RkRQ1iFN6z6aKy0h5CbuZgDVQNzvNQb0uhm3Gc8UIBUddItkJhlqr5ndnJQM8WhyevQK9xfM1Eu
+	eJtYv3BDOX0ERJhY0y27dKm2kav43Oo9c8wLuSdPfCW1PMl6hRgjHRpeCpc2GpKDC+C+D7uOFoh
+	jb2oUcJUxh8wTGTDFRdu/B8wKuZ839GMi7Gjr4lr5fGTpFL8dgLSQ8/6Ons6uukg9PWuTF0RZov
+	G1b3TF0cllTTQMIIApZesoUgaAMOFeRyauDW549EgiMqNC76tO6uzZLG4CGRu5domJ33Ma/RtNB
+	ToE+stSnQmjUIgym3PJjCzxKS3qqdiTJ/3p7MZ5OnGzEODMCwJqLpauVxkC+M5xmdgon/J7cYAC
+	91eVBS0fpca1nb+v9Ul+z5Hws=
+X-Received: by 2002:a17:907:7b97:b0:c2e:2944:d6cb with SMTP id a640c23a62f3a-c31a9fed205mr1609413966b.13.1792022192731;
+        Wed, 14 Oct 2026 16:56:32 -0700 (PDT)
 Received: from Desktop (p54affd5a.dip0.t-ipconnect.de. [84.175.253.90])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3edab12007sm46101666b.82.2026.10.14.16.56.30
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3edab12007sm46101666b.82.2026.10.14.16.56.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 16:56:30 -0700 (PDT)
+        Wed, 14 Oct 2026 16:56:32 -0700 (PDT)
 From: Julius Bairaktaris <julius@bairaktaris.de>
 To: netfilter-devel@vger.kernel.org
 Cc: pablo@netfilter.org,
@@ -81,10 +84,12 @@ Cc: pablo@netfilter.org,
 	linux-kselftest@vger.kernel.org,
 	bridge@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH nf-next v7 0/2] netfilter: flowtable: tear down bridged flows on layer 2 roaming
-Date: Thu, 15 Oct 2026 01:56:25 +0200
-Message-ID: <20261014235628.197976-1-julius@bairaktaris.de>
+Subject: [PATCH nf-next v7 2/2] selftests: netfilter: nft_flowtable.sh: roam a host between two bridge ports
+Date: Thu, 15 Oct 2026 01:56:27 +0200
+Message-ID: <20261014235628.197976-3-julius@bairaktaris.de>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261014235628.197976-1-julius@bairaktaris.de>
+References: <20261014235628.197976-1-julius@bairaktaris.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -93,50 +98,236 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A flowtable flow that transmits straight to a bridge port keeps sending
-to the old port when the host moves to another port, for example a
-Wi-Fi station roaming between access points.
+Move a host to another port of a bridge on the router while its flow is
+offloaded, and check that the transfer continues and is offloaded again.
+The cases are plain and vlan bridge ports, "bridge fdb replace", a
+pinned and then deleted fdb entry, an aged out entry (the flow must
+stay), the plain case over IPv6 and on a vlan_filtering bridge.
 
-Patch 1 makes the gc tear such a flow down, using the bridge fdb lookup
-from Pablo's patch. Patch 2 adds selftest cases.
+Without the gc check the transfer stalls when the host moves.
 
-Tested on nf-next a5e7d8e446af in an x86 guest: nft_flowtable.sh passes,
-including all seven roaming cases, and ftrace shows no
-flow_offload_teardown during 10 s of steady traffic in any of them.
-flow_offload grows by 16 bytes (296 to 312 on x86_64).
-
-Changes in v7:
-- look up the fdb entry through a bridge hook instead of walking the
-  forward path again (from Pablo's patch)
-- save the vid of the fdb lookup; the encap stack does not have it for
-  untagged ports of a vlan_filtering bridge
-- build br_nf_utils.o only with CONFIG_NF_FLOW_TABLE
-- selftest: vlan_filtering case
-
-v6: https://lore.kernel.org/netfilter-devel/20261004171605.3544792-1-julius@bairaktaris.de/
-Pablo's patch: https://lore.kernel.org/netfilter-devel/20261014210256.1573072-1-pablo@netfilter.org/
-
-Julius Bairaktaris (2):
-  netfilter: flowtable: tear down direct xmit flows when the fdb entry
-    moves
-  selftests: netfilter: nft_flowtable.sh: roam a host between two bridge
-    ports
-
- include/linux/netfilter.h                     |   8 +
- include/net/netfilter/nf_flow_table.h         |   4 +
- net/bridge/Makefile                           |   2 +
- net/bridge/br.c                               |   2 +
- net/bridge/br_nf_utils.c                      |  40 ++++
- net/bridge/br_private.h                       |  13 ++
- net/netfilter/core.c                          |   3 +
- net/netfilter/nf_flow_table_core.c            |  27 +++
- net/netfilter/nf_flow_table_path.c            |   9 +
+Assisted-by: Claude:claude-fable-5-1
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
+---
  .../selftests/net/netfilter/nft_flowtable.sh  | 204 ++++++++++++++++++
- 10 files changed, 312 insertions(+)
- create mode 100644 net/bridge/br_nf_utils.c
+ 1 file changed, 204 insertions(+)
 
-
-base-commit: a5e7d8e446af9803e37a3b6a4d416fb41178348f
+diff --git a/tools/testing/selftests/net/netfilter/nft_flowtable.sh b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
+index 449c518bd947d..e6b345ff45b5d 100755
+--- a/tools/testing/selftests/net/netfilter/nft_flowtable.sh
++++ b/tools/testing/selftests/net/netfilter/nft_flowtable.sh
+@@ -851,6 +851,210 @@ test_ipip
+ 
+ test_bridge
+ 
++# Roam a host between two ports of a bridge on the router while its flow is
++# offloaded, as a station moving between two access points attached to ports
++# of one bridge. The host keeps its address and mac on a bridge of its own
++# and roams by moving that bridge's port, so only the fdb changes. With a vid
++# the bridge ports are vlan devices, whose ifindex differs from the device
++# the flow transmits on. With "replace" the router's fdb entry is sticky and
++# the move is a "bridge fdb replace". With "del" the host stays, its entry is
++# pinned to the other port and then deleted, and a ping relearns it. With
++# "age" the host stays and its entry ages out, which must not tear the flow
++# down. A flow that stays on the fast path leaves no more than a few packets
++# in the forward chain, the counter tells offloaded from slow path. The
++# plain roam also runs over IPv6, and on a vlan_filtering bridge, whose fdb
++# entries are keyed by the pvid of the untagged ports.
++test_bridge_roam()
++{
++	local vid=$1 how=$2 fam=${3:-4} vf=$4
++	local p0=sr0 p1=sr1 r0=rr0 r1=rr1
++	local mac=02:00:00:09:01:99
++	local what="roaming on bridge${vf:+ with vlan_filtering}"
++	what="$what${vid:+ with vlan ports}${how:+ by fdb $how}"
++	local hn=10.9.1 wn=10.9.2 dot=. len=24 nodad= ip6= srv=10.9.2.99
++	local min=10000000
++	local dev old new slow lpid cpid max=100 win=2
++
++	if [ "$fam" = 6 ]; then
++		hn=dead:9:1 wn=dead:9:2 dot=:: len=64 nodad=nodad ip6=-6
++		srv="[dead:9:2::99]"
++		what="$what over IPv6"
++	fi
++
++	setup_ns rns1 rnsr rns2
++
++	if ! ip -net "$rnsr" link add br0 type bridge ${vf:+vlan_filtering 1} 2>/dev/null; then
++		echo "SKIP: could not add bridge for $what"
++		[ "$ret" -eq 0 ] && ret=$ksft_skip
++		return
++	fi
++
++	ip link add sr0 netns "$rns1" type veth peer name rr0 netns "$rnsr"
++	ip link add sr1 netns "$rns1" type veth peer name rr1 netns "$rnsr"
++	ip link add rw0 netns "$rnsr" type veth peer name w0 netns "$rns2"
++	for dev in sr0 sr1; do
++		ip -net "$rns1" link set "$dev" up
++	done
++	for dev in rr0 rr1; do
++		ip -net "$rnsr" link set "$dev" up
++	done
++
++	if [ -n "$vid" ]; then
++		for dev in sr0 sr1; do
++			ip -net "$rns1" link add link "$dev" name "$dev.$vid" type vlan id "$vid"
++			ip -net "$rns1" link set "$dev.$vid" up
++		done
++		for dev in rr0 rr1; do
++			ip -net "$rnsr" link add link "$dev" name "$dev.$vid" type vlan id "$vid"
++			ip -net "$rnsr" link set "$dev.$vid" up
++		done
++		p0=sr0.$vid; p1=sr1.$vid; r0=rr0.$vid; r1=rr1.$vid
++	fi
++
++	ip -net "$rnsr" link set "$r0" master br0
++	ip -net "$rnsr" link set "$r1" master br0
++	ip -net "$rnsr" addr add $hn${dot}1/$len dev br0 $nodad
++	ip -net "$rnsr" link set br0 up
++	ip -net "$rnsr" addr add $wn${dot}1/$len dev rw0 $nodad
++	ip -net "$rnsr" link set rw0 up
++	ip netns exec "$rnsr" sysctl -q net.ipv4.ip_forward=1
++	ip netns exec "$rnsr" sysctl -q net.ipv6.conf.all.forwarding=1
++
++	ip -net "$rns1" link add stbr type bridge
++	ip -net "$rns1" link set stbr address $mac
++	ip -net "$rns1" link set "$p0" master stbr
++	ip -net "$rns1" link set stbr up
++	ip -net "$rns1" addr add $hn${dot}99/$len dev stbr $nodad
++	ip $ip6 -net "$rns1" route add default via $hn${dot}1
++
++	ip -net "$rns2" addr add $wn${dot}99/$len dev w0 $nodad
++	ip -net "$rns2" link set w0 up
++	ip $ip6 -net "$rns2" route add default via $wn${dot}1
++
++	# no neighbour probes, so the host only sends when it receives
++	ip -net "$rnsr" neigh replace $hn${dot}99 lladdr $mac nud permanent dev br0
++	ip -net "$rns1" neigh replace $hn${dot}1 nud permanent dev stbr \
++		lladdr "$(ip -net "$rnsr" -br link show br0 | awk '{print $3}')"
++
++	if ! ip netns exec "$rnsr" nft -f - <<EOF
++table inet filter {
++  counter roam_repl { }
++  flowtable f1 { hook ingress priority 0; devices = { rr0, rr1, rw0 }; }
++  chain forward {
++    type filter hook forward priority 0; policy accept;
++    meta oif "rw0" tcp dport 12345 flow add @f1
++    meta iif "rw0" tcp sport 12345 counter name roam_repl flow add @f1
++  }
++}
++EOF
++	then
++		echo "SKIP: could not load ruleset for $what"
++		[ "$ret" -eq 0 ] && ret=$ksft_skip
++		return
++	fi
++
++	# the host discards what it receives, its socket byte counter is read
++	rx_bytes() { ip netns exec "$rns1" ss -tin "dst $srv" 2>/dev/null |
++		grep -o 'bytes_received:[0-9]*' | head -1 | cut -d: -f2; }
++	rx_started() { local n; n=$(rx_bytes); [ "${n:-0}" -gt 0 ]; }
++	# forward chain packets of the reply direction since the last call
++	slow_pkts() { ip netns exec "$rnsr" nft reset counter inet filter roam_repl |
++		grep -o 'packets [0-9]*' | cut -d' ' -f2; }
++	roam_listener_ready() { ss -N "$rns2" -lnt -o "sport = :12345" | grep -q 12345; }
++
++	roam_stop() { kill "$cpid" "$lpid" 2>/dev/null; wait "$cpid" "$lpid" 2>/dev/null; }
++
++	timeout "$SOCAT_TIMEOUT" ip netns exec "$rns2" socat -u \
++		OPEN:/dev/zero TCP$fam-LISTEN:12345,reuseaddr &
++	lpid=$!
++	if ! busywait "$BUSYWAIT_TIMEOUT" roam_listener_ready; then
++		echo "FAIL: $what: listener did not start" 1>&2
++		ret=1
++		kill "$lpid" 2>/dev/null; wait "$lpid" 2>/dev/null
++		return
++	fi
++	timeout "$SOCAT_TIMEOUT" ip netns exec "$rns1" socat -u \
++		TCP$fam:$srv:12345 OPEN:/dev/null &
++	cpid=$!
++
++	if ! busywait "$BUSYWAIT_TIMEOUT" rx_started; then
++		echo "FAIL: $what: transfer did not start" 1>&2
++		ret=1
++		roam_stop
++		return
++	fi
++	sleep 2
++	slow_pkts > /dev/null
++	old=$(rx_bytes)
++	sleep 2
++	new=$(rx_bytes)
++	slow=$(slow_pkts)
++	if [ -z "$slow" ] || [ $((${new:-0} - ${old:-0})) -lt $min ] ||
++	   [ "$slow" -gt 100 ]; then
++		echo "FAIL: $what: not offloaded before the roam:" \
++		     "$((${new:-0} - ${old:-0})) bytes, ${slow:-no} forward chain packets" 1>&2
++		ret=1
++		roam_stop
++		return
++	fi
++
++	if [ "$how" = age ]; then
++		# ageing_time is in centiseconds
++		ip -net "$rnsr" link set br0 type bridge ageing_time 200
++		max=0 win=10
++	elif [ "$how" = del ]; then
++		bridge -n "$rnsr" fdb replace $mac dev "$r1" master static sticky
++		sleep 2
++		bridge -n "$rnsr" fdb del $mac dev "$r1" master static
++		ip netns exec "$rns1" ping $ip6 -c 2 -W 1 -q $hn${dot}1 >/dev/null 2>&1
++	else
++		# roam: move the host bridge to the other port and send on it
++		if [ "$how" = replace ]; then
++			bridge -n "$rnsr" fdb replace $mac dev "$r0" master static sticky
++		fi
++		ip -net "$rns1" link set "$p0" nomaster
++		ip -net "$rns1" link set "$p1" master stbr
++		ip netns exec "$rns1" ping $ip6 -c 2 -W 1 -q $hn${dot}1 >/dev/null 2>&1
++		if [ "$how" = replace ]; then
++			bridge -n "$rnsr" fdb replace $mac dev "$r1" master static sticky
++		fi
++	fi
++
++	# the bytes in flight at the roam drain within the first seconds; a
++	# stale flow delivers nothing after that, a torn down one resumes and
++	# is offloaded again.
++	sleep 4
++	old=$(rx_bytes)
++	sleep 4
++	new=$(rx_bytes)
++	slow_pkts > /dev/null
++	sleep $win
++	slow=$(slow_pkts)
++	roam_stop
++
++	if [ "$how" = age ] &&
++	   bridge -n "$rnsr" fdb show br br0 | grep -q "$mac.*master"; then
++		echo "FAIL: $what: the host's fdb entry did not age out" 1>&2
++		ret=1
++	elif [ $((${new:-0} - ${old:-0})) -lt $min ]; then
++		echo "FAIL: $what: transfer stalled after the roam" 1>&2
++		ret=1
++	elif [ -z "$slow" ] || [ "$slow" -gt $max ]; then
++		echo "FAIL: $what: $slow forward chain packets after the roam" 1>&2
++		ret=1
++	else
++		echo "PASS: flow offload for $what"
++	fi
++}
++
++test_bridge_roam ""
++test_bridge_roam 100
++test_bridge_roam "" replace
++test_bridge_roam "" del
++test_bridge_roam "" age
++test_bridge_roam "" "" 6
++test_bridge_roam "" "" 4 vf
++
+ KEY_SHA="0x"$(ps -af | sha1sum | cut -d " " -f 1)
+ KEY_AES="0x"$(ps -af | md5sum | cut -d " " -f 1)
+ SPI1=$RANDOM
 -- 
 2.53.0
 
