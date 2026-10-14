@@ -1,83 +1,29 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stargate.chelsio.com (unknown [12.32.117.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D154E73C9
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC6B3CB2FA
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791981622; cv=none; b=FWGNNNWkbKBACpoxfrykYYvrufGed5J1LAJR9W3o0StxSNEmFqHEQqLUFvqcjwJly9eRxS31WGBzeg9M1ttlZEgGN26gJVom+bbp/BlYh6mxX+EO3hhLZ4nJzwR90ISA/44yf2ZYDORkXcJaBsT4tBTWWedi7/gJCw12sUjgRwA=
+	t=1791981681; cv=none; b=uSIfAEJQy/FIEG5SK2OVpZRIW2goZjbv9SNmdp4hV4dQN8jEXvgMEPr7Q43xIhKb/zUV5wxprq8SSCGThtm5GhmcKMPH12LUoZncYXjb1s0eUDLQl3DeOtNrAAm1b5qvltmr1zJzyRGGIu6C7Y58SocFuyL4DGZVBpDNUkem3uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791981622; c=relaxed/simple;
-	bh=3TZQ+HlcGjCGA3F/2zGyQPW/1sgKKdWUwMizSTdv6LM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2N0XzvkSr6z2fHV4W/cNe2D3c50G3sSbc4ZOAisg4UK9oXyaGDmmDVqPHBIwI8OHOSGVVHiPV9LVMcD9TIDDO71UruxjASddwRR5ZJCtKDWgtYgcO6qjVynFzX+666GTmDk74PPQhSz8bsNfdN6KlYP7LW1GP9zbUckmIcvn0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ltt4EhgF; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ltt4EhgF"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4a16c1608faso53253025e9.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 05:40:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791981618; x=1792586418; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=aOKE8b/KvX2bdCRB6QWafpMhNH6cuJzRy6nqCP30ARo=;
-        b=Ltt4EhgFD6LhvKh8jsSdRgxS/o61UUbFgCcuoDiH+n27bXYiMcv8K9StD3H9EtOzp+
-         eyygNxLg2ag8jQaKeCeOKVneHfMlZ0vazxtVEAcsTmn57R1BEsFX2Bxd58pvHWtf5XKz
-         kG2d9zXBH+uNWe488/lKU9beIkxyfw2PESro2GLiUIKq01ttTUP4qM9tzn7Fwt7clhnf
-         Ly39ZFoeN75cqkuYdYJZnz8EiM5Oq7Jek7UayS7dOHSbvWRCUegufUuZQwhSa3xaO32m
-         N3Qp+1f0Ijt2q14bCtViIa5Y69r16R8XwFvvez2LotiDm7vlYSvsKcVLji2AomwJta7o
-         Mc6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791981618; x=1792586418;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=aOKE8b/KvX2bdCRB6QWafpMhNH6cuJzRy6nqCP30ARo=;
-        b=eH9pih/1aBVgn/kKmE0VID4vvNVy1mNAHXEzJEvDXzVyXZaDF8axnrcBGoNl+fRhWM
-         A2P/mTtcz5nOMHUdxF9Ol/b4i7y8L4QrZLxd37VMTwClEMtrTqPysSmO+ha2J0fzwJgz
-         t6Nm38eWN7yHr7vZQ0/nnPaMljKFO5NK4ds0fyj7p/JvwAr4horodKYRDkJjPGZMceN4
-         xeQDakUQJAYlyeYT/haARfokxug+iasWW28uV8jPzedHdmFzr0AAM9HBPIEBycQ3Wi5/
-         IcFpKlbB/BBIRQUirM/LgVH0x153srIAaT5KphudoIBNgHdEfMZlGmiS6e6aycrA7CYQ
-         Y8gw==
-X-Gm-Message-State: AFq9FYJwUd+TG2I2MEBavhewg2lhDxnGHoh+ZUd106dcYwFmxEts1idD
-	g/JpMjotAOKRgZN3CeSsz0njsfQhTByBvVGS0SEG36v+oDtRUxgpp1UTEN3VySdcmsM=
-X-Gm-Gg: AYBFou0NJFdfQkrFeKdw0eS8gLV9OTDNYKeK6SjicKHZgamszhkq9+ZsoQ5d1vn8L6o
-	YHR2D51ERp2xHD3A/2qrmGfqwj8ev1Jxr5wtCz0HcPa9M6Ol5fFCporxXn6x0wfhqr94KN+Aooa
-	JuqDZTRtKTgZIQ+QzSas3EHA2wEGvTaQ5uhHZvid+8WfbFr1KTX16mv886Pgh0ROYGjp5N7BIhT
-	bFnR40lTZvcLiI2Y1VNmfZaVYwlTX2H+LsbmtuMs80piE13wDitlyf3+8uYIPbnCJz1L33De+6V
-	QJipTZYMa2C/Dpop/d1/uEEyPCEbJSGgD/OVT6jT/d7nfx6/D6c/7SP29JaKmNYAcvErW0cuQi9
-	VQnqntlrORMvGKvHwM3c/VfXsx+PB5+NAmUvqL6pIdEMvmEK1pBoyb/ADwtvurPJUnR1BX+OisP
-	R4p+AQiVVh8VwiC42n1DDMtoyzWpkhlCMgFmDfQH7wKkam+py1Zq7RRqW/DdqORq8=
-X-Received: by 2002:a05:600c:810a:b0:4a0:ec5:46d9 with SMTP id 5b1f17b1804b1-4a18e3ef100mr294242195e9.0.1791981616695;
-        Wed, 14 Oct 2026 05:40:16 -0700 (PDT)
-Received: from kali ([169.224.126.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1b2ec47fcsm54163165e9.1.2026.10.14.05.40.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 05:40:15 -0700 (PDT)
-From: Ali Firas <alishmery18@gmail.com>
-To: netdev@vger.kernel.org,
-	idosch@nvidia.com
-Cc: kuba@kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	razor@blackwall.org,
-	roopa@nvidia.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ali Firas <alishmery18@gmail.com>
-Subject: [PATCH net-next v4 7/7] selftests: net: test the vxlan vnifilter request limit and dump replay
-Date: Wed, 14 Oct 2026 15:38:14 +0300
-Message-ID: <20261014123814.388557-8-alishmery18@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261014123814.388557-1-alishmery18@gmail.com>
-References: <20261014123814.388557-1-alishmery18@gmail.com>
+	s=arc-20240116; t=1791981681; c=relaxed/simple;
+	bh=hDe9wav+hI4zEFVTnLEVyzYi5Ff+OcQHYMdvwDLOGk4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZCS0w2+XLjNarWPZDbM+7ZgthO1KBGn5pIeeWbNMsd1xaQuQ7cfHCJW0t81qAThs22ahEG1OSrmPYM+Vxdz5/5GAFUUE0IyrQ3VLmXX9DjbDyy8XkF/mue5WoEwgyc3vCm6w9woTohe4ws6nSQGLukJLw97PeJcolHItxiZWdTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
+Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqYs018414;
+	Wed, 14 Oct 2026 05:40:53 -0700
+From: Potnuri Bharat Teja <bharat@chelsio.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
+Subject: [PATCH net-next v4 00/12] cxgb4: Add T7 adapter support
+Date: Wed, 14 Oct 2026 18:12:45 -0400
+Message-Id: <20261014221257.436789-1-bharat@chelsio.com>
+X-Mailer: git-send-email 2.39.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,191 +32,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Extend the vnifilter tests for the request-size limit, the 24-bit VNI
-range, and the dump/replay round trip the limit requires.
+This series adds support for Chelsio T7 adapters to the cxgb4 driver.
 
-The API test gains: the largest accepted add and one VNI past it; a
-rejected oversized add and a rejected multi-entry add whose entries are
-each under the limit but sum over it, each checked to install nothing
-(the range is asserted absent first, since vxlan_vni_add() folds an
-existing VNI into the update path and would return 0 either way). The cap
-is symmetric, so it also checks a maximum-size delete accepted and a
-max+1 delete rejected, with every VNI in the max+1 range installed first
-so the refusal can only come from the cap; a within-cap delete of a
-never-installed range, which must fail on the missing VNI; an inverted
-range accepted as a no-op; and the 24-bit bound exercised through END,
-not only START.
+The series extends the driver core to recognize and initialize T7
+devices, adds support for T7-specific hardware resources and firmware
+interfaces, updates PCI initialization and resource management, and
+enables adapter operation through the existing networking stack.
 
-bridge(8) places one VXLAN_VNIFILTER_ENTRY per comma-separated item into
-a single message, so the multi-entry case is reachable without a
-hand-built netlink message.
+In addition, the series updates several auxiliary components to support
+the T7 architecture, including PTP, ethtool, filter management, CUDBG,
+and debugfs. Support is also added for T7 multicore debugging and
+diagnostic infrastructure.
 
-vxlan_vnifilter_dump_replay() builds a contiguous run twice the limit
-from two requests, then replays every range the dump reports into a
-second device and requires all to be accepted and the two dumps to
-match. Without the dump clamp the run dumps as one over-limit entry that
-replay rejects; with it the run dumps as limit-sized entries that
-replay.
+Testing:
+  1. Each patch compiled individually
+  2. Driver probe and initialization on T7 adapters
+  3. Link bring-up
+  4. ping
+  5. NIC tx and rx traffic (using neperf and iperf)
+  6. Reload the driver multiple times
 
-vxlan_vnifilter_api() had no teardown of its own device and namespace;
-add veth-host and the test netns to cleanup(), which runs on EXIT, so a
-failing case does not leave them or its entries behind.
+checkpatch.pl:
+- Patch 4: "missing sentinel in ID array" and "Macros with complex
+  values should be enclosed in parentheses" warnings are reported for
+  the macro-generated PCI device ID table. The generated table includes
+  the required terminating entry. This error is a false-positive.
+- Patch 7: Several "Avoid CamelCase" warnings are reported for standard
+  ethtool link mode identifiers (e.g. 1000baseKX_Full,
+  100000baseCR4_Full), which are kernel-defined names and cannot be
+  renamed.
 
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Assisted-by: LLM
-Signed-off-by: Ali Firas <alishmery18@gmail.com>
+Potnuri Bharat Teja (12):
+  cxgb4: add T7 hardware definitions and firmware interfaces
+  cxgb4: rework the interrupt handling framework
+  cxgb4: add T7 hardware management support
+  cxgb4: move PCI device management into cxgb4_pci.c and rework driver
+    helpers
+  cxgb4: add T7 support to the main driver
+  cxgb4: update PTP register access for T7
+  cxgb4: extend ethtool support for T7 adapters
+  cxgb4: Add T7 support to the filter infrastructure.
+  cxgb4: Add indirect register definitions for T7
+  cxgb4: extend CUDBG support for T7 adapters
+  cxgb4: extend debugfs support for T7 adapters
+  cxgb4: select ULD Tx and control queues by TID on T7
+
 ---
-v4: assert the dump is non-empty before replay, so
-the replay case cannot pass vacuously; rebased.
+v3 -> v4
+- fixed buildbot errors
+---
+v2 -> v3:
+- rebase the patches to tot
+- add ULD multicore support changes
+v1 -> v2:
+- split the v1 hardware management patch in two; the interrupt
+  handling rework is not T7 specific and now lands first
+- merged the PCI management patch into the one that wires it up, so
+  each commit builds what it adds, then split off the T7 changes
+- fixed per patch build failures reported by the kernel test robot
+- fixed: shared static intr_info structures mutated per adapter;
+  t4_handle_intr() clearing only enabled cause bits; IPv4 address
+  byte order in mk_act_open_req(); cxgb4_read_tpte() sleeping under
+  xa_lock_irq(); missing CAP_NET_ADMIN on the cudbg ioctl read
+  commands; CXGB4_DEV_ENABLED set too late in probe
+- dropped the SYN-only filter field and the unused cxgb4_pci helpers
+---
 
- .../selftests/net/test_vxlan_vnifiltering.sh  | 119 +++++++++++++++++-
- 1 file changed, 118 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/chelsio/cxgb4/Makefile   |    2 +-
+ drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c |   10 +-
+ .../net/ethernet/chelsio/cxgb4/cudbg_entity.h |  114 +-
+ drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h |   56 +-
+ .../ethernet/chelsio/cxgb4/cudbg_indir_reg.h  |   43 +
+ .../chelsio/cxgb4/cudbg_indir_reg_t7.h        | 1113 +++
+ .../net/ethernet/chelsio/cxgb4/cudbg_lib.c    | 1088 ++-
+ .../net/ethernet/chelsio/cxgb4/cudbg_lib.h    |   60 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |  148 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c  |   20 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_dcb.c    |   19 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_debugfs.c    | 1029 ++-
+ .../ethernet/chelsio/cxgb4/cxgb4_debugfs.h    |   17 +-
+ .../ethernet/chelsio/cxgb4/cxgb4_ethtool.c    |  381 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_filter.c |  214 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   | 1183 +--
+ .../net/ethernet/chelsio/cxgb4/cxgb4_pci.c    |  332 +
+ .../net/ethernet/chelsio/cxgb4/cxgb4_pci.h    |   23 +
+ .../net/ethernet/chelsio/cxgb4/cxgb4_ptp.c    |   82 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_uld.c    |  140 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_uld.h    |    5 +
+ drivers/net/ethernet/chelsio/cxgb4/sge.c      |  182 +-
+ .../net/ethernet/chelsio/cxgb4/t4_chip_type.h |   10 +
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c    | 6579 ++++++++++++---
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.h    |  140 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_msg.h   |  109 +-
+ .../ethernet/chelsio/cxgb4/t4_pci_id_tbl.h    |   21 +
+ drivers/net/ethernet/chelsio/cxgb4/t4_regs.h  | 7285 ++++++++++++++---
+ drivers/net/ethernet/chelsio/cxgb4/t4_tcb.h   |   16 +
+ .../net/ethernet/chelsio/cxgb4/t4_values.h    |   11 +
+ drivers/net/ethernet/chelsio/cxgb4/t4fw_api.h |   88 +-
+ .../net/ethernet/chelsio/cxgb4/t4fw_version.h |    9 +
+ 32 files changed, 17040 insertions(+), 3489 deletions(-)
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg.h
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cudbg_indir_reg_t7.h
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cxgb4_pci.c
+ create mode 100644 drivers/net/ethernet/chelsio/cxgb4/cxgb4_pci.h
 
-diff --git a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-index 6fb5af013dac..bb35e89d2d03 100755
---- a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-+++ b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-@@ -84,6 +84,7 @@ ret=0
- # all tests in this script. Can be overridden with -t option
- TESTS="
- 	vxlan_vnifilter_api
-+	vxlan_vnifilter_dump_replay
- 	vxlan_vnifilter_datapath
- 	vxlan_vnifilter_datapath_pervni
- 	vxlan_vnifilter_datapath_mgroup
-@@ -139,8 +140,9 @@ check_vm_connectivity() {
- cleanup() {
- 	ip link del veth-hv-1 2>/dev/null || true
- 	ip link del vethhv-11 vethhv-12 vethhv-21 vethhv-22 2>/dev/null || true
-+	ip link del veth-host 2>/dev/null || true
- 
--	cleanup_ns $hv_1 $hv_2 $vm_11 $vm_21 $vm_12 $vm_22 $vm_31 $vm_32
-+	cleanup_ns $hv_1 $hv_2 $vm_11 $vm_21 $vm_12 $vm_22 $vm_31 $vm_32 $testns
- }
- 
- trap cleanup EXIT
-@@ -347,6 +349,121 @@ vxlan_vnifilter_api()
- 	# change vxlan vnifilter flag
- 	run_cmd "ip -netns $testns link set dev vxlan-ext1 type vxlan external novnifilter"
- 	log_test $? 2 "Cannot unset vnifilter flag on a device"
-+
-+	# A single request may add at most 4096 VNIs. bridge(8) puts one
-+	# VXLAN_VNIFILTER_ENTRY per comma-separated item into a single message,
-+	# so both the single-entry and the multi-entry paths are reachable here.
-+
-+	# The largest accepted add, and one VNI more rejected.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 10000-14095"
-+	log_test $? 0 "Add a request of the maximum VNI count"
-+
-+	# The rejected oversized add must install nothing. Assert the range is
-+	# absent first: vxlan_vni_add() folds an already-present VNI into the
-+	# update path and returns 0, so a later probe cannot tell "installed
-+	# nothing" from "installed part" unless it started absent.
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 20000"
-+	log_test $? 1 "VNI 20000 absent before the oversized add"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 20000-24096"
-+	log_test $? 255 "Cannot add a request over the maximum VNI count"
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 20000"
-+	log_test $? 1 "The rejected oversized add installed nothing"
-+
-+	# Two entries each under the limit but summing over it: the per-message
-+	# total is what is bounded, not the span of one entry. This is the shape
-+	# a per-entry check would have let through.
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 30000"
-+	log_test $? 1 "VNI 30000 absent before the oversized multi-entry add"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 30000-32047,32048-34097"
-+	log_test $? 255 "Cannot add a multi-entry request summing over the maximum"
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 30000"
-+	log_test $? 1 "The rejected multi-entry add installed nothing"
-+
-+	# The cap is symmetric: a delete may touch at most the maximum too.
-+	# Install a maximum-size range and the VNI past it, so the max+1 delete
-+	# below has every VNI present and can only be refused by the cap, not by
-+	# a missing VNI.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 40000-44095"
-+	log_test $? 0 "Populate a maximum-size range to delete"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 44096"
-+	log_test $? 0 "Add the VNI past the maximum range"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 40000-44096"
-+	log_test $? 255 "Cannot delete a request over the maximum VNI count"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 40000-44095"
-+	log_test $? 0 "Delete a request of the maximum VNI count"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 44096"
-+	log_test $? 0 "Delete the VNI past the maximum range"
-+
-+	# A within-cap delete of a never-installed range reaches the handler and
-+	# fails there on the missing VNI, not on the cap.
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 50000-50010"
-+	log_test $? 255 "Cannot delete a range that was never installed"
-+
-+	# A start above the end selects nothing and is accepted as a no-op.
-+	# Use a VNI no earlier case installs, so the absence check is meaningful.
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 55000"
-+	log_test $? 1 "VNI 55000 absent before the inverted range"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 55000-50000"
-+	log_test $? 0 "An inverted range is accepted as a no-op"
-+	run_cmd "bridge -netns $testns vni show dev vxlan-ext1 | grep -qw 55000"
-+	log_test $? 1 "The inverted range installed nothing"
-+
-+	# The VXLAN header carries 24 bits. The bound is on both endpoints, so a
-+	# range whose END alone leaves the space is rejected too.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 16777215"
-+	log_test $? 0 "Add the highest VNI the header can carry"
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 16777215"
-+	log_test $? 0 "Delete the highest VNI the header can carry"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 16777215-16777216"
-+	log_test $? 255 "Cannot add a range whose END leaves the 24-bit space"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 100-4294967295"
-+	log_test $? 255 "Cannot add a range whose END wraps past the 24-bit space"
-+}
-+
-+# A device may hold a contiguous run longer than one request's limit, built
-+# from several requests. The dump coalesces it, so the dump must break the run
-+# into entries each no larger than the limit, or the configuration it reports
-+# cannot be replayed. Install such a run, then feed every range the dump
-+# reports back into a second device and require all to be accepted.
-+vxlan_vnifilter_dump_replay()
-+{
-+	local opts="external vnifilter local 172.16.0.1 dev veth-testns"
-+	local range rc=0 src_ranges dst_ranges
-+
-+	cleanup_vnifilter_api &>/dev/null
-+	setup_vnifilter_api
-+
-+	# The destination is on a different dstport so re-adding the same VNIs
-+	# does not collide with the source under vxlan_vni_in_use().
-+	run_cmd "ip -netns $testns link add vxlan-src type vxlan $opts dstport 4789"
-+	log_test $? 0 "dump/replay: create source device"
-+	run_cmd "ip -netns $testns link add vxlan-dst type vxlan $opts dstport 4790"
-+	log_test $? 0 "dump/replay: create destination device"
-+
-+	# 8192 contiguous VNIs sharing the default remote: one run, twice the
-+	# limit, installed in two accepted requests.
-+	run_cmd "bridge -netns $testns vni add dev vxlan-src vni 10000-14095"
-+	run_cmd "bridge -netns $testns vni add dev vxlan-src vni 14096-18191"
-+	log_test $? 0 "dump/replay: populate a run larger than the limit"
-+
-+	# Assert the dump is non-empty before replaying it, so an empty or
-+	# failed dump cannot let the replay check below pass without testing
-+	# anything.
-+	src_ranges=$(bridge -netns $testns vni show dev vxlan-src | \
-+		     grep -oE '[0-9]+-[0-9]+|[0-9]{2,}' | sort)
-+	test -n "$src_ranges"
-+	log_test $? 0 "dump/replay: source dump is non-empty"
-+
-+	for range in $src_ranges; do
-+		bridge -netns $testns vni add dev vxlan-dst vni "$range" \
-+			2>/dev/null || rc=$?
-+	done
-+	log_test $rc 0 "dump/replay: every dumped entry is accepted on replay"
-+
-+	dst_ranges=$(bridge -netns $testns vni show dev vxlan-dst | \
-+		     grep -oE '[0-9]+-[0-9]+|[0-9]{2,}' | sort)
-+	[ "$src_ranges" = "$dst_ranges" ]
-+	log_test $? 0 "dump/replay: source and destination dump the same ranges"
- }
- 
- # Sanity test vnifilter datapath
 -- 
-2.53.0
+2.39.1
 
