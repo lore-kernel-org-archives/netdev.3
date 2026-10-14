@@ -1,29 +1,29 @@
 Received: from stargate.chelsio.com (unknown [12.32.117.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203584A3D25
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128EA3CB2FA
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791981702; cv=none; b=KpyRpigMTE9M7s0inb2LOYk4QVDeBon1e040vecAjkOSXU89IVxzADWvAbaQdnN99CAxLCFyyQjHvmzKCvreXlTU6VK0dOO1EgxchDLp/IQ12EypiQmFg5Bym4o8hZkKkVvrtSQDbkBLmCnTCM+4aECWhv3qFsZ8EICNPr7/WHw=
+	t=1791981705; cv=none; b=P9nK6AiYUEZpDOI/+BulZHrMKsTKPD1ow5gG6cJ+hm+em8JKUsLE93Cm+BCncrcKf4zAL4+3TYtnxb7yv9H3fyGvrPj8GKnABiSeVEtUKegXOGLRIVzMsN/pvOt4VBu9tCbeU244/Rf3C8CMLuzpROv8IQt/EnRN7vTMcsis1yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791981702; c=relaxed/simple;
-	bh=ZQg622t9pTNiM6/Zy6XnFJRknh/Y6mmW9QEro+Yfios=;
+	s=arc-20240116; t=1791981705; c=relaxed/simple;
+	bh=uDtuQrLVwyVg5D8eVsQAOs7YM9sqsi6Xh4FE4AUBgdA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L8YRzu7pSdnM57YMKA1gRUpArGEc5Sn8TCb4hDgjsajfkG5G77bN6Sg1Lx6bAw3CNF4ICnEwo1sjoyFD1V9I3s2j0ENBnzxqkz0rIZjPDTGZehdGX5jiBJIjwGA+UK/xTlj/QNA8A1ewAcBrXGRK+Rgj+tGGhcl1QFh+pXl0De0=
+	 MIME-Version; b=jY0aXmW8YPJtOt8l3F98Z0uizccACxUqwheYcQOS8DmaG9M88E/53JqhCFTVa29caq1iPYRR8u6VA6V21MPfdoggybK3D5LK3uctyvlNLPN37sOYKMuDRdaMhBylQvyMtpf4g303k0drfAHixx1//pJCV+Cg6EQFH16ZEPkks4Q=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
 Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ4018414;
-	Wed, 14 Oct 2026 05:41:24 -0700
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ5018414;
+	Wed, 14 Oct 2026 05:41:27 -0700
 From: Potnuri Bharat Teja <bharat@chelsio.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
-Subject: [PATCH net-next v4 10/12] cxgb4: extend CUDBG support for T7 adapters
-Date: Wed, 14 Oct 2026 18:12:55 -0400
-Message-Id: <20261014221257.436789-11-bharat@chelsio.com>
+Subject: [PATCH net-next v4 11/12] cxgb4: extend debugfs support for T7 adapters
+Date: Wed, 14 Oct 2026 18:12:56 -0400
+Message-Id: <20261014221257.436789-12-bharat@chelsio.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20261014221257.436789-1-bharat@chelsio.com>
 References: <20261014221257.436789-1-bharat@chelsio.com>
@@ -35,2312 +35,1983 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update the CUDBG infrastructure to support T7-specific debug data
-collection.
+Update the debugfs infrastructure to support T7-specific debug data and
+multicore adapter architectures.
 
-Add support for collecting CIM IBQ and OBQ debug entities from T7
-adapters, including the additional queues introduced by T7 and support
-for multicore.
+Add support for collecting and displaying debug information from
+individual CIM cores, including CIM logic analyzer data, queue
+configuration, and queue state information. Update debugfs handlers to
+use the multicore-aware access mechanisms required by T7 devices.
 
-Also add T7 indirect register collection support using the new indirect
-register definitions, while preserving the existing register access
-mechanism for T5/T6.
-
-Debug tooling needs to read and write individual adapter registers and
-to read SGE contexts and queue descriptors without collecting a full
-cudbg dump. Add a private ioctl providing four commands
+Also extend debugfs support for T7-specific CIM IBQ and OBQ layouts,
+per-core device logs, and related debug entities.
 
 Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
 ---
- .../net/ethernet/chelsio/cxgb4/cudbg_entity.h |  114 +-
- drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h |   56 +-
- .../net/ethernet/chelsio/cxgb4/cudbg_lib.c    | 1088 ++++++++++++++---
- .../net/ethernet/chelsio/cxgb4/cudbg_lib.h    |   60 +-
- drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |    1 -
- .../net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c  |   20 +-
- .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   |  242 ++++
- drivers/net/ethernet/chelsio/cxgb4/t4_hw.c    |   20 -
- drivers/net/ethernet/chelsio/cxgb4/t4_hw.h    |    1 +
- 9 files changed, 1400 insertions(+), 202 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c |   10 +-
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4.h    |    8 -
+ .../ethernet/chelsio/cxgb4/cxgb4_debugfs.c    | 1029 ++++++++++++-----
+ .../ethernet/chelsio/cxgb4/cxgb4_debugfs.h    |   17 +-
+ .../net/ethernet/chelsio/cxgb4/cxgb4_main.c   |    2 +-
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c    |   64 +-
+ 6 files changed, 787 insertions(+), 343 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h
-index d5218e74284c..8295b330a7b9 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_entity.h
-@@ -21,13 +21,58 @@ struct cudbg_mbox_log {
- 	u32 lo[MBOX_LEN / 8];
- };
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c b/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c
+index 6954c15d2b82..7c13bc984883 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/clip_tbl.c
+@@ -17,6 +17,7 @@
+ #include <net/addrconf.h>
+ #include "cxgb4.h"
+ #include "clip_tbl.h"
++#include "cxgb4_debugfs.h"
  
--struct cudbg_cim_qcfg {
--	u8 chip;
--	u16 base[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
--	u16 size[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
--	u16 thres[CIM_NUM_IBQ];
--	u32 obq_wr[2 * CIM_NUM_OBQ_T5];
--	u32 stat[4 * (CIM_NUM_IBQ + CIM_NUM_OBQ_T5)];
-+#define CUDBG_CIM_IBQ_REV 1
-+
-+struct cim_ibq_rev1 {
-+	struct cudbg_ver_hdr ver_hdr;
-+	u8 qid;
-+	u8 coreid;
-+	u32 data[]; /* Must be last */
-+};
-+
-+#define CUDBG_CIM_OBQ_REV 1
-+
-+struct cim_obq_rev1 {
-+	struct cudbg_ver_hdr ver_hdr;
-+	u8 qid;
-+	u8 coreid;
-+	u32 data[]; /* Must be last */
-+};
-+
-+#define CUDBG_CIM_QCFG_REV 1
-+
-+enum cudbg_entity_cim_qcfg_qtype {
-+	CUDBG_ENTITY_CIM_QCFG_QTYPE_IBQ = 0,
-+	CUDBG_ENTITY_CIM_QCFG_QTYPE_OBQ,
-+};
-+
-+struct cim_qcfg_rev1_data {
-+	u8 qtype;
-+	u8 qid;
-+	u16 base;
-+	u16 size;
-+	u16 thres;
-+	u32 obq_wr[2];
-+	u32 stat[4];
-+};
-+
-+struct cim_qcfg_rev1 {
-+	struct cudbg_ver_hdr ver_hdr;
-+	u8 num_cim_ibq;
-+	u8 num_cim_obq;
-+	u8 coreid;
-+	struct cim_qcfg_rev1_data data[]; /* Must be last */
-+};
-+
-+#define CUDBG_CIM_LA_REV 1
-+
-+struct cim_la_rev1 {
-+	struct cudbg_ver_hdr ver_hdr;
-+	u8 coreid;
-+	u8 ncol;
-+	u16 nrow;
-+	u32 config;
-+	u32 data[]; /* Must be last */
- };
- 
- struct cudbg_rss_vf_conf {
-@@ -50,6 +95,25 @@ struct cudbg_hw_sched {
- 	u32 map;
- };
- 
-+#define CUDBG_TP_INDIR_REG_REV 1
-+#define CUDBG_PM_INDIR_REG_REV 1
-+#define CUDBG_MA_INDIR_REG_REV 1
-+#define CUDBG_UP_CIM_INDIR_REG_REV 1
-+#define CUDBG_HMA_INDIR_REG_REV 1
-+
-+struct cudbg_indir_reg_data {
-+	u32 offset;
-+	u32 data;
-+};
-+
-+struct cudbg_indir_reg_entity {
-+	struct cudbg_ver_hdr ver_hdr;
-+	u32 indir_reg;
-+	u32 indir_data;
-+	u32 nentries;
-+	struct cudbg_indir_reg_data data[];
-+};
-+
- #define SGE_QBASE_DATA_REG_NUM 4
- 
- struct sge_qbase_reg_field {
-@@ -91,8 +155,8 @@ static const char * const cudbg_region[] = {
- 	"Tx payload:", "Rx payload:", "LE hash:", "iSCSI region:",
- 	"TDDP region:", "TPT region:", "STAG region:", "RQ region:",
- 	"RQUDP region:", "PBL region:", "TXPBL region:",
--	"DBVFIFO region:", "ULPRX state:", "ULPTX state:",
--	"On-chip queues:"
-+	"RRQ region:", "DBVFIFO region:", "ULPRX state:",
-+	"ULPTX state:", "On-chip queues:"
- };
- 
- /* Memory region info relative to current memory (i.e. wrt 0). */
-@@ -187,20 +251,42 @@ struct cudbg_tid_info_region_rev1 {
- 	struct cudbg_ver_hdr ver_hdr;
- 	struct cudbg_tid_info_region tid;
- 	u32 tid_start;
--	u32 reserved[16];
-+	u32 nhash;
-+	u32 clip_base;
-+	u32 nclip;
-+	u32 route_base;
-+	u32 nroute;
-+	u32 reserved[11];
- };
- 
- #define CUDBG_LOWMEM_MAX_CTXT_QIDS 256
- #define CUDBG_MAX_FL_QIDS 1024
- 
--struct cudbg_ch_cntxt {
--	u32 cntxt_type;
--	u32 cntxt_id;
--	u32 data[SGE_CTXT_SIZE / 4];
-+#define CUDBG_SGE_CTXT_REV 1
-+
-+struct sge_ctxt_rev1_data {
-+	u8 ctxt_type;
-+	u8 size;
-+	u32 ctxt_id;
-+	u32 data[];
-+};
-+
-+struct sge_ctxt_rev1 {
-+	struct cudbg_ver_hdr ver_hdr;
-+	u32 nentries;
-+	u8 data[]; /* Must be last */
- };
- 
- #define CUDBG_MAX_RPLC_SIZE 128
- 
-+struct cudbg_cntxt_field {
-+	char *name;
-+	u32 start_bit;
-+	u32 end_bit;
-+	u32 shift;
-+	u32 islog2;
-+};
-+
- struct cudbg_mps_tcam {
- 	u64 mask;
- 	u32 rplc[8];
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h
-index c84719e3ca08..85c4400bf419 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_if.h
-@@ -17,6 +17,12 @@
- #define CUDBG_MAJOR_VERSION 1
- #define CUDBG_MINOR_VERSION 14
- 
-+#define CUDBG_MAX_PARAMS 16
-+
-+enum {
-+	CUDBG_UP_COREID_PARAM = 13,
-+};
-+
- enum cudbg_dbg_entity_type {
- 	CUDBG_REG_DUMP = 1,
- 	CUDBG_DEV_LOG = 2,
-@@ -26,8 +32,8 @@ enum cudbg_dbg_entity_type {
- 	CUDBG_CIM_IBQ_TP0 = 6,
- 	CUDBG_CIM_IBQ_TP1 = 7,
- 	CUDBG_CIM_IBQ_ULP = 8,
--	CUDBG_CIM_IBQ_SGE0 = 9,
--	CUDBG_CIM_IBQ_SGE1 = 10,
-+	CUDBG_CIM_IBQ_SGE = 9,
-+	CUDBG_CIM_IBQ_PCIE = 10,
- 	CUDBG_CIM_IBQ_NCSI = 11,
- 	CUDBG_CIM_OBQ_ULP0 = 12,
- 	CUDBG_CIM_OBQ_ULP1 = 13,
-@@ -71,11 +77,55 @@ enum cudbg_dbg_entity_type {
- 	CUDBG_HMA = 68,
- 	CUDBG_QDESC = 70,
- 	CUDBG_FLASH = 71,
--	CUDBG_MAX_ENTITY = 72,
-+	CUDBG_CIM_IBQ_TP2  = 73,
-+	CUDBG_CIM_IBQ_TP3  = 74,
-+	CUDBG_CIM_IBQ_IPC1 = 75,
-+	CUDBG_CIM_IBQ_IPC2 = 76,
-+	CUDBG_CIM_IBQ_IPC3 = 77,
-+	CUDBG_CIM_IBQ_IPC4 = 78,
-+	CUDBG_CIM_IBQ_IPC5 = 79,
-+	CUDBG_CIM_IBQ_IPC6 = 80,
-+	CUDBG_CIM_IBQ_IPC7 = 81,
-+	CUDBG_CIM_OBQ_IPC1 = 82,
-+	CUDBG_CIM_OBQ_IPC2 = 83,
-+	CUDBG_CIM_OBQ_IPC3 = 84,
-+	CUDBG_CIM_OBQ_IPC4 = 85,
-+	CUDBG_CIM_OBQ_IPC5 = 86,
-+	CUDBG_CIM_OBQ_IPC6 = 87,
-+	CUDBG_CIM_OBQ_IPC7 = 88,
-+	CUDBG_MAX_ENTITY,
-+};
-+
-+struct cudbg_param {
-+	u16 param_type;
-+	u16 reserved;
-+	union {
-+		struct {
-+			u32 memtype; /* which memory (EDC0, EDC1, MC) */
-+			u32 start; /* start of log in firmware memory */
-+			u32 size; /* size of log */
-+		} devlog_param;
-+		struct {
-+			struct mbox_cmd_log *log;
-+			u16 mbox_cmds;
-+		} mboxlog_param;
-+		struct {
-+			const char *caller_string;
-+			u8 os_type;
-+		} sw_state_param;
-+		struct {
-+			u32 itr;
-+		} yield_param;
-+		u64 time;
-+		u8 tcb_bit_param;
-+		void *adap;
-+		u8 coreid;
-+	} u;
- };
- 
- struct cudbg_init {
- 	struct adapter *adap; /* Pointer to adapter structure */
-+	struct cudbg_param dbg_params[CUDBG_MAX_PARAMS];
- 	void *outbuf; /* Output buffer */
- 	u32 outbuf_size;  /* Output buffer size */
- 	u8 compress_type; /* Type of compression to use */
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
-index 4bae323351f7..3331a27dedff 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
-@@ -15,6 +15,7 @@
- #include "cudbg_lib.h"
- #include "cudbg_zlib.h"
- #include "cxgb4_tc_mqprio.h"
-+#include "cudbg_indir_reg.h"
- 
- static const u32 t6_tp_pio_array[][IREG_NUM_ELEM] = {
- 	{0x7e40, 0x7e44, 0x020, 28}, /* t6_tp_pio_regs_20_to_3b */
-@@ -193,12 +194,15 @@ u32 cudbg_get_entity_length(struct adapter *adap, u32 entity)
- 		case CHELSIO_T6:
- 			len = T5_REGMAP_SIZE;
- 			break;
-+		case CHELSIO_T7:
-+			len = T7_REGMAP_SIZE;
-+			break;
- 		default:
- 			break;
- 		}
- 		break;
- 	case CUDBG_DEV_LOG:
--		len = adap->params.devlogs.size;
-+		len = adap->params.devlog[0].size;
- 		break;
- 	case CUDBG_CIM_LA:
- 		if (is_t6(adap->params.chip)) {
-@@ -214,39 +218,63 @@ u32 cudbg_get_entity_length(struct adapter *adap, u32 entity)
- 		len = 2 * CIM_MALA_SIZE * 5 * sizeof(u32);
- 		break;
- 	case CUDBG_CIM_QCFG:
--		len = sizeof(struct cudbg_cim_qcfg);
-+		len = sizeof(struct cim_qcfg_rev1);
- 		break;
- 	case CUDBG_CIM_IBQ_TP0:
- 	case CUDBG_CIM_IBQ_TP1:
- 	case CUDBG_CIM_IBQ_ULP:
--	case CUDBG_CIM_IBQ_SGE0:
--	case CUDBG_CIM_IBQ_SGE1:
-+	case CUDBG_CIM_IBQ_SGE:
-+	case CUDBG_CIM_IBQ_PCIE:
- 	case CUDBG_CIM_IBQ_NCSI:
- 		len = CIM_IBQ_SIZE * 4 * sizeof(u32);
- 		break;
-+	case CUDBG_CIM_IBQ_TP2:
-+	case CUDBG_CIM_IBQ_TP3:
-+	case CUDBG_CIM_IBQ_IPC1:
-+	case CUDBG_CIM_IBQ_IPC2:
-+	case CUDBG_CIM_IBQ_IPC3:
-+	case CUDBG_CIM_IBQ_IPC4:
-+	case CUDBG_CIM_IBQ_IPC5:
-+	case CUDBG_CIM_IBQ_IPC6:
-+	case CUDBG_CIM_IBQ_IPC7:
-+		if (CHELSIO_CHIP_VERSION(adap->params.chip) < CHELSIO_T7)
-+			break;			/* len stays 0 */
-+		len = CIM_IBQ_SIZE * 4 * sizeof(u32);
-+		break;
- 	case CUDBG_CIM_OBQ_ULP0:
--		len = cudbg_cim_obq_size(adap, 0);
-+		len = cudbg_cim_obq_size(adap, 0, 0);
- 		break;
- 	case CUDBG_CIM_OBQ_ULP1:
--		len = cudbg_cim_obq_size(adap, 1);
-+		len = cudbg_cim_obq_size(adap, 1, 0);
- 		break;
- 	case CUDBG_CIM_OBQ_ULP2:
--		len = cudbg_cim_obq_size(adap, 2);
-+		len = cudbg_cim_obq_size(adap, 2, 0);
- 		break;
- 	case CUDBG_CIM_OBQ_ULP3:
--		len = cudbg_cim_obq_size(adap, 3);
-+		len = cudbg_cim_obq_size(adap, 3, 0);
- 		break;
- 	case CUDBG_CIM_OBQ_SGE:
--		len = cudbg_cim_obq_size(adap, 4);
-+		len = cudbg_cim_obq_size(adap, 4, 0);
- 		break;
- 	case CUDBG_CIM_OBQ_NCSI:
--		len = cudbg_cim_obq_size(adap, 5);
-+		len = cudbg_cim_obq_size(adap, 5, 0);
- 		break;
- 	case CUDBG_CIM_OBQ_RXQ0:
--		len = cudbg_cim_obq_size(adap, 6);
-+		len = cudbg_cim_obq_size(adap, 6, 0);
- 		break;
- 	case CUDBG_CIM_OBQ_RXQ1:
--		len = cudbg_cim_obq_size(adap, 7);
-+		len = cudbg_cim_obq_size(adap, 7, 0);
-+		break;
-+	case CUDBG_CIM_OBQ_IPC1:
-+	case CUDBG_CIM_OBQ_IPC2:
-+	case CUDBG_CIM_OBQ_IPC3:
-+	case CUDBG_CIM_OBQ_IPC4:
-+	case CUDBG_CIM_OBQ_IPC5:
-+	case CUDBG_CIM_OBQ_IPC6:
-+	case CUDBG_CIM_OBQ_IPC7:
-+		if (CHELSIO_CHIP_VERSION(adap->params.chip) < CHELSIO_T7)
-+			break;			/* len stays 0 */
-+		len = 6 * CIM_OBQ_SIZE * 4 * sizeof(u32);
- 		break;
- 	case CUDBG_EDC0:
- 		value = t4_read_reg(adap, MA_TARGET_MEM_ENABLE_A);
-@@ -350,7 +378,9 @@ u32 cudbg_get_entity_length(struct adapter *adap, u32 entity)
- 		len = sizeof(u32) * CUDBG_NUM_PCIE_CONFIG_REGS;
- 		break;
- 	case CUDBG_DUMP_CONTEXT:
--		len = cudbg_dump_context_size(adap);
-+		len = cudbg_dump_context_size(adap, (CHELSIO_CHIP_VERSION(adap->params.chip) >=
-+						    CHELSIO_T7) ? SGE_CTXT_SIZE_T7 :
-+								  SGE_CTXT_SIZE);
- 		break;
- 	case CUDBG_MPS_TCAM:
- 		len = sizeof(struct cudbg_mps_tcam) *
-@@ -537,10 +567,11 @@ static int cudbg_mem_desc_cmp(const void *a, const void *b)
- int cudbg_fill_meminfo(struct adapter *padap,
- 		       struct cudbg_meminfo *meminfo_buff)
+ static inline unsigned int ipv4_clip_hash(struct clip_tbl *c, const u32 *key)
  {
-+	u32 lo, hi, used, alloc, chip_ver;
- 	struct cudbg_mem_desc *md;
--	u32 lo, hi, used, alloc;
- 	int n, i;
+@@ -249,12 +250,17 @@ EXPORT_SYMBOL(cxgb4_update_root_dev_clip);
  
-+	chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
- 	memset(meminfo_buff->avail, 0,
- 	       ARRAY_SIZE(meminfo_buff->avail) *
- 	       sizeof(struct cudbg_mem_desc));
-@@ -578,50 +609,66 @@ int cudbg_fill_meminfo(struct adapter *padap,
- 		i++;
- 	}
- 
--	if (is_t5(padap->params.chip)) {
-+	if (chip_ver >= CHELSIO_T7) {
-+		/* MC0:*/
- 		if (lo & EXT_MEM0_ENABLE_F) {
- 			hi = t4_read_reg(padap, MA_EXT_MEMORY0_BAR_A);
- 			meminfo_buff->avail[i].base =
--				cudbg_mbytes_to_bytes(EXT_MEM_BASE_G(hi));
-+				cudbg_mbytes_to_bytes(T7_EXT_MEM0_BASE_G(hi));
- 			meminfo_buff->avail[i].limit =
- 				meminfo_buff->avail[i].base +
--				cudbg_mbytes_to_bytes(EXT_MEM_SIZE_G(hi));
-+				cudbg_mbytes_to_bytes(T7_EXT_MEM0_SIZE_G(hi));
- 			meminfo_buff->avail[i].idx = 3;
- 			i++;
- 		}
--
-+		/* MC1:*/
- 		if (lo & EXT_MEM1_ENABLE_F) {
- 			hi = t4_read_reg(padap, MA_EXT_MEMORY1_BAR_A);
- 			meminfo_buff->avail[i].base =
--				cudbg_mbytes_to_bytes(EXT_MEM1_BASE_G(hi));
-+				cudbg_mbytes_to_bytes(T7_EXT_MEM1_BASE_G(hi));
- 			meminfo_buff->avail[i].limit =
- 				meminfo_buff->avail[i].base +
--				cudbg_mbytes_to_bytes(EXT_MEM1_SIZE_G(hi));
-+				cudbg_mbytes_to_bytes(T7_EXT_MEM1_SIZE_G(hi));
- 			meminfo_buff->avail[i].idx = 4;
- 			i++;
- 		}
--	} else {
--		if (lo & EXT_MEM_ENABLE_F) {
--			hi = t4_read_reg(padap, MA_EXT_MEMORY_BAR_A);
-+		/* HMA:*/
-+		if (lo & HMA_MUX_F) {
-+			hi = t4_read_reg(padap, MA_HOST_MEMORY_BAR_A);
- 			meminfo_buff->avail[i].base =
--				cudbg_mbytes_to_bytes(EXT_MEM_BASE_G(hi));
-+				cudbg_mbytes_to_bytes(HMATARGETBASE_G(hi));
- 			meminfo_buff->avail[i].limit =
- 				meminfo_buff->avail[i].base +
--				cudbg_mbytes_to_bytes(EXT_MEM_SIZE_G(hi));
--			meminfo_buff->avail[i].idx = 2;
-+				cudbg_mbytes_to_bytes(T7_HMA_SIZE_G(hi));
-+			meminfo_buff->avail[i].idx = 5;
- 			i++;
- 		}
- 
--		if (lo & HMA_MUX_F) {
--			hi = t4_read_reg(padap, MA_EXT_MEMORY1_BAR_A);
-+	} else {
-+		/* MC0:*/
-+		if (lo & EXT_MEM0_ENABLE_F) {
-+			hi = t4_read_reg(padap, MA_EXT_MEMORY0_BAR_A);
- 			meminfo_buff->avail[i].base =
--				cudbg_mbytes_to_bytes(EXT_MEM1_BASE_G(hi));
-+				cudbg_mbytes_to_bytes(EXT_MEM_BASE_G(hi));
- 			meminfo_buff->avail[i].limit =
- 				meminfo_buff->avail[i].base +
--				cudbg_mbytes_to_bytes(EXT_MEM1_SIZE_G(hi));
--			meminfo_buff->avail[i].idx = 5;
-+				cudbg_mbytes_to_bytes(EXT_MEM0_SIZE_G(hi));
-+			meminfo_buff->avail[i].idx = 2;
- 			i++;
- 		}
-+		/* HMA: In t6 no mc1 so HMA shares mc1 address space */
-+		if (chip_ver == CHELSIO_T6) {
-+			if (lo & HMA_MUX_F) {
-+				hi = t4_read_reg(padap, MA_EXT_MEMORY1_BAR_A);
-+				meminfo_buff->avail[i].base =
-+					cudbg_mbytes_to_bytes(EXT_MEM1_BASE_G(hi));
-+				meminfo_buff->avail[i].limit =
-+					meminfo_buff->avail[i].base +
-+					cudbg_mbytes_to_bytes(EXT_MEM1_SIZE_G(hi));
-+				meminfo_buff->avail[i].idx = 5;
-+				i++;
-+			}
-+		}
- 	}
- 
- 	if (!i) /* no memory available */
-@@ -820,10 +867,7 @@ int cudbg_collect_reg_dump(struct cudbg_init *pdbg_init,
- 	u32 buf_size = 0;
- 	int rc = 0;
- 
--	if (is_t4(padap->params.chip))
--		buf_size = T4_REGMAP_SIZE;
--	else if (is_t5(padap->params.chip) || is_t6(padap->params.chip))
--		buf_size = T5_REGMAP_SIZE;
-+	buf_size = t4_get_regs_len(padap);
- 
- 	rc = cudbg_get_buff(pdbg_init, dbg_buff, buf_size, &temp_buff);
- 	if (rc)
-@@ -839,15 +883,20 @@ int cudbg_collect_fw_devlog(struct cudbg_init *pdbg_init,
- 	struct adapter *padap = pdbg_init->adap;
- 	struct cudbg_buffer temp_buff = { 0 };
- 	struct devlog_params *dparams;
-+	u8 coreid = 0;
- 	int rc = 0;
- 
-+	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
-+			CUDBG_UP_COREID_PARAM)
-+		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
-+
-+	dparams = &padap->params.devlog[coreid];
- 	rc = t4_init_devlog_params(padap);
- 	if (rc < 0) {
- 		cudbg_err->sys_err = rc;
- 		return rc;
- 	}
- 
--	dparams = &padap->params.devlogs;
- 	rc = cudbg_get_buff(pdbg_init, dbg_buff, dparams->size, &temp_buff);
- 	if (rc)
- 		return rc;
-@@ -875,39 +924,52 @@ int cudbg_collect_cim_la(struct cudbg_init *pdbg_init,
- 			 struct cudbg_error *cudbg_err)
+ int clip_tbl_show(struct seq_file *seq, void *v)
  {
- 	struct adapter *padap = pdbg_init->adap;
-+	struct cim_la_rev1 *cim_la_buff;
- 	struct cudbg_buffer temp_buff = { 0 };
-+	u8 ncol, coreid = 0;
- 	int size, rc;
- 	u32 cfg = 0;
-+	u16 nrow;
+-	struct adapter *adapter = seq->private;
+-	struct clip_tbl *ctbl = adapter->clipt;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adapter = d->adap;
++	struct clip_tbl *ctbl;
+ 	struct clip_entry *ce;
+ 	char ip[60];
+ 	int i;
  
--	if (is_t6(padap->params.chip)) {
--		size = padap->params.cim_la_size / 10 + 1;
--		size *= 10 * sizeof(u32);
--	} else {
--		size = padap->params.cim_la_size / 8;
--		size *= 8 * sizeof(u32);
--	}
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T6)
-+		ncol = 10;
-+	else
-+		ncol = 8;
++	ctbl = adapter->clipt;
++	if (!ctbl)
++		return 0;
 +
-+	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
-+			CUDBG_UP_COREID_PARAM)
-+		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
+ 	read_lock_bh(&ctbl->lock);
  
--	size += sizeof(cfg);
-+	nrow = padap->params.cim_la_size / ncol;
-+	size = sizeof(*cim_la_buff) + padap->params.cim_la_size * sizeof(u32);
- 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
- 	if (rc)
- 		return rc;
+ 	seq_puts(seq, "IP Address                  Users\n");
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+index bf47aecc4bb3..e6250e031609 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
+@@ -455,7 +455,6 @@ struct adapter_params {
+ 	struct vpd_params vpd;
+ 	struct pf_resources pfres;
+ 	struct pci_params pci;
+-	struct devlog_params devlogs;
+ 	struct devlog_params devlog[MAX_UP_CORES];
+ 	enum pcie_memwin drv_memwin;
  
--	rc = t4_cim_read(padap, UP_UP_DBG_LA_CFG_A, 1, &cfg);
-+	cim_la_buff = (void *)temp_buff.data;
-+	cim_la_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
-+	cim_la_buff->ver_hdr.revision = CUDBG_CIM_LA_REV;
-+	cim_la_buff->ver_hdr.size = sizeof(*cim_la_buff) -
-+		sizeof(struct cudbg_ver_hdr);
-+
-+	rc = t4_cim_read_core(padap, 1, coreid, UP_UP_DBG_LA_CFG_A, 1, &cfg);
- 	if (rc) {
- 		cudbg_err->sys_err = rc;
- 		cudbg_put_buff(pdbg_init, &temp_buff);
- 		return rc;
- 	}
+@@ -1957,12 +1956,8 @@ u8 t4_cim_num_ibq(struct adapter *adap);
+ u8 t4_cim_num_obq(struct adapter *adap);
+ void t4_read_cimq_cfg_core(struct adapter *adap, u8 coreid, u16 *base,
+ 			   u16 *size, u16 *thres);
+-int t4_read_cim_ibq(struct adapter *adap, unsigned int qid, u32 *data,
+-		    size_t n);
+ int t4_read_cim_obq_core(struct adapter *adap, u8 coreid, u32 qid, u32 *data,
+ 			 size_t n);
+-int t4_read_cim_obq(struct adapter *adap, unsigned int qid, u32 *data,
+-		    size_t n);
+ int t4_cim_read_core(struct adapter *adap, u8 group, u8 coreid,
+ 		     unsigned int addr, unsigned int n, unsigned int *valp);
+ int t4_cim_read(struct adapter *adap, unsigned int addr, unsigned int n,
+@@ -1970,11 +1965,8 @@ int t4_cim_read(struct adapter *adap, unsigned int addr, unsigned int n,
+ int t4_cim_write_core(struct adapter *adap, u8 group, u8 coreid,
+ 		      unsigned int addr, unsigned int n,
+ 		      const unsigned int *valp);
+-int t4_cim_write(struct adapter *adap, unsigned int addr, unsigned int n,
+-		 const unsigned int *valp);
+ int t4_cim_read_la_core(struct adapter *adap, u8 coreid, u32 *la_buf,
+ 			u32 *wrptr);
+-int t4_cim_read_la(struct adapter *adap, u32 *la_buf, unsigned int *wrptr);
+ void t4_cim_read_pif_la(struct adapter *adap, u32 *pif_req, u32 *pif_rsp,
+ 			unsigned int *pif_req_wrptr,
+ 			unsigned int *pif_rsp_wrptr);
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
+index e0b4b04d4aac..9f4595e992d3 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.c
+@@ -196,21 +196,22 @@ static int cim_la_show_pc_t6(struct seq_file *seq, void *v, int idx)
  
--	memcpy((char *)temp_buff.data, &cfg, sizeof(cfg));
--	rc = t4_cim_read_la(padap,
--			    (u32 *)((char *)temp_buff.data + sizeof(cfg)),
--			    NULL);
-+	rc = t4_cim_read_la_core(padap, coreid, cim_la_buff->data, NULL);
- 	if (rc < 0) {
- 		cudbg_err->sys_err = rc;
- 		cudbg_put_buff(pdbg_init, &temp_buff);
- 		return rc;
- 	}
-+
-+	cim_la_buff->coreid = coreid;
-+	cim_la_buff->config = cfg;
-+	cim_la_buff->ncol = ncol;
-+	cim_la_buff->nrow = nrow;
- 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
- }
- 
-@@ -931,41 +993,160 @@ int cudbg_collect_cim_ma_la(struct cudbg_init *pdbg_init,
- 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
- }
- 
-+static void cudbg_cim_qcfg_copy(struct cim_qcfg_rev1_data *data, u8 num_cim_ibq,
-+				u8 num_cim_obq, u16 *base, u16 *size,
-+				u16 *thres, u32 *stat, u32 *obq_wr)
-+{
-+	u8 i = 0;
-+
-+	while (i < num_cim_ibq) {
-+		data->qtype = CUDBG_ENTITY_CIM_QCFG_QTYPE_IBQ;
-+		data->qid = i;
-+		data->base = *base;
-+		data->size = *size;
-+		data->thres = *thres;
-+		memcpy(data->stat, stat, sizeof(data->stat));
-+
-+		stat += ARRAY_SIZE(data->stat);
-+		thres++;
-+		size++;
-+		base++;
-+		data++;
-+		i++;
-+	}
-+
-+	while (i < num_cim_ibq + num_cim_obq) {
-+		data->qtype = CUDBG_ENTITY_CIM_QCFG_QTYPE_OBQ;
-+		data->qid = i - num_cim_ibq;
-+		data->base = *base;
-+		data->size = *size;
-+		memcpy(data->stat, stat, sizeof(data->stat));
-+		memcpy(data->obq_wr, obq_wr, sizeof(data->obq_wr));
-+
-+		obq_wr += ARRAY_SIZE(data->obq_wr);
-+		stat += ARRAY_SIZE(data->stat);
-+		size++;
-+		base++;
-+		data++;
-+		i++;
-+	}
-+}
-+
-+static int cudbg_collect_cim_qcfg_t5(struct cudbg_init *pdbg_init,
-+				     struct cim_qcfg_rev1_data *data,
-+				     u8 num_cim_ibq, u8 num_cim_obq)
-+{
-+	u32 stat[4 * (CIM_NUM_IBQ + CIM_NUM_OBQ_T5)];
-+	struct adapter *padap = pdbg_init->adap;
-+	u16 base[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
-+	u16 size[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
-+	u32 obq_wr[2 * CIM_NUM_OBQ_T5];
-+	u16 thres[CIM_NUM_IBQ];
+ static int cim_la_open(struct inode *inode, struct file *file)
+ {
+-	int ret;
+-	unsigned int cfg;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
++	u8 coreid = d->coreid;
+ 	struct seq_tab *p;
+-	struct adapter *adap = inode->i_private;
++	unsigned int cfg;
 +	int ret;
-+
-+	ret = t4_cim_read(padap, UP_IBQ_0_SHADOW_RDADDR_A,
-+			  4 * (num_cim_ibq + num_cim_obq), stat);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = t4_cim_read(padap, UP_OBQ_0_SHADOW_REALADDR_A, 2 * num_cim_obq,
-+			  obq_wr);
-+	if (ret < 0)
-+		return ret;
-+
-+	t4_read_cimq_cfg(padap, base, size, thres);
-+
-+	cudbg_cim_qcfg_copy(data, num_cim_ibq, num_cim_obq, base, size, thres,
-+			    stat, obq_wr);
-+	return 0;
-+}
-+
-+static int cudbg_collect_cim_qcfg_t7(struct cudbg_init *pdbg_init, u8 coreid,
-+				     struct cim_qcfg_rev1_data *data,
-+				     u8 num_cim_ibq, u8 num_cim_obq)
+ 
+-	ret = t4_cim_read(adap, UP_UP_DBG_LA_CFG_A, 1, &cfg);
++	ret = t4_cim_read_core(adap, 1, coreid, UP_UP_DBG_LA_CFG_A, 1, &cfg);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (is_t6(adap->params.chip)) {
+-		/* +1 to account for integer division of CIMLA_SIZE/10 */
+-		p = seq_open_tab(file, (adap->params.cim_la_size / 10) + 1,
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T6) {
++		p = seq_open_tab(file, adap->params.cim_la_size / 10,
+ 				 10 * sizeof(u32), 1,
+ 				 cfg & UPDBGLACAPTPCONLY_F ?
+-					cim_la_show_pc_t6 : cim_la_show_t6);
++				 cim_la_show_pc_t6 : cim_la_show_t6);
+ 	} else {
+ 		p = seq_open_tab(file, adap->params.cim_la_size / 8,
+ 				 8 * sizeof(u32), 1,
+@@ -220,7 +221,7 @@ static int cim_la_open(struct inode *inode, struct file *file)
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	ret = t4_cim_read_la(adap, (u32 *)p->data, NULL);
++	ret = t4_cim_read_la_core(adap, coreid, (u32 *)p->data, NULL);
+ 	if (ret)
+ 		seq_release_private(inode, file);
+ 	return ret;
+@@ -256,8 +257,9 @@ static int cim_pif_la_show(struct seq_file *seq, void *v, int idx)
+ 
+ static int cim_pif_la_open(struct inode *inode, struct file *file)
+ {
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 	struct seq_tab *p;
+-	struct adapter *adap = inode->i_private;
+ 
+ 	p = seq_open_tab(file, 2 * CIM_PIFLA_SIZE, 6 * sizeof(u32), 1,
+ 			 cim_pif_la_show);
+@@ -302,8 +304,9 @@ static int cim_ma_la_show(struct seq_file *seq, void *v, int idx)
+ 
+ static int cim_ma_la_open(struct inode *inode, struct file *file)
+ {
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 	struct seq_tab *p;
+-	struct adapter *adap = inode->i_private;
+ 
+ 	p = seq_open_tab(file, 2 * CIM_MALA_SIZE, 5 * sizeof(u32), 1,
+ 			 cim_ma_la_show);
+@@ -323,8 +326,112 @@ static const struct file_operations cim_ma_la_fops = {
+ 	.release = seq_release_private
+ };
+ 
++static int cim_qcfg_show_t7(struct seq_file *seq, struct adapter *adap,
++			    u8 coreid)
 +{
-+	u32 stat[4 * (CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7)];
++	static const char *const qname_t7[] = {
++		/* IBQ */
++		"TP0",
++		"TP1",
++		"TP2",
++		"TP3",
++		"ULP",
++		"SGE0",
++		"PCIE",
++		"NC-SI",
++		"RSVD",
++		"IPC1",
++		"IPC2",
++		"IPC3",
++		"IPC4",
++		"IPC5",
++		"IPC6",
++		"IPC7",
++		/* OBQ */
++		"ULP0",
++		"ULP1",
++		"ULP2",
++		"ULP3",
++		"SGE",
++		"NC-SI",
++		"SGE0-RX",
++		"RSVD",
++		"RSVD",
++		"IPC1",
++		"IPC2",
++		"IPC3",
++		"IPC4",
++		"IPC5",
++		"IPC6",
++		"IPC7",
++	};
++	u32 stat[(4 * (CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7))];
 +	u16 base[CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7];
 +	u16 size[CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7];
-+	struct adapter *padap = pdbg_init->adap;
 +	u32 obq_wr[2 * CIM_NUM_OBQ_T7];
 +	u16 thres[CIM_NUM_IBQ_T7];
++	u32 *wr = obq_wr;
++	u32 *p = stat;
 +	u32 addr;
 +	int ret;
 +	u8 i;
 +
-+	ret = t4_cim_read_core(padap, 1, coreid, T7_UP_IBQ_0_SHADOW_RDADDR_A,
-+			       4 * num_cim_ibq, stat);
++	ret = t4_cim_read_core(adap, 1, coreid, T7_UP_IBQ_0_SHADOW_RDADDR_A,
++			       4 * CIM_NUM_IBQ_T7, stat);
 +	if (ret < 0)
 +		return ret;
 +
-+	ret = t4_cim_read_core(padap, 1, coreid, T7_UP_OBQ_0_SHADOW_RDADDR_A,
-+			       4 * num_cim_obq, &stat[4 * num_cim_ibq]);
++	ret = t4_cim_read_core(adap, 1, coreid, T7_UP_OBQ_0_SHADOW_RDADDR_A,
++			       4 * CIM_NUM_OBQ_T7, &stat[4 * CIM_NUM_IBQ_T7]);
 +	if (ret < 0)
 +		return ret;
 +
 +	addr = T7_UP_OBQ_0_SHADOW_REALADDR_A;
-+	for (i = 0; i < num_cim_obq * 2; i++, addr += 8) {
-+		ret = t4_cim_read_core(padap, 1, coreid, addr, 1, &obq_wr[i]);
++	for (i = 0; i < CIM_NUM_OBQ_T7 * 2; i++, addr += 8) {
++		ret = t4_cim_read_core(adap, 1, coreid, addr, 1, &obq_wr[i]);
 +		if (ret < 0)
 +			return ret;
 +	}
 +
-+	t4_read_cimq_cfg_core(padap, coreid, base, size, thres);
++	t4_read_cimq_cfg_core(adap, coreid, base, size, thres);
 +
-+	cudbg_cim_qcfg_copy(data, num_cim_ibq, num_cim_obq, base, size, thres,
-+			    stat, obq_wr);
++	seq_printf(seq,
++		   "  Queue  Base  Size Thres  RdPtr WrPtr  SOP  EOP Avail\n");
++
++	for (i = 0; i < CIM_NUM_IBQ_T7; i++, p += 4) {
++		if (!size[i])
++			continue;
++
++		seq_printf(seq, "%7s %5x %5u %5u %6x  %4x %4u %4u %5u\n",
++			   qname_t7[i], base[i], size[i], thres[i],
++			   IBQRDADDR_G(p[0]) & 0xfff, IBQWRADDR_G(p[1]) & 0xfff,
++			   QUESOPCNT_G(p[3]), QUEEOPCNT_G(p[3]),
++			   T7_QUEREMFLITS_G(p[2]) * 16);
++	}
++
++	for ( ; i < CIM_NUM_IBQ_T7 + CIM_NUM_OBQ_T7; i++, p += 4, wr += 2) {
++		if (!size[i])
++			continue;
++
++		seq_printf(seq, "%7s %5x %5u %12x  %4x %4u %4u %5u\n",
++			   qname_t7[i], base[i], size[i],
++			   QUERDADDR_G(p[0]) & 0xfff, (wr[0] << 1),
++			   QUESOPCNT_G(p[3]), QUEEOPCNT_G(p[3]),
++			   T7_QUEREMFLITS_G(p[2]) * 16);
++	}
++
 +	return 0;
 +}
 +
- int cudbg_collect_cim_qcfg(struct cudbg_init *pdbg_init,
- 			   struct cudbg_buffer *dbg_buff,
- 			   struct cudbg_error *cudbg_err)
+ static int cim_qcfg_show(struct seq_file *seq, void *v)
  {
-+	struct cim_qcfg_rev1 *cim_qcfg_buff;
-+	u8 num_cim_ibq, num_cim_obq, coreid = 0;
- 	struct adapter *padap = pdbg_init->adap;
-+	struct cim_qcfg_rev1_data *data;
- 	struct cudbg_buffer temp_buff = { 0 };
--	struct cudbg_cim_qcfg *cim_qcfg_data;
-+	u32 size;
- 	int rc;
- 
--	rc = cudbg_get_buff(pdbg_init, dbg_buff, sizeof(struct cudbg_cim_qcfg),
--			    &temp_buff);
-+	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
-+			CUDBG_UP_COREID_PARAM)
-+		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	u8 coreid = d->coreid;
 +
-+	num_cim_ibq = t4_cim_num_ibq(padap);
-+	num_cim_obq = t4_cim_num_obq(padap);
-+	size = sizeof(*cim_qcfg_buff) +
-+		((num_cim_ibq + num_cim_obq) * sizeof(*data));
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7)
++		return cim_qcfg_show_t7(seq, adap, coreid);
 +
-+	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
- 	if (rc)
- 		return rc;
+ 	static const char * const qname[] = {
+ 		"TP0", "TP1", "ULP", "SGE0", "SGE1", "NC-SI",
+ 		"ULP0", "ULP1", "ULP2", "ULP3", "SGE", "NC-SI",
+@@ -332,7 +439,6 @@ static int cim_qcfg_show(struct seq_file *seq, void *v)
+ 	};
  
--	cim_qcfg_data = (struct cudbg_cim_qcfg *)temp_buff.data;
--	cim_qcfg_data->chip = padap->params.chip;
--	rc = t4_cim_read(padap, UP_IBQ_0_RDADDR_A,
--			 ARRAY_SIZE(cim_qcfg_data->stat), cim_qcfg_data->stat);
--	if (rc) {
--		cudbg_err->sys_err = rc;
--		cudbg_put_buff(pdbg_init, &temp_buff);
--		return rc;
--	}
-+	cim_qcfg_buff = (void *)((u8 *)temp_buff.data + temp_buff.offset);
-+	cim_qcfg_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
-+	cim_qcfg_buff->ver_hdr.revision = CUDBG_CIM_QCFG_REV;
-+	cim_qcfg_buff->ver_hdr.size = sizeof(*cim_qcfg_buff) -
-+		sizeof(struct cudbg_ver_hdr);
+ 	int i;
+-	struct adapter *adap = seq->private;
+ 	u16 base[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
+ 	u16 size[CIM_NUM_IBQ + CIM_NUM_OBQ_T5];
+ 	u32 stat[(4 * (CIM_NUM_IBQ + CIM_NUM_OBQ_T5))];
+@@ -391,16 +497,19 @@ static int cimq_show(struct seq_file *seq, void *v, int idx)
+ 
+ static int cim_ibq_open(struct inode *inode, struct file *file)
+ {
+-	int ret;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
++	unsigned int qid = d->data;
++	u8 coreid = d->coreid;
+ 	struct seq_tab *p;
+-	unsigned int qid = (uintptr_t)inode->i_private & 7;
+-	struct adapter *adap = inode->i_private - qid;
++	int ret;
+ 
+ 	p = seq_open_tab(file, CIM_IBQ_SIZE, 4 * sizeof(u32), 0, cimq_show);
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	ret = t4_read_cim_ibq(adap, qid, (u32 *)p->data, CIM_IBQ_SIZE * 4);
++	ret = t4_read_cim_ibq_core(adap, coreid, qid, (u32 *)p->data,
++				   CIM_IBQ_SIZE * 4);
+ 	if (ret < 0)
+ 		seq_release_private(inode, file);
+ 	else
+@@ -418,16 +527,19 @@ static const struct file_operations cim_ibq_fops = {
+ 
+ static int cim_obq_open(struct inode *inode, struct file *file)
+ {
+-	int ret;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
++	unsigned int qid = d->data;
++	u8 coreid = d->coreid;
+ 	struct seq_tab *p;
+-	unsigned int qid = (uintptr_t)inode->i_private & 7;
+-	struct adapter *adap = inode->i_private - qid;
++	int ret;
+ 
+ 	p = seq_open_tab(file, 6 * CIM_OBQ_SIZE, 4 * sizeof(u32), 0, cimq_show);
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+-	ret = t4_read_cim_obq(adap, qid, (u32 *)p->data, 6 * CIM_OBQ_SIZE * 4);
++	ret = t4_read_cim_obq_core(adap, coreid, qid, (u32 *)p->data,
++				   6 * CIM_OBQ_SIZE * 4);
+ 	if (ret < 0) {
+ 		seq_release_private(inode, file);
+ 	} else {
+@@ -638,8 +750,9 @@ static int tp_la_show3(struct seq_file *seq, void *v, int idx)
+ 
+ static int tp_la_open(struct inode *inode, struct file *file)
+ {
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 	struct seq_tab *p;
+-	struct adapter *adap = inode->i_private;
+ 
+ 	switch (DBGLAMODE_G(t4_read_reg(adap, TP_DBG_LA_CONFIG_A))) {
+ 	case 2:
+@@ -663,11 +776,14 @@ static int tp_la_open(struct inode *inode, struct file *file)
+ static ssize_t tp_la_write(struct file *file, const char __user *buf,
+ 			   size_t count, loff_t *pos)
+ {
+-	int err;
+-	char s[32];
++	struct t4_linux_debugfs_data *d = file_inode(file)->i_private;
++	struct adapter *adap = d->adap;
+ 	unsigned long val;
+-	size_t size = min(sizeof(s) - 1, count);
+-	struct adapter *adap = file_inode(file)->i_private;
++	size_t size;
++	char s[32];
++	int err;
 +
-+	cim_qcfg_buff->num_cim_ibq = num_cim_ibq;
-+	cim_qcfg_buff->num_cim_obq = num_cim_obq;
-+	cim_qcfg_buff->coreid = coreid;
-+	data = cim_qcfg_buff->data;
++	size = min(sizeof(s) - 1, count);
  
--	rc = t4_cim_read(padap, UP_OBQ_0_REALADDR_A,
--			 ARRAY_SIZE(cim_qcfg_data->obq_wr),
--			 cim_qcfg_data->obq_wr);
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
-+		rc = cudbg_collect_cim_qcfg_t7(pdbg_init, coreid, data,
-+					       num_cim_ibq, num_cim_obq);
-+	else
-+		rc = cudbg_collect_cim_qcfg_t5(pdbg_init, data, num_cim_ibq,
-+					       num_cim_obq);
- 	if (rc) {
- 		cudbg_err->sys_err = rc;
- 		cudbg_put_buff(pdbg_init, &temp_buff);
- 		return rc;
+ 	if (copy_from_user(s, buf, size))
+ 		return -EFAULT;
+@@ -707,8 +823,9 @@ static int ulprx_la_show(struct seq_file *seq, void *v, int idx)
+ 
+ static int ulprx_la_open(struct inode *inode, struct file *file)
+ {
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 	struct seq_tab *p;
+-	struct adapter *adap = inode->i_private;
+ 
+ 	p = seq_open_tab(file, ULPRX_LA_SIZE, 8 * sizeof(u32), 1,
+ 			 ulprx_la_show);
+@@ -748,10 +865,11 @@ static int pm_stats_show(struct seq_file *seq, void *v)
+ 		"Read:", "Write bypass:", "Write mem:", "Flush:"
+ 	};
+ 
+-	int i;
+ 	u32 tx_cnt[T6_PM_NSTATS], rx_cnt[T6_PM_NSTATS];
+ 	u64 tx_cyc[T6_PM_NSTATS], rx_cyc[T6_PM_NSTATS];
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	int i;
+ 
+ 	t4_pmtx_get_stats(adap, tx_cnt, tx_cyc);
+ 	t4_pmrx_get_stats(adap, rx_cnt, rx_cyc);
+@@ -791,6 +909,61 @@ static int pm_stats_show(struct seq_file *seq, void *v)
+ 		seq_printf(seq, "Rx latency    %10u  %20llu\n",
+ 			   rx_cnt[i], rx_cyc[i]);
  	}
- 
--	t4_read_cimq_cfg(padap, cim_qcfg_data->base, cim_qcfg_data->size,
--			 cim_qcfg_data->thres);
- 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
- }
- 
-@@ -973,20 +1154,38 @@ static int cudbg_read_cim_ibq(struct cudbg_init *pdbg_init,
- 			      struct cudbg_buffer *dbg_buff,
- 			      struct cudbg_error *cudbg_err, int qid)
- {
-+	struct cim_ibq_rev1 *cim_ibq_buff;
- 	struct adapter *padap = pdbg_init->adap;
- 	struct cudbg_buffer temp_buff = { 0 };
- 	int no_of_read_words, rc = 0;
-+	u8 coreid = 0;
- 	u32 qsize;
- 
-+	if (qid >= t4_cim_num_ibq(padap))
-+		return CUDBG_STATUS_ENTITY_NOT_FOUND;
 +
-+	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
-+			CUDBG_UP_COREID_PARAM)
-+		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7) {
++		u32 stats[T7_PM_RX_CACHE_NSTATS];
 +
- 	/* collect CIM IBQ */
- 	qsize = CIM_IBQ_SIZE * 4 * sizeof(u32);
--	rc = cudbg_get_buff(pdbg_init, dbg_buff, qsize, &temp_buff);
-+	rc = cudbg_get_buff(pdbg_init, dbg_buff, sizeof(*cim_ibq_buff) + qsize,
-+			    &temp_buff);
- 	if (rc)
- 		return rc;
-+	cim_ibq_buff = (void *)((u8 *)temp_buff.data + temp_buff.offset);
-+	cim_ibq_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
-+	cim_ibq_buff->ver_hdr.revision = CUDBG_CIM_IBQ_REV;
-+	cim_ibq_buff->ver_hdr.size = sizeof(*cim_ibq_buff) -
-+		sizeof(struct cudbg_ver_hdr);
-+	cim_ibq_buff->qid = qid;
-+	cim_ibq_buff->coreid = coreid;
- 
- 	/* t4_read_cim_ibq will return no. of read words or error */
--	no_of_read_words = t4_read_cim_ibq(padap, qid,
--					   (u32 *)temp_buff.data, qsize);
-+	no_of_read_words = t4_read_cim_ibq_core(padap, coreid, qid,
-+						cim_ibq_buff->data, qsize);
++		t4_pmrx_cache_get_stats(adap, stats);
 +
- 	/* no_of_read_words is less than or equal to 0 means error */
- 	if (no_of_read_words <= 0) {
- 		if (!no_of_read_words)
-@@ -1014,24 +1213,63 @@ int cudbg_collect_cim_ibq_tp1(struct cudbg_init *pdbg_init,
- 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 1);
- }
- 
-+int cudbg_collect_cim_ibq_tp2(struct cudbg_init *pdbg_init,
-+			      struct cudbg_buffer *dbg_buff,
-+			      struct cudbg_error *cudbg_err)
-+{
-+	struct adapter *padap = pdbg_init->adap;
-+
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) <= CHELSIO_T6)
-+		return CUDBG_STATUS_ENTITY_NOT_FOUND;
-+
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 2);
-+}
-+
-+int cudbg_collect_cim_ibq_tp3(struct cudbg_init *pdbg_init,
-+			      struct cudbg_buffer *dbg_buff,
-+			      struct cudbg_error *cudbg_err)
-+{
-+	struct adapter *padap = pdbg_init->adap;
-+
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) <= CHELSIO_T6)
-+		return CUDBG_STATUS_ENTITY_NOT_FOUND;
-+
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 3);
-+}
-+
- int cudbg_collect_cim_ibq_ulp(struct cudbg_init *pdbg_init,
- 			      struct cudbg_buffer *dbg_buff,
- 			      struct cudbg_error *cudbg_err)
- {
-+	struct adapter *padap = pdbg_init->adap;
-+
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
-+		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 4);
-+
- 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 2);
- }
- 
--int cudbg_collect_cim_ibq_sge0(struct cudbg_init *pdbg_init,
--			       struct cudbg_buffer *dbg_buff,
--			       struct cudbg_error *cudbg_err)
-+int cudbg_collect_cim_ibq_sge(struct cudbg_init *pdbg_init,
-+			      struct cudbg_buffer *dbg_buff,
-+			      struct cudbg_error *cudbg_err)
- {
-+	struct adapter *padap = pdbg_init->adap;
-+
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
-+		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 5);
-+
- 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 3);
- }
- 
--int cudbg_collect_cim_ibq_sge1(struct cudbg_init *pdbg_init,
-+int cudbg_collect_cim_ibq_pcie(struct cudbg_init *pdbg_init,
- 			       struct cudbg_buffer *dbg_buff,
- 			       struct cudbg_error *cudbg_err)
- {
-+	struct adapter *padap = pdbg_init->adap;
-+
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
-+		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 6);
-+
- 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 4);
- }
- 
-@@ -1039,17 +1277,82 @@ int cudbg_collect_cim_ibq_ncsi(struct cudbg_init *pdbg_init,
- 			       struct cudbg_buffer *dbg_buff,
- 			       struct cudbg_error *cudbg_err)
- {
-+	struct adapter *padap = pdbg_init->adap;
-+
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
-+		return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 7);
-+
- 	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 5);
- }
- 
--u32 cudbg_cim_obq_size(struct adapter *padap, int qid)
-+int cudbg_collect_cim_ibq_ipc1(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 9);
-+}
-+
-+int cudbg_collect_cim_ibq_ipc2(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
- {
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 10);
-+}
-+
-+int cudbg_collect_cim_ibq_ipc3(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 11);
-+}
-+
-+int cudbg_collect_cim_ibq_ipc4(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 12);
-+}
-+
-+int cudbg_collect_cim_ibq_ipc5(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 13);
-+}
-+
-+int cudbg_collect_cim_ibq_ipc6(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 14);
-+}
-+
-+int cudbg_collect_cim_ibq_ipc7(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_ibq(pdbg_init, dbg_buff, cudbg_err, 15);
-+}
-+
-+u32 cudbg_cim_obq_size(struct adapter *padap, int qid, u8 coreid)
-+{
-+	unsigned int v, m;
- 	u32 value;
- 
--	t4_write_reg(padap, CIM_QUEUE_CONFIG_REF_A, OBQSELECT_F |
--		     QUENUMSELECT_V(qid));
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
-+		v = T7_OBQSELECT_F | T7_QUENUMSELECT_V(qid) |
-+		    CORESELECT_V(coreid);
-+		/* value is in 512-byte units */
-+		m = 128;
-+	} else {
-+		v = OBQSELECT_F | QUENUMSELECT_V(qid);
-+		/* value is in 256-byte units */
-+		m = 64;
++		i = 0;
++		seq_puts(seq, "\n\nPM RX Cache Stats\n");
++		seq_printf(seq, "%-40s    %u\n", "ReqWrite", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "ReqReadInv", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "ReqReadNoInv", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Write Split Request",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n",
++			   "Normal Read Split (Read Invalidate)", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n",
++			   "Feedback Read Split (Read NoInvalidate)",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Write Hit", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Normal Read Hit", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Feedback Read Hit",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Normal Read Hit Full Avail",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Normal Read Hit Full UnAvail",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n",
++			   "Normal Read Hit Partial Avail", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "FB Read Hit Full Avail",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "FB Read Hit Full UnAvail",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "FB Read Hit Partial Avail",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Normal Read Full Free",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n",
++			   "Normal Read Part-avail Mul-Regions", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n",
++			   "FB Read Part-avail Mul-Regions", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Write Miss FL Used",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Write Miss LRU Used",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n",
++			   "Write Miss LRU-Multiple Evict", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Write Hit Increasing Islands",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n",
++			   "Normal Read Island Read split", stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Write Overflow Eviction",
++			   stats[i++]);
++		seq_printf(seq, "%-40s    %u\n", "Read Overflow Eviction",
++			   stats[i++]);
 +	}
-+
-+	t4_write_reg(padap, CIM_QUEUE_CONFIG_REF_A, v);
- 	value = t4_read_reg(padap, CIM_QUEUE_CONFIG_CTRL_A);
--	value = CIMQSIZE_G(value) * 64; /* size in number of words */
-+	value = CIMQSIZE_G(value) * m; /* size in number of words */
- 	return value * sizeof(u32);
+ 	return 0;
  }
  
-@@ -1057,20 +1360,38 @@ static int cudbg_read_cim_obq(struct cudbg_init *pdbg_init,
- 			      struct cudbg_buffer *dbg_buff,
- 			      struct cudbg_error *cudbg_err, int qid)
+@@ -802,7 +975,8 @@ static int pm_stats_open(struct inode *inode, struct file *file)
+ static ssize_t pm_stats_clear(struct file *file, const char __user *buf,
+ 			      size_t count, loff_t *pos)
  {
-+	struct cim_obq_rev1 *cim_obq_buff;
- 	struct adapter *padap = pdbg_init->adap;
- 	struct cudbg_buffer temp_buff = { 0 };
- 	int no_of_read_words, rc = 0;
-+	u8 coreid = 0;
- 	u32 qsize;
+-	struct adapter *adap = file_inode(file)->i_private;
++	struct t4_linux_debugfs_data *d = file_inode(file)->i_private;
++	struct adapter *adap = d->adap;
  
-+	if (qid >= t4_cim_num_obq(padap))
-+		return CUDBG_STATUS_ENTITY_NOT_FOUND;
-+
-+	if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
-+			CUDBG_UP_COREID_PARAM)
-+		coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
-+
- 	/* collect CIM OBQ */
--	qsize =  cudbg_cim_obq_size(padap, qid);
--	rc = cudbg_get_buff(pdbg_init, dbg_buff, qsize, &temp_buff);
-+	qsize = cudbg_cim_obq_size(padap, qid, coreid);
-+	rc = cudbg_get_buff(pdbg_init, dbg_buff, sizeof(*cim_obq_buff) + qsize,
-+			    &temp_buff);
- 	if (rc)
- 		return rc;
-+	cim_obq_buff = (void *)((u8 *)temp_buff.data + temp_buff.offset);
-+	cim_obq_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
-+	cim_obq_buff->ver_hdr.revision = CUDBG_CIM_OBQ_REV;
-+	cim_obq_buff->ver_hdr.size = sizeof(*cim_obq_buff) -
-+		sizeof(struct cudbg_ver_hdr);
-+	cim_obq_buff->qid = qid;
-+	cim_obq_buff->coreid = coreid;
+ 	t4_write_reg(adap, PM_RX_STAT_CONFIG_A, 0);
+ 	t4_write_reg(adap, PM_TX_STAT_CONFIG_A, 0);
+@@ -820,8 +994,9 @@ static const struct file_operations pm_stats_debugfs_fops = {
  
- 	/* t4_read_cim_obq will return no. of read words or error */
--	no_of_read_words = t4_read_cim_obq(padap, qid,
--					   (u32 *)temp_buff.data, qsize);
-+	no_of_read_words = t4_read_cim_obq_core(padap, coreid, qid,
-+						cim_obq_buff->data, qsize);
-+
- 	/* no_of_read_words is less than or equal to 0 means error */
- 	if (no_of_read_words <= 0) {
- 		if (!no_of_read_words)
-@@ -1140,6 +1461,55 @@ int cudbg_collect_obq_sge_rx_q1(struct cudbg_init *pdbg_init,
- 	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 7);
- }
- 
-+int cudbg_collect_cim_obq_ipc1(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 9);
-+}
-+
-+int cudbg_collect_cim_obq_ipc2(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 10);
-+}
-+
-+int cudbg_collect_cim_obq_ipc3(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 11);
-+}
-+
-+int cudbg_collect_cim_obq_ipc4(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 12);
-+}
-+
-+int cudbg_collect_cim_obq_ipc5(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 13);
-+}
-+
-+int cudbg_collect_cim_obq_ipc6(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 14);
-+}
-+
-+int cudbg_collect_cim_obq_ipc7(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err)
-+{
-+	return cudbg_read_cim_obq(pdbg_init, dbg_buff, cudbg_err, 15);
-+}
-+
- static int cudbg_meminfo_get_mem_index(struct adapter *padap,
- 				       struct cudbg_meminfo *mem_info,
- 				       u8 mem_type, u8 *idx)
-@@ -1286,9 +1656,9 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
+ static int tx_rate_show(struct seq_file *seq, void *v)
  {
- 	u32 win_pf, memoffset, mem_aperture, mem_base;
- 	struct adapter *adap = pdbg_init->adap;
--	u32 pos, offset, resid;
-+	u32 offset, resid;
-+	u64 pos, *buf;
- 	u32 *res_buf;
--	u64 *buf;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	u64 nrate[NCHAN], orate[NCHAN];
+-	struct adapter *adap = seq->private;
+ 
+ 	t4_get_chan_txrate(adap, nrate, orate);
+ 	if (adap->params.arch.nchan == NCHAN) {
+@@ -856,9 +1031,10 @@ static int cctrl_tbl_show(struct seq_file *seq, void *v)
+ 		"0.5", "0.5625", "0.625", "0.6875", "0.75", "0.8125", "0.875",
+ 		"0.9375" };
+ 
+-	int i;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	u16 (*incr)[NCCTRL_WIN];
+-	struct adapter *adap = seq->private;
++	int i;
+ 
+ 	incr = kmalloc_objs(*incr, NMTUS);
+ 	if (!incr)
+@@ -902,13 +1078,16 @@ static char *unit_conv(char *buf, size_t len, unsigned int val,
+ 
+ static int clk_show(struct seq_file *seq, void *v)
+ {
++	struct t4_linux_debugfs_data *d = seq->private;
++	unsigned int cclk_ps, tre, dack_re, res;
++	struct adapter *adap = d->adap;
++	unsigned long long tp_tick_us;
+ 	char buf[32];
+-	struct adapter *adap = seq->private;
+-	unsigned int cclk_ps = 1000000000 / adap->params.vpd.cclk;  /* in ps */
+-	u32 res = t4_read_reg(adap, TP_TIMER_RESOLUTION_A);
+-	unsigned int tre = TIMERRESOLUTION_G(res);
+-	unsigned int dack_re = DELAYEDACKRESOLUTION_G(res);
+-	unsigned long long tp_tick_us = (cclk_ps << tre) / 1000000; /* in us */
++	cclk_ps = 1000000000 / adap->params.vpd.cclk;  /* in ps */
++	res = t4_read_reg(adap, TP_TIMER_RESOLUTION_A);
++	tre = TIMERRESOLUTION_G(res);
++	dack_re = DELAYEDACKRESOLUTION_G(res);
++	tp_tick_us = (cclk_ps << tre) / 1000000; /* in us */
+ 
+ 	seq_printf(seq, "Core clock period: %s ns\n",
+ 		   unit_conv(buf, sizeof(buf), cclk_ps, 1000));
+@@ -1080,13 +1259,17 @@ static const struct seq_operations devlog_seq_ops = {
+  */
+ static int devlog_open(struct inode *inode, struct file *file)
+ {
+-	struct adapter *adap = inode->i_private;
+-	struct devlog_params *dparams = &adap->params.devlogs;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
++	struct devlog_params *dparams;
+ 	struct devlog_info *dinfo;
++	u8 coreid = d->coreid;
+ 	unsigned int index;
+ 	u32 fseqno;
  	int ret;
  
- 	/* Argument sanity checks ...
-@@ -1316,7 +1686,7 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
- 	/* Set up initial PCI-E Memory Window to cover the start of our
- 	 * transfer.
++	dparams = &adap->params.devlog[coreid];
++
+ 	/* If we don't know where the log is we can't do anything.
  	 */
--	t4_memory_update_win(adap, win, pos | win_pf);
-+	t4_pcie_mem_access_offset_write(adap, pos, win, win_pf);
- 
- 	/* Transfer data from the adapter */
- 	while (len > 0) {
-@@ -1331,7 +1701,7 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
- 		if (offset == mem_aperture) {
- 			pos += mem_aperture;
- 			offset = 0;
--			t4_memory_update_win(adap, win, pos | win_pf);
-+			t4_pcie_mem_access_offset_write(adap, pos, win, win_pf);
- 		}
- 	}
- 
-@@ -1349,7 +1719,7 @@ static int cudbg_memory_read(struct cudbg_init *pdbg_init, int win,
- 		if (offset == mem_aperture) {
- 			pos += mem_aperture;
- 			offset = 0;
--			t4_memory_update_win(adap, win, pos | win_pf);
-+			t4_pcie_mem_access_offset_write(adap, pos, win, win_pf);
- 		}
- 	}
- 
-@@ -1653,6 +2023,33 @@ int cudbg_collect_hw_sched(struct cudbg_init *pdbg_init,
- 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
- }
- 
-+static void *cudbg_collect_indir_reg_init(struct cudbg_indir_reg_entity *e,
-+					  u16 rev, u32 indir_reg,
-+					  u32 indir_data, u32 nentries)
-+{
-+	struct cudbg_ver_hdr *ver_hdr = &e->ver_hdr;
-+
-+	ver_hdr->signature = CUDBG_ENTITY_SIGNATURE;
-+	ver_hdr->revision = rev;
-+	ver_hdr->size = sizeof(*e) - sizeof(*ver_hdr);
-+
-+	e->indir_reg = indir_reg;
-+	e->indir_data = indir_data;
-+	e->nentries = nentries;
-+	return e;
-+}
-+
-+static void *cudbg_collect_indir_reg_init_next(struct cudbg_indir_reg_entity *e,
-+					       u16 rev, u32 indir_reg,
-+					       u32 indir_data, u32 nentries)
-+{
-+	struct cudbg_indir_reg_entity *n;
-+
-+	n = (void *)((u8 *)e + (sizeof(*e) + sizeof(e->data[0]) * e->nentries));
-+	return cudbg_collect_indir_reg_init(n, rev, indir_reg, indir_data,
-+					    nentries);
-+}
-+
- int cudbg_collect_tp_indirect(struct cudbg_init *pdbg_init,
- 			      struct cudbg_buffer *dbg_buff,
- 			      struct cudbg_error *cudbg_err)
-@@ -1663,6 +2060,77 @@ int cudbg_collect_tp_indirect(struct cudbg_init *pdbg_init,
- 	int i, rc, n = 0;
- 	u32 size;
- 
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
-+		/* T7 path - new indirect reg framework */
-+		struct cudbg_indir_reg_entity *tp_tm_entity, *tp_pio_entity;
-+		struct cudbg_indir_reg_entity *tp_mib_entity;
-+		const struct cudbg_indir_type_entry *tp_tm_arr;
-+		const struct cudbg_indir_type_entry *tp_pio_arr;
-+		const struct cudbg_indir_type_entry *tp_mib_arr;
-+		struct cudbg_indir_reg_data *reg_data;
-+		u32 chip_ver;
-+
-+		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
-+		tp_tm_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_TP_TM_PIO_ADDR);
-+		tp_pio_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_TP_PIO_ADDR);
-+		tp_mib_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_TP_MIB_INDEX);
-+
-+		if (!tp_tm_arr || !tp_pio_arr || !tp_mib_arr)
-+			return CUDBG_STATUS_ENTITY_NOT_FOUND;
-+
-+		size = sizeof(*tp_tm_entity) + sizeof(*tp_pio_entity) +
-+			sizeof(*tp_mib_entity) + sizeof(*reg_data) *
-+			(tp_tm_arr->nentries + tp_pio_arr->nentries +
-+			 tp_mib_arr->nentries);
-+
-+		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
-+		if (rc)
-+			return rc;
-+
-+		tp_tm_entity = cudbg_collect_indir_reg_init((void *)temp_buff.data,
-+							    CUDBG_TP_INDIR_REG_REV,
-+							    TP_TM_PIO_ADDR_A,
-+							    TP_TM_PIO_DATA_A,
-+							    tp_tm_arr->nentries);
-+
-+		tp_pio_entity = cudbg_collect_indir_reg_init_next(tp_tm_entity,
-+								  CUDBG_TP_INDIR_REG_REV,
-+								  TP_PIO_ADDR_A,
-+								  TP_PIO_DATA_A,
-+								  tp_pio_arr->nentries);
-+
-+		tp_mib_entity = cudbg_collect_indir_reg_init_next(tp_pio_entity,
-+								  CUDBG_TP_INDIR_REG_REV,
-+								  TP_MIB_INDEX_A,
-+								  TP_MIB_DATA_A,
-+								  tp_mib_arr->nentries);
-+
-+		reg_data = tp_tm_entity->data;
-+		for (i = 0; i < tp_tm_entity->nentries; i++, reg_data++) {
-+			reg_data->offset = tp_tm_arr->reg_arr[i].addr;
-+			t4_tp_tm_pio_read(pdbg_init->adap, &reg_data->data, 1,
-+					  reg_data->offset, true);
-+		}
-+
-+		reg_data = tp_pio_entity->data;
-+		for (i = 0; i < tp_pio_entity->nentries; i++, reg_data++) {
-+			reg_data->offset = tp_pio_arr->reg_arr[i].addr;
-+			t4_tp_pio_read(pdbg_init->adap, &reg_data->data, 1,
-+				       reg_data->offset, true);
-+		}
-+
-+		reg_data = tp_mib_entity->data;
-+		for (i = 0; i < tp_mib_entity->nentries; i++, reg_data++) {
-+			reg_data->offset = tp_mib_arr->reg_arr[i].addr;
-+			t4_tp_mib_read(pdbg_init->adap, &reg_data->data, 1,
-+				       reg_data->offset, true);
-+		}
-+
-+		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
-+				dbg_buff);
-+	}
-+
-+	/* T5/T6 path */
- 	if (is_t5(padap->params.chip))
- 		n = sizeof(t5_tp_pio_array) +
- 		    sizeof(t5_tp_tm_pio_array) +
-@@ -2061,6 +2529,36 @@ int cudbg_collect_pcie_indirect(struct cudbg_init *pdbg_init,
- 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
- }
- 
-+static void cudbg_collect_indir_reg(struct adapter *padap,
-+				    struct cudbg_indir_reg_entity *e,
-+				    const struct cudbg_indir_type_entry *arr,
-+				    u16 rev, u32 indir_reg, u32 indir_data)
-+{
-+	struct cudbg_indir_reg_entity *entity;
-+	struct cudbg_indir_reg_data *reg_data;
-+	u32 i;
-+
-+	entity = cudbg_collect_indir_reg_init(e, rev, indir_reg, indir_data,
-+					      arr->nentries);
-+	reg_data = entity->data;
-+	for (i = 0; i < entity->nentries; i++, reg_data++) {
-+		reg_data->offset = arr->reg_arr[i].addr;
-+		t4_read_indirect(padap, entity->indir_reg, entity->indir_data,
-+				 &reg_data->data, 1, reg_data->offset);
-+	}
-+}
-+
-+static void cudbg_collect_indir_reg_next(struct adapter *padap,
-+					 struct cudbg_indir_reg_entity *e,
-+					 const struct cudbg_indir_type_entry *arr,
-+					 u16 rev, u32 indir_reg, u32 indir_data)
-+{
-+	struct cudbg_indir_reg_entity *n;
-+
-+	n = (void *)((u8 *)e + (sizeof(*e) + sizeof(e->data[0]) * e->nentries));
-+	cudbg_collect_indir_reg(padap, n, arr, rev, indir_reg, indir_data);
-+}
-+
- int cudbg_collect_pm_indirect(struct cudbg_init *pdbg_init,
- 			      struct cudbg_buffer *dbg_buff,
- 			      struct cudbg_error *cudbg_err)
-@@ -2071,6 +2569,46 @@ int cudbg_collect_pm_indirect(struct cudbg_init *pdbg_init,
- 	int i, rc, n;
- 	u32 size;
- 
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
-+		/* T7 path - new indirect reg framework */
-+		const struct cudbg_indir_type_entry *pm_rx_arr, *pm_tx_arr;
-+		u32 chip_ver;
-+
-+		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
-+		pm_rx_arr = cudbg_get_indir_reg_info(chip_ver,
-+						     CUDBG_INDIR_TYPE_PM_RX_DBG_CTRL);
-+		pm_tx_arr = cudbg_get_indir_reg_info(chip_ver,
-+						     CUDBG_INDIR_TYPE_PM_TX_DBG_CTRL);
-+
-+		if (!pm_rx_arr || !pm_tx_arr)
-+			return CUDBG_STATUS_ENTITY_NOT_FOUND;
-+
-+		size = sizeof(struct cudbg_indir_reg_entity) +
-+			sizeof(struct cudbg_indir_reg_data) *
-+			pm_rx_arr->nentries;
-+		size += sizeof(struct cudbg_indir_reg_entity) +
-+			sizeof(struct cudbg_indir_reg_data) *
-+			pm_tx_arr->nentries;
-+
-+		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
-+		if (rc)
-+			return rc;
-+
-+		cudbg_collect_indir_reg(padap, (void *)temp_buff.data,
-+					pm_rx_arr, CUDBG_PM_INDIR_REG_REV,
-+					PM_RX_DBG_CTRL_A,
-+					PM_RX_DBG_CTRL_A + 4);
-+
-+		cudbg_collect_indir_reg_next(padap, (void *)temp_buff.data,
-+					     pm_tx_arr, CUDBG_PM_INDIR_REG_REV,
-+					     PM_TX_DBG_CTRL_A,
-+					     PM_TX_DBG_CTRL_A + 4);
-+
-+		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
-+						    dbg_buff);
-+	}
-+
-+	/* T5/T6 path */
- 	n = sizeof(t5_pm_rx_array) / (IREG_NUM_ELEM * sizeof(u32));
- 	size = sizeof(struct ireg_buf) * n * 2;
- 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
-@@ -2153,16 +2691,18 @@ int cudbg_collect_tid(struct cudbg_init *pdbg_init,
- 	 FW_PARAMS_PARAM_Y_V(0) | \
- 	 FW_PARAMS_PARAM_Z_V(0))
- 
--	para[0] = FW_PARAM_PFVF_A(ETHOFLD_START);
--	para[1] = FW_PARAM_PFVF_A(ETHOFLD_END);
--	rc = t4_query_params(padap, padap->mbox, padap->pf, 0, 2, para, val);
--	if (rc <  0) {
--		cudbg_err->sys_err = rc;
--		cudbg_put_buff(pdbg_init, &temp_buff);
--		return rc;
-+	if (padap->flags & CXGB4_FW_OK) {
-+		para[0] = FW_PARAM_PFVF_A(ETHOFLD_START);
-+		para[1] = FW_PARAM_PFVF_A(ETHOFLD_END);
-+		rc = t4_query_params(padap, padap->mbox, padap->pf, 0, 2, para, val);
-+		if (rc <  0) {
-+			cudbg_err->sys_err = rc;
-+			cudbg_put_buff(pdbg_init, &temp_buff);
-+			return rc;
-+		}
-+		tid->uotid_base = val[0];
-+		tid->nuotids = val[1] - val[0] + 1;
- 	}
--	tid->uotid_base = val[0];
--	tid->nuotids = val[1] - val[0] + 1;
- 
- 	if (is_t5(padap->params.chip)) {
- 		tid->sb = t4_read_reg(padap, LE_DB_SERVER_INDEX_A) / 4;
-@@ -2255,7 +2795,7 @@ static int cudbg_sge_ctxt_check_valid(u32 *buf, int type)
- 	return buf[index] & (1U << bit);
- }
- 
--static int cudbg_get_ctxt_region_info(struct adapter *padap,
-+static int cudbg_get_ctxt_region_info(struct adapter *padap, u8 sge_ctxt_size,
- 				      struct cudbg_region_info *ctx_info,
- 				      u8 *mem_type)
+ 	if (dparams->start == 0)
+@@ -1153,11 +1336,13 @@ static const struct file_operations devlog_fops = {
+  */
+ static int mboxlog_show(struct seq_file *seq, void *v)
  {
-@@ -2303,7 +2843,7 @@ static int cudbg_get_ctxt_region_info(struct adapter *padap,
- 	/* Get number of data freelist queues */
- 	flq = HDRSTARTFLQ_G(value);
- 	ctx_info[CTXT_FLM].exist = true;
--	ctx_info[CTXT_FLM].end = (CUDBG_MAX_FL_QIDS >> flq) * SGE_CTXT_SIZE;
-+	ctx_info[CTXT_FLM].end = (CUDBG_MAX_FL_QIDS >> flq) * sge_ctxt_size;
+-	struct adapter *adapter = seq->private;
+-	struct mbox_cmd_log *log = adapter->mbox_log;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	struct mbox_cmd_log *log;
+ 	struct mbox_cmd *entry;
+ 	int entry_idx, i;
  
- 	/* The number of CONM contexts are same as number of freelist
- 	 * queues.
-@@ -2314,30 +2854,31 @@ static int cudbg_get_ctxt_region_info(struct adapter *padap,
- 	return 0;
- }
++	log = adap->mbox_log;
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_printf(seq,
+ 			   "%10s  %15s  %5s  %5s  %s\n",
+@@ -1191,10 +1376,11 @@ static int mboxlog_show(struct seq_file *seq, void *v)
  
--int cudbg_dump_context_size(struct adapter *padap)
-+static u32 cudbg_sge_ctxt_entry_size(u8 sge_ctxt_size)
+ static inline void *mboxlog_get_idx(struct seq_file *seq, loff_t pos)
  {
--	struct cudbg_region_info region_info[CTXT_CNM + 1] = { {0} };
--	u8 mem_type[CTXT_INGRESS + 1] = { 0 };
--	u32 i, size = 0;
--	int rc;
-+	return sizeof(struct sge_ctxt_rev1_data) + sge_ctxt_size;
-+}
+-	struct adapter *adapter = seq->private;
+-	struct mbox_cmd_log *log = adapter->mbox_log;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
  
--	/* Get max valid qid for each type of queue */
--	rc = cudbg_get_ctxt_region_info(padap, region_info, mem_type);
--	if (rc)
--		return rc;
-+int cudbg_dump_context_size(struct adapter *padap, u8 sge_ctxt_size)
-+{
-+	struct cudbg_region_info region_info[CTXT_MAX] = { {0} };
-+	u32 i, nr_entries = 0;
-+	u32 entry_size;
- 
--	for (i = 0; i < CTXT_CNM; i++) {
-+	for (i = 0; i < CTXT_MAX; i++) {
- 		if (!region_info[i].exist) {
- 			if (i == CTXT_EGRESS || i == CTXT_INGRESS)
--				size += CUDBG_LOWMEM_MAX_CTXT_QIDS *
--					SGE_CTXT_SIZE;
-+				nr_entries += CUDBG_LOWMEM_MAX_CTXT_QIDS;
- 			continue;
- 		}
- 
--		size += (region_info[i].end - region_info[i].start + 1) /
--			SGE_CTXT_SIZE;
-+		nr_entries += (region_info[i].end -
-+			       region_info[i].start + 1) /
-+			       sge_ctxt_size;
- 	}
--	return size * sizeof(struct cudbg_ch_cntxt);
-+
-+	entry_size = cudbg_sge_ctxt_entry_size(sge_ctxt_size);
-+	return nr_entries * entry_size;
+-	return ((pos <= log->size) ? (void *)(uintptr_t)(pos + 1) : NULL);
++	return ((pos <= adap->mbox_log->size) ?
++			(void *)(uintptr_t)(pos + 1) : NULL);
  }
  
- static void cudbg_read_sge_ctxt(struct cudbg_init *pdbg_init, u32 cid,
-@@ -2359,32 +2900,48 @@ static void cudbg_read_sge_ctxt(struct cudbg_init *pdbg_init, u32 cid,
- 		t4_sge_ctxt_rd_bd(padap, cid, ctype, data);
- }
+ static void *mboxlog_start(struct seq_file *seq, loff_t *pos)
+@@ -1241,14 +1427,16 @@ static const struct file_operations mboxlog_fops = {
  
--static void cudbg_get_sge_ctxt_fw(struct cudbg_init *pdbg_init, u32 max_qid,
--				  u8 ctxt_type,
--				  struct cudbg_ch_cntxt **out_buff)
-+static u32 cudbg_get_sge_ctxt_fw(struct cudbg_init *pdbg_init, u8 sge_ctxt_size,
-+				 u32 max_qid, u8 ctxt_type,
-+				 struct sge_ctxt_rev1 *ctxt_buff,
-+				 struct sge_ctxt_rev1_data **out_buff)
+ static int mbox_show(struct seq_file *seq, void *v)
  {
--	struct cudbg_ch_cntxt *buff = *out_buff;
-+	struct sge_ctxt_rev1_data *buff;
-+	u8 *out = (u8 *)*out_buff;
-+	u32 j, total_size = 0;
-+	u32 entry_size;
- 	int rc;
+-	static const char * const owner[] = { "none", "FW", "driver",
+-					      "unknown", "<unread>" };
+-
++	static const char * const owner[] = {
++		"none", "FW", "driver", "FW Deferred", "<unread>"
++	};
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	unsigned int mbox = d->data;
++	void __iomem *addr;
+ 	int i;
+-	unsigned int mbox = (uintptr_t)seq->private & 7;
+-	struct adapter *adap = seq->private - mbox;
+-	void __iomem *addr = adap->regs + PF_REG(mbox, CIM_PF_MAILBOX_DATA_A);
+ 
++	addr = adap->regs + PF_REG(mbox, CIM_PF_MAILBOX_DATA_A);
+ 	/* For T4 we don't have a shadow copy of the Mailbox Control register.
+ 	 * And since reading that real register causes a side effect of
+ 	 * granting ownership, we're best of simply not reading it at all.
+@@ -1278,14 +1466,14 @@ static int mbox_open(struct inode *inode, struct file *file)
+ static ssize_t mbox_write(struct file *file, const char __user *buf,
+ 			  size_t count, loff_t *pos)
+ {
+-	int i;
+-	char c = '\n', s[256];
++	struct t4_linux_debugfs_data *d = file_inode(file)->i_private;
++	struct adapter *adap = d->adap;
++	unsigned int mbox = d->data;
+ 	unsigned long long data[8];
+-	const struct inode *ino;
+-	unsigned int mbox;
+-	struct adapter *adap;
++	char s[256], c = '\n';
+ 	void __iomem *addr;
+ 	void __iomem *ctrl;
++	int i;
+ 
+ 	if (count > sizeof(s) - 1 || !count)
+ 		return -EINVAL;
+@@ -1298,9 +1486,6 @@ static ssize_t mbox_write(struct file *file, const char __user *buf,
+ 		   &data[7], &c) < 8 || c != '\n')
+ 		return -EINVAL;
+ 
+-	ino = file_inode(file);
+-	mbox = (uintptr_t)ino->i_private & 7;
+-	adap = ino->i_private - mbox;
+ 	addr = adap->regs + PF_REG(mbox, CIM_PF_MAILBOX_DATA_A);
+ 	ctrl = addr + MBOX_LEN;
+ 
+@@ -1325,10 +1510,11 @@ static const struct file_operations mbox_debugfs_fops = {
+ 
+ static int mps_trc_show(struct seq_file *seq, void *v)
+ {
+-	int enabled, i;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	unsigned int trcidx = d->data;
+ 	struct trace_params tp;
+-	unsigned int trcidx = (uintptr_t)seq->private & 3;
+-	struct adapter *adap = seq->private - trcidx;
++	int enabled, i;
+ 
+ 	t4_get_trace_filter(adap, &tp, trcidx, &enabled);
+ 	if (!enabled) {
+@@ -1411,18 +1597,13 @@ static unsigned int xdigit2int(unsigned char c)
+ static ssize_t mps_trc_write(struct file *file, const char __user *buf,
+ 			     size_t count, loff_t *pos)
+ {
+-	int i, enable, ret;
+-	u32 *data, *mask;
+-	struct trace_params tp;
+-	const struct inode *ino;
+-	unsigned int trcidx;
++	struct t4_linux_debugfs_data *d = file_inode(file)->i_private;
++	struct adapter *adap = d->adap;
++	unsigned int trcidx = d->data;
+ 	char *s, *p, *word, *end;
+-	struct adapter *adap;
 -	u32 j;
-+
-+	entry_size = cudbg_sge_ctxt_entry_size(sge_ctxt_size);
+-
+-	ino = file_inode(file);
+-	trcidx = (uintptr_t)ino->i_private & 3;
+-	adap = ino->i_private - trcidx;
++	struct trace_params tp;
++	int i, enable, ret;
++	u32 *data, *mask, j;
  
- 	for (j = 0; j < max_qid; j++) {
-+		buff = (struct sge_ctxt_rev1_data *)out;
-+
- 		cudbg_read_sge_ctxt(pdbg_init, j, ctxt_type, buff->data);
- 		rc = cudbg_sge_ctxt_check_valid(buff->data, ctxt_type);
- 		if (!rc)
- 			continue;
- 
--		buff->cntxt_type = ctxt_type;
--		buff->cntxt_id = j;
--		buff++;
-+		buff->ctxt_type = ctxt_type;
-+		buff->ctxt_id = j;
-+		buff->size = sge_ctxt_size;
-+		total_size += entry_size;
-+		ctxt_buff->nentries++;
-+		out += entry_size;
- 		if (ctxt_type == CTXT_FLM) {
-+			buff = (struct sge_ctxt_rev1_data *)out;
-+
- 			cudbg_read_sge_ctxt(pdbg_init, j, CTXT_CNM, buff->data);
--			buff->cntxt_type = CTXT_CNM;
--			buff->cntxt_id = j;
--			buff++;
-+			buff->ctxt_type = CTXT_CNM;
-+			buff->ctxt_id = j;
-+			buff->size = sge_ctxt_size;
-+			total_size += entry_size;
-+			ctxt_buff->nentries++;
-+			out += entry_size;
- 		}
- 	}
- 
--	*out_buff = buff;
-+	*out_buff = (struct sge_ctxt_rev1_data *)out;
-+	return total_size;
- }
- 
- int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
-@@ -2393,27 +2950,39 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
+ 	/* Don't accept input more than 1K, can't be anything valid except lots
+ 	 * of whitespace.  Well, use less.
+@@ -1619,9 +1800,10 @@ static const struct file_operations mps_trc_debugfs_fops = {
+ static ssize_t flash_read(struct file *file, char __user *buf, size_t count,
+ 			  loff_t *ppos)
  {
- 	struct cudbg_region_info region_info[CTXT_CNM + 1] = { {0} };
- 	struct adapter *padap = pdbg_init->adap;
-+	struct sge_ctxt_rev1 *ctxt_buff;
-+	struct sge_ctxt_rev1_data *buff;
- 	u32 j, size, max_ctx_size, max_ctx_qid;
- 	u8 mem_type[CTXT_INGRESS + 1] = { 0 };
- 	struct cudbg_buffer temp_buff = { 0 };
--	struct cudbg_ch_cntxt *buff;
-+	u8 i, k, sge_ctxt_size;
- 	u8 *ctx_buf;
--	u8 i, k;
- 	int rc;
+-	loff_t pos = *ppos;
++	struct t4_linux_debugfs_data *d = file->private_data;
+ 	loff_t avail = file_inode(file)->i_size;
+-	struct adapter *adap = file->private_data;
++	struct adapter *adap = d->adap;
++	loff_t pos = *ppos;
  
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7)
-+		sge_ctxt_size = SGE_CTXT_SIZE_T7;
-+	else
-+		sge_ctxt_size = SGE_CTXT_SIZE;
+ 	if (pos < 0)
+ 		return -EINVAL;
+@@ -1671,8 +1853,11 @@ static inline void tcamxy2valmask(u64 x, u64 y, u8 *addr, u64 *mask)
+ 
+ static int mps_tcam_show(struct seq_file *seq, void *v)
+ {
+-	struct adapter *adap = seq->private;
+-	unsigned int chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	unsigned int chip_ver;
 +
- 	/* Get max valid qid for each type of queue */
--	rc = cudbg_get_ctxt_region_info(padap, region_info, mem_type);
-+	rc = cudbg_get_ctxt_region_info(padap, sge_ctxt_size, region_info, mem_type);
- 	if (rc)
- 		return rc;
++	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
+ 	if (v == SEQ_START_TOKEN) {
+ 		if (chip_ver > CHELSIO_T5) {
+ 			seq_puts(seq, "Idx  Ethernet address     Mask     "
+@@ -1683,27 +1868,91 @@ static int mps_tcam_show(struct seq_file *seq, void *v)
+ 				 "    P0 P1 P2 P3  ML\n");
+ 		} else {
+ 			if (adap->params.arch.mps_rplc_size > 128)
+-				seq_puts(seq, "Idx  Ethernet address     Mask     "
++				seq_puts(seq,
++					 "Idx  Ethernet address     Mask     "
+ 					 "Vld Ports PF  VF                           "
+ 					 "Replication                                "
+ 					 "    P0 P1 P2 P3  ML\n");
+ 			else
+-				seq_puts(seq, "Idx  Ethernet address     Mask     "
++				seq_puts(seq,
++					 "Idx  Ethernet address     Mask     "
+ 					 "Vld Ports PF  VF              Replication"
+ 					 "	         P0 P1 P2 P3  ML\n");
+ 		}
+ 	} else {
+-		u64 mask;
+-		u8 addr[ETH_ALEN];
++		u32 cls_lo, cls_hi, ctl, data2, vnix = 0, vniy = 0;
+ 		bool replicate, dip_hit = false, vlan_vld = false;
+ 		unsigned int idx = (uintptr_t)v - 2;
++		u8 lookup_type = 0, port_num = 0;
+ 		u64 tcamy, tcamx, val;
+-		u32 cls_lo, cls_hi, ctl, data2, vnix = 0, vniy = 0;
++		u8 addr[ETH_ALEN];
+ 		u32 rplc[8] = {0};
+-		u8 lookup_type = 0, port_num = 0;
+ 		u16 ivlan = 0;
++		u64 mask;
  
--	rc = cudbg_dump_context_size(padap);
-+	rc = cudbg_dump_context_size(padap, sge_ctxt_size);
- 	if (rc <= 0)
- 		return CUDBG_STATUS_ENTITY_NOT_FOUND;
- 
- 	size = rc;
--	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
-+	rc = cudbg_get_buff(pdbg_init, dbg_buff, size + sizeof(*ctxt_buff), &temp_buff);
- 	if (rc)
- 		return rc;
-+	ctxt_buff = (void *)temp_buff.data;
-+	ctxt_buff->ver_hdr.signature = CUDBG_ENTITY_SIGNATURE;
-+	ctxt_buff->ver_hdr.revision = CUDBG_SGE_CTXT_REV;
-+	ctxt_buff->ver_hdr.size = sizeof(*ctxt_buff) -
-+		sizeof(struct cudbg_ver_hdr);
-+	ctxt_buff->nentries = 0;
- 
- 	/* Get buffer with enough space to read the biggest context
- 	 * region in memory.
-@@ -2429,7 +2998,7 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
- 		return -ENOMEM;
- 	}
- 
--	buff = (struct cudbg_ch_cntxt *)temp_buff.data;
-+	buff = (struct sge_ctxt_rev1_data *)ctxt_buff->data;
- 
- 	/* Collect EGRESS and INGRESS context data.
- 	 * In case of failures, fallback to collecting via FW or
-@@ -2438,13 +3007,13 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
- 	for (i = CTXT_EGRESS; i <= CTXT_INGRESS; i++) {
- 		if (!region_info[i].exist) {
- 			max_ctx_qid = CUDBG_LOWMEM_MAX_CTXT_QIDS;
--			cudbg_get_sge_ctxt_fw(pdbg_init, max_ctx_qid, i,
--					      &buff);
-+			cudbg_get_sge_ctxt_fw(pdbg_init, sge_ctxt_size, max_ctx_qid, i,
-+					      ctxt_buff, &buff);
- 			continue;
+-		if (chip_ver > CHELSIO_T5) {
++		if (chip_ver >= CHELSIO_T7) {
++			/* CtlReqID   - 1: use Host Driver Requester ID
++			 * CtlCmdType - 0: Read, 1: Write
++			 * CtlXYBitSel- 0: Y bit, 1: X bit
++			  ####### for T6 ######
++			 * CtlTcamSel   - 26:25  Control bit. 0: TCAM0, 1: TCAM1
++			 * CtlTcamIndex - 24:17  Control bits. Index of TCAM location to be accessed
++			  ####### for T7B ######
++			 * CtlTcamSel   - 27:26  Control bit. 0: TCAM0, 1: TCAM1, 2: TCAM2
++			 * CtlTcamIndex - 25:17  Control bits. Index of TCAM location to be accessed
++			 */
++
++			/* Read tcamy */
++			ctl = (CTLREQID_V(1) |
++					CTLCMDTYPE_V(0) | CTLXYBITSEL_V(0));
++
++			if (idx < 512)
++				ctl |= T7_1_CTLTCAMINDEX_V(idx) | T7_CTLTCAMSEL_V(0);
++			else if (idx < 1024)
++				ctl |= T7_1_CTLTCAMINDEX_V(idx - 512) |
++					T7_CTLTCAMSEL_V(1);
++			else /* idx 1024 to 1535 */
++				ctl |= T7_1_CTLTCAMINDEX_V(idx - 1024) |
++					T7_CTLTCAMSEL_V(2);
++
++			t4_write_reg(adap, MPS_CLS_TCAM_DATA2_CTL_A, ctl);
++			val = t4_read_reg(adap, MPS_CLS_TCAM0_RDATA1_REQ_ID1_A);
++			tcamy = DMACH_G(val) << 32;
++			tcamy |= t4_read_reg(adap,
++					     MPS_CLS_TCAM0_RDATA0_REQ_ID1_A);
++			data2 = t4_read_reg(adap, MPS_CLS_TCAM0_RDATA2_REQ_ID1_A);
++			lookup_type = DATALKPTYPE_G(data2);
++			/* 0 - Outer header, 1 - Inner header
++			 * [71:48] bit locations are overloaded for
++			 * outer vs. inner lookup types.
++			 */
++			if (lookup_type && lookup_type != DATALKPTYPE_M) {
++				/* Inner header VNI */
++				vniy = (((data2 & DATAVIDH2_F) |
++							DATAVIDH1_G(data2)) << 16) |
++					VIDL_G(val);
++				dip_hit = data2 & DATADIPHIT_F;
++			} else {
++				vlan_vld = data2 & DATAVIDH2_F;
++				ivlan = VIDL_G(val);
++			}
++			port_num = DATAPORTNUM_G(data2);
++
++			/* Read tcamx. Change the control param */
++			vnix = 0;
++			ctl |= CTLXYBITSEL_V(1);
++			t4_write_reg(adap, MPS_CLS_TCAM_DATA2_CTL_A, ctl);
++			val = t4_read_reg(adap, MPS_CLS_TCAM0_RDATA1_REQ_ID1_A);
++			tcamx = DMACH_G(val) << 32;
++			tcamx |= t4_read_reg(adap, MPS_CLS_TCAM0_RDATA0_REQ_ID1_A);
++			data2 = t4_read_reg(adap, MPS_CLS_TCAM0_RDATA2_REQ_ID1_A);
++			if (lookup_type && lookup_type != DATALKPTYPE_M) {
++				/* Inner header VNI mask */
++				vnix = (((data2 & DATAVIDH2_F) |
++							DATAVIDH1_G(data2)) << 16) |
++					VIDL_G(val);
++			}
++		} else if (chip_ver > CHELSIO_T5) {
+ 			/* CtlCmdType - 0: Read, 1: Write
+ 			 * CtlTcamSel - 0: TCAM0, 1: TCAM1
+ 			 * CtlXYBitSel- 0: Y bit, 1: X bit
+@@ -1755,8 +2004,19 @@ static int mps_tcam_show(struct seq_file *seq, void *v)
+ 			tcamx = t4_read_reg64(adap, MPS_CLS_TCAM_X_L(idx));
  		}
  
- 		max_ctx_size = region_info[i].end - region_info[i].start + 1;
--		max_ctx_qid = max_ctx_size / SGE_CTXT_SIZE;
-+		max_ctx_qid = max_ctx_size / sge_ctxt_size;
- 
- 		/* If firmware is not attached/alive, use backdoor register
- 		 * access to collect dump.
-@@ -2459,8 +3028,8 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
- 
- 		if (rc || !is_fw_attached(pdbg_init)) {
- 			max_ctx_qid = CUDBG_LOWMEM_MAX_CTXT_QIDS;
--			cudbg_get_sge_ctxt_fw(pdbg_init, max_ctx_qid, i,
--					      &buff);
-+			cudbg_get_sge_ctxt_fw(pdbg_init, sge_ctxt_size, max_ctx_qid, i,
-+					      ctxt_buff, &buff);
- 			continue;
- 		}
- 
-@@ -2468,22 +3037,26 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
- 			__be64 *dst_off;
- 			u64 *src_off;
- 
--			src_off = (u64 *)(ctx_buf + j * SGE_CTXT_SIZE);
-+			src_off = (u64 *)(ctx_buf + j * sge_ctxt_size);
- 			dst_off = (__be64 *)buff->data;
- 
- 			/* The data is stored in 64-bit cpu order.  Convert it
- 			 * to big endian before parsing.
- 			 */
--			for (k = 0; k < SGE_CTXT_SIZE / sizeof(u64); k++)
-+			for (k = 0; k < sge_ctxt_size / sizeof(u64); k++)
- 				dst_off[k] = cpu_to_be64(src_off[k]);
- 
- 			rc = cudbg_sge_ctxt_check_valid(buff->data, i);
- 			if (!rc)
- 				continue;
- 
--			buff->cntxt_type = i;
--			buff->cntxt_id = j;
--			buff++;
-+			buff->ctxt_type = i;
-+			buff->ctxt_id = j;
-+			buff->size = sge_ctxt_size;
-+			ctxt_buff->nentries++;
-+			buff = (struct sge_ctxt_rev1_data *)
-+				((u8 *)buff +
-+				 cudbg_sge_ctxt_entry_size(sge_ctxt_size));
- 		}
- 	}
- 
-@@ -2492,11 +3065,11 @@ int cudbg_collect_dump_context(struct cudbg_init *pdbg_init,
- 	/* Collect FREELIST and CONGESTION MANAGER contexts */
- 	max_ctx_size = region_info[CTXT_FLM].end -
- 		       region_info[CTXT_FLM].start + 1;
--	max_ctx_qid = max_ctx_size / SGE_CTXT_SIZE;
-+	max_ctx_qid = max_ctx_size / sge_ctxt_size;
- 	/* Since FLM and CONM are 1-to-1 mapped, the below function
- 	 * will fetch both FLM and CONM contexts.
- 	 */
--	cudbg_get_sge_ctxt_fw(pdbg_init, max_ctx_qid, CTXT_FLM, &buff);
-+	cudbg_get_sge_ctxt_fw(pdbg_init, sge_ctxt_size, max_ctx_qid, CTXT_FLM, ctxt_buff, &buff);
- 
- 	return cudbg_write_and_release_buff(pdbg_init, &temp_buff, dbg_buff);
- }
-@@ -2544,7 +3117,72 @@ static int cudbg_collect_tcam_index(struct cudbg_init *pdbg_init,
- 	u32 ctl, data2;
- 	int rc = 0;
- 
--	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T6) {
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
-+		/* CtlReqID   - 1: use Host Driver Requester ID
-+		 * CtlCmdType - 0: Read, 1: Write
-+		 * CtlXYBitSel- 0: Y bit, 1: X bit
-+		 ####### for T6 ######
-+		 * CtlTcamSel     -   26:25    Control bit. 0: TCAM0, 1: TCAM1.
-+		 * CtlTcamIndex   -   24:17    Control bits. Index of TCAM location to be accessed.
+-		cls_lo = t4_read_reg(adap, MPS_CLS_SRAM_L(idx));
+-		cls_hi = t4_read_reg(adap, MPS_CLS_SRAM_H(idx));
++		/* t7b changes MPS_T5_CLS_SRAM_H_A to indirect register */
++		if (is_t7(adap->params.chip)) {
++			u32 tmp_ctl = 0;
 +
-+		 ####### for T7B ######
-+		 * CtlTcamSel     -   27:26    Control bit. 0: TCAM0, 1: TCAM1, 2: TCAM2.
-+		 * CtlTcamIndex   -   25:17    Control bits. Index of TCAM location to be accessed.
-+		 */
-+
-+		/* Read tcamy */
-+		ctl = (CTLREQID_V(1) | CTLCMDTYPE_V(0) | CTLXYBITSEL_V(0));
-+		if (idx < 512)
-+			ctl |= T7_1_CTLTCAMINDEX_V(idx) | T7_CTLTCAMSEL_V(0);
-+		else if (idx < 1024)
-+			ctl |= T7_1_CTLTCAMINDEX_V(idx - 512) |
-+				T7_CTLTCAMSEL_V(1);
-+		else /* idx 1024 to 1535 */
-+			ctl |= T7_1_CTLTCAMINDEX_V(idx - 1024) |
-+				T7_CTLTCAMSEL_V(2);
-+
-+		t4_write_reg(padap, MPS_CLS_TCAM_DATA2_CTL_A, ctl);
-+		val = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA1_REQ_ID1_A);
-+		tcamy = DMACH_G(val) << 32;
-+		tcamy |= t4_read_reg(padap, MPS_CLS_TCAM0_RDATA0_REQ_ID1_A);
-+		data2 = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA2_REQ_ID1_A);
-+		tcam->lookup_type = DATALKPTYPE_G(data2);
-+
-+		/* 0 - Outer header, 1 - Inner header
-+		 * [71:48] bit locations are overloaded for
-+		 * outer vs. inner lookup types.
-+		 */
-+		if (tcam->lookup_type &&
-+		    tcam->lookup_type != DATALKPTYPE_M) {
-+			/* Inner header VNI */
-+			tcam->vniy =
-+				(((data2 & DATAVIDH2_F) | (DATAVIDH1_G(data2)))
-+				 << 16) |
-+				VIDL_G(val);
-+			tcam->dip_hit = data2 & DATADIPHIT_F;
++			tmp_ctl |= SRAMWRN_V(0) |
++				SRAMINDEX_V(idx & SRAMINDEX_M);
++			t4_write_reg(adap, MPS_T5_CLS_SRAM_H_A, tmp_ctl);
++			cls_lo = t4_read_reg(adap, MPS_T5_CLS_SRAM_L_A);
++			cls_hi = t4_read_reg(adap, MPS_T5_CLS_SRAM_H_A);
 +		} else {
-+			tcam->vlan_vld = data2 & DATAVIDH2_F;
-+			tcam->ivlan = VIDL_G(val);
++			cls_lo = t4_read_reg(adap, MPS_CLS_SRAM_L(idx));
++			cls_hi = t4_read_reg(adap, MPS_CLS_SRAM_H(idx));
 +		}
-+
-+		tcam->port_num = DATAPORTNUM_G(data2);
-+
-+		/* Read tcamx. Change the control param */
-+		ctl |= CTLXYBITSEL_V(1);
-+		t4_write_reg(padap, MPS_CLS_TCAM_DATA2_CTL_A, ctl);
-+		val = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA1_REQ_ID1_A);
-+		tcamx = DMACH_G(val) << 32;
-+		tcamx |= t4_read_reg(padap, MPS_CLS_TCAM0_RDATA0_REQ_ID1_A);
-+		data2 = t4_read_reg(padap, MPS_CLS_TCAM0_RDATA2_REQ_ID1_A);
-+		if (tcam->lookup_type &&
-+		    tcam->lookup_type != DATALKPTYPE_M) {
-+			/* Inner header VNI mask */
-+			tcam->vnix =
-+				(((data2 & DATAVIDH2_F) | (DATAVIDH1_G(data2)))
-+				 << 16) |
-+				VIDL_G(val);
-+		}
-+	} else if (CHELSIO_CHIP_VERSION(padap->params.chip) > CHELSIO_T5) {
- 		/* CtlReqID   - 1: use Host Driver Requester ID
- 		 * CtlCmdType - 0: Read, 1: Write
- 		 * CtlTcamSel - 0: TCAM0, 1: TCAM1
-@@ -2602,13 +3240,24 @@ static int cudbg_collect_tcam_index(struct cudbg_init *pdbg_init,
- 	if (tcamx & tcamy)
- 		return rc;
  
--	tcam->cls_lo = t4_read_reg(padap, MPS_CLS_SRAM_L(idx));
--	tcam->cls_hi = t4_read_reg(padap, MPS_CLS_SRAM_H(idx));
-+	/* t7b changes MPS_T5_CLS_SRAM_H_A to indirect register */
-+	if (is_t7(padap->params.chip)) {
-+		u32 tmp_ctl = 0;
+ 		if (tcamx & tcamy) {
+ 			seq_printf(seq, "%3u         -\n", idx);
+@@ -1886,11 +2146,11 @@ out:	return 0;
  
--	if (is_t5(padap->params.chip))
--		tcam->repli = (tcam->cls_lo & REPLICATE_F);
--	else if (is_t6(padap->params.chip))
-+		tmp_ctl |= SRAMWRN_V(0) |
-+			SRAMINDEX_V(idx & SRAMINDEX_M);
-+		t4_write_reg(padap, MPS_T5_CLS_SRAM_H_A, tmp_ctl);
-+		tcam->cls_lo = t4_read_reg(padap, MPS_T5_CLS_SRAM_L_A);
-+		tcam->cls_hi = t4_read_reg(padap, MPS_T5_CLS_SRAM_H_A);
-+	} else {
-+		tcam->cls_lo = t4_read_reg(padap, MPS_CLS_SRAM_L(idx));
-+		tcam->cls_hi = t4_read_reg(padap, MPS_CLS_SRAM_H(idx));
-+	}
-+
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) > CHELSIO_T5)
- 		tcam->repli = (tcam->cls_lo & T6_REPLICATE_F);
-+	else
-+		tcam->repli = (tcam->cls_lo & REPLICATE_F);
- 
- 	if (tcam->repli) {
- 		struct fw_ldst_cmd ldst_cmd;
-@@ -2966,20 +3615,62 @@ int cudbg_collect_ma_indirect(struct cudbg_init *pdbg_init,
+ static inline void *mps_tcam_get_idx(struct seq_file *seq, loff_t pos)
  {
- 	struct adapter *padap = pdbg_init->adap;
- 	struct cudbg_buffer temp_buff = { 0 };
--	struct ireg_buf *ma_indr;
--	int i, rc, n;
--	u32 size, j;
-+	int i, j, rc, n;
-+	u32 size;
+-	struct adapter *adap = seq->private;
+-	int max_mac_addr = is_t4(adap->params.chip) ?
+-				NUM_MPS_CLS_SRAM_L_INSTANCES :
+-				NUM_MPS_T5_CLS_SRAM_L_INSTANCES;
+-	return ((pos <= max_mac_addr) ? (void *)(uintptr_t)(pos + 1) : NULL);
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++
++	return ((pos <= adap->params.arch.mps_tcam_size) ?
++			(void *)(uintptr_t)(pos + 1) : NULL);
+ }
  
- 	if (CHELSIO_CHIP_VERSION(padap->params.chip) < CHELSIO_T6)
- 		return CUDBG_STATUS_ENTITY_NOT_FOUND;
- 
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
-+		/* T7 path - new indirect reg framework */
-+		const struct cudbg_indir_type_entry *ma_arr, *ma_perf_arr;
-+		u32 chip_ver;
-+
-+		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
-+		ma_arr = cudbg_get_indir_reg_info(chip_ver,
-+						  CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_CFG);
-+		ma_perf_arr = cudbg_get_indir_reg_info(chip_ver,
-+						       CUDBG_INDIR_TYPE_MA_LOCAL_DEBUG_PERF_CFG);
-+
-+		if (!ma_arr)
-+			return CUDBG_STATUS_ENTITY_NOT_FOUND;
-+
-+		size = sizeof(struct cudbg_indir_reg_entity) +
-+			sizeof(struct cudbg_indir_reg_data) * ma_arr->nentries;
-+
-+		if (ma_perf_arr)
-+			size += sizeof(struct cudbg_indir_reg_entity) +
-+				sizeof(struct cudbg_indir_reg_data) *
-+				ma_perf_arr->nentries;
-+
-+		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
-+		if (rc)
-+			return rc;
-+
-+		cudbg_collect_indir_reg(padap, (void *)temp_buff.data,
-+					ma_arr, CUDBG_MA_INDIR_REG_REV,
-+					MA_LOCAL_DEBUG_CFG_A,
-+					MA_LOCAL_DEBUG_CFG_A + 4);
-+
-+		if (ma_perf_arr)
-+			cudbg_collect_indir_reg_next(padap, (void *)temp_buff.data, ma_perf_arr,
-+						     CUDBG_MA_INDIR_REG_REV,
-+						     MA_LOCAL_DEBUG_PERF_CFG_A,
-+						     MA_LOCAL_DEBUG_PERF_CFG_A + 4);
-+
-+		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
-+						    dbg_buff);
-+	}
-+
-+	/* T6 path */
- 	n = sizeof(t6_ma_ireg_array) / (IREG_NUM_ELEM * sizeof(u32));
- 	size = sizeof(struct ireg_buf) * n * 2;
-+
- 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
- 	if (rc)
- 		return rc;
- 
--	ma_indr = (struct ireg_buf *)temp_buff.data;
-+	struct ireg_buf *ma_indr = (struct ireg_buf *)temp_buff.data;
- 	for (i = 0; i < n; i++) {
- 		struct ireg_field *ma_fli = &ma_indr->tp_pio;
- 		u32 *buff = ma_indr->outbuf;
-@@ -3094,9 +3785,67 @@ int cudbg_collect_up_cim_indirect(struct cudbg_init *pdbg_init,
- 	else if (is_t6(padap->params.chip))
- 		n = sizeof(t6_up_cim_reg_array) /
- 		    ((IREG_NUM_ELEM + 1) * sizeof(u32));
--	else
-+	else if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
-+		/* T7 path - new indirect reg framework */
-+		const struct cudbg_indir_type_entry *cim_arr, *up_arr;
-+		struct cudbg_indir_reg_entity *cim_entity, *up_entity;
-+		struct cudbg_indir_reg_data *reg_data;
-+		u8 coreid = 0, groupid = 0;
-+		u32 chip_ver;
-+
-+		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
-+		cim_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_CIM_CTL);
-+		up_arr = cudbg_get_indir_reg_info(chip_ver, CUDBG_INDIR_TYPE_UP);
-+
-+		if (!cim_arr || !up_arr)
-+			return CUDBG_STATUS_ENTITY_NOT_FOUND;
-+
-+		if (pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].param_type ==
-+				CUDBG_UP_COREID_PARAM)
-+			coreid = pdbg_init->dbg_params[CUDBG_UP_COREID_PARAM].u.coreid;
-+
-+		size = sizeof(*cim_entity) + sizeof(*up_entity) +
-+		       sizeof(*reg_data) * (cim_arr->nentries + up_arr->nentries);
-+
-+		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
-+		if (rc)
-+			return rc;
-+
-+		cim_entity = cudbg_collect_indir_reg_init((void *)temp_buff.data,
-+							  CUDBG_UP_CIM_INDIR_REG_REV,
-+							  CIM_HOST_ACC_CTRL_A,
-+							  CIM_HOST_ACC_DATA_A,
-+							  cim_arr->nentries);
-+
-+		up_entity = cudbg_collect_indir_reg_init_next(cim_entity,
-+							      CUDBG_UP_CIM_INDIR_REG_REV,
-+							      CIM_HOST_ACC_CTRL_A,
-+							      CIM_HOST_ACC_DATA_A,
-+							      up_arr->nentries);
-+
-+		reg_data = cim_entity->data;
-+		for (i = 0; i < cim_entity->nentries; i++, reg_data++) {
-+			reg_data->offset = cim_arr->reg_arr[i].addr;
-+			t4_cim_read_core(padap, groupid, coreid,
-+					 reg_data->offset, 1, &reg_data->data);
-+		}
-+
-+		groupid = 1; /* T7 UP uses groupid 1 */
-+
-+		reg_data = up_entity->data;
-+		for (i = 0; i < up_entity->nentries; i++, reg_data++) {
-+			reg_data->offset = up_arr->reg_arr[i].addr;
-+			t4_cim_read_core(padap, groupid, coreid,
-+					 reg_data->offset, 1, &reg_data->data);
-+		}
-+
-+		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
-+						    dbg_buff);
-+	} else {
- 		return CUDBG_STATUS_NOT_IMPLEMENTED;
-+	}
- 
-+	/* T5/T6 path */
- 	size = sizeof(struct ireg_buf) * n;
- 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
- 	if (rc)
-@@ -3275,20 +4024,47 @@ int cudbg_collect_hma_indirect(struct cudbg_init *pdbg_init,
+ static void *mps_tcam_start(struct seq_file *seq, loff_t *pos)
+@@ -1939,7 +2199,8 @@ static const struct file_operations mps_tcam_debugfs_fops = {
+  */
+ static int sensors_show(struct seq_file *seq, void *v)
  {
- 	struct adapter *padap = pdbg_init->adap;
- 	struct cudbg_buffer temp_buff = { 0 };
--	struct ireg_buf *hma_indr;
- 	int i, rc, n;
- 	u32 size;
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	u32 param[7], val[7];
+ 	int ret;
  
- 	if (CHELSIO_CHIP_VERSION(padap->params.chip) < CHELSIO_T6)
- 		return CUDBG_STATUS_ENTITY_NOT_FOUND;
+@@ -1988,9 +2249,10 @@ static int rss_show(struct seq_file *seq, void *v, int idx)
  
-+	if (CHELSIO_CHIP_VERSION(padap->params.chip) >= CHELSIO_T7) {
-+		/* T7 path - new indirect reg framework */
-+		const struct cudbg_indir_type_entry *hma_arr;
-+		u32 chip_ver;
+ static int rss_open(struct inode *inode, struct file *file)
+ {
+-	struct adapter *adap = inode->i_private;
+-	int ret, nentries;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 	struct seq_tab *p;
++	int ret, nentries;
+ 
+ 	nentries = t4_chip_rss_size(adap);
+ 	p = seq_open_tab(file, nentries / 8, 8 * sizeof(u16), 0, rss_show);
+@@ -2028,7 +2290,8 @@ static const char *yesno(int x)
+ 
+ static int rss_config_show(struct seq_file *seq, void *v)
+ {
+-	struct adapter *adapter = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	static const char * const keymode[] = {
+ 		"global",
+ 		"global and per-VF scramble",
+@@ -2037,7 +2300,7 @@ static int rss_config_show(struct seq_file *seq, void *v)
+ 	};
+ 	u32 rssconf;
+ 
+-	rssconf = t4_read_reg(adapter, TP_RSS_CONFIG_A);
++	rssconf = t4_read_reg(adap, TP_RSS_CONFIG_A);
+ 	seq_printf(seq, "TP_RSS_CONFIG: %#x\n", rssconf);
+ 	seq_printf(seq, "  Tnl4TupEnIpv6: %3s\n", yesno(rssconf &
+ 							TNL4TUPENIPV6_F));
+@@ -2087,11 +2350,11 @@ static int rss_config_show(struct seq_file *seq, void *v)
+ 
+ 	seq_puts(seq, "\n");
+ 
+-	rssconf = t4_read_reg(adapter, TP_RSS_CONFIG_TNL_A);
++	rssconf = t4_read_reg(adap, TP_RSS_CONFIG_TNL_A);
+ 	seq_printf(seq, "TP_RSS_CONFIG_TNL: %#x\n", rssconf);
+ 	seq_printf(seq, "  MaskSize:      %3d\n", MASKSIZE_G(rssconf));
+ 	seq_printf(seq, "  MaskFilter:    %3d\n", MASKFILTER_G(rssconf));
+-	if (CHELSIO_CHIP_VERSION(adapter->params.chip) > CHELSIO_T5) {
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) > CHELSIO_T5) {
+ 		seq_printf(seq, "  HashAll:     %3s\n",
+ 			   yesno(rssconf & HASHALL_F));
+ 		seq_printf(seq, "  HashEth:     %3s\n",
+@@ -2101,7 +2364,7 @@ static int rss_config_show(struct seq_file *seq, void *v)
+ 
+ 	seq_puts(seq, "\n");
+ 
+-	rssconf = t4_read_reg(adapter, TP_RSS_CONFIG_OFD_A);
++	rssconf = t4_read_reg(adap, TP_RSS_CONFIG_OFD_A);
+ 	seq_printf(seq, "TP_RSS_CONFIG_OFD: %#x\n", rssconf);
+ 	seq_printf(seq, "  MaskSize:      %3d\n", MASKSIZE_G(rssconf));
+ 	seq_printf(seq, "  RRCplMapEn:    %3s\n", yesno(rssconf &
+@@ -2110,16 +2373,16 @@ static int rss_config_show(struct seq_file *seq, void *v)
+ 
+ 	seq_puts(seq, "\n");
+ 
+-	rssconf = t4_read_reg(adapter, TP_RSS_CONFIG_SYN_A);
++	rssconf = t4_read_reg(adap, TP_RSS_CONFIG_SYN_A);
+ 	seq_printf(seq, "TP_RSS_CONFIG_SYN: %#x\n", rssconf);
+ 	seq_printf(seq, "  MaskSize:      %3d\n", MASKSIZE_G(rssconf));
+ 	seq_printf(seq, "  UseWireCh:     %3s\n", yesno(rssconf & USEWIRECH_F));
+ 
+ 	seq_puts(seq, "\n");
+ 
+-	rssconf = t4_read_reg(adapter, TP_RSS_CONFIG_VRT_A);
++	rssconf = t4_read_reg(adap, TP_RSS_CONFIG_VRT_A);
+ 	seq_printf(seq, "TP_RSS_CONFIG_VRT: %#x\n", rssconf);
+-	if (CHELSIO_CHIP_VERSION(adapter->params.chip) > CHELSIO_T5) {
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) > CHELSIO_T5) {
+ 		seq_printf(seq, "  KeyWrAddrX:     %3d\n",
+ 			   KEYWRADDRX_G(rssconf));
+ 		seq_printf(seq, "  KeyExtend:      %3s\n",
+@@ -2133,7 +2396,7 @@ static int rss_config_show(struct seq_file *seq, void *v)
+ 							DISABLEVLAN_F));
+ 	seq_printf(seq, "  EnUpSwt:       %3s\n", yesno(rssconf & ENABLEUP0_F));
+ 	seq_printf(seq, "  HashDelay:     %3d\n", HASHDELAY_G(rssconf));
+-	if (CHELSIO_CHIP_VERSION(adapter->params.chip) <= CHELSIO_T5)
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) <= CHELSIO_T5)
+ 		seq_printf(seq, "  VfWrAddr:      %3d\n", VFWRADDR_G(rssconf));
+ 	else
+ 		seq_printf(seq, "  VfWrAddr:      %3d\n",
+@@ -2145,7 +2408,7 @@ static int rss_config_show(struct seq_file *seq, void *v)
+ 
+ 	seq_puts(seq, "\n");
+ 
+-	rssconf = t4_read_reg(adapter, TP_RSS_CONFIG_CNG_A);
++	rssconf = t4_read_reg(adap, TP_RSS_CONFIG_CNG_A);
+ 	seq_printf(seq, "TP_RSS_CONFIG_CNG: %#x\n", rssconf);
+ 	seq_printf(seq, "  ChnCount3:     %3s\n", yesno(rssconf & CHNCOUNT3_F));
+ 	seq_printf(seq, "  ChnCount2:     %3s\n", yesno(rssconf & CHNCOUNT2_F));
+@@ -2180,9 +2443,11 @@ DEFINE_SHOW_ATTRIBUTE(rss_config);
+ 
+ static int rss_key_show(struct seq_file *seq, void *v)
+ {
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	u32 key[10];
+ 
+-	t4_read_rss_key(seq->private, key, true);
++	t4_read_rss_key(adap, key, true);
+ 	seq_printf(seq, "%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x\n",
+ 		   key[9], key[8], key[7], key[6], key[5], key[4], key[3],
+ 		   key[2], key[1], key[0]);
+@@ -2197,10 +2462,11 @@ static int rss_key_open(struct inode *inode, struct file *file)
+ static ssize_t rss_key_write(struct file *file, const char __user *buf,
+ 			     size_t count, loff_t *pos)
+ {
+-	int i, j;
+-	u32 key[10];
++	struct t4_linux_debugfs_data *d = file_inode(file)->i_private;
++	struct adapter *adap = d->adap;
+ 	char s[100], *p;
+-	struct adapter *adap = file_inode(file)->i_private;
++	u32 key[10];
++	int i, j;
+ 
+ 	if (count > sizeof(s) - 1)
+ 		return -EINVAL;
+@@ -2285,10 +2551,11 @@ static int rss_pf_config_show(struct seq_file *seq, void *v, int idx)
+ 
+ static int rss_pf_config_open(struct inode *inode, struct file *file)
+ {
+-	struct adapter *adapter = inode->i_private;
+-	struct seq_tab *p;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 	u32 rss_pf_map, rss_pf_mask;
+ 	struct rss_pf_conf *pfconf;
++	struct seq_tab *p;
+ 	int pf;
+ 
+ 	p = seq_open_tab(file, 8, sizeof(*pfconf), 1, rss_pf_config_show);
+@@ -2296,12 +2563,12 @@ static int rss_pf_config_open(struct inode *inode, struct file *file)
+ 		return -ENOMEM;
+ 
+ 	pfconf = (struct rss_pf_conf *)p->data;
+-	rss_pf_map = t4_read_rss_pf_map(adapter, true);
+-	rss_pf_mask = t4_read_rss_pf_mask(adapter, true);
++	rss_pf_map = t4_read_rss_pf_map(adap, true);
++	rss_pf_mask = t4_read_rss_pf_mask(adap, true);
+ 	for (pf = 0; pf < 8; pf++) {
+ 		pfconf[pf].rss_pf_map = rss_pf_map;
+ 		pfconf[pf].rss_pf_mask = rss_pf_mask;
+-		t4_read_rss_pf_config(adapter, pf, &pfconf[pf].rss_pf_config,
++		t4_read_rss_pf_config(adap, pf, &pfconf[pf].rss_pf_config,
+ 				      true);
+ 	}
+ 	return 0;
+@@ -2353,18 +2620,20 @@ static int rss_vf_config_show(struct seq_file *seq, void *v, int idx)
+ 
+ static int rss_vf_config_open(struct inode *inode, struct file *file)
+ {
+-	struct adapter *adapter = inode->i_private;
+-	struct seq_tab *p;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 	struct rss_vf_conf *vfconf;
+-	int vf, vfcount = adapter->params.arch.vfcount;
++	struct seq_tab *p;
++	int vf, vfcount;
+ 
++	vfcount = adap->params.arch.vfcount;
+ 	p = seq_open_tab(file, vfcount, sizeof(*vfconf), 1, rss_vf_config_show);
+ 	if (!p)
+ 		return -ENOMEM;
+ 
+ 	vfconf = (struct rss_vf_conf *)p->data;
+ 	for (vf = 0; vf < vfcount; vf++) {
+-		t4_read_rss_vf_config(adapter, vf, &vfconf[vf].rss_vf_vfl,
++		t4_read_rss_vf_config(adap, vf, &vfconf[vf].rss_vf_vfl,
+ 				      &vfconf[vf].rss_vf_vfh, true);
+ 	}
+ 	return 0;
+@@ -2384,7 +2653,8 @@ static const struct file_operations rss_vf_config_debugfs_fops = {
+  */
+ static int dcb_info_show(struct seq_file *seq, void *v)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 
+ 	if (v == SEQ_START_TOKEN) {
+ 		seq_puts(seq, "Data Center Bridging Information\n");
+@@ -2405,7 +2675,6 @@ static int dcb_info_show(struct seq_file *seq, void *v)
+ 
+ 		if (dcb->msgs) {
+ 			int i;
+-
+ 			seq_puts(seq, "\n  Index\t\t\t  :\t");
+ 			for (i = 0; i < 8; i++)
+ 				seq_printf(seq, " %3d", i);
+@@ -2514,13 +2783,14 @@ static int dcb_info_show(struct seq_file *seq, void *v)
+ static inline void *dcb_info_get_idx(struct adapter *adap, loff_t pos)
+ {
+ 	return (pos <= adap->params.nports
+-		? (void *)((uintptr_t)pos + 1)
+-		: NULL);
++		      ? (void *)((uintptr_t)pos + 1)
++		      : NULL);
+ }
+ 
+ static void *dcb_info_start(struct seq_file *seq, loff_t *pos)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 
+ 	return (*pos
+ 		? dcb_info_get_idx(adap, *pos)
+@@ -2533,7 +2803,8 @@ static void dcb_info_stop(struct seq_file *seq, void *v)
+ 
+ static void *dcb_info_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 
+ 	(*pos)++;
+ 	return dcb_info_get_idx(adap, *pos);
+@@ -2569,8 +2840,11 @@ static const struct file_operations dcb_info_debugfs_fops = {
+ 
+ static int resources_show(struct seq_file *seq, void *v)
+ {
+-	struct adapter *adapter = seq->private;
+-	struct pf_resources *pfres = &adapter->params.pfres;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	struct pf_resources *pfres;
 +
-+		chip_ver = CHELSIO_CHIP_VERSION(padap->params.chip);
-+		hma_arr = cudbg_get_indir_reg_info(chip_ver,
-+						   CUDBG_INDIR_TYPE_HMAT6_LOCAL_DEBUG_CFG);
-+		if (!hma_arr)
-+			return CUDBG_STATUS_ENTITY_NOT_FOUND;
++	pfres = &adap->params.pfres;
+ 
+ 	#define S(desc, fmt, var) \
+ 		seq_printf(seq, "%-60s " fmt "\n", \
+@@ -2593,12 +2867,13 @@ static int resources_show(struct seq_file *seq, void *v)
+ }
+ DEFINE_SHOW_ATTRIBUTE(resources);
+ 
++#ifdef CONFIG_CHELSIO_T4_DCB
+ /**
+  * ethqset2pinfo - return port_info of an Ethernet Queue Set
+  * @adap: the adapter
+  * @qset: Ethernet Queue Set
+  */
+-static inline struct port_info *ethqset2pinfo(struct adapter *adap, int qset)
++static struct port_info *ethqset2pinfo(struct adapter *adap, int qset)
+ {
+ 	int pidx;
+ 
+@@ -2614,6 +2889,7 @@ static inline struct port_info *ethqset2pinfo(struct adapter *adap, int qset)
+ 	BUG();
+ 	return NULL;
+ }
++#endif /* CONFIG_CHELSIO_T4_DCB */
+ 
+ static int sge_qinfo_uld_txq_entries(const struct adapter *adap, int uld)
+ {
+@@ -2656,7 +2932,10 @@ static int sge_qinfo_show(struct seq_file *seq, void *v)
+ 	const struct sge_uld_txq_info *utxq_info;
+ 	const struct sge_uld_rxq_info *urxq_info;
+ 	struct cxgb4_tc_port_mqprio *port_mqprio;
+-	struct adapter *adap = seq->private;
 +
-+		size = sizeof(struct cudbg_indir_reg_entity) +
-+		       sizeof(struct cudbg_indir_reg_data) * hma_arr->nentries;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
 +
-+		rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
-+		if (rc)
-+			return rc;
+ 	int i, j, n, r = (uintptr_t)v - 1;
+ 	struct sge *s = &adap->sge;
+ 
+@@ -3101,7 +3380,6 @@ do { \
+ skip_uld:
+ 	if (r < ctrl_entries) {
+ 		const struct sge_ctrl_txq *tx = &s->ctrlq[r * 4];
+-
+ 		n = min(4, adap->params.nports - 4 * r);
+ 
+ 		S("QType:", "Control");
+@@ -3206,7 +3484,10 @@ static int sge_queue_entries(struct adapter *adap)
+ 
+ static void *sge_queue_start(struct seq_file *seq, loff_t *pos)
+ {
+-	int entries = sge_queue_entries(seq->private);
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
 +
-+		cudbg_collect_indir_reg(padap, (void *)temp_buff.data,
-+					hma_arr, CUDBG_HMA_INDIR_REG_REV,
-+					HMA_LOCAL_DEBUG_CFG_A,
-+					HMA_LOCAL_DEBUG_CFG_A + 4);
++	int entries = sge_queue_entries(adap);
+ 
+ 	return *pos < entries ? (void *)((uintptr_t)*pos + 1) : NULL;
+ }
+@@ -3217,7 +3498,10 @@ static void sge_queue_stop(struct seq_file *seq, void *v)
+ 
+ static void *sge_queue_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+-	int entries = sge_queue_entries(seq->private);
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
 +
-+		return cudbg_write_and_release_buff(pdbg_init, &temp_buff,
-+						    dbg_buff);
-+	}
++	int entries = sge_queue_entries(adap);
+ 
+ 	++*pos;
+ 	return *pos < entries ? (void *)((uintptr_t)*pos + 1) : NULL;
+@@ -3252,14 +3536,11 @@ static const struct file_operations sge_qinfo_debugfs_fops = {
+ 
+ int mem_open(struct inode *inode, struct file *file)
+ {
+-	unsigned int mem;
+-	struct adapter *adap;
++	struct t4_linux_debugfs_data *d = inode->i_private;
++	struct adapter *adap = d->adap;
+ 
+ 	file->private_data = inode->i_private;
+ 
+-	mem = (uintptr_t)file->private_data & 0x7;
+-	adap = file->private_data - mem;
+-
+ 	(void)t4_fwcache(adap, FW_PARAM_DEV_FWCACHE_FLUSH);
+ 
+ 	return 0;
+@@ -3268,10 +3549,11 @@ int mem_open(struct inode *inode, struct file *file)
+ static ssize_t mem_read(struct file *file, char __user *buf, size_t count,
+ 			loff_t *ppos)
+ {
+-	loff_t pos = *ppos;
++	struct t4_linux_debugfs_data *d = file->private_data;
+ 	loff_t avail = file_inode(file)->i_size;
+-	unsigned int mem = (uintptr_t)file->private_data & 0x7;
+-	struct adapter *adap = file->private_data - mem;
++	struct adapter *adap = d->adap;
++	unsigned int mem = d->data;
++	loff_t pos = *ppos;
+ 	__be32 *data;
+ 	int ret;
+ 
+@@ -3311,18 +3593,19 @@ static const struct file_operations mem_debugfs_fops = {
+ 
+ static int tid_info_show(struct seq_file *seq, void *v)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	const struct tid_info *t;
+-	enum chip_type chip;
++	unsigned int chip_ver;
+ 
++	chip_ver = CHELSIO_CHIP_VERSION(adap->params.chip);
+ 	t = &adap->tids;
+-	chip = CHELSIO_CHIP_VERSION(adap->params.chip);
 +
-+	/* T6 path */
- 	n = sizeof(t6_hma_ireg_array) / (IREG_NUM_ELEM * sizeof(u32));
- 	size = sizeof(struct ireg_buf) * n;
- 	rc = cudbg_get_buff(pdbg_init, dbg_buff, size, &temp_buff);
- 	if (rc)
- 		return rc;
+ 	if (t4_read_reg(adap, LE_DB_CONFIG_A) & HASHEN_F) {
+ 		unsigned int sb;
+ 		seq_printf(seq, "Connections in use: %u\n",
+ 			   atomic_read(&t->conns_in_use));
+-
+-		if (chip <= CHELSIO_T5)
++		if (chip_ver <= CHELSIO_T5)
+ 			sb = t4_read_reg(adap, LE_DB_SERVER_INDEX_A) / 4;
+ 		else
+ 			sb = t4_read_reg(adap, LE_DB_SRVR_START_INDEX_A);
+@@ -3363,12 +3646,11 @@ static int tid_info_show(struct seq_file *seq, void *v)
+ 	if (t->nstids)
+ 		seq_printf(seq, "STID range: %u..%u, in use-IPv4/IPv6: %u/%u\n",
+ 			   (!t->stid_base &&
+-			   (chip <= CHELSIO_T5)) ?
++			   (chip_ver <= CHELSIO_T5)) ?
+ 			   t->stid_base + 1 : t->stid_base,
+ 			   t->stid_base + t->nstids - 1,
+ 			   t->stids_in_use - t->v6_stids_in_use,
+ 			   t->v6_stids_in_use);
+-
+ 	if (t->natids)
+ 		seq_printf(seq, "ATID range: 0..%u, in use: %u\n",
+ 			   t->natids - 1, t->atids_in_use);
+@@ -3378,11 +3660,11 @@ static int tid_info_show(struct seq_file *seq, void *v)
+ 		seq_printf(seq, "SFTID range: %u..%u in use: %u\n",
+ 			   t->sftid_base, t->sftid_base + t->nsftids - 2,
+ 			   t->sftids_in_use);
+-	if (t->nhpftids)
++	if (t->nhpftids && chip_ver > CHELSIO_T5)
+ 		seq_printf(seq, "HPFTID range: %u..%u\n", t->hpftid_base,
+ 			   t->hpftid_base + t->nhpftids - 1);
+ 	if (t->neotids)
+-		seq_printf(seq, "EOTID range: %u..%u, in use: %u\n",
++		seq_printf(seq, "UOTID range: %u..%u, in use: %u\n",
+ 			   t->eotid_base, t->eotid_base + t->neotids - 1,
+ 			   atomic_read(&t->eotids_in_use));
+ 	if (t->ntids)
+@@ -3393,22 +3675,17 @@ static int tid_info_show(struct seq_file *seq, void *v)
+ }
+ DEFINE_SHOW_ATTRIBUTE(tid_info);
  
--	hma_indr = (struct ireg_buf *)temp_buff.data;
-+	struct ireg_buf *hma_indr = (struct ireg_buf *)temp_buff.data;
- 	for (i = 0; i < n; i++) {
- 		struct ireg_field *hma_fli = &hma_indr->tp_pio;
- 		u32 *buff = hma_indr->outbuf;
-@@ -3581,7 +4357,7 @@ int cudbg_collect_flash(struct cudbg_init *pdbg_init,
- 	u32 addr, i;
- 	int rc;
+-static void add_debugfs_mem(struct adapter *adap, const char *name,
+-			    unsigned int idx, unsigned int size_mb)
+-{
+-	debugfs_create_file_size(name, 0400, adap->debugfs_root,
+-				 (void *)adap + idx, &mem_debugfs_fops,
+-				 size_mb << 20);
+-}
+-
+ static ssize_t blocked_fl_read(struct file *filp, char __user *ubuf,
+ 			       size_t count, loff_t *ppos)
+ {
+-	int len;
+-	const struct adapter *adap = filp->private_data;
++	struct t4_linux_debugfs_data *d = filp->private_data;
++	const struct adapter *adap = d->adap;
++	ssize_t size;
+ 	char *buf;
+-	ssize_t size = (adap->sge.egr_sz + 3) / 4 +
+-			adap->sge.egr_sz / 32 + 2; /* includes ,/\n/\0 */
++	int len;
++
++	size = (adap->sge.egr_sz + 3) / 4 + adap->sge.egr_sz / 32 +
++	       2; /* includes ,/\n/\0 */
  
--	addr = FLASH_EXP_ROM_START;
-+	addr = FLASH_LOC_EXP_ROM;
+ 	buf = kzalloc(size, GFP_KERNEL);
+ 	if (!buf)
+@@ -3425,9 +3702,10 @@ static ssize_t blocked_fl_read(struct file *filp, char __user *ubuf,
+ static ssize_t blocked_fl_write(struct file *filp, const char __user *ubuf,
+ 				size_t count, loff_t *ppos)
+ {
+-	int err;
++	struct t4_linux_debugfs_data *d = filp->private_data;
++	struct adapter *adap = d->adap;
+ 	unsigned long *t;
+-	struct adapter *adap = filp->private_data;
++	int err;
  
- 	for (i = 0; i < count; i += SF_PAGE_SIZE) {
- 		n = min_t(u32, count - i, SF_PAGE_SIZE);
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h
-index d6d6cd298930..d92a445bf3b5 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.h
-@@ -30,10 +30,10 @@ int cudbg_collect_cim_ibq_tp1(struct cudbg_init *pdbg_init,
- int cudbg_collect_cim_ibq_ulp(struct cudbg_init *pdbg_init,
- 			      struct cudbg_buffer *dbg_buff,
- 			      struct cudbg_error *cudbg_err);
--int cudbg_collect_cim_ibq_sge0(struct cudbg_init *pdbg_init,
--			       struct cudbg_buffer *dbg_buff,
--			       struct cudbg_error *cudbg_err);
--int cudbg_collect_cim_ibq_sge1(struct cudbg_init *pdbg_init,
-+int cudbg_collect_cim_ibq_sge(struct cudbg_init *pdbg_init,
-+			      struct cudbg_buffer *dbg_buff,
-+			      struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_pcie(struct cudbg_init *pdbg_init,
- 			       struct cudbg_buffer *dbg_buff,
- 			       struct cudbg_error *cudbg_err);
- int cudbg_collect_cim_ibq_ncsi(struct cudbg_init *pdbg_init,
-@@ -165,13 +165,61 @@ int cudbg_collect_qdesc(struct cudbg_init *pdbg_init,
- int cudbg_collect_flash(struct cudbg_init *pdbg_init,
- 			struct cudbg_buffer *dbg_buff,
- 			struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_tp2(struct cudbg_init *pdbg_init,
-+			      struct cudbg_buffer *dbg_buff,
-+			      struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_tp3(struct cudbg_init *pdbg_init,
-+			      struct cudbg_buffer *dbg_buff,
-+			      struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_ipc1(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_ipc2(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_ipc3(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_ipc4(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_ipc5(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_ipc6(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_ibq_ipc7(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_obq_ipc1(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_obq_ipc2(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_obq_ipc3(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_obq_ipc4(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_obq_ipc5(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_obq_ipc6(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
-+int cudbg_collect_cim_obq_ipc7(struct cudbg_init *pdbg_init,
-+			       struct cudbg_buffer *dbg_buff,
-+			       struct cudbg_error *cudbg_err);
- 
- u32 cudbg_get_entity_length(struct adapter *adap, u32 entity);
- struct cudbg_entity_hdr *cudbg_get_entity_hdr(void *outbuf, int i);
- void cudbg_align_debug_buffer(struct cudbg_buffer *dbg_buff,
- 			      struct cudbg_entity_hdr *entity_hdr);
--u32 cudbg_cim_obq_size(struct adapter *padap, int qid);
--int cudbg_dump_context_size(struct adapter *padap);
-+u32 cudbg_cim_obq_size(struct adapter *padap, int qid, u8 coreid);
-+int cudbg_dump_context_size(struct adapter *padap, u8 sge_ctxt_size);
- 
- int cudbg_fill_meminfo(struct adapter *padap,
- 		       struct cudbg_meminfo *meminfo_buff);
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-index 8409e759f5ae..bf47aecc4bb3 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4.h
-@@ -1857,7 +1857,6 @@ void t4_setup_memwin(struct adapter *adap, u32 memwin_base, u32 window);
- 
- int t4_memory_rw_init(struct adapter *adap, int win, int mtype, u32 *mem_off,
- 		      u32 *mem_base, u32 *mem_aperture);
--void t4_memory_update_win(struct adapter *adap, int win, u32 addr);
- void t4_memory_rw_residual(struct adapter *adap, u32 off, u32 addr, u8 *buf,
- 			   int dir);
- #define T4_MEMORY_WRITE	0
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c
-index dd66b244466d..f2b98f1b4d61 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_cudbg.c
-@@ -27,8 +27,8 @@ static const struct cxgb4_collect_entity cxgb4_collect_hw_dump[] = {
- 	{ CUDBG_CIM_IBQ_TP0, cudbg_collect_cim_ibq_tp0 },
- 	{ CUDBG_CIM_IBQ_TP1, cudbg_collect_cim_ibq_tp1 },
- 	{ CUDBG_CIM_IBQ_ULP, cudbg_collect_cim_ibq_ulp },
--	{ CUDBG_CIM_IBQ_SGE0, cudbg_collect_cim_ibq_sge0 },
--	{ CUDBG_CIM_IBQ_SGE1, cudbg_collect_cim_ibq_sge1 },
-+	{ CUDBG_CIM_IBQ_SGE, cudbg_collect_cim_ibq_sge },
-+	{ CUDBG_CIM_IBQ_PCIE, cudbg_collect_cim_ibq_pcie },
- 	{ CUDBG_CIM_IBQ_NCSI, cudbg_collect_cim_ibq_ncsi },
- 	{ CUDBG_CIM_OBQ_ULP0, cudbg_collect_cim_obq_ulp0 },
- 	{ CUDBG_CIM_OBQ_ULP1, cudbg_collect_cim_obq_ulp1 },
-@@ -64,6 +64,22 @@ static const struct cxgb4_collect_entity cxgb4_collect_hw_dump[] = {
- 	{ CUDBG_UP_CIM_INDIRECT, cudbg_collect_up_cim_indirect },
- 	{ CUDBG_PBT_TABLE, cudbg_collect_pbt_tables },
- 	{ CUDBG_HMA_INDIRECT, cudbg_collect_hma_indirect },
-+	{ CUDBG_CIM_IBQ_TP2, cudbg_collect_cim_ibq_tp2 },
-+	{ CUDBG_CIM_IBQ_TP3, cudbg_collect_cim_ibq_tp3 },
-+	{ CUDBG_CIM_IBQ_IPC1, cudbg_collect_cim_ibq_ipc1 },
-+	{ CUDBG_CIM_IBQ_IPC2, cudbg_collect_cim_ibq_ipc2 },
-+	{ CUDBG_CIM_IBQ_IPC3, cudbg_collect_cim_ibq_ipc3 },
-+	{ CUDBG_CIM_IBQ_IPC4, cudbg_collect_cim_ibq_ipc4 },
-+	{ CUDBG_CIM_IBQ_IPC5, cudbg_collect_cim_ibq_ipc5 },
-+	{ CUDBG_CIM_IBQ_IPC6, cudbg_collect_cim_ibq_ipc6 },
-+	{ CUDBG_CIM_IBQ_IPC7, cudbg_collect_cim_ibq_ipc7 },
-+	{ CUDBG_CIM_OBQ_IPC1, cudbg_collect_cim_obq_ipc1 },
-+	{ CUDBG_CIM_OBQ_IPC2, cudbg_collect_cim_obq_ipc2 },
-+	{ CUDBG_CIM_OBQ_IPC3, cudbg_collect_cim_obq_ipc3 },
-+	{ CUDBG_CIM_OBQ_IPC4, cudbg_collect_cim_obq_ipc4 },
-+	{ CUDBG_CIM_OBQ_IPC5, cudbg_collect_cim_obq_ipc5 },
-+	{ CUDBG_CIM_OBQ_IPC6, cudbg_collect_cim_obq_ipc6 },
-+	{ CUDBG_CIM_OBQ_IPC7, cudbg_collect_cim_obq_ipc7 },
+ 	t = bitmap_zalloc(adap->sge.egr_sz, GFP_KERNEL);
+ 	if (!t)
+@@ -3453,20 +3731,21 @@ static const struct file_operations blocked_fl_fops = {
  };
  
- static const struct cxgb4_collect_entity cxgb4_collect_flash_dump[] = {
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index be4c8cbbad95..a3b1f9db5cbe 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -3097,6 +3097,247 @@ static int cxgb_hwtstamp_set(struct net_device *dev,
- 	return 0;
+ static void mem_region_show(struct seq_file *seq, const char *name,
+-			    unsigned int from, unsigned int to)
++			    u64 from, u64 to)
+ {
+ 	char buf[40];
+ 
+ 	string_get_size((u64)to - from + 1, 1, STRING_UNITS_2, buf,
+ 			sizeof(buf));
+-	seq_printf(seq, "%-15s %#x-%#x [%s]\n", name, from, to, buf);
++	seq_printf(seq, "%-20s %#llx-%#llx [%s]\n", name, from, to, buf);
  }
  
-+enum {
-+	CUDBG_SETREG        = 1024,
-+	CUDBG_GETREG        = 1025,
-+	CUDBG_GET_SGE_CTXT  = 1059,
-+	CUDBG_GET_SGE_DESC2 = 1060,
-+};
+ static int meminfo_show(struct seq_file *seq, void *v)
+ {
+ 	static const char * const memory[] = { "EDC0:", "EDC1:", "MC:",
+ 					       "MC0:", "MC1:", "HMA:"};
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	struct cudbg_meminfo meminfo;
+ 	int i, rc;
+ 
+@@ -3527,11 +3806,12 @@ DEFINE_SHOW_ATTRIBUTE(meminfo);
+ 
+ static int chcr_stats_show(struct seq_file *seq, void *v)
+ {
++	struct t4_linux_debugfs_data *d = seq->private;
+ #if IS_ENABLED(CONFIG_CHELSIO_TLS_DEVICE)
+ 	struct ch_ktls_port_stats_debug *ktls_port;
+ 	int i = 0;
+ #endif
+-	struct adapter *adap = seq->private;
++	struct adapter *adap = d->adap;
+ 
+ 	seq_puts(seq, "Chelsio Crypto Accelerator Stats \n");
+ 	seq_printf(seq, "Cipher Ops: %10u \n",
+@@ -3615,7 +3895,8 @@ do { \
+ 
+ static void show_tcp_stats(struct seq_file *seq)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	struct tp_tcp_stats v4, v6;
+ 
+ 	spin_lock(&adap->stats_lock);
+@@ -3634,7 +3915,8 @@ static void show_tcp_stats(struct seq_file *seq)
+ 
+ static void show_ddp_stats(struct seq_file *seq)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	struct tp_usm_stats stats;
+ 
+ 	spin_lock(&adap->stats_lock);
+@@ -3648,8 +3930,9 @@ static void show_ddp_stats(struct seq_file *seq)
+ 
+ static void show_rdma_stats(struct seq_file *seq)
+ {
+-	struct adapter *adap = seq->private;
+-	struct tp_rdma_stats stats;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
++	struct tp_rdma_stats stats = {0};
+ 
+ 	spin_lock(&adap->stats_lock);
+ 	t4_tp_get_rdma_stats(adap, &stats, false);
+@@ -3657,11 +3940,13 @@ static void show_rdma_stats(struct seq_file *seq)
+ 
+ 	PRINT_ADAP_STATS("rdma_no_rqe_mod_defer:", stats.rqe_dfr_mod);
+ 	PRINT_ADAP_STATS("rdma_no_rqe_pkt_defer:", stats.rqe_dfr_pkt);
 +
-+enum {
-+	CUDBG_CNTXT_TYPE_EGRESS  = 0,
-+	CUDBG_CNTXT_TYPE_FL      = 1,
-+	CUDBG_CNTXT_TYPE_RSP     = 2,
-+	CUDBG_CNTXT_TYPE_CQ      = 3,
-+	CUDBG_CNTXT_TYPE_CONG    = 4,
-+};
-+
-+enum {
-+	CUDBG_SGE_QTYPE_TX_ETH    = 1,
-+	CUDBG_SGE_QTYPE_TX_OFLD   = 2,
-+	CUDBG_SGE_QTYPE_TX_CTRL   = 3,
-+	CUDBG_SGE_QTYPE_FL        = 4,
-+	CUDBG_SGE_QTYPE_RSP       = 5,
-+	CUDBG_SGE_QTYPE_TX_CRYPTO = 6,
-+};
-+
-+struct cudbg_reg {
-+	u32 cmd;
-+	u32 addr;
-+	u32 val;
-+};
-+
-+struct cudbg_mem_range {
-+	u32 cmd;
-+	u32 mem_id;
-+	u32 addr;
-+	u32 len;
-+	u32 version;
-+	u8  buf[];
-+};
-+
-+static int cudbg_get_qdesc(struct adapter *adap, int qtype,
-+			   unsigned int qid, unsigned int idx,
-+			   unsigned char *data)
+ }
+ 
+ static void show_tp_err_adapter_stats(struct seq_file *seq)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	struct tp_err_stats stats;
+ 
+ 	spin_lock(&adap->stats_lock);
+@@ -3674,7 +3959,8 @@ static void show_tp_err_adapter_stats(struct seq_file *seq)
+ 
+ static void show_cpl_stats(struct seq_file *seq)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	struct tp_cpl_stats stats;
+ 	u8 i;
+ 
+@@ -3688,7 +3974,8 @@ static void show_cpl_stats(struct seq_file *seq)
+ 
+ static void show_tp_err_channel_stats(struct seq_file *seq)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	struct tp_err_stats stats;
+ 	u8 i;
+ 
+@@ -3708,7 +3995,8 @@ static void show_tp_err_channel_stats(struct seq_file *seq)
+ 
+ static void show_fcoe_stats(struct seq_file *seq)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 	struct tp_fcoe_stats stats[NCHAN];
+ 	u8 i;
+ 
+@@ -3728,7 +4016,8 @@ static void show_fcoe_stats(struct seq_file *seq)
+ 
+ static int tp_stats_show(struct seq_file *seq, void *v)
+ {
+-	struct adapter *adap = seq->private;
++	struct t4_linux_debugfs_data *d = seq->private;
++	struct adapter *adap = d->adap;
+ 
+ 	seq_puts(seq, "\n--------Adapter Stats--------\n");
+ 	show_tcp_stats(seq);
+@@ -3738,9 +4027,8 @@ static int tp_stats_show(struct seq_file *seq, void *v)
+ 
+ 	seq_puts(seq, "\n-------- Channel Stats --------\n");
+ 	if (adap->params.arch.nchan == NCHAN)
+-		seq_printf(seq, "%-25s %-20s %-20s %-20s %-20s\n",
+-			   " ", "channel 0", "channel 1",
+-			   "channel 2", "channel 3");
++		seq_printf(seq, "%-25s %-20s %-20s %-20s %-20s\n", " ",
++			   "channel 0", "channel 1", "channel 2", "channel 3");
+ 	else
+ 		seq_printf(seq, "%-25s %-20s %-20s\n",
+ 			   " ", "channel 0", "channel 1");
+@@ -3754,32 +4042,175 @@ DEFINE_SHOW_ATTRIBUTE(tp_stats);
+ 
+ /* Add an array of Debug FS files.
+  */
+-void add_debugfs_files(struct adapter *adap,
+-		       struct t4_debugfs_entry *files,
+-		       unsigned int nfiles)
++static void create_debugfs_file_entry(struct t4_linux_debugfs_entry *f,
++				      const char *name,
++				      const struct file_operations *ops,
++				      umode_t mode, unsigned char data)
+ {
+-	int i;
++	f->name = name;
++	f->ops = ops;
++	f->mode = mode;
++	f->data = data;
++}
+ 
+-	/* debugfs support is best effort */
+-	for (i = 0; i < nfiles; i++)
+-		debugfs_create_file(files[i].name, files[i].mode,
+-				    adap->debugfs_root,
+-				    (void *)adap + files[i].data,
+-				    files[i].ops);
++static void add_debugfs_file_size(struct adapter *adap, struct dentry *dentry,
++				  struct t4_linux_debugfs_entry *f, u64 size)
 +{
-+	struct sge *p = &adap->sge;
-+	int i, len = sizeof(struct tx_desc);
++	struct t4_linux_debugfs_data *data;
 +
-+	if (qtype == CUDBG_SGE_QTYPE_TX_ETH) {
-+		const struct sge_eth_txq *q = p->ethtxq;
++	data = devm_kzalloc(adap->pdev_dev, sizeof(*data), GFP_KERNEL);
++	if (!data)
++		return;
 +
-+		for (i = 0; i < ARRAY_SIZE(p->ethtxq); i++, q++)
-+			if (q->q.cntxt_id == qid && q->q.desc &&
-+			    idx < q->q.size) {
-+				memcpy(data, &q->q.desc[idx], len);
-+				return len;
-+			}
-+	}
-+
-+	if (qtype == CUDBG_SGE_QTYPE_TX_CTRL) {
-+		const struct sge_ctrl_txq *q = p->ctrlq;
-+
-+		for (i = 0; i < ARRAY_SIZE(p->ctrlq); i++, q++)
-+			if (q->q.cntxt_id == qid && q->q.desc &&
-+			    idx < q->q.size) {
-+				memcpy(data, &q->q.desc[idx], len);
-+				return len;
-+			}
-+	}
-+
-+	if (qtype == CUDBG_SGE_QTYPE_TX_OFLD ||
-+	    qtype == CUDBG_SGE_QTYPE_TX_CRYPTO) {
-+		struct sge_uld_txq_info *utxq_info;
-+		unsigned int uld_type;
-+		int i;
-+
-+		uld_type = (qtype == CUDBG_SGE_QTYPE_TX_OFLD) ?
-+			    CXGB4_TX_OFLD : CXGB4_TX_CRYPTO;
-+
-+		utxq_info = adap->sge.uld_txq_info[uld_type];
-+		if (!utxq_info)
-+			return -EINVAL;
-+
-+		for (i = 0; i < utxq_info->ntxq; i++) {
-+			const struct sge_uld_txq *q = &utxq_info->uldtxq[i];
-+
-+			if (q->q.cntxt_id == qid && q->q.desc &&
-+			    idx < q->q.size) {
-+				memcpy(data, &q->q.desc[idx], len);
-+				return len;
-+			}
-+		}
-+	}
-+
-+	if (qtype == CUDBG_SGE_QTYPE_FL) {
-+		const struct sge_fl *q = NULL;
-+
-+		if (qid >= p->egr_start &&
-+		    qid < p->egr_start + p->egr_sz)
-+			q = p->egr_map[qid - p->egr_start];
-+		if (q && idx < q->size) {
-+			*(__be64 *)data = q->desc[idx];
-+			return sizeof(u64);
-+		}
-+	}
-+
-+	if (qtype == CUDBG_SGE_QTYPE_RSP) {
-+		const struct sge_rspq *q = NULL;
-+
-+		if (qid >= p->ingr_start &&
-+		    qid < p->ingr_start + p->ingr_sz)
-+			q = p->ingr_map[qid - p->ingr_start];
-+		if (q && idx < q->size) {
-+			len = q->iqe_len;
-+			idx *= len / sizeof(u64);
-+			memcpy(data, &q->desc[idx], len);
-+			return len;
-+		}
-+	}
-+
-+	return -EINVAL;
++	data->adap = adap;
++	data->data = f->data;
++	data->coreid = 0;
++	debugfs_create_file_size(f->name, f->mode, dentry, data, f->ops, size);
 +}
 +
-+static int cxgb_extension_ioctl(struct net_device *dev,
-+				void __user *useraddr)
++static void add_debugfs_mem(struct adapter *adap, const char *name,
++			    unsigned int i, unsigned int size_mb)
 +{
-+	struct adapter *adap = netdev2adap(dev);
-+	u32 cmd;
-+	int ret = 0;
++	struct t4_linux_debugfs_entry f;
 +
-+	if (!ns_capable(dev_net(dev)->user_ns, CAP_NET_ADMIN))
-+		return -EPERM;
++	create_debugfs_file_entry(&f, name, &mem_debugfs_fops, 0400, i);
++	add_debugfs_file_size(adap, adap->debugfs_root, &f, (u64)size_mb << 20);
+ }
+ 
+-int t4_setup_debugfs(struct adapter *adap)
++void add_debugfs_files(struct adapter *adap, struct dentry *dentry,
++		       unsigned char coreid, struct t4_linux_debugfs_entry *f,
++		       unsigned int n)
+ {
++	struct t4_linux_debugfs_data *data;
+ 	int i;
+-	u32 size = 0;
+ 
+-	static struct t4_debugfs_entry t4_debugfs_files[] = {
++	for (i = 0; i < n; i++) {
++		data = devm_kzalloc(adap->pdev_dev, sizeof(*data), GFP_KERNEL);
++		if (!data)
++			continue;
 +
-+	if (copy_from_user(&cmd, useraddr, sizeof(cmd)))
-+		return -EFAULT;
-+
-+	switch (cmd) {
-+	case CUDBG_GETREG: {
-+		struct cudbg_reg edata;
-+
-+		if (copy_from_user(&edata, useraddr, sizeof(edata)))
-+			return -EFAULT;
-+		if ((edata.addr & 3) != 0 ||
-+		    edata.addr >= t4_get_regs_len(adap))
-+			return -EINVAL;
-+		edata.val = t4_read_reg(adap, edata.addr);
-+		if (copy_to_user(useraddr, &edata, sizeof(edata)))
-+			return -EFAULT;
-+		break;
++		data->adap = adap;
++		data->data = f[i].data;
++		data->coreid = coreid;
++		debugfs_create_file(f[i].name, f[i].mode, dentry, data,
++				    f[i].ops);
 +	}
-+	case CUDBG_SETREG: {
-+		struct cudbg_reg edata;
++}
 +
-+		if (copy_from_user(&edata, useraddr, sizeof(edata)))
-+			return -EFAULT;
-+		if ((edata.addr & 3) != 0 ||
-+		    edata.addr >= t4_get_regs_len(adap))
-+			return -EINVAL;
-+		t4_write_reg(adap, edata.addr, edata.val);
++static void add_debugfs_files_multicore(struct adapter *adap)
++{
++	static struct t4_linux_debugfs_entry common_files[] = {
+ 		{ "cim_la", &cim_la_fops, 0400, 0 },
+ 		{ "cim_pif_la", &cim_pif_la_fops, 0400, 0 },
+ 		{ "cim_ma_la", &cim_ma_la_fops, 0400, 0 },
+ 		{ "cim_qcfg", &cim_qcfg_fops, 0400, 0 },
+-		{ "clk", &clk_fops, 0400, 0 },
+ 		{ "devlog", &devlog_fops, 0400, 0 },
++	};
++	static struct t4_linux_debugfs_entry t4_files[] = {
++		{ "ibq_tp0", &cim_ibq_fops, 0400, 0 },
++		{ "ibq_tp1", &cim_ibq_fops, 0400, 1 },
++		{ "ibq_ulp", &cim_ibq_fops, 0400, 2 },
++		{ "ibq_sge", &cim_ibq_fops, 0400, 3 },
++		{ "ibq_pcie", &cim_ibq_fops, 0400, 4 },
++		{ "ibq_ncsi", &cim_ibq_fops, 0400, 5 },
++		{ "obq_ulp0", &cim_obq_fops, 0400, 0 },
++		{ "obq_ulp1", &cim_obq_fops, 0400, 1 },
++		{ "obq_ulp2", &cim_obq_fops, 0400, 2 },
++		{ "obq_ulp3", &cim_obq_fops, 0400, 3 },
++		{ "obq_sge", &cim_obq_fops, 0400, 4 },
++		{ "obq_ncsi", &cim_obq_fops, 0400, 5 },
++	};
++	static struct t4_linux_debugfs_entry t5_files[] = {
++		{ "ibq_tp0", &cim_ibq_fops, 0400, 0 },
++		{ "ibq_tp1", &cim_ibq_fops, 0400, 1 },
++		{ "ibq_ulp", &cim_ibq_fops, 0400, 2 },
++		{ "ibq_sge", &cim_ibq_fops, 0400, 3 },
++		{ "ibq_pcie", &cim_ibq_fops, 0400, 4 },
++		{ "ibq_ncsi", &cim_ibq_fops, 0400, 5 },
++		{ "obq_ulp0", &cim_obq_fops, 0400, 0 },
++		{ "obq_ulp1", &cim_obq_fops, 0400, 1 },
++		{ "obq_ulp2", &cim_obq_fops, 0400, 2 },
++		{ "obq_ulp3", &cim_obq_fops, 0400, 3 },
++		{ "obq_sge", &cim_obq_fops, 0400, 4 },
++		{ "obq_ncsi", &cim_obq_fops, 0400, 5 },
++		{ "obq_sge_rx_q0", &cim_obq_fops, 0400, 6 },
++		{ "obq_sge_rx_q1", &cim_obq_fops, 0400, 7 },
++	};
++	static struct t4_linux_debugfs_entry t7_files[] = {
++		{ "ibq_pcie", &cim_ibq_fops, 0400, 6 },
++		{ "ibq_ncsi", &cim_ibq_fops, 0400, 7 },
++		{ "ibq_ipc2", &cim_ibq_fops, 0400, 10 },
++		{ "ibq_ipc3", &cim_ibq_fops, 0400, 11 },
++		{ "ibq_ipc4", &cim_ibq_fops, 0400, 12 },
++		{ "ibq_ipc5", &cim_ibq_fops, 0400, 13 },
++		{ "ibq_ipc6", &cim_ibq_fops, 0400, 14 },
++		{ "ibq_ipc7", &cim_ibq_fops, 0400, 15 },
++		{ "obq_ncsi", &cim_obq_fops, 0400, 5 },
++		{ "obq_ipc2", &cim_obq_fops, 0400, 10 },
++		{ "obq_ipc3", &cim_obq_fops, 0400, 11 },
++		{ "obq_ipc4", &cim_obq_fops, 0400, 12 },
++		{ "obq_ipc5", &cim_obq_fops, 0400, 13 },
++		{ "obq_ipc6", &cim_obq_fops, 0400, 14 },
++		{ "obq_ipc7", &cim_obq_fops, 0400, 15 },
++	};
++	static struct t4_linux_debugfs_entry t7_sec_files[] = {
++		{ "ibq_tp0", &cim_ibq_fops, 0400, 0 },
++		{ "ibq_tp1", &cim_ibq_fops, 0400, 1 },
++		{ "ibq_tp2", &cim_ibq_fops, 0400, 2 },
++		{ "ibq_tp3", &cim_ibq_fops, 0400, 3 },
++		{ "ibq_ulp", &cim_ibq_fops, 0400, 4 },
++		{ "ibq_sge", &cim_ibq_fops, 0400, 5 },
++		{ "ibq_ipc1", &cim_ibq_fops, 0400, 9 },
++		{ "obq_ulp0", &cim_obq_fops, 0400, 0 },
++		{ "obq_ulp1", &cim_obq_fops, 0400, 1 },
++		{ "obq_ulp2", &cim_obq_fops, 0400, 2 },
++		{ "obq_ulp3", &cim_obq_fops, 0400, 3 },
++		{ "obq_sge", &cim_obq_fops, 0400, 4 },
++		{ "obq_sge_rx_q0", &cim_obq_fops, 0400, 6 },
++		{ "obq_ipc1", &cim_obq_fops, 0400, 9 },
++	};
++	u32 chip = CHELSIO_CHIP_VERSION(adap->params.chip);
++	char name[16];
++	u8 i;
++
++	switch (chip) {
++	case CHELSIO_T4:
++		add_debugfs_files(adap, adap->debugfs_root, 0, common_files,
++				  ARRAY_SIZE(common_files));
++		add_debugfs_files(adap, adap->debugfs_root, 0, t4_files,
++				  ARRAY_SIZE(t4_files));
 +		break;
-+	}
-+	case CUDBG_GET_SGE_CTXT: {
-+		u32 buf[SGE_CTXT_SIZE_T7 / 4];
-+		u8 size = SGE_CTXT_SIZE;
-+		struct cudbg_mem_range t;
-+		enum ctxt_type ctype;
++	case CHELSIO_T5:
++	case CHELSIO_T6:
++		add_debugfs_files(adap, adap->debugfs_root, 0, common_files,
++				  ARRAY_SIZE(common_files));
++		add_debugfs_files(adap, adap->debugfs_root, 0, t5_files,
++				  ARRAY_SIZE(t5_files));
++		break;
++	default:
++		for (i = 0; i < adap->params.num_up_cores; i++) {
++			snprintf(name, sizeof(name), "core_%u", i);
++			adap->debugfs_multicore[i] =
++				debugfs_create_dir(name, adap->debugfs_root);
 +
-+		if (copy_from_user(&t, useraddr, sizeof(t)))
-+			return -EFAULT;
-+		if (t.len < SGE_CTXT_SIZE || t.addr > CTXTQID_M)
-+			return -EINVAL;
-+		if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7) {
-+			if (t.len < SGE_CTXT_SIZE_T7)
-+				return -EINVAL;
-+			size = SGE_CTXT_SIZE_T7;
++			if (i == 0) {
++				add_debugfs_files(adap, adap->debugfs_multicore[i], i,
++						  t7_files, ARRAY_SIZE(t7_files));
++			}
++
++			add_debugfs_files(adap, adap->debugfs_multicore[i], i,
++					  common_files, ARRAY_SIZE(common_files));
++			add_debugfs_files(adap, adap->debugfs_multicore[i], i,
++					  t7_sec_files, ARRAY_SIZE(t7_sec_files));
 +		}
++		break;
++	}
++}
 +
-+		switch (t.mem_id) {
-+		case CUDBG_CNTXT_TYPE_EGRESS:
-+			ctype = CTXT_EGRESS;
++static int t4_setup_debugfs(struct adapter *adap)
++{
++	static struct t4_linux_debugfs_entry t4_debugfs_files[] = {
++		{ "clk", &clk_fops, 0400, 0 },
+ 		{ "mboxlog", &mboxlog_fops, 0400, 0 },
+ 		{ "mbox0", &mbox_debugfs_fops, 0600, 0 },
+ 		{ "mbox1", &mbox_debugfs_fops, 0600, 1 },
+@@ -3789,105 +4220,177 @@ int t4_setup_debugfs(struct adapter *adap)
+ 		{ "mbox5", &mbox_debugfs_fops, 0600, 5 },
+ 		{ "mbox6", &mbox_debugfs_fops, 0600, 6 },
+ 		{ "mbox7", &mbox_debugfs_fops, 0600, 7 },
+-		{ "trace0", &mps_trc_debugfs_fops, 0600, 0 },
+-		{ "trace1", &mps_trc_debugfs_fops, 0600, 1 },
+-		{ "trace2", &mps_trc_debugfs_fops, 0600, 2 },
+-		{ "trace3", &mps_trc_debugfs_fops, 0600, 3 },
+-		{ "l2t", &t4_l2t_fops, 0400, 0},
+ 		{ "mps_tcam", &mps_tcam_debugfs_fops, 0400, 0 },
+-		{ "rss", &rss_debugfs_fops, 0400, 0 },
+-		{ "rss_config", &rss_config_fops, 0400, 0 },
+-		{ "rss_key", &rss_key_debugfs_fops, 0400, 0 },
+-		{ "rss_pf_config", &rss_pf_config_debugfs_fops, 0400, 0 },
+-		{ "rss_vf_config", &rss_vf_config_debugfs_fops, 0400, 0 },
+-		{ "resources", &resources_fops, 0400, 0 },
+-#ifdef CONFIG_CHELSIO_T4_DCB
+-		{ "dcb_info", &dcb_info_debugfs_fops, 0400, 0 },
+-#endif
+-		{ "sge_qinfo", &sge_qinfo_debugfs_fops, 0400, 0 },
+-		{ "ibq_tp0",  &cim_ibq_fops, 0400, 0 },
+-		{ "ibq_tp1",  &cim_ibq_fops, 0400, 1 },
+-		{ "ibq_ulp",  &cim_ibq_fops, 0400, 2 },
+-		{ "ibq_sge0", &cim_ibq_fops, 0400, 3 },
+-		{ "ibq_sge1", &cim_ibq_fops, 0400, 4 },
+-		{ "ibq_ncsi", &cim_ibq_fops, 0400, 5 },
+-		{ "obq_ulp0", &cim_obq_fops, 0400, 0 },
+-		{ "obq_ulp1", &cim_obq_fops, 0400, 1 },
+-		{ "obq_ulp2", &cim_obq_fops, 0400, 2 },
+-		{ "obq_ulp3", &cim_obq_fops, 0400, 3 },
+-		{ "obq_sge",  &cim_obq_fops, 0400, 4 },
+-		{ "obq_ncsi", &cim_obq_fops, 0400, 5 },
+ 		{ "tp_la", &tp_la_fops, 0400, 0 },
+ 		{ "ulprx_la", &ulprx_la_fops, 0400, 0 },
+ 		{ "sensors", &sensors_fops, 0400, 0 },
++		{ "tp_stats", &tp_stats_fops, 0400, 0 },
+ 		{ "pm_stats", &pm_stats_debugfs_fops, 0400, 0 },
+ 		{ "tx_rate", &tx_rate_fops, 0400, 0 },
+ 		{ "cctrl", &cctrl_tbl_fops, 0400, 0 },
+-#if IS_ENABLED(CONFIG_IPV6)
+-		{ "clip_tbl", &clip_tbl_fops, 0400, 0 },
+-#endif
+-		{ "tids", &tid_info_fops, 0400, 0},
+-		{ "blocked_fl", &blocked_fl_fops, 0600, 0 },
+-		{ "meminfo", &meminfo_fops, 0400, 0 },
+-		{ "crypto", &chcr_stats_fops, 0400, 0 },
+-		{ "tp_stats", &tp_stats_fops, 0400, 0 },
+-	};
+-
+-	/* Debug FS nodes common to all T5 and later adapters.
+-	 */
+-	static struct t4_debugfs_entry t5_debugfs_files[] = {
+-		{ "obq_sge_rx_q0", &cim_obq_fops, 0400, 6 },
+-		{ "obq_sge_rx_q1", &cim_obq_fops, 0400, 7 },
++		{ "rss", &rss_debugfs_fops, 0400, 0 },
++		{ "rss_config", &rss_config_fops, 0400, 0 },
++		{ "rss_key", &rss_key_debugfs_fops, 0400, 0 },
++		{ "rss_pf_config", &rss_pf_config_debugfs_fops, 0400, 0 },
++		{ "rss_vf_config", &rss_vf_config_debugfs_fops, 0400, 0 },
++		{ "meminfo", &meminfo_fops, 0400, 0 }
+ 	};
++	u32 val, chip = CHELSIO_CHIP_VERSION(adap->params.chip);
++	struct t4_linux_debugfs_entry f;
++	int i;
+ 
+-	add_debugfs_files(adap,
+-			  t4_debugfs_files,
++	add_debugfs_files(adap, adap->debugfs_root, 0, t4_debugfs_files,
+ 			  ARRAY_SIZE(t4_debugfs_files));
+-	if (!is_t4(adap->params.chip))
+-		add_debugfs_files(adap,
+-				  t5_debugfs_files,
+-				  ARRAY_SIZE(t5_debugfs_files));
++
++	add_debugfs_files_multicore(adap);
+ 
+ 	i = t4_read_reg(adap, MA_TARGET_MEM_ENABLE_A);
+ 	if (i & EDRAM0_ENABLE_F) {
+-		size = t4_read_reg(adap, MA_EDRAM0_BAR_A);
+-		add_debugfs_mem(adap, "edc0", MEM_EDC0, EDRAM0_SIZE_G(size));
++		val = t4_read_reg(adap, MA_EDRAM0_BAR_A);
++		if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7)
++			add_debugfs_mem(adap, "edc0", MEM_EDC0, T7_EDRAM0_SIZE_G(val));
++		else
++			add_debugfs_mem(adap, "edc0", MEM_EDC0, EDRAM0_SIZE_G(val));
+ 	}
++
+ 	if (i & EDRAM1_ENABLE_F) {
+-		size = t4_read_reg(adap, MA_EDRAM1_BAR_A);
+-		add_debugfs_mem(adap, "edc1", MEM_EDC1, EDRAM1_SIZE_G(size));
++		val = t4_read_reg(adap, MA_EDRAM1_BAR_A);
++		if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7)
++			add_debugfs_mem(adap, "edc1", MEM_EDC1, T7_EDRAM1_SIZE_G(val));
++		else
++			add_debugfs_mem(adap, "edc1", MEM_EDC1, EDRAM1_SIZE_G(val));
+ 	}
+-	if (is_t5(adap->params.chip)) {
+-		if (i & EXT_MEM0_ENABLE_F) {
+-			size = t4_read_reg(adap, MA_EXT_MEMORY0_BAR_A);
++
++	if (i & EXT_MEM_ENABLE_F) {
++		switch (chip) {
++		case CHELSIO_T4:
++		case CHELSIO_T5:
++			val = t4_read_reg(adap, MA_EXT_MEMORY0_BAR_A);
++			add_debugfs_mem(adap, "mc0", MEM_MC0,
++					EXT_MEM0_SIZE_G(val));
 +			break;
-+		case CUDBG_CNTXT_TYPE_FL:
-+			ctype = CTXT_FLM;
-+			break;
-+		case CUDBG_CNTXT_TYPE_RSP:
-+		case CUDBG_CNTXT_TYPE_CQ:
-+			ctype = CTXT_INGRESS;
-+			break;
-+		case CUDBG_CNTXT_TYPE_CONG:
-+			ctype = CTXT_CNM;
++		case CHELSIO_T6:
++			val = t4_read_reg(adap, MA_EXT_MEMORY_BAR_A);
++			add_debugfs_mem(adap, "mc", MEM_MC,
++					EXT_MEM_SIZE_G(val));
 +			break;
 +		default:
-+			return -EINVAL;
-+		}
-+
-+		if ((adap->flags & CXGB4_FW_OK) && !adap->use_bd)
-+			ret = t4_sge_ctxt_rd(adap, adap->mbox,
-+					     t.addr, ctype, buf);
-+		else
-+			ret = t4_sge_ctxt_rd_bd(adap, t.addr, ctype, buf);
-+		if (ret)
-+			return ret;
-+
-+		t.version = mk_adap_vers(adap);
-+		if (copy_to_user(useraddr + sizeof(t), buf, size) ||
-+		    copy_to_user(useraddr, &t, sizeof(t)))
-+			return -EFAULT;
-+		break;
++			val = t4_read_reg(adap, MA_EXT_MEMORY0_BAR_A);
+ 			add_debugfs_mem(adap, "mc0", MEM_MC0,
+-					EXT_MEM0_SIZE_G(size));
++					T7_EXT_MEM0_SIZE_G(val));
++			break;
+ 		}
+-		if (i & EXT_MEM1_ENABLE_F) {
+-			size = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
 +	}
-+	case CUDBG_GET_SGE_DESC2: {
-+		unsigned char buf[128];
-+		struct cudbg_mem_range edesc;
 +
-+		if (copy_from_user(&edesc, useraddr, sizeof(edesc)))
-+			return -EFAULT;
-+		/* upper 8 bits of mem_id = queue type, lower 24 = qid */
-+		ret = cudbg_get_qdesc(adap,
-+				      edesc.mem_id >> 24,
-+				      edesc.mem_id & 0xffffff,
-+				      edesc.addr, buf);
-+		if (ret < 0)
-+			return ret;
-+		if (edesc.len < ret)
-+			return -EINVAL;
-+		edesc.len = ret;
-+		edesc.version = mk_adap_vers(adap);
-+		if (copy_to_user(useraddr + sizeof(edesc), buf, edesc.len) ||
-+		    copy_to_user(useraddr, &edesc, sizeof(edesc)))
-+			return -EFAULT;
-+		break;
++	if (i & EXT_MEM1_ENABLE_F) {
++		switch (chip) {
++		case CHELSIO_T4:
++		case CHELSIO_T5:
++			/* No mc1 when split mode enabled */
++			if (i & MC_SPLIT_F)
++				break;
++
++			val = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
+ 			add_debugfs_mem(adap, "mc1", MEM_MC1,
+-					EXT_MEM1_SIZE_G(size));
+-		}
+-	} else {
+-		if (i & EXT_MEM_ENABLE_F) {
+-			size = t4_read_reg(adap, MA_EXT_MEMORY_BAR_A);
+-			add_debugfs_mem(adap, "mc", MEM_MC,
+-					EXT_MEM_SIZE_G(size));
++					EXT_MEM1_SIZE_G(val));
++			break;
++		case CHELSIO_T6:
++			/* No support for mc1 */
++			break;
++		default:
++			/* No mc1 when split mode enabled */
++			if (i & MC_SPLIT_F)
++				break;
++
++			val = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
++			add_debugfs_mem(adap, "mc1", MEM_MC1,
++					T7_EXT_MEM1_SIZE_G(val));
++			break;
+ 		}
 +	}
-+	default:
-+		return -EOPNOTSUPP;
-+	}
+ 
+-		if (i & HMA_MUX_F) {
+-			size = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
++	if (i & HMA_MUX_F) {
++		switch (chip) {
++		case CHELSIO_T4:
++		case CHELSIO_T5:
++			/* No support for hma */
++			break;
++		case CHELSIO_T6:
++			val = t4_read_reg(adap, MA_EXT_MEMORY1_BAR_A);
++			add_debugfs_mem(adap, "hma", MEM_HMA,
++					EXT_MEM_SIZE_G(val));
++			break;
++		default:
++			val = t4_read_reg(adap, MA_HOST_MEMORY_BAR_A);
+ 			add_debugfs_mem(adap, "hma", MEM_HMA,
+-					EXT_MEM1_SIZE_G(size));
++					T7_HMA_SIZE_G(val));
++			break;
+ 		}
+ 	}
+ 
+-	debugfs_create_file_size("flash", 0400, adap->debugfs_root, adap,
+-				 &flash_debugfs_fops, adap->params.sf_size);
++	create_debugfs_file_entry(&f, "flash", &flash_debugfs_fops, 0400, 0);
++	add_debugfs_file_size(adap, adap->debugfs_root, &f,
++			      adap->params.sf_size);
++
+ 	debugfs_create_bool("use_backdoor", 0600,
+-			    adap->debugfs_root, &adap->use_bd);
++			adap->debugfs_root, &adap->use_bd);
+ 	debugfs_create_bool("trace_rss", 0600,
+-			    adap->debugfs_root, &adap->trace_rss);
++			adap->debugfs_root, &adap->trace_rss);
 +	return 0;
 +}
 +
-+static int cxgb_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
-+			       void __user *data, int cmd)
++/*
++ * Add an array of Debug FS files.
++ */
++static void cxgb4_add_debugfs_files(struct adapter *adap,
++				    struct t4_linux_debugfs_entry *files,
++				    unsigned int nfiles)
 +{
-+	return cxgb_extension_ioctl(dev, data);
++	int i;
++
++	/* debugfs support is best effort */
++	for (i = 0; i < nfiles; i++)
++		add_debugfs_files(adap, adap->debugfs_root, 0, &files[i], 1);
 +}
 +
- static int cxgb_ioctl(struct net_device *dev, struct ifreq *req, int cmd)
- {
- 	unsigned int mbox;
-@@ -3866,6 +4107,7 @@ static const struct net_device_ops cxgb4_netdev_ops = {
- 	.ndo_set_features     = cxgb_set_features,
- 	.ndo_validate_addr    = eth_validate_addr,
- 	.ndo_eth_ioctl        = cxgb_ioctl,
-+	.ndo_siocdevprivate   = cxgb_siocdevprivate,
- 	.ndo_change_mtu       = cxgb_change_mtu,
- #ifdef CONFIG_NET_POLL_CONTROLLER
- 	.ndo_poll_controller  = cxgb_netpoll,
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-index 04550a362504..742d417d2e4f 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-@@ -580,26 +580,6 @@ int t4_memory_rw_init(struct adapter *adap, int win, int mtype, u32 *mem_off,
++int cxgb4_setup_debugfs(struct adapter *adap)
++{
++	static struct t4_linux_debugfs_entry cxgb4_debugfs_files[] = {
++		{ "blocked_fl", &blocked_fl_fops, 0600 },
++#ifdef CONFIG_CHELSIO_T4_DCB
++		{ "dcb_info", &dcb_info_debugfs_fops, 0400, 0 },
++		#endif /* CONFIG_CHELSIO_T4_DCB */
++		{ "resources", &resources_fops, 0400, 0 },
++		{ "sge_qinfo", &sge_qinfo_debugfs_fops, 0400, 0 },
++		{ "clip_tbl", &clip_tbl_fops, 0400, 0 },
++		{ "tids", &tid_info_fops, 0400, 0 },
++		{ "trace0", &mps_trc_debugfs_fops, 0600, 0 },
++		{ "trace1", &mps_trc_debugfs_fops, 0600, 1 },
++		{ "trace2", &mps_trc_debugfs_fops, 0600, 2 },
++		{ "trace3", &mps_trc_debugfs_fops, 0600, 3 },
++		{ "l2t", &t4_l2t_fops, 0400, 0 },
++		{ "crypto", &chcr_stats_fops, 0400, 0 },
++	};
++
++	static struct t4_linux_debugfs_entry cxgb4_t7_debugfs_files[] = {
++		{ "trace4", &mps_trc_debugfs_fops, 0600, 4 },
++		{ "trace5", &mps_trc_debugfs_fops, 0600, 5 },
++		{ "trace6", &mps_trc_debugfs_fops, 0600, 6 },
++		{ "trace7", &mps_trc_debugfs_fops, 0600, 7 },
++	};
++
++	if (IS_ERR_OR_NULL(adap->debugfs_root))
++		return -1;
++
++#ifdef CONFIG_DEBUG_FS
++	t4_setup_debugfs(adap);
++#endif
++
++	cxgb4_add_debugfs_files(adap, cxgb4_debugfs_files,
++				ARRAY_SIZE(cxgb4_debugfs_files));
+ 
++	if (CHELSIO_CHIP_VERSION(adap->params.chip) >= CHELSIO_T7)
++		cxgb4_add_debugfs_files(adap, cxgb4_t7_debugfs_files,
++					ARRAY_SIZE(cxgb4_t7_debugfs_files));
  	return 0;
  }
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.h b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.h
+index 1471cf0deb58..77a0ed068baa 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.h
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_debugfs.h
+@@ -37,7 +37,13 @@
  
--/**
-- * t4_memory_update_win - Move memory window to specified address.
-- * @adap: the adapter
-- * @win: PCI-E Memory Window to use
-- * @addr: location to move.
+ #include <linux/export.h>
+ 
+-struct t4_debugfs_entry {
++struct t4_linux_debugfs_data {
++	struct adapter *adap;
++	unsigned int data;
++	unsigned char coreid;
++};
++
++struct t4_linux_debugfs_entry {
+ 	const char *name;
+ 	const struct file_operations *ops;
+ 	umode_t mode;
+@@ -61,10 +67,9 @@ struct seq_tab *seq_open_tab(struct file *f, unsigned int rows,
+ 			     unsigned int width, unsigned int have_header,
+ 			     int (*show)(struct seq_file *seq, void *v, int i));
+ 
+-int t4_setup_debugfs(struct adapter *adap);
+-void add_debugfs_files(struct adapter *adap,
+-		       struct t4_debugfs_entry *files,
+-		       unsigned int nfiles);
++void add_debugfs_files(struct adapter *adap, struct dentry *dentry,
++		       unsigned char coreid, struct t4_linux_debugfs_entry *f,
++		       unsigned int n);
+ int mem_open(struct inode *inode, struct file *file);
+-
++int cxgb4_setup_debugfs(struct adapter *adap);
+ #endif
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index a3b1f9db5cbe..563a0ee1ce2c 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -7190,7 +7190,7 @@ int cxgb4_adap_probe(struct adapter *adapter)
+ 		const char *dir_name = pci_name(adapter->pdev);
+ 
+ 		adapter->debugfs_root = debugfs_create_dir(dir_name, cxgb4_debugfs_root);
+-		t4_setup_debugfs(adapter);
++		cxgb4_setup_debugfs(adapter);
+ 	}
+ 
+ 	if (is_uld(adapter))
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index 742d417d2e4f..fc61ece3be7b 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -6521,7 +6521,7 @@ static bool ulprx_intr_handler(struct adapter *adap, int arg, bool verbose)
+ 	if (CHELSIO_CHIP_VERSION(adap->params.chip) <= CHELSIO_T5)
+ 		ulprx_intr_info.details = ulprx_intr_details;
+ 	else if (CHELSIO_CHIP_VERSION(adap->params.chip) <= CHELSIO_T6)
+-		ulprx_intr_info.details =  t6_ulprx_int_cause_details;
++		ulprx_intr_info.details = t6_ulprx_int_cause_details;
+ 	else
+ 		ulprx_intr_info.details = t7_ulprx_int_cause_details;
+ 
+@@ -14245,22 +14245,6 @@ int t4_read_cim_ibq_core(struct adapter *adap, u8 coreid, u32 qid, u32 *data,
+ 	return i;
+ }
+ 
+-/*
+- *	t4_read_cim_ibq - read the contents of a CIM inbound queue
+- *	@adap: the adapter
+- *	@qid: the queue index
+- *	@data: where to store the queue contents
+- *	@n: capacity of @data in 32-bit words
 - *
-- * Move memory window to specified address.
+- *	Reads the contents of the selected CIM queue starting at address 0 up
+- *	to the capacity of @data.  @n must be a multiple of 4.  Returns < 0 on
+- *	error and the number of 32-bit words actually read on success.
 - */
--void t4_memory_update_win(struct adapter *adap, int win, u32 addr)
+-int t4_read_cim_ibq(struct adapter *adap, unsigned int qid, u32 *data, size_t n)
 -{
--	t4_write_reg(adap,
--		     PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A, win),
--		     addr);
--	/* Read it back to ensure that changes propagate before we
--	 * attempt to use the new value.
--	 */
--	t4_read_reg(adap,
--		    PCIE_MEM_ACCESS_REG(PCIE_MEM_ACCESS_OFFSET_A, win));
+-	return t4_read_cim_ibq_core(adap, 0, qid, data, n);
+-}
+-
+ static int t4_read_cim_obq_data_core(struct adapter *adap, u8 coreid, u32 addr,
+ 				     u32 *data)
+ {
+@@ -14320,22 +14304,6 @@ int t4_read_cim_obq_core(struct adapter *adap, u8 coreid, u32 qid, u32 *data,
+ 	return i;
+ }
+ 
+-/*
+- * t4_read_cim_obq - read the contents of a CIM outbound queue
+- * @adap: the adapter
+- * @qid: the queue index
+- * @data: where to store the queue contents
+- * @n: capacity of @data in 32-bit words
+- *
+- * Reads the contents of the selected CIM queue starting at address 0 up
+- * to the capacity of @data.  @n must be a multiple of 4.  Returns < 0 on
+- * error and the number of 32-bit words actually read on success.
+- */
+-int t4_read_cim_obq(struct adapter *adap, unsigned int qid, u32 *data, size_t n)
+-{
+-	return t4_read_cim_obq_core(adap, 0, qid, data, n);
 -}
 -
  /**
-  * t4_memory_rw_residual - Read/Write residual data.
-  * @adap: the adapter
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h
-index 13c56fedfc5c..6f45f68e4299 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.h
-@@ -80,6 +80,7 @@ enum ctxt_type {
- 	CTXT_INGRESS,
- 	CTXT_FLM,
- 	CTXT_CNM,
-+	CTXT_MAX,
- };
+  * t4_cim_read_core - read a block from CIM internal address space
+  * of a control register group on specific core.
+@@ -14433,21 +14401,6 @@ int t4_cim_write_core(struct adapter *adap, u8 group, u8 coreid,
+ 	return ret;
+ }
  
- enum {
+-/**
+- *	t4_cim_write - write a block into CIM internal address space
+- *	@adap: the adapter
+- *	@addr: the start address within the CIM address space
+- *	@n: number of words to write
+- *	@valp: set of values to write
+- *
+- *	Writes a block of 4-byte words into the CIM intenal address space.
+- */
+-int t4_cim_write(struct adapter *adap, unsigned int addr, unsigned int n,
+-		 const unsigned int *valp)
+-{
+-	return t4_cim_write_core(adap, 0, 0, addr, n, valp);
+-}
+-
+ /**
+  *	t4_cim_read_la_core - read CIM LA capture buffer on specific core
+  *	@adap: the adapter
+@@ -14530,21 +14483,6 @@ int t4_cim_read_la_core(struct adapter *adap, u8 coreid, u32 *la_buf,
+ 	return ret;
+ }
+ 
+-/**
+- *	t4_cim_read_la - read CIM LA capture buffer
+- *	@adap: the adapter
+- *	@la_buf: where to store the LA data
+- *	@wrptr: the HW write pointer within the capture buffer
+- *
+- *	Reads the contents of the CIM LA buffer with the most recent entry at
+- *	the end	of the returned data and with the entry at @wrptr first.
+- *	We try to leave the LA in the running state we find it in.
+- */
+-int t4_cim_read_la(struct adapter *adap, u32 *la_buf, unsigned int *wrptr)
+-{
+-	return t4_cim_read_la_core(adap, 0, la_buf, wrptr);
+-}
+-
+ /**
+  *	t4_tp_read_la - read TP LA capture buffer
+  *	@adap: the adapter
 -- 
 2.39.1
 
