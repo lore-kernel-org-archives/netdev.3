@@ -1,245 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756195505C2;
-	Wed, 14 Oct 2026 16:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791996277; cv=none; b=LgDRldvvkDEWZxQQSbcRAL6ohw3fN83jV/KIIHDEL8JL62aw6NfqWkum0bEsPY/d/S72FQHwhC8A+4ICJqxIyhDOrDdgVRwr8WfnvsejHnjLuLxua+/Pgy7lkilhGeUAnDlkzm6az/3vHv9W69WcPHHkR/ega2/UcjpKkF7NJSg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791996277; c=relaxed/simple;
-	bh=8P7SJHcSYOw5JSY/nnJb9EuSGTBEOwXJIo2/lEXq9T8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PkNChtmCIWvn5xOiX5lW6u17P4AVHt/6jc0bRNJW4SuUg/3k+sj5FuP0ls/9t0t4xaKNcUDFa/vvgXhI608PdpDU1JvoQ3gxyd5xbC8QURDP9G2uIuyJHYNk4TwyjBwEq1cg5PA95Vyl2ifQnQTlsbVZ20cSnqK71606BwiiNgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ep315XNi; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6308C560ADA
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791996752; cv=pass; b=inHxNDMiSKhxexEFChhDT6xLKS3ASvF+a9XFQ3p8mJUlC42vO7KSmd9XmYChnWbAeDOlTEdjr3/Kgtv6+w//iGD67rog8QmtyfsZ3UiIObO+JkEpR6mLpDPgwjSb24ycpAyZxTHsidS8PlSWo4Lth92FffPkWSxVweYIsCMeLpY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791996752; c=relaxed/simple;
+	bh=fQ50eGlFnjMQI2C3GaRdlcFw09nmY23Q11yUL7SlD5I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AaAwBXV5/amnnNKHgTsNgUfUhLZMB5xXwY8GxqEXynk4vZSGuZAW2hNfVNeNLwZ8FonNPprSLSWzA5Gf1wASZrOeGHh3izfsiqHLX6pVzUDnWiz42UBDNvgajWIOivtLvd3rChD+BFdk6tESwtUQVbrAGntkmY6L1yjBZXXKnPU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=cIqhkAJt; arc=pass smtp.client-ip=74.125.82.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ep315XNi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324A71F000CE;
-	Wed, 14 Oct 2026 16:44:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791996276;
-	bh=GWhJq/1R6+HWndzsyOvpydL/Jcy4VCioKQ6402YATvY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ep315XNi4vdI4OVim8vklEJQHg/Fi4oOfQBEKbQCKCe+lXf0huWHf7Ygb9ZRz4Thh
-	 tBHs9FMTu19rVLyHPtglvef8lwC6w2XSylEvTAmWGYEKHF/cdeX3ST5RIJGDgYfSuE
-	 Svxza1o5FLg7mc2DsyL6+0i7zKMHktSnrGG+5Trx+LXxiax0vHMnrXurVghZQdjuMy
-	 7Eqsks0D0E0Qr6JIofgsGvhfdzLew86YTx9WTUIW5a7zBU/+yxQEQbrIsKjzAANL9E
-	 +cqUJwVlrddH3lsl98atJs9+6WsZW0WsM8UNh2qf5kDdbOSZR/jbOaq2zQrAu73Oko
-	 /eS7aNh/qWAkw==
-Date: Wed, 14 Oct 2026 17:44:31 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"ratbert@faraday-tech.com" <ratbert@faraday-tech.com>,
-	"edumazet@kernel.org" <edumazet@kernel.org>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>,
-	"linux@armlinux.org.uk" <linux@armlinux.org.uk>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: =?utf-8?B?5Zue6KaGOiDlm57opoY6IOWbng==?=
- =?utf-8?B?6KaGOiBbUEFUQ0ggbmV0LW5leA==?= =?utf-8?Q?t?= v2 1/6] dt-bindings:
- net: ftgmac100: Add AST2700 compatible
-Message-ID: <20261014-smog-runny-75f5f1370bd2@spud>
-References: <20261006-support_ast2700-v2-1-36de51fb8066@aspeedtech.com>
- <179161911824.434549.4075299707625994950@kernel.org>
- <20261012-aide-wimp-4edf96aaca1d@spud>
- <SEYPR06MB51346A6CB5D7D7FC6D3FC4DD9D9E2@SEYPR06MB5134.apcprd06.prod.outlook.com>
- <20261013-subwoofer-zestfully-fe98c6158ba9@spud>
- <SEYPR06MB513411BA847E7973291259959D9D2@SEYPR06MB5134.apcprd06.prod.outlook.com>
- <20261014-buffing-gilled-91576ce86eaa@spud>
- <SEYPR06MB513426D89C46D45519406E219D9D2@SEYPR06MB5134.apcprd06.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="cIqhkAJt"
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-33bf40b0c8bso1290921eec.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:52:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791996749; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YahuuGsDjtLjwQNAq8clyEYjabSIy0Niepiw6UpTIf1WCniYMH+vlTMkxrxU2KwEgW
+         KhmrQCUfUrYEn96SWzJuKn7fjV3MjBbMBHzq0ayWv0FqqHF9oFx5C2DXbFuflK4VJg8Q
+         EJa19UrIHbD5MTQUqjqbbCIJBhew9vMZ11l7OnarDsw1/0yoSsC7twUKKs072ylMvkwC
+         ov3BczoGPlCeeFWPj5W1r5TbK4xJ1XxHOkLUrMoH7uWXMZ6GPMB8yFf0FmBzT1Nhwbci
+         /5E46sndNFX0YLyAktLfzET8+tk68RHkxq32DcSVlfWtVMgmsd5B2Dyq4f4FVTZnLRfe
+         rZig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=SWLwZ/p70zDk5tHBhgiTHN/1ZMG5p4KgHwoBBSKxoBM=;
+        fh=PNsDauZi+l/vd+UP0fo8xNsB5PntbYgVeTEMD6hg5II=;
+        b=q544SeVFriFr5If7xb3whjX00trMdbUui0rhreSDDGEDvAx4K81g8alvNiEwpvmVyR
+         e4HNkxh6z9BImDNuYWOfscf+BWe/9MNMX3AGWmLvpfoMAL6X4HzaGi+9fd2+3O374yFL
+         zDzUXocNAQXuO7eT+wYPhqdn/zd3QvmmD+FVgKFZVW6+8BPaNP7XysOQ9MjZ9z+IfM4R
+         dX8IRjceBav+SeldBhMvj1uWBf8c7/zByMxBqJdfdJs8apowHkqLRRMLZ3cGF0w6CWjb
+         MMIMK6CY5jrVyIjVnUQoeyLm3KS8MbYdkwAoCawdgmAUVY0vJda4wAG0GEK3bgEs2OuO
+         u2XA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda.com; s=google; t=1791996749; x=1792601549; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SWLwZ/p70zDk5tHBhgiTHN/1ZMG5p4KgHwoBBSKxoBM=;
+        b=cIqhkAJtHmT03n2ZEgG8w4wzPyqXgS0tO+5FPE0Ijiuk5wj2XwI84XFWd0i4Vc7TXg
+         kFDiRMoW3XYsxxKDS5EjN84s4sc1+2cceZ1KakpWldZFyeRMMfzl/gV6uTka0p/ks7gI
+         H2hGLpArpHVzQrPUuBnAPvsjQJOHIS2HgT8d/fqOLKEnaKfYQb6yaQsCEnAERJSdIDqB
+         3uTklSzvtA0WwbMzDPeMUTbDt8c7NVVUqdch7WFB+AhRJP0/3pEKvK4dpT/lDM+0bEPA
+         zQ6a5NS2siQjSjLHvhxtR1xI24TbhiHMwCI5s05O8LFtnksRrNU7sRcMgCwksiRPLoMV
+         KoQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791996749; x=1792601549;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SWLwZ/p70zDk5tHBhgiTHN/1ZMG5p4KgHwoBBSKxoBM=;
+        b=XKRWADFIRXkcrxSLybZdBvFRjlhZNaCFH043y3EklOLusiIkB0ZtCZa+162zdIHxvV
+         BXafy6BdIQpZ4n29e5df4ZcluWdTvLcFyXKHJ9WNfqIFuw7QUcT4PTN3eTlzLSCnqYn/
+         naVRaDlZzXPgN+GVc0EOGQEoYOoeN5R+Sw+m2ZlKAeaGr/P6Ko0WS+2FvTX6T+Z0XIdh
+         mPSADVGyXRf1s7Q1dLgesTBT8Fs8iHoKSgCMhZSZ+5+2tJbWidJu02qrp3z1mmMq8bqh
+         BPA2OKMiSf3NnJGhQrbmknMJm0uvyY0dq+yBe7efkZxPL6GMaNbc1zi3n+0PI0PW38or
+         oHXw==
+X-Forwarded-Encrypted: i=1; AKwUvBzyjxfnlSCR3HcuhTuFVR0me8jgiYwNRw1dyU/m0yQTp96xeCl7EBluyvucl/+mZTvua8oGW8k=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLYK0nzSFRRBOzEG00Bkhcq9f/lWC7a+u8VBrg58c1hBU/f11O/
+	IlSUhSvWlkOtKKs6U7SjI1pKeICtfL/ddeMfh2r4pgdj25HAGw88W9qrZOq9XxJMN2bJDaQmo+1
+	D3R9MAY010Vxfj6MsbyIKTRbAfe4kss7d2UqszODAGg==
+X-Gm-Gg: AYBFou2ypz3Op3X4HGY8DtVz0AEE8yk/46bbdET19BKJRBT787oeuNi6/wRVQ3mOB1M
+	82sCdCeZcsyBaRlDIjejJ8sSf8t8F1wBuIVY2p69X5hyEzI892yci5nOsU+ufLfAZgAGquX89Gt
+	sz3MIX3N4Jt19EFd0+1CN+l8h4JFmenxWdEuB44CU0El1Ww8cfNGwj7BDRWfxOc1yrG7dvO+2cq
+	yGp2q+NXoO8Xu1TePKNSilGbcNmUS9zVsMHk62LWOzkNxp25aOicSyG7w99fMBSV0wKu7jfATy2
+	ypc+YhnBbXM7JigE9dVkxU/fHUZzAv60C+Q01Neuz9JNo1aFDvcfBVQ1LpBa9N7ynkfb6V6dqIy
+	8yll/HTUueoCPBQ==
+X-Received: by 2002:a05:693c:87c7:20b0:351:516f:7576 with SMTP id
+ 5a478bee46e88-3537e01e8a0mr23272919eec.10.1791996749365; Wed, 14 Oct 2026
+ 09:52:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="AysUfoOGaDSmX+kK"
-Content-Disposition: inline
-In-Reply-To: <SEYPR06MB513426D89C46D45519406E219D9D2@SEYPR06MB5134.apcprd06.prod.outlook.com>
-
---AysUfoOGaDSmX+kK
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
+ <20261014135154.05de968e@pumpkin> <179198668564919.2.10323410751655182155@toxicpanda.com>
+ <20261014173042.0a74a25d@pumpkin>
+In-Reply-To: <20261014173042.0a74a25d@pumpkin>
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Wed, 14 Oct 2026 12:52:17 -0400
+X-Gm-Features: AclHuK-GYay-AQwoTupL5qC9wZ92QZPzmV0dk65w2lPnhQBw10ayUmM8aY0IhLk
+Message-ID: <CAEzrpqd9Pna32K8i5Ug3tP+ZiRa7-0GmyX+sn=OwbZ_3osEAsQ@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits() report
+ unreadable frags
+To: David Laight <david.laight.linux@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Mina Almasry <almasrymina@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 10:24:47AM +0000, Jacky Chou wrote:
-> > > > > > > > @@ -18,6 +18,7 @@ properties:
-> > > > > > > >                - aspeed,ast2400-mac
-> > > > > > > >                - aspeed,ast2500-mac
-> > > > > > > >                - aspeed,ast2600-mac
-> > > > > > > > +              - aspeed,ast2700-mac
-> > > > > > > >            - const: faraday,ftgmac100
-> > > > > > >
-> > > > > > > [Severity: Low]
-> > > > > > > With this patch, "aspeed,ast2700-mac", "faraday,ftgmac100"
-> > > > > > > becomes a valid compatible pair. However, at this commit,
-> > > > > > > ftgmac100_of_match[] in
-> > > > > > > drivers/net/ethernet/faraday/ftgmac100.c
-> > > > > > > has no aspeed,ast2700-mac
-> > > > > > entry.
-> > > > > > > Such a node could only bind through the generic
-> > > > > > > faraday,ftgmac100 entry (FTGMAC100_FARADAY).
-> > > > > > >
-> > > > > > > On that path, ftgmac100_probe() would do the following:
-> > > > > > >
-> > > > > > >   - program the ring-end bits at BIT(15) instead of the Aspeed
-> > BIT(30)
-> > > > > > >   - leave is_aspeed false, so ftgmac100_setup_clk() never cla=
-ims
-> > > > > > >     MACCLK/RCLK
-> > > > > > >   - register the embedded MDIO bus through
-> > ftgmac100_setup_mdio()
-> > > > > > >   - never set a DMA mask wider than 32 bits
-> > > > > > >
-> > > > > > > Would an AST2700 node work correctly if it fell back to the
-> > > > > > > Faraday match?
-> > > > > >
-> > > > > > Sounds like no, can the submitter please clarify if the fallbac=
-k is valid?
-> > > > > >
-> > > > >
-> > > > > Agreed. I think the 'aspeed,ast2700-mac' should not be based on
-> > > > > the
-> > > > 'faraday,ftgmac100'.
-> > > > > Maybe the dt-bindings put ast2700-mac as a const like:
-> > > > > ```
-> > > > > ...
-> > > > > properties:
-> > > > >   compatible:
-> > > > >     oneOf:
-> > > > >       - const: faraday,ftgmac100
-> > > > >       - const: aspeed,ast2700-mac             // as a const
-> > > > >       - items:
-> > > > >           - enum:
-> > > > >               - aspeed,ast2400-mac
-> > > > >               - aspeed,ast2500-mac
-> > > > >               - aspeed,ast2600-mac
-> > > > >           - const: faraday,ftgmac100
-> > > >
-> > > > Looks good. I am curious whether the existing fallbacks used with
-> > > > other aspeed devices are also inaccurate? Could be worth looking in=
-to?
+On Wed, Oct 14, 2026 at 12:30=E2=80=AFPM David Laight
+<david.laight.linux@gmail.com> wrote:
+>
+> On Wed, 14 Oct 2026 14:04:45 +0000
+> Josef Bacik <josef@toxicpanda.com> wrote:
+>
+> > On Wed, Oct 14, 2026 at 01:51:54PM +0100, David Laight wrote:
+> > > Can't you use that fact that the csum function should only return
+> > > either 0 or ~0 and use the other value to indicate an error.
 > > >
-> > > Thanks for digging into this further.
-> > >
-> > > I went back to the current driver to confirm the exact bit
-> > > (drivers/net/ethernet/faraday/ftgmac100.c, ftgmac100_probe()):
-> > >
-> > > if (priv->mac_id =3D=3D FTGMAC100_AST2400 ||
-> > >     priv->mac_id =3D=3D FTGMAC100_AST2500 ||
-> > >     priv->mac_id =3D=3D FTGMAC100_AST2600 ||
-> > >     priv->mac_id =3D=3D FTGMAC100_AST2700) {
-> > >         priv->rxdes0_edorr_mask =3D BIT(30);
-> > >         priv->txdes0_edotr_mask =3D BIT(30);
-> > >         priv->is_aspeed =3D true;
-> > > } else {
-> > >         priv->rxdes0_edorr_mask =3D BIT(15);
-> > >         priv->txdes0_edotr_mask =3D BIT(15); }
-> > >
-> > > So it's actually BIT(30) for all Aspeed variants
-> > > (AST2400/2500/2600/2700), vs
-> > > BIT(15) for the plain Faraday IP =E2=80=94 not BIT(16). The conclusio=
-n still
-> > > holds either
-> > > way: none of the Aspeed compatibles can safely fall back to
-> > > faraday,ftgmac100 alone, since the driver would mark the wrong bit as
-> > > end-of-ring in rxdes0, and the MAC would walk past the end of the RX
-> > > descriptor ring instead of wrapping, exactly as you described.
-> > >
-> > > That said, I don't think we should extend the same fix to
-> > > AST2400/2500/2600 in this series. AST2700 is a brand-new compatible
-> > > with no existing devicetree using it, so making it a standalone const
-> > > (compatible =3D "aspeed,ast2700-mac" only) has zero migration cost.
-> > >
-> > > AST2400/2500/2600 are different: every upstream devicetree already
-> > > declares the pair, e.g. aspeed-g6.dtsi:
-> > >
-> > > compatible =3D "aspeed,ast2600-mac", "faraday,ftgmac100";
-> > >
-> > > If we turn aspeed,ast2600-mac (etc.) into a standalone const in the
-> > > oneOf, the schema would only accept a single-element compatible array,
-> > > which would break make dtbs_check for every existing AST2400/2500/2600
-> > > board devicetree. We'd also need to strip the faraday,ftgmac100
-> > > fallback from aspeed-g4.dtsi, aspeed-g5.dtsi, aspeed-g6.dtsi (and any=
-thing
-> > inheriting from them) =E2=80=94 a much bigger, unrelated change.
-> > >
-> > > It's also not fixing a live bug: ftgmac100_of_match[] only had the
-> > > generic
-> > > faraday,ftgmac100 entry until Feb 2026 (commit 03a2aba50b2c), when the
-> > > Aspeed-specific of_device_id rows for AST2400/2500/2600 were added as=
- a
-> > refactor.
-> > > Before that, the driver always bound through the generic fallback
-> > > string and used
-> > > of_device_is_compatible() internally in probe() to pick the right
-> > > EDORR bit / clocks / MDIO. So there's never been a real kernel +
-> > > devicetree combination where an
-> > > AST2400/2500/2600 node bound through the generic entry and got the
-> > > wrong EDORR bit =E2=80=94 the pairing has been safe in practice.
-> > >
-> > > So I'd suggest leaving AST2400/2500/2600 as-is (paired with the
-> > > fallback, same as
-> > > today) and keeping the standalone-const treatment scoped to AST2700
-> > > only, since that's the one case where the binding and match table gen=
-uinely
-> > diverge right now.
-> >=20
-> > It's wrong, and there's no pain involved in fixing it (just have to sen=
-d patches),
-> > so I think it should be fixed. Breaking dtbs_check isn't an excuse to n=
-ot fix
-> > things, we "break" it all the time adding new devices etc.
->=20
-> Fair enough =E2=80=94 you're right that "it breaks dtbs_check" isn't a re=
-ason not to fix it, and if the=20
-> EDORR bit mismatch is real for AST2400/2500/2600 too, it should be fixed =
-properly rather=20
-> than left as a known landmine.
->=20
-> I'll prepare a follow-up series for this:
->=20
-> - dt-bindings: net: ftgmac100: make aspeed,ast2400/2500/2600-mac standalo=
-ne consts
->   (drop the faraday,ftgmac100 fallback requirement, same shape as the AST=
-2700 fix here)
-> - ARM: dts: aspeed: drop the faraday,ftgmac100 fallback compatible from
->   aspeed-g4.dtsi / aspeed-g5.dtsi / aspeed-g6.dtsi
->=20
-> I'd like to keep it as a separate series rather than folding it into this=
- one, since the
-> dtsi changes go through the Aspeed/arm-soc tree rather than net-next, and=
- I'd rather not
-> block this AST2700 series on cross-tree coordination. I'll send it as a f=
-ollow-up once
-> this series lands (or in parallel, if that's preferred) =E2=80=94 let me =
-know if you'd rather
-> see it done differently.
+> > > ISTR this coming up before with the 'copy_to/from_user_and_csum' code=
+.
+> >
+> > skb_copy_and_csum_bits() returns an unfolded __wsum starting from 0, so
+> > 0 is a valid result today.  It would work if it started from ~0 the way
+> > csum_and_copy_from_user() does, since that doesn't change the folded
+> > result and the sum can never come out as 0.
+>
+> The result can only be 0 if either the length is zero or all the bytes
+> are zero.
+> You can probably prove that is never required.
+> It is likely better to initialise the csum to either 0xffff or ~0.
+>
+> IIRC both IPv4 and IPv6 complement the checksum before sending it.
+> For IPv6 a zero is invalid (it means checksum not calculated for IPv4),
+> I think the best was to achieve that is to initialise the csum to 1
+> and then add 1 after inverting it.
+>
+> > But this is one of those "you have to know the behavior of the function
+> > to use it properly." Explicit errors are always better, it removes
+> > ambiguity and creates cleaner and less error prone code. I'm happy to
+> > change it to start with ~0 as well to add the extra protection, but
+> > explicit errors are always best. Thanks,
+>
+> Look at all the places ERR_PTR() gets used.
+> An in-band error indication gives better code and is probably less buggy!
+>
 
-I'd fix the binding here, since you're gonna generate conflicts with
-yourself otherwise. The dts changes need to be sent separately anyway
-(or at least applied separately) since binding changes don't go via soc
-maintainers.
+...ERR_PTR would be fine too? I'm arguing for explicit return values,
+not "0 means failure". But I don't care enough to argue, I'm
+respinning. Thanks,
 
---AysUfoOGaDSmX+kK
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCas+xbwAKCRB4tDGHoIJi
-0n4XAQC/vpFXlrqYYxFRyP5O1UZSrVT66Z0RtZrn4N9W8vXGXgEA6Rpzuk1DX4+p
-S3y8ajBPXBIEI2sRavXKPvQtOuZZfAE=
-=1oCZ
------END PGP SIGNATURE-----
-
---AysUfoOGaDSmX+kK--
+Josef
