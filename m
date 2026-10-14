@@ -1,90 +1,151 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290782DF12F;
-	Wed, 14 Oct 2026 21:41:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8070F480356;
+	Wed, 14 Oct 2026 22:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792014088; cv=none; b=FAaVJVRb1dCgUFfjU2QJZlQbXiI8rpVgWU/UI1LbGZ2jiHDWheWbr9QmmJlsI8LUhK9wLy3DD7ktOQr/I5o/6wi+tPp94N1frR/6TYvDbL7fBV9dL1+Ud7Ze4Ip3t5aTfhPqrpFkevuPH+WuHYAjS6bnV07vtSZ63PB3ty0BTwE=
+	t=1792015293; cv=none; b=eNuM0V1u94NeMP0aug5T9LCHMxL2UF93BIj148W245cW1EzV3byYOA1BabMMaJWCTTx5TmXThWxQXAAfpGV52sgvizdRMwDNS9qBVmJ2AYSBK9CY/f0QAKzsOlQJp7rB6UNpS/TfG9TzrTWO4ebCByyHpI6HiL9UHVKzGeLqG+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792014088; c=relaxed/simple;
-	bh=mAVTMRFo1vjrXJKjZ4GB8UYm7iHtkcIECw9ZALxMtYc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=knYB2Sl0WGoGmCPH03Sg+QsGNtvqW1CtDDSggRd7/61rDwmM3YrExqmh0+bGO0xzhrTh9KQb2/Ahey/5LjWZCRfJAf1uVjMuEEVCXSSbONZHCaQ/7xriQZczZ7PvOYYCrW/NBI4Bc/b1u0Zig5anNAG10jHpt6RWS/2k6hyjb0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ywNCF0IY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vTwg8sks; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1792015293; c=relaxed/simple;
+	bh=K7ErMmg4iIXxElL/loaoTPxck/WbvlAZVoaymLW7RZg=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=H92F1f2GdFx0AphHOOxhgIP12UggrtdmKxR/ToCegpCTNHbi3VFrNPBa1+4fmZqFvfd4x4eaf9J8nOJ75c51nbvgmuDPiETvuByqb6utL8GH+QvnNCvOO7LOwaeDpV20csi8SaQ+gFSU477DHBZSjXFm6ciSaJFCiRfakMNfkTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=b2+43mxV; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=Qu00wAxp; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ywNCF0IY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vTwg8sks"
-Date: Wed, 14 Oct 2026 23:41:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1792014084;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="b2+43mxV";
+	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="Qu00wAxp"
+Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69EM0vkA020946;
+	Thu, 15 Oct 2026 00:01:02 +0200
+Received: from lubuntu-18.04 (host-79-32-222-240.retail.telecomitalia.it [79.32.222.240])
+	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id BD9BF1228C9;
+	Thu, 15 Oct 2026 00:00:52 +0200 (CEST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
+	s=ed201904; t=1792015253; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/L5wlkW/gq8uEhSDV4sxmEeSjlj/PBLvbAGF8LDYLuA=;
-	b=ywNCF0IYgyQ39uQPzFS1uhsGic1yRHVjC8B1AyBiQ5GHkhj2HXU3HiriIgzMI4OBkDQZOZ
-	idGMoNQyah77v3c5P94aBqqUydimVZ5Qa/1LzbqF4+naX8xQYsxV2rfKR6mVzgWxGgWsy7
-	z2NMqPXUe70/C02ZhZLzafnTrJVCMBIPGkq4+TCPO7p6QqGDtiZcxr9Mvqfkhk4qBwfXkG
-	w/B81ZGYS32RSWBgbusNDEfxmFkI6x2pesfay9VgWcq3jE5JG7pHTRuzHIP77tatSTnCXY
-	G/19s8cwSfR2UFNEzyC8Is/WL4hNzhUcGmg1hC27Wq8hIy9zZH+s0XYv3nMW7A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1792014084;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=OOqHPjPb+UnLTKnHvYlBvBRtCF+sTWDYKSjDVaWimnQ=;
+	b=b2+43mxVu/maB9IzEf+zp3XEE/OEvg5XWqTkaf/78I1ImhbIjk/suI/cC13SuUxqmPsLdq
+	RVVZttCdB9+gXuBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
+	t=1792015253; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/L5wlkW/gq8uEhSDV4sxmEeSjlj/PBLvbAGF8LDYLuA=;
-	b=vTwg8sksfd3IhYlWRxocW3c0EG5blQNywespIOQcCPYHeD1aZrF9cJftxLPwqJXKnYNcia
-	2k0tMBV7ccoV0eCg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Hidayath Khan <hidayath@linux.ibm.com>
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com, mjambigi@linux.ibm.com,
-	andrew+netdev@lunn.ch, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	pasic@linux.ibm.com, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net v3] net/smc: fix abort_work termination in
- smc_conn_free()
-Message-ID: <20261014214123.qNDtgrhJ@linutronix.de>
-References: <20261006073550.1595003-1-hidayath@linux.ibm.com>
+	bh=OOqHPjPb+UnLTKnHvYlBvBRtCF+sTWDYKSjDVaWimnQ=;
+	b=Qu00wAxptWN8f0RLV6wObqeRdugAEogGCu9WpCbKQQeGW9/0XfxF/eLpJ3rgXz2xvwLZ3h
+	QF2/axD7GNVRgzn8jj/Zreopgs27EOJadCQbeLyybyLKgkPpZE5k+fGu7T4w9xUcKxo1z/
+	ApwGN/PTi+0jN2vAEcqlJyGfFL17dXtFYOuo3kXx/yzv8wJspZ8ARlTUCahNs3Nx0Sg2vA
+	qVRmTafr3XSwyJgo5ovaPW2BXTSG8K7T1ydC2gKJWlHHlSL5yqkHBPgqzZeBUospg4zYcD
+	3gjCAaxcnfcLmiMmKQdkkEyNKC0XjlHHsvAtk2Fbc4Bf5CXGL1zjpbCm3yjU2g==
+Date: Thu, 15 Oct 2026 00:00:52 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+ <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>,
+        Simon Horman
+ <horms@kernel.org>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        Shuah Khan <shuah@kernel.org>,
+        Justin
+ Iurman <justin.iurman@gmail.com>,
+        Nicolas Dichtel
+ <nicolas.dichtel@6wind.com>,
+        Ahmed Abdelsalam <ahabdels@cisco.com>,
+        Stefano
+ Salsano <stefano.salsano@uniroma2.it>, andrea@common-net.org,
+        Andrea Mayer
+ <andrea.mayer@uniroma2.it>
+Subject: Re: [PATCH net-next 3/5] seg6: apply the PSP flavor together with
+ NEXT-C-SID in SRv6 End
+Message-Id: <20261015000052.7731f972b28eb12ab57dd93c@uniroma2.it>
+In-Reply-To: <asyXpWXMeKnPw9U6@fedora>
+References: <20261011192310.55-1-andrea.mayer@uniroma2.it>
+	<20261011192310.55-4-andrea.mayer@uniroma2.it>
+	<asyXpWXMeKnPw9U6@fedora>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261006073550.1595003-1-hidayath@linux.ibm.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
 
-On 2026-10-06 09:35:50 [+0200], Hidayath Khan wrote:
-> --- a/net/smc/smc_core.c
-> +++ b/net/smc/smc_core.c
-> @@ -1251,9 +1251,13 @@ static void smc_buf_unuse(struct smc_connection *conn,
->  	}
->  }
->  
-> -/* remove a finished connection from its link group */
-> +/* remove a finished connection from its link group.
-> + * Must be called with the socket lock held: conn->freed is what disarms
-> + * a pending or running abort_work, and both are set and tested under it.
-> + */
+On Mon, 12 Oct 2026 16:17:41 +0800
+Hangbin Liu <hangbin.liu@linux.dev> wrote:
 
-If so, sock_owned_by_me(conn->sk) would verify it at runtime, right?
+> [snip]
+> > +static bool seg6_flv8986_enabled(__u32 fops)
+> > +{
+> > +	return fops & SEG6_LOCAL_FLV8986_SUPP_OPS;
+> > +}
+> > +
+> > +/* check whether the NEXT-C-SID processing has to be used for the packet,
+> > + * instead of the RFC8986 flavors set for the given SRv6 End* behavior
+> > + * instance.
+> > + *
+> > + * This function returns:
+> > + *  - true, when the packet has to go through the NEXT-C-SID processing;
+> > + *  - false, when NEXT-C-SID is not configured or the packet has to be
+> > + *    processed on the basis of the RFC8986 flavors.
+> > + */
+> > +static bool seg6_use_next_csid(struct sk_buff *skb,
+> > +			       const struct seg6_flavors_info *finfo)
+> > +{
+> > +	const struct in6_addr *addr;
+> > +	__u32 fops = finfo->flv_ops;
+> > +
+> > +	if (!seg6_next_csid_enabled(fops))
+> > +		return false;
+> > +
+> > +	addr = &ipv6_hdr(skb)->daddr;
+> > +
+> > +	/* NEXT-C-SID and the RFC8986 flavors combine according to the
+> > +	 * DA.Argument (see RFC9800, sections 4.1.1 and 4.1.7):
+> > +	 *
+> > +	 *       DA.Argument   RFC8986 flavors   processing
+> > +	 *   (1) != 0          any               NEXT-C-SID only, SL unchanged
+> > +	 *   (2) == 0          none              the behavior, e.g. End
+> > +	 *   (3) == 0          one or more       the behavior with its flavors,
+> > +	 *                                       e.g. End with PSP
+> > +	 *
+> > +	 * In (2), the packet still goes through the NEXT-C-SID processing,
+> > +	 * which runs the behavior (e.g. End) when the DA.Argument is zero.
+> > +	 */
+> > +	return !seg6_flv8986_enabled(fops) ||
+> > +	       !seg6_next_csid_is_arg_zero(addr, finfo);
+> 
+> nit: based on the comment, maybe we can change the order to
+> 
+> 	return !seg6_next_csid_is_arg_zero(addr, finfo) ||
+> 	       !seg6_flv8986_enabled(fops);
+> 
+> No need to change if there is no new version patch.
+> 
+> > +}
+> 
+> [snip]
 
->  void smc_conn_free(struct smc_connection *conn)
->  {
-> +	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
->  	struct smc_link_group *lgr = conn->lgr;
->  
->  	if (!lgr || conn->freed)
+Hi Hangbin,
 
-This change looks reasonable. sashiko complains that smc_conn_create()
-will reset conn->freed. Does this make sense to you?
-I *think* the connection is cleaned up and it shouldn't happen but then
-I just started looking at this a while ago.
+thanks for the review and for the suggestion. I would prefer to keep
+this order. The table in the comment is meant to describe the cases
+rather than the order of the checks. Since testing the 32-bit flavor
+mask can be cheaper than checking the DA.Argument, I just put the mask
+test first.
 
-Sebastian
+Let me know if you see it differently.
+
+Ciao,
+Andrea
