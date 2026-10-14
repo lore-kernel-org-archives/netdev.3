@@ -1,529 +1,169 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EB75632A0
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 17:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791997415; cv=none; b=kgwU7jp5YmpyHnjclH5bstRqrTEO6tHz3D/ISHVZlBLICoIKbpwKtYJ5UBWvEgJYcVEzzL+gA8aiSm7baa4qERQvR2arZHyh+qHW/DwDKtlDhrJUFRl7Vj5h+0nWscsWXmaKBF17q3Oww7978ezdMh5p8vmTjvKllE6ude6QJdE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791997415; c=relaxed/simple;
-	bh=ZCAj5qCE+Na42wzdj6f8WjbnDJItDP+nVzDuApjn03s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YePtfVShTy/2lFKxfJ0V5YV8SsUDIWeg7DWKUGLvZCSdps0vsueh0PL5HG8LMxhSBoPW6qeOu9Y0qKeJuxNxoXWbLbGeMV62VAlI8Zqtn8uMKwsJz+M7O49zHZXNCS5kczI2jVW0qnm7MOn1Jo3LsC1RChTNYuVOHms/Pcj+vPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=k8e5fC/F; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602CF4CE690
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 17:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791997664; cv=pass; b=UuF0BWE6rNaJu3tE4w87a+EbqgmCpH2VZDN8uRwdP6wyvwpQPBdIMh1KxcwwofOlBna7ZqCdcqVq2IEHSmEEAEEbl9NAs/6BY3iv+KHctO5gVsHHMKwmVPH3qLe7nNp0+/e5T1cDIDEivBVMvhbyxV7MSTg1asWPsFKhbQGVba4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791997664; c=relaxed/simple;
+	bh=mqlHJeBfyTwlYUc3NbiaMm0Dt0eUNRbSZnH5mzrwXDU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nEU5/PW/i705BiTGQRXCObC15i9R3xAo78l0FbDuPeIjNaAO6Uv7Ke3Qd1HCMOsARRdpEnIWd9eDlAf2rmQRGB6PjP0hqcvJXuzs08vAVGosFCl33EO97DCroJXv+EPLoE3sp4IATFbykAkfSYc/wzdA7/wVXC4hu1Wbs/HUDUE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mrEYySNs; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="k8e5fC/F"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cc4dbcf2b85so640577a12.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:03:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mrEYySNs"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6acb9c018ffso7114639a12.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:07:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1791997661; cv=none;
+        d=google.com; s=arc-20260327;
+        b=W2ROs9ERlzRDNYVhWQzpKj444r1efzER/cgx1Le1a7LiRPhr0Joc55XRed5pmOCQZ6
+         7HltdRD5a0HJqSXh1P8vdODUX8GLDV3hn0G7JHbOBwSAGUspQ+5lBAtZ2LX++0dg33us
+         1FlmjWpQGCyikWp5HhgN1dlPTy89PzvvxCEvNpCSfLDn9xY2NxZGx3Eog2Mr3t+SY0JX
+         o7v1oKb19SZnl+SBMw9RUxaWpOpt4BM629wnxYMCPOwdcXMz7EoRg9tPu6gGwk3DDBTy
+         L+cO0PYatrmU2iXkfJbre80YufEGSlh7/JLdQmmnU0UdgfHgGtKpmlP51Llw0str3iLp
+         t++A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sdFd3r41M7yyc6N2ofKUYBcOXWgEzV7hB2FeJ/0r1mQ=;
+        fh=zT239D3uluY0S4SaxSt6v9qsARJBm0AH8ZIzY6AOLC8=;
+        b=g1UB+AM4+rXpXNExAl/xkaJphcUoq1hkR780/vXR5jUJrnbHVbvcZ2YW7IMzG6vrfT
+         jVQ1OOm3rntmhhP+cpgi0rGbyMmPavakwFZAV24TpVvjrmFNQm4QKvq/z0MleEM7lS9q
+         Jg+R9QEvkZcVTtY/0SC4n0fzKEwu6soxlqbdkmF1OFk9IGAMRU7JURE4qoa/Zd33jVMi
+         bNGlf2AfhStjtFYlqcXnFzjv/ouXPyKXC2P39uxlPHiZPgQ1N18nw7Vpcu/9rpiobhdK
+         PbAtnpy+MhloJeUI0xEoufkPmvpsQffxl1+qOps9BVKR4WEykAr/T75Zy8jCIHbkzfH8
+         rAXA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1791997413; x=1792602213; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ugF06mjxYvnU0C9PpIlhm3iMS0XIuy+NGR7vRCsQlXo=;
-        b=k8e5fC/FPIAO6xXFPBuZPZWRAgJ+jxppyQOJhHKYdMnKPfyZnUVjsU1kt4ElBAsrS8
-         G1eYghuy0atsC3ycXd45ZWDYJ544J5X14TK5cwr3ePguzD3yVPzP9lHOiB9eTbe4Emqu
-         7C/tNRBBvX57av/C82QI4K8aco3gYml7PeRPiS8xPplu3Yo1UENRZw4OKqsH9+zBnlaJ
-         c9IkCHkCsmZvszS+ynhaUiGOAn9eN6bTqPgL7j1gumzNcpn3VpolAp6twvPuviml8VcX
-         duuJO2uVuUvoBKmuv4TtmQnh9risb6mr5Ou/vGcdR7TQGwkEEfLIwwrJ1jhVI/tJ20K1
-         HQvQ==
+        d=gmail.com; s=20251104; t=1791997661; x=1792602461; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sdFd3r41M7yyc6N2ofKUYBcOXWgEzV7hB2FeJ/0r1mQ=;
+        b=mrEYySNsWseLC2l+53rWTlhw76X+YIL5ycc5vq0799t+s6A2x9vDqXVd9VqDf1FEy/
+         pnZpRIrts8tgLvUaCfJWhkn6oEE8u8+3Eoe8PdFt8BP0/VHtDLTW8reB4uMoRt4DkzbD
+         rUqP2G6xntA4N08A6CagNg+W73HGGEC0SpREw1oVo+SlI1q6TTPvR60ntSLIUK+d3NHg
+         pDfzIlC3Au4QYu7R04VGC/FH0ajG4Qqw5xPzJ5SXsxlclq6JB93IxHHdBqqpNi3DUaVk
+         3uyFZtd+DS/dKtimIlCO4gbQv0+rjL7Y0ykxr965BDomvtPVW/LMa//WnN8dM+Jq4l65
+         2PCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791997413; x=1792602213;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ugF06mjxYvnU0C9PpIlhm3iMS0XIuy+NGR7vRCsQlXo=;
-        b=QU3a1RQegarnlsOBXIOeKhOTBuHj4VHvwoj5wFy6WDl4frQCtzKXB2khh+qOae6IzV
-         LWk2F6wDxSs+c3pjqTcAW6IEn2MhyQz5reMpGvoHapOh51KRthjj8ZocwDqT2Ulp/qJ7
-         lmoiBkYli9AqGPg9WcKkzp4yN2o57LtH6s+gZw5l1/KLFchl8rg6Lo2Uoo1JKKnkfIRl
-         Irq8nTWyY3qVP1xVyvbyjDeKM+YJWpDC2dbJj6DCXyTZPeOexvu7Pg687sMfz3rR7Ck8
-         SN8w4Cc/RGr3CzXEwgU+bffon56lqhf8fQZEUpOMH3Z9JcqX4JOcWopv8kn292N8bvfR
-         A3Rw==
-X-Forwarded-Encrypted: i=1; AKwUvBy4XiwhKzhm0xmhq/2+eSaCZxqsJuWkW14WhnxkbnSxHbmvdh3/OAKJvELCzdGbHS0U79QcUKM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYI56sqfKRXZKZj8jXzwUMhpcFQjX+3nOzFYiTckULprmBzlUT4o
-	wCyyweBK9wNvKHAeBFUVfLrVXobEJaCtRbcBCKh4TXCoifn/nPspgG56s7oERGz2Nacl
-X-Gm-Gg: AYBFou0EPgz5sMPYkeMZ8oLaySa88xL8m4Y3o072lDCsHKxZVscuu0KGrogb8O4kBPP
-	K3XjYVdcYsa2msRk0YYM0zE7K7aaD9t3E3eUEy26rpi72/0L9CuEp0nuls5TA2vmfLDFz+8dWt6
-	YiGPO+INLem/bpML0GxmFpgxXeY6PZtYKClt4DyUsrTfbtQSaZnO22morTzJuFfRK71jT/q1uo6
-	oyj2EBrmwf3ljUFD/ewqY0L/KbVRQufjJjReU278UIsC19cE0wHIP5roPEiF9w/7pYB0LZCP+iz
-	UriqBMP3rttfGxHeNZnr1qBfgmv8KKMo6/EEopfacWltz7UZyn1L5VbdOVHrryxOlxihlO1ZLMF
-	EY03rWCJKx7i7cY/zqdeFEkSSNPmGFxJQNlYrd4/1EWqF7cnT9gL/9eLX30YK7swQZ04n1yHjzM
-	+ECg2SVa5yZiqz0BD6QUIa7A5yt3IHvavhGCm7QjDdGGaAGARwc8KlSgxAsKx6jYnLL3HQw6EpF
-	vfv1CzmJCx0B9QgVJCMl+S0S3EIP9wB5swV4Wb/
-X-Received: by 2002:a17:90b:1a90:b0:39e:6a80:dd9d with SMTP id 98e67ed59e1d1-3ab3a9aa92bmr15129591a91.36.1791997412460;
-        Wed, 14 Oct 2026 10:03:32 -0700 (PDT)
-Received: from 24c857d0c3be.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3ac94792925sm190406a91.13.2026.10.14.10.03.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 10:03:31 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org
-Cc: dhowells@redhat.com,
-	marc.dionne@auristor.com,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	pabeni@kernel.org,
-	horms@kernel.org,
-	vega@nebusec.ai,
-	root@tr0jan.top,
-	zihanx@nebusec.ai
-Subject: [PATCH net v9 3/3] rxrpc: bound DATA receive queues
-Date: Wed, 14 Oct 2026 16:58:36 +0000
-Message-ID: <4528cb16accabf1dfddb1762c8f7f5977a9383f8.1791994058.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1791994057.git.zihanx@nebusec.ai>
-References: <cover.1791994057.git.zihanx@nebusec.ai>
+        d=1e100.net; s=20260707; t=1791997661; x=1792602461;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sdFd3r41M7yyc6N2ofKUYBcOXWgEzV7hB2FeJ/0r1mQ=;
+        b=O4dU/de6hsRzLcY8pEqi0oUirq6abOx3YvQAi8BKg728CyIs0tL8O5EWrA1mIUr0hk
+         hY0bU/+Qac1oQiwhXslOX2xfUBo++VGjidV7KtvqZhscIZkDgFjjFShrrFa6LJEjuwjH
+         Og9S/M9coRtbR7JOtXP82e9O5AjjUfnL2ovhzTLaBtNcb8MdnKRT4MvoNKaQkc7qFDhG
+         EgCdmO//569k8TpUNmdEgiaiBwgNSMK5yjYkDcFwP9fn+FHnU6kytUYPK8S2eL58tFH6
+         5XyR0Cvpo7Mo3NcTzz2ClBsOk1QnfNFaU1Pha2vs1pynzRXHrsgdqNhEzPlsON7ln6tg
+         qTEA==
+X-Gm-Message-State: AFq9FYLKb+hhaD1hP0No+jlWMV+FESoBVSJmKMe1kuz4S4yvFMJlslV2
+	cc0AbWpM0OnwLG3EV1Tgf5AUGxIgDVTnWfBuEz2WRCnBJmpQ/awv7+0FKzF6tsNEBmUqQgToJeL
+	zFLao9qwNehYS6XwizwoHx94iGHpw9SU=
+X-Gm-Gg: AYBFou1wg2bHblIBlFWqYKCjwO2LE2k4rwkGYKRiED+akC+k2O9E0Kw6/TrP4TLqtNO
+	94wNd9/1phRsPcwLT/iNClThxQLawDE2rllcDiiLYTsjVevtz2B1UnT//bPWSadxmOymj5DfGXl
+	RWo5UrzK9xUqyU7uLaHJU8jUGb6ocH6gM/mn/BD7W5no2lkgZDKdIyG10Pslc1jXSA9duBEnQUk
+	Z9vv8vDHDccnjLvWXYzmXB++TStRixhrALfIctsROqkcs4wRsyKm2P4HUl5COHEE+2Rt0qr2Gxd
+	vyTuF+pJTC2n+vbo8YueLlzj3khU9zIlBODJtj+xbSJe78Ds0S27Q4VxnOrjQ/obN3ZiE9uLRXX
+	IzCNVbpS4Wo9UBoWh7k9wzLSllexA73LBSAFOvXOJEHQX1DDaG19hWmu2uJJvqinUtaLIcJFlT5
+	7dxPtHGSnm9G4/OaR/zYnkW0uleLaWb2z+7qulSPH2VWh9
+X-Received: by 2002:aa7:cf16:0:b0:6a9:9a0e:e05f with SMTP id
+ 4fb4d7f45d1cf-6b17ae26000mr9090745a12.2.1791997661286; Wed, 14 Oct 2026
+ 10:07:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261005-submit-phylink-suspended-stop-v1-v2-1-8b8e5d53dfc2@gmail.com>
+ <224296ea-f196-44f3-91d6-1461846c55a5@lunn.ch> <CADvTj4qgcXE6azsNx-Wg5afatezLeuctGR607qO1WhZSmuqzBg@mail.gmail.com>
+ <7ffb9b38-75e1-42e2-86e2-21a1666fc51f@lunn.ch>
+In-Reply-To: <7ffb9b38-75e1-42e2-86e2-21a1666fc51f@lunn.ch>
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Wed, 14 Oct 2026 11:07:27 -0600
+X-Gm-Features: AclHuK8jlqpg-qIbwAqpxCbEEkIemf37SHQz8CwDLoD9nKTqJNXJIwBV8qcy8Jo
+Message-ID: <CADvTj4pVtoMh=H=nJJaPxYf-ZqU8xJEJLMANUAXTFJWb5zBe-g@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: phylink: allow stopping a suspended instance
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-DATA packets retained in per-call buffers are not covered by common socket
-receive-memory accounting. Separate calls can therefore accumulate more
-DATA than the shared limit. The receive window also advances as packets
-arrive, while rx_consumed advances only as the application reads them, so a
-single call can retain more unconsumed DATA than the window should allow.
+On Wed, Oct 14, 2026 at 10:02=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote=
+:
+>
+> On Tue, Oct 13, 2026 at 01:46:24PM -0600, James Hilliard wrote:
+> > On Mon, Oct 12, 2026 at 7:22=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wr=
+ote:
+> > >
+> > > On Mon, Oct 05, 2026 at 01:09:05PM -0600, James Hilliard wrote:
+> > > > After a failed MAC resume, a driver must be able to stop phylink wi=
+thout
+> > > > resuming it and reconfiguring the failed MAC. This is needed when r=
+ecovery
+> > > > leaves the interface administratively up but detached until a subse=
+quent
+> > > > down/up: ndo_stop() must finish the suspended phylink lifetime even=
+ though
+> > > > the MAC could not be restored. The missing transition was identifie=
+d by
+> > > > code inspection of the stmmac recovery paths.
+> > >
+> > > I don't particularly like this. It feels like a workaround for a
+> > > broken MAC. It would be better to fix the MAC so that resume does not
+> > > fail.
+> >
+> > Fixing an identified cause of resume failure belongs in the MAC
+> > driver. The intended purpose here is narrower: allow orderly shutdown
+> > after the driver has returned an error, rather than recover the MAC
+> > through phylink.
+> >
+> > stmmac_resume() already returns before phylink_resume() when hardware
+> > setup fails.
+>
+> But why did the hardware setup fail?
 
-Charge accepted DATA to the per-local asynchronous receive budget and base
-the per-call receive window on rx_consumed. Account split jumbo skbs and
-release the charge when packets are consumed or purged.
+The exercised failure was injected, rather than a diagnosed spontaneous
+MAC fault. This change comes from auditing the existing error paths for
+the deferred stmmac recovery fix.
 
-Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
-Fixes: 5d7edbc9231e ("rxrpc: Get rid of the Rx ring")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/cover.1791428529.git.zihanx@nebusec.ai/
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v9:
-  - Split DATA receive-window and per-local aggregate queue accounting
-    from connection/OOB queue budgeting.
-  - Attribute the aggregate DATA accounting gap to 248f219cb8bc and retain
-    5d7edbc9231e for the receive-window accounting issue.
-  - v8 Link: https://lore.kernel.org/all/cover.1791428529.git.zihanx@nebusec.ai/
----
- net/rxrpc/ar-internal.h | 23 ++++++++++-
- net/rxrpc/call_event.c  |  1 +
- net/rxrpc/call_object.c |  4 +-
- net/rxrpc/input.c       | 83 +++++++++++++++++++++++++------------
- net/rxrpc/recvmsg.c     |  3 +-
- net/rxrpc/skbuff.c      | 92 +++++++++++++++++++++++++++++++++++++----
- 6 files changed, 168 insertions(+), 38 deletions(-)
+> This is what i mean about it being a workaround.
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 36fc4609181e1..1f1f49eca8e11 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -50,6 +50,7 @@ struct key_preparsed_payload;
- struct rxrpc_connection;
- struct rxrpc_txbuf;
- struct rxrpc_txqueue;
-+struct rxrpc_async_queue_charge;
- struct rxgk_context;
- 
- /*
-@@ -222,6 +223,15 @@ struct rxrpc_host_header {
- 	u16		serviceId;	/* service ID */
- } __packed;
- 
-+/*
-+ * Shared asynchronous receive-memory charge for split jumbo DATA packets.
-+ */
-+struct rxrpc_async_queue_charge {
-+	refcount_t		ref;
-+	long			size;
-+	bool			charged;
-+};
-+
- /*
-  * RxRPC socket buffer private variables
-  * - max 48 bytes (struct sk_buff::cb)
-@@ -233,6 +243,11 @@ struct rxrpc_skb_priv {
- 			u16		offset;		/* Offset of data */
- 			u16		len;		/* Length of data */
- 		};
-+		struct {
-+			u16		offset;
-+			u16		len;
-+			struct rxrpc_async_queue_charge *charge;
-+		} data;
- 		struct {
- 			rxrpc_seq_t	first_ack;	/* First packet in acks table */
- 			rxrpc_seq_t	prev_ack;	/* Highest seq seen */
-@@ -1517,8 +1532,12 @@ void rxrpc_new_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_see_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_get_skb(struct sk_buff *, enum rxrpc_skb_trace);
- void rxrpc_free_skb(struct sk_buff *, enum rxrpc_skb_trace);
--bool rxrpc_charge_async_queue(struct rxrpc_local *, struct sk_buff *);
--void rxrpc_uncharge_async_queue(struct rxrpc_local *, struct sk_buff *);
-+struct rxrpc_async_queue_charge *rxrpc_alloc_async_queue_charge(struct sk_buff *skb);
-+void rxrpc_put_async_queue_charge(struct rxrpc_local *local,
-+				  struct rxrpc_async_queue_charge *charge);
-+bool rxrpc_charge_async_queue(struct rxrpc_local *local, struct sk_buff *skb);
-+void rxrpc_uncharge_async_queue(struct rxrpc_local *local, struct sk_buff *skb);
-+void rxrpc_purge_data_queue(struct rxrpc_call *call, struct sk_buff_head *list);
- void rxrpc_purge_queue(struct sk_buff_head *);
- 
- /*
-diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
-index 21be9c86d7a74..9360852604645 100644
---- a/net/rxrpc/call_event.c
-+++ b/net/rxrpc/call_event.c
-@@ -473,6 +473,7 @@ bool rxrpc_input_call_event(struct rxrpc_call *call)
- out:
- 	if (__rxrpc_call_is_complete(call)) {
- 		timer_delete_sync(&call->timer);
-+		rxrpc_purge_queue(&call->rx_queue);
- 		if (!test_bit(RXRPC_CALL_DISCONNECTED, &call->flags))
- 			rxrpc_disconnect_call(call);
- 		if (call->security)
-diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index 817ed9acb91e6..8f115be491249 100644
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -553,9 +553,9 @@ static void rxrpc_cleanup_tx_buffers(struct rxrpc_call *call)
-  */
- static void rxrpc_cleanup_rx_buffers(struct rxrpc_call *call)
- {
--	rxrpc_purge_queue(&call->recvmsg_queue);
-+	rxrpc_purge_data_queue(call, &call->recvmsg_queue);
- 	rxrpc_purge_queue(&call->rx_queue);
--	rxrpc_purge_queue(&call->rx_oos_queue);
-+	rxrpc_purge_data_queue(call, &call->rx_oos_queue);
- 	kfree(call->rx_dec_buffer);
- }
- 
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index 73cafe6bfa9f5..6f0ba50097390 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -479,7 +479,9 @@ static void rxrpc_input_queue_data(struct rxrpc_call *call, struct sk_buff *skb,
-  * Process a DATA packet.
-  */
- static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
--				 bool *_notify, rxrpc_serial_t *_ack_serial, int *_ack_reason)
-+				 bool *_notify, rxrpc_serial_t *_ack_serial,
-+				 int *_ack_reason,
-+				 struct rxrpc_async_queue_charge **_charge)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct sk_buff *oos;
-@@ -487,9 +489,13 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
- 	unsigned int sack = call->ackr_sack_base;
- 	rxrpc_seq_t window = call->ackr_window;
- 	rxrpc_seq_t wtop = call->ackr_wtop;
--	rxrpc_seq_t wlimit = window + call->rx_winsize - 1;
-+	/* Bound queued DATA by the application's receive window. */
-+	rxrpc_seq_t wlimit = smp_load_acquire(&call->rx_consumed) +
-+		call->rx_winsize;
- 	rxrpc_seq_t seq = sp->hdr.seq;
- 	bool last = sp->hdr.flags & RXRPC_LAST_PACKET;
-+	bool set_last = false;
-+	unsigned int slot = 0;
- 	int ack_reason = -1;
- 
- 	rxrpc_inc_stat(call->rxnet, stat_rx_data);
-@@ -498,10 +504,24 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
- 	if (sp->hdr.flags & RXRPC_JUMBO_PACKET)
- 		rxrpc_inc_stat(call->rxnet, stat_rx_data_jumbo);
- 
-+	if (after(seq, call->rx_highest_seq))
-+		call->rx_highest_seq = seq;
-+
-+	trace_rxrpc_rx_data(call->debug_id, seq, serial, sp->hdr.flags);
-+
-+	if (after(seq, wlimit)) {
-+		ack_reason = RXRPC_ACK_EXCEEDS_WINDOW;
-+		goto send_ack;
-+	}
-+
- 	if (last) {
--		if (test_and_set_bit(RXRPC_CALL_RX_LAST, &call->flags) &&
--		    seq + 1 != wtop)
--			return rxrpc_proto_abort(call, seq, rxrpc_eproto_different_last);
-+		if (test_and_set_bit(RXRPC_CALL_RX_LAST, &call->flags)) {
-+			if (seq + 1 != wtop)
-+				return rxrpc_proto_abort(call, seq,
-+							rxrpc_eproto_different_last);
-+		} else {
-+			set_last = true;
-+		}
- 	} else {
- 		if (test_bit(RXRPC_CALL_RX_LAST, &call->flags) &&
- 		    after_eq(seq, wtop)) {
-@@ -511,17 +531,33 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
- 		}
- 	}
- 
--	if (after(seq, call->rx_highest_seq))
--		call->rx_highest_seq = seq;
--
--	trace_rxrpc_rx_data(call->debug_id, seq, serial, sp->hdr.flags);
--
- 	if (before(seq, window)) {
- 		ack_reason = RXRPC_ACK_DUPLICATE;
- 		goto send_ack;
- 	}
--	if (after(seq, wlimit)) {
--		ack_reason = RXRPC_ACK_EXCEEDS_WINDOW;
-+
-+	if (seq != window) {
-+		slot = seq - window;
-+		sack = (sack + slot) % RXRPC_SACK_SIZE;
-+
-+		if (call->ackr_sack_table[sack]) {
-+			ack_reason = RXRPC_ACK_DUPLICATE;
-+			goto send_ack;
-+		}
-+	}
-+
-+	sp->data.charge = NULL;
-+	if (sp->offset != sizeof(struct rxrpc_wire_header) ||
-+	    (sp->hdr.flags & RXRPC_JUMBO_PACKET)) {
-+		if (!*_charge)
-+			*_charge = rxrpc_alloc_async_queue_charge(skb);
-+		sp->data.charge = *_charge;
-+	}
-+	if (!rxrpc_charge_async_queue(call->local, skb)) {
-+		sp->data.charge = NULL;
-+		if (set_last)
-+			clear_bit(RXRPC_CALL_RX_LAST, &call->flags);
-+		ack_reason = RXRPC_ACK_NOSPACE;
- 		goto send_ack;
- 	}
- 
-@@ -568,19 +604,8 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
- 
- 		call->ackr_sack_base = sack;
- 	} else {
--		unsigned int slot;
--
- 		ack_reason = RXRPC_ACK_OUT_OF_SEQUENCE;
--
--		slot = seq - window;
--		sack = (sack + slot) % RXRPC_SACK_SIZE;
--
--		if (call->ackr_sack_table[sack % RXRPC_SACK_SIZE]) {
--			ack_reason = RXRPC_ACK_DUPLICATE;
--			goto send_ack;
--		}
--
--		call->ackr_sack_table[sack % RXRPC_SACK_SIZE] |= 1;
-+		call->ackr_sack_table[sack] |= 1;
- 		trace_rxrpc_sack(call, seq, sack, rxrpc_sack_oos);
- 
- 		if (after(seq + 1, wtop)) {
-@@ -623,6 +648,7 @@ static void rxrpc_input_data_one(struct rxrpc_call *call, struct sk_buff *skb,
-  */
- static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb)
- {
-+	struct rxrpc_async_queue_charge *charge = NULL;
- 	struct rxrpc_jumbo_header jhdr;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb), *jsp;
- 	struct sk_buff *jskb;
-@@ -644,13 +670,15 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
- 		jskb = skb_clone(skb, GFP_NOFS);
- 		if (!jskb) {
- 			kdebug("couldn't clone");
-+			rxrpc_put_async_queue_charge(call->local, charge);
- 			return false;
- 		}
- 		rxrpc_new_skb(jskb, rxrpc_skb_new_jumbo_subpacket);
- 		jsp = rxrpc_skb(jskb);
- 		jsp->offset = offset;
- 		jsp->len = RXRPC_JUMBO_DATALEN;
--		rxrpc_input_data_one(call, jskb, &notify, &ack_serial, &ack_reason);
-+		rxrpc_input_data_one(call, jskb, &notify, &ack_serial, &ack_reason,
-+				    &charge);
- 		rxrpc_free_skb(jskb, rxrpc_skb_put_jumbo_subpacket);
- 
- 		sp->hdr.flags = jhdr.flags;
-@@ -664,7 +692,8 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
- 
- 	sp->offset = offset;
- 	sp->len    = len;
--	rxrpc_input_data_one(call, skb, &notify, &ack_serial, &ack_reason);
-+	rxrpc_input_data_one(call, skb, &notify, &ack_serial, &ack_reason,
-+			    &charge);
- 
- 	stat_ix = umin(count, ARRAY_SIZE(call->rxnet->stat_rx_jumbo)) - 1;
- 	atomic_inc(&call->rxnet->stat_rx_jumbo[stat_ix]);
-@@ -681,9 +710,11 @@ static bool rxrpc_input_split_jumbo(struct rxrpc_call *call, struct sk_buff *skb
- 		trace_rxrpc_notify_socket(call->debug_id, sp->hdr.serial);
- 		rxrpc_notify_socket(call);
- 	}
-+	rxrpc_put_async_queue_charge(call->local, charge);
- 	return true;
- 
- protocol_error:
-+	rxrpc_put_async_queue_charge(call->local, charge);
- 	return false;
- }
- 
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index efcba4b2e74f0..9f84fc5e74593 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -118,6 +118,7 @@ static void rxrpc_rotate_rx_window(struct rxrpc_call *call)
- 
- 	skb = skb_dequeue(&call->recvmsg_queue);
- 	rxrpc_see_skb(skb, rxrpc_skb_see_rotate);
-+	rxrpc_uncharge_async_queue(call->local, skb);
- 
- 	sp = rxrpc_skb(skb);
- 	tseq   = sp->hdr.seq;
-@@ -565,7 +566,7 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	goto not_yet_complete;
- 
- call_failed:
--	rxrpc_purge_queue(&call->recvmsg_queue);
-+	rxrpc_purge_data_queue(call, &call->recvmsg_queue);
- call_complete:
- 	ret = rxrpc_recvmsg_term(call, msg);
- 	if (ret < 0)
-diff --git a/net/rxrpc/skbuff.c b/net/rxrpc/skbuff.c
-index a5113a284456e..3b999200b6fc6 100644
---- a/net/rxrpc/skbuff.c
-+++ b/net/rxrpc/skbuff.c
-@@ -10,6 +10,7 @@
- #include <linux/module.h>
- #include <linux/net.h>
- #include <linux/skbuff.h>
-+#include <linux/slab.h>
- #include <net/sock.h>
- #include <net/af_rxrpc.h>
- #include "ar-internal.h"
-@@ -58,10 +59,7 @@ void rxrpc_free_skb(struct sk_buff *skb, enum rxrpc_skb_trace why)
- 	}
- }
- 
--/*
-- * Charge an skb retained outside UDP receive-memory accounting.
-- */
--bool rxrpc_charge_async_queue(struct rxrpc_local *local, struct sk_buff *skb)
-+static bool rxrpc_charge_async_queue_bytes(struct rxrpc_local *local, long size)
- {
- 	struct sock *sk = local->socket->sk;
- 	long rcvbuf;
-@@ -72,25 +70,105 @@ bool rxrpc_charge_async_queue(struct rxrpc_local *local, struct sk_buff *skb)
- 	for (;;) {
- 		queued = atomic_long_read(&local->rx_async_queue_bytes);
- 		if (queued &&
--		    (queued >= rcvbuf ||
--		     (long)skb->truesize >= rcvbuf - queued)) {
-+		    (queued >= rcvbuf || size >= rcvbuf - queued)) {
- 			sk_drops_inc(sk);
- 			return false;
- 		}
- 		if (atomic_long_cmpxchg(&local->rx_async_queue_bytes, queued,
--					queued + (long)skb->truesize) == queued)
-+					queued + size) == queued)
- 			return true;
- 	}
- }
- 
-+struct rxrpc_async_queue_charge *rxrpc_alloc_async_queue_charge(struct sk_buff *skb)
-+{
-+	struct rxrpc_async_queue_charge *charge;
-+
-+	charge = kzalloc(sizeof(*charge), GFP_NOFS);
-+	if (!charge)
-+		return NULL;
-+
-+	refcount_set(&charge->ref, 1);
-+	charge->size = skb->truesize + sizeof(*charge);
-+	return charge;
-+}
-+
-+void rxrpc_put_async_queue_charge(struct rxrpc_local *local,
-+				  struct rxrpc_async_queue_charge *charge)
-+{
-+	if (charge && refcount_dec_and_test(&charge->ref)) {
-+		if (charge->charged)
-+			atomic_long_sub(charge->size, &local->rx_async_queue_bytes);
-+		kfree(charge);
-+	}
-+}
-+
-+/*
-+ * Charge an skb retained outside UDP receive-memory accounting.
-+ */
-+bool rxrpc_charge_async_queue(struct rxrpc_local *local, struct sk_buff *skb)
-+{
-+	struct rxrpc_async_queue_charge *charge = NULL;
-+	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+	long size = 0;
-+
-+	if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA)
-+		charge = sp->data.charge;
-+
-+	if (charge) {
-+		bool clone = sp->hdr.flags & RXRPC_JUMBO_PACKET;
-+
-+		if (!charge->charged) {
-+			size = charge->size;
-+			if (clone)
-+				size += SKB_DATA_ALIGN(sizeof(struct sk_buff));
-+		} else if (clone) {
-+			size = SKB_DATA_ALIGN(sizeof(struct sk_buff));
-+		}
-+		if (size && !rxrpc_charge_async_queue_bytes(local, size))
-+			return false;
-+		charge->charged = true;
-+		refcount_inc(&charge->ref);
-+		return true;
-+	}
-+	return rxrpc_charge_async_queue_bytes(local, (long)skb->truesize);
-+}
-+
- /*
-  * Release the asynchronous receive charge on an skb.
-  */
- void rxrpc_uncharge_async_queue(struct rxrpc_local *local, struct sk_buff *skb)
- {
-+	struct rxrpc_async_queue_charge *charge;
-+	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+	if (sp->hdr.type == RXRPC_PACKET_TYPE_DATA) {
-+		charge = sp->data.charge;
-+		if (charge) {
-+			sp->data.charge = NULL;
-+			if (sp->hdr.flags & RXRPC_JUMBO_PACKET)
-+				atomic_long_sub(SKB_DATA_ALIGN(sizeof(struct sk_buff)),
-+						&local->rx_async_queue_bytes);
-+			rxrpc_put_async_queue_charge(local, charge);
-+			return;
-+		}
-+	}
- 	atomic_long_sub(skb->truesize, &local->rx_async_queue_bytes);
- }
- 
-+/*
-+ * Purge DATA from a call's receive queue and release its per-local charge.
-+ */
-+void rxrpc_purge_data_queue(struct rxrpc_call *call, struct sk_buff_head *list)
-+{
-+	struct sk_buff *skb;
-+
-+	while ((skb = skb_dequeue(list)) != NULL) {
-+		rxrpc_uncharge_async_queue(call->local, skb);
-+		rxrpc_free_skb(skb, rxrpc_skb_put_purge);
-+	}
-+}
-+
- /*
-  * Clear a queue of socket buffers.
-  */
--- 
-2.43.0
+The deferred fix addresses a separate software failure: suspend has
+already disabled NAPI, but an unsuccessful resume leaves the interface
+administratively up. Closing it can then disable NAPI again and hang.
+The recovery changes preserve resource ownership so administrative down
+can finish and a later open can retry initialization.
 
+That shutdown also has to finish the suspended phylink lifetime.
+Without MAC WoL, suspend has already stopped phylink, although
+prepare_resume() may have powered the PHY back up. With MAC WoL,
+link-down was deferred and the MAC_WOL disable bit remains set.
+Suspend-owned advertisement changes also need restoring.
+
+Those are phylink-owned states. Avoiding the second NAPI disable in
+stmmac does not resolve them, and calling phylink_resume() just to
+permit shutdown would reconfigure the MAC after its setup failed.
+
+The required operation is therefore to terminate the suspended
+instance without bringing it back into service. Cleanup must not
+depend on first succeeding at the initialization that failed.
+
+The original resume error remains an error, and an identified
+MAC/PHY sequencing defect still needs its own fix. This transition
+addresses the subsequent shutdown failure; it does not hide or
+work around the cause of the unsuccessful resume.
+
+>     Andrew
+>
