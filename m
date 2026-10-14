@@ -1,138 +1,147 @@
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [81.169.146.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15296518132
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.168
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791989890; cv=pass; b=s9Z2xbUcJiImKbaPZXtfJV9OFKWIzC6pO4jOGpryUh8R3d9eFDhWl5BehWLhA6rKvqftoiF9K8G8v2T5C6SmuM6oa5zFY73EGKR5AV+0MyeMqrFolZLIp89vjDV6YN3btdxXmq3UhbxFM77YfookzNe6YzNiIBIUrHP46Xa5mIc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791989890; c=relaxed/simple;
-	bh=oIEwSzF9zK/6XdTC3D+ryIhqXjz0AkZrZVc/89+pf6E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CixwN+yvIeHdQqOVtWsurWh//mFUSgQ+rKkWODvuL4LjS6LQwwL9Xw5E+7B/7oW+MkVIgKI/lq8PyC+zOx80Eh1qU+DTLIS+JP9s2CYiM/OOErXTpTAhb6V9wa78nnvlKs8QaOmM5kUgWlXpGMS51HmKgSMdkhk+6lq7GBevUTw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=KCqTd9I+; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=g16/OB+V; arc=pass smtp.client-ip=81.169.146.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261CF526AB9
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791989892; cv=none; b=VsRKTSR/fV603ds1pDRRUgjcB0RqYWXia2uRmyMd448FzZj51iJHKHe1D0rSubRzPj6NbR+ZrqGG4bRlZP0DEe/R90VarwjQmtCCdYPx+ra1/SxSgxFaepc3hUzXmvobYHMdHVNJkJEbxHCBQh44c02XBElJ7cdH+6HCLrj1ChY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791989892; c=relaxed/simple;
+	bh=D7u5Uh09Hugbc4/qGFc9FYmLKZ5dOBypXQjLOpzmVg8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jtPhG+aF79PyVuE/7dv5NxOX5JQv5auYE8GY4wrxbOl1ShW0QLmPytAiykXzqJwLKg2FyjUfyooXIUKN/+fySNyCqB/Deos/dzRJzFw5jbFjmjt67P/NfJxYw2+p6Z6BPiM6qHDEC//pLz3GmQrXRkHE0Vk7TWB05wqtpsR5rIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IyQGHU9d; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="KCqTd9I+";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="g16/OB+V"
-ARC-Seal: i=1; a=rsa-sha256; t=1791989868; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=eETSyBGyBoSkDmeSeGkxIZV2m7CgJ6OE5zQRUSBiRYRAyqwt3na/AjJiYviI50D78u
-    uj/G3WldPQgFLtewicx2atooD7BPjHO2sSbKo207RkSYBK1SRkIpphWZ9ItBKcnwl/Wm
-    9UIrpILUldxYwDkWnN+sOJLPtLnWhxRGO7n/DUgk9XY2GLNG021+eVF9+DgLBKBsZHLk
-    zCH+ZplHPgkBZgkkS6uGE/2W1v9Pu98AnAxaKnST9CFe8swNy9kBRze2ATsgfHp5KIrw
-    r0eM7GAzWNezNjlcShNbq3TETDu1Ez+wwA1W0va5d5ryGmD6H7liWy/URcQ9XIVls2+6
-    m6NA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1791989868;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=gwhnwEJHExkgjKd9QsB/2ko8wE+WDrfgELKyL6/vU9A=;
-    b=r+a/q0uIjVA/MADh0SxHn/3qLnM5qlgQy4jVaZzXTnk7epxOKEO8ZEmUhZLA9+lNxz
-    MbppLH0r7lQ0HEoNon8CEe7MmMjtTwCmaHmKVMLNul+xrH/8cpbrUlxWL4fPULK4n23A
-    oz5EI9WlCQzL/C3q+l4nInDdux/xHvhs3lpp/2iHIqu7DC5vWrf4me98g6pftb+/x6Ke
-    Vg+xTk5RwrCetHdATm8rSocGGoNN85wBG64VKrPi18WYBh4iCV+q/oEzNqyXECQCdD21
-    /1YGr0BJrcHlmFSn/0+b/n541DsNRFwbM8huDbOMLqiSG68jzT/Wqwy4BTAPDrwHRhum
-    INiQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1791989868;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=gwhnwEJHExkgjKd9QsB/2ko8wE+WDrfgELKyL6/vU9A=;
-    b=KCqTd9I+MeX/rrnlvLWVoaRtUE+H4Fju1S58tz63YvFhbDT430b06n82fQ466FxDAI
-    zEdanYiDtM5URCB0LATsNLcA9Cc/mSVooFtfwgQbqA8fihjlHXpc/DQC7puWSbx23tCZ
-    DHIfKaEJnDtJ38nBCdeXnr9cOCnwNEVmFEyNF9O3HsjpmnqeDN/5Kw1pdWXohIirEdqo
-    UykdO7GAaYv1TjYG/d6/CQ0gi4jLy1uHGj7QGvP2zs/6lqBmfX6Nh1l0RAlnnh/SjyW9
-    fN3PkWShmcfpNGazH8Om8/7I07S7xZe7d5R+ATv9oVCL8W3k1nPj4CAOH8GirBC5usrB
-    xOPQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1791989868;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=gwhnwEJHExkgjKd9QsB/2ko8wE+WDrfgELKyL6/vU9A=;
-    b=g16/OB+V2TQmWql87Oe+teGWtqV2ASsqbkT0LlegqTRoFQ3/HYBq+AMwVhwfMsw6qv
-    SxfHVZM5LsnJPb4nOrDg==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8bDup0Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::989]
-    by smtp.strato.de (RZmta 55.6.3 AUTH)
-    with ESMTPSA id Kfdf2a29EEvlDip
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 14 Oct 2026 16:57:47 +0200 (CEST)
-Message-ID: <84811273-499e-45a4-bede-88bc6dcc5ed9@hartkopp.net>
-Date: Wed, 14 Oct 2026 16:57:47 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IyQGHU9d"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-533778ab0bdso47803071cf.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 07:58:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791989888; x=1792594688; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EPFRsj6t93vAexyH59CynnFG/MFW0LsJOyq8VSdl2Qs=;
+        b=IyQGHU9d/+lbzp5KNj85+guUgfhL9V9hka+dcCb7jKZT5X2V84m3XhPrQ2kAzgOPRT
+         uA4jTc7Qy5ux+qqphbKAIfSd+zETkif7G4ynN6+23p5zC+10SegMQQC96zAn2BUatS23
+         C7ArUcTkBzWjL9ZGhq/uca00dKTWW2lD4lIOVCy54UXrgNSVV0OQjgQayxdxo4T5I36+
+         HOfyjkNCTQejpaTETeweEDom9AjT76L49hKKYq5oENMtteZu/PRAylHbAXSyRbNEP0Bw
+         oaQAN2n5KdpPsawVnzZOjh/C0PjOJp2yFORzk/AvH00HYzHamqpDsR6p4LsUNyX+72sJ
+         edoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791989888; x=1792594688;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EPFRsj6t93vAexyH59CynnFG/MFW0LsJOyq8VSdl2Qs=;
+        b=I8JFrNA6ntoXedve9RJhYmRfTLsW9dZvEugPOP0wjoB1vxsXjrkIHGopUxrlxaAN0v
+         pU/ubm2zMv6i7fTba+0U8dBXrQlSwT63ZhfERfIb3euUFOvr/5bCuR7eVeRWqd8VbtYg
+         JCW+LDao9iTJhMjXOa5jqQsuY4eu2KHo+LeCjXuZnPNK3+0B3LzIShcZYWgGtib4XLb5
+         XubMF6cj0A744KDD23qlcgsgCh0S6QfPqHUddRrcUZPw30cwpW8DdOs0Vat38ZuwCkWW
+         kO+zqFG+FTV/1jfLjzP20KMKg4ab+48MUHsbqQVw0/3rkCkfTzbluBf93iKPyoyM0JnN
+         SmYw==
+X-Forwarded-Encrypted: i=1; AKwUvBy9FWk67O2fGrgn33foa1qABfYDadDvwy5zKaGVwwbv7wX5Qv9M6lG036ERpAAt4yUg27FaYiY=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIt8+Qv0/74HzSEm6w9vLplXTQ9YArEtaRK99EC44r8qje9YKJs
+	qTWU57GXgGLjDGwogR00EzTsG2c5/k9CHKPctT1JNmIJk8zCZgcxIj9Y
+X-Gm-Gg: AYBFou2r39H9e4q/tpl4JHqkGhmsE791/VGBpdin0cO0cOST0X+WfwkuzSSRZVmhipY
+	D8phDtTDSXJKZDjWaDuTvKHVLlsGi7hAM7U3zjBcQqTsP28bWB+yk15o2Ah5RvC74vO1zXYEdsC
+	a1L9NS5niT/xRiTZgWXoAJEGnor6CHAYb+Y4o1I2c2o1inrVuVon0DtPPaOUPZME3FLufn78BIP
+	r8YOcp9kVoud0SL0JDG0WTdseZYvz7Nh7pdf7JAOAYEgWOBaAoVvQw3dkhCCuRwTrSA7hMgIdhv
+	zuyF9t5lCKX2vIax9SrkILnGAjGmfPSRZ//QAfvxrV+PIE5gXLshDwoRrvhEOOsl4QYsWl2ME9G
+	pYA/230Dukmd6bxi1idBwKqfDNksAEXRSNsl7ZE7EOOLqrlanFQBCzG8Cle6NMC6ILiIcjjzugm
+	fdaTYZFQ4TmgBDNhB0Yy3/6BPnQpIKIxvBNie1Uz0IqCfZhaxquhMwQIEaB/lHZ5pTvxzDL0MW7
+	ORcfWgYWW7N+HmE+rdKyDXPkrtyyVufFvildZO31f2lKJYPcFoUj1pxwBHwbVhnF7q9CzXavQ==
+X-Received: by 2002:a05:622a:1b88:b0:535:1f03:32aa with SMTP id d75a77b69052e-5359fb85a7bmr299348751cf.45.1791989887934;
+        Wed, 14 Oct 2026 07:58:07 -0700 (PDT)
+Received: from DESKTOP-DIIS71I ([178.157.168.7])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ba220ea1asm38854676d6.48.2026.10.14.07.58.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 07:58:07 -0700 (PDT)
+From: Rand Deeb <rand.sec96@gmail.com>
+To: Edward Cree <ecree.xilinx@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	netdev@vger.kernel.org,
+	linux-net-drivers@amd.com,
+	linux-kernel@vger.kernel.org,
+	deeb.rand@confident.ru,
+	lvc-project@linuxtesting.org,
+	shda@confident.ru,
+	Rand Deeb <rand.sec96@gmail.com>
+Subject: [PATCH net] sfc: fix NULL pointer dereference in efx_tc_flower_replace_foreign()
+Date: Wed, 14 Oct 2026 17:58:00 +0300
+Message-ID: <20261014145800.726-1-rand.sec96@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] team: reject CAN, IEEE 802.15.4 and 6LoWPAN
- devices in team_port_add
-To: netdev-bot+sinfo@kernel.org
-Cc: Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Jiale Yao <yaojiale02@163.com>
-References: <20261014143309.284388-1-socketcan@hartkopp.net>
- <179198901397.399038.11366807934508541241@kernel.org>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <179198901397.399038.11366807934508541241@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The issue was found by code inspection (LLM-assisted, see the
-Assisted-by tag), following the syzbot report against the bonding
-driver (syzbot+8ed98cbd0161632bce95), which was fixed by commit
-8ba68464e478 ("bonding: refuse to enslave CAN devices").
+efx_tc_flower_replace_foreign() walks the rule's actions with an 'act'
+cursor. After a redirect action it adds the action set to the rule and
+sets the cursor to NULL:
 
-team_setup_by_port() copies port_dev->type into the team device in
-the same way, so a team master with a vxcan port ends up as an
-ARPHRD_CAN device without can_ml_priv, and runs into the same
-NULL pointer dereference (e.g. via isotp_release() ->
-can_rx_unregister()).
+	list_add_tail(&act->list, &rule->acts.list);
+	act = NULL;
+	if (fa->id == FLOW_ACTION_REDIRECT)
+		break; /* end of the line */
 
-The same class of problem (non-CAN netdevs claiming ARPHRD_CAN
-without CAN ml_priv) was already hit by syzbot in the CAN core and
-mitigated there, see 8aa59e355949 ("can: af_can: fix NULL pointer
-dereference in can_rx_register()") and 0acc442309a0 ("can: af_can:
-fix NULL pointer dereference in can_rcv_filter",
-syzbot+2d7f58292cb5b29eb5ad), both with bonding/tun.
+The break only leaves the switch statement, so flow_action_for_each()
+carries on with the next action while act is NULL. A following redirect
+or mirred action then does "save = *act", and a following tunnel decap
+action passes act to efx_tc_flower_action_order_ok(), which reads
+act->decap. Both dereference a NULL pointer.
 
-The IEEE 802.15.4 and 6LoWPAN types were added by analogy during review.
+The loop is missing the check that efx_tc_flower_replace() performs at
+the start of every iteration for the same cursor: reject the rule if an
+action follows a non-pipe action. The foreign variant was added without
+it.
 
-Best regards,
-Oliver
+As a result, a TC flower rule on a tunnel netdevice that redirects to an
+sfc representor and lists another redirect, mirred or tunnel decap
+action after the first redirect causes a kernel NULL pointer
+dereference. It happens in the context of the task adding the filter,
+with efx->tc->mutex held. Adding such a rule requires CAP_NET_ADMIN.
 
-On 14.10.26 16:43, netdev-bot+sinfo@kernel.org wrote:
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->   - How the issue was discovered, e.g. hit in production, hit during
->     development, syzbot report, manual code inspection, LLM or static
->     analysis tool scan.
-> 
->   - Whether the issue was actually triggered, or is only theoretical
->     (e.g. found by code inspection). If it was triggered please include
->     the symptoms, like the stack trace or error messages.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Add the same check at the top of the action loop in
+efx_tc_flower_replace_foreign(), returning -EINVAL with the same extack
+message as efx_tc_flower_replace(). The release path already copes with
+act being NULL.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 17654d84b47c ("sfc: add offloading of 'foreign' TC (decap) rules")
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+---
+ drivers/net/ethernet/sfc/tc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/ethernet/sfc/tc.c b/drivers/net/ethernet/sfc/tc.c
+index 25341acfb..4a740da04 100644
+--- a/drivers/net/ethernet/sfc/tc.c
++++ b/drivers/net/ethernet/sfc/tc.c
+@@ -1828,6 +1828,13 @@ static int efx_tc_flower_replace_foreign(struct efx_nic *efx,
+ 	flow_action_for_each(i, fa, &fr->action) {
+ 		struct efx_tc_action_set save;
+ 
++		if (!act) {
++			/* more actions after a non-pipe action */
++			NL_SET_ERR_MSG_MOD(extack, "Action follows non-pipe action");
++			rc = -EINVAL;
++			goto release;
++		}
++
+ 		switch (fa->id) {
+ 		case FLOW_ACTION_REDIRECT:
+ 		case FLOW_ACTION_MIRRED:
+
+base-commit: 24a19b953e2a3d0ea5a8c4951a0ab8f32720c907
+-- 
+2.39.5
 
