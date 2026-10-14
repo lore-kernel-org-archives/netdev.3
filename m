@@ -1,356 +1,181 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA65F2253FC
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:05:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791968756; cv=pass; b=nsgWXaLaovq++mU1XRb0HRsxEKFMpEmT1Sr7fdhrKRxEjT9oqVCYpoc6nU4mxD6fh1lSqNEMXNMhyS7xMQmkp0qg5gylgpI4AP+hW8Lb+RiOr2jUo2WEItMT+MXk9ckviN+8oiGcl4tE6HuI8uFEoPKF7mn1zSjT+/X9yk1R3lE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791968756; c=relaxed/simple;
-	bh=EPSi/OoEim+VUiNW3yJgkQzCl3Vq8OoXXvwWZyfWdLw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I6hxQkglUk9ORGYlF1448Xv+74bMUyv/88wZfn3kXgsZPVt+20m1FWmUHYR9xXQTMP6aXMxvoWvA+DtCPTHwfBRmGI+gHE9qGCFZRWbeQYlBnU+UmcmT/FzCCtxgSMnYhyNj1nlfPtkBmCisSYFTPNVbKGSkZxsxMhCcMf2lXug=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClDHfiI7; arc=pass smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CBA488223
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:08:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791968887; cv=none; b=huaxpLMkfCw3TmXgra6gkgM4dtNDmZFa4fYDBbndzVNi5Iej7uGjgtomaKY5JZXvVeo9uJd2QH/CIFYCLTmvMQ/27uPzcrENYAZCFTzmdHw6qdg3Iz1VxAqk4T4+I1mb6AikraBIheDoB8yKSsm5J9vO5OdF4W8nIlXu7YdrYLM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791968887; c=relaxed/simple;
+	bh=lKiPfEj4GiFsESIXSMABmEWrbzmHHHXncq9jkZ21n/U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s+A9GfmvVDhoVZO5wvf40HgqA/UBkDktmNS4WGdTpuYb/5qtaazY7A+ULj8gwpbVtbOLTY9l8Brc/MUeDcMNQ3BLf/UMW1J1N5ubbi7iOOtYY5E9kZeDynBdO5vFmmyyV6ejQYCy1ZrHevh211MzO/7qO+NbqAGmkSin3UbiveI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nxIIv81S; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClDHfiI7"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5bcb440d1cbso442937e87.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:05:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791968753; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PlXihgGhINCNyB2Cdakzugr8B4e6TwqxTEcjpPuRy3Q3Rd4rwzkpST4Akx9Wh7mDam
-         QaxEbrbWVFBi9nKIY9Y8p8yG0m3hD/Frx7CvUQ+bwoiD1oOWqbBr91ZuIXtW3kgTgwTz
-         ol8ibagIqfa+rl9jOg/iqIoZ50FGko7xGd4QPmLZieYU3RgXI0T9mUOopIJCX06spo2+
-         jJ+OkZS0yzDdkgIM5jZTfHqxmjFRCYKZwTtcrEb3GDFqJkIaV7UWK+7kgzXL5RgJYD3Y
-         3We4O2eGmLLl0dH7KaY7yGk0L1agPA8gk6yG3XKqolupNdI7qcUPIW/EoGiQgDablBBf
-         GIDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WlwurY0TiIkDVpZXAfTwTYREWvI2q1JzRx0JC1ItVic=;
-        fh=GgdGMhx8/kCCp4yHpSu/013WbXucVu9nNv2DF6m1zdo=;
-        b=eAPP30bMrH4wbDL9+4oM1okT5IcPsb7ir/Ul9lKpZJ83Gl0/pNHZANmsJf199X6kHa
-         9qXchLr3ZLYGCV9TZBrQjAbFlGnHqwahdHRoTfgSHBALpN8LQzxzP4ySPS5lyU8xhQlK
-         pr9xbuIwTKo4NWpDkCMx2zW3/ur4GdKx4YL7ufvNyfENcRgVUcWT8uuDcrPIqhUqwDRA
-         zhNBtRfvRtb1XBtIuIZg/llMF+Vxdyz9K+iKoGW4zWFAUnTzAXiXIYpRJJoJSBORSd4T
-         xMbtTd/LvxWYNTLkIkQy181RoSOK2OlWhOm07BV1yChmPJff3ey0PyAJfc80Y4bnTzdI
-         Kt7A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nxIIv81S"
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-c2e4df2e26fso521211766b.2
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791968753; x=1792573553; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WlwurY0TiIkDVpZXAfTwTYREWvI2q1JzRx0JC1ItVic=;
-        b=ClDHfiI7NzDZRDu09qSWiceIwYk8NodMQXzlLcOBVqiBmh6sEQWc59bmzqP2Iezelv
-         cB38T6S8Db67XtEBhj26nAue7vR/yaWXxAmPCVZqcxgRd0EN6PGwYUOrNTePMlurtAzm
-         ai8egvT4HmIMz2/QlZMrzFtlgBjxwliI6l6bzwKq6i0iYpaTWbRuOJfIqB46om/XHj0f
-         WrlR1gxd3u+Vd7SMCL0q6my2zB03HnYL6iHZRcfK8fWEycqSmhU9r25JuwNx/VBYgNDf
-         uu+zfLziGQn9ICwe4wK5wqf+rsOikRHZZJtcDgnZCNVDaADVefn2WGycT4mYFVcY1zug
-         SVpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791968753; x=1792573553;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1791968884; x=1792573684; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=WlwurY0TiIkDVpZXAfTwTYREWvI2q1JzRx0JC1ItVic=;
-        b=zNsu+pCkcXr6NPfJQrhi1eHqoudop06RfPngbnqNRCsibCPqTYNpqee5pILNLyMae/
-         9240kiE5tni4WIqtGLxJNN39McZ7imdDxWW+RaceLMWBOwyDbUvCWv/m3ViQkHOJH00R
-         bz651GamaRYv8nZQVTGiC7/KIZhGUQDoFe3MEjdHzE7dBZnOpvx6Qh/+8ThDflbpe/5P
-         Sy1In8H0wFucAq2cf0RU5MkI0euDo99UhNOCjbq8DPTYUgjMg2krLBENsqAjvSUPZ966
-         A/vaYpdS6SlIVRpBcrudMRBGy40gExnpzcxf6fTnTLRGWstWR8X+J/fnKsZ33LY4Ucg0
-         imag==
-X-Gm-Message-State: AFq9FYKSmQNhIV8HlbKJagTVWk/RpE0b0vmfHWzTbpjILaiu71j+3G/P
-	Vrf50sAn1czu0MnFYNdd7BTAnYHjp+eyII5rt08XU2x6TJpFQWNVbUtlsN/q7t4oqq6gKI8ou5D
-	GdHx3mAscQcLDXiR5h8H/H76w0470Z4Y=
-X-Gm-Gg: AYBFou209R92lTzuEAw7A9YMYM3UFphCFVIY1mak0XuKTz4AqeGacpuKAQdY3XHkG2/
-	D3sa277KvF7w321bD5wdaD/oODZcAqjzgDdznMtEnqye9UOqoYV73FYcpZiJwlAoPZl14oGFC1z
-	B4rNUX73NNo/Zo7W0HKXGe2e/V1vFR4/a8ZQHdb2Crz2lLHHv0JUK6clv9uzqj3b8LaLe05fufk
-	NIkKCT7KOwjA+Trbj7HrFVI5XI+mIOeiaW1DIjpUT3ASSNBRsJfYLLZ3xUN723xeHwxKGOc7B2g
-	GTwLoHqat6S5C7P6sCP3nmyW5C96OSTc3Y6eYVwIFBpg0AXnzvO0+TvDtCitPckuBg==
-X-Received: by 2002:a05:6512:b1c:b0:5b8:e9cf:daa6 with SMTP id
- 2adb3069b0e04-5bcdd4f080cmr5278239e87.10.1791968752266; Wed, 14 Oct 2026
- 02:05:52 -0700 (PDT)
+        bh=X6jLRvEdFUZOs356gfPWUV5PoYZmQs3hOKeg53YuPxY=;
+        b=nxIIv81SyOUgNpr+UQvGbuCSoGYUXLwmsdeoSLIaqys3RpkLZeGHhHt2Amhli+1Ifz
+         nQDK3nd1B/ZtW98dn57o6x7oA5LnZv975rHuDm9EyVxRfHyQBKty6jsQrIO46YSPURw7
+         yD1CvR9skpiiIFR3k54lELHAez5LGmmstKwHM4zW73xlzf3IE30eiEXBERnvEPfHynlk
+         Uog0x62Wkb4g7tozgkrtd3/ZjOhEBnW2AIN3UhbpamRXP5AFyEae2j3hm+F++g2mOj6L
+         +gpULllYbrIJQToqseJDzoINy8/DTxv2pc4VQV0TNgFcJZUcanCAZMVGOV4pM20aZq4M
+         XoHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791968884; x=1792573684;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=X6jLRvEdFUZOs356gfPWUV5PoYZmQs3hOKeg53YuPxY=;
+        b=NbbW0HRBC1NDItaVLl1gR4Ti/a5Wxj0Q/3QysIeYK6YgG3kMn6SlD7+ovMypE4Um6H
+         byW1vyo15aVDZl2HpnPn2m5DJN2xwyN5LjjSQpCmZ6OMHtkQ1R4QU6URiF6ygqw1Om3t
+         wl2hs24hyO9d7VwKjdwWA+oUqoPD8q+TyupmZUlC4tsRdSTy76o4N4mDqeQdXppk61l/
+         M/YdNGhUz12N5BWuJuzgXB+dJzPpcS8Uoxr5/9CNIMXfWNz6arwv7e0ngQX+rCz4pXfe
+         ZlEeJ3rRfOgvsWDQ4Sq2M99bupyGP9h6RThKIVgF4XNAeRx8lPqdqMNAeKc0QVBWoM6j
+         AbAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBye+i42F28oOIC+anQ+ppTo5xPvHS4QsjVe9U2hNloAJdWFZiuK779JJR/MkfACADjWGt4zIg0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKEe+EwHkFZ3HbqQqzMbUkM5/K6HXwQnlAKjZUJqcfMfl8trIDN
+	UcLAetHRbRAeNf55jDuDf3gdLutyTevOfjEZrLt7ylR4vtfD9GnZ1u7T
+X-Gm-Gg: AYBFou1aOLhxkn0DYjdgED6VNIK8fLlIMrFLd4a15gq9RFYfFppaDDz2QpIFnin4xZm
+	ScGR2g8FJ1Bu4Ir5ARf9md4nzdHo+YC0quUnXu/gkbGWX2RY0pjjhrHiRx2LiR9+S/BZN3SckHD
+	V/p0YAfYuBJw2TTf4cDr/DWnZz6sCCinbIQMx6lxXYhSr0m9t8ZSq/sZpDhP/2e0apQGXMW819b
+	53S6sCY4+F2z8g3+ZW142uyueFu6BlsT3EXNjJqziQmjwjC6UaDvZkkpgC1hXD/alOAW1CX0kRq
+	IU6rhSO2YgQ35hYzMF2SLRmycxZQSoWtxelsmlTHugkx1fjzrX6YcdHbxL7uGvG00saBU4k2+IM
+	I7TXxKngCHCxlCWpv5qYs7KN/l1N4WbieTWL3Jz3vqUE2IfNeosH3UOCEXy1tQ/AjuDOHpHaRli
+	7+XjDnPrjSZSbV8aFoJlvrPCOsEjG3H/kgha1QppvOoZKfEMYpboc0AhveVUfIhYOTuW+4lif5C
+	xOnnHh6rTnh2k2PuYZ5JW3L7XUCPdOltrT59L8PolqTHPHwn+dk/jGhbr3Ah1UktCpE882sajm7
+	/+DfmRtpTU2avugbbRND+zNrElDdtIvuyd6Mhw9/9+qOwZP28w2t2FNnpGmWWJMPNuyFbCeqwhr
+	16FctizfGaeeSK5FcULt5s/gv5vW+rJ8Uhg==
+X-Received: by 2002:a17:907:a310:b0:c2e:4e08:19ab with SMTP id a640c23a62f3a-c31a9afb4b9mr1447672966b.16.1791968883457;
+        Wed, 14 Oct 2026 02:08:03 -0700 (PDT)
+Received: from [192.168.100.100] (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3b7ee45694sm25010166b.34.2026.10.14.02.08.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2026 02:08:03 -0700 (PDT)
+Message-ID: <ab4a8b2c-0274-4423-8d10-04e7efb6c120@gmail.com>
+Date: Wed, 14 Oct 2026 11:08:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPZ+gd9d1P+xDSrxxZkGJr32zjubP=KfQegeGkWykKGvEH0=oA@mail.gmail.com>
- <CAPZ+gd8TPNnvEDOv_H=fdvy2ysG63uBD0MvmEMjhkMa8i-y1NA@mail.gmail.com>
- <as0DO7n5SCr2j3Z2@lore-desk> <CAPZ+gd_1JsNyhQbEAWiE1stom+T_jgvt4F2=tb68YoSvPCnFag@mail.gmail.com>
- <as3faB96PFSnC-qP@lore-desk> <CAPZ+gd_S4zMffbFTUbV989XxYtgxuJ3ijEBObehAXP_N20Akww@mail.gmail.com>
- <as5UUQuCjLTXvQ5Q@lore-desk> <CAPZ+gd_S=Wm2DOw+j14HNtsBDQvSgBkWHmBzPqqe3fi3UK4d4w@mail.gmail.com>
- <as6XhxxTqbarzZcS@lore-desk> <CAPZ+gd9Z0kVXy7QnNsByKF=fNAZLsA=q=KySwhmsz3qKgxzGfg@mail.gmail.com>
- <as80MpGWB6jtxrGj@lore-desk>
-In-Reply-To: <as80MpGWB6jtxrGj@lore-desk>
-From: =?UTF-8?B?6ZmI6ICA5piO?= <cc201008@gmail.com>
-Date: Wed, 14 Oct 2026 17:05:39 +0800
-X-Gm-Features: AclHuK8yunaWqrdYNRULXWfdhMLrXu8LzBcxepO8E6oxvDONIgZoFlS9pWE9vwI
-Message-ID: <CAPZ+gd8DCeBBNV8dRMRY2hFq8qiA+ivTOof4wwx6K2aONXQjZw@mail.gmail.com>
-Subject: Re: [PATCH net] net: airoha: Keep UPDMEM egress MAC in sync for
- offloaded IPv6 flows
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: netdev@vger.kernel.org, horms@kernel.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/2] net/sched: taprio: do not replay missed
+ entries in advance_sched()
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Vladimir Oltean
+ <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ syzbot+e044a9b6370ed8ca9737@syzkaller.appspotmail.com
+References: <20261009123309.284193-1-krystianmkaniewski@gmail.com>
+ <20261009123309.284193-3-krystianmkaniewski@gmail.com>
+ <87ik36lee9.fsf@intel.com>
+Content-Language: en-US
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+In-Reply-To: <87ik36lee9.fsf@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-No, I don't have a setup to exercise the DSA offload path, so I can't
-provide a Tested-by for this one.
+On 10/13/26 00:53, Vinicius Costa Gomes wrote:
 
-Agreed on the VLAN case: extending the notifier to VLAN devices is the
-easy half; the smac_id hw space allocation is the actual design work.
-That is beyond our scope for now.
+Hi Vinicius,
 
-It is worth noting that the free smac_id space is tight once the GDM
-ports and the DSA range are carved out (single digits on this SoC), so
-the allocation likely needs to be dynamic with reclaim, covering only
-identities that actually route IPv6.
+Thanks for the review, and for the Ack on patch 1.
 
-Lorenzo Bianconi <lorenzo@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=8814=
-=E6=97=A5=E5=91=A8=E4=B8=89 15:50=E5=86=99=E9=81=93=EF=BC=9A
->
-> > Went through the patch:
-> >
-> > Per-port UPDMEM slots referenced from the FOE and programmed
-> > through the notifier look correct; the slot range fits the 4-bit UPDMEM
-> > address and the 5-bit smac_id field, stays clear of the GDM port ids,
-> > and would only reach 0xf (the "keep original source MAC" marker) for
-> > an 8-port switch, which this SoC does not have.
->
-> do you have any chance to test it with offloading? I can't do it at the m=
-oment.
->
-> >
-> > For the non-DSA variants, in our setup several service VLANs
-> > (voip/iptv/tr069/internet) are stacked on a single GDM port, each with
-> > its own MAC address. VLAN devices are visible neither to the notifier
-> > nor to airoha_set_macaddr(), and foe_entry_prepare() still collapses
-> > them to smac_id =3D port->id, so all of them would egress with the port
-> > base MAC. The two-airoha,eth-port multi-SerDES variant shares the same
-> > gap.
->
-> I guess you can modify the airoha_eth_even() logic in order to look at vl=
-an too
-> but you need to implement the proper logic for the smac_id hw space.
->
-> Regards,
-> Lorenzo
->
-> >
-> > What the VLAN case needs is the same identity-scoped treatment for
-> > these devices: a slot allocated per egress identity, programmed on
-> > their address events and referenced per flow instead of per port.
-> >
-> > Lorenzo Bianconi <lorenzo@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=9C=88=
-14=E6=97=A5=E5=91=A8=E4=B8=89 04:41=E5=86=99=E9=81=93=EF=BC=9A
-> > >
-> > > On Oct 14, =E9=99=88=E8=80=80=E6=98=8E wrote:
-> > > > Yes, your analysis is correct: with the patch, the flow offloaded a=
-t t1
-> > > > reprograms the shared UPDMEM entry, so the flow egressing port0 sta=
-rts
-> > > > using port1's L2 address. Our setup happens to carry a single IPv6
-> > > > identity per GDM port (the other services are IPv4), which is why t=
-he
-> > > > patch holds there -- it is a stopgap for that topology, as noted.
-> > > >
-> > > > On the second question: in the default DSA configuration user ports
-> > > > inherit the conduit address, so the conduit MAC as source is
-> > > > indistinguishable from the user port's own. It diverges once user p=
-orts
-> > > > carry their own addresses (nvmem-assigned or user-configured): the
-> > > > egress frame then differs from what the software path would emit, a=
-nd
-> > > > upstream bridges learn the conduit MAC behind a user port. Whether =
-that
-> > > > is a bug or a corner case is your call; per-netdev slots would cove=
-r
-> > > > either way.
-> > >
-> > > I have not tested it yet, but can you please check if the patch avail=
-able at
-> > > [0] fixes the reported issue? Thanks.
-> > >
-> > > Regards,
-> > > Lorenzo
-> > >
-> > > [0] https://github.com/LorenzoBianconi/net-next/commit/486a5f13c62985=
-d4333a231cc9aaec714e81fcd2
-> > >
-> > > >
-> > > > Lorenzo Bianconi <lorenzo@kernel.org> =E4=BA=8E2026=E5=B9=B410=E6=
-=9C=8813=E6=97=A5=E5=91=A8=E4=BA=8C 23:54=E5=86=99=E9=81=93=EF=BC=9A
-> > > > >
-> > > > > > The issue is reproducible in the upstream codebase, without any=
- of the
-> > > > > > out-of-tree PON code -- the PON setup is just where I first hit=
- it.
-> > > > > >
-> > > > > > Reproduction with mainline code only (airoha eth + the mt7530 M=
-MIO DSA
-> > > > > > driver; the "airoha,en7581-switch" binding and driver are mainl=
-ine,
-> > > > > > the DT node just needs to be added to a board file):
-> > > > > >
-> > > > > > - AN7581 board, switch node with its CPU port on GDM1. Use a DS=
-A user
-> > > > > >   port as a routed WAN interface with its own MAC address.
-> > > > > >
-> > > > > > airoha_get_dsa_port() replaces the egress netdev with the condu=
-it, so
-> > > > > > routed IPv6 FOE entries carry smac_id =3D conduit port id, and =
-the PPE
-> > > > > > resolves the egress source MAC through UPDMEM[conduit]. That sl=
-ot is
-> > > > > > only programmed by airoha_set_macaddr(), which never runs when =
-a DSA
-> > > > > > slave address changes, so offloaded IPv6 frames leave the port =
-with
-> > > > > > the conduit's MAC instead of the user port's. IPv4 is unaffecte=
-d,
-> > > > > > since HNAPT entries store the MACs inline. The same shape appea=
-rs on a
-> > > > > > GDM port with two "airoha,eth-port" children carrying different=
- MAC
-> > > > > > LSBs, which the recent multi-SerDES series allows by design
-> > > > > > (REG_FE_MAC_LMIN/LMAX); for that variant the exposure starts wi=
-th the
-> > > > > > series introducing multiple net_devices per GDM port.
-> > > > > >
-> > > > > > The posted patch only reprograms the shared per-port slot at of=
-fload
-> > > > > > time, so a later address change on any netdev of that port re-b=
-reaks
-> > > > > > offloaded IPv6 flows. It is a temporary patch for this setup; t=
-he
-> > > > > > final solution is up to the maintainers.
-> > > > >
-> > > > > I do not think the case you described is fixed with your patch. L=
-et's consider
-> > > > > the following case:
-> > > > >
-> > > > > - time t0: you offload a flow rule for traffic egressing dsa port=
-0
-> > > > > - time t1: you offload a flow rule for traffic egressing dsa port=
-1
-> > > > >
-> > > > > Since the index written in REG_UPDMEM_CTRL() subfield is still th=
-e conduit port
-> > > > > ID, you are egressing traffic from port0 with L2 address of port1=
-. Am I right,
-> > > > > or am I missing something?
-> > > > > Moreover, is it a bug if we use the conduit port L2 address as so=
-urce mac
-> > > > > address for IPv6 traffic?
-> > > > >
-> > > > > Regards,
-> > > > > Lorenzo
-> > > > >
-> > > > > >
-> > > > > > A proper fix would probably give each netdev its own UPDMEM ent=
-ry: the
-> > > > > > table is indexed by a 4-bit address (16 entries) while the FOE
-> > > > > > smac_id field is 5-bit with 0xf reserved for "keep original MAC=
-", so
-> > > > > > there is room beyond the port ids. Slots could be programmed fr=
-om
-> > > > > > airoha_set_macaddr() (always under RTNL, as you noted) plus a
-> > > > > > netdevice notifier for DSA slaves, and foe_entry_prepare() woul=
-d only
-> > > > > > reference the slot -- removing both the race and the extra lock=
-ing the
-> > > > > > current approach needs.
-> > > > > >
-> > > > > > Lorenzo Bianconi <lorenzo@kernel.org> =E4=BA=8E2026=E5=B9=B410=
-=E6=9C=8813=E6=97=A5=E5=91=A8=E4=BA=8C 15:36=E5=86=99=E9=81=93=EF=BC=9A
-> > > > > > >
-> > > > > > > > Ooo,  the new patch should be a dedicated leaf lock inside
-> > > > > > > > airoha_ppe_init_upd_mem().
-> > > > > > > > --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> > > > > > > > +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> > > > > > > > @@ -416,6 +416,19 @@
-> > > > > > > >    dsa_port);
-> > > > > > > >
-> > > > > > > >   smac_id =3D port->id;
-> > > > > > > > + /*
-> > > > > > > > + * Routed IPv6 entries resolve the egress source MAC
-> > > > > > > > + * through the UPDMEM table indexed by smac_id. The
-> > > > > > > > + * egress netdev can legally carry a different address
-> > > > > > > > + * than the GDM port itself: on PON setups the
-> > > > > > > > + * authentication MAC lives on the pon device while
-> > > > > > > > + * each service VLAN routes with its own address. Keep
-> > > > > > > > + * the table entry in sync with the source address this
-> > > > > > > > + * flow is actually going to use.
-> > > > > > >
-> > > > > > > Is the issue occurring just with PON or are you able to trigg=
-er the issue
-> > > > > > even
-> > > > > > > in the upstream codebase? I guess you should not post a fix f=
-or some code
-> > > > > > that
-> > > > > > > is not upstream yet. Moreover, in the PON setup, I guess the =
-approach is
-> > > > > > still
-> > > > > > > broken if the user change the device mac address.
-> > > > > > >
-> > > > > > > > + */
-> > > > > > > > + if (type >=3D PPE_PKT_TYPE_IPV6_ROUTE_3T)
-> > > > > > > > + airoha_ppe_init_upd_mem(dev,
-> > > > > > > > + data->eth.h_source);
-> > > > > > > >   }
-> > > > > > > >   }
-> > > > > > > >
-> > > > > > > > @@ -1529,10 +1542,21 @@
-> > > > > > > >
-> > > > > > > >  void airoha_ppe_init_upd_mem(struct airoha_gdm_dev *dev, c=
-onst u8
-> > > > > > *addr)
-> > > > > > > >  {
-> > > > > > > > + static DEFINE_MUTEX(updmem_lock);
-> > > > > > > > +
-> > > > > > > >   struct airoha_gdm_port *port =3D dev->port;
-> > > > > > > >   struct airoha_eth *eth =3D dev->eth;
-> > > > > > > >   u32 val;
-> > > > > > > >
-> > > > > > > > + /*
-> > > > > > > > + * Routed IPv6 entries resolve the egress source MAC throu=
-gh the
-> > > > > > > > + * UPDMEM table indexed by smac_id; the ndo_open/ndo_set_m=
-ac_address
-> > > > > > > > + * writers hold flow_offload_mutex (QoS paths re-lock via
-> > > > > > > > + * airoha_set_macaddr()), so this lock also serializes the=
- leaf
-> > > > > > > > + * against them.
-> > > > > > > > + */
-> > > > > > > > + mutex_lock(&updmem_lock);
-> > > > > > >
-> > > > > > > This is only required adding the above configuration since in=
- the current
-> > > > > > > codebase airoha_ppe_init_upd_mem() is always running holding =
-RTNL.
-> > > > > > >
-> > > > > > > Regards,
-> > > > > > > Lorenzo
-> > > > > > >
-> > > > > > > > +
-> > > > > > > >   val =3D (addr[2] << 24) | (addr[3] << 16) | (addr[4] << 8=
-) | addr[5];
-> > > > > > > >   airoha_fe_wr(eth, REG_UPDMEM_DATA(0), val);
-> > > > > > > >   airoha_fe_wr(eth, REG_UPDMEM_CTRL(0),
-> > > > > > > > @@ -1545,6 +1569,8 @@
-> > > > > > > >       FIELD_PREP(PPE_UPDMEM_ADDR_MASK, port->id) |
-> > > > > > > >       FIELD_PREP(PPE_UPDMEM_OFFSET_MASK, 1) |
-> > > > > > > >       PPE_UPDMEM_WR_MASK | PPE_UPDMEM_REQ_MASK);
-> > > > > > > > +
-> > > > > > > > + mutex_unlock(&updmem_lock);
-> > > > > > > >  }
-> > > > > > > >
-> > > > > > > >  struct airoha_ppe_dev *airoha_ppe_get_dev(struct device *d=
-ev)
+>>  struct taprio_sched {
+>> @@ -902,8 +909,19 @@ static bool should_change_schedules(const struct sched_gate_list *admin,
+>>  	 * plus the amount that can be extended would fall after the
+>>  	 * next schedule base_time, we can extend the current schedule
+>>  	 * for that amount.
+>> +	 *
+>> +	 * cycle_time_extension is an unbounded signed value from netlink, so
+>> +	 * clamp the sum instead of letting it wrap. A wrap would make this
+>> +	 * test non-monotonic in end_time, and advance_sched() relies on it
+>> +	 * being monotonic to check it once after catching up instead of once
+>> +	 * per skipped entry.
+>>  	 */
+>> -	extension_time = ktime_add_ns(end_time, oper->cycle_time_extension);
+>> +	if (oper->cycle_time_extension > 0 &&
+>> +	    end_time > KTIME_MAX - oper->cycle_time_extension)
+>> +		extension_time = KTIME_MAX;
+>> +	else
+>> +		extension_time = ktime_add_ns(end_time,
+>> +					      oper->cycle_time_extension);
+>>
+> 
+> This one I could argue that it could be in a separate patch. As the
+> wrapping could cause issues even before these changes, no?
+> 
+
+Yes. With an extension larger than KTIME_MAX minus the end time, the sum
+becomes negative and should_change_schedules() ignores the extension.
+That is independent of the stall. I can move the clamp to a separate 
+patch with a Fixes tag for c25031e99344 ("taprio: Add support
+for cycle-time-extension"), before the advance_sched() change which
+relies on it.
+
+get_interval_end_time() has the same addition on the txtime-assist path.
+I can cover that path in the same  patch as well. Would you like me to
+do it? 
+>> +	struct sched_entry *entry, *found = NULL;
+>> +	ktime_t cycle_start = sched->start_time;
+>> +	s64 offset, entry_end = 0, elapsed = 0;
+>> +
+>> +	if (ktime_after(now, cycle_start)) {
+>> +		s64 periods = div64_s64(ktime_sub(now, cycle_start),
+>> +					sched->period);
+>> +
+>> +		cycle_start = ktime_add_ns(cycle_start,
+>> +					   periods * sched->period);
+>> +	}
+>> +	offset = ktime_sub(now, cycle_start);
+>> +
+>> +	/* The offset is less than one period, so an entry which ends after
+>> +	 * @now is found at the latest at the entry which reaches the end of
+>> +	 * the cycle, or at the last entry. A schedule has at least one entry,
+>> +	 * so the loop always sets found.
+>> +	 */
+>> +	list_for_each_entry(entry, &sched->entries, list) {
+>> +		entry_end = min_t(s64, elapsed + entry->interval,
+>> +				  sched->cycle_time);
+>> +		if (offset < entry_end ||
+>> +		    list_is_last(&entry->list, &sched->entries)) {
+>> +			found = entry;
+>> +			break;
+>> +		}
+>> +		elapsed = entry_end;
+>> +	}
+>> +
+>> +	*start = ktime_add_ns(cycle_start, elapsed);
+>> +	*end = ktime_add_ns(cycle_start, entry_end);
+>> +	sched->cycle_end_time = ktime_add_ns(cycle_start,
+>> sched->cycle_time);
+> 
+> Having this side effect here was unexpected. I think this would make
+> more sense outside this function.
+> 
+
+Agreed. I can make taprio_entry_at() return the cycle end through an
+extra output argument and have advance_sched() store it explicitly in
+oper->cycle_end_time. The helper could then take the schedule as const.
+
+I can wait for the rest of your review of this patch before sending v3
+
+-- 
+Krystian Kaniewski
