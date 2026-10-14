@@ -1,109 +1,185 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5229F51C049
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F6C53E2E6
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791986979; cv=none; b=izhbqUcUHWQw6k3Y9c0voX1V41zf2mSFFMFE3YeIJgC9JEzgZTr6HQixKLUuTIZfNld1kccHw0yZhDSKl19s4bZtMSZtyCzCOvL+/4d2rS3G6oSHOx491qccf97XxD7h886mLzR5lSC2X/afRUJq/rlpGj5Oi12Xua0/TqGQsbw=
+	t=1791987058; cv=none; b=I9ay1DH7oB/BW1EPA20rFEKjMlU2M9+Dx8omAoFdgUnxV7ICxBs75hV3KV4JErfhjc7mvrxE0U9IYQBzLmysO65GNdDmz7TCfGdbE2ehh7HR/g7NCyYoTfQeMWpGPE7HHagFWHlIzQD0nB/0N+9VY4VIl0MY45Sa1UAxh73YWnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791986979; c=relaxed/simple;
-	bh=39mqxoQ4FzxldK/jr8JEqlZcLe/X52JSnqR6pmEuz00=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VjI/BjHhNxuBM2sCHp60yAuvd8N4p/H+SxM8Cg92QE+ycSOO9jdeWrb27KcgjwJIRC+ESkIlzaRET1m6xk6EBb4iVia1DAHn6HYR1ilHYPHFpbFBflLNfzZO4Ovi/J5lY6rx7W76hqT9JX2PHtuAOgcBfdKDWk+l4IieZjRaYBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=hHK6r5m+; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	s=arc-20240116; t=1791987058; c=relaxed/simple;
+	bh=kO7lS1SXEhALyFoG03L01lJuVSSoUeXxVu2mGJefl38=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=apgSCbWciGSxvq03tzWzTJN4gsFZJauVT1MZlad4ARwFccrLFdAiI5IDQ5dLDm6BkEsxMN5Sm9LABDLpyz+oPrEniiDRhcT4TDFpoi04MC0tfMnMuSHMPlsVKvvKdA9yRYm1b/tf9O8kJexJqAmv1Y3nL5AmcKnEAQk1ToTIYy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=Ez0GIFIu; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SEXbQ2op; arc=none smtp.client-ip=103.168.172.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="hHK6r5m+"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-93e706a6ba9so541271885a.2
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 07:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1791986977; x=1792591777; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=3/Rdq16RXcxQlW9vLdkggo7RE79oEveipYzoAMSsoeU=;
-        b=hHK6r5m+YL08aTQqdE500oGvofyolfuOrJ1AHmWONTk3jYoWyqZBS+EniR2mfsCpRa
-         7RYYioCIMIpl1yGTR8ThJqIWdjMpZDvFmmT7rkOz0tcin2xd3RzoS5F14JKq/XDk0J0S
-         qJOI4NwhVy5oIBiU1dWNk5LBKTgzzL9xFo54ZC8K1jlwuS7PPsVbjr1gWa5t0tPl8onX
-         tERlwwyNyYA0KdhGIZNX3yO+fWRVwxBiQ9409adWXo/VHalNbZ/QSsqsefaODBJX6so0
-         /+SRAik1Pl+KjQppsIQYZSeXk1zjQZ83d+3ZCY7IDbKT4TIRKfVX9O0s9Aajklq6z6f3
-         6zxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791986977; x=1792591777;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3/Rdq16RXcxQlW9vLdkggo7RE79oEveipYzoAMSsoeU=;
-        b=s/ksxmUb3ub4/9z17J4AAGoPAAzfXQXCUkP5pujnUkyzjuQaE0JLOhS4Uf/9d2DLpp
-         M2Zn8bqPxtOOgCFFVSgAo3uuSl0klHdD7g/fQLP4g2rYW9tf7Lxc5Zt2zaS10JiB40RH
-         BWvR83CD+fm77o9DihGo3QGaY9rSkjPgo65sUtA2kMtsmPUoq1A72+mDAmAMYQCNcWbg
-         xoTz5PiobvsO+yOhCUDVFUuA3QZ92tw8S5TUVzwQXy606oUTxf+NFCKkcDXHJddXDg1s
-         lut1ccxvqYPkIEcEFMjI12VQrrA9GI10pEg4NLFllhE7J61zc2LmKND4Lf/FdbthTxHK
-         IAOw==
-X-Forwarded-Encrypted: i=1; AKwUvBzVGCFXj0OjvaXM2HSzO36IWQkvI2hNFisDUqPAdeSjdJIvsSJj9ye0emSb3cOt5kpQU40Hc3g=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJAEZVRqmoe1i6J8BDC5/e7GTYaWGs+dhYZZ59WIzvmZZ1GjrFt
-	EGosPt8esiOCJYNJoL/X+4fPlN5weLi2XQIzVahqiRtkBeWnyCFe86tXicoJrEbvPd8=
-X-Gm-Gg: AYBFou2GeZ24blvScFkkra6N1wYtt6wV0ZTxGSA9wgDNn5flw3724vhdM/3Jmuuvz7Y
-	4xglV4u3WJA2cHcnfChuJZqbtA8/2qVC8AVFPAlI/SDfuP+yxN4Ca87yZuSDyZxKLTT0KtZisu5
-	0dYLJBv0HljPAOC+vMP0IuEEdPpQFJVai0YKBueRve1Rawi2i9IZAsXF698OGhkXJao2nZVaZDU
-	ol3wVRyXnVgr3oyGxjL+VDa5ev5qazMtoEqZCeizbZdeREE6nmlOJJDXlRtGomAYLByiJOXZ8cV
-	LYRVmYS3yQl4amRWulbM9HancCIXIxxDGMZL/c9xaAhfz6hInOcdXsKOzgtdwm0asPUqyluLVEu
-	aZcXIiE9KdaO4UuYrKoKNm2WlutLNMRodu65HVfpUSSZL/H061WkkU+W8pFWycOwKDQ1df7dq1k
-	stCeME/1WMad8lm3Kkjfwa0VQW/xIS3b0dL5niLeIq63HcX2uMp+6VUpHwr4e886+Z0OE5CvTXg
-	mhgUdkaWIHUrXL7
-X-Received: by 2002:a05:620a:2988:b0:939:f49c:1b30 with SMTP id af79cd13be357-93ebd225501mr2597059885a.13.1791986977046;
-        Wed, 14 Oct 2026 07:09:37 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.251])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef5090050sm498788685a.40.2026.10.14.07.09.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 07:09:36 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Mina Almasry <almasrymina@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>,
- Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits() report
- unreadable frags
-Date: Wed, 14 Oct 2026 14:04:45 +0000
-Message-ID: <179198668564045.2.8478350980557034137@toxicpanda.com>
-In-Reply-To: <179191473048.99822.411131589969126386@kernel.org>
-References: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
- <179191473048.99822.411131589969126386@kernel.org>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="Ez0GIFIu";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SEXbQ2op"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 05C4AEC0247
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:10:50 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 14 Oct 2026 10:10:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1791987049; x=1792073449; bh=/+JI/P15xtoRWwZftZOJXqbX3O80Oe58
+	eo1xQXdfSmQ=; b=Ez0GIFIuvQ4uSFb3yoWwSsbtTHnfVx9V0BJDJrKfytHzb/AF
+	bblNo9J7+Jt1SxOhSHe9bClfYBU1p4eayKDVRPu0k4kAuPgGHAzoBElXC7/NdSnb
+	3U8elGixGAoGS0vzFl9MYclAitW+mt8cafmDRVN0XOeHttWo2rVUgAQ3AsGLsHjF
+	fPaca0mSsQatlOz3vBz4LRUYv6kVPnr6eS9CtHUVBHUwKMyjpSbBj/Bo+vLnW9cc
+	wFvzwECUrSZwCNCY5NUepqeQWk6uXitcdGQbGvkfnflaSzsHghiyyC6srZTsFUKF
+	nGvsHe6/YzD+2W1xJVEMwD6x9mgPiAiM6lDawA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1791987049; x=
+	1792073449; bh=/+JI/P15xtoRWwZftZOJXqbX3O80Oe58eo1xQXdfSmQ=; b=S
+	EXbQ2opjT6F6SRve/YrGvbu1mGzGa5jBpGZvIwU/X4HL6t/QtN5Y/YKBbmJgYSu6
+	8dm8OB1Jn3zty+rU3/AtzNdTzdQ+9ebIwqFMRUTnGvF/35alrnNLM0Imut1xuvzB
+	Kh2C36EIk6gP1I1PdbaoX3QAMs0Idd0170q+ys76E61JuKYpT78201V34aDhfokE
+	abz/nMOnwpnf4aQkxfLzyKNiw6VyTpljkO+j8pJ3VcpgekvWbiRntT8VHTCX39mK
+	He01zv6EP7iCztTxtkwEbkBs+4/cgX6b5XRjkk+stRgEoIhX9NznTjk89lz6HZ9U
+	c65gqbvn/Bx/Hyc0nVKcw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=sign d=queasysnail.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1791987049; d=queasysnail.net;
+	mf=PHNkQHF1ZWFzeXNuYWlsLm5ldD4=;
+	rt=PG5ldGRldkB2Z2VyLmtlcm5lbC5vcmc+;
+	s=fm3:rsa-sha256:QxYmII6QW7Ik5byjDDo2yhsHwnkRfzSDcs2jKbwMF9R7eN9
+	ONAOV+tZcVaQZ0NcFEUwPmphCV/Y/PlC2Iw9k+7pA9nGDT7xKjj2XzLJrC5Otgfq
+	/I81ZgwzNbUVYAKKmO5JEdRZgAlK1zkiBZA7EPrHqEk1aCk29yVlCehju2uMB5Tp
+	bPy1nF8rqxmhWpO/AsEb2ToW3gIVtANPRvMLohGOuVCNGGfa+/zDiKO5r1/kZC84
+	671MEHril3vF5Yh2ES5hLFUrCuz2WSfnEPTuwrmq6EX4emir0HCf/IDNrWkXzH5l
+	PwwU9aDURrGx8wgvHS4dThGn9032raYcHhhfzmg==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-06;
+	repo=github.com/dkim2wg/interop; date=2026-10-04; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-disposition,content-transfer-encoding,
+	content-type,date,feedback-id,from,in-reply-to,message-id,
+	mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:STCi2E8jXWRLDUCuCW9p3S/VP98I0v7EaMpPXS1GU7U=:kO7lS1SXEhALyFoG03L01lJuVSSoUeXxVu2mGJefl38=;
+X-ME-Sender: <xms:aI3Pamb51PXnzdjpOtTXwhFvdm5zBMOOGZvubJHbatLdddXi7e9Mgg>
+    <xme:aI3PahimxoxwHXqH2OV83Sn4bxWcN9-Hou08m81RQtOgoKNerUpd5X0OcgNLjrthz
+    31yW83OddERFpm8HTbd2Kx75bUSf18yB-iinBvIW5TwEDKI1BJWQ0A>
+X-ME-Received: <xmr:aI3PagdWhyFb9_KD1h8UXVyIvIX5Z_A9fTOMJuKZXoMyMh1aK8GbWTUtSz0>
+X-ME-Proxy-Cause: dmFkZTGYMSs3CFqigZbaBLa2eIXfCu/3WqZRg0HZEdFOJt3hYa0TpHT8Z+w00uZvZceQdX
+    qN1Sz2rc17MbyarCihZSadaYzDKIlkaigX0sens0l2o4h57mQ+w4vs2uqtmZGN9cgtMKNN
+    hQLp0HqRoljRuSinF63wdJzJRgGzxPe1s5gWsk3CjKKo2eAzKu9vxlz7QegXCOFM42tP9i
+    hT3aQe4My0iSp9ZjnzZRc4sg7UjRST9Lm/OqzSduh2oG1/Xng/xwFfUhj4O8YBXGbESEjw
+    z7nezSkdWThG3cHen0Hf8wIioUfL3JBcdXBl4ZOzVCAOwV5++/uPo4LAOc2nhIgBuIQgDu
+    Na/Ohbg+Ca4/HNFfQAUmPBkYCrOvAGilhuuSQNc8d7unrLzC4M09VsIvmZsPVyVNYfutbx
+    dGMRf6KvnHMu4UQGWis5VxgeSTakCW8sTDOhrrjYVFRQAY/IT/azUrDFzVGaJROYhPTOWT
+    D0LwCv0iURxjKGJ7SqbJxviylnnwi5SeP6UtWIcTmSScPP/srrzvJzfmDrFddtt6t/qrZM
+    R/Q9HYWd+2l7LEJcOfzFoBAoEBlbKwT7fYPu6pZ+VDxbraf7VrTXi0g18VIFhrzLY9JP0I
+    gQUfuzRK7//IulGszVRcw9uAB/5eT86U5oqrVQhpUcrVaY6++LqJyA3VvHtA
+X-ME-Proxy: <xmx:aI3PaolpyJCUUJBRyCmX0LkobSvd_QBJf0u62sOW3ZF1ngZuPNk3vw>
+    <xmx:aI3PatwmYkmNXc44oVfKQBfaJj__I4YwewK4XQOFl3Y4kkIUGwiRzQ>
+    <xmx:aI3PajzT8W17XZ93M8m7PYX4Ju_L7uGRNfDu5DGqMK5d6NBt8GvU4A>
+    <xmx:aI3PalXj-G96hCTvbyavyVcGj44LZDJ6KI3zulUh7Je9htR6XsxXEA>
+    <xmx:aY3PanV5k9Go0FYK4_LmcsE8Hv591yoFMbRydbjMDXUXotCawUo8wcNu>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 14 Oct 2026 10:10:47 -0400 (EDT)
+Date: Wed, 14 Oct 2026 16:10:44 +0200
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: =?utf-8?B?SsOpcsOpbXk=?= Jean <jeremy.jean@oss.cyber.gouv.fr>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>, Boris Pismenny <borisp@nvidia.com>,
+	netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH ipsec 4/7] xfrm: prevent AES-GCM nonce reuse after early
+ GSO
+Message-ID: <as-NZDzUz6Cf1_l5@krikkit>
+References: <20260930144523.435271-2-Jeremy.Jean@oss.cyber.gouv.fr>
+ <20260930144523.435271-6-Jeremy.Jean@oss.cyber.gouv.fr>
+ <ar5gnDR81WsA0TBg@krikkit>
+ <c24271382cde79f3b043908ae52c41cf@oss.cyber.gouv.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c24271382cde79f3b043908ae52c41cf@oss.cyber.gouv.fr>
 
-On Tue, Oct 13, 2026 at 06:05:30PM +0000, netdev-bot+sinfo@kernel.org wrote:
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
+Hi Jérémy, sorry for the delay.
 
-It was found by the Sashiko review of ab9414ed70bd and then triggered
-with a test module, not on devmem hardware.  The module builds a TCPv4
-GSO skb with 3000 bytes of payload in a page frag marked unreadable and
-calls skb_segment() on it with features == 0.  Without this patch that
-returns 3 segments whose payloads are all zeroes, each with a
-SKB_GSO_CB()->csum of 0, which is the correct checksum for zeroes.
-There's no stack trace or error, the data is just silently replaced.
-With this patch skb_segment() returns -EFAULT.
+2026-10-01, 23:07:55 +0200, Jérémy Jean wrote:
+> On 2026-10-01 15:31, Sabrina Dubroca wrote:
+> > 2026-09-30, 14:45:21 +0000, Jérémy Jean wrote:
+> > > In the software ESP offload path, xfrm_output_gso() leaves its
+> > > segments
+> > > sharing a secpath extension. Each segment gets its own ESP sequence
+> > > number, but stores it in the same xo->seq field for IV generation.
+> > > 
+> > > If encryption is delayed, later segments overwrite the value needed by
+> > > earlier ones: esp*_xmit() can then encrypt several packets with the
+> > > same
+> > > AES-GCM nonce, despite their distinct ESP sequence numbers.
+> > 
+> > Here again, your commit message could describe much more precisely
+> > what actually happens.
+> > 
+> > I'm guessing you mean something that starts like
+> > 
+> > xfrm_output_gso
+> >   segs = skb0,skb1... all with the same xo
+> >   ...
+> >   xfrm_output_one(skb0)
+> >     xfrm_replay_overflow(skb0) xo->seq = N
+> >   xfrm_output_one(skb1)
+> >     xfrm_replay_overflow(skb1) xo->seq = N+1
+> >   ...
+> > 
+> > [and then some more stuff happens that gives them the right
+> > esph->seq_no but wrong 64b seqno used for the IV]
+> > 
+> > But please help reviewers trace the codepath you've already gone down,
+> > without having to guess what you mean. You don't need to give the full
+> > call graph with the state of each variable, but there needs to be more
+> > than just the very beginning and the very end.
+> 
+> Here is a more verbose changelog I wrote for that patch:
+> 
+> ---
+> With software ESP offload, xfrm_output() attaches a secpath before
+> calling xfrm_output_gso() for an encapsulated GSO packet, but
+> skb_gso_segment() leaves the splitted skbs sharing the same secpath,
+> including xo->seq.
+> 
+> For the i-th splitted segment, xfrm_output_gso() reaches
+> xfrm_replay_overflow() through xfrm_output_one(), which allocates
+> sequence number N+i to that segment, and then incorrectly overwrites
+> the shared xo->seq with N+i. If encryption is delayed until all t
+> segments have been processed, xo->seq ends up with value N+t-1 for all
+> segments. When validate_xmit_xfrm() calls esp*_xmit() for each
+> segment, the IV is constructed from the same value N+t-1, causing
+> nonce reuse in AES-GCM. Yet, each ESP header correctly keeps using
+> value N+i from its private XFRM_SKB_CB.
+> 
+> Call secpath_set() for each offloaded segment before xfrm_output2(),
+> so sequence allocation writes to private metadata that cannot be
+> overwritten by later segments.
+> ---
 
-Thanks,
-Josef
+Thanks, this is much more helpful.
+
+The comment in the diff could be dropped (git blame will guide the
+reader to the commit message), or extended with "and stores it in the
+secpath".
+
+-- 
+Sabrina
