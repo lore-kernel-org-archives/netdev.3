@@ -1,80 +1,88 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694FF4B1CF4
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9904A8FE3
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791971748; cv=none; b=HaioietVlTma/VZ4eL6bmrMQ9WFkQgew5pB3iWlfo3xZ5GXHc5eC9B8CCDbLfcOwf5Wa/Y6dApzF7wooN6FKtFWlv5a/nwXweRuFAG7VK+PxfFc83LelDSCcu2bb81ClDHUWIskqM1AVLDgBSCxaKuiPPg+iN8Xv4VjvCFH1r5o=
+	t=1791971878; cv=none; b=XZkIJ2ZElAkd3f/tyNA0c8pqK0AhLAZnAj4/Vnn0k2YhqB3r6QJ6XG5IujyDRfG9kNHeE277NZA32ZXLl3lInViL4/xRXzgg/0wA+mfxJMdQEtkWHs9LmXV34oyIuia0YPCNKfhCuTE4WvUBvSXmkapnE+XwaafoQJ3rz0ww6/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791971748; c=relaxed/simple;
-	bh=tanxS6+EcsXYKTB++mJJ3P2qch+jbMnDPaq085HiUK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Jae4I/QORHSsI2CjRWYwbDS6cBFsDRnbIcXI2SXfLDFtPdRVlRIR0yXwtrlx1AQCwLIPr6AkPgff12MzShJUiEBlO2MSD7lBYhqQkii7nMw4zdmCjRbIVzc36ShQ6Ov9eS22uF+yMajhrdhmU0biO5tzM35liJsGsA3qTZeY1Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=DQBLnfx0; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1791971878; c=relaxed/simple;
+	bh=V8tm/yPwj2YfH8yitEElP9S7tiU4qwIG0oriSlLL44w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L21pjx9K5O6rGsyHjiQnl60ct2oqjwG8MZWTGxFNE4yknnZqeEALI3sTqiojeamu0sfKNSfqC101WFRsnATEOMZlq1zrDyCf7sXwTxXccj1r7/MS3jf+9KufddZEAAekobOIYbrBZhEVXyedl5XMnG3+oyyHW0deK5viHrEId8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ec2N/78S; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="DQBLnfx0"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-93e441e14a1so14148385a.2
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:55:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ec2N/78S"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48c411d6615so2813712f8f.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:57:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791971745; x=1792576545; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8amoaRo5x4tOQa/4NouaEJxL8CWcjy+23IoAkOoXYhw=;
-        b=DQBLnfx0CHpWA39OuBKb/qF96Tuo3JOp4vGUxp96ODBMac/BwiAF76d5ibWYJr24Qt
-         SuYyjsLXUYM4lAnVoFCvMiqX+dTci0QM38x75fW5CwkiGj2Oze/CWNgccZf0/V3GXTjS
-         7bO3mTH+aocir/kaXgN/eWxCH5JpYBwskNM14=
+        d=gmail.com; s=20251104; t=1791971874; x=1792576674; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ACPPyK0+gqe+ycEjjJs2TTLvtTPVz+VEJs6WV9i3hg0=;
+        b=ec2N/78Sq6U7DEjMXWnTBBla2qEiGNPeea/LE0/J5MMmwX6yBI/UbOfmNYtQFCbXhZ
+         tXkbIKiIwdp58u9CWhJn5XIRdAiwDnr9ZHxmt8oOWvfMZeN24jgAwC6WRss8CjDBcwXA
+         ji6NfV9pPt/EnswjJBqEs/KsoIJ7cbmJjTYjpy6nfzcAvvZQdo2Vcu7RW1AQQ1KK4Pd9
+         6SnT7Uh5SQKIP/f2b0HAFCL38l4rRYRWOpVJnnEK11AbSgtrC8gP6ie3aVPCkmJXcOTN
+         6nk+OsUjhkaSLL+hW1RNGWubuQEXK4MolxoO8OZOqvnyjkU0qqtd8eltQJmZ1Vgs23oY
+         g9Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791971745; x=1792576545;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8amoaRo5x4tOQa/4NouaEJxL8CWcjy+23IoAkOoXYhw=;
-        b=J0Wpcm3hqMeu7D1fP1qJB1DKwu+aFdRZr7MEPaSPT4/qUZmo8R4o7g0S2B6DDIbwR2
-         MlvUvNpZnoHqnxlst2q8ltPo9p1iBRZ5/RuCBvSQlVFMCHJzGMHQqoYm6Nqm0VdHzYut
-         ekquaAEurXINn5L16ByQZg+TwNyYyOKZDy87BKCzw9lKhx6+2tujvEdsXmmCNYvnWqHf
-         xKEhrppF4A1IKURijp93+OGTUyeQRhUHg+GUjRW6hhmj3ZvZ7/DE5Ehqzi/auGFnlxRD
-         qloDu74oC/sFPGRvvnvtwWNeFMwtdh5w4nethCJAD4xc6tETZC7tqYfm17mI8FebNtDu
-         hVHg==
-X-Gm-Message-State: AFq9FYKenwHVhZgA7habRhX2Rv+JLCTFNCeJ8MlsFznMzsq5q7MnEKoY
-	2xvnySMw9QKls8UHN9s6VWgysj4Wy7x5HbWI3Lo9AUeHw5UPptkE3PIjuLh+9D4jMAZotdxZwgW
-	VVcA=
-X-Gm-Gg: AYBFou3+koH+qn4LJDDAJn/b0H3GC3BbtML9eV/bLjTmDitEuxy583KNolaNRv+KKoa
-	IklIKnx6DTY7kUCcBvqm7ioG9Yy5W6baiYqW8BU9AAjN6uTr9T79HG2Fohtf8EiXhpy1rpmI8+X
-	AUKLpmcfr/kCBCv2lmE1tyuB6HSLWBiAWQkaXlR8Ib0S1LLvkp2Gz50AuEvTToRECh5SbQMnTL6
-	oJSZf1wDLAsRaGZ592YCbKmWLBBesGBkbLLTryPIaV07VMb0uRe7sDEldQ8iqC0kW2bxxP+yI6b
-	g2FfWSQtDuRf+uQIngK+KboFazptFHKW3AXAW3wVEAmXznZEYh0+c9mXgVqqI8eLfkFtqfj2Fab
-	PQ0xQrqASLUJAcdmcHhYok4s1LV+G0ru6lrNQ1s7DqR5Qvr+JaeD9WGN3gi/dm1KDxRbZZUlNbH
-	7y5L0Mpz4qPS8pjnAmw7YB0elb79JWCX6E9feixVa7Ni70jkyDrv6hJxI+QBzRJ16RRseWuYmHw
-	BGgD2kujJaFKaF17pEiNhVH72iXEps00CsglqBZqapBPYA26qcjLQens2b/
-X-Received: by 2002:a05:620a:2612:b0:93c:9eb3:9f04 with SMTP id af79cd13be357-93ebd0e41c3mr2334903485a.9.1791971745267;
-        Wed, 14 Oct 2026 02:55:45 -0700 (PDT)
-Received: from mbili.tail33bf8.ts.net ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef5055eb3sm453074985a.33.2026.10.14.02.55.43
+        d=1e100.net; s=20260707; t=1791971874; x=1792576674;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ACPPyK0+gqe+ycEjjJs2TTLvtTPVz+VEJs6WV9i3hg0=;
+        b=Y9Dk/XPdAPOmG8dMJMZwpvVi6mVK0q/S64q0FkRX/0sPjReaEWubWgzftrxYsbw1Xn
+         /CtUcHuu+Pbx0Q47+74aViremIhZ1iDaqXO/nJOjNN+3Mt4Ko4ELxJ+NY987r+QM0TOz
+         EAAu7ztLu9yYiZB0vI4/k/3q/QZXSiCQRlQePlwod8/dTQ6S6DDfN3wCvi4fxcJSMf2e
+         z68aArzIqS4YVY6rYTnEBfocCHJ0ZwvetkjmJBGehI2A1HP9C13+dgwQFW0nBX5wutiR
+         mJbcV3NVsIEiKTZ7gsDQFaJx0XUZevTGLx6TSYnBNW7+VNktTsL8yXJyTQHcrjMCq4ZM
+         s9Zg==
+X-Forwarded-Encrypted: i=1; AKwUvBzf2m6uJyp2kwwd91ic5VkdlDHngh8NhQ6Ce3X5gSQz9PrxUVCA4FFfyC7bUoGeF0YkLCSiNHc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ+QNyn9WS0Pg7gVyvg+QGVxxdIv/cLOgkDhbsP/MMP9oSB1Yn3
+	4DO6yqWLjoHaP9Jm77cCq7HcI9pbTjJSX8NFyHnrmWCvYpinOYTwoPCg
+X-Gm-Gg: AYBFou3k77CUcyfx9XgpYCsBOA7mE5iHianhx87KrsIVos/ZSzZ3rGqcO9/zLGDPgRi
+	nEBOCOnuq2Rcby/+mCp/90pIb30Q3ayqoF6ueUs3+zfaBs+TJEtwM9FJfEB9//Srpujq3DvBAw3
+	hd35YXFiNNgncWVZogc0JnLCkUAMusBckgXEAXPbOxCcPkRAAe8+PCTPJCmcQUwucOMBurWrHcH
+	bWC5aZgmA8j9zO6yAyAQotFBNzqcthixOvot5Vtz38O8p+XRjEj8/1hZzseaXCHz6mew6SK5ys7
+	NXetXiv9rUUJeuDPuNei0i0PXQCpR9ZBXbkD5MiF77DywfPOTTdoVwgnkgNK+uFttzzpIU76An8
+	P9pbJEqPl/y28Bpbn/U8fM7T+qj76KPdfo5JUykq+89Kk5rcdqCjIb04yfRpbKNAu/cPBoaE+rI
+	bCYLAB9Yo/o9BzGlRS6xB9OBHlgPknlQrC6YCdcfVRRNZygxfTj+Mf1VJjhwmhYh/eo6zdGkZQL
+	XGt8beXr9zS+1y4b2Nb6+x+jawlI72ykTsWAjc1Yzc2AiOh8YVYaPyg
+X-Received: by 2002:a05:6000:184e:b0:48b:174:eab1 with SMTP id ffacd0b85a97d-48dbaceb3f2mr26874342f8f.36.1791971874377;
+        Wed, 14 Oct 2026 02:57:54 -0700 (PDT)
+Received: from mtardy-friendly-lvh-runner.europe-west1-c.c.cilium-dev.internal ([2600:1900:4010:1a8::])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-48de77b35b5sm4162746f8f.21.2026.10.14.02.57.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 02:55:44 -0700 (PDT)
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-To: netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	cake@lists.bufferbloat.net,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net-next v6 4/4] net/sched: cake: hash before segmenting and reject an overlong split
-Date: Wed, 14 Oct 2026 05:55:32 -0400
-Message-Id: <QDISC-BA27.v6.r0.20261014054826-4@mojatatu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <QDISC-BA27.v6.r0.20261014054826@mojatatu.com>
-References: <QDISC-BA27.v6.r0.20261014054826@mojatatu.com>
+        Wed, 14 Oct 2026 02:57:53 -0700 (PDT)
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: bpf@vger.kernel.org
+Cc: andrii@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	eddyz87@gmail.com,
+	edumazet@google.com,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	liamwisehart@meta.com,
+	martin.lau@linux.dev,
+	pabeni@redhat.com,
+	song@kernel.org,
+	netdev@vger.kernel.org,
+	sdf.kernel@gmail.com,
+	ameryhung@gmail.com,
+	kuniyu@google.com,
+	memxor@gmail.com,
+	jiayuan.chen@linux.dev,
+	alan.maguire@oracle.com,
+	Mahe Tardy <mahe.tardy@gmail.com>
+Subject: [PATCH bpf-next v4] bpf: allow ksock connect/send calls from wq
+Date: Wed, 14 Oct 2026 09:57:43 +0000
+Message-ID: <20261014095743.35891-1-mahe.tardy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,253 +91,302 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Fix:
-with CAKE_FLAG_SPLIT_GSO, cake computes the flow/host hash keys, then
-splits a GSO skb into segments it accounts individually. Key extraction
-must run on the unsegmented skb -- skb_gso_segment() can rewrite an
-encapsulated packet's headers to the inner ones -- and the resolution
-must wait until the packet is admitted, since it commits the
-set-associative tags, host indices and way counters that a later
-rejection would leave mutated (a GSO skb whose segmentation fails was
-dropped with that state already committed).
+In the initial implementation in '7ae4eb14c5f9 ("bpf: Add ksock
+kfuncs")', it was decided to let the ksock kfuncs go through the LSM
+hooks instead of by-passing them, and thus to disallow the use of the
+kfuncs from asynchronous workqueues as the credentials would be
+different than the task context that triggered the kfuncs.
 
-Split cake_hash() into a side-effect-free cake_hash_keys(), run on the
-unsegmented skb, and cake_hash_resolve(), run only once the packet is
-admitted. Move the split-GSO path ahead of the resolution: sum the
-segment list, test the total against the ceiling before linking any
-segment, and drop the whole list on rejection so no persistent state is
-committed. The list is deferred to to_free so the tail segment's
-sock_wfree() never runs under the qdisc lock; a fraglist GSO, where
-skb_segment_list() returns the original skb as the head, drops the
-caller's reference and queues the list once instead of self-linking it.
+After some discussions, in particular at Plumbers 2026 at the
+presentation introducing this new ksock API[^1], it was agreed that
+by-passing the LSM from socket created by BPF programs should be okay
+and thus that the process context switch from kthread executing the
+workqueues wouldn't be an issue.
 
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+For now, the ksock kfuncs still trigger the LSM hooks but we relax the
+constraint on not using the workqueues as it will be useful for users
+triggering connect() or send() from non-sleepable programs (like
+tracing, support will be extended in future patches).
 
+Also adapt test_ksock_wq() added in 'c93cbdb13f99 ("selftests/bpf: Add
+ksock test for async callback guard")' to test that the connect() and
+send() kfuncs are now allowed and work when called from workqueues.
+
+Note that bpf_ksock_create() still checks for workqueue context
+execution and makes sure the current->nsproxy is defined as we rely on
+the network namespace to be defined (could be NULL in the case do_exit()
+was called on the task before the wq was scheduled) and to be the one
+from the task that triggered the SYSCALL bpf prog.
+
+[^1]: https://lpc.events/event/20/contributions/2430/
+
+Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
 ---
-v5 -> v6: split out of the single v5 patch; the hash logic is unchanged.
----
- net/sched/sch_cake.c | 126 ++++++++++++++++++++++++++++++++-----------
- 1 file changed, 95 insertions(+), 31 deletions(-)
+I resent v2 as v3 instead of this fix by mistake, ignore v3.
+v3: https://lore.kernel.org/bpf/20261014091450.19107-1-mahe.tardy@gmail.com/
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index adfe11737c66..c67db1c61a90 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -706,19 +706,28 @@ static u16 cake_get_flow_quantum(struct cake_tin_data *q,
- 		get_random_u16()) >> 16;
+ net/core/bpf_ksock.c                          | 27 +------
+ .../selftests/bpf/prog_tests/ksock_wq.c       | 29 +++++--
+ tools/testing/selftests/bpf/progs/ksock_wq.c  | 77 +++++++++++++++----
+ 3 files changed, 92 insertions(+), 41 deletions(-)
+
+diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
+index e9943aeeadd3..f74968397798 100644
+--- a/net/core/bpf_ksock.c
++++ b/net/core/bpf_ksock.c
+@@ -37,15 +37,6 @@ static void ksock_release_work_fn(struct work_struct *work)
+ 	kfree(ks);
  }
- 
--static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
--		     int flow_mode, u16 flow_override, u16 host_override)
-+struct cake_hash_keys {
-+	u32 srchost_hash;
-+	u32 dsthost_hash;
-+	u32 flow_hash;
-+};
-+
-+static void cake_hash_keys(const struct sk_buff *skb, int flow_mode,
-+			   u16 flow_override, u16 host_override,
-+			   struct cake_hash_keys *out)
+
+-static bool bpf_ksock_has_user_task_context(void)
+-{
+-	/*
+-	 * Task work can run from do_exit() after exit_nsproxy_namespaces()
+-	 * cleared current->nsproxy, while current is still not a kthread.
+-	 */
+-	return !(current->flags & PF_KTHREAD) && current->nsproxy;
+-}
+-
+ __bpf_kfunc_start_defs();
+
+ /**
+@@ -59,7 +50,7 @@ __bpf_kfunc_start_defs();
+  * This function may sleep (sock_create), so it can only be used
+  * in sleepable BPF programs (SYSCALL).
+  * It cannot be called from a BPF workqueue callback because that callback
+- * does not retain the invoking task's namespace or security context.
++ * does not retain the invoking task's namespace.
+  *
+  * @opts:	Pointer to struct bpf_ksock_create_opts with socket parameters.
+  * @opts__sz:	Size of the opts struct.
+@@ -73,13 +64,9 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
+ 	struct bpf_ksock *ks;
+ 	int err;
+
+-	/*
+-	 * sock_create() derives the network namespace, credentials, and cgroup
+-	 * from current. Kernel threads, including BPF workqueue callbacks, do
+-	 * not carry the context of the task that invoked the BPF program.
+-	 */
+-	if (!bpf_ksock_has_user_task_context()) {
+-		err = -EOPNOTSUPP;
++	/* sock_create() derives the network namespace from current. */
++	if ((current->flags & PF_KTHREAD) || !current->nsproxy) {
++		err = -EPERM;
+ 		goto err_out;
+ 	}
+
+@@ -165,9 +152,6 @@ __bpf_kfunc int bpf_ksock_connect(struct bpf_ksock *ks,
+ 	struct sockaddr_storage sa;
+ 	int addrlen;
+
+-	if (!bpf_ksock_has_user_task_context())
+-		return -EOPNOTSUPP;
+-
+ 	if (!addr || addr__sz != sizeof(*addr))
+ 		return -EINVAL;
+
+@@ -247,9 +231,6 @@ __bpf_kfunc int bpf_ksock_send(struct bpf_ksock *ks, const void *data,
+ 	};
+ 	int ret;
+
+-	if (!bpf_ksock_has_user_task_context())
+-		return -EOPNOTSUPP;
+-
+ 	ret = kernel_sendmsg(ks->sock, &msg, &iov, 1, data__sz);
+
+ 	return ret;
+diff --git a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+index d6dc20b8f95b..cb50f9a1be2e 100644
+--- a/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
++++ b/tools/testing/selftests/bpf/prog_tests/ksock_wq.c
+@@ -4,6 +4,7 @@
+ #include <unistd.h>
+
+ #include "test_progs.h"
++#include "network_helpers.h"
+ #include "ksock_wq.skel.h"
+
+ #define CALLBACK_WAIT_RETRIES 1000
+@@ -13,13 +14,22 @@ void test_ksock_wq(void)
  {
- 	bool hash_flows = (!flow_override && !!(flow_mode & CAKE_FLOW_FLOWS));
- 	bool hash_hosts = (!host_override && !!(flow_mode & CAKE_FLOW_HOSTS));
- 	bool nat_enabled = !!(flow_mode & CAKE_FLOW_NAT_FLAG);
--	u32 flow_hash = 0, srchost_hash = 0, dsthost_hash = 0;
--	u16 reduced_hash, srchost_idx, dsthost_idx;
- 	struct flow_keys keys, host_keys;
- 	bool use_skbhash = skb->l4_hash;
- 
-+	out->flow_hash = 0;
-+	out->srchost_hash = 0;
-+	out->dsthost_hash = 0;
+ 	LIBBPF_OPTS(bpf_test_run_opts, opts);
+ 	struct ksock_wq *skel;
++	char recv_data[sizeof(skel->data->send_data)];
+ 	u32 callback_done;
+-	int err, i;
++	int err, i, port, rfd;
+
+ 	skel = ksock_wq__open_and_load();
+ 	if (!ASSERT_OK_PTR(skel, "ksock_wq open and load"))
+ 		return;
+
++	rfd = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 1000);
++	if (!ASSERT_OK_FD(rfd, "receiver socket"))
++		goto out;
++	port = get_socket_local_port(rfd);
++	if (!ASSERT_GE(port, 0, "receiver port"))
++		goto out;
++	skel->bss->remote_port = port;
 +
- 	if (unlikely(flow_mode == CAKE_FLOW_NONE))
--		return 0;
-+		return;
- 
- 	/* If both overrides are set, or we can use the SKB hash and nat mode is
- 	 * disabled, we can skip packet dissection entirely. If nat mode is
-@@ -753,50 +762,65 @@ static u32 cake_hash(struct cake_tin_data *q, const struct sk_buff *skb,
- 	switch (host_keys.control.addr_type) {
- 	case FLOW_DISSECTOR_KEY_IPV4_ADDRS:
- 		host_keys.addrs.v4addrs.src = 0;
--		dsthost_hash = flow_hash_from_keys(&host_keys);
-+		out->dsthost_hash = flow_hash_from_keys(&host_keys);
- 		host_keys.addrs.v4addrs.src = keys.addrs.v4addrs.src;
- 		host_keys.addrs.v4addrs.dst = 0;
--		srchost_hash = flow_hash_from_keys(&host_keys);
-+		out->srchost_hash = flow_hash_from_keys(&host_keys);
- 		break;
- 
- 	case FLOW_DISSECTOR_KEY_IPV6_ADDRS:
- 		memset(&host_keys.addrs.v6addrs.src, 0,
- 		       sizeof(host_keys.addrs.v6addrs.src));
--		dsthost_hash = flow_hash_from_keys(&host_keys);
-+		out->dsthost_hash = flow_hash_from_keys(&host_keys);
- 		host_keys.addrs.v6addrs.src = keys.addrs.v6addrs.src;
- 		memset(&host_keys.addrs.v6addrs.dst, 0,
- 		       sizeof(host_keys.addrs.v6addrs.dst));
--		srchost_hash = flow_hash_from_keys(&host_keys);
-+		out->srchost_hash = flow_hash_from_keys(&host_keys);
- 		break;
- 
- 	default:
--		dsthost_hash = 0;
--		srchost_hash = 0;
-+		out->dsthost_hash = 0;
-+		out->srchost_hash = 0;
+ 	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.ksock_wq_start),
+ 				     &opts);
+ 	if (!ASSERT_OK(err, "run ksock_wq_start"))
+@@ -28,18 +38,27 @@ void test_ksock_wq(void)
+ 		goto out;
+
+ 	for (i = 0; i < CALLBACK_WAIT_RETRIES; i++) {
+-		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE))
++		if (__atomic_load_n(&skel->bss->callback_done, __ATOMIC_ACQUIRE) == 2)
+ 			break;
+ 		usleep(CALLBACK_WAIT_US);
  	}
- 
- 	/* This *must* be after the above switch, since as a
- 	 * side-effect it sorts the src and dst addresses.
- 	 */
- 	if (hash_flows && !use_skbhash)
--		flow_hash = flow_hash_from_keys(&keys);
-+		out->flow_hash = flow_hash_from_keys(&keys);
- 
- skip_hash:
- 	if (flow_override)
--		flow_hash = flow_override - 1;
-+		out->flow_hash = flow_override - 1;
- 	else if (use_skbhash && (flow_mode & CAKE_FLOW_FLOWS))
--		flow_hash = skb->hash;
-+		out->flow_hash = skb->hash;
- 	if (host_override) {
--		dsthost_hash = host_override - 1;
--		srchost_hash = host_override - 1;
-+		out->dsthost_hash = host_override - 1;
-+		out->srchost_hash = host_override - 1;
- 	}
- 
- 	if (!(flow_mode & CAKE_FLOW_FLOWS)) {
- 		if (flow_mode & CAKE_FLOW_SRC_IP)
--			flow_hash ^= srchost_hash;
-+			out->flow_hash ^= out->srchost_hash;
- 
- 		if (flow_mode & CAKE_FLOW_DST_IP)
--			flow_hash ^= dsthost_hash;
-+			out->flow_hash ^= out->dsthost_hash;
- 	}
+ 	callback_done = __atomic_load_n(&skel->bss->callback_done,
+ 					__ATOMIC_ACQUIRE);
+-	if (!ASSERT_EQ(callback_done, 1, "workqueue callback completed"))
++	if (!ASSERT_EQ(callback_done, 2, "workqueue callbacks completed"))
+ 		goto out;
+
+-	ASSERT_EQ(skel->bss->create_err, -EOPNOTSUPP,
+-		  "workqueue create rejected");
++	ASSERT_EQ(skel->bss->create_ret, -EPERM, "workqueue create rejected");
++
++	if (!ASSERT_EQ(skel->bss->connect_send_ret, sizeof(recv_data),
++		       "workqueue send bytes"))
++		goto out;
++	err = recv(rfd, recv_data, sizeof(recv_data), 0);
++	if (ASSERT_EQ(err, sizeof(recv_data), "recv len"))
++		ASSERT_MEMEQ(recv_data, skel->data->send_data, sizeof(recv_data),
++			     "payload match");
+
+ out:
++	if (rfd >= 0)
++		close(rfd);
+ 	ksock_wq__destroy(skel);
+ }
+diff --git a/tools/testing/selftests/bpf/progs/ksock_wq.c b/tools/testing/selftests/bpf/progs/ksock_wq.c
+index 16a1873d132e..6ec6103e2518 100644
+--- a/tools/testing/selftests/bpf/progs/ksock_wq.c
++++ b/tools/testing/selftests/bpf/progs/ksock_wq.c
+@@ -2,9 +2,11 @@
+ /* Copyright (c) 2026 Isovalent */
+
+ #include "vmlinux.h"
++#include <bpf/bpf_endian.h>
+ #include <bpf/bpf_helpers.h>
+ #include "bpf_experimental.h"
+ #include "bpf_tracing_net.h"
++#include "bpf_misc.h"
+ #include "errno.h"
+ #include "ksock_common.h"
+
+@@ -14,15 +16,19 @@ struct ksock_wq_value {
+
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_ARRAY);
+-	__uint(max_entries, 1);
++	__uint(max_entries, 2);
+ 	__type(key, u32);
+ 	__type(value, struct ksock_wq_value);
+ } work_map SEC(".maps");
+
+-int create_err;
++char send_data[] = "hello from bpf workqueue";
++
++__be16 remote_port;
++int connect_send_ret;
++int create_ret;
+ u32 callback_done;
+
+-static int ksock_wq_callback(void *map, int *key, void *value)
++static int ksock_wq_create(void *map, int *key, void *value)
+ {
+ 	struct bpf_ksock_create_opts opts = {
+ 		.family = AF_INET,
+@@ -35,7 +41,32 @@ static int ksock_wq_callback(void *map, int *key, void *value)
+ 	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
+ 	if (ks)
+ 		bpf_ksock_release(ks);
+-	create_err = err;
++	create_ret = err;
++	__sync_fetch_and_add(&callback_done, 1);
++	return 0;
 +}
 +
-+/* Commit the resolved flow into the set-associative table. Mutates
-+ * q->tags[], the flow host indices, the way counters and the host
-+ * bulk-flow counts, so run only after admission.
-+ */
-+static u32 cake_hash_resolve(struct cake_tin_data *q,
-+			     const struct cake_hash_keys *keys, int flow_mode)
++static int ksock_wq_connect_send(void *map, int *key, void *value)
 +{
-+	u32 flow_hash = keys->flow_hash, srchost_hash = keys->srchost_hash,
-+	    dsthost_hash = keys->dsthost_hash;
-+	u16 reduced_hash, srchost_idx, dsthost_idx;
++	union bpf_ksock_addr addr = {
++		.sin = {
++			.sin_family = AF_INET,
++			.sin_port = remote_port,
++			.sin_addr.s_addr = bpf_htonl(0x7f000001),
++		},
++	};
++	struct bpf_ksock *ks;
++	int err = -ENOENT;
 +
-+	if (unlikely(flow_mode == CAKE_FLOW_NONE))
-+		return 0;
- 
- 	reduced_hash = flow_hash % CAKE_QUEUES;
- 
-@@ -1763,11 +1787,14 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct cake_sched_data *q = qdisc_priv(sch);
- 	int len = qdisc_pkt_len(skb), ret;
- 	u16 flow_override, host_override;
-+	struct sk_buff *segs = NULL;
-+	struct cake_hash_keys keys;
- 	struct sk_buff *ack = NULL;
- 	ktime_t now = ktime_get();
- 	struct cake_tin_data *b;
- 	struct cake_flow *flow;
- 	bool same_flow = false;
-+	u64 slen = 0;
- 
- 	/* Classify first: a terminal TC action consumes the packet. */
- 	if (cake_tcf_classify(sch, skb, &flow_override, &host_override, &ret)) {
-@@ -1787,12 +1814,55 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 					 QDISC_DROP_OVERLIMIT);
- 	}
- 
--	/* choose flow to insert into */
-+	/* Tin selection and key extraction run on the unsegmented skb:
-+	 * skb_gso_segment() rewrites an encapsulated GSO packet's headers to
-+	 * the inner ones, changing the keys. Neither commits state.
-+	 */
- 	b = cake_select_tin(sch, skb);
--	idx = cake_hash(b, skb, q->config->flow_mode, flow_override,
--			host_override) + 1;
-+	cake_hash_keys(skb, q->config->flow_mode, flow_override,
-+		       host_override, &keys);
-+
-+	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
-+		struct sk_buff *nskb, *seg;
-+		netdev_features_t features = netif_skb_features(skb);
-+
-+		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
-+		if (IS_ERR_OR_NULL(segs))
-+			return qdisc_drop(skb, sch, to_free);
-+
-+		/* The split path accounts the segment sum, not the
-+		 * stab-adjusted qdisc_pkt_len(), so the top check does not
-+		 * bound it. Sum the list and reject it whole.
-+		 */
-+		skb_list_walk_safe(segs, seg, nskb)
-+			slen += seg->len;
-+
-+		if (unlikely((u64)sch->qstats.backlog + slen > QDISC_MAX_BACKLOG)) {
-+			qdisc_qstats_overlimit(sch);
-+			/* skb_gso_segment() moved the sock_wfree destructor to
-+			 * the tail segment; defer the whole list to to_free,
-+			 * never free it under the qdisc lock.
-+			 *
-+			 * Fraglist GSO is the exception: skb_segment_list()
-+			 * returns the original skb as the head with an extra
-+			 * ref (segs == skb), so drop the caller's ref and
-+			 * queue the list once, or the two drops self-link it.
-+			 */
-+			if (unlikely(segs == skb)) {
-+				tcf_set_qdisc_drop_reason(skb,
-+							  QDISC_DROP_OVERLIMIT);
-+				consume_skb(skb);
-+				return qdisc_drop_all(segs, sch, to_free);
-+			}
-+			__qdisc_drop_all(segs, to_free);
-+			return qdisc_drop_reason(skb, sch, to_free,
-+						 QDISC_DROP_OVERLIMIT);
-+		}
++	ks = ksock_ctx_get();
++	if (!ks)
++		goto out;
++	err = bpf_ksock_connect(ks, &addr, sizeof(addr));
++	if (!err)
++		err = bpf_ksock_send(ks, send_data, sizeof(send_data));
++	bpf_ksock_release(ks);
++out:
++	connect_send_ret = err;
+ 	__sync_fetch_and_add(&callback_done, 1);
+ 	return 0;
+ }
+@@ -43,20 +74,40 @@ static int ksock_wq_callback(void *map, int *key, void *value)
+ SEC("syscall")
+ int ksock_wq_start(void *ctx)
+ {
++	struct bpf_ksock_create_opts opts = {
++		.family = AF_INET,
++		.type = SOCK_DGRAM,
++		.protocol = IPPROTO_UDP,
++	};
+ 	struct ksock_wq_value *value;
+-	u32 key = 0;
+-	int err;
++	u32 key __aligned(8) = 0;
++	struct bpf_ksock *ks;
++	int err = 0;
+
+-	value = bpf_map_lookup_elem(&work_map, &key);
+-	if (!value)
+-		return -ENOENT;
+-	err = bpf_wq_init(&value->work, &work_map, 0);
+-	if (err)
++	ks = bpf_ksock_create(&opts, sizeof(opts), &err);
++	if (!ks)
+ 		return err;
+-	err = bpf_wq_set_callback(&value->work, ksock_wq_callback, 0);
++	err = ksock_ctx_insert(ks);
+ 	if (err)
+ 		return err;
+-	return bpf_wq_start(&value->work, 0);
++	for (key = 0; key < 2; key++) {
++		value = bpf_map_lookup_elem(&work_map, &key);
++		if (!value)
++			return -ENOENT;
++		err = bpf_wq_init(&value->work, &work_map, 0);
++		if (err)
++			return err;
++		if (key)
++			err = bpf_wq_set_callback(&value->work, ksock_wq_create, 0);
++		else
++			err = bpf_wq_set_callback(&value->work, ksock_wq_connect_send, 0);
++		if (err)
++			return err;
++		err = bpf_wq_start(&value->work, 0);
++		if (err)
++			return err;
 +	}
-+
-+	/* Admitted: resolve the keys and commit flow/shaper state. */
-+	idx = cake_hash_resolve(b, &keys, q->config->flow_mode);
- 	tin = (u32)(b - q->tins);
--	idx--;
- 	flow = &b->flows[idx];
- 
- 	/* ensure shaper state isn't stale */
-@@ -1819,14 +1889,9 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	if (unlikely(len > b->max_skblen))
- 		WRITE_ONCE(b->max_skblen, len);
- 
--	if (qdisc_pkt_segs(skb) > 1 && q->config->rate_flags & CAKE_FLAG_SPLIT_GSO) {
--		struct sk_buff *segs, *nskb, *seg;
--		netdev_features_t features = netif_skb_features(skb);
--		unsigned int slen = 0, numsegs = 0;
--
--		segs = skb_gso_segment(skb, features & ~NETIF_F_GSO_MASK);
--		if (IS_ERR_OR_NULL(segs))
--			return qdisc_drop(skb, sch, to_free);
-+	if (segs) {
-+		struct sk_buff *nskb, *seg;
-+		unsigned int numsegs = 0;
- 
- 		skb_list_walk_safe(segs, seg, nskb) {
- 			skb_mark_not_on_list(seg);
-@@ -1840,7 +1905,6 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			qdisc_qlen_inc(sch);
- 			numsegs++;
- 			q->buffer_used += seg->truesize;
--			slen += seg->len;
- 			WRITE_ONCE(b->packets, b->packets + 1);
- 		}
- 
--- 
++	return 0;
+ }
+
+ char __license[] SEC("license") = "GPL";
+--
 2.43.0
 
