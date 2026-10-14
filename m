@@ -1,101 +1,98 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B60253B60A;
-	Wed, 14 Oct 2026 14:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F349C53CA71;
+	Wed, 14 Oct 2026 14:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791986458; cv=none; b=jMfdiLJdhiNrDLmNDyII12EBsazDm6nVJOLM6bUzd5qRhkr0QBOu1sPmoRIf4YyUddGtnFaE/v6vfzVybSpmbYMMMk+Pkr13K0bZ2zDiOjDaSZbyvbXaGF+iqZrksPWKOExu7CbGiioq+jrrdZTfc1X656DFGniRfVjg9appKB4=
+	t=1791986485; cv=none; b=AV4hecIFzXei/btBzmRYb3RwELXcOJS830eROl6manweHcWB3/if3Ajwbtguxnvwb15YaIy03TLBLYBx3PTMOWRMU9JqHyrLhNvZzKho44uwuyeHhXkSM4UEp2+xDPiA8GHkiVPOToIMtK/sGCcq1blA21wNSBDTs2HaS6eJ8eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791986458; c=relaxed/simple;
-	bh=Ra0Y3BvTdz8AJOWltPsW7r1l5tkOwOlPYfZhSkipkvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BixIVl8m9woxtQ4+xj2+8PGecMITcs6gnP4KstD5dnZ+ozp92XY/S6u8X31BulIG8dqgL4yWOlOGJ1ABsyv8ow55lcfTBM5nZIofMW+HqZBjsmziOjIBnO7SSRJEkHB0oIG09/fA1jTs1Svby6x9BVTUMi1xAHHM7/4Qj8GxgVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2/Izit2A; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DMEyN1mZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1791986485; c=relaxed/simple;
+	bh=VVqUpLIr6hwDyUujSgCjZbQGFEBvkJMBUVsT0nmXs40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KexQQaqopKGXQphnC5qfMoIe3XTQI+rPBma2KSsE8J/xUHigA8JKmMNEaLVWboxigEYnwGyQeF/W3QExZcDY+3tvuVSXU2/+rUb1KOQto3qNitDxsxrxF5wLd1BAWBmtfOWKfZYS7TO29xoyV89HQ+mVRMPDvVCclS9IMDyLvg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=BgCTta/w; arc=none smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2/Izit2A";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DMEyN1mZ"
-Date: Wed, 14 Oct 2026 16:00:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1791986449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2mq7qJVC1awJnl+BqDUszf8sZ/WuqUk5FNcUeA/mKLU=;
-	b=2/Izit2AnR+VKpA+biznr+1OrJIRdHPG8iry1o4qffeEXzlrHF8WrjdtZ63amubKTbMfZr
-	gpIKzRukYayjZinZG62htIg5fq/FpU8VXoZehvJxn3n1Q3XGXmG4q49d31zp1DQpwI8zjl
-	5+Z8DDpJHTGIq5KP+sjHZS6Yp/rGsGSmP2e3+GKvTIY9o+8vIIU0PF/RnERA7SKuJPO709
-	F7QITUtjN2lLwaz2eJDmfhAlu88/B94A8va3E+U7Bc1nWIon0huKxodrw9/8xu8SI1+DuN
-	m/M4qlpUak2mcmUM9sY5fos8MKdiZuGNY/FEalu1EnbjIpkqIngR/T9YKRgZYA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1791986449;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2mq7qJVC1awJnl+BqDUszf8sZ/WuqUk5FNcUeA/mKLU=;
-	b=DMEyN1mZ7SL6/yU3qauW2MnC6dqhYEpTD7Dtp5vlBR80vDVpLmKVJ22z3yn9ppbrdnfJKE
-	GgNAFnPDyAwcmsDg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Xin Xie <xiexinet@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, andrew+netdev@lunn.ch, shuah@kernel.org,
-	kees@kernel.org, petr.wozniak@gmail.com, qingfang.deng@linux.dev,
-	fmaurer@redhat.com, luka.gejak@linux.dev, xiaoliang.yang_1@nxp.com,
-	skhawaja@google.com, liuhangbin@gmail.com, stable@vger.kernel.org,
-	sdf.kernel@gmail.com
-Subject: Re: [PATCH net v7 3/4] net: hsr: segment GSO before per-frame
- forwarding
-Message-ID: <20261014140047.Z8nhXzxa@linutronix.de>
-References: <20261009201324.17-1-xiexinet@gmail.com>
- <20261009201324.17-4-xiexinet@gmail.com>
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="BgCTta/w"
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6B0BB2400A9;
+	Wed, 14 Oct 2026 14:01:11 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.36.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id A592813C2B0;
+	Wed, 14 Oct 2026 07:01:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A592813C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1791986470;
+	bh=VVqUpLIr6hwDyUujSgCjZbQGFEBvkJMBUVsT0nmXs40=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BgCTta/wrclsuYkxXt+DLq9Ue6zjfARjph9k+OyolG+ry4eN5aHR7GeIRy0FgcGX2
+	 y2zDPq0fwUD4nLa+6+pUUfcRzm5jqouGQD8pIySzOwSgkME0df5lXkxHYcc2rZ99Lm
+	 L/Mof5BwaGNXLNnm/8GammwqaR82ApI06W3Vrll0=
+Message-ID: <04b8b928-b671-4236-a792-1141cd81a34b@candelatech.com>
+Date: Wed, 14 Oct 2026 07:01:10 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261009201324.17-4-xiexinet@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bug] Triple whammy of mt7996e bugs on 7.2+
+To: Ilya K <me@0upti.me>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-mediatek@lists.infradead.org
+References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd>
+ <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com>
+ <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615>
+ <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com>
+ <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df>
+ <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21>
+ <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com>
+ <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4>
+ <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8>
+ <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136>
+ <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
+ <143991791036721@40be7595-980b-4665-ba66-1601e10a0899>
+ <c4286904-2a9a-41fd-93ce-be57964909f6@candelatech.com>
+ <221941791052355@558b3e58-c2b1-4e14-91fe-beb5649d18f6>
+ <5955851791966910@d362902e-9931-4ad0-8e86-72401cc67703>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <5955851791966910@d362902e-9931-4ad0-8e86-72401cc67703>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1791986472-9G5xvht-Puv2
+X-PPE-STACK: {"stack":"us5"}
+X-MDID-O:
+ us5;at1;1791986472;9G5xvht-Puv2;<greearb@candelatech.com>;6f76c88c2c731de9ad886e575864f8cc
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-On 2026-10-09 22:13:23 [+0200], Xin Xie wrote:
-> HSR/PRP require a tag/RCT and sequence number for each wire frame.
-> Adding them to a GSO aggregate before segmentation cannot provide
-> valid per-frame metadata.
+On 10/14/26 01:35, Ilya K wrote:
+> OK, so I took some time off of this because of real life, but during that time, my 7.2-stable-with-Ben's-patches frankentree actually crashed! I am not sure if this is the same issue or a different one, but I thought it's at least interesting.
 > 
-> Use the core GSO segmenter before normal per-frame processing.
-> Each segment follows the usual local-delivery and forwarding paths.
-> Remove GSO_MASK types from the master's hw_features so core TX also
-> segments local traffic before ndo_start_xmit().
+> Here's the logs from the ~hour when it crashed (exported from Loki, so sorry for the weird format): https://gist.github.com/K900/e2e5b21d6a49f450fe353c7cc3057916
 > 
-> Classify by inner protocol, not ingress port. Use the core's bounded
-> VLAN decoder for 802.1Q, 802.1AD and nested or accelerated tags.
-> Reject inner HSR/PRP aggregates, unreadable fragments and undecodable
-> headers. Also reject trailing bytes beyond a known nonzero IP length:
-> otherwise an old PRP sender's erroneous whole-aggregate RCT becomes
-> transport payload. This check also rejects locally destined malformed
-> inputs that the base kernel accepted. Zero IP lengths and GSO_PARTIAL
-> are left to the segmenter because they provide no full IP extent for
-> this check.
+> If there's any more info you need, please tell me.
 > 
-> The preceding ordered-consumer patch is required for per-segment
-> local numbering. Charge the worker budget by the actual segment count,
-> or one on failure, and count each rejected input once through core
-> per-CPU statistics on its entry device.
-> 
-> Fixes: f421436a591d ("net/hsr: Add support for the High-availability Seamless Redundancy protocol (HSRv0)")
 
-I've been re-reading the old mails. The whole thing is needed for GSO
-when it can not be disabled, right? And VETH interface has been named as
-an example.
-There was also a bridge device. With HSR you form a ring. With a bridge
-you attach other (physical) devices within the ring. This does not sound
-like real life use-case. Do I miss something?
+Well, not exactly a crash, but the system stopped being able to talk to the radios it seems.  Error is 12, which is ENOMEM,
+so possibly memory leak or something like that is causing trouble.  Or maybe firmware is just wedged and the ENOMEM is a symptom
+of that.
 
-> Signed-off-by: Xin Xie <xiexinet@gmail.com>
+You might try the latest mt76 tree from Felix, it recently gained a large number of fixes.
+Maybe that made it into wireless-next tree as well, not sure.
+We're working on pulling Felix's patch series into our tree, but not done with rebase yet.
 
-Sebastian
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
