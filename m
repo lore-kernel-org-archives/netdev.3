@@ -1,110 +1,252 @@
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627FA4BF949
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:03:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6AE48C8C1
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791975844; cv=none; b=BiOQNOmncPLA/pk1X+CXJRCkPQTcAnynNv3uYylRC6T1MGvw42JlpMvn8KatUek4LqJRSZae4HDKwAWQ63/cCDMY803gVUn47cUY4JNVLOrZcSEXsZ83vS33KfOOS1FZu1YTD4TN3TD5uxiNgSFaPmkKZJh3bfAL4ieo1DlgmRs=
+	t=1791975882; cv=none; b=S0P8YedpsGD7QfVJfy3hGco4LVS5eZPzeD9IzsQ0kZ/nnoJtP89G50TxSzemoVzt8r9uElOmfO+P1sVzf5wZBakTw8NVRYKoh98+J9kkmEI9bIpAIkEsZ84yBFav7a/f2xsKQd11I41r7d1loYD8FvxcvwfnOfea+uIe75xUYyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791975844; c=relaxed/simple;
-	bh=XsGHi5FRsxGlXy/BzAv0634cOMAQkocEqD+0pVJs0jw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mU7u+haR473xdscnP0y82iv6iy446GwvrAjAe71gM5h6LYaoVVJeoNSzp0HN18wg8ssQ6Ydts3aTCW7dfv4OV3NZp9ClmlXf4pooycC84vuJMGBG1jTAELi4iWvJBiB6nh3O6YAryU3/T+/NnCtnahUFeRDdvXCVG8lgd+MFT6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gc10swPc; arc=none smtp.client-ip=209.85.210.49
+	s=arc-20240116; t=1791975882; c=relaxed/simple;
+	bh=7O6rWrEbMDVfy9c5rtx+EWfOlyYdJ0SxRACNu4mckQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pNDpx1AMtj2046jKqLfvVjOH8ALP7o5dUaQdI7T6y0qQapEKmN2yHASP8K4U1peiGgxaQyOV4GK+LQawNlRrmsQXA8XUXYbzr9J3nHe5092AashT3iaPoYRY6/IQUYPA32fyocrH5ptzdoOoTPNUNoJwRFr08b6LiyX/g9nBQXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3g92KyS; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gc10swPc"
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-8252259f6d2so2374771a34.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 04:03:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3g92KyS"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-48afe75f055so302072f8f.2
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 04:04:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1791975836; x=1792580636; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XsGHi5FRsxGlXy/BzAv0634cOMAQkocEqD+0pVJs0jw=;
-        b=Gc10swPcLmrHqC2BSK/CshBxX0HW9CRMjuDDX4R0DM+jF9w+N84Kll+lZfH9N34LJi
-         u81JQ+nObDKgSFTRCalLA/ROImuJ0BUphO6pUeaUCsdtZGiMXpYWkBHgUdn86ouSrjLA
-         n/ykClBqi133Dny/k7uGgMttzL9fob81f+d/VurosHjqdCEDs6LWCcTmNthoa+4iy0B6
-         S6YSSHRRb29NC8TTubjPyfuhIdBdc10GNS8E5LDF8Kng0jbvFNeOqKAk4tvtmy9DZ1xM
-         nrOWGjt+Q1lhdu+VJE9JBmNUaOtZTNgGppYgrSONHqJAkL7DgbvX1cO/rEnn+4xD7q7i
-         FS4Q==
+        d=gmail.com; s=20251104; t=1791975873; x=1792580673; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wAN4a5Qn+9mrwQZxJyTfVQaGWT0bG6L+Hmxi8yJDhvs=;
+        b=Y3g92KyS4J/fJmGW511dUC81gg6F4rEzTDAwsck/YDWWnLXSavkgoUWQVvQNDq9n9D
+         v5GqKfXkMwFVYvPZag+tNdy8StQ6GViprgG9ubi6PpWRvmgxcfYT0Jg7ETjxc1LzeP9V
+         HW/RTfWxYtJiS/2rCFVb0EOXimvBpg5+hhs6QbHxnOFYxz8d2khC5OFjM1rqJMEMjpf3
+         9xTZ+VMFJ2V9sk3c7jHOyNPvrIi/ucY2MkCHZRaCmeE0g0wq4oDcr+rpL0TwJhUGsvM9
+         EhBv+g6gh/ta1gSs0LWIhTfYaJZsUe7jkr6E1NWNEqpsGMQtCkVDXz+KyAUS1YagqYcO
+         d4cQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791975836; x=1792580636;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=XsGHi5FRsxGlXy/BzAv0634cOMAQkocEqD+0pVJs0jw=;
-        b=kAq67wrZlnA4cBIslALtCXvWq2KlacubIAGs9nByQtL6sm836N7+vsrU2nrTW3lSvu
-         nDjisFeQiJH6WEtJhwL9qN+Hwayfkf9pww49D9KSPlsE2Y5a2pOILr3b93opRulHLz6h
-         ws9pH3ZiZiFvYKvelxl+Luf3KuM23xx75d5RfEA7kXE9OOBzCZ1z1MzHM5ovGpHh/YHJ
-         8plC1H0ELcfh5KnsT31spRlSA+i4ZPMbQXJ1wtvzccURS496lA0UICysbJJG94v3iz/E
-         6bG57O5bL3RbU9r4WHkoXxZo+yFai2dCGSj47aH1whGxXMGAZDSQ6sK4NKQ49OJkWcUX
-         yqKQ==
-X-Gm-Message-State: AFq9FYKmOpoBC3E2+kKA3c79zxGsKluZZiVXT0CqaEqxSJOH+ufmaq+k
-	c9evbeDyw+r+BCutSZBjis1ltr8C9NAR51ksdMrY14ePVH9Q86S+v0K9HU96SW1E
-X-Gm-Gg: AYBFou05DX70Baq6/OAoLl4Bqj+7V8zM5NY46YoN8y0HZwtNJR58cuqFPZ5Z8hiW54p
-	aGlD5UxrnP4gkHMYbalcbsL2EXAgpr+zvxBQ57Al9FxfJeQILHwFd/vBnk4PhnP3hUgCMxSGuei
-	wHn1LqmIuDHE8RI7mQ/0x85g0SgyzjaDkPyQJUDlcwgwPZoFJ7h7UuBTqUbhfKS9G4oFWXqtRNz
-	o3gDOYqrI8DF3b5R1JSu2+6z/Ukfoi0Sy++/9sJN4ThWgQDTeZ9dwtu3blWuE+Ksi14ZzZxh+1N
-	v4mqwwvuAtK2lPqqagNCmRlT4NJHzj+xq1BMJDa42mW1cxMTWwn/qfcOLgGJLQ+dRajANLKVi5S
-	Xhq7W8KqSMMAg49guznHkQHGDGIRUPfZaIPi8Ai6MEHbkICOTqgljuuvmqlz7bwsR4XQ3EarzuH
-	i6FAZZo8uw8+0KtW1gjTNAqPZ6NfvEgkgybI8430ABhdnTOfu01A1JASGzElL7Ar6i
-X-Received: by 2002:a05:6808:1991:b0:4e9:cbdd:457d with SMTP id 5614622812f47-50c4dfb7cc7mr17875352b6e.11.1791975835804;
-        Wed, 14 Oct 2026 04:03:55 -0700 (PDT)
-Received: from houminxi ([61.170.226.68])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a6dfbd6a92sm1793351fac.9.2026.10.14.04.03.47
+        d=1e100.net; s=20260707; t=1791975873; x=1792580673;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wAN4a5Qn+9mrwQZxJyTfVQaGWT0bG6L+Hmxi8yJDhvs=;
+        b=NBIKF0UNmy8sX5EDqmcDAztQL5oLWlKcUVgtMMpSSFPcCLoz2dtIskN/oF7qhasM38
+         dRxz9MhQQJydoKH5zPajx3j+JMfmAI+euymsJC3pLBdmYKzot6vdBlGkp5KuhVsnCB4Z
+         ZUW1RVXgzdFtUGLAh9cWAgnL/iMfcETJFt9ass0/Ep0e3rfYDMGbqocakbvRAxpAQw1X
+         M6vzOkalaw91+0GU+KDzlEUSpP2oQLdsKMwam5rKsdUI50rK9AX5tARS+RHXroBA9gG6
+         tgHQvzpa3fmRTyeepZNLHJvRaGMqrg7cIO96gj18rf/uieQqhYOXHbHIvD9tVDgRnp89
+         Sauw==
+X-Forwarded-Encrypted: i=1; AKwUvBygmrLzYFjZn6IZ18+IswMK1gfFKBjPYTyuUZ1hP2hfVKukr4LnCiKrJidxUuEqjswXFa3Wi94=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLZ5yRFWULQXX4VRmKdmo/hCROfi6uoFcoh6wbYS2yXkEhLTkln
+	+tXKvS2dDhKnjQAR4udae3zoWDNF3s2+AkEh3T16rM1udZie4tSFvjC+
+X-Gm-Gg: AYBFou2En3BXQTb1YzqHl4Pd3iCy8Hyj5m+4Wi7Tg7hHqs2dOO1fg/5HHwDVBTLivIo
+	qhYgoJj9m9qPE0YRJn19rYRLtVYE8GCpOvTgdiBwZFWS88B1aVLJohHemWwHL3e0Wwz9lk83cVq
+	3DU2ybr4IWIOopdv39ZN9EHHx7USuHiztVT0bGfRpR2cUuolQsPhXAG8Xcan++vIGKRgU2wVerf
+	qhz7go8ws6DkH22X8yhzrBaOOARoBtmW+bF8Qc4NtuHoN4okincHpRVTSndD7SRrPj1RuihLLRK
+	aF4sLJQ5Eyz7X33odzqEsRDCzKd+ybU8a9Q8zYTjsDqPhMnUZNPbvyQL1585wlLhNINXbVVGshp
+	vrEsKLEwtQ2LCNBDqe55vNXML+DGHM+y89Uy1nnot5Ker3N3AHkfAiTBsdTZxY9lRsxHp1ypjcw
+	YR8Z4DiBq6wH+ah/C91TnEIgxQkaXh2XjCXJk8+wQsiBmvUYINrcEhK8uIzl9y9JvBeq3AhlRV8
+	VnHGmDY/GZ1SBx+G21Yhp8tPiZwR3qdvBFH
+X-Received: by 2002:adf:e011:0:20b0:488:57ad:d5c8 with SMTP id ffacd0b85a97d-48dba787c28mr22113841f8f.3.1791975873101;
+        Wed, 14 Oct 2026 04:04:33 -0700 (PDT)
+Received: from gmail.com (deskosmtp.auranext.com. [195.134.167.217])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ac5257sm11587825f8f.42.2026.10.14.04.04.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 04:03:54 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next v2 1/2] netlink: specs: add ovs_flow del and set operations
-Date: Wed, 14 Oct 2026 07:03:43 -0400
-Message-ID: <20261014110343.2567026-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <179187709747.434549.16040884181450649933@kernel.org>
-References: <20261006130533.1620706-1-houminxi@gmail.com> <179187709747.434549.16040884181450649933@kernel.org>
+        Wed, 14 Oct 2026 04:04:32 -0700 (PDT)
+Date: Wed, 14 Oct 2026 13:04:30 +0200
+From: Mahe Tardy <mahe.tardy@gmail.com>
+To: bot+bpf-ci@kernel.org
+Cc: bpf@vger.kernel.org, andrii@kernel.org, ast@kernel.org,
+	daniel@iogearbox.net, davem@davemloft.net, eddyz87@gmail.com,
+	edumazet@google.com, john.fastabend@gmail.com, kuba@kernel.org,
+	liamwisehart@meta.com, martin.lau@linux.dev, pabeni@redhat.com,
+	song@kernel.org, netdev@vger.kernel.org, sdf.kernel@gmail.com,
+	ameryhung@gmail.com, kuniyu@google.com, memxor@gmail.com,
+	jiayuan.chen@linux.dev, alan.maguire@oracle.com,
+	martin.lau@kernel.org, yonghong.song@linux.dev, mason@kernel.org,
+	ihor.solodrai@linux.dev
+Subject: Re: [PATCH bpf-next v4] bpf: allow ksock connect/send calls from wq
+Message-ID: <as9hvsd5zEqWhMGb@gmail.com>
+References: <20261014095743.35891-1-mahe.tardy@gmail.com>
+ <93996639c3a9d8900ff3ccde4f40acd93923ff546e717384a401b91b75ba064b@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <93996639c3a9d8900ff3ccde4f40acd93923ff546e717384a401b91b75ba064b@mail.kernel.org>
 
-On Tue, 13 Oct 2026, netdev-bot+sashiko@kernel.org wrote:
-> [Medium] The new operation's request list still leaves out ufid-flags
-> and probe. ovs_flow_cmd_new() reads both.
+On Wed, Oct 14, 2026 at 10:48:26AM +0000, bot+bpf-ci@kernel.org wrote:
+> > bpf: allow ksock connect/send calls from wq
+> 
+> TL;DR:
+> - Changelog's nsproxy explanation looks wrong, and it omits newly allowed
+>   task_work and LSM-kthread contexts
+> - bpf_ksock_create() error change to -EPERM may be indistinguishable from LSM
+>   denial
 
-Yes. ovs_flow_cmd_new() reads OVS_FLOW_ATTR_UFID_FLAGS and
-OVS_FLOW_ATTR_PROBE, and the del and set lists in this patch already
-have them. The new list did not. v3 adds both.
+Valid review: I'll push changes for those two points (changing error
+back to EOPNOTSUPP and improve the changelog) if we need a v5.
 
-> [Low] The commit message does not mention the probe type change or the
-> uns-admin-perm flag added to the existing new operation.
+> 
+> > bpf: allow ksock connect/send calls from wq
+> >
+> > In the initial implementation in '7ae4eb14c5f9 ("bpf: Add ksock
+> > kfuncs")', it was decided to let the ksock kfuncs go through the LSM
+> > hooks instead of by-passing them, and thus to disallow the use of the
+> > kfuncs from asynchronous workqueues as the credentials would be
+> > different than the task context that triggered the kfuncs.
+> >
+> > After some discussions, in particular at Plumbers 2026 at the
+> > presentation introducing this new ksock API[^1], it was agreed that
+> > by-passing the LSM from socket created by BPF programs should be okay
+> > and thus that the process context switch from kthread executing the
+> > workqueues wouldn't be an issue.
+> >
+> > For now, the ksock kfuncs still trigger the LSM hooks but we relax the
+> > constraint on not using the workqueues as it will be useful for users
+> > triggering connect() or send() from non-sleepable programs (like
+> > tracing, support will be extended in future patches).
+> >
+> > Also adapt test_ksock_wq() added in 'c93cbdb13f99 ("selftests/bpf: Add
+> > ksock test for async callback guard")' to test that the connect() and
+> > send() kfuncs are now allowed and work when called from workqueues.
+> >
+> > Note that bpf_ksock_create() still checks for workqueue context
+> > execution and makes sure the current->nsproxy is defined as we rely on
+> > the network namespace to be defined (could be NULL in the case do_exit()
+> > was called on the task before the wq was scheduled) and to be the one
+> > from the task that triggered the SYSCALL bpf prog.
+> >
+> > [^1]: https://lpc.events/event/20/contributions/2430/
+> >
+> > Signed-off-by: Mahe Tardy <mahe.tardy@gmail.com>
+> 
+> Is the nsproxy explanation in the last paragraph accurate?  The changelog
+> says current->nsproxy "could be NULL in the case do_exit() was called on the
+> task before the wq was scheduled".
+> 
+> A bpf_wq callback runs from bpf_wq_work() on a kworker, so current is the
+> kworker.  Its nsproxy is init_nsproxy and is never NULL, and the PF_KTHREAD
+> test already rejects it.  The triggering task calling do_exit() has no
+> effect on the kworker's nsproxy.
+> 
+> The case where !PF_KTHREAD && current->nsproxy == NULL comes from
+> bpf_task_work callbacks.  
 
-Right, it only said del and set need CAP_NET_ADMIN. new takes the same
-flag, and probe changes from binary to flag, which changes how a YNL
-client encodes it. v3 says both.
+Yes indeed this is for taskwork not workqueues in which we could face a
+NULL current->nsproxy. I should update the changelog.
 
-> [Low] The key attribute doc says a key is required for every request
-> except a dump, which contradicts the new del and set docs.
+> bpf_task_work_schedule_signal() and
+> bpf_task_work_schedule_resume() are registered for BPF_PROG_TYPE_UNSPEC, and
+> is_async_cb_sleepable() returns true for them.  Their callbacks run via
+> exit_task_work() after exit_nsproxy_namespaces() in do_exit():
+> 
+>     kernel/exit.c:do_exit() {
+>         ...
+>         exit_files(tsk);
+>         exit_fs(tsk);
+>         ...
+>         exit_nsproxy_namespaces(tsk);
+>         exit_task_work(tsk);
+>         ...
+>     }
+> 
+> The removed comment in bpf_ksock_has_user_task_context() described this
+> correctly:
+> 
+>     Task work can run from do_exit() after exit_nsproxy_namespaces()
+>     cleared current->nsproxy, while current is still not a kthread.
+> 
+> The replacement comment in bpf_ksock_create(), "sock_create() derives the
+> network namespace from current.", no longer says why nsproxy can be NULL.
 
-The doc was wrong. get, set and del all accept a ufid with no key, and
-only a new flow needs one. A set that replaces the actions still needs
-a key, which the set doc already says. v3 changes the key doc.
+I might just keep this in the changelog instead of a code comment.
 
-> [Low] The get operation uses one request list for both do and dump.
+> In the task_work case, current is the task the work was queued on.  That is
+> not necessarily the task that ran the SYSCALL program, so "to be the one
+> from the task that triggered the SYSCALL bpf prog" is not guaranteed either.
+> 
+> The changelog also describes the change as only allowing connect/send from
+> workqueues.  Removing the runtime check from bpf_ksock_connect() and
+> bpf_ksock_send() also newly allows:
+> 
+> - connect/send from bpf_task_work callbacks running in exiting tasks
+>   (nsproxy, fs, files and mm already torn down)
+> - bpf_ksock_send() from LSM programs running in kernel threads
+> 
+> Neither is mentioned.  No functional breakage was found in those paths,
+> because UDP connect/send use sock_net(sk) rather than current->nsproxy.
+> 
+> Should the changelog and the comment describe the contexts that are actually
+> allowed and why?
 
-That list predates this series. get's do request reads probe and the
-dump request only reads ufid-flags, so the two should not share a list.
-I am leaving it for a separate patch rather than widening this one.
+Not sure we should mention this since those paths are safe since not
+using current->nsproxy but the net associated with the socket. Might add
+a line about it but this was generally the goal of this patch.
 
-pw-bot: cr
+> 
+> > diff --git a/net/core/bpf_ksock.c b/net/core/bpf_ksock.c
+> > index e9943aeeadd3..f74968397798 100644
+> > --- a/net/core/bpf_ksock.c
+> > +++ b/net/core/bpf_ksock.c
+> 
+> [ ... ]
+> 
+> > @@ -73,13 +64,9 @@ bpf_ksock_create(const struct bpf_ksock_create_opts *opts, u32 opts__sz,
+> >  	struct bpf_ksock *ks;
+> >  	int err;
+> >
+> > -	/*
+> > -	 * sock_create() derives the network namespace, credentials, and cgroup
+> > -	 * from current. Kernel threads, including BPF workqueue callbacks, do
+> > -	 * not carry the context of the task that invoked the BPF program.
+> > -	 */
+> > -	if (!bpf_ksock_has_user_task_context()) {
+> > -		err = -EOPNOTSUPP;
+> > +	/* sock_create() derives the network namespace from current. */
+> > +	if ((current->flags & PF_KTHREAD) || !current->nsproxy) {
+> > +		err = -EPERM;
+>                 ^^^^
+> 
+> Was the change of the error reported through err__uninit from -EOPNOTSUPP to
+> -EPERM intentional?  The changelog doesn't mention it.
+> 
+> -EPERM is also a normal result of the sock_create() call further down.
+> __sock_create() calls security_socket_create(), and LSMs, BPF LSM programs
+> in particular, commonly deny with -EPERM.
+> 
+> After this change, can a BPF program that gets NULL with err == -EPERM tell
+> "called from a workqueue/kthread context" apart from "socket creation denied
+> by LSM policy"?
+> 
+> Programs written against the original 7ae4eb14c5f9 semantics that check for
+> -EOPNOTSUPP would also silently stop matching.  If the change is
+> intentional, could the changelog explain it?  Otherwise, keeping -EOPNOTSUPP
+> would preserve the unambiguous signal.
+
+Maybe we can keep EOPNOTSUPP, no strong preference but the confusion
+with LSM denial might be enough to justify this.
+
+> 
+> >  		goto err_out;
+> >  	}
+> >
+> 
+> 
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+> 
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/38548134159
+
