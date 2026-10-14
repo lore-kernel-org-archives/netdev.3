@@ -1,99 +1,102 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F068730EF97;
-	Wed, 14 Oct 2026 21:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548F2415B8D
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 21:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792012113; cv=fail; b=arudILrX5FLs70AhwO+b03I+yjQYTRthvngAn4uVskXAqLzHJbZdaR2+Uo8Hrn/tmqQKSP5jy9DEQYPLCWAhy/9n1hj6Zh2+QM259jVqEufB/n3jsTRuxsJjLGefvIyu04o1lnBlx70HjetmIuwqRzw8JdfEbf1FpKi3oZ5NHDo=
+	t=1792012282; cv=fail; b=EkBtnnzti1mz5xvgXAY2Gh9Gx64pD3HgIYjeHi4OsZHHKDBcNg6a9P8n6VvQhxeg4Ec/QNpTvioFum4VdxJLwKQm4JT7T8hM8G8+d28L4kngTOhYNiEcR/ScwUcrTA38ctoG7JnyXj1DgBFi5VlGXR4FUnggUXsWp9lZKNfeIxI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792012113; c=relaxed/simple;
-	bh=y5B/04zW5KG1jGhJZwQB387FePaJrdI3JCIlwDcE2kA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=bG+ihSdaDlUxQ0r9rYb7MInBkReY2P57S3l1MMVsljxCQOlC39Cr7SuDrIu58n4e3vjGVL/Fi7aA4+/Rr2ikuKduofBUevwsoEwkPnK2SBjKPkEBRoeYAJzFfycIMpDEWRXeOjlppQo8Qlc1A3+ZydkEogF6ASLegAoMUy8PcEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DD1j/25v; arc=fail smtp.client-ip=198.175.65.15
+	s=arc-20240116; t=1792012282; c=relaxed/simple;
+	bh=0ZZLFG2phBF8qZijCTAFU3Mx8Eq8DM+LCqNHsRp1eYM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=aAh0dqpfznh3Ke7ItHq35bkvhYFIH8BVIVTtmyhitNt0uhC+4qgm81NCVGK0JZVbnL1rn94KQCg5ICJ+Y2XgfIkQ8OHJ3YHuNeMcumixbb6sgkczStQJounrIH4hBbtn7xbn8NY07k3yWfgZAOEu7/JPIyv/Q8/JStoa4rN2k5E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g52W31y6; arc=fail smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DD1j/25v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g52W31y6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792012112; x=1823548112;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=y5B/04zW5KG1jGhJZwQB387FePaJrdI3JCIlwDcE2kA=;
-  b=DD1j/25vk7sY+EbGwSLgrDXAOEXzpkanQYfoH6Idt33cTM6RsYnU0Xhx
-   jFVK1xmo9OBp/i5On7W87QNsbQeml7bdLjVREvG4K8+pr8t8Hv0Zii6Q9
-   SEyueC9vYQWSK5Jqq9EIjxqUPu7vfEGplfwGbMlD/Qbwm8nxwtlDS6jNH
-   UhrwUsTbUMdsozZIivSI7AHZ68s25P8hQx/PUUEmNp81ImmonDSFI21YU
-   vbLVOOr4sG7DhPsReAmikEUs0YqoKPRM29HeC3ZjoaicgS+QzciC18RNW
-   JiErB9a7iyvFbs8C+VegJY99QRj9m1Kgll6nApRk9BpxorP/hE6e3Jegv
-   w==;
-X-CSE-ConnectionGUID: iB2cXPG0Sx6MQilcQ4vdfg==
-X-CSE-MsgGUID: wBmLUeboQ5KIV4xtc1kRCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="767096"
+  t=1792012280; x=1823548280;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=0ZZLFG2phBF8qZijCTAFU3Mx8Eq8DM+LCqNHsRp1eYM=;
+  b=g52W31y6XJJbP76wlLeXQ/AlgNCzu0wPgjfJ2PoNpqZKD/QddpiiAwsr
+   S7FbhH4LqcR/VyKOJ51YJ41x7uFy98I0lTdMLm71p5u0BJwDj+qORFMQi
+   r/h2qdnpjAYnOl6XQFO0DngBcRTjKCP6EAIZaTvkzZP7RoyEO6gnMeTn4
+   RNAHay55iGzhV2+CwEoscoL5Z+v9xurW6VhugohWoBEklvRtqAWtCy3oq
+   o2V9pgpdscxvZJ8Kf8+JWlwtf1R9yuJdAilGkgrnRVQHvg4MUSLrZdXFn
+   xmL6gZnurt5np3noYHbyOyIGnRdx2/cklMrfxEA0IF4vHVMvlVjAi/lLA
+   Q==;
+X-CSE-ConnectionGUID: mtDGCCEXReG9qiTeFLZCSA==
+X-CSE-MsgGUID: aFuuXqbqR2KHL48ZhZ8mKA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="672351"
 X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
-   d="scan'208";a="767096"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 14:08:32 -0700
-X-CSE-ConnectionGUID: ptSWGm1XR2+yZ0jV7RuJ/g==
-X-CSE-MsgGUID: VtQZwT64SvCdHNsCzyqX5g==
+   d="scan'208";a="672351"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 14:11:19 -0700
+X-CSE-ConnectionGUID: QWIqAkXJQtqVX/VM1mS/qA==
+X-CSE-MsgGUID: xtqIsdG1RwiB1a72OdFaJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
-   d="scan'208";a="1880244"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 14:08:31 -0700
+   d="scan'208";a="1634598"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2026 14:11:20 -0700
 Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 14 Oct 2026 14:08:30 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ 15.2.2562.49; Wed, 14 Oct 2026 14:11:19 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
  FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 14 Oct 2026 14:08:30 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.1) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.49 via Frontend Transport; Wed, 14 Oct 2026 14:11:19 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.24) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 14 Oct 2026 14:08:30 -0700
+ 15.2.2562.49; Wed, 14 Oct 2026 14:11:18 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZQDm3c5iOKZ5eK7ddOIrHNDi9/wLmcvNe5zYyrGRZvm7LpdVoCKTUidyNR9L955ux9TgiQVcI4CxSH5eatxT8+S9uLC+fBZhGc0Y3dmiglsyeqbJLmD4MCI1lky7hS1H/VbrAX58RpNiMm5uQbXemmkKE+7/JzClbyxrRnfT29R7CdF7f5aqP8gpxnbkYA87q22xnJ37BKkiXLJnpwUhiuqDnKNqMNh90ts2KyeX4fq5+rZvaNUudlkQALnPU16lVMEHU/6n0KzhdDH7Xk+VCkYdHtUXryMCcfykEOVXbXfMw2isLnaJS6QxUYBv7jYRBE2dc7G00n/MJVFAc38o1A==
+ b=L/d9F+pbC190fvXsjF0ENpTW5hJLrGoMfYW6xNVcAULxaa3rUTX+dft2ELYSiEEIHJvQRKQESQKaxC6MZWkBBC13TnNYLayTf9BU0xEKHHIBh/cdIKkSHX3djw3exkpJfNE+xNY+nEdhnjd6BxOy/7ZiwFoLjRWCQybXIcVZUbIVHGdi0oATvfGmBLEhhihWckSVO3mbQkLSz5mX2zqVZKUc07hN26Sd/IroAw9y5vYeyNYH/aLFezibCDE3NsazV4Ue05dyIKaIxETF7zFB1vaykNbE/X3KEeixNLV7qoA5OmejDP8+7RAcJ28gfKinpyBLObaDSCayWQTtID9ynA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tjx+qEyCK6zdoMDnL8rY2I3Y6NyD9IYAYvMuWzbE2uI=;
- b=lnPQvp6FxtHBoav5Jefq70Yk2RVHsnOz0K8a6YvA2pG5wMuiw9p6zjQHBs1nj9gopwvKmVBoUyEFiLst+fT3nI+w32BKQQG4SwrRGIkJf8kJEWRggsAHO5/O3lNaPgozwh7uZe9V8t/BO97+Fs4nQlvWsU/zqJ27hOaCbBr9nci/nMiMcvAE5bt4tGdisnVQfPDE3svojHxrJGAe5SYZBqefgYmXFRisd84QgllruqIkalPct76ZPXPB4+JfNnZYYeWPNlZN2Orwrxsj1zJPzq24DTcwHvLutyJGAR7Fs5a88t0CSJgaRqR8TqA+qvW3EEEn+aK5mioBX2qS4aasQg==
+ bh=1KXW8umTMdfGi0v2BIkWbaoIZJqo0HnnJRLivO/3zs8=;
+ b=rSe3SfgeZpVkgzyaaB/ScE2NprX9qTS6DWDC0SspG4Hsu39Qzpp8C4QexTsoMR3a2Yknct9Sr7aLM4GY5TADl13mkBv9tqQ+PKJ4rjd4x1me/IoCoidWrUsM6yzSyO+r2B+rrTGFCqfDwbv8jQMup8F6U9mtV+9UkBpVYvdS/zfL5LKC4zXzlWL9mnlREiodlmf0ByZsgKDJW17slj3mF4+dbVEHxl53+YitumHCrsOKVEER09x5qIbIahQU0e3AtUpFSjQa2HWHq0m9GMonoPa9Diam0mHIqDsDd2sLdncXam6gyqidbV8GEgMEn+TdTZ8cOqIk0hvO0plN6sZLFQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8230.namprd11.prod.outlook.com (2603:10b6:8:158::21)
- by PH8PR11MB9770.namprd11.prod.outlook.com (2603:10b6:510:3a4::13) with
+Received: from CH3PR11MB7180.namprd11.prod.outlook.com (2603:10b6:610:148::5)
+ by CH3PR11MB525758.namprd11.prod.outlook.com (2603:10b6:610:34d::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Wed, 14 Oct
- 2026 21:08:27 +0000
-Received: from DS0PR11MB8230.namprd11.prod.outlook.com
- ([fe80::2592:f5a9:a751:be40]) by DS0PR11MB8230.namprd11.prod.outlook.com
- ([fe80::2592:f5a9:a751:be40%6]) with mapi id 15.21.0522.012; Wed, 14 Oct 2026
- 21:08:27 +0000
-Message-ID: <9086c9d4-d2d4-4ea0-91ce-5eb047dd931d@intel.com>
-Date: Wed, 14 Oct 2026 14:08:24 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] e1000e: incorrect modified flag check in
- e1000_read_nvm_spt() (Bugzilla #221729)
-To: Ruan Bahia <ruanmed@live.com>, <przemyslaw.kitszel@intel.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <intel-wired-lan@lists.osuosl.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <CPDP284MB39374BC5A0CD11C9253CABF7C79D2@CPDP284MB3937.BRAP284.PROD.OUTLOOK.COM>
-Content-Language: en-US
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-In-Reply-To: <CPDP284MB39374BC5A0CD11C9253CABF7C79D2@CPDP284MB3937.BRAP284.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0307.namprd04.prod.outlook.com
- (2603:10b6:303:82::12) To DS0PR11MB8230.namprd11.prod.outlook.com
- (2603:10b6:8:158::21)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Wed, 14 Oct
+ 2026 21:11:12 +0000
+Received: from CH3PR11MB7180.namprd11.prod.outlook.com
+ ([fe80::70dc:90b2:50b4:31a8]) by CH3PR11MB7180.namprd11.prod.outlook.com
+ ([fe80::70dc:90b2:50b4:31a8%7]) with mapi id 15.21.0496.021; Wed, 14 Oct 2026
+ 21:11:12 +0000
+Date: Wed, 14 Oct 2026 17:11:06 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+CC: <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
+	<riana.tauro@intel.com>, <aravind.iddamsetty@linux.intel.com>,
+	<raag.jadav@intel.com>, <simona.vetter@ffwll.ch>, <airlied@gmail.com>,
+	<kuba@kernel.org>, <ogabbay@kernel.org>, <lizhi.hou@amd.com>,
+	<karol.wachowski@linux.intel.com>, <jeff.hugo@oss.qualcomm.com>,
+	<carl.vanderlip@oss.qualcomm.com>, <troy.hanson@oss.qualcomm.com>,
+	<youssef.abdulrahman@oss.qualcomm.com>
+Subject: Re: [PATCH 2/3] drm/drm_ras: Extend DRM RAS interface to include
+ telemetry nodes
+Message-ID: <as_v6iB__bh3cHm3@intel.com>
+References: <20261009173152.2436195-1-zachary.mckevitt@oss.qualcomm.com>
+ <20261009173152.2436195-3-zachary.mckevitt@oss.qualcomm.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261009173152.2436195-3-zachary.mckevitt@oss.qualcomm.com>
+X-ClientProxiedBy: SJ0PR13CA0060.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::35) To CH3PR11MB7180.namprd11.prod.outlook.com
+ (2603:10b6:610:148::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -101,95 +104,582 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8230:EE_|PH8PR11MB9770:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0465c601-f33e-4120-4acc-08df2a374a0c
+X-MS-TrafficTypeDiagnostic: CH3PR11MB7180:EE_|CH3PR11MB525758:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a97225b-dde4-4ead-a5e2-08df2a37ac6a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|10067099003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: VPUKA+QpjW/zx3H3aBup3xcq84swrg7R5743jKGjIFXWBuMiqlKWNkm3Bdyt1FEM4vcbCg1WJN4XJ6cGjY0a0JZqDMjJ3NF6Cag3748cyP2lYBDmHg4X8nUtQBLhpU2MPLSRY3j2/jrSsInzhFQ2STuWlbbo3b1D/ERm0NDGFVSC3aal3x2mkcLXoFvmKMubhIKxluWcHD7RGiPmDdpxdX9Pf3Sa0P+qJeq5U1HK0v+Dh93/PkntbLQzNdubIC7IjhbbCiNqY9dHErug2lW+mrRwRGkbUaVdxvWJfz5W8pXIzYLXOF+zmCGdbiW6rVcTg2f8FQtX50Lu7Segf+esQazbu/hYGFznmV3eGADogLlBh5CJ3syw7USdPylA3z+LyY0dMczObBvPgYhWgvwCgaxQskqUmYydus1LFwu37vUb76UcCZWaZTB8VOe0FaQtQGJ4n153kJOG7LC+1ET8i73MvlLoe4Ky8Z4+ZnnUuQN/rsMXUVGjxRyrsDoOPiWNWhMBD7Spygjeitf5VAC5092z4btDmk3eGO6Kot7GKSFeP/ukduiHpro6ANfMT6HhWeQQYnuI9/lgsBX0N/kL9qjNy/fYyChHDZeO1xSRp7Q=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8230.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|23010399003|6133799003|22082099003|10067099003|18002099003|261009221727099003|11063799006|261009223327099003|261009221227099003|261009220027099003|261009223027099003|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info: wrGre8a7tXHWMktA8eiL7RZstbSGpki5cCHSDkbF37MjQdmSLYrqifmjt27/jWu4tQ/nyDEbaPXUP1Ta2iVoL/iI/HjAIrrVWcYge6MhkvLUZmokrDQI4Gkayknk6dCl49iJFmZ65TJwREMMUBA+h/Ul856WBs5fgVihg5tpb0Yd/HZxyPwbRDG60gxQHsEYKH+nkANEpEg2W1Tm+4duJLTLwT+c+8DG/zc4Yarfs9eIStkUdDcnenOXe6HjTLcCsXxOyJgKBZAJefXZ8XdTwTq+piaq6RbH+nCab4uMqWVMSQS0nPzEvn/IN+HYddhq/i771f/MqNd5/sewwwXeyp+OOF+RkkN1H5Jso1tIIjwM1S36kIrOcj7qp31i2Z1LuaAUCZoeXPmlgAX9iInpSRYXZHWeDV6++oMMSgOpGlBkG7J8D8XpK9dPjBVssm1jkh+hC6RViIOsypxoOqRW/2JpGXNcItayVGSV/o7nyWEuuiImggLWcrOGi7HcnXrN6mjSJN+qlMogqD+CRFHeOx5urVyPpJiOj74hSc3cql52Y13qI653kUC8dM1yO2jGHwxMO0RPLgh/IEKnLoziqJg2Q8AP3uX9ILgZ+HfTROLCWrteOrt0/zBeUYU95nydpsQRqh0l/R0zrT42U54gJ9laAri7OVz1gG+woz9BJRo=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB7180.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(23010399003)(6133799003)(22082099003)(10067099003)(18002099003)(261009221727099003)(11063799006)(261009223327099003)(261009221227099003)(261009220027099003)(261009223027099003)(4143699003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cTFXdDdQcGlTUGd0WldwM0RHWTVhckFmQWRtb2wwdk1yaS9ERllrZ0Q3VFRW?=
- =?utf-8?B?K1BYNS9wd25lUEZaa1dzRldZVlVpZEMwZGk4c3RRNXlCMFp1UWpUZHY1b2RH?=
- =?utf-8?B?bHc2RmdoQlJhK0kwVVJGMkRYaFdtay92bUd3NUxTNDdHOFlWbldhVldrNFNG?=
- =?utf-8?B?WHJuVm8wUEdabXM0KzRVOVFXbGQ3YnhlVk5Vb1c3QWIreDl1REdhRVIzazdC?=
- =?utf-8?B?NjN2ZVBzc3F6UkZxc0NUUDM2ZzFwVlZwWW9TcHRYdXBSMEI1UjlKTkxYcjcr?=
- =?utf-8?B?VmUzWlR5SDdZWkdrRDArZVFSMjQ3U25PckUxZ1dScm1lcVhoYkFNYTVYNm96?=
- =?utf-8?B?OFUzamFsdXI0NUE1RTR2YlM0cjNqWk5rLy9yQ2Z2NHRld2VWemRpaTNCandB?=
- =?utf-8?B?YUlrdzFCOU81Y092dFB5MXNNRTliL2FCUUxKU2tIa09jZkduR2pGTWltZHFJ?=
- =?utf-8?B?SktGdjVWWU1BN250NW5MYUJVakg0WWl4eW9mYjNiUGp3UVV4MzVnODdXemVP?=
- =?utf-8?B?OVpKeExqaWdIOVdMSlFTY1poSVk2OGZyNzNSTHRjeHFSZEVxN3BZRkxwcHcz?=
- =?utf-8?B?SzRCaHVwYWtuQUp4MkdtU3RzdTAwNzkxU2hwQXMxZHNMVzlmWUg4TUJMVFls?=
- =?utf-8?B?UW5mazZhTHQ0ZDVjQUpISGVNSlBHTTJYMU9kQVJvTjlJT3RzcW9NUzZRNTdD?=
- =?utf-8?B?akdqaHJ4ZUhWM1NBREhTQlVML3NMdkF3ajdmUGR0d3RFRFlleGRJYUp2THcr?=
- =?utf-8?B?SzFPd0ZuTllYdWE5N3hNeU5wcldOOXY0Q0dpUllLMVpCYzVEWUwwemUyOW1k?=
- =?utf-8?B?MmZMdWJENlMwamhkUzAyYmFsZlBaeWZMWDdZZUEwTVlkZTBLRkc1RTU5Z2FH?=
- =?utf-8?B?dDJNRGhRQ0QybE54ZGd4YVpVMlpFVVVtUW9KYStCOUhzKzYvZlpKN25pTmk0?=
- =?utf-8?B?SUtJeWh5RFVhWHpVMSs5ZzRmZWdYMmk4WVVHZWo1aXB3aUxweThMSlZ2WGc0?=
- =?utf-8?B?eEl4ekYyalIvTUdzb1VmTFpZbkptWklMVjBTTGhRODR5ZVhKbkFUQTl4WmxO?=
- =?utf-8?B?Y1FNLzdRVmpIZzhWVktidzRFdDRjVStCV09NM3BGZVliU01lZHA3R3dyWDJD?=
- =?utf-8?B?UlpmL0NLSVUzcmNvZUY4VWtyQm9VVWtmSnNJczVrVmdsK0xFWmFLMXh1UW5u?=
- =?utf-8?B?RVAxY29SWjNPdE5Xb1pYS1dQNVZFY25XSHZreDNFVWtGRUJxZDRHcHh4dFlD?=
- =?utf-8?B?bUQxUzVRbGF3UHUxTlNadWhkUjJKeDRSbVhyaUQwT0kydDZoMStJeE0wN3Qr?=
- =?utf-8?B?djJuVzFrK1NCSUhNUkI4Q3g4ekRqZHVMNGlZVjVuQkx6d1pFdzREV3l5aTh6?=
- =?utf-8?B?ajNzYkg1T2xnenRROU5jbENRUkVvbXRUSTc2L1NnMzdHamFDQmF4QkU2anpJ?=
- =?utf-8?B?VTM0ZU1ZREUwZFlNZFJiYmpSV0p3YkZBNkFGY1hCUVZTVlhnM1ZiOFlCVXg1?=
- =?utf-8?B?OW91bEI5UXZWODRtR2NpUDVqVHgzVEJTT2xONDRKK3JZM3RpTy9WNXptODdk?=
- =?utf-8?B?eHEyZGMxZjdvamNPR2tvdzFMWE1rdzJBdlF4cUo1ZGlyZDZQSGJLYlRtWXNm?=
- =?utf-8?B?YVVZeENEVGMvRStKcWpneHE0YjFhY0RPQmwwQU9WQzA2UDltMnlabkwxWExK?=
- =?utf-8?B?MERBQ28xOFpoZlFxU0JnSVkrQjFSYktrYlRNRFFGUWRkb0toWkhyVVNOMW9v?=
- =?utf-8?B?dnM3WUMwaitUMjVzNWJxNm5nQTE5MEJZbXpwcG9ZaWVBSHR0aENLUXVZRlB2?=
- =?utf-8?B?K0RIakV1bk5laE5YZGw1bGVsNVJGSmR6T3ZLUDl3K2VtOERtcVo0M0pZbkRS?=
- =?utf-8?B?YXNXWkppNC9meEtNZWtKNitSUURPSWcwbk5MOU91NzRCTnJKK3NDeThuc0ZD?=
- =?utf-8?B?VDE5V1hjRUk2dlJ4cHY2bEY4NmNYZ0dEQzczeVYzM2dSMmlYOUNCRGNmY0Fu?=
- =?utf-8?B?NUNSeGdFdVJXbUpzNldUMDlmWnV4SnFlQ29BS3lMY2h5UFAyTFRlR3ZVWU1o?=
- =?utf-8?B?Zlo5UVFxVWo0OVZGMWFGYkIvRWh5SWw3RFYrT1crQ2w1eFNxR2gxM2s2RU1m?=
- =?utf-8?B?Z2NBUk5jdmRXRU5iakNTZEt4WVd1OXp6Zkp1TGJTa0dla1dIc1d2OHlrVk51?=
- =?utf-8?B?U3pPSDRWc01wN1VrY3lPck55UFgvc0dNbFJNeXF0R2Fyc1JvR2J4ZGpPbEZr?=
- =?utf-8?B?QTZ6dHBibkF6akMyZnB4aCtRaGY1K0Nsd2pCYlNLQjVJN0N6RG1FZGsyR3lN?=
- =?utf-8?B?SXpGU2s0K1RJa0RaMUN5N2JMMEpFU0thMmtFS1FzSG5nY3o1UFlQU042S283?=
- =?utf-8?Q?LP5W4wdS67xneQk8=3D?=
-X-Exchange-RoutingPolicyChecked: nfgg8e+/WYKMwcPDTlgMmvNhre7jPg9kozo6vh7CPFga1+PQmNp2V7gyYhtlJ0KjIg0vWbirhFzDgpZv+Qnjwt3dwbVilHcVrAULYswW4vk6pldwIjk2giiOolK1MGGuoMYOfScebjHPpZ0c+vMcUi3mK2N2CsjBcSY4TwDIwPEBSZVO7qetKIf14/cUUQG1Kbdp6gyJ1wyO5+fpxlw8tCXVphADzGdle5TDA6CgT7keoDbercElY4xZFf71QF+vfhu81+m8SGLlPbKWV8SWrxpYq3QEXghPcG2Dd7Uma8WaO7Zdqp3TxQIBOaQysoNcjer24v3VSVDExYvRSLLtmA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0465c601-f33e-4120-4acc-08df2a374a0c
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8230.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?0TwjjQIMjsOCSZhPZdTQe21YS3rnKvG5NOFN5szH6uQhZ1YXIrzjm7bvncVE?=
+ =?us-ascii?Q?jJf5D9iAZZZsVWuYHvw19TZ0uvQjeoVq0abrnCQyuAmvzHm0PMa+Tvac+HGP?=
+ =?us-ascii?Q?6VVQ1XzDOEfwshn7IFAnBMeINew+U/DzyYBNtWrXri4yoxXP+iRBI/KkO+vL?=
+ =?us-ascii?Q?cbHcYbCgXXeqdqBwqkvi+SBWhmpbb/LYJOLLPhdZjRAg/sByrCV/08mlbDjm?=
+ =?us-ascii?Q?oEZNmUrLLf1WZ77TBYaRF3WYDFK/PpSGu6+Fq+UT3rGUdAcEjnuUNJcxWIlI?=
+ =?us-ascii?Q?w4zZ+i/000OUMpC4RtIkv8XnN/7nBcsxKT48KPzEajmtbgyCCQleZOvXwlXt?=
+ =?us-ascii?Q?bDDe45CoUoVhKzlj4RBos6Q7XA2Uz/MQn83TVIon9hPCUpvcFWMAFjc4qOj/?=
+ =?us-ascii?Q?mUxReG4AZVI1FAU/cnmjdrhKUmm2CRvr+Y8mQbnQ4AgzhhfIdhPHwe/bqSED?=
+ =?us-ascii?Q?3jgTjxJ8KE7IU4cn+hgzFV4QQoHKbX6p/Fm5Ak/EFizruZBWn96vwEARKZdA?=
+ =?us-ascii?Q?cVrRYu005N9S1WV8hIIUcrxaVWNw+mbhIsH8+hC3sZmlb/ITApX/s5K4aOmI?=
+ =?us-ascii?Q?gCE4n5ffiOb7VTLue1y9YBhCW1/e9zl864F6b/v/pyjF4kfFynwycWPB0xHQ?=
+ =?us-ascii?Q?yAwLKMdS6brI6AU5KrmFOYRpBU5wZAbDDB6SEv4FS+WqHNv4O3cUvzBS/O0/?=
+ =?us-ascii?Q?GAJsvUlLV4ytQH5ZNYawB5JaNu5JkJKQMhpgh4SZIMdK1lo2+2jHgunzGmeb?=
+ =?us-ascii?Q?8LaGDOid2zQoFMLmBwddKpSp8r4IEs5mniyyPOZsTTqPc2I909rSibIn+Tvm?=
+ =?us-ascii?Q?7OIz3t8Z1zGICm6JkqNz/TzqVXm13KteOqbw0LgfWrKJzIbxlDLu9Qi+7j6J?=
+ =?us-ascii?Q?33brY/94LtJO8T0Vn+hjFRqI6sACjYo6lrq7EEvQr3RG9xZro36e5856mjSy?=
+ =?us-ascii?Q?52MSxMxuL/PIRGzMZEBS8Qd4NJlwKh4rnO2Kk+LYhZyAcHIsy3qSQM1x0lVF?=
+ =?us-ascii?Q?I/5WBU6Bh+IoOO1zTqYOe/j2mTLFs6Q0zNq4xj3gkn6JmJ7A0gcW2oAZ2wZm?=
+ =?us-ascii?Q?VOaz7zA5CsiEHEwBxAv1/RZ4g4KF5QotTzKC6BdAXveKw0LNxE7WE8YyQa4G?=
+ =?us-ascii?Q?91gtDGnLOoyVIJWXtptQnk2CmITrpSDD0RspeKAmc0FJj1xPRIWEtEcSLb8c?=
+ =?us-ascii?Q?k1T4soQ+4pVqhGiEwqpQDqpsTq/sXMVh/0jXtsLQFzKBmeYKdiyqS45kGa84?=
+ =?us-ascii?Q?8pgqUfk8bphEb/Rcx5yrQh9BiNO3trb4A/CCnNCp//RDUXV41VNptFnhdGKI?=
+ =?us-ascii?Q?Rinn/UWTLIuxKqneL09WoECL4yKJVtRNJytJGefE+srUKrv2UqR92T2PCVhi?=
+ =?us-ascii?Q?jbitpA3YeN+4Bm7sVPVdiirD40mpRk0HdCcIpapCxHj3D4N7y6jx6t20lqLe?=
+ =?us-ascii?Q?+wbDsjJiyu0l0oZKJGtsGCJH1gv+2jkmEchEWLlZUY/bkYbpxDRXICdrYmXp?=
+ =?us-ascii?Q?GWBPUI44q0FPO8V0yS+FAGKlQuXok3Ydc2zMxWiYriNqyaAoOqUEGZR3NIze?=
+ =?us-ascii?Q?+6viFX3aOHSgE2WYlMswcxFbJlWUUABHLPMzYMvUtAZHpxugUmiHBiShbqbj?=
+ =?us-ascii?Q?fx4iFNscobbJAKeXq2iMU66H3AuCoYjMUSuNQ5dZQ2FiKdcCVjwI9avnnP52?=
+ =?us-ascii?Q?dX7Be2wvj/5qorL0HmpORkXA2Tx1KGvcXztXhzesg6JHTskan7n/htnHCWD0?=
+ =?us-ascii?Q?QMDHcy7BAg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: 5gBfyccgDg8lqCNzwBT6kWs6MZ7OaaGe0JP8QkFaUmBfLsUtI+P4OyvFydq6nTDsnrBM6ozvwcffuo1aFAqv4nyk9WCrk1t9bvNe/aPZAKNAmLZbbS5hIFfvv5vEnwSxpiOmnKONQPBILGdQ5vozsNRuSYb9hWybLox8eoOi3AE/UZ2QwgC4SJINDBGfSpkkdnInqaxcN+VkhhJEOW+KuCXAXoq1hOwANB6UGdR4koEVqnoYQOAmTJEArEqMYoUnBRuHahLmaL65SpGX1rnMyY84Nf4eXyRSg69WqaID/HLyJTsbj+vMLoQ3ZD86JzJ7Svx9UMIgfoWvEIPweOdh9A==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a97225b-dde4-4ead-a5e2-08df2a37ac6a
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB7180.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 21:08:26.8383
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2026 21:11:11.8656
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nPlIPRL1+gTBmhSUHcuF6mXsKsqTsY3qsC5nIKFvwyaaHbGY2mHOoIRPJh5XL7PiDyrWGzdgnI4je5HVxFniogO56n28MYJT1Htku64kFos=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB9770
+X-MS-Exchange-CrossTenant-UserPrincipalName: olug/t4z8xVp6FlMeo4t0bWuVNh3o8mCT7d70A1cov0z8NvU9HuE8l76/CY03Dn37xZI1wmYinDaQr4rgKkbmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB525758
 X-OriginatorOrg: intel.com
 
+On Fri, Oct 09, 2026 at 10:31:51AM -0700, Zack McKevitt wrote:
+> Add a new node type, attribute set, and doit function for performing
+> telemetry read and write operations using the DRM RAS interface.
 
+Hi Zack,
 
-On 10/14/2026 10:47 AM, Ruan Bahia wrote:
-> Hi Tony and Przemek,
+I'm glad to see more users of drm-ras and glad that the flexibility is paying of
+
 > 
-> I am writing to bring Bugzilla #221729 to your attention (reported there 
-> in 2026-07-06 19:39), as it describes a logic bug in 
-> e1000_read_nvm_spt() that can cause silent shadow RAM corruption on SPT+ 
-> PCH chips.
-> 
-> A fix for this was recently submitted to the intel-wired-lan list by Ivy 
-> Lopez. I wanted to ensure the Bugzilla ticket is linked to this 
-> discussion for tracking purposes.
-> 
-> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=221729
-> 
-> Please let me know if any further information is needed from me.
+> Signed-off-by: Zack McKevitt <zachary.mckevitt@oss.qualcomm.com>
+> ---
+>  Documentation/netlink/specs/drm_ras.yaml |  55 ++++++-
+>  drivers/gpu/drm/drm_ras.c                | 193 ++++++++++++++++++++++-
+>  drivers/gpu/drm/drm_ras_nl.c             |  29 ++++
+>  drivers/gpu/drm/drm_ras_nl.h             |   6 +
+>  include/drm/drm_ras.h                    |  39 +++++
+>  include/uapi/drm/drm_ras.h               |  14 ++
 
-Hi Ruan,
+just to confirm, you used ynl to generate these most of these files right?
+Please make sure to mention in the commit message so we are sure.
 
-Thanks for the information. I've have it queued up; I'm waiting for room 
-to send it. I'll let you know if anything else is needed.
-
-Thanks,
-Tony
-
-> Thanks,
+>  6 files changed, 327 insertions(+), 9 deletions(-)
 > 
+> diff --git a/Documentation/netlink/specs/drm_ras.yaml b/Documentation/netlink/specs/drm_ras.yaml
+> index a88fdab7a1c7..d558eb1cba3f 100644
+> --- a/Documentation/netlink/specs/drm_ras.yaml
+> +++ b/Documentation/netlink/specs/drm_ras.yaml
+> @@ -16,7 +16,7 @@ definitions:
+>      type: enum
+>      name: node-type
+>      value-start: 1
+> -    entries: [error-counter]
+> +    entries: [error-counter, telemetry]
+>      doc: >-
+>           Type of the node. Currently, only error-counter nodes are
+
+Please ensure that the doc is also updated.
+
+>           supported, which expose reliability counters for a hardware/software
+> @@ -100,6 +100,31 @@ attribute-sets:
+>          name: error-value
+>          type: u32
+>          doc: Current value of the error counter.
+> +  -
+> +    name: telemetry-attrs
+> +    attributes:
+> +      -
+> +        name: node-id
+> +        type: u32
+> +        doc: >-
+> +             Unique identifier for the node.
+> +             Assigned dynamically by the DRM RAS core upon registration.
+> +      -
+> +        name: field
+> +        type: u32
+> +        doc:  Telemetry field to be read/written, e.g., SoC temp.
+> +      -
+> +        name: value
+> +        type: u64
+> +        doc: Value of telemetry field that was read/written.
+> +      -
+> +        name: status
+> +        type: s32
+> +        doc: Status of the telemetry operation.
+
+is this status the hardware itself that is giving?
+Please add some doc around it to help us understand the need and see if
+is generic enough and mandatory vs optional.
+
+> +      -
+> +        name: pad
+> +        type: pad
+> +        doc: Alignment padding used for 64-bit
+>  
+>  operations:
+>    list:
+> @@ -198,6 +223,34 @@ operations:
+>              - node-id
+>              - error-id
+>              - error-threshold
+> +    -
+> +      name: telemetry-read
+
+should we do get_/set_ instead of read/write to align with the existing
+entries?!
+
+> +      doc: Perform a read of the specified telemetry field.
+> +      attribute-set: telemetry-attrs
+> +      do:
+> +        pre: drm-ras-nl-pre-telemetry
+> +        request:
+> +          attributes:
+> +            - node-id
+> +            - field
+
+how do users know what field to read?
+Why not a dump or at least a dump field for field discovery?
+
+> +        reply:
+> +          attributes:
+> +            - value
+> +            - status
+> +    -
+> +      name: telemetry-write
+> +      doc: Perform a write of the specified telemetry field.
+
+what is a write telemetry operation?
+can we make this optional?
+
+even write is allowed without admin cap?
+
+> +      attribute-set: telemetry-attrs
+> +      do:
+> +        pre: drm-ras-nl-pre-telemetry
+> +        request:
+> +          attributes:
+> +            - node-id
+> +            - field
+> +            - value
+> +        reply:
+> +          attributes:
+> +            - status
+>  
+>  mcast-groups:
+>    list:
+> diff --git a/drivers/gpu/drm/drm_ras.c b/drivers/gpu/drm/drm_ras.c
+> index b099eb67836e..b88293295cda 100644
+> --- a/drivers/gpu/drm/drm_ras.c
+> +++ b/drivers/gpu/drm/drm_ras.c
+> @@ -53,6 +53,15 @@
+>   * 7. SET_ERROR_THRESHOLD: Set error threshold of a given counter.
+>   *    Userspace must provide Node ID, Error ID and threshold to be set.
+>   *
+> + * 8. TELEMETRY_READ: Read a telemetry value.
+> + *    Userspace must provide Node ID and telemetry field to be read.
+> + *    Returns the status of the read and the value read (if valid).
+> + *
+> + * 9. TELEMETRY_WRITE: Write a telemetry value.
+> + *    Userspace must provide Node ID, the telemetry field to write, and the value
+> + *    to be written.
+> + *    Returns the status of the write.
+> + *
+>   * Node registration:
+>   *
+>   * - drm_ras_node_register(): Registers a new node and assigns
+> @@ -63,7 +72,6 @@
+>   * Node type:
+>   *
+>   * - ERROR_COUNTER:
+> - *     + Currently, only error counters are supported.
+>   *     + The driver must implement the query_error_counter() callback to provide
+>   *       the name and the value of the error counter.
+>   *     + The driver must provide a error_counter_range.last value informing the
+> @@ -81,6 +89,12 @@
+>   *       that are raised by the hardware.
+>   *     + The driver is responsible for error threshold bounds checking.
+>   *
+> + * - TELEMETRY:
+> + *     + The driver must implement the telemetry_read() and telemetry_write()
+> + *       callbacks.
+> + *     + The driver can optionally provide a pre_doit callback, telemetry_pre(),
+> + *       to enforce permissions checks on telemetry operations.
+> + *
+>   * Netlink handlers:
+>   *
+>   * - drm_ras_nl_list_nodes_dumpit(): Implements the LIST_NODES
+> @@ -95,6 +109,12 @@
+>   *   operation, fetching the error threshold of a specific counter.
+>   * - drm_ras_nl_set_error_threshold_doit(): Implements the SET_ERROR_THRESHOLD doit
+>   *   operation, setting the error threshold of a specific counter.
+> + * - drm_ras_nl_pre_telemetry(): Implements the TELEMETRY_READ and TELEMETRY_WRITE
+> + *   pre_doit operation, returning 0 if valid.
+> + * - drm_ras_nl_telemetry_read_doit(): Implements the TELEMETRY_READ doit operation,
+> + *   invoking the driver's telemetry_read callback and returning the results.
+> + * - drm_ras_nl_telemetry_write_doit(): Implements the TELEMETRY_WRITE doit operation,
+> + *   invoking the driver's telemetry_write callback and returning the results.
+>   */
+>  
+>  static DEFINE_XARRAY_ALLOC(drm_ras_xa);
+> @@ -617,6 +637,156 @@ int drm_ras_nl_set_error_threshold_doit(struct sk_buff *skb, struct genl_info *i
+>  	return set_node_error_threshold(node_id, error_id, threshold);
+>  }
+>  
+> +/**
+> + * drm_ras_nl_pre_telemetry - Enforce permission checks
+> + * @ops: Generic netlink operations
+> + * @skb: Netlink message buffer
+> + * @info: Generic Netlink info containing attributes of the request
+> + *
+> + * Enforces a telemetry node's pre_doit conditions (if they exist).
+> + *
+> + * Returns 0 if no pre_doit is specified, otherwise returns the pre_doit.
+> + */
+> +int drm_ras_nl_pre_telemetry(const struct genl_split_ops *ops, struct sk_buff *skb,
+> +			     struct genl_info *info)
+> +{
+> +	struct drm_ras_node *node;
+> +	u32 node_id;
+> +
+> +	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
+> +	node = xa_load(&drm_ras_xa, node_id);
+> +
+> +	if (node->telemetry_pre)
+> +		return node->telemetry_pre(node);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * drm_ras_nl_telemetry_read_doit() - Query a telemetry value
+> + * @skb: Netlink message buffer
+> + * @info: Generic Netlink info containing attributes of the request
+> + *
+> + * Extracts the telemetry field from the netlink attributes and
+> + * reads that value from the device.
+> + *
+> + * Return: 0 on success, or negative errno on failure.
+> + */
+> +int drm_ras_nl_telemetry_read_doit(struct sk_buff *skb, struct genl_info *info)
+> +{
+> +	struct drm_ras_node *node;
+> +	struct sk_buff *msg;
+> +	struct nlattr *hdr;
+> +	u32 node_id, field;
+> +	s32 status;
+> +	u64 value;
+> +	int ret;
+> +
+> +	if (!info->attrs || !info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_FIELD])
+> +		return -EINVAL;
+> +
+> +	field = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_FIELD]);
+> +	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
+> +
+> +	node = xa_load(&drm_ras_xa, node_id);
+> +	if (!node || !node->telemetry_read)
+> +		return -ENOENT;
+> +
+> +	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
+> +	if (!msg)
+> +		return -ENOMEM;
+> +
+> +	hdr = genlmsg_iput(msg, info);
+> +	if (!hdr) {
+> +		nlmsg_free(msg);
+> +		return -EMSGSIZE;
+> +	}
+> +
+> +	ret = node->telemetry_read(node, &field, &value, &status);
+> +	if (ret) {
+> +		nlmsg_free(msg);
+> +		return ret;
+> +	}
+> +
+> +	ret = nla_put_s32(msg, DRM_RAS_A_TELEMETRY_ATTRS_STATUS, status);
+> +	if (ret) {
+> +		genlmsg_cancel(msg, hdr);
+> +		nlmsg_free(msg);
+> +		return ret;
+> +	}
+> +
+> +	ret = nla_put_64bit(msg, DRM_RAS_A_TELEMETRY_ATTRS_VALUE, sizeof(value),
+> +			    &value, DRM_RAS_A_TELEMETRY_ATTRS_PAD);
+> +	if (ret) {
+> +		genlmsg_cancel(msg, hdr);
+> +		nlmsg_free(msg);
+> +		return ret;
+> +	}
+> +
+> +	genlmsg_end(msg, hdr);
+> +
+> +	return genlmsg_reply(msg, info);
+> +}
+> +
+> +/**
+> + * drm_ras_nl_telemetry_write_doit() - Write a telemetry value
+> + * @skb: Netlink message buffer
+> + * @info: Generic Netlink info containing attributes of the request
+> + *
+> + * Extracts the telemetry field and value to be written from the netlink
+> + * attributes and writes that value to the specified field on the device.
+> + *
+> + * Return: 0 on success, or negative errno on failure.
+> + */
+> +int drm_ras_nl_telemetry_write_doit(struct sk_buff *skb, struct genl_info *info)
+> +{
+> +	struct drm_ras_node *node;
+> +	struct sk_buff *msg;
+> +	struct nlattr *hdr;
+> +	u32 node_id, field;
+> +	s32 status;
+> +	u64 value;
+> +	int ret;
+> +
+> +	if (!info->attrs || !info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_FIELD])
+> +		return -EINVAL;
+> +
+> +	value = nla_get_u64(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_VALUE]);
+> +	field = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_FIELD]);
+> +	node_id = nla_get_u32(info->attrs[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID]);
+> +
+> +	node = xa_load(&drm_ras_xa, node_id);
+> +	if (!node || !node->telemetry_read)
+> +		return -ENOENT;
+> +
+> +	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
+> +	if (!msg)
+> +		return -ENOMEM;
+> +
+> +	hdr = genlmsg_iput(msg, info);
+> +	if (!hdr) {
+> +		nlmsg_free(msg);
+> +		return -EMSGSIZE;
+> +	}
+> +
+> +	ret = node->telemetry_write(node, &field, &value, &status);
+> +	if (ret) {
+> +		nlmsg_free(msg);
+> +		return ret;
+> +	}
+> +
+> +	ret = nla_put_s32(msg, DRM_RAS_A_TELEMETRY_ATTRS_STATUS, status);
+> +	if (ret) {
+> +		genlmsg_cancel(msg, hdr);
+> +		nlmsg_free(msg);
+> +		return ret;
+> +	}
+> +
+> +	genlmsg_end(msg, hdr);
+> +
+> +	return genlmsg_reply(msg, info);
+> +}
+> +
+>  /**
+>   * drm_ras_node_register() - Register a new RAS node
+>   * @node: Node structure to register
+> @@ -631,14 +801,21 @@ int drm_ras_node_register(struct drm_ras_node *node)
+>  	if (!node->device_name || !node->node_name)
+>  		return -EINVAL;
+>  
+> -	/* Currently, only Error Counter Endpoints are supported */
+> -	if (node->type != DRM_RAS_NODE_TYPE_ERROR_COUNTER)
+> -		return -EINVAL;
+> -
+> -	/* Mandatory entries for Error Counter Node */
+> -	if (node->type == DRM_RAS_NODE_TYPE_ERROR_COUNTER &&
+> -	    (!node->error_counter_range.last || !node->query_error_counter))
+> +	/* Currently, only Error Counter and Telemetry endpoints are supported */
+> +	switch (node->type) {
+> +	case DRM_RAS_NODE_TYPE_ERROR_COUNTER:
+> +		/* Mandatory entries for Error Counter Node */
+> +		if (!node->error_counter_range.last || !node->query_error_counter)
+> +			return -EINVAL;
+> +		break;
+> +	case DRM_RAS_NODE_TYPE_TELEMETRY:
+> +		/* Mandatory entries for Telemetry Node */
+> +		if (!node->telemetry_read || !node->telemetry_write)
+> +			return -EINVAL;
+> +		break;
+> +	default:
+>  		return -EINVAL;
+> +	}
+>  
+>  	return xa_alloc(&drm_ras_xa, &node->id, node, xa_limit_32b, GFP_KERNEL);
+>  }
+> diff --git a/drivers/gpu/drm/drm_ras_nl.c b/drivers/gpu/drm/drm_ras_nl.c
+> index ff0dc406c27c..4577bc1a333e 100644
+> --- a/drivers/gpu/drm/drm_ras_nl.c
+> +++ b/drivers/gpu/drm/drm_ras_nl.c
+> @@ -41,6 +41,19 @@ static const struct nla_policy drm_ras_set_error_threshold_nl_policy[DRM_RAS_A_E
+>  	[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD] = { .type = NLA_U32, },
+>  };
+>  
+> +/* DRM_RAS_CMD_TELEMETRY_READ - do */
+> +static const struct nla_policy drm_ras_telemetry_read_nl_policy[DRM_RAS_A_TELEMETRY_ATTRS_FIELD + 1] = {
+> +	[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID] = { .type = NLA_U32, },
+> +	[DRM_RAS_A_TELEMETRY_ATTRS_FIELD] = { .type = NLA_U32, },
+> +};
+> +
+> +/* DRM_RAS_CMD_TELEMETRY_WRITE - do */
+> +static const struct nla_policy drm_ras_telemetry_write_nl_policy[DRM_RAS_A_TELEMETRY_ATTRS_VALUE + 1] = {
+> +	[DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID] = { .type = NLA_U32, },
+> +	[DRM_RAS_A_TELEMETRY_ATTRS_FIELD] = { .type = NLA_U32, },
+> +	[DRM_RAS_A_TELEMETRY_ATTRS_VALUE] = { .type = NLA_U64, },
+> +};
+> +
+>  /* Ops table for drm_ras */
+>  static const struct genl_split_ops drm_ras_nl_ops[] = {
+>  	{
+> @@ -83,6 +96,22 @@ static const struct genl_split_ops drm_ras_nl_ops[] = {
+>  		.maxattr	= DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
+>  		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
+>  	},
+> +	{
+> +		.cmd		= DRM_RAS_CMD_TELEMETRY_READ,
+> +		.pre_doit	= drm_ras_nl_pre_telemetry,
+> +		.doit		= drm_ras_nl_telemetry_read_doit,
+> +		.policy		= drm_ras_telemetry_read_nl_policy,
+> +		.maxattr	= DRM_RAS_A_TELEMETRY_ATTRS_FIELD,
+> +		.flags		= GENL_CMD_CAP_DO,
+> +	},
+> +	{
+> +		.cmd		= DRM_RAS_CMD_TELEMETRY_WRITE,
+> +		.pre_doit	= drm_ras_nl_pre_telemetry,
+> +		.doit		= drm_ras_nl_telemetry_write_doit,
+> +		.policy		= drm_ras_telemetry_write_nl_policy,
+> +		.maxattr	= DRM_RAS_A_TELEMETRY_ATTRS_VALUE,
+> +		.flags		= GENL_CMD_CAP_DO,
+> +	},
+>  };
+>  
+>  static const struct genl_multicast_group drm_ras_nl_mcgrps[] = {
+> diff --git a/drivers/gpu/drm/drm_ras_nl.h b/drivers/gpu/drm/drm_ras_nl.h
+> index 9aef097ea10f..4bdd7ed268a1 100644
+> --- a/drivers/gpu/drm/drm_ras_nl.h
+> +++ b/drivers/gpu/drm/drm_ras_nl.h
+> @@ -12,6 +12,9 @@
+>  
+>  #include <uapi/drm/drm_ras.h>
+>  
+> +int drm_ras_nl_pre_telemetry(const struct genl_split_ops *ops,
+> +			     struct sk_buff *skb, struct genl_info *info);
+> +
+>  int drm_ras_nl_list_nodes_dumpit(struct sk_buff *skb,
+>  				 struct netlink_callback *cb);
+>  int drm_ras_nl_get_error_counter_doit(struct sk_buff *skb,
+> @@ -24,6 +27,9 @@ int drm_ras_nl_get_error_threshold_doit(struct sk_buff *skb,
+>  					struct genl_info *info);
+>  int drm_ras_nl_set_error_threshold_doit(struct sk_buff *skb,
+>  					struct genl_info *info);
+> +int drm_ras_nl_telemetry_read_doit(struct sk_buff *skb, struct genl_info *info);
+> +int drm_ras_nl_telemetry_write_doit(struct sk_buff *skb,
+> +				    struct genl_info *info);
+>  
+>  enum {
+>  	DRM_RAS_NLGRP_ERROR_REPORT,
+> diff --git a/include/drm/drm_ras.h b/include/drm/drm_ras.h
+> index 1765a3130b09..2a2cdd44839d 100644
+> --- a/include/drm/drm_ras.h
+> +++ b/include/drm/drm_ras.h
+> @@ -100,6 +100,45 @@ struct drm_ras_node {
+>  	 */
+>  	int (*set_error_threshold)(struct drm_ras_node *node, u32 error_id, u32 threshold);
+>  
+> +	/**
+> +	 * @telemetry_pre:
+> +	 *
+> +	 * This callback is used to enforce any pre_doit conditions necessary
+> +	 * for telemetry. This is an optional callback for telemetry_node.
+> +	 *
+> +	 * Returns 0 on success, negative error code on failure.
+> +	 */
+> +	int (*telemetry_pre)(struct drm_ras_node *ep);
+> +
+> +	/**
+> +	 * @telemetry_read:
+> +	 *
+> +	 * This callback is used for a drm-ras telemetry node to read a
+> +	 * telemetry value. This is a mandatory callback for telemetry_node.
+> +	 *
+> +	 * The callback will read the desired device-specific field into value
+> +	 * and update status corresponding to a device-specific error code.
+> +	 *
+> +	 * Returns 0 on success, negative error code on failure.
+> +	 */
+> +	int (*telemetry_read)(struct drm_ras_node *ep, u32 *field, u64 *value,
+> +			      s32 *status);
+> +
+> +	/**
+> +	 * @telemetry_write:
+> +	 *
+> +	 * This callback is used for a drm-ras telemetry node to write a
+> +	 * telemetry value. This is a mandatory callback for telemetry_node.
+> +	 *
+> +	 * The callback will write the value to the desired device-specific
+> +	 * field and update status corresponding to a device-specific error
+> +	 * code.
+> +	 *
+> +	 * Returns 0 on success, negative error code on failure.
+> +	 */
+> +	int (*telemetry_write)(struct drm_ras_node *ep, u32 *field, u64 *value,
+> +			       s32 *status);
+> +
+>  	/** @priv: Driver private data */
+>  	void *priv;
+>  };
+> diff --git a/include/uapi/drm/drm_ras.h b/include/uapi/drm/drm_ras.h
+> index 2f832275ee6e..d39c78a9ed5a 100644
+> --- a/include/uapi/drm/drm_ras.h
+> +++ b/include/uapi/drm/drm_ras.h
+> @@ -16,6 +16,7 @@
+>   */
+>  enum drm_ras_node_type {
+>  	DRM_RAS_NODE_TYPE_ERROR_COUNTER = 1,
+> +	DRM_RAS_NODE_TYPE_TELEMETRY,
+>  };
+>  
+>  enum {
+> @@ -51,6 +52,17 @@ enum {
+>  	DRM_RAS_A_ERROR_EVENT_ATTRS_MAX = (__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX - 1)
+>  };
+>  
+> +enum {
+> +	DRM_RAS_A_TELEMETRY_ATTRS_NODE_ID = 1,
+> +	DRM_RAS_A_TELEMETRY_ATTRS_FIELD,
+> +	DRM_RAS_A_TELEMETRY_ATTRS_VALUE,
+> +	DRM_RAS_A_TELEMETRY_ATTRS_STATUS,
+> +	DRM_RAS_A_TELEMETRY_ATTRS_PAD,
+> +
+> +	__DRM_RAS_A_TELEMETRY_ATTRS_MAX,
+> +	DRM_RAS_A_TELEMETRY_ATTRS_MAX = (__DRM_RAS_A_TELEMETRY_ATTRS_MAX - 1)
+> +};
+> +
+>  enum {
+>  	DRM_RAS_CMD_LIST_NODES = 1,
+>  	DRM_RAS_CMD_GET_ERROR_COUNTER,
+> @@ -58,6 +70,8 @@ enum {
+>  	DRM_RAS_CMD_ERROR_EVENT,
+>  	DRM_RAS_CMD_GET_ERROR_THRESHOLD,
+>  	DRM_RAS_CMD_SET_ERROR_THRESHOLD,
+> +	DRM_RAS_CMD_TELEMETRY_READ,
+> +	DRM_RAS_CMD_TELEMETRY_WRITE,
+>  
+>  	__DRM_RAS_CMD_MAX,
+>  	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
 > -- 
-> Ruan Bahia
-
+> 2.43.0
+> 
