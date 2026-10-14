@@ -1,136 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D960397930;
-	Wed, 14 Oct 2026 02:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2281E5018;
+	Wed, 14 Oct 2026 02:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791945611; cv=none; b=Q2OxsiltIdIl008WExTWzPuhGG9Jvh26oLvCcODkc091zMIKWzIIFcqYCHXM+NB/qZj5i6vO51uecCXwzfIJC6WrsL4Br4JNvRjzJZSI0qekLs6zWS/SpDg7IDuAPyKz/HomyoWX+PFjIlFlPUNCQ/+SI0fstj/RAsN3iZbVEWA=
+	t=1791946051; cv=none; b=qpEoGN8s0IyL1S/pWOkU9SzFgJ1dGglqh3U45rN2ARHW8Ov8YxBGnjhd4wjujMPstdJywJmqcpDHbjDopiol+XLhNqdxZThiK9G/hcSH3CkYFtXwbnNFyjfVCEhUW51FdNocipkQCHfBBnZH9G4NXxAXkC98IXeRyKFRVN9eR4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791945611; c=relaxed/simple;
-	bh=X8lj5J4ZUuGxbnbcgCbLyk0XKbqXPSWIhxxb3NYP7qc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=daCJb9IxcUhSHhDuRKYMcDFyQV831V7e3FJFxf2NAnky8JG3zl8zRdpcYFhNHCLgCQ5oRk38nLqycBVC9Wh7RJqso/C0eLhZQGR7iWsM66zAA/fu4gsc0ApcbLp5yj9QBi+6xDpZLnRcYND8FEVqyZiHvZTNUsO2txqBuKCRujs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KGmaWVhx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1791946051; c=relaxed/simple;
+	bh=bU47t5azK/M7N5ZkIsA0t+/wEEAt4+XV8/3+W4p/3YA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dZZwSSAerckaZjDMj3xgzYu/c0tk00uJoKH+mWNoRV+HpnevMIkDxcnXwme4lrmXADAwU3cGXD578+LyvFhu0XHFTMtAgDy4Vl8hK80bxcxplEmoi4NjL4IiQCDDhWTBOR+USKjh+EiaEK+zlZuC6GKVP/7zMU/yBee3r4eOW3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Gs0Y6MT6; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KGmaWVhx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81931F000FF;
-	Wed, 14 Oct 2026 02:40:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791945609;
-	bh=hBkVpvKUPtDDjwwzZ3YUQSxJAQTY2TrMIaX7dOwsj6w=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KGmaWVhxCW8ztqS65PueVuORxF1wb2xc269m9LFQSeGyCMR/UCuzwjBRR11ZOykIY
-	 ksQkcHup27juJiNIjSrxov0ihiu+qk7rU8GqxR9h+pRjsj4+BrrrvrDJR6cvjOvchV
-	 Rry8l34ah/adO3pCtnE+2DitNjhepaNK6kYzmBk7CoQnWzOebpo6lMELj0iz9Vj+29
-	 LJ1a5I1whqpBeVe5is6HmUvCR/5WJq6nvKvgqBZkjvjQtkxV1GNKrz2xtGGkiLwoI0
-	 DMmbH6ZdBZCIZ9chbhMGgjVx/5kwl5jw+oUAC3NRFu8r4ZFpEOkpY8fbBlWHsMhpV+
-	 el1qm2eZj8qCA==
-Subject: Re: [PATCH net v2] netlink: fix out-of-bounds bitmap access clearing
- stale mc groups
-From: netdev-bot+sashiko@kernel.org
-To: bsdhenrymartin@gmail.com
-Cc: edumazet@kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, nicolas.dichtel@6wind.com,
- kees@kernel.org, i.maximets@ovn.org, leitao@debian.org, jlayton@kernel.org,
- kexinsun@smail.nju.edu.cn, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 14 Oct 2026 02:40:08 +0000
-Message-ID: <179194560847.434549.7995246256511325364@kernel.org>
-In-Reply-To: <20261013023859.3075601-1-bsdhenrymartin@gmail.com>
-References: <20261013023859.3075601-1-bsdhenrymartin@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Gs0Y6MT6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=an
+	ruDG1Od+mlES8g/2ElYftNeL5m7dyUazrMLwBBX3k=; b=Gs0Y6MT6RlGL46T4xo
+	K8eEJMiHOcQ/qm9YQsBvs6V1y6MMqBMxUZB5WG0GGO1MklNCQHS0kBDAHzuUYeEJ
+	6qO2ei0JJfbCFhK5WOU1jOMv46mvJry7wSM/HwNbanyadK5VmYBe1i5L585o3Ao0
+	kYfxApcEpp2/rNYB3sEGq5JXM=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PygvCgDHX1YS7c5qceXuEQ--.32271S2;
+	Wed, 14 Oct 2026 10:46:44 +0800 (CST)
+From: Wei Tao <taowei@kylinos.cn>
+To: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wei Tao <taowei@kylinos.cn>
+Subject: [PATCH net] net/sched: cls_fw: allow filter replace without re-specifying mask
+Date: Wed, 14 Oct 2026 10:45:48 +0800
+Message-Id: <20261014024548.37874-1-taowei@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PygvCgDHX1YS7c5qceXuEQ--.32271S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZF1kXF1xXry8Cw4DArWxtFb_yoW5Cr1DpF
+	1rK3WUGFsrtFyjgrWkJw1kK34a9rs3JryxuF10k34SyrZIgF4FqrWI9ayfW3yUGFZ7Ca42
+	qFs0q3y5W39rArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jtGYdUUUUU=
+Sender: cs_taowei@163.com
+X-CM-SenderInfo: xfvb3tprzhxqqrwthudrp/xtbC4RTOEGrO7RQCgAAA30
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+The fw classifier keeps the fwmark mask in the fw_head shared by all
+filters of a tcf_proto instance, so the mask is a property of the head
+and not of the individual filter: it is set when the head is created
+and cannot be changed by a filter that is being replaced.  Nevertheless
+fw_set_parms() rejects such a replace with -EINVAL whenever the head
+mask is not the default 0xFFFFFFFF and the mask is not repeated on the
+command line:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+  # tc qdisc add dev lo clsact
+  # tc filter add dev lo ingress prio 1 handle 1/0xffff fw classid 1:10
+  # tc filter replace dev lo ingress prio 1 handle 1 fw classid 1:20
+  RTNETLINK answers: Invalid argument
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+The same happens for tc filter change, which calls fw_set_parms() on the
+existing filter as well.
 
-- [Medium] The code guard is correct.
+The check only makes sense for a newly created filter, where the mask
+has to be spelled out so that a filter cannot silently match on a
+non-default mask inherited from the existing head.  A filter that is
+being replaced already shares the head mask and inherits it unchanged,
+so the check can be skipped for it.
 
---
+Tell the two cases apart with a new "new_filter" argument to
+fw_set_parms(), which fw_change() sets only when it creates a filter,
+and report the error through extack instead of failing silently.
 
-netlink: fix out-of-bounds bitmap access clearing stale mc groups
+Fixes: b4e9b520ca5d ("[NET_SCHED]: Add mask support to fwmark classifier")
+Signed-off-by: Wei Tao <taowei@kylinos.cn>
+---
+ net/sched/cls_fw.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-This patch adds a bounds check to netlink_update_socket_mc().  With it,
-__netlink_clear_multicast_users() no longer tests or clears bits past a
-socket's nlk->groups bitmap.  Sockets whose bitmap was sized before the
-multicast group table grew are skipped for groups beyond nlk->ngroups.
-
-> With in-tree families the overflow is only reachable on 32-bit
-> kernels: the ~54 dynamically allocated genl groups fit the initial
-> 64-bit bitmap on 64-bit kernels but exceed the 32-bit one, so the
-> table can grow there, and a later module unload then touches bits
-> past the bitmap of stale sockets.
-
-[Severity: Medium]
-The guard looks correct on every architecture.  Is the claim that only
-32-bit kernels are affected accurate, though?
-
-genl_allocate_reserve_groups() in net/netlink/genetlink.c does a first-fit
-search for a contiguous range.  It grows the table whenever that range ends
-past the current capacity:
-
-net/netlink/genetlink.c:genl_allocate_reserve_groups() {
-    ...
-		if (id + n_groups > mc_groups_longs * BITS_PER_LONG) {
-			unsigned long new_longs = mc_groups_longs +
-						  BITS_TO_LONGS(n_groups);
-    ...
-}
-
-genl_unregister_mc_groups() frees IDs with clear_bit(), and nothing
-compacts the remaining allocations.  So the number of live groups does not
-limit the highest group ID.
-
-The initial bitmap also starts with five bits reserved:
-
-static unsigned long mc_group_start = 0x3 | BIT(GENL_ID_CTRL) |
-				      BIT(GENL_ID_VFS_DQUOT) |
-				      BIT(GENL_ID_PMCRAID);
-
-That leaves 59 free IDs on a 64-bit kernel, only about 5 more than the ~54
-in-tree groups.
-
-With most in-tree families loaded, can an unload/reload sequence fragment
-the free space enough to force growth on 64-bit?  For example:
-
-  unload nl80211 (7 groups with CONFIG_NL80211_TESTMODE) and psample
-  load psample, which takes part of nl80211's old range
-  load nl80211, which no longer fits in any free 7-bit gap
-
-At that point id + n_groups > 64, mc_groups_longs becomes 2, and
-__netlink_change_ngroups() raises tbl->groups to 128.  Sockets that
-subscribed earlier still have nlk->ngroups == 64 and an 8-byte bitmap.
-
-A later unload of nl80211 then reaches:
-
-genl_unregister_mc_groups()
-  __netlink_clear_multicast_users()
-    netlink_update_socket_mc()
-      test_bit(group - 1, nlk->groups)        /* bit 64 */
-      __assign_bit(group - 1, nlk->groups, 0)
-
-Without this patch, that would be an out-of-bounds access on a 64-bit
-kernel with only in-tree modules.
-
-The v2 notes say Cc: stable was dropped because of this reachability
-description.  Could this paragraph be reworded so backporters don't
-conclude that 64-bit kernels are unaffected?
-
+diff --git a/net/sched/cls_fw.c b/net/sched/cls_fw.c
+index a462b262719c..f1b648a11e7c 100644
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -204,7 +204,8 @@ static const struct nla_policy fw_policy[TCA_FW_MAX + 1] = {
+ 
+ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
+ 			struct fw_filter *f, struct nlattr **tb,
+-			struct nlattr **tca, unsigned long base, u32 flags,
++			struct nlattr **tca, unsigned long base,
++			bool new_filter, u32 flags,
+ 			struct netlink_ext_ack *extack)
+ {
+ 	struct fw_head *head = rtnl_dereference(tp->root);
+@@ -229,8 +230,10 @@ static int fw_set_parms(struct net *net, struct tcf_proto *tp,
+ 		mask = nla_get_u32(tb[TCA_FW_MASK]);
+ 		if (mask != head->mask)
+ 			return err;
+-	} else if (head->mask != 0xFFFFFFFF)
++	} else if (head->mask != 0xFFFFFFFF && new_filter) {
++		NL_SET_ERR_MSG(extack, "Mask must be provided for new filter");
+ 		return err;
++	}
+ 
+ 	if (tb[TCA_FW_CLASSID]) {
+ 		f->res.classid = nla_get_u32(tb[TCA_FW_CLASSID]);
+@@ -291,7 +294,8 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 			return err;
+ 		}
+ 
+-		err = fw_set_parms(net, tp, fnew, tb, tca, base, flags, extack);
++		err = fw_set_parms(net, tp, fnew, tb, tca, base, false,
++				   flags, extack);
+ 		if (err < 0) {
+ 			tcf_exts_destroy(&fnew->exts);
+ 			kfree(fnew);
+@@ -340,7 +344,7 @@ static int fw_change(struct net *net, struct sk_buff *in_skb,
+ 	f->id = handle;
+ 	f->tp = tp;
+ 
+-	err = fw_set_parms(net, tp, f, tb, tca, base, flags, extack);
++	err = fw_set_parms(net, tp, f, tb, tca, base, true, flags, extack);
+ 	if (err < 0)
+ 		goto errout;
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013023859.3075601-1-bsdhenrymartin%40gmail.com
+2.33.0
+
