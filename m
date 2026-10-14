@@ -1,107 +1,152 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3CE568530
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792001969; cv=none; b=cxRNn+cLkcF3m8PbXsUnnOhF6QN1mmSXoTzFYMGkDmbuAKHgK1YDNEddagBhsVNB+jMTCvbBrBVtsyy1Zgvd8aYfLDKTj2fHxoITndbyh5XBfGH6a76ysemTE8aaXvSg5HgBrpOxQN/g8/ny/zimCO50ZDB1l8647oQpCFQ7W6A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792001969; c=relaxed/simple;
-	bh=xLy4bwJA3p4oGwSxkOP7algz00ABvvlb2hL7FQ0tbXw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sEBZ0uZaSVDZLFQCA6NsBV5FD051X9JZenj4E8lptBQpdEZjkBHjcl4lMySK3bA1wtTtYotkjDi47fP3MvC1wqQXeJr9GLpnvLBlDtRhTcB7+9IqkTrWRWb1RwnGyzjFqwAbF6gEisPe85fj4YFKGTesiB0JE8KtQ55w+FAtL40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=pass smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b=mcxCiTw4; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toxicpanda.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF8A565105
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792002526; cv=pass; b=NDQtOKcYDzEDy4ajk/OX/j3q+aUh+5ie0DWyxdA9qs2XxfY4q/BPWmmZfNq6lTYUd/qBmSe6nU06s/hBGOOBlW83sILnkmFdnoqzMO5PoQ3hnPBCmxIvtpXOj0MYrcrAkqA2LfQwyVpeZkS5QRg4RynjaRj42Gu3oMwCJUWGjGY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792002526; c=relaxed/simple;
+	bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sFBv2XNsECXT+XrDWUFLGyWAz/uqoDbmin3yJUgv7g9VWu7KLHMkptQ1/UzPmTcmXaHyJnzJw1CQxTJ/gKc67UkiSnQLdp0S4Lh1/aQbBImzszCJ+e2hxJt+2Quo+FyNQ/soNdjV5Sp8eCvR+SIgJJ+0RVEB40cEXUtkNqygEfc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGOzOT6p; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda.com header.i=@toxicpanda.com header.b="mcxCiTw4"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-917a64f28d0so84255586d6.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:19:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGOzOT6p"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2e8d6fcbba0so237205ad.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:28:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792002523; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DJogu6yTm745WmSJXKnL10XQ9y/o50g6cFAJ9p8UpwvGHmn4B1whQqxR2vDULyGnkJ
+         leviDpdevmU2lGde2bc6MAsk8ubFXzlyqBZkOr101YAMmeNoTBRM+ybKnMcmFgB4XZZV
+         cTCrn4h/F58dkOgIORM06bc/OLNs3tdcAhHGk6nKWJr1u6Z7JU3Q0wV1qPOYtUsPCxWY
+         Tc44hKAKK+HyG/QxN3wEIupE6UmFrIIp0DOETA8IHfrx4Z7oh8B4qWyK0bipGlCBssWl
+         SefL/VynSrY94ZWRWHgWR21jfR6tvolu0uZSp9PHoz83zmTI6cTfKoGpI7c3olXccw+w
+         H6Zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
+        fh=3J2MqcGlNt+uCAM5LlTZjXqtL0xDGQqVvCUEeRZPU3E=;
+        b=XXUQggMBmLrDDN8YR94v16X0+FBKcunFJ9LmKl3HnxkRGg2sMK127Q0BSWgN5I897L
+         nXmA29Qd+KqIbbd/TkdEFYXlqBMnQsji5C99RBQ9sMQGd3f+Xm9rjpPPjajsQxnF/GDq
+         8SHcxo+FiY8p6zkqKalEEXegkNtb7fb4ElvPkeYk7qgEzW7zStE/Ii07hpSMYg/McrRH
+         b2UT4R3rjJsvEguk8wJ65B9/SUkhOrkvOK0gDBskbNXKxEEAVbtJe/Ouh0wMrUGQ5bP9
+         /WnJr1K4q4Kgu1Vmzkid4dQRgHpHIr7JHik8a/bcjyNsQBaiPoRzc2N+7xdKApE9xFkR
+         Clnw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1792001967; x=1792606767; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+        d=google.com; s=20251104; t=1792002523; x=1792607323; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=d7wsO3zLWdRB4GlI02kHERXU64Q1Nav35BL5ro5gRHk=;
-        b=mcxCiTw4lZJIh8U/OXoB6J70gl5U4J2msmzGl7f4VpgSa4sFZb2o+FzALZjjUAC0Ng
-         Dy8VvO5LTI32n46fuv1RfgQ9Zkv2rv3SFX3o/m9O7OhKnePyftas/KdC7zytsgpJh4xJ
-         ci2OI8Gy0Jwz4wExAWokrjz3PXfDwTsHdAEmDHpDBmheddrni//eLjLBHY1lPVDvnh4N
-         TtsKzcF/WE7VMKVA7tdwO//4VSaNqC4GTlIl/tjOBX/uOzsTbanWVGX6iSrQ3JZ/0OsZ
-         495mYKhcx45g8VLDctwl3rnIkhbi2Qb3JON5fBw9wllPBl2J2XWDlmVaIgMVD1V8KsiP
-         YkNQ==
+        bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
+        b=BGOzOT6pQv0mFri/8RH7QoElgFXhyBZG1RjsW5RNYxkdnYukiZrxD76D4K0ytM+r52
+         YWjLYG+apmfLHG0e+NB8Bg1EBhaRj0TA1Gw8w/EtBKLwzAM/acQ2Ni9PHaL6bSsgUZNq
+         9Jq5OxfuVQ+vtOumR1rHLjcnA6RE/utxHHLV8jMsDqeOSkTKB0FZ3ImfPmWxwgMmDRes
+         dtimwJnMsjMisKDvBcSxx9qJ6EG1vKKThKHkQZBPxACg9Y8axR3Gx56HlJWPJpy8mTZk
+         LazNQcFbkaSmmFxdnGtU82jIY6+d+efUIDiXskLm55S+u6cQfV2px5nEE3i66EVvITQ7
+         0hWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792001967; x=1792606767;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1792002523; x=1792607323;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=d7wsO3zLWdRB4GlI02kHERXU64Q1Nav35BL5ro5gRHk=;
-        b=hfd5hG8PijF+29Qyi2TpFZMGDvPdQnmJVtGhWhmB4f4bib0k7wrBKbf6AD7QihB2G7
-         fjKSRU5sX3KAjqsfe7EZ0cS3b3Mh6qX4LJQIgRL81/JGx9SOg51VogNexBD61HOoTW6t
-         5Sk4+zFNgBbUI/XGQ1WTZibfktZCsul5A4RkWP8j3ZjC5ulk3j38O2p++u467yL20p3T
-         wbQ7mBB6q+Ne7jKJxtyHdE3GUjExwYLc/xk4ql/o65xoZWyRD8dCKHUP5kFsdJaIXd92
-         c4eK4q5n9d+JuJuWBUawfHziz/gGYKXc77agDAe5FEqKBGFWDkzTnwB1o2Xj6WLG+MCn
-         CmAw==
-X-Forwarded-Encrypted: i=1; AKwUvBwPnJ4GOP+GAd+d+h0vZcLstRBsgwCUgi+Bv52n6kMCRa9Pe2a/ZSrO47kEo2B3z4tsK9Rok64=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIiyTECoRfVYqDZfGHkrGT9Kx8HC3Od0aYXWH5NtLCH57yvoGhi
-	UzAEzYCK7JYX/fWKn38daU2cPPCQvg3lO9zvIiWPpkrUhzPtocDJAHnRlGTcD9XKWRA=
-X-Gm-Gg: AYBFou3qEyBCJom4u3AlLj/85apr765GbBoUaD4Ll3RZHkoiLyJwbpudX5kWmqqnrKc
-	TeO61VZSn5M+KwA63vsbKZ7qjbiQoh9PFiBGxG+hzGV6b1XZ7stxCtyFc5cnYMmTI3DNel9Pja5
-	64Z54GhAcVxYRGrIyYVzFSwuhW5iKUf06h6j5laQzheIclkysUiwXjRMq2h3GQhwwDXl+iMB7gA
-	H5zbSjqEnkXU3yY29C9y+gNIbrOUZ1EyLQtN/9w5VeuL+UZSodDQRAf9fy3oyOQtC1JHoPbsK0p
-	tYABn0ojYBO6XZBlcxldlqFkMk6BcbiSFH+tlyOZ6raD93mC+kXUgjH4nyYu0xELJyXC0VzJZtn
-	IkWewOZqVBUXAa0eQmHIUlVENOc6adn65P4uKLJif76eSbK/j4E1Mdq800z+b4eM6dZBq0YJpLy
-	U/m341EXdyfgCuLI5kubaC2t/uTJSfu5D9WIcSgK2OIbmSODHkq/6V4uq5uZ/EKeCGqoj/nadPx
-	g4ROPMkw8LPRdQ=
-X-Received: by 2002:a05:620a:2728:b0:93d:23d5:32fd with SMTP id af79cd13be357-93ec1499888mr2303090585a.27.1792001967385;
-        Wed, 14 Oct 2026 11:19:27 -0700 (PDT)
-Received: from toxicpanda.com ([153.61.196.244])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93ef508205csm553393285a.35.2026.10.14.11.19.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 11:19:26 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Mina Almasry <almasrymina@google.com>, Kaiyuan Zhang <kaiyuanz@google.com>,
- Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: skbuff: make skb_copy_and_csum_bits() report
- unreadable frags
-Date: Wed, 14 Oct 2026 18:17:01 +0000
-Message-ID: <179200182107330.2.7762063370688204320@toxicpanda.com>
-In-Reply-To: <179199883858343.2.17884063473154560573@toxicpanda.com>
-References: <20261013-b4-skb-segment-nosg-unreadable-v2-1-6c28d8ffa51e@toxicpanda.com>
- <20261014135154.05de968e@pumpkin>
- <179198668564919.2.10323410751655182155@toxicpanda.com>
- <20261014173042.0a74a25d@pumpkin>
- <CAEzrpqd9Pna32K8i5Ug3tP+ZiRa7-0GmyX+sn=OwbZ_3osEAsQ@mail.gmail.com>
- <179199883858343.2.17884063473154560573@toxicpanda.com>
+        bh=0+JRXvl/R9u5pNiuiBxqdsVIx1pGWTS2oCduhPjMn+0=;
+        b=zqSM68KztMPGHoWQQ8T8tPJ0GAbJ4MLf7ZZtkgTixhQG934Y3YGu8N6ljoMX5gKnhk
+         m2RVij3EOTGK3CHRPmAVnmDS+ESk5Gkg+fkEhfB/WjaRzbR3rwHbLoqgBfxcb6aN2cyK
+         65KbK4lyR9ld37vew7ignbNUCOtmRBtJL4uswK/cs9lqHxWCYzjd58J7TKUSJ1Lh99Bb
+         DBeDZ449DyAxpYWPfT30eS7IIocAxjW8GfYKHces8nJ/avqYmkY2UMZgxcRiBpmRVB1y
+         dKTQlrL+4lN3XdBzTKJaRsMVQa9ooAFVVqhouvErFeXP/EJtPnco09ZXh6TlNOE7Fr8G
+         SIlw==
+X-Forwarded-Encrypted: i=1; AKwUvBzMOwPxweHFI7N9gfHtAzFYNF51k6GiJBzv+6pTHj2GX2BS8oYjSFePw9WXZq+Gep2GuNetaIs=@vger.kernel.org
+X-Gm-Message-State: AFq9FYL45+Sb/xfO/knx9Rm3+0bjShpgwMEqyfzSkHGKDKcB93H7WfyE
+	zasvIChbfgFuhWswGbINghd0EbbxHcajgzJlFbJkDdexuFREyx5RaSlML13DxnRTekOdE0UIz14
+	AWqlkgkuOs38r3dFMkjEuFlP0hk67Zag4pOP1mO69
+X-Gm-Gg: AYBFou0+yThHxsl7OXH12U1FeZwBiEUs4gPqPlLrB+E51WMzhVTp9sCjGjxdhOZ4N6g
+	vIplD3QB3iweLqy25L3wSzJNL7WBlGejx+F2tjUmRXMdZpIBG0qhRm552zOu+KYl4r2w8RTJzCq
+	fP2SuFfxQdywxiDT4x4EJ/ZntMXLXj8S7nG2Ncrt8KW7hmPHTW7wNTIJkOb6OZiHq/gtE7D+428
+	l8oSbuwiHfv9Oz0hvCa5NhWpPXFApZPwBLF56wbD8USDbEnzxNO5el6VF9gUOSBaE8DvYcKWGDI
+	gWVQOH+pYs3r6qy1MNLvNnkRxF+YXBkdzecrW84L3kFq5fzs1HfKGJzC
+X-Received: by 2002:a17:902:e944:b0:2e5:4604:c37a with SMTP id
+ d9443c01a7336-2e87e303708mr18554105ad.18.1792002521805; Wed, 14 Oct 2026
+ 11:28:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+References: <20261003212241.3432303-1-lrizzo@google.com> <20261003212241.3432303-20-lrizzo@google.com>
+ <52a702a4-14eb-4617-bd29-e3140fd36780@nvidia.com> <afff5a1f-000a-4216-b4df-dd3d0406047c@nvidia.com>
+In-Reply-To: <afff5a1f-000a-4216-b4df-dd3d0406047c@nvidia.com>
+From: Luigi Rizzo <lrizzo@google.com>
+Date: Wed, 14 Oct 2026 20:28:05 +0200
+X-Gm-Features: AclHuK-6TbXuD5dQp6Q_-RxWjRRPPqkpIpvGcrKlslQ4aEjsOkMcO7VIrHzh1iI
+Message-ID: <CAMOZA0K4ZV53pE41AKoKz1g2wz3YENBz=HVoXng=RZbGyN3ssg@mail.gmail.com>
+Subject: Re: [RFC: DMA_PMD 19/22] net/mlx5e: Use DMA_PMD memory for tx header
+ bounce buffers
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
+	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 14, 2026 at 05:27:18PM +0000, Josef Bacik wrote:
-> So 0 can't mean failure here without changing checksums, and v3 will
-> keep the explicit error return from v2.
+On Wed, Oct 14, 2026 at 7:51=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com=
+> wrote:
+>
 
-Scratch the v3.  With the code staying the same, all it would add is the
-reproduction details from my reply to netdev-bot, and v2 still applies
-cleanly to net.  So v2 is the version to take as is.
+> > On 03.10.26 23:22, Luigi Rizzo wrote:
 
-Thanks,
-Josef
+> > Why are only headers considered for bouncing? Because they have the
+> > highest mapping overhead?
+>
+> I meant to say headers and small packets.
+
+Headers have a high cost for the map/unmap (especially in strict iommu mode=
+),
+and also cause significant IOTLB thrashing, because they come from skb_head
+that is not pre-mapped. The impact of IOTLB thrashing depends on
+the hardware and load but they consume one IOTLB entry per packet with
+almost non-existent recycling.
+
+In the following version I have modified the slub and skb allocator to
+feed skb head from DMA_PMD memory, which removes the need
+for header bounce buffers. It is a compromise (the skb head includes
+skb_shinfo, which we may not always want to expose to the device),
+but gives an option to those who want it, and in that case drivers
+that use pagepool can get all the benefits of DMA_PMD with zero
+modifications.
+
+> > Note that TSO/GSO packets will copy the header inline in the WQE
+> > already. But not for small packets.
+
+Yes additional bounce buffers are not needed on hardware that are
+essentially using the WQE as a bounce buffer. I'll double check the patch
+(mechanically generated).
+
+Small packets should not be too problematic, as long as they come from
+fragments allocated during the copy_from_user.
+
+cheers
+luigi
