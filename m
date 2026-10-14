@@ -1,182 +1,142 @@
-Received: from mail-pj2-f3.google.com (mail-pj2-f3.google.com [74.125.227.131])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB82496D34
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1E747ACC5
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 23:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792017597; cv=none; b=lUeGRJM85VKdbJFK0FjHufVbPjduI+5P3yF+byihHVvMUAweDTgDrWuqTUxCs/QIXG0n/8dr7B9FT2vPKc51cp4nHMumG6IFqaQVvRVNZq3agsOZ9zjy+NURBHah33WI30gzOMyvK60AZnekmaJrd+YvTSg8WkOXLEpYUyku0fc=
+	t=1792022194; cv=none; b=lU2lq1Ogq+szx/F5blptK+ZD2m10u1f+hAoehOxy8+PSHfo5+aKK18jeLHQv/wnrvNE648CVh4ugL+zd4nk3MGR06ypqwzv6J2OgZFxOYQMmgKa+ZoZEgEqmp5hR1RzoTD2UFkHRHyZNcePryfZIG2o6rihV/hB6MfXZqfT4KGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792017597; c=relaxed/simple;
-	bh=F0/PSnK0UYXRQwLpNd8hP6ZKOte9su8aiS8d81Stb/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M2LXPjF3CKJS/UJaOHNhdt+IM+CUkSgt+dCKsjuI0x4060hjhQL3unWwqT5J5E2flqbJHGWCmz5kpFj4qDL8MthxnxkMMTPHD4rh7XgDSct0z0hHq1SGtP4lwbCNzjRNVxkrZwSBmUEx2bTifQ+pH0AhAfLPrqz4sKP2SVURez4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkhdQU4B; arc=none smtp.client-ip=74.125.227.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792022194; c=relaxed/simple;
+	bh=nLu9+jS/Cn6oFT3DAy2pgKLYerUk78AHPFMk+9gkrY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a2HqA0GZbcPgN1GQOYUR8MloJSswPKKCUuo+q9Qfpj0skB8CzCnrtLEbjwmR68Y4qr5NT0NUNPOaJIiseXb6pugFREHkXYWIhLo91yHGzj3QBlXQ90mSH4af4rh4kVE9NO7fQ1TZrD03udzreJvhKxjXW7qEsSiZbAtOIRlUKn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=bJCCdWS3; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkhdQU4B"
-Received: by mail-pj2-f3.google.com with SMTP id d9443c01a7336-2e823bf32e9so2034585ad.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 15:39:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="bJCCdWS3"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c2e5e801487so712484566b.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 16:56:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792017596; x=1792622396; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8UyEnW2lOZvazx37QD4Yu1Cl+1Ebx+89Hh4Lc5xhOSk=;
-        b=NkhdQU4BSUgrd2KnOU1fSeIT0KDZl28mboXqjG1uBLY1r1/+3yH48RMQtFwfO3ccOu
-         kj3/AqdjT5QjGvsRjfIbBomr8UxWGwGz1NA6TTeyYwvaXZ5gKS4TIS6/Ww793+AEYSZ/
-         YFKQ6a5nHBfZJNJsbyHDOWm6xRkUkMQk4nS/mGqf/qvzS2oFKnEH9lHtzEqoOv5emqVb
-         5pOP98lBwbxUcRZqjr1Bsxw9xiCn4ce5nP0OCv2QQRrtXgu32aEiMV0jlCuYfG+YTddN
-         arVRRi1wBLb5/4CcJhyIs2pHBu5S8vGcxrigYhpr2IygHIo3B/Sw2AdrXIaAGFg27kbh
-         QYgA==
+        d=bairaktaris.de; s=google; t=1792022191; x=1792626991; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ujWOXhajkBZtlCmsZmCoVumMM+X/QUn/djLaiVsONPE=;
+        b=bJCCdWS3SAPVptxJycLn5yScFOncCfpXu+inchndA6M1vZCtSnwKPoxvEnuEhrLLHr
+         F86HqEXS5wP1bKUC+C+MffUT9VA7+fLrXZDZibZz5Tf61HlVHt1Jh10Mx8WjykwBvVHx
+         PWXTNj4DHwTNfgz+9nx+32yGY4Q/BCQGmsC4zK0EWkIocoTkU+QppCGu41JHJqoEKDFo
+         ctpDdkJ8TO0L22nPejk4mF94+ND9ukR8xzhM9Qt6FTYQ2A+oNHIWmhwOUYx956uW3oS5
+         wmLPx36n6syhNVOIFA+khBnb0lRUS9tKMbfr9/33VgB4P8oopaeBmMyrSaNE6iMN1r/a
+         /FpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792017596; x=1792622396;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=8UyEnW2lOZvazx37QD4Yu1Cl+1Ebx+89Hh4Lc5xhOSk=;
-        b=tlxTyrUWInXoF0kDvI0VhiFrAoy2Pz4NnmsHGyhbSKvBEYzsktSlPrwavuE6fTVrrB
-         biARDg4jIrK6WdMkpptThuPPOEVufd2La7OQTVwoMk1UGcn4Ltrd8QI+U7DQbEjW44Yn
-         df0rMBmV2xXI5MXufOZDAMm8ru6nwfLO7iwsV6Nw7E/l+NQ7IrrFp8/fooI1X8TMRfPz
-         QXqqkHmuu5TnPgyi96ZmYhx2QMDzlyXPhDvArN5sJdAVEIqZkdnSJT1MmsoH/yC1FnVc
-         +r282cCxXbDB+dehR+m6OwGtO0LIE85mVh5GVChAtg3aIY50pFU8D8lKcqzWD7AiZG/A
-         oZRQ==
-X-Gm-Message-State: AFq9FYKeqNt85tcfdxrXgp025O1WtnnNd2kZ5LqjPoY6TkXa+s5nZfTg
-	XQq8gzI+xAGkeCkZrotKc5OHBo1AZvOjIsdHZWyuWwh8V4Vu5SN/QH1kGutNtWChgsY=
-X-Gm-Gg: AYBFou3NUDl9ycaa3j+rhiZA2ARSypoOPGtz5mVVH0OxJoffGg+RCHpokAgeZepbMfR
-	BtDJVzSFUVOWo8dJ2FiPhfU5u/V2giWMFg3l2Qj8Kw0vXHMiuxB2blAtc1NoS85o49euy4AYIIn
-	Vbr1dlXOZ0ta1dP0KciD1dXqK4ujkQxXAD4Y/bgj/HJ1F8QnxvCb41ngjfm1NoD6fr0OcU8vwC0
-	UiFyML5xTqZddQKb5+KqDbilFPi9023zt/BnFEBUwQGjnYtzIetyoxXmNpKMUdTpri5yVMRPqek
-	M0OK6yCcBpuJpt/uBjYNkQeRq4jzaeqrxnfnPE/SKEJMVTilDuspHInuCDA4puKVWrA9iGsOD6a
-	B+8I/CG8dnuNeyFqVRw2YY7h9r50kzClCr/D8WDXP5RsP8jJHTFRvdtb/ZgYZsoFiY7V2IQVslW
-	TMrpSP5bxL0KevK4D7JEi4ss9kRiBghjR+MqDxMHhz76KtoqzZphQDxBeC1zgSNdqT
-X-Received: by 2002:a17:903:1b0c:b0:2e9:3dd0:c8d with SMTP id d9443c01a7336-2e93dd01892mr28961315ad.14.1792017595732;
-        Wed, 14 Oct 2026 15:39:55 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:58::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8483c3dfcsm72333795ad.24.2026.10.14.15.39.54
+        d=1e100.net; s=20260707; t=1792022191; x=1792626991;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ujWOXhajkBZtlCmsZmCoVumMM+X/QUn/djLaiVsONPE=;
+        b=pxtomSsE3Xr963Hh8MVPYtH0IBzzVxwXTiQMAWf3zkSGx0G3gnZoGo+yR5Od/64tLu
+         G2t1NWu1t//XHg4MStL/xezKHj+SyboqDWFQGkD2FQ938/Ozxcm8dVNE7dWBE+QIih6M
+         fjEVvtB+Y4P6tmRPvq0SQKiCKbSyJ2b/jc87bF0r5zJiw4sjSSgHNPlFXsTB7Yx14GAs
+         DIJ0yn8idPxOlkBM/qsXcBSKrTAu/URflV8I5Knn9bbfowP4YVXxMY7+hnPrfbH3mEV/
+         vcF4x4lAr8fgYfLyxkch15JsLFEnfiCVh1vxsOFaUvjUFF7z0B/NsCEiB+Ywuh6CsMsC
+         ClsA==
+X-Forwarded-Encrypted: i=1; AKwUvBxX+80HJI2+wkCZnLC6VPZFHCxzUrghGtGhIqm5UI00RpUYqG5aT9bZOKGInInfXRimWHwt1XQ=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIkNpoXLjBOgtFNIPW5JosqaHA5+IsfiPKiAl+NXIKfFCutJ9HF
+	NPxXfVTL09IyGJR3v+NL3G1fFfd22jeThYglqNpBC8ZcWfb8BmjsJtzN6ICzh/tGjA==
+X-Gm-Gg: AYBFou3AUl+liYUyi6yPLiNA+EsW+noRU/d8udHXqD+lE+NqhdVql719RJQ+xrdZGVH
+	9Sciez62G+wLBlfXatH+roCmSofFwkNjAHo444BsUmWLyhssSRCTf/sww1bLmyjmJm1JrWoYKRQ
+	TSTqveUIaODgNIFxiHlPYjjb2cupOi4tUk7QOovSEHpMLVjokSNiz12Me4cW5XhL1h2vJpqF0w4
+	RACxr4fc4X25d+c45g66yLHW5GXtn8xOXxbBS1ayxJenUmGxA/I6van9offdHeElOJw3MroPmwe
+	qPXvb//xGgOnXSPe//p0GLN02VA9wY6ctyuiqkaAyF5tj4s5is86aFbZABoV/VdIMd6v4ujnLcG
+	fulNsCjpKSSIcFwUeLpQL5zlQJVtLTFjtY9HO6ETFLeX6ZwenBTf2q6bjakE249kzl0PHZjMsLW
+	D60o19vf/6IG+BTtjjZldSlTGGwx08POUypjCkkxG4SfO1VqnIR8AY44S37Wn94xZNls4nTxHEN
+	+9E7EAexqoZVHJCFCwj5A2Vla16iKmQCS7rckC1W3HppbvBEBqweneD+IegkYY7vzw36vlWdmu9
+	sDTx1aS839w4rdTTJ3XRxwUGBbuHp79KB6TeUx2S47HESa+bzDV+4DbSyyGzhp5D6zaoRerAIZ1
+	pudVBD54ZKMvpZdV9ykxpX8jpb4mrPhzKyVQFsh/Cpp+gLFZb9QrumCmw6goqdzIq7iz9+uvoGP
+	37prw9ILLq5pJmYvKvO9DvxpY=
+X-Received: by 2002:a17:907:3d52:b0:c26:1648:a076 with SMTP id a640c23a62f3a-c31aa0e93bdmr1626520966b.49.1792022191008;
+        Wed, 14 Oct 2026 16:56:31 -0700 (PDT)
+Received: from Desktop (p54affd5a.dip0.t-ipconnect.de. [84.175.253.90])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3edab12007sm46101666b.82.2026.10.14.16.56.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 15:39:55 -0700 (PDT)
-Date: Wed, 14 Oct 2026 15:39:47 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: Mina Almasry <almasrymina@google.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, bpf@vger.kernel.org, Ayush Sawal <ayush.sawal@chelsio.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, John Fastabend <john.fastabend@gmail.com>, 
-	Sabrina Dubroca <sd@queasysnail.net>, Eric Biggers <ebiggers@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Petr Machata <petrm@nvidia.com>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, Jakub Raczynski <j.raczynski@samsung.com>, 
-	Wang Zhan <wang.zhan@smartx.com>, Willem de Bruijn <willemb@google.com>
-Subject: Re: [PATCH net-next v3 3/6] net: skbuff: replace skb_page_unref()
- and __skb_frag_unref() with skb_netmem_unref()
-Message-ID: <atAEVu_Hife2dWUz@devvm7509.cco0.facebook.com>
-References: <20261014173945.373295-1-almasrymina@google.com>
- <20261014173945.373295-4-almasrymina@google.com>
- <as_yg4hCCfpkukZB@devvm7509.cco0.facebook.com>
- <CAHS8izPDAjfRFCM2LrC7tzVQRkGCcn6zsghEvHJ9FJ1ET9odYg@mail.gmail.com>
+        Wed, 14 Oct 2026 16:56:30 -0700 (PDT)
+From: Julius Bairaktaris <julius@bairaktaris.de>
+To: netfilter-devel@vger.kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	kadlec@netfilter.org,
+	phil@nwl.cc,
+	horms@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	razor@blackwall.org,
+	idosch@nvidia.com,
+	ericwouds@gmail.com,
+	dqfext@gmail.com,
+	netdev@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org,
+	bridge@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH nf-next v7 0/2] netfilter: flowtable: tear down bridged flows on layer 2 roaming
+Date: Thu, 15 Oct 2026 01:56:25 +0200
+Message-ID: <20261014235628.197976-1-julius@bairaktaris.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHS8izPDAjfRFCM2LrC7tzVQRkGCcn6zsghEvHJ9FJ1ET9odYg@mail.gmail.com>
 
-On 10/14, Mina Almasry wrote:
-> On Wed, Oct 14, 2026 at 2:25 PM Stanislav Fomichev <sdf.kernel@gmail.com> wrote:
-> >
-> > On 10/14, Mina Almasry wrote:
-> > > Unreferencing a page_pool fragment with recycle=false decrements the
-> > > non-pp backing refcount instead of pp_ref_count, underflowing the page
-> > > refcount when the fragment was owned via page_pool (as on mlx4's RX
-> > > error path). Having both skb_page_unref() and __skb_frag_unref(frag,
-> > > recycle) made it easy for callers to pass hardcoded recycle=false on
-> > > SKB-owned fragments.
-> > >
-> > > Replace skb_page_unref() and __skb_frag_unref() with
-> > > skb_netmem_unref(netmem, recycle), which dispatches to
-> > > napi_pp_put_page() when recycle is true and put_netmem() otherwise:
-> > >
-> > > - Use skb_frag_unref(skb, ...) on SKB-owned fragments in mlx4, sky2,
-> > >   tls_strp, and skb_shift() so unrefs always match skb->pp_recycle.
-> > > - Use put_netmem() directly in tls_device's destroy_record(), which
-> > >   releases raw non-pp page references outside an SKB.
-> > >
-> > > Found by code inspection and confirmed with the KUnit tests added later
-> > > in this series; not observed in production. The mlx4, sky2, and TLS
-> > > call-site changes are compile-tested only.
-> > >
-> > > Assisted-by: LLM
-> > > Signed-off-by: Mina Almasry <almasrymina@google.com>
-> > > ---
-> > > v2:
-> > > - Note how the issue was found and how the change was tested.
-> > > - Link to v1: https://lore.kernel.org/netdev/20261010083935.3274178-4-almasrymina@google.com/
-> > > ---
-> > >  drivers/net/ethernet/marvell/sky2.c        |  2 +-
-> > >  drivers/net/ethernet/mellanox/mlx4/en_rx.c |  2 +-
-> > >  include/linux/skbuff_ref.h                 | 34 +++++++++++-----------
-> > >  net/core/skbuff.c                          |  7 +++--
-> > >  net/ipv4/esp4.c                            |  4 +--
-> > >  net/ipv6/esp6.c                            |  4 +--
-> > >  net/tls/tls_device.c                       |  2 +-
-> > >  net/tls/tls_strp.c                         |  2 +-
-> > >  8 files changed, 29 insertions(+), 28 deletions(-)
-> > >
-> > > diff --git a/drivers/net/ethernet/marvell/sky2.c b/drivers/net/ethernet/marvell/sky2.c
-> > > index 30facdece3e29..1d42a82db8f2b 100644
-> >
-> > [..]
-> >
-> > > --- a/drivers/net/ethernet/marvell/sky2.c
-> > > +++ b/drivers/net/ethernet/marvell/sky2.c
-> > > @@ -2501,7 +2501,7 @@ static void skb_put_frags(struct sk_buff *skb, unsigned int hdr_space,
-> > >
-> > >               if (length == 0) {
-> > >                       /* don't need this page */
-> > > -                     __skb_frag_unref(frag, false);
-> > > +                     skb_frag_unref(skb, i);
-> > >                       --skb_shinfo(skb)->nr_frags;
-> > >               } else {
-> > >                       size = min(length, (unsigned) PAGE_SIZE);
-> > > diff --git a/drivers/net/ethernet/mellanox/mlx4/en_rx.c b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> > > index 96f97fa0f5489..fe18606c2ab55 100644
-> > > --- a/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> > > +++ b/drivers/net/ethernet/mellanox/mlx4/en_rx.c
-> > > @@ -497,7 +497,7 @@ static int mlx4_en_complete_rx_desc(struct mlx4_en_priv *priv,
-> > >  fail:
-> > >       while (nr > 0) {
-> > >               nr--;
-> > > -             __skb_frag_unref(skb_shinfo(skb)->frags + nr, false);
-> > > +             skb_frag_unref(skb, nr);
-> > >       }
-> > >       return 0;
-> > >  }
-> >
-> > These do not support qops and don't advertise devmem tx, so they are not
-> > going to deal with netmems anytime soon, why touch these?
-> >
-> 
-> They're still using page-backed netmems that have 2 refcounts, and
-> frag ref/unref needs to pick the right one. Before they were
-> hardcoding false for the pp-recycle bit, so if a skb->pp_recycle==true
-> here for any reason, this code would hit a ref imbalance. Now after
-> this series both skb_frag_ref and skb_frag_unref do the right thing by
-> checking skb->pp_recycle.
-> 
-> This has nothing to do with net-iovs or devmem.
+A flowtable flow that transmits straight to a bridge port keeps sending
+to the old port when the host moves to another port, for example a
+Wi-Fi station roaming between access points.
 
-Ack, I was a bit confused because I was assuming that these are not
-using pp at all, but looks like mlx4 does :-/ And I see you drop
-__skb_frag_unref so these have to be converted anyway...
-And I guess the same for __skb_frag_unref below.. Let me go through the
-rest of the patches and see if anything else catches my eye, thanks!
+Patch 1 makes the gc tear such a flow down, using the bridge fdb lookup
+from Pablo's patch. Patch 2 adds selftest cases.
+
+Tested on nf-next a5e7d8e446af in an x86 guest: nft_flowtable.sh passes,
+including all seven roaming cases, and ftrace shows no
+flow_offload_teardown during 10 s of steady traffic in any of them.
+flow_offload grows by 16 bytes (296 to 312 on x86_64).
+
+Changes in v7:
+- look up the fdb entry through a bridge hook instead of walking the
+  forward path again (from Pablo's patch)
+- save the vid of the fdb lookup; the encap stack does not have it for
+  untagged ports of a vlan_filtering bridge
+- build br_nf_utils.o only with CONFIG_NF_FLOW_TABLE
+- selftest: vlan_filtering case
+
+v6: https://lore.kernel.org/netfilter-devel/20261004171605.3544792-1-julius@bairaktaris.de/
+Pablo's patch: https://lore.kernel.org/netfilter-devel/20261014210256.1573072-1-pablo@netfilter.org/
+
+Julius Bairaktaris (2):
+  netfilter: flowtable: tear down direct xmit flows when the fdb entry
+    moves
+  selftests: netfilter: nft_flowtable.sh: roam a host between two bridge
+    ports
+
+ include/linux/netfilter.h                     |   8 +
+ include/net/netfilter/nf_flow_table.h         |   4 +
+ net/bridge/Makefile                           |   2 +
+ net/bridge/br.c                               |   2 +
+ net/bridge/br_nf_utils.c                      |  40 ++++
+ net/bridge/br_private.h                       |  13 ++
+ net/netfilter/core.c                          |   3 +
+ net/netfilter/nf_flow_table_core.c            |  27 +++
+ net/netfilter/nf_flow_table_path.c            |   9 +
+ .../selftests/net/netfilter/nft_flowtable.sh  | 204 ++++++++++++++++++
+ 10 files changed, 312 insertions(+)
+ create mode 100644 net/bridge/br_nf_utils.c
+
+
+base-commit: a5e7d8e446af9803e37a3b6a4d416fb41178348f
+-- 
+2.53.0
+
