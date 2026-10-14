@@ -1,40 +1,69 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F349C53CA71;
-	Wed, 14 Oct 2026 14:01:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498A3524B0D
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 14:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791986485; cv=none; b=AV4hecIFzXei/btBzmRYb3RwELXcOJS830eROl6manweHcWB3/if3Ajwbtguxnvwb15YaIy03TLBLYBx3PTMOWRMU9JqHyrLhNvZzKho44uwuyeHhXkSM4UEp2+xDPiA8GHkiVPOToIMtK/sGCcq1blA21wNSBDTs2HaS6eJ8eg=
+	t=1791986694; cv=none; b=KyXMJvER2WWp8+VNia7iTHQhCRHB+0ouRqk3fyDmZ9XTX0LqiQqaPcSkNqEp4zS/SFm/+bf3F2v7a3JeMDfHIm5uCsxk1UOqXaC6nZOONjpshJ86uM8E0aRflWnGSBqybcW1tdJ4g9sDAIZxGVaubJwBHW8u2B5HC1+zk6g0gq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791986485; c=relaxed/simple;
-	bh=VVqUpLIr6hwDyUujSgCjZbQGFEBvkJMBUVsT0nmXs40=;
+	s=arc-20240116; t=1791986694; c=relaxed/simple;
+	bh=4IeqOwaK2rrpKgev9njqDsFhx5MrGIsfZe95yekEfiQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KexQQaqopKGXQphnC5qfMoIe3XTQI+rPBma2KSsE8J/xUHigA8JKmMNEaLVWboxigEYnwGyQeF/W3QExZcDY+3tvuVSXU2/+rUb1KOQto3qNitDxsxrxF5wLd1BAWBmtfOWKfZYS7TO29xoyV89HQ+mVRMPDvVCclS9IMDyLvg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=BgCTta/w; arc=none smtp.client-ip=67.231.154.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+	 In-Reply-To:Content-Type; b=YLI9QP/od8MJV/K6qMj8nQgiSzaMg0Jq08fyXPtJ7R3ztKHSVLSkglG7qDglIgq88xbpbqGZTZw1/8kk/BwIaumXxBheLvhmZcjHlFcFSuL03B+YtDmMvU35D68MyrHkWXMHRouSX1TLqfqSexjG+88K+EgRj/36M5mIB1VAu9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X29gUViD; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="BgCTta/w"
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6B0BB2400A9;
-	Wed, 14 Oct 2026 14:01:11 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.36.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id A592813C2B0;
-	Wed, 14 Oct 2026 07:01:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com A592813C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1791986470;
-	bh=VVqUpLIr6hwDyUujSgCjZbQGFEBvkJMBUVsT0nmXs40=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BgCTta/wrclsuYkxXt+DLq9Ue6zjfARjph9k+OyolG+ry4eN5aHR7GeIRy0FgcGX2
-	 y2zDPq0fwUD4nLa+6+pUUfcRzm5jqouGQD8pIySzOwSgkME0df5lXkxHYcc2rZ99Lm
-	 L/Mof5BwaGNXLNnm/8GammwqaR82ApI06W3Vrll0=
-Message-ID: <04b8b928-b671-4236-a792-1141cd81a34b@candelatech.com>
-Date: Wed, 14 Oct 2026 07:01:10 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X29gUViD"
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2a6d40404fso55925966b.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 07:04:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1791986690; x=1792591490; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=py4RYEm0XcehXYKw0bZP2hy4hM7I93auwoYlpwG9CAc=;
+        b=X29gUViDBn7wdG19oE+fqgU7scpwATQKElEOoiRT+AOiUNx9YSoSFch84I85xjtjWw
+         wpd3ctg7+91f/d5TROMidQREk/YX7+j5uwjilqVgkYse9RR2NMr7M6w356R/rbQPXPOh
+         vsflS0fUFBrlawhWaZBg2Tz/5c9lZHwPfqUPLVBZMsfxkGARGcZEkOIPggfkCofoHDKw
+         X7ps3haYIL2V1z1yMrgXE+2bZT40ERwkPfIuHFEp6bdjAuDCKuvGEUIrm1nudNuj1wZg
+         cEzLAJdwmsRmoz+QV4P/FEEMkJ2vsrZYuxS4zeaqc13e4uIF0DY+lJoIxkD9ctz1eh70
+         y5AA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791986690; x=1792591490;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=py4RYEm0XcehXYKw0bZP2hy4hM7I93auwoYlpwG9CAc=;
+        b=YonA5/yBqi9uA8iXRaecXPqSXliMZniG8/vFdvAeOHv5XGeqgKMhN5YMv8Dtw43kwY
+         ftK5tmh5E4XFJv93ho+uToCZ1+9HvDWXGlVOpZQZkXooz3sq7yMKkqoazFzHvf7rm6wQ
+         JtUOtc6gtSE3NUsnRYX5VtA98JohFATwM3WwxjwA1Bsu/+JwWvUO7+pIG1al+F1BRnmT
+         2Y4VaAIWviSbNoS1pQ7xwdU+TZbQZuy7jag0QDjebcuhpImNdWjp94aTwwCXTABMxqEA
+         YKChYbEvBd1cs1gPALbZzFjI61mBk9LfFTw+DuYVrFG07gS4jerxfZnVuWw0wHqKc2HW
+         AcCA==
+X-Gm-Message-State: AFq9FYL7JF11E62r4DI7M0TYNqWOqVD+2VPgqsp8MlzLbRxTm7Jnm4ZA
+	qYr4D83CuSg+avZ9rz8jZ/80P8QXH9T1Bd4NbUHkN51WwlxmpnKrXUO+
+X-Gm-Gg: AYBFou25ymULx7lKqMSaky7Sl3XtatxqUyNHPrdpoC8dRQqiPq+XhZQUiJowWIKi119
+	0pYvUZXTVczyvLqlHvfZjTHrb8EZ6LVK4dHkfUMmuoFGf3wPP8cWTLyma32V2iHumAqOa5gOJp8
+	D4eAsR1WsiOBDyG4Ogxs3Olhw6ci8wEo9QbrECitwI8lol2yK4lahuhbODTmZNRi4o4+oeofCQA
+	pZ0xo5lV31XoIjvmKWqaAw2X6XOfTDmp1BY7DCytO555eQWyxk8YoZubw6aXOOLiiiuIhE6ObVH
+	y8sitCAD/qlF4l9krTCXCPJrNaPbOrojivElCv16MvIQ1ax77uVEueFvq6+PbtV0wiAJBJTSb8W
+	ECzJgRiFhda7QzW4cqpjZPuzIJdU+Mdwr1WIXDmI0LlTovqT/EwfBbuJI4gSizG8eBr7XeraOEP
+	GwaCGgqVjxMPpXtP7BV3Yki8EYCsh25s4slVqMng078EYVAT2KdPw/5RVce5wn6Z3gSpq7lZlLc
+	mzUKYql1I2/gG2lZua/jlz9L18/u2Qgp0WULK5WLsdg0vDlKztL+MJmrUZHLVfbRIGtINzfc9A7
+	ks9LcVmrNemva603lAkoWaZMaRHhLe2MNxgsOd2Wl1Srv+vVCmhuFVnOglPskMC2fLHtq1jCF9r
+	90FHK7ZuQwJajtEVu2zC9/UEX2fTvrWs=
+X-Received: by 2002:a17:907:ea8f:b0:c2e:8801:9139 with SMTP id a640c23a62f3a-c31a9a065f7mr1436482366b.1.1791986690166;
+        Wed, 14 Oct 2026 07:04:50 -0700 (PDT)
+Received: from ?IPV6:2a02:3100:5ad1:60fc:7c7a:4c9b:4d41:afaf? (dynamic-2a02-3100-5ad1-60fc-7c7a-4c9b-4d41-afaf.310.pool.telefonica.de. [2a02:3100:5ad1:60fc:7c7a:4c9b:4d41:afaf])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c31a9a3bbe2sm707482866b.27.2026.10.14.07.04.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2026 07:04:48 -0700 (PDT)
+Message-ID: <ea399b99-3ce4-4180-b960-d3c8e3b2ed7b@gmail.com>
+Date: Wed, 14 Oct 2026 16:04:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,57 +71,96 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [bug] Triple whammy of mt7996e bugs on 7.2+
-To: Ilya K <me@0upti.me>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd>
- <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com>
- <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615>
- <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com>
- <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df>
- <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21>
- <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com>
- <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4>
- <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8>
- <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136>
- <211851789913261@df1900ea-d467-4ed7-a7f1-de68a4c3e6dd>
- <143991791036721@40be7595-980b-4665-ba66-1601e10a0899>
- <c4286904-2a9a-41fd-93ce-be57964909f6@candelatech.com>
- <221941791052355@558b3e58-c2b1-4e14-91fe-beb5649d18f6>
- <5955851791966910@d362902e-9931-4ad0-8e86-72401cc67703>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <5955851791966910@d362902e-9931-4ad0-8e86-72401cc67703>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net v7 1/4] net: hsr: keep GRO disabled on HSR/PRP ports
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch,
+ shuah@kernel.org, kees@kernel.org, petr.wozniak@gmail.com,
+ qingfang.deng@linux.dev, fmaurer@redhat.com, luka.gejak@linux.dev,
+ xiaoliang.yang_1@nxp.com, skhawaja@google.com, liuhangbin@gmail.com,
+ stable@vger.kernel.org, sdf.kernel@gmail.com
+References: <20261009201324.17-1-xiexinet@gmail.com>
+ <20261009201324.17-2-xiexinet@gmail.com>
+ <20261014132001.BzOkgyrC@linutronix.de>
+Content-Language: en-GB
+From: Xin Xie <xiexinet@gmail.com>
+Autocrypt: addr=xiexinet@gmail.com; keydata=
+ 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
+ sNySbH3veZ/55EtlXA==
+In-Reply-To: <20261014132001.BzOkgyrC@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MDID: 1791986472-9G5xvht-Puv2
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;at1;1791986472;9G5xvht-Puv2;<greearb@candelatech.com>;6f76c88c2c731de9ad886e575864f8cc
-X-PPE-TRUSTED: V=1;DIR=OUT;
 
-On 10/14/26 01:35, Ilya K wrote:
-> OK, so I took some time off of this because of real life, but during that time, my 7.2-stable-with-Ben's-patches frankentree actually crashed! I am not sure if this is the same issue or a different one, but I thought it's at least interesting.
-> 
-> Here's the logs from the ~hour when it crashed (exported from Loki, so sorry for the weird format): https://gist.github.com/K900/e2e5b21d6a49f450fe353c7cc3057916
-> 
-> If there's any more info you need, please tell me.
-> 
+> This looks better than what I remember from the previous version. Are
+> the bot's complains legitime?
 
-Well, not exactly a crash, but the system stopped being able to talk to the radios it seems.  Error is 12, which is ENOMEM,
-so possibly memory leak or something like that is causing trouble.  Or maybe firmware is just wedged and the ENOMEM is a symptom
-of that.
+Yes, the Critical one is real.
 
-You might try the latest mt76 tree from Felix, it recently gained a large number of fixes.
-Maybe that made it into wireless-next tree as well, not sure.
-We're working on pulling Felix's patch series into our tree, but not done with rebase yet.
+veth creates and deletes its NAPI instances based on wanted_features
+(veth_gro_requested() in veth_open() and veth_close()). This patch only
+clears NETIF_F_GRO from the active features. So after the attach,
+wanted_features still says "GRO on" while the feature is off.
 
-Thanks,
-Ben
+Two things can go wrong because of that:
+
+- The member is up with GRO on, then gets attached. veth_set_features()
+  deletes the NAPIs. Later the member is set down and veth_close()
+  deletes them a second time. napi_disable() then waits forever.
+
+- The member is down with GRO on, gets attached, is set up, and is then
+  detached while still up. veth_open() created the NAPIs, and the
+  detach creates them again. That ends in the BUG_ON() in napi_enable().
+
+The v7 selftests always attach and detach the member while it is up, so
+they did not see either case. I already replied to the bot with
+"pw-bot: cr", but by mistake under the patch 4 report.
+
+My plan for v8: keep the persistent filter, but at the same place also
+clear GRO from the member's wanted_features. This is what
+netdev_sync_lower_features() does for the UPPER_DISABLES bits. Then
+requested and active GRO always agree, and veth does not need a change.
+The downside: after the member is detached, GRO stays off, and the user
+has to enable it again. LRO behaves the same way today.
+
+If you or the other maintainers prefer that veth is fixed instead, so
+that it looks at the active feature, I can do that.
+
+The Low one is only a comment problem. For stacked members (bond,
+macvlan, ...) GRO runs on the lower device, so "software GRO must be
+off before frames can arrive" is only true for direct members. Patch 3
+segments any GSO input anyway. I will fix the comment.
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
+Xin
