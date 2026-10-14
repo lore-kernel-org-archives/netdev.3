@@ -1,29 +1,29 @@
 Received: from stargate.chelsio.com (unknown [12.32.117.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E474E534F
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7114DEC3B
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=12.32.117.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791981687; cv=none; b=dj6t+Bp0+uQZLw3FJtvJYMnpcc7OyEKNPEw1IWUkxtVoJNf4wmzEbKCG66SJYiUMQCRosxVmIWy+cbqvLSINAZwIHVKgjAUO5OoZcrovUOjpmZefqwvc5e0sodPkPGQMg5vNA0ZiEqr6Yey7HVFKQXnUAwiWjeW+20eK/CYmoF0=
+	t=1791981691; cv=none; b=ochvuMxG/QKF/Q5hhkleiCnseBudtl6k+bnCNjuIoX1s0uWKC7Ip1Yu6ibyHTwKdk41Ysa2ZWC7qZpWO5ioVi/Y5EVIx3kssxdrOBzg10qArif1hHRnPpbA7xMBpQnGXpc1z6/x3O/4VY4RDDwZs9XfizGoGaSIzr5tOMFfhL6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791981687; c=relaxed/simple;
-	bh=JA2D5IfJ6VETPlT9ktRyUACVdBFYNuO5EzResmujV7M=;
+	s=arc-20240116; t=1791981691; c=relaxed/simple;
+	bh=FfG6kVC5b4EjHqhfMHtCOsvZ4inXAJsGmiFOPyDjn00=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RzXnJAWJ1Zj72vWzOC1t1awXaMoVNHUoHw/m+WqbqPqaR4gOIcHSYuXBbyxgzGfJcFILjyPDsz+aL0RU5VaUu3I7RGVb1Zb8aeB5wy42Zl2Sj93xFtjKTM5GGGUdwdh178rM6i4e7eFuc7Nyn5sf7hYgStWTv99s8tYTpgAfRDs=
+	 MIME-Version; b=JovKAd/AIKPGvzQ/P8XpBKO99DAVzoTEKOlwFgt9jcAPhBYpZiCoYAgiX/2jn0O0sWYJRdNRX2eGlqeMX56Ow4eoQHFAy7M7SRsAjtO2Wr6qhRvbRaBHizFRZQSed/v37udCnXvSrrypdSAjaT0pUvKXcKv1ZhvPUMkG64W0b5Y=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com; spf=pass smtp.mailfrom=chelsio.com; arc=none smtp.client-ip=12.32.117.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chelsio.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chelsio.com
 Received: from mehrangarh-blr-asicdesigners-com.asicdesigners.com (mehrangarh.blr.asicdesigners.com [10.193.185.169])
-	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ0018414;
-	Wed, 14 Oct 2026 05:41:13 -0700
+	by stargate.chelsio.com (8.14.7/8.14.7) with ESMTP id 69ECeqZ1018414;
+	Wed, 14 Oct 2026 05:41:16 -0700
 From: Potnuri Bharat Teja <bharat@chelsio.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
         pabeni@redhat.com, andrew+netdev@lunn.ch, bharat@chelsio.com
-Subject: [PATCH net-next v4 06/12] cxgb4: update PTP register access for T7
-Date: Wed, 14 Oct 2026 18:12:51 -0400
-Message-Id: <20261014221257.436789-7-bharat@chelsio.com>
+Subject: [PATCH net-next v4 07/12] cxgb4: extend ethtool support for T7 adapters
+Date: Wed, 14 Oct 2026 18:12:52 -0400
+Message-Id: <20261014221257.436789-8-bharat@chelsio.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20261014221257.436789-1-bharat@chelsio.com>
 References: <20261014221257.436789-1-bharat@chelsio.com>
@@ -35,207 +35,605 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The MAC_PORT_TX_TS_VAL_LO/HI registers moved within the port register
-block on T7, and the PTP clock sum is now read from the chip global
-MAC_PTP_SUM_LO/HI instead of a per port register. Select the right
-registers by chip version and read both values with t4_read_reg64().
-PTP port accesses now use the logical port number (pi->lport).
+Update the ethtool implementation to support T7-specific port types,
+link modes, and adapter capabilities.
 
-On T7 a transmitted PTP event packet is looped back with equal source
-and destination MAC addresses rather than an MPS timestamp header.
-Detect that and hand the packet to the transmit timestamp path. The
-loopback packet is not necessarily UDP, so the RXF_UDP_F test is
-dropped and cxgb4_ptp_is_ptp_rx() parses the frame itself, handling
-VLAN tagged and IEEE 802.3 encapsulated PTP. On transmit,
-ptp_classify_raw() replaces the open coded IPv4/UDP test.
+Add support for new T7 port configurations including SFP56, QSFP56,
+50G/100G/200G/400G backplane modes, and the associated ethtool link
+mode mappings. Update port statistics handling and module type
+reporting to account for the new hardware capabilities.
+
+Extend RSS configuration support by implementing RSS hash key retrieval
+and programming through ethtool. Also update module EEPROM handling for
+new optical module types and CMIS-based devices.
 
 Signed-off-by: Potnuri Bharat Teja <bharat@chelsio.com>
 ---
- .../net/ethernet/chelsio/cxgb4/cxgb4_ptp.c    | 82 ++++++++++++++-----
- drivers/net/ethernet/chelsio/cxgb4/sge.c      | 13 ++-
- drivers/net/ethernet/chelsio/cxgb4/t4_regs.h  |  1 +
- 3 files changed, 71 insertions(+), 25 deletions(-)
+ .../ethernet/chelsio/cxgb4/cxgb4_ethtool.c    | 381 +++++++++++++-----
+ 1 file changed, 278 insertions(+), 103 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c
-index cbd06d9b95d4..fb0d4ae11196 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ptp.c
-@@ -57,14 +57,13 @@
-  */
- bool cxgb4_ptp_is_ptp_tx(struct sk_buff *skb)
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+index 0092bc16f887..605c0783d3d5 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+@@ -14,6 +14,8 @@
+ #include "cxgb4_tc_flower.h"
+ 
+ #define EEPROM_MAGIC 0x38E2F10C
++#define RSS_HASH_KEY_SIZE 40
++#define CMIS_PAGE_SELECT_REG 127
+ 
+ static u32 get_msglevel(struct net_device *dev)
  {
--	struct udphdr *uh;
--
--	uh = udp_hdr(skb);
--	return skb->len >= PTP_MIN_LENGTH &&
--		skb->len <= PTP_IN_TRANSMIT_PACKET_MAXNUM &&
--		likely(skb->protocol == htons(ETH_P_IP)) &&
--		ip_hdr(skb)->protocol == IPPROTO_UDP &&
--		uh->dest == htons(PTP_EVENT_PORT);
-+	unsigned int ptp_class;
-+
-+	ptp_class = ptp_classify_raw(skb);
-+	if (ptp_class == PTP_CLASS_NONE)
-+		return false;
-+
-+	return true;
+@@ -358,7 +360,7 @@ static void get_stats(struct net_device *dev, struct ethtool_stats *stats,
+ 	int i;
+ 	u64 *p0;
+ 
+-	t4_get_port_stats_offset(adapter, pi->tx_chan,
++	t4_get_port_stats_offset(adapter, pi->lport,
+ 				 (struct port_stats *)data,
+ 				 &pi->stats_base);
+ 
+@@ -440,10 +442,13 @@ static int from_fw_port_mod_type(enum fw_port_type port_type,
+ 		   port_type == FW_PORT_TYPE_CR4_QSFP ||
+ 		   port_type == FW_PORT_TYPE_CR_QSFP ||
+ 		   port_type == FW_PORT_TYPE_CR2_QSFP ||
+-		   port_type == FW_PORT_TYPE_SFP28) {
++		   port_type == FW_PORT_TYPE_SFP28 ||
++		   port_type == FW_PORT_TYPE_SFP56 ||
++		   port_type == FW_PORT_TYPE_QSFP56) {
+ 		if (mod_type == FW_PORT_MOD_TYPE_LR ||
+ 		    mod_type == FW_PORT_MOD_TYPE_SR ||
+ 		    mod_type == FW_PORT_MOD_TYPE_ER ||
++		    mod_type == FW_PORT_MOD_TYPE_DR ||
+ 		    mod_type == FW_PORT_MOD_TYPE_LRM)
+ 			return PORT_FIBRE;
+ 		else if (mod_type == FW_PORT_MOD_TYPE_TWINAX_PASSIVE ||
+@@ -453,7 +458,11 @@ static int from_fw_port_mod_type(enum fw_port_type port_type,
+ 			return PORT_OTHER;
+ 	} else if (port_type == FW_PORT_TYPE_KR4_100G ||
+ 		   port_type == FW_PORT_TYPE_KR_SFP28 ||
+-		   port_type == FW_PORT_TYPE_KR_XLAUI) {
++		   port_type == FW_PORT_TYPE_KR_XLAUI ||
++		   port_type == FW_PORT_TYPE_KR_50G ||
++		   port_type == FW_PORT_TYPE_KR2_100G ||
++		   port_type == FW_PORT_TYPE_KR4_200G ||
++		   port_type == FW_PORT_TYPE_KR8_400G) {
+ 		return PORT_NONE;
+ 	}
+ 
+@@ -490,8 +499,100 @@ static unsigned int speed_to_fw_caps(int speed)
+ 	return 0;
  }
  
- bool is_ptp_enabled(struct sk_buff *skb, struct net_device *dev)
-@@ -83,11 +82,50 @@ bool is_ptp_enabled(struct sk_buff *skb, struct net_device *dev)
-  */
- bool cxgb4_ptp_is_ptp_rx(struct sk_buff *skb)
- {
--	struct udphdr *uh = (struct udphdr *)(skb->data + ETH_HLEN +
--					      IPV4_HLEN(skb->data));
-+	int offset = ETH_HLEN;
-+	struct ethhdr *eth;
-+	__be16 proto;
++enum link_medium {
++	LINK_MEDIUM_NONE,
++	LINK_MEDIUM_TP,		/* plain copper baseT               */
++	LINK_MEDIUM_KR,		/* electrical backplane             */
++	LINK_MEDIUM_CR,		/* copper direct-attach (TwinAx)    */
++	LINK_MEDIUM_SR,
++	LINK_MEDIUM_LR,		/* also covers ER FR                */
++	LINK_MEDIUM_DR,
++	LINK_MEDIUM_LRM,
++};
 +
-+	if (skb->len < ETH_HLEN)
-+		return false;
-+
-+	eth = (struct ethhdr *)skb->data;
-+	proto = eth->h_proto;
-+
-+	if (proto == htons(ETH_P_8021Q)) {
-+		struct vlan_hdr *vhdr;
-+
-+		if (skb->len < offset + VLAN_HLEN)
-+			return false;
-+
-+		vhdr = (struct vlan_hdr *)(skb->data + offset);
-+		proto = vhdr->h_vlan_encapsulated_proto;
-+		offset += VLAN_HLEN;
-+	}
-+
-+	if (proto == htons(ETH_P_1588))
++static bool fw_port_is_backplane(enum fw_port_type port_type)
++{
++	switch (port_type) {
++	case FW_PORT_TYPE_KX:
++	case FW_PORT_TYPE_KX4:
++	case FW_PORT_TYPE_BP_AP:
++	case FW_PORT_TYPE_BP4_AP:
++	case FW_PORT_TYPE_BP40_BA:
++	case FW_PORT_TYPE_KR:
++	case FW_PORT_TYPE_KR_50G:
++	case FW_PORT_TYPE_KR_SFP28:
++	case FW_PORT_TYPE_KR_XLAUI:
++	case FW_PORT_TYPE_KR2_100G:
++	case FW_PORT_TYPE_KR4_100G:
++	case FW_PORT_TYPE_KR4_200G:
++	case FW_PORT_TYPE_KR8_400G:
 +		return true;
-+
-+	if (proto == htons(ETH_P_IP)) {
-+		struct iphdr *iph;
-+		struct udphdr *uh;
-+
-+		if (skb->len < offset + sizeof(*iph))
-+			return false;
-+		iph = (struct iphdr *)(skb->data + offset);
-+
-+		if (iph->protocol != IPPROTO_UDP)
-+			return false;
-+		offset += (iph->ihl * 4);
-+
-+		if (skb->len < offset + sizeof(*uh))
-+			return false;
-+		uh = (struct udphdr *)(skb->data + offset);
-+
-+		return uh->dest == htons(PTP_EVENT_PORT);
++	default:
++		return false;
 +	}
++}
++
++static bool fw_port_is_electrical_tp(enum fw_port_type port_type)
++{
++	switch (port_type) {
++	case FW_PORT_TYPE_BT_SGMII:
++	case FW_PORT_TYPE_BT_XFI:
++	case FW_PORT_TYPE_BT_XAUI:
++		return true;
++	default:
++		return false;
++	}
++}
++
++static bool fw_port_is_fixed_baset(enum fw_port_type port_type)
++{
++	switch (port_type) {
++	case FW_PORT_TYPE_FIBER_XFI:
++	case FW_PORT_TYPE_FIBER_XAUI:
++		return true;
++	default:
++		return fw_port_is_electrical_tp(port_type);
++	}
++}
++
++static int fw_port_class_bit(enum fw_port_type port_type)
++{
++	if (fw_port_is_backplane(port_type))
++		return ETHTOOL_LINK_MODE_Backplane_BIT;
++	if (fw_port_is_electrical_tp(port_type))
++		return ETHTOOL_LINK_MODE_TP_BIT;
++	return ETHTOOL_LINK_MODE_FIBRE_BIT;
++}
++
++static enum link_medium fw_port_medium(enum fw_port_type port_type,
++				       enum fw_port_module_type mod_type)
++{
++	if (fw_port_is_backplane(port_type))
++		return LINK_MEDIUM_KR;
++	if (fw_port_is_fixed_baset(port_type))
++		return LINK_MEDIUM_TP;
++
++	switch (mod_type) {
++	case FW_PORT_MOD_TYPE_TWINAX_PASSIVE:
++	case FW_PORT_MOD_TYPE_TWINAX_ACTIVE:
++		return LINK_MEDIUM_CR;
++	case FW_PORT_MOD_TYPE_SR:
++		return LINK_MEDIUM_SR;
++	case FW_PORT_MOD_TYPE_LR:
++	case FW_PORT_MOD_TYPE_ER:
++		return LINK_MEDIUM_LR;
++	case FW_PORT_MOD_TYPE_DR:
++		return LINK_MEDIUM_DR;
++	case FW_PORT_MOD_TYPE_LRM:
++		return LINK_MEDIUM_LRM;
++	default:
++		return LINK_MEDIUM_NONE;	/* no module / unreadable */
++	}
++}
++
+ /**
+  *	fw_caps_to_lmm - translate Firmware to ethtool Link Mode Mask
++ *	@mod_type: Firmware Module Type
+  *	@port_type: Firmware Port Type
+  *	@fw_caps: Firmware Port Capabilities
+  *	@link_mode_mask: ethtool Link Mode Mask
+@@ -500,114 +601,93 @@ static unsigned int speed_to_fw_caps(int speed)
+  *	Link Mode Mask.
+  */
+ static void fw_caps_to_lmm(enum fw_port_type port_type,
++			   enum fw_port_module_type mod_type,
+ 			   fw_port_cap32_t fw_caps,
+ 			   unsigned long *link_mode_mask)
+ {
+-	#define SET_LMM(__lmm_name) \
+-		do { \
+-			__set_bit(ETHTOOL_LINK_MODE_ ## __lmm_name ## _BIT, \
+-				  link_mode_mask); \
+-		} while (0)
++	enum link_medium medium = fw_port_medium(port_type, mod_type);
  
--	return  uh->dest == htons(PTP_EVENT_PORT) &&
--		uh->source == htons(PTP_EVENT_PORT);
-+	return false;
+ 	#define FW_CAPS_TO_LMM(__fw_name, __lmm_name) \
+ 		do { \
+ 			if (fw_caps & FW_PORT_CAP32_ ## __fw_name) \
+-				SET_LMM(__lmm_name); \
++				__set_bit(ETHTOOL_LINK_MODE_ ## __lmm_name ## _BIT, \
++					  link_mode_mask); \
+ 		} while (0)
+ 
+-	switch (port_type) {
+-	case FW_PORT_TYPE_BT_SGMII:
+-	case FW_PORT_TYPE_BT_XFI:
+-	case FW_PORT_TYPE_BT_XAUI:
+-		SET_LMM(TP);
+-		FW_CAPS_TO_LMM(SPEED_100M, 100baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
+-		break;
+-
+-	case FW_PORT_TYPE_KX4:
+-	case FW_PORT_TYPE_KX:
+-		SET_LMM(Backplane);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKX4_Full);
+-		break;
+-
+-	case FW_PORT_TYPE_KR:
+-		SET_LMM(Backplane);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
+-		break;
+-
+-	case FW_PORT_TYPE_BP_AP:
+-		SET_LMM(Backplane);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
+-		break;
++	if (medium != LINK_MEDIUM_NONE)
++		__set_bit(fw_port_class_bit(port_type), link_mode_mask);
+ 
+-	case FW_PORT_TYPE_BP4_AP:
+-		SET_LMM(Backplane);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseR_FEC);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKX4_Full);
++	switch (medium) {
++	case LINK_MEDIUM_TP:
++		FW_CAPS_TO_LMM(SPEED_100M, 100baseT_Full);
++		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseT_Full);
+ 		break;
+ 
+-	case FW_PORT_TYPE_FIBER_XFI:
+-	case FW_PORT_TYPE_FIBER_XAUI:
+-	case FW_PORT_TYPE_SFP:
+-	case FW_PORT_TYPE_QSFP_10G:
+-	case FW_PORT_TYPE_QSA:
+-		SET_LMM(FIBRE);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
++	case LINK_MEDIUM_KR:
++		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseKX4_Full);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseR_FEC);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseKR_Full);
++		FW_CAPS_TO_LMM(SPEED_25G,  25000baseKR_Full);
++		FW_CAPS_TO_LMM(SPEED_40G,  40000baseKR4_Full);
++		FW_CAPS_TO_LMM(SPEED_50G,  50000baseKR_Full);
++		FW_CAPS_TO_LMM(SPEED_50G,  50000baseKR2_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseKR2_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseKR4_Full);
++		FW_CAPS_TO_LMM(SPEED_200G, 200000baseKR4_Full);
++		FW_CAPS_TO_LMM(SPEED_400G, 400000baseKR8_Full);
+ 		break;
+ 
+-	case FW_PORT_TYPE_BP40_BA:
+-	case FW_PORT_TYPE_QSFP:
+-		SET_LMM(FIBRE);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
+-		break;
+-
+-	case FW_PORT_TYPE_CR_QSFP:
+-	case FW_PORT_TYPE_SFP28:
+-		SET_LMM(FIBRE);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_25G, 25000baseCR_Full);
++	case LINK_MEDIUM_CR:
++		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseCR_Full);
++		FW_CAPS_TO_LMM(SPEED_25G,  25000baseCR_Full);
++		FW_CAPS_TO_LMM(SPEED_40G,  40000baseCR4_Full);
++		FW_CAPS_TO_LMM(SPEED_50G,  50000baseCR_Full);
++		FW_CAPS_TO_LMM(SPEED_50G,  50000baseCR2_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR2_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR4_Full);
++		FW_CAPS_TO_LMM(SPEED_200G, 200000baseCR4_Full);
++		FW_CAPS_TO_LMM(SPEED_400G, 400000baseCR8_Full);
+ 		break;
+ 
+-	case FW_PORT_TYPE_KR_SFP28:
+-		SET_LMM(Backplane);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
+-		FW_CAPS_TO_LMM(SPEED_25G, 25000baseKR_Full);
++	case LINK_MEDIUM_SR:
++		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseSR_Full);
++		FW_CAPS_TO_LMM(SPEED_25G,  25000baseSR_Full);
++		FW_CAPS_TO_LMM(SPEED_40G,  40000baseSR4_Full);
++		FW_CAPS_TO_LMM(SPEED_50G,  50000baseSR_Full);
++		FW_CAPS_TO_LMM(SPEED_50G,  50000baseSR2_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseSR2_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseSR4_Full);
++		FW_CAPS_TO_LMM(SPEED_200G, 200000baseSR4_Full);
++		FW_CAPS_TO_LMM(SPEED_400G, 400000baseSR8_Full);
+ 		break;
+ 
+-	case FW_PORT_TYPE_KR_XLAUI:
+-		SET_LMM(Backplane);
+-		FW_CAPS_TO_LMM(SPEED_1G, 1000baseKX_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
+-		FW_CAPS_TO_LMM(SPEED_40G, 40000baseKR4_Full);
++	case LINK_MEDIUM_LR:
++		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseLR_Full);
++		FW_CAPS_TO_LMM(SPEED_40G,  40000baseLR4_Full);
++		FW_CAPS_TO_LMM(SPEED_50G,  50000baseLR_ER_FR_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseLR2_ER2_FR2_Full);
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseLR4_ER4_Full);
++		FW_CAPS_TO_LMM(SPEED_200G, 200000baseLR4_ER4_FR4_Full);
++		FW_CAPS_TO_LMM(SPEED_400G, 400000baseLR8_ER8_FR8_Full);
+ 		break;
+ 
+-	case FW_PORT_TYPE_CR2_QSFP:
+-		SET_LMM(FIBRE);
+-		FW_CAPS_TO_LMM(SPEED_50G, 50000baseSR2_Full);
++	case LINK_MEDIUM_DR:
++		FW_CAPS_TO_LMM(SPEED_100G, 100000baseDR2_Full);
++		FW_CAPS_TO_LMM(SPEED_200G, 200000baseDR4_Full);
++		FW_CAPS_TO_LMM(SPEED_400G, 400000baseDR8_Full);
+ 		break;
+ 
+-	case FW_PORT_TYPE_KR4_100G:
+-	case FW_PORT_TYPE_CR4_QSFP:
+-		SET_LMM(FIBRE);
+-		FW_CAPS_TO_LMM(SPEED_1G,  1000baseT_Full);
+-		FW_CAPS_TO_LMM(SPEED_10G, 10000baseKR_Full);
+-		FW_CAPS_TO_LMM(SPEED_40G, 40000baseSR4_Full);
+-		FW_CAPS_TO_LMM(SPEED_25G, 25000baseCR_Full);
+-		FW_CAPS_TO_LMM(SPEED_50G, 50000baseCR2_Full);
+-		FW_CAPS_TO_LMM(SPEED_100G, 100000baseCR4_Full);
++	case LINK_MEDIUM_LRM:
++		FW_CAPS_TO_LMM(SPEED_1G,   1000baseT_Full);
++		FW_CAPS_TO_LMM(SPEED_10G,  10000baseLRM_Full);
+ 		break;
+ 
++	case LINK_MEDIUM_NONE:
+ 	default:
+ 		break;
+ 	}
+@@ -616,7 +696,7 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
+ 		FW_CAPS_TO_LMM(FEC_RS, FEC_RS);
+ 		FW_CAPS_TO_LMM(FEC_BASER_RS, FEC_BASER);
+ 	} else {
+-		SET_LMM(FEC_NONE);
++		__set_bit(ETHTOOL_LINK_MODE_FEC_NONE_BIT, link_mode_mask);
+ 	}
+ 
+ 	FW_CAPS_TO_LMM(ANEG, Autoneg);
+@@ -624,7 +704,6 @@ static void fw_caps_to_lmm(enum fw_port_type port_type,
+ 	FW_CAPS_TO_LMM(802_3_ASM_DIR, Asym_Pause);
+ 
+ 	#undef FW_CAPS_TO_LMM
+-	#undef SET_LMM
  }
  
  /**
-@@ -103,12 +141,11 @@ void cxgb4_ptp_read_hwstamp(struct adapter *adapter, struct port_info *pi)
+@@ -649,10 +728,46 @@ static unsigned int lmm_to_fw_caps(const unsigned long *link_mode_mask)
+ 	LMM_TO_FW_CAPS(100baseT_Full, SPEED_100M);
+ 	LMM_TO_FW_CAPS(1000baseT_Full, SPEED_1G);
+ 	LMM_TO_FW_CAPS(10000baseT_Full, SPEED_10G);
+-	LMM_TO_FW_CAPS(40000baseSR4_Full, SPEED_40G);
++	LMM_TO_FW_CAPS(10000baseKX4_Full, SPEED_10G);
++	LMM_TO_FW_CAPS(10000baseR_FEC, SPEED_10G);
++	LMM_TO_FW_CAPS(10000baseKR_Full, SPEED_10G);
++	LMM_TO_FW_CAPS(10000baseCR_Full, SPEED_10G);
++	LMM_TO_FW_CAPS(10000baseSR_Full, SPEED_10G);
++	LMM_TO_FW_CAPS(10000baseLR_Full, SPEED_10G);
++	LMM_TO_FW_CAPS(10000baseLRM_Full, SPEED_10G);
++	LMM_TO_FW_CAPS(25000baseKR_Full, SPEED_25G);
+ 	LMM_TO_FW_CAPS(25000baseCR_Full, SPEED_25G);
++	LMM_TO_FW_CAPS(25000baseSR_Full, SPEED_25G);
++	LMM_TO_FW_CAPS(40000baseKR4_Full, SPEED_40G);
++	LMM_TO_FW_CAPS(40000baseCR4_Full, SPEED_40G);
++	LMM_TO_FW_CAPS(40000baseSR4_Full, SPEED_40G);
++	LMM_TO_FW_CAPS(40000baseLR4_Full, SPEED_40G);
++	LMM_TO_FW_CAPS(50000baseKR_Full, SPEED_50G);
++	LMM_TO_FW_CAPS(50000baseKR2_Full, SPEED_50G);
++	LMM_TO_FW_CAPS(50000baseCR_Full, SPEED_50G);
+ 	LMM_TO_FW_CAPS(50000baseCR2_Full, SPEED_50G);
++	LMM_TO_FW_CAPS(50000baseSR_Full, SPEED_50G);
++	LMM_TO_FW_CAPS(50000baseSR2_Full, SPEED_50G);
++	LMM_TO_FW_CAPS(50000baseLR_ER_FR_Full, SPEED_50G);
++	LMM_TO_FW_CAPS(100000baseKR2_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(100000baseKR4_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(100000baseCR2_Full, SPEED_100G);
+ 	LMM_TO_FW_CAPS(100000baseCR4_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(100000baseSR2_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(100000baseSR4_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(100000baseLR2_ER2_FR2_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(100000baseLR4_ER4_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(100000baseDR2_Full, SPEED_100G);
++	LMM_TO_FW_CAPS(200000baseKR4_Full, SPEED_200G);
++	LMM_TO_FW_CAPS(200000baseCR4_Full, SPEED_200G);
++	LMM_TO_FW_CAPS(200000baseSR4_Full, SPEED_200G);
++	LMM_TO_FW_CAPS(200000baseLR4_ER4_FR4_Full, SPEED_200G);
++	LMM_TO_FW_CAPS(200000baseDR4_Full, SPEED_200G);
++	LMM_TO_FW_CAPS(400000baseKR8_Full, SPEED_400G);
++	LMM_TO_FW_CAPS(400000baseCR8_Full, SPEED_400G);
++	LMM_TO_FW_CAPS(400000baseSR8_Full, SPEED_400G);
++	LMM_TO_FW_CAPS(400000baseLR8_ER8_FR8_Full, SPEED_400G);
++	LMM_TO_FW_CAPS(400000baseDR8_Full, SPEED_400G);
  
- 	skb_ts = skb_hwtstamps(adapter->ptp_tx_skb);
+ 	#undef LMM_TO_FW_CAPS
  
--	tx_ts = t4_read_reg(adapter,
--			    T5_PORT_REG(pi->port_id, MAC_PORT_TX_TS_VAL_LO));
-+	if (CHELSIO_CHIP_VERSION(adapter->params.chip) >= CHELSIO_T7)
-+		tx_ts = t4_read_reg64(adapter, T7_PORT_REG(pi->lport, T7_MAC_PORT_TX_TS_VAL_LO));
-+	else
-+		tx_ts = t4_read_reg64(adapter, T5_PORT_REG(pi->lport, MAC_PORT_TX_TS_VAL_LO));
+@@ -688,14 +803,14 @@ static int get_link_ksettings(struct net_device *dev,
+ 		base->mdio_support = 0;
+ 	}
  
--	tx_ts |= (u64)t4_read_reg(adapter,
--				  T5_PORT_REG(pi->port_id,
--					      MAC_PORT_TX_TS_VAL_HI)) << 32;
- 	skb_ts->hwtstamp = ns_to_ktime(tx_ts);
- 	skb_tstamp_tx(adapter->ptp_tx_skb, skb_ts);
- 	dev_kfree_skb_any(adapter->ptp_tx_skb);
-@@ -183,7 +220,7 @@ int cxgb4_ptp_redirect_rx_packet(struct adapter *adapter, struct port_info *pi)
+-	fw_caps_to_lmm(pi->port_type, pi->link_cfg.pcaps,
++	fw_caps_to_lmm(pi->port_type, pi->mod_type, pi->link_cfg.pcaps,
+ 		       link_ksettings->link_modes.supported);
+-	fw_caps_to_lmm(pi->port_type,
++	fw_caps_to_lmm(pi->port_type, pi->mod_type,
+ 		       t4_link_acaps(pi->adapter,
+ 				     pi->lport,
+ 				     &pi->link_cfg),
+ 		       link_ksettings->link_modes.advertising);
+-	fw_caps_to_lmm(pi->port_type, pi->link_cfg.lpacaps,
++	fw_caps_to_lmm(pi->port_type, pi->mod_type, pi->link_cfg.lpacaps,
+ 		       link_ksettings->link_modes.lp_advertising);
  
- 	c.retval_len16 = cpu_to_be32(FW_CMD_LEN16_V(sizeof(c) / 16));
- 	c.u.init.sc = FW_PTP_SC_RDRX_TYPE;
--	c.u.init.txchan = pi->tx_chan;
-+	c.u.init.txchan = pi->lport;
- 	c.u.init.absid = cpu_to_be16(receive_q->rspq.abs_id);
+ 	base->speed = (netif_carrier_ok(dev)
+@@ -800,7 +915,7 @@ static inline unsigned int eth_to_cc_fec(unsigned int eth_fec)
+ {
+ 	unsigned int cc_fec = 0;
  
- 	err = t4_wr_mbox(adapter, adapter->mbox, &c, sizeof(c), NULL);
-@@ -319,9 +356,10 @@ static int cxgb4_ptp_gettime(struct ptp_clock_info *ptp, struct timespec64 *ts)
- 					       ptp_clock_info);
- 	u64 ns;
+-	if (eth_fec & ETHTOOL_FEC_OFF)
++	if (eth_fec == ETHTOOL_FEC_OFF)
+ 		return cc_fec;
  
--	ns = t4_read_reg(adapter, T5_PORT_REG(0, MAC_PORT_PTP_SUM_LO_A));
--	ns |= (u64)t4_read_reg(adapter,
--			       T5_PORT_REG(0, MAC_PORT_PTP_SUM_HI_A)) << 32;
-+	if (CHELSIO_CHIP_VERSION(adapter->params.chip) >= CHELSIO_T7)
-+		ns = t4_read_reg64(adapter, MAC_PTP_SUM_LO_A);
-+	else
-+		ns = t4_read_reg64(adapter, T5_PORT_REG(0, MAC_PORT_PTP_SUM_LO_A));
+ 	if (eth_fec & ETHTOOL_FEC_AUTO)
+@@ -1576,6 +1691,11 @@ static int get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *ts
+ 	return 0;
+ }
  
- 	/* convert to timespec*/
- 	*ts = ns_to_timespec64(ns);
-@@ -432,7 +470,7 @@ void cxgb4_ptp_init(struct adapter *adapter)
- 	spin_lock_init(&adapter->ptp_lock);
- 
- 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_clock_info,
--						&adapter->pdev->dev);
-+						adapter->pdev_dev);
- 	if (IS_ERR_OR_NULL(adapter->ptp_clock)) {
- 		adapter->ptp_clock = NULL;
- 		dev_err(adapter->pdev_dev,
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-index 4a694d94f6eb..2171db2f201a 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-@@ -3483,7 +3483,8 @@ static void do_gro(struct sge_eth_rxq *rxq, const struct pkt_gl *gl,
- enum {
- 	RX_NON_PTP_PKT = 0,
- 	RX_PTP_PKT_SUC = 1,
--	RX_PTP_PKT_ERR = 2
-+	RX_PTP_PKT_ERR = 2,
-+	RX_PTP_PKT_T7 = 3
- };
- 
- /**
-@@ -3509,6 +3510,13 @@ static noinline int t4_systim_to_hwstamp(struct adapter *adapter,
- 
- 	data = skb->data + sizeof(*cpl);
- 	skb_pull(skb, 2 * sizeof(u64) + sizeof(struct cpl_rx_mps_pkt));
++static u32 get_rss_key_size(struct net_device *dev)
++{
++	return RSS_HASH_KEY_SIZE;
++}
 +
-+	if (CHELSIO_CHIP_VERSION(adapter->params.chip) == CHELSIO_T7) {
-+		struct ethhdr *eth = (struct ethhdr *)skb->data;
+ static u32 get_rss_table_size(struct net_device *dev)
+ {
+ 	const struct port_info *pi = netdev_priv(dev);
+@@ -1590,8 +1710,19 @@ static int get_rss_table(struct net_device *dev,
+ 	unsigned int n = pi->rss_size;
+ 
+ 	rxfh->hfunc = ETH_RSS_HASH_TOP;
 +
-+		if (ether_addr_equal(eth->h_source, eth->h_dest))
-+			return RX_PTP_PKT_T7;
++	if (rxfh->key) {
++		__be32 key[10];
++
++		t4_read_rss_key(pi->adapter, (u32 *)key, true);
++		/* RSS hash keys are read in order TP_RSS_SECRET_KEY9..0 */
++		for (int i = 0; i < 10; i++)
++			((u32 *)rxfh->key)[i] = be32_to_cpu(key[9 - i]);
 +	}
- 	offset = ETH_HLEN + IPV4_HLEN(skb->data) + UDP_HLEN;
- 	if (skb->len < offset + OFF_PTP_SEQUENCE_ID + sizeof(short))
- 		return RX_PTP_PKT_ERR;
-@@ -3740,8 +3748,7 @@ int t4_ethrx_handler(struct sge_rspq *q, const __be64 *rsp,
- 		__skb_pull(skb, s->pktshift); /* remove ethernet header pad */
++
+ 	if (!rxfh->indir)
+ 		return 0;
++
+ 	while (n--)
+ 		rxfh->indir[n] = pi->rss[n];
+ 	return 0;
+@@ -1607,10 +1738,19 @@ static int set_rss_table(struct net_device *dev,
+ 	/* We require at least one supported parameter to be changed and no
+ 	 * change in any of the unsupported parameters
+ 	 */
+-	if (rxfh->key ||
+-	    (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
+-	     rxfh->hfunc != ETH_RSS_HASH_TOP))
++	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
++	    rxfh->hfunc != ETH_RSS_HASH_TOP)
+ 		return -EOPNOTSUPP;
++
++	if (rxfh->key) {
++		__be32 key[10];
++
++		/* RSS hash keys are written in order TP_RSS_SECRET_KEY9..0 */
++		for (int i = 0; i < 10; i++)
++			key[i] = cpu_to_be32(((u32 *)rxfh->key)[9 - i]);
++		t4_write_rss_key(pi->adapter, (u32 *)key, -1, true);
++	}
++
+ 	if (!rxfh->indir)
+ 		return 0;
  
- 	/* Handle the PTP Event Tx Loopback packet */
--	if (unlikely(pi->ptp_enable && !ret &&
--		     (pkt->l2info & htonl(RXF_UDP_F)) &&
-+	if (unlikely(pi->ptp_enable && (ret == RX_PTP_PKT_T7 || !ret) &&
- 		     cxgb4_ptp_is_ptp_rx(skb))) {
- 		if (!t4_tx_hststamp(adapter, skb, q->netdev))
- 			return 0;
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h b/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h
-index 5ac262ec389f..e8bcce1993e1 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4_regs.h
-@@ -4533,6 +4533,7 @@
- #define MAC_PORT_EPIO_OP_A 0x8d0
+@@ -2022,12 +2162,13 @@ static int cxgb4_get_module_info(struct net_device *dev,
+ 	case FW_PORT_TYPE_SFP:
+ 	case FW_PORT_TYPE_QSA:
+ 	case FW_PORT_TYPE_SFP28:
+-		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
++	case FW_PORT_TYPE_SFP56:
++		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
+ 				I2C_DEV_ADDR_A0, SFF_8472_COMP_ADDR,
+ 				SFF_8472_COMP_LEN, &sff8472_comp);
+ 		if (ret)
+ 			return ret;
+-		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
++		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
+ 				I2C_DEV_ADDR_A0, SFP_DIAG_TYPE_ADDR,
+ 				SFP_DIAG_TYPE_LEN, &sff_diag_type);
+ 		if (ret)
+@@ -2046,11 +2187,12 @@ static int cxgb4_get_module_info(struct net_device *dev,
+ 		break;
  
- #define MAC_PORT_CFG2_A 0x818
-+#define MAC_PTP_SUM_LO_A 0x38108
+ 	case FW_PORT_TYPE_QSFP:
++	case FW_PORT_TYPE_QSFP56:
+ 	case FW_PORT_TYPE_QSFP_10G:
+ 	case FW_PORT_TYPE_CR_QSFP:
+ 	case FW_PORT_TYPE_CR2_QSFP:
+ 	case FW_PORT_TYPE_CR4_QSFP:
+-		ret = t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
++		ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
+ 				I2C_DEV_ADDR_A0, SFF_REV_ADDR,
+ 				SFF_REV_LEN, &sff_rev);
+ 		/* For QSFP type ports, revision value >= 3
+@@ -2083,14 +2225,14 @@ static int cxgb4_get_module_eeprom(struct net_device *dev,
  
- #define MAC_PORT_PTP_SUM_LO_A 0x990
- #define MAC_PORT_PTP_SUM_HI_A 0x994
+ 	memset(data, 0, eprom->len);
+ 	if (offset + len <= I2C_PAGE_SIZE)
+-		return t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
++		return t4_i2c_rd(adapter, adapter->mbox, pi->lport,
+ 				 I2C_DEV_ADDR_A0, offset, len, data);
+ 
+ 	/* offset + len spans 0xa0 and 0xa1 pages */
+ 	if (offset <= I2C_PAGE_SIZE) {
+ 		/* read 0xa0 page */
+ 		len = I2C_PAGE_SIZE - offset;
+-		ret =  t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan,
++		ret =  t4_i2c_rd(adapter, adapter->mbox, pi->lport,
+ 				 I2C_DEV_ADDR_A0, offset, len, data);
+ 		if (ret)
+ 			return ret;
+@@ -2101,10 +2243,41 @@ static int cxgb4_get_module_eeprom(struct net_device *dev,
+ 		len = eprom->len - len;
+ 	}
+ 	/* Read additional optical diagnostics from page 0xa2 if supported */
+-	return t4_i2c_rd(adapter, adapter->mbox, pi->tx_chan, I2C_DEV_ADDR_A2,
++	return t4_i2c_rd(adapter, adapter->mbox, pi->lport, I2C_DEV_ADDR_A2,
+ 			 offset, len, &data[eprom->len - len]);
+ }
+ 
++static int
++cxgb4_get_module_eeprom_by_page(struct net_device *dev,
++				const struct ethtool_module_eeprom *page_data,
++				struct netlink_ext_ack *extack)
++{
++	struct port_info *pi = netdev_priv(dev);
++	struct adapter *adapter = pi->adapter;
++	int ret;
++
++	if (page_data->offset >= 128) {
++		u8 page = page_data->page;
++		/* Before reading EEPROM data first select the page in PageSelect register */
++		ret = t4_i2c_wr(adapter, adapter->mbox, pi->lport,
++				page_data->i2c_address << 1,
++				CMIS_PAGE_SELECT_REG,        /* CMIS Page Select register */
++				1,                           /* Page Select register length */
++				&page);
++		if (ret)
++			return ret;
++	}
++
++	ret = t4_i2c_rd(adapter, adapter->mbox, pi->lport,
++			page_data->i2c_address << 1, page_data->offset,
++			page_data->length, page_data->data);
++
++	if (ret)
++		return ret;
++
++	return page_data->length;
++}
++
+ static u32 cxgb4_get_priv_flags(struct net_device *netdev)
+ {
+ 	struct port_info *pi = netdev_priv(netdev);
+@@ -2205,6 +2378,7 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
+ 	.get_rxnfc         = get_rxnfc,
+ 	.set_rxnfc         = set_rxnfc,
+ 	.get_rx_ring_count = get_rx_ring_count,
++	.get_rxfh_key_size = get_rss_key_size,
+ 	.get_rxfh_indir_size = get_rss_table_size,
+ 	.get_rxfh	   = get_rss_table,
+ 	.set_rxfh	   = set_rss_table,
+@@ -2217,6 +2391,7 @@ static const struct ethtool_ops cxgb_ethtool_ops = {
+ 	.get_dump_data     = get_dump_data,
+ 	.get_module_info   = cxgb4_get_module_info,
+ 	.get_module_eeprom = cxgb4_get_module_eeprom,
++	.get_module_eeprom_by_page  = cxgb4_get_module_eeprom_by_page,
+ 	.get_priv_flags    = cxgb4_get_priv_flags,
+ 	.set_priv_flags    = cxgb4_set_priv_flags,
+ };
 -- 
 2.39.1
 
