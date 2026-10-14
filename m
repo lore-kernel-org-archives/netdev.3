@@ -1,226 +1,139 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530014EA37B
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791972180; cv=pass; b=eqJ4/12t+nBKa11sds5lZf2UHOa7nnyDk8AuPJVhT+SohAWYUU+bkMEasyr06++BZQz5ojyNcDno+AGrkqU0betoBskIdwBSGXrCQgNz4dRBXP3fzXaOQ+s+FbZXRsLCjRMHW3mwL2bf595rH0HztYsiMaIY8co+1mUA8EsW5LQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791972180; c=relaxed/simple;
-	bh=4/XyayOHDRiLNGYPeeSA0Tk68l1jO5a9bJjfyvrkK7E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Gbx4V+uiauK8aQ75qJSUEHoyyDmoDJCmBnBn34edV11/rlxwrZghCNcIaz30r+wPMCPn5CYR0sNREn/MH1rqSWbQImtV8/fs1VG94iqo2OGZtAYAMd6FKqkPUKfmslRpPlYohxn7sNvgkfirU14wBKjSBPZoldAHz2/sqqvOn9o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=cBc39ErF; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7C14EC65A
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:04:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1791972284; cv=none; b=iBGr3HWF6006p8PWObdRVS8l8xhR+ffI2sNGJs9VStL80Kf0v7jY94qhCM7y4nK22w19ZGii71ErSi1HzS8/uJc7ND1pmv6+o50/YE4SvodkQBo2fEazclyUieEOldI29KRcW1DQWY98WYdXhxR2XaQIzYNT3y7mq7bePusk9VI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1791972284; c=relaxed/simple;
+	bh=xKoZbrsEpZl7WHOwhRzJwVxlIDXvatXmrwIqVWMRm3Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nnhjlz7rMXY+dy412RMdkRBcngg/UGOhaTkjHW2EZP3Ro7pertbLATcp11Pd9sFVAqr0PWSORbDhAq0q7jM80X1ag1caprluDcazLkEOpQ8Nnktq1kJfJPE9rnEmGqULVvDC10X+L0VfX0gRx2XBv1LfZkAdcBuBaa79yV9tNqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E3A3Lwxf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LZZ7I68l; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="cBc39ErF"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-88834d30002so1872023b3a.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 03:02:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1791972177; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZRgC8hEaU9zIiKrPMN7OLyltRoaI7ksXwkrKighH2hh4N6Ey1rOS96920O4ZnF4xmz
-         4xAEXTQGeOvbLK6h5kKrkBwUBzJRvnbUE56MOmbB0kQk+ahh9QGj/8ImN8oasXE8edC/
-         8Czygeq2P1EguI+C1PqskbF7i0tmos9QNTIldAlv9uMKGP62iCzAMOYLkxCDYcFoxMsg
-         /ZiL3wg1q3hOKoQhdO+ve+bzWF/67UpZKHeBJnbBXuJ/fmDX97NLhJN5cA3r5c7utGkM
-         nHuwN3Fs8w25FDrUvRPaVnK3kbBkyH1Q/3+D4g0oLRnhkRXlHwV4y76k1NP1dC3aXV5N
-         J78w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=AE0HN+fFvA2udY0NoWO2S7SaNrvjPqbhVXYmeMDtfk8=;
-        fh=MPnvnwOm34hiEvEPfx7qF9zN9L7c9r2UxLMadf15Td4=;
-        b=Aip30zYjS4qAZgJ9hbg0hb4FC0CZeRCaD3xm39momoN3Qfl6GmMlW1261MQoEXQX//
-         fLapb/K9cT5cHB1eTEykjIcQO5vIciq0zDldCwRJdRTNBGXQxJ0cHCRdGFnyDr6K6v/+
-         m/6PMneLZQlS6Vf5opHAITIiYgw6byDv1cuNJs4L1pMVRfxqtEHnphbVn5ecronzwZSR
-         WkGDtbejRFZgX/zR8J9i9GmxS96CpB4SBd16BC31RONKxNVN3x5TeJSsiJE4cD/G9tL+
-         48ZBg4oVzAp3WZz3DxfrX9Pl3wP8YYZFHAdZPmQjk8JbAPZ0qrrn3WWcxY78Kf/q8hl6
-         1FLw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E3A3Lwxf";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LZZ7I68l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791972281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XemIgLfXAXsX5F5DvdAMtcb2KhZv0+MaaLg/MSFJqAo=;
+	b=E3A3Lwxfd7RtHnhyYfATiE8BMQATbHnPK9oc1dT7N7P5ZPGhQvg4t4/dnyFRviLJz1+2Ei
+	RlBOVjkSICZQ9q795spDONdTnBHpnytetCLTHysXkMXnFQgkh9M1fXcNDInAO6TocEhoF+
+	xcrlqsqJh6roi/lzd5luTmyFv/xCjvs=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-myxqAIrQNYGuBaVc1AvTuQ-1; Wed, 14 Oct 2026 10:04:40 +0000
+X-MC-Unique: myxqAIrQNYGuBaVc1AvTuQ-1
+X-Mimecast-MFC-AGG-ID: myxqAIrQNYGuBaVc1AvTuQ_1791972279
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a19df2328cso9025985e9.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 03:04:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1791972177; x=1792576977; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AE0HN+fFvA2udY0NoWO2S7SaNrvjPqbhVXYmeMDtfk8=;
-        b=cBc39ErF9Fcr4i6RfkcOSjDiHOF2udUv8XURBcMFqtToituLa4bIcDcp7vXdL038l1
-         72jD0cYbfjtCADk1YjEz5upCkdzuzFr7oVbA5AMspzZj0p2l+hLjRzlupS5ySDCLjUHX
-         SCQ7ZpUyHGjhkZ0Xvhrufr/lAwX3NXe5s3d7k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791972177; x=1792576977;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1791972279; x=1792577079; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AE0HN+fFvA2udY0NoWO2S7SaNrvjPqbhVXYmeMDtfk8=;
-        b=P0db8VIPacfjQMlLX+H15YwOH8hfacYdvH6REhdQn2NPDGi6VJt6mS60RDYvs2ccpA
-         XMI9CYxpKOv2STJw/5bsS84c1BegoOpB5obj1+49p8BPK1dw6BVxoD3ELlr52W02fMis
-         wYlteDCldI2N4Fkoq+obsHP+vxD9NE7Rg25n/rU2F2ETENTNiGzlFEEaEUNzux3IxiWd
-         54zVQKwi7SLhMQg+Hoj7XSVvL7zLrpNocAsVMp1BMVprieHjbRo7uC9dkDqoVqmn2m6j
-         YCOd8IpFRV1c6WYFuL0JA8hX3mffhywgI8uHkeiNfYsqjv7CjhKf9p/OWXkzUs1ra/g/
-         lcQw==
-X-Gm-Message-State: AFq9FYJz6mg9bdXGtJhZi5Y7V/YdyouQ0ioisnkOeuUz2wWr/C1QCztF
-	UOpKtBu7DQvrqGZXtM4UyoYSYTwYvjntpVdKGXKdqISDzXtNBKU7e35FnAJOmK8CPoZY7EApEgK
-	dfU4WW5QYe/puygLFKYNqr1W1hroUrloM/UjdXNNd
-X-Gm-Gg: AYBFou3OpQWis+c0VpIDcVMci+hyet0zdVe+G2y9Fr/OQutKaedbXNB/L/wEjEFiAGV
-	jITR5RlRaQh+ACL41aOZx8i9FqxIxqz0i4bbPtY8PrCRT265K3Gd16dLJ9BgyPvsgIP8P/IGY7T
-	HA4uqK4HuviPSr3FZtAUElZBWctpQEcOZcs/4MFrYoY4Nex2vMKYlLdL6YQNq0RJLsHF7W/6Ftx
-	6RJkYm9vV1IhRj13Y4oFlpdzyH3p4kQyZw4G7Fmc+4yad0Nhz0EMJ7OwZMvF/cfEU0aaKF2vxN+
-	iDKC4f58pckUhvHHM8leSohU8zTKsYohZmg6x3stkyFBGNU0OP6dYcAz55IGfDYr0BEEi9V7F2U
-	8tp7rSMt6LpYIn/iPqoi30p5YRklRT/3YuQ==
-X-Received: by 2002:a05:6300:6d93:20b0:3e1:73d6:6932 with SMTP id
- adf61e73a8af0-3e173d67534mr7370477637.79.1791972177472; Wed, 14 Oct 2026
- 03:02:57 -0700 (PDT)
+        bh=XemIgLfXAXsX5F5DvdAMtcb2KhZv0+MaaLg/MSFJqAo=;
+        b=LZZ7I68ldkj3iSwSrPBlqlAYfN1L+tOgruyR2PKLAX796uVuMKta9ndcpM4O0A1Mx1
+         Jrh/KkTK7G55tFERV/NIXkgqGuIuZMJHiz5KVw/peJIlJU7qX/sDlgJJjq8kTxvXYpNE
+         O13qBCOE+IPVyaIVilSKDQ3mLfVo7xhUWVkrAC8K1E6IPftL+X72ATJYThhcwulci9wJ
+         spM+cBUqKCOhDE+tp8q2nCEt/fvn5sZZ+I0BpsYTRb4JK5oFWAjU3nfc64azqzAFG23v
+         5KwGcnodHwaXG3sbG6YCFg1oZScI88u0f9U4UmcWP5NAlylbh10jrmSDYbxAZLHpij1x
+         7v8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1791972279; x=1792577079;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XemIgLfXAXsX5F5DvdAMtcb2KhZv0+MaaLg/MSFJqAo=;
+        b=JtxciavJgjwsQ+xc98Icksqf4C4Ba3muLuJZh20ZIjWEcih+yjeZ7aavA2XC6ShUEb
+         DeoVkwAZoyeqAK0dxq1qEwHpiA5gtr9IdEMyQOzfLyGmz1iBch6DhFDhD0UqQNgtBVVC
+         pDKcYgKFvcUx/TlyL4KZ5Cc78GU6/02I7+BD6uRU2TOw1TCGU4/oogR5NN2iEh95HCcx
+         BkAdRaoUBd84SndiakSnQHuNqy83kInE8xJntlhBGVd+SApGefUqCdWfoHz2X4pcyt13
+         a3x461SmCUYnhqeIhf59wFQFyrH9a+sejfjnYPhjsH9VN7fJkjYLhT8/jpUNBqUip25a
+         mJlQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzPwszp8qzJnvKA7z0ChGpLSS6iLfQn7Ymp1vOPfsqSU22G49lde2c6A1Qg8yUhT7a5jTDy34M=@vger.kernel.org
+X-Gm-Message-State: AFq9FYKA9j4GB1TtSzLoMyO/p/9KBlr2wsgIRAmwPQ1mp9eI+jhi1kMj
+	sreZKt0tECwFHUuMeVpVQDM9NJV6DnUwVc1YHoQA6oAPPYURnq0K7tB24jLyGvHQwuTpEd/dUv2
+	+mwHxJOo49Oxw097Q7tMmF5jBiZVlpOnNmyRLmcZfhXUhO7BoYOtfcwzJ1w==
+X-Gm-Gg: AYBFou22XAyz3t8XIXY2tKia7cFfLrmzkZIBhwLfpbKsD7+jrmo7Om/Ghy5SUwzqCgd
+	EuCVW9bD/Eqc/lzs04RqGSImbtdnF1blQ2oUjpVBghIzcrBk3Y1opb8GLMUUVIGhVQRjPWMg1Ey
+	3blgYROfpjmq2G/LQC5tMNw/rmJdQor64p2esjrMOMNyAeqtG8XAjZKA8FV4+dw7/GykBw7KtwD
+	8UPfZbApa/1WHoqklnHFoSJrvH+JxgNt7D7ru02eayd+wBgECJtegMuKQwPIqTn0uRH8fcq419h
+	eYHwF+E9mlob+Kfrdifxrcfz5DgZjEpKkrkwLlwZLk5WCpFutqjHgc55iIt6qFbKJxnjgujb28H
+	kUAExEdwY9lNiwIpYd8+RjG05wbf/gbVHbV7UaBR8kFvJErp3WmhC5HKEGdnV8cXXuU6t+7BQSQ
+	==
+X-Received: by 2002:a05:600c:6383:b0:4a1:a6e0:4ce4 with SMTP id 5b1f17b1804b1-4a1a6e04d7cmr101285285e9.33.1791972279256;
+        Wed, 14 Oct 2026 03:04:39 -0700 (PDT)
+X-Received: by 2002:a05:600c:6383:b0:4a1:a6e0:4ce4 with SMTP id 5b1f17b1804b1-4a1a6e04d7cmr101284465e9.33.1791972278755;
+        Wed, 14 Oct 2026 03:04:38 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a18bf3e044sm419838595e9.14.2026.10.14.03.04.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2026 03:04:38 -0700 (PDT)
+Message-ID: <3d3b9f10-e3e8-4d50-b543-0d451cb07598@redhat.com>
+Date: Wed, 14 Oct 2026 12:04:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-H19Z.v3.r0.20261012193813-5@mojatatu.com> <179196934366.434549.16677487229407143890@kernel.org>
-In-Reply-To: <179196934366.434549.16677487229407143890@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Wed, 14 Oct 2026 06:02:46 -0400
-X-Gm-Features: AclHuK8StpvJM4uG8WzP41Ya8StQaTFXp8VlAXPbuSDUD4TGpgKBY4uJQ8Dd7qc
-Message-ID: <CAM0EoMkiAH_qnPARiXx9en-r=x2=w2sxNO2TWSmyG_LKJKx2cA@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 5/5] net/sched: act_api: report an oversized
- action dump instead of silently truncating it
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	victor@mojatatu.com, p@1g4.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 0/3] net: phylink: wait for a PHY that probes
+ after the MAC
+To: Aleksei Sviridkin <f@lex.la>
+Cc: Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Vladimir Oltean <olteanv@gmail.com>,
+ netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Conor Dooley <conor@kernel.org>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <aa01ab1c-da2c-4638-816b-f535b635379b@redhat.com>
+ <20261013151233.2474217-1-f@lex.la>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20261013151233.2474217-1-f@lex.la>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 14, 2026 at 5:15=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found more severe
-> issue(s) in other patches of this series. This mail is only an FYI, in ca=
-se
-> you want to address the nit picks below when you respin.
->
-> Low priority / nit picks for your consideration:
->
-> - [Low] The patch has no Fixes: tag for the old silent-truncation path in
->   tcf_dump_walker() (`index--; nlmsg_trim; goto done; return n_i`).
-> - [Low] The new comment above `return n_i ?: err;` in tcf_dump_walker()
->   (net/sched/act_api.c:625-630) does not match the code or af_netlink's=
-=E2=80=A6
->
+On 10/13/26 17:12, Aleksei Sviridkin wrote:
+> On 10/13/26 09:53, Paolo Abeni wrote:
+>> The above looks like a significant amount of complexity for OoT driver,
+>> and I understand it could be solved with a different kconf?
+> 
+> The PHY driver is in mainline, air_en8811h. Only the board's device
+> tree lives in OpenWrt.
+> 
+> A config change can avoid it, but it is expensive here. Building
+> air_en8811h in is not enough, since it loads its firmware with
+> request_firmware_direct() from the root filesystem, which is not mounted
+> yet when the switch probes. It also needs CONFIG_EXTRA_FIRMWARE with
+> 144 KB of blobs, in a kernel that OpenWrt shares between every board
+> of the subtarget.
+> 
+> Is that the expected answer for a board like this one, or would you
+> take a smaller change in phylink?
+To me this series still looks too much churn for something that has
+alternative options. I would like to hear a 2nd opinion from Russell,
+Andrew or Heiner.
 
-Since all feedback on patches 1-5 are nitpicks on commit log or
-comment I will not be making any changes unless something substantial
-shows up.
+/P
 
-cheers,
-jamal
-> --
->
-> net/sched: act_api: report an oversized action dump instead of silently t=
-runcating it
->
-> When an action does not fit even into an empty dump skb, tcf_dump_walker(=
-)
-> now returns -EMSGSIZE with an extack instead of 0. tc_dump_action() now
-> passes the walker's error up instead of returning skb->len. Before this
-> change, "tc actions ls" silently left out that action and every action
-> after it.
->
-> Closes: https://lore.kernel.org/netdev/vPFrhbkwAui8zFPcGQTUDazQfsFDlr5GYu=
-aYQ5BxJcrDiT6x1EljEze4cYadHqbeUW2ivLdpa8eC_cXC6ceACswgb-lW47aSVkHvHjhn_X8=
-=3D@1g4.org/
->
-> > That case is reachable inside the gate entry cap this series adds: a ga=
-te
-> > entry serializes to 36 bytes (40 with the gate-open flag) while a dump =
-skb
-> > is clamped to SKB_WITH_OVERHEAD(32768) by netlink_recvmsg()/netlink_dum=
-p(),
-> > so the top of the range the cap admits installs but cannot be dumped -
-> > and, before this change, fails silently.
->
-> [ ... ]
->
-> > This is a long-standing silent failure, not a regression, so it
-> > is net-next hardening.
->
-> [Severity: Low]
-> Would a Fixes: tag for the old silent truncation path in tcf_dump_walker(=
-)
-> be useful here, even though this goes to net-next?
->
-> The commit message ties the trigger to the gate entry cap in this series.
-> The same truncation can also be hit without the series. act_bpf_policy in
-> net/sched/act_bpf.c allows:
->
->         [TCA_ACT_BPF_OPS]       =3D { .type =3D NLA_BINARY,
->                                     .len =3D sizeof(struct sock_filter) *=
- BPF_MAXINSNS },
->
-> That is 32768 bytes of ops, which is more than SKB_WITH_OVERHEAD(32768).
-> So a single classic bpf action can already be too large for the dump skb.
->
-> Leaving out Fixes: may be on purpose, because the patch turns a silent
-> success into an error and is kept out of stable. If so, could the commit
-> message say that the problem is not limited to the gate series?
->
-> > diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-> > index fd7f60e0f62ba..33dba34364541 100644
-> > --- a/net/sched/act_api.c
-> > +++ b/net/sched/act_api.c
->
-> [ ... ]
->
-> > @@ -626,10 +621,21 @@ static int tcf_dump_walker(struct tcf_idrinfo *id=
-rinfo, struct sk_buff *skb,
-> >               if (act_flags & TCA_ACT_FLAG_LARGE_DUMP_ON)
-> >                       cb->args[1] =3D n_i;
-> >       }
-> > -     return n_i;
-> > +
-> > +     /* A positive count means the skb filled up before this action wa=
-s
-> > +      * complete, so netlink retries it in a fresh skb. An action that
-> > +      * does not fit even in an empty dump skb (nothing dumped) must b=
-e
-> > +      * reported as -EMSGSIZE by netlink instead of ending the dump.
-> > +      */
-> > +     return n_i ?: err;
->
-> [Severity: Low]
-> Is this comment right for every path that reaches this return in
-> tcf_dump_walker()?
->
-> A positive n_i also comes back when the idr walk finishes after dumping
-> every action. It also comes back when the loop stops here:
->
->                 if (!(act_flags & TCA_ACT_FLAG_LARGE_DUMP_ON) &&
->                     n_i >=3D TCA_ACT_MAX_PRIO)
->                         goto done;
->
-> The skb did not fill up in either case. After a normal finish there is
-> also nothing left to retry.
->
-> The second sentence says -EMSGSIZE is reported "instead of ending the
-> dump". In netlink_dump() in net/netlink/af_netlink.c, a negative return
-> with an empty skb fails this check:
->
->         if (nlk->dump_done_errno > 0 ||
->             skb_tailroom(skb) < nlmsg_total_size(sizeof(nlk->dump_done_er=
-rno))) {
->
-> It then goes on to netlink_dump_done(), which sends NLMSG_DONE with the
-> error and extack, and the dump ends. So the dump still ends, but now with
-> an error instead of silently.
->
-> Could the comment be reworded to match the return contract that
-> tc_dump_action() now relies on?
->
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/QDISC-H19Z.v3.r0.20261012193813%40mojatatu.com
