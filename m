@@ -1,283 +1,391 @@
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7972540801E
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792003189; cv=pass; b=pGhOYLpiEzcTDkOEfrOWoQJfjxrVwdNu/HSSvrNn8Tp6FIBGSDh9Y/Qauwr2LDjNP94sZ08mzDTP6i+ax/SsovEGX8EUz8TE/o8f3xnrmqyg+MVBHAsBjXpFegL61tz6eMQUWwyOdOVf0Givju8ZjDCmlt02jkODHmgFwCRzSVA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792003189; c=relaxed/simple;
-	bh=Hi3oLimrk06HY77N752dV/sqU29cIiskVgmmFoM1BrY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cms1+mZkSelgJH59ku36OKo/MTleb/sJ9srBvtuPp8GJUtw3OMiwqdjesAXwFvfEP+vi/UTBpZgNyk46QhSOPQT9aPkcWkf5k9eb6Zo9HygQvBHh+qhF7+hSd6QY9YnmfpWCyBtokNhF2fsuJ0XFrBf0YYMoHC4XfDJxqAJkg+I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LlGT/VHy; arc=pass smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ABA476CC6
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:43:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792003420; cv=none; b=gPk9lpyI4LfaVKr6Zc6FCZWhw13dmc9AiT9b25XbsR25ssSSvMkt4v4i9UEJp3cRyxCzQDP+KKbwRHi7n0ki/iYebq/Z5NQjfhXELiBBYZ9u/PvxQ2dpnVZL33jCNEtelP8qHpuJT7b3dLNZutWmUU3brNuRcao5z4xGDW5Hpfc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792003420; c=relaxed/simple;
+	bh=Y7xnwK8z1ivyl9b7h7uP42Rdjv2t9q/Cl3/MEiyCvd4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qzvThI16Ire/nq9Od4dxwAdaJ7kEKQPYOqk0RCusE81pRMu2eI8fUQY/iUprrWmahN98eI1WEXGA6daRaETR9oO0f6RhtUpvqbME92Zmc1axHJ+rqcSyLQ975FskPtwT26U4LJlquHrpZV4ipSFtNeLUbtg0Vhp4KK9FbMyrq1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cnu6vcCj; arc=none smtp.client-ip=209.85.222.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LlGT/VHy"
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-459bd8ea98aso202420fac.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:39:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792003186; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A2QbEn4JXCEASoZhfHgM4JEcrzzD1ALwtUZg4lg0ysYJics6y+IX4/zt5+qxVg2fOs
-         Px5CVlSTD626enOmYNI2pewbhZ/0RMKDoXIUrvPAtrWxB2j7EkkfGArF9znbgi9sxQR4
-         h6dxMDT69gLSebHpU2j9EUqy7TrFxj0OXmBOlouesaTJandVbfnoVCABRtitOpi/AhPQ
-         6b0brTiy+nPbfjg0lHbykGBuMxCW8CDHZUaLfBDeSLaBjmgtdNGJSmwvUMzEzzhSWSZ8
-         t1aCfrDwseJlXOHBZ/xcpMBR2e3z603vBm8Q/pjcUtG69VraW8SyVA5ocQQL41af5Y01
-         5Mmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nfJLxdiTo6vJhA+TJkzuS9wIdOWg1+Cfb8ilaZ5iWJU=;
-        fh=8YJ07cQTBLau2/4lS5UYzV5xQvU7Dtd3S1KGISy3ozc=;
-        b=gln3q4ttV9irLLmTfC+62t8QqGmyjb+uY7Rpo+6sL+U5SIh1+WX/+aD9PegODaPd92
-         nktrAwf2feQSvbE0sIIXCrIWiFngB44bv+z95njkj/TuEtNQYwFWf7fSeERlIQjb8GhZ
-         yXO/BGrH87QrBF6t6kQWFI47alA62R4FTIV05afR0nfyAVW/y8K0gSp4oJJBbv+kZpOX
-         LwyBMDKu37cqImgJWJ00o7hqB9TG75j83mJC9sCxqDsADeljeTqJdbuzhEEa8k8t9Y/f
-         YcoAfzgTpor0i1nrkm1YRT6qHzBzc6oM6/L1kcHqcW0XbOA4QTvMDhPEN+QPewTS4UyI
-         /F+g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cnu6vcCj"
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-980c4f5c921so1282179241.2
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 11:43:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792003186; x=1792607986; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nfJLxdiTo6vJhA+TJkzuS9wIdOWg1+Cfb8ilaZ5iWJU=;
-        b=LlGT/VHyAgrN/IdTQ6Ev9lBxxjVLPU7IvPw+3n8w/2oSZdb4C4GhiwCyYdc05MHGCW
-         DIGRLng1bIT0K8ka2XlxR1z46Ab/bu8D3U3/nuCUNIDNA95ZU7v+coVJye3gTrtA8AD9
-         Uv1G/uJm79zKmnNd0k+TGg471AH+FOZmqyOBlcAcOMzvU7crgj6Tnc3u5+AcPHBp9fTM
-         TylteBLo+YMZlD7WH0+71IMu8/mABZyGEYwCAKeccW2uD0Vn6seyXJ7YTZnDcQivMpkG
-         98BbtWtL1eFgGwe/hcSHdFOIZf1k211IhdoNQDpDKdHxO90/TK6Q5MP3YjSNwwEC1VMy
-         blLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792003186; x=1792607986;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1792003417; x=1792608217; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nfJLxdiTo6vJhA+TJkzuS9wIdOWg1+Cfb8ilaZ5iWJU=;
-        b=g0YHJtJdbTzo8/7H6bYhdRbIhZI/mZ8b0yqPPRbh+7I/Vomi5hsouT8VQiK74TAh3+
-         MzALiGz6YxUwtf/r1aj4BuquZV1L4fAGkxttEBZClY1Np5MBvNaXQ5Qne5gTwXNs1S52
-         t4KdT+yaKFCS5TUBCEp7k3rtqzYk/Bj6yRCpqMexz/y6o2cOs+qr9ArjjCtdvxHXCJF6
-         QnLOPImmEvNKNDEd6vRImk8h2meS3ExlFkWyg6VUTQT6oSPKskyMV89+i9Q2Qbky6Dh+
-         swvYqo8JLOULNd3ZRBDnDtyEur6RgiSHqDwTlw61L+tX06JpNKkq8ktBBkAohDqzT8cu
-         Xc9A==
-X-Forwarded-Encrypted: i=1; AKwUvBxf9xQZ6EzyKLn2DYLggsE6UzUWItLXBYGcRjN62Y/Bk6bsep5Erc6Q+LLliZPW27DPYJBJK1M=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK7MWuOcFENE37SGBZTmLPifZp2vF787GeQMZupPz/QiolSG50y
-	NTBiSN3x2Pv8/69Oc10cjMF7bb2Fw/KounZ2q45eFpDGQsMyc72LFM1+H/dFnBIFUDcMH9+BFG/
-	O2ORvS1q3OuOqHbBGyLwujFnw6x6pbgs=
-X-Gm-Gg: AYBFou0VecN4DsrTOiV7mrOwaaiQC4VFMG1TwiCsUuNnvSn8QrLmVItfAlMNNZBZ1gb
-	85lz9W2LLsKZMGgtkRcRDTnZHKUSekPKxULk18aUnfUFxaJROvg7SNFq+zoIm5N4p8Bh7N7A58g
-	hMvVoSM/Uq4qgydWACcE53momAzn4/IGuAGI0uE9PBO8twOyat6Pd0MCiMoNJcixkpsRNRF/eKL
-	6xAawYcY+rH0POV6OIDBQQI+U36wuPAnhNhp0mqMvyHWwWCY6kG3L72KEyswdzgMJ8hhShvirKY
-	RXQXix8eHfg2ocVkCrEC/BbMPjIgBjroahda55S7z4b05P18Tb0IckiLRUPOydJ691wB0Ss=
-X-Received: by 2002:a05:6808:50a8:b0:4e8:9e40:a0dc with SMTP id
- 5614622812f47-50c41108624mr24831152b6e.1.1792003186157; Wed, 14 Oct 2026
- 11:39:46 -0700 (PDT)
+        bh=tUKrwI694YVDxKZ1g5qsyZmsgUDdISSnPxqJADqeWNM=;
+        b=Cnu6vcCj3efJfyJ+1vYhB5KjEh9gSRjpn/6eFs9qXdhwm8ZKhLugIRTspIUZVIdk1d
+         rqvU9hSNhixyJIE/QvoowkeY7Zv9aIV5vbSoqFPMObnNeG/lew8plT+fxi3qUCPcV8wv
+         uLCyi6rphEvLiQYi6aS4Ink2fDjAD+uPBBB+EwXKLGKjsbjN0FT8i5RUH7gOjy3QpDRK
+         boE7WrbjW6HyEY0xROKrrs3rvg9MalgckUl8D0jL+f5wTir/eoogxlt/QLDBGpUQwqeo
+         dDvi62dN3UCI/IYvoTcDy76rwcu6iyBUvWzPjdt/4igs2H7g12hyreZbBu627zRH0oj9
+         UE0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792003417; x=1792608217;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tUKrwI694YVDxKZ1g5qsyZmsgUDdISSnPxqJADqeWNM=;
+        b=TF/37otNm847MIV2GlR79aSBHyemUrCsbRMaDoZ4gj6qG8pibjtrdGv8f4YZ8j4WU+
+         AxGp7LU7J+wtsrPLBDlfBm9WfncUpHWvOKaR3bSxWmYeRaIsH1AvBkVqvsyU+YVS9VyJ
+         Hs/nN/QzjPFKMs5zXAKrDamIrxazV7SCfqebD9gGnXg8aUoO9xEP5cRk1QDEjLJkFDa4
+         PVYRMki3jw9jELY1ED13Jevq4PhaPIjF9SipuvkQhP9Fa6igCb+il7SE+eclA9fPCCUH
+         6tU1LHgdpuvGV9gdejn+9+XenL096tkT0JoDy+xRUWf4XqJuQ895/283DtHByDMsW8Od
+         ASzw==
+X-Forwarded-Encrypted: i=1; AKwUvBxkSK667HRBph9e19dKZ+rsj3XvkKNtkA8Neiz2Njr99WITYW1d6mKXF3HFxVlRIF+ItoI/PTk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIcdS8tFuJK9iMUk+VQjtk7jrKB26iyPv6QGCGnoIDEyBMI5xMd
+	IAMXU5iJOEtW/m1i9bplfbKs7ESr/OihdEZ5wmnRotU+9Kr7+i4uLROL
+X-Gm-Gg: AYBFou0TSiVpi6WPrlp8FHuaXY0uBAw47KBfQglG1AwmxYoEuuUM+f6oLlRAFsrmHOE
+	QEK9Lzzo52Z9hvvq/eIplgUvjatgXPJVKcL0RT2X9o0+blbCK+t/w9NmpLkXwJz4qZNJSO0Oslr
+	iompGSvZK5bVZAX/zHaQeiknkaho+1Q2JW5aWOCUygIREGl1Gh24c2gIiBZkEfXeIHtAVEJQU0b
+	D1OhrJk9pt3s5rs+Mza7WlwarkkvJKGtgc9NW7fYfGzEYR2VSs9HCjnOJ/St3d3ugdFckvnwY6K
+	p/novbRjsvH7DGvSpH7XWezDCFFtCSblWII8nwXOrju+PvjDhxWizOOrBXMGWMugzr4c/k5ZHuz
+	qyHjwWIbNQN3OKgoXQroxe4FsXepUFrU6PJOkjL28UNnJOwKOzB0h2HgIQSWim5mmHm7E2Evjta
+	VSr5+9duVdWfivgmKqtxQQKPoCSueIekASlWT4/PBRj9AMn1Iqx8abCZqWdTAIXD4SMptfSkk4c
+	gC7AV+puA4QYhqdfenMsCLVNhcCAz37MBY9oiuqNwpkBqN8yPnQjsEdeanfc6UZ17K8Cx2mUrU=
+X-Received: by 2002:a05:6102:3753:b0:7c0:b41:145a with SMTP id ada2fe7eead31-7cb373b9ac7mr4006680137.30.1792003417194;
+        Wed, 14 Oct 2026 11:43:37 -0700 (PDT)
+Received: from lvondent-mobl5 ([72.188.211.115])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-99003f66f94sm10965622241.9.2026.10.14.11.43.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 11:43:36 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [GIT PULL] bluetooth-next 2026-10-14
+Date: Wed, 14 Oct 2026 14:43:25 -0400
+Message-ID: <20261014184327.1648397-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.56.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261012-netcons-fixes-next-v2-1-ac8ec4c62edb@gmail.com> <179191204261.434549.8984165771561140450@kernel.org>
-In-Reply-To: <179191204261.434549.8984165771561140450@kernel.org>
-From: Gustavo Luiz Duarte <gustavold@gmail.com>
-Date: Wed, 14 Oct 2026 19:39:35 +0100
-X-Gm-Features: AclHuK9H5B8TXm5v5mDMBoKGdofCkC_RwhygYwsXkWt2btKwSIv0kBCAj4jxGFY
-Message-ID: <CAGSyskXLys0G5MzhnRjGzLBFcsGfWUwJbBSxOezL+1UpPqc2NA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/2] netconsole: avoid printing partially
- updated target attributes
-To: netdev-bot+sashiko@kernel.org
-Cc: leitao@debian.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Oct 13, 2026 at 6:20=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider.
->
-> Critical: 0 =C2=B7 High: 2 =C2=B7 Medium: 0 =C2=B7 Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwor=
-k
-> know by including "pw-bot: cr" as a separate line at the end of your repl=
-y
-> (one such reply per series is enough).
->
-> - [High] In drivers/net/netconsole.c, local_mac_show() still takes no
->   lock.
-> - [High] dev_name_show() still races with netconsole_netdev_event()
->   writing np.dev_name, even though the commit message says this race is=
-=E2=80=A6
-> - [Low] The commit fixes a user-visible race: configfs *_show() callbacks
->   can return torn values while a store or the netdev notifier updates=E2=
-=80=A6
->
-> --
->
-> netconsole: avoid printing partially updated target attributes
->
-> This patch makes the netconsole configfs *_show() callbacks take
-> dynamic_netconsole_mutex, so they no longer return values that a
-> concurrent store has only partly updated. dev_name_show() also takes
-> target_list_lock to serialize against the NETDEV_CHANGENAME update in
-> netconsole_netdev_event().
->
-> > Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-ne=
-tcons_ipv6-v3-7-bc0915e8c75f@gmail.com
-> > Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-ne=
-tcons-fixes-v1-0-bb5ffe5e698a%40gmail.com
-> > Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
->
-> [Severity: Low]
-> Should this have a Fixes: tag?
->
-> The unlocked readers in dev_name_show(), remote_mac_show() and
-> local_mac_show() date back to commit 0bcc1816188e ("[NET] netconsole:
-> Support dynamic reconfiguration using configfs").
->
-> The family/address tearing in local_ip_show() and remote_ip_show() comes
-> from the more recent inet_addr/family rework (commits 46b3f9e7e761,
-> 56ddc8d48e75 and f6e96d72f64a).
->
-> > diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-> > index 267254f046de9..953a1da071862 100644
-> > --- a/drivers/net/netconsole.c
-> > +++ b/drivers/net/netconsole.c
-> > @@ -859,7 +859,20 @@ static ssize_t release_show(struct config_item *it=
-em, char *buf)
-> >
-> >  static ssize_t dev_name_show(struct config_item *item, char *buf)
-> >  {
-> > -     return sysfs_emit(buf, "%s\n", to_target(item)->np.dev_name);
-> > +     struct netconsole_target *nt =3D to_target(item);
-> > +     unsigned long flags;
-> > +     int ret;
-> > +
-> > +     dynamic_netconsole_mutex_lock();
-> > +     /* Hold target_list_lock to prevent racing against
-> > +      * netconsole_netdev_event() changing np.dev_name.
-> > +      */
-> > +     spin_lock_irqsave(&target_list_lock, flags);
-> > +     ret =3D sysfs_emit(buf, "%s\n", nt->np.dev_name);
-> > +     spin_unlock_irqrestore(&target_list_lock, flags);
->
-> [Severity: High]
-> Does target_list_lock cover every place where netconsole_netdev_event()
-> changes np.dev_name?
->
-> It covers the NETDEV_CHANGENAME strscpy(). For NETDEV_UNREGISTER,
-> NETDEV_RELEASE and NETDEV_JOIN, though, the notifier drops
-> target_list_lock before it cleans up the target:
->
-> netconsole_netdev_event()
->     spin_unlock_irqrestore(&target_list_lock, flags);
->     mutex_unlock(&target_cleanup_list_lock);
->     ...
->     netconsole_process_cleanups_core()
->         mutex_lock(&target_cleanup_list_lock);
->         netcons_release_dev(nt)
->             do_netpoll_cleanup(&nt->np);
->             if (bound_by_mac(nt))
->                 memset(&nt->np.dev_name, 0, IFNAMSIZ);
->         spin_lock_irqsave(&target_list_lock, flags);
->         list_move(&nt->list, &target_list);
->
-> The memset in netcons_release_dev() runs with only RTNL and
-> target_cleanup_list_lock held. Neither dynamic_netconsole_mutex nor
-> target_list_lock is held, so the new dev_name_show() has no lock in
-> common with this writer.
->
-> MAC-bound targets do show up in configfs. A netconsole=3D cmdline target
-> bound by MAC is exposed through populate_configfs_item(), and
-> netpoll_setup() fills np.dev_name from ndev->name.
->
-> For such a target, can the sysfs_emit() here still copy a partly zeroed
-> name?
+The following changes since commit 05b5019b01fb9443b09ae4ed34af1135a80a84c8:
 
-This might happen, though quite unlikely and it has limited impact:
-printing a truncated device name.
-The fix would be taking target_list_lock around the memset in
-netcons_release_dev().
-I'm not convinced it is worth it, but happy to spin another revision
-if someone thinks otherwise.
+  net: alacritech: fix dma_free_coherent() in error path (2026-10-13 15:48:29 +0200)
 
->
-> Two options that look possible: take target_cleanup_list_lock in
-> dev_name_show(), following the dynamic_netconsole_mutex ->
-> target_cleanup_list_lock -> target_list_lock order that
-> drop_netconsole_target() already uses. Or do the memset in
-> netcons_release_dev() under target_list_lock.
->
-> > +     dynamic_netconsole_mutex_unlock();
-> > +
-> > +     return ret;
-> >  }
-> >
->
-> [ ... ]
->
-> > @@ -906,7 +933,14 @@ static ssize_t local_mac_show(struct config_item *=
-item, char *buf)
-> >
-> >  static ssize_t remote_mac_show(struct config_item *item, char *buf)
-> >  {
-> > -     return sysfs_emit(buf, "%pM\n", to_target(item)->remote_mac);
-> > +     struct netconsole_target *nt =3D to_target(item);
-> > +     int ret;
-> > +
-> > +     dynamic_netconsole_mutex_lock();
-> > +     ret =3D sysfs_emit(buf, "%pM\n", nt->remote_mac);
-> > +     dynamic_netconsole_mutex_unlock();
-> > +
-> > +     return ret;
-> >  }
->
-> [Severity: High]
-> This patch leaves local_mac_show(), just above this hunk, without any
-> locking:
->
-> static ssize_t local_mac_show(struct config_item *item, char *buf)
-> {
->         struct net_device *dev =3D to_target(item)->np.dev;
->         static const u8 bcast[ETH_ALEN] =3D { 0xff, 0xff, 0xff, 0xff, 0xf=
-f, 0xff };
->
->         return sysfs_emit(buf, "%pM\n", dev ? dev->dev_addr : bcast);
-> }
->
-> It loads np.dev with no lock, no RCU read section and no netdev
-> reference, then dereferences dev->dev_addr.
->
-> enabled_store() sets and clears np.dev through netcons_netpoll_setup()
-> and netconsole_process_cleanups(). process_resume_target() sets and
-> clears it too. Both run under dynamic_netconsole_mutex.
->
-> The notifier also clears np.dev, without that mutex:
->
-> netconsole_netdev_event()
->     netconsole_process_cleanups_core()
->         netcons_release_dev()
->             do_netpoll_cleanup()
->                 netdev_put(np->dev, &np->dev_tracker);
->                 np->dev =3D NULL;
->
-> If netconsole holds the last reference on a device that is being
-> unregistered, netdev_run_todo() can free the net_device after this put.
->
-> Can a reader that already loaded dev then read dev->dev_addr from freed
-> memory?
+are available in the Git repository at:
 
-This is being addressed in
-https://lore.kernel.org/all/20261012-netcons-fixes-v3-2-1aac85ed7665@gmail.=
-com/
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git tags/for-net-next-2026-10-14
+
+for you to fetch changes up to 397464709a204da9b8dc3b01d6ea42539d951cd2:
+
+  Bluetooth: hci_sync: scan unfiltered for host-resolved RPAs (2026-10-14 14:38:29 -0400)
+
+----------------------------------------------------------------
+bluetooth-next pull request for net-next:
+
+core:
+
+ - Move H:4 reassembly into the Bluetooth core
+ - Add ge[GIT PULL] bluetooth-next 2026-08-07neric support for vendor packets
+ - MGMT: Add management security level changed event
+ - MGMT: Allow connection rate request as peripheral
+ - L2CAP: Add locking annotations and fix locking of channel operations
+ - Enable context analysis for headers
+
+drivers:
+
+ - btusb: Add support for Bulk Serialization Mode
+ - btusb: Build the driver from multiple source files
+ - btusb: Add support for Qualcomm multi-subsystem QCC2072
+ - btusb: Add support for Intel Otter Peak2 (OrP2)
+ - btusb: Add USB ID 13d3:3556 for RTL8821CE
+ - btusb: Add Realtek RTL8821CE device 13d3:3558
+ - btusb: Add device ID for Realtek RTL8761BUE (StarTech AV53C1)
+ - btusb: Add device ID for MediaTek MT7925 (13d3:3631)
+ - btusb: add ASUS 0b05:1825 and 0b05:1868 to QCA Rome quirks
+ - btintel: load unlocker.sfi to allow unsigned firmware
+ - btintel_pcie: Add support for Intel Draco
+ - btintel_pcie: Add PCI ID and CNVi ID for Titan Lake
+ - btintel_pcie: add MDBGC multi-buffer DBGC allocation
+ - btintel_pcie: unified decoder coredump format
+ - btmtk: Add MT7928 support
+ - btmtk: Improve BT firmware logging
+ - btbcm: Add Synaptics 4384 chip support
+ - btbcm: Add entry for BCM4356A3 UART bluetooth
+
+----------------------------------------------------------------
+Aaron Kling (1):
+      Bluetooth: btbcm: Add entry for BCM4356A3 UART bluetooth
+
+Adriano Cordova (1):
+      Bluetooth: bnep: linearize skb before sending
+
+Ajith P V (1):
+      Bluetooth: bnep: refactor deprecated strcpy
+
+Alex Zhou (1):
+      MAINTAINERS: add entry for NXP wireless Bluetooth driver
+
+Andy Chang (2):
+      Bluetooth: dt-bindings: net: bluetooth: add BCM4384
+      Bluetooth: btbcm: Add Synaptics 4384 chip support
+
+Aritra Das (1):
+      Bluetooth: btusb: Add USB ID 13d3:3556 for RTL8821CE
+
+Bui Viet Dung (4):
+      Bluetooth: 6lowpan: Pin module for 6lowpan_control debugfs file
+      Bluetooth: hci_debugfs: Pin module for debugfs file operations
+      Bluetooth: hci_vhci: Pin module for debugfs file operations
+      Bluetooth: selftest: Pin module for selftest debugfs file operations
+
+Catherine L (5):
+      Bluetooth: btintel_pcie: Route debug traces to WiFi DBGC by default
+      Bluetooth: btusb: Add support for Intel Otter Peak2 (OrP2)
+      Bluetooth: btintel_pcie: Add CNVi ID for Titan Lake (Scorpius Peak2 C0)
+      Bluetooth: btintel_pcie: Add PCI ID for Titan Lake
+      Bluetooth: btusb: annotate Intel Otter Peak 2 USB ID
+
+Cen Zhang (10):
+      Bluetooth: 6LoWPAN: Use RCU-safe device list removal
+      Bluetooth: hci_core: Keep RCU protection through LTK filtering
+      Bluetooth: hci_sync: Serialize devcoredump reset during device open
+      Bluetooth: ISO: Hold the listener during disconnect notification
+      Bluetooth: MGMT: Reject quality report requests during unregister
+      Bluetooth: msft: Lock failed probe cleanup against feature readers
+      Bluetooth: 6lowpan: Drain RCU readers on registration failure
+      Bluetooth: hci_sync: Protect IRK identity reads with RCU
+      Bluetooth: L2CAP: Hold the listener while notifying child teardown
+      Bluetooth: MSFT: Serialize handle map cleanup with event processing
+
+Chandrashekar Devegowda (4):
+      Bluetooth: btintel_pcie: parse FW memory addresses via mailbox TLV
+      Bluetooth: btintel_pcie: remove duplicate BTINTEL_PCIE_MAGIC_NUM definition
+      Bluetooth: btintel_pcie: add MDBGC multi-buffer DBGC allocation
+      Bluetooth: btintel_pcie: unified decoder coredump format
+
+Chris Lu (7):
+      Bluetooth: btmtksdio: Remove redundant firmware filename override
+      Bluetooth: btmtksdio: Pass the hardware device id to mt79xx_setup()
+      Bluetooth: btmtk: Validate the firmware layout before parsing it
+      Bluetooth: btmtk: Improve BT firmware logging
+      Bluetooth: btmtk: Replace magic numbers with WMT packet flag enum
+      Bluetooth: btmtk: Route firmware debug event to the diag channel
+      Bluetooth: btmtk: Add MT7928 support
+
+Christophe JAILLET (1):
+      Bluetooth: btmrvl: Slightly simplify btmrvl_process_event()
+
+Eric Dumazet (1):
+      Bluetooth: btmtk: fix skb double free on ISO padding failure
+
+Frédéric Danis (1):
+      Bluetooth: MGMT: Add management security level changed event
+
+George Maraveyas (1):
+      Bluetooth: mt7925: trigger reset on WMT timeout
+
+Hans de Goede (1):
+      Bluetooth: hci_sync: Factor common cleanup code into a helper
+
+Hitalo Souza (1):
+      Bluetooth: Add missing newline to bt_dev_{err,warn}_ratelimited()
+
+Ibrahim Abdelkader (1):
+      Bluetooth: hci_core: Return -ENOMEM when the sent_cmd clone fails
+
+Jeremy Dean (1):
+      Bluetooth: Fix code style error
+
+Junjie Cao (1):
+      Bluetooth: btusb: drop BROKEN_EXT_SCAN quirk for 0bda:a728
+
+Kevin Dewald (1):
+      Bluetooth: hci_event: Fix LE link drop on remote features command status
+
+Kiran K (5):
+      Bluetooth: btintel_pcie: sync mbox tlv parsing with GP0 alive interrupt
+      Bluetooth: btintel_pcie: cap device debug regions at 1 MB
+      Bluetooth: btusb: Preserve event and ACL packet ordering
+      Bluetooth: btintel: Zero version data before parsing TLVs
+      Bluetooth: btintel: load unlocker.sfi to allow unsigned firmware
+
+Konstantin Nazarov (1):
+      Bluetooth: btusb: add ASUS 0b05:1825 to QCA Rome quirks
+
+Kyle Pepper (1):
+      Bluetooth: hci_sync: scan unfiltered for host-resolved RPAs
+
+Luiz Augusto von Dentz (8):
+      Bluetooth: Move H:4 reassembly into the Bluetooth core
+      Bluetooth: btusb: Add support for Bulk Serialization Mode
+      Bluetooth: MGMT: Fix advertising instances with Global Advertising
+      Bluetooth: HCI: Fix tracking of instances sharing handle 0x00
+      Bluetooth: MGMT: Fix pending state of instances added without HCI traffic
+      Bluetooth: MGMT: Fix leaking instance on Add Extended Advertising Parameters
+      Bluetooth: MGMT: Allow connection rate request as peripheral
+      Bluetooth: Fix the LE Read Connection Interval response layout
+
+Nikolaj Klitlund Børty (1):
+      Bluetooth: btusb: Add device ID for Realtek RTL8761BUE (StarTech AV53C1)
+
+Pauli Virtanen (22):
+      Bluetooth: hci_core: add lockdep check to hci_conn lookups
+      Bluetooth: L2CAP: avoid maybe-return-locked in l2cap_get_chan_by_scid/dcid
+      Bluetooth: L2CAP: add locking annotations for l2cap_chan_lock/unlock
+      Bluetooth: enable context analysis for headers
+      Bluetooth: L2CAP: take chan->lock for l2cap_chan_add/ready/del
+      Bluetooth: L2CAP: add l2cap_chan_close_unlocked() and locking helpers
+      Bluetooth: L2CAP: fix race condition in l2cap_sock_shutdown()
+      Bluetooth: 6lowpan: use l2cap_chan_close_unlocked()
+      Bluetooth: L2CAP: remove unused l2cap_chan_close()
+      Bluetooth: 6lowpan: avoid concurrent peer_del() in bt_6lowpan_disconnect
+      Bluetooth: L2CAP: hold conn->lock for __l2cap_ecred_conn_rsp_defer
+      Bluetooth: L2CAP: hold l2cap_conn::lock in l2cap_connect_cfm()
+      Bluetooth: L2CAP: add annotations for l2cap_chan list locking
+      Bluetooth: L2CAP: hold chan in l2cap_ecred_conn_rsp()
+      Bluetooth: L2CAP: make concurrent l2cap_set_timer() refcounting safe
+      Bluetooth: L2CAP: remove conditional locking from l2cap_connect()
+      Bluetooth: L2CAP: take lock for l2cap_chan_del in l2cap_ecred_rsp_defer
+      Bluetooth: L2CAP: annotate locking for l2cap_chan_del()
+      Bluetooth: L2CAP: annotate locking for l2cap_ops callbacks
+      Bluetooth: L2CAP: refuse __l2cap_chan_add if chan already has conn
+      Bluetooth: hci_sync: fix mesh adv timeout units
+      Bluetooth: make hdev->adv_instance_timeout a boolean
+
+Peng Fan (1):
+      Bluetooth: use assign_bit() where applicable
+
+Quentin Strydom (1):
+      Bluetooth: btusb: add ASUS 0b05:1868 to QCA Rome quirks
+
+Radek Podgorny (1):
+      Bluetooth: forget a peer's RPA once it advertises its identity address
+
+Ravindra (3):
+      Bluetooth: btintel: read ROM debug registers on FW download failure
+      Bluetooth: btintel_pcie: fix PM flow for S0ix, S3 and S4
+      Bluetooth: btintel_pcie: clear the GP0 cause with a W1C write
+
+Richard Nunley (1):
+      Bluetooth: btusb: Add Realtek RTL8821CE device 13d3:3558
+
+Sai Teja Aluvala (3):
+      Bluetooth: btintel_pcie: Add support for Intel Draco
+      Bluetooth: btintel_pcie: Add support for Intel Draco
+      Bluetooth: Add support for Intel DRACO
+
+Samuel Alhovuori (1):
+      Bluetooth: btusb: Add device ID for MediaTek MT7925 (13d3:3631)
+
+Sergey Lebedev (1):
+      Bluetooth: btintel_pcie: verify and serialize D-state transitions
+
+Shuai Zhang (1):
+      Bluetooth: mgmt: reply to cancelled mgmt commands instead of silently dropping
+
+Siwei Zhang (6):
+      Bluetooth: L2CAP: Reject mode changes on connected channels
+      Bluetooth: L2CAP: Reject signalling responses in invalid states
+      Bluetooth: L2CAP: Reject invalid TxWindow in configuration requests
+      Bluetooth: L2CAP: Use default TxWindow for zero socket option
+      Bluetooth: L2CAP: Only accept connection responses to outstanding requests
+      Bluetooth: L2CAP: Remove dead configuration state code
+
+Thomas Huth (1):
+      Bluetooth: SMP: Zeroize raw key data on the stack in smp_e()
+
+Tzung-Bi Shih (1):
+      Bluetooth: btmtksdio: Fix spurious ownership error logs
+
+Vladimir V. Kondratyev (1):
+      Bluetooth: btintel_pcie: fix stale cache in set_dxstate fallback check
+
+Xuhua Zhang (3):
+      Bluetooth: hci_bcsp: Use the shared CRC-CCITT byte helper
+      Bluetooth: hci_h5: Avoid clearing the escape bit for ordinary bytes
+      Bluetooth: hci_ll: Sleep while waiting for the controller to power up
+
+ZhaoJinming (3):
+      Bluetooth: virtio_bt: Fix use-after-free and memory leak in probe error paths
+      Bluetooth: btmtksdio: fix deadlock in close and reset paths
+      Bluetooth: hci_serdev: Fix use-after-free in hci_uart_unregister_device()
+
+Zijun Hu (7):
+      Bluetooth: hci_event: Use 254 as max LE Meta subevent payload length in hci_le_ev_table[]
+      Bluetooth: hci_event: Use 252 as max CC event payload length in hci_cc_table[]
+      Bluetooth: btusb: Add recv_intr() hook to btusb_data
+      Bluetooth: Add generic support for vendor packets
+      Bluetooth: btusb: Build the driver from multiple source files
+      Bluetooth: btusb: Add support for Qualcomm multi-subsystem QCC2072
+      Bluetooth: btnxpuart: Simplify nxp_recv_acl_pkt() by hci_acl_handle()
+
+ .../bindings/net/bluetooth/brcm,bluetooth.yaml     |    1 +
+ MAINTAINERS                                        |    2 +
+ drivers/bluetooth/Kconfig                          |   15 +
+ drivers/bluetooth/Makefile                         |    3 +
+ drivers/bluetooth/btbcm.c                          |    7 +-
+ drivers/bluetooth/btintel.c                        |  152 +-
+ drivers/bluetooth/btintel.h                        |   19 +
+ drivers/bluetooth/btintel_pcie.c                   | 1545 ++++++-
+ drivers/bluetooth/btintel_pcie.h                   |  257 +-
+ drivers/bluetooth/btmrvl_main.c                    |    4 +-
+ drivers/bluetooth/btmtk.c                          |  515 ++-
+ drivers/bluetooth/btmtk.h                          |   12 +
+ drivers/bluetooth/btmtksdio.c                      |   55 +-
+ drivers/bluetooth/btnxpuart.c                      |    4 +-
+ drivers/bluetooth/{btusb.c => btusb_main.c}        |  370 +-
+ drivers/bluetooth/btusb_qcom.c                     | 4557 ++++++++++++++++++++
+ drivers/bluetooth/btusb_qcom.h                     |   99 +
+ drivers/bluetooth/hci_bcm.c                        |    1 +
+ drivers/bluetooth/hci_bcsp.c                       |   26 +-
+ drivers/bluetooth/hci_h4.c                         |  123 +-
+ drivers/bluetooth/hci_h5.c                         |   11 +-
+ drivers/bluetooth/hci_ll.c                         |    2 +-
+ drivers/bluetooth/hci_serdev.c                     |   46 +-
+ drivers/bluetooth/hci_uart.h                       |   39 +-
+ drivers/bluetooth/hci_vhci.c                       |    4 +
+ drivers/bluetooth/virtio_bt.c                      |   25 +-
+ include/net/bluetooth/bluetooth.h                  |    4 +-
+ include/net/bluetooth/hci.h                        |    1 +
+ include/net/bluetooth/hci_core.h                   |   69 +-
+ include/net/bluetooth/hci_h4.h                     |   60 +
+ include/net/bluetooth/hci_mon.h                    |    2 +
+ include/net/bluetooth/hci_sync.h                   |    1 +
+ include/net/bluetooth/l2cap.h                      |  103 +-
+ include/net/bluetooth/mgmt.h                       |   14 +
+ net/bluetooth/6lowpan.c                            |   48 +-
+ net/bluetooth/Makefile                             |    2 +-
+ net/bluetooth/bnep/core.c                          |   16 +-
+ net/bluetooth/hci_conn.c                           |   28 +
+ net/bluetooth/hci_core.c                           |   57 +-
+ net/bluetooth/hci_debugfs.c                        |    9 +
+ net/bluetooth/hci_event.c                          |  290 +-
+ net/bluetooth/hci_h4.c                             |  160 +
+ net/bluetooth/hci_sock.c                           |    8 +
+ net/bluetooth/hci_sync.c                           |  138 +-
+ net/bluetooth/iso.c                                |   18 +-
+ net/bluetooth/l2cap_core.c                         |  371 +-
+ net/bluetooth/l2cap_sock.c                         |  122 +-
+ net/bluetooth/mgmt.c                               |  204 +-
+ net/bluetooth/msft.c                               |    6 +
+ net/bluetooth/rfcomm/core.c                        |    6 +-
+ net/bluetooth/rfcomm/sock.c                        |    5 +-
+ net/bluetooth/sco.c                                |   10 +-
+ net/bluetooth/selftest.c                           |    1 +
+ net/bluetooth/smp.c                                |    5 +-
+ scripts/context-analysis-suppression.txt           |    1 +
+ 55 files changed, 8785 insertions(+), 868 deletions(-)
+ rename drivers/bluetooth/{btusb.c => btusb_main.c} (94%)
+ create mode 100644 drivers/bluetooth/btusb_qcom.c
+ create mode 100644 drivers/bluetooth/btusb_qcom.h
+ create mode 100644 include/net/bluetooth/hci_h4.h
+ create mode 100644 net/bluetooth/hci_h4.c
