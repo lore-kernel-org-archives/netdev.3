@@ -1,94 +1,140 @@
-Received: from out162-62-58-216.mail.qq.com (out162-62-58-216.mail.qq.com [162.62.58.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-8.mta0.migadu.com [91.218.175.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF8E361651;
-	Wed, 14 Oct 2026 05:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.58.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68FD2F12AB
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 05:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791954191; cv=none; b=DQl/eq7XwzUVwEm3r2iraVkYbusKE6t53CB+gSR9SRIMlup67/BXPHJYboIY3SdXyedsY/DdsC3Z50oSXexH35C7oFfW4qQWN9IwO7qX0UGwC844kQ7nkvMXkwMKzhzjHmAd90D8aj3La7z3id4CDxNUXnCnj1mL8TdtlSe9ZOo=
+	t=1791955964; cv=none; b=LN4ehgD0HKZwHAYy/kxbIcrfmr3m7itCFoBy5ZRXuqKLddrkZnFgrx+NmoLgOEDGwhaj0mekpfZbant2jDo8Y9t4DDwGjUy71j26hursonn7qXVsiDgkwLmP8sJtVeOHILW/uZONFNl88KvfKuagfNISOzt/p+AbS+ic23j05Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791954191; c=relaxed/simple;
-	bh=0T0zreJEKXCOs2vAHy9C7aS+rC0OoUQsDz7CaxsQtfg=;
-	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
-	 References:In-Reply-To; b=kgHrTA4FRIOuGbQKYgTfQZLVqG2ettteKOqAYaSLp4CLpN4rhZPDsnOoNAb5+RJdAhsKA29T25/kGkC4UFDHP7CfAtcUX6YSAdujME/Us6mLdzKYilK3ZgCQ/Bxxgxj3hoEuT/uO375eewMUmWy1I+q4cbePx3IyXp6Xl5O+/BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=No67Yb89; arc=none smtp.client-ip=162.62.58.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1791955964; c=relaxed/simple;
+	bh=DeeQ1mnSlJJadwW9+vWEJShMOdLCTlYD4T0We+pBlNo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pg9sqbuJA0xnNNcxSoHR6DQtJpjMYxuSi08cmA4QsD7FyG82kBQsBxTnN8yBs50sUV/jlwvh+VoXHnccEJfhHQjKlgI/K7HFpwYlQnOA+rcNMDtI4K5sGsDwqfzvkG//Gmm35BIeRSdnyYypC8MbljKGAzcjsVvyGez3DwGsNvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U6RqeYfQ; arc=none smtp.client-ip=91.218.175.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="No67Yb89"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1791954184; bh=0T0zreJEKXCOs2vAHy9C7aS+rC0OoUQsDz7CaxsQtfg=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=No67Yb899+Gy5k0t1WYRFaEiPXQEASN0lMGBncIbU4m8e4fnqLIm+fEXsR5UfuJwp
-	 yIrJoSxF4pMNGBdwDfBBn0Us2aUNEJN7/ZgcQUsN+oVjkPNya/0lvb6FO+i0L9mCfm
-	 /mPcwbtyc9mJSpxq3lCWtLVMGaJYR9gTtyyChNfg=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-QQ-XMAILINFO: MxLtP9q6S0tzjLKUKgJphWdmcFHfNjQ+Kg7zfilYfOVLccuCtqBLPDXOU/0AG3
-	 hDL/EKnlaE/4Unw/PfxELEMPmMENAGsqik9zbXx65JLzWq3V7par2z3s3fqP0lxb/tS+BeO5Gu3p6
-	 /wENtOGv41KbVGOZvRDWC5xLa0bWnalLVMpTNobxlr34gAcXwFbcU7+sEKEqpKvYZhrYrs4ouvi+Y
-	 4gECnxuN4+7fD8JXAslDJG/R1qwFg+HuvSXHoXQMTV1CDamooQqWma0WMIq7K1/QMDbprIc9G2jEs
-	 e3GD5a8sGYDS6FXCJa7xby38XshjdgNZecatCej30e/sCQZhPQokFNeC1AMMD/7G6JldqgGDQcEpR
-	 8r54+y0EGdWvHX9h82jppGKe1BGXL0Xkxwtc9NUf65rTbBddyTkpkbZ0+9vw5IZzLq8XHXVpN9GkO
-	 9YOpkySIos4xtYfpPTiCPH8B3NGGzjAlD1UhaTekAD70mundIhUfgbKT7H704tZBLpl5eaqEJwJKY
-	 eFHlJZwlxKGagWjnLISVdl0iXGBA+ke6RjWRgx1dv2RlhC3oV9j5RZHKafNToNomSwaZVRP/bot8C
-	 LVa1y9inpdOh49gA5e/mHAIHF471W6INM6UsSfdqMuPD4jThwep0vFAVYo7U+EfX3DkFA0OIv5vPO
-	 2+4gqjwQ0Qihoujov7LQknNJ7Lg1QU+/2cv/hnHaSayki3+8PWY2vGb5cBeSloV09+kzMqngrEaF5
-	 yMX45PfBtrNQeUqcJe83PMsreIHn8irfvpXCJtg8SBCyGHoDq0eyPQSlatJ9OefP1CYtj6hQjr5X4
-	 WtplOcUl0FDukpST5Aov9n0Fv8mnYeYvSyp/FMmmog7ajNe90P6m51FWmx3gW8J3hiw6v33G2ihwt
-	 SRjJwSTVa2kZ+qW0oJ4GM883eF3s0/Zz+GYQDsh16RPZvPlAG0jO8dHG2LSYxuRr6yzJnLB3O9nID
-	 4mPLuNj3oH8wOXjcEChVobv2ru0XNLfM6Jw83mCNqK/XGWC+Sot4MbqME0At8ZvTDGNQegoW9MMWu
-	 29dv36fwBYAFDYJgSlKIrftX3a8AIGo5TYxKVh22MaBVmKqs=
-From: "=?utf-8?B?Q3VuaGFvIEx1?=" <1579567540@qq.com>
-To: "=?utf-8?B?bmV0ZGV2LWJvdCtzYXNoaWtv?=" <netdev-bot+sashiko@kernel.org>
-Cc: "=?utf-8?B?bWts?=" <mkl@pengutronix.de>, "=?utf-8?B?bWFpbGhvbA==?=" <mailhol@kernel.org>, "=?utf-8?B?YmlnZWFzeQ==?=" <bigeasy@linutronix.de>, "=?utf-8?B?Y2xya3dsbG1z?=" <clrkwllms@kernel.org>, "=?utf-8?B?cm9zdGVkdA==?=" <rostedt@goodmis.org>, "=?utf-8?B?bGludXgtY2Fu?=" <linux-can@vger.kernel.org>, "=?utf-8?B?bmV0ZGV2?=" <netdev@vger.kernel.org>, "=?utf-8?B?a2VybmVs?=" <kernel@pengutronix.de>, "=?utf-8?B?aGVpa28=?=" <heiko@sntech.de>, "=?utf-8?B?bGludXgtcm9ja2NoaXA=?=" <linux-rockchip@lists.infradead.org>, "=?utf-8?B?bGludXgtYXJtLWtlcm5lbA==?=" <linux-arm-kernel@lists.infradead.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?a3ViYQ==?=" <kuba@kernel.org>
-Subject: Re: [PATCH net] can: rockchip_canfd: stop bus-off restart before closing the device
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U6RqeYfQ"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=DeeQ1mnSlJJadwW9+vWEJShMOdLCTlYD4T0We+pBlNo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1791955960; v=1; x=1792560760;
+ b=U6RqeYfQsa9t8wcGp8m2XqD4BFIwN3noHxt+ui1QMNky1qOcLUTGIpQP8c9S96r+DEeAo4cD
+ pi0/F/aykZmwCCeWKINE0jRj8HV2StoSlH6NZi8HWGdAVsApDiP3cVI1s9jwZbXmrP94M/CFWPl
+ M7FujYHPWrzRM495bG4c7Au8=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta10.migadu.com with ESMTPS id 172f82703bb1138b;
+	Wed, 14 Oct 2026 05:32:39 +0000
+X-Mizu-Trace-ID: 172f82703bb1138b
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Wed, 14 Oct 2026 13:32:24 +0800
+Subject: [PATCH net-next] selftests: net: exit with test failure status
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Wed, 14 Oct 2026 13:03:02 +0800
-X-Priority: 3
-Message-ID: <tencent_D5994C4DC2CF087A800762B3DF5F53010D06@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_5802EE88434010229EDF7A53084D994C6106@qq.com>
-	<179194843570.434549.16906326776857003512@kernel.org>
-In-Reply-To: <179194843570.434549.16906326776857003512@kernel.org>
-X-QQ-mid: xmsezb41-0t1791954182tg1aae6rv
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261014-self_ret-v1-1-6b5a95ba6106@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MWwqAIBBA0a3IfCf4iIi2EhFaYw2EhUoI4t6TP
+ i8cboGIgTDCxAoEfCnS7VvIjsF2Gn8gp701KKEGKWTPI15uDZj4qK3QwmlljYbGn4CO8r+awTf
+ gMSdYav0AissFWWQAAAA=
+X-Change-ID: 20261014-self_ret-83b030f32ba3
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ Ido Schimmel <idosch@nvidia.com>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-SGksCgpJIGNoZWNrZWQgYWxsIGZvdXIgZmluZGluZ3MgYWdhaW5zdCB0aGUgY3VycmVudCBi
-cmFuY2guCgo+IC0gW01lZGl1bV0gVGhlIHBhdGNoIG5vdyBoYXMgcmtjYW5mZF9zZXRfbW9k
-ZSgpIHJldHVybiAtRU5FVERPV04gd2hlbiBpdAo+ICAgc2VlcyBwcml2LT5jbG9zaW5nLgo+
-IC0gW01lZGl1bV0gcmtjYW5mZF9zdG9wKCkgcHVibGlzaGVzIHByaXYtPmNsb3NpbmcgPSB0
-cnVlIChsaW5lIDc3NikKPiAgIGJlZm9yZSBpdCBtYXNrcyB0aGUgY29udHJvbGxlciBpbnRl
-cnJ1cHRzIHdpdGjigKYKClRoZSB0d28gaXNzdWVzIGludm9sdmluZyBjbG9zaW5nIHdlcmUg
-YWRkcmVzc2VkIGluIHYyLgoKPiBbU2V2ZXJpdHk6IEhpZ2hdCj4gVGhpcyBpc24ndCBhIGJ1
-ZyBpbnRyb2R1Y2VkIGJ5IHRoaXMgcGF0Y2gsIGJ1dCB0aGlzIHBhdGNoIGhhcmRlbnMgdGhl
-Cj4gcmVzdGFydCBwYXRoLCBzbyBpcyBpdCBzYWZlIHRvIHJlaW5pdGlhbGl6ZSB0aGUgdGlt
-ZXN0YW1wIGRlbGF5ZWRfd29yawo+IGhlcmU/Cj4gLi4uCj4gV291bGQgaXQgd29yayB0byBj
-YWxsIElOSVRfREVMQVlFRF9XT1JLKCkgb25jZSBhdCBwcm9iZSB0aW1lLCBhbmQgdG8gY2Fs
-bAo+IGNhbmNlbF9kZWxheWVkX3dvcmtfc3luYygmcHJpdi0+dGltZXN0YW1wKSBpbiB0aGUg
-cHJvY2Vzcy1jb250ZXh0IHJlc3RhcnQKPiBwYXRoIGJlZm9yZSB0aGUgdGltZWNvdW50ZXIg
-aXMgcmVpbml0aWFsaXplZD8KCkFncmVlZC4gRXhjbHVkaW5nIHRoZSBJUlEgaGFuZGxlciBk
-b2VzIG5vdCBzdG9wIHRoZSB0aW1lc3RhbXAgd29ya2VyLgpJIHdpbGwgaW5pdGlhbGl6ZSB0
-aGUgZGVsYXllZF93b3JrIG9uY2UgYXQgcHJvYmUgdGltZSBhbmQgc3luY2hyb25vdXNseQpj
-YW5jZWwgaXQgaW4gdGhlIHByb2Nlc3MtY29udGV4dCByZXN0YXJ0IHBhdGgsIGFmdGVyIGV4
-Y2x1ZGluZyB0aGUgSVJRCmhhbmRsZXIgYW5kIGJlZm9yZSBya2NhbmZkX2NoaXBfc3RhcnQo
-KSByZWluaXRpYWxpemVzIHRoZSB0aW1lc3RhbXAKc3RhdGUuIFRoZSBidXMtb2ZmIElSUSBw
-YXRoIHdpbGwga2VlcCBpdHMgbm9uLXN5bmNocm9ub3VzIGNhbmNlbGxhdGlvbi4KCgo+IFtT
-ZXZlcml0eTogSGlnaF0KPiBUaGlzIGlzIGEgcHJlLWV4aXN0aW5nIGlzc3VlLCBidXQgdGhp
-cyBodW5rIHRvdWNoZXMgdGhlIHJlcXVlc3RfaXJxKCkKPiBwYXRoIGluIHJrY2FuZmRfb3Bl
-bigpLiBXaGF0IGhhcHBlbnMgdG8gTkFQSSBpZiByZXF1ZXN0X2lycSgpIGZhaWxzPwo+IC4u
-Lgo+IFNob3VsZCBjYW5fcnhfb2ZmbG9hZF9kaXNhYmxlKCZwcml2LT5vZmZsb2FkKSBiZSBh
-ZGRlZCB0byB0aGlzIGVycm9yIHBhdGg/CgpZZXMuIEkgd2lsbCBhZGQgaXQgdG8gdGhlIHJl
-cXVlc3RfaXJxKCkgZmFpbHVyZSBwYXRoLCBiZWZvcmUgc3RvcHBpbmcgdGhlCmNvbnRyb2xs
-ZXIsIHRvIGJhbGFuY2UgY2FuX3J4X29mZmxvYWRfZW5hYmxlKCkuIEkgd2lsbCBhZGRyZXNz
-IHRoaXMgYW5kCnRoZSB0aW1lc3RhbXAgd29yayBpc3N1ZSBpbiBzZXBhcmF0ZSBwYXRjaGVz
-LgoKSSB3aWxsIGZpeCB0aGVzZSBidWdzIGluIHYzLgoKUmVnYXJkcywKQ3VuaGFvIEx1
+From: Hangbin Liu <liuhangbin@kylinos.cn>
+
+fdb_flush.sh, fib-onlink-tests.sh and l2tp.sh can print [FAIL]
+subtests while still exiting with status 0. Their log_test(), aka
+log_test_expected() in lib.sh, helpers record a failure in ret, but
+the scripts never propagate ret to the exit code, so a kselftest runner
+treats the run as a pass.
+
+Initialize ret and exit with it at the end of each script so failed
+subtests are reflected in the exit status.
+
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+The patch doesn't fix a regression, nothing is failing (or passing when it
+shouldn't) because of it. So target the patch to net-next.
+---
+ tools/testing/selftests/net/fdb_flush.sh        | 3 +++
+ tools/testing/selftests/net/fib-onlink-tests.sh | 3 +++
+ tools/testing/selftests/net/l2tp.sh             | 3 +++
+ 3 files changed, 9 insertions(+)
+
+diff --git a/tools/testing/selftests/net/fdb_flush.sh b/tools/testing/selftests/net/fdb_flush.sh
+index 4965e52d5ef5..0827fdd60f8c 100755
+--- a/tools/testing/selftests/net/fdb_flush.sh
++++ b/tools/testing/selftests/net/fdb_flush.sh
+@@ -6,6 +6,7 @@
+ # some combinations of arguments.
+ 
+ source lib.sh
++ret=0
+ 
+ FLUSH_BY_STATE_TESTS="
+ 	vxlan_test_flush_by_permanent
+@@ -778,3 +779,5 @@ for t in $TESTS
+ do
+ 	setup; $t; cleanup;
+ done
++
++exit $ret
+diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+index a26075abf7d2..325da693c918 100755
+--- a/tools/testing/selftests/net/fib-onlink-tests.sh
++++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+@@ -6,6 +6,7 @@
+ source lib.sh
+ PAUSE_ON_FAIL=${PAUSE_ON_FAIL:=no}
+ VERBOSE=0
++ret=0
+ 
+ # Network interfaces
+ # - odd in current namespace; even in peer ns
+@@ -473,3 +474,5 @@ if [ "$TESTS" != "none" ]; then
+ 	printf "\nTests passed: %3d\n" ${nsuccess}
+ 	printf "Tests failed: %3d\n"   ${nfail}
+ fi
++
++exit $ret
+diff --git a/tools/testing/selftests/net/l2tp.sh b/tools/testing/selftests/net/l2tp.sh
+index 41e8b19d1bd3..de4b5da2da1b 100755
+--- a/tools/testing/selftests/net/l2tp.sh
++++ b/tools/testing/selftests/net/l2tp.sh
+@@ -16,6 +16,7 @@
+ source lib.sh
+ VERBOSE=0
+ PAUSE_ON_FAIL=no
++ret=0
+ 
+ which ping6 > /dev/null 2>&1 && ping6=$(which ping6) || ping6=$(which ping)
+ 
+@@ -357,3 +358,5 @@ cleanup
+ 
+ printf "\nTests passed: %3d\n" ${nsuccess}
+ printf "Tests failed: %3d\n"   ${nfail}
++
++exit $ret
+
+---
+base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+change-id: 20261014-self_ret-83b030f32ba3
+
+Best regards,
+-- 
+Hangbin Liu <liuhangbin@kylinos.cn>
 
