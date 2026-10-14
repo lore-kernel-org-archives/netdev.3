@@ -1,132 +1,134 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A388444C661
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F2C4DD3C9;
+	Wed, 14 Oct 2026 09:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791970583; cv=none; b=gahHHj/VVZsCgxhP1hAUk1EYhMzhEiVbQrm2qbBD2W4thYIt7SM7NuKrJnHfYJ14UFZ1GLyttp2Rz+2C+41axfq6Xv8o0SgGeRXm6kh4VRB6IxJ/8/M3y1T8ICBgDViW7/yy0j7qzLkAfxuQVmN5MTP+tpelkbqh6NQGT/8p6k8=
+	t=1791971083; cv=none; b=Qld+1S7uSPTfW5CXmmt4ZafY3rPmG215pqbU8nrytEBpRGQdaKUw4ZtCj9e/rE1nUe6rA4/VyunxINmd631WgVYr5QdCGawfyyQQE+wDrxW3Hp+KB8uvE1QrTvAdxwFa3B2yahEjYxV+81BXa9I3/mFZSV2ngMUCpf53bhy9SPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791970583; c=relaxed/simple;
-	bh=Z5ysX779+2BJivXevzHH1XvznaoW04mloJ1QhySlIwY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jfhXeWHCVGubfyJ6Gy5xsXKIEe5bGJCBvjHPD/n4S88/Fzah9hpjQYw4h46dhb+aVd44SV7N5AMVchPAqvAXKKe20dRB0rLnKUkEyGxskq8ySqAQjWaoA8mqMntPaJdxgABGYfdwo2Z1cpMnIgjXPDU0w/cqGDGzer+UvL0d0es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=D4h9k2KY; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1791971083; c=relaxed/simple;
+	bh=ysek4aHBu0K0buhWqgycnMaaYu9WclMvVNBclLQQdm0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYLmUeHHF4b3lO9MGIdJiR/AGDXzDxDsykTjlFS7GygcdOcayoktvFdJste7ipMqS0tPz4HsDbpVqDF8cETZufqhaOs928+AJ+kxPkEhfcCvJHjq2hfGoetRfYBok3XgbNnfbP4urX4cF61geJy8Ns0bNS1J9JRvRuk7qtzmIWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=whHQ98v3; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="D4h9k2KY"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-48b0d19cf7eso3880496f8f.1
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 02:36:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1791970580; x=1792575380; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9nFXolfpittgi2Lah9fQ/bqQ/j+/1tOBiVSyiO7ElMg=;
-        b=D4h9k2KYW0maCX6tsmsmAbBTbeDdlb5KVqZYxV9wP/e97DT6QK8TQKq4I42wueMV0a
-         zE2RtdDtU8d5LBptU2aMNoFDSszAJdZP1rravwftWPtTz7oH0RmXjV1nqk91mu9TQkAX
-         ufJfj8m19qntw2Uu955lFAoHWNN1BGx8VOiRbyd6rOWAuibyEHYTpQULp7Zq0IxGfTRD
-         MctpWNhBsxU45VyxsNAquLRCunBRdU4E/MnypoU/eseCMjj1ajJ2dmDecnvL2R0x0VtR
-         mVdVJM1Pm0mA+T+WIQk3HglCHAZE2vUw7QZhJE/CeYtTti7pqi6FPX2xqTjb//pYNPn5
-         E4RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791970580; x=1792575380;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9nFXolfpittgi2Lah9fQ/bqQ/j+/1tOBiVSyiO7ElMg=;
-        b=2kWnJ3eXYh/g6cxp45r1HR0pYskTliG6HzdwF7waxY7md9DB+r2xjRw9pO67b/0US5
-         M6i2eGr4COXdTcuQLOKmRQtyOVCrHCZ9zGZs3GKxIDb9CgA6f163F3EzJhhRVU/glDES
-         SAWo2pNx+qMvEoaQomnIuDQi/9oDPDm0uwrYTlTyKM9R2gAfJzPX2Dpr66/h4J43beIA
-         MthTNQDrBRDYfNFY/A96W7m6QHep7WjBcEa/5Lf4HEVHVtr+hEr7wpvJJRqCQpN3ppTQ
-         TfkPqZnl/SnqPa5BA1eaH8mTodvleLb4YaPsLaZmqx+DRQ3KrkSQyJDV9Sq70qob97oa
-         HMnQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz7MTMZe/2Qz5gZqsltM7gVqUt+z4Bkvw24mCD4wxhD67RRdzE3g2Py579aSgHFTESE21dJelw=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK6AP3FHoFAUzer62TRpC86yNnJNSlfORhCszdmcHImzLGItZBh
-	FuZ2VOjiUpydp0T65nQ6Tq8VgHpNpfc+SNBDh0sjIVQZbmT3Rh76r6ZyMj2Agdmd1rc=
-X-Gm-Gg: AYBFou129H1dE2v3gp30tCGonwf1TJKDrmCn0RCdgQU9PBQ/DDfEq+FqCBOjYVbuDfG
-	uXDxkAaU9bjJv9W92qIRBSGXl/0v6ae1P1WMGnjd0FVLmE4pqXkoB2m3Zk6F5wHDYLqkWc/MYZn
-	M4bYhvZJKlvJo8qNrWlmmxanxAOY2aoULr3E4ORZX645RjYDnNQrGz5TBqKUPjJX23rTlzZm/cd
-	RQEslgbwXUtOUjqB8+3GQ41TOgJs5zIdkDURxv33dgSy3Mi3IixoNkSeS9w8MNdR/nuFwFRrODs
-	niJGi+es0avA500CjchdZ+WFTO14r74sB4YE5d12Yt168mdl3Qb7PVpgKBnIcrYvgVaIU16TXEE
-	bP1OtN/cMKIi0QuWTE8Oay0Vnv2TfG+AknyCS6xBky+xsGwu+w7CVmaQKy+AxLt9A9DBwN8mUxO
-	4m2uI/xrXR6cOPKRCFWftXHPj+Q/fsWy76vRRxERUMF/fYBRdUN3bPwieMaVA+BUW/qYL7im+SJ
-	N5+RHkwOChnFLa3UYojB/tykNo7WBfg6HmcavFQ6fjZ7OxGnkWoX5Xl/wzYxm91fptfayaF24sR
-	S3/UA3hN4eg1RkLmHx0g29RYeZ3A7/tcsJAseBP3
-X-Received: by 2002:a05:600c:8a09:20b0:4a1:9c98:b9b8 with SMTP id 5b1f17b1804b1-4a19c98c153mr160846965e9.11.1791970579795;
-        Wed, 14 Oct 2026 02:36:19 -0700 (PDT)
-Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0aaaa3fsm10907378f8f.10.2026.10.14.02.36.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Oct 2026 02:36:19 -0700 (PDT)
-Message-ID: <2e88806e-57dd-47e0-a9ef-a8507d22aa3e@suse.com>
-Date: Wed, 14 Oct 2026 11:36:17 +0200
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="whHQ98v3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1791971082; x=1823507082;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ysek4aHBu0K0buhWqgycnMaaYu9WclMvVNBclLQQdm0=;
+  b=whHQ98v3RxCKBx5CkrjCag/ngZl3979Ww125TMQKbdGS7jGjuXdCz1B6
+   c191IG+7xF7eWOiTtVykMLB2n4UUU2/5unPx4Ozv4IpNZQMT1cnsNEe3R
+   +gunkInhyep1mlvC788T2NM26a9jSkX6KaIVsMnjL67PUGVDGXEsAQNFk
+   nkzCJOJSlQ2j+DYOSj1n6ddEwSdg4aYv1H11CjQzaTQzFhFle+KkZSknc
+   QFgeXp1PEPpFKxr0acokmKBMrPFOIzpMqf/TeqxQdv5QxrXF9eDlPvCnE
+   q+s1ZDZe7gHl5vMJc46akFeH1BloV4vjR/T1YjAOOjd/ah6CQ17lQ8ucB
+   Q==;
+X-CSE-ConnectionGUID: boNXzslZQNSo+OPTzTF2vw==
+X-CSE-MsgGUID: fBHndb8dQ7CH8LVtG9XtNg==
+X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
+   d="scan'208";a="296435375"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Oct 2026 02:44:41 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 14 Oct 2026 02:44:39 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Wed, 14 Oct 2026 02:44:37 -0700
+Date: Wed, 14 Oct 2026 11:44:37 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 0/5] net: sparx5: add tc matchall port policer
+ offload
+Message-ID: <20261014094437.tunkwehr5w6v7hdn@DEN-DL-M70577>
+References: <20261009-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v1-0-4916708a7ea2@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] Remove obsolete __MODULE_STRING()
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>,
- Guenter Roeck <linux@roeck-us.net>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Rudolf Marek <r.marek@assembler.cz>, Andi Shyti <andi.shyti@kernel.org>,
- Chris Snook <chris.snook@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Andreas Noever <andreas.noever@gmail.com>,
- Mika Westerberg <westeri@kernel.org>, Yehezkel Bernat
- <YehezkelShB@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Duncan Sands <duncan.sands@free.fr>,
- Chas Williams <3chas3@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-watchdog@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-hwmon@vger.kernel.org, linux-i2c@vger.kernel.org,
- netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- linux-rtc@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261002-module-string-v2-0-fc7438acaf4d@suse.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20261002-module-string-v2-0-fc7438acaf4d@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20261009-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-v1-0-4916708a7ea2@microchip.com>
 
-On 10/2/26 10:31 AM, Petr Pavlu wrote:
-> __MODULE_STRING() has been an alias for __stringify() since "[PATCH]
-> MODULE_PARM support for older modules" [1] in 2002-12. That change also
-> moved it to the graveyard section at the end of linux/module.h
+> This series adds offload of tc matchall filters with a police action to
+> the ingress port policers of Sparx5 and lan969x, which are both served
+> by the sparx5 driver.
 > 
-> Replace the remaining uses of __MODULE_STRING() with __stringify() and
-> remove the macro.
+> In hardware, each ingress port has four single-rate leaky bucket
+> policers. A policer drops the frames that exceed its rate and burst.
+> The four policers of a port share the pass and drop statistics counters
+> of the port.
 > 
-> Apologies for the wide distribution. Acked-bys are appreciated.
+> The driver uses one policer per port, because with more than one, the
+> statistics reported to tc could not be attributed to the right policer.
+> This matches lan966x and ocelot. The policer meters each frame
+> including 20 bytes of preamble and inter-frame gap, so the configured
+> rate is a line rate, also as on lan966x and ocelot.
 > 
-> [1] https://git.kernel.org/tglx/history/c/136839a1b4
+> Since the policer meters all ingress frames on the port, only filters on
+> chain 0 with protocol all are offloaded, and filters on shared blocks
+> are rejected. Only drop is supported as the exceed action, and the
+> police overhead parameter is not supported.
+> 
+> Patch #1 drops a redundant prefix from the existing POL_UPD_INT_CFG
+> register macros.
+> 
+> Patch #2 adds the registers used by the port policer.
+> 
+> Patch #3 tracks whether the ingress block of a port is shared, and adds
+> the per-port policer state.
+> 
+> Patch #4 adds the hardware programming of the port policer.
+> 
+> Patch #5 adds the tc matchall offload.
+> 
+> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+> ---
+> Daniel Machon (5):
+>       net: sparx5: Drop redundant POL_ prefix from POL_UPD_INT_CFG
+>       net: sparx5: Add registers used by the port policer
+>       net: sparx5: Track shared tc blocks and per-port policer state
+>       net: sparx5: Add hardware programming for the port policer
+>       net: sparx5: Offload tc port policers via matchall
+> 
+>  .../microchip/sparx5/lan969x/lan969x_regs.c        |   7 +
+>  .../net/ethernet/microchip/sparx5/sparx5_ethtool.c |   1 +
+>  .../net/ethernet/microchip/sparx5/sparx5_main.c    |   6 +-
+>  .../net/ethernet/microchip/sparx5/sparx5_main.h    |  36 +-
+>  .../ethernet/microchip/sparx5/sparx5_main_regs.h   | 117 +++++-
+>  .../net/ethernet/microchip/sparx5/sparx5_police.c  | 404 ++++++++++++++++++++-
+>  drivers/net/ethernet/microchip/sparx5/sparx5_qos.c |   4 +
+>  .../net/ethernet/microchip/sparx5/sparx5_regs.c    |   7 +
+>  .../net/ethernet/microchip/sparx5/sparx5_regs.h    |   7 +
+>  drivers/net/ethernet/microchip/sparx5/sparx5_tc.c  |  14 +-
+>  .../ethernet/microchip/sparx5/sparx5_tc_matchall.c |  38 ++
+>  11 files changed, 627 insertions(+), 14 deletions(-)
+> ---
+> base-commit: d8674294aefef02266c4d47ad10131f1bffbe534
+> change-id: 20260930-b4-lan966x-pci-fdma-sparx5-lan969x-port-policers-474610756e26
+> 
+> Best regards,
+> -- 
+> Daniel Machon <daniel.machon@microchip.com>
+>
 
-I've queued the second patch ("drivers: Replace __MODULE_STRING() with
-__stringify()") on modules-next for v7.4-rc1. Thanks for the Acked-byes
-and reviews.
+At least a few medium severity issues reported by sashiko are worth fixing. I
+will respin a v2.
 
-The first patch ("hwmon: Replace __MODULE_STRING() with __stringify()")
-should go through the hwmon tree. Once these changes are in mainline,
-I plan to pick up the final patch ("module: Remove obsolete
-__MODULE_STRING()").
+pw-bot: cr
 
--- Petr
