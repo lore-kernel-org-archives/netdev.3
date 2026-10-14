@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A044D9F68
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685544DAFA4
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 09:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791969342; cv=none; b=sHmSWbevuCeOqFY070nKKlWs39BZBObbrW8tOOuw57xvdJmgF0j9JWiTJTdE9okqjFDTuT5ggksk8JY7GQMVvJlLchwiUc8eWqiUY7cjmsf75mZV7z370bwTqMuRDwwFwn7EqK0LEdz7wXF0wZbl30ytZjTujxsfLYBP1/4skJk=
+	t=1791969343; cv=none; b=U3I6AYNGkojNHztP3whyWLdpk+VsbG18hU+9rJ9MLFtF43ub0G9ZQw6qEXeOTbAsBOo6EAq3QP235d4UClehM4ULeB4s09tf3aVh8ZhzI4m6PqGCtVm8s7IkF89oZqq3QD8CCGn52r33QMhPBvjIpavFc0EMt41UEbr5X+R3FaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791969342; c=relaxed/simple;
-	bh=Z9lgZiZ+Dm1gbZ6+toZQhvK9uM+qGbMxCRdF/bmR+yU=;
+	s=arc-20240116; t=1791969343; c=relaxed/simple;
+	bh=eFS4WGjshVW0iSf0gzlUevaCStY5cAzFApLu6ZgiaMQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aJ4e7/39z7l3QP+niixsuYU5LCSB8fVSZKCkKJUOZfP2RzI0Bm5UvfWuyX78Ggy0apJpDR7iY4WJanwOCk3ALogpKE9hDHPITpMHKlLpDqrPgc0EVxvkPxOxAgcERO1AlpIfjpItXHncJ/bvWURIo69Ehyn4AtEbD6ZXYFHqW/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mFXgu78R; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=i0Snfvc7amjok6/lZpvakW3GoVKhXjQuZeQT+rXVcqdI10r10Vg2b2NH59sOlbs6hDbOV/RypP5MPhYkffex66WcbE7DkwKRWiq6+yGbesXdgp5zhF5jWw2p6dULOoi0q2dOM00dI0EQc54VaeLXC1nKJM96ORM4iCchRw5mw6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFXUFNt0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mFXgu78R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B26B1F0089A;
-	Wed, 14 Oct 2026 09:15:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFXUFNt0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98C61F00893;
+	Wed, 14 Oct 2026 09:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1791969341;
-	bh=GfcRfLqWpOGkFEvjiEIeRXNKEXsHBfm1DqUqtI06JDE=;
+	s=k20260515; t=1791969342;
+	bh=GIDUS6d2r7efNFQ1jZ188R1FBA28+YoXE7UkaDSBCjs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mFXgu78RMDvkCSv73Q0UjU/3cQkvQiRjoJFNx68fkn2e0/mrQHXvafemiqcroJ9Qw
-	 UsmIniZTUMbreIF3IBnK5/6JD+mQKz2a+5Di2MUDWJZ9cARiKm97Z22+hYabx6a08i
-	 gy7M6XEEVctTG4k+swJ2Vc9HBMjbpObx2gg8QQNzBQT6/QbTWhRg6JGra+lUaVEaF8
-	 T+wtxPyCEPhVLyxN2iWWs8HNVwCRgIfZkoPWj+0WOihxfqbFXH2zu7BlJZ0OL7eeZu
-	 ZhdRnWO/g6F/Ej+H29RSLM+gOOhpuGZbP2kVr6qFW+TZckbW8Yk0ZggQ6j2Pn5CAci
-	 37lhU0JPwCyDA==
-Subject: Re: [PATCH net-next v3 2/5] net/sched: act_api: keep an add that
- created its actions from failing
+	b=RFXUFNt0qbozeczGzcDVzDJ/UuglXaG9LirYfL7UWLp6l3LDsa+N//mP6ThbRkYc7
+	 1wcIFxnVSEWKxMgpStjBycZ92dbLwdDVui8VaretXhZZlg+8Lxw5YFkBVo4FVphR0W
+	 PM5ac8IVKyfGq2EJHLzbK6039kwLbStKMs10XSafd6fqIt0m5PNQ54i6YrQBlDHs/U
+	 l9U8gc3jHkmE8Em7KjP20L3wE5vDxVfOeb0ABK1noobc/0GT5s+Z+wo/STX3r5Ueip
+	 hgFWOg5ag86Q+jyp9K8PkFnml1f6aH4PjqSVFcFXsFFHAU28mnFdm7Y4t3NQOdAhQh
+	 Jg3y2Sc5gIilA==
+Subject: Re: [PATCH net-next v3 3/5] net/sched: act_gate: cap the number of
+ scheduling entries
 From: netdev-bot+sashiko@kernel.org
 To: jhs@mojatatu.com
 Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  victor@mojatatu.com, p@1g4.org
-Date: Wed, 14 Oct 2026 09:15:40 +0000
-Message-ID: <179196934011.434549.12057895051142885770@kernel.org>
-In-Reply-To: <QDISC-H19Z.v3.r0.20261012193813-2@mojatatu.com>
-References: <QDISC-H19Z.v3.r0.20261012193813-2@mojatatu.com>
+Date: Wed, 14 Oct 2026 09:15:41 +0000
+Message-ID: <179196934128.434549.15511109301116224136@kernel.org>
+In-Reply-To: <QDISC-H19Z.v3.r0.20261012193813-3@mojatatu.com>
+References: <QDISC-H19Z.v3.r0.20261012193813-3@mojatatu.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,118 +53,61 @@ you want to address the nit picks below when you respin.
 
 Low priority / nit picks for your consideration:
 
-- [Low] The commit message says the change is "net-next hardening ... not
-  a regression".
-- [Low] The "Conditions to recreate the bug" section leaves out a
-  required precondition.
+- [Low] Concern (rejected after checking): the commit message relies on
+  "net/sched: act_api: report an oversized action dump instead of…
 
 --
 
-net/sched: act_api: keep an add that created its actions from failing
+net/sched: act_gate: cap the number of scheduling entries
 
-This commit changes tcf_action_add() so it no longer passes the result of
-tcf_add_notify() back to user space. After this change, an RTM_NEWACTION
-whose actions are already in the idr reports success even when the event
-notification cannot be built or sent. The failure is reported as an extack
-warning instead.
+This commit caps the number of TCA_GATE_ONE_ENTRY elements that
+parse_gate_list() accepts at GATE_ENTRIES_MAX (1024). Larger lists are
+rejected with -E2BIG and an extack message. The limit is based on the
+SJA1105 schedule-table capacity and on the 16-bit nla_len limit of a
+nested attribute.
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-H19Z.v2.20261007062551%40mojatatu.com
+Link: https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
 
-> This is net-next hardening: it corrects the reported result of an add
-> that already took effect, not a regression.
-
-[Severity: Low]
-Is "not a regression" accurate? The message names a "realistic trigger"
-and uses it in its reproducer: an action list whose aggregate TCA_ACT_TAB
-exceeds a u16 nest. That trigger seems to make the add fail only after the
-preceding patch in this series, "net/sched: act_gate: reject oversized
-dumps instead of wrapping them".
-
-Before that patch, tca_get_fill(), tcf_action_dump() and tcf_gate_dump()
-all closed their nests with plain nla_nest_end(). nla_nest_end() cannot
-fail: it warns and writes a wrapped length. Since cfa165cbfbed,
-tcf_gate_get_fill_size() budgets every entry, so the skb was large enough.
-An oversized add therefore returned 0, although its notification was
-corrupt.
-
-The preceding patch switched those closes to nla_nest_end_safe(), so
-tca_get_fill() now fails:
-
-net/sched/act_api.c:tca_get_fill() {
-    ...
-	err = nla_nest_end_safe(skb, nest);
-	if (err < 0)
-		goto out_nlmsg_trim;
-    ...
-}
-
-tcf_add_notify_msg() then turns that into -EINVAL:
-
-net/sched/act_api.c:tcf_add_notify_msg() {
-    ...
-	if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, n->nlmsg_flags,
-			 RTM_NEWACTION, 0, 0, extack) <= 0) {
-		...
-		return ERR_PTR(-EINVAL);
-	}
-    ...
-}
-
-Before this patch, tcf_action_add() returned that error to user space even
-though tcf_action_init() had already inserted the actions into the idr.
-
-This opens a one-commit bisect window. In it, an RTM_NEWACTION with
-oversized aggregate gate actions installs the actions but reports -EINVAL.
-This requires an RTNLGRP_TC listener or NLM_F_ECHO. A retry with the same
-index then fails with -EEXIST.
-
-The preceding patch fixed this "build failure vetoes the request" pattern
-for both delete paths but not for the add path.
-
-Should this change be squashed into the preceding patch, or ordered before
-it, with the message saying so? An in-series Fixes: tag would not work,
-because the hash is not stable yet.
-
-There are also triggers that predate this series: -ENOBUFS from
-alloc_skb(), or any action whose get_fill_size underestimates. They cause
-the same user-visible symptom that cfa165cbfbed described. That commit
-went in as a net fix with a Fixes: tag.
-
-If this stays a standalone patch, is a Fixes: tag for the long-standing
-error propagation in tcf_action_add() worth adding?
-
-> Conditions to recreate the bug:
-> CONFIG_NET_CLS_ACT=y; CONFIG_NET_ACT_GATE=y. Send an RTM_NEWACTION whose
-> actions create an aggregate TCA_ACT_TAB larger than a u16 nest, so the
-> notification cannot be built; before this change the add reports -EINVAL
-> although the actions were installed, after it the add reports success and
-> the actions are present.
+> Why 1024 despite the dump budget:
+> 1024 is a SJA1105 schedule-table capacity, not a dump-budget value. The
+> kernel clamps a dump skb to SKB_WITH_OVERHEAD(32768), so only ~800-890
+> entries of this list fit "tc actions ls"; the top of the admitted band
+> therefore installs but is not listed. That is accepted deliberately:
+> a unicast RTM_GETACTION reply is pre-sized from the action's advertised
+> size (budgeted per entry since the parent fix), so "tc actions get"
+> enumerates the whole band, and "net/sched: act_api: report an oversized
+> action dump instead of silently truncating it" makes the list view fail
+> loudly with -EMSGSIZE and an extack rather than silently truncating.
 
 [Severity: Low]
-Does this reproducer leave out a required condition? tcf_add_notify() only
-builds the notification when rtnl_notify_needed() is true:
+This is a minor point about the commit message, not about the code.
 
-net/sched/act_api.c:tcf_add_notify() {
+The paragraph reads as if the -EMSGSIZE behaviour is already in place.
+The referenced commit is the last patch of this series, though. At this
+commit, tcf_dump_walker() in net/sched/act_api.c still drops an action
+that does not fit:
+
+net/sched/act_api.c:tcf_dump_walker() {
     ...
-	if (!rtnl_notify_needed(net, n->nlmsg_flags, RTNLGRP_TC)) {
-		skb = NULL;
-	} else {
+		if (err < 0) {
+			index--;
+			nlmsg_trim(skb, nest);
+			goto done;
+		}
     ...
 }
 
-rtnl_notify_needed() is defined as:
+So at this bisect point, a gate with roughly 890-1024 entries is still
+silently left out of "tc actions ls". That is not a regression: the
+truncation already happened before this patch, when gates of any size
+were allowed. This patch only narrows the range that triggers it, and
+the final patch of the series makes it fail loudly.
 
-	return (nlflags & NLM_F_ECHO) || rtnl_has_listeners(net, group);
+Could the message say that the act_api change comes later in this
+series?
 
-With a NULL skb, rtnetlink_maybe_send() returns 0. So if there is no
-RTNLGRP_TC listener (for example, no tc monitor running) and the request
-does not set NLM_F_ECHO, the oversized RTM_NEWACTION returns 0 even before
-this change.
-
-The preceding patch in the series states this condition for the delete
-paths ("only when a notification was actually needed (rtnl_notify_needed():
-an RTNLGRP_TC listener or NLM_F_ECHO)"). Could the same condition be added
-here?
+Could "the parent fix" also name the commit it means, presumably
+cfa165cbfbed, which added the per-entry get_fill_size budget?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-H19Z.v3.r0.20261012193813%40mojatatu.com
