@@ -1,86 +1,80 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B31456852B
-	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 17:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5D15625E4
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 17:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791999704; cv=none; b=JDY1g29BV5x5nazPKNeNuMVQyGc9D5eyI2Of+bKC88MA2vljAwtBhsrJCW3embVdJhi0d83CRv5fsS8rnJXqW5jEQYrdmMMxVx2pej8nCCfdZabC0tHdEGwurXXbXAWlAQPu9D7ZoVOpJq3meuGT1uVGr58qOgpBJhjfENj1PqQ=
+	t=1792000235; cv=none; b=a0+so7yWGQ1uq23LTgXUicQ1YdakZVv45NeoZCZzn+iAPsr9WeykUV4Afpeyop3AASaLQEUkWb4jIQTv2VP6AA9/BScSa5Kia1YubrZ36GTQOcWmyq8dNoaiUWGbNt54ZA9TPX6BW93OXQLui6LZnMBoSYenUJE0esdGjaQh/6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791999704; c=relaxed/simple;
-	bh=hJiXXW54w0qUZXfnK9CVMzygd8SH7dwnkWHP5F1VjjQ=;
+	s=arc-20240116; t=1792000235; c=relaxed/simple;
+	bh=jOEgE+7hZGq23m4Kwf1DaF7fI9X9TN6cpMzxIR01eQE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QpHkF5bw9miaRKLIXNyToSUs38MQQbH67CjShOTm26tKTz0CUvpdFr/eq92VQiFL2284AfKmIjDToVXdXHMxE8f1bzt/mNdkWYLkLIDN8Y4YOGEgUV0ODQCc/v5bB9B24jDaPp5x9zZ5wDRcKjoqzkzBtqSqX+I2ydvpgmEmey8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=NbuVJq6e; arc=none smtp.client-ip=209.85.218.50
+	 MIME-Version:Content-Type; b=Iun7Hvu7Juiwru4wR27M0jJy/SL/qWsTlxgm/j2nGs+HDRrWC82+XNCJh228L7kJuu929NH/vWOYm3ePQHD6kb+rvGiCLnM3BQFkaA9rusbquUzgeLwnvzIZc6nfju1jKiF+j4LrnKuSUzLXBoM/Pxj9tnfebeetspb1eggGSYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=eGvlljxA; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="NbuVJq6e"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c2e62319cfaso136760866b.2
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:41:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="eGvlljxA"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c33bb2f3e6cso235031866b.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 10:50:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1791999694; x=1792604494; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1792000232; x=1792605032; darn=vger.kernel.org;
         h=content-type:mime-version:message-id:date:user-agent:references
          :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=urMVj8JzD3NiB+saVlxwn8HdeCLu3WGCkEIWSX5UCag=;
-        b=NbuVJq6ePbtMW+4yoHTEbd0PzS8B/iVVcWdC7NDUkGSFlJY4ErRLKGjQUyAGkGKJ0H
-         oBj2JMeqsa256MUIgop65L1uWgSuRsHVKF/6n042fw8BbrGJxPkFdYYQwSZZsJpsWWr/
-         PpHBuMCXvqB6I+3fdJllgefEMfcuKEERSGw31FO2Isn4gw3Df4+JxRSDyCK3ZRLrhMMc
-         3bNBqvYinuab3qWp9lxDlcVqnwEK8R8qYjSdbS3i6q09XqvlmLc84T6Tvu3GwYNOJeBb
-         dY5tdPNPMA/lPMYMSaQNjJxQzf1ME2NT4piM4RKpP4FBqCEycxq+CAOXkqYr7H7WcX9N
-         67CA==
+        bh=jOEgE+7hZGq23m4Kwf1DaF7fI9X9TN6cpMzxIR01eQE=;
+        b=eGvlljxAyFsJkM1yxRou1aGc6sVKrsM+psjmnP4Z0n5WCC1ieMv0P6pEyD0lLX+twW
+         NAWpZXKS4EtH0YCfb2uut4i2lErx2jbrUAh9rouXB6NyAFtrtJ5HZ5pL9+OlOVk9kwFA
+         bbvJrljiaN0fnMP2ykP3ePPE0NjIGgsBgZz/oGLXW5IPZwq21O13LhJPGx1kRnmBWxWh
+         ZKbE1ZdKVQy1XCCiuxAbDGO8e7sQ+7CD7tTHCw4jQudumJA1dKlr+9DiaX1nfO/iCd/h
+         qnQD9Yx62xaqegCvQ7tZnuhbsTha4wl8QVKV2lb9FtS82hGTDYqVqTSt76TrVwn+ueiw
+         153g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1791999694; x=1792604494;
+        d=1e100.net; s=20260707; t=1792000232; x=1792605032;
         h=content-type:mime-version:message-id:date:user-agent:references
          :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=urMVj8JzD3NiB+saVlxwn8HdeCLu3WGCkEIWSX5UCag=;
-        b=TUDtsQG1sy3+fuGK+9Yjg9AJEXSLju+k2tvNwKADwHDyS4GsJn0/qvyZhZsT20Hjkn
-         w/pGy/PEKgywlOk0LSue8DOvBWe0l0OR51sB710jXK26jaxY+Xy/CnvZGYma0i6KM3OJ
-         C/rvzYe5bIW6nIfzj+QfsBRevoZwVJK7YpcK6BfqJXNOjMN3wuH6Wv9oWEWNblZqTqi9
-         rzWI5FBubN5xrgnuD0JxgExEy8C5qIH9q5jYtyrcFyBPtRbR3i2/Y+1idiESr8pmAo6H
-         D/1nNp5GLKwZid/AKna2M1rvDfWOVvpeOjD9cI4gUy9/r0UzW7JHrjs53tCF+S+M3JaO
-         Rp9w==
-X-Forwarded-Encrypted: i=1; AKwUvBz/cNYZ8wqqdGx6D9bGihFyMSQNGC/Ul51vDaJ5doEwZw1GFaC+AFFYu7dkMOqIpx9TWthZKXE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYIjLPo3IqBPpBZTIVYzBbmKcpGMlqOxiNl9iSPHgvOvMSMCFIYo
-	vUQEzvmixqZSePzKmaKkpzIKO65NOtyIBavYxqwXk76NVUGGOraQxM0Sfova2E9NcoI=
-X-Gm-Gg: AYBFou2ByRd4swSlvpXy/8umEVFtc4wKFXGQjOewMjAYD86ZScnpgh9ifuqQHTypErb
-	yxESv6TWaaiddObB7bAR55UxXc+gEAOSd2hUnpom+tm7jQsqSed/KUgHWI4M/7laEZMvRO2bfMR
-	/55nbKMh4p9W+Nu+GJ+fFL0Ayx3bd1w0gtWNdM7aEoYudqXBR5WrmzKZvT8KM2meydLIWVNS+4Z
-	be6wYLj3j+NLCh3k6RX2ciPJ52cmsF30bjIMiL0POhlL+JLORLnwM9bEgjgKcIqE0B55z1n+Auy
-	N8TSIqYJA3g5/oBJA6WALcg57TjC0kgyZgnF/NIZgLbTTLwoAsbu5tpEfVQjqI9+F1GTqbKBkE4
-	ed66X6PiL/1iQ26kG5/aF0QXvDV5qoYkguctLmBY7wvGgjobYvSFmhzryxCB/Ssw4yvYK4WWRIy
-	DntDaG2K/GJo5j0hbWSauzZchUgNkEb+no+KOEw6GkGpL+OXsAiZnHYeeaOfE1
-X-Received: by 2002:a17:907:9705:b0:c2a:f5c2:5cfb with SMTP id a640c23a62f3a-c31a9a28f7amr1598056666b.7.1791999693127;
-        Wed, 14 Oct 2026 10:41:33 -0700 (PDT)
+        bh=jOEgE+7hZGq23m4Kwf1DaF7fI9X9TN6cpMzxIR01eQE=;
+        b=fhcc96d/M/C8QQFmQ3YFJLthArXug5PDtorq3aa2VWyAMLS3VAirRT6xuExJdpxcfh
+         nU6152p1yB7QgpLhJbI+VxaiIQ67rEaJ+UwhHfIJr3fkkO0k5UXkSu3gaYUR90quNM6L
+         Q+JgfC0EpCmj46tqCnD8YJuuOHKsP90TyNwVQNOfqldH/KmVA0Dl4ha7WUYKiNC5Wrsj
+         S5S+KA8g1XnNfxzFX82Vlwi8V+NSUGLfsO/5Pje3w7aexnOLIdI+LIF8MIFl0wOkGbxq
+         yGbBGtfhr9veYvxJqU+fBREMR3QY+ZQfelt8vJRNCmMX6Ys29FtRsXkTT9ej/ny3Y5/5
+         Bj2w==
+X-Gm-Message-State: AFq9FYLjTXd3UNOrpIxtu5mjocZo7cTVwOoTsWrK5D0wCGv/aRrizsT4
+	oHJ4HRyJHVoGuftnw+Z0oV1iLcYO2P4TLeh7/sUPl8kPfUkF6jaBfFFtWyoOTXLEfuQ=
+X-Gm-Gg: AYBFou33ZQMeDEh6Vus+CFCT8Pa9DIzO0P6TqX6T1Ll/VFzDoJDGNgIskFHvzSl3w+D
+	JA53ZdZuNdBbb/YE0tU5SQjqdI19SKQTuKp2r81KreBF6IZk11+1NJgtvXgvq7H3SjjjeueNGRj
+	D1rr3cLsypjBsdepiwmB4gqPsn0VmAgkWotEvHWxwSlILHDmOf6EbEQBt78/8M10cqVdatY0pNE
+	euCdDexqxL9vigd61qkewYnBaEXA/QZ8Zf0baVr+YSlEKqFKNqLoSnsAA/TscTUgZWoi9kiqbZM
+	EpVJj7zEQOS+s/B7yHMu80JID7qs9lnG0GZh79q4oBToVAF7pbWbWG/n+qVAVDx86oEFXBCLOeM
+	i/ivcz8Jd/JLaCu01v5uJsyUm3FeduL3oLoRMQxxZZOaqmxrlVXoB59ktsDykY9IhZMUVMubcYb
+	V/4ZeswiMaPDQvmYkYBjdzfRp2cxQSrxCPZe6gSxaDLI+r1vFYlrJi2nM6wk/z
+X-Received: by 2002:a17:906:f59f:b0:c2e:4b90:3c56 with SMTP id a640c23a62f3a-c31a9fcf0c2mr1509659066b.13.1792000231355;
+        Wed, 14 Oct 2026 10:50:31 -0700 (PDT)
 Received: from cloudflare.com ([2a09:bac6:5067:2dc::49:1e5])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3ed9c33f9fsm9815466b.42.2026.10.14.10.41.32
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c3eda433582sm10353666b.64.2026.10.14.10.50.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 10:41:32 -0700 (PDT)
+        Wed, 14 Oct 2026 10:50:30 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Martin
- KaFai Lau <martin.lau@linux.dev>,  Eduard Zingerman <eddyz87@gmail.com>,
-  Kumar Kartikeya Dwivedi <memxor@gmail.com>,  Amery Hung
- <ameryhung@gmail.com>,  Yonghong Song <yonghong.song@linux.dev>,  John
- Fastabend <john.fastabend@gmail.com>,  Stanislav Fomichev
- <sdf@fomichev.me>,  Eric Dumazet <edumazet@kernel.org>,  Neal Cardwell
- <ncardwell@google.com>,  Willem de Bruijn <willemb@google.com>,  Tenzin
- Ukyab <ukyab@berkeley.edu>,  =?utf-8?Q?Cl=C3=A9ment_L=C3=A9ger?=
- <cleger@meta.com>,  Kuniyuki
- Iwashima <kuni1840@gmail.com>,  bpf@vger.kernel.org,
-  netdev@vger.kernel.org
-Subject: Re: [PATCH v4 bpf-next 10/10] selftest: bpf: Add test for
- bpf_tcp_ops.{enqueue,dequeue}_rcvq().
-In-Reply-To: <20261006192601.1875100-11-kuniyu@google.com> (Kuniyuki
-	Iwashima's message of "Tue, 6 Oct 2026 19:24:36 +0000")
-References: <20261006192601.1875100-1-kuniyu@google.com>
-	<20261006192601.1875100-11-kuniyu@google.com>
+To: Willem Ferguson <wferguson@cloudflare.com>
+Cc: netdev@vger.kernel.org,  davem@davemloft.net,  edumazet@kernel.org,
+  kuba@kernel.org,  pabeni@redhat.com,  ncardwell@google.com,
+  bpf@vger.kernel.org,  ast@kernel.org,  daniel@iogearbox.net,
+  andrii@kernel.org,  eddyz87@gmail.com,  memxor@gmail.com,
+  linux-doc@vger.kernel.org,  corbet@lwn.net,
+  linux-kselftest@vger.kernel.org,  shuah@kernel.org,
+  linux-kernel@vger.kernel.org,  kernel-team@cloudflare.com
+Subject: Re: [RFC PATCH net-next 2/4] tcp: add BPF_SOCK_OPS_TCP_TS_ID_CB to
+ assign a TSval identifier
+In-Reply-To: <20261013103906.2660384-3-wferguson@cloudflare.com> (Willem
+	Ferguson's message of "Tue, 13 Oct 2026 10:39:04 +0000")
+References: <20261013103906.2660384-1-wferguson@cloudflare.com>
+	<20261013103906.2660384-3-wferguson@cloudflare.com>
 User-Agent: mu4e 1.14.1; emacs 30.2
-Date: Wed, 14 Oct 2026 19:41:31 +0200
-Message-ID: <87fqy889is.fsf@cloudflare.com>
+Date: Wed, 14 Oct 2026 19:50:29 +0200
+Message-ID: <877bjk893u.fsf@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,128 +83,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-On Tue, Oct 06, 2026 at 07:24 PM GMT, Kuniyuki Iwashima wrote:
-> The test is roughly divided into two stages, and the sequence
-> is as follows:
+On Tue, Oct 13, 2026 at 10:39 AM GMT, Willem Ferguson wrote:
+> Let a sock_ops program pick the identifier that the previous patch
+> encodes in the low bits of TSval, for passively opened connections.
 >
->   I) Setup
+> The width is set per network namespace by the new tcp_ts_id_bits sysctl
+> (0 to 8, default 0). A listener opts in by setting
+> BPF_SOCK_OPS_TCP_TS_ID_CB_FLAG, typically from BPF_SOCK_OPS_TCP_LISTEN_CB.
+> tcp_conn_request() then runs BPF_SOCK_OPS_TCP_TS_ID_CB once the request
+> socket exists and before the SYN-ACK is built, so the SYN-ACK already
+> carries the identifier. The program sees the request socket, the SYN
+> (bpf_load_hdr_opt() works on it) and the available width in args[1]. A
+> reply that fits in that width is stored with the width in the request
+> socket and is inherited by the child, including Fast Open children; any
+> other reply leaves the connection unencoded.
 >
->     1. Attach two BPF programs to a cgroup
->     2. Establish a TCP connection (@client <-> @child) within the cgroup
->     3. Enable BPF_TCP_OPS_FLAG_RCVQ on @child via setsockopt()
+> The callback is not run for SYN cookies, which have nowhere to keep the
+> identifier, or when the peer did not negotiate timestamps. It is skipped
+> for connections using microsecond timestamps and while the sysctl is 0.
+> The width is captured per connection, so changing the sysctl does not
+> affect existing connections.
 >
->  II) RPC frame exchange in various patterns
+> New /proc/net/netstat counters report how often an identifier was
+> assigned, declined by the program or skipped. TCPTSIdEchoMismatch counts
+> third ACKs whose TSecr no longer carries the identifier, which shows the
+> echo was rewritten in flight.
 >
->     4. Send a partial RPC descriptor from @client to @child
->     5. Verify that epoll does NOT wake up @child
->     6. Send the remaining data of the RPC frame
->     7. Verify that epoll finally wakes up @child
+> BPF_SOCK_OPS_ALL_CB_FLAGS grows from 0x7f to 0xff. The tcpbpf selftest
+> used 0x80 as an example of an unsupported flag, so move it to 0x100.
 >
-> During setup, two BPF programs are attached to simulate
-> a real-world scenario; one is bpf_tcp_ops and the other is
-> CGROUP_SOCKOPT.
+> Encoding makes the timestamp clock appear 2^bits times faster to the
+> peer. That shrinks the real-time span of the peer's PAWS window, and
+> peers that keep ts_recent for the RFC 7323 24 days stall connections
+> idle for longer than 24.8/2^bits days. ip-sysctl.rst documents both,
+> along with the lack of TCP_REPAIR support.
 >
-> While the bpf_tcp_ops prog handles the dynamic adjustment of
-> sk->sk_rcvlowat, the CGROUP_SOCKOPT prog is used to enable
-> the TCP AutoLOWAT feature via userspace setsockopt() using
-> pseudo options:
->
->   #define SOL_BPF               0xdeadbeef
->   #define BPF_TCP_AUTOLOWAT     0x8badf00d
->
->   setsockopt(fd, SOL_BPF, BPF_TCP_AUTOLOWAT, &(int){1}, sizeof(int));
->
-> This reflects a common production use case where an application
-> decides to start parsing RPC frames only at a certain point in
-> the stream (e.g., after HTTP Upgrade), rather than immediately
-> after TCP 3WHS (->passive_established(), etc).
->
-> When BPF_TCP_AUTOLOWAT is enabled, the BPF prog sets
-> BPF_TCP_OPS_FLAG_RCVQ and initializes sk_local_storage
-> for two sequence numbers to manage its state.
->
-> Then, for the RPC frame exchange, this test uses a simple format
-> defined as follows:
->
->   0        8       16      24       32
->   +--------+--------+-------+--------+ `.
->   |            header size           |  |
->   +--------+--------+-------+--------+   > RPC descriptor (8 bytes)
->   |            payload size          |  |
->   +--------+--------+-------+--------+ .'
->   ~               header             ~
->   +--------+--------+-------+--------+
->   ~               payload            ~
->   +--------+--------+-------+--------+
->
-> Every time a new skb is enqueued to sk->sk_receive_queue, the
-> bpf_tcp_ops prog parses it and updates these sequence numbers:
->
->   rpc_desc_seq : the SEQ # of the start of the RPC descriptor
->   rpc_end_seq  : the SEQ # of the end of the RPC frame
->                  => rpc_desc_seq + 8 + header size + payload size
->
-> Assume we receive two RPC descriptors in the following pattern:
->
->   1. When we receive skb-1, only part of the RPC descriptor is parsed.
->      rpc_desc_seq is set to the first byte while rpc_end_seq is
->      unknown.  Thus, sk->sk_rcvlowat is set to the size of the RPC
->      descriptor (8 bytes).
->
->    <- skb-1 -> <---- skb-2 ----> <------ skb-3 ----->
->   +-----------+.................+....................+......
->   |  RPC desc 1  |  header + payload  |  RPC desc 2  | ...
->   +-----------+.................+....................+......
->   ^              ^-.
->   `- rpc_desc_seq   `- sk->sk_rcvlowat
->
->   2. Next, we receive skb-2, which completes the first RPC descriptor.
->      Now rpc_end_seq is known, so sk->sk_rcvlowat is advanced to it.
->
->    <- skb-1 -> <---- skb-2 ----> <------ skb-3 ----->
->   +-----------+-----------------+....................+......
->   |  RPC desc 1  |  header + payload  |  RPC desc 2  | ...
->   +-----------+-----------------+....................+......
->   ^                                   ^
->   '- rpc_desc_seq                     '- rpc_end_seq
->                                            & sk->sk_rcvlowat
->
->   3. Once we receive skb-3, which contains the next full RPC descriptor,
->      rpc_desc_seq is advanced and rpc_end_seq is updated according
->      to the size of RPC frame 2.
->
->      Note that sk->sk_rcvlowat is NOT updated to the new rpc_end_seq
->      yet.  This ensures that the application is woken up to read the
->      already complete RPC frame 1.
->
->    <- skb-1 -> <---- skb-2 ----> <------ skb-3 ----->
->   +-----------+-----------------+--------------------+......
->   |  RPC desc 1  |  header + payload  |  RPC desc 2  | ...   |
->   +-----------+-----------------+--------------------+......
->                                       ^                      ^
->               rpc_desc_seq -----------'  rpc_end_seq ----...-'
->                 & sk->sk_rcvlowat
->
-> This sequence corresponds to the 4th test case in rpc_test_cases[],
-> and we can see helpful output if we "#define DEBUG":
->
->   # cat /sys/kernel/tracing/trace_pipe | \
->     awk '{ if ($0 ~ /AF_/) sub(/^.*AF_/, "AF_"); print $0 }' & \
->     BGPID=$!; ./test_progs -t tcp_autolowat; kill -9 -$BGPID
->   ...
->   AF_INET6 rpc_test_cases[3]: Start parsing skb: seq: 0, end_seq: 1, len: 1, rpc_desc_seq: 0, rpc_end_seq: 0, rpc_buff_len: 0
->   AF_INET6 rpc_test_cases[3]: Copied 1 bytes: rpc_desc_buff_len: 1
->   AF_INET6 rpc_test_cases[3]: Setting rcvlowat: tp->copied_seq: 0, rpc_desc_seq: 0, rpc_end_seq: 0, rpc_desc_buff_len: 1
->   AF_INET6 rpc_test_cases[3]: Set rcvlowat: expected: 8, actual: 8
->
->   AF_INET6 rpc_test_cases[3]: Start parsing skb: seq: 1, end_seq: 8, len: 7, rpc_desc_seq: 0, rpc_end_seq: 0, rpc_buff_len: 1
->   AF_INET6 rpc_test_cases[3]: Copied full descriptor: rpc_desc_seq: 0, rpc_end_seq: 258, header_len: 100, payload_len: 150
->   AF_INET6 rpc_test_cases[3]: No more descriptor: rpc_end_seq: 258, end_seq: 8
->   AF_INET6 rpc_test_cases[3]: Setting rcvlowat: tp->copied_seq: 0, rpc_desc_seq: 0, rpc_end_seq: 258, rpc_desc_buff_len: 8
->   AF_INET6 rpc_test_cases[3]: Set rcvlowat: expected: 258, actual: 258
->   ...
->
-> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> Signed-off-by: Willem Ferguson <wferguson@cloudflare.com>
 > ---
 
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+I think SOCK_OPS are considered legacy.
+We probably want bpf_tcp_ops struct_ops.
+See [1] for an example.
+
+[1] https://lore.kernel.org/all/20261006192601.1875100-11-kuniyu@google.com/
