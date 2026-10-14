@@ -1,129 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A884DD3B7;
-	Wed, 14 Oct 2026 12:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F0D279DC3
+	for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 12:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1791980034; cv=none; b=G/ph8AaeseGptnvqVWCCPQ5OTngZdH8rzRMKYf7zr40gYt7VI1D0f086X5OAVYMQW7Ht6s2wrY9+8g6S25b20xSPUVzzbyniP7Z6fhjB82VMkUILDC8BrF2aG6Far4cVTwoPB1W12LmvusDNVJAlnaU4gOet2pM0Fol9JYGp7t8=
+	t=1791980072; cv=none; b=eNw3KKoqBKB+duGCHLYeboQtg0FS3/dogSfPwjdt/7MqCZLL10yXOIeQ5sw+Y1g4RYtWm8q8SK7PZ5LpZtL0yrQNZGHZ+7D1VhUDTKYw46Fueyc4AN4STshmnLpuLGSNbAykysB5YFMiwyRwYeRAaY9wmZw68+fzaMXKcFZrA/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1791980034; c=relaxed/simple;
-	bh=bsWV7edgf5H4LUUOJnwQrzqP7wVigR4RnBUZe3p3Z1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mIJdPS1US3AC0bQ50bZnCV3kHz7xAhLbNtU9yMOy6fiMVzPxbkihT+oAKtjz+L5Gy+rWtLF85VQdUWAfL6XQ4N/Epiy2EvwbLLEIk5MB9aP8UMbjxM+TWGb7/xpc2xIbb3jnIJ6zf9iA3ClNQFLW+/TrmBlE3sIGISDnJNIlKWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3RNTW6C3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1791980072; c=relaxed/simple;
+	bh=bLUwe8uO9act5Ud1uMkHcK9bXkigBbI3FE1FZ8XAFwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZBFgU3NqRtGmktO7TLiqJdPeNiDeBiNgM0SitrhiIvJ3fNplGXVIN+8C3HsPBM/VNtIXgrAtk9QBEqagqmw1+jB8PAi7snDjrFC0lS8BJZoN2RB6WbVavXxoRhyF9Hx1gZdo/6RDqGULcyCpeDoMrmXP58DlZiNfcxWS0WwUk9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cyRyiGx+; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3RNTW6C3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=kBvZwMjkY3SFTfW54L+/3JW1YEsME5Dm5IClIbBeKQk=; b=3RNTW6C3qq+Yy9VbhkvL85MEfl
-	g+n8Vt2sBTZsNZ8N8u0Pi6SXJWtM5OjdMWSR9bikHwDTn2VtzwCCgW7VTpmD7PeQ3HMU7B/n/ZrgK
-	25nwCzFwMHi2wa4eYssYtUCalSBjjBT4Nkh6Kcy4IrkPqzCeokZSh2QsqK+N8M5GqvEw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xGxrX-00Aj27-0o; Wed, 14 Oct 2026 14:13:39 +0200
-Date: Wed, 14 Oct 2026 14:13:38 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Navid Ghahremani <ghahramani.navid@gmail.com>
-Cc: linux-arm-kernel@lists.infradead.org, arnd@arndb.de,
-	stefandoesinger@gmail.com, krzk@kernel.org,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 15/24] net: mdio: Add ZTE ZX279128S MDIO controller
-Message-ID: <595371a9-6b7b-4ad9-985e-66f0e659f4a1@lunn.ch>
-References: <20261014072109.1759502-1-ghahramani.navid@gmail.com>
- <20261014072109.1759502-16-ghahramani.navid@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cyRyiGx+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1791980070;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=2haka38DvFDMahhGFpE6R1Z6HzZa2FdPuOLWcLfUN2Q=;
+	b=cyRyiGx+plMaEeSAREyKY9GCPaEWtkZXAuJhkTcahnmZAxdSTm0etIWZWco0obw7E9DIG9
+	D2XwThP91KB0gbxePVdZ2rk+rwNEZFTg66DujzDgbc+donv519YZmFBWaxRgS4m8qiPu1K
+	p4u3dOMRyEIkT+oSo9cumA4w5Qgutys=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-329-WIQq21bSNyOIcprNbnY3XQ-1; Wed,
+ 14 Oct 2026 12:14:20 +0000
+X-MC-Unique: WIQq21bSNyOIcprNbnY3XQ-1
+X-Mimecast-MFC-AGG-ID: WIQq21bSNyOIcprNbnY3XQ_1791980059
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 259441800678;
+	Wed, 14 Oct 2026 12:14:19 +0000 (UTC)
+Received: from ivecera-thinkpadp16vgen1.tpbc.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8517230000E7;
+	Wed, 14 Oct 2026 12:14:16 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Shuah Khan <shuah@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net] selftests: tc-testing: use $IP in hfsc test 8c39 setup
+Date: Wed, 14 Oct 2026 14:14:12 +0200
+Message-ID: <20261014121414.2373985-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261014072109.1759502-16-ghahramani.navid@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-> +static int zx279128s_mdio_xfer(struct mii_bus *bus, u32 op, int addr,
-> +			       int regnum, u16 data)
-> +{
-> +	struct zx279128s_mdio *priv = bus->priv;
-> +	void __iomem *base = priv->base;
-> +	u32 cmd, val;
-> +	int ret;
-> +
-> +	/* Clear the previous command and its status */
-> +	writel(readl(base + ZX_MDIO_CMD) & ~ZX_MDIO_CMD_START,
-> +	       base + ZX_MDIO_CMD);
-> +	writel(0, base + ZX_MDIO_STATUS);
-> +
-> +	cmd = readl(base + ZX_MDIO_CMD);
-> +	cmd &= ~(ZX_MDIO_CMD_WR | ZX_MDIO_CMD_RD | ZX_MDIO_CMD_ADDR |
-> +		 ZX_MDIO_CMD_REG);
-> +	cmd |= op | FIELD_PREP(ZX_MDIO_CMD_ADDR, addr) |
-> +	       FIELD_PREP(ZX_MDIO_CMD_REG, regnum);
-> +
-> +	if (op == ZX_MDIO_CMD_WR)
-> +		writel(data, base + ZX_MDIO_DATA_WR);
-> +	writel(cmd | ZX_MDIO_CMD_START, base + ZX_MDIO_CMD);
-> +
-> +	ret = readl_poll_timeout(base + ZX_MDIO_STATUS, val,
-> +				 val & ZX_MDIO_STATUS_DONE, ZX_MDIO_POLL_US,
-> +				 ZX_MDIO_TIMEOUT_US);
-> +	if (ret) {
-> +		dev_err_ratelimited(&bus->dev, "timeout (addr %d, reg %d)\n",
-> +				    addr, regnum);
-> +		return ret;
-> +	}
-> +
-> +	writel(0, base + ZX_MDIO_STATUS);
-> +	writel(readl(base + ZX_MDIO_CMD) & ~ZX_MDIO_CMD_START,
-> +	       base + ZX_MDIO_CMD);
+Test 8c39 brings up lo with a bare "ip" command. nsPlugin runs it as
+"$IP netns exec <ns> ip ...", and as tdc runs commands with an empty
+environment, "ip netns exec" searches only the default execvp() path
+(/bin:/usr/bin). On systems that install ip only in /sbin, like Fedora,
+the setup fails:
 
-This is the same as what you did at the beginning, but in the opposite
-order. Is it actually needed, and can the same order be used?
+  # ./tdc.py -e 8c39
+  Test 8c39: HFSC classify walk still reaches leaf after lateral drift
+  -----> prepare stage *** Could not execute: "ip link set lo up"
+  -----> prepare stage *** Error message: "exec of "ip" failed: No such file or directory
 
-> +static int zx279128s_mdio_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct zx279128s_mdio *priv;
-> +	struct mii_bus *bus;
-> +	struct clk *clk;
-> +	u32 val;
-> +
-> +	bus = devm_mdiobus_alloc_size(dev, sizeof(*priv));
-> +	if (!bus)
-> +		return -ENOMEM;
-> +
-> +	priv = bus->priv;
-> +	priv->base = devm_platform_ioremap_resource(pdev, 0);
-> +	if (IS_ERR(priv->base))
-> +		return PTR_ERR(priv->base);
-> +
-> +	clk = devm_clk_get_enabled(dev, "pclk");
-> +	if (IS_ERR(clk))
-> +		return dev_err_probe(dev, PTR_ERR(clk),
-> +				     "failed to get the register clock\n");
-> +	clk = devm_clk_get_enabled(dev, "wclk");
-> +	if (IS_ERR(clk))
-> +		return dev_err_probe(dev, PTR_ERR(clk),
-> +				     "failed to get the work clock\n");
-> +
+Use $IP like all other tdc tests do.
 
-Is this the bus clock? Does it need setting to 2.5Mhz?
+Fixes: 1e24c4f2ee44 ("selftests: tc-testing: add a lateral-drift hfsc classify-walk test")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+---
+ tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +static const struct of_device_id zx279128s_mdio_of_match[] = {
-> +	{ .compatible = "zte,zx279128s-mdio" },
-> +	{ }
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
+index 4f6bbb8b57f9..557730eef055 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
+@@ -181,7 +181,7 @@
+             "requires": "nsPlugin"
+         },
+         "setup": [
+-            "ip link set lo up",
++            "$IP link set lo up",
+             "$TC qdisc add dev lo handle 1: root hfsc default 30",
+             "$TC class add dev lo parent 1: classid 1:1 hfsc rt m2 100kbit",
+             "$TC class add dev lo parent 1:1 classid 1:10 hfsc rt m2 50kbit",
+-- 
+2.56.0
 
-It needs a device tree binding. But that is mostly boilerplate.
-
-   Andrew
