@@ -1,80 +1,46 @@
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010024.outbound.protection.outlook.com [40.93.198.24])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37AC2FE05C;
-	Thu, 15 Oct 2026 08:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792054702; cv=fail; b=UpkYC6MqxZ6XwCQ9Tjgzebt4EPprj+mOeJZWBU5GsRJe9Pe8ODofNf2w1vSIiXOX8jQ1Qk3SkJqcKAJ9Kc4TNUrcjqR6QpYXmtDujF2FCw8zhk4vAv5/+cw/DWV9URXU0zcyZqZrEqutuuNCHodvy9fuR/ZEdtTTmDbnoyA43Xo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792054702; c=relaxed/simple;
-	bh=gSg5z42E/V/FH5ehEo2dKsEArxFIHjFqC9N/JSZlTTc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nmuKVCIpOtuX5ZMoQfTPrd2rdPtl02SHrQ7iqV1R5/Rw8AhdVBQ0J6PuesefbmzAL2Ru1nTEPo3tJMLGG9eqWe6XETt47zlaYSrUQ2/ofVAs3A0ksTlVH8eFY5CxbvChPx+jbIFmMC21ObkW4YL28Z42zP0Mg+mJtJ9OPnZiFo8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=RbH0PQ2G; arc=fail smtp.client-ip=40.93.198.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFB24EBAD2;
+	Thu, 15 Oct 2026 08:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792054753; cv=none; b=MCovs3yBrbCnjftL2TJ2IAJNh+5mcxVJeyfsG7RPvCKcU8hZfOS4TeLmG6Joyoa84rM9kwQR1E1IU7RnAAGVYkahpoUCeNT9dYCS7TQL6+pOXgBRbMK2R1Oy7kH6pfJgTWJS5emtZnuAGucfVHJg45OFpKjWq0DU7X61YZsEsiM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792054753; c=relaxed/simple;
+	bh=Qyk4fzUIXwUnNk3bSw3qy/UwHIH1593oSmAaBN3Ti8k=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Nh25n+Iz9fuzjBCQRdGT56LLnvDV8QYko4bPdkSMKMI405vjedzGCvv6huh+8rqn4a0bQpvW3hlydf9GYClMq4hSFK1w/ZvSiLOdKoyx6WwxRuz9dY0Ew/1AF6WtW57Pk/CRI9r6ocjeWQFG2bl91onzKe53b7Dj6qGrpbTV+Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ehb1dYls; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="RbH0PQ2G"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZZDnT+/bUXqC3yY4izJPbhIjKX8vcOsAmvZnQgbQZZdxrzZQ72/MkcQZmaXIOGU9dlmOSEKctzf0HD+3BDKlH97s9kBP8uJ1lnMjC7KV2a6qDilmWP/u8lcNXiNDhQvIWhx/7EYZn3n5vI1QTsbddZqW2cTEUlq7/u0y3Cy+ys7G4s1ilCbLit8xL4Rt8Vt6A/ugWQpQvVrz6xvXr3pJpjqeRtjG2o+Ecu59x4A7SyPlV14CWy6lFjphpls3DIyU7BvWSnwfNi+3ihJIGUKc96xF0pHuHqozeuKvKFuh+pgmhpvhv2MKzeF4HX1pdzuccfFvvbQEKdYBw/nkI/3VQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/WJ880jwdXlLoWGLEG9YmoqoO504ipl3spPVxwKA9oY=;
- b=vAVuQFN2kges866zm7dfQWE2mIrGL/m2eiMXmRwtI3bZY4dQJMi9SyqEmupfjdRa9I+3tdHZt8KCFF/k1vNnYQNT7W4O1tZmfKiv9RHWaXbkzalSRwIbCTJ2RAyz6WtO8I1URoPVuBynSXpJqEsqTGuXbBpUYavuDdHRuLX4kviRHP/s1S08Gp5zjVnX3Fd3ZrIxc79NpzTN/6Ru9KWgw504FGUMUd78+5pBKIDOlvmiNiJQ0cnFwicZF8lKlUmKzwchfwtifmsspejuIU2UQLU58JgN5OiJybRDXq87HyFYbZiEJ5+NRZtheCYn3ygCj7Jx8xOHlMIkcJYkzSoESg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/WJ880jwdXlLoWGLEG9YmoqoO504ipl3spPVxwKA9oY=;
- b=RbH0PQ2Gg81NYPAVfPf1oo62hfo0vXydRUU4sg5ZqLiK3DC67BF4GvlrACT6EdqClioC5JULtVmZbEYEjhrF9Ohj/l3jmay+tytaEtuiG5LHTsRN+c9BI3WORuMsZ2HfvCcsll+8tcNUDiPtvhctmv56iYZcRgQOfisKPo6D+M0wthcKmwQtMNzzy7FDAjm5jmnqNWlFKaHFOEWu5HMc/dPvZle82FEOHb1Cjf9DNUtL+W1jIPVy3IY0Z1It+lmM1a3eckDsB8ch5jSLhDOcAvdjj9EUGSFLSL2sdtssIbjoYknBfq6nGaXTfT+JrzGtfQl/G3mRp2cQObHUJIrPLw==
-Received: from CH5PR05CA0003.namprd05.prod.outlook.com (2603:10b6:610:1f0::16)
- by SA1PR12MB6800.namprd12.prod.outlook.com (2603:10b6:806:25c::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 08:58:15 +0000
-Received: from CH3PEPF0002457C.namprd04.prod.outlook.com
- (2603:10b6:610:1f0:cafe::49) by CH5PR05CA0003.outlook.office365.com
- (2603:10b6:610:1f0::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Thu, 15
- Oct 2026 08:58:14 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CH3PEPF0002457C.mail.protection.outlook.com (10.167.252.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 08:58:14 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
- 2026 01:57:57 -0700
-Received: from drhqmail201.nvidia.com (10.126.190.180) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 15 Oct 2026 01:57:57 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 15 Oct 2026 01:57:53 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: Gal Pressman <gal@nvidia.com>, Leon Romanovsky <leon@kernel.org>, "open
- list" <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Mark
- Bloch <mbloch@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Roi Dayan
-	<roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drory
-	<shayd@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net] net/mlx5e: rep, Fix races between devcom PAIR event and uplink close
-Date: Thu, 15 Oct 2026 11:57:44 +0300
-Message-ID: <20261015085744.1109107-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ehb1dYls"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=/x
+	y4dCAFiSOS7bJrEJtqhdCx4Cmu9Io/aYfxxfzJL5A=; b=ehb1dYlsxGIs/XyYln
+	b5Q0ak/8ntDQrwMKmR4r5A2f79GWPwFKWAGK+ahz5iQnnVX4vei+LQgRLnsd76Ut
+	/NdRLDqfR3jhRsoGfBvHF3qWZbRrpnHJEKUEL6eaO9oESBVdRJNc36nAfg01IVOv
+	gABwWQ8CLAuxpv9cRGIrm8yPc=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3n4O5ldBq3yzkAA--.32772S3;
+	Thu, 15 Oct 2026 16:58:35 +0800 (CST)
+From: Xia Yan <yana06070@163.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net 2/2] selftests: net: check veth carrier after changing channel counts
+Date: Thu, 15 Oct 2026 16:58:21 +0800
+Message-Id: <20261015085821.12725-2-yana06070@163.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <20261015085821.12725-1-yana06070@163.com>
+References: <20261015085821.12725-1-yana06070@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,89 +48,151 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF0002457C:EE_|SA1PR12MB6800:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab2ef4d4-1bb9-4c9b-e482-08df2a9a72a9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|23010399003|10067099003|18002099003|11063799006|261009223027099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	hfkWYPr7ZQ6Wt4JIX8YP2cCZ1urYdLuwOmSFMk27en2AoekhARiD6oG4VjUHrFVDccp+S8NvcfOipDMWNQ9dbXSds3fwSwfgMFcjG+Lb7EDrUwD0Y83zXtOx2My1NACc3qaA+dYTQIrNzMhRp2XJ1CxdEHxdONCdmA6e8Bmau/lhpbOAsfEC4Fob1Cdxad0h429eLSDpMTxZWnl/aLnzlotf7G+ReC99vAPLEDPrqQyoxLzZrX03A9sI8Mp8ZNV6PS4LxIhIzGT4RLpP4uWPeXhGBrydwUJ6pnrx9yGsRS8fFOEJRT4ztfNfMoibTFD/cnmNi4iJ+3CwxisMPpVD+wcM5dvdWtrpWsUsGCd1oLk9j/jGbW38AiEh6vvt32g+xMhJndCF0zi1piFAVBmMK1lxeNodtI2FKlAvr1OF97T82DYNSOMMBA1tcY02GkfJCayQpN38+Zn7HT8sWtC7+Qjt4tuPMyczU0T78jUv6XlWFP70KXz7Xg3xoWVRCtgdKSQ7MQIk7xPuBKOOaiX4y/SyafTI13GI0DmZJElW/NtEI3Y4yCr5uLVqZa8tHq1Qz5fkJGuPRBYlbzy25rqeVGEGbNxq5l+6YXjVwIaaTrzMzjEhAMPK9hPJAUP0KhM+5anaPPFVEIm4KTSyHOm0ZBDtQPF1EHNEFU0cJjEXNbpL+V6EFyd4nMENFpIEvt8Dgu71eSwoxU1ExHs2n7l04w==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(23010399003)(10067099003)(18002099003)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	9ZihcY0RC7Sdp5HhA8sTmo34YqGZyM4uimqnXoJrz2TGbFb1BLKXGwHN5DkQ0OdtBEis4a9KuiazbfcJO+NMSFn4XR5VAn1v7i3J0cdb9LxeAjqCPv0FKn2SjCzT5bhlZ+7lZ2y8ib9yE8jWIOV7KimjPt4X3a/oCDg4x36vDS4btYWnEqTxSAPn7apzPycrf2J1KCboEzl5d27D0to+u4CTApHeLo4fQ/XIuD3QdKaJYzjbNbnhZf6Bz1BQOtkQ/EZR1dHJWzN14YbUkENEa1I2bKJEUPpj/rYWI7xE6bpZSzi2gWC34lRgLhyEILqwE5iwt3krLYMyMrs7TTbKB6eSkN0FCM7I5bY3BZ6mTJ0CH+pXQhAeZAJ7CYL6ST9BNsGk3iYvpzzU8zovRNiwIjVfMZH+6iTWGqgnolGoFYInedZD2XUr0NniWoLfbl4X
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 08:58:14.5480
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab2ef4d4-1bb9-4c9b-e482-08df2a9a72a9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF0002457C.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6800
+X-CM-TRANSID:_____wD3n4O5ldBq3yzkAA--.32772S3
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAF4UtF13JFWUAryUur4xCrg_yoWrAr1fpF
+	s3Gw1aqr1IqF13tw1xKrs8ZF48W3Wvqw4jq34ay34DZ3ZFkrnaqr13K347tFyUKrs0qa13
+	ZFyS9Fn2g3WUuaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jSrWrUUUUU=
+X-CM-SenderInfo: p1dqtiawqxiqqrwthudrp/xtbC-Bti6GrQlbtH6QAA3X
 
-From: Shay Drory <shayd@nvidia.com>
+Add a regression test for veth_set_channels() incorrectly enabling
+carrier when the peer is administratively down.
 
-mlx5e_sqs2vport_stop() frees each rep_sq and its per-peer send-to-vport
-rules (rep_sq->sq_peer) while holding only the uplink's priv->state_lock
-(it runs from the ndo_stop -> mlx5e_deactivate_priv_channels ->
-mlx5e_rep_deactivate_channels path).
+Check all combinations of the two ends' administrative states with GRO
+enabled and disabled. Resize the RX and TX channel counts in both
+directions on each end and verify that carrier is on only when both ends
+are up. Also verify that rejecting an out-of-range channel count leaves
+carrier unchanged.
 
-The same rep_sq->sq_peer entries are inserted and erased by the devcom
-ESW_OFFLOADS PAIR/UNPAIR handler (mlx5e_vport_rep_event_pair/unpair),
-which runs under the devcom component write semaphore and takes no
-state_lock. The two lock sets are disjoint, so closing the uplink of one
-eswitch can run concurrently with a pairing/unpairing event driven by
-the peer eswitch, both mutating the same rep's vport_sqs_list / sq_peer.
-This is a use-after-free: one side frees rep_sq / sq_peer while the
-other walks the list or inserts/erases the xarray.
+On an unpatched kernel the two mixed up/down cases fail with each GRO
+setting. All eight cases pass with the carrier restoration fix.
 
-The add side (mlx5e_sqs2vport_start) already guards the peer-rule work
-with mlx5_devcom_for_each_peer_begin(), i.e. the devcom read semaphore,
-which excludes the write-side event. The stop side did not. Take the
-same read side around the sq_peer teardown so it cannot race the event
-handler.
+Assisted-by: LLM
 
-Lock ordering is preserved: like the start path, stop already holds
-state_lock and then takes the devcom semaphore (state_lock ->
-comp->sem); the event handler takes comp->sem and never state_lock, so
-there is no inversion.
-
-Fixes: ed7a8fe71836 ("net/mlx5e: rep, store send to vport rules per peer")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Xia Yan <yana06070@163.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 88a170e40bd9..7211faaffd8d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -629,8 +629,12 @@ mlx5e_remove_sqs_fwd_rules(struct mlx5e_priv *priv)
- 	struct mlx5_eswitch *esw = priv->mdev->priv.eswitch;
- 	struct mlx5e_rep_priv *rpriv = priv->ppriv;
- 	struct mlx5_eswitch_rep *rep = rpriv->rep;
-+	bool devcom_locked;
- 
-+	devcom_locked = mlx5_devcom_for_each_peer_begin(esw->devcom);
- 	mlx5e_sqs2vport_stop(esw, rep);
-+	if (devcom_locked)
-+		mlx5_devcom_for_each_peer_end(esw->devcom);
- }
- 
- static int
+Notes (validation):
+    Tested with iproute2 and ethtool in an isolated network namespace under
+    the unpatched and patched UML kernels. The mixed up/down states fail
+    before the driver fix with both GRO settings; all eight cases pass after
+    the fix. The script also passes bash -n.
+    
+    The new file is covered by the existing MAINTAINERS entry for
+    tools/testing/selftests/; no MAINTAINERS update is needed.
 
-base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
+ tools/testing/selftests/net/Makefile          |  1 +
+ .../selftests/net/veth_channels_carrier.sh    | 89 +++++++++++++++++++
+ 2 files changed, 90 insertions(+)
+ create mode 100755 tools/testing/selftests/net/veth_channels_carrier.sh
+
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 590b33e..4004014 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -128,6 +128,7 @@ TEST_PROGS := \
+ 	udpgso_bench.sh \
+ 	unicast_extensions.sh \
+ 	veth.sh \
++	veth_channels_carrier.sh \
+ 	vlan_bridge_binding.sh \
+ 	vlan_hw_filter.sh \
+ 	vrf-xfrm-tests.sh \
+diff --git a/tools/testing/selftests/net/veth_channels_carrier.sh b/tools/testing/selftests/net/veth_channels_carrier.sh
+new file mode 100755
+index 0000000..c72a03b
+--- /dev/null
++++ b/tools/testing/selftests/net/veth_channels_carrier.sh
+@@ -0,0 +1,89 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
++
++require_command ip
++require_command ethtool
++
++if [ "$EUID" -ne 0 ]; then
++	echo "SKIP: root privileges are required"
++	exit "$ksft_skip"
++fi
++
++trap cleanup_all_ns EXIT
++setup_ns ns || exit $?
++
++check_carrier()
++{
++	local dev=$1
++	local expected=$2
++	local carrier=0
++	local link
++
++	link=$(ip -n "$ns" -o link show dev "$dev")
++	check_err $? "Failed to read $dev link state"
++	[[ $link == *LOWER_UP* ]] && carrier=1
++	[ "$carrier" -eq "$expected" ]
++	check_err $? "$dev carrier is $carrier, expected $expected"
++}
++
++check_state()
++{
++	local left=$1
++	local right=$2
++	local gro=$3
++	local expected=0
++	local count dev
++
++	RET=0
++	if ! ip -n "$ns" link add vca numtxqueues 2 numrxqueues 2 \
++		type veth peer name vcb numtxqueues 2 numrxqueues 2; then
++		RET=$ksft_skip
++		log_test "veth carrier: $left/$right, GRO $gro"
++		return
++	fi
++
++	ip -n "$ns" link set vca "$left"
++	check_err $? "Failed to configure vca"
++	ip -n "$ns" link set vcb "$right"
++	check_err $? "Failed to configure vcb"
++	ip netns exec "$ns" ethtool -K vca gro "$gro" >/dev/null
++	check_err $? "Failed to configure GRO"
++	ip netns exec "$ns" ethtool -K vcb gro "$gro" >/dev/null
++	check_err $? "Failed to configure peer GRO"
++
++	[ "$left" = up ] && [ "$right" = up ] && expected=1
++	check_carrier vca "$expected"
++	check_carrier vcb "$expected"
++
++	for dev in vca vcb; do
++		for count in 1 2; do
++			ip netns exec "$ns" ethtool -L "$dev" \
++				rx "$count" tx "$count"
++			check_err $? "Failed to resize $dev channels"
++			check_carrier vca "$expected"
++			check_carrier vcb "$expected"
++		done
++
++		ip netns exec "$ns" ethtool -L "$dev" rx 3 tx 3 \
++			>/dev/null 2>&1
++		check_fail $? "Out-of-range channel counts were accepted"
++		check_carrier vca "$expected"
++		check_carrier vcb "$expected"
++	done
++
++	ip -n "$ns" link del vca
++	check_err $? "Failed to delete the veth pair"
++	log_test "veth carrier: $left/$right, GRO $gro"
++}
++
++for gro in off on; do
++	for left in down up; do
++		for right in down up; do
++			check_state "$left" "$right" "$gro"
++		done
++	done
++done
++
++exit "$EXIT_STATUS"
 -- 
-2.44.0
+2.33.0
 
