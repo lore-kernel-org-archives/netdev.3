@@ -1,76 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9561437F30C;
-	Thu, 15 Oct 2026 11:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA98B502D70;
+	Thu, 15 Oct 2026 11:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792063209; cv=none; b=uG9VaZeQFcoSVmIWNeiGumalbNzwxdpL6C5EEk+X8ZjRHcpm2K+NpuPWgW4l7yHPQpRfhZM7rGn/iZY5ULmFZMINAaPBmEMYGVRDEvOF62Wo+prGi38LFSGYy+ErXhDH45s+bHUEAzYkv2ZDH7BA58UxSbtdWm2eTzow9oPIcg0=
+	t=1792063356; cv=none; b=LRt2VrWXEN9XD/NAibVpRDgUAUMEBbrx0Sft2bkMLcBmPeTTGkrfRRB5SIxDcVur01M2HxhOY2gVJi1Bdoi/c7p2NHtbC3kB601fIhdf4iJ5OFTmO091XGhtebvEQs8QLzznadYqFNxeoapd4HI03RgzPonh9mralWN7jIUNHrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792063209; c=relaxed/simple;
-	bh=X8Bsj/av7N1bq06bbsG6kmwC3ix6qr6PQZrs/BSo6K8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IEFn+58zAWOwuteOpLpntzfqKdF7PrHUNK9PIk8JaluxrExICULiJH+QLvBOvA19pelq/h0DMLBlyv0FEB4Zt+gzhKNnyb7MQmofjBe89LbV9b0IJPIYFH7HjLpDEg7yWFivF3eKmcjSAb2RdsVFU/x+mmrSKxunaAIh1whYrA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwWjT0QI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792063356; c=relaxed/simple;
+	bh=aMxJHIWlVQlSshgv/y9UUCL7CLcqpL9m3f0H/p2ZYsc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V50rbMeuc6wzkKpfrc65jZapVOzgFW8+Vcww8p8NCWpc3nmgUIu8TgeLXRaFGpWThWoV/ak7lEJ1C4pX0tyLtSq28QDqCSQo5jgYjD/tDpxn/3A0vWa/VawjAYEBYLtdOx5lwYiWlN2YSKjj0c09lDha36fD1f1POz1nfyA8W7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ce0UlVOr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwWjT0QI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426571F000C4;
-	Thu, 15 Oct 2026 11:20:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ce0UlVOr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE041F000C4;
+	Thu, 15 Oct 2026 11:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792063208;
-	bh=lgrVMdj5yYyyhIyAnAbx5XqHQjZOgNnhgooEuX9XfuI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=cwWjT0QIYESreGccxMlsNLkFGFS/oBfxubXleFdHS6Pq/HwS2FrIaAzFHuQ/ngnoo
-	 bD2490AiCG6SIPLC4/JCWWDfuCu+hrzoYLl2QkXe8pIKyegK2xbVe85iK3ekU8ImeQ
-	 mcNIAiJ/ssTEKo/J6jiQlC2VlNkzZ9IWlIrmD1eQsDOboSoDmI++o50J8CY7rjY/NO
-	 7hHQ2uhFTCgHGPsfAXJpvcC3EAAaOVyd+olLdIFqvjFbOqPKrvRsBjeyfs1p9dJ5zh
-	 i2PyKVeL7Ojg9+x25eR9wEA6CHiLkdDL4n4NXX7t392130xyJM2vYSjCDYHskkRBq7
-	 s4vUfHjP0kwNA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A31D392EA65;
-	Thu, 15 Oct 2026 11:20:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1792063345;
+	bh=0bZqwPG1wq/RthV+cWbRM5Z37j8aa7pr5Ny6doQT6s8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ce0UlVOratY16ZBAbkQpvDIb2sdp+racO2JI7oiOCzsN/+AmqSLEit7LJutDcTmlJ
+	 XOJWIB69NqilrTxR5TwojHtZPqk4UQYU+HdffWOoGN4YMIxrQ1k61AqS8uxNjqaWvx
+	 0AWGJ/GFo44vQkpkh6ZRTmLIZG+SitDzJ1Bey1tnGFVbJiLkVyNzsjVMRLatBxlRBY
+	 VLfLHFG63dCVqhuW3Pn6GVOzDvrSx+rQGCaBvfWjBgY7i25ToxYB5wH5FLp8Y0JmVl
+	 Mf7Wg4SlwZwFmDjmSl2c65Z0lOK15Bv7PqKD45TWymoXzsj873oNeYa/iwzabH9gzp
+	 /qb9I6VPYhiJg==
+Date: Thu, 15 Oct 2026 12:22:21 +0100
+From: Simon Horman <horms@kernel.org>
+To: mail@gmelikov.ru
+Cc: Sudarsana Kalluru <skalluru@marvell.com>,
+	Manish Chopra <manishc@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Edward Cree <ecree.xilinx@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] bnx2x: fix header length calculation for
+ encapsulated TSO
+Message-ID: <20261015112221.GG83879@horms.kernel.org>
+References: <20261009-bnx2x-tso-fix-v1-1-1ebea422422d@gmelikov.ru>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: ibm: emac: size RX buffers for the MTU
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179206320702.3367635.13492497641235449780.git-patchwork-notify@kernel.org>
-Date: Thu, 15 Oct 2026 11:20:07 +0000
-References: <20261008035122.3182851-1-rosenp@gmail.com>
-In-Reply-To: <20261008035122.3182851-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261009-bnx2x-tso-fix-v1-1-1ebea422422d@gmelikov.ru>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Wed,  7 Oct 2026 20:51:22 -0700 you wrote:
-> Any MTU above ETH_DATA_LEN selects the largest MAL buffer size of 4080
-> bytes. A DSA conduit always runs with a slightly larger MTU for the
-> switch tag (1502 for qca8k), so every received frame then uses an 8K
-> slab object and a 4K cache invalidate even though it is at most 1520
-> bytes long. Size the buffers for the MTU instead, capped at the MAL
-> maximum as before. Larger jumbo frames still span several descriptors.
+On Fri, Oct 09, 2026 at 08:30:18PM +0300, George Melikov via B4 Relay wrote:
+> From: George Melikov <mail@gmelikov.ru>
 > 
-> [...]
+> Commit 80bfab79b835 ("net: adopt skb_network_offset() and similar helpers")
+> replaced the difference between the inner transport header and the outer
+> network header with skb_inner_transport_offset().
+> The helper is relative to skb->data, so the new calculation incorrectly
+> includes the outer Ethernet header in fw_ip_hdr_to_payload_w.
+> 
+> On a BCM57810 transmitting TCP over VXLAN with an outer MTU of 1500,
+> hardware segmentation emits packets declaring an outer IPv4 total length
+> of 1514 while the actual IP packet is only 1500 bytes long. The receiver
+> drops these malformed packets, severely degrading TCP connectivity.
+> 
+> Subtract skb_network_offset() to restore the original calculation of the
+> length from the outer network header to the inner TCP payload.
+> 
+> Reproduced with plain kernel VXLAN and one TCP flow on kernel
+> 7.0.0-31-generic: 50 of 200 captured packets had an invalid outer IP length
+> with the original driver, versus none with this fix. Disabling TSO/GSO on
+> the test VXLAN device also eliminated the error with the original driver.
+> 
+> Fixes: 80bfab79b835 ("net: adopt skb_network_offset() and similar helpers")
+> Signed-off-by: George Melikov <mail@gmelikov.ru>
+> Assisted-by: LLM
 
-Here is the summary with links:
-  - [net-next] net: ibm: emac: size RX buffers for the MTU
-    https://git.kernel.org/netdev/net-next/c/73022f605c44
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Reviewed-by: Simon Horman <horms@kernel.org>
 
