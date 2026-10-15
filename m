@@ -1,61 +1,82 @@
-Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CF148F008;
-	Thu, 15 Oct 2026 08:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F228249AA2E
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 08:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792053894; cv=none; b=G9JN49Ccb9n9VFT0HGGDl8owq4n/KR6Fr5HvuqIlKeX/GQQbZ8TWUAj+muZF003lWlb2ekoRcyLcD7dcM+GnOkOoljLvjUbzcfwosjFK/MbVZENB6tx31cdjyJrZLNPjvLV7FIpVlNwdd+pDrXTpwYPUmjrOD2f+fdEEVkUa/Ok=
+	t=1792054071; cv=none; b=nQi7UapGmwpec6QfHtG3sGPLdFF2LR6U1gas+KRFOHBjk6vMY1Lu8bjiieDZie43fKJUBq+xsS6NDPEYyobH6tZiKcnpoKAUwO78MJw9ECnx4AelwvZuOwlcLrJOYWVSZ32cPirFF062ds2G33il80BqPAIvr1mWN9RSXQOIbrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792053894; c=relaxed/simple;
-	bh=OZhBrowA6cT0dx95d5pQzpiY4q0ZQDXXjiy2MBvSQwo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LevSVgIEkaCn33FDqP+6k1Kvv/ZC3SFKu0YPWWeIOtO8QuDM06ONQ93OWm1dr14mo/yWv4Vu9oyoj5rzoBxG41o857dWPrxqkDbRd168UFv1NLj0k76uGgDQ7zBN/w2ihCypYYhnSiTXd8GYyoQkXgMCoWHB5gFWO67mj18P/EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=OMrky5FW; arc=none smtp.client-ip=37.230.196.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+	s=arc-20240116; t=1792054071; c=relaxed/simple;
+	bh=UGKBj/h6sbvEgkDPV05IVG/HSnc4PBVKluLbWb7zkDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cXy9vSx7zAasa4EdMy+FHLyE6+IkPEVC9uLdzcl19YxBiMutNdg2UGQixyaQ+Sdy03EU/nznGn2YnYAYoNtKVkd+gfxe6gMuPF3ho4VSE6NMnkpGkUHYJILN1TanqB0t+aKFttyKRgZh6y9Xfl2/DtlEeFazPVh31Qj9Ywufaiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IqPDEyxa; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="OMrky5FW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
-	s=mail; t=1792053884;
-	bh=OZhBrowA6cT0dx95d5pQzpiY4q0ZQDXXjiy2MBvSQwo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OMrky5FWQQHXgmi4cgffL54R3WqnKQ6v/r7KvjlAtvSfeUsKhNau3CPQK7r21MQ54
-	 4jyHDrbXF2JrllgdUJnrHzK04tRLWnVBl9vAjQqYICEsez4c7shGhvNJJAgQov6JZJ
-	 wOPVGX/D6UZSNBEqMRJ4WI62GXh/IhSVeHkYyehi4D3mc9DSvXSuVhx4VcncWqCQex
-	 TQESHpjjsrW/+p2UYquT8J1tmV6Hf5hv4tqqrjWLVaaOS6bHK5NkeoqPXNtgZ/MM22
-	 wqHR1aPvAMCyvjMOLdWce4OAJ60Rz8Gsm0XpCFdAwJ9SATbna7dRiR1FBaTs6s7kX+
-	 QMkyNbIRY9jog==
-Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
-	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 69F4F260A1;
-	Thu, 15 Oct 2026 11:44:44 +0300 (MSK)
-Received: from new-mail.astralinux.ru (unknown [10.205.207.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
-	Thu, 15 Oct 2026 11:44:43 +0300 (MSK)
-Received: from DESKTOP-D46TNHI (unknown [10.198.48.108])
-	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4j51pf3K7mzL91;
-	Thu, 15 Oct 2026 11:44:42 +0300 (MSK)
-From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
-	Sasha Levin <sashal@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IqPDEyxa"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a161d9b8c7so35221825e9.3
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 01:47:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792054068; x=1792658868; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+LoAM7/O56qtCbczKVBsmCZ8BcqH8pl/3PC+hZvCjxc=;
+        b=IqPDEyxanP3NJpe4pMcmtZNKXzn67Wa+0NE0HrRCc0dgoO7dw/3k+PC0gXzTQNjkIb
+         MAKFqIypdSPkhHsHP9B100v+LVznxhW9g34uMYJ49zovMNrCUTD5AWkhR8fo4OdXzTlf
+         WMNSnc+41kpJjh+83FaDI78U/bfIPR7rbV4MHGlU8A39cR4KYUwz/kI+ErUb0C4nzOCv
+         cv7bKN3YtNO48c8x4TuYa/mLHMt3mIUGuwtGTsrtSMhqUVBORCDPhaA6tnr4KXFH3lwD
+         L6HNV26VAmJ/eQf6t5TwktMgefc1pffFEn6CqsRved7Zh2gk1Nqn7CgGscNmy280asPp
+         rkDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792054068; x=1792658868;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+LoAM7/O56qtCbczKVBsmCZ8BcqH8pl/3PC+hZvCjxc=;
+        b=eUcThGJrArYY7wkxwhN6aa+W7+mPzsicv1+FXlyspgVytDMcy5W6LB8BhbqqjAkPbY
+         15fxGSe9y5DNqur0AMXn1+3KX5KkFvi7nHjsOmAPMo51C8SrXRaF5SoUBmXNVhOmaZvL
+         L4OlGileV60DusS0CmG07KdC76HWaouqnKJU4zH/PHpbInrlUw2DYLJWlzq/3JkQv1X4
+         H30kFqzWcLyBluxmcV+MnddDOF9hZFYkIGUyIciUlSs33WVqk+fhTKMRNhxdkXkg/2Ln
+         WjxwTZnWgd8UEb5gofzV1gAEXkZdIjn5YW8XX4xYaXKTxwDw8CBk6RXVCzgu13+rxUkc
+         9j6g==
+X-Gm-Message-State: AFq9FYKZsLppZF+9+rZrDJ4QiTGnoodDL6ITCMm3bhTZeaT7bDD4jQvi
+	N9PL3L21w44itugjxyd73AvDYIr4mMU7HH0T309Ivkk3lPv43d0p7ZjI0nHDy6t2
+X-Gm-Gg: AYBFou0SVoHOBjCBKfS5uek+6Pvqu9PqSH8cALs9AVXt9C/hSW5LMXd9uVQi04xYGV5
+	4ikVSyvkwsmLxSE2fT/dS62/DCHA0CiJYOZwf6aspy8IOWDXXNMc7fAS0jQwkPqUWJo0b3Cj22z
+	f21tUJmalfBz5BBDY+2pzs6kLhoTgv3wf95fmh7M7xr5eiZgtIC6LyOmrPKXcGao3/dfnYVpVwL
+	oIBr8YuWgDImZ+iGh8nUd+swY3B98+kaG115kwke75aJs8N8BqanRAGGbm8m0cYT9WQXXMtsleK
+	zI3GONcUYpOFaPAH18ME9w6uc0rwXEq4Z3lxhRkMhOP0QXPd7sbx+h64+dD0GJGTMCzo5xknZkl
+	7GMhj8vw9FeRYaj0ms6KkTMtB7J2ydUEANhRcy34t64IPGmgXv7J65YP9J4v20NjVR+1FV6svyn
+	ZdgBSCFfnUB/Ch0DC6ifY18ZXZfVZIajpCaeC/VjfOSGcBbarnE7KE9oNMJrE9f/CER77INyFz0
+	pc3xScEFe/Caf+fE6nqnmqfvxA208A4KkxDpaiX13+Rulel/xVeJqN4ofTsHJ1VGO37r68D
+X-Received: by 2002:a05:600c:4e12:b0:4a1:7f8e:6e5d with SMTP id 5b1f17b1804b1-4a18e4a393amr399094215e9.6.1792054067874;
+        Thu, 15 Oct 2026 01:47:47 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bf63567esm76383725e9.10.2026.10.15.01.47.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 01:47:47 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: radhey.shyam.pandey@amd.com,
+	michal.simek@amd.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andre.przywara@arm.com,
+	robert.hancock@calian.com,
+	horms@kernel.org,
+	joe@dama.to,
+	suraj.gupta2@amd.com,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH 5.10/5.15] vxlan: use pskb_network_may_pull() for transmit path header pulls
-Date: Thu, 15 Oct 2026 11:32:57 +0300
-Message-ID: <20261015083259.1684-1-mdmitrichenko@astralinux.ru>
-X-Mailer: git-send-email 2.54.0.windows.1
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net-next] net: axienet: release every RX buffer in axienet_dma_bd_release()
+Date: Thu, 15 Oct 2026 11:47:43 +0300
+Message-ID: <20261015084743.1798326-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,80 +84,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/15 07:23:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
-X-KSMG-AntiSpam-Info: LuaCore: 127 0.3.127 0884f7b061fa529b810563f359267cd65d2ec05c, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;patch.msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 206699 [Oct 15 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.27
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/15 06:31:00 #28687005
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/10/15 08:01:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 1
 
-From: Eric Dumazet <edumazet@google.com>
+The RX walk in axienet_dma_bd_release() stops at the first descriptor
+without an skb, assuming that such a slot and all after it were never
+filled.  That holds on the axienet_dma_bd_init() error path, but not once
+the ring has been running: when axienet_rx_poll() fails to allocate or
+map a replacement buffer it leaves the slot it emptied with a NULL skb,
+in the middle of a populated ring, until a later poll refills it.
+Closing the interface before then leaks the skb and the streaming DMA
+mapping of every descriptor after that slot, which can be most of the
+ring, and is most likely under memory pressure.
 
-commit b9553558b48db54ac9273e6b98d7263ef5c1a329 upstream.
+The walk also frees each skb before unmapping it.  With swiotlb, the
+DMA_FROM_DEVICE unmap copies the bounce buffer back into the skb data
+that was just freed, and on non-coherent platforms it invalidates cache
+lines that may already belong to a new owner.
 
-In vxlan_xmit(), arp_reduce(), and vxlan_mdb_entry_skb_get(), pskb_may_pull() was
-being called to verify the availability of network layer headers (ARP, IPv6/ND,
-IP/IPv6 MDB keys).
+Skip empty slots instead of stopping at the first one.  An emptied slot
+still has a non-zero cntrl but its buffer is already unmapped, so the
+skip has to cover the unmap too, which it does by coming before it.
+Then unmap before freeing, as axienet_rx_poll() does.
 
-However, during transmit skb->data points to the MAC header, so skb_network_offset(skb)
-is ETH_HLEN (14 bytes). Using pskb_may_pull(skb, len) only checks len bytes from skb->data
-rather than skb_network_offset(skb) + len, which can leave part of the network header
-in non-linear frags.
+This was reported by the Sashiko AI review bot.
 
-Replace these remaining pskb_may_pull() calls with pskb_network_may_pull() to properly
-account for the MAC header offset.
+Tested on the AXI Ethernet MAC of an ADVA TimeCard X2 (PCIe card, with
+the built-in AXI DMA): traffic passes after each of ten down/up cycles,
+each running axienet_dma_bd_release(), so the unmap-then-free order is
+exercised on every buffer.  A failed RX refill was not reproduced, so
+the skip over an empty slot was not exercised.
 
-Fixes: e4f67addf158 ("add DOVE extensions for VXLAN")
-Fixes: f564f45c4518 ("vxlan: add ipv6 proxy support")
-Fixes: 0f83e69f44bf ("vxlan: Add MDB data path support")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260723144249.759100-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ mdmitrichenko: drop the vxlan_mdb.c hunk, 5.10 and 5.15 have no VXLAN
-  MDB support (added in v6.4); arp_reduce() context differs only in the
-  tx_dropped accounting. ]
-Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+Fixes: f26667a373f3 ("net: axienet: Fix DMA descriptor cleanup path")
+Fixes: 7a7d340ba4d9 ("net: axienet: fix RX ring refill allocation failure handling")
+Assisted-by: LLM sparse
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 ---
-Backport fix for CVE-2026-74474
- drivers/net/vxlan/vxlan_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index a2955729998c..edd5976509d4 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2004,7 +2004,7 @@ static int arp_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
- 	if (dev->flags & IFF_NOARP)
- 		goto out;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 919e644d9158..a8b8c0efa21f 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -247,13 +247,13 @@ static void axienet_dma_bd_release(struct net_device *ndev)
+ 	for (i = 0; i < lp->rx_bd_num; i++) {
+ 		dma_addr_t phys;
  
--	if (!pskb_may_pull(skb, arp_hdr_len(dev))) {
-+	if (!pskb_network_may_pull(skb, arp_hdr_len(dev))) {
- 		dev->stats.tx_dropped++;
- 		goto out;
+-		/* A NULL skb means this descriptor has not been initialised
+-		 * at all.
++		/* A NULL skb means the descriptor holds no buffer: it was
++		 * never filled, or axienet_rx_poll() took its skb and could
++		 * not refill it, having already unmapped the old buffer.
++		 * Such slots can sit anywhere in a ring that has been running.
+ 		 */
+ 		if (!lp->rx_bd_v[i].skb)
+-			break;
+-
+-		dev_kfree_skb(lp->rx_bd_v[i].skb);
++			continue;
+ 
+ 		/* For each descriptor, we programmed cntrl with the (non-zero)
+ 		 * descriptor size, after it had been successfully allocated.
+@@ -264,6 +264,8 @@ static void axienet_dma_bd_release(struct net_device *ndev)
+ 			dma_unmap_single(lp->dev, phys,
+ 					 lp->max_frm_size, DMA_FROM_DEVICE);
+ 		}
++
++		dev_kfree_skb(lp->rx_bd_v[i].skb);
  	}
-@@ -2937,8 +2937,8 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
- 			return arp_reduce(dev, skb, vni);
- #if IS_ENABLED(CONFIG_IPV6)
- 		else if (ntohs(eth->h_proto) == ETH_P_IPV6 &&
--			 pskb_may_pull(skb, sizeof(struct ipv6hdr) +
--					    sizeof(struct nd_msg)) &&
-+			 pskb_network_may_pull(skb, sizeof(struct ipv6hdr) +
-+						    sizeof(struct nd_msg)) &&
- 			 ipv6_hdr(skb)->nexthdr == IPPROTO_ICMPV6) {
- 			struct nd_msg *m = (struct nd_msg *)(ipv6_hdr(skb) + 1);
  
+ 	dma_free_coherent(lp->dev,
 -- 
-2.43.0
+2.47.0
 
