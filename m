@@ -1,210 +1,276 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206C44EBAE2;
-	Thu, 15 Oct 2026 19:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44574CEE67;
+	Thu, 15 Oct 2026 19:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792092331; cv=none; b=TW1GzRSCsbMbA4tPoFeq/+oOkWWlLOFYaWf3WeCHTc5g03ckwf61U60qd6jr+P2wjoXtSqVHaVNvK/13RNWKYJv3BEnaP5SumNF2lvriSK3zb9O2UCTyzGtEenWec29fOrxFEPJyB37cXPx2eqPMbeNKmZ1jWXMZzt3Gf+05YUM=
+	t=1792092639; cv=none; b=coKd/dM1S5Ehp5uW/lU8Zqh7lunpeShQXHxEfHATWQ3O1gAjw1NJ/6EIAC+iI2vHQsFKi4AHJHOtxtQBfADx5jU+/C+yOCH4vw92Fs8vloFq0lCsoLemBnzKbejTS2JcCV9qqorhbJ7S7XBtv+Lzh99byV9sdLBX9MOdFQtqpS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792092331; c=relaxed/simple;
-	bh=/aDY3QvLbw7FPeyVbaZ96dHdAV8CciGipjzLko3iKMw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mNOvIu/qZTZrgFEoSQO3Qy0F/6yjw0xsUBef4IpjOIF6zVYmFy8GHJpMjA2FB8L9XUXT+K7K3YJ6KK5X1QMyXqJwRy79Usk4/KOdFY5+LD/cQiyVJHQtfczn7CgbzPZSojW9x0RP0nnhaN4+azRFM4s4o8Vwj9AWZX89ez5O5D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Flf7EuEf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792092639; c=relaxed/simple;
+	bh=pKk/wXorJdH86zpht2s/ZUaqa4iwaQQoHEvFkj1kMuE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IacMChXoHZMbQxeAbjkRsZWAwSgADT5YbxpE6jm5mwkOiwS7qwlc+WTOtKYP2Te5EC9Vs9Rw97Fb4i37//ylcwzEytzi+pSCXAtvO/56NeQu2eQ8/CP7EtL0JXDl2iOAPnzslQt9SNY1qkfcxmg/MbyKQ1FK5Jb6y3BX5ixfeYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeNwwBnU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Flf7EuEf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA001F000C4;
-	Thu, 15 Oct 2026 19:25:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jeNwwBnU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9653A1F000C4;
+	Thu, 15 Oct 2026 19:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792092329;
-	bh=5q3n8w8RnVYCDNZKQP3BeaNF8Rao1383kmsL5LXStQM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Flf7EuEfYgvY4keiTrAp+xNx3tUwEpqFEwDW6GAPGyZ6cBbZINgy/tfoFbMw6sNh1
-	 Xa0ANkL0yNPDfZXsxbm4H0Wib5fcDkzue7cTUmSFDSi64SxxXt+YGna2jRQZ9y8yIX
-	 Sxt8twxiuPtgUp3AdXcegOr1rwh/zC0neNCyAY8bYW+JHGNAYgE1BDosVNiDJeAPg8
-	 Svm8rAeNgEcAdqE2wlodlqiILF4pSRkvC1y43UV7/f84kOAttQS9AOzYpqD32aWpwg
-	 wtgA/KF1nV8P0KY3eVjezfeFKGAUITtTlOeM6AvoF9puo1Z3qTTXRtjHqDmQTHWE8R
-	 cT0bSSyJzgeHA==
-Date: Thu, 15 Oct 2026 14:25:27 -0500
-From: Rob Herring <robh@kernel.org>
-To: Kyle Swenson <kyle.swenson@est.tech>
-Cc: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-	"kory.maincent@bootlin.com" <kory.maincent@bootlin.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Roland =?iso-8859-1?Q?Kov=E1cs?= <roland.kovacs@est.tech>,
-	David =?iso-8859-1?Q?Nystr=F6m?= <david.nystrom@est.tech>
-Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: pse-pd: Add bindings
- for LTC4266 PSE Controller
-Message-ID: <20261015192527.GC5059-robh@kernel.org>
-References: <20260927212929.593366-1-kyle.swenson@est.tech>
- <20260927212929.593366-2-kyle.swenson@est.tech>
- <20261007210454.GA281943-robh@kernel.org>
- <asnpHkvHsFy2dX-9@est-xps15>
+	s=k20260515; t=1792092636;
+	bh=kgI9ggIKqdumJSL9nrA13PauMuxnRdXRZbi4QKVS5ZA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=jeNwwBnUAJxNZBJFTUuoD5N58037qydPZXXpPXc10kzbuohzoldTQsWNUrDRlyGmp
+	 UO8DkzL1C8LdUi2VObotPykQBxFe3flecYlRNHjlmZGxqT2e2fgIlRwPBUkPFtSlt1
+	 7hTaVOMe4FfQouIryB+AwkJB8vdZ3y76YQ86emlGElVkB7kcLXvbGCfipM97TZGPAv
+	 1QQcoRB8DsjYFE72abPdfK/NgX1mnJPMwlimOchkWEkyR5z8myhUtHwdN4rhes/y7P
+	 ZxAaCiweE7T9KUrJ3SzBj/Wnwl85ZnR0IgK96rqPxLv7qIeVpSPo6De72M+sf6mnDq
+	 Kear0lRI4WG/g==
+Subject: Re: [PATCH net] net/sched: cls_api: unlink indr cb on a failed bind
+From: netdev-bot+sashiko@kernel.org
+To: q.h.hack.winter@gmail.com
+Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, pablo@netfilter.org, stable@vger.kernel.org
+Date: Thu, 15 Oct 2026 19:30:35 +0000
+Message-ID: <179209263510.434549.8724854871414759928@kernel.org>
+In-Reply-To: <20261013162949.25622-1-q.h.hack.winter@gmail.com>
+References: <20261013162949.25622-1-q.h.hack.winter@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <asnpHkvHsFy2dX-9@est-xps15>
 
-On Sat, Oct 10, 2026 at 07:30:50AM +0000, Kyle Swenson wrote:
-> Hello Rob,
-> 
-> On Wed, Oct 07, 2026 at 04:04:54PM -0500, Rob Herring wrote:
-> > On Sun, Sep 27, 2026 at 09:29:48PM +0000, Kyle Swenson wrote:
-> > > Add the LTC4266 Power Sourcing Equipment controller device tree bindings
-> > > documentation.
-> > > 
-> > > Signed-off-by: Kyle Swenson <kyle.swenson@est.tech>
-> > > ---
-> > >  .../bindings/net/pse-pd/lltc,ltc4266.yaml     | 180 ++++++++++++++++++
-> > >  1 file changed, 180 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
-> > > new file mode 100644
-> > > index 000000000000..e11c9d601eee
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
-> > > @@ -0,0 +1,180 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/net/pse-pd/lltc,ltc4266.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Linear Technology LTC4266 Power Sourcing Equipment controller
-> > > +
-> > > +maintainers:
-> > > +  - Kyle Swenson <kyle.swenson@est.tech>
-> > > +
-> > > +allOf:
-> > > +  - $ref: pse-controller.yaml#
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - lltc,ltc4266
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  interrupts:
-> > > +    maxItems: 1
-> > > +
-> > > +  channels:
-> > > +    type: object
-> > > +    additionalProperties: false
-> > > +    description:
-> > > +      Defines the 4 physical delivery channels on the controller that can be
-> > > +      referenced by PSE PIs through their "pairsets" property. The actual port
-> > > +      matrix mapping is created when PSE PIs reference these channels in their
-> > > +      pairsets.
-> > > +
-> > > +    properties:
-> > > +      '#address-cells':
-> > > +        const: 1
-> > > +
-> > > +      '#size-cells':
-> > > +        const: 0
-> > > +
-> > > +    patternProperties:
-> > > +      '^channel@[0-3]$':
-> > > +        type: object
-> > > +        additionalProperties: false
-> > > +
-> > > +        properties:
-> > > +          reg:
-> > > +            maxItems: 1
-> > > +
-> > > +          sense-resistor-micro-ohms:
-> > > +            description: Sense resistor connected to the channel's MOSFET, used
-> > > +              for current measurement and for overcurrent detection. The I_CUT
-> > > +              and I_LIM register encodings depend on which value is fitted, so
-> > > +              a wrong value programs the wrong thresholds.
-> > > +            enum: [250000, 500000]
-> > > +
-> > > +        required:
-> > > +          - reg
-> > > +          - sense-resistor-micro-ohms
-> > > +
-> > > +    required:
-> > > +      - '#address-cells'
-> > > +      - '#size-cells'
-> > > +
-> > > +  pse-pis:
-> > > +    type: object
-> > > +    additionalProperties: false
-> > > +
-> > > +    properties:
-> > > +      '#address-cells':
-> > > +        const: 1
-> > > +
-> > > +      '#size-cells':
-> > > +        const: 0
-> > > +
-> > > +    patternProperties:
-> > > +      '^pse-pi@[0-3]$':
-> > > +        type: object
-> > > +        additionalProperties: true
-> > 
-> > This cannot be true. That allows adding any property.
-> > 
-> 
-> So my intent with the additionalProperties: true was to avoid
-> replicating the entire pse-pis node from pse-controller.yaml.
-> Conceptually, my goal was to inherit everything from the
-> pse-controller.yaml binding, except limit the maxItems to 1 (since the
-> LTC4266 only supports power over a single PI).
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider.
 
-pse-controller.yaml doesn't have the constraint there either. It is fine 
-if the constraint is there. However, that means custom properties are not 
-allowed in pse-pi nodes. Maybe that's fine and is certainly easier for 
-the schema. If you do forsee a need for device specific properties in 
-this node, then you need a $ref in this node with all the common 
-properties. IOW, similar to how the graph schema is structured.
+Critical: 0 · High: 2 (2) · Medium: 0 · Low: 0
 
+If you believe none of the issues are legitimate, please reply to each
+issue of Medium severity or higher and explain why the AI is wrong.
+If any of them are legitimate and you plan to respin, please let patchwork
+know by including "pw-bot: cr" as a separate line at the end of your reply
+(one such reply per series is enough).
 
-> > > +        properties:
-> > > +          pairsets:
-> > > +            description: The LTC4266 delivers power to a PI over a single
-> > > +              pairset, driven by one of the controller's four channels. There
-> > > +              is no 4-pair mode spreading a PI over two channels, so exactly
-> > > +              one channel phandle is expected.
-> > > +            maxItems: 1
-> > > +          pairset-names:
-> > > +            maxItems: 1
-> > 
-> > An empty node is valid? Needs 'required'.
-> 
-> I thought the 'required' comes from the pse-controller.yaml binding.
-> If I adjust the example dts in the binding with something like
+- [High] The fix does not cover the other way an indirect bind fails.
+- [High] The new `if (!list_empty(&block_cb->indr.list))
+  list_del_init(&block_cb->indr.list);` in tcf_block_bind()'s err_unroll…
 
-Indeed. My mistake.
+Pre-existing issues:
+- [High] On every FLOW_BLOCK_BIND, flow_indr_dev_setup_offload() calls
+  indir_dev_add(data, dev, sch, ...) unconditionally…
+- [High] This problem wasn't introduced by this patch, but
+  tcf_block_bind()'s err_unroll (the loop the patch edits)…
 
-> 
->            pse_pi2: pse-pi@2 {
-> -            reg = <2>;
-> -            #pse-cells = <0>;
-> -            pairset-names = "alternative-a";
-> -            pairsets = <&phys2>;
-> -            polarity-supported = "MDI";
-> -            vpwr-supply = <&vreg_pse>;
+--
 
-If instead, you add 'foo-bar' property, you won't see any failure. 
-That's the 1st issue.
+net/sched: cls_api: unlink indr cb on a failed bind
 
-Rob
+This patch changes the err_unroll path in tcf_block_bind() so that it
+removes a block_cb from the global flow_block_indr_list before freeing
+it. The goal is that a failed indirect bind no longer leaves a freed node
+on that list. It also initializes indr.list in flow_block_cb_alloc(), so
+that list_empty() can tell indirect callbacks apart from direct ones.
+
+> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> index a9f54988561f2..ffbb8353251b0 100644
+> --- a/net/sched/cls_api.c
+> +++ b/net/sched/cls_api.c
+> @@ -1665,6 +1665,9 @@ static int tcf_block_bind(struct tcf_block *block,
+>  err_unroll:
+>  	list_for_each_entry_safe(block_cb, next, &bo->cb_list, list) {
+>  		list_del(&block_cb->driver_list);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but can this list_del() oops
+for callbacks that come from the sfc driver?
+
+In drivers/net/ethernet/sfc/tc_bindings.c, efx_tc_setup_block() and
+efx_tc_indr_setup_cb() allocate the callback with
+flow_block_cb_alloc()/flow_indr_block_cb_alloc() and add it with
+flow_block_cb_add(). Neither one links block_cb->driver_list anywhere.
+
+flow_block_cb_alloc() uses a zeroed allocation, and this patch only
+initializes indr.list. So driver_list.next and driver_list.prev are still
+NULL when they reach this list_del().
+
+A user can make playback fail on purpose. If a shared block has
+offloaded filters and also a classifier without ->reoffload (basic, fw,
+route, flow, cgroup), tcf_block_playback_offloads() returns -EOPNOTSUPP:
+
+	} else if (add && offload_in_use) {
+		err = -EOPNOTSUPP;
+		...
+		goto err_playback_remove;
+
+With sfc TC offload up, the sfc callback is on bo->cb_list both for a
+direct bind of an sfc port and for an indirect bind of a vxlan or dummy
+device.
+
+Would err_unroll then dereference NULL in
+list_del(&block_cb->driver_list)?
+
+The unconditional list_del() of driver_list was added by commit
+da94a7781fc3 ("net/sched: cls_api: remove block_cb from driver_list
+before freeing").
+
+> +		/* linked only for an indirect bind */
+> +		if (!list_empty(&block_cb->indr.list))
+> +			list_del_init(&block_cb->indr.list);
+
+[Severity: High]
+Is it safe to change the global flow_block_indr_list here without holding
+flow_indr_block_lock?
+
+That mutex is static to net/core/flow_offload.c.
+flow_indr_dev_setup_offload() has already dropped it by the time
+tcf_block_setup()->tcf_block_bind() runs. Every other writer of
+flow_block_indr_list holds it:
+
+  flow_indr_block_cb_alloc():
+	list_add(&block_cb->indr.list, &flow_block_indr_list);
+
+  __flow_block_indr_cleanup():
+	list_move(&this->indr.list, cleanup_list);
+
+This path holds only RTNL and block->cb_lock. Neither lock excludes
+nft_indr_block_offload_cmd() or the nf_flow_table indirect setup, which
+both call flow_indr_dev_setup_offload() without RTNL.
+flow_indr_dev_unregister() can't hold RTNL either, because
+tc_block_indr_cleanup() takes rtnl_lock() itself.
+
+Here is one possible interleaving with flow_indr_dev_unregister():
+
+CPU1 (flow_indr_dev_unregister)
+  __flow_block_indr_cleanup()   [ under mutex, moves the tc block_cb to
+                                  its private cleanup_list ]
+  mutex_unlock()
+  flow_block_indr_notify()
+    list_del(&this->indr.list)  [ leaves LIST_POISON ]
+    tc_block_indr_cleanup()
+      rtnl_lock()               [ blocks, CPU0 holds RTNL ]
+
+CPU0 (tcf_block_bind() err_unroll, holding RTNL)
+  !list_empty(&block_cb->indr.list)   [ true, next is LIST_POISON1 or
+                                        points into CPU1's cleanup_list ]
+  list_del_init(&block_cb->indr.list)
+  flow_block_cb_free(block_cb)
+
+Without CONFIG_DEBUG_LIST, wouldn't list_del_init() dereference the
+poison pointer?
+
+Once CPU0 drops RTNL, tc_block_indr_cleanup() goes on to run:
+
+	list_del(&block_cb->driver_list);
+	list_move(&block_cb->list, &bo.cb_list);
+	tcf_block_unbind(block, &bo);
+
+on the block_cb that CPU0 just freed.
+
+A race with list_add() in flow_indr_block_cb_alloc() from an nftables
+commit also looks like it could lose updates. The list could then keep a
+pointer to the freed block_cb.
+
+Would it be better to unwind with a FLOW_BLOCK_UNBIND through
+flow_indr_dev_setup_offload()? Another option is a helper in
+flow_offload.c that takes the lock and leaves exactly one owner
+responsible for the free.
+
+[Severity: High]
+Does this cover the other way an indirect bind can fail in
+tcf_block_get_ext()?
+
+Suppose a device without ndo_setup_tc (vxlan, dummy, ...) binds to a
+shared block that already has offloaded filters. tcf_block_bind() can
+succeed and list_splice() the indirect block_cb onto
+block->flow_block.cb_list.
+
+On the indirect path, tcf_block_offload_cmd() then ignores the result:
+
+	flow_indr_dev_setup_offload(dev, sch, TC_SETUP_BLOCK, block, &bo,
+				    tc_block_indr_cleanup);
+	tcf_block_setup(block, &bo);
+
+	return -EOPNOTSUPP;
+
+After that, tcf_block_offload_bind() fails because offload is in use:
+
+no_offload_dev_inc:
+	if (tcf_block_offload_in_use(block))
+		goto err_unlock;
+
+tcf_block_get_ext() then jumps to err_block_offload_bind, which skips
+tcf_block_offload_unbind(). No FLOW_BLOCK_UNBIND reaches the driver, so
+flow_indr_block_cb_remove() never runs. ingress_destroy() and
+clsact_destroy() see a NULL block and return early.
+
+The block_cb stays on both block->flow_block.cb_list and
+flow_block_indr_list. Its indr.sch points at the qdisc that was freed,
+and its indr.data points at the block.
+
+Later, when the remaining direct owner unbinds, only its own cb is
+removed, and tcf_block_destroy() kfree_rcu()s the block. A later
+flow_indr_dev_unregister() of the indirect driver would then reach:
+
+  flow_block_indr_notify()
+    tc_block_indr_cleanup()
+      down_write(&block->cb_lock);
+      list_del(&block_cb->driver_list);
+      list_move(&block_cb->list, &bo.cb_list);
+      tcf_block_unbind(block, &bo);
+
+on the freed block. Isn't this the failed-bind case the commit message
+describes?
+
+  -> err_block_offload_bind            [ no tcf_block_offload_unbind() ]
+
+Would sending an UNBIND to unwind the indirect bind from the
+tcf_block_offload_bind()/tcf_block_get_ext() failure path cover both
+cases?
+
+[Severity: High]
+This is a pre-existing issue, but the new unlink only handles indr.list.
+What happens to the flow_indir_dev_info entry created for the same bind?
+
+flow_indr_dev_setup_offload() adds one on every FLOW_BLOCK_BIND, before
+it is known whether the bind will succeed:
+
+	if (bo) {
+		if (bo->command == FLOW_BLOCK_BIND)
+			indir_dev_add(data, dev, sch, type, cleanup, bo);
+
+indir_dev_add() stores the qdisc, the net_device, the block and
+&block->flow_block.cb_list without taking any references.
+
+The only removal is indir_dev_remove() on FLOW_BLOCK_UNBIND. A failed
+bind in tcf_block_get_ext() never sends one, either on the err_unroll
+path or on the offload_in_use path.
+
+For example, take a block whose existing owner is a direct ndo_setup_tc
+device, so it has no info entry yet. A qdisc on a vxlan or dummy device
+then fails to bind to it. The entry stays behind after that qdisc is
+freed, and again after the block is freed. A later
+flow_indr_dev_register() calls existing_qdiscs_register():
+
+		cb(cur->dev, cur->sch, cb_priv, cur->type, &bo, cur->data, cur->cleanup);
+		list_splice(&bo.cb_list, cur->cb_list);
+
+Can this pass a freed dev/sch to the driver callback? For example,
+efx_tc_indr_setup_cb() calls netif_is_ovs_master() on the net_device.
+Can it also splice new block_cbs into a list head inside the freed
+tcf_block?
+
+find_indir_dev() matches only on the block. So a stale entry would also
+make indir_dev_add() return -EEXIST for a later valid indirect bind to
+the same block, and the real dev/sch of that bind would never be
+recorded.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013162949.25622-1-q.h.hack.winter%40gmail.com
