@@ -1,128 +1,125 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CE426D4CA
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333953264CC
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792066454; cv=none; b=R052edvbYu3ZnhIAeALkLjLeNr2vRx0LPcd4ZEMBO+J2nazKI9/8szJxoRKoiyrO/uHmyUBkrqMYZNy7YbfAmYN/NWcCyq/bUG+iFP85RYGY99J3PC8O6NHKK1K8Hy7K3TpiNl9nnv4DAhpOBodGoj8jaapJEfj3aGJq9thi8sY=
+	t=1792066741; cv=none; b=bqiCkHHwEyHdD2l5KDPxVIZbRLyRK15sQaypVAkA1wzzJjjiSUnZuYR7cnXgQ18G77Sg/MEXWE5GqokPzXe1YfWoXmW+UGGyJmWamWOaDjDLuvpxXy75IrLBq0zQTOKDCgM/hry0CjqaTGETppZtm3p29DJIAChfkgZnjBL57Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792066454; c=relaxed/simple;
-	bh=CBSujmphNDQCFVF2Cp3TI/J45ZYgqjq09qGMCcpsInE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XtZRw04X4APjXz4EBZDXH8WnvA7Vo9TytseLdLFcyjf1dNHo6u+zoiN3pzFheedjtc6jaIe1FN1rc8PS+kbXk/GjTkrzdnwkl8mlOlHTTizO39m4miC5Ze/lJvj1qbh3X5X97TjoHNT9+wm0x+OU1G+yb35wTDxTNiC9JDWoBeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ifd3weqB; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1792066741; c=relaxed/simple;
+	bh=i+svUFWgR0CVmdNaW9gvdHhxIb9SSNi2f2TTUhncJI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PA5U0A4mqWccHbe7ehXidT9FNsCbxUEpQN5O/39Tt2VISWGQN1pnPxaR7dapL8i755/CsUMiHu8+KVgA/jsKuh+e1kyxYRZlQIUh3Ubp2TUIYa1PKEXywQ/+bKx4wkJ0JhPDFhYBngFN4+Ma5fGz3lvFsRF1ajlrS49fXQT3mvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=N4Pc5+nh; arc=none smtp.client-ip=209.85.216.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ifd3weqB"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A1848C63455;
-	Thu, 15 Oct 2026 12:15:05 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3666C60360;
-	Thu, 15 Oct 2026 12:14:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 088BA10328BC6;
-	Thu, 15 Oct 2026 14:13:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792066447; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=1gJALexW05XL2Pb5Fq3PqAp03mD7NtGawsGCWpwRmHU=;
-	b=Ifd3weqBL4dZA0MqbkFF6C1lVmZFL0nzM8MZMHA0eL16k/mOcv6E2MdHPf+LP5Dc4+sXdV
-	ygypA+PGRWQvkyiY0pAMcGEFaC7Rvqve5eIsLePBC0HXvoRZgUm/U9JTRHWwFqTjlA7WDE
-	jAmoVj/isy17n/rOndSPQO3DgCctO5lXH2zCSU8zV1mkbmsdkn8bET33npg4fLrzeEzg9I
-	J4WqRzvtsnMZdcTXYsUiHJA/LeksZJGP5RqFoESXDJPKuMx8cBI5syhWVcynEMBDGeZcnH
-	tjzP3neVJnw4LN2GRYQ9psSJNGjeIWK8mzxtxl07E6XN+Cgc9vwbDO3DgMKrdA==
-Message-ID: <020aa4b3-3f18-4a04-92b7-81cd21b07f7d@bootlin.com>
-Date: Thu, 15 Oct 2026 14:13:58 +0200
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="N4Pc5+nh"
+Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ac6794fe45so1333733a91.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:19:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792066739; x=1792671539;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8UE0FnktA/0QB+N/hruvrQD7JLt1z1nNTBQq1wQCA4A=;
+        b=vZoj3pMoAOuTU7V8++qaRXyPme7kgotCyIBRvV6oG0ij5Uk0o7uf+JDXXOWgkRzOj3
+         M7d7+uzzOEpXFgq34zZie3HD9rJ4UiFd25cYMimMNNaJ2dSzimwy54ALrYohMyG+LVhG
+         Iisbv3g7EUW14IZ6FgVhYR67b6VR5ZOyPK5nzvwBsJ2CyJdsQjTo+/kr8NKxOnXHx3jF
+         HHvCWxFRtqsqIlG4ksgyZBbGi9Uf4mkDSQNFm7t+qw+oy6YyVmQ7PL2H9DOSAzwcugar
+         T42iymNBWCYbyKsqPs4LbljoEbjDk1632+SE+f2jepL1ZGoxsNCeI9KycnQcJY0SiJ1D
+         9XJQ==
+X-Gm-Message-State: AFq9FYJc+vK5/NN1cMGCIs28CaP1GgaHILnGXaGIWXUb/wHEsx2mtiqW
+	dgBt8B8bTjEloM29Up+aNFEAROBj7IIXIF3tLTo8/tlDNBjFKLm0PIEmpbjgjsQP+Lzwi/TLxqL
+	WksaYHyZ7WDHtCX3488O4v6zQokny74r3WTAPWOJWF97y4mOWhdEJIF5JWqTjq6Uea3HOO3jjmP
+	iSWIsCmcAhokc0btI5qU6yziKe8Ajw8uQMwL2QOiSBmtzHBFKwjm8KaIms4hN9mZ0Jzw6gR8OVj
+	MM1EePymQ==
+X-Gm-Gg: AYBFou3AUuo2rjQMzzcHKsBntVoOs5DPvWFXxd0Las6kn0UWnzSwh6l9SvuNYQfy7K7
+	WmUfT4V9ObqS0Y01/IHLku7x2mi4IA1g/Nncc+dgv1Useg3Tf2uOkPXS11dSeSnCwvnnu0s9A+l
+	IaKLr5iJ+kxO99Mw3c7gZHS2RyCVCApLyh/+smA/hB4qYjtKl8tqYCJ8VRtqRKLCWMVg15KOM8m
+	lQOly8TeUaoDLzarQkZxGzC0G96pD2jjn+AMggHwzjZp8/NjF01qJgJvfjhzxpvWirupVAzhdMK
+	w4k0ardEUnOakhdAReOzgJmSTySY33vLnoUOQm8Aj2EDyIqd8ekCGPnEqxDC8AzqJUZhugIRwtl
+	1r2KCA7XBPOfJipuROyPdzjF2Mg880WTA+zuGvH3DPOj0bOv84SYj/uIKv/UXjbpRBxCTiTF7cX
+	mylZ4nrfIhK10w/WNufndCCqi0hgqLzKQ4UDiQ
+X-Received: by 2002:a17:90b:2885:b0:3a7:b260:9ccc with SMTP id 98e67ed59e1d1-3ab3af73996mr15931816a91.65.1792066739477;
+        Thu, 15 Oct 2026 05:18:59 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ac930496e2sm511965a91.1.2026.10.15.05.18.58
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 15 Oct 2026 05:18:59 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-35a4d2e39acso2873704eec.1
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:18:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1792066738; x=1792671538; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8UE0FnktA/0QB+N/hruvrQD7JLt1z1nNTBQq1wQCA4A=;
+        b=N4Pc5+nhUGLPQ/+fw0aMEcQTGMvrAKfjfKlk1qOuPAQvfqVSLLt1z+Riw5EdqYWchC
+         x3ycNdAbXMCsCc/YCQYjwWjwcf+HkIkGgYCEPScrCT5CjoxA8DcSp2N7X1LnjwEbWb2W
+         IA6DK/cySdRnADJdCcLE0MwH18HABnxRYK+xE=
+X-Received: by 2002:a05:7301:1890:b0:351:13b4:9c59 with SMTP id 5a478bee46e88-3537dde3eb0mr27290916eec.2.1792066737356;
+        Thu, 15 Oct 2026 05:18:57 -0700 (PDT)
+X-Received: by 2002:a05:7301:1890:b0:351:13b4:9c59 with SMTP id 5a478bee46e88-3537dde3eb0mr27290863eec.2.1792066736616;
+        Thu, 15 Oct 2026 05:18:56 -0700 (PDT)
+Received: from H5S1 ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2954bsm64496032eec.26.2026.10.15.05.18.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 05:18:56 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bhargava.marreddy@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	dharmender.garg@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [PATCH net v2 0/2] bnge fixes
+Date: Thu, 15 Oct 2026 17:48:45 +0530
+Message-ID: <20261015121847.1933308-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: stmmac: remove STMMAC_DOWN check to avoid irq storm
-To: Xiaochuan Li <chuanx2070@163.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20261015112415.437900-1-chuanx2070@163.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20261015112415.437900-1-chuanx2070@163.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 Hi,
 
-First thing first, you're missing the target git tree, net or net-next. It's
-likely net-next, unless this is a real crash you're facing.
+This series fixes RSS indirection table and context sizing for large RX
+ring counts. Patch 1 caps the hardware RSS context count and RX rings
+to the RSS table size, preventing out-of-bounds writes and an oversized
+memset(). Patch 2 fixes the indirection table sizing so rings above
+the table size still receive default RSS traffic.
 
-On 10/15/26 13:24, Xiaochuan Li wrote:
-> The stmmac interrupt handlers return IRQ_HANDLED immediately when
-> STMMAC_DOWN is set, without reading or clearing any device status
-> register.
-> 
-> STMMAC_DOWN is set by stmmac_reset_subtask() before dev_close(). The
-> device interrupt is level triggered, so if it fires after STMMAC_DOWN
-> is set and before the IRQs are masked/freed in __stmmac_release(), the
-> pending status is never cleared, the line stays asserted and the handler
-> is re-entered forever. Since the handler returns IRQ_HANDLED,
-> note_interrupt() never flags the IRQ as spurious and never disables it,
-> resulting in an interrupt storm.
-> 
-> Signed-off-by: Xiaochuan Li <chuanx2070@163.com>
+Thanks,
+Vikas
 
-This STMMAC_DOWN flag is quite misleading :( it's only set in the
-stmmac_reset_subtask() and there's no explanation at all in the git history about
-why this flag is even here...
+v1->v2:
+  - Fix Sashiko (Nipa) review comments.
 
-How did you find that problem ? Do you have a use-case that triggered the
-storm ?
+Dharmender Garg (2):
+  bnge: cap RSS contexts and RX rings to the RSS table size
+  bnge: fix RSS table sizing for large RX ring counts
 
-I'm wondering if the right move isn't just to get rid of the flag entirely, I'm
-failing to see what it brings.
+ drivers/net/ethernet/broadcom/bnge/bnge_netdev.c | 10 +++++-----
+ drivers/net/ethernet/broadcom/bnge/bnge_resc.c   |  6 ++++--
+ drivers/net/ethernet/broadcom/bnge/bnge_resc.h   | 11 +++++++++++
+ 3 files changed, 20 insertions(+), 7 deletions(-)
 
-> ---
->  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 33 ++++++++-----------
->  1 file changed, 13 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 56d89a696272..520c1b8d736c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -3091,6 +3091,13 @@ static bool stmmac_safety_feat_interrupt(struct stmmac_priv *priv)
->  
->  	ret = stmmac_safety_feat_irq_status(priv, priv->dev,
->  			priv->ioaddr, priv->dma_cap.asp, &priv->sstats);
-> +
-> +	/* Status is read/cleared; do not escalate to a global error reset
-> +	 * while the interface is going down.
-> +	 */
-> +	if (test_bit(STMMAC_DOWN, &priv->state))
-> +		return false;
-> +
->  	if (ret && (ret != -EINVAL)) {
->  		stmmac_global_err(priv);
->  		return true;
-> @@ -3113,6 +3120,12 @@ static int stmmac_napi_check(struct stmmac_priv *priv, u32 chan, u32 dir)
->  	rx_napi = rx_q->xsk_pool ? &ch->rxtx_napi : &ch->rx_napi;
->  	tx_napi = tx_q->xsk_pool ? &ch->rxtx_napi : &ch->tx_napi;
->  
-> +	/* Status was already read (and clear) above, so the irq line is
-> +	 * deasserted, Drop the event while the interface is going down.
-> +	 */
-> +	if (test_bit(STMMAC_DOWN, &priv->state))
-> +		return 0;
-> +
-
-I don't quite understand why this is added here, can you elaborate ?
-
-Maxime
+-- 
+2.52.0
 
