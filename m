@@ -1,116 +1,78 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B2651C065
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DAE4DA9DB;
+	Thu, 15 Oct 2026 12:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792068545; cv=none; b=KTAny1nQI3HG9+7Jmgfg1mMDCCoW/kRsrKCNDTTGpSiXz4aCb19qfcUZiadf6rS5pNNCvV39nZtpm8tcS7oonWggNcXHv1gtD6Uxpb4+9vJ/I0Zbf+lKx7C+BqDbeQIWOY9AjD9w+trbWBKQ2zSNS2xbEP2JTpEchPD8AmQXQl4=
+	t=1792068608; cv=none; b=ZWbpzM1Tw4N7WX2owavVYyuctIIXONTOAFr9XLdnXVSpwdEXOumXVuiGXLW0HCrJOw8vKLQT0XkXgAluThLiXLiEwuWjNwoX91Bfy8vIRnMkHDaPyT9WBdHZGSQszptxVFdKxbL7PKCE/w6YYrIYSA9na2+3qZiqihongj8JKOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792068545; c=relaxed/simple;
-	bh=vv7AXHIi5gcZFMKmnK8J4RAnNVBgy7f431o0PkxBEwk=;
+	s=arc-20240116; t=1792068608; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKI3qPgMsbgYB38IqKBbG/4N+DiNID01LJykMS1zkGJAcn5WfzpRNrYZyk1U7UrYHmvnrFfkte89/B3/YWjGGnfetwL6b+3btmE7DcKAb0P3d3pRGiNiWCflydsE1kFDSfRSHEBdC4nQ+5yS4XAU46s6DmzG6DSJw08zfpswwvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C61FD2244E;
-	Thu, 15 Oct 2026 12:49:02 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1B281373D;
-	Thu, 15 Oct 2026 12:48:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7MJWDY7L0GoCLQAAD6G6ig:T2
-	(envelope-from <fmancera@suse.de>); Thu, 15 Oct 2026 12:48:29 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: dev@openvswitch.org,
-	jesse@nicira.com,
-	aatteka@nicira.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@kernel.org,
-	davem@davemloft.net,
-	i.maximets@ovn.org,
-	echaudro@redhat.com,
-	aconole@redhat.com,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH 2/2 net-next] net: openvswitch: drop IP fragments on SCTP set action
-Date: Thu, 15 Oct 2026 14:47:49 +0200
-Message-ID: <20261015124749.4694-2-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20261015124749.4694-1-fmancera@suse.de>
-References: <20261015124749.4694-1-fmancera@suse.de>
+	 Content-Type:MIME-Version; b=C7WF3PHNulUIo2+Q6SWmKqBv9iWutmBR+TskhTykfX9zf8Ve/7rJiTKSDk+IcR1qurjzVWji2cqLUUDexy0EBx17geBTljypVPPOjrfzz+uOtc6LJW9w0kXvSYwDe/3XIP7zET0jbZsWw717t5Jh/E6vg/B0YhGvSf4VYYtzuJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHTc2BWD; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHTc2BWD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919FB1F000C4;
+	Thu, 15 Oct 2026 12:50:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792068607;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=jHTc2BWD3DSC0BgqxK/XktvZz7FvBSYKN+wRNPT6Hqu1meh2yVzMTh53PQPwhyQiG
+	 nkGSm0tmeaMTZ8CGEqWodPona9YbxgCG9SzcFSN/xVtPYtDerpa8qyVOEaoaU6qDFU
+	 CsY2XA7BdUAfH+MHNaw67Ht2FyIIwmr86arFi6l0GNQA7C7v52uyUhTJ7jS/eUgLLI
+	 0zWHJ9kbL9Gn7s2pzI3H5gDNrxMOn9jpP0YkjYW1RusCL+xhicjMs74DCmBUQLYOxp
+	 H6sf3m2WKIw/akHPDy7m4YHn8R5L1AA9m77hJ90dSClAiwiQ55oDPvJxKsWsfKHvNl
+	 /j4FAlAW52gHQ==
+From: netdev-bot+sinfo@kernel.org
+To: Thomas Fourier <fourier.thomas@gmail.com>
+Cc: Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+ Keyur Chudgar <keyur@os.amperecomputing.com>,
+ Quan Nguyen <quan@os.amperecomputing.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: 
+ Re: [PATCH net-next v2] drivers: net: xgene: Fix dma_unmap_single() size
+Date: Thu, 15 Oct 2026 12:50:06 +0000
+Message-ID: <179206860614.408196.2469714113425981382@kernel.org>
+In-Reply-To: <20261015124547.29996-2-fourier.thomas@gmail.com>
+References: <20261015124547.29996-2-fourier.thomas@gmail.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Level: 
-X-Rspamd-Queue-Id: C61FD2244E
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
 
-The SCTP checksum is a CRC32c over the whole SCTP packet. set_sctp()
-updates it as old_csum ^ old_correct_csum ^ new_csum, with the two CRCs
-computed over the bytes of the current skb only. That is correct only
-when the skb holds the whole SCTP packet. For a first fragment, and for
-a later fragment, it holds just a part of it, and the CRC delta of a
-change at the start of the packet depends on how many bytes follow, so
-the checksum written is wrong. The receiver drops the reassembled
-packet.
+Hi!
 
-validate_set() accepts SCTP set action for any flow with ip.proto set to
-SCTP, regardless of the fragmentation bits, as it only receives the
-masked key. As the checksum cannot be fixed up without the whole
-datagram, fail the action for packets that are IP fragments of either
-family, so the packet is dropped with OVS_DROP_ACTION_ERROR instead of
-being forwarded with modified ports and an invalid checksum.
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Link: https://lore.kernel.org/netdev/d4fc14f3-4308-4560-9012-43c09c1b3845@ovn.org/
-Fixes: a175a723301a ("openvswitch: Add SCTP support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
- net/openvswitch/actions.c | 3 +++
- 1 file changed, 3 insertions(+)
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 4aade471afc4..12e339cbf791 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -674,6 +674,9 @@ static int set_sctp(struct sk_buff *skb, struct sw_flow_key *flow_key,
- 	__le32 old_correct_csum, new_csum, old_csum;
- 	int err;
- 
-+	if (flow_key->ip.frag != OVS_FRAG_TYPE_NONE)
-+		return -EINVAL;
-+
- 	err = skb_ensure_writable(skb, sctphoff + sizeof(struct sctphdr));
- 	if (unlikely(err))
- 		return err;
--- 
-2.55.0
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
