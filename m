@@ -1,204 +1,142 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mail-gw01.astralinux.ru (mail-gw01.astralinux.ru [37.230.196.243])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD5D3D88E0;
-	Thu, 15 Oct 2026 08:44:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CF148F008;
+	Thu, 15 Oct 2026 08:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.230.196.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792053882; cv=none; b=ThoBJz3kMsDYhdnuWAoIy1isyU33uP1Y/q57tvrQ57LfD5cI/ZSOUvz8dIM+CgBTFUqNAiI8iy4u3fZwmjuQRPZJIPp+iBRu3n3RMbi7qlML0/yIoJUvltTmKPm0s3mHpmkh63fjInq1wZ9Nqi/FEr8jMrtjvAF+S+DzR9EURVU=
+	t=1792053894; cv=none; b=G9JN49Ccb9n9VFT0HGGDl8owq4n/KR6Fr5HvuqIlKeX/GQQbZ8TWUAj+muZF003lWlb2ekoRcyLcD7dcM+GnOkOoljLvjUbzcfwosjFK/MbVZENB6tx31cdjyJrZLNPjvLV7FIpVlNwdd+pDrXTpwYPUmjrOD2f+fdEEVkUa/Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792053882; c=relaxed/simple;
-	bh=bZkLoYIQQjVUK4XHgnMXsLjSW9f51PKOjGdxmTBIdGc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gjC4hiW5ZDcaUVjYId0phz4kAwrWkb4ThbtwF8Fu5eiGnXy1vflqs4fKkCNXHmS4YfeO6jjtJsQcoqbu7ph8oFRstrCz3ypoWZqS1kUj65Xq/zXv1MXgXlJqlBA5/oAVOY74NWFg+BkqwgeKdEFU6901CSR46uifzPBdAqdaAbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QseqCGbK; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792053894; c=relaxed/simple;
+	bh=OZhBrowA6cT0dx95d5pQzpiY4q0ZQDXXjiy2MBvSQwo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LevSVgIEkaCn33FDqP+6k1Kvv/ZC3SFKu0YPWWeIOtO8QuDM06ONQ93OWm1dr14mo/yWv4Vu9oyoj5rzoBxG41o857dWPrxqkDbRd168UFv1NLj0k76uGgDQ7zBN/w2ihCypYYhnSiTXd8GYyoQkXgMCoWHB5gFWO67mj18P/EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b=OMrky5FW; arc=none smtp.client-ip=37.230.196.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QseqCGbK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792053880; x=1823589880;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bZkLoYIQQjVUK4XHgnMXsLjSW9f51PKOjGdxmTBIdGc=;
-  b=QseqCGbKZZpSazTWS/JX92E31oTTW/uaSRB/KgyYE++FKmVJqq/iZEHj
-   Qm3qIcOqlTUcFp2Ah6DaRWLiTjc+jKCzJumsns6CrUfSDogyn7RykuUFd
-   nh9UHzyWdlGmyf8x2GhAEzeELVKUXaS7zw0Zz6XSh0dr98Qh1BTJcea7t
-   TY8Ce5U8HEQqNFbmA4lthTX8jFczI/mSm1qjgykRSkINR9+jhnfCphOK1
-   5A6Jdw9ZX2YFaMs5mJ0jdWnrXP+Z0rcCFRp/IWrfBD1nnHSLtxGtrXYZO
-   9oxFj1m7PvB3v7/QRRjIIN6dqbltDlkQqetPR3jzwYDWmC5nenvm+Ta8Y
-   Q==;
-X-CSE-ConnectionGUID: p1kljdykSYiDpK8FSkPk3g==
-X-CSE-MsgGUID: XDaxo7u1RlujshuYjclr6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="848210"
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="848210"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 01:44:40 -0700
-X-CSE-ConnectionGUID: wGs0T18cRx2rtVYfmexHUA==
-X-CSE-MsgGUID: +Cukhbh6TOyI157YdPCwvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="1576023"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 15 Oct 2026 01:44:36 -0700
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xHH4j-00000000G7W-2o18;
-	Thu, 15 Oct 2026 08:44:33 +0000
-Date: Thu, 15 Oct 2026 16:43:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Claudiu Manoil <claudiu.manoil@nxp.com>, netdev@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, s32@nxp.com,
+	dkim=pass (2048-bit key) header.d=astralinux.ru header.i=@astralinux.ru header.b="OMrky5FW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1792053884;
+	bh=OZhBrowA6cT0dx95d5pQzpiY4q0ZQDXXjiy2MBvSQwo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OMrky5FWQQHXgmi4cgffL54R3WqnKQ6v/r7KvjlAtvSfeUsKhNau3CPQK7r21MQ54
+	 4jyHDrbXF2JrllgdUJnrHzK04tRLWnVBl9vAjQqYICEsez4c7shGhvNJJAgQov6JZJ
+	 wOPVGX/D6UZSNBEqMRJ4WI62GXh/IhSVeHkYyehi4D3mc9DSvXSuVhx4VcncWqCQex
+	 TQESHpjjsrW/+p2UYquT8J1tmV6Hf5hv4tqqrjWLVaaOS6bHK5NkeoqPXNtgZ/MM22
+	 wqHR1aPvAMCyvjMOLdWce4OAJ60Rz8Gsm0XpCFdAwJ9SATbna7dRiR1FBaTs6s7kX+
+	 QMkyNbIRY9jog==
+Received: from gca-sc-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw01.astralinux.ru (Postfix) with ESMTP id 69F4F260A1;
+	Thu, 15 Oct 2026 11:44:44 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.205.207.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw01.astralinux.ru (Postfix) with ESMTPS;
+	Thu, 15 Oct 2026 11:44:43 +0300 (MSK)
+Received: from DESKTOP-D46TNHI (unknown [10.198.48.108])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4j51pf3K7mzL91;
+	Thu, 15 Oct 2026 11:44:42 +0300 (MSK)
+From: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>,
+	Sasha Levin <sashal@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, imx@lists.linux.dev,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/5] net: enetc: Add pseudo-MAC support for
- ENETCv4 Ports via a fixed-link node
-Message-ID: <202610151650.UHqL0Sb7-lkp@intel.com>
-References: <d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil@nxp.com>
+	lvc-project@linuxtesting.org
+Subject: [PATCH 5.10/5.15] vxlan: use pskb_network_may_pull() for transmit path header pulls
+Date: Thu, 15 Oct 2026 11:32:57 +0300
+Message-ID: <20261015083259.1684-1-mdmitrichenko@astralinux.ru>
+X-Mailer: git-send-email 2.54.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil@nxp.com>
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/10/15 07:23:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: mdmitrichenko@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 127 0.3.127 0884f7b061fa529b810563f359267cd65d2ec05c, {Tracking_one_susp_tld}, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;patch.msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 206699 [Oct 15 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.27
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2026/10/15 06:31:00 #28687005
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/10/15 08:01:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
 
-Hi Claudiu,
+From: Eric Dumazet <edumazet@google.com>
 
-kernel test robot noticed the following build errors:
+commit b9553558b48db54ac9273e6b98d7263ef5c1a329 upstream.
 
-[auto build test ERROR on net-next/main]
+In vxlan_xmit(), arp_reduce(), and vxlan_mdb_entry_skb_get(), pskb_may_pull() was
+being called to verify the availability of network layer headers (ARP, IPv6/ND,
+IP/IPv6 MDB keys).
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Claudiu-Manoil/net-enetc-Add-pseudo-MAC-support-for-ENETCv4-Ports-via-a-fixed-link-node/20261013-201245
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/d7b51cb29758538a4c68a700dd8cd41b6e7e08b6.1791908694.git.claudiu.manoil%40nxp.com
-patch subject: [PATCH net-next v2 1/5] net: enetc: Add pseudo-MAC support for ENETCv4 Ports via a fixed-link node
-config: x86_64-buildonly-randconfig-1004-20261015 (https://download.01.org/0day-ci/archive/20261015/202610151650.UHqL0Sb7-lkp@intel.com/config)
-compiler: clang version 22.1.8 (https://github.com/llvm/llvm-project ca7933e47d3a3451d81e72ac174dcb5aa28b59d1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261015/202610151650.UHqL0Sb7-lkp@intel.com/reproduce)
+However, during transmit skb->data points to the MAC header, so skb_network_offset(skb)
+is ETH_HLEN (14 bytes). Using pskb_may_pull(skb, len) only checks len bytes from skb->data
+rather than skb_network_offset(skb) + len, which can leave part of the network header
+in non-linear frags.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202610151650.UHqL0Sb7-lkp@intel.com/
+Replace these remaining pskb_may_pull() calls with pskb_network_may_pull() to properly
+account for the MAC header offset.
 
-All errors (new ones prefixed by >>):
+Fixes: e4f67addf158 ("add DOVE extensions for VXLAN")
+Fixes: f564f45c4518 ("vxlan: add ipv6 proxy support")
+Fixes: 0f83e69f44bf ("vxlan: Add MDB data path support")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260723144249.759100-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ mdmitrichenko: drop the vxlan_mdb.c hunk, 5.10 and 5.15 have no VXLAN
+  MDB support (added in v6.4); arp_reduce() context differs only in the
+  tx_dropped accounting. ]
+Signed-off-by: Mikhail Dmitrichenko <mdmitrichenko@astralinux.ru>
+---
+Backport fix for CVE-2026-74474
+ drivers/net/vxlan/vxlan_core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:963:2: error: call to undeclared function 'of_changeset_revert'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     963 |         of_changeset_revert(priv->ppm_ocs);
-         |         ^
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:964:2: error: call to undeclared function 'of_changeset_destroy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     964 |         of_changeset_destroy(priv->ppm_ocs);
-         |         ^
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:992:2: error: call to undeclared function 'of_changeset_init'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     992 |         of_changeset_init(ocs);
-         |         ^
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:994:15: error: call to undeclared function 'of_changeset_create_node'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     994 |         fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
-         |                      ^
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:994:13: error: incompatible integer to pointer conversion assigning to 'struct device_node *' from 'int' [-Wint-conversion]
-     994 |         fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
-         |                    ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1000:8: error: call to undeclared function 'of_changeset_add_prop_u32'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1000 |         err = of_changeset_add_prop_u32(ocs, fixed_link, "speed", speed);
-         |               ^
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1004:8: error: call to undeclared function 'of_changeset_add_prop_bool'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1004 |         err = of_changeset_add_prop_bool(ocs, fixed_link, "full-duplex");
-         |               ^
->> drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1008:8: error: call to undeclared function 'of_changeset_apply'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1008 |         err = of_changeset_apply(ocs);
-         |               ^
-   drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1020:2: error: call to undeclared function 'of_changeset_destroy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    1020 |         of_changeset_destroy(ocs);
-         |         ^
-   9 errors generated.
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index a2955729998c..edd5976509d4 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -2004,7 +2004,7 @@ static int arp_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
+ 	if (dev->flags & IFF_NOARP)
+ 		goto out;
+ 
+-	if (!pskb_may_pull(skb, arp_hdr_len(dev))) {
++	if (!pskb_network_may_pull(skb, arp_hdr_len(dev))) {
+ 		dev->stats.tx_dropped++;
+ 		goto out;
+ 	}
+@@ -2937,8 +2937,8 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			return arp_reduce(dev, skb, vni);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 		else if (ntohs(eth->h_proto) == ETH_P_IPV6 &&
+-			 pskb_may_pull(skb, sizeof(struct ipv6hdr) +
+-					    sizeof(struct nd_msg)) &&
++			 pskb_network_may_pull(skb, sizeof(struct ipv6hdr) +
++						    sizeof(struct nd_msg)) &&
+ 			 ipv6_hdr(skb)->nexthdr == IPPROTO_ICMPV6) {
+ 			struct nd_msg *m = (struct nd_msg *)(ipv6_hdr(skb) + 1);
+ 
+-- 
+2.43.0
 
-
-vim +/of_changeset_revert +963 drivers/net/ethernet/freescale/enetc/enetc4_pf.c
-
-   957	
-   958	static void enetc4_put_ppm_fixed_link(struct enetc_ndev_priv *priv)
-   959	{
-   960		if (!priv->ppm_ocs)
-   961			return;
-   962	
- > 963		of_changeset_revert(priv->ppm_ocs);
- > 964		of_changeset_destroy(priv->ppm_ocs);
-   965		kfree(priv->ppm_ocs);
-   966		priv->ppm_ocs = NULL;
-   967	}
-   968	
-   969	/* Pseudo-MAC ports have no real PHY; the link is fixed, with the operating
-   970	 * speed set at probe time from PCR[PSPEED]. Describe this with a fixed-link
-   971	 * subnode synthesized at runtime onto the port's own OF node, so phylink
-   972	 * picks it up through dev_fwnode() exactly as if it came from static DT.
-   973	 */
-   974	static int enetc4_add_ppm_fixed_link(struct enetc_ndev_priv *priv)
-   975	{
-   976		struct device_node *np = dev_of_node(priv->dev);
-   977		struct device_node *fixed_link;
-   978		struct of_changeset *ocs;
-   979		int speed, err;
-   980	
-   981		if (!np)
-   982			return dev_err_probe(priv->dev, -ENODEV,
-   983					     "Missing of_node for Pseudo-MAC port\n");
-   984	
-   985		enetc4_get_pcr_speed(&priv->si->hw, &speed);
-   986		speed = enetc_phylink_match_pseudo_mac_speed(speed);
-   987	
-   988		ocs = kzalloc_obj(*ocs);
-   989		if (!ocs)
-   990			return -ENOMEM;
-   991	
- > 992		of_changeset_init(ocs);
-   993	
- > 994		fixed_link = of_changeset_create_node(ocs, np, "fixed-link");
-   995		if (!fixed_link) {
-   996			err = -ENOMEM;
-   997			goto err_destroy;
-   998		}
-   999	
-> 1000		err = of_changeset_add_prop_u32(ocs, fixed_link, "speed", speed);
-  1001		if (err)
-  1002			goto err_put_node;
-  1003	
-> 1004		err = of_changeset_add_prop_bool(ocs, fixed_link, "full-duplex");
-  1005		if (err)
-  1006			goto err_put_node;
-  1007	
-> 1008		err = of_changeset_apply(ocs);
-  1009		if (err)
-  1010			goto err_put_node;
-  1011	
-  1012		of_node_put(fixed_link);
-  1013		priv->ppm_ocs = ocs;
-  1014	
-  1015		return 0;
-  1016	
-  1017	err_put_node:
-  1018		of_node_put(fixed_link);
-  1019	err_destroy:
-  1020		of_changeset_destroy(ocs);
-  1021		kfree(ocs);
-  1022	
-  1023		return dev_err_probe(priv->dev, err,
-  1024				     "Failed to add fixed-link node\n");
-  1025	}
-  1026	
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
