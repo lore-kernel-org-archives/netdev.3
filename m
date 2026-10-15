@@ -1,108 +1,154 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011037.outbound.protection.outlook.com [52.101.62.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4948E47DD77
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 07:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792049875; cv=none; b=DmbGEmEEaon3/KKAdbzApKcLJ469TGzXp26twxBu/zQTJd04wdv/v2LorFE8Oq7xcMlVA3p6/Wf+4qidDc0qPJgYBt3PqQCe6hsGoy1io7gbV9V6a8Q7WOdvpWL2NFuMcRP1P92AUWKadcfr61Rkih6mkvz8WwyMJORUy9I3EzQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792049875; c=relaxed/simple;
-	bh=7VhssldhEn1SH6TcBBPIWkuyOXVfHEC4iqR4M4KlGbE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bmNX3fnfWm16Bdt63jXWd+E+6GEwiJnj/R0SqJ1fCVh76Unxk06zoIMyrwOComMdvXrpx77mcJVg3apJYfnaWVVT+G+cc7UQWZZnPDzHpbPNERox8U2hYniV7r6mZLeAs1Cz5hLGm8yMDaI224k09e4XqrlIUa97Pm/n5Y6TB3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HIuT8OL+; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tavip.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0C04A8A18;
+	Thu, 15 Oct 2026 07:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792050082; cv=fail; b=agxTN/sCL76yl2+UH/XlZNG4yjHVsBL9LO5+3G8egkNkahA3nZwJBd35ysHK2krXBhHQJg89ASgqVOX1Z7yV0FWrizmI/HHuyz2jgf1I2ma+y9Ch72hgXjaO0tuv4LK0v1TmDMZ2KLoYc0BF6xts+lSY6Ek55nfvlNUgo84ANOQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792050082; c=relaxed/simple;
+	bh=0wFeM8X4sSYe32Vy0hum5X0evQm6Rk2rTXd2WwnR9ME=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mje61RINJVVB+m1c2fI6IJ9lqppmieh9jn3Sy2al07epqBPA0586fs1YxVRdEMXHu2Qt/n7KBDIYzaNtTNz2N2Lf2SroIpfXyY2l28/bzBRoAfu2PX6Z9bmPWPKtZ3PB56QA7/XEL4YyPYrauxlWZ8mCkhpy3YyQDsKu5Mfd5wo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Wk6SbFSM; arc=fail smtp.client-ip=52.101.62.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HIuT8OL+"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cd1e45a268cso1464957a12.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 00:37:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1792049868; x=1792654668; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Be8sy8Bdn5ONmnvgzJDmAuJ13byc/JKsc3e6N06ewxs=;
-        b=HIuT8OL+zlvsAVEP5a7KvTMGIuqRZMYp7NN8I1G4aob5sWO9vtEDJ7xYwgj7xiDnBb
-         GO7fMoU3autulH4rm6wBsqHIujBunYX5QLwxdiuM41ZhXgQl7ey5nf13HaynkmNRXWba
-         LoGKXkAl+lcjiuEy1/CBFV3v6Wv7YnsswELs8uDCKpErmp95R/oJH/YeSejAOaioG2oY
-         jv9MhpN59RCK0U8uWFbCeGdsNf7rJXlGER81CZNgtk3s+OIEOyg01iv3FsWQGlFMYFx2
-         b2F+JqisSxi40Zc9ofnrkqR6yMk/0dHbrJF/ZJxuipzYO7nzcOuRwU69noQGdOkG4VjQ
-         2gtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792049868; x=1792654668;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Be8sy8Bdn5ONmnvgzJDmAuJ13byc/JKsc3e6N06ewxs=;
-        b=FibW4bRN/F0/cnY6qH55WpSqX/Tjfyv9M+zKZSPF1Dg0mqgJI8wYlNojC/VRt+hyMu
-         IhKkiyMeHtJV7HAxfOkcuIhaBPujVN3OMQx33qTW0PSK8LCDH2qW4NTwfPbjIUsvrKQp
-         aA/V2//A56bRZaS192+oibBTE/U+DI3rH8ye43D7il7LC1IHrPYRlmsnVKHuH/Ty7+tI
-         y7GstIJW6vm76y0/QgEGiNhDDKiLDuFWm97m96t+ivuUADtbXFce14S8tQm28fBaRMME
-         j5SSwwfjo4EOtcbwtuyRuVV0iMHBg3TmktORXlMfhxSxn6aQGj5WrdonAM9WMq+XZBf/
-         jC4A==
-X-Forwarded-Encrypted: i=1; AKwUvBz6XZ/Z5t1Ub5MEE7rZfbg+phBrBbavxrfeN1TR78XUbgRMLnKccPRGvrShnLyTXN3OZmXQafg=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK/1O1AJEBar2S58l5wXTe1Q6h4+zk/P8xeVT6O4KchZeWb2Ozy
-	H4dJpKrfaxYkIHM0zpmmIk8PXpWWBfFMFKx425rtLM0ofqPe+Z1OXKF555UQXHcdte5sI+Uqyyw
-	9uA==
-X-Received: from pjbil8.prod.google.com ([2002:a17:90b:1648:b0:3a8:28d0:2510])
- (user=tavip job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4b:b0:3ab:2c2b:1030
- with SMTP id 98e67ed59e1d1-3ab3a747cfcmr14208135a91.22.1792049867875; Thu, 15
- Oct 2026 00:37:47 -0700 (PDT)
-Date: Thu, 15 Oct 2026 07:37:34 +0000
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Wk6SbFSM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BWglD3TrNx7HCJa9ZCH7lwcdOr0neVvzj38JKH2IbRQ8zOU8UXPCX7MAwOGRLDG/J3TEi0bdMMb+Bl1qE+D/r3DrHRMlSb1TJ4JMZKAYzrzL1eg5wLajc8rVVkUtc/FhgaP2rPKadNAXTqZ+a+54p65e5HJOxH3V8BF3BGDdyGafkl4UD8ktSnt1iaLPdB6s4TJHpStT67G8qUZE1yZ6vmNkKSaHzeJY+W1+XgArSpy50vfrIyR8wxvGyO1y02P+V16p4opQnugGxRFwkmKK6chCfrVBAwoUb97t40jQPHx6Vh5fB9xBHS3LPiaWSDBgefNGpHHmLCjXz+OzWzCcoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3lp6L0PchFFvvd7tydw+T6voo11KP+kIWze7aPPbmcQ=;
+ b=jRxLDPavLHvJ161/O/jAccatknle839ZpbJ8KUh0cIZMOOVd9E2G7ZIMybcmfOXohtWeYm3lX0Ho4lUh/Q48vNlpdai/QWiPm/uxL0ZLqteYcsiFLnt4P011lBvf5/0B/kw59p6c3BsA4FFUhmRceNV11nuzgWSjfUf6+vRBeWAB3yCiJrRe1B8Hi15OShGDDWctfIOewd4xvChkejqANccrLM+0itpYVKziNo9uq1EcP00Y5vGAEKRvPXY76QIxRvSx2waFSQloxRbgkYIVPS58OuqJ569jWuxEZxtRyR4Fd9CPZhhnh0hAUZj5hzZo7fD0vMXfSHLw6PR64OOe/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3lp6L0PchFFvvd7tydw+T6voo11KP+kIWze7aPPbmcQ=;
+ b=Wk6SbFSMvsSna9JBygfshY+XWlEiG7Gpc5eXx6hVyDKy/ktFEOMJkXEUUVcARAe+htMN37EfZSYaG3N64NaokL5O63o3qIwWgNxghpT7tiTUljM6GgTyxw1n6D05wWHSzJ7jbZS3opFZHoDsD6MezeM+J7kM+kfiIyOsUIncsuBgmvM9WLs65DtY0SrG40SQQXqpvkHjihewG8TEQbJukzoFckApv5FT4FNETiz29pkhNxXWSXGs5Uao+1i1mXJF6cJagJZoYAyIu9NMIivXyReKcj+nvNc0x4LxrkDe5mpGF5lTgmpoqKolu6qrO1AftcHZ36azTdC4t2BBolxEHA==
+Received: from SJ0PR05CA0012.namprd05.prod.outlook.com (2603:10b6:a03:33b::17)
+ by DS7PR12MB6006.namprd12.prod.outlook.com (2603:10b6:8:7d::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Thu, 15 Oct
+ 2026 07:41:07 +0000
+Received: from MWH0EPF000C6188.namprd02.prod.outlook.com
+ (2603:10b6:a03:33b:cafe::a8) by SJ0PR05CA0012.outlook.office365.com
+ (2603:10b6:a03:33b::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Thu, 15
+ Oct 2026 07:41:07 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.118.232) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ MWH0EPF000C6188.mail.protection.outlook.com (10.167.249.120) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 07:41:07 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
+ 2026 00:40:54 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 15 Oct 2026 00:40:53 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Thu, 15 Oct 2026 00:40:49 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>, Carolina Jubran
+	<cjubran@nvidia.com>, Gal Pressman <gal@nvidia.com>, Jiri Pirko
+	<jiri@nvidia.com>, Jiri Pirko <jiri@resnulli.us>, Leon Romanovsky
+	<leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Vadim Fedorenko
+	<vadim.fedorenko@linux.dev>
+Subject: [PATCH net] net/mlx5: DPLL, fix fractional frequency offset scaling
+Date: Thu, 15 Oct 2026 10:40:35 +0300
+Message-ID: <20261015074035.1092340-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.176.g3575e65682-goog
-Message-ID: <20261015073736.2944215-1-tavip@google.com>
-Subject: [PATCH net 0/2] tcp: clamp return value of tcp_wmem_schedule() to non-negative
-From: Octavian Purdila <tavip@google.com>
-To: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, Soheil Hassas Yeganeh <soheil@google.com>, Wei Wang <weiwan@google.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Octavian Purdila <tavip@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000C6188:EE_|DS7PR12MB6006:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11c714d1-bc34-4fda-9536-08df2a8fac78
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|23010399003|1800799024|7416014|376014|82310400026|56012099006|11063799006|261009223027099003|18002099003|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	5xtNRBynzHNPpDXh516OmDaU0QiJXyhA+nJQCaM2RUPovtHkHzD0i68knmCiFQmPJmKzYqnTtGsb11oGX6uKN/QpjN5BsKo+ymj/iGq94WV2+dB/082Vav++YvOItQaOMnfw506+XDSTzNjLujnN81/NGtTGQMVwG6iIjlvR0XAaacsXwSrheehL4piO7TQGMVJW/vK039XOx5a7PgHZnOYLcdXj2tbGc8s+gT89iLCG1+Et5wCp/mUD6PrdiPJv0S+9wncvI2jrX39qpKuQrUbDmVAn+X7gVzRocR22CQ8mNbnmXU5u8nG9CmbB+9HYXSv2E+MKsVhkF0zycKMgqw4elF/BRJzoutluGx+5LOvrk6cDH8GMvC1XRZODv8fcjDBMluwCZbICwFTeAyDQytp/fAfESrJ6niZMopSKdtOot2RiCFJkBAWqrzWhUO8Tf6kmSe5oNcQFcQmsFUyg47hhs8ZKiQZTFU07Uf3s9rZxFmj+X+GkQGyzDe/+okA4p3cnjLUq2PclzZWyUImCAAaXT8Cbux1w5kdVxew2pEADPAQeC3BxIRcbOdfV9cdTs+1HSySMoWSmM73D4zVnt6/vnf1PUpSBwR7nIRW8liIOuOeTGkVqUoKGveoItsru2kHB4XppJ14CSg+OKkXttEhvFNtehSr1ryesyYslIO/4MoLWMCvbgrRIJphlnRBAUJPGA4Z8QA7x6+ALZgcyTA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(1800799024)(7416014)(376014)(82310400026)(56012099006)(11063799006)(261009223027099003)(18002099003)(6133799003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	iuzxEQbCXa+0H3TMCI6QEJCZhA0gAqLc6xT4CfCwxHiuUmfpo7h6hfKbGppDZZLsiaOjLPfGVZ1iammnDqVCVU/Uume9MJpx/7Uw8wBZrlWPtK3fsXrjZKXNFUx3U+66Doh0NTC12ahgxsugNSlz5gXDi8wfdWBkdpdoQYPLcPOOmuZq7xgK0WpnzLkNJ7Umgpz0kvonpypfqytWxS1Zba1jFbBdnCEJZczQhg8dSsOVcv5i9pHtBxy2PCOt/FvcVoeUzMcih/BPGav6BRAjDE+Q7BvYgzt08j3qZqTQZgPhzc/2jjvzITkHtYn+xxX40hWaRkc0CaOpGaCCnLkydnOj1GlYhQEV4LHDLkpBAoWJZn3/HQTF9yisQD/OK+ZGFkLrqY2PLd3DPkvJxGuqL1aDyBqTaWVf6Zm+uou45BQFfdmMSUgPA59VJYGoRWNb
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 07:41:07.1002
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11c714d1-bc34-4fda-9536-08df2a8fac78
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000C6188.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6006
 
-This series fixes a bug in tcp_wmem_schedule() where a negative
-sk->sk_forward_alloc under TCP memory pressure causes tcp_wmem_schedule()
-to return a negative copy length when sk->sk_wmem_queued already reaches
-or exceeds sysctl_tcp_wmem[0].
+From: Carolina Jubran <cjubran@nvidia.com>
 
-sk->sk_forward_alloc can transiently become negative when tcp_collapse()
-re-packs partially read or high payload-to-truesize SKBs in the receive
-queue and charges newly allocated SKBs via sk_mem_charge() before
-freeing the original SKBs. When a subsequent send hits memory pressure
-in sk_wmem_schedule() with sk->sk_wmem_queued >= sysctl_tcp_wmem[0],
-tcp_wmem_schedule() returns min(copy, sk->sk_forward_alloc) < 0.
-Callers such as tcp_sendmsg_locked() then pass that negative copy length
-to skb_copy_to_page_nocache() -> copy_from_iter_full() ->
-check_copy_size(), triggering WARN_ON_ONCE(bytes > INT_MAX) and
-returning -EFAULT instead of waiting for memory or returning -EAGAIN.
+The frequency_diff is reported by firmware in parts-per-trillion, which
+is exactly what the DPLL core now expects from the ffo_get callback.
 
-Patch 1 clamps the return value of tcp_wmem_schedule() to [0, copy] so
-a negative sk->sk_forward_alloc is treated as 0 available bytes.
-Patch 2 adds a packetdrill selftest that reproduces the negative
-sk->sk_forward_alloc condition via tcp_collapse() under memory pressure
-and verifies that a non-blocking write fails with EAGAIN rather than
-EFAULT.
+Commit bc443c253fcd ("dpll: expose fractional frequency offset in ppt")
+switched the callback contract to ppt but assumed frequency_diff was in
+ppm and scaled it by 1000000 to "convert" it. Since the value was
+already ppt, this makes both exported attributes wrong.
 
-Octavian Purdila (2):
-  tcp: clamp return value of tcp_wmem_schedule() to non-negative
-  selftests: net: packetdrill: add test for negative sk_forward_alloc in
-    tcp_wmem_schedule()
+Report frequency_diff as is and let the core divide it down for the
+legacy ppm attribute.
 
- net/ipv4/tcp.c                                |   2 +-
- .../testing/selftests/net/packetdrill/config  |   1 +
- .../tcp_wmem_schedule_negative_fwd_alloc.pkt  | 116 ++++++++++++++++++
- 3 files changed, 118 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_wmem_schedule_negative_fwd_alloc.pkt
+Fixes: f035dca34ede ("net/mlx5: DPLL, Implement fractional frequency offset get pin op")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/dpll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/dpll.c b/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
+index 7c69d9029bfa..54ba7c330d66 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
+@@ -138,7 +138,7 @@ mlx5_dpll_pin_ffo_get(struct mlx5_dpll_synce_status *synce_status,
+ {
+ 	if (!synce_status->oper_freq_measure)
+ 		return -ENODATA;
+-	*ffo = 1000000LL * synce_status->frequency_diff;
++	*ffo = synce_status->frequency_diff;
+ 	return 0;
+ }
+ 
+
+base-commit: af32da41b0327b9c6a37856ba82b6760d6c8d10e
 -- 
-2.56.0.176.g3575e65682-goog
+2.44.0
 
