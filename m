@@ -1,136 +1,95 @@
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61CD56E05E
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 18:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD383161A1;
+	Thu, 15 Oct 2026 18:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792087668; cv=none; b=p6IToDZYBn8nsp21bHMPKfypD4O/3oFINHsGoqM9hn8IBjK32XOH440FrtwF3ZC/YloTTXCfr9+bUcAykF3TkHms3TdGwxs7j1fEZFMlyYwzu89ySVdpcTs9RK47yixna59uiy24JOqf2xAIamnfZHdwGyjVfDVRBc/2NZD15/c=
+	t=1792088812; cv=none; b=s120bZ6/9zkkgPQygpCFw078kgimX3LpVJ2tJf4cJhYRgTtH0QKlU5/ZuvJ0wm7yX0F4SufNpCXLcI19Qtyf1NTUDU4RgVZQ5C51CdZmZCvwB7qo3uN5Dwx15FleL74IyaABkoTZj3/3YaavUejpvFNTHlEDu5Ha8ca0VhkrpsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792087668; c=relaxed/simple;
-	bh=xAk9jUZ4tHEIPjhowarDu1pLkojlKzRtPIaVJYJ41As=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=fCnvD0sftR+/iMkJhC+XQtE1oW/bQBjNQSXRlJWeTe3qwozzzOmn9WcLK4t/7W+Cax6tM8kHR9fnbcIjMpLRofnf/MX7OEHzqJNaCaiGvYGGvjrl/u8AYa/8cRlQzQ5G3WE5t0JY46ORpAnwbw+SaSmok+MAEqckdLjrJTzUycQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4z1QMg3; arc=none smtp.client-ip=209.85.221.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792088812; c=relaxed/simple;
+	bh=jaKT1vd6Nk22cDhUf7YkN9EPXS477pLxkPrSe/hbmfg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M5VqOlEw12pqFr9QjSpCxuXEhyw/Rm5GFwkrGeEl1Mro0TL4NJpoRbkev50TvXwXPn9XW6DMi3MFWzwN5tKB7w8lHUzOYkJk7lHMzFRXLQzG6pSWiVhmi7AmCZgHf1eB5THyp66ugeHEKgfncc9clgXKcc81acSyMqqNu84TbRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dnkM1QqJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Fv7grZ/E; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4z1QMg3"
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5e94120191cso3559049e0c.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 11:07:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792087659; x=1792692459; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=nq2p8yOce4bNMEA6ygRhHxutRNrExZqu0Cd/fcqSm44=;
-        b=a4z1QMg3lpDADkHZ0FctIrivV63CKx3EReOyWjA5oQvTVEfkTbINiZ0ckZZLvlXeD3
-         SU0Iy5oiPGh4EP+3rxENFq1QGaz5JQjhi3fscWCJhcN5UzhtNFAQvH6mJbvzFa6feFUI
-         PS4HZKyROvXdIGQ98gwjmL17bfLtiXCG7iqnc17e5zBBGQ9P3DGRUR6mvz0frntzWF2E
-         u8NjnM175NdKh4jhI0Ss/32vLg2bMJBImwVa4Mem0eu83UDTuc3A12iiWy2uKqG82muf
-         ZQIIFxHAjdmihHYPgvT1Sykr/GKoKvLGXkFFTf49z3fl4R2ScO9KLUE1HGeUIB6+KoEA
-         keow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792087659; x=1792692459;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nq2p8yOce4bNMEA6ygRhHxutRNrExZqu0Cd/fcqSm44=;
-        b=gMYCG88Ucwv6ipiNGDtn/WmZZhLUxDMTu1c/n69trhPp2BBqXP4OFxPd2Ic1rSpYwD
-         NNYMjuSoEnqFJX1GOS10QSK5AueGjhdg+NL4n/6s7UXZKiocJop7/bgS/ZTQv+/K6OOs
-         x71Nfo0lDeM9copXqBfCEkJE2YMHbNPQezfSwvO7WLQIGm9H32cf6XjbW6ZzJFKbxT4i
-         uXG0zKdMCYXznmFP1nexei1OOCL9jbtBZKkAeX/BnM2j3OV/7bSfLy7P84Fj1QzyXaFC
-         FK8nB9b7o5DsxWIsoqFGy4NUUFpC8r49Q3QVR8QiXFWtFgm1dyRxd4BFrNhZTkeOJZ5q
-         qHhw==
-X-Forwarded-Encrypted: i=1; AKwUvBznyPmf6KwbMRtWFwKmp1vjNCgYzQNdCx9OoYnxJ0EFe/S90rtMjEQ2Q+1PJOYa+rcGbl0W0q0=@vger.kernel.org
-X-Gm-Message-State: AFq9FYLT6ju5kyP6ODYJSHkdgiewXw+OyfwpXuqDpnXF7E4cq6LS8kYn
-	9BtmSwCXw2qJrszIUNahKvj8D1F8Ri+1Rs/6yvXLCC6FihgD0e1tFgqX
-X-Gm-Gg: AYBFou1Sot3YZj01cbRRD6vBSnmuZR8I1OnS2h09uK6gmeNO/C3kfdbOH9FvvLRMOGw
-	568Agl5FvKPtY7k3kRcOb/McpHB8wQQ3kP+wlqq0CFQXIGqvoR1k//UbblINNG86BZYmSUHA71q
-	kEP/0Y92ksBKjmAEF+yTogGygkCZ0fl7fwx6Iqs7X7pEh9E11t1u+yEJ2rQ+KRiWleazIDmB6U2
-	kDuO4FOUzMEcz4MpXItQBH5HjH5M4mFRihsAz9lYlIIUp7feR0bf3Y9l8ZuwOklk64TgYKPolFV
-	LgqkgYJCUzDKvIhJFSlGZwP6jgJcdgq85Uc3TxoPl6ToORNjgZF9GyQ3UQuxQYeGBVNT0Rxc7DI
-	py0RYeXlLcX+GZ3K98KAqxgK5daj8H4KFaO+mEBhdxj7667W6Ltbf0Q2GNi5Tye8UAy84jje2Zq
-	TaKfnlGvYgy2bwKTErYlJbK1414vTYSlS2ebiiHPYV1FpGXqLpP/fl7Z/QtTdAlBc7rHPC/gobd
-	p9vUdgSfeBeDnyPBl2TLDDGQxYRhWnwBKlV4+yRDfNl6fYXl7ku+UqLXyOjKH8xYOZe96VSZ7Cv
-	IW+eZxkOnJuX9OloJqV19YVmFPUXeATAtkx6rQ==
-X-Received: by 2002:a05:6122:8b83:b0:5ea:389c:51e4 with SMTP id 71dfb90a1353d-5ea389c5604mr1033114e0c.2.1792087659373;
-        Thu, 15 Oct 2026 11:07:39 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea99491db7sm304799e0c.10.2026.10.15.11.07.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 11:07:38 -0700 (PDT)
-Date: Thu, 15 Oct 2026 14:07:38 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, 
- linux-kernel@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Jason Wang <jasowangio@gmail.com>, 
- =?UTF-8?B?RXVnZW5pbyBQw6lyZXo=?= <eperezma@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- netdev@vger.kernel.org, 
- virtualization@lists.linux.dev, 
- Rusty Russell <rusty@rustcorp.com.au>, 
- Max Krasnyansky <maxk@qualcomm.com>, 
- Paulos Yibelo <habte.yibelo@gmail.com>, 
- Chris Arges <carges@cloudflare.com>
-Message-ID: <willemdebruijn.kernel.18c52b086550a@gmail.com>
-In-Reply-To: <e66f7984fdeb8168e07fd7d0dad3deb8c30ead0a.1792067836.git.mst@redhat.com>
-References: <cover.1792067836.git.mst@redhat.com>
- <e66f7984fdeb8168e07fd7d0dad3deb8c30ead0a.1792067836.git.mst@redhat.com>
-Subject: Re: [PATCH net-next v2 4/7] net: resolve uncommon partial checksums
- at ingress
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dnkM1QqJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Fv7grZ/E"
+Date: Thu, 15 Oct 2026 20:26:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1792088805;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hb2ATapVCir5c7vfUU9dpC0TyRGAFJwwDj7tJXTZnYI=;
+	b=dnkM1QqJGB/NsT28efbDEXWp/jcfgTFPSLqJ/wEx7IA/dQalxKIAoRErrlSu4cJb7wjMop
+	0VLsk+VLy/jpiwQPT8gy0envoRrZdxlAvIqJV30AgkHBBZ2C9+NcrausiIwp0W+mOEcxKD
+	40lfLD/muoqXKBeS6hQbtg+X2+qguhHKvhQ097MetCJ/IawJJJz3vh+orqNKdBC1i4Rj2B
+	BxZxqpSaiOt8DOzk0q7voNGh27wpTVWuj1OAfkRXyp4fDSAhNg/59ib4wjdo0fkJ0WkXYE
+	l1jkHyFhlbOfZoB7pADwXFeVljkpnvBV75Cm0woJ+QMC+1afXzR3ttiNHg3sLw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1792088805;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hb2ATapVCir5c7vfUU9dpC0TyRGAFJwwDj7tJXTZnYI=;
+	b=Fv7grZ/EjV1oRoQ6oyjx0MNSL7Jd+9EWGDTGHqD62blrvcIB8/LfQrAyIc7B0vZ3DMcNJr
+	B1NsODpSIXttzBBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?utf-8?B?w5ZtZXI=?= Mete Kaya <omermetekaya0@gmail.com>,
+	oneukum@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	david.laight.linux@gmail.com,
+	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
+Subject: Re: [PATCH] USB: Documentation: Update description of completion
+ callback context
+Message-ID: <20261015182643.MIjjSTAr@linutronix.de>
+References: <06a81ea1-b17d-40bd-82d9-922de946b86f@rowland.harvard.edu>
+ <2026100910-petition-embattled-94cb@gregkh>
+ <20261012194902.aEq58Q6b@linutronix.de>
+ <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
+ <20261012212527.5sFqlGYu@linutronix.de>
+ <41af30de-4725-4913-9ad8-54d1dea2d4b8@rowland.harvard.edu>
+ <20261014191141.GxlJhR1e@linutronix.de>
+ <89da3b1f-60e5-4f18-9592-3d6d7175c437@rowland.harvard.edu>
+ <20261014220403.R38Gf0pW@linutronix.de>
+ <de582feb-a0aa-4fc8-9818-890014de32a9@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <de582feb-a0aa-4fc8-9818-890014de32a9@rowland.harvard.edu>
 
-Michael S. Tsirkin wrote:
-> As reported first by Paulos Yibelo <habte.yibelo@gmail.com> (after which
-> others, credited below, found more ways the bug can affect users) a
-> virtio net header can place CHECKSUM_PARTIAL at any in-packet offset.
-> If that state is retained, later checksum completion can modify the
-> packet after protocol processing has made decisions from it.
+On 2026-10-15 12:00:46 [-0400], Alan Stern wrote:
+> The existing kerneldoc documentation for URB completion callbacks is
+> incorrect about the context in which the callbacks occur; it is not
+> always in_interrupt.  State explicitly that a callback may occur in
+> any context with no guarantees, and likewise for the status of
+> CPU-local interrupts.
 > 
-> Let's fix that: let's validate csum_start and csum_offset and only keep
-> CHECKSUM_PARTIAL when csum_start and csum_offset match a parsed TCP or
-> UDP header, while handling VLAN headers, IPv4 options and IPv6 extension
-> headers.  Complete other non-GSO checksums immediately, before any
-> protocol processing runs.
+> Documentation update only; no code changes.
 > 
-> We can't easily "complete the checksum" for GSO we don't recognize - GSO
-> assumes knowledge of the protocol. We could segment ignoring the
-> checksum then do whatever csum_start and csum_offset say, but that
-> seems like an overkill for something that shouldn't happen.
-> 
-> There's some risk here:
-> - non-gso packets which can't be parsed get checksum calculated in
->   software, adding performance overhead
-> - gso packets which can't be parsed get dropped
+> Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
 
-The biggest risk I see of valid packets reaching this path is packet
-sockets that are not bound to a specific protocol (ETH_P_ALL) over a
-non Ethernet device.
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Iff proto is 0 we could try to infer from the first nibble at the
-network header:
+usb_hcd_giveback_urb() kernel doc says: 
 
-+	iph = (const void *)(skb->data + nhoff);
-+	if (!proto) {
-+		if (iph->version == 4)
-+			proto = htons(ETH_P_IP);
-+		else if (iph->version == 6)
-+			proto = htons(ETH_P_IPV6);
-+	}
+|  * Context: atomic. The completion callback is invoked either in a work queue
+|  * (BH) context or in the caller's context, depending on whether the HCD_BH
+|  * flag is set in the @hcd structure, except that URBs submitted to the
+|  * root hub always complete in BH context.
 
+Do you think this deserves an update?
+
+Sebastian
