@@ -1,204 +1,163 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324E147DD77
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 08:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7AF49C4A4
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 08:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792053698; cv=none; b=Y4A+aUsjgsuQLUn/eYBwd+sW4HdkNj9MgqjhUHV/p9zAJ5GFyKEdd9WSYXXx2Lc6vDwxpDHGrhKaUxN3IoR/W/2YD6yDhVSvWiidluwSnizEavRZfSfVX4mGPmuAwJ5uSXu7Qf9SmDv6yvMF4uEAMpsQv+qkbCQ3QnTOwa028e0=
+	t=1792053858; cv=none; b=hWVBP6RBbGCktmltNvB6Y2G4qjrZxQNDLZtqHZRZbwbCFx0VOe3k98QfARRmhrFeZCYCQnvRHFR8XjqosezKrtvXqN041w2ZH3/LrWUh75XMarXbZPBv4wHpbKcXmwVbazvYqoQCY4xBrcddDXz2S3YKpteeR8PjpZ0Y/liSres=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792053698; c=relaxed/simple;
-	bh=R2HwbYA3M5LCmpIJnZ8/6z01M4GuhoCuS+CLTM/Xm6U=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DgAHi6sZHqFmdYGdDG2DShq6oVUkBVa7s7VqURtjTT1Rf0rMKy9UQt4x6DyXpgJzi6WKs145xdHAqwO3+Whm28z3M7xTopu2sqDlt7jS/CJNGb0wF7P+X75dGB7xhmlYcFv95mQ2EcbITXnsjOOMFS6wdyTB5wk1a0mwwY8HHhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com; spf=pass smtp.mailfrom=airoha.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=H4Q1odMD; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=airoha.com
+	s=arc-20240116; t=1792053858; c=relaxed/simple;
+	bh=SlB68F3f+BdlirJUEjyixhDsOheZ/zyFCqTY5noaKsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=isvhj9u68+fC9V+fZArP799KN2V/PvwSFpyzuJCbEMTL5VEbkqOzJDQ2gnmTZD0vda6+TGFsfblYze3NIzfHFEDbQ9iknGGtzkvKnydRaNCIGXY0LOVzSzGq3f3IfwOZC/0QGQmmcO/KPvhJA3yDxOfyVNK2kacqbsODXoPPTW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=Qu38pjZv; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="H4Q1odMD"
-X-UUID: 3404874cc87411f1b1788b6acf885367-20261015
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:CC:To:From:Date; bh=1TG6EaszwqcVuJqwSi/vXz+tyLYa/MdcQh36mn2UMKc=;
-	b=H4Q1odMDUk2qt2xD9nhbmqkfcVfTZLq8ldMvRk4ES8cVVZ+rOk/uX7LTrXvF3qac/EnFzIqhtu7Y8VoWRr4qjqCYKcCdz5WGZdHWfdOiF3xlOcxaIZBsD65xE3R5KuBRXrJuUlGwiURXJGi1zcWYkKRkP7/vpoPY7FZXlFuTeUI=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.20,REQID:c8d1547c-73a4-49cf-8203-efdc4319e0ce,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:291e20b,CLOUDID:07f317fd-82fa-4755-85ae-ebe9525ab585,B
-	ulkID:nil,BulkQuantity:0,SF:80|81|82|83|102|836|865|888|898,TC:-5,Content:
-	0|15|50|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,
-	OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3404874cc87411f1b1788b6acf885367-20261015
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <zhengping.zhang@airoha.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1844561766; Thu, 15 Oct 2026 16:41:23 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Thu, 15 Oct 2026 16:41:22 +0800
-Received: from mediatek.com (172.18.153.129) by mtkmbs11n2.mediatek.inc
- (172.21.101.73) with Microsoft SMTP Server id 15.2.2562.29 via Frontend
- Transport; Thu, 15 Oct 2026 16:41:22 +0800
-Date: Thu, 15 Oct 2026 16:41:22 +0800
-From: Zhengping Zhang <zhengping.zhang@airoha.com>
-To: Daniel Pawlik <pawlik.dan@gmail.com>
-CC: <netdev@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kuba@kernel.org>,
-	<lorenzo@kernel.org>, <nbd@nbd.name>, <sean.wang@mediatek.com>,
-	<Mark-MC.Lee@mediatek.com>, <davem@davemloft.net>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <yangshiji66@outlook.com>,
-	<upstream@airoha.com>, <szymon.datko@gmail.com>, <lei.dong@airoha.com>,
-	<ansuelsmth@gmail.com>
-Subject: Re: [PATCH v10 2/2] net: airoha: npu: use cacheline-sized buffers
- for mailbox DMA
-Message-ID: <atCRsquzA1UxSpCc@mediatek.com>
-References: <20260820085941.380401-1-pawlik.dan@gmail.com>
- <20260820085941.380401-2-pawlik.dan@gmail.com>
- <CALC2AphzQ=dHOk2Yjtaw=i2euCLxo+Lk0kO50ixtYydO0yzBHA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="Qu38pjZv"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a1b07c3c5fso16364525e9.1
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 01:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792053853; x=1792658653; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7CSJIT17g58+oITTv0q53z5VUcT+bUH2Z8uN5LCucOA=;
+        b=Qu38pjZvJ/9yhCQf/QKDuagSkuepfr5Kk4tIXVsmZhlVJ/NmU/xNH8es5/NAEIsURr
+         yrmv9zxxVdZYiRB2SrFmfZYTl/wvPWUtOWhcyZdQI+x7U3A2zKuZwiWQ6z/t0oDn0xw3
+         nUXE/xKb8VNb9VQF7TLqOuEtHg4nMfke9frKMXzHZLx0M0Y8b4l8Qst9eiJ9uIfrkqVo
+         7SybQMAYfEgETv8MPcq2JMabHLhSg2gR7tpiMCubNSVkLMl5J7vhr9gf5BavxFLBBiog
+         cnLE8Q+afMWLx4G8S2fD59alFjbU2N/25/ZiDwdvWe9CFq4QBDFc40wcELPL/AwHOq2g
+         PcwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792053853; x=1792658653;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7CSJIT17g58+oITTv0q53z5VUcT+bUH2Z8uN5LCucOA=;
+        b=XcMx5kh3SINpyPxtI26ZXi0sCvufLKO4Xnk24M5OTIvSECNmn0P0tOczs4MoPnfcaR
+         CgvIgkW26X6B7tZg50cHYqN0jcXyrryUbMtgv/d8S2wpNtppz1/wPdWwERKhtXeQTRDr
+         si0Fl7WLjfsuOBXEzEU5Il5daOosruPnyKbVuwQVz3hp8X6at0w/edxSerg5k2mMGbff
+         qK6gEJ/5OW1Px6gL8EYI7CktbjqF9oP22M8aNyKv6EidZPlvxvQM9Soxm8mbw6BnNx7K
+         8WbgykQ3Qsb+XyuHVmsqJkQOjiw/6UjvH4+QuPy4mUdFrY0n/HHTZEUFBPm7KOJq3mvG
+         Tf5g==
+X-Forwarded-Encrypted: i=1; AKwUvBzVSl6PaBi8Zr3YDGQL7uE/66j0Y2DC2IaTk1cvKYySYujNWPjGhN0CMxd26akakWVLbt4ZGlc=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJ6elOE3QfMhj6g2A3sZMbhrhCdoUT/IcDa2nWe3dotQXA7kH8H
+	ycQH9XYtg8ZY7TVhwr72vGf1+Qp0kv2yoUweOy6C0XGXInkZA4z69hwhw+UW83nUDCw=
+X-Gm-Gg: AYBFou2cbebyO2olRlXiuhlzXL1zSrGQGPRFSozbOIJ36h/lCzDxYEQqIWl8rqUfnwh
+	mxOnVeLCyX3Nvvbf5T+G39PAmw1nlk+g2FS0a65MIUYp1iw9hs6Wumyz2OkAzWWul8qZ0G/Ex5p
+	9B1+64SLnUqaUXeDp+nDuAiQfGGcu25/rEm06xIT1LROORhWKJkcASfIF0w8Q0Iz85EDO9kCEhG
+	BgPalVBpY9j5PcjnNUNPaX//NVa9W1snC4MWuvQTLjXEuFvyA0ZUHtpV5/HAb5lJXNnHzjXX7R5
+	Q6nYcUe5jZijQDwVZaIbJKyYHo9IUpiAWDbQW0uDk1cH5MRGiwG2bhcpUH874aknT1Fl7zt7ot5
+	IM9basrftpkM+yHNRCJPgqhO8IeZOdcKqEkMQNydb77yLmSjdGBBYgxgVIRI1yHUp/peetCjYsJ
+	herbqDKVhrR6wGTJj+7ndwOnoFK3fIvJj/8MES4uceHl+24Ilx+HsiUITsSHpfac/4+y6JZRCYo
+	SyBWJfAWVjaRR1yluo1LoWX83WwIlnpBmHhkpNWMXtaPb/cILTVSB9v9z/MeGdhCP9BOjgz+HS5
+	qeWW34rBGU91HP921e8G5Ez1KHiedIqkKoAMse/bLrAerSZYubyFX7poTV8=
+X-Received: by 2002:a05:600c:c092:b0:4a1:9831:a69c with SMTP id 5b1f17b1804b1-4a19831a9f7mr220004565e9.30.1792053852671;
+        Thu, 15 Oct 2026 01:44:12 -0700 (PDT)
+Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd993caesm110794555e9.12.2026.10.15.01.44.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 01:44:11 -0700 (PDT)
+Date: Thu, 15 Oct 2026 09:44:09 +0100
+From: Daniel Thompson <daniel@riscstar.com>
+To: Alex Elder <elder@riscstar.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, hkallweit1@gmail.com,
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@kernel.org,
+	kuba@kernel.org, pabeni@redhat.com, donggeunyoo.kernel@gmail.com,
+	ansuelsmth@gmail.com, mohd.anwar@oss.qualcomm.com,
+	lorenzo.bianconi@oss.qualcomm.com, danielt@kernel.org,
+	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: qcom: qca808x: Add regulator
+ management
+Message-ID: <atCSWZQAyqvz62_K@aspen.lan>
+References: <20261014172300.292324-1-elder@riscstar.com>
+ <44a96544-5ed8-4bdc-8757-d7413e221f40@lunn.ch>
+ <4c0d9a12-6236-4bc5-949c-62a092edb0bc@riscstar.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CALC2AphzQ=dHOk2Yjtaw=i2euCLxo+Lk0kO50ixtYydO0yzBHA@mail.gmail.com>
-X-MTK: N
+In-Reply-To: <4c0d9a12-6236-4bc5-949c-62a092edb0bc@riscstar.com>
 
-Hi Daniel,
+On Wed, Oct 14, 2026 at 03:41:20PM -0500, Alex Elder wrote:
+> On 10/14/26 12:36 PM, Andrew Lunn wrote:
+> > On Wed, Oct 14, 2026 at 12:22:59PM -0500, Alex Elder wrote:
+> > > From: Daniel Thompson <daniel@riscstar.com>
+> > >
+> > > QCA8081 appears in embedded board designs paired with GPIO controlled
+> > > regulators for its power rails. Add logic to allow these regulators to
+> > > be turned on during a probe.
+> > >
+> > > In order to avoid the complexity of tracking state for suspend with and
+> > > without WoL we take a tremendously simple "always-on" approach to
+> > > regulator management, essentially relying on BMCR_PDOWN to conserve
+> > > power when the phy device exists.
+> > >
+> > > Signed-off-by: Daniel Thompson <daniel@riscstar.com>
+> > > Co-developed-by: Alex Elder <elder@riscstar.com>
+> > > Signed-off-by: Alex Elder <elder@riscstar.com>
+> > > ---
+> > >   drivers/net/phy/qcom/qca808x.c | 30 ++++++++++++++++++++++++++++++
+> > >   1 file changed, 30 insertions(+)
+> > >
+> > > diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
+> > > index bab26e4c61408..6e2bd753257d9 100644
+> > > --- a/drivers/net/phy/qcom/qca808x.c
+> > > +++ b/drivers/net/phy/qcom/qca808x.c
+> > > @@ -1,6 +1,7 @@
+> > >   // SPDX-License-Identifier: GPL-2.0+
+> > >   #include <linux/phy.h>
+> > > +#include <linux/regulator/consumer.h>
+> > >   #include <linux/module.h>
+> > >   #include "qcom.h"
+> > > @@ -181,15 +182,44 @@ static void qca808x_fill_possible_interfaces(struct phy_device *phydev)
+> > >   		__set_bit(PHY_INTERFACE_MODE_2500BASEX, possible);
+> > >   }
+> > > +static int qca808x_power_on(struct phy_device *phydev)
+> > > +{
+> > > +#ifdef CONFIG_OF
+> >
+> > Does this need to be conditional? It seems like
+> > devm_regulator_get_enable_optional() should return ENODEV, which you
+> > already handle.
+> >
+> > Making code this like conditional makes build testing less useful,
+> > more combinations which need testing.
+>
+> This is a really good point.
+>
+> > Another option is
+> >
+> > 	if (IS_ENABLED(CONFIG_OF)) {
+> >
+> >
+> > 	}
+> >
+> > That at least compiles the code, and then the optimizier throws it
+> > away when it sees  if (0) { }
+>
+> Yes I like doing it this way better.  I'll modify it
+> to be similar to this for v2, which I'll plan to send
+> tomorrow.
 
-We investigated the NPU V2 address handling and confirmed that the NPU
-exposes only a 1 GiB DRAM address window.
+Reading things back, I think Andrew's first suggestion of having no
+conditional might be better.
 
-The relevant vendor definitions are:
+devm_regulator_get_enable_optional() is log-silent on failure. I suspect
+the reason this code was conditional is that an early version used
+devm_regulator_get_enable() which is not log-silent when it falls back
+to a dummy reg.
 
-    #define DRAM_RANGE_1GB 0xbfffffff
+I suspect I was more influenced by the log-silence than the marginal
+code size cost on a CONFIG_REGULATOR && !CONFIG_OF system.
 
-    #define DRAM_CAC_TO_UNC(x) \
-            ((x & 0x3fffffff) | 0x40000000)
 
-    #define DRAM_UNC_TO_CAC(x) \
-            ((x & 0x3fffffff) | 0x80000000)
-
-Therefore, the supported host cached DRAM range is:
-
-    0x80000000 - 0xbfffffff
-
-The corresponding NPU uncached address range is:
-
-    0x40000000 - 0x7fffffff
-
-As a result, the upper 1 GiB of a 2 GiB DRAM configuration aliases the
-lower 1 GiB from the NPU's point of view.
-
-The WLAN NPU firmware also checks the address range for packet buffers
-and TX ring addresses:
-
-    if (addr > DRAM_RANGE_1GB)
-            printf("out of available range");
-
-NPU debug output is disabled by default. To enable it for debugging,
-change the value written to REG_CR_NPU_MIB(21) from 1 to 0 in
-airoha_npu.c:
-
--    regmap_write(npu->regmap, REG_CR_NPU_MIB(21), 1);
-+    regmap_write(npu->regmap, REG_CR_NPU_MIB(21), 0);
-
-The recommended platform integration is to reserve all NPU-owned WLAN
-buffers inside the supported DRAM window. For example:
-
-    reserved-memory {
-            #address-cells = <2>;
-            #size-cells = <2>;
-            ranges;
-
-            npu_pkt: npu-pkt@8a000000 {
-                    no-map;
-                    reg = <0x0 0x8a000000 0x0 0x2c00000>;
-            };
-
-            npu_txpkt: npu-txpkt@8cc00000 {
-                    no-map;
-                    reg = <0x0 0x8cc00000 0x0 0x4000000>;
-            };
-
-            npu_txbufid: npu-txbufid@90c00000 {
-                    no-map;
-                    reg = <0x0 0x90c00000 0x0 0x6800>;
-            };
-
-            npu_ba: npu-ba@90c06800 {
-                    no-map;
-                    reg = <0x0 0x90c06800 0x0 0x200000>;
-            };
-    };
-
-The regions should then be referenced by name from the NPU device node:
-
-    npu {
-            memory-region = <&npu_pkt>,
-                            <&npu_txpkt>,
-                            <&npu_txbufid>,
-                            <&npu_ba>;
-            memory-region-names = "pkt", "tx-pkt", "tx-bufid", "ba";
-    };
-
-This reserved-memory configuration covers the NPU WLAN packet buffers,
-TX packet buffers, buffer IDs, and BA memory.
-
-It does not automatically constrain the temporary mailbox buffers
-allocated with kzalloc(). If the same NPU address-window restriction
-also applies to mailbox DMA, those buffers must be allocated from a
-low-address DMA pool or otherwise guaranteed to map to an address
-within the supported window.
-
-Best regards,
-Zhengping
-
-Wed, Sep 30, 2026 at 06:19:31PM +0200, Daniel Pawlik wrote:
-> Hi Kuba, Lorenzo, Airoha team,
-> 
-> I found a concrete lead for the unresolved cacheline patch in the vendor
-> firmware. The installed en7581_MT7996_npu_rv32.bin matches the blob in
-> linux-firmware commit 1043c0303910 by SHA-256.
-> 
-> At file offset 0x3a9c, the Wi-Fi mailbox handler converts the supplied
-> buffer address before reading the command:
-> 
->   lui   a5,0x40000
->   addi  a4,a5,-1
->   and   a4,a4,a0
->   or    a4,a4,a5
->   lw    a1,0(a4)
-> 
-> This implements (address & 0x3fffffff) | 0x40000000. Both 0xbf6cf000
-> and 0xff6cf000 produce 0x7f6cf000. W1700K has 2 GiB of RAM starting
-> at 0x80000000; its current SWIOTLB pool starts at 0xff6cf000.
-> 
-> The handler also returns 1 (success) for an unsupported operation type
-> at file offset 0x3b4a. My earlier claim that mailbox success proved a
-> correct command read was therefore unjustified. The traces do not
-> establish a read-succeeds/write-fails limitation.
-> 
-> This suggests an address-window problem, but the NPU-side bus mapping
-> still needs confirmation. The cacheline patch avoids the observed bounce
-> path without constraining the address of future direct allocations.
-> 
-> Can Airoha confirm which host DRAM range this alias covers, and whether
-> mailbox buffers above 0xbfffffff are supported?
-> 
-> I have prepared, but not yet run, a test retaining all 2 GiB of RAM and
-> the 12-byte DMA_BIDIRECTIONAL mapping, with the SWIOTLB boot pool below
-> 0xc0000000. A successful version response through a verified bounced
-> mapping there would help distinguish the address limitation from a
-> SWIOTLB copy/cache issue.
-> 
-> Thanks,
-> Dan
-> 
+Daniel.
