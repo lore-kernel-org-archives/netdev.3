@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8E566C58;
-	Thu, 15 Oct 2026 17:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C13541472;
+	Thu, 15 Oct 2026 17:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792086943; cv=none; b=ZGK691Y6mSGPqjh5DDrF3xpqrzvbLd+sT1SqQEox2PRNu6UAqo+z3zNS7vqslTstKMMOR4MdX6ELIszuNIB4e2aRCLcID7Xz3qKSbcO/YitQw/OdKyELooQse5n3tltqIOvt365luh57atWvjJ0RWS+rdHsehGkHoNA1a6wETt4=
+	t=1792086945; cv=none; b=F6udf1A/xEzE69qljZ+bDY0UyvxAMyiUnpPvJPNV2HyS9koiHtGyLf1pEUqc+Y2v4OZ5gZNSq0wzmly3nuQHmVx7uN7AzygGGy4mR+CNtXifTZgTn10HB9nC35MgGQv5tGutLlaNSIHTEFbVc4KFK7/MtuFBTdtJ5Ncro3kXkIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792086943; c=relaxed/simple;
-	bh=jgWLwREZhRmBTdhc+Jj/kXz40l16tXGTpS1MeH/xrgs=;
+	s=arc-20240116; t=1792086945; c=relaxed/simple;
+	bh=XqPzHyhEKZKyuoJuZQJELeJ89ss2AbKTEmb86VgDVlw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PhYGyitn5aJE5jsI+FVhm4UreqX05j1A/0s/jtd8Kg7nvmyjiPkfPML1v/YSkhl9BPkoPBuVzJXWQRixixpGQ5RCGMO5Fvc7ll0i3Ru4wvhyenPNGtkHTcyE0FVKXuzfUOUn3PkYy1M+66jkQrkzSFTH8/3/PAiX9qKIUO82HDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4iFimT1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Z23ujQBV0Q0INNo2ipu3U0CuvI64czowNgO8XsZ1VQ+WQpSeATXHg9TzCAaoM+aa5zWY4rB74hDmDjEuzHDtX2mtVS9Oi15ggtm/4qP/ZwV+qEJjp5NRF/kcF0fSRvbnc86ZqqyzCeFzXVkP82hu0h+TTsFS6CBscztgLsI6XLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I///8MVj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4iFimT1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEBD1F000C5;
-	Thu, 15 Oct 2026 17:55:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I///8MVj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4701F000C6;
+	Thu, 15 Oct 2026 17:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792086935;
-	bh=q4ifquM97SMdR8lKmbWeoOGq0Xh7OXYDogSY1ltet9w=;
+	s=k20260515; t=1792086936;
+	bh=J7HZg6rAksXVoBr2xnRWmOUj/JfdCs0vGmQfyQ1uNU0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=S4iFimT1jHhoDS3EmGtkYzJrMjTwy2FzQjqxPla+orD4i/u4ASDVhNdb4xx2U8wLO
-	 MsVVLsSoyYrK8aa8a0kCeel3beZ1Mz1KS1YRJy3vLAmbcGjsYjEHCCRwwSvtrb5zIB
-	 ECcSFmpufCqoNAVAozhpzDuY8W6sSv3Jy7NGBNDUTTgi5nFjrSC54g/mzBhhhotgBW
-	 xATRPksGAfcUbhMeGZUO8IGjHbfXWDl1j0HRPJ6OnBjK6htdytK+gQDnwd3mHBcGLz
-	 7PMtYj7EkfXPVZjYVuQV9Q0JqZzdxGyzTBdJUDbInGWZ7wwqcG4xDfkF1pN9MOnbOq
-	 X9/8g2s4Td0Fw==
-Subject: Re: [PATCH net v4 2/5] amt: reject a gateway Query or Data from
- 0.0.0.0 before a relay is learned
+	b=I///8MVjsn23/Rw/DcLLQbbllvLaWR2TSY7V0DhNSIkeyG2uQyVJCKvOJZ1O9sxRQ
+	 GZIEVWFH0jGIM4UntA6T9pec0eqMalOvLE6ArnbDkUfQcWDZUiGnQIfAfg/ZbuFcIF
+	 04Hp/racptyO576WMNAoYu+ea89c5mqCO8qClUJxyRE2SNvlizBIsECYJVQCklFtdk
+	 2pQjJYoAi2GTGOzjuWvYuGiJuVrrp/aONpwP1yW9pWuw5HgGSCzRwqKmMwi5UfMxxt
+	 Dv1iaV0IEJifEgpGILHkmsdx6bTweNtKi3xWRTBLyIjgFkVLi6Fs6MDFjejZNB+LbP
+	 5MI1OI/WbobXA==
+Subject: Re: [PATCH net v4 4/5] amt: make pre-query report drops visible
 From: netdev-bot+sashiko@kernel.org
 To: omar@blockcast.net
 Cc: ap420073@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org
-Date: Thu, 15 Oct 2026 17:55:34 +0000
-Message-ID: <179208693481.434549.3987642690643160802@kernel.org>
-In-Reply-To: <20261013175407.947606-3-omar@blockcast.net>
-References: <20261013175407.947606-3-omar@blockcast.net>
-X-sashiko-severity: High
+Date: Thu, 15 Oct 2026 17:55:35 +0000
+Message-ID: <179208693596.434549.15039653939486955091@kernel.org>
+In-Reply-To: <20261013175407.947606-5-omar@blockcast.net>
+References: <20261013175407.947606-5-omar@blockcast.net>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,7 +49,7 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
 If you believe none of the issues are legitimate, please reply to each
 issue of Medium severity or higher and explain why the AI is wrong.
@@ -58,101 +57,96 @@ If any of them are legitimate and you plan to respin, please let patchwork
 know by including "pw-bot: cr" as a separate line at the end of your reply
 (one such reply per series is enough).
 
-- [High] The fix is incomplete.
+- [Medium] The commit message says amt_dev_xmit() now uses
+  DEV_STATS_INC() for tx_dropped and tx_errors "so concurrent increments…
 
 --
 
-amt: reject a gateway Query or Data from 0.0.0.0 before a relay is learned
+amt: make pre-query report drops visible
 
-This patch makes a gateway's amt_rcv() drop Membership Query and Multicast
-Data messages while remote_ip is 0. Before, a packet from 0.0.0.0 matched
-the unset remote_ip and was accepted. The commit message says that, with
-the nonce reset to 0, such a spoofed Query would be taken as genuine.
+When a gateway drops an IGMP or MLD report because the relay's Membership
+Query has not arrived yet, this patch now logs a netdev_dbg() message. It
+also stops counting successfully forwarded gateway reports as tx_dropped.
+The tx_dropped and tx_errors updates in amt_dev_xmit() now use
+DEV_STATS_INC().
 
 > diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-> index 530650d5c19e9..e9b1a4585ce51 100644
+> index e466cf815a358..884f27fd84a4a 100644
 > --- a/drivers/net/amt.c
 > +++ b/drivers/net/amt.c
+> @@ -1236,7 +1236,7 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+>  		group.ip6 = ipv6_hdr(skb)->daddr;
+>  #endif
+>  	} else {
+> -		dev->stats.tx_errors++;
+> +		DEV_STATS_INC(dev, tx_errors);
+>  		goto free;
+>  	}
+>  
 
 [ ... ]
 
-> @@ -2871,7 +2871,7 @@ static int amt_rcv(struct sock *sk, struct sk_buff *skb)
->  			else
->  				goto out;
->  		case AMT_MSG_MEMBERSHIP_QUERY:
-> -			if (saddr != remote_ip) {
-> +			if (!remote_ip || saddr != remote_ip) {
->  				netdev_dbg(amt->dev, "Invalid Relay IP\n");
->  				err = true;
->  				goto drop;
+> @@ -1283,8 +1292,7 @@ static netdev_tx_t amt_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	return NETDEV_TX_OK;
+>  free:
+>  	dev_kfree_skb(skb);
+> -unlock:
+> -	dev->stats.tx_dropped++;
+> +	DEV_STATS_INC(dev, tx_dropped);
+>  	return NETDEV_TX_OK;
+>  }
 
-[Severity: High]
-Is this check early enough to give the result the commit message describes?
-It runs in softirq, against a copy of remote_ip read at the top of
-amt_rcv():
+[Severity: Medium]
+The commit message says DEV_STATS_INC() is used "so concurrent increments
+are not lost". Is that still true while other code in amt.c updates the
+same counters with a plain increment?
 
-    remote_ip = READ_ONCE(amt->remote_ip);
+DEV_STATS_INC() expands to atomic_long_inc(&dev->stats.__tx_dropped).
+NET_DEV_STAT() makes __tx_dropped a union alias of the same unsigned long
+that stats.tx_dropped++ modifies. If one site uses the atomic increment and
+another does a plain read-modify-write on that word, updates can still be
+lost.
 
-The Query is then queued as AMT_EVENT_RECEIVE. It is handled later, in
-amt_event_work()->amt_gw_rcv()->amt_membership_query_handler(). That
-handler checks only the nonce. It does not look at remote_ip or
-amt->status again:
+For tx_dropped, amt_send_igmp_gq() and amt_send_mld_gq() still use the
+plain form:
 
-    if (amtmq->nonce != amt->nonce)
-        return true;
+drivers/net/amt.c:amt_send_igmp_gq() {
+    ...
+	if (amt_send_membership_query(amt, skb, tunnel, false)) {
+		amt->dev->stats.tx_dropped++;
+		kfree_skb(skb);
+	}
+}
 
-AMT_EVENT_SEND_REQUEST goes through the same FIFO. When discovery gives up,
-amt_event_send_request() does this in the worker:
+In relay mode these functions run from RX softirq via
+amt_rcv()->amt_request_handler(). A remote gateway's AMT Request is enough
+to trigger them. Nothing serializes them with amt_dev_xmit(), which is
+LLTX:
 
-    if (amt->req_cnt > AMT_MAX_REQ_COUNT) {
-        ...
-        WRITE_ONCE(amt->remote_ip, 0);
-        amt_update_gw_status(amt, AMT_STATUS_INIT, false);
-        amt->req_cnt = 0;
-        amt->nonce = 0;
-        goto out;
-    }
+CPU1 amt_send_igmp_gq()          CPU0 amt_dev_xmit()
+  load tx_dropped (N)
+                                   atomic_long_inc() -> N+1
+  store N+1
 
-Consider a Query spoofed from the old relay address with nonce 0. It passes
-the new check if it arrives while remote_ip still holds that address. This
-can happen in two ways:
+The counter ends up at N+1 instead of N+2.
 
-- it is queued behind a pending SEND_REQUEST event, or
-- amt_rcv() read remote_ip just before the WRITE_ONCE().
+For tx_errors, plain increments remain in amt_send_discovery() and
+amt_send_request() (gateway event work). They also remain in
+amt_build_mld_gq() and amt_send_advertisement() (relay RX softirq). For
+example:
 
-If so, the worker would handle it after the reset:
+drivers/net/amt.c:amt_send_request() {
+    ...
+	if (IS_ERR(rt)) {
+		amt->dev->stats.tx_errors++;
+		goto out;
+	}
+    ...
+}
 
-amt_event_work()
-  amt_event_send_request()       /* remote_ip = 0, nonce = 0, INIT */
-  amt_gw_rcv()
-    amt_membership_query_handler()
-      amtmq->nonce == amt->nonce  /* 0 == 0 */
-      WRITE_ONCE(amt->ready4, true);
-      amt->mac = response_mac;
-      amt->req_cnt = 0;
-      amt->qi = ihv3->qqic;
-
-The status then moves to AMT_STATUS_RECEIVED_QUERY. That makes
-amt_event_send_discovery() skip discovery.
-
-These are the effects the commit message says the patch prevents ("a
-spoofed Query is then taken as genuine: it sets ready4/qi and the response
-MAC and suppresses rediscovery"). Here they still happen with no relay
-learned.
-
-The give-up time is predictable. After an advertisement, unanswered
-requests back off 2s/4s/8s/16s, so req_cnt passes AMT_MAX_REQ_COUNT about
-30s later. Any host that can spoof the relay's source address could flood
-Queries around that moment.
-
-The later patches in this series do not appear to change
-amt_membership_query_handler() or this event ordering.
-
-Would it be better to check where the state is consumed? For example,
-amt_membership_query_handler() could reject the Query unless amt->status is
-AMT_STATUS_SENT_REQUEST or AMT_STATUS_RECEIVED_QUERY. Another option is to
-require a non-zero remote_ip that matches ip_hdr(skb)->saddr, and possibly
-to refuse the predictable nonce 0.
+Should every tx_dropped and tx_errors writer in amt.c be converted to
+DEV_STATS_INC(), so that the statement in the commit message is accurate?
+No later patch in the series seems to make this change.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013175407.947606-1-omar%40blockcast.net
