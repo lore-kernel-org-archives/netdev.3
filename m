@@ -1,71 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788C651E422
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7361251FCBD;
+	Thu, 15 Oct 2026 12:54:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792068839; cv=none; b=qP8lLDYrnyekjjxjujLjd731MWKqf8cP61R2R9xwt5X+jYf2kH/l1HZGLBpeSaQh9En2EAs2jJJ/kWQFTMIs3NU6+GXy+4raPaptwv6pLImj5SpYomTr3cfnzj/CSk07FtnnC4n88JqGGW8+qNzb+fjNWmxRwAoGbo7q03g0lEQ=
+	t=1792068879; cv=none; b=jddoJnS7FFZ8AKDg5E18FGT33xI5I2cWY9h668i7KpAVR4hZrbl5C3GUdsTNotwybc08tWjTLFQFfx8PrWaKjEwx87XVGuXHQ9BWdhbkbc4ryeYbKIMriVvJyB3jLcpLkOwfUIQrqnMgy0lgKLlRzwSweeZAn8C6/EOs+4z1kDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792068839; c=relaxed/simple;
-	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TOSaOQjlD9I3JxJ58SWhkR/zF04dbsQFQ6/3BklZQnx4c8Jlst42VknwGxwNACr/pBLtE9wV/ksMCRvozKQy7IOCpAF37fuQU7VlnXLbznkl+gkwI6P4xrJTfMKFSU3jLJ+6n9FTe3WRzfD3TDUwv7+Qt0q8EtMW1RZZxZHGLyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zarm2UhP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792068879; c=relaxed/simple;
+	bh=Vj+Ks2WpJd32vcgw6WagxzhHIqVHbI0rs33EKvZlLZc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FuX+6COqcWeJ00EsQ9U5rdETzRRauI2UOQsZgtwXFbdlTNbCc41ldbYOeqHcetRX2rfjumHBkLGsOGr8rLSXNJTEAICafMghUpcOjxuCWYmmwjIiSQhrcu9GJgghFKQu/82nW/UcshJ2+XzdUwQjmxBiK4nL/jawlY78EikQVrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QCVmWfGA; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zarm2UhP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676FC1F000C4;
-	Thu, 15 Oct 2026 12:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792068838;
-	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zarm2UhP2RwUhZ73TLTGzzjHIJY7q2MnzsxUe9aXzFYIMtyKSeRLalTqhGwz5EpKC
-	 Mz87vK5BsvOF9hdyEAFLltcgMB/f06vlNf3RN3gWwbr5qrAXFPhrBioMeNYHcjdWT4
-	 3BFWey2q9brTLQhtQDxINs0uorV1hAFTL60hvTN1Ug2KvuYggjyXHS9g9W0k5HDZFN
-	 xfnXpIRfvUNW96rd9ztI1pctTZz1Jt+p1SF6uYsgg7Vscb1gjNkOyrQleGWde4OAjC
-	 rDJeV6V7blrCKSGt8vCR1Y3+tdFyk8sWaa6HiylqmgfgPUqWnT5WUQ7kWuBi3LUGGG
-	 kBaXJZonJIjUg==
-From: netdev-bot+sinfo@kernel.org
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, jesse@nicira.com,
- aatteka@nicira.com, horms@kernel.org, pabeni@redhat.com, kuba@kernel.org,
- edumazet@kernel.org, davem@davemloft.net, i.maximets@ovn.org,
- echaudro@redhat.com, aconole@redhat.com
-Subject: Re: [PATCH 1/2 net-next] net: openvswitch: skip IPv4 later fragments
- on TCP/UDP set actions
-Date: Thu, 15 Oct 2026 12:53:56 +0000
-Message-ID: <179206883697.408196.1280247362935192335@kernel.org>
-In-Reply-To: <20261015124749.4694-1-fmancera@suse.de>
-References: <20261015124749.4694-1-fmancera@suse.de>
-Auto-Submitted: auto-generated
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QCVmWfGA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=PbtHM47vD37xRugiLgkVK73GPsLMSnus4Srt6/JuRtE=;
+	t=1792068877; x=1793278477; b=QCVmWfGAV2rEnboyevEaUQU4CZKC7mtg4yD+Cc/LGFgKNVY
+	wE1kaZgJnm8lKriA7Ol+u4YzYregeNFLHtxYerpdCflXjE5GaLYucMlOlRJWwbe6wI1K7BwvWGHbY
+	uI8/nEPRY1/sj8S6YhuUUThmr7sF4zduce27lqjkipiHnlOPcA3JMHabls5bG8eF9NGhNE3lgR8LE
+	n2ajFStMhp4+Nou2RzooowWdeSOqu7WhMW33Yk6hQRaps7Mje2qAbpKFXDjvrCznkv1TV5GTff5yt
+	MUOiHVa5WD4O4DlRGaFb3KFwEGku+Tv2U3xDsXEySJnfi9iOMr22SlYV3/paPl1Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1xHKyg-00000003bSS-0Zit;
+	Thu, 15 Oct 2026 14:54:34 +0200
+Message-ID: <7e95ff419f81425b9fa18c74f3a77208764751bb.camel@sipsolutions.net>
+Subject: Re: [GIT PULL] wireless-next-2026-10-07
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Oliver Hartkopp <socketcan@hartkopp.net>, Kuniyuki Iwashima
+	 <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+Date: Thu, 15 Oct 2026 14:54:33 +0200
+In-Reply-To: <51e3f9ce-fa8c-4cdb-b5bf-d05f53cb52ac@hartkopp.net>
+References: <20261007205827.467974-3-johannes@sipsolutions.net>
+	 <20261007163616.1088d364@kernel.org>
+	 <CAAVpQUATko2Oig53r1+VHe+4Y3fFeX1xOw5RAnXtUAGwvQoB5A@mail.gmail.com>
+	 <44cb773984f61ae85b8c42904ef1ce7a62e85e4e.camel@sipsolutions.net>
+	 <51e3f9ce-fa8c-4cdb-b5bf-d05f53cb52ac@hartkopp.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-Hi!
+On Thu, 2026-10-15 at 14:43 +0200, Oliver Hartkopp wrote:
+>=20
+> On 15.10.26 14:27, Johannes Berg wrote:
+> > On Wed, 2026-10-07 at 19:05 -0700, Kuniyuki Iwashima wrote:
+> > >=20
+> > > Also,
+> > > I hope we could remove the long comment in __rtnl_unlock().
+> >=20
+> > So I sent my next PR, and we could therefore do that now. I also checke=
+d
+> > across the other places in the tree, and isotp_release() was the only
+> > one that seems to do something similar, keeping a socket pinned around
+> > rtnl_unlock(), but I don't think that could cause a similar problem.
+>=20
+> If I got your claim correctly, I think we are solving this in this=20
+> net-next PR too:
+>=20
+> https://lore.kernel.org/linux-can/20261015015336.816543-8-mkl@pengutronix=
+.de/
 
-This is an automated message. This series looks like a fix, but its
-commit messages seem to be missing some information:
+I _think_ that's unrelated, but I might well not understand it
+correctly. I was looking at the rtnl_unlock() portion, where that could
+run a netdev todo item. Even with that change, you have
 
- - How the issue was discovered, e.g. hit in production, hit during
-   development, syzbot report, manual code inspection, LLM or static
-   analysis tool scan.
+	rtnl_lock()
+	lock_sock()
+	...
+	rtnl_unlock()
+	...
+	release_sock()
 
- - Whether the issue was actually triggered, or is only theoretical
-   (e.g. found by code inspection). If it was triggered please include
-   the symptoms, like the stack trace or error messages.
+which looks sufficiently similar to
 
-Please do not repost the series just to address the above. Instead,
-reply to this email with the missing information, so that reviewers
-can take it into account. If the series needs another revision for
-other reasons, please include the information in the commit messages
-then.
+	rtnl_lock()
+	wiphy_lock()
+	rtnl_unlock()
+	...
+	wiphy_unlock()
 
-The evaluation is done by an LLM so it may be wrong, if you think
-that is the case please reply and explain.
+that my search flagged it, but isn't really the same anyway. But I'm not
+sure I understand the socket lock semantics and the socket notifier etc.
+well enough that I should be commenting on this at all :)
+
+johannes
