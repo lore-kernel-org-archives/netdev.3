@@ -1,171 +1,210 @@
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46CB531639
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 19:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206C44EBAE2;
+	Thu, 15 Oct 2026 19:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792092109; cv=none; b=BuWUSDLtmPrv+pXBF17Mxib548o8TNoPdoeoN/VOdp/TeJ2UViIF/ISXamAnhMomEhtCYEr6yT0dj2JjerN3tKdcIsTIXzjXG2g8ITm6R2OacflRZG7vArm3Yz9CBfYmv9VXhWGOtKHIueFNeUJhiWbeBIY6jX0L9r9jYXAMaK8=
+	t=1792092331; cv=none; b=TW1GzRSCsbMbA4tPoFeq/+oOkWWlLOFYaWf3WeCHTc5g03ckwf61U60qd6jr+P2wjoXtSqVHaVNvK/13RNWKYJv3BEnaP5SumNF2lvriSK3zb9O2UCTyzGtEenWec29fOrxFEPJyB37cXPx2eqPMbeNKmZ1jWXMZzt3Gf+05YUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792092109; c=relaxed/simple;
-	bh=bWDcTUXKRCpKArq8mJguYgOf7WaUeTmsb/woHD2+h/I=;
+	s=arc-20240116; t=1792092331; c=relaxed/simple;
+	bh=/aDY3QvLbw7FPeyVbaZ96dHdAV8CciGipjzLko3iKMw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GnmTY2pNZ8XqtyLhEkOz8FyG4hw12nzJn40m7JmArQPhZD+HRZxfFVJd5AIUhlZhC8wJUSbLrXT5awADS9O/YpRXztU+Fz0OPLuNWgQ0llgPlhmXTyTBGGKpUbQ/tixMo+gGNd6/zBeNJXXyisBaUzmp9o9NzViPcfC20nSdDgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=R976MYoS; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=mNOvIu/qZTZrgFEoSQO3Qy0F/6yjw0xsUBef4IpjOIF6zVYmFy8GHJpMjA2FB8L9XUXT+K7K3YJ6KK5X1QMyXqJwRy79Usk4/KOdFY5+LD/cQiyVJHQtfczn7CgbzPZSojW9x0RP0nnhaN4+azRFM4s4o8Vwj9AWZX89ez5O5D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Flf7EuEf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="R976MYoS"
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-823545ce223so1845827a34.2
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1792092106; x=1792696906; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rbjX2NuExPWvz07RGXa2HRp0BDpTUBaueEzzQnIB3cM=;
-        b=R976MYoSBsU2ZTHb/0FFqHIkzzltEoEbRYGElE615llxI5BXRJ5t6mznkTKQk2POVx
-         VXnYCPmdg9vGs4U9x+QhOZWhNYw+FnYsiRMD0THqHRyDI6TrXrXWOFF7gjSsBaCnPjMg
-         ABFHB3clEbkKfg2kiHoYKZs9OoVeGMks7rx8WT75qPK2AyEx4L/wBZ8X+SVxcfncsZVv
-         ffQRqJpU035r+/TKFCZxa5ugZ4RR0CzUdu8wamZn/TpkoQ08HIcvRiNlH3+7y1Oe28UN
-         tLSq/2wyZRarvnyy4/Yzk+IxkR+V7mN/IAhOsgK93g1mECf6fVqn0HCXPtVkIbf3d7Wu
-         IuaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792092106; x=1792696906;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=rbjX2NuExPWvz07RGXa2HRp0BDpTUBaueEzzQnIB3cM=;
-        b=uq7TTIO9VBYwHGdbRAoboFzwpNmd/hebwQg1slOPGg4AwlIkuWC/AR48yf+WnrtumN
-         eFJbTywl02nfmpHkyCLX2K42YPmK5uNgf6fgbz5ina1jvTLaTiR4Dg6chBDxWzMAnWWb
-         gV9DOCfx4o3fm0qeAY7qWaGi7v1zXD1ZeiM1wM7aaabUN61k9vvNF7tNilK8w7DuYF1t
-         LXVu9aDujRaIyKdgD4YQHonQzJQwTX9ZJLLEED1zW51QC+l4bBfBfE1h3K5yVZVTeu8P
-         MYdDdHaEWGeM3OARlcP+25z6QGcgvJdVmHRCkn0SllHeQTtmVJuMsRwQCkaQHIS1fG/K
-         G74A==
-X-Forwarded-Encrypted: i=1; AKwUvBye1r+0R+ZsivhOjkLRtVKRcEOVuebD23fKpLyNO0ElB0y4EdI/RH3WGxTj4evAkYXl50eEEkE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKIU86NJ2dZ3m0Ua8qLZ1PP8jDOESWr4wOHeWKhK5HXzwe9tDyt
-	I8tyjQVy/Oc1fUWv640imuhVqFsq3Ui2VEK3ykd1sKkVtCW1nq8fjL+GcNkcGxODrWg=
-X-Gm-Gg: AYBFou1mY1rFY8Lh3RU+Zmf4Zb008KYIj7bm9usb9Uo8YV1RA4ZO8fSAkJD99iXA058
-	KSzJEp39XEn+wh83jWqySlz50Z4ogZmOl5GJFKEokUKkzPa1TI1HhMCoefjtv0KDZh8LTxgaZ6J
-	QlgdIS+Xv6aktYdaQzEJTNkQHPTVb0BsSOmJPT/Tkb3K4ZKIp7Tc97eBD+FBCWQT06YZPOLhh1B
-	o7wqudIrvM+25iQUOUG6Z8zLF/NKjzb9iHejI3Hs45Si0ys+MKpceL8a+RLaSuVGawWBoEJerFP
-	ZTXYuFXpjXkqN4PbGnl25nhmeaFUxSriW2WpS6vyELFK8uhX+icgzeIpfidwxRtMBtmSUzf4lGm
-	Non+tXabh4B9DGcGyVv8JJduQXEJUoXFfhBYDzU41Mg9lOSMfRAWdLrq8eOyGl8JSZgAZ+gDDTh
-	laS5lk7pq5mJHntEuw33XSdDDGEURmSIR9s6XljalxFWx1PjT0R0oR/A==
-X-Received: by 2002:a05:6808:3204:b0:4d6:9153:2962 with SMTP id 5614622812f47-50c58bd58abmr17672455b6e.51.1792092106515;
-        Thu, 15 Oct 2026 12:21:46 -0700 (PDT)
-Received: from 20HS2G4 ([2a09:bac6:bf21:3737::580:5a])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-537b247b19asm295516b6e.3.2026.10.15.12.21.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 12:21:45 -0700 (PDT)
-Date: Thu, 15 Oct 2026 14:21:40 -0500
-From: Chris Arges <carges@cloudflare.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Max Krasnyansky <maxk@qualcomm.com>
-Subject: Re: [PATCH net-next v2 0/7] more virtio-net csum hardening
-Message-ID: <atEnxBYUQNkjUXfA@20HS2G4>
-References: <cover.1792067836.git.mst@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Flf7EuEf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA001F000C4;
+	Thu, 15 Oct 2026 19:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792092329;
+	bh=5q3n8w8RnVYCDNZKQP3BeaNF8Rao1383kmsL5LXStQM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Flf7EuEfYgvY4keiTrAp+xNx3tUwEpqFEwDW6GAPGyZ6cBbZINgy/tfoFbMw6sNh1
+	 Xa0ANkL0yNPDfZXsxbm4H0Wib5fcDkzue7cTUmSFDSi64SxxXt+YGna2jRQZ9y8yIX
+	 Sxt8twxiuPtgUp3AdXcegOr1rwh/zC0neNCyAY8bYW+JHGNAYgE1BDosVNiDJeAPg8
+	 Svm8rAeNgEcAdqE2wlodlqiILF4pSRkvC1y43UV7/f84kOAttQS9AOzYpqD32aWpwg
+	 wtgA/KF1nV8P0KY3eVjezfeFKGAUITtTlOeM6AvoF9puo1Z3qTTXRtjHqDmQTHWE8R
+	 cT0bSSyJzgeHA==
+Date: Thu, 15 Oct 2026 14:25:27 -0500
+From: Rob Herring <robh@kernel.org>
+To: Kyle Swenson <kyle.swenson@est.tech>
+Cc: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"kory.maincent@bootlin.com" <kory.maincent@bootlin.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Roland =?iso-8859-1?Q?Kov=E1cs?= <roland.kovacs@est.tech>,
+	David =?iso-8859-1?Q?Nystr=F6m?= <david.nystrom@est.tech>
+Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: pse-pd: Add bindings
+ for LTC4266 PSE Controller
+Message-ID: <20261015192527.GC5059-robh@kernel.org>
+References: <20260927212929.593366-1-kyle.swenson@est.tech>
+ <20260927212929.593366-2-kyle.swenson@est.tech>
+ <20261007210454.GA281943-robh@kernel.org>
+ <asnpHkvHsFy2dX-9@est-xps15>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <cover.1792067836.git.mst@redhat.com>
+In-Reply-To: <asnpHkvHsFy2dX-9@est-xps15>
 
-On 2026-10-15 08:41:12, Michael S. Tsirkin wrote:
+On Sat, Oct 10, 2026 at 07:30:50AM +0000, Kyle Swenson wrote:
+> Hello Rob,
 > 
-> As reported first by Paulos Yibelo <habte.yibelo@gmail.com> (after which
-> others, credited below, found more ways the bug can affect users):
+> On Wed, Oct 07, 2026 at 04:04:54PM -0500, Rob Herring wrote:
+> > On Sun, Sep 27, 2026 at 09:29:48PM +0000, Kyle Swenson wrote:
+> > > Add the LTC4266 Power Sourcing Equipment controller device tree bindings
+> > > documentation.
+> > > 
+> > > Signed-off-by: Kyle Swenson <kyle.swenson@est.tech>
+> > > ---
+> > >  .../bindings/net/pse-pd/lltc,ltc4266.yaml     | 180 ++++++++++++++++++
+> > >  1 file changed, 180 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> > > new file mode 100644
+> > > index 000000000000..e11c9d601eee
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> > > @@ -0,0 +1,180 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/net/pse-pd/lltc,ltc4266.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Linear Technology LTC4266 Power Sourcing Equipment controller
+> > > +
+> > > +maintainers:
+> > > +  - Kyle Swenson <kyle.swenson@est.tech>
+> > > +
+> > > +allOf:
+> > > +  - $ref: pse-controller.yaml#
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - lltc,ltc4266
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  interrupts:
+> > > +    maxItems: 1
+> > > +
+> > > +  channels:
+> > > +    type: object
+> > > +    additionalProperties: false
+> > > +    description:
+> > > +      Defines the 4 physical delivery channels on the controller that can be
+> > > +      referenced by PSE PIs through their "pairsets" property. The actual port
+> > > +      matrix mapping is created when PSE PIs reference these channels in their
+> > > +      pairsets.
+> > > +
+> > > +    properties:
+> > > +      '#address-cells':
+> > > +        const: 1
+> > > +
+> > > +      '#size-cells':
+> > > +        const: 0
+> > > +
+> > > +    patternProperties:
+> > > +      '^channel@[0-3]$':
+> > > +        type: object
+> > > +        additionalProperties: false
+> > > +
+> > > +        properties:
+> > > +          reg:
+> > > +            maxItems: 1
+> > > +
+> > > +          sense-resistor-micro-ohms:
+> > > +            description: Sense resistor connected to the channel's MOSFET, used
+> > > +              for current measurement and for overcurrent detection. The I_CUT
+> > > +              and I_LIM register encodings depend on which value is fitted, so
+> > > +              a wrong value programs the wrong thresholds.
+> > > +            enum: [250000, 500000]
+> > > +
+> > > +        required:
+> > > +          - reg
+> > > +          - sense-resistor-micro-ohms
+> > > +
+> > > +    required:
+> > > +      - '#address-cells'
+> > > +      - '#size-cells'
+> > > +
+> > > +  pse-pis:
+> > > +    type: object
+> > > +    additionalProperties: false
+> > > +
+> > > +    properties:
+> > > +      '#address-cells':
+> > > +        const: 1
+> > > +
+> > > +      '#size-cells':
+> > > +        const: 0
+> > > +
+> > > +    patternProperties:
+> > > +      '^pse-pi@[0-3]$':
+> > > +        type: object
+> > > +        additionalProperties: true
+> > 
+> > This cannot be true. That allows adding any property.
+> > 
 > 
-> allowing untrusted hardware to specify csum start/offset for
-> CHECKSUM_PARTIAL was not a good idea, because, if it edits the packet
-> outside the actual checksum, and depending on the setup, the networking
-> stack could be looking at the packet both before and after the edit, and
-> seeing different results.
-> 
-> Previously, commit 6785011f8b16 ("ipv4: validate checksum_start before
-> completing checksum") validated all known instances where this
-> causes the most grief, but the real fix is to make sure
-> that either only actual checksum fields are ever edited,
-> or the checksum is completed before the net stack looks at it,
-> so it is always consistent.
-> 
-> 
-> This basically goes back to
-> what we did before f43798c27684 ("tun: Allow GSO using virtio_net_hdr"),
-> except in a narrow list of specified known good cases.
-> 
-> 
-> Summary of the patchset:
->   net: account for ingress-resolved virtio net hdr state
-> 	- accounting, not the fix itself, dependency of the next one
->   net: resolve uncommon partial checksums at ingress
-> 	- fix itself
->   net: add a sysctl to opt out of virtio net hdr checksum validation
-> 	- reducing risk of the fix by adding a sysctl to disable it
->   net: add ip4_parse()
->   virtio_net: cleanup protocol calculation
-> 	- cleanup resulting code duplication
-> 	 (kept separate to simplify backporting)
-> 
-> Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-> 
-> Changes since v1:
-> 	- reorder patches to fix bisectability, addressing
-> 	  a comment by Björn Töpel.
-> 	- code refactoring, different patch splitup,
-> 	  a sysctl knob to disable as suggested by Willem de Bruijn.
-> 	- fix a bunch of minor issues spotted by LLMs
-> 
-> 
-> Michael S. Tsirkin (7):
->   net: account for ingress-resolved virtio net hdr state
->   um: vector: honor virtio net hdr conversion failures
->   um: vector: trim skbs before verifying the header
->   net: resolve uncommon partial checksums at ingress
->   net: add a sysctl to opt out of virtio net hdr checksum validation
->   net: add ip4_parse()
->   virtio_net: cleanup protocol calculation
-> 
->  Documentation/admin-guide/sysctl/net.rst |  15 ++
->  arch/um/drivers/vector_kern.c            |   6 +-
->  arch/um/drivers/vector_transports.c      |   4 +-
->  drivers/net/tap.c                        |   4 +-
->  drivers/net/tun.c                        |  41 +++-
->  drivers/net/virtio_net.c                 |   2 +-
->  include/linux/ip.h                       |  24 +++
->  include/linux/virtio_net.h               | 249 ++++++++++++++++++++++-
->  include/net/netns/core.h                 |   1 +
->  net/bridge/br_netfilter_hooks.c          |  15 +-
->  net/core/dev.c                           |   6 +
->  net/core/net_namespace.c                 |   1 +
->  net/core/sysctl_net_core.c               |  54 +++++
->  net/ipv4/ip_input.c                      |  13 +-
->  net/ipv4/netfilter/nf_reject_ipv4.c      |  13 +-
->  net/packet/af_packet.c                   |   4 +-
->  16 files changed, 404 insertions(+), 48 deletions(-)
-> 
-> -- 
-> MST
->
+> So my intent with the additionalProperties: true was to avoid
+> replicating the entire pse-pis node from pse-controller.yaml.
+> Conceptually, my goal was to inherit everything from the
+> pse-controller.yaml binding, except limit the maxItems to 1 (since the
+> LTC4266 only supports power over a single PI).
 
-Aside from the KASAN issue described in the other thread, I was able to
-test this series and it fixes my local testcases.
+pse-controller.yaml doesn't have the constraint there either. It is fine 
+if the constraint is there. However, that means custom properties are not 
+allowed in pse-pi nodes. Maybe that's fine and is certainly easier for 
+the schema. If you do forsee a need for device specific properties in 
+this node, then you need a $ref in this node with all the common 
+properties. IOW, similar to how the graph schema is structured.
 
-Tested-by: Chris Arges <carges@cloudflare.com>
+
+> > > +        properties:
+> > > +          pairsets:
+> > > +            description: The LTC4266 delivers power to a PI over a single
+> > > +              pairset, driven by one of the controller's four channels. There
+> > > +              is no 4-pair mode spreading a PI over two channels, so exactly
+> > > +              one channel phandle is expected.
+> > > +            maxItems: 1
+> > > +          pairset-names:
+> > > +            maxItems: 1
+> > 
+> > An empty node is valid? Needs 'required'.
+> 
+> I thought the 'required' comes from the pse-controller.yaml binding.
+> If I adjust the example dts in the binding with something like
+
+Indeed. My mistake.
+
+> 
+>            pse_pi2: pse-pi@2 {
+> -            reg = <2>;
+> -            #pse-cells = <0>;
+> -            pairset-names = "alternative-a";
+> -            pairsets = <&phys2>;
+> -            polarity-supported = "MDI";
+> -            vpwr-supply = <&vreg_pse>;
+
+If instead, you add 'foo-bar' property, you won't see any failure. 
+That's the 1st issue.
+
+Rob
