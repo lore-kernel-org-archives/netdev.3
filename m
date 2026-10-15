@@ -1,150 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B367A4C9DFA;
-	Thu, 15 Oct 2026 11:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792065212; cv=none; b=Dq7bNKGMdpcrecu6pI8QFYt6SEe2iuPAwQXspXgMM/NELAL5X61pfPj/fW2SGzYwZZ1sIq4228Q4BGSz0XoxnkpRVbqjSj774PXxXyNItk3mSHZ2s9H3gsgmT75laZgI4XyJR5LwR/4pLzYlABkL3L0oY/Let0EIvLIQ8QPDYdM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792065212; c=relaxed/simple;
-	bh=TatF4kuCJ1dX+S0anufdKkQ+MQbFpSr/zLfJMobBZz4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Z8yVZREFsDyQlN8Z27il6IFTarVFF/FdQ5Lo33niJQozCqKOTqOf6oqcgp9WTnpbczMP8N/vSUHHMVMYLu4RmvimpA4ZNkH03727xrmAMtm+HVYmmyZkAu4ObqfAd4cQC2FfyfeEyIgGvOI2NiEQW3avoAigUIuF3lMytM14cIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hj5EU0b1; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD3B48C405
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792066400; cv=pass; b=ayMIRmmZjrBHiqqqdEByf+kmDQUyT0XjuKj8zLvkFv/wFpEenjs2j//HyerR8UEhbm2pf+VJzMiBUomJhHEcTMcHN/fd9Frckt1KAflbYz/k9X8e6qToigyF98rYe++2GH24mMx7atHVk3pXkhFfz0hxmh5uMGjWqKUKcIZNG0k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792066400; c=relaxed/simple;
+	bh=PfWD4VpdWtdSjVgCMYbGy7PflI7LLghvMi+QrsP2eAY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UFz2VIZqyReJqr36irVKGaDMDXSWtWL3V9ufCnaTGkpIcqPSh+QXDUsxVb2/ZzuZLblSay1U2CrQvUsAC2b0hvmQZYewiIzTyH/Ptts9GKlNlzPhZw/xbQlA8XPSwFS12Tiz2vG2I+cVLmxxaP5y4zN8p6t6V6VQ7kajshujwQc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MFUv0rFw; arc=pass smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hj5EU0b1"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 82C31C2BD01;
-	Thu, 15 Oct 2026 11:53:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1792065212;
-	bh=TatF4kuCJ1dX+S0anufdKkQ+MQbFpSr/zLfJMobBZz4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Hj5EU0b1K/ovX3Gg9JuNnXFcpgzE1d3i8oG6OZrhGOef6f1yIa1VD++ZtyKvfsZgW
-	 hfv63z8KlnobAWuGOZTb/no9z6qUSCIWbjCevOjECQ7Vy7uI2j+lC/22yA5HxDZpbf
-	 Q8Rzp5UtRDMcMUTLr6Ypb5krTvUfy/tx86hHyG9tYhKzUAL+F6Ft1BBxS0nVFOIea0
-	 1D36G6cDy0p7AQOXk7vwqBhWrnILwOi39VGwCykWViutCFP5ycvSKg/yep2DYXDnW8
-	 oGxM8ICwIOPQukrd+wEQ7SuM29hdLBtVWPH53j9oWjs+/lNPpMSDb1unqtSfyOSb4e
-	 sY0j7fPiB2SKA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53907CC6B3D;
-	Thu, 15 Oct 2026 11:53:32 +0000 (UTC)
-From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
-Date: Thu, 15 Oct 2026 06:53:32 -0500
-Subject: [PATCH net v5 2/2] net/smc: skip the DMB nocopy accounting until
- the send buffer is set
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MFUv0rFw"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5b8b3c8c4bbso2304963e87.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:13:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792066397; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LPczGlNZ5j3d8YeaspXxaUlU0P1W5b5ImwegnqnwGBgAaro84ZJHZ5ZCpcV6ZPHtDW
+         90qjnwXz2/KVZR3M/oINte2x+h30k3VD4iXSCsI6Biyw/46x6ssjIns01IcdXj8+q8Im
+         bj2AUuaiGsc6As/KgK6DX61K9jH3RPjQPHhWRVcgocGcLmddowfHYjrLeZf4hPWZdJ8f
+         V2KGQ88kiQ7tVO0rHrD7jnfxfPNbSMQIW88rHvETVvxaxrmOmH7O+6+sVn1isQK1VHZv
+         Y6Z/hNgixGXsu4ipx78tNG/IIuHR9SLZUjBFaFA+8PCTNQa4E9Wh6ws2hInxc4FiUOVK
+         guzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PfWD4VpdWtdSjVgCMYbGy7PflI7LLghvMi+QrsP2eAY=;
+        fh=eu3fNylAgjgul50jhoh2fhz7ga7Bz+ie34HO8yf3GnA=;
+        b=gzC42sJyAECBmlNFqN/H+CDbD0oUGQ33qm38Kjz4XZtOLpEO97wNWdCglBqJ/Levap
+         1/EZONQArI+VYsMQfGVInkk8DiDas+JBnVHM94j3MTcjpr9yEIFklShBgVXr40whJUB2
+         SX2CVAY70j9gWNdOvRwVGf9ZhBviMkYBTrnyJC5GndI59nTKDRoG1ZuPnzuMmMTd8nUM
+         j701NbVBrMh85NORFK2FPia6EA484a+IoYlkl5pPKAGKT3FCSu+V5OpOqAsNKxbAfZKi
+         tfWS5kXunsXPmRoMKi/mnI3PTQcEl7gJLdnqM0oSJm1/qCxbJBqBzXs6D7sI1REkPJ6I
+         s0gQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792066397; x=1792671197; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PfWD4VpdWtdSjVgCMYbGy7PflI7LLghvMi+QrsP2eAY=;
+        b=MFUv0rFwkY46TMBt7X8wNlMgYfH2YjM20arVDogzgWTSRu/Y6LyM+DTrbXsuUU4IIM
+         KMefd9j1ptRsfqlo0pBgpWwYnuwS7fgCGXKEckghBS+1MbY5V0k43XFCPQfNBRIo7rqn
+         7ogA4wk4yI3JLiTiW/wgvj+yXuLzs7al5YO7pu1bm4MGoB+M3Ehh8qJsKATWAJkHuduv
+         PK7Sw7a+CUJ3u0rQgaaMXwZoRqciyvgFJdV9v6dr96LtRVBOr1510olmTRyInjU3Gj5i
+         ycB+cHUT0QzW4clXhHZ1Tr619ClxvRi78UB0NIs+BHrDyy9A1FwE0I9Iucm1YJ3qhBiM
+         Q9vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792066397; x=1792671197;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PfWD4VpdWtdSjVgCMYbGy7PflI7LLghvMi+QrsP2eAY=;
+        b=TOmFw5MIPYOWQPUpghuXAn+W5W22Cb1CJ8PORFubGbG/RnAP6mRC28RTymOOxS2rz2
+         LfNZbeD9mZyUltxa4k1EgCQk7CKbIf3S2coVWsfw5K0v+bj8LHW7pRoKG82FxMg7LGto
+         8BtrOs7/2mmXYvOIjdcA/2MmBM5rVURUc+R/QzwyY3w6LOr+X3XOZ5mDd5KNbGI0gNDp
+         1sMcO8+8ChgL0yU6L3jdcSEZbLg5hEODZCtPxwt9WVqEemQTZn75RnY+yHCBt9HDc20/
+         K3cS28EXKODkG/aOj+RD+RKSv0jbdqmy4av/tFYkp93jyxJuIHOMv5V4PDHMuSI1eFMN
+         QB+A==
+X-Forwarded-Encrypted: i=1; AKwUvBxInRGmajBrDAQlicnz8S8Ke3yUqmHIFCnFRRlu5O8aITg2XQgtSXtpbJH8YzLQYTAE0sstcMU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJPorVooxreoW9oH9RCVqO770KYik0lpFH8Sz31pjE1NZVZ2kG6
+	q5LWAdoaKitgOKy7XdgZx1joig+fnYTvdvOeLTrj1B957wBcoooWajqnanKjc51cbyb7LFbfO5s
+	mOZ+eoAWLxQ+crz0hApACuX0iY7YVUYqU3QLag2bFNw==
+X-Gm-Gg: AYBFou3GjmoPtr6UQ74+yg+kzRMuqlsMFt5azGE4skIGIVJ31v0gtjXfu0zgeBBvLNN
+	8jGXBkyN3fHEuawV4Jk43npKFyR/vQ5m+1Ck8uaokBPuhs+H94MgCB0YN2ctmgu+Hq6RcZUiouJ
+	umxdboHn3YniN+zLMOur97ZaWLsEsSUeAr/KkPoPH5Kyb1vg44eWjuh/Hwe2A4nJC29fAkkvUA2
+	irgetroWfC06c+ZKVS20d3PJUOwISIs6mu74yoz01z5W90kMSGzwz8OzsYlYbt1JrFuhjIYpeVT
+	mHkn3ELwUmqTR4DsJxrOfb7BF1ZMrQ2h0w6BxEWCzzagiNG0lGx/XGF0MfO7xzt1CVcLwMqcXRj
+	Bp2FGztrSEtzaPTZOgG8VQe04eRVzKxctBOfMm26k0leKcl0Ymp9IwwPceh5c3FSWlyJXEw==
+X-Received: by 2002:a05:6512:b1c:b0:5b8:e9cf:daa6 with SMTP id
+ 2adb3069b0e04-5bcdd4f080cmr6853474e87.10.1792066396625; Thu, 15 Oct 2026
+ 05:13:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261015-b4-disp-2a8d85ef-v5-2-6b795e8263c9@proton.me>
-References: <20261015-b4-disp-2a8d85ef-v5-0-6b795e8263c9@proton.me>
-In-Reply-To: <20261015-b4-disp-2a8d85ef-v5-0-6b795e8263c9@proton.me>
-To: Jakub Kicinski <kuba@kernel.org>, Dust Li <dust.li@linux.alibaba.com>, 
- Sidraya Jayagond <sidraya@linux.ibm.com>, 
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
- "D. Wythe" <alibuda@linux.alibaba.com>, 
- Mahanta Jambigi <mjambigi@linux.ibm.com>, 
- Eric Dumazet <edumazet@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>, 
- Ursula Braun <ubraun@linux.ibm.com>, Hans Wippel <hwippel@linux.ibm.com>, 
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- Tony Lu <tonylu@linux.alibaba.com>, linux-rdma@vger.kernel.org, 
- Wen Gu <guwen@linux.alibaba.com>, linux-s390@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792065211; l=3069;
- i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
- bh=xXN+n7Qm/oywh+j/Q9jQUIu7QO9vC0hGn4Ru7SfMqHU=;
- b=ezgGqPvdMVh4D5CMq1SL5vDgT0+V7ZD18szmPex16OUdp9CoC7DNfuBJlqA79BrSA27spm5hi
- rXH48rquBpdAcs4/gREeXXIywRyBOjx/zCSd8rr+dwnxGDlFWr5n5Lr
-X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
- pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
-X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
- auth_id=893
-X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
-Reply-To: hexlabsecurity@proton.me
+References: <20261013103906.2660384-1-wferguson@cloudflare.com>
+ <20261013103906.2660384-3-wferguson@cloudflare.com> <877bjk893u.fsf@cloudflare.com>
+In-Reply-To: <877bjk893u.fsf@cloudflare.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Thu, 15 Oct 2026 20:12:39 +0800
+X-Gm-Features: AclHuK9xypnzrrqwCcprd2CwQO7kzSIQ141D-bgf0CuqS7x-S8jo7RzifyoP-go
+Message-ID: <CAL+tcoBjfDEVGvvSXZHkiMjq5jat+5OJE-7uJr3MvtFyzn+KUg@mail.gmail.com>
+Subject: Re: [RFC PATCH net-next 2/4] tcp: add BPF_SOCK_OPS_TCP_TS_ID_CB to
+ assign a TSval identifier
+To: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Willem Ferguson <wferguson@cloudflare.com>, netdev@vger.kernel.org, davem@davemloft.net, 
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, ncardwell@google.com, 
+	bpf@vger.kernel.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, memxor@gmail.com, linux-doc@vger.kernel.org, 
+	corbet@lwn.net, linux-kselftest@vger.kernel.org, shuah@kernel.org, 
+	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Bryam Vargas <hexlabsecurity@proton.me>
+On Thu, Oct 15, 2026 at 1:51=E2=80=AFAM Jakub Sitnicki <jakub@cloudflare.co=
+m> wrote:
+>
+> On Tue, Oct 13, 2026 at 10:39 AM GMT, Willem Ferguson wrote:
+> > Let a sock_ops program pick the identifier that the previous patch
+> > encodes in the low bits of TSval, for passively opened connections.
+> >
+> > The width is set per network namespace by the new tcp_ts_id_bits sysctl
+> > (0 to 8, default 0). A listener opts in by setting
+> > BPF_SOCK_OPS_TCP_TS_ID_CB_FLAG, typically from BPF_SOCK_OPS_TCP_LISTEN_=
+CB.
+> > tcp_conn_request() then runs BPF_SOCK_OPS_TCP_TS_ID_CB once the request
+> > socket exists and before the SYN-ACK is built, so the SYN-ACK already
+> > carries the identifier. The program sees the request socket, the SYN
+> > (bpf_load_hdr_opt() works on it) and the available width in args[1]. A
+> > reply that fits in that width is stored with the width in the request
+> > socket and is inherited by the child, including Fast Open children; any
+> > other reply leaves the connection unencoded.
+> >
+> > The callback is not run for SYN cookies, which have nowhere to keep the
+> > identifier, or when the peer did not negotiate timestamps. It is skippe=
+d
+> > for connections using microsecond timestamps and while the sysctl is 0.
+> > The width is captured per connection, so changing the sysctl does not
+> > affect existing connections.
+> >
+> > New /proc/net/netstat counters report how often an identifier was
+> > assigned, declined by the program or skipped. TCPTSIdEchoMismatch count=
+s
+> > third ACKs whose TSecr no longer carries the identifier, which shows th=
+e
+> > echo was rewritten in flight.
+> >
+> > BPF_SOCK_OPS_ALL_CB_FLAGS grows from 0x7f to 0xff. The tcpbpf selftest
+> > used 0x80 as an example of an unsupported flag, so move it to 0x100.
+> >
+> > Encoding makes the timestamp clock appear 2^bits times faster to the
+> > peer. That shrinks the real-time span of the peer's PAWS window, and
+> > peers that keep ts_recent for the RFC 7323 24 days stall connections
+> > idle for longer than 24.8/2^bits days. ip-sysctl.rst documents both,
+> > along with the lack of TCP_REPAIR support.
+> >
+> > Signed-off-by: Willem Ferguson <wferguson@cloudflare.com>
+> > ---
+>
+> I think SOCK_OPS are considered legacy.
+> We probably want bpf_tcp_ops struct_ops.
+> See [1] for an example.
+>
+> [1] https://lore.kernel.org/all/20261006192601.1875100-11-kuniyu@google.c=
+om/
+>
 
-With SMC-D DMB nocopy (the loopback device), smcd_buf_attach() sets
-conn->sndbuf_desc after the connection can already receive a CDC. When
-a DMB is reused, the peer of its previous connection can still hold
-the DMB token, and its next consumer update makes
-smc_cdc_msg_recv_action() dereference the NULL sndbuf_desc in the
-nocopy accounting.
+Exactly!
 
-Set sndbuf_desc with a release store after sndbuf_space, and skip the
-nocopy accounting while sndbuf_desc is unset. Before the attach the
-current peer has consumed nothing of ours, so no update from it is
-lost. The rest of the receive path handles an unset sndbuf_desc since
-commit b395dd319cea ("net/smc: do not dereference an unset send buffer
-on the SMC-D teardown path").
-
-Fixes: cc0ab806fc52 ("net/smc: adapt cursor update when sndbuf and peer DMB are merged")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryam Vargas <hexlabsecurity@proton.me>
----
- net/smc/smc_cdc.c  | 10 +++++++++-
- net/smc/smc_core.c |  7 ++++---
- 2 files changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
-index 7bf902ebd7ab..d6825f48f568 100644
---- a/net/smc/smc_cdc.c
-+++ b/net/smc/smc_cdc.c
-@@ -333,6 +333,7 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
- 	union smc_host_cursor cons_old, prod_old;
- 	struct smc_connection *conn = &smc->conn;
- 	int diff_cons, diff_prod, diff_tx;
-+	struct smc_buf_desc *sndbuf_desc;
- 
- 	smc_curs_copy(&prod_old, &conn->local_rx_ctrl.prod, conn);
- 	smc_curs_copy(&cons_old, &conn->local_rx_ctrl.cons, conn);
-@@ -353,12 +354,19 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
- 		 * peer RMB, then update tx_curs_fin and sndbuf_space
- 		 * here since peer has already consumed the data.
- 		 */
-+		sndbuf_desc = NULL;
- 		if (conn->lgr->is_smcd &&
- 		    smc_ism_support_dmb_nocopy(conn->lgr->smcd)) {
-+			/* NULL until smcd_buf_attach(), but the old peer of
-+			 * a reused DMB can already signal us.
-+			 */
-+			sndbuf_desc = smp_load_acquire(&conn->sndbuf_desc);
-+		}
-+		if (sndbuf_desc) {
- 			/* Calculate consumed data and
- 			 * increment free send buffer space.
- 			 */
--			diff_tx = smc_curs_diff(conn->sndbuf_desc->len,
-+			diff_tx = smc_curs_diff(sndbuf_desc->len,
- 						&conn->tx_curs_fin,
- 						&conn->local_rx_ctrl.cons);
- 			/* increase local sndbuf space and fin_curs */
-diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-index 26f19a00c159..9322c27145df 100644
---- a/net/smc/smc_core.c
-+++ b/net/smc/smc_core.c
-@@ -2603,9 +2603,10 @@ int smcd_buf_attach(struct smc_sock *smc)
- 	buf_desc->cpu_addr =
- 		(u8 *)buf_desc->cpu_addr + sizeof(struct smcd_cdc_msg);
- 	buf_desc->len -= sizeof(struct smcd_cdc_msg);
--	conn->sndbuf_desc = buf_desc;
--	conn->sndbuf_desc->used = 1;
--	atomic_set(&conn->sndbuf_space, conn->sndbuf_desc->len);
-+	buf_desc->used = 1;
-+	atomic_set(&conn->sndbuf_space, buf_desc->len);
-+	/* Set last; pairs with the acquire in smc_cdc_msg_recv_action() */
-+	smp_store_release(&conn->sndbuf_desc, buf_desc);
- 	return 0;
- 
- free:
-
--- 
-2.56.0
-
-
+Thanks,
+Jason
