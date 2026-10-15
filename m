@@ -1,38 +1,38 @@
 Received: from 0001.3ffe.de (0001.3ffe.de [159.69.201.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BB63CE4BE;
-	Thu, 15 Oct 2026 09:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2942BD09;
+	Thu, 15 Oct 2026 09:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.201.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792055953; cv=none; b=KL5NjuEPOTddb8X/UFmo8M1/TlWIkHcj6ZeQMIeHlts5LNdf0eL+CTLndi5EPyaSLxkAtOSadDXVqzafx2+V2MD79b8h4IktvFA0Kg/eqQYaR69bnd2W+jy/iJ9nKYhUZgxjTfs9mxwCGZWQptfX0Rk/8+twJ251yaOElgLHISY=
+	t=1792056068; cv=none; b=CUkC0TCKcZpgQX8loyFHKpnBF285sHNxCNwbwJMoh+3BfTyfoLTGGjl5TxoDYWRqgJehUqvRRsIPAeIKkImCGyHqEm1+4E19SkxxSMkMH9UYQbDH25cbAWWDVJ08AzNlDf6BQywH9JK/fL1cy0UdQJci+HQfATgrXcE7VE58lro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792055953; c=relaxed/simple;
-	bh=MH3qGToe99bdMqkSjji66J5o0oFCK9Jd8FLC49APQhs=;
+	s=arc-20240116; t=1792056068; c=relaxed/simple;
+	bh=Q5f7uMuv+Z1b7bEoZ+l0snFvcQAc1leSwiaOXkuQp3s=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=Mk80EHU5+HmGoWkagY+aVpG7jG/dhyMfuGGIOKmDQ8bsK0c6Jx9Jq9FsNS6CvP7fY93TDVT+L/dMYjOYBUeOS/XkMPC52ueFSULDL1fa0Ayb2migZd7tkEdSijXpYrkseKmHFJb2qJbuLoSsdc817cE2Hr0NNf/A2m2XgZ/0sD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=walle.cc; spf=pass smtp.mailfrom=walle.cc; dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b=h4mnp7OY; arc=none smtp.client-ip=159.69.201.130
+	 References:In-Reply-To; b=i78XuJMu1sTr+CufULoPMKO6Y6gQtfO8sYBXPdTbkduzbY98FPAkIuJ5PDVJVe/+Dye3+dO+YZzYoAOQaP0opOu6iaD0e+HiuSnyXo0lpP8QkdgnTb9btSHt8azPOk3MpLW69VtXkOcpH81WspDCfMMzUaPqGm/YtmmNJLEOfGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=walle.cc; spf=pass smtp.mailfrom=walle.cc; dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b=qkTBo9hI; arc=none smtp.client-ip=159.69.201.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=walle.cc
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=walle.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b="h4mnp7OY"
+	dkim=pass (2048-bit key) header.d=walle.cc header.i=@walle.cc header.b="qkTBo9hI"
 Received: from localhost (unknown [213.135.10.150])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.3ffe.de (Postfix) with ESMTPSA id AD3E148D;
-	Thu, 15 Oct 2026 11:12:31 +0200 (CEST)
+	by mail.3ffe.de (Postfix) with ESMTPSA id 57DC648D;
+	Thu, 15 Oct 2026 11:21:04 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=walle.cc; s=mail2022082101;
-	t=1792055551;
+	t=1792056064;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0Zj5znr2Nom4HHOQbTJi5RMAPGgKLlClPXVSJoArmYI=;
-	b=h4mnp7OYGlPKxKPsqXtOpEz9t3l1xHMXynyVgwvBejzSs1PxHS4dV2PL3DhdFs/sQyatFZ
-	pbKPj+jC+Q+bjYxpPbuK8uT/F2U9KA6Mxe/R5ZWlvVZe40PmaT04r+PA91UTvseqlpeaYa
-	+OkG2bBVBzGB/nCZNFxDacrX7ZoPRuxuXiFZ13zA+aACh3ChUpxOi8jRX075PupfINHOBn
-	bisuEkzn28Uzawb7qSk/yKNDN8lo4r50LF+yj642Q5DJToihOes11gvD5REA5iAtnvGRS0
-	00K4T0R0S7Ie6PwrHimZd6OEkbAfbMcpXzFFvp3F3Ui/PzAv4AxoLMN2HmKJPg==
+	bh=RhOXfJe2evQSmltYZcqoysV/ojsK0GjNWYjg2pyAuN0=;
+	b=qkTBo9hI6+sPXqeenT12ELPrdYL0GOJOtyFSPIXgxRq6GK4IMmNUqa4zVqQwJyGhapmTjI
+	ku5fbIeLlZw9IMaQV0mZxTKY7LL9rrPyW0jWHGVvz4VcSokzRzM+x9FQfuq8p5uBKgDVL1
+	wtN+QkhNuhLSM3kvlPcr7dkJPfzp0F4NcZ4qJxGJ4svJz0IrIXK5JIxlR0zK3Z8rl8WU8D
+	+VI81JPzU0CjbUX7sCpRqh40Fky5f3U0viqxNrw55gL8fqrdBVObQaQcLOzzGF0DCgapz2
+	Nv2v9AHnch1xy+b/hPijrh81mUG2kPf0svxawFPomN+5yrYI4o7MY9XDkHXEuA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,12 +40,12 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed;
- boundary=1bcab1df772fb139f8336f2aa8b8f79a6917ec2951c5e78cac2480ad5a3f;
+ boundary=499acbdbca56ee494925b2505869d62d751ec95367d3b21bbc9e541b217b;
  micalg=pgp-sha384; protocol="application/pgp-signature"
-Date: Thu, 15 Oct 2026 11:12:28 +0200
-Message-Id: <DM5AO9LBE1OI.19L3SG4BQTNB0@walle.cc>
-Subject: Re: [PATCH v8 3/8] nvmem: core: take a reference on dev.of_node in
- nvmem_register()
+Date: Thu, 15 Oct 2026 11:21:02 +0200
+Message-Id: <DM5AUTOSX5TD.2RD50MZ8S8GAF@walle.cc>
+Subject: Re: [PATCH v8 4/8] mtd: spi-nor: sfdp: expose the SFDP as a
+ read-only NVMEM device
 From: "Michael Walle" <michael@walle.cc>
 To: "Manikandan Muralidharan" <manikandan.m@microchip.com>,
  <pratyush@kernel.org>, <mwalle@kernel.org>, <takahiro.kuwano@infineon.com>,
@@ -60,79 +60,168 @@ To: "Manikandan Muralidharan" <manikandan.m@microchip.com>,
  <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>
 X-Mailer: aerc 0.20.0
 References: <cover.1790847519.git.manikandan.m@microchip.com>
- <2e21cc4b871da8764e3a12d0ebdcf7cb799149ab.1790847519.git.manikandan.m@microchip.com>
-In-Reply-To: <2e21cc4b871da8764e3a12d0ebdcf7cb799149ab.1790847519.git.manikandan.m@microchip.com>
+ <093672d183a06dc2f37366b2f9ff144316850863.1790847519.git.manikandan.m@microchip.com>
+In-Reply-To: <093672d183a06dc2f37366b2f9ff144316850863.1790847519.git.manikandan.m@microchip.com>
 
---1bcab1df772fb139f8336f2aa8b8f79a6917ec2951c5e78cac2480ad5a3f
+--499acbdbca56ee494925b2505869d62d751ec95367d3b21bbc9e541b217b
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
 
 On Wed Oct 14, 2026 at 8:40 AM CEST, Manikandan Muralidharan wrote:
-> nvmem_register() stores config->of_node (or config->dev->of_node)
-> into nvmem->dev.of_node without taking its own reference. Callers
-> that get the node via of_get_compatible_child() etc. and drop their
-> reference right after registering leave nvmem->dev.of_node backed by
-> no reference at all.
+> The SPI NOR core already reads the SFDP tables during enumeration and
+> caches them in nor->sfdp->dwords (see spi_nor_parse_sfdp()). Re-expose
+> that cached data as a read-only NVMEM device, in on-flash byte order,
+> rooted at the flash's SFDP child node (compatible "jedec,sfdp").
 >
-> Take an of_node_get() when assigning nvmem->dev.of_node and release
-> it in nvmem_release(). Existing callers that hold their own get/put
-> pair around the registration call need no changes, since get/put on
-> a device_node is per-holder and independent of core now also holding
-> one.
+> This lets NVMEM cells reference any SFDP data: a fixed-layout for
+> parameters at a known offset, or an nvmem-layout parser for vendor data
+> whose location must be discovered at runtime. The device is only register=
+ed
+> when an "sfdp" node is present in the device tree.
 >
-> Suggested-by: Michael Walle <mwalle@kernel.org>
 > Signed-off-by: Manikandan Muralidharan <manikandan.m@microchip.com>
+> ---
+>  drivers/mtd/spi-nor/core.c | 78 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 78 insertions(+)
+>
+> diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+> index 8bc117b46e02..4e47459b1679 100644
+> --- a/drivers/mtd/spi-nor/core.c
+> +++ b/drivers/mtd/spi-nor/core.c
+> @@ -17,6 +17,7 @@
+>  #include <linux/mtd/mtd.h>
+>  #include <linux/mtd/spi-nor.h>
+>  #include <linux/mutex.h>
+> +#include <linux/nvmem-provider.h>
+>  #include <linux/of.h>
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/sched/task_stack.h>
+> @@ -3001,6 +3002,75 @@ static void spi_nor_init_fixup_flags(struct spi_no=
+r *nor)
+>  		nor->flags |=3D SNOR_F_IO_MODE_EN_VOLATILE;
+>  }
+> =20
+> +static int spi_nor_sfdp_reg_read(void *priv, unsigned int offset,
+> +				 void *val, size_t bytes)
+> +{
+> +	struct spi_nor *nor =3D priv;
+> +	struct sfdp *sfdp =3D nor->sfdp;
+> +	size_t sfdp_size =3D sfdp->num_dwords * sizeof(*sfdp->dwords);
+> +
+> +	if (offset >=3D sfdp_size || bytes > sfdp_size - offset)
+> +		return -EINVAL;
+> +
+> +	/* The cached SFDP is kept in on-flash (little-endian) byte order. */
+> +	memcpy(val, (u8 *)sfdp->dwords + offset, bytes);
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * spi_nor_register_sfdp_nvmem() - expose the SFDP as a read-only NVMEM =
+device
+> + * @nor:	pointer to a 'struct spi_nor'
+> + *
+> + * Expose the whole SFDP, in on-flash byte order, as a read-only NVMEM d=
+evice
+> + * rooted at the flash's SFDP child node (compatible "jedec,sfdp"). This=
+ lets
+> + * generic (fixed-layout) or vendor (nvmem-layout) cells reference any S=
+FDP
+> + * data. The device is only registered when a child node with the "jedec=
+,sfdp"
+> + * compatible is described in the device tree.
+> + *
+> + * Return: 0 on success or if there is nothing to do, -errno otherwise.
+> + */
+> +static int spi_nor_register_sfdp_nvmem(struct spi_nor *nor)
+> +{
+> +	struct device *dev =3D nor->dev;
+> +	struct nvmem_config config =3D { };
+> +	struct nvmem_device *nvmem;
+> +	struct device_node *np;
+> +
+> +	if (!nor->sfdp)
+> +		return 0;
+> +
+> +	np =3D of_get_compatible_child(dev_of_node(dev), "jedec,sfdp");
+> +	if (!np)
+> +		return 0;
 
-Nice!
+I've missed replying to your former question about this, sorry. Yeah
+I was implying to always add the nvmem device regardless of the
+device tree. I don't see a reason why it should only be added if dt
+node is there. Userspace might still do something useful with it.
 
-Did you check if any callers are also taking a reference, which
-might not be needed anymore now.
+So if you'll respin a new version you can remove the check,
+otherwise it could be a follow-up patch.
 
 Reviewed-by: Michael Walle <mwalle@kernel.org>
 
 -michael
 
-> ---
->  drivers/nvmem/core.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-> index 0556d140170a..98192597b935 100644
-> --- a/drivers/nvmem/core.c
-> +++ b/drivers/nvmem/core.c
-> @@ -541,6 +541,7 @@ static void nvmem_release(struct device *dev)
+
+> +
+> +	config.dev =3D dev;
+> +	config.of_node =3D np;
+> +	config.name =3D "sfdp";
+> +	config.id =3D NVMEM_DEVID_AUTO;
+> +	config.owner =3D THIS_MODULE;
+> +	config.read_only =3D true;
+> +	config.word_size =3D 1;
+> +	config.stride =3D 1;
+> +	config.size =3D (int)(nor->sfdp->num_dwords * sizeof(*nor->sfdp->dwords=
+));
+> +	config.reg_read =3D spi_nor_sfdp_reg_read;
+> +	config.priv =3D nor;
+> +
+> +	nvmem =3D devm_nvmem_register(dev, &config);
+> +	of_node_put(np);
+> +	if (IS_ERR(nvmem)) {
+> +		/* NVMEM support is optional. */
+> +		if (PTR_ERR(nvmem) =3D=3D -EOPNOTSUPP)
+> +			return 0;
+> +		return dev_err_probe(dev, PTR_ERR(nvmem),
+> +				     "failed to register SFDP NVMEM device\n");
+> +	}
+> +
+> +	dev_dbg(dev, "exposed %d-byte SFDP as an NVMEM device\n", config.size);
+> +
+> +	return 0;
+> +}
+> +
+>  /**
+>   * spi_nor_late_init_params() - Late initialization of default flash par=
+ameters.
+>   * @nor:	pointer to a 'struct spi_nor'
+> @@ -3204,6 +3274,14 @@ static int spi_nor_init_params(struct spi_nor *nor=
+)
+>  		spi_nor_init_params_deprecated(nor);
+>  	}
 > =20
->  	ida_free(&nvmem_ida, nvmem->id);
->  	gpiod_put(nvmem->wp_gpio);
-> +	of_node_put(nvmem->dev.of_node);
->  	kfree(nvmem->ops);
->  	kfree(nvmem);
->  }
-> @@ -950,9 +951,9 @@ struct nvmem_device *nvmem_register(const struct nvme=
-m_config *config)
->  	nvmem->keepout =3D config->keepout;
->  	nvmem->nkeepout =3D config->nkeepout;
->  	if (config->of_node)
-> -		nvmem->dev.of_node =3D config->of_node;
-> +		nvmem->dev.of_node =3D of_node_get(config->of_node);
->  	else
-> -		nvmem->dev.of_node =3D config->dev->of_node;
-> +		nvmem->dev.of_node =3D of_node_get(config->dev->of_node);
-> =20
->  	switch (config->id) {
->  	case NVMEM_DEVID_NONE:
+> +	/*
+> +	 * Expose the SFDP table as an NVMEM device only when
+> +	 * the flash actually provides one
+> +	 */
+> +	ret =3D spi_nor_register_sfdp_nvmem(nor);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret =3D spi_nor_late_init_params(nor);
+>  	if (ret)
+>  		return ret;
 
 
---1bcab1df772fb139f8336f2aa8b8f79a6917ec2951c5e78cac2480ad5a3f
+--499acbdbca56ee494925b2505869d62d751ec95367d3b21bbc9e541b217b
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iKcEABMJAC8WIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCatCY/BEcbWljaGFlbEB3
-YWxsZS5jYwAKCRASJzzuPgIf+GofAYD9mcyrw6Fsl+MSjbGeqfOmb4MGExC9nDTZ
-ZOEr0wblbvSq2/743J69jXa4cWznv6UBgKoH3UHkbObCLUD2qJ/idZX/Ga9BD2Xc
-Qa+nNJFPjUjx0YIViZ9j8C25yOcdXP47fw==
-=lByw
+iKcEABMJAC8WIQTIVZIcOo5wfU/AngkSJzzuPgIf+AUCatCa/hEcbWljaGFlbEB3
+YWxsZS5jYwAKCRASJzzuPgIf+AyOAYDi48emPwhdKyXoa8JthR5GGnUzBcZHL2J2
+pZ6C6SSkmiXIHMoOJ/Th4WD1Cl8r1AgBf0EKFYwI9hHKsvev5mSZE2raQt8NV+Ew
+jpesdTau2EQaMxsXwnVl9FK/rXeEsy0+Hw==
+=sngz
 -----END PGP SIGNATURE-----
 
---1bcab1df772fb139f8336f2aa8b8f79a6917ec2951c5e78cac2480ad5a3f--
+--499acbdbca56ee494925b2505869d62d751ec95367d3b21bbc9e541b217b--
