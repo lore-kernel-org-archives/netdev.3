@@ -1,47 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC5349E5FF;
-	Thu, 15 Oct 2026 07:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DE049F130;
+	Thu, 15 Oct 2026 07:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792050222; cv=none; b=o8h/AmYaABVGtQBxgTAEUzRCW+iERCShE8vwBDYwEzrG0hdrlcIKb+sau2+3NigL+5fQ+lcuNTiLskyBMX9EnirWeuV/YBtWik6OO/bDYj5Vpc+4iK4r6J1j5YDRi+8iDBL++qWi0DBmZdP8Sv8mcC/TCRv+Mpl8O5QiFRKMsyU=
+	t=1792050230; cv=none; b=A4ZM73g7iFZD39+kcUyGRg9duiTjKbLs7mixYwREzFHkyHZt+yoNQW03Q02+RzzDLW8Bu6UiXk/4e8cUm4k53X2jB9EhH0x8IY23algBcZY2N7xMCVvS8Aybtk1Ca/MxGoVTGXOSu4KN9OwLIqinlgUGw+qYPB5QxbWttwxonpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792050222; c=relaxed/simple;
-	bh=x8GQ9TqAFu5driuvo38kqzYt3n324pebOlaNmEELI+s=;
+	s=arc-20240116; t=1792050230; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q9mh1fYkN/uE9cdFw7YfUDV+KzG7deScYt8xsqa60gvAovAm6wTvUgck/RHAKUY/bLsOUBmYHXu5c98Sh4nTBYp+NQhLWkCC8uF3r4HzcgVdc/Gxd/r7I7wf/h+6E+Rot1+yFw7xmBY4FoqP62EVmpmS5OcfhyLtiIO89JeLVr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avxfbTMA; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=tB4YgVjgYmGRxDELm9+zG8z7SgxZl0b1+q7qMGxaSNFZEzIi/dsVuKmtYYQbg44n/WVg2m6+veVec+9riWEQaK/n5mn+LNd9g3avwPRSrICdwLcxmmXa5Vg3HCdJs4X7lIdrQhxiLWcZhwLfmFIcCBL+DS4NQDrl/9c22/o5l1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NG3IXvfx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avxfbTMA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BD61F000C4;
-	Thu, 15 Oct 2026 07:43:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NG3IXvfx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8EE1F000C4;
+	Thu, 15 Oct 2026 07:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792050219;
-	bh=PJRu7W6/Or1we5Gv3BgoLEtby0D0Y0UGgfjBHfRc5+k=;
+	s=k20260515; t=1792050228;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=avxfbTMANEBfzVLsIqD7E/Dd14H2HWAqfQi/N1vosEjCv0S/PveXsz5hsLUSNa6D8
-	 NzZUlZjDeYBAz/mZyBmTjF4nr3xrGeyPIcb+HgD8eDnvrSWLaWERdaBa/J0RxbQfsM
-	 S4J2hns8JpbaQmo3Wo3987UdC18YtCsbO5g5/z5gPwP1Va3yaqj3MmRgY1bI9oxt87
-	 Pc2n+8lujnrKYCSb2u201lQbONNahe8dsQxdGR8NNSdXkHyUnyvXE/SHdvOw5V3VNa
-	 Yt0vlTp1A/IGOnMrq0TITgqJbSgIn8PhuE4ncqJWp9jI+vAEpxJAjj//tICwL3Nkch
-	 MpqyX1ybZS82w==
+	b=NG3IXvfx29I7ciI/r6qxqoxDtr9GZzQWK4m4ul5MDxHvszWjfauDM+NdLSygblpwD
+	 YeGAM/CC1i24s9/Z/xWg4HXPq87x0/LkGROMZdAt42jiwQRP7B4ttsWVvMA/xRgxw3
+	 vOAfq5z6y3LtCFZoIcCuPGySHh+zUbpefNavwHDDPD2ozTtbZ1Dlhj7bUbAAaRGn0Z
+	 XDYzi/HKvR9OsnZa/WFPaYJskx5ZwmseP2ea1nsHDlACf0Zl0CSI3DWxACn000jxMI
+	 Y58ArQDnHqM198QeLdt8oou+d6oCb9N8flNjB87jvm3mzrvxhyfDgXIwYTqHSJzAYk
+	 sZsHUtOFuPvWw==
 From: netdev-bot+sinfo@kernel.org
-To: Octavian Purdila <tavip@google.com>
-Cc: Eric Dumazet <edumazet@kernel.org>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>,
- "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, Willem de Bruijn <willemb@google.com>,
- Soheil Hassas Yeganeh <soheil@google.com>, Wei Wang <weiwan@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 0/2] tcp: clamp return value of tcp_wmem_schedule() to
- non-negative
-Date: Thu, 15 Oct 2026 07:43:38 +0000
-Message-ID: <179205021846.408196.14808616314279740107@kernel.org>
-In-Reply-To: <20261015073736.2944215-1-tavip@google.com>
-References: <20261015073736.2944215-1-tavip@google.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Carolina Jubran <cjubran@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Jiri Pirko <jiri@nvidia.com>, Jiri Pirko <jiri@resnulli.us>,
+ Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Subject: 
+ Re: [PATCH net] net/mlx5: DPLL, fix fractional frequency offset scaling
+Date: Thu, 15 Oct 2026 07:43:46 +0000
+Message-ID: <179205022689.408196.2502809558369367458@kernel.org>
+In-Reply-To: <20261015074035.1092340-1-tariqt@nvidia.com>
+References: <20261015074035.1092340-1-tariqt@nvidia.com>
 Auto-Submitted: auto-generated
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -60,6 +63,14 @@ commit messages seem to be missing some information:
  - How the issue was discovered, e.g. hit in production, hit during
    development, syzbot report, manual code inspection, LLM or static
    analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
 Please do not repost the series just to address the above. Instead,
 reply to this email with the missing information, so that reviewers
