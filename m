@@ -1,71 +1,72 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A47257EDAF
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 19:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544B937DAAE
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 19:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792091512; cv=none; b=kEic/2KYbVIAO5sCqUVsM7JN4I6/JEohFiEeKDZyNYumLkFeZRP3xbm3WHN9ds462UHPi/6ObJUcmKzmoTmjcjBKBam/9IwImTrei2kID+upa761g3xRenlVgj9JlOzYBGZ/1o2yWXTPWubaA26yKFVTP/61HGHInD+qy/iCJL0=
+	t=1792091736; cv=none; b=FFhse3hl+Oz56gjfxDB1yt8+Y4TrCKSdV0qqrMGwg4aA7oswl+D8LHJG8L8h/z8SfCbeo2bgllcs6od5oR8sJmdkHaXoKnX7FNVEM3b1NZLRocmctUnLWOIBccKIZ8OcwmUvzGmHwjMfJ6Sm3rQUZuUIrzFHDZc3wO98ltPm63M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792091512; c=relaxed/simple;
-	bh=15uQQtOwfPln07OLVQzeQ/wLDpdnCe68Efh7uZLmnu8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QQt8FlOHg6HSBlYwWxWGC4RH058RE2ew2TwdQ2sSzYeK9EabxqQfVZCxay3TGEh8k9OvROswmvOW1Rry9MCYz4Giyi3ftcj7VvUggw6eGldBJwLW6kIpjbFy7M/zmETAQzf4E1k77a3PTvu1WosTj6OW7WiF57imUzbp4bkUr1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JXI6qSkC; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792091736; c=relaxed/simple;
+	bh=Jp4pH0Td7L6ri7tat8z0EeT25X0PiKCVcnDPQdO3Bn0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JFFzmUPdsQsqG7WEn5i9DGBUgEoY3dVew14QKNWL4udaCxBtNotr6HHsWTVGLKdUz0KQzk+kmrBVGnNfQaMv87WgYofeR771JUJZr1jA3m84sJV0hdo2jGPZoM85PJYN+SGyIwXlMrUS3oW9K4Es6coyzuVIsLDK9b8cRX3wxcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=gveaAnEH; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JXI6qSkC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792091499; x=1823627499;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=15uQQtOwfPln07OLVQzeQ/wLDpdnCe68Efh7uZLmnu8=;
-  b=JXI6qSkC/Cd8PB43d1EiZ5xgpqPMKncIecV4yjAuq9Qm52Ui/0Qe1O3i
-   LGY6BNGYdYFOQKlGznhk4owZ3I57SF5oxc3vgyxUK4WkA8Gw1zGtCER/M
-   FPhPda8Kk02Zy8NY/6Yas8yoUmQijboiNmUMa0Q9b0hyzGkZQ4I0oDAPc
-   jcs6yNkqE5lZutCKDumKSGOsl3nnDsmZL4bcJiI0GSrqz3bHn4UtnUpJa
-   +BO0N+NNxWtXc91ngHYbne8NDM7KVVFeKklBlhIvGAv5aDQ091a7dIxwv
-   T0xiN0j6lRfKUBY9PnQIxdce9mbYa1mtvWGjuCOcA0JDmNsCj0OeFJE60
-   w==;
-X-CSE-ConnectionGUID: DnBhdSKBRU+Fdmu7E+WT7w==
-X-CSE-MsgGUID: WFh+m8oETLOo03Uqi3F6Gg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="765617"
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="765617"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 12:11:16 -0700
-X-CSE-ConnectionGUID: pQ89Hx0FTo2FZl+e1djt/A==
-X-CSE-MsgGUID: jYLWoVlXS2ejmy/o/biVrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="2078521"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa008.fm.intel.com with ESMTP; 15 Oct 2026 12:11:16 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="gveaAnEH"
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-5e4d95e3e55so684838e0c.2
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:15:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1792091732; x=1792696532; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZF3bLXj9CIqUg/WD3T8ieRXgzuioWGRz8bfYuuLDC8U=;
+        b=gveaAnEHMF6RyrNfGKzMxKcu2DRdgbCHxw1GuwbB5Sew14HiCO9m1RkLxWBD5Eiw4m
+         c8zItxoVeXVIlpc7TIBuW+7GcZBUJ1RUDKmZYAgPIJBVC/hUn7aID/2ifvQUczFmv7UA
+         1Wlc/UpQAkQy0IM8Ai72U9LFF7W596Cihq9Q4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792091732; x=1792696532;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZF3bLXj9CIqUg/WD3T8ieRXgzuioWGRz8bfYuuLDC8U=;
+        b=Av4YUgQNrdq7O4r8oUHCrhROB+o+fupTRR4y8nQWOZTeQVFEjjN0GGvpR6YeVTtBfp
+         VBjG8HUdLszoDsSZnNXPQrfupyjHgj2nlDvd27UQ5ie6TykhxMGdI/G3nsdMrsB3Z70k
+         JxZj4d2UwZpNVTbXoH4kLe7x1Pa2jxF+jZjppZhBlX9FbN3U2RPdFC+nxbaXpkA2r/2D
+         7nL8FpOXbVMBqapeUaLX+DwnXkZyuo6pLuW12v9uBNtc/ZFoD5VKuMmALKNONdwj+HIT
+         9DQsn0Fja4oV1tHPaOikVwD+SiMvkWcwGbhHFThFgTbeBCt+RDGEeVfpp4kYWy0nPGjk
+         Ux2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxKJ8meJv9UFzCnwbp9aifiK3JSpud+TxulinsVpIfFmGQ7gSOZPODSMFx8NjVuUo1+H12dCjg=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJj+Y7ddFS96CyfuiMdZ6QUHLiZs4J7qhykEV/1t0Qclh+0EsFg
+	fCxSxKGA9UUncuuIoyEVtcasri1XcDygiQOAiymrwXv2ck0jMYtdixmRAMNsVQLvDg==
+X-Gm-Gg: AYBFou1KWHGTgu/qk+bpKI2nYhVo8r0reqCy354u4Wqg7phF3azPbQCBG66vFGAAzel
+	ifj65m3hSoay81F4EbXn96kSkl7DiNDFQnVnMSlVz3Vusx6idC3bmb6KaizemmW3L1OnCRFKu08
+	IIn/Xc6AbZp/Cups8pEyeD6O7tt13kSAerLq4uCoGYzsLmUcVwuT/ZIl/xLhlCbE2T3aJIhnCjK
+	n4T+vMDJ252W3KK/xBQVzeP6d4joiBzhlkANhDyx7Y7W/g6J7/mLvVC5dpRhD7zEzqDKVKTHP5q
+	OAEX4qN/oubGpa0kFXKRz1/RBXBaI7lWZxpnd+BpWMJS23Mw0vFZBRwsexPl2nZ7u0DUW0NvTZk
+	lwAJLPs021zK9rEWGJrCTqU+QHuaalSjYDNE+yLPUDFFEoI2Xmm76vKcVp41y5iNca/9RuwJO5j
+	B1RkE1uhLWJ5z4pNATf3mawrB211p0NnUK3Enkqu0ooxB9TY+9NmkyMPCk6WZxDlZcQzkB5zgNk
+	TX9
+X-Received: by 2002:a05:6122:130d:b0:5db:4749:1730 with SMTP id 71dfb90a1353d-5e91f4bc6d0mr6187781e0c.14.1792091732028;
+        Thu, 15 Oct 2026 12:15:32 -0700 (PDT)
+Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67::2000])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9943caf9sm411962e0c.4.2026.10.15.12.15.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 12:15:31 -0700 (PDT)
+From: Victor Nogueira <victor@mojatatu.com>
 To: davem@davemloft.net,
+	edumazet@kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	edumazet@kernel.org,
-	andrew+netdev@lunn.ch,
+	jhs@mojatatu.com,
+	jiri@resnulli.us
+Cc: horms@kernel.org,
 	netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	anthony.l.nguyen@intel.com,
-	jacob.e.keller@intel.com,
-	maciej.machnikowski@intel.com,
-	przemyslaw.korba@intel.com,
-	grzegorz.nitka@intel.com,
-	sergey.temerkhanov@intel.com,
-	arkadiusz.kubalewski@intel.com,
-	richardcochran@gmail.com,
-	horms@kernel.org
-Subject: [PATCH net v3 12/14] ice: keep Tx timestamp slots tracked until completion or timeout
-Date: Thu, 15 Oct 2026 12:10:58 -0700
-Message-ID: <20261015191102.1174111-13-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20261015191102.1174111-1-anthony.l.nguyen@intel.com>
-References: <20261015191102.1174111-1-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next] selftests: tc-testing: keep IPv6 autoconf out of exact-counter checks
+Date: Thu, 15 Oct 2026 16:15:24 -0300
+Message-ID: <QDISC-L9J8.v1.r0.20261014162217-1@mojatatu.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,295 +75,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Petr Oros <poros@redhat.com>
+Several tc-testing cases assert an exact bytes/packets value from a single
+injected frame, but count every frame that traverses an egress qdisc (or
+match with "protocol all"). Every case creates a fresh veth pair (and, for
+the gso_skb cases, a netdevsim device) and brings it up with IPv6 enabled;
+a device whose link-local autoconfiguration runs then emits neighbour
+solicitations, MLD reports and router solicitations for a few seconds.
+Those are ordinary Ethernet frames (0x86DD) and are counted too, so the
+exact assertions race with the autoconf burst and fail intermittently. The
+$DEV0 peer of the veth pair lives in the init netns, so its frames follow
+the init-netns IPv6 sysctls.
 
-When the link goes down the processing loop drops every outstanding
-request, and a request whose timestamp is not ready yet is freed
-without reading the PHY slot. The hardware completes the capture a
-moment later, the orphaned ready bit blocks the port interrupt until
-the next link-up sweep, and the freed index can meanwhile be reused
-by a new request whose slot the hardware then overwrites. Captured on
-a reproducer as ready bits with no in_use owner right after a link
-bounce.
+Conditions to recreate the bug:
+Run the affected cases with IPv6 enabled (the tdc default) on net-next
+(7.3.0-rc6+). 4e6b fails intermittently (4/6 here); the four netdevsim
+"gso_skb" cases fail intermittently too (fb6c 1/25, 0235 4/15, 476f 4/8).
+1922 did not trip in the sampled runs but shares the same setup and is
+fixed for uniformity. Each failure carries a stray autoconf frame, e.g.
+"bytes: 98 != 188".
 
-Stop dropping on link down. Mark the outstanding requests stale so
-their completions are read and discarded, reject new requests while
-the link is down, and free a not yet ready slot only after the two
-second timeout. This way an index is never reused while the hardware
-can still write it and never left untracked while a completion can
-still arrive.
+The Fix:
+Fix the affected cases:
 
-Since we're adding a new call to ice_ptp_mark_tx_tracker, notice that the
-function previously did not check the tracker initialization state. Fix
-this by only accessing the bitmaps if the init field is set.
+ - actions/ife.json 4e6b injects only an 0xED3E frame but matches with
+   "protocol all"; scope the filter to that ethertype.
 
-To avoid continuously re-triggering the IRQ at the end of a processing loop
-when we have a stale packet that is not timestamped, modify
-ice_ptp_tx_tstamps_pending() to ignore stale timestamps when checking for
-whether to re-arm the IRQ from the miscellaneous thread function. Instead,
-only count stale packets as part of the check in the auxiliary work thread.
-This way we do not keep spamming the IRQ when the timestamp won't be
-reported anyways.
+ - The four netdevsim "gso_skb" cases (fb6c, 1922, 476f, 0235) create $ETH
+   from within the case and bring it up immediately before installing the
+   qdiscs, so the autoconf burst overlaps the measurement. Set
+   "addrgenmode none" before the link is brought up, so the device
+   generates no link-local address and the counter holds only the injected
+   packet. IPv6 stays usable (a manually added address still works), so
+   cases that exercise IPv6 are unaffected. On a kernel without IPv6
+   (CONFIG_IPV6=n, or booted with ipv6.disable=1) the attribute is not
+   available, so the line is made non-fatal like every neighbouring setup
+   line.
 
-To ensure that forward progress is made on clearing stale timestamps, fix
-the check for ice_ptp_maybe_trigger_tx_interrupt to properly apply for
-devices that manage their own interrupt, instead of only checking on the
-clock owner. In the case of a timestamp which never completes, this does
-result in one extra IRQ every 500 msec until the timeout. In some sense
-this is extra work, but we need to recheck to ensure that timestamp slots
-do not remain locked forever, and the software can't reliably know whether
-a given index will or won't complete.
+With this change the affected cases pass 20/20, and the whole ife.json
+(51/51) and infra/qdiscs.json (48/48) suites pass, as do the protocol-ipv6
+matchall cases (filters/matchall.json 0596, 41df, 8bd2, 2a4a).
 
-Note that E810 does not have the ready bitmap in its hardware. It is
-currently excluded from the ice_ptp_maybe_trigger_tx_interrupt() by a check
-against the has_ready_bitmap field. This could lead to an interrupt stall
-if every single Tx timestamp index slot becomes stale. However, just
-removing the check against has_ready_bitmap would be problematic for the
-low latency path which currently is not protected against another IRQ
-happening while a request is outstanding. That is a pre-existing issue, but
-we should avoid making it worse until the path can be addressed by another
-fix. The low latency path also completely bypasses the
-ice_ptp_process_tx_tstamp() flow. For now, skip the
-ice_ptp_maybe_trigger_tx_interrupt() when ts_ll_int_read is set and the low
-latency path is in use. The path still has preexisting issues but this
-avoids making it worse.
-
-This effectively reverts commit fcc2cef37fed ("ice/ptp: fix the PTP worker
-retrying indefinitely if the link went down"), which tried to release an
-index before this 2 second wait period.
-
-Fixes: fcc2cef37fed ("ice/ptp: fix the PTP worker retrying indefinitely if the link went down")
-Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c   |  2 +-
- drivers/net/ethernet/intel/ice/ice_ptp.c    | 56 ++++++++++-----------
- drivers/net/ethernet/intel/ice/ice_ptp.h    |  8 ++-
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c |  4 +-
- 4 files changed, 37 insertions(+), 33 deletions(-)
+ tools/testing/selftests/tc-testing/tc-tests/actions/ife.json  | 2 +-
+ tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json | 4 ++++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index b4ee2cf7cd70..b48b9c455166 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3248,7 +3248,7 @@ static irqreturn_t ice_misc_intr_thread_fn(int __always_unused irq, void *data)
- 	ice_irq_dynamic_ena(hw, NULL, NULL);
- 	ice_flush(hw);
- 
--	if (ice_ptp_tx_tstamps_pending(pf)) {
-+	if (ice_ptp_tx_tstamps_pending(pf, true)) {
- 		/* If any new Tx timestamps happened while in interrupt,
- 		 * re-arm the interrupt to trigger it again.
- 		 */
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index ca581490f3ed..57141e94c570 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -365,9 +365,12 @@ static u64 ice_ptp_extend_40b_ts(struct ice_pf *pf, u64 in_tstamp)
- static bool
- ice_ptp_is_tx_tracker_up(struct ice_ptp_tx *tx)
- {
-+	struct ice_ptp_port *ptp_port =
-+		container_of(tx, struct ice_ptp_port, tx);
-+
- 	lockdep_assert_held(&tx->lock);
- 
--	return tx->init && !tx->calibrating;
-+	return tx->init && !tx->calibrating && READ_ONCE(ptp_port->link_up);
- }
- 
- /**
-@@ -564,7 +567,6 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
- 	struct ice_pf *pf;
- 	struct ice_hw *hw;
- 	u64 tstamp_ready;
--	bool link_up;
- 	int err;
- 	u8 idx;
- 
-@@ -582,14 +584,11 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
- 			return;
- 	}
- 
--	/* Drop packets if the link went down */
--	link_up = READ_ONCE(ptp_port->link_up);
--
- 	for_each_set_bit(idx, tx->in_use, tx->len) {
- 		struct skb_shared_hwtstamps shhwtstamps = {};
- 		u8 phy_idx = idx + tx->offset;
- 		u64 raw_tstamp = 0, tstamp;
--		bool drop_ts = !link_up;
-+		bool drop_ts = false;
- 		struct sk_buff *skb;
- 
- 		/* Paired with smp_mb__before_atomic() in ice_ptp_request_ts()
-@@ -1432,6 +1431,9 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
- 
- 	WRITE_ONCE(ptp_port->link_up, linkup);
- 
-+	if (!linkup)
-+		ice_ptp_mark_tx_tracker_stale(&ptp_port->tx);
-+
- 	if (pf->ptp.state != ICE_PTP_READY || pf->hw.reset_ongoing)
- 		goto out_unlock;
- 
-@@ -2829,21 +2831,22 @@ void ice_ptp_process_ts(struct ice_pf *pf)
- 	}
- }
- 
--static bool ice_port_has_timestamps(struct ice_ptp_tx *tx)
-+static bool ice_port_has_timestamps(struct ice_ptp_tx *tx, bool in_irq)
- {
--	bool more_timestamps;
-+	DECLARE_BITMAP(tstamps, INDEX_PER_PORT_MAX) = {};
- 
- 	scoped_guard(spinlock_irqsave, &tx->lock) {
- 		if (!tx->init)
- 			return false;
- 
--		more_timestamps = !bitmap_empty(tx->in_use, tx->len);
-+		if (in_irq)
-+			return bitmap_andnot(tstamps, tx->in_use, tx->stale, tx->len);
-+		else
-+			return !bitmap_empty(tx->in_use, tx->len);
- 	}
--
--	return more_timestamps;
- }
- 
--static bool ice_any_port_has_timestamps(struct ice_pf *pf)
-+static bool ice_any_port_has_timestamps(struct ice_pf *pf, bool in_irq)
- {
- 	struct ice_port_list *ports = &pf->adapter->ports;
- 	bool have_tstamps = false;
-@@ -2856,7 +2859,7 @@ static bool ice_any_port_has_timestamps(struct ice_pf *pf)
- 		if (!kref_get_unless_zero(&port->ref))
- 			continue;
- 
--		if (ice_port_has_timestamps(&port->tx))
-+		if (ice_port_has_timestamps(&port->tx, in_irq))
- 			have_tstamps = true;
- 
- 		kref_put(&port->ref, ice_ptp_release_port_srcu);
-@@ -2869,7 +2872,7 @@ static bool ice_any_port_has_timestamps(struct ice_pf *pf)
- 	return have_tstamps;
- }
- 
--bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
-+bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq)
- {
- 	struct ice_hw *hw = &pf->hw;
- 	int ret;
-@@ -2879,11 +2882,11 @@ bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
- 	case ICE_PTP_TX_INTERRUPT_NONE:
- 		return false;
- 	case ICE_PTP_TX_INTERRUPT_SELF:
--		if (ice_port_has_timestamps(&pf->ptp.port.tx))
-+		if (ice_port_has_timestamps(&pf->ptp.port.tx, in_irq))
- 			return true;
- 		break;
- 	case ICE_PTP_TX_INTERRUPT_ALL:
--		if (ice_any_port_has_timestamps(pf))
-+		if (ice_any_port_has_timestamps(pf, in_irq))
- 			return true;
- 		break;
- 	default:
-@@ -2959,7 +2962,7 @@ irqreturn_t ice_ptp_ts_irq(struct ice_pf *pf)
- 		/* E830 can read timestamps in the top half using rd32() */
- 		ice_ptp_process_ts(pf);
- 
--		if (ice_ptp_tx_tstamps_pending(pf)) {
-+		if (ice_ptp_tx_tstamps_pending(pf, true)) {
- 			/* Process outstanding Tx timestamps. If there
- 			 * is more work, re-arm the interrupt to trigger again.
- 			 */
-@@ -2981,27 +2984,24 @@ irqreturn_t ice_ptp_ts_irq(struct ice_pf *pf)
-  * current timestamp data is read. In rare circumstances, it is possible that
-  * the driver fails to read all outstanding data.
-  *
-- * To avoid getting permanently stuck, periodically check if the PHY has
-- * outstanding timestamp data. If so, trigger an interrupt from software to
-- * process this data.
-+ * To avoid getting permanently stuck, periodically check if there is any
-+ * outstanding timestamps or if the PHY has marked any index as ready. If so,
-+ * trigger an interrupt from software to process this data.
-  */
- static void ice_ptp_maybe_trigger_tx_interrupt(struct ice_pf *pf)
- {
- 	struct device *dev = ice_pf_to_dev(pf);
- 	struct ice_hw *hw = &pf->hw;
--	int ret;
- 
--	if (!pf->ptp.port.tx.has_ready_bitmap)
-+	/* Avoid re-triggering OICR on E810 with low latency interrupt path */
-+	if (hw->dev_caps.ts_dev_info.ts_ll_int_read)
- 		return;
- 
--	if (!ice_pf_src_tmr_owned(pf))
-+	if (pf->ptp.tx_interrupt_mode != ICE_PTP_TX_INTERRUPT_SELF &&
-+	    !ice_pf_src_tmr_owned(pf))
- 		return;
- 
--	ret = ice_check_phy_tx_tstamp_ready(hw);
--	if (ret < 0) {
--		dev_dbg(dev, "PTP periodic task unable to read PHY timestamp ready bitmap, err %d\n",
--			ret);
--	} else if (ret) {
-+	if (ice_ptp_tx_tstamps_pending(pf, false)) {
- 		dev_dbg(dev, "PTP periodic task detected waiting timestamps. Triggering Tx timestamp interrupt now.\n");
- 
- 		wr32(hw, PFINT_OICR, PFINT_OICR_TSYN_TX_M);
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-index 029ee4612d76..7810fefc546e 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-@@ -132,6 +132,9 @@ struct ice_ptp_tx {
- #define INDEX_PER_PORT_E82X		16
- #define INDEX_PER_PORT			64
- 
-+/* Maximum number of timestamp indexes across all devices */
-+#define INDEX_PER_PORT_MAX              INDEX_PER_PORT
-+
- /**
-  * struct ice_ptp_port - data used to initialize an external port for PTP
-  *
-@@ -314,7 +317,7 @@ void ice_ptp_req_tx_single_tstamp(struct ice_ptp_tx *tx, u8 idx);
- void ice_ptp_complete_tx_single_tstamp(struct ice_ptp_tx *tx);
- void ice_ptp_process_ts(struct ice_pf *pf);
- irqreturn_t ice_ptp_ts_irq(struct ice_pf *pf);
--bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf);
-+bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq);
- u64 ice_ptp_read_src_clk_reg(struct ice_pf *pf,
- 			     struct ptp_system_timestamp *sts);
- 
-@@ -362,7 +365,8 @@ static inline irqreturn_t ice_ptp_ts_irq(struct ice_pf *pf)
- 	return IRQ_HANDLED;
- }
- 
--static inline bool ice_ptp_tx_tstamps_pending(struct ice_pf *pf)
-+static inline bool
-+ice_ptp_tx_tstamps_pending(struct ice_pf *pf, bool in_irq)
- {
- 	return false;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index 51442b26516e..bd14aa3a77f6 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -5001,8 +5001,8 @@ ice_get_phy_tx_tstamp_ready_e810(struct ice_hw *hw, u8 port, u64 *tstamp_ready)
-  * The E810 devices do not have a Tx memory status register. Note this is
-  * intentionally different behavior from ice_get_phy_tx_tstamp_ready_e810
-  * which always says that all bits are ready. This function is called in cases
-- * where code will trigger interrupts if timestamps are waiting, and should
-- * not be called for E810 hardware.
-+ * where code will trigger interrupts if timestamps are waiting, and which
-+ * should not trigger for E810.
-  *
-  * Return: 0.
-  */
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/actions/ife.json b/tools/testing/selftests/tc-testing/tc-tests/actions/ife.json
+index ece7ec41bf99..135e9fdc6e02 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/actions/ife.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/actions/ife.json
+@@ -1408,7 +1408,7 @@
+                 "packet": "Ether(type=0xED3E) / Raw(b'\\x00\\x02\\xaa')"
+             }
+         ],
+-        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol all matchall action ife decode pipe index 10",
++        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol 0xED3E matchall action ife decode pipe index 10",
+         "expExitCode": "0",
+         "verifyCmd": "$TC -s -j actions get action ife index 10",
+         "matchJSON": [
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+index 0cf12c50fb74..556a1dda1047 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/infra/qdiscs.json
+@@ -1555,6 +1555,7 @@
+         },
+         "setup": [
+             "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$IP link set dev $ETH addrgenmode none || true",
+             "$IP link set dev $ETH up || true",
+             "$IP l set addr 01:02:03:04:05:06 dev $ETH || true",
+             "$IP n add dev $ETH 10.10.11.1 lladdr 01:02:03:04:05:06 dev $ETH || true",
+@@ -1598,6 +1599,7 @@
+         },
+         "setup": [
+             "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$IP link set dev $ETH addrgenmode none || true",
+             "$IP link set dev $ETH up || true",
+             "$IP l set addr 01:02:03:04:05:06 dev $ETH || true",
+             "$IP n add dev $ETH 10.10.11.1 lladdr 01:02:03:04:05:06 dev $ETH || true",
+@@ -1640,6 +1642,7 @@
+         },
+         "setup": [
+             "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$IP link set dev $ETH addrgenmode none || true",
+             "$IP link set dev $ETH up || true",
+             "$IP l set addr 01:02:03:04:05:06 dev $ETH || true",
+             "$IP n add dev $ETH 10.10.11.1 lladdr 01:02:03:04:05:06 dev $ETH || true",
+@@ -1680,6 +1683,7 @@
+         },
+         "setup": [
+             "echo \"1 1 4\" > /sys/bus/netdevsim/new_device",
++            "$IP link set dev $ETH addrgenmode none || true",
+             "$IP link set dev $ETH up || true",
+             "$IP l set addr 01:02:03:04:05:06 dev $ETH || true",
+             "$IP n add dev $ETH 10.10.11.1 lladdr 01:02:03:04:05:06 dev $ETH || true",
 -- 
-2.47.1
+2.43.0
 
