@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159EA54CF4D
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 18:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FA0568FAE
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 18:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792090537; cv=none; b=Dw9XVSUYiAz/GyRKKJMmqAuFJESpYvwGdH9cwdkQv8SBNsUkut2kpF9ZGR/8yfOt059FX81MzblmZzd43q6PTofgBsjMiXg3korfSBc274vWsZAZ4XDtunN2RnGJf276KZA/4OtwKQxJYTkpvbMIF8O+nkLUZDorUQTZFxFwmJI=
+	t=1792090541; cv=none; b=KIbDD4xof9jCqvE3rlq6G9UaaIIkoYtyQvYZj6IdOrkcap8DDQp7ryKAT2M9hZtbkKz1f+zXx8MuLdlWEqrNcXv5j9J2mMZDpXUHqv3G0ze52RYyJIpRj2Ew2GRSv+IYCP4MXrFrZSvw9RLX9uhfzlNMscCAyuS47XsGWRVaws0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792090537; c=relaxed/simple;
-	bh=oHuMdYh+GySGDy2uAZ1rObRHg3aFPys/CcnmHX6irl4=;
+	s=arc-20240116; t=1792090541; c=relaxed/simple;
+	bh=RG1SwPGWFGqPnGDKptI3PY64nF94VTae+e07ogWdYRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZgywWkcAS5OkYH1P16s0j2QfnAWfcodrj+CG9afwbmmw2zynxNU0KvlUWHIkNRIrQkvE83UpkJWKPoqsbTYO3aC8Wtrhn1E37Zxbh4NtANuf2a/aAffwmsOOtSjO3L2KK0PCk4S6/sNgf76HorZRrsDA5gDJkLex8v+kQ1Z/ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iUnrUbMl; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=D/DvxQtvUQtL3LSwdZZtBD86cSU2qh9K4zBDmIqFiJDXiaAzeNS/cfwiSpQl/qhUozlu9y0Rejc+AvOm66uDDLDP283+tVjl6eVrCq76WRwBiGoREJcJCkDaRsaNRI0r/+4++zzRbpupvqCYghqFkdNZMH2DFgcFXiYX8BHsbUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hKfNK/g8; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iUnrUbMl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hKfNK/g8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792090532; x=1823626532;
+  t=1792090538; x=1823626538;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oHuMdYh+GySGDy2uAZ1rObRHg3aFPys/CcnmHX6irl4=;
-  b=iUnrUbMlZWpqVY2jwPoe+j9+d0k8AxQ79HlbRbH53DQwrFilA+oozS3y
-   ha8qX9uwl3WaX1AlQIa7r5ZmE+XleuyrxjZU1XF140FzgJw/RKYlmGuKu
-   BESpt76AD+kML/1FXolq+nQfIgw55Y6hN6UGpLf8zOkDjjiHGMlaSolK/
-   gtlk7W8FzVNkzFZsk1A34RpJHkPJUGG7rS/7cw+w6OJJ1tvC9wbw9e6W2
-   bGJbdI0aQLjDv1ovUSxP3lnMLtyTahMKkVVIVbmq83bntUxN4OrOzxAuS
-   hyARmTyTjFrecHArQJd5Kb4aWDivbpvv82g7XVwYWDhyb4O1km8bQZbHc
-   w==;
-X-CSE-ConnectionGUID: YkiHUq5SSuWVjnfCm9wPUA==
-X-CSE-MsgGUID: 0MVTHSeGROCwXeB4bNa+Dg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="757994"
+  bh=RG1SwPGWFGqPnGDKptI3PY64nF94VTae+e07ogWdYRQ=;
+  b=hKfNK/g8BMTXtk8mbWVFRlJLcDThUarP967c7/FCpAV2uRg6Qc7R7Jpr
+   +fX/z35DIxruiKySQyXxyeyXGjLKX0j+KBjSn6kxtvGnKPtBhXdoq4gL5
+   uWh1aRIB4wMkJ0xIJU/M5LdIqoAJBiFP8rrhnb5o+Ld3edR7NpV8O/m8I
+   8S4xJtONeJ8GDGpC22ahCGbAsBVe9bSO4rA8Da3egv4kYK29HZyHyHw/I
+   dIpXSM9Icj4yTqNulLNhTIiZESSvX5SEFaUDH5xaSaoH5Pi9a7VBeYGTI
+   +oTEIQdhZKxUG9noO8FTqLiKUvU04VxL7ikUjd0HsdyrsqBq3tlvX0sLD
+   g==;
+X-CSE-ConnectionGUID: fv5c2A7CTuuIfiQsFmavhg==
+X-CSE-MsgGUID: XyDT+d+xRNyfaNnEDGJ+4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="758032"
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="757994"
+   d="scan'208";a="758032"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 11:55:23 -0700
-X-CSE-ConnectionGUID: Ys+kCz8IT8iUk+XqR4dnGQ==
-X-CSE-MsgGUID: T1F+j+q+SfC4Ea9GlPjaAw==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 11:55:29 -0700
+X-CSE-ConnectionGUID: k2Y7CvscR5aMJIJSeVnAfw==
+X-CSE-MsgGUID: 8c/LtOSFQZKPf0a4WzQ8Mg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="2003155"
+   d="scan'208";a="2003167"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa001.fm.intel.com with ESMTP; 15 Oct 2026 11:55:18 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 15 Oct 2026 11:55:23 -0700
 Received: from pkitszel-desk.tendawifi.com (unknown [10.245.244.208])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id CAA9832EC4;
-	Thu, 15 Oct 2026 19:55:15 +0100 (IST)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 7817532EC3;
+	Thu, 15 Oct 2026 19:55:21 +0100 (IST)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: netdev@vger.kernel.org
 Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
@@ -72,9 +72,9 @@ Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	jtornosm@redhat.com,
 	ohartoov@nvidia.com,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net-next v3 06/15] ice: bump to 256qs for VF
-Date: Thu, 15 Oct 2026 20:51:17 +0200
-Message-ID: <20261015185454.6332-7-przemyslaw.kitszel@intel.com>
+Subject: [PATCH net-next v3 09/15] iavf: increase max number of queues to 256
+Date: Thu, 15 Oct 2026 20:51:20 +0200
+Message-ID: <20261015185454.6332-10-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20261015185454.6332-1-przemyslaw.kitszel@intel.com>
 References: <20261015185454.6332-1-przemyslaw.kitszel@intel.com>
@@ -86,281 +86,127 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Adjust all bitmaps and arrays in ice to accept 256 VF queues.
-Extend struct ice_vf::num_req_qs width to allow 256 queues.
-Keep old/legacy size for virtchnl opcodes that were designed to accept
-only up to 16 queues.
-
-Raise also the limits for the default VF queue count and for
-VIRTCHNL_OP_REQUEST_QUEUES to 256. New virtchnl opcodes, needed to
-make use of more than 16 queues, are handled by subsequent commits
-of this series, the work is split for easier review.
+Increase the max number of queues that driver will handle to 256.
+Use old legacy limit in the virtchnl handling of iavf_map_queues().
 
 Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 ---
-v3:
- * fix rollback in ice_vc_cfg_qs_msg() to disable queues by their IDs,
-   not by qpair index, as config could be now split into many messages;
-   unwind only the entries that got past validation (Sashiko)
-
 v2:
- * change ice_lag allocations to kvzalloc(), as they have grown to
-   66KB (Sashiko)
- * commit message: mention that the default and requested VF queue
-   limits are raised already here, while more than 16 queues are
-   enabled by subsequent commits
-
-Sashiko suggestions I don't want to apply:
- S: there is an existing error handling issue in ice_init_lag()
- me: pre-existing and unrelated, will be fixed separately
+ * change iavf_q_vector::num_ringpairs to u16 (Sashiko)
+ * drop the stale "_i=0...15" range from IAVF_Q{R,T}X_TAIL1()
 ---
- drivers/net/ethernet/intel/ice/ice_lag.h     |  2 +-
- drivers/net/ethernet/intel/ice/ice_vf_lib.h  |  9 ++++---
- drivers/net/ethernet/intel/ice/ice_lag.c     |  6 ++---
- drivers/net/ethernet/intel/ice/ice_lib.c     |  2 +-
- drivers/net/ethernet/intel/ice/ice_sriov.c   |  4 +--
- drivers/net/ethernet/intel/ice/ice_vf_lib.c  |  8 +++---
- drivers/net/ethernet/intel/ice/virt/queues.c | 28 +++++++++++---------
- 7 files changed, 31 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h          |  6 ++++--
+ drivers/net/ethernet/intel/iavf/iavf_register.h |  4 ++--
+ drivers/net/ethernet/intel/iavf/iavf_main.c     |  4 ++--
+ drivers/net/ethernet/intel/iavf/iavf_virtchnl.c | 15 ++++++++-------
+ 4 files changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.h b/drivers/net/ethernet/intel/ice/ice_lag.h
-index 4bfffecbdc97..39f6a6cc844d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.h
-@@ -52,7 +52,7 @@ struct ice_lag {
- 	u8 bond_lport_sec; /* lport values for secondary PF */
- 
- 	/* q_home keeps track of which interface the q is currently on */
--	u8 q_home[ICE_MAX_SRIOV_VFS][ICE_MAX_QS_PER_VF_VCV1];
-+	u8 q_home[ICE_MAX_SRIOV_VFS][ICE_MAX_QS_PER_VF];
- 
- 	/* placeholder VSI for hanging VF queues from on secondary interface */
- 	struct ice_vsi *sec_vf[ICE_MAX_SRIOV_VFS];
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-index 4959ecee0c21..a9e95c85bc98 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
-@@ -21,6 +21,7 @@
- /* VF resource constraints */
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 94ee18058115..47236d5f3961 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -87,8 +87,10 @@ struct iavf_vsi {
+ #define IAVF_TX_DESC(R, i) (&(((struct iavf_tx_desc *)((R)->desc))[i]))
+ #define IAVF_TX_CTXTDESC(R, i) \
+ 	(&(((struct iavf_tx_context_desc *)((R)->desc))[i]))
++
  /* for "old" virtchnl opcodes that accept up to 16 queues */
- #define ICE_MAX_QS_PER_VF_VCV1	16
-+#define ICE_MAX_QS_PER_VF	256
+ #define IAVF_MAX_REQ_QUEUES_VCV1	16
++#define IAVF_MAX_REQ_QUEUES		256
  
- struct ice_pf;
- struct ice_vf;
-@@ -162,8 +163,8 @@ struct ice_vf {
- 	u8 dev_lan_addr[ETH_ALEN];
- 	u8 hw_lan_addr[ETH_ALEN];
- 	struct ice_time_mac legacy_last_added_umac;
--	DECLARE_BITMAP(txq_ena, ICE_MAX_QS_PER_VF_VCV1);
--	DECLARE_BITMAP(rxq_ena, ICE_MAX_QS_PER_VF_VCV1);
-+	DECLARE_BITMAP(txq_ena, ICE_MAX_QS_PER_VF);
-+	DECLARE_BITMAP(rxq_ena, ICE_MAX_QS_PER_VF);
- 	struct ice_vlan port_vlan_info;	/* Port VLAN ID, QoS, and TPID */
- 	struct virtchnl_vlan_caps vlan_v2_caps;
- 	struct ice_mbx_vf_info mbx_info;
-@@ -185,7 +186,7 @@ struct ice_vf {
- 	DECLARE_BITMAP(vf_states, ICE_VF_STATES_NBITS);	/* VF runtime states */
+ #define IAVF_HKEY_ARRAY_SIZE ((IAVF_VFQF_HKEY_MAX_INDEX + 1) * 4)
+ #define IAVF_HLUT_ARRAY_SIZE ((IAVF_VFQF_HLUT_MAX_INDEX + 1) * 4)
+@@ -108,9 +110,9 @@ struct iavf_q_vector {
+ 	struct napi_struct napi;
+ 	struct iavf_ring_container rx;
+ 	struct iavf_ring_container tx;
+-	u32 ring_mask;
++	DECLARE_BITMAP(ring_mask, IAVF_MAX_REQ_QUEUES);
+ 	u8 itr_countdown;	/* when 0 should adjust adaptive ITR */
+-	u8 num_ringpairs;	/* total number of ring pairs in vector */
++	u16 num_ringpairs;	/* total number of ring pairs in vector */
+ 	u16 v_idx;		/* index in the vsi->q_vector array. */
+ 	u16 reg_idx;		/* register index of the interrupt */
+ 	char name[IFNAMSIZ + 15];
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_register.h b/drivers/net/ethernet/intel/iavf/iavf_register.h
+index a19e88898a0b..11043e330de8 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_register.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_register.h
+@@ -56,8 +56,8 @@
+ #define IAVF_VFINT_ICR0_ENA1_RSVD_SHIFT 31
+ #define IAVF_VFINT_ICR01 0x00004800 /* Reset: CORER */
+ #define IAVF_VFINT_ITRN1(_i, _INTVF) (0x00002800 + ((_i) * 64 + (_INTVF) * 4)) /* _i=0...2, _INTVF=0...15 */ /* Reset: VFR */
+-#define IAVF_QRX_TAIL1(_Q) (0x00002000 + ((_Q) * 4)) /* _i=0...15 */ /* Reset: CORER */
+-#define IAVF_QTX_TAIL1(_Q) (0x00000000 + ((_Q) * 4)) /* _i=0...15 */ /* Reset: PFR */
++#define IAVF_QRX_TAIL1(_Q) (0x00002000 + ((_Q) * 4)) /* Reset: CORER */
++#define IAVF_QTX_TAIL1(_Q) (0x00000000 + ((_Q) * 4)) /* Reset: PFR */
+ #define IAVF_VFQF_HENA(_i) (0x0000C400 + ((_i) * 4)) /* _i=0...1 */ /* Reset: CORER */
+ #define IAVF_VFQF_HKEY(_i) (0x0000CC00 + ((_i) * 4)) /* _i=0...12 */ /* Reset: CORER */
+ #define IAVF_VFQF_HKEY_MAX_INDEX 12
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index bb239e99e450..8059e855dc09 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -439,7 +439,7 @@ iavf_map_vector_to_rxq(struct iavf_adapter *adapter, int v_idx, int r_idx)
+ 	q_vector->rx.count++;
+ 	q_vector->rx.next_update = jiffies + 1;
+ 	q_vector->rx.target_itr = ITR_TO_REG(rx_ring->itr_setting);
+-	q_vector->ring_mask |= BIT(r_idx);
++	set_bit(r_idx, q_vector->ring_mask);
+ 	wr32(hw, IAVF_VFINT_ITRN1(IAVF_RX_ITR, q_vector->reg_idx),
+ 	     q_vector->rx.current_itr >> 1);
+ 	q_vector->rx.current_itr = q_vector->rx.target_itr;
+@@ -5370,7 +5370,7 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	pci_set_master(pdev);
  
- 	unsigned long vf_caps;		/* VF's adv. capabilities */
--	u8 num_req_qs;			/* num of queue pairs requested by VF */
-+	u16 num_req_qs;			/* num of queue pairs requested by VF */
- 	u16 num_mac;
- 	u16 num_mac_lldp;
- 	u16 num_vf_qs;			/* num of queue configured per VF */
-@@ -206,7 +207,7 @@ struct ice_vf {
- 	u16 lldp_recipe_id;
- 	u16 lldp_rule_id;
- 
--	struct ice_vf_qs_bw qs_bw[ICE_MAX_QS_PER_VF_VCV1];
-+	struct ice_vf_qs_bw qs_bw[ICE_MAX_QS_PER_VF];
- };
- 
- /* Flags for controlling behavior of ice_reset_vf */
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 08a17ded0ad5..e006311c18b6 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -2577,7 +2577,7 @@ int ice_init_lag(struct ice_pf *pf)
- 	if (!ice_is_feature_supported(pf, ICE_F_SRIOV_LAG))
- 		return 0;
- 
--	pf->lag = kzalloc_obj(*lag);
-+	pf->lag = kvzalloc_obj(*lag);
- 	if (!pf->lag)
- 		return -ENOMEM;
- 	lag = pf->lag;
-@@ -2651,7 +2651,7 @@ int ice_init_lag(struct ice_pf *pf)
- 	ice_free_hw_res(&pf->hw, ICE_AQC_RES_TYPE_RECIPE, 1,
- 			&lag->pf_recipe);
- lag_error:
--	kfree(lag);
-+	kvfree(lag);
- 	pf->lag = NULL;
- 	return err;
- }
-@@ -2680,7 +2680,7 @@ void ice_deinit_lag(struct ice_pf *pf)
- 	ice_free_hw_res(&pf->hw, ICE_AQC_RES_TYPE_RECIPE, 1,
- 			&pf->lag->lport_recipe);
- 
--	kfree(lag);
-+	kvfree(lag);
- 
- 	pf->lag = NULL;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index e18128bce959..f81b310a98c3 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -1026,7 +1026,7 @@ static void ice_vsi_set_rss_params(struct ice_vsi *vsi)
- 		 * For VSI_LUT, LUT size should be set to 64 bytes.
- 		 */
- 		vsi->rss_table_size = ICE_LUT_VSI_SIZE;
--		vsi->rss_size = ICE_MAX_QS_PER_VF_VCV1;
-+		vsi->rss_size = ICE_MAX_QS_PER_VF;
- 		vsi->rss_lut_type = ICE_LUT_VSI;
- 		break;
- 	case ICE_VSI_LB:
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index dcd6d48ea38d..d7c4a6540008 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -398,15 +398,15 @@ static int ice_set_per_vf_res(struct ice_pf *pf, u16 num_vfs)
- 	}
- 
- 	num_txq = min_t(u16, num_msix_per_vf - ICE_NONQ_VECS_VF,
--			ICE_MAX_QS_PER_VF_VCV1);
-+			ICE_MAX_QS_PER_VF);
- 	avail_qs = ice_get_avail_txq_count(pf) / num_vfs;
- 	if (!avail_qs)
- 		num_txq = 0;
- 	else if (num_txq > avail_qs)
- 		num_txq = rounddown_pow_of_two(avail_qs);
- 
- 	num_rxq = min_t(u16, num_msix_per_vf - ICE_NONQ_VECS_VF,
--			ICE_MAX_QS_PER_VF_VCV1);
-+			ICE_MAX_QS_PER_VF);
- 	avail_qs = ice_get_avail_rxq_count(pf) / num_vfs;
- 	if (!avail_qs)
- 		num_rxq = 0;
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index be87a83d2599..320b393ddaaf 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -528,8 +528,8 @@ static void ice_vf_rebuild_host_cfg(struct ice_vf *vf)
- static void ice_set_vf_state_qs_dis(struct ice_vf *vf)
+ 	netdev = alloc_etherdev_mq(sizeof(struct iavf_adapter),
+-				   IAVF_MAX_REQ_QUEUES_VCV1);
++				   IAVF_MAX_REQ_QUEUES);
+ 	if (!netdev) {
+ 		err = -ENOMEM;
+ 		goto err_alloc_etherdev;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+index 630a551c7566..3b9545d2c021 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
+@@ -268,19 +268,19 @@ int iavf_send_vf_ptp_caps_msg(struct iavf_adapter *adapter)
+  **/
+ static void iavf_validate_num_queues(struct iavf_adapter *adapter)
  {
- 	/* Clear Rx/Tx enabled queues flag */
--	bitmap_zero(vf->txq_ena, ICE_MAX_QS_PER_VF_VCV1);
--	bitmap_zero(vf->rxq_ena, ICE_MAX_QS_PER_VF_VCV1);
-+	bitmap_zero(vf->txq_ena, ICE_MAX_QS_PER_VF);
-+	bitmap_zero(vf->rxq_ena, ICE_MAX_QS_PER_VF);
- 	clear_bit(ICE_VF_STATE_QS_ENA, vf->vf_states);
- }
+-	if (adapter->vf_res->num_queue_pairs > IAVF_MAX_REQ_QUEUES_VCV1) {
++	if (adapter->vf_res->num_queue_pairs > IAVF_MAX_REQ_QUEUES) {
+ 		struct virtchnl_vsi_resource *vsi_res;
+ 		int i;
  
-@@ -1243,8 +1243,8 @@ bool ice_is_vf_trusted(struct ice_vf *vf)
-  */
- bool ice_vf_has_no_qs_ena(struct ice_vf *vf)
- {
--	return bitmap_empty(vf->rxq_ena, ICE_MAX_QS_PER_VF_VCV1) &&
--	       bitmap_empty(vf->txq_ena, ICE_MAX_QS_PER_VF_VCV1);
-+	return bitmap_empty(vf->rxq_ena, ICE_MAX_QS_PER_VF) &&
-+	       bitmap_empty(vf->txq_ena, ICE_MAX_QS_PER_VF);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/virt/queues.c b/drivers/net/ethernet/intel/ice/virt/queues.c
-index 2667634e3c8c..7f2b459dbc83 100644
---- a/drivers/net/ethernet/intel/ice/virt/queues.c
-+++ b/drivers/net/ethernet/intel/ice/virt/queues.c
-@@ -681,7 +681,7 @@ int ice_vc_cfg_q_bw(struct ice_vf *vf, u8 *msg)
- 		goto err;
- 	}
- 
--	if (qbw->num_queues > ICE_MAX_QS_PER_VF_VCV1 ||
-+	if (qbw->num_queues > ICE_MAX_QS_PER_VF ||
- 	    qbw->num_queues > min_t(u16, vsi->alloc_txq, vsi->alloc_rxq)) {
- 		dev_err(ice_pf_to_dev(vf->pf), "VF-%d trying to configure more than allocated number of queues: %d\n",
- 			vf->vf_id, min_t(u16, vsi->alloc_txq, vsi->alloc_rxq));
-@@ -773,7 +773,7 @@ int ice_vc_cfg_q_quanta(struct ice_vf *vf, u8 *msg)
- 		goto err;
- 	}
- 
--	if (end_qid > ICE_MAX_QS_PER_VF_VCV1 ||
-+	if (end_qid > ICE_MAX_QS_PER_VF ||
- 	    end_qid > min_t(u16, vsi->alloc_txq, vsi->alloc_rxq)) {
- 		dev_err(ice_pf_to_dev(vf->pf), "VF-%d trying to configure more than allocated number of queues: %d\n",
- 			vf->vf_id, min_t(u16, vsi->alloc_txq, vsi->alloc_rxq));
-@@ -822,9 +822,9 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 	struct virtchnl_vsi_queue_config_info *qci =
- 	    (struct virtchnl_vsi_queue_config_info *)msg;
- 	struct virtchnl_queue_pair_info *qpi;
-+	int i, q_idx, last_valid = -1;
- 	struct ice_pf *pf = vf->pf;
- 	struct ice_vsi *vsi;
--	int i = -1, q_idx;
- 	bool ena_ts;
- 	u8 act_prt;
- 
-@@ -841,7 +841,7 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 	if (!vsi)
- 		goto error_param;
- 
--	if (qci->num_queue_pairs > ICE_MAX_QS_PER_VF_VCV1 ||
-+	if (qci->num_queue_pairs > ICE_MAX_QS_PER_VF ||
- 	    qci->num_queue_pairs > min_t(u16, vsi->alloc_txq, vsi->alloc_rxq)) {
- 		dev_err(ice_pf_to_dev(pf), "VF-%d requesting more than supported number of queues: %d\n",
- 			vf->vf_id, min_t(u16, vsi->alloc_txq, vsi->alloc_rxq));
-@@ -877,6 +877,7 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 		if (q_idx >= vsi->alloc_txq || q_idx >= vsi->alloc_rxq) {
- 			goto error_param;
+ 		dev_info(&adapter->pdev->dev, "Received %d queues, but can only have a max of %d\n",
+ 			 adapter->vf_res->num_queue_pairs,
+-			 IAVF_MAX_REQ_QUEUES_VCV1);
++			 IAVF_MAX_REQ_QUEUES);
+ 		dev_info(&adapter->pdev->dev, "Fixing by reducing queues to %d\n",
+-			 IAVF_MAX_REQ_QUEUES_VCV1);
+-		adapter->vf_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES_VCV1;
++			 IAVF_MAX_REQ_QUEUES);
++		adapter->vf_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES;
+ 		for (i = 0; i < adapter->vf_res->num_vsis; i++) {
+ 			vsi_res = &adapter->vf_res->vsi_res[i];
+-			vsi_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES_VCV1;
++			vsi_res->num_queue_pairs = IAVF_MAX_REQ_QUEUES;
  		}
-+		last_valid = i;
- 
- 		/* copy Tx queue info from VF into VSI */
- 		if (qpi->txq.ring_len > 0) {
-@@ -967,13 +968,14 @@ int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 				     VIRTCHNL_STATUS_SUCCESS, NULL, 0);
- error_param:
- 	/* disable whatever we can */
--	for (; i >= 0; i--) {
--		if (ice_vsi_ctrl_one_rx_ring(vsi, false, i, true))
-+	for (; last_valid >= 0; last_valid--) {
-+		q_idx = qci->qpair[last_valid].rxq.queue_id;
-+		if (ice_vsi_ctrl_one_rx_ring(vsi, false, q_idx, true))
- 			dev_err(ice_pf_to_dev(pf), "VF-%d could not disable RX queue %d\n",
--				vf->vf_id, i);
--		if (ice_vf_vsi_dis_single_txq(vf, vsi, i))
-+				vf->vf_id, q_idx);
-+		if (ice_vf_vsi_dis_single_txq(vf, vsi, q_idx))
- 			dev_err(ice_pf_to_dev(pf), "VF-%d could not disable TX queue %d\n",
--				vf->vf_id, i);
-+				vf->vf_id, q_idx);
  	}
+ }
+@@ -583,8 +583,9 @@ void iavf_map_queues(struct iavf_adapter *adapter)
  
- 	ice_lag_complete_vf_reset(pf->lag, act_prt);
-@@ -1019,16 +1021,16 @@ int ice_vc_request_qs_msg(struct ice_vf *vf, u8 *msg)
- 	if (!req_queues) {
- 		dev_err(dev, "VF %d tried to request 0 queues. Ignoring.\n",
- 			vf->vf_id);
--	} else if (req_queues > ICE_MAX_QS_PER_VF_VCV1) {
-+	} else if (req_queues > ICE_MAX_QS_PER_VF) {
- 		dev_err(dev, "VF %d tried to request more than %d queues.\n",
--			vf->vf_id, ICE_MAX_QS_PER_VF_VCV1);
--		vfres->num_queue_pairs = ICE_MAX_QS_PER_VF_VCV1;
-+			vf->vf_id, ICE_MAX_QS_PER_VF);
-+		vfres->num_queue_pairs = ICE_MAX_QS_PER_VF;
- 	} else if (req_queues > cur_queues &&
- 		   req_queues - cur_queues > tx_rx_queue_left) {
- 		dev_warn(dev, "VF %d requested %u more queues, but only %u left.\n",
- 			 vf->vf_id, req_queues - cur_queues, tx_rx_queue_left);
- 		vfres->num_queue_pairs = min_t(u16, max_allowed_vf_queues,
--					       ICE_MAX_QS_PER_VF_VCV1);
-+					       ICE_MAX_QS_PER_VF);
- 	} else {
- 		/* request is successful, then reset VF */
- 		vf->num_req_qs = req_queues;
+ 		vecmap->vsi_id = adapter->vsi_res->vsi_id;
+ 		vecmap->vector_id = v_idx + NONQ_VECS;
+-		vecmap->txq_map = q_vector->ring_mask;
+-		vecmap->rxq_map = q_vector->ring_mask;
++		vecmap->txq_map = bitmap_read(q_vector->ring_mask, 0,
++					      IAVF_MAX_REQ_QUEUES_VCV1);
++		vecmap->rxq_map = vecmap->txq_map;
+ 		vecmap->rxitr_idx = IAVF_RX_ITR;
+ 		vecmap->txitr_idx = IAVF_TX_ITR;
+ 	}
 -- 
 2.51.1
 
