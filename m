@@ -1,75 +1,126 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2E44E325D;
-	Thu, 15 Oct 2026 10:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDC4509F07;
+	Thu, 15 Oct 2026 10:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792059206; cv=none; b=CdD6icpxugmIAe1XQiooN8gq/a9NSe9RyraEgfhfxJE1pLNtjg45dheiHFYHd1tHNzSUfpXqL0GbmzPhlN2akaGRPm8doCAsvQxn3NlgqGNqezD/qCDyAcKaWdZ3JN55CA750I7164CH2M0/cp1XXBCVFQUFi7O82NfMbMzixMQ=
+	t=1792059529; cv=none; b=GMMeYBVYfS+0aBuFR534FVB53BBlkusiLfj1eOx7GUmkdaDUPVeU077LhA9fbl+pjJjWFIL52qAlW+0Nk7b6b6zW6LlxpMhcf2GRGEtbzEqAV4lbCTuSKczWwItmcOgSm3ljPvHWIDLhh6MmLgCQq0eNVGW6M4pr0i2DxzJ1fE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792059206; c=relaxed/simple;
-	bh=b4+7BckYp/TslExRpb889Ix14EnhYPDMnBCNXxtB9JY=;
+	s=arc-20240116; t=1792059529; c=relaxed/simple;
+	bh=w6+oEsqpvhl9XS9dYOzM3rDSQdpihAlD4bYiXOl5b2M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rYaxYRu5HTE+vEwh40tgQ4gq9cH53/o+LbMfMvRFJyEjd9Ivg2k3fyUYhXT0L9vhLIIeL0oVgXfErOlvMsaaK151a3dfSO+sHa3fAIfe8WdCHSeg0Q52JXwS7hadd4UJIBixMlpsmdin/gzupuanK5IwTtqWPFkOkK73M6YgbgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Q8DfvsDY; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=do9GvXVHJ5HZlXKCfVZXFS7HHZlJ27nLKFxN+Dt11HIInWSLjWb+ukMRHXVaIoQmmFa5LtlF5aMK+F3O2f+b06XQLRPAe75cIybU0r0Nm+LVnNAcq5sG/PrqyxzSR3oJ9Nuy/heKZiZqK++Pezs1vT/fqFKxrOW6/iWy7YdDlHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=OdGLo44F; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Q8DfvsDY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=WAbtlqKuP69hiwARgiPCIxV+lrBvAR1z924vTs5YTXo=; b=Q8DfvsDYll5Eyone1xL5dVJQBo
-	Px63lopMx5uEVx6qTv8MIL32+9o24q7hWPvSHaNqVrAFgS99t7ZBnjMgKQXkLE5pocWUyvafejgGQ
-	ArDAPGml6vnbiExm2zQVh4DJRD5ogJ+rkfhZWX4zRZQamwm0JwK4r0bjYdDE3fe6ZA0Mp8vlTH80S
-	EByV1LaJZf/YrGnnoGes3rfqK4mnjSM15F9CyFC/fFVT6FV7JxJ1T0qOG3/eW52MQzagaAXOIyMwM
-	+yfWUVe4AwsmFFxG567OM2EGE4WHVPzu732FtCgnDghX8oaA7zibMpVf/earPL9GoilmbYSdNrufN
-	HoZBDGTA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xHISd-0057Nd-2D;
-	Thu, 15 Oct 2026 10:13:19 +0000
-Date: Thu, 15 Oct 2026 03:13:15 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/2] netconsole: remove unnecessary target
- refcounting from the netdev notifier
-Message-ID: <atCkMJcghkV7DD4S@gmail.com>
-References: <20261012-netcons-fixes-next-v2-0-ac8ec4c62edb@gmail.com>
- <20261012-netcons-fixes-next-v2-2-ac8ec4c62edb@gmail.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="OdGLo44F"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1792059523;
+	bh=kOpn0t+1OIM+cNSDkTgSrnahRd+omhH3QhXv8mIfdVk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OdGLo44FOArVKeoNSyi0TrSB8uQL00siqCx1D9PVyg28hdeM5hl43CQrsvd7fnC04
+	 6kuKcFrHGtrAZusVnRrqJ7kWQuoreBclnrFJDhvwmrBWWCLfDWM71e6hhFEImXDljP
+	 WRGyixy3AnQKDwmco6XVKgLKpjhtZuevVQOlpEaOOLEcQMkqhMVlQFR8OAdRwQi489
+	 rVvMxFyCrejt3p3Xx0LP7vdC3RMcEK5DY/+mWt9piC3U4P2ddYVlnw9BnQfgBuGWIZ
+	 G0U9GTGDKf7+7vQte6xKcLcHdaKg3MTi7pOviSVs22D6eHyYWAlpNKd/wYk6QtNhp5
+	 5UPG9MiG+xKcQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 4C90A6005A;
+	Thu, 15 Oct 2026 12:18:43 +0200 (CEST)
+Date: Thu, 15 Oct 2026 12:18:40 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@kernel.org, horms@kernel.org, fw@strlen.de, ja@ssi.bg,
+	lorenzo@kernel.org
+Subject: Re: [PATCH net-next 00/15] Netfilter/IPVS updates for net-next
+Message-ID: <atCogI3gNxxPjKxo@chamomile>
+References: <20261011215953.1334630-1-pablo@netfilter.org>
+ <as66prsWCk1qlQpm@chamomile>
+ <21b46e85-49db-4c7f-9fd7-f32528f2dc4d@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261012-netcons-fixes-next-v2-2-ac8ec4c62edb@gmail.com>
-X-Debian-User: leitao
+In-Reply-To: <21b46e85-49db-4c7f-9fd7-f32528f2dc4d@suse.de>
 
-On Mon, Oct 12, 2026 at 06:03:44PM +0100, Gustavo Luiz Duarte wrote:
-> Since netconsole_netdev_event() holds target_list_lock, there is no need
-> to also protect each target with netconsole_target_get/put()
-> refcounting. There is no way a target reachable from the target_list
-> would go away while we hold target_list_lock.
-
-Nice. I have never thought about it, but you are correct.  The
-notifier's get/put never protected nt at all.
-
-> This is similar to commit a6d403ac9689 ("netconsole: remove
-> unnecessary netconsole_target_get/out() from write_msg()").
+On Thu, Oct 15, 2026 at 11:48:39AM +0200, Fernando Fernandez Mancera wrote:
+> On 10/14/26 1:11 AM, Pablo Neira Ayuso wrote:
+> > Hi,
+> > 
+> > +Cc: lorenzo@kernel.org
+> > 
+> > This is a report on sashiko's findings:
+> > 
+> > https://sashiko.dev/#/patchset/20261011215953.1334630-1-pablo%40netfilter.org
+> > 
+> > On Sun, Oct 11, 2026 at 11:59:38PM +0200, Pablo Neira Ayuso wrote:
+> > > Hi,
+> > > 
+> > > The following patchset contains Netfilter/IPVS updates for net-next:
+> > > 
+> > > 1) Disable br_netfilter in userns and schedule it for removal in 2027,
+> > >     from Florian Westphal.
+> > > 
+> > > 2) Prepare the flowtable to support for IPv4 over IPv6 tunneling and
+> > >     vice-versa, this includes 5 patches from Lorenzo Bianconi.
+> > 
+> > I am afraid this preparation series is enabling more than it should,
+> > sashiko reports type confusion is possible, for example:
+> > 
+> >    1/5 netfilter: flowtable: recognize IPv4/IPv6 in tunnel proto matching
+> > 
+> > this adds the initial pre-processing of IPv6-over-IPv4.
+> > 
+> > But then, nf_flow_offload_lookup() expects to handle IPv4, not an IPv6
+> > packet.
+> > 
+> > I will repost this PR keeping them back.
+> > 
+> > > 3) Update selftest nft_queue.sh to make it more stable on debug
+> > >     kernels, from Jakub Kicinski.
+> > > 
+> > > 4) Fix a overflow in IPVS sync messages which can only happen in very
+> > >     old 2.6 kernels, from Julian Anastasov.
+> > > 
+> > > 5) Flush conntrack gc worker when existing netns to address a unlikely
+> > >     UaF, from Florian Westphal.
+> > > 
+> > > 6) Switch nf_tables chain types to use rcu, otherwise module removal
+> > >     can trigger UaF, also from Florian.
+> > > 
+> > > 7) Add two new helper functions to validate that socket is of inet type,
+> > >     coming in 2 patches from Florian Westphal.
+> > 
+> > sashiko reports:
+> > 
+> > "If an IPv4 packet from an AF_INET socket is encapsulated by an IPv6 tunnel,
+> > the tunnel preserves the AF_INET socket in skb->sk while transmitting the
+> > outer IPv6 packet on the LOCAL_OUT path."
+> > 
+> > This sounds like an unrelated issue, I don't know yet how that can
+> > happen TBH.
+> > 
+> > > 8) Remove redundant parsing in nft_exthdr for the tcp options case,
+> > >     from Fernando F. Mancera.
+> > > 
+> > > 9) Remove redundant skb_header_pointer() calls in nft_exthdr for tcp
+> > >     options, from Fernando F. Mancera.
+> > 
+> > Sashiko here reports this now drops malformed packets instead of
+> > NFT_BREAK, which is fine, maybe just extend it to tell about this in
+> > the patch description.
 > 
-> Since this is the only remaining user of netconsole_target_get/put(),
-> remove those helpers as well.
+> Hi Pablo,
 > 
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com> ---
+> Should I re-post a v2 of this patch or will you ammend the commit message to
+> add this bit?
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+I will amend the commit message here, no problem.
