@@ -1,61 +1,62 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D13442FA0
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 21:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A8B4915B1
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 21:18:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792099135; cv=none; b=nLC5jbtJza86xYqopJnnDkCRb6Y2tYSk9f7lR8eb4c8IduJ2en3L88a8JiWqVz6xWvmCkNCgtXbtKyZfxfCcn3xUrWoU7CDBnNPVTOWJICg1CV5g1q1QTQ908fjTUnBcyIBai1k//DWgnVPEW8KhF35/3ho6+AzbS+Utn9wpPhY=
+	t=1792099139; cv=none; b=opYMf35FFtni0YDWsMxqOA1Mc4zHlrBXbHYqGNEurVMakDcuEzh1PVjUwMecWPq+wo3NsJH2QMh4kSUOMq/rEZHNy74EWJG5C43yGDKmpWuHB6laZVBMdFwGneylpwcl3aa6Cl0BJkpfZe0NGmbpdpk4lFjBufu66YF1MK/83Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792099135; c=relaxed/simple;
-	bh=+2/vvKbWoAbvspskcU3rN/lCGQ9o1XB7p6MUcTKEXB0=;
+	s=arc-20240116; t=1792099139; c=relaxed/simple;
+	bh=v6OFGwjMVRT3JAYlk2W/ew659qk+mF0oLje4ITbj2sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlojelmhSrv6H1mrGOAXhPKNkUh+E3BCNPMSa8dHtxzjk5/Hp9co3nMVinrFi0jPhS18IVd9ApujBTRa4uLEjvYq+GZsl+PPAhKo/R3GCdiLokhi5xh8LmisC1bZO5eyqrLqqBx7RVxq1QtPye/UsQ1wbO7GgLqPe3SDX5QT1/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=rfNQSCcb; arc=none smtp.client-ip=74.125.82.50
+	 MIME-Version; b=MbUpAoX9iCb0oN6s1ApplUROiR0raaczwnb6GcUS4Vxl1Ed9v4lvUJ3VDgYq6V6dpOTapzn7s+GHoSyyn1yFOVyG492SG3WesmKCj0aFfK2egUA+nAbVXbx4pUru6y1eNa7BbQeK0S9mDugwjtkQ0XYdxvKQOHyKkB1P/ymdl9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=gNtJz5V6; arc=none smtp.client-ip=74.125.82.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="rfNQSCcb"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-16079d54c17so1041652c88.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 14:18:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="gNtJz5V6"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-141395927feso11093766c88.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 14:18:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792099131; x=1792703931; darn=vger.kernel.org;
+        d=mojatatu.com; s=google; t=1792099135; x=1792703935; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=VOV9lrbQ6U/ePh3qjqflN4zmHKmWIEXGerAj9rmp8aE=;
-        b=rfNQSCcb5z27dmPF15x0VQMKjmG68hDj2PYynDPbdSgEMhfpI8mfrPkoFuX54WcJKZ
-         YELtMqlI1YxKaXpNrZX3zPepZ04MzPkMdujnD5qK78bLGfNGvvP61ok37lQXavAeWcRU
-         g89fWnilEPtjM20QXWTVjUhvZE1s4dCTH/gwE=
+        bh=KSCUWR2pRGBK8cyXD6mH/N8CotOfV5OCmVFqY/ghAlg=;
+        b=gNtJz5V6NbeJSIs0/pxmKHhsMO+aTSogxWtK8Z3NkqQE2iAvkdAXc8AjgZnICKh+45
+         Qopo3QX6yzTuFXxpKttAPzs66DW6B4aH7mixDNZYORsBiznB6uh1mZfFUYzt82076lLd
+         Aft4ntz5jPJKH4plJl/Ybf8fkdOMB6ifPgyls=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792099131; x=1792703931;
+        d=1e100.net; s=20260707; t=1792099135; x=1792703935;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VOV9lrbQ6U/ePh3qjqflN4zmHKmWIEXGerAj9rmp8aE=;
-        b=pB9zQFqdw5MDqBgiSps9G1K6z8slDzrPLxaV1Vtfi+WgFE6qQ30um57OMJWjNOCtKE
-         qRQhuqoU/xqW83NriUxaTgOF96wNMxULH0Jj2irEGmjQP64A63VugEP3iH7T8TokBgKC
-         /6QI6xqpI9KXrN1Ikc3CVjYnP2Db9oWcODYI1csM9dJdtUvNjqdgkknb7p9ZpNamLc3U
-         KZD7qmCDabQj8cFFkOECRHsB6QZQmCnXIkAjs37O00eV1qP9SVsOfqxbJ/RC0M0fZjAS
-         wXUMx5QHKaV7zfJlIQN/37CrD0OY3lpF8k1E7/IUKW6wgITBHqlAaoTmZcQ2esoSDE+l
-         MZxg==
-X-Forwarded-Encrypted: i=1; AKwUvByH33oVogWFrJIR3QQpv4J+YlarjAjFZ6SNv8C/ekqdC1VhRvQLWetL86/BNWfzHb3rhXiJjtE=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJeb7oqd55c3E5rB/mZZOKh0ZToraBHBYgdv9cCDAaQb/SUoVDs
-	3bs0ws11uHFrv0mf8YrXQDKlKTyJiGLnC7bjIohARjnQPY7q1hHwk8uqYafnEczYtg==
-X-Gm-Gg: AYBFou3OpGVAKXpwImc7OUtzOO3yX4j5nkUjN5K5aFC5geDOJ477wNcM2ZWhAu0RM7J
-	LG/mLqniCgojkycnRhYmMzqknXu/FDDiIjGCtNoplDz/W08v8s5eA7OO+OnI/FSeerTsCx0um2+
-	G+s1ysbJAk1F7CAKTc2kPft5ym7W5uVPjg651wUTvEHefU7gFbHoTBYP7LXFvGPZN20gN5MknO2
-	vpllnpr88R/6K29+u6jyAc7Ks0q7cbi7hq1fz7iYs8Gted289ivtZK8E9bYaAN2StfDQAmfCbZp
-	Y8a26q20c6D7ZUYcLE8tAZdXYB6OEPS6oPpCv5IC0KYMHZPep8JyW0X7axG1/A/ME4ocqsd7eRD
-	5TJLApMhOFZZjGI45qyLaA8KS6iAl5wYg1GrdgE9feqgucaGFbXJNawUfMxJC5wXSTP4+mkFu8K
-	l2xsCmAGMTLCL5c9GClXDXv2AfZMKl+MREncaQXFu00WWDCi7Xip9LhEr8UoiD1O5cbHUVS8ub6
-	1i/pQ==
-X-Received: by 2002:a05:701b:21c5:b0:143:3617:c5ae with SMTP id a92af1059eb24-16a554812f4mr27717450c88.2.1792099130997;
-        Thu, 15 Oct 2026 14:18:50 -0700 (PDT)
+        bh=KSCUWR2pRGBK8cyXD6mH/N8CotOfV5OCmVFqY/ghAlg=;
+        b=BLJ14AwEJ1+x5ZOxgszU1l4Azbxr5xIYIrCg4TBGSRZV2Pu6KDmhUihccUiQTk/4rb
+         vAA1qYBexWbwOWS4NFFSdgCBWe2AdjNPfmcQd51QIT4pcT6hFCP82OsfTWwke9Nd9E7t
+         dYHJwEDz5SSeF23Ig+RhPcbVIfG2QLHpSuoZU+2dWtGi3NZDV/u+ioBed3jqiLlgjPTo
+         0E0in8AMR1CTrKhYh8DCEFz8OHEvQQA06HUfvUdkspmqh6PQFhzOq6D0P/oXkLTy+atP
+         7iABnD6K4kSrAwn7kNncDrZIJu8NaxktyS7fKe5SDgE0ZCQz8yu/xrLXfScY+xXE2z0B
+         D5+w==
+X-Forwarded-Encrypted: i=1; AKwUvByEAwRbLPtM32xpyrrQZ3+x6n9XhCvjYP2MDEcMJsWwBbUs4Pxch84u7FpqfFlCircrLZizrdA=@vger.kernel.org
+X-Gm-Message-State: AFq9FYK5/z/HDQgUsEFwjK7yauaogDVnWlSwrL4MYFwl3NTbh5V/Gk2B
+	bVLDofZhg71/5irx6gdFKa7aWXA0Po1qivKgE5FPZkcmFK5ehEwatox7KmJP5lKduPaPhgXDvY8
+	J1eg=
+X-Gm-Gg: AYBFou1DjGtuV327gxlA1dWDCzAN4aMI8bdIFii1HEFPNzxNJYbWh5BV8pB/GAaKaca
+	Q0eEs/sXWjXY30RaWNWen2QUHyj8i76Uk/wMAVegGfbrq8vISKd2BbGSJtYsqavfO7pB86hcKYu
+	qFM185bUTpTgUqBnGflcg+wX4kIipT0v3LtFg+vhUnDgqKVeCGwNffHbABC724A9+CX+sZV76rs
+	ujOJqk9+0KRzgp3MeFQxtm70pVLp1o4k7TGoLjGNdStPPOSkgDWud9ou67UMdUFyYUOIvxfD0BN
+	7QMZshkYck+6An/74oP2/dWF7NutnS6AOlH3i2Z0uAz0PXzx2M2WiPyxn8hHThis/uIUeeeX3Mt
+	+EunHe2J2I/5ZwbHh7TMebDRF+QPdW82Uexo1mSYTZuUMG3y3VWy53ivodkg7TAun/a0oW4cW3k
+	G0AmLw8GQAX10c3aEm8fA+7wMTkwAkmgmaoG1xEv2fIT8jlWujmIyGf5Lo5TfXAl1VnqoFMjjMg
+	MMo
+X-Received: by 2002:a05:7022:3b87:b0:14c:e31e:5dd4 with SMTP id a92af1059eb24-16a60ce6e71mr31865257c88.36.1792099135194;
+        Thu, 15 Oct 2026 14:18:55 -0700 (PDT)
 Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4d67::2000])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831b859142sm216711c88.18.2026.10.15.14.18.47
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831b859142sm216711c88.18.2026.10.15.14.18.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 14:18:50 -0700 (PDT)
+        Thu, 15 Oct 2026 14:18:54 -0700 (PDT)
 From: Victor Nogueira <victor@mojatatu.com>
 To: davem@davemloft.net,
 	edumazet@kernel.org,
@@ -68,9 +69,9 @@ Cc: horms@kernel.org,
 	sashiko-bot <sashiko-bot@kernel.org>,
 	Shuah Khan <shuah@kernel.org>,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next v2 1/3] net/sched: drr, ets, sfq: skip empty rounds in the deficit-refill dequeue loop
-Date: Thu, 15 Oct 2026 18:18:29 -0300
-Message-ID: <QDISC-TIAE.v2.r0.20261015163454-1@mojatatu.com>
+Subject: [PATCH net-next v2 2/3] net/sched: fq, fq_codel, fq_pie: skip empty rounds in the deficit-refill dequeue loop
+Date: Thu, 15 Oct 2026 18:18:30 -0300
+Message-ID: <QDISC-TIAE.v2.r0.20261015163454-2@mojatatu.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <QDISC-TIAE.v2.r0.20261015163454@mojatatu.com>
 References: <QDISC-TIAE.v2.r0.20261015163454@mojatatu.com>
@@ -82,226 +83,372 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The issue: DRR and ETS refill the head class one quantum per iteration
-until its packet fits the deficit. A size table that inflates the packet
-length to QDISC_PKT_LEN_MAX (1 MiB) with a quantum of 256 makes that
-~4096 iterations per packet, so one dequeue over N backlogged classes
-can spin N * 4096 times under the qdisc lock with BH disabled. Draining
-16384 DRR classes this way takes about a second.
+The issue: fq, fq_codel and fq_pie refill the head flow one quantum per
+iteration until it has credit. With a size table that inflates the packet
+length to 1 MiB and a quantum of 256 that is ~4096 iterations per packet,
+so a dequeue over N flows can spin N * 4096 times under the qdisc lock
+with BH disabled.
 
-The Fix: after a full round in which no class could dequeue, compute how
-many more rounds it takes until one can and add that many quanta to every
-class at once. Deficits and service order are the same as with the
-one-quantum loop, and a dequeue costs O(N).
+The Fix: apply the same skip-ahead as the previous patch for DRR. After a
+full round in which no flow could dequeue, add the quanta for the
+remaining rounds to every flow at once. An empty flow that the one-quantum
+loop would have removed during those rounds is credited the same amount
+and removed in the same pass, so credits and list order match the old
+loop.
 
-sfq has the same loop and is fixed the same way. ETS has at most 16
-bands, so it was never that slow; it is changed to match DRR.
-
-This follows commit 8f735d64382d ("net/sched: bound qdisc_pkt_len to
-prevent qdisc soft lockup"). With 16384 DRR classes the drain goes from
-~1.0s to ~0.12s.
+The skip runs once per dequeue. If the flow it makes eligible is then
+throttled (fq) or all its packets are dropped by the AQM (fq_codel,
+fq_pie), the loop goes back to one quantum at a time. A setup built to
+make that happen every time is as slow as before; normal ones are O(N).
 
 Conditions to recreate:
-- tc qdisc add dev veth0 root handle 1: stab mtu 2048 tsize 0 \
-    overhead 1048576 drr
-- 16384 classes with quantum 256, one packet in each (sent with
-  SO_PRIORITY set to the classid), plus one catch-all u32 filter so ARP
-  is not dropped
-- CAP_NET_ADMIN (unshare -Urn is enough)
+- root: stab mtu 2048 tsize 0 overhead 1048576 tbf rate 100kbit
+  burst 2mb limit 1000000 (stab must be on the root)
+- child: fq_codel or fq_pie, flows 65536 quantum 256, target and
+  interval 100s so the AQM never drops
+- one packet in each of 8192 flows (SO_PRIORITY = 0x10:<i> or a distinct
+  destination per packet so the flow hash separates them), then raise the
+  tbf rate to release them
+- the last dequeue takes 65-70 ms (fq_codel) / 74-75 ms (fq_pie)
+  before this change and under 0.4 ms after
+- fq hits the same loop when a band holds only empty flows while
+  packets wait in another band or in throttled flows
 
 Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260819143213.57401-1-jhs@mojatatu.com
+Link: https://lore.kernel.org/netdev/179182028153.434549.4854377793269282267@kernel.org/
 Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 ---
 v1 -> v2:
-- drr, ets, sfq: the dequeue loop skips the empty rounds in one bulk
-  refill.
- net/sched/sch_drr.c | 42 +++++++++++++++++++++++++++++++++++++++++-
- net/sched/sch_ets.c | 41 ++++++++++++++++++++++++++++++++++++++++-
- net/sched/sch_sfq.c | 41 ++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 121 insertions(+), 3 deletions(-)
+- fq, fq_codel, fq_pie: skip empty rounds as in 1/3, empty flows
+  credited as the old loop would.
+ net/sched/sch_fq.c       | 81 +++++++++++++++++++++++++++++++++++++++-
+ net/sched/sch_fq_codel.c | 74 +++++++++++++++++++++++++++++++++++-
+ net/sched/sch_fq_pie.c   | 68 ++++++++++++++++++++++++++++++++-
+ 3 files changed, 218 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
-index 8621d057edd9..d6cb389a55f0 100644
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -372,7 +372,8 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- static struct sk_buff *drr_dequeue(struct Qdisc *sch)
- {
- 	struct drr_sched *q = qdisc_priv(sch);
--	struct drr_class *cl;
-+	struct drr_class *cl, *first = NULL;
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index a282812c192e..5c724ec04d90 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -737,8 +737,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 	struct fq_sched_data *q = qdisc_priv(sch);
+ 	u64 offload_horizon = fq_offload_horizon(sch, q);
+ 	struct fq_perband_flows *pband;
++	struct fq_flow *first = NULL;
+ 	struct fq_flow_head *head;
+ 	u64 time_next_packet = 0;
 +	bool scanned = false;
  	struct sk_buff *skb;
- 	unsigned int len;
- 
-@@ -402,6 +403,45 @@ static struct sk_buff *drr_dequeue(struct Qdisc *sch)
- 			return skb;
+ 	struct fq_flow *f;
+ 	unsigned long rate;
+@@ -769,8 +771,12 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 			pband = &q->band_flows[q->band_nr];
+ 			pband->credit = min(pband->credit + pband->quantum,
+ 					    pband->quantum);
+-			if (pband->credit > 0)
++			if (pband->credit > 0) {
++				/* New band: start a new round. */
++				first = NULL;
++				scanned = false;
+ 				goto begin;
++			}
+ 			retry = 0;
  		}
- 
-+		/* No class could dequeue in the last full round. Add the
+ 		if (q->time_next_delayed_flow != ~0ULL)
+@@ -782,9 +788,76 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 	f = head->first;
+ 	retry = 0;
+ 	if (f->credit <= 0) {
++		/* No flow could dequeue in the last full round. Add the
 +		 * quanta for the rounds still needed in one pass.
 +		 */
-+		if (!scanned && cl == first) {
++		if (!scanned && f == first) {
 +			unsigned int rounds = UINT_MAX;
-+			struct drr_class *iter;
++			struct fq_flow *iter, *prev;
 +			bool skip = true;
 +
 +			scanned = true;
-+			list_for_each_entry(iter, &q->active, alist) {
-+				unsigned int pkt_len;
-+				struct sk_buff *peek;
-+
-+				/* An empty child unlinks iter; stop here. */
-+				peek = iter->qdisc->ops->peek(iter->qdisc);
-+				if (!peek) {
-+					skip = false;
-+					break;
-+				}
-+				pkt_len = qdisc_pkt_len(peek);
-+				if (pkt_len <= iter->deficit) {
++			/* new_flows is empty after a full round. */
++			for (iter = pband->old_flows.first; iter;
++			     iter = iter->next) {
++				/* Empty flows don't limit the rounds. */
++				if (!fq_peek(iter))
++					continue;
++				if (iter->credit > 0) {
 +					skip = false;
 +					break;
 +				}
 +				rounds = min(rounds,
-+					     DIV_ROUND_UP(pkt_len - iter->deficit,
-+							  READ_ONCE(iter->quantum)));
++					     DIV_ROUND_UP(1 - iter->credit,
++							  q->quantum));
 +			}
-+			if (skip && rounds != UINT_MAX) {
-+				list_for_each_entry(iter, &q->active, alist)
-+					WRITE_ONCE(iter->deficit,
-+						   iter->deficit + rounds *
-+						   READ_ONCE(iter->quantum));
-+				continue;
++			if (skip) {
++				prev = NULL;
++				for (iter = pband->old_flows.first; iter;
++				     iter = iter->next) {
++					unsigned int k = 0;
++
++					/* An empty flow leaves the list after
++					 * k more refills. If that falls within
++					 * the skipped rounds, remove it now.
++					 * fq keeps the credit if the flow comes
++					 * back, so give it exactly k quanta.
++					 */
++					if (fq_peek(iter)) {
++						iter->credit += rounds * q->quantum;
++						prev = iter;
++						continue;
++					}
++					if (iter->credit <= 0)
++						k = DIV_ROUND_UP(1 - iter->credit,
++								 q->quantum);
++					if (k >= rounds) {
++						iter->credit += rounds * q->quantum;
++						prev = iter;
++						continue;
++					}
++					iter->credit += k * q->quantum;
++					if (prev)
++						prev->next = iter->next;
++					else
++						pband->old_flows.first = iter->next;
++					if (pband->old_flows.last == iter)
++						pband->old_flows.last = prev;
++					fq_flow_set_detached(iter);
++				}
++				goto begin;
 +			}
 +		}
 +
++		/* Remember which flow started this round. */
 +		if (!first)
-+			first = cl;
- 		WRITE_ONCE(cl->deficit, cl->deficit + READ_ONCE(cl->quantum));
- 		list_move_tail(&cl->alist, &q->active);
++			first = f;
+ 		f->credit += q->quantum;
+ 		head->first = f->next;
+ 		fq_flow_add_tail(q, f, OLD_FLOW);
++		/* f may have moved to another band's list. */
++		if (f == first && f->band != q->band_nr)
++			first = NULL;
+ 		goto begin;
  	}
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 6cc902a03838..331c6d886fde 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -459,7 +459,8 @@ ets_qdisc_dequeue_skb(struct Qdisc *sch, struct sk_buff *skb)
- static struct sk_buff *ets_qdisc_dequeue(struct Qdisc *sch)
- {
- 	struct ets_sched *q = qdisc_priv(sch);
--	struct ets_class *cl;
-+	struct ets_class *cl, *first = NULL;
-+	bool scanned = false;
- 	struct sk_buff *skb;
- 	unsigned int band;
- 	unsigned int len;
-@@ -493,6 +494,44 @@ static struct sk_buff *ets_qdisc_dequeue(struct Qdisc *sch)
- 			return ets_qdisc_dequeue_skb(sch, skb);
+ 
+@@ -796,6 +869,9 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 		if (now + offload_horizon < time_next_packet) {
+ 			head->first = f->next;
+ 			f->time_next_packet = time_next_packet;
++			/* The round's first flow left; the next one takes over. */
++			if (f == first)
++				first = scanned ? NULL : head->first;
+ 			fq_flow_set_throttled(q, f);
+ 			goto begin;
  		}
- 
-+		/* No class could dequeue in the last full round. Add the
-+		 * quanta for the rounds still needed in one pass.
-+		 */
-+		if (!scanned && cl == first) {
-+			unsigned int rounds = UINT_MAX;
-+			struct ets_class *iter;
-+			bool skip = true;
-+
-+			scanned = true;
-+			list_for_each_entry(iter, &q->active, alist) {
-+				unsigned int pkt_len;
-+				struct sk_buff *peek;
-+
-+				/* An empty child unlinks iter; stop here. */
-+				peek = iter->qdisc->ops->peek(iter->qdisc);
-+				if (!peek) {
-+					skip = false;
-+					break;
-+				}
-+				pkt_len = qdisc_pkt_len(peek);
-+				if (pkt_len <= iter->deficit) {
-+					skip = false;
-+					break;
-+				}
-+				rounds = min(rounds,
-+					     DIV_ROUND_UP(pkt_len - iter->deficit,
-+							  READ_ONCE(iter->quantum)));
-+			}
-+			if (skip && rounds != UINT_MAX) {
-+				list_for_each_entry(iter, &q->active, alist)
-+					iter->deficit += rounds *
-+							 READ_ONCE(iter->quantum);
-+				continue;
-+			}
-+		}
-+
-+		if (!first)
-+			first = cl;
- 		cl->deficit += READ_ONCE(cl->quantum);
- 		list_move_tail(&cl->alist, &q->active);
- 	}
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index 8bbcfc9e85d9..83a698af2d58 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -479,9 +479,11 @@ static struct sk_buff *
- sfq_dequeue(struct Qdisc *sch)
+@@ -814,6 +890,9 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 		if (head == &pband->new_flows) {
+ 			fq_flow_add_tail(q, f, OLD_FLOW);
+ 		} else {
++			/* The round's first flow left; the next one takes over. */
++			if (f == first)
++				first = scanned ? NULL : head->first;
+ 			fq_flow_set_detached(f);
+ 		}
+ 		goto begin;
+diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
+index e6c87a32950f..bc74690e2323 100644
+--- a/net/sched/sch_fq_codel.c
++++ b/net/sched/sch_fq_codel.c
+@@ -284,6 +284,8 @@ static void drop_func(struct sk_buff *skb, void *ctx)
+ static struct sk_buff *__fq_codel_dequeue(struct Qdisc *sch)
  {
- 	struct sfq_sched_data *q = qdisc_priv(sch);
-+	sfq_index first = SFQ_EMPTY_SLOT;
- 	struct sk_buff *skb;
--	sfq_index a, next_a;
- 	struct sfq_slot *slot;
+ 	struct fq_codel_sched_data *q = qdisc_priv(sch);
++	struct fq_codel_flow *first = NULL;
 +	bool scanned = false;
-+	sfq_index a, next_a;
+ 	struct sk_buff *skb;
+ 	struct fq_codel_flow *flow;
+ 	struct list_head *head;
+@@ -298,6 +300,67 @@ static struct sk_buff *__fq_codel_dequeue(struct Qdisc *sch)
+ 	flow = list_first_entry(head, struct fq_codel_flow, flowchain);
  
- 	/* No active slots */
- 	if (q->tail == NULL)
-@@ -491,6 +493,43 @@ sfq_dequeue(struct Qdisc *sch)
- 	a = q->tail->next;
- 	slot = &q->slots[a];
- 	if (slot->allot <= 0) {
-+		/* No slot could dequeue in the last full round. Add the
+ 	if (flow->deficit <= 0) {
++		/* No flow could dequeue in the last full round. Add the
 +		 * quanta for the rounds still needed in one pass.
 +		 */
-+		if (!scanned && a == first) {
++		if (!scanned && flow == first) {
 +			unsigned int rounds = UINT_MAX;
++			struct fq_codel_flow *iter;
 +			bool skip = true;
-+			sfq_index i = a;
 +
 +			scanned = true;
-+			do {
-+				struct sfq_slot *s = &q->slots[i];
++			/* new_flows is empty after a full round. */
++			list_for_each_entry(iter, &q->old_flows, flowchain) {
 +				unsigned int r;
 +
-+				if (s->allot > 0) {
++				/* Empty flows don't limit the rounds. */
++				if (!iter->head)
++					continue;
++				if (iter->deficit > 0) {
 +					skip = false;
 +					break;
 +				}
-+				r = DIV_ROUND_UP(1 - s->allot, q->quantum);
++				r = DIV_ROUND_UP(1 - iter->deficit, q->quantum);
 +				rounds = min(rounds, r);
-+				i = s->next;
-+			} while (i != a);
-+			if (skip && rounds != UINT_MAX) {
-+				i = a;
-+				do {
-+					struct sfq_slot *s = &q->slots[i];
++			}
++			if (skip) {
++				struct fq_codel_flow *tmp;
 +
-+					WRITE_ONCE(s->allot,
-+						   s->allot +
++				list_for_each_entry_safe(iter, tmp, &q->old_flows,
++							 flowchain) {
++					unsigned int k = 0;
++
++					/* An empty flow leaves the list after
++					 * k more refills. If that falls within
++					 * the skipped rounds, remove it now.
++					 */
++					if (iter->head) {
++						WRITE_ONCE(iter->deficit,
++							   iter->deficit +
++							   rounds * q->quantum);
++						continue;
++					}
++					if (iter->deficit <= 0)
++						k = DIV_ROUND_UP(1 - iter->deficit,
++								 q->quantum);
++					if (k < rounds) {
++						WRITE_ONCE(iter->deficit,
++							   iter->deficit +
++							   k * q->quantum);
++						list_del_init(&iter->flowchain);
++						continue;
++					}
++					WRITE_ONCE(iter->deficit,
++						   iter->deficit +
 +						   rounds * q->quantum);
-+					i = s->next;
-+				} while (i != a);
-+				goto next_slot;
++				}
++				goto begin;
 +			}
 +		}
 +
-+		if (first == SFQ_EMPTY_SLOT)
-+			first = a;
- 		q->tail = slot;
- 		WRITE_ONCE(slot->allot, slot->allot + q->quantum);
- 		goto next_slot;
++		/* Remember which flow started this round. */
++		if (!first)
++			first = flow;
+ 		WRITE_ONCE(flow->deficit, flow->deficit + q->quantum);
+ 		list_move_tail(&flow->flowchain, &q->old_flows);
+ 		goto begin;
+@@ -309,10 +372,17 @@ static struct sk_buff *__fq_codel_dequeue(struct Qdisc *sch)
+ 
+ 	if (!skb) {
+ 		/* force a pass through old_flows to prevent starvation */
+-		if ((head == &q->new_flows) && !list_empty(&q->old_flows))
++		if (head == &q->new_flows && !list_empty(&q->old_flows)) {
+ 			list_move_tail(&flow->flowchain, &q->old_flows);
+-		else
++		} else {
+ 			list_del_init(&flow->flowchain);
++			/* The round's first flow left; the next one takes over. */
++			if (flow == first)
++				first = scanned ? NULL :
++					list_first_entry_or_null(&q->old_flows,
++								 struct fq_codel_flow,
++								 flowchain);
++		}
+ 		goto begin;
+ 	}
+ 	qdisc_bstats_update(sch, skb);
+diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+index 5982847df8f8..55c88f4bbd7c 100644
+--- a/net/sched/sch_fq_pie.c
++++ b/net/sched/sch_fq_pie.c
+@@ -238,6 +238,8 @@ static inline struct sk_buff *dequeue_head(struct fq_pie_flow *flow)
+ static struct sk_buff *fq_pie_qdisc_dequeue(struct Qdisc *sch)
+ {
+ 	struct fq_pie_sched_data *q = qdisc_priv(sch);
++	struct fq_pie_flow *first = NULL;
++	bool scanned = false;
+ 	struct sk_buff *skb = NULL;
+ 	struct fq_pie_flow *flow;
+ 	struct list_head *head;
+@@ -254,6 +256,61 @@ static struct sk_buff *fq_pie_qdisc_dequeue(struct Qdisc *sch)
+ 	flow = list_first_entry(head, struct fq_pie_flow, flowchain);
+ 	/* Flow has exhausted all its credits */
+ 	if (flow->deficit <= 0) {
++		/* No flow could dequeue in the last full round. Add the
++		 * quanta for the rounds still needed in one pass.
++		 */
++		if (!scanned && flow == first) {
++			unsigned int rounds = UINT_MAX;
++			struct fq_pie_flow *iter;
++			bool skip = true;
++
++			scanned = true;
++			/* new_flows is empty after a full round. */
++			list_for_each_entry(iter, &q->old_flows, flowchain) {
++				unsigned int r;
++
++				/* Empty flows don't limit the rounds. */
++				if (!iter->head)
++					continue;
++				if (iter->deficit > 0) {
++					skip = false;
++					break;
++				}
++				r = DIV_ROUND_UP(1 - iter->deficit, q->quantum);
++				rounds = min(rounds, r);
++			}
++			if (skip) {
++				struct fq_pie_flow *tmp;
++
++				list_for_each_entry_safe(iter, tmp, &q->old_flows,
++							 flowchain) {
++					unsigned int k = 0;
++
++					/* An empty flow leaves the list after
++					 * k more refills. If that falls within
++					 * the skipped rounds, remove it now.
++					 */
++					if (iter->head) {
++						iter->deficit += rounds * q->quantum;
++						continue;
++					}
++					if (iter->deficit <= 0)
++						k = DIV_ROUND_UP(1 - iter->deficit,
++								 q->quantum);
++					if (k < rounds) {
++						iter->deficit += k * q->quantum;
++						list_del_init(&iter->flowchain);
++						continue;
++					}
++					iter->deficit += rounds * q->quantum;
++				}
++				goto begin;
++			}
++		}
++
++		/* Remember which flow started this round. */
++		if (!first)
++			first = flow;
+ 		flow->deficit += q->quantum;
+ 		list_move_tail(&flow->flowchain, &q->old_flows);
+ 		goto begin;
+@@ -269,10 +326,17 @@ static struct sk_buff *fq_pie_qdisc_dequeue(struct Qdisc *sch)
+ 
+ 	if (!skb) {
+ 		/* force a pass through old_flows to prevent starvation */
+-		if (head == &q->new_flows && !list_empty(&q->old_flows))
++		if (head == &q->new_flows && !list_empty(&q->old_flows)) {
+ 			list_move_tail(&flow->flowchain, &q->old_flows);
+-		else
++		} else {
+ 			list_del_init(&flow->flowchain);
++			/* The round's first flow left; the next one takes over. */
++			if (flow == first)
++				first = scanned ? NULL :
++					list_first_entry_or_null(&q->old_flows,
++								 struct fq_pie_flow,
++								 flowchain);
++		}
+ 		goto begin;
+ 	}
+ 
 -- 
 2.43.0
 
