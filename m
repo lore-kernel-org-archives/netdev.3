@@ -1,211 +1,210 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from out28-3.mail.aliyun.com (out28-3.mail.aliyun.com [115.124.28.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBD13C061F
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 14:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C849230274D;
+	Thu, 15 Oct 2026 14:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792075431; cv=none; b=uRb83qTNMWr3Mj2O5US0aHVoE3Q7eX+os+lo05XkWZX1j58trozfNtNDfi38ZS2eWgHokOFWZaxCCrk3cqhIbSpTGV3ocfhbATaHujCE74Cz2Xa1I70fgVU8eL1ZKpnCH5ZpD501WoKbb6AnQsBGB7YbXVj1ipmYhZJ41XmSgM0=
+	t=1792075842; cv=none; b=e+57aTXoqqPJ994XuqwqAUNJ7fWKNFDdUS8KYku+eLKMFk3KEB/2OixiZIguqsDvRBQwrKKPEY3GiA8EVtZsJzv1rmbrTLxd/0ScBsAnAEcmN//X0EHvytTtXkWqnBWuUeuMixtr/PwSr+ic2nEqEGwhYOtJxoNDBkqmttpe8XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792075431; c=relaxed/simple;
-	bh=M/I0zAJEPMLBymuryoqRmhRi8flVdbFTmfF0TrHzyAM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAq2WU24/gWXIAOwyjs8kOoA9dqdFXY/ef6McZ46hqfQy6yPPpeKiWG9NmWtQsXU6nYZo2MnOIQAcIxEIogV06jRK62Iqm6t6WStKBmu5t1pOSXPjCzFLaXliZANUVKqnLBUyApIqWG3XzXXH9JmGQMIVHAuprUiG7dyYJL21bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mBm48ztO; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eZsTSEEy; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mBm48ztO";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="eZsTSEEy"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69F9jTej2809317
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 14:43:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=8Jv8ziNJlXPNbrImiv89bm0v
-	lgkuGeTAZkaRAOPky68=; b=mBm48ztOA1eZbqumBtIsAII9V7fboMf1X06aeRcY
-	qPnmimI85JtRl+STdR+qMyyTYhgpTTtvbnhHofL5oUApKe7B3YvjCVhtxTZnz/5n
-	LjMnkDZtZXgtIDGG4GBudEfU6zsSGCps1gGb3AiYvxtlEAO0QZqih0gWmQce8/VJ
-	8EOgDCCHaoWgDlPpou0bUhjWk9zZbq19XSp6cfvrxgQ/YD7Ugl6J0GH3av9oSJx4
-	IcNgKC/WT3WCLb28dLZ1uiaOj3QsxnLOB+6jTScwQLHpqdDzDNmzIoIt4P3wbE+w
-	KzUhiqlS1U8wpMd8YGpnXxoZOu7i3IAjF0XyvznKSe14zQ==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4han54u467-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 14:43:47 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93cb98809caso911153785a.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 07:43:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792075427; x=1792680227; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8Jv8ziNJlXPNbrImiv89bm0vlgkuGeTAZkaRAOPky68=;
-        b=eZsTSEEyTq7XHTT//5TJQjiQTzfVhPoEo6stmuv5uBasR7dgX6uHWdPU0Ncbh6d8dp
-         ZRxJP2nqNUarnPSfdQSs3Kmys6B1SsfmvNie6cnVuQmb5+q+5s854KS5J00R14/lqzft
-         +QmV6Qf3FZ10Wa8VXyLp/bCuDObotsvPJr+XBWFwarSbRIcbIY3NeAkA0N6SlItQ52V4
-         EjglB8W11ndLT1QT+RXZkf5+7H3RCZc+YtFc3GzFslSmcn857XXVVOXb6IkO4DZbyEtD
-         vU5qlVX4G+km1gMc+xEXHyLK2RyBo06hysaGxwbTdgkeHtdWmiM6L/wPk6IFJDero+9H
-         jqsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792075427; x=1792680227;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8Jv8ziNJlXPNbrImiv89bm0vlgkuGeTAZkaRAOPky68=;
-        b=zocq/LZmtBeJIV1DIFoGfjdFKtiwHUfTbI65+sKEsJUGXlF9wswuuJJd+Pk+gQinQI
-         MZ2zDpRk4+gSZF2YWbAVQYYQKg5Oof4csbjm9EWxl6JSCjLbDuVkgYEKqPo2v5CvNjDd
-         CMGYzY3VXNnBxMaZspc+c6PveZtgnfZzceTkx54fTICUXJOwIKL0ejOO6ATsU8VYATsS
-         rfC+WS2hNAtXuy4NAiO1aJX/TBLylc/V0NJtKSQccrlP2Tk9toT2X1Gm2pSp3zGh/4wF
-         o5WjcAnPM/nPRFWC0UMFNdd6Fzrti7I4KUjpkQwekNllLaoy/SCVCdZsssdUI/cN5qR0
-         FytA==
-X-Forwarded-Encrypted: i=1; AKwUvBzfpsodx78uX3Whu4pV+xwGBZNCxoQRHQ/lPxhG+BGQD05B0cLT4xC3Ha4bnebFADKuSTf4jG4=@vger.kernel.org
-X-Gm-Message-State: AFq9FYKNSDhATkTuBCTQ92kFX8Qfq/yoBfrxOtVXHUqV2J962GsiDvFh
-	L+bo9Rsm1SilxjCNpm7jfp68/B8BVyVsgaiEybBGmH3ifZJ7QE9PTnbDoPeaJsgoAXxLmxL9/rx
-	xReUVL+JzUThLymjL6DZ6NiE9F/HbzgKbxOtROPbDr0e//iAhgf64Gpz6KXtKKHE7Hvk=
-X-Gm-Gg: AYBFou2Y3WR0AnuphUMYeYB1aYajxyBjF24SIri4SuflReg8ujlGayhZOZis8dYszUr
-	YvvKfX9jC+dKMYMWo9UvWbsiBqZZr0GMm7BaSogHmSSCCvHOLDUf0P8HCd0iPSDWmk7TxwkTN/W
-	omDNcBiECE+fY+SnwUMnvPzmzufdZS+1WfPYwPORHX5scGdBkpHbp0QWQcGzmXRXG9wVbcZ8SQD
-	8X5x9oOIvujpVD5wE3niR0F7OzyRR9BqqlYCuDKKN9sLgd8QEvakXzo1j1G78qgBH1qblYbACRB
-	FPPgFekoBbe8RQUHPHq3WNu6aat3M8TZa3ewIdXYLE764P1zeG37la30V6IMpfYtqVFxT78FAS0
-	nitoXxFZeLiH6CQ==
-X-Received: by 2002:a05:620a:4449:b0:93a:17c8:a1e7 with SMTP id af79cd13be357-93ebd263d3amr3069401785a.44.1792075426908;
-        Thu, 15 Oct 2026 07:43:46 -0700 (PDT)
-X-Received: by 2002:a05:620a:4449:b0:93a:17c8:a1e7 with SMTP id af79cd13be357-93ebd263d3amr3069395085a.44.1792075426160;
-        Thu, 15 Oct 2026 07:43:46 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48df758258fsm3327631f8f.17.2026.10.15.07.43.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 07:43:45 -0700 (PDT)
-Date: Thu, 15 Oct 2026 16:43:44 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: netdev-bot+sinfo@kernel.org
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Jose Abreu <Jose.Abreu@synopsys.com>,
-        Ong Boon Leong <boon.leong.ong@intel.com>, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, bpf@vger.kernel.org,
-        James Hilliard <james.hilliard1@gmail.com>,
-        Nicolai Buchwitz <nb@tipi-net.de>
-Subject: Re: [PATCH net-next v7 0/4] net: stmmac: introduce XDP rx multi-buff
- support
-Message-ID: <atDmoPpmzgRoaOWj@lore-desk>
-References: <20261014-stmmac-rx-mb-v7-0-5d2d70f052cd@oss.qualcomm.com>
- <179198374828.320699.17103999780938670424@kernel.org>
- <as-Ef22VEKQcZ9QQ@lore-desk>
+	s=arc-20240116; t=1792075842; c=relaxed/simple;
+	bh=mfEtpSkjR2ZNwH2efDzXmVyZVOGZKfWA0ZLmq/zivcI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZlkcxMZ5qtC8Ziqb1kp3pnLljwF1Wvt2F/1sFIuj74/6exe9UYj0IlXbwEYan938pDpg+aQmmkZLmjo6GB3FZevwGoFgdm3k6AxRb1CFtRflyLicKRPFs2DOvq61/Fpw7qJQX+FYLTBQCI4MCWfKZBxssyn/Bc6bhDMwiWtGARk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.0671392|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0162146-0.000265364-0.98352;FP=16929346251190263026|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068005250;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jexT-9D_1792075822;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jexT-9D_1792075822 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 15 Oct 2026 22:50:28 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	Frank.Sae@motor-comm.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com
+Subject: [PATCH net-next v25 0/3] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+Date: Thu, 15 Oct 2026 22:50:18 +0800
+Message-Id: <20261015145021.2216003-1-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Bkfl3mL1k4wIuKjB"
-Content-Disposition: inline
-In-Reply-To: <as-Ef22VEKQcZ9QQ@lore-desk>
-X-Authority-Analysis: v=2.4 cv=RYQFmFtv c=1 sm=1 tr=0 ts=6ad0e6a3 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=9R54UkLUAAAA:8 a=zPHIA2Y_rLiAKEAzPmIA:9 a=CjuIK1q_8ugA:10
- a=hbj8jUmztM6ql5xhcn0A:9 a=PEH46H7Ffwr30OY-TuGO:22 a=YTcpBFlVQWkNscrzJ_Dz:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE1MDA1OCBTYWx0ZWRfX6a8j1xebDMaC
- s4g1Gy3FzG51ufZ93wUMAqXKokYEr+c0olhhu935ciziQRuqIl7YWkbN6XBbBJT5u9JcZ7S973z
- /FEWOvl1VfKtjP5h+cnMPPRImMPR4bEIowSOHwXf0RIcVooyHepi86cSpEtTdGA0OQhnsDozQbL
- 6w2pnTPMCxzbGgGrHC48xSIGoHq5+1OE/ODWeH/bcDtNkKJerqVQlMAzZwArC7Qm1AgqMW2Olss
- 8p8us8nKqcNGMOqCpnDLdXL2tCNx5zdajKIQ1u9dsqQSvfTbVfTQ7yMc2p7k2j8PlpM2DYo+wIH
- i7RKr9FLZpM3xFTXnGToAwffY3X/j6O+3VWLWLdtTbGqUy2Bk+pzeoDpufmmMDgP4tEmC8VsnwF
- aYog7GlAlo7LO6O+71FQSrdw0u8ZmpgqdV61OWvzdpoYlJllMaz3Y6DZtd3KNQzoadupgGeUYJx
- R4KsTZRg/a+TUq9koFQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE1MDA1OCBTYWx0ZWRfX8OgOe31xmZR0
- 44uSqurAwYGa45hmXCafG7LlD8bM5P5mERhCQZnkf3JsY589w3FNpo37daE11gdzOoQOVldkWqI
- vqqHwDPhqpqSVgyccxTcuKN5C2nRJEI=
-X-Proofpoint-GUID: wQ5iCEvbwCyL4cEHROPCtu_lvw8ETaKx
-X-Proofpoint-ORIG-GUID: wQ5iCEvbwCyL4cEHROPCtu_lvw8ETaKx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1015 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610150058
+Content-Transfer-Encoding: 8bit
 
---Bkfl3mL1k4wIuKjB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patchset mainly implements the phy8824 driver. The phy8824 is
+an Ethernet PHY that provides one 10G SerDes output to four 2.5G ports.
+The driver mainly covers two application scenarios:
+ 1. external PHY8824
+ 2. PHY8824 embedded in a switch.
+The patchset mainly consists of three parts:
+ 1. the DTS for the phy8824
+ 2. a generic template testmode configuration api.
+ 3. the phy8824 functional functions.
 
-> > Hi!
-> >=20
-> > This is an automated message. This series looks like a fix, but its
-> > commit messages seem to be missing some information:
-> >=20
-> >  - How the issue was discovered, e.g. hit in production, hit during
-> >    development, syzbot report, manual code inspection, LLM or static
-> >    analysis tool scan.
->=20
-> The issues have been reported by sashiko.
->=20
-> >=20
-> >  - Whether the issue was actually triggered, or is only theoretical
-> >    (e.g. found by code inspection). If it was triggered please include
-> >    the symptoms, like the stack trace or error messages.
->=20
-> The issues are real bugs spotted by sashiko.
->=20
-> >=20
-> >  - What hardware the change was tested on. For driver fixes please
-> >    mention the device (and if relevant firmware version) used for
-> >    testing, or say that the change was not tested on real hardware.
->=20
-> I tested them on a Qualcomm RB3-gen2 board.
->=20
-> Regards,
-> Lorenzo
->=20
-> >=20
-> > Please do not repost the series just to address the above. Instead,
-> > reply to this email with the missing information, so that reviewers
-> > can take it into account. If the series needs another revision for
-> > other reasons, please include the information in the commit messages
-> > then.
-> >=20
-> > The evaluation is done by an LLM so it may be wrong, if you think
-> > that is the case please reply and explain.
+changes in v25:
+1) Correct the naming of some register name macro definitions used for
+phy8824 initialization to follow the conventional naming style.
 
-This series is marked as 'Failed for Unknown error' in sashiko-nipa:
+No functional change.
 
-https://patchwork.kernel.org/project/netdevbpf/patch/20261014-stmmac-rx-mb-=
-v7-1-5d2d70f052cd@oss.qualcomm.com/
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261014-stmmac-rx-mb-v=
-7-0-5d2d70f052cd%40oss.qualcomm.com
+changes in v24:
+1) Fix the typo during sds init.
+2) Add priv->sds_initialized to indicate whether the SDS extended
+registers shared by the four channels have been initialized.
 
-Will the AI review still take place? Am I suppose to repost?
+changes in v23:
+1) Remove meaningless comments in driver.
+2) Using #define to replace magic numbers during PHY8824 init.
 
-Regards,
-Lorenzo
+changes in v22:
+1) Using motorcomm,package-mode to replace phy-mode in DTS.
+2) The corresponding parsing has also been updated, using
+   "motorcomm,package-mode".
 
---Bkfl3mL1k4wIuKjB
-Content-Type: application/pgp-signature; name=signature.asc
+changes in v21:
+patch 1: 1) Add maintainer for motorcomm,yt8824.yaml.
+    2) Using 10g-qxgmii instead of usxgmii.
+patch 3: 1) Change the usxgmii space to serdes space.
+         2) Add lock operation during phy-package init in probe()
+         3) Add check for whether auto-negotiation is enabled
+         when updating the link status in read_status().
 
------BEGIN PGP SIGNATURE-----
+changes in v20:
+patch 1: Add phy-mode description in properties in motorcomm,yt8824.yaml
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCatDmoAAKCRA6cBh0uS2t
-rAGPAQDOR1UCr5HtCIe9Nw2G2i1dLH5T25axrA2WLWy1e+QNnQD+NEiaGtvnHBvQ
-+ig5hO6JzXsfluj3NPTkahcQvLfiUw0=
-=PWr9
------END PGP SIGNATURE-----
+changes in v19:
+patch 2: Replace the int type with the u16 type for test_mode.
+patch 3: 1) Merge yt8824_utp_normal_test_mode_paged() and
+         yt8824_utp_invalid_test_mode_paged() into 
+         yt8824_utp_set_template_test_mode().
+  2) Add a fatal error return when phy-mode is missing in
+         the DTS.
 
---Bkfl3mL1k4wIuKjB--
+changes in v18:
+1. Split the template_testmode() into a small patch 
+   and optimize the implementation.
+2. Optimize the definition and initialization of 
+   interface_mode by adopting the existing approach.
+
+changes in v17:
+patch 1: Remove redundant description.
+         Use phy-mode instead of motorcomm,interface to describe the
+         interface.
+         Add the required checks.
+patch 2: Use phy-mode to get interface mode.
+         Need return after init configuration is done to avoid falling
+         into the error path.
+
+changes in v16:
+1. Add DTS documentation.
+2. Fix redundant initialization.
+
+changes in v14:
+1. Refactor the error return path to preserve and return the initial error,
+   rather than letting later errors mask it.
+
+changes in v13:
+1. Fix the lock release issue on the error path to prevent potential
+   deadlock or resource leak.
+2. Add a func yt8824_restore_defaults() to restore configuration on
+   the error path,ensuring the hardware/device is left in a known
+   good state upon failure.
+
+changes in v12:
+1. Refactor the yt8824_read_status() function to ensure proper state
+   synchronization between hardware registers and the phy_device structure.
+
+changes in v11:
+1. Clean build_clang warning.
+
+changes in v10:
+1. Within the interface that swaps to the USXGMII reg space,the lock
+   include shared_lock and mdio mutex must remain held throughout 
+   the entire operation and should only be released after all steps
+   have completed.
+2. Improve the template interface in phy-c45.c
+3. Fix the handling of some failure paths.
+
+changes in v9:
+1. Add shared_lock mutex prevents UTPs from interfering with each other 
+   due to swapping reg space.
+
+change in v8:
+1. Clean up format warning.
+2. Fix exception handling code logic based on Sashiko/Gemini.
+3. Remove interrupt/handle function
+
+changes in v7:
+1. Refactor the using of mdio lock
+  In all cases of swapping to the USXGMII side interface, lock the MDIO bus
+  at the beginning, switch to the UTP address space after the operation is
+  completed, and then release the lock.The purpose of doing this is to
+  ensure that it will not affect other UTPs operating in the UTP address
+  space.
+2. Rename YT8824_RSSR_FIBER_SPACE to YT8824_RSSR_USXGMII_SPACE.
+
+changes in v6:
+1. Add  test mode helper in phy-c45.c
+2. Refactor the using of swapping paged for utp and fiber
+
+changes in v5:
+1. Fix diffs issue which caused by unexpected whitespace.
+2. Fix "exceeding 80 columns" warning.
+
+changes in v4:
+1. Remove motorcomm,yt8xxx.yaml, will update in other patch thread
+2. Fix locking issue. Since every interface requires switching of space, 
+   the bus is already locked during the space switching process in
+   phy_select_page(), other operations within the interface cannot 
+   be locked again before unlock in phy_restore_page().
+3. Fix warning log identified during the inspection process using
+   checkpatch.pl.
+4. Fix the way of using common api in phy_package.c
+
+
+changes in v3:
+1. Using common apis defined in phy_package.c to handle shared top
+extend register space.
+2. Add dts demo in motorcomm,yt8xxx.yaml.
+3. Fix unnecessary redundant judgments.
+4. Fix BMCR registers operation using magic number.
+5. Rename function based on its approximate functionality.
+
+changes in v2:
+1. Remove duplicate code and replace it with existing api.
+
+Kyle Switch (3):
+  dt-bindings: net: Document Motorcomm YT8824 PHY package
+  net: phy: Add support for Template Control register for PMA
+  net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+
+ .../bindings/net/motorcomm,yt8824.yaml        |   78 +
+ MAINTAINERS                                   |    2 +
+ drivers/net/phy/Kconfig                       |    3 +-
+ drivers/net/phy/motorcomm.c                   | 1926 ++++++++++++++++-
+ drivers/net/phy/phy-c45.c                     |   23 +
+ include/linux/phy.h                           |    1 +
+ include/uapi/linux/mdio.h                     |   12 +
+ 7 files changed, 2042 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+
+-- 
+2.25.1
+
