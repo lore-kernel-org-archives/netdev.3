@@ -1,61 +1,61 @@
-Received: from pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.12.53.23])
+Received: from pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.77.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF8037DAAE;
-	Thu, 15 Oct 2026 23:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.12.53.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646C64C9DF9;
+	Thu, 15 Oct 2026 23:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.77.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792108511; cv=none; b=BdEkhfNCkZsrJcX4VcKXdUWsAtmYcIN6/dyaNZHszqBkV6KCgUgX3Oix2HXt+tg7+N3iJZ7EMjBi1BZZRT25Aw5rC2j0Ksn08ZRbIXdLpqYrY9JJ/dUAYL3AjQxDoRwKcCNhF6mDhD+LugVfHeOvZmn+N/3VIiizOM7rQ4GyIn4=
+	t=1792108540; cv=none; b=HdgGC1exsp3IjhdstKNaMrIDRZ7aerBmbw728EOqW0XOEOj3QXxl6D3uIpT9HOEqTrPUkTgGuzMhw8Lc83qHbNJnAvm8RQyCYVAt0QNwTAbu3ZWtgiNKqPtU7OSffoi/+0Qx4cqoyOWybVCKw/Ns3aGeyNuKIsMNC4JtPRDUmzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792108511; c=relaxed/simple;
-	bh=NU+88D01z0xKD9rVu1nOHWbkObq+uVTVJ19u+9nRUk8=;
+	s=arc-20240116; t=1792108540; c=relaxed/simple;
+	bh=fsy1HDXYDCBxoU8rw9mNSNkam/02fcI4sQoFMBYkvLY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eU1U2kvlLwI6pQJnHWi6tRSOqCg9MYaH5jGYGlFfdwtSyre83ZGQ/4I8mkmhx6aQrDRhGhbFYxm24WTTNt6+bRVLTQlCfV5khiBvxAXHKU02W0hMfXadFU/8NhtdZeJwW7hbbrc4mFE3W+SIJ0cGLtwY3TCP8gy+psFH31QQrJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XgjKzsG6; arc=none smtp.client-ip=52.12.53.23
+	 MIME-Version:Content-Type; b=GEfxf0qkFeAt5i6gJSEjJ07zWzVD2xBI+SJb+CxRaVaIGmoeVFjkV2WddsS2R2FJW3PjgO/pDNhLMi1aP7LSMrBPifIB7dK8To7YfGiRwAzCXBtlY2hzrXU8SNcSGq2vpCyHHcZICRnvqTdSJceegOPxA3Qw2cEk1+HS0vCxwtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XrmJQZiy; arc=none smtp.client-ip=44.246.77.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XgjKzsG6"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XrmJQZiy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1792108509; x=1823644509;
+  t=1792108539; x=1823644539;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=zj9mrzxo72LrC57/aCdjXrA9LiKXNIoxoGruwoqBX+g=;
-  b=XgjKzsG6LUhWChEGDDFmw6RvJbqIr9STtELmPXxl4NM8fdNK+OevjuBs
-   FlxJOGuwBdCyXOBQZuJc/HVw4TRN6NvRNQBPQxc1jRgeueUJzeH4w+/hm
-   Ko4sPSfbxy9iS9wDFWx2pstdfdAhFFl0Me8M20FtKaBJC2qNQuq7Jy8ne
-   kvucohrLCz0cekY1etKerN/OIWDgomn1RmQDDr7cNHIUUUFNDdwTJySXd
-   syqGcERJhFENr6OwzQZP/pUou7dp3DQBTCRfK9wQkeLPZpzlTXcNpqA2+
-   sONuHbJfx9zDW2GPD0xcZ30al8IktrKHm/j6F/kxN+tdJvSSKJiyvc+sp
-   g==;
-X-CSE-ConnectionGUID: U01tyVWPSh+MkzNoNdi+4A==
-X-CSE-MsgGUID: ZNQTjotqSwy5pJoOTMd+qw==
+  bh=QP6nEgHVVunplixiZ+zcISbOTPZOCUNPX8lrOuRiGOA=;
+  b=XrmJQZiyOU++C9HFxyWKYy1JGhwK/0Dwri/PZXMIThH2vp/K0jc4Bvol
+   et2yUx+Em6YA6cnYoHxluEYrsq/19+3xyJY8LpSJiDIJfdV5K/Ju2xdiS
+   DvHWH5Whyp9aRERt6P38CsPu4fHe2P1dYIIz1mfAGHP09W+JH5In/QU9a
+   AWKrTNJCV7u/zy2xPL1q1/GlS2kK6YGHPdn5hxms7HHPaQlZ7JFJWedQD
+   ObU3Xkw4uvIKQycUVZx3/LvaOV2PPj1VGwZzCDy9t+2u4UjILsMcckZdh
+   NbonZi2lpqftl5K4PSu5R5bcDd240o7pn6XwB+0fV0s894ZCgYcb0e2h6
+   Q==;
+X-CSE-ConnectionGUID: e/2na6VVR2OUG5qNML2i8w==
+X-CSE-MsgGUID: RoLWbN+QQCWpogSHu896rA==
 X-IronPort-AV: E=Sophos;i="6.27,160,1787011200"; 
-   d="scan'208";a="31261335"
+   d="scan'208";a="31383875"
 Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-010.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 23:55:08 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:29648]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.42.190:2525] with esmtp (Farcaster)
- id 43bf413a-6a22-4a82-a52b-f78d3746de0b; Thu, 15 Oct 2026 23:55:08 +0000 (UTC)
-X-Farcaster-Flow-ID: 43bf413a-6a22-4a82-a52b-f78d3746de0b
+  by internal-pdx-out-004.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 23:55:38 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [205.251.233.111:16334]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.12.154:2525] with esmtp (Farcaster)
+ id b8147083-17ee-4bb2-b354-730e5a82730b; Thu, 15 Oct 2026 23:55:38 +0000 (UTC)
+X-Farcaster-Flow-ID: b8147083-17ee-4bb2-b354-730e5a82730b
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
- Thu, 15 Oct 2026 23:55:08 +0000
+ Thu, 15 Oct 2026 23:55:37 +0000
 Received: from dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com
  (172.19.55.127) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53; Thu, 15 Oct 2026
- 23:55:08 +0000
+ 23:55:37 +0000
 From: David Keogh <dkeogh@amazon.com>
 To: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
 	<pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>
 CC: Dragos Tatulea <dtatulea@nvidia.com>, Nimrod Oren <noren@nvidia.com>,
 	<nh-open-source@amazon.com>, <linux-kernel@vger.kernel.org>
-Subject: [RFC net-next 2/6] net: reserve extra TX headroom for local egress
-Date: Thu, 15 Oct 2026 23:53:31 +0000
-Message-ID: <20261015235335.4162993-3-dkeogh@amazon.com>
+Subject: [RFC net-next 3/6] rtnetlink: add IFLA_TX_EXTRA_HEADROOM
+Date: Thu, 15 Oct 2026 23:53:32 +0000
+Message-ID: <20261015235335.4162993-4-dkeogh@amazon.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261015235335.4162993-1-dkeogh@amazon.com>
 References: <20261015235335.4162993-1-dkeogh@amazon.com>
@@ -67,149 +67,187 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
+X-ClientProxiedBy: EX19D031UWA002.ant.amazon.com (10.13.139.96) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-Use LL_ALLOC_SPACE() instead of LL_RESERVED_SPACE() where the stack
-allocates packets on behalf of a local sender and sizes them for the
-output device:
+Expose tx_extra_headroom through a new IFLA_TX_EXTRA_HEADROOM u16
+attribute. The value is bounded to NETDEV_TX_EXTRA_HEADROOM_MAX
+(512 bytes) by the netlink policy, which is plenty for several layers
+of encapsulation while keeping the growth of per-packet allocations
+modest.
 
- - __ip_append_data() and __ip6_append_data(), covering UDP, ICMP,
-   ping and raw sockets without IP_HDRINCL;
- - raw_send_hdrinc() and rawv6_send_hdrinc();
- - the three AF_PACKET transmit paths;
- - AF_XDP copy mode, which open-codes the same calculation from
-   needed_headroom.
+The attribute can be given when creating a link and when changing one.
+It is included in link dumps and a change triggers the usual link
+notification. Zero is the default and resets the reservation.
 
-These are the main paths where a packet's headroom is decided by the
-device's advertised requirement and nothing else. Adding the
-administrator's extra reservation here means such packets reach the TC
-egress hook with room for additional headers already in place.
+IFLA_HEADROOM keeps reporting needed_headroom, the driver's own
+requirement, so userspace can tell the two apart.
 
-Paths that check an existing packet against LL_RESERVED_SPACE() and
-expand it on demand, such as ip_finish_output2() and the tunnel
-transmit functions, are deliberately left alone. Using the larger value
-there would force a reallocation of every packet that lacks the full
-extra reservation, including TCP segments that already have enough
-room for the headers an egress program actually pushes.
+The setting applies to the device the packet is allocated for, that is
+the device selected by the route, and is not inherited by stacked
+devices. Document that together with the allocation-only semantics in
+netdevices.rst and add the attribute to the rt-link spec.
 
 Signed-off-by: David Keogh <dkeogh@amazon.com>
 ---
- net/ipv4/ip_output.c   | 2 +-
- net/ipv4/raw.c         | 2 +-
- net/ipv6/ip6_output.c  | 2 +-
- net/ipv6/raw.c         | 2 +-
- net/packet/af_packet.c | 6 +++---
- net/xdp/xsk.c          | 6 ++++--
- 6 files changed, 11 insertions(+), 9 deletions(-)
+ Documentation/netlink/specs/rt-link.yaml | 12 +++++++++
+ Documentation/networking/netdevices.rst  | 34 ++++++++++++++++++++++++
+ include/uapi/linux/if_link.h             |  1 +
+ net/core/rtnetlink.c                     | 19 ++++++++++++-
+ 4 files changed, 65 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 3396f177a..bf718b8f6 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -988,7 +988,7 @@ static int __ip_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP_MAX_MTU : cork->fragsize;
- 	paged = !!cork->gso_size;
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index 81b586339..9da363df5 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -1098,6 +1098,16 @@ attribute-sets:
+         name: pacing-offload
+         type: u32
+         doc: Enable EDT pacing offload (0 - disabled, 1 - enabled).
++      -
++        name: tx-extra-headroom
++        type: u16
++        doc: |
++          Additional headroom, in bytes, reserved on top of the driver's
++          requirement when allocating locally generated packets for
++          transmission through this device. Zero (the default) disables
++          the extra reservation.
++        checks:
++          max: 512
+   -
+     name: prop-list-link-attrs
+     subset-of: link-attrs
+@@ -2471,6 +2481,7 @@ operations:
+             - gso-ipv4-max-size
+             - gro-ipv4-max-size
+             - af-spec
++            - tx-extra-headroom
+     -
+       name: newlink-ntf
+       doc: Notify that a link has been created
+@@ -2567,6 +2578,7 @@ operations:
+             - gso-ipv4-max-size
+             - gro-ipv4-max-size
+             - pacing-offload
++            - tx-extra-headroom
+       dump:
+         request:
+           value: 18
+diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
+index 6a87f09e7..02d6b4d4b 100644
+--- a/Documentation/networking/netdevices.rst
++++ b/Documentation/networking/netdevices.rst
+@@ -441,6 +441,40 @@ from a notifier.
  
--	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
-+	hh_len = LL_ALLOC_SPACE(rt->dst.dev);
+ Drivers **must not** generate nested notifications of the ops-locked types.
  
- 	fragheaderlen = sizeof(struct iphdr) + (opt ? opt->optlen : 0);
- 	maxfraglen = ((mtu - fragheaderlen) & ~7) + fragheaderlen;
-diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
-index 9d01006d8..a1e72e634 100644
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -355,7 +355,7 @@ static int raw_send_hdrinc(struct sock *sk, struct flowi4 *fl4,
- 	if (flags&MSG_PROBE)
- 		goto out;
++TX headroom reservation
++=======================
++
++``needed_headroom`` is the driver's own additional header-space requirement.
++It is written by the driver, or by a stacked device inheriting the value of
++the device below it, and is reported read-only through ``IFLA_HEADROOM``.
++
++``tx_extra_headroom`` is a separate reservation configured by the
++administrator through the ``IFLA_TX_EXTRA_HEADROOM`` rtnetlink attribute, a
++byte count from 0 to 512 that defaults to 0. It can be supplied when a link
++is created or changed, is reported in link dumps and change notifications,
++and setting it back to 0 removes it.
++
++The extra reservation is only applied when the stack allocates a locally
++generated packet for transmission through the device. ``LL_ALLOC_SPACE()``
++is ``LL_RESERVED_SPACE()`` plus ``tx_extra_headroom`` and is used by the
++UDP, raw, AF_PACKET and AF_XDP transmit paths. Its purpose is to give
++programs attached at TC egress room to push additional headers without
++having to reallocate the packet first.
++
++The setting is deliberately not part of ``LL_RESERVED_SPACE()``, which
++remains the threshold for deciding whether an already existing packet must
++be expanded. Packets that reach the device with less than the extra
++reservation, such as forwarded packets or TCP segments, are therefore not
++reallocated because of it. Consumers must keep their usual headroom and
++clone checks.
++
++The setting is not inherited through stacked devices. Packets are allocated
++against the device selected by the route, so configure it on the VLAN,
++bond or bridge device the route points at rather than on the device
++beneath it. It survives link down/up and network namespace moves and is
++independent of any TC or BPF attachment. It does not change the MTU or
++the bytes on the wire.
++
+ NETDEV_INTERNAL symbol namespace
+ ================================
  
--	hlen = LL_RESERVED_SPACE(rt->dst.dev);
-+	hlen = LL_ALLOC_SPACE(rt->dst.dev);
- 	tlen = rt->dst.dev->needed_tailroom;
- 	skb = sock_alloc_send_skb(sk,
- 				  length + hlen + tlen + 15,
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 25fe0ba98..a3626d5f0 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1490,7 +1490,7 @@ static int __ip6_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP6_MAX_MTU : cork->fragsize;
- 	orig_mtu = mtu;
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 245b36204..fb3a6b382 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -382,6 +382,7 @@ enum {
+ 	IFLA_HEADROOM,
+ 	IFLA_TAILROOM,
+ 	IFLA_PACING_OFFLOAD,
++	IFLA_TX_EXTRA_HEADROOM,
+ 	__IFLA_MAX
+ };
  
--	hh_len = LL_RESERVED_SPACE(rt->dst.dev);
-+	hh_len = LL_ALLOC_SPACE(rt->dst.dev);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 15bffafbf..fb691db8e 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -1403,6 +1403,7 @@ static noinline size_t if_nlmsg_size(const struct net_device *dev,
+ 	       + nla_total_size(4)  /* IFLA_PACING_OFFLOAD */
+ 	       + nla_total_size(2)  /* IFLA_HEADROOM */
+ 	       + nla_total_size(2)  /* IFLA_TAILROOM */
++	       + nla_total_size(2)  /* IFLA_TX_EXTRA_HEADROOM */
+ 	       + rtnl_dev_parent_size(dev)
+ 	       + 0;
  
- 	fragheaderlen = sizeof(struct ipv6hdr) + rt->rt6i_nfheader_len +
- 			(opt ? opt->opt_nflen : 0);
-diff --git a/net/ipv6/raw.c b/net/ipv6/raw.c
-index b965258cf..7f2da5581 100644
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -601,7 +601,7 @@ static int rawv6_send_hdrinc(struct sock *sk, struct msghdr *msg, int length,
- 	struct sk_buff *skb;
- 	int err;
- 	struct rt6_info *rt = dst_rt6_info(*dstp);
--	int hlen = LL_RESERVED_SPACE(rt->dst.dev);
-+	int hlen = LL_ALLOC_SPACE(rt->dst.dev);
- 	int tlen = rt->dst.dev->needed_tailroom;
+@@ -2200,7 +2201,9 @@ static int rtnl_fill_ifinfo(struct sk_buff *skb,
+ 	    nla_put_u16(skb, IFLA_HEADROOM,
+ 			READ_ONCE(dev->needed_headroom)) ||
+ 	    nla_put_u16(skb, IFLA_TAILROOM,
+-			READ_ONCE(dev->needed_tailroom)))
++			READ_ONCE(dev->needed_tailroom)) ||
++	    nla_put_u16(skb, IFLA_TX_EXTRA_HEADROOM,
++			READ_ONCE(dev->tx_extra_headroom)))
+ 		goto nla_put_failure;
  
- 	if (length > rt->dst.dev->mtu) {
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 823e0911c..8790fd038 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2031,7 +2031,7 @@ static int packet_sendmsg_spkt(struct socket *sock, struct msghdr *msg,
- 		goto out_unlock;
+ 	if (rtnl_fill_proto_down(skb, dev))
+@@ -2361,6 +2364,8 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+ 	[IFLA_HEADROOM]		= { .type = NLA_REJECT },
+ 	[IFLA_TAILROOM]		= { .type = NLA_REJECT },
+ 	[IFLA_PACING_OFFLOAD]	= NLA_POLICY_MAX(NLA_U32, 1),
++	[IFLA_TX_EXTRA_HEADROOM] =
++		NLA_POLICY_MAX(NLA_U16, NETDEV_TX_EXTRA_HEADROOM_MAX),
+ };
  
- 	if (!skb) {
--		size_t reserved = LL_RESERVED_SPACE_EX(dev, hard_header_len);
-+		size_t reserved = LL_ALLOC_SPACE_EX(dev, hard_header_len);
- 		int tlen = dev->needed_tailroom;
- 		unsigned int hhlen = dev->header_ops ? hard_header_len : 0;
+ static const struct nla_policy ifla_info_policy[IFLA_INFO_MAX+1] = {
+@@ -3368,6 +3373,15 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+ 		}
+ 	}
  
-@@ -2863,7 +2863,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			goto tpacket_error;
++	if (tb[IFLA_TX_EXTRA_HEADROOM]) {
++		u16 val = nla_get_u16(tb[IFLA_TX_EXTRA_HEADROOM]);
++
++		if (dev->tx_extra_headroom != val) {
++			WRITE_ONCE(dev->tx_extra_headroom, val);
++			status |= DO_SETLINK_NOTIFY;
++		}
++	}
++
+ 	if (tb[IFLA_OPERSTATE])
+ 		set_operstate(dev, nla_get_u8(tb[IFLA_OPERSTATE]));
  
- 		status = TP_STATUS_SEND_REQUEST;
--		hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
-+		hlen = LL_ALLOC_SPACE_EX(dev, hard_header_len);
- 		tlen = dev->needed_tailroom;
- 		if (vnet_hdr_sz) {
- 			data += vnet_hdr_sz;
-@@ -3090,7 +3090,7 @@ static int packet_snd(struct socket *sock, struct msghdr *msg, size_t len)
- 		goto out_unlock;
+@@ -3859,6 +3873,9 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ 		netif_set_gso_ipv4_max_size(dev, nla_get_u32(tb[IFLA_GSO_IPV4_MAX_SIZE]));
+ 	if (tb[IFLA_GRO_IPV4_MAX_SIZE])
+ 		netif_set_gro_ipv4_max_size(dev, nla_get_u32(tb[IFLA_GRO_IPV4_MAX_SIZE]));
++	if (tb[IFLA_TX_EXTRA_HEADROOM])
++		dev->tx_extra_headroom =
++			nla_get_u16(tb[IFLA_TX_EXTRA_HEADROOM]);
  
- 	err = -ENOBUFS;
--	hlen = LL_RESERVED_SPACE_EX(dev, hard_header_len);
-+	hlen = LL_ALLOC_SPACE_EX(dev, hard_header_len);
- 	tlen = dev->needed_tailroom;
- 	linear = __virtio16_to_cpu(vio_le(), vnet_hdr.hdr_len);
- 	linear = max(linear, min_t(int, len, hard_header_len));
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 33475b180..58d64025d 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -1045,7 +1045,8 @@ static struct sk_buff *xsk_build_skb_zerocopy(struct xdp_sock *xs,
- 	buffer = xsk_buff_raw_get_data(pool, addr);
- 
- 	if (!skb) {
--		hr = max(NET_SKB_PAD, L1_CACHE_ALIGN(xs->dev->needed_headroom));
-+		hr = max(NET_SKB_PAD,
-+			 L1_CACHE_ALIGN(netdev_tx_alloc_headroom(xs->dev)));
- 
- 		skb = sock_alloc_send_skb(&xs->sk, hr, 1, &err);
- 		if (unlikely(!skb))
-@@ -1128,7 +1129,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 		len = desc->len;
- 
- 		if (!skb) {
--			hr = max(NET_SKB_PAD, L1_CACHE_ALIGN(dev->needed_headroom));
-+			hr = max(NET_SKB_PAD,
-+				 L1_CACHE_ALIGN(netdev_tx_alloc_headroom(dev)));
- 			tr = dev->needed_tailroom;
- 			skb = sock_alloc_send_skb(&xs->sk, hr + len + tr, 1, &err);
- 			if (unlikely(!skb))
+ 	return dev;
+ }
 -- 
 2.50.1
 
