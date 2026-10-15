@@ -1,133 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E46B35E950;
-	Thu, 15 Oct 2026 04:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9072E35DA78
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792040295; cv=none; b=lDMaWbxAxjUg1ojzmOYhpRWYFc7xha5o6XmGQhi3IIiWw45d2Lu9eO7XMC0d2/PZyUd2nnab9iBTsju7jbS+4lUlxJmKmMJ2mQzkjLg0P7Uadhv1D0QD5wX8vcCLnjt65NblWnhBH8m1yJpnb1R0GZV+MSVC0223onYAx/H3w2s=
+	t=1792040766; cv=none; b=AC/HVz08fiX4MhrOXvBtvKb0nNO3qWClVg2xuSLb7vbhTA7EqoVVk55JQ1tgZuPyDDSG/NmSFRk18tzenu3TrggWCkhtw6IDECklftBXqJ+m6mui7kD7lIZxRhtI9tUpKW1dNRHYK//LxvHbnSTZfyiP/K176FUwPZYS6A6prYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792040295; c=relaxed/simple;
-	bh=clUiAKhLEx4WFMI0PNW0Z8EWPCN3W0nXfiaXiKbBvZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gjVCPPu8F/fWgOXB9VMNz2Nnd29aZjGEn4BC/NDyK1PluFnq7FMcVRAkghVippAf3Arktlr5eHmB4iBsjXIhw7cMWozP3RKyK8YpHbjVDZ/UiBcrN8ajg7ok7dPKJLNWsb0zrhbxi23dcKBEuPnd/fNiZEv7tpqEQ9jaDsffqfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kAZgCBxL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792040766; c=relaxed/simple;
+	bh=w11y49jbyV/4vIC2F4b6XFOH4Euf+45PUeCl4BzyPVM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O2mwzJJ6HSuhVQXtLKHvPM++AooeFvZgd4T5HttM24i13RZyLNY8O2llsJdhIxIAyHOJJ4TfjdF2Y1qB+fi7Awsc4Skwz0b6lNNIx9z5xogpSiAeNPKKcRFav5WE9OErnMM2B790oAa2Cjo3PC0rtdQcQoLtpShB3d+v6htInEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pGmHK5U3; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kAZgCBxL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB101F000C4;
-	Thu, 15 Oct 2026 04:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792040293;
-	bh=q158/zsMzI1U2HCglnHVdw7Kf32xTgm9ETONvsqEy24=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kAZgCBxL9eWGCOft6x1B3Pog4zCC7kP68oCE/+IqtiQssfKJzgyecNjIPYVuyDvr3
-	 DapY5jl3T9nCv6zkcahRLR7KNOd3X7bJSca6JbZS+rsmlvq/vwwXJohuBGd1n3iIcs
-	 F5weX3FU8nrEYHDmhrYXyxoXdLfFsH9EGLKlR3F1BalCENigpxBAhDifuQZoFGJkcO
-	 XFIMn0a++kcA/qjozmXaewiefl9OcXSPt/lQKBJM/FhYDLKvO5cxHtdCkAGjBl5bu0
-	 LLzggU2Jgp3lQwFFtMOobLqm9PQm85mW6Nid7G5iCNDUuFmvIYpUkZJXsF68bXBbo6
-	 Z9F6yQQvM/aoA==
-Message-ID: <9e10a74b-a73b-4899-a652-898e21de69a6@kernel.org>
-Date: Thu, 15 Oct 2026 06:58:05 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pGmHK5U3"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-88b5f43cb8aso449825b3a.3
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:06:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792040765; x=1792645565; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w11y49jbyV/4vIC2F4b6XFOH4Euf+45PUeCl4BzyPVM=;
+        b=pGmHK5U3snngF0QolHy6HqPWemjepwXdVLMaJA7GLUhRUx27xqrLkzKpfIAvC4rxUm
+         HLfjL6qXdeaM0XGLHROVG2uZYiQ5T/m/UxIB4C1LWONqIo6cHri86tlelfO9CiJ3J3y/
+         8c+Okskgh4SLYTeqnw9p8dwRTk1qlND/j44mUUTMSaLY0bsiqqIwnjZIHCyuJA+2g5Wg
+         WNL9g+IYESXF0U70hAchIle17YuUKB4OZhyvWUFmL6Rib01c8hHVP7zh08T+tTBsX0gW
+         hHGG8hWdvEcbB3B7bzTKerBinYtvVnxVxPCdb4dWQsyVeUcLeekOxCSBYJjfThkR4grd
+         If/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792040765; x=1792645565;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=w11y49jbyV/4vIC2F4b6XFOH4Euf+45PUeCl4BzyPVM=;
+        b=SFgT0A41ZoD2ohvssQ8L23Z0r3vDGbe9q3zNBvqHScLFPlRu34Yi4tAatQf7zoG8m1
+         dqvkVxEDCcUQ/bKVBV4Ow2snOs4JH949TSqHkm1ZFFGcfpT0iJVNI/n6jwbw2vdFa+nF
+         cx4qb4lS8L9BH8jngdLCE0KIW58Ubh4JzIKe03Bdl2On65Fk300g433GOhazUR3NPDSF
+         7kHptLQ2wu6bzSCMDIMOczz891oxFSFBb3O/CHonxfNctLSiegfL88MkAReFtJY/pKz6
+         pH6JIuDyjjGKE3P3Wjd0S+jus6vzdj/Wq5Tru3a8VxymdEkoIy5KHqGKKqHE8IyzlMZT
+         GlDA==
+X-Forwarded-Encrypted: i=1; AKwUvBxlnJ2k3QUDgTRDBFNt2FgotVK+OhtYTR5lVc7TipS4I9weKwkBXE0cFC1fPgotXXF4bpG4ZHI=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJx0VPb40l58lSE3E9rZ0EwCPlcfJKC+4gMMwmFz/hfpQwbJaL1
+	80zgwH95L1Ud66Mi4J5SXW9wLly5uuc69jTYN/6PtxtaDmRMpLZ4mi97
+X-Gm-Gg: AYBFou0o2XeHrUsarD6PDEW68X7G8TYlVhIiCYt5ZjA6SjIAB+clEh7SItKwxcpH7Fz
+	C3xLmlKYIzPE9Gc31Dh0sBGX/H8VO9xIwZbbPOv3u60wJqvZ7VskXZhDQE+Eq9Q+KPwgdcFTkE5
+	UFIOUR4fUuNSsylojLWNs/Io1QLnBZzJC6iGxnVn+Qkqqw0cG/7Gl4YyivVRhsMKaNHxL3Pm9fs
+	Ss9oj3JDf2jZD4+kt/MyunICa6dUm7wHFci76rATuZ/7PGFhKFK5vnms+DRKmfIifL905cBSC+w
+	AQ2ktK7EyIDQToyHVrQnxz6mV52IJ3EbXRq3ilRXwi3EIy8yAMg/A2XBdqBy+rEskwcCPfyNRGh
+	fsQi88AIbmCL0amxc4jt7rsFwyzKEr/X8CSe60DnhZqYIyatuokohh50fh4llHJ1QerLfLKbq6g
+	4kTV3he4VRsunSPz++tzAdKNbE5/fPjX+j2SfboHSBv6UC+jLgD3gfWptNfA89uB1qpzzJMq4G8
+	OHG7Pa3zIY=
+X-Received: by 2002:a05:6a00:8019:b0:886:84c7:72b3 with SMTP id d2e1a72fcca58-897c78d79d0mr14722485b3a.26.1792040764769;
+        Wed, 14 Oct 2026 22:06:04 -0700 (PDT)
+Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89d7f51f452sm1726602b3a.1.2026.10.14.22.06.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Oct 2026 22:06:03 -0700 (PDT)
+From: Daehyeon Ko <4ncienth@gmail.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: Daehyeon Ko <4ncienth@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3 1/3] ipv6: serialize address publication with device teardown
+Date: Thu, 15 Oct 2026 14:05:51 +0900
+Message-ID: <20261015050553.1835517-1-4ncienth@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261012145306.GB779501@shredder>
+References: <20261009054042.272944-1-4ncienth@gmail.com> <20261009054042.272944-2-4ncienth@gmail.com> <20261012145306.GB779501@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] powerpc/lib: prefetch ahead in __csum_partial()
-To: Rosen Penev <rosenp@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Michael Stapelberg <michael@stapelberg.de>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:ETHERNET PHY LIBRARY" <netdev@vger.kernel.org>
-References: <20261014194818.11640-1-rosenp@gmail.com>
-Content-Language: fr-FR
-From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-In-Reply-To: <20261014194818.11640-1-rosenp@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-
-
-Le 14/10/2026 à 21:48, Rosen Penev a écrit :
-> __csum_partial() walks the buffer linearly and reads each cache line
-> exactly once. On cores without a hardware prefetcher, such as the 464FP
-> in the APM82181, every new line is therefore a demand miss that stalls
-> the loop. Packets received by non-coherent DMA are never in the cache,
-> so this is the common case for GRO checksum validation: when routing
-> TCP with GRO enabled on a Meraki MX60, __csum_partial() takes about 30%
-> of all cycles and is the top entry in the profile.
-> 
-> Issue a dcbt MAX_COPY_PREFETCH cache lines ahead in the main loop,
-> the same distance csum_partial_copy_generic() already uses. That is
-> 128 bytes on the 44x. dcbt is only a hint and never faults, so
-> prefetching past the end of the buffer is harmless. Lines that are
-> already cached, for example when checksumming data the CPU just wrote,
-> are left untouched.
-> 
-> Measured on a Meraki MX60 (APM82181 at 800 MHz), single TCP stream
-> routed through a qca8k DSA switch, iperf3 median of 5. Only the dcbt
-> was toggled at runtime, in the same boot:
-> 
->                LAN->WAN               WAN->LAN
->                Mbit/s  csum cycles    Mbit/s  csum cycles
->    before      495     30.5%          439     27.2%
->    after       599     15.3%          520     13.7%
-> 
-> That is 58% less time spent in __csum_partial() per byte.
-> 
-> The prefetch distance was chosen with an earlier, slower driver
-> configuration (median of 3, Mbit/s):
-> 
->    distance    LAN->WAN   WAN->LAN
->    none        370        341
->    64 bytes    430        381
->    96 bytes    438        397
->    128 bytes   438        385
->    160 bytes   434        386
->    256 bytes   423        383
-> 
-> Prefetching the first lines before entering the loop made no
-> measurable difference and is not done.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-
-> ---
->   v3: use MAX_COPY_PREFETCH
->   v2: reword commit message and retest numbers.
->   arch/powerpc/lib/checksum_32.S | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/lib/checksum_32.S b/arch/powerpc/lib/checksum_32.S
-> index cd00b9bdd772..5bb872e9e68f 100644
-> --- a/arch/powerpc/lib/checksum_32.S
-> +++ b/arch/powerpc/lib/checksum_32.S
-> @@ -43,6 +43,7 @@ _GLOBAL(__csum_partial)
->   	bdnz	2b
->   21:	srwi.	r6,r4,4		/* # blocks of 4 words to do */
->   	beq	3f
-> +	li	r9,MAX_COPY_PREFETCH*L1_CACHE_BYTES /* prefetch distance */
->   	lwz	r0,4(r3)
->   	mtctr	r6
->   	lwz	r6,8(r3)
-> @@ -52,7 +53,8 @@ _GLOBAL(__csum_partial)
->   	lwzu	r8,16(r3)
->   	adde	r5,r5,r7
->   	bdz	23f
-> -22:	lwz	r0,4(r3)
-> +22:	dcbt	r3,r9
-> +	lwz	r0,4(r3)
->   	adde	r5,r5,r8
->   	lwz	r6,8(r3)
->   	adde	r5,r5,r0
-
+You are right. I overlooked both earlier comments. V4 drops the preliminary
+READ_ONCE() conversions and the disable_ipv6 recheck. The new locking now
+serializes only idev->dead, the state relevant to the reference leak, and
+leaves the existing preliminary checks unchanged. Sorry for the churn.
