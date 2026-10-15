@@ -1,23 +1,23 @@
-Received: from out28-73.mail.aliyun.com (out28-73.mail.aliyun.com [115.124.28.73])
+Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D315637C926;
-	Thu, 15 Oct 2026 14:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B3337F310;
+	Thu, 15 Oct 2026 14:50:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792075843; cv=none; b=QvvfN1zLnoBUTVgmSIXB4v3OLT52EiS79ASW9J3e7+R24Tu2/P6ORxoq0X4B+p/Aen1ds5FhWDN2/nsh6zjHdAQFIRn4kBd091zxTMtBdYIo9uoRrVCl+SVmj/H1C14co1hzQvtR5oEHtnBtYElkcuYhdYmWVTYlej4sxEch0/A=
+	t=1792075844; cv=none; b=s0MGTsljUHU25u/Kd7XBY+qPy6f6XlHaPLtyWAIXGQVET8p141yp/AQss1N6G5zYu0JTGmt9KRhNji3exYzWwofvwaNYBaQJRZEhZ9pqT9YT97Zt54RXR7ucteQqjrGhOjgZ13nyw9s2I7hEH250neeVt+huiXiElePMoEJBw8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792075843; c=relaxed/simple;
-	bh=I2DMrmyL8hpMdcOCuget3c2bHKZbarHbTu2GJp6GTWY=;
+	s=arc-20240116; t=1792075844; c=relaxed/simple;
+	bh=HP+XkyMi6V+nfah9Q3XU6k4C82hRhLAewzKKyWuoF/c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Orx8gU9a3N6tMnJw5lIp+DZPZ6br1MFkwddLrJqShxxTe7hFEDXy5Jl3GfVIeRDrhng4smSCnKwbFgvShk2waF0QzLPawD55+t9mwZZ0LsjkHdelzNWpx8wnefjY1MOPSDzRArdBw3ExJUi2eiFuDczMse8BCJauRrpNcqW2lD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.73
+	 MIME-Version; b=IEd04aqW+GwgVKx7jmsZ+k/wOuFYw9EhynvEEKhnzcLTibCazB8yTDTahTNNw4BN4JCg3m7dDbaiqbS3sJGso9Jc2dJWkz7bd9MND5FwqW1hJWeZmvqqSTBmrT3V0NYZLrWD/VLPgum6HSHn06t2HvT1WEJk6TKWic8bb+cB3Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07497911|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.04611-0.00409288-0.949797;FP=16348516055682450675|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033032062159;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jexT-Ef_1792075828;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jexT-Ef_1792075828 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06737254|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.316453-0.0542113-0.629336;FP=13761360782042877878|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jexT-FU_1792075829;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jexT-FU_1792075829 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Thu, 15 Oct 2026 22:50:28 +0800
+          Thu, 15 Oct 2026 22:50:29 +0800
 From: Kyle Switch <kyle.switch@motor-comm.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -37,9 +37,9 @@ To: andrew+netdev@lunn.ch,
 Cc: ming.xu@motor-comm.com,
 	xiaolin.xu@motor-comm.com,
 	jianmin.wang@motor-comm.com
-Subject: [PATCH net-next v25 1/3] dt-bindings: net: Document Motorcomm YT8824 PHY package
-Date: Thu, 15 Oct 2026 22:50:19 +0800
-Message-Id: <20261015145021.2216003-2-kyle.switch@motor-comm.com>
+Subject: [PATCH net-next v25 2/3] net: phy: Add support for Template Control register for PMA
+Date: Thu, 15 Oct 2026 22:50:20 +0800
+Message-Id: <20261015145021.2216003-3-kyle.switch@motor-comm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261015145021.2216003-1-kyle.switch@motor-comm.com>
 References: <20261015145021.2216003-1-kyle.switch@motor-comm.com>
@@ -51,114 +51,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
+Add support for the 10GBASE-T PMA Template Test Mode register
+field, which allows selecting one of eight test modes (Normal and
+TestMode1..TestMode7) used for PHY validation.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 ---
- .../bindings/net/motorcomm,yt8824.yaml        | 78 +++++++++++++++++++
- MAINTAINERS                                   |  2 +
- 2 files changed, 80 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+ drivers/net/phy/phy-c45.c | 23 +++++++++++++++++++++++
+ include/linux/phy.h       |  1 +
+ include/uapi/linux/mdio.h | 12 ++++++++++++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
-new file mode 100644
-index 000000000000..4c67f8afcf27
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
-@@ -0,0 +1,78 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/motorcomm,yt8824.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: MotorComm YT8824 Ethernet PHY
-+
-+maintainers:
-+  - Kyle Switch <kyle.switch@motor-comm.com>
-+
-+description:
-+  Motorcomm YT8824 Ethernet PHY is a PHY package of 4 PHYs.
-+
-+$ref: ethernet-phy-package.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - motorcomm,yt8824-package
-+
-+  motorcomm,package-mode:
-+    description: |
-+      PHY package can be configured in 2 modes:
-+      - internal: YT8824 is embedded in the switch, using
-+        an internal interface to the MAC.
-+      - 10g-qxgmii: YT8824 is a standalone external PHY,
-+        connected via 10G QXGMII.
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum: [ internal, 10g-qxgmii ]
-+
-+  reg:
-+    description:
-+      The absolute MDIO address of the YT8824 shared top extend
-+      register block.
-+      For internal mode, this is fixed at 9;
-+      For external mode, it is the base MDIO address of the four
-+      member PHYs plus 4, where base is typically 0x0.
-+      Note that this is NOT the reg of the first member PHY.
-+
-+required:
-+  - compatible
-+  - motorcomm,package-mode
-+  - reg
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet-phy-package@9 {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            compatible = "motorcomm,yt8824-package";
-+            reg = <9>;
-+
-+            motorcomm,package-mode = "internal";
-+
-+            ethernet-phy@4 {
-+                reg = <4>;
-+            };
-+
-+            ethernet-phy@5 {
-+                reg = <5>;
-+            };
-+
-+            ethernet-phy@6 {
-+                reg = <6>;
-+            };
-+
-+            ethernet-phy@7 {
-+                reg = <7>;
-+            };
-+        };
-+    };
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 509b35b5a0e7..572f6b26ae6d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18427,8 +18427,10 @@ F:	drivers/net/ethernet/stmicro/stmmac/dwmac-motorcomm.c
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 870920311f9a..c5f5753f7194 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -1408,6 +1408,29 @@ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable)
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_fast_retrain);
  
- MOTORCOMM PHY DRIVER
- M:	Frank <Frank.Sae@motor-comm.com>
-+M:	Kyle Switch <kyle.switch@motor-comm.com>
- L:	netdev@vger.kernel.org
- S:	Maintained
-+F:	Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
- F:	Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml
- F:	drivers/net/phy/motorcomm.c
++/**
++ * genphy_c45_template_testmode - configure template testmode registers
++ * @phydev: target phy_device struct
++ * @test_mode: testmode includes Normal to Test mode 7
++ *
++ * Description: Set template testmode include Normal to Test mode 7
++ *
++ * Return: 0 on success, or a negative error code on failure (e.g. register
++ * read/write error).
++ */
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode)
++{
++	u16 ctrl;
++
++	if (test_mode > MDIO_PMA_10GBT_TESTMODE_7)
++		return -EOPNOTSUPP;
++
++	ctrl = FIELD_PREP(MDIO_PMA_10GBT_TESTMODE_MASK, test_mode);
++	return phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_10GBT_TESTMODE,
++			      MDIO_PMA_10GBT_TESTMODE_MASK, ctrl);
++}
++EXPORT_SYMBOL_GPL(genphy_c45_template_testmode);
++
+ /**
+  * genphy_c45_plca_get_cfg - get PLCA configuration from standard registers
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 7c5098a0dd6c..b9dee2655e6b 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2357,6 +2357,7 @@ int genphy_c45_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_c45_pma_resume(struct phy_device *phydev);
+ int genphy_c45_pma_suspend(struct phy_device *phydev);
+ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable);
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode);
+ int genphy_c45_plca_get_cfg(struct phy_device *phydev,
+ 			    struct phy_plca_cfg *plca_cfg);
+ int genphy_c45_plca_set_cfg(struct phy_device *phydev,
+diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+index 06f4bc3c20c7..353ca13c64fc 100644
+--- a/include/uapi/linux/mdio.h
++++ b/include/uapi/linux/mdio.h
+@@ -63,6 +63,7 @@
+ /* Media-dependent registers. */
+ #define MDIO_PMA_10GBT_SWAPPOL	130	/* 10GBASE-T pair swap & polarity */
+ #define MDIO_PMA_10GBT_TXPWR	131	/* 10GBASE-T TX power control */
++#define MDIO_PMA_10GBT_TESTMODE 132 /* Test mode control */
+ #define MDIO_PMA_10GBT_SNR	133	/* 10GBASE-T SNR margin, lane A.
+ 					 * Lanes B-D are numbered 134-136. */
+ #define MDIO_PMA_10GBR_FSRT_CSR	147	/* 10GBASE-R fast retrain status and control */
+@@ -320,6 +321,17 @@
+ /* PMA 10GBASE-R Fast Retrain status and control register. */
+ #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
+ 
++/* PMA 10GBASE-T Template Test Mode Register*/
++#define MDIO_PMA_10GBT_TESTMODE_MASK GENMASK(15, 13) /* Template test mode */
++#define MDIO_PMA_10GBT_TESTMODE_NORMAL 0x0 /* Template Normal */
++#define MDIO_PMA_10GBT_TESTMODE_1 0x1 /* Template TestMode1 */
++#define MDIO_PMA_10GBT_TESTMODE_2 0x2 /* Template TestMode2 */
++#define MDIO_PMA_10GBT_TESTMODE_3 0x3 /* Template TestMode3 */
++#define MDIO_PMA_10GBT_TESTMODE_4 0x4 /* Template TestMode4 */
++#define MDIO_PMA_10GBT_TESTMODE_5 0x5 /* Template TestMode5 */
++#define MDIO_PMA_10GBT_TESTMODE_6 0x6 /* Template TestMode6 */
++#define MDIO_PMA_10GBT_TESTMODE_7 0x7 /* Template TestMode7 */
++
+ /* PCS 10GBASE-R/-T status register 1. */
+ #define MDIO_PCS_10GBRT_STAT1_BLKLK	0x0001	/* Block lock attained */
  
 -- 
 2.25.1
