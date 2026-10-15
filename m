@@ -1,116 +1,151 @@
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EE34BE420
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782AA3E1231
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792106552; cv=none; b=dxcrKfj4tRqZy4EESGwUaVMOPAYzyPdMhTmLwJUkS0zYlCD4TbtNKhVX4XkT8HGlFiG13GP3BnBMc9tTAFCLGb8DR7HJhP2H6ZAVFdnT29vbuSxejy59i7nUQtIhfp0jP7PPoXiw9XGmxTrnBqH80oX/oV4zQ07wKEYhmsg+g7o=
+	t=1792107220; cv=none; b=J78OA6OJzxWlxHj9p/tFd1ucuBChmv+t7hoQYDdXNuOfJS2vW2PvE8Xcjbf0aanqUcqU+NkW1fiyIAQC7+2BhQ/aLNbj7Y6Fg8OfeB5slF1FZUzoEsRLRGMGFGUorL5VEICptO1ZAwTrRolzZGDEsHHULnlu36Q1gPRW7QsCAfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792106552; c=relaxed/simple;
-	bh=flgSKC6pMf++7DJb38js+MGdU3o8QmC+4FmYXdajCnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMTHv4eGhX7ZpRSLyH8FgFZTd0KIQqRgMTvEhdeYDGn1+utprbC544/pFoVt2oBD0sE9NpFoLWOqLGDcUlOA3QiS7IebGGCdLOKM4BTNv8gpUqoGCdaAAwKirvggPwGeoZDjMCgIPcRqxsDkcJaTW5JqUfOaE/vtvywLnL8/sI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net; spf=pass smtp.mailfrom=blockcast.net; dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b=hIGpUcGq; arc=none smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=blockcast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blockcast.net
+	s=arc-20240116; t=1792107220; c=relaxed/simple;
+	bh=CNPsR7bzQDLmgfpvT3zgzovzG/cYekzcy5fSLl9hrrg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KohxcUETO3yVUllHEpnCu5nWNeQdpqYWSH04so38npYN1SRD7IRo3TYD0Jqfdn+FtehAsZ1scmgSpfCNOEDTW1aZHEsHAIxoSTPkFjEIfYMtHfhIdrTKnicmZ4gvlDWtJE7Wyo1HSysm9skv7fRvWv33/8RbLOZ2l4oexbfMTN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Duz+gkKS; arc=none smtp.client-ip=209.85.161.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blockcast.net header.i=@blockcast.net header.b="hIGpUcGq"
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-17bc533fda3so2825507c88.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 16:22:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Duz+gkKS"
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-6df1eeb43feso2538639eaf.1
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 16:33:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blockcast.net; s=google; t=1792106550; x=1792711350; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=flgSKC6pMf++7DJb38js+MGdU3o8QmC+4FmYXdajCnI=;
-        b=hIGpUcGqQ7Uo/Xo7U5LZkCBLYyOBhPl2ndaSzcuNGrQm+qYkjXEFnsibtvYjSBE1uQ
-         4qUaGkMtKUOjQCVKZWIDQ3Jd/58EjObsJwqwwyxaLeYXJOuu24eeqbLEq219RZdhohzN
-         kNlTDgmp5xL8iiWb2fKJwdkh6R/6x804jfwYw9hO/PxbS4IhxCGdHhE3dVTa377nLzac
-         lfR/DG7r4HNSigLe52/TqRxRdvc/QFA5rOiE5CzIaRSqXpUtOm2GqAa4EYSdb692yX/o
-         2/DYQ8uAMpXVzST8HoP1yBpHsMjYsAl8Nt8EdH17RfZfWxFzBKEPrqKQ2T/tMZPyizcJ
-         WIqA==
+        d=gmail.com; s=20251104; t=1792107218; x=1792712018; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=zdD17TQF6DaYFKwkt5ECBqDYHDfoAehq3WTKwKTpVWA=;
+        b=Duz+gkKSP59wp634+7Kd8g2EIWVtABdIwSF9baB06xqJ0P2vG/WEsAujSndwtsMF2s
+         kedVs990V+hpFyLk1IUIpof06mUmr2FhqqYzRcmpHeQcs43mJsvDRDUi3hRacMklpAxq
+         DKHMhL2DuieoQhg3T//is8T+RF3evY8mEWGwNRC+r8VUkeBRscoaP3R0avFOS9iUpV/v
+         OWuLpRlEu3/YJDpUkbMYbwD457Y/DJTof5k+cQfm+eKvceOmYMKKeZHjA0/rMr/PEAgn
+         Ew6dXVDdPhNAuZGmJnIkMDSa0RtvhrWzygavPNjzRpOE1AMH61HK7p8eHR2+NRXA+MoM
+         i3oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792106550; x=1792711350;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=flgSKC6pMf++7DJb38js+MGdU3o8QmC+4FmYXdajCnI=;
-        b=xGS7RmlJtpxPY9IRmGCllP86rySONN5INZDaR7O2+yiWRRLoTu8AGXUeYdLBT0c8E/
-         mSvxemvk9pg7XxEMbgdpAvvafuH/s8Ya6kjJh14+/qSDax1yJPlrdFSqEBsN2TSO9SAq
-         44l3sbVA0K+Z5SjFF0jukg/Z162if/WKJ5bOdgFydkrTgrjYcLqnS1CYYhT231PU5J1n
-         J3p/Kj/t3kvqFP7wm018cONoLY1OL9dL75SuRq8MOiCMHT0Vrw1q/f4bgPxUggKN+THf
-         5uQIoHprJDpkA/JLvKLkAbPEUAtEEqVnBfGOwgjs1kEPqaU0y9aszC0PomCRNDCS/CGv
-         rMRA==
-X-Forwarded-Encrypted: i=1; AKwUvBx6hgo9egzbflaN2b6/X0cxpBfdsdUAFdQAuqjQgjJX1vC9XOEdwD40TKaG4u3znLs5WHs6rMM=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK0HBwdQckV0wAFO3SoYXFIAFWsP5Ry2qS34XkKE8OIbv2LOfBW
-	vHfvlsrxkH8nlI3O8MQImbbdcL3BHS/sLDe1hvGcFJHL/l+NO0xasyJWV9OJmYi4vNE=
-X-Gm-Gg: AYBFou3lWYSW9/s/W12S8Y1vnGF753gKfSuhTrJRkY78Q3+MqeqY0viISZNcvboo+TR
-	gqKy25miIiyl/eCwECnmWgToFHykowVot64r41r4ziKlHMhuVQ+GjDIvFaMuH/Ty3Oyrb39iCBF
-	DB7I/F5sZ9ctqCno3pGZglp/W67zwgzmmJ240mlsCK4Mde4LtDQS0YvFD03W2mG2vpB9xR3UGCe
-	yPD77xeo/mbupdaiyRH42oFwUcs29jxfb6q2P/pgrWDJTEp4BhGMsEIErfF+AvqEg0QN3nKkHHr
-	i55OoAEPjTX1pHqUr3JRZ1im0M2H/dr7rM6HgghUEWB/rLB+FppBeIz0L6EFTBdmDM0WQjWk1vL
-	/H4C6jXkc2nxVofkjKaco/jVcaMynlfRxoQpG++eI+sJetOi3H6Dfjoa1O0jYPyS0OHrN19pqnm
-	/eAwTO+NBiUyobnckxdukF5U13o8X/pN6aDets3F0SOHgMoxIAM81B15rDVjBmVULYLDACBuYAK
-	G+VT+KU5X7wl1v2MFnPoq++Cxq909EfK8pfuyrM/McUC1c8YGo=
-X-Received: by 2002:a05:701b:2810:b0:14c:d8d9:9502 with SMTP id a92af1059eb24-16a5e49fe06mr29600227c88.14.1792106550027;
-        Thu, 15 Oct 2026 16:22:30 -0700 (PDT)
-Received: from devbox.ts.blockcast.net ([2602:f74d:1::32])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831c2e7bf4sm619618c88.20.2026.10.15.16.22.28
+        d=1e100.net; s=20260707; t=1792107218; x=1792712018;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=zdD17TQF6DaYFKwkt5ECBqDYHDfoAehq3WTKwKTpVWA=;
+        b=wtDnhtQgtzZtj7RxnFMQ4ewFVfj6mTjK6KdLYs7GbjxcjDobLFLYnfdci1U65L6Nen
+         UDsjOncMmNK2j50Qb/lw8RrJywWPucm4iYkW6MyJzyiLD/p/4gs78sgaRyBBejVaW9yh
+         90Vq7OglgVknU2Snyvn9l6jZUh8RstjAU710zeEWuZkZcBSHgCmMpw4QZQSYHSoGhwW/
+         wINJaTXvEZVJ1Fm0VwHuGCPzsMMJ/GgdfK9urNM0g874yuDdf6tmwArtcgR9BArYEOo8
+         RfQ8lpAJ05CsRa3RDQNVHj/shOUZo7n07X+fVKZ/siuy8SOiLTBtsforLwlS+1zmYdPT
+         iDPQ==
+X-Gm-Message-State: AFq9FYKwsvnjrOfy4k3XE/Ttwjvo6ab0WRF8zJUkbm1PSmrvesG5YR7O
+	kl7GGEroDhyHe3WDJsKVP5MNyoyVYzN/jJiIZAsz/MaNnKdGSagRq3n8
+X-Gm-Gg: AYBFou2zdzCfHm6AAEAwsyxg5dsXCCYyRTpHLGiNo44KBYJOpifxvC2zWVVEdxOZCib
+	Br6qL7vgGKzbddZExRa2AtQpoWRMuBU7xlyoNcCCQK1aSTQIThMGC27myEDQbxxUNygQSmFjyTy
+	Bu36sH2LT3q5IlYpPrE7sSKoc8udG3nFvPfqwWsxWE0DB+vy0k3VG7FQ35zLaYewG5colcDjrPK
+	1UMx77OTAKNFHsw+NGUSdcFTxsrfu3QuaDq+JirLs+7bah5c2aQeNZamduDsthHIsPZIDQfleNB
+	sE58EfxxpvDBVyXCk1VKThIVr0za+gs9KDLkeNyGYgMA10iJVN7P6QLTLDY0+8cKmc0QXDcG6RL
+	Z2Fg7gsgi4qCMiBg7UUzkVdQK0FD8Ww6wx6E4pCsLkmYzkrt9ftvkpGaSuLOXeWhiRVo2VjiO+F
+	cJKk1DzKrt83esNthpaQ9UprD3NosGFwaKqEq8c8rOOB7NaVEdIUyfYxdsZO+V6s+s7ObTNpJ3g
+	0ShaJmEEpBHq5IDoEevIPyXBubD5EdNaweRwwym+7+kZCl7BC2haEubbAjpLL7ho8WZN0JRSydt
+	lNmUVCUvfHkXCHKqB1HWD5bsqjJzM8ZPhLh4Y7YPoC+2ESUGqgrZGm2wxxtHVbARmO6ZWYYDXxR
+	6GQ6wgRPbxoVyvtrukzitlw==
+X-Received: by 2002:a05:6820:1c84:b0:6f8:3d45:b469 with SMTP id 006d021491bc7-6f83d460e66mr9271597eaf.86.1792107218216;
+        Thu, 15 Oct 2026 16:33:38 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-70188bd9ecdsm525519eaf.2.2026.10.15.16.33.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 16:22:28 -0700 (PDT)
-From: Omar Ramadan <omar@blockcast.net>
-To: netdev-bot+sashiko@kernel.org
-Cc: Taehee Yoo <ap420073@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net v4 0/5] amt: relay tunnel lifetime, validation and request-path hardening
-Date: Thu, 15 Oct 2026 23:22:26 +0000
-Message-ID: <20261015232227.2929175-1-omar@blockcast.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261013175407.947606-1-omar@blockcast.net>
-References: <20261013175407.947606-1-omar@blockcast.net>
+        Thu, 15 Oct 2026 16:33:37 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net v4 0/5] ptp: make virtual clock sampling and teardown
+ failure-safe
+Date: Thu, 15 Oct 2026 17:33:30 -0600
+Message-Id: <20261015-ptp-vclock-sampling-v4-0-cba6ffc8ceb6@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/33NTQrCMBAF4KtI1o7MJDU0rryHuIjJtA32j6YER
+ Xp3QxciUly+ecz3XiLyFDiK0+4lJk4hhqHPodjvhGtsXzMEn7OQKDUahTDOIyTXDu4O0XZjG/o
+ aDMrKlAWWziiRP8eJq/BY1YvoeRbXfGxCnIfpuS4lWqu/aCIgcEQ3R1obsnyuOxvagxu61UvyY
+ xDicduQgFCyJ+kLT2irX0N9GaS2DZUNr5gLtlpWTn8by7K8AbaT4nBDAQAA
+X-Change-ID: 20260930-ptp-vclock-sampling-902f98408c93
+To: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Yangbo Lu <yangbo.lu@nxp.com>, 
+ Miroslav Lichvar <mlichvar@redhat.com>
+Cc: Eric Dumazet <edumazet@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-Thanks for the review. These comments are against the v3 series; v4 has
-addressed the review issues introduced or exposed at those bisect points.
+Fix virtual-clock sampling errors, registration rollback and parent
+teardown in separate patches. Keep failed PHC reads out of the timecounter
+and serialize extended samples with virtual-clock adjustments. Also
+preserve the zero sentinel for packets without hardware timestamps.
 
-The Update path now takes tunnel->lock and checks READ_ONCE(tunnel->dead)
-before either the IGMP or MLD report handler. Both tunnel freers set dead
-before clearing groups, so an Update that acquires the lock after teardown
-starts cannot add a group or arm its group_timer. An Update that acquires the
-lock first is covered by the same lock ordering: teardown waits for the
-handler before clearing the group list.
+Retain the existing cyclecounter mask, scaling and conversion windows.
+Retry failed refreshes promptly and queue the first refresh immediately
+after registration. This does not guarantee recovery across prolonged
+sampling gaps or assume full-width nanosecond samples.
 
-amt_dev_stop() no longer uses list_splice_init(). It marks all tunnels dead,
-then removes one tunnel at a time with list_del_rcu() while holding amt->lock,
-and performs cancel_delayed_work_sync(), group clearing, and kfree_rcu()
-outside the lock. Every lockless reader therefore keeps the real list head as
-its terminator, and the post-stop get_or_create() path also rejects creation
-when !netif_running(amt->dev).
+Changes in v4:
+- Retry failed refreshes after 10 ms, keeping the normal two-second
+  interval after success.
+- Queue the first refresh immediately after registration, while keeping
+  counter initialization before publication.
+- Clarify the half-wrap conversion window and full-wrap sampling limit.
+- Document the zero-input return from ptp_convert_timestamp().
+- Add Vadim Fedorenko's Reviewed-by tags to patches 1 and 5.
+- Rebase onto current net.
+- Link to v3: https://patch.msgid.link/20261013-ptp-vclock-sampling-v3-0-d3ee4ea62fc6@gmail.com
 
-The Request-only lifetime issue is removed by v4's final patch. Requests are
-stateless and do not allocate tunnel entries; tunnel state is created only
-after a Membership Update authenticates. last_seen therefore describes a
-valid Update again, and the global and per-source limits cannot be consumed
-by unauthenticated Requests.
+Changes in v3:
+- Split the independent fixes into separate patches, as requested by Paolo.
+- Retain the existing timecounter arithmetic and conversion windows; drop
+  the full-width rewrite and extended-read anchor updates from v2.
+- Propagate registration errors through sysfs, including a failed initial
+  PHC sample, and initialize the counter before publishing the clock.
+- Preserve absent hardware timestamps instead of converting zero.
+- Correct the sysfs teardown rationale and its Fixes tag.
+- Rebase onto current net.
+- Link to v2: https://patch.msgid.link/20261005-ptp-vclock-sampling-v2-0-8ed12d4d10af@gmail.com
 
-The group and source timer workers now hold RCU while finding their owners
-and take tunnel->lock before checking dead state. A worker that races with
-teardown exits safely; the group worker also releases the device reference
-that its timer owns. This closes the callback lifetime and double-removal
-races raised in the review.
+Changes in v2:
+- Drain virtual clock sysfs changes before parent unregister walks children.
+- Use full-width samples and overflow-safe scaling across long sampling gaps.
+- Update the anchor for extended and cross-timestamp reads under the clock lock.
+- Link to v1: https://patch.msgid.link/20260930-ptp-vclock-sampling-v1-1-c11bc16691ae@gmail.com
 
-pw-bot: cr
+Assisted-by: Codex:gpt-6-astra
+---
+James Hilliard (5):
+      ptp: drain virtual clock sysfs operations before unregistering children
+      ptp: unwind partially completed virtual clock creation
+      ptp: vclock: propagate physical clock sampling errors
+      ptp: vclock: serialize extended samples with counter updates
+      ptp: vclock: preserve missing hardware timestamps
+
+ drivers/ptp/ptp_clock.c          |   5 ++
+ drivers/ptp/ptp_private.h        |   4 +-
+ drivers/ptp/ptp_sysfs.c          |  18 ++++++-
+ drivers/ptp/ptp_vclock.c         | 109 +++++++++++++++++++++++++--------------
+ include/linux/ptp_clock_kernel.h |   2 +-
+ 5 files changed, 95 insertions(+), 43 deletions(-)
+---
+base-commit: 045958acaa75205b31578cb22c4345e28dd2e4bf
+change-id: 20260930-ptp-vclock-sampling-902f98408c93
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
