@@ -1,67 +1,67 @@
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F9224AB3C1
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 18:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61CD56E05E
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 18:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792087459; cv=none; b=tumSKpIKCJKo75ChFpv5kARFaALv0jGSpS9dJsBKQoroG9Nie4tm/W3HlrRmGSma9wXsqDZaQwEOE1SGkpFFDj5vbPfoTRDgZyWiOoEshAg5X6YqlCtxCkglXaT6O0dPa9O8r3KOd6b0YxLEPh9xDqecAcEzHbs/zRciZQNaej0=
+	t=1792087668; cv=none; b=p6IToDZYBn8nsp21bHMPKfypD4O/3oFINHsGoqM9hn8IBjK32XOH440FrtwF3ZC/YloTTXCfr9+bUcAykF3TkHms3TdGwxs7j1fEZFMlyYwzu89ySVdpcTs9RK47yixna59uiy24JOqf2xAIamnfZHdwGyjVfDVRBc/2NZD15/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792087459; c=relaxed/simple;
-	bh=RBnf8b8QRw1/pS3XpaIdJOrSUHXXX4v/3KfV3aU8d/U=;
+	s=arc-20240116; t=1792087668; c=relaxed/simple;
+	bh=xAk9jUZ4tHEIPjhowarDu1pLkojlKzRtPIaVJYJ41As=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=mEEZDfC5aTmpLbzF3vJgMDLf4XNS1WQXUH1/ftzvJrJNs2PFFTw5oaJEe+bagT1DbeNfkLMrg9GgLkUHb0WHp6GNKGNshrG94CYDqYXi3zwRIWVfFIFT/tQgymD+Un6w/hLI/Cgrxw8iYPmivJE0R+RaephcmvlVaBzwjBJPSIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K0y6/JQV; arc=none smtp.client-ip=209.85.221.171
+	 MIME-Version:Content-Type; b=fCnvD0sftR+/iMkJhC+XQtE1oW/bQBjNQSXRlJWeTe3qwozzzOmn9WcLK4t/7W+Cax6tM8kHR9fnbcIjMpLRofnf/MX7OEHzqJNaCaiGvYGGvjrl/u8AYa/8cRlQzQ5G3WE5t0JY46ORpAnwbw+SaSmok+MAEqckdLjrJTzUycQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4z1QMg3; arc=none smtp.client-ip=209.85.221.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K0y6/JQV"
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5dc2dc6d3fdso2082435e0c.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 11:04:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4z1QMg3"
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5e94120191cso3559049e0c.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 11:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792087449; x=1792692249; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792087659; x=1792692459; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=xKibE8p71HG4LdZ63GfDMEy7h78ItNosZth3y1tUgIw=;
-        b=K0y6/JQVckusR3gCgEbpAKjuQSxK6tDEeEUf5EVVhI1Bj5ZSnD26bZ8F2ZV/lHKRto
-         rsCwM/lczhyCXf78PNWk4NUacMavAu+c5N5zZmXRf5g2GfIXJJosZsbgRfXyaimSGWx3
-         OnYn5ImGCVwQyYc1/iTvNG4Km3VSKyR94MBjaqse896S5fX7BXd/u7Z71cEHwmqKEsa6
-         uOdEfD3794t+wGlmJjywZbIpFz7XgnRs4cj+nVMgxeXTF9zawJ5yuKdPqVQhircLoErh
-         G17KDBq2W2GyHfIaj3eGW7DoY9D5+MojkuOFd097ebegIgZskywyH1g4C3iZHAXxHwG/
-         gaBw==
+        bh=nq2p8yOce4bNMEA6ygRhHxutRNrExZqu0Cd/fcqSm44=;
+        b=a4z1QMg3lpDADkHZ0FctIrivV63CKx3EReOyWjA5oQvTVEfkTbINiZ0ckZZLvlXeD3
+         SU0Iy5oiPGh4EP+3rxENFq1QGaz5JQjhi3fscWCJhcN5UzhtNFAQvH6mJbvzFa6feFUI
+         PS4HZKyROvXdIGQ98gwjmL17bfLtiXCG7iqnc17e5zBBGQ9P3DGRUR6mvz0frntzWF2E
+         u8NjnM175NdKh4jhI0Ss/32vLg2bMJBImwVa4Mem0eu83UDTuc3A12iiWy2uKqG82muf
+         ZQIIFxHAjdmihHYPgvT1Sykr/GKoKvLGXkFFTf49z3fl4R2ScO9KLUE1HGeUIB6+KoEA
+         keow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792087449; x=1792692249;
+        d=1e100.net; s=20260707; t=1792087659; x=1792692459;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xKibE8p71HG4LdZ63GfDMEy7h78ItNosZth3y1tUgIw=;
-        b=LecsIV1SiLgdHgG+M4xYBM/Xp7mEa2ysMo6E+ndNE7O2RiU3h3oRyp2F6L+5fzF10F
-         SLFoPe/+i+wfOnKpSJcI7mO7ucGQQo+cngvloRVOdfZIr8ITUQa5QHfaJq+diRB/RTPw
-         lfo+Huw2z2pPlpfdP+q/1//9EPnaw8dp51KQQc4VYfJkc6wG7yT5QOpjOk8h1nbjeFy0
-         vGfs/iCp8n+VfoLUqyrPUEc/NB/tS50/2INz/hJ3KFCaRCeuzw88lyJep2sdJLSxSn5t
-         qEyTuol57pAUk7XTRDJi/lnCAYFv7/ASr6lNJDgH/KU923TS86p+m+adI/WMUiqk7bqw
-         hToA==
-X-Forwarded-Encrypted: i=1; AKwUvBw1N14TgUrGwMVD2PfFzQ1heMyE9dBOqG91DvxQCzhORhDL9OJ8g1V1PChFD+uj+0s2J8lCrtA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYK9VDdJfYyh61fdBkXys/cHMw4iN0bMHBN1AYNCw9RqcTw3cFOX
-	seiC05RebLTFq7cOitmlUnKBmQiRg8Dlde5wQ7hn23oAwh5meqpvEiIf
-X-Gm-Gg: AYBFou1dF+mqc6xL6T7gkiVCV1Au3ibm+eoOoKPu7dQ/GKJddO9jo0OjVp6E2BuXEZ6
-	AU4Y0p4vTUJYhgLbHw+1XFl1Vb93stp5do/JQHTWztxEnftNQ5ZGKFz8IcVqMuNMUijhxWPCbpu
-	nMUYV4DCs2ZAroNjg/fYXH+s3VF6cfmszyCPHMFtMg/6ie5cFG7Dx6Pgo8IUqDgf8Ph1AD3kQlx
-	ZN0bOggLklWTbjVabTXsz/k13+v6kTIWeS26DW2mPiuAwUr671gM2jXl/G7w1gqTEsteXtscTxy
-	dvQOA4cbL/0VcF8EAevIUVtuW6h8zVcSjkjxEmagVQmjfWEcwvhBGi2hU7JAHn5o9x6HerDeUuY
-	OdbxR8PARHmfJQMLlAenjvL4HBPImzNxDyNyB+MdM5fE1odi9GAp60fc8nW6AGfhWlWCmem0cns
-	MMXVyhymRq91PVGozsfgQKRuYuuiRQiDbsneAY0SEfx6VA03rGM+cTQOwVXZZLpsAMSs+713jMg
-	1sRQ1v9XZ/7JYFTcn9AWsOEuqOVY6eIzogASDrSST1eVw60DfHQyErP6ORq6S4yVMmZneRRwRiR
-	p8prmmFVsMhx4vMGfuFCqnM2zwf5G76vKRFpSw==
-X-Received: by 2002:a05:6122:2388:b0:5ea:98fb:e9de with SMTP id 71dfb90a1353d-5ea98fbeb25mr215788e0c.3.1792087448837;
-        Thu, 15 Oct 2026 11:04:08 -0700 (PDT)
+        bh=nq2p8yOce4bNMEA6ygRhHxutRNrExZqu0Cd/fcqSm44=;
+        b=gMYCG88Ucwv6ipiNGDtn/WmZZhLUxDMTu1c/n69trhPp2BBqXP4OFxPd2Ic1rSpYwD
+         NNYMjuSoEnqFJX1GOS10QSK5AueGjhdg+NL4n/6s7UXZKiocJop7/bgS/ZTQv+/K6OOs
+         x71Nfo0lDeM9copXqBfCEkJE2YMHbNPQezfSwvO7WLQIGm9H32cf6XjbW6ZzJFKbxT4i
+         uXG0zKdMCYXznmFP1nexei1OOCL9jbtBZKkAeX/BnM2j3OV/7bSfLy7P84Fj1QzyXaFC
+         FK8nB9b7o5DsxWIsoqFGy4NUUFpC8r49Q3QVR8QiXFWtFgm1dyRxd4BFrNhZTkeOJZ5q
+         qHhw==
+X-Forwarded-Encrypted: i=1; AKwUvBznyPmf6KwbMRtWFwKmp1vjNCgYzQNdCx9OoYnxJ0EFe/S90rtMjEQ2Q+1PJOYa+rcGbl0W0q0=@vger.kernel.org
+X-Gm-Message-State: AFq9FYLT6ju5kyP6ODYJSHkdgiewXw+OyfwpXuqDpnXF7E4cq6LS8kYn
+	9BtmSwCXw2qJrszIUNahKvj8D1F8Ri+1Rs/6yvXLCC6FihgD0e1tFgqX
+X-Gm-Gg: AYBFou1Sot3YZj01cbRRD6vBSnmuZR8I1OnS2h09uK6gmeNO/C3kfdbOH9FvvLRMOGw
+	568Agl5FvKPtY7k3kRcOb/McpHB8wQQ3kP+wlqq0CFQXIGqvoR1k//UbblINNG86BZYmSUHA71q
+	kEP/0Y92ksBKjmAEF+yTogGygkCZ0fl7fwx6Iqs7X7pEh9E11t1u+yEJ2rQ+KRiWleazIDmB6U2
+	kDuO4FOUzMEcz4MpXItQBH5HjH5M4mFRihsAz9lYlIIUp7feR0bf3Y9l8ZuwOklk64TgYKPolFV
+	LgqkgYJCUzDKvIhJFSlGZwP6jgJcdgq85Uc3TxoPl6ToORNjgZF9GyQ3UQuxQYeGBVNT0Rxc7DI
+	py0RYeXlLcX+GZ3K98KAqxgK5daj8H4KFaO+mEBhdxj7667W6Ltbf0Q2GNi5Tye8UAy84jje2Zq
+	TaKfnlGvYgy2bwKTErYlJbK1414vTYSlS2ebiiHPYV1FpGXqLpP/fl7Z/QtTdAlBc7rHPC/gobd
+	p9vUdgSfeBeDnyPBl2TLDDGQxYRhWnwBKlV4+yRDfNl6fYXl7ku+UqLXyOjKH8xYOZe96VSZ7Cv
+	IW+eZxkOnJuX9OloJqV19YVmFPUXeATAtkx6rQ==
+X-Received: by 2002:a05:6122:8b83:b0:5ea:389c:51e4 with SMTP id 71dfb90a1353d-5ea389c5604mr1033114e0c.2.1792087659373;
+        Thu, 15 Oct 2026 11:07:39 -0700 (PDT)
 Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea9943cdabsm280979e0c.6.2026.10.15.11.04.07
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ea99491db7sm304799e0c.10.2026.10.15.11.07.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 11:04:07 -0700 (PDT)
-Date: Thu, 15 Oct 2026 14:04:07 -0400
+        Thu, 15 Oct 2026 11:07:38 -0700 (PDT)
+Date: Thu, 15 Oct 2026 14:07:38 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
  linux-kernel@vger.kernel.org
@@ -80,7 +80,7 @@ Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
  Max Krasnyansky <maxk@qualcomm.com>, 
  Paulos Yibelo <habte.yibelo@gmail.com>, 
  Chris Arges <carges@cloudflare.com>
-Message-ID: <willemdebruijn.kernel.1a9a8b3792ae6@gmail.com>
+Message-ID: <willemdebruijn.kernel.18c52b086550a@gmail.com>
 In-Reply-To: <e66f7984fdeb8168e07fd7d0dad3deb8c30ead0a.1792067836.git.mst@redhat.com>
 References: <cover.1792067836.git.mst@redhat.com>
  <e66f7984fdeb8168e07fd7d0dad3deb8c30ead0a.1792067836.git.mst@redhat.com>
@@ -118,65 +118,19 @@ Michael S. Tsirkin wrote:
 > - non-gso packets which can't be parsed get checksum calculated in
 >   software, adding performance overhead
 > - gso packets which can't be parsed get dropped
-> 
-> To mitigate the risks, the following patch will add a sysctl knob to
-> bypass the resolution. This is reasonable if the setup is such that
-> there is no protocol processing at all.
-> 
-> UDP tunnel headers get the same handling on the inner header.
-> 
-> Packets without VIRTIO_NET_HDR_F_NEEDS_CSUM are unaffected.
-> 
-> Assisted-by: LLM
-> Reported-by: Paulos Yibelo <habte.yibelo@gmail.com>
-> Reported-by: Chris Arges <carges@cloudflare.com>
-> Tested-by: Chris Arges <carges@cloudflare.com>
-> Fixes: f43798c27684 ("tun: Allow GSO using virtio_net_hdr")
-> Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->  include/linux/virtio_net.h | 251 +++++++++++++++++++++++++++++++++++--
->  1 file changed, 241 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> index d6466f96cdd0..357115ff0ec2 100644
-> --- a/include/linux/virtio_net.h
-> +++ b/include/linux/virtio_net.h
-> @@ -5,7 +5,11 @@
->  #include <linux/if_vlan.h>
->  #include <linux/ip.h>
->  #include <linux/ipv6.h>
-> +#include <linux/netdevice.h>
->  #include <linux/udp.h>
-> +#include <net/gso.h>
-> +#include <net/ip.h>
-> +#include <net/ipv6.h>
->  #include <net/tcp.h>
->  #include <uapi/linux/tcp.h>
->  #include <uapi/linux/virtio_net.h>
 
->  static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->  					  const struct virtio_net_hdr *hdr,
->  					  bool little_endian, u8 hdr_gso_type)
-> @@ -158,8 +327,6 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->  		case SKB_GSO_UDP_L4:
->  			if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
->  				return -EINVAL;
-> -			if (skb->csum_offset != offsetof(struct udphdr, check))
-> -				return -EINVAL;
->  			if (skb->len - p_off > gso_size * UDP_MAX_SEGMENTS)
->  				return -EINVAL;
->  			if (gso_type != SKB_GSO_UDP_L4)
-> @@ -167,10 +334,6 @@ static inline int __virtio_net_hdr_to_skb(struct sk_buff *skb,
->  			break;
->  		case SKB_GSO_TCPV4:
->  		case SKB_GSO_TCPV6:
-> -			if (skb->ip_summed == CHECKSUM_PARTIAL &&
-> -			    skb->csum_offset != offsetof(struct tcphdr, check))
-> -				return -EINVAL;
-> -
+The biggest risk I see of valid packets reaching this path is packet
+sockets that are not bound to a specific protocol (ETH_P_ALL) over a
+non Ethernet device.
 
-Maybe keep this and the above check, to keep things exactly as is when the
-sysctl is disabled.
+Iff proto is 0 we could try to infer from the first nibble at the
+network header:
 
-Removing these checks weakens validation vs the present state.
++	iph = (const void *)(skb->data + nhoff);
++	if (!proto) {
++		if (iph->version == 4)
++			proto = htons(ETH_P_IP);
++		else if (iph->version == 6)
++			proto = htons(ETH_P_IPV6);
++	}
+
