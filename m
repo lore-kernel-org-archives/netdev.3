@@ -1,89 +1,78 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EA6502790;
-	Thu, 15 Oct 2026 10:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37138503BF4;
+	Thu, 15 Oct 2026 10:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792060672; cv=none; b=CCawW84/VHyHVC+OIkrXpwHdL2D8sFM+WObjuRIF15dxAybjAKcZhfImFCpP4xkpCeM1pK2ysBKA7AIEqh7OuUbyQhuTEv+c59hCjZz9Wz8a77f21yFsIiRGwV7sYP6WNpiTIVVHpWU1Hkn2YuMS8iwoOOpZmzmR6SOa+ryuats=
+	t=1792060826; cv=none; b=ukQuem6EibuWM56d1D7aJfiVxidGubg6rvur8/yJNLcJOSXNZay5t2Nk0AV0ND97CjtjGX3jCxTDKtbACMcsS1Q0funvxyy6+p/wckert3GiyrjuSiiqwTmVguJ4c7hoZPBIBbO0lmkZ7El4X8Ox2ETpQjIiRkas57ZOwnVDCsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792060672; c=relaxed/simple;
-	bh=pi1spHJrkmpthoLfYy09/FDeB23hvcdEhXdU/TPtt+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L9XDB1ehHB7Bl8MlY8Fbn0fBwquHmkr9puzzGgGutfJtQop0sOdIoZYVkspsmRcbLlMs24CwU2qRhPY1oI5cHrigZHH76fEpgdCDrTsRvbPsF2peTFt6lD3WqEq/2NuQDrOciKEkxPmgtpoBCD+RnZ7kF7qRA3LXOam/83X59yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=gh2+J9kB; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1792060826; c=relaxed/simple;
+	bh=6QnLYhTuITx1Dvbnjsv9kmV5C0rki8dpp8VFdnDGLZM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=mf3RQYOaLcgJ2DVPPW/i965j8yu9V1n+sOxtgy6sxe4hexywsQH4+tlTpXV5FiaiMPq16yqrbJMBGMPNJZNjOvln7u9sqWK552egNai0QSDfGVwHJQnPhdIu9OzVyN8IoABJzRQb4AAq/5ULEA52nMxaaUTj7iLJZSWdAtkIQ0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mx2QYl0Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="gh2+J9kB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1792060668;
-	bh=x1hTOdx9HBwQjS6C/jhkTLQ0ZT4WclQ+JGizpYah/yI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gh2+J9kBcDUzR6Em3XBL8H7KwQoVn2ySnfvdMZ0CfcTSOU8jqCIg9UzZYEOGpceEi
-	 N4864J4TR8KVbA+9KLp5+Rt2O08n68WsZ/fqsGQbiP/ZxT7gCnZGiSjpxCZIoEgcEc
-	 hoxGs4LqNWytQzxWrZUhA3JeSlVdjZaUtNb1MiMAuYdAlL5MK79OSdLjmWSsJRSRWR
-	 4Lt6sc+mTO6FbZuBIs8Pi7bigLeczAMqtKHMx5/TNI5YS7VLUn12VjR680cHN5VV92
-	 +17LgCKnL8z/XC4nYThooGpvXA7rg8Vf97PEZYcNVs7usqM+ng4izf32O1gGrgdDem
-	 OexN5VZ9ATNQg==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id EEFEF60074;
-	Thu, 15 Oct 2026 12:37:47 +0200 (CEST)
-Date: Thu, 15 Oct 2026 12:37:45 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Julius Bairaktaris <julius@bairaktaris.de>
-Cc: netfilter-devel@vger.kernel.org, fw@strlen.de, kadlec@netfilter.org,
-	phil@nwl.cc, horms@kernel.org, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	shuah@kernel.org, razor@blackwall.org, idosch@nvidia.com,
-	ericwouds@gmail.com, dqfext@gmail.com, netdev@vger.kernel.org,
-	coreteam@netfilter.org, linux-kselftest@vger.kernel.org,
-	bridge@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH nf-next v7 1/2] netfilter: flowtable: tear down direct
- xmit flows when the fdb entry moves
-Message-ID: <atCs-U_AXIyvvpKd@chamomile>
-References: <20261014235628.197976-1-julius@bairaktaris.de>
- <20261014235628.197976-2-julius@bairaktaris.de>
- <atCsGx2IRecQNK3r@chamomile>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mx2QYl0Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9251F000C4;
+	Thu, 15 Oct 2026 10:40:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792060824;
+	bh=9y/dCGag0YklyJ0+G8qH9kDNVYd08PFkR4SRAnALcEo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=Mx2QYl0QC8m9TsHbuGsSswjPidDOuNnXwDlR/CEfMFtn3SiHHbs1wE/UFrhlI1r5j
+	 tNzlrwJKGb9qK5Dv9F/7fqQ/EYDgBAVp6ZfTskb80PG10q76u5RMAaQTl3GTNh53X5
+	 zjeFfjAE2ccxY9lHeB8VK5OAaRi8nmnMpT+OnCUJuSGmpl31HRMJTtnSFMzsK8baZW
+	 KUoTBojZEvsTCsejtwT4FEPQW8XMAaWmpjKPEjAw0sR7mR+kwVFk2qSeBCDvRnDlgh
+	 l5oriCnDSwUqgF2v6ggSrJoqisNo4FC6RSsfj53/vVmqMmp4d84xms3ZuDbECLYUL9
+	 /cwIar2JCpQlg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B4467392EA58;
+	Thu, 15 Oct 2026 10:40:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <atCsGx2IRecQNK3r@chamomile>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] dt-bindings: net: ethernet-controller: Allow
+ "ethernet-N" node names
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179206082337.3345829.7874654486393814216.git-patchwork-notify@kernel.org>
+Date: Thu, 15 Oct 2026 10:40:23 +0000
+References: <20261009155444.2347045-2-robh@kernel.org>
+In-Reply-To: <20261009155444.2347045-2-robh@kernel.org>
+To: Rob Herring (Arm) <robh@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, krzk+dt@kernel.org, conor+dt@kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Thu, Oct 15, 2026 at 12:34:06PM +0200, Pablo Neira Ayuso wrote:
-> On Thu, Oct 15, 2026 at 01:56:26AM +0200, Julius Bairaktaris wrote:
-[...]
-> > @@ -183,6 +185,11 @@ static int nft_dev_path_info(struct net_device_path_stack *stack,
-> >  			case DEV_PATH_BR_VLAN_KEEP:
-> >  				break;
-> >  			}
-> > +			/* dev_fill_forward_path() adds the bridge port after
-> > +			 * the bridge.
-> > +			 */
-> > +			info->bridge_ifidx = stack->path[i + 1].dev->ifindex;
-> > +			info->bridge_vid = path->bridge.vlan_id;
-> 
-> Why do we need this new bridge_vid field? This is stored in info->encaps.
-> 
->                 case DEV_PATH_BR_VLAN_TAG:
->                                 if (info->num_encaps >= NF_FLOW_TABLE_ENCAP_MAX)
->                                         goto err_out;
->  
->                                 info->encap[info->num_encaps].id = path->bridge.vlan_id;
-> 
-> My understanding is that this is need to know if this vlan coming from
-> bridge vlan filtering (not vlan device), but it is possible to track
-> this in a local variable while walking over the path stack?
+Hello:
 
-A new flag might be need, but there is room for new flags to annotate
-this VLAN header came from bridge filter filtering, I understand
-info->encap is not enough.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-> >  			info->xmit_type = FLOW_OFFLOAD_XMIT_DIRECT;
-> >  			break;
-> >  		default:
+On Fri,  9 Oct 2026 10:54:45 -0500 you wrote:
+> The HiSilicon hisilicon,hns-nic-v2 binding uses "ethernet-N" node names
+> as there is no "reg" property and multiple instances. Add support for
+> this pattern which is a common pattern on other node names.
+> 
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> ---
+>  Documentation/devicetree/bindings/net/ethernet-controller.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Here is the summary with links:
+  - [net-next] dt-bindings: net: ethernet-controller: Allow "ethernet-N" node names
+    https://git.kernel.org/netdev/net-next/c/d8839381c196
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
