@@ -1,129 +1,159 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011037.outbound.protection.outlook.com [40.107.208.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D914A3F02
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 11:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792065181; cv=fail; b=ukrFjz2TnznfaXQzp1BofP39bqRNlSN0QfgiMriFi9TcfSzn0vYb7HKlp3q0SyJXe9qcQfC4mJ9aVvfJCFps/2o0rNHelBX9U94P8i9P9ukF3nvQ2e5I3gSGwX7XpFumtzjBBl1DxyPzjxkX5s63SkDCFW48Ri8PUMoRbqe0eu0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792065181; c=relaxed/simple;
-	bh=5hK58d6ysrinr1E0B7fojDadSyKEbU0nDunAFLAeZsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=XNSJsk5kTMsVtFcj/Gm4GbDle2cHiSUrftx9nUOaHfXffheYQ1RQElNLw6aH/IuOr8ZETE1evK1qPg2JGBcRIKrYT81khGXc2RuldJMf4BqEgQvIPxBLE6qNcvrVQwb8Q7kl7hVFSm+khVEmEzgsYeX71Im8b969iLNEu5YV9Rc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=h/7oKwhC; arc=fail smtp.client-ip=40.107.208.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AD146C4C5;
+	Thu, 15 Oct 2026 11:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792065212; cv=none; b=ry632iqa5iimJok/KF0ax6udLvO48jGTaLXcJgQlst0RNkccV1OanyxE2p5womz7vcm+vmfhk66bQuMqsMsqwH/vBGYcLAJYkP3QPOUkN5qGrOGR46ZrL7zkX9nsT/o0MpB/7rFn5cv6rGiJ01G5zfz1sgOpK5x371ZTIQIXxX4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792065212; c=relaxed/simple;
+	bh=ojTtm/s6ghvhqfVqGZpxsFVWWkyo0teHaxlRnB4svMw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q6A3uP84PRCktjxe8Fcz3CgoFY6wKouGvFuK8EleRmx8KGHMLsh7O2MJs+uTrf3AvF0uEFo+69DpSXO1+a+mn0xLdh6+RikvhUCirWLxxwPJFfJot4AvlAgwxAaQd7Jf1qgaSxwlEYGPqHS5Wq1rvvluWJQ0QG5N539M639ERLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mjE832Lg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="h/7oKwhC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zRLCDCo3lBG6yVvDrS4SyzktwSjVJwuaz1rf/ZQeaz40Lyt3HqM8Qft3gk2af72kZxdf+Vug6tA5Hg1MJvg5BAkU7ZCiPWC3flq72DhxWok9uYnj+P+OifsC/dwfyFeSfmayUcJbxu+xx3AzFgWie97XYDLIcdQQWwgrcq6bb3zavg54LNAwnj/oYJLen4H30mihrjNNjLKWgWHl5UPL0WfCDgzZu12sc+wBYaVV/s0wmbur/DWLsgg2+LOE/LfCkkbSoxPQlh5Bo2Oq1alKNaCR7ftItfkKHMMlcy6qpN2vGX+61KYg/30YuZpoXcPl/aGrz8lV1F6mjwxAUQ3eeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ek6j5OeUrDHx7bwL56fzPEs25c4qJgH3KLnNrWdMb94=;
- b=m5hyuMSbqaKMu4fCG+qn3Wc0eNEbEq148sMsXGduFHaU/bmyQpr8ouYCyKA/64CxiyTqsYlnLY384aOyDT9ZM9Hdd1YGNOqjaiP2GhqaWCeqRpx6CvJwzWhJ/Toc7JhCtfKZioVs5wcXN8IHmkgSe3sOJN666GOcQjQ1wxPkKYScDObPEX5NXqPdTUSnio8EUi1bMsuFT8jGSdYVVmzV4cig0yJCkrGot/puUJaUvUny1bmxaU5MYy1DOnS9AEqf7ANMxkM1eCkeqphZI+f+ATj0MbxKSqhYiVHpzeTc4xgNF7XUZ/n6uP0LkZbmoPlyBO4v/xvSTGZGwYB0sO+XHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ek6j5OeUrDHx7bwL56fzPEs25c4qJgH3KLnNrWdMb94=;
- b=h/7oKwhCv/qnW7MeS3PueT33+aye74CHXfhTAX6WaWNCtJ+npBhLwlqAl7dBr15ZhzGUtxRg/Bvo/aOczbnjhdQU9+J6xYJVt9Y2GyOuDPfWbHFasdQydQL/dDMyzKInQm0y7bvCKprAeIzKrHVpzFVIk7Ub/8xbY5dZrQXXoTflrz1bvmvVOFogUysaQd3hwwhp+iL6n0cONw2V57sLJ0QkKyE5KHDAKgPn6UCnB9XKzJ4i96YDZpi+goPjomL8uXAsXD6nJrBbu0KKGETWyhYi8TDsMmB1k/x6m5j5/qcTaO8JP3HR4IzG5khgezA7XknSE7gpjbn9UuYpNCBkQQ==
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by BY5PR12MB4147.namprd12.prod.outlook.com (2603:10b6:a03:205::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
- 2026 11:52:57 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.021; Thu, 15 Oct 2026
- 11:52:57 +0000
-Date: Thu, 15 Oct 2026 14:52:48 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Zhiling Zou <zhilinz@nebusec.ai>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, davem@davemloft.net,
-	edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	vega@nebusec.ai
-Subject: Re: [PATCH net 0/1] ipmr: validate VIF indexes before offload lookup
-Message-ID: <20261015115248.GB1716181@shredder>
-References: <cover.1791899747.git.zhilinz@nebusec.ai>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1791899747.git.zhilinz@nebusec.ai>
-X-ClientProxiedBy: FR4P281CA0077.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cd::17) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mjE832Lg"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 51E8FC2BCF5;
+	Thu, 15 Oct 2026 11:53:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1792065212;
+	bh=ojTtm/s6ghvhqfVqGZpxsFVWWkyo0teHaxlRnB4svMw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=mjE832LgwODzHsag+3+oSlyY/5zqpyppi+Cr7+PB3IcP8YSqpDEXQNf/Go9pnrWNJ
+	 /OIXONLTlIT450NpVVOuFqUTuDgECTnw2K+8Ls3sboNnOd38HoXqwX1k8FeUdqLG3U
+	 eZtuIIAivgexcNOKYkB5pW2BKUMqEK1eX7Hs09SwFMp8ryZTswfp/WQ0Hd9CogJ8Sv
+	 kvguWSj0Wkx4a87MHLQkGL8ayD+ojYVifONSEB03ThY6BmNKTMGIytF6Zgqv9UScT8
+	 5nOJFDmDFm9JZKcaTJ4e1cOdU7LpBI1EoUm5RJdSvkw/jFVqEyALkV66mA+j8Ln3k+
+	 DXnT0Lb9nEteA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BF5ACC6B33;
+	Thu, 15 Oct 2026 11:53:32 +0000 (UTC)
+From: Bryam Vargas via B4 Relay <devnull+hexlabsecurity.proton.me@kernel.org>
+Subject: [PATCH net v5 0/2] net/smc: order the CDC receive path against
+ buffer publication
+Date: Thu, 15 Oct 2026 06:53:30 -0500
+Message-Id: <20261015-b4-disp-2a8d85ef-v5-0-6b795e8263c9@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|BY5PR12MB4147:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7d40b45-98d6-467d-71dd-08df2ab2dac8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|56012099006|11063799006|261009223027099003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	7d33QfrK8tFG5k2sqal6+STlrPfe1xnSHcskwgl2238exnUw+Ok10PEcxbXn+r0RwlS8D0811Xxl5gv6PhPfgImjSJBKBCf2D+ocMAagURz4aF2xZ20tORZij0IpYTHGV2SAxXIm6GDNZnYVmkpkdacHbFiJyzTW57jdUZgvPZ1hYEjEAuRnOMRKMmcP4fld1yp3+u0UzFKxhnIZtbP2dMzScaFKIsK00p3bLsT9YmF9JgyF9GF3vBSRsb7jNSNaj7JDVmaBSvjgr3blVR4vh/gRXgGmDz0y48Qnogc1UNt6CgYnr9OdGwKK+2Run3/cosoK3xhCoWNpwPaSKtf2/xhSWv6jYvIDM+vvg7GBbE3hihOk1JX0NDrEPlXih+I9UWzttJmhePTosfWohtITqmhzZDfHOUGAJ1kewPRJl5HVtnaV24+sABX4GYnKiwzfBGEguTGRwbjjIDdH00Rk5ZoiFTwnDIiDPLZTkZYKIzDTFi/UlOzP++9e/5o7xLxWtWNpzsgojpBLwoqE3MGYSUsroqo2dFgouVowYg0HIrhnB1F/xo1VeLKT+mH7xGd94tH6Z2AbeynSjEn6famJQAGsh8R3QrjVYZjzAuy36U5uOV+puVx1CO+swDfJjBvzbBm4sCc/Z4dlJWIsaKbC9RqSaejAoZb2keokyFl7l3M=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(56012099006)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e4VkpRB63cnDGK6mvg9cL8dOF8H9obif0FZRG87Kv9a7jM47xE46DzrxSE20?=
- =?us-ascii?Q?B0xBn77XzflJ5xeXr1lV/w7FNsGsWUl5F8+RKYGCRPEypDVgdke2Ukm95AHp?=
- =?us-ascii?Q?U2K8NBnezoiIU94vydjNIDOvMRha9ASWY7J153zhQGx1ZecgoDmTRmMlDUUG?=
- =?us-ascii?Q?l0mPojzJ+5Q9YTWZclDR/z9aARKN5OxSM2PVRMrvbX1hlsjbTIhLSGuT1bsL?=
- =?us-ascii?Q?7eO71M3MXJvNWx5u5IjXsp3kCvFc1N6rObS7pO4kaXRJWC4tI8qNpeD3Vc7B?=
- =?us-ascii?Q?HQmoVUubJiuEYnPKXLiwAc4RChrVoEVK4jSGNBTX7hoLKbYulkuBGnNryTv0?=
- =?us-ascii?Q?/REzKfIuGL3XAU0wKfNDZ3pJ0pGYxDOMd5OVR+t0KcAFAfD1xDNUJ40Q3bGQ?=
- =?us-ascii?Q?/x+XK9+UfiXBMKnyGFpfngf5kzTyLy0YRFMMQ7+WgsAvmu5+K4D4g4Eur0Qy?=
- =?us-ascii?Q?iCyWmDBV+TQCs+B3HAmZ48sFQ6VJx4KU3kN9XiuOAfNy2KgckjM15zexWEFF?=
- =?us-ascii?Q?ZtDLjhbIDaMt4Jh0+2DYT5ySppXv394ra3pcaECs80VEArT7rVeTXE6TpMmf?=
- =?us-ascii?Q?fNvgeiFyy1J+qtVjrogmRY2Vw4bD9hFNj2jR4QqgEy8DM1OA5aeMOnL4a08N?=
- =?us-ascii?Q?WwCrxvflM8phRgH78ijGMq4pKvOa68xcqCtxNEljzkDTmSeWO6ICumdk/Niv?=
- =?us-ascii?Q?DHlvC+G1x7LmG0e1vyJxmSoVCZL+/Ww8gT3T6s9L2W2z+dVTBfg6heMW/KAg?=
- =?us-ascii?Q?AiWNqt8ipWVmMg0SaWRCw8fzdLzMpjTPh2HXXDph0IHtr4cZQEXSXI+PC6b+?=
- =?us-ascii?Q?XLfSreX3kDjoCOrytT8aQ5SShzrDniuaWpymENIghvtOvrcJj+YLYpjRL+RO?=
- =?us-ascii?Q?4ihkxTwEvwpx0j5+rdX+wNqOmxnEG4yB764yqNu2sx8Lfb6fa4GUlmPJfGxd?=
- =?us-ascii?Q?zNZYlwKVxF4TfoHW5X1QPAH9j3vYqVmVFENExUwLttdAlmNYReO27Vn0bhdK?=
- =?us-ascii?Q?5jmHfz8NmoGP7R3gc1c2e31CBabbB0YWthOPJleq4ArWnZeyYIBbLHtHCGMG?=
- =?us-ascii?Q?NnnHVFZ7nuk1+t+MOETYVCdaUPWQ+a2HB5OYWYYrfvXERkTgNvkug5WUcCnH?=
- =?us-ascii?Q?PKWS47/VHpU6GD29b9c0SFsvbpVFV84KKmX/uC0+MoYbgUyJiTU96RNTvJXY?=
- =?us-ascii?Q?+/biXGlUuu4MK/4Y6w4YjNQtmH6JJYljxpkqoz/l4wUDA64t4uaJig6xzVkv?=
- =?us-ascii?Q?CIQSoQ1UGjfd3apCMWhUJV66/4aJzGv81nvL2crDLKJxMxRLopKiRnmLduq4?=
- =?us-ascii?Q?1Iw9PmIrzUhAwv4G+5wlYsoFAnkcDlDJVvqKU3PsvZLBGXoXsP78otWDeEMD?=
- =?us-ascii?Q?bPDjm+FXt+DA2PWvJgc/Ml40Qvl+lc+OPXO+TnC/iwcgfurqYskiHF37do2D?=
- =?us-ascii?Q?/MD2033ciUEKWAwse2JqIW95F2mfmuUY99JHmorS53La65MNpt3HWQ/Lh5iT?=
- =?us-ascii?Q?8bvLfAyxXL9rH0wcvMc8aHtNDJoUZPbf4ijrDnFDUoLShrgJAkq2b60D2497?=
- =?us-ascii?Q?ZNZCN/8INZldaIV1ojhfmIhNUa/y3RBEIyaEFghuvouPEVYWKfvIesvj7EpY?=
- =?us-ascii?Q?1b/SSGbpHpYyHZno5CkL++ZvuUg3crWSFycrz687AG4TCfiSgyBzS0qCmjju?=
- =?us-ascii?Q?JzMqSVU+kII009912RcXDu7ORYmDmazWUZDtg+RgO+SMdSr2zdND41mfw1Sx?=
- =?us-ascii?Q?m5BTvlfmJg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7d40b45-98d6-467d-71dd-08df2ab2dac8
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 11:52:57.4043
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X8jF+DviqSncOZeafamZV57OOIc7KFMAbcjMdMj8UqBMZ2UbR7BHXMSWQyBhCmwkpPJeY4INkfJlbfKTfEtiuQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4147
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMzQrCMBAGX6V8ZxeS0GjwVcRDfra6HmLJtiKUv
+ rtRjzMws0G5CSvOw4bGL1F51g7+MCDfY70xSekMZ9zRGuspjVREZ3IxlOB5IncaQ8rRGrYRPZs
+ bT/L+LS+ovOD6l7qmB+flO8O+fwBr0whpeQAAAA==
+X-Change-ID: 20261015-b4-disp-2a8d85ef-2748bca10e1a
+To: Jakub Kicinski <kuba@kernel.org>, Dust Li <dust.li@linux.alibaba.com>, 
+ Sidraya Jayagond <sidraya@linux.ibm.com>, 
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
+ "D. Wythe" <alibuda@linux.alibaba.com>, 
+ Mahanta Jambigi <mjambigi@linux.ibm.com>, 
+ Eric Dumazet <edumazet@kernel.org>
+Cc: Simon Horman <horms@kernel.org>, Wenjia Zhang <wenjia@linux.ibm.com>, 
+ Ursula Braun <ubraun@linux.ibm.com>, Hans Wippel <hwippel@linux.ibm.com>, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Tony Lu <tonylu@linux.alibaba.com>, linux-rdma@vger.kernel.org, 
+ Wen Gu <guwen@linux.alibaba.com>, linux-s390@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792065211; l=4756;
+ i=hexlabsecurity@proton.me; s=default; h=from:subject:message-id;
+ bh=ojTtm/s6ghvhqfVqGZpxsFVWWkyo0teHaxlRnB4svMw=;
+ b=5mPEIctDtJFLhlsm2cF1XuIpR/sLLdEmcojEZU0dDPbUQqwr2UFZxsJHTSX556dvjNZJdckwi
+ Li9k8jCumzKC5H8zD6DZk5i9vYJiZMocutX8FR5bur77tSwAyMPS1ea
+X-Developer-Key: i=hexlabsecurity@proton.me; a=ed25519;
+ pk=xw1AhCtQdvuoQc+bOQIYy9o8G++cp4/VniI2G/tc3G8=
+X-Endpoint-Received: by B4 Relay for hexlabsecurity@proton.me/default with
+ auth_id=893
+X-Original-From: Bryam Vargas <hexlabsecurity@proton.me>
+Reply-To: hexlabsecurity@proton.me
 
-On Tue, Oct 13, 2026 at 10:33:56PM +0800, Zhiling Zou wrote:
-> Hi Linux kernel maintainers,
-> 
-> We found and validated an issue in net/ipv4/ipmr.c.
+A CDC can reach a connection before its RMB, or its SMC-D nocopy send
+buffer, is set, and smc_cdc_msg_recv_action() then derefs a NULL
+pointer in softirq. For the SMC-R RMB (1/2) the CDC comes from a peer
+in the link group that predicts the next token. For the nocopy sndbuf
+(2/2, SMC-D loopback only) it comes from the old peer of a reused DMB.
+Each patch sets its pointer last with a release store, and the rx path
+drops the CDC (1/2) or skips the nocopy accounting (2/2) while the
+pointer is unset.
 
-It's quite frustrating to see this given that you abandoned a previous
-ipmr bug fix:
+1/2 goes back to 69cb7dc0218b (v4.18), 2/2 to cc0ab806fc52 (v6.10).
+2/2 relies on b395dd319cea ("net/smc: do not dereference an unset send
+buffer on the SMC-D teardown path"), already in 6.12.y, 6.18.y and
+7.2.y.
 
-https://lore.kernel.org/netdev/20260903113055.GA90787@shredder/
+The old peer can also close the new connection or, once the sndbuf is
+attached, push the new connection's sndbuf_space past the sndbuf size,
+with or without this series; 3/4 of my v7 series [1] bounds the send()
+copy, not sndbuf_space. FWIW smc_conn_free() releasing the RMB before
+the connection leaves the token tree [2] is pre-existing too.
+
+1/2 conflicts in __smc_buf_create() with v7 2/4: keep v7's rmb_len
+assignment at the top of the is_rmb block, before the release store,
+and the tree is the same in either merge order.
+
+v7 1/4 adds an rmb_desc->len load in smcr_cdc_msg_to_host() that any CDC
+in 1/2's window reaches (by inspection), as Sashiko flagged [3]. In C,
+net already loads rmb_desc->len later in smc_cdc_msg_recv_action(), as I
+told Paolo [4], but in my x86 and s390x builds that load only runs when
+the cursor wraps differ. 1/2 drops the CDC before both loads.
+
+Tested with KASAN on x86 (v7.3-rc6, whose net/smc differs from net only
+by 64a6b36b0e18) and on s390x under QEMU (net). Unpatched, two cases
+with the cursor wraps apart reach their NULL loads: a CDC forged with
+the next token (1/2, over rxe), and the old peer's consumer update to
+a reused DMB (2/2). In the second, nothing is forged, but the old peer
+times its read off a test-only counter and the new connect() is starved
+of CPU. KASAN reports a null-ptr-deref on x86; on s390x, with the
+default lowcore, each load reads page 0 and nothing faults. With the
+series, and test-only delays holding the windows open, test-only probes
+see the CDC dropped and the update skip the accounting with the cursor
+wraps apart. With either NULL check removed they see the NULL load
+again, and with either store moved back they see a CDC handled before
+the fields that go with the pointer are set. On top of the v7 series and
+two other net fixes [5] [6], the patched runs read the same. The
+ordering was also checked against LKMM. Test patch and logs on request.
+
+v5:
+ - Split in two, one patch per Fixes: tag, and rebased on net, which
+   now has the SMC-D teardown fixes 36cdf5d48ca1 and b395dd319cea.
+ - Dropped the sndbuf_desc check on the consumer trigger, unneeded
+   after b395dd319cea, and the tasklet's rmb_desc acquire, as
+   smcd->lock orders that load (by inspection). The sndbuf_desc
+   acquire moved into the nocopy branch.
+ - Kept per-buffer checks: one readiness flag would drop a conforming
+   client's first CDC on SMC-D, and registering the connection later
+   would reorder the connect and listen paths.
+ - The Closes: tag now points at Sashiko's report [3], not at a review
+   of v2. Dropped the R-b tags from Dust Li and Sidraya Jayagond, since
+   the patch changed.
+v4: https://lore.kernel.org/all/20260728-b4-disp-52ee4e7d-v4-1-0dda94b0f397@proton.me/
+v3: https://lore.kernel.org/all/20260716-b4-disp-aa52955a-v3-1-03a4411a7549@proton.me/
+v2: https://lore.kernel.org/all/20260714-b4-disp-835288a6-v2-1-581555ef2145@proton.me/
+v1: https://lore.kernel.org/all/20260711-b4-disp-c36a9798-v1-1-340b0c6053fb@proton.me/
+
+[1] https://lore.kernel.org/all/20261013-b4-disp-f345196c-v7-0-ef3dddfbfa68@proton.me/
+[2] https://lore.kernel.org/all/20260729165306.BE7C21F000E9@smtp.kernel.org/
+[3] https://lore.kernel.org/all/sashiko-outbox-164917@kernel.org/
+[4] https://lore.kernel.org/all/20260728172552.69349-1-hexlabsecurity@proton.me/
+[5] https://lore.kernel.org/all/20261013-b4-disp-872a3689-v1-1-2a4c63b04761@proton.me/
+[6] https://lore.kernel.org/all/20261013-b4-disp-193a2a59-v1-1-ed88ac10a41c@proton.me/
+
+---
+Bryam Vargas (2):
+      net/smc: order the CDC receive path against RMB publication
+      net/smc: skip the DMB nocopy accounting until the send buffer is set
+
+ net/smc/smc_cdc.c  | 16 ++++++++++++++--
+ net/smc/smc_core.c | 10 ++++++----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
+---
+base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
+change-id: 20261015-b4-disp-2a8d85ef-2748bca10e1a
+
+Best regards,
+--  
+Bryam Vargas <hexlabsecurity@proton.me>
+
+
