@@ -1,107 +1,107 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9557147F79B;
-	Thu, 15 Oct 2026 08:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE3F38C421;
+	Thu, 15 Oct 2026 08:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792051318; cv=none; b=NntjKcONKmzR9Kd8PQMVgOspGJKUPiYGn8hzonc6X4QV1onNGSwOA/AP/SOo7kh1FQogM3jYwH0vWP3SivH0IplvF3vSWeQgBf7MeoqsiVGVk5pxQc09SrDCYz0phpPGsr3fVJ8JC4mdqgtQ9ltbj2/p4NlfMJEbn8BtY+ngJf0=
+	t=1792051408; cv=none; b=FfOGtw0kjez0C8Zsx4GzO3wxWOHirHUsm6fugU020THEAfz6PU6xSZ2LC0PjbBIl2PuLLx5wxGHq4iTmA5WqgpsKqBWFMBeViS35j+kRArjCl3w1pw6SGEiIKzFd/0weq0hKfPhlYNC90qizLOWhnG/ln9s8pNqQPlOri7720Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792051318; c=relaxed/simple;
-	bh=wo6NeKZojviEosBcJYtMLCfWwCFzXBGs5gykktT9OoY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=TM43TDzU2TioHkXFBWenQXosc9+PWY2kX2vBgrfXM2Vcxl7VeFLcPRM4Ht3YKTH85QVvOs/E89gtHChCTtb1MXGUDDD/9DjaPGy0Zz2FpJb62L266cmp0NyPrGHq7OkcR4LKnkpeFtTTjOmP/EzRJa+Xdlp0ws7+RZ7WJtkHABU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=u2mCl7oy; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1792051408; c=relaxed/simple;
+	bh=sEhQ8KBsekhw0zbOdanprd8DiArMJXCtOwTggfftcmc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XvQ9SSWZcdqNyjGQXnxm2EZWRt2OywJ8nhW7XBKZs9pkkVTzGDqq0ThDG224nXMziAtSYVXEARGuY4W65co5xs9rg9IwmcYLdIo5xdOAevTZvwraKyo1brPjazomLC7erEednj55toYyMarZy1961mOCED8WpGo2yEVleWQvBmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=R5htUudS; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="u2mCl7oy"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 685AFA1544;
-	Thu, 15 Oct 2026 10:01:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1792051306; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=lVUttG8iRwcZ+EEkZGFkY8VCO4ZqOKXFF79fwhVmDpU=;
-	b=u2mCl7oyCi8dyZxjmVyFnt8dJgiEPaEMIOtQGIeJPZSatiNCMbd3UKDKNqpes8pwee5u/F
-	lbvZUwDtJIoRyCjQ/+cS3jNdZajXUjYoxOvqPHBqSmlR9BUNcynm2DieqAh4giytIEf2hk
-	CEwrarokbGLOInTIARveF4YGWoW+66ac4BkojHGFTcV8lCZDnywS+oZHmodumC9PcXZoqa
-	IbiLemW1IXQ5T9xu0JwDwPa61Pzc6ENAVMVimKSjQRHtU25i0FoGXF+Fu+X2WaJyFt68gY
-	94Gh8P+/sVSBhjl1S9eV8VXeuhpqyGzyrpmP2Wq92Uk3tNqbLdWqCGVxCWhfuA==
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="R5htUudS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1792051414; x=1823587414;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sEhQ8KBsekhw0zbOdanprd8DiArMJXCtOwTggfftcmc=;
+  b=R5htUudSdesS96s2AxQ4AnUWo4B7FmAz2ISvJHathJRoPWoWK6F6ElwF
+   pNjbXAg+4fLt69ztuh2ZvVkNP7quJtyoTrq1dduRZq8Cv2GE39cZYG9/Q
+   3gz7z6QofV2ZmgOVg03LG0vmrGoG1ZbJVk3+luk/eB4mwsn5aZumG5XbF
+   s58oIexxunWdaBVjCoeIxsmTMA7Ek0fQrDCbY2kOTXCQPIweotk8tFk/I
+   O2DfEhcQkTRIiLhX7oHshogAERgB/MYz6oe6gI6TqYK66fC4MWTMTYENv
+   /1secWf1Fz58WD3gHztYpCl3+13gPjJj6EQdHBAGcPn2edyqdq4uCYiz+
+   g==;
+X-CSE-ConnectionGUID: Vay8vR0DQOiEN4pPhKguDg==
+X-CSE-MsgGUID: wtEBimCOSSy+7cz24yqZ2g==
+X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
+   d="scan'208";a="65077714"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 01:03:33 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Thu, 15 Oct 2026 01:03:25 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex01.mchp-main.com
+ (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Thu, 15 Oct 2026 01:03:22 -0700
+Date: Thu, 15 Oct 2026 10:03:21 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Paolo Abeni <pabeni@redhat.com>
+CC: Jakub Kicinski <kuba@kernel.org>, Sagi Maimon <maimon.sagi@gmail.com>, Joe
+ Damato <joe@dama.to>, <netdev@vger.kernel.org>,
+	<radhey.shyam.pandey@amd.com>, <michal.simek@amd.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<daniel@iogearbox.net>, <jacob.e.keller@intel.com>, <suraj.gupta2@amd.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v3] net: axienet: free outstanding TX buffers in
+ axienet_dma_bd_release()
+Message-ID: <20261015080321.zefrpa6ylcbsk3uq@DEN-DL-M70577>
+References: <20261004083759.1016519-1-maimon.sagi@gmail.com>
+ <asQ1pF9AAqOiEo3r@devvm20253.cco0.facebook.com>
+ <CAMuE1bGXcNwKKX1firkq6eEzymkrDOp8PnnowMzz97SibtpoSQ@mail.gmail.com>
+ <20261006180210.03a15e52@kernel.org>
+ <20261011084652.c5y3zj7wzmj53ur4@DEN-DL-M70577>
+ <d832de5c-a01a-471d-b935-5ea00d1c5794@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 15 Oct 2026 10:01:41 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: netdev-bot+sashiko@kernel.org, davem@davemloft.net, edumazet@kernel.org,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- o.rempel@pengutronix.de, andrew+netdev@lunn.ch, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, Jose.Abreu@synopsys.com, saeedm@nvidia.com,
- tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org, dtatulea@nvidia.com,
- alazar@nvidia.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] net: selftests: use skb_share_check() in the
- loopback receive hook
-In-Reply-To: <cccfd292-6169-449e-a675-a9bb54ec4191@bootlin.com>
-References: <20261007-nb-net-selftest-shared-net-v1-1-458369bfa1ba@tipi-net.de>
- <179149509090.434549.9918598206439291164@kernel.org>
- <533b88ce917b59f4f59f52145d2f035f@tipi-net.de>
- <cccfd292-6169-449e-a675-a9bb54ec4191@bootlin.com>
-Message-ID: <d28efab10f43a46d51cdfd978b0a1e90@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <d832de5c-a01a-471d-b935-5ea00d1c5794@redhat.com>
 
-Hi Maxime
+> On 10/11/26 10:46, Daniel Machon wrote:
+> > > On Tue, 6 Oct 2026 06:44:55 +0300 Sagi Maimon wrote:
+> > > > Agreed on the helper.  As on v2, I kept the fix minimal for net, and
+> > > > will send the helper to net-next once this has reached it, with both
+> > > > axienet_dma_bd_release() and axienet_dma_err_handler() using it.
+> > > 
+> > > Let's do this now, trying to keep fixes small is a bit of
+> > > an anti-pattern
+> > 
+> > Out of curiosity, why is that an anti-pattern?
+> > 
+> > I'd think that small fixes are, in general, easier to backport to stable. Is this
+> > more of procedural question - if the whole fix gets into net, it will get merged
+> > into net-next by the end of the week anyway?
+> I'm answering here because I can only guess how scarefully long is
+> Jakub's email backlog, and possibly this could get lost.
 
-On 15.10.2026 09:46, Maxime Chevallier wrote:
+I appreciate that.
 
-> [...]
-
->>> Could an IPv4 frame that arrives during ethtool -t make the hook read 
->>> up
->>> to about 64 bytes past skb->tail? Examples would be a minimum-size 
->>> TCP
->>> segment or a frame with ihl=15.
->>> 
->>> The over-read seems to stay inside the skb head allocation, because
->>> skb_shared_info follows skb->end. If so, the only effect is a 
->>> possibly
->>> wrong selftest result.
->> 
->> The length check is pre-existing, will address that in a follow-up 
->> patch.
 > 
-> I'm unsure about this, Can we instead assume that when one is running 
-> the
-> "ethtool -t" selftests on a machine, they are doing so in some 
-> controlled
-> conditions ?
+> I think the key here is the context. This revision is incorrect because
+> in order to be minimal intentionally adds a significant chunk of duplicate
+> code, but such duplication must be avoided, the 'keep is small' is not a
+> good argument to allow that.
 > 
-> IOW can we take the assumption that we won't get incoming traffic at 
-> the same
-> time as we run the selftests, and if we do get some and that triggers a 
-> wrong
-> result, this is expected ? ethtool selftests are very cheap to run, 
-> only a
-> handful of seconds, and don't require any extra dependency, it doesn't 
-> cost
-> much to re-run them if something unexpected happens during them.
+> I guess a one-line alternative implementing a different solution
+> (if existing) could have been ok.
 > 
-> ofc. getting a stray frame during the selftests mustn't crash :)
+> /P
 > 
-> That's my take on these tests, but feel free to disagree :)
 
-Also fine with me. A stray frame just fails the magic check and gets
-dropped anyway, so the test result doesn't even change...
+Thanks for the clarification.
 
-Two patches less to fight with Clashiko over :)
-
-Regards
-Nicolai
+/Daniel
