@@ -1,101 +1,70 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013007.outbound.protection.outlook.com [40.107.162.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B8944E02A;
-	Thu, 15 Oct 2026 10:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571293EAC75;
+	Thu, 15 Oct 2026 10:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792061727; cv=fail; b=e5g+vhiTcWUVGlhI81nzCkk8uMETE58mrMu8Ymeb0cPNurcXXf3D7Bgs3mWWOMRR8g6qX3eWkhgNJcduQ+B9I9nYPvpPSt74r8DGj6qscSeX9taKC1guzK9GWjm2s+256iLq7Tg00lF6RVkwMG1sDXHA2owmoVen9z+OYwsBsNY=
+	t=1792061768; cv=fail; b=TSXWE8JzcI6qECPWmH1jy6m+G2ZigoseK6Qv82l+CO8kLbJd9HeMeg+xV7thdwmCxHdrX49Yr9iL56+qK1oq4woEEynQETioG24hKHEKsBpZH4oz7X56KGNAYZlZVWoYyw8ryoC0rHp33j3/oGskeSBoLitKpuPWjPlqSTcsCmc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792061727; c=relaxed/simple;
-	bh=y3qwbnlgMgo0kHVTsWeFVSunZ/P9KU2HxzvBOjOG7l4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NUI7WijJhVOTF7z+1UmSlNfD3d4JFbtn2WgSnIkeQKJdrYfGQ+O53CKCC9HiOFixvR6Vhvpq+r6+rUpap4VXbUYcffHxU0UHGtsvZHs59uoq8mY33JkvNPy79wgk6hxQ3pXSf+FWesLk0vLo94SFrprXZpE57PV5UOsROzfNkTw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Qqi1M9rJ; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1792061768; c=relaxed/simple;
+	bh=Ov8I0h4vx4rVPEvDJYC3n1Otrsvb450QQwY7j9n8YSc=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GKsJmKZxJJFBPS1dprLxstZd8awmhdh0MsLEob1HgB3Muf3V2Pk/dyMAzQPhahOCnWtWBuhebXapY+RxMHkEDtH2wfs93Nrc0DeNMwTnNHT3npwpbvEXRD9sxhixrvu4rsOaiCbdAs+Pmhu2+DU1LlIcfDL/xdF5fZsTKajqfFc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=T3ohCAVJ; arc=fail smtp.client-ip=40.107.162.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Qqi1M9rJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1792061726; x=1823597726;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=y3qwbnlgMgo0kHVTsWeFVSunZ/P9KU2HxzvBOjOG7l4=;
-  b=Qqi1M9rJIHFaMh7axBhJubwtpm7pLROPN/D4/RH/KKvKAt78b8cDhYSO
-   cT9yi+iVsnKfeJISdoylYz/SEG/FdaL1yOYTW0CxkkQqCkeeLwvES7eTi
-   HgAtcU+c4Zkw1DcFuys0tVZxBzP4uh9t66IerS45+xOeDhd54ODiftCTg
-   9RDOS1oaykworpCAOy/XwcuVSASn1FLcZURXH+geP2xTN5ebwT/c2T3pv
-   S9f9Os6vePjt/SYt55R2CcPGpsZmHHM0Bn11zv73KH77Y/NWZ3XhIA2ZU
-   aGWfDFuf1ggtF8Mi1MGxY1qXG9CRGM9gbY9LLPTgOckPvPCsLl02q/w62
-   A==;
-X-CSE-ConnectionGUID: gT5WRW0DRgO2l61Gkor3Gg==
-X-CSE-MsgGUID: cF2tOXULTlKgz9fJthy39Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="715810"
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="715810"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 03:55:25 -0700
-X-CSE-ConnectionGUID: VwMSaCThSSWwD/D57sOkrg==
-X-CSE-MsgGUID: t4Fgu1OpTciBf/TvL7rygQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="3428092"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa013.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 03:55:25 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 15 Oct 2026 03:55:24 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 15 Oct 2026 03:55:24 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.2) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 15 Oct 2026 03:55:23 -0700
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="T3ohCAVJ"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zEmiYW3ORAW+r6+GgUguWH2Kw2p8SacsApOJbYgw4U91sxhUc/ed9zTeNw0a0IEhFW/Cnv9S175dBGup+OSV4Zuqlk8YvzjkkTwLvUzOoOBMAwprv8lKMcP7lQgtj3cH8W5o3OegK5hEo/SI4CNtmIXGvPnYRYUxBiYUX0PSLM2qvc2S4KaUCtrw6/N//Wspos50qtH0HnIuMC11SGhqkJfXAqcjqe9lyGydbEN1lUyB8K+NB+EyVcsZBRF7WlRhVDdzJy55IXuDfUrBxT1mWAmzrh5JgJPenCjzu/RknYN4bOS1WNgia5DKEDM+4Y+gferAcGHm3h1dDsvQgRjGiQ==
+ b=PFJrUY0iRjpuv0z0XVyyat/GH0jURob/NAwb7/ybaKCwe3fy7l6EnNLoaIQFjWZ1UwmAP4eW0fcLhnbx0oQFjDr3hmWeTIYOAkp/6EljKk+i13QCLNRZrirYQ0y9g81Ihcoj/rm3xIpkCYxgSuf07z0iZ+tfWelMz+QMjfbs4gbtu+T8q0e2eaaBOPCBTEQ1+m65jj1myvYuRXVAmjWSp6OOa/XMgKwmXD2xXmcV9yXZ7Olna1VRXQhW70bkeuBOZRoH7QtOlsGiKeBYzumqVCrur1HK8EHYlhSNwE8dusGrHSN8AciRUAdBrtlARVf3NrO6nflpBMZt+FRahjlhSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v4x/8NXfRqTxyqWsPaxIoriLjRI37rMn8ALEJPPEj94=;
- b=ZtoGmAt88SHdDXd5AZZspmrD5zFBmt8Po3oMYlABEuXxXAiLGVnSmRxHrXPTI7jMUHfQ1KpQGkgULR6ZmxzW9mpGzNDZ1oCdgdgVDqlw0QnEUeJrmyb34YnWYjmIl90z4TJAr2KnTCjDUx2e2Ei18oWwOHEdLTRbWv8wSy6KDXvzzvtJpnw68w15Vo99uoc+U6IpaKSgLT1i4JiKlYtBwnegrL3hmW+R/3Ou7S0xhQID2nKUqnRr7+UHt5Jm3wkIMMYihtLjD6NtgXx4FfwYT8qEZlIKYMPFfukO6sJFHsMVuRJVl2FCESZ5YnUROFP0835X9RHYPpByvY0Vuma3DQ==
+ bh=iiw8SyCWOT3RpZkPActw4B+XAG07Kpd3PrDtcozaohc=;
+ b=pUkObMGcC4hslbbCo81XVEZTyUJ0vGf155SZ+e0QzsbcaQ8ZtyWrj5oruuy9GlUsrlQLXLFdWpLf8Gv/0ly8o5UAdM0OufbhUbURfISwhg3SVhoKiFwhCHNW1s3Qw7coIkoq+qeU/WHMfmMCC3aGC5cwpPDGnQNamMHH4IFm5bwh3yD0HzXGTWzi8QF9ErL562QFZZbu4Nb+jgYzAvoU58H4T6+n5WLFpRrK8EpyHWlqd02uxGE+Fa4wfjDhg6ejKszDaTksXQsL4ymMbJ2UHVK2hlM4tHQ8INGUQv/DT1qiddxMZprOzULEbHDgA5Qq4wziyWZEPmiOcALgmy9OTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iiw8SyCWOT3RpZkPActw4B+XAG07Kpd3PrDtcozaohc=;
+ b=T3ohCAVJZF+elTqlwNswwbcJ5eGrmD4lXVqciYZv9DUA9H39Y+z6fkNLOHCxT2jgsLbNSaByJzvQpTiCOa1TnLbs0Qrkx6dC4dvciQGIEt/oCBHMSrmX4DJjpFjPFWVutFxJwC5U9HkVlpXfD9xuRGQ4R5sksBGxFr/TQakiLlr5WuxI1131eQ8D7flhjzgcvDo1Vr1YjrOt/vp2O17xIwgntKmHfWpUX5pQOj+Th5cgK5kMud/aVZ3v2tzEeRcugAIkxlpyME51X0rUGYHo3ZXt2OG32hkRmC8Nu083p9dbmoWCAitYGIAe8MKj28XXCz6rXg71S28/9z7wxyG6+g==
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
- SA2PR11MB4971.namprd11.prod.outlook.com (2603:10b6:806:118::18) with
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by AS1PR04MB9698.eurprd04.prod.outlook.com (2603:10a6:20b:481::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Thu, 15 Oct
- 2026 10:55:21 +0000
-Received: from DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
- ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
- 10:55:21 +0000
-Date: Thu, 15 Oct 2026 12:55:11 +0200
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
-CC: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<magnus.karlsson@intel.com>, <stfomichev@gmail.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <tushar.vyavahare@intel.com>,
-	<kerneljasonxing@gmail.com>
-Subject: Re: [PATCH v3 net-next 11/15] selftests: xsk: add a hardware mode to
- xskxceiver
-Message-ID: <atCxD0EJHCRBR+pI@boxer>
-References: <20261014184539.774708-1-maciej.fijalkowski@intel.com>
- <20261014184539.774708-12-maciej.fijalkowski@intel.com>
- <87tsmn5mg4.fsf@all.your.base.are.belong.to.us>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
+ 2026 10:56:01 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0522.013; Thu, 15 Oct 2026
+ 10:56:01 +0000
+From: vladimir.oltean@nxp.com
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Zefir Kurtisi <zefir.kurtisi@westermo.com>,
+	Zefir Kurtisi <zefir.kurtisi@gmail.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	netdev@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 net 0/8] Fix short frame transmission in enetc
+Date: Thu, 15 Oct 2026 13:55:28 +0300
+Message-ID: <20261015105536.1692348-1-vladimir.oltean@nxp.com>
+X-Mailer: git-send-email 2.43.0
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87tsmn5mg4.fsf@all.your.base.are.belong.to.us>
-X-ClientProxiedBy: WA2P291CA0002.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::22) To DM4PR11MB6117.namprd11.prod.outlook.com
- (2603:10b6:8:b3::19)
+Content-Type: text/plain
+X-ClientProxiedBy: AM9P195CA0021.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21f::26) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -103,122 +72,120 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|SA2PR11MB4971:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9d7e82b2-8d28-46b8-4651-08df2aaaced5
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|AS1PR04MB9698:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a16c1e4-28a2-4217-8554-08df2aaae695
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|4143699003|56012099006|5023799004|11063799006|6133799003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: 9XbiXS6Tqya/lcrjf9yMXpmxUK38Rb0G9Byv3mCpJIXJvWowGpsLKec540cN1tBengMQ/P1vZK6bz7TcpMkuQQ8/LfxBRBDbiP/K49sQXGukmbED54z957pl4X/Z+e4CmSpPseVPCYW4pNNJeqt9zxEbgcgEVU7+4+2A42K0VPbnijr+loJ6Q7h/BABrbMEvvvYxuGOXnoFJ//OzJPV7WzlXHMcp7NZP4DlqwG1Hmu0ARmJypr06ft524kXOME9aCy2xzrumninFyL+TESAZKml3AqHkOQ+RWDY5BV1wpnw0UqshtwQhdjVZgf3Z9c8zIWtf6k/3mH5cvqp35XoXTsrDfyzYXhS6kq/waQFeUZ0Q8H5YyhNtDBksZGzkkP2JDRcW8MsNoA9KB5wj1Hqrxf1smT5tMMNdz091Gk0pBptnO5NtcEB5mo6t6rwzHZJc43EBTmiAeflZLiSMfpCjabhcZbJ//r+FQk0/qMQygTw5SCBfZRU6JsH8Bl1bkSwAvheNM8M8731uUlYreE++xEq5J3Iz48XCGcu3gm00rmRzm9rpt+eJzfuWDFxFAlnA8YQMFmVakQ9sY2TmzzkJOKDmbe+jhuXq27QfDums0bp2h0BjgaHu1Xf97JyTi2j9
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(4143699003)(56012099006)(5023799004)(11063799006)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|19092799006|56012099006|11063799006|5023799004|261009223027099003|10067099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	JRWrjKCMOZ4fhAhMoz3caIlz6gvL8uRQCByGoHgeElrmKB447xFswAW4UK+QoMvo2C5YemCtc9QIT4xkz+TQ2NUzUZbIFfPTgjZSmNcMrKyrxuChPF3nHN1VfccIc1kNEy4m2+Ygn9+g1L8UYbv0/IHgOQ3/hoz4DOg26Hlbzdd78m4kOIOCeK1aeJOvUf7T9Kok8nSM1jUhacx0Ma9OhB+FWzt5yn2kKzbov9r3KAW1MR2dCzS4z8B/OTxzBPhN23RW/WKHcpTj1e5J2pHVUFHZ19e4k6BM1zrKCX7UjN3G8OfRGWJmB40jgrfJCVq5HlfHcOG19V1/NkMOCSSP6N1PpN6VQS42mCiWh6jwFlv/QAsVz+Ng5zblIff21x6RyCFud2WTOOpYG0Zxr143+ul1UQI1mF5Jjv6MoO3iOCbaAiq1ait0/pW6QKuIEgEeTOGxQTSYMp/0b5FpNyrDZ0vEoQo/FwCxIadlmLhnY7Mf6+OiQgx8SpTroa7HAnO4Er4d893R0A9Io709iKt9upmOBHJTs/y4OXrObD1MUGdjJSg4vrdwK+Y6keneKSpH1ifHQCJlzKfaKq8Ew6C8cJCUM2pOvfHHfCrGZYqK7VXD6FU27pXSjtRIWz23mmo1
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(19092799006)(56012099006)(11063799006)(5023799004)(261009223027099003)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?hLdZRFrir+5O6eenIToACqOXyujkJ78tqXawv7SXB1TfAHCcfPwvje82BG?=
- =?iso-8859-1?Q?ilWfKURGAyFjD2tNNIgaZ7tyQnXcdd9bNZoIOnBkqBzBw+OPIJEm9knW5Z?=
- =?iso-8859-1?Q?rIY30a0OkPaEDcc+GAFiO82kSbSWA6bNJLcSXJY/Y5ezsJ7pBjTrHueYgU?=
- =?iso-8859-1?Q?gJZYAgexsZCMs4zXPwlXTIN4PsI20nuLLAfEHvvxKPDNgKk65rrhsS6BEz?=
- =?iso-8859-1?Q?xMQzvacaSKVX3aM7no3MkyRNsSc8ilEi7mKpXblzwa6goISWgfDgJ3HwvA?=
- =?iso-8859-1?Q?Ezb2Y0Cpef4JTnstGoQs8PbGQAEnFtB4dCicvifjTiRfAZTDKXKZBpMprH?=
- =?iso-8859-1?Q?ELdzqclOoZuW0uc7EGBRQfiy+yu+VE6EM2Rxfkma7ip2G1nXn/XorR+ijw?=
- =?iso-8859-1?Q?cbfb72Aid8vJDokXcriikmO1NQt7fXnnGit7yjDasmgJSUDxbrF3kH0s8D?=
- =?iso-8859-1?Q?B2kDzYOQBwI5jzk8hC18WU7OqWMxGkHL8pbNyOGnjIja+HQwbViq/60r8q?=
- =?iso-8859-1?Q?qlZEBIn9gvWwRKreMt0uWIloQ7bUAhoQtiYJopLqK8R8E6TmFJgjZZqVmM?=
- =?iso-8859-1?Q?HWq3xL4Kz/wqyNR0nm424QWuivaJWQhEIij64r/RmNxiGviuN1Pj3/353l?=
- =?iso-8859-1?Q?MKiAzbLUBVDLOqZOeSsfxV4Ub+C53lF2jrDuTsHzc/CPRzAJ18A60KFsNd?=
- =?iso-8859-1?Q?+uIGlqDyaG1evfoQuezdqS9sVmOXm0jk/i4Qvt/KMoMqyjNqFr3p/RXvfI?=
- =?iso-8859-1?Q?CX9DqCnJK/MpB0am/m4U7PRuxahuZyVMUUtTel4ai46eWmh7ThLTPScdIM?=
- =?iso-8859-1?Q?oYjGxLMYB6y3mM5heZsc9J1CNwMG9PYSh2WJAiozc+r6ToPOwt17hCWLmZ?=
- =?iso-8859-1?Q?qqpVploTwb8gE9+QdSHOmjm1VJzLSzsPbLTj3qPegozndt5baYrtgXJ2Tm?=
- =?iso-8859-1?Q?Ju+Vy5svXbMrNoZf1FGXaDE4E6W2Ks4yqqSst1D7wES1I5IWcbFT7IWSAh?=
- =?iso-8859-1?Q?H7Dpn/4YP8Pfy4du6rldiQCkLPSzCOCOVbt5wmA6xG14Y8/BohD7e8WYEu?=
- =?iso-8859-1?Q?PjKfPvthLNX61JKk89aTAfcP3TbHC9HdWXuqKmyEMZk7HIRmgKbkfncx9K?=
- =?iso-8859-1?Q?jqm2wU5av8D1lx9DaDz31rufI/x/vMb1g1WyPRNxCmJyLECD1RlTXe/Au1?=
- =?iso-8859-1?Q?lJ5QwxoP7AMdYD0SYCztBIoe08TEygp8xbggE//OCriaHpaU8HhLwbKEaY?=
- =?iso-8859-1?Q?FHP/TjVHBf0KkAtf0kmxcPyZ0hbcr5GQCh/gd+nauG5/sNnRPklW6l0Tuu?=
- =?iso-8859-1?Q?LJqJYnb6ODUHRJgARiJVgQy2gVN+rC3FqhB5krd/7ELgG2SPya5llrbfmc?=
- =?iso-8859-1?Q?c6stPEhibZY9e0IxzuVyWDmtzlH4CMxIctsRI9ww7GlOVCW8Mq0mhw4JRQ?=
- =?iso-8859-1?Q?30jtpUpLMAAVe/Nx9a+OKM6I2Wq/Cx51Bn2eIpQSLANmAS/hTgb0NTFjBH?=
- =?iso-8859-1?Q?nKJKvkBB7jnfOAtFN1yyT/7AiVj7k4mZemLGWaV3u3PkGAjyXgKYFOn24m?=
- =?iso-8859-1?Q?sCLPAA0xZb5iL7L+895e31cqPkTqb+t6IPIOC/MXhqvXbAlkj/qtIm4nRy?=
- =?iso-8859-1?Q?8UpHhavs3ufRlM92V4Wi8w6nPbpsykFf6XKUVlsFHJPT8unPWDfF8o5R6s?=
- =?iso-8859-1?Q?Yidpfjl17j2s+YsXwa/QZftMo4FBxviEoxMWozE6HFUoyS//TQtqLvE4nY?=
- =?iso-8859-1?Q?wKjehulX5UtHsTpcNTnLFOpsAFIzAKg9fNZdNbwO+yNCJQQR32Rxc8OinJ?=
- =?iso-8859-1?Q?q/Y7la3DTWjsN7lP4a8N/k0DyNrwgjQ=3D?=
-X-Exchange-RoutingPolicyChecked: zQGnB3WNAeZ+SxrCu/hyfXzLQJ5zUbeL9XwjCaOqpuJA4+p74MHQyLDGOj7dcxZBrxtr9SMYt8klMjOgpFjAJY4NJurqHrmrS0PzNX+U+EYxn6uBoRSj5evlC5sz2/fcpFOL7pMp3jdT7SHacEMG1Y116bJCvWysgnF2ZP1JJ7VyEtgkuta0ViG+xFwmiSDgH3ervSZOCzBL3vgob3WgpKMVXXY9Zvbb40+XlZWuZo7pwDaaspJ1MHEFh27Ch/6Xsm7vImqyBPjmU5NLy6aczJvEcqE579YkJ4oYRMO1ZnvXeu35wrXSUcSGCRQ87+3LIO7N0cDbsypdwDXVBw8duw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9d7e82b2-8d28-46b8-4651-08df2aaaced5
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?hFTrRG/Ybog1GIuke1fXQjx62sdI16+sWsb/pv6lVRPI/5V/Nq9Q/xDqpFNL?=
+ =?us-ascii?Q?GSRuqZqGcfVYDjLeswuMYub9kG9VVTlmVNqmt6bTHb/WtJGBKQn7cAGAh1nX?=
+ =?us-ascii?Q?d1bQ5EWQdqf8SUFSWEytAl8i7W+qkKudhLqf5IP5yYa9xK/Y6ulyA8m1AjtR?=
+ =?us-ascii?Q?VZHC+/x9ypSOWp5Ombujat1XHmZ5jTE2lFBHU1Av5JRtqQ0yW7p0usdLTpb8?=
+ =?us-ascii?Q?wdFO+BGjZ2x8fYZQsiWQRzgk+ULiPRyVO81gaDw18RoVq2IhoeXMOyChJEJp?=
+ =?us-ascii?Q?a1wWOpLWLKNHsURf/MAtt++BXPvEErXE1MSTHVLOHo/Cir0j2b1hkcsQUvt6?=
+ =?us-ascii?Q?Ag7JuUfnRAtW0T1FFPLoAm2cOJtUq4mxI37gpqCRwP6EPNl/qyLN1JTVW7FF?=
+ =?us-ascii?Q?+nJeDW36hz6+hqsEIlfqT/aoYcpCxk/dbGG79BOxS9yvq9MV7netJw1ydS+r?=
+ =?us-ascii?Q?JipRTdpRTdgBbQxYEOWnDlHdTHhtdPhqntLD6yTKciymu/cN2Qvtsxlid7RT?=
+ =?us-ascii?Q?cAClj6oqKXnw2ZOH7q1+CDeCdevnlZZ6wPbkMqCJ39femVfCLamzC9h1+rqR?=
+ =?us-ascii?Q?HaRgY61N5+PEfWGM8tRIZdEEjsorDGxz6XcA8OxNC1WeoJCIRAfqds+/O4zP?=
+ =?us-ascii?Q?BMnRU8KPGA9MCTJ9u1VfAYj1wyYa9ptxp7OispWcB3D7BqDKfjp9mrGOgRYm?=
+ =?us-ascii?Q?WTdu00nVuL14GomewfZ93SgySbB4F/+nRHQ9jgTjCxrJObloSq+gMTxwPDyl?=
+ =?us-ascii?Q?JhA05g3ZOb8PDSTeQ+S0IlRhX7edXX2SgFNWU8sUzY/kkGVMS6JMHD5XfYQo?=
+ =?us-ascii?Q?tJFQjH/AjboX0LwNKEwhTBQuQVjwou+sZH0pXZiUrvrIFDWMXFgHkXDhpWMW?=
+ =?us-ascii?Q?cpTNeI2uepWlu27ZyzUH9fnRRck3dNTGXnuVXxWRwoIhJ82l8AKt/JF60Z5p?=
+ =?us-ascii?Q?euS0+bPd8QVIG6epdhtUZgfICycKH6UFMMgyTN8ul5jZMC6tIKKDAPRC0e13?=
+ =?us-ascii?Q?gAAEzDUja5FhKmCJrLCLc+f0cwaJQXim7v4V1i1vUkEAMHy7lk5rDGvKht7B?=
+ =?us-ascii?Q?b7xOZd35CeLL4tK6S9Iw5k1WeM7gn3ZydXN66UcCl0ZLHZxmWMkHRic/rRyE?=
+ =?us-ascii?Q?7/tqzxSXD+JJQuDNVMVsrHXLLnRxbrgufB7Vn8P/CiwHLXfDD3czx9215E4G?=
+ =?us-ascii?Q?6rewRYYHGmrAtkkkUjlekKkZX0PCTzEJPhaXDctSTZXKppm8jFBZCp3HPgE0?=
+ =?us-ascii?Q?0r5HMlO3YoUbFdcY20SCLar5AkGskU4ZlQcB0Rg0XqeeEUm/yDHuWG0fdGJG?=
+ =?us-ascii?Q?+ihOIxIEj19FFNvDnI9EJIlqhSIlb5v4H+9g2XGTC71KiWuZI/cZBWNk+ErE?=
+ =?us-ascii?Q?OU9oLDAnVIR0MRQkfk3N9izYnh1V7zhdpdV0lH2ZM1ca26bUB9+htTn9wAba?=
+ =?us-ascii?Q?d6ztujgiWfQnK2kTt1rapXltZMB4/xShbH1eReJhzQZYgWpZ+s/ByW1OIZLZ?=
+ =?us-ascii?Q?XVNV6A622Pa4+Ygt2vnesFg40RELNKvvXG53UzxP2GegfCVNlfX++tXyjwGY?=
+ =?us-ascii?Q?1JiIUixa3iocWi4pAX7eUFTLFmDPH7AzwF/arJT0zRk9hF+8tRv/rbl5Y/RR?=
+ =?us-ascii?Q?XINAEPTdrlkyn7wvaYu4An30CVhMfIzmgjT32aUz2HMOMKiJPMcThPKLLpaP?=
+ =?us-ascii?Q?00Jdu9j1HMXDhnsReJjH4AGpuDuVZXETRcr+zPAHtsVCZtDE/W9z7LXnpDwW?=
+ =?us-ascii?Q?d8g68qZb7w=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a16c1e4-28a2-4217-8554-08df2aaae695
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 10:55:21.4320
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 10:56:01.2877
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tHOw05Tyy7Lv+f6FFeb7OzPPpNvzJNI3pvfbf84WIZHYzi751NzJW5COnWg44Y71ZuiFUwZ+G7VEyD4pHEZLEU0fdEbW5TCEvQj7tUM1YIg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4971
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: ubsylNvf1DpMsgXj/8tI8ngtKOlVdlP4j31CgnKCcDWq4J7V700j/L6UC9NNnzYqt7ZhEmFbe1xNtnnyjB57YQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9698
 
-On Thu, Oct 15, 2026 at 11:42:51AM +0200, Björn Töpel wrote:
-> Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
-> 
-> > drivers/net/hw/xsk.py, added later in this series, runs each hardware
-> > AF_XDP case as a zero-copy DUT endpoint and an SKB-mode remote endpoint
-> > over a physical link, without negotiating capabilities between them.
-> > Add what such a run needs to xskxceiver:
-> >
-> > - --hw sends UDP/IPv4 test packets (--udp-src, --udp-dst, --udp-port)
-> >   between the real interface MACs (--peer-mac); XDP_SHARED_UMEM, whose
-> >   program picks the socket by a synthetic destination MAC, skips
-> 
-> This reads weird to me.
-> 
-> I wonder if we can avoid introducing a separate "hardware" mode here? It
-> seems to bundle packet format, link handling, and assumptions about the
-> endpoint modes. Those are separate concerns, and much of this should
-> work with veth too, no?
-> 
-> Could we first make the real MAC addresses and IPv4/UDP format common to
-> both veth and physical-device runs?
+This is a belated follow-up to Zefir Kurtisi's report:
+https://lore.kernel.org/netdev/20260220132930.2521155-1-zefir.kurtisi@gmail.com/
 
-I must admit I have not tried that and --hw introduction feels like veth
-approach is still a first-class citizen here. Aligning both test runners
-would simplify stuff I assume, will look at it.
+which is that the ENETC misbehaves when transmitting packets smaller
+than 16 octets sans FCS: it sends them but does not update the completed
+index in the transmit BD ring. I did find a sentence in the reference
+manual explicitly stating these short frames are not supported.
 
-> 
-> Then --listen could work independently, timeouts could be configurable,
-> and test selection could reflect the actual endpoint modes and
-> capabilities.
+The original series was focused on handling the invalid frame
+geometries (now patches 4, 5 and 6). However, review pointed out further
+issues in annex code. The other patches handle those.
 
-You select cases based on DUT's endpoint and its capabilities. Regarding
-timeouts, we can add a knob for it, sure.
+v1 at:
+https://lore.kernel.org/netdev/20260401172246.1075883-1-vladimir.oltean@nxp.com/
 
-> For example, skipping TX_QUEUE_CONSUMER because hw_test
-> implies mixed ZC/SKB endpoints seems to encode the launcher's current
-> configuration into the test itself. "Real" endpoints could also run the
-> same mode.
+v2 at:
+https://lore.kernel.org/netdev/20260406204122.167237-1-vladimir.oltean@nxp.com/
 
-This test has nothing to do with ZC at all, Jason added this during one of
-the many xsk_generic_xmit() bugfixes.
+v3 at:
+https://lore.kernel.org/netdev/20260915222735.1016937-5-vladimir.oltean@nxp.com/
 
-https://lore.kernel.org/bpf/20250703141712.33190-3-kerneljasonxing@gmail.com/
+Change log in individual patches. At a high level:
+- applied feedback from Wei Fang, David Laight and Sashiko
+- dropped "[PATCH v3 net 7/7] net: enetc: drain and cancel one-step TX
+  tstamp queue when going down" because addressing Sashiko's feedback
+  would grow this series to a point where it would become impossible to
+  make any progress; plus it becomes more and more unrelated to the main
+  objective. Will address that part separately.
+- dropped "[PATCH v3 net 6/7] net: enetc: linearize PTP event packets
+  with one-step TX timestamping"; also unrelated to short frames, will
+  resubmit separately.
+- split v3's "pad short frames in software" into patch 4 (do not rely on
+  mEMAC hardware frame padding) and patch 5 (ensure head buffer has at
+  least 16 octets).
+- reworked v3's "pad short XDP frames coming from devmap": instead of
+  padding the xdp_frame in place through a new generic xdp_frame_pad()
+  helper (which only covered ndo_xdp_xmit()), patch 6 now pads in the
+  driver using the shared tx_pad buffer, covering the XDP_TX path too.
+  Consequently, there is no longer a change to include/net/xdp.h, so the
+  BPF/XDP folks are no longer CCed.
+- new patches:
+  - 2/8: serialize access to the same TX ring from NAPI XDP_TX and
+    ndo_xdp_xmit()
+  - 7/8: fix leak of pending XDP_TX frames when going down
 
-Remote endpoint's role is rather limited and I wanted to be sure that we
-cover both tx and rx sides from particular test cases, that's the purpose
-behind --direction and storing test cases within 'hw_group's.
+Vladimir Oltean (8):
+  net: enetc: consistently track dropped frames in enetc_xdp_xmit()
+  net: enetc: serialize access to the same TX ring from NAPI XDP_TX and
+    ndo_xdp_xmit()
+  net: enetc: fix bogus TX ring consumer index after reinitialization
+  net: enetc: do not rely on mEMAC hardware frame padding
+  net: enetc: ensure head buffer has at least 16 octets
+  net: enetc: pad short XDP frames in software
+  net: enetc: fix leak of pending XDP_TX frames when going down
+  net: enetc: ensure enetc_xdp_xmit() calls enetc_update_tx_ring_tail()
 
-> 
-> If we need to keep both packet formats, something like
-> --packet-format=udp would maybe describe it better. I'd prefer keeping
-> these behaviors independent rather than giving the combined mode another
-> name.
+ drivers/net/ethernet/freescale/enetc/enetc.c | 160 ++++++++++++++++---
+ drivers/net/ethernet/freescale/enetc/enetc.h |  12 ++
+ 2 files changed, 148 insertions(+), 24 deletions(-)
 
-Nah, let's make veth runner use what currently 'hw' side does.
+-- 
+2.43.0
 
-> 
-> Also, we need IPv6 support here in addition to IPv4. You can't assume
-> that the DUT is onlink or IPv4.
-
-Is that currently a show-stopper? That is another left-over from old
-architecture where data path was rather on a local and isolated
-environment... /me finding excuses ;)
-
-> 
-> 
-> Björn
