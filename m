@@ -1,28 +1,28 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013041.outbound.protection.outlook.com [40.107.201.41])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011000.outbound.protection.outlook.com [52.101.57.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA6D4A64F2;
-	Thu, 15 Oct 2026 15:02:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD06C3D9DB1;
+	Thu, 15 Oct 2026 15:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.0
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792076581; cv=fail; b=Fh7nLYyj6OpYxXh+kmA7dd3oJO9B5l0+00A4eMyJjF2pPkexff9f0HmfTDlIzSD0jtXUiYIrtY62Tq4ZSU68U5Hq4qgz8KkWsGvkfeemEPn9OnrdMum5w9vJSd4gkrNOQVgQVfK6WXuSofGlDH2bMwRU81PjvoE3NG9Gakw6u8s=
+	t=1792076582; cv=fail; b=Gh+REElz4jHoWJme3RR/p/YM1Hf5wwoPCDy9/ymTbdekUT/mHVJpXno4rLxgnu/wEbRFawK7ZatO1ZUIRHtl3Vz7LCAW9RRvLq+9pGGUXQ2O7lXAWOqV5t71C9rD6MqqAQkHEnwpced/UFQAZpcVoEPUJ8lKRa4KfhrOQYMW1gM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792076581; c=relaxed/simple;
-	bh=b8gAOoSP32vMJgLXjpdt6Rc3nzpCj+3/NNo7CV5WKPw=;
+	s=arc-20240116; t=1792076582; c=relaxed/simple;
+	bh=fiaR3rkfQ8nNe2YxaIWZDqJdAm866djBjHFGIfhxqkc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jr0ipYfQUH3Si8v1gcmmzrlcbHEkhYPJ95uL1SOUB5jhacm9GOolQ1+zTeZbTf3oHvKV9IzBP043ngBedaEpWuyQI3Qnk7I4s/AoFapsHyafcRdC7IAk7LfRt3BCl8rqsw/xMRvKJPYlVGyabS7L/gZbgTjA2/pKbP+Ke94eKjw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=edVR2yx8; arc=fail smtp.client-ip=40.107.201.41
+	 MIME-Version:Content-Type; b=reovfmEOuc1mGfImoGCwEfFFX1wQCJXShUyIJ7vipBIb/5NcDAKMq4KNZC2rm6UpVyRM+k5MUvRqUles9dGM/XwVfp/CCdGKFk4orkCHX8LFM1763JAYg9eiZnc4XditqPKghalqsVSDueh7zqqjzTOa7yC/s9uc0LJm4+WKJi4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JgmO9Nzs; arc=fail smtp.client-ip=52.101.57.0
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="edVR2yx8"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JgmO9Nzs"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UD03W7IYCQs8Qzb/NQ0Yd/kAchfzoqpCsuJhZHX/wTUG4jodhknhc4ssS8kkV0qEL7JCSpFzR/MwKYyBb3fZzPzC16y2+7Ao00em/LVD+kPsIV6wflFDhRk49UGiOw6Yx8/Z7lS68QfZbL2w9YJPHMfOXPOJHtqwZjpKgUxATHIBXFpMwHVmn9kpugFnzCMRE4DGXFi3KgkO/rHzP2VZZk+YOajQ0DrlVJOZtYSgjNOxeNSIFBcCICY+MF+R6s8GJ9GsbTUut+2dPjTrcR4u016WrPPz/qgkdRfwo0LM34fpcU164LqFrgUdIgMma0zJgp57UUldQpuFgQiSuj3bNw==
+ b=T+d5I8//GfqES7J+Uue3eCrOJZZv5wkG7kQgkyop7zcsTZC194xn2vOlmE6Kh6N4Nd3+ev3VUyC4c5YcVUQjkSg45ZQquPQjGThqJ2F9+5jee9CEK0r7K5UJAtWsNfDE+MXU7jA9cIbqF3PoZ2/R2R5/xujOsiZvH4vFcM6U9kgC4OeaYIVv+O2cerfkB+CVspHcgC7/gg9xBE+5jYpTWkP9namXJ5kPJlUlrfpAzgNhMjxCvxLdI7GW+as1ykgC7rT5Y5gcT8jILMyz1gfm9JDEfYGeLlSNYTMdRIddoe2EcpcbETOLz4fp35b+NjlH1WS6ICxrEskdJLPAyW6KlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b45AUc75THHXuVtvqbPcXAO7PTSa7LSUE7A6Gek2nSA=;
- b=tIS2DyWr32U0WJ1eg01cT4hmAoNDtScimxpvx9Va70+y05zqwsE6TfoU8dkumNnpkAqW640kkoH5N6BRxlp9i8Og3w9sbBmxpR32TZdn2TLhjtXYYcUrYXCroi/r3O+IqwOyuKm50VvN8xzct7ysbpJoLETkFFMx+pRJgPQJumbpluFXxKhvNzka2R4xPXyIzhxpyOLj2sRkw4amsqeofpoqfBi4XEjMroursci9xYZwvi/WYxb771irEa9kVlVqIJiTpvfjdkTpT2pwcjyFYkRt8Uftwfe/ru0Vjl/6G8aRCh+4w2XzFLcpIRAlFdXzdUvlR1ubrJgGWKEELcbZGQ==
+ bh=qb9ZTlfndwYrtf3psGbWEiN/g61lOgMiTo8R4QUSWaI=;
+ b=mhXIr6x0c/WKz6RuwRwsj8soNNbh/cn0FejsZGZE1y5Qgt/54agTAAsssRJf3Y38P4MnbjKi4J5NSuXdYlxmUXJd7Rm5uzWdqORDYNsNPjJzwSCXxobiIJ6n2vidV7ntSB3+5LlZha1R76AiLyvc/VzxGgyxmtIV0XJCu/BbfYGHQubVVK8b48gZzqkVfT+LcoonRJCba71t7FM3glkfTy5M0zeFiNkEa8pWoUBm1H/EcK9kqei+lCvKtsb1F+j4sdnMCJH5C/AEdpKSHumDNzjBIIEhtYp5Zi9FxhOPrHbiDjNCqmOq5BclxUjVMzkV2tJ3Ob5rl1GhqdSykbTbYQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=microchip.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b45AUc75THHXuVtvqbPcXAO7PTSa7LSUE7A6Gek2nSA=;
- b=edVR2yx8/gvaCx9gIZze6D4MPvJjvkmis9vbBSN4g9/gYK0AgjngnAJp8jVJeG+BZzSCoX9Mbn0LmKeNpkY5qGVpMN+INLa4IAm8XpY2J/1AdxpLe5FKexssANvzyiz4ToaWfuQg/DB910LJqJU8vezpjIuCen9FC2d6Iz4QrLikqqoiVOUvYIOyTNwOuNzCq9Xe+1fqA4O1h73tt0wMPvbIsrAYtpHT77ezpTuendEAtvoFV7Y3lYdVLBZZBa2GCC6konEmt2F6tqcFQyCuyyZn5Bp+jmMglj8nFqFy6YvywYhwOAqK577idl7rTjSmBPrNUudmN0smtGH5aCno1Q==
-Received: from CY8PR12CA0064.namprd12.prod.outlook.com (2603:10b6:930:4c::10)
- by DSVPR12MB999193.namprd12.prod.outlook.com (2603:10b6:8:496::6) with
+ bh=qb9ZTlfndwYrtf3psGbWEiN/g61lOgMiTo8R4QUSWaI=;
+ b=JgmO9NzsaA+l2HxArh+FU7Y5WmcqYLdfYhPIifegizgH9i62HVoO186HQVKPzU7Vsrw24s4U0STkqgRHLQC97YhsWzODioQy+lkQ5xUGx9G7VhOTDIY/XD2sNcj6/BrIkR+ZUWUOWriYfBClZtzMijtNMxn6WiK0NDNCUo1gWITohskUCXG457jaaPIvtZVlnpSZRdWl4SKxil079I/4rpXlhbDdCgTTCtxSDURuu8z5wVbCvOqVp+Cy5W0qULaIxDVd9dM2+WWCo09/UywBCQjYz/NF7pg+LIXTOy/VW1d+oLvn4lXu1c29OY6YuSwK7DuMYfjao6vjWlllMkQKxg==
+Received: from CY5PR15CA0181.namprd15.prod.outlook.com (2603:10b6:930:81::16)
+ by DS0PR12MB8200.namprd12.prod.outlook.com (2603:10b6:8:f5::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
- 2026 15:02:55 +0000
-Received: from CY7PEPF000000F0.namprd05.prod.outlook.com
- (2603:10b6:930:4c:cafe::17) by CY8PR12CA0064.outlook.office365.com
- (2603:10b6:930:4c::10) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 15:02:44 +0000
+Received: from CY7PEPF000000F4.namprd05.prod.outlook.com
+ (2603:10b6:930:81:cafe::8a) by CY5PR15CA0181.outlook.office365.com
+ (2603:10b6:930:81::16) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Thu,
- 15 Oct 2026 15:02:55 +0000
+ 15 Oct 2026 15:02:44 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,17 +49,17 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- CY7PEPF000000F0.mail.protection.outlook.com (10.167.247.148) with Microsoft
+ CY7PEPF000000F4.mail.protection.outlook.com (10.167.247.152) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 15:02:55 +0000
+ 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 15:02:43 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
- 2026 08:02:21 -0700
+ 2026 08:02:13 -0700
 Received: from vdi.nvidia.com (10.126.230.37) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
- 2026 08:02:19 -0700
+ 2026 08:02:11 -0700
 From: Chris Babroski <cbabroski@nvidia.com>
 To: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
 	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@kernel.org>,
@@ -68,9 +68,9 @@ To: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
 	<linux@armlinux.org.uk>
 CC: <maxime.chevallier@bootlin.com>, <Raju.Lakkaraju@microchip.com>,
 	<cbabroski@nvidia.com>, <davthompson@nvidia.com>
-Subject: [PATCH net-next v1 5/5] net: lan743x: add byte queue limits support
-Date: Thu, 15 Oct 2026 11:00:44 -0400
-Message-ID: <1e42bb2a36f305d8b3ba805e85d18c3dcda14887.1792008404.git.cbabroski@nvidia.com>
+Subject: [PATCH net-next v1 2/5] net: lan743x: start phylink last and stop it first
+Date: Thu, 15 Oct 2026 11:00:41 -0400
+Message-ID: <84c495b24206953fb799d4070c4d99ff27efb829.1792008404.git.cbabroski@nvidia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1792008404.git.cbabroski@nvidia.com>
 References: <cover.1792008404.git.cbabroski@nvidia.com>
@@ -86,97 +86,112 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY7PEPF000000F0:EE_|DSVPR12MB999193:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b7e1bc8-9307-4f2f-580c-08df2acd64a9
+X-MS-TrafficTypeDiagnostic: CY7PEPF000000F4:EE_|DS0PR12MB8200:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6c65f6a-d2c6-475a-b419-08df2acd5dc2
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|7416014|82310400026|36860700016|376014|56012099006|921020|11063799006|261009223027099003|22082099003|18002099003|10067099003;
+	BCL:0;ARA:13230040|7416014|1800799024|376014|82310400026|23010399003|36860700016|56012099006|11063799006|921020|261009223027099003|5023799004|18002099003|10067099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	Q9GEpRtVSTxl1bU4SQoTCTfafFPR6ElhcCvcsTNrgkGaKVbyWnLuZd5nmFU/aKiiPfJ1aDbjwOn0M/UFv5qEF/Qm3KyQbovQjCZubc+kraEtWKE/cx69LGFlS5yJtF3zGRqALGD9h2AdUmDQUpF0hPTls3XkE3hsVwb7YWTex6I+oOUS/eE4uInMwuX9WZWbFmJScoTUdVOVum/bbChziejDOc50/0DmEqe6tciVDOeIGtEKzXA3ueR8Yx2GXKAh0WyfcLib8jOwa22qMY3D/8Bl3+TmmAdXY02/7IJ0UNPcvy/cMawrQU1NQ1XlJSPHyIFkXAEEeJSduglS0x6uG4L0t4OIDyt2zizVpdarDHve6Hdh0cXvicU91Q1ZtdRGhXJ+IftcjCOh903ogGP6qYsXOe1aXuaKtge8huKPKUg72pgcDqQqAQP89AAghGIHHQUQHWDdDFfFuE9NjN08Ok0XxJv3J8lji6C7hP0O1MYudDB5XNdMMYZ6Bkoq3QmoN34WAyOHwSAT/AQOPJT5FdKGRLvrEuuJRvblC6ojXDDPPonzOn6UD9irA9nOsdeywfYjv9J7WNlF3ClHZE6+ZC9kr8GfGq0X/AvAln9O+vgzl8YLoggQu/YsIxwbd8ZuhoyfKvm0+68tXfRcUciMZu9g5AtlIioXZgYv7xS0nd7jE7pie9VJtx6DkTRVzyn1HM775lzblKePkA0649rsFvf98/UrbIm8x3xPz+sxJDjywqcmCSfhhEzd/VKsDH0S
+	r7bWmJQLW3MXbM+2i4+BtuZKl1sk7INjuZfG2yGBGeGY5ApsFrk2nauwfxd11FZc4HJ2P1dGmoGk7OHcGEe/6H72wB64Cx9jeSQMHLQE6AzEHLGz22bYqnhSN+RhFrRPrZWxoIF8XvEomgFwBw9UqO93ygKDP9TRJ+V1aawHtGHXIArR7y+M5lAZi1YTnbxFFtIeGTQzB+zi8EqZaxHyPBKfKQJtiUKyyS6G6r+jeneenkx9qGV8D3JCNF42sVOqQtYwVU07g8/sxftMFKpVNMyXFc/h4y/pjtCBsx1iv21cPztYWFsCENLKigRr2UcPIEMpamY6El8NPPQt6rUXSjFd9Gd2l8d9yLj/CT0oUcoiE2nU/I5RLTAel7R1wx09rkZkWrddtoAnj9QwCOfRv3MN5Pja1z++Ek83c6gUGJUTxgiHeNDQlohsU+UY7YiumHwUb0W7/N/X7l4kQQQVkZkVObZwG8uzbdifmYW2iONxlmJE9ERRC5GThlhAxVYXmXCoGuAVL+P9Rvzvq6WW4Vfb1dpvgwUQ+ZG5G8sSb/eIsfK/twiGMBWFZb/KYzBZ0w+mmUWhlskdnVd9FuvW+FMEh4puzjhTcBvXDyaIuBqBDtHd3PAdyNXcLmqnf5JFLR8mGQJZ+CM2RLhyEo20RPih047dGgIPlG5dOI8a5BkYkMyfaWpTh8Dp5JqKw/8L3154oKfL+GIZOGp1L1aKYsiWwQ4wNsmVlJvF82P4CGhPyRPBnZHQzJn+qccMbcOP
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(7416014)(82310400026)(36860700016)(376014)(56012099006)(921020)(11063799006)(261009223027099003)(22082099003)(18002099003)(10067099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(82310400026)(23010399003)(36860700016)(56012099006)(11063799006)(921020)(261009223027099003)(5023799004)(18002099003)(10067099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	UYi1qUE24G4Uv9wBO4GqWHi4+o00GD7/IvETE3xEfL8ZBxQViErid5peJodHFB3BZO7JRCabnugRwLXhUQrY9bQIe3WiK5qI8akGrXWHeUrF+SJgAwrGm4yxO8Am2RHatyzfzgrodyCfNpavYt3Gtb+1W0YAFpsc+q7YB2QotTzrh0tRtOOKXsQj+YxgP7GGMHwS8guQgyjRmiEr+Y0TF8OuYl2YGeQ7KzWwYlENVSSRUwoUCYahSZszSISNQuAqOM0KZi++o81mQAmDIOScqjBw3TJSSoCzhvKmGXhJ4wsC6P3e4Pgy59qQt74/4cW2/ddBq+v/LR/i627vfnOZ0sb+F1os7h05l8bR6UKHi6QZ1OsQuQQ7fN9hJPWOd3V0BjJ1OV5kfB/ukxU9pXJe0zCUodtm9gN+cXYfcJio9I/T3T0rOMcp5DcUuYiXZcOY
+	V1MvY0OLwvXaukv/pxVIoQyY6A/6GA6Wq9fdCSl6sTPT5dQ7gqlxj2BFfXityo1zhSU/E3SHHhamlVpICXyW31gmlzjeolocdTG4xULBfK+hrsZ1PrVnryH508i/JyPQrq7/hHaewtJ/SNjOey2j4b/I2TH1biOlnPk7rlILniGlvSFHl5unUpKGBmxBMpwxltqrLF3UDDtt/hXr+k2ZFH8j10ofaxGR3At2mjJV8lqBV3+hwSq55TfJpYX8nlqP8TAxrojSuCQ/7wCa9tykK6Fd3FL4q2m0129rbfcZ1rBa0buP5Gix0ZA5OfRbUCQJjhDlg1CctQWrH4acqp8+FJNV1DOJYQ2AoHWvi0TA+wOb6gxU3BjlgWJTOsjUq+MxEJB8y16apadb5Sxv3Hk0RXOVbfjndyZragpEpFlPwt1rS6xQzeWCljOBx49vCjxt
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:02:55.4086
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:02:43.8311
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b7e1bc8-9307-4f2f-580c-08df2acd64a9
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6c65f6a-d2c6-475a-b419-08df2acd5dc2
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY7PEPF000000F0.namprd05.prod.outlook.com
+	CY7PEPF000000F4.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSVPR12MB999193
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8200
 
-Report the bytes queued to and completed by each TX ring to BQL.
+lan743x_netdev_open() starts phylink before the RX and TX rings exist,
+and lan743x_netdev_close() only stops it after the rings are freed. The
+mac_link_up() callback wakes all TX queues, so it can run while there is
+no TX ring to transmit on.
 
-Besides limiting how much data sits in the TX ring, this lets the stack
-stop a queue once the bytes in flight exceed the BQL limit. Without it,
-a queue is only stopped when its 128 entry ring is full, and the TX
-watchdog only looks at stopped queues. With light traffic it can take
-tens of seconds after a TX hang to fill the ring, before the watchdog
-timeout even starts counting.
+For ndo_open and ndo_stop the qdisc is not active at that point, but the
+suspend and resume paths call lan743x_netdev_close() and
+lan743x_netdev_open() directly with the qdisc still attached. A link up
+event in either window lets the stack call ndo_start_xmit() on a channel
+whose ring is not allocated yet or has just been freed.
 
-lan743x_tx_close() frees pending descriptors without completing them,
-so reset the BQL state there.
+The error path of lan743x_netdev_open() is also wrong: a
+lan743x_ptp_open() failure jumps past lan743x_phylink_disconnect(),
+leaving phylink started and the PHY attached after open has failed.
+Every later open then fails because the PHY is already attached.
 
+Connect and start phylink as the last step of open and stop it as the
+first step of close, as other phylink users do. If phylink fails to
+connect, nothing is attached, so the error path only needs to unwind the
+rings, PTP, MAC and interrupts.
+
+Fixes: a5f199a8d8a0 ("net: lan743x: Migrate phylib to phylink")
 Assisted-by: LLM
 Signed-off-by: Chris Babroski <cbabroski@nvidia.com>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/net/ethernet/microchip/lan743x_main.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 2545a846478d..7739fa49fc44 100644
+index 9e1276cf313c..583f631df701 100644
 --- a/drivers/net/ethernet/microchip/lan743x_main.c
 +++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1708,10 +1708,23 @@ static int lan743x_tx_next_index(struct lan743x_tx *tx, int index)
+@@ -3334,6 +3334,8 @@ static int lan743x_netdev_close(struct net_device *netdev)
+ 	struct lan743x_adapter *adapter = netdev_priv(netdev);
+ 	int index;
  
- static void lan743x_tx_release_completed_descriptors(struct lan743x_tx *tx)
- {
-+	struct lan743x_tx_buffer_info *buffer_info;
-+	unsigned int bytes = 0;
-+	unsigned int pkts = 0;
++	lan743x_phylink_disconnect(adapter);
 +
- 	while (le32_to_cpu(*tx->head_cpu_ptr) != (tx->last_head)) {
-+		buffer_info = &tx->buffer_info[tx->last_head];
-+		if (buffer_info->skb) {
-+			bytes += buffer_info->skb->len;
-+			pkts++;
-+		}
- 		lan743x_tx_release_desc(tx, tx->last_head, false);
- 		tx->last_head = lan743x_tx_next_index(tx, tx->last_head);
+ 	for (index = 0; index < adapter->used_tx_channels; index++)
+ 		lan743x_tx_close(&adapter->tx[index]);
+ 
+@@ -3342,8 +3344,6 @@ static int lan743x_netdev_close(struct net_device *netdev)
+ 
+ 	lan743x_ptp_close(adapter);
+ 
+-	lan743x_phylink_disconnect(adapter);
+-
+ 	lan743x_mac_close(adapter);
+ 
+ 	lan743x_intr_close(adapter);
+@@ -3365,10 +3365,6 @@ static int lan743x_netdev_open(struct net_device *netdev)
+ 	if (ret)
+ 		goto close_intr;
+ 
+-	ret = lan743x_phylink_connect(adapter);
+-	if (ret)
+-		goto close_mac;
+-
+ 	ret = lan743x_ptp_open(adapter);
+ 	if (ret)
+ 		goto close_mac;
+@@ -3387,6 +3383,10 @@ static int lan743x_netdev_open(struct net_device *netdev)
+ 			goto close_tx;
  	}
+ 
++	ret = lan743x_phylink_connect(adapter);
++	if (ret)
++		goto close_tx;
 +
-+	netdev_tx_completed_queue(netdev_get_tx_queue(tx->adapter->netdev,
-+						      tx->channel_number),
-+				  pkts, bytes);
- }
+ 	if (netdev->phydev)
+ 		phy_support_eee(netdev->phydev);
  
- static void lan743x_tx_release_all_descriptors(struct lan743x_tx *tx)
-@@ -2003,6 +2016,10 @@ static void lan743x_tx_frame_end(struct lan743x_tx *tx,
- 	if (ignore_sync)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_IGNORE_SYNC;
+@@ -3414,8 +3414,6 @@ static int lan743x_netdev_open(struct net_device *netdev)
+ 			lan743x_rx_close(&adapter->rx[index]);
+ 	}
+ 	lan743x_ptp_close(adapter);
+-	if (adapter->phylink)
+-		lan743x_phylink_disconnect(adapter);
  
-+	netdev_tx_sent_queue(netdev_get_tx_queue(adapter->netdev,
-+						 tx->channel_number),
-+			     skb->len);
-+
- 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
- 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
- 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
-@@ -2276,6 +2293,8 @@ static void lan743x_tx_close(struct lan743x_tx *tx)
- 				 0, 1000, 20000, 100);
- 
- 	lan743x_tx_release_all_descriptors(tx);
-+	netdev_tx_reset_queue(netdev_get_tx_queue(adapter->netdev,
-+						  tx->channel_number));
- 
- 	tx->rqd_descriptors = 0;
- 
+ close_mac:
+ 	lan743x_mac_close(adapter);
 -- 
 2.34.1
 
