@@ -1,145 +1,115 @@
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A67D52123E;
-	Thu, 15 Oct 2026 13:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.165
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792070017; cv=pass; b=ePdGihZ2E0JGQE8AM7DY74xZEX2A7vkLJpVYCyohMnxk4xN9WIScaVcvXN4hH0fAEUB9v+n32WENF9/vbkLo93Y2zxyS1JxhrxxFrh3yfD35VWa/7knB+md9YYIKUlRqy+tmgHjpzpirF4+iehxVeqownwySKG66vehvCsJPLgs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792070017; c=relaxed/simple;
-	bh=c08mBnKV3/i60Vh//ZrjZSKzlhtxP0l+7hJOJ1D8H9s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=um8D/ZwMCgZxTF/bIqBRKsVJqy9HOgv0IVMyWsuvAYLhbonPqbqZokuyQd3zk5hLSYx5TDEA+X35Bn225m4efsqeA9Gv60hpEudthlZrNRtVZPvBD5biqihtsj+t7S5HwW5Nj8GCo8R5fEXxG2Z3+c4we9+POARx/Fz8ON8vAOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=JJJSVCko; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=dYjKGlZ+; arc=pass smtp.client-ip=81.169.146.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE84951C322
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 13:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792070092; cv=none; b=i++pz8KRQX8qRzNMLG9YC5pNArfcsFV1g7OkHUYnIfDxRnpb1UO7DnSDKDxEM9OnF7I4SqGHUoERDVMs10/fyU5suq8N6ff5MdQ0XwHIo30BWwG4ECRf57DrRF4+xlWzgmbYNHkS+J84tvoV2OjH71ELK6oB/C8dgpZ9cUIMaOo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792070092; c=relaxed/simple;
+	bh=GNmrpnkyU9pHXwGf/LVP3YSCbYjT7Qtwi3MUrAOJQC0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mLBjGinnL7nXk7dH6Ruxvl6vaSgA7KBRFSMgg1Aj4ERuoI5vQ8c7MT5acFzE0DPIScpApI03AN0iJEUjFOk9pZxONtgoNmUGcsibcgMNnjRAberOKLeuf74y9M9okAmrEEsnmAYs95HVrrsKHP1UQM7B9JGi6amCbvz/PXFvmyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QAxOtSRn; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="JJJSVCko";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="dYjKGlZ+"
-ARC-Seal: i=1; a=rsa-sha256; t=1792070007; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=N5foxcyrMRO81Go3flA77mFiad602Azwjmsx6lMOhWkRC+xAoGAoQPzY1Hu8JiuXHO
-    0gI+flvq7vHSAurkcOjfnHYXefhqhaBIvna9Fx4zFa69Qvxh7Fc72voss2wOUViBBYg3
-    LBB5yJqz6wsz9FIU2aOKEim8SnRu0nTmtl8pp8NczzhjZtgj5qKMXY5MYHO+rqUfMFG0
-    aIWC5Rrd1VDUiSbGfUh1yy57cRW5dKuu04NSlfwpoBi+r3YWussskm8++p0F4e/dGCPg
-    c2cUBj6LsPsckc+rG97ZfKEAfGuHwXv0gMrpFvvKQEwoYOKl1A1SdtEp9VMOIeawKzSD
-    /EpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1792070007;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=5x98H03MmDqMwJs1jkMDbGaMEvUbrWs72k5aOTht/54=;
-    b=Lju/uPiFjLzHhSMc5B446xJepyvl9ys42oLVUzlSWxUdzScUsmmh1UnWzKOrFOH6/E
-    mUZcEioQdgdr05FKDnq5oPzIp+O1rZjxEmnkFx1eqCgFPNTCBFUchs3Tv8v1w9hRk9Uz
-    zW29Gl0Fn35b6Qx4luG89rxOHXcYnFtTq3qi6+2U0ez+6GZdA9bA7oOS/+g6xgow/avi
-    5DAVIzjAZz/fkoeEA+dQr8HwV/M6Z1pg3U3+BEhPPkknZpdubwbMmMsQOwaaSnBAXVbU
-    RgJTTbZO6Weu9ELbjma6rEwEpIbITC1g5btxTkeO451J4aT00V1vAHNuCQtXL+kBAP2q
-    Edng==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1792070006;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=5x98H03MmDqMwJs1jkMDbGaMEvUbrWs72k5aOTht/54=;
-    b=JJJSVCkoO3e1XSstdT8TkAVPCFLGQJCEYbsTtIcayJvNerb96Vn7YxnSHArxCiY7MK
-    4T0OmmRZ8/OgQq26Wp31zZL2IiET+I77o1Y9h4TBm53+gdPJy1iCd3iN1V9hztpQrKf5
-    AFG7gyAhSM/Pd6u3eVbVBGdcs6C/4eNnFZCQZ+7rDv1NFsNwy0MGBz8P/KaW8Lw9QD9i
-    w5SyJ7+7/bTYuSpLp1Kw5viBROiCoCposBzqKrO8xwT49PxbBmW2/bk55wEqvmVuuN9E
-    cOBW1PeRiZJ2+VYJoP+4YfRsTPAIaKS9e/8hpv1ghBTuJpspxqwN0rQa2Cm6B9oABfnm
-    ZK6A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1792070006;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=5x98H03MmDqMwJs1jkMDbGaMEvUbrWs72k5aOTht/54=;
-    b=dYjKGlZ+CibCctN11qnTc9t6arEa5hJjO7gZs+yuZ1X02NAy7HQ7QyZB9pObXZJNhe
-    wJEPJihBD41uN2kO8LCA==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tRkI16oOSW1Ti/f4Kp38="
-Received: from [192.168.20.237]
-    by smtp.strato.de (RZmta 55.6.3 SBL|AUTH)
-    with ESMTPSA id Kfdf2a29FDDQIIv
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 15 Oct 2026 15:13:26 +0200 (CEST)
-Message-ID: <88644694-66b0-499d-99ee-d0c18b53b00c@hartkopp.net>
-Date: Thu, 15 Oct 2026 15:13:26 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QAxOtSRn"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4a005aa0838so5059415e9.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 06:14:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792070089; x=1792674889; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9e6tOpY5SeeMPDTwWX6pIO46IuU6H5Wj4q8BPwTgU5I=;
+        b=QAxOtSRnHp2VBkQq47A09g6RXDFthCDEAbKON1sUuKorhPqdTV3bhMDNjd2nH0Ss8w
+         DOhrHue0qz2Wgkn4N5zFxUSJl1b7/oTaBUhEm7hZWRe5giRkJu9E/OAYlrnc16pUw6ZU
+         /p0mAiNlDXiF/uAh4xRzYWQjwu983iMsPNv4oC0ogtHscu/Q/n/qnimWPrlKrEPr2WOU
+         rWfxUKnh0QI5Xnj1vPQmcPXJI1wieVeR6IIq5MpBLdg6Lh5HrDdfTJ8tL5hLdur1mS8R
+         4iIubmpvJ5Y8vDSx48cBjn2cuKpo3CmSShZwksrL7m0Tz8voetOpgph25OAE7x+6WJz1
+         fd8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792070089; x=1792674889;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9e6tOpY5SeeMPDTwWX6pIO46IuU6H5Wj4q8BPwTgU5I=;
+        b=dR6cYpFuHoETCYsVeWr/6kJWup+DHYIi5cdmkNTnaCSUdPD+0pEiTe4x2qprkJDSMF
+         /sSvwh8ANGlc5oj3SQKyLjBnIqqRmktp9plHnPL7x7zpapIEcIMvKEYJ08ifa6N50A0J
+         PkEI+tS00SkqvXNXkcSYMCpaoq6PXYu5vaaaSuiiWlxpM2Mo3rZ2Pbqay3qcGX3t+990
+         sB0KGZBQGR7CA/uYG0T810PJJpHQymW8fB5feY82lXVIID9J7AZGNp84LNawURGm7gNd
+         RYEn7BNgPX6YmPC8eNX84HnBpaAs6+YCx0kkRo9gnuVkXlDQ7Rd5GxsweCRZHOLo1mwY
+         3lsQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwTcRNgLh2SOis6Q5lWbpsQwqqr2ekQ3JpiRe+m5NkPFvYCPkjtRvxfSSxDY6j8opXL6PkYa/8=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJaUO0yTMYUFfbG2Nrt1YjcoQxuR8oCK0DSNehpwIS5PpMYK9e2
+	UgkzNjTNZeFLH1PyBAzColhEB7hhxeV3eMq3ihTIYQf3PxF0ZXpgsVfS
+X-Gm-Gg: AYBFou0ALKg3cyLCdsF2iBjmckGY0j4OphdN+SyspocgMppPXgE4W5+46ZsnNKwMdTB
+	kv8li35ac86ZhDKoGaPLY9qawPM0CTB+fzGQya84tBG0ikMF7EX5Aj+Nspj1jwUlL3pwWoVaDfn
+	kjHT60vhehLLRN2pyaC9reTrrZEgs/OsH+S5TX0yzXjoMJILNdojPgdwKMbNHewCHN0E/SJszk6
+	mSlkAenEIsiCkIIN2gIqLNJ2FXo/u1UmhovlES5s/gl4fk/idg/9nsFdjX+T2V9RJ8GGUaD8kPS
+	mslfxAfTpxi74xMGZVJLBKeFCqYAlcrofqSilAabe75kwyngLAKlyLvc3GfLLXLfwI/xb3Axgi0
+	wrqmqWZ8mQsko6yL6eyS/hoUZBGJw1QWp0xh/FlrsWHg70e9crxVpiXjyKdH6JnjQ9a5IpRPxnj
+	25txs6dMBJxwtOOpJIfbFloifL9cPpAPfJacCfnwUBCwi2VHRXlpig/YXwPrxhXHFr96Hlatf6v
+	sCOfHa2TGb6yYRh1TTbYjhHNovHxDiby1LSSjEreYupJmoR/fB52bXbkgaKU44C2Ls=
+X-Received: by 2002:a05:600c:1e0f:b0:4a1:8469:e6c8 with SMTP id 5b1f17b1804b1-4a18e46f48fmr408305435e9.1.1792070088832;
+        Thu, 15 Oct 2026 06:14:48 -0700 (PDT)
+Received: from thomas-precision3591.paris.inria.fr (wifi-pro-83-149.paris.inria.fr. [128.93.83.149])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4a1bd99faf3sm70307735e9.14.2026.10.15.06.14.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 06:14:47 -0700 (PDT)
+From: Thomas Fourier <fourier.thomas@gmail.com>
+To: 
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	David Daney <ddaney@caviumnetworks.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net-next] net: octeon: Fix dma_unmap_single() size
+Date: Thu, 15 Oct 2026 15:13:28 +0200
+Message-ID: <20261015131336.34801-1-fourier.thomas@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [GIT PULL] wireless-next-2026-10-07
-To: Johannes Berg <johannes@sipsolutions.net>,
- Kuniyuki Iwashima <kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20261007205827.467974-3-johannes@sipsolutions.net>
- <20261007163616.1088d364@kernel.org>
- <CAAVpQUATko2Oig53r1+VHe+4Y3fFeX1xOw5RAnXtUAGwvQoB5A@mail.gmail.com>
- <44cb773984f61ae85b8c42904ef1ce7a62e85e4e.camel@sipsolutions.net>
- <51e3f9ce-fa8c-4cdb-b5bf-d05f53cb52ac@hartkopp.net>
- <7e95ff419f81425b9fa18c74f3a77208764751bb.camel@sipsolutions.net>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <7e95ff419f81425b9fa18c74f3a77208764751bb.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+re.s.addr is mapped in octeon_mgmt_rx_fill_ring() with size re.s.len
+set to netdev->mtu + OCTEON_MGMT_RX_HEADROOM + 8 + NET_IP_ALIGN. It is
+unmapped in octeon_mgmt_dequeue_rx_buffer() with
+ETH_FRAME_LEN + OCTEON_MGMT_RX_HEADROOM.
 
+Change unmap size to re.s.len.
 
-On 15.10.26 14:54, Johannes Berg wrote:
-> On Thu, 2026-10-15 at 14:43 +0200, Oliver Hartkopp wrote:
->>
->> On 15.10.26 14:27, Johannes Berg wrote:
->>> On Wed, 2026-10-07 at 19:05 -0700, Kuniyuki Iwashima wrote:
->>>>
->>>> Also,
->>>> I hope we could remove the long comment in __rtnl_unlock().
->>>
->>> So I sent my next PR, and we could therefore do that now. I also checked
->>> across the other places in the tree, and isotp_release() was the only
->>> one that seems to do something similar, keeping a socket pinned around
->>> rtnl_unlock(), but I don't think that could cause a similar problem.
->>
->> If I got your claim correctly, I think we are solving this in this
->> net-next PR too:
->>
->> https://lore.kernel.org/linux-can/20261015015336.816543-8-mkl@pengutronix.de/
-> 
-> I _think_ that's unrelated, but I might well not understand it
-> correctly. I was looking at the rtnl_unlock() portion, where that could
-> run a netdev todo item. Even with that change, you have
-> 
-> 	rtnl_lock()
-> 	lock_sock()
-> 	...
-> 	rtnl_unlock()
-> 	...
-> 	release_sock()
-> 
-> which looks sufficiently similar to
-> 
-> 	rtnl_lock()
-> 	wiphy_lock()
-> 	rtnl_unlock()
-> 	...
-> 	wiphy_unlock()
-> 
-> that my search flagged it, but isn't really the same anyway. But I'm not
-> sure I understand the socket lock semantics and the socket notifier etc.
-> well enough that I should be commenting on this at all :)
+Fixes: d6aa60a10b2f ("NET: Add Ethernet driver for Octeon MGMT devices.")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+---
+ drivers/net/ethernet/cavium/octeon/octeon_mgmt.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-Right. It really seems to be unrelated. Sorry for the noise.
-
-Btw. the locking scheme is ok for the isotp case because after 
-rtnl_unlock(), the remaining operations only affect the socket itself 
-and no longer interact with any netdevices.
-
-Best regards,
-Oliver
+diff --git a/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c b/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
+index c190fc6538d4..92050716f103 100644
+--- a/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
++++ b/drivers/net/ethernet/cavium/octeon/octeon_mgmt.c
+@@ -380,9 +380,7 @@ static u64 octeon_mgmt_dequeue_rx_buffer(struct octeon_mgmt *p,
+ 	p->rx_current_fill--;
+ 	*pskb = __skb_dequeue(&p->rx_list);
+ 
+-	dma_unmap_single(p->dev, re.s.addr,
+-			 ETH_FRAME_LEN + OCTEON_MGMT_RX_HEADROOM,
+-			 DMA_FROM_DEVICE);
++	dma_unmap_single(p->dev, re.s.addr, re.s.len, DMA_FROM_DEVICE);
+ 
+ 	return re.d64;
+ }
+-- 
+2.53.0
 
