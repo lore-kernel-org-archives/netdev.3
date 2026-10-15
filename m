@@ -1,27 +1,28 @@
-Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011002.outbound.protection.outlook.com [40.107.208.2])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013028.outbound.protection.outlook.com [40.93.196.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94763C1D73;
-	Thu, 15 Oct 2026 15:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2426224AF2;
+	Thu, 15 Oct 2026 15:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.28
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792076566; cv=fail; b=is7QjjLInICZO9dJhB7mKzt1yGE6eDBUwd3jKYVylMT3nQT7hL9b/vScsAm7qPMPgaqQFQm1Lw1XZ1ddYfvYmJrbP8y4A06hTUmSNW4ormVgQts2Rz2hb2qQF1xLzZtC37KRSGoCepcBDwDF7llDDZ9cOOrIHIU3aiJ9OCzdH3I=
+	t=1792076577; cv=fail; b=Ov6p7rxZKP1c+vCl06WEcElZAmBxpHBgH1MajL780O7u7ZO0RlgTu8zdJkpfOAVLPZ88Sx4xuyT0DfmPiuvTMxYwnH3mIEE8mfZgkqvmvCIDCuyKI3rvTa9r3yTdtIEVNspWpthHxCKg0cXkUhCH51oLvWkPN4ymocZuBvhkP6M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792076566; c=relaxed/simple;
-	bh=U03TsRb9NPU/ymVxrxxkghPQsQ/5SUZLrLfeVAAiW7M=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qwiaqb/bX3H4f19QHb06VLFTuKAOnBPJPesYWNk4QaoeRzNTfNCglIKKF4edUIYzrIIeMUonKLYgieFvleRlHFtrwbxeuyzHqgaobcHFZZVvj4v+uC3ubLiXuc33fuivBz+Md2xJdslHedWQXkFVocRtog71MM1SlNJBQJiTaDI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eMlpq17m; arc=fail smtp.client-ip=40.107.208.2
+	s=arc-20240116; t=1792076577; c=relaxed/simple;
+	bh=jU5AbbjchBfjZRKDO8v4eQp/8XrZfiCqytb7tBLRawY=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h/VOPCFK0Wy/TvvtfIOYmBbc9BZwAJej9+5yfEVx977Ldp8bqVjWOnYcDMbcEJKvc/v03PnjX6HEB6D/qwjphHFNgQzoTkYiyyMlV1SrZfsVNFjhh+UhEBohh+uojZD1Zhqh+NkOfMiQ76kfFtNnqt6dR2HRnUUcg8A5tpDX33o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dMrdbcRE; arc=fail smtp.client-ip=40.93.196.28
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eMlpq17m"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dMrdbcRE"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Oy9sZiNPqN3Si1wZzuWb4u7SxuKVb8CKow+99Rt0zTJAYFsGH/Yt6HpslZP45rMGjZvgrxdNS9to9ZPGyOlCLRCQ4n86sLUFN3GiNwT7hMzg3mm6VrWPFARcyVopYPYDAWGqlo2Pghew4Olj+WsoRRBoFKaAnSVVgbP7BayW7tqJs09vUoShzpXtHL7+cCTr2r7tA1XGAo5aDEedGyn7DJMJlHkIEB4n3dE8+zlxr0LIawLu83t4RNHVBB9N4QsXYm7psyUA1398M9ihHe7jjaRlFJpOmMMPxabUoYffG0WJkSffIrW3j2x0Bi75wa5FvF8C4jrxhEZZNMo+f9hHfw==
+ b=h3BIAAX73Wj7xSF/dmvjN7ILAYTwNxiilLfcU4UBEHufd5tnRnMJFKW6ZtHAix+F6D4jga5rV4hA8EZZMhkbyoZ+6y9gB1i+iyjqkAaH/d7LoXKUyCwHI5hmdx1JY4lWXJhC3muAf0QhX+MArcWDs+ItnSNBiscUiErxWaq3/ELJngtN/Uj6mqqHCXa+1YnIQRtt7NiZiY/DnvWWWZOTLC3hG+9Sep/s3SaEDyGFvjNz24FO/QKQudxvAr1nqQITsAdLSpGeNAgnBaTp7uaCHHpIb2Mlkn2GIvn/85hfdnyITYYm+tGzff9Wz4U0nCB8RGmHBabzp7BzfX9HD5KlHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wt4lGju7D8PTj1rfAG/OcLfJQFJkK3lME2hd34qjobs=;
- b=Z5oBLtAi8AdlZubUEJwKy3QyD3qFVPySKcTvhwRm72QpiLpIjytkhwXwzfSGMH4EbHpic5gwF22pI2P+q/2HjO3wmYBedGzxRUQdQ7xF44Q6oy+akUmp1ngX3Wamycw8k3ZzsajpU8rgF5dUYOTSjPQvBJ9Opn3qUYdE1xuNhHdmn11iM6XZxuVWfSXDR5BQCEGVQRo2Zw7xvAtMMcNAsTYDnrKRfgFvoQzwcOZS5xWK4u7e0NJCAyNb8UZLIaomPtB+FF/ho3lheHw1JafEzgOnMbSPhzFYIhUNgt3GqkAnMnoUJweCv+3G/u58i3Z4LV5FzS+ZWXj/yJ9O9PHTHw==
+ bh=XfK/ecA7f1HwBlEOaECNQ7MWs0DANIa8wBCgIx9+ldI=;
+ b=QcNKW5L5IQyVsDDMmKfaa7VNBqe8yCVp8cO5/Tcy4nIKCHNfHV6rwoi/7au/VxLvZCt9Mc3CiJG9OVu7f+89dqzqnjj1w8w0sPqGpVAUEs6/AHb9Agi/W3Zfe/cwqstIHlK1VMJiSqdLlQ8herbzSg5rpSlsDFwCK2ijxOiEl6T7IGxdIHeXaqA1rPb+LyU/uPnKeCD9EWMY2xo1ToPkpseX9o/Jg1JaGhMgj3KYaZcJxMEcoS1zZajMY1JJ3QzxTxWuV5HNiiazqQYu/5wdWQjkJQIoPsfKJwAHsxtIChNgjAxms5+W2d/XkB5ST0750eBX3Uq1udgL6VRbBgLZuQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=microchip.com smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -29,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wt4lGju7D8PTj1rfAG/OcLfJQFJkK3lME2hd34qjobs=;
- b=eMlpq17mPXPLixgae/D47sm+sQFJlGZ9u+hY4goPv3VQoxn2XB2Bf3xkSBMYQFgnD4Do+Q4iOe1njEwF0gmI+kq2qNwy3HUbCW1JgUWZkVa3q/uCY7gfJx0KmDjRYHhSXoizD019KPaGr0UKjhb9KwbH4X2lp0MN1KOogmMYyyzqGWwEJsxJnZG6mjWONDddbTVYHAFmYUToDdP/hhHBRmd5EvXul2inApkJV/h99LnqNbtOwaFz8B46BSFrqeKhlpVkYxHTd/jWMtbUk6+ub8WSR1fDTN9zPH49tMBkd2dOgNk7LQBDUSozLdYK4JcHl6P8uQ2iKIDKgZ3aIG6BIg==
-Received: from CY5P221CA0146.NAMP221.PROD.OUTLOOK.COM (2603:10b6:930:6a::19)
- by DM6PR12MB4299.namprd12.prod.outlook.com (2603:10b6:5:223::9) with
+ bh=XfK/ecA7f1HwBlEOaECNQ7MWs0DANIa8wBCgIx9+ldI=;
+ b=dMrdbcREy93A6safyO9U48YCMnB7AkOr8AGFUxQmMIgUTOsOuGtcejfic5SUoAUH6vHLXvWK+LN2ll+VsIG47e1LTnBleGvw3RUZ6YwW46Z0uQOp0aeYHK5nHt4qUHeJS67OHi8ESyHJoKWmE+7LMCikjI2mbKTqq6UQUZKDknUuKcNIuceoeU2NyW1shUpChY3GtVXqMQeZ78WJmYxOZc6/d7TnJelyF35ZvYYb1A39AxjP1Ve4EQyhy/m55yl3nZ053Kzg1IOQgxVHCEtUdTQMepnTgFQCtzoWMmatlJeT28XdVEfTMNTyQT2Ybsr5AzGJ8b15eNHUX8vSTSDOGQ==
+Received: from DS3P220CA0007.NAMP220.PROD.OUTLOOK.COM (2603:10b6:8:45f::6) by
+ PH6PR12MB902451.namprd12.prod.outlook.com (2603:10b6:510:3df::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Thu, 15 Oct
- 2026 15:02:38 +0000
-Received: from CY7PEPF000000F3.namprd05.prod.outlook.com
- (2603:10b6:930:6a:cafe::5) by CY5P221CA0146.outlook.office365.com
- (2603:10b6:930:6a::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Thu,
- 15 Oct 2026 15:02:38 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
+ 2026 15:02:52 +0000
+Received: from CH01EPF000BE94F.namprd02.prod.outlook.com
+ (2603:10b6:8:45f:cafe::28) by DS3P220CA0007.outlook.office365.com
+ (2603:10b6:8:45f::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Thu, 15
+ Oct 2026 15:02:52 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -48,17 +49,17 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- CY7PEPF000000F3.mail.protection.outlook.com (10.167.247.151) with Microsoft
+ CH01EPF000BE94F.mail.protection.outlook.com (10.167.244.199) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 15:02:38 +0000
+ 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 15:02:51 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
- 2026 08:02:08 -0700
+ 2026 08:02:19 -0700
 Received: from vdi.nvidia.com (10.126.230.37) by rnnvmail201.nvidia.com
  (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
- 2026 08:02:06 -0700
+ 2026 08:02:16 -0700
 From: Chris Babroski <cbabroski@nvidia.com>
 To: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
 	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@kernel.org>,
@@ -67,10 +68,12 @@ To: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
 	<linux@armlinux.org.uk>
 CC: <maxime.chevallier@bootlin.com>, <Raju.Lakkaraju@microchip.com>,
 	<cbabroski@nvidia.com>, <davthompson@nvidia.com>
-Subject: [PATCH net-next v1 0/5] net: lan743x: automatically recover from TX hang
-Date: Thu, 15 Oct 2026 11:00:39 -0400
-Message-ID: <cover.1792008404.git.cbabroski@nvidia.com>
+Subject: [PATCH net-next v1 4/5] net: lan743x: reset the device on TX timeout
+Date: Thu, 15 Oct 2026 11:00:43 -0400
+Message-ID: <784a571839d5dd83c2c3e8ea38844159f353de77.1792008404.git.cbabroski@nvidia.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1792008404.git.cbabroski@nvidia.com>
+References: <cover.1792008404.git.cbabroski@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,118 +86,219 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY7PEPF000000F3:EE_|DM6PR12MB4299:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3b99ff5-8957-4db4-ff2b-08df2acd5ac2
+X-MS-TrafficTypeDiagnostic: CH01EPF000BE94F:EE_|PH6PR12MB902451:EE_
+X-MS-Office365-Filtering-Correlation-Id: 13afdd25-1bd8-4249-5bee-08df2acd6287
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|23010399003|6133799003|10067099003|18002099003|921020|11063799006|261009223027099003|56012099006;
+	BCL:0;ARA:13230040|7416014|36860700016|1800799024|376014|23010399003|82310400026|56012099006|921020|11063799006|261009223027099003|10067099003|18002099003|22082099003|20046099003|18096099006;
 X-Microsoft-Antispam-Message-Info:
-	lGV9ucvTD2yMJvAMzMbmKdWI8GfIgE7b8lQaUnscgMsaozASc2rWrJUjsXlEJpV5EvykYUvPq73ayfMC5tLrJzFp77zIzxHJB8M1quBUqaowT0mk8BtduxGZJH38q3dRO3eR7c47sAr+NX6e/1OfIiSAp0c4/4y3HhkBkAwabF/J/KdH8M30JPaq9nwO9Rrnk8h86vnI+cQp8B4/bwWp8zS9gOmacnnwNl5sAstRU/zTCXF8C1GTRrXOTH7YaPXTHdlu2iWY8Ndjju940GCSQed+WkPhEME0rp1cQNntsqFiYcN9chipyQeGEOv8+31mAw4lVvwtfkGGaVj04ouncu4cZIDVvh9WoWK6smYlf+fZ1gYHpzFA4Cd9PYneLQfsDhqtg0bvewiuxUnLhLza6gpsXPIRzkHqiEj4yI9cdhuS0ZG5BW0dTvp9ByyZ0TGpAo28hYSRfabXlbts0KOFOBXgdzFG3gaXMmihtG25fQMZzxG5TrgY56OyQ85vp1JDsjajzRTbmKCWt6Ev/rGZs2rAfFCpW0kfVry6lwEOO5eBhIE5so9GI0njNZtr6MT6kIpumgczjTWl0ZJrZUgtWm3fw9ZFkMY/m5ZnXoLY6tDnVLJO0gCDRfj8Tvzyu5AHmjuodXbKfTV5homc+NR+53MmmHlexvtnxGuXbwzpfWssXmIZmZ4slipkvMNJ1seYqdll6q7G3nuMSf6aD1TQzm8O2cWtLJrqWt7xmeAJS+IWZFMmOo4KszVVBpqbmA+8
+	NtGxYrqVJ8f3CTh4qUPDt83QhFpkwKN+WXIuFupZEHWkyGieRgE+uFtV1AkhBRqt+XFo+EZn6mxsmo+qzBekv484ep3anVIAmoXKZcipyRWLj4ZblY8/HOyXR29VAvJywAzJVA1i+d6mSf/D8P8Gr9WVOIaudFaHjQtzSs+/JaJtdHr85YjbGRU9VRPfL7fyMpBC5wti87vduYH4Hs2ndgBGwiNkHCtnDf8QfZJ3655njHUhdrZjgLzab+yK8RcIH1Zk1ouRTXz5GyRENlGq8FI0uSqlK1OPMiCGtxgosjvcdN5lnWxFbsj19ZMA9RhlSC3HGJBSP9hDLQxYAfD9CVoghXLwFtiEwPHumc8GWFuLuKkWjADSf4SxdcItmVKeiRsXRVPCERFskJ8bQk/pQnkAweBN7ZKjXjTOTATTlsn4fgA9tSD2ICWC5xSDqpRU6O2WqtnQfcCbglQquBGpUlRIuN6nVGItW9Q9AXoDKfr4g753QUt+CodNJnR2RjqB0byWlF7uxC0o+7M56YDeaXxZNIZS0I3L+C3i0R/YeRESrrC2vHC0BcT9e30vm8rfu3GCuSgFlX5Vmcm/3pdqpLqQfDDNjMZUTAh2zTTTvz8xWPXOtkdFUcHTSXPsszkPnMz7SfyvnN8LelqEv/mCR3llJAFaobNDwbRwI+/zPv5AjNEzKuTMIi4iGKQ8o57GUxnH13HkMPN0eI6a00YpfnLbMe9vwp5M2YZ/eeoMXlDJrgHI3YUucMFMddc/dlCz
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(23010399003)(6133799003)(10067099003)(18002099003)(921020)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(1800799024)(376014)(23010399003)(82310400026)(56012099006)(921020)(11063799006)(261009223027099003)(10067099003)(18002099003)(22082099003)(20046099003)(18096099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	XXmI02bW4C7ClVONv85Q0cJVVHNoamsRd5bOfquNIpaS1hJ2TNjQbw9wbgMMTAFodct0vuYq1aSWM1xG4OE84ZHKapgaoVPowK04x6LZ9/uSwyGHJ7QkQenveVvMchYSURKEX8Si7TwOV5hVT0c2fbQDZmP2BCom9xZXzbhn7BgGr40d4ajBC20fDB5zDy9H4zvBhoxF9YbRSa+zZQGaFnHLJs4mkJQfqyojRFLO/6aeBjxHw8xhmCUqIIIhTzAeasbxcn9UKjar2/IfGUPWt8/xZ3W40WnxxRKx1oDxQ6fQ6DHPUCF3LdMYPfRPy+ybqESZafZQtHNIhx8/FjOLO36O3BBKbV8KXZYPBfXQcjZD7vQzvK1ucDwxdjPXt1fUp/4a0YX3kbxm/xOyM2p01Nd2VBKfQGRmE+9I7UggCYj3+l7Hi7n+bwIJGiaYmJC0
+	NE+bUm70e2/eGkBWBN7Qc2oXe2E10XHLHnIDrp1NlpwFNBVECj6O8hic9uvpYV3LM6NBvqa6g4XCXBRnmV/N34JgcuwzzLcrORzUidK6MhOfYVe1cJ03rA3N20LJDbNllHjgpM47Kt6JWWLGx6qZMxsYbuiqsFFFlKNZgm3o6EnXR1b2Nkjtpzd4BtA6VkswHuD9q9fHL05Nh1bxgQRMqOhKuJkfoHX+cczPaW7E5rsjkfIzKxjMSIwvdLEmOlFd941BqiorzbvL5O7xvK1VNfhTQNN1Tu+sYaDiX9BeTkw8gJb+VZ1rgGwfvRxC1Bn+S76ujksa43OqTtOY8Sxmxd76nJrYzwOphGj1g7iiC4+eIJM127DVZaIVmf/za/aQ4PWSzYFYUJIH8HfMYPR9cZbqz1lcKxg97kDgvexttRKnHDqlGxVYWkGn20G1Y2Y0
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:02:38.7964
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:02:51.7830
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3b99ff5-8957-4db4-ff2b-08df2acd5ac2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 13afdd25-1bd8-4249-5bee-08df2acd6287
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY7PEPF000000F3.namprd05.prod.outlook.com
+	CH01EPF000BE94F.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4299
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH6PR12MB902451
 
-Background
-----------
-On a custom HW platform that uses the LAN7430 NIC we have been able to
-reproduce a scenario where the SoC stops receiving TX completion
-interrupts, appearing as a TX hang. After dumping and decoding the
-LAN7430 registers we see that the TX channel reports that it is in
-started state with no error, but TX_HEAD stops advancing. TX MSI-X stops
-incrementing while RX interrupts continue to increment.
+The driver does not implement ndo_tx_timeout, so the core TX watchdog is
+never started. If a TX DMA channel stops completing descriptors, its
+queue stays stopped and the interface cannot transmit again until it is
+brought down and back up.
 
-This scenario has most often been reproduced in large server cluster
-environments, but it's also been seen locally during repeated SCP and
-iperf testing.
+Add an ndo_tx_timeout handler that schedules a work item to reset the
+device. Under rtnl_lock(), the work detaches the netdev, closes it,
+soft-resets the DMA controller, opens it again and reattaches it. This
+is the sequence suspend and resume already use, with the DMA controller
+reset taking the place of the full hardware init.
 
-The root cause of this issue is still unknown and we are continuing
-debug. It was found that bringing the interface down and up recovers the
-network. This issue has not been reproduced with the LAN7430 EVB
-connected to a standard Linux server.
+Because everything is reopened, the RX path, PTP and the PHY link are
+restarted along with TX. For PTP, the reset has the same effect as
+bringing the interface down and up. As on suspend and resume, the PTP
+clock is unregistered and registered again, and its time is reset to the
+system time. The hardware timestamping state is also reset, so the RX
+filter returns to none and one-step sync insertion is disabled, while
+the driver keeps its TX timestamping flags. PTP applications have to set
+up timestamping again.
 
-What this patch series does
----------------------------
-This patch series attempts to implement automatic recovery of the
-network interface after a TX hang is detected. It does not fix the
-underlying root cause of the TX hang.
+lan743x_dmac_init() did not check that the DMA controller soft reset
+completed, so the work could reopen a controller whose reset timed out.
+Return the error from the poll so the work can tell. Probe already fails
+when lan743x_dmac_init() returns an error, so a controller that does not
+come out of reset now also fails probe.
 
-At a high level, the patches implement the following:
-1. ndo_tx_timeout support to reset and recover the interface when the
-   netdev TX watchdog triggers.
-2. BQL support to decrease the amount of time it takes for the watchdog
-   to trigger.
-3. Stability improvements and error handling around the open/close paths
-   that now get executed more frequently as part of the TX hang recovery
-   flow.
+If lan743x_dmac_init() or the reopen returns an error, the interface is
+taken down with dev_close() so it can be brought back up later. The
+hardware is already closed at that point, so route ndo_stop through a
+wrapper that skips the hardware close while the device is detached.
 
-Potential issues and concerns
------------------------------
-* One of the patches adds new lan743x_dmac_tx_reset and
-  lan743x_dmac_rx_reset helper functions. There is no cleanup handling
-  introduced if these return an error, only a new error log. This
-  matches pre-existing behavior: if a reset timeout occurs then it is
-  possible to DMA freed memory. The datasheet states that these resets
-  are performed immediately in HW so I'm not sure if these will ever
-  time out, but I'm open to suggestions on how we should handle an error
-  in these cases.
-* The TX timeout reset flow does a full lan743x_netdev_close followed by
-  lan743x_netdev_open instead of individual TX channel reset. If the
-  stall is happening inside the NIC DMA engine then the theory is that a
-  full reset may be needed to recover. For internal use we also wanted
-  to reduce risk by putting the NIC into a clean state after recovery
-  with full reset. It would be great to have Microchip/LAN743x experts
-  confirm the best reset flow.
-* LLM review tools flagged several possible bugs during development
-  that resulted in the inclusion of three "Fixes:" tagged patches in this
-  series. They are included in this series with the ndo_tx_timeout
-  support because lan743x_netdev_open and lan743x_netdev_close are now
-  called more frequently as a result of TX hang recovery.
+ndo_stop is called with rtnl held and cannot wait for the work, so it
+only cancels a pending one. A work that is already waiting for rtnl
+returns if the device is still down when it gets the lock. If the device
+was opened again in the meantime, it is reset once more, which only
+costs an extra link flap. On remove, the work is cancelled synchronously
+after the netdev is unregistered.
 
-Testing
--------
-Testing was performed on a 7.0 based kernel using the same driver code.
-Please let me know if you would like me to run any other tests.
+Assisted-by: LLM
+Signed-off-by: Chris Babroski <cbabroski@nvidia.com>
+---
+ drivers/net/ethernet/microchip/lan743x_main.c | 74 ++++++++++++++++++-
+ drivers/net/ethernet/microchip/lan743x_main.h |  2 +
+ 2 files changed, 73 insertions(+), 3 deletions(-)
 
-Tests:
-* Verified the TX timeout watchdog triggers and recovers the network
-  interface when TX hang is reproduced. This was done as part of
-  repeated SCP loop testing and is also being tested in a server cluster
-  environment. dmesg was inspected for "NETDEV WATCHDOG" to verify that
-  the watchdog is being triggered. No errors were seen in dmesg after
-  reset.
-* Performance tests using iperf3 to measure RX and TX throughput show no
-  noticeable difference with the patches applied.
-* Repeated module load and unload cycles produce no errors in dmesg.
-  Network appears to function as expected when module is loaded.
-* Repeated ifconfig down and up cycles produce no errors in dmesg.
-  Network appears to function as expected when interface is back up.
-
-Chris Babroski (5):
-  net: lan743x: reset DMA channels that fail to stop
-  net: lan743x: start phylink last and stop it first
-  net: lan743x: quiesce TX before freeing the rings
-  net: lan743x: reset the device on TX timeout
-  net: lan743x: add byte queue limits support
-
- drivers/net/ethernet/microchip/lan743x_main.c | 177 +++++++++++++++---
- drivers/net/ethernet/microchip/lan743x_main.h |   2 +
- 2 files changed, 155 insertions(+), 24 deletions(-)
-
-base-commit: 05b5019b01fb9443b09ae4ed34af1135a80a84c8
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 8d256a80dac6..2545a846478d 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -1516,10 +1516,14 @@ static void lan743x_rfe_set_multicast(struct lan743x_adapter *adapter)
+ static int lan743x_dmac_init(struct lan743x_adapter *adapter)
+ {
+ 	u32 data = 0;
++	int ret;
+ 
+ 	lan743x_csr_write(adapter, DMAC_CMD, DMAC_CMD_SWR_);
+-	lan743x_csr_wait_for_bit(adapter, DMAC_CMD, DMAC_CMD_SWR_,
+-				 0, 1000, 20000, 100);
++	ret = lan743x_csr_wait_for_bit(adapter, DMAC_CMD, DMAC_CMD_SWR_,
++				       0, 1000, 20000, 100);
++	if (ret)
++		return ret;
++
+ 	switch (DEFAULT_DMA_DESCRIPTOR_SPACING) {
+ 	case DMA_DESCRIPTOR_SPACING_16:
+ 		data = DMAC_CFG_MAX_DSPACE_16_;
+@@ -3335,6 +3339,12 @@ static int lan743x_netdev_close(struct net_device *netdev)
+ 	struct lan743x_adapter *adapter = netdev_priv(netdev);
+ 	int index;
+ 
++	/* lan743x_reset_work() takes rtnl, so it cannot be waited for here.
++	 * A running one returns if the device is still down when it gets
++	 * rtnl, otherwise it resets the reopened device once more.
++	 */
++	cancel_work(&adapter->reset_work);
++
+ 	lan743x_phylink_disconnect(adapter);
+ 
+ 	synchronize_net();
+@@ -3431,6 +3441,61 @@ static int lan743x_netdev_open(struct net_device *netdev)
+ 	return ret;
+ }
+ 
++static int lan743x_netdev_stop(struct net_device *netdev)
++{
++	if (!netif_device_present(netdev))
++		return 0;
++
++	return lan743x_netdev_close(netdev);
++}
++
++static void lan743x_reset_work(struct work_struct *work)
++{
++	struct lan743x_adapter *adapter =
++		container_of(work, struct lan743x_adapter, reset_work);
++	struct net_device *netdev = adapter->netdev;
++	int ret;
++
++	rtnl_lock();
++
++	if (!netif_running(netdev) || !netif_device_present(netdev))
++		goto unlock;
++
++	netdev_warn(netdev, "resetting after TX timeout\n");
++
++	netif_device_detach(netdev);
++	lan743x_netdev_close(netdev);
++
++	ret = lan743x_dmac_init(adapter);
++	if (ret) {
++		netdev_err(netdev, "DMA controller reset failed: %d\n", ret);
++		goto close;
++	}
++
++	ret = lan743x_netdev_open(netdev);
++	if (ret) {
++		netdev_err(netdev, "failed to reopen after reset: %d\n", ret);
++		goto close;
++	}
++
++	goto attach;
++
++close:
++	dev_close(netdev);
++attach:
++	netif_device_attach(netdev);
++unlock:
++	rtnl_unlock();
++}
++
++static void lan743x_netdev_tx_timeout(struct net_device *netdev,
++				      unsigned int txqueue)
++{
++	struct lan743x_adapter *adapter = netdev_priv(netdev);
++
++	schedule_work(&adapter->reset_work);
++}
++
+ static netdev_tx_t lan743x_netdev_xmit_frame(struct sk_buff *skb,
+ 					     struct net_device *netdev)
+ {
+@@ -3537,8 +3602,9 @@ static int lan743x_netdev_set_mac_address(struct net_device *netdev,
+ 
+ static const struct net_device_ops lan743x_netdev_ops = {
+ 	.ndo_open		= lan743x_netdev_open,
+-	.ndo_stop		= lan743x_netdev_close,
++	.ndo_stop		= lan743x_netdev_stop,
+ 	.ndo_start_xmit		= lan743x_netdev_xmit_frame,
++	.ndo_tx_timeout		= lan743x_netdev_tx_timeout,
+ 	.ndo_eth_ioctl		= lan743x_netdev_ioctl,
+ 	.ndo_set_rx_mode	= lan743x_netdev_set_multicast,
+ 	.ndo_change_mtu		= lan743x_netdev_change_mtu,
+@@ -3567,6 +3633,7 @@ static void lan743x_destroy_phylink(struct lan743x_adapter *adapter)
+ static void lan743x_full_cleanup(struct lan743x_adapter *adapter)
+ {
+ 	unregister_netdev(adapter->netdev);
++	cancel_work_sync(&adapter->reset_work);
+ 
+ 	lan743x_destroy_phylink(adapter);
+ 	lan743x_mdiobus_cleanup(adapter);
+@@ -3761,6 +3828,7 @@ static int lan743x_pcidev_probe(struct pci_dev *pdev,
+ 			      NETIF_MSG_LINK | NETIF_MSG_IFUP |
+ 			      NETIF_MSG_IFDOWN | NETIF_MSG_TX_QUEUED;
+ 	netdev->max_mtu = LAN743X_MAX_FRAME_SIZE;
++	INIT_WORK(&adapter->reset_work, lan743x_reset_work);
+ 
+ 	of_get_mac_address(pdev->dev.of_node, adapter->mac_address);
+ 
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index d9495cf96b41..2697f0a2a83b 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -6,6 +6,7 @@
+ 
+ #include <linux/phy.h>
+ #include <linux/phylink.h>
++#include <linux/workqueue.h>
+ #include "lan743x_ptp.h"
+ 
+ #define DRIVER_AUTHOR   "Bryan Whitehead <Bryan.Whitehead@microchip.com>"
+@@ -1075,6 +1076,7 @@ struct lan743x_adapter {
+ 	struct lan743x_phy      phy;
+ 	struct lan743x_tx       tx[PCI11X1X_USED_TX_CHANNELS];
+ 	struct lan743x_rx       rx[LAN743X_USED_RX_CHANNELS];
++	struct work_struct	reset_work;
+ 	bool			is_pci11x1x;
+ 	bool			is_sgmii_en;
+ 	bool			is_rmii_en;
 -- 
 2.34.1
 
