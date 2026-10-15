@@ -1,77 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A741381B0A;
-	Thu, 15 Oct 2026 11:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792062611; cv=none; b=dz0v0a0jzRjErggF3TLp52spO56Gfd5HOgUWPR4PLBMQRYRcGXdlvc187F+QxbDRo1ppUzFNu+z03YWlJcmQX1NLt4W2Ibw5/NZxsVKQPHq9K42RtEkHfV9C4QbVjwb4vhhc6dTVXuI1dqKiBD5Z0WJy24k1e3uW9/F6roLR8LI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792062611; c=relaxed/simple;
-	bh=p4eCl/qVCpYrVybyyT0uU/nCVkitGvxxHKDt+VlOgp4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gB2j88oz6LwaTeIihilVtuezx7CJsBGItj9F0ji2J4flKE7fmO0yIa97XhtOXTHkYKaFfl6MFTiES9f9v6h/fMe/OWBGQwBQcRR8sjl02lTX3Kvqq0hGN3weMBnXvT6Jaz6WpHZPQm7nAWNj2B4/IONWEw78PJzlCGkNjOjvzWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyvHCH+6; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561484E1C8B
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 11:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792062917; cv=pass; b=LTL7tMHzFpHssQ6Sm+hqCirEKG1PDMujlXi4Lzyaa6dwHbKzuCYVsD+gSRXE32xtAZiB4+3vkq6wyRY/rzNQUOiK7y0DjgBr9Yd/GUlHlHBtDtLYkntVWXeaAAbqvWZ/AhYXms6heku5Rj7p9/iOHE3D1dpvU9nWiIQGwshCU1A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792062917; c=relaxed/simple;
+	bh=I9oPJ3YGlwxlNX6cpMBiC5ATHr477eWduZeRhnHEaoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tuYpBNor4JacAHGnqFjovOno3isvuwY4GWObIP0Uzf1DLpPg4GqIRLoZv3inrUvFUFNVPkReTe6ZjQbavpAQGRxLRzxV2DxmxGBEJXPmBn2XE2v6O2lqERRQ9lvYkyVNbgYqhkPogPlS3rACF5XwPPKDV8fWMUqKj0Ga2GguaiQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=tFsok8Gu; arc=pass smtp.client-ip=209.85.128.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyvHCH+6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EFB1F000C4;
-	Thu, 15 Oct 2026 11:10:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792062610;
-	bh=4fZ0T/FRKNZKlaSurLx8IyMRUVHSqBKk1vrCoi5/09I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=AyvHCH+6FbMvBYDM3JUSF8yFZrDLEa51vw8iiWHE4LJhIFl3DSv14kM78IMUb1+kG
-	 0o08ezFhIYmpA1F7UaFzG7aDE80JKP209bxOeLQkrYWbd5nFQd7fNaOHCtNF/K/1tx
-	 k2bT5zvoy8IoRBYI0LAIL+cddXmB0E9KJjk+f52pgT296OrQMNf9H3+Vkj62NPdauL
-	 cageqmqYrEiUKaHBWhBpquz+fggZWxWh4fd7x6oYRWN7Ms+IttoZKrvk2rMe8P7hI6
-	 sp5Ixspq69/Vm7JQkYBnwC40cRWKgOjhFp4koe+5eIsqSzQOin1eEtDftkAuBU9zOm
-	 QQEH/tmIuHBZQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id F1538392EA65;
-	Thu, 15 Oct 2026 11:10:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="tFsok8Gu"
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-8ab37e44643so15275967b3.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 04:15:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1792062915; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ItHXbP18EYA4bNkFclK6VEbhxI7Kv5YARSXijIfhKVzN4mqjWVKbcg1ZjmRWCneYRV
+         W3yw7K+Al3y91qhcI5b+2iV1kGNkg5oj81AvsMR6xPhzuytmVCWQhyWQG5DVT/5uVbW4
+         o8F9BMcs3pETTKKsWNBwdSV+3S34vJ1PwN+8brX3pPCIMslWi/dFCwWrtsuu6QzbUqyp
+         PXRYJLBqvv4sTk0NW/rcSLqms8qqmVbbjNMMS7wKbnShyu7gR5bAY2gk+HrGztqDvpOm
+         +E3dpw3/KRvi+FAfdgOoxB2PLNolwcjolAGz3Eq7OmZM0/CpDa2IHaU6J1lxVsc1BR/9
+         pyMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=I9oPJ3YGlwxlNX6cpMBiC5ATHr477eWduZeRhnHEaoM=;
+        fh=iGJn1tAz80iDMoYKRDnRRwfrUjUtriZiEtJd2gTKNzw=;
+        b=VPXiOkilrykOLag+ciVV92j32ODmyA0l9YrZctiGTJoMU68Rfr+Ck59TJWfgWBm73G
+         jxEOfhTa76XGK4ZjwUAaMlFSkGx95RRXuecKYFrANi+jCK+UHZL5knDL+KTo+nQSvu5K
+         Ri1fv+BITP4Xbtn+cWDeGMEJ9pTGOywrQuk/15b9X99ow+x3BfA5LSaiKPsSlKraNy/7
+         tipEb/Kh9HJPkewdFwOOmIuWF3VMQF4+dmk0nEozu33AyTP3NgFFdEfyPe6UhQ0eaP/U
+         x+rqV+G5mBQXOWFxddiH/wz8lAu/i5S9R/uwg9IINAQ4xMMMi3NX/2pYHK1gOGYTTPH5
+         mSAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bairaktaris.de; s=google; t=1792062915; x=1792667715; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I9oPJ3YGlwxlNX6cpMBiC5ATHr477eWduZeRhnHEaoM=;
+        b=tFsok8Gu7pL10k+toUtA9U1xyWr1fKGTQGuD6siZNufYDmTlx5iGEacoYxtaO/9xuZ
+         royzZQvQ6BThJfyJOQm1cjOvW32PR3hZrFJznN27ptUm1mghkbkPzgXvj2a6XHJP47TB
+         bbih8OPOOMxnSjvYa3885JLpMvx+GgzIpy01s33Pr+h1OnjbITbetlHEid5It9BuxJdj
+         +jtrJxAEb7mGxUwzI9gbGyCk7bauz2wHkzrmnfBsZ71s8dxlipqI21+C75FkHWcs/1y6
+         QR+IKe4BLpXExBmfQlhIMoF33/KjpN4sl9hVB1ojQGf4RCv8Q7kgUbMcMuO8dLhZMhMI
+         Fxdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792062915; x=1792667715;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=I9oPJ3YGlwxlNX6cpMBiC5ATHr477eWduZeRhnHEaoM=;
+        b=WcEpveyoRqwdYq189Z7nXs1GdJVvoT88cRvpiYoBT9RtPcJ2pbQpW0BGwPXb+sPsKi
+         NqMFVU7YH3dZvNWmtNdD1+sTS3/qY2/VbaDfoAMCwIcEtnwVJfkZgpMg3AVhxPBHwQTI
+         Bh7psQYWFXINkCTHkQGX5CUgvmG12ttptWP3IRmcaOZnCRQSIKj2vvK/ZJkyWZgPiGsa
+         YoXJzla5WC79TBGZzKBFvn3TdxscHwi3xhbetabTghwZkKDF0MlE5OFcHFinPnJ/Tpzj
+         fnitL2gkiGHQmFv6AqOu5jjs8NiiCyuDm7wJlI9FNFKLLUab0vZu1iGz5LDzxqT3mhcM
+         cbww==
+X-Forwarded-Encrypted: i=1; AKwUvBzLHDeEo8OYmZcovB6PIquqPuDJSKIEEEmKBVfEh/VxBIZ0bcsEd1vyo1EtbLITjtkUXRTXSQ4=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJmoiOM6ryqfqASSXKVh/hPuWullH9s3MM07/DJyT+maZvy33wq
+	d9iiJMDf8E6McuyKadYvxc32pIe3yEVpM+Nabvf33BJCVynp//SfSHHFJMnTiwnsML7xVRnKMfC
+	yIEz5nVJbHpC2XWC8zJvQYRCjlg2Cj2ieLEUNZgBd
+X-Gm-Gg: AYBFou3PUtu0e3v4q5CceiALgkhsrshQJOZkem3xF9T19+r73XX6l1frYwhhN5tNa79
+	FSgEaircjn0Q1LSRlhEzr2Ti4FdgEUcYTARbhOAdvrBxCUKRCJKSpykDBojKrTX7oxFFKOu/9DX
+	7vi7GmH0dhyouxued/QzrdCZqi2AR0N8V4ChN7kabqxBRid7B8fz0Df3Nx07T3bsxkTH2RJo1c1
+	yEOjxo6x6vhAf5B/+NGrba87AqxDnI9/z0GMKfmbsvji/Swcc56luRDTULW5AJcQwy7D2J4Qu5U
+	osnYoHvtpcSjXKcONjcwLLknwRXdNGgIw7JYWvHc36SdEB5tCPFzLJQb6oFplisUWehp28XUeyl
+	ubCY0HkcaBWoMvmh5lOv5QHxDk3ahZdD/UUys2fL9orw/gTk/a/20+pQ9TQNWm3soYnGGa0IEm5
+	ekH3MlrpdyZyavx+2rGis/SjsE+3SD1+3i8RhgJGeehpsb8kME1sJGZEJrvFdZ51S5ALMLD5E8O
+	MiSyMgW4nzvzYMY2rS+6MmMqx0SM9awIhrpxZMTZ++QiL0p4XyDz9fS/JhusH8/nfO7fVn3wVP8
+	/N6P+DwERd4Atw==
+X-Received: by 2002:a05:690c:7012:b0:8b0:cf3d:7b35 with SMTP id
+ 00721157ae682-8b0cf3d7ea6mr10078397b3.15.1792062915195; Thu, 15 Oct 2026
+ 04:15:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/sched: fix use-after-free in
- __tcf_action_put()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179206260877.3362884.12272330509635303725.git-patchwork-notify@kernel.org>
-Date: Thu, 15 Oct 2026 11:10:08 +0000
-References: <20261008181348.527035-2-Jeremy.Jean@oss.cyber.gouv.fr>
-In-Reply-To: <20261008181348.527035-2-Jeremy.Jean@oss.cyber.gouv.fr>
-To: =?utf-8?b?SsOpcsOpbXkgSmVhbiA8SmVyZW15LkplYW5Ab3NzLmN5YmVyLmdvdXYuZnI+?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
-Cc: jhs@mojatatu.com, jiri@resnulli.us, kuba@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261014235628.197976-1-julius@bairaktaris.de>
+ <20261014235628.197976-2-julius@bairaktaris.de> <atCsGx2IRecQNK3r@chamomile> <atCs-U_AXIyvvpKd@chamomile>
+In-Reply-To: <atCs-U_AXIyvvpKd@chamomile>
+From: Julius Bairaktaris <julius@bairaktaris.de>
+Date: Thu, 15 Oct 2026 11:14:38 +0000
+X-Gm-Features: AclHuK-GCm2OH3Jid7zEvImtoqSM3gq7UTcC3JLFEhmei75CLrzAl8zOZjCyOVw
+Message-ID: <CAC1t37+g_5q2NbKmCkxhZthdHYabypyDZSoshwgAUVjbGm0NsQ@mail.gmail.com>
+Subject: Re: [PATCH nf-next v7 1/2] netfilter: flowtable: tear down direct
+ xmit flows when the fdb entry moves
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, fw@strlen.de, kadlec@netfilter.org, 
+	phil@nwl.cc, horms@kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, razor@blackwall.org, 
+	idosch@nvidia.com, ericwouds@gmail.com, dqfext@gmail.com, 
+	netdev@vger.kernel.org, coreteam@netfilter.org, 
+	linux-kselftest@vger.kernel.org, bridge@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+Hi Pablo,
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+Thanks for looking over this.
 
-On Thu,  8 Oct 2026 18:13:49 +0000 you wrote:
-> __tcf_action_put() decrements the reference count before decrementing the
-> binding count. Another thread can free the action between these operations,
-> causing the binding-count update to access freed memory. KASAN reports it
-> as:
-> 
->   BUG: KASAN: slab-use-after-free in __tcf_action_put+0x327/0x340
->   Write of size 4 at addr ff11000000d46420 by task tc-put-pause/64
-> 
-> [...]
+I will incorporate your feedback and send out v8 + explanations for
+the questions Saturday.
 
-Here is the summary with links:
-  - [net,v2] net/sched: fix use-after-free in __tcf_action_put()
-    https://git.kernel.org/netdev/net/c/7b16eb911091
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Julius
