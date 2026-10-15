@@ -1,79 +1,138 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793FD439F75;
-	Thu, 15 Oct 2026 10:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE2D48C41B;
+	Thu, 15 Oct 2026 10:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792060083; cv=none; b=iMnTe+3fnSw0x4suRImAnWKaVCZGOAvvMG7bzB+T/FaV+6SnPZSH2G+XxzHOm7v3wRb1QEPR+tdzRFyC7jfDJ6FwTMcdcYp2q86gm7snsoxoS7j2Nr7DVOAomId5kFwtWXui3cernZrLCGsveJv2lF0kiMW45xJ3ddGb93sQtng=
+	t=1792060175; cv=none; b=lhs0WHAwQkumt/l36QZkdsUIiw6cxannW6bJHMEQw587+bd5nxDLc8cTONZMRE0yUCxWOdSIyB3eBqiPbdUWHMn2NPdY+BUinnzSALsU1yt17lLptg7CkyMeHmE7YJRDZXEeYnBuwSm3JL6MFyDfhr/RmaJF7X3uZBlmAT9HKVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792060083; c=relaxed/simple;
-	bh=JZ9/4jmbJeCBHPwSgo1TDGUTRv1owDqAWV7mKohbsQs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sAiM6RXxDU12oWG1wLuTetepwUnq5Sen9meqVvnT1DjTxjgIq+sB9t4+bvVmQ67FYkqhXlt6gq61PmBomgQE8zLbC4hKpRFyCYSHxRWxpVxcdmo1OlUbQ4EAqLTfSDRL8vRZTyMsT78+H+TEyUGtuGF4IMP8oizOD92IAo5FDG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=YOoo5loU; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1792060175; c=relaxed/simple;
+	bh=+gp9W2HjvkTvPbYIFY7CuaxOyO8m2XTrZqpcWgKBzi0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=O1x21LxI4zw+OMNtTU2FUV+cNv6PyTPVZx1muh0S3z422nPZ40Q0fEjqqDrdZuqPy3grJ69gZs72Yl0TBuul21bIzhzyLM5/uU5Q3L0YpSLQn2sVt3YcA4qVlLhuZsfs/K/TjuCJgrBKFSj9Iq0ZAoGVmYzSVJuq8MfS1EMrkh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZOCdXnFf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="YOoo5loU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:Content-Type:
-	MIME-Version; bh=JZ9/4jmbJeCBHPwSgo1TDGUTRv1owDqAWV7mKohbsQs=;
-	b=YOoo5loUEYuaq0txI/H5rEuExv1nkKTKNxF1Lwh2vffHzjWZHTWlTGPtynqNYo
-	uI8nnjHg23YF8bgwyro1L0deJu2epbCFkqkeRkWxJEvhEze4rPDq9DrgWIFOB+C5
-	6bKYtRoZDSN/O3lqikbQB8ll815ZCizHStReZAkrGwZoI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD3fyOPqtBqLrTzEQ--.45522S2;
-	Thu, 15 Oct 2026 18:27:28 +0800 (CST)
-From: Xia Yan <yana06070@163.com>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev-bot+sinfo@kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] veth: keep carrier off when resizing channels with a down peer
-Date: Thu, 15 Oct 2026 18:27:15 +0800
-Message-Id: <179205999714.14383.12377248582345992543.discovery-plain@163.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <179205503431.408196.3787158263559792614@kernel.org>
-References: <20261015085821.12725-1-yana06070@163.com> <179205503431.408196.3787158263559792614@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZOCdXnFf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF2A1F000C4;
+	Thu, 15 Oct 2026 10:29:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792060173;
+	bh=krtsqP9HVq82+t6vS5sSiaQFrwSgNYHXkfB8BbMCijI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=ZOCdXnFfU2EBs7sZ+792qES1kj3cYliEVjjFguOhwELR3sELcHqT8KsLUCHxTu5ED
+	 Wv3gr7CwnFap7Gdpi0DVvKhi22kwJUnIMFEItVaWUF6NLzcrnXX+zzLOyqr5onVYQK
+	 C1HNFhmrDr+F1JKmOLISzEU1+i5M3Uwm0BfylJGVA1Tq7dFQG9PkYX/fO23e7lpbVs
+	 od/pk3DkvOvFZsIeIgOfC+WSdBekm/EriYMOyEowghAXrVAt9s9scJy6+Al15+6Sqr
+	 sntlsX9SUjENaTCp/Q7Ej0dIS8/PpjYuh2pVRb1QLvXkEWTSBeMA/HGNYVNywyqq6n
+	 rV0O64V13b8Nw==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
+ kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
+ kerneljasonxing@gmail.com, Maciej Fijalkowski
+ <maciej.fijalkowski@intel.com>
+Subject: Re: [PATCH v3 net-next 14/15] selftests: drv-net: test AF_XDP
+ zero-copy with an SKB peer
+In-Reply-To: <20261014184539.774708-15-maciej.fijalkowski@intel.com>
+References: <20261014184539.774708-1-maciej.fijalkowski@intel.com>
+ <20261014184539.774708-15-maciej.fijalkowski@intel.com>
+Date: Thu, 15 Oct 2026 12:29:30 +0200
+Message-ID: <87jynj5kad.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3fyOPqtBqLrTzEQ--.45522S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7GF1xCF45Gw4DJw45CrW8Xrb_yoWxurc_u3
-	97t34Iga1xAFyUJF9rKF45urs7KayYgr9Yy3y8Wa42kw1vyrWIg392qr17Wr109ayqqFs5
-	GF45Gw4Yywn3CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUUG-e7UUUUU==
-X-CM-SenderInfo: p1dqtiawqxiqqrwthudrp/xtbC3xCdJGrQqpB9xwAA3M
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
 
-Resending as plain text because the mailing lists rejected my previous
-reply for containing HTML.
+> Run the AF_XDP cases that a physical link can carry as pairs of
+> xskxceiver processes: a zero-copy endpoint on the DUT and an SKB-mode
+> endpoint on the remote, which needs no zero-copy support. xsk.py runs
+> the cases that xskxceiver -L lists, in the DUT directions listed with
+> them, as KTAP variants named <rx|tx>_<CASE>. test_xsk runs them with
+> the DUT socket driven by interrupts and test_xsk_busy_poll with it busy
+> polling, after xsk_setup_busy_poll() sets napi_defer_hard_irqs and
+> gro_flush_timeout on the DUT so that SO_PREFER_BUSY_POLL keeps its IRQs
+> masked, as on veth.
+>
+> main() sets up what the cases share once and undoes it after them, as
+> defer() works only within a case, so xsk.py rejects -l and -h, on which
+> ksft_run() exits without returning:
+>
+> - the DUT endpoint binds the last queue with both an RX and a TX ring,
+>   which is taken out of RSS with ethtool -X equal and handed back with
+>   ethtool -X default; a TX endpoint fills no RX buffers, so in
+>   zero-copy mode its queue drops what it receives and TX cases need the
+>   queue out of RSS as much as RX cases do. A DUT with fewer than two
+>   such queues skips
+> - an ntuple rule on each host steers the test UDP flow to the receiving
+>   endpoint: the DUT queue in RX cases and queue 0 of the remote, where
+>   its endpoint binds, in TX cases. A host without ntuple support skips.
+>   Setting the rules once spares each TX case the ssh round trips of a
+>   remote rule and toggles ntuple-filters, which resets some NICs, once
+>   per run rather than per case
+> - huge pages are reserved on both hosts, and the UNALIGNED cases are
+>   left out without them
+> - both endpoints get the DUT's xdp-zc-max-segs for TOO_MANY_FRAGS,
+>   which is left out without multi-buffer zero-copy
+>
+> A DUT that does not advertise AF_XDP zero-copy skips the run.
+>
+> The remote endpoint listens on REMOTE_V4, and the DUT endpoint connects
+> once the remote says on stderr that it listens. The control connection
+> shares the tested link, where the XDP programs pass it to the stack.
+> Killing an ssh client does not stop the command it runs, so timeout(1)
+> bounds the remote endpoint, and the runner waits for it to exit before
+> the case ends. The endpoints are waited for with the test_xsk.py
+> helpers, so the output of one that does not pass is logged, timeouts
+> included.
+>
+> The endpoints detach their XDP programs and restore the MTU and ring
+> sizes when they exit; the runner detaches the programs and restores the
+> MTU only after one fails or is killed. Each endpoint sees only its own
+> device and mode, so one may skip a case that the other runs and then
+> fails once its peer is gone; such a case is reported as skipped.
+>
+> xsk.py runs the xskxceiver that net/lib builds, which drv-net already
+> installs, and copies it to the remote with cfg.remote.deploy(). Add
+> xsk.py to TEST_PROGS and to the AF_XDP entry in MAINTAINERS,
+> CONFIG_XDP_SOCKETS to the drivers/net/hw config, and the xskxceiver
+> helpers to the drivers/net/hw library exports.
+>
+> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-This issue was found during LLM-assisted source review of
-veth_set_channels(). I reproduced it with a veth pair in a network
-namespace by bringing one end up, leaving the peer down, and changing
-the active end's RX/TX channel counts with ethtool -L. The UP endpoint
-then incorrectly reported LOWER_UP.
+I just skimmed this, and it seems like it needs some scrutiny on the
+cleanup side. The LLM flagged a few cleanup issues. Could you check
+these paths?
 
-I built and booted unpatched and patched UML kernels and ran the
-accompanying selftest. The four mixed up/down cases fail before the
-fix; all eight cases pass after the fix.
+  | main() only restores shared state on the normal path. Exceptions
+  | during setup can leave RSS, steering rules or hugepage reservations
+  | changed. Would a run-scoped ExitStack help here?
+  |
+  | _steer_udp() enables ntuple filtering before recording its original
+  | state. If rule insertion fails, that change isn't tracked.
+  |
+  | _unsteer_udp() stops on the first error, leaving subsequent cleanup
+  | undone.
+  |
+  | _run() waits for the remote in finally, but doesn't ensure the local
+  | endpoint is stopped/reaped if its wait is interrupted.
+  |
+  | The fallback cleanup restores XDP/MTU, but not ring sizes after an
+  | endpoint is killed.
+  |
+  | "-X default" resets RSS rather than restoring the original table.
+  |
+  | An unconditional SKIP when either endpoint skips can hide a genuine
+  | failure on the other endpoint, including a crash or cleanup failure.
 
-I will include the discovery method in the commit message if another
-revision is needed.
+The defer ordering itself looks sensible: detach XDP before restoring
+the MTU.
 
-Thanks,
-Xia Yan
 
+Bj=C3=B6rn
