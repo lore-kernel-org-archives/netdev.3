@@ -1,99 +1,92 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2B14A13AF;
-	Thu, 15 Oct 2026 07:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D1437BE93;
+	Thu, 15 Oct 2026 07:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792050421; cv=none; b=L0ScyOwzZEqK/tZ3EcbTFYb2dAFhsB4tVAZxVtor9KlMA6NGbXU1pJ4f60okVqqV7Z/R6/5fvwoffLG99lhZkkz5p28qZdkq7srMGlB3kPGXBvJ/cIbQ8obSt9nEKLweISBMBaia46wNy8cK9PccWGXTHHqyiEpuJTJKBiW9bO0=
+	t=1792050500; cv=none; b=PKYriV7QPa6rom1X4Tv2IkTy97sBOW1yQKLt84vn7WC4YvPpOeqFRb6GkiZQ4r5QM0UBSKeDSs5l+6jqbJBxU50jEhGQS5kpA4q3IGlLdlTB3QFXcT5Pj9Ddffc3vOyjZFYRiE4GOMtNgpH3lVQimzTPBNNK3OKJpQAmZnMDvos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792050421; c=relaxed/simple;
-	bh=6UHjJliqF9K4zi8MTRY0D4g3HGixAtyzI+smduapvUw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Gi1FJ1mLSxbh2h3Myj3M2l/cQCv3beifiGBl9fto5vG/UmbPuE0mWdNLj9tJrt2+RBRIvmd6Y00bzPeszSvHLrdV2vC7MQ7rsUQQr4IbwT8dTJkPrxvQjSJPl/Ab6Uili/LHMQ2IRUz5h1Xm207S3EUUZiF7wvOVHsa44zoXBRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=I4aZWQJa; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1792050500; c=relaxed/simple;
+	bh=2T8DWHLOuIMjqX7qR5+p2AHvU66WpzmJ1U5OQVan6qI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=rLwrclxgjgtUPA/tqgn93tlLxQRr+IH1bmVj8o05fD06QCW1ePlE3+7hQbPXul7HNnfCESt0YqfGadtyMhh7nsIw9gnl3kXiq9WLXpJcfD8RWOxVN1Bu10W0lVphA06LoFTYOWaBapmJQoRdTff7adVlLh1V0W6dDApYDzhxKDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nFcubVq8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="I4aZWQJa"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B820F4E41246;
-	Thu, 15 Oct 2026 07:46:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 73D0960360;
-	Thu, 15 Oct 2026 07:46:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B966010328B8D;
-	Thu, 15 Oct 2026 09:46:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792050414; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Xj4hLpHjzheP4AEGLpAFn5JMjwlG+fQsoZ3qshX2rR0=;
-	b=I4aZWQJa5eiMyD2REL02NTzzy7IuxQ8lj0letekuQ91rK5zrme4YUkJhRJysD+FfKkEYuT
-	PEkt0FYKr1T6q2KU797FoRXLy7yRKSncC0itrLXXM3ogzKDH12QxTatZIPgFeiginCetqK
-	wBObo6K1YafbwYlRDsar1dzlynLMsRa/2JFV3KWAYffJA0xLoLskd9OQ13dVitcYQcdL3k
-	y+od1ZIbNhZcK8fkgkx1zCtPpem8AlyfVrri8SQRzW7d340wK5lXpTRlZWN2kjEBDHTFbc
-	dgB9wfe1wfWQLBdqqk0XkA/thJiXwYCdxMwbOr9qZqyzH6zQEZl5PWG7/Tadsw==
-Message-ID: <cccfd292-6169-449e-a675-a9bb54ec4191@bootlin.com>
-Date: Thu, 15 Oct 2026 09:46:41 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nFcubVq8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED41F000C4;
+	Thu, 15 Oct 2026 07:48:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792050497;
+	bh=XNRe4wdgHJC8WqhZGcOYLCOcUoEAbq7B+B2ZqkentCM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=nFcubVq8/68DVvnbVCzBHzOy4FsSOzLUb+8XDxxVfJOEdfnorggiqeDsZuiEQusUM
+	 qgnwBSWewJapgC8leeknF9ygrJO/II5b4Tv6vVcDOAaVzY6LNpx9ypdv2yMD2kSpl8
+	 OcZ/oVDTEFZVTZn1kkBZz2fjh6XXZ2g13J0UyxJhFD4vqgNdwsuK8siq7zTiDxHLi6
+	 Y/LsuShBJsccuua6/GHzySKz5IvTrv1N/VmDl/NYZAUVk3Z0dsL1UpS6HxReaGwD9n
+	 Ar8mb8LY1lXhx+pH7QSeN86OKYiFZdMX+QI1/fSCGcLB0QClbqv4j2IA+ukxjObAxw
+	 Lx/2kxShMUxDw==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: Til Kaiser <mail@tk154.de>, netdev@vger.kernel.org
+Cc: Til Kaiser <mail@tk154.de>, stable@vger.kernel.org, Ido Schimmel
+ <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Jiri Pirko <jiri@resnulli.us>, Vadim Pasternak
+ <vadimp@mellanox.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] mlxsw: Initialize register query payloads
+In-Reply-To: <20261014173117.26305-1-mail@tk154.de>
+References: <20261014173117.26305-1-mail@tk154.de>
+Date: Thu, 15 Oct 2026 09:48:14 +0200
+Message-ID: <87a4of8kw1.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 1/3] net: selftests: use skb_share_check() in the
- loopback receive hook
-To: Nicolai Buchwitz <nb@tipi-net.de>, netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, o.rempel@pengutronix.de,
- andrew+netdev@lunn.ch, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, Jose.Abreu@synopsys.com, saeedm@nvidia.com,
- tariqt@nvidia.com, mbloch@nvidia.com, leon@kernel.org, dtatulea@nvidia.com,
- alazar@nvidia.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-rdma@vger.kernel.org
-References: <20261007-nb-net-selftest-shared-net-v1-1-458369bfa1ba@tipi-net.de>
- <179149509090.434549.9918598206439291164@kernel.org>
- <533b88ce917b59f4f59f52145d2f035f@tipi-net.de>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <533b88ce917b59f4f59f52145d2f035f@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Til Kaiser <mail@tk154.de> writes:
 
-On 10/9/26 08:49, Nicolai Buchwitz wrote:
-> Hi Clashiko
-> 
+> MFGD register queries can exhaust EMAD retries and leave Mellanox
+> Spectrum switches stuck during boot or shutdown when running OpenWrt
+> built with GCC 15.
+>
+> An example failure is shown below with the second line wrapped:
+>
+>   EMAD retries (5/5) (tid=3D9b544fc100001f35)
+>   EMAD reg access failed (tid=3D9b544fc100001f35,reg_id=3D90f0(mfgd),
+>                           type=3Dquery,status=3D0(operation performed))
+>
+> On an SN2100, the failure occurs during driver teardown on reboot.
+> On an SN3420, it occurs while probing mlxsw_spectrum during boot.
+>
+> The register query API transmits the supplied payload to the device
+> before replacing it with the response. Both MFGD callers pass an
+> uninitialized stack buffer, so the request contains arbitrary register
+> field values and reserved bits. This makes the request depend on stack
+> contents and compiler code generation.
+>
+> Initialize both MFGD query buffers in the firmware fatal event
+> configuration and reporter test paths. The initialization has been
+> confirmed to eliminate the boot and shutdown hangs on both switches.
+> The subsequent read-modify-write still preserves the other fields
+> returned by the device.
+>
+> Also initialize the FORE fan fault query and the MOGCR mirroring policer
+> base query, which pass entirely uninitialized payloads. Restore the MTMP
+> query initialization in the temperature history reset path, where only
+> the slot and sensor index fields are set before querying the register.
+>
+> This follows commit 5b0907407e7f ("mlxsw: core: Zero payload buffers for
+> couple of registers"), which initialized other query payloads after a
+> firmware field length bug caused firmware to consume uninitialized data.
 
-[...]
+Hmm, isn't this pointing to that the query should be more robust,
+instead of relying on zeroing receive buffers pre-call? Maybe just fixup
+query instead?
 
->>
->> Could an IPv4 frame that arrives during ethtool -t make the hook read up
->> to about 64 bytes past skb->tail? Examples would be a minimum-size TCP
->> segment or a frame with ihl=15.
->>
->> The over-read seems to stay inside the skb head allocation, because
->> skb_shared_info follows skb->end. If so, the only effect is a possibly
->> wrong selftest result.
-> 
-> The length check is pre-existing, will address that in a follow-up patch.
 
-I'm unsure about this, Can we instead assume that when one is running the
-"ethtool -t" selftests on a machine, they are doing so in some controlled
-conditions ?
-
-IOW can we take the assumption that we won't get incoming traffic at the same
-time as we run the selftests, and if we do get some and that triggers a wrong
-result, this is expected ? ethtool selftests are very cheap to run, only a
-handful of seconds, and don't require any extra dependency, it doesn't cost
-much to re-run them if something unexpected happens during them.
-
-ofc. getting a stray frame during the selftests mustn't crash :)
-
-That's my take on these tests, but feel free to disagree :)
-
-Maxime
+Bj=C3=B6rn
