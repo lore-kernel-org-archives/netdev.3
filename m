@@ -1,122 +1,96 @@
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC5D556B8A
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 20:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792097734; cv=pass; b=BBM7O0HBOuSDjrTcHJ/dyT7hTHVcjVpFB6Lwfzaba8F7GX1p7m1dJmkJBh8hZoJ2SWFEZOhQlehFr0F6ZX2WEOz8OpWYP5qmf2dOYQuewJ12TcZXRG7PF0ULLxtBWgdjFZD3ouDusuPcd998+6SRL1KZgEZkg64v4aOwYwXEUag=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792097734; c=relaxed/simple;
-	bh=oxcL+DRLHpYRuFoWgi1CdwrKDasz59wF1+KBu8njpV4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aZwRr3+D1hsYyPEY40uYXaxTLdJ3X+a5UH8y0zuoW01WzcdgU5G63Uunbq5lQv+ezsYryP/AOT63Y+ntZfB+FvehjWqi1rMUbW3ZuzWm1F9KOcMSPr/RYjmu7c4zSBH4bf4oqDwmQH+yzTVFN0vb5PeWxlZC1Da2t/mAImMm+zA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=FINtlzK/; arc=pass smtp.client-ip=209.85.217.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4B047D44D;
+	Thu, 15 Oct 2026 21:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792098566; cv=none; b=cg5pQFy7alAxB2wBfB0FuvM6Z6iTxDp+Yn0yyVxxnYwzlyhbi5q9vcM5OvZHKMl0DwmngIOEu8JakVBfJ/2aASTj6K0TQ/KEjJCgWqezbWSAH8dC0MWvmU+JilWvqGTzNQ2eA9FYVrirwEE+ZKAxXMaf6nf6fObDw3eG3+sIpzs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792098566; c=relaxed/simple;
+	bh=9Y46DEC3PPmcE7MNTmHva0nYD66oOBCo5fZT6uzi2hw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vu7L0fDwc4riCijtt+FPABEub1kgXAkQBJh+0DoIU9a/OkV/V2fvSNIBnGrYociAQTPazhSPYpPuhzCuDahfxEU+KOlQZ0M5HfzzSldVoKNsonHvyg0m5fOBr1XlnZJFj0daA3mUtgRwCTPWzNcGIkGZOVWqG4LlXo7QIk7pRmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5kbK7uYa; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="FINtlzK/"
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-7777fa8f1ccso1605069137.3
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 13:55:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1792097731; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MlIDJopYj8ROkgwLpe9H1C4FQziC+K3NuIJn5AmAINVE+hCTYVBIs842Hd8w1u0WK/
-         T2I3EtgZr9C+d68fwfBmit5rKF9iaUCwu+GuaryvIO3Sb+LxQ43Oyw/GT01ldFFfViBN
-         p4hy+kc3Zy/c4eoAgjAtrWJbKevGVpDiN+lUEwOO6BL5X/dubB2jNNmvDHIlN/exfCqv
-         HNBz66M6ipI6eyW24VkYrqrT2bL5mLxO7d8HlbIpX8kQOJ4oY5MrZuq9hztthyJNqrbE
-         Y+qLtyDRLRN9f7UxpdowZpsnGuY5q9cANB3YGstqYyw/FDojA8g71JbY2x4slurlg8Fi
-         joig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iZa+VRwpFoqUOiuw2h255Iumi459YfZ43vaXhQz0jBw=;
-        fh=bRwc2joVQhsis7QiBSILN1mRBNnv9Y4/X1r2910FThE=;
-        b=OBKb4gw2hi1Lac06pY0Ec5DtxCKcfK8SoiImcxETdcjorvQwOj0qy5H+bwGOmKjNAv
-         Hpd2tvJX22TLS6e8GmL7pH6ThYGpXeFUgT5RMIyrn1n/L/K5rQas4dL4QNUjFxVVT27C
-         gGs7ANS/dCkiwV7SrXnfDKJRP968q0m8zyNwL7NPRZLNgA8WTR7xOSaZq99PD/rwB38z
-         TN/1BdCGo3NyoK+ls5di/Opql0nQmuIUelGgF2jGe7Tfcd6VvQPw9pAwlhfb89f3bQKV
-         f+032A0x4LUv1WdsiYDuJBckMwJIJOkBnZCQDSTx944LJkYpzakznxSJHQDjTIGyANr9
-         Zzgg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1792097731; x=1792702531; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iZa+VRwpFoqUOiuw2h255Iumi459YfZ43vaXhQz0jBw=;
-        b=FINtlzK/RmRJTsG1m/S/TRO5jCb5dNkQ3IA/HsG38I5WEfU7a+cHc/y7uxALQjhkd3
-         xMEO9D64PK+2v3XQTdubIGrbtc03Ch4J2rrd1arwLzEvwnHiqSrIBiekwOlsET8I0TQM
-         tiFDAD1Ya60ubt9J2LSg2AnVSFS6joZ2+YI1rvjyF66iPn2XdCAGV/dvaeZBVHb7eEe7
-         paV0WPQhbLD34caPB/6j9HsIIDrm1lqcFE2TasYYHynBgjCUKNRdMvtq9MQ1AH8JxW7J
-         uhcw6Zdz/4bFybaojJDjXMCzlX9WIbb/8zJB2vvzAgWVUJFQICH+rbt/Fizg6TUJh6z2
-         GikA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792097731; x=1792702531;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iZa+VRwpFoqUOiuw2h255Iumi459YfZ43vaXhQz0jBw=;
-        b=Q/Kf+Nj55O+tHk+uIgD4DkPeQcrEDSFpagcKFEZKJPBwp5s9FawM75jMzCddwg1q3Q
-         2GkE10b0KoqRGZjy5OX7Yn/2EMCN+L8LcgWoI3DebqgCvgk0AyU7Ag6iLVEmWW2d+GyE
-         cFZAy+G0G2bqhuSjHsdhBjsmavn3u8vlUA4Sw/TX30jDquvC3vPZpMbbPEYMTlyFh3tB
-         h/IF42T/aZ+4AULeHWJXaWmksJn7nJf19S5B6Xl6OxaZMOUr7kgI3U9PpsmF5IfzqtNG
-         POeA3tFZR6J+YtkXg/C9rsuRT/QrS9986VoQG2J1in4xWfyom9venZAq74aeC6JX1RM5
-         bZYg==
-X-Gm-Message-State: AFq9FYKyzbBvldtNzqClArMNLx3JFBQERlYQzO5cGtgot00LgneqZ7Nk
-	h6ksUdyMuYT/cnj13906ZSic9rMZqQveRThe2jRyOy+QkhyO13ZFA8fRobuO2W4+8cg0VoLS+to
-	tRGyVF3wwM4eZmqTy8RbkSq3ggcnyplBrQc+sQ3ibFg==
-X-Gm-Gg: AYBFou1hOVmahomL6loHkVg35ws1EyZ0bl/6UA9SmTNilcHD2i1uRMQZUw5vq+Rdx1g
-	5Z2MB64EFnqXorawvkRHEv6UR79fHbGu+w0uforbxaILJ7toTS39dW9OI3VGd0XolM+M7eXlI6c
-	f8isTBUCR8685RfhCbLiVL24yWpeDNLHoeDJRRtLa9R5RzlB4K7dRbY26SGbD31t2HleftEngXJ
-	KQzwEcrjclL//Np6cXTeeiltkfqRE15wJ9CF8UKrK/w22pk4Kk1v+YdcB2lGkizAav1HXlci00v
-	QR+us0fCxPWfKkeLa8jIfvYZsfrEBipUx0GoHa22wAUGibQfyBhcnMdlHm+ON51vvBsHr46d85f
-	mltZJFBBfh2Y5mV301Y8uTquGF38cFG+dBO+EDmiHA+UQUjEKgCU9waRK/vMCuCR/AusKPQEYqC
-	8iM6Dyg89Qq3Xsfp/c5rYBVpMFFGYOiq+wPQVEFcRf
-X-Received: by 2002:a05:6102:50a8:b0:7cc:1d0b:6d33 with SMTP id
- ada2fe7eead31-7cc1d0b6e14mr138384137.26.1792097730684; Thu, 15 Oct 2026
- 13:55:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5kbK7uYa"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sm5AtA3zThJ2soW28fcDouT2WceUmE7esbpI3ceQWzU=; b=5kbK7uYa1Ou7FlQWVyTZ8WKHtz
+	JDfumCJ531FNlHHYqePgLc+EUYJ3tL/CFJaX9A1qRn+fzyu6XBf2je/j5y34tKIbDOtrQflGy9KqW
+	mxXg4VwLpcafgNcymJwGAGfY8EyMDIJ3jA4mJrJIkFqw2FzyJaiv4W0zwzTDP/KPBNwM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1xHShO-00B1oK-D4; Thu, 15 Oct 2026 23:09:14 +0200
+Date: Thu, 15 Oct 2026 23:09:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alex Elder <elder@riscstar.com>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
+	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	Daniel Thompson <daniel@riscstar.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net: pcs: xpcs: select operating mode for
+ 10G-baseR capable PCS
+Message-ID: <f8c01002-da88-4f0f-a02a-7480591f4296@lunn.ch>
+References: <20261014223100.304486-1-elder@riscstar.com>
+ <20261014223100.304486-3-elder@riscstar.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20261015201135.2744031-1-rjethwani@purestorage.com> <179209526555.408196.10402909579775011337@kernel.org>
-In-Reply-To: <179209526555.408196.10402909579775011337@kernel.org>
-From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Thu, 15 Oct 2026 13:55:19 -0700
-X-Gm-Features: AclHuK_KJKMqgPTEBOM4jIVqlplrA2L0KkNOxz_yqNIgpeoekK7xG11MjUkpUfI
-Message-ID: <CAKaoeS2dKXBY4zKtf1LDx5cbMaSxfcvf4oHuri5uEu5vis3pfw@mail.gmail.com>
-Subject: Re: [PATCH net 0/2] tls: device: fix users of copied_seq after the
- strparser rework
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261014223100.304486-3-elder@riscstar.com>
 
-On Thu, Oct 15, 2026 at 1:14=E2=80=AFPM <netdev-bot+sinfo@kernel.org> wrote=
-:
->
-> Hi!
->
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
->
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
->
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
->
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+I don't know this PCS driver, so maybe dumb questions....
 
-Both issues were found by code inspection, while
-working on the TLS 1.3 hardware offload series.
+> Currently the XPCS found on Toshiba TC9564 is unable to operate at
+> 2500base-X and slower with a PHY connected using SGMII/2500base-X
+> (in our case a Qualcomm QCA8081).
+
+Is the PHY actually relevant here? What about SGMII/2500base-X for an
+SFP?
+
+Is this purely a PCS problem, or does what the PCS connect to make a
+difference?
+
+> The problem arises because this XPCS supports 10Gbase-R. That means
+> that the reset value of SR_XS_PCS_CTRL2:PCS_TYPE_SEL (0) is valid and
+> this suppresses the modal switching based on bit 13 of SR_PMA_CTRL1
+> or SR_XS_PCS_CTRL1.
+
+~/linux/drivers/net/pcs$ grep SR_XS_PCS_CTRL1 *
+~/linux/drivers/net/pcs$ grep SR_PMA_CTRL1 *
+~/linux/drivers/net/pcs$
+
+This is not helping me understand what is going on here.
+
+> +	if (mdio_stat2 & MDIO_PCS_STAT2_10GBR) {
+> +		switch (interface) {
+> +		case PHY_INTERFACE_MODE_SGMII:
+> +		case PHY_INTERFACE_MODE_1000BASEX:
+> +		case PHY_INTERFACE_MODE_2500BASEX:
+> +			/*
+> +			 * Why are we writing MDIO_PCS_CTRL2_TYPE + 1? We want
+> +			 * the modal behaviour that comes when we pick a
+> +			 * reserved value. XPCS allocates extra bits to this
+> +			 * field and allocates values from 15 down so
+> +			 * MDIO_PCS_CTRL2_TYPE + 1 is the value likely to be
+> +			 * allocated last (and hopefully never).
+
+MDIO_PCS_CTRL2_TYPE is 3. Looking at 802.3, the value 4 is
+40GBASE-R. The 2022 version of the standard has values defined up to
+10011b, for speeds up to 400G,
+
+Alex added support for 25G, 50G, 100G.
+
+Is this an issue?
+
+	Andrew
