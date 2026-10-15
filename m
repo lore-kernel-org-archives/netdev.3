@@ -1,113 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1A34BE45E;
-	Thu, 15 Oct 2026 08:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42534AA3ED
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 08:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792052883; cv=none; b=ouGyyrOU+dpIU1CwhoCvbojlSXVZ8YT81+F626l/lpysP4Pvbk9Qk3tKcdlNhgAe8nqESOY+oBb73TBai7oefnIwvJWi0DZoFp+NGxPMjBK1DzOtXXh7SMGETHHHjRj2+Btgy2LYHptFlVQBF+qiL++bzms5zVPagjpnbgRJCv0=
+	t=1792052946; cv=none; b=CLMdFFQFFJz7iMjrS/0ir314m5dh4LxLwaQbtJGGS5DKq1cLrNjdaLCGhzIYOd8WveMfrlIY7gT5WowuO8zoCLSQKg1apqJg2OxnHTp5gt0Jv7Rh/Wrtbq5n6bHVqnPZg2x4TaFnb7Ic4oF4tq9UyDZM0IN+auA70gmGMHhDjMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792052883; c=relaxed/simple;
-	bh=pA5pdyFX1UxzMIQQlheJlHsNFDoU6iH8bBoP4vYaWkU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SYGQjsRed27VT5nHPbPPx83OwzImRfXoqtyShkAWogqPWhJyDJqerpvPDdNcHMx+Sz9YlG4tPDiRJglafWNqVKN5UANMSpiU4UTPOAPeD72eqcR0e9e15KCimzdlW/YUM+ttWo9BRtV+CyOm6vDOM7u3lzDr9esq7iZMvzbK3rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vz92MHxZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792052946; c=relaxed/simple;
+	bh=UclMXT5dgaXzi8d+Et2aQmWDjkQGmYQfEWHeAsuzHAI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F2+tq3j6V6eqJzt8LiK/WNICibKM6bdxKLNG/kU5W+YIwsPJdVAhUezQn5DTwZeE9G5pjdpKMgT43CGHxuyNXGaAuiiWVThg51CVGfbVKYaFOBVZSJo1A57R+1e5gFsjMUzDySzK7g0nk4Ko+xLrtKxJ7UG3aIxNayogekwplWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TY/rY+h7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vz92MHxZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154961F000C4;
-	Thu, 15 Oct 2026 08:27:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TY/rY+h7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723D71F000C9
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 08:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792052880;
-	bh=PszMguYC+OPtDzMvLLBU4BgcfG4LyvpkBov/KvdqA54=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Vz92MHxZIsaqsU1Ts0o5Bi9ri0gOhxUkeK4wJKJTEI6uIu2C8Kb3SM7TNXByK2Y4W
-	 uhiuFDiOqI43XjczT6qzePvZAQMabpcKsxrbifx+MGvsiZPJ+LSDpiq3IEGkdUjTcq
-	 6pb/X3y/sOoc8Z/HD3zA1yFO5UU/nJTAN5IeXE1MURTf85Z6qZL+fFjcihZDdvXDI7
-	 pO2c94YX1IuvfepCKNfap5YKis1xC0UyxFkX7k1Y092EqoJuZV3hp7BvEFLRKFH5KM
-	 eNs6YH2JvmI5qkk7s2EyD4iu8lYtgBqmGDNprcXaqG2/JIgbQOJYl7/UB9MRI5beYU
-	 beKt7p+t6rqgw==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
- kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
- kerneljasonxing@gmail.com, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>
-Subject: Re: [PATCH v3 net-next 07/15] selftests: xsk: collect interface
- capabilities in struct xsk_caps
-In-Reply-To: <20261014184539.774708-8-maciej.fijalkowski@intel.com>
-References: <20261014184539.774708-1-maciej.fijalkowski@intel.com>
- <20261014184539.774708-8-maciej.fijalkowski@intel.com>
-Date: Thu, 15 Oct 2026 10:27:57 +0200
-Message-ID: <87fqy774he.fsf@all.your.base.are.belong.to.us>
+	s=k20260515; t=1792052945;
+	bh=UclMXT5dgaXzi8d+Et2aQmWDjkQGmYQfEWHeAsuzHAI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TY/rY+h7wanHSplyQ+Tnf4ZmmiL9+9t1MktcHS2ZZd7G7RWv76+z/hfd0CSY72vwO
+	 Au/kiOm73Q08zNZzMK6Lg1fm7pvzSVyi/8r5pVoDrQNYOjjI+jubM7ju0PuCbbiPiW
+	 vR++g1RQOAU7m94BIZ0c0xN4ykHod5RYdq1a9/D0OtgP9s5NMEkPI6jLMRI7Rr1gjk
+	 JmHdx6tJ5WynTscSrTkZtIeZSwqBvBzyEB4SGd+A6ONpLD93/keqrd7seepJG6/6d7
+	 gk8/v0mFNFsyfkPB18h2upZlBC/l2cDOLreae37JwZ2bSEAEj+jBf6YO8+Q2VRol8q
+	 hisffRmRt3T0Q==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3a7858d3a20so13594621fa.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 01:29:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxLj4w7ZqfdV9wHEak4WpWEctnxg5fMe17sovrXyKnzUU/qXNe1CLedzpNer5LeX6uJRIWwz3E=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIsomJ6aKeUvU7YL/lufrWNR0EXBVGKDuxO+4rtqawBM+ikvcp0
+	Z6wiKIttsJb+zkErOSjkFJlQDQrj49m4/dGiR2NXbIIdN12qxM3rAC3HIwXlGCo8o7GqUC3HSaV
+	P4BPByOuqvq5wN0bhe3YHQyd2SnQdhzk=
+X-Received: by 2002:a05:651c:502:b0:3a6:6efb:a0e3 with SMTP id
+ 38308e7fff4ca-3a9c52544femr47372571fa.5.1792052943186; Thu, 15 Oct 2026
+ 01:29:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20260602-pdm_clk_gp_mnd_v1-v1-0-1522662b6c53@oss.qualcomm.com>
+ <20260602-pdm_clk_gp_mnd_v1-v1-3-1522662b6c53@oss.qualcomm.com>
+ <CAD++jLnqCipTxkOhiwQhKFymOxu1HOTbHzLbNrGTOkCO33y8Vg@mail.gmail.com> <0cb8005e-964c-43e2-8e9d-4e955cf2ff90@oss.qualcomm.com>
+In-Reply-To: <0cb8005e-964c-43e2-8e9d-4e955cf2ff90@oss.qualcomm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 15 Oct 2026 10:28:50 +0200
+X-Gmail-Original-Message-ID: <CAD++jLmA65GL4xxFNSHr-j=Xo2o3dNmEcKjpNEkECXb5bOX8TA@mail.gmail.com>
+X-Gm-Features: AclHuK8sF_Rp3sPUvkXokg3OYjbIVxL6iVSLlt_kf3aFbP7rWfJnEWwj0w4dISM
+Message-ID: <CAD++jLmA65GL4xxFNSHr-j=Xo2o3dNmEcKjpNEkECXb5bOX8TA@mail.gmail.com>
+Subject: Re: [PATCH 3/5] pinctrl: qcom: Add gp_mn mux function for QCS8300,
+ SA8775P and SC7280
+To: Taniya Das <taniya.das@oss.qualcomm.com>, Bartosz Golaszewski <brgl@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Richard Cochran <richardcochran@gmail.com>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Ajit Pandey <ajit.pandey@oss.qualcomm.com>, Imran Shaik <imran.shaik@oss.qualcomm.com>, 
+	Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>, linux-arm-msm@vger.kernel.org, 
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
+On Thu, Oct 15, 2026 at 9:14=E2=80=AFAM Taniya Das <taniya.das@oss.qualcomm=
+.com> wrote:
 
-> A later patch runs the TX and RX endpoints of a case as separate
-> processes, possibly on different hosts, each binding only its own
-> interface. The shared test code still looks at the capabilities of both
-> ifobjects, e.g. to check both for multi-buffer support or to size the
-> RX batch from the TX ring limit. As the endpoints do not exchange
-> capabilities, a process will represent the other side by a shadow
-> ifobject that mirrors the local ones.
->
-> Prepare for that by replacing the per-interface support booleans and
-> limits in struct ifobject with one struct xsk_caps, so that mirroring
-> takes a single struct assignment and a capability added later cannot
-> be left out of the copy. The maximum TX ring size, which comes from the
-> ethtool ring parameters that a shadow does not mirror, is copied there
-> too. ifobj_has_cap() and ifobj_set_cap() test and set the flags, and
-> xsk_get_cap() reads a limit from the TX ifobject, the only one that has
-> all of them set, as the open-coded reads did.
->
-> The unaligned UMEM check now looks at the RX ifobject only: the flag
-> comes from a huge page probe that does not depend on the interface, and
-> test_spec_set_unaligned() switches both UMEMs together.
->
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> ---
->  .../testing/selftests/net/lib/xsk/test_xsk.c  | 84 +++++++++++--------
->  .../testing/selftests/net/lib/xsk/test_xsk.h  | 34 ++++++--
->  .../selftests/net/lib/xsk/xskxceiver.c        | 13 +--
->  3 files changed, 81 insertions(+), 50 deletions(-)
+> > This looks all right and no-one is saying anything about it, should
+> > I just apply this one patch to the pin control tree? It doesn't seem
+> > to have any dependencies.
+> >
+> Linus Walleij, sorry for the late response. I will split the patches as
+> per comments from Konrad.
 
-[...]
+In the meantime Bartosz has taken responsibility of
+Qualcomm pin control patch collection and integration, so
+check with him how he want to merge this, I think just some
+separate patches for pin control would work fine.
 
-> diff --git a/tools/testing/selftests/net/lib/xsk/test_xsk.h b/tools/testi=
-ng/selftests/net/lib/xsk/test_xsk.h
-> index 0717d855e4df..1d17e214db91 100644
-> --- a/tools/testing/selftests/net/lib/xsk/test_xsk.h
-> +++ b/tools/testing/selftests/net/lib/xsk/test_xsk.h
-> @@ -144,11 +155,20 @@ struct ifobject {
->  	bool use_fill_ring;
->  	bool release_rx;
->  	bool use_metadata;
-> -	bool unaligned_supp;
-> -	bool multi_buff_supp;
-> -	bool multi_buff_zc_supp;
-> -	bool hw_ring_size_supp;
->  };
-> +
-> +static inline bool ifobj_has_cap(const struct ifobject *ifobj, u32 cap)
-> +{
-> +	return ifobj && (ifobj->caps.flags & cap);
-> +}
-> +
-> +static inline void ifobj_set_cap(struct ifobject *ifobj, u32 cap)
-> +{
-> +	ifobj->caps.flags |=3D cap;
-> +}
-> +
-> +#define xsk_get_cap(test, cap) ((test)->ifobj_tx->caps.cap)
-
-nit, and iff respin: I'd leave the whole inlining out. Keep it simple.
-Also, please functions instead of macros.
-
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+Yours,
+Linus Walleij
