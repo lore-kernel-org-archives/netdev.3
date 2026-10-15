@@ -1,264 +1,200 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011002.outbound.protection.outlook.com [40.107.208.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628593D5C05
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 14:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792076301; cv=none; b=G1LuLyNJ/Ooe9pltxFS52BlambCwxCieEcdVJCL2V3qNphXW9cqXO6ou1grBiZVAD8qEuq1lzRiLZpBsR5eOslCDMfvPiwbr5b657/dr3Sh6CsRmx26k092/k3p5XQ8vkxuBGcOQUy68HM8fpXDL9HfiMS2vAv7Qzpd2rd7BBgg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792076301; c=relaxed/simple;
-	bh=Xmsh8vLkxa+urAg9ZzBey5HhQUknHpXB+xWvp5JB6io=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aoUbimfTN8mxjKYaNOC7VndCFvrT7tBuuXb/A+zvSTTa0XeAp1ocI9AttgEJfY0GsSO3jdanRdYUao4qMljolgbZpiICy1iXbabey0UOfmvMNzhO5MM7iM0Z2qC442yTiMBPFlnA13SLzRPJgaPeD9gLgbmq0fLJivoJkVMgk8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com; spf=pass smtp.mailfrom=riscstar.com; dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b=h/PRzly6; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=riscstar.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=riscstar.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94763C1D73;
+	Thu, 15 Oct 2026 15:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792076566; cv=fail; b=is7QjjLInICZO9dJhB7mKzt1yGE6eDBUwd3jKYVylMT3nQT7hL9b/vScsAm7qPMPgaqQFQm1Lw1XZ1ddYfvYmJrbP8y4A06hTUmSNW4ormVgQts2Rz2hb2qQF1xLzZtC37KRSGoCepcBDwDF7llDDZ9cOOrIHIU3aiJ9OCzdH3I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792076566; c=relaxed/simple;
+	bh=U03TsRb9NPU/ymVxrxxkghPQsQ/5SUZLrLfeVAAiW7M=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qwiaqb/bX3H4f19QHb06VLFTuKAOnBPJPesYWNk4QaoeRzNTfNCglIKKF4edUIYzrIIeMUonKLYgieFvleRlHFtrwbxeuyzHqgaobcHFZZVvj4v+uC3ubLiXuc33fuivBz+Md2xJdslHedWQXkFVocRtog71MM1SlNJBQJiTaDI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eMlpq17m; arc=fail smtp.client-ip=40.107.208.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=riscstar-com.20251104.gappssmtp.com header.i=@riscstar-com.20251104.gappssmtp.com header.b="h/PRzly6"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48af27fe287so504886f8f.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 07:58:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=riscstar-com.20251104.gappssmtp.com; s=20251104; t=1792076295; x=1792681095; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HM+R+mbJK8RLBqpDdx1wr25PKa74we7OacPAq9nMC0I=;
-        b=h/PRzly6hhi90KP0RzL8HrpZfRgF2sERzu2tPpwVXy/XAttTznW/cyqvTtYWNsaWVK
-         gDPBerOsOknGvgDALJJsL8ezVNDtNBxSwG6arIr4Nsd+4fw8xiiTUSTYL9NXN1+L8Uy+
-         fHfRtb4Kmjqj/FYidsTSPVK6KDgbOj0XN73dUQgrWcM+cs+2RHDq2MnPXqp1QEM7pEPZ
-         y0EKUnteHqB2y2bisI1FeLaA1BrPPhVgx4wdugI492doXJJxZ35Awk+K857YUy6+Oxg/
-         sf9XJNrjvu8hIlaq88jMwJvAMYujU7dIeYkJmPpr5/a/+p0qwuQVBFR7888bqDMAxjXz
-         AlhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792076295; x=1792681095;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HM+R+mbJK8RLBqpDdx1wr25PKa74we7OacPAq9nMC0I=;
-        b=2DSttyxEq54QTNksuBLF+oO1aAzbWeTzEdUwa7xhBwuTBBrMTi4L4R9ha98sqQXjQO
-         laXZnPbAiUyp1b+DqOSkNm9Utmn6Z7qLYiLF3trwSEBeVb7yFV2Kew0Fkl6M0d9Sn57s
-         9EGnV/XsThOlzbDLh5Bxu/0nsenRuC84kpsGjwe4tjmj6PBRfBRqJ117eWvddD9qJLzf
-         S3INh/9V0NDmR1CMP07d09P83qLq2vOxdFLOJ7CiuDm1BiNQSShANkhQFYHnOPVLQViP
-         mwBxb+16DxGdGWreMZ0wlNQ8Y23gBCf0SwdaQkdzkp8Ii4g8QcHcq44Ta5qN8PJB4cqs
-         NIhw==
-X-Forwarded-Encrypted: i=1; AKwUvBxhAds8QLNlxcrZ11meYe7Wuz4ydXnB7OU3QnjvFksT/4t+ZaEtZreoEwxpOlVQ9q3iY28tjGs=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJmQGD63aa0nNMp/jopLyVhXtlxzGML32jJ6Mcz4JFS1Hj0/6Bd
-	VkfwpS4bdVd5dtmgXSspVumm+yAS1xEOKyS+xn3ieVIYIlwDUG5JFVhilZTnY68t460=
-X-Gm-Gg: AYBFou2hut1b0gn7MZ0ffGnxPmr9gA0BGHJg6blILKT+YIcR279tUUYAIUSiWV5aSwA
-	t0L2hbJPABVd2WpQUbvcZ5AEOP6/E3+bRDUbrcsQi7qoThUqxTYjMeTO+ge77AWwcUertgtmCbZ
-	HaTWXeTyD/k7YgPHYOg1ff6fPLo2hVyufyeD1gPSVO/kmEaujTJ0OvJPo+npuzqFf1cH8g4cVKu
-	3fifi+s7ITkUfqyBwwiG4n8XLWNjhFHw/WF+so47hrYaRdrwK89pq0VISXLHghT6/SbvNfTszF1
-	SEPnRd3LNzqzLzJH/LjQ8WP5puzCJvuZpGzcap3VixUua+0H0xA3NgKwP4ZUK6fDZRHFqEfkOPu
-	/ds6zb/Y90bzqWFFI+HGGhgnRrT61gkHBzFt2g/xH0aEmYbweDFS5FpoKMfrOOXUNpJyAKJWbQO
-	IBZPxmukwk8lhozAxM3caDl/C32NAE2EgNMkKqu4+xuE7M63yHT37ax6AXYJpXW1vLhxNSZd2Ie
-	7ekfiHcwFR1HI7fzHNzY3oul6orgt08iBLJnn5uLYYH1dtMzaFSQDx0oOK1fetBZMB6tRUE9nZi
-	yNsF+Q4lLD1IkLqDk3B5CWTBG0SsOqPKemR0/2SC5LmR3o4qJ92gneZrSPjNeFO0w7ww2A==
-X-Received: by 2002:a5d:43c4:0:b0:48d:ba3b:af36 with SMTP id ffacd0b85a97d-48dbaae8e33mr30543201f8f.37.1792076295196;
-        Thu, 15 Oct 2026 07:58:15 -0700 (PDT)
-Received: from aspen.lan (aztw-33-b2-v4wan-169864-cust3247.vm26.cable.virginm.net. [92.239.204.176])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48de0ac4fd7sm19738293f8f.40.2026.10.15.07.58.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 07:58:14 -0700 (PDT)
-From: Daniel Thompson <daniel@riscstar.com>
-Date: Thu, 15 Oct 2026 15:55:02 +0100
-Subject: [PATCH net-next v3 2/2] net: stmmac: Avoid freeing and
- re-requesting IRQ during XDP set prog
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eMlpq17m"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Oy9sZiNPqN3Si1wZzuWb4u7SxuKVb8CKow+99Rt0zTJAYFsGH/Yt6HpslZP45rMGjZvgrxdNS9to9ZPGyOlCLRCQ4n86sLUFN3GiNwT7hMzg3mm6VrWPFARcyVopYPYDAWGqlo2Pghew4Olj+WsoRRBoFKaAnSVVgbP7BayW7tqJs09vUoShzpXtHL7+cCTr2r7tA1XGAo5aDEedGyn7DJMJlHkIEB4n3dE8+zlxr0LIawLu83t4RNHVBB9N4QsXYm7psyUA1398M9ihHe7jjaRlFJpOmMMPxabUoYffG0WJkSffIrW3j2x0Bi75wa5FvF8C4jrxhEZZNMo+f9hHfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wt4lGju7D8PTj1rfAG/OcLfJQFJkK3lME2hd34qjobs=;
+ b=Z5oBLtAi8AdlZubUEJwKy3QyD3qFVPySKcTvhwRm72QpiLpIjytkhwXwzfSGMH4EbHpic5gwF22pI2P+q/2HjO3wmYBedGzxRUQdQ7xF44Q6oy+akUmp1ngX3Wamycw8k3ZzsajpU8rgF5dUYOTSjPQvBJ9Opn3qUYdE1xuNhHdmn11iM6XZxuVWfSXDR5BQCEGVQRo2Zw7xvAtMMcNAsTYDnrKRfgFvoQzwcOZS5xWK4u7e0NJCAyNb8UZLIaomPtB+FF/ho3lheHw1JafEzgOnMbSPhzFYIhUNgt3GqkAnMnoUJweCv+3G/u58i3Z4LV5FzS+ZWXj/yJ9O9PHTHw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=microchip.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wt4lGju7D8PTj1rfAG/OcLfJQFJkK3lME2hd34qjobs=;
+ b=eMlpq17mPXPLixgae/D47sm+sQFJlGZ9u+hY4goPv3VQoxn2XB2Bf3xkSBMYQFgnD4Do+Q4iOe1njEwF0gmI+kq2qNwy3HUbCW1JgUWZkVa3q/uCY7gfJx0KmDjRYHhSXoizD019KPaGr0UKjhb9KwbH4X2lp0MN1KOogmMYyyzqGWwEJsxJnZG6mjWONDddbTVYHAFmYUToDdP/hhHBRmd5EvXul2inApkJV/h99LnqNbtOwaFz8B46BSFrqeKhlpVkYxHTd/jWMtbUk6+ub8WSR1fDTN9zPH49tMBkd2dOgNk7LQBDUSozLdYK4JcHl6P8uQ2iKIDKgZ3aIG6BIg==
+Received: from CY5P221CA0146.NAMP221.PROD.OUTLOOK.COM (2603:10b6:930:6a::19)
+ by DM6PR12MB4299.namprd12.prod.outlook.com (2603:10b6:5:223::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Thu, 15 Oct
+ 2026 15:02:38 +0000
+Received: from CY7PEPF000000F3.namprd05.prod.outlook.com
+ (2603:10b6:930:6a:cafe::5) by CY5P221CA0146.outlook.office365.com
+ (2603:10b6:930:6a::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Thu,
+ 15 Oct 2026 15:02:38 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CY7PEPF000000F3.mail.protection.outlook.com (10.167.247.151) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 15:02:38 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
+ 2026 08:02:08 -0700
+Received: from vdi.nvidia.com (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 15 Oct
+ 2026 08:02:06 -0700
+From: Chris Babroski <cbabroski@nvidia.com>
+To: <bryan.whitehead@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@kernel.org>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <richardcochran@gmail.com>,
+	<linux@armlinux.org.uk>
+CC: <maxime.chevallier@bootlin.com>, <Raju.Lakkaraju@microchip.com>,
+	<cbabroski@nvidia.com>, <davthompson@nvidia.com>
+Subject: [PATCH net-next v1 0/5] net: lan743x: automatically recover from TX hang
+Date: Thu, 15 Oct 2026 11:00:39 -0400
+Message-ID: <cover.1792008404.git.cbabroski@nvidia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261015-tc956x-stmmac-no_irq_teardown-v3-2-8189870be545@riscstar.com>
-References: <20261015-tc956x-stmmac-no_irq_teardown-v3-0-8189870be545@riscstar.com>
-In-Reply-To: <20261015-tc956x-stmmac-no_irq_teardown-v3-0-8189870be545@riscstar.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Eric Dumazet <edumazet@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Eric Dumazet <edumazet@kernel.org>
-Cc: Alex Elder <elder@riscstar.com>, netdev@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, linux-sunxi@lists.linux.dev, 
- Daniel Thompson <daniel@riscstar.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5397; i=daniel@riscstar.com;
- h=from:subject:message-id; bh=Xmsh8vLkxa+urAg9ZzBey5HhQUknHpXB+xWvp5JB6io=;
- b=owEBbQKS/ZANAwAKAXzjJV0594ihAcsmYgBq0On0886l08HHREvWrJqdn0hcWlbVy9OPSK05v
- 3jBqmxmICCJAjMEAAEKAB0WIQQvNUFTUPeVarpwrPB84yVdOfeIoQUCatDp9AAKCRB84yVdOfeI
- oVUJD/9PRRiCUW/mNpgCqony21Y+ly09GrfxL7uqhj8q7gbv3J7MfZzTgMES0M6JKRyOUTAWMbW
- mdRzY0OHRDgRt01w5WKjbMjHKriUKKfk40tc7BLkyYmI2DRz3uAYVE5e5Nh7GLXylUtF9z/QtF9
- YjFgKjuhdfSknG+uoXjgTwASLwOAjFHoHdkgOE3Q+8akX0b99GZb+WRvbNxXVEnTrgBjd65cMvK
- U49YCfVG3Y4LkLOhZHNWRjs+NzvBvU0DqHF93X9cMQzzaFG47gaWbzwIcUEgsvTm5U0U+wbwLKS
- zFccajtkdEBVDGQdvdtLre3N+JRcuyEM///kbv4u/PgqFeTrcnpjiwuQXOaFHz4dX5fgRVGXSGM
- RxRl/xUENymJW+9VIdG4SDmIsKVrZ+K9K4smCGuki9lHJm2ev5j5ruLxN8ePCOZx+hhzi3ODiX7
- sPkd0pIyACcYwhdR264p7xgILqRgTjje1USdjq+0TiVtd9hTSbIsW+/8BtC0JDxOBI1lfZwOtzW
- lPy/dGg/KH02/QaJYKzf0KIxxiVIk62+9KMYdt7JH9IIMY4HjVrq67ocMu09Fs+hB9V4u1+jusd
- TOBMZnXTwmhsWV+nTxj6CloIkRFtCsiUncePB8XlUuKBOBuFiF4iOzGL2Ip6bmD25BIV+jdKDSN
- +q/Y6jCTmK2tnHg==
-X-Developer-Key: i=daniel@riscstar.com; a=openpgp;
- fpr=E38BE19861669213F6E2661AA8A4E3BC5B7B28BE
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY7PEPF000000F3:EE_|DM6PR12MB4299:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3b99ff5-8957-4db4-ff2b-08df2acd5ac2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|23010399003|6133799003|10067099003|18002099003|921020|11063799006|261009223027099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	lGV9ucvTD2yMJvAMzMbmKdWI8GfIgE7b8lQaUnscgMsaozASc2rWrJUjsXlEJpV5EvykYUvPq73ayfMC5tLrJzFp77zIzxHJB8M1quBUqaowT0mk8BtduxGZJH38q3dRO3eR7c47sAr+NX6e/1OfIiSAp0c4/4y3HhkBkAwabF/J/KdH8M30JPaq9nwO9Rrnk8h86vnI+cQp8B4/bwWp8zS9gOmacnnwNl5sAstRU/zTCXF8C1GTRrXOTH7YaPXTHdlu2iWY8Ndjju940GCSQed+WkPhEME0rp1cQNntsqFiYcN9chipyQeGEOv8+31mAw4lVvwtfkGGaVj04ouncu4cZIDVvh9WoWK6smYlf+fZ1gYHpzFA4Cd9PYneLQfsDhqtg0bvewiuxUnLhLza6gpsXPIRzkHqiEj4yI9cdhuS0ZG5BW0dTvp9ByyZ0TGpAo28hYSRfabXlbts0KOFOBXgdzFG3gaXMmihtG25fQMZzxG5TrgY56OyQ85vp1JDsjajzRTbmKCWt6Ev/rGZs2rAfFCpW0kfVry6lwEOO5eBhIE5so9GI0njNZtr6MT6kIpumgczjTWl0ZJrZUgtWm3fw9ZFkMY/m5ZnXoLY6tDnVLJO0gCDRfj8Tvzyu5AHmjuodXbKfTV5homc+NR+53MmmHlexvtnxGuXbwzpfWssXmIZmZ4slipkvMNJ1seYqdll6q7G3nuMSf6aD1TQzm8O2cWtLJrqWt7xmeAJS+IWZFMmOo4KszVVBpqbmA+8
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(23010399003)(6133799003)(10067099003)(18002099003)(921020)(11063799006)(261009223027099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	XXmI02bW4C7ClVONv85Q0cJVVHNoamsRd5bOfquNIpaS1hJ2TNjQbw9wbgMMTAFodct0vuYq1aSWM1xG4OE84ZHKapgaoVPowK04x6LZ9/uSwyGHJ7QkQenveVvMchYSURKEX8Si7TwOV5hVT0c2fbQDZmP2BCom9xZXzbhn7BgGr40d4ajBC20fDB5zDy9H4zvBhoxF9YbRSa+zZQGaFnHLJs4mkJQfqyojRFLO/6aeBjxHw8xhmCUqIIIhTzAeasbxcn9UKjar2/IfGUPWt8/xZ3W40WnxxRKx1oDxQ6fQ6DHPUCF3LdMYPfRPy+ybqESZafZQtHNIhx8/FjOLO36O3BBKbV8KXZYPBfXQcjZD7vQzvK1ucDwxdjPXt1fUp/4a0YX3kbxm/xOyM2p01Nd2VBKfQGRmE+9I7UggCYj3+l7Hi7n+bwIJGiaYmJC0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:02:38.7964
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3b99ff5-8957-4db4-ff2b-08df2acd5ac2
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY7PEPF000000F3.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4299
 
-Currently stmmac will run a full cycle of IRQ tear down and setup when
-setting up a new XDP program. This makes tuning TSN systems difficult
-because whenever a new XDP program is installed then the irq threads will
-be stopped and restarted which will undo any thread tuning.
+Background
+----------
+On a custom HW platform that uses the LAN7430 NIC we have been able to
+reproduce a scenario where the SoC stops receiving TX completion
+interrupts, appearing as a TX hang. After dumping and decoding the
+LAN7430 registers we see that the TX channel reports that it is in
+started state with no error, but TX_HEAD stops advancing. TX MSI-X stops
+incrementing while RX interrupts continue to increment.
 
-The problem is avoided by removing stmmac_free_irq()/stmmac_request_irq()
-from stmmac_xdp_release()/stmmac_xdp_open().
+This scenario has most often been reproduced in large server cluster
+environments, but it's also been seen locally during repeated SCP and
+iperf testing.
 
-stmmac_free_irq() implicitly synchronizes interrupts and, with that
-removed, nothing else disables interrupts or makes later actions by
-stmmac_xdp_release() safe when there are concurrent interrupts. Thus we
-must replace the code to free the IRQ with code to disable (and sync) DMA
-interrupts. We also need to avoid re-initializing the DMA channel. Happily
-the reinit is redundant, it is sufficient to rely on the re-enabling
-of interrupts at the end of stmmac_xdp_open().
+The root cause of this issue is still unknown and we are continuing
+debug. It was found that bringing the interface down and up recovers the
+network. This issue has not been reproduced with the LAN7430 EVB
+connected to a standard Linux server.
 
-Signed-off-by: Daniel Thompson <daniel@riscstar.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 65 +++++++++++++++++------
- 1 file changed, 48 insertions(+), 17 deletions(-)
+What this patch series does
+---------------------------
+This patch series attempts to implement automatic recovery of the
+network interface after a TX hang is detected. It does not fix the
+underlying root cause of the TX hang.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7b80fe66cf199adbd31b79a484b2970aef211b51..f1359637007e211b505dd74577232cdc079baf46 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -144,6 +144,7 @@ static const char *stmmac_dwxgmac_phyif[4] = {
- 	[PHY_INTF_RGMII]	= "RGMII",
- };
- 
-+static void stmmac_synchronize_irq(struct net_device *dev);
- static irqreturn_t stmmac_interrupt(int irq, void *dev_id);
- /* For MSI interrupts handling */
- static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id);
-@@ -2520,6 +2521,23 @@ static void stmmac_enable_all_dma_irq(struct stmmac_priv *priv)
- 	}
- }
- 
-+static void stmmac_disable_all_dma_irq(struct stmmac_priv *priv)
-+{
-+	u8 rx_channels_count = priv->plat->rx_queues_to_use;
-+	u8 tx_channels_count = priv->plat->tx_queues_to_use;
-+	u8 dma_csr_ch = max(rx_channels_count, tx_channels_count);
-+	u8 chan;
-+
-+	for (chan = 0; chan < dma_csr_ch; chan++) {
-+		struct stmmac_channel *ch = &priv->channel[chan];
-+		unsigned long flags;
-+
-+		spin_lock_irqsave(&ch->lock, flags);
-+		stmmac_disable_dma_irq(priv, priv->ioaddr, chan, STMMAC_DMA_IRQ_ALL);
-+		spin_unlock_irqrestore(&ch->lock, flags);
-+	}
-+}
-+
- /**
-  * stmmac_start_all_dma - start all RX and TX DMA channels
-  * @priv: driver private structure
-@@ -3816,6 +3834,33 @@ static void stmmac_free_irq(struct net_device *dev,
- 	}
- }
- 
-+static void stmmac_synchronize_irq(struct net_device *dev)
-+{
-+	struct stmmac_priv *priv = netdev_priv(dev);
-+	struct stmmac_msi *msi = priv->msi;
-+	int j;
-+
-+	for (j = priv->plat->tx_queues_to_use - 1; msi && j >= 0; j--) {
-+		if (msi->tx_irq[j] > 0)
-+			synchronize_irq(msi->tx_irq[j]);
-+	}
-+
-+	for (j = priv->plat->rx_queues_to_use - 1; msi && j >= 0; j--) {
-+		if (msi->rx_irq[j] > 0)
-+			synchronize_irq(msi->rx_irq[j]);
-+	}
-+
-+	if (msi && msi->sfty_ue_irq > 0 && msi->sfty_ue_irq != dev->irq)
-+		synchronize_irq(msi->sfty_ue_irq);
-+	if (msi && msi->sfty_ce_irq > 0 && msi->sfty_ce_irq != dev->irq)
-+		synchronize_irq(msi->sfty_ce_irq);
-+	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
-+		synchronize_irq(priv->wol_irq);
-+	if (priv->sfty_irq > 0 && priv->sfty_irq != dev->irq)
-+		synchronize_irq(priv->sfty_irq);
-+	synchronize_irq(dev->irq);
-+}
-+
- static int stmmac_msi_init(struct stmmac_priv *priv,
- 			   struct stmmac_resources *res)
- {
-@@ -7141,8 +7186,9 @@ void stmmac_xdp_release(struct net_device *dev)
- 	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
- 		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
- 
--	/* Free the IRQ lines */
--	stmmac_free_irq(dev, REQ_IRQ_ERR_ALL, 0);
-+	/* Silence DMA interrupts */
-+	stmmac_disable_all_dma_irq(priv);
-+	stmmac_synchronize_irq(dev);
- 
- 	/* Stop TX/RX DMA channels */
- 	stmmac_stop_all_dma(priv);
-@@ -7165,7 +7211,6 @@ int stmmac_xdp_open(struct net_device *dev)
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 	u8 rx_cnt = priv->plat->rx_queues_to_use;
- 	u8 tx_cnt = priv->plat->tx_queues_to_use;
--	u8 dma_csr_ch = max(rx_cnt, tx_cnt);
- 	struct stmmac_rx_queue *rx_q;
- 	struct stmmac_tx_queue *tx_q;
- 	bool sph_en;
-@@ -7188,12 +7233,6 @@ int stmmac_xdp_open(struct net_device *dev)
- 
- 	stmmac_reset_queues_param(priv);
- 
--	/* DMA CSR Channel configuration */
--	for (chan = 0; chan < dma_csr_ch; chan++) {
--		stmmac_init_chan(priv, priv->ioaddr, priv->plat->dma_cfg, chan);
--		stmmac_disable_dma_irq(priv, priv->ioaddr, chan, STMMAC_DMA_IRQ_TXRX);
--	}
--
- 	/* Adjust Split header */
- 	sph_en = (priv->hw->rx_csum > 0) && priv->sph_active;
- 
-@@ -7230,10 +7269,6 @@ int stmmac_xdp_open(struct net_device *dev)
- 	/* Start Rx & Tx DMA Channels */
- 	stmmac_start_all_dma(priv);
- 
--	ret = stmmac_request_irq(dev);
--	if (ret)
--		goto irq_error;
--
- 	/* Enable NAPI process*/
- 	stmmac_enable_all_queues(priv);
- 	netif_carrier_on(dev);
-@@ -7242,10 +7277,6 @@ int stmmac_xdp_open(struct net_device *dev)
- 
- 	return 0;
- 
--irq_error:
--	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
--		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
--
- init_error:
- 	free_dma_desc_resources(priv, &priv->dma_conf);
- dma_desc_error:
+At a high level, the patches implement the following:
+1. ndo_tx_timeout support to reset and recover the interface when the
+   netdev TX watchdog triggers.
+2. BQL support to decrease the amount of time it takes for the watchdog
+   to trigger.
+3. Stability improvements and error handling around the open/close paths
+   that now get executed more frequently as part of the TX hang recovery
+   flow.
 
+Potential issues and concerns
+-----------------------------
+* One of the patches adds new lan743x_dmac_tx_reset and
+  lan743x_dmac_rx_reset helper functions. There is no cleanup handling
+  introduced if these return an error, only a new error log. This
+  matches pre-existing behavior: if a reset timeout occurs then it is
+  possible to DMA freed memory. The datasheet states that these resets
+  are performed immediately in HW so I'm not sure if these will ever
+  time out, but I'm open to suggestions on how we should handle an error
+  in these cases.
+* The TX timeout reset flow does a full lan743x_netdev_close followed by
+  lan743x_netdev_open instead of individual TX channel reset. If the
+  stall is happening inside the NIC DMA engine then the theory is that a
+  full reset may be needed to recover. For internal use we also wanted
+  to reduce risk by putting the NIC into a clean state after recovery
+  with full reset. It would be great to have Microchip/LAN743x experts
+  confirm the best reset flow.
+* LLM review tools flagged several possible bugs during development
+  that resulted in the inclusion of three "Fixes:" tagged patches in this
+  series. They are included in this series with the ndo_tx_timeout
+  support because lan743x_netdev_open and lan743x_netdev_close are now
+  called more frequently as a result of TX hang recovery.
+
+Testing
+-------
+Testing was performed on a 7.0 based kernel using the same driver code.
+Please let me know if you would like me to run any other tests.
+
+Tests:
+* Verified the TX timeout watchdog triggers and recovers the network
+  interface when TX hang is reproduced. This was done as part of
+  repeated SCP loop testing and is also being tested in a server cluster
+  environment. dmesg was inspected for "NETDEV WATCHDOG" to verify that
+  the watchdog is being triggered. No errors were seen in dmesg after
+  reset.
+* Performance tests using iperf3 to measure RX and TX throughput show no
+  noticeable difference with the patches applied.
+* Repeated module load and unload cycles produce no errors in dmesg.
+  Network appears to function as expected when module is loaded.
+* Repeated ifconfig down and up cycles produce no errors in dmesg.
+  Network appears to function as expected when interface is back up.
+
+Chris Babroski (5):
+  net: lan743x: reset DMA channels that fail to stop
+  net: lan743x: start phylink last and stop it first
+  net: lan743x: quiesce TX before freeing the rings
+  net: lan743x: reset the device on TX timeout
+  net: lan743x: add byte queue limits support
+
+ drivers/net/ethernet/microchip/lan743x_main.c | 177 +++++++++++++++---
+ drivers/net/ethernet/microchip/lan743x_main.h |   2 +
+ 2 files changed, 155 insertions(+), 24 deletions(-)
+
+base-commit: 05b5019b01fb9443b09ae4ed34af1135a80a84c8
 -- 
-2.47.3
+2.34.1
 
