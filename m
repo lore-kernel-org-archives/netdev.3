@@ -1,41 +1,56 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EE1483819;
-	Thu, 15 Oct 2026 20:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE2A3A63EF;
+	Thu, 15 Oct 2026 20:34:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792096458; cv=none; b=gn/tVH2LAbGl0nyOY2Ag9iqU/VWvmNGrL/C3g71/qayJAgmIijjaMmfQIdhOrGIKtEjBGKryYp6j4+1apfpc7WCZIXgG/RTRJl9xfC+Q8SZGlTcmFWaoRfT4MwW3FUJiuOzO4jp7JhAYz9ko3nJG6ea5/+BIBDes2amzpe9ZcFI=
+	t=1792096486; cv=none; b=cVuuYBDbLw598kdnQ9ChYB+yvM/9Et1LV//ANyz6hP3M7kpxv0EHRmoN5auECmpmvyQef7l94NyjrLfgWSUqLN1f18AH1zzOgwD/6o7CCCr1tfLHlGRjeUIYB97cTYwNOYutmY8BJmf9tpoi6uguWwzCpXjB42iyH1mRR7ppvno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792096458; c=relaxed/simple;
-	bh=gDpQFN++xPwT0x6m8l+Fta4hIRm9lrj7r30nvMaPyW8=;
+	s=arc-20240116; t=1792096486; c=relaxed/simple;
+	bh=sV2HEuvR9zQyz+Q4KvsucuhVmhv9nZsLKpq9zIz6v+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vpf9SilxY3kjzcP+uJt71iocFvWGyqmlYs81+F+hDqqkfHH8oieD2wFYUpczmi44lsKWBE3C20K9dHD/VRWbwPP4ovTlJrsgV0z4gyPceg9tavesN3Bynk+b5tGihXL+XjxiOjNMCp62bJVie/LmLi3HI5b2Wc6QW4PllKftaew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XS7h2Ylr; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=BIqc97rJTP5qniRdyWtW1RQcoYsEpHBEpKOcNut/fHFE5eb6lFNKOupS5WUv6F0lZ1h3dLo2aJVxgN0skWqx8JmXvk8qmPF+PuCXzoRt9IGGfOynBMff2FM/9eu8OruH/dRPCZGamkwPbN+Yl1+Ax1DDSLc3ajihcAY9YQwIuuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hhi/zd5W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XS7h2Ylr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=sT57Px4Vg7Js1kzkyVxmNzndr3U3+dmuMx+Xr+DujHo=; b=XS7h2Ylrdx/fLqFAMc3VTKBd0s
-	VzmZ4Vci+QLQFGsd4MDtb+8axLdtxA1loz5sD3UfsGTmMh/0nJQfVNNCFEZY1klml8gN0BrE714PT
-	cvORvzPM3T1r/1OhC0jzZ+qFc0CN84RXXd/FWd+Z/R9AqT2u7fcZVUIWraC5+B5MhTr4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1xHS9O-00B1JS-3W; Thu, 15 Oct 2026 22:34:06 +0200
-Date: Thu, 15 Oct 2026 22:34:06 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Alex Elder <elder@riscstar.com>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/2] net: pcs: xpcs: fix operating mode selection
-Message-ID: <597dbcf1-8362-408e-a1ba-256b07b99713@lunn.ch>
-References: <20261014223100.304486-1-elder@riscstar.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hhi/zd5W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A943E1F000C5;
+	Thu, 15 Oct 2026 20:34:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792096483;
+	bh=Iem+pLJO9ZYQDqe8VHL3AmzInyj0TGtjgP3owuH6BbI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Hhi/zd5WiI25MM7Uu1D5DQx+Y77A3b3pGnGm6oSq87Wvjws3mS2ZeSaNbGN5P6pIM
+	 P30CkKd+hVHbPpDrHS4FBXq/Qx5aL4tkaeIE4SGeHKhDJnHRjB/I9VtyRN+w5aNd1o
+	 zMrrRx+xqkHs66L3jDB+3A79nsAGkclmOExJ99bycu+sR175QNegjKKEOjZXknhDEQ
+	 QAd6J7HtB06OLgTSP2eLr7hL40SNZZEItMKbAZHt5O1rBcBCLv+WyTavZu9lB0nmaw
+	 Yhs0aU1S74bEFV5bae2ZeYho6lt+M0qqXKLY7/7fegw8u0kqOA4ybyJm01jg/W5q15
+	 ax0acgG/OIE8g==
+Date: Thu, 15 Oct 2026 15:34:42 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Oskari Lemmela <oskari@lemmela.net>
+Cc: Marek Vasut <marek.vasut@mailbox.org>, Andrew Lunn <andrew@lunn.ch>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Aleksander Jan Bajkowski <olek2@wp.pl>,
+	Issam Hamdi <ih@simonwunderlich.de>, linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Javen Xu <javen_xu@realsil.com.cn>, dam.dejean@gmail.com,
+	Manuel Stocker <mensi@mensi.ch>, Eric Dumazet <edumazet@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Paolo Abeni <pabeni@redhat.com>, devicetree@vger.kernel.org,
+	Jan Hoffmann <jan@3e8.eu>, Florian Fainelli <f.fainelli@gmail.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>, Conor Dooley <conor+dt@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: realtek: add RTL8224
+ package binding
+Message-ID: <179209648173.3102384.6472126730411571099.robh@kernel.org>
+References: <20261013185635.1412452-1-oskari@lemmela.net>
+ <20261013185635.1412452-2-oskari@lemmela.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,32 +59,26 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261014223100.304486-1-elder@riscstar.com>
+In-Reply-To: <20261013185635.1412452-2-oskari@lemmela.net>
 
-On Wed, Oct 14, 2026 at 05:30:57PM -0500, Alex Elder wrote:
-> The XPCS found on Toshiba TC9564 is unable to operate at 2500base-X
-> and slower with a PHY connected using SGMII/2500base-X.  This XPCS
-> supports 10Gbase-R, which is the default operating mode, and this
-> causes mode selection to fail for slower interfaces (SGMII, 1000baseX,
-> and 2500baseX).  Writing a reserved value to the MDIO_CTRL2 register
-> avoids this failure.
+
+On Tue, 13 Oct 2026 21:56:34 +0300, Oskari Lemmela wrote:
+> RTL8224 packages contain four PHYs at consecutive MDIO addresses and
+> share configuration registers. Unaligned packages need an explicit base
+> address to select the correct package registers and per-port MDI fields.
 > 
-> Wangxun already addresses a similar scenario, but includes custom
-> quirk handling.
+> Introduce realtek,rtl8224-package so the package example selects a
+> dedicated schema while child PHYs retain their Clause 45 discovery
+> compatible. Validate package and child properties, document that
+> unaligned layouts require a package node, and preserve support for
+> existing aligned descriptions without package nodes.
 > 
-> This series implements handling for slower rates for an XPCS that
-> supports 10Gbase-R.  The first patch rearranges code that performs
-> soft reset so that it is done *before* the interface mode is
-> switched.  The second adds code to xpcs_switch_interface_mode()
-> to update the MDIO_CTRL2 register for interfaces that support
-> 10Gbase-R so that the desired rate change works as intended.
+> Signed-off-by: Oskari Lemmela <oskari@lemmela.net>
+> ---
+>  .../bindings/net/realtek,rtl8224-package.yaml | 332 ++++++++++++++++++
+>  1 file changed, 332 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/realtek,rtl8224-package.yaml
+> 
 
-You Cc: those reported by get_maintainers, but i think a few other
-people should be involved, who have made changes in this area:
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-Coia Prant <coiaprant@gmail.com>
-Choong Yong Liang <yong.liang.choong@linux.intel.com>
-Vladimir Oltean <vladimir.oltean@nxp.com>
-Jiawen Wu <jiawenwu@trustnetic.com>
-
-       Andrew
