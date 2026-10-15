@@ -1,69 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C6F3A0E80;
-	Thu, 15 Oct 2026 08:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9407E4A8A1C;
+	Thu, 15 Oct 2026 08:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792052309; cv=none; b=C9zwhjASc4ocjioAB+bsObbK3GV69Q1WWOmuD7NS0yVR//p3ZKPo+LEFOZqkHc4dH6KNwM1FTdbGkS83mohyqoh5ig+ws86AeglSwyqDdFjGqNCpfbXBzKmKDkvBDPMmA2AZoG4M5K+4i6OzPU+HJ1ZQ02HspJ9uQDSDSpD3HDw=
+	t=1792052388; cv=none; b=ZZHluJxCgorTm4gHKDP5Hv6rm04MSZWrLemZvHcRGuxb9cD/aJliwCvdmTDYBOYn+WMD8QJ82gkUQHqvuvPEeud5IwuWK2hvTTq/5mRGrIxUFfCsehscOtpnArImkdVUgefRF8tGafOoUuwP4C9Ys9Gtkmd2gXVROiGAhVAexP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792052309; c=relaxed/simple;
-	bh=BwxE6RsL/PjM9CcEB+CvdbwUBreqVvKr22WP7X7Nw/c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VDEeYu5fMbjJohxgZW32PqZNaJKSITdpKL1yGnMaQjW6qPI5aetwhmP3300qJ8kS6hbplBbrPj2Pm5fAVG39W5H2a5XDmfHwveGOOFEZgthePUQAxpeK2qlM1nPdTnTBp4OXDT1Sr19xOsVZqKtsis4Iq73ZNkYIO5GysJJHn48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjTRYx5p; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792052388; c=relaxed/simple;
+	bh=gp7PRv3WjAiMJrp0DvXpRvTv3mwC8R3NiezXzUE7FxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kvMISoYAq0u+bron8lQvjAcYG8g0MVl12DboLsfBeSVjNMYfSgknHSfRBvR7Y0yW0s9B1Mx4j5d42Eef3e+vjgNSbJDdWKWpTEP/HUjilYpCcUaTAW5H91VcZUW0IbAtp73PXUGLr9IGv4+Z/rr8gtkZxZBQZlUokUYlcIOHHhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LGmdrSkn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjTRYx5p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27DB1F000C4;
-	Thu, 15 Oct 2026 08:18:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LGmdrSkn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989861F000C4;
+	Thu, 15 Oct 2026 08:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792052308;
-	bh=BwxE6RsL/PjM9CcEB+CvdbwUBreqVvKr22WP7X7Nw/c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=gjTRYx5pgGrVJe1/ZX+4Fu65Q95J+pADloo0EVWH+fPmTHb9XrlaKa8xJNohGoOMj
-	 XNvaQ+cMaa+AhLVM8b5cKpaP828ZcVKL2GcagpsNAHfSXnelUagWF2zc0DuiBnKiha
-	 2GSzQl/gafl0K6QdA2SohVo9aHQMWbyf7xz89+TMdgN7Rt8evD6jW3dwiNO4HxbWSU
-	 AmTB/n151s9OfDWs+FAY+wRmRH+8rg3YVvoVszaxmbs63htbIVIJUymXm6rFUIvACd
-	 uULuo4UV8t/t32Zo/TRD3vcVfJIoGn1zQUBtq8jpfzz+jZ5lzYfLIZRhMcH8BR9NR+
-	 TyuiT9nAjpp+A==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: Maciej Fijalkowski <maciej.fijalkowski@intel.com>, netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org, magnus.karlsson@intel.com, stfomichev@gmail.com,
- kuba@kernel.org, pabeni@redhat.com, tushar.vyavahare@intel.com,
- kerneljasonxing@gmail.com, Maciej Fijalkowski
- <maciej.fijalkowski@intel.com>
-Subject: Re: [PATCH v3 net-next 04/15] selftests/bpf: drop the test_progs
- AF_XDP wrapper
-In-Reply-To: <20261014184539.774708-5-maciej.fijalkowski@intel.com>
-References: <20261014184539.774708-1-maciej.fijalkowski@intel.com>
- <20261014184539.774708-5-maciej.fijalkowski@intel.com>
-Date: Thu, 15 Oct 2026 10:18:25 +0200
-Message-ID: <87tsmn74xa.fsf@all.your.base.are.belong.to.us>
+	s=k20260515; t=1792052387;
+	bh=Z9zRtXHe/J1k/4/9wAeq1n+PwAt+ioXmV3zyjSNrjDw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LGmdrSknJVV0ciR++l5V8/fzXF6rTCPBchNFqoagstmliyf4THtiMmBW7zC4v1gDv
+	 YXqg3CQOAkEBzj8UsK9DFkKEgP3xnskzjXFSjWwoFCjgX0M5bI8UPzl8dep2J7Q6u+
+	 oiEV/FH5MNsJB7+7M6TJ/6AD6+rzCovh5aGiQFr96M0/h/k4eArNNS0BblbFT5yYH7
+	 rD2pryyCs7IurAkm2s6HPqEPOWWQYljT3JZ/JSheZWY/VtTTyCIp9m8KBZ1F6Y06Nu
+	 KEqoQtaDUaAXX6J1Brdob6DWQrutFHawd3vXwkAqAGGSuEixDKcZ+0CqbgsM90r6Ec
+	 lyDUgN7/UoaPw==
+From: netdev-bot+sinfo@kernel.org
+To: Mahanta Jambigi <mjambigi@linux.ibm.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, hidayath@linux.ibm.com,
+ pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+ guwen@linux.alibaba.com, stable@vger.kernel.org, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [PATCH net v11] net/smc: fix lgr/lnk lifetime vs diag reader race
+Date: Thu, 15 Oct 2026 08:19:46 +0000
+Message-ID: <179205238616.408196.12778446349366057336@kernel.org>
+In-Reply-To: <20261015081349.1252391-1-mjambigi@linux.ibm.com>
+References: <20261015081349.1252391-1-mjambigi@linux.ibm.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Maciej Fijalkowski <maciej.fijalkowski@intel.com> writes:
+Hi!
 
-> prog_tests/xsk.c runs the xskxceiver cases inside test_progs, driving
-> the TX and RX sockets of a veth pair from two threads. The following
-> patches turn each endpoint into a process of its own that can run
-> against a peer on another host. Keeping the wrapper would mean rewiring
-> it at every step of that split and teaching test_progs to spawn and
-> synchronize peer processes, so drop it. BPF CI loses the ns_xsk_skb and
-> ns_xsk_drv entries; the same veth coverage stays with test_xsk.sh,
-> which moves to selftests/net together with the engine.
->
-> ci_skip_tests[] held the cases that the wrapper left out: flaky and
-> slow ones and those that need hugepages or HW ring size support.
-> Nothing runs only one of the lists anymore, so fold ci_skip_tests[]
-> into tests[]. The test IDs do not change.
->
-> Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
+
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
+
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
+
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
