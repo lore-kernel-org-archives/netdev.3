@@ -1,159 +1,199 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112DE2459CF;
-	Thu, 15 Oct 2026 19:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652A53ED04;
+	Thu, 15 Oct 2026 19:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792092640; cv=none; b=ew8TqTrGSy20SyJzdaoMNHCLjXYZ91+j99xOElhHMktS1+ipCZX/b8tv7qMZOd7M4qRXbVHMliSFB17WrRHwQJ8WNDOGTbDOQ4UQTkfOFxRNMeRbvoLT5AkrZik+YaqI2fCaJr8chWRhUOUoYQyQqagqbENoGIlxdlu/yZZG8QY=
+	t=1792092640; cv=none; b=FWFGlcBdVRnT0FUKHLhIU0ReV7lUtjUkBx00DbTAUSYoVG6HxsmVg4yNDa2w5w+Kf7XOayKvE+mLm9eNL/euk4D6Xvtcc8OsheHi5HOIDpV5joZP0ls4uuJnWPr9O0Q7fuHFFL2in1lGZ/w2SUbBOgHPvGu80Uqn/h0bTeZbgjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792092640; c=relaxed/simple;
-	bh=qBPtAvglUjCZGleelOkOOqqmiQKkLs1LZ7i6JWqjLtQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mQWhsyQD/WW8j/KgdMBZUoLDLuh19riRxsv+IQCD758Qkx5sypVKhU225efUka1NkgrrIoyx2Y8M65zYx9YMKsiFhh1YLIGNtXvTnv3RrDv7ovBdixi5UrZP1HruVxfH42EjgRYC3FIc6SYg8f26wdxqylN84Q0miLgEq8/ts3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8xFBqc+; arc=none smtp.client-ip=100.103.45.18
+	bh=H98HpDUW+hAIVIU3VQKuIbZih8WmEreljadpm51yq2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dtHguoRfzJWPIeM1v7+R3EBxFuAgKDn6QOZdN88rSUmitA3szvAfs72w1auJrXk9PLZbZN2NQTB8eaZzbJoPZLHf0dmWhRf/JydW/FkjK8Vz4Rc1IuwhtyGECP4Q3bK7g8NY3sKrK+A7J4v93UY1HmPp4EAgWPCdvo49Q7esOZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXNNOahq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8xFBqc+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9521F000C5;
-	Thu, 15 Oct 2026 19:30:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXNNOahq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58AFA1F000C6;
+	Thu, 15 Oct 2026 19:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792092637;
-	bh=Zc3mBX2CmFvaIP5sKLJr+jv/V4h90b405bhZT8Iypw4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=N8xFBqc+AmWl0y9SPkSvRoZatPCZKBWvZ03bZsWm/tqB/uCADyjF2HWF/gxzhWOxs
-	 WOvIGg+srKlR/1Fs2gB8MvIbfXujfCXoKKFwdVJUX8uQv1CB1/898RTrkcRn6dlvLY
-	 UBNP3QsFDaK6REk/rAfRjSkiaC5mF06NXlXfFIH99T/ncaJ6nL+PcCIu+lYHTM3vBO
-	 F3QT6NoQMUajpSkFe0ci4zElVqQsZnkjDje3e0OikGKohXykAjxPyAGmFtJNHpL35N
-	 JVDcL0IE7YT7rIgF9OYkR8SNWlyX0T1cTKNT2uLTDSpLSc8I5ChXU7UwuOfLyNVkQk
-	 p0N2e/6HiLNnQ==
-Subject: Re: [PATCH] net/sched: cls_api: skip indr register on failed bind
-From: netdev-bot+sashiko@kernel.org
-To: q.h.hack.winter@gmail.com
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, elic@nvidia.com, stable@vger.kernel.org
-Date: Thu, 15 Oct 2026 19:30:36 +0000
-Message-ID: <179209263675.434549.1993653089289586887@kernel.org>
-In-Reply-To: <20261013163014.25722-1-q.h.hack.winter@gmail.com>
-References: <20261013163014.25722-1-q.h.hack.winter@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1792092638;
+	bh=ZuKHJXsKbCvkFzenoJmPSBw47riyFBoZNnA7AhR3Xak=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AXNNOahqhsaTOmVsB4yo/zzfnYf37WojO5oyFjiNhO49fB6YG1AfOyqEDHyQkTFkV
+	 /UIeqeoIHJsML7pmiDid9n9cv6rUlBaW4qtA5FN3KIqHCkVZFicQ/mpVpgjG1nLfqx
+	 N8myBfUOxv6NTs76PbumMjPnB/CNPodWiPVtF63eIg489d3rov6heeLJUU2ZobSe0y
+	 eddzHiy6q6CWOsJo0bcGzL3m4GJOTdIgGUmTgXqzNNo7AT57YSbLc9Qyr3GggXIsNf
+	 NTdFIrG9129X7ukGvdU5lydAJO133F7A97t+v+5g3BTYk7671Qmg1HVDtHFj4UGo8i
+	 seyPHqOHeCjJg==
+Date: Thu, 15 Oct 2026 14:30:36 -0500
+From: Rob Herring <robh@kernel.org>
+To: Kory Maincent <kory.maincent@bootlin.com>
+Cc: Kyle Swenson <kyle.swenson@est.tech>,
+	"o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Roland =?iso-8859-1?Q?Kov=E1cs?= <roland.kovacs@est.tech>,
+	David =?iso-8859-1?Q?Nystr=F6m?= <david.nystrom@est.tech>
+Subject: Re: [PATCH net-next v3 1/2] dt-bindings: net: pse-pd: Add bindings
+ for LTC4266 PSE Controller
+Message-ID: <20261015193036.GD5059-robh@kernel.org>
+References: <20260927212929.593366-1-kyle.swenson@est.tech>
+ <20260927212929.593366-2-kyle.swenson@est.tech>
+ <20261007210454.GA281943-robh@kernel.org>
+ <asnpHkvHsFy2dX-9@est-xps15>
+ <92efb7e8-e69d-49aa-9cf7-9dc8fc0ead99@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92efb7e8-e69d-49aa-9cf7-9dc8fc0ead99@bootlin.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider.
+On Tue, Oct 13, 2026 at 04:57:29PM +0200, Kory Maincent wrote:
+> 
+> 
+> On 10/10/26 09:30, Kyle Swenson wrote:
+> > Hello Rob,
+> > 
+> > On Wed, Oct 07, 2026 at 04:04:54PM -0500, Rob Herring wrote:
+> > > On Sun, Sep 27, 2026 at 09:29:48PM +0000, Kyle Swenson wrote:
+> > > > Add the LTC4266 Power Sourcing Equipment controller device tree bindings
+> > > > documentation.
+> > > > 
+> > > > Signed-off-by: Kyle Swenson <kyle.swenson@est.tech>
+> > > > ---
+> > > >   .../bindings/net/pse-pd/lltc,ltc4266.yaml     | 180 ++++++++++++++++++
+> > > >   1 file changed, 180 insertions(+)
+> > > >   create mode 100644 Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..e11c9d601eee
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/net/pse-pd/lltc,ltc4266.yaml
+> > > > @@ -0,0 +1,180 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/net/pse-pd/lltc,ltc4266.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Linear Technology LTC4266 Power Sourcing Equipment controller
+> > > > +
+> > > > +maintainers:
+> > > > +  - Kyle Swenson <kyle.swenson@est.tech>
+> > > > +
+> > > > +allOf:
+> > > > +  - $ref: pse-controller.yaml#
+> > > > +
+> > > > +properties:
+> > > > +  compatible:
+> > > > +    enum:
+> > > > +      - lltc,ltc4266
+> > > > +
+> > > > +  reg:
+> > > > +    maxItems: 1
+> > > > +
+> > > > +  interrupts:
+> > > > +    maxItems: 1
+> > > > +
+> > > > +  channels:
+> > > > +    type: object
+> > > > +    additionalProperties: false
+> > > > +    description:
+> > > > +      Defines the 4 physical delivery channels on the controller that can be
+> > > > +      referenced by PSE PIs through their "pairsets" property. The actual port
+> > > > +      matrix mapping is created when PSE PIs reference these channels in their
+> > > > +      pairsets.
+> > > > +
+> > > > +    properties:
+> > > > +      '#address-cells':
+> > > > +        const: 1
+> > > > +
+> > > > +      '#size-cells':
+> > > > +        const: 0
+> > > > +
+> > > > +    patternProperties:
+> > > > +      '^channel@[0-3]$':
+> > > > +        type: object
+> > > > +        additionalProperties: false
+> > > > +
+> > > > +        properties:
+> > > > +          reg:
+> > > > +            maxItems: 1
+> > > > +
+> > > > +          sense-resistor-micro-ohms:
+> > > > +            description: Sense resistor connected to the channel's MOSFET, used
+> > > > +              for current measurement and for overcurrent detection. The I_CUT
+> > > > +              and I_LIM register encodings depend on which value is fitted, so
+> > > > +              a wrong value programs the wrong thresholds.
+> > > > +            enum: [250000, 500000]
+> > > > +
+> > > > +        required:
+> > > > +          - reg
+> > > > +          - sense-resistor-micro-ohms
+> > > > +
+> > > > +    required:
+> > > > +      - '#address-cells'
+> > > > +      - '#size-cells'
+> > > > +
+> > > > +  pse-pis:
+> > > > +    type: object
+> > > > +    additionalProperties: false
+> > > > +
+> > > > +    properties:
+> > > > +      '#address-cells':
+> > > > +        const: 1
+> > > > +
+> > > > +      '#size-cells':
+> > > > +        const: 0
+> > > > +
+> > > > +    patternProperties:
+> > > > +      '^pse-pi@[0-3]$':
+> > > > +        type: object
+> > > > +        additionalProperties: true
+> > > 
+> > > This cannot be true. That allows adding any property.
+> > > 
+> > 
+> > So my intent with the additionalProperties: true was to avoid
+> > replicating the entire pse-pis node from pse-controller.yaml.
+> > Conceptually, my goal was to inherit everything from the
+> > pse-controller.yaml binding, except limit the maxItems to 1 (since the
+> > LTC4266 only supports power over a single PI).
+> > 
+> > Is there a better way to express this?
+> 
+> I think you can do something like this:
+>      patternProperties:
+> 
+>        '^pse-pi@[0-3]$':
+> 
+>          type: object
+> 
+>          $ref:
+> pse-controller.yaml#/properties/pse-pis/patternProperties/^pse-pi@[0-9a-f]+$
+> 
+>          unevaluatedProperties: false
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Yes, if you want/need to allow custom properties, like this is what I 
+meant.
 
-If you believe none of the issues are legitimate, please reply to each
-issue of Medium severity or higher and explain why the AI is wrong.
-If any of them are legitimate and you plan to respin, please let patchwork
-know by including "pw-bot: cr" as a separate line at the end of your reply
-(one such reply per series is enough).
+However, it is hit or miss if a $ref to a regex works. Instead, 
+pse-controller.yaml would need a $defs section that the pattern and this 
+schema can reference. Multiple levels of nodes and allowing them to be 
+extended gets messy.
 
-- [High] The patch does not fully close the failed-bind leak.
-
---
-
-net/sched: cls_api: skip indr register on failed bind
-
-This patch adds an early -EOPNOTSUPP return to tcf_block_offload_cmd().
-It fires for FLOW_BLOCK_BIND on a device without ndo_setup_tc() when the
-block already has offloaded filters. The aim is to stop a failed bind
-from leaving a record on flow_indir_dev_list, which later causes a
-use-after-free of the freed tcf_block.
-
-> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-> index a9f54988561f2..7acfe71853a7c 100644
-> --- a/net/sched/cls_api.c
-> +++ b/net/sched/cls_api.c
-> @@ -860,6 +860,10 @@ static int tcf_block_offload_cmd(struct tcf_block *block,
->  		return tcf_block_setup(block, &bo);
->  	}
->  
-> +	/* a bind that cannot succeed must not leave a record behind */
-> +	if (command == FLOW_BLOCK_BIND && tcf_block_offload_in_use(block))
-> +		return -EOPNOTSUPP;
-> +
->  	flow_indr_dev_setup_offload(dev, sch, TC_SETUP_BLOCK, block, &bo,
->  				    tc_block_indr_cleanup);
->  	tcf_block_setup(block, &bo);
-
-[Severity: High]
-Is offloadcnt read too early here to fully close the leak?
-
-The real rejection in tcf_block_offload_bind() reads offloadcnt after
-flow_indr_dev_setup_offload() and tcf_block_setup() have run:
-
-net/sched/cls_api.c:tcf_block_offload_bind() {
-    ...
-no_offload_dev_inc:
-	if (tcf_block_offload_in_use(block))
-		goto err_unlock;
-    ...
-}
-
-Between the two reads, tcf_block_setup()->tcf_block_bind() replays the
-existing filters to each newly allocated indirect block_cb:
-
-tcf_block_bind()
-  tcf_block_playback_offloads()
-    tp->ops->reoffload()   (e.g. fl_reoffload())
-      tc_setup_cb_reoffload()
-        tc_cls_offload_cnt_update(add = true)
-          tcf_block_offload_inc()
-
-If the indirect driver accepts any replayed filter, offloadcnt goes
-from 0 to non-zero. tcf_block_bind() then publishes the callback:
-
-	list_splice(&bo->cb_list, &block->flow_block.cb_list);
-
-The indirect branch still always returns -EOPNOTSUPP. So
-tcf_block_offload_bind() sees tcf_block_offload_in_use() as true and
-fails the bind. tcf_block_get_ext() then goes to err_block_offload_bind
-without calling tcf_block_offload_unbind().
-
-Does that still leave two things behind?
-
-First, the indir_dev_add() record stays on flow_indir_dev_list, with
-data = block and cb_list = &block->flow_block.cb_list.
-
-Second, the indirect flow_block_cb stays on flow_block_indr_list with
-indr.data = block. This second leak happens even when indir_dev_add()
-returned -EEXIST.
-
-After the block is freed, flow_indr_dev_register()->
-existing_qdiscs_register() would list_splice() into the freed block's
-cb_list. Also, flow_indr_dev_unregister()->tc_block_indr_cleanup() would
-dereference the freed block through block_cb->indr.data. These are the
-same two use-after-free paths the commit message describes.
-
-Here is one way to reach it:
-
-- an indirect tunnel offload driver is registered
-- a shared block has flower filters (no skip_sw) that nothing has
-  offloaded yet, so offloadcnt == 0
-- a tunnel device without ndo_setup_tc(), such as vxlan, is bound to
-  the block
-- the indirect driver accepts at least one replayed filter
-
-The commit message also describes the new predicate as:
-
-  "the condition tcf_block_offload_bind() rejects the bind with"
-
-Is that accurate? The actual rejection uses the offloadcnt value from
-after the replay.
-
-Would it be more robust to roll back on the failing path in
-tcf_block_offload_bind() instead of predicting the post-bind offloadcnt
-in advance? That could mean issuing a FLOW_BLOCK_UNBIND, or removing the
-record and unbinding the spliced callbacks.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20261013163014.25722-1-q.h.hack.winter%40gmail.com
+Rob
