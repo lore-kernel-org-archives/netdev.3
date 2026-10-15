@@ -1,186 +1,128 @@
-Received: from smtp.uniroma2.it (smtp-2015.uniroma2.it [160.80.4.37])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F6235E950;
-	Thu, 15 Oct 2026 01:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792028796; cv=none; b=QDIqxgMWqb+vcMNDpHOCUuQs2NFzN5bewYxAwBipT76YBJVz/aPq6k9JBfU9DLnaxrjlvc25nANjWNhVyS2pXlHXNEB3qFs7TJGFw7TIxHJrxoeWy00CUaLis/T9Gdy00WQouFx0Z5St03uS9QvNUj3c5et2Rw76mUof8RjgRSI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792028796; c=relaxed/simple;
-	bh=JS1UHXPvvp09gY0rzjuh5BWZwvh7T+K/RQvpRF/NL2Q=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=EaSpVI5grgKJHeq2xzv+Gk4beLIK3VRVYIkUrlRs+osFS6BiLPn0qmsomUou82aD++Xjs76ykgJjItBcwk2QeYsQpTl2HpnBdf4z67LSH+HuBDz7vIyLeoz69f0aeKld1sVG/0EY1NqmodwOkFvF/t/jckaJQ46TxKm1MItGcs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=/tGq1udY; dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b=UcJeR3s/; arc=none smtp.client-ip=160.80.4.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F196547063;
+	Thu, 15 Oct 2026 01:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.203.200.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792029223; cv=pass; b=o1VkCSfWPYB3MNjorsxMj0fNlfUenS3PqfdDxi82JFUftG/V8a8qEYfPj+vPWvBabKJCHlOM+iqGTJ8wQ+ukI5upwvYS2KIjmHC0bKXdsqiLp9QJnnHjwzFwNnIA3MmpWNlO8lnHiMpLxW5phiocosMkyUMUuwxXonODaPD1lfI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792029223; c=relaxed/simple;
+	bh=icwttVp/gpJ9Ow/0dJ5cGcW3oVQP3H8pD+33rsf3U90=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N47zNfyN+vYyqTICbvI6M/cmysR/X+n7lZvyTG6U4KUxBhz/TYdbY/iPzGl3Wy1fjdhvrEhqh5VIUJaTmmOmOmnmecpqWmwurqMH6YJpziK/cXag7QjISqP9Z02sPo8NkLtm+wwufpgQtKxbu60F6+KxvBd1+e92I8x7meyaHt4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b=awIbH+1v; arc=pass smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="/tGq1udY";
-	dkim=pass (2048-bit key) header.d=uniroma2.it header.i=@uniroma2.it header.b="UcJeR3s/"
-Received: from smtpauth-2019-1.uniroma2.it (smtpauth.uniroma2.it [160.80.5.46])
-	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 69F1jleX026015;
-	Thu, 15 Oct 2026 03:45:52 +0200
-Received: from lubuntu-18.04 (host-79-32-222-240.retail.telecomitalia.it [79.32.222.240])
-	by smtpauth-2019-1.uniroma2.it (Postfix) with ESMTPSA id EAC6E1212CA;
-	Thu, 15 Oct 2026 03:45:41 +0200 (CEST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=uniroma2.it;
-	s=ed201904; t=1792028742; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	dkim=pass (2048-bit key) header.d=pengutronix.de header.i=@pengutronix.de header.b="awIbH+1v"
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B9DB1201E7D;
+	Thu, 15 Oct 2026 03:53:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792029219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=E3jLV7xkKyPXyvZnAkQlyv/K5QoOzL9c26mU54ZKf5Y=;
-	b=/tGq1udYD2iG5msheWccAyxKu5AteoXND1qfVa5kvVZ0uc+nkImaiU+uaKTa0tgYU+vZN0
-	zfPYGlf0IQWuyhDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniroma2.it; s=rsa201904;
-	t=1792028742; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	bh=GuuCj5FgUwZxYjIYXBjDzyPTNHukyGNgbaxYgigr4OE=;
+	b=awIbH+1viQ29r2rs2wRhZHkHX6YVkdtMHZ7eBG31lxbW0p6vCEKGCz/9OeIEeBgknWHnPu
+	XMqEnBxh/sS4ttuMloNUZeSx25It4Jehoh+q7/Q6MJz/5EC53yLz2FjiDYP4zibIyTbMCz
+	LUhyezobGAEb58ZOeIi8Gx1+a+ou+Wc5EBOWChNlKZkeCuP1BBxL48ra/uQyEDVhmkbgHR
+	uLqHr+HEiUtU/eT0EqSbfKErpc8AuLMQx0TVf+P0cd0cXh4T68F777dF5FRbO+jPR/70dR
+	+MHgF5/ynQEgzCDi9ZTmLKq2y8dPMSxUEl5bPiP9d7FWfhF0qXnZyFgq668uog==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792029219; a=rsa-sha256;
+	cv=none;
+	b=EbHAf2RiS5aRK4ZXff1R3V2MOBv4msPA9pe7iVI/AbwhQwPcEO/P7+awBNnoGkN79IaBki
+	oCOrigNOaN0pw6BcFV7BKttQch4rBS/JYvtenVUmHggsD37E1a1XZhWYmPoBuBwnAxk36z
+	XpIauVFye3tKPxJ07kcttbGGw4CfUoRWazw6NvjtUsYH1ldI+QYUSCX1dQDWxzIImxZoKM
+	dWkJ4Akv0XbjcDQByy0/8oOfQYPsuflEvfdyfGCvc8wJbe2Ebvb3mQT4XrdtnuaPlb4Lxw
+	XJXwnMceVYQ+jOQ7pgB5bZA6OYOBDspL+0PsJHGUB9DRlPsuWtsKe4JS9P8XsQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=mkl@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792029219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=E3jLV7xkKyPXyvZnAkQlyv/K5QoOzL9c26mU54ZKf5Y=;
-	b=UcJeR3s/d4sIHHpBG9NAmJ6Z5YKwR7ZMZWIT7qSdAG+IvVoBsIoF5ZEC/hArvQbXx41wTL
-	0SXQM+G26W02XwZfAgrnJmUknVedK1x5YtIuPPBtRUEJY/yTd9lyH36b5EzbgFD9Q1mdSD
-	7LQsU+ISNxoN72/JOGsMn5A51J/vsWV6xIq3dYIYvNpVyNNQtkbnPo4bV/wDUAb0ZVvFKf
-	zevjOwGpxHpr7bai4OD/AtELaUEAOHSv6HDaDNnYlXHDC1w6/sIftLOcFlgArE6nva6fCz
-	feCUYFFxFuNMT7QxUir/FBBbRhp3lSRFk59obLd4PaIf2yLDhtyQRUkGtC9djA==
-Date: Thu, 15 Oct 2026 03:45:41 +0200
-From: Andrea Mayer <andrea.mayer@uniroma2.it>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org,
-        pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, shuah@kernel.org,
-        hangbin.liu@linux.dev, justin.iurman@gmail.com,
-        nicolas.dichtel@6wind.com, ahabdels@cisco.com,
-        stefano.salsano@uniroma2.it, andrea@common-net.org,
-        Andrea Mayer
- <andrea.mayer@uniroma2.it>
-Subject: Re: [PATCH net-next 5/5] selftests: seg6: add tests for PSP with a
- consumed SRH
-Message-Id: <20261015034541.cc16ac6eb2dfdb2f9273a021@uniroma2.it>
-In-Reply-To: <179183319121.434549.16235006579764445540@kernel.org>
-References: <20261011192310.55-6-andrea.mayer@uniroma2.it>
-	<179183319121.434549.16235006579764445540@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+	bh=GuuCj5FgUwZxYjIYXBjDzyPTNHukyGNgbaxYgigr4OE=;
+	b=HeIRcctTs60Lh3hZlYuiZ4NFqwnkYN2gjC6zRfkY6ufhgnHUgRVby8mlEtcNAPDt17M10n
+	esGCqsRizbHaFTMjqKlqCUCXuoXFMyTrS24tPMmbpBGBbGkTGxEQaxhIU5kH861Zr3Gd35
+	+SI0WeyLePPP60xmPxZCzl6vAfFIwevdW36Deo98BdslyG74/mGyi38JsoGO/YEhVdZQJY
+	WocXHI6mi5r1mDR5HSNNWQaP1uwY9tmIxIPIsWyGjO9g1eipg/DT4Wj9A8E0Sfr5g5xFfy
+	TMP4d8t6StbqvGi0Nsn5Xpcqaz3B4yEsQqCOGsPQhM/ywQG/MuTqWvwvx2v41A==
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1xHAf5-005wpj-24;
+	Thu, 15 Oct 2026 03:53:39 +0200
+Received: from blackshift.org (p4ffb23c7.dip0.t-ipconnect.de [79.251.35.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 5F2A05C4775;
+	Thu, 15 Oct 2026 01:53:39 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 02/37] can: raw: remove redundant NULL check before netdev_hold()
+Date: Thu, 15 Oct 2026 03:40:00 +0200
+Message-ID: <20261015015336.816543-3-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261015015336.816543-1-mkl@pengutronix.de>
+References: <20261015015336.816543-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
-X-Virus-Status: Clean
 
-On Mon, 12 Oct 2026 19:26:31 +0000
-netdev-bot+sashiko@kernel.org wrote:
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
 
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider.
->
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
->
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
->
-> - [Medium] The consumed-SRH tests in
->   host_srv6_end_flv_consumed_srh_tests()…
-> - [Low] setup_rt_consumed_srh() runs `ip -netns ... -6 route add "${sid}"
->   table 90 encap seg6 mode inline segs ... dev dum0` and does not check…
->
-> --
->
-> [snip]
->
-> [Severity: Medium]
-> If rt-2 removes the wrong SRH, or no SRH at all, would these tests notice?
->
-> [snip]
->
-> So two possible kernel regressions on the multi-SRH path would still pass:
->
->   - end_flv8986_core() takes srhoff from the first routing header instead of
->     the one found with IP6_FH_F_SKIP_RH. seg6_pop_srh() then removes the
->     consumed SRH at offset 40 and leaves
->     "IPv6 | Policy's SRH, SL=0 | ICMPv6".
->
->   - PSP falls back to plain End without calling seg6_pop_srh(), which leaves
->     "IPv6 | extra SRH, SL=0 | Policy's SRH, SL=0 | ICMPv6".
->
-> In both cases ipv6_srh_rcv() skips each SL=0 SRH, the echo request is
-> delivered, and the ping succeeds.
->
-> The comment and the commit message say "PSP itself is checked by the PSP
-> flavor and NEXT-C-SID,PSP tests". Those tests only carry a single SRH, so
-> srhoff is always sizeof(struct ipv6hdr). They never pick an SRH at
-> srhoff > 40, and they never run the positional nexthdr fix-up in the else
-> branch of seg6_pop_srh():
->
-> 	if (srhoff == sizeof(*iph)) {
-> 		iph->nexthdr = srh_nexthdr;
-> 	} else {
-> 		...
->
-> Could a host-side check of what is left in the packet close this gap? One
-> option is an ip6tables "-m srh" match on the host's veth0. It would accept
-> only a first SRH with --srh-last-entry-eq 1 and --srh-next-hdr 58.
->
-> [snip]
+netdev_hold() does nothing if dev is NULL, so the check before the call
+is redundant.
 
-The consumed-SRH tests in this patch would not notice these cases.
+So remove it. No functional change.
 
-However, the suggested match is not enough for the first case. In (i.b)
-and (i.d), the Policy's SRH also has Last Entry 1 and is followed by
-ICMPv6, and the packet is still accepted. I checked this on a kernel
-where I added this regression on purpose.
+This is the result of running the Coccinelle script from
+scripts/coccinelle/free/ifnulldev_put.cocci after commit f83b8a58695c
+("coccinelle: ifnulldev_put: update outdated helper names").
 
-A check on Segment List[0] of the first SRH would detect this case. In
-the extra SRH it is the SID that triggered the insertion, while in the
-Policy's SRH it is an address of the host.
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260831052031.902699-1-ekffu200098@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ net/can/raw.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I will address this finding in v2.
+diff --git a/net/can/raw.c b/net/can/raw.c
+index 0acd4f6c6dd6..6944ebab3feb 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -529,8 +529,7 @@ static int raw_bind(struct socket *sock, struct sockaddr_unsized *uaddr, int len
+ 		ro->bound = 1;
+ 		/* bind() ok -> hold a reference for new ro->dev */
+ 		ro->dev = dev;
+-		if (ro->dev)
+-			netdev_hold(ro->dev, &ro->dev_tracker, GFP_KERNEL);
++		netdev_hold(ro->dev, &ro->dev_tracker, GFP_KERNEL);
+ 	}
+ 
+ out_put_dev:
+-- 
+2.53.0
 
-> [snip]
->
-> > +setup_rt_consumed_srh()
-> > +{
-> > +	local rt="$1"
-> > +	local sid="$2"
-> > +	local end_rt="$3"
-> > +	local nsname
-> > +
-> > +	nsname="$(get_rtname "${rt}")"
-> > +
-> > +	ip -netns "${nsname}" -6 route \
-> > +		add "${sid}" table "${LOCALSID_TABLE_ID}" \
-> > +		encap seg6 mode inline \
-> > +		segs "${LOCATOR_SERVICE}:${end_rt}::${END_FUNC}" \
-> > +		dev "${DUMMY_DEVNAME}"
-> > +}
->
-> [Severity: Low]
-> Should setup_rt_consumed_srh() check the exit status of this ip route add?
->
-> The test body runs with set +e, so a failure here is ignored. Without the
-> route, the extra SRH is never inserted.
->
-> The packet would then follow the plain Policy path that the earlier PSP and
-> NEXT-C-SID tests already cover. The ping would succeed, since the hosts have
-> seg6_enabled=1. log_test would then record a pass for the consumed SRH case
-> without running that path.
->
-> I could not find a way for this route add to fail in the current topology.
-> setup() already uses the same features under set -e, so this is a
-> robustness question more than a confirmed failure.
->
-> [snip]
-
-I will also have a look at this for v2.
-
-Ciao,
-Andrea
-
-pw-bot: cr
