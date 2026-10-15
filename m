@@ -1,71 +1,76 @@
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2633F0773
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 20:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554DD49E13A
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 20:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.228
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792094491; cv=none; b=mGw3j7Mrk08QQ5A3ZO26J3+yuJVvjG+9LS/dIdhTt+Q+VN8galX9nHpTHvA8tX+VdV8/0YHOpJwi3Z4kPLyowBpdx9d4WK00xARNqNG95UUfrTAJAP/Tnq+e3QBS9GfdTmhsElXXxOACETVrH24gxDz4FWJtYMOJHWmPtO41v1k=
+	t=1792095102; cv=none; b=cyH5hlD07tthOwm2gxWTR/5p8U/JGKzTqGgfJ3LCo1h1aJF89YVBui10W0SZ1MEoNWsYWJPNEc/TIee+W2cnygYVSy6Zm930N3ukJJqWEjuyLDmNDNr+qj5s09QnD19XhMvpzxrDaiZnfYmGtH7AGIA62l+nliboJxiQ7OloiNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792094491; c=relaxed/simple;
-	bh=QL9G/ZdfxHTjVTXMQirkaxiH1Rb6WFT9TmpnX/tQqdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mf44xoyXKjp8uyHYYO1BY7DjECKufQWN0HfIL3JMNppjeZQYagw295XXpCmWshkXomgbWrO47BOecnzLBs+ey78sXqSRUo6TmLLGGcTb8J9MuD+6C0ij3IQCclBhlzG5QD/+IWUxQZiEIwGiL7QSwlznje6rFoTPiT/sAkfTriI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a601hR5r; arc=none smtp.client-ip=209.85.160.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1792095102; c=relaxed/simple;
+	bh=oVBdcx7QBzktUk/xQNOK1ZNW1Ht2UmQ4yAgaHTBOSBk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m2tJmLG8Jrt1aXsu8OqvqrPd2El1AB00eIUV9EYhqVq2pVn1Dh9k7Y2Y+AtNNq/pkixwvHHaSUVYk9G8iVBKn/Sf2rpityn2wdzY4JcN3ygOi/vSImN4bCoO4Bmi3D53rO9VX9swcXLgNeT0c6018ASidJflTVDSfvtDGJBO78Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=BvaPbBpK; arc=none smtp.client-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a601hR5r"
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-48e2d5a69c4so1056748fac.3
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 13:01:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="BvaPbBpK"
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2e5378b281aso32764725ad.2
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 13:11:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792094489; x=1792699289; darn=vger.kernel.org;
+        d=purestorage.com; s=google2022; t=1792095100; x=1792699900; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=rt719Y4sNnt0qnmrZXsL4TYbTguenBlckVdl7ZRbCnc=;
-        b=a601hR5rYr8KSRmch8t+lHxpjcl6hE2e0cIl7T6j9pjPHk/HRS492+vNQdYrxVA2mP
-         oBTsL0cbr2QsBpGrQwQPxrJWvuPmuGbJacJNDqPAI+8raB8P2Mb/0LoztA9TCgmoou4C
-         v562DEzjUga/26Mz//uNRJVciKtrTSA0oX8QlgkREP0zGkrFjBRxDOKHFOJmzi717sbj
-         Qxcxseoxm6ZqMlg4yWaKZc34gs3kp5JWlhi/pxNgHxraawF4TuNY2OWGF8sbCqJsiMx8
-         walK0AobHV6aauEudYVhKykKNocBqI+PtYg4ZYXwdMieqNKVosJpODlgeL7FAu+WFSMY
-         42ZQ==
+        bh=h5GYjkagcJB1Snpe6UHyziVsipjStIncQ15Pby/HbIg=;
+        b=BvaPbBpK4l0z5LQi+gDOFFhZ4Dx8IFs2qvkJrtz78pwJ3xq2ZFqXNMvrDKAyh2oHN3
+         XgN/rsD0Vcxkacf1YVRNon4rFSIPXFSUuCs+mFZ1OLJSv+8L3QGdwrKh3pgNBM8CWT6B
+         b7EiL+RI9rz2zMFzCGarfxf1oJXt/PWGyQLUeoKM7TnnP0azgZRLsQ3IiJi/F0QOqEJ6
+         J7z0A90MjKy02NXDH5m1OFwglJuz91Jg2WyGhQoZ+TYu2i5v+eGfvvNVE2PRlLoRf4AY
+         xCWpu8fQGHR19lfp1cSa3R0WQ4kZQlp95hfrK+kQgkPkg7ABg4w524mEyUXpoxoZvdJb
+         eDgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792094489; x=1792699289;
+        d=1e100.net; s=20260707; t=1792095100; x=1792699900;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rt719Y4sNnt0qnmrZXsL4TYbTguenBlckVdl7ZRbCnc=;
-        b=hhQFrM/f3oGnY8PUejsljXDw1pGuSJ86KPFzH4ayv6p4SjnSDMLMy8gTPLP5KWQMrY
-         Xxv0LWd4BDzBeVlb3hg3muZq+z5jsD3K27uSghDRBCF5rN//jkG4F3auCU9P6BQFR9Xc
-         iFYmUIG6PDOWAdvEVk0dZn0HzPhmbCBS8kzIzQVDUV7/MKuj/HbAa0nvwnsxwKFl05gG
-         +tK6v7UxqS1DkIO+CTp9Cq+GoO6aG0tavhVPZJlUpgI82Epf1bvQjx5oQ22JSP1ENh6A
-         7sAbrQ75mA3I+KHKfM5EypQmuFI0CukpcjhEM+1dsaDg/vRcicJqv+13XShpcl6eBxTO
-         g3qQ==
-X-Gm-Message-State: AFq9FYLkkL20fXJJy2G1DLxIj9vu25Z+c6I6CkvgwToOPifO4MlAUeq1
-	3fPayBdSuvnwUaGLFnxTt9kEIPOWb18ZJ+bHB3CbhZz05N89gu2K0Dfh
-X-Gm-Gg: AYBFou1w4b4xeXAzKfaEbnaGhQGDwvUI/Qbd8Ndddnlnn2f5FLfO98+Nuoi9p4RqTyq
-	1TawKCcRTtVpXB6Sp6eYfwIeQ3+H6MroN9VndepSroECmlTerlmPpH4kQj1PEyCf7zuEI+0TgbF
-	uyK4Bymwu4EdD+EaASUyr4GtnTF3xZRttBoMqugvq3y14IIlKGhLWSMDR/AtJXX19zBm3kwEFBM
-	cTCHpNFKgw2/d6gLszG7aQpXR4eFAQbHARh3uY/41xUJ5f1S3v85W73RlosBkUQeehU2OXeBwoE
-	3GbH7GKLHzuL4892t0AHl1YkVx8TNbRV9c6cthJp8D0fKwf/ijD/jm/RV1qIeygVxwAjevsTdBX
-	MSV3Zotmq6L326dU5P6zIUY1zCNYkuT/f8OS7V+kOJ03R5rPGY5+t1Gut2XyrFMZcAdTs328AKa
-	2Xqeh31xvTdtvFKmoPSZdfKIUHTgqqK7Gd8z/TKAthhOrF/eNBOa3WgRJN55DXJtfUG2F/Fx5yR
-	pMFzBv1u1LSBYI9OOCuj69ff0sfqYOFGewyxiptIZGmOyC/kRw=
-X-Received: by 2002:a05:6870:5064:b0:491:2ed8:33e6 with SMTP id 586e51a60fabf-4a2a8b4290cmr16609778fac.59.1792094489083;
-        Thu, 15 Oct 2026 13:01:29 -0700 (PDT)
-Received: from cr-x-ubuntu2604-client-2.dev.fyre.ibm.com ([170.225.223.17])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4a73adff016sm12208fac.0.2026.10.15.13.01.26
+        bh=h5GYjkagcJB1Snpe6UHyziVsipjStIncQ15Pby/HbIg=;
+        b=nZnkobH4ZNCneiEYMlpn5tlhZlX48qwiKUOHC9Gk0M7TQ3gwx+knLOlzZ9Tk8Z9ijR
+         DAExiqrwpkKv5qzsrBqYouspR5no3Z7qU7UCI2D18rdDVPwK4X9hqyHqhnJacGS5k/BY
+         dJgkNAS5vNuWpIjkErrl769oA90xdhGMN2oIN/ui3ipHTAlYDea/WYMkflvu1NhvRvI+
+         nBuQBObE8BjQy4M/ZH3INlOqGdHbGqsTBDDSqItdsGuUFnlOUrRf5XZTQE8SlD3ASEU1
+         GYlQgpGFgJgNchb0mOCLN4PDgITdiN4nuRUfDyf6uqupNzHmTiLPUQEHStitOWuMEF5X
+         oJUg==
+X-Gm-Message-State: AFq9FYKC6An8aquEgAvKSOXMDen+mixs6LDuIbTyA5d6FPGWQF0Te5wT
+	8ooUFBvzE0actg6JNoe/ZDfhiXVZNb0blGEq6DW/+/jNWxa4K+RGCY6B0UJrALxLYi1nKyYNSi6
+	SlkAlZ52XrakOcravywgOXcdXC1A0h808G4tAganyP7SP8XF5euZc
+X-Gm-Gg: AYBFou1pMpqZns6UEOpp9H4ZNBxTilRDaGJmhts8Z1U9+gZYWp2G1IQpCavGIqd54+U
+	yaFnOzfFt5MwtmoTqIbDSwzzu3MznP9lmpzUIhZvBf6Cx1d1g2eBGai+/iBcOuHlDRoWWtESdZY
+	gQgiP6vrW9ev8nz1dtli0Qc+BmS6hSkfsQx6RpIpB6TNZDyt/w7kShxdm7vkIrEDos0qecAAR95
+	6YrJiYmhOFMnBRTUla8aKb3tXUEqke43rZe8n2m2TNP0r9r4hukhbVyNtfB/NJEbVRrDkduTgQU
+	vG0mdaKy5XmqkbEqU2U79tuGab8E8S4BXY3ikHPGtGGwBkvhDXcsTpXOTKAmgEalu2yLHrC2DlO
+	Jv8WOOyC+636t57xIWrIZ
+X-Received: by 2002:a17:902:dad2:b0:2e9:64b9:a330 with SMTP id d9443c01a7336-2e964b9a8admr26744875ad.11.1792095099630;
+        Thu, 15 Oct 2026 13:11:39 -0700 (PDT)
+Received: from c7-smtp-2026.dev.purestorage.com ([2620:125:9017:12:36:3:6:0])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2e97e7beb66sm70855ad.37.2026.10.15.13.11.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 13:01:27 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: dhowells@redhat.com,
-	davem@davemloft.net,
-	marc.dionne@auristor.com
-Cc: netdev@vger.kernel.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH] net/rxrpc: Simplify rxrpcpeerseq_next()
-Date: Thu, 15 Oct 2026 13:01:15 -0700
-Message-ID: <20261015200115.59571-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        Thu, 15 Oct 2026 13:11:39 -0700 (PDT)
+X-Relaying-Domain: purestorage.com
+Received: from dev-rjethwani.dev.purestorage.com (bond0.slc5-n22m13-k8s.dev.purestorage.com [IPv6:2620:125:9025:20::a31:430])
+	by c7-smtp-2026.dev.purestorage.com (Postfix) with ESMTP id E79B240276;
+	Thu, 15 Oct 2026 14:11:37 -0600 (MDT)
+Received: by dev-rjethwani.dev.purestorage.com (Postfix, from userid 1557719937)
+	id E1AC0DCE0FB; Thu, 15 Oct 2026 14:11:37 -0600 (MDT)
+From: Rishikesh Jethwani <rjethwani@purestorage.com>
+To: netdev@vger.kernel.org
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Rishikesh Jethwani <rjethwani@purestorage.com>
+Subject: [PATCH net 0/2] tls: device: fix users of copied_seq after the strparser rework
+Date: Thu, 15 Oct 2026 14:11:33 -0600
+Message-ID: <20261015201135.2744031-1-rjethwani@purestorage.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,41 +79,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Remove the redundant initialization and conditional handling of n,
-as it is always set to 1. Use the constant directly when updating
-*_pos and starting the hlist iteration.
+Since commit 84c61fe1a75b ("tls: rx: do not use the standard
+strparser"), the record being processed stays in the TCP receive queue
+in the strparser's normal mode, so tcp_sk(sk)->copied_seq points at the
+start of the current record rather than past it. In copy mode it is past
+the record, plus one if TCP consumed a FIN with it.
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
- net/rxrpc/proc.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+Two users in tls_device.c still assume the old meaning:
 
-diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
-index e9a27fa7b25d..608670dc97d9 100644
---- a/net/rxrpc/proc.c
-+++ b/net/rxrpc/proc.c
-@@ -367,19 +367,14 @@ static void *rxrpc_peer_seq_next(struct seq_file *seq, void *v, loff_t *_pos)
- 
- 	for (;;) {
- 		bucket++;
--		n = 1;
--		*_pos = (bucket << shift) | n;
-+		*_pos = (bucket << shift) | 1;
- 
- 		if (bucket >= HASH_SIZE(rxnet->peer_hash)) {
- 			*_pos = UINT_MAX;
- 			return NULL;
- 		}
--		if (n == 0) {
--			*_pos += 1;
--			n++;
--		}
- 
--		p = seq_hlist_start_rcu(&rxnet->peer_hash[bucket], n - 1);
-+		p = seq_hlist_start_rcu(&rxnet->peer_hash[bucket], 0);
- 		if (p)
- 			return p;
- 	}
+Patch 1 fixes the record start reported by the tls_device_decrypted
+tracepoint. It saves the record start when the strparser enters copy
+mode and adds tls_device_rx_rec_start() to return it.
+
+Patch 2 uses that helper to fix the next-record TCP sequence passed to
+the device by core-driven RX resync (TLS_OFFLOAD_SYNC_TYPE_CORE_NEXT_HINT,
+used only by nfp). In normal mode the device was told that the next
+record starts where the current one does.
+
+Patch 1 was tested on mlx5. Patch 2 is untested on hardware; review of
+the device-side effect from anyone with nfp kTLS RX would be welcome.
+
+Rishikesh Jethwani (2):
+  tls: device: fix record start in the tls_device_decrypted tracepoint
+  tls: device: fix next-record sequence in core-driven RX resync
+
+ include/net/tls.h    |  2 ++
+ net/tls/tls_device.c | 24 +++++++++++++++++++++---
+ net/tls/tls_strp.c   |  2 ++
+ 3 files changed, 25 insertions(+), 3 deletions(-)
+
 -- 
-2.53.0
+2.50.1
 
