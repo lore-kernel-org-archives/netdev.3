@@ -1,106 +1,79 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692784F4CF4;
-	Thu, 15 Oct 2026 08:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178484848BA;
+	Thu, 15 Oct 2026 09:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792054754; cv=none; b=amw/kDEmEYv7Ac2zJWmSkJTOFwIOa6uxNli6FNNqzT89lYFvKSGk1m2lzEfZ8BeMTweLzZtLLg8xqGmM077oBOm39saebktggmF+H/jeEK+Z3XNWhXBf5XO6xQ2SiQGhEnueZ9igBC0mu/EzuuPUOGUlgF1W6t+tPMojEJCIXSg=
+	t=1792055028; cv=none; b=eoRLplfJRb8Zl7cW0TQTpfrNueFU0MANVrtuX3MiU57h+eEAuzgyJ/EK80DFHuVFgGlwPRlqrFofXPv3VjWJjEecMbvctQ/c9WEcnx9eashu/QiyFN+MXoyGct/OmN/c3DMf2EFpIz09NSVA7vxB3MXAvZ7zIG5halOLdtJMxvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792054754; c=relaxed/simple;
-	bh=QktqaRHtQl/Fe9A/hBhQSQa8Ld2ifsl4rpxnRpMGVc8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SpCyRLELLiM4M3X338IJR33emIamAQ29ARW7RiZ/AvieQAmTeo7W7xBLKWVRRULxrsqFZaHSxf099ZENHU9oJpp7O5Wjoe4hXi7wcrEQ97ZCT8/sYT2rwqdFUf1j7hp4xV3dtpKSmTYNahfCaoToiG/uumrJUGVUfyNvaIYSHiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=hN1iXeoe; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1792055028; c=relaxed/simple;
+	bh=DxOA3K04TdGKgV9RBzwq7NMB042SfZvdvrNpiga7nYU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eAgq2tkUGpX2sXbCrVrbFldVJLTIC0Z8IydUb5dleEgsj4uOvvsrzdZf/v0bSgq07RlrUn/3m3amXsHQ8RGT7zBtALp3/PrrBpPQENMkdHG3KAwLe9qlZ9W/71PYNaLbWSNHo/9SVBhn6z/ey2G4ArxfAOTO3VVd9sTyfNdKuI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeoC8Fk/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="hN1iXeoe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=HM
-	55kMGXP6tJWkUCl0Hzup4EMIaaf+vYx+pw74b7sw0=; b=hN1iXeoegB+z2IY2Yq
-	eiY3bMc+nokyNXwbSWA4MzRm4uHzALsHoeJhjYwWpOm3op+0Lv56GBFtUWWJzS3k
-	5h6wXxWyxL6JyauwkGNW71z6rq6RQkbm8NPV7r8l0gZfZYyrEjuVyBSVKwgjcV3e
-	YtEBU+uUnRPI+mrs0Mw4yczvI=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wD3n4O5ldBq3yzkAA--.32772S2;
-	Thu, 15 Oct 2026 16:58:33 +0800 (CST)
-From: Xia Yan <yana06070@163.com>
-To: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net 1/2] veth: keep carrier off when resizing channels with a down peer
-Date: Thu, 15 Oct 2026 16:58:20 +0800
-Message-Id: <20261015085821.12725-1-yana06070@163.com>
-X-Mailer: git-send-email 2.33.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeoC8Fk/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A1B1F000C4;
+	Thu, 15 Oct 2026 09:03:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792055026;
+	bh=URC7r36kokGjXCV5G6Ei8oKV54JoMbconYpCKkPt2AY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=oeoC8Fk/hvQ75AsycJvkVMkByhxPIzupidqzUKlM5YkuPP7Im9rU+E0vjw0NLUVRh
+	 uHwRejb21YIek9RyrZ06ccGG4fXjYIbDKBTPLWmwhbI1ieEs4SJrzPag2u85jTk+a8
+	 n3RHq0uEDda9gZH9hoG10t8nA3S5wGc82Z0pjFPDPCfzjoUvIeFKL9uBqGb8hlKI93
+	 3BeWK2GntPdT4cpIaqN2Fg7OENazzoK8hlPJbeZxX9firOeegdheCuXiH+LH5eOslk
+	 Z8soc1wbDejHkdebEClyl+hRMWSZGz/6VQ4+hu1jdpKNt/lIYQZrp7kxqMQLVeFsSA
+	 flLlbHVOUFZnQ==
+From: netdev-bot+sinfo@kernel.org
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+ Paolo Abeni <pabeni@redhat.com>, Gal Pressman <gal@nvidia.com>,
+ Leon Romanovsky <leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+ Moshe Shemesh <moshe@nvidia.com>, Roi Dayan <roid@nvidia.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Shay Drory <shayd@nvidia.com>
+Subject: Re: [PATCH net] net/mlx5e: rep, Fix races between devcom PAIR event
+ and uplink close
+Date: Thu, 15 Oct 2026 09:03:45 +0000
+Message-ID: <179205502546.408196.15852916239937447709@kernel.org>
+In-Reply-To: <20261015085744.1109107-1-tariqt@nvidia.com>
+References: <20261015085744.1109107-1-tariqt@nvidia.com>
+Auto-Submitted: auto-generated
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n4O5ldBq3yzkAA--.32772S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uF4rZF1rAFWxJr47WFy3urg_yoW8WF43pa
-	1fJFWYkryvqF4Uta1vq3yUAF1Yqa1xX34agF9Yk3yruwn8tF95Xr4Fy34jvF1UKFWrXF42
-	9rW09rnFva4DCaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYksgUUUUU=
-X-CM-SenderInfo: p1dqtiawqxiqqrwthudrp/xtbC-Bli6GrQlblH0QAA3v
 
-veth_set_channels() temporarily turns carrier off while reconfiguring a
-running interface. It then turns carrier on for both ends without
-checking whether the peer is administratively up. If only one end is up,
-changing its channel counts therefore reports LOWER_UP even though the
-peer remains down.
+Hi!
 
-For example, after creating a pair with two RX and TX queues per end:
+This is an automated message. This series looks like a fix, but its
+commit messages seem to be missing some information:
 
-  ip link set vca up
-  ethtool -L vca rx 1 tx 1
+ - How the issue was discovered, e.g. hit in production, hit during
+   development, syzbot report, manual code inspection, LLM or static
+   analysis tool scan.
 
-vca incorrectly reports LOWER_UP while vcb is still down.
+ - Whether the issue was actually triggered, or is only theoretical
+   (e.g. found by code inspection). If it was triggered please include
+   the symptoms, like the stack trace or error messages.
 
-Only restore carrier when the peer has IFF_UP, matching veth_open().
-The local interface is already known to be running at this point.
+ - What hardware the change was tested on. For driver fixes please
+   mention the device (and if relevant firmware version) used for
+   testing, or say that the change was not tested on real hardware.
 
-Fixes: 4752eeb3d891 ("veth: implement support for set_channel ethtool op")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
+Please do not repost the series just to address the above. Instead,
+reply to this email with the missing information, so that reviewers
+can take it into account. If the series needs another revision for
+other reasons, please include the information in the commit messages
+then.
 
-Signed-off-by: Xia Yan <yana06070@163.com>
----
-
-Notes (validation):
-    Testing: Built and booted UML kernels with W=1 before and after
-    the fix. The regression test reproduces the bug before the fix;
-    all eight cases pass after the fix.
-
- drivers/net/veth.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 643b97d..4e75830 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1372,9 +1372,10 @@ static int veth_set_channels(struct net_device *dev,
- 		 * to identify the range we have to disable
- 		 */
- 		veth_disable_range_safe(dev, new_rx_count, old_rx_count);
--		netif_carrier_on(dev);
--		if (peer)
-+		if (peer && (peer->flags & IFF_UP)) {
-+			netif_carrier_on(dev);
- 			netif_carrier_on(peer);
-+		}
- 	}
- 
- 	/* update XDP supported features */
-
-base-commit: 513444cc62e231a11c9b15ea88de0890da9b2b4f
--- 
-2.33.0
-
+The evaluation is done by an LLM so it may be wrong, if you think
+that is the case please reply and explain.
