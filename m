@@ -1,60 +1,62 @@
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E8F2931D2
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 02:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7312931D2
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 02:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792032104; cv=none; b=NfnrQQE+nhl5NpuWsk39jWWsdSByKyhbyOLAb95B1qRkWCqOhoZtAETtejS+0DTcplkv4RIqZBtqa/bZQvCHB9aCv7vdJecsXQW1p3IFc1sD7gfxpZqQsAd00wI7+nfUC572Cx4xp4ieRI2XbMW3lOmheP4aeW+W2uPk+Bhe6Fk=
+	t=1792032109; cv=none; b=Mtwt/FiF9UlXH9jMwXvT5w5FhwJPoiNWTM+aoFfPkxGYq/UPrzlURGcrvPWPepHiQGCEbLucbxcz4Gdv38CRsoUxvwqrhzSDxVr7iuHb2HaTWx7dLV7pEbXgJ2QH/PvHi0TqFSKrf+SCmz7829xbf4NhBgcqw9Hbm0NmP04lJEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792032104; c=relaxed/simple;
-	bh=xSLrUSKKZAPp2wcKpWJETkYozmlfLo3zMRG7G4pGckw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=myM5OibXGDy2aI5gFrRi53ZpRvLkrnQLGHqr5UlsHRNPb/Bu3RnkL35hPLI5CP3iQj4Tg7AViKhDM2pn5fj+qNHs4hKUjNBJkbOus5Ts4rXD0Y2Br5cH1URmSZzTP/LELNUuAK87CiMFr8TOfGV/IjwKqR3FCuM9tfKCO0q7LdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W/X+n6g4; arc=none smtp.client-ip=209.85.161.53
+	s=arc-20240116; t=1792032109; c=relaxed/simple;
+	bh=dO1gS+V7rjOGZbV9WceWrnW9g91bTAjayMKq5Kgj3W0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PvlRf9ujdcAtRlxmXjQtJ+zHdF8i6/Jg4OUhSGFhSIg9fc5WIcdpqJyR1aVm1mrY4MWt7y4wI3Rv6frkk488j7kQ+OalGLZqY+KKtin3F+2NTKz4YQHjH72Z5bQKcuOfIYHLAuBjBOx1SUBtFqw6z34vo1GbXiqfqpjung8g5V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrQGnrnT; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W/X+n6g4"
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-6cfed5dd071so3509545eaf.0
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:41:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrQGnrnT"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-81ae6aefdceso1357446a34.0
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 19:41:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792032102; x=1792636902; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LHkf0Mpwwazr30dqJ1ae4B7rfoUGvwnjCOldZ2sPi3k=;
-        b=W/X+n6g4MWBynYAPwlgnchvwJ5T7e52xDljsfiBPZDw7OEevaX+a4dl+T4lj0VbRzr
-         /TWCWojHgfTx1oYgBHS+8AEznKUqSzqJIcq6jXsj9Q0smhRYRi/Yyl9RUjB18BA60qG5
-         wnGd8aN6Ayx4fd/1z9UEdR9ryRuYCC2PnjIXQSJ+kYtO4+WJj4xPoU3WCJXatBAv2lLO
-         peitI/zE2xCuSKRYwkd7jwYJVXJ5auLsa42mneUiKxrhhhM+URHafgevlL4wVGytFF1j
-         6M3rSDf7KhuBR/KjbERgUb+BTxixHeXx48rjcV2am5bp/g8hv49XUJ9xWmt+nQ+jWxVR
-         vFuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792032102; x=1792636902;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1792032106; x=1792636906; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LHkf0Mpwwazr30dqJ1ae4B7rfoUGvwnjCOldZ2sPi3k=;
-        b=iExuBQnvfvJ+7T3412Ez/SnoFoHPjdD9eavd+dDqDdSZPCA/MLgD5yM3aQjxc1wbsU
-         zVysoXqtQkvUgzFxjGrj+iaa+tpN7QeSkwL7dr6EGPogB5BfH270wdOyfojKygzU+sdv
-         MtVF+pWYtFrZMAaGnWBTIsF4Pvn+Rp2JpkdsIUWfrAhGPvdjwRE3CQe6YiAalIHOr4Ai
-         P0F6SEfOcEQ3IDizGfY0V8FA7p11y3jMc3ooR7h4Mvm5zNMjHKlWRAHgZAYL/eY+EPUR
-         ryN3bRClbQUJ35g0emthfbhuMvbFUFmYAkJWI77XYGDpD+ko7lvyrER6hyQhv1V2rtZ0
-         0esA==
-X-Gm-Message-State: AFq9FYJ3X3U46ZX1oSflOCX4dGSKOdXPjDO8HzJP3nda7ZIcRNIbO1Ez
-	TWGZ4UJSYq2t+n4P44WF7/pmZ6uJBRbMbrAlaNfQ0yyx7W4POCBw7WIb3nTqZRMZ1zgWtw==
-X-Gm-Gg: AYBFou0CJRqGXrSxtDEVcbHuu7gEsuo02kwN4cECtpJnGB/3r30Ou34e7dWqTDTMmfR
-	I3GgYbsx94Pyak2171xCGc+PZWulJCQVsXyBY4DWk9gLNz+GOprbH5kpJ++niqPNvBOItEV4f9Q
-	jrOaJmE8R0RY84K0LubSnOzlqPnVYR1fiOej/lIA11QsXLF+1t1JWkE3leBOcRLcklOh7/MUyJ1
-	hv6rn0zoLyCEEtpovz8PJVS5dZiYm5FYUFjuuNmOSfcZOXOnuJuI7EdAu6ShWhK/KPobZBFH3wm
-	80Y12eG2VJEW+YzRL+tlI9OXsM1eoOpK6TyUqapzy5p79aMfjz3Lb3TTZwwqEQ9hwBIzzTlEROF
-	i6zbNo8XeseRrLwI+Ew0jcj125rAjMXMl/iOumXb8edlMWoJJ8RIwRQujyQ1e9GNSW48F4RiWJV
-	8BDiZ7FfhBv+Xz8KtkfYcdhP/1jB85DOhLKTwHxiiXnTDC44SXhdQaP7XxRcJh0Xkupg==
-X-Received: by 2002:a05:6820:826:b0:6fb:b922:8d30 with SMTP id 006d021491bc7-6fbb922bb98mr4207627eaf.2.1792032102427;
-        Wed, 14 Oct 2026 19:41:42 -0700 (PDT)
+        bh=lhir5mfJ+S6FKIo+ZY9zWb4jkeGKyv3et9OGrx/eCdY=;
+        b=TrQGnrnTyOoa3vitEYRnTFTE+DOOwgvLgGKt6x7ujBB4gV+aqJtc/ZDTKR2YSBCnIp
+         UcR05oHFN+thOqyvBdN/nU0XLmwZ7TMornmGTIfM73IKFPft0SWuvzadSjdBtwumzAdQ
+         wR7VdPOTstNGpHoyNZBEN7mlJD8VwhmSRkK5Rj21YBAD3YA+XZtkJGfGFzWJJl0W3Sfb
+         Mlzy3uZrgPYD3qhE0LGGr3PSPb8KxKCM3351KttUi41CvDIyIW0tAj0sng5TxBgoXM5c
+         oXsLoJqpH/XW1FXxCsDsWnYA+Ifb10L6z7VSnogXT+pYBloy2b2IcRLDaNPBGJkA/QnW
+         jdrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792032106; x=1792636906;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lhir5mfJ+S6FKIo+ZY9zWb4jkeGKyv3et9OGrx/eCdY=;
+        b=z0vbDFTyMEVLO4H6grvDsZnsJvfQjDBbZt1cqNm3maWGvJaWHTwG7KZaAqLpO6sfB5
+         tUEmcNXbtRVbnk/kIKGrmvEkX/uZtN9J32wU+rNR4X0AUXUQAIeptjALc7ZxliKtb17L
+         ZuEGth7dV2HSZxIim0fqwL6ojZRif541iXzztoEWkoOqbJjBJPgC21HESnDKoFfpRwcl
+         ggCKXsgTVa4yD65FMteShaZ8yblFZkPI3Av8pc+7j3yiiP20mallI6ys0ln4bhfJmtn9
+         rQ/PCFqh/UMbA2XA29Ny2SyqF6s5fyu4fBoFC32STxu2D+XMhbxOiik48j1kfDhVUC65
+         JCqA==
+X-Gm-Message-State: AFq9FYJV2OZqEjjSHkyJ9lfWPaywqN8vEPCOfxm4Qyzi6lwU+5Ks6pNp
+	5SLNWidKY9jbrAjKkPYrJMI8zt8iRhYqRrnwvrhkhXKs6y8PmtdMB/YxHHTLgvq7m0aVRw==
+X-Gm-Gg: AYBFou2FeFyz2njP9W0+Cag/NNn2YQtzTMY6PqJ4ayzFiqbki08AFaGcFgeh8l9tyEq
+	1bM/19MHPCUMsIWxL4mE2de05X/IrW2h9U2+n80K6+P2E6jWM4wySTmks+UlQL8rzgVfYXRlXf1
+	8kg9zRIvJ9xR8iES5GEOCEJbLOf6j9j/cq9AnjT6pqENERJP6UUIWYdybAmqphzAel7SfCSHXNJ
+	3kRqJ9cu6Ku6sLKoSfV0M7KEPyMQ72Wv2Y1unbcLiRS4IlqPZx1jXn7VZ2msBvCCe0+G9CzonCU
+	pjxryiCuf/JUiofxIvXfY2yU0ID2j/ZOsQGZjl+wJ/fDE4hK8kGESbogYrVNdfE6ffQrIQjuclQ
+	S6KIn2erb6O1wfrPzHJo/c/rKxZD4blI1iphPFe4BS7Sej+iuDp0iC8FgqZxHFZlM89wxVNioEy
+	2t4csQ81ISJReXsD4SKKUqQKn1oDIy8q83wFXVXWcjcpl2k4GtvXvCpx+zDV2ojv04Eg==
+X-Received: by 2002:a05:6830:380f:b0:806:9a8d:4b9b with SMTP id 46e09a7af769-830963f4b30mr16162064a34.15.1792032106556;
+        Wed, 14 Oct 2026 19:41:46 -0700 (PDT)
 Received: from houminxi ([61.170.152.244])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-830385b9cb0sm16720024a34.4.2026.10.14.19.41.36
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-830385b9cb0sm16720024a34.4.2026.10.14.19.41.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 19:41:41 -0700 (PDT)
+        Wed, 14 Oct 2026 19:41:45 -0700 (PDT)
 From: Minxi Hou <houminxi@gmail.com>
 To: netdev@vger.kernel.org
 Cc: donald.hunter@gmail.com,
@@ -63,10 +65,12 @@ Cc: donald.hunter@gmail.com,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	horms@kernel.org
-Subject: [PATCH net-next v3 0/2] netlink: specs: fill in the missing ovs operations
-Date: Wed, 14 Oct 2026 22:41:29 -0400
-Message-ID: <20261015024132.698658-1-houminxi@gmail.com>
+Subject: [PATCH net-next v3 1/2] netlink: specs: add ovs_flow del and set operations
+Date: Wed, 14 Oct 2026 22:41:30 -0400
+Message-ID: <20261015024132.698658-2-houminxi@gmail.com>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261015024132.698658-1-houminxi@gmail.com>
+References: <20261015024132.698658-1-houminxi@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -75,44 +79,102 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ovs specs describe get and new but not the set and del commands the
-kernel has registered since the families were added. This series adds
-them and names the attributes each handler reads. Nothing here changes
-the kernel.
+The ovs_flow spec only described get and new, so a YNL client could
+not delete or modify a flow. The kernel has had both commands since
+the family was added: del flushes the data path when neither a key nor
+a ufid is given, and set looks a flow up by key or ufid.
 
-v3:
-  - no change since v2 beyond the items listed above.
+Name the attributes each command reads. new reads ufid-flags and probe
+as well as the key, so both are in its request list. new, del and set
+all need CAP_NET_ADMIN.
 
-v2:
-https://lore.kernel.org/netdev/20261012065552.2426415-1-houminxi@gmail.com/
-  - ovs_flow new lists ufid-flags and probe, which ovs_flow_cmd_new()
-    reads.
-  - The commit message now says probe changes from binary to flag, and
-    that new needs CAP_NET_ADMIN.
-  - The key attribute doc no longer says a key is required for every
-    request except a dump. get, set and del accept a ufid with no key,
-    and only a new flow needs a key. A set that replaces the actions
-    still needs a key.
+probe was binary in the spec while the kernel policy is NLA_FLAG. It
+is a flag now, which changes how a YNL client encodes it: a false flag
+is left out, where a binary attribute was sent empty.
 
-v1:
-https://lore.kernel.org/netdev/20261006130533.1620706-1-houminxi@gmail.com/
-  - probe is a flag, matching the NLA_FLAG policy. A false flag is left
-    out, where the binary attribute was sent empty.
-  - del lists probe.
-  - The set doc says replacing the actions needs a key even when a ufid
-    is present.
-
-Minxi Hou (2):
-  netlink: specs: add ovs_flow del and set operations
-  netlink: specs: add ovs datapath and vport set operations
-
- Documentation/netlink/specs/ovs_datapath.yaml | 18 +++++++
- Documentation/netlink/specs/ovs_flow.yaml     | 41 ++++++++++++++++++-
- Documentation/netlink/specs/ovs_vport.yaml    | 15 +++++++
- 3 files changed, 72 insertions(+), 2 deletions(-)
+The key attribute doc said a key is required for every request except
+a dump. The kernel accepts a ufid with no key for get, set and del, and
+only a new flow needs a key. A set that replaces the actions needs a
+key too. The doc says both now.
 
 Signed-off-by: Minxi Hou <houminxi@gmail.com>
+---
+ Documentation/netlink/specs/ovs_flow.yaml | 41 +++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
-base-commit: 05b5019b01fb9443b09ae4ed34af1135a80a84c8
+diff --git a/Documentation/netlink/specs/ovs_flow.yaml b/Documentation/netlink/specs/ovs_flow.yaml
+index 951837b72e1d..e5e110b6ccc8 100644
+--- a/Documentation/netlink/specs/ovs_flow.yaml
++++ b/Documentation/netlink/specs/ovs_flow.yaml
+@@ -384,7 +384,9 @@ attribute-sets:
+         nested-attributes: key-attrs
+         doc: |
+           Nested attributes specifying the flow key. Always present in
+-          notifications. Required for all requests (except dumps).
++          notifications. A request may carry a ufid instead, except for a
++          new flow, which needs a key. A set that replaces the actions
++          needs a key too.
+       -
+         name: actions
+         type: nest
+@@ -438,7 +440,7 @@ attribute-sets:
+           are exact match bits.
+       -
+         name: probe
+-        type: binary
++        type: flag
+         doc: |
+           Flow operation is a feature probe, error logging should be suppressed.
+       -
+@@ -988,6 +990,7 @@ operations:
+       doc: Create OVS flow configuration in a data path
+       value: 1
+       attribute-set: flow-attrs
++      flags: [uns-admin-perm]
+       do:
+         request:
+           attributes:
+@@ -995,6 +998,40 @@ operations:
+             - ufid
+             - mask
+             - actions
++            - ufid-flags
++            - probe
++    -
++      name: del
++      doc: Delete one flow, or every flow in the data path
++      value: 2
++      attribute-set: flow-attrs
++      flags: [uns-admin-perm]
++      do:
++        request:
++          attributes:
++            - key
++            - ufid
++            - ufid-flags
++            - probe
++    -
++      name: set
++      doc: |
++        Modify an existing flow. The kernel rejects the request with
++        -EINVAL when it carries neither a key nor a ufid. Replacing the
++        actions also needs a key: a ufid on its own is not enough.
++      value: 4
++      attribute-set: flow-attrs
++      flags: [uns-admin-perm]
++      do:
++        request:
++          attributes:
++            - key
++            - ufid
++            - mask
++            - actions
++            - ufid-flags
++            - clear
++            - probe
+ 
+ mcast-groups:
+   list:
 -- 
 2.56.0
+
