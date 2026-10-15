@@ -1,184 +1,242 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012033.outbound.protection.outlook.com [52.101.43.33])
+Received: from pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.13.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA09C348C67
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792108606; cv=fail; b=p3IfnkkCmZs1fBHdND/fTRT7kKPQPcL/fUFkQcy3VeMDuv64JltNOEo3EGyMC+Q0YDpuMpdrGK8wBEW9VE1i0dgeoiz77srhatkjq8gdfrIUnR6PQHBPRot7gw/QYBRd3t4qNV7sl0PIMk94/7DKwQf7mgedeMSh9CRZ797BSls=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792108606; c=relaxed/simple;
-	bh=2fiwnfu/tJgcbvXTSXLKvhIrcx2WGJtwQkyOqkOV8bU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=N8mXb+jnsTu+gQYC5/hS4e3hDLhPk+eDU+HyJxsY5NyTBj+kWeJKax8QUL+HiubB6Igyuhv83B5O/Rmq24FlLFkYa0JqqJeeaxCBwNc7zhYHzOhqD/lV5PNiAaaswRgw/IORvv6aUGQG0s6lheiRyoOFAczD1PZYJO0VF0EqvFY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=a+PVGky9; arc=fail smtp.client-ip=52.101.43.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF13E3D88E0;
+	Thu, 15 Oct 2026 23:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.13.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792108610; cv=none; b=M2j2Uvvw+FXmlIiyHQKo5TcYPVcwrgTTj7atuGitZRk3lEyNgH16RLfio413rNMrEXNT3c88fPz3hL8LrZECAyfx5YSJULnT1SKPVnbPhT44qR1kw+m49m48/TkMbziJYaXu4r6ABCb60ap/N8sNJYFyWAlFlmZRdPBO+e8BFqE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792108610; c=relaxed/simple;
+	bh=Aw7Uh7QIY/HPESoLBQp6yeoOqo6iAB6HcKSVOV0eK84=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Av1lPjxqt3EUbQq9vz0D5bg6gtZonGBT95GBjcY11cBVwkHVMwYnqXxULGL+bPVoJa5HYHRHg/uv3AhtEBsUsQPHYb35D7X55YTa09XC9AQlj27tN/6La4lIblkBJhaxkgufJ9siuu8FnJ5jZXeo87x3ohUeNsf4HpbEWEYx3/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=IQWjixcz; arc=none smtp.client-ip=52.13.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="a+PVGky9"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m0yyPf9OOr0b3TbGlKIKp/q5YonojfUitJwF1oLOraqcmjQDbxfegXGn5F5ibHeDJNW6NBeMY7dfzMabT8kIY3wsWiB6WJbfk5A4TZsx3mpGFmfZcnwDaKmfeyawrfSs/C5hKHZwnNCqH72VDSlK2IrdfiI2Z1qPchgB4n20HaMS2TvN6lNWbvZ/lYL4XJQmU/mhB++Fx9VIZzXbKn20HCHiTMM8WhNelOW87VDEJiiXBHdzZRcl9lKLbmjiermcMW6mWYUYCWwit4Er/Uy3ZE9eg1GGZWAHhEjDUJqcCeVnNow5Za6Z97qkl3kiphiRF1GXlTtkbxUMltD4fRnPfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xr2sKvAyESeuvgzKJPe+RIWdT0redL9Gb55KkBBuSL0=;
- b=Td1SqdxLzCbhkTct+d3Bd+Idum3Uwtd7v1LJTD+fKS7ZoiLHAywi81ZvwjbtC9+60KcBkoT4nfggWKq6v0fU58cDvG9ClQM94MRfJ/cTFsz2nnPhnFjDt6AYRioj+nSwkuDa0Y9+OQfrxZPhGPoH8hLWTja0JX81agRH93C6G/dCkXOhYcq7qHRJRb1klqBCCfMhs4SmY8vJ4wPbGDbQJoXoss61aEOvA1tqZIwM8fWPpDY0VJAWmESQ3bD9sQA4QLO8By/jX8Tc74ySMuHSJU+kVfsGYhTC4oq35J7xwNJzFokmeY7GNng0k6CPWZfTAPtc/6Gltw37ZmNxpi5dbQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xr2sKvAyESeuvgzKJPe+RIWdT0redL9Gb55KkBBuSL0=;
- b=a+PVGky9brBkAGVbsuM2XN+wXG6l6ral8Zo+hE/aTIu+A+ohPzHlozhJ/rj+NlGGfcfyZLQbKnXL0QguwuuPwihivHXA3bsQnxUXlIBzl8na20qftvIshQqKHYLDv56fnZuLU7ABrjts3wctPCzUKqzro518xcApNuVY/WZOHwo=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DS4PR12MB9708.namprd12.prod.outlook.com (2603:10b6:8:278::7) by
- IA1PR12MB6433.namprd12.prod.outlook.com (2603:10b6:208:3af::11) with
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="IQWjixcz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1792108607; x=1823644607;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=iporXgDcLq8Qs5m1AomBCEZH863qUOYM2erUOveq4GQ=;
+  b=IQWjixczm2WbmlE4yAvWSp6n7sP7GR/xAjqbjv9Y+XY3dilM72faHXMm
+   JjSww59YwFi9pHoBL9kKcVefHCnfbAKXfDTFtdjwZ7dKBIn1E53Qlg41l
+   Z9atWq/CRGl36xICwebW4SA4i+ArvFCx4mjqp1IzEKPcERf1eHrzC2H0E
+   /QyqENovAV03BdxkF/qwE1afp1E9WiQS+/QCPF7Nkg7tJHXPIzj+lI/Xi
+   kmTlmFufzdlCyQNWdUFh134BdqHci0O0FzQOVeBEvUOZhGpvmY1+ucGnY
+   yQDUkicdl/UqjP1fqAgeD4G92aU4KVDPYnf8hq6zfRjLVORYZmPAA4uAw
+   w==;
+X-CSE-ConnectionGUID: T55mjaqtQ/m9ox5hHqnMZQ==
+X-CSE-MsgGUID: 4WQ80iPOTpKbUgKwMWk6gw==
+X-IronPort-AV: E=Sophos;i="6.27,160,1787011200"; 
+   d="scan'208";a="31368865"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-005.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2026 23:56:44 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:9704]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.63.90:2525] with esmtp (Farcaster)
+ id 0df28996-750e-4a56-ac9d-24d89250e3a0; Thu, 15 Oct 2026 23:56:44 +0000 (UTC)
+X-Farcaster-Flow-ID: 0df28996-750e-4a56-ac9d-24d89250e3a0
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Thu, 15 Oct 2026 23:56:43 +0000
+Received: from dev-dsk-dkeogh-ai2-36d3b9a7.us-west-2.amazon.com
+ (172.19.55.127) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.12; Thu, 15 Oct
- 2026 23:56:41 +0000
-Received: from DS4PR12MB9708.namprd12.prod.outlook.com
- ([fe80::8570:d817:2f81:c62a]) by DS4PR12MB9708.namprd12.prod.outlook.com
- ([fe80::8570:d817:2f81:c62a%4]) with mapi id 15.21.0522.012; Thu, 15 Oct 2026
- 23:56:40 +0000
-Message-ID: <03de28a9-ba9a-4502-83f6-7029149a29fa@amd.com>
-Date: Thu, 15 Oct 2026 16:56:31 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 0/2] ionic: fix port_info lifetime bugs
-To: netdev-bot+sinfo@kernel.org
-Cc: netdev@vger.kernel.org, Brett Creeley <brett.creeley@amd.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- "Nikhil P. Rao" <nikhil.rao@amd.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Eric Dumazet <edumazet@kernel.org>
-References: <20261015-ionic-port-info-lifetime-v2-0-57232013fd79@amd.com>
- <179210571254.408196.9199301625371086933@kernel.org>
-From: Eric Joyner <eric.joyner@amd.com>
-Content-Language: en-US
-In-Reply-To: <179210571254.408196.9199301625371086933@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR03CA0271.namprd03.prod.outlook.com
- (2603:10b6:a03:39e::6) To DS4PR12MB9708.namprd12.prod.outlook.com
- (2603:10b6:8:278::7)
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.53; Thu, 15 Oct 2026
+ 23:56:43 +0000
+From: David Keogh <dkeogh@amazon.com>
+To: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Eric Dumazet <edumazet@kernel.org>
+CC: Dragos Tatulea <dtatulea@nvidia.com>, Nimrod Oren <noren@nvidia.com>,
+	<nh-open-source@amazon.com>, <linux-kernel@vger.kernel.org>
+Subject: [RFC net-next 5/6] selftests/bpf: add tx_extra_headroom data-plane programs
+Date: Thu, 15 Oct 2026 23:53:34 +0000
+Message-ID: <20261015235335.4162993-6-dkeogh@amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261015235335.4162993-1-dkeogh@amazon.com>
+References: <20261015235335.4162993-1-dkeogh@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PR12MB9708:EE_|IA1PR12MB6433:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f13c91d-a2cf-4fb7-1b72-08df2b17f4e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|6133799003|22082099003|18002099003|10067099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	I49j/u1d8xq6VOzuVljeWtD7M6RLuE3Lf1d7jIYI7q65SoXzkkGlymvku8neDGK2AybI2BNzYuJEjfFO1TEaGqfwtfW5E9L1YPtY8lhsdr9+koEwk0fwZefzdKEFLcjikrRN8eH27tuZDiBUPTC3/MjLyd43b1u+x3OMaefZOYy9jzmJHWMi2VloiK0D0dfJP0gEffapJSgUgK41tHRju+BIQ5hVcjF+wTWN6WLpVpBcI9WAd3jF+nLEHbBe9loUi6eDil8UY1VREore7MxouN0VktIVZT2s13qshzR2P1gj2RwqJ4VnPXtYusU0F28XVoYxiWDUSnAu9vlVRRTyKRiKE5A32j2xOBslQyvkilNRu/dMXpcJl3fmYVHauQ+kctI/dAaz2bVomFHEdDw+ApkRRPvvAunTOcV3LwPe5+52kK1LjMWbylDVGPVzDgF83f53EprP8UeFqmaeifXIwlc0icc12imCrYBxCA9Zf9pWsKPJfdDwBfu9KteHMfGo72WcY3NIp796hN2s+qAx/ji6Lj7CKJS53ROISm7CZJ6JgkOPOlT3yG5Qi0hOhI2ZSy1mbmZgsN7g7S+QeTcQiNdBcplHR+Sm06PnB5V0LZEeYATjzDVglD336n0wl43bYQWNK6d2pAAhS1ZrHECfoXZUD4Cw4xBj+uwntFKxq9o=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS4PR12MB9708.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(6133799003)(22082099003)(18002099003)(10067099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V2h3SXB3dkZOSUJVbTdJaHM4a28veEtrK2lHaUhNZ3VneGJ6WkZnYWtVYnpz?=
- =?utf-8?B?N3oxeCtyc3AxRlpFZ2paZjVEazdhV0JWc0dHREszeTBWTXRQS3BVUURUNHlr?=
- =?utf-8?B?Z2R2emRyTHo0eWFQa1NPYVBlTWIvK0EvMjh0dlNpaTJYUVN5VnhMRkNwT0Nn?=
- =?utf-8?B?ZVJOR0lMd1ZHOWV1eVErWFpUVnZoVGNGV1lqZUg5MEd2NTc3NE12M3dpdms0?=
- =?utf-8?B?MHA2QnZ5T1VwcEJFK1duTGhyU0NKUHFHMEZjWU0zcnkvQTJIZVd0ekdMTXN0?=
- =?utf-8?B?MmlPaDByU25Kb3NHaFhKVEwyQVZkQy91bm9XaWRuWkVXK2ViZkkrazZrOXpK?=
- =?utf-8?B?M3ZQTUl1dXZaTEV6WXdhNEVmMFltS2dXY25MenpvejJIWkIvV2ZwVlBXSjhC?=
- =?utf-8?B?WS9iTVRUNWFwejU3dEUzdS80d2kzaEhpTW93OHZBci83cDhrVkRhVDJXL3Bz?=
- =?utf-8?B?V0RtY2YxUjloK1laTGFVYXFGRjhzdGtoTENsTkVDVlJFejl3SFBFSVY0SFcv?=
- =?utf-8?B?eGF0YU16MC9qSndHVGJoWlA4c01YRklwZ280RXUzdFRST3Z2TE5SVXRwbXBO?=
- =?utf-8?B?TzFsOXVveGRIeDhGNDdhMldPRldnMyt0cXBRMnkwYVhtcVpNblBnTTJraS9U?=
- =?utf-8?B?MnhpYkhqbk9yWjNhUFZKNGZGZDdETWRaNUFaUXN1UHNIeU9UL2gxbGNCb0hS?=
- =?utf-8?B?L3VOVmFJNktXWUdvL1Fmd2h4QW5BMHI4bUo4bHliTlNYSzZkZjJjbEloeXM2?=
- =?utf-8?B?NmZUanRDUU1PWk1SLzNuNUpRVEFiTTZZWXZBdkFseC81UVhjb055TnlDaXVj?=
- =?utf-8?B?bXhURHZmK3IvU3RKcFdBNitTLytjUWtVTldGSVNMbVdxbHQzVlorbFVJRkR6?=
- =?utf-8?B?U2I4Y0lMbUZYZUtaRHpKOE1GZGlaTlJSd0I4ZlR4di9CT1FJRXN6cGhkd0wx?=
- =?utf-8?B?a3c5dno2TnIzMGNpaGU4bTZkU1FJU1hsWEZSL0FpSkI3a0lmRE55djB6SjJo?=
- =?utf-8?B?bldlVFBac3EzRVlKNEdWd1Jhb2ZJSFVWWE5ZaGl3dnJ2ajBib1F1UFh4UDBu?=
- =?utf-8?B?SHFpTjE5UndUbXdBVHdHTEQvOVRISjc4clZGNEg4UmRQb0ZYQllONWJoNkE1?=
- =?utf-8?B?SG9CakJkSytiOFRqR2xyVW9yZnB3Q05XcnVkZlozNytrbDRoMDgyRE9MbmFY?=
- =?utf-8?B?S1JHZlZNQzFGaG9TWFVUV1ZVL0hTbEZvY1lZMmpaWGhBOHR5cXAweWs4RCtD?=
- =?utf-8?B?Mjd6QlRwSUFVZnVWZnpPOGdQL1ZlWTlrR0dnK3RzdE9VRzNhU1lnRzVUVk5m?=
- =?utf-8?B?bGxoVU53TTZaSkE2UkVxTGlKWFpnTG5jNDJxSjBsTGpvcXRWb1AzVDNUc2Jn?=
- =?utf-8?B?djNtaWxCWUZPeXo5bS9YOXpzeTI5YmNWZ0ZvdktjbVg1RkxBdC81dlBHbUlv?=
- =?utf-8?B?YXk1ZHdCQmx3S3p6akliaENlcG1XcmRKRVZReVVScW95QUVCNXA4aWhCTVNO?=
- =?utf-8?B?SGp5MzVhMjhEOEhuVnVkVWlOVERpU2FOWkNrQW92VDJpb0FTS1pmNVZPYUQx?=
- =?utf-8?B?NmoweCtkcWtUb0RaY3NiaVhJZytod1lqSnZBNW8rNEJLcW5yZjZsdHVSRUtx?=
- =?utf-8?B?ZVJBM2xrN2hTRmd0ZUVwQnE1QXlDWUU2bXJDWjFndFJxUWJvVjJzdFE0Yk1P?=
- =?utf-8?B?RVNVSGlsbUR1QnVZcWZUT0sxdUpEcXdud1RCVTJxWFE2ZkZ3T2xCTExqQXhO?=
- =?utf-8?B?V1VJZVJIWm1qdHpkN0NRUlU0WXhXaENpUjJUZENjQ1gzRGxjSEYxZ2RzdXdF?=
- =?utf-8?B?WHpBSXNKVUt5aGRjUGdkQXJLVnRJSUdPRVFaekZJWG9DS2pYQVBCak9xV0ph?=
- =?utf-8?B?empXZ0lNaGpSbzNZVm1zN0RWdWx3VWxrTjI2ZUtFNTF6QnlVbUx0VncrVy9j?=
- =?utf-8?B?d1Ywb3dZSFRkSzkxYTh6MTUySWdJbit6OWltQ0FCQ3VuQ2taZ3hwYXBUTy9j?=
- =?utf-8?B?SHVDcDVVNTJSY0FnQTIzYzY0eHF3Wng5NUZVdDFXcjEybHVRSjJ5L29sSHdS?=
- =?utf-8?B?QlA4SC9DRFJyeld4Wk1rSk0rdG42ZHdlWS9iOFhrVzBOdThPOUxlMXYvS28r?=
- =?utf-8?B?TDNndno5OE1tWmFQRkhzSHpMVDVXandDWmg0TDVCTWxaMDRCZlFXQ29GUVF0?=
- =?utf-8?B?ZXRqWFJuUTZXVlJ2d3lqUXNoZTRXY1hqa2ZDY29IVnk0bEVPZnBOSnQwdzc2?=
- =?utf-8?B?QVlMTkl0dGd2Wm1KbTdIb3JoZW84ZnJCUzhyZFRHMU90cW15amRSZ1lLdFRz?=
- =?utf-8?Q?wESv2jspOwF/KZMfep?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f13c91d-a2cf-4fb7-1b72-08df2b17f4e6
-X-MS-Exchange-CrossTenant-AuthSource: DS4PR12MB9708.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 23:56:40.4867
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ssMRLbuOFj2Rsu/i10Y30Un+tsuzpbx2iQZq3dwjC3rwDSUAg2HGrJqc/QZA9JSS
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6433
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA001.ant.amazon.com (10.13.139.88) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On 10/15/2026 4:08 PM, netdev-bot+sinfo@kernel.org wrote:
-> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
-> 
-> 
-> Hi!
-> 
-> This is an automated message. This series looks like a fix, but its
-> commit messages seem to be missing some information:
-> 
->  - How the issue was discovered, e.g. hit in production, hit during
->    development, syzbot report, manual code inspection, LLM or static
->    analysis tool scan.
-> 
->  - Whether the issue was actually triggered, or is only theoretical
->    (e.g. found by code inspection). If it was triggered please include
->    the symptoms, like the stack trace or error messages.
-> 
->  - What hardware the change was tested on. For driver fixes please
->    mention the device (and if relevant firmware version) used for
->    testing, or say that the change was not tested on real hardware.
-> 
-> Please do not repost the series just to address the above. Instead,
-> reply to this email with the missing information, so that reviewers
-> can take it into account. If the series needs another revision for
-> other reasons, please include the information in the commit messages
-> then.
-> 
-> The evaluation is done by an LLM so it may be wrong, if you think
-> that is the case please reply and explain.
+Add two BPF programs for a tx_extra_headroom data-plane test:
 
-Ok:
+  * push_outer (SEC "tc") pushes a 20-byte outer header on UDP egress,
+    forcing a head reallocation when the skb lacks the headroom.
 
-- This was discovered by a Sashiko review for v1 of a different patchset;
-we evaluated the discovery internally and it looked like something that
-should be fixed.
+  * count_realloc (SEC "fentry/pskb_expand_head") counts those reallocs
+    for one ifindex, selected via the cfg_ifindex map.
 
-- It's theoretical by finding, but...
+The test that loads them is added to selftests/net in the next patch.
 
-- I tested it on an actual DSC3 "Pollara" with a hacked driver and test kernel
-to cause both issues:
-  - Had PORT_INIT fail during PCI reset recovery and saw that the port_info
-buffer was freed while the netdev was still registered, meaning that the netdev
-ethtool ops could get a NULL pointer for port_info
-  - Made probe fail on purpose at ionic_setup_one() to verify that port_info
-memory and DMA allocation was being leaked
+Signed-off-by: David Keogh <dkeogh@amazon.com>
+---
+ .../bpf/progs/tx_extra_headroom_probe.c       | 68 ++++++++++++++++++
+ .../bpf/progs/tx_extra_headroom_tc.bpf.c      | 69 +++++++++++++++++++
+ 2 files changed, 137 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/progs/tx_extra_headroom_probe.c
+ create mode 100644 tools/testing/selftests/bpf/progs/tx_extra_headroom_tc.bpf.c
 
-  and then checked that the patched one did not have these issues.
+diff --git a/tools/testing/selftests/bpf/progs/tx_extra_headroom_probe.c b/tools/testing/selftests/bpf/progs/tx_extra_headroom_probe.c
+new file mode 100644
+index 000000000..a6ca66ef0
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/tx_extra_headroom_probe.c
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * fentry realloc counter for the tx_extra_headroom data-plane selftest.
++ *
++ * count_realloc (fentry/pskb_expand_head) increments realloc_cnt[0] each time
++ * pskb_expand_head() runs for an skb whose egress device ifindex matches
++ * cfg_ifindex[0]. The ifindex filter scopes the count to the test interface so
++ * unrelated background reallocs are not counted. fentry is BTF/CO-RE based, so
++ * this attaches by its SEC name via "bpftool prog loadall ... autoattach" with
++ * no raw kprobe name, no bpftrace, and no user-space loader.
++ *
++ * The companion tc program (tx_extra_headroom_tc.bpf.c) is what forces the
++ * reallocation this program observes. Userspace writes cfg_ifindex[0] (the
++ * device under test) and resets realloc_cnt[0] before each run via bpftool,
++ * then reads realloc_cnt[0] after.
++ */
++#include <vmlinux.h>
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_core_read.h>
++#include <bpf/bpf_tracing.h>
++
++/* realloc_cnt[0] = number of pskb_expand_head calls on the test interface. */
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, 1);
++	__type(key, __u32);
++	__type(value, __u64);
++} realloc_cnt SEC(".maps");
++
++/* cfg_ifindex[0] = ifindex of the device under test (set by userspace). */
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, 1);
++	__type(key, __u32);
++	__type(value, __u32);
++} cfg_ifindex SEC(".maps");
++
++/*
++ * BPF_PROG unpacks the trampoline args, so skb is the first argument of
++ * pskb_expand_head(struct sk_buff *, int, int, gfp_t). Count only reallocs
++ * whose egress device matches the configured ifindex.
++ */
++SEC("fentry/pskb_expand_head")
++int BPF_PROG(count_realloc, struct sk_buff *skb)
++{
++	__u32 key = 0;
++	__u32 *want;
++	__u64 *cnt;
++	__u32 ifi;
++
++	want = bpf_map_lookup_elem(&cfg_ifindex, &key);
++	if (!want || *want == 0)
++		return 0;
++
++	/* CO-RE read: skb->dev may be NULL on some paths. */
++	if (!BPF_CORE_READ(skb, dev))
++		return 0;
++	ifi = BPF_CORE_READ(skb, dev, ifindex);
++	if (ifi != *want)
++		return 0;
++
++	cnt = bpf_map_lookup_elem(&realloc_cnt, &key);
++	if (cnt)
++		__sync_fetch_and_add(cnt, 1);
++	return 0;
++}
++
++char _license[] SEC("license") = "GPL";
+diff --git a/tools/testing/selftests/bpf/progs/tx_extra_headroom_tc.bpf.c b/tools/testing/selftests/bpf/progs/tx_extra_headroom_tc.bpf.c
+new file mode 100644
+index 000000000..43e3bea60
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/tx_extra_headroom_tc.bpf.c
+@@ -0,0 +1,69 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * tc-egress pusher for the tx_extra_headroom data-plane selftest.
++ *
++ * On egress, pushes OUTER_LEN bytes of outer header via
++ * bpf_skb_adjust_room(..., BPF_ADJ_ROOM_MAC, ...). On an skb allocated with only
++ * LL_RESERVED_SPACE() of headroom this forces skb_cow_head() ->
++ * pskb_expand_head() (a realloc-and-copy) on every packet; when the device has
++ * reserved extra headroom via tx_extra_headroom the push finds room already
++ * present and no realloc happens. The reallocation is counted by the companion
++ * fentry program in tx_extra_headroom_probe.bpf.c.
++ *
++ * UDP only, so TCP control traffic and IPv6 NDP are not corrupted. OUTER_LEN
++ * defaults to 20 (one IPv4 header) and can be overridden at build time.
++ */
++#include <linux/bpf.h>
++#include <linux/if_ether.h>
++#include <linux/in.h>
++#include <linux/ip.h>
++#include <linux/ipv6.h>
++#include <linux/pkt_cls.h>
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_endian.h>
++
++#ifndef OUTER_LEN
++#define OUTER_LEN 20
++#endif
++
++SEC("tc")
++int push_outer(struct __sk_buff *skb)
++{
++	void *data = (void *)(long)skb->data;
++	void *data_end = (void *)(long)skb->data_end;
++	struct ethhdr *eth = data;
++	__u8 l4 = 0;
++
++	if ((void *)(eth + 1) > data_end)
++		return TC_ACT_OK;
++
++	if (eth->h_proto == bpf_htons(ETH_P_IP)) {
++		struct iphdr *ip = (void *)(eth + 1);
++
++		if ((void *)(ip + 1) > data_end)
++			return TC_ACT_OK;
++		l4 = ip->protocol;
++	} else if (eth->h_proto == bpf_htons(ETH_P_IPV6)) {
++		struct ipv6hdr *ip6 = (void *)(eth + 1);
++
++		if ((void *)(ip6 + 1) > data_end)
++			return TC_ACT_OK;
++		l4 = ip6->nexthdr;
++	} else {
++		return TC_ACT_OK;
++	}
++
++	/* UDP only: do not corrupt TCP or ICMPv6/NDP control traffic. */
++	if (l4 != IPPROTO_UDP)
++		return TC_ACT_OK;
++
++	/*
++	 * Grow at the MAC layer by OUTER_LEN. The helper's internal
++	 * skb_cow_head() reallocates when headroom is insufficient; that
++	 * realloc is exactly what tx_extra_headroom is meant to avoid.
++	 */
++	bpf_skb_adjust_room(skb, OUTER_LEN, BPF_ADJ_ROOM_MAC, 0);
++	return TC_ACT_OK;
++}
++
++char _license[] SEC("license") = "GPL";
+-- 
+2.50.1
 
-- Eric
