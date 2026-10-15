@@ -1,117 +1,190 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5F7525A76;
-	Thu, 15 Oct 2026 12:55:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B8E5293E9;
+	Thu, 15 Oct 2026 12:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792068936; cv=none; b=Jo5AIapjdDNWvHVmld9zVUTziq974r8CGgDpe5GaJX2A6FKVr7bZRrP2KyUvy2fbJHW1Q8fup4m2BcOnB/S43msKCqSYqdaY/DurWiIxq5akv9Qe8HgLbK+jpQHl2SCkX+wuMFlpov6lCa0QqFU9xnXQgGPfhIVoawKP6NluDmA=
+	t=1792069109; cv=none; b=m3BXZcz364DHgoAr41LuDbVqJ3N28uHw7LvalM9YXFKgWTiHV1JDDg3++/vLnqkPme93J3+FYM7X1TwnIy04jUFBQDFY3Du/qiZM2fttUjJwu5rwKh8hjH86SZfhDad1MQsfUg5GiDzTKQB6XdOIOIRMUSB14HOl5Hi5Bap9px4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792068936; c=relaxed/simple;
-	bh=1VL3ul+oyEqH/SBvPY1P3l7zVD9s1jUU5EEiHqlYnhE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CODgOYjSITQV829hQzExWbazQR9g1Ldhs7Tyi2UVD3OeUoLfbJHpAzf4ekXvD+pRqZH9SfhQ4v8p6Aojt/JUC9AWrhMhCF6OJIKQ0DeQNeBa7JzE7YwHy1TThq2Nc8CbktmtdPpW/6UjZXfqjnMuUC+L999SPPIPNgedALCLees=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=wHImKLHW; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1792069109; c=relaxed/simple;
+	bh=O2+1GwEE0AsDmP5QqMiPLXgMPBGGavsO6FmACr+IRVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IbFaTdrpOBzAJbu4Sjr7sL2EGo+z0Zdv+OsHZvYYqvIZvrjcgq6mDWvdk8cyv2v+k3Hg48wwciTpCelCsrh12kT+yxcWhBknFlcqI8TeYVpbn59slpHQnn6wMt/vNBmkSKHlSvQK4bwCPntNlMS5I2COpEbYtnd0f9hnA/nGEdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BnQPqeck; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="wHImKLHW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zL4P1buyUO0HTa8tz5fIfgHMxvjhBM1cuXeP1N+bW10=;
-	t=1792068935; x=1793278535; b=wHImKLHWjYOEFReQdzIl9jLd6b48Nsnes8s4ioAQnRsH1ld
-	M08QoGB+/w7SF1ugXglUIHta+zD4ZdWkd+fu1NWAU+pNDRHmiu/k6C72wWsZWOfXvHfux0/j1N4vb
-	eWRcEBrc3ifePfHbBjolTBFK86TKpwqaMZJ0+dotRCAxuV/6aoGNl5k+mZ6JspqXM9wenWEd7BsDA
-	R8dD8DPRqlNu9ghObdeJl6QejWwVTNS1d4YLetEihADDCMa7KA7rUrK9AbsP07pa/mGeiyQHqzZ6t
-	Ddj87I3sQkoYKDPVxgGUIfqJGLAW37BWcMWFCOHMs9z/mDg7kMXjiWJ7NdiAfSpw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1xHKzU-00000003bXE-0Kyl;
-	Thu, 15 Oct 2026 14:55:24 +0200
-Message-ID: <64ee40b97fc447bbf3abb80250ad0d9f3cf3c6fa.camel@sipsolutions.net>
-Subject: Re: [PATCH net-next v2 2/7] um: vector: honor virtio net hdr
- conversion failures
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Willem de Bruijn	
- <willemdebruijn.kernel@gmail.com>, Jason Wang <jasowangio@gmail.com>, 
- Eugenio =?ISO-8859-1?Q?P=E9rez?=	 <eperezma@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, Andrew Lunn	 <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet	 <edumazet@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni	 <pabeni@redhat.com>,
- netdev@vger.kernel.org, virtualization@lists.linux.dev,  Rusty Russell
- <rusty@rustcorp.com.au>, Max Krasnyansky <maxk@qualcomm.com>, Richard
- Weinberger <richard@nod.at>,  Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, linux-um@lists.infradead.org
-Date: Thu, 15 Oct 2026 14:55:23 +0200
-In-Reply-To: <20261015085119-mutt-send-email-mst@kernel.org>
-References: <cover.1792067836.git.mst@redhat.com>
-	 <6716834884238de0ab1ab313004044122aa2adbf.1792067836.git.mst@redhat.com>
-	 <8420ba1fe84fc7d105825026802d4ad10d44af71.camel@sipsolutions.net>
-	 <20261015085119-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BnQPqeck"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506601F000C4;
+	Thu, 15 Oct 2026 12:58:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792069106;
+	bh=c+hYfQRfw/vcaP+SdQuPcP8r55bXq9Rsby8ykddfBB8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BnQPqeckA/+14E1ejZnXfCGBkUgNzXeDijJXXHFi7106QQUDRv0FDiHRMrKMsriL3
+	 3rQCNWIC/fmJbV+/+MJWLofyiiktBd+2/CDkUeLfg7OKWtqj2t+EqiiOWUCnsDsf2B
+	 Z7xRLseQa/bfv9u/etIaR1Me2HjqAGSO2xtOezJNkrQHhnu6hVXEOSQllqoiNSGuLh
+	 /0XS4KxcQ6F0Qn5ZsVqQ/aCsfEZwFW4O5pLv2FkXtlEelC2DZnkE8DrV5QxKHPTNCJ
+	 BzNvRKd2TWCrboJCDc6I0SGHT1uj/IcwZYLuCX5bxdkYW7UL5lZH43uCqH2zwaV365
+	 2PMz3ZybAy+bQ==
+Date: Thu, 15 Oct 2026 13:58:22 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, Victor Nogueira <victor@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sashiko <sashiko-bot@kernel.org>, bpf@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net/sched: clamp skb->queue_mapping before
+ indexing the tx queue
+Message-ID: <20261015125822.GH83879@horms.kernel.org>
+References: <QDISC-MD1X.v2.20261009135842@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <QDISC-MD1X.v2.20261009135842@mojatatu.com>
 
-On Thu, 2026-10-15 at 08:52 -0400, Michael S. Tsirkin wrote:
-> On Thu, Oct 15, 2026 at 02:47:01PM +0200, Johannes Berg wrote:
-> > On Thu, 2026-10-15 at 08:41 -0400, Michael S. Tsirkin wrote:
-> > > virtio_net_hdr_to_skb() refuses packets whose checksum metadata
-> > > it cannot make sense of, but the vector raw transport ignored
-> > > its return value: rejected packets went on into the stack with
-> > > their metadata unvalidated.
-> > >=20
-> > > Propagate the failure.
-> > >=20
-> > > Assisted-by: LLM
-> > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > ---
-> > >  arch/um/drivers/vector_transports.c | 4 +++-
-> > >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/arch/um/drivers/vector_transports.c b/arch/um/drivers/ve=
-ctor_transports.c
-> > > index e1fb2a76fdff..8b7548458663 100644
-> > > --- a/arch/um/drivers/vector_transports.c
-> > > +++ b/arch/um/drivers/vector_transports.c
-> > > @@ -210,7 +210,9 @@ static int raw_verify_header(
-> > >  		return 1;
-> > > =20
-> > >  	skb_set_network_header(skb, ETH_HLEN);
-> > > -	virtio_net_hdr_to_skb(skb, vheader, virtio_legacy_is_little_endian(=
-));
-> > > +	if (virtio_net_hdr_to_skb(skb, vheader,
-> > > +			virtio_legacy_is_little_endian()) < 0)
-> > > +		return -1;
-> > >  	return 0;
-> > >=20
-> >=20
-> > Seems it'd be simpler to just
-> >=20
-> > 	return virtio_net_hdr_to_skb(...);
-> >=20
-> > As far as I can tell, the function only returns -EINVAL or 0 (never a
-> > positive value), and the caller only cares about negative (error) or
-> > positive (no checksum needed), so that'd be equivalent?
-> >=20
-> > johannes
->=20
-> if raw_verify_header can safely return any errno - i did not want to
-> audit it.
+On Fri, Oct 09, 2026 at 02:09:03PM -0400, Jamal Hadi Salim wrote:
+> This issue was caught by Sashiko (nipa). A producer-side path cap is
+> already merged (ea4d4b5dddb5); this patch adds the matching consumer-side
+> cap.
+> 
+> The issue:
+> The tx queue is picked and capped in netdev_core_pick_tx(), before the
+> __dev_xmit_skb() qdisc enqueue path. A tc BPF program running inside
+> egress qdisc (not clsact) can then change __sk_buff->queue_mapping;
+> that store is never re-checked. bpf_convert_ctx_access() bounds it only
+> by NO_QUEUE_MAPPING, not by the device's queue count.
+> 
+> On dequeue, qdisc_restart() calls netdev_get_tx_queue(), which
+> indexes dev->_tx[] with that value. netdev_get_tx_queue() guards it with
+> just a DEBUG_NET_WARN_ON_ONCE, so sch_direct_xmit() takes the out-of-bounds
+> txq->_xmit_lock and writes txq->xmit_lock_owner past the end of the
+> allocation on non-lltx devices such as ifb. Drivers that index their rings
+> from skb_get_queue_mapping() (ex: ifb) go out of range the same way.
+> 
+> The Fix:
+> Cap the mapping at the consumer and write the capped value back, so both
+> the qdisc's _tx[] lookup and any later driver read stay in range. The cap
+> folds into the dequeue path instead of a separate walk over the returned
+> list: dequeue_skb() caps the head, and each bulk helper caps the element it
+> appends. netdev_cap_txqueue() already logs a ratelimited notice and selects
+> queue 0. The single-packet case pays one extra compare against
+> real_num_tx_queues.
+> 
+> A bulk-dequeued list is transmitted under the single tx queue lock of the
+> head skb, so every element must belong to that same queue. The fast bulk
+> helper (TCQ_F_ONETXQUEUE, taken on BQL devices by the per-queue children
+> of mq, mqprio, taprio and htb, and by any qdisc on a single-queue device
+> such as the prio root in the reproducer) must therefore compare each
+> capped follower against the head and requeue a mismatch, exactly as the
+> slow helper already does; appending a follower that caps to a different
+> queue would send it under the wrong _xmit_lock.
+> 
+> Conditions to recreate the bug:
+> Load a SCHED_CLS or SCHED_ACT program that stores __sk_buff->queue_mapping
+> (a tc BPF action is enough), attach it to a transmit qdisc (for example a
+> matchall filter on a prio root), and send a packet. With a 1-queue device a
+> store of 1 indexes one past dev->_tx[]. Under KASAN with panic_on_warn=1
+> the unfixed kernel faults with "BUG: KASAN: slab-out-of-bounds in
+> sch_direct_xmit". Loading the program needs CAP_BPF/CAP_SYS_ADMIN, so the
+> trigger is root.
+> 
+> Fixes: 74e31ca850c1 ("bpf: add skb->queue_mapping write access from tc clsact")
+> Reported-by: Sashiko (nipa) <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/netdev/179033713973.2160803.4914570693994398206@kernel.org/
+> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-9R8V.v2.20260924072708%40mojatatu.com
+> Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-MD1X.v1.20261005193231%40mojatatu.com
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> ---
+> v1 -> v2:
+> - try_bulk_dequeue_skb(): the fast bulk helper (TCQ_F_ONETXQUEUE) capped
+>   each follower but appended it without comparing it against the head, so
+>   a mismatched follower was still sent under the head's txq lock. Compare
+>   the capped follower with the head and requeue a mismatch to skb_bad_txq,
+>   matching try_bulk_dequeue_skb_slow(). Reported by Sashiko (nipa).
+> ---
+>  net/sched/sch_generic.c | 53 ++++++++++++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 48 insertions(+), 5 deletions(-)
 
-You already used an LLM and still didn't want to? ;-)
+Hi Jamal,
 
-I checked briefly (by hand) and it seems fine, it's assigned to the
-function pointer, which only has two callers on the _kern.c side.
+Weirdly, this patch is mangled and does not apply.
 
-johannes
+> 
+> diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+> index 6f6a6f0d5eb0..b65bec7e2643 100644
+> --- a/net/sched/sch_generic.c
+> +++ b/net/sched/sch_generic.c
+> @@ -96,9 +96,33 @@ static void qdisc_maybe_clear_missed(struct Qdisc *q,
+
+This hunk results in 31 lines, not 33.
+
+>  
+>  #define SKB_XOFF_MAGIC ((struct sk_buff *)1UL)
+>  
+> +/* A tc BPF program on a transmit qdisc can change __sk_buff->queue_mapping
+> + * after the tx queue was picked. Re-cap it against the device and write it
+> + * back, so a driver that re-reads skb_get_queue_mapping() stays in range.
+> + */
+> +static u16 qdisc_cap_skb_tx_queue(struct net_device *dev, struct sk_buff *skb)
+> +{
+> +	u16 queue = skb_get_queue_mapping(skb);
+> +	u16 capped;
+> +
+> +	capped = netdev_cap_txqueue(dev, queue);
+> +	if (unlikely(capped != queue))
+> +		skb_set_queue_mapping(skb, capped);
+> +
+> +	return capped;
+> +}
+> +
+> +static struct netdev_queue *skb_cap_tx_queue(struct net_device *dev,
+> +					     struct sk_buff *skb)
+> +{
+> +	return netdev_get_tx_queue(dev, qdisc_cap_skb_tx_queue(dev, skb));
+> +}
+> +
+>  static inline struct sk_buff *__skb_dequeue_bad_txq(struct Qdisc *q)
+>  {
+> -	const struct netdev_queue *txq = q->dev_queue;
+> +	const struct netdev_queue *txq;
+>  	spinlock_t *lock = NULL;
+>  	struct sk_buff *skb;
+>  
+
+...
+
+> @@ -216,6 +242,17 @@ static void try_bulk_dequeue_skb(struct Qdisc *q,
+
+And this hunk results in 15 lines, not 17.
+
+>  		if (!nskb)
+>  			break;
+>  
+> +		/* Re-cap a mapping changed after pick; requeue a
+> +		 * follower that no longer matches the head, which owns
+> +		 * the _xmit_lock for the whole list.
+> +		 */
+> +		if (unlikely(qdisc_cap_skb_tx_queue(dev, nskb) !=
+> +			     skb_get_queue_mapping(skb))) {
+> +			qdisc_enqueue_skb_bad_txq(q, nskb);
+> +			break;
+> +		}
+>  		bytelimit -= nskb->len; /* covers GSO len */
+>  		skb->next = nskb;
+>  		skb = nskb;
+
+...
+
+pw-bot: changes-requested
