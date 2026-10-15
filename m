@@ -1,61 +1,62 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD68D5172EF
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD72518136
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792060378; cv=none; b=exdxdmnb7XkT8zXlYcYiS5AEWymQC+3I4d2jYO6dOvLwFu9ks7whrb9Np+8O46wyGvc7mfx/8j+4jLP21TNBkHozl/YMn4PRZ5qTPS5GFZ0lL8c0+W8eoS2EG3ppeoCkxqJXTu6/wus0lqcfeYxBoW0niQ+nEmKFgO3qxEXSqZ4=
+	t=1792060380; cv=none; b=dA+JAIrayQK3D7gYhQyNIX0Dn+q9zH34rbdfamhpGnx6wFsk289DpTVJMyqZKElFAr1VC84zqlKbANOUD0MxAXfieca3QCxgAUSdmxZuP8aor431LPzvTBAXTh5vFAie0X0Oj6inKun4rWzcY7v33tIaOIlgKXByUk8oaPExfsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792060378; c=relaxed/simple;
-	bh=5Jz09q/VUw6mYp32daSl1xADdUjelZ16OLzcCEJDLtI=;
+	s=arc-20240116; t=1792060380; c=relaxed/simple;
+	bh=UB/Ep/Y03qwRUvcPr1dSXyXBAS78olg0lyaVWKpQXV0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m3zxA+5aKYaqBsq5/l3bzyBXeNZBWMU4eXemxyYfkWLPY4OzNGqHiW1+pRGYaUrBPIBwryomj9TFsvUny1P3iLdN93RcVnvsBKrjjnrpbSwMW79tff7S6uvdPt9d7rUuSxZc2ruxyfYuT4nflbq4cIeQ7loaYsKTOYOAAIKM5tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=x0KOAnXq; arc=none smtp.client-ip=209.85.219.47
+	 MIME-Version:Content-Type; b=t9J4KgThoo8fN/3XP5uaVnglKlCMv/UB8jLFzgcmcbrTt2u3BIfJF68ZBdxMWRtIU286L+KQ8Q/A45EtpeiJFYJdnTsK+XLDW7yG0PKZCPl0qdTjqnsQhmdLRAzsgFIOBZibwSen3nyRblxg3Xqp0mTZbBzxr98FL8S76XWllv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=jjMeNhu9; arc=none smtp.client-ip=209.85.219.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="x0KOAnXq"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-91791ec1b83so11901756d6.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 03:32:56 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="jjMeNhu9"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-917a6dccc60so58454596d6.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 03:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1792060376; x=1792665176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=66piF5YkkVEBVNwq8Z5bqRw7oWnzwFidIdz5zrD4ZM8=;
-        b=x0KOAnXqQIM8P97C+x0pieuEMykkS9BS0TobzmxEgCGvvDgfVUyrOs0qi4LvOCGULr
-         Cw98Ml+XUg6OH28M0NG5gPIA2XQAkaWKKwoZPPc04wnf7lWr18PC3vpmFKeoObWk4Bso
-         MAaSwTVonhSkXAH6qwQRHSUmSr8P4rgE1D284=
+        d=mojatatu.com; s=google; t=1792060378; x=1792665178; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Y9jp0yKWerzGGX31FqxEYfZ6VZBQv+aNm4Z29B71O1o=;
+        b=jjMeNhu9HiboLMwciqr49V2k0zQs39w1NnfeYe3odMlis6LE1GJZlGjiHm9PJJwhrk
+         ArlujUMutTv0HHI5uaLHtAeU5lKzdKvyI7TKY5T2x0qSHySaRcG229E0sqsyQdgFqihB
+         EuPvRFzxeYzZufDGjybGXWI/AHmNP6dK1rYdA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792060376; x=1792665176;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=66piF5YkkVEBVNwq8Z5bqRw7oWnzwFidIdz5zrD4ZM8=;
-        b=GZHZq7mHP9ifb12RjmHYOfxke1qxdN19vYmkQREwtjAjYCNYkwn9goGLzXJcR6D0uG
-         7L0y0MdMah3YjqJ/TD+gCblu4muRb2Edh5CevE03s+oC48fttySkFpZARVwUmLuTLkET
-         khbmR+ArOlCuu2A1P/2f/G4Iq0GYFbfPtIHXKNyGd1R2Wt8fgQAktqhe3wpZa8zr5Qjt
-         3S/y/qjMZhN/D2zVEdxz4eGoXYLGj90Hr1WrVkIHJpai3/+gAwooiOyiE3/mXw2InD40
-         Fx+NsLNUf1OrfDBg2K6g/KnwXZnR4U25IQ8Dp4NVVqx8fo9rnvwzLDch/vmTMFQonu3/
-         3C0A==
-X-Gm-Message-State: AFq9FYInGtH1m4Kru9moA8hN6wAQzMrN8pVoeXHWfPPn+8TBGkvt+ycP
-	8Fng0EAxMTqBhI73OB2+vIc4g4+mR4itrKllOV1mcx9H94r6ZS7o8LuGHIyw+Qrp3o832y4M4d2
-	ItNg=
-X-Gm-Gg: AYBFou3AcPqXPxnuIAvsc6H0uwJaFxwwx/JiO1iA53PYtiLfyqfGjCD6Tm71OWTvGbu
-	H9Hz82Vjjt4fsRIoSR40n6W2K5/W01f6c4AREmzRN6K2RF+zc2Hk0vCFRCNzIJVJ6k1WVCIBunv
-	H+xR5d60CGr8Du641tSUgZHnZZBnWfoiQx7yjWfLDf0vSycymeqTE0vOwe0voE4L7sZKS/ZcjT6
-	2v0xnDGIzMdVvxO1TviKAq43jlO5dshdMoK3ZMQ3zg3KIv3Rlmq1oRT4anHFRyM6CPvoRt0GxVM
-	sTe1TUN63gAKqyzdo8ybgdt4R7tcz1DA0kdqKm/OOvIHXnk2FJN+XGznn+XwKltmjyn8LvnSqHD
-	KrWhGTr5kzWIaCR+EbvWm5JxWZywjlggui0sVZWiuDk0rlx+vWnZl0sxhMSTLcKTKTc7fU+ytO0
-	s/NXQyG9pZjU+Xxeu3o1552zL1eeB6DDCgbqpQuWcSv2zFXih6RgI7UbQJxl4PYz/IcrwtNfRWX
-	mWhFLyR2M/+SNBei+rJ2leot1d9RFwk88DmnRyCG12M
-X-Received: by 2002:a05:6214:268e:b0:917:a8ae:26d6 with SMTP id 6a1803df08f44-91b5557f525mr318815846d6.34.1792060375737;
-        Thu, 15 Oct 2026 03:32:55 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792060378; x=1792665178;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Y9jp0yKWerzGGX31FqxEYfZ6VZBQv+aNm4Z29B71O1o=;
+        b=F26ul7p3yVuHaBfV/hqCVotdlWL2Bq74PQ2Gq7kQqKTzbkCZ1gMJqJsFxhbvOvYbHW
+         Bg50hBSqM3fdBuW04pbp6z5qU2/bLkYbWGR2NFAIpb6TLPUiT/O9CzlR4uGfoNoE3GNW
+         YlL2ycPg0leXKL5ff72xTNdV1K74nXmB36GCZCohc5ferF4ksl6VKLplRqkD6WPEnvY8
+         H5DTEnwXcH2ypDy6eat5MzRS64krZGzbpiN2kYTxCDGT9dBw9d5KPuNRwMiKoOXBYhiC
+         N6fVM1EwvYqTcke+KRKZAI3ZOnwb8/AVbb5FTVJfac/yn9PGM2YscevHR04V9YtC+DC4
+         rWbQ==
+X-Gm-Message-State: AFq9FYI/ie8AnvWPEhEIJBhnBonl4+4aubeNyhxs939ifrzaqVJUHC76
+	pOtS+JRS2oFefhVX4kgM4ecJouqDrVgetrRuavkdD/1iIc00+2s6uuMhdF5lWIJ0mGoKZHFr/cB
+	hC+c=
+X-Gm-Gg: AYBFou0TSfxSI7qdpa1Cb8lC8XNIBLMEk60rA9gd2NOVE5O73WbPfA293AwewM+ruKz
+	igfKRjHBO3QnzH9wSWQHXnSUOa21aY9vl0vOPsi4QYR2yWJFrev0yHS6kF8+SOxAL8dy0U4/+Mk
+	q2ZVaJP7IR/hDZSZ9B4TaqvlkV7vA2fK+WN3vFXrdyYEq7yDCtU708ir/GHTX9v3I5lgoeoGdgc
+	9ngB8rTjB3yG78tnVZ+YPW25sQ+5m3wnE4lMJ0a5xHZTaPV33XSy/FqAeGfj0zhagW3T22blvWe
+	xZnYayztQ23fVHLfn6VVLazPtLTbpzhk++QiRia1EjYrl+Fmnx6eq+bCPClcTcJnUKrlucvIXiQ
+	n/qqadMIWEzb3bXVJl/GkysuNmDZyQtjbRoC8jtRDEXrduZz9KyYYyaAgCLgSIG+/o1Ya/9C8UO
+	TevqvtSbpYylH4EA0lEzrta2AXPbe9zY8rEF30G+l7hcCxRZ4U0Pf1/TNH56F3v5TCkDiAy0AW6
+	VVxBs0rw+yzZ/H8DvGTuECcxXagPwUnZZEF4brNPOzL
+X-Received: by 2002:a05:6214:5004:b0:914:48c8:6961 with SMTP id 6a1803df08f44-91b5d57c1b5mr306941696d6.17.1792060378263;
+        Thu, 15 Oct 2026 03:32:58 -0700 (PDT)
 Received: from mbili.waya ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ba684f404sm55261936d6.31.2026.10.15.03.32.53
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ba684f404sm55261936d6.31.2026.10.15.03.32.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 03:32:54 -0700 (PDT)
+        Thu, 15 Oct 2026 03:32:57 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -66,12 +67,11 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	cake@lists.bufferbloat.net,
 	Victor Nogueira <victor@mojatatu.com>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net-next v2 3/4] net/sched/sch_cake: widen buffer_used to u64
-Date: Thu, 15 Oct 2026 06:32:44 -0400
-Message-Id: <QDISC-5RTM.v2.r0.20261015051735-3@mojatatu.com>
+	cake@lists.bufferbloat.net
+Subject: [PATCH net-next v2 4/4] net/sched/sch_cake: drop dead nla_nest_end() error check
+Date: Thu, 15 Oct 2026 06:32:45 -0400
+Message-Id: <QDISC-5RTM.v2.r0.20261015051735-4@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <QDISC-5RTM.v2.r0.20261015051735@mojatatu.com>
 References: <QDISC-5RTM.v2.r0.20261015051735@mojatatu.com>
@@ -81,115 +81,56 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is a follow-up to commit 4c660ee8c809 ("net: sched: fix 32-bit
-backlog wrap in gred, bfifo and plug enqueue"), which promoted the
-backlog + length admission sums in gred, bfifo and plug to u64.  CAKE's
-own memory accounting has the same 32-bit wrap.
+cake_dump_class_stats() closes the TCA_STATS_APP nest with
 
-The issue:
+	if (nla_nest_end(d->skb, stats) < 0)
+		return -1;
 
-cake_sched_data.buffer_used accumulates skb->truesize and is compared
-against memory_limit:
+nla_nest_end() never returns a negative value: it has a single
+`return skb->len;` and no error path (that is why the overflow-aware
+nla_nest_end_safe() helper was later added). The '< 0' test can never
+be true, so the 'return -1' is unreachable dead code.
 
-	q->buffer_used += skb->truesize;
-	if (q->buffer_used <= q->buffer_limit)
-		return NET_XMIT_SUCCESS;
-	while (q->buffer_used > q->buffer_limit)
-		drop...
+Drop the check and close the nest with the bare statement, matching the
+sibling cake nests in the same file.
 
-buffer_used is u32, so once the resident truesize passes 2^32 it wraps to
-a small value, the <= test passes and the drop loop is skipped even
-though far more than the configured limit is queued.  memory_limit is a
-u32 attribute (TCA_CAKE_MEMORY), so buffer_limit can be as large as
-U32_MAX and never caps buffer_used below the wrap point; with a large
-memory_limit the queue then grows until the machine is out of memory.
+This issue was discovered while fixing a bug on the gate action, see:
+https://lore.kernel.org/netdev/QDISC-H19Z.v1.20261001053234@mojatatu.com/
 
-The fix:
+Conditions to recreate the bug:
+- not runtime observable: the issue is found by inspection.
 
-Widen buffer_used and buffer_max_used to u64, the same shape as the
-gred/bfifo/plug fix.  buffer_limit stays u32; the comparison promotes it
-to u64, so the bounded queue stops at the configured limit below 2^32 and
-the counter can no longer wrap.  buffer_used is subtracted on dequeue and
-drop, so the widened type flows through unchanged.  The ACK-filter
-replacement applied the net delta as one expression,
-q->buffer_used += skb->truesize - ack->truesize.  Both operands are
-unsigned int, so the subtraction is evaluated at u32 and a larger removed
-ACK wraps the delta; the old u32 accumulator folded that back to the
-correct net value, but the widened u64 accumulator would persist it as a
-roughly 4 GiB over-count.  Apply the replacement as two exact operations
-on the widened counter instead; the queue already accounts ack->truesize,
-so the subtraction cannot underflow.
-
-Widening the counters alone is incomplete because cake_dump_stats() still
-exports buffer_max_used through PUT_STAT_U32(MEMORY_USED, ...), and
-tc.yaml declares memory-used as u32.  buffer_max_used only ever rises, so
-once the widened counter passes 2^32 the export reports peak - 2^32 for
-the rest of the qdisc's life.  Clamp the exported value to U32_MAX; the
-counter itself is unaffected.
-
-Conditions to recreate the bug: CAP_NET_ADMIN (root or a user namespace,
-the qdisc attach is gated by netlink_net_capable(CAP_NET_ADMIN)).
-
-  # hold a tun device's tx ring so the root qdisc parks packets
-  ip tuntap add tun0 mode tun
-  ip link set tun0 txqueuelen 32 up
-  ip addr add 10.99.0.1/24 dev tun0
-  tc qdisc add dev tun0 root handle 1: cake memlimit 4294967295
-
-  # drive >4 GiB of resident truesize through the qdisc (e.g. several UDP
-  # sockets with SO_SNDBUFFORCE). On the unfixed kernel buffer_used wraps,
-  # the drop loop is bypassed and the guest OOMs; with the fix the counter
-  # passes the limit without wrapping and drops the excess.
-
-  # the ACK-filter over-count is reached with ack-filter enabled and a
-  # queued pure ACK whose truesize is larger than the replacement ACK:
-  tc qdisc add dev tun0 root handle 1: cake ack-filter
-
-Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260818095927.15901-1-jhs@mojatatu.com
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260818095927.15901-1-jhs@mojatatu.com
-Link: https://lore.kernel.org/netdev/20260818095927.15901-1-jhs@mojatatu.com/
 Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://lore.kernel.org/netdev/87v77csd5q.fsf@toke.dk/
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/sch_cake.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+v1 -> v2:
+ - No changes to this patch. Re-sent as part of the
+   series_cake_clear_tin_backlog_underflow v2; it keeps Toke's v1
+   Acked-by, carried forward.
+ - Subject version tag bumped to v2; Message-Id re-baked.
+
+ net/sched/sch_cake.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index dc93267029e7..79a07fa80b35 100644
+index 4caf9718c9bd..124f552023f8 100644
 --- a/net/sched/sch_cake.c
 +++ b/net/sched/sch_cake.c
-@@ -234,8 +234,9 @@ struct cake_sched_data {
- 	u16		tin_cnt;
+@@ -3211,8 +3211,7 @@ static int cake_dump_class_stats(struct Qdisc *sch, unsigned long cl,
+ 						       READ_ONCE(flow->cvars.drop_next))));
+ 		}
  
- 	/* resource tracking */
--	u32		buffer_used;
--	u32		buffer_max_used;
-+
-+	u64		buffer_max_used;
-+	u64		buffer_used;
- 	u32		buffer_limit;
+-		if (nla_nest_end(d->skb, stats) < 0)
+-			return -1;
++		nla_nest_end(d->skb, stats);
+ 	}
  
- 	/* indices for dequeue */
-@@ -1850,7 +1851,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 			qdisc_qstats_drop(sch);
- 			ack_pkt_len = qdisc_pkt_len(ack);
- 			WRITE_ONCE(b->bytes, b->bytes + ack_pkt_len);
--			q->buffer_used += skb->truesize - ack->truesize;
-+			q->buffer_used += skb->truesize;
-+			q->buffer_used -= ack->truesize;
- 			if (q->config->rate_flags & CAKE_FLAG_INGRESS)
- 				cake_advance_shaper(q, b, ack, now, true);
- 
-@@ -3012,7 +3014,8 @@ static int cake_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
- 
- 	PUT_STAT_U64(CAPACITY_ESTIMATE64, READ_ONCE(q->avg_peak_bandwidth));
- 	PUT_STAT_U32(MEMORY_LIMIT, READ_ONCE(q->buffer_limit));
--	PUT_STAT_U32(MEMORY_USED, READ_ONCE(q->buffer_max_used));
-+	PUT_STAT_U32(MEMORY_USED,
-+		     min_t(u64, READ_ONCE(q->buffer_max_used), U32_MAX));
- 	PUT_STAT_U32(AVG_NETOFF, ((READ_ONCE(q->avg_netoff) + 0x8000) >> 16));
- 	PUT_STAT_U32(MAX_NETLEN, READ_ONCE(q->max_netlen));
- 	PUT_STAT_U32(MAX_ADJLEN, READ_ONCE(q->max_adjlen));
+ 	return 0;
+-- 
+2.43.0
+
