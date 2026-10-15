@@ -1,132 +1,129 @@
-Received: from mta0.migadu.com (out-100.mta0.migadu.com [91.218.175.100])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8522C282F34
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 00:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD932F39B5
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 01:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792025682; cv=none; b=MEisdjfxPLOFzbxSNQCOudcHfPnwRunOAXWKfg4ul2ftvBZ+SAq+HhAkx3bhj70ZIdcsGtBJl8k8xbCOGB+qeqk24nUvx3rPi2gLeOy0JKIJ3VfXVqlX2Ef26UGNeYQJWxRuE/O+qmPBgiTBY718xlEttfA2CWoLJr9bKJ3FiZM=
+	t=1792026883; cv=none; b=n+7eydvmC8cHtDPo3uKWeUHkAQHROIR6RQZnUQm1TPGDBy/wuThbMsaVcK/K3AK+hesJOx6jGWsqnnSaVD8mfTIMubuCf/y+BOsBxzUBGX+zHTiAuyh1MnWhv1PlCDzV0k5w71UQrfTE07AccFDkVI+iE+NBtcdFHQTLH2p+wGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792025682; c=relaxed/simple;
-	bh=r247dczbk+8j7HVrazYqB4jq4GEyWT/BBF98AxWtuB8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TEJcrUioOFRU3NGDIjnAveMPlMi6rvAas3LFgkmDqJqe42soyARryj4vkp/6fZecKmNdOlM8YV97J1BJGC7dQFe41m8v8lISHMupoDN0YMTiMIuxz467+Yze6I/0K7ckdjs67bvc9hF12qjwFj8F7aYkEBU0hpf0U0EruTvu+ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SE4RzuVO; arc=none smtp.client-ip=91.218.175.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1792026883; c=relaxed/simple;
+	bh=a0JM3tGonG6TXjE/FanhVttaHvXzL1JEEXBVFVdzvlc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RzKrJ0G6VfwT1KTV2pA+m2cN9c1WkzNyIp/w0LTyFEHw55rF+HhvGXiKSAWqvb3G9pTliZjRUqrJx/B/fuysNLfqcN4Axm5gLp/168O9ETNmbczS1j9N8bm7yyO83SfX5+2W7meRXD2KZTbcNxzMmlp6YhdkhaH4K0DY4D2+hWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iNs6Q0rL; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SE4RzuVO"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=r247dczbk+8j7HVrazYqB4jq4GEyWT/BBF98AxWtuB8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792025678; v=1; x=1792630478;
- b=SE4RzuVOWBfqDbbWmdLh+Oxecw401ihk60GUM7rm7cXZyltp45UG3LSkJ3Ju3W8/aF6xrw9l
- jEBYhbzYoACrrOHpXccNirXLrIsOQqOSazOQLXlrJu2mmiKwjT5CvutLfDA7ytOxK7vVwmWaJwD
- uVSFpBAh+9MA8QRZqrwokSmE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 57c161504278a604;
-	Thu, 15 Oct 2026 00:54:37 +0000
-X-Mizu-Trace-ID: 57c161504278a604
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 15 Oct 2026 08:54:30 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Ahmed Abdelsalam <ahabdels@cisco.com>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>,
-	andrea@common-net.org
-Subject: Re: [PATCH net-next 3/5] seg6: apply the PSP flavor together with
- NEXT-C-SID in SRv6 End
-Message-ID: <atAkRpVssWDpyx9-@fedora>
-References: <20261011192310.55-1-andrea.mayer@uniroma2.it>
- <20261011192310.55-4-andrea.mayer@uniroma2.it>
- <asyXpWXMeKnPw9U6@fedora>
- <20261015000052.7731f972b28eb12ab57dd93c@uniroma2.it>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iNs6Q0rL"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a022fee0caso44171015e9.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 18:14:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1792026880; x=1792631680; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=TITPVJDihb8Q06oVMdVjVp/hCUi1JQZf8N1TzMREhjc=;
+        b=iNs6Q0rLRlUqyPdel4mXa7w3Gsq6fO3j3Hc7vdUgQ1MjqmB5x6j5L5SIbzipUWXZF5
+         iU9DYOhOo5HKNID6wiTgLrOZgoYcMliCH0HMpOCuZQMNAMyVSaFdKFyheWyf3ZQwbInU
+         B8x+CEOokgbvfHeamkrkTwd5XR6Ajibzu+idWLVPyz1KQfaROp2FkrI4/pLH6V7jJDZR
+         TeyXrhIOscmHSIvwT2yEYMcBBoQ8a5WjSsG3N1U0p3z14HzyGVtIPowjyWWVF9cY3N8p
+         ozu+iFl0YUJVIBVsJfh+8lSqwtd/2uWhSMm3Gnd1jYJmQx5pd4en2JzSiAZeoGQ6kvo7
+         PvxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1792026880; x=1792631680;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TITPVJDihb8Q06oVMdVjVp/hCUi1JQZf8N1TzMREhjc=;
+        b=qzJyZcHLlZ9hED6wqB0g9WRRgKrCtYFnto4LfXicK2d92xlkSzC3kH82AjNkHH2+xF
+         SIjtF8lMdO0yCvotZOw7Ruj/dDYepAOIK+PV6zbxKny7c6oC1zZaLg66T9CqyOW3MYjt
+         DWRemuD6rE7OY2vyH2nSJynGqZgTc1cyL05oBKAxyGahZL3KIt019be/XV82UdFNPE0D
+         aGgemcjsL2awvMZHC7f9fi1ku82QvYDtfm8eaccS2V7WXLsD2rjYA8f8PjWfycFcQKUI
+         5XgVBDUZsJBl0XlqVNXtyt6uPg0xeleNgQEwlM2vOJgPUkcL8A+vS083/cuLCAg1rUJZ
+         KAMw==
+X-Forwarded-Encrypted: i=1; AKwUvBx/3eE11fyX5eFj2tSDt1eMTnYMubQe8WzDBX3NniTM7c9of/ji/TISnGLFDYRj4gwQ0Ut0kXk=@vger.kernel.org
+X-Gm-Message-State: AFq9FYJPRu1zRMD1ffStPd1/43ANulWWT42CqdJI7VGN5JpwxnR8CmL1
+	dZmnmNrkVLHf+SDnRayXkAo4qmGwSR4lrfxxmMx/KSFmA9CAqYHjxcEJCYHeZg==
+X-Gm-Gg: AYBFou3u/LktLwD/sANdJEYC6COKLSnAaroqPF8hSAlmC6ITDSqZ6YamyUsJCcfmWYM
+	S4nwIKxWWtwxvk2fGfpr+bIa3plq7rIlR+UVIgnbild0HrWZoXwczbsEJi4xeuCVjLuf82+LH5B
+	nU0D5TxMt6BqhymB/zAUZ6XfT+SFJNsp1i/oy2fBukfj0AbFyN6LV1v74tDWSBgqr48XAXhl95f
+	peZbWE4EWCLjuzK2cfm6aeB7QCXg7FIplIJvQHEhkuZxRSoTGlAhdNrjoIxAxZVzBWTe6pI0atz
+	dAXE/n7DsB8lE0hDxLI+a7enGzLLD8gC1ZIaP2+IQsbtd0DdHZAXekhQXXjyOqBiZXu7l1OpDa0
+	K1SYKBmJ6ydfJ8nIXHwyw05MsvCSWQU0AuVATw9gSjY2cafYW+kom1n3WXO0mxRyXCy3eEe3Vfz
+	uHkiu/LOYnGXsKPx+HuRt/3FXJOEKEERoHLumXbJz3ZdNPEA2P4w+4+sm/Yppgtu9xrIE2d/759
+	qeSCb+e+ZtzJTb35ssgt/uDOyDLcRsC7dzpTd7LF+MVaB+Kndq3yqsltx7T
+X-Received: by 2002:a05:600c:8b0a:b0:4a1:6992:f861 with SMTP id 5b1f17b1804b1-4a18e446db6mr326233375e9.1.1792026879579;
+        Wed, 14 Oct 2026 18:14:39 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a1bd99e87csm30060215e9.13.2026.10.14.18.14.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Oct 2026 18:14:39 -0700 (PDT)
+Message-ID: <401073e5-6f35-4230-8734-2428e188993f@gmail.com>
+Date: Thu, 15 Oct 2026 02:14:37 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261015000052.7731f972b28eb12ab57dd93c@uniroma2.it>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] sfc: fix NULL pointer dereference in
+ efx_tc_flower_replace_foreign()
+To: Rand Deeb <rand.sec96@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@kernel.org>, "David S . Miller"
+ <davem@davemloft.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ netdev@vger.kernel.org, linux-net-drivers@amd.com,
+ linux-kernel@vger.kernel.org, deeb.rand@confident.ru,
+ lvc-project@linuxtesting.org, shda@confident.ru
+References: <20261014145800.726-1-rand.sec96@gmail.com>
+Content-Language: en-GB
+From: Edward Cree <ecree.xilinx@gmail.com>
+In-Reply-To: <20261014145800.726-1-rand.sec96@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Oct 15, 2026 at 12:00:52AM +0200, Andrea Mayer wrote:
-> On Mon, 12 Oct 2026 16:17:41 +0800
-> Hangbin Liu <hangbin.liu@linux.dev> wrote:
+On 14/10/2026 15:58, Rand Deeb wrote:
+> efx_tc_flower_replace_foreign() walks the rule's actions with an 'act'
+> cursor. After a redirect action it adds the action set to the rule and
+> sets the cursor to NULL:
 > 
-> > [snip]
-> > > +static bool seg6_flv8986_enabled(__u32 fops)
-> > > +{
-> > > +	return fops & SEG6_LOCAL_FLV8986_SUPP_OPS;
-> > > +}
-> > > +
-> > > +/* check whether the NEXT-C-SID processing has to be used for the packet,
-> > > + * instead of the RFC8986 flavors set for the given SRv6 End* behavior
-> > > + * instance.
-> > > + *
-> > > + * This function returns:
-> > > + *  - true, when the packet has to go through the NEXT-C-SID processing;
-> > > + *  - false, when NEXT-C-SID is not configured or the packet has to be
-> > > + *    processed on the basis of the RFC8986 flavors.
-> > > + */
-> > > +static bool seg6_use_next_csid(struct sk_buff *skb,
-> > > +			       const struct seg6_flavors_info *finfo)
-> > > +{
-> > > +	const struct in6_addr *addr;
-> > > +	__u32 fops = finfo->flv_ops;
-> > > +
-> > > +	if (!seg6_next_csid_enabled(fops))
-> > > +		return false;
-> > > +
-> > > +	addr = &ipv6_hdr(skb)->daddr;
-> > > +
-> > > +	/* NEXT-C-SID and the RFC8986 flavors combine according to the
-> > > +	 * DA.Argument (see RFC9800, sections 4.1.1 and 4.1.7):
-> > > +	 *
-> > > +	 *       DA.Argument   RFC8986 flavors   processing
-> > > +	 *   (1) != 0          any               NEXT-C-SID only, SL unchanged
-> > > +	 *   (2) == 0          none              the behavior, e.g. End
-> > > +	 *   (3) == 0          one or more       the behavior with its flavors,
-> > > +	 *                                       e.g. End with PSP
-> > > +	 *
-> > > +	 * In (2), the packet still goes through the NEXT-C-SID processing,
-> > > +	 * which runs the behavior (e.g. End) when the DA.Argument is zero.
-> > > +	 */
-> > > +	return !seg6_flv8986_enabled(fops) ||
-> > > +	       !seg6_next_csid_is_arg_zero(addr, finfo);
-> > 
-> > nit: based on the comment, maybe we can change the order to
-> > 
-> > 	return !seg6_next_csid_is_arg_zero(addr, finfo) ||
-> > 	       !seg6_flv8986_enabled(fops);
-> > 
-> > No need to change if there is no new version patch.
-> > 
-> > > +}
-> > 
-> > [snip]
+> 	list_add_tail(&act->list, &rule->acts.list);
+> 	act = NULL;
+> 	if (fa->id == FLOW_ACTION_REDIRECT)
+> 		break; /* end of the line */
 > 
-> Hi Hangbin,
+> The break only leaves the switch statement, so flow_action_for_each()
+> carries on with the next action while act is NULL. A following redirect
+> or mirred action then does "save = *act", and a following tunnel decap
+> action passes act to efx_tc_flower_action_order_ok(), which reads
+> act->decap. Both dereference a NULL pointer.
 > 
-> thanks for the review and for the suggestion. I would prefer to keep
-> this order. The table in the comment is meant to describe the cases
-> rather than the order of the checks. Since testing the 32-bit flavor
-> mask can be cheaper than checking the DA.Argument, I just put the mask
-> test first.
+> The loop is missing the check that efx_tc_flower_replace() performs at
+> the start of every iteration for the same cursor: reject the rule if an
+> action follows a non-pipe action. The foreign variant was added without
+> it.
 > 
-> Let me know if you see it differently.
+> As a result, a TC flower rule on a tunnel netdevice that redirects to an
+> sfc representor and lists another redirect, mirred or tunnel decap
+> action after the first redirect causes a kernel NULL pointer
+> dereference. It happens in the context of the task adding the filter,
+> with efx->tc->mutex held. Adding such a rule requires CAP_NET_ADMIN.
+> 
+> Add the same check at the top of the action loop in
+> efx_tc_flower_replace_foreign(), returning -EINVAL with the same extack
+> message as efx_tc_flower_replace(). The release path already copes with
+> act being NULL.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: 17654d84b47c ("sfc: add offloading of 'foreign' TC (decap) rules")
+> Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
 
-Yes, putting the mask test first makes sense to me.
+Diagnosis and fix look correct to me.
+Acked-by: Edward Cree <ecree.xilinx@gmail.com>
 
-Thanks
-Hangbin
+Sadly I don't have a working ef100 to test this on.
