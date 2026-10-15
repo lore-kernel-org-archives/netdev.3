@@ -1,73 +1,76 @@
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+Received: from mail-qv1-f100.google.com (mail-qv1-f100.google.com [209.85.219.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333953264CC
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312203BCD37
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 12:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792066741; cv=none; b=bqiCkHHwEyHdD2l5KDPxVIZbRLyRK15sQaypVAkA1wzzJjjiSUnZuYR7cnXgQ18G77Sg/MEXWE5GqokPzXe1YfWoXmW+UGGyJmWamWOaDjDLuvpxXy75IrLBq0zQTOKDCgM/hry0CjqaTGETppZtm3p29DJIAChfkgZnjBL57Ak=
+	t=1792066747; cv=none; b=S8KdARBSJDb/QzBXhl8LWmErcpDcZST3R8Fp+djLW7EkehD1JkQx5Dro/dGVodCGj5Hf+BdAFdd6SkNaEg6/AGjG5XOVjh7wIkz1nNjETHBloAdVtco4hR5p3oiSkxOByr/eaKMTg4n4IPXd9/0CtyO1CwSjf/HfKcpLzwIpx7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792066741; c=relaxed/simple;
-	bh=i+svUFWgR0CVmdNaW9gvdHhxIb9SSNi2f2TTUhncJI4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PA5U0A4mqWccHbe7ehXidT9FNsCbxUEpQN5O/39Tt2VISWGQN1pnPxaR7dapL8i755/CsUMiHu8+KVgA/jsKuh+e1kyxYRZlQIUh3Ubp2TUIYa1PKEXywQ/+bKx4wkJ0JhPDFhYBngFN4+Ma5fGz3lvFsRF1ajlrS49fXQT3mvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=N4Pc5+nh; arc=none smtp.client-ip=209.85.216.99
+	s=arc-20240116; t=1792066747; c=relaxed/simple;
+	bh=USxceNv93mvO+qYyxsutIULkz6xx7E7suaD9GJik7LQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=puDXZ09Wy7hJ4+yvoKHb39EHvRUNo7zqC5wlSZxH0CigmIDgjrn2yKXjBJnREPwhCjtSukYeKNi0ZWj1CSXz0q0Rz73XOzVpyDJx7GmZCneulxUyu/kzyrf2UjGqzq7de5UWCyWaskjUDWSnjKVzU4KqontQan+lNPFyF+xacFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AYmBolax; arc=none smtp.client-ip=209.85.219.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="N4Pc5+nh"
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-3ac6794fe45so1333733a91.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:19:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AYmBolax"
+Received: by mail-qv1-f100.google.com with SMTP id 6a1803df08f44-91b52ba422cso57049166d6.2
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:19:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792066739; x=1792671539;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=8UE0FnktA/0QB+N/hruvrQD7JLt1z1nNTBQq1wQCA4A=;
-        b=vZoj3pMoAOuTU7V8++qaRXyPme7kgotCyIBRvV6oG0ij5Uk0o7uf+JDXXOWgkRzOj3
-         M7d7+uzzOEpXFgq34zZie3HD9rJ4UiFd25cYMimMNNaJ2dSzimwy54ALrYohMyG+LVhG
-         Iisbv3g7EUW14IZ6FgVhYR67b6VR5ZOyPK5nzvwBsJ2CyJdsQjTo+/kr8NKxOnXHx3jF
-         HHvCWxFRtqsqIlG4ksgyZBbGi9Uf4mkDSQNFm7t+qw+oy6YyVmQ7PL2H9DOSAzwcugar
-         T42iymNBWCYbyKsqPs4LbljoEbjDk1632+SE+f2jepL1ZGoxsNCeI9KycnQcJY0SiJ1D
-         9XJQ==
-X-Gm-Message-State: AFq9FYJc+vK5/NN1cMGCIs28CaP1GgaHILnGXaGIWXUb/wHEsx2mtiqW
-	dgBt8B8bTjEloM29Up+aNFEAROBj7IIXIF3tLTo8/tlDNBjFKLm0PIEmpbjgjsQP+Lzwi/TLxqL
-	WksaYHyZ7WDHtCX3488O4v6zQokny74r3WTAPWOJWF97y4mOWhdEJIF5JWqTjq6Uea3HOO3jjmP
-	iSWIsCmcAhokc0btI5qU6yziKe8Ajw8uQMwL2QOiSBmtzHBFKwjm8KaIms4hN9mZ0Jzw6gR8OVj
-	MM1EePymQ==
-X-Gm-Gg: AYBFou3AUuo2rjQMzzcHKsBntVoOs5DPvWFXxd0Las6kn0UWnzSwh6l9SvuNYQfy7K7
-	WmUfT4V9ObqS0Y01/IHLku7x2mi4IA1g/Nncc+dgv1Useg3Tf2uOkPXS11dSeSnCwvnnu0s9A+l
-	IaKLr5iJ+kxO99Mw3c7gZHS2RyCVCApLyh/+smA/hB4qYjtKl8tqYCJ8VRtqRKLCWMVg15KOM8m
-	lQOly8TeUaoDLzarQkZxGzC0G96pD2jjn+AMggHwzjZp8/NjF01qJgJvfjhzxpvWirupVAzhdMK
-	w4k0ardEUnOakhdAReOzgJmSTySY33vLnoUOQm8Aj2EDyIqd8ekCGPnEqxDC8AzqJUZhugIRwtl
-	1r2KCA7XBPOfJipuROyPdzjF2Mg880WTA+zuGvH3DPOj0bOv84SYj/uIKv/UXjbpRBxCTiTF7cX
-	mylZ4nrfIhK10w/WNufndCCqi0hgqLzKQ4UDiQ
-X-Received: by 2002:a17:90b:2885:b0:3a7:b260:9ccc with SMTP id 98e67ed59e1d1-3ab3af73996mr15931816a91.65.1792066739477;
-        Thu, 15 Oct 2026 05:18:59 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1792066745; x=1792671545;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Rxq3hfUR8X6WLnz0/5e9y66/fCs1i78EHHGa1XswQAY=;
+        b=nJMFwpar8X4K/aVGFvfLOOy1q87XEXZ3ooeZ/QjZUKLcnNCYPd0KcSUyv3rZz5nemx
+         CH+szngjorlzLnkDugGIBwPjjv3l9VinnzDcNLybDYWcTZmSPXYhTcW+cXD+vhnaI+dg
+         dDI9GGKJqEuAjpbo/3Pmt1th7D5TF85LKjfWXDG3PplUVaxdEUya22qLXnbkqoEi4qhT
+         50FtIEYndPG4KkIK/inNMzOwUimws/e0vw3CTZVD1aJSCcnc3y40+gsnMYUp8zYiexrj
+         dClVhqXGDbk5tiZbbaSbQzPtIjcI1rzGImoIOPgRsm5Zwyr4Buk8zxUn7/8+NyFwWt5c
+         XZhg==
+X-Gm-Message-State: AFq9FYIvaPLgNIRM/Mq7Iv/b2SZqZBI/Bv6c4ZkrdFpoha/JdKwtvwNW
+	yymZPIWwP2I2tkZTOWYlPSqblnIIwKNQHu0BjQHQBFj9/k1czzy34XrHbbCOL1Cq3+q9pwE4snS
+	zCusoD+lrqSkgpT8wl3pepiTEkyoh1ZBlii4dLAZdDKf56MOjiIp3hx9s+Tk8koRrsMFQYAAME9
+	1wPxW9E0E3RcO0TxzG3vFmLGI2P25YJjeDFBUP3Q2U9MBm1CAq7PXYwt4W5sYlziE10WIe41iup
+	c5i3NE/Ng==
+X-Gm-Gg: AYBFou06nfJ0NAwzL9c4dBZlwvyqixXQQEVxrcxsG6MC4bfMdcnN0KAoAIpzELs85dp
+	IGmzuQasFveVUyeSKD67hl37covWAPBzEBfo8GbOQN7SMgq7ucbZ6wguqK1P/nA+h7fNQAJL2cK
+	cuDgExVXF+c+MUUqu5r5zJPPvTgyJvpKfz30nE1OUcn46C7vpNujocEHJvm7IQyszdWKTHNyNGt
+	AeHt+50Ee22Nk279WcEs/jhzsZ/0IPALICZynvAHkTW/bGdufIzD+JjzvKcwTn3MApxxUWhstY5
+	EPV3ofe6jE/byc197TwnCaNKhyzxVVGzog0WpGEIyHZmdG5nzBz/fHoHv3loThFdjjnXcfkNuQh
+	/gBHRo5vUFd00HJ2SU9StizGVpvTQplGSk3I7tOHVCti65AevjXV6dP4/wKr5ubBWgeKsRCgP9g
+	uWO9/bX6o4i9FtnETXy+hMOQNpWAlE+Onh29BX
+X-Received: by 2002:a05:6214:2e45:b0:91b:5d39:e13f with SMTP id 6a1803df08f44-91b5d39e9a0mr309281106d6.52.1792066744407;
+        Thu, 15 Oct 2026 05:19:04 -0700 (PDT)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-120.dlp.protect.broadcom.com. [144.49.247.120])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-3ac930496e2sm511965a91.1.2026.10.15.05.18.58
+        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-91b97b1080dsm617186d6.8.2026.10.15.05.19.04
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 15 Oct 2026 05:18:59 -0700 (PDT)
+        Thu, 15 Oct 2026 05:19:04 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-35a4d2e39acso2873704eec.1
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:18:58 -0700 (PDT)
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-357e2bc3b1bso8228590eec.0
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:19:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1792066738; x=1792671538; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8UE0FnktA/0QB+N/hruvrQD7JLt1z1nNTBQq1wQCA4A=;
-        b=N4Pc5+nhUGLPQ/+fw0aMEcQTGMvrAKfjfKlk1qOuPAQvfqVSLLt1z+Riw5EdqYWchC
-         x3ycNdAbXMCsCc/YCQYjwWjwcf+HkIkGgYCEPScrCT5CjoxA8DcSp2N7X1LnjwEbWb2W
-         IA6DK/cySdRnADJdCcLE0MwH18HABnxRYK+xE=
-X-Received: by 2002:a05:7301:1890:b0:351:13b4:9c59 with SMTP id 5a478bee46e88-3537dde3eb0mr27290916eec.2.1792066737356;
-        Thu, 15 Oct 2026 05:18:57 -0700 (PDT)
-X-Received: by 2002:a05:7301:1890:b0:351:13b4:9c59 with SMTP id 5a478bee46e88-3537dde3eb0mr27290863eec.2.1792066736616;
-        Thu, 15 Oct 2026 05:18:56 -0700 (PDT)
+        d=broadcom.com; s=google; t=1792066743; x=1792671543; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Rxq3hfUR8X6WLnz0/5e9y66/fCs1i78EHHGa1XswQAY=;
+        b=AYmBolaxe/87sCZDDd8Dd+5/RQzjX9p8DESwWTWh8W3Fl87h/qdLekqhu/LxBwVZ8K
+         h10cSjSPkpLh+H3f8YEIBNgXUSAaI548Ugok7KUnroRmZcM6N8E05pardllgGo0e7hos
+         Ja+9rABMpTupCbP+68YyxQbYKIFtPbdYLSczg=
+X-Received: by 2002:a05:693c:26c1:b0:351:7e5d:2de9 with SMTP id 5a478bee46e88-3537ddd6142mr23491568eec.1.1792066742977;
+        Thu, 15 Oct 2026 05:19:02 -0700 (PDT)
+X-Received: by 2002:a05:693c:26c1:b0:351:7e5d:2de9 with SMTP id 5a478bee46e88-3537ddd6142mr23491537eec.1.1792066742277;
+        Thu, 15 Oct 2026 05:19:02 -0700 (PDT)
 Received: from H5S1 ([192.19.203.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2954bsm64496032eec.26.2026.10.15.05.18.51
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3537cb2954bsm64496032eec.26.2026.10.15.05.18.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 05:18:56 -0700 (PDT)
+        Thu, 15 Oct 2026 05:19:01 -0700 (PDT)
 From: Vikas Gupta <vikas.gupta@broadcom.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -84,10 +87,12 @@ Cc: netdev@vger.kernel.org,
 	dharmender.garg@broadcom.com,
 	ajit.khaparde@broadcom.com,
 	Vikas Gupta <vikas.gupta@broadcom.com>
-Subject: [PATCH net v2 0/2] bnge fixes
-Date: Thu, 15 Oct 2026 17:48:45 +0530
-Message-ID: <20261015121847.1933308-1-vikas.gupta@broadcom.com>
+Subject: [PATCH net v2 1/2] bnge: cap RSS contexts and RX rings to the RSS table size
+Date: Thu, 15 Oct 2026 17:48:46 +0530
+Message-ID: <20261015121847.1933308-2-vikas.gupta@broadcom.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20261015121847.1933308-1-vikas.gupta@broadcom.com>
+References: <20261015121847.1933308-1-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,29 +102,55 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hi,
+From: Dharmender Garg <dharmender.garg@broadcom.com>
 
-This series fixes RSS indirection table and context sizing for large RX
-ring counts. Patch 1 caps the hardware RSS context count and RX rings
-to the RSS table size, preventing out-of-bounds writes and an oversized
-memset(). Patch 2 fixes the indirection table sizing so rings above
-the table size still receive default RSS traffic.
+The hardware supports at most BNGE_RSS_TABLE_MAX_TBL (8) RSS contexts.
+They are stored in vnic->fw_rss_cos_lb_ctx[8] and back a 512-entry
+(BNGE_MAX_RSS_TABLE_ENTRIES) indirection table and DMA buffer, so at most
+512 RX rings can be served by RSS.
 
-Thanks,
-Vikas
+bnge_cal_nr_rss_ctxs() has no upper bound, so with more RX rings it
+returns more than 8 contexts: bnge_setup_vnic() writes past
+fw_rss_cos_lb_ctx[], bnge_set_dflt_rss_indir_tbl() and
+bnge_fill_hw_rss_tbl() write past the indirection table and its DMA
+buffer, and the pad computation in bnge_set_dflt_rss_indir_tbl()
+underflows into a huge memset().
 
-v1->v2:
-  - Fix Sashiko (Nipa) review comments.
+Cap the number of contexts at BNGE_RSS_TABLE_MAX_TBL and the number of RX
+rings at BNGE_MAX_RSS_TABLE_ENTRIES, so the sizes derived from the ring
+count always fit the arrays.
 
-Dharmender Garg (2):
-  bnge: cap RSS contexts and RX rings to the RSS table size
-  bnge: fix RSS table sizing for large RX ring counts
+Fixes: 627c67f038d2 ("bng_en: Add resource management support")
+Signed-off-by: Dharmender Garg <dharmender.garg@broadcom.com>
+Reviewed-by: Vikas Gupta <vikas.gupta@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/bnge/bnge_resc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- drivers/net/ethernet/broadcom/bnge/bnge_netdev.c | 10 +++++-----
- drivers/net/ethernet/broadcom/bnge/bnge_resc.c   |  6 ++++--
- drivers/net/ethernet/broadcom/bnge/bnge_resc.h   | 11 +++++++++++
- 3 files changed, 20 insertions(+), 7 deletions(-)
-
+diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+index 4711dd4945ff..b540eed12fc6 100644
+--- a/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
++++ b/drivers/net/ethernet/broadcom/bnge/bnge_resc.c
+@@ -182,8 +182,9 @@ int bnge_cal_nr_rss_ctxs(u16 rx_rings)
+ 	if (!rx_rings)
+ 		return 0;
+ 
+-	return bnge_adjust_pow_two(rx_rings - 1,
+-				   BNGE_RSS_TABLE_ENTRIES);
++	return min_t(int, bnge_adjust_pow_two(rx_rings - 1,
++					      BNGE_RSS_TABLE_ENTRIES),
++		     BNGE_RSS_TABLE_MAX_TBL);
+ }
+ 
+ static u16 bnge_rss_ctxs_in_use(struct bnge_dev *bd,
+@@ -459,6 +460,7 @@ static void _bnge_get_max_rings(struct bnge_dev *bd, u16 *max_rx,
+ 	}
+ 
+ 	*max_rx = min_t(int, *max_rx, max_ring_grps);
++	*max_rx = min_t(int, *max_rx, BNGE_MAX_RSS_TABLE_ENTRIES);
+ }
+ 
+ static int bnge_get_max_rings(struct bnge_dev *bd, u16 *max_rx,
 -- 
 2.52.0
 
