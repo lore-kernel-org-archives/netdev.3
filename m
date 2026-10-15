@@ -1,405 +1,245 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3812529414
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 13:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FE424A078;
+	Thu, 15 Oct 2026 13:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792071870; cv=none; b=qR/EAm8c5IRmIylHJHyc2p84JLpZwgaQlNcV2+ankvYmb22mrmSiO3MDCWcEiT8eBDTFd79RWSYd4tUOb2Gz9wLfWk1dQAYlpvUA48nKFHNCnOisTmbXIZfTN528GwurQjot6iY3vdy3iCOBsstO+Hg4+wInIooCklAEmMUzlf8=
+	t=1792072501; cv=none; b=HPXrCmBhNJrSLSmFOPwbdrC5+0mpTM2Xo/oc1kmDmYU4Gj7jat2BiyQ/tqUz5JFzEY88H+Mc5EUzKJVqVZmT/w5wetUOI1ZtaI27BagUG5JWpt0nV7YsRzGf1rJvhhiMe8P0TAnGZyFNSloQbbEZtKXkeQ5BM0z0ch3hEVs2GhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792071870; c=relaxed/simple;
-	bh=yXHPiRfuc+64QzYxYM5QJOO+PRUm1XCvgYjVRn5AOA8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVCCkFWhFVf5kHZO0qJmrxGvF47fHZtvFJ1pPK/5IYUCA+rEz8u9BHzgC73tsOAVCCsYzhnejtw4ZwYIKanYTAue2T+eI9BTHNX7lzt41kLbz0bT/3kQTYtI1YlaxD8HSsrT2bExOQHmRdgYz6MhMxDZryj4pBM7avm8IivWSUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Ev1YhCwt; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1792072501; c=relaxed/simple;
+	bh=0PRBjTr5TypY1b893wkFMEDgcWkORlJqXUbeNeHQLNk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NeXlvjCS5LfiT/vvaCRpK7rUAJw0WfqPBf9GX2xrR3bJg8+TlN7Q0ZSWvi0bt2+xlleuQYUVrzU73MD94eS65cwmdNHmVh7k7fw4b0Cw3y12LF3802bsnFWMaV2pP2kcxqE0UeEK5T3sjH7CYqdpeScasibaJiRq300nnGp9Iro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+s5HZxi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Ev1YhCwt"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 4FA814E41260;
-	Thu, 15 Oct 2026 13:44:27 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BB5860360;
-	Thu, 15 Oct 2026 13:44:27 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5EEB510328B9A;
-	Thu, 15 Oct 2026 15:44:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792071862; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=dLCPgpGiJfsTcmZBYtAIUIyQk+X0pDqsb2Fz5a/9Sb4=;
-	b=Ev1YhCwtbqjEqsPr9I8yUTVBa9GzmnkLjIpPeGdv9wVdkFaVsapOAYvJGrkBB7u4LXwt3A
-	/C6GaCIKw117E9iSwpiCT9bYlamNjFZ//9QKHd/hquT0ib+I6bk9RRaBZeIM7j0PXj2veL
-	BFVOc3hSU/ZuS9U7kNoLTicX+t4dsYm7DVgt/E0zhONcW+dtyGrNBaMnM/OLAbA3YW1i8Z
-	IpytQD+nkiEtBnbLPs9P5DoCQIsnFlJyDl1Das+w41jZnS9WT+GWNe96KuZFb0XSbPhY8y
-	dUTxtK4JVlQDbnqe2mHE1TQ2kcJ/y34VqZZs7cC9TFsc0kupf59tdM8KCbtgmQ==
-From: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	thomas.petazzoni@bootlin.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next v3 3/3] selftests: drv-net: pause: Validate pause autoneg interactions with link autoneg
-Date: Thu, 15 Oct 2026 15:43:48 +0200
-Message-ID: <20261015134350.629593-4-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261015134350.629593-1-maxime.chevallier@bootlin.com>
-References: <20261015134350.629593-1-maxime.chevallier@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+s5HZxi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2937E1F000C4;
+	Thu, 15 Oct 2026 13:54:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792072499;
+	bh=gcI24nl2IlPA5Bb0Wh99zUo3x/8i2k9HfoyGQVQIpDg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=a+s5HZxibXWhqhURTstsw12T/IevWt4HrHhRpZgbNCdg/hWmVdbb2gZ4YzOpVs1X+
+	 8UfkgDVdL/JQAzMUaI5YDFrAThRBXJWI1XxrX3c8sxnoiFNlLNxenVhMo5uaqgf1Jk
+	 1ArLyKrMO3Va5Cp1nw0RYV7K6u4jfA1r3FV25QV30265brksQ1nNGVNQKQ7LN3ocvk
+	 KQ5tovhGpFCrhA+ZiE6bubRtCD7KTbLkfNRiIvDEMvlAhU8pxBBcIhMrklmhmfG5Xj
+	 etdkC5AzhFEyn05iJZSi7gtIF8BSb5ZCFXSzYebOO6kdwH7HEkAA832hhPo+ujro6q
+	 b3umGmKUykOmA==
+Message-ID: <6747ddd1-3eb4-45ff-be2d-f858dc71ab35@kernel.org>
+Date: Thu, 15 Oct 2026 15:54:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net 1/4] mptcp: reset msk state on early connect failure
+Content-Language: fr
+To: netdev-bot+sashiko@kernel.org
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ caoruide123@gmail.com, stable@vger.kernel.org, vega@nebusec.ai,
+ sashiko-bot@kernel.org, weir@nebusec.ai, kuniyu@google.com,
+ daniel@iogearbox.net, kafai@fb.com, Quanye Yang <quanyeyang@proton.me>
+References: <20261013-net-mptcp-misc-fixes-7-3-rc8-v1-1-932c9b182fc7@kernel.org>
+ <179198834484.434549.4616694240552704738@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <179198834484.434549.4616694240552704738@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Pause autonegotiation happens with the link partner using the same words
-as the link negotiation, used for speed and duplex exchanges. However,
-pause and link autonegotiation can be separately toggled :
+Hello,
 
-ethtool -s eth0 autoneg on # Enable link negotiation
-ethtool -A eth0 autoneg on # Enable Pause negotiation
+On 14/10/2026 16:32, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider.
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> If you believe none of the issues are legitimate, please reply to each
+> issue of Medium severity or higher and explain why the AI is wrong.
+> If any of them are legitimate and you plan to respin, please let patchwork
+> know by including "pw-bot: cr" as a separate line at the end of your reply
+> (one such reply per series is enough).
+> 
+> - [Medium] The new error path in mptcp_connect()
+>   (net/mptcp/protocol.c:4224) calls…
 
-Pause can't be negotiated if the link autoneg isn't enabled.
+TL;DR: this is a pre-existing issue.
 
-Pause autoneg and link autoneg settings must not interfere with one
-another when user is configuring them :
- - If Pause autoneg is on, it must stay on when link autoneg is disabled
-   (even though Pause won't actually be negotiated)
- - If Pause autoneg is off, it must stay off when link autoneg is
-   enabled
+> mptcp: reset msk state on early connect failure
+> 
+> This commit changes the mptcp_connect() error path. It now clears the
+> fallback state (MPTCP_FALLBACK_DONE, allow_subflows,
+> allow_infinite_fallback) and resets the first subflow context. The goal
+> is that a later connect() on the same fd can use MPTCP again after an
+> early fallback followed by an immediate connect failure.
+> 
+> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/633
+> 
+>> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+>> index e89a69ab927c9..e6f73a5ee630a 100644
+>> --- a/net/mptcp/protocol.c
+>> +++ b/net/mptcp/protocol.c
+>> @@ -4212,9 +4212,16 @@ static int mptcp_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+>>  	 * subflow_finish_connect()
+>>  	 */
+>>  	if (unlikely(err)) {
+>> -		/* avoid leaving a dangling token in an unconnected socket */
+>>  		mptcp_token_destroy(msk);
+>>  		mptcp_set_state(sk, TCP_CLOSE);
+>> +
+>> +		spin_lock_bh(&msk->fallback_lock);
+>> +		msk->allow_subflows = true;
+>> +		msk->allow_infinite_fallback = true;
+>> +		clear_bit(MPTCP_FALLBACK_DONE, &msk->flags);
+>> +		spin_unlock_bh(&msk->fallback_lock);
+>> +
+>> +		mptcp_subflow_ctx_reset(mptcp_subflow_ctx(ssk));
+> 
+> [Severity: Medium]
+> Is mptcp_subflow_ctx_reset() resetting more than this path needs? It
+> clears the whole reset group and then sets local_id to -1:
+> 
+> net/mptcp/protocol.h:mptcp_subflow_ctx_reset() {
+> 	memset(&subflow->reset, 0, sizeof(subflow->reset));
+> 	subflow->request_mptcp = 1;
+> 	WRITE_ONCE(subflow->local_id, -1);
+> }
+> 
+> This also wipes two values that are set only once, when msk->first is
+> created:
+> 
+> net/mptcp/protocol.c:__mptcp_socket_create() {
+>     ...
+> 	subflow->subflow_id = msk->subflow_id++;
+> 
+> 	/* This is the first subflow, always with id 0 */
+> 	WRITE_ONCE(subflow->local_id, 0);
+>     ...
+> }
+> 
+> A second connect() gets the same msk->first back from __mptcp_nmpc_sk(),
+> so this setup does not run again. The reset also runs on every immediate
+> failure (ENETUNREACH, EAFNOSUPPORT, BPF pre_connect, ...), not only after
+> an early fallback.
+> 
+> On the retry, local_id is -1, so the connect goes through:
+> 
+> tcp_connect()
+>   subflow_rebuild_header()
+>     subflow_chk_local_id()
+>       mptcp_pm_get_local_id()
+> 
+> mptcp_pm_get_local_id() returns 0 only when the msk local address matches
+> the subflow's address:
+> 
+> 	mptcp_local_address((struct sock_common *)msk, &msk_local);
+> 	mptcp_local_address((struct sock_common *)skc, &skc_local.addr);
+> 	if (mptcp_addresses_equal(&msk_local, &skc_local.addr, false))
+> 		return 0;
+> 
+> mptcp_copy_inaddrs() runs only after a successful connect. For an unbound
+> msk, the msk address is therefore still zero at this point.
+> 
+> Wouldn't the kernel PM then give the MPC subflow a non-zero ID, either
+> from a matching endpoint or by adding an IMPLICIT endpoint to the netns
+> endp_list?
+> 
+> If the endpoint table is full, mptcp_pm_nl_get_local_id() returns -ERANGE.
+> tcp_connect() would then fail the retry with -EHOSTUNREACH, even though a
+> valid route exists.
+> 
+> A non-zero local_id on the initial subflow also seems to break endpoint
+> removal. When that endpoint is deleted,
+> mptcp_nl_remove_subflow_and_signal_addr() gets the ID from
+> mptcp_endp_get_local_id(), which returns rm_id 0 for the MPC endpoint.
+> mptcp_pm_rm_addr_or_subflow() then skips the initial subflow because
+> id != rm_id, so the initial subflow is never closed.
+> 
+> The reset also zeroes subflow_id, while msk->subflow_id has already
+> advanced to 2. After a successful retry, mptcp_get_full_info() would
+> report the first subflow with id 0:
+> 
+> 	sfinfo.id = subflow->subflow_id;
+> 
+> But tools/testing/selftests/net/mptcp/mptcp_sockopt.c expects:
+> 
+> 	assert(sfinfo[0].id == 1);
+> 
+> mptcp_disconnect() already behaves this way for subflow_id. The local_id
+> part looks new, though: on the disconnect path, the msk still holds the
+> addresses from the earlier successful connect.
 
-Introduce a set of tests to verify that pause and link autoneg are
-behaving correctly, in particular that the user intent is correctly
-cached when toggling link autoneg.
+The code here is doing a "disconnect" of the first subflow: similar to
+what is done in __mptcp_subflow_disconnect(), mptcp_subflow_ctx_reset()
+is called. It will indeed set subflow->local_id to -1 and causing the
+(minor) issue reported here where the PM could assign the wrong ID when
+reconnecting (yeah, another reconnect after a "disconnect" case...). So
+I don't think this issue is new, and the fix here is doing the right
+thing of calling mptcp_subflow_ctx_reset().
 
-Signed-off-by: Maxime Chevallier (Netdev Foundation) <maxime.chevallier@bootlin.com>
----
- .../testing/selftests/drivers/net/hw/pause.py | 269 +++++++++++++++++-
- 1 file changed, 268 insertions(+), 1 deletion(-)
+> The commit message mentions only MPTCP_FALLBACK_DONE, allow_subflows and
+> request_mptcp. Would it work to reset only request_mptcp here (plus the
+> token and key fields if needed)? Another option would be to restore
+> local_id to 0 and keep the original subflow_id for msk->first after
+> mptcp_subflow_ctx_reset().
 
-diff --git a/tools/testing/selftests/drivers/net/hw/pause.py b/tools/testing/selftests/drivers/net/hw/pause.py
-index cd117296be33..ca4a55e59c30 100755
---- a/tools/testing/selftests/drivers/net/hw/pause.py
-+++ b/tools/testing/selftests/drivers/net/hw/pause.py
-@@ -119,6 +119,17 @@ def require_controllable_lp(cfg):
-     if not controllable_lp(cfg):
-         raise KsftSkipEx(f"{cfg.remote_ifname} is not directly connected to {cfg.ifname}")
- 
-+def require_link_autoneg(cfg):
-+    """ Skip if local or remote device don't support link aneg """
-+    # Does local device support link aneg
-+    if not ethtool(f"{cfg.ifname}", json=True)[0]["supports-auto-negotiation"]:
-+        raise KsftSkipEx(f"{cfg.ifname} doesn't support link autoneg")
-+
-+    # Does remote device support link aneg
-+    if not ethtool(f"{cfg.remote_ifname}",
-+                   json=True, host=cfg.remote)[0]["supports-auto-negotiation"]:
-+        raise KsftSkipEx(f"Remote {cfg.remote_ifname} doesn't support link autoneg")
-+
- def forced_link_settings(cfg):
-     """ Returns a string to pass to ethtool -s with speed/duplex corresponding
-         to the current settings.
-@@ -266,6 +277,20 @@ def get_peer_pause_lp_advertising(cfg):
-         ksft_pr(f"Warning: {cfg.remote_ifname} does not report the LP's advertising")
-         return errno.EOPNOTSUPP, None
- 
-+def require_pause_supported_anyof(cfg, linkmodes):
-+    """ Skip if local device doesn't support any of the passed modes """
-+
-+    ret, _ = get_local_pauseparams(cfg)
-+    if ret != 0:
-+        raise KsftSkipEx("device doesn't allow getting pauseparams")
-+
-+    _, pause_support = get_local_pause_supported(cfg)
-+    for lm in linkmodes:
-+        if lm in pause_support:
-+            return
-+
-+    raise KsftSkipEx(f"Local device doesn't support any of {linkmodes}")
-+
- def require_pause_supported_allof(cfg, linkmodes):
-     """ Skip if local device doesn't support all of the passed modes """
- 
-@@ -290,8 +315,51 @@ def require_peer_pause_supported_allof(cfg, linkmodes):
-         if lm not in pause_support:
-             raise KsftSkipEx(f"Remote device doesn't support {lm}")
- 
-+def supported_pauseparams(cfg):
-+    """ The rx/tx params covering every mode the local device supports """
-+
-+    _, pause_support = get_local_pause_supported(cfg)
-+    if "Pause" in pause_support:
-+        return 1, 1
-+    if "Asym_Pause" in pause_support:
-+        return 0, 1
-+
-+    raise KsftSkipEx("Local device doesn't support pause")
-+
-+def set_local_pause_autoneg(cfg, aneg):
-+    """ Enable/Disable local pause autoneg """
-+
-+    ret, _ = ethtool_ret(f"-A {cfg.ifname} autoneg {onoff(aneg)}",
-+                         is_get=False)
-+    return ret
-+
-+def check_local_pauseparams(cfg, aneg, rx, tx):
-+    """ Check that the local pauseparams are the passed parameters """
-+
-+    ret, params = get_local_pauseparams(cfg)
-+    ksft_eq(ret, 0)
-+    if ret != 0:
-+        return
-+
-+    ksft_eq(params["autonegotiate"], bool(aneg), "pause autoneg")
-+    ksft_eq(params["rx"], bool(rx), "rx pause")
-+    ksft_eq(params["tx"], bool(tx), "tx pause")
-+
-+def check_local_advertising(cfg, linkmodes):
-+    """ Check that the local advertised modes are the passed parameters """
-+
-+    _, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(adv, linkmodes, "advertised pause modes")
-+
-+def check_local_lp_advertising(cfg, linkmodes):
-+    """ Check that the local lp_advertised modes are the passed parameters """
-+
-+    ret, adv = get_local_pause_lp_advertising(cfg)
-+    if ret == 0:
-+        ksft_eq(adv, linkmodes, "link partner advertised pause modes")
-+
- def expect_pauseparams_set(cfg, pauseparams, aneg, supported, note):
--    """ ethtool -A must work or be refused depending on what the local
-+    """ Whether ethtool -A had to work or to be refused, given what the local
-         device supports
-     """
-     rx = pauseparams["rx"]
-@@ -663,12 +731,211 @@ def pause_aneg_resolution(cfg, settings):
-         ksft_eq(remote_pauseparams["negotiated"]["rx"], expected_lp_rx)
-         ksft_eq(remote_pauseparams["negotiated"]["tx"], expected_lp_tx)
- 
-+@ksft_disruptive
-+def pause_autoneg_state_adv(cfg):
-+    """Validate that disabling pause autoneg keeps the advertised linkmodes
-+
-+    With pause autoneg disabled, the pause params are enforced as what the user
-+    intended, but the advertising still follows the rx and tx pause params so
-+    that the link partner resolves its own pause settings consistently.
-+
-+    Failing this test means that the MAC or PHY driver changes the
-+    Pause / Asym_Pause advertising when pause autoneg is disabled.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_link_autoneg(cfg)
-+
-+    pause_setup(cfg)
-+    require_controllable_lp(cfg)
-+
-+    set_peer_pauseparams(cfg, True, True, True)
-+    wait_for_aneg(cfg)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+
-+    # Enable all possible pauseparams with pause autoneg
-+    ret = set_local_pauseparams(cfg, rx, tx, True)
-+    ksft_eq(ret, 0)
-+    wait_for_aneg(cfg)
-+
-+    # Make sure we advertise them
-+    ret, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, pause_to_linkmodes(rx, tx))
-+
-+    # Disable pause autoneg
-+    ret = set_local_pauseparams(cfg, rx, tx, False)
-+    ksft_eq(ret, 0)
-+
-+    # This may trigger a link renegociation
-+    wait_for_aneg(cfg)
-+
-+    ret, adv = get_local_pause_advertising(cfg)
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, pause_to_linkmodes(rx, tx))
-+
-+    ret, adv = get_peer_pause_lp_advertising(cfg)
-+    if ret == errno.EOPNOTSUPP:
-+        return
-+
-+    ksft_eq(ret, 0)
-+    ksft_eq(adv, pause_to_linkmodes(rx, tx))
-+
-+@ksft_disruptive
-+def pause_autoneg_state_params(cfg):
-+    """Validate the pause params when transitioning between fixed pause
-+       params and negotiated ones. The goal is to make sure that user
-+       intent on the RX and TX pause params are stored when user decides
-+       to use negotiated parameters instead. The main gotcha lies on the
-+       fact that when pause autoneg is used, the autoneg result may differ
-+       from the user intent.
-+
-+    Failing this test means the MAC driver is overwriting the user intent
-+    when switching to forced pause.
-+    """
-+
-+    require_pause_supported_allof(cfg, ["Pause", "Asym_Pause"])
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+    require_controllable_lp(cfg)
-+
-+    # Set peer user intent to RX on TX on, with Pause autoneg on
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    wait_for_aneg(cfg)
-+
-+    # Set the local intent to RX on TX off with pause autoneg
-+    ksft_eq(set_local_pauseparams(cfg, 1, 0, True), 0)
-+    wait_for_aneg(cfg)
-+
-+    check_local_pauseparams(cfg, True, 1, 0)
-+    check_local_advertising(cfg, ["Pause", "Asym_Pause"])
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+    # Disable pause autoneg
-+    ksft_eq(set_local_pause_autoneg(cfg, False), 0)
-+    wait_for_aneg(cfg)
-+
-+    # The pauseparams must still be what we configured before, and not the
-+    # previously negotiated ones
-+    check_local_pauseparams(cfg, False, 1, 0)
-+
-+    # Re-enable autoneg
-+    ksft_eq(set_local_pause_autoneg(cfg, True), 0)
-+    wait_for_aneg(cfg)
-+
-+    check_local_pauseparams(cfg, True, 1, 0)
-+    # We must be advertising our intent again, and not RX on TX on, which would
-+    # be "Pause" only.
-+    check_local_advertising(cfg, ["Pause", "Asym_Pause"])
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
-+@ksft_disruptive
-+def pause_autoneg_off_while_link_autoneg_on(cfg):
-+    """ Validate that when link autoneg is on but pause autoneg is off, we do
-+        not use negotiated pause parameters.
-+
-+        Failing this test means the MAC driver incorrectly accounts for the
-+        negotiated pause parameters even with pause aneg off, likely due to
-+        confusion between link autoneg and pause autoneg.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+    require_controllable_lp(cfg)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+
-+    # Enable pause autoneg with all the locally supported modes enabled
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, True), 0)
-+    wait_for_aneg(cfg)
-+
-+    # Disable Pause autoneg
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, False), 0)
-+    wait_for_aneg(cfg)
-+    # Pause autoneg must read "disabled"
-+    check_local_pauseparams(cfg, False, rx, tx)
-+
-+    set_peer_pauseparams(cfg, 0, 0, True)
-+    wait_for_aneg(cfg)
-+
-+    ethtool(f"-r {cfg.ifname}")
-+    wait_for_aneg(cfg, link_drop=True)
-+
-+    # Pause autoneg must still be off even after a link renegotiation
-+    check_local_pauseparams(cfg, False, rx, tx)
-+
-+@ksft_disruptive
-+def pause_autoneg_link_autoneg(cfg):
-+    """Validate pause autoneg and link autoneg interactions. The link autoneg's
-+       admin status (i.e. do we autoneg link parameters or force them) must not
-+       impact the pause autoneg status. While link autoneg is disabled, we don't
-+       negotiate the pause params, however we must keep pause autoneg on as this
-+       is the user intent. When link autoneg is re-enabled, pause params must be
-+       derived from the negotiation.
-+    """
-+
-+    require_pause_supported_anyof(cfg, ["Pause", "Asym_Pause"])
-+    require_peer_pause_supported_allof(cfg, ["Pause"])
-+    require_link_autoneg(cfg)
-+    pause_setup(cfg)
-+    require_controllable_lp(cfg)
-+
-+    rx, tx = supported_pauseparams(cfg)
-+    adv = pause_to_linkmodes(rx, tx)
-+
-+    # Enable all possible pause modes and autoneg
-+    set_peer_pauseparams(cfg, 1, 1, True)
-+    ksft_eq(set_local_pauseparams(cfg, rx, tx, True), 0)
-+    wait_for_aneg(cfg)
-+
-+    # Disable link autoneg, at the speed and duplex the link runs at
-+    forced = forced_link_settings(cfg)
-+    if not forced:
-+        raise KsftSkipEx("Can't tell what to force the link at")
-+
-+    ret, _ = ethtool_ret(f"-s {cfg.remote_ifname} autoneg off {forced}",
-+                         is_get=False, host=cfg.remote)
-+    if ret != 0:
-+        raise KsftSkipEx(f"Can't force the peer's link at {forced}")
-+
-+    ret, _ = ethtool_ret(f"-s {cfg.ifname} autoneg off {forced}",
-+                         is_get=False)
-+    if ret != 0:
-+        raise KsftSkipEx(f"Can't force the link at {forced}")
-+
-+    try:
-+        wait_for_aneg(cfg)
-+    except TimeoutError:
-+        raise KsftSkipEx(f"No link when forced at {forced}")
-+
-+    # We must have pause autoneg still enabled, even if we don't negotiate pause
-+    check_local_pauseparams(cfg, True, rx, tx)
-+
-+    # Re-enable autoneg
-+    ethtool(f"-s {cfg.remote_ifname} autoneg on", host=cfg.remote)
-+    ethtool(f"-s {cfg.ifname} autoneg on")
-+    wait_for_aneg(cfg)
-+
-+    # Pause autoneg must still be on
-+    check_local_pauseparams(cfg, True, rx, tx)
-+    check_local_advertising(cfg, adv)
-+    check_local_lp_advertising(cfg, ["Pause"])
-+
- def main():
-     """ Entry point """
-     with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-         ksft_run([pause_test_support,
-                   pause_advertising_test,
-                   pause_aneg_resolution,
-+                  pause_autoneg_state_adv,
-+                  pause_autoneg_state_params,
-+                  pause_autoneg_off_while_link_autoneg_on,
-+                  pause_autoneg_link_autoneg,
-                   ],
-                  args=(cfg, ))
-     ksft_exit()
+I don't think we should set the local_id to 0 in mptcp_subflow_ctx_reset
+because it will cause issues in mptcp_close_ssk(). Maybe we should set
+local_id to 0 for the first subflow in mptcp_disconnect()? Anyway, that
+should be part of a follow-up patch (I can look at that), not as a new
+version of this one.
+
+Cheers,
+Matt
 -- 
-2.55.0
+Sponsored by the NGI0 Core fund.
 
