@@ -1,296 +1,139 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013007.outbound.protection.outlook.com [40.107.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8804A545DB0;
-	Thu, 15 Oct 2026 15:52:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792079580; cv=none; b=uYmVeYPjpyg2O63PID2yoD4eA2sfXvBOne6fDZHRTyOZ3InDOuokoUl5rAEyTEm7jw+zKAB91n+sH35aqVAre6+PYHG81oK6vpS6ZtK5yjNx8G+MD+vc85yLcW86qsa6yUz8g1Yd2q/33xJxbXzCjKs63tZy4NcsHXGOKgh2oYE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792079580; c=relaxed/simple;
-	bh=jLOQqkhHz4y1dBJ2dNUbTUBDf1VNKhVW0Ue9wi6gDz8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=fYiT4YamSIcsc2DTxA2vvWW9fV0rlaja649gBZNrmB/uOCV+A0ORLgQSArECEhl2iCOJE7yvAcNw+lf7wlS1fB2VZIFxqwMDePM13hPw8BYNlpwFEb0EVDwyq3gd3mhzjhSIqfmT6CUpbRTY7z0ijZo47g8OLWavEyLsWEWZYc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dDtEmuvc; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE1F4248A9;
+	Thu, 15 Oct 2026 15:59:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792080012; cv=fail; b=kkXtDG0+InnBrZhePdWEa6WO/EXPlUTnxfAebeXuJ/lZ+WX0qmZz9XaSvUycx7avVNQjPEIUIXMEXhq+XVbAGOuna65/DCTbCJ3XKapSMlCnqh+pCCCnlVqmZoCVGq7Ps9F/ij5+Z2nPF3QUYkYJtPnUKEwuBzSzeEmVBNW5OT4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792080012; c=relaxed/simple;
+	bh=iBIw6FMndJEay/80zoXLXq1sXSg+vnXe/pHhstpklO0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Y/ydV2thnin/ojnrEMqMPsJBzUpiZguU6JT/AbrhZEDX16WRt4SfGf8VTR6VR1VM7TybnN9e93anO2v543pI1EitoQ/wK1J+khoT3oYaTn+VQg9KJa48ERulKbJrZ0Yxux3GyRPuXu8XjScgoXmolDOqBVlsT3BlcTiSIyoXp4w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MkW5atwF reason="signature verification failed"; arc=fail smtp.client-ip=40.107.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dDtEmuvc"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 77D751A1241;
-	Thu, 15 Oct 2026 15:52:37 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3E3286075C;
-	Thu, 15 Oct 2026 15:52:37 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 705EF10328CEA;
-	Thu, 15 Oct 2026 17:52:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1792079555; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=C0a5W2OdDSxdUM2GZ1hLLLMJ6kCHR/FuggO9HUhU+74=;
-	b=dDtEmuvcLA7/WwJZBvCPyuLjjPwtLHqN2YDhN/EW0EQQjj1GC9JMbgfx332rfW2FBG/aet
-	NZZz1+IsCC7mTaknv5OKotkeHjE/LrxyzMhBiM/mk8Pm+nV0UOqKd26b6KoetgApnytouF
-	dYSl40e9IePXzaaz79qo1GfJwKX4Y01/QqzvVx2UYcQULqfmIXjbez/sK45/Ot5RBZbz9C
-	Xwg0j726a25eik1UyZZk2jgrkDJ4bIpxPX/vsphktNYRD3Nh/uirMvvRLzUf6uo0YOslNq
-	sBzmsdBTWUT06SAgW8bCPZKOoTKjMgM/Xcab+97skveN/4ZNdt/JzKyl0hua/g==
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MkW5atwF"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oSsFSXQL0KFMtoXwY5WLSlpJAANa0t0BCd3BAlCjjb1yTWicjTj1NvVbFlayw62pkhzV9thTOyUoNaCaH+Clk5DIdfsduizfAEh63gKD8aM2rdF64Ss1jhYiLG3gzOyowPB1SNLnRf9Or0p+CTAUGUmWdKmm9G4cjFxyxW9c27vf40PV9tfHynDrWqBSF4kvQanczR/WEz9D0g5OiRKz4IrmJ93SuW/bnnsdjBKhy8txQQuecHUXXzH5cOAwXDr+lpYLe5STsMcX11FMw0UQOWj+b9261JbAAhC5XJfn8QVXffGse1q1wHkOqQKJwx/BtkyaPBYIoa1Ya5UC0afNSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nWmNvx5dXXswABTO0onAPXjtcBo8uUo9wz6rMwtXMRM=;
+ b=lLPbXuNOgOZaU4ZEaJRyI/m8jsd1ZHrezZYd+YV28CIg24am8jgQgdcP9S7kVzGSZYi2qkdZRNFsh95iD5hCpm+drFHQj3dvEzlrsc51y41REa08i/WFfbFVF5S4FDemzXRIFxAD6u27ccjG6+f0JrWa0Q+P2qJMIRXo4kF3pfFIr6QBz8a604/0BdMpRkCRGNj8DRG4ZQAtSnTuuTSTlRlIFa3hj9fwHfW3vPCkmCnJwzbrsXWKoTZVJkYGuCe2DsUiBvW/gL5kQTM8wupyhz8oKctVUdQ8L+mkiP96j6GnPJgIPy12d0XVRBco0FDCzXTC+gYDrJjAJRYUq27gtA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nWmNvx5dXXswABTO0onAPXjtcBo8uUo9wz6rMwtXMRM=;
+ b=MkW5atwF1xRlFWQWPmzLKCpA3PyWf54ZCcto8gZBfgXg4UvsRdYHxZMXUw0eHrY9PIpJS5V02eE6r062Y3JWe6WUgs0XBUI1K24o7jKfBwjmEx60XVWs2KRmGNKZDmtBChgLBY9KgnMMQE7GFP+/t2qLdUb11Ayx+6X6Hw1IjI18NH8vp0L3Kg6e85tEI/Ejv/XeQpZJqVWDMCc1rRvUG33xUgC/RSV6TOU3a79aSXzaUJPhpmAS9HT8sW9VcwrVeFfkhpE9guwRxEsbY37dR18b+VQkaT7LgFb5gjqmwnV6SXwup7md7MW8sQS5wgul7iJe2/kQ8U+GWZomvlsmOg==
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by PH0PR12MB8799.namprd12.prod.outlook.com (2603:10b6:510:28e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Thu, 15 Oct
+ 2026 15:59:54 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0496.021; Thu, 15 Oct 2026
+ 15:59:54 +0000
+Date: Thu, 15 Oct 2026 18:59:44 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
+Cc: Til Kaiser <mail@tk154.de>, netdev@vger.kernel.org,
+	stable@vger.kernel.org, Petr Machata <petrm@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Vadim Pasternak <vadimp@mellanox.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] mlxsw: Initialize register query payloads
+Message-ID: <20261015155944.GA1836432@shredder>
+References: <20261014173117.26305-1-mail@tk154.de>
+ <87a4of8kw1.fsf@all.your.base.are.belong.to.us>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87a4of8kw1.fsf@all.your.base.are.belong.to.us>
+X-ClientProxiedBy: TL2P290CA0017.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:3::7)
+ To PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 15 Oct 2026 17:52:28 +0200
-Message-Id: <DM5J6J74NCTY.1IDZXHZM276JS@bootlin.com>
-Subject: Re: [PATCH net-next 4/5] net: macb: implement timestamped MDIO
- writes
-Cc: "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "Heiner
- Kallweit" <hkallweit1@gmail.com>, "Richard Cochran"
- <richardcochran@gmail.com>, "Florian Fainelli"
- <florian.fainelli@broadcom.com>, "Doug Berger" <opendmb@gmail.com>,
- "Nicolai Buchwitz" <nb@tipi-net.de>, "Russell King"
- <linux@armlinux.org.uk>, "Conor Dooley" <conor.dooley@microchip.com>,
- "Broadcom internal kernel review list"
- <bcm-kernel-feedback-list@broadcom.com>, "Thomas Gleixner"
- <tglx@kernel.org>, "Miroslav Lichvar" <mlichvar@redhat.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Maxime
- Chevallier" <maxime.chevallier@bootlin.com>, "Brian Masney"
- <bmasney+clk@redhat.com>, "Stephen Boyd" <sboyd@kernel.org>, "Jerome
- Brunet" <jbrunet+clk@baylibre.com>
-To: "James Clark" <jjc@jclark.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-X-Mailer: aerc 0.22.0-0-gc2f86b7abde3
-References: <20261009143506.2507607-1-jjc@jclark.com>
- <20261009143506.2507607-5-jjc@jclark.com>
- <DM1WEUIF8V8V.2OZWRB5G232T4@bootlin.com>
- <CANz3_EamUFhoQJ54g9pxdrxGK9EYxu_KeqRTdAdxWzV15k4_9w@mail.gmail.com>
-In-Reply-To: <CANz3_EamUFhoQJ54g9pxdrxGK9EYxu_KeqRTdAdxWzV15k4_9w@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH0PR12MB8799:EE_
+X-MS-Office365-Filtering-Correlation-Id: 90550843-618f-42f7-5037-08df2ad559e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|10067099003|18002099003|22082099003|11063799006|4143699003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	U2w1ggVvqs+jUUNN+XPiDOkoC/wFgYlY2WDFm+vF3GcOV9KquiIfu8nYQDzE2Ilch36piBIS/7dX2iYM3mlDLTG1RinyCqE83MEsFQxujCDcAUHnCK1JV4mV7Lvz0SQagpxRqU97JLPO6Z2gXF8bB19VNzcrMnGrpa+NtvdZiHdNZ/bytWrJnckxxjSx/kSRk4VajKvdmfshgrZFI/w24J1uPXNc8FZ+/yyKbcx8lBbnR4CBRGssAOas0nIdRxcV+EwbCwr+aw06h7PGiCU9X5EflXYJM6elhHj68cvbIYdhGvYKGYt55jpYS1YZMEIlRDexq6KL5/N7pGQWyc45JUo6UghWW4LIq9wGiegsj7XujPO7xybZhABYQt9bp7NFKr1zRTgcPZQmkz7let3zCWpCwLvGbwwJ6F8CsL6+mv+oy58W2WhbwiHnqYSzFZzVq3PHTftVMOUDQaDGgx9m4+fZKoEwcdo6nEKGNtBySCCSnZxojBqz4mJ9kaWagYWjf1biU7HuotsmaLa7yVz2yjqcrvH07bZg7iPoWZrJSkDtDyDBiICep6bbLVYVdvjcHb0fnV/XXdb8z+gi1HDjnAo+bfYtYQVT98l6E2aacFu4YdMQg9rIfC8NDN9ThYj67oQXdGFBD8umLZ/bmcBfVr2ohljek678NMYYaSjZCeQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(10067099003)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?iso-8859-1?Q?n2t+KABilDuA+H+lrjxM+FgAZC+C7wNsBlvy5fXYwXf8tFJQJpk3NoTt/I?=
+ =?iso-8859-1?Q?kniVYxNlGg8SJbvcVTTmWW9rFjWQnBiBRPBQUOy1b6mjZIhsR//TtH/SRe?=
+ =?iso-8859-1?Q?2oBl3vhTBQ4qcy15aVaQFh2lPXbTcLbMvFKTiyuhSOchbYhb1D3O5KzxxY?=
+ =?iso-8859-1?Q?0idwbyK82T70l1jojTBMr8Et5uvSGtAhs/gtwy4mgc4Ig/weexzlpDU8vT?=
+ =?iso-8859-1?Q?V2uPqOBJDNPeDXk14Rl3wXL/m9qivGdzo+XuBUyG0qzFsxqmWbeQPvAhVS?=
+ =?iso-8859-1?Q?4y4aS1T82f+NkEhRYrNdhgEsGVxfoyxo2rdbufCOKLUHopgbsrT8YGoPO9?=
+ =?iso-8859-1?Q?ltlW6bNlTWcCmEy+fQV3fzRU1DYEDD2tQHwXrdBD3d4jm+NikLScv9CQ+X?=
+ =?iso-8859-1?Q?02eURf22bnjYVrY7Wacz+Dq7W/29m9toSXcU7FFhQrad5En26ZhRwnpyJ+?=
+ =?iso-8859-1?Q?nJDZ+bMBI/N7IONn/Mrti7LwjcERFyUN17ibSVuuaAtazUlS3XM3ylkpvT?=
+ =?iso-8859-1?Q?ZeNKeq2nGjGJCdJ/Yd0SM9VCHAjucl/3HMfgxb3OytSzR/xGB/Gp0llKfX?=
+ =?iso-8859-1?Q?2djw4GWnBW8oarFF4qekNWQzJEGvk2X/o2TRBHL0gwQEa6yHNPFfx9nz+M?=
+ =?iso-8859-1?Q?0pDz5utU8i5WpgV22Zj652vqNVUG1JP6GkTwKWURqDXkUcGQSJpB5N6wih?=
+ =?iso-8859-1?Q?e1jD2VWOwFL/n3Mck79KvnARBXPOukeLR59+T18KeSdi4i+41dm2+Hox6s?=
+ =?iso-8859-1?Q?e7Og1/HBWeWacARzG2XUSu4Xq2v5Qf7rZpWrNHOd2aRapqzjnsJcGsB+br?=
+ =?iso-8859-1?Q?A27IaE5a9gUwRmjYjC2aSykNXmOCpDI7Omc6LYPHZOoFpb3in1uJeWxusA?=
+ =?iso-8859-1?Q?q5ikb8YdW1v6IzkeH17XvDuM8Lk8xZzuMX3Rni46uD1D3uVD45VWf8oVOJ?=
+ =?iso-8859-1?Q?+HUMb1I/y62/L0cYAt0yKX3D2v/w4EHu5JLUF3EEYqmcCj58E56SB68m0r?=
+ =?iso-8859-1?Q?s48a3AisiVmy3RCPCyhhKSBgnSYs/EoYAqbF8t3x10NhBxjeVtCJqz1a+B?=
+ =?iso-8859-1?Q?njjZqrTgrsswryN6u52DNJlHoR/K+M56mIenH9DSc3WyBRKIKTES++v+SI?=
+ =?iso-8859-1?Q?6gxDPW0/CiA1RY9iiDO1nfRepwA/WkOzuk61P97hEHKIsRncE+CJH8FxFh?=
+ =?iso-8859-1?Q?/st5JjfggSacUS1X0jBquccxT8ET+u3pSKZFgrl4whVNiJEF55q9U0Fd/O?=
+ =?iso-8859-1?Q?mxBlOXpIsNiE92aM4vI2JqzrElpXOakyKLQ7AIBJZGgTf/Q/YVsMF8DJtv?=
+ =?iso-8859-1?Q?t+NuWKw2ovVK1Y2K8d6LHDujah98lFd79JWuCa2EVmUN/GFw9PY50/p2mm?=
+ =?iso-8859-1?Q?Z4ahfFmnph7P6t0aUchI0IkVCB3LvOLpK5V99Qxp4vbGXk6mGhgcnYOBwE?=
+ =?iso-8859-1?Q?8JSCm/ZNWYzjFXOPjtNZEEsISKG4/9u/AhtUIvU3qg7Rr9kB6AoaAEOvpJ?=
+ =?iso-8859-1?Q?IW7Qrq32a5oAvVM696L8tpLYtG/prqLR7LjXrQS5XZn4inp6OOeZXrKW5/?=
+ =?iso-8859-1?Q?auqiurdS0GSGqr94MI0pczYW/RSHM+pQn6R+iU9OJm0Ii3yCVMyIHrhusy?=
+ =?iso-8859-1?Q?ej+WCFUntnClklH54GYGGAK36fFJcrshQX1/dAj4m2SxDmPvKYTqDYnFcn?=
+ =?iso-8859-1?Q?T2U5tneBQtRYDL3MatmtZEydwJVIwTsp3uOC/vp2zH7kcOFfmF35WHlhEe?=
+ =?iso-8859-1?Q?Spfv8CkbfjUGGC/blk41fCBjmB2EwxCXM1Qk6/SxgJvaubbkBGSyRtTBA0?=
+ =?iso-8859-1?Q?vqTKszymhA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 90550843-618f-42f7-5037-08df2ad559e8
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 15:59:53.8172
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6G0bfDDhrFnzYFyJy7JTZvTFGaddMsUuDB8e1fhvbpr9J9AxT5LKtM0w6cAEXnTXJUQb3Cy9aUb3M/8Ahnx68A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8799
 
-Hello James,
+On Thu, Oct 15, 2026 at 09:48:14AM +0200, Björn Töpel wrote:
+> Hmm, isn't this pointing to that the query should be more robust,
+> instead of relying on zeroing receive buffers pre-call? Maybe just fixup
+> query instead?
 
-+Cc clk maintainers, for a question at the end.
+Most registers require an index, so the common pattern is:
 
-On Sun Oct 11, 2026 at 3:01 PM CEST, James Clark wrote:
-> Thanks for looking at this! I am very new to this, so I really
-> appreciate any guidance.
+mlxsw_reg_*_pack(...);
+mlxsw_reg_query(...);
 
-I know the MACB hardware and driver pretty well by now but I don't have
-much PTP experience. :-)
-
-> (For some reason your message didn't make it into Lore, although your
-> followup did.)
-
-I has appeared now, but the body contains a second copy which includes
-the mail headers. I have no clue what happened.
-
-> On Sun, Oct 11, 2026 at 4:24=E2=80=AFPM Th=C3=A9o Lebrun <theo.lebrun@boo=
-tlin.com> wrote:
->
->> I'm invoking my colleague @Maxime to get his opinion. What impacts the
->> MDIO write_c22 duration and how likely is it that this duration varies
->> (1) on the same MAC+PHY combo, (2) with a different PHY or (3) with a
->> different MACB revision?
->
-> (3) is the one case where I think it could possibly vary.  But 63.5
-> periods makes sense assuming the first bit starts at the moment the
-> command is written and the PHY acts on it when it samples the last of
-> 64 bits at the rising edge half-way through the last period. In 5/5
-> there's a different situation: there UniMAC's MDC is free-running, so
-> the frame can start up to a period after the command write, leading to
-> a possible range of 63.5-64.5. So I don't think 63.5 is as arbitrary
-> as it might at first seem.
-
-After a few days ruminating on this topic it is much clearer now.
-Thanks Andrew and you for the replies.
-
->> Sashiko makes an interesting point with PCLK that might change over
->> time, giving an example (which I've not checked) where it would be
->> derived from the CPU clk which might change with cpufreq.
->
-> I tried a bunch of different approaches before landing on what I sent
-> in v1, and ran Sashiko locally to review. And every approach had its
-> problems. Sashiko is right here, but on the other hand the existing
-> macb_mdc_clk_div() (it's only called at probe, open and resume) has
-> the same problem.
->
-> My plan for v2 was to limit this to RP1, as Sashiko suggested, with a
-> MACB_CAPS_MDIO_WRITE_STS flag
-> set in raspberrypi_rp1_config. This would solve the PCLK point since
-> the PCLK is fixed in the RP1.
-
-I'm not convinced by the idea of a flag only allowed to RP1. Our caps
-are usually to restrict what IP revisions can do; here we're talking
-about a driver implementation detail. Worst case they get bad PTP
-accuracy, but it probably already isn't great if they use PHY PTP but
-have their MDC clock vary with cpufreq.
-
->> If you share more details on your testing setup it would help for us to
->> reproduce on other hardware to gather more data points.
->
-> I created a gist with the code I used (this is all agent-written)
->
-> https://gist.github.com/jclark/372822d80ba27a9648d1aea939191b53
->
-> Key point is that the measurement technique depends on there being a
-> PHY with a PHC connected over MDIO, which is the case when write_sts
-> is useful. I believe the RP1 is the only such case in the tree at the
-> moment. If in the future there's another case, then it can be measured
-> and added using the same technique.
-
-I've not checked what is in tree. I care most about EyeQ platforms.
-The EyeQ dev boards use a Marvell PHY which could benefit from the
-feature if/when Marvell PHY PTP support lands in tree. I've tested it
-briefly (more accurately, I tasked an LLM with running a few tests) and
-something times out but I stopped there.
-
-An RFC has been sent two years ago by rmk, and I guess it will be
-iterated upon because there is interest!
-
-https://lore.kernel.org/netdev/Z_mI94gkKkBslWmv@shell.armlinux.org.uk/
-
->> I'm wondering if we could do better than a hardcoded delay? For example
->> we could busy-wait for NSR.IDLE inside the prets/postts region, but
->> that implies at least 25=C2=B5s with IRQs disabled. Or we could do a few
->> measurements at init to sample our platform delay?
->
-> On the RP1, IDLE is not the edge: IDLE comes at 65.0 periods. The only
-> way we could measure the edge is by using the PHY as an external
-> reference.
-
-Saying "IDLE is not the edge" is a bit of an overstatement, we are
-talking about 600ns (1.5 period @ 2.5MHz) here so IDLE is the edge plus
-some amount of latency, which is to be expected. We are in the order of
-magnitude of an MMIO read.
-
-Is the 65.0 periods number you gave a minimum or an average?
-
-Anyway from feedback on this series from Andrew, it seems this latency
-is pretty deterministic and could be hardcoded (and shared across IP
-revisions).
-
->> > +     unsigned long rate =3D READ_ONCE(bp->mdio_sts_rate);
->> > +     u32 config =3D macb_readl(bp, NCFGR);
->> > +     u32 divisor;
->> > +
->> > +     if (macb_is_gem(bp))
->> > +             divisor =3D gem_divisors[GEM_BFEXT(CLK, config)];
->> > +     else
->> > +             divisor =3D macb_divisors[MACB_BFEXT(CLK, config)];
->>
->> I'm a bit surprised to see you reading NCFGR.CLK and derive the current
->> divisor from that. The divisor is set by us in macb_mdc_clk_div(), with
->> only input being the PCLK rate.
->
-> This was something a local Sashiko review found in an earlier version.
-> The divider in hardware isn't always the one macb_mdc_clk_div() chose:
-> after suspend with the interface down, macb_resume() doesn't reprogram
-> NCFGR.
-
-Sashiko is technically correct. But then the bug is not in your MDIO
-delay computation, it is in the PCLK/divisor/suspend code. You should
-be capable of determining the current divisor rate without reading the
-NCFGR register.
-
-> Incidentally, it is also what made the measurement technique work: the
-> bounds follow a divider changed through /dev/mem.
->
->> > +     if (sts) {
->> > +             delay_ns =3D macb_mdio_sts_delay(bp);
->> > +             local_irq_save(flags);
->> > +             ptp_read_system_prets(sts);
->> > +             /* macb_writel() is relaxed; order it after the timestam=
-p. */
->> > +             mb();
->> > +     }
->> > +     macb_writel(bp, MAN, cmd);
->> > +     if (sts) {
->> > +             /* Flush the posted write before taking the upper bound.=
- */
->> > +             macb_readl(bp, NSR);
->>
->> An unconditional readl for flushing the posted write won't do it.
->> MACB is over PCI only on very few platforms. I guess the straightforward
->> solution is a POSTED_WRITES flag that is then read from here.
->
-> This is only under sts.  Assuming write_sts becomes RP1 only, then it
-> is only over PCIe. I am not sure if I have understood what you are
-> getting at here.
-
-On any platform but RP1, such a readl() is useless. My remark was that
-the readl()-for-posted-writes must be made conditional, and I don't
-think we should make the whole of write_sts conditional.
-
-Also, it would be a footgun to have a CAPS_WRITE_STS that also has an
-underlying posted-write-readl() because we know only a PCI platform
-uses the CAPS_WRITE_STS.
-
->
->> > +             /* Order the read-back before the system timestamp. */
->> > +             rmb();
->>
->> Why rmb() and not mb()?
->
-> The rmb() here only has to order the NSR read before the post
-> timestamp read, since by the same device rule that read can't complete
-> before the MAN write has arrived.
->
->> > +     /* Record the pclk rate the MDC divider is chosen from, for
->> > +      * write_sts, which can't call clk_get_rate() under the MDIO bus
->> > +      * lock.
->> > +      */
->> > +     rate =3D clk_get_rate(bp->pclk);
->> > +     if (rate)
->> > +             WRITE_ONCE(bp->mdio_sts_rate, rate);
->>
->> Can you clarify here and in the commit message why clk_get_rate() is
->> unacceptable under the MDIO bus lock?
->>
->> Seeing your comment, my guess is an ABBA deadlock risk between
->> clk_prepare_lock and mii_bus->mdio_lock but please write it out.
->
-> Your guess is right. I tried this earlier and a local Sashiko review
-> found the problem:
->
-> bcm_ptp_gettimex()
->   bcm_phy_write_exp_sts()
->     phy_lock_mdio_bus()
->     __mdiobus_write_sts()
->       macb_mdio_write_c22_sts()
->         macb_mdio_sts_delay()
->           clk_get_rate()
->             clk_prepare_lock()
->
-> clk_summary_show()
->   clk_prepare_lock()
->   clk_summary_show_one()
->     clk_core_is_enabled()
->       en8811h_clk_is_enabled()
->         air_phy_buckpbus_reg_read()
->           phy_select_page()
->             phy_save_page()
->               phy_lock_mdio_bus()
->
-> I will clarify this in the comment and commit message.
-
-@clk maintainers: is this expected?
-
-Recap: we must cache a clock rate in an netdev because we cannot call
-clk_get_rate() in PHY ops because that risks an ABBA deadlock.
-
-From that we get other bugs because then the cached rate is out of sync
-from the real one.
-
-It sounds like a common shortcoming that would be faced by many people?
-Searching lore gives no result.
-
-Thanks!
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Where the pack function zeroes the payload. We can't zero in the core
+because then we would overwrite the indexes.
