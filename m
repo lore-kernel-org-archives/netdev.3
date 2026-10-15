@@ -1,68 +1,69 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9072E35DA78
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4189835DA78
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 05:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792040766; cv=none; b=AC/HVz08fiX4MhrOXvBtvKb0nNO3qWClVg2xuSLb7vbhTA7EqoVVk55JQ1tgZuPyDDSG/NmSFRk18tzenu3TrggWCkhtw6IDECklftBXqJ+m6mui7kD7lIZxRhtI9tUpKW1dNRHYK//LxvHbnSTZfyiP/K176FUwPZYS6A6prYA=
+	t=1792040786; cv=none; b=M/Dkb3HMG6Fdf3bGHSzz0w8qj4AEK68aP4x4c7epBIF3dQi+OzMvttwe6pY0vOqdFYUl3c/6mJzSNzuUlgm+EHS4IXUyX3G5BtKbdEG6Z7O5BS7c3yKjxSB85DOh+h9CWq7wDAdvIq+hhwOrwXg6sGoY+TPzolQW4x7wHPHgheg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792040766; c=relaxed/simple;
-	bh=w11y49jbyV/4vIC2F4b6XFOH4Euf+45PUeCl4BzyPVM=;
+	s=arc-20240116; t=1792040786; c=relaxed/simple;
+	bh=cxH/hMZE/AC08HsgZbXRkmn12fLokOsUnbhBRljJda4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2mwzJJ6HSuhVQXtLKHvPM++AooeFvZgd4T5HttM24i13RZyLNY8O2llsJdhIxIAyHOJJ4TfjdF2Y1qB+fi7Awsc4Skwz0b6lNNIx9z5xogpSiAeNPKKcRFav5WE9OErnMM2B790oAa2Cjo3PC0rtdQcQoLtpShB3d+v6htInEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pGmHK5U3; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=RMHGUeiRBlbof4dMFAYaI7325ZjXG4kGS7hkBzhOGL6W5EoyFt9J8HiaJ0EKCiO584qdU0tiZWHhioywBEgCwwTkxmU5IoDcdtluNZpFpf9DgPwP2rjcvdJ8Ts5d8YwP9RQ6C+YiU3HTf40yFDHpbJmoGvxEY+DRNTaRKvA/k5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CfTpMHWB; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pGmHK5U3"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-88b5f43cb8aso449825b3a.3
-        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:06:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CfTpMHWB"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-89d4030cc57so985715b3a.1
+        for <netdev@vger.kernel.org>; Wed, 14 Oct 2026 22:06:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792040765; x=1792645565; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1792040784; x=1792645584; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=w11y49jbyV/4vIC2F4b6XFOH4Euf+45PUeCl4BzyPVM=;
-        b=pGmHK5U3snngF0QolHy6HqPWemjepwXdVLMaJA7GLUhRUx27xqrLkzKpfIAvC4rxUm
-         HLfjL6qXdeaM0XGLHROVG2uZYiQ5T/m/UxIB4C1LWONqIo6cHri86tlelfO9CiJ3J3y/
-         8c+Okskgh4SLYTeqnw9p8dwRTk1qlND/j44mUUTMSaLY0bsiqqIwnjZIHCyuJA+2g5Wg
-         WNL9g+IYESXF0U70hAchIle17YuUKB4OZhyvWUFmL6Rib01c8hHVP7zh08T+tTBsX0gW
-         hHGG8hWdvEcbB3B7bzTKerBinYtvVnxVxPCdb4dWQsyVeUcLeekOxCSBYJjfThkR4grd
-         If/A==
+        bh=cxH/hMZE/AC08HsgZbXRkmn12fLokOsUnbhBRljJda4=;
+        b=CfTpMHWBdS7UYt4NB6fY1+KeJ+jxZuY+ll1gb/9loITxuCLC+2pZWoo7tLuLJCvS+f
+         jd64zng1TM1I+Ps+vyMc8Sx+HMaSUp2FdqbkD/u7tC1WIe7WAGhCq/jZs3PVqea6fF/Y
+         HLMdLWqwJOsjSfMISpJTlXH+7zU+k+vbjomksefBef0llsC3W5g/uLaVsxf8aWImxQVc
+         EY9aRq7AetSMKr2aN5uyHNMVa+yFpFQPI84Ok9/tKVkJwwvLhOa8eU9SAdoGreMCB9XE
+         P2cvSW50AowHqYv/DA4vjuIsHVBOGx8AQSjuErrBCcZJfXoEY+aM1fPVDEuP9SLYfAY2
+         jJ8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792040765; x=1792645565;
+        d=1e100.net; s=20260707; t=1792040784; x=1792645584;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w11y49jbyV/4vIC2F4b6XFOH4Euf+45PUeCl4BzyPVM=;
-        b=SFgT0A41ZoD2ohvssQ8L23Z0r3vDGbe9q3zNBvqHScLFPlRu34Yi4tAatQf7zoG8m1
-         dqvkVxEDCcUQ/bKVBV4Ow2snOs4JH949TSqHkm1ZFFGcfpT0iJVNI/n6jwbw2vdFa+nF
-         cx4qb4lS8L9BH8jngdLCE0KIW58Ubh4JzIKe03Bdl2On65Fk300g433GOhazUR3NPDSF
-         7kHptLQ2wu6bzSCMDIMOczz891oxFSFBb3O/CHonxfNctLSiegfL88MkAReFtJY/pKz6
-         pH6JIuDyjjGKE3P3Wjd0S+jus6vzdj/Wq5Tru3a8VxymdEkoIy5KHqGKKqHE8IyzlMZT
-         GlDA==
-X-Forwarded-Encrypted: i=1; AKwUvBxlnJ2k3QUDgTRDBFNt2FgotVK+OhtYTR5lVc7TipS4I9weKwkBXE0cFC1fPgotXXF4bpG4ZHI=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJx0VPb40l58lSE3E9rZ0EwCPlcfJKC+4gMMwmFz/hfpQwbJaL1
-	80zgwH95L1Ud66Mi4J5SXW9wLly5uuc69jTYN/6PtxtaDmRMpLZ4mi97
-X-Gm-Gg: AYBFou0o2XeHrUsarD6PDEW68X7G8TYlVhIiCYt5ZjA6SjIAB+clEh7SItKwxcpH7Fz
-	C3xLmlKYIzPE9Gc31Dh0sBGX/H8VO9xIwZbbPOv3u60wJqvZ7VskXZhDQE+Eq9Q+KPwgdcFTkE5
-	UFIOUR4fUuNSsylojLWNs/Io1QLnBZzJC6iGxnVn+Qkqqw0cG/7Gl4YyivVRhsMKaNHxL3Pm9fs
-	Ss9oj3JDf2jZD4+kt/MyunICa6dUm7wHFci76rATuZ/7PGFhKFK5vnms+DRKmfIifL905cBSC+w
-	AQ2ktK7EyIDQToyHVrQnxz6mV52IJ3EbXRq3ilRXwi3EIy8yAMg/A2XBdqBy+rEskwcCPfyNRGh
-	fsQi88AIbmCL0amxc4jt7rsFwyzKEr/X8CSe60DnhZqYIyatuokohh50fh4llHJ1QerLfLKbq6g
-	4kTV3he4VRsunSPz++tzAdKNbE5/fPjX+j2SfboHSBv6UC+jLgD3gfWptNfA89uB1qpzzJMq4G8
-	OHG7Pa3zIY=
-X-Received: by 2002:a05:6a00:8019:b0:886:84c7:72b3 with SMTP id d2e1a72fcca58-897c78d79d0mr14722485b3a.26.1792040764769;
-        Wed, 14 Oct 2026 22:06:04 -0700 (PDT)
+        bh=cxH/hMZE/AC08HsgZbXRkmn12fLokOsUnbhBRljJda4=;
+        b=v61X1yAzOXooq+Dz7JMkjlZNH5rxcwPsflEjnVBnacNKy0skpQbJMk1gLjRbwPkcuN
+         6f/CPeRIQzVKf7ONsmfBXbZuVNfPEBwCE3RBV97dBcJ8feRL7klPI5vNGTiwERzGunlr
+         S+YkcVmwZCcgm8PayqM8ZYORvux9cC8uXXOcWPKMZCf4zyJe55I8zn7nYR7DnddTIopt
+         iTq4K/ZtP0Z+uIRrjVSzCImbjlxQ3ZqrHUttXOMgC1SSKJw/T0dw83VBWbjpvgNcliwQ
+         2lDkBpCyZjFOF1mT0aPrP+quEqwaTa/fkqPrmMbjouRGVcPYxT3joqeITpVd7/eDH94J
+         aCjA==
+X-Forwarded-Encrypted: i=1; AKwUvBy3NKSfWFvMiMvzyq16T97LxxXX0CYcGPsWdS9nTZQbZWQxx55K2LI67nw5esNrJu+lelspGLU=@vger.kernel.org
+X-Gm-Message-State: AFq9FYIAgJ+iEGUXZJssCbzz/20jbvh1xTqrvltSj15F+1wVgSLWEP+v
+	e7jb4og9dRvQCDb758dE3HMSwOWl1X8CwLBC8BArf/3TqJxoTAXuR51d
+X-Gm-Gg: AYBFou3YdKTwU3bV9VOAZrSlAiuCEm1hUBOwyRIDE0oZnxiFdAlKgiyj5SS/trQCTlT
+	fDgzB1UPbInBTkRVKbZ5Q2gGrWHEujSK2+hjHPh6Ul0PWQi4NLVZ8b63Orbm+pLAnhmbrO8Lxao
+	Sud8STfJF5weNIRhzginW24Wl4Nvrqnr2JbFmc8wh+ZMsV9WyFrjGRenY7JlSebFxJkgkebqQah
+	AU7s1ehr/5he/1OrtFpGj7KNaykA8bGnBNLksVKEWU/ObtTp7Sv3/m0cGtSlKWFXPEcWm3HrjTW
+	7qqiP01QjpjM1AWyRaV00Lq+zSFeajKw6lRI6E0EVNrx1C5q3bafOenK1Ya2JRWGgw5m7jTFD8i
+	iLW2CKhKfSqJbJe4IMk5M9MBU13yR9M0SkYGTWdxLzavT9p3Pwf1bgUv6Q8fRRv6OxUWYQcaBy9
+	Ot+42O7uQLQ0HlsQdH9qcsDJG5MGDBzIcfCdCOVj+kUlz9Lwu075rke8MlCw7FHZZm/uGha3lnI
+	u6nXr2IlTg=
+X-Received: by 2002:a05:6a20:6a1d:b0:3e0:df81:23e8 with SMTP id adf61e73a8af0-3e16bdb632amr16747581637.24.1792040784494;
+        Wed, 14 Oct 2026 22:06:24 -0700 (PDT)
 Received: from ancienth-X870E-Nova-WiFi ([125.186.72.2])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-89d7f51f452sm1726602b3a.1.2026.10.14.22.06.01
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cd635cdffa5sm635724a12.29.2026.10.14.22.06.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Oct 2026 22:06:03 -0700 (PDT)
+        Wed, 14 Oct 2026 22:06:23 -0700 (PDT)
 From: Daehyeon Ko <4ncienth@gmail.com>
-To: Ido Schimmel <idosch@nvidia.com>
+To: netdev-bot+sashiko@kernel.org
 Cc: Daehyeon Ko <4ncienth@gmail.com>,
 	David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -71,11 +72,11 @@ Cc: Daehyeon Ko <4ncienth@gmail.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH net v3 1/3] ipv6: serialize address publication with device teardown
-Date: Thu, 15 Oct 2026 14:05:51 +0900
-Message-ID: <20261015050553.1835517-1-4ncienth@gmail.com>
+Date: Thu, 15 Oct 2026 14:06:05 +0900
+Message-ID: <20261015050610.1836863-1-4ncienth@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261012145306.GB779501@shredder>
-References: <20261009054042.272944-1-4ncienth@gmail.com> <20261009054042.272944-2-4ncienth@gmail.com> <20261012145306.GB779501@shredder>
+In-Reply-To: <179161099408.434549.14449036924552933828@kernel.org>
+References: <20261009054042.272944-2-4ncienth@gmail.com> <179161099408.434549.14449036924552933828@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,7 +85,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-You are right. I overlooked both earlier comments. V4 drops the preliminary
-READ_ONCE() conversions and the disable_ipv6 recheck. The new locking now
-serializes only idev->dead, the state relevant to the reference leak, and
-leaves the existing preliminary checks unchanged. Sorry for the churn.
+The patch 1 Critical is fixed by patch 2 in v3, but serialization appears
+before its cleanup prerequisite. V4 puts the hash cleanup first and states
+that both fixes must be backported together.
+
+The other findings are valid. V4 describes the stale hash entry as a UAF,
+initializes ifpub, cstamp and tstamp before publication, and adds a fourth
+patch that does not restart DAD after teardown has marked the replacement
+ifaddr DEAD. Thank you for the review.
+
+pw-bot: cr
