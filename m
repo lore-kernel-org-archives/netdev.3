@@ -1,68 +1,75 @@
-Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E904DDB27
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2E44E325D;
+	Thu, 15 Oct 2026 10:13:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792059146; cv=none; b=sCYVO2bvpNp94VHEfZTvv13Sr+SOYVtIfcjfMiPOl3RM51WlIDadjAyzHrf6zuygKdpgga1rDZ3pSxQYoO2IU48I1qIgunrayxl8caE3UWp4IdtcA9D5+0h3KSIQSt0rapBWoijscWSmugQfhgIyAJzNKcLTw5PHg0Ly/qc8Was=
+	t=1792059206; cv=none; b=CdD6icpxugmIAe1XQiooN8gq/a9NSe9RyraEgfhfxJE1pLNtjg45dheiHFYHd1tHNzSUfpXqL0GbmzPhlN2akaGRPm8doCAsvQxn3NlgqGNqezD/qCDyAcKaWdZ3JN55CA750I7164CH2M0/cp1XXBCVFQUFi7O82NfMbMzixMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792059146; c=relaxed/simple;
-	bh=OJk1cz3CfsO6TmrGjCaPEDykyhiW/es/CCWJikSPDzw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nwjRt2J8WiRRlN9ry1P7tLk3awA+SWzUGb3UzOTtNRvLjjQUmZNQ20iVOQG21WzrMG5qdAzk/3591TTgtEHAGG8OCZ/WZR+j0C+xl4eYZWyk48Loc6TpqEUeem/+LamQkyhPjqzqZfkj4U50qG680kms549r+N/J9p5jeLsKvtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NS1g0Z2I; arc=none smtp.client-ip=185.70.43.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1792059206; c=relaxed/simple;
+	bh=b4+7BckYp/TslExRpb889Ix14EnhYPDMnBCNXxtB9JY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rYaxYRu5HTE+vEwh40tgQ4gq9cH53/o+LbMfMvRFJyEjd9Ivg2k3fyUYhXT0L9vhLIIeL0oVgXfErOlvMsaaK151a3dfSO+sHa3fAIfe8WdCHSeg0Q52JXwS7hadd4UJIBixMlpsmdin/gzupuanK5IwTtqWPFkOkK73M6YgbgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Q8DfvsDY; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NS1g0Z2I"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail2; t=1792059137; x=1792318337;
-	bh=OJk1cz3CfsO6TmrGjCaPEDykyhiW/es/CCWJikSPDzw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=NS1g0Z2IhSkK48VPXeHV6GZx1270udI5iTLqSwhoiro35RwZh7KHd2WE73nIXDsD6
-	 5/oUOsNN6ouZUXnhCECLGV6pF3IEfRmNpVMt5cu31wQumHSe9wJ1KVVmJ6khaiLgX7
-	 HFDKd2ioeihuSstVoUIxW6t/1xj5ETpVWUgzh3LpAnF3g23BdvNuvQmFAKeg2y9TrV
-	 /FoAJkADK3aF2Qd8jqo1x1wuY9NGV+6kN9LFvmkR9ot7/M4X89jNq37gJHfARTfO+v
-	 ZH0tBfYDJyXcwOfKiwet6a5WHzDllOzU1DxbMHFVnILQuX/sJoyXMtnKjwQorRirv2
-	 upozVtqyncevA==
-Date: Thu, 15 Oct 2026 10:12:11 +0000
-To: netdev-bot+sashiko@kernel.org
-From: quanyeyang <quanyeyang@proton.me>
-Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, jakub@cloudflare.com, jiayuan.chen@linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/2] tls: annotate lockless access to sk->sk_err
-Message-ID: <63MTB0ZQu5tbPM8m7Oa83_El49QoWVCm15ic_XX7RDZNClpaM5IaeZgMhoOC4NhGEzOeVGOdSUpd0EYAmrXxCxXAV1l23w_JhhsImMz7Eug=@proton.me>
-In-Reply-To: <179173140561.434549.1271106969659357254@kernel.org>
-References: <20261010-tls-fix-sk-kcsan-err-v3-1-e28aadeb31ad@proton.me> <179173140561.434549.1271106969659357254@kernel.org>
-Feedback-ID: 206494642:user:proton
-X-Pm-Message-ID: 2fdcc952814896e00c571428484493aacfb859b5
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Q8DfvsDY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WAbtlqKuP69hiwARgiPCIxV+lrBvAR1z924vTs5YTXo=; b=Q8DfvsDYll5Eyone1xL5dVJQBo
+	Px63lopMx5uEVx6qTv8MIL32+9o24q7hWPvSHaNqVrAFgS99t7ZBnjMgKQXkLE5pocWUyvafejgGQ
+	ArDAPGml6vnbiExm2zQVh4DJRD5ogJ+rkfhZWX4zRZQamwm0JwK4r0bjYdDE3fe6ZA0Mp8vlTH80S
+	EByV1LaJZf/YrGnnoGes3rfqK4mnjSM15F9CyFC/fFVT6FV7JxJ1T0qOG3/eW52MQzagaAXOIyMwM
+	+yfWUVe4AwsmFFxG567OM2EGE4WHVPzu732FtCgnDghX8oaA7zibMpVf/earPL9GoilmbYSdNrufN
+	HoZBDGTA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xHISd-0057Nd-2D;
+	Thu, 15 Oct 2026 10:13:19 +0000
+Date: Thu, 15 Oct 2026 03:13:15 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Gustavo Luiz Duarte <gustavold@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 2/2] netconsole: remove unnecessary target
+ refcounting from the netdev notifier
+Message-ID: <atCkMJcghkV7DD4S@gmail.com>
+References: <20261012-netcons-fixes-next-v2-0-ac8ec4c62edb@gmail.com>
+ <20261012-netcons-fixes-next-v2-2-ac8ec4c62edb@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261012-netcons-fixes-next-v2-2-ac8ec4c62edb@gmail.com>
+X-Debian-User: leitao
 
-On Sunday, October 11th, 2026 at AM 8:10, netdev-bot+sashiko@kernel.org <ne=
-tdev-bot+sashiko@kernel.org> wrote:
+On Mon, Oct 12, 2026 at 06:03:44PM +0100, Gustavo Luiz Duarte wrote:
+> Since netconsole_netdev_event() holds target_list_lock, there is no need
+> to also protect each target with netconsole_target_get/put()
+> refcounting. There is no way a target reachable from the target_list
+> would go away while we hold target_list_lock.
 
-> Can the EBADMSG test in bpf_exec_tx_verdict() miss a synchronous
-> encryption failure?
+Nice. I have never thought about it, but you are correct.  The
+notifier's get/put never protected nt at all.
 
-That window is pre-existing. tls_push_record() still reports the
-crypto failure through sk_err and returns the raw crypto rc; the
-caller peeks sk_err to decide cleanup. Folding the two unmarked
-loads into one READ_ONCE() does not close a steal or overwrite of
-that slot. Routing the failure back through the return value would
-be a separate change, not this annotation.
+> This is similar to commit a6d403ac9689 ("netconsole: remove
+> unnecessary netconsole_target_get/out() from write_msg()").
+> 
+> Since this is the only remaining user of netconsole_target_get/put(),
+> remove those helpers as well.
+> 
+> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com> ---
 
-> Should this patch carry Fixes: tags so the fix reaches stable?
-
-No. This series is a net-next annotation of lockless sk_err access.
-The consume-once change in tls_rx_rec_wait() matches what we already
-did for TCP/MPTCP; it is not being backported here.
-
+Reviewed-by: Breno Leitao <leitao@debian.org>
