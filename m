@@ -1,63 +1,131 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6824153FD5A;
-	Thu, 15 Oct 2026 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7590053ED12
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 15:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792077785; cv=none; b=BXgxML/1z69zcCI1O2xseJYh4DJVwBdJXIbJKFodg9DOGhAet++UIdQFfpvrNcMGjgfvJxEx5Bg3GLwFkP3/mq4xUxJ+PnRE5PWqehRNYj5LUyj4zs6kPPl70DVXPRKb3VvLbWAL64g/VC+EbjgokxPu1byl8jrVPt6Qcz82z0Y=
+	t=1792077857; cv=none; b=DvsiYlkGlfxVCohPQjxX70itbfmPLxErhQg8vsmAXMIs7BUJLlvGNp3xjAJmaoS2zQ5x0WJwcB9I5quGSL1N6MTSD6S2yIOrD77w2ENK6MHAna/Af8PdPQBk+HwjCNUE0uZB66iWEcWBnY/tRJmmQt8LLIzvhVmNhk1G9AZF1lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792077785; c=relaxed/simple;
-	bh=pBVIUhqWcaZfPcq5z/rpMLtbodmcs1yW4/aInBEFpxU=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=fm4CF+9/VwgKtU46v5jUk4JnGapNgCe0VoxFl4kBpW9dvxNzoIVbN4tufENIKAbhs6i0tfrK5yp0CeNUxauTwwEynysvZdFVQTYD4oCqadGObHTH3GCQbfg+1ViH5WDXd8vWz3pil3tWXPqqkr5o8vCgfwCJIPHgkzFmtfJ87TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mN3t7+40; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792077857; c=relaxed/simple;
+	bh=CKoL26ABbwOGXOvSVsiDMkVA4eOCWp9NncspIwO2DFI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=sWJCO/d2g9SK8zB7Ov3pnCYGomqoJ6teVTUlRSB5JbaQZg0WNqonj11rG+5uQeubO1XlWnEpY7Gou+CXq4hs83y6qAhpQxud/qkNdBIUo9jmYqpJlxwSyglkSG66dBR8p/vytRjsTekvcqkTXemgyTQ4ChSEZlmgB4OA5/9X0AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GzTv9NmZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mN3t7+40"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E0B1F000C4;
-	Thu, 15 Oct 2026 15:22:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GzTv9NmZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EDC1F000C5;
+	Thu, 15 Oct 2026 15:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792077777;
-	bh=uJXIiF8prnALe94Y+5cz/F5pbW16tata7wadQKRqYnk=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=mN3t7+40h16hYrfupBzonJnvQDLQLiDubNZ8eRqsCORCJH2z38rP3wfcJqMHDwfpC
-	 qGJtFqiqWFkYeaWxIEUeqbnRwPMQNSf2l5UvOs5HLCZbHFqfx+klCjD/dRMlPlkb+K
-	 Cm3ZELkQt3DpGge5B6ecdXU33CE6WqpLNd1fDRypb69SR1mys1SCiAcvLjwyBHGllO
-	 XfWz3w2s+GoqTDAsiKKQNrKh2NZ5ameFTCnfOu27CmiPsW9uv70ETVCBowITbF7zvC
-	 amuQLd63At+PC4yvtpaGtz9Kks2UcsyataZyFEqG8NHwbJTUsKKRiDweeMR//HVZk2
-	 +Vm32xLzsRKiA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A3C2392EB21;
-	Thu, 15 Oct 2026 15:22:57 +0000 (UTC)
-Subject: Re: [GIT PULL] Networking for v7.3-rc8
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20261015140051.105229-1-pabeni@redhat.com>
-References: <20261015140051.105229-1-pabeni@redhat.com>
-X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20261015140051.105229-1-pabeni@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc8
-X-PR-Tracked-Commit-Id: aa07285705f8d5bac464eb1c5b7412f8e88b91e1
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 045958acaa75205b31578cb22c4345e28dd2e4bf
-Message-Id: <179207777577.3502468.11718910943020250395.pr-tracker-bot@kernel.org>
-Date: Thu, 15 Oct 2026 15:22:55 +0000
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20260515; t=1792077850;
+	bh=t7s6af2RCACMyBPQAb9C2Qbo1cKUrk6SdIfxEopqpjg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=GzTv9NmZNN+YPmajfdaMlJCg0pOr4BmsMjbV2AMMnQ6FjHklyJXoxNsMcDyb9P3NN
+	 cwNXgf4T5Y+mMcZJ6JzFU2PT7H6k9GlavSgPXCkj7hTNpz7VIyH8mtxxQ7yag/rjLP
+	 bQ1I2w24mjP+M12ZkaviqxB0FP8nywirzCvodxIx9pVvwRTtxCFAu6jZ518R3Rw7gb
+	 vqgzKNziM2Cf5yrjEnlLpBM3Dn6UZcKKUNhq85rt4Z1+sLJC0hZkc8/qf4k3mfNaNu
+	 zHSEkYVEvO3j41uPWfS92TKN6flQsYgQBpGP/ywWMTfPNvy9voOdez9bYZN+JYM/HH
+	 /TdP2ZFfpkXDQ==
+From: Linus Walleij <linusw@kernel.org>
+Date: Thu, 15 Oct 2026 17:24:01 +0200
+Subject: [PATCH net-next v5 01/14] net: ethernet: cortina: Keep shared free
+ queue parent-owned
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261015-gemini-ethernet-fixes-3-v5-1-b5c9e2f7b8a3@kernel.org>
+References: <20261015-gemini-ethernet-fixes-3-v5-0-b5c9e2f7b8a3@kernel.org>
+In-Reply-To: <20261015-gemini-ethernet-fixes-3-v5-0-b5c9e2f7b8a3@kernel.org>
+To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Micha=C5=82_Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>, 
+ Myeonghun Pak <mhun512@gmail.com>, Eric Dumazet <edumazet@kernel.org>
+Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
+X-Mailer: b4 0.16.0
 
-The pull request you sent on Thu, 15 Oct 2026 16:00:51 +0200:
+The software free queue is shared by both Ethernet ports, but teardown is
+not ordered around that ownership. On parent unbind or module unload, the
+parent remove callback runs before devres depopulates the child devices. It
+therefore destroys the queue while both child netdevs are still registered
+and can be doing DMA. Devres then removes each child, and both child remove
+callbacks destroy the same queue again, resulting in up to three cleanup
+attempts.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc8
+Removal before the first interface has been opened is broken as well. The
+shared block initialization assigns a nonzero queue order, but allocation
+is deferred until open. Cleanup consequently derives a nonzero page count
+and dereferences the NULL queue ring.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/045958acaa75205b31578cb22c4345e28dd2e4bf
+Depopulate both port devices before cleaning up the queue, and perform that
+cleanup only from the parent. Disable the free-queue interrupt after the
+managed handlers have drained, since its threaded handler can re-enable it.
+Guard cleanup for paths where no queue was allocated.
 
-Thank you!
+Port 1 owns the shared refill interrupt, so prevent the children from being
+unbound independently. Unregister each netdev before detaching its PHY so
+ndo_stop can still access netdev->phydev.
+
+Reported-by: Myeonghun Pak <mhun512@gmail.com>
+Closes: https://lore.kernel.org/netdev/20260917192835.58126-1-mhun512@gmail.com/
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Assisted-by: LLM
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+ drivers/net/ethernet/cortina/gemini.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 2fe7fd0202d2..bf7652b04f1b 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1004,6 +1004,9 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
+ 	unsigned int pages = len >> fpp_order;
+ 	unsigned int pn;
+ 
++	if (!geth->freeq_ring)
++		return;
++
+ 	writew(readw(geth->base + GLOBAL_SWFQ_RWPTR_REG),
+ 	       geth->base + GLOBAL_SWFQ_RWPTR_REG + 2);
+ 	writel(0, geth->base + GLOBAL_SW_FREEQ_BASE_SIZE_REG);
+@@ -2387,11 +2390,10 @@ static irqreturn_t gemini_port_irq(int irq, void *data)
+ static void gemini_port_remove(struct gemini_ethernet_port *port)
+ {
+ 	if (port->netdev) {
+-		phy_disconnect(port->netdev->phydev);
+ 		unregister_netdev(port->netdev);
++		phy_disconnect(port->netdev->phydev);
+ 	}
+ 	clk_disable_unprepare(port->pclk);
+-	geth_cleanup_freeq(port->geth);
+ }
+ 
+ static void gemini_ethernet_init(struct gemini_ethernet *geth)
+@@ -2635,6 +2637,7 @@ static struct platform_driver gemini_ethernet_port_driver = {
+ 	.driver = {
+ 		.name = "gemini-ethernet-port",
+ 		.of_match_table = gemini_ethernet_port_of_match,
++		.suppress_bind_attrs = true,
+ 	},
+ 	.probe = gemini_ethernet_port_probe,
+ 	.remove = gemini_ethernet_port_remove,
+@@ -2683,6 +2686,8 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
+ {
+ 	struct gemini_ethernet *geth = platform_get_drvdata(pdev);
+ 
++	devm_of_platform_depopulate(&pdev->dev);
++	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
+ 	geth_cleanup_freeq(geth);
+ 	geth->initialized = false;
+ }
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.56.0
+
