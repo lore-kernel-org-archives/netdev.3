@@ -1,89 +1,62 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from orbyte.nwl.cc (orbyte.nwl.cc [151.80.46.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6167456E1F
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 18:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E6A4BAA17;
+	Thu, 15 Oct 2026 18:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=151.80.46.58
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792089368; cv=none; b=XkAuqiR0Mc18vxgui08Xkx9pVBqc1mMMNnbWJ2sNOZCt2f1tALNhBYmsvLnwcImRQdHU7xlvfwVad3SQQB7NTb201ujrNgycoJCMpuQd5CFRP3o8WpabuEXRuACLGlg5oCG9xBpyJywbGqB6h3VBNGtIe87nc2gdhnYcC/QgRe4=
+	t=1792090279; cv=none; b=KUYwETGKSEMo+5csVJXZAO0fKdoMTWVYEydjLiwdKxRb0GV911AGXWDos0WLEOjiw1BQb6EiJzDh3cg3vLIYWH1H03k3+kpt0GvCuoWLWzUOKh8gKOAll9PWUKRN/0sC39zXis4RTjhvlXE7Xu4s8zz+4yc0N+6owRbxRsgcQjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792089368; c=relaxed/simple;
-	bh=TLr1LucY4VL4yVUlVTB823ltLyltwTY+iKWipUNEIeI=;
+	s=arc-20240116; t=1792090279; c=relaxed/simple;
+	bh=PdtEyOd+J/2fiZkaceo5cAeUkPy9uCTBZFkQzoFfpGw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VnSwsC2UeeaR+O38blI/wch9tkrGli/PSzDzLWdNtpYKrdlIZqWzgv2jhMNdp9Vju+hYn1VsR/mo0ErwaOt3yrcai7ZRToL2NQ/lubTKeXj9K3JlSLTqU1fmmc0sNSlqCWdP+nSNghJf344jJJNEK0t1G8VHHKdAwfO/uC92RjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=qYPQjXOH; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+	 Content-Type:Content-Disposition:In-Reply-To; b=U5UsRAU4PnchvKk9hLXxkS3TMSEfs5mymWtCloSTaXZB9FSpKdRra3Riv/NnKx4Qw6eGit1+qMHcZRvZa3jE7fkJitf21S77f4JQcZhUac2fX1+9m1R5BBlpUaD6ybTuwnHhrxihT/pTGLFBXycCI+WjBJ2bXyIDESs2dMgJG3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc; spf=pass smtp.mailfrom=nwl.cc; dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b=ewf5R94e; arc=none smtp.client-ip=151.80.46.58
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nwl.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="qYPQjXOH"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5339733feb9so50312921cf.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 11:36:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1792089360; x=1792694160; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gGaEJMGgzicXp76y7CRrNxXTeHLUaqluIVRvG1wuFn8=;
-        b=qYPQjXOHuQB2vs2NHK4FzYC1bR9UJWakETapKJVVZTfWqLNj+2se28Xl6ZfvK6+3ik
-         MN6cJOzaFA4SRGAcbgOXL8CivmqCkk4C0oeINrNAUlXL82sLF0dYdvgx6dD0FW6+WYIe
-         n9E4Bo7CS2EhBtRdcBPCPiu8pwtoL168ofHstZDftYvARmK7crKH7C+AhXqd6z6n/Xd/
-         dVj5E776XWZX59sGqjqkNxxNrFfaMI4GCxQ4E/3OsGsZXNpVhnVD1rv4Rjz+2/JLhTZ9
-         hn5FuElae3cTBETRxwalr6FNHWoYDx1EWF6Jm5umevwGTyYykjwm+PEiNhHEIFb5jaSX
-         ZCQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792089360; x=1792694160;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gGaEJMGgzicXp76y7CRrNxXTeHLUaqluIVRvG1wuFn8=;
-        b=RM68vmVA2yADDz2Dwnt2ClinPtxzqCnxLZbLYAbkF/wXSR0rH7rXnuncix/3FqRFau
-         rllr+gmLm5x0UuZw6KWlR+ZBuEb/ETKGQQe7yndBHyBFkfnWfZZ3KwvnPTByCaDCaW0S
-         2e5VOau4cy9diuXxSb9DGZmPYntQKaTTIhdt3bXFARWs371sxwUBMsm7jdKU+fkfVjWa
-         KrlKL8VEeLUYGSucWZgCm+WPLgistoMWV5Hhitv2hup4wWdu69oHS2hdf9sy6BRTswkU
-         hIzLqhBKuVmr4iqe6neTY9LUZz6mrirSHPz64kVKy//ytrjVyGlbWrEXpXtHB/qa9jwW
-         DEhg==
-X-Forwarded-Encrypted: i=1; AKwUvBxh2EOnaLIPbEa0BBvJClctddZfRkRxr8Huc1snwmxTH1RdAmuyXOQ2BlMZXHIi+cZqWXGzU2E=@vger.kernel.org
-X-Gm-Message-State: AFq9FYInjKP0fpvPSpmBOi2NzjNEtpGDmo9dptmEseejDrrkSMBQtksR
-	pDOJ/kf4jWVlReqp9+yW2ji1406E8wXpJIpPTdxC6QUvDWfc0wJKChbfQpdoTdTicg==
-X-Gm-Gg: AYBFou2ackYAppJztWFg3kut/8RvsrtHpvdO1Kaldnv9r7CHvfIaCVyqNMxSjERKvE1
-	iKRXrGJbhzjVuFwKA5IpOnw3QSLcX1/ce1YA6oor6Mm7jFee2xQkyK+6+9QFoS368UYvHsc1EPI
-	l+UWzH+qspEPbcPO0WRWJo6R5/Jx6KMv5u/q2UNEXTSTXh5m1arb3WLHbpdHPJ4mTvGejqeQDHc
-	9/n/nd+ErCZLyBVkY/8mhWtJ/BULtYwR31LiYslM5Wk8IY0kiPgUJu81Uvz/usZvBjPhjwa7nLt
-	pAYEJqa7xOlBGililyYOokO4VXV6wODMzyQkcul9QcuBLQHnIjeK7BtAHR/s1xWf65+PB3oIlDX
-	jf1PP6slJym3wc7qDdbiNoofydwBkbP0uaJ3cF1c9Ea2IE2PcSEKCwy1P/LiLAXS5prz8GKqdd8
-	+AwWP4V8uwMYUjThSw0CKMINOtzDP14x0/Xf3f4Wx8Q1a2lst9XoSbN0p881BYzo6C1xOGsSuTd
-	SsZBz1qGbMPZBpGM0sLaGS9gNKdBA1T4J7qwRqgnA==
-X-Received: by 2002:a05:622a:90b:b0:535:85be:da8b with SMTP id d75a77b69052e-5359fe01121mr316645821cf.61.1792089360229;
-        Thu, 15 Oct 2026 11:36:00 -0700 (PDT)
-Received: from rowland.harvard.edu ([2607:fb60:1011:2006:2008:aeb7:73d7:d8ff])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5362a9bbad2sm192231cf.18.2026.10.15.11.35.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Oct 2026 11:35:59 -0700 (PDT)
-Date: Thu, 15 Oct 2026 14:35:56 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?iso-8859-1?Q?=D6mer?= Mete Kaya <omermetekaya0@gmail.com>,
-	oneukum@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	david.laight.linux@gmail.com,
-	syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
-Subject: Re: [PATCH] USB: Documentation: Update description of completion
- callback context
-Message-ID: <7494e770-518f-4866-87e2-5a525af3b82e@rowland.harvard.edu>
-References: <2026100910-petition-embattled-94cb@gregkh>
- <20261012194902.aEq58Q6b@linutronix.de>
- <8545800a-a37f-482a-9b06-cbdd70312b7a@rowland.harvard.edu>
- <20261012212527.5sFqlGYu@linutronix.de>
- <41af30de-4725-4913-9ad8-54d1dea2d4b8@rowland.harvard.edu>
- <20261014191141.GxlJhR1e@linutronix.de>
- <89da3b1f-60e5-4f18-9592-3d6d7175c437@rowland.harvard.edu>
- <20261014220403.R38Gf0pW@linutronix.de>
- <de582feb-a0aa-4fc8-9818-890014de32a9@rowland.harvard.edu>
- <20261015182643.MIjjSTAr@linutronix.de>
+	dkim=pass (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b="ewf5R94e"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nwl.cc;
+	s=mail2022; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=MJmX4b1u5tOTPARyB5qX60siGQ72Kn2GluhVs6oag6Q=; b=ewf5R94evg7Eyo9ZbrhlAriwdj
+	izNfmTeT2CRvXyHnV5jp010NSVYHkz9GshTiBGI3ZASUnEV4rpaYhLrjF0c6m+tq1z1diuUDVSsUO
+	1aSpqEVttvMZGhgkDemWFaDtwdyjK4egcDmhG56NcJOrklJ3eKyn2LPP1/a31oN3kcPKKR+TJAQTV
+	KL8KQy0F6YUU6cFBduNNKS2OxXmXIrdLbGFM+/xPUFikskmY3Tn3Fr/lqWvsbYAagqrQjccnIw1VC
+	uoHfyvflJSoIAljVumj8YThh/DhBh5B/DdxeMD+0aZn/cSuSuD81h1ovgCdrU/seA9iiJNbPRQXjp
+	nFZFs1ZQ==;
+Received: from n0-1 by orbyte.nwl.cc with local (Exim 4.98.2)
+	(envelope-from <phil@nwl.cc>)
+	id 1xHQXc-000000004CZ-3Ik4;
+	Thu, 15 Oct 2026 20:51:00 +0200
+Date: Thu, 15 Oct 2026 20:51:00 +0200
+From: Phil Sutter <phil@nwl.cc>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Jason Wang <jasowangio@gmail.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Max Krasnyansky <maxk@qualcomm.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>,
+	David Ahern <dsahern@kernel.org>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, bridge@lists.linux.dev
+Subject: Re: [PATCH net-next v2 6/7] net: add ip4_parse()
+Message-ID: <atEglBQ0B1jR5t7q@orbyte.nwl.cc>
+References: <cover.1792067836.git.mst@redhat.com>
+ <2645c102b2f73292d1973b82c95def24e48064e1.1792067836.git.mst@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,33 +65,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261015182643.MIjjSTAr@linutronix.de>
+In-Reply-To: <2645c102b2f73292d1973b82c95def24e48064e1.1792067836.git.mst@redhat.com>
 
-On Thu, Oct 15, 2026 at 08:26:43PM +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-10-15 12:00:46 [-0400], Alan Stern wrote:
-> > The existing kerneldoc documentation for URB completion callbacks is
-> > incorrect about the context in which the callbacks occur; it is not
-> > always in_interrupt.  State explicitly that a callback may occur in
-> > any context with no guarantees, and likewise for the status of
-> > CPU-local interrupts.
-> > 
-> > Documentation update only; no code changes.
-> > 
-> > Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-> 
-> Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> 
-> usb_hcd_giveback_urb() kernel doc says: 
-> 
-> |  * Context: atomic. The completion callback is invoked either in a work queue
-> |  * (BH) context or in the caller's context, depending on whether the HCD_BH
-> |  * flag is set in the @hcd structure, except that URBs submitted to the
-> |  * root hub always complete in BH context.
-> 
-> Do you think this deserves an update?
+Hi Michael,
 
-I think that's okay as is.  It describes the current implementation 
-pretty well, even though it doesn't mention the lack of guarantees.  If 
-you feel it should be changed, let me know.
+On Thu, Oct 15, 2026 at 08:41:45AM -0400, Michael S. Tsirkin wrote:
+> Multiple places in the net stack open-code the same minimal IPv4 header
+> validation: pull the fixed header, check version 4 and IHL >= 5 (where 5
+> is the fixed header size in 32-bit units) - and locate the transport
+> header at IHL * 4 past the network header.
+> 
+> Add a helper for doing that: it returns the validated header and
+> the transport header offset, or NULL if truncated or malformed.
+> 
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> Assisted-by: LLM
 
-Alan Stern
+Reviewed-by: Phil Sutter <phil@nwl.cc>
+
+Did you consider nft_inner_parse_l2l3 in net/netfilter/nft_inner.c and
+ip_mc_check_iphdr in net/ipv4/igmp.c as well?
+
+Cheers, Phil
