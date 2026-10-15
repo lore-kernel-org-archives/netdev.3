@@ -1,76 +1,81 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2C450EBFE;
-	Thu, 15 Oct 2026 09:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA75C4A7CA7;
+	Thu, 15 Oct 2026 10:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792058356; cv=none; b=RKxHAKDkELCK9ZeUcaZfvcH+CDcI6PdJObHqbo6HdH/HyU9MQ602OOjfKe2FGhNmqEtY6v42tjjVK5caRnz6mbwumNi9SPBMwPCs1VIBRpmfjaRUcDHwZbuPhwsbY17DnY0ytON22mkEEnXsPDBYA7Tgx9OBete/72w5TyySuVE=
+	t=1792058408; cv=none; b=sreWhWLBc2kGGGdSwNSqKKZm1xvbeuLYWcfB0rshorypNC0zSmG/52HNnzaaFwR5GDi7yZQnmkdE/9cQbnLG1VPlcS/JYMe7ChPU2lF90wkbuSkN8INyZsHj6VDMRq7FMe2ZmEjtEshFLvQunwmxK9yTBOV8ePck2STHGcT3ZUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792058356; c=relaxed/simple;
-	bh=NVOia/N7LIk8muVKWJmeQ6PHy+eo+cQ9zaVjQs9I690=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eTGjzG/tU8bP2celyKl12TbnCHbnhzL5tNABedSRkOSai2vmoWBtGWLgNw8yZD/7FPvITNwpGduz2JGkG7tN333UsRakY5U/c9uJiNcoFClCL2mbryqywhkvsofsGVqODgTel7LRogYEzJPNxOeM8WXKXIbf7Pb8y1p2ImzcQW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=ukyERuE4; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1792058408; c=relaxed/simple;
+	bh=FRIOZyO0iAK4GL6hXO5EDHKcOhtImob5hsUVrqOj52k=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GTRewn5KnkkExotdqS8iwuIL0ZO4zYazJMJhU5FPsFvrAY9embq3JJzi6rgsLkf+lStt6po64L+HOFTy7qvW9YtTMpYyP4Nh2AjbP+Ph167pMctzQYVAxDC2+tAHoQj6nRILNPJSVRRD5JDYaEuQIZVVPpOczCKl05ZWtlgl7+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQ3w9+Vc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="ukyERuE4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uAHo67pn/12jxJum+3WSXwcW7pfgqgyfx97rw9oiqW8=; b=ukyERuE4dLZMVahRFReNWVx0gi
-	qEQqcN+leoQIn50ENP2cPXNGKIMmgNnDAA/vG+i/dkWamyUm9HRf5duku3Vz1FQrVVuQpqJM9bhsz
-	/V58VQLOrBLx91zm5gddj6smw9rnOKVlZQ8xC3q62Z+WGNMYnbhIwXFXxcsAA1R6MuDfIiWI5z3fI
-	kyum1w1dD9HMe5T436aYRj3qzYiQHczQEgLonJX0zIdFih3YIl4rV9HB0ZvgjxxSyz8QxmcQrYB5y
-	L9Wt0lfzO+eMsp+g9ABkEOwPPuPj0K+XgSYrjMKxoYosAvfb4hRr0FTcOjT4xdN5hZfyEb8GTtwhC
-	4V4rTIvQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xHIEt-0056yl-1s;
-	Thu, 15 Oct 2026 09:59:08 +0000
-Date: Thu, 15 Oct 2026 02:59:03 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Gustavo Luiz Duarte <gustavold@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Sashiko <netdev-bot+sashiko@kernel.org>
-Subject: Re: [PATCH net-next v2 1/2] netconsole: avoid printing partially
- updated target attributes
-Message-ID: <atCj2rOpqy83s5bC@gmail.com>
-References: <20261012-netcons-fixes-next-v2-0-ac8ec4c62edb@gmail.com>
- <20261012-netcons-fixes-next-v2-1-ac8ec4c62edb@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQ3w9+Vc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0B81F000C4;
+	Thu, 15 Oct 2026 10:00:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1792058406;
+	bh=O5PSGyP3wGupPJqSfNsCyMmvW0tTQlkg6s/LDbfJd2c=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=GQ3w9+VcIs5b1BwjJ1iCh59EFJZlT0Z5PHEzdgENPyH4tgCRwe8aKk6grqhZli7Lo
+	 CcciMX5a+qnhK62KG/9CskMBZKJOfb8eukj0pCsw1wMa01nmO3zN5j/LzcvzlT95qS
+	 KOM6KGgak7wWZEjarbyk5CrJctWIScqEhN8ezxZpLYkalA4R0RsHCUIvzTxCWjEg+a
+	 alVURb81EPgGOvOhMGiQaKIxYVBoqsezrMRzLtU8YNGj7eb7leIPjPkgwP4kWqaKXl
+	 m0GBH1Bu8Gc+Ww5ujG4KQkbHX9wTPhe3SDgeOgehtyAGM+FpZs2jGLLoGC+U6p5BEh
+	 eW13N9HwDKekA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B44C4392EA50;
+	Thu, 15 Oct 2026 10:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261012-netcons-fixes-next-v2-1-ac8ec4c62edb@gmail.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] net/mlx5: less memory per offloaded tc rule
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <179205840526.3325132.4078585050271061230.git-patchwork-notify@kernel.org>
+Date: Thu, 15 Oct 2026 10:00:05 +0000
+References: <20261009052103.3621855-1-acassen@corp.free.fr>
+In-Reply-To: <20261009052103.3621855-1-acassen@corp.free.fr>
+To: Alexandre Cassen <acassen@corp.free.fr>
+Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@kernel.org,
+ kuba@kernel.org, pabeni@redhat.com, moshe@nvidia.com, kliteyn@nvidia.com,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org
 
-On Mon, Oct 12, 2026 at 06:03:43PM +0100, Gustavo Luiz Duarte wrote:
-> The configfs store callbacks all serialize on dynamic_netconsole_mutex
-> but not on the read side, so reading an attribute while it is being
-> written returns a partially updated value.
-> 
-> Hold dynamic_netconsole_mutex on *_show() callbacks to avoid racing with
-> writers.
-> 
-> The dev_name_show() callback can also race with
-> netconsole_netdev_event() writing to np.dev_name due to
-> NETDEV_CHANGENAME. So it needs to hold target_list_lock in addition to
-> dynamic_netconsole_mutex.
-> 
-> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260814-netcons_ipv6-v3-7-bc0915e8c75f@gmail.com
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260928-netcons-fixes-v1-0-bb5ffe5e698a%40gmail.com
-> Signed-off-by: Gustavo Luiz Duarte <gustavold@gmail.com>
+Hello:
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri,  9 Oct 2026 07:20:59 +0200 you wrote:
+> Two mlx5 allocations hold more memory than an offloaded tc rule needs.
+> A NIC flow keeps a 4 KB allocation for parse attributes that nothing
+> reads after offload. An FTE under hardware steering keeps the 1 KB
+> action array it was built in while a rule rarely needs more than three
+> entries.
+> 
+> Freeing the first after offload saves 4 KB per NIC flow. Shrinking the
+> second saves about 1 KB per FTE under hardware steering.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,1/2] net/mlx5e: TC, free NIC flow parse attributes after offload
+    https://git.kernel.org/netdev/net-next/c/dd0425c502fc
+  - [net-next,2/2] net/mlx5: HWS, shrink FTE action array to fit
+    https://git.kernel.org/netdev/net-next/c/3636705910f9
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
