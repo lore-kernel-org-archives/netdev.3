@@ -1,178 +1,323 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F0E41D640
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC0E4BF924
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792061160; cv=none; b=iibpkuSN2Pc5HoaHEbG9IJgOQjI3TVH4dRHT/TrBZ1oNvL17fMKYclmMQf5u/ixko5WMsOQ4rLw1lIqEha2dbqEtaAvEvKg4UdO81qMeDvk3Ye8OTD893R/AEML5gQCkg0soS63pamPUy1E1H/AjtnDLMV/k8n8y+2ixSrCXY90=
+	t=1792061160; cv=none; b=OE/yLyMzdNy8Jajxxs4N6cPOjJCEJ7gaSXSdQt7Kpw26vHq67pFc9P8rOE2ycfuBE57AAsB1UbZEHCehnEk79I6819d/M5NvXUMl/m14isbBBTKu/+XgRM+oYfChVFNAKpc0Y/p1+WnYMuIHqFqmJPlTlfxPcVODg+Tv5RXBRK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1792061160; c=relaxed/simple;
-	bh=NA3boDKAwC1ACfxc+FiFlcJYSUIqrYD95FMKUqgjSd4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=drEU7SOhSz5c6PwRvwxr7GbFKJQVCOKZoS79rnEUOZnoynaYfoKtQo5ksXBpaD5e3BWAB6tjoLczUN1GXmiBoYGxWxJ655yqQ2ITBumlPrGP5fZqsKubWvW5ysj3f68Qa4hxM3ScKKMs5MMi4o2B6egxgq9r6lngle3eMChgdu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=X95/FT3n; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RmqR4Aw9; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	bh=XjqFGGhWxnBM68o8iILc1Q0NMdOJ1sFt4q4gXSkvrng=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QMwUFpYRuRYUtmhW6oOHmgn/lLk31csfoswAzO7tq4WNw8oc/HO1GQUAArSZIoD09bRaKQ16Qtxuz09iTJVUB5R263YGn+BnUoVFRM3NW5Z76mAu5ZiqrdEp1Kw58O0U4dVWs2QPwR9uf6s5vvqlpya9vjKlqkWxO4El2jxUOYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=StcT1t1K; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="X95/FT3n";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RmqR4Aw9"
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 69FAPp5c4100543
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:45:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xVES5cjeJjK+Muq8ExAtlSTp+lSKmw1ZNAsjhYRd9pA=; b=X95/FT3nTlaY3tgc
-	GlH612If7g2x9adSVaHJhD7mDqsj4m0QnJ/6UQXRIlEh0fDsf3zOyhkooZoCfTEm
-	TZQFkL8HFIKpeMlFUg78hqtoB03InOn2j+GkPCzW3N7D9vN7X0NT5tC6AdkDDl3D
-	210YS8tyR8qVFf9nzT+waR1Xwlr6BZa8FkuhAp/Qc9dwTvePisVvD+/vm1w8yte+
-	xQllqj+EjBbPeQGApMcnCMn9Cn5pvpk0GXYZf6iNyZTthaw3UQoq4sy45FKhhfM2
-	pYBFrVPctjNxeUKEdSkLD/xghyKuQfKrg2MGyHi0g/TTT1Kcv1enLfMdFkyoWfEG
-	sPGcsQ==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4haw2r82bf-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:45:54 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e954d87b48so16872735ad.2
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 03:45:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="StcT1t1K"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6b1aa29e06bso3243935a12.2
+        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 03:45:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1792061154; x=1792665954; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xVES5cjeJjK+Muq8ExAtlSTp+lSKmw1ZNAsjhYRd9pA=;
-        b=RmqR4Aw9ICiHMlm7mV5wSi0Eky8M5+7gW73nlNgzOhP3in67oMcuuGQdDYgdNtQ1pb
-         Hj5w3hfJEgHndSDOmYUKPQkiczUwJsjP3wAscAq344NqZIWvd7e5dC3NTsDibpdYgZVc
-         GPun7fNBc6BqXBCVbESZjqA0hlnmvsBbqskm26bu8wxZEkh/Wb5unvI+0A9cI6n4UEMa
-         Ay0VV9ITRTPtjPYjKMNGjoP85xIcPoRU3vS1nSBwZnkUdgRg8o9EVA58ywq5bGkNlM/X
-         dr38XeYq8rCZTRZFr4ScpL/Myg6HHrjiNwTI9nVCR3zOyIIxT05dEvODZ2lYO9Y63Egf
-         uHDQ==
+        d=gmail.com; s=20251104; t=1792061156; x=1792665956; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IxFWoN5ur3EbIeo6PfJtMrMZmQs9N78gDIkfe6qxWGs=;
+        b=StcT1t1KAUyBiA36owktkGhkaLI+NebzE7CtCXvh2CyxvYAxu9CTOlgXHo54ooJFkd
+         ng4qPyGxL98jCONYQ09Bd5JK0ArYJWF4C+2K1dw+eK9ILq7p9Ska13MeF/JaN1AgJ5Ev
+         TXjQkuMogWvKcYGzegn0BhOKc8A/V/vXlTkk1lHlxiJDuEE3/XaFsMHABTOfjzrVH63k
+         XkUtjmc0m/r5eYJrrWqDNBigUAZqaMolKOA3Vb9EDvP4r0bAFs0sekLxEPs9TXDcT0UC
+         e7T7X2TtQr6Lxh/+oEesptp74ghahNKRVfYt+25ydMYT9GiecE2ia4TL/11hr8KHroGf
+         r6VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792061154; x=1792665954;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1792061156; x=1792665956;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xVES5cjeJjK+Muq8ExAtlSTp+lSKmw1ZNAsjhYRd9pA=;
-        b=xdyZqpFa8H+C8KTQAv7xNk2gd6h33Hs6d9pp0kTxyMD71Gc01+l+oe/qnpnwKk4FV2
-         cqWQN1TvLqGwKYdA23myTWWiT1HbUtX87w/tG6HeFgsyNoRSpOvrokkukQ3K4XVt0ynm
-         JL8Uy7Mu0SUkETLFLRdQ7zKYlg7Pnk58vStD7fO1swPDFapy3DrNR7lD5mwkkjqv1Ub2
-         o1ivw1ys6rK3omh9IaIUWLSbSFtlzsHWkBGWHA+ygC9gp18qzTBS5HuF537Ghxj6F3kL
-         ilZ9fjsrStLWUPSZm8ki9qwmIcjcTArzjEiK0zn2HI75p+req3D/7QmK+FgVNDLQNajs
-         Ys+Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwXytIUSogSM7kK86jKMasO65ofXRuLFdgaJZSVqH8HDYrGioE2EtXFAw7CCO6ZzHYF22QBIQk=@vger.kernel.org
-X-Gm-Message-State: AFq9FYL906Vl0CrKeImSgKZBDVMTyj/cwl8Tf65vK2lHMIZ1cqCjxt8G
-	kzaSDs1Ll36G6VcQZQ6pIXjM7rgt0l3dCiXXp8A3FqVQ6qD6i/6SDyf6pvIp7jTDGu56bAIRDFF
-	BdkSof7pRhalItiPG8zcUKXfkQV/SPOS1yFzqx676T64/hgASFg/kNxJ5q2M=
-X-Gm-Gg: AYBFou14+NURpfGKIIWMLVQrG7naJYa1YvGEmyze8jde353foHvAG1FSDEdnxW3CqEp
-	YakcskiMBmQrQPSJnkD0GrDDzeG6MSIG7Af8DBfJ+Xq1TmTHrwYaUR5+kJJrl6OgtRoa4MXf/i2
-	fIDeTZBGRfMKS5NqUgeLpf8yOCeTIq1pbWHqQr6dzu/WdcDYxG+5oL9hWkA22GCZoNl0u9NpqFS
-	8AQWh1N9tD9dA3ROPY54zsUrjkpqTD7s1ou0MCd6LWLpdJNC8ugdShp0VG4WYwXwPb6wNYWE8GJ
-	8GYgwYIYeDzkQ3PFltNwB5nuUtf10ktbCZhJc2EDq4amuAeG4Iq8TPHIJt3gj1toKIzxAR7snVC
-	z2OUsRHgjjmyTF+G96VlB1To3pVc=
-X-Received: by 2002:a17:902:cccc:b0:2df:7fe1:72b8 with SMTP id d9443c01a7336-2e8429a649bmr162354895ad.16.1792061153846;
-        Thu, 15 Oct 2026 03:45:53 -0700 (PDT)
-X-Received: by 2002:a17:902:cccc:b0:2df:7fe1:72b8 with SMTP id d9443c01a7336-2e8429a649bmr162354625ad.16.1792061153359;
-        Thu, 15 Oct 2026 03:45:53 -0700 (PDT)
-Received: from [10.217.216.28] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e8acfa3b6csm55485005ad.41.2026.10.15.03.45.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Oct 2026 03:45:53 -0700 (PDT)
-Message-ID: <5be485ec-7abb-40e1-9a62-aab90524de2d@oss.qualcomm.com>
-Date: Thu, 15 Oct 2026 16:15:40 +0530
+        bh=IxFWoN5ur3EbIeo6PfJtMrMZmQs9N78gDIkfe6qxWGs=;
+        b=l5+BTQaWm0GbqhVE+4OfBN89RWVsF6hgQYzfg5K0AK9wSGqZpekK5K9kIhTcLOGhJS
+         awOxSGtzefbAknCSy4jJ2U4fbhRC5cKA9VeX0/rLk51pqr1bmVI7/lIncd1b1iYnpKEu
+         wBnNUDeiJzgyiNlmfqqhkaPj6gZ5IEJWw3GCGNb/lH5ArVtMimL/yH3lJCIxDaTiZGnw
+         73ld1+e1Kgy+o4b4UoYW7PB/hCn7vnxUdnRxkpOf2KHWdJU2M4i4eA1mfJSQRjumcUl2
+         16oy1wM7iZaZgP45GihKUYqzOeHYOFI7DNNjCrBhg62GX/M6Bv/u1XExDOghYcy1Mjtb
+         TFpA==
+X-Gm-Message-State: AFq9FYIlTNeX/Zkolocgv6Lu88PrM8WNYqAzNpGikcdg+jRdijROcjaF
+	oJCLF8KOTbyQ//E+2zTdWDGK/Xs5xzJ6G42jnzOQBWFH5Raj+GXopGG5OAqjwsHijsY=
+X-Gm-Gg: AYBFou22oNcuhghdbcvwIIH5U4qYFUeG7yrsKKRt/B+nwoNwpc9amPFc1crn2kQeaBk
+	GIlsOA2XMr0MSYh9DXQYKYo+WRyjpH5PzSssl4S/QK276ZUWSezE57OkMmEna/ZXJPZQ4Mc0ElP
+	R13Msnd2nS91qdPSFWhPZcEbAPgIh3YbMLkYEJpDAQi2BK/mP11UplVk4P+70jpnCf5sqs8rEMc
+	I7OM6znxT5+twj5wDmqxCX4gmqiKdbsEXZqR86ovjw3v6KnRwPRUgAP++oeg8jnfAggl5CrWYGZ
+	oek/V4u+icsFWzdwjKR2rT3Kxzfg1qzw5BKcF1keToHZ/7uUiLlNgaL/YovpIcEZUffVf8HEVa5
+	LwdzuhCKiBsNcXzlTUGiKbEIxdutUuQX6r8gv9FdpTTH7S+LJmZ1lKIsDXsRgvr+0oqcoc5jWEt
+	ZvSJIlAc+HXSOlBBLXeuMT/m4C9bQ3g5jqVI5Mof7v47aj3K5oiJC2OXTM9ZwqF14sQKZTjsUxn
+	rstK1WYeKqD00akhgUAN8228WFkuBJJcQQHBL26Jp8ZcDZ0VKfYfVyBt+cQ0VMxlPBqrzmi3lbV
+	Mhk=
+X-Received: by 2002:a05:6402:42c7:b0:6b1:cc39:28e5 with SMTP id 4fb4d7f45d1cf-6b1cc392c26mr9113407a12.40.1792061155641;
+        Thu, 15 Oct 2026 03:45:55 -0700 (PDT)
+Received: from CCM-PC (94-255-221-162.cust.bredband2.com. [94.255.221.162])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b203762b7bsm2416018a12.4.2026.10.15.03.45.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2026 03:45:54 -0700 (PDT)
+From: Yongzhao Chen <yongzhao.derek@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	linux-kernel@vger.kernel.org,
+	Ziyang Huang <hzyitc@outlook.com>
+Subject: [PATCH net v5] net: dsa: qca8k: preserve port state across MTU changes
+Date: Thu, 15 Oct 2026 12:45:50 +0200
+Message-ID: <20261015104550.43169-1-yongzhao.derek@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] arm64: dts: qcom: Add GP M/N clock controller node
- for SA8775P and QCS8300
-To: Luca Weiss <luca.weiss@fairphone.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
- <sboyd@kernel.org>, Brian Masney <bmasney@redhat.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: Ajit Pandey <ajit.pandey@oss.qualcomm.com>,
-        Imran Shaik <imran.shaik@oss.qualcomm.com>,
-        Jagadeesh Kona <jagadeesh.kona@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, netdev@vger.kernel.org
-References: <20260602-pdm_clk_gp_mnd_v1-v1-0-1522662b6c53@oss.qualcomm.com>
- <20260602-pdm_clk_gp_mnd_v1-v1-5-1522662b6c53@oss.qualcomm.com>
- <DJ3HRRGJZN8F.3UNOV86ZOB47B@fairphone.com>
-Content-Language: en-US
-From: Taniya Das <taniya.das@oss.qualcomm.com>
-In-Reply-To: <DJ3HRRGJZN8F.3UNOV86ZOB47B@fairphone.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDE1MDA0MiBTYWx0ZWRfX87rcRnoLch2G
- vHGiMuHFfxBbDDt2B2deNnquMbkkctml3Z+nK39GDY0s9Xjkyoj2YqsplyXrBeT3tCkm+EYSJFt
- iFXFNW0c1lmAKNn0Y6pvCoOpnpizSTI=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDE1MDA0MiBTYWx0ZWRfX/xlL6IolEosc
- 3aOj0ICuM0IjoKaRhg5yGr4eQkv3GmOivIMYf/KXt4OG0fy5qyOxWfJKWBW+yDvcw98Mx9oiing
- 6r0FCCsnugak5f3+/NzgYOL0BBoO/kzXmzSvcVz8fTlQ2nw2z/8PWRLZhOlMv3Da87AvP09w1im
- g8OSQK4Vv04Ah7+j+NPX71le6AWIdniy3qk6HoyiSCFhVHe6Re1SDsiQowe+YIgrPL2bHOR5gpu
- ZI0Zj6KYxeybiUnQ47fyXBtf9NuZ4CErhr7jQyPPnTCl3opHy3ppjP53belwcdTH1tofCCy2I+8
- wuDf55/Y/IFIgVp6rtNHsQg2GrS/IJRq9fdwAb/SpmMrslR5A86EImt2c88IGcIKfxJXfUULXkJ
- 3isVwLyvizJBbnRb5HExestjdD37quFPXi0vfg2gw3XI1iydwaqo3FMNjIQXAPtqD6HkHAQB58G
- 7o7yz/zO0e/CiBW6RDg==
-X-Authority-Analysis: v=2.4 cv=BNMmP1QG c=1 sm=1 tr=0 ts=6ad0aee2 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
- a=QRVzKC9bvf-Z0aX3qjUA:9 a=QEXdDO2ut3YA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-GUID: u4KMjAQ2wKUG_rmFBnlkp3VWbXJXZg1b
-X-Proofpoint-ORIG-GUID: u4KMjAQ2wKUG_rmFBnlkp3VWbXJXZg1b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-10-14_01,2026-10-14_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
- priorityscore=1501 malwarescore=0 suspectscore=0 impostorscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2610080000 definitions=main-2610150042
+Content-Transfer-Encoding: 8bit
 
+The MTU update pauses enabled ports 0 and 6 and then unconditionally
+enables their MACs. A port can remain enabled while phylink has disabled
+its MAC after a link-down event, so an MTU change can undo that decision.
 
+The sequence can also interleave with phylink MAC callbacks, which run
+without RTNL. A link-up can re-enable a MAC before the frame-size write,
+or the restore can overwrite a link-down. Commit 386228c694bf found that
+changing MAX_FRAME_SIZE while a CPU port is on can stop the switch from
+sending packets until it is reset; a MAC re-enabled by the link-up leaves
+that window open. This can happen at boot, when the CPU port's first
+link-up is still pending as DSA sets the user ports' MTU.
 
-On 6/8/2026 1:02 PM, Luca Weiss wrote:
->> @@ -4412,6 +4412,20 @@ usb2_role_switch: endpoint {
->>  			};
->>  		};
->>  
->> +		gp_mn: clock-controller@88d3000 {
->> +			compatible = "qcom,clk-gp-mnd";
->> +			reg = <0x0 0x088d3000 0x0 0xc>;
->> +			clocks = <&gcc GCC_PDM_XO4_CLK>,
->> +				 <&gcc GCC_PDM_AHB_CLK>;
->> +			clock-names = "pdm_clk", "ahb_clk";
->> +			clock-output-names = "gp_mn_clk";
->> +			#clock-cells = <0>;
->> +			pinctrl-names = "active";
->> +			pinctrl-0 = <&gp_mn_active>;
->> +			assigned-clocks = <&gcc GCC_PDM_XO4_CLK>;
->> +			assigned-clock-rates = <4800000>;
->> +		};
-> Am I missing something, or would this just configure gpio60 for all
-> boards for this clock controller output? On QCM6490 Fairphone 5 this pin
-> is connected to FP_3P3_EN, so it's definitely not unused.
-> 
-> Maybe disable them by default and let the board enable it, if it wants
-> to make use of this clock?
+Serialize the MTU transaction and PORT_STATUS writers with a dedicated
+mutex. Save and restore the MAC bits instead of forcing them on. Abort
+on detected read or pause errors, attempt to restore every touched port,
+and return the first error. Keep PHY and phylink calls outside the lock.
 
+Fixes: 386228c694bf ("net: dsa: qca8k: reset cpu port on MTU change")
+Assisted-by: LLM
+Signed-off-by: Yongzhao Chen <yongzhao.derek@gmail.com>
+---
+v5 (split from net-next v4 2/3):
+- Separate the existing port 0/6 fix from internal CPU port support and
+  target net, with a Fixes tag for the pause/restore sequence.
+- Use a dedicated port_status_lock, as Christian suggested [1].
+- Keep the pause scope at enabled ports 0/6, including user ports.
 
-yes I will keep it disabled and will let board enable them.
+My earlier reply ruled out races in port_enabled_map under RTNL, not
+the MTU transaction defects fixed here. These were found by code
+inspection, not from a port 0/6 hardware failure.
 
+The net base still has MDIO accesses which can swallow write errors.
+This patch handles errors returned by the register API; it does not fix
+that transport limitation or depend on the MDIO series in net-next.
+
+net-next has since switched qca8k_port_set_status() to
+regmap_assign_bits(). When merging, keep that call in
+__qca8k_port_set_status().
+
+The affected arm64 objects build with W=1. A userspace harness compiles
+the actual driver functions and checks saved-state restoration,
+MTU/callback interleavings and detected-error recovery. The old code and
+10 mutations fail the relevant checks. These are software checks; this
+standalone revision has not been tested on hardware.
+
+[1] https://lore.kernel.org/netdev/6abb535c.8fb0a6ce.10321.5538@mx.google.com/
+v4: https://lore.kernel.org/netdev/20260928220811.1880-3-yongzhao.derek@gmail.com/
+
+ drivers/net/dsa/qca/qca8k-8xxx.c   |  3 ++
+ drivers/net/dsa/qca/qca8k-common.c | 88 ++++++++++++++++++++++++++++++--------
+ drivers/net/dsa/qca/qca8k.h        |  5 +++
+ 3 files changed, 77 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 4c928983b..9aadca8b9 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -1483,7 +1483,9 @@ qca8k_phylink_mac_link_up(struct phylink_config *config,
+ 
+ 	reg |= QCA8K_PORT_STATUS_TXMAC | QCA8K_PORT_STATUS_RXMAC;
+ 
++	mutex_lock(&priv->port_status_lock);
+ 	qca8k_write(priv, QCA8K_REG_PORT_STATUS(port), reg);
++	mutex_unlock(&priv->port_status_lock);
+ }
+ 
+ static struct qca8k_pcs *pcs_to_qca8k_pcs(struct phylink_pcs *pcs)
+@@ -2116,6 +2118,7 @@ qca8k_sw_probe(struct mdio_device *mdiodev)
+ 	priv->ds->ops = &qca8k_switch_ops;
+ 	priv->ds->phylink_mac_ops = &qca8k_phylink_mac_ops;
+ 	mutex_init(&priv->reg_mutex);
++	mutex_init(&priv->port_status_lock);
+ 	dev_set_drvdata(&mdiodev->dev, priv);
+ 
+ 	return dsa_register_switch(priv->ds);
+diff --git a/drivers/net/dsa/qca/qca8k-common.c b/drivers/net/dsa/qca/qca8k-common.c
+index 13005f10e..084df92c5 100644
+--- a/drivers/net/dsa/qca/qca8k-common.c
++++ b/drivers/net/dsa/qca/qca8k-common.c
+@@ -463,7 +463,7 @@ int qca8k_mib_init(struct qca8k_priv *priv)
+ 	return ret;
+ }
+ 
+-void qca8k_port_set_status(struct qca8k_priv *priv, int port, int enable)
++static u32 qca8k_port_status_mask(int port)
+ {
+ 	u32 mask = QCA8K_PORT_STATUS_TXMAC | QCA8K_PORT_STATUS_RXMAC;
+ 
+@@ -471,10 +471,27 @@ void qca8k_port_set_status(struct qca8k_priv *priv, int port, int enable)
+ 	if (port > 0 && port < 6)
+ 		mask |= QCA8K_PORT_STATUS_LINK_AUTO;
+ 
++	return mask;
++}
++
++static void __qca8k_port_set_status(struct qca8k_priv *priv, int port,
++				    int enable)
++{
++	lockdep_assert_held(&priv->port_status_lock);
++
+ 	if (enable)
+-		regmap_set_bits(priv->regmap, QCA8K_REG_PORT_STATUS(port), mask);
++		regmap_set_bits(priv->regmap, QCA8K_REG_PORT_STATUS(port),
++				qca8k_port_status_mask(port));
+ 	else
+-		regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(port), mask);
++		regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(port),
++				  qca8k_port_status_mask(port));
++}
++
++void qca8k_port_set_status(struct qca8k_priv *priv, int port, int enable)
++{
++	mutex_lock(&priv->port_status_lock);
++	__qca8k_port_set_status(priv, port, enable);
++	mutex_unlock(&priv->port_status_lock);
+ }
+ 
+ void qca8k_get_strings(struct dsa_switch *ds, int port, u32 stringset,
+@@ -751,8 +768,10 @@ int qca8k_port_enable(struct dsa_switch *ds, int port,
+ {
+ 	struct qca8k_priv *priv = ds->priv;
+ 
+-	qca8k_port_set_status(priv, port, 1);
++	mutex_lock(&priv->port_status_lock);
++	__qca8k_port_set_status(priv, port, 1);
+ 	priv->port_enabled_map |= BIT(port);
++	mutex_unlock(&priv->port_status_lock);
+ 
+ 	if (dsa_is_user_port(ds, port))
+ 		phy_support_asym_pause(phy);
+@@ -764,14 +783,18 @@ void qca8k_port_disable(struct dsa_switch *ds, int port)
+ {
+ 	struct qca8k_priv *priv = ds->priv;
+ 
+-	qca8k_port_set_status(priv, port, 0);
++	mutex_lock(&priv->port_status_lock);
++	__qca8k_port_set_status(priv, port, 0);
+ 	priv->port_enabled_map &= ~BIT(port);
++	mutex_unlock(&priv->port_status_lock);
+ }
+ 
+ int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+ {
++	u32 status[QCA8K_NUM_PORTS] = { 0 };
+ 	struct qca8k_priv *priv = ds->priv;
+-	int ret;
++	unsigned long ports, stopped = 0;
++	int ret, restore_ret, i;
+ 
+ 	/* We have only have a general MTU setting.
+ 	 * DSA always set the CPU port's MTU to the largest MTU of the user
+@@ -782,27 +805,54 @@ int qca8k_port_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
+ 	if (!dsa_is_cpu_port(ds, port))
+ 		return 0;
+ 
+-	/* To change the MAX_FRAME_SIZE the cpu ports must be off or
+-	 * the switch panics.
+-	 * Turn off both cpu ports before applying the new value to prevent
+-	 * this.
++	/* To change MAX_FRAME_SIZE, pause enabled ports 0 and 6.
++	 * Serialize with phylink and restore the saved MAC state.
+ 	 */
+-	if (priv->port_enabled_map & BIT(0))
+-		qca8k_port_set_status(priv, 0, 0);
++	mutex_lock(&priv->port_status_lock);
++
++	ports = (BIT(0) | BIT(6)) & priv->port_enabled_map;
+ 
+-	if (priv->port_enabled_map & BIT(6))
+-		qca8k_port_set_status(priv, 6, 0);
++	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
++		ret = regmap_read(priv->regmap, QCA8K_REG_PORT_STATUS(i),
++				  &status[i]);
++		if (ret)
++			goto unlock;
++	}
++
++	for_each_set_bit(i, &ports, QCA8K_NUM_PORTS) {
++		u32 mask = qca8k_port_status_mask(i);
++
++		if (!(status[i] & mask))
++			continue;
++
++		__set_bit(i, &stopped);
++		ret = regmap_clear_bits(priv->regmap, QCA8K_REG_PORT_STATUS(i),
++					mask);
++		if (ret)
++			goto restore;
++	}
+ 
+ 	/* Include L2 header / FCS length */
+ 	ret = qca8k_write(priv, QCA8K_MAX_FRAME_SIZE, new_mtu +
+ 			  ETH_HLEN + ETH_FCS_LEN);
+ 
+-	if (priv->port_enabled_map & BIT(0))
+-		qca8k_port_set_status(priv, 0, 1);
+-
+-	if (priv->port_enabled_map & BIT(6))
+-		qca8k_port_set_status(priv, 6, 1);
++restore:
++	for_each_set_bit(i, &stopped, QCA8K_NUM_PORTS) {
++		u32 mask = qca8k_port_status_mask(i);
++
++		restore_ret = regmap_update_bits(priv->regmap,
++						 QCA8K_REG_PORT_STATUS(i),
++						 mask, status[i] & mask);
++		if (restore_ret) {
++			dev_err(priv->dev, "failed to restore MAC state on port %d: %d\n",
++				i, restore_ret);
++			if (!ret)
++				ret = restore_ret;
++		}
++	}
+ 
++unlock:
++	mutex_unlock(&priv->port_status_lock);
+ 	return ret;
+ }
+ 
+diff --git a/drivers/net/dsa/qca/qca8k.h b/drivers/net/dsa/qca/qca8k.h
+index 956338893..9225f4c40 100644
+--- a/drivers/net/dsa/qca/qca8k.h
++++ b/drivers/net/dsa/qca/qca8k.h
+@@ -459,6 +459,11 @@ struct qca8k_priv {
+ 	struct mii_bus *internal_mdio_bus;
+ 	struct dsa_switch *ds;
+ 	struct mutex reg_mutex;
++	/* Serializes writes to QCA8K_REG_PORT_STATUS and the MTU update. Taken
++	 * from phylink MAC callbacks: do not access a PHY or call into phylink
++	 * with it held.
++	 */
++	struct mutex port_status_lock;
+ 	struct device *dev;
+ 	struct gpio_desc *reset_gpio;
+ 	struct net_device *mgmt_conduit; /* Track if mdio/mib Ethernet is available */
+base-commit: f88bb3606e4bd11ee035b682cddc2999e604609a
 -- 
-Thanks,
-Taniya Das
-
+2.43.0
