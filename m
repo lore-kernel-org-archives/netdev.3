@@ -1,78 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCF048665F;
-	Thu, 15 Oct 2026 10:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E904DDB27
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 10:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792059007; cv=none; b=ApdMcS1ehelK5xO8yNwSUM2UY8TvOO/tt5P6EodWYiFjI6RkAHrcKPzJD07qsuF+dxJGGL57PaJLXfkUw2P0E9ZqmxNmZLiJFxX2ipQnQEqt1g4yVeg0fR332yE9ex48Iog2sc/uolfLpnPf/ll0mqR9dhwX4g0d9Z6oTFohV3I=
+	t=1792059146; cv=none; b=sCYVO2bvpNp94VHEfZTvv13Sr+SOYVtIfcjfMiPOl3RM51WlIDadjAyzHrf6zuygKdpgga1rDZ3pSxQYoO2IU48I1qIgunrayxl8caE3UWp4IdtcA9D5+0h3KSIQSt0rapBWoijscWSmugQfhgIyAJzNKcLTw5PHg0Ly/qc8Was=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792059007; c=relaxed/simple;
-	bh=WRgzYFOArbXaTYEeFNrGeUiCrAn4QQqyStUy/+BzAZY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qloPcncIG6V+HlwZgvMajtbBKtQOS4cj7NOmqauQ53OOgd1yjjIZ/s3+uIeKS1crOyKDCGxMLOT20pakmSZpqJydE7P9M2NQxbJXre5tbZxcqfu/7XbWtoMZr+rWvLOeJm9Wglsf8QxTXT1zo5AlxvsaYmEWCo20a/uP9v4glYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hpGQE/J4; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1792059146; c=relaxed/simple;
+	bh=OJk1cz3CfsO6TmrGjCaPEDykyhiW/es/CCWJikSPDzw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nwjRt2J8WiRRlN9ry1P7tLk3awA+SWzUGb3UzOTtNRvLjjQUmZNQ20iVOQG21WzrMG5qdAzk/3591TTgtEHAGG8OCZ/WZR+j0C+xl4eYZWyk48Loc6TpqEUeem/+LamQkyhPjqzqZfkj4U50qG680kms549r+N/J9p5jeLsKvtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NS1g0Z2I; arc=none smtp.client-ip=185.70.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hpGQE/J4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E1D1F000C4;
-	Thu, 15 Oct 2026 10:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792059006;
-	bh=NCYNP9Fi9prxm0OJnfd1ciz/HhBuDQoqjbyYk3JuOoE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hpGQE/J4BlXWTO779nvAX1pRfX1xrCbDwDz9tSMxOxX2vp8Me50MBvYneOpCkVx6A
-	 i7tkPvte/MTyO4TS9FkZaFZStyvD/5nAn6nQDBMsTEblXOcbmOwxOzWk6H+Be++sJJ
-	 4uUHNcsrbGFc9I5IfjPzSC41r5oImsMBy5qkCOvBZc61psIZ8xyjtui5uE09y5mCsS
-	 TSyILHdXUz6RMeTXF/zSUCRp2oeUOe2txmKXXRu3JjWcqDmZciQ3yuqi6tvhrduwsp
-	 vRGHjvxxTLCnlH1hVWDcqP95d/ufVekaz63SwJi88LyQbldxZGoC2vXW0ufRkcDcay
-	 xDBIpaQkA6Skw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3A288392EA50;
-	Thu, 15 Oct 2026 10:10:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NS1g0Z2I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail2; t=1792059137; x=1792318337;
+	bh=OJk1cz3CfsO6TmrGjCaPEDykyhiW/es/CCWJikSPDzw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=NS1g0Z2IhSkK48VPXeHV6GZx1270udI5iTLqSwhoiro35RwZh7KHd2WE73nIXDsD6
+	 5/oUOsNN6ouZUXnhCECLGV6pF3IEfRmNpVMt5cu31wQumHSe9wJ1KVVmJ6khaiLgX7
+	 HFDKd2ioeihuSstVoUIxW6t/1xj5ETpVWUgzh3LpAnF3g23BdvNuvQmFAKeg2y9TrV
+	 /FoAJkADK3aF2Qd8jqo1x1wuY9NGV+6kN9LFvmkR9ot7/M4X89jNq37gJHfARTfO+v
+	 ZH0tBfYDJyXcwOfKiwet6a5WHzDllOzU1DxbMHFVnILQuX/sJoyXMtnKjwQorRirv2
+	 upozVtqyncevA==
+Date: Thu, 15 Oct 2026 10:12:11 +0000
+To: netdev-bot+sashiko@kernel.org
+From: quanyeyang <quanyeyang@proton.me>
+Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net, davem@davemloft.net, edumazet@kernel.org, pabeni@redhat.com, horms@kernel.org, jakub@cloudflare.com, jiayuan.chen@linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/2] tls: annotate lockless access to sk->sk_err
+Message-ID: <63MTB0ZQu5tbPM8m7Oa83_El49QoWVCm15ic_XX7RDZNClpaM5IaeZgMhoOC4NhGEzOeVGOdSUpd0EYAmrXxCxXAV1l23w_JhhsImMz7Eug=@proton.me>
+In-Reply-To: <179173140561.434549.1271106969659357254@kernel.org>
+References: <20261010-tls-fix-sk-kcsan-err-v3-1-e28aadeb31ad@proton.me> <179173140561.434549.1271106969659357254@kernel.org>
+Feedback-ID: 206494642:user:proton
+X-Pm-Message-ID: 2fdcc952814896e00c571428484493aacfb859b5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: bcmgenet: unshare the skb before writing the
- control block
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <179205900502.3330315.1943709997032683206.git-patchwork-notify@kernel.org>
-Date: Thu, 15 Oct 2026 10:10:05 +0000
-References: <20261009-nb-genet-shared-skb-net-v1-1-c6d0a841977d@tipi-net.de>
-In-Reply-To: <20261009-nb-genet-shared-skb-net-v1-1-c6d0a841977d@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: opendmb@gmail.com, florian.fainelli@broadcom.com,
- bcm-kernel-feedback-list@broadcom.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Sunday, October 11th, 2026 at AM 8:10, netdev-bot+sashiko@kernel.org <ne=
+tdev-bot+sashiko@kernel.org> wrote:
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+> Can the EBADMSG test in bpf_exec_tx_verdict() miss a synchronous
+> encryption failure?
 
-On Fri, 09 Oct 2026 12:10:41 +0200 you wrote:
-> bcmgenet stores first_cb, last_cb and bytes_sent in the skb control
-> block and reads them back on completion to free the skb and credit BQL.
-> ether_setup() leaves IFF_TX_SKB_SHARING set, so the stack can resubmit
-> a shared skb that is still in the ring. The next transmit overwrites
-> last_cb, so the earlier slots complete without crediting their bytes
-> and BQL stalls the queue until the watchdog resets it.
-> 
-> [...]
+That window is pre-existing. tls_push_record() still reports the
+crypto failure through sk_err and returns the raw crypto rc; the
+caller peeks sk_err to decide cleanup. Folding the two unmarked
+loads into one READ_ONCE() does not close a steal or overwrite of
+that slot. Routing the failure back through the return value would
+be a separate change, not this annotation.
 
-Here is the summary with links:
-  - [net] net: bcmgenet: unshare the skb before writing the control block
-    https://git.kernel.org/netdev/net/c/89771ce4f8f6
+> Should this patch carry Fixes: tags so the fix reaches stable?
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+No. This series is a net-next annotation of lockless sk_err access.
+The consume-once change in tls_rx_rec_wait() matches what we already
+did for TCP/MPTCP; it is not being backported here.
 
