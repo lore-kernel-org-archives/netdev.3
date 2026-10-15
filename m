@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB735541E59
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 15:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3038253FD5A
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 15:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792077867; cv=none; b=fFL/G7cmc5jd292Zjhnss7/1eA0DYuY80nVDhKtxk0thUx0LdenRuCmI2LMo2OfDi18Bt1qr4HGD2Yn4dVBR10RrAydTiH393uUalJI4M6y4PTsmWsOQ5ZEoftJoyyel4XPtmz4p+pNfsg6R92oFdQpHIuPXjyPKQxeruT781zo=
+	t=1792077869; cv=none; b=h4GtgeBrn0RPmHoqEid09lwJFMknKGOkwzCetjNJDZwJWVB5dqSPWN+kvGpX8RXLMjWo3tkReEjj8Jv6Zaz3IXlqfBHd8mRpy+kSXBNvE3C9k6lWSyjWjtaRk6hwIDREz3IzLngnafUz3ysUfkL1dhcEaLiMtjOLuhZkh1Uo21g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792077867; c=relaxed/simple;
-	bh=TyDOxGxX1/U5i8ixxlja/qnq64Ra3PwGe7DWRnj3bIM=;
+	s=arc-20240116; t=1792077869; c=relaxed/simple;
+	bh=6upTb37NnfMHulRIs7de+X0odm05kHvQ1wfLZ/Cg8js=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gDeogKnEykXj9D0NyUPgpm9SI7v2XNhI33arHtQOLpWrhr2AdybGmd+74OoMJJauYdvbd2UDCAnhS1md6BwLJFV1Nx95hPI3jBzYaFfCcb/X0HrHKZK4gJhgJzOzN0tb4DKyRh5vIHw/90O8UfOrqyotUsVCJE+rSnI3bjQ1d2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=juvNet2K; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=AdLOjgs8qUxtwD8mmQra9gSGZHGx5OnCXj/BM07AaSoPLrVdKUK/BeuiwzJ27E23ADX3tGTJ+AAps0I3cNXb00Uq2pZhImDjAXgG4fCudRL6ae55n/XXBmH8wN0RouzYoo2V9P7b6Cauo4DV5VjHfsHpltOk4u8ATsUQLlwuLiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WAA9NLFN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="juvNet2K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9401F000C7;
-	Thu, 15 Oct 2026 15:24:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WAA9NLFN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508521F000C5;
+	Thu, 15 Oct 2026 15:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1792077855;
-	bh=Y5y2B0QpGzYEI9ky4L5lU6nHb7u90zPiLW8yrewn2p4=;
+	s=k20260515; t=1792077861;
+	bh=PUbH0hVeMuxcEw641hkvOWWGLmhD2baFASvpjXriA1w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=juvNet2KhHBJq3oD8vLmtv9DFeUQ9i8wsixBaUQnmgZqoCp3fACHk97zcHvs4f1tN
-	 hUG+dImfDftXq+m53X8kw4LgaKIAKH8CadR46DrU3IIxWQn/wMlSH8CpW8qO0dat1B
-	 0VunDdHeCUPtxJ4bx6QonBHiBuWIEmBg6+lOUSQk6RzFT9G/6qV56zt8n4alyJo6SF
-	 8S9KqUSorz7WHWcMzzvtSfFS8/Sxrblq3Cj9P6q/H+hsh5/SHrLV3o4Ub0pFofVGKa
-	 R0l+t+zUpQ1Pw3M5h5eZ2zdE0AP5buWtq4iiBiASZ/HM3CemTCd7IC+T6j2TqO/22s
-	 fdMLZUzSCYx4A==
+	b=WAA9NLFNjyjY3AN9vs8dXelBIu+gdY5YJcrgYArCCjxTDUuP/nBeG6vjhH0U9ZWZZ
+	 Wuho/uFqNmPnba8TDWzfy+HDx87oXDYzvd8U4K8twopbsyfcG9Pel8AVriTwsaaoEu
+	 0+/JL25+Tf5fEbTRMbpMfNNaAuD9INQz+8A6s3D3oyz/kDIdrxM9tZKdVoPjcjUNfu
+	 wxYUFtrSAU0EygF2EUDBKc1TfJqbb0ZhDomu9OcqwpARjLORrenLCcTb63F36mfII5
+	 7sqyC94AUkiFzmrbRW32pYQTgT8vhiJ7ndF+f8jSZ1AWfLkRG/4gGgxXjKQRKHS5Si
+	 J/RSrmh1FVoQQ==
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 15 Oct 2026 17:24:03 +0200
-Subject: [PATCH net-next v5 03/14] net: ethernet: cortina: Drain free queue
- IRQ before resize
+Date: Thu, 15 Oct 2026 17:24:05 +0200
+Subject: [PATCH net-next v5 05/14] net: ethernet: cortina: Correct free
+ queue DMA mappings
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261015-gemini-ethernet-fixes-3-v5-3-b5c9e2f7b8a3@kernel.org>
+Message-Id: <20261015-gemini-ethernet-fixes-3-v5-5-b5c9e2f7b8a3@kernel.org>
 References: <20261015-gemini-ethernet-fixes-3-v5-0-b5c9e2f7b8a3@kernel.org>
 In-Reply-To: <20261015-gemini-ethernet-fixes-3-v5-0-b5c9e2f7b8a3@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
@@ -50,138 +50,276 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-The software free queue interrupt remains registered while both netdevs
-are down. Merely masking the device source does not stop a threaded
-handler which was already woken. That handler can refill the queue while
-resize frees its ring and page metadata, or re-enable the source after
-teardown.
+The free queue maps complete pages and splits each mapping between its
+fragment descriptors. The mapping variable is advanced while filling the
+descriptors and that advanced address is then saved as the page mapping.
 
-The free queue interrupt is routed through port 1, but both port IRQs
-register the global handler. Ignore the source on port 0, then disable the
-port 1 Linux IRQ for the entire resize. disable_irq() drains hard and
-threaded handlers and prevents a new thread from being woken.
+Replacement also reads the old address after overwriting the descriptor
+with the new mapping, so it unmaps the new buffer while leaving the old
+mapping live.
 
-After the drain, mask the device source and rebuild the queue. If setup
-succeeds, re-enable the source before the Linux IRQ. On failure, keep the
-source masked, clear freed queue state and restore the Linux IRQ so a later
-open retries setup safely.
+Keep the page DMA base separate from the fragment iterator and remove the
+invalid replacement unmap. The replaced mapping cannot be released until
+its in-flight fragments have been claimed, which is handled with their
+lifetime later in the series. Use the saved DMA base and PAGE_SIZE when
+unwinding setup and tearing down the current queue.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Reject mappings that cannot fit in the 32-bit hardware descriptors and
+derive fragment offsets from the saved DMA base instead of assuming
+page-aligned DMA addresses. Snapshot the page, DMA base and offset under
+the free queue lock so refill cannot replace them between lookup and use.
+
 Assisted-by: LLM
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 53 +++++++++++++++++++++--------------
- 1 file changed, 32 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 112 ++++++++++++++++++----------------
+ 1 file changed, 58 insertions(+), 54 deletions(-)
 
 diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 79c046364292..003108270d06 100644
+index 7ebd62f8a3a4..006362a03395 100644
 --- a/drivers/net/ethernet/cortina/gemini.c
 +++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -986,6 +986,8 @@ static int geth_setup_freeq(struct gemini_ethernet *geth)
- 	}
- 
- 	kfree(geth->freeq_pages);
-+	geth->freeq_pages = NULL;
-+	geth->num_freeq_pages = 0;
- err_freeq:
- 	dma_free_coherent(geth->dev,
- 			  sizeof(*geth->freeq_ring) << geth->freeq_order,
-@@ -1026,20 +1028,37 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
- 	}
- 
- 	kfree(geth->freeq_pages);
-+	geth->freeq_pages = NULL;
-+	geth->num_freeq_pages = 0;
- 
- 	dma_free_coherent(geth->dev,
- 			  sizeof(*geth->freeq_ring) << geth->freeq_order,
- 			  geth->freeq_ring, geth->freeq_dma_base);
-+	geth->freeq_ring = NULL;
-+}
-+
-+static void geth_set_freeq_irq(struct gemini_ethernet *geth, bool enable)
-+{
-+	unsigned long flags;
-+	u32 val;
-+
-+	spin_lock_irqsave(&geth->irq_lock, flags);
-+	val = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
-+	if (enable)
-+		val |= SWFQ_EMPTY_INT_BIT;
-+	else
-+		val &= ~SWFQ_EMPTY_INT_BIT;
-+	writel(val, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
-+	spin_unlock_irqrestore(&geth->irq_lock, flags);
+@@ -726,32 +726,43 @@ static int gmac_setup_rxq(struct net_device *netdev)
+ 	return 0;
  }
  
- /**
-  * geth_resize_freeq() - resize the software queue depth
-  * @port: the port requesting the change
-  *
-- * This gets called at least once during probe() so the device queue gets
-- * "resized" from the hardware defaults. Since both ports/net devices share
-- * the same hardware queue, some synchronization between the ports is
-- * needed.
-+ * This is called when a port is opened or its RX ring size changes. Since
-+ * both ports/net devices share the same hardware queue, some synchronization
-+ * between the ports is needed.
-  */
- static int geth_resize_freeq(struct gemini_ethernet_port *port)
+-static struct gmac_queue_page *
+-gmac_get_queue_page(struct gemini_ethernet *geth,
+-		    struct gemini_ethernet_port *port,
+-		    dma_addr_t addr)
++static struct page *geth_freeq_lookup(struct gemini_ethernet *geth,
++				      dma_addr_t mapping,
++				      unsigned int *page_offs)
  {
-@@ -1049,8 +1068,6 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
- 	struct net_device *other_netdev;
- 	unsigned int new_size = 0;
- 	unsigned int new_order;
--	unsigned long flags;
--	u32 en;
- 	int ret;
++	unsigned int frag_len = 1 << geth->freeq_frag_order;
+ 	struct gmac_queue_page *gpage;
+-	dma_addr_t mapping;
++	unsigned long flags;
++	dma_addr_t page_mapping;
++	struct page *page = NULL;
+ 	int i;
  
- 	ASSERT_RTNL();
-@@ -1087,13 +1104,8 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
- 	if (geth->freeq_ring && geth->freeq_order == new_order)
- 		return 0;
- 
--	spin_lock_irqsave(&geth->irq_lock, flags);
+-	/* Only look for even pages */
+-	mapping = addr & PAGE_MASK;
 -
--	/* Disable the software queue IRQs */
--	en = readl(geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
--	en &= ~SWFQ_EMPTY_INT_BIT;
--	writel(en, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
--	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+	disable_irq(geth->port1->irq);
-+	geth_set_freeq_irq(geth, false);
++	spin_lock_irqsave(&geth->freeq_lock, flags);
+ 	if (!geth->freeq_pages) {
+ 		dev_err_ratelimited(geth->dev,
+ 				    "try to get page with no page list\n");
+-		return NULL;
++		goto unlock;
+ 	}
  
- 	/* Drop the old queue */
- 	if (geth->freeq_ring)
-@@ -1103,14 +1115,10 @@ static int geth_resize_freeq(struct gemini_ethernet_port *port)
- 	geth->freeq_order = new_order;
- 	ret = geth_setup_freeq(geth);
- 
--	/* Restart the interrupts - NOTE if this is the first resize
--	 * after probe(), this is where the interrupts get turned on
--	 * in the first place.
--	 */
--	spin_lock_irqsave(&geth->irq_lock, flags);
--	en |= SWFQ_EMPTY_INT_BIT;
--	writel(en, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
--	spin_unlock_irqrestore(&geth->irq_lock, flags);
-+	/* Enable the queue interrupt only after successful setup. */
-+	if (!ret)
-+		geth_set_freeq_irq(geth, true);
-+	enable_irq(geth->port1->irq);
- 
- 	return ret;
- }
-@@ -2373,6 +2381,9 @@ static irqreturn_t gemini_port_irq(int irq, void *data)
- 	irqreturn_t ret = IRQ_NONE;
- 	u32 val, en;
- 
-+	if (!port->id)
-+		return IRQ_NONE;
+ 	/* Look up a ring buffer page from virtual mapping */
+ 	for (i = 0; i < geth->num_freeq_pages; i++) {
+ 		gpage = &geth->freeq_pages[i];
+-		if (gpage->mapping == mapping)
+-			return gpage;
++		if (!gpage->page || mapping < gpage->mapping)
++			continue;
 +
- 	geth = port->geth;
- 	spin_lock(&geth->irq_lock);
++		page_mapping = gpage->mapping;
++		if (mapping - page_mapping > PAGE_SIZE - frag_len ||
++		    ((mapping - page_mapping) & (frag_len - 1)))
++			continue;
++
++		page = gpage->page;
++		*page_offs = mapping - page_mapping;
++		break;
+ 	}
  
+-	return NULL;
++unlock:
++	spin_unlock_irqrestore(&geth->freeq_lock, flags);
++	return page;
+ }
+ 
+ static void gmac_cleanup_rxq(struct net_device *netdev)
+@@ -759,11 +770,12 @@ static void gmac_cleanup_rxq(struct net_device *netdev)
+ 	struct gemini_ethernet_port *port = netdev_priv(netdev);
+ 	struct gemini_ethernet *geth = port->geth;
+ 	struct gmac_rxdesc *rxd = port->rxq_ring;
+-	static struct gmac_queue_page *gpage;
+ 	struct nontoe_qhdr __iomem *qhdr;
+ 	void __iomem *dma_reg;
+ 	void __iomem *ptr_reg;
++	unsigned int page_offs;
+ 	dma_addr_t mapping;
++	struct page *page;
+ 	union dma_rwptr rw;
+ 	unsigned int r, w;
+ 
+@@ -790,14 +802,13 @@ static void gmac_cleanup_rxq(struct net_device *netdev)
+ 		if (!mapping)
+ 			continue;
+ 
+-		/* Freeq pointers are one page off */
+-		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
+-		if (!gpage) {
++		page = geth_freeq_lookup(geth, mapping, &page_offs);
++		if (!page) {
+ 			dev_err(geth->dev, "could not find page\n");
+ 			continue;
+ 		}
+ 		/* Release the RX queue reference to the page */
+-		put_page(gpage->page);
++		put_page(page);
+ 	}
+ 
+ 	dma_free_coherent(geth->dev, sizeof(*port->rxq_ring) << port->rxq_order,
+@@ -811,6 +822,7 @@ static struct page *geth_freeq_alloc_map_page(struct gemini_ethernet *geth,
+ 	struct gmac_queue_page *gpage;
+ 	unsigned int fpp_order;
+ 	unsigned int frag_len;
++	dma_addr_t page_mapping;
+ 	dma_addr_t mapping;
+ 	struct page *page;
+ 	int i;
+@@ -820,9 +832,17 @@ static struct page *geth_freeq_alloc_map_page(struct gemini_ethernet *geth,
+ 	if (!page)
+ 		return NULL;
+ 
+-	mapping = dma_map_single(geth->dev, page_address(page),
+-				 PAGE_SIZE, DMA_FROM_DEVICE);
+-	if (dma_mapping_error(geth->dev, mapping)) {
++	page_mapping = dma_map_single(geth->dev, page_address(page),
++				      PAGE_SIZE, DMA_FROM_DEVICE);
++	if (dma_mapping_error(geth->dev, page_mapping)) {
++		put_page(page);
++		return NULL;
++	}
++	if (page_mapping > U32_MAX - (PAGE_SIZE - 1)) {
++		dev_err_ratelimited(geth->dev,
++				    "freeq DMA mapping exceeds 32 bits\n");
++		dma_unmap_single(geth->dev, page_mapping, PAGE_SIZE,
++				 DMA_FROM_DEVICE);
+ 		put_page(page);
+ 		return NULL;
+ 	}
+@@ -835,31 +855,25 @@ static struct page *geth_freeq_alloc_map_page(struct gemini_ethernet *geth,
+ 	 */
+ 	frag_len = 1 << geth->freeq_frag_order; /* Usually 2048 */
+ 	fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
++	gpage = &geth->freeq_pages[pn];
++	if (gpage->page)
++		put_page(gpage->page);
++
++	/* Then put our new mapping into the page table */
++	gpage->mapping = page_mapping;
++	gpage->page = page;
++
+ 	freeq_entry = geth->freeq_ring + (pn << fpp_order);
+ 	dev_dbg(geth->dev, "allocate page %d fragment length %d fragments per page %d, freeq entry %p\n",
+-		 pn, frag_len, (1 << fpp_order), freeq_entry);
++		pn, frag_len, (1 << fpp_order), freeq_entry);
++	mapping = page_mapping;
+ 	for (i = (1 << fpp_order); i > 0; i--) {
+ 		freeq_entry->word2.buf_adr = mapping;
+ 		freeq_entry++;
+ 		mapping += frag_len;
+ 	}
+-
+-	/* If the freeq entry already has a page mapped, then unmap it. */
+-	gpage = &geth->freeq_pages[pn];
+-	if (gpage->page) {
+-		mapping = geth->freeq_ring[pn << fpp_order].word2.buf_adr;
+-		dma_unmap_single(geth->dev, mapping, frag_len, DMA_FROM_DEVICE);
+-		/* This should be the last reference to the page so it gets
+-		 * released
+-		 */
+-		put_page(gpage->page);
+-	}
+-
+-	/* Then put our new mapping into the page table */
+-	dev_dbg(geth->dev, "page %d, DMA addr: %08x, page %p\n",
+-		pn, (unsigned int)mapping, page);
+-	gpage->mapping = mapping;
+-	gpage->page = page;
++	dev_dbg(geth->dev, "page %d, DMA addr: %pad, page %p\n",
++		pn, &page_mapping, page);
+ 
+ 	return page;
+ }
+@@ -930,7 +944,6 @@ static unsigned int geth_fill_freeq(struct gemini_ethernet *geth, bool refill)
+ static int geth_setup_freeq(struct gemini_ethernet *geth)
+ {
+ 	unsigned int fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
+-	unsigned int frag_len = 1 << geth->freeq_frag_order;
+ 	unsigned int len = 1 << geth->freeq_order;
+ 	unsigned int pages = len >> fpp_order;
+ 	union queue_threshold qt;
+@@ -982,12 +995,11 @@ static int geth_setup_freeq(struct gemini_ethernet *geth)
+ err_freeq_alloc:
+ 	while (pn > 0) {
+ 		struct gmac_queue_page *gpage;
+-		dma_addr_t mapping;
+ 
+ 		--pn;
+-		mapping = geth->freeq_ring[pn << fpp_order].word2.buf_adr;
+-		dma_unmap_single(geth->dev, mapping, frag_len, DMA_FROM_DEVICE);
+ 		gpage = &geth->freeq_pages[pn];
++		dma_unmap_single(geth->dev, gpage->mapping, PAGE_SIZE,
++				 DMA_FROM_DEVICE);
+ 		put_page(gpage->page);
+ 	}
+ 
+@@ -1009,7 +1021,6 @@ static int geth_setup_freeq(struct gemini_ethernet *geth)
+ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
+ {
+ 	unsigned int fpp_order = PAGE_SHIFT - geth->freeq_frag_order;
+-	unsigned int frag_len = 1 << geth->freeq_frag_order;
+ 	unsigned int len = 1 << geth->freeq_order;
+ 	unsigned int pages = len >> fpp_order;
+ 	unsigned int pn;
+@@ -1023,12 +1034,10 @@ static void geth_cleanup_freeq(struct gemini_ethernet *geth)
+ 
+ 	for (pn = 0; pn < pages; pn++) {
+ 		struct gmac_queue_page *gpage;
+-		dma_addr_t mapping;
+-
+-		mapping = geth->freeq_ring[pn << fpp_order].word2.buf_adr;
+-		dma_unmap_single(geth->dev, mapping, frag_len, DMA_FROM_DEVICE);
+ 
+ 		gpage = &geth->freeq_pages[pn];
++		dma_unmap_single(geth->dev, gpage->mapping, PAGE_SIZE,
++				 DMA_FROM_DEVICE);
+ 		while (page_ref_count(gpage->page) > 0)
+ 			put_page(gpage->page);
+ 	}
+@@ -1486,7 +1495,6 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+ 	unsigned int consumed = 0;
+ 	unsigned int frame_len, frag_len;
+ 	struct gmac_rxdesc *rx = NULL;
+-	struct gmac_queue_page *gpage;
+ 	unsigned int received = 0;
+ 	bool dropping = port->rx_dropping;
+ 	union gmac_rxdesc_0 word0;
+@@ -1523,8 +1531,6 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+ 
+ 		frag_len = word0.bits.buffer_size;
+ 		frame_len = word1.bits.byte_count;
+-		page_offs = mapping & ~PAGE_MASK;
+-
+ 		if (word3.bits32 & SOF_BIT) {
+ 			if (skb) {
+ 				napi_free_frags(&port->napi);
+@@ -1543,14 +1549,12 @@ static unsigned int gmac_rx(struct net_device *netdev, unsigned int budget,
+ 			goto err_drop;
+ 		}
+ 
+-		/* Freeq pointers are one page off */
+-		gpage = gmac_get_queue_page(geth, port, mapping + PAGE_SIZE);
+-		if (!gpage) {
++		page = geth_freeq_lookup(geth, mapping, &page_offs);
++		if (!page) {
+ 			dev_err_ratelimited(geth->dev,
+ 					    "could not find mapping\n");
+ 			goto err_drop;
+ 		}
+-		page = gpage->page;
+ 
+ 		if (word3.bits32 & SOF_BIT) {
+ 			skb = gmac_skb_if_good_frame(port, word0, frame_len);
 
 -- 
 2.56.0
