@@ -1,285 +1,171 @@
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011065.outbound.protection.outlook.com [40.107.208.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965143E2AB6
-	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 22:52:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1792104730; cv=none; b=TtJl0/irEl96P99koACGyX3/mkJDg1oYJeGifSc7oYdFdA23utrtqhZxzTCdVfor4SR0EulLjYUTMxFvS46RaWqPIm9fRG2iIYY6+PYXF+xdxhFqSZSrppn5umOWh93B1SYgf953mpVOKTJ1My/VIvT3xS4fL6dG4B15yuInMJM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1792104730; c=relaxed/simple;
-	bh=eD+XOczd0SOv/IS2MeWlFj8VnT4R4KP7o4oKX6lQ/tc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s7yKPHw6Iuf1g5K7rZZ/8AwSZEhPCg3AtEGhdnLeSMEjKe/FIiZ1X7VMSkvzMEVs1PdvYvxfQUIPGkJOoxkFYAdbH3HlRUcDhNhkGDvGZKRG9eQy2GL6ufKTK2J/atf5OHcmXk7tN+1yR/XwtYKpRiHK3BVsJnmkTOFHBqlG79o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rolLzD4Q; arc=none smtp.client-ip=74.125.82.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2476529B216
+	for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 23:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1792105433; cv=fail; b=Or2tpDbT8zULeiQEt3AfWN/11LMXxrEo4rijWswCXEFxX3jXFXtHJSb9YKQKvOhxcqUadpHL8r8jH51lXDqykpS16/wssuScJfwjbOmyTt0/IMvO9Z504IwoQTOYoWYAjiKqlyVDtmEx/2SH5KIHTtqGyRHEyZFV81apHnqotXw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1792105433; c=relaxed/simple;
+	bh=FjwGEJUMQE4d/po8kFrs+tMKMvNPN7mQ40UTnwTcQDs=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=oACW6csdMoYxK4e64nIyNYqb47heSIYL2GOTW1pf0ZXs6gIW929NNeQBCTu3V2ZbonbKhJv98pPGo6fsWqmE2kf6dcleGl30hqzuIVtZzyZWmL09I5CbYJQddal6dDLrgaW/1YGtXi1lBJC9lr/L/hnL7LLXepS9OSRsIH+HXOM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=alJ4vziA; arc=fail smtp.client-ip=40.107.208.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rolLzD4Q"
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-144f79153f5so400935c88.0
-        for <netdev@vger.kernel.org>; Thu, 15 Oct 2026 15:52:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1792104728; x=1792709528; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jNlpzIcecwwaTDv1YwZkM4sHbEeZr9KYjPYll1ofctc=;
-        b=rolLzD4QQnnycEpUA2sr0lYTaKOpXw7hDW243TPETGaoOSh7rCJcr1DSlNveLdsL4J
-         Oo5uTBnRqLYWpGSmH/CtJjNhasDEktSV79kqTVd3HCp/i+CBeCNx+diagWyDQa2j4DoM
-         qI7MOUPcByloi4FLPiwzNMncHhYDdWgwKVIg0qf3ZnuhrS5CXej8Z7MiCyRoJRW4Dfd8
-         b2jDu9KLM9261L9VBrhW6cImviG6LuLQy/YGVkcOFF3Iu87vwPizr05nr/TqdrRRrRHb
-         VnpvS5QPn7z9Oy7mUKFpeMbOw4q7uJIpzgOs/q2EWpRtHkzECvMwEND1/waevgJGqMdo
-         GPdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1792104728; x=1792709528;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=jNlpzIcecwwaTDv1YwZkM4sHbEeZr9KYjPYll1ofctc=;
-        b=Q6Z9lH02NG3Cufw6kYbQRG3yUCHC+zJ0ZPkq8EFz+pRPXsR1nUhgHoOpTX+3lQlEqj
-         i+aryuiDkdrWPlnBYJi+dkbLJB7eIrw4PLoybIACt6iN5uKIfAtgdG/M2aC/RfuMUBpS
-         f/iZbuCIE4HPqzhF8sxc+ATApBa6WRey+BzJC9NOWbJNIazznzuqlm3C5PdGyTtZ6siW
-         BJKvtSWqFkC8e/P7v3l1BCGAdGe1xZFqjW1m+k6VKpJiej0kUphdjpzqDDE10p7r5KzT
-         Oep68HZaq++V3iVRw08+7O4DTZg6w99VJH8HNL6+W7omCslUmoWYH9vjkvGEG1nR7Qle
-         qNQw==
-X-Forwarded-Encrypted: i=1; AKwUvBw38DxRgYy0I6i0kVky7HtirdWKEx9eoKSWT7UoGAwmWj1NQVkS8OrVjq1iUpjdYwWvknoXgHA=@vger.kernel.org
-X-Gm-Message-State: AFq9FYJQC9CJy9q/ik9DWLbeg+jKJWUHf4l6hKJCmnvJwIEy5snUdXNo
-	bRex2tU6PA2Pv35/KYlCVF9l8uZ5vPvGDGuiD+9DdQMwb/AvpJ2DZCU+
-X-Gm-Gg: AYBFou0upxrN3QmGJNNr/7NjiQJwr5U2w8WsX4tL07PIhPWaIEqqNn4VQ5fNxWAVr1K
-	FGUJRt9X9FQXOE81wuuzKPU5VX+L9+/SQrFO6NCOOx27XtFC4MOPIMSPY6E6Qv39RDqXhy/P9tO
-	VzcUxggac9hcQ5buNYFlrHroHOFlXle/cl91t5ca3TTBOjQHog1SO5zaLJ3tEzbodCG/BCCC/w9
-	ScRHfgPF17PvZmjvDINWDmIY6ta4jP1UwB+C12dt9iuve0CY5IX7bJe2o+7jULW5leZy+6Chzri
-	554jl062xD6z1p7iOrtvBsCoo60xmrzQlaK/MnIokruniE4oJWK3evLBkPDrurOCwb4gZtA0PBY
-	n58MXbAc+cvoHg/M5rey27jZrus+pktVhhC+2lzrhpN1J3IfowOVqxHzs+edbmM8TT27FZHSdmF
-	OqbiIVU2mRaVJAc8qIP6iz1quuwMGeE2OvUbBgr+LOp+xelwHDzLQv71kFKNqHDLvJ3vMn7bLjq
-	V1k86dDEo/1HS7st/L4nhcjH7AVQmkXI/KZr6pIKA18NSGJS8me76zuRxkEyg==
-X-Received: by 2002:a05:7022:b0c5:b0:182:61f2:d818 with SMTP id a92af1059eb24-18261f2d979mr1360645c88.5.1792104727370;
-        Thu, 15 Oct 2026 15:52:07 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1151:15:c24:4ad9:f660:1904? ([2620:10d:c090:500::5:d964])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1831b37ce3fsm532896c88.14.2026.10.15.15.52.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Oct 2026 15:52:06 -0700 (PDT)
-Message-ID: <e34eba12-ecab-4215-b75b-eea3e29fefb2@gmail.com>
-Date: Thu, 15 Oct 2026 15:52:05 -0700
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="alJ4vziA"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w+HidaYXyAeyjG1kSE9xYOe7/1NnkD8yyLr2Rl8cdUm0z70MnNlFBdBijTv2MxKS1pYDB1n50d1BjUdiiDGacd7wKGxBEy1nyBxbPVIbzFgkp+AHrFFL209ZaA6j2sRHB4NAisUNS3DQvB3VJDDKxVAVSh7JHuIQO39hn6qMR8zgSz0U/+ysHaesjZy+otMJoItjVCj6nAwShugIEN2wJ5zMcPIJ0DcOC6BED4q1w539d3DYhGLDGnJaJZ40+NJdRniwozfwHcO0Y7a5gAfphFhdEh+jEwlbWApfcRHbhR9ywlDw2tAJr4Wmgu2KnPv7Fnc8qizj9NxfIJZMOQ/vLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z54Tu3MVLDM9lnrlnTPb1KBe6E0o4hxXhB64krYwuY0=;
+ b=btFgSnJXX8ROnjJ+Er6zFI1ciYglspI4CRBCU3/IYeYMmlIcPhpsY7WxlzXaYC8vb+shvf6NqxlPS54yzwKzakB6Cr9ZK7jXYs/64N2xvLXGdMegcUsw3f0tiD71QSN2rWyT86XRNL+32wbV5N3l5BeJaxHQT4qXo6s8n4vThY3tbiwm1edQ2xBcr6V9mp8y1vZeB+e0aQhKe92kKWN/YdIb7LxRvcXvffVY5RAJ+Rv6lLLWCXg4z7jY5yOYZwpMOxHAjE9roxPZS3/TjJyC/GBcug4vThWpNtedXvNuf5amQnQbK/xdWfBkJIkgBuZjlpypPmdD+pXpbLgAGiV9SQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=z54Tu3MVLDM9lnrlnTPb1KBe6E0o4hxXhB64krYwuY0=;
+ b=alJ4vziAV10pH2iTzOgZYcewMF4y7JCq7rxrojdjRVbVUgmnq3C19G2Q44YO32rlYUGys1y1OJd+1YLdAPLBB43+X7jWwlfwRl03x4R+lPCeMSLh5Nwov4ZgN/tSASmF5a9HCfrV9/awBMimAqQoQ4VZHMCYseLrbRhFy8wH9xs=
+Received: from BN0PR04CA0105.namprd04.prod.outlook.com (2603:10b6:408:ec::20)
+ by IA4PR12MB461082.namprd12.prod.outlook.com (2603:10b6:207:10f::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Thu, 15 Oct
+ 2026 23:03:48 +0000
+Received: from BN2PEPF0000A992.namprd04.prod.outlook.com
+ (2603:10b6:408:ec:cafe::25) by BN0PR04CA0105.outlook.office365.com
+ (2603:10b6:408:ec::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.522.4 via Frontend Transport; Thu, 15
+ Oct 2026 23:03:48 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF0000A992.mail.protection.outlook.com (10.167.248.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 23:03:48 +0000
+Received: from SCSEJOYNER01.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Thu, 15 Oct
+ 2026 18:03:40 -0500
+From: Eric Joyner <eric.joyner@amd.com>
+Subject: [PATCH net v2 0/2] ionic: fix port_info lifetime bugs
+Date: Thu, 15 Oct 2026 16:03:29 -0700
+Message-ID: <20261015-ionic-port-info-lifetime-v2-0-57232013fd79@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net/mlx5e: advertise tcp-data-split support
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, saeedm@nvidia.com, tariqt@nvidia.com,
- mbloch@nvidia.com, leon@kernel.org, andrew+netdev@lunn.ch,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gal@nvidia.com,
- cratiu@nvidia.com, dtatulea@nvidia.com, noren@nvidia.com,
- cjubran@nvidia.com, bjorn@kernel.org, netdev@vger.kernel.org
-References: <20261009025137.2631215-1-dimitri.daskalakis1@gmail.com>
- <179160117016.434549.2094341982375611260@kernel.org>
-Content-Language: en-US
-From: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>
-In-Reply-To: <179160117016.434549.2094341982375611260@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNTQ6DIBCFr2Jm3WkAW/xZ9R6NC8WhTlLBADFtD
+ Hcv8QJdvvflfe+ASIEpQl8dEGjnyN6VoC4VmGV0L0KeSwYllBatvGHhbHDzISE76/HNlhKvhLX
+ UddN0ZlJdC2W+BbL8OdVPcJRgKOXCMfnwPe92eaL/5l2iQNvUkxyFNnerH+M6X41fYcg5/wCyU
+ TO/wwAAAA==
+X-Change-ID: 20260814-ionic-port-info-lifetime-3163779cb298
+To: <netdev@vger.kernel.org>
+CC: Brett Creeley <brett.creeley@amd.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, "Nikhil P. Rao" <nikhil.rao@amd.com>, Vadim Fedorenko
+	<vadim.fedorenko@linux.dev>, Eric Joyner <eric.joyner@amd.com>, Eric Dumazet
+	<edumazet@kernel.org>
+X-Mailer: b4 0.14.3
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A992:EE_|IA4PR12MB461082:EE_
+X-MS-Office365-Filtering-Correlation-Id: fcf7219c-7bb0-486a-c809-08df2b109287
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|23010399003|36860700016|82310400026|56012099006|11063799006|261009223027099003|18002099003|10067099003|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	5hce/brOTFrc1fROECD9O0JBeeORtoQrFGvei7EHriiauKqVWl33OwpTN9Ii1e2ehQ6Mr7VYDR6UQsl3MRKgzD8BzOf0VxsvBe7WeGG4qYGbl2Sho3oprkkFCjffbKSqkpVxE/qxaLgKKiOD3JQAmEJsXR1k+obPqgsBQrpGDgfIPBOv8V2Abp8aH68fEh3cP/XPx79OCLl2/zg+Xmd9B7vjjTHJtihm67wr/TmBaSbRloksoUnf4VUGLcpljdOrf+LMullWGBWhP3zHgLAVanLPyFiCbhl7JqgEEDgh6ymkLZPVZSxI2lJAK84L1Xp0/TPzVFEjxw8MkGTyCaMj25saet8WD5EmJMK1I2qwzTlAWAI1vp04dnp5H8luRRnlscO4khMHbulQeLPCvA6r8oXQ5orN1hmhJH9VCq6jaBO32qA/LwDre2bfMbSx3G4Uv/vwbWJTZgaASFZAFxS1Tn7+IYOsozuozi4eRVraleTP9fXz70Nb//teoaEM52ITEayd2aC48f6YCAyX/zIzO1O9SK4e1zUAXQeVAnBTB81ll/egpWvZLnGcSM+szjv2MUscfIAANWk7aA8HJfRriHrem4MI6rtAy6MVJLE4WPFLlo+z/Jzz5y5bfS1NuXU5gk3nm4/OSUcn/65SdWzrP2q5Rt+GXDduDBFn+Wcy6No=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(36860700016)(82310400026)(56012099006)(11063799006)(261009223027099003)(18002099003)(10067099003)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	o7NQl0N3an1e4eZpfgUvyMYCv9ZgbCCynl1TAt1FvJbclc/3B2VKnt7W5yxuOE7HNaDZEu8o3njXplpOmxbCyWp9kancDyqj2AiTg4zf4XE6lVoXwRdZ+Q8NpuxZd0rOLF0dR8QjY/22DwdPYsLU+Bws9MDe8gx6wYnXm0lB8wEChrjmn3+JmCVgm4ii7Z21JPWxyHm5jM8gzhVTlAhk0wm5wFjSI7joIW/dQV8zSoL1xV5SQpICzGRIgTi77L/CenfktX27tLozKXsPASR0LR6Wv8W/C5PgjUlFXY53X5zrkKXfg4+pGyWBHOA79aeKTuRb4M840neU/xHHhvZPaBg2qdYOcCnkJcA+YPFDfPZ+rcWGvtpW6oEnq4PP9Jy2RKinZk6fslkcRUugm2QWuy2XbKB7FZZGxvSqQFKjZnwUhBOrLJ40qH0+hfjiew7E
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 23:03:48.7321
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcf7219c-7bb0-486a-c809-08df2b109287
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF0000A992.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR12MB461082
 
-On 10/9/26 7:59 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider.
-> 
-> Critical: 0 · High: 0 · Medium: 2 · Low: 2
-> 
-> If you believe none of the issues are legitimate, please reply to each
-> issue of Medium severity or higher and explain why the AI is wrong.
-> If any of them are legitimate and you plan to respin, please let patchwork
-> know by including "pw-bot: cr" as a separate line at the end of your reply
-> (one such reply per series is enough).
-> 
-> - [Medium] The patch is titled "advertise tcp-data-split support" and
->   says it will "Add back tcp-data-split reporting", but…
-> - [Medium] On an mlx5 device with rx-gro-hw on,
->   mlx5e_ethtool_get_ringparam() now reports tcp-data-split='enabled'…
-> - [Low] The commit message says "This is not a fix" and carries no Fixes:
->   tag, but the patch fixes real defects that the message itself…
-> - [Low] With rx-gro-hw on and dev->cfg->hds_config == UNKNOWN,
->   mlx5e_ethtool_get_ringparam() now reports tcp-data-split=enabled from…
-> 
-> --
-> 
-> net/mlx5e: advertise tcp-data-split support
-> 
-> This commit brings back tcp-data-split reporting in
-> mlx5e_ethtool_get_ringparam() when SHAMPO is active. It also rejects
-> requests to disable tcp-data-split. Finally, it moves
-> netdev_update_features() so that it only runs after
-> mlx5e_ethtool_set_ringparam() succeeds.
-> 
->> This is not a fix since HDS/tcp-data-split is still functional with HW
->> GRO enabled.
-> 
-> [Severity: Low]
-> Is this accurate? The patch seems to fix problems that the commit message
-> itself describes:
-> 
->   - the tcp-data-split reporting that 46bcce5dfd33 dropped from ethtool -g
->   - the KeyError in hds.set_hds_enable/disable since d347b28c492e
->   - the feature/config de-sync caused by calling netdev_update_features()
->     before mlx5e_ethtool_set_ringparam()
-> 
-> For the last one: in the baseline, mlx5e_ethtool_set_tcp_data_split()
-> called netdev_update_features() before the ring sizes were validated.
-> mlx5e_fix_features() looks at netdev->cfg_pending:
-> 
-> drivers/net/ethernet/mellanox/mlx5/core/en_main.c:mlx5e_fix_features() {
->     ...
-> 	if (cfg && cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-> 	    !(features & NETIF_F_GRO_HW)) {
->     ...
-> }
-> 
-> Take a request like "ethtool -G ethX rx 1 tcp-data-split off" while
-> hds_config is ENABLED. HW-GRO/SHAMPO could be turned off first. The
-> rx_pending minimum check then fails, and the ethtool core discards
-> cfg_pending. dev->cfg->hds_config stays ENABLED, but the HW is no longer
-> splitting.
-> 
-> There is no Fixes: tag, so stable tooling won't pick these fixes up for
-> kernels that contain 46bcce5dfd33 and d347b28c492e. Could the reporting
-> restore and the netdev_update_features() reordering be split into their
-> own patches with Fixes: tags? The uAPI behavior change that rejects
-> tcp-data-split off could then stay separate.
-> 
+Two fixes for the lifetime of the ionic port_info DMA buffer.
 
-The lack of tcp-data-split reporting that d347b28c492e introduced does not
-cause any user facing issues, so this does not warrant a standalone Fix.
+Patch 1 fixes a use-after-free. ionic_port_init() allocates port_info
+only when the pointer is NULL, but its error path frees the buffer
+unconditionally. On the firmware recovery paths,
+ionic_lif_handle_fw_up() and ionic_reset_done(), the buffer belongs to
+an earlier successful init, so a failed PORT_INIT frees it under any
+ethtool op that is already reading it. The error path now frees only
+what the same call allocated.
 
-The early call to netdev_update_features() is a real bug. A user can get
-themselves into a state where all ring changes are blocked. I've been able
-to verify this on a 6.16 kernel. Fortunately this state is not terminal,
-users can recover by setting rx-gro-hw on. I'll send the Fix to net.
+Patch 2 (v1 patch 3) fixes a leak of the same buffer when probe fails
+after the port has been set up.
 
->> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
->> index 261c466a4d362..c30d751cac2fa 100644
->> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
->> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
->> @@ -378,6 +378,9 @@ void mlx5e_ethtool_get_ringparam(struct mlx5e_priv *priv,
->>  
->>  	kernel_param->hds_thresh = 0;
->>  	kernel_param->hds_thresh_max = 0;
->> +
->> +	if (priv->channels.params.packet_merge.type == MLX5E_PACKET_MERGE_SHAMPO)
->> +		kernel_param->tcp_data_split = ETHTOOL_TCP_DATA_SPLIT_ENABLED;
->>  }
-> 
-> [Severity: Medium]
-> The subject says "advertise tcp-data-split support" and the message says
-> "Add back tcp-data-split reporting". However, this only ever writes
-> ENABLED, and only when SHAMPO is active. The code removed by 46bcce5dfd33
-> also reported DISABLED when SHAMPO was not active.
-> 
-> HW-GRO is off by default on mlx5, since mlx5e_build_nic_netdev() clears
-> NETIF_F_GRO_HW. In that case:
-> 
->   - rings_prepare_data() pre-fills tcp_data_split from
->     dev->cfg->hds_config (UNKNOWN)
->   - the driver leaves it untouched
->   - rings_fill_reply() leaves out the attribute:
-> 
-> net/ethtool/rings.c:rings_fill_reply() {
->     ...
-> 	    (kr->tcp_data_split &&
-> 	     (nla_put_u8(skb, ETHTOOL_A_RINGS_TCP_DATA_SPLIT,
->     ...
-> }
-> 
-> So user space sees tcp-data-split as unsupported, even though the device
-> advertises ETHTOOL_RING_USE_TCP_DATA_SPLIT and is in fact not splitting.
-> The post-patch log in the changelog shows this:
-> 
->   ok 1 hds.get_hds # SKIP tcp-data-split not supported by device
-> 
-> mlx5e_ethtool_set_tcp_data_split() now also rejects
-> ETHTOOL_TCP_DATA_SPLIT_DISABLED unconditionally. On a default-configured
-> device, the off state can then be neither reported nor requested.
-> 
-> Would it be safe to report ETHTOOL_TCP_DATA_SPLIT_DISABLED when SHAMPO is
-> not active? Both ethtool_ringparam_get_cfg() and the netlink set path
-> replace the driver-reported value with dev->cfg->hds_config.
-> 
+Signed-off-by: Eric Joyner <eric.joyner@amd.com>
+---
+Changes in v2:
+- Nikhil's work replaces v1 patches 1 and 2 with a fix for the root
+  cause. With the ionic_port_init() error path no longer freeing a
+  buffer it did not allocate, port_info is never freed or set to NULL
+  while the netdev is registered, which also covers
+  ionic_sw_stats_get_values() and ionic_reset_link_down_count(). As the
+  Sashiko review pointed out, the v1 NULL checks could not stop a reader
+  that had already loaded the pointer, and ionic_reset_prepare() already
+  detaches the netdev via ionic_stop_queues_reconfig() before any
+  port_info or BAR teardown, so the extra detach did not close the window.
+- If PORT_INIT fails during recovery, the old buffer is now kept. The
+  netdev stays detached with IONIC_LIF_F_FW_RESET set until a later
+  PORT_INIT succeeds, so its stale contents are not reported.
+- On freeing without PORT_RESET after a timed-out PORT_INIT: that free
+  now runs only when the same call allocated the buffer, i.e. at
+  probe. LIF_INIT is never sent after a failed PORT_INIT on any path,
+  and Nikhil checked that the firmware only writes port_info once the
+  LIF is initialized.
+- Patch 2: correct the Fixes tag to 0de38d9f1dba, which removed the
+  ionic_port_reset() call from the probe unwind, and reword the
+  changelog to match. No code change.
+- Not addressed here: an ethtool op can still run while the PCI reset
+  path unmaps the BARs in ionic_clear_pci() and tears down device state
+  in ionic_dev_teardown(). The ignored PORT_STATE result in
+  ionic_port_init() is also unchanged.
+- Rebase onto current net.
+- Link to v1: https://lore.kernel.org/r/20260814-ionic-port-info-lifetime-v1-0-f73b1a06c5f6@amd.com
 
-It's safe to report ETHTOOL_TCP_DATA_SPLIT_DISABLED based on the SHAMPO
-state. The set path safely ignores what get returns. Will update this in
-the next version.
+---
+Eric Joyner (1):
+      ionic: free port_info when probe fails after the port is set up
 
-> [Severity: Low]
-> With rx-gro-hw on and dev->cfg->hds_config == UNKNOWN, this now reports
-> enabled. Can hds.set_hds_enable then leave hds_config stuck at ENABLED
-> after the test finishes?
-> 
-> _defer_reset_hds() saves tcp-data-split as 'enabled' (from SHAMPO state)
-> set_hds_enable() writes tcp-data-split 'enabled'
->   ethnl_set_rings()
->     dev->cfg_pending->hds_config = kernel_ringparam.tcp_data_split;
-> _hds_reset() at cleanup:
->     if cur.get('tcp-data-split') != rings.get('tcp-data-split'):
-> 
-> Both values are 'enabled', so 'unknown' is never written back.
-> 
-> After that, mlx5e_fix_features() keeps NETIF_F_GRO_HW forced on, and
-> "ethtool -K rx-gro-hw off" no longer takes effect. dev_xdp_attach() also
-> rejects single-buffer XDP:
-> 
-> 	if (dev->cfg->hds_config == ETHTOOL_TCP_DATA_SPLIT_ENABLED &&
-> 	    prog && !prog->aux->xdp_has_frags) {
-> 
-> In a full hds.py run, the later set_xdp tests write 'unknown' and hide
-> this. It shows up when set_hds_enable runs alone, or as the last test that
-> touches HDS.
-> 
-> The root cause is that the test compares reported state rather than
-> config, and netdevsim has the same pattern. This patch is what makes it
-> reachable on mlx5, though. Should _hds_reset() or the driver reporting
-> be adjusted?
-> 
+Nikhil P. Rao (1):
+      ionic: fix port_info use-after-free on firmware recovery
 
-This issue is unique to mlx5 since tcp-data-split is tied to HW-GRO. We
-shouldn't modify a generic test to account for this coupling.
+ drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c |  1 +
+ drivers/net/ethernet/pensando/ionic/ionic_main.c    | 13 +++++++++----
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+---
+base-commit: 045958acaa75205b31578cb22c4345e28dd2e4bf
+change-id: 20260814-ionic-port-info-lifetime-3163779cb298
 
-> [Severity: Medium]
-> On mlx5 with rx-gro-hw on, do hds.set_xdp and hds.ioctl_set_xdp now go
-> from SKIP to FAIL?
-> 
-> Both tests see mode 'enabled', write 'unknown', and then attach a
-> single-buffer XDP program:
-> 
-> tools/testing/selftests/drivers/net/hds.py:set_xdp() {
->     ...
->     if mode == 'enabled':
->         _defer_reset_hds(cfg, netnl)
->         netnl.rings_set({'header': {'dev-index': cfg.ifindex},
->                          'tcp-data-split': 'unknown'})
-> 
->     _xdp_onoff(cfg)
-> }
-> 
-> If cfg is already UNKNOWN, ethnl_set_rings() returns 0 on !mod and the
-> 'unknown' write does nothing. Otherwise it only clears the config, and
-> GRO_HW stays wanted. Either way SHAMPO stays active:
-> 
-> mlx5e_xdp_set()
->   mlx5e_xdp_allowed()
-> 	if (params->packet_merge.type != MLX5E_PACKET_MERGE_NONE) {
-> 		netdev_warn(netdev, "can't set XDP while HW-GRO/LRO is on, disable them first\n");
-> 		return -EINVAL;
-> 
-> The log in the changelog only covers the HW-GRO off case, where these
-> tests are skipped. Was the HW-GRO on configuration tested as well?
-> 
-> [ ... ]
-> 
-
-It's fine for these test to fail given mlx5's HW-GRO and tcp-data-split
-coupling.
+Best regards,
+-- 
+Eric Joyner <eric.joyner@amd.com>
 
